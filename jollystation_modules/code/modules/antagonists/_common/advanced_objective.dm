@@ -60,11 +60,11 @@
 	var/formatted_text = "<br><B>Objective #[number]</B>: [goal]"
 	if(LAZYLEN(similar_objectives) || always_succeed)
 		if(check_relative_success())
-			formatted_text += "<br><span class='greentext'> The [our_antag_datum.name] succeeded this goal!</span>"
+			formatted_text += span_greentext("<br>The [our_antag_datum.name] succeeded this goal!")
 		else
-			formatted_text += "<br><span class='redtext'> The [our_antag_datum.name] failed this goal!</span>"
+			formatted_text += span_redtext("<br>The [our_antag_datum.name] failed this goal!")
 	if(notes)
-		formatted_text += "<br><span class='info'>Extra info they had about this goal: [notes]</span>"
+		formatted_text += span_info("<br>Extra info they had about this goal: [notes]")
 
 	return formatted_text
 

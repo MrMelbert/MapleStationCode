@@ -71,12 +71,13 @@
 			result += "<br>They were afforded <b>[linked_advanced_datum.starting_points]</b> tc to accomplish these tasks."
 
 	if(uplink_true)
-		var/uplink_text = "(used [TC_uses] TC) [purchases]"
+		var/uplink_text = span_bold("(used [TC_uses] TC)")
+		uplink_text += "[purchases]"
 		result += uplink_text
 		if (contractor_hub)
 			result += contractor_round_end()
 	else if (!should_equip)
-		result += "<br>The [name] never obtained their uplink!"
+		result += span_bold("<br>The [name] never obtained their uplink!")
 
 	return result.Join("<br>")
 
