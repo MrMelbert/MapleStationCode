@@ -25,19 +25,12 @@
  *		an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
  */
 
-/// Defines for the message to display when finding more info.
-#define ADDITIONAL_INFO_RECORDS (1<<0)
-#define ADDITIONAL_INFO_EXPLOITABLE (1<<1)
-#define ADDITIONAL_INFO_FLAVOR (1<<2)
-
 // Mob is the person being examined. User is the one doing the examining.
 // Extension of /mob/living/carbon/human/examine().
 /mob/living/carbon/human/examine(mob/user)
 	. = ..()
 	// The string we return, formatted.
 	var/expanded_examine = ""
-	// Whether or not we would have additional info on `examine_more()`.
-	var/has_additional_info
 	// Who's identity are we dealing with? In most cases it's the same as [src], but it could be disguised people, or null.
 	var/mob/living/carbon/human/known_identity = get_visible_identity(user)
 
@@ -66,52 +59,15 @@
 		if(!known_identity)
 			expanded_examine += span_smallnoticeital("You can't make out any details of this individual.\n")
 
-		// if we have an identity, we can check for flavor and records
 		else if(known_identity.client)
-			// If the client has flavor text set.
-			if(known_identity.client.prefs.flavor_text)
-				var/found_flavor_text = known_identity.get_flavor_text(TRUE)
-				expanded_examine += found_flavor_text
-				if(length(found_flavor_text) > EXAMINE_FLAVOR_MAX_DISPLAYED)
-					has_additional_info |= ADDITIONAL_INFO_FLAVOR
-
-			// Typecasted user into human, so we can check their ID for access.
-			var/mob/living/carbon/human/hud_wearer = user
-			// A list of our user's acccess.
-			var/list/access = istype(hud_wearer) ? hud_wearer.wear_id?.GetAccess() : null
-
-			// Antagonists can see expoitable information.
-			if(user.mind?.antag_datums && known_identity.client.prefs.exploitable_info)
-				for(var/antag_datum in user.mind.antag_datums)
-					var/datum/antagonist/curious_antag = antag_datum
-					if(!(curious_antag.antag_flags & CAN_SEE_EXPOITABLE_INFO))
-						continue
-					has_additional_info |= ADDITIONAL_INFO_EXPLOITABLE
-					break
-			// Medhuds can see medical records, with adequate access.
-			if(known_identity.client.prefs.medical_records && HAS_TRAIT(hud_wearer, TRAIT_MEDICAL_HUD) && access && (ACCESS_MEDICAL in access))
-				has_additional_info |= ADDITIONAL_INFO_RECORDS
-			// Sechuds can see security records, with adequate access.
-			if(known_identity.client.prefs.security_records && HAS_TRAIT(hud_wearer, TRAIT_SECURITY_HUD) && access && (ACCESS_SECURITY in access))
-				has_additional_info |= ADDITIONAL_INFO_RECORDS
-
-			// Format a little message to append to let the player know they can access longer flavor text/records/info on double examine.
-			var/added_info = ""
-			if(has_additional_info & ADDITIONAL_INFO_FLAVOR)
-				added_info = "longer flavor text"
-			if(has_additional_info & ADDITIONAL_INFO_EXPLOITABLE)
-				added_info = "[added_info ? "[added_info], exploitable information" : "exploitable information"]"
-			if(has_additional_info & ADDITIONAL_INFO_RECORDS)
-				added_info = "[added_info ? "[added_info] and past records" : "past records"]"
-
-			if(added_info)
-				expanded_examine += span_smallnoticeital("This individual may have [added_info] available if you <b>examine closer.<b/>\n")
+			expanded_examine += known_identity.get_basic_flavor_and_records(user)
 
 	// if the mob doesn't have a client, show how long they've been disconnected for.
 	else if(last_connection_time)
-		expanded_examine += span_info("<i>[p_theyve(TRUE)] been unresponsive for <b>[round((world.time - last_connection_time) / (60*60), 0.1)] minute(s).</b></i>\n")
+		var/formatted_afk_time = span_bold(round((world.time - last_connection_time) / (60*60), 0.1))
+		expanded_examine += span_info(span_italics("[p_theyve(TRUE)] been unresponsive for [formatted_afk_time] minute(s).\n"))
 
-	if(length(expanded_examine) >= 0) // >= 20 instead of 0 to account for the span
+	if(length(expanded_examine) > 0)
 		expanded_examine = span_info(expanded_examine)
 		expanded_examine += "*---------*\n"
 		. += expanded_examine
@@ -123,7 +79,3 @@
 	var/mob/living/carbon/human/known_identity = get_visible_identity(user)
 	if(client && known_identity?.client)
 		. += span_info("[known_identity.get_flavor_text(FALSE)][known_identity.get_records_text(user)]")
-
-#undef ADDITIONAL_INFO_RECORDS
-#undef ADDITIONAL_INFO_EXPLOITABLE
-#undef ADDITIONAL_INFO_FLAVOR

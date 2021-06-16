@@ -3,11 +3,6 @@
 /// For admin disabling LOOC
 GLOBAL_VAR_INIT(looc_allowed, TRUE)
 
-/// The color for LOOC chat.
-#define LOOC_SPAN_COLOR "#00a8c5"
-/// The color the prefix for LOOC uses.
-#define LOOC_PREFIX_COLOR "#5f008b"
-
 /// The LOOC verb
 /client/verb/looc(msg as text)
 	set name = "LOOC"
@@ -155,9 +150,3 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 /proc/toggle_looc()
 	GLOB.looc_allowed = !GLOB.looc_allowed
 	to_chat(world, span_bold("LOOC has been globally [GLOB.looc_allowed ? "enabled" : "disabled"]."))
-
-/proc/span_message(str)
-	return "<span class='message'>[str]</span>"
-
-#undef LOOC_PREFIX_COLOR
-#undef LOOC_SPAN_COLOR

@@ -79,7 +79,7 @@
 	if(isstructure(source))
 		thing = "structure"
 
-	examine_list += span_smallnoticeital("This [thing] might have additional information if you examine closer.")
+	examine_list += span_smallnoticeital("This [thing] might have additional information if you [EXAMINE_CLOSER_BOLD].")
 
 /datum/element/unique_examine/proc/examine(datum/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
@@ -156,7 +156,7 @@
 					composed_message += "You note the following because of [species_text]: <br>"
 					composed_message += special_desc
 
-	if(length(composed_message) >= 0) // >= 20 instead of 0 to account for the span
+	if(length(composed_message) > 0)
 		examine_list += span_info(composed_message)
 	else if(toy) //If we don't have a message and we're a toy, add on the toy message.
 		composed_message += "The popular toy resembling [source] from your local arcade, suitable for children and adults alike."
@@ -194,6 +194,3 @@
 			. = faction
 
 	return span_bold(.)
-
-/proc/span_readable_yellow(str)
-	return "<font color = '#c5c900'>[str]</font>"
