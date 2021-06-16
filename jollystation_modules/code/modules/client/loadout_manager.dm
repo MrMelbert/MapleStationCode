@@ -142,7 +142,7 @@
 /// Select [path] item to [category_slot] slot, and open up the greyscale UI to customize [path] in [category] slot.
 /datum/loadout_manager/proc/select_item_color(path, category_slot)
 	if(menu)
-		to_chat(owner, "<span class='warning'>You already have a greyscaling window open!</span>")
+		to_chat(owner, span_warning("You already have a greyscaling window open!"))
 		return
 
 	var/obj/item/colored_item = new path
@@ -163,6 +163,11 @@
 	var/slot_starting_colors = colored_item.greyscale_colors
 	if(owner.prefs.greyscale_loadout_list && owner.prefs.greyscale_loadout_list[category_slot])
 		slot_starting_colors = owner.prefs.greyscale_loadout_list[category_slot]
+
+	var/datum/greyscale_config/current_config = SSgreyscale.configurations[colored_item.greyscale_config]
+	if(current_config && !current_config.icon_states)
+		to_chat(owner, span_warning("This item isn't properly configured for greyscaling! Complain to a coder!"))
+		CRASH("Loadout manager attempted to pass greyscale item without icon_states into greyscale modification menu!")
 
 	menu = new(
 		src,
@@ -187,12 +192,12 @@
 /// Sets [category_slot]'s greyscale colors to the colors in the currently opened [open_menu].
 /datum/loadout_manager/proc/set_slot_greyscale(category_slot, datum/greyscale_modify_menu/open_menu)
 	if(!open_menu)
-		CRASH("set_slot_greyscale called without a greyscale menu")
+		CRASH("set_slot_greyscale called without a greyscale menu!")
 
 	var/list/loadout = owner.prefs.loadout_list
 
 	if(!loadout[category_slot])
-		to_chat(owner, "<span class='warning'>Select the item before attempting to apply greyscale to it!</span>")
+		to_chat(owner, span_warning("Select the item before attempting to apply greyscale to it!"))
 		return
 
 	var/list/colors = open_menu.split_colors
