@@ -27,7 +27,9 @@
 /obj/structure/closet/secure_closet/bridge_officer
 	name = "\proper bridge officer's locker"
 	req_access = list(ACCESS_HEADS)
-	icon_state = "hos"
+	icon = 'jollystation_modules/icons/obj/locker.dmi'
+	icon_state = "bo"
+	icon_door = "bo"
 
 /obj/structure/closet/secure_closet/bridge_officer/PopulateContents()
 	. = ..()
