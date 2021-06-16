@@ -102,11 +102,13 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\datums\datacore.dm
 - code\datums\id_trim\jobs.dm
 - code\datums\mapgen\Cavegens\LavalandGenerator.dm
+- code\datums\greyscale\json_configs\plushie_lizard.json
 - code\game\gamemodes\objective_items.dm
 - code\game\machinery\computer\crew.dm
 - code\game\machinery\computer\medical.dm
 - code\game\machinery\computer\security.dm
 - code\game\objects\items\implants\implantuplink.dm
+- code\game\objects\items\plushes.dm
 - code\modules\antagonists\eldritch_cult\eldritch_effects.dm
 - code\modules\antagonists\eldritch_cult\eldritch_knowledge.dm
 - code\modules\antagonists\traitor\datum_traitor.dm
