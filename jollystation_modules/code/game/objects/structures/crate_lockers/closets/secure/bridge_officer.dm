@@ -29,7 +29,6 @@
 	req_access = list(ACCESS_HEADS)
 	icon = 'jollystation_modules/icons/obj/locker.dmi'
 	icon_state = "bo"
-	icon_door = "bo"
 
 /obj/structure/closet/secure_closet/bridge_officer/PopulateContents()
 	. = ..()
