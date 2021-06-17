@@ -410,6 +410,7 @@
 
 /datum/id_trim/job/scientist
 	assignment = "Scientist"
+	trim_icon = 'jollystation_modules/icons/obj/card.dmi' //NON-MODULE CHANGE
 	trim_state = "trim_scientist"
 	full_access = list(ACCESS_ROBOTICS, ACCESS_RND, ACCESS_TOXINS, ACCESS_TOXINS_STORAGE, ACCESS_RESEARCH, ACCESS_XENOBIOLOGY,
 					ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_TECH_STORAGE, ACCESS_GENETICS, ACCESS_AUX_BASE)
