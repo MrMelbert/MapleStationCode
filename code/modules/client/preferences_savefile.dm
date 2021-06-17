@@ -113,7 +113,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		if(hotkeys)
 			for(var/hotkeytobind in kb.hotkey_keys)
 				if(!length(key_bindings[hotkeytobind]) || hotkeytobind == "Unbound") //Only bind to the key if nothing else is bound expect for Unbound
-					LAZYADD(key_bindings[hotkeytobind], kb.name) 
+					LAZYADD(key_bindings[hotkeytobind], kb.name)
 					addedbind = TRUE
 		else
 			for(var/classickeytobind in kb.classic_keys)
@@ -540,7 +540,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	exploitable_info = strip_html_simple(sanitize_text(exploitable_info), MAX_FLAVOR_LEN)
 
 	sanitize_loadout_list(loadout_list)
-	sanitize_loadout_list(greyscale_loadout_list)
+	sanitize_greyscale_list(greyscale_loadout_list)
 
 	//NON-MODULE CHANGES END
 

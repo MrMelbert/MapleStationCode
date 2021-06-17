@@ -116,6 +116,7 @@
 
 	if(w_uniform && items[LOADOUT_ITEM_UNIFORM] && colors[LOADOUT_ITEM_UNIFORM])
 		w_uniform.set_greyscale(colors[LOADOUT_ITEM_UNIFORM])
+	w_uniform.swap_to_modular_dmi(src)
 	if(wear_suit && items[LOADOUT_ITEM_SUIT] && colors[LOADOUT_ITEM_SUIT])
 		wear_suit.set_greyscale(colors[LOADOUT_ITEM_SUIT])
 	if(belt && items[LOADOUT_ITEM_BELT] && colors[LOADOUT_ITEM_BELT])
@@ -183,6 +184,23 @@
 
 		if(!(slot in GLOB.loadout_slots))
 			stack_trace("invalid loadout slot found in loadout list! Slot: [slot], Path: [path]")
+			list_to_clean[slot] = null
+			list_to_clean -= slot
+
+	if(!list_to_clean.len)
+		list_to_clean = null
+
+/* Removes all nulls, invalid paths, and bad slots from loadout lists.
+ *
+ * list_to_clean - the loadout list we're sanitizing.
+ */
+/proc/sanitize_greyscale_list(list/list_to_clean)
+	if(!istype(list_to_clean))
+		return
+
+	for(var/slot in list_to_clean)
+		if(!(slot in GLOB.loadout_slots))
+			stack_trace("invalid loadout slot found in greyscale loadout list! Slot: [slot], Color: [list_to_clean[slot]]")
 			list_to_clean[slot] = null
 			list_to_clean -= slot
 
