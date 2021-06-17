@@ -380,6 +380,7 @@
 
 /datum/id_trim/job/research_director
 	assignment = "Research Director"
+	trim_icon = 'jollystation_modules/icons/obj/card.dmi' //NON-MODULE CHANGE
 	trim_state = "trim_researchdirector"
 	full_access = list(ACCESS_HEADS, ACCESS_RND, ACCESS_GENETICS, ACCESS_MORGUE,
 					ACCESS_TOXINS, ACCESS_TELEPORTER, ACCESS_SEC_DOORS, ACCESS_MECH_SCIENCE,
