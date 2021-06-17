@@ -3608,6 +3608,7 @@
 #include "jollystation_modules\code\__HELPERS\text_helpers.dm"
 #include "jollystation_modules\code\controllers\configuration\entries\autotransfer.dm"
 #include "jollystation_modules\code\controllers\subsystem\autotransfer.dm"
+#include "jollystation_modules\code\datums\shuttles.dm"
 #include "jollystation_modules\code\datums\elements\unique_examine.dm"
 #include "jollystation_modules\code\datums\greyscale\json_configs\greyscale_configs.dm"
 #include "jollystation_modules\code\datums\id_trim\jobs.dm"
