@@ -3605,6 +3605,7 @@
 #include "jollystation_modules\code\__DEFINES\examine_defines.dm"
 #include "jollystation_modules\code\__DEFINES\jobs.dm"
 #include "jollystation_modules\code\__DEFINES\keybinding.dm"
+#include "jollystation_modules\code\__DEFINES\mobs.dm"
 #include "jollystation_modules\code\__HELPERS\text_helpers.dm"
 #include "jollystation_modules\code\controllers\configuration\entries\autotransfer.dm"
 #include "jollystation_modules\code\controllers\subsystem\autotransfer.dm"
@@ -3677,6 +3678,7 @@
 #include "jollystation_modules\code\modules\mob\living\carbon\human\human.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\human_helpers.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\skrell_hair.dm"
+#include "jollystation_modules\code\modules\mob\living\carbon\human\species.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\species_types\android.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\species_types\ethereal.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\species_types\felinid.dm"
@@ -3699,4 +3701,6 @@
 #include "jollystation_modules\code\modules\uplink\uplink_infiltrator.dm"
 #include "jollystation_modules\code\modules\uplink\uplink_items.dm"
 #include "jollystation_modules\code\modules\vending\_vending.dm"
+#include "jollystation_modules\event_modules\beach_episode\hyperthermia.dm"
+#include "jollystation_modules\event_modules\beach_episode\hypothermia.dm"
 // END_INCLUDE
