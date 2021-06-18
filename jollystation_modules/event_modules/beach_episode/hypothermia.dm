@@ -1,6 +1,6 @@
 /datum/disease/hypothermia
 	name = "Hypothermia"
-	max_stages = 3
+	max_stages = 4
 	spread_text = "None"
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	cure_text = "Warm the body up with careful monitoring."
@@ -16,21 +16,15 @@
 	if(!.)
 		return
 	switch(stage)
-		if(1 to 2)
+		if(1)
 			if(DT_PROB(1, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You feel exceptionally hot.</span>")
-			if(DT_PROB(2, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You feel nauseous.</span>")
+				to_chat(affected_mob, "<span class='danger'>You shiver.</span>")
+			if(DT_PROB(1, delta_time))
+				to_chat(affected_mob, "<span class='danger'>You feel cold.</span>")
+		if(2)
 			if(DT_PROB(0.5, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You're sweating profusely.</span>")
-			if(DT_PROB(2.5, delta_time))
-				affected_mob.vomit(95)
+				to_chat(affected_mob, "<span class='danger'>Your appendages feel numb.</span>")
+			if(DT_PROB(1.5, delta_time))
+				to_chat(affected_mob, "<span class='danger'>You shiver more.</span>")
 		if(3)
-			if(DT_PROB(3, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You lose consciousness...</span>")
-				affected_mob.visible_message("<span class='warning'>[affected_mob] suddenly collapses!</span>", \
-											"<span class='userdanger'>You suddenly collapse!</span>")
-				affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5, 170)
-				affected_mob.Unconscious(rand(100, 200))
-			if(prob(1))
-				affected_mob.emote("snore")
+		if(4)
