@@ -37,21 +37,27 @@
 
 /obj/item/clothing/under/swap_to_modular_dmi(mob/user, slot)
 	. = ..()
-	if(use_modular_dmi && ishuman(user) && user.is_digitigrade())
+	if(!user)
+		return
+
+	if(use_modular_dmi && user.is_digitigrade())
 		fitted = NO_FEMALE_UNIFORM
 		if(alt_greyscale_config_worn)
 			greyscale_config_worn = alt_greyscale_config_worn
-		else
+		else if(!greyscale_config)
 			worn_icon = alt_icon
+		else
+			stack_trace("Greyscaled under item [src] did not have an alt_greyscale_config_worn set correctly!")
 	else
 		fitted = initial(fitted)
 		if(alt_greyscale_config_worn)
-			greyscale_config_worn = initial(greyscale_config)
-		else
+			greyscale_config_worn = initial(greyscale_config_worn)
+		else if(!greyscale_config)
 			worn_icon = initial(worn_icon)
 
 	update_greyscale()
 	user.update_inv_w_uniform()
+	return TRUE
 
 // Included:
 // - Misc. Jumpsuits

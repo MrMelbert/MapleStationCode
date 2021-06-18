@@ -100,6 +100,7 @@
 			LAZYADD(equipped_outfit.backpack_contents, move_to_backpack)
 
 	equipped_outfit.equip(src, visuals_only)
+	w_uniform?.swap_to_modular_dmi(src)
 	equip_greyscale(visuals_only, preference_source)
 	return TRUE
 
@@ -116,7 +117,6 @@
 
 	if(w_uniform && items[LOADOUT_ITEM_UNIFORM] && colors[LOADOUT_ITEM_UNIFORM])
 		w_uniform.set_greyscale(colors[LOADOUT_ITEM_UNIFORM])
-	w_uniform.swap_to_modular_dmi(src)
 	if(wear_suit && items[LOADOUT_ITEM_SUIT] && colors[LOADOUT_ITEM_SUIT])
 		wear_suit.set_greyscale(colors[LOADOUT_ITEM_SUIT])
 	if(belt && items[LOADOUT_ITEM_BELT] && colors[LOADOUT_ITEM_BELT])
