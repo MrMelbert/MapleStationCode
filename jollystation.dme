@@ -3703,4 +3703,5 @@
 #include "jollystation_modules\code\modules\vending\_vending.dm"
 #include "jollystation_modules\event_modules\beach_episode\hyperthermia.dm"
 #include "jollystation_modules\event_modules\beach_episode\hypothermia.dm"
+#include "jollystation_modules\event_modules\beach_episode\towels.dm"
 // END_INCLUDE
