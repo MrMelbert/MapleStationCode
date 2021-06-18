@@ -3,11 +3,6 @@
 /// For admin disabling LOOC
 GLOBAL_VAR_INIT(looc_allowed, TRUE)
 
-/// The color for LOOC chat.
-#define LOOC_SPAN_COLOR "#00a8c5"
-/// The color the prefix for LOOC uses.
-#define LOOC_PREFIX_COLOR "#5f008b"
-
 /// The LOOC verb
 /client/verb/looc(msg as text)
 	set name = "LOOC"
@@ -24,35 +19,35 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 	// Run through some checks for non-admins
 	if(!holder)
 		if(!GLOB.ooc_allowed) // If OOC is disabled LOOC probably should be, too
-			to_chat(src, "<span class='danger'>All OOC is globally muted.</span>")
+			to_chat(src, span_danger("All OOC is globally muted."))
 			return
 		if(!GLOB.looc_allowed)
-			to_chat(src, "<span class='danger'>LOOC is globally muted.</span>")
+			to_chat(src, span_danger("LOOC is globally muted."))
 			return
 		if(!GLOB.dooc_allowed && (mob.stat == DEAD))
-			to_chat(src, "<span class='danger'>LOOC for dead mobs has been turned off.</span>")
+			to_chat(src, span_danger("LOOC for dead mobs has been turned off."))
 			return
 		if(prefs.muted & MUTE_OOC)
-			to_chat(src, "<span class='danger'>You cannot use LOOC (muted).</span>")
+			to_chat(src, span_danger("You cannot use LOOC (muted)."))
 			return
 
 
 	// Really?
 	if(!SSticker.HasRoundStarted())
-		to_chat(src, "<span class='danger'>The round hasn't started yet, dummy! Just use OOC.</span>")
+		to_chat(src, span_danger("The round hasn't started yet, dummy! Just use OOC."))
 		return
 	if(istype(mob, /mob/dead/new_player))
-		to_chat(src, "<span class='danger'>You're not in game to broadcast LOOC anywhere! Use OOC.</span>")
+		to_chat(src, span_danger("You're not in game to broadcast LOOC anywhere! Use OOC."))
 		return
 
 	// Check for people with OOC muted
 	if(!(prefs.toggles & CHAT_OOC))
-		to_chat(src, "<span class='danger'>You have LOOC muted.</span>")
+		to_chat(src, span_danger("You have LOOC muted."))
 		return
 
 	// Check for people banned from OOC
 	if(is_banned_from(ckey, "OOC"))
-		to_chat(src, "<span class='danger'>You have been banned from OOC.</span>")
+		to_chat(src, span_danger("You have been banned from OOC."))
 		return
 
 	if(QDELETED(src))
@@ -71,7 +66,7 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 		if(handle_spam_prevention(msg, MUTE_OOC))
 			return
 		if(findtext(msg, "byond://"))
-			to_chat(src, "<B>Advertising other servers is not allowed.</B>")
+			to_chat(src, span_bold("Advertising other servers is not allowed."))
 			log_admin("[key_name(src)] has attempted to advertise in LOOC: [msg]")
 			message_admins("[key_name_admin(src)] has attempted to advertise in LOOC: [msg]")
 			return
@@ -130,7 +125,8 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 				send = TRUE
 
 			if(send)
-				to_chat(target, "<span class='looc'><b><span class='prefix'><font color='[LOOC_PREFIX_COLOR]'>LOOC[prefix]:</font> </span><font color='[LOOC_SPAN_COLOR]'><EM>[display_admin? "[display_admin]" : "[display_name]"]:</EM> <span class='message'>[msg]</span></span></b></font></span>")
+				var/message_contents = span_message(msg)
+				to_chat(target, span_looc(span_bold("<span class='prefix'><font color='[LOOC_PREFIX_COLOR]'>LOOC[prefix]: </font></span><font color='[LOOC_SPAN_COLOR]'><EM>[display_admin? "[display_admin]" : "[display_name]"]:</EM> [message_contents]</span></font>")))
 
 // OOP getters be like
 /mob/proc/get_looc_source()
@@ -153,7 +149,4 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 // Global proc to toggle LOOC
 /proc/toggle_looc()
 	GLOB.looc_allowed = !GLOB.looc_allowed
-	to_chat(world, "<B>LOOC has been globally [GLOB.looc_allowed ? "enabled" : "disabled"].</B>")
-
-#undef LOOC_PREFIX_COLOR
-#undef LOOC_SPAN_COLOR
+	to_chat(world, span_bold("LOOC has been globally [GLOB.looc_allowed ? "enabled" : "disabled"]."))

@@ -1,3 +1,4 @@
+// -- Modular grown food --
 // you wanted leema beens, you're getting leema beens.
 /obj/item/seeds/leemabeens
 	name = "pack of leemabeen seeds"
@@ -27,3 +28,7 @@
 	foodtypes = VEGETABLES
 	tastes = list("mapper frustration" = 1)
 	wine_power = 20
+
+// Added to vending machines
+/obj/machinery/vending/hydroseeds
+	added_products = list(/obj/item/seeds/leemabeens = 3)

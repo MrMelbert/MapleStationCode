@@ -18,7 +18,7 @@
 	var/turf/sac_loc = get_turf(sac_target)
 	var/sleeping_time = 12 SECONDS
 
-	sac_target.visible_message("<span class='danger'>[sac_target] begins to shudder violenty as dark tendrils begin to drag them into thin air!</span>")
+	sac_target.visible_message(span_danger("[sac_target] begins to shudder violenty as dark tendrils begin to drag them into thin air!"))
 	sac_target.set_handcuffed(new /obj/item/restraints/handcuffs/energy/cult(sac_target))
 	sac_target.update_handcuffed()
 
@@ -27,7 +27,7 @@
 		log_attack("[sac_target] was gibbed by a heretic at [loc_name(sac_loc)].")
 		sac_target.gib() // Ol' reliable
 	else
-		to_chat(sac_target, "<span class='big hypnophrase'>Your mind feels torn apart as you fall into a shallow slumber...</span>")
+		to_chat(sac_target, span_hypnophrase("Your mind feels torn apart as you fall into a shallow slumber..."))
 		message_admins("[sac_target] was non-lethally sacrificed by a heretic at [ADMIN_VERBOSEJMP(sac_loc)].")
 		log_attack("[sac_target] was non-lethally sacrificed by a heretic at [loc_name(sac_loc)].")
 		sac_target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 115, 150)
@@ -68,7 +68,7 @@
 
 	var/helgrasp_time = 1 MINUTES
 	var/list/chems_to_add = list(/datum/reagent/inverse/helgrasp = (helgrasp_time / (20)))// 1 metab a tick = helgrasp_time / 2 ticks (so, 1 minute = 60 seconds = 30 ticks)
-	to_chat(sac_target, "<span class='reallybig hypnophrase'>The grasp of the Mansus reveal themselves to you!</span>")
+	to_chat(sac_target, span_reallybig(span_hypnophrase("The grasp of the Mansus reveal themselves to you!")))
 	sac_target.flash_act()
 	sac_target.add_confusion(20)
 	sac_target.blur_eyes(15)
@@ -78,7 +78,7 @@
 
 	addtimer(CALLBACK(src, .proc/after_helgrasp_ends, sac_target), helgrasp_time)
 
-	to_chat(sac_target, "<span class='hypnophrase'>You feel invigorated! Fight to survive!</span>")
+	to_chat(sac_target, span_hypnophrase("You feel invigorated! Fight to survive!"))
 	chems_to_add[/datum/reagent/unholy_determination] = 12
 
 	for(var/reagents_to_add in chems_to_add)
@@ -89,7 +89,7 @@
 
 /// This proc is called after helgrasp exits the target's system.
 /datum/eldritch_knowledge/spell/basic/proc/after_helgrasp_ends(mob/living/carbon/human/sac_target)
-	to_chat(sac_target, "<span class='hypnophrase'>The worst is behind you... Not much longer! Hold fast, or expire!</span>")
+	to_chat(sac_target, span_hypnophrase("The worst is behind you... Not much longer! Hold fast, or expire!"))
 	sac_target.reagents?.add_reagent(/datum/reagent/unholy_determination, 6)
 
 /// This proc is called after a set time OR after they die, to return the target to the station.
@@ -119,17 +119,25 @@
 		message_admins("Heretic sacrifice_process chain ended up failing to return their sac target ([sac_target]) to the station. This is probably very bad and means someone was removed from the round!")
 		CRASH("Heretic sacrifice_process chain ended up failing to return their sac target ([sac_target]) to the station.")
 
+	var/composed_return_message = ""
+	composed_return_message += span_notice("Your victim, [sac_target], was returned to the station - ")
+	if(sac_target.stat == DEAD)
+		composed_return_message += span_red("dead. ")
+	else
+		composed_return_message += span_green("alive, but with a shattered mind. ")
+	composed_return_message += span_notice("You hear a whisper... ")
+	composed_return_message += span_hypnophrase(get_area_name(safe_turf, TRUE))
+
+	to_chat(heretic, composed_return_message)
 	if(sac_target.stat == DEAD)
 		after_return_dead_target(sac_target, safe_turf)
-		to_chat(heretic, "<span class='notice'>Your victim, [sac_target], was returned to the station - dead. You hear a whisper...</span><span class='hypnophrase'>[get_area_name(safe_turf, TRUE)].</span>")
 	else
 		after_return_live_target(sac_target, safe_turf)
-		to_chat(heretic, "<span class='notice'>Your victim, [sac_target], was returned to the station - alive, but with a shattered mind. You hear a whisper...</span><span class='hypnophrase'>[get_area_name(safe_turf, TRUE)].</span>")
 
 /// This proc is called from [return_target] if the target returns alive.
 /datum/eldritch_knowledge/spell/basic/proc/after_return_live_target(mob/living/carbon/human/sac_target, turf/landing_turf)
-	to_chat(sac_target, "<span class='hypnophrase'>The fight is over - at great cost. You have been returned to your realm in one piece.</span>")
-	to_chat(sac_target, "<span class='hypnophrase'>You can hardly remember anything from before and leading up to the experience - all you can think about are those horrific hands...</span>")
+	to_chat(sac_target, span_hypnophrase("The fight is over - at great cost. You have been returned to your realm in one piece."))
+	to_chat(sac_target, span_hypnophrase("You can hardly remember anything from before and leading up to the experience - all you can think about are those horrific hands..."))
 
 	sac_target.flash_act()
 	sac_target.add_confusion(60)
@@ -197,12 +205,12 @@
 	/// In softcrit you're strong enough to stay up
 	if(user.health <= user.crit_threshold && user.health >= user.hardcrit_threshold)
 		if(DT_PROB(15, delta_time))
-			to_chat(user, "<span class='hypnophrase'>Your body feels like giving up, but you fight on!</span>")
+			to_chat(user, span_hypnophrase("Your body feels like giving up, but you fight on!"))
 		healing_amount *= 2
 	/// ...But in hardcrit you're in big danger
 	if (user.health < user.hardcrit_threshold)
 		if(DT_PROB(15, delta_time))
-			to_chat(user, "<span class='hypnophrase big'>You can't hold on for much longer...</span>")
+			to_chat(user, span_big(span_hypnophrase("You can't hold on for much longer...")))
 
 	if(user.health > user.crit_threshold && DT_PROB(10, delta_time))
 		user.Jitter(10)

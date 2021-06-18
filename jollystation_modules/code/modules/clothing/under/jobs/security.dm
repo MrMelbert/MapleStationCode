@@ -9,6 +9,7 @@
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/security/bridge_officer/black
+	name = "bridge officer suit"
 	desc = "A distinguished black suit kitted out with padding for protection worn by the officers that work the bridge."
 	icon = 'icons/obj/clothing/under/suits.dmi'
 	worn_icon = 'icons/mob/clothing/under/suits.dmi'
@@ -16,7 +17,7 @@
 	inhand_icon_state = "lawyer_black"
 
 /obj/item/clothing/under/rank/security/bridge_officer/black/skirt //putting this here god fucking forbid it pulls the lawyers black suit
-	name = "bridge officer black suitskirt"
+	name = "bridge officer suitskirt"
 	desc = "A distinguished black suit kitted out with padding for protection worn by the officers that work the bridge."
 	icon_state = "really_black_suit_skirt"
 	inhand_icon_state = "lawyer_black"

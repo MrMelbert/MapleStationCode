@@ -79,12 +79,12 @@
 	if(isstructure(source))
 		thing = "structure"
 
-	examine_list += "<span class='smallnoticeital'>This [thing] might have additional information if you examine closer.</span>"
+	examine_list += span_smallnoticeital("This [thing] might have additional information if you [EXAMINE_CLOSER_BOLD].")
 
 /datum/element/unique_examine/proc/examine(datum/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
 
-	var/composed_message = "<span class='info'>"
+	var/composed_message
 	switch(special_desc_requirement)
 		//Will always show if set
 		if(EXAMINE_CHECK_NONE)
@@ -93,37 +93,42 @@
 		//Mindshield checks
 		if(EXAMINE_CHECK_MINDSHIELD)
 			if(HAS_TRAIT(examiner, TRAIT_MINDSHIELD))
-				composed_message += "You note the following because of your <span class='blue'><b>mindshield</b></span>: <br>"
+				var/mindshield_text = span_blue(span_bold("mindshield"))
+				composed_message += "You note the following because of your [mindshield_text]: <br>"
 				composed_message += special_desc
-		//Standard syndicate checks
+		//Aantag checks
 		if(EXAMINE_CHECK_ANTAG)
 			if(examiner.mind)
 				var/datum/mind/M = examiner.mind
-				for(var/antag_datum in special_desc_list)
+				for(var/datum/antagonist/antag_datum as anything in special_desc_list)
 					if(M.has_antag_datum(antag_datum))
-						composed_message += "You note the following because of your <span class='red'><b>[special_desc_affiliation ? special_desc_affiliation : "Antagonist Affiliation"]</b></span>: <br>"
+						var/antag_text = span_red(span_bold(special_desc_affiliation ? special_desc_affiliation : "[antag_datum.name] Role"))
+						composed_message += "You note the following because of your [antag_text]: <br>"
 						composed_message += special_desc
-		//Standard role checks
+		//Role checks
 		if(EXAMINE_CHECK_ROLE)
 			if(examiner.mind)
 				var/datum/mind/M = examiner.mind
 				for(var/checked_role in special_desc_list)
 					if(M.special_role == checked_role)
-						composed_message += "You note the following because of your <b>[checked_role]</b> role: <br>"
+						var/role_text = span_bold(checked_role)
+						composed_message += "You note the following because of your [role_text] role: <br>"
 						composed_message += special_desc
-		//Standard job checks
+		//Kob checks
 		if(EXAMINE_CHECK_JOB)
 			if(ishuman(examiner))
 				var/mob/living/carbon/human/H = examiner
 				for(var/checked_job in special_desc_list)
 					if(H.job == checked_job)
-						composed_message += "You note the following because of your job as a <b>[checked_job]</b>: <br>"
+						var/job_text = span_bold(checked_job)
+						composed_message += "You note the following because of your job as a [job_text]: <br>"
 						composed_message += special_desc
 		//Standard faction checks
 		if(EXAMINE_CHECK_FACTION)
 			for(var/checked_faction in special_desc_list)
 				if(checked_faction in examiner.faction)
-					composed_message += "You note the following because of your loyalty to <b>[get_formatted_faction(checked_faction)]</b>: <br>"
+					var/faction_text = get_formatted_faction(checked_faction)
+					composed_message += "You note the following because of your loyalty to [faction_text]: <br>"
 					composed_message += special_desc
 		// Skillchip checks
 		if(EXAMINE_CHECK_SKILLCHIP)
@@ -133,55 +138,59 @@
 				if(examiner_brain)
 					for(var/obj/item/skillchip/checked_skillchip in examiner_brain.skillchips)
 						if(checked_skillchip.active && (checked_skillchip.type in special_desc_list))
-							composed_message += "You note the following because of your implanted <font color = '#c5c900'><b>[checked_skillchip.name]</b></font>: <br>"
+							var/skllchip_text = span_readable_yellow(span_bold(checked_skillchip.name))
+							composed_message += "You note the following because of your implanted [skllchip_text]: <br>"
 							composed_message += special_desc
 		// Trait checks
 		if(EXAMINE_CHECK_TRAIT)
 			for(var/checked_trait in special_desc_list)
 				if(HAS_TRAIT(examiner, checked_trait))
-					composed_message += "You note the following because of a <font color = '#c5c900'><b>trait</b></font> you have: <br>"
+					var/trait_text = span_readable_yellow(span_bold("trait"))
+					composed_message += "You note the following because of a [trait_text] you have: <br>"
 					composed_message += special_desc
 		// Species checks
 		if(EXAMINE_CHECK_SPECIES)
-			for(var/checked_species in special_desc_list)
+			for(var/datum/species/checked_species as anything in special_desc_list)
 				if(is_species(examiner, checked_species))
-					composed_message += "You note the following because of <font color = '#008a17'><b>your species</b></font>: <br>"
+					var/species_text = span_green(span_bold("your [checked_species.name] species"))
+					composed_message += "You note the following because of [species_text]: <br>"
 					composed_message += special_desc
 
-	if(length(composed_message) >= 20) // >= 20 instead of 0 to account for the span
-		composed_message += "</span>"
-		examine_list += composed_message
+	if(length(composed_message) > 0)
+		examine_list += span_info(composed_message)
 	else if(toy) //If we don't have a message and we're a toy, add on the toy message.
-		composed_message += "The popular toy resembling [source] from your local arcade, suitable for children and adults alike. </span>"
-		examine_list += composed_message
+		composed_message += "The popular toy resembling [source] from your local arcade, suitable for children and adults alike."
+		examine_list += span_info(composed_message)
 
 // When given some of the more commonly set factions, formats them into a more accurate title
 /datum/element/unique_examine/proc/get_formatted_faction(faction)
 	switch(faction)
 		if(ROLE_WIZARD)
-			return "<span class='hypnophrase'>the Wizard Federation</span>"
+			. = span_hypnophrase("the Wizard Federation")
 		if(ROLE_SYNDICATE)
-			return "<span class='red'>the Syndicate</span>"
+			. = span_red("the Syndicate")
 		if(ROLE_ALIEN)
-			return "<span class='alien'>the alien hivemind</span>"
+			. = span_alien("the alien hivemind")
 		if(ROLE_NINJA)
-			return "<span class='hypnophrase'>the spider clan</span>"
+			. = span_hypnophrase("the spider clan")
 		// I love that some factions use role defines while others use magic strings
 		if("Nanotrasen")
-			return "<span class='blue'>Nanotrasen</span>" // not necessary but keeping it here
+			. = span_blue("Nanotrasen") // not necessary but keeping it here
 		if("Station")
-			return "<span class='blue'>[station_name()]</span>"
+			. = span_blue("[station_name()]")
 		if("heretics")
-			return "<span class='hypnophrase'>the Mansus</span>"
+			. = span_hypnophrase("the Mansus")
 		if("cult")
-			return "<span class='cult'>Nar'sie</span>"
+			. = span_cult("Nar'sie")
 		if("pirate")
-			return "<span class='red'>the Jolly Roger</span>"
+			. = span_red("the Jolly Roger")
 		if("plants")
-			return "<span class='green'>nature</span>"
+			. = span_green("nature")
 		if("ashwalker")
-			return "<span class='red'>the tendril</span>"
+			. = span_red("the tendril")
 		if("carp")
-			return "<span class='green'>space carp</span>"
+			. = span_green("space carp")
 		else
-			return faction
+			. = faction
+
+	return span_bold(.)
