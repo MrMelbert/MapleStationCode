@@ -3674,6 +3674,7 @@
 #include "jollystation_modules\code\modules\mob\pixel_shift.dm"
 #include "jollystation_modules\code\modules\mob\typing_indicator.dm"
 #include "jollystation_modules\code\modules\mob\dead\new_player\sprite_accessories.dm"
+#include "jollystation_modules\code\modules\mob\living\emote.dm"
 #include "jollystation_modules\code\modules\mob\living\living.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_bodyparts.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_hooks.dm"
