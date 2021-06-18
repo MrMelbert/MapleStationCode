@@ -190,9 +190,9 @@
 	if(!list_to_clean.len)
 		list_to_clean = null
 
-/* Removes all nulls, invalid paths, and bad slots from loadout lists.
+/* Removes all bad slots from greyscale loadout lists.
  *
- * list_to_clean - the loadout list we're sanitizing.
+ * list_to_clean - the greyscale loadout list we're sanitizing.
  */
 /proc/sanitize_greyscale_list(list/list_to_clean)
 	if(!istype(list_to_clean))

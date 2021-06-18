@@ -32,6 +32,12 @@
 		fitted = initial(fitted)
 	wearer.update_inv_w_uniform()
 
+/*
+ * Swap our clothing item to an alternate dmi if applicable.
+ *
+ * user - the mob who has equipped the clothing
+ * slot - the slot equipped to
+ */
 /obj/item/clothing/proc/swap_to_modular_dmi(mob/user, slot)
 	return FALSE
 
