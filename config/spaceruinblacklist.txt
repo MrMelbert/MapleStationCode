@@ -48,4 +48,5 @@ _maps/RandomRuins/SpaceRuins/thederelict.dmm
 #_maps/RandomRuins/SpaceRuins/whiteshipdock.dmm
 #_maps/RandomRuins/SpaceRuins/whiteshipruin_box.dmm
 _maps/RandomRuins/SpaceRuins/forgottenship.dmm
-
+#_maps/RandomRuins/SpaceRuins/jolly_berry.dmm
+#_maps/RandomRuins/SpaceRuins/jolly_nerva.dmm

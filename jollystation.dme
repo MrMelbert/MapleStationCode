@@ -3618,6 +3618,7 @@
 #include "jollystation_modules\code\datums\quirks\good.dm"
 #include "jollystation_modules\code\datums\quirks\negative.dm"
 #include "jollystation_modules\code\datums\quirks\neutral.dm"
+#include "jollystation_modules\code\datums\ruins\space.dm"
 #include "jollystation_modules\code\game\area\space_station_13_areas.dm"
 #include "jollystation_modules\code\game\objects\unique_examine_items.dm"
 #include "jollystation_modules\code\game\objects\effects\landmarks.dm"
