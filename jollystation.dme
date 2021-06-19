@@ -3621,6 +3621,7 @@
 #include "jollystation_modules\code\game\area\space_station_13_areas.dm"
 #include "jollystation_modules\code\game\objects\unique_examine_items.dm"
 #include "jollystation_modules\code\game\objects\effects\landmarks.dm"
+#include "jollystation_modules\code\game\objects\effects\decals\turfdecal\textured.dm"
 #include "jollystation_modules\code\game\objects\items\devices\PDA\PDA_types.dm"
 #include "jollystation_modules\code\game\objects\items\devices\radio\encryptionkey.dm"
 #include "jollystation_modules\code\game\objects\items\devices\radio\headset.dm"

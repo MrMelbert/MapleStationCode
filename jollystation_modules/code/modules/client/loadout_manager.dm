@@ -33,6 +33,7 @@
 
 /datum/loadout_manager/ui_close(mob/user)
 	sanitize_loadout_list(owner.prefs.loadout_list)
+	sanitize_greyscale_list(owner.prefs.greyscale_loadout_list)
 	if(menu)
 		SStgui.close_uis(menu)
 		menu = null
