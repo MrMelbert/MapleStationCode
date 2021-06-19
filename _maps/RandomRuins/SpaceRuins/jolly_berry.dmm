@@ -67,7 +67,7 @@
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/berry_physics)
 "M" = (
-/turf/closed/wall/mineral/uranium,
+/turf/closed/indestructible/riveted/uranium,
 /area/ruin/space/has_grav/powered/berry_physics)
 "O" = (
 /obj/structure/table/bronze,
