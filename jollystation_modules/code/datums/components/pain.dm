@@ -1,31 +1,6 @@
 // -- Pain for bodyparts --
-
-/// Add or subtract to a bodypart's pain. (def_zone, amount)
-#define COMSIG_CARBON_ADJUST_BODYPART_PAIN "cause_pain"
-/// Set bodypart's pain. (def_zone, amount)
-#define COMSIG_CARBON_SET_BODYPART_PAIN "set_pain"
-/// Add a pain modifier. (key, amount)
-#define COMSIG_CARBON_ADD_PAIN_MODIFIER "add_pain_mod"
-/// Remove a pain modifier. (key)
-#define COMSIG_CARBON_REMOVE_PAIN_MODIFIER "remove_pain_mod"
-
-#define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
-
-#define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper")
-
-#define PAIN_LIMB_DISMEMBERED 45
-#define PAIN_LIMB_REMOVED 10
-
-#define PAIN_MOD_CHEMS "chems"
-#define PAIN_MOD_DRUNK "drunk"
-#define PAIN_MOD_SLEEP "asleep"
-#define PAIN_MOD_STASIS "stasis"
-#define PAIN_MOD_DROWSY "drowsy"
-#define PAIN_MOD_NEAR_DEATH "near-death"
-
-#define PAIN_LIMB_PARALYSIS "pain"
-
 /datum/component/pain
+
 	/// Total pain across all bodyparts
 	var/total_pain = 0
 	/// Previous set total_pain, when changed
@@ -39,8 +14,13 @@
 	/// Assoc list [zones] to [references to bodyparts]
 	var/list/body_zones = list()
 	/// Natural amount of decay given to each limb per process
-	var/natural_pain_decay = 0.1
+	var/natural_pain_decay = -0.2
+
 	var/natural_decay_counter = 0
+
+	COOLDOWN_DECLARE(time_since_last_pain_loss)
+
+	var/debugging = FALSE
 
 /datum/component/pain/Initialize()
 	if(!iscarbon(parent))
@@ -53,7 +33,8 @@
 	if(!body_zones.len)
 		stack_trace("Pain component failed to find any body_zones to track!")
 		return COMPONENT_INCOMPATIBLE
-	START_PROCESSING(SSpain, src)
+	if(carbon_parent.stat == CONSCIOUS)
+		START_PROCESSING(SSpain, src)
 
 /datum/component/pain/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, .proc/limb_added)
@@ -65,7 +46,9 @@
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMGE, .proc/add_damage_pain)
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_WOUND, .proc/add_wound_pain)
 	RegisterSignal(parent, COMSIG_CARBON_LOSE_WOUND, .proc/remove_wound_pain)
+	RegisterSignal(parent, COMSIG_LIVING_REVIVE, .proc/renew_pain_processing)
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_all_pain)
+	RegisterSignal(parent, COMSIG_LIVING_DEATH, .proc/halt_pain_processing)
 
 /datum/component/pain/UnregisterFromParent()
 	UnregisterSignal(parent, list(
@@ -78,7 +61,9 @@
 		COMSIG_MOB_APPLY_DAMGE,
 		COMSIG_CARBON_GAIN_WOUND,
 		COMSIG_CARBON_LOSE_WOUND,
+		COMSIG_LIVING_REVIVE,
 		COMSIG_LIVING_POST_FULLY_HEAL,
+		COMSIG_LIVING_DEATH,
 	))
 
 /datum/component/pain/Destroy()
@@ -146,7 +131,9 @@
 	if(!islist(def_zones))
 		def_zones = list(def_zones)
 
-	amount *= pain_modifier
+	if(amount > 0)
+		amount *= pain_modifier
+
 	for(var/zone in def_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
 		if(!adjusted_bodypart)
@@ -161,11 +148,12 @@
 		total_pain = clamp(total_pain + amount, 0, total_pain_max)
 
 		if(amount > 0)
-			INVOKE_ASYNC(src, .proc/on_pain_gain, source, zone, amount)
+			INVOKE_ASYNC(src, .proc/on_pain_gain, source, adjusted_bodypart, amount)
 		else
-			INVOKE_ASYNC(src, .proc/on_pain_loss, source, zone, amount)
+			INVOKE_ASYNC(src, .proc/on_pain_loss, source, adjusted_bodypart, amount)
 
-		message_admins("DEBUG: [parent] recived [amount] pain to [adjusted_bodypart]. Total pain: [total_pain]")
+		if(debugging)
+			message_admins("DEBUG: [parent] recived [amount] pain to [adjusted_bodypart]. Total pain: [total_pain]")
 
 	return TRUE
 
@@ -187,11 +175,12 @@
 		last_total_pain = total_pain
 		total_pain -= set_bodypart.last_pain
 		total_pain = clamp(total_pain + amount, 0, total_pain_max)
-		message_admins("DEBUG: [parent] set pain to [amount] on [set_bodypart]. Total pain: [total_pain]")
+		if(debugging)
+			message_admins("DEBUG: [parent] set pain to [amount] on [set_bodypart]. Total pain: [total_pain]")
 
 	return TRUE
 
-/datum/component/pain/proc/on_pain_gain(mob/living/carbon/source, zone, amount)
+/datum/component/pain/proc/on_pain_gain(mob/living/carbon/source, obj/item/bodypart/affected_part, amount)
 
 	if(amount > 10 && prob(20))
 		source.emote("scream")
@@ -199,7 +188,13 @@
 		var/picked_shock_emote = pick("gasp", "wince", "grimace")
 		source.emote(picked_shock_emote)
 
-/datum/component/pain/proc/on_pain_loss(mob/living/carbon/source, zone, amount)
+	affected_part.on_gain_pain_effects(amount)
+	SEND_SIGNAL(source, COMSIG_CARBON_PAIN_GAINED, affected_part, amount)
+	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
+
+/datum/component/pain/proc/on_pain_loss(mob/living/carbon/source, obj/item/bodypart/affected_part, amount)
+	affected_part.on_lose_pain_effects(amount)
+	SEND_SIGNAL(source, COMSIG_CARBON_PAIN_LOST, affected_part, amount)
 
 /datum/component/pain/proc/add_damage_pain(mob/living/carbon/source, damage, damagetype, def_zone)
 	SIGNAL_HANDLER
@@ -217,7 +212,7 @@
 		// Brute pain is dealt to the target zone
 		// pain = the damage divided by a random number
 		if(BRUTE)
-			pain = damage / rand(2, 4)
+			pain = damage / rand(1.5, 3)
 
 		// Burn pain is dealt to the target zone
 		// pain = lower for weaker burns, but scales up for more damaging burns
@@ -304,22 +299,9 @@
 		if(STAMINA)
 			return
 
-		// Brain pain is done to the head, if the damage is severe enough
-		// pain = more based on how much brain damage is had
+		// Head pain causes brain damage, so brain damage causes no pain (to prevent death spirals)
 		if(BRAIN)
-			def_zone = BODY_ZONE_HEAD
-			var/mob/living/carbon/human_source = source
-			if(istype(human_source))
-				var/obj/item/organ/brain/our_brain = human_source.getorganslot(ORGAN_SLOT_BRAIN)
-				switch(our_brain.damage)
-					if(0 to 50)
-						pain = 0
-					if(51 to 100)
-						pain += 1
-					if(101 to 150)
-						pain += 3
-					if(151 to INFINITY)
-						pain += 5
+			return
 
 	if(!def_zone || !pain)
 		return
@@ -342,110 +324,125 @@
 
 	var/mob/living/carbon/human/human_parent = parent
 	// our entire body is in massive amounts of pain
-	if(total_pain >= total_pain_max - 50)
+	if(total_pain >= total_pain_max - 100)
 		// Change in total pain since last tick. Negative = losing pain
 		var/delta_total_pain = total_pain - last_total_pain
-		if(DT_PROB(5, delta_time) && delta_total_pain < 0)
+		if(DT_PROB(5, delta_time) && delta_total_pain < 0 && COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			to_chat(parent, span_green("You feel the pain start to dull!"))
 
-		if(DT_PROB(5, delta_time))
-			var/very_pained_messages = pick("Stop the pain!", "Everything hurts!", "Why, why?!", "AAAAAAAH!!")
-			to_chat(parent, span_userdanger("[very_pained_messages]"))
-			human_parent.visible_message(span_warning("[human_parent] winces from pain!"), ignored_mobs = human_parent)
-			human_parent.emote("scream")
-		if(DT_PROB(2, delta_time) && human_parent.staminaloss <= 90)
-			human_parent.apply_damage(15, STAMINA)
-			human_parent.visible_message(span_warning("[human_parent] doubles over in pain!"))
-			human_parent.emote("gasp")
-		if(DT_PROB(2, delta_time))
-			human_parent.Knockdown(15)
-			human_parent.visible_message(span_warning("[human_parent] collapses in pain!"))
-		if(DT_PROB(4, delta_time))
-			var/obj/item/held_item = human_parent.get_active_held_item()
-			if(held_item && human_parent.dropItemToGround(held_item))
-				to_chat(human_parent, span_danger("Your fumble though the pain and drop [held_item]!"))
-				human_parent.visible_message(span_warning("[human_parent] fumbles around and drops [held_item]!"), ignored_mobs = human_parent)
+		if(!human_parent.has_status_effect(STATUS_EFFECT_DETERMINED))
+			if(DT_PROB(5, delta_time))
+				var/very_pained_messages = pick("Stop the pain!", "Everything hurts!", "Why, why?!", "AAAAAAAH!!")
+				to_chat(parent, span_userdanger("[very_pained_messages]"))
+				human_parent.visible_message(span_warning("[human_parent] winces from pain!"), ignored_mobs = human_parent)
+				human_parent.emote("scream")
+			if(DT_PROB(2, delta_time) && human_parent.staminaloss <= 90)
+				human_parent.apply_damage(30 * pain_modifier, STAMINA)
+				human_parent.visible_message(span_warning("[human_parent] doubles over in pain!"))
 				human_parent.emote("gasp")
+			if(DT_PROB(2, delta_time))
+				human_parent.Knockdown(15 * pain_modifier)
+				human_parent.visible_message(span_warning("[human_parent] collapses in pain!"))
+			if(DT_PROB(1, delta_time))
+				human_parent.vomit(50)
+			if(DT_PROB(4, delta_time))
+				var/obj/item/held_item = human_parent.get_active_held_item()
+				if(held_item && human_parent.dropItemToGround(held_item))
+					to_chat(human_parent, span_danger("Your fumble though the pain and drop [held_item]!"))
+					human_parent.visible_message(span_warning("[human_parent] fumbles around and drops [held_item]!"), ignored_mobs = human_parent)
+					human_parent.emote("gasp")
 
-	else
-		var/list/shuffled_zones = shuffle(body_zones)
-		var/display_message = TRUE
+	var/list/shuffled_zones = shuffle(body_zones)
+	var/display_message = TRUE
 
-		for(var/part in shuffled_zones)
-			var/obj/item/bodypart/checked_bodypart = body_zones[part]
-			var/first_pain_threshold = checked_bodypart.max_pain / 3
-			var/second_pain_threshold = first_pain_threshold * 2
-			var/third_pain_threshold = checked_bodypart.max_pain - 10
-			// Change in limb pain since last tick. Negative = losing pain
-			var/delta_pain = checked_bodypart.pain - checked_bodypart.last_pain
-			var/base_max_stamina_damage = initial(checked_bodypart.max_stamina_damage)
+	for(var/part in shuffled_zones)
+		var/obj/item/bodypart/checked_bodypart = body_zones[part]
+		// 1st threshold: max_pain / 3 (~25, for reference)
+		var/first_pain_threshold = checked_bodypart.max_pain / 3
+		// 2nd threshold: 2 * max_pain / 3 (~50)
+		var/second_pain_threshold = first_pain_threshold * 2
+		// 3rd threshold: max_pain - 10 (~65)
+		var/third_pain_threshold = checked_bodypart.max_pain - 10
+		// Change in limb pain since last tick. Negative = losing pain
+		var/delta_pain = checked_bodypart.pain - checked_bodypart.last_pain
+		var/base_max_stamina_damage = initial(checked_bodypart.max_stamina_damage)
 
-			if(delta_pain < 0)
-				if(checked_bodypart.pain > 0 && checked_bodypart.pain <= 10)
-					checked_bodypart.max_stamina_damage = base_max_stamina_damage
-				else if(checked_bodypart.pain > 10 && checked_bodypart.pain <= first_pain_threshold)
-					checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.2
-				else if(checked_bodypart.pain > first_pain_threshold && checked_bodypart.pain <= second_pain_threshold)
-					checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.5
-				if(HAS_TRAIT_FROM(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS) && checked_bodypart.pain < third_pain_threshold)
-					to_chat(parent, span_green("You can feel your [checked_bodypart.name] again!"))
-					REMOVE_TRAIT(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
+		var/healing_pain = ((delta_pain < 0) && (COOLDOWN_FINISHED(src, time_since_last_pain_loss)))
+
+		if(healing_pain)
+			if(checked_bodypart.pain > 0 && checked_bodypart.pain <= 10)
+				checked_bodypart.max_stamina_damage = base_max_stamina_damage
+			else if(checked_bodypart.pain > 10 && checked_bodypart.pain <= first_pain_threshold)
+				checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.2
+			else if(checked_bodypart.pain > first_pain_threshold && checked_bodypart.pain <= second_pain_threshold)
+				checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.5
+			if(HAS_TRAIT_FROM(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS) && checked_bodypart.pain < third_pain_threshold)
+				to_chat(parent, span_green("You can feel your [checked_bodypart.name] again!"))
+				REMOVE_TRAIT(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
+				checked_bodypart.update_disabled()
+		else
+			if(checked_bodypart.pain > 10 && checked_bodypart.pain <= first_pain_threshold)
+				checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.2
+			else if(checked_bodypart.pain > first_pain_threshold && checked_bodypart.pain <= second_pain_threshold)
+				checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.5
+			else if(checked_bodypart.pain > second_pain_threshold && checked_bodypart.pain <= third_pain_threshold)
+				checked_bodypart.max_stamina_damage = base_max_stamina_damage / 2
+			else if(checked_bodypart.pain > third_pain_threshold)
+				if(checked_bodypart.can_be_disabled && !HAS_TRAIT_FROM(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
+					to_chat(parent, span_userdanger("Your [checked_bodypart.name] goes numb from the pain!"))
+					ADD_TRAIT(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 					checked_bodypart.update_disabled()
-			else
-				if(checked_bodypart.pain > 10 && checked_bodypart.pain <= first_pain_threshold)
-					checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.2
-				else if(checked_bodypart.pain > first_pain_threshold && checked_bodypart.pain <= second_pain_threshold)
-					checked_bodypart.max_stamina_damage = base_max_stamina_damage / 1.5
-				else if(checked_bodypart.pain > second_pain_threshold && checked_bodypart.pain <= third_pain_threshold)
-					checked_bodypart.max_stamina_damage = base_max_stamina_damage / 2
-				else if(checked_bodypart.pain > third_pain_threshold)
-					if(checked_bodypart.can_be_disabled && !HAS_TRAIT_FROM(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
-						to_chat(parent, span_userdanger("Your [checked_bodypart.name] goes numb from the pain!"))
-						ADD_TRAIT(checked_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
-						checked_bodypart.update_disabled()
 
-			if(display_message && pain_modifier > 0.5 && DT_PROB((checked_bodypart.pain/12), delta_time))
-				display_message = FALSE
-				var/scream_prob = 0
-				var/picked_emote = pick(PAIN_EMOTES)
-				if(checked_bodypart.pain > 10 && checked_bodypart.pain <= first_pain_threshold)
-					to_chat(parent, span_warning("Your [checked_bodypart.name] aches[delta_pain < 0 ? ", but it's getting better" : ""]."))
-				else if(checked_bodypart.pain > first_pain_threshold && checked_bodypart.pain <= second_pain_threshold)
+			checked_bodypart.processed_pain_effects(delta_time)
+
+		if(display_message && pain_modifier > 0.5 && !human_parent.has_status_effect(STATUS_EFFECT_DETERMINED) && DT_PROB((checked_bodypart.pain/12), delta_time))
+			display_message = FALSE
+			var/scream_prob = 0
+			var/picked_emote = pick(PAIN_EMOTES)
+			if(checked_bodypart.pain > 10 && checked_bodypart.pain <= first_pain_threshold)
+				to_chat(parent, span_danger("Your [checked_bodypart.name] aches[healing_pain ? ", but it's getting better" : ""]."))
+			else if(checked_bodypart.pain > first_pain_threshold && checked_bodypart.pain <= second_pain_threshold)
+				human_parent.emote(picked_emote)
+				if(healing_pain)
+					to_chat(parent, span_danger("Your [checked_bodypart.name] hurts, but it's starting to die down."))
+				else
 					scream_prob = 5
-					to_chat(parent, span_boldwarning("Your [checked_bodypart.name] hurts[delta_pain < 0 ? ", but it's starting to die down." : "!"]"))
-					human_parent.emote(picked_emote)
-				else if(checked_bodypart.pain > second_pain_threshold && checked_bodypart.pain <= third_pain_threshold)
+					to_chat(parent, span_danger("Your [checked_bodypart.name] hurts!"))
+			else if(checked_bodypart.pain > second_pain_threshold && checked_bodypart.pain <= third_pain_threshold)
+				human_parent.emote(picked_emote)
+				if(healing_pain)
+					to_chat(parent, span_danger("Your [checked_bodypart.name] really hurts, but the stinging is stopping."))
+				else
 					scream_prob = 10
-					if(delta_pain < 0)
-						to_chat(parent, span_boldwarning("Your [checked_bodypart.name] really hurts, but the stinging is stopping."))
-					else
-						to_chat(parent, span_userdanger("Your [checked_bodypart.name] really hurts!"))
-						human_parent.emote(picked_emote)
-				else if(checked_bodypart.pain > third_pain_threshold)
-					scream_prob = 25
-					to_chat(parent, span_userdanger("Your [checked_bodypart.name] is numb from the pain[delta_pain < 0 ? ", but the feeling is returning." : "!"]"))
-				if(DT_PROB(scream_prob, delta_pain))
-					human_parent.emote("scream")
+					to_chat(parent, span_danger("Your [checked_bodypart.name] really hurts!"))
+			else if(checked_bodypart.pain > third_pain_threshold)
+				scream_prob = 25
+				to_chat(parent, span_danger("Your [checked_bodypart.name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"))
+			if(DT_PROB(scream_prob, delta_time))
+				human_parent.emote("scream")
 
 	natural_decay_counter++
-	if(natural_decay_counter % 5 == 0)
+	if(natural_decay_counter % 5 == 0) // every 10 seconds
 		natural_decay_counter = 0
-		// all of our body parts get healed by (1 - pain_modifier) + natural pain decay
-		var/pain_modifier_plus_decay = clamp(1 - pain_modifier, 0, 0.9) + natural_pain_decay
-		adjust_bodypart_pain(parent, BODY_ZONES_ALL, -5 * pain_modifier_plus_decay)
+		if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+			natural_pain_decay = max(natural_pain_decay - 0.05, -2) // 20 seconds = 0.1 increase, 5 minutes of no pain = -1.5
+		else
+			natural_pain_decay = initial(natural_pain_decay)
+
+		adjust_bodypart_pain(parent, BODY_ZONES_ALL, natural_pain_decay + pain_modifier - 1)
 
 /datum/component/pain/proc/check_pain_modifiers(mob/living/carbon/carbon_parent)
-	if(!pain_mods[PAIN_MOD_DRUNK] && carbon_parent.drunkenness > 10)
+	if(carbon_parent.drunkenness > 10)
 		set_pain_modifier(carbon_parent, PAIN_MOD_DRUNK, 0.9)
 	else
 		unset_pain_modifier(carbon_parent, PAIN_MOD_DRUNK)
 
-	if(!pain_mods[PAIN_MOD_DROWSY] && carbon_parent.drowsyness > 10)
+	if(carbon_parent.drowsyness > 10)
 		set_pain_modifier(carbon_parent, PAIN_MOD_DROWSY, 0.95)
 	else
 		unset_pain_modifier(carbon_parent, PAIN_MOD_DROWSY)
 
-	if(!pain_mods[PAIN_MOD_SLEEP] && carbon_parent.IsSleeping())
+	if(carbon_parent.IsSleeping())
 		var/sleeping_turf = get_turf(carbon_parent)
 		var/sleeping_modifier = 0.8
 		if(locate(/obj/structure/bed) in sleeping_turf)
@@ -462,7 +459,7 @@
 	else
 		unset_pain_modifier(carbon_parent, PAIN_MOD_SLEEP)
 
-	if(!pain_mods[PAIN_MOD_STASIS] && IS_IN_STASIS(carbon_parent)) // Is this a cop-out?
+	if(IS_IN_STASIS(carbon_parent)) // Is this a cop-out?
 		set_pain_modifier(carbon_parent, PAIN_MOD_STASIS, 0)
 	else
 		unset_pain_modifier(carbon_parent, PAIN_MOD_STASIS)
@@ -477,26 +474,49 @@
 	for(var/mod in pain_mods)
 		unset_pain_modifier(source, mod)
 
+/datum/component/pain/proc/renew_pain_processing(datum/source)
+	SIGNAL_HANDLER
+
+	START_PROCESSING(SSpain, src)
+
+/datum/component/pain/proc/halt_pain_processing(datum/source)
+	SIGNAL_HANDLER
+
+	STOP_PROCESSING(SSpain, src)
+
 /datum/component/pain/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION("debug_pain", "Debug Pain")
+	VV_DROPDOWN_OPTION("max_pain", "Max Out Pain")
 
 /datum/component/pain/vv_do_topic(href_list)
 	. = ..()
 	if(href_list["debug_pain"])
 		debug_print_pain()
+	if(href_list["max_pain"])
+		max_pain()
 
 /datum/component/pain/proc/debug_print_pain()
-	message_admins("DEBUG PRINTOUT: [src]")
-	message_admins("[parent] has a pain modifier of [pain_modifier].")
-	message_admins(" - - - - ")
+	debugging = !debugging
+	if(debugging)
+		message_admins("Debugging pain enabled. DEBUG PRINTOUT: [src]")
+		message_admins("[parent] has a pain modifier of [pain_modifier].")
+		message_admins(" - - - - ")
+		for(var/part in body_zones)
+			var/obj/item/bodypart/checked_bodypart = body_zones[part]
+
+			message_admins("[parent] has [checked_bodypart.pain] pain in [checked_bodypart.name].")
+			message_admins(" * [checked_bodypart.name] has a max pain of [checked_bodypart.max_pain].")
+			message_admins(" * [checked_bodypart.name] has delta pain of [checked_bodypart.pain - checked_bodypart.last_pain].")
+
+		message_admins(" - - - - ")
+		for(var/mod in pain_mods)
+			message_admins("[parent] has pain mod [mod], value [pain_mods[mod]].")
+	else
+		message_admins("Debugging pain disabled.")
+
+/datum/component/pain/proc/max_pain()
 	for(var/part in body_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
-
-		message_admins("[parent] has [checked_bodypart.pain] pain in [checked_bodypart.name].")
-		message_admins(" * [checked_bodypart.name] has a max pain of [checked_bodypart.max_pain].")
-		message_admins(" * [checked_bodypart.name] has delta pain of [checked_bodypart.pain - checked_bodypart.last_pain].")
-
-	message_admins(" - - - - ")
-	for(var/mod in pain_mods)
-		message_admins("[parent] has pain mod [mod], value [pain_mods[mod]].")
+		set_bodypart_pain(parent, part, checked_bodypart.max_pain - 5)
+	message_admins("[parent]'s pain has been fully maximized.")
