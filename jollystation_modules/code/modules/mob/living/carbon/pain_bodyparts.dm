@@ -35,8 +35,8 @@
 	if(!.)
 		return FALSE
 
-	if(amount > 15)
-		brain.applyOrganDamage(amount / 4, 150)
+	if(amount > 10)
+		owner.apply_damage(pain / 3, BRAIN)
 
 	return TRUE
 

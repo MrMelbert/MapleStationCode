@@ -1,4 +1,4 @@
-// -- Pain status effects. --
+// -- Pain effects - mood, modifiers, statuses. --
 /atom/movable/screen/alert/status_effect/limp/pain
 	name = "Pained Limping"
 	desc = "The pain in your legs is unbearable, forcing you to limp!"
@@ -43,5 +43,58 @@
 		return
 
 /datum/movespeed_modifier/pain
+	id = MOVESPEED_ID_PAIN
+	movetypes = GROUND
+
+// >= 100 total pain
+/datum/movespeed_modifier/pain/light
+	multiplicative_slowdown = 0.1
+
+// >= 200 total pain
+/datum/movespeed_modifier/pain/medium
+	multiplicative_slowdown = 0.2
+
+// >= 300 total pain
+/datum/movespeed_modifier/pain/heavy
+	multiplicative_slowdown = 0.35
+
+// >= 400 total pain
+/datum/movespeed_modifier/pain/crippling
+	multiplicative_slowdown = 0.5
 
 /datum/actionspeed_modifier/pain
+	id = ACTIONSPEED_ID_PAIN
+
+// >= 100 total pain
+/datum/actionspeed_modifier/pain/light
+	multiplicative_slowdown = 0.2
+
+// >= 200 total pain
+/datum/actionspeed_modifier/pain/medium
+	multiplicative_slowdown = 0.2
+
+// >= 300 total pain
+/datum/actionspeed_modifier/pain/heavy
+	multiplicative_slowdown = 0.35
+
+// >= 400 total pain
+/datum/actionspeed_modifier/pain/crippling
+	multiplicative_slowdown = 0.5
+
+
+/datum/mood_event/pain
+	description = "<span class='warning'>It hurts!</span>\n"
+	mood_change = -6
+	timeout = 2 MINUTES
+
+/datum/mood_event/anesthetic
+	description = "<span class='nicegreen'>Thank science for modern medicine.</span>\n"
+	mood_change = 2
+	timeout = 5 MINUTES
+
+/datum/mood_event/surgery
+	mood_change = -6
+	timeout = 2 MINUTES
+
+/datum/mood_event/surgery/major
+	mood_change = -9
