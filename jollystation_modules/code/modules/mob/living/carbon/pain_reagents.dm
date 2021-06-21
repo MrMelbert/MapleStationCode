@@ -1,48 +1,34 @@
 // -- Reagents that modify pain. --
-/datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_ADD_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]", 0.9)
+/datum/reagent
+	/// Modifier applied by this reagent to the mob's pain.
+	/// This is both a multiplicative modifier to their overall recieved pain,
+	/// and an additive modifier to their per tick pain decay rate.
+	var/pain_modifier = -1
 
-/datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/user)
+/datum/reagent/on_mob_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_REMOVE_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]")
+	if(pain_modifier >= 0)
+		user.pain_controller?.set_pain_modifier("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
 
-/datum/reagent/medicine/atropine/on_mob_metabolize(mob/living/user)
+/datum/reagent/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_ADD_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]", 0.8)
+	if(pain_modifier >= 0)
+		user.pain_controller?.unset_pain_modifier("[PAIN_MOD_CHEMS]-[name]")
 
-/datum/reagent/medicine/atropine/on_mob_end_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_REMOVE_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]")
+/datum/reagent/medicine/epinephrine
+	pain_modifier = 0.9
 
-/datum/reagent/medicine/morphine/on_mob_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_ADD_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]", 0.5)
+/datum/reagent/medicine/atropine
+	pain_modifier = 0.8
 
-/datum/reagent/medicine/morphine/on_mob_end_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_REMOVE_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]")
+/datum/reagent/medicine/morphine
+	pain_modifier = 0.5
 
-/datum/reagent/medicine/mine_salve/on_mob_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_ADD_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]", 0.75)
+/datum/reagent/medicine/mine_salve
+	pain_modifier = 0.75
 
-/datum/reagent/medicine/mine_salve/on_mob_end_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_REMOVE_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]")
+/datum/reagent/determination
+	pain_modifier = 0.6
 
-/datum/reagent/determination/on_mob_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_ADD_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]", 0.6)
-
-/datum/reagent/determination/on_mob_end_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_REMOVE_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]")
-
-/datum/reagent/consumable/ethanol/painkiller/on_mob_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_ADD_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]", 0.75)
-
-/datum/reagent/consumable/ethanol/painkiller/on_mob_end_metabolize(mob/living/user)
-	. = ..()
-	SEND_SIGNAL(user, COMSIG_CARBON_REMOVE_PAIN_MODIFIER, "[PAIN_MOD_CHEMS]-[name]")
+/datum/reagent/consumable/ethanol/painkiller
+	pain_modifier = 0.75
