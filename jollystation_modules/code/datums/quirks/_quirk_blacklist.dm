@@ -8,12 +8,18 @@
 			"Size D - Average Height", \
 			"Size E - Small", \
 			"Size F - Very Small", \
-			"Size G - Extremely Small"),\
+			"Size G - Extremely Small"), \
 		list("Language - Draconic", \
 			"Language - Moffic", \
 			"Language - Nekomimetic", \
 			"Language - Skrellian", \
-			"Language - Trilingual",\
+			"Language - Trilingual", \
+			"Language - High Draconic"), \
+		list("Allodynia", \
+			"Hyperalgesia", \
+			"Hypoalgesia", \
+			"Language - Skrellian", \
+			"Language - Trilingual", \
 			"Language - High Draconic"))
 
 //Extends the initialization proc, adding the module blacklists we have after the main init finishes.

@@ -1,5 +1,5 @@
 // -- Pain for bodyparts --
-/mob/living/carbon
+/mob/living
 	/// A paint controller datum, to track and deal with pain. Only initialized on humans.
 	var/datum/pain/pain_controller
 
@@ -132,7 +132,7 @@
 	if(amount > 0)
 		amount *= pain_modifier
 
-	amount = round(amount, 0.1)
+	amount = round(amount, 0.05)
 	for(var/zone in def_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
 		if(!adjusted_bodypart)
@@ -379,7 +379,8 @@
 		else
 			natural_pain_decay = initial(natural_pain_decay)
 
-		adjust_bodypart_pain(BODY_ZONES_ALL, natural_pain_decay + pain_modifier - 1)
+		var/pain_modified_decay = min(-1 + natural_pain_decay + pain_modifier, 0)
+		adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
 
 /datum/pain/proc/check_pain_modifiers(mob/living/carbon/carbon_parent)
 	if(carbon_parent.drunkenness > 10)

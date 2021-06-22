@@ -27,8 +27,11 @@
 #define PAIN_MOD_DROWSY "drowsy"
 #define PAIN_MOD_NEAR_DEATH "near-death"
 #define PAIN_MOD_YOUTH "youth"
+#define PAIN_MOD_TENACITY "tenacity"
+#define PAIN_MOD_QUIRK "quirk"
 
 /// ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"
 #define MOVESPEED_ID_PAIN "pain_movespeed"
 #define ACTIONSPEED_ID_PAIN "pain_actionspeed"
+#define TRAIT_EXTRA_PAIN "extra_pain"

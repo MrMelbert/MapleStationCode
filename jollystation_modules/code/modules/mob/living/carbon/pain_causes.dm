@@ -76,6 +76,14 @@
 
 	. = ..()
 
+/datum/brain_trauma/special/tenacity/on_gain()
+	owner.pain_controller?.set_pain_modifier(PAIN_MOD_TENACITY, 0.25)
+	. = ..()
+
+/datum/brain_trauma/special/tenacity/on_lose()
+	owner.pain_controller?.unset_pain_modifier(PAIN_MOD_TENACITY)
+	. = ..()
+
 // Near death
 /mob/living/carbon/human/set_health(new_value)
 	. = ..()
