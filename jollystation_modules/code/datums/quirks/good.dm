@@ -23,7 +23,7 @@
 	/// The language we give out. If null, just grabs a random language.
 	var/datum/language/added_language
 
-/datum/quirk/trilingual/post_add()
+/datum/quirk/trilingual/add()
 	var/datum/language_holder/quirk_holder_languages = quirk_holder.get_language_holder()
 	if(!added_language)
 		added_language = pick(GLOB.all_languages - LANGUAGE_QUIRK_RANDOM_BLACKLIST)

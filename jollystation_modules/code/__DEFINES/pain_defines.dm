@@ -26,6 +26,7 @@
 #define PAIN_MOD_STASIS "stasis"
 #define PAIN_MOD_DROWSY "drowsy"
 #define PAIN_MOD_NEAR_DEATH "near-death"
+#define PAIN_MOD_YOUTH "youth"
 
 /// ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"

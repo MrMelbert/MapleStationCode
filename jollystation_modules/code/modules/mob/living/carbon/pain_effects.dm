@@ -1,10 +1,21 @@
 // -- Pain effects - mood, modifiers, statuses. --
+
+/atom/movable/screen/fullscreen/pain
+	icon = 'jollystation_modules/icons/hud/screen_full.dmi'
+	icon_state = "painoverlay"
+	layer = UI_DAMAGE_LAYER
+
+/mob/living/carbon/proc/flash_pain_overlay(severity = 1, time = 10)
+	overlay_fullscreen("pain", /atom/movable/screen/fullscreen/pain, severity)
+	clear_fullscreen("pain", time)
+
 /atom/movable/screen/alert/status_effect/limp/pain
 	name = "Pained Limping"
 	desc = "The pain in your legs is unbearable, forcing you to limp!"
 
 /datum/status_effect/limp/pain
 	id = "limp_pain"
+	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/limp/pain
 
 /datum/status_effect/limp/pain/on_apply()

@@ -7,13 +7,15 @@
 
 /datum/reagent/on_mob_metabolize(mob/living/user)
 	. = ..()
-	if(pain_modifier >= 0)
-		user.pain_controller?.set_pain_modifier("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
+	if(pain_modifier >= 0 && ishuman(user))
+		var/mob/living/carbon/human/human_user = user
+		human_user.pain_controller.set_pain_modifier("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
 
 /datum/reagent/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	if(pain_modifier >= 0)
-		user.pain_controller?.unset_pain_modifier("[PAIN_MOD_CHEMS]-[name]")
+	if(pain_modifier >= 0 && ishuman(user))
+		var/mob/living/carbon/human/human_user = user
+		human_user.pain_controller.unset_pain_modifier("[PAIN_MOD_CHEMS]-[name]")
 
 /datum/reagent/medicine/epinephrine
 	pain_modifier = 0.9

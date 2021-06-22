@@ -4,9 +4,20 @@
 	var/pain = 15
 	/// The max amount of pain this limb can experience
 	var/max_pain = 70
-	var/first_pain_threshold = 25
-	var/second_pain_threshold = 50
-	var/third_pain_threshold = 65
+
+/obj/item/bodypart/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE)
+	. = ..()
+	if(!.)
+		return
+
+	var/can_inflict = max_damage - get_damage()
+	var/total_damage = brute + burn
+	if(total_damage > can_inflict && total_damage > 0)
+		brute = round(brute * (can_inflict / total_damage), DAMAGE_PRECISION)
+		burn = round(burn * (can_inflict / total_damage), DAMAGE_PRECISION)
+
+	if(can_inflict > 0)
+		owner?.pain_controller?.adjust_bodypart_pain(body_zone, body_damage_coeff * (brute + burn))
 
 /obj/item/bodypart/proc/on_gain_pain_effects(amount)
 	if(!owner)
@@ -15,13 +26,13 @@
 	var/base_max_stamina_damage = initial(max_stamina_damage)
 
 	switch(pain)
-		if(10 to first_pain_threshold)
+		if(10 to 25)
 			max_stamina_damage = base_max_stamina_damage / 1.2
-		if(first_pain_threshold to second_pain_threshold)
+		if(26 to 50)
 			max_stamina_damage = base_max_stamina_damage / 1.5
-		if(second_pain_threshold to third_pain_threshold)
+		if(51 to 65)
 			max_stamina_damage = base_max_stamina_damage / 2
-		if(third_pain_threshold to INFINITY)
+		if(66 to INFINITY)
 			if(can_be_disabled && !HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
 				to_chat(owner, span_userdanger("Your [name] goes numb from the pain!"))
 				ADD_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
@@ -37,11 +48,11 @@
 	switch(pain)
 		if(0 to 10)
 			max_stamina_damage = base_max_stamina_damage
-		if(10 to first_pain_threshold)
+		if(11 to 25)
 			max_stamina_damage = base_max_stamina_damage / 1.2
-		if(first_pain_threshold to second_pain_threshold)
+		if(26 to 50)
 			max_stamina_damage = base_max_stamina_damage / 1.5
-	if(pain < third_pain_threshold && HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
+	if(pain < 65 && HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
 		to_chat(owner, span_green("You can feel your [name] again!"))
 		REMOVE_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 		update_disabled()
@@ -54,51 +65,86 @@
 
 	return TRUE
 
-/obj/item/bodypart/proc/pain_message(delta_time, healing_pain)
+/obj/item/bodypart/proc/pain_feedback(delta_time, healing_pain)
 	if(!owner || !pain)
 		return FALSE
 
-	if(!owner.has_status_effect(STATUS_EFFECT_DETERMINED))
+	if(owner.has_status_effect(STATUS_EFFECT_DETERMINED))
 		return FALSE
 
 	var/scream_prob = 0
-	var/picked_emote = pick(PAIN_EMOTES)
+	var/picked_emote = pick(PAIN_EMOTES + "mumble")
+	var/feedback = ""
 	switch(pain)
-		if(10 to first_pain_threshold)
-			to_chat(owner, span_danger("Your [name] aches[healing_pain ? ", but it's getting better" : ""]."))
-		if(first_pain_threshold to second_pain_threshold)
+		if(10 to 25)
+			owner.flash_pain_overlay(1)
+			feedback = "Your [name] aches[healing_pain ? ", but it's getting better" : ""]."
+		if(26 to 50)
 			owner.emote(picked_emote)
+			owner.flash_pain_overlay(1)
 			if(healing_pain)
-				to_chat(owner, span_danger("Your [name] hurts, but it's starting to die down."))
+				feedback = "Your [name] hurts, but it's starting to die down."
 			else
 				scream_prob = 5
-				to_chat(owner, span_danger("Your [name] hurts!"))
-		if(second_pain_threshold to third_pain_threshold)
+				feedback = "Your [name] hurts!"
+		if(51 to 65)
 			owner.emote(picked_emote)
+			owner.flash_pain_overlay(2)
 			if(healing_pain)
-				to_chat(owner, span_danger("Your [name] really hurts, but the stinging is stopping."))
+				feedback = "Your [name] really hurts, but the stinging is stopping."
 			else
 				scream_prob = 10
-				to_chat(owner, span_danger("Your [name] really hurts!"))
-		if(third_pain_threshold to INFINITY)
+				feedback = "Your [name] really hurts!"
+		if(66 to INFINITY)
 			scream_prob = 25
-			to_chat(owner, span_danger("Your [name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"))
+			owner.flash_pain_overlay(2, 2 SECONDS)
+			feedback = "Your [name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"
+
 	if(DT_PROB(scream_prob, delta_time))
 		owner.emote("scream")
-
+	to_chat(owner, span_danger(feedback))
 	return TRUE
 
 /obj/item/bodypart/chest
 	max_pain = 120
-	first_pain_threshold = 40
-	second_pain_threshold = 75
-	third_pain_threshold = 110
+
+/obj/item/bodypart/chest/pain_feedback(delta_time, healing_pain)
+	if(!owner || !pain)
+		return FALSE
+
+	if(owner.has_status_effect(STATUS_EFFECT_DETERMINED))
+		return FALSE
+
+	var/picked_emote = pick(PAIN_EMOTES + "groan")
+	var/feedback = ""
+	switch(pain)
+		if(10 to 40)
+			feedback = "Your [name] aches[healing_pain ? ", for a short time" : ""]."
+			owner.flash_pain_overlay(1)
+		if(41 to 75)
+			owner.emote(picked_emote)
+			owner.flash_pain_overlay(1, 2 SECONDS)
+			feedback = pick("Your [name] feels sore", "Your [name] hurts", "Your side hurts", "Your ribs hurt")
+			if(healing_pain)
+				feedback += pick(", but it's getting better", ", but it's feeling better", ", but it's improving", ", but it stops shortly")
+			feedback += "."
+		if(76 to 110)
+			owner.emote(picked_emote)
+			owner.flash_pain_overlay(2, 2 SECONDS)
+			feedback = pick("Your [name] really hurts", "Your feel a sharp pain in your side", "You breathe in and feel pain in your ribs")
+			if(healing_pain)
+				feedback += pick(", but the stinging is stopping", ", but it's feeling better", ", but it quickly subsides")
+			feedback += "!"
+		if(111 to INFINITY)
+			owner.flash_pain_overlay(2, 3 SECONDS)
+			feedback = "You feel your ribs jostle in your [name]!"
+			owner.emote(pick("groan", "scream"))
+
+	to_chat(owner, span_danger(feedback))
+	return TRUE
 
 /obj/item/bodypart/head
 	max_pain = 100
-	first_pain_threshold = 30
-	second_pain_threshold = 60
-	third_pain_threshold = 90
 
 /obj/item/bodypart/head/on_gain_pain_effects(amount)
 	. = ..()
@@ -110,12 +156,40 @@
 
 	return TRUE
 
+/obj/item/bodypart/head/pain_feedback(delta_time, healing_pain)
+	if(!owner || !pain)
+		return FALSE
+
+	var/feedback = ""
+	switch(pain)
+		if(10 to 30)
+			feedback = "Your [name] aches[healing_pain ? ", but it's getting better" : ""]."
+			owner.flash_pain_overlay(1)
+		if(31 to 60)
+			owner.flash_pain_overlay(1)
+			if(healing_pain)
+				feedback = "Your [name] hurts, but it's starting to die down."
+			else
+				feedback = "Your [name] hurts!"
+		if(61 to 90)
+			owner.flash_pain_overlay(2)
+			if(healing_pain)
+				feedback = "Your [name] really hurts, but the stinging is stopping."
+			else
+				feedback = "Your [name] really hurts!"
+		if(91 to INFINITY)
+			owner.flash_pain_overlay(2, 2 SECONDS)
+			feedback = "Your [name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"
+
+	to_chat(owner, span_danger(feedback))
+	return TRUE
+
 /obj/item/bodypart/r_leg/processed_pain_effects(delta_time)
 	. = ..()
 	if(!.)
 		return FALSE
 
-	if(pain > 30 && DT_PROB(50, delta_time))
+	if(pain > 30 && DT_PROB(25, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
@@ -126,7 +200,7 @@
 	if(!.)
 		return FALSE
 
-	if(pain > 30 && DT_PROB(50, delta_time))
+	if(pain > 30 && DT_PROB(25, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 

@@ -1,5 +1,6 @@
 // -- Pain for bodyparts --
-/mob/living
+/mob/living/carbon
+	/// A paint controller datum, to track and deal with pain. Only initialized on humans.
 	var/datum/pain/pain_controller
 
 /mob/living/carbon/human/Initialize()
@@ -12,6 +13,7 @@
 	return ..()
 
 /datum/pain
+	/// The parent mob we're tracking.
 	var/mob/living/carbon/human/parent
 	/// Total pain across all bodyparts
 	var/total_pain = 0
@@ -23,17 +25,16 @@
 	var/list/pain_mods = list()
 	/// Assoc list [zones] to [references to bodyparts]
 	var/list/body_zones = list()
-	/// Natural amount of decay given to each limb per process
+	/// Natural amount of decay given to each limb per 5 ticks of process
 	var/natural_pain_decay = -0.2
-
+	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
 	var/natural_decay_counter = 0
-
+	/// Cooldown to track the last time we lost pain.
 	COOLDOWN_DECLARE(time_since_last_pain_loss)
-
 	var/debugging = FALSE
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
-	if(!ishuman(new_parent))
+	if(!iscarbon(new_parent))
 		return INITIALIZE_HINT_QDEL
 
 	parent = new_parent
@@ -44,15 +45,14 @@
 		stack_trace("Pain datum failed to find any body_zones to track!")
 		return INITIALIZE_HINT_QDEL
 
-	if(new_parent.stat == CONSCIOUS)
-		START_PROCESSING(SSpain, src)
-
 	RegisterParentSignals()
+	if(new_parent.stat == CONSCIOUS)
+		start_pain_processing()
 
 /datum/pain/Destroy()
 	for(var/part in body_zones)
 		body_zones -= part
-	STOP_PROCESSING(SSpain, src)
+	stop_pain_processing()
 	UnregisterParentSignals()
 	parent = null
 	return ..()
@@ -63,9 +63,9 @@
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMGE, .proc/add_damage_pain)
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_WOUND, .proc/add_wound_pain)
 	RegisterSignal(parent, COMSIG_CARBON_LOSE_WOUND, .proc/remove_wound_pain)
-	RegisterSignal(parent, COMSIG_LIVING_REVIVE, .proc/renew_pain_processing)
+	RegisterSignal(parent, COMSIG_LIVING_REVIVE, .proc/start_pain_processing)
+	RegisterSignal(parent, COMSIG_LIVING_DEATH, .proc/stop_pain_processing)
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_all_pain)
-	RegisterSignal(parent, COMSIG_LIVING_DEATH, .proc/halt_pain_processing)
 
 /datum/pain/proc/UnregisterParentSignals()
 	UnregisterSignal(parent, list(
@@ -75,8 +75,8 @@
 		COMSIG_CARBON_GAIN_WOUND,
 		COMSIG_CARBON_LOSE_WOUND,
 		COMSIG_LIVING_REVIVE,
-		COMSIG_LIVING_POST_FULLY_HEAL,
 		COMSIG_LIVING_DEATH,
+		COMSIG_LIVING_POST_FULLY_HEAL,
 	))
 
 /datum/pain/proc/limb_added(mob/living/carbon/source, obj/item/bodypart/new_limb, special)
@@ -132,6 +132,7 @@
 	if(amount > 0)
 		amount *= pain_modifier
 
+	amount = round(amount, 0.1)
 	for(var/zone in def_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
 		if(!adjusted_bodypart)
@@ -227,11 +228,11 @@
 			switch(damage)
 				if(1 to 10)
 					pain = damage / 4
-				if(10 to 15)
+				if(11 to 15)
 					pain = damage / 3
-				if(15 to 20)
+				if(16 to 20)
 					pain = damage / 2
-				if(25 to INFINITY)
+				if(21 to INFINITY)
 					pain = damage / 1.2
 
 		// Toxins pain is dealt to the chest (stomach and liver)
@@ -273,27 +274,25 @@
 		// pain = more for hurt lungs, more for higher total oxyloss
 		if(OXY)
 			def_zone = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
-			var/mob/living/carbon/human_source = source
-			if(istype(human_source))
-				var/obj/item/organ/lungs/our_lungs = human_source.getorganslot(ORGAN_SLOT_LUNGS)
-				if(our_lungs)
-					switch(our_lungs.damage)
-						if(20 to 50)
-							pain += 1
-						if(51 to 80)
-							pain += 2
-						if(81 to INFINITY)
-							pain += 3
-				else
-					pain += 5
-
-				switch(human_source.oxyloss)
-					if(0 to 20)
-						pain = 0
-					if(21 to 50)
+			var/obj/item/organ/lungs/our_lungs = source.getorganslot(ORGAN_SLOT_LUNGS)
+			if(our_lungs)
+				switch(our_lungs.damage)
+					if(20 to 50)
 						pain += 1
-					if(51 to INFINITY)
+					if(51 to 80)
+						pain += 2
+					if(81 to INFINITY)
 						pain += 3
+			else
+				pain += 5
+
+			switch(parent.oxyloss)
+				if(0 to 20)
+					pain = 0
+				if(21 to 50)
+					pain += 1
+				if(51 to INFINITY)
+					pain += 3
 
 		// Cellular pain is dealt to all bodyparts
 		// pain = damage (very ouchy)
@@ -311,7 +310,7 @@
 	if(!def_zone || !pain)
 		return
 
-	INVOKE_ASYNC(src, .proc/adjust_bodypart_pain, source, def_zone, pain)
+	INVOKE_ASYNC(src, .proc/adjust_bodypart_pain, def_zone, pain)
 
 /datum/pain/proc/add_wound_pain(mob/living/carbon/source, datum/wound/applied_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
@@ -327,6 +326,7 @@
 
 	check_pain_modifiers(parent)
 
+	var/display_message = TRUE
 	// our entire body is in massive amounts of pain
 	if(total_pain >= total_pain_max - 100)
 		// Change in total pain since last tick. Negative = losing pain
@@ -334,37 +334,42 @@
 			to_chat(parent, span_green("You feel the pain start to dull!"))
 
 		if(!parent.has_status_effect(STATUS_EFFECT_DETERMINED))
-			if(DT_PROB(5, delta_time))
-				var/very_pained_messages = pick("Stop the pain!", "Everything hurts!", "Why, why?!", "AAAAAAAH!!")
-				to_chat(parent, span_userdanger("[very_pained_messages]"))
-				parent.visible_message(span_warning("[parent] winces from pain!"), ignored_mobs = parent)
-				parent.emote("scream")
+			if(DT_PROB(3, delta_time))
+				display_message = FALSE
+				to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!")))
+				parent.emote("wince")
 			if(DT_PROB(2, delta_time) && parent.staminaloss <= 90)
+				display_message = FALSE
 				parent.apply_damage(30 * pain_modifier, STAMINA)
 				parent.visible_message(span_warning("[parent] doubles over in pain!"))
 				parent.emote("gasp")
 			if(DT_PROB(2, delta_time))
+				display_message = FALSE
 				parent.Knockdown(15 * pain_modifier)
-				parent.visible_message(span_warning("[parent] collapses in pain!"))
+				parent.visible_message(span_warning("[parent] collapses from pain!"))
 			if(DT_PROB(1, delta_time))
 				parent.vomit(50)
-			if(DT_PROB(4, delta_time))
+			if(DT_PROB(1, delta_time))
+				display_message = FALSE
+				parent.emote("scream")
+				parent.Jitter(15)
+			if(DT_PROB(5, delta_time))
 				var/obj/item/held_item = parent.get_active_held_item()
 				if(held_item && parent.dropItemToGround(held_item))
+					display_message = FALSE
 					to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
 					parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
 					parent.emote("gasp")
 
 	var/list/shuffled_zones = shuffle(body_zones)
-	var/display_message = TRUE
 
 	for(var/part in shuffled_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
 		checked_bodypart.processed_pain_effects(delta_time)
 
-		if(DT_PROB((checked_bodypart.pain/12), delta_time)&& display_message && pain_modifier > 0.5)
+		if(DT_PROB((checked_bodypart.pain/12), delta_time) && display_message && pain_modifier > 0.5)
 			display_message = FALSE
-			checked_bodypart.pain_message(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+			checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 
 	natural_decay_counter++
 	if(natural_decay_counter % 5 == 0) // every 10 seconds
@@ -416,15 +421,15 @@
 	for(var/part in body_zones)
 		var/obj/item/bodypart/healed_bodypart = body_zones[part]
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
-	for(var/mod in pain_mods)
-		unset_pain_modifier(source, mod)
+	//for(var/mod in pain_mods)
+	//	unset_pain_modifier(source, mod)
 
-/datum/pain/proc/renew_pain_processing(datum/source)
+/datum/pain/proc/start_pain_processing(datum/source)
 	SIGNAL_HANDLER
 
 	START_PROCESSING(SSpain, src)
 
-/datum/pain/proc/halt_pain_processing(datum/source)
+/datum/pain/proc/stop_pain_processing(datum/source)
 	SIGNAL_HANDLER
 
 	STOP_PROCESSING(SSpain, src)
