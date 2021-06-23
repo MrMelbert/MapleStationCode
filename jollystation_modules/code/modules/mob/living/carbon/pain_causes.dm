@@ -77,7 +77,7 @@
 	. = ..()
 
 /datum/brain_trauma/special/tenacity/on_gain()
-	owner.pain_controller?.set_pain_modifier(PAIN_MOD_TENACITY, 0.25)
+	owner.pain_controller?.set_pain_modifier(PAIN_MOD_TENACITY, 0)
 	. = ..()
 
 /datum/brain_trauma/special/tenacity/on_lose()
@@ -93,3 +93,14 @@
 	else
 		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "near-death")
 		pain_controller.unset_pain_modifier(PAIN_MOD_NEAR_DEATH)
+
+// Shocks
+/mob/living/carbon/human/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+	. = ..()
+	if(!.)
+		return
+
+	var/pain = . / max(bodyparts.len, 2)
+	pain_controller?.adjust_bodypart_pain(BODY_ZONES_ALL, pain)
+	pain_controller?.set_pain_modifier(PAIN_MOD_RECENT_SHOCK, 0.5)
+	addtimer(CALLBACK(pain_controller, /datum/pain.proc/unset_pain_modifier, PAIN_MOD_RECENT_SHOCK), 30 SECONDS)

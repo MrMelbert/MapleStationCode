@@ -12,7 +12,7 @@
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 
 /// List of some emotes that convey pain.
-#define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper")
+#define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s")
 
 /// Amount of pain gained from dismembered limb
 #define PAIN_LIMB_DISMEMBERED 45
@@ -26,6 +26,7 @@
 #define PAIN_MOD_STASIS "stasis"
 #define PAIN_MOD_DROWSY "drowsy"
 #define PAIN_MOD_NEAR_DEATH "near-death"
+#define PAIN_MOD_RECENT_SHOCK "recently-shocked"
 #define PAIN_MOD_YOUTH "youth"
 #define PAIN_MOD_TENACITY "tenacity"
 #define PAIN_MOD_QUIRK "quirk"

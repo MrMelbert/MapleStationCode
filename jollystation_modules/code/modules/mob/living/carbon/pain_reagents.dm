@@ -22,13 +22,13 @@
 	pain_modifier = 0.8
 
 /datum/reagent/medicine/morphine
-	pain_modifier = 0.5
+	pain_modifier = 0.45
 
 /datum/reagent/medicine/mine_salve
 	pain_modifier = 0.75
 
 /datum/reagent/determination
-	pain_modifier = 0.6
+	pain_modifier = 0.5
 
 /datum/reagent/consumable/ethanol/painkiller
 	pain_modifier = 0.75

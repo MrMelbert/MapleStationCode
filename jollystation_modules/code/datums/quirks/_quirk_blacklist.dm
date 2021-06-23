@@ -18,9 +18,7 @@
 		list("Allodynia", \
 			"Hyperalgesia", \
 			"Hypoalgesia", \
-			"Language - Skrellian", \
-			"Language - Trilingual", \
-			"Language - High Draconic"))
+			"Bad Touch", ))
 
 //Extends the initialization proc, adding the module blacklists we have after the main init finishes.
 /datum/controller/subsystem/processing/quirks/Initialize()
