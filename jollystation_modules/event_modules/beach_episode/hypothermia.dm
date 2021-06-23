@@ -27,4 +27,17 @@
 			if(DT_PROB(1.5, delta_time))
 				to_chat(affected_mob, "<span class='danger'>You shiver more.</span>")
 		if(3)
+			if(DT_PROB(1.5, delta_time))
+				to_chat(affected_mob, "<span class='danger'>Your appendages feel numb.</span>")
+			if(DT_PROB(2, delta_time))
+				to_chat(affected_mob, "<span class='danger'>You shiver violently.</span>")
+			//Damage proc to a random limb, burn damage, DT_PROB(1)
+			//Movement speed multiplier, possibly a 0.8
 		if(4)
+			if(DT_PROB(0.5, delta_time))
+				to_chat(affected_mob, "<span class='danger'>Your appendages feel numb.</span>")
+			if(DT_PROB(1.5, delta_time))
+				to_chat(affected_mob, "<span class='danger'>You shiver more.</span>")
+			//Damage proc to a random limb, burn damage, DT_PROB(2), increased burn damage per tick
+			//Chance to disable a random limb (scale with damage?)
+			//Movement speed multiplier, possibly a 0.55
