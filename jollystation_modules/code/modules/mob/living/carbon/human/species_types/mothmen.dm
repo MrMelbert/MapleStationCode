@@ -5,3 +5,4 @@
 						'jollystation_modules/sound/voice/moff_3.ogg' = 80)
 	species_speech_sounds_ask = list()
 	species_speech_sounds_exclaim = list()
+	species_pain_mod = 1.1
