@@ -18,10 +18,14 @@
 	medical_record_text = "Patient has Hyperalgesia, and is more susceptible to pain stimuli than most."
 
 /datum/quirk/pain_vulnerability/add()
-	quirk_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 1.15)
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 1.15)
 
 /datum/quirk/pain_vulnerability/remove()
-	quirk_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
 
 // More vulnerable to pain + get pain from more actions (Glass bones and paper skin)
 /datum/quirk/allodynia
@@ -34,13 +38,17 @@
 	COOLDOWN_DECLARE(time_since_last_touch)
 
 /datum/quirk/allodynia/add()
-	quirk_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 1.2)
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 1.2)
 	ADD_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	RegisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HUGGED), .proc/cause_body_pain)
 	RegisterSignal(quirk_holder, COMSIG_CARBON_HEADPAT, .proc/cause_head_pain)
 
 /datum/quirk/allodynia/remove()
-	quirk_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
 	REMOVE_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	UnregisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HUGGED, COMSIG_CARBON_HEADPAT))
 
@@ -89,8 +97,60 @@
  * amount - the amount of pain being added
  */
 /datum/quirk/allodynia/proc/actually_hurt(zone, amount)
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(!istype(carbon_holder))
+		return
+
 	new /obj/effect/temp_visual/annoyed(quirk_holder.loc)
-	quirk_holder.pain_controller?.adjust_bodypart_pain(zone, amount)
+	carbon_holder.pain_controller?.adjust_bodypart_pain(zone, amount)
 	INVOKE_ASYNC(quirk_holder, /mob.proc/emote, pick(PAIN_EMOTES))
 	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_touch", /datum/mood_event/very_bad_touch)
 	COOLDOWN_START(src, time_since_last_touch, 30 SECONDS)
+
+// Prosthetic limb quirks (targeted limbs)
+/datum/quirk/prosthetic_limb
+	name = "Prosthetic Limb - Random"
+
+/datum/quirk/prosthetic_limb/targeted
+	value = -2
+	abstract_parent_type = /datum/quirk/prosthetic_limb/targeted
+	/// Typepath of what bodypart we're adding onto our person.
+	var/obj/item/bodypart/replacement
+
+/datum/quirk/prosthetic_limb/targeted/add_unique()
+	if(!replacement)
+		CRASH("Targeted prosthetic limb quirk tried to add a null replacement to [quirk_holder]!")
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	if(!istype(human_holder))
+		return
+
+	var/obj/item/bodypart/old_part = human_holder.get_bodypart(initial(replacement.body_zone))
+	var/obj/item/bodypart/prosthetic = new replacement(human_holder)
+
+	prosthetic.replace_limb(human_holder, TRUE)
+	if(old_part)
+		qdel(old_part)
+	human_holder.regenerate_icons()
+
+/datum/quirk/prosthetic_limb/targeted/post_add()
+	return
+
+/datum/quirk/prosthetic_limb/targeted/left_arm
+	name = "Prosthetic Limb - Left Arm"
+	desc = "Your left arm is replaced with a prosthetic."
+	replacement = /obj/item/bodypart/l_arm/robot/surplus
+
+/datum/quirk/prosthetic_limb/targeted/right_arm
+	name = "Prosthetic Limb - Right Arm"
+	desc = "Your right arm is replaced with a prosthetic."
+	replacement = /obj/item/bodypart/r_arm/robot/surplus
+
+/datum/quirk/prosthetic_limb/targeted/left_leg
+	name = "Prosthetic Limb - Left Leg"
+	desc = "Your left leg is replaced with a prosthetic."
+	replacement = /obj/item/bodypart/l_leg/robot/surplus
+
+/datum/quirk/prosthetic_limb/targeted/right_leg
+	name = "Prosthetic Limb - Right Leg"
+	desc = "Your right leg is replaced with a prosthetic."
+	replacement = /obj/item/bodypart/r_leg/robot/surplus

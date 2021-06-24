@@ -104,13 +104,18 @@
 	pain_controller?.set_pain_modifier(PAIN_MOD_RECENT_SHOCK, 0.5)
 	addtimer(CALLBACK(pain_controller, /datum/pain.proc/unset_pain_modifier, PAIN_MOD_RECENT_SHOCK), 30 SECONDS)
 
-/obj/machinery/stasis/chill_out(mob/living/target)
+/obj/machinery/stasis/chill_out(mob/living/carbon/target)
 	. = ..()
 	if(target != occupant)
+		return
+	if(!istype(target))
 		return
 
 	target.pain_controller?.set_pain_modifier(PAIN_MOD_STASIS, 0)
 
-/obj/machinery/stasis/thaw_them(mob/living/target)
+/obj/machinery/stasis/thaw_them(mob/living/carbon/target)
 	. = ..()
+	if(!istype(target))
+		return
+
 	target.pain_controller?.unset_pain_modifier(PAIN_MOD_STASIS)

@@ -101,9 +101,13 @@
 	medical_record_text = "Patient has Hypoalgesia, and is less susceptible to pain stimuli than most."
 
 /datum/quirk/pain_resistance/add()
-	quirk_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 0.9)
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 0.9)
 
 /datum/quirk/pain_resistance/remove()
-	quirk_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
 
 #undef LANGUAGE_QUIRK_RANDOM_BLACKLIST

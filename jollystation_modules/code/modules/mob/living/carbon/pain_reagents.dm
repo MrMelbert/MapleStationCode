@@ -5,15 +5,15 @@
 	/// and an additive modifier to their per tick pain decay rate.
 	var/pain_modifier = null
 
-/datum/reagent/on_mob_metabolize(mob/living/user)
+/datum/reagent/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
 	if(!isnull(pain_modifier))
-		user.pain_controller.set_pain_modifier("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
+		user.pain_controller?.set_pain_modifier("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
 
-/datum/reagent/on_mob_end_metabolize(mob/living/user)
+/datum/reagent/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
 	if(!isnull(pain_modifier))
-		user.pain_controller.unset_pain_modifier("[PAIN_MOD_CHEMS]-[name]")
+		user.pain_controller?.unset_pain_modifier("[PAIN_MOD_CHEMS]-[name]")
 
 /datum/reagent/medicine/epinephrine
 	pain_modifier = 0.9
@@ -347,6 +347,15 @@
 				human_mob.set_heartattack(TRUE)
 				metabolization_rate *= 4
 		return TRUE
+
+/obj/item/food/grown/poppy
+	juice_results = list(/datum/reagent/medicine/oxycodone = 0)
+
+/obj/item/food/grown/poppy/geranium
+	juice_results = null
+
+/obj/item/food/grown/poppy/lily
+	juice_results = null
 
 /obj/item/reagent_containers/pill/asprin
 	name = "asprin pill"

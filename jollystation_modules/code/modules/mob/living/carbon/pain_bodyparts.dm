@@ -21,6 +21,11 @@
 	if(can_inflict > 0)
 		owner?.pain_controller?.adjust_bodypart_pain(body_zone, body_damage_coeff * (brute + burn))
 
+/*
+ * Effects on this bodypart has when pain is gained.
+ *
+ * amount - amount of pain gained
+ */
 /obj/item/bodypart/proc/on_gain_pain_effects(amount)
 	if(!owner)
 		return FALSE
@@ -42,6 +47,11 @@
 
 	return TRUE
 
+/*
+ * Effects on this bodypart has when pain is lost and some time passes without any pain gain.
+ *
+ * amount - amount of pain lost
+ */
 /obj/item/bodypart/proc/on_lose_pain_effects(amount)
 	if(!owner)
 		return FALSE
@@ -61,12 +71,20 @@
 
 	return TRUE
 
+/*
+ * Effects on this bodypart when pain is processed (every 2 seconds)
+ */
 /obj/item/bodypart/proc/processed_pain_effects(delta_time)
 	if(!owner || !pain)
 		return FALSE
 
 	return TRUE
 
+/*
+ * Feedback messages from this limb when it is sustaining pain.
+ *
+ * healing_pain - if TRUE, the bodypart has gone some time without recieving pain, and is healing.
+ */
 /obj/item/bodypart/proc/pain_feedback(delta_time, healing_pain)
 	if(!owner || !pain)
 		return FALSE
@@ -107,8 +125,12 @@
 	to_chat(owner, span_danger(feedback))
 	return TRUE
 
+// --- Chest ---
 /obj/item/bodypart/chest
 	max_pain = 120
+
+/obj/item/bodypart/chest/robot
+	pain = 80
 
 /obj/item/bodypart/chest/pain_feedback(delta_time, healing_pain)
 	if(!owner || !pain)
@@ -145,8 +167,12 @@
 	to_chat(owner, span_danger(feedback))
 	return TRUE
 
+// --- Head ---
 /obj/item/bodypart/head
 	max_pain = 100
+
+/obj/item/bodypart/head/robot
+	pain = 65
 
 /obj/item/bodypart/head/on_gain_pain_effects(amount)
 	. = ..()
@@ -186,6 +212,13 @@
 	to_chat(owner, span_danger(feedback))
 	return TRUE
 
+// --- Right Leg ---
+/obj/item/bodypart/r_leg/robot
+	pain = 55
+
+/obj/item/bodypart/r_leg/robot/surplus
+	pain = 30
+
 /obj/item/bodypart/r_leg/processed_pain_effects(delta_time)
 	. = ..()
 	if(!.)
@@ -197,6 +230,13 @@
 
 	return TRUE
 
+// --- Left Leg ---
+/obj/item/bodypart/l_leg/robot
+	pain = 55
+
+/obj/item/bodypart/l_leg/robot/surplus
+	pain = 30
+
 /obj/item/bodypart/l_leg/processed_pain_effects(delta_time)
 	. = ..()
 	if(!.)
@@ -207,3 +247,17 @@
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
 	return TRUE
+
+// --- Right Arm ---
+/obj/item/bodypart/r_arm/robot
+	pain = 55
+
+/obj/item/bodypart/r_arm/robot/surplus
+	pain = 30
+
+// --- Left Arm ---
+/obj/item/bodypart/l_arm/robot
+	pain = 55
+
+/obj/item/bodypart/l_arm/robot/surplus
+	pain = 30

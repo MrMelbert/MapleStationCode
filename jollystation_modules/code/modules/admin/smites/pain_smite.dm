@@ -14,7 +14,7 @@
 	var/static/list/how_much_hurt = list("no thanks, let them figure it out", PAIN_LITTLE, PAIN_LOT, PAIN_MAX)
 	apply_pain = input(user, "Do you want to apply some pain to all their body parts, too?") in how_much_hurt
 
-/datum/smite/glass_bones_and_paper_skin/effect(client/user, mob/living/target)
+/datum/smite/glass_bones_and_paper_skin/effect(client/user, mob/living/carbon/target)
 	. = ..()
 	if (!iscarbon(target))
 		to_chat(user, span_warning("This must be used on a carbon mob."), confidential = TRUE)
