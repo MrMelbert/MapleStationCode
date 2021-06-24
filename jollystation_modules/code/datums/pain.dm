@@ -177,14 +177,14 @@
 /datum/pain/proc/adjust_bodypart_pain(list/def_zones, amount)
 	SHOULD_NOT_SLEEP(TRUE) // This needs to be asyncronously called in a lot of places, it should already check that this doesn't sleep but just in case.
 
-	if(!amount)
-		return
-
 	if(!islist(def_zones))
 		def_zones = list(def_zones)
 
 	if(amount > 0)
 		amount *= pain_modifier
+
+	if(!amount)
+		return
 
 	for(var/zone in def_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
@@ -497,11 +497,12 @@
 	if(natural_decay_counter % 5 == 0) // every 10 seconds
 		natural_decay_counter = 0
 		if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-			natural_pain_decay = max(natural_pain_decay - 0.05, -2) // 20 seconds = 0.1 increase, 5 minutes of no pain = -1.5
+			natural_pain_decay = max(natural_pain_decay - 0.016, -1) // 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
 		else
 			natural_pain_decay = initial(natural_pain_decay)
 
-		var/pain_modified_decay = min(-1 + natural_pain_decay + pain_modifier, 0)
+		// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
+		var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.05)
 		adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
 
 /*
@@ -527,7 +528,7 @@
 			sleeping_modifier -= 0.2
 		if(locate(/obj/structure/table/optable) in sleeping_turf)
 			sleeping_modifier -= 0.1
-		if(istype(parent.back, /obj/item/tank/internals/anesthetic))
+		if(istype(parent.back, /obj/item/tank/internals/anesthetic)) // TODO: Breath.
 			sleeping_modifier -= 0.5
 
 		sleeping_modifier = max(sleeping_modifier, 0.1)
