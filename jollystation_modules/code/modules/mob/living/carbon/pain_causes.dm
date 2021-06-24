@@ -71,14 +71,13 @@
 
 // Traumas
 /datum/brain_trauma/mild/concussion/on_life(delta_time, times_fired)
+	. = ..()
 	if(DT_PROB(1, delta_time))
 		owner.pain_controller?.adjust_bodypart_pain(BODY_ZONE_HEAD, 10)
 
-	. = ..()
-
 /datum/brain_trauma/special/tenacity/on_gain()
-	owner.pain_controller?.set_pain_modifier(PAIN_MOD_TENACITY, 0)
 	. = ..()
+	owner.pain_controller?.set_pain_modifier(PAIN_MOD_TENACITY, 0)
 
 /datum/brain_trauma/special/tenacity/on_lose()
 	owner.pain_controller?.unset_pain_modifier(PAIN_MOD_TENACITY)
@@ -104,3 +103,14 @@
 	pain_controller?.adjust_bodypart_pain(BODY_ZONES_ALL, pain)
 	pain_controller?.set_pain_modifier(PAIN_MOD_RECENT_SHOCK, 0.5)
 	addtimer(CALLBACK(pain_controller, /datum/pain.proc/unset_pain_modifier, PAIN_MOD_RECENT_SHOCK), 30 SECONDS)
+
+/obj/machinery/stasis/chill_out(mob/living/target)
+	. = ..()
+	if(target != occupant)
+		return
+
+	target.pain_controller?.set_pain_modifier(PAIN_MOD_STASIS, 0)
+
+/obj/machinery/stasis/thaw_them(mob/living/target)
+	. = ..()
+	target.pain_controller?.unset_pain_modifier(PAIN_MOD_STASIS)

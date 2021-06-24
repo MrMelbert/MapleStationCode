@@ -2,6 +2,8 @@
 /obj/item/bodypart
 	/// The amount of pain this limb is experiencing (A bit for default)
 	var/pain = 15
+	/// The min amount of pain this limb can experience
+	var/min_pain = 0
 	/// The max amount of pain this limb can experience
 	var/max_pain = 70
 
