@@ -32,6 +32,7 @@
 #define PAIN_MOD_YOUTH "youth"
 #define PAIN_MOD_TENACITY "tenacity"
 #define PAIN_MOD_QUIRK "quirk"
+#define PAIN_MOD_SPECIES "species"
 
 /// ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"

@@ -1,7 +1,7 @@
 // -- Pain for bodyparts --
-/mob/living
+/mob/living/carbon
 	/// A paint controller datum, to track and deal with pain.
-	/// Only initialized on humans. On mob/living for simplicity.
+	/// Only initialized on humans.
 	var/datum/pain/pain_controller
 
 /mob/living/carbon/human/Initialize()
@@ -12,6 +12,14 @@
 	if(pain_controller)
 		QDEL_NULL(pain_controller)
 	return ..()
+
+/datum/species/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
+	. = ..()
+	C.pain_controller?.set_pain_modifier(PAIN_MOD_SPECIES, species_pain_mod)
+
+/datum/species/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
+	. = ..()
+	C.pain_controller?.unset_pain_modifier(PAIN_MOD_SPECIES)
 
 /*
  * The pain controller datum.
@@ -38,16 +46,17 @@
 	var/natural_decay_counter = 0
 	/// Cooldown to track the last time we lost pain.
 	COOLDOWN_DECLARE(time_since_last_pain_loss)
+	/// Cooldown to track last time we sent a pain message.
 	COOLDOWN_DECLARE(time_since_last_pain_message)
 	var/debugging = FALSE
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
-	if(!iscarbon(new_parent))
+	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy))
 		return INITIALIZE_HINT_QDEL // If we're not a carbon, delete us
 
 	parent = new_parent
 	for(var/obj/item/bodypart/parent_bodypart in parent.bodyparts)
-		limb_added(parent, parent_bodypart, TRUE)
+		add_bodypart(parent, parent_bodypart, TRUE)
 
 	if(!body_zones.len)
 		stack_trace("Pain datum failed to find any body_zones to track!")
@@ -69,8 +78,8 @@
  * Register all of our signals with our parent.
  */
 /datum/pain/proc/RegisterParentSignals()
-	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, .proc/limb_added)
-	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, .proc/limb_removed)
+	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, .proc/add_bodypart)
+	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, .proc/remove_bodypart)
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMGE, .proc/add_damage_pain)
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_WOUND, .proc/add_wound_pain)
 	RegisterSignal(parent, COMSIG_CARBON_LOSE_WOUND, .proc/remove_wound_pain)
@@ -102,8 +111,14 @@
  * new_limb - the bodypart being attatched
  * special - whether this limb being attatched should have side effects (if TRUE, likely being attatched on initialization)
  */
-/datum/pain/proc/limb_added(mob/living/carbon/source, obj/item/bodypart/new_limb, special)
+/datum/pain/proc/add_bodypart(mob/living/carbon/source, obj/item/bodypart/new_limb, special)
 	SIGNAL_HANDLER
+
+	if(new_limb.body_zone in body_zones)
+		if(body_zones[new_limb.body_zone])
+			remove_bodypart(lost_limb = body_zones[new_limb.body_zone], special = special)
+		else
+			body_zones -= new_limb.body_zone
 
 	total_pain_max += new_limb.max_pain
 	body_zones[new_limb.body_zone] = new_limb
@@ -122,7 +137,7 @@
  * special - whether this limb being removed should have side effects (if TRUE, likely being removed on initialization)
  * dismembered - whether this limb was dismembered
  */
-/datum/pain/proc/limb_removed(mob/living/carbon/source, obj/item/bodypart/lost_limb, special, dismembered)
+/datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, special, dismembered)
 	SIGNAL_HANDLER
 
 	total_pain_max -= lost_limb.max_pain
@@ -135,7 +150,6 @@
 		lost_limb.pain = initial(lost_limb.pain)
 		lost_limb.max_stamina_damage = initial(lost_limb.max_stamina_damage)
 
-	body_zones[lost_limb.body_zone] = null
 	body_zones -= lost_limb
 
 /*
@@ -188,8 +202,8 @@
 
 	for(var/zone in def_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		if(!adjusted_bodypart)
-			CRASH("Pain component attempted to adjust_bodypart_pain of untracked or invalid zone [zone].")
+		if(QDELETED(adjusted_bodypart))
+			CRASH("Pain component attempted to adjust_bodypart_pain of untracked or invalid zone. Bodypart: [adjusted_bodypart] Zone: [zone]")
 		if(amount < 0 && adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
 			continue
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
@@ -476,6 +490,10 @@
 
 	for(var/part in shuffled_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
+		if(QDELETED(checked_bodypart))
+			stack_trace("Null or invalid bodypart found in [parent]'s pain bodypart list! Bodypart: [checked_bodypart] Zone: [part]")
+			body_zones -= part
+			continue
 		checked_bodypart.processed_pain_effects(delta_time)
 
 		if(DT_PROB((checked_bodypart.pain/12), delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_message))
