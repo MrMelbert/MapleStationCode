@@ -114,6 +114,9 @@
 /datum/pain/proc/add_bodypart(mob/living/carbon/source, obj/item/bodypart/new_limb, special)
 	SIGNAL_HANDLER
 
+	if(!istype(new_limb))
+		return
+
 	if(new_limb.body_zone in body_zones)
 		if(body_zones[new_limb.body_zone])
 			remove_bodypart(lost_limb = body_zones[new_limb.body_zone], special = special)
@@ -126,9 +129,8 @@
 	if(special)
 		new_limb.pain = 0
 	else
-		message_admins("Attatching [source], not special")
-		adjust_bodypart_pain(BODY_ZONE_CHEST, new_limb.pain / 3)
 		adjust_bodypart_pain(new_limb.body_zone, new_limb.pain)
+		adjust_bodypart_pain(BODY_ZONE_CHEST, new_limb.pain / 3)
 
 /*
  * Remove a limb from being tracked.
@@ -142,7 +144,6 @@
 	SIGNAL_HANDLER
 
 	if(!special)
-		message_admins("Removing [source], not special, dismembereed? [dismembered]")
 		var/limb_removed_pain = dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED
 		adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
 		adjust_bodypart_pain(BODY_ZONE_HEAD, limb_removed_pain / 4)
