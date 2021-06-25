@@ -20,7 +20,7 @@
 	INVOKE_ASYNC(limb_owner, /mob.proc/emote, "scream")
 	playsound(get_turf(limb_owner), 'sound/effects/dismember.ogg', 80, TRUE)
 	SEND_SIGNAL(limb_owner, COMSIG_ADD_MOOD_EVENT, "dismembered", /datum/mood_event/dismembered)
-	drop_limb()
+	drop_limb(FALSE, TRUE) // NON-MODULE CHANGE
 
 	limb_owner.update_equipment_speed_mods() // Update in case speed affecting item unequipped by dismemberment
 	var/turf/owner_location = limb_owner.loc
@@ -307,7 +307,7 @@
 	if(!attach_limb(limb_owner, special))//we can attach this limb and drop the old after because of our robust bodyparts system. you know, just for a sec.
 		return
 	if(limb)
-		limb.drop_limb(1)
+		limb.drop_limb(special) // NON-MODULE CHANGE
 
 /obj/item/bodypart/head/replace_limb(mob/living/carbon/head_owner, special)
 	if(!istype(head_owner))
@@ -316,7 +316,7 @@
 	if(!attach_limb(head_owner, special))
 		return
 	if(head)
-		head.drop_limb(1)
+		head.drop_limb(special) // NON-MODULE CHANGE
 
 /obj/item/bodypart/proc/attach_limb(mob/living/carbon/new_limb_owner, special)
 	if(SEND_SIGNAL(new_limb_owner, COMSIG_CARBON_ATTACH_LIMB, src, special) & COMPONENT_NO_ATTACH)

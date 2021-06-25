@@ -3671,6 +3671,7 @@
 #include "jollystation_modules\code\modules\jobs\job_types\xenobiologist.dm"
 #include "jollystation_modules\code\modules\language\highdraconic.dm"
 #include "jollystation_modules\code\modules\language\skrellian.dm"
+#include "jollystation_modules\code\modules\library\skill_learning\job_skillchips\mining.dm"
 #include "jollystation_modules\code\modules\mob\logout.dm"
 #include "jollystation_modules\code\modules\mob\mob.dm"
 #include "jollystation_modules\code\modules\mob\mob_defines.dm"

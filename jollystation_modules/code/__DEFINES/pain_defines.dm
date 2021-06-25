@@ -33,9 +33,11 @@
 #define PAIN_MOD_TENACITY "tenacity"
 #define PAIN_MOD_QUIRK "quirk"
 #define PAIN_MOD_SPECIES "species"
+#define PAIN_MOD_OFF_STATION "off-station-pain-resistance"
 
 /// ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"
 #define MOVESPEED_ID_PAIN "pain_movespeed"
 #define ACTIONSPEED_ID_PAIN "pain_actionspeed"
 #define TRAIT_EXTRA_PAIN "extra_pain"
+#define TRAIT_OFF_STATION_PAIN_RESISTANCE "pain_resistance_off_station"

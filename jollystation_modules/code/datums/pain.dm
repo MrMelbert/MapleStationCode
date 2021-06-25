@@ -120,12 +120,13 @@
 		else
 			body_zones -= new_limb.body_zone
 
-	total_pain_max += new_limb.max_pain
 	body_zones[new_limb.body_zone] = new_limb
+	update_total_pain()
 
 	if(special)
 		new_limb.pain = 0
 	else
+		message_admins("Attatching [source], not special")
 		adjust_bodypart_pain(BODY_ZONE_CHEST, new_limb.pain / 3)
 		adjust_bodypart_pain(new_limb.body_zone, new_limb.pain)
 
@@ -140,10 +141,8 @@
 /datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, special, dismembered)
 	SIGNAL_HANDLER
 
-	total_pain_max -= lost_limb.max_pain
-	total_pain -= lost_limb.pain
-
 	if(!special)
+		message_admins("Removing [source], not special, dismembereed? [dismembered]")
 		var/limb_removed_pain = dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED
 		adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
 		adjust_bodypart_pain(BODY_ZONE_HEAD, limb_removed_pain / 4)
@@ -151,6 +150,21 @@
 		lost_limb.max_stamina_damage = initial(lost_limb.max_stamina_damage)
 
 	body_zones -= lost_limb
+	update_total_pain()
+
+/*
+ * Re-check and update our total_pain and total_max_pain.
+ */
+/datum/pain/proc/update_total_pain()
+	var/total_pain_max_new = 0
+	var/total_pain_new = 0
+	for(var/zone in body_zones)
+		var/obj/item/bodypart/checked_bodypart = body_zones[zone]
+		total_pain_new += checked_bodypart.pain
+		total_pain_max_new += checked_bodypart.max_pain
+
+	total_pain_max = total_pain_max_new
+	total_pain = total_pain_new
 
 /*
  * Add a pain modifier and update our overall modifier.
@@ -532,6 +546,12 @@
 	else
 		unset_pain_modifier(PAIN_MOD_DRUNK)
 
+	if(HAS_TRAIT(parent, TRAIT_OFF_STATION_PAIN_RESISTANCE))
+		if(is_station_level(parent.z))
+			unset_pain_modifier(PAIN_MOD_OFF_STATION)
+		else
+			set_pain_modifier(PAIN_MOD_OFF_STATION, 0.6)
+
 	if(parent.drowsyness > 10)
 		set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
 	else
@@ -566,7 +586,7 @@
 		adjust_bodypart_pain(zone, -500)
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 	for(var/mod in pain_mods)
-		if(mod == PAIN_MOD_QUIRK)
+		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES)
 			continue
 		unset_pain_modifier(mod)
 
