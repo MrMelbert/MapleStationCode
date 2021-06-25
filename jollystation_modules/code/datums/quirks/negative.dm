@@ -20,12 +20,12 @@
 /datum/quirk/pain_vulnerability/add()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
-		carbon_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 1.15)
+		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 1.15)
 
 /datum/quirk/pain_vulnerability/remove()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
-		carbon_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
+		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
 
 // More vulnerable to pain + get pain from more actions (Glass bones and paper skin)
 /datum/quirk/allodynia
@@ -40,7 +40,7 @@
 /datum/quirk/allodynia/add()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
-		carbon_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 1.2)
+		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 1.2)
 	ADD_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	RegisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HUGGED), .proc/cause_body_pain)
 	RegisterSignal(quirk_holder, COMSIG_CARBON_HEADPAT, .proc/cause_head_pain)
@@ -48,7 +48,7 @@
 /datum/quirk/allodynia/remove()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
-		carbon_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
+		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
 	REMOVE_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	UnregisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HUGGED, COMSIG_CARBON_HEADPAT))
 
@@ -102,7 +102,7 @@
 		return
 
 	new /obj/effect/temp_visual/annoyed(quirk_holder.loc)
-	carbon_holder.pain_controller?.adjust_bodypart_pain(zone, amount)
+	carbon_holder.cause_pain(zone, amount)
 	INVOKE_ASYNC(quirk_holder, /mob.proc/emote, pick(PAIN_EMOTES))
 	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_touch", /datum/mood_event/very_bad_touch)
 	COOLDOWN_START(src, time_since_last_touch, 30 SECONDS)

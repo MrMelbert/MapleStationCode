@@ -1,25 +1,4 @@
 // -- Pain for bodyparts --
-/mob/living/carbon
-	/// A paint controller datum, to track and deal with pain.
-	/// Only initialized on humans.
-	var/datum/pain/pain_controller
-
-/mob/living/carbon/human/Initialize()
-	. = ..()
-	pain_controller = new(src)
-
-/mob/living/carbon/human/Destroy()
-	if(pain_controller)
-		QDEL_NULL(pain_controller)
-	return ..()
-
-/datum/species/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
-	. = ..()
-	C.pain_controller?.set_pain_modifier(PAIN_MOD_SPECIES, species_pain_mod)
-
-/datum/species/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
-	. = ..()
-	C.pain_controller?.unset_pain_modifier(PAIN_MOD_SPECIES)
 
 /*
  * The pain controller datum.
@@ -223,6 +202,8 @@
 			continue
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
 			continue
+		if(amount > 0)
+			amount *= adjusted_bodypart.bodypart_pain_modifier
 		total_pain -= adjusted_bodypart.pain
 		adjusted_bodypart.pain = round(clamp(adjusted_bodypart.pain + amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain), 0.05)
 		total_pain = clamp(total_pain + adjusted_bodypart.pain, 0, total_pain_max)

@@ -10,7 +10,7 @@
 	deactivate_message = "<span class='notice'>You feel more vulnerable to the unknown.</span>"
 
 /obj/item/skillchip/job/off_z_pain_resistance/on_deactivate(mob/living/carbon/user, silent = FALSE)
-	user.pain_controller?.unset_pain_modifier(PAIN_MOD_OFF_STATION)
+	user.unset_pain_mod(PAIN_MOD_OFF_STATION)
 	return ..()
 
 /datum/outfit/job/miner

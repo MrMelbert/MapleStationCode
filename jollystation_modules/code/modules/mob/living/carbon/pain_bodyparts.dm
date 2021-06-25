@@ -6,6 +6,8 @@
 	var/min_pain = 0
 	/// The max amount of pain this limb can experience
 	var/max_pain = 70
+	/// Modifier applied to pain that this part recieves
+	var/bodypart_pain_modifier = 1
 
 /obj/item/bodypart/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE)
 	. = ..()
@@ -19,7 +21,7 @@
 		burn = round(burn * (can_inflict / total_damage), DAMAGE_PRECISION)
 
 	if(can_inflict > 0)
-		owner?.pain_controller?.adjust_bodypart_pain(body_zone, body_damage_coeff * (brute + burn))
+		owner?.cause_pain(body_zone, body_damage_coeff * (brute + burn))
 
 /*
  * Effects on this bodypart has when pain is gained.
@@ -130,7 +132,8 @@
 	max_pain = 120
 
 /obj/item/bodypart/chest/robot
-	pain = 80
+	pain = 160
+	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/chest/pain_feedback(delta_time, healing_pain)
 	if(!owner || !pain)
@@ -172,7 +175,8 @@
 	max_pain = 100
 
 /obj/item/bodypart/head/robot
-	pain = 65
+	pain = 120
+	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/head/on_gain_pain_effects(amount)
 	. = ..()
@@ -214,10 +218,12 @@
 
 // --- Right Leg ---
 /obj/item/bodypart/r_leg/robot
-	pain = 55
+	pain = 100
+	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/r_leg/robot/surplus
-	pain = 30
+	pain = 40
+	bodypart_pain_modifier = 0.8
 
 /obj/item/bodypart/r_leg/processed_pain_effects(delta_time)
 	. = ..()
@@ -232,10 +238,12 @@
 
 // --- Left Leg ---
 /obj/item/bodypart/l_leg/robot
-	pain = 55
+	pain = 100
+	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/l_leg/robot/surplus
-	pain = 30
+	pain = 40
+	bodypart_pain_modifier = 0.8
 
 /obj/item/bodypart/l_leg/processed_pain_effects(delta_time)
 	. = ..()
@@ -250,14 +258,18 @@
 
 // --- Right Arm ---
 /obj/item/bodypart/r_arm/robot
-	pain = 55
+	pain = 100
+	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/r_arm/robot/surplus
-	pain = 30
+	pain = 40
+	bodypart_pain_modifier = 0.8
 
 // --- Left Arm ---
 /obj/item/bodypart/l_arm/robot
-	pain = 55
+	pain = 100
+	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/l_arm/robot/surplus
-	pain = 30
+	pain = 40
+	bodypart_pain_modifier = 0.8

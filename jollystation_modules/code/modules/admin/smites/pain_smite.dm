@@ -32,8 +32,8 @@
 		if(PAIN_MAX)
 			pain_amount = 999
 
-	target.pain_controller.adjust_bodypart_pain(BODY_ZONES_ALL, pain_amount)
-	target.pain_controller.set_pain_modifier("badmin", 100)
+	target.cause_pain(BODY_ZONES_ALL, pain_amount)
+	target.set_pain_mod("badmin", 100)
 
 #undef PAIN_LITTLE
 #undef PAIN_LOT

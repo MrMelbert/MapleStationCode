@@ -103,11 +103,11 @@
 /datum/quirk/pain_resistance/add()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
-		carbon_holder.pain_controller?.set_pain_modifier(PAIN_MOD_QUIRK, 0.9)
+		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 0.9)
 
 /datum/quirk/pain_resistance/remove()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
-		carbon_holder.pain_controller?.unset_pain_modifier(PAIN_MOD_QUIRK)
+		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
 
 #undef LANGUAGE_QUIRK_RANDOM_BLACKLIST

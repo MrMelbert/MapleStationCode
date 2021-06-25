@@ -8,12 +8,12 @@
 /datum/reagent/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
 	if(!isnull(pain_modifier))
-		user.pain_controller?.set_pain_modifier("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
+		user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
 
 /datum/reagent/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
 	if(!isnull(pain_modifier))
-		user.pain_controller?.unset_pain_modifier("[PAIN_MOD_CHEMS]-[name]")
+		user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
 
 /datum/reagent/medicine/epinephrine
 	pain_modifier = 0.9
@@ -29,7 +29,7 @@
 	. = ..()
 	M.adjustBruteLoss(-0.2 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONES_ALL, -0.5)
+	M.cause_pain(BODY_ZONES_ALL, -0.5)
 
 	return TRUE
 
@@ -91,9 +91,9 @@
 	// Not good at headaches, but very good at treating everything else.
 	M.adjustBruteLoss(-0.2 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONE_HEAD, -0.05)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONES_LIMBS, -0.1)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONE_CHEST, -0.2)
+	M.cause_pain(BODY_ZONE_HEAD, -0.05)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.1)
+	M.cause_pain(BODY_ZONE_CHEST, -0.2)
 	// Okay at fevers.
 	M.adjust_bodytemperature(-15 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes more disgust than paracetamol.
@@ -150,8 +150,8 @@
 	M.adjustBruteLoss(-0.1 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
 	M.adjustToxLoss(-0.1 * REM * delta_time, FALSE)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONE_HEAD, -0.2)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONES_MINUS_HEAD, -0.15)
+	M.cause_pain(BODY_ZONE_HEAD, -0.2)
+	M.cause_pain(BODY_ZONES_MINUS_HEAD, -0.15)
 	// Not very good at treating fevers.
 	M.adjust_bodytemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes liver damage - higher dosages causes more liver damage.
@@ -198,9 +198,9 @@
 	// Really good at treating headaches.
 	M.adjustBruteLoss(-0.1 * REM * delta_time, FALSE)
 	M.adjustToxLoss(-0.2 * REM * delta_time, FALSE)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONE_HEAD, -0.3)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONE_CHEST, -0.1)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONES_LIMBS, -0.05)
+	M.cause_pain(BODY_ZONE_HEAD, -0.3)
+	M.cause_pain(BODY_ZONE_CHEST, -0.1)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.05)
 	// Causes flat liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * REM * delta_time)
 	// Really good at treating fevers.
@@ -222,7 +222,7 @@
 
 	// On overdose, causes liver damage and chest pain...
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 1 * REM * delta_time)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONE_CHEST, 1)
+	M.cause_pain(BODY_ZONE_CHEST, 1)
 	// Sickness...
 	if(M.disgust < 100 && DT_PROB(100 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(5 * REM * delta_time)
@@ -274,7 +274,7 @@
 
 	// Heals all pain a bit if in low dosage.
 	if(volume <= 10)
-		M.pain_controller?.adjust_bodypart_pain(BODY_ZONES_ALL, -0.3)
+		M.cause_pain(BODY_ZONES_ALL, -0.3)
 	// Mildly toxic in higher dosages.
 	else if(DT_PROB(volume * 3, delta_time))
 		M.apply_damage(3 * delta_time, TOX)
@@ -305,7 +305,7 @@
 		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_heavy, name)
 	M.adjustBruteLoss(-0.3 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.2 * REM * delta_time, FALSE)
-	M.pain_controller?.adjust_bodypart_pain(BODY_ZONES_ALL, -1.5)
+	M.cause_pain(BODY_ZONES_ALL, -1.5)
 	M.set_drugginess(10 * REM * delta_time)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(3 * REM * delta_time)
