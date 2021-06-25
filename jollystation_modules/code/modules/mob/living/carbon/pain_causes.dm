@@ -11,12 +11,23 @@
 
 /datum/surgery_step/incise/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	. = ..()
+	target.pain_controller.adjust_bodypart_pain(target_zone, 12) // incise doesn't actually deal any direct dmg, unlike saw
 	if(target.stat == CONSCIOUS)
 		if(target.IsSleeping())
 			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/anesthetic)
 		else
 			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/surgery/major)
 			target.flash_pain_overlay(1)
+
+/datum/surgery_step/replace_limb/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/bodypart/tool, datum/surgery/surgery, default_display_results = FALSE)
+	. = ..()
+	if(target.pain_controller && (tool in target.bodyparts))
+		// We have to snowflake this because replace_limb uses SPECIAL = TRUE when replacing limbs (which doesn't cause pain because I hate limb code)
+		target.pain_controller.adjust_bodypart_pain(target_zone, initial(tool.pain))
+		target.pain_controller.adjust_bodypart_pain(BODY_ZONE_CHEST, initial(tool.pain) / 3)
+		//TODO: make this a status effect (post augment fatigue?)
+		target.pain_controller.adjust_bodypart_min_pain(target_zone, 15)
+		addtimer(CALLBACK(target.pain_controller, /datum/pain.proc/adjust_bodypart_min_pain, target_zone, -15), 2 MINUTES)
 
 // Disease symptoms
 /datum/symptom/headache/Activate(datum/disease/advance/A)
