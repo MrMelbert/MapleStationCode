@@ -55,6 +55,9 @@
 /datum/reagent/medicine/cordiolis_hepatico
 	pain_modifier = 0
 
+/datum/reagent/healium
+	pain_modifier = 0.5
+
 /// New reagents
 
 /datum/reagent/medicine/painkiller
@@ -416,3 +419,14 @@
 
 /obj/machinery/vending/drugs
 	added_premium = list(/obj/item/storage/pill_bottle/painkillers = 2)
+
+/obj/item/reagent_containers/hypospray/medipen/survival/painkiller
+	name = "emergency painkiller medipen"
+	desc = "A medipen that contains 2 dosages of heavy duty painkillers. Side effects or addiction may occur with rapid usage."
+	volume = 40
+	amount_per_transfer_from_this = 20
+	list_reagents = list(/datum/reagent/medicine/oxycodone = 20, /datum/reagent/medicine/morphine = 10, /datum/reagent/medicine/modafinil = 10)
+
+/obj/machinery/mineral/equipment_vendor/Initialize()
+	prize_list += new /datum/data/mining_equipment("Painkiller Medipen", /obj/item/reagent_containers/hypospray/medipen/survival/painkiller, 500)
+	. = ..()

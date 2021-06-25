@@ -1,4 +1,11 @@
 // -- Bodypart pain definitions. --
+
+/obj/item/organ/lungs
+	var/on_anesthetic = FALSE
+
+/obj/item/organ/lungs/proc/check_anesthetic(partial_pressure, min_sleep)
+	return partial_pressure > min_sleep
+
 /obj/item/bodypart
 	/// The amount of pain this limb is experiencing (A bit for default)
 	var/pain = 15

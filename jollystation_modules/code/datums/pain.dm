@@ -259,26 +259,30 @@
 			parent.emote("scream")
 			COOLDOWN_START(src, time_since_last_pain_message, 5 SECONDS)
 		else if(amount > 6 && prob(25))
-			var/picked_shock_emote = pick(PAIN_EMOTES)
-			parent.emote(picked_shock_emote)
+			parent.emote(pick(PAIN_EMOTES))
 			COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
 
 	switch(total_pain)
 		if(0 to 100)
 			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
+			SEND_SIGNAL(parent, COMSIG_CLEAR_MOOD_EVENT, "pain")
 		if(100 to 200)
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/light_pain)
 		if(200 to 300)
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/med_pain)
 		if(300 to 400)
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/heavy_pain)
 		if(400 to 500)
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/crippling_pain)
 
 /*
  * Called when pain is lost, if the mob did not lose pain in the last 60 seconds.
@@ -445,45 +449,10 @@
  */
 /datum/pain/process(delta_time)
 
-	check_pain_modifiers()
+	check_pain_modifiers(delta_time)
 
-	// our entire body is in massive amounts of pain
-	if(total_pain >= total_pain_max - 100)
-		// Change in total pain since last tick. Negative = losing pain
-		if(DT_PROB(5, delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-			to_chat(parent, span_green("You feel the pain start to dull!"))
-
-		if(COOLDOWN_FINISHED(src, time_since_last_pain_message) && !parent.has_status_effect(STATUS_EFFECT_DETERMINED))
-			if(DT_PROB(3, delta_time))
-				COOLDOWN_START(src, time_since_last_pain_message, 5 SECONDS)
-				to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!")))
-				parent.emote("wince")
-			if(DT_PROB(2, delta_time) && parent.staminaloss <= 90)
-				COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
-				parent.apply_damage(30 * pain_modifier, STAMINA)
-				parent.visible_message(span_warning("[parent] doubles over in pain!"))
-				parent.emote("gasp")
-			if(DT_PROB(2, delta_time))
-				COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
-				parent.Knockdown(15 * pain_modifier)
-				parent.visible_message(span_warning("[parent] collapses from pain!"))
-			if(DT_PROB(1, delta_time))
-				COOLDOWN_START(src, time_since_last_pain_message, 5 SECONDS)
-				parent.vomit(50)
-			if(DT_PROB(1, delta_time))
-				COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
-				parent.emote("scream")
-				parent.Jitter(15)
-			if(DT_PROB(8, delta_time))
-				var/obj/item/held_item = parent.get_active_held_item()
-				if(held_item && parent.dropItemToGround(held_item))
-					COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
-					to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
-					parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
-					parent.emote("gasp")
-
+	var/average_pain = 0
 	var/list/shuffled_zones = shuffle(body_zones)
-
 	for(var/part in shuffled_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
 		if(QDELETED(checked_bodypart))
@@ -491,6 +460,12 @@
 			body_zones -= part
 			continue
 		checked_bodypart.processed_pain_effects(delta_time)
+		if(part == BODY_ZONE_CHEST)
+			average_pain += (0.625 * checked_bodypart.pain)
+		else if(part == BODY_ZONE_HEAD)
+			average_pain += (0.75 * checked_bodypart.pain)
+		else
+			average_pain += checked_bodypart.pain
 
 		if(DT_PROB((checked_bodypart.pain/12), delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_message))
 			var/prob_of_message = 100
@@ -503,26 +478,26 @@
 			else if(pain_modifier <= 0.6)
 				prob_of_message = 75
 
-			if(COOLDOWN_FINISHED(src, time_since_last_pain_message) && prob(prob_of_message))
+			if(prob(prob_of_message))
 				checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 				COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
+	average_pain /= body_zones.len
 
-	natural_decay_counter++
-	if(natural_decay_counter % 5 == 0) // every 10 seconds
-		natural_decay_counter = 0
-		if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-			natural_pain_decay = max(natural_pain_decay - 0.016, -1) // 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
-		else
-			natural_pain_decay = initial(natural_pain_decay)
+	// we check the average pain of all bodyparts, normalized to limb pain (max of 75)
+	switch(average_pain)
+		if(20 to 35)
+			low_pain_effects(delta_time)
+		if(36 to 55)
+			med_pain_effects(delta_time)
+		if(56 to 75)
+			high_pain_effects(delta_time)
 
-		// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
-		var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.05)
-		adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
+	decay_pain(delta_time)
 
 /*
  * Check which additional pain modifiers should be applied.
  */
-/datum/pain/proc/check_pain_modifiers()
+/datum/pain/proc/check_pain_modifiers(delta_time)
 	if(parent.drunkenness > 10)
 		set_pain_modifier(PAIN_MOD_DRUNK, 0.9)
 	else
@@ -548,13 +523,117 @@
 			sleeping_modifier -= 0.2
 		if(locate(/obj/structure/table/optable) in sleeping_turf)
 			sleeping_modifier -= 0.1
-		if(istype(parent.back, /obj/item/tank/internals/anesthetic)) // TODO: Breath.
+		var/obj/item/organ/lungs/our_lungs = parent.getorganslot(ORGAN_SLOT_LUNGS)
+		if(our_lungs && our_lungs.on_anesthetic)
 			sleeping_modifier -= 0.5
 
 		sleeping_modifier = max(sleeping_modifier, 0.1)
 		set_pain_modifier(PAIN_MOD_SLEEP, sleeping_modifier)
 	else
 		unset_pain_modifier(PAIN_MOD_SLEEP)
+
+/*
+ * Natural pain healing of all of our bodyparts per five process ticks / 10 seconds.
+ *
+ * Slowly increases overtime if the [parent] has not experienced pain in a minute.
+ * Multiplied by the pain modifier, up to 3x decay.
+ */
+/datum/pain/proc/decay_pain(delta_time)
+	natural_decay_counter++
+	if(natural_decay_counter % 5 == 0) // every 10 seconds
+		natural_decay_counter = 0
+		if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+			natural_pain_decay = max(natural_pain_decay - 0.016, -1) // 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
+		else
+			natural_pain_decay = initial(natural_pain_decay)
+
+		// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
+		var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.05)
+		adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
+
+/*
+ * Effects caused by medium pain. (~250-400 pain)
+ */
+/datum/pain/proc/low_pain_effects(delta_time)
+	if(parent.has_status_effect(STATUS_EFFECT_DETERMINED))
+		return
+
+	if(DT_PROB(3, delta_time))
+		to_chat(parent, span_danger(pick("Everything aches.", "Everything feels sore.")))
+		if(parent.staminaloss < 5)
+			parent.apply_damage(10, STAMINA)
+	else if(DT_PROB(1, delta_time))
+		parent.Jitter(5)
+	else if(DT_PROB(1, delta_time))
+		parent.Dizzy(2)
+
+/*
+ * Effects caused by medium pain. (~250-400 pain)
+ */
+/datum/pain/proc/med_pain_effects(delta_time)
+	if(parent.has_status_effect(STATUS_EFFECT_DETERMINED))
+		return
+
+	if(DT_PROB(3, delta_time))
+		to_chat(parent, span_danger(pick("Everything hurts.", "Everything feels very sore.", "", "It hurts to walk.", "It hurts.")))
+		if(parent.staminaloss < 30)
+			parent.apply_damage(10, STAMINA)
+	else if(DT_PROB(6, delta_time) && parent.staminaloss <= 60)
+		parent.apply_damage(20 * pain_modifier, STAMINA)
+		if(COOLDOWN_FINISHED(src, time_since_last_pain_message))
+			parent.visible_message(span_warning("[parent] doubles over in pain!"))
+			parent.emote("gasp")
+	else if(DT_PROB(0.5, delta_time))
+		parent.Knockdown(15 * pain_modifier)
+		parent.visible_message(span_warning("[parent] collapses from pain!"))
+	else if(DT_PROB(1, delta_time))
+		parent.Jitter(10)
+	else if(DT_PROB(1, delta_time))
+		parent.Dizzy(5)
+	else if(DT_PROB(3, delta_time))
+		var/obj/item/held_item = parent.get_active_held_item()
+		if(held_item && parent.dropItemToGround(held_item))
+			to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
+			parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
+			parent.emote("gasp")
+		else
+			to_chat(parent, span_danger("Your hand cramps and seizes!"))
+
+/*
+ * Effects caused by extremely high pain. (~400-500 pain)
+ */
+/datum/pain/proc/high_pain_effects(delta_time)
+	if(parent.has_status_effect(STATUS_EFFECT_DETERMINED))
+		return
+
+	if(DT_PROB(3, delta_time))
+		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!", "I can't feel my legs!", "I can't feel my arms!", "Why?!")))
+		if(parent.staminaloss < 50)
+			parent.apply_damage(10, STAMINA)
+		parent.emote("wince")
+	else if(DT_PROB(12, delta_time) && parent.staminaloss <= 75)
+		parent.apply_damage(30 * pain_modifier, STAMINA)
+		if(COOLDOWN_FINISHED(src, time_since_last_pain_message))
+			parent.visible_message(span_warning("[parent] doubles over in pain!"))
+			parent.emote("gasp")
+	else if(DT_PROB(2, delta_time))
+		parent.Knockdown(15 * pain_modifier)
+		parent.visible_message(span_warning("[parent] collapses from pain!"))
+	else if(DT_PROB(1, delta_time))
+		parent.vomit(50)
+	else if(DT_PROB(1, delta_time))
+		parent.emote("scream")
+		parent.Jitter(15)
+	else if(DT_PROB(1, delta_time))
+		parent.set_confusion(min(parent.get_confusion() + 4, 12))
+	else if(DT_PROB(8, delta_time))
+		var/obj/item/held_item = parent.get_active_held_item()
+		if(held_item && parent.dropItemToGround(held_item))
+			to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
+			parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
+			parent.emote("gasp")
+		else
+			to_chat(parent, span_danger("Your hand cramps and seizes!"))
 
 /*
  * Remove all pain and pain paralysis from our mob after we're fully healed by something (like an adminheal)

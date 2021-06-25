@@ -20,10 +20,20 @@
 	pain_controller?.adjust_bodypart_pain(target_zone, amount)
 
 /*
- * Helper carbon proc to set [id] pain mod with amount [amount].
+ * Helper carbon proc to set [zone] min pain to [amount] that expires after [time].
  */
-/mob/living/carbon/proc/set_pain_mod(id, amount)
+/mob/living/carbon/proc/apply_min_pain(zone, amount = 0, time)
+	pain_controller?.adjust_bodypart_min_pain(zone, amount)
+	if(!isnull(time))
+		addtimer(CALLBACK(src, .proc/apply_min_pain, zone, -amount), time)
+
+/*
+ * Helper carbon proc to set [id] pain mod with amount [amount] that expires after [time].
+ */
+/mob/living/carbon/proc/set_pain_mod(id, amount = 0, time)
 	pain_controller?.set_pain_modifier(id, amount)
+	if(!isnull(time))
+		addtimer(CALLBACK(src, .proc/unset_pain_mod, id), time)
 
 /*
  * Helper carbon proc to clear [id] pain mod.

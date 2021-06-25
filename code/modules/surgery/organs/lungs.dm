@@ -277,7 +277,7 @@
 			n2o_euphoria = EUPHORIA_INACTIVE
 			breather.clear_alert("too_much_n2o")
 
-
+		on_anesthetic = check_anesthetic(SA_pp, SA_sleep_min) // NON-MODULE CHANGE
 	// BZ
 
 		var/bz_pp = breath.get_breath_partial_pressure(breath_gases[/datum/gas/bz][MOLES])

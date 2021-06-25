@@ -3,7 +3,8 @@
 /datum/surgery_step/saw/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	. = ..()
 	if(target.stat == CONSCIOUS)
-		if(target.IsSleeping())
+		var/obj/item/organ/lungs/our_lungs = target.getorganslot(ORGAN_SLOT_LUNGS)
+		if(target.IsSleeping() && our_lungs?.on_anesthetic)
 			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/anesthetic)
 		else
 			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/surgery)
@@ -13,7 +14,8 @@
 	. = ..()
 	target.cause_pain(target_zone, 12) // incise doesn't actually deal any direct dmg, unlike saw
 	if(target.stat == CONSCIOUS)
-		if(target.IsSleeping())
+		var/obj/item/organ/lungs/our_lungs = target.getorganslot(ORGAN_SLOT_LUNGS)
+		if(target.IsSleeping() && our_lungs?.on_anesthetic)
 			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/anesthetic)
 		else
 			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/surgery/major)
@@ -26,8 +28,7 @@
 		target.cause_pain(target_zone, initial(tool.pain))
 		target.cause_pain(BODY_ZONE_CHEST, initial(tool.pain) / 3)
 		//TODO: make this a status effect (post augment fatigue?)
-		target.pain_controller.adjust_bodypart_min_pain(target_zone, 15)
-		addtimer(CALLBACK(target.pain_controller, /datum/pain.proc/adjust_bodypart_min_pain, target_zone, -15), 2 MINUTES)
+		target.apply_min_pain(target_zone, 15, 2 MINUTES)
 
 // Disease symptoms
 /datum/symptom/headache/Activate(datum/disease/advance/A)
@@ -112,8 +113,7 @@
 
 	var/pain = . / max(bodyparts.len, 2)
 	cause_pain(BODY_ZONES_ALL, pain)
-	set_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5)
-	addtimer(CALLBACK(pain_controller, /datum/pain.proc/unset_pain_modifier, PAIN_MOD_RECENT_SHOCK), 30 SECONDS)
+	set_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
 
 /obj/machinery/stasis/chill_out(mob/living/carbon/target)
 	. = ..()

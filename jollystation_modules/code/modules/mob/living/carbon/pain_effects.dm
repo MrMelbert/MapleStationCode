@@ -92,10 +92,26 @@
 	multiplicative_slowdown = 0.5
 
 
-/datum/mood_event/pain
-	description = "<span class='warning'>It hurts!</span>\n"
+/datum/mood_event/light_pain
+	description = "<span class='warning'>Everything aches.</span>\n"
+	mood_change = -3
+	timeout = 2 MINUTES
+
+/datum/mood_event/med_pain
+	description = "<span class='warning'>Everything feels sore.</span>\n"
 	mood_change = -6
 	timeout = 2 MINUTES
+
+/datum/mood_event/heavy_pain
+	description = "<span class='warning'>Everything hurts!</span>\n"
+	mood_change = -10
+	timeout = 2 MINUTES
+
+/datum/mood_event/crippling_pain
+	description = "<span class='boldwarning'>STOP THE PAIN!</span>\n"
+	mood_change = -15
+	timeout = 2 MINUTES
+
 
 /datum/mood_event/anesthetic
 	description = "<span class='nicegreen'>Thank science for modern medicine.</span>\n"
