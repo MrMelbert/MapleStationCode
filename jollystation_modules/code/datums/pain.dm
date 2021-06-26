@@ -201,9 +201,9 @@
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
 			continue
 		if(adjusted_amount > 0)
-			adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier
+			adjusted_amount *= (pain_modifier * adjusted_bodypart.bodypart_pain_modifier)
 		total_pain -= adjusted_bodypart.pain
-		adjusted_bodypart.pain = round(clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain), 0.05)
+		adjusted_bodypart.pain = round(clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain), 0.01)
 		total_pain = clamp(total_pain + adjusted_bodypart.pain, 0, total_pain_max)
 
 		if(adjusted_amount > 0)
@@ -233,7 +233,7 @@
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
 		if(!adjusted_bodypart)
 			CRASH("Pain component attempted to adjust_bodypart_pain of untracked or invalid zone [zone].")
-		adjusted_bodypart.min_pain = round(clamp(adjusted_bodypart.min_pain + amount, 0, adjusted_bodypart.max_pain), 0.05)
+		adjusted_bodypart.min_pain = round(clamp(adjusted_bodypart.min_pain + amount, 0, adjusted_bodypart.max_pain), 0.01)
 		if(adjusted_bodypart.pain < adjusted_bodypart.min_pain)
 			adjust_bodypart_pain(zone, -500)
 
@@ -429,7 +429,10 @@
 
 	check_pain_modifiers(delta_time)
 
-	var/average_pain = 0
+	if(!total_pain)
+		return
+
+	var/average_pain = 0 //We can save proc overhead by doing this here manually instead of calling get_average_pain().
 	var/list/shuffled_zones = shuffle(body_zones)
 	for(var/part in shuffled_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
@@ -437,34 +440,26 @@
 			stack_trace("Null or invalid bodypart found in [parent]'s pain bodypart list! Bodypart: [checked_bodypart] Zone: [part]")
 			body_zones -= part
 			continue
+		if(!checked_bodypart.pain)
+			continue
 		checked_bodypart.processed_pain_effects(delta_time)
 		average_pain += (checked_bodypart.pain * (PAIN_LIMB_MAX / checked_bodypart.max_pain))
 
-		if(DT_PROB((checked_bodypart.pain/12), delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_message))
-			var/prob_of_message = 100
-			if(pain_modifier <= 0.3)
-				prob_of_message = 0
-			else if(pain_modifier <= 0.4)
-				prob_of_message = 20
-			else if(pain_modifier <= 0.5)
-				prob_of_message = 50
-			else if(pain_modifier <= 0.6)
-				prob_of_message = 75
-
-			if(prob(prob_of_message))
-				checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-				COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
+		if(DT_PROB((pain_modifier * checked_bodypart.pain / 8), delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_message))
+			checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+			COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
 
 	average_pain /= body_zones.len
 
 	// we check the average pain of all bodyparts, normalized to limb pain (max of 75)
-	switch(average_pain)
-		if(20 to 35)
-			low_pain_effects(delta_time)
-		if(36 to 55)
-			med_pain_effects(delta_time)
-		if(56 to 75)
-			high_pain_effects(delta_time)
+	if(!parent.has_status_effect(STATUS_EFFECT_DETERMINED))
+		switch(average_pain)
+			if(20 to 35)
+				low_pain_effects(delta_time)
+			if(36 to 55)
+				med_pain_effects(delta_time)
+			if(56 to 75)
+				high_pain_effects(delta_time)
 
 	decay_pain(delta_time)
 
@@ -472,15 +467,17 @@
  * Check which additional pain modifiers should be applied.
  */
 /datum/pain/proc/check_pain_modifiers(delta_time)
-	if(parent.drunkenness > 10)
-		set_pain_modifier(PAIN_MOD_DRUNK, 0.9)
-	else
-		unset_pain_modifier(PAIN_MOD_DRUNK)
+	if(parent.drunkenness)
+		if(parent.drunkenness > 10)
+			set_pain_modifier(PAIN_MOD_DRUNK, 0.9)
+		else
+			unset_pain_modifier(PAIN_MOD_DRUNK)
 
-	if(parent.drowsyness > 10)
-		set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
-	else
-		unset_pain_modifier(PAIN_MOD_DROWSY)
+	if(parent.drowsyness)
+		if(parent.drowsyness > 8)
+			set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
+		else
+			unset_pain_modifier(PAIN_MOD_DROWSY)
 
 	if(HAS_TRAIT(parent, TRAIT_OFF_STATION_PAIN_RESISTANCE))
 		if(is_station_level(parent.z))
@@ -522,16 +519,13 @@
 			natural_pain_decay = initial(natural_pain_decay)
 
 		// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
-		var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.05)
+		var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
 		adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
 
 /*
  * Effects caused by medium pain. (~250-400 pain)
  */
 /datum/pain/proc/low_pain_effects(delta_time)
-	if(parent.has_status_effect(STATUS_EFFECT_DETERMINED))
-		return
-
 	if(DT_PROB(3, delta_time))
 		to_chat(parent, span_danger(pick("Everything aches.", "Everything feels sore.")))
 		if(parent.staminaloss < 5)
@@ -545,9 +539,6 @@
  * Effects caused by medium pain. (~250-400 pain)
  */
 /datum/pain/proc/med_pain_effects(delta_time)
-	if(parent.has_status_effect(STATUS_EFFECT_DETERMINED))
-		return
-
 	if(DT_PROB(3, delta_time))
 		to_chat(parent, span_danger(pick("Everything hurts.", "Everything feels very sore.", "", "It hurts to walk.", "It hurts.")))
 		if(parent.staminaloss < 30)
@@ -570,16 +561,11 @@
 			to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
 			parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
 			parent.emote("gasp")
-		else
-			to_chat(parent, span_danger("Your hand cramps and seizes!"))
 
 /*
  * Effects caused by extremely high pain. (~400-500 pain)
  */
 /datum/pain/proc/high_pain_effects(delta_time)
-	if(parent.has_status_effect(STATUS_EFFECT_DETERMINED))
-		return
-
 	if(DT_PROB(3, delta_time))
 		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!", "I can't feel my legs!", "I can't feel my arms!", "Why?!")))
 		if(parent.staminaloss < 50)
@@ -606,31 +592,39 @@
 			to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
 			parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
 			parent.emote("gasp")
-		else
-			to_chat(parent, span_danger("Your hand cramps and seizes!"))
-
+	else if(DT_PROB(0.1, delta_time))
+		if(locate(/datum/disease/shock) in parent.diseases)
+			return
+		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
+		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
+		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
 /*
  * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain]
  */
 /datum/pain/proc/apply_pain_attributes()
 	switch(get_average_pain())
 		if(0 to 15)
+			parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
 			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 			SEND_SIGNAL(parent, COMSIG_CLEAR_MOOD_EVENT, "pain")
 		if(15 to 30)
+			parent.mob_surgery_speed_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/light_pain)
 		if(30 to 45)
+			parent.mob_surgery_speed_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/med_pain)
 		if(45 to 60)
+			parent.mob_surgery_speed_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/heavy_pain)
 		if(60 to INFINITY) // Functionally 60 to 75
+			parent.mob_surgery_speed_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/crippling_pain)
@@ -659,6 +653,7 @@
 		adjust_bodypart_min_pain(zone, -500)
 		adjust_bodypart_pain(zone, -500)
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
+	parent.remove_status_effect(STATUS_EFFECT_LIMP_PAIN)
 	for(var/mod in pain_mods)
 		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES)
 			continue
@@ -712,16 +707,23 @@
 /datum/pain/vv_get_dropdown()
 	. = ..()
 	VV_DROPDOWN_OPTION("debug_pain", "Debug Pain")
+	VV_DROPDOWN_OPTION("set_limb_pain", "Adjust Limb Pain")
+	VV_DROPDOWN_OPTION("refresh_mod", "Refresh Pain Mod")
 
 /datum/pain/vv_do_topic(href_list)
 	. = ..()
 	if(href_list["debug_pain"])
 		debug_print_pain()
+	if(href_list["set_limb_pain"])
+		admin_adjust_bodypart_pain()
+	if(href_list["refresh_mod"])
+		update_pain_modifier()
 
 /datum/pain/proc/debug_print_pain()
 	debugging = !debugging
 	if(debugging)
 		message_admins("Debugging pain enabled. DEBUG PRINTOUT: [src]")
+		message_admins("[parent] has [total_pain] of [total_pain_max].")
 		message_admins("[parent] has a pain modifier of [pain_modifier].")
 		message_admins(" - - - - ")
 		for(var/part in body_zones)
@@ -735,3 +737,15 @@
 			message_admins("[parent] has pain mod [mod], value [pain_mods[mod]].")
 	else
 		message_admins("Debugging pain disabled.")
+
+/datum/pain/proc/admin_adjust_bodypart_pain()
+	var/zone = input(usr, "Which bodypart") as null|anything in BODY_ZONES_ALL + "All"
+	var/amount = input(usr, "How much?") as null|num
+
+	if(isnull(amount) || isnull(zone))
+		return
+	if(zone == "All")
+		zone = BODY_ZONES_ALL
+
+	amount = clamp(amount, -200, 200)
+	adjust_bodypart_pain(zone, amount)

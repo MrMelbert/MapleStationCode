@@ -29,7 +29,7 @@
 	. = ..()
 	M.adjustBruteLoss(-0.2 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -0.5)
+	M.cause_pain(BODY_ZONES_ALL, -0.3)
 
 	return TRUE
 
@@ -84,7 +84,7 @@
 	description = "A medication that combats pain and fever. Can cause mild nausea. Overdosing is toxic, and causes high body temperature, sickness, hallucinations, dizziness, and confusion."
 	reagent_state = LIQUID
 	color = "#9c46ff"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 	overdose_threshold = 25
 	ph = 6.4
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -92,11 +92,11 @@
 
 /datum/reagent/medicine/painkiller/aspirin/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	// Not good at headaches, but very good at treating everything else.
-	M.adjustBruteLoss(-0.2 * REM * delta_time, FALSE)
-	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.05)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.1)
-	M.cause_pain(BODY_ZONE_CHEST, -0.2)
+	M.adjustBruteLoss(-0.1 * REM * delta_time, FALSE)
+	M.adjustFireLoss(-0.95 * REM * delta_time, FALSE)
+	M.cause_pain(BODY_ZONE_HEAD, -0.02)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.04)
+	M.cause_pain(BODY_ZONE_CHEST, -0.08)
 	// Okay at fevers.
 	M.adjust_bodytemperature(-15 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes more disgust than paracetamol.
@@ -142,7 +142,7 @@
 	description = "A painkiller that combats mind to moderate pain, headaches, and low fever. Causes mild nausea. Overdosing causes liver damage, sickness, and can be lethal."
 	reagent_state = LIQUID
 	color = "#fcaeff"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 	overdose_threshold = 25
 	ph = 4.7
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -150,15 +150,15 @@
 
 /datum/reagent/medicine/painkiller/paracetamol/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	// Good general painkiller.
-	M.adjustBruteLoss(-0.1 * REM * delta_time, FALSE)
-	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
-	M.adjustToxLoss(-0.1 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.2)
-	M.cause_pain(BODY_ZONES_MINUS_HEAD, -0.15)
+	M.adjustBruteLoss(-0.05 * REM * delta_time, FALSE)
+	M.adjustFireLoss(-0.05 * REM * delta_time, FALSE)
+	M.adjustToxLoss(-0.05 * REM * delta_time, FALSE)
+	M.cause_pain(BODY_ZONE_HEAD, -0.08)
+	M.cause_pain(BODY_ZONES_MINUS_HEAD, -0.06)
 	// Not very good at treating fevers.
 	M.adjust_bodytemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes liver damage - higher dosages causes more liver damage.
-	M.adjustOrganLoss(ORGAN_SLOT_LIVER, volume / 20 * REM * delta_time)
+	M.adjustOrganLoss(ORGAN_SLOT_LIVER, volume / 30 * REM * delta_time)
 	// Causes a flat amount of disgust - not very much.
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(66 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(1.5 * REM * delta_time)
@@ -191,7 +191,7 @@
 	description = "A medication that combats mild pain, headaches, and fever. Causes mild nausea and dizziness in higher dosages. Overdosing causes sickness, drowsiness, dizziness, and mild pain."
 	reagent_state = LIQUID
 	color = "#e695ff"
-	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 	overdose_threshold = 30
 	ph = 5.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -199,11 +199,11 @@
 
 /datum/reagent/medicine/painkiller/ibuprofen/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	// Really good at treating headaches.
-	M.adjustBruteLoss(-0.1 * REM * delta_time, FALSE)
-	M.adjustToxLoss(-0.2 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.3)
-	M.cause_pain(BODY_ZONE_CHEST, -0.1)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.05)
+	M.adjustBruteLoss(-0.05 * REM * delta_time, FALSE)
+	M.adjustToxLoss(-0.1 * REM * delta_time, FALSE)
+	M.cause_pain(BODY_ZONE_HEAD, -0.1)
+	M.cause_pain(BODY_ZONE_CHEST, -0.04)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.02)
 	// Causes flat liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * REM * delta_time)
 	// Really good at treating fevers.
@@ -270,7 +270,7 @@
 	reagent_state = LIQUID
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	color = "#e695ff"
-	metabolization_rate = REM
+	metabolization_rate = REAGENTS_METABOLISM
 
 /datum/reagent/medicine/painkiller/aspririn_para_coffee/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
@@ -308,7 +308,7 @@
 		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_heavy, name)
 	M.adjustBruteLoss(-0.3 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.2 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -1.5)
+	M.cause_pain(BODY_ZONES_ALL, -1)
 	M.set_drugginess(10 * REM * delta_time)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(3 * REM * delta_time)

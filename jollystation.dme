@@ -3689,6 +3689,7 @@
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_causes.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_effects.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_reagents.dm"
+#include "jollystation_modules\code\modules\mob\living\carbon\pain_shock.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\examine.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\human.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\human_helpers.dm"

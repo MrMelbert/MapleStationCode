@@ -100,7 +100,7 @@
 	mood_change = -6
 
 /datum/mood_event/heavy_pain
-	description = "<span class='warning'>Everything hurts!</span>\n"
+	description = "<span class='boldwarning'>Everything hurts!</span>\n"
 	mood_change = -10
 
 /datum/mood_event/crippling_pain
