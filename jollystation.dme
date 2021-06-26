@@ -3675,6 +3675,7 @@
 #include "jollystation_modules\code\modules\language\highdraconic.dm"
 #include "jollystation_modules\code\modules\language\skrellian.dm"
 #include "jollystation_modules\code\modules\library\skill_learning\job_skillchips\mining.dm"
+#include "jollystation_modules\code\modules\mining\machine_vending.dm"
 #include "jollystation_modules\code\modules\mining\mining_redemption.dm"
 #include "jollystation_modules\code\modules\mob\logout.dm"
 #include "jollystation_modules\code\modules\mob\mob.dm"
