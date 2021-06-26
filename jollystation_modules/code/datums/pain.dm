@@ -438,7 +438,7 @@
 			body_zones -= part
 			continue
 		checked_bodypart.processed_pain_effects(delta_time)
-		average_pain += (adjusted_bodypart.pain * (PAIN_LIMB_MAX / adjusted_bodypart.max_pain))
+		average_pain += (checked_bodypart.pain * (PAIN_LIMB_MAX / checked_bodypart.max_pain))
 
 		if(DT_PROB((checked_bodypart.pain/12), delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_message))
 			var/prob_of_message = 100
