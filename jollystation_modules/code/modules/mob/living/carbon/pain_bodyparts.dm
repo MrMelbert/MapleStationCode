@@ -12,7 +12,7 @@
 	/// The min amount of pain this limb can experience
 	var/min_pain = 0
 	/// The max amount of pain this limb can experience
-	var/max_pain = 70
+	var/max_pain = PAIN_LIMB_MAX
 	/// Modifier applied to pain that this part recieves
 	var/bodypart_pain_modifier = 1
 
@@ -44,11 +44,11 @@
 	switch(pain)
 		if(10 to 25)
 			max_stamina_damage = base_max_stamina_damage / 1.2
-		if(26 to 50)
+		if(25 to 50)
 			max_stamina_damage = base_max_stamina_damage / 1.5
-		if(51 to 65)
+		if(50 to 65)
 			max_stamina_damage = base_max_stamina_damage / 2
-		if(66 to INFINITY)
+		if(65 to INFINITY)
 			if(can_be_disabled && !HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
 				to_chat(owner, span_userdanger("Your [name] goes numb from the pain!"))
 				ADD_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
@@ -69,9 +69,9 @@
 	switch(pain)
 		if(0 to 10)
 			max_stamina_damage = base_max_stamina_damage
-		if(11 to 25)
+		if(10 to 25)
 			max_stamina_damage = base_max_stamina_damage / 1.2
-		if(26 to 50)
+		if(25 to 50)
 			max_stamina_damage = base_max_stamina_damage / 1.5
 	if(pain < 65 && HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
 		to_chat(owner, span_green("You can feel your [name] again!"))
@@ -108,7 +108,7 @@
 		if(10 to 25)
 			owner.flash_pain_overlay(1)
 			feedback = "Your [name] aches[healing_pain ? ", but it's getting better" : ""]."
-		if(26 to 50)
+		if(25 to 50)
 			owner.emote(picked_emote)
 			owner.flash_pain_overlay(1)
 			if(healing_pain)
@@ -116,7 +116,7 @@
 			else
 				scream_prob = 5
 				feedback = "Your [name] hurts!"
-		if(51 to 65)
+		if(50 to 65)
 			owner.emote(picked_emote)
 			owner.flash_pain_overlay(2)
 			if(healing_pain)
@@ -136,10 +136,10 @@
 
 // --- Chest ---
 /obj/item/bodypart/chest
-	max_pain = 120
+	max_pain = PAIN_CHEST_MAX
 
 /obj/item/bodypart/chest/robot
-	pain = 160
+	pain = PAIN_CHEST_MAX
 	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/chest/pain_feedback(delta_time, healing_pain)
@@ -155,14 +155,14 @@
 		if(10 to 40)
 			feedback = "Your [name] aches[healing_pain ? ", for a short time" : ""]."
 			owner.flash_pain_overlay(1)
-		if(41 to 75)
+		if(40 to 75)
 			owner.emote(picked_emote)
 			owner.flash_pain_overlay(1, 2 SECONDS)
 			feedback = pick("Your [name] feels sore", "Your [name] hurts", "Your side hurts", "Your ribs hurt")
 			if(healing_pain)
 				feedback += pick(", but it's getting better", ", but it's feeling better", ", but it's improving", ", but it stops shortly")
 			feedback += "."
-		if(76 to 110)
+		if(75 to 110)
 			owner.emote(picked_emote)
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback = pick("Your [name] really hurts", "Your feel a sharp pain in your side", "You breathe in and feel pain in your ribs")
@@ -179,10 +179,10 @@
 
 // --- Head ---
 /obj/item/bodypart/head
-	max_pain = 100
+	max_pain = PAIN_HEAD_MAX
 
 /obj/item/bodypart/head/robot
-	pain = 120
+	pain = PAIN_HEAD_MAX
 	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/head/on_gain_pain_effects(amount)
@@ -204,19 +204,19 @@
 		if(10 to 30)
 			feedback = "Your [name] aches[healing_pain ? ", but it's getting better" : ""]."
 			owner.flash_pain_overlay(1)
-		if(31 to 60)
+		if(30 to 60)
 			owner.flash_pain_overlay(1)
 			if(healing_pain)
 				feedback = "Your [name] hurts, but it's starting to die down."
 			else
 				feedback = "Your [name] hurts!"
-		if(61 to 90)
+		if(60 to 90)
 			owner.flash_pain_overlay(2)
 			if(healing_pain)
 				feedback = "Your [name] really hurts, but the stinging is stopping."
 			else
 				feedback = "Your [name] really hurts!"
-		if(91 to INFINITY)
+		if(90 to INFINITY)
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback = "Your [name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"
 
@@ -225,7 +225,7 @@
 
 // --- Right Leg ---
 /obj/item/bodypart/r_leg/robot
-	pain = 100
+	pain = PAIN_LIMB_MAX
 	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/r_leg/robot/surplus
@@ -245,7 +245,7 @@
 
 // --- Left Leg ---
 /obj/item/bodypart/l_leg/robot
-	pain = 100
+	pain = PAIN_LIMB_MAX
 	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/l_leg/robot/surplus
@@ -265,7 +265,7 @@
 
 // --- Right Arm ---
 /obj/item/bodypart/r_arm/robot
-	pain = 100
+	pain = PAIN_LIMB_MAX
 	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/r_arm/robot/surplus
@@ -274,7 +274,7 @@
 
 // --- Left Arm ---
 /obj/item/bodypart/l_arm/robot
-	pain = 100
+	pain = PAIN_LIMB_MAX
 	bodypart_pain_modifier = 0.5
 
 /obj/item/bodypart/l_arm/robot/surplus

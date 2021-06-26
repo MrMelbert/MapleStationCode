@@ -17,9 +17,14 @@
 #define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s")
 
 /// Amount of pain gained from dismembered limb
-#define PAIN_LIMB_DISMEMBERED 45
-/// Amount of pain gained from surgically removed limb
-#define PAIN_LIMB_REMOVED 10
+#define PAIN_LIMB_DISMEMBERED 65
+/// Amount of pain gained from surgically removed limb (given to the chest)
+#define PAIN_LIMB_REMOVED 20
+
+/// Max pains for limbs.
+#define PAIN_LIMB_MAX 70
+#define PAIN_CHEST_MAX 120
+#define PAIN_HEAD_MAX 100
 
 /// Keys for pain modifiers
 #define PAIN_MOD_CHEMS "chems"

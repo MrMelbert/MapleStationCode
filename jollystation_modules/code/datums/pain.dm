@@ -188,13 +188,11 @@
 	if(!islist(def_zones))
 		def_zones = list(def_zones)
 
-	if(amount > 0)
-		amount *= pain_modifier
-
 	if(!amount)
 		return
 
 	for(var/zone in def_zones)
+		var/adjusted_amount = amount
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
 		if(QDELETED(adjusted_bodypart))
 			CRASH("Pain component attempted to adjust_bodypart_pain of untracked or invalid zone. Bodypart: [adjusted_bodypart] Zone: [zone]")
@@ -202,13 +200,13 @@
 			continue
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
 			continue
-		if(amount > 0)
-			amount *= adjusted_bodypart.bodypart_pain_modifier
+		if(adjusted_amount > 0)
+			adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier
 		total_pain -= adjusted_bodypart.pain
-		adjusted_bodypart.pain = round(clamp(adjusted_bodypart.pain + amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain), 0.05)
+		adjusted_bodypart.pain = round(clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain), 0.05)
 		total_pain = clamp(total_pain + adjusted_bodypart.pain, 0, total_pain_max)
 
-		if(amount > 0)
+		if(adjusted_amount > 0)
 			INVOKE_ASYNC(src, .proc/on_pain_gain, adjusted_bodypart, amount)
 		else if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			INVOKE_ASYNC(src, .proc/on_pain_loss, adjusted_bodypart, amount)
@@ -251,6 +249,7 @@
  */
 /datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount)
 	affected_part.on_gain_pain_effects(amount)
+	apply_pain_attributes()
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
 
@@ -262,28 +261,6 @@
 			parent.emote(pick(PAIN_EMOTES))
 			COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
 
-	switch(total_pain)
-		if(0 to 100)
-			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
-			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
-			SEND_SIGNAL(parent, COMSIG_CLEAR_MOOD_EVENT, "pain")
-		if(100 to 200)
-			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
-			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/light_pain)
-		if(200 to 300)
-			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
-			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/med_pain)
-		if(300 to 400)
-			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
-			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/heavy_pain)
-		if(400 to 500)
-			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
-			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/crippling_pain)
-
 /*
  * Called when pain is lost, if the mob did not lose pain in the last 60 seconds.
  * Calls [affected_part]'s [on_lose_pain_effects] proc with arguments [amount].
@@ -294,6 +271,7 @@
  */
 /datum/pain/proc/on_pain_loss(obj/item/bodypart/affected_part, amount)
 	affected_part.on_lose_pain_effects(amount)
+	apply_pain_attributes()
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_LOST, affected_part, amount)
 
 /*
@@ -328,11 +306,11 @@
 			switch(damage)
 				if(1 to 10)
 					pain = damage / 4
-				if(11 to 15)
+				if(10 to 15)
 					pain = damage / 3
-				if(16 to 20)
+				if(15 to 20)
 					pain = damage / 2
-				if(21 to INFINITY)
+				if(20 to INFINITY)
 					pain = damage / 1.2
 
 		// Toxins pain is dealt to the chest (stomach and liver)
@@ -346,9 +324,9 @@
 				switch(our_liver.damage)
 					if(20 to 50)
 						pain += 1
-					if(51 to 80)
+					if(50 to 80)
 						pain += 2
-					if(81 to INFINITY)
+					if(80 to INFINITY)
 						pain += 3
 			else
 				pain = damage * 2
@@ -357,9 +335,9 @@
 				switch(our_stomach.damage)
 					if(20 to 50)
 						pain += 1
-					if(51 to 80)
+					if(50 to 80)
 						pain += 2
-					if(81 to INFINITY)
+					if(80 to INFINITY)
 						pain += 3
 			else
 				pain += 3
@@ -379,9 +357,9 @@
 				switch(our_lungs.damage)
 					if(20 to 50)
 						pain += 1
-					if(51 to 80)
+					if(50 to 80)
 						pain += 2
-					if(81 to INFINITY)
+					if(80 to INFINITY)
 						pain += 3
 			else
 				pain += 5
@@ -389,9 +367,9 @@
 			switch(parent.oxyloss)
 				if(0 to 20)
 					pain = 0
-				if(21 to 50)
+				if(20 to 50)
 					pain += 1
-				if(51 to INFINITY)
+				if(50 to INFINITY)
 					pain += 3
 
 		// Cellular pain is dealt to all bodyparts
@@ -460,12 +438,7 @@
 			body_zones -= part
 			continue
 		checked_bodypart.processed_pain_effects(delta_time)
-		if(part == BODY_ZONE_CHEST)
-			average_pain += (0.625 * checked_bodypart.pain)
-		else if(part == BODY_ZONE_HEAD)
-			average_pain += (0.75 * checked_bodypart.pain)
-		else
-			average_pain += checked_bodypart.pain
+		average_pain += (adjusted_bodypart.pain * (PAIN_LIMB_MAX / adjusted_bodypart.max_pain))
 
 		if(DT_PROB((checked_bodypart.pain/12), delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_message))
 			var/prob_of_message = 100
@@ -481,6 +454,7 @@
 			if(prob(prob_of_message))
 				checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 				COOLDOWN_START(src, time_since_last_pain_message, 3 SECONDS)
+
 	average_pain /= body_zones.len
 
 	// we check the average pain of all bodyparts, normalized to limb pain (max of 75)
@@ -503,16 +477,16 @@
 	else
 		unset_pain_modifier(PAIN_MOD_DRUNK)
 
+	if(parent.drowsyness > 10)
+		set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
+	else
+		unset_pain_modifier(PAIN_MOD_DROWSY)
+
 	if(HAS_TRAIT(parent, TRAIT_OFF_STATION_PAIN_RESISTANCE))
 		if(is_station_level(parent.z))
 			unset_pain_modifier(PAIN_MOD_OFF_STATION)
 		else
 			set_pain_modifier(PAIN_MOD_OFF_STATION, 0.6)
-
-	if(parent.drowsyness > 10)
-		set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
-	else
-		unset_pain_modifier(PAIN_MOD_DROWSY)
 
 	if(parent.IsSleeping())
 		var/sleeping_turf = get_turf(parent)
@@ -524,7 +498,7 @@
 		if(locate(/obj/structure/table/optable) in sleeping_turf)
 			sleeping_modifier -= 0.1
 		var/obj/item/organ/lungs/our_lungs = parent.getorganslot(ORGAN_SLOT_LUNGS)
-		if(our_lungs && our_lungs.on_anesthetic)
+		if(our_lungs?.on_anesthetic)
 			sleeping_modifier -= 0.5
 
 		sleeping_modifier = max(sleeping_modifier, 0.1)
@@ -636,6 +610,45 @@
 			to_chat(parent, span_danger("Your hand cramps and seizes!"))
 
 /*
+ * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain]
+ */
+/datum/pain/proc/apply_pain_attributes()
+	switch(get_average_pain())
+		if(0 to 15)
+			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
+			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
+			SEND_SIGNAL(parent, COMSIG_CLEAR_MOOD_EVENT, "pain")
+		if(15 to 30)
+			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
+			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/light_pain)
+		if(30 to 45)
+			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
+			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/med_pain)
+		if(45 to 60)
+			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
+			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/heavy_pain)
+		if(60 to INFINITY) // Functionally 60 to 75
+			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
+			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
+			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/crippling_pain)
+
+/*
+ * Get the average pain of all limbs.
+ * Not all limbs share the same max pain so we normalize it to the max limb pain.
+ *
+ * returns the average pain across all limbs.
+ */
+/datum/pain/proc/get_average_pain()
+	. = 0
+	for(var/zone in body_zones)
+		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
+		. += (adjusted_bodypart.pain * (PAIN_LIMB_MAX / adjusted_bodypart.max_pain))
+	. /= body_zones.len
+
+/*
  * Remove all pain and pain paralysis from our mob after we're fully healed by something (like an adminheal)
  */
 /datum/pain/proc/remove_all_pain(datum/source, adminheal)
@@ -676,19 +689,19 @@
 		if(25 to 75)
 			amount = "minor"
 			tip = "Pain should subside in time."
-		if(76 to 150)
+		if(75 to 150)
 			amount = "moderate"
 			tip = "Pain should subside in time and can be quickened with rest or painkilling medication."
-		if(151 to 250)
+		if(150 to 250)
 			amount = "major"
 			tip = "Treat wounds and pain should abated with rest or stasis and painkilling medication."
-		if(251 to 350)
+		if(250 to 350)
 			amount = "severe"
 			tip = "Treat wounds and pain should abated with rest, anesthetic or stasis, and painkilling medication."
-		if(351 to 500)
+		if(350 to 500)
 			amount = "extreme"
 			tip = "Treat wounds and pain should abated with long rest, anesthetic or stasis, and heavy painkilling medication."
-		if(501 to INFINITY)
+		if(500 to INFINITY) // Shouldn't be reachable, but I guess
 			amount = "ultimate"
 			tip = "Subject should be supplemented with merciful death."
 

@@ -26,8 +26,8 @@
 	if(target.pain_controller && (tool in target.bodyparts))
 		// We have to snowflake this because replace_limb uses SPECIAL = TRUE when replacing limbs (which doesn't cause pain because I hate limb code)
 		target.cause_pain(target_zone, initial(tool.pain))
-		target.cause_pain(BODY_ZONE_CHEST, initial(tool.pain) / 3)
-		//TODO: make this a status effect (post augment fatigue?)
+		target.cause_pain(BODY_ZONE_CHEST, PAIN_LIMB_REMOVED)
+		//TODO: make this a status effect instead (post augment fatigue?)
 		target.apply_min_pain(target_zone, 15, 2 MINUTES)
 
 // Disease symptoms
