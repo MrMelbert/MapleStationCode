@@ -49,7 +49,7 @@
 		slowdown_left = (right.pain / 10) * limping_carbon.pain_controller.pain_modifier * left.bodypart_pain_modifier
 
 	// this handles losing your leg with the limp and the other one being in good shape as well
-	if(!slowdown_left && !slowdown_right)
+	if(slowdown_left < 3 && slowdown_right < 3)
 		limping_carbon.remove_status_effect(src)
 
 /datum/movespeed_modifier/pain

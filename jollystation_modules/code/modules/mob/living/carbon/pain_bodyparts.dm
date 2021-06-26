@@ -31,6 +31,17 @@
 		owner?.cause_pain(body_zone, body_damage_coeff * (brute + burn))
 
 /*
+ * Gets our bodypart's effective pain (pain * pain modifiers).
+ *
+ * Returns our effective pain.
+ */
+/obj/item/bodypart/proc/get_modified_pain()
+	if(owner?.pain_controller)
+		return pain * bodypart_pain_modifier * owner.pain_controller.pain_modifier
+	else
+		return pain * bodypart_pain_modifier
+
+/*
  * Effects on this bodypart has when pain is gained.
  *
  * amount - amount of pain gained
@@ -109,7 +120,7 @@
 			owner.flash_pain_overlay(1)
 			feedback = "Your [name] aches[healing_pain ? ", but it's getting better" : ""]."
 		if(25 to 50)
-			owner.emote(picked_emote)
+			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(1)
 			if(healing_pain)
 				feedback = "Your [name] hurts, but it's starting to die down."
@@ -117,7 +128,7 @@
 				scream_prob = 5
 				feedback = "Your [name] hurts!"
 		if(50 to 65)
-			owner.emote(picked_emote)
+			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(2)
 			if(healing_pain)
 				feedback = "Your [name] really hurts, but the stinging is stopping."
@@ -130,7 +141,7 @@
 			feedback = "Your [name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"
 
 	if(DT_PROB(scream_prob, delta_time))
-		owner.emote("scream")
+		owner.pain_emote("scream")
 	to_chat(owner, span_danger(feedback))
 	return TRUE
 
@@ -156,14 +167,14 @@
 			feedback = "Your [name] aches[healing_pain ? ", for a short time" : ""]."
 			owner.flash_pain_overlay(1)
 		if(40 to 75)
-			owner.emote(picked_emote)
+			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(1, 2 SECONDS)
 			feedback = pick("Your [name] feels sore", "Your [name] hurts", "Your side hurts", "Your ribs hurt")
 			if(healing_pain)
 				feedback += pick(", but it's getting better", ", but it's feeling better", ", but it's improving", ", but it stops shortly")
 			feedback += "."
 		if(75 to 110)
-			owner.emote(picked_emote)
+			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback = pick("Your [name] really hurts", "Your feel a sharp pain in your side", "You breathe in and feel pain in your ribs")
 			if(healing_pain)
@@ -172,7 +183,7 @@
 		if(111 to INFINITY)
 			owner.flash_pain_overlay(2, 3 SECONDS)
 			feedback = "You feel your ribs jostle in your [name]!"
-			owner.emote(pick("groan", "scream"))
+			owner.pain_emote(pick("groan", "scream"))
 
 	to_chat(owner, span_danger(feedback))
 	return TRUE
@@ -237,7 +248,7 @@
 	if(!.)
 		return FALSE
 
-	if(pain > 30 && DT_PROB(25, delta_time))
+	if(get_modified_pain() > 30 && DT_PROB(25, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
@@ -257,7 +268,7 @@
 	if(!.)
 		return FALSE
 
-	if(pain > 30 && DT_PROB(25, delta_time))
+	if(get_modified_pain() > 30 && DT_PROB(25, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 

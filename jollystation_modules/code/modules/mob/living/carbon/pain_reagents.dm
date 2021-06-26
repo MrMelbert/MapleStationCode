@@ -93,7 +93,7 @@
 /datum/reagent/medicine/painkiller/aspirin/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	// Not good at headaches, but very good at treating everything else.
 	M.adjustBruteLoss(-0.1 * REM * delta_time, FALSE)
-	M.adjustFireLoss(-0.95 * REM * delta_time, FALSE)
+	M.adjustFireLoss(-0.05 * REM * delta_time, FALSE)
 	M.cause_pain(BODY_ZONE_HEAD, -0.02)
 	M.cause_pain(BODY_ZONES_LIMBS, -0.04)
 	M.cause_pain(BODY_ZONE_CHEST, -0.08)
@@ -158,7 +158,7 @@
 	// Not very good at treating fevers.
 	M.adjust_bodytemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes liver damage - higher dosages causes more liver damage.
-	M.adjustOrganLoss(ORGAN_SLOT_LIVER, volume / 30 * REM * delta_time)
+	M.adjustOrganLoss(ORGAN_SLOT_LIVER, volume / 25 * REM * delta_time)
 	// Causes a flat amount of disgust - not very much.
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(66 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(1.5 * REM * delta_time)
@@ -205,7 +205,7 @@
 	M.cause_pain(BODY_ZONE_CHEST, -0.04)
 	M.cause_pain(BODY_ZONES_LIMBS, -0.02)
 	// Causes flat liver damage.
-	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.3 * REM * delta_time)
+	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.5 * REM * delta_time)
 	// Really good at treating fevers.
 	M.adjust_bodytemperature(-25 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes more disgust the longer it's in someone...
@@ -293,7 +293,7 @@
 // Oxycodone. Very addictive, heals pain very fast, also a drug.
 /datum/reagent/medicine/oxycodone
 	name = "Oxycodone"
-	description = "A drug that treats major and extreme pain. Highly addictive. Overdose can cause heart attacks."
+	description = "A drug that rapidly treats major to extreme pain. Highly addictive. Overdose can cause heart attacks."
 	reagent_state = LIQUID
 	color = "#ffcb86"
 	metabolization_rate = REAGENTS_METABOLISM
@@ -362,36 +362,36 @@
 
 /obj/item/reagent_containers/pill/asprin
 	name = "asprin pill"
-	desc = "Used to treat moderate pain and fever. Best at treating chest pain."
+	desc = "Used to treat moderate pain and fever. Metabolizes slowly. Best at treating chest pain."
 	icon_state = "pill7"
 	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 10)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/ibuprofen
 	name = "ibuprofen pill"
-	desc = "Used to treat mild pain, headaches, and fever. Best at treating head pain."
+	desc = "Used to treat mild pain, headaches, and fever. Metabolizes slowly. Best at treating head pain."
 	icon_state = "pill8"
 	list_reagents = list(/datum/reagent/medicine/painkiller/ibuprofen = 10)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/paracetamol
 	name = "paracetamol pill"
-	desc = "Used to treat moderate pain and headaches. Good as a general painkiller."
+	desc = "Used to treat moderate pain and headaches. Metabolizes slowly. Good as a general painkiller."
 	icon_state = "pill9"
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 10)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/morphine/diluted
-	desc = "Used to treat severe pain. Causes moderate drowsyness."
+	desc = "Used to treat severe pain and pain symptoms. Causes moderate drowsyness. Mildly addictive."
 	icon_state = "pill11"
-	list_reagents = list(/datum/reagent/medicine/morphine = 10)
+	list_reagents = list(/datum/reagent/medicine/morphine = 5)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/oxycodone
 	name = "oxycodon pill"
-	desc = "Used to treat severe to extreme pain. Very addictive."
+	desc = "Used to treat severe to extreme pain. Metabolizes quickly, rapid acting. Very addictive."
 	icon_state = "pill12"
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 10)
+	list_reagents = list(/datum/reagent/medicine/oxycodone = 5)
 	rename_with_volume = TRUE
 
 /obj/item/storage/pill_bottle/painkillers
@@ -422,7 +422,7 @@
 
 /obj/item/reagent_containers/hypospray/medipen/survival/painkiller
 	name = "emergency painkiller medipen"
-	desc = "A medipen that contains 2 dosages of heavy duty painkillers. Side effects or addiction may occur with rapid usage."
+	desc = "A medipen that contains 2 dosages of heavy duty painkillers. Side effects or addiction may occur with rapid consecutive usage."
 	volume = 40
 	amount_per_transfer_from_this = 20
 	list_reagents = list(/datum/reagent/medicine/oxycodone = 20, /datum/reagent/medicine/morphine = 10, /datum/reagent/medicine/modafinil = 10)

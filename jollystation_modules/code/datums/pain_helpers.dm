@@ -20,6 +20,12 @@
 	pain_controller?.adjust_bodypart_pain(target_zone, amount)
 
 /*
+ * Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.
+ */
+/mob/living/carbon/proc/pain_emote(emote, cooldown)
+	pain_controller?.do_pain_emote(emote, cooldown)
+
+/*
  * Helper carbon proc to set [zone] min pain to [amount] that expires after [time].
  */
 /mob/living/carbon/proc/apply_min_pain(zone, amount = 0, time)
