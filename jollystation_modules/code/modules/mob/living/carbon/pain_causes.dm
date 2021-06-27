@@ -61,10 +61,10 @@
 		return
 	switch(A.stage)
 		if(4)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 5)
+			A.affected_mob.cause_pain(BODY_ZONES_ALL, 5, BURN)
 			A.affected_mob.flash_pain_overlay(1)
 		if(5)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 10)
+			A.affected_mob.cause_pain(BODY_ZONES_ALL, 10, BURN)
 			A.affected_mob.flash_pain_overlay(2)
 
 /datum/symptom/youth/Activate(datum/disease/advance/A)
@@ -112,7 +112,7 @@
 		return
 
 	var/pain = . / max(bodyparts.len, 2)
-	cause_pain(BODY_ZONES_ALL, pain)
+	cause_pain(BODY_ZONES_ALL, pain, BURN)
 	set_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
 
 /obj/machinery/stasis/chill_out(mob/living/carbon/target)

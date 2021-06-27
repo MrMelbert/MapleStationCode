@@ -14,10 +14,10 @@
 	return ..()
 
 /*
- * Helper carbon proc to cause [amount] pain to [target_zone].
+ * Helper carbon proc to cause [amount] pain of [type] damage type to [target_zone].
  */
-/mob/living/carbon/proc/cause_pain(target_zone, amount)
-	pain_controller?.adjust_bodypart_pain(target_zone, amount)
+/mob/living/carbon/proc/cause_pain(target_zone, amount, type)
+	pain_controller?.adjust_bodypart_pain(target_zone, amount, type)
 
 /*
  * Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.

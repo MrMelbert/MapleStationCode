@@ -182,7 +182,7 @@
  * def_zones - list of all zones being adjusted. Can be passed a non-list.
  * amount - amount of pain being applied to all items in [def_zones]. If posiitve, multiplied by [pain_modifier].
  */
-/datum/pain/proc/adjust_bodypart_pain(list/def_zones, amount)
+/datum/pain/proc/adjust_bodypart_pain(list/def_zones, amount, type = BRUTE)
 	SHOULD_NOT_SLEEP(TRUE) // This needs to be asyncronously called in a lot of places, it should already check that this doesn't sleep but just in case.
 
 	if(!islist(def_zones))
@@ -202,6 +202,7 @@
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
 			continue
 		if(adjusted_amount > 0)
+			adjusted_bodypart.last_recieved_pain_type = type
 			adjusted_amount *= (pain_modifier * adjusted_bodypart.bodypart_pain_modifier)
 		total_pain -= adjusted_bodypart.pain
 		adjusted_bodypart.pain = round(clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain), 0.01)
@@ -386,7 +387,7 @@
 	if(!def_zone || !pain)
 		return
 
-	adjust_bodypart_pain(def_zone, pain)
+	adjust_bodypart_pain(def_zone, pain, damagetype)
 
 /*
  * Add pain in from a recieved wound based on severity.
@@ -538,7 +539,7 @@
  */
 /datum/pain/proc/med_pain_effects(delta_time)
 	if(DT_PROB(3, delta_time))
-		to_chat(parent, span_danger(pick("Everything hurts.", "Everything feels very sore.", "", "It hurts to walk.", "It hurts.")))
+		to_chat(parent, span_bold(span_danger(pick("Everything hurts.", "Everything feels very sore.", "It hurts."))))
 		if(parent.staminaloss < 30)
 			parent.apply_damage(10, STAMINA)
 	else if(DT_PROB(6, delta_time) && parent.staminaloss <= 60)
@@ -565,13 +566,12 @@
 /datum/pain/proc/high_pain_effects(delta_time)
 	if(DT_PROB(0.5, delta_time))
 		if(locate(/datum/disease/shock) in parent.diseases)
-			message_admins("Found shock in [parent]")
 			return
 		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
 		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
 	else if(DT_PROB(3, delta_time))
-		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!", "I can't feel my legs!", "I can't feel my arms!", "Why?!")))
+		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!")))
 		if(parent.staminaloss < 50)
 			parent.apply_damage(10, STAMINA)
 		do_pain_emote("wince")

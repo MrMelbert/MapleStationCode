@@ -15,12 +15,15 @@
 	var/max_pain = PAIN_LIMB_MAX
 	/// Modifier applied to pain that this part recieves
 	var/bodypart_pain_modifier = 1
+	/// The last type of pain we recieved.
+	var/last_recieved_pain_type = BRUTE
 
 /obj/item/bodypart/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE)
 	. = ..()
 	if(!.)
 		return
 
+	var/dominant_type = (brute > burn ? BRUTE : BURN)
 	var/can_inflict = max_damage - get_damage()
 	var/total_damage = brute + burn
 	if(total_damage > can_inflict && total_damage > 0)
@@ -28,7 +31,7 @@
 		burn = round(burn * (can_inflict / total_damage), DAMAGE_PRECISION)
 
 	if(can_inflict > 0)
-		owner?.cause_pain(body_zone, body_damage_coeff * (brute + burn))
+		owner?.cause_pain(body_zone, body_damage_coeff * (brute + burn), dominant_type)
 
 /*
  * Gets our bodypart's effective pain (pain * pain modifiers).
@@ -112,37 +115,38 @@
 	if(owner.has_status_effect(STATUS_EFFECT_DETERMINED))
 		return FALSE
 
+	var/list/feedback_phrases = list()
+	var/static/list/healing_phrases = list("but is improving", "but is starting to dull", "but the stinging is stopping", "but feels faint")
+
 	var/scream_prob = 0
 	var/picked_emote = pick(PAIN_EMOTES + "mumble")
-	var/feedback = ""
 	switch(pain)
 		if(10 to 25)
 			owner.flash_pain_overlay(1)
-			feedback = "Your [name] aches[healing_pain ? ", but it's getting better" : ""]."
+			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")
 		if(25 to 50)
 			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(1)
-			if(healing_pain)
-				feedback = "Your [name] hurts, but it's starting to die down."
-			else
-				scream_prob = 5
-				feedback = "Your [name] hurts!"
+			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs", "cramps", "feels wrong", "feels loose")
+			if(last_recieved_pain_type == BURN)
+				feedback_phrases += list("stings to the touch", "burns")
+
 		if(50 to 65)
 			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(2)
-			if(healing_pain)
-				feedback = "Your [name] really hurts, but the stinging is stopping."
-			else
-				scream_prob = 10
-				feedback = "Your [name] really hurts!"
-		if(66 to INFINITY)
+			feedback_phrases += list("really hurts", "is loosing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels terrible")
+			if(last_recieved_pain_type == BURN)
+				feedback_phrases += list("burns to the touch", "burns", "singes")
+
+		if(65 to INFINITY)
 			scream_prob = 25
 			owner.flash_pain_overlay(2, 2 SECONDS)
-			feedback = "Your [name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"
+			feedback_phrases += list("is numb from the pain")
 
 	if(DT_PROB(scream_prob, delta_time))
 		owner.pain_emote("scream")
-	to_chat(owner, span_danger(feedback))
+
+	to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	return TRUE
 
 // --- Chest ---
@@ -160,32 +164,36 @@
 	if(owner.has_status_effect(STATUS_EFFECT_DETERMINED))
 		return FALSE
 
+	var/list/feedback_phrases = list()
+	var/list/side_feedback = list()
+	var/static/list/healing_phrases = list("but is improving", "but is starting to dull", "but the stinging is stopping", "but feels faint", "but is settling", "but it subsides")
+
 	var/picked_emote = pick(PAIN_EMOTES + "groan")
-	var/feedback = ""
 	switch(pain)
 		if(10 to 40)
-			feedback = "Your [name] aches[healing_pain ? ", for a short time" : ""]."
 			owner.flash_pain_overlay(1)
+			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")
 		if(40 to 75)
 			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(1, 2 SECONDS)
-			feedback = pick("Your [name] feels sore", "Your [name] hurts", "Your side hurts", "Your ribs hurt")
-			if(healing_pain)
-				feedback += pick(", but it's getting better", ", but it's feeling better", ", but it's improving", ", but it stops shortly")
-			feedback += "."
+			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs", "cramps", "feels tight")
+			side_feedback += list("Your side hurts", "Your side pangs", "Your ribs hurt", "Your ribs pang", "Your neck stiffs")
 		if(75 to 110)
 			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(2, 2 SECONDS)
-			feedback = pick("Your [name] really hurts", "Your feel a sharp pain in your side", "You breathe in and feel pain in your ribs")
-			if(healing_pain)
-				feedback += pick(", but the stinging is stopping", ", but it's feeling better", ", but it quickly subsides")
-			feedback += "!"
-		if(111 to INFINITY)
+			feedback_phrases += list("really hurts", "is loosing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels tight")
+			side_feedback += list("You feel a sharp pain in your side", "Your ribs feel broken")
+		if(110 to INFINITY)
 			owner.flash_pain_overlay(2, 3 SECONDS)
-			feedback = "You feel your ribs jostle in your [name]!"
+			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "stings to the touch", "feels terrible", "feels constricted")
+			side_feedback += list("You feel your ribs jostle in your [name]")
 			owner.pain_emote(pick("groan", "scream"))
 
-	to_chat(owner, span_danger(feedback))
+	if(side_feedback && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
+		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? "[pick(healing_phrases)]." : "!"]"))
+	else
+		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+
 	return TRUE
 
 // --- Head ---
@@ -210,28 +218,33 @@
 	if(!owner || !pain)
 		return FALSE
 
-	var/feedback = ""
+	var/list/feedback_phrases = list()
+	var/list/side_feedback = list()
+	var/static/list/healing_phrases = list("but is improving", "but is starting to dull", "but the stinging is stopping", "but the tension is stopping", "but is settling", "but it subsides", "but the pressure fades")
+
 	switch(pain)
 		if(10 to 30)
-			feedback = "Your [name] aches[healing_pain ? ", but it's getting better" : ""]."
 			owner.flash_pain_overlay(1)
+			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")
+			side_feedback += list("Your neck feels sore", "Your eyes feel tired")
 		if(30 to 60)
 			owner.flash_pain_overlay(1)
-			if(healing_pain)
-				feedback = "Your [name] hurts, but it's starting to die down."
-			else
-				feedback = "Your [name] hurts!"
+			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs")
+			side_feedback += list("Your neck aches badly", "Your eyes hurt", "You feel a migrane coming on", "You feel a splitting headache")
 		if(60 to 90)
 			owner.flash_pain_overlay(2)
-			if(healing_pain)
-				feedback = "Your [name] really hurts, but the stinging is stopping."
-			else
-				feedback = "Your [name] really hurts!"
+			feedback_phrases += list("really hurts", "is loosing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels terrible")
+			side_feedback += list("Your neck stiffs", "You feel pressure in your [name]", "The back of your eyes begin hurt", "You feel a terrible migrane")
 		if(90 to INFINITY)
 			owner.flash_pain_overlay(2, 2 SECONDS)
-			feedback = "Your [name] is numb from the pain[healing_pain ? ", but the feeling is returning." : "!"]"
+			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "feels terrible", "is in agony", "feels tense")
+			side_feedback += list("You feel a splitting migrane", "Pressure floods your [name]", "Your head feels as if it's being squeezed", "Your eyes hurt to keep open")
 
-	to_chat(owner, span_danger(feedback))
+	if(side_feedback && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
+		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? "[pick(healing_phrases)]." : "!"]"))
+	else
+		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+
 	return TRUE
 
 // --- Right Leg ---
@@ -248,7 +261,7 @@
 	if(!.)
 		return FALSE
 
-	if(get_modified_pain() > 30 && DT_PROB(25, delta_time))
+	if(get_modified_pain() > 30 && DT_PROB(10, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
@@ -268,7 +281,7 @@
 	if(!.)
 		return FALSE
 
-	if(get_modified_pain() > 30 && DT_PROB(25, delta_time))
+	if(get_modified_pain() > 30 && DT_PROB(10, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
