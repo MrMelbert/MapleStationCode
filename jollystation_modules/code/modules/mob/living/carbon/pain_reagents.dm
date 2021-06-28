@@ -15,12 +15,7 @@
 	if(!isnull(pain_modifier))
 		user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
 
-/datum/reagent/medicine/epinephrine
-	pain_modifier = 0.9
-
-/datum/reagent/medicine/atropine
-	pain_modifier = 0.8
-
+// Morphine buff to actually work as a painkiller
 /datum/reagent/medicine/morphine
 	addiction_types = list(/datum/addiction/opiods = 30) //~50 units for addiction
 	pain_modifier = 0.4
@@ -33,17 +28,22 @@
 
 	return TRUE
 
+/datum/reagent/medicine/epinephrine
+	pain_modifier = 0.9
+
+/datum/reagent/medicine/atropine
+	pain_modifier = 0.8
+
 /datum/reagent/medicine/mine_salve
 	pain_modifier = 0.75
 
+// Determined = fight or flight mode = should have less pain
 /datum/reagent/determination
 	pain_modifier = 0.5
 
+// Drugs reduce pain, alcohol reduces pain based on boozepwr
 /datum/reagent/drug/space_drugs
 	pain_modifier = 0.8
-
-/datum/reagent/consumable/ethanol/painkiller
-	pain_modifier = 0.75
 
 /datum/reagent/consumable/ethanol/New()
 	if(boozepwr)
@@ -52,10 +52,42 @@
 			pain_modifier = new_pain_modifier
 	return ..()
 
+/datum/reagent/consumable/ethanol/painkiller
+	pain_modifier = 0.75
+
+// Abductor chem sets pain mod to 0 so abductors can do their surgeries
 /datum/reagent/medicine/cordiolis_hepatico
 	pain_modifier = 0
 
+// Healium functions as an anesthetic
 /datum/reagent/healium
+	pain_modifier = 0.75
+
+/datum/reagent/healium/on_mob_metabolize(mob/living/L)
+	. = ..()
+	if(L.IsSleeping())
+		var/obj/item/organ/lungs/our_lungs = L.getorganslot(ORGAN_SLOT_LUNGS)
+		our_lungs?.on_anesthetic = TRUE
+
+/datum/reagent/healium/on_mob_end_metabolize(mob/living/L)
+	. = ..()
+	var/obj/item/organ/lungs/our_lungs = L.getorganslot(ORGAN_SLOT_LUNGS)
+	our_lungs?.on_anesthetic = FALSE
+
+// Cryoxadone slowly heals pain, a la wounds
+/datum/reagent/medicine/cryoxadone
+	pain_modifier = 0.5
+
+/datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+	. = ..()
+	var/power = -0.00003 * (M.bodytemperature ** 2) + 3
+	if(M.bodytemperature < T0C)
+		M.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * delta_time, 0.01)
+
+/datum/reagent/medicine/stimulants
+	pain_modifier = 0.5
+
+/datum/reagent/medicine/changelingadrenaline
 	pain_modifier = 0.5
 
 /// New reagents
@@ -94,9 +126,9 @@
 	// Not good at headaches, but very good at treating everything else.
 	M.adjustBruteLoss(-0.1 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.05 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.02)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.04)
-	M.cause_pain(BODY_ZONE_CHEST, -0.08)
+	M.cause_pain(BODY_ZONE_HEAD, -0.02 * REM * delta_time)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.04 * REM * delta_time)
+	M.cause_pain(BODY_ZONE_CHEST, -0.08 * REM * delta_time)
 	// Okay at fevers.
 	M.adjust_bodytemperature(-15 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes more disgust than paracetamol.
@@ -114,7 +146,7 @@
 	// On overdose, heat up the body...
 	M.adjust_bodytemperature(30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time)
 	// Causes sickness...
-	M.apply_damage(1 * delta_time, TOX)
+	M.apply_damage(1 * REM * delta_time, TOX)
 	if(M.disgust < 100 && DT_PROB(100 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(6 * REM * delta_time)
 	// ...Hallucinations after a while...
@@ -153,8 +185,8 @@
 	M.adjustBruteLoss(-0.05 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.05 * REM * delta_time, FALSE)
 	M.adjustToxLoss(-0.05 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.08)
-	M.cause_pain(BODY_ZONES_MINUS_HEAD, -0.06)
+	M.cause_pain(BODY_ZONE_HEAD, -0.08 * REM * delta_time)
+	M.cause_pain(BODY_ZONES_MINUS_HEAD, -0.06 * REM * delta_time)
 	// Not very good at treating fevers.
 	M.adjust_bodytemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes liver damage - higher dosages causes more liver damage.
@@ -201,9 +233,9 @@
 	// Really good at treating headaches.
 	M.adjustBruteLoss(-0.05 * REM * delta_time, FALSE)
 	M.adjustToxLoss(-0.1 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.1)
-	M.cause_pain(BODY_ZONE_CHEST, -0.04)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.02)
+	M.cause_pain(BODY_ZONE_HEAD, -0.1 * REM * delta_time)
+	M.cause_pain(BODY_ZONE_CHEST, -0.04 * REM * delta_time)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.02 * REM * delta_time)
 	// Causes flat liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.5 * REM * delta_time)
 	// Really good at treating fevers.
@@ -225,7 +257,7 @@
 
 	// On overdose, causes liver damage and chest pain...
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 1 * REM * delta_time)
-	M.cause_pain(BODY_ZONE_CHEST, 1)
+	M.cause_pain(BODY_ZONE_CHEST, 1 * REM * delta_time)
 	// Sickness...
 	if(M.disgust < 100 && DT_PROB(100 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(5 * REM * delta_time)
@@ -277,10 +309,10 @@
 
 	// Heals all pain a bit if in low dosage.
 	if(volume <= 10)
-		M.cause_pain(BODY_ZONES_ALL, -0.3)
+		M.cause_pain(BODY_ZONES_ALL, -0.2 * REM * delta_time)
 	// Mildly toxic in higher dosages.
 	else if(DT_PROB(volume * 3, delta_time))
-		M.apply_damage(3 * delta_time, TOX)
+		M.apply_damage(3 * REM * delta_time, TOX)
 
 /datum/chemical_reaction/medicine/aspririn_para_coffee
 	results = list(/datum/reagent/medicine/painkiller/aspririn_para_coffee = 3)
@@ -308,7 +340,7 @@
 		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_heavy, name)
 	M.adjustBruteLoss(-0.3 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.2 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -1)
+	M.cause_pain(BODY_ZONES_ALL, -1 * REM * delta_time)
 	M.set_drugginess(10 * REM * delta_time)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(3 * REM * delta_time)
@@ -329,19 +361,19 @@
 		switch(picked_option)
 			if(1)
 				to_chat(human_mob, span_danger("Your legs don't want to move."))
-				human_mob.Paralyze(60)
+				human_mob.Paralyze(60 * REM * delta_time)
 			if(2)
 				to_chat(human_mob, span_danger("Your breathing starts to shallow."))
-				human_mob.losebreath = clamp(human_mob.losebreath + 3, 0, 12)
+				human_mob.losebreath = clamp(human_mob.losebreath + 3 * REM * delta_time, 0, 12)
 				human_mob.adjustOxyLoss((15 / creation_purity), FALSE)
 			if(3)
 				human_mob.drop_all_held_items()
 			if(4)
 				to_chat(human_mob, span_danger("You feel your heart skip a beat."))
-				human_mob.Jitter(3)
+				human_mob.Jitter(3 * REM * delta_time)
 			if(5)
 				to_chat(human_mob, span_danger("You feel the world spin."))
-				human_mob.Dizzy(3)
+				human_mob.Dizzy(3 * REM * delta_time)
 			if(6)
 				to_chat(human_mob, span_userdanger("You feel your heart seize and stop completely!"))
 				if(human_mob.stat == CONSCIOUS)
@@ -382,7 +414,7 @@
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/morphine/diluted
-	desc = "Used to treat severe pain and pain symptoms. Causes moderate drowsyness. Mildly addictive."
+	desc = "Used to treat major to severe pain. Causes moderate drowsyness. Mildly addictive."
 	icon_state = "pill11"
 	list_reagents = list(/datum/reagent/medicine/morphine = 5)
 	rename_with_volume = TRUE

@@ -9,10 +9,6 @@
 /datum/pain
 	/// The parent mob we're tracking.
 	var/mob/living/carbon/parent
-	/// Total pain across all bodyparts
-	var/total_pain = 0
-	/// Max total pain (sum of all body part [max_pain]s)
-	var/total_pain_max = 0
 	/// Modifier applied to all [adjust_pain] amounts
 	var/pain_modifier = 1
 	/// List of all pain modifiers we have
@@ -103,7 +99,6 @@
 			body_zones -= new_limb.body_zone
 
 	body_zones[new_limb.body_zone] = new_limb
-	update_total_pain()
 
 	if(special)
 		new_limb.pain = 0
@@ -130,21 +125,6 @@
 		lost_limb.max_stamina_damage = initial(lost_limb.max_stamina_damage)
 
 	body_zones -= lost_limb
-	update_total_pain()
-
-/*
- * Re-check and update our total_pain and total_max_pain.
- */
-/datum/pain/proc/update_total_pain()
-	var/total_pain_max_new = 0
-	var/total_pain_new = 0
-	for(var/zone in body_zones)
-		var/obj/item/bodypart/checked_bodypart = body_zones[zone]
-		total_pain_new += checked_bodypart.pain
-		total_pain_max_new += checked_bodypart.max_pain
-
-	total_pain_max = total_pain_max_new
-	total_pain = total_pain_new
 
 /*
  * Add a pain modifier and update our overall modifier.
@@ -193,28 +173,26 @@
 
 	shuffle_inplace(def_zones)
 	for(var/zone in def_zones)
-		var/adjusted_amount = amount
+		var/adjusted_amount = round(amount, 0.01)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		if(QDELETED(adjusted_bodypart))
-			CRASH("Pain component attempted to adjust_bodypart_pain of untracked or invalid zone. Bodypart: [adjusted_bodypart] Zone: [zone]")
+		if(!adjusted_bodypart)
+			continue
 		if(amount < 0 && adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
 			continue
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
 			continue
 		if(adjusted_amount > 0)
 			adjusted_bodypart.last_recieved_pain_type = type
-			adjusted_amount *= (pain_modifier * adjusted_bodypart.bodypart_pain_modifier)
-		total_pain -= adjusted_bodypart.pain
-		adjusted_bodypart.pain = round(clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain), 0.01)
-		total_pain = clamp(total_pain + adjusted_bodypart.pain, 0, total_pain_max)
+			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
+		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
 
 		if(adjusted_amount > 0)
-			INVOKE_ASYNC(src, .proc/on_pain_gain, adjusted_bodypart, amount)
+			INVOKE_ASYNC(src, .proc/on_pain_gain, adjusted_bodypart, amount, type)
 		else if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-			INVOKE_ASYNC(src, .proc/on_pain_loss, adjusted_bodypart, amount)
+			INVOKE_ASYNC(src, .proc/on_pain_loss, adjusted_bodypart, amount, type)
 
 		if(debugging)
-			message_admins("DEBUG: [parent] recived [amount] pain to [adjusted_bodypart]. Total pain: [total_pain]")
+			message_admins("DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
 
 	return TRUE
 
@@ -236,8 +214,7 @@
 		if(!adjusted_bodypart)
 			CRASH("Pain component attempted to adjust_bodypart_pain of untracked or invalid zone [zone].")
 		adjusted_bodypart.min_pain = round(clamp(adjusted_bodypart.min_pain + amount, 0, adjusted_bodypart.max_pain), 0.01)
-		if(adjusted_bodypart.pain < adjusted_bodypart.min_pain)
-			adjust_bodypart_pain(zone, -500)
+		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
 
 	return TRUE
 
@@ -249,10 +226,10 @@
  * affected_part - the bodypart that gained the pain
  * amount - amount of pain that was gained, post-[pain_modifier] applied
  */
-/datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount)
+/datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount, type)
 	affected_part.on_gain_pain_effects(amount)
 	apply_pain_attributes()
-	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount)
+	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
 
 	if(amount > 12 && prob(20))
@@ -268,10 +245,10 @@
  * affected_part - the bodypart that lost pain
  * amount - amount of pain that was lost
  */
-/datum/pain/proc/on_pain_loss(obj/item/bodypart/affected_part, amount)
+/datum/pain/proc/on_pain_loss(obj/item/bodypart/affected_part, amount, type)
 	affected_part.on_lose_pain_effects(amount)
 	apply_pain_attributes()
-	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_LOST, affected_part, amount)
+	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_LOST, affected_part, amount, type)
 
 /*
  * Hook into [/mob/living/proc/apply_damage] proc via signal and apply pain based on how much damage was gained.
@@ -427,9 +404,6 @@
 /datum/pain/process(delta_time)
 
 	check_pain_modifiers(delta_time)
-
-	if(!total_pain)
-		return
 
 	var/average_pain = 0 //We can save proc overhead by doing this here manually instead of calling get_average_pain().
 	var/list/shuffled_zones = shuffle(body_zones)
@@ -597,7 +571,7 @@
 			parent.visible_message(span_warning("[parent] doubles over in pain!"))
 
 /*
- * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain]
+ * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
  */
 /datum/pain/proc/apply_pain_attributes()
 	switch(get_average_pain())
@@ -627,8 +601,19 @@
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/crippling_pain)
 
+/*
+ * Run a pain related emote, if a few checks are successful.
+ *
+ * emote - string, what emote we're running
+ * cooldown - what cooldown to set our emote cooldown to
+ *
+ * returns TRUE if successful.
+ */
 /datum/pain/proc/do_pain_emote(emote, cooldown = 3 SECONDS)
 	if(!COOLDOWN_FINISHED(src, time_since_last_pain_message))
+		return FALSE
+
+	if(parent.stat == DEAD)
 		return FALSE
 
 	parent.emote(emote)
@@ -636,20 +621,20 @@
 	return TRUE
 
 /*
- * Get the average pain of all limbs.
- * Not all limbs share the same max pain so we normalize it to the max limb pain.
- *
- * returns the average pain across all limbs.
+ * Get the average pain of all bodyparts as a percent of the total pain.
  */
 /datum/pain/proc/get_average_pain()
-	. = 0
+	var/max_total_pain = 0
+	var/total_pain = 0
 	for(var/zone in body_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		. += (adjusted_bodypart.pain * (PAIN_LIMB_MAX / adjusted_bodypart.max_pain))
-	. /= body_zones.len
+		total_pain += adjusted_bodypart.pain
+		max_total_pain += adjusted_bodypart.max_pain
+
+	return 100 * round(total_pain / max_total_pain, 0.05)
 
 /*
- * Remove all pain and pain paralysis from our mob after we're fully healed by something (like an adminheal)
+ * Remove all pain, pain paralysis, side effects, etc. from our mob after we're fully healed by something (like an adminheal)
  */
 /datum/pain/proc/remove_all_pain(datum/source, adminheal)
 	SIGNAL_HANDLER
@@ -681,30 +666,34 @@
 
 	STOP_PROCESSING(SSpain, src)
 
+/*
+ * Sends text to health analyzers via signal. Reports how much pain [source] is sustaining to [user].
+ * Only sends a vague description of how much pain, instead of a detailed report -
+ * it's up to the patient to elaborate on which limbs hurt and how much they hurt.
+ *
+ * adds text to [analyzer_text] list in place
+ */
 /datum/pain/proc/on_analyzed(mob/living/carbon/source, mob/living/carbon/human/user, list/analyzer_text)
 	SIGNAL_HANDLER
 
 	var/amount = ""
 	var/tip = ""
-	switch(total_pain)
-		if(25 to 75)
+	switch(get_average_pain())
+		if(5 to 15)
 			amount = "minor"
 			tip = "Pain should subside in time."
-		if(75 to 150)
+		if(15 to 30)
 			amount = "moderate"
 			tip = "Pain should subside in time and can be quickened with rest or painkilling medication."
-		if(150 to 250)
+		if(30 to 50)
 			amount = "major"
 			tip = "Treat wounds and pain should abated with rest or stasis and painkilling medication."
-		if(250 to 350)
+		if(50 to 80)
 			amount = "severe"
 			tip = "Treat wounds and pain should abated with rest, anesthetic or stasis, and painkilling medication."
-		if(350 to 500)
+		if(80 to 100)
 			amount = "extreme"
 			tip = "Treat wounds and pain should abated with long rest, anesthetic or stasis, and heavy painkilling medication."
-		if(500 to INFINITY) // Shouldn't be reachable, but I guess
-			amount = "ultimate"
-			tip = "Subject should be supplemented with merciful death."
 
 	if(amount)
 		analyzer_text += "<span class='alert ml-1'><b>Subject is experiencing [amount] pain. </b>[tip]</span>"
@@ -729,7 +718,6 @@
 	debugging = !debugging
 	if(debugging)
 		message_admins("Debugging pain enabled. DEBUG PRINTOUT: [src]")
-		message_admins("[parent] has [total_pain] of [total_pain_max].")
 		message_admins("[parent] has an average pain of [get_average_pain()].")
 		message_admins("[parent] has a pain modifier of [pain_modifier].")
 		message_admins(" - - - - ")

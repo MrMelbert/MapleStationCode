@@ -3,12 +3,12 @@
 /// Pained Limp status effect
 #define STATUS_EFFECT_LIMP_PAIN /datum/status_effect/limp/pain
 
-/// Sent when a carbon gains pain. (obj/item/bodypart/affected_bodypart, amount)
+/// Sent when a carbon gains pain. (obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
-/// Sent when a carbon loses pain. (obj/item/bodypart/affected_bodypart, amount)
+/// Sent when a carbon loses pain. (obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
 
-/// List of all body zones affected by pain. (Which is all body zones...)
+/// Various lists of body zones affected by pain.
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_MINUS_HEAD list(BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_LIMBS list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -21,7 +21,7 @@
 /// Amount of pain gained from surgically removed limb (given to the chest)
 #define PAIN_LIMB_REMOVED 20
 
-/// Max pains for limbs.
+/// Max pains for bodyparts
 #define PAIN_LIMB_MAX 70
 #define PAIN_CHEST_MAX 120
 #define PAIN_HEAD_MAX 100

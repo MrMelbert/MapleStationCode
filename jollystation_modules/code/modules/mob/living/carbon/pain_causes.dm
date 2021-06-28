@@ -67,44 +67,6 @@
 			A.affected_mob.cause_pain(BODY_ZONES_ALL, 10, BURN)
 			A.affected_mob.flash_pain_overlay(2)
 
-/datum/symptom/youth/Activate(datum/disease/advance/A)
-	. = ..()
-	if(!.)
-		return
-	switch(A.stage)
-		if(5)
-			A.affected_mob.set_pain_mod(PAIN_MOD_YOUTH, 0.8)
-
-/datum/symptom/youth/End(datum/disease/advance/A)
-	. = ..()
-	if(!.)
-		return
-	A.affected_mob.unset_pain_mod(PAIN_MOD_YOUTH)
-
-// Traumas
-/datum/brain_trauma/mild/concussion/on_life(delta_time, times_fired)
-	. = ..()
-	if(DT_PROB(1, delta_time))
-		owner.cause_pain(BODY_ZONE_HEAD, 10)
-
-/datum/brain_trauma/special/tenacity/on_gain()
-	. = ..()
-	owner.set_pain_mod(PAIN_MOD_TENACITY, 0)
-
-/datum/brain_trauma/special/tenacity/on_lose()
-	owner.unset_pain_mod(PAIN_MOD_TENACITY)
-	. = ..()
-
-// Near death
-/mob/living/carbon/human/set_health(new_value)
-	. = ..()
-	if(HAS_TRAIT_FROM(src, TRAIT_SIXTHSENSE, "near-death"))
-		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "near-death", /datum/mood_event/deaths_door)
-		set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
-	else
-		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "near-death")
-		unset_pain_mod(PAIN_MOD_NEAR_DEATH)
-
 // Shocks
 /mob/living/carbon/human/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
 	. = ..()
@@ -115,16 +77,9 @@
 	cause_pain(BODY_ZONES_ALL, pain, BURN)
 	set_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
 
-/obj/machinery/stasis/chill_out(mob/living/carbon/target)
+// Fleshmend of course heals pain.
+/datum/status_effect/fleshmend/tick()
 	. = ..()
-	if(!istype(target) || target != occupant)
-		return
-
-	target.set_pain_mod(PAIN_MOD_STASIS, 0)
-
-/obj/machinery/stasis/thaw_them(mob/living/carbon/target)
-	. = ..()
-	if(!istype(target))
-		return
-
-	target.unset_pain_mod(PAIN_MOD_STASIS)
+	if(iscarbon(owner) && !owner.on_fire)
+		var/mob/living/carbon/carbon_owner = owner
+		carbon_owner.cause_pain(BODY_ZONES_ALL, -1.5)

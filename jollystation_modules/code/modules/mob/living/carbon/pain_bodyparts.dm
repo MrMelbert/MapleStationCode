@@ -146,7 +146,8 @@
 	if(DT_PROB(scream_prob, delta_time))
 		owner.pain_emote("scream")
 
-	to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+	if(feedback_phrases.len)
+		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	return TRUE
 
 // --- Chest ---
@@ -189,9 +190,9 @@
 			side_feedback += list("You feel your ribs jostle in your [name]")
 			owner.pain_emote(pick("groan", "scream"))
 
-	if(side_feedback && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
+	if(side_feedback.len && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
 		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? "[pick(healing_phrases)]." : "!"]"))
-	else
+	else if(feedback_phrases.len)
 		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 
 	return TRUE
@@ -240,9 +241,9 @@
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "feels terrible", "is in agony", "feels tense")
 			side_feedback += list("You feel a splitting migrane", "Pressure floods your [name]", "Your head feels as if it's being squeezed", "Your eyes hurt to keep open")
 
-	if(side_feedback && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
+	if(side_feedback.len && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
 		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? "[pick(healing_phrases)]." : "!"]"))
-	else
+	else if(feedback_phrases.len)
 		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 
 	return TRUE
