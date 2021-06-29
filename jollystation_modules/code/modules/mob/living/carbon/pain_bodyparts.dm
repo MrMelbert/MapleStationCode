@@ -141,12 +141,10 @@
 			if(last_recieved_pain_type == BURN)
 				feedback_phrases += list("burns to the touch", "burns", "singes")
 		if(65 to INFINITY)
-			scream_prob = 25
+			if(DT_PROB(12, delta_time))
+				owner.pain_emote("scream")
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback_phrases += list("is numb from the pain")
-
-	if(DT_PROB(scream_prob, delta_time))
-		owner.pain_emote("scream")
 
 	if(feedback_phrases.len)
 		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
