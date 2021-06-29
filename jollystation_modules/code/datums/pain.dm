@@ -55,6 +55,9 @@
  * Register all of our signals with our parent.
  */
 /datum/pain/proc/RegisterParentSignals()
+	if(!parent)
+		CRASH("Attempted to register pain signals on null parent!")
+
 	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, .proc/add_bodypart)
 	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, .proc/remove_bodypart)
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMGE, .proc/add_damage_pain)
@@ -66,9 +69,12 @@
 	RegisterSignal(parent, COMSIG_MOB_HEALTHSCANNED, .proc/on_analyzed)
 
 /*
- * Unregister all of our signals from our parent when we're done.
+ * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
  */
 /datum/pain/proc/UnregisterParentSignals()
+	if(!parent?.comp_lookup)
+		return
+
 	UnregisterSignal(parent, list(
 		COMSIG_CARBON_ATTACH_LIMB,
 		COMSIG_CARBON_REMOVE_LIMB,
@@ -95,9 +101,9 @@
 		return
 
 	if(new_limb.body_zone in body_zones)
-		if(body_zones[new_limb.body_zone])
+		if(body_zones[new_limb.body_zone]) // if we already have a val assigned to this key
 			remove_bodypart(lost_limb = body_zones[new_limb.body_zone], special = special)
-		else
+		else // if we somehow don't have a val assigned to this key
 			body_zones -= new_limb.body_zone
 
 	body_zones[new_limb.body_zone] = new_limb
@@ -425,11 +431,11 @@
 	// we check the average pain of all bodyparts, normalized to limb pain (max of 75)
 	if(!parent.has_status_effect(STATUS_EFFECT_DETERMINED))
 		switch(get_average_pain())
-			if(15 to 40)
+			if(10 to 40)
 				low_pain_effects(delta_time)
-			if(40 to 75)
+			if(40 to 70)
 				med_pain_effects(delta_time)
-			if(75 to INFINITY)
+			if(70 to INFINITY)
 				high_pain_effects(delta_time)
 
 	decay_pain(delta_time)
@@ -510,8 +516,15 @@
  * Effects caused by medium pain. (~250-400 pain)
  */
 /datum/pain/proc/med_pain_effects(delta_time)
-	if(DT_PROB(3, delta_time))
+	if(DT_PROB(0.1, delta_time))
+		if(locate(/datum/disease/shock) in parent.diseases)
+			return
+		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
+		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
+		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+	else if(DT_PROB(3, delta_time))
 		to_chat(parent, span_bold(span_danger(pick("Everything hurts.", "Everything feels very sore.", "It hurts."))))
+		do_pain_emote("scream", 5 SECONDS)
 		if(parent.staminaloss < 30)
 			parent.apply_damage(10, STAMINA)
 	else if(DT_PROB(6, delta_time) && parent.staminaloss <= 60)
@@ -544,16 +557,16 @@
 		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
 	else if(DT_PROB(3, delta_time))
 		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!")))
+		do_pain_emote("scream", 5 SECONDS)
 		if(parent.staminaloss < 50)
 			parent.apply_damage(10, STAMINA)
-		do_pain_emote("wince")
 	else if(DT_PROB(2, delta_time))
 		parent.Knockdown(15 * pain_modifier)
 		parent.visible_message(span_warning("[parent] collapses from pain!"))
 	else if(DT_PROB(1, delta_time))
 		parent.vomit(50)
 	else if(DT_PROB(1, delta_time))
-		do_pain_emote("scream")
+		do_pain_emote("wince")
 		parent.Jitter(15)
 	else if(DT_PROB(1, delta_time))
 		parent.set_confusion(min(parent.get_confusion() + 4, 12))
@@ -629,7 +642,7 @@
 		total_pain += adjusted_bodypart.pain
 		max_total_pain += adjusted_bodypart.max_pain
 
-	return 100 * round(total_pain / max_total_pain, 0.05)
+	return 100 * total_pain / max_total_pain
 
 /*
  * Remove all pain, pain paralysis, side effects, etc. from our mob after we're fully healed by something (like an adminheal)
@@ -682,16 +695,16 @@
 			tip = "Pain should subside in time."
 		if(15 to 30)
 			amount = "moderate"
-			tip = "Pain should subside in time and can be quickened with rest or painkilling medication."
+			tip = "Pain should subside in time and can be quickened with rest or cryogenics, or painkilling medication."
 		if(30 to 50)
 			amount = "major"
-			tip = "Treat wounds and pain should abated with rest or stasis and painkilling medication."
+			tip = "Treat wounds and pain should abated with rest, cryogenics, or stasis and painkilling medication."
 		if(50 to 80)
 			amount = "severe"
-			tip = "Treat wounds and pain should abated with rest, anesthetic or stasis, and painkilling medication."
+			tip = "May enter Neurogenic shock soon. Treat wounds and pain should abated with rest, anesthetic, cryogenics, or stasis, and painkilling medication."
 		if(80 to 100)
 			amount = "extreme"
-			tip = "Treat wounds and pain should abated with long rest, anesthetic or stasis, and heavy painkilling medication."
+			tip = "May enter Neurogenic shock soon. Treat wounds and pain should abated with long rest, anesthetic, cryogenics,  or stasis, and heavy painkilling medication."
 
 	if(amount)
 		analyzer_text += "<span class='alert ml-1'><b>Subject is experiencing [amount] pain. </b>[tip]</span>"

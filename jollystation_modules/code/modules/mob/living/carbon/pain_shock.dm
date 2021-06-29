@@ -90,7 +90,7 @@
 			if(DT_PROB(2, delta_time))
 				to_chat(affected_mob, span_danger("You skip a breath!"))
 				affected_mob.pain_emote("gasp")
-				affected_mob.adjustOxyLoss(rand(5, 15))
+				affected_mob.apply_damage(rand(5, 15), OXY)
 			if(DT_PROB(8, delta_time))
 				to_chat(affected_mob, span_danger("You feel freezing!"))
 				affected_mob.pain_emote("shiver")

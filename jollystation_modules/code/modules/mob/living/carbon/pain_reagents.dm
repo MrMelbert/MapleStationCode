@@ -17,7 +17,7 @@
 
 // Morphine buff to actually work as a painkiller
 /datum/reagent/medicine/morphine
-	addiction_types = list(/datum/addiction/opiods = 30) //~50 units for addiction
+	addiction_types = list(/datum/addiction/opiods = 30) //5u = 100 progress, 25-30u = addiction
 	pain_modifier = 0.4
 
 /datum/reagent/medicine/morphine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
@@ -120,7 +120,7 @@
 	overdose_threshold = 25
 	ph = 6.4
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	pain_modifier = 0.4
+	pain_modifier = 0.6
 
 /datum/reagent/medicine/painkiller/aspirin/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	// Not good at headaches, but very good at treating everything else.
@@ -178,15 +178,14 @@
 	overdose_threshold = 25
 	ph = 4.7
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	pain_modifier = 0.5
+	pain_modifier = 0.6
 
 /datum/reagent/medicine/painkiller/paracetamol/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	// Good general painkiller.
 	M.adjustBruteLoss(-0.05 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.05 * REM * delta_time, FALSE)
 	M.adjustToxLoss(-0.05 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.08 * REM * delta_time)
-	M.cause_pain(BODY_ZONES_MINUS_HEAD, -0.06 * REM * delta_time)
+	M.cause_pain(BODY_ZONES_ALL, -0.05 * REM * delta_time)
 	// Not very good at treating fevers.
 	M.adjust_bodytemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes liver damage - higher dosages causes more liver damage.
@@ -233,7 +232,7 @@
 	// Really good at treating headaches.
 	M.adjustBruteLoss(-0.05 * REM * delta_time, FALSE)
 	M.adjustToxLoss(-0.1 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONE_HEAD, -0.1 * REM * delta_time)
+	M.cause_pain(BODY_ZONE_HEAD, -0.08 * REM * delta_time)
 	M.cause_pain(BODY_ZONE_CHEST, -0.04 * REM * delta_time)
 	M.cause_pain(BODY_ZONES_LIMBS, -0.02 * REM * delta_time)
 	// Causes flat liver damage.
@@ -256,8 +255,8 @@
 		return
 
 	// On overdose, causes liver damage and chest pain...
-	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 1 * REM * delta_time)
-	M.cause_pain(BODY_ZONE_CHEST, 1 * REM * delta_time)
+	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 1.5 * REM * delta_time)
+	M.cause_pain(BODY_ZONE_CHEST, 0.24 * REM * delta_time)
 	// Sickness...
 	if(M.disgust < 100 && DT_PROB(100 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(5 * REM * delta_time)
@@ -307,9 +306,9 @@
 /datum/reagent/medicine/painkiller/aspririn_para_coffee/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
 
-	// Heals all pain a bit if in low dosage.
+	// Heals all pain a bit if in low dosage. High metabolism, so it must make it count.
 	if(volume <= 10)
-		M.cause_pain(BODY_ZONES_ALL, -0.2 * REM * delta_time)
+		M.cause_pain(BODY_ZONES_ALL, -1 * REM * delta_time)
 	// Mildly toxic in higher dosages.
 	else if(DT_PROB(volume * 3, delta_time))
 		M.apply_damage(3 * REM * delta_time, TOX)
@@ -328,11 +327,11 @@
 	description = "A drug that rapidly treats major to extreme pain. Highly addictive. Overdose can cause heart attacks."
 	reagent_state = LIQUID
 	color = "#ffcb86"
-	metabolization_rate = REAGENTS_METABOLISM
+	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 30
 	ph = 5.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/opiods = 60) //Yeah, very addictive (~25 units for addiction)
+	addiction_types = list(/datum/addiction/opiods = 45) //5u = 150 progress, 15-20u = addiction
 	pain_modifier = 0.3
 
 /datum/reagent/medicine/oxycodone/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
@@ -340,7 +339,7 @@
 		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_heavy, name)
 	M.adjustBruteLoss(-0.3 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.2 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -1 * REM * delta_time)
+	M.cause_pain(BODY_ZONES_ALL, -0.6 * REM * delta_time)
 	M.set_drugginess(10 * REM * delta_time)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
 		M.adjust_disgust(3 * REM * delta_time)
@@ -365,7 +364,7 @@
 			if(2)
 				to_chat(human_mob, span_danger("Your breathing starts to shallow."))
 				human_mob.losebreath = clamp(human_mob.losebreath + 3 * REM * delta_time, 0, 12)
-				human_mob.adjustOxyLoss((15 / creation_purity), FALSE)
+				human_mob.apply_damage((15 / creation_purity), OXY)
 			if(3)
 				human_mob.drop_all_held_items()
 			if(4)
@@ -396,39 +395,39 @@
 	name = "asprin pill"
 	desc = "Used to treat moderate pain and fever. Metabolizes slowly. Best at treating chest pain."
 	icon_state = "pill7"
-	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 10)
+	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 10) // Lasts ~4 minutes, heals ~20 pain in chest (lower in other parts)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/ibuprofen
 	name = "ibuprofen pill"
 	desc = "Used to treat mild pain, headaches, and fever. Metabolizes slowly. Best at treating head pain."
 	icon_state = "pill8"
-	list_reagents = list(/datum/reagent/medicine/painkiller/ibuprofen = 10)
+	list_reagents = list(/datum/reagent/medicine/painkiller/ibuprofen = 10) // Lasts ~4 minutes, heals ~20 pain in head (lower in other parts)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/paracetamol
 	name = "paracetamol pill"
 	desc = "Used to treat moderate pain and headaches. Metabolizes slowly. Good as a general painkiller."
 	icon_state = "pill9"
-	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 10)
+	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 10) // Lasts ~4 minutes, heals ~15 pain per bodypart
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/morphine/diluted
 	desc = "Used to treat major to severe pain. Causes moderate drowsyness. Mildly addictive."
 	icon_state = "pill11"
-	list_reagents = list(/datum/reagent/medicine/morphine = 5)
+	list_reagents = list(/datum/reagent/medicine/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/oxycodone
 	name = "oxycodon pill"
-	desc = "Used to treat severe to extreme pain. Metabolizes quickly, rapid acting. Very addictive."
+	desc = "Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
 	icon_state = "pill12"
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 5)
+	list_reagents = list(/datum/reagent/medicine/oxycodone = 5) // Lasts ~1 minute, heals ~20 pain per bodypart (~200 pain)
 	rename_with_volume = TRUE
 
 /obj/item/storage/pill_bottle/painkillers
 	name = "bottle of painkillers"
-	desc = "Contains multiple pills used to treat anywhere from mild to extreme pain."
+	desc = "Contains multiple pills used to treat anywhere from mild to extreme pain. CAUTION: Do not take in conjunction with alcohol."
 	custom_premium_price = PAYCHECK_HARD * 1.5
 
 /obj/item/storage/pill_bottle/painkillers/ComponentInitialize()
@@ -444,7 +443,7 @@
 		new /obj/item/reagent_containers/pill/ibuprofen(src)
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/paracetamol(src)
-	for(var/i in 1 to 2)
+	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/morphine/diluted(src)
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/pill/oxycodone(src)
