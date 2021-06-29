@@ -16,4 +16,4 @@
 											'jollystation_modules/sound/voice/speak_3_exclaim.ogg' = 120, \
 											'jollystation_modules/sound/voice/speak_4_exclaim.ogg' = 120)
 	/// Pain modifier that this species recieves.
-	var/species_pain_mod = 1
+	var/species_pain_mod = null

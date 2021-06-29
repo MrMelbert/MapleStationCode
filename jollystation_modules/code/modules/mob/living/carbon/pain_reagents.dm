@@ -12,8 +12,7 @@
 
 /datum/reagent/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	if(!isnull(pain_modifier))
-		user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
+	user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
 
 // Morphine buff to actually work as a painkiller
 /datum/reagent/medicine/morphine

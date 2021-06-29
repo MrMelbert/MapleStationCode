@@ -49,7 +49,8 @@
 
 /datum/species/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
-	C.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
+	if(!isnull(species_pain_mod))
+		C.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
 
 /datum/species/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	. = ..()

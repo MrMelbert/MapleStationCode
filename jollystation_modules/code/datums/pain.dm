@@ -72,7 +72,7 @@
  * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
  */
 /datum/pain/proc/UnregisterParentSignals()
-	if(!parent?.comp_lookup)
+	if(!parent)
 		return
 
 	UnregisterSignal(parent, list(
@@ -144,9 +144,11 @@
  */
 /datum/pain/proc/set_pain_modifier(key, amount)
 	if(!isnull(pain_mods[key]))
-		if(amount >= 1 && pain_mods[key] > amount)
+		if(amount > 1 && pain_mods[key] >= amount)
 			return FALSE
-		if(amount < 1 && pain_mods[key] < amount)
+		if(amount < 1 && pain_mods[key] <= amount)
+			return FALSE
+		if(amount == 1)
 			return FALSE
 
 	pain_mods[key] = amount
