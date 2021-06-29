@@ -84,6 +84,7 @@
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.cause_pain(BODY_ZONES_ALL, -1.5)
 
+// Painkiller withdraw = pain
 /datum/addiction/opiods/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
 	if(!affected_carbon.pain_controller)
@@ -104,3 +105,12 @@
 		return
 	if(affected_carbon.pain_controller.get_average_pain() <= 50 && DT_PROB(8, delta_time))
 		affected_carbon.cause_pain(BODY_ZONES_ALL, 1.5 * delta_time)
+
+// Regen cores.
+/datum/status_effect/regenerative_core/on_apply()
+	. = ..()
+	var/mob/living/carbon/human/human_owner = owner
+	if(istype(human_owner) && human_owner.pain_controller)
+		human_owner.cause_pain(BODY_ZONES_LIMBS, -15)
+		human_owner.cause_pain(BODY_ZONE_CHEST, -20)
+		human_owner.cause_pain(BODY_ZONE_HEAD, -10) // heals 90 pain total

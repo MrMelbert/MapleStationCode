@@ -122,7 +122,6 @@
 	var/list/feedback_phrases = list()
 	var/static/list/healing_phrases = list("but is improving", "but is starting to dull", "but the stinging is stopping", "but feels faint")
 
-	var/scream_prob = 0
 	var/picked_emote = pick(PAIN_EMOTES)
 	switch(pain)
 		if(10 to 25)

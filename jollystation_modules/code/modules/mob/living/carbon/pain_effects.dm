@@ -17,6 +17,7 @@
 	id = "limp_pain"
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/limp/pain
+	examine_text = "<span class='danger'>They're limping with every move.</span>"
 
 /datum/status_effect/limp/pain/on_apply()
 	. = ..()
