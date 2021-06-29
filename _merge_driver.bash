@@ -51,11 +51,12 @@ update_dme (){
 	cp $tempfile $2
 	rm $tempfile
 	echo "Done updating dme."
-
+	return 0
 }
 
 update_build (){
 	sed -i 's/tgstation/jollystation/g' tools/build/build.js
+	return 0
 }
 
 echo "Running merge driver. . ."
