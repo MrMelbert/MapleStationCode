@@ -123,7 +123,7 @@
 	var/static/list/healing_phrases = list("but is improving", "but is starting to dull", "but the stinging is stopping", "but feels faint")
 
 	var/scream_prob = 0
-	var/picked_emote = pick(PAIN_EMOTES + "mumble")
+	var/picked_emote = pick(PAIN_EMOTES)
 	switch(pain)
 		if(10 to 25)
 			owner.flash_pain_overlay(1)
@@ -134,14 +134,12 @@
 			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs", "cramps", "feels wrong", "feels loose")
 			if(last_recieved_pain_type == BURN)
 				feedback_phrases += list("stings to the touch", "burns")
-
 		if(50 to 65)
 			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(2)
 			feedback_phrases += list("really hurts", "is losing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels terrible")
 			if(last_recieved_pain_type == BURN)
 				feedback_phrases += list("burns to the touch", "burns", "singes")
-
 		if(65 to INFINITY)
 			scream_prob = 25
 			owner.flash_pain_overlay(2, 2 SECONDS)
@@ -173,7 +171,7 @@
 	var/list/side_feedback = list()
 	var/static/list/healing_phrases = list("but is improving", "but is starting to dull", "but the stinging is stopping", "but feels faint", "but is settling", "but it subsides")
 
-	var/picked_emote = pick(PAIN_EMOTES + "groan")
+	var/picked_emote = pick(PAIN_EMOTES)
 	switch(pain)
 		if(10 to 40)
 			owner.flash_pain_overlay(1)

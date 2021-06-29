@@ -589,6 +589,8 @@
 		parent.Jitter(15)
 	else if(DT_PROB(1, delta_time))
 		parent.set_confusion(min(parent.get_confusion() + 4, 12))
+	else if(DT_PROB(4, delta_time))
+		do_pain_emote("cry", 6 SECONDS)
 	else if(DT_PROB(8, delta_time))
 		var/obj/item/held_item = parent.get_active_held_item()
 		if(held_item && parent.dropItemToGround(held_item))

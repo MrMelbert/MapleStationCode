@@ -32,6 +32,10 @@
 /datum/disease/shock/has_cure()
 	return check_cure_conditions() >= 3 && !affected_mob.undergoing_cardiac_arrest()
 
+/datum/disease/shock/cure()
+	affected_mob = null
+	return ..()
+
 /datum/disease/shock/after_add()
 	affected_mob.apply_status_effect(STATUS_EFFECT_LOWBLOODPRESSURE)
 
@@ -44,6 +48,10 @@
 		return
 
 	if(!affected_mob.pain_controller)
+		cure()
+		return FALSE
+
+	if(affected_mob.stat == DEAD)
 		cure()
 		return FALSE
 
@@ -66,6 +74,7 @@
 			cure_text = "Subject is in stage one of shock. Provide immediate pain relief and stop blood loss to prevent worsening condition."
 			if(DT_PROB(0.5, delta_time))
 				to_chat(affected_mob, span_danger("Your chest feels uncomfortable."))
+				affected_mob.pain_emote(pick("mumble", "grumble"))
 				affected_mob.flash_pain_overlay(1)
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_danger("You feel nauseous."))
@@ -87,6 +96,7 @@
 			cure_text = "Subject is in stage two of shock. Provide additional pain relief, assist in maintaining a high body temperature and stop further blood loss to prevent cardiac arrest."
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_danger("Your chest feels wrong!"))
+				affected_mob.pain_emote(pick("mumble", "grumble"))
 				affected_mob.flash_pain_overlay(2)
 			if(DT_PROB(2, delta_time))
 				to_chat(affected_mob, span_danger("You can't focus on anything!"))
