@@ -1,29 +1,33 @@
 #!/bin/bash
 
-do_not_touch=("plushie_lizard.json")
-
 find_all_in_dir (){
-	for file in $(find $1 -name "*.json" -type f)
-	do
+
+	if [ ! -f $1 ]; then
+		echo "!! find_all_in_dir error: $1 directory not found."
+		return 1
+	fi
+
+	for file in $(find $1 -name "*.json" -type f); do
 		if grep -q "<<<<<<<" "$file"; then
-			echo "!! Special case file $file caught, and must be handled manually."
+			echo "NOTICE: Special case file $file caught, and must be handled manually."
 		fi
 	done
 
-	for file in $(find $1 -name "*.dm" -or -name "*.js" -type f)
-	do
+	for file in $(find $1 -name "*.dm" -or -name "*.js" -type f); do
 		if ! grep -q "<<<<<<<" "$file"; then
 			continue
 		fi
-		if grep -q "// NON-MODULE" "$file"
-		then
-			echo "!! NOTICE: $file contains modular changes, and must be done manually."
+
+		if grep -q "// NON-MODULE" "$file"; then
+			echo "NOTICE: $file contains modular changes, and must be done manually."
 			continue
 		fi
+
 		sed -i '/<<<<<<</,/=======/d' "$file"
 		sed -i '/>>>>>>>/d' "$file"
 		echo "$file merge conflicts resolved."
 	done
+
 	echo "Done searching dir: $1."
 	return 0
 }
