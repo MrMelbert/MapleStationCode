@@ -98,8 +98,6 @@ jobs:
           source $HOME/BYOND/byond/bin/byondsetup
           tools/build/build -DCIBUILDING
           bash tools/ci/run_server.sh
-        env:
-          CBT_BUILD_MODE: TEST_RUN
 
   test_windows:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"

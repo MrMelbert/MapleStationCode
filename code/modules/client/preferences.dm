@@ -5,7 +5,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//doohickeys for savefiles
 	var/path
 	var/default_slot = 1 //Holder so it doesn't default to slot 1, rather the last one used
-	var/max_save_slots = 6 //NON-MODULE CHANGE
+	var/max_save_slots = 3
 
 	//non-preference stuff
 	var/muted = 0
@@ -80,7 +80,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/skin_tone = "caucasian1" //Skin color
 	var/eye_color = "000" //Eye color
 	var/datum/species/pref_species = new /datum/species/human() //Mutant race
-	var/list/features = list("mcolor" = "FFF", "ethcolor" = "9c3030", "tail_lizard" = "Smooth", "tail_human" = "None", "snout" = "Round", "horns" = "None", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None", "legs" = "Normal Legs", "moth_wings" = "Plain", "moth_antennae" = "Plain", "moth_markings" = "None", "skrell_headtentacles" = "Male") // NON-MODULE EDIT
+	var/list/features = list("mcolor" = "FFF", "ethcolor" = "9c3030", "tail_lizard" = "Smooth", "tail_human" = "None", "snout" = "Round", "horns" = "None", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None", "legs" = "Normal Legs", "moth_wings" = "Plain", "moth_antennae" = "Plain", "moth_markings" = "None")
 	var/list/randomise = list(RANDOM_UNDERWEAR = TRUE, RANDOM_UNDERWEAR_COLOR = TRUE, RANDOM_UNDERSHIRT = TRUE, RANDOM_SOCKS = TRUE, RANDOM_BACKPACK = TRUE, RANDOM_JUMPSUIT_STYLE = TRUE, RANDOM_HAIRSTYLE = TRUE, RANDOM_HAIR_COLOR = TRUE, RANDOM_FACIAL_HAIRSTYLE = TRUE, RANDOM_FACIAL_HAIR_COLOR = TRUE, RANDOM_SKIN_TONE = TRUE, RANDOM_EYE_COLOR = TRUE)
 	var/phobia = "spiders"
 
@@ -189,13 +189,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	update_preview_icon()
 	var/list/dat = list("<center>")
 
-//NON-MODULE CHANGE:
 	dat += "<a href='?_src_=prefs;preference=tab;tab=0' [current_tab == 0 ? "class='linkOn'" : ""]>Character Settings</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=1' [current_tab == 1 ? "class='linkOn'" : ""]>Character Background</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=2' [current_tab == 2 ? "class='linkOn'" : ""]>Game Preferences</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=3' [current_tab == 3 ? "class='linkOn'" : ""]>OOC Preferences</a>"
-	dat += "<a href='?_src_=prefs;preference=tab;tab=4' [current_tab == 4 ? "class='linkOn'" : ""]>Custom Keybindings</a>"
-//NON-MODULE CHANGE END
+	dat += "<a href='?_src_=prefs;preference=tab;tab=1' [current_tab == 1 ? "class='linkOn'" : ""]>Game Preferences</a>"
+	dat += "<a href='?_src_=prefs;preference=tab;tab=2' [current_tab == 2 ? "class='linkOn'" : ""]>OOC Preferences</a>"
+	dat += "<a href='?_src_=prefs;preference=tab;tab=3' [current_tab == 3 ? "class='linkOn'" : ""]>Custom Keybindings</a>"
 
 	if(!path)
 		dat += "<div class='notice'>Please create an account to save your preferences</div>"
@@ -547,21 +544,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			//JollyStation Addition Start
-			if(pref_species.mutant_bodyparts["skrell_headtentacles"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Head Tentacles</h3>"
-
-				dat += "<a href='?_src_=prefs;preference=skrell_headtentacles;task=input'>[features["skrell_headtentacles"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-			//JollyStation Addition End
-
 			//Adds a thing to select which phobia because I can't be assed to put that in the quirks window
 			if("Phobia" in all_quirks)
 				dat += "<h3>Phobia</h3>"
@@ -587,54 +569,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "</td>"
 				mutant_category = 0
 			dat += "</tr></table>"
-		//NON-MODULE CHANGES:
-		if (1) // character details
-			if(path)
-				var/savefile/S = new /savefile(path)
-				if(S)
-					dat += "<center>"
-					var/name
-					var/unspaced_slots = 0
-					for(var/i=1, i<=max_save_slots, i++)
-						unspaced_slots++
-						if(unspaced_slots > 4)
-							dat += "<br>"
-							unspaced_slots = 0
-						S.cd = "/character[i]"
-						S["real_name"] >> name
-						if(!name)
-							name = "Character[i]"
-						dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[i];' [i == default_slot ? "class='linkOn'" : ""]>[name]</a> "
-					dat += "</center>"
 
-			dat += "<table><tr><td width='500px' height='300px' valign='center'>"
-			dat += "<h2>Misc. Character Settings</h2>"
-			dat += "<a href='?_src_=prefs;preference=enter_loadout_manager;task=input'>Enter Loadout Manager</a><br>(<i>May appear behind preferences window</i>)<br>"
-			dat += "<b>Runechat Text Color: &nbsp;</b>"
-			dat += "<span style='border: 1px solid #161616; background-color: #[runechat_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=rune_chat_text;task=input'>Change</a><BR>"
-			dat += "<i>Set your color to <font color = #aaaaaa>#aaaaaa</font> to have a randomized color on spawn.</i><br>"
-			dat += "<b>Hear Speech Sounds:</b> <a href='?_src_=prefs;preference=hear_speech_sounds'>[hear_speech_sounds ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>Hear Radio Sounds:</b> <a href='?_src_=prefs;preference=hear_radio_sounds'>[hear_radio_sounds ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<h2>Flavor</h2>"
-			dat += "<a href='?_src_=prefs;preference=flavor_text;task=input'><b>Examine Flavor Text</b></a><br>"
-			dat += "[TextPreview(flavor_text, 65)]"
-			dat += "<BR>"
-			dat += 	"<h2>Records</h2>"
-			dat += 	"<a href='?_src_=prefs;preference=general_records;task=input'><b>General</b></a><br>"
-			dat += "[TextPreview(general_records, 125)]"
-			dat += "<BR>"
-			dat += 	"<a href='?_src_=prefs;preference=security_records;task=input'><b>Security</b></a><br>"
-			dat += "[TextPreview(security_records, 125)]"
-			dat += "<BR>"
-			dat += 	"<a href='?_src_=prefs;preference=medical_records;task=input'><b>Medical</b></a><br>"
-			dat += "[TextPreview(medical_records, 125)]"
-			dat += "<BR>"
-			dat += 	"<a href='?_src_=prefs;preference=exploitable_info;task=input'><b>Exploitable Information</b></a><br>"
-			dat += "[TextPreview(exploitable_info, 125)]"
-			dat += "<BR><BR>"
-			dat += "</td></tr></table>"
-			//NON-MODULE CHANGES END
-		if (2) // Game Preferences, NON-MODULE CHANGES
+
+		if (1) // Game Preferences
 			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 			dat += "<h2>General Settings</h2>"
 			dat += "<b>UI Style:</b> <a href='?_src_=prefs;task=input;preference=ui'>[UI_style]</a><br>"
@@ -772,7 +709,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<br>"
 			dat += "<b>Midround Antagonist:</b> <a href='?_src_=prefs;preference=allow_midround_antag'>[(toggles & MIDROUND_ANTAG) ? "Enabled" : "Disabled"]</a><br>"
 			dat += "</td></tr></table>"
-		if(3) //OOC Preferences, NON-MODULE CHANGES
+		if(2) //OOC Preferences
 			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 			dat += "<h2>OOC Settings</h2>"
 			dat += "<b>Window Flashing:</b> <a href='?_src_=prefs;preference=winflash'>[(windowflashing) ? "Enabled":"Disabled"]</a><br>"
@@ -851,7 +788,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 				dat += "</td>"
 			dat += "</tr></table>"
-		if(4) // Custom keybindings, NON-MODULE CHANGES
+		if(3) // Custom keybindings
 			// Create an inverted list of keybindings -> key
 			var/list/user_binds = list()
 			for (var/key in key_bindings)
@@ -1365,50 +1302,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(new_age)
 						age = max(min( round(text2num(new_age)), AGE_MAX),AGE_MIN)
 
-				//NON-MODULE CHANGES:
-
-				if("enter_loadout_manager")
-					if(parent.open_loadout_ui)
-						parent.open_loadout_ui.ui_interact(usr)
-					else
-						var/datum/loadout_manager/tgui = new(usr)
-						tgui.ui_interact(usr)
-
-				if("rune_chat_text")
-					var/new_chatcolor = input(user, "Choose your runechat color:", "Character Preference",runechat_color) as color|null
-					if(new_chatcolor)
-						var/temp_hsv = RGBtoHSV(new_chatcolor)
-						if(ReadHSV(temp_hsv)[3] >= ReadHSV("#7F7F7F")[3]) // running runechat by the same brightness sanitization that mutant colors choose
-							runechat_color = sanitize_hexcolor(new_chatcolor)
-						else
-							to_chat(user, "<span class='danger'>Invalid color. Your color is not bright enough.</span>")
-
-				if("flavor_text")
-					var/flavor_txt = input(usr, "Set your flavor text on examine", "Flavor Text", flavor_text) as message|null
-					if(flavor_txt)
-						flavor_text = strip_html_simple(flavor_txt, MAX_MESSAGE_LEN)
-
-				if("general_records")
-					var/gen_record = input(usr, "Set your general records", "General Records", general_records) as message|null
-					if(gen_record)
-						general_records = strip_html_simple(gen_record, MAX_FLAVOR_LEN)
-
-				if("security_records")
-					var/sec_record = input(usr, "Set your security records", "Security Records", security_records) as message|null
-					if(sec_record)
-						security_records = strip_html_simple(sec_record, MAX_FLAVOR_LEN)
-
-				if("medical_records")
-					var/med_record = input(usr, "Set your medical records", "Medical Records", medical_records) as message|null
-					if(med_record)
-						medical_records = strip_html_simple(med_record, MAX_FLAVOR_LEN)
-
-				if("exploitable_info")
-					var/expl_info = input(usr, "Set your exploitable information, this rarely will be showed to antagonists", "Exploitable Info", exploitable_info) as message|null
-					if(expl_info)
-						exploitable_info = strip_html_simple(expl_info, MAX_FLAVOR_LEN)
-				//NON-MODULE CHANGES END
-
 				if("hair")
 					var/new_hair = input(user, "Choose your character's hair colour:", "Character Preference","#"+hair_color) as color|null
 					if(new_hair)
@@ -1575,14 +1468,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					new_moth_markings = input(user, "Choose your character's markings:", "Character Preference") as null|anything in GLOB.moth_markings_list
 					if(new_moth_markings)
 						features["moth_markings"] = new_moth_markings
-
-				//JollyStation Addition Start
-				if("skrell_headtentacles")
-					var/new_skrell_headtentacles
-					new_skrell_headtentacles = input(user, "Choose your character's style of head tentacles:", "Character Preference") as null|anything in GLOB.skrellheadtentacles_list
-					if(new_skrell_headtentacles)
-						features["skrell_headtentacles"] = new_skrell_headtentacles
-				//JollyStation Addition End
 
 				if("s_tone")
 					var/new_s_tone = input(user, "Choose your character's skin-tone:", "Character Preference")  as null|anything in GLOB.skin_tones
@@ -1985,12 +1870,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					to_chat(user, span_notice("OOC Commendation Heart disabled"))
 					save_preferences()
 
-				if("hear_speech_sounds")
-					hear_speech_sounds = !hear_speech_sounds
-
-				if("hear_radio_sounds")
-					hear_radio_sounds = !hear_radio_sounds
-
 	ShowChoices(user)
 	return 1
 
@@ -2015,7 +1894,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			hardcore_random_setup(character, antagonist, is_latejoiner)
 
 	if(roundstart_checks)
-		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == "human"))
+		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == SPECIES_HUMAN))
 			var/firstspace = findtext(real_name, " ")
 			var/name_length = length(real_name)
 			if(!firstspace) //we need a surname

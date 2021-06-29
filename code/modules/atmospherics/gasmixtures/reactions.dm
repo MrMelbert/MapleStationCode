@@ -39,10 +39,10 @@
 	return priority_reactions
 
 /datum/gas_reaction
-	/** 
+	/**
 	 * Regarding the requirements list: the minimum or maximum requirements must be non-zero.
 	 * When in doubt, use MINIMUM_MOLE_COUNT.
-	 * Another thing to note is that reactions will not fire if we have any requirements outside of gas id path or MIN_TEMP or MAX_TEMP. 
+	 * Another thing to note is that reactions will not fire if we have any requirements outside of gas id path or MIN_TEMP or MAX_TEMP.
 	 * More complex implementations will require modifications to gas_mixture.react()
 	 */
 	var/list/requirements

@@ -445,6 +445,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 
 //this is here to eat arguments
 /obj/machinery/power/supermatter_crystal/proc/call_explode()
+	SIGNAL_HANDLER
+
 	explode()
 
 /obj/machinery/power/supermatter_crystal/process_atmos()
@@ -1260,7 +1262,6 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_crystal)
 	icon = 'icons/obj/supermatter.dmi'
 	icon_state = "psy"
 	layer = FLOAT_LAYER - 1
-
 
 /obj/overlay/psy/shard
 	icon_state = "psy_shard"

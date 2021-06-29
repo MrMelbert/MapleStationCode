@@ -58,3 +58,6 @@ GLOBAL_LIST_INIT(loadout_slots, list(
 
 /// Global list of all our bridge officer locker landmarks
 GLOBAL_LIST_EMPTY(bridge_officer_lockers)
+
+//Skrell blood datum because I accidentally nuked it in an upstream once
+#define isSkrell(A) (is_species(A, /datum/species/skrell))

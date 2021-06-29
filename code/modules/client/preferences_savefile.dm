@@ -122,6 +122,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 					addedbind = TRUE
 		if(!addedbind)
 			notadded += kb
+	save_preferences() //Save the players pref so that new keys that were set to Unbound as default are permanently stored
 	if(length(notadded))
 		addtimer(CALLBACK(src, .proc/announce_conflict, notadded), 5 SECONDS)
 
@@ -225,10 +226,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			parsed_favs += path
 	favorite_outfits = uniqueList(parsed_favs)
 
-	// NON-MODULE CHANGES: client prefs
-	READ_FILE(S["hear_speech_sounds"] , hear_speech_sounds)
-	READ_FILE(S["hear_radio_sounds"] , hear_radio_sounds)
-
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)
 		var/bacpath = "[path].updatebac" //todo: if the savefile version is higher then the server, check the backup, and give the player a prompt to load the backup
@@ -277,10 +274,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	pda_color = sanitize_hexcolor(pda_color, 6, 1, initial(pda_color))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
-
-	// NON-MODULE CHANGES: sanitization
-	hear_speech_sounds = sanitize_integer(hear_speech_sounds, FALSE, TRUE, initial(hear_speech_sounds))
-	hear_radio_sounds = sanitize_integer(hear_speech_sounds, FALSE, TRUE, initial(hear_radio_sounds))
 
 	if(needs_update >= 0) //save the updated version
 		var/old_default_slot = default_slot
@@ -359,11 +352,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["key_bindings"], key_bindings)
 	WRITE_FILE(S["hearted_until"], (hearted_until > world.realtime ? hearted_until : null))
 	WRITE_FILE(S["favorite_outfits"], favorite_outfits)
-
-	// NON-MODULE CHANGES: client prefs
-	WRITE_FILE(S["hear_speech_sounds"] , hear_speech_sounds)
-	WRITE_FILE(S["hear_radio_sounds"] , hear_radio_sounds)
-
 	return TRUE
 
 /datum/preferences/proc/load_character(slot)
@@ -430,18 +418,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["feature_moth_antennae"], features["moth_antennae"])
 	READ_FILE(S["feature_moth_markings"], features["moth_markings"])
 	READ_FILE(S["persistent_scars"] , persistent_scars)
-	//NON-MODULE CHANGES:
-	READ_FILE(S["feature_skrell_headtentacles"], features["skrell_headtentacles"])
-	READ_FILE(S["runechat_color"] , runechat_color)
-	READ_FILE(S["flavor_text"] , flavor_text)
-	READ_FILE(S["security_records"] , security_records)
-	READ_FILE(S["medical_records"] , medical_records)
-	READ_FILE(S["general_records"] , general_records)
-	READ_FILE(S["exploitable_info"] , exploitable_info)
-	READ_FILE(S["loadout_list"] , loadout_list)
-	READ_FILE(S["greyscale_loadout_list"] , greyscale_loadout_list)
-	//NON-MODULE CHANGES END
-
 	if(!CONFIG_GET(flag/join_with_mutant_humans))
 		features["tail_human"] = "none"
 		features["ears"] = "none"
@@ -529,20 +505,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["moth_wings"] = sanitize_inlist(features["moth_wings"], GLOB.moth_wings_list, "Plain")
 	features["moth_antennae"] = sanitize_inlist(features["moth_antennae"], GLOB.moth_antennae_list, "Plain")
 	features["moth_markings"] = sanitize_inlist(features["moth_markings"], GLOB.moth_markings_list, "None")
-	//NON-MODULE CHANGES: -- Pref Sanitization --
-	features["skrell_headtentacles"] = sanitize_inlist(features["skrell_headtentacles"], GLOB.skrellheadtentacles_list, "Male")
-
-	runechat_color = sanitize_hexcolor(runechat_color)
-	flavor_text = strip_html_simple(sanitize_text(flavor_text), MAX_MESSAGE_LEN)
-	security_records = strip_html_simple(sanitize_text(security_records), MAX_FLAVOR_LEN)
-	medical_records = strip_html_simple(sanitize_text(medical_records), MAX_FLAVOR_LEN)
-	general_records = strip_html_simple(sanitize_text(general_records), MAX_FLAVOR_LEN)
-	exploitable_info = strip_html_simple(sanitize_text(exploitable_info), MAX_FLAVOR_LEN)
-
-	sanitize_loadout_list(loadout_list)
-	sanitize_greyscale_list(greyscale_loadout_list)
-
-	//NON-MODULE CHANGES END
 
 	persistent_scars = sanitize_integer(persistent_scars)
 
@@ -604,17 +566,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["feature_moth_antennae"] , features["moth_antennae"])
 	WRITE_FILE(S["feature_moth_markings"] , features["moth_markings"])
 	WRITE_FILE(S["persistent_scars"] , persistent_scars)
-	//NON-MODULE CHANGES:
-	WRITE_FILE(S["feature_skrell_headtentacles"], features["skrell_headtentacles"])
-	WRITE_FILE(S["runechat_color"] , runechat_color)
-	WRITE_FILE(S["flavor_text"] , flavor_text)
-	WRITE_FILE(S["general_records"] , general_records)
-	WRITE_FILE(S["security_records"] , security_records)
-	WRITE_FILE(S["medical_records"] , medical_records)
-	WRITE_FILE(S["exploitable_info"] , exploitable_info)
-	WRITE_FILE(S["loadout_list"], loadout_list)
-	WRITE_FILE(S["greyscale_loadout_list"], greyscale_loadout_list)
-	//NON-MODULE CHANGES END
 
 	//Custom names
 	for(var/custom_name_id in GLOB.preferences_custom_names)

@@ -260,7 +260,7 @@
 		G.fields["rank"] = assignment
 		G.fields["age"] = H.age
 		G.fields["species"] = H.dna.species.name
-		G.fields["fingerprint"] = md5(H.dna.uni_identity)
+		G.fields["fingerprint"] = md5(H.dna.unique_identity)
 		G.fields["p_stat"] = "Active"
 		G.fields["m_stat"] = "Stable"
 		G.fields["gender"] = H.gender
@@ -272,9 +272,6 @@
 			G.fields["gender"]  = "Other"
 		G.fields["photo_front"] = photo_front
 		G.fields["photo_side"] = photo_side
-		//NON-MODULE CHANGES:
-		G.fields["past_records"] = C.prefs.general_records
-		//NON-MODULE CHANGES END
 		general += G
 
 		//Medical Record
@@ -291,9 +288,6 @@
 		M.fields["cdi_d"] = "No diseases have been diagnosed at the moment."
 		M.fields["notes"] = H.get_quirk_string(!medical, CAT_QUIRK_NOTES)
 		M.fields["notes_d"] = H.get_quirk_string(medical, CAT_QUIRK_NOTES)
-		//NON-MODULE CHANGES:
-		M.fields["past_records"] = C.prefs.medical_records
-		//NON-MODULE CHANGES END
 		medical += M
 
 		//Security Record
@@ -304,9 +298,6 @@
 		S.fields["citation"] = list()
 		S.fields["crim"] = list()
 		S.fields["notes"] = "No notes."
-		//NON-MODULE CHANGES:
-		S.fields["past_records"] = C.prefs.security_records
-		//NON-MODULE CHANGES END
 		security += S
 
 		//Locked Record
@@ -324,7 +315,7 @@
 			G.fields["gender"]  = "Other"
 		L.fields["blood_type"] = H.dna.blood_type
 		L.fields["b_dna"] = H.dna.unique_enzymes
-		L.fields["identity"] = H.dna.uni_identity
+		L.fields["identity"] = H.dna.unique_identity
 		L.fields["species"] = H.dna.species.type
 		L.fields["features"] = H.dna.features
 		L.fields["image"] = image

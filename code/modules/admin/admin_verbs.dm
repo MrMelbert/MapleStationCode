@@ -78,8 +78,7 @@ GLOBAL_PROTECT(admin_verbs_admin)
 	/client/proc/resetasaycolor,
 	/client/proc/toggleadminhelpsound,
 	/client/proc/respawn_character,
-	/datum/admins/proc/open_borgopanel,
-	/datum/admins/proc/togglelooc // Non-module : toggle LOOC verb  (this list isn't touched ever anyways)
+	/datum/admins/proc/open_borgopanel
 	)
 GLOBAL_LIST_INIT(admin_verbs_ban, list(/client/proc/unban_panel, /client/proc/ban_panel, /client/proc/stickybanpanel))
 GLOBAL_PROTECT(admin_verbs_ban)
@@ -168,6 +167,7 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/map_template_upload,
 	/client/proc/jump_to_ruin,
 	/client/proc/clear_dynamic_transit,
+	/client/proc/run_empty_query,
 	/client/proc/toggle_medal_disable,
 	/client/proc/view_runtimes,
 	/client/proc/pump_random_event,
@@ -184,9 +184,7 @@ GLOBAL_PROTECT(admin_verbs_debug)
 	/client/proc/export_dynamic_json,
 	/client/proc/run_dynamic_simulations,
 	#endif
-	#ifdef SENDMAPS_PROFILE
 	/client/proc/display_sendmaps,
-	#endif
 	/datum/admins/proc/create_or_modify_area,
 	/client/proc/check_timer_sources,
 	/client/proc/toggle_cdn,
@@ -815,10 +813,8 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	var/datum/admins/admin = GLOB.admin_datums[ckey]
 	admin?.associate(src)
 
-#ifdef SENDMAPS_PROFILE
 /client/proc/display_sendmaps()
 	set name = "Send Maps Profile"
 	set category = "Debug"
 
 	src << link("?debug=profile&type=sendmaps&window=test")
-#endif

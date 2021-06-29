@@ -3,19 +3,6 @@ What are the archived variables for?
 Calculations are done using the archived variables with the results merged into the regular variables.
 This prevents race conditions that arise based on the order of tile processing.
 */
-#define MINIMUM_HEAT_CAPACITY 0.0003
-#define MINIMUM_MOLE_COUNT 0.01
-#define MOLAR_ACCURACY  1E-4
-/**
- *I feel the need to document what happens here. Basically this is used
- *catch rounding errors, and make gas go away in small portions.
- *People have raised it to higher levels in the past, do not do this. Consider this number a soft limit
- *If you're making gasmixtures that have unexpected behavior related to this value, you're doing something wrong.
- *
- *On an unrelated note this may cause a bug that creates negative gas, related to round(). When it has a second arg it will round up.
- *So for instance round(0.5, 1) == 1. I've hardcoded a fix for this into share, by forcing the garbage collect.
- *Any other attempts to fix it just killed atmos. I leave this to a greater man then I
- */
 #define QUANTIZE(variable) (round((variable), (MOLAR_ACCURACY)))
 GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
@@ -42,7 +29,7 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	/// Used for analyzer feedback - not initialized until its used
 	var/list/analyzer_results
 	/// Whether to call garbage_collect() on the sharer during shares, used for immutable mixtures
-	var/gc_share = FALSE 
+	var/gc_share = FALSE
 
 /datum/gas_mixture/New(volume)
 	gases = new
@@ -109,7 +96,6 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 /datum/gas_mixture/proc/total_moles()
 	var/cached_gases = gases
 	TOTAL_MOLES(cached_gases, .)
-	
 /// Checks to see if gas amount exists in mixture.
 /// Do NOT use this in code where performance matters!
 /// It's better to batch calls to garbage_collect(), especially in places where you're checking many gastypes
@@ -262,7 +248,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 			var/total_moles = gases[gas_id][MOLES] + other.gases[gas_id][MOLES]
 			gases[gas_id][MOLES] = total_moles * (volume/total_volume)
 			other.gases[gas_id][MOLES] = total_moles * (other.volume/total_volume)
-
+	garbage_collect()
+	other.garbage_collect()
 
 ///Creates new, identical gas mixture
 ///Returns: duplicate gas mixture

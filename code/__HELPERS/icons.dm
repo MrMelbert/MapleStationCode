@@ -1057,8 +1057,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		if(J)
 			J.equip(body, TRUE, FALSE, outfit_override = outfit_override)
 		else if (outfit_override)
-			//body.equipOutfit(outfit_override,visualsOnly = TRUE)
-			body.equip_outfit_and_loadout(outfit_override, TRUE, prefs) // NON-MODULE CHANGE
+			body.equipOutfit(outfit_override,visualsOnly = TRUE)
+
 
 		var/icon/out_icon = icon('icons/effects/effects.dmi', "nothing")
 		COMPILE_OVERLAYS(body)

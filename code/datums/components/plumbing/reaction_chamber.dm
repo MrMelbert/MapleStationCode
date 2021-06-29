@@ -57,8 +57,4 @@
 /datum/component/plumbing/alkaline_input/send_request(dir)
 	process_request(amount = MACHINE_REAGENT_TRANSFER, reagent = /datum/reagent/reaction_agent/basic_buffer, dir = dir)
 
-///Special connect that we currently use for reaction chambers. Being used so we can keep certain inputs seperate, like into a special internal acid container
-/datum/component/plumbing/acidic_input
-	demand_connects = WEST
-	demand_color = "yellow"
 

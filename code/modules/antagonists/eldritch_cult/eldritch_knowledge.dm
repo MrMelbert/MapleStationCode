@@ -156,7 +156,7 @@
 	var/list/compiled_list = list()
 
 	for(var/mob/living/carbon/human/human_to_check as anything in GLOB.human_list)
-		if(fingerprints[md5(human_to_check.dna.uni_identity)])
+		if(fingerprints[md5(human_to_check.dna.unique_identity)])
 			compiled_list |= human_to_check.real_name
 			compiled_list[human_to_check.real_name] = human_to_check
 
@@ -257,7 +257,7 @@
 	var/datum/antagonist/heretic/user_heretic = user.mind.has_antag_datum(/datum/antagonist/heretic)
 	var/datum/advanced_antag_datum/heretic/our_heretic = user_heretic.linked_advanced_datum
 	if(our_heretic && !our_heretic.sacrifices_enabled)
-		to_chat(user, "<span class='cult'>You surrendered the ability to sacrifice!</span>")
+		to_chat(user,span_danger("You surrendered the ability to sacrifice!"))
 		return FALSE
 	/// NON-MODULE CHANGE END
 
@@ -266,7 +266,7 @@
 	for(var/obj/item/living_heart/heart in atoms)
 
 		if(heart.target && heart.target.stat != CONSCIOUS) // NON-MODULE CHANGE
-			to_chat(carbon_user,"<span class='danger'>Your patrons accepts your offer..</span>")
+			to_chat(carbon_user,span_danger("Your patrons accepts your offer.."))
 			var/mob/living/carbon/human/current_target = heart.target
 			sacrifice_process(current_target, user) // NON-MODULE CHANGE
 			heart.target = null
@@ -323,5 +323,5 @@
 	gain_text = "Their hand is at your throat, yet you see Them not."
 	cost = 0
 	required_atoms = list(/obj/item/organ/eyes,/obj/item/stack/sheet/animalhide/human,/obj/item/storage/book/bible,/obj/item/pen)
-	result_atoms = list(/obj/item/forbidden_book)
+	result_atoms = list(/obj/item/forbidden_book/ritual)
 	route = "Start"

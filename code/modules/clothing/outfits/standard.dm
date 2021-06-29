@@ -193,7 +193,6 @@
 	l_pocket = /obj/item/food/grown/banana
 	r_pocket = /obj/item/bikehorn
 	l_hand = /obj/item/fireaxe
-	id_trim = /datum/id_trim/tunnel_clown
 
 /datum/outfit/tunnel_clown/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	if(visualsOnly)
