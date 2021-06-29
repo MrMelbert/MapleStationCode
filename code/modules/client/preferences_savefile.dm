@@ -430,7 +430,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["feature_moth_antennae"], features["moth_antennae"])
 	READ_FILE(S["feature_moth_markings"], features["moth_markings"])
 	READ_FILE(S["persistent_scars"] , persistent_scars)
-	//NON-MODULE CHANGES:
+	// NON-MODULE CHANGES:
 	READ_FILE(S["feature_skrell_headtentacles"], features["skrell_headtentacles"])
 	READ_FILE(S["runechat_color"] , runechat_color)
 	READ_FILE(S["flavor_text"] , flavor_text)
@@ -440,7 +440,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["exploitable_info"] , exploitable_info)
 	READ_FILE(S["loadout_list"] , loadout_list)
 	READ_FILE(S["greyscale_loadout_list"] , greyscale_loadout_list)
-	//NON-MODULE CHANGES END
+	// NON-MODULE CHANGES END
 
 	if(!CONFIG_GET(flag/join_with_mutant_humans))
 		features["tail_human"] = "none"
@@ -529,7 +529,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["moth_wings"] = sanitize_inlist(features["moth_wings"], GLOB.moth_wings_list, "Plain")
 	features["moth_antennae"] = sanitize_inlist(features["moth_antennae"], GLOB.moth_antennae_list, "Plain")
 	features["moth_markings"] = sanitize_inlist(features["moth_markings"], GLOB.moth_markings_list, "None")
-	//NON-MODULE CHANGES: -- Pref Sanitization --
+	// NON-MODULE CHANGES: -- Pref Sanitization --
 	features["skrell_headtentacles"] = sanitize_inlist(features["skrell_headtentacles"], GLOB.skrellheadtentacles_list, "Male")
 
 	runechat_color = sanitize_hexcolor(runechat_color)
@@ -542,7 +542,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	sanitize_loadout_list(loadout_list)
 	sanitize_greyscale_list(greyscale_loadout_list)
 
-	//NON-MODULE CHANGES END
+	// NON-MODULE CHANGES END
 
 	persistent_scars = sanitize_integer(persistent_scars)
 
@@ -604,7 +604,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["feature_moth_antennae"] , features["moth_antennae"])
 	WRITE_FILE(S["feature_moth_markings"] , features["moth_markings"])
 	WRITE_FILE(S["persistent_scars"] , persistent_scars)
-	//NON-MODULE CHANGES:
+	// NON-MODULE CHANGES:
 	WRITE_FILE(S["feature_skrell_headtentacles"], features["skrell_headtentacles"])
 	WRITE_FILE(S["runechat_color"] , runechat_color)
 	WRITE_FILE(S["flavor_text"] , flavor_text)
@@ -614,7 +614,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["exploitable_info"] , exploitable_info)
 	WRITE_FILE(S["loadout_list"], loadout_list)
 	WRITE_FILE(S["greyscale_loadout_list"], greyscale_loadout_list)
-	//NON-MODULE CHANGES END
+	// NON-MODULE CHANGES END
 
 	//Custom names
 	for(var/custom_name_id in GLOB.preferences_custom_names)

@@ -998,7 +998,7 @@
 	ph = 6
 
 /datum/reagent/iron/on_mob_life(mob/living/carbon/C, delta_time, times_fired)
-	if((C.blood_volume < BLOOD_VOLUME_NORMAL) && !(isSkrell(C))) //JollyStation Edit, added check for the mob not being a skrell to benefit from this. -Jon
+	if((C.blood_volume < BLOOD_VOLUME_NORMAL) && !(isSkrell(C))) // NON-MODULE Edit, added check for the mob not being a skrell to benefit from this. -Jon
 		C.blood_volume += 0.25 * delta_time
 	..()
 

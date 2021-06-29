@@ -253,13 +253,13 @@
 	return FALSE
 
 /datum/eldritch_knowledge/spell/basic/on_finished_recipe(mob/living/user, list/atoms, loc)
-	/// NON-MODULE CHANGE
+	// NON-MODULE CHANGE
 	var/datum/antagonist/heretic/user_heretic = user.mind.has_antag_datum(/datum/antagonist/heretic)
 	var/datum/advanced_antag_datum/heretic/our_heretic = user_heretic.linked_advanced_datum
 	if(our_heretic && !our_heretic.sacrifices_enabled)
 		to_chat(user, "<span class='cult'>You surrendered the ability to sacrifice!</span>")
 		return FALSE
-	/// NON-MODULE CHANGE END
+	// NON-MODULE CHANGE END
 
 	. = TRUE
 	var/mob/living/carbon/carbon_user = user

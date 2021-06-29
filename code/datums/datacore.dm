@@ -272,9 +272,9 @@
 			G.fields["gender"]  = "Other"
 		G.fields["photo_front"] = photo_front
 		G.fields["photo_side"] = photo_side
-		//NON-MODULE CHANGES:
+		// NON-MODULE CHANGES:
 		G.fields["past_records"] = C.prefs.general_records
-		//NON-MODULE CHANGES END
+		// NON-MODULE CHANGES END
 		general += G
 
 		//Medical Record
@@ -291,9 +291,9 @@
 		M.fields["cdi_d"] = "No diseases have been diagnosed at the moment."
 		M.fields["notes"] = H.get_quirk_string(!medical, CAT_QUIRK_NOTES)
 		M.fields["notes_d"] = H.get_quirk_string(medical, CAT_QUIRK_NOTES)
-		//NON-MODULE CHANGES:
+		// NON-MODULE CHANGES:
 		M.fields["past_records"] = C.prefs.medical_records
-		//NON-MODULE CHANGES END
+		// NON-MODULE CHANGES END
 		medical += M
 
 		//Security Record
@@ -304,9 +304,9 @@
 		S.fields["citation"] = list()
 		S.fields["crim"] = list()
 		S.fields["notes"] = "No notes."
-		//NON-MODULE CHANGES:
+		// NON-MODULE CHANGES:
 		S.fields["past_records"] = C.prefs.security_records
-		//NON-MODULE CHANGES END
+		// NON-MODULE CHANGES END
 		security += S
 
 		//Locked Record

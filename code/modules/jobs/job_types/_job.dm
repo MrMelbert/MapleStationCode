@@ -167,7 +167,7 @@
 
 	if(outfit_override || outfit)
 		//H.equipOutfit(outfit_override ? outfit_override : outfit, visualsOnly)
-		H.equip_outfit_and_loadout(outfit_override ? outfit_override : outfit, visualsOnly, preference_source?.prefs) /// NON-MODULE CHANGE: LOADOUTS
+		H.equip_outfit_and_loadout(outfit_override ? outfit_override : outfit, visualsOnly, preference_source?.prefs) // NON-MODULE CHANGE: LOADOUTS
 
 	if(!visualsOnly && is_captain)
 		var/is_acting_captain = (title != "Captain")

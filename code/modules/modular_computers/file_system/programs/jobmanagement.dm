@@ -25,7 +25,7 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 		"Chief Engineer",
 		"Research Director",
 		"Chief Medical Officer",
-		"Bridge Officer") //NON-MODULE CHANGE
+		"Bridge Officer") // NON-MODULE CHANGE
 
 	//The scaling factor of max total positions in relation to the total amount of people on board the station in %
 	var/max_relative_positions = 30 //30%: Seems reasonable, limit of 6 @ 20 players
@@ -141,4 +141,3 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 		priority += job.title
 	data["prioritized"] = priority
 	return data
-

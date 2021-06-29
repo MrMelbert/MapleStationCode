@@ -966,13 +966,13 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 				if("South")
 					movement_keys[key] = SOUTH
 				if("Say")
-					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=.say") //NON-MODULE CHANGE
+					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=.say") // NON-MODULE CHANGE
 				if("OOC")
 					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=ooc")
 				if("Me")
-					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=.me") //NON-MODULE CHANGE
+					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=.me") // NON-MODULE CHANGE
 				if("LOOC")
-					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=looc") //NON-MODULE CHANGE
+					winset(src, "default-[REF(key)]", "parent=default;name=[key];command=looc") // NON-MODULE CHANGE
 
 /client/proc/change_view(new_size)
 	if (isnull(new_size))
