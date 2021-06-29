@@ -516,8 +516,8 @@
  * Effects caused by medium pain. (~250-400 pain)
  */
 /datum/pain/proc/med_pain_effects(delta_time)
-	if(DT_PROB(0.1, delta_time))
-		if(locate(/datum/disease/shock) in parent.diseases)
+	if(DT_PROB(0.05, delta_time))
+		if(is_undergoing_shock())
 			return
 		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
@@ -550,7 +550,7 @@
  */
 /datum/pain/proc/high_pain_effects(delta_time)
 	if(DT_PROB(0.5, delta_time))
-		if(locate(/datum/disease/shock) in parent.diseases)
+		if(is_undergoing_shock())
 			return
 		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
@@ -645,6 +645,12 @@
 	return 100 * total_pain / max_total_pain
 
 /*
+ * Returns TRUE if we are undergoing shock.
+ */
+/datum/pain/proc/is_undergoing_shock()
+	return locate(/datum/disease/shock) in parent.diseases
+
+/*
  * Remove all pain, pain paralysis, side effects, etc. from our mob after we're fully healed by something (like an adminheal)
  */
 /datum/pain/proc/remove_all_pain(datum/source, adminheal)
@@ -689,25 +695,35 @@
 
 	var/amount = ""
 	var/tip = ""
+	if(is_undergoing_shock())
+		tip += "Neurogenic shock has begun and should be treated urgently. "
+
 	switch(get_average_pain())
 		if(5 to 15)
 			amount = "minor"
-			tip = "Pain should subside in time."
+			tip += "Pain should subside in time."
 		if(15 to 30)
 			amount = "moderate"
-			tip = "Pain should subside in time and can be quickened with rest or cryogenics, or painkilling medication."
+			tip += "Pain should subside in time and can be quickened with rest or cryogenics, or painkilling medication."
 		if(30 to 50)
 			amount = "major"
-			tip = "Treat wounds and pain should abated with rest, cryogenics, or stasis and painkilling medication."
+			tip += "Treat wounds and abate pain with rest, cryogenics, or stasis and painkilling medication."
 		if(50 to 80)
 			amount = "severe"
-			tip = "May enter Neurogenic shock soon. Treat wounds and pain should abated with rest, anesthetic, cryogenics, or stasis, and painkilling medication."
+			if(!tip)
+				tip += span_bold("Alert: Potential of neurogenic shock. ")
+			tip += "Treat wounds and abate pain with rest, anesthetic, cryogenics, or stasis, and painkilling medication."
 		if(80 to 100)
 			amount = "extreme"
-			tip = "May enter Neurogenic shock soon. Treat wounds and pain should abated with long rest, anesthetic, cryogenics,  or stasis, and heavy painkilling medication."
+			if(!tip)
+				tip += span_bold("Alert: High potential of neurogenic shock. ")
+			tip += "Treat wounds and abate pain with long rest, anesthetic, cryogenics, or stasis, and heavy painkilling medication."
 
-	if(amount)
-		analyzer_text += "<span class='alert ml-1'><b>Subject is experiencing [amount] pain. </b>[tip]</span>"
+	if(amount && tip)
+		analyzer_text += "<span class='alert ml-1'>"
+		analyzer_text += span_bold("Subject is experiencing [amount] pain. ")
+		analyzer_text += tip
+		analyzer_text += "</span>"
 
 // ------ Pain debugging stuff. ------
 /datum/pain/vv_get_dropdown()

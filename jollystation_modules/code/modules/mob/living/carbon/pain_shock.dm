@@ -46,7 +46,7 @@
 
 	// If we have enough conditions present to cure us, roll for a cure
 	if(has_cure() && DT_PROB(check_cure_conditions(), delta_time) && stage <= 2)
-		to_chat(affected_mob, span_green("Your body feels awake and active again!"))
+		to_chat(affected_mob, span_bold(span_green("Your body feels awake and active again!")))
 		cure()
 		return FALSE
 

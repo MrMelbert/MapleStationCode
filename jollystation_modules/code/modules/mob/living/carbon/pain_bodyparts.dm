@@ -182,11 +182,11 @@
 		if(75 to 110)
 			owner.pain_emote(picked_emote)
 			owner.flash_pain_overlay(2, 2 SECONDS)
-			feedback_phrases += list("really hurts", "is loosing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels tight")
+			feedback_phrases += list("really hurts", "is loosing feeling", "throbs painfully", "stings to the touch", "is in agony", "anguishes", "feels broken", "feels tight")
 			side_feedback += list("You feel a sharp pain in your side", "Your ribs feel broken")
 		if(110 to INFINITY)
 			owner.flash_pain_overlay(2, 3 SECONDS)
-			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "stings to the touch", "feels terrible", "feels constricted")
+			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "burns to the touch", "feels terrible", "feels constricted")
 			side_feedback += list("You feel your ribs jostle in your [name]")
 			owner.pain_emote(pick("groan", "scream"))
 
