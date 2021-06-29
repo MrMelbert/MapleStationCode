@@ -428,6 +428,7 @@
 /obj/item/storage/pill_bottle/painkillers
 	name = "bottle of painkillers"
 	desc = "Contains multiple pills used to treat anywhere from mild to extreme pain. CAUTION: Do not take in conjunction with alcohol."
+	icon = 'jollystation_modules/icons/obj/chemical.dmi'
 	custom_premium_price = PAYCHECK_HARD * 1.5
 
 /obj/item/storage/pill_bottle/painkillers/ComponentInitialize()
@@ -453,7 +454,10 @@
 
 /obj/item/reagent_containers/hypospray/medipen/survival/painkiller
 	name = "emergency painkiller medipen"
-	desc = "A medipen that contains 2 dosages of heavy duty painkillers. Side effects or addiction may occur with rapid consecutive usage."
-	volume = 40
-	amount_per_transfer_from_this = 20
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 20, /datum/reagent/medicine/morphine = 10, /datum/reagent/medicine/modafinil = 10)
+	desc = "A medipen that contains a dosage of heavy duty painkillers. WARNING: Side effects or addiction may occur with rapid consecutive usage. Do not use in combination with alcohol."
+	icon = 'jollystation_modules/icons/obj/syringe.dmi'
+	icon_state = "painkiller_stimpen"
+	base_icon_state = "painkiller_stimpen"
+	volume = 15
+	amount_per_transfer_from_this = 15
+	list_reagents = list(/datum/reagent/medicine/oxycodone = 7.5, /datum/reagent/medicine/morphine = 5, /datum/reagent/medicine/modafinil = 2.5)

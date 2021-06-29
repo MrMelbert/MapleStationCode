@@ -17,9 +17,6 @@
 	visibility_flags = HIDDEN_PANDEMIC
 	bypasses_immunity = TRUE
 
-/datum/disease/shock/has_cure()
-	return check_cure_conditions() >= 3 && !affected_mob.undergoing_cardiac_arrest()
-
 /*
  * Checks which cure conditions we fulfill.
  *
@@ -29,7 +26,17 @@
 	. = 0
 	. += affected_mob.bodytemperature > affected_mob.get_body_temp_cold_damage_limit()
 	. += !affected_mob.is_bleeding()
+	. += affected_mob.body_position == LYING_DOWN
 	. += 2 * (affected_mob.pain_controller.get_average_pain() < 40)
+
+/datum/disease/shock/has_cure()
+	return check_cure_conditions() >= 3 && !affected_mob.undergoing_cardiac_arrest()
+
+/datum/disease/shock/after_add()
+	affected_mob.apply_status_effect(STATUS_EFFECT_LOWBLOODPRESSURE)
+
+/datum/disease/shock/remove_disease()
+	affected_mob.remove_status_effect(STATUS_EFFECT_LOWBLOODPRESSURE)
 
 /datum/disease/shock/stage_act(delta_time, times_fired)
 	. = ..()

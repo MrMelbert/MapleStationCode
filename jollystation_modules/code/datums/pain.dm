@@ -139,30 +139,45 @@
  *
  * key - key of the added modifier
  * amount - multiplier of the modifier
+ *
+ * returns TRUE if our pain mod actually changed
  */
 /datum/pain/proc/set_pain_modifier(key, amount)
-	if(isnull(pain_mods[key]) || pain_mods[key] < amount)
-		pain_mods[key] = amount
-		update_pain_modifier()
+	if(!isnull(pain_mods[key]))
+		if(amount >= 1 && pain_mods[key] > amount)
+			return FALSE
+		if(amount < 1 && pain_mods[key] < amount)
+			return FALSE
+
+	pain_mods[key] = amount
+	return update_pain_modifier()
 
 /*
  * Remove a pain modifier and update our overall modifier.
  *
  * key - key of the removed modifier
+ *
+ * returns TRUE if our pain mod actually changed
  */
 /datum/pain/proc/unset_pain_modifier(key)
-	if(!isnull(pain_mods[key]))
-		pain_mods -= key
-		update_pain_modifier()
+	if(isnull(pain_mods[key]))
+		return FALSE
+
+	pain_mods -= key
+	return update_pain_modifier()
 
 /*
  * Update our overall pain modifier.
  * The pain modifier is multiplicative based on all the pain modifiers we have.
+ *
+ * returns TRUE if our pain modifier was changed after update, FALSE if it remained the same
  */
 /datum/pain/proc/update_pain_modifier()
+	var/old_pain_mod = pain_modifier
 	pain_modifier = 1
 	for(var/mod in pain_mods)
 		pain_modifier *= pain_mods[mod]
+	return old_pain_mod != pain_modifier
 
 /*
  * Adjust the amount of pain in all [def_zones] provided by [amount] (multiplied by the [pain_modifier] if positive).
@@ -458,9 +473,11 @@
 
 	if(HAS_TRAIT(parent, TRAIT_OFF_STATION_PAIN_RESISTANCE))
 		if(is_station_level(parent.z))
-			unset_pain_modifier(PAIN_MOD_OFF_STATION)
+			if(unset_pain_modifier(PAIN_MOD_OFF_STATION))
+				to_chat(parent, span_notice("Returning to the station, you feel much more vulnerable to incoming pain."))
 		else
-			set_pain_modifier(PAIN_MOD_OFF_STATION, 0.6)
+			if(set_pain_modifier(PAIN_MOD_OFF_STATION, 0.6))
+				to_chat(parent, span_notice("As you depart from the station, you feel more resilient to incoming pain."))
 
 	if(parent.IsSleeping())
 		var/sleeping_turf = get_turf(parent)
