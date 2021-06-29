@@ -27,7 +27,8 @@
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
 	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy))
-		return INITIALIZE_HINT_QDEL // If we're not a carbon, delete us
+		qdel(src) // If we're not a carbon, or a dummy, delete us
+		return
 
 	parent = new_parent
 	for(var/obj/item/bodypart/parent_bodypart in parent.bodyparts)
@@ -35,7 +36,8 @@
 
 	if(!body_zones.len)
 		stack_trace("Pain datum failed to find any body_zones to track!")
-		return INITIALIZE_HINT_QDEL // If we have no bodyparts, delete us
+		qdel(src) // If we have no bodyparts, delete us
+		return
 
 	RegisterParentSignals()
 	if(new_parent.stat == CONSCIOUS)
@@ -405,7 +407,6 @@
 
 	check_pain_modifiers(delta_time)
 
-	var/average_pain = 0 //We can save proc overhead by doing this here manually instead of calling get_average_pain().
 	var/list/shuffled_zones = shuffle(body_zones)
 	for(var/part in shuffled_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
@@ -416,22 +417,19 @@
 		if(!checked_bodypart.pain)
 			continue
 		checked_bodypart.processed_pain_effects(delta_time)
-		average_pain += (checked_bodypart.pain * (PAIN_LIMB_MAX / checked_bodypart.max_pain))
 
 		if(DT_PROB(checked_bodypart.get_modified_pain() / 8, delta_time) && COOLDOWN_FINISHED(src, time_since_last_pain_message))
 			if(checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss)))
 				COOLDOWN_START(src, time_since_last_pain_message, 4 SECONDS)
 
-	average_pain /= body_zones.len
-
 	// we check the average pain of all bodyparts, normalized to limb pain (max of 75)
 	if(!parent.has_status_effect(STATUS_EFFECT_DETERMINED))
-		switch(average_pain)
-			if(20 to 35)
+		switch(get_average_pain())
+			if(15 to 40)
 				low_pain_effects(delta_time)
-			if(36 to 55)
+			if(40 to 75)
 				med_pain_effects(delta_time)
-			if(56 to 75)
+			if(75 to INFINITY)
 				high_pain_effects(delta_time)
 
 	decay_pain(delta_time)
@@ -575,27 +573,27 @@
  */
 /datum/pain/proc/apply_pain_attributes()
 	switch(get_average_pain())
-		if(0 to 15)
+		if(0 to 20)
 			parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
 			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 			SEND_SIGNAL(parent, COMSIG_CLEAR_MOOD_EVENT, "pain")
-		if(15 to 30)
+		if(20 to 40)
 			parent.mob_surgery_speed_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/light_pain)
-		if(30 to 45)
+		if(40 to 60)
 			parent.mob_surgery_speed_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/med_pain)
-		if(45 to 60)
+		if(60 to 80)
 			parent.mob_surgery_speed_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
 			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/heavy_pain)
-		if(60 to INFINITY) // Functionally 60 to 75
+		if(80 to INFINITY)
 			parent.mob_surgery_speed_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
