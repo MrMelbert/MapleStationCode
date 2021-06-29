@@ -59,7 +59,7 @@ var/epic_variable = 3 // NON-MODULE CHANGE
 // NON-MODULE CHANGE END
 ```
 
-- What DOES matter: The formatting of the first part of the comment! The comment MUST start with `// NON-MODULE`, space included, exact number of forward slashes.
+- What DOES matter: The formatting of the first part of the comment! The comment MUST start with `// NON-MODULE`, space included, exact number of forward slashes, capitalized.
 - What doesnt matter: what follows above. `// NON-MODULE CHANGE`, `// NON-MODULE CHANGE START`, `// NON-MODULE CHANGES`, `// NON-MODULE CHANGE: I did stuff`
 ## ...custom things to vendors:
 
