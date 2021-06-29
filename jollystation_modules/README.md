@@ -52,15 +52,15 @@ var/epic_variable = 3 // NON-MODULE CHANGE
 ```
 
 ```
-/* NON-MODULE CHANGE:
+// NON-MODULE CHANGE START
 /obj/foo/bar/proc/do_thing()
 	to_chat(world, "I added a proc to something")
 	qdel(src)
-NON-MODULE CHANGE END /*
+// NON-MODULE CHANGE END
 ```
 
-- It doesn't matter if you use Non-Module Change/Changes. Try to keep the ending part 'Module Change/s' consistent. DO NOT USE 'MODULAR'.
-
+- What DOES matter: The formatting of the first part of the comment! The comment MUST start with `// NON-MODULE`, space included, exact number of forward slashes.
+- What doesnt matter: what follows above. `// NON-MODULE CHANGE`, `// NON-MODULE CHANGE START`, `// NON-MODULE CHANGES`, `// NON-MODULE CHANGE: I did stuff`
 ## ...custom things to vendors:
 
 Go to `jollystation_modules/code/modules/vending/_vending.dm` and use the template provided to add or remove items from vendors. Follow the provided template there.
