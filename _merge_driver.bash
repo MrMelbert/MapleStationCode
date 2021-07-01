@@ -44,6 +44,12 @@ update_dme (){
 		return 1
 	fi
 
+	if grep -q "<<<<<<<" $1; then
+		sed -i '/<<<<<<</,/=======/d' $1
+		sed -i '/>>>>>>>/d' $1
+		echo "$1 merge conflicts resolved before updating modular DME.."
+	fi
+
 	tempfile=temp_"$1"
 	sed '$d' $1 >> $tempfile
 	grep '#include "jollystation_modules' $2 >> $tempfile
@@ -60,8 +66,8 @@ update_build (){
 }
 
 echo "Running merge driver. . ."
-find_all_in_dir "code"
-find_all_in_dir "tgui"
+#find_all_in_dir "code"
+#find_all_in_dir "tgui"
 echo "Conflict checking done. Updating DME."
 update_dme tgstation.dme jollystation.dme
 echo "DME update down. Updating build.js"
