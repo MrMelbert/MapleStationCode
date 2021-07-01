@@ -347,7 +347,8 @@
 		Leads the nest through their xenomorph hivemind. The source of the xenos - \
 		killing the queen is important in killing the hive. \
 		When slain, releases a psychic scream along the alien hivemind, \
-		confusing and disorienting their kin and offspring.", EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND, hint = FALSE)
+		confusing and disorienting their kin and offspring.", \
+		EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND, hint = FALSE)
 
 /mob/living/simple_animal/hostile/alien/queen/Initialize()
 	. = ..()
