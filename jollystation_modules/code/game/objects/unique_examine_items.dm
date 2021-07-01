@@ -163,7 +163,7 @@
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A pierce in reality - a weakness in the veil that allows power to be gleamed from the Mansus.\
-		\n<span class='hypnophrase'>[pick(strings(HERETIC_REALITY_MESSAGES, examine_reality))]</span>", \
+		\n[span_hypnophrase(pick(strings(HERETIC_REALITY_MESSAGES, "examine_reality")))]", \
 		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
 
 /obj/effect/broken_illusion/Initialize()
@@ -171,7 +171,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"A tapped pierce in reality - this one has been sapped of power. \
 		There is nothing here for Them any longer.\
-		\n<span class='hypnophrase'>[pick(strings(HERETIC_REALITY_MESSAGES, examine_reality))]</span>", \
+		\n[span_hypnophrase(pick(strings(HERETIC_REALITY_MESSAGES, "examine_reality")))]", \
 		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
 	AddElement(/datum/element/unique_examine, \
 		span_hypnophrase("A harrowing reminder of the \
