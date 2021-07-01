@@ -99,11 +99,6 @@
 		user.put_in_active_hand(input_shock_kit)
 		to_chat(user, "<span class='notice'> You cannot fit the shock kit onto the [name]!")
 
-/obj/structure/chair/wrench_act(mob/living/user, obj/item/I)
-	. = ..()
-	I.play_tool_sound(src)
-	deconstruct()
-	return TRUE
 
 /obj/structure/chair/wrench_act(mob/living/user, obj/item/I)
 	. = ..()

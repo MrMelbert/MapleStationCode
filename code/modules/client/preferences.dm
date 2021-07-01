@@ -1985,12 +1985,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					to_chat(user, span_notice("OOC Commendation Heart disabled"))
 					save_preferences()
 
-				if("hear_speech_sounds")
-					hear_speech_sounds = !hear_speech_sounds
-
-				if("hear_radio_sounds")
-					hear_radio_sounds = !hear_radio_sounds
-
 	ShowChoices(user)
 	return 1
 
@@ -2015,7 +2009,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			hardcore_random_setup(character, antagonist, is_latejoiner)
 
 	if(roundstart_checks)
-		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == "human"))
+		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == SPECIES_HUMAN))
 			var/firstspace = findtext(real_name, " ")
 			var/name_length = length(real_name)
 			if(!firstspace) //we need a surname

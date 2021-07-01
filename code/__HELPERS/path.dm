@@ -171,6 +171,7 @@
 	if(path)
 		for(var/i = 1 to round(0.5 * length(path)))
 			path.Swap(i, length(path) - i + 1)
+
 	sources = null
 	qdel(open)
 	return path

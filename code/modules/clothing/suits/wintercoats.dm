@@ -202,6 +202,7 @@
 	inhand_icon_state = "coatcmo"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, RAD = 0, FIRE = 20, ACID = 30)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/cmo
+
 /obj/item/clothing/suit/hooded/wintercoat/medical/cmo/Initialize()
 	. = ..()
 	allowed += list(
@@ -284,6 +285,7 @@
 	inhand_icon_state = "coatrd"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 20, BIO = 0, RAD = 0, FIRE = 30, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science/rd
+
 /obj/item/clothing/suit/hooded/wintercoat/science/rd/Initialize()
 	. = ..()
 	allowed += list(

@@ -4,7 +4,7 @@
 	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel" 
+	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 
 	outfit = /datum/outfit/job/bartender
@@ -20,7 +20,7 @@
 
 	mail_goodies = list(
 		/obj/item/storage/box/rubbershot = 30,
-		/datum/reagent/consumable/clownstears = 10,
+		/obj/item/reagent_containers/glass/bottle/clownstears = 10,
 		/obj/item/stack/sheet/mineral/plasma = 10,
 		/obj/item/stack/sheet/mineral/uranium = 10,
 	)

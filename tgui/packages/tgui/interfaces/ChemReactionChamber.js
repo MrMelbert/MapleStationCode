@@ -24,6 +24,7 @@ export const ChemReactionChamber = (props, context) => {
     reagentAcidic,
     reagentAlkaline,
   } = data;
+  const reagents = data.reagents || [];
   return (
     <Window
       width={290}

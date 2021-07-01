@@ -212,6 +212,7 @@ GLOBAL_LIST_EMPTY(explorer_drone_adventure_db_entries)
 	fresh_node.on_enter_effects = node_data[NODE_ON_ENTER_EFFECTS_FIELD]
 	fresh_node.on_exit_effects = node_data[NODE_ON_EXIT_EFFECTS_FIELD]
 	return fresh_node
+
 /// text adventure instance, holds data about nodes/choices/etc and of current play state.
 /datum/adventure
 	/// Adventure name, this organization only, not visible to users

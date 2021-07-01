@@ -2,7 +2,7 @@
 
 find_all_in_dir (){
 
-	if [ ! -f $1 ]; then
+	if [ ! -d $1 ]; then
 		echo "!! find_all_in_dir error: $1 directory not found."
 		return 1
 	fi
