@@ -10,15 +10,15 @@
 	var/mob/living/living_antag = mob_override || owner.current
 	add_antag_hud(antag_hud_type, antag_hud_name, living_antag)
 	living_antag.faction |= ROLE_SYNDICATE
-	living_antag.mind.special_role = "Infiltrator"
-	living_antag.mind.assigned_role = "Infiltrator"
+	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/infiltrator))
+	living_antag.mind.special_role = ROLE_INFILTRATOR
 
 /datum/antagonist/traitor/traitor_plus/intiltrator/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/living_antag = mob_override || owner.current
 	remove_antag_hud(antag_hud_type, living_antag)
 	living_antag.faction -= ROLE_SYNDICATE
-	living_antag.mind.special_role = null
 	living_antag.mind.assigned_role = null
+	living_antag.mind.special_role = null
 
 /datum/antagonist/traitor/traitor_plus/intiltrator/on_removal()
 	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = locate() in owner.current
@@ -99,8 +99,7 @@
 
 /datum/antagonist/traitor/traitor_plus/intiltrator/pod_spawn/on_gain()
 	name = "Infiltrator"
-	owner.assigned_role = "Infiltrator"
-	equip_infiltrator_outfit(TRUE)
+	equip_infiltrator_outfit()
 	return ..()
 
 /datum/antagonist/traitor/traitor_plus/intiltrator/pod_spawn/equip(silent = FALSE)
