@@ -66,8 +66,8 @@ update_build (){
 }
 
 echo "Running merge driver. . ."
-#find_all_in_dir "code"
-#find_all_in_dir "tgui"
+find_all_in_dir "code"
+find_all_in_dir "tgui"
 echo "Conflict checking done. Updating DME."
 update_dme tgstation.dme jollystation.dme
 echo "DME update down. Updating build.js"
