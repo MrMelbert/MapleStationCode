@@ -47,7 +47,7 @@
 
 	/// If we were passed a examine check that checks the special list, make sure the special list is filled too
 	switch(special_desc_requirement)
-		if(EXAMINE_CHECK_TRAIT, EXAMINE_CHECK_SKILLCHIP, EXAMINE_CHECK_FACTION, EXAMINE_CHECK_JOB, EXAMINE_CHECK_ROLE, EXAMINE_CHECK_SPECIES)
+		if(EXAMINE_CHECK_TRAIT, EXAMINE_CHECK_SKILLCHIP, EXAMINE_CHECK_FACTION, EXAMINE_CHECK_JOB, EXAMINE_CHECK_ROLE, EXAMINE_CHECK_SPECIES, EXAMINE_CHECK_DEPARTMENT)
 			if(!special_desc_list.len)
 				stack_trace("Unique examine element attempted to attach to something with a special examine requirement [special_desc_requirement] but provided no list to check.")
 				return ELEMENT_INCOMPATIBLE
@@ -84,6 +84,10 @@
 /datum/element/unique_examine/proc/examine(datum/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
 
+	var/datum/mind/examiner_mind = examiner.mind
+	if(!examiner_mind)
+		return
+
 	var/composed_message
 	switch(special_desc_requirement)
 		//Will always show if set
@@ -98,31 +102,33 @@
 				composed_message += special_desc
 		//Aantag checks
 		if(EXAMINE_CHECK_ANTAG)
-			if(examiner.mind)
-				var/datum/mind/M = examiner.mind
-				for(var/datum/antagonist/antag_datum as anything in special_desc_list)
-					if(M.has_antag_datum(antag_datum))
-						var/antag_text = span_red(span_bold(special_desc_affiliation ? special_desc_affiliation : "[antag_datum.name] Role"))
-						composed_message += "You note the following because of your [antag_text]: <br>"
-						composed_message += special_desc
+			for(var/datum/antagonist/antag_datum as anything in special_desc_list)
+				if(examiner_mind.has_antag_datum(antag_datum))
+					var/antag_text = span_red(span_bold(special_desc_affiliation ? special_desc_affiliation : "[antag_datum.name] Role"))
+					composed_message += "You note the following because of your [antag_text]: <br>"
+					composed_message += special_desc
 		//Role checks
 		if(EXAMINE_CHECK_ROLE)
-			if(examiner.mind)
-				var/datum/mind/M = examiner.mind
-				for(var/checked_role in special_desc_list)
-					if(M.special_role == checked_role)
-						var/role_text = span_bold(checked_role)
-						composed_message += "You note the following because of your [role_text] role: <br>"
-						composed_message += special_desc
-		//Kob checks
+			for(var/checked_role in special_desc_list)
+				if(examiner_mind.special_role == checked_role)
+					var/role_text = span_bold(checked_role)
+					composed_message += "You note the following because of your [role_text] role: <br>"
+					composed_message += special_desc
+		//Job (title) checks
 		if(EXAMINE_CHECK_JOB)
-			if(ishuman(examiner))
-				var/mob/living/carbon/human/H = examiner
-				for(var/checked_job in special_desc_list)
-					if(H.job == checked_job)
-						var/job_text = span_bold(checked_job)
-						composed_message += "You note the following because of your job as a [job_text]: <br>"
-						composed_message += special_desc
+			for(var/checked_job in special_desc_list)
+				if(examiner_mind.job.title == checked_job)
+					var/job_text = span_bold(checked_job)
+					composed_message += "You note the following because of your job as a [job_text]: <br>"
+					composed_message += special_desc
+					break
+		//Department checks
+		if(EXAMINE_CHECK_DEPARTMENT)
+			if(examiner_mind.job.departments & special_desc_list)
+				var/dept_title = get_department(special_desc_list)
+				composed_message += "You note the following because of your place [dept_title]: <br>"
+				composed_message += special_desc
+				break
 		//Standard faction checks
 		if(EXAMINE_CHECK_FACTION)
 			for(var/checked_faction in special_desc_list)
@@ -173,11 +179,11 @@
 			. = span_alien("the alien hivemind")
 		if(ROLE_NINJA)
 			. = span_hypnophrase("the spider clan")
+		if(FACTION_STATION)
+			. = span_blue("[station_name()]")
 		// I love that some factions use role defines while others use magic strings
 		if("Nanotrasen")
 			. = span_blue("Nanotrasen") // not necessary but keeping it here
-		if("Station")
-			. = span_blue("[station_name()]")
 		if("heretics")
 			. = span_hypnophrase("the Mansus")
 		if("cult")
@@ -192,5 +198,27 @@
 			. = span_green("space carp")
 		else
 			. = faction
+
+	return span_bold(.)
+
+/datum/element/unique_examine/proc/get_department(department_bitflag)
+	if(department_bitflag & DEPARTMENT_COMMAND)
+		. =  "as a member of command staff"
+	else if(department_bitflag & DEPARTMENT_SECURITY)
+		. =  "as a member of security force"
+	else if(department_bitflag & DEPARTMENT_SERVICE)
+		. =  "in the service department"
+	else if(department_bitflag & DEPARTMENT_CARGO)
+		. =  "in the cargo bay"
+	else if(department_bitflag & DEPARTMENT_ENGINEERING)
+		. =  "as one of the engineers"
+	else if(department_bitflag & DEPARTMENT_SCIENCE)
+		. =  "in the science team"
+	else if(department_bitflag & DEPARTMENT_MEDICAL)
+		. =  "in the medical field"
+	else if(department_bitflag & DEPARTMENT_SILICON)
+		. =  "as a silicon unit"
+	else
+		. = "on the station"
 
 	return span_bold(.)

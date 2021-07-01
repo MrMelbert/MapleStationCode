@@ -9,6 +9,8 @@
 #define EXAMINE_CHECK_ROLE "role"
 /// For displaying descriptors for specific jobs, e.g scientist. Pass a list of string "Job"
 #define EXAMINE_CHECK_JOB "job"
+/// For displaying descriptors for specific departments, like "service". Pass a bitflag of departments
+#define EXAMINE_CHECK_DEPARTMENT "department"
 /// For displaying descriptors for mob factions, e.g. a zombie, or... turrets. Or syndicate. Pass a list of type "faction"
 // NOTE: factions aren't often set very consistently, so this might not work as anticipated. You should try to use other checks before faction if possible.
 #define EXAMINE_CHECK_FACTION "faction"
