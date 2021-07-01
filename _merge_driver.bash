@@ -2,7 +2,7 @@
 
 find_all_in_dir (){
 
-	if [ ! -f $1 ]; then
+	if [ ! -d $1 ]; then
 		echo "!! find_all_in_dir error: $1 directory not found."
 		return 1
 	fi
@@ -18,7 +18,7 @@ find_all_in_dir (){
 			continue
 		fi
 
-		if grep -q "// NON-MODULE" "$file"; then
+		if grep -q -i -E "\/{2,}\s*non(\s|-)*module" "$file"; then
 			echo "NOTICE: $file contains modular changes, and must be done manually."
 			continue
 		fi
