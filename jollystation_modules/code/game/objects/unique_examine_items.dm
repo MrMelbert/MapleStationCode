@@ -3,22 +3,18 @@
 /// Job defines
 #define SECURITY_JOBS_PLUS_COMMAND GLOB.security_positions + list("Captain", "Bridge Officer")
 /// Antag defines
-#define TRAITOR_LIST list(/datum/antagonist/traitor)
-#define CHANGELING_LIST list(/datum/antagonist/changeling)
-#define HERETIC_LIST list(/datum/antagonist/heretic)
-#define WIZARD_LIST list(/datum/antagonist/wizard)
-#define NUKEOP_LIST list(/datum/antagonist/nukeop)
-#define SYNDICATES_LIST NUKEOP_LIST + TRAITOR_LIST
+#define TRAITOR_ANTAG /datum/antagonist/traitor
+#define NUKEOP_ANTAG /datum/antagonist/nukeop
+#define SYNDICATE_ANTAGS list(TRAITOR_ANTAG, NUKEOP_ANTAG)
 /// Species defines
-#define LIZARD_LIST list(/datum/species/lizard)
+#define LIZARD_SPECIES /datum/species/lizard
 /// Faction defines
-#define HERETIC_FACTIONS list("heretics")
-#define WIZARD_FACTIONS list(ROLE_WIZARD)
+#define HERETIC_FACTION "heretics"
 
 // SYNDICATE / SYNDICATE TOY ITEMS //
 
 /obj/item/storage/backpack/duffelbag/syndie
-	name = "duffel bag"
+	name = "dark duffel bag"
 	desc = "A large lightweight duffel bag for holding extra supplies."
 
 /obj/item/storage/backpack/duffelbag/syndie/Initialize()
@@ -26,7 +22,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"This bag is used to store tactical equipment and is manufactured by Donk Co. \
 		It's faster and lighter than other duffelbags without sacrificing any space.", \
-		EXAMINE_CHECK_ANTAG, SYNDICATES_LIST, "Syndicate Affiliation", hint = FALSE)
+		EXAMINE_CHECK_ANTAG, SYNDICATE_ANTAGS, "Syndicate Affiliation", hint = FALSE)
 	AddElement(/datum/element/unique_examine, \
 		"A large, dark colored dufflebag commonly used to transport ammunition, tools, and explosives. \
 		Its design makes it much lighter than other duffelbags without sacrificing any space.", \
@@ -41,7 +37,7 @@
 	if(unique_description)
 		AddElement(/datum/element/unique_examine, \
 			unique_description, \
-			EXAMINE_CHECK_ANTAG, SYNDICATES_LIST, "Syndicate Affiliation",  hint = FALSE)
+			EXAMINE_CHECK_ANTAG, SYNDICATE_ANTAGS, "Syndicate Affiliation", hint = FALSE)
 		AddElement(/datum/element/unique_examine, \
 			"A padded, armored outfit commonly used by syndicate operatives in the field.", \
 			EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND)
@@ -67,7 +63,7 @@
 	if(tacticool_description)
 		AddElement(/datum/element/unique_examine, \
 			tacticool_description, \
-			EXAMINE_CHECK_ANTAG, SYNDICATES_LIST, "Syndicate Affiliation", is_toy = TRUE)
+			EXAMINE_CHECK_ANTAG, SYNDICATE_ANTAGS, "Syndicate Affiliation", is_toy = TRUE)
 
 /obj/item/clothing/under/syndicate/tacticool/skirt
 	tacticool_description = "Knockoff, Nanotrasen brand tactical skirtleneck - it's not even the right color."
@@ -104,22 +100,20 @@
 	var/vintage = rand(GLOB.year_integer + 450, GLOB.year_integer + 540) // Wine has an actual vintage var but lizardwine is special
 	AddElement(/datum/element/unique_examine, \
 		"A bottle of ethically questionable lizard wine. \
-		Rare now-a-days following the harsh regulations placed on the great wine industry. \
-		You'd place the vintage at... \
+		Rare now-a-days following the harsh regulations placed on the great wine industry. You'd place the vintage at... \
 		[(vintage >= 3000) ? "[vintage] Nanotrasen White-Green. Not my personal preference..." : "a respectable [vintage] Nanotrasen White-Green. Wonderful."]", \
-		EXAMINE_CHECK_SKILLCHIP, list(/obj/item/skillchip/wine_taster), hint = FALSE)
+		EXAMINE_CHECK_SKILLCHIP, /obj/item/skillchip/wine_taster, hint = FALSE)
 	AddElement(/datum/element/unique_examine, \
 		"A lizardperson's tail is important in keeping balance and warding off enemies in combat situations. \
 		You can't help but feel disappointed and saddened looking at this, knowing a fellow kin was robbed of such a thing.", \
-		EXAMINE_CHECK_SPECIES, LIZARD_LIST)
+		EXAMINE_CHECK_SPECIES, LIZARD_SPECIES)
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A bottle of fine [name]. Classic, refreshing, usually comes with a sharp taste. \
-		The vintage is labeled as [generate_vintage()]... \
-		You'll be the one to determine that.", \
-		EXAMINE_CHECK_SKILLCHIP, list(/obj/item/skillchip/wine_taster), hint = FALSE)
+		The vintage is labeled as [generate_vintage()]... You'll be the one to determine that.", \
+		EXAMINE_CHECK_SKILLCHIP, /obj/item/skillchip/wine_taster, hint = FALSE)
 
 // MAGICAL ITEMS //
 
@@ -133,7 +127,7 @@
 		Using it will allow you to release your ghost while alive, \
 		allowing you to spy upon the station and talk to the deceased. \
 		In addition, holding it it will permanently grant you X-ray vision.", \
-		EXAMINE_CHECK_FACTION, WIZARD_FACTIONS)
+		EXAMINE_CHECK_FACTION, ROLE_WIZARD)
 
 /obj/item/forbidden_book
 	name = "suspicious purple book"
@@ -144,8 +138,13 @@
 	AddElement(/datum/element/unique_examine, \
 		"The Codex Cicatrix - the book of knowledge holding all the secrets of the veil between the worlds, the Mansus. \
 		Discovered by Wizard Federation aeons ago but locked away deep in the shelving of the highest security libraries of the Spindward Galaxy, \
+		the book was recently stolen during a raid by the Cybersun Industries - which is how you got into contact with it.", \
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+	AddElement(/datum/element/unique_examine, \
+		"The Codex Cicatrix - the book of knowledge that supposedly holds all the secrets of the viel between the worlds.. \
+		Discovered by Wizard Federation long ago, but locked away deep in the shelving of the highest security libraries of the Spindward Galaxy, \
 		the book was recently stolen during a raid by the Cybersun Industries, copied, and widespread to aspiring seekers of power.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTIONS)
+		EXAMINE_CHECK_DEPARTMENT, (DEPARTMENT_SECURITY | DEPARTMENT_COMMAND), hint = FALSE)
 
 /obj/item/toy/eldritch_book
 	name = "suspicious purple book"
@@ -156,7 +155,7 @@
 		"A fake Codex Cicatrix - the book of knowledge holding all the secrets of the veil between the worlds, the Mansus. \
 		While the book was recently discovered, copied, and spread due to a recent Cybersun Industries raid on a high-security library, \
 		it seems as if Nanotrasen has already began marketing and selling fake toy copies for children... interesting.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTIONS, is_toy = TRUE)
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION, is_toy = TRUE)
 
 // GUNS //
 
@@ -166,16 +165,16 @@
 		"A refitted revolver that takes .357 caliber, the Mateba Model 6 Unica - \
 		or as it's commonly known shorthand, either the Mateba or the Unica - \
 		has been the weapon of choice for Nanotrasen commanding officers in the field for decades.", \
-		EXAMINE_CHECK_DEPARTMENT, (DEPARTMENT_SECURITY & DEPARTMENT_COMMAND))
+		EXAMINE_CHECK_DEPARTMENT, (DEPARTMENT_SECURITY | DEPARTMENT_COMMAND))
 
 /obj/item/gun/energy/laser/captain/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine,
+	AddElement(/datum/element/unique_examine, \
 		"The pride and joy of every captain in the Spinward. \
 		It's tradition amongst captains to mod and maintain a lasergun of your own, only bringing it out to use in dire straits. \
 		Every captain has their own personal modifications - \
 		this one is modified with a self-recharging cell and hellfire laser rounds.", \
-		EXAMINE_CHECK_JOB, list("Captain"))
+		EXAMINE_CHECK_JOB, "Captain")
 
 /obj/item/gun/energy/e_gun/hos/Initialize()
 	. = ..()
@@ -184,7 +183,7 @@
 		the X-01 multiphase energy gun was developed in the past few decades to issue to only the highest brass officers \
 		in Nanotrasen security forces. While in the past the gun was outfitted with taser electrodes instead of an ion bolts, \
 		it is still used by lead officers for quick response and utility in the event of varying threats.", \
-		EXAMINE_CHECK_JOB, DEPARTMENT_SECURITY)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_SECURITY)
 
 // HIGH RISK ITEMS //
 
@@ -205,7 +204,7 @@
 		to hold the authentication disk and (should the situation call for it) enter the codes to the self-destruct. \
 		Of course, because of the importance of the disk in unlocking nuclear devices, the Nuclear Authentication Disk \
 		is a very sought after object - luckily, it's in good hands...", \
-		EXAMINE_CHECK_SKILLCHIP, list(/obj/item/skillchip/disk_verifier), hint = FALSE)
+		EXAMINE_CHECK_SKILLCHIP, /obj/item/skillchip/disk_verifier, hint = FALSE)
 
 /obj/item/clothing/shoes/magboots/advance/Initialize()
 	. = ..()
@@ -225,7 +224,7 @@
 
 /obj/item/card/id/advanced/gold/captains_spare/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine,
+	AddElement(/datum/element/unique_examine, \
 		"The captain's spare ID card - the backup all-access ID card assigned to the care of the captain themselves. \
 		Standard-issue golden ID cards supplied to all Nanotrasen operated space stations, to allow \
 		for normal operation of every aspect of the station in the absence of the captain... \
@@ -234,7 +233,7 @@
 
 /obj/item/hand_tele/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine,
+	AddElement(/datum/element/unique_examine, \
 		"The Hand Teleporter, a breakthrough of bluespace technology, is a miniature hand-held version of the \
 		larger room-sized teleporters found aboard various stations across the Spinward. \
 		While not as powerful independently as a full teleporter gate setup just yet, \
@@ -250,7 +249,7 @@
 		"It's Ian! Your trusty companion through and through. \
 		It's the Head of Personnel's secondary job to keep Ian safe and sound from anything that can harm them. \
 		Ian's birthday is on September 9th - be sure to celebrate!", \
-		EXAMINE_CHECK_JOB, list("Head of Personnel"))
+		EXAMINE_CHECK_JOB, "Head of Personnel")
 
 /mob/living/carbon/alien/Initialize()
 	. = ..()
@@ -313,7 +312,7 @@
 
 /obj/machinery/computer/communications/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine,
+	AddElement(/datum/element/unique_examine, \
 		"The communications console is the station's one and only link to central command for anything and everything. \
 		If every console on the station is destoyed, the emergency shuttle is automatically called on a 25 minute timer. \
 		Likewise if a large percentage of the station's crew perish the shuttle is automatically called in that case, too. \
@@ -322,14 +321,14 @@
 
 /obj/machinery/power/supermatter_crystal/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine,
+	AddElement(/datum/element/unique_examine, \
 		"Hope you're wearing meson goggles - Crystallized supermatter, one of the most deadly and reactive things in the universe. \
 		Supermatter reacts when shot with energy, turning the light energy of emitters into heated waste gases and bursts of gamma radiation.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_ENGINEERING)
 
 /obj/machinery/computer/slot_machine/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine,
+	AddElement(/datum/element/unique_examine, \
 		"Often called 'one armed bandit', 'fruit machine', or just 'slots', \
 		\the [src] is one of the most common forms of gambling in the galaxy. \
 		A 7 century old design. Simple and addictive - \
@@ -344,15 +343,15 @@
 		"This religious altar is the place where chaplains can commune with their deities and undergo mystical rituals to their gods. \
 		The closest place on the station to the gods above is in front of the altar, \
 		and it's where the most successful prayers and rituals take place.", \
-		EXAMINE_CHECK_TRAIT, list(TRAIT_SPIRITUAL))
+		EXAMINE_CHECK_TRAIT, TRAIT_SPIRITUAL)
 
 /obj/effect/eldritch/big/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine,
+	AddElement(/datum/element/unique_examine, \
 		"The transumation circle - the site to most known rituals involving unlocking the key to the veil between worlds. \
 		Many concentric black ink circles are drawn amidst a larger, thick green circle, weakening the chains of reality \
 		and allowing a seekers of ancient powers to access the mysteries of the Mansus.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTIONS)
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
 
 #define HERETIC_REALITY_MESSAGES list( \
 	"THE HIGHER I RISE, THE MORE I SEE.", \
@@ -378,7 +377,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"A pierce in reality - a weakness in the veil that allows power to be gleamed from the Mansus.\
 		\n<span class='hypnophrase'>[pick(HERETIC_REALITY_MESSAGES)]</span>", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTIONS)
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
 
 /obj/effect/broken_illusion/Initialize()
 	. = ..()
@@ -386,11 +385,11 @@
 		"A tapped pierce in reality - this one has been sapped of power. \
 		There is nothing here for Them any longer.\
 		\n<span class='hypnophrase'>[pick(HERETIC_REALITY_MESSAGES)]</span>", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTIONS)
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
 	AddElement(/datum/element/unique_examine, \
-		"<span class='hypnophrase'>A harrowing reminder of the \
+		span_hypnophrase("A harrowing reminder of the \
 		<span class='big hypnophrase'>fragility of our reality</span>, \
-		the fleeting nature of life, and of impending slow doom.</span>", \
+		the fleeting nature of life, and of impending slow doom."), \
 		EXAMINE_CHECK_NONE, hint = FALSE)
 	AddElement(/datum/element/unique_examine, \
 		"A tapped, used rift in reality. Its pressence means a fellow man - likely a crewmate - \
@@ -403,14 +402,14 @@
 	AddElement(/datum/element/unique_examine, \
 		"A pierced reality - a weakness in the veil that allows power to be gleamed from the Mansus. \
 		This one is fake, however. How'd they even make this?", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTIONS)
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
 
 /obj/effect/rune/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A rune of blood inscribed by the followers of the Geometer Nar'sie \
 		to channel powerful blood magics through the invoker.", \
-		EXAMINE_CHECK_FACTION, list("cult"))
+		EXAMINE_CHECK_FACTION, "cult")
 
 /obj/effect/decal/cleanable/crayon/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
 	. = ..()
@@ -419,26 +418,22 @@
 			"A rune of blood inscribed by the followers of the Geometer Nar'sie \
 			to channel powerful blood magics through the invoker. \
 			Except this one is crayon and not blood - a mockery.", \
-			EXAMINE_CHECK_FACTION, list("cult"))
+			EXAMINE_CHECK_FACTION, "cult")
 
 /obj/item/spear/bonespear/ceremonial/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
-	"It's common tradition for Ash-kin to build and carry their own spear or axe \
-	as their weapon of choice for most of their lives. While most have abandoned this practice since, \
-	some are still allowed by the company to carry a ceremonial or traiditional weapon - \
-	provided they aren't used for attacking others, of course.", \
-	EXAMINE_CHECK_SPECIES, LIZARD_LIST)
+		"It's common tradition for Ash-kin to build and carry their own spear or axe \
+		as their weapon of choice for most of their lives. While most have abandoned this practice since, \
+		some are still allowed by the company to carry a ceremonial or traiditional weapon - \
+		provided they aren't used for attacking others, of course.", \
+		EXAMINE_CHECK_SPECIES, LIZARD_SPECIES)
 
 #undef SECURITY_JOBS_PLUS_COMMAND
 #undef TRAITOR_LIST
-#undef CHANGELING_LIST
-#undef HERETIC_LIST
-#undef WIZARD_LIST
 #undef NUKEOP_LIST
-#undef SYNDICATES_LIST
-#undef LIZARD_LIST
-#undef HERETIC_FACTIONS
-#undef WIZARD_FACTIONS
+#undef SYNDICATE_ANTAGS
+#undef LIZARD_SPECIES
+#undef HERETIC_FACTION
 
 #undef HERETIC_REALITY_MESSAGES

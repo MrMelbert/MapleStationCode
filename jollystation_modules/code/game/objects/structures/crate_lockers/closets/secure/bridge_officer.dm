@@ -69,7 +69,7 @@
 
 /obj/item/bridge_officer_locker_spawner/attack_self(mob/user, modifiers)
 	. = ..()
-	if(requires_job && istype(user.mind?.job, /datum/job/bridge_officer))
+	if(requires_job && istype(user.mind?.assigned_role, /datum/job/bridge_officer))
 		to_chat(user, "<span class='warning'>\The [src] requires you are assigned to the station as an official Bridge Officer to use.</span>")
 		return
 	spawn_locker(user)
