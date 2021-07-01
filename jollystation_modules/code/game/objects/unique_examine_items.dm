@@ -2,14 +2,13 @@
 
 /// Job defines
 #define SECURITY_JOBS_PLUS_COMMAND GLOB.security_positions + list("Captain", "Bridge Officer")
-/// Antag defines
-#define TRAITOR_ANTAG /datum/antagonist/traitor
-#define NUKEOP_ANTAG /datum/antagonist/nukeop
-#define SYNDICATE_ANTAGS list(TRAITOR_ANTAG, NUKEOP_ANTAG)
 /// Species defines
 #define LIZARD_SPECIES /datum/species/lizard
 /// Faction defines
 #define HERETIC_FACTION "heretics"
+
+/// json for extra fun lines to show up when examining certain heretic stuff
+#define HERETIC_REALITY_MESSAGES "pierced_reality.json"
 
 // SYNDICATE / SYNDICATE TOY ITEMS //
 
@@ -22,7 +21,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"This bag is used to store tactical equipment and is manufactured by Donk Co. \
 		It's faster and lighter than other duffelbags without sacrificing any space.", \
-		EXAMINE_CHECK_ANTAG, SYNDICATE_ANTAGS, "Syndicate Affiliation", hint = FALSE)
+		EXAMINE_CHECK_SYNDICATE, hint = FALSE)
 	AddElement(/datum/element/unique_examine, \
 		"A large, dark colored dufflebag commonly used to transport ammunition, tools, and explosives. \
 		Its design makes it much lighter than other duffelbags without sacrificing any space.", \
@@ -35,12 +34,8 @@
 /obj/item/clothing/under/syndicate/Initialize()
 	. = ..()
 	if(unique_description)
-		AddElement(/datum/element/unique_examine, \
-			unique_description, \
-			EXAMINE_CHECK_ANTAG, SYNDICATE_ANTAGS, "Syndicate Affiliation", hint = FALSE)
-		AddElement(/datum/element/unique_examine, \
-			"A padded, armored outfit commonly used by syndicate operatives in the field.", \
-			EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND)
+		AddElement(/datum/element/unique_examine, unique_description, EXAMINE_CHECK_SYNDICATE, hint = FALSE)
+		AddElement(/datum/element/unique_examine, "A padded, armored outfit commonly used by syndicate operatives in the field.", EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND)
 
 /obj/item/clothing/under/syndicate/skirt
 	name = "suspicious skirtleneck"
@@ -61,9 +56,7 @@
 /obj/item/clothing/under/syndicate/tacticool/Initialize()
 	. = ..()
 	if(tacticool_description)
-		AddElement(/datum/element/unique_examine, \
-			tacticool_description, \
-			EXAMINE_CHECK_ANTAG, SYNDICATE_ANTAGS, "Syndicate Affiliation", is_toy = TRUE)
+		AddElement(/datum/element/unique_examine, tacticool_description, EXAMINE_CHECK_SYNDICATE, is_toy = TRUE)
 
 /obj/item/clothing/under/syndicate/tacticool/skirt
 	tacticool_description = "Knockoff, Nanotrasen brand tactical skirtleneck - it's not even the right color."
@@ -157,7 +150,64 @@
 		it seems as if Nanotrasen has already began marketing and selling fake toy copies for children... interesting.", \
 		EXAMINE_CHECK_FACTION, HERETIC_FACTION, is_toy = TRUE)
 
-// GUNS //
+
+/obj/effect/eldritch/big/Initialize()
+	. = ..()
+	AddElement(/datum/element/unique_examine, \
+		"The transumation circle - the site to most known rituals involving unlocking the key to the veil between worlds. \
+		Many concentric black ink circles are drawn amidst a larger, thick green circle, weakening the chains of reality \
+		and allowing a seekers of ancient powers to access the mysteries of the Mansus.", \
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+
+/obj/effect/reality_smash/Initialize()
+	. = ..()
+	AddElement(/datum/element/unique_examine, \
+		"A pierce in reality - a weakness in the veil that allows power to be gleamed from the Mansus.\
+		\n<span class='hypnophrase'>[pick(strings(HERETIC_REALITY_MESSAGES, examine_reality))]</span>", \
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+
+/obj/effect/broken_illusion/Initialize()
+	. = ..()
+	AddElement(/datum/element/unique_examine, \
+		"A tapped pierce in reality - this one has been sapped of power. \
+		There is nothing here for Them any longer.\
+		\n<span class='hypnophrase'>[pick(strings(HERETIC_REALITY_MESSAGES, examine_reality))]</span>", \
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+	AddElement(/datum/element/unique_examine, \
+		span_hypnophrase("A harrowing reminder of the \
+		<span class='big hypnophrase'>fragility of our reality</span>, \
+		the fleeting nature of life, and of impending slow doom."), \
+		EXAMINE_CHECK_NONE, hint = FALSE)
+	AddElement(/datum/element/unique_examine, \
+		"A tapped, used rift in reality. Its pressence means a fellow man - likely a crewmate - \
+		has attempted to throw off the shackles of reality \
+		and began seeking power and strength from a copy of the forbidden Codex Cicatrix.", \
+		EXAMINE_CHECK_MINDSHIELD, hint = FALSE)
+
+/obj/item/toy/reality_pierce/Initialize()
+	. = ..()
+	AddElement(/datum/element/unique_examine, \
+		"A pierced reality - a weakness in the veil that allows power to be gleamed from the Mansus. \
+		This one is fake, however. How'd they even make this?", \
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+
+/obj/effect/rune/Initialize()
+	. = ..()
+	AddElement(/datum/element/unique_examine, \
+		"A rune of blood inscribed by the followers of the Geometer Nar'sie \
+		to channel powerful blood magics through the invoker.", \
+		EXAMINE_CHECK_FACTION, "cult")
+
+/obj/effect/decal/cleanable/crayon/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
+	. = ..()
+	if(e_name == "rune")
+		AddElement(/datum/element/unique_examine, \
+			"A rune of blood inscribed by the followers of the Geometer Nar'sie \
+			to channel powerful blood magics through the invoker. \
+			Except this one is crayon and not blood - a mockery.", \
+			EXAMINE_CHECK_FACTION, "cult")
+
+// ITEMS //
 
 /obj/item/gun/ballistic/revolver/mateba/Initialize()
 	. = ..()
@@ -184,8 +234,6 @@
 		in Nanotrasen security forces. While in the past the gun was outfitted with taser electrodes instead of an ion bolts, \
 		it is still used by lead officers for quick response and utility in the event of varying threats.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_SECURITY)
-
-// HIGH RISK ITEMS //
 
 /obj/item/disk/nuclear/Initialize()
 	. = ..()
@@ -240,6 +288,15 @@
 		these are often entrusted to the Captain for their emergencies, though Research Directors \
 		and even space explorers are often given one for personal usage.", \
 		EXAMINE_CHECK_JOB, list("Captain", "Research Director", "Scientist"))
+
+/obj/item/spear/bonespear/ceremonial/Initialize()
+	. = ..()
+	AddElement(/datum/element/unique_examine, \
+		"It's common tradition for Ash-kin to build and carry their own spear or axe \
+		as their weapon of choice for most of their lives. While most have abandoned this practice since, \
+		some are still allowed by the company to carry a ceremonial or traiditional weapon - \
+		provided they aren't used for attacking others, of course.", \
+		EXAMINE_CHECK_SPECIES, LIZARD_SPECIES)
 
 // MOBS //
 
@@ -345,94 +402,8 @@
 		and it's where the most successful prayers and rituals take place.", \
 		EXAMINE_CHECK_TRAIT, TRAIT_SPIRITUAL)
 
-/obj/effect/eldritch/big/Initialize()
-	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"The transumation circle - the site to most known rituals involving unlocking the key to the veil between worlds. \
-		Many concentric black ink circles are drawn amidst a larger, thick green circle, weakening the chains of reality \
-		and allowing a seekers of ancient powers to access the mysteries of the Mansus.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
-
-#define HERETIC_REALITY_MESSAGES list( \
-	"THE HIGHER I RISE, THE MORE I SEE.", \
-	"THE VEIL IS SHATTERED.", \
-	"THE GATES OF THE MANSUS IS HERE, IS OPEN.", \
-	"I AM BEING WATCHED... FROM WHERE? FROM WHAT?", \
-	"A SHIMMER... POTENTIAL... POWER.", \
-	"THEIR HAND IS AT MY SIDE.", \
-	"STRENGTH... UNPARALLELED. UNNATURAL.", \
-	"I AM LATE FOR MY DESTINY.", \
-	"TO WALK BETWEEN PLANES.", \
-	"THEY WALK THE WORLD. UNNOTICED.", \
-	"CURSED LAND, CURSED MAN, CURSED MIND.", \
-	"GREATER HEIGHTS.", \
-	"SCREAMS. SILENCE.", \
-	"RAIN OF BLOOD. REIGN OF BLOOD.", \
-	"LIFE IS FLEETING, BUT WHAT YET STAYS?", \
-	"COVERED AND FORGOTTEN.", \
-	"A WHISPER.")
-
-/obj/effect/reality_smash/Initialize()
-	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"A pierce in reality - a weakness in the veil that allows power to be gleamed from the Mansus.\
-		\n<span class='hypnophrase'>[pick(HERETIC_REALITY_MESSAGES)]</span>", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
-
-/obj/effect/broken_illusion/Initialize()
-	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"A tapped pierce in reality - this one has been sapped of power. \
-		There is nothing here for Them any longer.\
-		\n<span class='hypnophrase'>[pick(HERETIC_REALITY_MESSAGES)]</span>", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
-	AddElement(/datum/element/unique_examine, \
-		span_hypnophrase("A harrowing reminder of the \
-		<span class='big hypnophrase'>fragility of our reality</span>, \
-		the fleeting nature of life, and of impending slow doom."), \
-		EXAMINE_CHECK_NONE, hint = FALSE)
-	AddElement(/datum/element/unique_examine, \
-		"A tapped, used rift in reality. Its pressence means a fellow man - likely a crewmate - \
-		has attempted to throw off the shackles of reality \
-		and began seeking power and strength from a copy of the forbidden Codex Cicatrix.", \
-		EXAMINE_CHECK_MINDSHIELD, hint = FALSE)
-
-/obj/item/toy/reality_pierce/Initialize()
-	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"A pierced reality - a weakness in the veil that allows power to be gleamed from the Mansus. \
-		This one is fake, however. How'd they even make this?", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
-
-/obj/effect/rune/Initialize()
-	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"A rune of blood inscribed by the followers of the Geometer Nar'sie \
-		to channel powerful blood magics through the invoker.", \
-		EXAMINE_CHECK_FACTION, "cult")
-
-/obj/effect/decal/cleanable/crayon/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
-	. = ..()
-	if(e_name == "rune")
-		AddElement(/datum/element/unique_examine, \
-			"A rune of blood inscribed by the followers of the Geometer Nar'sie \
-			to channel powerful blood magics through the invoker. \
-			Except this one is crayon and not blood - a mockery.", \
-			EXAMINE_CHECK_FACTION, "cult")
-
-/obj/item/spear/bonespear/ceremonial/Initialize()
-	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"It's common tradition for Ash-kin to build and carry their own spear or axe \
-		as their weapon of choice for most of their lives. While most have abandoned this practice since, \
-		some are still allowed by the company to carry a ceremonial or traiditional weapon - \
-		provided they aren't used for attacking others, of course.", \
-		EXAMINE_CHECK_SPECIES, LIZARD_SPECIES)
-
 #undef SECURITY_JOBS_PLUS_COMMAND
-#undef TRAITOR_LIST
-#undef NUKEOP_LIST
-#undef SYNDICATE_ANTAGS
+
 #undef LIZARD_SPECIES
 #undef HERETIC_FACTION
 
