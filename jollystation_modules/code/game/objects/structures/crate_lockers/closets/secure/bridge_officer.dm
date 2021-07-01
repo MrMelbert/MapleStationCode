@@ -69,11 +69,10 @@
 
 /obj/item/bridge_officer_locker_spawner/attack_self(mob/user, modifiers)
 	. = ..()
-	var/mob/living/carbon/human/human_user = user
-	if(requires_job && istype(human_user) && human_user.mind?.assigned_role != "Bridge Officer")
-		to_chat(human_user, "<span class='warning'>\The [src] requires you are assigned to the station as an official Bridge Officer to use.</span>")
+	if(requires_job && istype(user.mind?.job, /datum/job/bridge_officer))
+		to_chat(user, "<span class='warning'>\The [src] requires you are assigned to the station as an official Bridge Officer to use.</span>")
 		return
-	spawn_locker(human_user)
+	spawn_locker(user)
 
 // Actually spawn the locker at the [bridge_officer]'s feet.
 /obj/item/bridge_officer_locker_spawner/proc/spawn_locker(mob/living/carbon/human/bridge_officer)
