@@ -2,18 +2,20 @@
 
 #define SIZE_QUIRKS list("Size A - Extremely Large", "Size B - Very Large", "Size C - Large", "Size E - Small", "Size F - Very Small", "Size G - Extremely Small")
 #define LANG_QUIRKS list("Language - Trilingual", "Language - Draconic", "Language - Moffic", "Language - Nekomimetic", "Language - Skrellian", "Language - High Draconic")
-#define PAIN_QUIRKS list("Allodynia", "Hyperalgesia", "Hypoalgesia", "Bad Touch")
+#define PAIN_QUIRKS list("Allodynia", "Hyperalgesia", "Hypoalgesia")
+#define TOUCH_QUIRKS list("Allodynia", "Bad Touch")
 #define PROSTHETICS_L_LEG list("Prosthetic Limb - Random", "Prosthetic Limb - Left Leg")
 #define PROSTHETICS_R_LEG list("Prosthetic Limb - Random", "Prosthetic Limb - Right Leg")
 #define PROSTHETICS_L_ARM list("Prosthetic Limb - Random", "Prosthetic Limb - Left Arm")
 #define PROSTHETICS_R_ARM list("Prosthetic Limb - Random", "Prosthetic Limb - Right Arm")
 
 /datum/controller/subsystem/processing/quirks
-	// Add in quirk blackists here. Format is a list of a list of quirks that are incompatible.
+	// Add in quirk blackists here.
 	var/list/module_blacklist = list(
 		SIZE_QUIRKS,
 		PAIN_QUIRKS,
 		LANG_QUIRKS,
+		TOUCH_QUIRKS,
 		PROSTHETICS_L_LEG,
 		PROSTHETICS_R_LEG,
 		PROSTHETICS_L_ARM,

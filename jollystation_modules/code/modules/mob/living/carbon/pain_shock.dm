@@ -24,17 +24,22 @@
  */
 /datum/disease/shock/proc/check_cure_conditions()
 	. = 0
+	var/our_average_pain = affected_mob.pain_controller.get_average_pain()
 	. += affected_mob.bodytemperature > affected_mob.get_body_temp_cold_damage_limit()
-	. += !affected_mob.is_bleeding()
-	. += affected_mob.body_position == LYING_DOWN
-	. += 2 * (affected_mob.pain_controller.get_average_pain() < 40)
+	. += affected_mob.IsSleeping() ? 1 : 0
+	. += our_average_pain < 40
+	. += our_average_pain < 50
+	. += our_average_pain < 60
+	. -= affected_mob.body_position == STANDING_UP
+	. -= affected_mob.is_bleeding()
 
 /datum/disease/shock/has_cure()
 	return check_cure_conditions() >= 3 && !affected_mob.undergoing_cardiac_arrest()
 
 /datum/disease/shock/cure()
+	affected_mob.diseases -= src
 	affected_mob = null
-	return ..()
+	qdel(src)
 
 /datum/disease/shock/after_add()
 	affected_mob.apply_status_effect(STATUS_EFFECT_LOWBLOODPRESSURE)
@@ -60,7 +65,7 @@
 		update_stage(2)
 
 	// If we have enough conditions present to cure us, roll for a cure
-	if(has_cure() && DT_PROB(check_cure_conditions(), delta_time) && stage <= 2)
+	if(has_cure() && DT_PROB(check_cure_conditions() / 2, delta_time) && stage <= 2)
 		to_chat(affected_mob, span_bold(span_green("Your body feels awake and active again!")))
 		cure()
 		return FALSE
