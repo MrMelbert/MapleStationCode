@@ -213,7 +213,7 @@
 
 		if(adjusted_amount > 0)
 			INVOKE_ASYNC(src, .proc/on_pain_gain, adjusted_bodypart, amount, type)
-		else if(adjusted_amount <= -10 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+		else if(adjusted_amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			INVOKE_ASYNC(src, .proc/on_pain_loss, adjusted_bodypart, amount, type)
 
 		if(debugging)
