@@ -1984,7 +1984,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					hearted_until = null
 					to_chat(user, span_notice("OOC Commendation Heart disabled"))
 					save_preferences()
+				//NON-MODULE START
+				if("hear_speech_sounds")
+					hear_speech_sounds = !hear_speech_sounds
 
+				if("hear_radio_sounds")
+					hear_radio_sounds = !hear_radio_sounds
+				//NON-MODULE END
 	ShowChoices(user)
 	return 1
 
