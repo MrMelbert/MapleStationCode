@@ -262,7 +262,7 @@
 	if(!.)
 		return FALSE
 
-	if(get_modified_pain() > 30 && DT_PROB(10, delta_time))
+	if(get_modified_pain() >= 40 && DT_PROB(5, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
@@ -282,7 +282,7 @@
 	if(!.)
 		return FALSE
 
-	if(get_modified_pain() > 30 && DT_PROB(10, delta_time))
+	if(get_modified_pain() >= 40 && DT_PROB(5, delta_time))
 		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 

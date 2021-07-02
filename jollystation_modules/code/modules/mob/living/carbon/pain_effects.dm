@@ -43,11 +43,11 @@
 	slowdown_left = 0
 	slowdown_right = 0
 
-	if(left?.pain >= 20)
-		slowdown_left = (left.pain / 10) * limping_carbon.pain_controller.pain_modifier * left.bodypart_pain_modifier
+	if(left?.get_modified_pain() >= 30)
+		slowdown_left = left.get_modified_pain() / 10
 
-	if(right?.pain >= 20)
-		slowdown_left = (right.pain / 10) * limping_carbon.pain_controller.pain_modifier * right.bodypart_pain_modifier
+	if(right?.get_modified_pain() >= 30)
+		slowdown_right = right.get_modified_pain() / 10
 
 	// this handles losing your leg with the limp and the other one being in good shape as well
 	if(slowdown_left < 3 && slowdown_right < 3)
