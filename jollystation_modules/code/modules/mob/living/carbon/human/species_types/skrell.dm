@@ -19,6 +19,7 @@
 	species_speech_sounds = list('jollystation_modules/sound/voice/huff.ogg' = 120)
 	species_speech_sounds_exclaim = list('jollystation_modules/sound/voice/huff_ask.ogg' = 120)
 	species_speech_sounds_ask = list('jollystation_modules/sound/voice/huff_exclaim.ogg' = 120)
+	species_pain_mod = 0.85
 
 //Adding their bloodbag here as well.
 /obj/item/reagent_containers/blood/skrell

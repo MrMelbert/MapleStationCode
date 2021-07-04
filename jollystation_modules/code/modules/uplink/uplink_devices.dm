@@ -15,11 +15,11 @@
 
 /obj/item/item_announcer/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>It has [uses] uses left.</span>"
+	. += span_notice("It has [uses] uses left.")
 
 /// Deletes the item when it's used up.
 /obj/item/item_announcer/proc/break_item(mob/user)
-	to_chat(user, "<span class='notice'>The [src] breaks down into unrecognizable scrap and ash after being used.</span>")
+	to_chat(user, span_notice("The [src] breaks down into unrecognizable scrap and ash after being used."))
 	var/obj/effect/decal/cleanable/ash/spawned_ash = new(drop_location())
 	spawned_ash.desc = "Ashes to ashes, dust to dust. There's a few pieces of scrap in this pile."
 	qdel(src)
@@ -41,12 +41,12 @@
 
 /obj/item/item_announcer/preset/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>It causes a fake \"[fake_event_name]\" when used.</span>"
+	. += span_notice("It causes a fake \"[fake_event_name]\" when used.")
 
 /obj/item/item_announcer/preset/attack_self(mob/user)
 	. = ..()
 	if(owner && owner != user)
-		to_chat(user, "<span class='warning'>Identity check failed.</span>")
+		to_chat(user, span_warning("Identity check failed."))
 	else
 		if(trigger_announcement(user) && uses <= 0)
 			break_item(user)
@@ -57,8 +57,8 @@
 		return FALSE
 	triggered_event.forced_type = fake_event
 	triggered_event.runEvent(FALSE)
-	to_chat(user, "<span class='notice'>You press the [src], triggering a false alarm for [fake_event_name].</span>")
-	deadchat_broadcast("<span class='bold'>[user] has triggered a false alarm using a syndicate device!</span>", follow_target = user)
+	to_chat(user, span_notice("You press the [src], triggering a false alarm for [fake_event_name]."))
+	deadchat_broadcast(span_bold("[user] has triggered a false alarm using a syndicate device!"), follow_target = user)
 	message_admins("[ADMIN_LOOKUPFLW(user)] has triggered a false alarm using a syndicate device: \"[fake_event_name]\".")
 	log_game("[key_name(user)] has triggered a false alarm using a syndicate device: \"[fake_event_name]\".")
 	uses--
@@ -84,13 +84,13 @@
 
 /obj/item/item_announcer/input/attack_self(mob/user)
 	if(owner && owner != user)
-		to_chat(user, "<span class='warning'>Identity check failed.</span>")
+		to_chat(user, span_warning("Identity check failed."))
 		return TRUE
 	. = ..()
 
 /obj/item/item_announcer/input/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>It sends messages from \"[fake_command_name]\".</span>"
+	. += span_notice("It sends messages from \"[fake_command_name]\".")
 
 /obj/item/item_announcer/input/ui_state(mob/user)
 	return GLOB.inventory_state
@@ -121,10 +121,10 @@
 			announce_contents = !announce_contents
 		if("submit_report")
 			if(!command_report_content)
-				to_chat(usr, "<span class='danger'>You can't send a report with no contents.</span>")
+				to_chat(usr, span_danger("You can't send a report with no contents."))
 				return
 			if(owner && usr != owner)
-				to_chat(usr, "<span class='warning'>Identity check failed.</span>")
+				to_chat(usr, span_warning("Identity check failed."))
 				return
 			if(send_announcement(usr) && uses <= 0)
 				break_item(usr)
@@ -144,8 +144,8 @@
 
 	change_command_name(original_command_name)
 
-	to_chat(user, "<span class='notice'>You tap on the [src], sending a [announce_contents ? "" : "classified "]report from [fake_command_name].</span>")
-	deadchat_broadcast("<span class='bold'>[user] has triggered an announcement using a syndicate device!</span>", follow_target = user)
+	to_chat(user, span_notice("You tap on the [src], sending a [announce_contents ? "" : "classified "]report from [fake_command_name]."))
+	deadchat_broadcast(span_bold("[user] has triggered an announcement using a syndicate device!"), follow_target = user)
 	message_admins("[ADMIN_LOOKUPFLW(user)] has sent a fake command report using a syndicate device: \"[command_report_content]\".")
 	log_game("[key_name(user)] has sent a fake command report using a syndicate device: \"[command_report_content]\", sent from \"[fake_command_name]\".")
 	uses--
@@ -193,12 +193,12 @@
 
 /obj/item/card/doorhacker/attack_self(mob/user)
 	if(Adjacent(user))
-		user.visible_message("<span class='notice'>[user] shows you: [icon2html(src, viewers(user))] [name].</span>", "<span class='notice'>You show [src].</span>")
+		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [name]."), span_notice("You show [src]."))
 	add_fingerprint(user)
 
 /obj/item/card/doorhacker/examine(mob/user)
 	. = ..()
-	. += "<span class='notice'>Hacking the next door will take [(DOORHACKER_HACK_TIME/10) * (1 + recent_hacks)] seconds."
+	. += span_notice("Hacking the next door will take [(DOORHACKER_HACK_TIME/10) * (1 + recent_hacks)] seconds.")
 
 /obj/item/card/doorhacker/pre_attack(atom/A, mob/living/user, params)
 	. = ..()
@@ -219,7 +219,7 @@
  * user - the one hacking the door.
  */
 /obj/item/card/doorhacker/proc/start_hacking(obj/machinery/door/hacked_door, mob/living/user)
-	to_chat(user, "<span class='notice'>You start bypassing the access requirements of \the [hacked_door]...</span>")
+	to_chat(user, span_notice("You start bypassing the access requirements of \the [hacked_door]..."))
 	if(do_after(user, (DOORHACKER_HACK_TIME * (1 + recent_hacks)), hacked_door, interaction_key = DOAFTER_SOURCE_DOORHACKER))
 		hack_door(hacked_door, user)
 
@@ -231,7 +231,7 @@
 /obj/item/card/doorhacker/proc/hack_door(obj/machinery/door/hacked_door, mob/living/user)
 	if(hacked_door.can_open_async() && hacked_door.hasPower())
 		INVOKE_ASYNC(hacked_door, /obj/machinery/door/.proc/open)
-		to_chat(user, "<span class='notice'>You nullify the access requirements of \the [hacked_door], opening it temporarily.</span>")
+		to_chat(user, span_notice("You nullify the access requirements of \the [hacked_door], opening it temporarily."))
 		playsound(drop_location(), 'sound/machines/ding.ogg', 50, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, ignore_walls = FALSE)
 		if(hacked_door.autoclose)
 			hacked_door.autoclose = FALSE
@@ -242,7 +242,7 @@
 			addtimer(VARSET_CALLBACK(hacked_airlock, aiDisabledIdScanner, FALSE), (DOORHACKER_AUTOCLOSE_TIME - 5 SECONDS))
 		addtimer(CALLBACK(hacked_door, /obj/machinery/door/.proc/close), DOORHACKER_AUTOCLOSE_TIME)
 	else
-		to_chat(user, "<span class='danger'>You attempt to nullify the access requirements of \the [hacked_door], but the door fails to open.</span>")
+		to_chat(user, span_warning("You nullify the access requirements of \the [hacked_door], but it fails to open."))
 		playsound(drop_location(), 'sound/machines/buzz-sigh.ogg', 20, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, ignore_walls = FALSE)
 
 	recent_hacks = min(DOORHACKER_MAX_HACKS, recent_hacks + 1)

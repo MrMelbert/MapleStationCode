@@ -18,4 +18,4 @@
 #define MESSAGE_TYPE_ADMINLOG "adminlog"
 #define MESSAGE_TYPE_ATTACKLOG "attacklog"
 #define MESSAGE_TYPE_DEBUG "debug"
-#define MESSAGE_TYPE_LOOC "looc" // NON MODULE CHANGE
+#define MESSAGE_TYPE_LOOC "looc" // NON-MODULE CHANGE

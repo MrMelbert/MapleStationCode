@@ -1,3 +1,4 @@
+
 /////RESTAURANT/////
 /datum/venue/restaurant
 	name = "restaurant"

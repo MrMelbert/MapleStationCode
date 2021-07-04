@@ -36,7 +36,6 @@ export const MESSAGE_TYPE_EVENTCHAT = 'eventchat';
 export const MESSAGE_TYPE_ADMINLOG = 'adminlog';
 export const MESSAGE_TYPE_ATTACKLOG = 'attacklog';
 export const MESSAGE_TYPE_DEBUG = 'debug';
-export const MESSAGE_TYPE_LOOC = 'looc'; // NON MODULE CHANGE
 
 // Metadata for each message type
 export const MESSAGE_TYPES = [
@@ -85,14 +84,6 @@ export const MESSAGE_TYPES = [
     description: 'The bluewall of global OOC messages',
     selector: '.ooc, .adminooc, .oocplain',
   },
-  // NON MODULE CHANGE START
-  {
-    type: MESSAGE_TYPE_LOOC,
-    name: 'LOOC',
-    description: 'Stinky LOOC messages',
-    selector: '.looc',
-  },
-  // NON MODULE CHANGE END
   {
     type: MESSAGE_TYPE_ADMINPM,
     name: 'Admin PMs',

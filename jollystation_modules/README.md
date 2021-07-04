@@ -52,15 +52,15 @@ var/epic_variable = 3 // NON-MODULE CHANGE
 ```
 
 ```
-/* NON-MODULE CHANGE:
+// NON-MODULE CHANGE START
 /obj/foo/bar/proc/do_thing()
 	to_chat(world, "I added a proc to something")
 	qdel(src)
-NON-MODULE CHANGE END /*
+// NON-MODULE CHANGE END
 ```
 
-- It doesn't matter if you use Non-Module Change/Changes. Try to keep the ending part 'Module Change/s' consistent. DO NOT USE 'MODULAR'.
-
+- What DOES matter: The formatting of the first part of the comment! The comment MUST start with `// NON-MODULE`, space included, exact number of forward slashes, capitalized.
+- What doesnt matter: what follows above. `// NON-MODULE CHANGE`, `// NON-MODULE CHANGE START`, `// NON-MODULE CHANGES`, `// NON-MODULE CHANGE: I did stuff`
 ## ...custom things to vendors:
 
 Go to `jollystation_modules/code/modules/vending/_vending.dm` and use the template provided to add or remove items from vendors. Follow the provided template there.
@@ -102,11 +102,14 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\datums\datacore.dm
 - code\datums\id_trim\jobs.dm
 - code\datums\mapgen\Cavegens\LavalandGenerator.dm
+- code\datums\greyscale\json_configs\plushie_lizard.json
 - code\game\gamemodes\objective_items.dm
 - code\game\machinery\computer\crew.dm
 - code\game\machinery\computer\medical.dm
 - code\game\machinery\computer\security.dm
 - code\game\objects\items\implants\implantuplink.dm
+- code\game\objects\items\plushes.dm
+- code\game\objects\items\scanners.dm
 - code\modules\antagonists\eldritch_cult\eldritch_effects.dm
 - code\modules\antagonists\eldritch_cult\eldritch_knowledge.dm
 - code\modules\antagonists\traitor\datum_traitor.dm
@@ -124,6 +127,9 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\language\language_holder.dm
 - code\modules\mob\living\carbon\human\species.dm
 - code\modules\modular_computers\file_system\programs\jobmanagement.dm
+- code\modules\surgery\bodyparts\dismemberment.dm
+- code\modules\surgery\bodyparts\helpers.dm
+- code\modules\surgery\organs\lungs.dm
 - code\modules\surgery\organs\tongue.dm
 - code\modules\unit_tests\heretic_knowledge.dm
 

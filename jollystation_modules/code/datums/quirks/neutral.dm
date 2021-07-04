@@ -1,15 +1,14 @@
 /// -- Neutral quirks module file. Add neutral quirks to the end of this file. --
 
 /// Height changing quirks.
-// The default parent quirk shows up in the quirk list because it adds all subtypes of quirks.
-// So it's just "average height" Screw it..
 /datum/quirk/size_change
 	name = "Size D - Average Height"
-	desc = "You are average. (0% size change - this quirk does nothing.)"
+	desc = "You are average. (0% size change)"
 	value = 0
 	gain_text = "<span class='notice'>You feel average.</span>"
 	lose_text = "<span class='notice'>You still feel average.</span>"
 	medical_record_text = "Patient is of average height."
+	abstract_parent_type = /datum/quirk/size_change
 	/// The amount we resize the quirk holder for.
 	var/resize_amount = 1
 	/// the amount we offset the person for, with their new size.

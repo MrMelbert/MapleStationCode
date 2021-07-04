@@ -24,7 +24,7 @@
 /datum/antagonist/heretic/heretic_plus/equip_cultist()
 	. = ..()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ecult_op.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
-	to_chat(owner, "<span class='boldannounce'>You are the Heretic!</span>")
+	to_chat(owner, span_boldannounce("You are the Heretic!"))
 
 /datum/antagonist/heretic/heretic_plus/forge_primary_objectives()
 	return FALSE
@@ -36,9 +36,9 @@
 	parts += printplayer(owner)
 	parts += "<b>[owner]</b> was \a <b>[our_heretic.name]</b>[our_heretic.employer? ", a follower of <b>[our_heretic.employer]</b>":""]."
 	if(our_heretic.sacrifices_enabled)
-		parts += "<b>Sacrifices Made:</b> [total_sacrifices]"
+		parts += span_bold("Sacrifices Made: [total_sacrifices]")
 	else
-		parts +="<b>The heretic gave up the rite of sacrifice!</b>"
+		parts += span_bold("The heretic gave up the rite of sacrifice!")
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
 		var/count = 1
@@ -47,14 +47,14 @@
 			count++
 		if(our_heretic.ascension_enabled)
 			if(ascended)
-				parts += "<span class='greentext big'>THE HERETIC ASCENDED!</span>"
+				parts += span_big(span_greentext("THE HERETIC ASCENDED!"))
 		else
-			parts += "<br><b>The heretic gave up the rite of ascension!</b>"
+			parts += span_bold("<br>The heretic gave up the rite of ascension!")
 
 	if(give_equipment)
 
 		parts += "<br>The heretic was bestowed [our_heretic.starting_points] influences in their initial Codex."
-		parts += "<b>Knowledge Researched:</b> "
+		parts += span_bold("Knowledge Researched: ")
 
 		var/list/knowledge_message = list()
 		var/list/knowledge = get_all_knowledge()
@@ -63,7 +63,7 @@
 			knowledge_message += "[found_knowledge.name]"
 		parts += knowledge_message.Join(", ")
 	else
-		parts += "<br><b>The heretic never recieved their Codex!</b> "
+		parts += span_bold("<br>The heretic never recieved their Codex! ")
 
 	return parts.Join("<br>")
 
@@ -168,7 +168,7 @@ You can still edit your goals after finalizing, but you will not be able to re-e
 	log_game("[key_name(linked_antagonist.owner.current)] finalized their goals with [sacrifices_enabled? "sacrifices enabled":"sacrifices disabled"].")
 
 /datum/advanced_antag_datum/heretic/greet_message_two(mob/antagonist)
-	to_chat(antagonist, "<span class='danger'>You are a cultic follower sent to [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab.</span>")
+	to_chat(antagonist, span_danger("You are a cultic follower sent to [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
 	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
 
 /datum/objective/sacrifice_ecult/adv

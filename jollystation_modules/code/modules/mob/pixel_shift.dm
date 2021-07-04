@@ -44,11 +44,11 @@
 		SEND_SIGNAL(our_mob, COMSIG_PIXELSHIFT_STOP)
 	else
 		if(our_mob.stat != CONSCIOUS)
-			to_chat(src, "<span class='danger'>You need to be conscious to use pixel shifting.</span>")
+			to_chat(src, span_danger("You need to be conscious to use pixel shifting."))
 			return
 
 		if(our_mob.incapacitated())
-			to_chat(src, "<span class='danger'>You aren't able to use pixel shifting right now.</span>")
+			to_chat(src, span_danger("You aren't able to use pixel shifting right now."))
 			return
 
 		var/datum/pixel_shift_ui/tgui = new(our_mob)
@@ -67,11 +67,11 @@
 		return
 
 	if(stat != CONSCIOUS)
-		to_chat(src, "<span class='danger'>You need to be conscious to use pixel shifting.</span>")
+		to_chat(src, span_danger("You need to be conscious to use pixel shifting."))
 		return
 
 	if(incapacitated())
-		to_chat(src, "<span class='danger'>You aren't able to use pixel shifting right now.</span>")
+		to_chat(src, span_danger("You aren't able to use pixel shifting right now."))
 		return
 
 	var/datum/pixel_shift_ui/tgui = new(src)
@@ -163,7 +163,7 @@
 	// Resist, getting pulled, or the STOP signal will reset the user and qdel the component.
 	RegisterSignal(parent, list(COMSIG_LIVING_RESIST, COMSIG_LIVING_GET_PULLED, COMSIG_PIXELSHIFT_STOP), .proc/stop_pixel_shift)
 
-	to_chat(parent, "<span class='notice'>You are now pixel shifting. Movement has been locked. <b>Resist</b> or close the UI to stop pixel shifting.</span>")
+	to_chat(parent, span_notice("You are now pixel shifting. Movement has been locked. <b>Resist</b> or close the UI to stop pixel shifting."))
 
 /datum/component/pixel_shift/Destroy()
 	reset_offsets()
@@ -186,7 +186,7 @@
 		COMSIG_PIXELSHIFT_NEGX,
 	))
 
-	to_chat(parent, "<span class='notice'>You are no longer pixel shifting. Movement has been unlocked.</span>")
+	to_chat(parent, span_notice("You are no longer pixel shifting. Movement has been unlocked."))
 	return ..()
 
 /// Shifts the user in the positive y direction (up)

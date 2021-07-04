@@ -37,6 +37,7 @@
 #define BB_MONKEY_RECRUIT_COOLDOWN "BB_monkey_recruit_cooldown"
 #define BB_MONKEY_NEXT_HUNGRY "BB_monkey_next_hungry"
 
+
 ///Haunted item controller defines
 
 ///Chance for haunted item to haunt someone

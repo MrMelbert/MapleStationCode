@@ -24,10 +24,10 @@
 	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = locate() in owner.current
 	var/obj/item/implant/weapons_auth/weapons_implant = locate() in owner.current
 	if(infiltrator_implant)
-		to_chat(owner.current, "<span class='danger'>You hear a whirring in your ear as your [infiltrator_implant.name] deactivates and becomes non-functional!</span>")
+		to_chat(owner.current, span_danger("You hear a whirring in your ear as your [infiltrator_implant.name] deactivates and becomes non-functional!"))
 		qdel(infiltrator_implant)
 	if(weapons_implant)
-		to_chat(owner.current, "<span class='danger'>You hear a click in your [prob(50) ? "right" : "left"] arm as your [weapons_implant.name] deactivates and becomes non-functional!</span>")
+		to_chat(owner.current, span_danger("You hear a click in your [prob(50) ? "right" : "left"] arm as your [weapons_implant.name] deactivates and becomes non-functional!"))
 		qdel(weapons_implant)
 	. = ..()
 
@@ -60,10 +60,11 @@
 			result += "<br>They were afforded <b>[linked_advanced_datum.starting_points]</b> tc to accomplish these tasks."
 
 	if(uplink_true)
-		var/uplink_text = "(used [TC_uses] TC) [purchases]"
+		var/uplink_text = span_bold("(used [TC_uses] TC)")
+		uplink_text += "[purchases]"
 		result += uplink_text
 	else if (!should_equip)
-		result += "<br>The [name] never obtained their uplink!"
+		result += span_bold("<br>The [name] never obtained their uplink!")
 
 	return result.Join("<br>")
 
@@ -80,8 +81,8 @@
 	infiltrator_implant.implant(traitor_mob, traitor_mob, TRUE)
 	weapons_implant.implant(traitor_mob, traitor_mob, TRUE)
 	if(!silent)
-		to_chat(traitor_mob, "<span class='boldnotice'>[employer] has cunningly implanted you with an [infiltrator_implant.name] to assist in your infiltration. You can trigger the uplink to stealthily access it.</span>")
-		to_chat(traitor_mob, "<span class='boldnotice'>[employer] has wisely implanted you with a [weapons_implant.name] to allow you to use syndicate weaponry. You can now fire weapons with Syndicate firing pins.</span>")
+		to_chat(traitor_mob, span_boldnotice("[employer] has cunningly implanted you with an [infiltrator_implant.name] to assist in your infiltration. You can trigger the uplink to stealthily access it."))
+		to_chat(traitor_mob, span_boldnotice("[employer] has wisely implanted you with a [weapons_implant.name] to allow you to use syndicate weaponry. You can now fire weapons with Syndicate firing pins."))
 
 /datum/antagonist/traitor/traitor_plus/intiltrator/proc/equip_infiltrator_outfit(strip = FALSE)
 	if(!ishuman(owner.current))
@@ -129,7 +130,7 @@
 	var/turf/randomized_picked_turf = find_obstruction_free_location(3, picked_turf) || picked_turf
 
 	if(!silent)
-		to_chat(infiltrator, "\n<span class='alertwarning'>You are being deployed via drop pod into [get_area_name(randomized_picked_turf, TRUE)] to begin your infiltration of [station_name()].</span>")
+		to_chat(infiltrator, span_alertwarning("\nYou are being deployed via drop pod into [get_area_name(randomized_picked_turf, TRUE)] to begin your infiltration of [station_name()]."))
 	infiltrator.forceMove(infiltrator_pod)
 	return new /obj/effect/pod_landingzone(randomized_picked_turf, infiltrator_pod)
 

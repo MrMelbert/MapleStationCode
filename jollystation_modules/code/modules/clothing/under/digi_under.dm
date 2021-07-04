@@ -5,6 +5,10 @@
 	var/use_modular_dmi = FALSE
 	/// Var to not squish digi legs on certain clothes.
 	var/should_not_squish = FALSE
+	/// Alt icon file to swap to
+	var/alt_icon = 'jollystation_modules/icons/mob/clothing/under/digi_under.dmi'
+	/// Alt greyscale config to swap to
+	var/alt_greyscale_config_worn = null
 
 /obj/item/clothing/Initialize()
 	. = ..()
@@ -14,15 +18,7 @@
 /obj/item/clothing/under/equipped(mob/user, slot)
 	if(slot == ITEM_SLOT_HANDS)
 		return
-	if(use_modular_dmi && ishuman(user))
-		if(user.is_digitigrade())
-			fitted = NO_FEMALE_UNIFORM
-			worn_icon = 'jollystation_modules/icons/mob/clothing/under/digi_under.dmi'
-			user.update_inv_w_uniform()
-		else
-			fitted = initial(fitted)
-			worn_icon = initial(worn_icon)
-			user.update_inv_w_uniform()
+	swap_to_modular_dmi(user, slot)
 	. = ..()
 
 /obj/item/clothing/under/toggle_jumpsuit_adjust()
@@ -34,6 +30,40 @@
 		fitted = NO_FEMALE_UNIFORM
 	else
 		fitted = initial(fitted)
+	wearer.update_inv_w_uniform()
+
+/*
+ * Swap our clothing item to an alternate dmi if applicable.
+ *
+ * user - the mob who has equipped the clothing
+ * slot - the slot equipped to
+ */
+/obj/item/clothing/proc/swap_to_modular_dmi(mob/user, slot)
+	return FALSE
+
+/obj/item/clothing/under/swap_to_modular_dmi(mob/user, slot)
+	. = ..()
+	if(!user)
+		return
+
+	if(use_modular_dmi && user.is_digitigrade())
+		fitted = NO_FEMALE_UNIFORM
+		if(alt_greyscale_config_worn)
+			greyscale_config_worn = alt_greyscale_config_worn
+		else if(!greyscale_config)
+			worn_icon = alt_icon
+		else
+			stack_trace("Greyscaled under item [src] did not have an alt_greyscale_config_worn set correctly!")
+	else
+		fitted = initial(fitted)
+		if(alt_greyscale_config_worn)
+			greyscale_config_worn = initial(greyscale_config_worn)
+		else if(!greyscale_config)
+			worn_icon = initial(worn_icon)
+
+	update_greyscale()
+	user.update_inv_w_uniform()
+	return TRUE
 
 // Included:
 // - Misc. Jumpsuits
@@ -163,9 +193,13 @@
 // -- Colored Jumpsuits --
 /obj/item/clothing/under/color
 	use_modular_dmi = TRUE
+	alt_greyscale_config_worn = /datum/greyscale_config/jumpsuit_worn_digi
 
 /obj/item/clothing/under/color/jumpskirt
 	use_modular_dmi = FALSE
+
+/obj/item/clothing/under/rank/prisoner
+	alt_greyscale_config_worn = /datum/greyscale_config/jumpsuit_prison_worn_digi
 
 /obj/item/clothing/under/color/grey/ancient
 	use_modular_dmi = FALSE
@@ -382,4 +416,7 @@
 	should_not_squish = TRUE
 
 /obj/item/clothing/suit/hooded/cultrobes/void
+	should_not_squish = TRUE
+
+/obj/item/clothing/suit/hooded/explorer
 	should_not_squish = TRUE

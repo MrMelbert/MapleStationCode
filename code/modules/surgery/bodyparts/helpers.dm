@@ -236,7 +236,7 @@
 		body_plan_changed = TRUE
 		existing_bodypart.drop_limb(1)
 		qdel(existing_bodypart)
-		new_bodypart.attach_limb(src) //no sanity for if this fails here because we just dropped out a limb of the same zone, SHOULD be okay
+		new_bodypart.attach_limb(src, TRUE) // NON-MODULE CHANGE: Fuck that other comment
 	if(body_plan_changed && ishuman(src))
 		var/mob/living/carbon/human/leg_owner = src
 		if(leg_owner.w_uniform)
