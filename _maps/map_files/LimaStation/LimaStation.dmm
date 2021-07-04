@@ -11810,6 +11810,9 @@
 	},
 /turf/open/floor/iron/textured,
 /area/maintenance/starboard)
+"djK" = (
+/turf/open/floor/iron,
+/area/engineering/atmos/experiment_room)
 "djN" = (
 /obj/structure/closet,
 /obj/effect/spawner/lootdrop/maintenance/three,
@@ -12675,9 +12678,6 @@
 	},
 /area/service/bar)
 "dDI" = (
-/obj/machinery/airalarm{
-	pixel_y = 24
-	},
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -12685,6 +12685,7 @@
 	dir = 8
 	},
 /obj/structure/cable,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "dDQ" = (
@@ -24341,10 +24342,6 @@
 /obj/effect/landmark/start/assistant,
 /turf/open/floor/iron,
 /area/hallway/primary/aft)
-"jJr" = (
-/obj/effect/spawner/structure/window/reinforced,
-/turf/open/floor/plating,
-/area/engineering/atmos/experiment_room)
 "jJD" = (
 /obj/machinery/door/airlock/external{
 	name = "Engineering External Access";
@@ -28148,6 +28145,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/cargo/office)
+"lMU" = (
+/turf/closed/wall/r_wall,
+/area/maintenance/port/aft)
 "lMX" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "bridge blast";
@@ -28239,7 +28239,6 @@
 /obj/item/hfr_box/corner,
 /obj/item/hfr_box/corner,
 /obj/item/hfr_box/corner,
-/obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos/experiment_room)
 "lPk" = (
@@ -32277,11 +32276,8 @@
 /area/tcommsat/computer)
 "nTe" = (
 /obj/effect/turf_decal,
-/obj/machinery/airalarm{
-	dir = 4;
-	pixel_x = -24
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden,
+/obj/machinery/firealarm/directional/west,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos/experiment_room)
 "nTh" = (
@@ -36767,6 +36763,9 @@
 /obj/effect/spawner/lootdrop/grille_or_trash,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+"qny" = (
+/turf/closed/wall/r_wall,
+/area/engineering/atmos/experiment_room)
 "qnK" = (
 /obj/machinery/shower{
 	dir = 1
@@ -37817,6 +37816,7 @@
 /area/science/xenobiology)
 "qTW" = (
 /obj/structure/closet/secure_closet/atmospherics,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos/experiment_room)
 "qUi" = (
@@ -41627,9 +41627,6 @@
 /obj/effect/loot_site_spawner,
 /turf/open/floor/plating,
 /area/maintenance/starboard)
-"sUQ" = (
-/turf/closed/wall/r_wall,
-/area/engineering/atmos/experiment_room)
 "sUT" = (
 /obj/structure/closet,
 /turf/open/floor/plating,
@@ -45789,6 +45786,11 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/service/hydroponics)
+"uUl" = (
+/obj/effect/turf_decal,
+/obj/machinery/firealarm/directional/east,
+/turf/open/floor/iron/dark,
+/area/engineering/atmos/experiment_room)
 "uUm" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/red{
@@ -48504,9 +48506,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/security/brig)
-"wjb" = (
-/turf/open/floor/iron,
-/area/engineering/atmos/experiment_room)
 "wjr" = (
 /obj/machinery/door/airlock/maintenance{
 	name = "Custodial Maintenance";
@@ -52066,6 +52065,10 @@
 	},
 /turf/open/floor/iron/freezer,
 /area/maintenance/starboard/aft)
+"xWB" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/engineering/atmos/experiment_room)
 "xWC" = (
 /obj/machinery/disposal/bin,
 /obj/structure/disposalpipe/trunk,
@@ -65820,11 +65823,11 @@ fsz
 fsz
 fsz
 fsz
-sUQ
-sUQ
-sUQ
-sUQ
-sUQ
+qny
+qny
+qny
+qny
+qny
 gfQ
 fsz
 gfQ
@@ -66077,11 +66080,11 @@ fsz
 gfQ
 gfQ
 fsz
-sUQ
+qny
 hpe
 jUQ
 jUQ
-sUQ
+qny
 gfQ
 fFC
 gfQ
@@ -66334,11 +66337,11 @@ bnA
 gfQ
 gfQ
 joR
-sUQ
+qny
 nXD
 jUQ
 wiH
-sUQ
+qny
 cES
 xlO
 gfQ
@@ -66591,11 +66594,11 @@ clp
 gfQ
 gfQ
 joR
-sUQ
+qny
 aOX
 jUQ
 reV
-sUQ
+qny
 cES
 xlO
 gfQ
@@ -66848,11 +66851,11 @@ bnA
 gfQ
 gfQ
 joR
-sUQ
+qny
 odS
 eMT
 wcp
-sUQ
+qny
 cES
 gfQ
 gfQ
@@ -67876,13 +67879,13 @@ qmq
 yeY
 bnA
 bnA
-jJr
-jJr
+xWB
+xWB
 rVf
-jJr
-jJr
-sUQ
-sUQ
+xWB
+xWB
+qny
+qny
 gfQ
 xlO
 gfQ
@@ -68139,7 +68142,7 @@ pfA
 gTe
 cZH
 iRr
-sUQ
+qny
 fsz
 xlO
 gfQ
@@ -68390,13 +68393,13 @@ xzY
 xzY
 xzY
 tnK
-sUQ
-sUQ
-sUQ
-sUQ
+qny
+qny
+qny
+qny
 joA
 tkD
-sUQ
+qny
 gfQ
 xlO
 gfQ
@@ -68650,10 +68653,10 @@ fPo
 fPo
 fPo
 csg
-sUQ
+qny
 koB
 grq
-sUQ
+qny
 gfQ
 gfQ
 xlO
@@ -68907,10 +68910,10 @@ vSM
 vSM
 vSM
 joR
-sUQ
+qny
 oDA
 wjM
-sUQ
+qny
 gfQ
 gfQ
 gfQ
@@ -69164,16 +69167,16 @@ urS
 urS
 vSM
 joR
-sUQ
-sUQ
+qny
+qny
 gTe
-sUQ
-jJr
-jJr
-jJr
-jJr
-sUQ
-sUQ
+qny
+xWB
+xWB
+xWB
+xWB
+qny
+qny
 gfQ
 gfQ
 xlO
@@ -69421,17 +69424,17 @@ hAD
 gKb
 vSM
 joR
-sUQ
+qny
 lOE
 cZH
 nTe
 jUG
-wjb
-wjb
-wjb
+djK
+djK
+djK
 cXs
-sUQ
-sUQ
+qny
+qny
 gfQ
 fsz
 gfQ
@@ -69678,17 +69681,17 @@ urS
 imi
 vSM
 joR
-sUQ
+qny
 qTW
 cZH
 gIp
-wjb
-wjb
-wjb
-wjb
-wjb
-wjb
-jJr
+djK
+djK
+djK
+djK
+djK
+djK
+xWB
 fsz
 xlO
 gfQ
@@ -69935,17 +69938,17 @@ vSM
 vSM
 vSM
 joR
-sUQ
+qny
 dJu
 cZH
 nhm
-wjb
+djK
 aQm
 nDS
 rEm
-wjb
-wjb
-jJr
+djK
+djK
+xWB
 gfQ
 xlO
 gfQ
@@ -70192,17 +70195,17 @@ fsz
 fsz
 fsz
 joR
-sUQ
+qny
 itf
 qqt
 vta
-wjb
+djK
 nDS
 wfV
 nDS
-wjb
-wjb
-jJr
+djK
+djK
+xWB
 gfQ
 xlO
 gfQ
@@ -70449,17 +70452,17 @@ vSM
 vSM
 vSM
 joR
-sUQ
+qny
 lZo
 cZH
 nhm
-wjb
+djK
 rEm
 nDS
 aQm
-wjb
-wjb
-jJr
+djK
+djK
+xWB
 gfQ
 xlO
 gfQ
@@ -70706,17 +70709,17 @@ tJM
 tJM
 vSM
 joR
-sUQ
+qny
 ngV
 cws
 gIp
-wjb
-wjb
-wjb
-wjb
-wjb
-wjb
-jJr
+djK
+djK
+djK
+djK
+djK
+djK
+xWB
 fsz
 xlO
 gfQ
@@ -70963,17 +70966,17 @@ iZs
 tvS
 vSM
 joR
-sUQ
+qny
 xsI
 cws
-gIp
+uUl
 toN
-wjb
-wjb
-wjb
+djK
+djK
+djK
 dwF
-sUQ
-sUQ
+qny
+qny
 gfQ
 fsz
 gfQ
@@ -71220,16 +71223,16 @@ tJM
 vsB
 vSM
 joR
-sUQ
-sUQ
+qny
+qny
 mvz
-sUQ
+qny
 nzo
-jJr
-jJr
-jJr
-sUQ
-sUQ
+xWB
+xWB
+xWB
+qny
+qny
 gfQ
 gfQ
 xlO
@@ -71477,10 +71480,10 @@ vSM
 vSM
 vSM
 joR
-sUQ
+qny
 pZY
 das
-sUQ
+qny
 tnB
 aUP
 fsz
@@ -71734,10 +71737,10 @@ lpf
 lpf
 lpf
 nsx
-sUQ
+qny
 kDr
 rqd
-sUQ
+qny
 aUP
 fsz
 xlO
@@ -71988,13 +71991,13 @@ xzY
 xzY
 xzY
 tnK
-sUQ
-sUQ
-sUQ
-sUQ
-sUQ
+qny
+qny
+qny
+qny
+qny
 evs
-sUQ
+qny
 aUP
 gfQ
 gfQ
@@ -72251,7 +72254,7 @@ cws
 mvz
 tzS
 cws
-sUQ
+qny
 aUP
 gfQ
 gfQ
@@ -72502,13 +72505,13 @@ bvo
 bvo
 bvo
 cwg
-sUQ
-sUQ
-jJr
-sUQ
-sUQ
+qny
+qny
+xWB
+qny
+qny
 xLM
-sUQ
+qny
 aUP
 gfQ
 gfQ
@@ -73267,7 +73270,7 @@ tMU
 cdQ
 vSM
 joR
-rKZ
+aHw
 oWd
 bzw
 pYa
@@ -73524,7 +73527,7 @@ bWA
 mML
 vSM
 joR
-rKZ
+aHw
 gmx
 tdK
 pYa
@@ -73781,7 +73784,7 @@ gac
 mML
 vSM
 joR
-rKZ
+aHw
 nji
 gkd
 sVz
@@ -74038,7 +74041,7 @@ vSM
 vSM
 vSM
 joR
-rKZ
+aHw
 pwJ
 mgF
 udr
@@ -74295,7 +74298,7 @@ lpf
 lpf
 lpf
 cGr
-rKZ
+aHw
 iJy
 igd
 pYa
@@ -74538,21 +74541,21 @@ cfC
 uYy
 bnA
 bnA
-bnA
-bnA
-rKZ
-bnA
-bnA
-bnA
-rKZ
-bnA
-bnA
-rKZ
-rKZ
-rKZ
-bnA
-bnA
-bnA
+lMU
+lMU
+aHw
+lMU
+lMU
+lMU
+aHw
+lMU
+lMU
+aHw
+aHw
+aHw
+lMU
+lMU
+lMU
 uDH
 tuj
 pYa
