@@ -114,3 +114,38 @@
 		human_owner.cause_pain(BODY_ZONES_LIMBS, -15)
 		human_owner.cause_pain(BODY_ZONE_CHEST, -20)
 		human_owner.cause_pain(BODY_ZONE_HEAD, -10) // heals 90 pain total
+
+// Falling? Hurts!
+/mob/living/carbon/human/ZImpactDamage(turf/T, levels)
+	var/is_freerunner = HAS_TRAIT(src, TRAIT_FREERUNNING)
+	// This proc is coded so wonky...
+	if(is_freerunner && levels <= 1)
+		return ..()
+
+	// 12 brute for 1 level, 32 brute for 2 levels
+	var/brute_amount = (levels * 5) ** 1.5
+	var/limb_pain_amount = brute_amount // 1:1 ratio of brute to pain, baby
+	adjustBruteLoss(brute_amount)
+	if(is_freerunner)
+		limb_pain_amount /= 2
+	if(usable_legs >= 2 && prob(80))
+		visible_message(
+			span_danger("[src] crashes into [T] with a sickening noise, landing on their legs [is_freerunner ? "shakily" : "hard"]!"),
+			span_userdanger("You crash into [T] with a sickening noise, landing [is_freerunner ? "shakily" : "hard"] on your legs! Ouch!"),
+			span_hear("You hear a sickening crunch."))
+		cause_pain(list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG), limb_pain_amount)
+	else if(usable_hands >= 2)
+		visible_message(
+			span_danger("[src] attempts to stop their fall with their arms, crashing into [T] with a sickening noise!"),
+			span_userdanger("You attempt to stop your fall with your arms, and crash into [T] with a sickening noise! Ouch!"),
+			span_hear("You hear a sickening crunch."))
+		cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), limb_pain_amount)
+	else
+		visible_message(
+			span_danger("[src] crash into [T] with a sickening noise!"),
+			span_userdanger("You crash into [T] with a sickening noise! Ouch!"),
+			span_hear("You hear a sickening thud."))
+		cause_pain(BODY_ZONE_HEAD, (levels * 10)) // bonk
+
+	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs recieve
+	Knockdown(levels * 50)

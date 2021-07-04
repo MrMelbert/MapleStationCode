@@ -294,7 +294,7 @@
 
 // Combination drug of other painkillers. It's a real thing. Less side effects, heals pain generally, mildly toxic in high doses.
 // Upgrade to paracetamol and aspirin if you go through the effort to get coffee.
-/datum/reagent/medicine/painkiller/aspririn_para_coffee
+/datum/reagent/medicine/painkiller/aspirin_para_coffee
 	name = "aspirin/paracetamol/caffeine"
 	description = "A combination drug that effectively treats moderate pain with low side effects when used in low dosage. Toxic in higher dosages."
 	reagent_state = LIQUID
@@ -302,7 +302,7 @@
 	color = "#e695ff"
 	metabolization_rate = REAGENTS_METABOLISM
 
-/datum/reagent/medicine/painkiller/aspririn_para_coffee/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/medicine/painkiller/aspirin_para_coffee/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
 
 	// Heals all pain a bit if in low dosage. High metabolism, so it must make it count.
@@ -312,8 +312,8 @@
 	else if(DT_PROB(volume * 3, delta_time))
 		M.apply_damage(3 * REM * delta_time, TOX)
 
-/datum/chemical_reaction/medicine/aspririn_para_coffee
-	results = list(/datum/reagent/medicine/painkiller/aspririn_para_coffee = 3)
+/datum/chemical_reaction/medicine/aspirin_para_coffee
+	results = list(/datum/reagent/medicine/painkiller/aspirin_para_coffee = 3)
 	required_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 1, /datum/reagent/medicine/painkiller/paracetamol = 1, /datum/reagent/consumable/coffee = 1)
 	optimal_ph_min = 2
 	optimal_ph_max = 12
@@ -389,74 +389,3 @@
 
 /obj/item/food/grown/poppy/lily
 	juice_results = null
-
-/obj/item/reagent_containers/pill/asprin
-	name = "asprin pill"
-	desc = "Used to treat moderate pain and fever. Metabolizes slowly. Best at treating chest pain."
-	icon_state = "pill7"
-	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 10) // Lasts ~4 minutes, heals ~20 pain in chest (lower in other parts)
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/ibuprofen
-	name = "ibuprofen pill"
-	desc = "Used to treat mild pain, headaches, and fever. Metabolizes slowly. Best at treating head pain."
-	icon_state = "pill8"
-	list_reagents = list(/datum/reagent/medicine/painkiller/ibuprofen = 10) // Lasts ~4 minutes, heals ~20 pain in head (lower in other parts)
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/paracetamol
-	name = "paracetamol pill"
-	desc = "Used to treat moderate pain and headaches. Metabolizes slowly. Good as a general painkiller."
-	icon_state = "pill9"
-	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 10) // Lasts ~4 minutes, heals ~15 pain per bodypart
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/morphine/diluted
-	desc = "Used to treat major to severe pain. Causes moderate drowsyness. Mildly addictive."
-	icon_state = "pill11"
-	list_reagents = list(/datum/reagent/medicine/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain)
-	rename_with_volume = TRUE
-
-/obj/item/reagent_containers/pill/oxycodone
-	name = "oxycodon pill"
-	desc = "Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
-	icon_state = "pill12"
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 5) // Lasts ~1 minute, heals ~20 pain per bodypart (~200 pain)
-	rename_with_volume = TRUE
-
-/obj/item/storage/pill_bottle/painkillers
-	name = "bottle of painkillers"
-	desc = "Contains multiple pills used to treat anywhere from mild to extreme pain. CAUTION: Do not take in conjunction with alcohol."
-	icon = 'jollystation_modules/icons/obj/chemical.dmi'
-	custom_premium_price = PAYCHECK_HARD * 1.5
-
-/obj/item/storage/pill_bottle/painkillers/ComponentInitialize()
-	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 14
-	STR.max_combined_w_class = 28
-
-/obj/item/storage/pill_bottle/painkillers/PopulateContents()
-	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/asprin(src)
-	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/ibuprofen(src)
-	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/paracetamol(src)
-	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/morphine/diluted(src)
-	for(var/i in 1 to 2)
-		new /obj/item/reagent_containers/pill/oxycodone(src)
-
-/obj/machinery/vending/drugs
-	added_premium = list(/obj/item/storage/pill_bottle/painkillers = 2)
-
-/obj/item/reagent_containers/hypospray/medipen/survival/painkiller
-	name = "emergency painkiller medipen"
-	desc = "A medipen that contains a dosage of heavy duty painkillers. WARNING: Side effects or addiction may occur with rapid consecutive usage. Do not use in combination with alcohol."
-	icon = 'jollystation_modules/icons/obj/syringe.dmi'
-	icon_state = "painkiller_stimpen"
-	base_icon_state = "painkiller_stimpen"
-	volume = 15
-	amount_per_transfer_from_this = 15
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 7.5, /datum/reagent/medicine/morphine = 5, /datum/reagent/medicine/modafinil = 2.5)
