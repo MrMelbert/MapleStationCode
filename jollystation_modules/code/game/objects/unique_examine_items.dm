@@ -86,7 +86,7 @@
 
 /obj/item/reagent_containers/food/drinks/bottle/lizardwine/Initialize()
 	. = ..()
-	var/vintage = rand(GLOB.year_integer + 450, GLOB.year_integer + 540) // Wine has an actual vintage var but lizardwine is special
+	var/vintage = rand(GLOB.year_integer + 450, GLOB.year_integer + 555) // Wine has an actual vintage var but lizardwine is special // NON-MODULE CHANGE; Default year increment is 540, Jollystation is +15 years from that. And yes, this does make these wines able to be older.
 	AddElement(/datum/element/unique_examine, "A bottle of ethically questionable lizard wine. Rare now-a-days following the harsh regulations placed on the great wine industry. You'd place the vintage at... [(vintage >= 3000) ? "[vintage] Nanotrasen White-Green. Not my personal preference..." : "a respectable [vintage] Nanotrasen White-Green. Wonderful."]", EXAMINE_CHECK_SKILLCHIP, list(/obj/item/skillchip/wine_taster), hint = FALSE)
 	AddElement(/datum/element/unique_examine, "A lizardperson's tail is important in keeping balance and warding off enemies in combat situations. You can't help but feel disappointed and saddened looking at this, knowing a fellow kin was robbed of such a thing.", EXAMINE_CHECK_SPECIES, LIZARD_LIST)
 
