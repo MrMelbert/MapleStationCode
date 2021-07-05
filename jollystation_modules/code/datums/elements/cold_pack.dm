@@ -4,13 +4,71 @@
 	var/pain_heal_rate = 0
 	var/pain_modifier_on_limb = 1
 
-/datum/element/cold_pack/Attach(obj/target, pain_heal_rate = 0, pain_modifier_on_limb = 1)
+/datum/element/cold_pack/Attach(obj/item/target, pain_heal_rate = 0, pain_modifier_on_limb = 1)
 	. = ..()
 
-	if(!isobj(target))
+	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
 
 	src.pain_heal_rate = pain_heal_rate
 	src.pain_modifier_on_limb = pain_modifier_on_limb
 
-	//COMSIG_ITEM_ATTACK_SECONDARY
+	RegisterSignal(target, COMSIG_ITEM_ATTACK_SECONDARY, .proc/try_freeze_limb)
+	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/get_examine_text)
+
+/datum/element/cold_pack/Detach(obj/target)
+	. = ..()
+	UnregisterSignal(target, list(
+		COMSIG_ITEM_ATTACK_SECONDARY,
+		COMSIG_PARENT_EXAMINE,
+	))
+
+/datum/element/cold_pack/proc/get_examine_text(obj/item/source, mob/examiner, list/examine_list)
+	SIGNAL_HANDLER
+
+	if(pain_heal_rate > 0)
+		examine_list += span_notice("Right-clicking on a hurt limb with this item can help soothe pain.")
+
+/datum/element/cold_pack/proc/try_freeze_limb(obj/item/source, atom/target, mob/user, params)
+	SIGNAL_HANDLER
+
+	. = SECONDARY_ATTACK_CALL_NORMAL
+	if(source.resistance_flags & ON_FIRE)
+		return
+	if(!ishuman(target))
+		return
+
+	var/mob/living/carbon/human/target_mob = target
+	var/targeted_zone = target_mob.zone_selected
+
+	if(!target_mob.pain_controller)
+		return
+	if(!target_mob.get_bodypart_pain(targeted_zone, TRUE))
+		return
+
+	. = SECONDARY_ATTACK_CONTINUE_CHAIN
+
+	for(var/datum/status_effect/cold_pack/pre_existing_effect in target_mob.status_effects)
+		if(pre_existing_effect.targeted_zone == targeted_zone)
+			to_chat(user, span_warning("There is already a something cold placed on that limb."))
+			return
+		if(pre_existing_effect.cold_item == source)
+			to_chat(user, span_warning("You are already pressing [source] onto another limb."))
+			return
+
+	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	INVOKE_ASYNC(src, .proc/begin_freezing_limb, source, target, user, targeted_zone)
+
+/datum/element/cold_pack/proc/begin_freezing_limb(obj/item/parent, mob/living/carbon/target, mob/user, targeted_zone)
+	if(!do_after(user, 0.5 SECONDS, target))
+		return
+
+	var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(targeted_zone)
+	user.visible_message(
+		span_notice("[user] press [parent] against [target == user ? "their" : "[target]'s" ] [targeted_bodypart.name]."),
+		span_notice("You press [parent] against [target == user ? "your" : "[target]'s" ] [targeted_bodypart.name].")
+	)
+	to_chat(target, span_green("You wince as [target == user ? "you press" : "[user] presses"] [parent] against your [targeted_bodypart.name], but eventually the chill starts to dull the pain."))
+	target.pain_emote("wince")
+	target.apply_status_effect(/datum/status_effect/cold_pack, user, parent, targeted_zone, pain_heal_rate, pain_modifier_on_limb)

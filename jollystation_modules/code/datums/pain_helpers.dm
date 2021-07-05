@@ -42,6 +42,20 @@
 		addtimer(CALLBACK(src, .proc/unset_pain_mod, id), time)
 
 /*
+ * Returns the bodypart pain of [zone].
+ * If [get_modified] is TRUE, returns the bodypart's pain multiplied by any modifiers affecting it.
+ */
+/mob/living/carbon/proc/get_bodypart_pain(zone, get_modified = FALSE)
+	var/obj/item/bodypart/checked_bodypart = pain_controller?.body_zones[zone]
+	if(!checked_bodypart)
+		return 0
+
+	if(get_modified)
+		return checked_bodypart.get_modified_pain()
+	else
+		return checked_bodypart.pain
+
+/*
  * Helper carbon proc to clear [id] pain mod.
  */
 /mob/living/carbon/proc/unset_pain_mod(id, amount)
