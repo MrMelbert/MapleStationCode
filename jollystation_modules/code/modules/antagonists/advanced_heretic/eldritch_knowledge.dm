@@ -45,7 +45,7 @@
 	var/turf/sac_loc = get_turf(sac_target)
 	var/obj/effect/landmark/error/error_landmark = locate(/obj/effect/landmark/error) in GLOB.landmarks_list
 	var/turf/picked_turf = error_landmark || locate(4,4,1)
-	if(sac_target.stat == DEAD || !picked_turf || !do_teleport(sac_target, picked_turf, forceMove = TRUE, asoundin = 'sound/magic/repulse.ogg', asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
+	if(sac_target.stat == DEAD || !picked_turf || !do_teleport(sac_target, picked_turf, asoundin = 'sound/magic/repulse.ogg', asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
 		message_admins("[sac_target] was gibbed by a heretic at [ADMIN_VERBOSEJMP(sac_loc)]: [picked_turf? "Teleport failed - [(sac_target.stat == DEAD)? "Target was dead":"do_teleport action failed somehow, likely a bug"]":"No target turf was found"].")
 		log_attack("[sac_target] was gibbed by a heretic at [loc_name(sac_loc)].")
 		stack_trace("[sac_target] was gibbed by a heretic at [loc_name(sac_loc)]: [picked_turf? "Teleport failed - [(sac_target.stat == DEAD)? "Target was dead":"do_teleport failed"]":"No target turf was found"].")
@@ -106,7 +106,7 @@
 	var/turf/sac_loc = get_turf(sac_target)
 	/// Teleport them to a random z level
 	var/turf/open/floor/safe_turf = find_safe_turf(zlevels = SSmapping.levels_by_trait(ZTRAIT_STATION)[1], extended_safety_checks = TRUE)
-	if(!do_teleport(sac_target, safe_turf, forceMove = TRUE, asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
+	if(!do_teleport(sac_target, safe_turf, asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
 		message_admins("[sac_target] was gibbed by a heretic at [ADMIN_VERBOSEJMP(sac_loc)]: [safe_turf? "Teleport failed":"No target turf was found"].")
 		log_attack("[sac_target] was gibbed by a heretic at [loc_name(sac_loc)].")
 		stack_trace("[sac_target] was gibbed by a heretic at [loc_name(sac_loc)]: [safe_turf? "Teleport failed":"No target turf was found"].")

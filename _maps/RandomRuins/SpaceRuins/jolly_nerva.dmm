@@ -88,7 +88,6 @@
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/nerva)
 "hw" = (
-/obj/machinery/atmospherics/components/unary/tank/air,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/nerva)

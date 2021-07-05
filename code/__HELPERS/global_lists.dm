@@ -34,7 +34,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/skrell_headtentacles, GLOB.skrellheadtentacles_list) //Adding Skrell Headtentacles init -Jon
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/skrell_headtentacles, GLOB.skrellheadtentacles_list) //NON-MODULE COMMENT
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))

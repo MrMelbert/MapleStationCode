@@ -2,7 +2,7 @@
 
 find_all_in_dir (){
 
-	if [ ! -f $1 ]; then
+	if [ ! -d $1 ]; then
 		echo "!! find_all_in_dir error: $1 directory not found."
 		return 1
 	fi
@@ -18,7 +18,7 @@ find_all_in_dir (){
 			continue
 		fi
 
-		if grep -q "// NON-MODULE" "$file"; then
+		if grep -q -i -E "\/{2,}\s*non(\s|-)*module" "$file"; then
 			echo "NOTICE: $file contains modular changes, and must be done manually."
 			continue
 		fi
@@ -42,6 +42,12 @@ update_dme (){
 	if [ ! -f $2 ]; then
 		echo "!! update_dme error:: $2 file not found. This should be the old jollystation.dme."
 		return 1
+	fi
+
+	if grep -q "<<<<<<<" $1; then
+		sed -i '/<<<<<<</,/=======/d' $1
+		sed -i '/>>>>>>>/d' $1
+		echo "$1 merge conflicts resolved before updating modular DME.."
 	fi
 
 	tempfile=temp_"$1"

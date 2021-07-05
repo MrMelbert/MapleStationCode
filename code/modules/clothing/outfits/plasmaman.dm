@@ -7,12 +7,6 @@
 	mask = /obj/item/clothing/mask/breath
 	r_hand= /obj/item/tank/internals/plasmaman/belt/full
 
-	uniform = /obj/item/clothing/under/plasmaman
-	gloves = /obj/item/clothing/gloves/color/plasmaman
-	head = /obj/item/clothing/head/helmet/space/plasmaman
-	mask = /obj/item/clothing/mask/breath
-	r_hand= /obj/item/tank/internals/plasmaman/belt/full
-	
 /datum/outfit/plasmaman/security
 	name = "Security Plasmaman"
 

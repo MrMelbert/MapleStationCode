@@ -158,7 +158,7 @@
 
 /obj/item/clothing/head/helmet/justice/Initialize()
 	. = ..()
-	weewooloop = new(list(src), FALSE, FALSE)
+	weewooloop = new(src, FALSE, FALSE)
 
 /obj/item/clothing/head/helmet/justice/Destroy()
 	QDEL_NULL(weewooloop)
@@ -417,8 +417,6 @@
 /obj/item/clothing/head/helmet/monkey_sentience/equipped(mob/user, slot)
 	. = ..()
 	if(slot != ITEM_SLOT_HEAD)
-		return
-	if(istype(user, /mob/living/carbon/human/dummy)) //Prevents ghosts from being polled when the helmet is put on a dummy.
 		return
 	if(!ismonkey(user) || user.ckey)
 		var/mob/living/something = user
