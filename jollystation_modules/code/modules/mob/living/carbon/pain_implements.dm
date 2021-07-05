@@ -1,4 +1,24 @@
 // -- Implements and equipment to help reduce pain. --
+// Temperature pack stuff - things you can press to people to help reduce pain.
+
+/// Heal rate and modifier for generic items that are frozen.
+#define FROZEN_ITEM_HEAL_RATE 1
+#define FROZEN_ITEM_MODIFIER 0.5
+
+/obj/item/reagent_containers/food/drinks/beer/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/temperature_pack, pain_heal_rate = 0.3, pain_modifier_on_limb = 0.9)
+
+/obj/item/make_frozen_visual()
+	. = ..()
+	if(obj_flags & FROZEN)
+		AddElement(/datum/element/temperature_pack, pain_heal_rate = FROZEN_ITEM_HEAL_RATE, pain_modifier_on_limb = FROZEN_ITEM_MODIFIER)
+
+/obj/item/make_unfrozen()
+	. = ..()
+	if(!(obj_flags & FROZEN))
+		RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_HEAL_RATE, FROZEN_ITEM_MODIFIER)
+
 /obj/item/reagent_containers/pill/asprin
 	name = "asprin pill"
 	desc = "Used to treat moderate pain and fever. Metabolizes slowly. Best at treating chest pain."
@@ -277,3 +297,6 @@
 
 /obj/machinery/vending/wallmed
 	added_products = list(/obj/item/shock_blanket/emergency = 2)
+
+#undef FROZEN_ITEM_HEAL_RATE
+#undef FROZEN_ITEM_MODIFIER

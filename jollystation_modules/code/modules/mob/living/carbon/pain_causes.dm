@@ -149,8 +149,3 @@
 
 	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs recieve
 	Knockdown(levels * 50)
-
-// Stuff that can help pain.
-/obj/item/reagent_containers/food/drinks/beer/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/cold_pack, pain_heal_rate = 0.5, pain_modifier_on_limb = 0.9)
