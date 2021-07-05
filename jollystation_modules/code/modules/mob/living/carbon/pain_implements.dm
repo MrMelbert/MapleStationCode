@@ -165,12 +165,12 @@
 	if(slot_flags & slot)
 		enable_protection(user)
 		RegisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), .proc/check_protection)
-		RegisterSignal(user, COMSIG_MOVABLE_PRE_MOVE, .proc/disable_protection)
+		RegisterSignal(user, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_PRE_MOVE), .proc/disable_protection)
 
 /obj/item/shock_blanket/dropped(mob/user, silent)
 	. = ..()
 	disable_protection(user)
-	UnregisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED, COMSIG_MOVABLE_PRE_MOVE))
+	UnregisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED, COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_PRE_MOVE))
 
 /*
  * Check if we should be recieving temperature protection.
@@ -191,20 +191,49 @@
 /*
  * Enable the temperature protection.
  */
-/obj/item/shock_blanket/proc/enable_protection(atom/source)
+/obj/item/shock_blanket/proc/enable_protection(mob/living/source)
 	SIGNAL_HANDLER
 
-	ADD_TRAIT(source, TRAIT_RESISTCOLD, "[REF(src)]")
-	ADD_TRAIT(source, TRAIT_RESISTHEAT, "[REF(src)]")
+	if(istype(source) && !(datum_flags & DF_ISPROCESSING))
+		var/temp_change = "warmer"
+		if(source.bodytemperature > source.get_body_temp_normal(apply_change = FALSE))
+			temp_change = "colder"
+
+		to_chat(source, span_notice("You feel [temp_change] as [src] begins regulating your body temperature."))
+		START_PROCESSING(SSobj, src)
 
 /*
  * Disable the temperataure protection.
  */
-/obj/item/shock_blanket/proc/disable_protection(atom/source)
+/obj/item/shock_blanket/proc/disable_protection(mob/living/source)
 	SIGNAL_HANDLER
 
-	REMOVE_TRAIT(source, TRAIT_RESISTCOLD, "[REF(src)]")
-	REMOVE_TRAIT(source, TRAIT_RESISTHEAT, "[REF(src)]")
+	if(istype(source) && (datum_flags & DF_ISPROCESSING))
+		var/temp_change = "freezing"
+		if(source.bodytemperature > source.get_body_temp_normal(apply_change = FALSE))
+			temp_change = "hotter"
+
+		to_chat(source, span_notice("You feel [temp_change] again as [src] stops regulating your body temperature."))
+
+	STOP_PROCESSING(SSobj, src)
+
+/obj/item/shock_blanket/process(delta_time)
+	var/mob/living/carbon/wearer = loc
+	if(!istype(wearer))
+		disable_protection()
+		return
+
+	var/target_temp = wearer.get_body_temp_normal(apply_change = FALSE)
+	if(wearer.bodytemperature > target_temp)
+		wearer.adjust_bodytemperature(-30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, target_temp)
+	else if(wearer.bodytemperature < (target_temp + 1))
+		wearer.adjust_bodytemperature(30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, 0, target_temp)
+	if(ishuman(wearer))
+		var/mob/living/carbon/human/human_wearer = wearer
+		if(human_wearer.coretemperature > target_temp)
+			human_wearer.adjust_coretemperature(-30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, target_temp)
+		else if(human_wearer.coretemperature < (target_temp + 1))
+			human_wearer.adjust_coretemperature(30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, 0, target_temp)
 
 /obj/item/shock_blanket/emergency
 	slowdown = 2.5
@@ -247,4 +276,4 @@
 	added_products = list(/obj/item/shock_blanket = 3)
 
 /obj/machinery/vending/wallmed
-	added_products = list(/obj/item/shock_blanket/emergency = 3)
+	added_products = list(/obj/item/shock_blanket/emergency = 2)
