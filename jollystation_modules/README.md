@@ -107,6 +107,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\game\machinery\computer\crew.dm
 - code\game\machinery\computer\medical.dm
 - code\game\machinery\computer\security.dm
+- code\game\objects\items\devices\PDA\PDA.dm
 - code\game\objects\items\implants\implantuplink.dm
 - code\game\objects\items\plushes.dm
 - code\game\objects\items\scanners.dm
@@ -116,6 +117,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\client\client_procs.dm
 - code\modules\client\preferences_savefile.dm
 - code\modules\client\preferences.dm
+- code\modules\food_and_drinks\drinks\drinks\bottle.dm
 - code\modules\jobs\jobs.dm
 - code\modules\jobs\job_types\_job.dm
 - code\modules\jobs\job_types\cargo_technician.dm
@@ -125,6 +127,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\jobs\job_types\scientist.dm
 - code\modules\jobs\job_types\shaft_miner.dm
 - code\modules\language\language_holder.dm
+- code\modules\mob\living\carbon\human\human.dm
 - code\modules\mob\living\carbon\human\species.dm
 - code\modules\modular_computers\file_system\programs\jobmanagement.dm
 - code\modules\surgery\bodyparts\dismemberment.dm
