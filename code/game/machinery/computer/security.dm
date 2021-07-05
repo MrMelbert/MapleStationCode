@@ -19,6 +19,180 @@
 	var/sortBy = "name"
 	var/order = 1 // -1 = Descending - 1 = Ascending
 
+/obj/machinery/computer/secure_data/Initialize(mapload, obj/item/circuitboard/C)
+	. = ..()
+	AddComponent(/datum/component/usb_port, list(
+		/obj/item/circuit_component/arrest_console_data,
+		/obj/item/circuit_component/arrest_console_arrest,
+	))
+
+/obj/item/circuit_component/arrest_console_data
+	display_name = "Security Records Data"
+	display_desc = "Outputs the security records data, where it can then be filtered with a Select Query component"
+	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
+
+	/// The records retrieved
+	var/datum/port/output/records
+
+	/// Sends a signal on failure
+	var/datum/port/output/on_fail
+
+	var/obj/machinery/computer/secure_data/attached_console
+
+/obj/item/circuit_component/arrest_console_data/Initialize()
+	. = ..()
+	records = add_output_port("Security Records", PORT_TYPE_TABLE)
+	on_fail = add_output_port("Failed", PORT_TYPE_SIGNAL)
+
+/obj/item/circuit_component/arrest_console_data/Destroy()
+	records = null
+	on_fail = null
+	return ..()
+
+
+/obj/item/circuit_component/arrest_console_data/register_usb_parent(atom/movable/parent)
+	. = ..()
+	if(istype(parent, /obj/machinery/computer/secure_data))
+		attached_console = parent
+
+/obj/item/circuit_component/arrest_console_data/unregister_usb_parent(atom/movable/parent)
+	attached_console = null
+	return ..()
+
+/obj/item/circuit_component/arrest_console_data/get_ui_notices()
+	. = ..()
+	. += create_table_notices(list(
+		"name",
+		"id",
+		"rank",
+		"arrest_status",
+		"gender",
+		"age",
+		"species",
+		"fingerprint",
+	))
+
+
+/obj/item/circuit_component/arrest_console_data/input_received(datum/port/input/port)
+	. = ..()
+	if(.)
+		return
+
+	if(!attached_console || !attached_console.authenticated)
+		on_fail.set_output(COMPONENT_SIGNAL)
+		return
+
+	if(isnull(GLOB.data_core.general))
+		on_fail.set_output(COMPONENT_SIGNAL)
+		return
+
+	var/list/new_table = list()
+	for(var/datum/data/record/player_record as anything in GLOB.data_core.general)
+		var/list/entry = list()
+		var/datum/data/record/player_security_record = find_record("id", player_record.fields["id"], GLOB.data_core.security)
+		if(player_security_record)
+			entry["arrest_status"] = player_security_record.fields["criminal"]
+			entry["security_record"] = player_security_record
+		entry["name"] = player_record.fields["name"]
+		entry["id"] = player_record.fields["id"]
+		entry["rank"] = player_record.fields["rank"]
+		entry["gender"] = player_record.fields["gender"]
+		entry["age"] = player_record.fields["age"]
+		entry["species"] = player_record.fields["species"]
+		entry["fingerprint"] = player_record.fields["fingerprint"]
+
+		new_table += list(entry)
+
+	records.set_output(new_table)
+
+/obj/item/circuit_component/arrest_console_arrest
+	display_name = "Security Records Set Status"
+	display_desc = "Receives a table to use to set people's arrest status. Table should be from the security records data component. If New Status port isn't set, the status will be decided by the options."
+	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL|CIRCUIT_FLAG_OUTPUT_SIGNAL
+
+	/// The targets to set the status of.
+	var/datum/port/input/targets
+
+	/// Sets the new status of the targets. If set to null, the status is taken from the options.
+	var/datum/port/input/new_status
+
+	/// Returns the new status set once the setting is complete. Good for locating errors.
+	var/datum/port/output/new_status_set
+
+	/// Sends a signal on failure
+	var/datum/port/output/on_fail
+
+	var/obj/machinery/computer/secure_data/attached_console
+
+/obj/item/circuit_component/arrest_console_arrest/register_usb_parent(atom/movable/parent)
+	. = ..()
+	if(istype(parent, /obj/machinery/computer/secure_data))
+		attached_console = parent
+
+/obj/item/circuit_component/arrest_console_arrest/unregister_usb_parent(atom/movable/parent)
+	attached_console = null
+	return ..()
+
+/obj/item/circuit_component/arrest_console_arrest/populate_options()
+	var/static/list/component_options = list(
+		COMP_STATE_ARREST,
+		COMP_STATE_PRISONER,
+		COMP_STATE_PAROL,
+		COMP_STATE_DISCHARGED,
+		COMP_STATE_NONE,
+	)
+	options = component_options
+
+/obj/item/circuit_component/arrest_console_arrest/Initialize()
+	. = ..()
+	targets = add_input_port("Targets", PORT_TYPE_TABLE)
+	new_status = add_input_port("New Status", PORT_TYPE_STRING)
+	new_status_set = add_output_port("Set Status", PORT_TYPE_STRING)
+	on_fail = add_output_port("Failed", PORT_TYPE_SIGNAL)
+
+/obj/item/circuit_component/arrest_console_arrest/Destroy()
+	targets = null
+	new_status = null
+	new_status_set = null
+	on_fail = null
+	return ..()
+
+/obj/item/circuit_component/arrest_console_arrest/input_received(datum/port/input/port)
+	. = ..()
+	if(.)
+		return
+
+	if(!attached_console || !attached_console.authenticated)
+		on_fail.set_output(COMPONENT_SIGNAL)
+		return
+
+	var/status_to_set = new_status.input_value
+	if(!status_to_set || !(status_to_set in options))
+		status_to_set = current_option
+
+	new_status_set.set_output(status_to_set)
+	var/list/target_table = targets.input_value
+	if(!target_table)
+		on_fail.set_output(COMPONENT_SIGNAL)
+		return
+
+	var/successful_set = 0
+	var/list/names_of_entries = list()
+	for(var/list/target in target_table)
+		var/datum/data/record/sec_record = target["security_record"]
+		if(!sec_record)
+			continue
+
+		successful_set++
+		sec_record.fields["criminal"] = status_to_set
+		names_of_entries += target["name"]
+
+	if(successful_set > 0)
+		investigate_log("[names_of_entries.Join(", ")] have been set to [status_to_set] by [parent.get_creator()].", INVESTIGATE_RECORDS)
+		if(successful_set > COMP_SECURITY_ARREST_AMOUNT_TO_FLAG)
+			message_admins("[successful_set] security entries have been set to [status_to_set] by [parent.get_creator_admin()]. [ADMIN_COORDJMP(src)]")
+		for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
+			human.sec_hud_set_security_status()
 
 /obj/machinery/computer/secure_data/syndie
 	icon_keyboard = "syndie_key"
@@ -177,8 +351,6 @@
 						<tr><td>Physical Status:</td><td>&nbsp;[active1.fields["p_stat"]]&nbsp;</td></tr>
 						<tr><td>Mental Status:</td><td>&nbsp;[active1.fields["m_stat"]]&nbsp;</td></tr>
 						</table></td>
-						<tr><td>General Records:</td><td><A href='?src=[REF(src)];choice=View Past General'>View&nbsp;</A></td></tr> <!--Skyrat change-->
-						</table></td>
 						<td><table><td align = center><a href='?src=[REF(src)];choice=Edit Field;field=show_photo_front'><img src=photo_front height=80 width=80 border=4></a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=print_photo_front'>Print photo</a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=upd_photo_front'>Update front photo</a></td>
@@ -188,7 +360,7 @@
 						</td></tr></table></td></tr></table>"}
 					else
 						dat += "<br>General Record Lost!<br>"
-					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2))) //NON-MODULE CHANGE LINE 194
+					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2))) // NON-MODULE CHANGE LINE 194
 						dat += "<font size='4'><b>Security Data</b></font>"
 						dat += "<br>Security Records: <A href='?src=[REF(src)];choice=View Past Security'>View</A>"
 						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields["criminal"]]</A>"
@@ -280,7 +452,7 @@ What a mess.*/
 	if(usr.contents.Find(src) || (in_range(src, usr) && isturf(loc)) || issilicon(usr) || isAdminGhostAI(usr))
 		usr.set_machine(src)
 		switch(href_list["choice"])
-			//NON-MODULE CHANGE:
+			// NON-MODULE CHANGE:
 			if("View Past Security")
 				if(istype(active2, /datum/data/record))
 					temp = "<h5>Security Records:</h5>"
@@ -295,7 +467,7 @@ What a mess.*/
 					temp += "<ul>"
 					temp += "<li>[active1.fields["past_records"]]</li>"
 					temp += "</ul>"
-			//NON-MODULE CHANGE END
+			// NON-MODULE CHANGE END
 // SORTING!
 			if("Sorting")
 				// Reverse the order if clicked twice
@@ -401,14 +573,14 @@ What a mess.*/
 						P.info += text("Name: [] ID: []<BR>\nGender: []<BR>\nAge: []<BR>", active1.fields["name"], active1.fields["id"], active1.fields["gender"], active1.fields["age"])
 						P.info += "\nSpecies: [active1.fields["species"]]<BR>"
 						P.info += text("\nFingerprint: []<BR>\nPhysical Status: []<BR>\nMental Status: []<BR>", active1.fields["fingerprint"], active1.fields["p_stat"], active1.fields["m_stat"])
-						if(!(active1.fields["past_records"] == "")) //NON-MODULE CHANGE
-							P.info += "\nGeneral Records:\n[active1.fields["past_records"]]\n" //NON-MODULE CHANGE
+						if(!(active1.fields["past_records"] == "")) // NON-MODULE CHANGE
+							P.info += "\nGeneral Records:\n[active1.fields["past_records"]]\n" // NON-MODULE CHANGE
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
 					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
 						P.info += text("<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\nCriminal Status: []", active2.fields["criminal"])
-						if(!(active2.fields["past_records"] == "")) //NON-MODULE CHANGE
-							P.info += "\nSecurity Records:\n[active2.fields["past_records"]]\n" //NON-MODULE CHANGE
+						if(!(active2.fields["past_records"] == "")) // NON-MODULE CHANGE
+							P.info += "\nSecurity Records:\n[active2.fields["past_records"]]\n" // NON-MODULE CHANGE
 						P.info += "<BR>\n<BR>\nCrimes:<BR>\n"
 						P.info +={"<table style="text-align:center;" border="1" cellspacing="0" width="100%">
 <tr>

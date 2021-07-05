@@ -1,13 +1,6 @@
 /obj/item/clothing/gloves/color
 	dying_key = DYE_REGISTRY_GLOVES
 
-/obj/item/clothing/gloves/color/chief_engineer
-	desc = "These gloves provide protection against electric shock. They are so thin you can barely feel them."
-	name = "advanced insulated gloves"
-	icon_state = "ce_insuls"
-	inhand_icon_state = "lgloves"
-	siemens_coefficient = 0
-
 /obj/item/clothing/gloves/color/yellow
 	desc = "These gloves provide protection against electric shock. The thickness of the rubber makes your fingers seem bigger."
 	name = "insulated gloves"

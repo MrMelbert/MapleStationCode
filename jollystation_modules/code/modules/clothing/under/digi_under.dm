@@ -417,3 +417,6 @@
 
 /obj/item/clothing/suit/hooded/cultrobes/void
 	should_not_squish = TRUE
+
+/obj/item/clothing/suit/hooded/explorer
+	should_not_squish = TRUE

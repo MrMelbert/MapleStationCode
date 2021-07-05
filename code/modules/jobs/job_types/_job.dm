@@ -154,7 +154,7 @@
 	if(!H)
 		return FALSE
 	if(CONFIG_GET(flag/enforce_human_authority) && (title in GLOB.command_positions))
-		if(H.dna.species.id != "human")
+		if(H.dna.species.id != SPECIES_HUMAN)
 			H.set_species(/datum/species/human)
 			H.apply_pref_name("human", preference_source)
 	if(!visualsOnly)
@@ -167,7 +167,7 @@
 
 	if(outfit_override || outfit)
 		//H.equipOutfit(outfit_override ? outfit_override : outfit, visualsOnly)
-		H.equip_outfit_and_loadout(outfit_override ? outfit_override : outfit, visualsOnly, preference_source?.prefs) /// NON-MODULE CHANGE: LOADOUTS
+		H.equip_outfit_and_loadout(outfit_override ? outfit_override : outfit, visualsOnly, preference_source?.prefs) // NON-MODULE CHANGE: LOADOUTS
 
 	if(!visualsOnly && is_captain)
 		var/is_acting_captain = (title != "Captain")

@@ -650,11 +650,6 @@
 
 #undef MINIMUM_THREAT_FOR_RITUALS
 
-#define LOADOUT_CLASSIC "loadout_classic"
-#define LOADOUT_MJOLNIR "loadout_hammer"
-#define LOADOUT_WIZARMY "loadout_army"
-#define LOADOUT_SOULTAP "loadout_tap"
-
 /obj/item/spellbook
 	name = "spell book"
 	desc = "An unearthly tome that glows with power."

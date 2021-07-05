@@ -156,7 +156,7 @@
 	var/list/compiled_list = list()
 
 	for(var/mob/living/carbon/human/human_to_check as anything in GLOB.human_list)
-		if(fingerprints[md5(human_to_check.dna.uni_identity)])
+		if(fingerprints[md5(human_to_check.dna.unique_identity)])
 			compiled_list |= human_to_check.real_name
 			compiled_list[human_to_check.real_name] = human_to_check
 
@@ -253,13 +253,13 @@
 	return FALSE
 
 /datum/eldritch_knowledge/spell/basic/on_finished_recipe(mob/living/user, list/atoms, loc)
-	/// NON-MODULE CHANGE
+	// NON-MODULE CHANGE
 	var/datum/antagonist/heretic/user_heretic = user.mind.has_antag_datum(/datum/antagonist/heretic)
 	var/datum/advanced_antag_datum/heretic/our_heretic = user_heretic.linked_advanced_datum
 	if(our_heretic && !our_heretic.sacrifices_enabled)
 		to_chat(user, "<span class='cult'>You surrendered the ability to sacrifice!</span>")
 		return FALSE
-	/// NON-MODULE CHANGE END
+	// NON-MODULE CHANGE END
 
 	. = TRUE
 	var/mob/living/carbon/carbon_user = user
@@ -323,5 +323,5 @@
 	gain_text = "Their hand is at your throat, yet you see Them not."
 	cost = 0
 	required_atoms = list(/obj/item/organ/eyes,/obj/item/stack/sheet/animalhide/human,/obj/item/storage/book/bible,/obj/item/pen)
-	result_atoms = list(/obj/item/forbidden_book)
+	result_atoms = list(/obj/item/forbidden_book/ritual)
 	route = "Start"

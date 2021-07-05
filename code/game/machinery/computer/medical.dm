@@ -530,8 +530,8 @@
 						P.info += text("Name: [] ID: []<BR>\nGender: []<BR>\nAge: []<BR>", active1.fields["name"], active1.fields["id"], active1.fields["gender"], active1.fields["age"])
 						P.info += "\nSpecies: [active1.fields["species"]]<BR>"
 						P.info += text("\nFingerprint: []<BR>\nPhysical Status: []<BR>\nMental Status: []<BR>", active1.fields["fingerprint"], active1.fields["p_stat"], active1.fields["m_stat"])
-						if(!(active1.fields["past_records"] == "")) //NON-MODULE CHANGE
-							P.info += "\nGeneral Records:\n[active1.fields["past_records"]]\n" //NON-MODULE CHANGE
+						if(!(active1.fields["past_records"] == "")) // NON-MODULE CHANGE
+							P.info += "\nGeneral Records:\n[active1.fields["past_records"]]\n" // NON-MODULE CHANGE
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
 					if(active2 in GLOB.data_core.medical)

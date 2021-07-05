@@ -23,7 +23,7 @@
 	/// The language we give out. If null, just grabs a random language.
 	var/datum/language/added_language
 
-/datum/quirk/trilingual/post_add()
+/datum/quirk/trilingual/add()
 	var/datum/language_holder/quirk_holder_languages = quirk_holder.get_language_holder()
 	if(!added_language)
 		added_language = pick(GLOB.all_languages - LANGUAGE_QUIRK_RANDOM_BLACKLIST)
@@ -82,13 +82,32 @@
 	name = "Appendicitis Survivor"
 	desc = "You had a run in with appendicitis in the past and no longer have an appendix."
 	value = 2
-	gain_text = "<span class='notice'>You no longerhave an appendix.</span>"
-	lose_text = "<span class='notice'>You miss your appendix.</span>"
+	gain_text = "<span class='notice'>You no longer have an appendix.</span>"
+	lose_text = "<span class='danger'>You miss your appendix?</span>"
 	medical_record_text = "Patient had appendicitis in the past and has had their appendix surgically removed as a consequence."
 
 /datum/quirk/no_appendix/post_add()
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
 	var/obj/item/organ/appendix/dumb_appendix = carbon_quirk_holder.getorganslot(ORGAN_SLOT_APPENDIX)
 	dumb_appendix.Remove(quirk_holder, TRUE)
+
+// Less vulnerable to pain (lower pain modifier)
+/datum/quirk/pain_resistance
+	name = "Hypoalgesia"
+	desc = "You're more resistant to pain - Your pain naturally decreases faster and you recieve less overall."
+	value = 8
+	gain_text = "<span class='notice'>You feel duller.</span>"
+	lose_text = "<span class='danger'>You feel sharper.</span>"
+	medical_record_text = "Patient has Hypoalgesia, and is less susceptible to pain stimuli than most."
+
+/datum/quirk/pain_resistance/add()
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 0.9)
+
+/datum/quirk/pain_resistance/remove()
+	var/mob/living/carbon/carbon_holder = quirk_holder
+	if(istype(carbon_holder))
+		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
 
 #undef LANGUAGE_QUIRK_RANDOM_BLACKLIST

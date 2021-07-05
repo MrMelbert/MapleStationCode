@@ -1,10 +1,10 @@
 /datum/job/cook
 	title = "Cook"
-	department_head = list("Head of Personnel") 
+	department_head = list("Head of Personnel")
 	faction = "Station"
 	total_positions = 2
 	spawn_positions = 1
-	supervisors = "the head of personnel" 
+	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 	var/cooks = 0 //Counts cooks amount
 	/// List of areas that are counted as the kitchen for the purposes of CQC. Defaults to just the kitchen. Mapping configs can and should override this.
@@ -55,7 +55,7 @@
 
 	mail_goodies = list(
 		/obj/item/storage/box/ingredients/random = 80,
-		/datum/reagent/consumable/caramel =  20,
+		/obj/item/reagent_containers/glass/bottle/caramel = 20,
 		/obj/item/reagent_containers/food/condiment/flour = 20,
 		/obj/item/reagent_containers/food/condiment/rice = 20,
 		/obj/item/reagent_containers/food/condiment/enzyme = 15,

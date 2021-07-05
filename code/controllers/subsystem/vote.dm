@@ -71,14 +71,14 @@ SUBSYSTEM_DEF(vote)
 						preferred_map = global.config.defaultmap.map_name
 					choices[preferred_map] += 1
 					greatest_votes = max(greatest_votes, choices[preferred_map])
-			/// NON-MODULE CHANGE: AUTOTRANSFER
+			// NON-MODULE CHANGE: AUTOTRANSFER
 			else if(mode == "transfer")
 				/// multipler applied to non-voters. non-voters count for 1/3rd of a vote, then past two votes they count for 1/4th, 1/5th, and so on.
 				var/non_voters_multiplier = clamp(SScrewtransfer.transfer_votes_attempted + 1, 3, 50)
 				choices["Continue Shift"] += round(non_voters.len / non_voters_multiplier)
 				if(choices["Continue Shift"] >= greatest_votes)
 					greatest_votes = choices["Continue Shift"]
-			/// NON-MODULE CHANGE END
+			// NON-MODULE CHANGE END
 	. = list()
 	if(greatest_votes)
 		for(var/option in choices)
@@ -126,7 +126,7 @@ SUBSYSTEM_DEF(vote)
 			if("map")
 				SSmapping.changemap(global.config.maplist[.])
 				SSmapping.map_voted = TRUE
-			/// NON-MODULE CHANGE: AUTOTRANSFER
+			// NON-MODULE CHANGE: AUTOTRANSFER
 			if("transfer")
 				if(. == "Initiate Crew Transfer")
 					SScrewtransfer.initiate_crew_transfer()
@@ -169,7 +169,7 @@ SUBSYSTEM_DEF(vote)
 		return FALSE
 	var/lower_admin = FALSE
 	var/ckey = ckey(initiator_key)
-	if(GLOB.admin_datums[ckey] || forced) //NON-MODULE CHANGE: AUTOTRANSFER
+	if(GLOB.admin_datums[ckey] || forced) // NON-MODULE CHANGE: AUTOTRANSFER
 		lower_admin = TRUE
 
 	if(!mode)
@@ -209,7 +209,7 @@ SUBSYSTEM_DEF(vote)
 					if(!option || mode || !usr.client)
 						break
 					choices.Add(option)
-			/// NON-MODULE CHANGE: AUTOTRANSFER
+			// NON-MODULE CHANGE: AUTOTRANSFER
 			if("transfer")
 				var/mob/dead/observer/caller = usr
 				//Observers/ghosts don't get to decide when a shuttle-call vote happens
@@ -219,7 +219,7 @@ SUBSYSTEM_DEF(vote)
 
 				SScrewtransfer.transfer_votes_attempted++
 				choices.Add("Initiate Crew Transfer", "Continue Shift")
-			/// NON-MODULE CHANGE END
+			// NON-MODULE CHANGE END
 			else
 				return FALSE
 		mode = vote_type

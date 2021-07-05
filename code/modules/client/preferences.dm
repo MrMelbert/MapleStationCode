@@ -5,7 +5,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//doohickeys for savefiles
 	var/path
 	var/default_slot = 1 //Holder so it doesn't default to slot 1, rather the last one used
-	var/max_save_slots = 6 //NON-MODULE CHANGE
+	var/max_save_slots = 6 // NON-MODULE CHANGE
 
 	//non-preference stuff
 	var/muted = 0
@@ -189,13 +189,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	update_preview_icon()
 	var/list/dat = list("<center>")
 
-//NON-MODULE CHANGE:
+// NON-MODULE CHANGE:
 	dat += "<a href='?_src_=prefs;preference=tab;tab=0' [current_tab == 0 ? "class='linkOn'" : ""]>Character Settings</a>"
 	dat += "<a href='?_src_=prefs;preference=tab;tab=1' [current_tab == 1 ? "class='linkOn'" : ""]>Character Background</a>"
 	dat += "<a href='?_src_=prefs;preference=tab;tab=2' [current_tab == 2 ? "class='linkOn'" : ""]>Game Preferences</a>"
 	dat += "<a href='?_src_=prefs;preference=tab;tab=3' [current_tab == 3 ? "class='linkOn'" : ""]>OOC Preferences</a>"
 	dat += "<a href='?_src_=prefs;preference=tab;tab=4' [current_tab == 4 ? "class='linkOn'" : ""]>Custom Keybindings</a>"
-//NON-MODULE CHANGE END
+// NON-MODULE CHANGE END
 
 	if(!path)
 		dat += "<div class='notice'>Please create an account to save your preferences</div>"
@@ -547,7 +547,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			//JollyStation Addition Start
+			// NON-MODULE Addition Start
 			if(pref_species.mutant_bodyparts["skrell_headtentacles"])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
@@ -560,7 +560,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if(mutant_category >= MAX_MUTANT_ROWS)
 					dat += "</td>"
 					mutant_category = 0
-			//JollyStation Addition End
+			// NON-MODULE Addition End
 
 			//Adds a thing to select which phobia because I can't be assed to put that in the quirks window
 			if("Phobia" in all_quirks)
@@ -587,7 +587,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "</td>"
 				mutant_category = 0
 			dat += "</tr></table>"
-		//NON-MODULE CHANGES:
+		// NON-MODULE CHANGES:
 		if (1) // character details
 			if(path)
 				var/savefile/S = new /savefile(path)
@@ -633,7 +633,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "[TextPreview(exploitable_info, 125)]"
 			dat += "<BR><BR>"
 			dat += "</td></tr></table>"
-			//NON-MODULE CHANGES END
+			// NON-MODULE CHANGES END
 		if (2) // Game Preferences, NON-MODULE CHANGES
 			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
 			dat += "<h2>General Settings</h2>"
@@ -1365,7 +1365,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(new_age)
 						age = max(min( round(text2num(new_age)), AGE_MAX),AGE_MIN)
 
-				//NON-MODULE CHANGES:
+				// NON-MODULE CHANGES:
 
 				if("enter_loadout_manager")
 					if(parent.open_loadout_ui)
@@ -1407,7 +1407,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					var/expl_info = input(usr, "Set your exploitable information, this rarely will be showed to antagonists", "Exploitable Info", exploitable_info) as message|null
 					if(expl_info)
 						exploitable_info = strip_html_simple(expl_info, MAX_FLAVOR_LEN)
-				//NON-MODULE CHANGES END
+				// NON-MODULE CHANGES END
 
 				if("hair")
 					var/new_hair = input(user, "Choose your character's hair colour:", "Character Preference","#"+hair_color) as color|null
@@ -1576,13 +1576,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(new_moth_markings)
 						features["moth_markings"] = new_moth_markings
 
-				//JollyStation Addition Start
+				// NON-MODULE Addition Start
 				if("skrell_headtentacles")
 					var/new_skrell_headtentacles
 					new_skrell_headtentacles = input(user, "Choose your character's style of head tentacles:", "Character Preference") as null|anything in GLOB.skrellheadtentacles_list
 					if(new_skrell_headtentacles)
 						features["skrell_headtentacles"] = new_skrell_headtentacles
-				//JollyStation Addition End
+				// NON-MODULE Addition End
 
 				if("s_tone")
 					var/new_s_tone = input(user, "Choose your character's skin-tone:", "Character Preference")  as null|anything in GLOB.skin_tones
@@ -1984,13 +1984,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					hearted_until = null
 					to_chat(user, span_notice("OOC Commendation Heart disabled"))
 					save_preferences()
-
+				//NON-MODULE START
 				if("hear_speech_sounds")
 					hear_speech_sounds = !hear_speech_sounds
 
 				if("hear_radio_sounds")
 					hear_radio_sounds = !hear_radio_sounds
-
+				//NON-MODULE END
 	ShowChoices(user)
 	return 1
 
@@ -2015,7 +2015,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			hardcore_random_setup(character, antagonist, is_latejoiner)
 
 	if(roundstart_checks)
-		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == "human"))
+		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == SPECIES_HUMAN))
 			var/firstspace = findtext(real_name, " ")
 			var/name_length = length(real_name)
 			if(!firstspace) //we need a surname

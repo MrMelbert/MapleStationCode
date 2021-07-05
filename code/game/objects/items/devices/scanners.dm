@@ -18,6 +18,8 @@ GENE SCANNER
 #define SCANNER_CONDENSED 0
 #define SCANNER_VERBOSE 1
 
+#define COMSIG_MOB_HEALTHSCANNED "healthscanned" // NON-MODULE - signal sent after a health scan
+
 /obj/item/t_scanner
 	name = "\improper T-ray scanner"
 	desc = "A terahertz-ray emitter and scanner used to detect underfloor objects such as cables and pipes."
@@ -422,6 +424,7 @@ GENE SCANNER
 			render_list += "<span class='notice ml-1'>Detected cybernetic modifications:</span>\n"
 			render_list += "<span class='notice ml-2'>[cyberimp_detect]</span>\n"
 
+	SEND_SIGNAL(M, COMSIG_MOB_HEALTHSCANNED, user, render_list) // NON-MODULE CHANGE: Send a signal to add in extra health analyzer lines
 	SEND_SIGNAL(M, COMSIG_NANITE_SCAN, user, FALSE)
 	to_chat(user, jointext(render_list, ""), trailing_newline = FALSE) // we handled the last <br> so we don't need handholding
 

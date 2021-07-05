@@ -48,7 +48,7 @@
 			continue
 		if(istype(atom_in_range,/mob/living))
 			var/mob/living/living_in_range = atom_in_range
-			if(living_in_range.stat == CONSCIOUS || living_in_range == user) // we only accept corpses, no living beings allowed. //NON-MODULE CHANGE
+			if(living_in_range.stat == CONSCIOUS || living_in_range == user) // we only accept corpses, no living beings allowed. // NON-MODULE CHANGE
 				continue
 		atoms_in_range += atom_in_range
 	for(var/X in knowledge)
