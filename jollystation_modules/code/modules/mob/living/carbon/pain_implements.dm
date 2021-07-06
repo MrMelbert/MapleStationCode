@@ -6,6 +6,8 @@
 #define FROZEN_ITEM_PAIN_MODIFIER 0.5
 #define FROZEN_ITEM_TEMPERATURE_CHANGE -5
 
+#define DOAFTER_SOURCE_BLANKET "doafter_blanket"
+
 /obj/item/reagent_containers/food/drinks/beer/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/temperature_pack, pain_heal_rate = 0.3, pain_modifier_on_limb = 0.9, temperature_change = -2)
@@ -24,7 +26,7 @@
 	name = "temperature pack"
 	desc = "A temperature pack, to soothe pain."
 	w_class = WEIGHT_CLASS_SMALL
-	icon = 'icons/obj/bureaucracy.dmi'
+	icon = 'jollystation_modules/icons/obj/pain_items.dmi'
 	icon_state = "stamp-ok"
 	inhand_icon_state = "stamp"
 	throwforce = 0
@@ -160,20 +162,18 @@
 	amount_per_transfer_from_this = 15
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 7.5, /datum/reagent/medicine/painkiller/aspirin_para_coffee = 5, /datum/reagent/medicine/morphine = 2.5)
 
-#define DOAFTER_SOURCE_BLANKET "doafter_blanket"
-
 /obj/item/shock_blanket
 	name = "shock blanket"
 	desc = "A metallic looking plastic blanket specifically designed to well insulate anyone seeking comfort underneath."
-	icon = 'icons/obj/bedsheets.dmi'
-	lefthand_file = 'icons/mob/inhands/misc/bedsheet_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/bedsheet_righthand.dmi'
-	icon_state = "sheetwhite"
-	inhand_icon_state = "sheetwhite"
-	layer = MOB_LAYER
+	icon = 'jollystation_modules/icons/obj/pain_items.dmi'
+	worn_icon = 'jollystation_modules/icons/mob/pain_items.dmi'
+	lefthand_file = 'jollystation_modules/icons/mob/inhands/pain_items_lhand.dmi'
+	righthand_file = 'jollystation_modules/icons/mob/inhands/pain_items_rhand.dmi'
+	icon_state = "shockblanket"
+	worn_icon_state = "shockblanket"
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_OCLOTHING
-	body_parts_covered = CHEST|GROIN|LEGS|ARMS
+	body_parts_covered = CHEST
 	resistance_flags = FIRE_PROOF
 	heat_protection = CHEST|GROIN|LEGS|ARMS
 	cold_protection = CHEST|GROIN|LEGS|ARMS
@@ -189,13 +189,36 @@
 
 /obj/item/shock_blanket/Initialize(mapload)
 	. = ..()
-	if(prob(1))
-		name = "safety blanket"
+	if(prob(5))
+		name = pick("space blanket", "safety blanket")
+
 	AddElement(/datum/element/bed_tuckable, 0, 0, 0)
 
 /obj/item/shock_blanket/examine(mob/user)
 	. = ..()
 	. += span_notice("To use: Apply to a patient experiencing shock or loss of body temperature. Keep patient still and lying down for maximum effect.")
+
+/obj/item/shock_blanket/pickup(mob/user)
+	. = ..()
+	icon_state = initial(icon_state)
+	layer = initial(layer)
+
+/obj/item/shock_blanket/dropped(mob/user)
+	. = ..()
+	if(locate(/obj/structure/bed) in loc)
+		icon_state = "[initial(icon_state)]_dropped"
+		layer = MOB_LAYER
+
+/obj/item/shock_blanket/attack_self(mob/user, modifiers)
+	if(!user.dropItemToGround(src))
+		return
+
+	var/obj/structure/bed/bed_below = locate(/obj/structure/bed) in loc
+	to_chat(user, span_notice("You lay out [src] on [bed_below ? "[bed_below]" : "the floor"]."))
+	icon_state = "[initial(icon_state)]_dropped"
+	layer = MOB_LAYER
+
+	return ..()
 
 /obj/item/shock_blanket/pre_attack(atom/target, mob/living/user, params)
 	. = ..()
@@ -326,8 +349,6 @@
 	. = ..()
 	name = "emergency [name]"
 
-#undef DOAFTER_SOURCE_BLANKET
-
 /obj/item/storage/firstaid/emergency/ComponentInitialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
@@ -363,3 +384,5 @@
 #undef FROZEN_ITEM_PAIN_RATE
 #undef FROZEN_ITEM_PAIN_MODIFIER
 #undef FROZEN_ITEM_TEMPERATURE_CHANGE
+
+#undef DOAFTER_SOURCE_BLANKET
