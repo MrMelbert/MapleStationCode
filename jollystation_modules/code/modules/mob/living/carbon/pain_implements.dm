@@ -2,22 +2,84 @@
 // Temperature pack stuff - things you can press to people to help reduce pain.
 
 /// Heal rate and modifier for generic items that are frozen.
-#define FROZEN_ITEM_HEAL_RATE 1
-#define FROZEN_ITEM_MODIFIER 0.5
+#define FROZEN_ITEM_PAIN_RATE 1
+#define FROZEN_ITEM_PAIN_MODIFIER 0.5
+#define FROZEN_ITEM_TEMPERATURE_CHANGE -5
 
 /obj/item/reagent_containers/food/drinks/beer/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/temperature_pack, pain_heal_rate = 0.3, pain_modifier_on_limb = 0.9)
+	AddElement(/datum/element/temperature_pack, pain_heal_rate = 0.3, pain_modifier_on_limb = 0.9, temperature_change = -2)
 
 /obj/item/make_frozen_visual()
 	. = ..()
 	if(obj_flags & FROZEN)
-		AddElement(/datum/element/temperature_pack, pain_heal_rate = FROZEN_ITEM_HEAL_RATE, pain_modifier_on_limb = FROZEN_ITEM_MODIFIER)
+		AddElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
 
 /obj/item/make_unfrozen()
 	. = ..()
 	if(!(obj_flags & FROZEN))
-		RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_HEAL_RATE, FROZEN_ITEM_MODIFIER)
+		RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
+
+/obj/item/temperature_pack
+	name = "temperature pack"
+	desc = "A temperature pack, to soothe pain."
+	w_class = WEIGHT_CLASS_SMALL
+	icon = 'icons/obj/bureaucracy.dmi'
+	icon_state = "stamp-ok"
+	inhand_icon_state = "stamp"
+	throwforce = 0
+	throw_speed = 2
+	throw_range = 5
+	attack_verb_continuous = list("pads")
+	attack_verb_simple = list("pads")
+	var/used = FALSE
+	var/active = FALSE
+	var/pain_heal_amount = 0
+	var/pain_limb_modifier = 1
+	var/temperature_change = 0
+
+/obj/item/temperature_pack/attack_self(mob/user, modifiers)
+	. = ..()
+	if(used)
+		used = !used
+		activate_pack(user)
+		return TRUE
+
+/obj/item/temperature_pack/examine(mob/user)
+	. = ..()
+	if(used)
+		if(active)
+			. += span_notice("It's used, but emanating [temperature_change > 0 ? "heat" : "a chill"].")
+		else
+			. += span_notice("It's used up and empty.")
+	else
+		. += span_notice("Use it in hand to crack it, activating the pack and [temperature_change > 0 ? "heating it up" : "cooling it down"].")
+
+/obj/item/temperature_pack/proc/activate_pack(mob/user)
+	addtimer(CALLBACK(src, .proc/deactivate_pack), 5 MINUTES)
+	to_chat(user, span_notice("You crack [src], [temperature_change > 0 ? "heating it up" : "cooling it down"]."))
+	AddElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
+	active = TRUE
+
+/obj/item/temperature_pack/proc/deactivate_pack()
+	SEND_SIGNAL(src, COMSIG_TEMPERATURE_PACK_EXPIRED)
+	visible_message(span_notice("[src] fizzles as the last of its [temperature_change > 0 ? "heat" : "chill"] runs out."))
+	RemoveElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
+	active = FALSE
+
+/obj/item/temperature_pack/heat
+	name = "heat pack"
+	desc = "A heat pack. Crack it on and apply it to an aching limb to reduce joint stress and moderate pain."
+	temperature_change = 5
+	pain_heal_amount = 1.2
+	pain_limb_modifier = 0.5
+
+/obj/item/temperature_pack/cool
+	name = "cool pack"
+	desc = "A cool pack. Crack it on and apply it to a hurt limb to abate sharp pain."
+	temperature_change = -5
+	pain_heal_amount = 2
+	pain_limb_modifier = 0.75
 
 /obj/item/reagent_containers/pill/asprin
 	name = "asprin pill"
@@ -223,7 +285,7 @@
 		START_PROCESSING(SSobj, src)
 
 /*
- * Disable the temperataure protection.
+ * Disable the temperature protection.
  */
 /obj/item/shock_blanket/proc/disable_protection(mob/living/source)
 	SIGNAL_HANDLER
@@ -298,5 +360,6 @@
 /obj/machinery/vending/wallmed
 	added_products = list(/obj/item/shock_blanket/emergency = 2)
 
-#undef FROZEN_ITEM_HEAL_RATE
-#undef FROZEN_ITEM_MODIFIER
+#undef FROZEN_ITEM_PAIN_RATE
+#undef FROZEN_ITEM_PAIN_MODIFIER
+#undef FROZEN_ITEM_TEMPERATURE_CHANGE

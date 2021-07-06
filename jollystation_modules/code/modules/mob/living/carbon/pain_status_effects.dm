@@ -66,6 +66,103 @@
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.physiology.bleed_mod /= 0.75
 
+/// Sharp pain. Used for a lot of pain at once, as a little of it is healed after the effect runs out.
+/datum/status_effect/sharp_pain
+	id = "sharp_pain"
+	status_type = STATUS_EFFECT_MULTIPLE
+	on_remove_on_mob_delete = TRUE
+	alert_type = null
+	/// Amount of pain being given
+	var/pain_amount = 0
+	/// Type of pain being given
+	var/pain_type = BRUTE
+	/// The amount of pain we had before recieving the sharp pain
+	var/initial_pain_amount = 0
+	/// The zone we're afflicting
+	var/targeted_zone = BODY_ZONE_CHEST
+
+/datum/status_effect/sharp_pain/on_creation(targeted_zone, pain_amount, pain_type, duration)
+	src.targeted_zone = targeted_zone
+	src.pain_amount = pain_amount
+	if(pain_type)
+		src.pain_type = pain_type
+	src.duration = duration
+
+/datum/status_effect/sharp_pain/on_apply()
+	if(!ishuman(owner))
+		return FALSE
+
+	var/mob/living/carbon/human/human_owner = owner
+	if(!human_owner.pain_controller)
+		return FALSE
+
+	if(!targeted_zone || pain_amount == 0 || duration <= 0)
+		return FALSE
+
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	if(!afflicted_bodypart)
+		return FALSE
+
+	initial_pain_amount = afflicted_bodypart.pain
+	human_owner.pain_controller.adjust_bodypart_pain(targeted_zone, pain_amount, pain_type)
+	return TRUE
+
+/datum/status_effect/sharp_pain/on_remove()
+	. = ..()
+	var/mob/living/carbon/human/human_owner = owner
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	if(!afflicted_bodypart)
+		return
+
+	var/healed_amount = pain_amount / -3
+	if((afflicted_bodypart.pain + healed_amount) < initial_pain_amount)
+		healed_amount = initial_pain_amount - afflicted_bodypart.pain
+
+	human_owner.pain_controller.adjust_bodypart_pain(targeted_zone, healed_amount, pain_type)
+
+/// Adjusting a limb's minimum bodypart pain for a time.
+/datum/status_effect/minimum_bodypart_pain
+	id = "min_bodypart_pain"
+	status_type = STATUS_EFFECT_MULTIPLE
+	on_remove_on_mob_delete = TRUE
+	alert_type = null
+	/// The min pain we're setting the bodypart to
+	var/min_amount = 0
+	/// The zone we're afflicting
+	var/targeted_zone = BODY_ZONE_CHEST
+
+/datum/status_effect/minimum_bodypart_pain/on_creation(targeted_zone, min_amount, duration)
+	src.targeted_zone = targeted_zone
+	src.min_amount = min_amount
+	src.duration = duration
+
+/datum/status_effect/minimum_bodypart_pain/on_apply()
+	if(!ishuman(owner))
+		return FALSE
+
+	var/mob/living/carbon/human/human_owner = owner
+	if(!human_owner.pain_controller)
+		return FALSE
+
+	if(!targeted_zone || min_amount == 0 || duration <= 0)
+		return FALSE
+
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	if(!afflicted_bodypart)
+		return FALSE
+
+	human_owner.pain_controller.adjust_bodypart_min_pain(targeted_zone, min_amount)
+	return TRUE
+
+/datum/status_effect/minimum_bodypart_pain/on_remove()
+	. = ..()
+	var/mob/living/carbon/human/human_owner = owner
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	if(!afflicted_bodypart)
+		return
+
+	human_owner.pain_controller.adjust_bodypart_min_pain(targeted_zone, -min_amount)
+
 /// Status effect for pressing a hot or cold item onto a bodypart, to soothe pain.
 /datum/status_effect/temperature_pack
 	id = "temp_pack"
@@ -85,13 +182,17 @@
 	var/pain_heal_amount = 0
 	/// The pain modifier placed on the limb.
 	var/pain_modifier = 1
+	/// The change in temperature while applied.
+	var/temperature_change = 0
 
-/datum/status_effect/temperature_pack/on_creation(mob/living/new_owner, mob/living/holder, obj/item/pressed_item, targeted_zone = BODY_ZONE_CHEST, pain_heal_amount = 0, pain_modifier = 1)
+/datum/status_effect/temperature_pack/on_creation(mob/living/new_owner, mob/living/holder, obj/item/pressed_item, targeted_zone = BODY_ZONE_CHEST, pain_heal_amount = 0, pain_modifier = 1, temperature_change = null)
 	src.holder = holder
 	src.pressed_item = pressed_item
 	src.targeted_zone = targeted_zone
 	src.pain_heal_amount = pain_heal_amount
 	src.pain_modifier = pain_modifier
+	if(isnum(temperature_change))
+		src.temperature_change = temperature_change
 	return ..()
 
 /datum/status_effect/temperature_pack/on_apply()
@@ -126,7 +227,7 @@
 
 	held_bodypart.bodypart_pain_modifier *= pain_modifier
 	pressed_item.AddComponent(/datum/component/make_item_slow)
-	RegisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), .proc/stop_effects)
+	RegisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), .proc/stop_effects)
 	if(holder != owner)
 		RegisterSignal(holder, COMSIG_MOVABLE_MOVED, .proc/check_adjacency)
 
@@ -140,6 +241,8 @@
 		stop_effects(silent = FALSE)
 		return
 
+	if(temperature_change)
+		owner.adjust_bodytemperature(temperature_change, human_owner.get_body_temp_cold_damage_limit() + 5, human_owner.get_body_temp_heat_damage_limit() - 5)
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
 	if(held_bodypart && prob(66))
 		human_owner.cause_pain(targeted_zone, -pain_heal_amount)
@@ -164,13 +267,14 @@
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
 	held_bodypart.bodypart_pain_modifier /= pain_modifier
 	qdel(pressed_item.GetComponent(/datum/component/make_item_slow))
-	UnregisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED))
+	UnregisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
 	UnregisterSignal(holder, COMSIG_MOVABLE_MOVED)
 	pressed_item = null
 	holder = null
 
 /datum/status_effect/temperature_pack/cold
 	id = "cold_pack"
+	temperature_change = -2
 
 /datum/status_effect/temperature_pack/cold/on_apply()
 	. = ..()
@@ -192,6 +296,7 @@
 
 /datum/status_effect/temperature_pack/heat
 	id = "heat_pack"
+	temperature_change = 2
 
 /datum/status_effect/temperature_pack/heat/on_apply()
 	. = ..()

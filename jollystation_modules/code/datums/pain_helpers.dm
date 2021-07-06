@@ -16,8 +16,18 @@
 /*
  * Helper carbon proc to cause [amount] pain of [type] damage type to [target_zone].
  */
-/mob/living/carbon/proc/cause_pain(target_zone, amount, type)
+/mob/living/carbon/proc/cause_pain(target_zone, amount = 0, type = BRUTE)
 	pain_controller?.adjust_bodypart_pain(target_zone, amount, type)
+
+/*
+ * Cause [amount] of [type] sharp pain [target_zone].
+ * Sharp pain is for sudden spikes of pain that go away in [duration] time.
+ */
+/mob/living/carbon/proc/sharp_pain(target_zones, amount = 0, type = BRUTE, duration = 2 MINUTES)
+	if(!islist(target_zones))
+		target_zones = list(target_zones)
+	for(var/zone in target_zones)
+		apply_status_effect(/datum/status_effect/sharp_pain, zone, amount, type, duration)
 
 /*
  * Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.
@@ -28,17 +38,15 @@
 /*
  * Helper carbon proc to set [zone] min pain to [amount] that expires after [time].
  */
-/mob/living/carbon/proc/apply_min_pain(zone, amount = 0, time)
-	pain_controller?.adjust_bodypart_min_pain(zone, amount)
-	if(!isnull(time))
-		addtimer(CALLBACK(src, .proc/apply_min_pain, zone, -amount), time)
+/mob/living/carbon/proc/apply_min_pain(zone, amount = 0, time = 0)
+	apply_status_effect(/datum/status_effect/minimum_bodypart_pain, zone, amount, time)
 
 /*
  * Helper carbon proc to set [id] pain mod with amount [amount] that expires after [time].
  */
-/mob/living/carbon/proc/set_pain_mod(id, amount = 0, time)
+/mob/living/carbon/proc/set_pain_mod(id, amount = 0, time = 0)
 	pain_controller?.set_pain_modifier(id, amount)
-	if(!isnull(time))
+	if(time > 0)
 		addtimer(CALLBACK(src, .proc/unset_pain_mod, id), time)
 
 /*
@@ -58,7 +66,7 @@
 /*
  * Helper carbon proc to clear [id] pain mod.
  */
-/mob/living/carbon/proc/unset_pain_mod(id, amount)
+/mob/living/carbon/proc/unset_pain_mod(id)
 	pain_controller?.unset_pain_modifier(id)
 
 /datum/species/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)

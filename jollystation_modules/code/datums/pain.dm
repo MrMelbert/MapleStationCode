@@ -683,6 +683,8 @@
 		adjust_bodypart_pain(zone, -500)
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 	parent.remove_status_effect(STATUS_EFFECT_LIMP_PAIN)
+	parent.remove_status_effect(/datum/status_effect/sharp_pain)
+	parent.remove_status_effect(/datum/status_effect/minimum_bodypart_pain)
 	for(var/mod in pain_mods)
 		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES)
 			continue

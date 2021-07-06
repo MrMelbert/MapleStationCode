@@ -5,10 +5,12 @@
 /// Low blood pressure
 #define STATUS_EFFECT_LOWBLOODPRESSURE /datum/status_effect/low_blood_pressure
 
-/// Sent when a carbon gains pain. (obj/item/bodypart/affected_bodypart, amount, type)
+/// Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
-/// Sent when a carbon loses pain. (obj/item/bodypart/affected_bodypart, amount, type)
+/// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
+/// Sent when a temperature pack runs out of juice.
+#define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 
 /// Various lists of body zones affected by pain.
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)

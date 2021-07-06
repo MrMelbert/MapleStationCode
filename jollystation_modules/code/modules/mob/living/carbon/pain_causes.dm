@@ -37,10 +37,10 @@
 		return
 	switch(A.stage)
 		if(4)
-			A.affected_mob.cause_pain(BODY_ZONE_HEAD, 3 * power)
+			A.affected_mob.sharp_pain(BODY_ZONE_HEAD, 3 * power)
 			A.affected_mob.flash_pain_overlay(1)
 		if(5)
-			A.affected_mob.cause_pain(BODY_ZONE_HEAD, 5 * power)
+			A.affected_mob.sharp_pain(BODY_ZONE_HEAD, 5 * power)
 			A.affected_mob.flash_pain_overlay(2)
 
 /datum/symptom/flesh_eating/Activate(datum/disease/advance/A)
@@ -74,7 +74,7 @@
 		return
 
 	var/pain = . / max(bodyparts.len, 2)
-	cause_pain(BODY_ZONES_ALL, pain, BURN)
+	sharp_pain(BODY_ZONES_ALL, pain, BURN)
 	set_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
 
 // Fleshmend of course heals pain.
@@ -133,19 +133,19 @@
 			span_danger("[src] crashes into [T] with a sickening noise, landing on their legs [is_freerunner ? "shakily" : "hard"]!"),
 			span_userdanger("You crash into [T] with a sickening noise, landing [is_freerunner ? "shakily" : "hard"] on your legs! Ouch!"),
 			span_hear("You hear a sickening crunch."))
-		cause_pain(list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG), limb_pain_amount)
+		sharp_pain(list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG), limb_pain_amount)
 	else if(usable_hands >= 2)
 		visible_message(
 			span_danger("[src] attempts to stop their fall with their arms, crashing into [T] with a sickening noise!"),
 			span_userdanger("You attempt to stop your fall with your arms, and crash into [T] with a sickening noise! Ouch!"),
 			span_hear("You hear a sickening crunch."))
-		cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), limb_pain_amount)
+		sharp_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), limb_pain_amount)
 	else
 		visible_message(
 			span_danger("[src] crash into [T] with a sickening noise!"),
 			span_userdanger("You crash into [T] with a sickening noise! Ouch!"),
 			span_hear("You hear a sickening thud."))
-		cause_pain(BODY_ZONE_HEAD, (levels * 10)) // bonk
+		sharp_pain(BODY_ZONE_HEAD, (levels * 10)) // bonk
 
 	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs recieve
 	Knockdown(levels * 50)
