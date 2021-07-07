@@ -4,6 +4,10 @@
 #define STATUS_EFFECT_LIMP_PAIN /datum/status_effect/limp/pain
 /// Low blood pressure
 #define STATUS_EFFECT_LOWBLOODPRESSURE /datum/status_effect/low_blood_pressure
+/// Sharp pain
+#define STATUS_EFFECT_SHARP_PAIN /datum/status_effect/sharp_pain
+/// Minimum pain
+#define STATUS_EFFECT_MIN_PAIN /datum/status_effect/minimum_bodypart_pain
 
 /// Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"

@@ -27,7 +27,7 @@
 	if(!islist(target_zones))
 		target_zones = list(target_zones)
 	for(var/zone in target_zones)
-		apply_status_effect(/datum/status_effect/sharp_pain, zone, amount, type, duration)
+		apply_status_effect(STATUS_EFFECT_SHARP_PAIN, zone, amount, type, duration)
 
 /*
  * Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.
@@ -39,7 +39,7 @@
  * Helper carbon proc to set [zone] min pain to [amount] that expires after [time].
  */
 /mob/living/carbon/proc/apply_min_pain(zone, amount = 0, time = 0)
-	apply_status_effect(/datum/status_effect/minimum_bodypart_pain, zone, amount, time)
+	apply_status_effect(STATUS_EFFECT_MIN_PAIN, zone, amount, time)
 
 /*
  * Helper carbon proc to set [id] pain mod with amount [amount] that expires after [time].

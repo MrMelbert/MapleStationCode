@@ -15,6 +15,10 @@
 	if(!.)
 		return
 
+	var/mob/living/carbon/human/owner_human = owner
+	if(!istype(owner_human) || !owner_human.pain_controller)
+		return FALSE
+
 	RegisterSignal(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST), .proc/update_limp)
 
 /datum/status_effect/limp/pain/on_remove()
@@ -23,12 +27,16 @@
 	to_chat(owner, span_green("Your pained limp stops!"))
 
 /datum/status_effect/limp/pain/update_limp()
-	var/mob/living/carbon/limping_carbon = owner
-	left = limping_carbon.get_bodypart(BODY_ZONE_L_LEG)
-	right = limping_carbon.get_bodypart(BODY_ZONE_R_LEG)
+	var/mob/living/carbon/human/limping_human = owner
+	if(!ishuman(owner) || !limping_human.pain_controller)
+		limping_human.remove_status_effect(src)
+		return
+
+	left = limping_human.pain_controller.body_zones[BODY_ZONE_L_LEG]
+	right = limping_human.pain_controller.body_zones[BODY_ZONE_R_LEG]
 
 	if(!left && !right)
-		limping_carbon.remove_status_effect(src)
+		limping_human.remove_status_effect(src)
 		return
 
 	slowdown_left = 0
@@ -42,8 +50,7 @@
 
 	// this handles losing your leg with the limp and the other one being in good shape as well
 	if(slowdown_left < 3 && slowdown_right < 3)
-		limping_carbon.remove_status_effect(src)
-
+		limping_human.remove_status_effect(src)
 
 /atom/movable/screen/alert/status_effect/low_blood_pressure
 	name = "Low blood pressure"
@@ -185,7 +192,7 @@
 	/// The change in temperature while applied.
 	var/temperature_change = 0
 
-/datum/status_effect/temperature_pack/on_creation(mob/living/new_owner, mob/living/holder, obj/item/pressed_item, targeted_zone = BODY_ZONE_CHEST, pain_heal_amount = 0, pain_modifier = 1, temperature_change = null)
+/datum/status_effect/temperature_pack/on_creation(mob/living/new_owner, mob/living/holder, obj/item/pressed_item, targeted_zone = BODY_ZONE_CHEST, pain_heal_amount = 0, pain_modifier = 1, temperature_change)
 	src.holder = holder
 	src.pressed_item = pressed_item
 	src.targeted_zone = targeted_zone
