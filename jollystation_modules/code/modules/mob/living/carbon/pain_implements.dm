@@ -26,9 +26,11 @@
 	name = "temperature pack"
 	desc = "A temperature pack, to soothe pain."
 	w_class = WEIGHT_CLASS_SMALL
-	icon = 'jollystation_modules/icons/obj/pain_items.dmi'
-	icon_state = "stamp-ok"
-	inhand_icon_state = "stamp"
+	icon = 'jollystation_modules/icons/obj/pain_items.dmi' //TODO
+	lefthand_file = 'jollystation_modules/icons/mob/inhands/pain_items_lhand.dmi'
+	righthand_file = 'jollystation_modules/icons/mob/inhands/pain_items_rhand.dmi'
+	icon_state = "cold_pack"
+	inhand_icon_state = "cold_pack"
 	throwforce = 0
 	throw_speed = 2
 	throw_range = 5
@@ -60,18 +62,22 @@
 /obj/item/temperature_pack/proc/activate_pack(mob/user)
 	addtimer(CALLBACK(src, .proc/deactivate_pack), 5 MINUTES)
 	to_chat(user, span_notice("You crack [src], [temperature_change > 0 ? "heating it up" : "cooling it down"]."))
+	icon_state = "[initial(icon_state)]_active"
 	AddElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
 	active = TRUE
 
 /obj/item/temperature_pack/proc/deactivate_pack()
 	SEND_SIGNAL(src, COMSIG_TEMPERATURE_PACK_EXPIRED)
 	visible_message(span_notice("[src] fizzles as the last of its [temperature_change > 0 ? "heat" : "chill"] runs out."))
+	icon_state = "[initial(icon_state)]_used"
 	RemoveElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
 	active = FALSE
 
 /obj/item/temperature_pack/heat
 	name = "heat pack"
 	desc = "A heat pack. Crack it on and apply it to an aching limb to reduce joint stress and moderate pain."
+	icon_state = "heat_pack"
+	inhand_icon_state = "heat_pack"
 	temperature_change = 5
 	pain_heal_amount = 1.2
 	pain_limb_modifier = 0.5
@@ -79,6 +85,8 @@
 /obj/item/temperature_pack/cool
 	name = "cool pack"
 	desc = "A cool pack. Crack it on and apply it to a hurt limb to abate sharp pain."
+	icon_state = "cold_pack"
+	inhand_icon_state = "cold_pack"
 	temperature_change = -5
 	pain_heal_amount = 2
 	pain_limb_modifier = 0.75
@@ -171,6 +179,8 @@
 	righthand_file = 'jollystation_modules/icons/mob/inhands/pain_items_rhand.dmi'
 	icon_state = "shockblanket"
 	worn_icon_state = "shockblanket"
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound =  'sound/items/handling/cloth_pickup.ogg'
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_OCLOTHING
 	body_parts_covered = CHEST
@@ -242,7 +252,7 @@
 		return FALSE
 
 	if(target.wear_suit)
-		to_chat(user, span_warning("You need to take off [target == user ? "your" : "their"] [target.wear_suit] first!"))
+		to_chat(user, span_warning("You need to take off [target == user ? "your" : "their"] [target.wear_suit.name] first!"))
 		return FALSE
 
 	to_chat(user, span_notice("You begin wrapping [target == user ? "yourself" : "[target]"] with [src]..."))
@@ -262,8 +272,9 @@
 /obj/item/shock_blanket/proc/do_shelter_mob(mob/living/carbon/human/target, mob/living/user)
 	if(target.equip_to_slot_if_possible(src, ITEM_SLOT_OCLOTHING, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
 		to_chat(user, span_notice("You wrap [target == user ? "yourself" : "[target]"] with [src], helping prevent loss of body heat."))
+		target.update_inv_hands()
 	else
-		to_chat(user, span_warning("You fumble and fail to wrap [target == user ? "yourself" : "[target]"] with [src]."))
+		to_chat(user, span_warning("You can't quite reach and fail to wrap [target == user ? "yourself" : "[target]"] with [src]."))
 
 /obj/item/shock_blanket/equipped(mob/user, slot)
 	. = ..()
