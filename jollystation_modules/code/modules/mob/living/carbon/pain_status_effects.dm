@@ -215,11 +215,11 @@
 		return FALSE
 
 	if(QDELETED(pressed_item))
-		stack_trace("cold_pack status effect created without linked item!")
+		stack_trace("temperature_pack status effect created without linked item!")
 		return FALSE
 
 	if(QDELETED(holder))
-		stack_trace("cold_pack status effect created without a linked holder mob!")
+		stack_trace("temperature_pack status effect created without a linked holder mob!")
 		return FALSE
 
 	for(var/datum/status_effect/temperature_pack/pre_existing_effect in owner.status_effects)

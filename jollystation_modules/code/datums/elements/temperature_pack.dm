@@ -47,11 +47,13 @@
 	var/mob/living/carbon/human/target_mob = target
 	var/targeted_zone = target_mob.zone_selected
 
-	if(target_mob.stat == DEAD)
-		return
 	if(!target_mob.pain_controller)
 		return
+	if(target_mob.stat == DEAD)
+		to_chat(user, span_warning("[target_mob] is dead!"))
+		return
 	if(!target_mob.get_bodypart_pain(targeted_zone, TRUE))
+		to_chat(user, span_warning("That limb is not in pain."))
 		return
 
 	. = SECONDARY_ATTACK_CONTINUE_CHAIN // Past this point, no afterattacks

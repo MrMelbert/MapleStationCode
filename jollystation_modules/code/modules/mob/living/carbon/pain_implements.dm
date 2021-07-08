@@ -22,29 +22,38 @@
 	if(!(obj_flags & FROZEN))
 		RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
 
+/// Temperature packs (heat packs, cold packs)
 /obj/item/temperature_pack
 	name = "temperature pack"
 	desc = "A temperature pack, to soothe pain."
 	w_class = WEIGHT_CLASS_SMALL
-	icon = 'jollystation_modules/icons/obj/pain_items.dmi' //TODO
+	icon = 'jollystation_modules/icons/obj/pain_items.dmi'
 	lefthand_file = 'jollystation_modules/icons/mob/inhands/pain_items_lhand.dmi'
 	righthand_file = 'jollystation_modules/icons/mob/inhands/pain_items_rhand.dmi'
 	icon_state = "cold_pack"
-	inhand_icon_state = "cold_pack"
 	throwforce = 0
 	throw_speed = 2
 	throw_range = 5
 	attack_verb_continuous = list("pads")
 	attack_verb_simple = list("pads")
+	/// Whether our pack has been used.
 	var/used = FALSE
+	/// Whether our pack is active.
 	var/active = FALSE
+	/// The amount of pain that our pack heals when used.
 	var/pain_heal_amount = 0
+	/// The modifier put onto the limb when used.
 	var/pain_limb_modifier = 1
+	/// The change in temperature applied to the user while our pack is in use.
 	var/temperature_change = 0
+
+/obj/item/temperature_pack/Initialize()
+	. = ..()
+	update_appearance()
 
 /obj/item/temperature_pack/attack_self(mob/user, modifiers)
 	. = ..()
-	if(used)
+	if(!used)
 		used = !used
 		activate_pack(user)
 		return TRUE
@@ -57,36 +66,46 @@
 		else
 			. += span_notice("It's used up and empty.")
 	else
-		. += span_notice("Use it in hand to crack it, activating the pack and [temperature_change > 0 ? "heating it up" : "cooling it down"].")
+		. += span_notice("Use it in hand to activate the pack, [temperature_change > 0 ? "heating it up" : "cooling it down"].")
+
+/obj/item/temperature_pack/update_overlays()
+	. = ..()
+	if(!used || active)
+		if(temperature_change > 0)
+			. += "heat_overlay"
+			if(active)
+				. += "active_heat_overlay"
+		else
+			. += "cold_overlay"
+			if(active)
+				. += "active_cold_overlay"
 
 /obj/item/temperature_pack/proc/activate_pack(mob/user)
 	addtimer(CALLBACK(src, .proc/deactivate_pack), 5 MINUTES)
 	to_chat(user, span_notice("You crack [src], [temperature_change > 0 ? "heating it up" : "cooling it down"]."))
-	icon_state = "[initial(icon_state)]_active"
 	AddElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
 	active = TRUE
+	update_appearance()
 
 /obj/item/temperature_pack/proc/deactivate_pack()
 	SEND_SIGNAL(src, COMSIG_TEMPERATURE_PACK_EXPIRED)
 	visible_message(span_notice("[src] fizzles as the last of its [temperature_change > 0 ? "heat" : "chill"] runs out."))
-	icon_state = "[initial(icon_state)]_used"
 	RemoveElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
 	active = FALSE
+	name = "used [name]"
+	desc = "A used up [name]. It's no use to anyone anymore."
+	update_appearance()
 
 /obj/item/temperature_pack/heat
 	name = "heat pack"
-	desc = "A heat pack. Crack it on and apply it to an aching limb to reduce joint stress and moderate pain."
-	icon_state = "heat_pack"
-	inhand_icon_state = "heat_pack"
+	desc = "A heat pack. Crack it to turn it on and apply it to an aching limb to reduce joint stress and moderate pain."
 	temperature_change = 5
 	pain_heal_amount = 1.2
 	pain_limb_modifier = 0.5
 
-/obj/item/temperature_pack/cool
-	name = "cool pack"
-	desc = "A cool pack. Crack it on and apply it to a hurt limb to abate sharp pain."
-	icon_state = "cold_pack"
-	inhand_icon_state = "cold_pack"
+/obj/item/temperature_pack/cold
+	name = "cold pack"
+	desc = "A cold pack. Crack it on and apply it to a hurt limb to abate sharp pain."
 	temperature_change = -5
 	pain_heal_amount = 2
 	pain_limb_modifier = 0.75
@@ -164,8 +183,9 @@
 /obj/item/reagent_containers/hypospray/medipen/painkiller
 	name = "emergency painkiller medipen"
 	desc = "A medipen that contains a dosages of moderate painkilling chemicals. Can cause drowsyness. WARNING: Do not use in combination with alcohol."
-	icon_state = "hypovolemic"
-	base_icon_state = "hypovolemic"
+	icon = 'jollystation_modules/icons/obj/syringe.dmi'
+	icon_state = "painkiller"
+	base_icon_state = "painkiller"
 	volume = 15
 	amount_per_transfer_from_this = 15
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 7.5, /datum/reagent/medicine/painkiller/aspirin_para_coffee = 5, /datum/reagent/medicine/morphine = 2.5)
@@ -387,10 +407,18 @@
 	added_premium = list(/obj/item/storage/pill_bottle/painkillers = 2)
 
 /obj/machinery/vending/medical
-	added_products = list(/obj/item/shock_blanket = 3)
+	added_products = list(
+		/obj/item/shock_blanket = 3,
+		/obj/item/temperature_pack/cold = 2,
+		/obj/item/temperature_pack/heat = 2,
+		)
 
 /obj/machinery/vending/wallmed
-	added_products = list(/obj/item/shock_blanket/emergency = 2)
+	added_products = list(
+		/obj/item/shock_blanket/emergency = 2,
+		/obj/item/temperature_pack/cold = 1,
+		/obj/item/temperature_pack/heat = 1,
+		)
 
 #undef FROZEN_ITEM_PAIN_RATE
 #undef FROZEN_ITEM_PAIN_MODIFIER
