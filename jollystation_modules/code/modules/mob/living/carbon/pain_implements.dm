@@ -372,6 +372,7 @@
 			human_wearer.adjust_coretemperature(30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, 0, target_temp)
 
 /obj/item/shock_blanket/emergency
+	desc = "An emergency variant shock blanket intended to be placed in medkits for field treatment. Faster to apply to patients, but more restrictive to movement."
 	slowdown = 2.5
 	equip_delay_self = 1.2 SECONDS
 	equip_delay_other = 1.2 SECONDS

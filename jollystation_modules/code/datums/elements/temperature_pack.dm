@@ -1,4 +1,8 @@
-// -- Element to make items into things you can apply to reduce pain. --
+/*
+ * Element to make an item into a "temperature pack".
+ * Temperature packs are hot or cold things that can be pressed against
+ * limbs experiencing pain to reduce it.
+ */
 /datum/element/temperature_pack
 	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
 	id_arg_index = 2
