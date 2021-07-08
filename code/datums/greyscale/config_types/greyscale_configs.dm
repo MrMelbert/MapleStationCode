@@ -230,7 +230,7 @@
 
 /datum/greyscale_config/plush_lizard
 	name = "Plushie Lizard"
-	icon_file = 'icons/obj/plushes.dmi'
+	icon_file = 'jollystation_modules/icons/obj/plushes.dmi' // NON-MODULE CHANGE
 	json_config = 'code/datums/greyscale/json_configs/plushie_lizard.json'
 
 /datum/greyscale_config/flower_simple
