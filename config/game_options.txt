@@ -33,7 +33,7 @@ COMMENDATION_PERCENT_POLL 0.05
 ## To speed things up make the number negative, to slow things down, make the number positive.
 
 ## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied.
-RUN_DELAY 1.5
+RUN_DELAY 2
 WALK_DELAY 4
 
 ## The variables below affect the movement of specific mob types. THIS AFFECTS ALL SUBTYPES OF THE TYPE YOU CHOOSE!
@@ -44,7 +44,7 @@ WALK_DELAY 4
 ##MULTIPLICATIVE_MOVESPEED /mob/living/silicon/robot 0
 ##MULTIPLICATIVE_MOVESPEED /mob/living/carbon/alien 0
 ##MULTIPLICATIVE_MOVESPEED /mob/living/simple_animal/slime 0
-MULTIPLICATIVE_MOVESPEED /mob/living/simple_animal 0
+MULTIPLICATIVE_MOVESPEED /mob/living/simple_animal -1
 
 
 ## NAMES ###
@@ -88,18 +88,18 @@ ALERT_DELTA Destruction of the station is imminent. All crew are instructed to o
 ## Default probablity is 1, increase to make that mode more likely to be picked.
 ## Set to 0 to disable that mode.
 
-PROBABILITY TRAITOR 5
-PROBABILITY TRAITORBRO 2
-PROBABILITY TRAITORCHAN 4
-PROBABILITY INTERNAL_AFFAIRS 3
-PROBABILITY NUCLEAR 2
-PROBABILITY REVOLUTION 2
-PROBABILITY CULT 2
-PROBABILITY CHANGELING 2
-PROBABILITY WIZARD 4
+PROBABILITY TRAITOR 0
+PROBABILITY TRAITORBRO 0
+PROBABILITY TRAITORCHAN 0
+PROBABILITY INTERNAL_AFFAIRS 0
+PROBABILITY NUCLEAR 0
+PROBABILITY REVOLUTION 0
+PROBABILITY CULT 0
+PROBABILITY CHANGELING 0
+PROBABILITY WIZARD 0
 PROBABILITY MONKEY 0
 PROBABILITY METEOR 0
-PROBABILITY EXTENDED 0
+PROBABILITY EXTENDED 100
 PROBABILITY SECRET_EXTENDED 0
 PROBABILITY CLOWNOPS 0
 
@@ -166,19 +166,19 @@ MIDROUND_ANTAG WIZARD
 #MIN_POP NUCLEAR 0
 #MAX_POP NUCLEAR -1
 
-#MIN_POP REVOLUTION 20
+#MIN_POP REVOLUTION 30
 #MAX_POP REVOLUTION -1
 
-#MIN_POP CULT 24
+#MIN_POP CULT 34
 #MAX_POP CULT -1
 
-#MIN_POP CHANGELING 15
+#MIN_POP CHANGELING 25
 #MAX_POP CHANGELING -1
 
-#MIN_POP WIZARD 20
+#MIN_POP WIZARD 25
 #MAX_POP WIZARD -1
 
-#MIN_POP MONKEY 20
+#MIN_POP MONKEY 50
 #MAX_POP MONKEY -1
 
 #MIN_POP METEOR 0
@@ -258,7 +258,7 @@ ALLOW_AI_MULTICAM
 
 ## Secborg ###
 ## Uncomment to prevent the security cyborg module from being chosen
-DISABLE_SECBORG
+#DISABLE_SECBORG
 
 ## Peacekeeper Borg ###
 ## Uncomment to prevent the peacekeeper cyborg module from being chosen
@@ -510,7 +510,7 @@ LAVALAND_BUDGET 30
 ICEMOON_BUDGET 90
 
 ## Space Ruin Budget
-Space_Budget 8
+Space_Budget 28
 
 ## Time in ds from when a player latejoins till the arrival shuttle docks at the station
 ## Must be at least 30. At least 55 recommended to be visually/aurally appropriate
@@ -537,7 +537,7 @@ ROUNDSTART_TRAITS
 #DISABLE_HUMAN_MOOD
 
 ## Enable night shifts ##
-#ENABLE_NIGHT_SHIFTS
+ENABLE_NIGHT_SHIFTS
 
 ## Enable randomized shift start times##
 RANDOMIZE_SHIFT_TIME
