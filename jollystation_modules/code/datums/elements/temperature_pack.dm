@@ -13,7 +13,7 @@
 	/// Body temperature change per tick.
 	var/temperature_change = 0
 
-/datum/element/temperature_pack/Attach(obj/item/target, pain_heal_rate = 0, pain_modifier_on_limb = 1, temperature_change = null)
+/datum/element/temperature_pack/Attach(obj/item/target, pain_heal_rate = 0, pain_modifier_on_limb = 1, temperature_change)
 	. = ..()
 
 	if(!isitem(target))
