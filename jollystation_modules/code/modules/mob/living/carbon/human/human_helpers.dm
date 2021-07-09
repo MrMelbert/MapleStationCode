@@ -9,7 +9,10 @@
  *	- returns another mob if [src] is disguised as someone that exists in the world
  * returns null otherwise.
  */
-/mob/living/carbon/human/proc/get_visible_flavor(mob/examiner)
+/mob/living/proc/get_visible_flavor(mob/examiner)
+	return null
+
+/mob/living/carbon/human/get_visible_flavor(mob/examiner)
 	//var/face_obscured = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	var/shown_name = get_visible_name()
 
@@ -31,6 +34,15 @@
 
 	// if you are not the species linked to the flavor text, you are not recognizable
 	if(found_flavor?.linked_species != dna?.species.id)
+		. = null
+
+/mob/living/silicon/get_visible_flavor(mob/examiner)
+	. = linked_flavor
+
+	if(examiner == src)
+		return
+
+	if(found_flavor?.linked_species != "silicon")
 		. = null
 
 /mob/proc/check_med_hud_and_access()

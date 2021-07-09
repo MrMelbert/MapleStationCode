@@ -16,12 +16,12 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 /proc/add_client_flavor_text(client/added_client)
 	if(!added_client.prefs)
 		return FALSE
-	if(!added_client.prefs.flavor_text)
+	if(!added_client.prefs.flavor_text || !added_client.prefs.general_records || !added_client.prefs.medical_records || !added_client.prefs.security_records)
 		return FALSE
-	if(!iscarbon(added_client.mob))
+	if(!isliving(added_client.mob))
 		return FALSE
 
-	var/mob/living/carbon/added_mob = added_client.mob
+	var/mob/living/added_mob = added_client.mob
 	if(!GLOB.flavor_texts[added_mob.real_name])
 		var/datum/flavor_text/found_text = new /datum/flavor_text(added_client)
 		GLOB.flavor_texts[added_mob.real_name] = found_text
@@ -38,11 +38,11 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	populate_flavor_texts()
 
 /// Flavor text define for carbons.
-/mob/living/carbon
+/mob/living
 	/// The flavor text linked to our carbon.
 	var/datum/flavor_text/linked_flavor
 
-/mob/living/carbon/Destroy()
+/mob/living/Destroy()
 	linked_flavor = null // We should never QDEL flavor text datums.
 	return ..()
 
@@ -74,7 +74,10 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	owner = linked_client
 
 	linked_name = owner.prefs.real_name
-	linked_species = owner.prefs.pref_species.id
+	if(issilicon(inked_client.mob))
+		linked_species = "silicon"
+	else
+		linked_species = owner.prefs.pref_species.id
 
 	flavor_text = owner.prefs.flavor_text
 	gen_records = owner.prefs.general_records
