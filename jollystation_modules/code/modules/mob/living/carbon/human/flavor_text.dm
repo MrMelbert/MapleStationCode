@@ -74,7 +74,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	owner = linked_client
 
 	linked_name = owner.prefs.real_name
-	if(issilicon(inked_client.mob))
+	if(issilicon(owner.mob))
 		linked_species = "silicon"
 	else
 		linked_species = owner.prefs.pref_species.id

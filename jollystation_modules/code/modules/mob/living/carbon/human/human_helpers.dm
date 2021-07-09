@@ -42,6 +42,7 @@
 	if(examiner == src)
 		return
 
+	var/datum/flavor_text/found_flavor = .
 	if(found_flavor?.linked_species != "silicon")
 		. = null
 
