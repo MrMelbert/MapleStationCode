@@ -56,25 +56,31 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	var/linked_species
 	/// The actual flavor text.
 	var/flavor_text
-	/// General records associated
+	/// General records associated with this flavor text
 	var/gen_records
-	/// Medical records associated
+	/// Medical records associated with this flavor text
 	var/med_records
-	/// Security records associated
+	/// Security records associated with this flavor text
 	var/sec_records
-	/// Exploitable info associated
+	/// Exploitable info associated with this flavor text
 	var/expl_info
 
 /datum/flavor_text/New(client/linked_client)
-	owner = linked_client
-	linked_name = linked_client.prefs.real_name
-	linked_species = linked_client.prefs.pref_species.id
+	if(!linked_client?.prefs)
+		stack_trace("Flavor text created [linked_client ? "from a client without a prefs datum" : "without a client"]!")
+		qdel(src)
+		return
 
-	flavor_text = linked_client.prefs.flavor_text
-	gen_records = linked_client.prefs.general_records
-	med_records = linked_client.prefs.medical_records
-	sec_records = linked_client.prefs.security_records
-	expl_info = linked_client.prefs.exploitable_info
+	owner = linked_client
+
+	linked_name = owner.prefs.real_name
+	linked_species = owner.prefs.pref_species.id
+
+	flavor_text = owner.prefs.flavor_text
+	gen_records = owner.prefs.general_records
+	med_records = owner.prefs.medical_records
+	sec_records = owner.prefs.security_records
+	expl_info = owner.prefs.exploitable_info
 
 /*
  * Get the flavor text formatted.
@@ -93,7 +99,6 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 
 	if(.)
 		. += "\n"
-		. = span_italics(.)
 
 /*
  * Get the href buttons for all the mob's records, formatted.
@@ -178,5 +183,4 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 		added_info = "[added_info ? "[added_info] and past records" : "past records"]"
 
 	if(added_info)
-		added_info = span_italics(added_info)
 		. += span_smallnoticeital("This individual may have [added_info] available if you [EXAMINE_CLOSER_BOLD].\n")

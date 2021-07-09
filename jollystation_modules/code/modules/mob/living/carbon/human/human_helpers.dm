@@ -10,34 +10,28 @@
  * returns null otherwise.
  */
 /mob/living/carbon/human/proc/get_visible_flavor(mob/examiner)
-	var/face_obscured = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
+	//var/face_obscured = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	var/shown_name = get_visible_name()
-	var/is_our_name_visible = (shown_name == linked_flavor.linked_name || findtext(shown_name, linked_flavor.linked_name))
-
-	. = linked_flavor
 
 	// your identity is always known to you
 	if(examiner == src)
-		return
+		return linked_flavor
 
 	if(shown_name == "Unknown")
 		return null
 
-	// whether their face is covered
-	if(face_obscured)
-		. = null
-
-	// the important check - if the name visible is not the name saved in our flavor text
-	if(is_our_name_visible)
+	// the important check - if the visible name is our flavor text name, display our flavor text
+	// if the visible name is not, however, we may be in disguise - so grab the corresponding flavor text from our global list
+	if(shown_name == linked_flavor?.linked_name || findtext(shown_name, linked_flavor?.linked_name))
 		. = linked_flavor
-
-	// if you are not your original species, you are not recognizable
-	if(dna?.species.id != linked_flavor.linked_species)
-		. = null
-
-	// If we don't have a visible identity by now, we may be in disguise - return that (can be null, too)
-	if(!. && !is_our_name_visible)
+	else
 		. = GLOB.flavor_texts[shown_name]
+
+	var/datum/flavor_text/found_flavor = .
+
+	// if you are not the species linked to the flavor text, you are not recognizable
+	if(found_flavor?.linked_species != dna?.species.id)
+		. = null
 
 /mob/proc/check_med_hud_and_access()
 	return FALSE

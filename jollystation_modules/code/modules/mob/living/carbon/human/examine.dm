@@ -29,42 +29,39 @@
 // Extension of /mob/living/carbon/human/examine().
 /mob/living/carbon/human/examine(mob/user)
 	. = ..()
-	// The string we return, formatted.
-	var/expanded_examine = ""
 	// Who's identity are we dealing with? In most cases it's the same as [src], but it could be disguised people, or null.
 	var/datum/flavor_text/known_identity = get_visible_flavor(user)
+	var/expanded_examine = ""
 
 	if(known_identity)
 		expanded_examine += known_identity.get_flavor_and_records_links(user)
-	else
-		expanded_examine += span_smallnoticeital("You can't make out any details of this individual.\n")
 
-	if(client)
+	if(linked_flavor)
 		// Admins can view all records.
 		if(user.client.holder && isAdminObserver(user))
 			// Formatted output list of records.
-			var/list/admin_line = list()
+			var/admin_line = ""
 
-			if(linked_flavor?.flavor_text)
+			if(linked_flavor.flavor_text)
 				admin_line += "<a href='?src=[REF(src)];flavor_text=1'>\[FLA\]</a>"
-			if(linked_flavor?.gen_records)
+			if(linked_flavor.gen_records)
 				admin_line += "<a href='?src=[REF(src)];general_records=1'>\[GEN\]</a>"
-			if(linked_flavor?.sec_records)
+			if(linked_flavor.sec_records)
 				admin_line += "<a href='?src=[REF(src)];security_records=1'>\[SEC\]</a>"
-			if(linked_flavor?.med_records)
+			if(linked_flavor.med_records)
 				admin_line += "<a href='?src=[REF(src)];medical_records=1'>\[MED\]</a>"
-			if(linked_flavor?.expl_info)
+			if(linked_flavor.expl_info)
 				admin_line += "<a href='?src=[REF(src)];exploitable_info=1'>\[EXP\]</a>"
 
-			if(admin_line.len)
+			if(admin_line)
 				expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"
 
 	// if the mob doesn't have a client, show how long they've been disconnected for.
-	else if(last_connection_time)
+	if(!client && last_connection_time)
 		var/formatted_afk_time = span_bold("[round((world.time - last_connection_time) / (60*60), 0.1)]")
 		expanded_examine += span_info(span_italics("[p_theyve(TRUE)] been unresponsive for [formatted_afk_time] minute(s).\n"))
 
-	if(length(expanded_examine) > 0)
+	if(length(expanded_examine))
 		expanded_examine = span_info(expanded_examine)
 		expanded_examine += "*---------*\n"
 		. += expanded_examine
