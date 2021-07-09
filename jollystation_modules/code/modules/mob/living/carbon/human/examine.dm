@@ -59,7 +59,7 @@
 	// if the mob doesn't have a client, show how long they've been disconnected for.
 	if(!client && last_connection_time)
 		var/formatted_afk_time = span_bold("[round((world.time - last_connection_time) / (60*60), 0.1)]")
-		expanded_examine += span_info(span_italics("[p_theyve(TRUE)] been unresponsive for [formatted_afk_time] minute(s).\n"))
+		expanded_examine += span_italics("\n[p_theyve(TRUE)] been unresponsive for [formatted_afk_time] minute(s).\n")
 
 	if(length(expanded_examine))
 		expanded_examine = span_info(expanded_examine)
