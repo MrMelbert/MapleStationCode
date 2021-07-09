@@ -32,35 +32,32 @@
 	// The string we return, formatted.
 	var/expanded_examine = ""
 	// Who's identity are we dealing with? In most cases it's the same as [src], but it could be disguised people, or null.
-	var/mob/living/carbon/human/known_identity = get_visible_identity(user)
+	var/datum/flavor_text/known_identity = get_visible_flavor(user)
+
+	if(known_identity)
+		expanded_examine += known_identity.get_flavor_and_records_links(user)
+	else
+		expanded_examine += span_smallnoticeital("You can't make out any details of this individual.\n")
 
 	if(client)
 		// Admins can view all records.
 		if(user.client.holder && isAdminObserver(user))
 			// Formatted output list of records.
-			var/list/line = list()
+			var/list/admin_line = list()
 
-			if(client.prefs.flavor_text)
-				line += "<a href='?src=[REF(src)];flavor_text=1'>\[FLA\]</a>"
-			if(client.prefs.general_records)
-				line += "<a href='?src=[REF(src)];general_records=1'>\[GEN\]</a>"
-			if(client.prefs.security_records)
-				line += "<a href='?src=[REF(src)];security_records=1'>\[SEC\]</a>"
-			if(client.prefs.medical_records)
-				line += "<a href='?src=[REF(src)];medical_records=1'>\[MED\]</a>"
-			if(client.prefs.exploitable_info)
-				line += "<a href='?src=[REF(src)];exploitable_info=1'>\[EXP\]</a>"
+			if(linked_flavor?.flavor_text)
+				admin_line += "<a href='?src=[REF(src)];flavor_text=1'>\[FLA\]</a>"
+			if(linked_flavor?.gen_records)
+				admin_line += "<a href='?src=[REF(src)];general_records=1'>\[GEN\]</a>"
+			if(linked_flavor?.sec_records)
+				admin_line += "<a href='?src=[REF(src)];security_records=1'>\[SEC\]</a>"
+			if(linked_flavor?.med_records)
+				admin_line += "<a href='?src=[REF(src)];medical_records=1'>\[MED\]</a>"
+			if(linked_flavor?.expl_info)
+				admin_line += "<a href='?src=[REF(src)];exploitable_info=1'>\[EXP\]</a>"
 
-			if(line.len)
-				expanded_examine += "[ADMIN_LOOKUPFLW(src)] - "
-				expanded_examine += line.Join()
-				expanded_examine += "\n"
-
-		if(!known_identity)
-			expanded_examine += span_smallnoticeital("You can't make out any details of this individual.\n")
-
-		else if(known_identity.client)
-			expanded_examine += known_identity.get_basic_flavor_and_records(user)
+			if(admin_line.len)
+				expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"
 
 	// if the mob doesn't have a client, show how long they've been disconnected for.
 	else if(last_connection_time)
@@ -75,7 +72,9 @@
 // This isn't even an extension of examine_more this is the only definition for /human/examine_more, isn't that neat?
 /mob/living/carbon/human/examine_more(mob/user)
 	. = ..()
-	// Who's identity are we dealing with? In most cases it's the same as [src], but it could be disguised people.
-	var/mob/living/carbon/human/known_identity = get_visible_identity(user)
-	if(client && known_identity?.client)
-		. += span_info("[known_identity.get_flavor_text(FALSE)][known_identity.get_records_text(user)]")
+	var/datum/flavor_text/known_identity = get_visible_flavor(user)
+
+	if(known_identity)
+		. += span_info(known_identity.get_flavor_and_records_links(user, FALSE))
+	else
+		. += span_smallnoticeital("You can't make out any details of this individual.\n")
