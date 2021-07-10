@@ -291,8 +291,8 @@
  */
 /obj/item/shock_blanket/proc/do_shelter_mob(mob/living/carbon/human/target, mob/living/user)
 	if(target.equip_to_slot_if_possible(src, ITEM_SLOT_OCLOTHING, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
-		to_chat(user, span_notice("You wrap [target == user ? "yourself" : "[target]"] with [src], helping prevent loss of body heat."))
-		target.update_inv_hands()
+		to_chat(user, span_notice("You wrap [target == user ? "yourself" : "[target]"] with [src], helping regulate body temperature."))
+		user.update_inv_hands()
 	else
 		to_chat(user, span_warning("You can't quite reach and fail to wrap [target == user ? "yourself" : "[target]"] with [src]."))
 
