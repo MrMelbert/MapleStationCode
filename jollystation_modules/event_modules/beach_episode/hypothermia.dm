@@ -1,7 +1,6 @@
 /datum/disease/hypothermia
 	name = "Hypothermia"
-	max_stages = 4
-	spread_text = "None"
+	max_stages = 6
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	cure_text = "Warm the body up with careful monitoring."
 	agent = "Long exposure to extremely cold conditions."
@@ -11,33 +10,57 @@
 	severity = DISEASE_SEVERITY_HARMFUL
 	bypasses_immunity = TRUE
 
-/datum/disease/hyperthermia/stage_act(delta_time, times_fired)
+/datum/disease/hypothermia/stage_act(delta_time, times_fired)
 	. = ..()
 	if(!.)
 		return
 	switch(stage)
 		if(1)
-			if(DT_PROB(1, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You shiver.</span>")
-			if(DT_PROB(1, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You feel cold.</span>")
+			if(DT_PROB(2.5, delta_time))
+				to_chat(affected_mob, span_danger("You shiver."))
+			if(DT_PROB(3, delta_time))
+				to_chat(affected_mob, span_danger("You feel cold."))
 		if(2)
-			if(DT_PROB(0.5, delta_time))
-				to_chat(affected_mob, "<span class='danger'>Your appendages feel numb.</span>")
-			if(DT_PROB(1.5, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You shiver more.</span>")
-		if(3)
-			if(DT_PROB(1.5, delta_time))
-				to_chat(affected_mob, "<span class='danger'>Your appendages feel numb.</span>")
 			if(DT_PROB(2, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You shiver violently.</span>")
-			//Damage proc to a random limb, burn damage, DT_PROB(1)
-			//Movement speed multiplier, possibly a 0.8
+				to_chat(affected_mob, span_danger("Your appendages feel numb."))
+			if(DT_PROB(2, delta_time))
+				to_chat(affected_mob, span_danger("You shiver more."))
+		if(3)
+			if(DT_PROB(1, delta_time))
+				affected_mob.cause_pain(pick(BODY_ZONE_L_ARM), 2, BURN)
+			if(DT_PROB(1, delta_time))
+				affected_mob.cause_pain(BODY_ZONE_R_ARM, 2, BURN)
+			if(DT_PROB(1, delta_time))
+				affected_mob.cause_pain(BODY_ZONE_L_LEG, 2, BURN)
+			if(DT_PROB(1, delta_time))
+				affected_mob.cause_pain(BODY_ZONE_R_LEG, 2, BURN)
+			if(DT_PROB(3, delta_time))
+				to_chat(affected_mob, span_danger("Your appendages feel numb."))
+			if(DT_PROB(2, delta_time))
+				to_chat(affected_mob, span_danger("You shiver more."))
+			if(DT_PROB(10, delta_time))
+				affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/hypothermia/stage_three)
 		if(4)
-			if(DT_PROB(0.5, delta_time))
-				to_chat(affected_mob, "<span class='danger'>Your appendages feel numb.</span>")
-			if(DT_PROB(1.5, delta_time))
-				to_chat(affected_mob, "<span class='danger'>You shiver more.</span>")
-			//Damage proc to a random limb, burn damage, DT_PROB(2), increased burn damage per tick
-			//Chance to disable a random limb (scale with damage?)
-			//Movement speed multiplier, possibly a 0.55
+			if(DT_PROB(4, delta_time))
+				to_chat(affected_mob, span_danger("Your appendages feel numb."))
+			if(DT_PROB(3, delta_time))
+				to_chat(affected_mob, span_danger("Your nose feel numb."))
+			if(DT_PROB(3, delta_time))
+				to_chat(affected_mob, span_danger("Your fingers feel numb."))
+			if(DT_PROB(3, delta_time))
+				to_chat(affected_mob, span_danger("Your feet feel numb."))
+			if(DT_PROB(3.5, delta_time))
+				to_chat(affected_mob, span_danger("You shiver violently."))
+		if(5)
+			if(DT_PROB(10, delta_time))
+				affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/hypothermia/stage_four)
+		if(6)
+			if(DT_PROB(1, delta_time))
+				affected_mob.apply_damage(7, BURN, pick(BODY_ZONE_L_ARM))
+			if(DT_PROB(1, delta_time))
+				affected_mob.apply_damage(7, BURN, pick(BODY_ZONE_R_ARM))
+			if(DT_PROB(1, delta_time))
+				affected_mob.apply_damage(7, BURN, pick(BODY_ZONE_L_LEG))
+			if(DT_PROB(1, delta_time))
+				affected_mob.apply_damage(7, BURN, pick(BODY_ZONE_R_LEG))
+

@@ -3630,6 +3630,7 @@
 #include "jollystation_modules\code\__DEFINES\examine_defines.dm"
 #include "jollystation_modules\code\__DEFINES\jobs.dm"
 #include "jollystation_modules\code\__DEFINES\keybinding.dm"
+#include "jollystation_modules\code\__DEFINES\mobs.dm"
 #include "jollystation_modules\code\__DEFINES\pain_defines.dm"
 #include "jollystation_modules\code\__DEFINES\spans.dm"
 #include "jollystation_modules\code\__HELPERS\text_helpers.dm"
@@ -3747,5 +3748,6 @@
 #include "jollystation_modules\code\modules\vending\_vending.dm"
 #include "jollystation_modules\event_modules\beach_episode\hyperthermia.dm"
 #include "jollystation_modules\event_modules\beach_episode\hypothermia.dm"
+#include "jollystation_modules\event_modules\beach_episode\temp_disease_effects.dm"
 #include "jollystation_modules\event_modules\beach_episode\towels.dm"
 // END_INCLUDE
