@@ -43,12 +43,18 @@
 	. = ..()
 	if(!istype(target) || target != occupant)
 		return
+	if(!target.pain_controller)
+		return
 
-	target.set_pain_mod(PAIN_MOD_STASIS, 0)
+	target.set_pain_mod(PAIN_MOD_STASIS, 0.3)
+	target.pain_controller.natural_pain_decay = 0 // No pain decay on stasis!
 
 /obj/machinery/stasis/thaw_them(mob/living/carbon/target)
 	. = ..()
 	if(!istype(target))
 		return
+	if(!target.pain_controller)
+		return
 
 	target.unset_pain_mod(PAIN_MOD_STASIS)
+	target.pain_controller.natural_pain_decay = target.pain_controller.base_pain_decay

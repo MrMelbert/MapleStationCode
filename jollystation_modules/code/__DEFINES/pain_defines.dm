@@ -38,6 +38,7 @@
 #define PAIN_MOD_CHEMS "chems"
 #define PAIN_MOD_DRUNK "drunk"
 #define PAIN_MOD_SLEEP "asleep"
+#define PAIN_MOD_LYING "lying"
 #define PAIN_MOD_STASIS "stasis"
 #define PAIN_MOD_DROWSY "drowsy"
 #define PAIN_MOD_NEAR_DEATH "near-death"

@@ -17,6 +17,8 @@
 	var/list/body_zones = list()
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
 	var/natural_pain_decay = -0.2
+	/// The base amount of pain decay recieved.
+	var/base_pain_decay = -0.2
 	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
 	var/natural_decay_counter = 0
 	/// Cooldown to track the last time we lost pain.
@@ -41,6 +43,7 @@
 		return
 
 	RegisterParentSignals()
+	base_pain_decay = natural_pain_decay
 	if(new_parent.stat == CONSCIOUS)
 		start_pain_processing()
 
@@ -68,7 +71,7 @@
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, .proc/stop_pain_processing)
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_all_pain)
 	RegisterSignal(parent, COMSIG_MOB_HEALTHSCANNED, .proc/on_analyzed)
-
+	RegisterSignal(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), .proc/check_lying_pain_modifier)
 /*
  * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
  */
@@ -86,6 +89,8 @@
 		COMSIG_LIVING_DEATH,
 		COMSIG_LIVING_POST_FULLY_HEAL,
 		COMSIG_MOB_HEALTHSCANNED,
+		COMSIG_LIVING_SET_BODY_POSITION,
+		COMSIG_LIVING_SET_BUCKLED
 	))
 
 /*
@@ -500,6 +505,23 @@
 		unset_pain_modifier(PAIN_MOD_SLEEP)
 
 /*
+ * Whenever we buckle to something or lie down, get a pain bodifier.
+ */
+/datum/pain/proc/check_lying_pain_modifier(datum/source, new_buckled)
+	SIGNAL_HANDLER
+
+	unset_pain_modifier(PAIN_MOD_LYING)
+	var/buckled_lying_modifier = 1
+	if(parent.body_position == LYING_DOWN)
+		buckled_lying_modifier -= 0.1
+
+	if(new_buckled)
+		buckled_lying_modifier -= 0.1
+
+	if(buckled_lying_modifier < 1)
+		set_pain_modifier(PAIN_MOD_LYING, buckled_lying_modifier)
+
+/*
  * Natural pain healing of all of our bodyparts per five process ticks / 10 seconds.
  *
  * Slowly increases overtime if the [parent] has not experienced pain in a minute.
@@ -512,7 +534,7 @@
 		if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			natural_pain_decay = max(natural_pain_decay - 0.016, -1) // 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
 		else
-			natural_pain_decay = initial(natural_pain_decay)
+			natural_pain_decay = base_pain_decay
 
 		// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
 		var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
