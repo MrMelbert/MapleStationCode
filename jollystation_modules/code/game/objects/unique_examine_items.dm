@@ -343,7 +343,8 @@
 		Leads its sisters and offspring through their alien hivemind - \
 		when slain, releases a psychic screen via the hivemind, greatly disorienting their kin.", \
 		EXAMINE_CHECK_JOB, list("Research Director", "Scientist", "Xenobiologist"), hint = FALSE)
-	AddElement(/datum/element/unique_examine, "A xenomorph queen - the patriarch of the xenomorph species. \
+	AddElement(/datum/element/unique_examine, \
+		"A xenomorph queen - the patriarch of the xenomorph species. \
 		Leads the nest through their xenomorph hivemind. The source of the xenos - \
 		killing the queen is important in killing the hive. \
 		When slain, releases a psychic scream along the alien hivemind, \
