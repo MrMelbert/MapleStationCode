@@ -132,7 +132,7 @@
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/morphine/diluted
-	desc = "Used to treat major to severe pain. Causes moderate drowsyness. Mildly addictive."
+	desc = "Used to treat major to severe pain. Causes moderate drowsiness. Mildly addictive."
 	icon_state = "pill11"
 	list_reagents = list(/datum/reagent/medicine/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain)
 	rename_with_volume = TRUE
