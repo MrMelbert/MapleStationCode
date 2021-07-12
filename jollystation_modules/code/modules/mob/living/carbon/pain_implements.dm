@@ -138,7 +138,7 @@
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/oxycodone
-	name = "oxycodon pill"
+	name = "oxycodone pill"
 	desc = "Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
 	icon_state = "pill12"
 	list_reagents = list(/datum/reagent/medicine/oxycodone = 5) // Lasts ~1 minute, heals ~20 pain per bodypart (~200 pain)
