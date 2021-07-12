@@ -111,7 +111,7 @@
 	pain_limb_modifier = 0.75
 
 /obj/item/reagent_containers/pill/asprin
-	name = "asprin pill"
+	name = "aspirin pill"
 	desc = "Used to treat moderate pain and fever. Metabolizes slowly. Best at treating chest pain."
 	icon_state = "pill7"
 	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 10) // Lasts ~4 minutes, heals ~20 pain in chest (lower in other parts)
