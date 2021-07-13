@@ -43,15 +43,15 @@
 			var/admin_line = ""
 
 			if(linked_flavor.flavor_text)
-				admin_line += "<a href='?src=[REF(src)];flavor_text=1'>\[FLA\]</a>"
+				admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
 			if(linked_flavor.gen_records)
-				admin_line += "<a href='?src=[REF(src)];general_records=1'>\[GEN\]</a>"
+				admin_line += "<a href='?src=[REF(linked_flavor)];general_records=1'>\[GEN\]</a>"
 			if(linked_flavor.sec_records)
-				admin_line += "<a href='?src=[REF(src)];security_records=1'>\[SEC\]</a>"
+				admin_line += "<a href='?src=[REF(linked_flavor)];security_records=1'>\[SEC\]</a>"
 			if(linked_flavor.med_records)
-				admin_line += "<a href='?src=[REF(src)];medical_records=1'>\[MED\]</a>"
+				admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
 			if(linked_flavor.expl_info)
-				admin_line += "<a href='?src=[REF(src)];exploitable_info=1'>\[EXP\]</a>"
+				admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
 
 			if(admin_line)
 				expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"

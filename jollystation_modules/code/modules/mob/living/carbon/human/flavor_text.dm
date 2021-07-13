@@ -16,7 +16,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 /proc/add_client_flavor_text(client/added_client)
 	if(!added_client.prefs)
 		return FALSE
-	if(!added_client.prefs.flavor_text || !added_client.prefs.general_records || !added_client.prefs.medical_records || !added_client.prefs.security_records)
+	if(!added_client.prefs.flavor_text && !added_client.prefs.general_records && !added_client.prefs.medical_records && !added_client.prefs.security_records)
 		return FALSE
 	if(!isliving(added_client.mob))
 		return FALSE
@@ -112,7 +112,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  */
 /datum/flavor_text/proc/get_records_text(mob/living/carbon/human/examiner)
 	if(!examiner)
-		return
+		CRASH("get_records_text() called without an examiner argument - proc is not implemented for a null examiner")
 
 	. = ""
 
@@ -124,14 +124,14 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 				break
 
 	// Medhuds can see medical records.
-	if(med_records && examiner.check_med_hud_and_access())
-		. += "<a href='?src=[REF(src)];medical_records=1'>\[Past Medical Records\]</a>"
+	if(examiner.check_med_hud_and_access())
+		if(med_records)
+			. += "<a href='?src=[REF(src)];medical_records=1'>\[Past Medical Records\]</a>"
+		if(gen_records)
+			. += "<a href='?src=[REF(src)];general_records=1'>\[General Records\]</a>"
 	// Sechuds can see security records.
 	if(sec_records && examiner.check_sec_hud_and_access())
 		. += "<a href='?src=[REF(src)];security_records=1'>\[Past Security Records\]</a>"
-	// General records aren't seen normally, but i'm leaving this here for if it is implemented.
-	//if(gen_records)
-	//	. += "<a href='?src=[REF(src)];general_records=1'>\[General Records\]</a>"
 
 	if(.)
 		. += "\n"
@@ -146,7 +146,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  */
 /datum/flavor_text/proc/get_flavor_and_records_links(mob/living/carbon/human/examiner, shorten = TRUE)
 	if(!examiner)
-		CRASH("get_records_text() called without a user argument - proc is not implemented for a null examiner")
+		CRASH("get_flavor_and_records_links() called without an examiner argument - proc is not implemented for a null examiner")
 
 	. = ""
 
@@ -166,15 +166,13 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 			if(antag_datum.antag_flags & CAN_SEE_EXPOITABLE_INFO)
 				has_additional_info |= ADDITIONAL_INFO_EXPLOITABLE
 				break
-	// Medhuds can see medical records, with adequate access.
-	if(med_records && examiner.check_med_hud_and_access())
-		has_additional_info |= ADDITIONAL_INFO_RECORDS
+	// Medhuds can see medical and general records, with adequate access.
+	if(examiner.check_med_hud_and_access())
+		if(med_records || gen_records)
+			has_additional_info |= ADDITIONAL_INFO_RECORDS
 	// Sechuds can see security records, with adequate access.
 	if(sec_records && examiner.check_sec_hud_and_access())
 		has_additional_info |= ADDITIONAL_INFO_RECORDS
-	// General records are unseen normally but leaving this here incase it is implemented.
-	//if(gen_records)
-	//	has_additional_info |= ADDITIONAL_INFO_RECORDS
 
 	// Format a little message to append to let the player know they can access longer flavor text/records/info on double examine.
 	var/added_info = ""
@@ -185,5 +183,44 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	if(has_additional_info & ADDITIONAL_INFO_RECORDS)
 		added_info = "[added_info ? "[added_info] and past records" : "past records"]"
 
-	if(added_info)
+	if(added_info && shorten)
 		. += span_smallnoticeital("This individual may have [added_info] available if you [EXAMINE_CLOSER_BOLD].\n")
+	else
+		. += get_records_text(examiner)
+
+/datum/flavor_text/Topic(href, href_list)
+	. = ..()
+	if(href_list["flavor_text"])
+		if(flavor_text)
+			var/datum/browser/popup = new(usr, "[linked_name]'s flavor text", "[linked_name]'s Flavor Text (expanded)", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s flavor text (expanded)", replacetext(flavor_text, "\n", "<BR>")))
+			popup.open()
+			return
+
+	if(href_list["general_records"])
+		if(gen_records)
+			var/datum/browser/popup = new(usr, "[linked_name]'s gen rec", "[linked_name]'s General Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s general records", replacetext(gen_records, "\n", "<BR>")))
+			popup.open()
+			return
+
+	if(href_list["security_records"])
+		if(sec_records)
+			var/datum/browser/popup = new(usr, "[linked_name]'s sec rec", "[linked_name]'s Security Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s security records", replacetext(sec_records, "\n", "<BR>")))
+			popup.open()
+			return
+
+	if(href_list["medical_records"])
+		if(med_records)
+			var/datum/browser/popup = new(usr, "[linked_name]'s med rec", "[linked_name]'s Medical Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s medical records", replacetext(med_records, "\n", "<BR>")))
+			popup.open()
+			return
+
+	if(href_list["exploitable_info"])
+		if(expl_info)
+			var/datum/browser/popup = new(usr, "[linked_name]'s exp info", "[linked_name]'s Exploitable Info", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s exploitable information", replacetext(expl_info, "\n", "<BR>")))
+			popup.open()
+			return

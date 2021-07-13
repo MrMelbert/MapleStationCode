@@ -3718,7 +3718,6 @@
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_shock.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\examine.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\flavor_text.dm"
-#include "jollystation_modules\code\modules\mob\living\carbon\human\human.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\human_helpers.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\skrell_hair.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\human\species_types\android.dm"
