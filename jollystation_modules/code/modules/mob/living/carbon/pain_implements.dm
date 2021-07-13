@@ -121,7 +121,7 @@
 	pain_limb_modifier = 0.75
 
 /obj/item/reagent_containers/pill/asprin
-	name = "asprin pill"
+	name = "aspirin pill"
 	desc = "Used to treat moderate pain and fever. Metabolizes slowly. Best at treating chest pain."
 	icon_state = "pill7"
 	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 10) // Lasts ~4 minutes, heals ~20 pain in chest (lower in other parts)
@@ -142,13 +142,13 @@
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/morphine/diluted
-	desc = "Used to treat major to severe pain. Causes moderate drowsyness. Mildly addictive."
+	desc = "Used to treat major to severe pain. Causes moderate drowsiness. Mildly addictive."
 	icon_state = "pill11"
 	list_reagents = list(/datum/reagent/medicine/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/pill/oxycodone
-	name = "oxycodon pill"
+	name = "oxycodone pill"
 	desc = "Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
 	icon_state = "pill12"
 	list_reagents = list(/datum/reagent/medicine/oxycodone = 5) // Lasts ~1 minute, heals ~20 pain per bodypart (~200 pain)
