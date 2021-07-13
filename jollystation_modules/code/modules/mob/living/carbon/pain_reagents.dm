@@ -115,7 +115,7 @@
 // Aspirin. Bad at headaches, good at everything else, okay at fevers.
 // Use healing chest and limb pain primarily.
 /datum/reagent/medicine/painkiller/aspirin
-	name = "Asprin"
+	name = "Aspirin"
 	description = "A medication that combats pain and fever. Can cause mild nausea. Overdosing is toxic, and causes high body temperature, sickness, hallucinations, dizziness, and confusion."
 	reagent_state = LIQUID
 	color = "#9c46ff"

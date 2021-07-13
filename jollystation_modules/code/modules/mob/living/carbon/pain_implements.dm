@@ -120,7 +120,7 @@
 	pain_heal_amount = 2
 	pain_limb_modifier = 0.75
 
-/obj/item/reagent_containers/pill/asprin
+/obj/item/reagent_containers/pill/aspirin
 	name = "aspirin pill"
 	desc = "Used to treat moderate pain and fever. Metabolizes slowly. Best at treating chest pain."
 	icon_state = "pill7"
@@ -168,7 +168,7 @@
 
 /obj/item/storage/pill_bottle/painkillers/PopulateContents()
 	for(var/i in 1 to 3)
-		new /obj/item/reagent_containers/pill/asprin(src)
+		new /obj/item/reagent_containers/pill/aspirin(src)
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/ibuprofen(src)
 	for(var/i in 1 to 3)
@@ -192,7 +192,7 @@
 /// Medkit pen.
 /obj/item/reagent_containers/hypospray/medipen/painkiller
 	name = "emergency painkiller medipen"
-	desc = "A medipen that contains a dosages of moderate painkilling chemicals. Can cause drowsyness. WARNING: Do not use in combination with alcohol."
+	desc = "A medipen that contains a dosages of moderate painkilling chemicals. Can cause drowsiness. WARNING: Do not use in combination with alcohol."
 	icon = 'jollystation_modules/icons/obj/syringe.dmi'
 	icon_state = "painkiller"
 	base_icon_state = "painkiller"
