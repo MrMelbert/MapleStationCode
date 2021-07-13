@@ -1,17 +1,19 @@
 // -- Implements and equipment to help reduce pain. --
 // Temperature pack stuff - things you can press to people to help reduce pain.
-
 /// Heal rate and modifier for generic items that are frozen.
 #define FROZEN_ITEM_PAIN_RATE 1
 #define FROZEN_ITEM_PAIN_MODIFIER 0.5
 #define FROZEN_ITEM_TEMPERATURE_CHANGE -5
 
+/// do_after key for using emergency blankets.
 #define DOAFTER_SOURCE_BLANKET "doafter_blanket"
 
+// Holding a beer to your busted arm, now that's classic
 /obj/item/reagent_containers/food/drinks/beer/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/temperature_pack, pain_heal_rate = 0.3, pain_modifier_on_limb = 0.9, temperature_change = -2)
 
+// Frozen items become usable temperature packs.
 /obj/item/make_frozen_visual()
 	. = ..()
 	if(obj_flags & FROZEN)
@@ -22,7 +24,7 @@
 	if(!(obj_flags & FROZEN))
 		RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
 
-/// Temperature packs (heat packs, cold packs)
+/// Temperature packs (heat packs, cold packs). Apply to hurt limb to un-hurty.
 /obj/item/temperature_pack
 	name = "temperature pack"
 	desc = "A temperature pack, to soothe pain."
@@ -80,6 +82,9 @@
 			if(active)
 				. += "active_cold_overlay"
 
+/*
+ * Activate [src] from [user], making it into a temperature pack that can be used, that expires in 5 minutes.
+ */
 /obj/item/temperature_pack/proc/activate_pack(mob/user)
 	addtimer(CALLBACK(src, .proc/deactivate_pack), 5 MINUTES)
 	to_chat(user, span_notice("You crack [src], [temperature_change > 0 ? "heating it up" : "cooling it down"]."))
@@ -87,6 +92,9 @@
 	active = TRUE
 	update_appearance()
 
+/*
+ * Deactivate [src], making it unusable, and sending signal [COMSIG_TEMPERATURE_PACK_EXPIRED].
+ */
 /obj/item/temperature_pack/proc/deactivate_pack()
 	SEND_SIGNAL(src, COMSIG_TEMPERATURE_PACK_EXPIRED)
 	visible_message(span_notice("[src] fizzles as the last of its [temperature_change > 0 ? "heat" : "chill"] runs out."))
@@ -96,6 +104,7 @@
 	desc = "A used up [name]. It's no use to anyone anymore."
 	update_appearance()
 
+// Head packs have a stronger modifier, but heals less.
 /obj/item/temperature_pack/heat
 	name = "heat pack"
 	desc = "A heat pack. Crack it to turn it on and apply it to an aching limb to reduce joint stress and moderate pain."
@@ -103,6 +112,7 @@
 	pain_heal_amount = 1.2
 	pain_limb_modifier = 0.5
 
+// Cold packs heal more, but have a weaker modifier.
 /obj/item/temperature_pack/cold
 	name = "cold pack"
 	desc = "A cold pack. Crack it on and apply it to a hurt limb to abate sharp pain."
@@ -190,6 +200,10 @@
 	amount_per_transfer_from_this = 15
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 7.5, /datum/reagent/medicine/painkiller/aspirin_para_coffee = 5, /datum/reagent/medicine/morphine = 2.5)
 
+/*
+ * Shock blanket item. Hit someone to cover them with the blanket.
+ * If they lie down and stay still, it will regulate their body temperature.
+ */
 /obj/item/shock_blanket
 	name = "shock blanket"
 	desc = "A metallic looking plastic blanket specifically designed to well insulate anyone seeking comfort underneath."
@@ -381,6 +395,7 @@
 	. = ..()
 	name = "emergency [name]"
 
+// Change the contents of emergency first-aid kids.
 /obj/item/storage/firstaid/emergency/ComponentInitialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
@@ -404,6 +419,7 @@
 	generate_items_inside(items_inside, src)
 
 
+// Pain implements added to various vendors.
 /obj/machinery/vending/drugs
 	added_premium = list(/obj/item/storage/pill_bottle/painkillers = 2)
 

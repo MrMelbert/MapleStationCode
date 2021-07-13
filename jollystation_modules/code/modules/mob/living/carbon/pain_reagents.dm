@@ -27,6 +27,10 @@
 
 	return TRUE
 
+// Muscle stimulant is functionally morphine without downsides (it's rare)
+/datum/reagent/medicine/muscle_stimulant
+	pain_modifier = 0.5
+
 /datum/reagent/medicine/epinephrine
 	pain_modifier = 0.9
 

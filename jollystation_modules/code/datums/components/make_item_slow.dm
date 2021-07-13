@@ -23,15 +23,20 @@
 
 	make_slow()
 
-/datum/component/make_item_slow/InheritComponent(datum/component/make_item_slow/passed_component, original, applied_slowdown = 1)
-	src.applied_slowdown = applied_slowdown
-
-	make_slow()
-
 /datum/component/make_item_slow/Destroy()
 	revert_slow()
 	return ..()
 
+/*
+ * If this component is applied to a parent that already has the same typer component, just update the slowness to the new value.
+ */
+/datum/component/make_item_slow/InheritComponent(datum/component/make_item_slow/passed_component, original, applied_slowdown = 1)
+	src.applied_slowdown = applied_slowdown
+	make_slow()
+
+/*
+ * Apply our slowness to the attatched item.
+ */
 /datum/component/make_item_slow/proc/make_slow()
 	var/obj/item/item_parent = parent
 	var/mob/living/carbon/mob_holder = item_parent.loc
@@ -42,6 +47,9 @@
 	if(istype(mob_holder))
 		mob_holder.update_equipment_speed_mods()
 
+/*
+ * Remove our slowness from the attatched item.
+ */
 /datum/component/make_item_slow/proc/revert_slow()
 	var/obj/item/item_parent = parent
 	var/mob/living/carbon/mob_holder = item_parent.loc

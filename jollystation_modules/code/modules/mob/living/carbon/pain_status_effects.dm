@@ -192,14 +192,13 @@
 	/// The change in temperature while applied.
 	var/temperature_change = 0
 
-/datum/status_effect/temperature_pack/on_creation(mob/living/new_owner, mob/living/holder, obj/item/pressed_item, targeted_zone = BODY_ZONE_CHEST, pain_heal_amount = 0, pain_modifier = 1, temperature_change)
+/datum/status_effect/temperature_pack/on_creation(mob/living/new_owner, mob/living/holder, obj/item/pressed_item, targeted_zone = BODY_ZONE_CHEST, pain_heal_amount = 0, pain_modifier = 1, temperature_change = 0)
 	src.holder = holder
 	src.pressed_item = pressed_item
 	src.targeted_zone = targeted_zone
 	src.pain_heal_amount = pain_heal_amount
 	src.pain_modifier = pain_modifier
-	if(isnum(temperature_change))
-		src.temperature_change = temperature_change
+	src.temperature_change = temperature_change
 	return ..()
 
 /datum/status_effect/temperature_pack/on_apply()
@@ -256,12 +255,18 @@
 		if(prob(10))
 			to_chat(human_owner, span_italics(span_notice("[pressed_item] dulls the pain in your [held_bodypart.name] a little.")))
 
+/*
+ * Check on move whether [holder] is still adjacent to [owner].
+ */
 /datum/status_effect/temperature_pack/proc/check_adjacency(datum/source)
 	SIGNAL_HANDLER
 
 	if(!in_range(holder, owner))
 		stop_effects(silent = FALSE)
 
+/*
+ * Stop the effects of this status effect, deleting it, and sending a message if [silent] is TRUE.
+ */
 /datum/status_effect/temperature_pack/proc/stop_effects(datum/source, silent = FALSE)
 	SIGNAL_HANDLER
 
@@ -279,6 +284,7 @@
 	pressed_item = null
 	holder = null
 
+// Cold stuff needs to stay cold.
 /datum/status_effect/temperature_pack/cold
 	id = "cold_pack"
 	temperature_change = -2
@@ -301,6 +307,7 @@
 
 	. = ..()
 
+// And warm stuff needs to stay warm.
 /datum/status_effect/temperature_pack/heat
 	id = "heat_pack"
 	temperature_change = 2
