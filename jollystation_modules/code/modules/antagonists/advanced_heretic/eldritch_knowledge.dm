@@ -13,7 +13,10 @@
 	gain_text = "I took an oath to my gods not to sacrifice powerless mortals, as my time was better utilized elsewhere."
 
 /datum/eldritch_knowledge/spell/basic
+	/// The heretic who owns this knowledge.
 	var/mob/living/master_heretic
+	/// Lazylist of all the people this heretic has selected as a heart target.
+	var/list/target_blacklist
 
 /datum/eldritch_knowledge/spell/basic/on_gain(mob/user)
 	. = ..()
@@ -21,6 +24,7 @@
 
 /datum/eldritch_knowledge/spell/basic/on_lose(mob/user)
 	master_heretic = null
+	LAZYNULL(target_blacklist)
 	return ..()
 
 /*
@@ -30,6 +34,9 @@
  * instead of straight up getting gibbed.
  */
 /datum/eldritch_knowledge/spell/basic/proc/sacrifice_process(mob/living/carbon/human/sac_target)
+	if(!sac_target)
+		CRASH("sacrifice_process() called with null sac_target!")
+
 	var/turf/sac_loc = get_turf(sac_target)
 	var/sleeping_time = 12 SECONDS
 
@@ -99,11 +106,10 @@
 
 	sac_target.apply_necropolis_curse(CURSE_WASTING | CURSE_BLINDING | CURSE_GRASPING)
 	sac_target.flash_act()
-	sac_target.add_confusion(20)
 	sac_target.blur_eyes(15)
 	sac_target.Jitter(10)
 	sac_target.Dizzy(10)
-	sac_target.hallucination += 10
+	sac_target.hallucination += 12
 	sac_target.emote("scream")
 
 	to_chat(sac_target, span_reallybig(span_hypnophrase("The grasp of the Mansus reveal themselves to you!")))
@@ -150,6 +156,7 @@
 	var/composed_return_message = ""
 	composed_return_message += span_notice("Your victim, [sac_target], was returned to the station - ")
 	SEND_SIGNAL(sac_target, COMSIG_CLEAR_MOOD_EVENT, "shadow_realm")
+	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived_sadness", /datum/mood_event/shadow_realm_live_sad)
 	if(sac_target.stat == DEAD)
 		INVOKE_ASYNC(src, .proc/after_return_dead_target, sac_target, safe_turf)
 		composed_return_message += span_red("dead. ")
@@ -186,7 +193,6 @@
 	sac_target.reagents?.add_reagent(/datum/reagent/medicine/epinephrine, 8)
 
 	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived", /datum/mood_event/shadow_realm_live)
-	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm_survived_sadness", /datum/mood_event/shadow_realm_live_sad)
 
 /*
  * This proc is called from [proc/return_target] if the target dies in the shadow realm.
@@ -306,10 +312,10 @@
 			to_chat(user, span_big(span_hypnophrase("You can't hold on for much longer...")))
 		healing_amount *= -0.5
 
-	if(user.health > user.crit_threshold && DT_PROB(10, delta_time))
+	if(user.health > user.crit_threshold && DT_PROB(4, delta_time))
 		user.Jitter(10)
 		user.Dizzy(5)
-		user.add_confusion(5)
+		user.hallucination = min(user.hallucination + 3, 24)
 
 	user.set_fire_stacks(max(0, user.fire_stacks + healing_amount * 1.33 * REM * delta_time))
 	user.losebreath = max(0, user.losebreath + healing_amount * 0.66 * REM * delta_time)
