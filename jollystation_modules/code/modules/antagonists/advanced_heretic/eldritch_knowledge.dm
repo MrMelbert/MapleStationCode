@@ -12,20 +12,35 @@
 	desc = "Gives up your ability to sacrifice in favor of going about other means."
 	gain_text = "I took an oath to my gods not to sacrifice powerless mortals, as my time was better utilized elsewhere."
 
+/datum/map_template/heretic_sacrifice_level
+	name = "Heretic Sacrifice Level"
+	mappath = "_maps/templates/_heretic_template.dmm"
+
 /datum/eldritch_knowledge/spell/basic
 	/// The heretic who owns this knowledge.
 	var/mob/living/master_heretic
 	/// Lazylist of all the people this heretic has selected as a heart target.
 	var/list/target_blacklist
+	var/heretic_type = null
 
 /datum/eldritch_knowledge/spell/basic/on_gain(mob/user)
 	. = ..()
 	master_heretic = user
+	if(!GLOB.heretic_sacrifice_landmarks.len)
+		INVOKE_ASYNC(src, .proc/generate_heretic_z_level)
 
 /datum/eldritch_knowledge/spell/basic/on_lose(mob/user)
 	master_heretic = null
 	LAZYNULL(target_blacklist)
 	return ..()
+
+/*
+ * Generate the heretic z-level for sacrificed people.
+ */
+/datum/eldritch_knowledge/spell/basic/proc/generate_heretic_z_level()
+	var/datum/map_template/heretic_sacrifice_level/new_level = new()
+	if(!new_level.load_new_z())
+		CRASH("Failed to initialize heretic sacrifice z-level!")
 
 /*
  * This proc is called from [proc/on_finished_recipe] after the [heretic] successfully sacrifices [sac_target]
@@ -36,6 +51,20 @@
 /datum/eldritch_knowledge/spell/basic/proc/sacrifice_process(mob/living/carbon/human/sac_target)
 	if(!sac_target)
 		CRASH("sacrifice_process() called with null sac_target!")
+
+	var/datum/antagonist/heretic/our_heretic = master_heretic?.mind?.has_antag_datum(/datum/antagonist/heretic)
+	if(!our_heretic)
+		CRASH("sacrifice_process() called [master_heretic? "without a heretic linked":"without a heretic antag datum found"]!")
+
+	if(!heretic_type)
+		if(locate(/datum/eldritch_knowledge/base_void) in our_heretic.researched_knowledge)
+			heretic_type = PATH_VOID
+		else if(locate(/datum/eldritch_knowledge/base_rust) in our_heretic.researched_knowledge)
+			heretic_type = PATH_RUST
+		else if(locate(/datum/eldritch_knowledge/base_ash) in our_heretic.researched_knowledge)
+			heretic_type = PATH_ASH
+		else if(locate(/datum/eldritch_knowledge/base_flesh) in our_heretic.researched_knowledge)
+			heretic_type = PATH_FLESH
 
 	var/turf/sac_loc = get_turf(sac_target)
 	var/sleeping_time = 12 SECONDS
@@ -67,15 +96,24 @@
 /*
  * This proc is called from [proc/sacrifice_process] after the [sac_target] falls asleep, shortly after the sacrifice occurs.
  *
- * The [sac_target] is teleported to the error room asleep. If it fails to teleport, it instead disembowels them and stops the chain.
+ * The [sac_target] is teleported to the heretic room asleep. If it fails to teleport, it instead disembowels them and stops the chain.
  * If they are sacrificed while dead, it revives them, too.
  */
 /datum/eldritch_knowledge/spell/basic/proc/after_target_sleep(mob/living/carbon/human/sac_target)
 	var/turf/sac_loc = get_turf(sac_target)
-	var/obj/effect/landmark/error/error_landmark = locate(/obj/effect/landmark/error) in GLOB.landmarks_list
-	var/turf/picked_turf = get_turf(error_landmark)
+	var/obj/effect/landmark/heretic/destination
+	switch(heretic_type)
+		if(PATH_VOID)
+			destination = locate(/obj/effect/landmark/heretic/void) in GLOB.heretic_sacrifice_landmarks
+		if(PATH_FLESH)
+			destination = locate(/obj/effect/landmark/heretic/flesh) in GLOB.heretic_sacrifice_landmarks
+		if(PATH_RUST)
+			destination = locate(/obj/effect/landmark/heretic/rust) in GLOB.heretic_sacrifice_landmarks
+		else
+			destination = locate(/obj/effect/landmark/heretic/ash) in GLOB.heretic_sacrifice_landmarks
 
-	if(!picked_turf || !do_teleport(sac_target, picked_turf, asoundin = 'sound/magic/repulse.ogg', asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
+	var/turf/picked_turf = get_turf(destination)
+	if(!destination || !picked_turf || !do_teleport(sac_target, picked_turf, asoundin = 'sound/magic/repulse.ogg', asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
 		message_admins("[sac_target] teleported failed at [ADMIN_VERBOSEJMP(sac_loc)]: Teleport failed - [picked_turf ? "do_teleport action failed somehow, likely a bug":"no target turf was found"].")
 		stack_trace("[sac_target] was disemboweled by a heretic at [loc_name(sac_loc)]: [picked_turf? "Teleport failed - [(sac_target.stat == DEAD)? "target was dead":"do_teleport failed"]":"no target turf was found"].")
 		disembowel_target()
@@ -136,11 +174,11 @@
 /datum/eldritch_knowledge/spell/basic/proc/return_target(mob/living/carbon/human/sac_target, gibbed)
 	SIGNAL_HANDLER
 
+	if(gibbed)
+		return
+
 	UnregisterSignal(sac_target, COMSIG_LIVING_DEATH)
 	sac_target.remove_status_effect(STATUS_EFFECT_NECROPOLIS_CURSE)
-
-	if(gibbed || !is_centcom_level(sac_target.z))
-		return
 
 	/// Teleport them to a random safe coordinate on the station z level.
 	var/turf/open/floor/safe_turf = find_safe_turf(extended_safety_checks = TRUE)
