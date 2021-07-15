@@ -143,7 +143,7 @@
 	addtimer(CALLBACK(src, .proc/after_helgrasp_ends, sac_target), helgrasp_time)
 	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm", /datum/mood_event/shadow_realm)
 
-	sac_target.apply_necropolis_curse(CURSE_WASTING | CURSE_BLINDING | CURSE_GRASPING)
+	sac_target.apply_necropolis_curse(CURSE_BLINDING | CURSE_GRASPING)
 	sac_target.flash_act()
 	sac_target.blur_eyes(15)
 	sac_target.Jitter(10)
@@ -366,6 +366,8 @@
 	user.adjustFireLoss(healing_amount * 2 * REM * delta_time, FALSE)
 	user.cause_pain(BODY_ZONES_LIMBS + BODY_ZONE_HEAD, healing_amount / 4)
 	user.cause_pain(BODY_ZONE_CHEST, healing_amount / 2)
+	if(user.blood_volume < BLOOD_VOLUME_NORMAL)
+		user.blood_volume = user.blood_volume + (2 * REM * delta_time)
 	adjust_temperature(user, delta_time)
 	adjust_bleed_wounds(user, delta_time)
 	. = ..()
