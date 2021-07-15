@@ -871,7 +871,7 @@
 		return
 
 	if(should_draw_greyscale)
-		limb.icon = 'icons/mob/human_parts_greyscale.dmi'
+		limb.icon = DEFAULT_BODYPART_ICON_ORGANIC //NON-MODULE CHANGE - normally hardcoded sprite definition
 		if(should_draw_gender)
 			limb.icon_state = "[species_id]_[body_zone]_[icon_gender]"
 		else if(use_digitigrade)

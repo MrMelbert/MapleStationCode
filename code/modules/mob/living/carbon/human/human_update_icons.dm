@@ -352,7 +352,7 @@ There are several things that need to be remembered:
 		var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_OCLOTHING) + 1]
 		inv.update_appearance()
 
-	if(istype(wear_suit, /obj/item/clothing/suit))
+	if(wear_suit) // NON-MODULE CHANGE: I hate old-code!
 		wear_suit.screen_loc = ui_oclothing
 		if(client && hud_used?.hud_shown)
 			if(hud_used.inventory_shown)
