@@ -20,3 +20,28 @@
 /obj/structure/no_effect_signpost/void/Initialize()
 	. = ..()
 	set_light(range, power)
+
+// Very dim lights.
+/obj/machinery/light/very_dim
+	nightshift_allowed = FALSE
+	bulb_colour = "#d6b6a6ff"
+	brightness = 3
+	bulb_power = 0.5
+
+/obj/machinery/light/very_dim/LateInitialize()
+	fitting = null
+	. = ..()
+	fitting = initial(fitting)
+	// Can you say hacky?
+
+/obj/machinery/light/very_dim/directional/north
+	dir = NORTH
+
+/obj/machinery/light/very_dim/directional/south
+	dir = SOUTH
+
+/obj/machinery/light/very_dim/directional/east
+	dir = EAST
+
+/obj/machinery/light/very_dim/directional/west
+	dir = WEST

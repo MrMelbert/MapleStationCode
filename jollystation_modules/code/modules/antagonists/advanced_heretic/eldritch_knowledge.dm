@@ -21,6 +21,7 @@
 	var/mob/living/master_heretic
 	/// Lazylist of all the people this heretic has selected as a heart target.
 	var/list/target_blacklist
+	/// What heretic type our master heretic is (path_void, path_flesh, path_ash, path_rust, or null)
 	var/heretic_type = null
 
 /datum/eldritch_knowledge/spell/basic/on_gain(mob/user)
@@ -354,6 +355,8 @@
 		user.Jitter(10)
 		user.Dizzy(5)
 		user.hallucination = min(user.hallucination + 3, 24)
+	if(DT_PROB(1, delta_time))
+		playsound(user, pick(GLOB.creepy_ambience), 50, TRUE)
 
 	user.set_fire_stacks(max(0, user.fire_stacks + healing_amount * 1.33 * REM * delta_time))
 	user.losebreath = max(0, user.losebreath + healing_amount * 0.66 * REM * delta_time)
