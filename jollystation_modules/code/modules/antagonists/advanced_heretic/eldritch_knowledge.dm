@@ -89,7 +89,6 @@
 	message_admins("[sac_target] was non-lethally sacrificed by a heretic at [ADMIN_VERBOSEJMP(sac_loc)].")
 	log_attack("[sac_target] was non-lethally sacrificed by a heretic at [loc_name(sac_loc)].")
 
-	RegisterSignal(sac_target, COMSIG_LIVING_DEATH, .proc/return_target) // Loss condition
 	addtimer(CALLBACK(src, .proc/after_target_sleep, sac_target), sleeping_time / 2) // Teleport to the minigame
 	addtimer(CALLBACK(src, .proc/after_target_awaken, sac_target), sleeping_time) // Begin the minigame
 	addtimer(CALLBACK(src, .proc/return_target, sac_target, FALSE), 3 MINUTES) // Win condition
@@ -127,6 +126,9 @@
 	message_admins("[sac_target] was non-lethally sacrificed by a heretic at [ADMIN_VERBOSEJMP(sac_loc)]. Teleporting to [ADMIN_VERBOSEJMP(picked_turf)].")
 	log_attack("[sac_target] was non-lethally sacrificed by a heretic at [loc_name(sac_loc)].")
 	to_chat(sac_target, span_big(span_hypnophrase("Unnatural forces begin to claw at your every being from beyond the veil.")))
+
+	RegisterSignal(sac_target, COMSIG_MOVABLE_Z_CHANGED, .proc/target_lost)
+	RegisterSignal(sac_target, COMSIG_LIVING_DEATH, .proc/return_target) // Loss condition
 
 /*
  * This proc is called from [proc/sacrifice_process] after the [sac_target] wakes up.
@@ -178,6 +180,7 @@
 	if(gibbed)
 		return
 
+	UnregisterSignal(sac_target, COMSIG_MOVABLE_Z_CHANGED)
 	UnregisterSignal(sac_target, COMSIG_LIVING_DEATH)
 	sac_target.remove_status_effect(STATUS_EFFECT_NECROPOLIS_CURSE)
 
@@ -206,6 +209,17 @@
 	composed_return_message += span_hypnophrase(get_area_name(safe_turf, TRUE))
 	if(master_heretic)
 		to_chat(master_heretic, composed_return_message)
+
+/*
+ * If they somehow cheese the shadow realm by teleporting out, kill them and return them properly.
+ */
+/datum/eldritch_knowledge/spell/basic/proc/target_lost(mob/living/carbon/human/sac_target, old_z, new_z)
+	SIGNAL_HANDLER
+
+	to_chat(sac_target, span_userdanger("Your attempt to escape the realm is not taken kindly!"))
+	disembowel_target(sac_target)
+	sac_target.death()
+	return_target(sac_target, FALSE)
 
 /*
  * This proc is called from [proc/return_target] if the target survives the shadow realm.
