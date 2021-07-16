@@ -44,8 +44,6 @@
 
 	id_trim = /datum/id_trim/job/scientist
 
-	id_trim = /datum/id_trim/job/scientist
-
 /datum/outfit/job/scientist/pre_equip(mob/living/carbon/human/H)
 	..()
 	if(prob(0.4))
