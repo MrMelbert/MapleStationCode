@@ -1492,6 +1492,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							features["mcolor"] = pref_species.default_color
 						if(randomise[RANDOM_NAME])
 							real_name = pref_species.random_name(gender)
+						// NON-MODULE CHANGE: We also need to verify our quirks are okay.
+						validate_quirks()
 
 				if("mutant_color")
 					var/new_mutantcolor = input(user, "Choose your character's alien/mutant color:", "Character Preference","#"+features["mcolor"]) as color|null
