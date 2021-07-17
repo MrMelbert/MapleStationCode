@@ -155,7 +155,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 
 	// If the client has flavor text set.
 	if(flavor_text)
-		var/found_flavor_text = get_flavor_text(shorten)
+		var/found_flavor_text = get_flavor_text(examiner, shorten)
 		. += found_flavor_text
 		if(length(found_flavor_text) > EXAMINE_FLAVOR_MAX_DISPLAYED)
 			added_info += "longer flavor text"
