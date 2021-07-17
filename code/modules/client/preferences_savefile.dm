@@ -632,7 +632,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["job_preferences"] , job_preferences)
 
 	//Quirks
-	validate_quirks() // NON-MODULE CHANGE
 	WRITE_FILE(S["all_quirks"] , all_quirks)
 
 	return TRUE
