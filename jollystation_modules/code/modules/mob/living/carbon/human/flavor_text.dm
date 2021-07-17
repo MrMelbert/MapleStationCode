@@ -151,40 +151,30 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	. = ""
 
 	// Whether or not we would have additional info on `examine_more()`.
-	var/has_additional_info
+	var/list/added_info = list()
 
 	// If the client has flavor text set.
 	if(flavor_text)
 		var/found_flavor_text = get_flavor_text(shorten)
 		. += found_flavor_text
 		if(length(found_flavor_text) > EXAMINE_FLAVOR_MAX_DISPLAYED)
-			has_additional_info |= ADDITIONAL_INFO_FLAVOR
+			added_info += "longer flavor text"
 
 	// Antagonists can see expoitable information.
 	if(expl_info && examiner.mind?.antag_datums)
 		for(var/datum/antagonist/antag_datum as anything in examiner.mind.antag_datums)
 			if(antag_datum.antag_flags & CAN_SEE_EXPOITABLE_INFO)
-				has_additional_info |= ADDITIONAL_INFO_EXPLOITABLE
+				added_info += "exploitable information"
 				break
 	// Medhuds can see medical and general records, with adequate access.
-	if(examiner.check_med_hud_and_access())
-		if(med_records || gen_records)
-			has_additional_info |= ADDITIONAL_INFO_RECORDS
+	if(examiner.check_med_hud_and_access() && (med_records || gen_records))
+		added_info += "past records"
 	// Sechuds can see security records, with adequate access.
-	if(sec_records && examiner.check_sec_hud_and_access())
-		has_additional_info |= ADDITIONAL_INFO_RECORDS
+	else if(examiner.check_sec_hud_and_access() && sec_records)
+		added_info += "past records"
 
-	// Format a little message to append to let the player know they can access longer flavor text/records/info on double examine.
-	var/added_info = ""
-	if(has_additional_info & ADDITIONAL_INFO_FLAVOR)
-		added_info = "longer flavor text"
-	if(has_additional_info & ADDITIONAL_INFO_EXPLOITABLE)
-		added_info = "[added_info ? "[added_info], exploitable information" : "exploitable information"]"
-	if(has_additional_info & ADDITIONAL_INFO_RECORDS)
-		added_info = "[added_info ? "[added_info] and past records" : "past records"]"
-
-	if(added_info && shorten)
-		. += span_smallnoticeital("This individual may have [added_info] available if you [EXAMINE_CLOSER_BOLD].\n")
+	if(added_info.len && shorten)
+		. += span_smallnoticeital("This individual may have [english_list(added_info, and_text = " or ", final_comma_text = ",")] available if you [EXAMINE_CLOSER_BOLD].\n")
 	else
 		. += get_records_text(examiner)
 
