@@ -1,4 +1,7 @@
 // -- Modular Skrell species --
+/// GLOB list of head tentacle sprites / options
+GLOBAL_LIST_EMPTY(head_tentacles_list)
+
 // The datum for Skrell.
 /datum/species/skrell
 	name = "Skrell"

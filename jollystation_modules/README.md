@@ -98,7 +98,6 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\__DEFINES\say.dm
 - code\__HELPERS\global_lists.dm
 - code\__HELPERS\mobs.dm
-- code\_globalvars\lists\flavor_misc.dm
 - code\controllers\subsystem\id_access.dm
 - code\controllers\subsystems\job.dm
 - code\controllers\subsystem\mapping.dm
