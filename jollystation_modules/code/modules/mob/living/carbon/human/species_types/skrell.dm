@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	id = SPECIES_SKRELL
 	default_color = "4B4B4B"
 	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE)
-	external_organs = list(/obj/item/organ/external/head_tentacles = "Short")
+	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	toxic_food = MEAT | RAW | DAIRY | TOXIC
 	disliked_food = GROSS
 	liked_food = VEGETABLES | FRUIT
