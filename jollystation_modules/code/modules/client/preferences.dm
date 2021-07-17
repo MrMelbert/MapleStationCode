@@ -14,3 +14,13 @@
 	/// Client preferences
 	var/hear_speech_sounds = TRUE
 	var/hear_radio_sounds = TRUE
+
+/datum/preferences/validate_quirks() // TODO: test
+	. = ..()
+	for(var/quirk in all_quirks)
+		if(SSquirks.species_blacklist[quirk] && (pref_species.type in SSquirks.species_blacklist[quirk]))
+			all_quirks -= quirk
+			continue
+		if(SSquirks.species_whitelist[quirk] && !(pref_species.type in SSquirks.species_whitelist[quirk]))
+			all_quirks -= quirk
+			continue
