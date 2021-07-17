@@ -8,6 +8,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	id = SPECIES_SKRELL
 	default_color = "4B4B4B"
 	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE)
+	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP, TRAIT_LIGHT_DRINKER)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	toxic_food = MEAT | RAW | DAIRY | TOXIC
 	disliked_food = GROSS
@@ -15,7 +16,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
-	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LIGHT_DRINKER)
 	say_mod = "warbles"
 	exotic_bloodtype = "S"
 	mutanttongue = /obj/item/organ/tongue/skrell
