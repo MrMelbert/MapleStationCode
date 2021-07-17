@@ -532,7 +532,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["moth_wings"] = sanitize_inlist(features["moth_wings"], GLOB.moth_wings_list, "Plain")
 	features["moth_antennae"] = sanitize_inlist(features["moth_antennae"], GLOB.moth_antennae_list, "Plain")
 	features["moth_markings"] = sanitize_inlist(features["moth_markings"], GLOB.moth_markings_list, "None")
-	// NON-MODULE CHANGES: -- Pref Sanitization --
+	// NON-MODULE CHANGE: -- Pref Sanitization --
 	features["head_tentacles"] = sanitize_inlist(features["head_tentacles"], GLOB.head_tentacles_list, "Long")
 
 	runechat_color = sanitize_hexcolor(runechat_color)
@@ -544,8 +544,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	sanitize_loadout_list(loadout_list)
 	sanitize_greyscale_list(greyscale_loadout_list)
-
-	// NON-MODULE CHANGES END
+	// NON-MODULE CHANGE END
 
 	persistent_scars = sanitize_integer(persistent_scars)
 

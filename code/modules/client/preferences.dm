@@ -548,7 +548,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			// NON-MODULE Addition Start
+			// NON-MODULE CHANGE: Head Tentacles
 			if(pref_species.external_organs[/obj/item/organ/external/head_tentacles])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
@@ -561,7 +561,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if(mutant_category >= MAX_MUTANT_ROWS)
 					dat += "</td>"
 					mutant_category = 0
-			// NON-MODULE Addition End
+			// NON-MODULE CHANGE END
 
 			//Adds a thing to select which phobia because I can't be assed to put that in the quirks window
 			if("Phobia" in all_quirks)
@@ -1577,13 +1577,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(new_moth_markings)
 						features["moth_markings"] = new_moth_markings
 
-				// NON-MODULE Addition Start
+				// NON-MODULE CHANGE: Head Tentacles
 				if("head_tentacles")
 					var/new_head_tentacles
 					new_head_tentacles = input(user, "Choose your character's style of head tentacles:", "Character Preference") as null|anything in GLOB.head_tentacles_list
 					if(new_head_tentacles)
 						features["head_tentacles"] = new_head_tentacles
-				// NON-MODULE Addition End
+				// NON-MODULE CHANGE END
 
 				if("s_tone")
 					var/new_s_tone = input(user, "Choose your character's skin-tone:", "Character Preference")  as null|anything in GLOB.skin_tones
