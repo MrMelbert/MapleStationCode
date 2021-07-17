@@ -2081,7 +2081,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		var/datum/antagonist/antag
 		if(antag.get_team()) //No team antags
 			return FALSE
-	return TRUE
+	return FALSE // NON-MODULE CHANGE: Disable random hardcore
 
 /datum/preferences/proc/get_default_name(name_id)
 	switch(name_id)
