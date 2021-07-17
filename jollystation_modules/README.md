@@ -93,13 +93,19 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 
 - code\__DEFINES\antagonists.dm
 - code\__DEFINES\chat.dm
+- code\__DEFINES\DNA.dm
+- code\__DEFINES\is_helpers.dm
 - code\__DEFINES\say.dm
+- code\__HELPERS\global_lists.dm
+- code\__HELPERS\mobs.dm
+- code\_globalvars\lists\flavor_misc.dm
 - code\controllers\subsystem\id_access.dm
 - code\controllers\subsystems\job.dm
 - code\controllers\subsystem\mapping.dm
 - code\controllers\subsystem\vote.dm
 - code\datums\chatmessage.dm
 - code\datums\datacore.dm
+- code\datums\dna.dm
 - code\datums\id_trim\jobs.dm
 - code\datums\mapgen\Cavegens\LavalandGenerator.dm
 - code\datums\greyscale\json_configs\plushie_lizard.json
@@ -112,6 +118,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\game\objects\items\implants\implantuplink.dm
 - code\game\objects\items\plushes.dm
 - code\game\objects\items\scanners.dm
+- code\modules\admin\create_mob.dm
 - code\modules\antagonists\eldritch_cult\eldritch_effects.dm
 - code\modules\antagonists\eldritch_cult\eldritch_knowledge.dm
 - code\modules\antagonists\traitor\datum_traitor.dm
@@ -132,6 +139,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\mob\living\carbon\human\human_update_icons.dm
 - code\modules\mob\living\carbon\human\species.dm
 - code\modules\modular_computers\file_system\programs\jobmanagement.dm
+- code\modules\reagents\chemistry\reagents\other_reagents.dm
 - code\modules\surgery\bodyparts\_bodyparts.dm
 - code\modules\surgery\bodyparts\dismemberment.dm
 - code\modules\surgery\bodyparts\helpers.dm

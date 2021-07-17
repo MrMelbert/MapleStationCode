@@ -1,11 +1,11 @@
 // -- Modular Skrell species --
+// The datum for Skrell.
 /datum/species/skrell
 	name = "Skrell"
 	id = SPECIES_SKRELL
 	default_color = "4B4B4B"
-	species_traits = list(MUTCOLORS,EYECOLOR,LIPS,HAS_FLESH,HAS_BONE)
-	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutant_bodyparts = list("skrell_headtentacles" = "Male")
+	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE)
+	external_organs = list(/obj/item/organ/external/head_tentacles = "Short")
 	toxic_food = MEAT | RAW | DAIRY | TOXIC
 	disliked_food = GROSS
 	liked_food = VEGETABLES | FRUIT
@@ -22,11 +22,15 @@
 	species_pain_mod = 0.85
 	limbs_id = "skrell"
 
-//Adding their bloodbag here as well.
-/obj/item/reagent_containers/blood/skrell
-    blood_type = "S"
+// Preset Skrell species
+/mob/living/carbon/human/species/skrell
+	race = /datum/species/skrell
 
-//Adding the Skrell tongue here for now, could use a sprite for it. This probably should be cleaned up if another race is ported.
+// Skrell bloodbag, for S type blood
+/obj/item/reagent_containers/blood/skrell
+	blood_type = "S"
+
+// Skrell Tongue. Could use a sprite.
 /obj/item/organ/tongue/skrell
 	name = "skrellian tongue"
 	desc = "The source of the Skrellian people's warbling voice."
@@ -53,8 +57,29 @@
 	. = ..()
 	languages_possible = languages_possible_skrell
 
-//Moving the copper -> blood for skrell into here.
-/datum/reagent/copper/on_mob_life(mob/living/carbon/C)
-	if((isSkrell(C)) && (C.blood_volume < BLOOD_VOLUME_NORMAL))
-		C.blood_volume += 0.5
+// Copper restores blood for Skrell instead of iron.
+/datum/reagent/copper/on_mob_life(mob/living/carbon/C, delta_time)
+	if((isskrell(C)) && (C.blood_volume < BLOOD_VOLUME_NORMAL))
+		C.blood_volume += 0.5 * delta_time
 	..()
+
+// Organ for Skrell head tentacles.
+/obj/item/organ/external/head_tentacles
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES
+	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
+	dna_block = DNA_HEAD_TENTACLES_BLOCK
+	preference = "head_tentacles"
+
+/obj/item/organ/external/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
+	. = TRUE
+	if(human.head?.flags_inv & HIDEHAIR)
+		. = FALSE
+	if(human.wear_mask?.flags_inv & HIDEHAIR)
+		. = FALSE
+	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
+	if(our_head?.status == BODYPART_ROBOTIC)
+		. = FALSE
+
+/obj/item/organ/external/head_tentacles/get_global_feature_list()
+	return GLOB.head_tentacles_list

@@ -80,7 +80,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/skin_tone = "caucasian1" //Skin color
 	var/eye_color = "000" //Eye color
 	var/datum/species/pref_species = new /datum/species/human() //Mutant race
-	var/list/features = list("mcolor" = "FFF", "ethcolor" = "9c3030", "tail_lizard" = "Smooth", "tail_human" = "None", "snout" = "Round", "horns" = "None", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None", "legs" = "Normal Legs", "moth_wings" = "Plain", "moth_antennae" = "Plain", "moth_markings" = "None", "skrell_headtentacles" = "Male") // NON-MODULE EDIT
+	// NON-MODULE CHANGE: More possible features to save.
+	var/list/features = list("mcolor" = "FFF", "ethcolor" = "9c3030", "tail_lizard" = "Smooth", "tail_human" = "None", "snout" = "Round", "horns" = "None", "ears" = "None", "wings" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None", "legs" = "Normal Legs", "moth_wings" = "Plain", "moth_antennae" = "Plain", "moth_markings" = "None", "head_tentacles" = "Short")
 	var/list/randomise = list(RANDOM_UNDERWEAR = TRUE, RANDOM_UNDERWEAR_COLOR = TRUE, RANDOM_UNDERSHIRT = TRUE, RANDOM_SOCKS = TRUE, RANDOM_BACKPACK = TRUE, RANDOM_JUMPSUIT_STYLE = TRUE, RANDOM_HAIRSTYLE = TRUE, RANDOM_HAIR_COLOR = TRUE, RANDOM_FACIAL_HAIRSTYLE = TRUE, RANDOM_FACIAL_HAIR_COLOR = TRUE, RANDOM_SKIN_TONE = TRUE, RANDOM_EYE_COLOR = TRUE)
 	var/phobia = "spiders"
 
@@ -548,13 +549,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					mutant_category = 0
 
 			// NON-MODULE Addition Start
-			if(pref_species.mutant_bodyparts["skrell_headtentacles"])
+			if(pref_species.external_organs[/obj/item/organ/external/head_tentacles])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
 
 				dat += "<h3>Head Tentacles</h3>"
 
-				dat += "<a href='?_src_=prefs;preference=skrell_headtentacles;task=input'>[features["skrell_headtentacles"]]</a><BR>"
+				dat += "<a href='?_src_=prefs;preference=head_tentacles;task=input'>[features["head_tentacles"]]</a><BR>"
 
 				mutant_category++
 				if(mutant_category >= MAX_MUTANT_ROWS)
@@ -1577,11 +1578,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						features["moth_markings"] = new_moth_markings
 
 				// NON-MODULE Addition Start
-				if("skrell_headtentacles")
-					var/new_skrell_headtentacles
-					new_skrell_headtentacles = input(user, "Choose your character's style of head tentacles:", "Character Preference") as null|anything in GLOB.skrellheadtentacles_list
-					if(new_skrell_headtentacles)
-						features["skrell_headtentacles"] = new_skrell_headtentacles
+				if("head_tentacles")
+					var/new_head_tentacles
+					new_head_tentacles = input(user, "Choose your character's style of head tentacles:", "Character Preference") as null|anything in GLOB.head_tentacles_list
+					if(new_head_tentacles)
+						features["head_tentacles"] = new_head_tentacles
 				// NON-MODULE Addition End
 
 				if("s_tone")

@@ -845,13 +845,6 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		if(!source.dna.features["ears"] || source.dna.features["ears"] == "None" || source.head && (source.head.flags_inv & HIDEHAIR) || (source.wear_mask && (source.wear_mask.flags_inv & HIDEHAIR)) || !noggin || noggin.status == BODYPART_ROBOTIC)
 			bodyparts_to_add -= "ears"
 
-	//JolyStation Addition Start
-	if(mutant_bodyparts["skrell_headtentacles"])
-		if(source.head && (source.head.flags_inv & HIDEHAIR) || (source.wear_mask && (source.wear_mask.flags_inv & HIDEHAIR)) || !noggin || noggin.status == BODYPART_ROBOTIC)
-			bodyparts_to_add -= "skrell_headtentacles"
-	// NON-MODULE Addition End
-	//A big chunk of mutant code was removed, this needs to be refactored to fit the standard. Maybe remove skrells in the future?
-
 	//Digitigrade legs are stuck in the phantom zone between true limbs and mutant bodyparts. Mainly it just needs more agressive updating than most limbs.
 	var/update_needed = FALSE
 	var/not_digitigrade = TRUE
@@ -922,6 +915,9 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 					accessory = GLOB.caps_list[source.dna.features["caps"]]
 				if("tail_monkey")
 					accessory = GLOB.tails_list_monkey[source.dna.features["tail_monkey"]]
+				if("head_tentacles") // NON-MODULE CHANGE
+					accessory = GLOB.head_tentacles_list[source.dna.features["head_tentacles"]]
+
 			if(!accessory || accessory.icon_state == "none")
 				continue
 
