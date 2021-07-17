@@ -7,6 +7,9 @@
 /datum/quirk/bad_touch
 	value = -2
 
+/datum/quirk/light_drinker
+	desc = "You just can't handle your drinks and get drunk very quickly. (Unallowed: Skrell)"
+
 // Modular quirks
 // More vulnerabile to pain (increased pain modifier)
 /datum/quirk/pain_vulnerability

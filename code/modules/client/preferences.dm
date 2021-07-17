@@ -1254,6 +1254,17 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						if((Q in L) && !(Q == quirk)) //two quirks have lined up in the list of the list of quirks that conflict with each other, so return (see quirks.dm for more details)
 							to_chat(user, span_danger("[quirk] is incompatible with [Q]."))
 							return
+				// NON-MODULE CHANGE: Species requirements and blacklists for quirks
+				if(SSquirks.species_blacklist[quirk] && (pref_species.type in SSquirks.species_blacklist[quirk]))
+					to_chat(user, span_danger("[quirk] is incompatible with your selected species, [pref_species]."))
+					return
+				if(SSquirks.species_whitelist[quirk] && !(pref_species.type in SSquirks.species_whitelist[quirk]))
+					var/list/req_species = list()
+					for(var/datum/species/required_species as anything in SSquirks.species_whitelist[quirk])
+						req_species += initial(required_species.name)
+					to_chat(user, span_danger("[quirk] requires one of the following species: [req_species.Join(", ")]."))
+					return
+				// NON-MODULE CHANGE END
 				var/value = SSquirks.quirk_points[quirk]
 				var/balance = GetQuirkBalance()
 				if(quirk in all_quirks)

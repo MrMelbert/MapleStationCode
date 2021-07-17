@@ -103,7 +103,7 @@
 // Draconic
 /datum/quirk/trilingual/draconic
 	name = "Language - Draconic"
-	desc = "You're trilingual - you know the draconic language along with common and your native tongue."
+	desc = "You're trilingual - you know the draconic language along with common and your native tongue. (Unallowed: Lizardperson)"
 	value = 0
 	gain_text = "<span class='notice'>You understand Draconic.</span>"
 	lose_text = "<span class='notice'>You no longer understand Draconic.</span>"
@@ -113,7 +113,7 @@
 // Moffic
 /datum/quirk/trilingual/moffic
 	name = "Language - Moffic"
-	desc = "You're trilingual - you know the moffic language along with common and your native tongue."
+	desc = "You're trilingual - you know the moffic language along with common and your native tongue. (Unallowed: Mothperson)"
 	value = 0
 	gain_text = "<span class='notice'>You understand Moffic.</span>"
 	lose_text = "<span class='notice'>You no longer understand Moffic.</span>"
@@ -123,7 +123,7 @@
 // Nekomimetic
 /datum/quirk/trilingual/nekomimetic
 	name = "Language - Nekomimetic"
-	desc = "You're trilingual - you know the Nekomimetic language along with common and your native tongue."
+	desc = "You're trilingual - you know the Nekomimetic language along with common and your native tongue. (Unallowed: Felinid)"
 	value = 0
 	gain_text = "<span class='notice'>You understand Nekomimetic.</span>"
 	lose_text = "<span class='notice'>You no longer understand Nekomimetic.</span>"
@@ -133,7 +133,7 @@
 // Skrellian
 /datum/quirk/trilingual/skrell
 	name = "Language - Skrellian"
-	desc = "You're trilingual - you know the Skrellian language along with common and your native tongue."
+	desc = "You're trilingual - you know the Skrellian language along with common and your native tongue. (Unallowed: Skrell)"
 	value = 0
 	gain_text = "<span class='notice'>You understand Skrellian.</span>"
 	lose_text = "<span class='notice'>You no longer understand Skrellian.</span>"

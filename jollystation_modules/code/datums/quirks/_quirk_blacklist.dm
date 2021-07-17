@@ -11,7 +11,7 @@
 
 /datum/controller/subsystem/processing/quirks
 	// Add in quirk blackists here.
-	var/list/module_blacklist = list(
+	var/static/list/module_blacklist = list(
 		SIZE_QUIRKS,
 		PAIN_QUIRKS,
 		LANG_QUIRKS,
@@ -20,6 +20,16 @@
 		PROSTHETICS_R_LEG,
 		PROSTHETICS_L_ARM,
 		PROSTHETICS_R_ARM,
+	)
+	var/static/list/species_blacklist = list(
+		"Light Drinker" = list(/datum/species/skrell),
+		"Language - Draconic" = list(/datum/species/lizard),
+		"Language - Moffic" = list(/datum/species/moth),
+		"Language - Nekomimetic" = list(/datum/species/human/felinid),
+		"Language - Skrellian" = list(/datum/species/skrell),
+	)
+	var/static/list/species_whitelist = list(
+		"Language - High Draconic" = list(/datum/species/lizard),
 	)
 
 //Extends the initialization proc, adding the module blacklists we have after the main init finishes.
