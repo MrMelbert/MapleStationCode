@@ -76,10 +76,10 @@
 	if (!istype(traitor_mob))
 		return
 
-	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = new(traitor_mob)
+	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = new(traitor_mob, traitor_mob, UPLINK_INFILTRATOR)
 	var/obj/item/implant/weapons_auth/weapons_implant = new(traitor_mob)
-	infiltrator_implant.implant(traitor_mob, traitor_mob, TRUE)
-	weapons_implant.implant(traitor_mob, traitor_mob, TRUE)
+	infiltrator_implant.implant(traitor_mob, traitor_mob, TRUE, TRUE)
+	weapons_implant.implant(traitor_mob, traitor_mob, TRUE, TRUE)
 	if(!silent)
 		to_chat(traitor_mob, span_boldnotice("[employer] has cunningly implanted you with an [infiltrator_implant.name] to assist in your infiltration. You can trigger the uplink to stealthily access it."))
 		to_chat(traitor_mob, span_boldnotice("[employer] has wisely implanted you with a [weapons_implant.name] to allow you to use syndicate weaponry. You can now fire weapons with Syndicate firing pins."))
