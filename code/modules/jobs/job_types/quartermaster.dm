@@ -2,7 +2,7 @@
 	title = "Quartermaster"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD // NON-MODULE CHANGE
 	department_head = list("Captain") // NON-MODULE CHANGE
-	faction = "Station"
+	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
 	req_admin_notify = 1 // NON-MODULE CHANGE
@@ -26,10 +26,13 @@
 		/obj/item/circuitboard/machine/emitter = 3
 	)
 
-/datum/job/quartermaster/announce(mob/living/carbon/human/H, announce_captaincy = FALSE)
-	..()
-	if(announce_captaincy)
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/minor_announce, "Due to extreme staffing shortages, newly promoted Acting Captain [H.real_name] on deck!"))
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE
+
+	voice_of_god_power = 1.4 //Command staff has authority
+
+
+/datum/job/research_director/get_captaincy_announcement(mob/living/captain) // NON-MODULE CHANGE
+	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 /datum/outfit/job/quartermaster
 	name = "Quartermaster"

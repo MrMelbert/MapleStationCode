@@ -17,7 +17,7 @@
 	var/mob/living/living_antag = mob_override || owner.current
 	remove_antag_hud(antag_hud_type, living_antag)
 	living_antag.faction -= ROLE_SYNDICATE
-	living_antag.mind.assigned_role = null
+	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/unassigned))
 	living_antag.mind.special_role = null
 
 /datum/antagonist/traitor/traitor_plus/intiltrator/on_removal()
