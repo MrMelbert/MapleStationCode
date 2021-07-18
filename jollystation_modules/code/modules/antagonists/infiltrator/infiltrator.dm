@@ -136,7 +136,7 @@
 /// infiltrator uplink implant.
 /obj/item/implant/uplink/infiltrator
 	name = "infiltrator uplink implant"
-	uplink_type = UPLINK_INFILTRATOR
+	uplink_flag = UPLINK_INFILTRATOR
 
 /datum/outfit/syndicate_infiltrator
 	name = "Syndicate Infiltrator"

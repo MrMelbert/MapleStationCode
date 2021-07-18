@@ -171,13 +171,7 @@
 		return TRUE
 	if(our_mind.has_antag_datum(/datum/antagonist/nukeop))
 		return TRUE
-	if(istype(our_mind.assigned_role, /datum/job/space_syndicate))
-		return TRUE
-	if(istype(our_mind.assigned_role, /datum/job/lavaland_syndicate))
-		return TRUE
-	if(istype(our_mind.assigned_role, /datum/job/syndicate_cybersun))
-		return TRUE
-	if(istype(our_mind.assigned_role, /datum/job/syndicate_cybersun_captain))
+	if(our_mind.assigned_role.faction_alignment & JOB_SYNDICATE)
 		return TRUE
 	if(ROLE_SYNDICATE in our_mind.current.faction)
 		return TRUE
