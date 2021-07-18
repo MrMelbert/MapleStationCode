@@ -51,7 +51,7 @@
 	purchasable_from = UPLINK_NUKE_OPS | UPLINK_CLOWN_OPS | UPLINK_INFILTRATOR
 
 /datum/uplink_item/stealthy_weapons/cqc/infiltrator // Do I really want to give out CQC for non-ops?
-	cost = 30 // ...Yes, but it costs their entire budget
+	cost = 24
 	cant_discount = TRUE
 	purchasable_from = UPLINK_INFILTRATOR
 
