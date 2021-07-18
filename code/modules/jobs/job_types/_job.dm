@@ -13,11 +13,11 @@
 	/// Tells the given channels that the given mob is the new department head. See communications.dm for valid channels.
 	var/list/head_announce = null
 
-	// /Bitflags for the job
+	/// Bitflags for the job
 	var/auto_deadmin_role_flags = NONE
 
 	/// Players will be allowed to spawn in as jobs that are set to "Station"
-	var/faction = "None"
+	var/faction = FACTION_NONE
 
 	/// How many players can be this job
 	var/total_positions = 0

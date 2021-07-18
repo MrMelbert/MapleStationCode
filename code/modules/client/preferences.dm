@@ -2031,7 +2031,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		pref_species = new /datum/species/human
 		save_character()
 
-
 	if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == SPECIES_HUMAN))
 		var/firstspace = findtext(real_name, " ")
 		var/name_length = length(real_name)
@@ -2052,7 +2051,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /datum/preferences/proc/apply_prefs_to(mob/living/carbon/human/character, icon_updates = TRUE)
 	character.real_name = real_name
 	character.name = real_name
-
 
 	character.gender = gender
 	character.age = age
@@ -2084,7 +2082,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	character.jumpsuit_style = jumpsuit_style
 
-
 	character.dna.features = features.Copy()
 	character.set_species(pref_species.type, icon_update = FALSE, pref_load = TRUE)
 	character.dna.real_name = character.real_name
@@ -2112,6 +2109,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		if(antag.get_team()) //No team antags
 			return FALSE
 	return FALSE // NON-MODULE CHANGE: Disables random hardcore
+
 
 
 /datum/preferences/proc/get_default_name(name_id)
