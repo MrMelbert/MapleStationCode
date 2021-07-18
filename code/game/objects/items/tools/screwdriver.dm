@@ -42,8 +42,6 @@
 		"cyan" = "#18a2d5",
 		"yellow" = "#ffa500"
 	)
-	/// Colored belt appearance for adding it as a belt overlay
-	var/mutable_appearance/colored_belt_appearance
 
 /obj/item/screwdriver/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is stabbing [src] into [user.p_their()] [pick("temple", "heart")]! It looks like [user.p_theyre()] trying to commit suicide!"))

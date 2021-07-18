@@ -34,7 +34,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/skrell_headtentacles, GLOB.skrellheadtentacles_list) //Adding Skrell Headtentacles init -Jon
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/skrell_headtentacles, GLOB.skrellheadtentacles_list) //NON-MODULE COMMENT
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))
@@ -58,6 +58,8 @@
 	GLOB.emote_list = init_emote_list()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+
+	init_subtypes_w_path_keys(/obj/projectile, GLOB.proj_by_path_key)
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -85,3 +87,10 @@
 			L+= path
 		return L
 
+/// Functions like init_subtypes, but uses the subtype's path as a key for easy access
+/proc/init_subtypes_w_path_keys(prototype, list/L)
+	if(!istype(L))
+		L = list()
+	for(var/path as anything in subtypesof(prototype))
+		L[path] = new path()
+	return L

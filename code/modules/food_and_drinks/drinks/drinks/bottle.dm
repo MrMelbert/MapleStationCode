@@ -24,10 +24,6 @@
 	///Directly relates to the 'knockdown' duration. Lowered by armor (i.e. helmets)
 	var/bottle_knockdown_duration = 1.3 SECONDS
 
-/obj/item/reagent_containers/food/drinks/bottle/update_overlays()
-	. = ..()
-	. += "[initial(icon_state)]shine"
-
 /obj/item/reagent_containers/food/drinks/bottle/small
 	name = "small glass bottle"
 	desc = "This blank bottle is unyieldingly anonymous, offering no clues to its contents."
@@ -273,14 +269,14 @@
 		LAZYSET(W.data,"vintage",wine_info)
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/proc/generate_vintage()
-	return "[GLOB.year_integer + 540] Nanotrasen Light Red"
+	return "[GLOB.year_integer + 555] Nanotrasen Light Red" // NON-MODULE CHANGE; Default year increment is 540, Jollystation is +15 years from that.
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/unlabeled
 	name = "unlabeled wine bottle"
 	desc = "There's no label on this wine bottle."
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/unlabeled/generate_vintage()
-	var/current_year = GLOB.year_integer + 540
+	var/current_year = GLOB.year_integer + 555 // NON-MODULE CHANGE; Default year increment is 540, Jollystation is +15 years from that.
 	var/year = rand(current_year-50,current_year)
 	var/type = pick("Sparkling","Dry White","Sweet White","Rich White","Rose","Light Red","Medium Red","Bold Red","Dessert")
 	var/origin = pick("Nanotrasen","Syndicate","Local")

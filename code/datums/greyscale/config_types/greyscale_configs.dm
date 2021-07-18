@@ -28,6 +28,11 @@
 	icon_file = 'icons/obj/atmospherics/prototype_canister.dmi'
 	json_config = 'code/datums/greyscale/json_configs/canister_proto.json'
 
+/datum/greyscale_config/stationary_canister
+	name = "Stationary Canister"
+	icon_file = 'icons/obj/atmospherics/stationary_canisters.dmi'
+	json_config = 'code/datums/greyscale/json_configs/smooth_canister_stationary.json'
+
 /datum/greyscale_config/carp
 	name = "Space Carp"
 	icon_file = 'icons/mob/carp.dmi'
@@ -225,7 +230,7 @@
 
 /datum/greyscale_config/plush_lizard
 	name = "Plushie Lizard"
-	icon_file = 'icons/obj/plushes.dmi'
+	icon_file = 'jollystation_modules/icons/obj/plushes.dmi' // NON-MODULE CHANGE
 	json_config = 'code/datums/greyscale/json_configs/plushie_lizard.json'
 
 /datum/greyscale_config/flower_simple
@@ -278,6 +283,16 @@
 	icon_file = 'icons/obj/items/cleric_mace.dmi'
 	json_config = 'code/datums/greyscale/json_configs/items/cleric_mace_worn_gold.json'
 
+/datum/greyscale_config/suspenders
+	name = "Suspenders"
+	icon_file = 'icons/obj/clothing/belts.dmi'
+	json_config = 'code/datums/greyscale/json_configs/suspenders.json'
+
+/datum/greyscale_config/suspenders/worn
+	name = "Worn Suspenders"
+	icon_file = 'icons/mob/clothing/suit.dmi'
+	json_config = 'code/datums/greyscale/json_configs/suspenders_worn.json'
+
 /datum/greyscale_config/giftdeliverybox
 	name = "Gift Box"
 	icon_file = 'icons/obj/storage.dmi'
@@ -322,3 +337,11 @@
 	name = "Wrapping Paper"
 	icon_file = 'icons/obj/stack_objects.dmi'
 	json_config = 'code/datums/greyscale/json_configs/wrap_paper.json'
+
+/datum/greyscale_config/janicart_upgrade
+	name = "Janicart Upgrade"
+	icon_file = 'icons/obj/janicart_upgrade.dmi'
+	json_config = 'code/datums/greyscale/json_configs/janicart_upgrade.json'
+
+/datum/greyscale_config/janicart_upgrade/installed
+	json_config = 'code/datums/greyscale/json_configs/janicart_upgrade_installed.json'

@@ -99,20 +99,6 @@
 	distill_reagent = null
 	wine_power = 80
 
-/obj/item/food/grown/tomato/blue/bluespace/Initialize(mapload, obj/item/seeds/new_seed)
-	. = ..()
-	AddElement(/datum/element/plant_backfire, /obj/item/food/grown/tomato/blue/bluespace.proc/splat_user, extra_genes = list(/datum/plant_gene/trait/squash))
-
-/*
- * Splat our tomato on our user. Called from [/datum/element/plant_backfire]
- *
- * user - the mob handling the bluespace tomato
- */
-/obj/item/food/grown/tomato/blue/bluespace/proc/splat_user(mob/living/carbon/user)
-	if(prob(50))
-		to_chat(user, "<span class='danger'>[src] slips out of your hand!</span>")
-		attack_self(user)
-
 // Killer Tomato
 /obj/item/seeds/tomato/killer
 	name = "pack of killer-tomato seeds"

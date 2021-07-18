@@ -214,7 +214,8 @@
 		if(M.see_invisible < invisibility)//if src is invisible to M
 			msg = blind_message
 		else if(T != loc && T != src) //if src is inside something and not a turf.
-			msg = blind_message
+			if(M != loc) // Only give the blind message to hearers that aren't the location
+				msg = blind_message
 		else if(M.lighting_alpha > LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE && T.is_softly_lit() && !in_range(T,M)) //if it is too dark, unless we're right next to them.
 			msg = blind_message
 		if(!msg)
@@ -971,18 +972,10 @@
  *
  * You can buckle on mobs if you're next to them since most are dense
  */
-/mob/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
+/mob/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE, ignore_self = FALSE)
 	if(M.buckled)
 		return FALSE
-	var/turf/T = get_turf(src)
-	if(M.loc != T)
-		var/old_density = density
-		density = FALSE
-		var/can_step = step_towards(M, T)
-		density = old_density
-		if(!can_step)
-			return FALSE
-	return ..()
+	return ..(M, force, check_loc, buckle_mob_flags, ignore_self = TRUE)
 
 ///Call back post buckle to a mob to offset your visual height
 /mob/post_buckle_mob(mob/living/M)

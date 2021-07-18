@@ -90,7 +90,7 @@
 
 /obj/item/reagent_containers/food/drinks/bottle/lizardwine/Initialize()
 	. = ..()
-	var/vintage = rand(GLOB.year_integer + 450, GLOB.year_integer + 540) // Wine has an actual vintage var but lizardwine is special
+	var/vintage = rand(GLOB.year_integer + 450, GLOB.year_integer + 555) // Wine has an actual vintage var but lizardwine is special
 	AddElement(/datum/element/unique_examine, \
 		"A bottle of ethically questionable lizard wine. \
 		Rare now-a-days following the harsh regulations placed on the great wine industry. You'd place the vintage at... \

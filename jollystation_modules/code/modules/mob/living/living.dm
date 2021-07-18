@@ -31,6 +31,10 @@
 	if(forced)
 		return
 
+	// No sounds for sign language folk
+	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
+		return
+
 	/// Our list of sounds we're going to play
 	var/list/chosen_speech_sounds
 	/// Whether this is a question, an exclamation, or neither

@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 /**
+ * Build script for /tg/station 13 codebase.
+ *
+ * This script uses Juke Build, read the docs here:
+ * https://github.com/stylemistake/juke-build
+ *
  * @file
  * @copyright 2021 Aleksej Komarov
  * @license MIT
@@ -123,7 +128,7 @@ const DefaultTarget = Juke.createTarget({
  * Does not clean them up, as this is intended for TGS which
  * clones new copies anyway.
  */
- const prependDefines = (...defines) => {
+const prependDefines = (...defines) => {
   const dmeContents = fs.readFileSync(`${DME_NAME}.dme`);
   const textToWrite = defines.map(define => `#define ${define}\n`);
   fs.writeFileSync(`${DME_NAME}.dme`, `${textToWrite}\n${dmeContents}`);
@@ -138,13 +143,11 @@ const TgsTarget = Juke.createTarget({
   },
 });
 
+const TGS_MODE = process.env.CBT_BUILD_MODE === 'TGS';
+
 Juke
   .setup({
-    default: (
-      process.env.CBT_BUILD_MODE === 'TGS'
-        ? TgsTarget
-        : DefaultTarget
-    ),
+    default: TGS_MODE ? TgsTarget : DefaultTarget,
   })
   .then((code) => {
     process.exit(code);

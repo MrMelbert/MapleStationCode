@@ -404,7 +404,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			if(pref_species.mutant_bodyparts["snout"])
+			if(pref_species.external_organs[/obj/item/organ/external/snout])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
 
@@ -417,7 +417,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			if(pref_species.mutant_bodyparts["horns"])
+			if(pref_species.external_organs[/obj/item/organ/external/horns])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
 
@@ -430,7 +430,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			if(pref_species.mutant_bodyparts["frills"])
+			if(pref_species.external_organs[/obj/item/organ/external/frills])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
 
@@ -482,7 +482,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			if(pref_species.mutant_bodyparts["moth_wings"])
+			if(pref_species.external_organs[/obj/item/organ/external/wings/moth])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
 
@@ -495,7 +495,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			if(pref_species.mutant_bodyparts["moth_antennae"])
+			if(pref_species.external_organs[/obj/item/organ/external/antennae])
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
 
@@ -1984,13 +1984,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					hearted_until = null
 					to_chat(user, span_notice("OOC Commendation Heart disabled"))
 					save_preferences()
-
+				//NON-MODULE START
 				if("hear_speech_sounds")
 					hear_speech_sounds = !hear_speech_sounds
 
 				if("hear_radio_sounds")
 					hear_radio_sounds = !hear_radio_sounds
-
+				//NON-MODULE END
 	ShowChoices(user)
 	return 1
 
@@ -2015,7 +2015,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			hardcore_random_setup(character, antagonist, is_latejoiner)
 
 	if(roundstart_checks)
-		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == "human"))
+		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == SPECIES_HUMAN))
 			var/firstspace = findtext(real_name, " ")
 			var/name_length = length(real_name)
 			if(!firstspace) //we need a surname
@@ -2081,7 +2081,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		var/datum/antagonist/antag
 		if(antag.get_team()) //No team antags
 			return FALSE
-	return TRUE
+	return FALSE // NON-MODULE CHANGE: Disable random hardcore
 
 /datum/preferences/proc/get_default_name(name_id)
 	switch(name_id)

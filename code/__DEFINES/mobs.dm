@@ -57,7 +57,7 @@
 #define BODYPART_ORGANIC   1
 #define BODYPART_ROBOTIC   2
 
-#define DEFAULT_BODYPART_ICON_ORGANIC 'jollystation_modules/icons/mob/human_parts_greyscale_js.dmi' //Changing from the "icons/mob/human_parts_greyscale" file to the "jollystation_modules/icons/mob/human_parts_greyscale_js" version, to account for Skrell additions. JollyStation Edit -Jon
+#define DEFAULT_BODYPART_ICON_ORGANIC 'jollystation_modules/icons/mob/human_parts_greyscale_js.dmi' //NON-MODULE CHANGE - for the love of god just make these comments
 #define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
 
 #define MONKEY_BODYPART "monkey"
@@ -303,8 +303,8 @@
 #define OFFSET_NECK "neck"
 
 //MINOR TWEAKS/MISC
-#define AGE_MIN 17 //youngest a character can be
-#define AGE_MAX 85 //oldest a character can be
+#define AGE_MIN 18 //youngest a character can be, NON-MODULE START
+#define AGE_MAX 300 //oldest a character can be, NON-MODULE END
 #define AGE_MINOR 20  //legal age of space drinking and smoking
 #define WIZARD_AGE_MIN 30 //youngest a wizard can be
 #define APPRENTICE_AGE_MIN 29 //youngest an apprentice can be

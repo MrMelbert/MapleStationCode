@@ -4,11 +4,17 @@
 #define STATUS_EFFECT_LIMP_PAIN /datum/status_effect/limp/pain
 /// Low blood pressure
 #define STATUS_EFFECT_LOWBLOODPRESSURE /datum/status_effect/low_blood_pressure
+/// Sharp pain
+#define STATUS_EFFECT_SHARP_PAIN /datum/status_effect/sharp_pain
+/// Minimum pain
+#define STATUS_EFFECT_MIN_PAIN /datum/status_effect/minimum_bodypart_pain
 
-/// Sent when a carbon gains pain. (obj/item/bodypart/affected_bodypart, amount, type)
+/// Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
-/// Sent when a carbon loses pain. (obj/item/bodypart/affected_bodypart, amount, type)
+/// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
+/// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
+#define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 
 /// Various lists of body zones affected by pain.
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -32,6 +38,7 @@
 #define PAIN_MOD_CHEMS "chems"
 #define PAIN_MOD_DRUNK "drunk"
 #define PAIN_MOD_SLEEP "asleep"
+#define PAIN_MOD_LYING "lying"
 #define PAIN_MOD_STASIS "stasis"
 #define PAIN_MOD_DROWSY "drowsy"
 #define PAIN_MOD_NEAR_DEATH "near-death"
