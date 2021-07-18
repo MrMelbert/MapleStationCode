@@ -1,6 +1,25 @@
 {
 	"Dynamic": {},
 	"Roundstart": {
+		"Extended": {
+			"cost": 1,
+			"scaling_cost": 10,
+			"weight": 10,
+			"required_candidates": 1,
+			"minimum_required_age": 0,
+			"requirements": [
+				10,
+				10,
+				10,
+				10,
+				10,
+				10,
+				10,
+				10,
+				10,
+				10
+			]
+		},
 		"Traitors": {
 			"cost": 101,
 			"scaling_cost": 101,

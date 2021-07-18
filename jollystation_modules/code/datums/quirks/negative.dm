@@ -1,7 +1,7 @@
 // -- Bad modular quirks. --
 
 // Rebalance of existing quirks
-/datum/quirk/nearsighted
+/datum/quirk/item_quirk/nearsighted
 	value = -2
 
 /datum/quirk/bad_touch

@@ -29,6 +29,10 @@
 	name = "implanter (uplink)"
 	imp_type = /obj/item/implant/uplink
 
+/obj/item/implanter/uplink/Initialize(mapload, uplink_flag = UPLINK_TRAITORS)
+	imp = new imp_type(src, null, uplink_flag)
+	. = ..()
+
 /obj/item/implanter/uplink/precharged
 	name = "implanter (precharged uplink)"
 	imp_type = /obj/item/implant/uplink/precharged

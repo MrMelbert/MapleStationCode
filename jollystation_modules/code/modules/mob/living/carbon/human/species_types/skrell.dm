@@ -1,7 +1,7 @@
 // -- Modular Skrell species --
 /datum/species/skrell
 	name = "Skrell"
-	id = "skrell"
+	id = SPECIES_SKRELL
 	default_color = "4B4B4B"
 	species_traits = list(MUTCOLORS,EYECOLOR,LIPS,HAS_FLESH,HAS_BONE)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
@@ -20,6 +20,7 @@
 	species_speech_sounds_exclaim = list('jollystation_modules/sound/voice/huff_ask.ogg' = 120)
 	species_speech_sounds_ask = list('jollystation_modules/sound/voice/huff_exclaim.ogg' = 120)
 	species_pain_mod = 0.85
+	limbs_id = "skrell"
 
 //Adding their bloodbag here as well.
 /obj/item/reagent_containers/blood/skrell
