@@ -124,7 +124,7 @@
 		return FALSE
 
 	finalized = TRUE
-	return finalized
+	return TRUE
 
 /// Miscellaneous logging for the antagonist's goals after they finalize them.
 /// Extend this proc for adding in extra logging to an antagonist.
