@@ -991,7 +991,7 @@
 	ph = 6
 
 /datum/reagent/iron/on_mob_life(mob/living/carbon/C, delta_time, times_fired)
-	if((C.blood_volume < BLOOD_VOLUME_NORMAL) && !(isSkrell(C))) // NON-MODULE Edit, added check for the mob not being a skrell to benefit from this. -Jon
+	if((C.blood_volume < BLOOD_VOLUME_NORMAL) && !(isskrell(C))) // NON-MODULE CHANGE - Skrell do not benefit from iron.
 		C.blood_volume += 0.25 * delta_time
 	..()
 
@@ -2420,14 +2420,6 @@
 	taste_description = "acrid cinnamon"
 	metabolization_rate = 0.2 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/bz_metabolites/on_mob_metabolize(mob/living/L)
-	..()
-	ADD_TRAIT(L, CHANGELING_HIVEMIND_MUTE, type)
-
-/datum/reagent/bz_metabolites/on_mob_end_metabolize(mob/living/L)
-	..()
-	REMOVE_TRAIT(L, CHANGELING_HIVEMIND_MUTE, type)
 
 /datum/reagent/bz_metabolites/on_mob_life(mob/living/L, delta_time, times_fired)
 	if(L.mind)

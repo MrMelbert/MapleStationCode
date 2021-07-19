@@ -1,8 +1,8 @@
 // -- Modular spans and fonts.
 
-#define span_message(str) ("<span class='message'>[str]</span>")
-#define span_italics(str) ("<span class='italics'>[str]</span>")
-#define span_readable_yellow(str) ("<font color = '#c5c900'>[str]</font>")
+#define span_message(str) ("<span class='message'>" + str + "</span>")
+#define span_italics(str) ("<span class='italics'>" + str + "</span>")
+#define span_readable_yellow(str) ("<font color = '#c5c900'>" + str + "</font>")
 
 #define EXAMINE_CLOSER_BOLD span_bold("examine closer")
 
