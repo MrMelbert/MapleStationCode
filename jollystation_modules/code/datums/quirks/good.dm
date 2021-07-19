@@ -64,7 +64,7 @@
 /// High draconic language. Only works on draconic speakers.
 /datum/quirk/trilingual/high_draconic
 	name = "Language - High Draconic"
-	desc = "You're trilingual - you know old High Draconic. (This quirk only works for species that can speak draconic!)"
+	desc = "You're trilingual - you know old High Draconic. (Required: Lizardperson)"
 	value = 1
 	gain_text = "<span class='notice'>You understand High Draconic.</span>"
 	lose_text = "<span class='notice'>You no longer understand High Draconic.</span>"

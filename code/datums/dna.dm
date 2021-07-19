@@ -162,6 +162,8 @@
 		L[DNA_MUSHROOM_CAPS_BLOCK] = construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len)
 	if(features["tail_monkey"])
 		L[DNA_MONKEY_TAIL_BLOCK] = construct_block(GLOB.tails_list_monkey.Find(features["tail_monkey"]), GLOB.tails_list_monkey.len)
+	if(features["head_tentacles"]) // NON-MODULE CHANGE
+		L[DNA_HEAD_TENTACLES_BLOCK] = construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len)
 
 	for(var/i in 1 to DNA_FEATURE_BLOCKS)
 		data += (L[i] || random_string(DNA_BLOCK_SIZE,GLOB.hex_characters))
@@ -284,6 +286,8 @@
 			setblock(unique_features, blocknumber, construct_block(GLOB.caps_list.Find(features["caps"]), GLOB.caps_list.len))
 		if(DNA_MONKEY_TAIL_BLOCK)
 			setblock(unique_features, blocknumber, construct_block(GLOB.tails_list_monkey.Find(features["tail_monkey"]), GLOB.tails_list_monkey.len))
+		if(DNA_HEAD_TENTACLES_BLOCK) // NON-MODULE CHANGE
+			setblock(unique_features, blocknumber, construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len))
 
 //Please use add_mutation or activate_mutation instead
 /datum/dna/proc/force_give(datum/mutation/human/HM)
@@ -531,6 +535,8 @@
 		dna.features["caps"] = GLOB.caps_list[deconstruct_block(getblock(features, DNA_MUSHROOM_CAPS_BLOCK), GLOB.caps_list.len)]
 	if(dna.features["tail_monkey"])
 		dna.features["tail_monkey"] = GLOB.tails_list_monkey[deconstruct_block(getblock(features, DNA_MONKEY_TAIL_BLOCK), GLOB.tails_list_monkey.len)]
+	if(dna.features["head_tentacles"]) // NON-MODULE CHANGE
+		dna.features["head_tentacles"] = GLOB.head_tentacles_list[deconstruct_block(getblock(features, DNA_HEAD_TENTACLES_BLOCK), GLOB.head_tentacles_list.len)]
 
 	for(var/obj/item/organ/external/external_organ in internal_organs)
 		external_organ.mutate_feature(features, src)

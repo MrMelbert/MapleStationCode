@@ -75,7 +75,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isvampire(A) (is_species(A,/datum/species/vampire))
 #define isdullahan(A) (is_species(A, /datum/species/dullahan))
 #define ismonkey(A) (is_species(A, /datum/species/monkey))
-#define isSkrell(A) (is_species(A, /datum/species/skrell)) // NON-MODULE Addition, adding is-check for Skrell!
+#define isandroid(A) (is_species(A, /datum/species/android))
+#define isskrell(A) (is_species(A, /datum/species/skrell)) // NON-MODULE Change, check for Skrell
 #define isreploid(A) (is_species(A, /datum/species/reploid)) // NON-MODULE Change, check for Reploids.
 
 //more carbon mobs
