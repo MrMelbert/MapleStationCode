@@ -1,6 +1,8 @@
 "aa" = (/turf/open/floor/iron/dark,/area/space)
+"ab" = (/obj/machinery/atmospherics/components/binary/thermomachine/freezer{dir = 4},/turf/open/floor/plating,/area/space)
 "ag" = (/obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "al" = (/obj/machinery/door/airlock/medical/glass{name = "Cryogenics Bay"; req_access_txt = "5"},/obj/effect/mapping_helpers/airlock/unres,/obj/effect/mapping_helpers/airlock/cyclelink_helper,/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
+"ao" = (/obj/machinery/chem_master,/turf/open/floor/iron/white,/area/space)
 "ar" = (/obj/machinery/door/airlock/medical/glass{name = "Medbay Staff Entrance"; req_access_txt = "5"},/obj/effect/mapping_helpers/airlock/cyclelink_helper,/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "as" = (/obj/structure/table/glass,/obj/item/stack/sticky_tape/surgical,/obj/item/stack/medical/bone_gel,/turf/open/floor/iron/white,/area/space)
 "at" = (/turf/open/floor/wood{icon_state = "wood-broken3"},/area/space)
@@ -16,13 +18,14 @@
 "aU" = (/obj/machinery/camera{c_tag = "Xenobiology Lab - Pen #8"; dir = 10; network = list("ss13","rd","xeno")},/turf/open/floor/engine,/area/space)
 "aY" = (/obj/machinery/door/airlock/research/glass{name = "Pharmacy"; req_access_txt = "69"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "ba" = (/obj/machinery/door/airlock/medical/glass{id_tag = "MedbayFoyer"; name = "Medbay"; req_access_txt = "5"},/obj/effect/mapping_helpers/airlock/unres{dir = 8},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
-"bj" = (/obj/machinery/door/airlock/medical{name = "Surgical Theatre A"; req_access_txt = "45"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
+"bj" = (/obj/machinery/door/airlock/medical{name = "Surgical Theatre A"; req_access_txt = "45"},/obj/machinery/door/firedoor,/obj/machinery/duct,/turf/open/floor/plating,/area/space)
 "bk" = (/obj/machinery/door/airlock/medical/glass{name = "Exam Room"; req_access_txt = "5"},/obj/effect/mapping_helpers/airlock/unres,/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "bm" = (/obj/machinery/medical_kiosk,/turf/open/floor/plating,/area/space)
 "bn" = (/obj/structure/table/glass,/obj/item/scalpel{pixel_y = 12},/obj/item/circular_saw,/obj/item/blood_filter,/obj/item/bonesetter,/turf/open/floor/plating,/area/space)
 "bo" = (/obj/machinery/suit_storage_unit/standard_unit,/obj/effect/decal/cleanable/cobweb,/turf/open/floor/iron/dark,/area/space)
 "bp" = (/obj/machinery/suit_storage_unit/standard_unit,/turf/open/floor/iron/dark,/area/space)
 "bw" = (/obj/structure/rack,/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced{dir = 4},/obj/machinery/door/window/northleft{dir = 2; name = "Magboot Storage"; pixel_x = -1; req_access_txt = "18"},/obj/item/clothing/shoes/magboots{pixel_x = -4; pixel_y = 3},/obj/item/clothing/shoes/magboots,/obj/item/clothing/shoes/magboots{pixel_x = 4; pixel_y = -3},/turf/open/floor/iron/dark,/area/space)
+"bx" = (/obj/structure/table,/obj/item/stack/sheet/iron/fifty,/obj/item/stack/sheet/iron/fifty,/obj/item/construction/plumbing,/obj/item/construction/plumbing,/turf/open/floor/plating,/area/space)
 "by" = (/obj/structure/rack,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{dir = 8},/obj/machinery/door/window/northleft{dir = 2; name = "Jetpack Storage"; pixel_x = -1; req_access_txt = "18"},/obj/item/tank/jetpack/carbondioxide{pixel_x = -4; pixel_y = 1},/obj/item/tank/jetpack/carbondioxide,/obj/item/tank/jetpack/carbondioxide{pixel_x = 4; pixel_y = -1},/turf/open/floor/plating,/area/space)
 "bz" = (/obj/machinery/suit_storage_unit/standard_unit,/turf/open/floor/plating,/area/space)
 "bC" = (/obj/machinery/stasis,/turf/open/floor/plating,/area/space)
@@ -36,6 +39,7 @@
 "bU" = (/obj/effect/decal/cleanable/vomit/old,/turf/open/floor/iron,/area/space)
 "bV" = (/obj/effect/decal/cleanable/glass,/turf/open/floor/iron/dark,/area/space)
 "bW" = (/obj/structure/table,/obj/machinery/cell_charger,/obj/item/stock_parts/cell/high{charge = 100; maxcharge = 15000},/obj/item/radio/off{pixel_x = 9; pixel_y = 6},/obj/item/radio/off{pixel_x = 6},/obj/item/radio/off{pixel_x = -6; pixel_y = 6},/obj/item/radio/off{pixel_x = -3},/turf/open/floor/plating,/area/space)
+"bX" = (/obj/structure/table,/obj/item/reagent_containers/glass/bottle/epinephrine{pixel_x = -4; pixel_y = 12},/obj/item/reagent_containers/glass/bottle/multiver{pixel_x = 7; pixel_y = 12},/obj/item/reagent_containers/glass/beaker/large,/obj/item/reagent_containers/glass/beaker{pixel_x = 8; pixel_y = 2},/obj/item/reagent_containers/dropper,/turf/open/floor/plating,/area/space)
 "bY" = (/obj/structure/tank_dispenser/oxygen{pixel_x = -1; pixel_y = 2},/turf/open/floor/plating,/area/space)
 "bZ" = (/obj/structure/table,/obj/item/grenade/chem_grenade/smart_metal_foam{pixel_x = -4; pixel_y = 6},/obj/item/grenade/chem_grenade/smart_metal_foam{pixel_y = 4},/obj/item/grenade/chem_grenade/smart_metal_foam{pixel_x = 4; pixel_y = 2},/obj/item/grenade/chem_grenade/smart_metal_foam{pixel_x = 8},/turf/open/floor/plating,/area/space)
 "ca" = (/obj/structure/table/glass,/obj/item/storage/box/gloves{pixel_y = 8},/obj/item/storage/box/masks{pixel_y = 4},/obj/item/storage/box/bodybags,/turf/open/floor/plating,/area/space)
@@ -49,8 +53,10 @@
 "cG" = (/obj/machinery/door/poddoor/shutters{id = "evashutter"; name = "E.V.A. Storage Shutter"},/turf/open/floor/plating,/area/space)
 "cK" = (/obj/machinery/door/airlock/command{name = "E.V.A. Storage"; req_access_txt = "18"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "cM" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
+"cN" = (/obj/structure/table/glass,/obj/item/clipboard,/turf/open/floor/iron/white,/area/space)
 "cP" = (/obj/machinery/button/door/directional/north{id = "evashutter"; name = "E.V.A. Storage Shutter Control"; req_access_txt = "19"},/turf/open/floor/plating,/area/space)
 "cQ" = (/obj/effect/decal/cleanable/blood/gibs/old,/turf/open/floor/iron,/area/space)
+"cV" = (/obj/structure/table/optable{desc = "A cold, hard place for your final rest."; name = "Morgue Slab"},/obj/item/organ/brain,/turf/open/floor/plating,/area/space)
 "cX" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating,/area/space)
 "cY" = (/obj/effect/decal/cleanable/insectguts,/turf/open/floor/iron,/area/space)
 "da" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/gibs/old,/turf/open/floor/plating,/area/space)
@@ -60,7 +66,7 @@
 "dj" = (/obj/machinery/door/airlock/silver{name = "Bathroom"},/turf/open/floor/plating,/area/space)
 "dk" = (/obj/effect/decal/cleanable/glass,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "dl" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/iron,/area/space)
-"dq" = (/obj/machinery/shower{dir = 4},/turf/open/floor/iron/white,/area/space)
+"dq" = (/obj/machinery/shower{dir = 4},/obj/machinery/duct,/turf/open/floor/iron/white,/area/space)
 "du" = (/turf/open/floor/carpet,/area/space)
 "dv" = (/obj/effect/decal/cleanable/dirt,/turf/open/floor/carpet,/area/space)
 "dw" = (/obj/structure/bed,/obj/item/bedsheet/captain,/turf/open/floor/carpet,/area/space)
@@ -70,6 +76,7 @@
 "dF" = (/turf/open/floor/wood{icon_state = "wood-broken5"},/area/space)
 "dM" = (/obj/machinery/computer/security,/obj/effect/decal/cleanable/cobweb/cobweb2,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "dO" = (/obj/effect/decal/cleanable/blood/gibs/old,/obj/effect/decal/cleanable/cobweb,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
+"dP" = (/obj/structure/table/glass,/obj/item/storage/secure/briefcase{pixel_x = 3; pixel_y = 5},/obj/item/storage/firstaid/regular{pixel_x = -3; pixel_y = -3},/turf/open/floor/plating,/area/space)
 "dQ" = (/obj/structure/table,/obj/item/kitchen/rollingpin,/turf/open/floor/plating,/area/space)
 "dS" = (/obj/effect/decal/cleanable/insectguts,/obj/machinery/modular_computer/console/preset/cargochat/service,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "dU" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/computer/cargo/request,/turf/open/floor/plating,/area/space)
@@ -103,6 +110,7 @@
 "fl" = (/obj/machinery/suit_storage_unit/captain,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "fo" = (/obj/machinery/airlock_sensor/incinerator_toxmix{pixel_x = -24},/obj/machinery/atmospherics/components/binary/pump/on{dir = 1},/turf/open/floor/engine,/area/space)
 "fs" = (/obj/machinery/door/airlock/command{name = "Captain's Quarters"; req_access_txt = "20"},/turf/open/floor/plating,/area/space)
+"fw" = (/obj/structure/window/reinforced/tinted{dir = 4},/turf/open/floor/plating,/area/space)
 "fx" = (/obj/effect/decal/cleanable/shreds,/turf/open/floor/plating,/area/space)
 "fy" = (/obj/machinery/atmospherics/components/unary/outlet_injector/on{dir = 4},/turf/open/floor/engine,/area/space)
 "fz" = (/obj/structure/table/wood,/obj/item/pinpointer/nuke,/obj/item/disk/nuclear,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
@@ -118,6 +126,7 @@
 "fQ" = (/obj/structure/chair/comfy/teal{dir = 1},/obj/effect/decal/cleanable/plastic,/turf/open/floor/carpet/cyan,/area/space)
 "fT" = (/obj/effect/decal/cleanable/dirt,/turf/open/floor/carpet/cyan,/area/space)
 "fV" = (/obj/effect/turf_decal/tile/bar,/turf/open/floor/iron,/area/space)
+"fX" = (/obj/structure/table/glass,/obj/item/reagent_containers/glass/beaker/large,/obj/item/reagent_containers/glass/beaker{pixel_x = 8; pixel_y = 2},/obj/item/reagent_containers/dropper,/obj/item/stack/sheet/mineral/plasma{pixel_y = 10},/obj/item/stack/sheet/mineral/plasma{pixel_y = 10},/turf/open/floor/iron/white,/area/space)
 "fY" = (/obj/machinery/duct,/obj/effect/decal/cleanable/blood/old,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "ga" = (/obj/machinery/duct,/obj/effect/turf_decal/tile/bar,/obj/effect/decal/cleanable/blood/gibs/up,/turf/open/floor/iron,/area/space)
 "ge" = (/obj/machinery/duct,/obj/effect/turf_decal/tile/bar,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron,/area/space)
@@ -155,8 +164,10 @@
 "hy" = (/obj/machinery/door/airlock/research/glass/incinerator/toxmix_exterior,/obj/effect/mapping_helpers/airlock/locked,/turf/open/floor/engine,/area/space)
 "hz" = (/obj/effect/decal/cleanable/cobweb/cobweb2,/obj/structure/rack,/obj/item/radio/off{pixel_x = -5; pixel_y = 5},/obj/item/radio/off,/obj/item/radio/off{pixel_x = 5; pixel_y = -5},/turf/open/floor/plating,/area/space)
 "hB" = (/obj/effect/decal/cleanable/dirt,/turf/open/floor/wood{icon_state = "wood-broken6"},/area/space)
+"hC" = (/obj/structure/table/glass,/obj/item/clothing/neck/stethoscope,/obj/item/clothing/glasses/hud/health,/turf/open/floor/plating,/area/space)
 "hD" = (/obj/effect/decal/cleanable/shreds,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "hE" = (/obj/machinery/door/airlock/command{name = "Bridge Officer's Quarters"; req_access_txt = "19"},/turf/open/floor/plating,/area/space)
+"hG" = (/obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "hI" = (/obj/effect/decal/cleanable/dirt,/turf/open/floor/wood{icon_state = "wood-broken7"},/area/space)
 "hK" = (/obj/machinery/modular_computer/console/preset/command{dir = 4},/obj/effect/decal/cleanable/cobweb,/turf/open/floor/wood,/area/space)
 "hM" = (/obj/structure/chair/office{dir = 8},/turf/open/floor/wood{icon_state = "wood-broken3"},/area/space)
@@ -186,6 +197,7 @@
 "iP" = (/obj/structure/closet/secure_closet/hydroponics,/turf/open/floor/plating,/area/space)
 "iR" = (/obj/structure/closet/secure_closet/hydroponics,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "iS" = (/obj/machinery/biogenerator,/turf/closed/wall,/area/space)
+"iV" = (/obj/machinery/duct,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "iW" = (/obj/structure/table,/obj/machinery/door/window/eastleft{dir = 2; name = "Hydroponics Window"; req_one_access_txt = "30;35"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "iX" = (/obj/effect/decal/cleanable/insectguts,/obj/structure/extinguisher_cabinet/directional/east,/turf/open/floor/iron,/area/space)
 "jb" = (/obj/structure/lattice/catwalk,/obj/structure/marker_beacon/burgundy,/turf/open/space/basic,/area/space)
@@ -203,6 +215,7 @@
 "jv" = (/obj/machinery/modular_computer/console/preset/engineering{dir = 4},/obj/structure/extinguisher_cabinet/directional/west,/turf/open/floor/wood,/area/space)
 "jw" = (/obj/effect/turf_decal/siding/wood{dir = 4},/turf/open/floor/wood,/area/space)
 "jx" = (/obj/structure/chair/office{dir = 4},/turf/open/floor/carpet/black,/area/space)
+"jz" = (/obj/structure/chair/sofa/right,/obj/item/toy/plush/moth{name = "Bug Plushie"},/turf/open/floor/plating,/area/space)
 "jB" = (/obj/machinery/computer/secure_data{dir = 8},/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "jD" = (/obj/machinery/gibber,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/splatter,/turf/open/floor/iron/kitchen_coldroom/freezerfloor,/area/space)
 "jF" = (/obj/effect/decal/cleanable/blood/gibs/torso,/obj/effect/decal/cleanable/blood/gibs/up,/obj/effect/decal/cleanable/dirt,/obj/machinery/duct,/turf/open/floor/iron/kitchen_coldroom/freezerfloor,/area/space)
@@ -235,6 +248,7 @@
 "kX" = (/obj/effect/turf_decal/tile/blue{dir = 1},/obj/effect/turf_decal/tile/blue{dir = 4},/obj/machinery/status_display/evac/directional/north,/turf/open/floor/iron/dark,/area/space)
 "kY" = (/obj/machinery/button/door/incinerator_vent_toxmix{pixel_x = 8; pixel_y = -30},/obj/machinery/button/ignition/incinerator/toxmix{pixel_x = -6; pixel_y = -30},/obj/machinery/atmospherics/components/binary/valve,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "le" = (/obj/effect/turf_decal/tile/blue{dir = 1},/obj/effect/turf_decal/tile/blue{dir = 4},/obj/effect/decal/cleanable/blood/gibs/old,/turf/open/floor/iron/dark,/area/space)
+"lj" = (/obj/structure/table/glass,/obj/machinery/computer/med_data/laptop,/turf/open/floor/iron/white,/area/space)
 "lk" = (/obj/effect/turf_decal/tile/blue{dir = 1},/obj/effect/turf_decal/tile/blue{dir = 4},/turf/open/floor/iron/dark,/area/space)
 "ll" = (/obj/effect/turf_decal/tile/blue{dir = 1},/obj/effect/turf_decal/tile/blue{dir = 4},/obj/effect/decal/cleanable/dirt,/obj/machinery/firealarm/directional/north,/turf/open/floor/iron/dark,/area/space)
 "ln" = (/obj/effect/turf_decal/tile/blue{dir = 1},/obj/effect/turf_decal/tile/blue{dir = 4},/obj/item/radio/intercom/directional/north,/turf/open/floor/iron/dark,/area/space)
@@ -246,6 +260,7 @@
 "lI" = (/obj/structure/table/glass,/obj/machinery/recharger,/obj/item/restraints/handcuffs{pixel_y = 3},/turf/open/floor/wood,/area/space)
 "lN" = (/obj/structure/closet/secure_closet/freezer/meat,/turf/open/floor/plating,/area/space)
 "lQ" = (/mob/living/simple_animal/hostile/retaliate/goat{name = "Pete"},/obj/effect/decal/cleanable/blood/tracks{dir = 4},/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
+"lT" = (/obj/machinery/door/airlock/maintenance_hatch,/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 8},/turf/open/floor/plating,/area/space)
 "lU" = (/obj/effect/decal/cleanable/blood/gibs/old,/obj/structure/kitchenspike,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/kitchen_coldroom/freezerfloor,/area/space)
 "lW" = (/obj/structure/reagent_dispensers/cooking_oil,/turf/open/floor/plating,/area/space)
 "lX" = (/obj/machinery/duct,/turf/open/floor/iron/cafeteria,/area/space)
@@ -253,15 +268,19 @@
 "mc" = (/obj/structure/table/wood,/obj/item/storage/photo_album/bar,/obj/item/vending_refill/cigarette,/obj/item/gun/ballistic/shotgun/doublebarrel,/turf/open/floor/plating,/area/space)
 "md" = (/obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron,/area/space)
 "me" = (/obj/structure/reagent_dispensers/beerkeg,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
+"mf" = (/obj/structure/chair/office/light,/turf/open/floor/plating,/area/space)
 "mg" = (/obj/machinery/vending/wardrobe/medi_wardrobe,/turf/open/floor/iron/dark,/area/space)
 "mj" = (/obj/machinery/door/airlock{name = "Bar"; req_access_txt = "25"},/obj/machinery/duct,/turf/open/floor/plating,/area/space)
 "mk" = (/obj/effect/turf_decal/tile/bar{dir = 1},/obj/effect/turf_decal/tile/bar,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/obj/machinery/duct,/turf/open/floor/iron,/area/space)
 "mn" = (/obj/machinery/vending/wardrobe/hydro_wardrobe,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
+"mo" = (/obj/machinery/door/airlock/maintenance{name = "Medbay Maintenance"; req_access_txt = "5"},/obj/machinery/duct,/turf/open/floor/plating,/area/space)
 "mp" = (/obj/structure/closet/crate/hydroponics,/obj/item/shovel/spade,/obj/item/wrench,/obj/item/reagent_containers/glass/bucket,/obj/item/cultivator,/obj/item/wirecutters,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "mr" = (/obj/structure/table/glass,/obj/item/clothing/accessory/armband/hydro,/obj/item/clothing/suit/apron,/obj/item/reagent_containers/spray/plantbgone{pixel_x = 8; pixel_y = 8},/obj/item/reagent_containers/spray/plantbgone{pixel_x = 13; pixel_y = 5},/obj/item/watertank,/obj/item/grenade/chem_grenade/antiweed,/turf/open/floor/iron,/area/space)
 "mu" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/duct,/turf/open/floor/iron,/area/space)
 "mv" = (/obj/machinery/door/airlock{name = "Hydroponics Backroom"; req_access_txt = "35"},/obj/effect/decal/cleanable/dirt,/obj/machinery/duct,/turf/open/floor/plating,/area/space)
 "mw" = (/obj/structure/chair/stool/directional/south,/turf/open/floor/plating,/area/space)
+"mx" = (/obj/machinery/suit_storage_unit/cmo,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
+"mz" = (/obj/machinery/smartfridge/chemistry/preloaded,/turf/closed/wall/r_wall,/area/space)
 "mA" = (/obj/structure/chair/stool/directional/south,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
 "mB" = (/obj/machinery/air_sensor/atmos/toxins_mixing_tank,/turf/open/floor/engine,/area/space)
 "mC" = (/obj/machinery/computer/crew{dir = 8},/turf/open/floor/plating,/area/space)
@@ -283,6 +302,7 @@
 "nh" = (/obj/effect/turf_decal/tile/blue,/obj/effect/turf_decal/tile/green{dir = 4},/obj/machinery/seed_extractor,/turf/open/floor/iron,/area/space)
 "nm" = (/obj/machinery/door/airlock{name = "Theater Backstage"; req_access_txt = "46"},/turf/open/floor/wood,/area/space)
 "no" = (/turf/open/floor/plating,/area/space)
+"np" = (/obj/effect/spawner/structure/window/reinforced,/obj/machinery/door/poddoor/shutters/preopen{id = "pharmacy_shutters"; name = "pharmacy shutters"},/turf/open/floor/plating,/area/space)
 "nv" = (/obj/effect/decal/cleanable/blood/old,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "nx" = (/obj/machinery/door/airlock/command/glass{name = "Bridge"; req_access_txt = "19"},/obj/effect/turf_decal/siding/wood{dir = 8},/obj/machinery/door/firedoor,/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 8},/turf/open/floor/wood,/area/space)
 "ny" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/holopad,/turf/open/floor/wood{icon_state = "wood-broken"},/area/space)
@@ -296,6 +316,7 @@
 "nM" = (/obj/machinery/chem_master/condimaster{name = "CondiMaster Neo"},/turf/open/floor/iron/cafeteria,/area/space)
 "nQ" = (/turf/open/floor/iron/cafeteria,/area/space)
 "nR" = (/obj/machinery/vending/boozeomat,/obj/effect/turf_decal/tile/bar{dir = 1},/obj/effect/turf_decal/tile/bar,/turf/open/floor/iron,/area/space)
+"nS" = (/obj/structure/table/glass,/obj/machinery/reagentgrinder,/obj/machinery/button/door/directional/south{id = "pharmacy_shutters_2"; name = "pharmacy shutters control"; req_access_txt = "5;69"},/turf/open/floor/plating,/area/space)
 "nU" = (/obj/structure/table,/obj/machinery/chem_dispenser/drinks/beer,/obj/effect/turf_decal/tile/bar{dir = 1},/obj/effect/turf_decal/tile/bar,/turf/open/floor/iron,/area/space)
 "nV" = (/obj/structure/table,/obj/machinery/chem_dispenser/drinks,/obj/effect/turf_decal/tile/bar{dir = 1},/obj/effect/turf_decal/tile/bar,/obj/structure/sign/plaques/deempisi{pixel_y = 28},/turf/open/floor/iron,/area/space)
 "nW" = (/obj/structure/chair/stool/bar/directional/west,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
@@ -328,9 +349,11 @@
 "pk" = (/obj/structure/table/glass,/obj/item/folder/blue{pixel_y = 2},/obj/item/paper_bin{pixel_x = -2; pixel_y = 8},/turf/open/floor/plating,/area/space)
 "pm" = (/obj/structure/table,/obj/machinery/microwave,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/cafeteria,/area/space)
 "pt" = (/obj/effect/decal/cleanable/blood/gibs/down,/turf/open/floor/iron/cafeteria,/area/space)
+"pu" = (/obj/machinery/computer/crew,/turf/open/floor/plating,/area/space)
 "px" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/iron/cafeteria,/area/space)
 "py" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood,/turf/open/floor/plating,/area/space)
 "pB" = (/obj/structure/chair/stool/bar/directional/west,/obj/effect/decal/cleanable/glass,/turf/open/floor/wood,/area/space)
+"pC" = (/obj/machinery/door/airlock/grunge{name = "Morgue"; req_access_txt = "5;6"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "pE" = (/obj/structure/closet/secure_closet/freezer/fridge,/turf/open/floor/plating,/area/space)
 "pG" = (/obj/structure/extinguisher_cabinet/directional/west,/turf/open/floor/plating,/area/space)
 "pI" = (/obj/effect/turf_decal/tile/bar{dir = 1},/obj/effect/turf_decal/tile/bar,/obj/effect/decal/cleanable/blood/old,/obj/effect/decal/cleanable/glass,/turf/open/floor/iron,/area/space)
@@ -345,6 +368,7 @@
 "qf" = (/obj/structure/musician/piano,/turf/open/floor/wood{icon_state = "wood-broken5"},/area/space)
 "qg" = (/obj/structure/chair/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/blood/gibs/old,/turf/open/floor/wood,/area/space)
 "qh" = (/obj/structure/chair/office/light{dir = 4},/obj/effect/decal/cleanable/oil,/turf/open/floor/iron/dark,/area/space)
+"qj" = (/obj/structure/window/reinforced/tinted,/turf/open/floor/plating,/area/space)
 "ql" = (/obj/machinery/door/airlock/command{name = "Head of Personnel"; req_access_txt = "57"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "qn" = (/obj/machinery/door/airlock/command{name = "Meeting Room"; req_access_txt = "19"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "qp" = (/obj/structure/table/glass,/obj/machinery/cell_charger{pixel_y = 4},/obj/item/stock_parts/cell/high{charge = 100; maxcharge = 15000},/turf/open/floor/wood,/area/space)
@@ -358,6 +382,7 @@
 "qM" = (/obj/effect/decal/cleanable/blood/splatter,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating,/area/space)
 "qQ" = (/obj/structure/table/glass,/obj/item/tank/internals/anesthetic{pixel_x = 3},/obj/item/tank/internals/anesthetic,/obj/item/tank/internals/anesthetic{pixel_x = -3},/obj/item/clothing/mask/breath/medical{pixel_y = -3},/obj/item/clothing/mask/breath/medical,/obj/item/clothing/mask/breath/medical{pixel_y = 3},/turf/open/floor/iron/white,/area/space)
 "qS" = (/obj/effect/turf_decal/tile/bar{dir = 1},/obj/effect/turf_decal/tile/bar,/obj/effect/decal/cleanable/glass,/turf/open/floor/iron,/area/space)
+"qU" = (/obj/structure/table/reinforced,/obj/item/reagent_containers/glass/bottle/morphine,/obj/item/reagent_containers/glass/bottle/multiver{pixel_x = -5},/obj/item/reagent_containers/glass/bottle/toxin{pixel_x = 5; pixel_y = 4},/obj/item/reagent_containers/glass/bottle/epinephrine{pixel_x = 8},/obj/item/reagent_containers/syringe/epinephrine,/obj/machinery/door/window/eastright{name = "Pharmacy Desk"; req_access_txt = "5; 69"},/obj/machinery/door/window/eastright{dir = 8; name = "Pharmacy Desk"; req_access_txt = "5"},/obj/machinery/door/firedoor,/obj/machinery/door/poddoor/shutters/preopen{id = "pharmacy_shutters"; name = "pharmacy shutters"},/turf/open/floor/plating,/area/space)
 "qV" = (/obj/effect/decal/cleanable/blood/gibs/limb{dir = 1},/turf/open/floor/engine,/area/space)
 "qZ" = (/obj/effect/turf_decal/tile/blue{dir = 1},/obj/effect/turf_decal/tile/green{dir = 8},/obj/machinery/hydroponics/constructable,/obj/effect/turf_decal/bot,/turf/open/floor/iron,/area/space)
 "ra" = (/obj/machinery/hydroponics/constructable,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
@@ -378,6 +403,7 @@
 "rH" = (/obj/machinery/photocopier,/turf/open/floor/iron/dark,/area/space)
 "rI" = (/obj/structure/table,/obj/item/raw_anomaly_core/random{pixel_x = -5; pixel_y = 7},/obj/item/raw_anomaly_core/random,/obj/item/raw_anomaly_core/random{pixel_x = 7; pixel_y = 9},/turf/open/floor/plating,/area/space)
 "rJ" = (/obj/structure/rack,/obj/item/aicard,/turf/open/floor/plating,/area/space)
+"rK" = (/obj/machinery/button/door/directional/north{id = "pharmacy_shutters"; name = "pharmacy shutters control"; pixel_x = 24; req_access_txt = "5;69"},/turf/open/floor/plating,/area/space)
 "rO" = (/obj/effect/turf_decal/siding/wood,/turf/open/floor/wood,/area/space)
 "rR" = (/obj/effect/turf_decal/siding/wood,/obj/effect/decal/cleanable/dirt,/turf/open/floor/wood,/area/space)
 "rS" = (/obj/effect/turf_decal/siding/wood,/turf/open/floor/wood{icon_state = "wood-broken3"},/area/space)
@@ -387,8 +413,10 @@
 "rZ" = (/obj/structure/rack,/obj/effect/spawner/lootdrop/donkpockets,/obj/effect/spawner/lootdrop/donkpockets,/turf/open/floor/plating,/area/space)
 "sb" = (/obj/structure/table,/obj/item/storage/bag/tray,/turf/open/floor/plating,/area/space)
 "sc" = (/obj/structure/table,/obj/item/kitchen/rollingpin,/turf/open/floor/iron/cafeteria,/area/space)
+"sd" = (/obj/structure/bodycontainer/morgue{dir = 1},/turf/open/floor/plating,/area/space)
 "sf" = (/obj/structure/table,/obj/item/reagent_containers/glass/beaker{pixel_x = 5},/obj/item/reagent_containers/food/condiment/enzyme{layer = 5},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "sg" = (/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/blood/gibs/up,/turf/open/floor/plating,/area/space)
+"sh" = (/obj/machinery/keycard_auth/directional/south{pixel_x = 6},/obj/structure/chair/office/light{dir = 1},/obj/machinery/button/door/directional/south{id = "cmoprivacy"; name = "CMO Privacy Shutters"; pixel_x = -8; req_access_txt = "40"},/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
 "sl" = (/obj/structure/table,/turf/open/floor/iron/cafeteria,/area/space)
 "sn" = (/obj/machinery/smartfridge/drinks{icon_state = "boozeomat"},/turf/closed/wall,/area/space)
 "sr" = (/obj/structure/table/reinforced,/turf/open/floor/plating,/area/space)
@@ -396,6 +424,7 @@
 "sy" = (/obj/machinery/hydroponics/constructable,/obj/effect/turf_decal/bot,/turf/open/floor/iron,/area/space)
 "sz" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/garbage,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "sB" = (/obj/machinery/door/poddoor/shutters{id = "mechbay2"; name = "Mech Bay Shutters"},/turf/open/floor/plating,/area/space)
+"sD" = (/obj/structure/bookcase/random/reference,/turf/open/floor/wood{icon_state = "wood-broken6"},/area/space)
 "sF" = (/obj/machinery/mass_driver/toxins,/turf/open/floor/plating,/area/space)
 "sG" = (/obj/structure/chair/wood{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/open/floor/carpet,/area/space)
 "sH" = (/obj/structure/chair/wood{dir = 1},/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/blood/old,/turf/open/floor/carpet,/area/space)
@@ -416,12 +445,14 @@
 "tl" = (/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/blood,/turf/open/floor/iron/cafeteria,/area/space)
 "tm" = (/obj/structure/window/reinforced{dir = 4},/turf/open/floor/iron/dark,/area/space)
 "tn" = (/obj/machinery/griddle,/turf/open/floor/plating,/area/space)
+"to" = (/obj/structure/bed,/obj/item/bedsheet/cmo,/turf/open/floor/plating,/area/space)
 "tr" = (/obj/structure/table,/obj/item/book/manual/chef_recipes{pixel_x = 2; pixel_y = 6},/turf/open/floor/plating,/area/space)
 "tt" = (/obj/machinery/griddle,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "tu" = (/obj/effect/decal/cleanable/blood/old,/turf/open/floor/iron/cafeteria,/area/space)
 "tw" = (/obj/effect/decal/cleanable/blood/gibs/core,/turf/open/floor/iron/cafeteria,/area/space)
 "tD" = (/obj/machinery/door/airlock{name = "Kitchen"; req_one_access_txt = "25;28"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "tE" = (/obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/dark/telecomms,/area/space)
+"tH" = (/obj/machinery/duct,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "tI" = (/obj/structure/table/reinforced,/obj/structure/window/reinforced,/obj/item/storage/firstaid/toxin{pixel_x = 3; pixel_y = 3},/obj/item/storage/firstaid/toxin,/obj/item/storage/firstaid/toxin{pixel_x = -3; pixel_y = -3},/turf/open/floor/plating,/area/space)
 "tJ" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "tN" = (/obj/effect/turf_decal/tile/bar{dir = 1},/obj/effect/turf_decal/tile/bar,/obj/structure/chair/stool/bar/directional/south,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron,/area/space)
@@ -431,6 +462,7 @@
 "tW" = (/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/wrapping,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "tX" = (/obj/structure/chair/wood{dir = 1},/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "tZ" = (/obj/structure/table,/obj/item/scalpel{pixel_y = 16},/obj/item/circular_saw,/obj/item/hemostat{pixel_x = -10},/obj/item/retractor,/obj/item/cautery,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/white,/area/space)
+"uh" = (/obj/structure/reagent_dispensers/water_cooler,/turf/open/floor/wood{icon_state = "wood-broken3"},/area/space)
 "ui" = (/obj/effect/decal/cleanable/blood/old,/turf/open/floor/plating,/area/space)
 "uj" = (/obj/machinery/door/window/southleft{dir = 8; name = "Maximum Security Test Chamber"; req_access_txt = "55"},/obj/machinery/door/poddoor/preopen{id = "Xenolab"; name = "test chamber blast door"},/obj/effect/decal/cleanable/blood/old,/turf/open/floor/plating,/area/space)
 "uk" = (/obj/structure/chair/wood{dir = 1},/turf/open/floor/carpet,/area/space)
@@ -452,12 +484,14 @@
 "uV" = (/obj/structure/marker_beacon/burgundy,/obj/item/beacon,/turf/open/floor/plating/airless,/area/space)
 "uW" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/gibs/old,/turf/open/floor/wood,/area/space)
 "uX" = (/obj/effect/decal/cleanable/blood/gibs/core,/turf/open/floor/wood,/area/space)
+"va" = (/obj/machinery/door/airlock/virology/glass{name = "Virology Access"; req_one_access_txt = "5;39"},/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 1},/turf/open/floor/plating,/area/space)
 "vb" = (/obj/effect/decal/cleanable/blood/gibs/body,/turf/open/floor/wood,/area/space)
 "vc" = (/obj/effect/decal/cleanable/vomit/old,/turf/open/floor/plating,/area/space)
 "ve" = (/obj/machinery/door/airlock/public{name = "Theater"},/turf/open/floor/plating,/area/space)
 "vk" = (/obj/machinery/camera{c_tag = "Xenobiology Lab - Pen #5"; dir = 10; network = list("ss13","rd","xeno")},/turf/open/floor/engine,/area/space)
 "vl" = (/obj/structure/sign/warning/electricshock{pixel_x = 32},/turf/open/floor/plating,/area/space)
 "vm" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/holopad,/turf/open/floor/carpet,/area/space)
+"vo" = (/obj/machinery/chem_dispenser{layer = 2.7},/turf/open/floor/plating,/area/space)
 "vq" = (/obj/machinery/mech_bay_recharge_port,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "vs" = (/obj/structure/chair/comfy/beige{dir = 4},/turf/open/floor/wood{icon_state = "wood-broken4"},/area/space)
 "vt" = (/obj/structure/chair/comfy/beige{dir = 8},/turf/open/floor/plating,/area/space)
@@ -489,6 +523,7 @@
 "wP" = (/obj/structure/chair/comfy/teal{dir = 4},/turf/open/floor/plating,/area/space)
 "wR" = (/obj/structure/table/wood,/obj/item/book/manual/wiki/security_space_law{pixel_y = 3},/turf/open/floor/wood,/area/space)
 "wT" = (/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
+"wU" = (/obj/machinery/vending/wardrobe/chem_wardrobe,/turf/open/floor/plating,/area/space)
 "wV" = (/mob/living/simple_animal/slime,/turf/open/floor/engine,/area/space)
 "wX" = (/obj/structure/chair/comfy/teal{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "wZ" = (/obj/effect/spawner/structure/window/reinforced,/turf/open/space/basic,/area/space)
@@ -497,6 +532,7 @@
 "xf" = (/obj/structure/table/reinforced,/obj/machinery/door/poddoor/shutters/preopen{id = "kitchen_counter"; name = "Kitchen Counter Shutters"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "xg" = (/obj/structure/table/reinforced,/obj/machinery/door/poddoor/shutters/preopen{id = "kitchen_counter"; name = "Kitchen Counter Shutters"},/obj/machinery/door/firedoor,/obj/item/holosign_creator/robot_seat/restaurant,/turf/open/floor/plating,/area/space)
 "xj" = (/obj/structure/table/reinforced,/obj/machinery/door/poddoor/shutters/preopen{id = "kitchen_counter"; name = "Kitchen Counter Shutters"},/obj/machinery/door/firedoor,/obj/item/food/pie/cream,/turf/open/floor/plating,/area/space)
+"xk" = (/obj/structure/closet/secure_closet/chemical,/turf/open/floor/iron/white,/area/space)
 "xm" = (/obj/machinery/door/window/southleft{dir = 8; name = "Maximum Security Test Chamber"; req_access_txt = "55"},/obj/machinery/door/poddoor/preopen{id = "Xenolab"; name = "test chamber blast door"},/obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron,/area/space)
 "xn" = (/obj/machinery/atmospherics/components/unary/vent_scrubber/on{dir = 1},/turf/open/floor/engine,/area/space)
 "xr" = (/obj/machinery/restaurant_portal/bar,/turf/open/floor/plating,/area/space)
@@ -541,9 +577,11 @@
 "zl" = (/obj/effect/decal/cleanable/confetti,/turf/open/floor/plating,/area/space)
 "zm" = (/obj/machinery/bookbinder,/turf/open/floor/plating,/area/space)
 "zn" = (/obj/structure/bookcase/random/fiction,/turf/open/floor/plating,/area/space)
+"zq" = (/obj/effect/spawner/structure/window/reinforced,/obj/machinery/door/poddoor/preopen{id = "cmoprivacy"; name = "privacy shutter"},/turf/open/floor/plating,/area/space)
 "zs" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/vomit/old,/turf/open/floor/carpet,/area/space)
 "zu" = (/obj/structure/bookcase/random/reference,/turf/open/floor/plating,/area/space)
 "zx" = (/obj/effect/decal/cleanable/shreds,/obj/structure/extinguisher_cabinet/directional/east,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
+"zH" = (/obj/structure/table/glass,/obj/item/grenade/chem_grenade,/obj/item/grenade/chem_grenade,/obj/item/grenade/chem_grenade,/obj/item/grenade/chem_grenade,/obj/item/stack/cable_coil,/obj/item/stack/cable_coil,/obj/item/screwdriver{pixel_x = -2; pixel_y = 6},/obj/item/reagent_containers/glass/bottle/epinephrine{pixel_x = -4; pixel_y = 12},/obj/item/reagent_containers/glass/bottle/multiver{pixel_x = 7; pixel_y = 12},/turf/open/floor/plating,/area/space)
 "zI" = (/obj/structure/lattice,/turf/open/space/basic,/area/space)
 "zJ" = (/obj/machinery/door/airlock/command{name = "Head of Personnel's Quarters"; req_access_txt = "57"},/turf/open/floor/plating,/area/space)
 "zK" = (/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/dark/smooth_large,/area/space)
@@ -551,6 +589,7 @@
 "zN" = (/obj/machinery/lapvend,/turf/open/floor/iron/white,/area/space)
 "zO" = (/obj/effect/decal/cleanable/glass,/turf/open/floor/wood,/area/space)
 "zR" = (/obj/effect/decal/cleanable/vomit/old,/turf/open/floor/wood,/area/space)
+"zS" = (/obj/structure/table/reinforced,/obj/item/storage/backpack/duffelbag/med/surgery,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "zU" = (/obj/effect/decal/cleanable/dirt/dust,/turf/open/floor/plating,/area/space)
 "zW" = (/obj/machinery/door/window/southright{dir = 8; name = "Paramedic Desk"; req_access_txt = "5"},/turf/open/floor/plating,/area/space)
 "zY" = (/obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/dark,/area/space)
@@ -578,7 +617,7 @@
 "Bb" = (/obj/machinery/holopad,/obj/effect/turf_decal/box,/turf/open/floor/carpet,/area/space)
 "Bd" = (/obj/machinery/atmospherics/components/binary/thermomachine/heater{dir = 1},/turf/open/floor/plating,/area/space)
 "Bg" = (/obj/structure/displaycase/trophy,/turf/open/floor/plating,/area/space)
-"Bj" = (/obj/machinery/button/door/directional/south{id = "main_surgery"; name = "privacy shutters control"},/obj/structure/sink{dir = 1},/turf/open/floor/plating,/area/space)
+"Bj" = (/obj/machinery/button/door/directional/south{id = "main_surgery"; name = "privacy shutters control"},/obj/structure/sink{dir = 1},/obj/machinery/duct,/turf/open/floor/plating,/area/space)
 "Bk" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "Bl" = (/obj/structure/table/optable,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "Bo" = (/obj/structure/bed,/obj/item/bedsheet/hop,/turf/open/floor/carpet,/area/space)
@@ -590,6 +629,7 @@
 "By" = (/obj/effect/spawner/structure/window,/turf/open/floor/plating,/area/space)
 "BA" = (/obj/effect/decal/cleanable/dirt,/turf/open/floor/wood{icon_state = "wood-broken"},/area/space)
 "BD" = (/obj/machinery/button/door/directional/north{id = "roboticsprivacy"; name = "Robotics Privacy Control"; pixel_x = -7; req_access_txt = "29"},/obj/machinery/modular_computer/console/preset/civilian{dir = 8},/turf/open/floor/plating,/area/space)
+"BE" = (/obj/machinery/chem_dispenser{layer = 2.7},/turf/open/floor/iron/white,/area/space)
 "BR" = (/obj/structure/bookcase/random/nonfiction,/turf/open/floor/plating,/area/space)
 "BS" = (/obj/effect/decal/cleanable/blood/splatter,/obj/effect/decal/cleanable/garbage,/turf/open/floor/wood,/area/space)
 "BT" = (/obj/effect/decal/remains/human,/obj/effect/decal/cleanable/dirt,/turf/open/floor/engine,/area/space)
@@ -610,17 +650,21 @@
 "CA" = (/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/blood/old,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "CC" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/status_display/evac/directional/south,/turf/open/floor/plating,/area/space)
 "CD" = (/obj/structure/table/wood,/obj/item/storage/fancy/candle_box,/turf/open/floor/plating,/area/space)
+"CE" = (/obj/structure/closet/secure_closet/chief_medical,/turf/open/floor/plating,/area/space)
 "CG" = (/obj/structure/table/wood,/obj/item/taperecorder,/obj/item/camera,/turf/open/floor/plating,/area/space)
+"CJ" = (/obj/structure/table/glass,/obj/item/folder/white,/obj/item/stamp/cmo,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "CK" = (/obj/structure/bookcase{name = "Forbidden Knowledge"},/turf/open/floor/plating,/area/space)
 "CL" = (/obj/machinery/libraryscanner,/turf/open/floor/plating,/area/space)
 "CM" = (/obj/effect/spawner/randomcolavend,/turf/open/floor/plating,/area/space)
 "CN" = (/obj/machinery/door/window/northright{base_state = "left"; dir = 8; icon_state = "left"; name = "Library Desk Door"; pixel_x = 3; req_access_txt = "37"},/turf/open/floor/wood{icon_state = "wood-broken7"},/area/space)
+"CO" = (/obj/machinery/chem_heater/withbuffer{pixel_x = 4},/turf/open/floor/iron/white,/area/space)
 "CQ" = (/obj/structure/sign/painting/library{pixel_y = -32},/turf/open/floor/plating,/area/space)
 "CS" = (/obj/structure/sign/painting/library{pixel_y = -32},/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "CU" = (/obj/structure/sign/painting/library{pixel_y = -32},/obj/effect/decal/cleanable/glass,/turf/open/floor/plating,/area/space)
 "CV" = (/obj/machinery/door/poddoor/shutters{id = "gateshutter"; name = "Gateway Access Shutter"},/obj/structure/barricade/wooden,/turf/open/floor/iron/dark,/area/space)
 "CX" = (/obj/effect/decal/cleanable/blood/gibs/up,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "CZ" = (/obj/structure/table/reinforced,/obj/machinery/door/window/southright{name = "First Aid Supplies"; req_access_txt = "5"},/turf/open/floor/plating,/area/space)
+"Db" = (/obj/machinery/smartfridge/chemistry/preloaded,/obj/machinery/door/poddoor/shutters/preopen{id = "pharmacy_shutters_2"; name = "Pharmacy shutters"},/turf/closed/wall/r_wall,/area/space)
 "De" = (/obj/machinery/gateway/centerstation,/turf/open/floor/iron/dark,/area/space)
 "Dg" = (/obj/structure/sign/barsign,/turf/closed/wall,/area/space)
 "Dk" = (/obj/machinery/door/poddoor/shutters{id = "gateshutter"; name = "Gateway Access Shutter"},/turf/open/floor/plating,/area/space)
@@ -631,6 +675,7 @@
 "Ds" = (/obj/structure/table/reinforced,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "Du" = (/obj/structure/table,/obj/machinery/cell_charger,/obj/item/stock_parts/cell/high{charge = 100; maxcharge = 15000},/turf/open/floor/plating,/area/space)
 "Dw" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/insectguts,/turf/open/floor/plating,/area/space)
+"DA" = (/obj/structure/table/glass,/obj/item/reagent_containers/glass/beaker/cryoxadone{pixel_x = -6; pixel_y = 10},/obj/item/reagent_containers/glass/beaker/cryoxadone{pixel_x = 6; pixel_y = 10},/obj/item/reagent_containers/glass/beaker/cryoxadone{pixel_x = -6; pixel_y = 6},/obj/item/reagent_containers/glass/beaker/cryoxadone{pixel_x = 6; pixel_y = 6},/obj/item/storage/pill_bottle/mannitol,/obj/item/reagent_containers/dropper{pixel_y = 6},/turf/open/floor/plating,/area/space)
 "DC" = (/obj/effect/decal/cleanable/greenglow,/turf/open/floor/iron/dark,/area/space)
 "DD" = (/obj/effect/decal/cleanable/blood/gibs/old,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "DH" = (/obj/machinery/computer/gateway_control{dir = 4},/turf/open/floor/iron,/area/space)
@@ -658,7 +703,8 @@
 "EJ" = (/obj/effect/spawner/structure/window/reinforced,/obj/machinery/door/poddoor/shutters/preopen{id = "roboticsprivacy"; name = "Robotics Shutters"},/turf/open/floor/plating,/area/space)
 "EK" = (/obj/machinery/atmospherics/components/unary/portables_connector/visible{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "EL" = (/obj/machinery/door/poddoor/shutters{id = "teleshutter"; name = "Teleporter Access Shutter"},/turf/closed/wall/r_wall/rust,/area/space)
-"EQ" = (/obj/machinery/door/firedoor,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
+"EQ" = (/obj/machinery/door/firedoor,/obj/machinery/duct,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
+"EV" = (/obj/machinery/modular_computer/console/preset/id{dir = 4},/turf/open/floor/plating,/area/space)
 "EX" = (/obj/machinery/door/poddoor/shutters{id = "teleshutter"; name = "Teleporter Access Shutter"},/obj/structure/barricade/wooden,/turf/closed/wall/r_wall,/area/space)
 "EY" = (/obj/machinery/door/airlock/command{name = "Teleport Access"; req_one_access_txt = "17;19"},/obj/machinery/door/firedoor,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "EZ" = (/obj/effect/turf_decal/stripes/line{dir = 10},/obj/effect/decal/cleanable/glass,/turf/open/floor/iron,/area/space)
@@ -681,6 +727,7 @@
 "FU" = (/obj/structure/table,/obj/item/paper_bin,/obj/item/pen,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
 "FX" = (/obj/effect/decal/cleanable/xenoblood/xgibs/limb{dir = 4},/turf/open/floor/engine,/area/space)
 "Ga" = (/obj/structure/table,/obj/item/stack/cable_coil,/turf/open/floor/plating,/area/space)
+"Gc" = (/obj/structure/bed/dogbed/runtime,/mob/living/simple_animal/pet/cat/runtime,/turf/open/floor/iron/white,/area/space)
 "Ge" = (/obj/structure/table/reinforced,/obj/machinery/door/firedoor,/obj/machinery/door/window/westleft{dir = 2; name = "Robotics Desk"; req_access_txt = "29"},/obj/machinery/door/poddoor/shutters/preopen{id = "roboticsprivacy"; name = "Robotics Shutters"},/turf/open/floor/plating,/area/space)
 "Gh" = (/obj/structure/table,/obj/machinery/cell_charger,/turf/open/floor/plating,/area/space)
 "Gl" = (/obj/structure/table,/obj/item/reagent_containers/glass/beaker/large{pixel_x = -4; pixel_y = 7},/obj/item/reagent_containers/glass/beaker{pixel_x = 7},/obj/item/reagent_containers/dropper{pixel_x = -3; pixel_y = -6},/turf/open/floor/iron/dark,/area/space)
@@ -694,6 +741,7 @@
 "GD" = (/obj/structure/table/reinforced,/obj/item/assembly/flash/handheld,/obj/item/assembly/flash/handheld{pixel_x = 3; pixel_y = 2},/obj/item/assembly/flash/handheld{pixel_x = -1; pixel_y = -1},/obj/item/assembly/flash/handheld{pixel_x = 1; pixel_y = 4},/obj/item/assembly/flash/handheld{pixel_x = -4; pixel_y = 5},/obj/item/assembly/flash/handheld,/obj/item/bodypart/r_arm/robot{pixel_x = 3},/obj/item/bodypart/l_arm/robot{pixel_x = -3},/turf/open/floor/plating,/area/space)
 "GG" = (/obj/structure/table,/obj/item/clipboard,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating,/area/space)
 "GH" = (/obj/machinery/button/door/directional/east{id = "rdrnd"; name = "Primary Research Shutters Control"; pixel_y = 6; req_access_txt = "7"},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
+"GM" = (/obj/effect/spawner/structure/window/reinforced,/obj/machinery/door/poddoor/shutters/preopen{id = "pharmacy_shutters_2"; name = "Pharmacy shutters"},/turf/open/floor/plating,/area/space)
 "GO" = (/obj/structure/table,/obj/machinery/cell_charger,/obj/item/stock_parts/cell/high{charge = 100; maxcharge = 15000},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "GR" = (/obj/effect/decal/cleanable/greenglow,/obj/machinery/holopad,/turf/open/floor/iron,/area/space)
 "GW" = (/obj/effect/decal/cleanable/blood/gibs/up,/turf/open/floor/iron/dark,/area/space)
@@ -728,6 +776,7 @@
 "Iu" = (/obj/machinery/bluespace_beacon,/obj/effect/turf_decal/stripes/line,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron,/area/space)
 "Ix" = (/obj/structure/window/reinforced,/obj/structure/window/reinforced{dir = 4},/obj/structure/rack,/obj/item/storage/box/beakers{pixel_x = 6; pixel_y = 10},/obj/item/storage/box/syringes{pixel_x = -4; pixel_y = 4},/obj/item/wrench,/obj/item/kitchen/knife,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "IA" = (/obj/structure/window/reinforced,/obj/machinery/atmospherics/components/unary/portables_connector/visible{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/dark,/area/space)
+"IB" = (/obj/machinery/chem_heater/withbuffer{pixel_x = 4},/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "IH" = (/obj/machinery/mech_bay_recharge_port,/turf/open/floor/plating,/area/space)
 "II" = (/obj/structure/table/reinforced,/obj/machinery/cell_charger,/obj/item/stock_parts/cell/high/plus{pixel_x = -8; pixel_y = 9},/obj/item/stock_parts/cell/high/plus{pixel_x = 4; pixel_y = 5},/obj/item/stock_parts/cell/high/plus,/obj/item/borg/upgrade/rename{pixel_x = 3; pixel_y = 18},/turf/open/floor/iron,/area/space)
 "IJ" = (/obj/structure/table/glass,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
@@ -749,6 +798,7 @@
 "Jq" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/iron/white,/area/space)
 "Jt" = (/obj/structure/chair/office,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "Ju" = (/obj/machinery/computer/operating,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
+"Jv" = (/obj/structure/table,/obj/item/stack/ducts/fifty,/obj/item/stack/ducts/fifty,/obj/item/stack/ducts/fifty,/obj/item/stack/ducts/fifty,/obj/item/stack/ducts/fifty,/obj/item/stack/ducts/fifty,/obj/item/stack/ducts/fifty,/obj/item/stack/ducts/fifty,/obj/item/plunger,/obj/item/plunger,/turf/open/floor/plating,/area/space)
 "Jx" = (/obj/structure/table/optable,/obj/item/surgical_drapes,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/gibs/old,/turf/open/floor/iron/white,/area/space)
 "Jy" = (/obj/effect/turf_decal/tile/neutral,/obj/effect/turf_decal/tile/neutral{dir = 8},/obj/effect/turf_decal/tile/neutral{dir = 4},/obj/effect/turf_decal/tile/neutral{dir = 1},/turf/open/floor/iron/dark,/area/space)
 "JB" = (/obj/item/storage/belt/utility/full,/turf/open/floor/plating,/area/space)
@@ -757,6 +807,7 @@
 "JQ" = (/obj/machinery/modular_computer/console/preset/cargochat/science{dir = 1},/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "JS" = (/obj/machinery/computer/cargo/request{dir = 1},/turf/open/floor/plating,/area/space)
 "JV" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/gibs/body,/turf/open/floor/plating,/area/space)
+"Kb" = (/obj/structure/reagent_dispensers/plumbed/storage,/turf/open/floor/plating,/area/space)
 "Kc" = (/obj/machinery/door/window/westleft{dir = 4; name = "Robotics Surgery"; req_access_txt = "29"},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "Kd" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/robot_debris/down,/turf/open/floor/plating,/area/space)
 "Kf" = (/obj/item/robot_suit,/obj/effect/decal/cleanable/blood/gibs/core,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
@@ -770,6 +821,7 @@
 "Kq" = (/obj/machinery/aug_manipulator,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/white,/area/space)
 "Ks" = (/obj/structure/table,/obj/machinery/cell_charger,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "Kt" = (/obj/machinery/mechpad,/turf/open/floor/plating,/area/space)
+"Ku" = (/obj/structure/chair/sofa/left,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "Kv" = (/obj/structure/window/reinforced{dir = 4},/obj/structure/rack,/turf/open/floor/plating,/area/space)
 "Kx" = (/obj/effect/turf_decal/tile/neutral,/obj/effect/turf_decal/tile/neutral{dir = 8},/obj/effect/turf_decal/tile/neutral{dir = 4},/obj/effect/turf_decal/tile/neutral{dir = 1},/obj/effect/turf_decal/stripes/line,/obj/structure/rack,/obj/item/book/manual/wiki/robotics_cyborgs,/obj/item/storage/toolbox/mechanical{pixel_x = -3; pixel_y = 3},/obj/item/storage/toolbox/electrical,/obj/item/multitool,/obj/item/clothing/glasses/welding,/obj/item/clothing/head/welding,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/dark,/area/space)
 "KB" = (/obj/machinery/door/firedoor,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/white,/area/space)
@@ -778,7 +830,9 @@
 "KE" = (/obj/structure/table,/obj/machinery/cell_charger,/obj/item/stock_parts/cell/high,/turf/open/floor/plating,/area/space)
 "KF" = (/obj/structure/table,/obj/item/integrated_circuit/loaded/hello_world{pixel_x = -4; pixel_y = 4},/obj/item/integrated_circuit/loaded/speech_relay,/turf/open/floor/plating,/area/space)
 "KH" = (/obj/structure/sink{dir = 4; pixel_x = -12; pixel_y = -2},/turf/open/floor/iron/white,/area/space)
+"KK" = (/obj/machinery/door/airlock/virology{autoclose = 0; frequency = 1449; id_tag = "virology_airlock_exterior"; name = "Virology Exterior Airlock"; req_access_txt = "39"},/obj/effect/mapping_helpers/airlock/cyclelink_helper,/obj/effect/mapping_helpers/airlock/locked,/turf/open/floor/plating,/area/space)
 "KL" = (/obj/structure/table,/obj/item/multitool/circuit{pixel_x = 7},/obj/item/multitool/circuit,/obj/item/multitool/circuit{pixel_x = -8},/turf/open/floor/plating,/area/space)
+"KN" = (/obj/machinery/door/airlock/maintenance_hatch,/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 4},/turf/open/floor/plating,/area/space)
 "KO" = (/obj/structure/table/glass,/obj/item/nanite_scanner{pixel_x = -4; pixel_y = -4},/obj/item/nanite_scanner{pixel_x = 4; pixel_y = -4},/obj/item/nanite_remote{pixel_x = -4; pixel_y = 4},/obj/item/nanite_remote{pixel_x = 4; pixel_y = 4},/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "KP" = (/obj/effect/decal/cleanable/vomit/old,/turf/open/floor/wood{icon_state = "wood-broken5"},/area/space)
 "KQ" = (/obj/machinery/nanite_program_hub,/turf/open/floor/plating,/area/space)
@@ -789,10 +843,12 @@
 "Lc" = (/obj/machinery/rnd/production/techfab/department/medical,/turf/open/floor/iron/white,/area/space)
 "Lk" = (/obj/effect/decal/cleanable/greenglow,/turf/open/floor/plating,/area/space)
 "Ll" = (/obj/structure/chair/office{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
+"Lm" = (/obj/machinery/atmospherics/components/unary/portables_connector/visible{dir = 1},/obj/machinery/portable_atmospherics/canister/oxygen,/turf/open/floor/plating,/area/space)
 "Lo" = (/obj/structure/table,/obj/item/controller,/obj/item/compact_remote,/obj/item/compact_remote,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "Lp" = (/obj/structure/bed,/obj/item/bedsheet/rd,/turf/open/floor/wood,/area/space)
+"Lq" = (/obj/machinery/duct,/turf/open/floor/iron/white,/area/space)
 "Ls" = (/obj/machinery/door/airlock/command{name = "Research Director's Quarters"; req_access_txt = "30"},/turf/open/floor/plating,/area/space)
-"Lv" = (/obj/machinery/button/door/directional/south{id = "main_surgery2"; name = "privacy shutters control"},/obj/structure/sink{dir = 1},/turf/open/floor/plating,/area/space)
+"Lv" = (/obj/machinery/button/door/directional/south{id = "main_surgery2"; name = "privacy shutters control"},/obj/structure/sink{dir = 1},/obj/machinery/duct,/turf/open/floor/plating,/area/space)
 "Ly" = (/obj/structure/table,/obj/item/aicard,/obj/item/paicard,/obj/item/circuitboard/aicore,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "LD" = (/obj/machinery/modular_computer/console/preset/id,/turf/open/floor/plating,/area/space)
 "LF" = (/obj/structure/table/wood,/obj/item/reagent_containers/food/condiment/peppermill{pixel_x = -13; pixel_y = -9},/turf/open/floor/wood{icon_state = "wood-broken3"},/area/space)
@@ -803,6 +859,8 @@
 "LR" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/iron/dark,/area/space)
 "LU" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/greenglow,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "Mb" = (/obj/structure/closet/secure_closet/research_director,/turf/open/floor/wood{icon_state = "wood-broken3"},/area/space)
+"Mc" = (/obj/machinery/chem_mass_spec,/turf/open/floor/plating,/area/space)
+"Me" = (/obj/structure/table/wood,/obj/item/flashlight/lamp/green{pixel_y = 4},/turf/open/floor/plating,/area/space)
 "Mk" = (/obj/effect/decal/cleanable/glass,/turf/open/floor/plating,/area/space)
 "Ml" = (/obj/structure/displaycase/labcage,/obj/effect/decal/cleanable/dirt,/turf/open/floor/wood{icon_state = "wood-broken3"},/area/space)
 "Mo" = (/obj/structure/window/reinforced{dir = 8},/obj/effect/decal/cleanable/glass/plasma,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
@@ -815,6 +873,7 @@
 "MD" = (/obj/machinery/suit_storage_unit/rd,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating,/area/space)
 "ME" = (/obj/effect/decal/cleanable/glass,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "MF" = (/obj/machinery/door/airlock/command{name = "Research Director's Office"; req_access_txt = "30"},/obj/machinery/door/firedoor,/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 4},/turf/open/floor/plating,/area/space)
+"MG" = (/obj/structure/table,/obj/item/storage/toolbox/mechanical,/obj/item/clothing/head/welding,/turf/open/floor/plating,/area/space)
 "MK" = (/obj/machinery/door/airlock/research{name = "Nanite Lab"; req_one_access_txt = "47"},/obj/machinery/door/firedoor,/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 4},/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 8},/turf/open/floor/plating,/area/space)
 "ML" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/glass,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
 "MN" = (/obj/machinery/door/airlock/research{name = "Testing Labs"; req_one_access_txt = "7"},/obj/machinery/door/firedoor,/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 8},/turf/open/floor/plating,/area/space)
@@ -845,15 +904,19 @@
 "NU" = (/obj/machinery/computer/rdconsole{dir = 1},/turf/open/floor/plating,/area/space)
 "NZ" = (/obj/machinery/modular_computer/console/preset/research{dir = 1},/turf/open/floor/plating,/area/space)
 "Ob" = (/obj/machinery/computer/mecha{dir = 1},/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
+"Oc" = (/obj/structure/bodycontainer/morgue{dir = 1},/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "Od" = (/obj/machinery/nanite_chamber,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
+"Of" = (/obj/structure/table,/obj/machinery/reagentgrinder,/obj/item/stack/sheet/mineral/plasma{pixel_y = 10},/turf/open/floor/plating,/area/space)
 "Oh" = (/obj/effect/spawner/structure/window/reinforced,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "Oi" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/gibs/up,/turf/open/floor/engine,/area/space)
 "Ok" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/greenglow,/turf/open/floor/engine,/area/space)
 "Om" = (/obj/machinery/door/airlock/research{name = "Laboratory Access"; req_access_txt = "47"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "On" = (/obj/machinery/atmospherics/components/trinary/filter{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
+"Oo" = (/obj/structure/closet/secure_closet/psychology,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "Ou" = (/obj/machinery/door/airlock/maintenance_hatch,/turf/open/floor/plating,/area/space)
 "Ox" = (/obj/structure/table/glass,/obj/item/stack/sheet/mineral/plasma{pixel_y = 4},/obj/item/reagent_containers/dropper,/obj/item/reagent_containers/glass/beaker{pixel_x = 8; pixel_y = 2},/obj/item/reagent_containers/glass/beaker/large{pixel_x = -3; pixel_y = 3},/turf/open/floor/plating,/area/space)
 "Oy" = (/obj/machinery/atmospherics/components/unary/outlet_injector/atmos/toxins_mixing_input{dir = 1},/turf/open/floor/engine,/area/space)
+"OB" = (/obj/structure/bodycontainer/morgue{dir = 2},/turf/open/floor/plating,/area/space)
 "OD" = (/obj/machinery/smartfridge/organ,/turf/open/floor/plating,/area/space)
 "OG" = (/obj/machinery/smartfridge/extract/preloaded,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "OH" = (/obj/machinery/computer/camera_advanced/xenobio,/turf/open/floor/plating,/area/space)
@@ -882,6 +945,7 @@
 "Ps" = (/obj/machinery/door/airlock/research{autoclose = 0; frequency = 1449; id_tag = "xeno_airlock_exterior"; name = "Xenobiology Lab External Airlock"; req_access_txt = "55"},/obj/effect/mapping_helpers/airlock/locked,/obj/machinery/door_buttons/access_button{idDoor = "xeno_airlock_exterior"; idSelf = "xeno_airlock_control"; name = "Access Button"; pixel_y = -24; req_access_txt = "55"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "Pt" = (/obj/machinery/door/airlock/research{name = "Toxins Mixing Lab"; req_access_txt = "8"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
 "Pu" = (/obj/effect/decal/cleanable/blood/gibs/body,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
+"PB" = (/obj/machinery/computer/operating,/turf/open/floor/plating,/area/space)
 "PD" = (/obj/structure/table/glass,/obj/item/storage/box/petridish{pixel_x = -5; pixel_y = 8},/obj/item/storage/box/petridish{pixel_x = 5; pixel_y = 3},/turf/open/floor/plating,/area/space)
 "PI" = (/obj/effect/decal/cleanable/garbage,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
 "PJ" = (/obj/structure/table/reinforced,/turf/open/floor/iron/dark,/area/space)
@@ -901,6 +965,7 @@
 "Ql" = (/obj/structure/window/plasma/reinforced/spawner/west,/obj/structure/window/plasma/reinforced/spawner/north,/turf/open/space/basic,/area/space)
 "Qn" = (/obj/structure/table/glass,/obj/machinery/reagentgrinder{pixel_x = -1; pixel_y = 8},/turf/open/floor/plating,/area/space)
 "Qr" = (/obj/machinery/shower{dir = 4},/obj/effect/decal/cleanable/garbage,/turf/open/floor/plating,/area/space)
+"Qs" = (/obj/structure/chair/office/light{dir = 8},/turf/open/floor/wood{icon_state = "wood-broken4"},/area/space)
 "Qz" = (/obj/structure/sink{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "QB" = (/obj/machinery/shower{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "QC" = (/obj/machinery/door/airlock/research{name = "Genetics Lab"; req_access_txt = "9"},/obj/machinery/door/firedoor,/turf/open/floor/plating,/area/space)
@@ -923,8 +988,10 @@
 "Rl" = (/obj/machinery/dna_scannernew,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
 "Rn" = (/obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "Rv" = (/obj/structure/chair/office/light,/turf/open/floor/plating{icon_state = "platingdmg3"},/area/space)
+"Rw" = (/obj/structure/chair/comfy/brown{dir = 4},/turf/open/floor/wood{icon_state = "wood-broken7"},/area/space)
 "Ry" = (/obj/structure/closet{anchored = 1; can_be_unanchored = 1; name = "Cold protection gear"},/obj/item/clothing/shoes/winterboots,/obj/item/clothing/shoes/winterboots,/obj/item/clothing/suit/hooded/wintercoat/science,/obj/item/clothing/suit/hooded/wintercoat/science,/turf/open/floor/plating,/area/space)
 "RC" = (/obj/structure/table/reinforced,/obj/item/assembly/timer{pixel_x = 5; pixel_y = 4},/obj/item/assembly/timer{pixel_x = -4; pixel_y = 2},/obj/item/assembly/timer{pixel_x = 6; pixel_y = -4},/obj/item/assembly/timer,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
+"RE" = (/obj/structure/table/glass,/obj/item/clothing/neck/stethoscope,/obj/item/wrench/medical,/turf/open/floor/plating,/area/space)
 "RG" = (/turf/open/floor/circuit/telecomms,/area/space)
 "RJ" = (/turf/open/floor/plating/grass,/area/space)
 "RK" = (/obj/structure/window/reinforced{dir = 4},/obj/effect/decal/cleanable/glass,/obj/effect/decal/cleanable/vomit/old,/turf/open/floor/plating/grass,/area/space)
@@ -942,6 +1009,7 @@
 "So" = (/obj/structure/window/reinforced{dir = 8},/turf/open/floor/engine,/area/space)
 "Ss" = (/obj/machinery/camera{c_tag = "Xenobiology Lab - Pen #3"; network = list("ss13","rd","xeno")},/obj/effect/decal/cleanable/dirt,/turf/open/floor/engine,/area/space)
 "Sy" = (/obj/effect/decal/cleanable/blood/old,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
+"SA" = (/obj/structure/table/reinforced,/obj/machinery/door/firedoor,/obj/machinery/door/window/northleft{name = "Pharmacy Desk"; req_access_txt = "5; 69"},/obj/machinery/door/poddoor/shutters/preopen{id = "pharmacy_shutters_2"; name = "Pharmacy shutters"},/turf/open/floor/plating,/area/space)
 "SC" = (/obj/machinery/camera{c_tag = "Xenobiology Lab - Pen #2"; network = list("ss13","rd","xeno")},/obj/effect/decal/cleanable/dirt,/turf/open/floor/engine,/area/space)
 "SD" = (/obj/machinery/camera{c_tag = "Xenobiology Lab - Pen #1"},/turf/open/floor/engine,/area/space)
 "SG" = (/obj/effect/decal/cleanable/xenoblood/xgibs/larva/body,/turf/open/floor/iron,/area/space)
@@ -985,6 +1053,7 @@
 "Up" = (/obj/machinery/button/door/directional/north{id = "Xenolab"; name = "Test Chamber Blast Doors"; pixel_x = 6; req_access_txt = "55"},/obj/machinery/button/ignition{id = "Xenobio"; pixel_x = -6; pixel_y = 24},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "Ur" = (/obj/machinery/atmospherics/components/unary/portables_connector/visible,/obj/machinery/portable_atmospherics/canister/bz,/turf/open/floor/plating,/area/space)
 "Us" = (/obj/structure/window/reinforced,/turf/open/floor/engine,/area/space)
+"Ut" = (/obj/structure/table/glass,/obj/item/cartridge/medical{pixel_x = -3},/obj/item/cartridge/medical{pixel_x = 3},/obj/item/cartridge/chemistry{pixel_y = 6},/turf/open/floor/iron/white,/area/space)
 "Uu" = (/obj/machinery/door/window/northleft{base_state = "right"; dir = 2; icon_state = "right"; name = "Containment Pen #4"; req_access_txt = "55"},/obj/effect/decal/cleanable/blood/old,/turf/open/floor/engine,/area/space)
 "Uw" = (/obj/structure/window/reinforced,/obj/structure/window/reinforced{dir = 4},/turf/open/floor/engine,/area/space)
 "Ux" = (/obj/structure/window/reinforced,/obj/structure/window/reinforced{dir = 8},/turf/open/floor/engine,/area/space)
@@ -1015,6 +1084,7 @@
 "VC" = (/turf/open/floor/iron/white,/area/space)
 "VE" = (/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 4},/turf/open/floor/plating,/area/space)
 "VI" = (/obj/structure/table/glass,/obj/item/clothing/gloves/color/latex,/obj/item/surgical_drapes,/turf/open/floor/plating,/area/space)
+"VK" = (/obj/structure/filingcabinet/filingcabinet,/turf/open/floor/wood{icon_state = "wood-broken7"},/area/space)
 "VL" = (/obj/machinery/door/window/northleft{base_state = "right"; dir = 2; icon_state = "right"; name = "Containment Pen #4"; req_access_txt = "55"},/obj/machinery/door/poddoor/preopen{id = "xenobio4"; name = "Xenobio Pen 4 Blast Door"},/turf/open/floor/iron,/area/space)
 "VM" = (/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/structure/table,/obj/machinery/button/door{id = "xenobio4"; layer = 3.3; name = "Xenobio Pen 4 Blast Doors"; pixel_y = 4; req_access_txt = "55"; sync_doors = 4},/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "VO" = (/obj/machinery/door/window/northleft{base_state = "right"; dir = 2; icon_state = "right"; name = "Containment Pen #3"; req_access_txt = "55"},/obj/machinery/door/poddoor/preopen{id = "xenobio3"; name = "Xenobio Pen 3 Blast Door"},/turf/open/floor/plating,/area/space)
@@ -1043,6 +1113,7 @@
 "WQ" = (/obj/effect/decal/cleanable/blood/gibs/up,/turf/open/floor/plating,/area/space)
 "WR" = (/obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,/obj/effect/turf_decal/stripes/line{dir = 4},/obj/effect/decal/cleanable/blood/old,/turf/open/floor/iron,/area/space)
 "WS" = (/obj/structure/table/wood,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
+"Xc" = (/obj/structure/table/wood,/obj/machinery/computer/med_data/laptop{dir = 4},/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
 "Xf" = (/obj/machinery/door/firedoor,/turf/open/floor/iron/white,/area/space)
 "Xl" = (/obj/effect/decal/cleanable/xenoblood/xsplatter,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "Xn" = (/obj/effect/decal/cleanable/blood/gibs/core,/turf/open/floor/plating,/area/space)
@@ -1063,8 +1134,10 @@
 "Ya" = (/obj/effect/decal/cleanable/xenoblood/xgibs/torso,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/white,/area/space)
 "Yc" = (/obj/structure/table/glass,/obj/item/reagent_containers/chem_pack{pixel_x = 10; pixel_y = 10},/obj/item/storage/box/rxglasses{pixel_x = -4; pixel_y = 8},/obj/item/stack/medical/gauze{pixel_x = 8},/turf/open/floor/plating,/area/space)
 "Ye" = (/obj/effect/decal/cleanable/xenoblood/xsplatter,/obj/effect/decal/cleanable/blood/splatter,/obj/effect/decal/cleanable/dirt,/turf/open/floor/iron/white,/area/space)
+"Yf" = (/obj/structure/window/reinforced/tinted{dir = 4},/obj/structure/window/reinforced/tinted,/turf/open/floor/plating,/area/space)
 "Yg" = (/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "Yi" = (/obj/effect/decal/cleanable/blood/splatter,/turf/open/floor/iron/white,/area/space)
+"Yj" = (/obj/structure/table/reinforced,/obj/item/organ/heart{pixel_x = -5; pixel_y = 3},/obj/item/organ/lungs{pixel_x = 8},/obj/item/organ/liver,/obj/item/organ/stomach{pixel_x = -5; pixel_y = 5},/obj/structure/window/reinforced/tinted{dir = 4},/turf/open/floor/plating{icon_state = "platingdmg1"},/area/space)
 "Yl" = (/obj/effect/decal/cleanable/xenoblood/xgibs/core,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating,/area/space)
 "Yr" = (/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating{icon_state = "panelscorched"},/area/space)
 "Ys" = (/obj/structure/reagent_dispensers/watertank,/obj/item/extinguisher{pixel_x = 4; pixel_y = 3},/obj/item/extinguisher,/obj/effect/decal/cleanable/dirt,/turf/open/floor/plating{icon_state = "platingdmg2"},/area/space)
@@ -1093,6 +1166,7 @@
 "Zn" = (/obj/machinery/door/window/northleft{base_state = "right"; icon_state = "right"; name = "Containment Pen #6"; req_access_txt = "55"},/obj/machinery/door/poddoor/preopen{id = "xenobio6"; name = "Xenobio Pen 6 Blast Door"},/turf/open/floor/iron,/area/space)
 "Zo" = (/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced,/obj/structure/table,/obj/machinery/button/door{id = "xenobio6"; layer = 3.3; name = "Xenobio Pen 6 Blast Doors"; pixel_y = 1; req_access_txt = "55"},/turf/open/floor/iron/white,/area/space)
 "Zp" = (/obj/machinery/door/airlock/research{name = "Research Division Access"; req_access_txt = "47"},/obj/machinery/door/firedoor,/obj/effect/mapping_helpers/airlock/cyclelink_helper,/turf/open/floor/plating,/area/space)
+"Zq" = (/obj/machinery/atmospherics/components/unary/cryo_cell,/turf/open/floor/plating,/area/space)
 "Zs" = (/obj/machinery/door/window/northleft{base_state = "right"; icon_state = "right"; name = "Containment Pen #5"; req_access_txt = "55"},/obj/machinery/door/poddoor/preopen{id = "xenobio5"; name = "Xenobio Pen 5 Blast Door"},/obj/effect/decal/cleanable/xenoblood/xsplatter,/turf/open/floor/plating,/area/space)
 "Zx" = (/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced,/obj/structure/table,/obj/machinery/button/door{id = "xenobio5"; layer = 3.3; name = "Xenobio Pen 5 Blast Doors"; pixel_y = 4; req_access_txt = "55"},/turf/open/floor/iron/white,/area/space)
 "Zy" = (/obj/machinery/door/poddoor/shutters/preopen{id = "XenoPens"; name = "Xenobiology Lockdown"},/turf/open/floor/iron,/area/space)
@@ -1175,38 +1249,38 @@ wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
 wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
 wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
 wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBPononoPowBwBwBwBwBwBwBwBwBnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBPononoPofIfIfIfIfIfIfIfIfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononononononononononononononononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPononoPoPoPoPoPoPoPoPoPoPonononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofInonoPomgHjoTxctICZTGHTPononononononononononononononononononononononononononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofInonoPoaaaaaaaaaaaaaanoPononononononononononononononononononononononononononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofInonoPoVCnoYgVCnoVCVCVCPononononononononononononononononononononononononononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofInonoPoVCVCqQAHLcnoTZnoPoZmZmZmfIalfIZmZmZmfIZmZmfIarZmfIfIfIfIfIfIfIfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofIVCVCZmnonoNFasVCVCnonoZmnonononoYgnononoTZZmnoVCnoYgVCfIatawnonoeXayfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononowBwBwBwBwBnofIVCnoaCnonoVCVCYgVCnonoaCnoeXYgeXnonoYgeXnoZmnoVCVCVCnoaDYgYgayaFawnoaLnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononononononononofIVCnoZmuzuznoTZVCnoXYnoZmnoYgnonoTZnononoYgZmnonoVCVCnofIeXaFatYgnoYgfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofIfIfIfIfIfIfIfIXfKiPoPoZmZmaCZmZmPoPoPoZmZmZmfIaNfIZmZmZmfIZmZmfIaOZmfIfIfIfIfIfIfIfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofIYgnoVCVCVCnoVCVCVCVCnonononoVCVCVCVCVCEQnononoTZnonoVCnononoeXeXnoTZnozWnogBnoRvmCZmnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnofInonoVCnoVCnoVCYgeXVCeXVCVCVCeXnonoeXnoKiVCVCVCVCTZeXnonoVCnononoYgVCnoZmZmHzPLhhZmZmnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPoPoPoPoPoizPoPoPoPoPoaTPoPoPoPoaYPoPoPoPonoVCVCVCYgnoTZnonoVCTZYgVCVCnobanoVCnonoYgZmnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPononoTZVCnoVCPonononononononoPononoVCnoPoeXVCTZVCnonoYgnoYgnoVCVCnononoZmnoTZnononoKinononoFaPoFaFaFaFaPoPoPoFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPononoVCnoVCVCPononononononoVCPononoVCnoPoPobjfIOIOIfIbjfIkLkLfIbkZmZmZmfIbmnowTnoVCKinononoFabobpbpbwbybzbpbpPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPonoTZVCVCVCnoPononoeXnoVCTZnoaTTZYgnononoPoTZVceWbnfIVCVcVIbnfInoHiYgbCZmnoYgnoTZVCKinononoFaaauibEbJbEeXYNYrFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPonowTTZTZnonoPonoeXVCTZnononoPonoTZVCVCVCPoVCnonoTZODVCnonoYgfIKHYgVCYcZmVCVCwTVCnoZmnononoFabPMkwTYNbQbUZLbVFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPoPoPoIoPoPoPoPononoVCVCnononoPoVCnoeXnoVCPodqVCVCBlfIdqVCVCmMfIeXVCVCbMZmVCwTnoVCnoZmnononoFanoWqnobWbYnoZgbZFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPowTnonoPononononoeXYgYgVCnonoPonoVCeXVCVCPoBjTsVCgwfILvHinogwfIcaTsYgbCZmnoVCVCnonoZmnononoPocbaacdaabPcfcpcxPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPonowTnoPononononoTZYgnoVCnonoPoPoPoPoPoPoPofIcEcEfIfIfIcEcEfIfIfIcEcEfIfIZmKiKiKiZmfInononoPoFaFacGcGcGPocKPoPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPonowTnoPonoVCVCVCYgnoVCnononoPoMknoYNTZZgnowTnoZgZgnonoZgcMYNnoZgnonowTZOnowTYgnoYNPpnoZgZgYrYNnononoeXcPnonoPoPoFaFaPoFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPoPoPoPoPonoVCnonoVCVCYgnonowTPonoZgcQeXnoZgcXYNnocYZLYNwTZgnodaZgZgZgZLZgZgeXnoZgnoZgnoZgcQnonoZgMkZgYrZLnonoFadcdgnodhPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPononononoVCVCYgTZVCeXYgnononoPonoZgnoYNYNwTnoZLnononoZgnoeXZgnowTnonoZLZgnoZgnoZLYNnoZgnonoZgnoYgnononoZLYNZgFaFadjPoFaFaZmZmZmFawBwBwBPoFaZmZmZmFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPononoVCeXVCVCYgYgVCYgnowTnonoPodkdlnofIfIKnKnKnKnfIfIfIfIKnfIfIKnfIfIfIfIKnKnKnKnfIfIfIfIKnKnfIfIfIfInocYZgeXFadudvdwKndAaydDdEFawBwBwBPowTnodFdMZmwBZmZmZmZmZmZmZmwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPoYgTZVCYgVCVCeXVCVCVCwTnononoPoYNZgnofIdOZgYNnonodQdSdUYNYNnoYgnonoZgZLZgZgZgZgYNWqYNnoZgZgYgnononofIZgdXZLnoPodZYgeafIebekeoesFaPoFaPoPoeueEeKYNZmwBZmeLeOeQeRfcZmwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnoPoYgnoTZnononononononowTnononoPoYNZgnofdnoYNcYZgZgZgfgZgnoZgfhZgfiZgZgnoZOZgMknonoZgcYZLZgZgZgnoZLYgfkZOMkYNZgPoflWqdvfsfxfzfAfBKnfDYNfEKneXfGOZfHZmwBZmnofOfQfTfOZmwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnonoPoPoPoPoPoPoPoPoPoPoPoPoPoPoPofInoZgMkfIfVfYgagegfgfHRPpgjgfgfgfgngsgngfgvgxnoeXnonoMknonoZgnoZgnoYgfInowTnoZgFaKnKnfIKngAhwnogCfIgDgEnofInohXdFgKPoFaFagLfOfOgNfOPoFaFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononononononononononononononononofInoZgnoKnKngSfIfIfIgUgWheKnhffIfIKnhhgUKnhjfIKnKnfIYNMkYNwTnofIhtfIfIKneXnocYZgPohuhxhzKnnodDhwhBKndunohDhEhInonooFfIhKhMhNhPYrhUhWiaifFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonoYNKnigihiiimfIfIfIfIfIiriuiJfIfIfIfIgfiOiPiRfIiSiWfIZLiXjcnojejkfInowTZOPoPojnjqjrKnKnjsfIKnKnKnKnKnfIKnjtfIKnfIjvhwhwayhwdkjwjxjBPoZmZmZmwBwBwBwBwBwBwBwBwBwBwBwB
-wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIZgZgoFfIjDjFjHjIjLjMjOjQfIgfjXjZfIwTkffIkgkCkGkHfIkMYgkQZgZgfIkTkUeXfIZgnonoZmkXlelklklleXTZlnnonoYNeXYgnolklkltkXZmlChwdDhwhwdFhwnolElGhwlIZmwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBPoKKFaPowBwBwBwBwBwBwBwBwBnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIfIPononoPofIKnfIfIfIKnfIfIfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIfIfIfIwBwBwBfInoKNnonolTnonononononononoOunononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonofIfIfIfIfInoPononoFaPoPoFaPoPoFaPoPoFanononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonononononononoPovaFaPomgHjoTxctICZTGHTPononononononononononononononononononononononononononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonoKnfIfIfIKnfIKnnonoPoaaaaaaaaaaaaaanoFanonononononononononononononononononononononononononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonofIzSPBYjOBOBfInonoFaVCnoYgVCnoVCVCVCPononononononononononononononononononononononononononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonoKnnocVfwnoYgfInonoPoVCVCqQAHLcnoTZnoPoZmZmZmfIalfIZmZmZmfIZmZmfIarZmfIfIfIKnfIKnfIfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIfInonofIYgqjYfeXnopCVCVCZmnonoNFasVCVCnonoZmnononoZqYgZqnonoTZZmnoVCnoYgVCfIuhsDMejzKuVKfInononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInogfgUKnnononowTnofIVCnoaCnonoVCVCYgVCnonoaCnoeXYghGTOTOYgeXnoZmnoVCVCVCnoaDYgYgRwaFawnoaLnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInogfgUKnOcsdnosdsdKnVCnoZmuzuznoTZVCnoXYnoZmnoYgDALmTZabREnoYgZmnonoVCVCnofIXcQsatYgnoOoKnnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInogffIKnKnKnpCfIKnfIXfKiPoPoZmZmaCZmZmPoFaFaZmZmZmfIaNfIZmZmZmKnZmZmfIaOZmfIKnfIfIKnfIKnKnnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInogfmotHgfLqLqLqgfLqLqLqLqgfgfgfgfLqLqLqLqLqEQgfnonoTZnonoVCnononoeXeXnoTZnozWnogBnoRvmCZmnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonofInonoVCnoVCnoVCYgeXVCeXVCVCVCeXnonoeXnoKiLqVCVCVCTZeXnonoVCnononoYgVCnoZmZmHzPLhhZmZmnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIfInoPozqzqzqzqizFaPoZmZmZmaTZmZmZmPoaYmznpnpFagfLqLqLqtHgfiVnonoVCTZYgVCVCnobanoVCnonoYgZmnononowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoFapunoTZVCnoGczqbxMGJvnoOfbXwUZmnonoxknoqUeXLqTZVCnonotHnoYgnoVCVCnononoZmnoTZnononoKinononoFaPoFaFaFaFaPoPoPoFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPonomfVCnoVCUtzqhhnononononoVCZmnonoVCnoFaFabjfIOIOIKnbjfIkLkLKnbkZmZmZmfIbmnowTnoVCKinononoFabobpbpbwbybzbpbpPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPobMCJljcNVChCzqQdnoeXnoVCTZnoaTTZYgzHrKQdPoiVVceWbnfILqVcVIbnfInoHiYgbCZmnoYgnoTZVCKinononoFaaauibEbJbEeXYNYrFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoFaEVshTZTZnodPzqvoeXVCTZnononoZmMcTZCOVCBEFaLqnonoTZODLqnonoYgKnKHYgVCYcZmVCVCwTVCnoZmnononoFabPMkwTYNbQbUZLbVFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPoPoFaIoPoPoPoFaQanoVCVCnononoZmfXnoIBnoBEPodqVCVCBlfIdqVCVCmMfIeXVCVCbMZmVCwTnoVCnoZmnononoFanoWqnobWbYnoZgbZFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPomxCEnoPoKbnononoeXYgYgVCnonoPonSVCeXgBaoPoBjTsVCgwKnLvHinogwKncaTsYgbCZmnoVCVCnonoZmnononoPocbaacdaabPcfcpcxPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPonowTnoPononononoTZYgnoVCnonoFaPoGMDbSAGMFafIcEcEfIKnfIcEcEKnKnfIcEcEfIKnZmKiKiKiZmKnnononoPoFaFacGcGcGPocKPoPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPonowTtoPonoVCVCVCYgnoVCnononoZmMknoYNTZZgnowTnoZgZgnonoZgcMYNnoZgnonowTZOnowTYgnoYNPpnoZgZgYrYNnononoeXcPnonoPoPoFaFaPoFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPoPoFaFaPonoVCnonoVCVCYgnonowTZmnoZgcQeXnoZgcXYNnocYZLYNwTZgnodaZgZgZgZLZgZgeXnoZgnoZgnoZgcQnonoZgMkZgYrZLnonoFadcdgnodhPowBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPoKbnononoVCVCYgTZVCeXYgnononoZmnoZgnoYNYNwTnoZLnononoZgnoeXZgnowTnonoZLZgnoZgnoZLYNnoZgnonoZgnoYgnononoZLYNZgFaFadjPoFaFaZmZmZmFawBwBwBPoFaZmZmZmFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoFanonoVCeXVCVCYgYgVCYgnowTnonoZmdkdlnofIfIKnKnKnKnfIfIfIfIKnfIfIKnfIfIfIfIKnKnKnKnfIfIfIfIKnKnfIfIfIfInocYZgeXFadudvdwKndAaydDdEFawBwBwBPowTnodFdMZmwBZmZmZmZmZmZmZmwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoPoYgTZVCYgVCVCeXVCVCVCwTnononoZmYNZgnofIdOZgYNnonodQdSdUYNYNnoYgnonoZgZLZgZgZgZgYNWqYNnoZgZgYgnononofIZgdXZLnoPodZYgeafIebekeoesFaPoFaPoPoeueEeKYNZmwBZmeLeOeQeRfcZmwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIfInoPoYgnoTZnononononononowTnononoZmYNZgnofdnoYNcYZgZgZgfgZgnoZgfhZgfiZgZgnoZOZgMknonoZgcYZLZgZgZgnoZLYgfkZOMkYNZgPoflWqdvfsfxfzfAfBKnfDYNfEKneXfGOZfHZmwBZmnofOfQfTfOZmwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInonoFaPoPoPoFaFaPoPoPoFaPoPoPoFaPoFanoZgMkfIfVfYgagegfgfHRPpgjgfgfgfgngsgngfgvgxnoeXnonoMknonoZgnoZgnoYgfInowTnoZgFaKnKnfIKngAhwnogCfIgDgEnofInohXdFgKPoFaFagLfOfOgNfOPoFaFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInononononononononononononononononoOunoZgnoKnKngSfIfIfIgUgWheKnhffIfIKnhhgUKnhjfIKnKnfIYNMkYNwTnofIhtfIfIKneXnocYZgPohuhxhzKnnodDhwhBKndunohDhEhInonooFfIhKhMhNhPYrhUhWiaifFawBwBwBwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInononofIfIfIfIfIfIfIfIfIfIfIfIfIfIfInonoYNKnigihiiimfIfIfIfIfIiriuiJfIfIfIfIgfiOiPiRfIiSiWfIZLiXjcnojejkfInowTZOPoPojnjqjrKnKnjsfIKnKnKnKnKnfIKnjtfIKnfIjvhwhwayhwdkjwjxjBPoZmZmZmwBwBwBwBwBwBwBwBwBwBwBwB
+wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIfIfIfIfIwBwBwBwBwBwBwBwBwBwBwBwBwBfIZgZgoFfIjDjFjHjIjLjMjOjQfIgfjXjZfIwTkffIkgkCkGkHfIkMYgkQZgZgfIkTkUeXfIZgnonoZmkXlelklklleXTZlnnonoYNeXYgnolklkltkXZmlChwdDhwhwdFhwnolElGhwlIZmwBwBwBwBwBwBwBwBwBwBwBwB
 wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfInoMknofIlNlQlUlWfIlXYNmaKnmcmekgmjmkYNfImnmpmrmumvkgnoKnmwmAfImEhwmGKnZgZLnomHeXYNTZaaaabPaaaaTZnoaaaabPbPbVaanoeXmNYghwlCmOhwmShwYgwThwmTmUZmwBwBwBwBwBwBwBwBwBwBwBwB
 wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIYgdlnofIfIfIfIfIKnnanbYNKnfIfIfIfIncnfKnKnfIfIfIfIngnhfIfIfIKnfIfInmKnnoZLnomHaabPnvaaYgwTYgaaaanonoaaaaaaYNTZnononxhwdDhwhwnyhwhwnzhwhwhwnFZmwBwBwBwBwBwBwBwBwBwBwBwB
 wBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBwBfIYgYNZgfInGnHnInInMnQnQTZKnnRnUnVnXocohfIolonMkoooskgowoxozbMKnoAoChIKnnoZgwTZmoHnooIoPoQoIYgwToFnoYgYrTZoYoZpgoZphZmdFpihwhwMkhwhwdDhwpjwTpkZmwBwBwBwBwBwBwBwBwBwBwBwB
