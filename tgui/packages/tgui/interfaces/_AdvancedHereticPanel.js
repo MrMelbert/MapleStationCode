@@ -5,7 +5,7 @@ import { AdvancedTraitorPanelBackground } from './_AdvancedTraitorParts';
 import { AdvancedTraitorPanelGoals } from './_AdvancedTraitorParts';
 import { AdvancedTraitorTutorialModal } from './_AdvancedTraitorParts';
 
-export const _AdvancedTraitorPanel = (props, context) => {
+export const _AdvancedHereticPanel = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     antag_type,
@@ -14,6 +14,8 @@ export const _AdvancedTraitorPanel = (props, context) => {
     goals = [],
     backstory_tutorial_text,
     objective_tutorial_text,
+    can_ascend,
+    can_sac,
   } = data;
 
   return (
@@ -21,7 +23,7 @@ export const _AdvancedTraitorPanel = (props, context) => {
       title="Antagonist Goal Panel"
       width={1150}
       height={550}
-      theme="jolly-syndicate">
+      theme="wizard">
       <Window.Content>
         <Section
           title={`${ antag_type } Background`}
@@ -63,6 +65,24 @@ export const _AdvancedTraitorPanel = (props, context) => {
               content="Add Goal"
               textAlign="center"
               onClick={() => act('add_advanced_goal')} />
+            <Button.Checkbox
+              width="140px"
+              height="20px"
+              content="Toggle Ascending"
+              textAlign="center"
+              checked={can_ascend}
+              tooltip="Toggle the ability to ascend. \
+                      Disabling ascending rewards 3 bonus charges."
+              onClick={() => act('toggle_ascension')} />
+            <Button.Checkbox
+              width="140px"
+              height="20px"
+              content="Toggle Sacrificing"
+              textAlign="center"
+              checked={can_sac}
+              tooltip="Toggle the ability to sacrifice. \
+                      Disabling sacrificing rewards 3 bonus charges."
+              onClick={() => act('toggle_sacrificing')} />
             { goals_finalized === 0 && (
               <Button.Confirm
                 width="112px"

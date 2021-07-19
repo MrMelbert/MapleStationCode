@@ -19,6 +19,7 @@
 	var/static/list/possible_objectives = list()
 	/// Whether our goals are finalized.
 	var/finalized = FALSE
+	var/advanced_panel_type = /datum/advanced_antag_panel
 	/// All advanced traitor panels we have open (assoc list user to panel)
 	var/list/open_panels
 
@@ -30,7 +31,7 @@
 	remove_verb(linked_antagonist.owner.current, /mob/proc/open_advanced_antag_panel)
 
 	for(var/panel_user in open_panels)
-		var/datum/adv_traitor_panel/tgui_panel = open_panels[panel_user]
+		var/datum/advanced_antag_panel/tgui_panel = open_panels[panel_user]
 		SStgui.close_uis(tgui_panel)
 
 	linked_antagonist = null
@@ -83,14 +84,14 @@
 		var/datum/mind/our_mind = user
 		user = our_mind.current
 
-	var/datum/adv_traitor_panel/tgui
+	var/datum/advanced_antag_panel/tgui
 	if(LAZYLEN(open_panels))
 		tgui = open_panels[user]
 		if(tgui)
 			tgui.ui_interact(user, tgui.open_ui)
 			return
 
-	tgui = new(user, src)
+	tgui = new advanced_panel_type(user, src)
 	tgui.ui_interact(user)
 	LAZYADDASSOC(open_panels, user, tgui)
 
@@ -119,13 +120,11 @@
 
 /// Actions to do after the antag finalizes their goals.
 /datum/advanced_antag_datum/proc/post_finalize_actions()
-	SHOULD_CALL_PARENT(TRUE)
 	if(finalized)
 		return FALSE
 
-	log_goals_on_finalize()
 	finalized = TRUE
-	return TRUE
+	return finalized
 
 /// Miscellaneous logging for the antagonist's goals after they finalize them.
 /// Extend this proc for adding in extra logging to an antagonist.

@@ -98,7 +98,6 @@
 /datum/advanced_antag_datum/traitor
 	name = "Advanced Traitor"
 	employer = "The Syndicate"
-	style = "jolly-syndicate"
 	starting_points = 8
 	/// Our antag datum linked to our advanced antag.
 	var/datum/antagonist/traitor/our_traitor
@@ -140,6 +139,7 @@
 	our_traitor.should_equip = TRUE
 	our_traitor.finalize_antag()
 	modify_antag_points()
+	log_goals_on_finalize()
 
 /datum/advanced_antag_datum/traitor/set_employer(employer)
 	. = ..()

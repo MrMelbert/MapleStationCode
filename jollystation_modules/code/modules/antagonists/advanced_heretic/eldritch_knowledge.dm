@@ -28,6 +28,7 @@
 	. = ..()
 	master_heretic = user
 	if(!GLOB.heretic_sacrifice_landmarks.len)
+		message_admins("Generating z-level for heretic sacrifices...")
 		INVOKE_ASYNC(src, .proc/generate_heretic_z_level)
 
 /datum/eldritch_knowledge/spell/basic/on_lose(mob/user)
@@ -216,7 +217,7 @@
 /datum/eldritch_knowledge/spell/basic/proc/target_lost(mob/living/carbon/human/sac_target, old_z, new_z)
 	SIGNAL_HANDLER
 
-	to_chat(sac_target, span_userdanger("Your attempt to escape the realm is not taken kindly!"))
+	to_chat(sac_target, span_userdanger("Your attempt to escape the grasp of the Mansus is not taken kindly!"))
 	disembowel_target(sac_target)
 	sac_target.death()
 	return_target(sac_target, FALSE)
