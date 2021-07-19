@@ -18,8 +18,3 @@
 #define EXAMINE_CHECK_TRAIT "trait"
 /// For displayind descriptors for people of certain species. Pass it a list of types "/datum/species"
 #define EXAMINE_CHECK_SPECIES "species"
-
-/// Defines for the message to display when finding more info.
-#define ADDITIONAL_INFO_RECORDS (1<<0)
-#define ADDITIONAL_INFO_EXPLOITABLE (1<<1)
-#define ADDITIONAL_INFO_FLAVOR (1<<2)

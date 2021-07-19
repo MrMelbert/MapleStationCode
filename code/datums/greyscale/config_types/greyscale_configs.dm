@@ -230,7 +230,7 @@
 
 /datum/greyscale_config/plush_lizard
 	name = "Plushie Lizard"
-	icon_file = 'icons/obj/plushes.dmi'
+	icon_file = 'jollystation_modules/icons/obj/plushes.dmi' // NON-MODULE CHANGE
 	json_config = 'code/datums/greyscale/json_configs/plushie_lizard.json'
 
 /datum/greyscale_config/flower_simple
@@ -337,3 +337,11 @@
 	name = "Wrapping Paper"
 	icon_file = 'icons/obj/stack_objects.dmi'
 	json_config = 'code/datums/greyscale/json_configs/wrap_paper.json'
+
+/datum/greyscale_config/janicart_upgrade
+	name = "Janicart Upgrade"
+	icon_file = 'icons/obj/janicart_upgrade.dmi'
+	json_config = 'code/datums/greyscale/json_configs/janicart_upgrade.json'
+
+/datum/greyscale_config/janicart_upgrade/installed
+	json_config = 'code/datums/greyscale/json_configs/janicart_upgrade_installed.json'

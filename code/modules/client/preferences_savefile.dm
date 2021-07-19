@@ -434,7 +434,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["feature_moth_markings"], features["moth_markings"])
 	READ_FILE(S["persistent_scars"] , persistent_scars)
 	// NON-MODULE CHANGES:
-	READ_FILE(S["feature_skrell_headtentacles"], features["skrell_headtentacles"])
+	READ_FILE(S["feature_head_tentacles"], features["head_tentacles"])
 	READ_FILE(S["runechat_color"] , runechat_color)
 	READ_FILE(S["flavor_text"] , flavor_text)
 	READ_FILE(S["security_records"] , security_records)
@@ -532,8 +532,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["moth_wings"] = sanitize_inlist(features["moth_wings"], GLOB.moth_wings_list, "Plain")
 	features["moth_antennae"] = sanitize_inlist(features["moth_antennae"], GLOB.moth_antennae_list, "Plain")
 	features["moth_markings"] = sanitize_inlist(features["moth_markings"], GLOB.moth_markings_list, "None")
-	// NON-MODULE CHANGES: -- Pref Sanitization --
-	features["skrell_headtentacles"] = sanitize_inlist(features["skrell_headtentacles"], GLOB.skrellheadtentacles_list, "Male")
+	// NON-MODULE CHANGE: -- Pref Sanitization --
+	features["head_tentacles"] = sanitize_inlist(features["head_tentacles"], GLOB.head_tentacles_list, "Long")
 
 	runechat_color = sanitize_hexcolor(runechat_color)
 	flavor_text = strip_html_simple(sanitize_text(flavor_text), MAX_MESSAGE_LEN)
@@ -544,8 +544,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	sanitize_loadout_list(loadout_list)
 	sanitize_greyscale_list(greyscale_loadout_list)
-
-	// NON-MODULE CHANGES END
+	// NON-MODULE CHANGE END
 
 	persistent_scars = sanitize_integer(persistent_scars)
 
@@ -608,7 +607,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["feature_moth_markings"] , features["moth_markings"])
 	WRITE_FILE(S["persistent_scars"] , persistent_scars)
 	// NON-MODULE CHANGES:
-	WRITE_FILE(S["feature_skrell_headtentacles"], features["skrell_headtentacles"])
+	WRITE_FILE(S["feature_head_tentacles"], features["head_tentacles"])
 	WRITE_FILE(S["runechat_color"] , runechat_color)
 	WRITE_FILE(S["flavor_text"] , flavor_text)
 	WRITE_FILE(S["general_records"] , general_records)

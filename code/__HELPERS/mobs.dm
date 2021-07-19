@@ -77,12 +77,30 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
 	if(!GLOB.moth_markings_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
-	// NON-MODULE Addition Start
-	if(!GLOB.skrellheadtentacles_list.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/skrell_headtentacles, GLOB.skrellheadtentacles_list)
-	// NON-MODULE Addition End
-	//For now we will always return none for tail_human and ears.
-	return(list("mcolor" = pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"),"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)], "tail_lizard" = pick(GLOB.tails_list_lizard), "tail_human" = "None", "wings" = "None", "snout" = pick(GLOB.snouts_list), "horns" = pick(GLOB.horns_list), "ears" = "None", "frills" = pick(GLOB.frills_list), "spines" = pick(GLOB.spines_list), "body_markings" = pick(GLOB.body_markings_list), "legs" = "Normal Legs", "caps" = pick(GLOB.caps_list), "moth_wings" = pick(GLOB.moth_wings_list), "moth_antennae" = pick(GLOB.moth_antennae_list), "moth_markings" = pick(GLOB.moth_markings_list), "tail_monkey" = "None", "skrell_headtentacles" = pick(GLOB.skrellheadtentacles_list))) // NON-MODULE Edit, adding Skrell Headtentacles to this. -Jon
+	if(!GLOB.head_tentacles_list.len) // NON-MODULE CHANGE: Head Tentacles initialize
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles, GLOB.head_tentacles_list)
+
+	// NON-MODULE CHANGE: Holy shit, this return is ass. Reformatted it for future sanity. Contains a non-module change.
+	return(list(
+		"mcolor" = pick("FFFFFF", "7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"),
+		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
+		"tail_lizard" = pick(GLOB.tails_list_lizard),
+		"tail_human" = "None",
+		"wings" = "None",
+		"snout" = pick(GLOB.snouts_list),
+		"horns" = pick(GLOB.horns_list),
+		"ears" = "None",
+		"frills" = pick(GLOB.frills_list),
+		"spines" = pick(GLOB.spines_list),
+		"body_markings" = pick(GLOB.body_markings_list),
+		"legs" = "Normal Legs",
+		"caps" = pick(GLOB.caps_list),
+		"moth_wings" = pick(GLOB.moth_wings_list),
+		"moth_antennae" = pick(GLOB.moth_antennae_list),
+		"moth_markings" = pick(GLOB.moth_markings_list),
+		"tail_monkey" = "None",
+		"head_tentacles" = pick(GLOB.head_tentacles_list),
+	))
 
 /proc/random_hairstyle(gender)
 	switch(gender)
@@ -527,9 +545,9 @@ GLOBAL_LIST_EMPTY(species_list)
 				var/turf_link = TURF_LINK(M, turf_target)
 				rendered_message = "[turf_link] [message]"
 
-			to_chat(M, rendered_message)
+			to_chat(M, rendered_message, avoid_highlighting = speaker_key == M.key)
 		else
-			to_chat(M, message)
+			to_chat(M, message, avoid_highlighting = speaker_key == M.key)
 
 //Used in chemical_mob_spawn. Generates a random mob based on a given gold_core_spawnable value.
 /proc/create_random_mob(spawn_location, mob_class = HOSTILE_SPAWN)

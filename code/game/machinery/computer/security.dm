@@ -183,9 +183,11 @@
 		if(!sec_record)
 			continue
 
-		successful_set++
+		if(sec_record.fields["criminal"] != status_to_set)
+			successful_set++
+			names_of_entries += target["name"]
 		sec_record.fields["criminal"] = status_to_set
-		names_of_entries += target["name"]
+
 
 	if(successful_set > 0)
 		investigate_log("[names_of_entries.Join(", ")] have been set to [status_to_set] by [parent.get_creator()].", INVESTIGATE_RECORDS)
@@ -674,7 +676,7 @@ What a mess.*/
 				var/counter = 1
 				while(active2.fields[text("com_[]", counter)])
 					counter++
-				active2.fields[text("com_[]", counter)] = text("Made by [] ([]) on [] [], []<BR>[]", src.authenticated, src.rank, station_time_timestamp(), time2text(world.realtime, "MMM DD"), GLOB.year_integer+540, t1)
+				active2.fields[text("com_[]", counter)] = text("Made by [] ([]) on [] [], []<BR>[]", src.authenticated, src.rank, station_time_timestamp(), time2text(world.realtime, "MMM DD"), GLOB.year_integer+555, t1) // NON-MODULE CHANGE; Default year increment is 540, Jollystation is +15 years from that.
 
 			if("Delete Record (ALL)")
 				if(active1)
