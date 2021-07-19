@@ -14,6 +14,8 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  * Create a flavor text datum for [added_client].
  */
 /proc/add_client_flavor_text(client/added_client)
+	if(!added_client)
+		return FALSE
 	if(!added_client.prefs)
 		return FALSE
 	if(!added_client.prefs.flavor_text && !added_client.prefs.general_records && !added_client.prefs.medical_records && !added_client.prefs.security_records)
