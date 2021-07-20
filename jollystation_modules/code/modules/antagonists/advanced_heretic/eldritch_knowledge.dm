@@ -75,6 +75,9 @@
 	sac_target.set_handcuffed(new /obj/item/restraints/handcuffs/energy/cult(sac_target))
 	sac_target.update_handcuffed()
 	sac_target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 85, 150)
+	sac_target.do_jitter_animation(100)
+	addtimer(CALLBACK(sac_target, /mob/living/carbon.proc/do_jitter_animation, 100), 4 SECONDS)
+	addtimer(CALLBACK(sac_target, /mob/living/carbon.proc/do_jitter_animation, 100), 8 SECONDS)
 
 	if(!heal_and_revive_target(sac_target, 50)) // If our target is dead, and we fail to revive them, just disembowel them and be done
 		disembowel_target(sac_target)
@@ -184,6 +187,9 @@
 	UnregisterSignal(sac_target, COMSIG_MOVABLE_Z_CHANGED)
 	UnregisterSignal(sac_target, COMSIG_LIVING_DEATH)
 	sac_target.remove_status_effect(STATUS_EFFECT_NECROPOLIS_CURSE)
+
+	if(is_station_level(sac_target.z))
+		return
 
 	/// Teleport them to a random safe coordinate on the station z level.
 	var/turf/open/floor/safe_turf = find_safe_turf(extended_safety_checks = TRUE)
