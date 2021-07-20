@@ -178,27 +178,27 @@
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/pill/oxycodone(src)
 
-/// Miner pen.
+/// Miner pen. Heals about 30 pain to all limbs, causes ~150 addiction
 /obj/item/reagent_containers/hypospray/medipen/survival/painkiller
 	name = "survival painkiller medipen"
-	desc = "A medipen that contains a dosage of heavy duty painkillers. WARNING: Side effects or addiction may occur with rapid consecutive usage. Do not use in combination with alcohol."
+	desc = "A medipen that contains a dosage of painkilling chemicals. WARNING: Do not use in combination with alcohol. Can cause drowsiness."
 	icon = 'jollystation_modules/icons/obj/syringe.dmi'
 	icon_state = "painkiller_stimpen"
 	base_icon_state = "painkiller_stimpen"
-	volume = 15
-	amount_per_transfer_from_this = 15
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 7.5, /datum/reagent/medicine/morphine = 5, /datum/reagent/medicine/modafinil = 2.5)
+	volume = 20
+	amount_per_transfer_from_this = 20
+	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 7.5, /datum/reagent/medicine/painkiller/aspirin_para_coffee = 5, /datum/reagent/medicine/morphine = 5, /datum/reagent/medicine/modafinil = 2.5)
 
-/// Medkit pen.
+/// Medkit pen. Heals about 35 pain to all limbs, causes ~450 addiction
 /obj/item/reagent_containers/hypospray/medipen/painkiller
 	name = "emergency painkiller medipen"
-	desc = "A medipen that contains a dosages of moderate painkilling chemicals. Can cause drowsiness. WARNING: Do not use in combination with alcohol."
+	desc = "A medipen that contains a dosage of heavy painkilling chemicals. WARNING: Do not use in combination with alcohol. Can cause drowsiness and addiction."
 	icon = 'jollystation_modules/icons/obj/syringe.dmi'
 	icon_state = "painkiller"
 	base_icon_state = "painkiller"
 	volume = 15
 	amount_per_transfer_from_this = 15
-	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 7.5, /datum/reagent/medicine/painkiller/aspirin_para_coffee = 5, /datum/reagent/medicine/morphine = 2.5)
+	list_reagents = list(/datum/reagent/medicine/oxycodone = 7.5, /datum/reagent/medicine/morphine = 5, /datum/reagent/medicine/modafinil = 2.5)
 
 /*
  * Shock blanket item. Hit someone to cover them with the blanket.
