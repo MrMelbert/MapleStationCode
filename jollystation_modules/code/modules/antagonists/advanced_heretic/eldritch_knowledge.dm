@@ -258,6 +258,7 @@
 /datum/eldritch_knowledge/spell/basic/proc/after_return_dead_target(mob/living/carbon/human/sac_target, turf/landing_turf)
 	addtimer(CALLBACK(src, .proc/announce_dead_target, landing_turf), rand(1 MINUTES, 2 MINUTES))
 	sac_target?.reagents?.del_reagent(/datum/reagent/unholy_determination)
+	sac_target?.reagents?.del_reagent(/datum/reagent/inverse/helgrasp)
 	var/obj/effect/broken_illusion/illusion = new /obj/effect/broken_illusion(landing_turf)
 	illusion.name = "Weakened rift in reality"
 	illusion.desc = "A rift wide enough for something... or someone to come through."
