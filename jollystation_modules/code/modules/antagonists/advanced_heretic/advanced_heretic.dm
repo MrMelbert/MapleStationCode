@@ -85,7 +85,7 @@
 	name = "Advanced Heretic"
 	employer = "The Mansus"
 	starting_points = 0
-	style = "wizard"
+	advanced_panel_type = /datum/advanced_antag_panel/heretic
 	/// Our linked antagonist typecasted to heretic_plus.
 	var/datum/antagonist/heretic/heretic_plus/our_heretic
 	/// Whether our heretic is allowed to ascend.
@@ -144,6 +144,7 @@ You can still edit your goals after finalizing, but you will not be able to re-e
 	our_heretic.give_equipment = TRUE
 	our_heretic.equip_cultist()
 	modify_antag_points()
+	log_goals_on_finalize()
 
 	if(!ascension_enabled)
 		if(our_heretic.gain_knowledge(/datum/eldritch_knowledge/no_ascension))

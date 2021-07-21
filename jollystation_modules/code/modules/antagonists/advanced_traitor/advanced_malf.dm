@@ -64,7 +64,6 @@
 /datum/advanced_antag_datum/malf_ai
 	name = "Advanced Malfunctioning AI"
 	employer = "The Syndicate"
-	style = "jolly-syndicate"
 	starting_points = 20
 	/// Our antag datum linked to our advanced antag.
 	var/datum/antagonist/malf_ai/our_ai
@@ -104,6 +103,7 @@
 	our_ai.should_equip = TRUE
 	our_ai.finalize_antag()
 	modify_antag_points()
+	log_goals_on_finalize()
 
 /datum/advanced_antag_datum/malf_ai/set_employer(employer)
 	. = ..()

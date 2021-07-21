@@ -1,11 +1,11 @@
 /// -- Skrell headtentacles. --
-/datum/sprite_accessory/skrell_headtentacles
+/datum/sprite_accessory/head_tentacles
 	icon = 'jollystation_modules/icons/mob/skrell_hair.dmi'
 
-/datum/sprite_accessory/skrell_headtentacles/long
-	name = "Female"
+/datum/sprite_accessory/head_tentacles/long
+	name = "Long"
 	icon_state = "long"
 
-/datum/sprite_accessory/skrell_headtentacles/short
-	name = "Male"
+/datum/sprite_accessory/head_tentacles/short
+	name = "Short"
 	icon_state = "short"
