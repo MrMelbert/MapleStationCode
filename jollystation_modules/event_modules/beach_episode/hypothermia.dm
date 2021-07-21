@@ -5,7 +5,6 @@
 	cure_text = "Warm the body up with careful monitoring."
 	agent = "Long exposure to extremely cold conditions."
 	viable_mobtypes = list(/mob/living/carbon/human)
-	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
 	desc = "Sever exposure to the cold. If subject is suffering from frostbite, amputation may be required."
 	severity = DISEASE_SEVERITY_HARMFUL
 	bypasses_immunity = TRUE
