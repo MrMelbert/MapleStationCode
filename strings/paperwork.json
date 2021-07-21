@@ -1,0 +1,37 @@
+{
+	"subject": [
+		"Centcom"
+	],
+
+	"time_period": [
+		"old",
+		"new"
+	],
+
+	"occasion": [
+		"court case",
+		"patent"
+
+	],
+
+	"contents_court_cases": [
+		"subject is suing victim for abuse of company funds."
+
+	],
+
+	"contents_executions": [
+		"victim is being executed by subject for traitorous activity."
+
+	],
+
+	"contents_patents": [
+		"subject is patenting a new technology that keeps lizardpeople warm."
+
+	],
+
+	"contents_random": [
+		"lorem ipsum."
+
+	]
+
+}

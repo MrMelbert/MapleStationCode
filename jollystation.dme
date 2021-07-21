@@ -3664,6 +3664,7 @@
 #include "jollystation_modules\code\datums\quirks\neutral.dm"
 #include "jollystation_modules\code\datums\ruins\space.dm"
 #include "jollystation_modules\code\game\area\space_station_13_areas.dm"
+#include "jollystation_modules\code\game\machinery\fax_machine.dm"
 #include "jollystation_modules\code\game\objects\unique_examine_items.dm"
 #include "jollystation_modules\code\game\objects\effects\landmarks.dm"
 #include "jollystation_modules\code\game\objects\effects\decals\turfdecal\textured.dm"
