@@ -3644,6 +3644,7 @@
 #include "jollystation_modules\code\__DEFINES\jobs.dm"
 #include "jollystation_modules\code\__DEFINES\keybinding.dm"
 #include "jollystation_modules\code\__DEFINES\pain_defines.dm"
+#include "jollystation_modules\code\__DEFINES\paperwork_defines.dm"
 #include "jollystation_modules\code\__DEFINES\spans.dm"
 #include "jollystation_modules\code\__HELPERS\text_helpers.dm"
 #include "jollystation_modules\code\controllers\configuration\entries\autotransfer.dm"
