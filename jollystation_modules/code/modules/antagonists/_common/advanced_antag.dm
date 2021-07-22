@@ -98,11 +98,10 @@
 /// This proc cleans up the open_panels list after a panel viewer closes the UI.
 /// viewer - the mob that just closed the panel.
 /datum/advanced_antag_datum/proc/cleanup_advanced_traitor_panel(mob/viewer)
-	open_panels[viewer] = null
 	open_panels -= viewer
 
 	if(!LAZYLEN(open_panels))
-		open_panels = null
+		LAZYNULL(open_panels)
 
 /// Modify the traitor's starting_points (TC, processing points, etc) based on their goals's intensity levels.
 /datum/advanced_antag_datum/proc/modify_antag_points()
