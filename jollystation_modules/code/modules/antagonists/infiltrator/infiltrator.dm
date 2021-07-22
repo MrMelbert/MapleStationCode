@@ -1,26 +1,26 @@
 /// -- Infiltrator antag. Advanced traitors but they get some nukops gear in their uplink. --
-/datum/antagonist/traitor/traitor_plus/intiltrator
+/datum/antagonist/traitor/advanced/intiltrator
 	name = "Infiltrator"
 	hijack_speed = 1
 	advanced_antag_path = /datum/advanced_antag_datum/traitor/infiltrator
 	antag_hud_type = ANTAG_HUD_OPS
 	antag_hud_name = "synd"
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/apply_innate_effects(mob/living/mob_override)
+/datum/antagonist/traitor/advanced/intiltrator/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/living_antag = mob_override || owner.current
 	add_antag_hud(antag_hud_type, antag_hud_name, living_antag)
 	living_antag.faction |= ROLE_SYNDICATE
 	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/infiltrator))
 	living_antag.mind.special_role = ROLE_INFILTRATOR
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/remove_innate_effects(mob/living/mob_override)
+/datum/antagonist/traitor/advanced/intiltrator/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/living_antag = mob_override || owner.current
 	remove_antag_hud(antag_hud_type, living_antag)
 	living_antag.faction -= ROLE_SYNDICATE
 	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/unassigned))
 	living_antag.mind.special_role = null
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/on_removal()
+/datum/antagonist/traitor/advanced/intiltrator/on_removal()
 	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = locate() in owner.current
 	var/obj/item/implant/weapons_auth/weapons_implant = locate() in owner.current
 	if(infiltrator_implant)
@@ -31,7 +31,7 @@
 		qdel(weapons_implant)
 	. = ..()
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/roundend_report()
+/datum/antagonist/traitor/advanced/intiltrator/roundend_report()
 	var/list/result = list()
 
 	result += printplayer(owner)
@@ -68,10 +68,10 @@
 
 	return result.Join("<br>")
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/roundend_report_footer()
+/datum/antagonist/traitor/advanced/intiltrator/roundend_report_footer()
 	return "<br>And thus ends another attempted Syndicate infiltration on board [station_name()]."
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/equip(silent = FALSE)
+/datum/antagonist/traitor/advanced/intiltrator/equip(silent = FALSE)
 	var/mob/living/carbon/human/traitor_mob = owner.current
 	if (!istype(traitor_mob))
 		return
@@ -84,7 +84,7 @@
 		to_chat(traitor_mob, span_boldnotice("[employer] has cunningly implanted you with an [infiltrator_implant.name] to assist in your infiltration. You can trigger the uplink to stealthily access it."))
 		to_chat(traitor_mob, span_boldnotice("[employer] has wisely implanted you with a [weapons_implant.name] to allow you to use syndicate weaponry. You can now fire weapons with Syndicate firing pins."))
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/proc/equip_infiltrator_outfit(strip = FALSE)
+/datum/antagonist/traitor/advanced/intiltrator/proc/equip_infiltrator_outfit(strip = FALSE)
 	if(!ishuman(owner.current))
 		return FALSE
 	var/mob/living/carbon/human/human_current = owner.current
@@ -93,23 +93,23 @@
 	human_current.equipOutfit(/datum/outfit/syndicate_infiltrator)
 	return TRUE
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/pod_spawn
+/datum/antagonist/traitor/advanced/intiltrator/pod_spawn
 	name = "Infiltrator (Pod spawn)"
 	advanced_antag_path = /datum/advanced_antag_datum/traitor/infiltrator/podspawn
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/pod_spawn/on_gain()
+/datum/antagonist/traitor/advanced/intiltrator/pod_spawn/on_gain()
 	name = "Infiltrator"
 	equip_infiltrator_outfit()
 	return ..()
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/pod_spawn/equip(silent = FALSE)
+/datum/antagonist/traitor/advanced/intiltrator/pod_spawn/equip(silent = FALSE)
 	. = ..()
 	if(linked_advanced_datum.open_panels[owner.current])
 		SStgui.close_uis(linked_advanced_datum.open_panels[owner.current])
 	if(!spawn_infiltrator_pod(owner.current, silent))
 		message_admins("Cannot pod-spawn [owner.current] as infiltrator.")
 
-/datum/antagonist/traitor/traitor_plus/intiltrator/pod_spawn/proc/spawn_infiltrator_pod(mob/living/infiltrator, silent)
+/datum/antagonist/traitor/advanced/intiltrator/pod_spawn/proc/spawn_infiltrator_pod(mob/living/infiltrator, silent)
 	if(!istype(infiltrator))
 		return FALSE
 

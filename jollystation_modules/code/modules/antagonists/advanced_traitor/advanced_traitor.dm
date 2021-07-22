@@ -3,11 +3,19 @@
 
 /// Proc to give the traitor their uplink and play the sound.
 /datum/antagonist/traitor/finalize_antag()
-	equip()
+	if(!linked_advanced_datum)
+		var/faction = prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN
+		pick_employer(faction)
+		traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
+
+	if(give_uplink)
+		owner.give_uplink(silent = TRUE, antag_datum = src)
+
+	uplink = owner.find_syndicate_uplink()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /// The Advanecd Traitor antagonist datum.
-/datum/antagonist/traitor/traitor_plus
+/datum/antagonist/traitor/advanced
 	/// Changed to "Traitor" on spawn, but can be changed by the player.
 	name = "Advanced Traitor"
 	/// Edited to ([starting_tc] / 40).
@@ -25,7 +33,7 @@
 	/// Typepath of what advanced antag datum gets instantiated to this antag.
 	var/advanced_antag_path = /datum/advanced_antag_datum/traitor
 
-/datum/antagonist/traitor/traitor_plus/on_gain()
+/datum/antagonist/traitor/advanced/on_gain()
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
 
@@ -39,10 +47,10 @@
 	return ..()
 
 /// Greet the antag with big menacing text.
-/datum/antagonist/traitor/traitor_plus/greet()
+/datum/antagonist/traitor/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
 
-/datum/antagonist/traitor/traitor_plus/roundend_report()
+/datum/antagonist/traitor/advanced/roundend_report()
 	var/list/result = list()
 
 	result += printplayer(owner)
@@ -81,16 +89,16 @@
 
 	return result.Join("<br>")
 
-/datum/antagonist/traitor/traitor_plus/roundend_report_footer()
+/datum/antagonist/traitor/advanced/roundend_report_footer()
 	return "<br>And thus ends another story on board [station_name()]."
 
 /// An extra button for the TP, to open the goal panel
-/datum/antagonist/traitor/traitor_plus/get_admin_commands()
+/datum/antagonist/traitor/advanced/get_admin_commands()
 	. = ..()
 	.["View Goals"] = CALLBACK(src, .proc/show_advanced_traitor_panel, usr)
 
 /// An extra button for check_antagonists, to open the goal panel
-/datum/antagonist/traitor/traitor_plus/antag_listing_commands()
+/datum/antagonist/traitor/advanced/antag_listing_commands()
 	. = ..()
 	. += "<a href='?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
 

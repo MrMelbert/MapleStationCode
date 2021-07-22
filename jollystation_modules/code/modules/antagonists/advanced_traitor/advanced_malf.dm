@@ -12,6 +12,7 @@
 	give_objectives = FALSE
 	should_give_codewords = FALSE
 	should_equip = FALSE
+	finalize_antag = FALSE
 	/// List of objectives AIs can get, because apparently they're not initialized anywhere like normal objectives.
 	var/static/list/ai_objectives = list("no organics on shuttle" = /datum/objective/block, "no mutants on shuttle" = /datum/objective/purge, "robot army" = /datum/objective/robot_army, "survive AI" = /datum/objective/survive/malf)
 
