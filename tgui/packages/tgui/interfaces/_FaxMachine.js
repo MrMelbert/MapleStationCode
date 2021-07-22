@@ -1,5 +1,5 @@
 import { useBackend, useSharedState, useLocalState } from '../backend';
-import { Box, Button, Divider, Section, Stack, Tabs } from '../components';
+import { BlockQuote, Box, Button, Divider, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 
 export const _FaxMachine = (props, context) => {
@@ -8,6 +8,7 @@ export const _FaxMachine = (props, context) => {
     display_name,
     emagged,
     can_send_cc_messages,
+    can_recieve,
     recieved_paper = [],
     stored_paper,
   } = data;
@@ -21,11 +22,11 @@ export const _FaxMachine = (props, context) => {
     return paper.ref === selectedPaperTab;
   });
 
-
   return (
     <Window
       title="Fax Machine"
       width={550}
+      height={630}
       theme={emagged ? "syndicate":"ntos"}>
       <Window.Content>
         <Section
@@ -57,7 +58,8 @@ export const _FaxMachine = (props, context) => {
             <Stack.Item height={13}>
               {stored_paper ? (
                 <Box>
-                  <b>Message:</b> {stored_paper.contents}
+                  <span style={{ color: "lightblue", fontWeight: "bold" }}>Message:</span>
+                  <BlockQuote>{stored_paper.contents}</BlockQuote>
                 </Box>
               ) : (
                 <Box>
@@ -74,7 +76,7 @@ export const _FaxMachine = (props, context) => {
           title="Recieved Papers"
           buttons={(
             <Button.Checkbox
-              selected={can_recieve}
+              checked={can_recieve}
               content="Toggle Incoming Paperwork"
               tooltip={(can_recieve ? "Disable" : "Enable")
                 + " the ability for this fax machine \
@@ -132,7 +134,7 @@ export const _FaxMachine = (props, context) => {
                     color="good"
                     disabled={!selectedPaper}
                     content="Print Paper"
-                    tooltip="Print out the currently selected paper.
+                    tooltip="Print out the currently selected paper. \
                       This is how you stamp and process the paperwork."
                     onClick={() => act('print_recieved_paper', {
                       ref: selectedPaper.ref,
@@ -142,7 +144,7 @@ export const _FaxMachine = (props, context) => {
                   <Button
                     disabled={!selectedPaper || emagged}
                     content="Send Paper For Processing"
-                    tooltip="Send your finalized paperwork to your employer
+                    tooltip="Send your finalized paperwork to your employer \
                       to check its validity and recieve your payment."
                     onClick={() => act('check_paper', {
                       ref: selectedPaper.ref,
