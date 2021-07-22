@@ -9,16 +9,19 @@ export const _FaxMachine = (props, context) => {
     emagged,
     can_send_cc_messages,
     can_recieve,
-    recieved_paper = [],
+    recieved_paperwork = [],
+    recieved_paper,
     stored_paper,
   } = data;
+
+  const [tab, setTab] = useSharedState(context, 'tab', 1);
 
   const [
     selectedPaperTab,
     setSelectedPaper,
-  ] = useLocalState(context, 'ref', recieved_paper[0]?.ref);
+  ] = useLocalState(context, 'ref', recieved_paperwork[0]?.ref);
 
-  const selectedPaper = recieved_paper.find(paper => {
+  const selectedPaper = recieved_paperwork.find(paper => {
     return paper.ref === selectedPaperTab;
   });
 
@@ -42,38 +45,81 @@ export const _FaxMachine = (props, context) => {
             : "Welcome to the Nanotrasen Approved Faxing Device!"}
         </Section>
         <Section
-          title="Fax Paper"
+          title="Faxed Papers"
           buttons={(
             <Button
               color={emagged ? "bad" : "good"}
               content={emagged ? "Send to Syndicate Command"
                 : "Send to Central Command"}
-              disabled={!stored_paper || !(can_send_cc_messages || emagged)}
+              disabled={tab !== 1
+                || !stored_paper
+                || !(can_send_cc_messages || emagged)}
               tooltip={"Send the contents of the paper currently inserted \
                 in the machine to your employer. Response not guaranteed. \
                 A copy of the sent paper will print, too - for record-keeping."}
               onClick={() => act('send_stored_paper')} />
           )}>
           <Stack vertical height={15}>
+            <Stack.Item height={2}>
+              <Tabs fluid>
+                <Tabs.Tab
+                  icon="copy"
+                  selected={tab === 1}
+                  onClick={() => setTab(1)}>
+                  <b>Send A Fax</b>
+                </Tabs.Tab>
+                <Tabs.Tab
+                  icon="broadcast-tower"
+                  selected={tab === 2}
+                  onClick={() => setTab(2)}>
+                  <b>Recieved Faxes</b>
+                </Tabs.Tab>
+              </Tabs>
+            </Stack.Item>
             <Stack.Item height={13}>
-              {stored_paper ? (
-                <Box>
-                  <span style={{ color: "lightblue", fontWeight: "bold" }}>Message:</span>
-                  <BlockQuote>{stored_paper.contents}</BlockQuote>
-                </Box>
-              ) : (
-                <Box>
-                  <i>
-                    Insert a paper into the machine fax its contents to
-                    { emagged ? " the Syndicate" : " Central Command"}.
-                  </i>
-                </Box>
+              {tab === 1 && (
+                stored_paper ? (
+                  <Box>
+                    <span style={{ color: "lightblue", fontWeight: "bold" }}>Message:</span>
+                    <BlockQuote>{stored_paper.contents}</BlockQuote>
+                  </Box>
+                ) : (
+                  <Box>
+                    <i>
+                      Insert a paper into the machine fax its contents to
+                      { emagged ? " the Syndicate" : " Central Command"}.
+                    </i>
+                  </Box>
+                ))}
+              {tab === 2 && (
+                recieved_paper ? (
+                  <Box>
+                    <span style={{ color: "lightblue", fontWeight: "bold" }}>Message:</span>
+                    <BlockQuote>{recieved_paper.contents}</BlockQuote>
+                  </Box>
+                ) : (
+                  <Box>
+                    <i>
+                      No papers have been recieved from
+                      { emagged ? " the Syndicate" : " Central Command"}, yet.
+                    </i>
+                  </Box>
+                ))}
+            </Stack.Item>
+            <Stack.Item>
+              {tab === 2 && recieved_paper && (
+                <Button
+                  disabled={!recieved_paper}
+                  content="Print Recieved Fax"
+                  tooltip={"Print the last recieved fax from "
+                    + (emagged ? " the Syndicate." : " Central Command.")}
+                  onClick={() => act('print_recieved_paper')} />
               )}
             </Stack.Item>
           </Stack>
         </Section>
         <Section
-          title="Recieved Papers"
+          title="Paperwork"
           buttons={(
             <Button.Checkbox
               checked={can_recieve}
@@ -86,12 +132,11 @@ export const _FaxMachine = (props, context) => {
           )}>
           <Stack vertical grow>
             <Stack.Item height={2}>
-              {recieved_paper && recieved_paper.length > 0 ? (
+              {recieved_paperwork && recieved_paperwork.length > 0 ? (
                 <Tabs fluid>
-                  {recieved_paper.map(paper => (
+                  {recieved_paperwork.map(paper => (
                     <Tabs.Tab
                       key={paper}
-                      fluid
                       textAlign="center"
                       selected={paper.ref === selectedPaperTab}
                       onClick={() => setSelectedPaper(paper.ref)}>
@@ -105,9 +150,11 @@ export const _FaxMachine = (props, context) => {
             </Stack.Item>
             <Stack.Item height={8}>
               {selectedPaper ? (
-                selectedPaper.contents
+                <BlockQuote fontSize="14px">
+                  {selectedPaper.contents}
+                </BlockQuote>
               ) : (
-                recieved_paper && recieved_paper.length > 0
+                recieved_paperwork && recieved_paperwork.length > 0
                 && ("No paper selected.")
               )}
             </Stack.Item>
@@ -122,7 +169,9 @@ export const _FaxMachine = (props, context) => {
                     </b>
                   </Stack.Item>
                   <Stack.Item>
-                    {selectedPaper.required_answer}
+                    <BlockQuote>
+                      {selectedPaper.required_answer}
+                    </BlockQuote>
                   </Stack.Item>
                 </Stack>
               )}
@@ -134,9 +183,9 @@ export const _FaxMachine = (props, context) => {
                     color="good"
                     disabled={!selectedPaper}
                     content="Print Paper"
-                    tooltip="Print out the currently selected paper. \
+                    tooltip="Print the selected paperwork. \
                       This is how you stamp and process the paperwork."
-                    onClick={() => act('print_recieved_paper', {
+                    onClick={() => act('print_select_paperwork', {
                       ref: selectedPaper.ref,
                     })} />
                 </Stack.Item>
@@ -144,20 +193,32 @@ export const _FaxMachine = (props, context) => {
                   <Button
                     disabled={!selectedPaper || emagged}
                     content="Send Paper For Processing"
-                    tooltip="Send your finalized paperwork to your employer \
-                      to check its validity and recieve your payment."
+                    tooltip="Send the selected paperwork \
+                      to your employer to check its \
+                      validity and recieve your payment."
                     onClick={() => act('check_paper', {
                       ref: selectedPaper.ref,
                     })} />
                 </Stack.Item>
                 <Stack.Item>
                   <Button
-                    color={(!recieved_paper || recieved_paper.length <= 0)
-                      ? "good" : "caution"}
-                    disabled={!recieved_paper || recieved_paper.length <= 0}
+                    color="bad"
+                    disabled={!selectedPaper}
+                    content="Delete Paper"
+                    tooltip="Delete the selected paperwork from the machine."
+                    onClick={() => act('delete_select_paperwork', {
+                      ref: selectedPaper.ref,
+                    })} />
+                </Stack.Item>
+                <Stack.Item>
+                  <Button
+                    color={(!recieved_paperwork
+                      || recieved_paperwork.length <= 0) ? "good" : "caution"}
+                    disabled={!recieved_paperwork
+                      || recieved_paperwork.length <= 0}
                     content="Print All Papers"
                     tooltip="Print out all the paperwork stored in the machine."
-                    onClick={() => act('print_all_recieved_papers')} />
+                    onClick={() => act('print_all_paperwork')} />
                 </Stack.Item>
               </Stack>
             </Stack.Item>
