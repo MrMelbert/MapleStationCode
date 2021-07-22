@@ -303,6 +303,7 @@
 
 	return data
 
+/// Generate a flat icon preview of our user, if we need to update it.
 /datum/loadout_manager/proc/generate_preview()
 	if(!dummy_key)
 		init_dummy()
