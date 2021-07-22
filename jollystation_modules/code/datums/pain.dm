@@ -777,7 +777,7 @@
 	VV_DROPDOWN_OPTION("set_limb_pain", "Adjust Limb Pain")
 	VV_DROPDOWN_OPTION("refresh_mod", "Refresh Pain Mod")
 
-/datum/pain/vv_do_topic(href_list)
+/datum/pain/vv_do_topic(list/href_list)
 	. = ..()
 	if(href_list["debug_pain"])
 		debug_print_pain()
