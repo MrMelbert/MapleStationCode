@@ -15,6 +15,7 @@ export const _FaxMachine = (props, context) => {
     can_send_cc_messages,
     can_recieve,
     emagged,
+    unread_message,
   } = data;
 
   const [
@@ -61,45 +62,70 @@ export const _FaxMachine = (props, context) => {
         <Section title="Faxed Papers">
           <Stack vertical height={15}>
             <Stack.Item height={2}>
-              <Tabs fluid>
+              <Tabs>
                 <Tabs.Tab
+                  width="50%"
                   icon="copy"
                   selected={tab === 1}
-                  onClick={() => setTab(1)}>
+                  onClick={() => {
+                    setTab(1);
+                    act('read_last_recieved');
+                  }}>
                   <b>Send A Fax</b>
                 </Tabs.Tab>
                 <Tabs.Tab
+                  width="50%"
                   icon="broadcast-tower"
                   selected={tab === 2}
                   onClick={() => setTab(2)}>
-                  <b>Recieved Faxes</b>
+                  <Stack grow width="100%">
+                    <Stack.Item grow textAlign="left">
+                      <b>Recieved Faxes </b>
+                    </Stack.Item>
+                    {recieved_paper && !!unread_message && (
+                      <Stack.Item grow textAlign="right">
+                        <i>{"New message!"}</i>
+                      </Stack.Item>)}
+                  </Stack>
                 </Tabs.Tab>
               </Tabs>
             </Stack.Item>
-            <Stack.Item ma={1} height={13}>
+            <Stack.Item mt={1} height={13}>
               {tab === 1 && (
                 stored_paper ? (
-                  <Box>
-                    <span style={{ color: "lightblue", fontWeight: "bold" }}>Message:</span>
-                    <BlockQuote>{stored_paper.contents}</BlockQuote>
+                  <Box mt={1}>
+                    <span style={{
+                      color: (emagged ? "lightgreen" : "lightblue"),
+                      fontWeight: "bold" }}>
+                      Unformatted Message:
+                    </span>
+                    <BlockQuote mt={1}>
+                      {stored_paper.contents}
+                    </BlockQuote>
                   </Box>
                 ) : (
                   <Box>
                     <i>
-                      Insert a paper into the machine fax its contents to
-                      { emagged ? " the Syndicate" : " Central Command"}.
+                      Insert a paper into the machine
+                      to fax its contents somewhere.
                     </i>
                   </Box>
                 ))}
               {tab === 2 && (
                 recieved_paper ? (
-                  <Box>
-                    <span style={{ color: "lightblue", fontWeight: "bold" }}>Message:</span>
-                    <BlockQuote>{recieved_paper.contents}</BlockQuote>
+                  <Box mt={1}>
+                    <span style={{ color: "gold", fontWeight: "bold" }}>
+                      Message from {recieved_paper.source}:
+                    </span>
+                    <BlockQuote mt={1}>
+                      {recieved_paper.contents}
+                    </BlockQuote>
                   </Box>
                 ) : (
                   <Box>
-                    <i> No papers have been recieved. </i>
+                    <i>
+                      No papers have been recieved.
+                    </i>
                   </Box>
                 ))}
             </Stack.Item>
@@ -108,6 +134,8 @@ export const _FaxMachine = (props, context) => {
                 <Stack>
                   <Stack.Item>
                     <Button
+                      height="100%"
+                      icon="fax"
                       color={emagged
                         ? "bad" : "good"}
                       content="Send to: "
@@ -124,6 +152,7 @@ export const _FaxMachine = (props, context) => {
                   <Stack.Item grow>
                     <Dropdown
                       width="100%"
+                      height="100%"
                       selected={selectedDestination}
                       options={destination_options}
                       onSelected={dest => { setDestination(dest); }} />
@@ -131,12 +160,15 @@ export const _FaxMachine = (props, context) => {
                 </Stack>
               )}
               {tab === 2 && recieved_paper && (
-                <Button
-                  disabled={!recieved_paper}
-                  content="Print Recieved Fax"
-                  tooltip={"Print the last recieved fax from "
-                    + (emagged ? " the Syndicate." : " Central Command.")}
-                  onClick={() => act('print_recieved_paper')} />
+                <Stack>
+                  <Stack.Item>
+                    <Button
+                      disabled={!recieved_paper}
+                      content="Print Recieved Fax"
+                      tooltip="Print the last recieved fax."
+                      onClick={() => act('print_recieved_paper')} />
+                  </Stack.Item>
+                </Stack>
               )}
             </Stack.Item>
           </Stack>

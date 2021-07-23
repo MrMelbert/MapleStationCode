@@ -21,14 +21,14 @@
 			continue
 		processed_areas += area_loc
 
-		if(LAZYLEN(found_machine.recieved_paperwork) >= 8)
+		if(LAZYLEN(found_machine.recieved_paperwork) >= found_machine.max_paperwork)
 			continue
 		if(!found_machine.can_recieve)
 			continue
 
 		var/num_papers_added = 0
 		for(var/i in 1 to rand(0, 4))
-			if(LAZYLEN(found_machine.recieved_paperwork) >= 8)
+			if(LAZYLEN(found_machine.recieved_paperwork) >= found_machine.max_paperwork)
 				continue
 			num_papers_added++
 			LAZYADD(found_machine.recieved_paperwork, generate_paperwork(found_machine))
@@ -43,7 +43,7 @@
  * return an instance of [/obj/item/paper/processed].
  */
 /proc/generate_paperwork(obj/machinery/fax_machine/destination_machine)
-	var/error_paper = prob(5)
+	var/error_paper = prob(8)
 	var/paper_base_subject = pick_list(PAPERWORK_FILE, "subject")
 	var/rand_month = rand(1, 12)
 	var/rand_days = 31
@@ -53,7 +53,7 @@
 		if(2)
 			rand_days = (GLOB.year_integer % 4 == 0) ? 29 : 28
 
-	var/paper_time_period = "[rand(GLOB.year_integer + 400, GLOB.year_integer + 550)]/[rand(1, 12)]/[rand(1, rand_days)]"
+	var/paper_time_period = "[rand(GLOB.year_integer + 400, GLOB.year_integer + 550)]/[rand_month]/[rand(1, rand_days)]"
 	var/paper_occasion = pick_list(PAPERWORK_FILE, "occasion")
 	var/paper_contents
 	var/paper_victim
@@ -91,7 +91,7 @@
 			if("victim")
 				paper_victim = scramble_text(paper_victim)
 			if("time")
-				paper_time_period = scramble_text(paper_time_period)
+				paper_time_period = "[rand(GLOB.year_integer + 400, GLOB.year_integer + 550)]/[rand_month + 6]/[rand(rand_days, 1.5 * rand_days)]"
 			if("occasion")
 				paper_occasion = scramble_text(paper_occasion)
 
