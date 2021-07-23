@@ -71,7 +71,7 @@
 /datum/antagonist/traitor/advanced/intiltrator/roundend_report_footer()
 	return "<br>And thus ends another attempted Syndicate infiltration on board [station_name()]."
 
-/datum/antagonist/traitor/advanced/intiltrator/equip(silent = FALSE)
+/datum/antagonist/traitor/advanced/intiltrator/finalize_antag()
 	var/mob/living/carbon/human/traitor_mob = owner.current
 	if (!istype(traitor_mob))
 		return
@@ -83,6 +83,9 @@
 	if(!silent)
 		to_chat(traitor_mob, span_boldnotice("[employer] has cunningly implanted you with an [infiltrator_implant.name] to assist in your infiltration. You can trigger the uplink to stealthily access it."))
 		to_chat(traitor_mob, span_boldnotice("[employer] has wisely implanted you with a [weapons_implant.name] to allow you to use syndicate weaponry. You can now fire weapons with Syndicate firing pins."))
+
+	uplink = owner.find_syndicate_uplink()
+	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/traitor/advanced/intiltrator/proc/equip_infiltrator_outfit(strip = FALSE)
 	if(!ishuman(owner.current))
@@ -102,7 +105,7 @@
 	equip_infiltrator_outfit()
 	return ..()
 
-/datum/antagonist/traitor/advanced/intiltrator/pod_spawn/equip(silent = FALSE)
+/datum/antagonist/traitor/advanced/intiltrator/pod_spawn/finalize_antag()
 	. = ..()
 	if(linked_advanced_datum.open_panels[owner.current])
 		SStgui.close_uis(linked_advanced_datum.open_panels[owner.current])

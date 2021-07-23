@@ -1,12 +1,13 @@
 /// -- Advanced heretic datum --
 /// Advanced traitor, but for heretics!
-/datum/antagonist/heretic/heretic_plus
+/datum/antagonist/heretic/advanced
 	name = "Advanced Heretic"
 	give_equipment = FALSE
+	finalize_antag = FALSE
 	/// Static list of extra objectives heretics have.
 	var/static/list/heretic_objectives = list("sacrifice" = /datum/objective/sacrifice_ecult/adv)
 
-/datum/antagonist/heretic/heretic_plus/on_gain()
+/datum/antagonist/heretic/advanced/on_gain()
 	name = "Heretic"
 
 	if(!GLOB.admin_objective_list)
@@ -18,18 +19,18 @@
 	linked_advanced_datum.possible_objectives = objectives_to_choose
 	return ..()
 
-/datum/antagonist/heretic/heretic_plus/greet()
+/datum/antagonist/heretic/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
 
-/datum/antagonist/heretic/heretic_plus/equip_cultist()
+/datum/antagonist/heretic/advanced/equip_cultist()
 	. = ..()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ecult_op.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	to_chat(owner, span_boldannounce("You are the Heretic!"))
 
-/datum/antagonist/heretic/heretic_plus/forge_primary_objectives()
+/datum/antagonist/heretic/advanced/forge_primary_objectives()
 	return FALSE
 
-/datum/antagonist/heretic/heretic_plus/roundend_report()
+/datum/antagonist/heretic/advanced/roundend_report()
 	var/list/parts = list()
 
 	var/datum/advanced_antag_datum/heretic/our_heretic = linked_advanced_datum
@@ -67,16 +68,16 @@
 
 	return parts.Join("<br>")
 
-/datum/antagonist/heretic/heretic_plus/roundend_report_footer()
+/datum/antagonist/heretic/advanced/roundend_report_footer()
 	return "<br>And thus closes another book on board [station_name()]."
 
 /// An extra button for the TP, to open the goal panel
-/datum/antagonist/heretic/heretic_plus/get_admin_commands()
+/datum/antagonist/heretic/advanced/get_admin_commands()
 	. = ..()
 	.["View Goals"] = CALLBACK(src, .proc/show_advanced_traitor_panel, usr)
 
 /// An extra button for check_antagonists, to open the goal panel
-/datum/antagonist/heretic/heretic_plus/antag_listing_commands()
+/datum/antagonist/heretic/advanced/antag_listing_commands()
 	. = ..()
 	. += "<a href='?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
 
@@ -87,7 +88,7 @@
 	starting_points = 0
 	style = "wizard"
 	/// Our linked antagonist typecasted to heretic_plus.
-	var/datum/antagonist/heretic/heretic_plus/our_heretic
+	var/datum/antagonist/heretic/advanced/our_heretic
 	/// Whether our heretic is allowed to ascend.
 	var/ascension_enabled = TRUE
 	/// Whether our heretic is allowed to sacrifice.
