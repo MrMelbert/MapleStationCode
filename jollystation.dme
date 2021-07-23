@@ -3649,6 +3649,7 @@
 #include "jollystation_modules\code\__HELPERS\text_helpers.dm"
 #include "jollystation_modules\code\controllers\configuration\entries\autotransfer.dm"
 #include "jollystation_modules\code\controllers\subsystem\autotransfer.dm"
+#include "jollystation_modules\code\controllers\subsystem\economy.dm"
 #include "jollystation_modules\code\controllers\subsystem\pain_subsystem.dm"
 #include "jollystation_modules\code\datums\pain.dm"
 #include "jollystation_modules\code\datums\pain_helpers.dm"

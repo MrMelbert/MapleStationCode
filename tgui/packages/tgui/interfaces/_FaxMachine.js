@@ -110,19 +110,18 @@ export const _FaxMachine = (props, context) => {
                     <Button
                       color={emagged
                         ? "bad" : "good"}
-                      content={emagged
-                        ? "Send to Syndicate Command" : "Send to Central Command"}
+                      content="Send to: "
                       disabled={tab !== 1
                         || !stored_paper
                         || !(can_send_cc_messages || emagged)}
                       tooltip={"Send the contents of the paper currently inserted \
-                      in the machine to your employer. Response not guaranteed. \
+                      in the machine to the destination specified. Response not guaranteed. \
                       A copy of the sent paper will print, too - for record-keeping."}
                       onClick={() => act('send_stored_paper', {
                         destination_machine: destination,
                       })} />
                   </Stack.Item>
-                  <Stack.Item>
+                  <Stack.Item grow>
                     <Dropdown
                       width="100%"
                       selected={selectedDestination}
