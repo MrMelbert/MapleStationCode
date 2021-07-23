@@ -33,18 +33,6 @@
 
 	],
 
-	"time_period": [
-		"old",
-		"early",
-		"new",
-		"ancient",
-		"fresh",
-		"classic",
-		"current",
-		"present-day",
-		"brand new"
-	],
-
 	"occasion": [
 		"court case",
 		"trial",

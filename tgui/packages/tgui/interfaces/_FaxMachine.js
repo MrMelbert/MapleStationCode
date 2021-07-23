@@ -1,33 +1,47 @@
 import { useBackend, useSharedState, useLocalState } from '../backend';
-import { BlockQuote, Box, Button, Divider, Section, Stack, Tabs } from '../components';
+import { BlockQuote, Box, Button, Divider, Dropdown, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 
 export const _FaxMachine = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     display_name,
-    emagged,
-    can_send_cc_messages,
-    can_recieve,
+
+    destination_options = [],
+    default_destination,
     recieved_paperwork = [],
     recieved_paper,
     stored_paper,
+    can_send_cc_messages,
+    can_recieve,
+    emagged,
   } = data;
 
-  const [tab, setTab] = useSharedState(context, 'tab', 1);
+  const [
+    tab,
+    setTab,
+  ] = useSharedState(context, 'tab', 1);
 
   const [
     selectedPaperTab,
     setSelectedPaper,
   ] = useLocalState(context, 'ref', recieved_paperwork[0]?.ref);
 
+  const [
+    destination,
+    setDestination,
+  ] = useLocalState(context, 'dest', default_destination);
+
   const selectedPaper = recieved_paperwork.find(paper => {
     return paper.ref === selectedPaperTab;
   });
 
+  const selectedDestination = destination_options.find(dest => {
+    return dest === destination;
+  });
+
   return (
     <Window
-      title="Fax Machine"
       width={550}
       height={630}
       theme={emagged ? "syndicate":"ntos"}>
@@ -44,21 +58,7 @@ export const _FaxMachine = (props, context) => {
           Hello, {display_name}! {emagged ? "ERR- ERRoR. ERROR."
             : "Welcome to the Nanotrasen Approved Faxing Device!"}
         </Section>
-        <Section
-          title="Faxed Papers"
-          buttons={(
-            <Button
-              color={emagged ? "bad" : "good"}
-              content={emagged ? "Send to Syndicate Command"
-                : "Send to Central Command"}
-              disabled={tab !== 1
-                || !stored_paper
-                || !(can_send_cc_messages || emagged)}
-              tooltip={"Send the contents of the paper currently inserted \
-                in the machine to your employer. Response not guaranteed. \
-                A copy of the sent paper will print, too - for record-keeping."}
-              onClick={() => act('send_stored_paper')} />
-          )}>
+        <Section title="Faxed Papers">
           <Stack vertical height={15}>
             <Stack.Item height={2}>
               <Tabs fluid>
@@ -76,7 +76,7 @@ export const _FaxMachine = (props, context) => {
                 </Tabs.Tab>
               </Tabs>
             </Stack.Item>
-            <Stack.Item height={13}>
+            <Stack.Item ma={1} height={13}>
               {tab === 1 && (
                 stored_paper ? (
                   <Box>
@@ -99,14 +99,38 @@ export const _FaxMachine = (props, context) => {
                   </Box>
                 ) : (
                   <Box>
-                    <i>
-                      No papers have been recieved from
-                      { emagged ? " the Syndicate" : " Central Command"}, yet.
-                    </i>
+                    <i> No papers have been recieved. </i>
                   </Box>
                 ))}
             </Stack.Item>
             <Stack.Item>
+              {tab === 1 && stored_paper && (
+                <Stack>
+                  <Stack.Item>
+                    <Button
+                      color={emagged
+                        ? "bad" : "good"}
+                      content={emagged
+                        ? "Send to Syndicate Command" : "Send to Central Command"}
+                      disabled={tab !== 1
+                        || !stored_paper
+                        || !(can_send_cc_messages || emagged)}
+                      tooltip={"Send the contents of the paper currently inserted \
+                      in the machine to your employer. Response not guaranteed. \
+                      A copy of the sent paper will print, too - for record-keeping."}
+                      onClick={() => act('send_stored_paper', {
+                        destination_machine: destination,
+                      })} />
+                  </Stack.Item>
+                  <Stack.Item>
+                    <Dropdown
+                      width="100%"
+                      selected={selectedDestination}
+                      options={destination_options}
+                      onSelected={dest => { setDestination(dest); }} />
+                  </Stack.Item>
+                </Stack>
+              )}
               {tab === 2 && recieved_paper && (
                 <Button
                   disabled={!recieved_paper}
@@ -133,9 +157,10 @@ export const _FaxMachine = (props, context) => {
           <Stack vertical grow>
             <Stack.Item height={2}>
               {recieved_paperwork && recieved_paperwork.length > 0 ? (
-                <Tabs fluid>
+                <Tabs>
                   {recieved_paperwork.map(paper => (
                     <Tabs.Tab
+                      width="12.5%"
                       key={paper}
                       textAlign="center"
                       selected={paper.ref === selectedPaperTab}
