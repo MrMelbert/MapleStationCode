@@ -183,7 +183,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		if("print_all_paperwork")
 			eject_all_paperwork_with_delay(usr)
 
-		if("del_select_paperwork")
+		if("delete_select_paperwork")
 			var/obj/item/paper/processed/paper = locate(params["ref"]) in recieved_paperwork
 			delete_select_paperwork(paper)
 
