@@ -305,6 +305,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	color = "#e695ff"
 	metabolization_rate = REAGENTS_METABOLISM
+	pain_modifier = 0.6
 
 /datum/reagent/medicine/painkiller/aspirin_para_coffee/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()

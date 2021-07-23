@@ -17,19 +17,21 @@
 #define TUTORIAL_OBJECTIVE_END (TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA)
 
 /// The actual datum advanced traitor goal panel used to set and finalized goals.
-/datum/adv_traitor_panel
+/datum/advanced_antag_panel
 	/// The mob viewing this panel.
 	var/mob/viewer
 	/// The antag datum linked to this panel.
 	var/datum/advanced_antag_datum/owner_datum
 	/// The UI currently opened.
 	var/datum/tgui/open_ui
+	/// The UI we're going to open.
+	var/ui_to_open = "_AdvancedTraitorPanel"
 	/// The current state of the background tutorial.
 	var/background_tutorial_state = TUTORIAL_OFF
 	/// The current state of the objective tutorial.
 	var/objective_tutorial_state = TUTORIAL_OFF
 
-/datum/adv_traitor_panel/New(mob/user, datum/advanced_antag_datum/owner_datum)
+/datum/advanced_antag_panel/New(mob/user, datum/advanced_antag_datum/owner_datum)
 	if(istype(user))
 		viewer = user
 	else
@@ -38,19 +40,19 @@
 
 	src.owner_datum = owner_datum
 
-/datum/adv_traitor_panel/ui_close()
+/datum/advanced_antag_panel/ui_close()
 	open_ui = null
 	owner_datum.cleanup_advanced_traitor_panel(viewer)
 	qdel(src)
 
-/datum/adv_traitor_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/advanced_antag_panel/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "_AdvancedTraitorPanel")
+		ui = new(user, src, ui_to_open)
 		ui.open()
 		open_ui = ui
 
-/datum/adv_traitor_panel/ui_state(mob/user)
+/datum/advanced_antag_panel/ui_state(mob/user)
 	if(viewer != owner_datum.linked_antagonist.owner.current)
 		to_chat(user, "You are viewing [owner_datum.linked_antagonist.owner.current]'s advanced traitor panel as an admin.")
 		message_admins("[ADMIN_LOOKUPFLW(user)] is viewing [ADMIN_LOOKUPFLW(owner_datum.linked_antagonist.owner.current)]'s advanced traitor panel as an admin.")
@@ -58,15 +60,10 @@
 	else
 		return GLOB.always_state
 
-/datum/adv_traitor_panel/ui_data(mob/user)
+/datum/advanced_antag_panel/ui_data(mob/user)
 	var/list/data = list()
 
 	data["antag_type"] = owner_datum.linked_antagonist.name
-	if(data["antag_type"] == "Heretic")
-		var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
-		data["heretic_data"] = list(can_ascend = our_heretic.ascension_enabled, can_sac = our_heretic.sacrifices_enabled)
-
-	data["style"] = owner_datum.style
 	data["name"] = owner_datum.name
 	data["employer"] = owner_datum.employer
 	data["backstory"] = owner_datum.backstory
@@ -103,7 +100,7 @@
 
 	return data
 
-/datum/adv_traitor_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/advanced_antag_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
@@ -119,16 +116,11 @@
 	switch(action)
 		// Tutorial stuff
 		if("begin_background_tutorial")
-			if(background_tutorial_state == TUTORIAL_OFF)
-				background_tutorial_state = TUTORIAL_BACKGROUND_START
-			else
-				background_tutorial_state = TUTORIAL_OFF
+			background_tutorial_state = (background_tutorial_state == TUTORIAL_OFF ? TUTORIAL_BACKGROUND_START : TUTORIAL_OFF)
 			. = TRUE
+
 		if("begin_objective_tutorial")
-			if(objective_tutorial_state == TUTORIAL_OFF)
-				objective_tutorial_state = TUTORIAL_OBJECTIVE_START
-			else
-				objective_tutorial_state = TUTORIAL_OFF
+			objective_tutorial_state = (objective_tutorial_state == TUTORIAL_OFF ? TUTORIAL_OBJECTIVE_START : TUTORIAL_OFF)
 			. = TRUE
 
 		if("proceede_beginner_tutorial")
@@ -136,6 +128,7 @@
 			if(background_tutorial_state == TUTORIAL_BACKGROUND_END)
 				background_tutorial_state = TUTORIAL_OFF
 			. = TRUE
+
 		if("proceede_objective_tutorial")
 			objective_tutorial_state++
 			if(objective_tutorial_state == TUTORIAL_OBJECTIVE_END)
@@ -146,9 +139,11 @@
 		if("set_name")
 			owner_datum.set_name(params["name"])
 			. = TRUE
+
 		if("set_employer")
 			owner_datum.set_employer(params["employer"])
 			. = TRUE
+
 		if("set_backstory")
 			owner_datum.set_backstory(params["backstory"])
 			. = TRUE
@@ -161,6 +156,7 @@
 
 			owner_datum.add_advanced_goal()
 			. = TRUE
+
 		if("remove_advanced_goal")
 			owner_datum.remove_advanced_goal(edited_goal)
 			. = TRUE
@@ -168,9 +164,11 @@
 		if("set_goal_text")
 			edited_goal.set_goal_text(params["newgoal"])
 			. = TRUE
+
 		if("set_goal_intensity")
 			edited_goal.set_intensity(params["newlevel"])
 			. = TRUE
+
 		if("set_note_text")
 			edited_goal.set_note_text(params["newtext"])
 			. = TRUE
@@ -180,13 +178,11 @@
 				to_chat(usr, "Maximum amount of similar objectives reached for this goal.")
 				return
 
-			var/list/all_possible_objectives = owner_datum.possible_objectives.Copy()
-
-			var/new_objective_type = input("Add an objective:", "Objective type", null) as null|anything in all_possible_objectives
+			var/new_objective_type = input("Add an objective:", "Objective type", null) as null|anything in owner_datum.possible_objectives
 			if(!new_objective_type)
 				return
 
-			new_objective_type = all_possible_objectives[new_objective_type]
+			new_objective_type = owner_datum.possible_objectives[new_objective_type]
 			var/datum/objective/objective_to_add = new new_objective_type
 			objective_to_add.admin_edit(usr)
 			edited_goal.add_similar_objective(objective_to_add)
@@ -204,25 +200,13 @@
 		if("clear_sim_objectives")
 			QDEL_LIST(edited_goal.similar_objectives)
 			. = TRUE
+
 		if("toggle_check_all_objectives")
 			edited_goal.check_all_objectives = !edited_goal.check_all_objectives
 			. = TRUE
+
 		if("toggle_always_succeed")
 			edited_goal.always_succeed = !edited_goal.always_succeed
-			. = TRUE
-
-		/// Hacky Heretic Stuff
-		if("toggle_ascension")
-			var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
-			if(our_heretic.finalized)
-				return
-			our_heretic.ascension_enabled = !our_heretic.ascension_enabled
-			. = TRUE
-		if("toggle_sacrificing")
-			var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
-			if(our_heretic.finalized)
-				return
-			our_heretic.sacrifices_enabled = !our_heretic.sacrifices_enabled
 			. = TRUE
 
 		/// Finalize
@@ -230,7 +214,7 @@
 			owner_datum.post_finalize_actions()
 			. = TRUE
 
-/datum/adv_traitor_panel/proc/get_backstory_tutorial_text(current_step)
+/datum/advanced_antag_panel/proc/get_backstory_tutorial_text(current_step)
 	switch(current_step)
 		if(TUTORIAL_BACKGROUND_START)
 			return {"This top section is mostly flavor about your antagonist - What makes you tick.
@@ -261,7 +245,7 @@ You can this box to anything, or leave it empty. Having a backstory is not neces
 		else
 			return null
 
-/datum/adv_traitor_panel/proc/get_objective_tutorial_text(current_step)
+/datum/advanced_antag_panel/proc/get_objective_tutorial_text(current_step)
 	switch(current_step)
 		if(TUTORIAL_OBJECTIVE_START)
 			return {"This lower section is the important part of your antagonist - What's your job? What's the plan?
@@ -318,6 +302,36 @@ If enabled, your objective will always show up as successful at round end, even 
 If you don't set any similar objectives, success won't even be checked at the end of the round - it's entirely up to you."}
 		else
 			return null
+
+/datum/advanced_antag_panel/heretic
+	ui_to_open = "_AdvancedHereticPanel"
+
+/datum/advanced_antag_panel/heretic/ui_data(mob/user)
+	. = ..()
+	var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
+	.["can_ascend"] = our_heretic.ascension_enabled
+	.["can_sac"] = our_heretic.sacrifices_enabled
+
+/datum/advanced_antag_panel/heretic/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	/// Hacky Heretic Stuff
+	switch(action)
+		if("toggle_ascension")
+			var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
+			if(our_heretic.finalized)
+				return
+			our_heretic.ascension_enabled = !our_heretic.ascension_enabled
+			. = TRUE
+
+		if("toggle_sacrificing")
+			var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
+			if(our_heretic.finalized)
+				return
+			our_heretic.sacrifices_enabled = !our_heretic.sacrifices_enabled
+			. = TRUE
 
 #undef TUTORIAL_OFF
 

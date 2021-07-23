@@ -1,28 +1,5 @@
 // -- Bridge Officer locker + spawner. --
 
-// Landmark for mapping in Bridge Officer equipment.
-// Use this in place of manually mapping it in - this allows us to track all Bridge Officer lockers in the world.
-// We do this so we can detect if a map doesn't have a Bridge Officer locker, so we can allow the player to spawn one in manually.
-/obj/effect/landmark/bridge_officer_equipment
-	name = "bridge officer locker"
-	icon_state = "secequipment"
-	var/spawn_anchored = FALSE
-
-/obj/effect/landmark/bridge_officer_equipment/Initialize(mapload)
-	GLOB.bridge_officer_lockers += loc
-	var/obj/structure/closet/secure_closet/bridge_officer/spawned_locker = new(drop_location())
-	if(spawn_anchored)
-		spawned_locker.set_anchored(TRUE)
-	return ..()
-
-/obj/effect/landmark/bridge_officer_equipment/Destroy()
-	GLOB.bridge_officer_lockers -= loc
-	return ..()
-
-// Subtype that spawns anchored.
-/obj/effect/landmark/bridge_officer_equipment/spawn_anchored
-	spawn_anchored = TRUE
-
 // The actual Bridge Officer's locker of equipment
 /obj/structure/closet/secure_closet/bridge_officer
 	name = "\proper bridge officer's locker"
