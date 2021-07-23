@@ -1,6 +1,7 @@
 /// -- Infiltrator antag. Advanced traitors but they get some nukops gear in their uplink. --
 /datum/antagonist/traitor/advanced/intiltrator
 	name = "Infiltrator"
+	ui_name = null
 	hijack_speed = 1
 	advanced_antag_path = /datum/advanced_antag_datum/traitor/infiltrator
 	antag_hud_type = ANTAG_HUD_OPS
@@ -43,7 +44,7 @@
 	var/uplink_true = FALSE
 	var/purchases = ""
 
-	if(should_equip)
+	if(give_uplink)
 		LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
 		var/datum/uplink_purchase_log/H = GLOB.uplink_purchase_logs_by_key[owner.key]
 		if(H)
@@ -63,7 +64,7 @@
 		var/uplink_text = span_bold("(used [TC_uses] TC)")
 		uplink_text += "[purchases]"
 		result += uplink_text
-	else if (!should_equip)
+	else if (!give_uplink)
 		result += span_bold("<br>The [name] never obtained their uplink!")
 
 	return result.Join("<br>")

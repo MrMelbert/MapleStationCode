@@ -16,19 +16,13 @@
 
 /// The Advanecd Traitor antagonist datum.
 /datum/antagonist/traitor/advanced
-	/// Changed to "Traitor" on spawn, but can be changed by the player.
-	name = "Advanced Traitor"
-	/// Edited to ([starting_tc] / 40).
-	hijack_speed = 0.5
-	/// Can be changed by the player.
-	employer = "The Syndicate"
-	/// We don't give them standard traitor objectives.
+	name = "Advanced Traitor" // Changed to just "Traitor" on spawn, but can be changed by the player.
+	ui_name = null // We have our own UI
+	hijack_speed = 0.5 // Edited to ([starting_tc] / 40).
+	employer = "The Syndicate" // Can be changed by the player.
 	give_objectives = FALSE
-	/// We don't give any codewords out.
 	should_give_codewords = FALSE
-	/// We equip our traitor after they finish their goals.
-	should_equip = FALSE
-	/// We finalize our antag when they finish their goals.
+	give_uplink = FALSE
 	finalize_antag = FALSE
 	/// Typepath of what advanced antag datum gets instantiated to this antag.
 	var/advanced_antag_path = /datum/advanced_antag_datum/traitor
@@ -62,7 +56,7 @@
 	var/uplink_true = FALSE
 	var/purchases = ""
 
-	if(should_equip)
+	if(give_uplink)
 		LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
 		var/datum/uplink_purchase_log/H = GLOB.uplink_purchase_logs_by_key[owner.key]
 		if(H)
@@ -84,7 +78,7 @@
 		result += uplink_text
 		if (contractor_hub)
 			result += contractor_round_end()
-	else if (!should_equip)
+	else if (!give_uplink)
 		result += span_bold("<br>The [name] never obtained their uplink!")
 
 	return result.Join("<br>")
@@ -144,7 +138,7 @@
 	if(!.)
 		return
 
-	our_traitor.should_equip = TRUE
+	our_traitor.give_uplink = TRUE
 	our_traitor.finalize_antag()
 	modify_antag_points()
 	log_goals_on_finalize()

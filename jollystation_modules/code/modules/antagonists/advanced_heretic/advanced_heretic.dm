@@ -2,6 +2,7 @@
 /// Advanced traitor, but for heretics!
 /datum/antagonist/heretic/advanced
 	name = "Advanced Heretic"
+	ui_name = null
 	give_equipment = FALSE
 	finalize_antag = FALSE
 	/// Static list of extra objectives heretics have.
