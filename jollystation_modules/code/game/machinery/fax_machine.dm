@@ -69,7 +69,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 /obj/machinery/fax_machine/full/Initialize()
 	. = ..()
-	for(var/i in 1 to 8)
+	for(var/i in 1 to max_paperwork)
 		if(LAZYLEN(recieved_paperwork) >= max_paperwork)
 			continue
 		LAZYADD(recieved_paperwork, generate_paperwork(src))
@@ -273,7 +273,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	to_chat(user, span_notice("Fax sent. Dispensing paper for personal record keeping. Thank you for using the Nanotrasen Approved Faxing Device!"))
 	eject_stored_paper()
 	flick("faxsend", src)
-	playsound(src, 'sound/machines/terminal_processing.ogg', 50, FALSE)
+	playsound(src, 'sound/machines/terminal_processing.ogg', 35, FALSE)
 	COOLDOWN_START(src, fax_cooldown, FAX_COOLDOWN_TIME)
 	use_power(active_power_usage)
 
@@ -591,8 +591,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	var/needed_answer
 	/// The last answer supplied by a user.
 	var/last_answer
-	/// Whether this paper contains errors and must be denied to be marked as correct.
-	var/errors_present = FALSE
 
 /obj/item/paper/processed/attackby(obj/item/weapon, mob/living/user, params)
 	if(istype(weapon, /obj/item/pen) || istype(weapon, /obj/item/toy/crayon))
@@ -622,16 +620,24 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 		needed_answer = shuffled_data[data]
 		switch(data)
-			if("subject")
-				required_question = "Who was the subject of the document?"
+			if("subject_one")
+				required_question = "Which corporation was the first mentioned in the document?"
+			if("subject_two")
+				required_question = "Which corporation was the second mentioned in the document?"
+			if("station")
+				required_question = "Which space station was mentioned in the document?"
 			if("time_period")
-				required_question = "When did the event in the document occur?"
+				required_question = "What date did was this document created?"
 			if("occasion")
-				required_question = "What was the event in the document?"
+				required_question = "What type of document is this paperwork for?"
 			if("victim")
-				required_question = "Who was the victim of the document?"
+				required_question = "What was the name of the victim in the document?"
+			if("victim_species")
+				required_question = "What was the species of the victim in the document?"
+			if("errors_present", "redacts_present")
+				continue
 			else
-				required_question = "This paperwork is incompletable."
+				required_question = "This paperwork is incompletable. Who made this garbage?"
 		return
 
 /*
@@ -646,7 +652,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return FAIL_NO_STAMP
 	if(last_answer != needed_answer)
 		return FAIL_QUESTION_WRONG
-	if(errors_present && !("stamp-deny" in stamped))
+	if(paper_data["errors_present"] && !("stamp-deny" in stamped))
 		return FAIL_NOT_DENIED
 
 	return PAPERWORK_SUCCESS

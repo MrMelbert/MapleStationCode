@@ -67,17 +67,17 @@ export const _FaxMachine = (props, context) => {
                   width="50%"
                   icon="copy"
                   selected={tab === 1}
-                  onClick={() => {
-                    setTab(1);
-                    act('read_last_recieved');
-                  }}>
+                  onClick={() => setTab(1)}>
                   <b>Send A Fax</b>
                 </Tabs.Tab>
                 <Tabs.Tab
                   width="50%"
                   icon="broadcast-tower"
                   selected={tab === 2}
-                  onClick={() => setTab(2)}>
+                  onClick={() => {
+                    setTab(2);
+                    act('read_last_recieved');
+                  }}>
                   <Stack grow width="100%">
                     <Stack.Item grow textAlign="left">
                       <b>Recieved Faxes </b>
@@ -97,7 +97,7 @@ export const _FaxMachine = (props, context) => {
                     <span style={{
                       color: (emagged ? "lightgreen" : "lightblue"),
                       fontWeight: "bold" }}>
-                      Unformatted Message:
+                      Message to Send:
                     </span>
                     <BlockQuote mt={1}>
                       {stored_paper.contents}
