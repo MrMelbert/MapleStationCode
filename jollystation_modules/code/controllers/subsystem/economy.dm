@@ -98,6 +98,8 @@
 		all_tracked_data += "subject_one"
 	if(findtext(paper_contents, "subject_two"))
 		paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
+		if(paper_secondary_subject == paper_base_subject) // okay but what are the odds of picking the same name, threee times?
+			paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
 		all_tracked_data += "subject_two"
 	if(findtext(paper_contents, "victim"))
 		var/list/possible_names = list(

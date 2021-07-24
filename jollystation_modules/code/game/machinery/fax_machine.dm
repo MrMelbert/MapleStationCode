@@ -144,6 +144,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	var/list/possible_destinations = list()
 	possible_destinations += admin_destination
 	for(var/obj/machinery/fax_machine/machine as anything in GLOB.fax_machines)
+		if(machine.room_tag in possible_destinations)
+			continue
 		possible_destinations += machine.room_tag
 	data["destination_options"] = possible_destinations
 	data["default_destination"] = admin_destination
@@ -627,7 +629,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 			if("station")
 				required_question = "Which space station was mentioned in the document?"
 			if("time_period")
-				required_question = "What date did was this document created?"
+				required_question = "What date was this document created?"
 			if("occasion")
 				required_question = "What type of document is this paperwork for?"
 			if("victim")
