@@ -125,7 +125,9 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\client\preferences_savefile.dm
 - code\modules\client\preferences_toggles.dm
 - code\modules\client\preferences.dm
+- code\modules\food_and_drinks\drinks\drinks.dm
 - code\modules\food_and_drinks\drinks\drinks\bottle.dm
+- code\modules\food_and_drinks\recipes\drinks_recipes.dm
 - code\modules\jobs\jobs.dm
 - code\modules\jobs\job_types\_job.dm
 - code\modules\jobs\job_types\cargo_technician.dm
