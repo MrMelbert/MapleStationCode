@@ -16,7 +16,7 @@
 	new /obj/item/clothing/shoes/laceup(src)
 	new /obj/item/clothing/shoes/jackboots(src)
 	new /obj/item/radio/headset/heads/bridge_officer(src)
-	new /obj/item/clothing/head/beret/black/bridge_officer(src)
+	// new /obj/item/clothing/head/beret/black/bridge_officer(src) - Needs to be GAGs'd
 	new /obj/item/clothing/glasses/sunglasses/garb(src)
 	new /obj/item/clothing/suit/armor/vest/bridge_officer(src)
 	new /obj/item/clothing/suit/armor/vest/bridge_officer/large(src)

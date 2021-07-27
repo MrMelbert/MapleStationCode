@@ -3771,7 +3771,6 @@
 #include "jollystation_modules\code\modules\clothing\accessories\loadout_pocket_items.dm"
 #include "jollystation_modules\code\modules\clothing\glasses\loadout_glasses.dm"
 #include "jollystation_modules\code\modules\clothing\gloves\loadout_gloves.dm"
-#include "jollystation_modules\code\modules\clothing\head\jobs.dm"
 #include "jollystation_modules\code\modules\clothing\head\loadout_helmet.dm"
 #include "jollystation_modules\code\modules\clothing\shoes\loadout_shoes.dm"
 #include "jollystation_modules\code\modules\clothing\suits\armor.dm"
