@@ -2072,7 +2072,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	else
 		character.body_type = body_type
 
-
 	character.eye_color = eye_color
 	var/obj/item/organ/eyes/organ_eyes = character.getorgan(/obj/item/organ/eyes)
 	if(organ_eyes)
@@ -2089,9 +2088,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	character.undershirt = undershirt
 	character.socks = socks
 
-
 	character.backpack = backpack
-
 
 	character.jumpsuit_style = jumpsuit_style
 
@@ -2099,12 +2096,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	character.set_species(pref_species.type, icon_update = FALSE, pref_load = TRUE)
 	character.dna.real_name = character.real_name
 
-
 	if(pref_species.mutant_bodyparts["tail_lizard"])
 		character.dna.species.mutant_bodyparts["tail_lizard"] = pref_species.mutant_bodyparts["tail_lizard"]
 	if(pref_species.mutant_bodyparts["spines"])
 		character.dna.species.mutant_bodyparts["spines"] = pref_species.mutant_bodyparts["spines"]
-
 
 	if(icon_updates)
 		character.update_body()

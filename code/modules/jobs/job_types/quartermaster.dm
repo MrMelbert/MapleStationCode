@@ -31,7 +31,7 @@
 	voice_of_god_power = 1.4 //Command staff has authority
 
 
-/datum/job/research_director/get_captaincy_announcement(mob/living/captain) // NON-MODULE CHANGE
+/datum/job/quartermaster/get_captaincy_announcement(mob/living/captain) // NON-MODULE CHANGE
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 /datum/outfit/job/quartermaster

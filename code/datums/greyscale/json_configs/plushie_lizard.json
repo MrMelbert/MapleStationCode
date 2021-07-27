@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
 	"map_plushie_lizard": [
+=======
+	"": [
+>>>>>>> b1041fed0b5d33b4f21ebd902c3e75e8cb579539
 		{
 			"type": "icon_state",
 			"icon_state": "plushie_lizard_body",
