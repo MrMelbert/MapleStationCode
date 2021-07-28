@@ -21,17 +21,17 @@
 			continue
 		processed_areas += area_loc
 
-		if(LAZYLEN(found_machine.recieved_paperwork) >= found_machine.max_paperwork)
+		if(LAZYLEN(found_machine.received_paperwork) >= found_machine.max_paperwork)
 			continue
-		if(!found_machine.can_recieve)
+		if(!found_machine.can_receive_paperwork)
 			continue
 
 		var/num_papers_added = 0
 		for(var/i in 1 to rand(0, 4))
-			if(LAZYLEN(found_machine.recieved_paperwork) >= found_machine.max_paperwork)
+			if(LAZYLEN(found_machine.received_paperwork) >= found_machine.max_paperwork)
 				continue
 			num_papers_added++
-			LAZYADD(found_machine.recieved_paperwork, generate_paperwork(found_machine))
+			LAZYADD(found_machine.received_paperwork, generate_paperwork(found_machine))
 		if(num_papers_added)
 			found_machine.audible_message(span_notice("[found_machine] beeps as new paperwork becomes available to process."))
 			playsound(found_machine,  'sound/machines/twobeep.ogg', 50)

@@ -9,11 +9,11 @@ export const _FaxMachine = (props, context) => {
 
     destination_options = [],
     default_destination,
-    recieved_paperwork = [],
-    recieved_paper,
+    received_paperwork = [],
+    received_paper,
     stored_paper,
     can_send_cc_messages,
-    can_recieve,
+    can_receive,
     emagged,
     unread_message,
   } = data;
@@ -26,14 +26,14 @@ export const _FaxMachine = (props, context) => {
   const [
     selectedPaperTab,
     setSelectedPaper,
-  ] = useLocalState(context, 'ref', recieved_paperwork[0]?.ref);
+  ] = useLocalState(context, 'ref', received_paperwork[0]?.ref);
 
   const [
     destination,
     setDestination,
   ] = useLocalState(context, 'dest', default_destination);
 
-  const selectedPaper = recieved_paperwork.find(paper => {
+  const selectedPaper = received_paperwork.find(paper => {
     return paper.ref === selectedPaperTab;
   });
 
@@ -76,13 +76,13 @@ export const _FaxMachine = (props, context) => {
                   selected={tab === 2}
                   onClick={() => {
                     setTab(2);
-                    act('read_last_recieved');
+                    act('read_last_received');
                   }}>
                   <Stack grow width="100%">
                     <Stack.Item grow textAlign="left">
-                      <b>Recieved Faxes </b>
+                      <b>received Faxes </b>
                     </Stack.Item>
-                    {recieved_paper && !!unread_message && (
+                    {received_paper && !!unread_message && (
                       <Stack.Item grow textAlign="right">
                         <i>{"New message!"}</i>
                       </Stack.Item>)}
@@ -112,19 +112,19 @@ export const _FaxMachine = (props, context) => {
                   </Box>
                 ))}
               {tab === 2 && (
-                recieved_paper ? (
+                received_paper ? (
                   <Box mt={1}>
                     <span style={{ color: "gold", fontWeight: "bold" }}>
-                      Message from {recieved_paper.source}:
+                      Message from {received_paper.source}:
                     </span>
                     <BlockQuote mt={1}>
-                      {recieved_paper.contents}
+                      {received_paper.contents}
                     </BlockQuote>
                   </Box>
                 ) : (
                   <Box>
                     <i>
-                      No papers have been recieved.
+                      No papers have been received.
                     </i>
                   </Box>
                 ))}
@@ -159,14 +159,14 @@ export const _FaxMachine = (props, context) => {
                   </Stack.Item>
                 </Stack>
               )}
-              {tab === 2 && recieved_paper && (
+              {tab === 2 && received_paper && (
                 <Stack>
                   <Stack.Item>
                     <Button
-                      disabled={!recieved_paper}
-                      content="Print Recieved Fax"
-                      tooltip="Print the last recieved fax."
-                      onClick={() => act('print_recieved_paper')} />
+                      disabled={!received_paper}
+                      content="Print received Fax"
+                      tooltip="Print the last received fax."
+                      onClick={() => act('print_received_paper')} />
                   </Stack.Item>
                 </Stack>
               )}
@@ -177,19 +177,19 @@ export const _FaxMachine = (props, context) => {
           title="Paperwork"
           buttons={(
             <Button.Checkbox
-              checked={can_recieve}
+              checked={can_receive}
               content="Toggle Incoming Paperwork"
-              tooltip={(can_recieve ? "Disable" : "Enable")
+              tooltip={(can_receive ? "Disable" : "Enable")
                 + " the ability for this fax machine \
-                to recieve paperwork every five minutes."}
+                to receive paperwork every five minutes."}
               onClick={() => act('toggle_recieving')}
             />
           )}>
           <Stack vertical grow>
             <Stack.Item height={2}>
-              {recieved_paperwork && recieved_paperwork.length > 0 ? (
+              {received_paperwork && received_paperwork.length > 0 ? (
                 <Tabs>
-                  {recieved_paperwork.map(paper => (
+                  {received_paperwork.map(paper => (
                     <Tabs.Tab
                       width="12.5%"
                       key={paper}
@@ -210,7 +210,7 @@ export const _FaxMachine = (props, context) => {
                   {selectedPaper.contents}
                 </BlockQuote>
               ) : (
-                recieved_paperwork && recieved_paperwork.length > 0
+                received_paperwork && received_paperwork.length > 0
                 && ("No paper selected.")
               )}
             </Stack.Item>
@@ -251,7 +251,7 @@ export const _FaxMachine = (props, context) => {
                     content="Send Paper For Processing"
                     tooltip="Send the selected paperwork \
                       to your employer to check its \
-                      validity and recieve your payment."
+                      validity and receive your payment."
                     onClick={() => act('check_paper', {
                       ref: selectedPaper.ref,
                     })} />
@@ -268,10 +268,10 @@ export const _FaxMachine = (props, context) => {
                 </Stack.Item>
                 <Stack.Item>
                   <Button
-                    color={(!recieved_paperwork
-                      || recieved_paperwork.length <= 0) ? "good" : "caution"}
-                    disabled={!recieved_paperwork
-                      || recieved_paperwork.length <= 0}
+                    color={(!received_paperwork
+                      || received_paperwork.length <= 0) ? "good" : "caution"}
+                    disabled={!received_paperwork
+                      || received_paperwork.length <= 0}
                     content="Print All Papers"
                     tooltip="Print out all the paperwork stored in the machine."
                     onClick={() => act('print_all_paperwork')} />
