@@ -55,3 +55,6 @@ GLOBAL_LIST_INIT(loadout_slots, list(
 #define RANDOM_COLOR "RANDOM COLOR"
 #define ACCESSORY "ACCESSORY"
 #define IMPORTANT_SLOT "IMPORTANT SLOT"
+
+/// Modular traits
+#define TRAIT_DISEASE_RESISTANT "disease_resistant"

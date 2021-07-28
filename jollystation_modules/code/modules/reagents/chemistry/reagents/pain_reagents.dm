@@ -17,7 +17,7 @@
 // Morphine buff to actually work as a painkiller
 /datum/reagent/medicine/morphine
 	addiction_types = list(/datum/addiction/opiods = 30) //5u = 100 progress, 25-30u = addiction
-	pain_modifier = 0.4
+	pain_modifier = 0.5
 
 /datum/reagent/medicine/morphine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
@@ -305,7 +305,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	color = "#e695ff"
 	metabolization_rate = REAGENTS_METABOLISM
-	pain_modifier = 0.6
+	pain_modifier = 0.75
 
 /datum/reagent/medicine/painkiller/aspirin_para_coffee/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	. = ..()
@@ -336,7 +336,7 @@
 	ph = 5.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/opiods = 45) //5u = 150 progress, 15-20u = addiction
-	pain_modifier = 0.3
+	pain_modifier = 0.4
 
 /datum/reagent/medicine/oxycodone/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	if(current_cycle >= 9)
