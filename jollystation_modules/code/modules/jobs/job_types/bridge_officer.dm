@@ -57,7 +57,7 @@
 	gloves = /obj/item/clothing/gloves/color/black
 	uniform = /obj/item/clothing/under/rank/security/bridge_officer/black
 	shoes = /obj/item/clothing/shoes/laceup
-	// head = /obj/item/clothing/head/beret/black/bridge_officer - Upstream Merge 26; Beret needs to be converted to GAGs
+	head = /obj/item/clothing/head/beret/black/bridge_officer
 	suit = /obj/item/clothing/suit/armor/vest/bridge_officer
 	suit_store = /obj/item/gun/energy/disabler
 	id_trim = /datum/id_trim/job/bridge_officer
