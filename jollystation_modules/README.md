@@ -149,6 +149,10 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\surgery\organs\tongue.dm
 - code\modules\unit_tests\heretic_knowledge.dm
 
+# Interface files with non-module comments
+- interface\interface.dm
+- interface\skin.dmf
+
 # Tools with non-module comments
 - tgui\packages\tgui\index.js
 - tgui\packages\tgui-panel\chat\constants.js
