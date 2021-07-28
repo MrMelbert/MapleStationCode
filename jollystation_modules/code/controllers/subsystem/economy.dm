@@ -87,9 +87,6 @@
 		if("patent", "intellectual property", "copyright")
 			paper_contents = pick_list(PAPERWORK_FILE, "contents_patents")
 
-		if("passport")
-			paper_contents = pick_list(PAPERWORK_FILE, "contents_passport")
-
 		else
 			paper_contents = pick_list(PAPERWORK_FILE, "contents_random")
 
