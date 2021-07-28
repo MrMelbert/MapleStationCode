@@ -1,7 +1,7 @@
 //Please use mob or src (not usr) in these procs. This way they can be called in the same fashion as procs.
 /client/verb/wiki(query as text)
 	set name = "wiki"
-	set desc = "Type what you want to know about.  This will open the wiki in your web browser. Type nothing to go to the main page."
+	set desc = "Type what you want to know about.  This will open the /TG/ wiki in your web browser. Type nothing to go to the main page."
 	set hidden = TRUE
 	var/wikiurl = CONFIG_GET(string/wikiurl)
 	if(wikiurl)
@@ -33,7 +33,7 @@
 	set hidden = TRUE
 	var/rulesurl = CONFIG_GET(string/rulesurl)
 	if(rulesurl)
-		if(tgui_alert(src, "This will open the rules in your browser. Are you sure?",, list("Yes","No"))!="Yes")
+		if(tgui_alert(src, "This will open the rules in your browser, if you're logged into Discord browser. Are you sure?",, list("Yes","No"))!="Yes") //NON-MODULE CHANGE
 			return
 		src << link(rulesurl)
 	else

@@ -181,7 +181,7 @@ window "infowindow"
 		anchor1 = 50,0
 		anchor2 = 66,0
 		saved-params = "is-checked"
-		text = "Forum"
+		text = "Modular Changelog"
 		command = "forum"
 	elem "github"
 		type = BUTTON
