@@ -181,7 +181,7 @@ window "infowindow"
 		anchor1 = 50,0
 		anchor2 = 66,0
 		saved-params = "is-checked"
-		text = "Modular Changelog"
+		text = "Server Changes"
 		command = "forum"
 	elem "github"
 		type = BUTTON
@@ -337,4 +337,3 @@ window "statwindow"
 		anchor2 = 100,100
 		is-visible = false
 		saved-params = ""
-
