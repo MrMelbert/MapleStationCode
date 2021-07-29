@@ -110,13 +110,28 @@
 	. = ..()
 	return TRUE
 
+/obj/item/reagent_containers/pill/luciferium
+	name = "luciferium pill"
+	desc = "A very dangerous medicine that can save the life of the most wounded and scarred of people, at a costly price of \
+		permanent reliance on the drug to maintain the mechanite structure it creates."
+	icon_state = "pill_syndie"
+	list_reagents = list(/datum/reagent/medicine/luciferium = 5)
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/glass/bottle/luciferium
+	name = "luciferium bottle"
+	desc = "A bottle of luciferium, an extremely effective but dangerous medicine that can save someone from the brink of death \
+		at the cost of permanent reliance on the drug to maintain the mechanite structure it creates."
+	volume = 20
+	possible_transfer_amounts = list(2, 5, 10, 20)
+	list_reagents = list(/datum/reagent/medicine/luciferium = 20)
+
 /datum/reagent/medicine/penoxycyline
 	name = "Penoxycyline"
 	description = "A standard drug that prevents the user from catching viral or bacterial diseases or infections."
 	reagent_state = LIQUID
 	color = "#c4b703"
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
-	overdose_threshold = 30
 	ph = 8.7
 
 /datum/reagent/medicine/penoxycyline/on_mob_metabolize(mob/living/carbon/user)
@@ -126,6 +141,13 @@
 /datum/reagent/medicine/penoxycyline/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
+
+/obj/item/reagent_containers/pill/penoxycyline
+	name = "penoxycyline pill"
+	desc = "A standard medicine that prevents the user from catching viral or bacterial diseases or infections."
+	icon_state = "pill22"
+	list_reagents = list(/datum/reagent/medicine/penoxycyline = 10)
+	rename_with_volume = TRUE
 
 /datum/reagent/drug/gojuice
 	name = "Go-Juice"
@@ -177,6 +199,13 @@
 	. = ..()
 	return TRUE
 
+/obj/item/reagent_containers/glass/bottle/gojuice
+	name = "go-juice bottle"
+	desc = "A small bottle of Go-Juice, an effective but addictive combat stimulant."
+	volume = 20
+	possible_transfer_amounts = list(2, 5, 10, 20)
+	list_reagents = list(/datum/reagent/drug/gojuice = 20)
+
 /datum/reagent/drug/flake
 	name = "Flake"
 	description = "A hard drug made from the distant psychoid leaf. While easy to produce and potent, it is also incredibly addictive."
@@ -194,6 +223,13 @@
 /datum/reagent/drug/flake/on_mob_end_metabolize(mob/living/user)
 	. = ..()
 	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+
+/obj/item/reagent_containers/glass/bottle/flake
+	name = "flake bottle"
+	desc = "A small bottle that contains Flake, a very addictive and often smoked drug produced from psychoid leaves that causes temporary euphoria."
+	volume = 20
+	possible_transfer_amounts = list(2, 5, 10, 20)
+	list_reagents = list(/datum/reagent/drug/flake = 20)
 
 /datum/reagent/drug/yayo
 	name = "Yayo"
@@ -226,6 +262,13 @@
 	. = ..()
 	return TRUE
 
+/obj/item/reagent_containers/glass/bottle/yayo
+	name = "yayo bottle"
+	desc = "A small bottle that contains Yayo, a powdery drug produced from psychoid leaves snorted to produce a high, suppress pain, and prevent tiredness."
+	volume = 20
+	possible_transfer_amounts = list(2, 5, 10, 20)
+	list_reagents = list(/datum/reagent/drug/yayo = 20)
+
 /datum/reagent/psychite_tea
 	name = "Psychite Tea"
 	description = "A soothing tea drink made from the distant psychoid leaves. Reduces pain and improves mood slightly, but is slightly addictive - \
@@ -254,3 +297,8 @@
 	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, user.get_body_temp_normal())
 	. = ..()
 	return TRUE
+
+/obj/item/reagent_containers/food/drinks/mug/psychite_tea
+	name = "psychite tea"
+	desc = "A type of Psychite tea brewed from psychoid leaves. Mildly addictive, but improves mood and reduces pain slightly."
+	list_reagents = list(/datum/reagent/psychite_tea = 30)

@@ -127,12 +127,22 @@
 	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 10) // Lasts ~4 minutes, heals ~20 pain in chest (lower in other parts)
 	rename_with_volume = TRUE
 
+/obj/item/reagent_containers/syringe/aspirin
+	name = "syringe (aspirin)"
+	desc = "Contains fiteen units of aspirin. Used to treat chest pain and fever. Metabolizes slowly."
+	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 15)
+
 /obj/item/reagent_containers/pill/ibuprofen
 	name = "ibuprofen pill"
 	desc = "Used to treat mild pain, headaches, and fever. Metabolizes slowly. Best at treating head pain."
 	icon_state = "pill8"
 	list_reagents = list(/datum/reagent/medicine/painkiller/ibuprofen = 10) // Lasts ~4 minutes, heals ~20 pain in head (lower in other parts)
 	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/syringe/ibuprofen
+	name = "syringe (ibuprofen)"
+	desc = "Contains fiteen units of ibuprofen. Used to treat head pain headaches, and fever. Metabolizes slowly."
+	list_reagents = list(/datum/reagent/medicine/painkiller/ibuprofen = 15)
 
 /obj/item/reagent_containers/pill/paracetamol
 	name = "paracetamol pill"
@@ -141,11 +151,21 @@
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 10) // Lasts ~4 minutes, heals ~15 pain per bodypart
 	rename_with_volume = TRUE
 
+/obj/item/reagent_containers/syringe/paracetamol
+	name = "syringe (paracetamol)"
+	desc = "Contains fiteen units of Paracetamol. Used to treat general pain. Metabolizes slowly."
+	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 15)
+
 /obj/item/reagent_containers/pill/morphine/diluted
 	desc = "Used to treat major to severe pain. Causes moderate drowsiness. Mildly addictive."
 	icon_state = "pill11"
 	list_reagents = list(/datum/reagent/medicine/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain)
 	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/syringe/morphine
+	name = "syringe (morphine)"
+	desc = "Contains three injections of Morphine. Used to treat major to severe pain. Causes moderate drowsiness. Mildly addictive."
+	list_reagents = list(/datum/reagent/medicine/morphine = 15)
 
 /obj/item/reagent_containers/pill/oxycodone
 	name = "oxycodone pill"
@@ -153,6 +173,26 @@
 	icon_state = "pill12"
 	list_reagents = list(/datum/reagent/medicine/oxycodone = 5) // Lasts ~1 minute, heals ~20 pain per bodypart (~200 pain)
 	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/syringe/oxycodone
+	name = "syringe (oxycodone)"
+	desc = "Contains three injections of Oxycodone. Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
+	list_reagents = list(/datum/reagent/medicine/oxycodone = 15)
+
+obj/item/reagent_containers/pill/aspirin_para_coffee
+	name = "aspirin/paracetamol/caffeine pill"
+	desc = "A mix of Aspirin, Paracetamol and Coffee to produce an effective, but short lasting painkiller with little to no side effects. Do not take multiple at once."
+	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin_para_coffee = 10)
+
+/obj/item/storage/pill_bottle/aspirin_para_coffee_pills
+	name = "bottle of aspirin/paracetamol/caffeine pills"
+	desc = "Contains five, ten unit pills of aspirin/paracetamol/caffeine, an effective painkiller. Do not use two in quick succession."
+	custom_premium_price = PAYCHECK_HARD * 2
+
+/obj/item/storage/pill_bottle/aspirin_para_coffee_pills/PopulateContents()
+	. = ..()
+	for(var/i in 1 to 5)
+		new /obj/item/reagent_containers/pill/aspirin_para_coffee(src)
 
 /obj/item/storage/pill_bottle/painkillers
 	name = "bottle of painkillers"
