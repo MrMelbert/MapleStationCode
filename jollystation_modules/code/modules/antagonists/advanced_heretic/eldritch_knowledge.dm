@@ -12,20 +12,37 @@
 	desc = "Gives up your ability to sacrifice in favor of going about other means."
 	gain_text = "I took an oath to my gods not to sacrifice powerless mortals, as my time was better utilized elsewhere."
 
+/datum/map_template/heretic_sacrifice_level
+	name = "Heretic Sacrifice Level"
+	mappath = "_maps/templates/_heretic_template.dmm"
+
 /datum/eldritch_knowledge/spell/basic
 	/// The heretic who owns this knowledge.
 	var/mob/living/master_heretic
 	/// Lazylist of all the people this heretic has selected as a heart target.
 	var/list/target_blacklist
+	/// What heretic type our master heretic is (path_void, path_flesh, path_ash, path_rust, or null)
+	var/heretic_type = null
 
 /datum/eldritch_knowledge/spell/basic/on_gain(mob/user)
 	. = ..()
 	master_heretic = user
+	if(!GLOB.heretic_sacrifice_landmarks.len)
+		message_admins("Generating z-level for heretic sacrifices...")
+		INVOKE_ASYNC(src, .proc/generate_heretic_z_level)
 
 /datum/eldritch_knowledge/spell/basic/on_lose(mob/user)
 	master_heretic = null
 	LAZYNULL(target_blacklist)
 	return ..()
+
+/*
+ * Generate the heretic z-level for sacrificed people.
+ */
+/datum/eldritch_knowledge/spell/basic/proc/generate_heretic_z_level()
+	var/datum/map_template/heretic_sacrifice_level/new_level = new()
+	if(!new_level.load_new_z())
+		CRASH("Failed to initialize heretic sacrifice z-level!")
 
 /*
  * This proc is called from [proc/on_finished_recipe] after the [heretic] successfully sacrifices [sac_target]
@@ -37,6 +54,20 @@
 	if(!sac_target)
 		CRASH("sacrifice_process() called with null sac_target!")
 
+	var/datum/antagonist/heretic/our_heretic = master_heretic?.mind?.has_antag_datum(/datum/antagonist/heretic)
+	if(!our_heretic)
+		CRASH("sacrifice_process() called [master_heretic? "without a heretic linked":"without a heretic antag datum found"]!")
+
+	if(!heretic_type)
+		if(locate(/datum/eldritch_knowledge/base_void) in our_heretic.researched_knowledge)
+			heretic_type = PATH_VOID
+		else if(locate(/datum/eldritch_knowledge/base_rust) in our_heretic.researched_knowledge)
+			heretic_type = PATH_RUST
+		else if(locate(/datum/eldritch_knowledge/base_ash) in our_heretic.researched_knowledge)
+			heretic_type = PATH_ASH
+		else if(locate(/datum/eldritch_knowledge/base_flesh) in our_heretic.researched_knowledge)
+			heretic_type = PATH_FLESH
+
 	var/turf/sac_loc = get_turf(sac_target)
 	var/sleeping_time = 12 SECONDS
 
@@ -44,6 +75,9 @@
 	sac_target.set_handcuffed(new /obj/item/restraints/handcuffs/energy/cult(sac_target))
 	sac_target.update_handcuffed()
 	sac_target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 85, 150)
+	sac_target.do_jitter_animation(100)
+	addtimer(CALLBACK(sac_target, /mob/living/carbon.proc/do_jitter_animation, 100), 4 SECONDS)
+	addtimer(CALLBACK(sac_target, /mob/living/carbon.proc/do_jitter_animation, 100), 8 SECONDS)
 
 	if(!heal_and_revive_target(sac_target, 50)) // If our target is dead, and we fail to revive them, just disembowel them and be done
 		disembowel_target(sac_target)
@@ -59,7 +93,6 @@
 	message_admins("[sac_target] was non-lethally sacrificed by a heretic at [ADMIN_VERBOSEJMP(sac_loc)].")
 	log_attack("[sac_target] was non-lethally sacrificed by a heretic at [loc_name(sac_loc)].")
 
-	RegisterSignal(sac_target, COMSIG_LIVING_DEATH, .proc/return_target) // Loss condition
 	addtimer(CALLBACK(src, .proc/after_target_sleep, sac_target), sleeping_time / 2) // Teleport to the minigame
 	addtimer(CALLBACK(src, .proc/after_target_awaken, sac_target), sleeping_time) // Begin the minigame
 	addtimer(CALLBACK(src, .proc/return_target, sac_target, FALSE), 3 MINUTES) // Win condition
@@ -67,15 +100,24 @@
 /*
  * This proc is called from [proc/sacrifice_process] after the [sac_target] falls asleep, shortly after the sacrifice occurs.
  *
- * The [sac_target] is teleported to the error room asleep. If it fails to teleport, it instead disembowels them and stops the chain.
+ * The [sac_target] is teleported to the heretic room asleep. If it fails to teleport, it instead disembowels them and stops the chain.
  * If they are sacrificed while dead, it revives them, too.
  */
 /datum/eldritch_knowledge/spell/basic/proc/after_target_sleep(mob/living/carbon/human/sac_target)
 	var/turf/sac_loc = get_turf(sac_target)
-	var/obj/effect/landmark/error/error_landmark = locate(/obj/effect/landmark/error) in GLOB.landmarks_list
-	var/turf/picked_turf = get_turf(error_landmark)
+	var/obj/effect/landmark/heretic/destination
+	switch(heretic_type)
+		if(PATH_VOID)
+			destination = locate(/obj/effect/landmark/heretic/void) in GLOB.heretic_sacrifice_landmarks
+		if(PATH_FLESH)
+			destination = locate(/obj/effect/landmark/heretic/flesh) in GLOB.heretic_sacrifice_landmarks
+		if(PATH_RUST)
+			destination = locate(/obj/effect/landmark/heretic/rust) in GLOB.heretic_sacrifice_landmarks
+		else
+			destination = locate(/obj/effect/landmark/heretic/ash) in GLOB.heretic_sacrifice_landmarks
 
-	if(!picked_turf || !do_teleport(sac_target, picked_turf, asoundin = 'sound/magic/repulse.ogg', asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
+	var/turf/picked_turf = get_turf(destination)
+	if(!destination || !picked_turf || !do_teleport(sac_target, picked_turf, asoundin = 'sound/magic/repulse.ogg', asoundout = 'sound/magic/blind.ogg', no_effects = TRUE, channel = TELEPORT_CHANNEL_MAGIC, forced = TRUE))
 		message_admins("[sac_target] teleported failed at [ADMIN_VERBOSEJMP(sac_loc)]: Teleport failed - [picked_turf ? "do_teleport action failed somehow, likely a bug":"no target turf was found"].")
 		stack_trace("[sac_target] was disemboweled by a heretic at [loc_name(sac_loc)]: [picked_turf? "Teleport failed - [(sac_target.stat == DEAD)? "target was dead":"do_teleport failed"]":"no target turf was found"].")
 		disembowel_target()
@@ -88,6 +130,9 @@
 	message_admins("[sac_target] was non-lethally sacrificed by a heretic at [ADMIN_VERBOSEJMP(sac_loc)]. Teleporting to [ADMIN_VERBOSEJMP(picked_turf)].")
 	log_attack("[sac_target] was non-lethally sacrificed by a heretic at [loc_name(sac_loc)].")
 	to_chat(sac_target, span_big(span_hypnophrase("Unnatural forces begin to claw at your every being from beyond the veil.")))
+
+	RegisterSignal(sac_target, COMSIG_MOVABLE_Z_CHANGED, .proc/target_lost)
+	RegisterSignal(sac_target, COMSIG_LIVING_DEATH, .proc/return_target) // Loss condition
 
 /*
  * This proc is called from [proc/sacrifice_process] after the [sac_target] wakes up.
@@ -104,7 +149,7 @@
 	addtimer(CALLBACK(src, .proc/after_helgrasp_ends, sac_target), helgrasp_time)
 	SEND_SIGNAL(sac_target, COMSIG_ADD_MOOD_EVENT, "shadow_realm", /datum/mood_event/shadow_realm)
 
-	sac_target.apply_necropolis_curse(CURSE_WASTING | CURSE_BLINDING | CURSE_GRASPING)
+	sac_target.apply_necropolis_curse(CURSE_BLINDING | CURSE_GRASPING)
 	sac_target.flash_act()
 	sac_target.blur_eyes(15)
 	sac_target.Jitter(10)
@@ -136,10 +181,14 @@
 /datum/eldritch_knowledge/spell/basic/proc/return_target(mob/living/carbon/human/sac_target, gibbed)
 	SIGNAL_HANDLER
 
+	if(gibbed)
+		return
+
+	UnregisterSignal(sac_target, COMSIG_MOVABLE_Z_CHANGED)
 	UnregisterSignal(sac_target, COMSIG_LIVING_DEATH)
 	sac_target.remove_status_effect(STATUS_EFFECT_NECROPOLIS_CURSE)
 
-	if(gibbed || !is_centcom_level(sac_target.z))
+	if(is_station_level(sac_target.z))
 		return
 
 	/// Teleport them to a random safe coordinate on the station z level.
@@ -167,6 +216,17 @@
 	composed_return_message += span_hypnophrase(get_area_name(safe_turf, TRUE))
 	if(master_heretic)
 		to_chat(master_heretic, composed_return_message)
+
+/*
+ * If they somehow cheese the shadow realm by teleporting out, kill them and return them properly.
+ */
+/datum/eldritch_knowledge/spell/basic/proc/target_lost(mob/living/carbon/human/sac_target, old_z, new_z)
+	SIGNAL_HANDLER
+
+	to_chat(sac_target, span_userdanger("Your attempt to escape the grasp of the Mansus is not taken kindly!"))
+	disembowel_target(sac_target)
+	sac_target.death()
+	return_target(sac_target, FALSE)
 
 /*
  * This proc is called from [proc/return_target] if the target survives the shadow realm.
@@ -204,6 +264,7 @@
 /datum/eldritch_knowledge/spell/basic/proc/after_return_dead_target(mob/living/carbon/human/sac_target, turf/landing_turf)
 	addtimer(CALLBACK(src, .proc/announce_dead_target, landing_turf), rand(1 MINUTES, 2 MINUTES))
 	sac_target?.reagents?.del_reagent(/datum/reagent/unholy_determination)
+	sac_target?.reagents?.del_reagent(/datum/reagent/inverse/helgrasp)
 	var/obj/effect/broken_illusion/illusion = new /obj/effect/broken_illusion(landing_turf)
 	illusion.name = "Weakened rift in reality"
 	illusion.desc = "A rift wide enough for something... or someone to come through."
@@ -316,6 +377,8 @@
 		user.Jitter(10)
 		user.Dizzy(5)
 		user.hallucination = min(user.hallucination + 3, 24)
+	if(DT_PROB(1, delta_time))
+		playsound(user, pick(GLOB.creepy_ambience), 50, TRUE)
 
 	user.set_fire_stacks(max(0, user.fire_stacks + healing_amount * 1.33 * REM * delta_time))
 	user.losebreath = max(0, user.losebreath + healing_amount * 0.66 * REM * delta_time)
@@ -325,6 +388,8 @@
 	user.adjustFireLoss(healing_amount * 2 * REM * delta_time, FALSE)
 	user.cause_pain(BODY_ZONES_LIMBS + BODY_ZONE_HEAD, healing_amount / 4)
 	user.cause_pain(BODY_ZONE_CHEST, healing_amount / 2)
+	if(user.blood_volume < BLOOD_VOLUME_NORMAL)
+		user.blood_volume = user.blood_volume + (2 * REM * delta_time)
 	adjust_temperature(user, delta_time)
 	adjust_bleed_wounds(user, delta_time)
 	. = ..()

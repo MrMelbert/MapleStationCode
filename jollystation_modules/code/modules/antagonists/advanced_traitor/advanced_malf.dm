@@ -8,10 +8,11 @@
 /// The Advanced Malf datum.
 /datum/antagonist/malf_ai/advanced
 	name = "Advanced Malfunctioning AI"
+	ui_name = null
 	employer = "The Syndicate"
 	give_objectives = FALSE
 	should_give_codewords = FALSE
-	should_equip = FALSE
+	finalize_antag = FALSE
 	/// List of objectives AIs can get, because apparently they're not initialized anywhere like normal objectives.
 	var/static/list/ai_objectives = list("no organics on shuttle" = /datum/objective/block, "no mutants on shuttle" = /datum/objective/purge, "robot army" = /datum/objective/robot_army, "survive AI" = /datum/objective/survive/malf)
 
@@ -64,7 +65,6 @@
 /datum/advanced_antag_datum/malf_ai
 	name = "Advanced Malfunctioning AI"
 	employer = "The Syndicate"
-	style = "jolly-syndicate"
 	starting_points = 20
 	/// Our antag datum linked to our advanced antag.
 	var/datum/antagonist/malf_ai/our_ai
@@ -101,9 +101,9 @@
 	if(!.)
 		return
 
-	our_ai.should_equip = TRUE
 	our_ai.finalize_antag()
 	modify_antag_points()
+	log_goals_on_finalize()
 
 /datum/advanced_antag_datum/malf_ai/set_employer(employer)
 	. = ..()

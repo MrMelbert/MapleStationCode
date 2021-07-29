@@ -452,9 +452,9 @@
 	results = list(/datum/reagent/consumable/coffee = 5)
 	required_reagents = list(/datum/reagent/toxin/coffeepowder = 1, /datum/reagent/water = 5)
 
-/datum/chemical_reaction/drink/tea
-	results = list(/datum/reagent/consumable/tea = 5)
-	required_reagents = list(/datum/reagent/toxin/teapowder = 1, /datum/reagent/water = 5)
+// /datum/chemical_reaction/drink/tea // NON-MODULE CHANGE: This recipe now makes green tea instead, in the modular drinks_recipes.dm file.
+//	results = list(/datum/reagent/consumable/tea = 5)
+//	required_reagents = list(/datum/reagent/toxin/teapowder = 1, /datum/reagent/water = 5)
 
 /datum/chemical_reaction/drink/eggnog
 	results = list(/datum/reagent/consumable/ethanol/eggnog = 15)

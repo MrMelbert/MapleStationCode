@@ -1,28 +1,5 @@
 // -- Bridge Officer locker + spawner. --
 
-// Landmark for mapping in Bridge Officer equipment.
-// Use this in place of manually mapping it in - this allows us to track all Bridge Officer lockers in the world.
-// We do this so we can detect if a map doesn't have a Bridge Officer locker, so we can allow the player to spawn one in manually.
-/obj/effect/landmark/bridge_officer_equipment
-	name = "bridge officer locker"
-	icon_state = "secequipment"
-	var/spawn_anchored = FALSE
-
-/obj/effect/landmark/bridge_officer_equipment/Initialize(mapload)
-	GLOB.bridge_officer_lockers += loc
-	var/obj/structure/closet/secure_closet/bridge_officer/spawned_locker = new(drop_location())
-	if(spawn_anchored)
-		spawned_locker.set_anchored(TRUE)
-	return ..()
-
-/obj/effect/landmark/bridge_officer_equipment/Destroy()
-	GLOB.bridge_officer_lockers -= loc
-	return ..()
-
-// Subtype that spawns anchored.
-/obj/effect/landmark/bridge_officer_equipment/spawn_anchored
-	spawn_anchored = TRUE
-
 // The actual Bridge Officer's locker of equipment
 /obj/structure/closet/secure_closet/bridge_officer
 	name = "\proper bridge officer's locker"
@@ -69,21 +46,21 @@
 
 /obj/item/bridge_officer_locker_spawner/attack_self(mob/user, modifiers)
 	. = ..()
-	var/mob/living/carbon/human/human_user = user
-	if(requires_job && istype(human_user) && human_user.mind?.assigned_role != "Bridge Officer")
-		to_chat(human_user, "<span class='warning'>\The [src] requires you are assigned to the station as an official Bridge Officer to use.</span>")
+	if(requires_job && !istype(user.mind?.assigned_role, /datum/job/bridge_officer))
+		to_chat(user, "<span class='warning'>\The [src] requires you are assigned to the station as an official Bridge Officer to use.</span>")
 		return
-	spawn_locker(human_user)
+	spawn_locker(user)
 
 // Actually spawn the locker at the [bridge_officer]'s feet.
 /obj/item/bridge_officer_locker_spawner/proc/spawn_locker(mob/living/carbon/human/bridge_officer)
 	if(istype(bridge_officer.ears, /obj/item/radio/headset))
-		to_chat(bridge_officer, "You hear something crackle in your ears for a moment before a voice speaks. \
-			\"Please stand by for a message from Central Command. Message as follows: \
-			<span class='bold'>Equipment request received. Your new locker is inbound. \
-			Thank you for your valued service as a \[Bridge Officer\]!</span> Message ends.\"")
+		var/nanotrasen_message = span_bold("Equipment request received. Your new locker is inbound. \
+			Thank you for your valued service as a Nanotrasen official \[[bridge_officer.mind?.assigned_role.title]\]!")
+		to_chat(bridge_officer,
+			"You hear something crackle in your ears for a moment before a voice speaks. \
+			\"Please stand by for a message from Central Command. Message as follows: [nanotrasen_message] Message ends.\"")
 	else
-		to_chat(bridge_officer, "<span class='notice'>You notice a target painted on the ground below you.</span>")
+		to_chat(bridge_officer, span_notice("You notice a target painted on the ground below you."))
 
 	var/list/spawned_paths = list(/obj/structure/closet/secure_closet/bridge_officer)
 	podspawn(list(

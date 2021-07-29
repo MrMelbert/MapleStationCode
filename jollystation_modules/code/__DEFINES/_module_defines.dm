@@ -55,6 +55,3 @@ GLOBAL_LIST_INIT(loadout_slots, list(
 #define RANDOM_COLOR "RANDOM COLOR"
 #define ACCESSORY "ACCESSORY"
 #define IMPORTANT_SLOT "IMPORTANT SLOT"
-
-/// Global list of all our bridge officer locker landmarks
-GLOBAL_LIST_EMPTY(bridge_officer_lockers)

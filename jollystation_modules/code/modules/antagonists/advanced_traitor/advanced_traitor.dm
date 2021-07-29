@@ -3,29 +3,31 @@
 
 /// Proc to give the traitor their uplink and play the sound.
 /datum/antagonist/traitor/finalize_antag()
-	equip()
+	if(!linked_advanced_datum)
+		var/faction = prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN
+		pick_employer(faction)
+		traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
+
+	if(give_uplink)
+		owner.give_uplink(silent = TRUE, antag_datum = src)
+
+	uplink = owner.find_syndicate_uplink()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /// The Advanecd Traitor antagonist datum.
-/datum/antagonist/traitor/traitor_plus
-	/// Changed to "Traitor" on spawn, but can be changed by the player.
-	name = "Advanced Traitor"
-	/// Edited to ([starting_tc] / 40).
-	hijack_speed = 0.5
-	/// Can be changed by the player.
-	employer = "The Syndicate"
-	/// We don't give them standard traitor objectives.
+/datum/antagonist/traitor/advanced
+	name = "Advanced Traitor" // Changed to just "Traitor" on spawn, but can be changed by the player.
+	ui_name = null // We have our own UI
+	hijack_speed = 0.5 // Edited to ([starting_tc] / 40).
+	employer = "The Syndicate" // Can be changed by the player.
 	give_objectives = FALSE
-	/// We don't give any codewords out.
 	should_give_codewords = FALSE
-	/// We equip our traitor after they finish their goals.
-	should_equip = FALSE
-	/// We finalize our antag when they finish their goals.
+	give_uplink = FALSE
 	finalize_antag = FALSE
 	/// Typepath of what advanced antag datum gets instantiated to this antag.
 	var/advanced_antag_path = /datum/advanced_antag_datum/traitor
 
-/datum/antagonist/traitor/traitor_plus/on_gain()
+/datum/antagonist/traitor/advanced/on_gain()
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
 
@@ -39,10 +41,10 @@
 	return ..()
 
 /// Greet the antag with big menacing text.
-/datum/antagonist/traitor/traitor_plus/greet()
+/datum/antagonist/traitor/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
 
-/datum/antagonist/traitor/traitor_plus/roundend_report()
+/datum/antagonist/traitor/advanced/roundend_report()
 	var/list/result = list()
 
 	result += printplayer(owner)
@@ -54,7 +56,7 @@
 	var/uplink_true = FALSE
 	var/purchases = ""
 
-	if(should_equip)
+	if(give_uplink)
 		LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
 		var/datum/uplink_purchase_log/H = GLOB.uplink_purchase_logs_by_key[owner.key]
 		if(H)
@@ -76,21 +78,21 @@
 		result += uplink_text
 		if (contractor_hub)
 			result += contractor_round_end()
-	else if (!should_equip)
+	else if (!give_uplink)
 		result += span_bold("<br>The [name] never obtained their uplink!")
 
 	return result.Join("<br>")
 
-/datum/antagonist/traitor/traitor_plus/roundend_report_footer()
+/datum/antagonist/traitor/advanced/roundend_report_footer()
 	return "<br>And thus ends another story on board [station_name()]."
 
 /// An extra button for the TP, to open the goal panel
-/datum/antagonist/traitor/traitor_plus/get_admin_commands()
+/datum/antagonist/traitor/advanced/get_admin_commands()
 	. = ..()
 	.["View Goals"] = CALLBACK(src, .proc/show_advanced_traitor_panel, usr)
 
 /// An extra button for check_antagonists, to open the goal panel
-/datum/antagonist/traitor/traitor_plus/antag_listing_commands()
+/datum/antagonist/traitor/advanced/antag_listing_commands()
 	. = ..()
 	. += "<a href='?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
 
@@ -98,7 +100,6 @@
 /datum/advanced_antag_datum/traitor
 	name = "Advanced Traitor"
 	employer = "The Syndicate"
-	style = "jolly-syndicate"
 	starting_points = 8
 	/// Our antag datum linked to our advanced antag.
 	var/datum/antagonist/traitor/our_traitor
@@ -137,9 +138,10 @@
 	if(!.)
 		return
 
-	our_traitor.should_equip = TRUE
+	our_traitor.give_uplink = TRUE
 	our_traitor.finalize_antag()
 	modify_antag_points()
+	log_goals_on_finalize()
 
 /datum/advanced_antag_datum/traitor/set_employer(employer)
 	. = ..()
