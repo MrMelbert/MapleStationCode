@@ -8757,7 +8757,7 @@
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)
 "aBv" = (
-/obj/structure/plaque/static_plaque/golden/commission/pubby,
+/obj/structure/plaque/static_plaque/golden/commission/pubby2,
 /turf/closed/wall/r_wall,
 /area/hallway/primary/central)
 "aBx" = (
