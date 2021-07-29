@@ -3766,6 +3766,7 @@
 #include "jollystation_modules\code\modules\reagents\chemistry\reagents\rim_reagents.dm"
 #include "jollystation_modules\code\modules\reagents\chemistry\withdrawal\go_juice_addiction.dm"
 #include "jollystation_modules\code\modules\reagents\chemistry\withdrawal\luciferium_addiction.dm"
+#include "jollystation_modules\code\modules\reagents\chemistry\withdrawal\psychite_addiction.dm"
 #include "jollystation_modules\code\modules\research\techweb\all_nodes.dm"
 #include "jollystation_modules\code\modules\uplink\uplink_devices.dm"
 #include "jollystation_modules\code\modules\uplink\uplink_infiltrator.dm"

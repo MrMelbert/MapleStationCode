@@ -22,6 +22,7 @@
 	ADD_TRAIT(user, TRAIT_ANTICONVULSANT, type)
 	ADD_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 	ADD_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
+	ADD_TRAIT(user, TRAIT_COAGULATING, type)
 	// Improved blood filtration (resistance to diseases)
 	ADD_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
 	// Slight improved vision
@@ -35,8 +36,11 @@
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
+	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
 
 /datum/reagent/medicine/luciferium/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
+	if(overdosed)
+		return ..()
 
 	// Heals pain and tons of damage (based on purity)
 	user.cause_pain(BODY_ZONES_ALL, -1 * REM * delta_time)
@@ -45,6 +49,9 @@
 	user.adjustFireLoss(-5 * normalise_creation_purity() * REM * delta_time, FALSE)
 	user.adjustOxyLoss(-3 * normalise_creation_purity() * REM * delta_time, FALSE)
 	user.adjustToxLoss(-3 * normalise_creation_purity() * REM * delta_time, FALSE, TRUE)
+	adjust_bleed_wounds(user, delta_time)
+	if(user.blood_volume < BLOOD_VOLUME_NORMAL)
+		user.blood_volume = min(user.blood_volume + (5 * REM * delta_time), BLOOD_VOLUME_NORMAL)
 
 	// Improves / fixes eyesight
 	user.adjust_blindness(-2 * normalise_creation_purity() * REM * delta_time)
@@ -76,6 +83,33 @@
 	. = ..()
 	return TRUE
 
+/*
+ * Slow and stop blood loss.
+ */
+/datum/reagent/medicine/luciferium/proc/adjust_bleed_wounds(mob/living/carbon/user, delta_time)
+	if(!user.blood_volume || !user.all_wounds)
+		return
+
+	var/datum/wound/bloodiest_wound
+	for(var/datum/wound/iter_wound as anything in user.all_wounds)
+		if(iter_wound.blood_flow)
+			if(iter_wound.blood_flow > bloodiest_wound?.blood_flow)
+				bloodiest_wound = iter_wound
+
+	if(bloodiest_wound)
+		bloodiest_wound.blood_flow = max(0, bloodiest_wound.blood_flow - (0.5 * REM * delta_time))
+
+/datum/reagent/medicine/luciferium/overdose_start(mob/living/user)
+	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/luciferium)
+	REMOVE_TRAIT(user, TRAIT_ANTICONVULSANT, type)
+	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
+	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
+	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
+	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
+	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
+	. = ..()
+	return TRUE
+
 /datum/reagent/medicine/penoxycyline
 	name = "Penoxycyline"
 	description = "A standard drug that prevents the user from catching viral or bacterial diseases or infections."
@@ -99,7 +133,7 @@
 		Addiction causes increased pain and massively reduced movement speed, but last shorter than most."
 	reagent_state = LIQUID
 	color = "#52bb38"
-	overdose_threshold = 20
+	overdose_threshold = 15
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/gojuice = 30) //25-30 units = addiction
@@ -121,7 +155,102 @@
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 
 /datum/reagent/drug/gojuice/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
-	. = ..()
+	if(overdosed)
+		return ..()
+
+	if(DT_PROB(33, delta_time))
+		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * delta_time)
+	user.drowsyness = max(user.drowsyness - (4 * REM * delta_time), 0)
 	user.Jitter(4 * REM * delta_time)
-	user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 2) * REM * delta_time)
-	user.drowsyness = max(user.drowsyness - (4 * normalise_creation_purity() * REM * delta_time), 0)
+	. = ..()
+	return TRUE
+
+/datum/reagent/drug/gojuice/overdose_start(mob/living/user)
+	. = ..()
+	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
+
+/datum/reagent/drug/gojuice/overdose_process(mob/living/user, delta_time, times_fired)
+	if(DT_PROB(66, delta_time))
+		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * delta_time)
+	if(DT_PROB(50, delta_time))
+		user.adjustToxLoss(1 * REM * delta_time, FALSE)
+	. = ..()
+	return TRUE
+
+/datum/reagent/drug/flake
+	name = "Flake"
+	description = "A hard drug made from the distant psychoid leaf. While easy to produce and potent, it is also incredibly addictive."
+	reagent_state = LIQUID
+	color = "#c9ffbc"
+	metabolization_rate = 0.75 * REAGENTS_METABOLISM
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	addiction_types = list(/datum/addiction/psychite = 60) //5u = ~190 points
+	ph = 2.1
+
+/datum/reagent/drug/flake/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/flake)
+
+/datum/reagent/drug/flake/on_mob_end_metabolize(mob/living/user)
+	. = ..()
+	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+
+/datum/reagent/drug/yayo
+	name = "Yayo"
+	description = "A hard drug made from the distant psychoid leaf. Moderatively addictive and causes mild liver damage, but effective at \
+		supressing pain, reducing tiredness, and improving the user's mood."
+	reagent_state = LIQUID
+	color = "#e2e2e2"
+	metabolization_rate = 0.75 * REAGENTS_METABOLISM
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	addiction_types = list(/datum/addiction/psychite = 35) //5u = ~90 points
+	ph = 2.4
+	pain_modifier = 0.5
+
+/datum/reagent/drug/yayo/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/yayo)
+	user.add_movespeed_modifier(/datum/movespeed_modifier/reagent/yayo)
+
+/datum/reagent/drug/yayo/on_mob_end_metabolize(mob/living/user)
+	. = ..()
+	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/yayo)
+
+/datum/reagent/drug/yayo/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
+	if(DT_PROB(clamp(current_cycle, 5, 80), delta_time))
+		user.adjustOrganLoss(ORGAN_SLOT_LIVER, 1 * REM * delta_time)
+	if(DT_PROB(30, delta_time))
+		user.AdjustSleeping(-100 * REM * delta_time)
+	user.drowsyness = max(user.drowsyness - (12 * REM * delta_time), 0)
+	. = ..()
+	return TRUE
+
+/datum/reagent/psychite_tea
+	name = "Psychite Tea"
+	description = "A soothing tea drink made from the distant psychoid leaves. Reduces pain and improves mood slightly, but is slightly addictive - \
+		though less addictive than other chemicals that is made via the psychoid leaf (Yayo and Flake)."
+	reagent_state = LIQUID
+	color = "#f5ffbc"
+	metabolization_rate = 0.75 * REAGENTS_METABOLISM
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	addiction_types = list(/datum/addiction/psychite = 10) //5u = ~30 points
+	ph = 6.3
+	pain_modifier = 0.9
+
+/datum/reagent/psychite_tea/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/psychite_tea)
+
+/datum/reagent/psychite_tea/on_mob_end_metabolize(mob/living/user)
+	. = ..()
+	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+
+/datum/reagent/psychite_tea/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
+	user.drowsyness = max(user.drowsyness - (3 * REM * delta_time), 0)
+	user.dizziness = max(user.dizziness - (2 * REM * delta_time), 0)
+	user.jitteriness = max(user.jitteriness - (2 * REM * delta_time), 0)
+	user.AdjustSleeping(-20 * REM * delta_time)
+	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, user.get_body_temp_normal())
+	. = ..()
+	return TRUE
