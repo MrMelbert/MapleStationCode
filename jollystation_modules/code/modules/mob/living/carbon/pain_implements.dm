@@ -179,20 +179,32 @@
 	desc = "Contains three injections of Oxycodone. Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
 	list_reagents = list(/datum/reagent/medicine/oxycodone = 15)
 
-obj/item/reagent_containers/pill/aspirin_para_coffee
+/obj/item/reagent_containers/pill/aspirin_para_coffee
 	name = "aspirin/paracetamol/caffeine pill"
 	desc = "A mix of Aspirin, Paracetamol and Coffee to produce an effective, but short lasting painkiller with little to no side effects. Do not take multiple at once."
 	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin_para_coffee = 10)
 
-/obj/item/storage/pill_bottle/aspirin_para_coffee_pills
-	name = "bottle of aspirin/paracetamol/caffeine pills"
-	desc = "Contains five, ten unit pills of aspirin/paracetamol/caffeine, an effective painkiller. Do not use two in quick succession."
-	custom_premium_price = PAYCHECK_HARD * 2
+/obj/item/storage/pill_bottle/prescription
+	name = "prescription pill bottle"
+	desc = "Contains prescription pills."
+	/// Typepath of pill type to spawn
+	var/obj/item/reagent_containers/pill/pill_type = null
+	/// Number of pills to spawn
+	var/num_pills = 0
 
-/obj/item/storage/pill_bottle/aspirin_para_coffee_pills/PopulateContents()
+/obj/item/storage/pill_bottle/prescription/ComponentInitialize()
 	. = ..()
-	for(var/i in 1 to 5)
-		new /obj/item/reagent_containers/pill/aspirin_para_coffee(src)
+	if(pill_type)
+		name = "[initial(pill_type.name)] bottle"
+	if(num_pills)
+		var/datum/component/storage/STR = GetComponent(/datum/component/storage)
+		STR.max_items = num_pills
+		STR.max_combined_w_class = 2 * num_pills
+
+/obj/item/storage/pill_bottle/prescription/PopulateContents()
+	if(num_pills && pill_type)
+		for(var/i in 1 to num_pills)
+			new pill_type(src)
 
 /obj/item/storage/pill_bottle/painkillers
 	name = "bottle of painkillers"

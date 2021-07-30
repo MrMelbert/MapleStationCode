@@ -10,7 +10,7 @@
 
 /datum/supply_pack/medical/luciferium_bottles
 	name = "Luciferium Shipment"
-	desc = "Contains three bottles - sixty units - of Luciferium, an extremely dangerous drug that can cure the most absolute of medicinal issues, but cause permanent addiction."
+	desc = "Contains three bottles - sixty units - of Luciferium, an extremely dangerous drug that can cure the most absolute of medicinal issues, but cause permanent addiction. Requires CMO access to open."
 	cost = CARGO_CRATE_VALUE * 30
 	access = ACCESS_CMO
 	contraband = TRUE
@@ -32,7 +32,7 @@
 
 /datum/supply_pack/medical/go_juice_bottles
 	name = "Go-Juice Shipment"
-	desc = "Contains three bottles - sixty units - of Go-Juice, a potent but addictive combat stimulant and pain suppressant."
+	desc = "Contains three bottles - sixty units - of Go-Juice, a potent but addictive combat stimulant and pain suppressant. Requires armory access to open."
 	cost = CARGO_CRATE_VALUE * 10
 	contraband = TRUE
 	access = ACCESS_ARMORY
@@ -45,7 +45,7 @@
 
 /datum/supply_pack/medical/psychoids
 	name = "Psychoid Variety Shipment"
-	desc = "Contains three randomly selected containers of drugs made from the psychoid leaf - Yayo, Flake, or Psychite Tea - often used to reduce pain and raise moods."
+	desc = "Contains three randomly selected containers of drugs made from the psychoid leaf - Yayo, Flake, or Psychite Tea - often used to reduce pain and raise moods. Requires medical access to open."
 	cost = CARGO_CRATE_VALUE * 8
 	access = ACCESS_MEDICAL
 	crate_name = "psychoid shipment"
@@ -73,7 +73,7 @@
 /datum/supply_pack/goody/oxycodone_syringe
 	name = "Oxycodone Syringe"
 	desc = "Contains three injections of Oxycodone, an extremely addictive but effective painkiller."
-	cost = PAYCHECK_HARD * 8
+	cost = PAYCHECK_HARD * 4
 	contains = list(
 		/obj/item/reagent_containers/syringe/oxycodone
 		)
@@ -81,17 +81,70 @@
 /datum/supply_pack/goody/morphine_syringe
 	name = "Morphine Syringe"
 	desc = "Contains three injections of Morphine, an addictive painkiller used to treat moderate pain."
-	cost = PAYCHECK_HARD * 6
+	cost = PAYCHECK_HARD * 3
 	contains = list(
 		/obj/item/reagent_containers/syringe/morphine
 		)
 
+
+/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee
+	pill_type = /obj/item/reagent_containers/pill/aspirin_para_coffee
+	num_pills = 3
+
 /datum/supply_pack/goody/aspirin_para_coffee
-	name = "Aspirin/paracetamol/caffeine Pill Bottle"
+	name = "Aspirin/paracetamol/caffeine Prescription"
 	desc = "Contains a pill bottle of aspirin/paracetamol/caffeine, a combination painkiller used to treat pain with few side effects."
-	cost = PAYCHECK_HARD * 12
+	cost = PAYCHECK_HARD * 7.5
 	contains = list(
-		/obj/item/storage/pill_bottle/aspirin_para_coffee_pills
+		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee
+		)
+
+/obj/item/storage/pill_bottle/prescription/paracetamol
+	pill_type = /obj/item/reagent_containers/pill/paracetamol
+	num_pills = 3
+
+/datum/supply_pack/goody/paracetamol
+	name = "Paracetamol Prescription"
+	desc = "Contains a pill bottle of Paracetamol."
+	cost = PAYCHECK_HARD * 5
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/paracetamol
+		)
+
+/obj/item/storage/pill_bottle/prescription/aspirin
+	pill_type = /obj/item/reagent_containers/pill/aspirin
+	num_pills = 3
+
+/datum/supply_pack/goody/aspirin
+	name = "Aspirin Prescription"
+	desc = "Contains a pill bottle of Aspirin."
+	cost = PAYCHECK_HARD * 5
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/aspirin
+		)
+
+/obj/item/storage/pill_bottle/prescription/ibuprofen
+	pill_type = /obj/item/reagent_containers/pill/ibuprofen
+	num_pills = 3
+
+/datum/supply_pack/goody/ibuprofen
+	name = "Ibuprofen Prescription"
+	desc = "Contains a pill bottle of Ibuprofen."
+	cost = PAYCHECK_HARD * 5
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/ibuprofen
+		)
+
+/obj/item/storage/pill_bottle/prescription/happiness
+	pill_type = /obj/item/reagent_containers/pill/happinesspsych
+	num_pills = 4
+
+/datum/supply_pack/goody/happiness
+	name = "Mood Stabilizer Prescription"
+	desc = "Contains a pill bottle of Mood Stabilizers. May contain Happiness."
+	cost = PAYCHECK_HARD * 5
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/happiness
 		)
 
 /datum/supply_pack/medical/painkiller_syringes
