@@ -4,6 +4,7 @@
 #define FAIL_NO_ANSWER 1
 #define FAIL_QUESTION_WRONG 3
 #define FAIL_NOT_DENIED 4
+#define FAIL_INCORRECTLY_DENIED 5
 #define PAPERWORK_SUCCESS 0
 
 /// The file containing the paperwork strings.
