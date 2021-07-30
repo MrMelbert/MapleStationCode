@@ -13,7 +13,7 @@
 	mood_change = 20
 
 /datum/mood_event/psychite_tea
-	description = "<span class='nicegreen'>Drank some nice, calming psychite tea.</span>\n"
+	description = "<span class='nicegreen'>I drank some nice, calming psychite tea.</span>\n"
 	mood_change = 8
 
 // Addiction moodlets

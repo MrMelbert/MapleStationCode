@@ -5,6 +5,7 @@
 	description = "An incredibly powerful, addictive, and dangerous concoction of mechanites from the outer planets of the Spinward. \
 		Drastically improves the user's bodily functions but will cause eventual death if mechanite cohesion is not sustained with continuous dosage. \
 		Once used, the pressence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
+	taste_description = "dread"
 	reagent_state = LIQUID
 	color = "#a80008"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
@@ -153,6 +154,7 @@
 	name = "Go-Juice"
 	description = "An effective, but addictive stimulant that blocks pain and increases the user's combat effectiveness and movement speed. \
 		Addiction causes increased pain and massively reduced movement speed, but last shorter than most."
+	taste_description = "sourness"
 	reagent_state = LIQUID
 	color = "#52bb38"
 	overdose_threshold = 15
@@ -235,6 +237,7 @@
 	name = "Yayo"
 	description = "A hard drug made from the distant psychoid leaf. Moderatively addictive and causes mild liver damage, but effective at \
 		supressing pain, reducing tiredness, and improving the user's mood."
+	taste_description = "chalk"
 	reagent_state = LIQUID
 	color = "#e2e2e2"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
@@ -273,6 +276,7 @@
 	name = "Psychite Tea"
 	description = "A soothing tea drink made from the distant psychoid leaves. Reduces pain and improves mood slightly, but is slightly addictive - \
 		though less addictive than other chemicals that is made via the psychoid leaf (Yayo and Flake)."
+	taste_description = "mint tea"
 	reagent_state = LIQUID
 	color = "#f5ffbc"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM

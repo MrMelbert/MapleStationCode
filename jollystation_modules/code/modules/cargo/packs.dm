@@ -1,7 +1,11 @@
 // -- Modular cargo packs --
+
+#define GROUP_DRUGS "Prescriptions (Goodies)"
+
 /datum/supply_pack/goody/luciferium_bottle
 	name = "Luciferium Bottle"
 	desc = "Contains one bottle - twenty units - of Luciferium, an extremely dangerous medicine. Use with great caution."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_COMMAND * 15
 	contraband = TRUE
 	contains = list(
@@ -24,6 +28,7 @@
 /datum/supply_pack/goody/go_juice_bottle
 	name = "Go-Juice Bottle"
 	desc = "Contains one bottle - twenty units - of Go-Juice, a potent but addictive combat stimulant."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 10
 	contraband = TRUE
 	contains = list(
@@ -64,6 +69,7 @@
 /datum/supply_pack/goody/psychite_tea
 	name = "Psychite Tea Order"
 	desc = "Contains two mugs of Psychite Tea, a slightly addictive but mood boosting tea made from the distant psychoid leaf."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 8
 	contains = list(
 		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
@@ -73,6 +79,7 @@
 /datum/supply_pack/goody/oxycodone_syringe
 	name = "Oxycodone Syringe"
 	desc = "Contains three injections of Oxycodone, an extremely addictive but effective painkiller."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 4
 	contains = list(
 		/obj/item/reagent_containers/syringe/oxycodone
@@ -81,6 +88,7 @@
 /datum/supply_pack/goody/morphine_syringe
 	name = "Morphine Syringe"
 	desc = "Contains three injections of Morphine, an addictive painkiller used to treat moderate pain."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 3
 	contains = list(
 		/obj/item/reagent_containers/syringe/morphine
@@ -94,6 +102,7 @@
 /datum/supply_pack/goody/aspirin_para_coffee
 	name = "Aspirin/paracetamol/caffeine Prescription"
 	desc = "Contains a pill bottle of aspirin/paracetamol/caffeine, a combination painkiller used to treat pain with few side effects."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 7.5
 	contains = list(
 		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee
@@ -106,6 +115,7 @@
 /datum/supply_pack/goody/paracetamol
 	name = "Paracetamol Prescription"
 	desc = "Contains a pill bottle of Paracetamol."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
 		/obj/item/storage/pill_bottle/prescription/paracetamol
@@ -118,6 +128,7 @@
 /datum/supply_pack/goody/aspirin
 	name = "Aspirin Prescription"
 	desc = "Contains a pill bottle of Aspirin."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
 		/obj/item/storage/pill_bottle/prescription/aspirin
@@ -130,6 +141,7 @@
 /datum/supply_pack/goody/ibuprofen
 	name = "Ibuprofen Prescription"
 	desc = "Contains a pill bottle of Ibuprofen."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
 		/obj/item/storage/pill_bottle/prescription/ibuprofen
@@ -137,14 +149,28 @@
 
 /obj/item/storage/pill_bottle/prescription/happiness
 	pill_type = /obj/item/reagent_containers/pill/happinesspsych
-	num_pills = 4
+	num_pills = 5
 
 /datum/supply_pack/goody/happiness
 	name = "Mood Stabilizer Prescription"
 	desc = "Contains a pill bottle of Mood Stabilizers. May contain Happiness."
+	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
 		/obj/item/storage/pill_bottle/prescription/happiness
+		)
+
+/obj/item/storage/pill_bottle/prescription/psicodine
+	pill_type = /obj/item/reagent_containers/pill/psicodine
+	num_pills = 3
+
+/datum/supply_pack/goody/happiness
+	name = "Psicodine Prescription"
+	desc = "Contains a pill bottle of Psicodine."
+	group = GROUP_DRUGS
+	cost = PAYCHECK_HARD * 5
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/psicodine
 		)
 
 /datum/supply_pack/medical/painkiller_syringes
