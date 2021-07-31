@@ -95,6 +95,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\__DEFINES\chat.dm
 - code\__DEFINES\DNA.dm
 - code\__DEFINES\is_helpers.dm
+- code\__DEFINES\reagents.dm
 - code\__DEFINES\say.dm
 - code\__HELPERS\global_lists.dm
 - code\__HELPERS\mobs.dm
