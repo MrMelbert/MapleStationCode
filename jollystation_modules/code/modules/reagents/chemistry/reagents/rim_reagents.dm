@@ -1,4 +1,19 @@
 // -- Rimworld inspired reagents. --
+
+
+/datum/reagent/neutroamine
+	name = "Neutroamine"
+	desc = "A component chem often used in outer rim planets to make a variety of medicines and drugs."
+	reagent_state = LIQUID
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	color = "#9dffff"
+	ph = 9.4
+
+/datum/chemical_reaction/neutroamine
+	results = list(/datum/reagent/neutroamine = 3)
+	required_reagents = list(/datum/reagent/carbon = 1, /datum/reagent/stable_plasma = 1, /datum/reagent/mercury = 1)
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL
+
 // Luciferium. Exremely addictive, very strong pain relief
 /datum/reagent/medicine/luciferium
 	name = "Luciferium"
@@ -143,6 +158,11 @@
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
 
+/datum/chemical_reaction/penoxycyline
+	results = list(/datum/reagent/penoxycyline = 2)
+	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/spaceacillin = 1)
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
+
 /obj/item/reagent_containers/pill/penoxycyline
 	name = "penoxycyline pill"
 	desc = "A standard medicine that prevents the user from catching viral or bacterial diseases or infections."
@@ -192,6 +212,9 @@
 /datum/reagent/drug/gojuice/overdose_start(mob/living/user)
 	. = ..()
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
+	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
+	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 
 /datum/reagent/drug/gojuice/overdose_process(mob/living/user, delta_time, times_fired)
 	if(DT_PROB(66, delta_time))
@@ -200,6 +223,11 @@
 		user.adjustToxLoss(1 * REM * delta_time, FALSE)
 	. = ..()
 	return TRUE
+
+/datum/chemical_reaction/gojuice
+	results = list(/datum/reagent/drug/gojuice = 3)
+	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/oil = 1, /datum/reagent/sugar = 1)
+	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
 
 /obj/item/reagent_containers/glass/bottle/gojuice
 	name = "go-juice bottle"
