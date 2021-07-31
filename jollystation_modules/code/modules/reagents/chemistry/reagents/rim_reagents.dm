@@ -1,6 +1,6 @@
 // -- Rimworld inspired reagents. --
 
-
+// Component chem
 /datum/reagent/neutroamine
 	name = "Neutroamine"
 	desc = "A component chem often used in outer rim planets to make a variety of medicines and drugs."
