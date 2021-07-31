@@ -3,7 +3,7 @@
 // Component chem
 /datum/reagent/neutroamine
 	name = "Neutroamine"
-	desc = "A component chem often used in outer rim planets to make a variety of medicines and drugs."
+	description = "A component chem often used in outer rim planets to make a variety of medicines and drugs."
 	reagent_state = LIQUID
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	color = "#9dffff"
@@ -159,7 +159,7 @@
 	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
 
 /datum/chemical_reaction/penoxycyline
-	results = list(/datum/reagent/penoxycyline = 2)
+	results = list(/datum/reagent/medicine/penoxycyline = 2)
 	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/spaceacillin = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
 
@@ -226,7 +226,7 @@
 
 /datum/chemical_reaction/gojuice
 	results = list(/datum/reagent/drug/gojuice = 3)
-	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/oil = 1, /datum/reagent/sugar = 1)
+	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/oil = 1, /datum/reagent/consumable/sugar = 1)
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
 
 /obj/item/reagent_containers/glass/bottle/gojuice
