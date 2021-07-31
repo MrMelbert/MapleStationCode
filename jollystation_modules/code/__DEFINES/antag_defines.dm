@@ -38,3 +38,6 @@
 
 /// Infiltrator uplink
 #define UPLINK_INFILTRATOR (1 << 3)
+
+/// Infiltrator antag type
+#define ROLE_INFILTRATOR "Infiltrator"

@@ -149,3 +149,19 @@
 
 	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs recieve
 	Knockdown(levels * 50)
+
+// Flight potion's flavor says "it hurts a shit ton bro", so it should cause decent pain
+/datum/reagent/flightpotion/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
+	. = ..()
+	if(iscarbon(exposed_mob) && exposed_mob.stat != DEAD)
+		var/mob/living/carbon/exposed_carbon = exposed_mob
+		if(reac_volume < 5 || !(ishumanbasic(exposed_carbon) || islizard(exposed_carbon) || ismoth(exposed_carbon)))
+			return
+		if(exposed_carbon.dna.species.has_innate_wings)
+			exposed_carbon.cause_pain(BODY_ZONE_HEAD, 10)
+			exposed_carbon.cause_pain(BODY_ZONE_CHEST, 45)
+			exposed_carbon.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 18)
+		else
+			exposed_carbon.cause_pain(BODY_ZONE_HEAD, 16)
+			exposed_carbon.cause_pain(BODY_ZONE_CHEST, 75)
+			exposed_carbon.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 30)
