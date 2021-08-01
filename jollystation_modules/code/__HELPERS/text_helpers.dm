@@ -16,9 +16,9 @@
 	if(!string)
 		return
 
-	var/first_carrot = findtext(string, "<")
-	var/second_carrot = findtext(string, ">")
-	if(first_carrot && second_carrot)
+	var/first_bracket = findtext(string, "<")
+	var/second_bracket = findtext(string, ">")
+	if(first_bracket && second_bracket)
 		return replacetext(string, regex("<.*?>", "g"), "")
 	return string
 
