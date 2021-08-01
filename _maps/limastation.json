@@ -8,5 +8,17 @@
 		"whiteship": "whiteship_pubby",
 		"ferry": "ferry_fancy",
 		"cargo": "cargo_lima"
-	}
+	},
+	"traits": [
+		{
+			"Up": 1,
+			"Baseturf": "/turf/open/openspace",
+			"Linkage": "Self"
+		},
+		{
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace",
+			"Linkage": "Self"
+		}
+	],
 }
