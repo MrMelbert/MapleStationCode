@@ -9755,7 +9755,7 @@
 	req_access_txt = "28"
 	},
 /obj/machinery/button/door/directional/south{
-	id = "hopqueue;
+	id = "hopqueue";
 	name = "Queue Shutters Control";
 	pixel_x = 25;
 	pixel_y = -34;
