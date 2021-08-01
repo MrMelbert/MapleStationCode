@@ -53,6 +53,11 @@
 /obj/item/paper_bin/carbon{
 	layer = 2.9
 	},
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch";
+	pixel_x = 6;
+	pixel_y = -35
+	},
 /turf/open/floor/carpet,
 /area/command/heads_quarters/hop)
 "aah" = (
@@ -2106,11 +2111,6 @@
 /turf/open/floor/iron/dark,
 /area/security/execution/transfer)
 "ahz" = (
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = 24;
-	pixel_y = 4
-	},
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
 	dir = 4
@@ -2125,6 +2125,9 @@
 	id = "executionfireblast";
 	name = "Transfer Area Lockdown";
 	req_access_txt = "2"
+	},
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/dark,
 /area/security/execution/transfer)
@@ -2186,6 +2189,7 @@
 /obj/machinery/button/door/directional/north{
 	id = "permashut3";
 	name = "Cell Lockdown Control";
+	pixel_x = 6;
 	req_access_txt = "2"
 	},
 /turf/open/floor/iron,
@@ -4314,11 +4318,11 @@
 /turf/open/floor/iron,
 /area/cargo/storage)
 "anR" = (
-/obj/machinery/light_switch{
-	pixel_y = -24
-	},
 /obj/effect/turf_decal/tile/red{
 	dir = 4
+	},
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/hos)
@@ -7875,10 +7879,6 @@
 /turf/open/floor/carpet,
 /area/command/heads_quarters/captain)
 "azd" = (
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = -22
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
@@ -7891,6 +7891,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
+	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/dark,
 /area/command/bridge)
@@ -8768,6 +8771,9 @@
 /area/service/lawoffice)
 "aCf" = (
 /obj/machinery/vending/wardrobe/law_wardrobe,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/wood,
 /area/service/lawoffice)
 "aCi" = (
@@ -8791,16 +8797,16 @@
 /turf/open/floor/iron/grimy,
 /area/security/detectives_office)
 "aCn" = (
-/obj/machinery/light_switch{
-	pixel_x = -8;
-	pixel_y = 27
-	},
 /obj/machinery/vending/wardrobe/det_wardrobe,
 /obj/machinery/light/small/directional/north,
 /obj/machinery/button/door/directional/north{
 	id = "datboidetective";
 	name = "Privacy Shutters Control";
 	req_access_txt = "4"
+	},
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch";
+	pixel_x = -8
 	},
 /turf/open/floor/iron/grimy,
 /area/security/detectives_office)
@@ -8900,11 +8906,11 @@
 	c_tag = "Captain's Office";
 	dir = 8
 	},
-/obj/machinery/light_switch{
-	pixel_x = 25
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
+	},
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/captain)
@@ -9744,10 +9750,6 @@
 	pixel_x = 38;
 	pixel_y = -25
 	},
-/obj/machinery/light_switch{
-	pixel_x = 38;
-	pixel_y = -35
-	},
 /obj/machinery/button/door/directional/south{
 	id = "hop";
 	name = "Privacy Shutters Control";
@@ -9814,8 +9816,8 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "aFb" = (
-/obj/machinery/light_switch{
-	pixel_y = 25
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/freezer,
 /area/commons/toilet/restrooms)
@@ -10886,8 +10888,8 @@
 	},
 /area/hallway/primary/central)
 "aKh" = (
-/obj/machinery/light_switch{
-	pixel_x = -25
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/freezer,
 /area/commons/toilet/restrooms)
@@ -11254,10 +11256,6 @@
 /obj/structure/urinal{
 	pixel_y = 32
 	},
-/obj/machinery/light_switch{
-	pixel_x = 36;
-	pixel_y = 6
-	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
@@ -11265,6 +11263,11 @@
 	id = "Potty1";
 	name = "Bathroom Bolt Control";
 	specialfunctions = 4
+	},
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch";
+	pixel_x = 36;
+	pixel_y = 6
 	},
 /turf/open/floor/iron/freezer,
 /area/commons/toilet/auxiliary)
@@ -11512,10 +11515,6 @@
 /obj/item/storage/toolbox/artistic{
 	pixel_x = -3
 	},
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = -22
-	},
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
@@ -11527,6 +11526,9 @@
 	dir = 8
 	},
 /obj/item/rcl/pre_loaded,
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron,
 /area/commons/storage/art)
 "aMW" = (
@@ -11568,11 +11570,10 @@
 /obj/structure/chair{
 	dir = 1
 	},
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = -22
-	},
 /obj/machinery/airalarm/directional/south,
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/cafeteria,
 /area/service/cafeteria)
 "aMZ" = (
@@ -12026,10 +12027,6 @@
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "aOU" = (
-/obj/machinery/light_switch{
-	pixel_x = 25;
-	pixel_y = -3
-	},
 /obj/structure/cable,
 /obj/item/radio/intercom/directional/east{
 	pixel_x = 32;
@@ -12038,6 +12035,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
+	},
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron,
 /area/security/checkpoint/supply)
@@ -12348,14 +12348,15 @@
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
 "aQo" = (
-/obj/machinery/light_switch{
-	pixel_x = -23;
-	pixel_y = 9
-	},
 /obj/machinery/button/door/directional/west{
 	id = "qm_warehouse";
 	name = "Warehouse Door Control";
 	req_access_txt = "31"
+	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch";
+	pixel_x = -24;
+	pixel_y = 6
 	},
 /turf/open/floor/iron,
 /area/cargo/warehouse)
@@ -13051,10 +13052,10 @@
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 10
 	},
-/obj/machinery/light_switch{
-	pixel_x = 22
-	},
 /obj/structure/extinguisher_cabinet/directional/east,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron,
 /area/cargo/office)
 "aTc" = (
@@ -13072,10 +13073,6 @@
 /turf/open/floor/iron,
 /area/cargo/office)
 "aTk" = (
-/obj/machinery/light_switch{
-	pixel_x = 8;
-	pixel_y = -34
-	},
 /obj/machinery/newscaster/directional/south,
 /turf/open/floor/wood{
 	icon_state = "wood-broken6"
@@ -13341,6 +13338,9 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/north,
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron,
 /area/cargo/storage)
 "aUx" = (
@@ -13505,13 +13505,13 @@
 	pixel_x = 2;
 	pixel_y = 4
 	},
-/obj/machinery/light_switch{
-	pixel_y = 22
-	},
 /obj/item/holosign_creator/robot_seat/bar{
 	pixel_y = -10
 	},
 /obj/machinery/light/small/directional/north,
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/dark,
 /area/service/bar)
 "aVi" = (
@@ -13646,16 +13646,15 @@
 /turf/open/floor/iron,
 /area/cargo/office)
 "aVy" = (
-/obj/machinery/light_switch{
-	pixel_x = -4;
-	pixel_y = -25
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
+	},
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
@@ -13886,10 +13885,6 @@
 /area/service/theater)
 "aWr" = (
 /obj/structure/disposalpipe/segment,
-/obj/machinery/light_switch{
-	pixel_x = 24;
-	pixel_y = 24
-	},
 /obj/structure/mirror{
 	pixel_x = 28;
 	pixel_y = -2
@@ -14002,10 +13997,10 @@
 /obj/structure/bed,
 /obj/effect/landmark/start/janitor,
 /obj/item/bedsheet/purple,
-/obj/machinery/light_switch{
-	pixel_x = 24
-	},
 /obj/structure/cable,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/dark,
 /area/service/janitor)
 "aWP" = (
@@ -14051,10 +14046,6 @@
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "aWT" = (
-/obj/machinery/light_switch{
-	pixel_x = -6;
-	pixel_y = 38
-	},
 /obj/structure/sink/kitchen{
 	name = "utility sink";
 	pixel_y = 28
@@ -14063,6 +14054,11 @@
 	dir = 4
 	},
 /obj/structure/cable,
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch";
+	pixel_x = -4;
+	pixel_y = 36
+	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "aWU" = (
@@ -14131,6 +14127,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
+	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron,
 /area/service/theater)
@@ -15728,12 +15727,11 @@
 	dir = 8;
 	pixel_x = 11
 	},
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = 22
-	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/east,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron,
 /area/service/janitor)
 "bdj" = (
@@ -16638,15 +16636,15 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 1
 	},
-/obj/machinery/light_switch{
-	pixel_x = 25
-	},
 /obj/item/kirbyplants/random,
 /obj/effect/turf_decal/tile/brown,
 /obj/machinery/requests_console/directional/north{
 	name = "Commissary Requests Console"
 	},
 /obj/machinery/light/directional/north,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron,
 /area/commons/vacant_room/commissary)
 "bgZ" = (
@@ -18708,10 +18706,6 @@
 /turf/open/floor/iron/dark,
 /area/hallway/primary/aft)
 "boX" = (
-/obj/machinery/light_switch{
-	pixel_x = -25;
-	pixel_y = -8
-	},
 /obj/machinery/modular_computer/console/preset/civilian{
 	dir = 4
 	},
@@ -18719,6 +18713,10 @@
 	id = "robotics";
 	name = "Shutters Control Button";
 	req_access_txt = "29"
+	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch";
+	pixel_y = -6
 	},
 /turf/open/floor/iron/dark,
 /area/science/robotics)
@@ -19635,14 +19633,14 @@
 /turf/open/floor/iron/dark,
 /area/science/server)
 "brG" = (
-/obj/machinery/light_switch{
-	pixel_x = -25
-	},
 /obj/effect/turf_decal/tile/purple{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
+	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/white,
 /area/science/explab)
@@ -20203,8 +20201,8 @@
 /obj/structure/table,
 /obj/item/clothing/gloves/color/latex,
 /obj/item/clothing/mask/surgical,
-/obj/machinery/light_switch{
-	pixel_y = -24
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
@@ -22662,9 +22660,6 @@
 /obj/item/clothing/glasses/hud/health,
 /obj/item/clothing/glasses/hud/health,
 /obj/item/clothing/glasses/hud/health,
-/obj/machinery/light_switch{
-	pixel_y = -24
-	},
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
@@ -22680,6 +22675,9 @@
 /obj/structure/table/glass,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
+	},
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/white,
 /area/medical/storage)
@@ -23408,10 +23406,6 @@
 /obj/machinery/computer/mecha{
 	dir = 4
 	},
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = -22
-	},
 /obj/effect/turf_decal/tile/purple{
 	dir = 1
 	},
@@ -23420,6 +23414,9 @@
 	dir = 8
 	},
 /obj/item/radio/intercom/directional/south,
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/rd)
 "bES" = (
@@ -23853,11 +23850,6 @@
 /turf/open/floor/iron/dark,
 /area/science/explab)
 "bGm" = (
-/obj/machinery/light_switch{
-	dir = 8;
-	pixel_x = -24;
-	pixel_y = 8
-	},
 /obj/structure/disposalpipe/trunk{
 	dir = 1
 	},
@@ -23865,6 +23857,10 @@
 /obj/effect/turf_decal/tile/purple,
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
+	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch";
+	pixel_y = 6
 	},
 /turf/open/floor/iron/white,
 /area/science/mixing)
@@ -24891,11 +24887,10 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/light_switch{
-	dir = 8;
-	pixel_x = -25
-	},
 /obj/machinery/iv_drip,
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/white,
 /area/medical/surgery)
 "bKt" = (
@@ -26638,13 +26633,13 @@
 /turf/open/floor/iron/dark,
 /area/engineering/storage/tech)
 "bRm" = (
-/obj/machinery/light_switch{
-	pixel_x = 25
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
 /obj/structure/cable,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/dark,
 /area/engineering/storage/tech)
 "bRn" = (
@@ -28277,9 +28272,6 @@
 /obj/machinery/modular_computer/console/preset/engineering{
 	dir = 8
 	},
-/obj/machinery/light_switch{
-	pixel_x = 22
-	},
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -28568,9 +28560,6 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 8
 	},
-/obj/machinery/light_switch{
-	pixel_x = 25
-	},
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -28582,6 +28571,9 @@
 	id = "ce_privacy";
 	name = "Privacy Shutters";
 	req_access_txt = "56"
+	},
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron,
 /area/command/heads_quarters/ce)
@@ -32042,10 +32034,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/machinery/light_switch{
-	pixel_x = -6;
-	pixel_y = -24
-	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
@@ -32053,6 +32041,10 @@
 	id = "kitchenshutters";
 	name = "Kitchen Shutters Control";
 	req_access_txt = "28"
+	},
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch";
+	pixel_x = -6
 	},
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
@@ -33068,6 +33060,9 @@
 	name = "Coffin Storage";
 	req_one_access_txt = "22"
 	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/dark,
 /area/service/chapel/main/monastery)
 "cvs" = (
@@ -33470,6 +33465,9 @@
 /obj/machinery/camera{
 	c_tag = "Monastery Archives Fore";
 	network = list("ss13","monastery")
+	},
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/dark,
 /area/service/library)
@@ -35846,15 +35844,14 @@
 	network = list("ss13","medbay");
 	pixel_y = -22
 	},
-/obj/machinery/light_switch{
-	dir = 8;
-	pixel_x = -25
-	},
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
 /obj/machinery/light/directional/west,
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
 "eFj" = (
@@ -37299,6 +37296,18 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/security)
+"fQY" = (
+/obj/effect/turf_decal/tile/purple{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/purple{
+	dir = 4
+	},
+/obj/machinery/light_switch/directional/west{
+	name = "Light Switch"
+	},
+/turf/open/floor/iron/dark,
+/area/service/library)
 "fRl" = (
 /obj/item/bedsheet,
 /obj/structure/bed,
@@ -37596,9 +37605,6 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 4
 	},
-/obj/machinery/light_switch{
-	pixel_x = 22
-	},
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
 	},
@@ -37610,6 +37616,9 @@
 	},
 /obj/machinery/power/apc/auto_name/north,
 /obj/structure/cable,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
 "gjN" = (
@@ -40329,6 +40338,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
 /turf/closed/wall/r_wall,
 /area/engineering/lobby)
+"jeN" = (
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch"
+	},
+/turf/open/floor/iron/dark,
+/area/service/chapel/main/monastery)
 "jgr" = (
 /obj/machinery/door/airlock/grunge{
 	name = "Library"
@@ -41693,6 +41708,9 @@
 /obj/machinery/disposal/bin,
 /obj/structure/disposalpipe/trunk{
 	dir = 8
+	},
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
@@ -44467,8 +44485,8 @@
 /turf/open/floor/iron,
 /area/science/xenobiology)
 "nyl" = (
-/obj/machinery/light_switch{
-	pixel_y = -24
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch"
 	},
 /turf/open/floor/plating,
 /area/medical/cryo)
@@ -45351,6 +45369,7 @@
 /obj/machinery/button/door/directional/north{
 	id = "permashut2";
 	name = "Cell Lockdown Control";
+	pixel_x = 6;
 	req_access_txt = "2"
 	},
 /turf/open/floor/iron,
@@ -46697,6 +46716,12 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
+"pGg" = (
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
+/turf/open/floor/iron/dark,
+/area/service/chapel/office)
 "pGi" = (
 /obj/structure/table,
 /obj/machinery/recharger{
@@ -48804,10 +48829,6 @@
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
 "rAP" = (
-/obj/machinery/light_switch{
-	pixel_x = 25;
-	pixel_y = -9
-	},
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron,
 /area/cargo/storage)
@@ -52440,6 +52461,12 @@
 "uFo" = (
 /turf/open/floor/iron/white,
 /area/medical/psychology)
+"uFY" = (
+/obj/machinery/light_switch/directional/south{
+	name = "Light Switch"
+	},
+/turf/open/floor/iron/dark,
+/area/service/chapel/main/monastery)
 "uGx" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -54138,6 +54165,13 @@
 /mob/living/simple_animal/hostile/retaliate/snake,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
+"wgH" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
+/turf/open/floor/iron/white,
+/area/medical/medbay/central)
 "wha" = (
 /obj/structure/table/glass,
 /obj/item/folder/white{
@@ -54588,6 +54622,19 @@
 	},
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
+"wBb" = (
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red,
+/obj/effect/turf_decal/tile/red{
+	dir = 8
+	},
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
+/turf/open/floor/iron/dark,
+/area/service/chapel/office)
 "wBg" = (
 /obj/machinery/door/airlock/maintenance{
 	id_tag = "Potty1";
@@ -54863,10 +54910,6 @@
 	pixel_y = 22;
 	req_access_txt = "39"
 	},
-/obj/machinery/light_switch{
-	pixel_x = -4;
-	pixel_y = 24
-	},
 /obj/effect/turf_decal/tile/green{
 	dir = 1
 	},
@@ -54875,6 +54918,10 @@
 	},
 /obj/effect/turf_decal/stripes/corner{
 	dir = 4
+	},
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch";
+	pixel_x = -6
 	},
 /turf/open/floor/iron/white,
 /area/medical/virology)
@@ -55000,11 +55047,10 @@
 /turf/open/floor/plating,
 /area/maintenance/disposal)
 "wQy" = (
-/obj/machinery/light_switch{
-	dir = 8;
-	pixel_x = 25
-	},
 /obj/structure/chair/sofa/left,
+/obj/machinery/light_switch/directional/east{
+	name = "Light Switch"
+	},
 /turf/open/floor/carpet,
 /area/medical/psychology)
 "wQE" = (
@@ -55636,9 +55682,8 @@
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 6
 	},
-/obj/machinery/light_switch{
-	pixel_x = 7;
-	pixel_y = 32
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch"
 	},
 /turf/open/floor/iron,
 /area/cargo/sorting)
@@ -56022,6 +56067,10 @@
 	},
 /obj/structure/disposaloutlet,
 /obj/structure/plasticflaps/opaque,
+/obj/machinery/light_switch/directional/north{
+	name = "Light Switch";
+	pixel_x = -4
+	},
 /turf/open/floor/iron,
 /area/cargo/storage)
 "xEA" = (
@@ -56657,6 +56706,7 @@
 /obj/machinery/button/door/directional/north{
 	id = "permashut1";
 	name = "Cell Lockdown Control";
+	pixel_x = 6;
 	req_access_txt = "2"
 	},
 /turf/open/floor/iron,
@@ -67402,7 +67452,7 @@ cfN
 bZY
 crh
 vWg
-crv
+pGg
 bZY
 crU
 bYx
@@ -67920,7 +67970,7 @@ bZY
 giI
 pkM
 crv
-owS
+wBb
 kqH
 rrU
 gKz
@@ -70997,7 +71047,7 @@ bOw
 bOw
 bQe
 bWV
-csS
+jeN
 csS
 bZm
 bYB
@@ -71304,7 +71354,7 @@ mcy
 cAK
 xBB
 cAr
-cAB
+fQY
 cyU
 cjp
 aaa
@@ -72290,7 +72340,7 @@ crN
 vFs
 csS
 qiF
-csS
+uFY
 bWV
 cfm
 csS
@@ -82789,7 +82839,7 @@ bvh
 xWB
 ivy
 bzO
-eyL
+wgH
 bCh
 bjc
 bEu
