@@ -192,7 +192,7 @@
 	/// Number of pills to spawn
 	var/num_pills = 0
 
-/obj/item/storage/pill_bottle/prescription/ComponentInitialize()
+/obj/item/storage/pill_bottle/prescription/Initialize()
 	. = ..()
 	if(pill_type)
 		name = "[initial(pill_type.name)] bottle"
