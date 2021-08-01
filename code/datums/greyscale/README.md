@@ -93,7 +93,10 @@ And that's all you need to make it usable by other code:
 More configurations can be found in [code/datums/greyscale/greyscale_configs.dm](./greyscale_configs.dm)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 5d2a9dd843807bcad59d4a98be9fffb8992b8854
 If you want your item to be colorable in a vending machine (or other places if there's ever any support added for that), you should do it like this:
 
 ```c
@@ -109,7 +112,6 @@ better way to do this with BYOND just yet. You can put multiple flags like this 
 	flags_1 = IS_PLAYER_COLORABLE_1 | THIS_IS_A_FAKE_FLAG | THIS_IS_ANOTHER_FAKE_FLAG
 ```
 
->>>>>>> b1041fed0b5d33b4f21ebd902c3e75e8cb579539
 ## Debugging
 
 If you're making a new greyscale sprite you sometimes want to be able to see how layers got generated or maybe you're just tweaking some colors. Rather than rebooting the server with every change there is a greyscale modification menu that can be found in the vv dropdown menu for the greyscale object. Here you can change colors, preview the results, and reload everything from their files.

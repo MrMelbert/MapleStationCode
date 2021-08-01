@@ -19021,8 +19021,9 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/landmark/start/scientist,
-/turf/open/floor/iron/white,
+/obj/machinery/door/firedoor/heavy,
+/obj/effect/turf_decal/stripes/end,
+/turf/open/floor/iron/showroomfloor,
 /area/science/research)
 "izI" = (
 /obj/structure/disposalpipe/segment{
@@ -23748,7 +23749,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron/white,
+/turf/open/floor/iron/showroomfloor,
 /area/science/research)
 "kCy" = (
 /turf/closed/wall/r_wall,

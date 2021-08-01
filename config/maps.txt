@@ -50,3 +50,7 @@ endmap
 map limastation
 	votable
 endmap
+
+map pubbystation
+	voteable
+endmap
