@@ -65,7 +65,7 @@
 			knowledge_message += "[found_knowledge.name]"
 		parts += knowledge_message.Join(", ")
 	else
-		parts += span_bold("<br>The heretic never recieved their Codex! ")
+		parts += span_bold("<br>The heretic never received their Codex! ")
 
 	return parts.Join("<br>")
 

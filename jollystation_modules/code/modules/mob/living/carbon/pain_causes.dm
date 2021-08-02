@@ -147,7 +147,7 @@
 			span_hear("You hear a sickening thud."))
 		sharp_pain(BODY_ZONE_HEAD, (levels * 10)) // bonk
 
-	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs recieve
+	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs receive
 	Knockdown(levels * 50)
 
 // Flight potion's flavor says "it hurts a shit ton bro", so it should cause decent pain

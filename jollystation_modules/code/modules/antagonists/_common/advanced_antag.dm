@@ -68,7 +68,7 @@
 /// Give them a short guide on how to use the goal panel, and what all the buttons do.
 /// antagonist - the mob being greeted, the antagonist.
 /datum/advanced_antag_datum/proc/greet_message_three(mob/antagonist)
-	to_chat(antagonist, span_danger("In your goal panel, you should set a few goals to get started and finalize them to recieve your uplink. If you're not sure how to use the panel or its functions, use the tutorial built into the UI."))
+	to_chat(antagonist, span_danger("In your goal panel, you should set a few goals to get started and finalize them to receive your uplink. If you're not sure how to use the panel or its functions, use the tutorial built into the UI."))
 
 /* Updates the user's currently open TGUI panel, or open a new panel if they don't have one.
  * Checks the open_panels list if our user already has a panel opened. If so, try to update the ui instead of opening a new one.
