@@ -1658,9 +1658,17 @@
 /turf/open/floor/iron,
 /area/security/prison)
 "afJ" = (
-/obj/effect/landmark/carpspawn,
-/turf/open/space/basic,
-/area/space/nearstation)
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/structure/noticeboard/hos{
+	pixel_y = 32
+	},
+/turf/open/floor/iron,
+/area/security/brig)
 "afK" = (
 /obj/machinery/atmospherics/components/tank/air{
 	dir = 1
@@ -2738,15 +2746,13 @@
 /obj/item/storage/fancy/donut_box{
 	pixel_y = 2
 	},
-/obj/structure/noticeboard{
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/red{
 	dir = 4
 	},
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/iron,
 /area/security)
 "ajn" = (
@@ -8863,9 +8869,7 @@
 	c_tag = "Primary Tool Storage"
 	},
 /obj/item/assembly/voice,
-/obj/structure/noticeboard{
-	pixel_y = 32
-	},
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/iron,
 /area/commons/storage/primary)
 "aCw" = (
@@ -13649,6 +13653,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
+/obj/structure/noticeboard/qm{
+	dir = 1;
+	pixel_y = -32
+	},
 /turf/open/floor/iron,
 /area/cargo/office)
 "aVy" = (
@@ -14990,9 +14998,7 @@
 /area/service/bar/atrium)
 "baq" = (
 /obj/effect/spawner/randomarcade,
-/obj/structure/noticeboard{
-	pixel_y = 32
-	},
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/carpet/lone,
 /area/service/bar/atrium)
 "bar" = (
@@ -21537,6 +21543,10 @@
 	dir = 8;
 	network = list("ss13","medbay")
 	},
+/obj/structure/noticeboard/cmo{
+	dir = 8;
+	pixel_x = 32
+	},
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "byu" = (
@@ -25548,6 +25558,10 @@
 	dir = 1
 	},
 /obj/machinery/light/directional/west,
+/obj/structure/noticeboard/ce{
+	dir = 4;
+	pixel_x = -32
+	},
 /turf/open/floor/iron,
 /area/engineering/lobby)
 "bMW" = (
@@ -38258,6 +38272,19 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
+"gIg" = (
+/obj/effect/turf_decal/tile/purple{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/purple{
+	dir = 8
+	},
+/obj/structure/noticeboard/rd{
+	dir = 4;
+	pixel_x = -32
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/aft)
 "gIC" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/disposalpipe/segment,
@@ -42240,6 +42267,20 @@
 /obj/item/pen,
 /turf/open/floor/iron/dark,
 /area/science/xenobiology)
+"ldu" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/structure/noticeboard/captain{
+	dir = 1;
+	pixel_y = -32
+	},
+/turf/open/floor/iron/dark,
+/area/command/bridge)
 "lem" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -44077,6 +44118,13 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos)
+"nbQ" = (
+/obj/effect/turf_decal/bot,
+/obj/structure/noticeboard/hop{
+	pixel_y = 32
+	},
+/turf/open/floor/iron,
+/area/hallway/primary/central)
 "ndc" = (
 /obj/structure/table/reinforced,
 /obj/machinery/button/door{
@@ -46286,13 +46334,11 @@
 /turf/open/floor/iron/dark,
 /area/service/library)
 "pcH" = (
-/obj/structure/noticeboard{
-	pixel_y = 32
-	},
 /obj/structure/table/wood,
 /obj/item/flashlight/lamp/green{
 	pixel_y = 4
 	},
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/carpet,
 /area/medical/psychology)
 "pdf" = (
@@ -46731,9 +46777,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
-/obj/structure/noticeboard{
-	pixel_y = 32
-	},
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/iron/white,
 /area/medical/medbay/central)
 "pBN" = (
@@ -53963,9 +54007,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/structure/noticeboard{
-	pixel_y = 32
-	},
 /obj/item/clothing/gloves/color/yellow,
 /obj/item/clothing/gloves/color/yellow{
 	pixel_x = -1;
@@ -53982,6 +54023,7 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/north,
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/iron,
 /area/engineering/storage_shared)
 "vRq" = (
@@ -56615,9 +56657,7 @@
 /area/hallway/secondary/exit/departure_lounge)
 "xWl" = (
 /obj/structure/table/glass,
-/obj/structure/noticeboard{
-	pixel_y = 32
-	},
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/iron,
 /area/science/xenobiology)
 "xWB" = (
@@ -80904,7 +80944,7 @@ anL
 aot
 apa
 agP
-aqz
+afJ
 vao
 mJe
 apE
@@ -81655,7 +81695,7 @@ aaa
 aaa
 aaa
 aaa
-afJ
+cFB
 aby
 aaa
 agQ
@@ -83974,7 +84014,7 @@ aaa
 aaa
 aaa
 aaa
-afJ
+cFB
 aaa
 aaa
 abI
@@ -88365,7 +88405,7 @@ dch
 ayg
 hpp
 ayg
-wyP
+ldu
 aAB
 aBs
 aCM
@@ -90685,7 +90725,7 @@ aaT
 aDV
 aEO
 aAH
-aGw
+nbQ
 awd
 aHV
 xPQ
@@ -92006,7 +92046,7 @@ bkn
 byL
 cqk
 bqd
-cqk
+gIg
 lNm
 but
 cqk
