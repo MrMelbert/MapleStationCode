@@ -11267,7 +11267,7 @@
 /obj/machinery/button/door/directional/east{
 	id = "Potty1";
 	name = "Bathroom Bolt Control";
-	specialfunctions = 4
+	normaldoorcontrol = 1
 	},
 /obj/machinery/light_switch/directional/east{
 	name = "Light Switch";
@@ -14669,19 +14669,17 @@
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "aYO" = (
-/obj/effect/turf_decal/tile/green{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/green,
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "aYP" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/turf_decal/tile/green{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 8
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
@@ -14690,7 +14688,6 @@
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
 "aYR" = (
-/obj/machinery/vending/dinnerware,
 /obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
@@ -14994,12 +14991,12 @@
 /area/service/bar/atrium)
 "bap" = (
 /obj/machinery/computer/slot_machine,
-/turf/open/floor/carpet/lone,
+/turf/open/floor/carpet/lone/star,
 /area/service/bar/atrium)
 "baq" = (
 /obj/effect/spawner/randomarcade,
 /obj/structure/noticeboard/directional/north,
-/turf/open/floor/carpet/lone,
+/turf/open/floor/carpet/lone/star,
 /area/service/bar/atrium)
 "bar" = (
 /obj/effect/turf_decal/tile/brown{
@@ -15318,16 +15315,16 @@
 "bbv" = (
 /obj/item/trash/can,
 /obj/structure/chair/stool/bar/directional/south,
-/turf/open/floor/carpet/lone,
+/turf/open/floor/carpet/lone/star,
 /area/service/bar/atrium)
 "bbw" = (
 /obj/effect/landmark/start/assistant,
 /obj/structure/chair/stool/bar/directional/south,
-/turf/open/floor/carpet/lone,
+/turf/open/floor/carpet/lone/star,
 /area/service/bar/atrium)
 "bbx" = (
 /obj/structure/chair/stool/bar/directional/south,
-/turf/open/floor/carpet/lone,
+/turf/open/floor/carpet/lone/star,
 /area/service/bar/atrium)
 "bbA" = (
 /obj/effect/turf_decal/stripes/line{
@@ -15752,26 +15749,31 @@
 /turf/open/floor/iron,
 /area/service/janitor)
 "bdj" = (
-/obj/effect/turf_decal/tile/green,
+/obj/effect/turf_decal/tile/green{
+	dir = 4
+	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "bdk" = (
-/obj/effect/turf_decal/tile/green{
-	dir = 8
-	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 1
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "bdl" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/turf_decal/tile/green{
-	dir = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 1
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
@@ -32110,9 +32112,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
 "cpA" = (
-/obj/machinery/computer/chef_order{
-	dir = 1
-	},
+/obj/machinery/vending/dinnerware,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
 "cpB" = (
@@ -38215,11 +38215,12 @@
 /turf/open/floor/iron/dark,
 /area/science/lab)
 "gFw" = (
-/obj/effect/turf_decal/tile/green{
-	dir = 4
-	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
+	},
+/obj/effect/turf_decal/tile/green,
+/obj/effect/turf_decal/tile/green{
+	dir = 8
 	},
 /turf/open/floor/iron,
 /area/service/hydroponics)
@@ -47498,9 +47499,15 @@
 /turf/open/floor/iron,
 /area/medical/medbay/central)
 "qih" = (
-/obj/machinery/holopad,
-/turf/open/floor/iron/white,
-/area/medical/medbay/lobby)
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/computer/chef_order{
+	dir = 1
+	},
+/turf/open/floor/iron/showroomfloor,
+/area/service/kitchen/coldroom)
 "qit" = (
 /obj/structure/table/wood,
 /obj/item/kirbyplants{
@@ -48232,6 +48239,10 @@
 "qRW" = (
 /turf/open/floor/wood,
 /area/service/abandoned_gambling_den)
+"qTd" = (
+/obj/machinery/smartfridge,
+/turf/closed/wall,
+/area/service/chapel/main/monastery)
 "qUe" = (
 /obj/effect/turf_decal/tile/brown,
 /obj/effect/turf_decal/tile/brown{
@@ -68455,7 +68466,7 @@ cfN
 bWV
 bWV
 bWV
-bWV
+qTd
 cuS
 bWV
 bWV
@@ -70511,7 +70522,7 @@ cvy
 bWV
 cgG
 cgG
-bWV
+qTd
 cuY
 bWV
 cgG
@@ -85343,7 +85354,7 @@ afu
 pMM
 aTZ
 wsV
-iNR
+qih
 afu
 afu
 nRV
@@ -87417,7 +87428,7 @@ bjg
 fmD
 cpZ
 cqc
-qih
+ufo
 boL
 bja
 yat
