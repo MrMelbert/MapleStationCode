@@ -25,7 +25,9 @@
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM) // QM normally has this, but since they're a head of staff now I put it here. C'est la vie.
 
 	display_order = JOB_DISPLAY_ORDER_BRIDGE_OFFICER
-	departments = DEPARTMENT_COMMAND
+	departments_list = list(
+		/datum/job_department/command,
+		)
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
 
@@ -43,7 +45,7 @@
 		/obj/item/storage/fancy/donut_box = 1,
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS
 	voice_of_god_power = 1.2 // Not quite command staff.
 
 /datum/outfit/job/bridge_officer
