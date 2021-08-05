@@ -25,7 +25,7 @@
 
 /datum/addiction/gojuice/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
-	affected_carbon.adjust_nutrition(HUNGER_FACTOR * delta_time)
+	affected_carbon.adjust_nutrition(-HUNGER_FACTOR * delta_time)
 
 /datum/addiction/gojuice/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
@@ -35,7 +35,7 @@
 
 /datum/addiction/gojuice/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
-	affected_carbon.adjust_nutrition(HUNGER_FACTOR * delta_time)
+	affected_carbon.adjust_nutrition(-HUNGER_FACTOR * delta_time)
 	if(DT_PROB(66, delta_time))
 		affected_carbon.drowsyness = min(affected_carbon.drowsyness + 1 * REM * delta_time, 8)
 	if(DT_PROB(8, delta_time))
@@ -43,13 +43,12 @@
 
 /datum/addiction/gojuice/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
-	affected_carbon.become_nearsighted(type)
 	affected_carbon.set_pain_mod(PAIN_MOD_GOJUICE_ADDICT, 3)
 	affected_carbon.add_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice_addiction)
 
 /datum/addiction/gojuice/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
-	affected_carbon.adjust_nutrition(HUNGER_FACTOR * delta_time)
+	affected_carbon.adjust_nutrition(-HUNGER_FACTOR * delta_time)
 	if(DT_PROB(75, delta_time))
 		affected_carbon.drowsyness = min(affected_carbon.drowsyness + 1 * REM * delta_time, 16)
 	if(DT_PROB(8, delta_time))
