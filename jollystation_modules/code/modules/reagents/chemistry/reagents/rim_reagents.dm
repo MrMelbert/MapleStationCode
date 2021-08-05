@@ -27,7 +27,7 @@
 	overdose_threshold = 12
 	ph = 12.4
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/luciferium = 50) // 2 units = addiction
+	addiction_types = list(/datum/addiction/luciferium = 100) // 1 unit = addiction
 	pain_modifier = 0.8
 
 /datum/reagent/medicine/luciferium/on_mob_metabolize(mob/living/carbon/user)
