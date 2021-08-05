@@ -24,36 +24,38 @@
 	var/special_desc = ""
 	/// The special affiliation type, basically overrides the "Syndicate Affiliation" for SYNDICATE check types. It will show whatever organisation you put here instead of "Syndicate Affiliation"
 	var/special_desc_affiliation = ""
-	/// A list of everything we may want to check based on an examine check.
-	/// This can be a list of ROLES, JOBS, FACTIONS, SKILL CHIPS, or TRAITS.
-	var/list/special_desc_list
-	/// If this is a toy. Toys display a message if you don't succeed the check.
-	var/toy = FALSE
+	/// Everything we may want to check based on an examine check.
+	/// This can be a list of JOBS, FACTIONS, SKILL CHIPS, or TRAITS, or a bitflag
+	var/special_desc_req
+	/// If this is a toy / the real name of the object. Toys display a message if you fail the check.
+	var/toy_name
 
-/datum/element/unique_examine/Attach(atom/thing, desc, requirement = EXAMINE_CHECK_NONE, requirement_list, affiliation, hint = TRUE, is_toy = FALSE)
+/datum/element/unique_examine/Attach(atom/thing, desc, requirement = EXAMINE_CHECK_NONE, requirement_list, affiliation, hint = TRUE, real_name = "")
 	. = ..()
 
 	/// Init our vars
-	special_desc = desc
 	desc_requirement = requirement
-	if(islist(requirement_list))
-		special_desc_list = requirement_list
-	else
-		special_desc_list = list(requirement_list)
+	special_desc = desc
+	special_desc_req = requirement_list
 	special_desc_affiliation = affiliation
-	toy = is_toy
+	toy_name = real_name
 
 	// What are we doing if we don't even have a description?
 	if(!special_desc)
 		stack_trace("Unique examine element attempted to attach to something without an examine text set.")
 		return ELEMENT_INCOMPATIBLE
 
-	/// If we were passed a examine check that checks the special list, make sure the special list is filled too
+	/// If we were passed a examine check that has a requirement, check to make sure we have that requirement / it's formatted correctly
 	switch(desc_requirement)
-		if(EXAMINE_CHECK_TRAIT, EXAMINE_CHECK_SKILLCHIP, EXAMINE_CHECK_FACTION, EXAMINE_CHECK_JOB, EXAMINE_CHECK_SPECIES, EXAMINE_CHECK_DEPARTMENT)
-			if(!length(special_desc_list))
-				stack_trace("Unique examine element attempted to attach to something with a special examine requirement [desc_requirement] but provided no list to check.")
+		if(EXAMINE_CHECK_TRAIT, EXAMINE_CHECK_SKILLCHIP, EXAMINE_CHECK_FACTION, EXAMINE_CHECK_JOB, EXAMINE_CHECK_SPECIES)
+			if(isnull(special_desc_req))
 				return ELEMENT_INCOMPATIBLE
+			else if(!islist(special_desc_req))
+				special_desc_req = list(special_desc_req)
+		if(EXAMINE_CHECK_DEPARTMENT)
+			if(isnull(special_desc_req))
+				return ELEMENT_INCOMPATIBLE
+
 	if(hint)
 		RegisterSignal(thing, COMSIG_PARENT_EXAMINE, .proc/hint_at)
 	RegisterSignal(thing, COMSIG_PARENT_EXAMINE_MORE, .proc/examine)
@@ -109,26 +111,26 @@
 
 		//Aantag checks
 		if(EXAMINE_CHECK_ANTAG)
-			for(var/datum/antagonist/antag_datum as anything in special_desc_list)
+			for(var/datum/antagonist/antag_datum as anything in special_desc_req)
 				if(examiner_mind.has_antag_datum(antag_datum))
 					composed_message = "You note the following because of your [span_red(span_bold(special_desc_affiliation ? special_desc_affiliation : "[antag_datum.name] Role"))]: <br>"
 					break
 
 		//Job (title) checks
 		if(EXAMINE_CHECK_JOB)
-			for(var/checked_job in special_desc_list)
+			for(var/checked_job in special_desc_req)
 				if(examiner_mind.assigned_role.title == checked_job)
 					composed_message = "You note the following because of your job as a [span_bold(checked_job)]: <br>"
 					break
 
 		//Department checks
 		if(EXAMINE_CHECK_DEPARTMENT)
-			if(examiner_mind.assigned_role.departments & special_desc_list)
-				composed_message = "You note the following because of your place [get_department(special_desc_list)]: <br>"
+			if(examiner_mind.assigned_role.departments_bitflags & special_desc_req)
+				composed_message = "You note the following because of your place [get_department(special_desc_req)]: <br>"
 
 		//Standard faction checks
 		if(EXAMINE_CHECK_FACTION)
-			for(var/checked_faction in special_desc_list)
+			for(var/checked_faction in special_desc_req)
 				if(checked_faction in examiner.faction)
 					composed_message = "You note the following because of your loyalty to [get_formatted_faction(checked_faction)]: <br>"
 					break
@@ -140,33 +142,34 @@
 				var/obj/item/organ/brain/examiner_brain = human_examiner.getorganslot(ORGAN_SLOT_BRAIN)
 				if(examiner_brain)
 					for(var/obj/item/skillchip/checked_skillchip in examiner_brain.skillchips)
-						if(checked_skillchip.active && (checked_skillchip.type in special_desc_list))
+						if(checked_skillchip.active && (checked_skillchip.type in special_desc_req))
 							composed_message += "You note the following because of your implanted [span_readable_yellow(span_bold(checked_skillchip.name))]: <br>"
 							break
 
 		// Trait checks
 		if(EXAMINE_CHECK_TRAIT)
-			for(var/checked_trait in special_desc_list)
+			for(var/checked_trait in special_desc_req)
 				if(HAS_TRAIT(examiner, checked_trait))
 					composed_message += "You note the following because of a [span_readable_yellow(span_bold("trait"))] you have: <br>"
 					break
 
 		// Species checks
 		if(EXAMINE_CHECK_SPECIES)
-			for(var/datum/species/checked_species as anything in special_desc_list)
+			for(var/datum/species/checked_species as anything in special_desc_req)
 				if(is_species(examiner, checked_species))
 					composed_message += "You note the following because of [span_green(span_bold("your [checked_species.name] species"))]: <br>"
 					break
 
 	if(length(composed_message) > 0)
 		composed_message += special_desc
-		examine_list += span_info(composed_message)
-	else if(toy) //If we don't have a message and we're a toy, add on the toy message.
-		composed_message += "The popular toy resembling [source] from your local arcade, suitable for children and adults alike."
-		examine_list += span_info(composed_message)
+	else if(toy_name) //If we don't have a message and we're a toy, add on the toy message.
+		composed_message += "The popular toy resembling [toy_name] from your local arcade, suitable for children and adults alike."
+	examine_list += span_info(composed_message)
 
 /// Check if we're any spice or variety of syndicate (antagonists, ghost roles, or special)
 /datum/element/unique_examine/proc/check_if_syndicate(datum/mind/our_mind)
+	. = FALSE
+
 	if(our_mind.has_antag_datum(/datum/antagonist/traitor))
 		return TRUE
 	if(our_mind.has_antag_datum(/datum/antagonist/nukeop))
@@ -176,10 +179,10 @@
 	if(ROLE_SYNDICATE in our_mind.current.faction)
 		return TRUE
 
-	return FALSE
-
 // Formats some of the more common faction names into a more accurate string.
 /datum/element/unique_examine/proc/get_formatted_faction(faction)
+	. = faction
+
 	switch(faction)
 		if(ROLE_WIZARD)
 			. = span_hypnophrase("the Wizard Federation")
@@ -206,30 +209,28 @@
 			. = span_red("the tendril")
 		if("carp")
 			. = span_green("space carp")
-		else
-			. = faction
 
 	return span_bold(.)
 
 /// Format our department bitflag into a string.
 /datum/element/unique_examine/proc/get_department(department_bitflag)
-	if(department_bitflag & DEPARTMENT_COMMAND)
+	. = "on the station"
+
+	if(department_bitflag & DEPARTMENT_BITFLAG_COMMAND)
 		. =  "as a member of command staff"
-	else if(department_bitflag & DEPARTMENT_SECURITY)
+	else if(department_bitflag & DEPARTMENT_BITFLAG_SECURITY)
 		. =  "as a member of security force"
-	else if(department_bitflag & DEPARTMENT_SERVICE)
+	else if(department_bitflag & DEPARTMENT_BITFLAG_SERVICE)
 		. =  "in the service department"
-	else if(department_bitflag & DEPARTMENT_CARGO)
+	else if(department_bitflag & DEPARTMENT_BITFLAG_CARGO)
 		. =  "in the cargo bay"
-	else if(department_bitflag & DEPARTMENT_ENGINEERING)
+	else if(department_bitflag & DEPARTMENT_BITFLAG_ENGINEERING)
 		. =  "as one of the engineers"
-	else if(department_bitflag & DEPARTMENT_SCIENCE)
+	else if(department_bitflag & DEPARTMENT_BITFLAG_SCIENCE)
 		. =  "in the science team"
-	else if(department_bitflag & DEPARTMENT_MEDICAL)
+	else if(department_bitflag & DEPARTMENT_BITFLAG_MEDICAL)
 		. =  "in the medical field"
-	else if(department_bitflag & DEPARTMENT_SILICON)
+	else if(department_bitflag & DEPARTMENT_BITFLAG_SILICON)
 		. =  "as a silicon unit"
-	else
-		. = "on the station"
 
 	return span_bold(.)

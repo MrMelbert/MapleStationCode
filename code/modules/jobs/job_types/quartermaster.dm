@@ -2,10 +2,11 @@
 	title = "Quartermaster"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD // NON-MODULE CHANGE
 	department_head = list("Captain") // NON-MODULE CHANGE
+	head_announce = list(RADIO_CHANNEL_SUPPLY) // NON-MODULE CHANGE
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	req_admin_notify = 1 // NON-MODULE CHANGE
+	req_admin_notify = TRUE // NON-MODULE CHANGE
 	supervisors = "the captain" // NON-MODULE CHANGE
 	selection_color = "#d7b088"
 	exp_required_type_department = EXP_TYPE_SUPPLY

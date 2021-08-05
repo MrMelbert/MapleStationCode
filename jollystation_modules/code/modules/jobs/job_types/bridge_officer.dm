@@ -12,8 +12,9 @@
 	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
-	exp_type = EXP_TYPE_CREW
-	exp_type_department = EXP_TYPE_COMMAND
+	exp_required_type = EXP_TYPE_CREW
+	exp_required_type_department = EXP_TYPE_COMMAND
+	exp_granted_type = EXP_TYPE_CREW
 
 	outfit = /datum/outfit/job/bridge_officer
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security

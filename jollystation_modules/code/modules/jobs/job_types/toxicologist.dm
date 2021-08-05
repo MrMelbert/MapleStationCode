@@ -8,7 +8,8 @@
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	exp_requirements = 60
-	exp_type = EXP_TYPE_CREW
+	exp_required_type = EXP_TYPE_CREW
+	exp_granted_type = EXP_TYPE_CREW
 
 //most likely can be subtyped later
 
