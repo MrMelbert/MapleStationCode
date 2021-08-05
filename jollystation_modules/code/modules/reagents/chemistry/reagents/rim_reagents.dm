@@ -60,19 +60,19 @@
 
 	// Heals pain and tons of damage (based on purity)
 	user.cause_pain(BODY_ZONES_ALL, -1 * REM * delta_time)
-	user.adjustCloneLoss(-8 * normalise_creation_purity() * REM * delta_time, FALSE)
-	user.adjustBruteLoss(-5 * normalise_creation_purity() * REM * delta_time, FALSE)
-	user.adjustFireLoss(-5 * normalise_creation_purity() * REM * delta_time, FALSE)
-	user.adjustOxyLoss(-3 * normalise_creation_purity() * REM * delta_time, FALSE)
-	user.adjustToxLoss(-3 * normalise_creation_purity() * REM * delta_time, FALSE, TRUE)
+	user.adjustCloneLoss(-8 * REM * delta_time, FALSE)
+	user.adjustBruteLoss(-5 * REM * delta_time, FALSE)
+	user.adjustFireLoss(-5 * REM * delta_time, FALSE)
+	user.adjustOxyLoss(-3 * REM * delta_time, FALSE)
+	user.adjustToxLoss(-3 * REM * delta_time, FALSE, TRUE)
 	adjust_bleed_wounds(user, delta_time)
 	if(user.blood_volume < BLOOD_VOLUME_NORMAL)
 		user.blood_volume = min(user.blood_volume + (5 * REM * delta_time), BLOOD_VOLUME_NORMAL)
 
 	// Improves / fixes eyesight
-	user.adjust_blindness(-2 * normalise_creation_purity() * REM * delta_time)
-	user.adjust_blurriness(-2 * normalise_creation_purity() * REM * delta_time)
-	user.adjustOrganLoss(ORGAN_SLOT_EYES, -3 * normalise_creation_purity() * REM * delta_time )
+	user.adjust_blindness(-2 * REM * delta_time)
+	user.adjust_blurriness(-2 * REM * delta_time)
+	user.adjustOrganLoss(ORGAN_SLOT_EYES, -3 * REM * delta_time )
 
 	// Removes scars
 	if(DT_PROB(8, delta_time))
@@ -81,7 +81,7 @@
 			LAZYREMOVE(user.all_scars, scar_to_remove)
 
 	// Can cure permanent traumas
-	user.adjustOrganLoss(ORGAN_SLOT_BRAIN, -3 * normalise_creation_purity() * REM * delta_time)
+	user.adjustOrganLoss(ORGAN_SLOT_BRAIN, -3 * REM * delta_time)
 	if(DT_PROB(5, delta_time))
 		var/static/list/curable_traumas = shuffle(subtypesof(/datum/brain_trauma/severe) + subtypesof(/datum/brain_trauma/mild))
 		for(var/trauma in curable_traumas)

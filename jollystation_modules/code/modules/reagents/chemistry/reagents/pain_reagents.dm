@@ -24,6 +24,8 @@
 	M.adjustBruteLoss(-0.2 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
 	M.cause_pain(BODY_ZONES_ALL, -0.3)
+	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
+		M.adjust_disgust(1.5 * REM * delta_time)
 
 	return TRUE
 
@@ -134,9 +136,8 @@
 	M.cause_pain(BODY_ZONE_CHEST, -0.08 * REM * delta_time)
 	// Okay at fevers.
 	M.adjust_bodytemperature(-15 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
-	// Causes more disgust than paracetamol.
-	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(3 * REM * delta_time)
+	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(66 * max(1 - creation_purity, 0.5), delta_time))
+		M.adjust_disgust(1.5 * REM * delta_time)
 
 	. = ..()
 	return TRUE
@@ -151,7 +152,7 @@
 	// Causes sickness...
 	M.apply_damage(1 * REM * delta_time, TOX)
 	if(M.disgust < 100 && DT_PROB(100 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(6 * REM * delta_time)
+		M.adjust_disgust(3 * REM * delta_time)
 	// ...Hallucinations after a while...
 	if(current_cycle >= 15 && DT_PROB(75 * max(1 - creation_purity, 0.5), delta_time))
 		M.hallucination = clamp(M.hallucination + 3 * REM * delta_time, 0, 20)
@@ -190,12 +191,11 @@
 	M.adjustToxLoss(-0.05 * REM * delta_time, FALSE)
 	M.cause_pain(BODY_ZONES_ALL, -0.05 * REM * delta_time)
 	// Not very good at treating fevers.
-	M.adjust_bodytemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
+	M.adjust_bodytemperature(-10 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes liver damage - higher dosages causes more liver damage.
-	M.adjustOrganLoss(ORGAN_SLOT_LIVER, volume / 25 * REM * delta_time)
-	// Causes a flat amount of disgust - not very much.
+	M.adjustOrganLoss(ORGAN_SLOT_LIVER, volume / 30 * REM * delta_time)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(66 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(1.5 * REM * delta_time)
+		M.adjust_disgust(1.2 * REM * delta_time)
 
 	. = ..()
 	return TRUE
@@ -208,7 +208,7 @@
 	// On overdose, cause sickness and liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 2 * REM * delta_time)
 	if(M.disgust < 100 && DT_PROB(100 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(5 * REM * delta_time)
+		M.adjust_disgust(3 * REM * delta_time)
 
 	return TRUE
 
@@ -239,12 +239,12 @@
 	M.cause_pain(BODY_ZONE_CHEST, -0.04 * REM * delta_time)
 	M.cause_pain(BODY_ZONES_LIMBS, -0.02 * REM * delta_time)
 	// Causes flat liver damage.
-	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.5 * REM * delta_time)
+	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.25 * REM * delta_time)
 	// Really good at treating fevers.
 	M.adjust_bodytemperature(-25 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, M.get_body_temp_normal())
 	// Causes more disgust the longer it's in someone...
-	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(max(current_cycle * 0.1, 5) * REM * delta_time)
+	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(66 * max(1 - creation_purity, 0.5), delta_time))
+		M.adjust_disgust(min(current_cycle * 0.02, 2.4) * REM * delta_time)
 	// ...and dizziness.
 	if(current_cycle >= 25 && DT_PROB(30 * max(1 - creation_purity, 0.5), delta_time))
 		M.dizziness = clamp(M.dizziness + (1 * REM * delta_time), 0, 5)
@@ -262,7 +262,7 @@
 	M.cause_pain(BODY_ZONE_CHEST, 0.24 * REM * delta_time)
 	// Sickness...
 	if(M.disgust < 100 && DT_PROB(100 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(5 * REM * delta_time)
+		M.adjust_disgust(3 * REM * delta_time)
 	// ...Drowsyness...
 	if(DT_PROB(75 * max(1 - creation_purity, 0.5), delta_time))
 		M.drowsyness += 1 * REM * delta_time
@@ -322,7 +322,7 @@
 	required_reagents = list(/datum/reagent/medicine/painkiller/aspirin = 1, /datum/reagent/medicine/painkiller/paracetamol = 1, /datum/reagent/consumable/coffee = 1)
 	optimal_ph_min = 2
 	optimal_ph_max = 12
-	reaction_tags = REACTION_TAG_HARD| REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG
+	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG
 	reaction_flags = REACTION_INSTANT
 
 // Oxycodone. Very addictive, heals pain very fast, also a drug.
@@ -345,8 +345,8 @@
 	M.adjustFireLoss(-0.2 * REM * delta_time, FALSE)
 	M.cause_pain(BODY_ZONES_ALL, -0.6 * REM * delta_time)
 	M.set_drugginess(10 * REM * delta_time)
-	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(3 * REM * delta_time)
+	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(75 * max(1 - creation_purity, 0.5), delta_time))
+		M.adjust_disgust(2 * REM * delta_time)
 	if(DT_PROB(33 * max(1 - creation_purity, 0.5), delta_time))
 		M.dizziness = clamp(M.dizziness + (1 * REM * delta_time), 0, 5)
 	. = ..()
@@ -394,3 +394,53 @@
 
 /obj/item/food/grown/poppy/lily
 	juice_results = null
+
+// Diphenhydrame helps against disgust slightly
+/datum/reagent/medicine/diphenhydramine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+	. = ..()
+	M.adjust_disgust(-3 * REM * delta_time )
+
+// Diphenhydramine can be upgraded into Dimenhydrinate, less good against allergens but better against nausea
+/datum/reagent/medicine/dimenhydrinate
+	name = "Dimenhydrinate"
+	description = "Helps combat nausea and motion sickness."
+	reagent_state = LIQUID
+	color = "#98ffee"
+	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+	ph = 10.6
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/dimenhydrinate/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+	. = ..()
+	M.adjust_disgust(-10 * REM * delta_time)
+	if(M.nutrition > NUTRITION_LEVEL_FULL - 25) // Boosts hunger to a bit, assuming you've been vomiting
+		M.adjust_nutrition(2 * HUNGER_FACTOR * REM * delta_time)
+
+/datum/chemical_reaction/medicine/dimenhydrinate
+	results = list(/datum/reagent/medicine/dimenhydrinate = 3)
+	required_reagents = list(/datum/reagent/medicine/diphenhydramine = 1, /datum/reagent/nitrogen = 1, /datum/reagent/chlorine = 1)
+	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG
+
+// Good against nausea, easier to maket han Dimenhydrinate
+/datum/reagent/medicine/ondansetron
+	name = "Ondansetron"
+	description = "Prevents nausea and vomiting."
+	reagent_state = LIQUID
+	color = "#74d3ff"
+	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+	ph = 10.6
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/medicine/ondansetron/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+	. = ..()
+	if(DT_PROB(5, delta_time))
+		M.drowsyness++
+	if(DT_PROB(8, delta_time) && M.get_bodypart_pain(BODY_ZONE_HEAD) <= PAIN_HEAD_MAX / 4)
+		M.cause_pain(BODY_ZONE_HEAD, 4)
+	M.adjust_disgust(-10 * REM * delta_time)
+
+/datum/chemical_reaction/medicine/ondansetron
+	results = list(/datum/reagent/medicine/ondansetron = 3)
+	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/nitrogen = 1, /datum/reagent/oxygen = 1)
+	required_catalysts = list(/datum/reagent/consumable/ethanol = 3)
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG

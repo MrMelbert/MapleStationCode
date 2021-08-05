@@ -199,7 +199,7 @@
 	if(num_pills)
 		var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 		STR.max_items = num_pills
-		STR.max_combined_w_class = 2 * num_pills
+		STR.max_combined_w_class = num_pills
 
 /obj/item/storage/pill_bottle/prescription/PopulateContents()
 	if(num_pills && pill_type)
@@ -212,11 +212,11 @@
 	icon = 'jollystation_modules/icons/obj/chemical.dmi'
 	custom_premium_price = PAYCHECK_HARD * 1.5
 
-/obj/item/storage/pill_bottle/painkillers/ComponentInitialize()
+/obj/item/storage/pill_bottle/painkillers/Initialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	STR.max_items = 14
-	STR.max_combined_w_class = 28
+	STR.max_combined_w_class = 14
 
 /obj/item/storage/pill_bottle/painkillers/PopulateContents()
 	for(var/i in 1 to 3)
@@ -448,7 +448,7 @@
 	name = "emergency [name]"
 
 // Change the contents of emergency first-aid kids.
-/obj/item/storage/firstaid/emergency/ComponentInitialize()
+/obj/item/storage/firstaid/emergency/Initialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	STR.max_w_class = WEIGHT_CLASS_SMALL
