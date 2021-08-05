@@ -370,7 +370,7 @@
 /mob/living/simple_animal/pet/dog/corgi/exoticcorgi/dufresne/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
-		"A peculiar and unusual corgi. You don't know if this corgi comes from Nar'Sai, \
+		"A peculiar and unusual corgi. You don't know if this corgi comes from Nar'Sie, \
 		Ratvar or the Eldritch Gods. Whatever it may be, best to keep your distance.", \
 		EXAMINE_CHECK_JOB, list("Chaplain"))
 	AddElement(/datum/element/unique_examine, \
