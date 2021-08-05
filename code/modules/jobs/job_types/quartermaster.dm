@@ -24,7 +24,7 @@
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,
- 		/datum/job_department/command, // NON-MODULE CHANGE
+		/datum/job_department/command, // NON-MODULE CHANGE
 		)
 
 	family_heirlooms = list(/obj/item/stamp, /obj/item/stamp/denied)
