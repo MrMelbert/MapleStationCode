@@ -3825,6 +3825,7 @@
 #include "jollystation_modules\code\modules\mob\living\silicon\silicon.dm"
 #include "jollystation_modules\code\modules\mob\living\simple_animal\simple_animal.dm"
 #include "jollystation_modules\code\modules\mob\living\simple_animal\bot\bot.dm"
+#include "jollystation_modules\code\modules\mob\living\simple_animal\friendly\dog.dm"
 #include "jollystation_modules\code\modules\modular_computers\computers\item\tablet_presets.dm"
 #include "jollystation_modules\code\modules\movespeed\modifiers\reagent.dm"
 #include "jollystation_modules\code\modules\reagents\chemistry\reagents\drink_reagents.dm"
