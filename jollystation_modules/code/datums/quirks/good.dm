@@ -94,7 +94,7 @@
 // Less vulnerable to pain (lower pain modifier)
 /datum/quirk/pain_resistance
 	name = "Hypoalgesia"
-	desc = "You're more resistant to pain - Your pain naturally decreases faster and you recieve less overall."
+	desc = "You're more resistant to pain - Your pain naturally decreases faster and you receive less overall."
 	value = 8
 	gain_text = "<span class='notice'>You feel duller.</span>"
 	lose_text = "<span class='danger'>You feel sharper.</span>"

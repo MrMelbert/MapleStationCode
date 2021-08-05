@@ -52,5 +52,5 @@ map limastation
 endmap
 
 map pubbystation
-	voteable
+	votable
 endmap

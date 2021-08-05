@@ -12,8 +12,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 #define MAX_DISPLAYED_PAPER_CHARS 475
 
 /// Wire IDs for the fax machine
-#define WIRE_SEND "Send wire"
-#define WIRE_RECIEVE "Recieve wire"
+#define WIRE_SEND_FAXES "Send wire"
+#define WIRE_RECEIVE_FAXES "Receive wire"
 #define WIRE_PAPERWORK "Paperwork wire"
 
 /// Fax machine design, for techwebs.
@@ -719,8 +719,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 /datum/wires/fax/New(atom/holder)
 	wires = list(
-		WIRE_SEND,
-		WIRE_RECIEVE,
+		WIRE_SEND_FAXES,
+		WIRE_RECEIVE_FAXES,
 		WIRE_PAPERWORK,
 	)
 	add_duds(1)
@@ -744,11 +744,11 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /datum/wires/fax/on_pulse(wire, user)
 	var/obj/machinery/fax_machine/machine = holder
 	switch(wire)
-		if(WIRE_SEND)
+		if(WIRE_SEND_FAXES)
 			machine.send_stored_paper(user)
 		if(WIRE_PAPERWORK)
 			machine.can_receive_paperwork = !machine.can_receive_paperwork
-		if(WIRE_RECIEVE)
+		if(WIRE_RECEIVE_FAXES)
 			if(machine.receiving_enabled)
 				machine.receiving_enabled = FALSE
 				addtimer(VARSET_CALLBACK(machine, receiving_enabled, TRUE), 30 SECONDS)
@@ -756,15 +756,15 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /datum/wires/fax/on_cut(wire, mend)
 	var/obj/machinery/fax_machine/machine = holder
 	switch(wire)
-		if(WIRE_SEND)
+		if(WIRE_SEND_FAXES)
 			machine.sending_enabled = mend
-		if(WIRE_RECIEVE)
+		if(WIRE_RECEIVE_FAXES)
 			machine.receiving_enabled = mend
 
 #undef FAX_COOLDOWN_TIME
 #undef FAX_UNREAD_ALERT_TIME
 #undef MAX_DISPLAYED_PAPER_CHARS
 
-#undef WIRE_SEND
-#undef WIRE_RECIEVE
+#undef WIRE_SEND_FAXES
+#undef WIRE_RECEIVE_FAXES
 #undef WIRE_PAPERWORK

@@ -3,7 +3,7 @@
 /datum/antagonist
 	/// Whether this antag can see exploitable info on examine.
 	var/antag_flags = CAN_SEE_EXPOITABLE_INFO
-	/// Whether we spawn with our equpiment or we wait to recieve it.
+	/// Whether we spawn with our equpiment or we wait to receive it.
 	var/finalize_antag = TRUE
 	/// The advanced antag datum we are linked to.
 	var/datum/advanced_antag_datum/linked_advanced_datum
