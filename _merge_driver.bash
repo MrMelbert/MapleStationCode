@@ -2,7 +2,7 @@
 
 # print all files that aren't ticked in tgstation.dme
 #
-# supply one argument: the directorly to search
+# supply one argument: the directory to search
 find_unticked_files (){
 
 	if [ ! -d $1 ]; then
@@ -53,7 +53,7 @@ find_unticked_files (){
 # find all files with merge conflicts in the supplied directory
 # if no non-module comments are present, automatically resolve the merge conflict (accept incoming)
 #
-# supply one argument: the directorly to search
+# supply one argument: the directory to search
 find_all_in_dir (){
 
 	if [ ! -d $1 ]; then
