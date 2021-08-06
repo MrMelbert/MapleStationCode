@@ -78,12 +78,20 @@ This module system edits the launch.json and the build.bat files so VSCODE can c
 
 # Upstream merge:
 
-The time has come for doom. Pull from upstream and pray. Things will probably be broken. Try to fix as many as possible. Merge conflicts will be likely. Try to solve them sensibly. When all's done, you need to update our jollystation.dme with the changes done to tgstation.dme by hand.
+The time has come for doom. Pull from upstream and pray.
 
-- Either manually copy-paste the new tgstation.dme over into jollystation.dme up to our files and you're done.
-- ...Or run _merge_update_dme.bash in gitbash, with the arguments of `<tgstation.dme>` and `<jollystation.dme>`.
+- Run ./_merge_driver.bash from gitbash (or any bash terminal, I guess) This will do a few things:
+	- A list of all unticked files in the code directory will be printed.
+		- Either delete the unticked files, or leave them if you desire.
+	- All files with merge conflict markers will be parsed through.
+		- All JSON files with merge conflicts will need to be resolved manually.
+		- All JS and DM files that don't have a modular comment will have its merge conflicts automatically resolved.
+		- All JS and DM files with a modular comment will need to be resolved manually.
+	- jollystation.dme will be updated to tgstation.dme automatically.
+	- build.js, if it was changed, will attempt to update automatically. Merge conflicts may persist in the file.
+- After the merge driver is ran, minor maintenance and resolving merge conflicts will be expected. Then, it's done.
 
-Everything should be set to try to compile. If there are errors, try to solve them. If it compiles and the game itself seems wonky, then probably call your local coder and cry.
+Everything should be set to try to compile. If there are errors, try to solve them. If it compiles and the game itself seems wonky, then call your local coder and cry.
 
 - Make sure that (to maintainers and Jolly) the commit message is not the garbled mess that it is. Change it. Please.
 
