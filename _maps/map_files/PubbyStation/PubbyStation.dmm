@@ -722,6 +722,7 @@
 /area/ai_monitored/turret_protected/ai_sat_ext_ap)
 "acX" = (
 /obj/machinery/computer/monitor,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/ai_sat_ext_ap)
 "acY" = (
@@ -765,6 +766,7 @@
 "adf" = (
 /obj/machinery/modular_computer/console/preset/civilian,
 /obj/machinery/light/small/directional/north,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/ai_sat_ext_as)
 "adg" = (
@@ -1684,6 +1686,7 @@
 /obj/structure/table,
 /obj/item/wrench,
 /obj/item/tank/internals/emergency_oxygen,
+/obj/machinery/airalarm/directional/south,
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/ai_sat_ext_ap)
 "afM" = (
@@ -12228,6 +12231,7 @@
 /area/maintenance/department/crew_quarters/bar)
 "aPz" = (
 /obj/effect/spawner/lootdrop/gross_decal_spawner,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -14410,6 +14414,9 @@
 "aXO" = (
 /obj/effect/landmark/event_spawn,
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/service/janitor)
 "aXP" = (
@@ -14714,6 +14721,9 @@
 	},
 /obj/machinery/door/firedoor,
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/service/janitor)
 "aYN" = (
@@ -15274,6 +15284,9 @@
 	id = "janigarage";
 	name = "Custodial Closet Shutters Control";
 	req_access_txt = "26"
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
 	},
 /turf/open/floor/iron,
 /area/service/janitor)
@@ -21000,6 +21013,7 @@
 /obj/structure/closet,
 /obj/item/stack/cable_coil,
 /obj/item/electronics/airalarm,
+/obj/machinery/airalarm/directional/west,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "bwu" = (
@@ -36540,6 +36554,10 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/white,
 /area/medical/storage)
+"fah" = (
+/obj/machinery/airalarm/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/security/brig)
 "faA" = (
 /obj/effect/landmark/blobstart,
 /obj/effect/decal/cleanable/dirt,
@@ -38083,6 +38101,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/plating,
 /area/maintenance/department/security/brig)
 "gum" = (
@@ -41615,6 +41634,11 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 4
 	},
+/obj/machinery/camera{
+	c_tag = "Security Post - Medbay";
+	dir = 8;
+	network = list("ss13","medbay")
+	},
 /turf/open/floor/iron,
 /area/security/checkpoint/medical)
 "kiw" = (
@@ -42127,11 +42151,6 @@
 /turf/open/floor/wood,
 /area/maintenance/department/engine)
 "kEb" = (
-/obj/machinery/camera{
-	c_tag = "Security Post - Medbay";
-	dir = 8;
-	network = list("ss13","medbay")
-	},
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
 	dir = 4
@@ -42766,6 +42785,7 @@
 	dir = 4
 	},
 /obj/structure/cable,
+/obj/machinery/airalarm/directional/south,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "ljT" = (
@@ -44420,6 +44440,10 @@
 /obj/item/clothing/head/mailman,
 /turf/open/floor/iron,
 /area/cargo/storage)
+"mTV" = (
+/obj/machinery/airalarm/directional/north,
+/turf/open/floor/iron/dark,
+/area/maintenance/department/engine)
 "mUt" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -47078,6 +47102,16 @@
 /obj/structure/musician/piano,
 /turf/open/floor/iron/dark,
 /area/service/abandoned_gambling_den)
+"plU" = (
+/obj/structure/grille/broken,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/airalarm/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/crew_quarters/bar)
 "pmv" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -47131,6 +47165,7 @@
 "ppx" = (
 /obj/effect/decal/remains/human,
 /obj/machinery/light/directional/east,
+/obj/machinery/airalarm/directional/east,
 /turf/open/floor/plating,
 /area/medical/abandoned)
 "ppQ" = (
@@ -47368,14 +47403,12 @@
 /turf/open/floor/iron/dark,
 /area/security/prison)
 "pEv" = (
-/obj/structure/disposalpipe/junction{
-	dir = 1
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
 /obj/machinery/duct,
+/obj/structure/disposalpipe/junction/flip,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
 "pEK" = (
@@ -47917,6 +47950,18 @@
 	},
 /turf/open/floor/iron/dark,
 /area/service/chapel/main/monastery)
+"qcB" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/airalarm/directional/north,
+/turf/open/floor/plating,
+/area/maintenance/department/crew_quarters/bar)
 "qcD" = (
 /obj/effect/turf_decal/tile/green{
 	dir = 1
@@ -50806,6 +50851,11 @@
 /obj/structure/lattice,
 /turf/open/space/basic,
 /area/space/nearstation)
+"sDV" = (
+/obj/machinery/recharge_station,
+/obj/machinery/airalarm/directional/south,
+/turf/open/floor/plating,
+/area/ai_monitored/turret_protected/ai_sat_ext_as)
 "sEx" = (
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
@@ -54627,6 +54677,9 @@
 "vOW" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
 /turf/open/floor/iron,
 /area/service/janitor)
 "vPa" = (
@@ -56813,6 +56866,7 @@
 /area/science/xenobiology)
 "xuv" = (
 /obj/item/broken_bottle,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/plating,
 /area/maintenance/solars/port)
 "xuy" = (
@@ -73712,7 +73766,7 @@ aiu
 aht
 aht
 aiu
-ajD
+fah
 ajD
 ajD
 ajD
@@ -78161,7 +78215,7 @@ bDf
 lsq
 aht
 bva
-bHQ
+mTV
 kjI
 bJg
 bKl
@@ -82735,7 +82789,7 @@ nJc
 aMW
 aOu
 aKJ
-wYH
+plU
 mUt
 mUt
 mUt
@@ -91218,7 +91272,7 @@ aLV
 aLV
 aKY
 aKY
-wbR
+qcB
 aPE
 aPE
 aPE
@@ -92199,7 +92253,7 @@ szb
 aeS
 szb
 ezt
-afS
+sDV
 acU
 abI
 aby
