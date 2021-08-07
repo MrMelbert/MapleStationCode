@@ -4,7 +4,7 @@
 /obj/item/reagent_containers/food/drinks
 	name = "drink"
 	desc = "yummy"
-	icon = 'icons/obj/drinks.dmi'
+	icon = 'jollystation_modules/icons/obj/drinks.dmi' // NON-MODULE CHANGE: repath to our own drinks.dmi
 	icon_state = null
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
@@ -148,7 +148,7 @@
 		return
 	var/obj/item/broken_bottle/B = new (loc)
 	B.icon_state = icon_state
-	var/icon/I = new('icons/obj/drinks.dmi', src.icon_state)
+	var/icon/I = new('jollystation_modules/icons/obj/drinks.dmi', src.icon_state) // NON-MODULE CHANGE: repath to our own drinks.dmi
 	I.Blend(B.broken_outline, ICON_OVERLAY, rand(5), 1)
 	I.SwapColor(rgb(255, 0, 220, 255), rgb(0, 0, 0, 0))
 	B.icon = I

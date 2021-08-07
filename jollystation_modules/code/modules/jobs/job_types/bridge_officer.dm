@@ -4,7 +4,7 @@
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list("Captain")
 	head_announce = list(RADIO_CHANNEL_COMMAND)
-	faction = "Station"
+	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the heads of staff and the captain"
@@ -25,6 +25,7 @@
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM) // QM normally has this, but since they're a head of staff now I put it here. C'est la vie.
 
 	display_order = JOB_DISPLAY_ORDER_BRIDGE_OFFICER
+	departments = DEPARTMENT_COMMAND
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
 
@@ -41,6 +42,9 @@
 		/obj/item/clothing/mask/whistle = 5,
 		/obj/item/storage/fancy/donut_box = 1,
 	)
+
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE
+	voice_of_god_power = 1.2 // Not quite command staff.
 
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"

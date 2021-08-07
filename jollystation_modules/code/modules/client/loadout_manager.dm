@@ -22,6 +22,10 @@
 	var/tutorial_status = FALSE
 	/// Our currently open greyscaling menu.
 	var/datum/greyscale_modify_menu/menu
+	/// Whether we need to update our dummy sprite next ui_data or not.
+	var/update_dummysprite = TRUE
+	/// Our preview sprite.
+	var/icon/dummysprite
 
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
@@ -32,8 +36,8 @@
 	loadout_to_outfit()
 
 /datum/loadout_manager/ui_close(mob/user)
-	sanitize_loadout_list(owner.prefs.loadout_list)
-	sanitize_greyscale_list(owner.prefs.greyscale_loadout_list)
+	owner.prefs.loadout_list = sanitize_loadout_list(owner.prefs.loadout_list)
+	owner.prefs.greyscale_loadout_list = sanitize_greyscale_list(owner.prefs.greyscale_loadout_list)
 	if(menu)
 		SStgui.close_uis(menu)
 		menu = null
@@ -67,6 +71,7 @@
 		// Turns the tutorial on and off.
 		if("toggle_tutorial")
 			tutorial_status = !tutorial_status
+			return TRUE
 
 		// Either equips or de-equips the params["path"] item into params["category"]
 		if("select_item")
@@ -81,8 +86,7 @@
 		// Clears the loadout list entirely.
 		if("clear_all_items")
 			owner.prefs.loadout_list.Cut()
-			if(owner.prefs.greyscale_loadout_list)
-				owner.prefs.greyscale_loadout_list = null
+			LAZYNULL(owner.prefs.greyscale_loadout_list)
 
 		// Toggles between viewing favorite job clothes on the dummy.
 		if("toggle_job_clothes")
@@ -105,6 +109,7 @@
 
 	// Always update our loadout after we do something.
 	loadout_to_outfit()
+	update_dummysprite = TRUE
 	return TRUE
 
 /// Select [path] item to [category_slot] slot. If it's not a greyscale item, clear the corresponding greyscale slot too.
@@ -203,9 +208,9 @@
 
 	var/list/colors = open_menu.split_colors
 	if(colors)
-		if(!owner.prefs.greyscale_loadout_list)
-			owner.prefs.greyscale_loadout_list = list()
+		LAZYINITLIST(owner.prefs.greyscale_loadout_list)
 		owner.prefs.greyscale_loadout_list[category_slot] = colors.Join("")
+	update_dummysprite = TRUE
 
 /// Clears [category_slot]'s greyscale colors.
 /datum/loadout_manager/proc/clear_slot_greyscale(category_slot)
@@ -214,10 +219,9 @@
 	if(!owner.prefs.greyscale_loadout_list[category_slot])
 		return
 
-	owner.prefs.greyscale_loadout_list[category_slot] = null
 	owner.prefs.greyscale_loadout_list -= category_slot
 	if(!owner.prefs.greyscale_loadout_list.len)
-		owner.prefs.greyscale_loadout_list = null
+		LAZYNULL(owner.prefs.greyscale_loadout_list)
 
 /// Rotate the dummy [DIR] direction, or reset it to SOUTH dir if we're showing all dirs at once.
 /datum/loadout_manager/proc/rotate_model_dir(dir)
@@ -254,16 +258,8 @@
 
 /datum/loadout_manager/ui_data(mob/user)
 	var/list/data = list()
-	if(!dummy_key)
-		init_dummy()
 
-	var/icon/dummysprite = get_flat_human_icon(null,
-		dummy_key = dummy_key,
-		outfit_override = custom_loadout,
-		showDirs = dummy_dir,
-		prefs = owner.prefs,
-		)
-	data["icon64"] = icon2base64(dummysprite)
+	data["icon64"] = generate_preview()
 
 	var/list/all_selected_paths = list()
 	for(var/path_id in owner.prefs.loadout_list)
@@ -307,6 +303,23 @@
 
 	return data
 
+/// Generate a flat icon preview of our user, if we need to update it.
+/datum/loadout_manager/proc/generate_preview()
+	if(!dummy_key)
+		init_dummy()
+
+	if(update_dummysprite)
+		dummysprite = get_flat_human_icon(
+			null,
+			dummy_key = dummy_key,
+			outfit_override = custom_loadout,
+			showDirs = dummy_dir,
+			prefs = owner.prefs,
+			)
+		update_dummysprite = FALSE
+
+	return icon2base64(dummysprite)
+
 /// Returns a formatted string for use in the UI.
 /datum/loadout_manager/proc/get_tutorial_text()
 	return {"This is the Loadout Manager.
@@ -333,7 +346,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 /datum/loadout_manager/proc/loadout_to_outfit()
 	var/datum/outfit/default_outfit
 	if(view_job_clothes)
-		var/datum/job/fav_job = SSjob.GetJob("Assistant")
+		var/datum/job/fav_job = SSjob.GetJobType(SSjob.overflow_role)
 		for(var/selected_job in owner.prefs.job_preferences)
 			if(owner.prefs.job_preferences[selected_job] == JP_HIGH)
 				fav_job = SSjob.GetJob(selected_job)

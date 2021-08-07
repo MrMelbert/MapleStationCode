@@ -1,0 +1,64 @@
+2021-08-02:
+  DAKKA-WAAAGH:
+  - rscadd: Casino emergency shuttle
+  EuSouAFazer:
+  - expansion: Kilostation Medbay's solar now starts with a Space Carp that cannot
+      destroy stuff.
+  - expansion: Kilostation Security's solar now doesn't have a solar computer, instead
+      having an empty computer frame and the circuitboard nearby. There is also 2
+      glass nearby as well.
+  - expansion: Kilostation Engineering's solar now starts partially built, with a
+      box with assembly and glass nearby.
+  Fikou:
+  - bugfix: grav anomalies will no longer permanently make you unclickable
+  - bugfix: reactive armor now properly updates its sprite on the mob
+  Ghommie:
+  - bugfix: Fixed e-bolas being unblockable, and not being able to ensnare flying/floating
+      mobs (though kinda pointless because they ignore the slowdown).
+  - bugfix: fixes being able to mind transfer into someone protected against it by
+      targetting their holoparasite/guardian.
+  - bugfix: All cargo manifest exports should now work as expected. No more gaining
+      money from selling erroneously denied manifests and not gaining/losing money
+      from incorrect manifests.
+  - bugfix: Fixes martial grab combos working while inside objects.
+  Guestify:
+  - bugfix: Replaces security newscasters with non security ones in non security rooms
+      on Tramstation
+  Melbert:
+  - bugfix: Glowshrooms created from spread now should behave like things that actually
+      exist again.
+  Nari Harimoto:
+  - bugfix: added missing air alarms on Tramstation in several areas that previously
+      had none
+  - bugfix: removed air alarms that was right next to each other in the same room
+      on Tramstation
+  - bugfix: Tramstation toxins now has proper firelock safety, no more toxin fires
+      breaking the windows into sci halls
+  - bugfix: Tramstation Kitchen Freezer now uses the proper area so the kitchen and
+      freezer air alarms dont control the same vents
+  Ryll/Shaps:
+  - bugfix: OOC heart commendations once again properly save and persist between rounds!
+  - bugfix: You can no longer sacrifice pAI shells as a cultist
+  SmArtKar:
+  - bugfix: Fixes unremovable components counting towards overall capacity. BCIs are
+      no longer 6 slot instead of 10
+  Timberpoes:
+  - bugfix: The detective's scanner should now always properly output the correct
+      data for scans and should no longer print out blank entries erroneously.
+  Watermelon914:
+  - refactor: Refactors the UI code of integrated circuits to be a lot less messy
+      and much more organised and to use much better practices to allow for better
+      features to be added.
+  - qol: Adds dragndrop functionality to integrated circuits so that you no longer
+      have to click to connect ports, you can drag instead.
+  aaaa1023:
+  - bugfix: Removes stray coldroom area tile in cryogenics, medbay central tiles under
+      medical and snaking chapel office line on chapel walls on Metastation.
+  bobbahbrown:
+  - bugfix: You may no longer circumvent config VAS protections by proxying proc calls.
+  coiax:
+  - bugfix: Ethereal players cannot erroneously revive during mafia games.
+  tralezab:
+  - bugfix: rev art now works correctly!
+  wesoda25:
+  - admin: Adds logging for cult reaching red eye and halo milestones

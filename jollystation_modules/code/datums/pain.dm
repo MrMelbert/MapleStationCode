@@ -17,7 +17,7 @@
 	var/list/body_zones = list()
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
 	var/natural_pain_decay = -0.2
-	/// The base amount of pain decay recieved.
+	/// The base amount of pain decay received.
 	var/base_pain_decay = -0.2
 	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
 	var/natural_decay_counter = 0
@@ -213,7 +213,7 @@
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
 			continue
 		if(adjusted_amount > 0)
-			adjusted_bodypart.last_recieved_pain_type = type
+			adjusted_bodypart.last_received_pain_type = type
 			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
 		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
 
@@ -398,7 +398,7 @@
 	adjust_bodypart_pain(def_zone, pain, damagetype)
 
 /*
- * Add pain in from a recieved wound based on severity.
+ * Add pain in from a received wound based on severity.
  *
  * source - source of the signal / the mob being wounded / parent
  * applied_wound - the wound being applied
@@ -777,7 +777,7 @@
 	VV_DROPDOWN_OPTION("set_limb_pain", "Adjust Limb Pain")
 	VV_DROPDOWN_OPTION("refresh_mod", "Refresh Pain Mod")
 
-/datum/pain/vv_do_topic(href_list)
+/datum/pain/vv_do_topic(list/href_list)
 	. = ..()
 	if(href_list["debug_pain"])
 		debug_print_pain()

@@ -1,7 +1,7 @@
 // -- Reagents that modify pain. --
 /datum/reagent
 	/// Modifier applied by this reagent to the mob's pain.
-	/// This is both a multiplicative modifier to their overall recieved pain,
+	/// This is both a multiplicative modifier to their overall received pain,
 	/// and an additive modifier to their per tick pain decay rate.
 	var/pain_modifier = null
 

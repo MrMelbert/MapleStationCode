@@ -6,3 +6,5 @@
 	icon = 'jollystation_modules/icons/obj/clothing/hats.dmi'
 	worn_icon = 'jollystation_modules/icons/mob/clothing/head.dmi'
 	icon_state = "boberetblack"
+	greyscale_config = null
+	greyscale_config_worn = null

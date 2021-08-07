@@ -114,7 +114,6 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\game\machinery\computer\medical.dm
 - code\game\machinery\computer\security.dm
 - code\game\objects\items\devices\PDA\PDA.dm
-- code\game\objects\items\implants\implantuplink.dm
 - code\game\objects\items\plushes.dm
 - code\game\objects\items\scanners.dm
 - code\modules\admin\create_mob.dm
@@ -123,8 +122,11 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\antagonists\traitor\datum_traitor.dm
 - code\modules\client\client_procs.dm
 - code\modules\client\preferences_savefile.dm
+- code\modules\client\preferences_toggles.dm
 - code\modules\client\preferences.dm
+- code\modules\food_and_drinks\drinks\drinks.dm
 - code\modules\food_and_drinks\drinks\drinks\bottle.dm
+- code\modules\food_and_drinks\recipes\drinks_recipes.dm
 - code\modules\jobs\jobs.dm
 - code\modules\jobs\job_types\_job.dm
 - code\modules\jobs\job_types\cargo_technician.dm
@@ -146,6 +148,10 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\surgery\organs\lungs.dm
 - code\modules\surgery\organs\tongue.dm
 - code\modules\unit_tests\heretic_knowledge.dm
+
+# Interface files with non-module comments
+- interface\interface.dm
+- interface\skin.dmf
 
 # Tools with non-module comments
 - tgui\packages\tgui\index.js
