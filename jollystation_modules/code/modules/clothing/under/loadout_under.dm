@@ -21,9 +21,13 @@
 	desc = "An almost pristine light-weight gladitorial armor set inspired by those the Ash Walkers wear. It's unarmored and looks very dated."
 
 /obj/item/clothing/under/color/greyscale
-	name = "greyscale jumpsuit"
+	name = "tailored jumpsuit"
+	desc = "A tailor made custom jumpsuit."
 	greyscale_colors = "#eeeeee"
+	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/under/color/jumpskirt/greyscale
-	name = "greyscale jumpskirt"
+	name = "tailored jumpskirt"
+	desc = "A tailor made custom jumpskirt."
 	greyscale_colors = "#eeeeee"
+	flags_1 = IS_PLAYER_COLORABLE_1
