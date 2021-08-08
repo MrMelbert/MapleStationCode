@@ -1,6 +1,6 @@
 // -- Bridge Officer job & outfit datum --
-/datum/job/bridge_officer
-	title = "Bridge Officer"
+/datum/job/asset_protection
+	title = "Asset Protection"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list("Captain")
 	head_announce = list(RADIO_CHANNEL_COMMAND)
@@ -16,11 +16,11 @@
 	exp_type_department = EXP_TYPE_COMMAND
 
 	outfit = /datum/outfit/job/bridge_officer
-	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel
+	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security
 
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_SEC
-	bounty_types = CIV_JOB_RANDOM
+	bounty_types = CIV_JOB_SEC
 
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM) // QM normally has this, but since they're a head of staff now I put it here. C'est la vie.
 
@@ -46,9 +46,9 @@
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE
 	voice_of_god_power = 1.1 // Not quite command staff.
 
-/datum/outfit/job/bridge_officer
-	name = "Bridge Officer"
-	jobtype = /datum/job/bridge_officer
+/datum/outfit/job/asset_protection
+	name = "Asset Protection"
+	jobtype = /datum/job/asset_protection
 
 	id = /obj/item/card/id/advanced/silver
 	belt = /obj/item/pda/heads/bridge_officer
@@ -62,6 +62,8 @@
 	suit_store = /obj/item/gun/energy/disabler
 	id_trim = /datum/id_trim/job/bridge_officer
 	box = /obj/item/storage/box/survival/security
+
+	implants = list(/obj/item/implant/mindshield)
 
 	backpack_contents = list(/obj/item/melee/classic_baton/telescopic = 1, /obj/item/modular_computer/tablet/preset/advanced/command = 1)
 

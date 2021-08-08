@@ -3776,6 +3776,7 @@
 #include "jollystation_modules\code\modules\hydroponics\grown\beans.dm"
 #include "jollystation_modules\code\modules\jobs\access.dm"
 #include "jollystation_modules\code\modules\jobs\job_types\_job.dm"
+#include "jollystation_modules\code\modules\jobs\job_types\asset_protection.dm"
 #include "jollystation_modules\code\modules\jobs\job_types\bridge_officer.dm"
 #include "jollystation_modules\code\modules\jobs\job_types\toxicologist.dm"
 #include "jollystation_modules\code\modules\jobs\job_types\xenobiologist.dm"
