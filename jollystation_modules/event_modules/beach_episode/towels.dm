@@ -17,10 +17,10 @@
 	layer = MOB_LAYER
 	// TODO
 	icon = 'icons/obj/bedsheets.dmi'
-	lefthand_file = 'icons/mob/inhands/misc/bedsheet_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/bedsheet_righthand.dmi'
+	lefthand_file = 'jollystation_modules/event_modules/beach_episode/icons/inhands_left.dmi'
+	righthand_file = 'jollystation_modules/event_modules/beach_episode/icons/inhands_right.dmi'
 	icon_state = "sheetwhite"
-	inhand_icon_state = "sheetwhite"
+	inhand_icon_state = "towel_hand"
 	/// Whether our tower is warm and comfy.
 	var/warm_towel = FALSE
 	/// The timer ID on our towel cooling.
