@@ -637,6 +637,13 @@
 /obj/machinery/newscaster/directional/east,
 /turf/open/floor/carpet/black,
 /area/security/prison/workout)
+"asI" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible{
+	dir = 4
+	},
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron/dark,
+/area/science/misc_lab)
 "asV" = (
 /obj/structure/table,
 /obj/item/kitchen/spoon/plastic,
@@ -3156,6 +3163,7 @@
 	name = "Gas to Chamber"
 	},
 /obj/machinery/firealarm/directional/north,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
 /area/science/misc_lab)
 "bCC" = (
@@ -28287,7 +28295,7 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/on/layer2{
 	dir = 1
 	},
-/turf/open/floor/plating,
+/turf/open/floor/plating/airless,
 /area/maintenance/central)
 "lwJ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -37541,6 +37549,10 @@
 /obj/structure/flora/ausbushes/sunnybush,
 /turf/open/floor/grass,
 /area/hallway/primary/central)
+"pYd" = (
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/science/research)
 "pYk" = (
 /obj/machinery/door/airlock/maintenance{
 	req_access_txt = "12"
@@ -54671,7 +54683,7 @@
 	dir = 1
 	},
 /obj/structure/disposaloutlet,
-/turf/open/floor/plating,
+/turf/open/floor/plating/airless,
 /area/maintenance/central)
 "xXX" = (
 /turf/closed/wall/r_wall,
@@ -99456,10 +99468,10 @@ abe
 iRJ
 iIM
 bwF
+pYd
 bwF
 bwF
-bwF
-bwF
+pYd
 bwF
 bwF
 iIM
@@ -101511,7 +101523,7 @@ hdc
 iRJ
 jZv
 bwr
-bDh
+asI
 cIn
 dJs
 cIn
