@@ -14098,6 +14098,10 @@
 	},
 /turf/open/floor/iron,
 /area/commons/storage/primary)
+"fSM" = (
+/obj/effect/spawner/randomcolavend,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "fTg" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -16567,14 +16571,18 @@
 	dir = 6;
 	network = list("ss13","rd")
 	},
+/obj/structure/table/glass,
+/obj/effect/spawner/lootdrop/refreshing_beverage,
 /turf/open/floor/iron/dark,
 /area/science/breakroom)
 "gLM" = (
 /obj/machinery/airalarm/directional/north,
+/obj/structure/chair/sofa,
 /turf/open/floor/iron/dark,
 /area/science/breakroom)
 "gLR" = (
 /obj/machinery/newscaster/directional/north,
+/obj/structure/chair/sofa/left,
 /turf/open/floor/iron/dark,
 /area/science/breakroom)
 "gLS" = (
@@ -17763,7 +17771,11 @@
 /obj/structure/chair/sofa/right,
 /obj/machinery/status_display/evac/directional/west,
 /obj/machinery/firealarm/directional/west,
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hig" = (
 /obj/structure/extinguisher_cabinet/directional/west,
@@ -17773,7 +17785,11 @@
 /obj/structure/chair/sofa,
 /obj/machinery/vending/wallmed/directional/north,
 /obj/machinery/newscaster/directional/north,
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hiF" = (
 /obj/structure/chair/sofa/corner,
@@ -17781,7 +17797,11 @@
 	c_tag = "Medbay - Breakroom";
 	network = list("ss13","medbay")
 	},
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hiJ" = (
 /turf/closed/wall,
@@ -17928,6 +17948,7 @@
 	pixel_x = 30;
 	receive_ore_updates = 1
 	},
+/obj/machinery/vending/coffee,
 /turf/open/floor/iron/dark,
 /area/science/breakroom)
 "hml" = (
@@ -18396,23 +18417,33 @@
 /area/medical/psychology)
 "hyN" = (
 /obj/machinery/light/directional/west,
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 4
-	},
 /obj/item/radio/intercom/directional/west,
-/turf/open/floor/iron/cafeteria,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hyP" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/start/paramedic,
-/turf/open/floor/iron/cafeteria,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hyT" = (
 /obj/structure/chair/sofa/left{
 	dir = 8
 	},
 /obj/machinery/airalarm/directional/east,
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hyV" = (
 /obj/structure/table,
@@ -19079,20 +19110,33 @@
 /obj/structure/sign/poster/official/random{
 	pixel_x = -32
 	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/table,
 /obj/machinery/microwave{
 	pixel_y = 4
 	},
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hLA" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/landmark/start/medical_doctor,
-/turf/open/floor/iron/cafeteria,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hLM" = (
 /obj/effect/spawner/randomsnackvend,
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "hMj" = (
 /obj/structure/table,
@@ -19671,26 +19715,38 @@
 /turf/open/floor/iron,
 /area/engineering/atmos/experiment_room)
 "iaz" = (
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 4
-	},
 /obj/machinery/light_switch{
 	pixel_x = -20;
 	pixel_y = 11
 	},
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/west,
-/turf/open/floor/iron/cafeteria,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/table,
+/obj/effect/spawner/lootdrop/donkpockets,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "iaB" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "ibg" = (
 /obj/effect/spawner/randomcolavend,
-/turf/open/floor/iron/cafeteria,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
 /area/medical/break_room)
 "iby" = (
 /obj/structure/disposalpipe/segment,
@@ -19796,15 +19852,7 @@
 /turf/open/floor/iron/dark,
 /area/science/breakroom)
 "icM" = (
-/obj/effect/turf_decal/loading_area{
-	dir = 1
-	},
-/obj/structure/cable,
-/obj/machinery/light_switch{
-	pixel_x = 22;
-	pixel_y = 11
-	},
-/obj/machinery/power/apc/auto_name/east,
+/obj/item/kirbyplants/random,
 /turf/open/floor/iron/dark,
 /area/science/breakroom)
 "icN" = (
@@ -20222,6 +20270,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
+/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
 /turf/open/floor/iron/cafeteria,
 /area/medical/break_room)
 "ilM" = (
@@ -20419,6 +20471,7 @@
 /obj/effect/turf_decal/siding/purple{
 	dir = 1
 	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/science/research)
 "ioj" = (
@@ -24932,6 +24985,10 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/white,
 /area/medical/treatment_center)
+"jYH" = (
+/obj/structure/cable,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "jYI" = (
 /obj/machinery/medical_kiosk,
 /obj/structure/cable,
@@ -25163,6 +25220,10 @@
 "kcg" = (
 /turf/open/openspace,
 /area/service/hydroponics)
+"kci" = (
+/obj/structure/table/glass,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "kcp" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod C";
@@ -27906,6 +27967,11 @@
 /obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
+"lhE" = (
+/obj/effect/spawner/lootdrop/donkpockets,
+/obj/structure/table/glass,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "lhU" = (
 /obj/structure/chair/office/light{
 	dir = 8
@@ -32088,6 +32154,13 @@
 	name = "black plastitanium floor"
 	},
 /area/service/bar)
+"nlB" = (
+/obj/machinery/microwave{
+	pixel_y = 4
+	},
+/obj/structure/table/glass,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "nlD" = (
 /obj/effect/landmark/start/bartender,
 /turf/open/floor/mineral/plastitanium{
@@ -37499,6 +37572,12 @@
 /obj/machinery/door/airlock/maintenance,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
+"pQf" = (
+/obj/structure/cable,
+/obj/machinery/power/apc/auto_name/east,
+/obj/effect/spawner/randomsnackvend,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "pQh" = (
 /turf/open/floor/plating{
 	icon_state = "platingdmg1"
@@ -43141,6 +43220,13 @@
 /obj/effect/spawner/lootdrop/grille_or_trash,
 /turf/open/floor/plating,
 /area/maintenance/starboard/aft)
+"snB" = (
+/obj/structure/cable,
+/obj/machinery/door/airlock/research{
+	name = "Science Breakroom"
+	},
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "snR" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/grille,
@@ -47964,6 +48050,10 @@
 /obj/structure/cable,
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain)
+"uCb" = (
+/obj/structure/chair/sofa/right,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "uCi" = (
 /mob/living/simple_animal/pet/fox/renault,
 /obj/structure/bed/dogbed/renault,
@@ -54788,6 +54878,10 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
 /area/hallway/secondary/exit/departure_lounge)
+"xTw" = (
+/obj/structure/chair/office/light,
+/turf/open/floor/iron/dark,
+/area/science/breakroom)
 "xTy" = (
 /obj/structure/window{
 	dir = 1
@@ -164540,12 +164634,12 @@ fVE
 gfX
 cSB
 sLC
+icM
 icD
-icD
-icD
-icD
-icD
-icD
+xTw
+kci
+nlB
+gKA
 ioc
 izF
 iJw
@@ -164801,8 +164895,8 @@ gLs
 icD
 icD
 icD
-icD
-icD
+lhE
+gKA
 ioc
 izH
 iJw
@@ -165054,12 +165148,12 @@ fVW
 bHW
 bHW
 sLC
+uCb
 icD
 icD
-icD
-icD
-icD
-icD
+jYH
+jYH
+snB
 ioh
 izI
 iJx
@@ -165314,9 +165408,9 @@ sLC
 gLM
 icD
 icD
+jYH
 icD
-icD
-icD
+gKA
 ioj
 izL
 iJz
@@ -165571,9 +165665,9 @@ sLC
 gLR
 gVX
 hme
-icD
-icD
-icM
+pQf
+fSM
+gKA
 ioQ
 izT
 iJz
