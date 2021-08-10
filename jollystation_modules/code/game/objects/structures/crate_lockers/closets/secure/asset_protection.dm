@@ -5,7 +5,7 @@
 	name = "\proper asset protection's locker"
 	req_access = list(ACCESS_HEADS)
 	icon = 'jollystation_modules/icons/obj/locker.dmi'
-	icon_state = "bo"
+	icon_state = "ap"
 
 /obj/structure/closet/secure_closet/asset_protection/PopulateContents()
 	. = ..()
