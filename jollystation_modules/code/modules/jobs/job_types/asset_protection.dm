@@ -54,10 +54,10 @@
 	ears = /obj/item/radio/headset/heads/asset_protection/alt
 	glasses = /obj/item/clothing/glasses/hud/security/sunglasses
 	gloves = /obj/item/clothing/gloves/color/black
-	uniform = /obj/item/clothing/under/rank/security/bridge_officer/black
+	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
 	shoes = /obj/item/clothing/shoes/jackboots
 	head = /obj/item/clothing/head/beret/black/bridge_officer
-	suit = /obj/item/clothing/suit/armor/vest/bridge_officer
+	suit = /obj/item/clothing/suit/armor/vest/asset_protection
 	suit_store = /obj/item/gun/energy/disabler
 	id_trim = /datum/id_trim/job/asset_protection
 	box = /obj/item/storage/box/survival/security

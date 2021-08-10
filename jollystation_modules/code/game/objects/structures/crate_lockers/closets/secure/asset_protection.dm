@@ -10,15 +10,15 @@
 /obj/structure/closet/secure_closet/asset_protection/PopulateContents()
 	. = ..()
 	new /obj/item/clothing/under/rank/security/bridge_officer/black/skirt (src)
-	new /obj/item/clothing/under/rank/security/bridge_officer/black(src)
+	new /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection(src)
 	new /obj/item/clothing/under/rank/security/bridge_officer(src)
 	new /obj/item/clothing/gloves/color/black(src)
 	new /obj/item/clothing/shoes/jackboots(src)
-	new /obj/item/radio/headset/heads/bridge_officer(src)
+	new /obj/item/radio/headset/heads/asset_protection(src)
 	new /obj/item/clothing/head/beret/black/bridge_officer(src)
 	new /obj/item/clothing/glasses/sunglasses/garb(src)
-	new /obj/item/clothing/suit/armor/vest/bridge_officer(src)
-	new /obj/item/clothing/suit/armor/vest/bridge_officer/large(src)
+	new /obj/item/clothing/suit/armor/vest/asset_protection(src)
+	new /obj/item/clothing/suit/armor/vest/asset_protection/large(src)
 	new /obj/item/megaphone/command(src)
 	new /obj/item/cartridge/hos(src)
 	new /obj/item/assembly/flash/handheld(src)
@@ -26,7 +26,7 @@
 
 // Asset Protection album for their locker
 /obj/item/storage/photo_album/ap
-	name = "photo album (Bridge Officer)"
+	name = "photo album (Asset Protection)"
 	icon_state = "album_red"
 	persistence_id = "AP"
 
