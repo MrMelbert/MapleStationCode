@@ -15,7 +15,6 @@
 	new /obj/item/clothing/shoes/jackboots(src)
 	new /obj/item/radio/headset/heads/asset_protection(src)
 	new /obj/item/clothing/head/beret/black/asset_protection(src)
-	new /obj/item/clothing/glasses/sunglasses/garb(src)
 	new /obj/item/clothing/suit/armor/vest/asset_protection(src)
 	new /obj/item/clothing/suit/armor/vest/asset_protection/large(src)
 	new /obj/item/megaphone/command(src)

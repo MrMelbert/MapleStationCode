@@ -18,11 +18,11 @@
 	new /obj/item/clothing/head/beret/black/bridge_officer(src)
 	new /obj/item/clothing/glasses/sunglasses/garb(src)
 	new /obj/item/clothing/suit/armor/vest/bridge_officer(src)
-	new /obj/item/clothing/suit/armor/vest/bridge_officer/large(src)
 	new /obj/item/megaphone/command(src)
 	new /obj/item/cartridge/hop(src)
 	new /obj/item/assembly/flash/handheld(src)
 	new /obj/item/storage/photo_album/bo(src)
+	new /obj/item/storage/box/fountainpens(src)
 
 // Bridge Officer album for their locker
 /obj/item/storage/photo_album/bo
