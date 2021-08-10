@@ -56,7 +56,6 @@
 	gloves = /obj/item/clothing/gloves/color/black
 	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
 	shoes = /obj/item/clothing/shoes/jackboots
-	head = /obj/item/clothing/head/beret/black/bridge_officer
 	suit = /obj/item/clothing/suit/armor/vest/asset_protection
 	suit_store = /obj/item/gun/energy/disabler
 	id_trim = /datum/id_trim/job/asset_protection

@@ -36,3 +36,8 @@
 	armor = list(MELEE = 15, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 50, WOUND = 5)
 	sensor_mode = SENSOR_COORDS
 	can_adjust = FALSE
+
+/obj/item/clothing/under/rank/security/officer/grey/asset_protection
+	name = "grey asset protection suit"
+	desc = "It gives you unease, the grey. But hey, that tie looks swanky! ..Is it even a tie?"
+	armor = list(MELEE = 15, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 50, WOUND = 5)

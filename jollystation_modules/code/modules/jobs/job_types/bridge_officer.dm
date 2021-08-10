@@ -53,7 +53,7 @@
 	belt = /obj/item/pda/heads/bridge_officer
 	ears = /obj/item/radio/headset/heads/bridge_officer
 	glasses = /obj/item/clothing/glasses/sunglasses
-	gloves = /obj/item/clothing/gloves/color/black
+	gloves = /obj/item/clothing/gloves/color/white
 	uniform = /obj/item/clothing/under/rank/security/bridge_officer/black
 	shoes = /obj/item/clothing/shoes/laceup
 	head = /obj/item/clothing/head/beret/black/bridge_officer
