@@ -1,5 +1,6 @@
 GLOBAL_LIST_INIT(command_positions, list(
 	"Captain",
+	"Asset Protection", // NON-MODULE CHANGE
 	"Bridge Officer", // NON-MODULE CHANGE
 	"Head of Personnel",
 	"Head of Security",

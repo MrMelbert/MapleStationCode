@@ -3737,6 +3737,7 @@
 #include "jollystation_modules\code\game\objects\structures\fluff.dm"
 #include "jollystation_modules\code\game\objects\structures\static_plaques.dm"
 #include "jollystation_modules\code\game\objects\structures\crate_lockers\crates.dm"
+#include "jollystation_modules\code\game\objects\structures\crate_lockers\closets\secure\asset_protection.dm"
 #include "jollystation_modules\code\game\objects\structures\crate_lockers\closets\secure\bridge_officer.dm"
 #include "jollystation_modules\code\modules\admin\smites\pain_smite.dm"
 #include "jollystation_modules\code\modules\antagonists\_common\advanced_antag.dm"

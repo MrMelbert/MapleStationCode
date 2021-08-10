@@ -9,9 +9,16 @@
 // Bridge Officer PDA.
 /obj/item/pda/heads/bridge_officer
 	name = "bridge officer PDA"
-	default_cartridge = /obj/item/cartridge/hos
+	default_cartridge = /obj/item/cartridge/hop
 	greyscale_config = /datum/greyscale_config/pda/head
 	greyscale_colors = "#99ccff#000099"
+
+// Asset Protection PDA.
+/obj/item/pda/heads/asset_protection
+	name = "asset protection PDA"
+	default_cartridge = /obj/item/cartridge/hos
+	greyscale_config = /datum/greyscale_config/pda/head
+	greyscale_colors = "#99ccff#d91a40"
 
 /// QM PDA, with head of staff stripe.
 /obj/item/pda/quartermaster
