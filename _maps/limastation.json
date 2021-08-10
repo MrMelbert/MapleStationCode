@@ -11,12 +11,12 @@
 	},
 	"traits": [
 		{
-			"Up": 1,
-			"Baseturf": "/turf/open/space/basic"
+			"Down": 1,
+			"Baseturf": "/turf/open/openspace"
 		},
 		{
-			"Down": -1,
-			"Baseturf": "/turf/open/openspace"
+			"Up": -1,
+			"Baseturf": "/turf/open/space/basic"
 		}
 	],
 	"job_changes": {
