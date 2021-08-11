@@ -29,17 +29,18 @@
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
 
 	mail_goodies = list(
-		/obj/item/clothing/mask/cigarette/cigar/havana = 10,
-		/obj/item/reagent_containers/food/drinks/bottle/champagne = 10,
 		/obj/item/food/donut/choco = 10,
 		/obj/item/food/donut/apple = 10,
+		/obj/item/reagent_containers/food/drinks/coffee = 10,
 		/obj/item/food/donut/blumpkin = 5,
 		/obj/item/food/donut/caramel = 5,
 		/obj/item/food/donut/berry = 5,
 		/obj/item/food/donut/matcha = 5,
 		/obj/item/storage/fancy/cigarettes/cigars/havana = 5,
 		/obj/item/clothing/mask/whistle = 5,
-		/obj/item/storage/fancy/donut_box = 1,
+		/obj/item/reagent_containers/food/drinks/mug/tea = 5,
+		/obj/item/reagent_containers/food/drinks/mug/coco = 1,
+		/obj/item/storage/box/office_supplies = 1,
 	)
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE
