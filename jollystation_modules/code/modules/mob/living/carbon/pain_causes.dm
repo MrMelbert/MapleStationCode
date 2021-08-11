@@ -27,7 +27,6 @@
 		// We have to snowflake this because replace_limb uses SPECIAL = TRUE when replacing limbs (which doesn't cause pain because I hate limb code)
 		target.cause_pain(target_zone, initial(tool.pain))
 		target.cause_pain(BODY_ZONE_CHEST, PAIN_LIMB_REMOVED)
-		//TODO: make this a status effect instead (post augment fatigue?)
 		target.apply_min_pain(target_zone, 15, 2 MINUTES)
 
 // Disease symptoms
@@ -73,8 +72,7 @@
 	if(!.)
 		return
 
-	var/pain = . / max(bodyparts.len, 2)
-	sharp_pain(BODY_ZONES_ALL, pain, BURN)
+	sharp_pain(BODY_ZONES_ALL, min((. / 2), 25), BURN)
 	set_timed_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
 
 // Fleshmend of course heals pain.

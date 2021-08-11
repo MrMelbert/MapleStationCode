@@ -16,7 +16,7 @@
 /// Cause [amount] pain of default (BRUTE) damage type to [target_zone]
 #define cause_pain(target_zone, amount) pain_controller?.adjust_bodypart_pain(target_zone, amount)
 /// Cause [amount] pain of [type] damage type to [target_zone]
-#define cause_typed_pain(target_zone, amount, type) pain_controller?.adjust_bodypart_pain(target_zone, amount, type)
+#define cause_typed_pain(target_zone, amount, dam_type) pain_controller?.adjust_bodypart_pain(target_zone, amount, dam_type)
 /// Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.
 #define pain_emote(emote, cooldown) pain_controller?.do_pain_emote(emote, cooldown)
 /// Increase the minimum amount of pain [zone] can have for [time]
@@ -27,14 +27,14 @@
 #define unset_pain_mod(id) pain_controller?.unset_pain_modifier(id)
 
 /*
- * Cause [amount] of [type] sharp pain to [target_zones].
+ * Cause [amount] of [dam_type] sharp pain to [target_zones].
  * Sharp pain is for sudden spikes of pain that go away after [duration] deciseconds.
  */
-/mob/living/carbon/proc/sharp_pain(target_zones, amount = 0, type = BRUTE, duration = 2 MINUTES)
+/mob/living/carbon/proc/sharp_pain(target_zones, amount = 0, dam_type = BRUTE, duration = 2 MINUTES)
 	if(!islist(target_zones))
 		target_zones = list(target_zones)
 	for(var/zone in target_zones)
-		apply_status_effect(STATUS_EFFECT_SHARP_PAIN, zone, amount, type, duration)
+		apply_status_effect(STATUS_EFFECT_SHARP_PAIN, zone, amount, dam_type, duration)
 
 /*
  * Set [id] pain modifier to [amount], and

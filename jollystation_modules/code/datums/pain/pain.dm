@@ -194,7 +194,7 @@
  * def_zones - list of all zones being adjusted. Can be passed a non-list.
  * amount - amount of pain being applied to all items in [def_zones]. If posiitve, multiplied by [pain_modifier].
  */
-/datum/pain/proc/adjust_bodypart_pain(list/def_zones, amount = 0, type = BRUTE)
+/datum/pain/proc/adjust_bodypart_pain(list/def_zones, amount = 0, dam_type = BRUTE)
 	SHOULD_NOT_SLEEP(TRUE) // This needs to be asyncronously called in a lot of places, it should already check that this doesn't sleep but just in case.
 
 	if(!islist(def_zones))
@@ -214,14 +214,14 @@
 		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
 			continue
 		if(adjusted_amount > 0)
-			adjusted_bodypart.last_received_pain_type = type
+			adjusted_bodypart.last_received_pain_type = dam_type
 			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
 		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
 
 		if(adjusted_amount > 0)
-			INVOKE_ASYNC(src, .proc/on_pain_gain, adjusted_bodypart, amount, type)
+			INVOKE_ASYNC(src, .proc/on_pain_gain, adjusted_bodypart, amount, dam_type)
 		else if(adjusted_amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-			INVOKE_ASYNC(src, .proc/on_pain_loss, adjusted_bodypart, amount, type)
+			INVOKE_ASYNC(src, .proc/on_pain_loss, adjusted_bodypart, amount, dam_type)
 
 		if(debugging)
 			message_admins("DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")

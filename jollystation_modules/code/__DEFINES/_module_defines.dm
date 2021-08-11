@@ -58,3 +58,6 @@ GLOBAL_LIST_INIT(loadout_slots, list(
 
 /// Modular traits
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"
+
+/// QDEL macro that qdel's an item if it exists.
+#define QDEL_IF(item) if(item) { qdel(item); }
