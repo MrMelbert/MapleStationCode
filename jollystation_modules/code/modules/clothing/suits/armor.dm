@@ -2,7 +2,7 @@
 // BO Armor
 /obj/item/clothing/suit/armor/vest/bridge_officer
 	name = "bridge officer's armor vest"
-	desc = "A rigid vest of armor worn by Bridge Officers in tandem with their padded suits. Style and protection!"
+	desc = "A somewhat flexible but stiff suit of armor. It reminds you of a simplier time."
 	armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 20, BOMB = 15, BIO = 0, RAD = 0, FIRE = 100, ACID = 90, WOUND = 10)
 
 //Unused, but we're keeping it

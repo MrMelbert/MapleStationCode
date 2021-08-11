@@ -3,7 +3,7 @@
 // Box of office supplies; goes in the BO locker
 /obj/item/storage/box/office_supplies
 	name = "box of office supplies"
-	desc = "Sometimes you got the itch to go buy a new pen. Don't, your box has you covered."
+	desc = "Sometimes you get the itch to go buy a new pen. Don't, your box has you covered."
 
 /obj/item/storage/box/office_supplies/PopulateContents()
 	new /obj/item/pen/red(src)
