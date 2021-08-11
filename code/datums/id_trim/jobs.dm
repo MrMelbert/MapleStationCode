@@ -370,7 +370,7 @@
 
 /datum/id_trim/job/quartermaster
 	assignment = "Quartermaster"
-	trim_icon = 'jollystation_modules/icons/obj/card.dmi' // NON-MODULE CHANGE
+	trim_icon = 'jollystation_modules/icons/obj/card.dmi' // NON-MODULE CHANGE, viva
 	trim_state = "trim_quartermaster"
 	full_access = list(ACCESS_MAINT_TUNNELS, ACCESS_MAILSORTING, ACCESS_CARGO, ACCESS_QM, ACCESS_MINING, ACCESS_MECH_MINING, ACCESS_MINING_STATION,
 					ACCESS_MINERAL_STOREROOM, ACCESS_VAULT, ACCESS_AUX_BASE, ACCESS_RC_ANNOUNCE, ACCESS_HEADS, ACCESS_SEC_DOORS, ACCESS_SECURITY, ACCESS_ENGINE, ACCESS_RND, ACCESS_RESEARCH) // NON-MODULE CHANGES
