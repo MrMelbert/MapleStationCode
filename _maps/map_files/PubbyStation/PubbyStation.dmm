@@ -36734,6 +36734,7 @@
 "fep" = (
 /obj/structure/table/wood,
 /obj/item/storage/fancy/donut_box,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "fer" = (
