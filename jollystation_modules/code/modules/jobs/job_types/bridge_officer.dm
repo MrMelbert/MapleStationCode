@@ -58,11 +58,10 @@
 	uniform = /obj/item/clothing/under/rank/security/bridge_officer/black
 	shoes = /obj/item/clothing/shoes/laceup
 	head = /obj/item/clothing/head/beret/black/bridge_officer
-	r_pocket = /obj/item/gun/energy/disabler
 	id_trim = /datum/id_trim/job/bridge_officer
 	box = /obj/item/storage/box/survival
 
-	backpack_contents = list(/obj/item/melee/classic_baton/telescopic = 1, /obj/item/modular_computer/tablet/preset/advanced/command = 1)
+	backpack_contents = list(/obj/item/melee/classic_baton/telescopic = 1, /obj/item/modular_computer/tablet/preset/advanced/command = 1, /obj/item/gun/energy/disabler = 1)
 
 /datum/outfit/job/bridge_officer/pre_equip(mob/living/carbon/human/H)
 	..()
