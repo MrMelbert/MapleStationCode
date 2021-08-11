@@ -79,7 +79,7 @@
 			cure_text = "Subject is in stage one of shock. Provide immediate pain relief and stop blood loss to prevent worsening condition."
 			if(DT_PROB(0.5, delta_time))
 				to_chat(affected_mob, span_danger("Your chest feels uncomfortable."))
-				affected_mob.pain_emote(pick("mumble", "grumble"))
+				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
 				affected_mob.flash_pain_overlay(1)
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_danger("You feel nauseous."))
@@ -90,7 +90,7 @@
 				affected_mob.jitteriness += rand(6,8)
 			if(DT_PROB(6, delta_time))
 				to_chat(affected_mob, span_danger("You feel cold."))
-				affected_mob.pain_emote("shiver")
+				affected_mob.pain_emote("shiver", 3 SECONDS)
 			affected_mob.adjust_bodytemperature(-5 * delta_time, affected_mob.get_body_temp_cold_damage_limit() + 5) // Not lethal
 
 		// decompensated (or progressive) - unable to maintain themselves
@@ -101,7 +101,7 @@
 			cure_text = "Subject is in stage two of shock. Provide additional pain relief, assist in maintaining a high body temperature and stop further blood loss to prevent cardiac arrest."
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_danger("Your chest feels wrong!"))
-				affected_mob.pain_emote(pick("mumble", "grumble"))
+				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
 				affected_mob.flash_pain_overlay(2)
 			if(DT_PROB(2, delta_time))
 				to_chat(affected_mob, span_danger("You can't focus on anything!"))
@@ -111,11 +111,11 @@
 				affected_mob.losebreath = clamp(affected_mob.losebreath + 4, 0, 12)
 			if(DT_PROB(2, delta_time))
 				to_chat(affected_mob, span_danger("You skip a breath!"))
-				affected_mob.pain_emote("gasp")
+				affected_mob.pain_emote("gasp", 3 SECONDS)
 				affected_mob.apply_damage(rand(5, 15), OXY)
 			if(DT_PROB(8, delta_time))
 				to_chat(affected_mob, span_danger("You feel freezing!"))
-				affected_mob.pain_emote("shiver")
+				affected_mob.pain_emote("shiver", 3 SECONDS)
 			affected_mob.adjust_bodytemperature(-10 * delta_time, affected_mob.get_body_temp_cold_damage_limit() - 5) // uh oh
 
 		// irreversible - point of no return, system failure

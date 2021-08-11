@@ -61,10 +61,10 @@
 		return
 	switch(A.stage)
 		if(4)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 5, BURN)
+			A.affected_mob.cause_typed_pain(BODY_ZONES_ALL, 5, BURN)
 			A.affected_mob.flash_pain_overlay(1)
 		if(5)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 10, BURN)
+			A.affected_mob.cause_typed_pain(BODY_ZONES_ALL, 10, BURN)
 			A.affected_mob.flash_pain_overlay(2)
 
 // Shocks
@@ -75,7 +75,7 @@
 
 	var/pain = . / max(bodyparts.len, 2)
 	sharp_pain(BODY_ZONES_ALL, pain, BURN)
-	set_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
+	set_timed_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
 
 // Fleshmend of course heals pain.
 /datum/status_effect/fleshmend/tick()

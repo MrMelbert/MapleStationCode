@@ -87,7 +87,7 @@
 	. = ..()
 	var/power = -0.00003 * (M.bodytemperature ** 2) + 3
 	if(M.bodytemperature < T0C)
-		M.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * delta_time, 0.01)
+		M.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * delta_time)
 
 /datum/reagent/medicine/stimulants
 	pain_modifier = 0.5
