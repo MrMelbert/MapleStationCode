@@ -38291,12 +38291,12 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/hop)
 "qxL" = (
-/obj/machinery/door/window{
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/window/southleft{
 	name = "Gateway Chamber";
 	req_access_txt = "62"
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/command/gateway)
 "qxT" = (
