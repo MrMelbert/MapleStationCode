@@ -23,13 +23,13 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 /obj/effect/landmark/start/bridge_officer
 	name = "Bridge Officer"
 	icon = 'jollystation_modules/icons/mob/landmarks.dmi'
-	icon_state = "Bridgeofficer"
+	icon_state = "BridgeOfficer"
 
 // AP start location
 /obj/effect/landmark/start/asset_protectionasset_protection
 	name = "Asset Protection"
 	icon = 'jollystation_modules/icons/mob/landmarks.dmi'
-	icon_state = "Bridgeofficer"
+	icon_state = "AssetProtection"
 
 // Landmark for mapping in Bridge Officer equipment.
 // Use this in place of manually mapping it in - this allows us to track all Bridge Officer lockers in the world.
