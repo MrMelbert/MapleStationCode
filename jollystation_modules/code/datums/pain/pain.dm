@@ -484,7 +484,7 @@
 			if(unset_pain_modifier(PAIN_MOD_OFF_STATION))
 				to_chat(parent, span_notice("Returning to the station, you feel much more vulnerable to incoming pain."))
 		else
-			if(set_pain_modifier(PAIN_MOD_OFF_STATION, 0.6))
+			if(isturf(parent.loc) && set_pain_modifier(PAIN_MOD_OFF_STATION, 0.6))
 				to_chat(parent, span_notice("As you depart from the station, you feel more resilient to incoming pain."))
 
 	if(parent.IsSleeping())
