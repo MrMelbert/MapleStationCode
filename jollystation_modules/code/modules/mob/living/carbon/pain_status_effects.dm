@@ -116,7 +116,7 @@
 
 /datum/status_effect/sharp_pain/on_remove()
 	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	if(!afflicted_bodypart)
 		return
 
@@ -163,7 +163,7 @@
 
 /datum/status_effect/minimum_bodypart_pain/on_remove()
 	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	if(!afflicted_bodypart)
 		return
 
@@ -279,7 +279,7 @@
 
 /datum/status_effect/temperature_pack/on_remove()
 	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	held_bodypart?.bodypart_pain_modifier /= pain_modifier
 	QDEL_IF(pressed_item.GetComponent(/datum/component/make_item_slow))
 	UnregisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
