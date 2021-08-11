@@ -2764,7 +2764,7 @@
 	dir = 4
 	},
 /obj/machinery/door/window/southleft{
-	name = "shower"
+	name = "Shower"
 	},
 /obj/machinery/light/floor,
 /turf/open/floor/iron/freezer,
@@ -4782,24 +4782,6 @@
 /turf/open/floor/grass,
 /area/security/courtroom)
 "ctv" = (
-/obj/item/radio/intercom{
-	freerange = 1;
-	name = "Common Channel";
-	pixel_y = 21
-	},
-/obj/item/radio/intercom{
-	freerange = 1;
-	listening = 0;
-	name = "Custom Channel";
-	pixel_x = -27;
-	pixel_y = -3
-	},
-/obj/item/radio/intercom{
-	freerange = 1;
-	frequency = 1447;
-	name = "Private Channel";
-	pixel_y = -27
-	},
 /obj/effect/landmark/start/ai,
 /obj/machinery/button/door{
 	id = "AI Core shutters";
@@ -4814,6 +4796,20 @@
 	pixel_x = -8;
 	pixel_y = -34;
 	req_access_txt = "16"
+	},
+/obj/item/radio/intercom/directional/north{
+	freerange = 1;
+	name = "Common Channel"
+	},
+/obj/item/radio/intercom/directional/west{
+	freerange = 1;
+	listening = 0;
+	name = "Custom Channel"
+	},
+/obj/item/radio/intercom/directional/south{
+	freerange = 1;
+	frequency = 1447;
+	name = "Private Channel"
 	},
 /turf/open/floor/circuit/green,
 /area/ai_monitored/turret_protected/ai)
@@ -8666,9 +8662,7 @@
 /area/science/mixing/chamber)
 "ekh" = (
 /obj/structure/cable,
-/obj/machinery/status_display/ai{
-	pixel_x = 32
-	},
+/obj/machinery/status_display/ai/directional/east,
 /turf/open/floor/circuit,
 /area/ai_monitored/turret_protected/ai)
 "eku" = (
@@ -12015,34 +12009,24 @@
 /area/maintenance/fore)
 "fFM" = (
 /obj/effect/landmark/start/ai/secondary,
-/obj/item/radio/intercom{
-	freerange = 1;
-	listening = 0;
-	name = "Custom Channel";
-	pixel_x = 27;
-	pixel_y = -3
-	},
-/obj/item/radio/intercom{
-	freerange = 1;
-	name = "Common Channel";
-	pixel_y = -27
-	},
-/obj/item/radio/intercom{
-	freerange = 1;
-	frequency = 1447;
-	name = "Private Channel";
-	pixel_x = -27;
-	pixel_y = -3
-	},
-/obj/machinery/door/window{
-	base_state = "leftsecure";
-	dir = 1;
-	icon_state = "leftsecure";
+/obj/machinery/door/window/brigdoor/northright{
 	layer = 4.1;
 	name = "Tertiary AI Core Access";
-	obj_integrity = 300;
-	pixel_x = -3;
 	req_access_txt = "16"
+	},
+/obj/item/radio/intercom/directional/east{
+	freerange = 1;
+	name = "Common Channel"
+	},
+/obj/item/radio/intercom/directional/west{
+	freerange = 1;
+	listening = 0;
+	name = "Custom Channel"
+	},
+/obj/item/radio/intercom/directional/south{
+	freerange = 1;
+	frequency = 1447;
+	name = "Private Channel"
 	},
 /turf/open/floor/circuit/green,
 /area/ai_monitored/turret_protected/ai)
@@ -16518,11 +16502,8 @@
 	dir = 8
 	},
 /obj/structure/cable,
-/obj/machinery/door/window{
-	base_state = "rightsecure";
-	icon_state = "rightsecure";
+/obj/machinery/door/window/brigdoor/southleft{
 	name = "Primary AI Core Access";
-	obj_integrity = 300;
 	req_access_txt = "16"
 	},
 /turf/open/floor/iron/dark,
@@ -16716,10 +16697,7 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/obj/machinery/power/apc{
-	name = "Atmospherics Control Center APC";
-	pixel_y = -24
-	},
+/obj/machinery/power/apc/auto_name/south,
 /turf/open/floor/iron/dark,
 /area/engineering/atmos/control_center)
 "hLW" = (
@@ -18332,9 +18310,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/medical)
 "ixT" = (
-/obj/machinery/status_display/ai{
-	pixel_y = -32
-	},
+/obj/machinery/status_display/ai/directional/south,
 /turf/open/floor/circuit,
 /area/ai_monitored/turret_protected/ai)
 "ixU" = (
@@ -20607,13 +20583,6 @@
 	id = "AI Chamber entrance shutters";
 	name = "AI Chamber entrance shutters"
 	},
-/obj/item/radio/intercom{
-	broadcasting = 1;
-	frequency = 1447;
-	listening = 0;
-	name = "Station Intercom (AI Private)";
-	pixel_y = -27
-	},
 /obj/machinery/flasher{
 	id = "AI";
 	pixel_x = -8;
@@ -21889,10 +21858,7 @@
 /turf/open/floor/iron/dark,
 /area/security/office)
 "kaZ" = (
-/obj/machinery/door/window{
-	base_state = "right";
-	dir = 1;
-	icon_state = "right";
+/obj/machinery/door/window/northright{
 	name = "Captain's Desk Door";
 	req_access_txt = "20"
 	},
@@ -22356,31 +22322,24 @@
 /area/command/heads_quarters/captain)
 "kjW" = (
 /obj/effect/landmark/start/ai/secondary,
-/obj/item/radio/intercom{
-	freerange = 1;
-	listening = 0;
-	name = "Custom Channel";
-	pixel_x = 27
-	},
-/obj/item/radio/intercom{
-	freerange = 1;
-	name = "Common Channel";
-	pixel_y = 21
-	},
-/obj/item/radio/intercom{
-	freerange = 1;
-	frequency = 1447;
-	name = "Private Channel";
-	pixel_x = -27
-	},
-/obj/machinery/door/window{
-	base_state = "rightsecure";
-	icon_state = "rightsecure";
+/obj/machinery/door/window/brigdoor/southright{
 	layer = 4.1;
 	name = "Secondary AI Core Access";
-	obj_integrity = 300;
-	pixel_x = 4;
 	req_access_txt = "16"
+	},
+/obj/item/radio/intercom/directional/east{
+	freerange = 1;
+	name = "Common Channel"
+	},
+/obj/item/radio/intercom/directional/west{
+	freerange = 1;
+	listening = 0;
+	name = "Custom Channel"
+	},
+/obj/item/radio/intercom/directional/north{
+	freerange = 1;
+	frequency = 1447;
+	name = "Private Channel"
 	},
 /turf/open/floor/circuit/green,
 /area/ai_monitored/turret_protected/ai)
@@ -22739,15 +22698,11 @@
 	dir = 8
 	},
 /obj/structure/cable,
-/obj/machinery/door/window{
-	base_state = "leftsecure";
-	dir = 1;
-	icon_state = "leftsecure";
+/obj/machinery/power/apc/auto_name/east,
+/obj/machinery/door/window/brigdoor/northleft{
 	name = "Primary AI Core Access";
-	obj_integrity = 300;
 	req_access_txt = "16"
 	},
-/obj/machinery/power/apc/auto_name/east,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
 "kru" = (
@@ -24167,7 +24122,7 @@
 /obj/structure/window/reinforced{
 	dir = 8
 	},
-/obj/machinery/door/window{
+/obj/machinery/door/window/southright{
 	name = "High-Risk Modules";
 	req_access_txt = "20"
 	},
@@ -26310,6 +26265,12 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
+/obj/item/radio/intercom/directional/east{
+	broadcasting = 1;
+	frequency = 1447;
+	listening = 0;
+	name = "Station Intercom (AI Private)"
+	},
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/aisat_interior)
 "lNn" = (
@@ -26901,15 +26862,15 @@
 /area/engineering/atmos)
 "lYy" = (
 /obj/structure/table/wood/fancy/royalblue,
-/obj/machinery/door/window{
-	name = "Secure Art Exhibition";
-	req_access_txt = "37"
-	},
 /obj/structure/sign/painting/library_secure{
 	pixel_y = 32
 	},
 /obj/structure/window/reinforced{
 	dir = 4
+	},
+/obj/machinery/door/window/southright{
+	name = "Secure Art Exhibition";
+	req_access_txt = "37"
 	},
 /turf/open/floor/wood/parquet,
 /area/service/library)
@@ -29164,9 +29125,7 @@
 /obj/structure/window/reinforced{
 	dir = 8
 	},
-/obj/machinery/door/window{
-	base_state = "right";
-	icon_state = "right";
+/obj/machinery/door/window/southleft{
 	name = "Core Modules";
 	req_access_txt = "20"
 	},
@@ -30803,9 +30762,7 @@
 /area/command/gateway)
 "nxB" = (
 /obj/machinery/teleport/station,
-/obj/machinery/status_display/ai{
-	pixel_x = 32
-	},
+/obj/machinery/status_display/ai/directional/east,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/aisat/foyer)
 "nxC" = (
@@ -31287,9 +31244,7 @@
 /turf/open/floor/iron,
 /area/security/prison/mess)
 "nFo" = (
-/obj/machinery/status_display/ai{
-	pixel_x = -32
-	},
+/obj/machinery/status_display/ai/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/showroomfloor,
@@ -33580,15 +33535,15 @@
 /area/cargo/miningdock)
 "oDv" = (
 /obj/structure/table/wood/fancy/royalblue,
-/obj/machinery/door/window{
-	name = "Secure Art Exhibition";
-	req_access_txt = "37"
-	},
 /obj/structure/sign/painting/library_secure{
 	pixel_y = 32
 	},
 /obj/structure/window/reinforced{
 	dir = 8
+	},
+/obj/machinery/door/window/southleft{
+	name = "Secure Art Exhibition";
+	req_access_txt = "37"
 	},
 /turf/open/floor/wood/parquet,
 /area/service/library)
@@ -37786,9 +37741,7 @@
 /turf/closed/wall,
 /area/hallway/secondary/exit/departure_lounge)
 "qnA" = (
-/obj/machinery/status_display/ai{
-	pixel_y = 32
-	},
+/obj/machinery/status_display/ai/directional/north,
 /turf/open/floor/circuit,
 /area/ai_monitored/turret_protected/ai)
 "qnF" = (
@@ -39457,7 +39410,7 @@
 	id = "chapelgun";
 	name = "Holy Driver"
 	},
-/obj/machinery/door/window{
+/obj/machinery/door/window/southleft{
 	name = "Mass Driver"
 	},
 /turf/open/floor/plating,
@@ -40643,12 +40596,7 @@
 /turf/open/floor/iron/dark,
 /area/service/hydroponics)
 "rxZ" = (
-/obj/machinery/door/window{
-	base_state = "right";
-	dir = 4;
-	icon_state = "right";
-	layer = 3
-	},
+/obj/machinery/door/window/eastright,
 /turf/open/floor/plating,
 /area/maintenance/disposal)
 "rya" = (
@@ -45217,15 +45165,11 @@
 /turf/open/floor/circuit/telecomms/mainframe,
 /area/tcommsat/server)
 "tpG" = (
-/obj/machinery/status_display/ai{
-	pixel_x = 32
-	},
+/obj/machinery/status_display/ai/directional/east,
 /turf/open/floor/circuit,
 /area/ai_monitored/turret_protected/ai)
 "tpK" = (
-/obj/machinery/status_display/ai{
-	pixel_y = -32
-	},
+/obj/machinery/status_display/ai/directional/south,
 /obj/structure/closet/secure_closet/research_director,
 /obj/item/gun/energy/e_gun/mini,
 /obj/item/taperecorder{
@@ -45395,9 +45339,7 @@
 /area/hallway/secondary/command)
 "tui" = (
 /obj/machinery/light/directional/west,
-/obj/machinery/status_display/ai{
-	pixel_x = -32
-	},
+/obj/machinery/status_display/ai/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/showroomfloor,
@@ -51026,9 +50968,6 @@
 /turf/open/floor/plating,
 /area/maintenance/department/engine/atmos)
 "wdI" = (
-/obj/item/radio/intercom{
-	pixel_y = 37
-	},
 /obj/machinery/camera{
 	c_tag = "Science - Toxins Launch Chamber";
 	dir = 4;
@@ -51042,6 +50981,7 @@
 	pixel_y = 26
 	},
 /obj/machinery/light/directional/west,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron,
 /area/science/mixing)
 "wdL" = (
@@ -51443,9 +51383,7 @@
 	pixel_x = -3;
 	pixel_y = 7
 	},
-/obj/machinery/status_display/ai{
-	pixel_x = -32
-	},
+/obj/machinery/status_display/ai/directional/west,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
 "wlH" = (
@@ -54517,9 +54455,7 @@
 "xGL" = (
 /obj/structure/table/reinforced,
 /obj/item/pen,
-/obj/machinery/status_display/ai{
-	pixel_x = -32
-	},
+/obj/machinery/status_display/ai/directional/west,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai)
 "xHh" = (
@@ -54611,11 +54547,6 @@
 /turf/open/floor/plating,
 /area/maintenance/disposal)
 "xJg" = (
-/obj/machinery/door/window{
-	dir = 1;
-	name = "AI Core";
-	req_access_txt = "20"
-	},
 /turf/open/floor/circuit,
 /area/ai_monitored/turret_protected/ai_upload)
 "xJl" = (
