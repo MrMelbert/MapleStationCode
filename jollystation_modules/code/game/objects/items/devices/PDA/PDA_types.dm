@@ -18,7 +18,7 @@
 	name = "asset protection PDA"
 	default_cartridge = /obj/item/cartridge/hos
 	greyscale_config = /datum/greyscale_config/pda/head
-	greyscale_colors = "#99ccff#d91a40"
+	greyscale_colors = "#d91a40#3F1514"
 
 /// QM PDA, with head of staff stripe.
 /obj/item/pda/quartermaster

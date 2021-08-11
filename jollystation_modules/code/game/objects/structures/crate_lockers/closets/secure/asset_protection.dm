@@ -21,6 +21,8 @@
 	new /obj/item/cartridge/hos(src)
 	new /obj/item/assembly/flash/handheld(src)
 	new /obj/item/storage/photo_album/ap(src)
+	new /obj/item/storage/belt/security/full(src)
+	new /obj/item/storage/box/dept_armbands(src)
 
 // Asset Protection album for their locker
 /obj/item/storage/photo_album/ap

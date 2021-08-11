@@ -22,7 +22,7 @@
 	new /obj/item/cartridge/hop(src)
 	new /obj/item/assembly/flash/handheld(src)
 	new /obj/item/storage/photo_album/bo(src)
-	new /obj/item/storage/box/fountainpens(src)
+	new /obj/item/storage/box/office_supplies(src)
 
 // Bridge Officer album for their locker
 /obj/item/storage/photo_album/bo

@@ -53,6 +53,7 @@
 	belt = /obj/item/pda/heads/asset_protection
 	ears = /obj/item/radio/headset/heads/asset_protection/alt
 	glasses = /obj/item/clothing/glasses/hud/security/sunglasses
+	neck = /obj/item/clothing/neck/tie/black
 	gloves = /obj/item/clothing/gloves/color/black
 	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
 	shoes = /obj/item/clothing/shoes/jackboots
@@ -63,13 +64,11 @@
 
 	implants = list(/obj/item/implant/mindshield)
 
-	backpack_contents = list(/obj/item/melee/classic_baton/telescopic = 1, /obj/item/modular_computer/tablet/preset/advanced/command = 1)
-
 /datum/outfit/job/asset_protection/pre_equip(mob/living/carbon/human/H)
 	..()
 	// If the map we're on doesn't have a brige officer locker, add in a way to get one
 	if(!GLOB.asset_protection_lockers.len)
-		backpack_contents += /obj/item/asset_protection_locker_spawner
+		LAZYADD(backpack_contents, /obj/item/asset_protection_locker_spawner)
 
 	// 0.1% chance on spawn to be given a meme flash in place of a real one.
 	if(r_pocket)
