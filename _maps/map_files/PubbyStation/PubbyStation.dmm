@@ -35619,7 +35619,7 @@
 /turf/open/floor/iron/white,
 /area/medical/surgery)
 "ehs" = (
-/obj/effect/landmark/start/asset_protectionasset_protection,
+/obj/effect/landmark/start/asset_protection,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -42427,7 +42427,7 @@
 /obj/structure/chair/office{
 	dir = 8
 	},
-/obj/effect/landmark/start/asset_protectionasset_protection,
+/obj/effect/landmark/start/asset_protection,
 /obj/machinery/requests_console/directional/south{
 	announcementConsole = 1;
 	department = "Asset Protection's Desk";
@@ -52057,7 +52057,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/obj/effect/landmark/start/asset_protectionasset_protection,
+/obj/effect/landmark/start/asset_protection,
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "txu" = (

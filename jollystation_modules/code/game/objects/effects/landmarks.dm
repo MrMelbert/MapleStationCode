@@ -26,7 +26,7 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	icon_state = "BridgeOfficer"
 
 // AP start location
-/obj/effect/landmark/start/asset_protectionasset_protection
+/obj/effect/landmark/start/asset_protection
 	name = "Asset Protection"
 	icon = 'jollystation_modules/icons/mob/landmarks.dmi'
 	icon_state = "AssetProtection"
