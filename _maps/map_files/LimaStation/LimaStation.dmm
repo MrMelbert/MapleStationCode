@@ -1152,13 +1152,6 @@
 /obj/structure/flora/ausbushes/leafybush,
 /turf/open/floor/grass,
 /area/security/detectives_office/bridge_officer_office)
-"aCZ" = (
-/obj/machinery/light/directional/east,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/hallway/secondary/command)
 "aDe" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -3227,6 +3220,7 @@
 /obj/machinery/light/small/directional/south,
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
+/obj/machinery/airalarm/directional/south,
 /turf/open/floor/plating,
 /area/maintenance/solars/starboard/aft)
 "bCp" = (
@@ -9791,7 +9785,6 @@
 /turf/open/floor/iron/showroomfloor,
 /area/engineering/atmos/control_center)
 "eFP" = (
-/obj/structure/flora/ausbushes/pointybush,
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
@@ -10528,17 +10521,6 @@
 /obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
-"eVz" = (
-/obj/structure/flora/ausbushes/ywflowers,
-/obj/structure/flora/ausbushes/brflowers,
-/obj/effect/spawner/structure/window/reinforced,
-/obj/structure/cable,
-/obj/machinery/door/poddoor/preopen{
-	id = "ianroomlockdown";
-	name = "privacy shutter"
-	},
-/turf/open/floor/plating,
-/area/command/corporate_showroom)
 "eVA" = (
 /obj/machinery/vending/wardrobe/atmos_wardrobe,
 /obj/machinery/requests_console{
@@ -13347,6 +13329,7 @@
 "giK" = (
 /obj/machinery/power/terminal,
 /obj/structure/cable,
+/obj/machinery/airalarm/directional/east,
 /turf/open/floor/plating,
 /area/maintenance/solars/port/fore)
 "giM" = (
@@ -15140,6 +15123,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/duct,
+/obj/machinery/door/firedoor,
 /turf/open/floor/mineral/plastitanium{
 	name = "black plastitanium floor"
 	},
@@ -18250,18 +18234,6 @@
 /obj/effect/spawner/lootdrop/maintenance/three,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
-"irz" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/turf/open/floor/iron,
-/area/hallway/primary/aft)
 "irF" = (
 /obj/machinery/camera{
 	c_tag = "Permabrig - Cellblock A - Fore";
@@ -27875,6 +27847,7 @@
 "mkx" = (
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/fax_machine,
 /turf/open/floor/carpet/royalblue,
 /area/command/heads_quarters/hop)
 "mli" = (
@@ -28212,16 +28185,6 @@
 /obj/machinery/power/apc/auto_name/west,
 /turf/open/floor/iron/white,
 /area/medical/storage)
-"mpu" = (
-/obj/structure/flora/junglebush/b,
-/obj/effect/spawner/structure/window/reinforced,
-/obj/structure/cable,
-/obj/machinery/door/poddoor/preopen{
-	id = "ianroomlockdown";
-	name = "privacy shutter"
-	},
-/turf/open/floor/plating,
-/area/command/corporate_showroom)
 "mpH" = (
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron,
@@ -35744,8 +35707,8 @@
 /area/engineering/main)
 "pml" = (
 /obj/structure/table/wood,
-/obj/item/pen/red,
 /obj/machinery/computer/security/telescreen/entertainment/directional/south,
+/obj/machinery/fax_machine,
 /turf/open/floor/carpet/orange,
 /area/service/lawoffice)
 "pmo" = (
@@ -36294,9 +36257,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/brown,
-/obj/machinery/keycard_auth/directional/south{
-	pixel_y = -24
-	},
+/obj/machinery/keycard_auth/directional/south,
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "pzA" = (
@@ -36726,6 +36687,9 @@
 /obj/item/pen/blue,
 /obj/structure/disposalpipe/segment{
 	dir = 4
+	},
+/obj/item/pen/red{
+	pixel_y = 4
 	},
 /turf/open/floor/carpet/orange,
 /area/service/lawoffice)
@@ -39273,6 +39237,7 @@
 	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/showroomfloor,
 /area/maintenance/aft)
 "qJU" = (
@@ -39782,13 +39747,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)
-"qVc" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/airalarm/directional/east,
-/turf/open/floor/iron,
-/area/hallway/secondary/command)
 "qVh" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -40451,17 +40409,6 @@
 	dir = 8
 	},
 /area/command/gateway)
-"rkm" = (
-/obj/structure/flora/ausbushes/sparsegrass,
-/obj/structure/flora/ausbushes/brflowers,
-/obj/effect/spawner/structure/window/reinforced,
-/obj/structure/cable,
-/obj/machinery/door/poddoor/preopen{
-	id = "ianroomlockdown";
-	name = "privacy shutter"
-	},
-/turf/open/floor/plating,
-/area/command/corporate_showroom)
 "rkn" = (
 /turf/open/floor/glass,
 /area/service/hydroponics)
@@ -42629,6 +42576,7 @@
 	name = "Service Hall";
 	req_one_access_txt = "22;25;26;28;35;37;38;46"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/maintenance/central)
 "sdg" = (
@@ -43347,15 +43295,6 @@
 	icon_state = "wood-broken2"
 	},
 /area/maintenance/starboard/aft)
-"ssn" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/sign/poster/official/random{
-	pixel_x = 32
-	},
-/turf/open/floor/iron,
-/area/hallway/secondary/command)
 "ssv" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -45458,6 +45397,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/command/corporate_showroom)
 "tlO" = (
@@ -48417,18 +48357,6 @@
 /obj/effect/spawner/lootdrop/glowstick,
 /turf/open/floor/plating,
 /area/maintenance/department/science)
-"uEj" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/landmark/start/assistant,
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/hallway/primary/aft)
 "uEs" = (
 /obj/machinery/vending/coffee,
 /obj/machinery/newscaster/directional/west,
@@ -50304,7 +50232,6 @@
 	pixel_x = 25;
 	pixel_y = 8
 	},
-/obj/machinery/light/directional/east,
 /obj/machinery/keycard_auth/directional/east{
 	pixel_x = 39;
 	pixel_y = 8
@@ -51818,6 +51745,11 @@
 	},
 /turf/open/floor/engine,
 /area/engineering/supermatter)
+"wjI" = (
+/obj/machinery/airalarm/directional/west,
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/hallway/secondary/command)
 "wjL" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -92418,7 +92350,7 @@ cwE
 xTI
 iKd
 rAj
-irz
+hci
 tlK
 pJJ
 llN
@@ -92676,7 +92608,7 @@ xTI
 gEE
 rAj
 qjw
-mpu
+eFP
 lGf
 uAB
 hKl
@@ -92932,8 +92864,8 @@ dew
 xTI
 iKd
 rAj
-uEj
-eVz
+qjw
+eFP
 tTE
 tHj
 eCG
@@ -93191,7 +93123,7 @@ nKE
 ioh
 ybg
 tEb
-rkm
+eFP
 eFP
 tEb
 vyK
@@ -95254,7 +95186,7 @@ kyW
 oDD
 kdm
 ari
-dmh
+wjI
 dmh
 vOq
 ari
@@ -95767,9 +95699,9 @@ pdM
 hEJ
 oza
 jso
-qVc
-aCZ
-ssn
+ari
+ari
+ari
 ari
 ari
 dmh
