@@ -22,8 +22,7 @@
 
 /obj/item/clothing/suit/armor/vest/asset_protection/large
 	name = "asset protection's large armor vest"
-	desc = "A bulkier, heavier armor that Asset Protection can use when the situation calls for it."
+	desc = "A SUPPOSEDLY bulkier, heavier armor that Asset Protection can use when the situation calls for it. Feels identical to your other one."
 	icon_state = "blueshift"
 	inhand_icon_state = "blueshift"
-	armor = list(MELEE = 45, BULLET = 50, LASER = 45, ENERGY = 45, BOMB = 35, BIO = 0, RAD = 0, FIRE = 100, ACID = 90, WOUND = 20)
-	slowdown = 1
+	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 30, BIO = 0, RAD = 0, FIRE = 100, ACID = 90, WOUND = 10)
