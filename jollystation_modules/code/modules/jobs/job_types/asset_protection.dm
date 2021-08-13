@@ -60,21 +60,3 @@
 	box = /obj/item/storage/box/survival/security
 
 	implants = list(/obj/item/implant/mindshield)
-
-/datum/outfit/job/asset_protection/pre_equip(mob/living/carbon/human/H)
-	..()
-	// If the map we're on doesn't have a brige officer locker, add in a way to get one
-	if(!GLOB.asset_protection_lockers.len)
-		LAZYADD(backpack_contents, /obj/item/asset_protection_locker_spawner)
-
-	// 0.1% chance on spawn to be given a meme flash in place of a real one.
-	if(r_pocket)
-		if(prob(0.1))
-			backpack_contents += /obj/item/assembly/flash/memorizer
-		else
-			backpack_contents += /obj/item/assembly/flash
-	else
-		if(prob(0.1))
-			r_pocket = /obj/item/assembly/flash/memorizer
-		else
-			r_pocket = /obj/item/assembly/flash
