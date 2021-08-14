@@ -30,7 +30,7 @@
  * Cause [amount] of [dam_type] sharp pain to [target_zones].
  * Sharp pain is for sudden spikes of pain that go away after [duration] deciseconds.
  */
-/mob/living/carbon/proc/sharp_pain(target_zones, amount = 0, dam_type = BRUTE, duration = 2 MINUTES)
+/mob/living/carbon/proc/sharp_pain(target_zones, amount = 0, dam_type = BRUTE, duration = 1 MINUTES)
 	if(!islist(target_zones))
 		target_zones = list(target_zones)
 	for(var/zone in target_zones)

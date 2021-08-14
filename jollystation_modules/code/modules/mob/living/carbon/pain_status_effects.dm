@@ -88,7 +88,14 @@
 	/// The zone we're afflicting
 	var/targeted_zone
 
-/datum/status_effect/sharp_pain/on_creation(mob/living/carbon/human/new_owner, targeted_zone, pain_amount = 0, pain_type = BRUTE, duration = 0)
+/datum/status_effect/sharp_pain/on_creation(
+		mob/living/carbon/human/new_owner,
+		targeted_zone,
+		pain_amount = 0,
+		pain_type = BRUTE,
+		duration = 0
+	)
+
 	src.duration = duration
 	src.targeted_zone = targeted_zone
 	src.pain_amount = pain_amount
@@ -137,7 +144,13 @@
 	/// The zone we're afflicting
 	var/targeted_zone = BODY_ZONE_CHEST
 
-/datum/status_effect/minimum_bodypart_pain/on_creation(mob/living/carbon/human/new_owner, targeted_zone, min_amount = 0, duration = 0)
+/datum/status_effect/minimum_bodypart_pain/on_creation(
+		mob/living/carbon/human/new_owner,
+		targeted_zone,
+		min_amount = 0,
+		duration = 0
+	)
+
 	src.duration = duration
 	src.targeted_zone = targeted_zone
 	src.min_amount = min_amount
