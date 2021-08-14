@@ -27,7 +27,7 @@
 	overdose_threshold = 12
 	ph = 12.4
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-	addiction_types = list(/datum/addiction/luciferium = 100) // 1 unit = addiction
+	addiction_types = list(/datum/addiction/luciferium = 33) // 3 units = addiction
 	pain_modifier = 0.8
 
 /datum/reagent/medicine/luciferium/on_mob_metabolize(mob/living/carbon/user)
@@ -53,6 +53,11 @@
 	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
+
+/datum/reagent/medicine/luciferium/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
+	. = ..()
+	if(!(methods & INGEST)) // If we're not ingested, delete ourselves.
+		exposed_mob.reagents.del_reagent(type)
 
 /datum/reagent/medicine/luciferium/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
 	if(overdosed)
