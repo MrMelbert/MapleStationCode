@@ -46,13 +46,11 @@
 
 /datum/reagent/medicine/luciferium/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/luciferium)
-	REMOVE_TRAIT(user, TRAIT_ANTICONVULSANT, type)
-	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
-	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
-	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
-	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
-	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
+	stop_effects(user)
+
+/datum/reagent/medicine/luciferium/overdose_start(mob/living/user)
+	. = ..()
+	stop_effects(user)
 
 /datum/reagent/medicine/luciferium/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
 	. = ..()
@@ -122,7 +120,10 @@
 	if(bloodiest_wound)
 		bloodiest_wound.blood_flow = max(0, bloodiest_wound.blood_flow - (0.5 * REM * delta_time))
 
-/datum/reagent/medicine/luciferium/overdose_start(mob/living/user)
+/*
+ * Stop the effects of the chem.
+ */
+/datum/reagent/medicine/luciferium/proc/stop_effects(mob/living/user)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/luciferium)
 	REMOVE_TRAIT(user, TRAIT_ANTICONVULSANT, type)
 	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
@@ -130,8 +131,6 @@
 	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
-	. = ..()
-	return TRUE
 
 /obj/item/reagent_containers/pill/luciferium
 	name = "luciferium pill"
@@ -200,10 +199,11 @@
 
 /datum/reagent/drug/gojuice/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
-	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
-	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
+	stop_effects(user)
+
+/datum/reagent/drug/gojuice/overdose_start(mob/living/user)
+	. = ..()
+	stop_effects(user)
 
 /datum/reagent/drug/gojuice/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
 	if(overdosed)
@@ -216,13 +216,6 @@
 	. = ..()
 	return TRUE
 
-/datum/reagent/drug/gojuice/overdose_start(mob/living/user)
-	. = ..()
-	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
-	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
-	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
-
 /datum/reagent/drug/gojuice/overdose_process(mob/living/user, delta_time, times_fired)
 	if(DT_PROB(66, delta_time))
 		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * delta_time)
@@ -230,6 +223,15 @@
 		user.adjustToxLoss(1 * REM * delta_time, FALSE)
 	. = ..()
 	return TRUE
+
+/*
+ * Remove the effects of the drug.
+ */
+/datum/reagent/drug/gojuice/proc/stop_effects(mob/living/user)
+	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
+	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
+	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 
 /datum/chemical_reaction/gojuice
 	results = list(/datum/reagent/drug/gojuice = 3)
