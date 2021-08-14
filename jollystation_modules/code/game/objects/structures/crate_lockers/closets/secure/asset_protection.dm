@@ -23,7 +23,7 @@
 	new /obj/item/storage/photo_album/ap(src)
 	new /obj/item/storage/belt/security/full(src)
 	new /obj/item/storage/box/dept_armbands(src)
-	new /obj/item/gun/energy(src)
+	new /obj/item/gun/energy/e_gun(src)
 
 // Asset Protection album for their locker
 /obj/item/storage/photo_album/ap

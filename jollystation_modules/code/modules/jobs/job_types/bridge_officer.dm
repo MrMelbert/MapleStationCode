@@ -66,8 +66,9 @@
 /datum/outfit/job/bridge_officer/pre_equip(mob/living/carbon/human/H)
 	..()
 	// If the map we're on doesn't have a brige officer locker, add in a way to get one
-	if(!GLOB.bridge_officer_lockers.len)
+	if(!(locate(/obj/effect/landmark/locker_spawner/bridge_officer_equipment) in GLOB.locker_landmark))
 		backpack_contents += /obj/item/bridge_officer_locker_spawner
+
 
 	// 0.1% chance on spawn to be given a meme flash in place of a real one.
 	if(r_pocket)

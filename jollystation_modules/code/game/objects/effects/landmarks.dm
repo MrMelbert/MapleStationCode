@@ -1,5 +1,7 @@
 /// -- Modular landmarks. --
 
+// Global list for generic lockers
+GLOBAL_LIST_EMPTY(locker_landmark)
 /// Global list of all our bridge officer locker landmarks
 GLOBAL_LIST_EMPTY(bridge_officer_lockers)
 /// Global list of all our asset protection locker landmarks
@@ -31,50 +33,37 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	icon = 'jollystation_modules/icons/mob/landmarks.dmi'
 	icon_state = "AssetProtection"
 
-// Landmark for mapping in Bridge Officer equipment.
-// Use this in place of manually mapping it in - this allows us to track all Bridge Officer lockers in the world.
-// We do this so we can detect if a map doesn't have a Bridge Officer locker, so we can allow the player to spawn one in manually.
-/obj/effect/landmark/bridge_officer_equipment
-	name = "bridge officer locker"
+// Code for the custom job spawning lockers on maps w/o mapped lockers
+/obj/effect/landmark/locker_spawner
+	name = "A spawned locker"
 	icon_state = "secequipment"
 	var/spawn_anchored = FALSE
+	var/spawned_path = /obj/structure/closet/secure_closet
 
-/obj/effect/landmark/bridge_officer_equipment/Initialize(mapload)
-	GLOB.bridge_officer_lockers += src
-	var/obj/structure/closet/secure_closet/bridge_officer/spawned_locker = new(drop_location())
+/obj/effect/landmark/locker_spawner/Initialize(mapload)
+	GLOB.locker_landmark += src
+	var/obj/structure/closet/secure_closet/spawned_locker = new spawned_path(drop_location())
 	if(spawn_anchored)
 		spawned_locker.set_anchored(TRUE)
 	return ..()
 
-/obj/effect/landmark/bridge_officer_equipment/Destroy()
-	GLOB.bridge_officer_lockers -= src
+/obj/effect/landmark/locker_spawner/Destroy()
+	GLOB.locker_landmark -= src
 	return ..()
 
 // Subtype that spawns anchored.
-/obj/effect/landmark/bridge_officer_equipment/spawn_anchored
+/obj/effect/landmark/locker_spawner/spawn_anchored
 	spawn_anchored = TRUE
+
+// Landmark for mapping in Bridge Officer equipment.
+/obj/effect/landmark/locker_spawner/bridge_officer_equipment
+	name = "bridge officer locker"
+	spawned_path = /obj/structure/closet/secure_closet/bridge_officer
 
 // Landmark for mapping in Asset Protection equipment.
-//Just copy pasted from the BO shit, Melbert don't kill me
-/obj/effect/landmark/asset_protection_equipment
+/obj/effect/landmark/locker_spawner/asset_protection_equipment
 	name = "asset protection locker"
-	icon_state = "secequipment"
-	var/spawn_anchored = FALSE
-
-/obj/effect/landmark/asset_protection_equipment/Initialize(mapload)
-	GLOB.asset_protection_lockers += src
-	var/obj/structure/closet/secure_closet/asset_protection/spawned_locker = new(drop_location())
-	if(spawn_anchored)
-		spawned_locker.set_anchored(TRUE)
-	return ..()
-
-/obj/effect/landmark/asset_protection_equipment/Destroy()
-	GLOB.asset_protection_lockers -= src
-	return ..()
-
-// Subtype that spawns anchored.
-/obj/effect/landmark/asset_protection_equipment/spawn_anchored
-	spawn_anchored = TRUE
+	spawned_path = /obj/structure/closet/secure_closet/asset_protection
 
 /obj/effect/landmark/heretic
 	name = "heretic sacrifice landmark"
