@@ -21,7 +21,7 @@
 		Drastically improves the user's bodily functions but will cause eventual death if mechanite cohesion is not sustained with continuous dosage. \
 		Once used, the pressence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
 	taste_description = "dread"
-	reagent_state = LIQUID
+	reagent_state = SOLID
 	color = "#a80008"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	overdose_threshold = 12
@@ -56,8 +56,10 @@
 
 /datum/reagent/medicine/luciferium/expose_mob(mob/living/exposed_mob, methods, reac_volume, show_message, touch_protection)
 	. = ..()
-	if(!(methods & INGEST)) // If we're not ingested, delete ourselves.
-		exposed_mob.reagents.del_reagent(type)
+	if(!(methods & (PATCH|INGEST))) // If we're not ingested, delete ourselves.
+		exposed_mob.reagents.remove_reagent(type, reac_volume)
+	if(methods & INJECT)
+		exposed_mob.visible_message(span_warning("The [name] nanomachine web disintegrates upon injection into [exposed_mob]!"))
 
 /datum/reagent/medicine/luciferium/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
 	if(overdosed)
@@ -244,7 +246,7 @@
 /datum/reagent/drug/flake
 	name = "Flake"
 	description = "A hard drug made from the distant psychoid leaf. While easy to produce and potent, it is also incredibly addictive."
-	reagent_state = LIQUID
+	reagent_state = SOLID
 	color = "#c9ffbc"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -271,7 +273,7 @@
 	description = "A hard drug made from the distant psychoid leaf. Moderatively addictive and causes mild liver damage, but effective at \
 		supressing pain, reducing tiredness, and improving the user's mood."
 	taste_description = "chalk"
-	reagent_state = LIQUID
+	reagent_state = SOLID
 	color = "#e2e2e2"
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
