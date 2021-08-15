@@ -47,19 +47,17 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	GLOB.locker_landmarks -= src
 	return ..()
 
-// Subtype that spawns anchored.
-/obj/effect/landmark/locker_spawner/spawn_anchored
-	spawn_anchored = TRUE
-
 // Landmark for mapping in Bridge Officer equipment.
 /obj/effect/landmark/locker_spawner/bridge_officer_equipment
 	name = "bridge officer locker"
 	spawned_path = /obj/structure/closet/secure_closet/bridge_officer
+	spawn_anchored = TRUE
 
 // Landmark for mapping in Asset Protection equipment.
 /obj/effect/landmark/locker_spawner/asset_protection_equipment
 	name = "asset protection locker"
 	spawned_path = /obj/structure/closet/secure_closet/asset_protection
+	spawn_anchored = TRUE
 
 /obj/effect/landmark/heretic
 	name = "heretic sacrifice landmark"
