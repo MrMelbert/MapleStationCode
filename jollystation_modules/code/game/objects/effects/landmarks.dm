@@ -2,10 +2,6 @@
 
 // Global list for generic lockers
 GLOBAL_LIST_EMPTY(locker_landmark)
-/// Global list of all our bridge officer locker landmarks
-GLOBAL_LIST_EMPTY(bridge_officer_lockers)
-/// Global list of all our asset protection locker landmarks
-GLOBAL_LIST_EMPTY(asset_protection_lockers)
 /// Global list of all heretic sacrifice landmarks (contains all 4 subtypes of landmarks)
 GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 
