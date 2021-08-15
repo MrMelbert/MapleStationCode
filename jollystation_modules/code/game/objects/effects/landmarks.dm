@@ -1,7 +1,7 @@
 /// -- Modular landmarks. --
 
 // Global list for generic lockers
-GLOBAL_LIST_EMPTY(locker_landmark)
+GLOBAL_LIST_EMPTY(locker_landmarks)
 /// Global list of all our bridge officer locker landmarks
 GLOBAL_LIST_EMPTY(bridge_officer_lockers)
 /// Global list of all our asset protection locker landmarks
