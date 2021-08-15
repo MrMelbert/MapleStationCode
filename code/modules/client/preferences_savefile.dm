@@ -442,7 +442,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["general_records"] , general_records)
 	READ_FILE(S["exploitable_info"] , exploitable_info)
 	READ_FILE(S["loadout_list"] , loadout_list)
-	READ_FILE(S["greyscale_loadout_list"] , greyscale_loadout_list)
 	// NON-MODULE CHANGES END
 
 	if(!CONFIG_GET(flag/join_with_mutant_humans))
@@ -542,8 +541,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	general_records = strip_html_simple(sanitize_text(general_records), MAX_FLAVOR_LEN)
 	exploitable_info = strip_html_simple(sanitize_text(exploitable_info), MAX_FLAVOR_LEN)
 
-	loadout_list = sanitize_loadout_list(loadout_list)
-	greyscale_loadout_list = sanitize_greyscale_list(greyscale_loadout_list)
+	loadout_list = sanitize_loadout_list(update_loadout_list(loadout_list))
 	// NON-MODULE CHANGE END
 
 	persistent_scars = sanitize_integer(persistent_scars)
@@ -615,7 +613,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["medical_records"] , medical_records)
 	WRITE_FILE(S["exploitable_info"] , exploitable_info)
 	WRITE_FILE(S["loadout_list"], loadout_list)
-	WRITE_FILE(S["greyscale_loadout_list"], greyscale_loadout_list)
 	// NON-MODULE CHANGES END
 
 	//Custom names

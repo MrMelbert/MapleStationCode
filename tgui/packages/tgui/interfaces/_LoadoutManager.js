@@ -12,10 +12,10 @@ export const _LoadoutManager = (props, context) => {
     tutorial_status,
   } = data;
 
-  const [selectedTabID, setSelectedTab] = useSharedState(
-    context, 'tabs', loadout_tabs[0]?.id);
+  const [selectedTabName, setSelectedTab] = useSharedState(
+    context, 'tabs', loadout_tabs[0]?.name);
   const selectedTab = loadout_tabs.find(curTab => {
-    return curTab.id === selectedTabID;
+    return curTab.name === selectedTabName;
   });
 
   return (
@@ -42,10 +42,10 @@ export const _LoadoutManager = (props, context) => {
               <Tabs fluid align="center">
                 {loadout_tabs.map(curTab => (
                   <Tabs.Tab
-                    key={curTab.id}
-                    selected={curTab.id === selectedTabID}
-                    onClick={() => setSelectedTab(curTab.id)}>
-                    {curTab.id}
+                    key={curTab.name}
+                    selected={curTab.name === selectedTabName}
+                    onClick={() => setSelectedTab(curTab.name)}>
+                    {curTab.name}
                   </Tabs.Tab>
                 ))}
               </Tabs>
@@ -56,7 +56,7 @@ export const _LoadoutManager = (props, context) => {
               <Stack.Item grow >
                 { selectedTab && selectedTab.contents ? (
                   <Section
-                    title={`Items: ${selectedTab.id}`}
+                    title={`Items: ${selectedTab.name}`}
                     fill
                     scrollable
                     buttons={(
@@ -76,14 +76,22 @@ export const _LoadoutManager = (props, context) => {
                             <Stack.Item grow align="left">
                               {item.name}
                             </Stack.Item>
-                            { item.extra_info
-                            && !!item.extra_info.is_greyscale
+                            { !!item.is_greyscale
                             && (
                               <Stack.Item>
                                 <Button
                                   icon="palette"
                                   onClick={() => act('select_color', {
-                                    category: selectedTab.slot,
+                                    path: item.path,
+                                  })} />
+                              </Stack.Item>
+                            )}
+                            { !!item.is_renamable
+                            && (
+                              <Stack.Item>
+                                <Button
+                                  icon="pen"
+                                  onClick={() => act('set_name', {
                                     path: item.path,
                                   })} />
                               </Stack.Item>
@@ -93,16 +101,12 @@ export const _LoadoutManager = (props, context) => {
                                 checked={selected_loadout.includes(item.path)}
                                 content="Select"
                                 fluid
-                                tooltip={item.extra_info
-                                  && !!item.extra_info.tooltip
-                                  ? (item.extra_info.tooltip_text) : ("")}
+                                tooltip={item.tooltip_text
+                                  ? (item.tooltip_text) : ("")}
                                 onClick={() => act('select_item', {
-                                  category: selectedTab.slot,
                                   path: item.path,
                                   deselect:
                                     selected_loadout.includes(item.path),
-                                  greyscale: item.extra_info
-                                    ? (item.extra_info.is_greyscale) : (0),
                                 })} />
                             </Stack.Item>
                           </Stack>
@@ -126,8 +130,6 @@ export const _LoadoutManager = (props, context) => {
                     <Button.Checkbox
                       align="center"
                       content="Toggle Job Clothes"
-                      tooltip="Shown job clothes do not respect \
-                        skirt and backpack preference."
                       checked={job_clothes}
                       onClick={() => act('toggle_job_clothes')} />
                   )}>

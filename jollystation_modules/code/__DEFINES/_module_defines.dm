@@ -17,44 +17,22 @@
 #define LOADOUT_ITEM_SHOES "shoes"
 #define LOADOUT_ITEM_SUIT "suit"
 #define LOADOUT_ITEM_UNIFORM "under"
-#define LOADOUT_ITEM_INHAND "inhand_items" //Divides into the two below slots
-#define LOADOUT_ITEM_LEFT_HAND "inhand_items_left"
-#define LOADOUT_ITEM_RIGHT_HAND "inhand_items_right"
-#define LOADOUT_ITEM_MISC "pocket_items" //Divides into the three below slots
-#define LOADOUT_ITEM_BACKPACK_1 "pocket_items_1"
-#define LOADOUT_ITEM_BACKPACK_2 "pocket_items_2"
-#define LOADOUT_ITEM_BACKPACK_3 "pocket_items_3"
+#define LOADOUT_ITEM_ACCESSORY "accessory"
+#define LOADOUT_ITEM_INHAND "inhand_items"
+#define LOADOUT_ITEM_MISC "pocket_items"
 
-/// Global list of all loadout slots.
-GLOBAL_LIST_INIT(loadout_slots, list(
-	LOADOUT_ITEM_BELT,
-	LOADOUT_ITEM_EARS,
-	LOADOUT_ITEM_GLASSES,
-	LOADOUT_ITEM_GLOVES,
-	LOADOUT_ITEM_HEAD,
-	LOADOUT_ITEM_MASK,
-	LOADOUT_ITEM_NECK,
-	LOADOUT_ITEM_SHOES,
-	LOADOUT_ITEM_SUIT,
-	LOADOUT_ITEM_UNIFORM,
-	LOADOUT_ITEM_LEFT_HAND,
-	LOADOUT_ITEM_RIGHT_HAND,
-	LOADOUT_ITEM_BACKPACK_1,
-	LOADOUT_ITEM_BACKPACK_2,
-	LOADOUT_ITEM_BACKPACK_3,
-))
+#define INFO_GREYSCALE "greyscale"
+#define INFO_NAMED "name"
+
+/// Max amonut of misc / backpack items that are allowed.
+#define MAX_ALLOWED_MISC_ITEMS 3
 
 /// Defines for extra info blurbs, for loadout items.
-#define PRESCRIPTION_GLASSES "PRESCRIPTION"
-#define MATCHES_EYE_COLOR "MATCHES EYE COLOR"
-#define NO_ARMOR "UNARMORED"
-#define NO_DAMAGE "CEREMONIAL"
-#define NO_SHOCK "UNINSULATED"
-#define GREYSCALE "GREYSCALED"
-#define SETS_NAME "MATCHES NAME"
-#define RANDOM_COLOR "RANDOM COLOR"
-#define ACCESSORY "ACCESSORY"
-#define IMPORTANT_SLOT "IMPORTANT SLOT"
+#define TOOLTIP_NO_ARMOR "ARMORLESS - This item has no armor and is entirely cosmetic."
+#define TOOLTIP_NO_DAMAGE "CEREMONIAL - This item has very low force and is cosmetic."
+#define TOOLTIP_RANDOM_COLOR "RANDOM COLOR -This item has a random color and will change every round."
+#define TOOLTIP_GREYSCALE "GREYSCALED - This item can be customized via the greyscale modification UI."
+#define TOOLTIP_RENAMABLE "RENAMABLE - This item can be given a custom name."
 
 /// Modular traits
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"
