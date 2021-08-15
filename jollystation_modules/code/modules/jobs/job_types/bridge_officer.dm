@@ -66,7 +66,7 @@
 /datum/outfit/job/bridge_officer/pre_equip(mob/living/carbon/human/H)
 	..()
 	// If the map we're on doesn't have a brige officer locker, add in a way to get one
-	if(!(locate(/obj/effect/landmark/locker_spawner/bridge_officer_equipment) in GLOB.locker_landmark))
+	if(!(locate(/obj/effect/landmark/locker_spawner/bridge_officer_equipment) in GLOB.locker_landmarks))
 		backpack_contents += /obj/item/bridge_officer_locker_spawner
 
 

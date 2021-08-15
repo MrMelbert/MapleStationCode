@@ -1,7 +1,7 @@
 /// -- Modular landmarks. --
 
 // Global list for generic lockers
-GLOBAL_LIST_EMPTY(locker_landmark)
+GLOBAL_LIST_EMPTY(locker_landmarks)
 /// Global list of all heretic sacrifice landmarks (contains all 4 subtypes of landmarks)
 GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 
@@ -37,14 +37,14 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	var/spawned_path = /obj/structure/closet/secure_closet
 
 /obj/effect/landmark/locker_spawner/Initialize(mapload)
-	GLOB.locker_landmark += src
+	GLOB.locker_landmarks += src
 	var/obj/structure/closet/secure_closet/spawned_locker = new spawned_path(drop_location())
 	if(spawn_anchored)
 		spawned_locker.set_anchored(TRUE)
 	return ..()
 
 /obj/effect/landmark/locker_spawner/Destroy()
-	GLOB.locker_landmark -= src
+	GLOB.locker_landmarks -= src
 	return ..()
 
 // Subtype that spawns anchored.
