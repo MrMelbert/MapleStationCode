@@ -1,119 +1,22 @@
-/// -- A ton of global lists that dictate the name and typepaths of all loadout items. --
-/// Belt Slot Items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_belts, list(
-	"Black Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/black,
-	"Blue Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/blue,
-	"Brown Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack,
-	"Cyan Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/cyan,
-	"Green Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/green,
-	"Orange Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/orange,
-	"Pink Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/pink,
-	"Purple Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/purple,
-	"Red Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/red,
-	"Yellow Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/yellow,
-	"White Fannypack_[IMPORTANT_SLOT]" = /obj/item/storage/belt/fannypack/white,
-))
+/// -- A ton of global lists that hold singletons of all loadout items. --
+/proc/generate_loadout_items(type_to_generate)
+	. = list()
+	if(!ispath(type_to_generate))
+		CRASH("generate_loadout_items(): called with an invalid or null path as an argument!")
 
-/// Ear Slot Items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_ears, list(
-	"Earmuffs_[IMPORTANT_SLOT]" = /obj/item/clothing/ears/earmuffs,
-	"Headphones_[IMPORTANT_SLOT]" = /obj/item/instrument/piano_synth/headphones,
-))
+	for(var/found_item in subtypesof(type_to_generate))
+		var/datum/loadout_item/item = new found_item()
+		if(!istype(item))
+			stack_trace("generate_loadout_items(): Instantiated a loadout item ([item]) that isn't of type /datum/loadout_item! (got type: [item.type])")
+			qdel(item)
+			continue
 
-/// Glasses Slot Items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_glasses, list(
-	"Glasses_[PRESCRIPTION_GLASSES]" = /obj/item/clothing/glasses/regular,
-	"Circle Glasses_[PRESCRIPTION_GLASSES]" = /obj/item/clothing/glasses/regular/circle,
-	"Hipster Glasses_[PRESCRIPTION_GLASSES]" = /obj/item/clothing/glasses/regular/hipster,
-	"Jamjar Glasses_[PRESCRIPTION_GLASSES]" = /obj/item/clothing/glasses/regular/jamjar,
-	"Black Blindfold" = /obj/item/clothing/glasses/blindfold,
-	"Colored Blindfold_[MATCHES_EYE_COLOR]" = /obj/item/clothing/glasses/blindfold/white/loadout,
-	"Cold Glasses" = /obj/item/clothing/glasses/cold,
-	"Heat Glasses" = /obj/item/clothing/glasses/heat,
-	"Geist Gazers" = /obj/item/clothing/glasses/geist_gazers,
-	"Orange Glasses" = /obj/item/clothing/glasses/orange,
-	"Psych Glasses" = /obj/item/clothing/glasses/psych,
-	"Red Glasses" = /obj/item/clothing/glasses/red,
-	"Welding Goggles" = /obj/item/clothing/glasses/welding,
-))
+		if(!ispath(item.item_path))
+			stack_trace("generate_loadout_items(): Instantiated a loadout item ([item.name]) with an invalid or null typepath! (got path: [item.item_path])")
+			qdel(item)
+			continue
 
-/// Glove Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_gloves, list(
-	"Fingerless Gloves" = /obj/item/clothing/gloves/fingerless,
-	"Black Gloves" = /obj/item/clothing/gloves/color/black,
-	"Blue Gloves" = /obj/item/clothing/gloves/color/blue,
-	"Brown Gloves" = /obj/item/clothing/gloves/color/brown,
-	"Green Gloves" = /obj/item/clothing/gloves/color/green,
-	"Grey Gloves" = /obj/item/clothing/gloves/color/grey,
-	"Light Brown Gloves" = /obj/item/clothing/gloves/color/light_brown,
-	"Orange Gloves" = /obj/item/clothing/gloves/color/orange,
-	"Purple Gloves" = /obj/item/clothing/gloves/color/purple,
-	"Rainbow Gloves" = /obj/item/clothing/gloves/color/rainbow,
-	"Red Gloves" = /obj/item/clothing/gloves/color/red,
-	"Yellow Gloves_[NO_SHOCK]" = /obj/item/clothing/gloves/color/normal_yellow,
-	"White Gloves" = /obj/item/clothing/gloves/color/white,
-	"Bone Bracers_[NO_ARMOR]" = /obj/item/clothing/gloves/armorless_bracer,
-))
-
-/// Head Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_helmets, list(
-	"Black Beanie" = /obj/item/clothing/head/beanie/black,
-	"Christmas Beanie" = /obj/item/clothing/head/beanie/christmas,
-	"Cyan Beanie" = /obj/item/clothing/head/beanie/cyan,
-	"Dark Blue Beanie" = /obj/item/clothing/head/beanie/darkblue,
-	"Green Beanie" = /obj/item/clothing/head/beanie/green,
-	"Orange Beanie" = /obj/item/clothing/head/beanie/orange,
-	"Purple Beanie" = /obj/item/clothing/head/beanie/purple,
-	"Red Beanie" = /obj/item/clothing/head/beanie/red,
-	"Striped Beanie" = /obj/item/clothing/head/beanie/striped,
-	"Striped Blue Beanie" = /obj/item/clothing/head/beanie/stripedblue,
-	"Striped Green Beanie" = /obj/item/clothing/head/beanie/stripedgreen,
-	"Striped Red Beanie" = /obj/item/clothing/head/beanie/stripedred,
-	"White Beanie" = /obj/item/clothing/head/beanie,
-	"Yellow Beanie" = /obj/item/clothing/head/beanie/yellow,
-	"Greyscale Beret_[GREYSCALE]" = /obj/item/clothing/head/beret/greyscale,
-	"Greyscale Beret (Badge)_[GREYSCALE]" = /obj/item/clothing/head/beret/greyscale_badge,
-	"Black Beret" = /obj/item/clothing/head/beret/black,
-	"Red Beret" = /obj/item/clothing/head/beret,
-	"Black Cap" = /obj/item/clothing/head/soft/black,
-	"Blue Cap" = /obj/item/clothing/head/soft/blue,
-	"Delinquent Cap" = /obj/item/clothing/head/delinquent,
-	"Green Cap" = /obj/item/clothing/head/soft/green,
-	"Grey Cap" = /obj/item/clothing/head/soft/grey,
-	"Orange Cap" = /obj/item/clothing/head/soft/orange,
-	"Purple Cap" = /obj/item/clothing/head/soft/purple,
-	"Rainbow Cap" = /obj/item/clothing/head/soft/rainbow,
-	"Red Cap" = /obj/item/clothing/head/soft/red,
-	"Yellow Cap" = /obj/item/clothing/head/soft/yellow,
-	"White Cap" = /obj/item/clothing/head/soft/mime,
-	"Flat Cap" = /obj/item/clothing/head/flatcap,
-	"Beige Fedora" = /obj/item/clothing/head/fedora/beige,
-	"Black Fedora" = /obj/item/clothing/head/fedora,
-	"White Fedora" = /obj/item/clothing/head/fedora/white,
-	"Dark Blue Hardhat" = /obj/item/clothing/head/hardhat/dblue,
-	"Orange Hardhat" = /obj/item/clothing/head/hardhat/orange,
-	"Red Hardhat" = /obj/item/clothing/head/hardhat/red,
-	"White Hardhat" = /obj/item/clothing/head/hardhat/white,
-	"Yellow Hardhat" = /obj/item/clothing/head/hardhat,
-	"Gladiator Helmet" = /obj/item/clothing/head/helmet/gladiator/loadout,
-	"Mail Cap" = /obj/item/clothing/head/mailman,
-	"Nurse Hat" = /obj/item/clothing/head/nursehat,
-	"Kitty Ears" = /obj/item/clothing/head/kitty,
-	"Rabbit Ears" = /obj/item/clothing/head/rabbitears,
-	"Bandana" = /obj/item/clothing/head/bandana,
-	"Rastafarian Cap" = /obj/item/clothing/head/beanie/rasta,
-	"Top Hat" = /obj/item/clothing/head/that,
-	"Bowler Hat" = /obj/item/clothing/head/bowler,
-	"Bear Pelt" = /obj/item/clothing/head/bearpelt,
-	"Ushanka" = /obj/item/clothing/head/ushanka,
-	"Plague Doctor Cap" = /obj/item/clothing/head/plaguedoctorhat,
-	"Wedding Veil" = /obj/item/clothing/head/weddingveil,
-	"Poppy" = /obj/item/food/grown/poppy,
-	"Lily" = /obj/item/food/grown/poppy/lily,
-	"Geranium" = /obj/item/food/grown/poppy/geranium,
-	"Rose" = /obj/item/food/grown/rose,
-	"Sunflower" = /obj/item/grown/sunflower,
-))
+		.[found_item] = item
 
 /// Mask Slot Items (Deletes overrided items)
 GLOBAL_LIST_INIT(loadout_masks, list(
@@ -415,3 +318,18 @@ GLOBAL_LIST_INIT(loadout_pocket_items, list(
 	"D100" = /obj/item/dice/d100,
 	"D00" = /obj/item/dice/d00,
 ))
+
+/datum/loadout_item
+	var/name
+	var/is_plasmaman_important = FALSE
+	var/is_important_slot = FALSE
+	var/is_greyscale = TRUE
+	var/category
+	var/item_path
+	var/list/additional_tooltip_contents
+
+/datum/loadout_item/proc/equip_outfit_with_item(mob/living/equipper, datum/outfit/outfit, visual)
+	return TRUE
+
+/datum/loadout_item/proc/post_equip_item(mob/living/equipper)
+	return TRUE

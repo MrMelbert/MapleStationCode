@@ -34,18 +34,6 @@
 			continue
 		switch(slot)
 			/// Key slots - Replaced, item moved to backpack
-			if(LOADOUT_ITEM_BELT)
-				if(equipped_outfit.belt)
-					move_to_backpack = equipped_outfit.belt
-				equipped_outfit.belt = loadout[slot]
-			if(LOADOUT_ITEM_EARS)
-				if(equipped_outfit.ears)
-					move_to_backpack = equipped_outfit.ears
-				equipped_outfit.ears = loadout[slot]
-			if(LOADOUT_ITEM_GLASSES)
-				if(equipped_outfit.glasses)
-					move_to_backpack = equipped_outfit.glasses
-				equipped_outfit.glasses = loadout[slot]
 			if(LOADOUT_ITEM_LEFT_HAND)
 				if(equipped_outfit.l_hand)
 					move_to_backpack = equipped_outfit.l_hand
@@ -55,18 +43,6 @@
 					move_to_backpack = equipped_outfit.r_hand
 				equipped_outfit.r_hand = loadout[slot]
 			/// Plasmaman slots - Not replaced, loadout item moved to backpack
-			if(LOADOUT_ITEM_GLOVES)
-				if(isplasmaman(src))
-					to_chat(src, "Your loadout gloves were not equipped directly due to your envirosuit gloves.")
-					move_to_backpack = loadout[slot]
-				else
-					equipped_outfit.gloves = loadout[slot]
-			if(LOADOUT_ITEM_HEAD)
-				if(isplasmaman(src))
-					to_chat(src, "Your loadout helmet was not equipped directly due to your envirosuit helmet.")
-					move_to_backpack = loadout[slot]
-				else
-					equipped_outfit.head = loadout[slot]
 			if(LOADOUT_ITEM_MASK)
 				if(isplasmaman(src))
 					move_to_backpack = loadout[slot]

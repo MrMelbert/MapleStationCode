@@ -45,11 +45,10 @@ GLOBAL_LIST_INIT(loadout_slots, list(
 ))
 
 /// Defines for extra info blurbs, for loadout items.
-#define PRESCRIPTION_GLASSES "PRESCRIPTION"
-#define MATCHES_EYE_COLOR "MATCHES EYE COLOR"
-#define NO_ARMOR "UNARMORED"
+#define TOOLTIP_NO_ARMOR "This item has no armor and is entirely cosmetic."
+#define TOOLTIP_RANDOM_COLOR "This item has a random color and will change every round."
+
 #define NO_DAMAGE "CEREMONIAL"
-#define NO_SHOCK "UNINSULATED"
 #define GREYSCALE "GREYSCALED"
 #define SETS_NAME "MATCHES NAME"
 #define RANDOM_COLOR "RANDOM COLOR"
