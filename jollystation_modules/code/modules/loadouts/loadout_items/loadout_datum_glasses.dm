@@ -6,10 +6,29 @@ GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/gla
 /datum/loadout_item/glasses
 	category = LOADOUT_ITEM_GLASSES
 
-/datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
 	if(outfit.glasses)
 		LAZYADD(outfit.backpack_contents, outfit.glasses)
 	outfit.glasses = item_path
+
+/datum/loadout_item/glasses/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+	. = ..()
+	if(visuals_only)
+		return
+	// MELBERT TODO: This doesn't work
+	var/obj/item/clothing/glasses/equipped_glasses = locate(item_path) in equipper.get_equipped_items()
+	if(equipped_glasses.glass_colour_type)
+		equipper.update_glasses_color(equipped_glasses, TRUE)
+	if(equipped_glasses.tint)
+		equipper.update_tint()
+	if(equipped_glasses.vision_correction)
+		equipper.clear_fullscreen("nearsighted")
+	if(equipped_glasses.vision_flags \
+		|| equipped_glasses.darkness_view \
+		|| equipped_glasses.invis_override \
+		|| equipped_glasses.invis_view \
+		|| !isnull(equipped_glasses.lighting_alpha))
+		equipper.update_sight()
 
 /datum/loadout_item/glasses/prescription_glasses
 	name = "Glasses"

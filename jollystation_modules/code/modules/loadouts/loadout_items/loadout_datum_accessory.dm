@@ -5,9 +5,8 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 
 /datum/loadout_item/accessory
 	category = LOADOUT_ITEM_ACCESSORY
-	additional_tooltip_contents = list(TOOLTIP_ACCESSORY)
 
-/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, item_path)
 	outfit.accessory = item_path
@@ -27,7 +26,7 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 /datum/loadout_item/accessory/full_pocket_protector
 	name = "Pocket Protector (Filled)"
 	item_path = /obj/item/clothing/accessory/pocketprotector/full
-	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, "CONTAINS PENS - This item contains multiple pens on spawn.")
+	additional_tooltip_contents = list("CONTAINS PENS - This item contains multiple pens on spawn.")
 
 /datum/loadout_item/accessory/ribbon
 	name = "Ribbon"
@@ -64,14 +63,14 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
 	item_path = /obj/item/clothing/accessory/cosmetic_dogtag
-	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, "MATCHES NAME - The name inscribed on this item matches your character's name on spawn.")
+	additional_tooltip_contents = list( "MATCHES NAME - The name inscribed on this item matches your character's name on spawn.")
 
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
-	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, TOOLTIP_NO_ARMOR)
+	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
 
 /datum/loadout_item/accessory/bone_codpiece
 	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
-	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, TOOLTIP_NO_ARMOR)
+	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)

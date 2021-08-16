@@ -5,11 +5,10 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 
 /datum/loadout_item/mask
 	category = LOADOUT_ITEM_MASK
-	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT)
 
-/datum/loadout_item/mask/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/mask/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
 	if(isplasmaman(equipper))
-		to_chat(equipper, "Your loadout helmet was not equipped directly due to your envirosuit helmet.")
+		to_chat(equipper, "Your loadout mask was not equipped directly due to your envirosuit mask.")
 		LAZYADD(outfit.backpack_contents, item_path)
 	else
 		outfit.mask = item_path

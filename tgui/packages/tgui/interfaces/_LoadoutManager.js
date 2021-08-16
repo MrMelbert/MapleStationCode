@@ -130,8 +130,6 @@ export const _LoadoutManager = (props, context) => {
                     <Button.Checkbox
                       align="center"
                       content="Toggle Job Clothes"
-                      tooltip="Shown job clothes do not respect \
-                        skirt and backpack preference."
                       checked={job_clothes}
                       onClick={() => act('toggle_job_clothes')} />
                   )}>

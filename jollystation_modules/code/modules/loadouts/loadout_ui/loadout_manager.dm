@@ -155,7 +155,6 @@
 		clear_slot_name(deselected_item.item_path)
 
 	LAZYREMOVE(owner.prefs.loadout_list, deselected_item.item_path)
-	loadout_to_outfit() // We call this here so we `null` the slot correctly
 
 /// Select [path] item to [category_slot] slot, and open up the greyscale UI to customize [path] in [category] slot.
 /datum/loadout_manager/proc/select_item_color(datum/loadout_item/item)
@@ -228,7 +227,7 @@
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
 		return
 
-	if(!(path in owner.prefs.name_loadout_list))
+	if(!(item.item_path in owner.prefs.loadout_list))
 		to_chat(owner, span_warning("Select the item before attempting to name to it!"))
 		return
 
@@ -370,6 +369,23 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 			default_outfit = new fav_job.outfit()
 			if(owner.prefs.jumpsuit_style == PREF_SKIRT)
 				default_outfit.uniform = text2path("[default_outfit.uniform]/skirt")
+
+			switch(owner.prefs.backpack)
+				if(GBACKPACK)
+					back = /obj/item/storage/backpack //Grey backpack
+				if(GSATCHEL)
+					back = /obj/item/storage/backpack/satchel //Grey satchel
+				if(GDUFFELBAG)
+					back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
+				if(LSATCHEL)
+					back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
+				if(DSATCHEL)
+					back = satchel //Department satchel
+				if(DDUFFELBAG)
+					back = duffelbag //Department duffel bag
+				else
+					back = backpack //Department backpack
+
 	else
 		default_outfit = new()
 
@@ -378,7 +394,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 
 	var/list/loadout_datums = loadout_list_to_datums(owner.prefs.loadout_list)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.insert_path_into_outfit(custom_loadout, visual = TRUE)
+		item.insert_path_into_outfit(custom_loadout, visuals_only = TRUE)
 
 /*
  * Takes an assoc list of [typepath]s to [singleton datum]

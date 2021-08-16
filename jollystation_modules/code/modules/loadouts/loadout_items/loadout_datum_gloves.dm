@@ -5,9 +5,8 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 
 /datum/loadout_item/gloves
 	category = LOADOUT_ITEM_GLOVES
-	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT)
 
-/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
 	if(isplasmaman(equipper))
 		to_chat(equipper, "Your loadout gloves were not equipped directly due to your envirosuit gloves.")
 		LAZYADD(outfit.backpack_contents, item_path)
@@ -61,7 +60,7 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 /datum/loadout_item/gloves/yellow
 	name = "Yellow Gloves"
 	item_path = /obj/item/clothing/gloves/color/normal_yellow
-	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT, "NON-INSULATING - This item is purely cosmetic and provide no shock insulation.")
+	additional_tooltip_contents = list("NON-INSULATING - This item is purely cosmetic and provide no shock insulation.")
 
 /datum/loadout_item/gloves/yellow
 	name = "White Gloves"
@@ -70,4 +69,4 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 /datum/loadout_item/gloves/yellow
 	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
-	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT, TOOLTIP_NO_ARMOR)
+	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)

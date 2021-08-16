@@ -5,9 +5,8 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 
 /datum/loadout_item/head
 	category = LOADOUT_ITEM_HEAD
-	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT)
 
-/datum/loadout_item/head/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/head/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
 	if(isplasmaman(equipper))
 		to_chat(equipper, "Your loadout helmet was not equipped directly due to your envirosuit helmet.")
 		LAZYADD(outfit.backpack_contents, item_path)
@@ -246,4 +245,4 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 /datum/loadout_item/head/rainbow_bunch
 	name = "Rainbow Bunch"
 	item_path = /obj/item/food/grown/rainbow_flower
-	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT, TOOLTIP_RANDOM_COLOR)
+	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)

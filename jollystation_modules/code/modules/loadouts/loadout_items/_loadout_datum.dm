@@ -1,4 +1,13 @@
-/// -- A ton of global lists that hold singletons of all loadout items. --
+// -- The loadout item datum and related procs. --
+
+/// Global list of ALL loadout datums instantiated.
+GLOBAL_LIST_EMPTY(all_loadout_datums)
+
+/*
+ * Generate a list of singleton loadout_item datums from all subtypes of [type_to_generate]
+ *
+ * returns a list of singleton datums.
+ */
 /proc/generate_loadout_items(type_to_generate)
 	RETURN_TYPE(/list)
 
@@ -6,29 +15,20 @@
 	if(!ispath(type_to_generate))
 		CRASH("generate_loadout_items(): called with an invalid or null path as an argument!")
 
-	for(var/found_type in subtypesof(type_to_generate))
-		var/datum/loadout_item/item = new found_type()
-		if(!istype(item))
-			stack_trace("generate_loadout_items(): Instantiated a loadout item ([item]) that isn't of type /datum/loadout_item! (got type: [item.type])")
-			qdel(item)
-			continue
-
-		if(!ispath(item.item_path))
-			stack_trace("generate_loadout_items(): Instantiated a loadout item ([item.name]) with an invalid or null typepath! (got path: [item.item_path])")
-			qdel(item)
-			continue
-
+	for(var/datum/loadout_item/found_type as anything in subtypesof(type_to_generate))
 		/// Any item without a name is "abstract"
-		if(isnull(item.name))
-			qdel(item)
+		if(isnull(initial(found_type.name)))
 			continue
 
-		. |= item
+		if(!ispath(initial(found_type.item_path)))
+			stack_trace("generate_loadout_items(): Attempted to instantiate a loadout item ([initial(found_type.name)]) with an invalid or null typepath! (got path: [initial(found_type.item_path)])")
+			continue
 
-/// Global list of ALL loadout datums instantiated.
-GLOBAL_LIST_EMPTY(all_loadout_datums)
+		var/datum/loadout_item/spawned_type = new found_type()
+		GLOB.all_loadout_datums[spawned_type.item_path] = spawned_type
+		. |= spawned_type
 
-/// Loadoit item datum.
+/// Loadout item datum.
 /// Holds all the information about each loadout items.
 /// A list of singleton loadout items are generated on initialize.
 /datum/loadout_item
@@ -58,12 +58,6 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		else
 			LAZYADD(additional_tooltip_contents, TOOLTIP_GREYSCALE)
 
-	GLOB.all_loadout_datums[item_path] = src
-
-/datum/loadout_item/Destroy()
-	GLOB.all_loadout_datums -= src
-	return ..()
-
 /*
  * Place our [var/item_path] into [outfit].
  *
@@ -73,24 +67,25 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  * outfit - The outfit we're equipping our items into.
  * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
  */
-/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
 	if(!visual)
 		LAZYADD(outfit.backpack_contents, item_path)
 
 /*
  * Called after the item is equipped on [equipper].
  */
-/datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/equipper, visual)
+/datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/equipper, visuals_only)
+	// MELBERT TODO: This doesn't work on the preview, but it does work in game?
 	var/list/greyscale_colors = preference_source?.greyscale_loadout_list
 	if(can_be_greyscale && LAZYLEN(greyscale_colors))
 		if(ispath(item_path, /obj/item/clothing))
 			var/obj/item/clothing/equipped_item = locate(item_path) in equipper.get_equipped_items()
 			equipped_item?.set_greyscale(greyscale_colors[item_path])
-		else if(!visual)
+		else if(!visuals_only)
 			var/obj/item/other_item = locate(item_path) in equipper.GetAllContents()
 			other_item?.set_greyscale(greyscale_colors[item_path])
 
-	if(!visual)
+	if(!visuals_only)
 		var/list/loadout_names = preference_source?.name_loadout_list
 		if(LAZYLEN(loadout_names))
 			var/obj/item/equipped_item = locate(item_path) in equipper.GetAllContents()

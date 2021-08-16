@@ -28,10 +28,6 @@
 #define TOOLTIP_NO_ARMOR "ARMORLESS - This item has no armor and is entirely cosmetic."
 #define TOOLTIP_NO_DAMAGE "CEREMONIAL - This item has very low force and is cosmetic."
 #define TOOLTIP_RANDOM_COLOR "RANDOM COLOR -This item has a random color and will change every round."
-#define TOOLTIP_ACCESSORY "ACCESSORY - This item is an accessory, and will attempt to be attached to your jumpsuit on spawn."
-#define TOOLTIP_BACKPACK_ITEM "BACKPACK ITEM - This item is a pocket item, and will be added to your backpack on spawn."
-#define TOOLTIP_PLASMAMAN_IMPORTANT "PLASMAMAN SLOT - This item occupies a slot important for Plasmaman survival, and will not be equipped onto Plasmamen automatically."
-#define TOOLTIP_SLOT_IMPORTANT "KEY SLOT -This item occupies a slot important for job equipment - any items that occupy that slot will be moved to your backpack automatically."
 #define TOOLTIP_GREYSCALE "GREYSCALED - This item can be customized via the greyscale modification UI."
 #define TOOLTIP_RENAMABLE "RENAMABLE - This item can be given a custom name."
 

@@ -12,8 +12,12 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under
 	category = LOADOUT_ITEM_UNIFORM
 
-/datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
-	outfit.uniform = item_path
+/datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
+	if(isplasmaman(equipper))
+		to_chat(equipper, "Your loadout uniform was not equipped directly due to your envirosuit.")
+		LAZYADD(outfit.backpack_contents, item_path)
+	else
+		outfit.uniform = item_path
 
 // jumpsuit undersuits
 /datum/loadout_item/under/jumpsuit

@@ -6,7 +6,7 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 /datum/loadout_item/shoes
 	category = LOADOUT_ITEM_SHOES
 
-/datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/shoes/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
 	outfit.shoes = item_path
 
 /datum/loadout_item/shoes/jackboots

@@ -6,7 +6,8 @@ GLOBAL_LIST_INIT(loadout_inhand_items, generate_loadout_items(/datum/loadout_ite
 /datum/loadout_item/inhand
 	category = LOADOUT_ITEM_INHAND
 
-/datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+/datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
+	/// MELBERT TODO: equips to both hands?
 	if(outfit.l_hand && !outfit.r_hand)
 		outfit.r_hand = item_path
 	else

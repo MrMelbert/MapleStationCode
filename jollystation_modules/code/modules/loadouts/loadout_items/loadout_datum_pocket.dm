@@ -5,7 +5,6 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 
 /datum/loadout_item/pocket_items
 	category = LOADOUT_ITEM_MISC
-	additional_tooltip_contents = list(TOOLTIP_BACKPACK_ITEM)
 
 /datum/loadout_item/pocket_items/gum_pack
 	name = "Pack of Gum"
@@ -74,7 +73,7 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 /datum/loadout_item/pocket_items/plush/lizard_random
 	name = "Random Lizard Plush"
 	item_path = /obj/item/toy/plush/lizard_plushie
-	additional_tooltip_contents = list(TOOLTIP_BACKPACK_ITEM, TOOLTIP_RANDOM_COLOR)
+	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
 
 /datum/loadout_item/pocket_items/plush/moth
 	name = "Moth Plush"

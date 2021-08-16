@@ -32,6 +32,7 @@
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
+	/// MELBERT TODO: maybe make this not use equip(), pass item into post_equip_item
 	equipped_outfit.equip(src, visuals_only)
 	w_uniform?.swap_to_modular_dmi(src)
 
