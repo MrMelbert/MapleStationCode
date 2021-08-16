@@ -7,12 +7,8 @@
 	var/medical_records = ""
 	var/exploitable_info = ""
 	var/runechat_color = "aaa"
-	/// Loadout prefs. List of typepaths.
+	/// Loadout prefs. Assoc list of [typepaths] to [associated list of item info].
 	var/list/loadout_list
-	/// Greyscale loadout prefs. Assoc list of typepath to color.
-	var/list/greyscale_loadout_list
-	/// Named items loadout prefs. Assoc list of typepath to string.
-	var/list/name_loadout_list
 
 	/// Client preferences
 	var/hear_speech_sounds = TRUE

@@ -8,8 +8,8 @@
 /datum/loadout_manager
 	/// The client of the person using the UI
 	var/client/owner
-	/// The loadout list we had when we opened the UI.
-	var/list/loadout_on_open
+	/// The current selected loadout list.
+	var/list/current_loadout
 	/// The key of the dummy we use to generate sprites
 	var/dummy_key
 	/// The dir the dummy is facing.
@@ -31,17 +31,15 @@
 	owner = CLIENT_FROM_VAR(user)
 	custom_loadout = new()
 	owner.open_loadout_ui = src
-	loadout_on_open = LAZYLISTDUPLICATE(owner.prefs.loadout_list)
+	current_loadout = LAZYLISTDUPLICATE(owner.prefs.loadout_list)
 	loadout_to_outfit()
 
 /datum/loadout_manager/ui_close(mob/user)
-	owner.prefs.loadout_list = sanitize_loadout_list(owner.prefs.loadout_list)
-	owner.prefs.greyscale_loadout_list = sanitize_assoc_loadout_list(owner.prefs.greyscale_loadout_list)
-	owner.prefs.name_loadout_list = sanitize_assoc_loadout_list(owner.prefs.name_loadout_list)
+	owner?.prefs.loadout_list = sanitize_loadout_list(current_loadout)
 	if(menu)
 		SStgui.close_uis(menu)
 		menu = null
-	owner.open_loadout_ui = null
+	owner?.open_loadout_ui = null
 	clear_human_dummy(dummy_key)
 	qdel(custom_loadout)
 	qdel(src)
@@ -80,7 +78,6 @@
 			tutorial_status = !tutorial_status
 			return TRUE
 
-		// Either equips or de-equips the params["path"] item into params["category"]
 		if("select_item")
 			if(params["deselect"])
 				deselect_item(interacted_item)
@@ -95,9 +92,7 @@
 
 		// Clears the loadout list entirely.
 		if("clear_all_items")
-			LAZYNULL(owner.prefs.loadout_list)
-			LAZYNULL(owner.prefs.greyscale_loadout_list)
-			LAZYNULL(owner.prefs.name_loadout_list)
+			LAZYNULL(current_loadout)
 
 		// Toggles between viewing favorite job clothes on the dummy.
 		if("toggle_job_clothes")
@@ -114,7 +109,7 @@
 		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
 		if("close_ui")
 			if(params["revert"])
-				owner.prefs.loadout_list = loadout_on_open
+				current_loadout = owner.prefs.loadout_list
 			SStgui.close_uis(src)
 			return
 
@@ -125,13 +120,7 @@
 
 /// Select [path] item to [category_slot] slot. If it's not a greyscale item, clear the corresponding greyscale slot too.
 /datum/loadout_manager/proc/select_item(datum/loadout_item/selected_item)
-	if(!selected_item.can_be_greyscale)
-		clear_slot_greyscale(selected_item.item_path)
-
-	if(!selected_item.can_be_named)
-		clear_slot_name(selected_item.item_path)
-
-	var/list/loadout_datums = loadout_list_to_datums(owner.prefs.loadout_list)
+	var/list/loadout_datums = loadout_list_to_datums(current_loadout)
 	var/num_misc_items = 0
 	var/datum/loadout_item/first_misc_found
 	for(var/datum/loadout_item/item as anything in loadout_datums)
@@ -144,17 +133,11 @@
 			deselect_item(first_misc_found || item)
 			continue
 
-	LAZYADD(owner.prefs.loadout_list, selected_item.item_path)
+	LAZYSET(current_loadout, selected_item.item_path, list())
 
 /// Deselect [deselected_item]. If it's not a greyscale item, clear the corresponding assoc list slots, too.
 /datum/loadout_manager/proc/deselect_item(datum/loadout_item/deselected_item)
-	if(deselected_item.can_be_greyscale)
-		clear_slot_greyscale(deselected_item.item_path)
-
-	if(deselected_item.can_be_named)
-		clear_slot_name(deselected_item.item_path)
-
-	LAZYREMOVE(owner.prefs.loadout_list, deselected_item.item_path)
+	LAZYREMOVE(current_loadout, deselected_item.item_path)
 
 /// Select [path] item to [category_slot] slot, and open up the greyscale UI to customize [path] in [category] slot.
 /datum/loadout_manager/proc/select_item_color(datum/loadout_item/item)
@@ -175,8 +158,8 @@
 		allowed_configs += "[colored_item.greyscale_config_inhand_right]"
 
 	var/slot_starting_colors = colored_item.greyscale_colors
-	if(LAZYLEN(owner.prefs.greyscale_loadout_list) && owner.prefs.greyscale_loadout_list[item.item_path])
-		slot_starting_colors = owner.prefs.greyscale_loadout_list[item.item_path]
+	if(INFO_GREYSCALE in current_loadout[item.item_path])
+		slot_starting_colors = current_loadout[item.item_path][INFO_GREYSCALE]
 
 	var/datum/greyscale_config/current_config = SSgreyscale.configurations[colored_item.greyscale_config]
 	if(current_config && !current_config.icon_states)
@@ -208,18 +191,14 @@
 	if(!open_menu)
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	if(!(path in owner.prefs.loadout_list))
+	if(!(path in current_loadout))
 		to_chat(owner, span_warning("Select the item before attempting to apply greyscale to it!"))
 		return
 
 	var/list/colors = open_menu.split_colors
 	if(colors)
-		LAZYSET(owner.prefs.greyscale_loadout_list, path, colors.Join(""))
+		current_loadout[path][INFO_GREYSCALE] = colors.Join("")
 		update_dummysprite = TRUE
-
-/// Clears [category_slot]'s greyscale colors.
-/datum/loadout_manager/proc/clear_slot_greyscale(path)
-	LAZYREMOVE(owner.prefs.greyscale_loadout_list, path)
 
 /// Set [item]'s name to input provided.
 /datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)
@@ -227,18 +206,19 @@
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
 		return
 
-	if(!(item.item_path in owner.prefs.loadout_list))
+	if(!(item.item_path in current_loadout))
 		to_chat(owner, span_warning("Select the item before attempting to name to it!"))
 		return
 
 	if(input_name)
-		LAZYSET(owner.prefs.name_loadout_list, item.item_path, input_name)
+		current_loadout[item.item_path][INFO_NAMED] = input_name
 	else
-		if(LAZYLEN(owner.prefs.name_loadout_list) && (item.item_path in owner.prefs.name_loadout_list))
-			LAZYREMOVE(owner.prefs.name_loadout_list, item.item_path)
+		clear_slot_info(item.item_path, INFO_NAMED)
 
-/datum/loadout_manager/proc/clear_slot_name(path)
-	LAZYREMOVE(owner.prefs.name_loadout_list, path)
+/// Clear [info_to_clear] from [path]'s associated list of loadout info.
+/datum/loadout_manager/proc/clear_slot_info(path, info_to_clear)
+	if(info_to_clear in current_loadout[path])
+		current_loadout[path] -= info_to_clear
 
 /// Rotate the dummy [DIR] direction, or reset it to SOUTH dir if we're showing all dirs at once.
 /datum/loadout_manager/proc/rotate_model_dir(dir)
@@ -276,8 +256,12 @@
 /datum/loadout_manager/ui_data(mob/user)
 	var/list/data = list()
 
+	var/list/all_selected_paths = list()
+	for(var/path in current_loadout)
+		all_selected_paths += path
+
 	data["icon64"] = generate_preview()
-	data["selected_loadout"] = LAZYCOPY(owner.prefs.loadout_list)
+	data["selected_loadout"] = all_selected_paths
 	data["mob_name"] = owner.prefs.real_name
 	data["ismoth"] = istype(owner.prefs.pref_species, /datum/species/moth) // Moth's humanflaticcon isn't the same dimensions for some reason
 	data["job_clothes"] = view_job_clothes
@@ -357,6 +341,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 /datum/loadout_manager/proc/loadout_to_outfit()
 	var/datum/outfit/default_outfit
 	if(view_job_clothes)
+		var/datum/outfit/job/job_outfit
 		var/datum/job/fav_job = SSjob.GetJobType(SSjob.overflow_role)
 		for(var/selected_job in owner.prefs.job_preferences)
 			if(owner.prefs.job_preferences[selected_job] == JP_HIGH)
@@ -364,35 +349,36 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 				break
 
 		if(istype(owner.prefs.pref_species, /datum/species/plasmaman) && fav_job.plasmaman_outfit)
-			default_outfit = new fav_job.plasmaman_outfit()
+			job_outfit = new fav_job.plasmaman_outfit()
 		else
-			default_outfit = new fav_job.outfit()
+			job_outfit = new fav_job.outfit()
 			if(owner.prefs.jumpsuit_style == PREF_SKIRT)
-				default_outfit.uniform = text2path("[default_outfit.uniform]/skirt")
+				job_outfit.uniform = text2path("[job_outfit.uniform]/skirt")
 
 			switch(owner.prefs.backpack)
 				if(GBACKPACK)
-					back = /obj/item/storage/backpack //Grey backpack
+					job_outfit.back = /obj/item/storage/backpack //Grey backpack
 				if(GSATCHEL)
-					back = /obj/item/storage/backpack/satchel //Grey satchel
+					job_outfit.back = /obj/item/storage/backpack/satchel //Grey satchel
 				if(GDUFFELBAG)
-					back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
+					job_outfit.back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
 				if(LSATCHEL)
-					back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
+					job_outfit.back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
 				if(DSATCHEL)
-					back = satchel //Department satchel
+					job_outfit.back = job_outfit.satchel //Department satchel
 				if(DDUFFELBAG)
-					back = duffelbag //Department duffel bag
+					job_outfit.back = job_outfit.duffelbag //Department duffel bag
 				else
-					back = backpack //Department backpack
+					job_outfit.back = job_outfit.backpack //Department backpack
 
+		default_outfit = job_outfit
 	else
 		default_outfit = new()
 
 	custom_loadout.copy_from(default_outfit)
 	qdel(default_outfit)
 
-	var/list/loadout_datums = loadout_list_to_datums(owner.prefs.loadout_list)
+	var/list/loadout_datums = loadout_list_to_datums(current_loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(custom_loadout, visuals_only = TRUE)
 

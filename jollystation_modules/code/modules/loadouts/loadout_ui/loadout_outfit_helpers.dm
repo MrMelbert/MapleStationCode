@@ -84,7 +84,7 @@
 
 		LAZYREMOVE(list_to_update, thing)
 		if(ispath(our_path))
-			LAZYADD(list_to_update, our_path)
+			LAZYSET(list_to_update, our_path, list())
 
 	return list_to_update
 
@@ -106,22 +106,6 @@
 
 		else if(!(path in GLOB.all_loadout_datums))
 			stack_trace("invalid loadout slot found in loadout list! Path: [path]")
-			LAZYREMOVE(list_to_clean, path)
-
-	return list_to_clean
-
-/*
- * Removes all invalid paths from assoc loadout lists and any paths without values assigned.
- *
- * passed_list - the loadout list we're sanitizing.
- *
- * returns a list
- */
-/proc/sanitize_assoc_loadout_list(list/passed_list)
-	var/list/list_to_clean = sanitize_loadout_list(passed_list) // run basic sanitization, first
-	for(var/path in list_to_clean)
-		if (!list_to_clean[path])
-			stack_trace("path found in assoc loadout list without value assigned! (Path: [path])")
 			LAZYREMOVE(list_to_clean, path)
 
 	return list_to_clean

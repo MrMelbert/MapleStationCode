@@ -68,7 +68,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
  */
 /datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
-	if(!visual)
+	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
 /*
@@ -76,17 +76,20 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  */
 /datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/equipper, visuals_only)
 	// MELBERT TODO: This doesn't work on the preview, but it does work in game?
-	var/list/greyscale_colors = preference_source?.greyscale_loadout_list
-	if(can_be_greyscale && LAZYLEN(greyscale_colors))
+	if(!preference_source)
+		return
+
+	var/list/our_loadout = preference_source?.loadout_list
+
+	if(can_be_greyscale && (INFO_GREYSCALE in our_loadout[item_path]))
 		if(ispath(item_path, /obj/item/clothing))
 			var/obj/item/clothing/equipped_item = locate(item_path) in equipper.get_equipped_items()
-			equipped_item?.set_greyscale(greyscale_colors[item_path])
+			equipped_item?.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
+			message_admins("Setting [equipped_item] to [our_loadout[item_path][INFO_GREYSCALE]]")
 		else if(!visuals_only)
 			var/obj/item/other_item = locate(item_path) in equipper.GetAllContents()
-			other_item?.set_greyscale(greyscale_colors[item_path])
+			other_item?.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
 
-	if(!visuals_only)
-		var/list/loadout_names = preference_source?.name_loadout_list
-		if(LAZYLEN(loadout_names))
-			var/obj/item/equipped_item = locate(item_path) in equipper.GetAllContents()
-			equipped_item.name = loadout_names[item_path]
+	if(can_be_named && !visuals_only && (INFO_NAMED in our_loadout[item_path]))
+		var/obj/item/equipped_item = locate(item_path) in equipper.GetAllContents()
+		equipped_item.name = our_loadout[item_path][INFO_NAMED]

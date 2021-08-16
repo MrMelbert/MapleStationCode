@@ -21,6 +21,9 @@
 #define LOADOUT_ITEM_INHAND "inhand_items"
 #define LOADOUT_ITEM_MISC "pocket_items"
 
+#define INFO_GREYSCALE "greyscale"
+#define INFO_NAMED "name"
+
 /// Max amonut of misc / backpack items that are allowed.
 #define MAX_ALLOWED_MISC_ITEMS 3
 
