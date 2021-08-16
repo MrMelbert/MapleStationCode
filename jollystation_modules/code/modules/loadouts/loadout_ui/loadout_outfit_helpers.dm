@@ -4,7 +4,8 @@
 /datum/outfit/player_loadout
 	name = "Player Loadout"
 
-/* Actually equip our mob with our job outfit and our loadout items.
+/*
+ * Actually equip our mob with our job outfit and our loadout items.
  * Loadout items override the pre-existing item in the corresponding slot of the job outfit.
  * Some job items are preserved after being overridden - belt items, ear items, and glasses.
  * The rest of the slots, the items are overridden completely and deleted.
@@ -26,63 +27,76 @@
 	else
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
-	var/list/loadout_datums = list()
-	for(var/path in preference_source.loadout_list)
-		if(!GLOB.all_loadout_datums[path])
-			stack_trace("Could not find ([path]) loadout item in the global list of loadout datums!")
-			continue
-
-		loadout_datums += GLOB.all_loadout_datums[path]
+	var/list/loadout_datums = loadout_list_to_datums(preference_source.loadout_list)
 
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.insert_path_into_outfit(outfit, src, visuals_only)
-
-	/*
-		switch(slot)
-
-			if(LOADOUT_ITEM_UNIFORM)
-				if(isplasmaman(src))
-					to_chat(src, "Your loadout jumpsuit was not equipped directly due to your envirosuit.")
-					move_to_backpack = loadout[slot]
-				else
-					equipped_outfit.uniform = loadout[slot]
-
-		if(!visuals_only && move_to_backpack)
-			LAZYADD(equipped_outfit.backpack_contents, move_to_backpack)
-	*/
+		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
 	equipped_outfit.equip(src, visuals_only)
 	w_uniform?.swap_to_modular_dmi(src)
 
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.post_equip_item(src, preference_source, visuals_only)
+		item.post_equip_item(preference_source, src, visuals_only)
 
 	regenerate_icons()
 	return TRUE
 
-
-/* Removes all invalid paths from loadout lists.
+/*
+ * Takes a list of paths (such as a loadout list)
+ * and returns a list of their singleton loadout item datums
  *
- * list_to_clean - the loadout list we're sanitizing.
+ * loadout_list - the list being checked
+ *
+ * returns a list of singleton datums
+ */
+/proc/loadout_list_to_datums(list/loadout_list)
+	RETURN_TYPE(/list)
+
+	. = list()
+
+	if(!GLOB.all_loadout_datums.len)
+		CRASH("No loadout datums in the global loadout list!")
+
+	for(var/path in loadout_list)
+		if(!GLOB.all_loadout_datums[path])
+			stack_trace("Could not find ([path]) loadout item in the global list of loadout datums!")
+			continue
+
+		. |= GLOB.all_loadout_datums[path]
+
+
+/*
+ * Removes all invalid paths from loadout lists.
+ *
+ * passed_list - the loadout list we're sanitizing.
+ *
+ * returns a list
  */
 /proc/update_loadout_list(list/passed_list)
+	RETURN_TYPE(/list)
+
 	var/list/list_to_update = LAZYLISTDUPLICATE(passed_list)
-	for(var/thing in list_to_update)
+	for(var/thing in list_to_update) //thing, 'cause it could be a lot of things
 		if(ispath(thing))
 			break
-
-		LAZYREMOVE(thing, list_to_update)
 		var/our_path = text2path(list_to_update[thing])
+
+		LAZYREMOVE(list_to_update, thing)
 		if(ispath(our_path))
-			LAZYADD(our_path, list_to_update)
+			LAZYADD(list_to_update, our_path)
 
 	return list_to_update
 
-/* Removes all invalid paths from loadout lists.
+/*
+ * Removes all invalid paths from loadout lists.
  *
- * list_to_clean - the loadout list we're sanitizing.
+ * passed_list - the loadout list we're sanitizing.
+ *
+ * returns a list
  */
 /proc/sanitize_loadout_list(list/passed_list)
+	RETURN_TYPE(/list)
+
 	var/list/list_to_clean = LAZYLISTDUPLICATE(passed_list)
 	for(var/path in list_to_clean)
 		if(!ispath(path))
@@ -95,15 +109,18 @@
 
 	return list_to_clean
 
-/* Removes all invalid paths from greyscale loadout lists and any paths without colors assigned.
+/*
+ * Removes all invalid paths from assoc loadout lists and any paths without values assigned.
  *
- * list_to_clean - the greyscale loadout list we're sanitizing.
+ * passed_list - the loadout list we're sanitizing.
+ *
+ * returns a list
  */
-/proc/sanitize_greyscale_list(list/passed_list)
+/proc/sanitize_assoc_loadout_list(list/passed_list)
 	var/list/list_to_clean = sanitize_loadout_list(passed_list) // run basic sanitization, first
 	for(var/path in list_to_clean)
 		if (!list_to_clean[path])
-			stack_trace("path found in greyscale loadout list without color assigned! (Path: [path])")
+			stack_trace("path found in assoc loadout list without value assigned! (Path: [path])")
 			LAZYREMOVE(list_to_clean, path)
 
 	return list_to_clean

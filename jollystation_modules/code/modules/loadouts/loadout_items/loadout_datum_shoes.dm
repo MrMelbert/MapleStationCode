@@ -47,7 +47,7 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 
 /datum/loadout_item/shoes/greyscale_sneakers
 	name = "Greyscale Sneakers"
-	is_greyscale = TRUE
+	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/shoes/sneakers/greyscale
 
 /datum/loadout_item/shoes/black_sneakers

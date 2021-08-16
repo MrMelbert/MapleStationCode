@@ -61,7 +61,7 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 /datum/loadout_item/gloves/yellow
 	name = "Yellow Gloves"
 	item_path = /obj/item/clothing/gloves/color/normal_yellow
-	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT, "This item is purely cosmetic and provide no shock insulation.")
+	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT, "NON-INSULATING - This item is purely cosmetic and provide no shock insulation.")
 
 /datum/loadout_item/gloves/yellow
 	name = "White Gloves"

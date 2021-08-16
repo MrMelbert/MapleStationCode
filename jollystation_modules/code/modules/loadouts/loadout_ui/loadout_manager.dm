@@ -36,7 +36,8 @@
 
 /datum/loadout_manager/ui_close(mob/user)
 	owner.prefs.loadout_list = sanitize_loadout_list(owner.prefs.loadout_list)
-	owner.prefs.greyscale_loadout_list = sanitize_greyscale_list(owner.prefs.greyscale_loadout_list)
+	owner.prefs.greyscale_loadout_list = sanitize_assoc_loadout_list(owner.prefs.greyscale_loadout_list)
+	owner.prefs.name_loadout_list = sanitize_assoc_loadout_list(owner.prefs.name_loadout_list)
 	if(menu)
 		SStgui.close_uis(menu)
 		menu = null
@@ -68,7 +69,7 @@
 
 	var/datum/loadout_item/interacted_item
 	if(params["path"])
-		interacted_item = GLOB.all_loadout_datums[params["path"]]
+		interacted_item = GLOB.all_loadout_datums[text2path(params["path"])]
 		if(!interacted_item)
 			stack_trace("Failed to locate desired loadout item (path: [params["path"]]) in the global list of loadout datums!")
 			return
@@ -89,10 +90,14 @@
 		if("select_color")
 			select_item_color(interacted_item)
 
+		if("set_name")
+			set_item_name(interacted_item)
+
 		// Clears the loadout list entirely.
 		if("clear_all_items")
 			LAZYNULL(owner.prefs.loadout_list)
 			LAZYNULL(owner.prefs.greyscale_loadout_list)
+			LAZYNULL(owner.prefs.name_loadout_list)
 
 		// Toggles between viewing favorite job clothes on the dummy.
 		if("toggle_job_clothes")
@@ -120,17 +125,36 @@
 
 /// Select [path] item to [category_slot] slot. If it's not a greyscale item, clear the corresponding greyscale slot too.
 /datum/loadout_manager/proc/select_item(datum/loadout_item/selected_item)
-	if(!selected_item.is_greyscale)
-		clear_slot_greyscale(selected_item.category_slot)
+	if(!selected_item.can_be_greyscale)
+		clear_slot_greyscale(selected_item.item_path)
+
+	if(!selected_item.can_be_named)
+		clear_slot_name(selected_item.item_path)
+
+	var/list/loadout_datums = loadout_list_to_datums(owner.prefs.loadout_list)
+	var/num_misc_items = 0
+	var/datum/loadout_item/first_misc_found
+	for(var/datum/loadout_item/item as anything in loadout_datums)
+		if(item.category == selected_item.category)
+			if(item.category == LOADOUT_ITEM_MISC && ++num_misc_items < MAX_ALLOWED_MISC_ITEMS)
+				if(!first_misc_found)
+					first_misc_found = item
+				continue
+
+			deselect_item(first_misc_found || item)
+			continue
+
 	LAZYADD(owner.prefs.loadout_list, selected_item.item_path)
 
-/// Deselect [delected_item] item. If it's not a greyscale item, clear the corresponding greyscale slot too.
-/datum/loadout_manager/proc/deselect_item(datum/loadout_item/delected_item)
-	if(!delected_item.is_greyscale)
-		// If we're not a greyscale item, clear any greyscale config associated with our slot
-		clear_slot_greyscale(delected_item.item_path)
+/// Deselect [deselected_item]. If it's not a greyscale item, clear the corresponding assoc list slots, too.
+/datum/loadout_manager/proc/deselect_item(datum/loadout_item/deselected_item)
+	if(deselected_item.can_be_greyscale)
+		clear_slot_greyscale(deselected_item.item_path)
 
-	LAZYREMOVE(owner.prefs.loadout_list, delected_item.item_path)
+	if(deselected_item.can_be_named)
+		clear_slot_name(deselected_item.item_path)
+
+	LAZYREMOVE(owner.prefs.loadout_list, deselected_item.item_path)
 	loadout_to_outfit() // We call this here so we `null` the slot correctly
 
 /// Select [path] item to [category_slot] slot, and open up the greyscale UI to customize [path] in [category] slot.
@@ -164,7 +188,7 @@
 		src,
 		usr,
 		allowed_configs,
-		CALLBACK(src, .proc/set_slot_greyscale, item),
+		CALLBACK(src, .proc/set_slot_greyscale, item.item_path),
 		starting_icon_state=colored_item.icon_state,
 		starting_config=colored_item.greyscale_config,
 		starting_colors=slot_starting_colors,
@@ -181,22 +205,41 @@
 	menu = null
 
 /// Sets [category_slot]'s greyscale colors to the colors in the currently opened [open_menu].
-/datum/loadout_manager/proc/set_slot_greyscale(datum/loadout_item/item, datum/greyscale_modify_menu/open_menu)
+/datum/loadout_manager/proc/set_slot_greyscale(path, datum/greyscale_modify_menu/open_menu)
 	if(!open_menu)
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	if(!(item in owner.prefs.loadout_list))
+	if(!(path in owner.prefs.loadout_list))
 		to_chat(owner, span_warning("Select the item before attempting to apply greyscale to it!"))
 		return
 
 	var/list/colors = open_menu.split_colors
 	if(colors)
-		LAZYSET(owner.prefs.greyscale_loadout_list, item.item_path, colors.Join(""))
-	update_dummysprite = TRUE
+		LAZYSET(owner.prefs.greyscale_loadout_list, path, colors.Join(""))
+		update_dummysprite = TRUE
 
 /// Clears [category_slot]'s greyscale colors.
 /datum/loadout_manager/proc/clear_slot_greyscale(path)
 	LAZYREMOVE(owner.prefs.greyscale_loadout_list, path)
+
+/// Set [item]'s name to input provided.
+/datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)
+	var/input_name = stripped_input(owner, "What name do you want to give [item.name]? Leave blank to clear.", "[item.name] name", "", MAX_NAME_LEN)
+	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
+		return
+
+	if(!(path in owner.prefs.name_loadout_list))
+		to_chat(owner, span_warning("Select the item before attempting to name to it!"))
+		return
+
+	if(input_name)
+		LAZYSET(owner.prefs.name_loadout_list, item.item_path, input_name)
+	else
+		if(LAZYLEN(owner.prefs.name_loadout_list) && (item.item_path in owner.prefs.name_loadout_list))
+			LAZYREMOVE(owner.prefs.name_loadout_list, item.item_path)
+
+/datum/loadout_manager/proc/clear_slot_name(path)
+	LAZYREMOVE(owner.prefs.name_loadout_list, path)
 
 /// Rotate the dummy [DIR] direction, or reset it to SOUTH dir if we're showing all dirs at once.
 /datum/loadout_manager/proc/rotate_model_dir(dir)
@@ -235,8 +278,7 @@
 	var/list/data = list()
 
 	data["icon64"] = generate_preview()
-
-	data["selected_loadout"] = owner.prefs.loadout_list
+	data["selected_loadout"] = LAZYCOPY(owner.prefs.loadout_list)
 	data["mob_name"] = owner.prefs.real_name
 	data["ismoth"] = istype(owner.prefs.pref_species, /datum/species/moth) // Moth's humanflaticcon isn't the same dimensions for some reason
 	data["job_clothes"] = view_job_clothes
@@ -268,7 +310,7 @@
 	loadout_tabs += list(list("name" = "Formal", "contents" = list_to_data(GLOB.loadout_undersuits)))
 	loadout_tabs += list(list("name" = "Misc. Under", "contents" = list_to_data(GLOB.loadout_miscunders)))
 	loadout_tabs += list(list("name" = "Accessory", "contents" = list_to_data(GLOB.loadout_accessory)))
-	loadout_tabs += list(list("name" = "Inhand (2 max)", "contents" = list_to_data(GLOB.loadout_inhand_items)))
+	loadout_tabs += list(list("name" = "Inhand", "contents" = list_to_data(GLOB.loadout_inhand_items)))
 	loadout_tabs += list(list("name" = "Misc. (3 max)", "contents" = list_to_data(GLOB.loadout_pocket_items)))
 
 	data["loadout_tabs"] = loadout_tabs
@@ -297,9 +339,7 @@
 	return {"This is the Loadout Manager.
 It allows you to customize what your character will wear on shift start in addition to their job's uniform.
 
-Only one item can be selected per tab, with some exceptions.
-Inhand items (one item is allowed per hand)
-Miscellaneous items (three items are allowed in total - they will spawn in your backpack or attached to your jumpsuit).
+Only one item can be selected per tab, with the exception of backpack items (three items are allowed in total).
 
 Some items have tooltips displaying additional information about how they work.
 Some items are compatible with greyscale coloring! You can choose what color they spawn as
@@ -328,17 +368,16 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 			default_outfit = new fav_job.plasmaman_outfit()
 		else
 			default_outfit = new fav_job.outfit()
+			if(owner.prefs.jumpsuit_style == PREF_SKIRT)
+				default_outfit.uniform = text2path("[default_outfit.uniform]/skirt")
 	else
 		default_outfit = new()
 
 	custom_loadout.copy_from(default_outfit)
 	qdel(default_outfit)
 
-	for(var/path in owner.prefs.loadout_list)
-		var/datum/loadout_item/item = GLOB.all_loadout_datums[path]
-		if(!item)
-			continue
-
+	var/list/loadout_datums = loadout_list_to_datums(owner.prefs.loadout_list)
+	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(custom_loadout, visual = TRUE)
 
 /*
@@ -359,7 +398,8 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 		var/list/formatted_item = list()
 		formatted_item["name"] = item.name
 		formatted_item["path"] = item.item_path
-		formatted_item["is_greyscale"] = item.is_greyscale
+		formatted_item["is_greyscale"] = item.can_be_greyscale
+		formatted_item["is_renamable"] = item.can_be_named
 		if(LAZYLEN(item.additional_tooltip_contents))
 			formatted_item["tooltip_text"] = item.additional_tooltip_contents.Join("\n")
 

@@ -15,7 +15,7 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 
 /datum/loadout_item/suit/winter_coat_greyscale
 	name = "Greyscale Winter Coat"
-	is_greyscale = TRUE
+	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/suit/hooded/wintercoat/custom
 
 /datum/loadout_item/suit/denim_overalls
@@ -40,7 +40,7 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 
 /datum/loadout_item/suit/suspenders_greyscale
 	name = "Greyscale Suspenders"
-	is_greyscale = TRUE
+	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/suit/toggle/suspenders/greyscale
 
 /datum/loadout_item/suit/Suspenders_blue

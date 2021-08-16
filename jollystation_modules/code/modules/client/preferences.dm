@@ -9,8 +9,10 @@
 	var/runechat_color = "aaa"
 	/// Loadout prefs. List of typepaths.
 	var/list/loadout_list
-	/// Greysclae loadout prefs. Assoc list of typepath to color.
+	/// Greyscale loadout prefs. Assoc list of typepath to color.
 	var/list/greyscale_loadout_list
+	/// Named items loadout prefs. Assoc list of typepath to string.
+	var/list/name_loadout_list
 
 	/// Client preferences
 	var/hear_speech_sounds = TRUE

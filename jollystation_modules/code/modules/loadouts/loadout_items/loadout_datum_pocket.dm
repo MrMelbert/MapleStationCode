@@ -55,53 +55,56 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 	name = "Lighter"
 	item_path = /obj/item/lighter
 
-/datum/loadout_item/pocket_items/plush_bee
+/datum/loadout_item/pocket_items/plush
+	can_be_named = TRUE
+
+/datum/loadout_item/pocket_items/plush/bee
 	name = "Bee Plush"
 	item_path = /obj/item/toy/plush/beeplushie
 
-/datum/loadout_item/pocket_items/plush_carp
+/datum/loadout_item/pocket_items/plush/carp
 	name = "Carp Plush"
 	item_path = /obj/item/toy/plush/carpplushie
 
-/datum/loadout_item/pocket_items/plush_lizard_greyscale
+/datum/loadout_item/pocket_items/plush/lizard_greyscale
 	name = "Greyscale Lizard Plush"
-	is_greyscale = TRUE
+	can_be_greyscale = TRUE
 	item_path = /obj/item/toy/plush/lizard_plushie/greyscale
 
-/datum/loadout_item/pocket_items/plush_lizard_random
+/datum/loadout_item/pocket_items/plush/lizard_random
 	name = "Random Lizard Plush"
 	item_path = /obj/item/toy/plush/lizard_plushie
 	additional_tooltip_contents = list(TOOLTIP_BACKPACK_ITEM, TOOLTIP_RANDOM_COLOR)
 
-/datum/loadout_item/pocket_items/plush_moth
+/datum/loadout_item/pocket_items/plush/moth
 	name = "Moth Plush"
 	item_path = /obj/item/toy/plush/moth
 
-/datum/loadout_item/pocket_items/plush_narsie
+/datum/loadout_item/pocket_items/plush/narsie
 	name = "Nar'sie Plush"
 	item_path = /obj/item/toy/plush/narplush
 
-/datum/loadout_item/pocket_items/plush_nukie
+/datum/loadout_item/pocket_items/plush/nukie
 	name = "Nukie Plush"
 	item_path = /obj/item/toy/plush/nukeplushie
 
-/datum/loadout_item/pocket_items/plush_peacekeeper
+/datum/loadout_item/pocket_items/plush/peacekeeper
 	name = "Peacekeeper Plush"
 	item_path = /obj/item/toy/plush/pkplush
 
-/datum/loadout_item/pocket_items/plush_plasmaman
+/datum/loadout_item/pocket_items/plush/plasmaman
 	name = "Plasmaman Plush"
 	item_path = /obj/item/toy/plush/plasmamanplushie
 
-/datum/loadout_item/pocket_items/plush_ratvar
+/datum/loadout_item/pocket_items/plush/ratvar
 	name = "Ratvar Plush"
 	item_path = /obj/item/toy/plush/ratplush
 
-/datum/loadout_item/pocket_items/plush_rouny
+/datum/loadout_item/pocket_items/plush/rouny
 	name = "Rouny Plush"
 	item_path = /obj/item/toy/plush/rouny
 
-/datum/loadout_item/pocket_items/plush_snake
+/datum/loadout_item/pocket_items/plush/snake
 	name = "Snake Plush"
 	item_path = /obj/item/toy/plush/snakeplushie
 

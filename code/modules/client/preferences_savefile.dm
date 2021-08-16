@@ -443,6 +443,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["exploitable_info"] , exploitable_info)
 	READ_FILE(S["loadout_list"] , loadout_list)
 	READ_FILE(S["greyscale_loadout_list"] , greyscale_loadout_list)
+	READ_FILE(S["name_loadout_list"] , name_loadout_list)
 	// NON-MODULE CHANGES END
 
 	if(!CONFIG_GET(flag/join_with_mutant_humans))
@@ -544,7 +545,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	/// Convert from old loadout lists to new loadout lists
 	loadout_list = sanitize_loadout_list(update_loadout_list(loadout_list))
-	greyscale_loadout_list = sanitize_greyscale_list(greyscale_loadout_list)
+	greyscale_loadout_list = sanitize_assoc_loadout_list(greyscale_loadout_list)
+	name_loadout_list = sanitize_assoc_loadout_list(name_loadout_list)
 	// NON-MODULE CHANGE END
 
 	persistent_scars = sanitize_integer(persistent_scars)
@@ -617,6 +619,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["exploitable_info"] , exploitable_info)
 	WRITE_FILE(S["loadout_list"], loadout_list)
 	WRITE_FILE(S["greyscale_loadout_list"], greyscale_loadout_list)
+	WRITE_FILE(S["name_loadout_list"], name_loadout_list)
 	// NON-MODULE CHANGES END
 
 	//Custom names

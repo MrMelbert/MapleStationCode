@@ -4,7 +4,7 @@
 GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/accessory))
 
 /datum/loadout_item/accessory
-	category = LOADOUT_ITEM_MISC
+	category = LOADOUT_ITEM_ACCESSORY
 	additional_tooltip_contents = list(TOOLTIP_ACCESSORY)
 
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
@@ -27,7 +27,7 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 /datum/loadout_item/accessory/full_pocket_protector
 	name = "Pocket Protector (Filled)"
 	item_path = /obj/item/clothing/accessory/pocketprotector/full
-	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, "This item contains multiple pens on spawn.")
+	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, "CONTAINS PENS - This item contains multiple pens on spawn.")
 
 /datum/loadout_item/accessory/ribbon
 	name = "Ribbon"
@@ -64,7 +64,7 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
 	item_path = /obj/item/clothing/accessory/cosmetic_dogtag
-	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, "The name inscribed on this item matches your character's name on spawn.")
+	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, "MATCHES NAME - The name inscribed on this item matches your character's name on spawn.")
 
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"

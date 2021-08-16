@@ -72,7 +72,7 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 
 /datum/loadout_item/head/greyscale_beret
 	name = "Greyscale Beret"
-	is_greyscale = TRUE
+	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/head/beret/greyscale
 
 /datum/loadout_item/head/greyscale_beret/badge
@@ -241,9 +241,9 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 
 /datum/loadout_item/head/harebell
 	name = "Harebell"
-	item_path = /obj/item/grown/harebell
+	item_path = /obj/item/food/grown/harebell
 
 /datum/loadout_item/head/rainbow_bunch
 	name = "Rainbow Bunch"
-	item_path = /obj/item/grown/rainbow_flower
+	item_path = /obj/item/food/grown/rainbow_flower
 	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT, TOOLTIP_RANDOM_COLOR)
