@@ -67,11 +67,11 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, "The name inscribed on this item matches your character's name on spawn.")
 
 /datum/loadout_item/accessory/bone_charm
-	name = "Bone Talismin"
+	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
 	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, TOOLTIP_NO_ARMOR)
 
 /datum/loadout_item/accessory/bone_codpiece
-	name = "Skull Codpiece"
+	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
 	additional_tooltip_contents = list(TOOLTIP_ACCESSORY, TOOLTIP_NO_ARMOR)

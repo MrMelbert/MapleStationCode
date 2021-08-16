@@ -122,7 +122,7 @@
 /datum/loadout_manager/proc/select_item(datum/loadout_item/selected_item)
 	if(!selected_item.is_greyscale)
 		clear_slot_greyscale(selected_item.category_slot)
-	LAZYADD(selected_item.item_path)
+	LAZYADD(owner.prefs.loadout_list, selected_item.item_path)
 
 /// Deselect [delected_item] item. If it's not a greyscale item, clear the corresponding greyscale slot too.
 /datum/loadout_manager/proc/deselect_item(datum/loadout_item/delected_item)
@@ -152,8 +152,8 @@
 		allowed_configs += "[colored_item.greyscale_config_inhand_right]"
 
 	var/slot_starting_colors = colored_item.greyscale_colors
-	if(owner.prefs.greyscale_loadout_list && owner.prefs.greyscale_loadout_list[delected_item.item_path])
-		slot_starting_colors = owner.prefs.greyscale_loadout_list[delected_item.item_path]
+	if(LAZYLEN(owner.prefs.greyscale_loadout_list) && owner.prefs.greyscale_loadout_list[item.item_path])
+		slot_starting_colors = owner.prefs.greyscale_loadout_list[item.item_path]
 
 	var/datum/greyscale_config/current_config = SSgreyscale.configurations[colored_item.greyscale_config]
 	if(current_config && !current_config.icon_states)
@@ -191,7 +191,7 @@
 
 	var/list/colors = open_menu.split_colors
 	if(colors)
-		LAZYSET(owner.prefs.greyscale_loadout_list, item.path, colors.Join(""))
+		LAZYSET(owner.prefs.greyscale_loadout_list, item.item_path, colors.Join(""))
 	update_dummysprite = TRUE
 
 /// Clears [category_slot]'s greyscale colors.
@@ -356,7 +356,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 
 	var/array_index = 1
 	for(var/datum/loadout_item/item as anything in list_of_datums)
-
+		var/list/formatted_item = list()
 		formatted_item["name"] = item.name
 		formatted_item["path"] = item.item_path
 		formatted_item["is_greyscale"] = item.is_greyscale

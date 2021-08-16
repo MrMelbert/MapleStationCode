@@ -39,39 +39,13 @@
 
 	/*
 		switch(slot)
-			/// Key slots - Replaced, item moved to backpack
-			if(LOADOUT_ITEM_LEFT_HAND)
-				if(equipped_outfit.l_hand)
-					move_to_backpack = equipped_outfit.l_hand
-				equipped_outfit.l_hand = loadout[slot]
-			if(LOADOUT_ITEM_RIGHT_HAND)
-				if(equipped_outfit.r_hand)
-					move_to_backpack = equipped_outfit.r_hand
-				equipped_outfit.r_hand = loadout[slot]
-			/// Plasmaman slots - Not replaced, loadout item moved to backpack
-			if(LOADOUT_ITEM_MASK)
-				if(isplasmaman(src))
-					move_to_backpack = loadout[slot]
-					to_chat(src, "Your loadout mask was not equipped directly due to your envirosuit mask.")
-				else
-					equipped_outfit.mask = loadout[slot]
+
 			if(LOADOUT_ITEM_UNIFORM)
 				if(isplasmaman(src))
 					to_chat(src, "Your loadout jumpsuit was not equipped directly due to your envirosuit.")
 					move_to_backpack = loadout[slot]
 				else
 					equipped_outfit.uniform = loadout[slot]
-			// Loadout slots - items replaced and deleted
-			if(LOADOUT_ITEM_NECK)
-				equipped_outfit.neck = loadout[slot]
-			if(LOADOUT_ITEM_SHOES)
-				equipped_outfit.shoes = loadout[slot]
-			if(LOADOUT_ITEM_SUIT)
-				equipped_outfit.suit = loadout[slot]
-			// Backpack items - accessories are equipped, and former accessories are preserved
-			if(LOADOUT_ITEM_BACKPACK_1, LOADOUT_ITEM_BACKPACK_2, LOADOUT_ITEM_BACKPACK_3)
-				move_to_backpack = loadout[slot]
-
 
 		if(!visuals_only && move_to_backpack)
 			LAZYADD(equipped_outfit.backpack_contents, move_to_backpack)
@@ -86,6 +60,23 @@
 	regenerate_icons()
 	return TRUE
 
+
+/* Removes all invalid paths from loadout lists.
+ *
+ * list_to_clean - the loadout list we're sanitizing.
+ */
+/proc/update_loadout_list(list/passed_list)
+	var/list/list_to_update = LAZYLISTDUPLICATE(passed_list)
+	for(var/thing in list_to_update)
+		if(ispath(thing))
+			break
+
+		LAZYREMOVE(thing, list_to_update)
+		var/our_path = text2path(list_to_update[thing])
+		if(ispath(our_path))
+			LAZYADD(our_path, list_to_update)
+
+	return list_to_update
 
 /* Removes all invalid paths from loadout lists.
  *
@@ -109,8 +100,7 @@
  * list_to_clean - the greyscale loadout list we're sanitizing.
  */
 /proc/sanitize_greyscale_list(list/passed_list)
-
-	var/list/list_to_clean = sanitize_loadout_list(passed_list)
+	var/list/list_to_clean = sanitize_loadout_list(passed_list) // run basic sanitization, first
 	for(var/path in list_to_clean)
 		if (!list_to_clean[path])
 			stack_trace("path found in greyscale loadout list without color assigned! (Path: [path])")

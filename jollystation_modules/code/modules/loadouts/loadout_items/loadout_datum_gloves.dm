@@ -68,6 +68,6 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 	item_path = /obj/item/clothing/gloves/color/white
 
 /datum/loadout_item/gloves/yellow
-	name = "Bone Bracers"
+	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
 	additional_tooltip_contents = list(TOOLTIP_PLASMAMAN_IMPORTANT, TOOLTIP_NO_ARMOR)

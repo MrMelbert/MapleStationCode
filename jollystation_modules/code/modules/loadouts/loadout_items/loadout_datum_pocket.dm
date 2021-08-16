@@ -1,5 +1,6 @@
 // --- Loadout item datums for backpack / pocket items ---
 
+/// Pocket items (Moved to backpack)
 GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_item/pocket_items))
 
 /datum/loadout_item/pocket_items
