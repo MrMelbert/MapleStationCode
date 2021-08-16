@@ -76,8 +76,7 @@ export const _LoadoutManager = (props, context) => {
                             <Stack.Item grow align="left">
                               {item.name}
                             </Stack.Item>
-                            { item.extra_info
-                            && !!item.extra_info.is_greyscale
+                            { !!item.is_greyscale
                             && (
                               <Stack.Item>
                                 <Button
@@ -93,16 +92,13 @@ export const _LoadoutManager = (props, context) => {
                                 checked={selected_loadout.includes(item.path)}
                                 content="Select"
                                 fluid
-                                tooltip={item.extra_info
-                                  && !!item.extra_info.tooltip
-                                  ? (item.extra_info.tooltip_text) : ("")}
+                                tooltip={item.tooltip_text
+                                  ? (item.tooltip_text) : ("")}
                                 onClick={() => act('select_item', {
                                   category: selectedTab.slot,
                                   path: item.path,
                                   deselect:
                                     selected_loadout.includes(item.path),
-                                  greyscale: item.extra_info
-                                    ? (item.extra_info.is_greyscale) : (0),
                                 })} />
                             </Stack.Item>
                           </Stack>

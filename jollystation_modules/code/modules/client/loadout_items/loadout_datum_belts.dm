@@ -4,10 +4,10 @@
 GLOBAL_LIST_INIT(loadout_belts, generate_loadout_items(/datum/loadout_item/belts))
 
 /datum/loadout_item/belts
-	is_important_slot = TRUE
 	category = LOADOUT_ITEM_BELT
+	additional_tooltip_contents = list(TOOLTIP_SLOT_IMPORTANT)
 
-/datum/loadout_item/belts/equip_outfit_with_item(mob/living/equipper, datum/outfit/outfit, visual)
+/datum/loadout_item/belts/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
 	if(outfit.belt)
 		LAZYADD(outfit.backpack_contents, outfit.belt)
 	outfit.belt = item_path

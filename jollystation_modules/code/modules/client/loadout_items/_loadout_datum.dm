@@ -4,8 +4,8 @@
 	if(!ispath(type_to_generate))
 		CRASH("generate_loadout_items(): called with an invalid or null path as an argument!")
 
-	for(var/found_item in subtypesof(type_to_generate))
-		var/datum/loadout_item/item = new found_item()
+	for(var/found_type in subtypesof(type_to_generate))
+		var/datum/loadout_item/item = new found_type()
 		if(!istype(item))
 			stack_trace("generate_loadout_items(): Instantiated a loadout item ([item]) that isn't of type /datum/loadout_item! (got type: [item.type])")
 			qdel(item)
@@ -16,7 +16,10 @@
 			qdel(item)
 			continue
 
-		.[found_item] = item
+		. |= item
+
+/// Global list of ALL loadout datums instantiated.
+GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 /// Mask Slot Items (Deletes overrided items)
 GLOBAL_LIST_INIT(loadout_masks, list(
@@ -259,77 +262,46 @@ GLOBAL_LIST_INIT(loadout_inhand_items, list(
 	"Rose Bouquet" = /obj/item/bouquet/rose,
 ))
 
-/// Pocket / Backpack / Accessory Slot Items (3 allowed, placed in backpack)
-GLOBAL_LIST_INIT(loadout_pocket_items, list(
-	"Maid Apron_[ACCESSORY]" = /obj/item/clothing/accessory/maidapron,
-	"Waistcoat_[ACCESSORY]" = /obj/item/clothing/accessory/waistcoat,
-	"Pocket Protector_[ACCESSORY]" = /obj/item/clothing/accessory/pocketprotector,
-	"Pocket Protector (Filled)_[ACCESSORY]" = /obj/item/clothing/accessory/pocketprotector/full,
-	"Ribbon_[ACCESSORY]" = /obj/item/clothing/accessory/medal/ribbon,
-	"Blue and Green Armband_[ACCESSORY]" = /obj/item/clothing/accessory/armband/hydro_cosmetic,
-	"Brown Armband_[ACCESSORY]" = /obj/item/clothing/accessory/armband/cargo_cosmetic,
-	"Purple Armband_[ACCESSORY]" = /obj/item/clothing/accessory/armband/science_cosmetic,
-	"Red Armband_[ACCESSORY]" = /obj/item/clothing/accessory/armband/deputy_cosmetic,
-	"Yellow Reflective Armband_[ACCESSORY]" = /obj/item/clothing/accessory/armband/engine_cosmetic,
-	"White Armband_[ACCESSORY]" = /obj/item/clothing/accessory/armband/med_cosmetic,
-	"White and Blue Armband_[ACCESSORY]" = /obj/item/clothing/accessory/armband/medblue_cosmetic,
-	"Name-Inscribed Dogtags_[SETS_NAME]_[ACCESSORY]" = /obj/item/clothing/accessory/cosmetic_dogtag,
-	"Bone Talismin_[NO_ARMOR]_[ACCESSORY]" = /obj/item/clothing/accessory/armorless_talisman,
-	"Skull Codpiece_[NO_ARMOR]_[ACCESSORY]" = /obj/item/clothing/accessory/armorless_skullcodpiece,
-	"Pack of Gum" = /obj/item/storage/box/gum,
-	"Pack of Nicotine Gum" = /obj/item/storage/box/gum/nicotine,
-	"Pack of HP+ Gum" = /obj/item/storage/box/gum/happiness,
-	"Black Lipstick" = /obj/item/lipstick/black,
-	"Blue Lipstick" = /obj/item/lipstick/blue,
-	"Green Lipstick" = /obj/item/lipstick/green,
-	"Jade Lipstick" = /obj/item/lipstick/jade,
-	"Purple Lipstick" = /obj/item/lipstick/purple,
-	"Red Lipstick" = /obj/item/lipstick,
-	"White Lipstick" = /obj/item/lipstick/white,
-	"Razor" = /obj/item/razor,
-	"Lighter" = /obj/item/lighter,
-	"Bee Plush" = /obj/item/toy/plush/beeplushie,
-	"Carp Plush" = /obj/item/toy/plush/carpplushie,
-	"Greyscale Lizard Plush_[GREYSCALE]" = /obj/item/toy/plush/lizard_plushie/greyscale,
-	"Random Lizard Plush_[RANDOM_COLOR]" = /obj/item/toy/plush/lizard_plushie,
-	"Moth Plush" = /obj/item/toy/plush/moth,
-	"Nar'sie Plush" = /obj/item/toy/plush/narplush,
-	"Nukie Plush" = /obj/item/toy/plush/nukeplushie,
-	"Peacekeeper Plush" = /obj/item/toy/plush/pkplush,
-	"Plasmaman Plush" = /obj/item/toy/plush/plasmamanplushie,
-	"Ratvar Plush" = /obj/item/toy/plush/ratplush,
-	"Rouny Plush" = /obj/item/toy/plush/rouny,
-	"Snake Plush" = /obj/item/toy/plush/snakeplushie,
-	"Card Binder" = /obj/item/storage/card_binder,
-	"Playing Card Deck" = /obj/item/toy/cards/deck,
-	"Kotahi Deck" = /obj/item/toy/cards/deck/kotahi,
-	"Wizoff Deck" = /obj/item/toy/cards/deck/wizoff,
-	"Dice Bag" = /obj/item/storage/pill_bottle/dice,
-	"D1" = /obj/item/dice/d1,
-	"D2" = /obj/item/dice/d2,
-	"D4" = /obj/item/dice/d4,
-	"D6" = /obj/item/dice/d6,
-	"D6 (Ebony)" = /obj/item/dice/d6/space,
-	"D6 (Space)" = /obj/item/dice/d6/ebony,
-	"D8" = /obj/item/dice/d8,
-	"D10" = /obj/item/dice/d10,
-	"D12" = /obj/item/dice/d12,
-	"D20" = /obj/item/dice/d20,
-	"D100" = /obj/item/dice/d100,
-	"D00" = /obj/item/dice/d00,
-))
-
 /datum/loadout_item
 	var/name
-	var/is_plasmaman_important = FALSE
-	var/is_important_slot = FALSE
 	var/is_greyscale = TRUE
 	var/category
 	var/item_path
 	var/list/additional_tooltip_contents
 
-/datum/loadout_item/proc/equip_outfit_with_item(mob/living/equipper, datum/outfit/outfit, visual)
-	return TRUE
+/datum/loadout_item/New()
+	if(is_greyscale)
+		if(LAZYLEN(additional_tooltip_contents))
+			additional_tooltip_contents.Insert(1, TOOLTIP_GREYSCALE)
+		else
+			LAZYADD(additional_tooltip_contents, TOOLTIP_GREYSCALE)
 
-/datum/loadout_item/proc/post_equip_item(mob/living/equipper)
-	return TRUE
+	GLOB.all_loadout_datums[item_path] = src
+
+/datum/loadout_item/Destroy()
+	GLOB.all_loadout_datums -= src
+	return ..()
+
+/*
+ * Place our [var/item_path] into [outfit].
+ *
+ * equipper - If we're equipping out outfit onto a mob at the time, this is the mob it is equipped on. Can be null.
+ * outfit - The outfit we're equipping our items into.
+ * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
+ */
+/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
+	if(!visual)
+		LAZYADD(outfit.backpack_contents, item_path)
+
+/*
+ * Called after the item is equipped on [equipper].
+ *
+ */
+/datum/loadout_item/proc/post_equip_item(mob/living/equipper, datum/preference/preference_source, visual)
+	if(!visual)
+		var/list/greyscale_colors = preference_source?.greyscale_loadout_list
+		if(is_greyscale && LAZYLEN(greyscale_colors))
+			var/obj/item/equipped_item = locate(item_path) in equipper.GetAllContents()
+			equipped_item.set_greyscale(greyscale_colors[item_path])
+
+	return FALSE

@@ -7,8 +7,9 @@
 	var/medical_records = ""
 	var/exploitable_info = ""
 	var/runechat_color = "aaa"
-	/// Loadout prefs. Assoc list of slot to typepath.
+	/// Loadout prefs. List of typepaths.
 	var/list/loadout_list
+	/// Greysclae loadout prefs. Assoc list of typepath to color.
 	var/list/greyscale_loadout_list
 
 	/// Client preferences

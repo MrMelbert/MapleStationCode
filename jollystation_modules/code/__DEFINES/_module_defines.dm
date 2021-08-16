@@ -46,14 +46,13 @@ GLOBAL_LIST_INIT(loadout_slots, list(
 
 /// Defines for extra info blurbs, for loadout items.
 #define TOOLTIP_NO_ARMOR "This item has no armor and is entirely cosmetic."
+#define TOOLTIP_NO_DAMAGE "This item has very low force and is cosmetic."
 #define TOOLTIP_RANDOM_COLOR "This item has a random color and will change every round."
-
-#define NO_DAMAGE "CEREMONIAL"
-#define GREYSCALE "GREYSCALED"
-#define SETS_NAME "MATCHES NAME"
-#define RANDOM_COLOR "RANDOM COLOR"
-#define ACCESSORY "ACCESSORY"
-#define IMPORTANT_SLOT "IMPORTANT SLOT"
+#define TOOLTIP_ACCESSORY "This item is an accessory, and will attempt to be attached to your jumpsuit on spawn."
+#define TOOLTIP_BACKPACK_ITEM "This item is a pocket item, and will be added to your backpack on spawn."
+#define TOOLTIP_PLASMAMAN_IMPORTANT "This item occupies a slot important for Plasmaman survival, and will not be equipped onto Plasmamen automatically."
+#define TOOLTIP_SLOT_IMPORTANT "This item occupies a slot important for job equipment - any items that occupy that slot will be moved to your backpack automatically."
+#define TOOLTIP_GREYSCALE "This item can be customized via the greyscale modification UI."
 
 /// Modular traits
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"

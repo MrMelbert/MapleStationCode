@@ -6,7 +6,7 @@ GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/gla
 /datum/loadout_item/glasses
 	category = LOADOUT_ITEM_GLASSES
 
-/datum/loadout_item/glasses/equip_outfit_with_item(mob/living/equipper, datum/outfit/outfit, visual)
+/datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visual)
 	if(outfit.glasses)
 		LAZYADD(outfit.backpack_contents, outfit.glasses)
 	outfit.glasses = item_path
@@ -14,7 +14,7 @@ GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/gla
 /datum/loadout_item/glasses/prescription_glasses
 	name = "Glasses"
 	item_path = /obj/item/clothing/glasses/regular
-	additional_tooltip_contents = list("These glasses function with the 'nearsighted' quirk.")
+	additional_tooltip_contents = list("This item functions with the 'nearsighted' quirk.")
 
 /datum/loadout_item/glasses/prescription_glasses/circle_glasses
 	name = "Circle Glasses"
@@ -35,7 +35,7 @@ GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/gla
 /datum/loadout_item/glasses/colored_blindfold
 	name = "Colored Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold/white/loadout
-	additional_tooltip_contents = list("The color of this item matches your character's eye color on spawn.")
+	additional_tooltip_contents = list("This item's color matches your character's eye color on spawn.")
 
 /datum/loadout_item/glasses/cold_glasses
 	name = "Cold Glasses"

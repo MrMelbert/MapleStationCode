@@ -542,6 +542,16 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	general_records = strip_html_simple(sanitize_text(general_records), MAX_FLAVOR_LEN)
 	exploitable_info = strip_html_simple(sanitize_text(exploitable_info), MAX_FLAVOR_LEN)
 
+	/// Convert from old loadout lists to new loadout lists
+	for(var/thing in loadout_list)
+		if(ispath(thing))
+			break
+
+		LAZYREMOVE(thing, loadout_list)
+		var/our_path = text2path(loadout_list[thing])
+		if(ispath(our_path))
+			LAZYADD(our_path, loadout_list)
+
 	loadout_list = sanitize_loadout_list(loadout_list)
 	greyscale_loadout_list = sanitize_greyscale_list(greyscale_loadout_list)
 	// NON-MODULE CHANGE END
