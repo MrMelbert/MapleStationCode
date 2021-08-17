@@ -14,8 +14,9 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 
 /datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))
-		to_chat(equipper, "Your loadout uniform was not equipped directly due to your envirosuit.")
-		LAZYADD(outfit.backpack_contents, item_path)
+		if(!visuals_only)
+			to_chat(equipper, "Your loadout uniform was not equipped directly due to your envirosuit.")
+			LAZYADD(outfit.backpack_contents, item_path)
 	else
 		outfit.uniform = item_path
 

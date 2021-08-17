@@ -8,8 +8,9 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 
 /datum/loadout_item/mask/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))
-		to_chat(equipper, "Your loadout mask was not equipped directly due to your envirosuit mask.")
-		LAZYADD(outfit.backpack_contents, item_path)
+		if(!visuals_only)
+			to_chat(equipper, "Your loadout mask was not equipped directly due to your envirosuit mask.")
+			LAZYADD(outfit.backpack_contents, item_path)
 	else
 		outfit.mask = item_path
 

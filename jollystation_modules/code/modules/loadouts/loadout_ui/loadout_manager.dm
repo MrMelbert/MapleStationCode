@@ -210,12 +210,8 @@
 	if(input_name)
 		owner.prefs.loadout_list[item.item_path][INFO_NAMED] = input_name
 	else
-		clear_slot_info(item.item_path, INFO_NAMED)
-
-/// Clear [info_to_clear] from [path]'s associated list of loadout info.
-/datum/loadout_manager/proc/clear_slot_info(path, info_to_clear)
-	if(info_to_clear in owner.prefs.loadout_list[path])
-		owner.prefs.loadout_list[path] -= info_to_clear
+		if(INFO_NAMED in owner.prefs.loadout_list[item.item_path])
+			owner.prefs.loadout_list[item.item_path] -= INFO_NAMED
 
 /// Rotate the dummy [DIR] direction, or reset it to SOUTH dir if we're showing all dirs at once.
 /datum/loadout_manager/proc/rotate_model_dir(dir)

@@ -13,7 +13,6 @@ GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/gla
 
 /datum/loadout_item/glasses/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
 	var/obj/item/clothing/glasses/equipped_glasses = locate(item_path) in equipper.get_equipped_items()
-	message_admins("Fixing eyes!! [equipped_glasses]")
 	if(equipped_glasses.glass_colour_type)
 		equipper.update_glasses_color(equipped_glasses, TRUE)
 	if(equipped_glasses.tint)
