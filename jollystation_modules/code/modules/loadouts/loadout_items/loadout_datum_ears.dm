@@ -6,7 +6,7 @@ GLOBAL_LIST_INIT(loadout_ears, generate_loadout_items(/datum/loadout_item/ears))
 /datum/loadout_item/ears
 	category = LOADOUT_ITEM_EARS
 
-/datum/loadout_item/ears/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/ears/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.ears)
 		LAZYADD(outfit.backpack_contents, outfit.ears)
 	outfit.ears = item_path

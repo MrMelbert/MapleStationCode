@@ -67,15 +67,14 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  * outfit - The outfit we're equipping our items into.
  * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
  */
-/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
 /*
- * Called after the item is equipped on [equipper].
+ * Called When the item is equipped on [equipper].
  */
-/datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
-	// MELBERT TODO: This doesn't work on the preview, but it does work in game?
+/datum/loadout_item/proc/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(!preference_source)
 		return
 
@@ -91,4 +90,11 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 	if(can_be_named && !visuals_only && (INFO_NAMED in our_loadout[item_path]))
 		var/obj/item/equipped_item = locate(item_path) in equipper.GetAllContents()
-		equipped_item.name = our_loadout[item_path][INFO_NAMED]
+		message_admins("We have [equipped_item] and we're trying to give it a name ([our_loadout[item_path][INFO_NAMED]])")
+		equipped_item?.name = our_loadout[item_path][INFO_NAMED]
+
+/*
+ * Called after the item is equipped on [equipper], at the end of character setup.
+ */
+/datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
+	return FALSE

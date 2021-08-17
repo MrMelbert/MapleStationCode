@@ -6,7 +6,7 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 /datum/loadout_item/head
 	category = LOADOUT_ITEM_HEAD
 
-/datum/loadout_item/head/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/head/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))
 		to_chat(equipper, "Your loadout helmet was not equipped directly due to your envirosuit helmet.")
 		LAZYADD(outfit.backpack_contents, item_path)

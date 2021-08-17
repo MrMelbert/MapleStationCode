@@ -15,9 +15,9 @@
  *
  * outfit - the job outfit we're equipping
  * visuals_only - whether we call special equipped procs, or if we just look like we equipped it
- * preference_source - the client belonging to the thing we're equipping
+ * preference_source - the preferences of the thing we're equipping
  */
-/mob/living/carbon/human/proc/equip_outfit_and_loadout(datum/outfit/outfit, visuals_only = FALSE, datum/preferences/preference_source)
+/mob/living/carbon/human/proc/equip_outfit_and_loadout(datum/outfit/outfit, datum/preferences/preference_source, visuals_only = FALSE)
 	var/datum/outfit/equipped_outfit
 
 	if(ispath(outfit))
@@ -28,16 +28,14 @@
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
 	var/list/loadout_datums = loadout_list_to_datums(preference_source.loadout_list)
-
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
-	/// MELBERT TODO: maybe make this not use equip(), pass item into post_equip_item
-	equipped_outfit.equip(src, visuals_only)
+	equipOutfit(equipped_outfit, visuals_only)
 	w_uniform?.swap_to_modular_dmi(src)
 
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.post_equip_item(preference_source, src, visuals_only)
+		item.on_equip_item(preference_source, src, visuals_only)
 
 	regenerate_icons()
 	return TRUE

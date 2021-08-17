@@ -381,7 +381,11 @@
 		SSquirks.AssignQuirks(humanc, humanc.client)
 
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
-	add_client_flavor_text(humanc?.client) // NON-MODULE CHANGE
+	/// NON-MODULE CHANGE
+	add_client_flavor_text(humanc?.client)
+	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(humanc?.client?.prefs?.loadout_list))
+		item.post_equip_item(new_player_mob.client?.prefs, new_player_living)
+	/// NON-MODULE CHANGE END
 
 /mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)
 	//TODO:  figure out a way to exclude wizards/nukeops/demons from this.

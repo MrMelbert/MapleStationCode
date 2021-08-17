@@ -9,7 +9,7 @@
 	/// The client of the person using the UI
 	var/client/owner
 	/// The current selected loadout list.
-	var/list/current_loadout
+	var/list/loadout_on_open
 	/// The key of the dummy we use to generate sprites
 	var/dummy_key
 	/// The dir the dummy is facing.
@@ -30,12 +30,12 @@
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
 	owner.open_loadout_ui = src
-	current_loadout = LAZYLISTDUPLICATE(owner.prefs.loadout_list)
+	loadout_on_open = LAZYLISTDUPLICATE(owner.prefs.loadout_list)
 	custom_loadout = new()
-	loadout_to_outfit()
+	reset_outfit()
 
 /datum/loadout_manager/ui_close(mob/user)
-	owner?.prefs.loadout_list = sanitize_loadout_list(current_loadout)
+	owner?.prefs.save_character()
 	if(menu)
 		SStgui.close_uis(menu)
 		menu = null
@@ -81,7 +81,7 @@
 		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
 		if("close_ui")
 			if(params["revert"])
-				current_loadout = owner.prefs.loadout_list
+				owner.prefs.loadout_list = loadout_on_open
 			SStgui.close_uis(src)
 			return
 
@@ -99,7 +99,7 @@
 
 		// Clears the loadout list entirely.
 		if("clear_all_items")
-			LAZYNULL(current_loadout)
+			LAZYNULL(owner.prefs.loadout_list)
 
 		// Toggles between viewing favorite job clothes on the dummy.
 		if("toggle_job_clothes")
@@ -113,15 +113,14 @@
 		if("show_all_dirs")
 			toggle_model_dirs()
 
-	loadout_to_outfit()
+	reset_outfit()
 	return TRUE
 
 /// Select [path] item to [category_slot] slot.
 /datum/loadout_manager/proc/select_item(datum/loadout_item/selected_item)
-	var/list/loadout_datums = loadout_list_to_datums(current_loadout)
 	var/num_misc_items = 0
 	var/datum/loadout_item/first_misc_found
-	for(var/datum/loadout_item/item as anything in loadout_datums)
+	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(owner.prefs.loadout_list))
 		if(item.category == selected_item.category)
 			if(item.category == LOADOUT_ITEM_MISC && ++num_misc_items < MAX_ALLOWED_MISC_ITEMS)
 				if(!first_misc_found)
@@ -131,11 +130,11 @@
 			deselect_item(first_misc_found || item)
 			continue
 
-	LAZYSET(current_loadout, selected_item.item_path, list())
+	LAZYSET(owner.prefs.loadout_list, selected_item.item_path, list())
 
 /// Deselect [deselected_item].
 /datum/loadout_manager/proc/deselect_item(datum/loadout_item/deselected_item)
-	LAZYREMOVE(current_loadout, deselected_item.item_path)
+	LAZYREMOVE(owner.prefs.loadout_list, deselected_item.item_path)
 
 /// Select [path] item to [category_slot] slot, and open up the greyscale UI to customize [path] in [category] slot.
 /datum/loadout_manager/proc/select_item_color(datum/loadout_item/item)
@@ -156,8 +155,8 @@
 		allowed_configs += "[colored_item.greyscale_config_inhand_right]"
 
 	var/slot_starting_colors = colored_item.greyscale_colors
-	if(INFO_GREYSCALE in current_loadout[item.item_path])
-		slot_starting_colors = current_loadout[item.item_path][INFO_GREYSCALE]
+	if(INFO_GREYSCALE in owner.prefs.loadout_list[item.item_path])
+		slot_starting_colors = owner.prefs.loadout_list[item.item_path][INFO_GREYSCALE]
 
 	var/datum/greyscale_config/current_config = SSgreyscale.configurations[colored_item.greyscale_config]
 	if(current_config && !current_config.icon_states)
@@ -189,13 +188,13 @@
 	if(!open_menu)
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	if(!(path in current_loadout))
+	if(!(path in owner.prefs.loadout_list))
 		to_chat(owner, span_warning("Select the item before attempting to apply greyscale to it!"))
 		return
 
 	var/list/colors = open_menu.split_colors
 	if(colors)
-		current_loadout[path][INFO_GREYSCALE] = colors.Join("")
+		owner.prefs.loadout_list[path][INFO_GREYSCALE] = colors.Join("")
 		update_dummysprite = TRUE
 
 /// Set [item]'s name to input provided.
@@ -204,19 +203,19 @@
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
 		return
 
-	if(!(item.item_path in current_loadout))
+	if(!(item.item_path in owner.prefs.loadout_list))
 		to_chat(owner, span_warning("Select the item before attempting to name to it!"))
 		return
 
 	if(input_name)
-		current_loadout[item.item_path][INFO_NAMED] = input_name
+		owner.prefs.loadout_list[item.item_path][INFO_NAMED] = input_name
 	else
 		clear_slot_info(item.item_path, INFO_NAMED)
 
 /// Clear [info_to_clear] from [path]'s associated list of loadout info.
 /datum/loadout_manager/proc/clear_slot_info(path, info_to_clear)
-	if(info_to_clear in current_loadout[path])
-		current_loadout[path] -= info_to_clear
+	if(info_to_clear in owner.prefs.loadout_list[path])
+		owner.prefs.loadout_list[path] -= info_to_clear
 
 /// Rotate the dummy [DIR] direction, or reset it to SOUTH dir if we're showing all dirs at once.
 /datum/loadout_manager/proc/rotate_model_dir(dir)
@@ -255,7 +254,7 @@
 	var/list/data = list()
 
 	var/list/all_selected_paths = list()
-	for(var/path in current_loadout)
+	for(var/path in owner.prefs.loadout_list)
 		all_selected_paths += path
 
 	data["icon64"] = generate_preview()
@@ -335,7 +334,7 @@ selected by plasmamen will spawn in their backpack instead of overriding their c
 to avoid an untimely and sudden death by fire or suffocation at the start of the shift."}
 
 /// Reset our displayed loadout and re-load all its items from the bottom up.
-/datum/loadout_manager/proc/loadout_to_outfit()
+/datum/loadout_manager/proc/reset_outfit()
 	var/datum/outfit/job/default_outfit
 	if(view_job_clothes)
 		var/datum/job/fav_job = SSjob.GetJobType(SSjob.overflow_role)
@@ -371,10 +370,6 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 
 	custom_loadout.copy_from(default_outfit)
 	qdel(default_outfit)
-
-	var/list/loadout_datums = loadout_list_to_datums(current_loadout)
-	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.insert_path_into_outfit(custom_loadout, visuals_only = TRUE)
 
 	update_dummysprite = TRUE
 

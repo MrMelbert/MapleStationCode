@@ -1061,7 +1061,7 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 	if(job)
 		body.dna.species.pre_equip_species_outfit(job, body, TRUE)
 	if(outfit)
-		body.equipOutfit(outfit, TRUE)
+		body.equip_outfit_and_loadout(outfit, prefs, TRUE) // NON-MODULE CHANGE
 
 	var/icon/out_icon = icon('icons/effects/effects.dmi', "nothing")
 	COMPILE_OVERLAYS(body)
