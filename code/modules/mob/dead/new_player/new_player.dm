@@ -383,8 +383,9 @@
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
 	/// NON-MODULE CHANGE
 	add_client_flavor_text(humanc?.client)
-	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(humanc?.client?.prefs?.loadout_list))
-		item.post_equip_item(humanc?.client?.prefs, new_player_living)
+	if(humanc)
+		for(var/datum/loadout_item/item as anything in loadout_list_to_datums(humanc?.client?.prefs?.loadout_list))
+			item.post_equip_item(humanc.client?.prefs, humanc)
 	/// NON-MODULE CHANGE END
 
 /mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)
