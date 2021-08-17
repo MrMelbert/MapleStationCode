@@ -1,6 +1,6 @@
 // --- Loadout item datums for accessories ---
 
-/// Ear Slot Items (Moves overrided items to backpack)
+/// Accessory Items (Moves overrided items to backpack)
 GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/accessory))
 
 /datum/loadout_item/accessory

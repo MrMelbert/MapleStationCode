@@ -174,3 +174,31 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 /datum/loadout_item/pocket_items/d00
 	name = "D00"
 	item_path = /obj/item/dice/d00
+
+/datum/loadout_item/pocket_items/wallet
+	name = "Wallet"
+	item_path = /obj/item/storage/wallet
+	additional_tooltip_contents = list("FILLS AUTOMATICALLY - This item will populate itself with your ID card and other small items you may have on spawn.")
+
+/datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
+	return FALSE // We add our wallet manually
+
+/datum/loadout_item/pocket_items/wallet/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+	return FALSE // We didn't spawn any item so nothing to call here
+
+/datum/loadout_item/pocket_items/wallet/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
+	var/obj/item/card/id/advanced/id_card = equipper.get_item_by_slot(ITEM_SLOT_ID)
+	var/obj/item/storage/wallet/wallet = new(src)
+	if(istype(id_card))
+		equipper.temporarilyRemoveItemFromInventory(id_card, force = TRUE)
+		equipper.equip_to_slot_if_possible(wallet, ITEM_SLOT_ID, initial = TRUE)
+		id_card.forceMove(wallet)
+
+		for(var/obj/item/thing as anything in equipper.back.contents)
+			if(wallet.contents.len >= 3)
+				break
+			if(thing.w_class <= WEIGHT_CLASS_SMALL)
+				SEND_SIGNAL(wallet, COMSIG_TRY_STORAGE_INSERT, thing, equipper, TRUE, FALSE)
+	else
+		if(!equipper.equip_to_slot_if_possible(wallet, slot = ITEM_SLOT_BACKPACK, initial = TRUE))
+			wallet.forceMove(equipper.drop_location())
