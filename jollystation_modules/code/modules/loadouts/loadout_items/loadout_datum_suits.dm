@@ -6,7 +6,7 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 /datum/loadout_item/suit
 	category = LOADOUT_ITEM_SUIT
 
-/datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
+/datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
 	outfit.suit = item_path
 
 /datum/loadout_item/suit/winter_coat

@@ -29,9 +29,9 @@
 
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
-	custom_loadout = new()
 	owner.open_loadout_ui = src
 	current_loadout = LAZYLISTDUPLICATE(owner.prefs.loadout_list)
+	custom_loadout = new()
 	loadout_to_outfit()
 
 /datum/loadout_manager/ui_close(mob/user)
@@ -78,6 +78,13 @@
 			tutorial_status = !tutorial_status
 			return TRUE
 
+		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
+		if("close_ui")
+			if(params["revert"])
+				current_loadout = owner.prefs.loadout_list
+			SStgui.close_uis(src)
+			return
+
 		if("select_item")
 			if(params["deselect"])
 				deselect_item(interacted_item)
@@ -106,19 +113,10 @@
 		if("show_all_dirs")
 			toggle_model_dirs()
 
-		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
-		if("close_ui")
-			if(params["revert"])
-				current_loadout = owner.prefs.loadout_list
-			SStgui.close_uis(src)
-			return
-
-	// Always update our loadout after we do something.
 	loadout_to_outfit()
-	update_dummysprite = TRUE
 	return TRUE
 
-/// Select [path] item to [category_slot] slot. If it's not a greyscale item, clear the corresponding greyscale slot too.
+/// Select [path] item to [category_slot] slot.
 /datum/loadout_manager/proc/select_item(datum/loadout_item/selected_item)
 	var/list/loadout_datums = loadout_list_to_datums(current_loadout)
 	var/num_misc_items = 0
@@ -135,7 +133,7 @@
 
 	LAZYSET(current_loadout, selected_item.item_path, list())
 
-/// Deselect [deselected_item]. If it's not a greyscale item, clear the corresponding assoc list slots, too.
+/// Deselect [deselected_item].
 /datum/loadout_manager/proc/deselect_item(datum/loadout_item/deselected_item)
 	LAZYREMOVE(current_loadout, deselected_item.item_path)
 
@@ -336,12 +334,10 @@ Additionally, UNDERSUITS, HELMETS, MASKS, and GLOVES loadout items
 selected by plasmamen will spawn in their backpack instead of overriding their clothes
 to avoid an untimely and sudden death by fire or suffocation at the start of the shift."}
 
-/// Turns our client's assoc list of loadout items into actual items on our dummy outfit.
-/// Also loads job clothes into our custom list to show what gets overriden.
+/// Reset our displayed loadout and re-load all its items from the bottom up.
 /datum/loadout_manager/proc/loadout_to_outfit()
-	var/datum/outfit/default_outfit
+	var/datum/outfit/job/default_outfit
 	if(view_job_clothes)
-		var/datum/outfit/job/job_outfit
 		var/datum/job/fav_job = SSjob.GetJobType(SSjob.overflow_role)
 		for(var/selected_job in owner.prefs.job_preferences)
 			if(owner.prefs.job_preferences[selected_job] == JP_HIGH)
@@ -349,31 +345,29 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 				break
 
 		if(istype(owner.prefs.pref_species, /datum/species/plasmaman) && fav_job.plasmaman_outfit)
-			job_outfit = new fav_job.plasmaman_outfit()
+			default_outfit = new fav_job.plasmaman_outfit()
 		else
-			job_outfit = new fav_job.outfit()
+			default_outfit = new fav_job.outfit()
 			if(owner.prefs.jumpsuit_style == PREF_SKIRT)
-				job_outfit.uniform = text2path("[job_outfit.uniform]/skirt")
+				default_outfit.uniform = text2path("[default_outfit.uniform]/skirt")
 
 			switch(owner.prefs.backpack)
 				if(GBACKPACK)
-					job_outfit.back = /obj/item/storage/backpack //Grey backpack
+					default_outfit.back = /obj/item/storage/backpack //Grey backpack
 				if(GSATCHEL)
-					job_outfit.back = /obj/item/storage/backpack/satchel //Grey satchel
+					default_outfit.back = /obj/item/storage/backpack/satchel //Grey satchel
 				if(GDUFFELBAG)
-					job_outfit.back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
+					default_outfit.back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
 				if(LSATCHEL)
-					job_outfit.back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
+					default_outfit.back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
 				if(DSATCHEL)
-					job_outfit.back = job_outfit.satchel //Department satchel
+					default_outfit.back = default_outfit.satchel //Department satchel
 				if(DDUFFELBAG)
-					job_outfit.back = job_outfit.duffelbag //Department duffel bag
+					default_outfit.back = default_outfit.duffelbag //Department duffel bag
 				else
-					job_outfit.back = job_outfit.backpack //Department backpack
-
-		default_outfit = job_outfit
+					default_outfit.back = default_outfit.backpack //Department backpack
 	else
-		default_outfit = new()
+		default_outfit = new /datum/outfit()
 
 	custom_loadout.copy_from(default_outfit)
 	qdel(default_outfit)
@@ -381,6 +375,8 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 	var/list/loadout_datums = loadout_list_to_datums(current_loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(custom_loadout, visuals_only = TRUE)
+
+	update_dummysprite = TRUE
 
 /*
  * Takes an assoc list of [typepath]s to [singleton datum]

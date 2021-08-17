@@ -67,25 +67,24 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  * outfit - The outfit we're equipping our items into.
  * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
  */
-/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
+/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
 	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
 /*
  * Called after the item is equipped on [equipper].
  */
-/datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/equipper, visuals_only)
+/datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
 	// MELBERT TODO: This doesn't work on the preview, but it does work in game?
 	if(!preference_source)
 		return
 
 	var/list/our_loadout = preference_source?.loadout_list
-
 	if(can_be_greyscale && (INFO_GREYSCALE in our_loadout[item_path]))
 		if(ispath(item_path, /obj/item/clothing))
-			var/obj/item/clothing/equipped_item = locate(item_path) in equipper.get_equipped_items()
+			// When an outfit is equipped in preview, get_equipped_items() does not work, so we have to use GetAllContents()
+			var/obj/item/clothing/equipped_item = locate(item_path) in (visuals_only ? equipper.GetAllContents() : equipper.get_equipped_items())
 			equipped_item?.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
-			message_admins("Setting [equipped_item] to [our_loadout[item_path][INFO_GREYSCALE]]")
 		else if(!visuals_only)
 			var/obj/item/other_item = locate(item_path) in equipper.GetAllContents()
 			other_item?.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])

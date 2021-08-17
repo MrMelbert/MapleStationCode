@@ -6,7 +6,7 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 /datum/loadout_item/gloves
 	category = LOADOUT_ITEM_GLOVES
 
-/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/equipper, visuals_only)
+/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
 	if(isplasmaman(equipper))
 		to_chat(equipper, "Your loadout gloves were not equipped directly due to your envirosuit gloves.")
 		LAZYADD(outfit.backpack_contents, item_path)
