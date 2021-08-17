@@ -90,7 +90,6 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 	if(can_be_named && !visuals_only && (INFO_NAMED in our_loadout[item_path]))
 		var/obj/item/equipped_item = locate(item_path) in equipper.GetAllContents()
-		message_admins("We have [equipped_item] and we're trying to give it a name ([our_loadout[item_path][INFO_NAMED]])")
 		equipped_item?.name = our_loadout[item_path][INFO_NAMED]
 
 /*
