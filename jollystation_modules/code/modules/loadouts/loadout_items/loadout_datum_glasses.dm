@@ -79,3 +79,7 @@ GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/gla
 /datum/loadout_item/glasses/welding_goggles
 	name = "Welding Goggles"
 	item_path = /obj/item/clothing/glasses/welding
+
+/datum/loadout_item/glasses/eyepatch
+	name = "Eyepatch"
+	item_path = /obj/item/clothing/glasses/eyepatch

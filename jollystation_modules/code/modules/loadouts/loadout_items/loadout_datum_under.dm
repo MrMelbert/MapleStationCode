@@ -484,3 +484,7 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/miscellaneous/overalls
 	name = "Overalls"
 	item_path = /obj/item/clothing/under/misc/overalls
+
+/datum/loadout_item/under/miscellaneous/redcoat
+	name = "Redcoat"
+	item_path = /obj/item/clothing/under/costume/redcoat
