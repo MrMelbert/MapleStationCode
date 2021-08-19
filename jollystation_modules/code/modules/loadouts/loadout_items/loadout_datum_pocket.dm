@@ -201,7 +201,7 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 		equipper.equip_to_slot_if_possible(wallet, ITEM_SLOT_ID, initial = TRUE)
 		id_card.forceMove(wallet)
 
-		for(var/obj/item/thing as anything in equipper.back.contents)
+		for(var/obj/item/thing in equipper.back.contents)
 			if(wallet.contents.len >= 3)
 				break
 			if(thing.w_class <= WEIGHT_CLASS_SMALL)
