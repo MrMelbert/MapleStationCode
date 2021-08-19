@@ -37,19 +37,19 @@ export const AdvancedTraitorPanelBackground = (props, context) => {
           <Input
             width="40%"
             value={name}
+            placeholder={name}
             onInput={(e, value) => act('set_name', {
               name: value,
-            })}
-            placeholder={name} />
+            })} />
         </LabeledList.Item>
         <LabeledList.Item label="Employer">
           <Input
             width="40%"
             value={employer}
+            placeholder={employer}
             onInput={(e, value) => act('set_employer', {
               employer: value,
-            })}
-            placeholder={employer} />
+            })} />
         </LabeledList.Item>
         <LabeledList.Divider />
         <LabeledList.Item label="Backstory">
@@ -57,10 +57,10 @@ export const AdvancedTraitorPanelBackground = (props, context) => {
             width="66%"
             height="54px"
             value={backstory}
+            placeholder={backstory}
             onInput={(e, value) => act('set_backstory', {
               backstory: value,
-            })}
-            placeholder={backstory} />
+            })} />
         </LabeledList.Item>
       </LabeledList>
     </Stack>
@@ -105,8 +105,8 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
                       color="bad"
                       textAlign="center"
                       tooltip="Remove goal"
-                      onClick={() => act('remove_advanced_goal',
-                        { goal_ref: goal.ref })}
+                      onClick={() => act('remove_advanced_goal', {
+                        goal_ref: goal.ref })}
                     />
                   </Stack.Item>
                 </Stack>
@@ -143,22 +143,24 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
                       Intensity
                     </Stack.Item>
                     <Stack.Item mb={2}>
-                      <RoundGauge
-                        size={2}
-                        value={selectedGoal.intensity}
-                        minValue={1}
-                        maxValue={5}
-                        alertAfter={3.9}
-                        format={value => null}
-                        ranges={{
-                          "green": [1, 1.8],
-                          "good": [1.8, 2.6],
-                          "yellow": [2.6, 3.4],
-                          "orange": [3.4, 4.2],
-                          "red": [4.2, 5] }} />
                       <Tooltip
-                        content="Set your goal's intensity level. \
-                        Check the tutorial for what each level means." />
+                        content="Set your goal's intensity level. Check the \
+                          tutorial details/examples about each level." >
+                        <RoundGauge
+                          size={2}
+                          value={selectedGoal.intensity}
+                          minValue={1}
+                          maxValue={5}
+                          alertAfter={3.9}
+                          format={value => null}
+                          position="relative"
+                          ranges={{
+                            "green": [1, 1.8],
+                            "good": [1.8, 2.6],
+                            "yellow": [2.6, 3.4],
+                            "orange": [3.4, 4.2],
+                            "red": [4.2, 5] }} />
+                      </Tooltip>
                     </Stack.Item>
                     <Stack.Item>
                       <NumberInput
@@ -257,10 +259,11 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
                             onClick={() => act('remove_similar_objective', {
                               goal_ref: selectedGoal.ref,
                               objective_ref: objective.ref })} />
-                          <Box position="relative">
-                            : {objective.trimmed_text}
-                            <Tooltip content={objective.text} />
-                          </Box>
+                          <Tooltip content={objective.text}>
+                            <Box position="relative">
+                              : {objective.trimmed_text}
+                            </Box>
+                          </Tooltip>
                         </Stack>
                       </Stack.Item>))}
                   </Stack>
