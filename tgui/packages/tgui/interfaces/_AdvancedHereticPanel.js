@@ -21,8 +21,8 @@ export const _AdvancedHereticPanel = (props, context) => {
   return (
     <Window
       title="Antagonist Goal Panel"
-      width={1150}
-      height={550}
+      width={600}
+      height={600}
       theme="wizard">
       <Window.Content>
         <Section
@@ -44,7 +44,6 @@ export const _AdvancedHereticPanel = (props, context) => {
         <Divider />
         <Section
           title={`${ antag_type } Objectives`}
-          height="60%"
           buttons={(
             <Button
               content="Tutorial: Objectives"

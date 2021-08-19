@@ -19,8 +19,8 @@ export const _AdvancedTraitorPanel = (props, context) => {
   return (
     <Window
       title="Antagonist Goal Panel"
-      width={1150}
-      height={550}
+      width={550}
+      height={660}
       theme="jolly-syndicate">
       <Window.Content>
         <Section
@@ -39,10 +39,8 @@ export const _AdvancedTraitorPanel = (props, context) => {
           )}
           <AdvancedTraitorPanelBackground />
         </Section>
-        <Divider />
         <Section
           title={`${ antag_type } Objectives`}
-          height="60%"
           buttons={(
             <Button
               content="Tutorial: Objectives"
@@ -55,25 +53,23 @@ export const _AdvancedTraitorPanel = (props, context) => {
               text={objective_tutorial_text}
               tutorialAct="proceede_objective_tutorial" />
           )}
-          <Flex mb={1}>
-            <Button
-              width="85px"
+          <Button
+            width="85px"
+            height="20px"
+            icon="plus"
+            content="Add Goal"
+            textAlign="center"
+            onClick={() => act('add_advanced_goal')} />
+          { goals_finalized === 0 && (
+            <Button.Confirm
+              width="112px"
               height="20px"
-              icon="plus"
-              content="Add Goal"
+              icon="exclamation-circle"
+              content="Finalize Goals"
+              color="bad"
               textAlign="center"
-              onClick={() => act('add_advanced_goal')} />
-            { goals_finalized === 0 && (
-              <Button.Confirm
-                width="112px"
-                height="20px"
-                icon="exclamation-circle"
-                content="Finalize Goals"
-                color="bad"
-                textAlign="center"
-                tooltip={finalize_text}
-                onClick={() => act('finalize_goals')} />)}
-          </Flex>
+              tooltip={finalize_text}
+              onClick={() => act('finalize_goals')} />)}
           { !!goals.length && (
             <AdvancedTraitorPanelGoals />
           )}

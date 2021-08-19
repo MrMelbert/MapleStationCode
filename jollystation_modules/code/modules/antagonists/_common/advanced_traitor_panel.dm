@@ -6,7 +6,7 @@
 #define TUTORIAL_BACKGROUND_NAME 1
 #define TUTORIAL_BACKGROUND_EMPLOYER 2
 #define TUTORIAL_BACKGROUND_BACKSTORY 3
-#define TUTORIAL_BACKGROUND_END (TUTORIAL_BACKGROUND_BACKSTORY)
+#define TUTORIAL_BACKGROUND_END (TUTORIAL_BACKGROUND_BACKSTORY+1)
 /// Defines for state of the objective tutorial.
 #define TUTORIAL_OBJECTIVE_START 0
 #define TUTORIAL_OBJECTIVE_ADD_GOAL 1
@@ -14,7 +14,7 @@
 #define TUTORIAL_OBJECTIVE_INTENSITIES 3
 #define TUTORIAL_OBJECTIVE_SIM_OBJECTIVES 4
 #define TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA 5
-#define TUTORIAL_OBJECTIVE_END (TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA)
+#define TUTORIAL_OBJECTIVE_END (TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA+1)
 
 /// The actual datum advanced traitor goal panel used to set and finalized goals.
 /datum/advanced_antag_panel
@@ -91,7 +91,7 @@
 					id = obj_num,
 					ref = REF(found_objective),
 					text = found_objective.explanation_text,
-					trimmed_text = TextPreview(found_objective.explanation_text, 55),
+					trimmed_text = TextPreview(found_objective.explanation_text, 65),
 				)
 				goal_data["objective_data"] += list(found_objective_data)
 				obj_num++
