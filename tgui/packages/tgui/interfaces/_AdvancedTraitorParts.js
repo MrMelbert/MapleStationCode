@@ -73,7 +73,11 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
     goals = [],
   } = data;
 
-  const [selectedGoalID, setSelectedGoal] = useSharedState(context, 'goals', goals[0]?.id);
+  const [
+    selectedGoalID,
+    setSelectedGoal,
+  ] = useSharedState(context, 'goals', goals[0]?.id);
+
   const selectedGoal = goals.find(goal => {
     return goal.id === selectedGoalID;
   });
