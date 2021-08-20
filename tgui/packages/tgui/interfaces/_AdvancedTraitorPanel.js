@@ -20,7 +20,7 @@ export const _AdvancedTraitorPanel = (props, context) => {
     <Window
       title="Antagonist Goal Panel"
       width={550}
-      height={660}
+      height={650}
       theme="jolly-syndicate">
       <Window.Content>
         <Section

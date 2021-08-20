@@ -21,8 +21,8 @@ export const _AdvancedHereticPanel = (props, context) => {
   return (
     <Window
       title="Antagonist Goal Panel"
-      width={600}
-      height={600}
+      width={550}
+      height={650}
       theme="wizard">
       <Window.Content>
         <Section
@@ -56,43 +56,41 @@ export const _AdvancedHereticPanel = (props, context) => {
               text={objective_tutorial_text}
               tutorialAct="proceede_objective_tutorial" />
           )}
-          <Flex mb={1}>
-            <Button
-              width="85px"
+          <Button
+            width="85px"
+            height="20px"
+            icon="plus"
+            content="Add Goal"
+            textAlign="center"
+            onClick={() => act('add_advanced_goal')} />
+          <Button.Checkbox
+            width="140px"
+            height="20px"
+            content="Toggle Ascending"
+            textAlign="center"
+            checked={can_ascend}
+            tooltip="Toggle the ability to ascend. \
+                    Disabling ascending rewards 3 bonus charges."
+            onClick={() => act('toggle_ascension')} />
+          <Button.Checkbox
+            width="140px"
+            height="20px"
+            content="Toggle Sacrificing"
+            textAlign="center"
+            checked={can_sac}
+            tooltip="Toggle the ability to sacrifice. \
+                    Disabling sacrificing rewards 3 bonus charges."
+            onClick={() => act('toggle_sacrificing')} />
+          { goals_finalized === 0 && (
+            <Button.Confirm
+              width="112px"
               height="20px"
-              icon="plus"
-              content="Add Goal"
+              icon="exclamation-circle"
+              content="Finalize Goals"
+              color="bad"
               textAlign="center"
-              onClick={() => act('add_advanced_goal')} />
-            <Button.Checkbox
-              width="140px"
-              height="20px"
-              content="Toggle Ascending"
-              textAlign="center"
-              checked={can_ascend}
-              tooltip="Toggle the ability to ascend. \
-                      Disabling ascending rewards 3 bonus charges."
-              onClick={() => act('toggle_ascension')} />
-            <Button.Checkbox
-              width="140px"
-              height="20px"
-              content="Toggle Sacrificing"
-              textAlign="center"
-              checked={can_sac}
-              tooltip="Toggle the ability to sacrifice. \
-                      Disabling sacrificing rewards 3 bonus charges."
-              onClick={() => act('toggle_sacrificing')} />
-            { goals_finalized === 0 && (
-              <Button.Confirm
-                width="112px"
-                height="20px"
-                icon="exclamation-circle"
-                content="Finalize Goals"
-                color="bad"
-                textAlign="center"
-                tooltip={finalize_text}
-                onClick={() => act('finalize_goals')} />)}
-          </Flex>
+              tooltip={finalize_text}
+              onClick={() => act('finalize_goals')} />)}
           { !!goals.length && (
             <AdvancedTraitorPanelGoals />
           )}

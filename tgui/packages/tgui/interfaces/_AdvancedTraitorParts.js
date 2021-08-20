@@ -87,7 +87,7 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
       <Divider />
       { goals.length > 0 && (
         <Stack.Item>
-          <Tabs>
+          <Tabs fill>
             {goals.map(goal => (
               <Tabs.Tab
                 width="20%"
@@ -120,15 +120,15 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
           <Stack vertical>
             <Stack.Item>
               <Stack width="100%">
-                <Stack.Item>
-                  <Stack vertical fill>
+                <Stack.Item mr={3}>
+                  <Stack vertical width="225px">
                     <Stack.Item >
                       Goal Text
                     </Stack.Item>
                     <Stack.Item>
                       <TextArea
                         fluid
-                        height="100px"
+                        height="85px"
                         value={selectedGoal.goal}
                         onInput={(e, value) => act('set_goal_text', {
                           goal_ref: selectedGoal.ref,
@@ -137,7 +137,7 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
                     </Stack.Item>
                   </Stack>
                 </Stack.Item>
-                <Stack.Item>
+                <Stack.Item mr={3}>
                   <Stack vertical align="center">
                     <Stack.Item mb={2}>
                       Intensity
@@ -168,7 +168,7 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
                         step={1}
                         minValue={1}
                         maxValue={5}
-                        stepPixelSize={20}
+                        stepPixelSize={15}
                         onDrag={(e, value) => act('set_goal_intensity', {
                           goal_ref: selectedGoal.ref,
                           newlevel: value,
@@ -177,13 +177,13 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
                   </Stack>
                 </Stack.Item>
                 <Stack.Item>
-                  <Stack vertical>
+                  <Stack vertical width="175px">
                     <Stack.Item>
                       Additional Notes
                     </Stack.Item>
                     <Stack.Item>
                       <TextArea
-                        height="100px"
+                        height="85px"
                         value={selectedGoal.notes}
                         onInput={(e, value) => act('set_note_text', {
                           goal_ref: selectedGoal.ref,
