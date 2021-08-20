@@ -99,7 +99,6 @@ Everything should be set to try to compile. If there are errors, try to solve th
 
 To prevent me from accidentally accept incoming on files with module changes, I'm doing this for the future.
 
-- code\__DEFINES\antagonists.dm
 - code\__DEFINES\chat.dm
 - code\__DEFINES\DNA.dm
 - code\__DEFINES\is_helpers.dm
