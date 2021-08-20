@@ -45,6 +45,6 @@
 	name = "Xenobiologist"
 	suit = /obj/item/clothing/suit/toggle/labcoat/xenobio
 	uniform = /obj/item/clothing/under/rank/rnd/xenobiologist
-	belt = /obj/item/pda/toxins/xenobiologist
+	belt = /obj/item/pda/science/xenobiologist
 	jobtype = /datum/job/xenobiologist
 	id_trim = /datum/id_trim/job/xenobiologist
