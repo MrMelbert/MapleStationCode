@@ -64,7 +64,7 @@
 
 	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, .proc/add_bodypart)
 	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, .proc/remove_bodypart)
-	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMGE, .proc/add_damage_pain)
+	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, .proc/add_damage_pain)
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_WOUND, .proc/add_wound_pain)
 	RegisterSignal(parent, COMSIG_CARBON_LOSE_WOUND, .proc/remove_wound_pain)
 	RegisterSignal(parent, COMSIG_LIVING_REVIVE, .proc/start_pain_processing)
@@ -82,7 +82,7 @@
 	UnregisterSignal(parent, list(
 		COMSIG_CARBON_ATTACH_LIMB,
 		COMSIG_CARBON_REMOVE_LIMB,
-		COMSIG_MOB_APPLY_DAMGE,
+		COMSIG_MOB_APPLY_DAMAGE,
 		COMSIG_CARBON_GAIN_WOUND,
 		COMSIG_CARBON_LOSE_WOUND,
 		COMSIG_LIVING_REVIVE,
