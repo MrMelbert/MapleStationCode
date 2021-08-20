@@ -41,7 +41,6 @@ export const _AdvancedHereticPanel = (props, context) => {
           )}
           <AdvancedTraitorPanelBackground />
         </Section>
-        <Divider />
         <Section
           title={`${ antag_type } Objectives`}
           buttons={(
