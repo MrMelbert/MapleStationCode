@@ -89,11 +89,7 @@ const VendingRow = (props, context) => {
   return (
     <Table.Row>
       <Table.Cell collapsing>
-<<<<<<< HEAD
-        {product.base64 && (
-=======
         {product.img && (
->>>>>>> tg/master
           <img
             src={`data:image/jpeg;base64,${product.img}`}
             style={{
@@ -123,11 +119,7 @@ const VendingRow = (props, context) => {
             || productStock.amount <= (product.max_amount / 2) && 'average'
             || 'good'
           )}>
-<<<<<<< HEAD
-          {productStock.amount} in stock
-=======
           {custom ? product.amount : productStock.amount} in stock
->>>>>>> tg/master
         </Box>
       </Table.Cell>
       <Table.Cell collapsing textAlign="center">
@@ -157,21 +149,13 @@ const VendingRow = (props, context) => {
       </Table.Cell>
       <Table.Cell>
         {
-<<<<<<< HEAD
-          productStock.colorable
-=======
           productStock?.colorable
->>>>>>> tg/master
             ? (
               <Button
                 fluid
                 icon="palette"
                 disabled={
-<<<<<<< HEAD
-                  productStock.Amount === 0
-=======
                   productStock?.amount === 0
->>>>>>> tg/master
                   || (!free && (!user || product.price > user.cash))
                 }
                 onClick={() => act('select_colors', { ref: product.ref })}

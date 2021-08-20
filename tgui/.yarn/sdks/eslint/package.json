@@ -1,10 +1,6 @@
 {
   "name": "eslint",
-<<<<<<< HEAD
-  "version": "7.21.0-pnpify",
-=======
   "version": "7.32.0-sdk",
->>>>>>> tg/master
   "main": "./lib/api.js",
   "type": "commonjs"
 }

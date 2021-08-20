@@ -59,11 +59,7 @@ task-webpack() {
 ## Runs a development server
 task-dev-server() {
   cd "${base_dir}"
-<<<<<<< HEAD
-  yarn node packages/tgui-dev-server/index.esm.js "${@}"
-=======
   yarn node --experimental-modules packages/tgui-dev-server/index.js "${@}"
->>>>>>> tg/master
 }
 
 ## Run a linter through all packages
@@ -96,11 +92,7 @@ task-clean() {
   rm -f .yarn/build-state.yml
   rm -f .yarn/install-state.gz
   rm -f .yarn/install-target
-<<<<<<< HEAD
-  rm -f .pnp.js
-=======
   rm -f .pnp.*
->>>>>>> tg/master
   ## NPM artifacts
   rm -rf **/node_modules
   rm -f **/package-lock.json
