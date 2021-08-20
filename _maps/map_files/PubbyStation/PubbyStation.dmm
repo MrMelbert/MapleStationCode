@@ -73,7 +73,7 @@
 /area/science/mixing)
 "aai" = (
 /obj/machinery/camera{
-	c_tag = "Toxins Lab Starboard";
+	c_tag = "Ordnance Lab Starboard";
 	network = list("ss13","rd")
 	},
 /obj/machinery/portable_atmospherics/canister,
@@ -23261,7 +23261,7 @@
 	dir = 4
 	},
 /obj/machinery/door/airlock/research{
-	name = "Toxins Storage";
+	name = "Ordnance Lab Storage";
 	req_access_txt = "71"
 	},
 /obj/machinery/door/firedoor,
@@ -23307,7 +23307,7 @@
 "bDU" = (
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/airlock/research/glass{
-	name = "Toxins Lab";
+	name = "Ordnance Lab";
 	req_access_txt = "8"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
@@ -23906,7 +23906,7 @@
 /area/science/storage)
 "bGi" = (
 /obj/machinery/camera{
-	c_tag = "Toxins Storage";
+	c_tag = "Ordnance Lab Storage";
 	dir = 8;
 	network = list("ss13","rd")
 	},
@@ -23978,9 +23978,9 @@
 	pixel_y = -9
 	},
 /obj/machinery/requests_console/directional/south{
-	department = "Toxins";
+	department = "Ordnance Lab";
 	departmentType = 2;
-	name = "Toxins Requests Console"
+	name = "Ordnance Lab Requests Console"
 	},
 /turf/open/floor/iron/white,
 /area/science/mixing)
@@ -24024,7 +24024,7 @@
 	},
 /obj/structure/table/reinforced,
 /obj/machinery/camera{
-	c_tag = "Toxins Lab Port";
+	c_tag = "Ordnance Lab Port";
 	dir = 1;
 	network = list("ss13","rd")
 	},
@@ -24101,7 +24101,7 @@
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
 /obj/machinery/door/airlock/research{
-	name = "Toxins Launch Room";
+	name = "Ordnance Launch Room";
 	req_access_txt = "8"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
@@ -24576,7 +24576,7 @@
 	dir = 4;
 	layer = 4;
 	name = "Test Chamber Telescreen";
-	network = list("toxins");
+	network = list("ordnance");
 	pixel_x = -32
 	},
 /obj/effect/turf_decal/tile/purple,
@@ -47577,7 +47577,7 @@
 "pNy" = (
 /obj/structure/closet/firecloset,
 /obj/machinery/camera{
-	c_tag = "Toxins Launch Area";
+	c_tag = "Ordnance Launch Area";
 	network = list("ss13","rd")
 	},
 /obj/structure/sign/poster/official/random{
@@ -54585,7 +54585,7 @@
 "vMt" = (
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/airlock/atmos{
-	name = "Toxins Storage";
+	name = "Ordnance Lab Storage";
 	req_access_txt = "24"
 	},
 /obj/structure/cable,
@@ -54809,7 +54809,7 @@
 "vTN" = (
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/airlock/research{
-	name = "Toxins Lab";
+	name = "Ordnance Lab";
 	req_access_txt = "8"
 	},
 /turf/open/floor/iron/dark,

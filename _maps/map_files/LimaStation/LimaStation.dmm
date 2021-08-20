@@ -3677,7 +3677,7 @@
 /area/medical/morgue)
 "bMH" = (
 /obj/machinery/door/airlock/research{
-	name = "Toxins Storage";
+	name = "Ordnance Lab Storage";
 	req_access_txt = "8"
 	},
 /obj/machinery/door/firedoor/heavy,
@@ -6212,7 +6212,7 @@
 /area/security/prison/safe)
 "cYA" = (
 /obj/machinery/camera{
-	c_tag = "Science - Toxins Chamber";
+	c_tag = "Science - Ordnance Lab Chamber";
 	dir = 8;
 	network = list("ss13","rd")
 	},
@@ -9183,7 +9183,7 @@
 /obj/effect/turf_decal/delivery,
 /obj/machinery/portable_atmospherics/canister/plasma,
 /obj/machinery/camera{
-	c_tag = "Science - Toxins Storage A";
+	c_tag = "Science - Ordnance Lab Storage A";
 	dir = 4;
 	network = list("ss13","rd")
 	},
@@ -10952,7 +10952,7 @@
 "feW" = (
 /obj/machinery/computer/atmos_control{
 	dir = 8;
-	sensors = list("n2_sensor" = "Nitrogen Tank", "o2_sensor" = "Oxygen Tank", "co2_sensor" = "Carbon Dioxide Tank", "tox_sensor" = "Plasma Tank", "n2o_sensor" = "Nitrous Oxide Tank", "air_sensor" = "Mixed Air Tank", "mix_sensor" = "Mix Tank", "mix2_sensor" = "Mix Tank #2", "distro-loop_meter" = "Distribution Loop", "atmos-waste_loop_meter" = "Atmos Waste Loop", "incinerator_sensor" = "Incinerator Chamber", "toxinslab_sensor" = "Toxins Mixing Chamber")
+	sensors = list("n2_sensor" = "Nitrogen Tank", "o2_sensor" = "Oxygen Tank", "co2_sensor" = "Carbon Dioxide Tank", "plas_sensor" = "Plasma Tank", "n2o_sensor" = "Nitrous Oxide Tank", "air_sensor" = "Mixed Air Tank", "mix_sensor" = "Mix Tank", "mix2_sensor" = "Mix Tank #2", "distro-loop_meter" = "Distribution Loop", "atmos-waste_loop_meter" = "Atmos Waste Loop", "incinerator_sensor" = "Incinerator Chamber", "ordnancelab_sensor" = "Ordnance Lab Mixing Chamber")
 	},
 /obj/structure/disposalpipe/junction/flip{
 	dir = 4
@@ -11711,7 +11711,7 @@
 /area/service/chapel/office)
 "fun" = (
 /obj/machinery/door/airlock/research{
-	name = "Toxins Storage";
+	name = "Ordnance Lab Storage";
 	req_access_txt = "8"
 	},
 /obj/machinery/door/firedoor/heavy,
@@ -12597,7 +12597,7 @@
 /area/science/storage)
 "fPz" = (
 /obj/machinery/door/airlock/research{
-	name = "Toxins Launch Room";
+	name = "Ordnance Launch Room";
 	req_access_txt = "7"
 	},
 /obj/structure/cable,
@@ -23113,7 +23113,7 @@
 /area/security/office)
 "kte" = (
 /obj/machinery/door/airlock/research{
-	name = "Toxins Launch Room";
+	name = "Ordnance Launch Room";
 	req_access_txt = "7"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -24795,7 +24795,7 @@
 /area/science/research)
 "ldo" = (
 /obj/machinery/door/airlock/research{
-	name = "Toxins Lab";
+	name = "Ordnance Lab";
 	req_access_txt = "7"
 	},
 /obj/machinery/door/firedoor/heavy,
@@ -28268,7 +28268,7 @@
 /area/science/genetics)
 "mqL" = (
 /obj/machinery/camera{
-	c_tag = "Science - Toxins Storage B";
+	c_tag = "Science - Ordnance Lab Storage B";
 	dir = 8;
 	network = list("ss13","rd")
 	},
@@ -38665,8 +38665,8 @@
 /area/science/xenobiology)
 "qxa" = (
 /obj/machinery/door/poddoor{
-	id = "toxinsdriver";
-	name = "toxins launcher bay door"
+	id = "ordnancedriver";
+	name = "ordnance launch bay door"
 	},
 /turf/open/floor/plating,
 /area/science/mixing)
@@ -43939,7 +43939,7 @@
 	},
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/camera{
-	c_tag = "Science - Toxins Airlock";
+	c_tag = "Science - Ordnance Lab Airlock";
 	dir = 8;
 	network = list("ss13","rd")
 	},
@@ -51414,7 +51414,7 @@
 /area/maintenance/department/engine/atmos)
 "wdI" = (
 /obj/machinery/camera{
-	c_tag = "Science - Toxins Launch Chamber";
+	c_tag = "Science - Ordnance Launch Chamber";
 	dir = 4;
 	network = list("ss13","rd")
 	},
@@ -53505,7 +53505,7 @@
 "xbA" = (
 /obj/structure/disposalpipe/sorting/mail/flip{
 	dir = 2;
-	name = "toxins sorting disposal pipe";
+	name = "ordnance sorting disposal pipe";
 	sortType = 25
 	},
 /obj/structure/cable,
@@ -55449,7 +55449,7 @@
 /area/maintenance/department/medical)
 "xUe" = (
 /obj/machinery/door/airlock/research{
-	name = "Toxins Lab";
+	name = "Ordnance Lab";
 	req_access_txt = "7"
 	},
 /obj/machinery/door/firedoor/heavy,
