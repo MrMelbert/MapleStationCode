@@ -72,6 +72,7 @@
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_all_pain)
 	RegisterSignal(parent, COMSIG_MOB_HEALTHSCANNED, .proc/on_analyzed)
 	RegisterSignal(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), .proc/check_lying_pain_modifier)
+
 /*
  * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
  */

@@ -6,7 +6,9 @@
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
-	pain_controller = new(src)
+	var/datum/pain/new_pain_controller = new(src)
+	if(!QDELETED(new_pain_controller))
+		pain_controller = new_pain_controller
 
 /mob/living/carbon/human/Destroy()
 	if(pain_controller)
