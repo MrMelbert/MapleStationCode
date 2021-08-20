@@ -1,6 +1,10 @@
 {
   "name": "typescript",
+<<<<<<< HEAD
   "version": "4.2.3-pnpify",
+=======
+  "version": "4.3.5-sdk",
+>>>>>>> tg/master
   "main": "./lib/typescript.js",
   "type": "commonjs"
 }

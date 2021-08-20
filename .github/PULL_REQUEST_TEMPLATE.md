@@ -10,6 +10,6 @@
 5. Confused? Lost? Don't know what you're doing? Ask for help!
 
 ## MODULARITY
-It's important to ALWAYS MAKE SURE to modularize your content! If you need to touch the main game files, ALWAYS use "NON-MODULE" in the comment. 
+It's important to ALWAYS MAKE SURE to modularize your content! If you need to touch the main game files, ALWAYS use "NON-MODULE" in the comment.
 Multi line changes should have "NON-MODULE START / END" to deonate the multi line changes, if applicable in succession.
-Images added to master .dmi files will be rejected and you will be asked to modularize them, even if you need to copy the master file. 
+Images added to master .dmi files will be rejected and you will be asked to modularize them, even if you need to copy the master file.

@@ -47,7 +47,11 @@ function task-webpack {
 
 ## Runs a development server
 function task-dev-server {
+<<<<<<< HEAD
   yarn node "packages/tgui-dev-server/index.esm.js" @Args
+=======
+  yarn node --experimental-modules "packages/tgui-dev-server/index.js" @Args
+>>>>>>> tg/master
 }
 
 ## Run a linter through all packages
@@ -75,7 +79,11 @@ function task-clean {
   Remove-Quiet -Force ".yarn\build-state.yml"
   Remove-Quiet -Force ".yarn\install-state.gz"
   Remove-Quiet -Force ".yarn\install-target"
+<<<<<<< HEAD
   Remove-Quiet -Force ".pnp.js"
+=======
+  Remove-Quiet -Force ".pnp.*"
+>>>>>>> tg/master
   ## NPM artifacts
   Get-ChildItem -Path "." -Include "node_modules" -Recurse -File:$false | Remove-Item -Recurse -Force
   Remove-Quiet -Force "package-lock.json"

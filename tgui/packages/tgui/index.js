@@ -17,10 +17,15 @@ import './styles/themes/retro.scss';
 import './styles/themes/syndicate.scss';
 import './styles/themes/wizard.scss';
 
+<<<<<<< HEAD
 import './styles/themes/jolly-syndicate.scss'; // NON-MODULE CHANGE
 
 import { perf } from 'common/perf';
 import { setupHotReloading } from 'tgui-dev-server/link/client';
+=======
+import { perf } from 'common/perf';
+import { setupHotReloading } from 'tgui-dev-server/link/client.cjs';
+>>>>>>> tg/master
 import { setupHotKeys } from './hotkeys';
 import { captureExternalLinks } from './links';
 import { createRenderer } from './renderer';

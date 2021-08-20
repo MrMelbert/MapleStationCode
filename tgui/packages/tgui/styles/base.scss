@@ -4,6 +4,10 @@
  */
 
 @use 'sass:color';
+<<<<<<< HEAD
+=======
+@use 'sass:math';
+>>>>>>> tg/master
 
 $color-fg: #ffffff !default;
 $color-bg: #252525 !default;
@@ -19,9 +23,17 @@ $font-size: 1 * $unit !default;
 $border-radius: 0.16em !default;
 
 @function em($px) {
+<<<<<<< HEAD
   @return 1em * ($px / $unit);
 }
 
 @function rem($px) {
   @return 1rem * ($px / $unit);
+=======
+  @return 1em * math.div($px, $unit);
+}
+
+@function rem($px) {
+  @return 1rem * math.div($px, $unit);
+>>>>>>> tg/master
 }

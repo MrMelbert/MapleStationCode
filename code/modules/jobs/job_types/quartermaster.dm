@@ -5,10 +5,11 @@
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	req_admin_notify = 1 // NON-MODULE CHANGE
+	req_admin_notify = TRUE // NON-MODULE CHANGE
 	supervisors = "the captain" // NON-MODULE CHANGE
 	selection_color = "#d7b088"
 	exp_type_department = EXP_TYPE_SUPPLY // This is so the jobs menu can work properly
+	exp_granted_type = EXP_TYPE_CREW
 
 	outfit = /datum/outfit/job/quartermaster
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
@@ -20,13 +21,16 @@
 
 	display_order = JOB_DISPLAY_ORDER_QUARTERMASTER
 	bounty_types = CIV_JOB_RANDOM
-	departments = DEPARTMENT_CARGO | DEPARTMENT_COMMAND
+	departments_list = list(
+		/datum/job_department/cargo,
+		/datum/job_department/command,
+		)
 	family_heirlooms = list(/obj/item/stamp, /obj/item/stamp/denied)
 	mail_goodies = list(
 		/obj/item/circuitboard/machine/emitter = 3
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS
 
 	voice_of_god_power = 1.4 // NON-MODULE CHANGE: Command staff
 

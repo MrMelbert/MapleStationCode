@@ -1,4 +1,7 @@
 /// -- Defines for antag datums and advanced antag datums. --
+/// Whether the antagonist can see exploitable info on people they examine.
+#define CAN_SEE_EXPOITABLE_INFO (1<<0)
+
 /// Initial / base TC for advanced traitors.
 #define TRAITOR_PLUS_INITIAL_TC 8
 /// Max amount of TC advanced traitors can get.
