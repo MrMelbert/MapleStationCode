@@ -163,7 +163,7 @@
 	if(length(composed_message) > 0)
 		composed_message += special_desc
 	else if(toy_name) //If we don't have a message and we're a toy, add on the toy message.
-		composed_message += "The popular toy resembling [toy_name] from your local arcade, suitable for children and adults alike."
+		composed_message += "The popular toy resembling \a [toy_name] from your local arcade, suitable for children and adults alike."
 	examine_list += span_info(composed_message)
 
 /// Check if we're any spice or variety of syndicate (antagonists, ghost roles, or special)
