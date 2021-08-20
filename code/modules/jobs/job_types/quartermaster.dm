@@ -2,13 +2,15 @@
 	title = "Quartermaster"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD // NON-MODULE CHANGE
 	department_head = list("Captain") // NON-MODULE CHANGE
+	head_announce = list(RADIO_CHANNEL_SUPPLY) // NON-MODULE CHANGE
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
 	req_admin_notify = TRUE // NON-MODULE CHANGE
 	supervisors = "the captain" // NON-MODULE CHANGE
 	selection_color = "#d7b088"
-	exp_type_department = EXP_TYPE_SUPPLY // This is so the jobs menu can work properly
+	exp_required_type = EXP_TYPE_CREW
+	exp_required_type_department = EXP_TYPE_SUPPLY
 	exp_granted_type = EXP_TYPE_CREW
 
 	outfit = /datum/outfit/job/quartermaster
@@ -23,8 +25,9 @@
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,
-		/datum/job_department/command,
+		/datum/job_department/command, // NON-MODULE CHANGE
 		)
+
 	family_heirlooms = list(/obj/item/stamp, /obj/item/stamp/denied)
 	mail_goodies = list(
 		/obj/item/circuitboard/machine/emitter = 3

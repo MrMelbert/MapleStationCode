@@ -1,7 +1,5 @@
 /// -- This file is ONLY for adding the unique_examine element onto items, pre-existing or modular. --
 
-/// Job defines
-#define SECURITY_JOBS_PLUS_COMMAND GLOB.security_positions + list("Captain", "Bridge Officer")
 /// Species defines
 #define LIZARD_SPECIES /datum/species/lizard
 /// Faction defines
@@ -9,6 +7,26 @@
 
 /// json for extra fun lines to show up when examining certain heretic stuff
 #define HERETIC_REALITY_MESSAGES "pierced_reality.json"
+
+/*
+ * Get the job TITLES of all jobs that are in the security department,
+ * and all the jobs that are ONLY in the command department
+ *
+ * returns a list of strings
+ */
+/proc/get_sec_and_command_jobs()
+	RETURN_TYPE(/list)
+	. = list()
+
+	var/datum/job_department/command_department = SSjob.get_department_type(/datum/job_department/command)
+	for(var/datum/job/job as anything in command_department.department_jobs)
+		if(job.departments_bitflags == DEPARTMENT_BITFLAG_COMMAND) // we only want people with COMMAND only
+			. |= job.title
+
+	var/datum/job_department/sec_department = SSjob.get_department_type(/datum/job_department/security)
+	for(var/datum/job/job as anything in sec_department.department_jobs)
+		if(!(job.title in .))
+			. |= job.title
 
 // SYNDICATE / SYNDICATE TOY ITEMS //
 
@@ -25,7 +43,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"A large, dark colored dufflebag commonly used to transport ammunition, tools, and explosives. \
 		Its design makes it much lighter than other duffelbags without sacrificing any space.", \
-		EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs())
 
 /obj/item/clothing/under/syndicate
 	name = "suspicious turtleneck"
@@ -35,7 +53,7 @@
 	. = ..()
 	if(unique_description)
 		AddElement(/datum/element/unique_examine, unique_description, EXAMINE_CHECK_SYNDICATE, hint = FALSE)
-		AddElement(/datum/element/unique_examine, "A padded, armored outfit commonly used by syndicate operatives in the field.", EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND)
+		AddElement(/datum/element/unique_examine, "A padded, armored outfit commonly used by syndicate operatives in the field.", EXAMINE_CHECK_JOB, get_sec_and_command_jobs())
 
 /obj/item/clothing/under/syndicate/skirt
 	name = "suspicious skirtleneck"
@@ -56,7 +74,7 @@
 /obj/item/clothing/under/syndicate/tacticool/Initialize()
 	. = ..()
 	if(tacticool_description)
-		AddElement(/datum/element/unique_examine, tacticool_description, EXAMINE_CHECK_SYNDICATE, is_toy = TRUE)
+		AddElement(/datum/element/unique_examine, tacticool_description, EXAMINE_CHECK_SYNDICATE, real_name = name)
 
 /obj/item/clothing/under/syndicate/tacticool/skirt
 	tacticool_description = "Knockoff, Nanotrasen brand tactical skirtleneck - it's not even the right color."
@@ -137,7 +155,7 @@
 		"The Codex Cicatrix - the book of knowledge that supposedly holds all the secrets of the viel between the worlds.. \
 		Discovered by Wizard Federation long ago, but locked away deep in the shelving of the highest security libraries of the Spindward Galaxy, \
 		the book was recently stolen during a raid by the Cybersun Industries, copied, and widespread to aspiring seekers of power.", \
-		EXAMINE_CHECK_DEPARTMENT, (DEPARTMENT_SECURITY | DEPARTMENT_COMMAND), hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
 /obj/item/toy/eldritch_book
 	name = "suspicious purple book"
@@ -148,7 +166,7 @@
 		"A fake Codex Cicatrix - the book of knowledge holding all the secrets of the veil between the worlds, the Mansus. \
 		While the book was recently discovered, copied, and spread due to a recent Cybersun Industries raid on a high-security library, \
 		it seems as if Nanotrasen has already began marketing and selling fake toy copies for children... interesting.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION, is_toy = TRUE)
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION, real_name = "Codex Cicatrix")
 
 
 /obj/effect/eldritch/big/Initialize()
@@ -189,7 +207,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"A pierced reality - a weakness in the veil that allows power to be gleamed from the Mansus. \
 		This one is fake, however. How'd they even make this?", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+		EXAMINE_CHECK_FACTION, HERETIC_FACTION, real_name = "Pierced Reality")
 
 /obj/effect/rune/Initialize()
 	. = ..()
@@ -215,7 +233,7 @@
 		"A refitted revolver that takes .357 caliber, the Mateba Model 6 Unica - \
 		or as it's commonly known shorthand, either the Mateba or the Unica - \
 		has been the weapon of choice for Nanotrasen commanding officers in the field for decades.", \
-		EXAMINE_CHECK_DEPARTMENT, (DEPARTMENT_SECURITY | DEPARTMENT_COMMAND))
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs())
 
 /obj/item/gun/energy/laser/captain/Initialize()
 	. = ..()
@@ -233,7 +251,7 @@
 		the X-01 multiphase energy gun was developed in the past few decades to issue to only the highest brass officers \
 		in Nanotrasen security forces. While in the past the gun was outfitted with taser electrodes instead of an ion bolts, \
 		it is still used by lead officers for quick response and utility in the event of varying threats.", \
-		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_SECURITY)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_SECURITY)
 
 /obj/item/disk/nuclear/Initialize()
 	. = ..()
@@ -261,14 +279,14 @@
 		designed with speed and wearability in mind during extravehicular activity. \
 		Offers a lighter magnetic pull compared to standard model of magboots, \
 		reducing slowdown without sacrificing safety or usability.", \
-		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_ENGINEERING)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
 /obj/item/clothing/suit/space/hardsuit/engine/elite/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The Chief Engineer's spotless advanced hardsuit - a sleek white design of the standard engineering \
 		and atmospheric hardsuits with improved resistance to fire and radiation.", \
-		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_ENGINEERING)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
 /obj/item/card/id/advanced/gold/captains_spare/Initialize()
 	. = ..()
@@ -277,7 +295,7 @@
 		Standard-issue golden ID cards supplied to all Nanotrasen operated space stations, to allow \
 		for normal operation of every aspect of the station in the absence of the captain... \
 		assuming it doesn't end up in the hands of certain gas-masked individuals, of course.", \
-		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_COMMAND)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_COMMAND)
 
 /obj/item/hand_tele/Initialize()
 	. = ..()
@@ -314,12 +332,12 @@
 		"A xenomorph - an alien species designed to hunt and capture live prey. \
 		They reproduce by attaching facehuggers to their prey, impregnating them with the alient seed, \
 		eventually causing the host to burst in a violent display of gore as a new larva writhes out.", \
-		EXAMINE_CHECK_JOB, list("Research Director", "Scientist", "Xenobiologist"))
+		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"))
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph - an alien species designed to hunt live prey. \
 		Weak to flames and laser fire. Facial coverage in the form of biosuits, hardsuits, or riot helmets are of utmost importance \
 		when facing these creatures to avoid being 'facehugged' by their offspring.", \
-		EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND, hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
 /mob/living/simple_animal/hostile/alien/Initialize()
 	. = ..()
@@ -327,12 +345,12 @@
 		"A xenomorph - an alien species designed to hunt and capture live prey. \
 		They reproduce by attaching facehuggers to their prey, impregnating them with the alient seed, \
 		eventually causing the host to burst in a violent display of gore as a new larva writhes out.", \
-		EXAMINE_CHECK_JOB, list("Research Director", "Scientist", "Xenobiologist"))
+		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"))
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph - an alien species designed to hunt live prey. \
 		Weak to flames and laser fire. Facial coverage in the form of biosuits, hardsuits, or riot helmets are of utmost importance \
 		when facing these creatures to avoid being 'facehugged' by their offspring.", \
-		EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND, hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
 /mob/living/carbon/alien/humanoid/royal/queen/Initialize()
 	. = ..()
@@ -342,14 +360,14 @@
 		the small, jumpy alien creature responisble for the alien's method of reproduction. \
 		Leads its sisters and offspring through their alien hivemind - \
 		when slain, releases a psychic screen via the hivemind, greatly disorienting their kin.", \
-		EXAMINE_CHECK_JOB, list("Research Director", "Scientist", "Xenobiologist"), hint = FALSE)
+		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"), hint = FALSE)
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph queen - the patriarch of the xenomorph species. \
 		Leads the nest through their xenomorph hivemind. The source of the xenos - \
 		killing the queen is important in killing the hive. \
 		When slain, releases a psychic scream along the alien hivemind, \
 		confusing and disorienting their kin and offspring.", \
-		EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND, hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
 /mob/living/simple_animal/hostile/alien/queen/Initialize()
 	. = ..()
@@ -359,13 +377,13 @@
 		the small, jumpy alien creature responisble for the alien's method of reproduction. \
 		Leads its sisters and offspring through their alien hivemind - \
 		when slain, releases a psychic screen via the hivemind, greatly disorienting their kin.", \
-		EXAMINE_CHECK_JOB, list("Research Director", "Scientist", "Xenobiologist"))
+		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"))
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph queen - the patriarch of the xenomorph species. \
 		Leads the nest through their xenomorph hivemind. The source of the xeno menace - \
 		killing the queen is crucial in killing the hive. \
 		When slain, releases a psychic scream along the alien hivemind, confusing and disorienting their kin and offspring.", \
-		EXAMINE_CHECK_JOB, SECURITY_JOBS_PLUS_COMMAND, hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
 /mob/living/simple_animal/pet/dog/corgi/exoticcorgi/dufresne/Initialize()
 	. = ..()
@@ -388,14 +406,14 @@
 		If every console on the station is destoyed, the emergency shuttle is automatically called on a 25 minute timer. \
 		Likewise if a large percentage of the station's crew perish the shuttle is automatically called in that case, too. \
 		It's good that central command cares.", \
-		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_COMMAND)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_COMMAND)
 
 /obj/machinery/power/supermatter_crystal/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"Hope you're wearing meson goggles - Crystallized supermatter, one of the most deadly and reactive things in the universe. \
 		Supermatter reacts when shot with energy, turning the light energy of emitters into heated waste gases and bursts of gamma radiation.", \
-		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_ENGINEERING)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
 /obj/machinery/computer/slot_machine/Initialize()
 	. = ..()
@@ -404,7 +422,7 @@
 		\the [src] is one of the most common forms of gambling in the galaxy. \
 		A 7 century old design. Simple and addictive - \
 		Hopefully you're doing your job and not playing it right now.", \
-		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_SERVICE)
+		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_SERVICE)
 
 // STRUCTURES //
 
@@ -415,8 +433,6 @@
 		The closest place on the station to the gods above is in front of the altar, \
 		and it's where the most successful prayers and rituals take place.", \
 		EXAMINE_CHECK_TRAIT, TRAIT_SPIRITUAL)
-
-#undef SECURITY_JOBS_PLUS_COMMAND
 
 #undef LIZARD_SPECIES
 #undef HERETIC_FACTION

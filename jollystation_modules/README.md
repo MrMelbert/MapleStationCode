@@ -139,11 +139,12 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\jobs\jobs.dm
 - code\modules\jobs\job_types\_job.dm
 - code\modules\jobs\job_types\cargo_technician.dm
+- code\modules\jobs\job_types\head_of_personnel.dm
 - code\modules\jobs\job_types\lawyer.dm
-- code\modules\jobs\job_types\quartermaster.dm
 - code\modules\jobs\job_types\research_director.dm
 - code\modules\jobs\job_types\scientist.dm
 - code\modules\jobs\job_types\shaft_miner.dm
+- code\modules\jobs\job_types\quartermaster.dm
 - code\modules\language\language_holder.dm
 - code\modules\mob\dead\new_player\new_player.dm
 - code\modules\mob\living\carbon\human\human.dm
