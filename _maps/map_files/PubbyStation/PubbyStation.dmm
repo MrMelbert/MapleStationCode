@@ -6258,6 +6258,8 @@
 /obj/machinery/computer/secure_data{
 	dir = 4
 	},
+/obj/machinery/light/directional/west,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/carpet/royalblack,
 /area/security/detectives_office/bridge_officer_office)
 "atZ" = (
@@ -6568,6 +6570,12 @@
 "auU" = (
 /obj/machinery/computer/med_data{
 	dir = 4
+	},
+/obj/machinery/requests_console/directional/west{
+	announcementConsole = 1;
+	department = "Bridge Officer's Desk";
+	departmentType = 5;
+	name = "Bridge Officer's RQ"
 	},
 /turf/open/floor/carpet/royalblack,
 /area/security/detectives_office/bridge_officer_office)
@@ -35165,6 +35173,7 @@
 /area/security/prison)
 "dIJ" = (
 /obj/structure/filingcabinet,
+/obj/machinery/light/directional/south,
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "dJm" = (
@@ -48852,6 +48861,9 @@
 	},
 /obj/structure/table/wood,
 /obj/item/storage/fancy/donut_box,
+/obj/item/radio/intercom/directional/south{
+	pixel_y = -38
+	},
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "qOx" = (
@@ -54782,6 +54794,7 @@
 	name = "Bridge Officer's Equipment"
 	},
 /obj/effect/landmark/locker_spawner/bridge_officer_equipment,
+/obj/machinery/light/directional/east,
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "vMt" = (
