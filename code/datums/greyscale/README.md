@@ -92,11 +92,6 @@ And that's all you need to make it usable by other code:
 
 More configurations can be found in [code/datums/greyscale/greyscale_configs.dm](./greyscale_configs.dm)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 5d2a9dd843807bcad59d4a98be9fffb8992b8854
 If you want your item to be colorable in a vending machine (or other places if there's ever any support added for that), you should do it like this:
 
 ```c

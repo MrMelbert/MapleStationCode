@@ -5,6 +5,7 @@
 	can_be_tied = TRUE
 
 /obj/item/clothing/shoes/sneakers/greyscale
-	name = "greyscale shoes"
-	desc = "A pair of greyscale shoes."
+	name = "tailored shoes"
+	desc = "A pair of custom colored tailored shoes."
 	greyscale_colors = "#eeeeee#ffffff"
+	flags_1 = IS_PLAYER_COLORABLE_1

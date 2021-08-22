@@ -260,6 +260,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 				dat += "[station_time_timestamp()]<br>" //:[world.time / 100 % 6][world.time / 100 % 10]"
 				dat += "[time2text(world.realtime, "MMM DD")] [GLOB.year_integer+555]" // NON-MODULE CHANGE; Default year increment is 540, Jollystation is +15 years from that.
+				dat += "It has been [ROUND_TIME] since the emergency shuttle was last called."
 
 				dat += "<br><br>"
 

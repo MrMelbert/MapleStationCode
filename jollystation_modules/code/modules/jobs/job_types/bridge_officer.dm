@@ -11,8 +11,9 @@
 	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
-	exp_type = EXP_TYPE_CREW
-	exp_type_department = EXP_TYPE_COMMAND
+	exp_required_type = EXP_TYPE_CREW
+	exp_required_type_department = EXP_TYPE_COMMAND
+	exp_granted_type = EXP_TYPE_CREW
 
 	outfit = /datum/outfit/job/bridge_officer
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel
@@ -24,7 +25,9 @@
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM) // QM normally has this, but since they're a head of staff now I put it here. C'est la vie.
 
 	display_order = JOB_DISPLAY_ORDER_BRIDGE_OFFICER
-	departments = DEPARTMENT_COMMAND
+	departments_list = list(
+		/datum/job_department/command,
+		)
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
 
@@ -43,8 +46,8 @@
 		/obj/item/storage/box/office_supplies = 1,
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE
-	voice_of_god_power = 1.1 // Not quite command staff.
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS
+	voice_of_god_power = 1.2 // Not quite command staff.
 
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"

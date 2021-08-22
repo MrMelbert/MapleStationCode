@@ -503,7 +503,7 @@
 	name = "lizard plushie"
 	desc = "An adorable stuffed toy that resembles a lizardperson."
 	icon = 'jollystation_modules/icons/obj/plushes.dmi' // NON-MODULE CHANGE
-	icon_state = "map_plushie_lizard" // NON-MODULE CHANGE
+	icon_state = "map_plushie_lizard"
 	greyscale_config = /datum/greyscale_config/plush_lizard
 	attack_verb_continuous = list("claws", "hisses", "tail slaps")
 	attack_verb_simple = list("claw", "hiss", "tail slap")
