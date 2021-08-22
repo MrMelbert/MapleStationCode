@@ -5888,7 +5888,6 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 4
 	},
-/obj/effect/landmark/start/bridge_officer,
 /obj/machinery/button/door/directional/east{
 	id = "bridgespace";
 	name = "Bridge Space Lockdown";
@@ -6577,6 +6576,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
+/obj/effect/landmark/start/bridge_officer,
 /turf/open/floor/carpet/royalblack,
 /area/security/detectives_office/bridge_officer_office)
 "auW" = (
@@ -8044,6 +8044,7 @@
 /area/command/bridge)
 "azp" = (
 /obj/machinery/newscaster/directional/south,
+/obj/effect/landmark/start/bridge_officer,
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "azq" = (
@@ -8405,6 +8406,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
+/obj/effect/landmark/start/asset_protection,
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "aAE" = (
@@ -36851,6 +36853,7 @@
 /area/security/detectives_office)
 "fin" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
+/obj/effect/landmark/start/asset_protection,
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "fjs" = (
@@ -38781,6 +38784,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/command/heads_quarters/cmo)
+"gVE" = (
+/obj/effect/landmark/start/bridge_officer,
+/turf/open/floor/iron/dark,
+/area/command/bridge)
 "gXg" = (
 /obj/effect/turf_decal/tile/purple{
 	dir = 1
@@ -46561,6 +46568,13 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/service/chapel/monastery)
+"oMD" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/obj/effect/landmark/start/asset_protection,
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "oMH" = (
 /obj/structure/table,
 /obj/item/airlock_painter/decal,
@@ -49978,6 +49992,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
+/obj/effect/landmark/start/bridge_officer,
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "rLJ" = (
@@ -51847,6 +51862,7 @@
 /obj/structure/chair/office{
 	dir = 8
 	},
+/obj/effect/landmark/start/asset_protection,
 /turf/open/floor/wood/parquet,
 /area/security/detectives_office/bridge_officer_office)
 "trt" = (
@@ -89854,7 +89870,7 @@ atW
 atW
 atW
 ayg
-ayg
+gVE
 wyP
 ayg
 aBy
@@ -91395,7 +91411,7 @@ oAS
 fin
 rCQ
 rLp
-rLp
+oMD
 iTo
 qNS
 aAH
