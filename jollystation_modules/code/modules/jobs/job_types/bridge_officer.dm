@@ -70,7 +70,7 @@
 	..()
 	// If the map we're on doesn't have a brige officer locker, add in a way to get one
 	if(!(locate(/obj/effect/landmark/locker_spawner/bridge_officer_equipment) in GLOB.locker_landmarks))
-		backpack_contents += /obj/item/bridge_officer_locker_spawner
+		LAZYADD(backpack_contents, /obj/item/locker_spawner/bridge_officer)
 
 
 	// 0.1% chance on spawn to be given a meme flash in place of a real one.

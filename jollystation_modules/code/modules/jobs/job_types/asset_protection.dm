@@ -1,4 +1,4 @@
-// -- Bridge Officer job & outfit datum --
+// -- Asset Protection job & outfit datum --
 /datum/job/asset_protection
 	title = "Asset Protection"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
@@ -11,8 +11,9 @@
 	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
-	exp_type = EXP_TYPE_CREW
-	exp_type_department = EXP_TYPE_COMMAND
+	exp_required_type = EXP_TYPE_CREW
+	exp_required_type_department = EXP_TYPE_COMMAND
+	exp_granted_type = EXP_TYPE_CREW
 
 	outfit = /datum/outfit/job/asset_protection
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security
@@ -24,7 +25,9 @@
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM) // QM normally has this, but since they're a head of staff now I put it here. C'est la vie.
 
 	display_order = JOB_DISPLAY_ORDER_ASSET_PROTECTION
-	departments = DEPARTMENT_COMMAND
+	departments_list = list(
+		/datum/job_department/command,
+		)
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
 
@@ -65,4 +68,4 @@
 	..()
 	// If the map we're on doesn't have a brige officer locker, add in a way to get one
 	if(!(locate(/obj/effect/landmark/locker_spawner/asset_protection_equipment) in GLOB.locker_landmarks))
-		backpack_contents += /obj/item/asset_protection_locker_spawner
+		LAZYADD(backpack_contents, /obj/item/locker_spawner/asset_protection)

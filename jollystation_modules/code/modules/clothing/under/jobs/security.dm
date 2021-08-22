@@ -1,5 +1,6 @@
 /// -- Modular security clothing. --
 //BO clothing
+//Unused, may be reimplamented later if we get a different sprite
 /obj/item/clothing/under/rank/security/bridge_officer
 	name = "bridge officer uniform"
 	desc = "A formal blue suit and tie kitted out with padding for protection worn by the officers that work the bridge. Someone owes you a beer..."
