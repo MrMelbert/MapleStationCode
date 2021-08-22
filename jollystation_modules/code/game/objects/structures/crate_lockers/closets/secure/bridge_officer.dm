@@ -11,7 +11,6 @@
 	. = ..()
 	new /obj/item/clothing/under/rank/security/bridge_officer/black/skirt (src)
 	new /obj/item/clothing/under/rank/security/bridge_officer/black(src)
-	new /obj/item/clothing/under/rank/security/bridge_officer(src)
 	new /obj/item/clothing/gloves/color/white(src)
 	new /obj/item/clothing/shoes/laceup(src)
 	new /obj/item/radio/headset/heads/bridge_officer(src)
