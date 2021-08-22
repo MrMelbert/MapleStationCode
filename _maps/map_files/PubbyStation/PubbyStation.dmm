@@ -5867,7 +5867,6 @@
 /obj/effect/turf_decal/tile/green{
 	dir = 8
 	},
-/obj/effect/landmark/start/bridge_officer,
 /obj/machinery/button/door/directional/west{
 	id = "bridgespace";
 	name = "Bridge Space Lockdown";
@@ -5879,7 +5878,6 @@
 /obj/structure/chair/office{
 	dir = 1
 	},
-/obj/effect/landmark/start/bridge_officer,
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "asT" = (
@@ -6258,16 +6256,14 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "atY" = (
-/turf/closed/wall,
-/area/command/bridge)
-"atZ" = (
-/obj/effect/mapping_helpers/airlock/cyclelink_helper,
-/obj/machinery/door/airlock/external{
-	name = "Bridge External Access";
-	req_access_txt = "10;13"
+/obj/machinery/computer/secure_data{
+	dir = 4
 	},
-/turf/open/floor/plating,
-/area/command/bridge)
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
+"atZ" = (
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "aua" = (
 /obj/structure/closet/secure_closet/freezer/money,
 /obj/item/reagent_containers/food/drinks/bottle/vodka/badminka,
@@ -6520,13 +6516,15 @@
 /turf/open/floor/plating,
 /area/maintenance/fore)
 "auK" = (
-/obj/machinery/door/poddoor/preopen{
-	id = "bridgespace";
-	name = "bridge external shutters"
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
 	},
-/obj/effect/turf_decal/delivery,
-/turf/open/floor/iron/dark,
-/area/command/bridge)
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "auL" = (
 /obj/structure/sign/poster/random{
 	pixel_x = 32
@@ -6569,16 +6567,18 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "auU" = (
-/obj/structure/closet/emcloset/anchored,
-/obj/structure/sign/warning/vacuum/external{
-	pixel_x = -32
+/obj/machinery/computer/med_data{
+	dir = 4
 	},
-/obj/machinery/light/small/directional/north,
-/turf/open/floor/plating,
-/area/command/bridge)
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "auV" = (
-/turf/open/floor/plating,
-/area/command/bridge)
+/obj/structure/chair/office,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 4
+	},
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "auW" = (
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
@@ -7044,15 +7044,17 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "awc" = (
-/obj/effect/mapping_helpers/airlock/cyclelink_helper{
-	dir = 1
+/obj/structure/table/wood,
+/obj/item/stamp{
+	pixel_x = 10;
+	pixel_y = 10
 	},
-/obj/machinery/door/airlock/external{
-	name = "Bridge External Access";
-	req_access_txt = "10;13"
+/obj/item/stamp/denied{
+	pixel_x = 10;
+	pixel_y = 5
 	},
-/turf/open/floor/plating,
-/area/command/bridge)
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "awd" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -7450,9 +7452,15 @@
 	},
 /area/maintenance/department/security/brig)
 "axh" = (
-/obj/effect/spawner/structure/window/reinforced,
-/turf/open/floor/plating,
-/area/command/bridge)
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "axi" = (
 /turf/closed/wall/r_wall,
 /area/hallway/primary/central)
@@ -7657,8 +7665,15 @@
 	req_one_access_txt = "19; 65"
 	},
 /obj/machinery/door/firedoor,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
-/area/command/bridge)
+/area/security/detectives_office/bridge_officer_office)
 "ayg" = (
 /turf/open/floor/iron/dark,
 /area/command/bridge)
@@ -7939,9 +7954,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/obj/structure/rack,
-/obj/item/book/manual/wiki/security_space_law,
-/obj/item/restraints/handcuffs,
 /obj/structure/fireaxecabinet/directional/south,
 /turf/open/floor/iron/dark,
 /area/command/bridge)
@@ -8021,16 +8033,19 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "azp" = (
-/obj/machinery/camera{
-	c_tag = "Bridge External Access";
-	dir = 1
-	},
-/obj/machinery/light/directional/south,
-/turf/open/floor/iron/dark,
-/area/command/bridge)
+/obj/machinery/newscaster/directional/south,
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "azq" = (
 /obj/machinery/power/apc/auto_name/south,
 /obj/structure/cable,
@@ -17108,6 +17123,13 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/central)
+"bip" = (
+/obj/structure/chair/office{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood,
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "biq" = (
 /obj/effect/turf_decal/tile/purple,
 /obj/effect/landmark/start/hangover,
@@ -35139,6 +35161,10 @@
 	},
 /turf/open/floor/iron,
 /area/security/prison)
+"dIJ" = (
+/obj/structure/filingcabinet,
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "dJm" = (
 /obj/machinery/door/airlock/research/glass{
 	name = "Research Pit";
@@ -36823,6 +36849,10 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/security/detectives_office)
+"fin" = (
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "fjs" = (
 /obj/effect/turf_decal/tile/purple{
 	dir = 1
@@ -38660,6 +38690,20 @@
 /obj/structure/closet/mini_fridge,
 /turf/open/floor/plating,
 /area/maintenance/department/engine)
+"gRF" = (
+/obj/structure/table/wood,
+/obj/item/paper_bin/carbon{
+	layer = 2.9
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "gRJ" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden/layer4,
@@ -39862,6 +39906,18 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/dark,
 /area/command/heads_quarters/captain)
+"ieR" = (
+/obj/structure/table/wood,
+/obj/item/folder/blue{
+	pixel_x = 6
+	},
+/obj/item/folder/yellow,
+/obj/item/folder/red{
+	pixel_x = -6
+	},
+/obj/machinery/airalarm/directional/west,
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "ieU" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -40445,6 +40501,15 @@
 	},
 /turf/open/floor/iron,
 /area/security/checkpoint/supply)
+"iKt" = (
+/obj/effect/spawner/structure/window/reinforced,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id = "aps";
+	name = "Space Blinds"
+	},
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/security/detectives_office/bridge_officer_office)
 "iLl" = (
 /obj/structure/sink{
 	pixel_y = 29
@@ -40497,14 +40562,9 @@
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "iNH" = (
-/obj/machinery/door/poddoor/preopen{
-	id = "bridgespace";
-	name = "bridge external shutters"
-	},
-/obj/effect/turf_decal/delivery,
-/obj/item/radio/intercom/directional/north,
-/turf/open/floor/iron/dark,
-/area/command/bridge)
+/obj/effect/turf_decal/siding/wood,
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "iNR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
@@ -40577,6 +40637,13 @@
 /obj/machinery/newscaster/security_unit/directional/south,
 /turf/open/floor/iron,
 /area/security/prison)
+"iTo" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "iTx" = (
 /obj/effect/turf_decal/trimline/yellow/line,
 /turf/open/floor/iron/white,
@@ -46278,16 +46345,14 @@
 /turf/open/floor/carpet,
 /area/security/detectives_office)
 "oAS" = (
+/obj/effect/spawner/structure/window/reinforced,
+/obj/machinery/door/poddoor/shutters/preopen{
+	id = "bos";
+	name = "Space Blinds"
+	},
 /obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
-	dir = 8
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
-	dir = 4
-	},
-/obj/effect/landmark/bridge_officer_equipment/spawn_anchored,
-/turf/open/floor/iron/dark,
-/area/command/bridge)
+/turf/open/floor/plating,
+/area/security/detectives_office/bridge_officer_office)
 "oAW" = (
 /obj/item/stack/sheet/mineral/wood,
 /turf/open/floor/plating,
@@ -48586,6 +48651,18 @@
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
+"qGQ" = (
+/obj/structure/table/wood,
+/obj/machinery/fax_machine,
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "qHa" = (
 /obj/structure/closet/wardrobe/red,
 /obj/effect/turf_decal/tile/red,
@@ -48753,6 +48830,16 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
+"qNS" = (
+/obj/machinery/button/door/directional/south{
+	id = "aps";
+	name = "Asset Protection's Blinds";
+	pixel_x = 9
+	},
+/obj/structure/table/wood,
+/obj/item/storage/fancy/donut_box,
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "qOx" = (
 /turf/closed/wall/r_wall,
 /area/engineering/lobby)
@@ -49681,6 +49768,19 @@
 	},
 /turf/open/floor/iron,
 /area/cargo/storage)
+"rCQ" = (
+/obj/machinery/keycard_auth/directional/east,
+/obj/machinery/button/door/directional/east{
+	id = "bos";
+	name = "BO Space Blinds";
+	pixel_x = 38;
+	pixel_y = 6
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "rCR" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
@@ -49874,6 +49974,12 @@
 	},
 /turf/closed/wall/r_wall,
 /area/science/mixing)
+"rLp" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "rLJ" = (
 /obj/machinery/atmospherics/components/unary/outlet_injector/on{
 	dir = 1;
@@ -51301,6 +51407,21 @@
 	},
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
+"taR" = (
+/obj/structure/rack,
+/obj/machinery/camera{
+	c_tag = "Bridge and Asset's Office";
+	dir = 1
+	},
+/obj/item/book/manual/wiki/security_space_law,
+/obj/item/restraints/handcuffs,
+/obj/machinery/power/apc/auto_name/south,
+/obj/structure/cable,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "taT" = (
 /obj/machinery/atmospherics/components/binary/thermomachine/freezer/on{
 	dir = 4;
@@ -51716,6 +51837,18 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/science/xenobiology)
+"trr" = (
+/obj/machinery/requests_console/directional/south{
+	announcementConsole = 1;
+	department = "Asset Protection's Chair";
+	departmentType = 5;
+	name = "Asset Protection's RQ"
+	},
+/obj/structure/chair/office{
+	dir = 8
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "trt" = (
 /obj/structure/lattice,
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
@@ -52168,6 +52301,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
 /turf/open/floor/plating,
 /area/engineering/supermatter/room)
+"tJS" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 8
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "tJX" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
@@ -52238,6 +52378,13 @@
 	},
 /turf/closed/wall,
 /area/engineering/storage_shared)
+"tPn" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/cable,
+/turf/open/floor/carpet/royalblack,
+/area/security/detectives_office/bridge_officer_office)
 "tQi" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
@@ -53302,6 +53449,21 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
+"uDu" = (
+/obj/machinery/door/window/brigdoor/eastleft{
+	dir = 8;
+	name = "Asset Protection's Equipment"
+	},
+/obj/effect/landmark/locker_spawner/asset_protection_equipment,
+/obj/structure/window/reinforced{
+	dir = 1
+	},
+/obj/structure/window/reinforced,
+/obj/structure/sign/poster/contraband/donut_corp{
+	pixel_x = 32
+	},
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "uDR" = (
 /obj/docking_port/stationary{
 	dir = 4;
@@ -54598,6 +54760,14 @@
 	},
 /turf/open/floor/iron/white,
 /area/medical/medbay/lobby)
+"vMb" = (
+/obj/machinery/door/window/brigdoor/eastright{
+	dir = 8;
+	name = "Bridge Officer's Equipment"
+	},
+/obj/effect/landmark/locker_spawner/bridge_officer_equipment,
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "vMt" = (
 /obj/machinery/door/firedoor/heavy,
 /obj/machinery/door/airlock/atmos{
@@ -87372,7 +87542,7 @@ syK
 syK
 vLp
 aDO
-oAS
+wyP
 aAB
 aAB
 aAB
@@ -90450,13 +90620,13 @@ aaa
 aaa
 aaa
 aaa
-ahi
+oAS
 atY
 auU
-atY
+ieR
 iNH
 auK
-auK
+dIJ
 aAH
 aBz
 aCP
@@ -90707,12 +90877,12 @@ aaa
 aaa
 aaa
 aaa
-ahi
+oAS
 atZ
 auV
 awc
-ayg
-ayg
+bip
+auK
 azp
 aAH
 aBA
@@ -90964,13 +91134,13 @@ aaa
 aaa
 aaa
 aaa
-ahi
-atY
-atY
-atY
+oAS
+tPn
+qGQ
+gRF
 axh
-axh
-axh
+auK
+taR
 aAH
 aBB
 aCR
@@ -91221,13 +91391,13 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aht
-aaa
-aaa
-aht
-aaa
-aaa
+oAS
+fin
+rCQ
+rLp
+rLp
+iTo
+qNS
 aAH
 aBC
 hQV
@@ -91481,10 +91651,10 @@ apT
 apT
 apT
 apT
-aaa
-aht
-aaa
-aaa
+vMb
+uDu
+tJS
+trr
 aAH
 aBD
 aaT
@@ -91738,10 +91908,10 @@ auc
 asV
 aua
 apT
-awd
 axi
-aaa
-aaa
+axi
+iKt
+iKt
 aAH
 aBE
 pHo
