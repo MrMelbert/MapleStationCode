@@ -8,7 +8,6 @@
 	icon_state = "bo"
 
 /obj/structure/closet/secure_closet/bridge_officer/PopulateContents()
-	. = ..()
 	new /obj/item/clothing/under/rank/security/bridge_officer/black/skirt (src)
 	new /obj/item/clothing/under/rank/security/bridge_officer/black(src)
 	new /obj/item/clothing/gloves/color/white(src)
