@@ -65,6 +65,6 @@
 
 /datum/outfit/job/asset_protection/pre_equip(mob/living/carbon/human/H)
 	..()
-	// If the map we're on doesn't have a brige officer locker, add in a way to get one
+	// If the map we're on doesn't have a ap locker, add in a way to get one
 	if(!(locate(/obj/effect/landmark/locker_spawner/asset_protection_equipment) in GLOB.locker_landmarks))
 		LAZYADD(backpack_contents, /obj/item/locker_spawner/asset_protection)
