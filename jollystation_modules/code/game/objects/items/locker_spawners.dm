@@ -15,7 +15,7 @@
 /obj/item/locker_spawner/attack_self(mob/user, modifiers)
 	. = ..()
 	if(requires_job_path && !istype(user.mind?.assigned_role, requires_job_path))
-		to_chat(user, "<span class='warning'>You are not assigned to use [src]!</span>")
+		to_chat(user, span_warning("You are not assigned to use [src]!"))
 		return
 	spawn_locker(user)
 
