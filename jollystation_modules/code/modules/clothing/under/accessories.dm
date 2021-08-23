@@ -2,7 +2,6 @@
 /obj/item/clothing/accessory
 	//Var that takes overlay icons from our modular dmi file
 	var/overlay_file = 'jollystation_modules/icons/mob/clothing/accessories.dmi'
-	var/overlay_icon = "null"
 
 //Service armband
 /obj/item/clothing/accessory/armband/service
