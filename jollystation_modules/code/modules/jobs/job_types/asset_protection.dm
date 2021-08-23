@@ -52,7 +52,6 @@
 	id = /obj/item/card/id/advanced/silver
 	belt = /obj/item/pda/heads/asset_protection
 	ears = /obj/item/radio/headset/heads/asset_protection/alt
-	glasses = /obj/item/clothing/glasses/hud/security/sunglasses
 	neck = /obj/item/clothing/neck/tie/black
 	gloves = /obj/item/clothing/gloves/color/black
 	uniform = /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection
