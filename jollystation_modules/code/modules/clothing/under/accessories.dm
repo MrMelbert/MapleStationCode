@@ -11,4 +11,3 @@
 	icon = 'jollystation_modules/icons/obj/clothing/accessories.dmi'
 	worn_icon = 'jollystation_modules/icons/mob/clothing/accessories.dmi'
 	icon_state = "servband"
-	overlay_icon = "servband"
