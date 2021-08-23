@@ -8,7 +8,6 @@
 	icon_state = "ap"
 
 /obj/structure/closet/secure_closet/asset_protection/PopulateContents()
-	. = ..()
 	new /obj/item/clothing/under/rank/security/officer/blueshirt/asset_protection(src)
 	new /obj/item/clothing/under/rank/security/officer/grey/asset_protection(src)
 	new /obj/item/clothing/gloves/color/black(src)
