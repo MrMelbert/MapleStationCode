@@ -51,7 +51,6 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 /obj/effect/landmark/locker_spawner/bridge_officer_equipment
 	name = "bridge officer locker"
 	spawned_path = /obj/structure/closet/secure_closet/bridge_officer
-	spawn_anchored = TRUE
 
 // Landmark for mapping in Asset Protection equipment.
 /obj/effect/landmark/locker_spawner/asset_protection_equipment
