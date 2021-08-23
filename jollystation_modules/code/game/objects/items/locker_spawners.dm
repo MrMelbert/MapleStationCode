@@ -45,7 +45,7 @@
 	name = "bridge officer equipment beacon"
 	desc = "A beaconm handed out for enterprising bridge officers being assigned to stations without proper \
 		accommodations made for their occupation. When used, drop-pods in a fully stocked locker of equipment \
-		for use when manning the bridge of Nanotrasne research stations."
+		for use when manning the bridge of Nanotrasen research stations."
 	requires_job_path = /datum/job/bridge_officer
 	spawned_locker_path = /obj/structure/closet/secure_closet/bridge_officer
 
