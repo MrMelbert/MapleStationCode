@@ -56,7 +56,6 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 /obj/effect/landmark/locker_spawner/asset_protection_equipment
 	name = "asset protection locker"
 	spawned_path = /obj/structure/closet/secure_closet/asset_protection
-	spawn_anchored = TRUE
 
 /obj/effect/landmark/heretic
 	name = "heretic sacrifice landmark"
