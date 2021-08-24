@@ -54,3 +54,11 @@ GLOBAL_LIST_INIT(loadout_belts, generate_loadout_items(/datum/loadout_item/belts
 /datum/loadout_item/belts/fanny_pack_white
 	name = "White Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/white
+
+/datum/loadout_item/belts/lantern
+	name = "Lantern"
+	item_path = /obj/item/flashlight/lantern
+
+/datum/loadout_item/belts/lantern
+	name = "Candle Box"
+	item_path = /obj/item/storage/fancy/candle_box

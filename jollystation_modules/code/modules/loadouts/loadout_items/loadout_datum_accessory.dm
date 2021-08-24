@@ -8,7 +8,7 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.accessory)
-		LAZYADD(outfit.backpack_contents, item_path)
+		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
 
 /datum/loadout_item/accessory/maid_apron
@@ -40,6 +40,10 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 	name = "Brown Armband"
 	item_path = /obj/item/clothing/accessory/armband/cargo_cosmetic
 
+///datum/loadout_item/accessory/green_armband
+//	name = "Green Armband"
+//	item_path = /obj/item/clothing/accessory/armband/service_cosmetic
+
 /datum/loadout_item/accessory/purple_armband
 	name = "Purple Armband"
 	item_path = /obj/item/clothing/accessory/armband/science_cosmetic
@@ -63,7 +67,7 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
 	item_path = /obj/item/clothing/accessory/cosmetic_dogtag
-	additional_tooltip_contents = list( "MATCHES NAME - The name inscribed on this item matches your character's name on spawn.")
+	additional_tooltip_contents = list("MATCHES NAME - The name inscribed on this item matches your character's name on spawn.")
 
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"

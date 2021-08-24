@@ -83,14 +83,24 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		if(ispath(item_path, /obj/item/clothing))
 			// When an outfit is equipped in preview, get_equipped_items() does not work, so we have to use GetAllContents()
 			var/obj/item/clothing/equipped_item = locate(item_path) in (visuals_only ? equipper.GetAllContents() : equipper.get_equipped_items())
-			equipped_item?.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
+			if(equipped_item)
+				equipped_item.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
+			else
+				stack_trace("[type] on_equip_item(): Could not locate clothing item (path: [item_path]) in [equipper]'s [visuals_only ? "visible":"all"] contents to set greyscaling!")
+
 		else if(!visuals_only)
-			var/obj/item/other_item = locate(item_path) in equipper.GetAllContents()
-			other_item?.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
+			var/obj/item/other_item = locate(item_path) in equipper.get_all_gear()
+			if(other_item)
+				other_item.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
+			else
+				stack_trace("[type] on_equip_item(): Could not locate backpack item (path: [item_path]) in [equipper]'s contents to set greyscaling!")
 
 	if(can_be_named && !visuals_only && (INFO_NAMED in our_loadout[item_path]))
-		var/obj/item/equipped_item = locate(item_path) in equipper.GetAllContents()
-		equipped_item?.name = our_loadout[item_path][INFO_NAMED]
+		var/obj/item/equipped_item = locate(item_path) in equipper.get_all_gear()
+		if(equipped_item)
+			equipped_item.name = our_loadout[item_path][INFO_NAMED]
+		else
+			stack_trace("[type] on_equip_item(): Could not locate item (path: [item_path]) in [equipper]'s contents to set name!")
 
 /*
  * Called after the item is equipped on [equipper], at the end of character setup.

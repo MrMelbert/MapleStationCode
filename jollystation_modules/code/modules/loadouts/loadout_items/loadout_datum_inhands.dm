@@ -11,7 +11,7 @@ GLOBAL_LIST_INIT(loadout_inhand_items, generate_loadout_items(/datum/loadout_ite
 		outfit.r_hand = item_path
 	else
 		if(outfit.l_hand)
-			LAZYADD(outfit.l_hand, outfit.backpack_contents)
+			LAZYADD(outfit.backpack_contents, outfit.l_hand)
 		outfit.l_hand = item_path
 
 /datum/loadout_item/inhand/cane
