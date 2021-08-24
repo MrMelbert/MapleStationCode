@@ -208,6 +208,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["tip_delay"], tip_delay)
 	READ_FILE(S["pda_style"], pda_style)
 	READ_FILE(S["pda_color"], pda_color)
+	READ_FILE(S["darkened_flash"], darkened_flash)
 
 	// OOC commendations
 	READ_FILE(S["hearted_until"], hearted_until)
@@ -280,6 +281,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	pda_color = sanitize_hexcolor(pda_color, 6, 1, initial(pda_color))
 	key_bindings = sanitize_keybindings(key_bindings)
 	favorite_outfits = SANITIZE_LIST(favorite_outfits)
+	darkened_flash = sanitize_integer(darkened_flash, FALSE, TRUE, initial(darkened_flash))
 
 	// NON-MODULE CHANGES: sanitization
 	hear_speech_sounds = sanitize_integer(hear_speech_sounds, FALSE, TRUE, initial(hear_speech_sounds))
@@ -362,6 +364,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["key_bindings"], key_bindings)
 	WRITE_FILE(S["hearted_until"], (hearted_until > world.realtime ? hearted_until : null))
 	WRITE_FILE(S["favorite_outfits"], favorite_outfits)
+	WRITE_FILE(S["darkened_flash"], darkened_flash)
 
 	// NON-MODULE CHANGES: client prefs
 	WRITE_FILE(S["hear_speech_sounds"] , hear_speech_sounds)
@@ -433,6 +436,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["feature_moth_antennae"], features["moth_antennae"])
 	READ_FILE(S["feature_moth_markings"], features["moth_markings"])
 	READ_FILE(S["persistent_scars"] , persistent_scars)
+
 	// NON-MODULE CHANGES:
 	READ_FILE(S["feature_head_tentacles"], features["head_tentacles"])
 	READ_FILE(S["runechat_color"] , runechat_color)
@@ -531,6 +535,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["moth_wings"] = sanitize_inlist(features["moth_wings"], GLOB.moth_wings_list, "Plain")
 	features["moth_antennae"] = sanitize_inlist(features["moth_antennae"], GLOB.moth_antennae_list, "Plain")
 	features["moth_markings"] = sanitize_inlist(features["moth_markings"], GLOB.moth_markings_list, "None")
+
 	// NON-MODULE CHANGE: -- Pref Sanitization --
 	features["head_tentacles"] = sanitize_inlist(features["head_tentacles"], GLOB.head_tentacles_list, "Long")
 
@@ -604,6 +609,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["feature_moth_antennae"] , features["moth_antennae"])
 	WRITE_FILE(S["feature_moth_markings"] , features["moth_markings"])
 	WRITE_FILE(S["persistent_scars"] , persistent_scars)
+
 	// NON-MODULE CHANGES:
 	WRITE_FILE(S["feature_head_tentacles"], features["head_tentacles"])
 	WRITE_FILE(S["runechat_color"] , runechat_color)

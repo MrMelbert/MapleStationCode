@@ -99,7 +99,6 @@ Everything should be set to try to compile. If there are errors, try to solve th
 
 To prevent me from accidentally accept incoming on files with module changes, I'm doing this for the future.
 
-- code\__DEFINES\antagonists.dm
 - code\__DEFINES\chat.dm
 - code\__DEFINES\DNA.dm
 - code\__DEFINES\is_helpers.dm
@@ -134,17 +133,19 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\client\preferences_savefile.dm
 - code\modules\client\preferences_toggles.dm
 - code\modules\client\preferences.dm
+- code\modules\clothing\under\_under.dm
 - code\modules\food_and_drinks\drinks\drinks.dm
 - code\modules\food_and_drinks\drinks\drinks\bottle.dm
 - code\modules\food_and_drinks\recipes\drinks_recipes.dm
 - code\modules\jobs\jobs.dm
 - code\modules\jobs\job_types\_job.dm
 - code\modules\jobs\job_types\cargo_technician.dm
+- code\modules\jobs\job_types\head_of_personnel.dm
 - code\modules\jobs\job_types\lawyer.dm
-- code\modules\jobs\job_types\quartermaster.dm
 - code\modules\jobs\job_types\research_director.dm
 - code\modules\jobs\job_types\scientist.dm
 - code\modules\jobs\job_types\shaft_miner.dm
+- code\modules\jobs\job_types\quartermaster.dm
 - code\modules\language\language_holder.dm
 - code\modules\mob\dead\new_player\new_player.dm
 - code\modules\mob\living\carbon\human\human.dm

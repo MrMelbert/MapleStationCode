@@ -11,10 +11,17 @@
 /area/engineering/atmos/experiment_room
 	name = "Atmospherics Experimentation Room"
 
+//BO Office
 /area/security/detectives_office/bridge_officer_office //This should inherient det offices ambient?
 	name = "Bridge Officer's Office"
 	icon = 'jollystation_modules/icons/turf/areas.dmi'
 	icon_state = "bo_office"
+
+//AP Office, possibly going unused? We're adding it anyway, fuck you
+/area/command/ap_office
+	name = "Asset Protection's Office"
+	icon = 'jollystation_modules/icons/turf/areas.dmi'
+	icon_state = "ap_office"
 
 //Berry Physics Space Ruin
 /area/ruin/space/has_grav/powered/berry_physics

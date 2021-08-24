@@ -82,18 +82,25 @@
 	/// Amount of pain being given
 	var/pain_amount = 0
 	/// Type of pain being given
-	var/pain_type = BRUTE
+	var/pain_type
 	/// The amount of pain we had before recieving the sharp pain
 	var/initial_pain_amount = 0
 	/// The zone we're afflicting
-	var/targeted_zone = BODY_ZONE_CHEST
+	var/targeted_zone
 
-/datum/status_effect/sharp_pain/on_creation(targeted_zone, pain_amount, pain_type, duration)
+/datum/status_effect/sharp_pain/on_creation(
+		mob/living/carbon/human/new_owner,
+		targeted_zone,
+		pain_amount = 0,
+		pain_type = BRUTE,
+		duration = 0
+	)
+
+	src.duration = duration
 	src.targeted_zone = targeted_zone
 	src.pain_amount = pain_amount
-	if(pain_type)
-		src.pain_type = pain_type
-	src.duration = duration
+	src.pain_type = pain_type
+	return ..()
 
 /datum/status_effect/sharp_pain/on_apply()
 	if(!ishuman(owner))
@@ -115,9 +122,8 @@
 	return TRUE
 
 /datum/status_effect/sharp_pain/on_remove()
-	. = ..()
 	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	if(!afflicted_bodypart)
 		return
 
@@ -138,10 +144,17 @@
 	/// The zone we're afflicting
 	var/targeted_zone = BODY_ZONE_CHEST
 
-/datum/status_effect/minimum_bodypart_pain/on_creation(targeted_zone, min_amount, duration)
+/datum/status_effect/minimum_bodypart_pain/on_creation(
+		mob/living/carbon/human/new_owner,
+		targeted_zone,
+		min_amount = 0,
+		duration = 0
+	)
+
+	src.duration = duration
 	src.targeted_zone = targeted_zone
 	src.min_amount = min_amount
-	src.duration = duration
+	return ..()
 
 /datum/status_effect/minimum_bodypart_pain/on_apply()
 	if(!ishuman(owner))
@@ -162,9 +175,8 @@
 	return TRUE
 
 /datum/status_effect/minimum_bodypart_pain/on_remove()
-	. = ..()
 	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	if(!afflicted_bodypart)
 		return
 
@@ -192,7 +204,16 @@
 	/// The change in temperature while applied.
 	var/temperature_change = 0
 
-/datum/status_effect/temperature_pack/on_creation(mob/living/new_owner, mob/living/holder, obj/item/pressed_item, targeted_zone = BODY_ZONE_CHEST, pain_heal_amount = 0, pain_modifier = 1, temperature_change = 0)
+/datum/status_effect/temperature_pack/on_creation(
+		mob/living/new_owner,
+		mob/living/holder,
+		obj/item/pressed_item,
+		targeted_zone = BODY_ZONE_CHEST,
+		pain_heal_amount = 0,
+		pain_modifier = 1,
+		temperature_change = 0
+	)
+
 	src.holder = holder
 	src.pressed_item = pressed_item
 	src.targeted_zone = targeted_zone
@@ -202,23 +223,17 @@
 	return ..()
 
 /datum/status_effect/temperature_pack/on_apply()
-	. = ..()
-	if(!.)
-		return
-
 	if(!ishuman(owner))
-		return
+		return FALSE
 
 	var/mob/living/carbon/human/human_owner = owner
 	if(!human_owner.pain_controller || human_owner.stat == DEAD)
 		return FALSE
 
 	if(QDELETED(pressed_item))
-		stack_trace("temperature_pack status effect created without linked item!")
 		return FALSE
 
 	if(QDELETED(holder))
-		stack_trace("temperature_pack status effect created without a linked holder mob!")
 		return FALSE
 
 	for(var/datum/status_effect/temperature_pack/pre_existing_effect in owner.status_effects)
@@ -236,6 +251,7 @@
 	RegisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), .proc/stop_effects)
 	if(holder != owner)
 		RegisterSignal(holder, COMSIG_MOVABLE_MOVED, .proc/check_adjacency)
+	return TRUE
 
 /datum/status_effect/temperature_pack/tick()
 	if(QDELETED(holder) || QDELETED(pressed_item) || owner.stat == DEAD || !holder.is_holding(pressed_item))
@@ -276,11 +292,12 @@
 
 /datum/status_effect/temperature_pack/on_remove()
 	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
-	held_bodypart.bodypart_pain_modifier /= pain_modifier
-	qdel(pressed_item.GetComponent(/datum/component/make_item_slow))
+	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
+	held_bodypart?.bodypart_pain_modifier /= pain_modifier
+	QDEL_IF(pressed_item.GetComponent(/datum/component/make_item_slow))
 	UnregisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
 	UnregisterSignal(holder, COMSIG_MOVABLE_MOVED)
+
 	pressed_item = null
 	holder = null
 
@@ -298,7 +315,7 @@
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
 	examine_text = span_danger("[holder == owner ? "They're" : "[holder] is"] pressing a cold [pressed_item.name] against their [held_bodypart.name].")
 	to_chat(human_owner, span_green("You wince as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.name], but eventually the chill starts to dull the pain."))
-	human_owner.pain_emote("wince")
+	human_owner.pain_emote("wince", 3 SECONDS)
 
 /datum/status_effect/temperature_pack/cold/tick()
 	if(pressed_item.resistance_flags & ON_FIRE)
@@ -321,7 +338,7 @@
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
 	examine_text = span_danger("[holder == owner ? "They're" : "[holder] is"] pressing a warm [pressed_item.name] against their [held_bodypart.name].")
 	to_chat(human_owner, span_green("You gasp as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.name], but eventually the warmth starts to dull the pain."))
-	human_owner.pain_emote("gasp")
+	human_owner.pain_emote("gasp", 3 SECONDS)
 
 /datum/status_effect/temperature_pack/heat/tick()
 	if(pressed_item.obj_flags & FROZEN)
