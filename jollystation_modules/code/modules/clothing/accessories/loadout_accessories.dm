@@ -46,6 +46,13 @@
 	desc = "A white and blue armband."
 	icon_state = "medblueband"
 
+/obj/item/clothing/accessory/armband/service_cosmetic
+	name = "green armband"
+	desc = "A green armband."
+	icon = 'jollystation_modules/icons/obj/clothing/accessories.dmi'
+	worn_icon = 'jollystation_modules/icons/mob/clothing/accessories.dmi'
+	icon_state = "servband"
+
 /obj/item/clothing/accessory/allergy_dogtag
 	desc = "A set of dogtags with a list of allergies inscribed."
 

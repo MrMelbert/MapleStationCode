@@ -40,9 +40,9 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 	name = "Brown Armband"
 	item_path = /obj/item/clothing/accessory/armband/cargo_cosmetic
 
-///datum/loadout_item/accessory/green_armband
-//	name = "Green Armband"
-//	item_path = /obj/item/clothing/accessory/armband/service_cosmetic
+/datum/loadout_item/accessory/green_armband
+	name = "Green Armband"
+	item_path = /obj/item/clothing/accessory/armband/service_cosmetic
 
 /datum/loadout_item/accessory/purple_armband
 	name = "Purple Armband"
