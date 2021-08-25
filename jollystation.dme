@@ -3850,6 +3850,7 @@
 #include "jollystation_modules\code\modules\cargo\packs.dm"
 #include "jollystation_modules\code\modules\client\preferences.dm"
 #include "jollystation_modules\code\modules\client\verbs\looc.dm"
+#include "jollystation_modules\code\modules\clothing\_greyscale_configs\suit_greyscale_configs.dm"
 #include "jollystation_modules\code\modules\clothing\accessories\accessories.dm"
 #include "jollystation_modules\code\modules\clothing\accessories\loadout_accessories.dm"
 #include "jollystation_modules\code\modules\clothing\glasses\loadout_glasses.dm"

@@ -25,3 +25,24 @@
 	desc = "A SUPPOSEDLY bulkier, heavier armor that Asset Protection can use when the situation calls for it. Feels identical to your other one."
 	icon_state = "blueshift"
 	inhand_icon_state = "blueshift"
+
+/obj/item/clothing/suit/toggle/greyscale_parade
+	name = "tailored parade jacket"
+	desc = "No armor, all fashion, unfortunately."
+	icon_state = "formal"
+	inhand_icon_state = "labcoat"
+	body_parts_covered = CHEST|GROIN|ARMS
+	togglename = "buttons"
+	greyscale_config = /datum/greyscale_config/parade_formal
+	greyscale_config_worn = /datum/greyscale_config/parade_formal_worn
+	greyscale_colors = "#DDDDDD"
+
+/obj/item/clothing/suit/toggle/greyscale_parade/suit_toggle()
+	. = ..()
+	if(suittoggled)
+		set_greyscale(new_config = /datum/greyscale_config/parade_formal_open, new_worn_config = /datum/greyscale_config/parade_formal_open_worn)
+	else
+		set_greyscale(new_config = initial(greyscale_config), new_worn_config = initial(greyscale_config_worn))
+	var/mob/living/carbon/our_wearer = loc
+	if(istype(our_wearer))
+		our_wearer.update_inv_wear_suit()
