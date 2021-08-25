@@ -485,6 +485,26 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Overalls"
 	item_path = /obj/item/clothing/under/misc/overalls
 
+/datum/loadout_item/under/miscellaneous/pj_blue
+	name = "Mailman Jumpsuit"
+	item_path = /obj/item/clothing/under/misc/mailman
+
+/datum/loadout_item/under/miscellaneous/vice_officer
+	name = "Vice Officer Jumpsuit"
+	item_path = /obj/item/clothing/under/misc/vice_officer
+
+/datum/loadout_item/under/miscellaneous/soviet
+	name = "Soviet Uniform"
+	item_path = /obj/item/clothing/under/costume/soviet
+
 /datum/loadout_item/under/miscellaneous/redcoat
 	name = "Redcoat"
 	item_path = /obj/item/clothing/under/costume/redcoat
+
+/datum/loadout_item/under/miscellaneous/pj_red
+	name = "Red PJs"
+	item_path = /obj/item/clothing/under/misc/pj/red
+
+/datum/loadout_item/under/miscellaneous/pj_blue
+	name = "Blue PJs"
+	item_path = /obj/item/clothing/under/misc/pj/blue
