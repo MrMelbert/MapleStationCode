@@ -18,6 +18,12 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/suit/hooded/wintercoat/custom
 
+/datum/loadout_item/suit/parade_jacket_greyscale
+	name = "Greyscale Parade Jacket"
+	can_be_greyscale = TRUE
+	item_path = /obj/item/clothing/suit/toggle/greyscale_parade
+	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
+
 /datum/loadout_item/suit/denim_overalls
 	name = "Denim Overalls"
 	item_path = /obj/item/clothing/suit/apron/overalls

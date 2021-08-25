@@ -33,14 +33,38 @@
 	inhand_icon_state = "labcoat"
 	body_parts_covered = CHEST|GROIN|ARMS
 	togglename = "buttons"
+	allowed = list(
+		/obj/item/flashlight,
+		/obj/item/lighter,
+		/obj/item/storage/box/matches,
+		/obj/item/modular_computer/tablet,
+		/obj/item/pda,
+		/obj/item/toy,
+		/obj/item/stamp,
+		/obj/item/pen,
+		/obj/item/radio,
+		/obj/item/kitchen/knife,
+		/obj/item/reagent_containers/food/drinks/bottle,
+		/obj/item/reagent_containers/food/drinks/flask,
+		/obj/item/storage/fancy/candle_box,
+		/obj/item/storage/fancy/cigarettes,
+		/obj/item/assembly/flash/handheld,
+		/obj/item/tank/internals/emergency_oxygen,
+		/obj/item/tank/internals/plasmaman,
+	)
+
+	greyscale_colors = "#DDDDDD"
 	greyscale_config = /datum/greyscale_config/parade_formal
 	greyscale_config_worn = /datum/greyscale_config/parade_formal_worn
-	greyscale_colors = "#DDDDDD"
+	/// Greyscale config to use when toggled.
+	var/toggled_config = /datum/greyscale_config/parade_formal_open
+	/// Greyscale worn config to use when toggled.
+	var/toggled_config_worn = /datum/greyscale_config/parade_formal_open_worn
 
 /obj/item/clothing/suit/toggle/greyscale_parade/suit_toggle()
 	. = ..()
 	if(suittoggled)
-		set_greyscale(new_config = /datum/greyscale_config/parade_formal_open, new_worn_config = /datum/greyscale_config/parade_formal_open_worn)
+		set_greyscale(new_config = toggled_config, new_worn_config = toggled_config_worn)
 	else
 		set_greyscale(new_config = initial(greyscale_config), new_worn_config = initial(greyscale_config_worn))
 	var/mob/living/carbon/our_wearer = loc
