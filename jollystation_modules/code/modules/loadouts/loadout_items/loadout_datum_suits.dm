@@ -8,6 +8,9 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 
 /datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	outfit.suit = item_path
+	if(outfit.suit_store)
+		LAZYADD(outfit.backpack_contents, outfit.suit_store)
+		outfit.suit_store = null
 
 /datum/loadout_item/suit/winter_coat
 	name = "Winter Coat"

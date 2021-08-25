@@ -19,6 +19,9 @@
 	new /obj/item/megaphone/command(src)
 	new /obj/item/cartridge/hos(src)
 	new /obj/item/assembly/flash/handheld(src)
+	new /obj/item/clothing/glasses/hud/security/sunglasses(src)
+	new /obj/item/clothing/glasses/hud/security/sunglasses/gars(src)
+	new /obj/item/clothing/glasses/hud/security/sunglasses/eyepatch(src)
 	new /obj/item/storage/photo_album/ap(src)
 	new /obj/item/storage/belt/security/full(src)
 	new /obj/item/storage/box/dept_armbands(src)
@@ -29,4 +32,3 @@
 	name = "photo album (Asset Protection)"
 	icon_state = "album_red"
 	persistence_id = "AP"
-

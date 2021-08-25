@@ -193,7 +193,11 @@
 
 /// Set [item]'s name to input provided.
 /datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)
-	var/input_name = stripped_input(owner, "What name do you want to give [item.name]? Leave blank to clear.", "[item.name] name", "", MAX_NAME_LEN)
+	var/current_name = ""
+	if(INFO_NAMED in owner.prefs.loadout_list[item.item_path])
+		current_name = owner.prefs.loadout_list[item.item_path][INFO_NAMED]
+
+	var/input_name = stripped_input(owner, "What name do you want to give [item.name]? Leave blank to clear.", "[item.name] name", current_name, MAX_NAME_LEN)
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
 		return
 

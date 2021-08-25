@@ -27,7 +27,7 @@
 	else
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
-	var/list/loadout_datums = loadout_list_to_datums(preference_source.loadout_list)
+	var/list/loadout_datums = loadout_list_to_datums(preference_source?.loadout_list)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
