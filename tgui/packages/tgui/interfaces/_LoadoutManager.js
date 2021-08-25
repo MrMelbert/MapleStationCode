@@ -56,7 +56,7 @@ export const _LoadoutManager = (props, context) => {
               <Stack.Item grow >
                 { selectedTab && selectedTab.contents ? (
                   <Section
-                    title={`Items: ${selectedTab.name}`}
+                    title={selectedTab.title}
                     fill
                     scrollable
                     buttons={(

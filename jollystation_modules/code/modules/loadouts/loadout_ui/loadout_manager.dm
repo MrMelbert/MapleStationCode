@@ -142,42 +142,36 @@
 		to_chat(owner, span_warning("You already have a greyscaling window open!"))
 		return
 
-	var/obj/item/colored_item = new item.item_path
+	var/obj/item/colored_item = item.item_path
 
 	var/list/allowed_configs = list()
-	if(colored_item.greyscale_config)
-		allowed_configs += "[colored_item.greyscale_config]"
-	if(colored_item.greyscale_config_worn)
-		allowed_configs += "[colored_item.greyscale_config_worn]"
-	if(colored_item.greyscale_config_inhand_left)
-		allowed_configs += "[colored_item.greyscale_config_inhand_left]"
-	if(colored_item.greyscale_config_inhand_right)
-		allowed_configs += "[colored_item.greyscale_config_inhand_right]"
+	if(initial(colored_item.greyscale_config))
+		allowed_configs += "[initial(colored_item.greyscale_config)]"
+	if(initial(colored_item.greyscale_config_worn))
+		allowed_configs += "[initial(colored_item.greyscale_config_worn)]"
+	if(initial(colored_item.greyscale_config_inhand_left))
+		allowed_configs += "[initial(colored_item.greyscale_config_inhand_left)]"
+	if(initial(colored_item.greyscale_config_inhand_right))
+		allowed_configs += "[initial(colored_item.greyscale_config_inhand_right)]"
 
-	var/slot_starting_colors = colored_item.greyscale_colors
-	if(INFO_GREYSCALE in owner.prefs.loadout_list[item.item_path])
-		slot_starting_colors = owner.prefs.loadout_list[item.item_path][INFO_GREYSCALE]
-
-	var/datum/greyscale_config/current_config = SSgreyscale.configurations[colored_item.greyscale_config]
-	if(current_config && !current_config.icon_states)
-		to_chat(owner, span_warning("This item isn't properly configured for greyscaling! Complain to a coder!"))
-		CRASH("Loadout manager attempted to pass greyscale item without icon_states into greyscale modification menu!")
+	var/slot_starting_colors = initial(colored_item.greyscale_colors)
+	if(INFO_GREYSCALE in owner.prefs.loadout_list[colored_item])
+		slot_starting_colors = owner.prefs.loadout_list[colored_item][INFO_GREYSCALE]
 
 	menu = new(
 		src,
 		usr,
 		allowed_configs,
-		CALLBACK(src, .proc/set_slot_greyscale, item.item_path),
-		starting_icon_state=colored_item.icon_state,
-		starting_config=colored_item.greyscale_config,
-		starting_colors=slot_starting_colors,
+		CALLBACK(src, .proc/set_slot_greyscale, colored_item),
+		starting_icon_state = initial(colored_item.icon_state),
+		starting_config = initial(colored_item.greyscale_config),
+		starting_colors = slot_starting_colors,
 	)
 	RegisterSignal(menu, COMSIG_PARENT_PREQDELETED, /datum/loadout_manager.proc/cleanup_greyscale_menu)
 	menu.ui_interact(usr)
-	qdel(colored_item)
 
 /// A proc to make sure our menu gets null'd properly when it's deleted.
-/// If we delete the greyscale menu from the greyscale datum, we don't null it correctly here, and it harddels.
+/// If we delete the greyscale menu from the greyscale datum, we don't null it correctly here, it harddels.
 /datum/loadout_manager/proc/cleanup_greyscale_menu(datum/source)
 	SIGNAL_HANDLER
 
@@ -267,27 +261,31 @@
 /datum/loadout_manager/ui_static_data()
 	var/list/data = list()
 
-	// [name] is the displayed name of the slot.
+	// [name] is the name of the tab that contains all the corresponding contents.
+	// [title] is the name at the top of the list of corresponding contents.
 	// [contents] is a formatted list of all the possible items for that slot.
-	//  - [contents.ref] is the reference to the singleton datums
-	//  - [contents.name] is the name of the singleton datums
+	//  - [contents.path] is the path the singleton datum holds
+	//  - [contents.name] is the name of the singleton datum
+	//  - [contents.is_renamable], whether the item can be renamed in the UI
+	//  - [contents.is_greyscale], whether the item can be greyscaled in the UI
+	//  - [contents.tooltip_text], any additional tooltip text that hovers over the item's select button
 
 	var/list/loadout_tabs = list()
-	loadout_tabs += list(list("name" = "Belt", "contents" = list_to_data(GLOB.loadout_belts)))
-	loadout_tabs += list(list("name" = "Ears", "contents" = list_to_data(GLOB.loadout_ears)))
-	loadout_tabs += list(list("name" = "Glasses", "contents" = list_to_data(GLOB.loadout_glasses)))
-	loadout_tabs += list(list("name" = "Gloves", "contents" = list_to_data(GLOB.loadout_gloves)))
-	loadout_tabs += list(list("name" = "Head", "contents" = list_to_data(GLOB.loadout_helmets)))
-	loadout_tabs += list(list("name" = "Mask", "contents" = list_to_data(GLOB.loadout_masks)))
-	loadout_tabs += list(list("name" = "Neck", "contents" = list_to_data(GLOB.loadout_necks)))
-	loadout_tabs += list(list("name" = "Shoes", "contents" = list_to_data(GLOB.loadout_shoes)))
-	loadout_tabs += list(list("name" = "Suit", "contents" = list_to_data(GLOB.loadout_exosuits)))
-	loadout_tabs += list(list("name" = "Jumpsuit", "contents" = list_to_data(GLOB.loadout_jumpsuits)))
-	loadout_tabs += list(list("name" = "Formal", "contents" = list_to_data(GLOB.loadout_undersuits)))
-	loadout_tabs += list(list("name" = "Misc. Under", "contents" = list_to_data(GLOB.loadout_miscunders)))
-	loadout_tabs += list(list("name" = "Accessory", "contents" = list_to_data(GLOB.loadout_accessory)))
-	loadout_tabs += list(list("name" = "Inhand", "contents" = list_to_data(GLOB.loadout_inhand_items)))
-	loadout_tabs += list(list("name" = "Misc. (3 max)", "contents" = list_to_data(GLOB.loadout_pocket_items)))
+	loadout_tabs += list(list("name" = "Belt", "title" = "Belt Slot Items", "contents" = list_to_data(GLOB.loadout_belts)))
+	loadout_tabs += list(list("name" = "Ears", "title" = "Ear Slot Items", "contents" = list_to_data(GLOB.loadout_ears)))
+	loadout_tabs += list(list("name" = "Glasses", "title" = "Glasses Slot Items", "contents" = list_to_data(GLOB.loadout_glasses)))
+	loadout_tabs += list(list("name" = "Gloves", "title" = "Glove Slot Items", "contents" = list_to_data(GLOB.loadout_gloves)))
+	loadout_tabs += list(list("name" = "Head", "title" = "Head Slot Items", "contents" = list_to_data(GLOB.loadout_helmets)))
+	loadout_tabs += list(list("name" = "Mask", "title" = "Mask Slot Items", "contents" = list_to_data(GLOB.loadout_masks)))
+	loadout_tabs += list(list("name" = "Neck", "title" = "Neck Slot Items", "contents" = list_to_data(GLOB.loadout_necks)))
+	loadout_tabs += list(list("name" = "Shoes", "title" = "Shoe Slot Items", "contents" = list_to_data(GLOB.loadout_shoes)))
+	loadout_tabs += list(list("name" = "Suit", "title" = "Suit Slot Items", "contents" = list_to_data(GLOB.loadout_exosuits)))
+	loadout_tabs += list(list("name" = "Jumpsuit", "title" = "Uniform Slot Items", "contents" = list_to_data(GLOB.loadout_jumpsuits)))
+	loadout_tabs += list(list("name" = "Formal", "title" = "Uniform Slot Items (cont)", "contents" = list_to_data(GLOB.loadout_undersuits)))
+	loadout_tabs += list(list("name" = "Misc. Under", "title" = "Uniform Slot Items (cont)", "contents" = list_to_data(GLOB.loadout_miscunders)))
+	loadout_tabs += list(list("name" = "Accessory", "title" = "Uniform Accessory Slot Items", "contents" = list_to_data(GLOB.loadout_accessory)))
+	loadout_tabs += list(list("name" = "Inhand", "title" = "In-hand Items", "contents" = list_to_data(GLOB.loadout_inhand_items)))
+	loadout_tabs += list(list("name" = "Other", "title" = "Backpack Items (3 max)", "contents" = list_to_data(GLOB.loadout_pocket_items)))
 
 	data["loadout_tabs"] = loadout_tabs
 
