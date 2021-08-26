@@ -44,6 +44,19 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 		if(!equipper.equip_to_slot_if_possible(wallet, slot = ITEM_SLOT_BACKPACK, initial = TRUE))
 			wallet.forceMove(equipper.drop_location())
 
+/datum/loadout_item/pocket_items/beach_towel
+	name = "Beach Towel"
+	can_be_greyscale = TRUE
+	item_path = /obj/item/towel/beach
+
+/datum/loadout_item/pocket_items/towel
+	name = "Towel"
+	item_path = /obj/item/towel
+
+/datum/loadout_item/pocket_items/rag
+	name = "Rag"
+	item_path = /obj/item/reagent_containers/glass/rag
+
 /datum/loadout_item/pocket_items/gum_pack
 	name = "Pack of Gum"
 	item_path = /obj/item/storage/box/gum
