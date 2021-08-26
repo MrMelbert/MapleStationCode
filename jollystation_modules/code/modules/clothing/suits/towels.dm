@@ -400,8 +400,8 @@
 		visible_message(span_notice("[picker_up] fold up [src] off [our_turf]."), ignored_mobs = list(picker_up))
 	else
 		our_towel.forceMove(drop_location())
-		to_chat(picker_up, span_notice("You go to fold up [src] from [our_turf], but your hands are full, leaving it considerably less kempt that it was before."))
-		visible_message(span_notice("[picker_up] tries to fold up [src] from [our_turf], but ends up leaving it considerably less kempt that it was before."), ignored_mobs = list(picker_up))
+		to_chat(picker_up, span_notice("You go to fold up [src] from [our_turf], but your hands are full, leaving it considerably less kempt than it was before."))
+		visible_message(span_notice("[picker_up] tries to fold up [src] from [our_turf], but ends up leaving it considerably less kempt than it was before."), ignored_mobs = list(picker_up))
 
 	our_towel = null
 	qdel(src)
