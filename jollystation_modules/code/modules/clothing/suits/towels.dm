@@ -284,7 +284,7 @@
 	density = FALSE
 	anchored = TRUE
 
-	icon = 'jollystation_modules/event_modules/beach_episode/icons/towel.dmi'
+	icon = 'jollystation_modules/icons/mob/clothing/under/towel.dmi'
 	icon_state = "towel_placed"
 
 	greyscale_config = /datum/greyscale_config/towel_placed
