@@ -52,7 +52,7 @@
 		contraband_value += rand(-4, 4)
 		message_admins("A [name] at [ADMIN_VERBOSEJMP(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
 		log_game("A [name] at [loc_name(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
-		var/list/uplink_items = get_uplink_items(SSticker.mode)
+		var/list/uplink_items = get_uplink_items(UPLINK_TRAITORS, FALSE)
 		while(contraband_value)
 			var/category = pick(uplink_items)
 			var/item = pick(uplink_items[category])
