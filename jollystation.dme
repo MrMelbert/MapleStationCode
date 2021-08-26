@@ -3864,6 +3864,7 @@
 #include "jollystation_modules\code\modules\clothing\suits\armor.dm"
 #include "jollystation_modules\code\modules\clothing\suits\duck_tube.dm"
 #include "jollystation_modules\code\modules\clothing\suits\grass_skirt.dm"
+#include "jollystation_modules\code\modules\clothing\suits\labcoat.dm"
 #include "jollystation_modules\code\modules\clothing\suits\towels.dm"
 #include "jollystation_modules\code\modules\clothing\suits\towel_configs\towels_greyscale.dm"
 #include "jollystation_modules\code\modules\clothing\suits\loadout_suits.dm"
