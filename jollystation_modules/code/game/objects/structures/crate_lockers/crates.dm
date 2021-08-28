@@ -48,8 +48,9 @@
 
 /obj/structure/closet/crate/resource_cache/syndicate/PopulateContents()
 	. = ..()
-	if(bonus_mats && prob(4))
-		contraband_value += rand(-4, 4)
+	// 5% chance that a syndicate crate spawns with some syndicate contraband.
+	if(bonus_mats && prob(5))
+		contraband_value += rand(-3, 2)
 		message_admins("A [name] at [ADMIN_VERBOSEJMP(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
 		log_game("A [name] at [loc_name(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
 		var/list/uplink_items = get_uplink_items(UPLINK_TRAITORS, FALSE)
