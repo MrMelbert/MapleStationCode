@@ -6,6 +6,10 @@
 /// Language flag for languages added via quirk
 #define LANGUAGE_QUIRK "quirk"
 
+/// Some string files.
+#define COMPANY_FILE "companies.json"
+#define RESOURCE_EVENT_FILE "resource_events.json"
+
 /// Defines for what loadout slot a corresponding item belongs to.
 #define LOADOUT_ITEM_BELT "belt"
 #define LOADOUT_ITEM_EARS "ears"

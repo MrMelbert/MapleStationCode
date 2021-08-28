@@ -48,7 +48,7 @@
 	// Percent change that something will be redacted from the paper.
 	var/redacted_prob = prob(15)
 	// The 'base' subject of the paper.
-	var/paper_base_subject = pick_list(PAPERWORK_FILE, "subject")
+	var/paper_base_subject = pick_list(COMPANY_FILE, "companies")
 	// The month to this paper's date.
 	var/rand_month = rand(1, 12)
 	// A var tracking the date range we can use for randomizing dates.
@@ -94,9 +94,9 @@
 		paper_primary_subject = paper_base_subject
 		all_tracked_data += "subject_one"
 	if(findtext(paper_contents, "subject_two"))
-		paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
+		paper_secondary_subject = pick_list(COMPANY_FILE, "companies")
 		if(paper_secondary_subject == paper_base_subject) // okay but what are the odds of picking the same name, threee times?
-			paper_secondary_subject = pick_list(PAPERWORK_FILE, "subject")
+			paper_secondary_subject = pick_list(COMPANY_FILE, "companies")
 		all_tracked_data += "subject_two"
 	if(findtext(paper_contents, "victim"))
 		var/list/possible_names = list(
