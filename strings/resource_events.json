@@ -1,6 +1,9 @@
 {
 	"drift_reasons": [
-		"A recent ship scuttle between $party_one and $party_two ships in your sector led large amounts of ship debris and caravan goods floating freely in your orbit.",
+		"A recent scuffle between $party_one and $party_two ships in your sector led large amounts of ship debris and caravan goods floating freely in your orbit.",
+		"A recent ship battle between $party_one and $party_two ships in your sector led large amounts of ship debris and caravan goods floating freely in your orbit.",
+		"$party_one enaged $party_two in ship based combat in your sector, leading to large amounts of ship debris and goods floating freely in your orbit.",
+		"$party_one scuttled one of their captial ship on your sector, leaving ship debris and various goods floating into your orbit.",
 		"A recent raid by $party_one gunships on $party_two transports has lead to abandoned caches of goods floating freely in your orbit.",
 		"A $party_one supply ship crashed into an asteroid in your sector.",
 		"A $party_one supply ship crashed into an moon surface in your sector.",
