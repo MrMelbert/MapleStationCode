@@ -27,7 +27,6 @@
 		// We have to snowflake this because replace_limb uses SPECIAL = TRUE when replacing limbs (which doesn't cause pain because I hate limb code)
 		target.cause_pain(target_zone, initial(tool.pain))
 		target.cause_pain(BODY_ZONE_CHEST, PAIN_LIMB_REMOVED)
-		//TODO: make this a status effect instead (post augment fatigue?)
 		target.apply_min_pain(target_zone, 15, 2 MINUTES)
 
 // Disease symptoms
@@ -61,10 +60,10 @@
 		return
 	switch(A.stage)
 		if(4)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 5, BURN)
+			A.affected_mob.cause_typed_pain(BODY_ZONES_ALL, 5, BURN)
 			A.affected_mob.flash_pain_overlay(1)
 		if(5)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 10, BURN)
+			A.affected_mob.cause_typed_pain(BODY_ZONES_ALL, 10, BURN)
 			A.affected_mob.flash_pain_overlay(2)
 
 // Shocks
@@ -73,9 +72,8 @@
 	if(!.)
 		return
 
-	var/pain = . / max(bodyparts.len, 2)
-	sharp_pain(BODY_ZONES_ALL, pain, BURN)
-	set_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
+	sharp_pain(BODY_ZONES_ALL, min((. / 2), 25), BURN)
+	set_timed_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
 
 // Fleshmend of course heals pain.
 /datum/status_effect/fleshmend/tick()
@@ -147,5 +145,21 @@
 			span_hear("You hear a sickening thud."))
 		sharp_pain(BODY_ZONE_HEAD, (levels * 10)) // bonk
 
-	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs recieve
+	cause_pain(BODY_ZONE_CHEST, (levels * 8)) // always less pain than what the legs receive
 	Knockdown(levels * 50)
+
+// Flight potion's flavor says "it hurts a shit ton bro", so it should cause decent pain
+/datum/reagent/flightpotion/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
+	. = ..()
+	if(iscarbon(exposed_mob) && exposed_mob.stat != DEAD)
+		var/mob/living/carbon/exposed_carbon = exposed_mob
+		if(reac_volume < 5 || !(ishumanbasic(exposed_carbon) || islizard(exposed_carbon) || ismoth(exposed_carbon)))
+			return
+		if(exposed_carbon.dna.species.has_innate_wings)
+			exposed_carbon.cause_pain(BODY_ZONE_HEAD, 10)
+			exposed_carbon.cause_pain(BODY_ZONE_CHEST, 45)
+			exposed_carbon.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 18)
+		else
+			exposed_carbon.cause_pain(BODY_ZONE_HEAD, 16)
+			exposed_carbon.cause_pain(BODY_ZONE_CHEST, 75)
+			exposed_carbon.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 30)

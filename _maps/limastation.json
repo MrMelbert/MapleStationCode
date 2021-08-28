@@ -4,9 +4,24 @@
 	"map_path": "map_files/LimaStation",
 	"map_file": "LimaStation.dmm",
 	"shuttles": {
-		"emergency": "emergency_lima",
-		"whiteship": "whiteship_pubby",
+		"cargo": "cargo_lima",
 		"ferry": "ferry_fancy",
-		"cargo": "cargo_lima"
+		"whiteship": "whiteship_pubby",
+		"emergency": "emergency_lima"
+	},
+	"traits": [
+		{
+			"Down": 1,
+			"Baseturf": "/turf/open/openspace"
+		},
+		{
+			"Up": -1,
+			"Baseturf": "/turf/open/space/basic"
+		}
+	],
+	"job_changes": {
+		"cook": {
+			"additional_cqc_areas": ["/area/service/kitchen/diner", "/area/service/kitchen/coldroom"]
+		}
 	}
 }

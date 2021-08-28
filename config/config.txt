@@ -237,16 +237,16 @@ USEWHITELIST
 # SERVER ss13.example.com:2506
 
 ## forum address
-# FORUMURL http://tgstation13.org/phpBB/index.php
+FORUMURL https://docs.google.com/document/d/1tcM2kTv4crDHqCWZcZu7U7CISuvQLMc5fMJE-JQxVtc/edit
 
 ## Wiki address
 # WIKIURL http://www.tgstation13.org/wiki
 
 ## Rules address
-# RULESURL http://www.tgstation13.org/wiki/Rules
+RULESURL https://discord.com/channels/801124315213987880/801124534182215681/853315055285305406
 
 ## Github address
-# GITHUBURL https://www.github.com/tgstation/tgstation
+GITHUBURL https://github.com/Jolly-66/JollyStationCode
 
 ## Discord bot command prefix, if the discord bot is used
 # DISCORDBOTCOMMANDPREFIX ?
@@ -312,6 +312,9 @@ TICKLAG 0.5
 NOTE_FRESH_DAYS 91.31055
 ## Notes older then this will be completely faded out.
 NOTE_STALE_DAYS 365.2422
+
+## Uncomment to allow drastic performence enhancemet measures to turn on automatically once there are equal or more clients than the configured amount (will also prompt admin for veto)
+#AUTO_LAG_SWITCH_POP 75
 
 ##Note: all population caps can be used with each other if desired.
 
@@ -542,6 +545,11 @@ DEFAULT_VIEW_SQUARE 15x15
 #DISCORD_ROLEID 000000000000000000
 
 
+## How long in seconds after which a hard delete is treated as causing lag. This can be a float and supports a precision as low as nanoseconds.
+#HARD_DELETES_OVERRUN_THRESHOLD 0.5
+
+## Once a typepath causes overrun from hard deletes this many times, stop hard deleting it on garbage collection failures. (set to 0 to disable)
+#HARD_DELETES_OVERRUN_LIMIT 0
 
 #############################
 #### MODULE CONFIG STUFF ####

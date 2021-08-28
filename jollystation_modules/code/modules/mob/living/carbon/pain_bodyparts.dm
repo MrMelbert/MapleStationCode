@@ -17,14 +17,16 @@
 	var/min_pain = 0
 	/// The max amount of pain this limb can experience
 	var/max_pain = PAIN_LIMB_MAX
-	/// Modifier applied to pain that this part recieves
+	/// Modifier applied to pain that this part receives
 	var/bodypart_pain_modifier = 1
-	/// The last type of pain we recieved.
-	var/last_recieved_pain_type = BRUTE
+	/// The last type of pain we received.
+	var/last_received_pain_type = BRUTE
 
 /obj/item/bodypart/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE)
 	. = ..()
 	if(!.)
+		return
+	if(!owner?.pain_controller)
 		return
 
 	var/dominant_type = (brute > burn ? BRUTE : BURN)
@@ -35,7 +37,7 @@
 		burn = round(burn * (can_inflict / total_damage), DAMAGE_PRECISION)
 
 	if(can_inflict > 0)
-		owner?.cause_pain(body_zone, body_damage_coeff * (brute + burn), dominant_type)
+		owner.cause_typed_pain(body_zone, body_damage_coeff * (brute + burn), dominant_type)
 
 /*
  * Gets our bodypart's effective pain (pain * pain modifiers).
@@ -128,20 +130,20 @@
 			owner.flash_pain_overlay(1)
 			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")
 		if(25 to 50)
-			owner.pain_emote(picked_emote)
+			owner.pain_emote(picked_emote, 3 SECONDS)
 			owner.flash_pain_overlay(1)
 			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs", "cramps", "feels wrong", "feels loose")
-			if(last_recieved_pain_type == BURN)
+			if(last_received_pain_type == BURN)
 				feedback_phrases += list("stings to the touch", "burns")
 		if(50 to 65)
-			owner.pain_emote(picked_emote)
+			owner.pain_emote(picked_emote, 3 SECONDS)
 			owner.flash_pain_overlay(2)
 			feedback_phrases += list("really hurts", "is losing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels terrible")
-			if(last_recieved_pain_type == BURN)
+			if(last_received_pain_type == BURN)
 				feedback_phrases += list("burns to the touch", "burns", "singes")
 		if(65 to INFINITY)
 			if(DT_PROB(12, delta_time))
-				owner.pain_emote("scream")
+				owner.pain_emote("scream", 3 SECONDS)
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback_phrases += list("is numb from the pain")
 
@@ -174,22 +176,22 @@
 			owner.flash_pain_overlay(1)
 			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")
 		if(40 to 75)
-			owner.pain_emote(picked_emote)
+			owner.pain_emote(picked_emote, 3 SECONDS)
 			owner.flash_pain_overlay(1, 2 SECONDS)
 			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs", "cramps", "feels tight")
 			side_feedback += list("Your side hurts", "Your side pangs", "Your ribs hurt", "Your ribs pang", "Your neck stiffs")
 		if(75 to 110)
-			owner.pain_emote(picked_emote)
+			owner.pain_emote(picked_emote, 3 SECONDS)
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback_phrases += list("really hurts", "is losing feeling", "throbs painfully", "stings to the touch", "is in agony", "anguishes", "feels broken", "feels tight")
 			side_feedback += list("You feel a sharp pain in your side", "Your ribs feel broken")
 		if(110 to INFINITY)
-			owner.pain_emote(pick("groan", "scream", picked_emote))
+			owner.pain_emote(pick("groan", "scream", picked_emote), 3 SECONDS)
 			owner.flash_pain_overlay(2, 3 SECONDS)
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "burns to the touch", "feels terrible", "feels constricted")
 			side_feedback += list("You feel your ribs jostle in your [name]")
 
-	if(side_feedback.len && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
+	if(side_feedback.len && last_received_pain_type == BRUTE && DT_PROB(50, delta_time))
 		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
 		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
@@ -236,12 +238,12 @@
 			feedback_phrases += list("really hurts", "is losing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels terrible")
 			side_feedback += list("Your neck stiffs", "You feel pressure in your [name]", "The back of your eyes begin hurt", "You feel a terrible migrane")
 		if(90 to INFINITY)
-			owner.pain_emote(pick("groan", pick(PAIN_EMOTES)))
+			owner.pain_emote(pick("groan", pick(PAIN_EMOTES)), 3 SECONDS)
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "feels terrible", "is in agony", "feels tense")
 			side_feedback += list("You feel a splitting migrane", "Pressure floods your [name]", "Your head feels as if it's being squeezed", "Your eyes hurt to keep open")
 
-	if(side_feedback.len && last_recieved_pain_type == BRUTE && DT_PROB(50, delta_time))
+	if(side_feedback.len && last_received_pain_type == BRUTE && DT_PROB(50, delta_time))
 		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
 		to_chat(owner, span_danger("Your [name] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))

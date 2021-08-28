@@ -14,3 +14,8 @@
 	clothing_flags = SNUG_FIT
 	flags_inv = HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR
 	transparent_protection = HIDEMASK
+
+/obj/item/clothing/suit/toggle/suspenders/greyscale
+	name = "tailored suspenders"
+	desc = "A set of custom made suspender straps."
+	greyscale_colors = "#ffffff"

@@ -26,8 +26,11 @@
 
 #Ignore compiled files and other files generated during compilation.
 *.mdme
+*.mdme.*
 *.dmb
 *.rsc
+*.m.dme
+*.test.dme
 *.lk
 *.int
 *.backup
@@ -211,4 +214,3 @@ Temporary Items
 # SQL and other config ignores
 /config/dbconfig.txt
 /config/whitelist.txt
-

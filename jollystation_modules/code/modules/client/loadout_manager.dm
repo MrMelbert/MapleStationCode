@@ -346,7 +346,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 /datum/loadout_manager/proc/loadout_to_outfit()
 	var/datum/outfit/default_outfit
 	if(view_job_clothes)
-		var/datum/job/fav_job = SSjob.GetJob("Assistant")
+		var/datum/job/fav_job = SSjob.GetJobType(SSjob.overflow_role)
 		for(var/selected_job in owner.prefs.job_preferences)
 			if(owner.prefs.job_preferences[selected_job] == JP_HIGH)
 				fav_job = SSjob.GetJob(selected_job)

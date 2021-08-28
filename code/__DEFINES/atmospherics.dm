@@ -212,6 +212,20 @@
 /// The modifier on cold damage hulks get.
 #define HULK_COLD_DAMAGE_MOD 2
 
+// Body temperature warning icons
+/// The temperature the red icon is displayed.
+#define BODYTEMP_HEAT_WARNING_3 (BODYTEMP_HEAT_DAMAGE_LIMIT + 360) //+700k
+/// The temperature the orange icon is displayed.
+#define BODYTEMP_HEAT_WARNING_2 (BODYTEMP_HEAT_DAMAGE_LIMIT + 120) //460K
+/// The temperature the yellow icon is displayed.
+#define BODYTEMP_HEAT_WARNING_1 (BODYTEMP_HEAT_DAMAGE_LIMIT) //340K
+/// The temperature the light green icon is displayed.
+#define BODYTEMP_COLD_WARNING_1 (BODYTEMP_COLD_DAMAGE_LIMIT) //270k
+/// The temperature the cyan icon is displayed.
+#define BODYTEMP_COLD_WARNING_2 (BODYTEMP_COLD_DAMAGE_LIMIT - 70) //200k
+/// The temperature the blue icon is displayed.
+#define BODYTEMP_COLD_WARNING_3 (BODYTEMP_COLD_DAMAGE_LIMIT - 150) //120k
+
 /// what min_cold_protection_temperature is set to for space-helmet quality headwear. MUST NOT BE 0.
 #define SPACE_HELM_MIN_TEMP_PROTECT 2.0
 /// Thermal insulation works both ways /Malkevin
@@ -363,9 +377,9 @@
 #define ATMOS_GAS_MONITOR_OUTPUT_O2 "o2_out"
 #define ATMOS_GAS_MONITOR_SENSOR_O2 "o2_sensor"
 
-#define ATMOS_GAS_MONITOR_INPUT_TOX "tox_in"
-#define ATMOS_GAS_MONITOR_OUTPUT_TOX "tox_out"
-#define ATMOS_GAS_MONITOR_SENSOR_TOX "tox_sensor"
+#define ATMOS_GAS_MONITOR_INPUT_PLAS "plas_in"
+#define ATMOS_GAS_MONITOR_OUTPUT_PLAS "plas_out"
+#define ATMOS_GAS_MONITOR_SENSOR_PLAS "plas_sensor"
 
 #define ATMOS_GAS_MONITOR_INPUT_AIR "air_in"
 #define ATMOS_GAS_MONITOR_OUTPUT_AIR "air_out"
@@ -455,9 +469,9 @@
 #define ATMOS_GAS_MONITOR_OUTPUT_INCINERATOR "incinerator_out"
 #define ATMOS_GAS_MONITOR_SENSOR_INCINERATOR "incinerator_sensor"
 
-#define ATMOS_GAS_MONITOR_INPUT_TOXINS_LAB "toxinslab_in"
-#define ATMOS_GAS_MONITOR_OUTPUT_TOXINS_LAB "toxinslab_out"
-#define ATMOS_GAS_MONITOR_SENSOR_TOXINS_LAB "toxinslab_sensor"
+#define ATMOS_GAS_MONITOR_INPUT_ORDNANCE_LAB "ordnancelab_in"
+#define ATMOS_GAS_MONITOR_OUTPUT_ORDNANCE_LAB "ordnancelab_out"
+#define ATMOS_GAS_MONITOR_SENSOR_ORDNANCE_LAB "ordnancelab_sensor"
 
 #define ATMOS_GAS_MONITOR_LOOP_DISTRIBUTION "distro-loop_meter"
 #define ATMOS_GAS_MONITOR_LOOP_ATMOS_WASTE "atmos-waste_loop_meter"
@@ -467,14 +481,14 @@
 
 //AIRLOCK CONTROLLER TAGS
 
-//RnD toxins burn chamber
-#define INCINERATOR_TOXMIX_IGNITER "toxmix_igniter"
-#define INCINERATOR_TOXMIX_VENT "toxmix_vent"
-#define INCINERATOR_TOXMIX_DP_VENTPUMP "toxmix_airlock_pump"
-#define INCINERATOR_TOXMIX_AIRLOCK_SENSOR "toxmix_airlock_sensor"
-#define INCINERATOR_TOXMIX_AIRLOCK_CONTROLLER "toxmix_airlock_controller"
-#define INCINERATOR_TOXMIX_AIRLOCK_INTERIOR "toxmix_airlock_interior"
-#define INCINERATOR_TOXMIX_AIRLOCK_EXTERIOR "toxmix_airlock_exterior"
+//RnD ordnance burn chamber
+#define INCINERATOR_ORDMIX_IGNITER "ordmix_igniter"
+#define INCINERATOR_ORDMIX_VENT "ordmix_vent"
+#define INCINERATOR_ORDMIX_DP_VENTPUMP "ordmix_airlock_pump"
+#define INCINERATOR_ORDMIX_AIRLOCK_SENSOR "ordmix_airlock_sensor"
+#define INCINERATOR_ORDMIX_AIRLOCK_CONTROLLER "ordmix_airlock_controller"
+#define INCINERATOR_ORDMIX_AIRLOCK_INTERIOR "ordmix_airlock_interior"
+#define INCINERATOR_ORDMIX_AIRLOCK_EXTERIOR "ordmix_airlock_exterior"
 
 //Atmospherics/maintenance incinerator
 #define INCINERATOR_ATMOS_IGNITER "atmos_incinerator_igniter"

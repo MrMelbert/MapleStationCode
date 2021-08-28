@@ -4,7 +4,7 @@
 	name = "D1GGY skillchip"
 	auto_traits = list(TRAIT_OFF_STATION_PAIN_RESISTANCE)
 	skill_name = "Off Station Pain Resistance"
-	skill_description = "For the adventurous in life, this skillchip provides a reduction in pain recieved when off the station."
+	skill_description = "For the adventurous in life, this skillchip provides a reduction in pain received when off the station."
 	skill_icon = "fist-raised"
 	activate_message = "<span class='notice'>You feel like you can safely take on the unknown.</span>"
 	deactivate_message = "<span class='notice'>You feel more vulnerable to the unknown.</span>"

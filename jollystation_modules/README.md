@@ -78,12 +78,20 @@ This module system edits the launch.json and the build.bat files so VSCODE can c
 
 # Upstream merge:
 
-The time has come for doom. Pull from upstream and pray. Things will probably be broken. Try to fix as many as possible. Merge conflicts will be likely. Try to solve them sensibly. When all's done, you need to update our jollystation.dme with the changes done to tgstation.dme by hand.
+The time has come for doom. Pull from upstream and pray.
 
-- Either manually copy-paste the new tgstation.dme over into jollystation.dme up to our files and you're done.
-- ...Or run _merge_update_dme.bash in gitbash, with the arguments of `<tgstation.dme>` and `<jollystation.dme>`.
+- Run ./_merge_driver.bash from gitbash (or any bash terminal, I guess) This will do a few things:
+	- A list of all unticked files in the code directory will be printed.
+		- Either delete the unticked files, or leave them if you desire.
+	- All files with merge conflict markers will be parsed through.
+		- All JSON files with merge conflicts will need to be resolved manually.
+		- All JS and DM files that don't have a modular comment will have its merge conflicts automatically resolved.
+		- All JS and DM files with a modular comment will need to be resolved manually.
+	- jollystation.dme will be updated to tgstation.dme automatically.
+	- build.js, if it was changed, will attempt to update automatically. Merge conflicts may persist in the file.
+- After the merge driver is ran, minor maintenance and resolving merge conflicts will be expected. Then, it's done.
 
-Everything should be set to try to compile. If there are errors, try to solve them. If it compiles and the game itself seems wonky, then probably call your local coder and cry.
+Everything should be set to try to compile. If there are errors, try to solve them. If it compiles and the game itself seems wonky, then call your local coder and cry.
 
 - Make sure that (to maintainers and Jolly) the commit message is not the garbled mess that it is. Change it. Please.
 
@@ -91,10 +99,10 @@ Everything should be set to try to compile. If there are errors, try to solve th
 
 To prevent me from accidentally accept incoming on files with module changes, I'm doing this for the future.
 
-- code\__DEFINES\antagonists.dm
 - code\__DEFINES\chat.dm
 - code\__DEFINES\DNA.dm
 - code\__DEFINES\is_helpers.dm
+- code\__DEFINES\reagents.dm
 - code\__DEFINES\say.dm
 - code\__HELPERS\global_lists.dm
 - code\__HELPERS\mobs.dm
@@ -114,7 +122,6 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\game\machinery\computer\medical.dm
 - code\game\machinery\computer\security.dm
 - code\game\objects\items\devices\PDA\PDA.dm
-- code\game\objects\items\implants\implantuplink.dm
 - code\game\objects\items\plushes.dm
 - code\game\objects\items\scanners.dm
 - code\modules\admin\create_mob.dm
@@ -125,17 +132,19 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\client\preferences_savefile.dm
 - code\modules\client\preferences_toggles.dm
 - code\modules\client\preferences.dm
+- code\modules\clothing\under\_under.dm
 - code\modules\food_and_drinks\drinks\drinks.dm
 - code\modules\food_and_drinks\drinks\drinks\bottle.dm
 - code\modules\food_and_drinks\recipes\drinks_recipes.dm
 - code\modules\jobs\jobs.dm
 - code\modules\jobs\job_types\_job.dm
 - code\modules\jobs\job_types\cargo_technician.dm
+- code\modules\jobs\job_types\head_of_personnel.dm
 - code\modules\jobs\job_types\lawyer.dm
-- code\modules\jobs\job_types\quartermaster.dm
 - code\modules\jobs\job_types\research_director.dm
 - code\modules\jobs\job_types\scientist.dm
 - code\modules\jobs\job_types\shaft_miner.dm
+- code\modules\jobs\job_types\quartermaster.dm
 - code\modules\language\language_holder.dm
 - code\modules\mob\dead\new_player\new_player.dm
 - code\modules\mob\living\carbon\human\human.dm
@@ -149,6 +158,10 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\surgery\organs\lungs.dm
 - code\modules\surgery\organs\tongue.dm
 - code\modules\unit_tests\heretic_knowledge.dm
+
+# Interface files with non-module comments
+- interface\interface.dm
+- interface\skin.dmf
 
 # Tools with non-module comments
 - tgui\packages\tgui\index.js

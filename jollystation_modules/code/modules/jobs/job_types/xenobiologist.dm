@@ -2,14 +2,12 @@
 /datum/job/xenobiologist
 	title = "Xenobiologist"
 	department_head = list("Research Director")
-	faction = "Station"
+	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 3
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
-	exp_requirements = 60
-	exp_type = EXP_TYPE_CREW
-
+	exp_granted_type = EXP_TYPE_CREW
 
 	outfit = /datum/outfit/job/scientist/xenobiologist
 	plasmaman_outfit = /datum/outfit/plasmaman/science
@@ -37,10 +35,16 @@
 		/obj/item/slime_extract/oil = 1
 	)
 
+	departments_list = list(
+		/datum/job_department/science,
+		)
+
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS
+
 /datum/outfit/job/scientist/xenobiologist
 	name = "Xenobiologist"
 	suit = /obj/item/clothing/suit/toggle/labcoat/xenobio
 	uniform = /obj/item/clothing/under/rank/rnd/xenobiologist
-	belt = /obj/item/pda/toxins/xenobiologist
+	belt = /obj/item/pda/science/xenobiologist
 	jobtype = /datum/job/xenobiologist
 	id_trim = /datum/id_trim/job/xenobiologist

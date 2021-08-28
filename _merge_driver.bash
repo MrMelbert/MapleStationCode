@@ -1,5 +1,59 @@
 #!/bin/bash
 
+# print all files that aren't ticked in tgstation.dme
+#
+# supply one argument: the directory to search
+find_unticked_files (){
+
+	if [ ! -d $1 ]; then
+		echo "!! find_unticked_files error: $1 directory not found."
+		return 1
+	fi
+
+	NEED_NEWLINE=1
+	NUM_DOTS=0
+	for file in $(find $1 -name "*.dm" -or -name "*.js" -type f); do
+		if [ ! -f $file ]; then
+			continue
+		fi
+
+		if grep -q "/datum/unit_test" $file; then # Unit tests are not ticked
+			continue
+		fi
+		if grep -q "/datum/tgs_api" $file; then # TGS are not ticked either (I think)
+			continue
+		fi
+
+		FILE_NAME="$(echo $file | sed -e 's,/,\\,g')"
+		if ! grep -q -i -F "$FILE_NAME" tgstation.dme; then
+			if [ "$NEED_NEWLINE" -eq "1" ]; then
+				echo ""
+				NEED_NEWLINE=0
+			fi
+			echo "$FILE_NAME was found to not be in tgstation.dme / unticked!"
+			NUM_DOTS=0
+		else
+			NEED_NEWLINE=1
+			let NUM_DOTS++
+			if ! (($NUM_DOTS % 3)); then
+				echo -ne "."
+			fi
+			if [ "$NUM_DOTS" -ge "270" ]; then
+				echo ""
+				NUM_DOTS=0
+			fi
+		fi
+
+	done
+	echo ""
+	echo "Done search dir and all subdirs: $1."
+	return 0
+}
+
+# find all files with merge conflicts in the supplied directory
+# if no non-module comments are present, automatically resolve the merge conflict (accept incoming)
+#
+# supply one argument: the directory to search
 find_all_in_dir (){
 
 	if [ ! -d $1 ]; then
@@ -13,9 +67,30 @@ find_all_in_dir (){
 		fi
 	done
 
+	NEED_NEWLINE=1
+	NUM_DOTS=0
 	for file in $(find $1 -name "*.dm" -or -name "*.js" -type f); do
-		if ! grep -q "<<<<<<<" "$file"; then
+		if [ ! -f $file ]; then
 			continue
+		fi
+
+		if ! grep -q "<<<<<<<" "$file"; then
+			NEED_NEWLINE=1
+			let NUM_DOTS++
+			if ! (($NUM_DOTS % 3)); then
+				echo -ne "."
+			fi
+			if [ "$NUM_DOTS" -ge "270" ]; then
+				echo ""
+				NUM_DOTS=0
+			fi
+			continue
+		fi
+
+		if [ "$NEED_NEWLINE" -eq "1" ]; then
+			echo ""
+			NEED_NEWLINE=0
+			NUM_DOTS=0
 		fi
 
 		if grep -q -i -E "\/{2,}\s*non(\s|-)*module" "$file"; then
@@ -28,10 +103,14 @@ find_all_in_dir (){
 		echo "$file merge conflicts resolved."
 	done
 
-	echo "Done searching dir: $1."
+	echo ""
+	echo "Done resolving dir and all subdirs: $1."
 	return 0
 }
 
+# updates the DME to the new version
+#
+# supply two arguments: the new tgstation.dme, and the old jollystation.dme
 update_dme (){
 
 	if [ ! -f $1 ]; then
@@ -60,16 +139,27 @@ update_dme (){
 	return 0
 }
 
+#update the build file
 update_build (){
 	sed -i 's/tgstation/jollystation/g' tools/build/build.js
 	return 0
 }
 
 echo "Running merge driver. . ."
+echo "====================================================================================="
+echo "Looking for unticked files. . ."
+find_unticked_files "code"
+echo "Unticked files done."
+echo "====================================================================================="
+echo "Checking for merge conflicts. . ."
 find_all_in_dir "code"
 find_all_in_dir "tgui"
-echo "Conflict checking done. Updating DME."
+echo "Conflict checking done."
+echo "====================================================================================="
+echo "Updating DME. . ."
 update_dme tgstation.dme jollystation.dme
-echo "DME update down. Updating build.js"
+echo "DME update done."
+echo "====================================================================================="
+echo "Updating build.js. . ."
 update_build
 echo "All tasks done."
