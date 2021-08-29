@@ -64,20 +64,21 @@
 			result += "<br>They were given <b>[linked_advanced_datum.starting_points]</b> genetic points to accomplish these tasks."
 
 	if(our_ling.no_hard_absorb)
-		result += "<br>The changeling gave up the ability to absorb humans!"
+		result += "The changeling gave up the ability to absorb humans!"
 
-	if(linked_advanced_datum.finalized)
+	var/list/powers = purchasedpowers
+	if(powers.len && linked_advanced_datum.finalized)
 		var/list/bought_powers = list()
-		for(var/datum/action/changeling/power as anything in purchasedpowers)
+		for(var/datum/action/changeling/power as anything in powers)
 			if(power.dna_cost > 0)
 				bought_powers += power.name
 
 		if(bought_powers.len)
-			result += span_bold("<br>The changeling aquired the following powers: [english_list(bought_powers)].")
+			result += span_bold("The changeling aquired the following powers: [english_list(bought_powers)].")
 		else
-			result += span_bold("<br>The [name] never aquired any changeling powers!")
+			result += span_bold("The [name] never aquired any additional changeling powers!")
 	else
-		result += span_bold("<br>The [name] never recieved their changeling powers! ...Why?")
+		result += span_bold("The [name] never recieved their changeling powers! ...Why?")
 
 	return result.Join("<br>")
 

@@ -28,7 +28,8 @@
 	add_new_profile(owner.current, TRUE)
 
 /datum/antagonist/changeling/neutered/reset_powers()
-	if(purchasedpowers)
+	var/list/powers = purchasedpowers
+	if(powers.len)
 		remove_changeling_powers()
 	for(var/path in allowed_powers)
 		var/datum/action/changeling/sting = new path()

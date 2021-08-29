@@ -9,8 +9,6 @@
 	var/employer = "The Badmins"
 	/// This player's backstory for their antag - optional, can be empty/null
 	var/backstory = ""
-	/// The style of this antag's UI.
-	var/style = "neutral"
 	/// The starting "traitor fun points" for our antag. TC, processing power, etc.
 	var/starting_points = 0
 	/// Lazylist of our goals datums linked to this antag.
