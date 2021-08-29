@@ -19,6 +19,7 @@
 	var/static/list/possible_objectives = list()
 	/// Whether our goals are finalized.
 	var/finalized = FALSE
+	/// The type of advanced panel datum we make / open
 	var/advanced_panel_type = /datum/advanced_antag_panel
 	/// All advanced traitor panels we have open (assoc list user to panel)
 	var/list/open_panels
@@ -93,15 +94,7 @@
 
 	tgui = new advanced_panel_type(user, src)
 	tgui.ui_interact(user)
-	LAZYADDASSOC(open_panels, user, tgui)
-
-/// This proc cleans up the open_panels list after a panel viewer closes the UI.
-/// viewer - the mob that just closed the panel.
-/datum/advanced_antag_datum/proc/cleanup_advanced_traitor_panel(mob/viewer)
-	open_panels -= viewer
-
-	if(!LAZYLEN(open_panels))
-		LAZYNULL(open_panels)
+	LAZYSET(open_panels, user, tgui)
 
 /// Modify the traitor's starting_points (TC, processing points, etc) based on their goals's intensity levels.
 /datum/advanced_antag_datum/proc/modify_antag_points()
@@ -123,12 +116,17 @@
 		return FALSE
 
 	finalized = TRUE
+	linked_antagonist.finalize_antag()
+	modify_antag_points()
+	log_goals_on_finalize()
+
 	return TRUE
 
 /// Miscellaneous logging for the antagonist's goals after they finalize them.
 /// Extend this proc for adding in extra logging to an antagonist.
 /datum/advanced_antag_datum/proc/log_goals_on_finalize()
 	SHOULD_CALL_PARENT(TRUE)
+
 	var/mob/antag = linked_antagonist.owner.current
 	message_admins("[ADMIN_LOOKUPFLW(antag)] finalized their objectives. They began with [starting_points] antagonist points as a [linked_antagonist.name]. ")
 	log_game("[key_name(antag)] finalized their objectives. Their began with [starting_points] antagonist points as a [linked_antagonist.name]. ")

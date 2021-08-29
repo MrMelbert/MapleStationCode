@@ -83,12 +83,12 @@
 	emporium_action.Grant(owner.current)
 
 /datum/antagonist/changeling/on_gain()
-	create_actions()
-	reset_powers()
-	create_initial_profile()
+
+	/// NON-MODULE CHANGE: ADVANCED CHANGELINGS
 	if(give_objectives)
+		finalize_antag()
 		forge_objectives()
-	owner.current.grant_all_languages(FALSE, FALSE, TRUE) //Grants omnitongue. We are able to transform our body after all.
+
 	. = ..()
 
 /datum/antagonist/changeling/on_removal()

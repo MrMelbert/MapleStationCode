@@ -13,18 +13,32 @@
 	give_objectives = FALSE
 	should_give_codewords = FALSE
 	finalize_antag = FALSE
-	/// List of objectives AIs can get, because apparently they're not initialized anywhere like normal objectives.
-	var/static/list/ai_objectives = list("no organics on shuttle" = /datum/objective/block, "no mutants on shuttle" = /datum/objective/purge, "robot army" = /datum/objective/robot_army, "survive AI" = /datum/objective/survive/malf)
+	/// List of objectives AIs can get in addition to the base ones
+	var/static/list/ai_objectives = list(
+		"no organics on shuttle" = /datum/objective/block,
+		"no mutants on shuttle" = /datum/objective/purge,
+		"robot army" = /datum/objective/robot_army,
+		"survive AI" = /datum/objective/survive/malf,
+		)
+	/// Goals that advanced malf AIs shouldn't be able to pick
+	var/static/list/blacklisted_ai_objectives = list(
+		"survive",
+		"destroy AI",
+		"download",
+		"steal",
+		"escape",
+		"debrain"
+		)
 
 /datum/antagonist/malf_ai/advanced/on_gain()
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
 
 	var/list/objectives_to_choose = GLOB.admin_objective_list.Copy()
-	name = "Malfunctioning AI"
 	objectives_to_choose -= blacklisted_similar_objectives
 	objectives_to_choose -= blacklisted_ai_objectives
 	objectives_to_choose += ai_objectives
+	name = "Malfunctioning AI"
 
 	linked_advanced_datum = new /datum/advanced_antag_datum/malf_ai(src)
 	linked_advanced_datum.setup_advanced_antag()
@@ -38,28 +52,19 @@
 	var/list/result = list()
 
 	result += printplayer(owner)
-	result += "<b>[owner]</b> was \a <b>[linked_advanced_datum.name]</b>[employer? " hacked by <b>[employer]</b>":""]."
+	result += "<b>[owner]</b> was a/an <b>[linked_advanced_datum.name]</b>[employer? " hacked by <b>[employer]</b>":""]."
 	if(linked_advanced_datum.backstory)
 		result += "<b>[owner]'s</b> backstory was the following: <br>[linked_advanced_datum.backstory]"
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
-			result += goal.get_roundend_text(count)
-			count++
+			result += goal.get_roundend_text(count++)
 
 	return result.Join("<br>")
 
 /datum/antagonist/malf_ai/advanced/roundend_report_footer()
 	return "<br>And thus ends another security breach on board [station_name()]."
-
-/datum/antagonist/malf_ai/advanced/get_admin_commands()
-	. = ..()
-	.["View Goals"] = CALLBACK(src, .proc/show_advanced_traitor_panel, usr)
-
-/datum/antagonist/malf_ai/advanced/antag_listing_commands()
-	. = ..()
-	. += "<a href='?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
 
 /// The advanced antag datum itself for malf AIs.
 /datum/advanced_antag_datum/malf_ai
@@ -87,23 +92,14 @@
 	traitor_ai_uplink.processing_time = starting_points
 
 /datum/advanced_antag_datum/malf_ai/get_antag_points_from_goals()
-	var/finalized_starting_points = TRAITOR_PLUS_INITIAL_MALF_POINTS
+	var/finalized_starting_points = ADV_TRAITOR_INITIAL_MALF_POINTS
 	for(var/datum/advanced_antag_goal/goal as anything in our_goals)
-		finalized_starting_points += (goal.intensity * 5)
+		finalized_starting_points += (goal.intensity * ADV_TRAITOR_MALF_POINTS_PER_INTENSITY)
 
-	return min(finalized_starting_points, TRAITOR_PLUS_MAX_MALF_POINTS)
+	return min(finalized_starting_points, ADV_TRAITOR_MAX_MALF_POINTS)
 
 /datum/advanced_antag_datum/malf_ai/get_finalize_text()
 	return "Finalizing will begin installlation of your malfunction module with [get_antag_points_from_goals()] processing power. You can still edit your goals after finalizing!"
-
-/datum/advanced_antag_datum/malf_ai/post_finalize_actions()
-	. = ..()
-	if(!.)
-		return
-
-	our_ai.finalize_antag()
-	modify_antag_points()
-	log_goals_on_finalize()
 
 /datum/advanced_antag_datum/malf_ai/set_employer(employer)
 	. = ..()

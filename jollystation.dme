@@ -3844,6 +3844,8 @@
 #include "jollystation_modules\code\modules\antagonists\_common\antag_datum.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_heretic\advanced_heretic.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_heretic\eldritch_knowledge.dm"
+#include "jollystation_modules\code\modules\antagonists\advanced_ling\advanced_ling.dm"
+#include "jollystation_modules\code\modules\antagonists\advanced_ling\neutered_ling.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_traitor\advanced_malf.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_traitor\advanced_traitor.dm"
 #include "jollystation_modules\code\modules\antagonists\infiltrator\advanced_infiltrator.dm"

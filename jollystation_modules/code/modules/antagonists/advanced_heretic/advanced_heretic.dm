@@ -6,15 +6,21 @@
 	give_equipment = FALSE
 	finalize_antag = FALSE
 	/// Static list of extra objectives heretics have.
-	var/static/list/heretic_objectives = list("sacrifice" = /datum/objective/sacrifice_ecult/adv)
+	var/static/list/heretic_objectives = list(
+		"sacrifice" = /datum/objective/sacrifice_ecult/adv,
+		"exile" = /datum/objective/exile,
+		)
 
 /datum/antagonist/heretic/advanced/on_gain()
-	name = "Heretic"
 
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
 
-	var/list/objectives_to_choose = GLOB.admin_objective_list.Copy() - blacklisted_similar_objectives + heretic_objectives
+	var/list/objectives_to_choose = GLOB.admin_objective_list.Copy()
+	objectives_to_choose -= blacklisted_similar_objectives
+	objectives_to_choose += heretic_objectives
+	name = "Heretic"
+
 	linked_advanced_datum = new /datum/advanced_antag_datum/heretic(src)
 	linked_advanced_datum.setup_advanced_antag()
 	linked_advanced_datum.possible_objectives = objectives_to_choose
@@ -28,6 +34,9 @@
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ecult_op.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	to_chat(owner, span_boldannounce("You are the Heretic!"))
 
+/datum/antagonist/heretic/advanced/finalize_antag()
+	equip_cultist()
+
 /datum/antagonist/heretic/advanced/forge_primary_objectives()
 	return FALSE
 
@@ -36,7 +45,7 @@
 
 	var/datum/advanced_antag_datum/heretic/our_heretic = linked_advanced_datum
 	parts += printplayer(owner)
-	parts += "<b>[owner]</b> was \a <b>[our_heretic.name]</b>[our_heretic.employer? ", a follower of <b>[our_heretic.employer]</b>":""]."
+	parts += "<b>[owner]</b> was a/an <b>[our_heretic.name]</b>[our_heretic.employer? ", a follower of <b>[our_heretic.employer]</b>":""]."
 	if(our_heretic.sacrifices_enabled)
 		parts += span_bold("Sacrifices Made: [total_sacrifices]")
 	else
@@ -45,16 +54,14 @@
 	if(LAZYLEN(linked_advanced_datum.our_goals))
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
-			parts += goal.get_roundend_text(count)
-			count++
+			parts += goal.get_roundend_text(count++)
 		if(our_heretic.ascension_enabled)
 			if(ascended)
 				parts += span_big(span_greentext("THE HERETIC ASCENDED!"))
 		else
 			parts += span_bold("<br>The heretic gave up the rite of ascension!")
 
-	if(give_equipment)
-
+	if(linked_advanced_datum.finalized)
 		parts += "<br>The heretic was bestowed [our_heretic.starting_points] influences in their initial Codex."
 		parts += span_bold("Knowledge Researched: ")
 
@@ -71,16 +78,6 @@
 
 /datum/antagonist/heretic/advanced/roundend_report_footer()
 	return "<br>And thus closes another book on board [station_name()]."
-
-/// An extra button for the TP, to open the goal panel
-/datum/antagonist/heretic/advanced/get_admin_commands()
-	. = ..()
-	.["View Goals"] = CALLBACK(src, .proc/show_advanced_traitor_panel, usr)
-
-/// An extra button for check_antagonists, to open the goal panel
-/datum/antagonist/heretic/advanced/antag_listing_commands()
-	. = ..()
-	. += "<a href='?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
 
 /// The advanced antag datum for heretics.
 /datum/advanced_antag_datum/heretic
@@ -118,17 +115,17 @@
 /// Roughly 1 influence per 3 intensity levels.
 /// Flat +3 from disabling ascension, and another +3 from disabling sacrifices.
 /datum/advanced_antag_datum/heretic/get_antag_points_from_goals()
-	var/finalized_influences = HERETIC_PLUS_INITIAL_INFLUENCE
-	var/max_influnces = HERETIC_PLUS_MAX_INFLUENCE
+	var/finalized_influences = ADV_HERETIC_INITIAL_INFLUENCE
+	var/max_influnces = ADV_HERETIC_MAX_INFLUENCE
 	if(!ascension_enabled)
 		finalized_influences += 3
-		max_influnces += HERETIC_PLUS_NO_ASCENSION_MAX
+		max_influnces += ADV_HERETIC_NO_ASCENSION_MAX
 	if(!sacrifices_enabled)
 		finalized_influences += 3
-		max_influnces += HERETIC_PLUS_NO_SAC_MAX
+		max_influnces += ADV_HERETIC_NO_SAC_MAX
 
 	for(var/datum/advanced_antag_goal/goal as anything in our_goals)
-		finalized_influences += (goal.intensity / 3)
+		finalized_influences += (goal.intensity * ADV_HERETIC_INFLUENCE_PER_INTENSITY)
 
 	return min(round(finalized_influences), max_influnces)
 
@@ -142,11 +139,6 @@ You can still edit your goals after finalizing, but you will not be able to re-e
 	. = ..()
 	if(!.)
 		return
-
-	our_heretic.give_equipment = TRUE
-	our_heretic.equip_cultist()
-	modify_antag_points()
-	log_goals_on_finalize()
 
 	if(!ascension_enabled)
 		if(our_heretic.gain_knowledge(/datum/eldritch_knowledge/no_ascension))

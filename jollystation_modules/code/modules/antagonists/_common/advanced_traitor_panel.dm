@@ -42,7 +42,7 @@
 
 /datum/advanced_antag_panel/ui_close()
 	open_ui = null
-	owner_datum.cleanup_advanced_traitor_panel(viewer)
+	LAZYREMOVE(owner_datum.open_panels, viewer)
 	qdel(src)
 
 /datum/advanced_antag_panel/ui_interact(mob/user, datum/tgui/ui)
@@ -150,7 +150,7 @@
 
 		/// Goal Stuff
 		if("add_advanced_goal")
-			if(LAZYLEN(owner_datum.our_goals) >= TRAITOR_PLUS_MAX_GOALS)
+			if(LAZYLEN(owner_datum.our_goals) >= ADV_TRAITOR_MAX_GOALS)
 				to_chat(usr, "Maximum amount of goals reached.")
 				return
 
@@ -174,7 +174,7 @@
 			. = TRUE
 
 		if("add_similar_objective")
-			if(LAZYLEN(edited_goal.similar_objectives) >= TRAITOR_PLUS_MAX_SIMILAR_OBJECTIVES)
+			if(LAZYLEN(edited_goal.similar_objectives) >= ADV_TRAITOR_MAX_SIMILAR_OBJECTIVES)
 				to_chat(usr, "Maximum amount of similar objectives reached for this goal.")
 				return
 
@@ -332,6 +332,29 @@ If you don't set any similar objectives, success won't even be checked at the en
 				return
 			our_heretic.sacrifices_enabled = !our_heretic.sacrifices_enabled
 			. = TRUE
+
+/datum/advanced_antag_panel/changeling
+	ui_to_open = "_AdvancedChangelingPanel"
+
+/datum/advanced_antag_panel/changeling/ui_data(mob/user)
+	. = ..()
+	var/datum/advanced_antag_datum/changeling/our_ling = owner_datum
+	.["cannot_absorb"] = our_ling.no_hard_absorb
+
+/datum/advanced_antag_panel/changeling/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	/// Ling Stuff
+	switch(action)
+		if("toggle_absorb")
+			var/datum/advanced_antag_datum/changeling/our_ling = owner_datum
+			if(our_ling.finalized)
+				return
+			our_ling.no_hard_absorb = !our_ling.no_hard_absorb
+			. = TRUE
+
 
 #undef TUTORIAL_OFF
 

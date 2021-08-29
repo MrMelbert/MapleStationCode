@@ -24,6 +24,10 @@
 	should_give_codewords = FALSE
 	give_uplink = FALSE
 	finalize_antag = FALSE
+	/// List of objectives traitors can get in addition to the base ones
+	var/static/list/traitor_objectives = list(
+		"exile" = /datum/objective/exile,
+		)
 	/// Typepath of what advanced antag datum gets instantiated to this antag.
 	var/advanced_antag_path = /datum/advanced_antag_datum/traitor
 
@@ -31,7 +35,10 @@
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
 
-	var/list/objectives_to_choose = GLOB.admin_objective_list.Copy() - blacklisted_similar_objectives
+	var/list/objectives_to_choose = GLOB.admin_objective_list.Copy()
+	objectives_to_choose -= blacklisted_similar_objectives
+	objectives_to_choose += traitor_objectives
+
 	if(findtext(name, "Advanced"))
 		name = "Traitor"
 
@@ -48,7 +55,7 @@
 	var/list/result = list()
 
 	result += printplayer(owner)
-	result += "<b>[owner]</b> was \a <b>[linked_advanced_datum.name]</b>[employer? " employed by <b>[employer]</b>":""]."
+	result += "<b>[owner]</b> was a/an <b>[linked_advanced_datum.name]</b>[employer? " employed by <b>[employer]</b>":""]."
 	if(linked_advanced_datum.backstory)
 		result += "<b>[owner]'s</b> backstory was the following: <br>[linked_advanced_datum.backstory]"
 
@@ -56,45 +63,34 @@
 	var/uplink_true = FALSE
 	var/purchases = ""
 
-	if(give_uplink)
+	if(linked_advanced_datum.finalized)
 		LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
-		var/datum/uplink_purchase_log/H = GLOB.uplink_purchase_logs_by_key[owner.key]
-		if(H)
+		var/datum/uplink_purchase_log/log = GLOB.uplink_purchase_logs_by_key[owner.key]
+		if(log)
 			uplink_true = TRUE
-			TC_uses = H.total_spent
-			purchases += H.generate_render(FALSE)
+			TC_uses = log.total_spent
+			purchases += log.generate_render(FALSE)
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
-			result += goal.get_roundend_text(count)
-			count++
-		if(uplink_true)
+			result += goal.get_roundend_text(count++)
+		if(linked_advanced_datum.finalized)
 			result += "<br>They were afforded <b>[linked_advanced_datum.starting_points]</b> tc to accomplish these tasks."
 
-	if(uplink_true)
+	if(uplink_true && linked_advanced_datum.finalized)
 		var/uplink_text = span_bold("(used [TC_uses] TC)")
 		uplink_text += "[purchases]"
 		result += uplink_text
 		if (contractor_hub)
 			result += contractor_round_end()
-	else if (!give_uplink)
+	else
 		result += span_bold("<br>The [name] never obtained their uplink!")
 
 	return result.Join("<br>")
 
 /datum/antagonist/traitor/advanced/roundend_report_footer()
 	return "<br>And thus ends another story on board [station_name()]."
-
-/// An extra button for the TP, to open the goal panel
-/datum/antagonist/traitor/advanced/get_admin_commands()
-	. = ..()
-	.["View Goals"] = CALLBACK(src, .proc/show_advanced_traitor_panel, usr)
-
-/// An extra button for check_antagonists, to open the goal panel
-/datum/antagonist/traitor/advanced/antag_listing_commands()
-	. = ..()
-	. += "<a href='?_src_=holder;[HrefToken()];admin_check_goals=[REF(src)]'>Show Goals</a>"
 
 /// The advanced antag datum for traitor.
 /datum/advanced_antag_datum/traitor
@@ -124,24 +120,14 @@
 	linked_antagonist.hijack_speed = (starting_points * hijack_speed_modifier) // 20 tc traitor = 0.5 (default traitor hijack speed)
 
 /datum/advanced_antag_datum/traitor/get_antag_points_from_goals()
-	var/finalized_starting_tc = TRAITOR_PLUS_INITIAL_TC
+	var/finalized_starting_tc = ADV_TRAITOR_INITIAL_TC
 	for(var/datum/advanced_antag_goal/goal as anything in our_goals)
-		finalized_starting_tc += (goal.intensity * 2)
+		finalized_starting_tc += (goal.intensity * ADV_TRAITOR_TC_PER_INTENSITY)
 
-	return min(finalized_starting_tc, TRAITOR_PLUS_MAX_TC)
+	return min(finalized_starting_tc, ADV_TRAITOR_MAX_TC)
 
 /datum/advanced_antag_datum/traitor/get_finalize_text()
 	return "Finalizing will send you your uplink to your preferred location with [get_antag_points_from_goals()] telecrystals. You can still edit your goals after finalizing!"
-
-/datum/advanced_antag_datum/traitor/post_finalize_actions()
-	. = ..()
-	if(!.)
-		return
-
-	our_traitor.give_uplink = TRUE
-	our_traitor.finalize_antag()
-	modify_antag_points()
-	log_goals_on_finalize()
 
 /datum/advanced_antag_datum/traitor/set_employer(employer)
 	. = ..()

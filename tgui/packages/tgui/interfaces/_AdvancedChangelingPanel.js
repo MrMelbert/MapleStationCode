@@ -5,7 +5,7 @@ import { AdvancedTraitorPanelBackground } from './_AdvancedTraitorParts';
 import { AdvancedTraitorPanelGoals } from './_AdvancedTraitorParts';
 import { AdvancedTraitorTutorialModal } from './_AdvancedTraitorParts';
 
-export const _AdvancedTraitorPanel = (props, context) => {
+export const _AdvancedChangelingPanel = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     antag_type,
@@ -14,6 +14,7 @@ export const _AdvancedTraitorPanel = (props, context) => {
     goals = [],
     backstory_tutorial_text,
     objective_tutorial_text,
+    cannot_absorb,
   } = data;
 
   return (
@@ -21,7 +22,7 @@ export const _AdvancedTraitorPanel = (props, context) => {
       title="Antagonist Goal Panel"
       width={550}
       height={650}
-      theme="jolly-syndicate">
+      theme="neutral">
       <Window.Content>
         <Section
           title={`${ antag_type } Background`}
@@ -60,6 +61,16 @@ export const _AdvancedTraitorPanel = (props, context) => {
             content="Add Goal"
             textAlign="center"
             onClick={() => act('add_advanced_goal')} />
+          <Button.Checkbox
+            width="140px"
+            height="20px"
+            content="Disable Absorb"
+            textAlign="center"
+            disabled={goals_finalized}
+            checked={cannot_absorb}
+            tooltip="If checked, the ability to use absorb will be disabled. \
+                    Disabling absorbing rewards +10 max chemical storage."
+            onClick={() => act('toggle_absorb')} />
           { goals_finalized === 0 && (
             <Button.Confirm
               width="112px"
