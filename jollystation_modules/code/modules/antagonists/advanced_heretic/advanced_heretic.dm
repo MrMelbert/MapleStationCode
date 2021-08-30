@@ -59,20 +59,26 @@
 			if(ascended)
 				parts += span_big(span_greentext("THE HERETIC ASCENDED!"))
 		else
-			parts += span_bold("<br>The heretic gave up the rite of ascension!")
+			parts += span_bold("The heretic gave up the rite of ascension!")
 
 	if(linked_advanced_datum.finalized)
 		parts += "<br>The heretic was bestowed [our_heretic.starting_points] influences in their initial Codex."
-		parts += span_bold("Knowledge Researched: ")
 
 		var/list/knowledge_message = list()
 		var/list/knowledge = get_all_knowledge()
+		var/static/list/starting_knowledge = GLOB.heretic_start_knowledge.Copy() + list(/datum/eldritch_knowledge/no_ascension, /datum/eldritch_knowledge/no_sacrifices)
 		for(var/found_knowledge_id in knowledge)
+			if(found_knowledge_id in starting_knowledge)
+				continue
 			var/datum/eldritch_knowledge/found_knowledge = knowledge[found_knowledge_id]
-			knowledge_message += "[found_knowledge.name]"
-		parts += knowledge_message.Join(", ")
+			knowledge_message += found_knowledge.name
+		if(knowledge_message.len)
+			parts += span_bold("Knowledge Researched: ")
+			parts += knowledge_message.Join(", ")
+		else
+			parts += span_bold("The heretic didn't research any knowledge!")
 	else
-		parts += span_bold("<br>The heretic never received their Codex! ")
+		parts += span_bold("The heretic never received their Codex! ")
 
 	return parts.Join("<br>")
 
