@@ -92,7 +92,7 @@
 	if(!iscarbon(target))
 		return FALSE
 	var/mob/living/carbon/carbon_target = target
-	var/datum/dna/old_dna = new() // may not be necessary
+	var/datum/dna/old_dna = new()
 	carbon_target.dna.copy_dna(old_dna)
 
 	if(ismonkey(carbon_target))
