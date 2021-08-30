@@ -117,9 +117,9 @@
 /datum/advanced_antag_datum/changeling/get_antag_points_from_goals()
 	var/finalized_starting_points = ADV_CHANGELING_INITIAL_POINTS
 	for(var/datum/advanced_antag_goal/goal as anything in our_goals)
-		finalized_starting_points += round((goal.intensity * ADV_CHANGELING_POINTS_PER_INTENSITY) - 0.1) // round down
+		finalized_starting_points += (goal.intensity * ADV_CHANGELING_POINTS_PER_INTENSITY)
 
-	return min(finalized_starting_points, ADV_CHANGELING_MAX_POINTS)
+	return min(round(finalized_starting_points + 0.1), ADV_CHANGELING_MAX_POINTS)
 
 /datum/advanced_antag_datum/changeling/get_finalize_text()
 	var/starting_points = get_antag_points_from_goals()
