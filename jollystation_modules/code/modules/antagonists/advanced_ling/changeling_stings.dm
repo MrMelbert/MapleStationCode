@@ -31,7 +31,7 @@
 	name = "Temporary Transformation Sting"
 	desc = "We silently sting a human, injecting a retrovirus that forces them to transform. \
 		If the human is alive, the transformation is temporary, and lasts 4 minutes. Costs 50 chemicals."
-	helptext = "If the victim is conscious, the sting will take a second to complete, during which you must both remain still. \
+	helptext = "If the victim is conscious, the sting will take a second to complete, during which you must remain in range of them. \
 		The victim will transform much like a changeling would. Does not provide a warning to others. \
 		Mutations and quirks will not be transferred, and monkeys will become human."
 	button_icon_state = "sting_transform"
@@ -114,7 +114,7 @@
 /datum/action/changeling/sting/knock_out
 	name = "Knockout Sting"
 	desc = "After a short preparation, we sting our victim with a chemical that induces a short sleep after a short time. Costs 40 chemicals."
-	helptext = "The sting takes three seconds to prepare, during which you and the victim must not move. The victim will be made aware \
+	helptext = "The sting takes three seconds to prepare, during which you must remain in range of the victim. The victim will be made aware \
 		of the sting when complete, and will be able to call for help or attempt to run for a short period of time until falling asleep. \
 		The chemical takes about 20 seconds to kick in, and lasts for roughly 1 minute."
 	hud_icon = 'jollystation_modules/icons/hud/screen_changeling.dmi'
@@ -157,7 +157,7 @@
 	name = "Toxin Sting"
 	desc = "After a short preparation, we sting our victim with debilitating toxic chemicals, \
 		dealing roughly 50 toxins damage to the victim over time. Costs 30 chemicals."
-	helptext = "The sting takes a second to prepare, during which you and the victim must not move. \
+	helptext = "The sting takes a second to prepare, during which you must remain in range of the victim. \
 		The target will feel the toxins entering their body when the sting is complete, but will be unaware the sting itself occured."
 	icon_icon = 'jollystation_modules/icons/mob/actions/actions_changeling.dmi'
 	button_icon_state = "sting_poison"

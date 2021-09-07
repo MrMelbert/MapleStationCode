@@ -5,9 +5,9 @@
 	desc = "We evolve additional sacs of adrenaline throughout our body. Costs 40 chemicals."
 	chemical_cost = 40
 
-/// MELBERT TODO; this doesn't get up instantly cause stamcrit?
 /datum/action/changeling/adrenaline/sting_action(mob/living/user)
 	user.adjustStaminaLoss(-75)
+	/// MELBERT TODO; despite being instant, does not get up instantly, due to stam crit?
 	user.set_resting(FALSE, instant = TRUE)
 	user.SetStun(0)
 	user.SetImmobilized(0)
