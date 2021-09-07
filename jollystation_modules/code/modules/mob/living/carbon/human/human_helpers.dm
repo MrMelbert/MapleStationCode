@@ -92,7 +92,7 @@
 
 	var/overall_health = getBruteLoss() + getFireLoss() + getToxLoss() + getOxyLoss()
 	if(overall_health < 200 && stat == DEAD)
-		revive(full_heal = FALSE, admin_revive = FALSE, excess_healing = 10)
+		revive(FALSE, FALSE, 10)
 		if(revive_message)
 			visible_message(revive_message)
 	updatehealth()
