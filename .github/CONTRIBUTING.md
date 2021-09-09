@@ -463,7 +463,7 @@ All procs that are registered to listen for signals using `RegisterSignal()` mus
 ```
 This is to ensure that it is clear the proc handles signals and turns on a lint to ensure it does not sleep.
 
-Any sleeping behaviour that you need to perform inside a `SIGNAL_HANDLER` proc must be called asynchronously (e.g. with `INVOKE_ASYNC()`) or be redone to work asynchronously.
+Any sleeping behaviour that you need to perform inside a `SIGNAL_HANDLER` proc must be called asynchronously (e.g. with `INVOKE_ASYNC()`) or be redone to work asynchronously. 
 
 ### Enforcing parent calling
 When adding new signals to root level procs, eg;
@@ -576,7 +576,7 @@ Good:
 		off_overlay = iconstate2appearance(icon, "off")
 		broken_overlay = icon2appearance(broken_icon)
 	if (stat & broken)
-		add_overlay(broken_overlay)
+		add_overlay(broken_overlay) 
 		return
 	if (is_on)
 		add_overlay(on_overlay)
@@ -599,7 +599,7 @@ Bad:
 	if(isnull(our_overlays)
 		our_overlays = list("on" = iconstate2appearance(overlay_icon, "on"), "off" = iconstate2appearance(overlay_icon, "off"), "broken" = iconstate2appearance(overlay_icon, "broken"))
 	if (stat & broken)
-		add_overlay(our_overlays["broken"])
+		add_overlay(our_overlays["broken"]) 
 		return
 	...
 ```
@@ -781,7 +781,7 @@ Isn't that confusing?
 
 There is also an undocumented keyword called `static` that has the same behaviour as global but more correctly describes BYOND's behaviour. Therefore, we always use static instead of global where we need it, as it reduces suprise when reading BYOND code.
 
-### Byond Hellspawn
+### Byond Hellspawn 
 
 Put stuff that shouldn’t work but does, or should work but doesn’t here so we don’t forget about it.
 #### Icon hell

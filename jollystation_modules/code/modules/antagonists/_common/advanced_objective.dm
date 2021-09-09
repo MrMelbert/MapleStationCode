@@ -33,11 +33,11 @@
 
 /// Set our goal to our passed goal.
 /datum/advanced_antag_goal/proc/set_goal_text(goal)
-	src.goal = strip_html_simple(goal, TRAITOR_PLUS_MAX_GOAL_LENGTH)
+	src.goal = STRIP_HTML_SIMPLE(goal, TRAITOR_PLUS_MAX_GOAL_LENGTH)
 
 /// Set our goal to our passed goal.
 /datum/advanced_antag_goal/proc/set_note_text(notes)
-	src.notes = strip_html_simple(notes, TRAITOR_PLUS_MAX_NOTE_LENGTH)
+	src.notes = STRIP_HTML_SIMPLE(notes, TRAITOR_PLUS_MAX_NOTE_LENGTH)
 
 /// Set our intensity level to our passed intensity.
 /datum/advanced_antag_goal/proc/set_intensity(intensity)

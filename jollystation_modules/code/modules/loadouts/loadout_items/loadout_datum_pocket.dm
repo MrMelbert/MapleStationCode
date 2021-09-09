@@ -176,7 +176,7 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 
 /datum/loadout_item/pocket_items/dice_bag
 	name = "Dice Bag"
-	item_path = /obj/item/storage/pill_bottle/dice
+	item_path = /obj/item/storage/dice
 
 /datum/loadout_item/pocket_items/d1
 	name = "D1"

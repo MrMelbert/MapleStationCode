@@ -155,17 +155,17 @@
 /// Saniztize and set our name.
 /// name - the name we're changing this to
 /datum/advanced_antag_datum/proc/set_name(name)
-	src.name = strip_html_simple(name, MAX_NAME_LEN)
+	src.name = STRIP_HTML_SIMPLE(name, MAX_NAME_LEN)
 
 /// Sanitize and set our employer
 /// employer - the employer we're changing this to
 /datum/advanced_antag_datum/proc/set_employer(employer)
-	src.employer = strip_html_simple(employer, MAX_NAME_LEN)
+	src.employer = STRIP_HTML_SIMPLE(employer, MAX_NAME_LEN)
 
 /// Sanitize and set our backstory
 /// backstory - the backstory we're changing this to
 /datum/advanced_antag_datum/proc/set_backstory(backstory)
-	src.backstory = strip_html_simple(backstory, MAX_MESSAGE_LEN)
+	src.backstory = STRIP_HTML_SIMPLE(backstory, MAX_MESSAGE_LEN)
 
 /// Initialize a new goal and append it to our lazylist
 /datum/advanced_antag_datum/proc/add_advanced_goal()
