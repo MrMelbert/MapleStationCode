@@ -540,11 +540,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	features["head_tentacles"] = sanitize_inlist(features["head_tentacles"], GLOB.head_tentacles_list, "Long")
 
 	runechat_color = sanitize_hexcolor(runechat_color)
-	flavor_text = strip_html_simple(sanitize_text(flavor_text), MAX_MESSAGE_LEN)
-	security_records = strip_html_simple(sanitize_text(security_records), MAX_FLAVOR_LEN)
-	medical_records = strip_html_simple(sanitize_text(medical_records), MAX_FLAVOR_LEN)
-	general_records = strip_html_simple(sanitize_text(general_records), MAX_FLAVOR_LEN)
-	exploitable_info = strip_html_simple(sanitize_text(exploitable_info), MAX_FLAVOR_LEN)
+	flavor_text = STRIP_HTML_SIMPLE(sanitize_text(flavor_text), MAX_MESSAGE_LEN)
+	security_records = STRIP_HTML_SIMPLE(sanitize_text(security_records), MAX_FLAVOR_LEN)
+	medical_records = STRIP_HTML_SIMPLE(sanitize_text(medical_records), MAX_FLAVOR_LEN)
+	general_records = STRIP_HTML_SIMPLE(sanitize_text(general_records), MAX_FLAVOR_LEN)
+	exploitable_info = STRIP_HTML_SIMPLE(sanitize_text(exploitable_info), MAX_FLAVOR_LEN)
 
 	loadout_list = sanitize_loadout_list(update_loadout_list(loadout_list))
 	// NON-MODULE CHANGE END

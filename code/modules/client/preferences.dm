@@ -1431,27 +1431,27 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("flavor_text")
 					var/flavor_txt = input(usr, "Set your flavor text on examine", "Flavor Text", flavor_text) as message|null
 					if(flavor_txt)
-						flavor_text = strip_html_simple(flavor_txt, MAX_MESSAGE_LEN)
+						flavor_text = STRIP_HTML_SIMPLE(flavor_txt, MAX_MESSAGE_LEN)
 
 				if("general_records")
 					var/gen_record = input(usr, "Set your general records", "General Records", general_records) as message|null
 					if(gen_record)
-						general_records = strip_html_simple(gen_record, MAX_FLAVOR_LEN)
+						general_records = STRIP_HTML_SIMPLE(gen_record, MAX_FLAVOR_LEN)
 
 				if("security_records")
 					var/sec_record = input(usr, "Set your security records", "Security Records", security_records) as message|null
 					if(sec_record)
-						security_records = strip_html_simple(sec_record, MAX_FLAVOR_LEN)
+						security_records = STRIP_HTML_SIMPLE(sec_record, MAX_FLAVOR_LEN)
 
 				if("medical_records")
 					var/med_record = input(usr, "Set your medical records", "Medical Records", medical_records) as message|null
 					if(med_record)
-						medical_records = strip_html_simple(med_record, MAX_FLAVOR_LEN)
+						medical_records = STRIP_HTML_SIMPLE(med_record, MAX_FLAVOR_LEN)
 
 				if("exploitable_info")
 					var/expl_info = input(usr, "Set your exploitable information, this rarely will be showed to antagonists", "Exploitable Info", exploitable_info) as message|null
 					if(expl_info)
-						exploitable_info = strip_html_simple(expl_info, MAX_FLAVOR_LEN)
+						exploitable_info = STRIP_HTML_SIMPLE(expl_info, MAX_FLAVOR_LEN)
 				// NON-MODULE CHANGES END
 
 				if("hair")
