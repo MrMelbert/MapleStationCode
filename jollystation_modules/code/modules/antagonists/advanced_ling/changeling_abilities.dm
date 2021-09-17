@@ -1,9 +1,17 @@
 // -- New changeling abilities / passives --
 
+// Defines for "Nervous System Realignment".
 #define PAIN_MOD_LING_KEY "ling_ability"
 #define PAIN_MOD_LING_AMOUNT 0.75
 #define PAIN_CLEAR_COOLDOWN 2 MINUTES
 
+// Defines for Adaptive Mimic Voice.
+/// Mob trait that makes the mob behave as if they passively had a syndicate voice changer.
+#define TRAIT_VOICE_MATCHES_ID "voice_matches_id"
+/// Source for the mob trait.
+#define CHANGELING_ABILITY "trait_source_ling"
+
+// Defines for "Uplift Human".
 #define UPLIFT_COOLDOWN 20 MINUTES
 
 /datum/action/changeling/mimicvoice
@@ -19,28 +27,18 @@
 
 /datum/action/changeling/passive_mimicvoice/on_purchase(mob/user, is_respec)
 	. = ..()
-	if(!ishuman(user))
-		return
-
-	var/mob/living/carbon/human/our_ling = user
-	to_chat(our_ling, span_green("Our vocal glands will now always mimic the voice of your visible identity."))
-	our_ling.voice_matches_id = TRUE
+	to_chat(user, span_green("Our vocal glands will now always mimic the voice of your visible identity."))
+	ADD_TRAIT(user, TRAIT_VOICE_MATCHES_ID, CHANGELING_ABILITY)
 
 /datum/action/changeling/passive_mimicvoice/Remove(mob/user)
 	. = ..()
-	if(!ishuman(user))
-		return
+	to_chat(user, span_green("Our vocal glands will now no longer mimic the voice of your visible identity."))
+	REMOVE_TRAIT(user, TRAIT_VOICE_MATCHES_ID, CHANGELING_ABILITY)
 
-	var/mob/living/carbon/human/our_ling = user
-	to_chat(our_ling, span_green("Our vocal glands will now no longer mimic the voice of your visible identity."))
-	our_ling.voice_matches_id = FALSE
-
-/mob/living/carbon/human
-	var/voice_matches_id = FALSE
-
+/// Extension of GetVoice for TRAIT_VOICE_MATCHES_ID.
 /mob/living/carbon/human/GetVoice()
 	. = ..()
-	if(voice_matches_id)
+	if(HAS_TRAIT(src, TRAIT_VOICE_MATCHES_ID))
 		var/obj/item/card/id/idcard = wear_id.GetID()
 		if(istype(idcard))
 			return idcard.registered_name
@@ -97,6 +95,9 @@
 		The victim gains genetic points equals to half our max genetics points. This abilities goes on a very long cooldown after use, and can only be used twice."
 	chemical_cost = 0
 	dna_cost = 4
+	/// Whether we're currently uplifting them
+	var/is_uplifting = FALSE
+	/// The cooldown for uplifting
 	COOLDOWN_DECLARE(uplift_cooldown)
 
 /datum/action/changeling/grant_powers/can_sting(mob/living/user, mob/target)
@@ -121,7 +122,7 @@
 	if(!target.mind)
 		to_chat(user, span_warning("This creature has no mind or soul to uplift!"))
 		return FALSE
-	if(our_ling.isabsorbing)
+	if(is_uplifting)
 		to_chat(user, span_warning("We are already attemping to uplift this creature!"))
 		return FALSE
 	if(target.mind.has_antag_datum(/datum/antagonist/changeling))
@@ -133,7 +134,7 @@
 /datum/action/changeling/grant_powers/sting_action(mob/user, mob/target)
 	var/datum/antagonist/changeling/our_ling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/mob/living/carbon/carbon_target = target
-	our_ling.isabsorbing = TRUE
+	is_uplifting = TRUE
 	for(var/i in 1 to 3)
 		switch(i)
 			if(1)
@@ -148,7 +149,7 @@
 		SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("Grant Powers", "[i]"))
 		if(!do_mob(user, target, (i * 8 SECONDS)))
 			to_chat(user, span_warning("Our uplifting of [target] has been interrupted!"))
-			our_ling.isabsorbing = FALSE
+			is_uplifting = FALSE
 			return
 
 	SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("Grant Powers", "4"))
@@ -178,7 +179,7 @@
 	to_chat(target, span_green("You are weaker than them, inheriting only half of their genetic power potential. You are to assist them wherever possible."))
 
 	our_ling.changeling_uplifts++
-	our_ling.isabsorbing = FALSE
+	is_uplifting = FALSE
 	COOLDOWN_START(src, uplift_cooldown, UPLIFT_COOLDOWN)
 
 #undef PAIN_CLEAR_COOLDOWN
