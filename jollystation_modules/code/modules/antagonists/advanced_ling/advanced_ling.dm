@@ -1,11 +1,4 @@
 /// -- Advanced changelings. --
-
-/datum/antagonist/changeling/finalize_antag()
-	create_actions()
-	reset_powers()
-	create_initial_profile()
-	owner.current.grant_all_languages(FALSE, FALSE, TRUE) //Grants omnitongue. We are able to transform our body after all.
-
 /// The Advanecd Traitor antagonist datum.
 /datum/antagonist/changeling/advanced
 	name = "Advanced Changeling"
@@ -42,10 +35,6 @@
 /// Greet the antag with big menacing text.
 /datum/antagonist/changeling/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
-
-/datum/antagonist/changeling/advanced/finalize_antag()
-	. = ..()
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ling_aler.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/changeling/advanced/roundend_report()
 	var/list/result = list()

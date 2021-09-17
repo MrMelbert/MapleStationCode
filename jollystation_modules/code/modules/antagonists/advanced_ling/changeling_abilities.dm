@@ -158,6 +158,7 @@
 
 	var/datum/antagonist/changeling/fresh/new_ling_datum = target.mind.add_antag_datum(/datum/antagonist/changeling/fresh)
 
+	to_chat(target, span_boldannounce("You are now a freshly born changeling! You were once human, but uplifted into the changeling hive by [user]. You are weaker than them, but assist them where you can."))
 	new_ling_datum.granter = WEAKREF(user)
 	new_ling_datum.total_chem_storage = round(0.66 * our_ling.total_chem_storage)
 	new_ling_datum.chem_storage = new_ling_datum.total_chem_storage
@@ -179,22 +180,6 @@
 	our_ling.changeling_uplifts++
 	our_ling.isabsorbing = FALSE
 	COOLDOWN_START(src, uplift_cooldown, UPLIFT_COOLDOWN)
-
-/datum/antagonist/changeling
-	var/changeling_uplifts = 0
-
-/datum/antagonist/changeling/fresh
-	name = "Fresh Changeling"
-	you_are_greet = FALSE
-	show_in_antagpanel = FALSE
-	give_objectives = FALSE
-	soft_antag = TRUE
-	var/datum/weakref/granter
-
-/datum/antagonist/changeling/fresh/greet()
-	if(you_are_greet)
-		to_chat(owner, span_boldannounce("You are a fresh changeling! You were once human, but uplifted into the changeling hive by another changeling. You are weaker than them, but assist them where you can."))
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ling_aler.ogg', 100, TRUE, 42000, pressure_affected = FALSE, use_reverb = FALSE)
 
 #undef PAIN_CLEAR_COOLDOWN
 #undef PAIN_MOD_LING_KEY
