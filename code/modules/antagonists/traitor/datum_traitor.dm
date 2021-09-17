@@ -50,12 +50,6 @@
 
 /datum/antagonist/traitor/on_gain()
 	owner.special_role = job_rank
-
-	if(give_uplink)
-		owner.give_uplink(silent = TRUE, antag_datum = src)
-
-	uplink = owner.find_syndicate_uplink()
-
 	if(give_objectives)
 		forge_traitor_objectives()
 		forge_ending_objective()
