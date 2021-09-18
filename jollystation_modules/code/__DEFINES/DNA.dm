@@ -5,6 +5,6 @@
 #define SPECIES_REPLOID "reploid"
 
 //Mutation Defines
-#define COLD_IMMUNITY
-#define HOT_IMMUNITY
-#define VACUUM_IMMUNITY
+#define COLD_IMMUNITY /datum/mutation/human/cold_adaptation
+#define HOT_IMMUNITY /datum/mutation/human/heat_adaptation
+#define VACUUM_IMMUNITY /datum/mutation/human/vacuum_adaptation
