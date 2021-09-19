@@ -116,7 +116,6 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\datums\dna.dm
 - code\datums\id_trim\jobs.dm
 - code\datums\mapgen\Cavegens\LavalandGenerator.dm
-- code\datums\mutations\space_adaptation.dm
 - code\datums\greyscale\json_configs\plushie_lizard.json
 - code\game\world.dm
 - code\game\gamemodes\objective_items.dm
