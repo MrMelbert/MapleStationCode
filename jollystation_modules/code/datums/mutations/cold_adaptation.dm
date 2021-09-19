@@ -3,7 +3,7 @@
 	name = "Frigid Adaptation"
 	desc = "A pecuilar mutation that allows the host to be completely resistant to absolute zero."
 	quality = POSITIVE
-	difficulty = 16
+	difficulty = 32
 	text_gain_indication = "<span class='notice'>Your body feels warm!</span>"
 	time_coeff = 5
 	instability = 10

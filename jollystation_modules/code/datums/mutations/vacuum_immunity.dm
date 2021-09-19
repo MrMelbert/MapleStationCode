@@ -14,7 +14,7 @@
 		return
 	ADD_TRAIT(owner, TRAIT_RESISTLOWPRESSURE, GENETIC_MUTATION)
 	owner.physiology.oxy_mod *= 2.5
-	owner.set_pain_mod(PAIN_MOD_QUIRK, 2.25)
+	owner.set_pain_mod(PAIN_MOD_QUIRK, 1.75)
 
 /datum/mutation/human/vacuum_adaptation/on_losing(mob/living/carbon/human/owner)
 	if(..())

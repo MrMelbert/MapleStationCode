@@ -3,7 +3,7 @@
 	name = "Swealtering Adaptation"
 	desc = "A pecuilar mutation that allows the host to be completely resistant to the hottest tempeatures known to man."
 	quality = POSITIVE
-	difficulty = 16
+	difficulty = 32
 	text_gain_indication = "<span class='notice'>Your body feels cool!</span>"
 	time_coeff = 5
 	instability = 10
