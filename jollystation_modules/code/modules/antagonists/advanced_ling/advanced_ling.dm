@@ -32,7 +32,6 @@
 	linked_advanced_datum.possible_objectives = objectives_to_choose
 	return ..()
 
-/// Greet the antag with big menacing text.
 /datum/antagonist/changeling/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
 
@@ -112,7 +111,7 @@
 
 /datum/advanced_antag_datum/changeling/get_finalize_text()
 	var/starting_points = get_antag_points_from_goals()
-	return "Finalizing will give your your cellular emproium with [starting_points] genetic points, and [round((starting_points * ADV_CHANGELING_CHEM_PER_POINTS) + (10 * no_hard_absorb))] total chemical storage. [no_hard_absorb ? "You will not be able to absorb humans. ":""]You can still edit your goals after finalizing!"
+	return "Finalizing will give you your cellular emporium with [starting_points] genetic points, and [round((starting_points * ADV_CHANGELING_CHEM_PER_POINTS) + (10 * no_hard_absorb))] total chemical storage. [no_hard_absorb ? "You will not be able to absorb humans. ":""]You can still edit your goals after finalizing!"
 
 /datum/advanced_antag_datum/changeling/post_finalize_actions()
 	. = ..()
@@ -120,6 +119,7 @@
 		return
 
 	if(no_hard_absorb)
+		our_changeling.all_powers -= /datum/action/changeling/absorb_dna
 		var/datum/action/changeling/absorb_dna/dna_power = locate() in our_changeling.purchasedpowers
 		dna_power?.Remove(linked_antagonist.owner.current)
 

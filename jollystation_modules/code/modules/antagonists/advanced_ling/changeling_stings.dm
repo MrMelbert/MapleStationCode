@@ -135,7 +135,7 @@
 		return FALSE
 
 	if(!do_mob(user, target, 3 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, .proc/check_range, user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
-		to_chat(user, span_warning("We could not complete the sting on [target]. They are not aware of the sting yet."))
+		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
 	return TRUE
 
@@ -156,7 +156,7 @@
 /datum/action/changeling/sting/poison
 	name = "Toxin Sting"
 	desc = "After a short preparation, we sting our victim with debilitating toxic chemicals, \
-		dealing roughly 50 toxins damage to the victim over time. Costs 30 chemicals."
+		dealing roughly 50 toxins damage to the victim over time, as well as fatiguing them and causing brain damage. Costs 30 chemicals."
 	helptext = "The sting takes a second to prepare, during which you must remain in range of the victim. \
 		The target will feel the toxins entering their body when the sting is complete, but will be unaware the sting itself occured."
 	icon_icon = 'jollystation_modules/icons/mob/actions/actions_changeling.dmi'
@@ -176,7 +176,7 @@
 		return FALSE
 
 	if(!do_mob(user, target, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, .proc/check_range, user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
-		to_chat(user, span_warning("We could not complete the sting on [target]."))
+		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
 	return TRUE
 
@@ -184,6 +184,7 @@
 	log_combat(user, target, "stung", "poison sting")
 	target.reagents?.add_reagent(/datum/reagent/toxin, 10)
 	target.reagents?.add_reagent(/datum/reagent/toxin/formaldehyde, 10)
+	target.reagents?.add_reagent(/datum/reagent/consumable/ethanol/neurotoxin, 10)
 	return TRUE
 
 /datum/action/changeling/sting/poison/sting_feedback(mob/user, mob/target)

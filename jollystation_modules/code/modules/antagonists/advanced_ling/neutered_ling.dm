@@ -81,8 +81,11 @@
 
 /// Successfully neutering the changeling removes the changeling datum and gives them the neutered changelings datum.
 /datum/surgery_step/neuter_ling/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	if(target.mind?.has_antag_datum(/datum/antagonist/changeling/neutered))
-		to_chat(user, span_notice("This changeling headslug has already been neutered!"))
+	if(target.mind?.has_antag_datum(/datum/antagonist/changeling/neutered, FALSE))
+		to_chat(user, span_notice("The changeling headslug inside has already been neutered!"))
+		return TRUE
+	if(target.mind?.has_antag_datum(/datum/antagonist/fallen_changeling))
+		to_chat(user, span_notice("The changeling headslug inside is dead!"))
 		return TRUE
 
 	if(target.mind?.has_antag_datum(/datum/antagonist/changeling))
@@ -92,9 +95,12 @@
 			span_notice("[user] successfully locates and neuters the headslug within [target]'s chest!"),
 			span_notice("[user] finishes working within [target]'s chest."))
 
-		target.mind.remove_antag_datum(/datum/antagonist/changeling)
+		var/datum/antagonist/changeling/old_ling_datum = target.mind.has_antag_datum(/datum/antagonist/changeling)
 		var/datum/antagonist/changeling/new_ling_datum = target.mind.add_antag_datum(/datum/antagonist/changeling/neutered)
+		new_ling_datum.changeling_id = old_ling_datum.changeling_id
+
 		target.do_jitter_animation(30)
+		target.mind.remove_antag_datum(/datum/antagonist/changeling)
 
 		var/revival_message_end = ""
 		if(target.getorganslot(ORGAN_SLOT_HEART))

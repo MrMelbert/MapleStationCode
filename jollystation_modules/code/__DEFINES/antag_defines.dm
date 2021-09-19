@@ -36,6 +36,28 @@
 /// How much chem storage a changeling gets per genetic point
 #define ADV_CHANGELING_CHEM_PER_POINTS 7.5
 
+// Defines for the changeling ability Adaptive Mimic Voice.
+/// Mob trait that makes the mob behave as if they passively had a syndicate voice changer.
+#define TRAIT_VOICE_MATCHES_ID "voice_matches_id"
+/// Source for the mob trait.
+#define CHANGELING_ABILITY "trait_source_ling"
+
+// Defines for Hivemind Chat, for changelings.
+/// Mob trait for linglinked mobs.
+#define TRAIT_LING_LINKED "ling_linked"
+/// Mob trait for hivemind muted mobs.
+#define TRAIT_LING_MUTE "ling_muted"
+/// Binary flags for ling hivemind chat statuses.
+#define LING_HIVE_NONE 0 // Not a ling
+#define LING_HIVE_LING 1 // Is a ling
+#define LING_HIVE_NOT_AWOKEN 2 // Is a ling, but no hivemind
+#define LING_HIVE_OUTSIDER 3 // Not a ling, but linglinked
+
+/// Changeling hivemind mode stuff.
+#define MODE_CHANGELING "changeling"
+#define MODE_KEY_CHANGELING "g"
+#define MODE_TOKEN_CHANGELING ":g"
+
 /// Max amount of goals an advanced traitor can add.
 #define ADV_TRAITOR_MAX_GOALS 5
 /// Max amount of similar objectives an advanced traitor can add.
