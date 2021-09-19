@@ -13,7 +13,7 @@
 	if(..())
 		return
 	ADD_TRAIT(owner, TRAIT_RESISTCOLD, GENETIC_MUTATION)
-	owner.physiology.cold_mod *= 2
+	owner.physiology.heat_mod *= 2
 
 /datum/mutation/human/cold_adaptation/on_losing(mob/living/carbon/human/owner)
 	if(..())

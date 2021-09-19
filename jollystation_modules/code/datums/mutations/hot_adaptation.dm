@@ -13,10 +13,10 @@
 	if(..())
 		return
 	ADD_TRAIT(owner, TRAIT_RESISTHEAT, GENETIC_MUTATION)
-	owner.physiology.heat_mod *= 2
+	owner.physiology.cold_mod *= 2
 
 /datum/mutation/human/heat_adaptation/on_losing(mob/living/carbon/human/owner)
 	if(..())
 		return
 	REMOVE_TRAIT(owner, TRAIT_RESISTHEAT, GENETIC_MUTATION)
-	owner.physiology.heat_mod /= 2
+	owner.physiology.cold_mod /= 2
