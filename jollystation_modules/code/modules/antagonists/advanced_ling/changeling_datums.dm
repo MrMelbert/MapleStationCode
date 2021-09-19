@@ -52,6 +52,7 @@
 	give_objectives = FALSE
 	you_are_greet = FALSE
 	hivemind_link_awoken = FALSE
+	antag_moodlet = /datum/mood_event/fallen_changeling
 	dna_max = 1
 	sting_range = 1
 	chem_recharge_rate = 0.1
@@ -90,6 +91,35 @@
 		purchasedpowers += sting
 		sting.on_purchase(owner.current, TRUE)
 
+/datum/antagonist/changeling/neutered/roundend_report()
+	var/list/result = list()
+
+	result += printplayer(owner)
+	result += "<b>[owner]</b> was <b>[changeling_id]</b>, a changeling who had their powers neutered!"
+
+	return result.Join("<br>")
+
+/datum/antagonist/fallen_changeling
+	show_in_antagpanel = FALSE
+	soft_antag = TRUE
+	/// Our changeling ID before we lost everything.
+	var/previous_changeling_id = ""
+	/// Weakref to the mind of the changeling that stole our powers.
+	var/datum/weakref/changeling_who_robbed_us
+
+/datum/antagonist/fallen_changeling/roundend_report()
+	var/list/result = list()
+
+	var/datum/mind/robber_mind = changeling_who_robbed_us?.resolve()
+	var/datum/antagonist/changeling/robber_ling_datum = is_any_changeling(robber_mind.current)
+
+	result += printplayer(owner)
+	if(robber_ling_datum)
+		result += "<b>[owner]</b> was <b>[previous_changeling_id]</b>, a changeling who had their powers stolen by <b>[robber_ling_datum.changeling_id]</b> ([robber_mind])!"
+	else
+		result += "<b>[owner]</b> was <b>[previous_changeling_id]</b>, a changeling who had their powers stolen!"
+
+	return result.Join("<br>")
 
 /// Fresh changeling, from the Uplift Human ability.
 /datum/antagonist/changeling/fresh // MELBERT TODO; roundend report
@@ -99,11 +129,22 @@
 	give_objectives = FALSE
 	soft_antag = TRUE
 	hivemind_link_awoken = FALSE
-	/// Weakref to whoever made us into a ling
+	/// Weakref to a mob of whoever made us into a ling
 	var/datum/weakref/granter
 
 /datum/antagonist/changeling/fresh/play_changeling_sound()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ling_aler.ogg', 100, TRUE, 42000, pressure_affected = FALSE, use_reverb = FALSE)
+
+/datum/antagonist/changeling/fresh/roundend_report()
+	var/list/result = list()
+
+	var/datum/mind/parent_ling = granter?.resolve()
+	var/datum/antagonist/changeling/parent_ling_datum = is_any_changeling(parent_ling.current)
+
+	result += printplayer(owner)
+	result += "<b>[owner]</b> was <b>[changeling_id]</b>, a freshly born changeling created by <b>[parent_ling_datum.changeling_id]</b> ([parent_ling])."
+
+	return result.Join("<br>")
 
 /// UI pinpointer that directs a fresh changeling to the hive leader.
 /datum/status_effect/agent_pinpointer/changeling_spawn
@@ -113,8 +154,10 @@
 	range_fuzz_factor = 0
 
 /datum/status_effect/agent_pinpointer/changeling_spawn/scan_for_target()
-	var/datum/antagonist/changeling/fresh/our_ling_datum = owner.mind?.has_antag_datum(/datum/antagonist/changeling/fresh)
-	scan_target = our_ling_datum?.granter?.resolve()
+	var/datum/antagonist/changeling/fresh/our_ling_datum = is_fresh_changeling(owner)
+	var/datum/mind/our_parent_mind = our_ling_datum?.granter?.resolve()
+	var/mob/living/our_living_parent = our_parent_mind.current
+	scan_target = (istype(our_living_parent) ? our_living_parent : null)
 
 /atom/movable/screen/alert/status_effect/agent_pinpointer/changeling_spawn
 	name = "Hive Lead Scent"

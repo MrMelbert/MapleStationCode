@@ -36,6 +36,14 @@
 /// How much chem storage a changeling gets per genetic point
 #define ADV_CHANGELING_CHEM_PER_POINTS 7.5
 
+/// Some is_helpers for changelings. Bear in mind these return the changeling antag datum that is found.
+#define is_any_changeling(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/changeling))
+#define is_adult_changeling(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/changeling, FALSE) || mob?.mind?.has_antag_datum(/datum/antagonist/changeling/advanced, FALSE))
+#define is_fresh_changeling(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/changeling/fresh))
+#define is_neutered_changeling(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/changeling/neutered))
+#define is_fallen_changeling(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/fallen_changeling))
+#define is_defeated_changeling(mob) (is_fallen_changeling(mob) || is_neutered_changeling(mob))
+
 // Defines for the changeling ability Adaptive Mimic Voice.
 /// Mob trait that makes the mob behave as if they passively had a syndicate voice changer.
 #define TRAIT_VOICE_MATCHES_ID "voice_matches_id"

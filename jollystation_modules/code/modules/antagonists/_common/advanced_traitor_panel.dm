@@ -338,8 +338,9 @@ If you don't set any similar objectives, success won't even be checked at the en
 
 /datum/advanced_antag_panel/changeling/ui_data(mob/user)
 	. = ..()
-	var/datum/advanced_antag_datum/changeling/our_ling = owner_datum
-	.["cannot_absorb"] = our_ling.no_hard_absorb
+	var/datum/advanced_antag_datum/changeling/ling_datum = owner_datum
+	.["cannot_absorb"] = ling_datum.no_hard_absorb
+	.["changeling_id"] = ling_datum.our_changeling.changeling_id
 
 /datum/advanced_antag_panel/changeling/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
@@ -348,6 +349,11 @@ If you don't set any similar objectives, success won't even be checked at the en
 
 	/// Ling Stuff
 	switch(action)
+		if("set_ling_id")
+			var/datum/advanced_antag_datum/changeling/ling_datum = owner_datum
+			ling_datum.our_changeling.changeling_id = params["changeling_id"]
+			. = TRUE
+
 		if("toggle_absorb")
 			var/datum/advanced_antag_datum/changeling/our_ling = owner_datum
 			if(our_ling.finalized)

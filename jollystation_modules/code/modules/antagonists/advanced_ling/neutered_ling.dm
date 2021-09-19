@@ -81,21 +81,21 @@
 
 /// Successfully neutering the changeling removes the changeling datum and gives them the neutered changelings datum.
 /datum/surgery_step/neuter_ling/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	if(target.mind?.has_antag_datum(/datum/antagonist/changeling/neutered, FALSE))
+	if(is_neutered_changeling(target))
 		to_chat(user, span_notice("The changeling headslug inside has already been neutered!"))
 		return TRUE
-	if(target.mind?.has_antag_datum(/datum/antagonist/fallen_changeling))
+	if(is_fallen_changeling(target))
 		to_chat(user, span_notice("The changeling headslug inside is dead!"))
 		return TRUE
 
-	if(target.mind?.has_antag_datum(/datum/antagonist/changeling))
+	var/datum/antagonist/changeling/old_ling_datum = is_any_changeling(target)
+	if(old_ling_datum)
 		// It was a ling, good job bucko! The changeling is neutered.
 		display_results(user, target,
 			span_notice("You locate and succeed in neutering the headslug within [target]'s chest."),
 			span_notice("[user] successfully locates and neuters the headslug within [target]'s chest!"),
 			span_notice("[user] finishes working within [target]'s chest."))
 
-		var/datum/antagonist/changeling/old_ling_datum = target.mind.has_antag_datum(/datum/antagonist/changeling)
 		var/datum/antagonist/changeling/new_ling_datum = target.mind.add_antag_datum(/datum/antagonist/changeling/neutered)
 		new_ling_datum.changeling_id = old_ling_datum.changeling_id
 
@@ -146,12 +146,11 @@
 		span_notice("[user] fails to locate a headslug!"), TRUE)
 
 	// ...And if there is, the changeling gets pissed
-	if(target.mind?.has_antag_datum(/datum/antagonist/changeling))
-		to_chat(target, span_green("[user] has failed to neuter our changeling abilities! We feel invigorated!"))
+	var/datum/antagonist/changeling/our_changeling = is_any_changeling(target)
+	if(our_changeling)
+		to_chat(target, span_changeling("[user] has attempted and failed to neuter our changeling abilities! We may have a chance to break free!"))
 		target.do_jitter_animation(50)
-		var/datum/antagonist/changeling/our_changeling = target.mind?.has_antag_datum(/datum/antagonist/changeling)
-		if(our_changeling)
-			our_changeling.chem_charges = our_changeling.total_chem_storage
+		our_changeling.chem_charges = our_changeling.total_chem_storage
 
 	// Causes organ damage nonetheless
 	for(var/obj/item/organ/stabbed_organ as anything in target.internal_organs)

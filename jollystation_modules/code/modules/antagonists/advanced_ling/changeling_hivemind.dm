@@ -5,7 +5,7 @@
 	return LING_HIVE_NONE
 
 /mob/living/ling_hive_check()
-	var/datum/antagonist/changeling/our_ling = mind?.has_antag_datum(/datum/antagonist/changeling)
+	var/datum/antagonist/changeling/our_ling = is_any_changeling(src)
 	if(our_ling)
 		if(our_ling.hivemind_link_awoken)
 			return LING_HIVE_LING
@@ -33,12 +33,13 @@
 
 	switch(user.ling_hive_check())
 		if(LING_HIVE_LING, LING_HIVE_OUTSIDER)
-			var/datum/antagonist/adult_changeling = user.mind.has_antag_datum(/datum/antagonist/changeling) || user.mind.has_antag_datum(/datum/antagonist/fallen_changeling)
-			send_mind_message(user, span_changeling("[span_bold("[adult_changeling || "Outsider"] [user.mind]")]: [message]"))
-			user.log_talk(message, LOG_SAY, tag = "[adult_changeling || "Outsider"] [user.mind]")
+			var/datum/antagonist/changeling/valid_antag = is_any_changeling(user)
+			var/datum/antagonist/other_valid_antag = is_fallen_changeling(user)
+			send_mind_message(user, span_changeling("[span_bold("[valid_antag || other_valid_antag || "Outsider"] [user.mind]")] [valid_antag?.changeling_id ? "([span_italics(valid_antag.changeling_id)])" : ""]: [message]"))
+			user.log_talk(message, LOG_SAY, tag = "changeling hivemind")
 
 		if(LING_HIVE_NOT_AWOKEN)
-			to_chat(user, span_changeling("Our senses have not evolved enough to be able to communicate via the hivemind..."))
+			to_chat(user, span_changeling("Our senses have not evolved enough to be able to communicate via the hivemind."))
 
 	return FALSE
 
@@ -52,9 +53,10 @@
 				switch(global_mob.ling_hive_check())
 					if(LING_HIVE_LING, LING_HIVE_OUTSIDER)
 						to_chat(global_mob, message)
+
 					if(LING_HIVE_NOT_AWOKEN)
-						if(prob(33))
-							to_chat(global_mob, span_changeling("We can faintly sense an outsider trying to communicate through the hivemind..."))
+						if(prob(12))
+							to_chat(global_mob, span_changeling("We can faintly sense someone communicating through the hivemind..."))
 
 // BZ metabolites mute the ling hivemind.
 /datum/reagent/bz_metabolites/on_mob_metabolize(mob/living/carbon/user)

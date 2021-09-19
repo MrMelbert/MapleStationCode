@@ -6,6 +6,7 @@
 	hijack_speed = 0.5
 	give_objectives = FALSE
 	you_are_greet = FALSE
+	hivemind_link_awoken = FALSE
 	/// List of objectives changelings can get in addition to the base ones
 	var/static/list/ling_objectives = list(
 		"absorb" = /datum/objective/absorb,
@@ -35,12 +36,16 @@
 /datum/antagonist/changeling/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
 
+/datum/antagonist/changeling/advanced/finalize_antag()
+	hivemind_link_awoken = TRUE
+	. = ..()
+
 /datum/antagonist/changeling/advanced/roundend_report()
 	var/list/result = list()
 	var/datum/advanced_antag_datum/changeling/our_ling = linked_advanced_datum
 
 	result += printplayer(owner)
-	result += "<b>[owner]</b> was a/an <b>[our_ling.name]</b>[our_ling.employer? " employed by <b>[our_ling.employer]</b>":""]."
+	result += "<b>[owner]</b> was <b>[changeling_id]</b>, a/an <b>[our_ling.name]</b>[our_ling.employer? " employed by <b>[our_ling.employer]</b>":""]."
 	if(our_ling.backstory)
 		result += "<b>[owner]'s</b> backstory was the following: <br>[our_ling.backstory]"
 
@@ -64,9 +69,9 @@
 		if(bought_powers.len)
 			result += span_bold("The changeling aquired the following powers: [english_list(bought_powers)].")
 		else
-			result += span_bold("The [name] never aquired any additional changeling powers!")
+			result += span_bold("The changeling never aquired any additional changeling powers!")
 	else
-		result += span_bold("The [name] never recieved their changeling powers! ...Why?")
+		result += span_bold("The changeling never recieved their changeling powers! ...Why?")
 
 	return result.Join("<br>")
 

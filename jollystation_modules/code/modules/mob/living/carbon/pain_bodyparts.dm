@@ -211,8 +211,8 @@
 	if(!.)
 		return FALSE
 
-	if(amount > 10)
-		owner.apply_damage(pain / 3, BRAIN)
+	if(amount > 5)
+		owner.apply_damage(pain / 5, BRAIN)
 
 	return TRUE
 

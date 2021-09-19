@@ -139,7 +139,7 @@
 			else if(goal.intensity == 0)
 				message_admins("Potential error: [ADMIN_LOOKUPFLW(antag)] finalized an intensity 0 goal: [goal.goal]")
 		else if(goal.intensity > 0)
-			message_admins("Potential exploit: [ADMIN_LOOKUPFLW(antag)] finalized an intensity [goal.intensity] goal with no goal text. Potential exploit of goals for extra TC.")
+			message_admins("Potential exploit: [ADMIN_LOOKUPFLW(antag)] finalized an intensity [goal.intensity] goal with no goal text. Potential exploit of goals for extra points.")
 		else
 			message_admins("Potential error: [ADMIN_LOOKUPFLW(antag)] finalized a goal with no goal text.")
 

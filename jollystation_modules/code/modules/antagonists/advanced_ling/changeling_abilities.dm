@@ -7,6 +7,8 @@
 
 // Defines for "Uplift Human".
 #define UPLIFT_COOLDOWN 20 MINUTES
+// Defines for "Hivemind Link".
+#define HIVELINK_DURATION 10 MINUTES
 
 /datum/action/changeling/mimicvoice
 	name = "Targeted Mimic Voice"
@@ -96,7 +98,7 @@
 	helptext = "Requires the victim be dead or unconscious. On success, the victim is implanted with a changeling headslug, granting them changling powers. \
 		The victim gains genetic points equals to half our max genetics points. This abilities goes on a very long cooldown after use, and can only be used twice."
 	chemical_cost = 0
-	dna_cost = 4
+	dna_cost = 3
 	/// Whether we're currently uplifting them
 	var/is_uplifting = FALSE
 	/// The cooldown for uplifting
@@ -108,8 +110,8 @@
 		return
 
 	var/mob/living/carbon/target = user.pulling
-	var/datum/antagonist/changeling/our_ling = user.mind?.has_antag_datum(/datum/antagonist/changeling)
-	var/datum/antagonist/changeling/fresh/their_ling = target?.mind?.has_antag_datum(/datum/antagonist/changeling/fresh)
+	var/datum/antagonist/changeling/our_ling = is_any_changeling(user)
+	var/datum/antagonist/changeling/fresh/their_ling = is_fresh_changeling(user)
 
 	if(!COOLDOWN_FINISHED(src, uplift_cooldown))
 		to_chat(user, span_warning("We uplifted someone recently, and must wait [round(uplift_cooldown / (60 * 60), 0.1)] minutes to regenerate a new headslug."))
@@ -129,17 +131,17 @@
 	if(is_uplifting)
 		to_chat(user, span_warning("We are already attemping to uplift this creature!"))
 		return FALSE
-	if(their_ling?.granter?.resolve() == user)
+	if(their_ling?.granter?.resolve() == user.mind)
 		to_chat(user, span_warning("You already uplifted this creature!"))
 		return FALSE
-	if(target.mind.has_antag_datum(/datum/antagonist/changeling))
+	if(is_any_changeling(target))
 		to_chat(user, span_warning("You sense this creature already has a changeling headslug within!"))
 		return FALSE
 
 	return TRUE
 
 /datum/action/changeling/grant_powers/sting_action(mob/user)
-	var/datum/antagonist/changeling/our_ling = user.mind.has_antag_datum(/datum/antagonist/changeling)
+	var/datum/antagonist/changeling/our_ling = is_any_changeling(user)
 	var/mob/living/target = user.pulling
 	is_uplifting = TRUE
 
@@ -185,10 +187,10 @@
 	return TRUE
 
 /datum/action/changeling/grant_powers/proc/setup_new_ling(mob/living/carbon/human/target)
-	var/datum/antagonist/changeling/our_ling = owner.mind.has_antag_datum(/datum/antagonist/changeling)
+	var/datum/antagonist/changeling/our_ling = is_any_changeling(owner)
 	var/datum/antagonist/changeling/fresh/new_ling_datum = target.mind.add_antag_datum(/datum/antagonist/changeling/fresh)
 
-	new_ling_datum.granter = WEAKREF(owner)
+	new_ling_datum.granter = WEAKREF(owner.mind)
 	new_ling_datum.total_chem_storage = round(0.66 * our_ling.total_chem_storage)
 	new_ling_datum.chem_storage = new_ling_datum.total_chem_storage
 	new_ling_datum.chem_charges = 10
@@ -222,29 +224,15 @@
 
 	target.apply_status_effect(/datum/status_effect/agent_pinpointer/changeling_spawn)
 
-/// Extension of attempt_absorb, for changeling cannot absorb their own spawn
-/datum/action/changeling/absorb_dna/can_sting(mob/living/user, mob/target)
-	var/datum/antagonist/changeling/fresh/their_ling_datum = target.mind?.has_antag_datum(/datum/antagonist/changeling/fresh)
-	if(their_ling_datum?.granter?.resolve() == owner)
-		to_chat(owner, span_warning("You cannot absorb your own changeling spawn!"))
-		return FALSE
-
-	var/datum/action/changeling/grant_powers/powers_action = locate() in owner.actions
-	if(powers_action?.is_uplifting)
-		to_chat(owner, span_warning("You are currently uplifting someone!"))
-		return FALSE
-
-	. = ..()
-
 /datum/action/changeling/linglink
 	name = "Hivemind Link"
-	desc = "We link our victim's mind into the hivemind for personal interrogation."
+	desc = "We link our victim's mind into the changeling hivemind, allowing us to communicate discretely and at range."
 	helptext = "If our target is a changeling, our hiveminds will be linked permanently. If they are a human, it will only last temporarily."
 	button_icon_state = "hivemind_link"
 	chemical_cost = 0
 	dna_cost = 0
 	req_human = 1
-	/// If we've linked to a non changeling - weakref to them
+	/// If we've linked to a non changeling - weakref to their mob
 	var/datum/weakref/linked_non_ling
 
 /datum/action/changeling/linglink/can_sting(mob/living/carbon/user)
@@ -262,6 +250,9 @@
 	if(target.stat == DEAD)
 		to_chat(user, span_warning("This creature is dead!"))
 		return FALSE
+	if(!target.mind)
+		to_chat(user, span_warning("This creature has no mind or soul to probe!"))
+		return FALSE
 	switch(target.ling_hive_check())
 		if(LING_HIVE_LING, LING_HIVE_OUTSIDER)
 			to_chat(user, span_warning("This creature is already a part of the hivemind!"))
@@ -272,22 +263,26 @@
 /datum/action/changeling/linglink/sting_action(mob/user)
 	var/mob/living/carbon/human/target = user.pulling
 
-	to_chat(user, span_notice("This creature is compatible. We begin to probe their mind..."))
+	user.visible_message(span_danger("[user] begins to extend something inhuman from their head!"), span_notice("This creature is compatible. We begin to probe their mind..."))
+	if(!do_mob(user, target, 6 SECONDS))
+		to_chat(user, span_danger("You fail to probe [target]'s mind!"))
+		return
+
 	to_chat(target, span_userdanger("You experience a stabbing sensation and your ears begin to ring..."))
 	target.sharp_pain(BODY_ZONE_HEAD, 30, BRUTE, 10 SECONDS) // A ton of pain immediately that wanes
-	target.sharp_pain(BODY_ZONE_HEAD, 20, BRUTE, 50 SECONDS) // Then a more lasting pain
 	target.reagents?.add_reagent(/datum/reagent/medicine/mannitol, 10)
 	target.reagents?.add_reagent(/datum/reagent/medicine/epinephrine, 5)
 
-	if(!do_mob(user, target, 10 SECONDS))
+	if(!do_mob(user, target, 6 SECONDS))
 		to_chat(user, span_danger("You fail to probe [target]'s mind!"))
+		user.stop_pulling()
 		return
 
 	for(var/mob/global_mob as anything in GLOB.mob_list)
 		if(global_mob.ling_hive_check() == LING_HIVE_LING)
 			to_chat(global_mob, span_changeling("We can sense a foreign presence in the hivemind..."))
 
-	var/datum/antagonist/changeling/their_ling_datum = target.mind.has_antag_datum(/datum/antagonist/changeling)
+	var/datum/antagonist/changeling/their_ling_datum = is_any_changeling(target)
 
 	to_chat(target, span_userdanger("A migraine throbs behind your eyes, you hear yourself screaming - but your mouth has not opened!"))
 	if(their_ling_datum)
@@ -299,14 +294,15 @@
 			linked_non_ling = null
 		ADD_TRAIT(target, TRAIT_LING_LINKED, "[owner]-[CHANGELING_ABILITY]")
 		to_chat(target, span_bold(span_changeling("You can now temporarily communicate in the changeling hivemind using \"[MODE_TOKEN_CHANGELING]\".")))
-		addtimer(CALLBACK(src, .proc/unlink_target, target), 10 MINUTES)
+		addtimer(CALLBACK(src, .proc/unlink_target, target), HIVELINK_DURATION)
 		linked_non_ling = WEAKREF(target)
 
 
 	target.say("[MODE_TOKEN_CHANGELING] AAAAARRRRGGGGGHHHHH!!")
 	// And normal / non-sharp pain done at the end
+	target.cause_pain(BODY_ZONE_HEAD, 30)
 	target.cause_pain(BODY_ZONE_CHEST, 20)
-	target.cause_pain(BODY_ZONE_HEAD, 15)
+	user.stop_pulling()
 
 	SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("[name]"))
 	return TRUE
@@ -324,11 +320,9 @@
 		to_chat(target, span_changeling("Your mind goes silent - you are left alone once more. You can no longer communicate in the changeling hivemind."))
 		to_chat(owner, span_notice("Our linked creature, [target], has been removed from our hivemind."))
 
+
 #undef PAIN_CLEAR_COOLDOWN
 #undef PAIN_MOD_LING_KEY
 #undef PAIN_MOD_LING_AMOUNT
-
-#undef TRAIT_VOICE_MATCHES_ID
-#undef CHANGELING_ABILITY
 
 #undef UPLIFT_COOLDOWN

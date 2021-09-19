@@ -133,8 +133,12 @@
 		changeling.absorbedcount += (target_ling.absorbedcount)
 
 		var/list/copied_objectives = target_ling.objectives.Copy()
-		target.mind.remove_antag_datum(/datum/antagonist/changeling)
+		/// NON-MODULE CHANGE: Advanced lings
 		var/datum/antagonist/fallen_changeling/fallen = target.mind.add_antag_datum(/datum/antagonist/fallen_changeling)
+		fallen.previous_changeling_id = target_ling.changeling_id
+		fallen.changeling_who_robbed_us = WEAKREF(owner.mind)
+		target.mind.remove_antag_datum(/datum/antagonist/changeling)
+		// NON-MODULE CHANGE END
 		fallen.objectives = copied_objectives
 
 /datum/action/changeling/absorb_dna/proc/attempt_absorb(mob/living/carbon/human/target)

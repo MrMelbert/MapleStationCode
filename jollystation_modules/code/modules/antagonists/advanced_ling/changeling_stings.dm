@@ -20,7 +20,7 @@
  * Simple proc to check if [target] is in range of [user] according to the user's [var/sting_range]
  */
 /datum/action/changeling/sting/proc/check_range(mob/user, mob/target)
-	var/datum/antagonist/changeling/our_ling = user.mind?.has_antag_datum(/datum/antagonist/changeling)
+	var/datum/antagonist/changeling/our_ling = is_any_changeling(user)
 	if(!our_ling)
 		CRASH("changeling sting check_range failed to find changeling antagonist datum of [user]!")
 	return IN_GIVEN_RANGE(user, target, our_ling.sting_range)
@@ -42,7 +42,7 @@
 
 /datum/action/changeling/sting/temp_transformation/Trigger()
 	var/mob/user = usr
-	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
+	var/datum/antagonist/changeling/changeling = is_any_changeling(user)
 	if(changeling.chosen_sting)
 		unset_sting(user)
 		return
