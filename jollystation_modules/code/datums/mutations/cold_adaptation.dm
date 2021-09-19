@@ -6,7 +6,7 @@
 	difficulty = 32
 	text_gain_indication = "<span class='notice'>Your body feels warm!</span>"
 	time_coeff = 5
-	instability = 10
+	instability = 20
 
 
 /datum/mutation/human/cold_adaptation/on_acquiring(mob/living/carbon/human/owner)
