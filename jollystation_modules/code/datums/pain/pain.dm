@@ -710,7 +710,7 @@
 	parent.remove_status_effect(STATUS_EFFECT_SHARP_PAIN)
 	parent.remove_status_effect(STATUS_EFFECT_MIN_PAIN)
 	for(var/mod in pain_mods)
-		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES)
+		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES || mod == PAIN_MOD_GENETICS)
 			continue
 		unset_pain_modifier(mod)
 
