@@ -74,11 +74,12 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 
 	owner = linked_client
 
-	linked_name = owner.prefs.real_name
+	linked_name = owner.prefs.read_preference(/datum/preference/name/real_name)
 	if(issilicon(owner.mob))
 		linked_species = "silicon"
 	else
-		linked_species = owner.prefs.pref_species.id
+		var/datum/species/our_species = owner.prefs.read_preference(/datum/preference/choiced/species)
+		linked_species = our_species.id
 
 	flavor_text = owner.prefs.flavor_text
 	gen_records = owner.prefs.general_records

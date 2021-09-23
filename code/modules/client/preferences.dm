@@ -9,16 +9,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
  * - security records
  * - flavor text
  *
- * - loadout manager
+ * - loadout manager -read/write done, need button, test
  *
- * - speech sounds
- * - radio sounds
+ * - speech sounds -done, test
+ * - radio sounds -done, test
  *
- * - frilles for skrell
+ * - frilles for skrell -done, test
  *
- * - runechat text color
+ * - runechat text color -done, test
  *
- * - quirk species black/white lists
+ * - quirk species black/white lists -done, test
  *
  * - convert languages to nuprefs
  * - convert heights to nuprefs

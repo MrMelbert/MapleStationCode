@@ -14,7 +14,9 @@
 	if(!.)
 		return
 
-	READ_FILE(S["loadout_list"] , loadout_list)
+	var/savefile/player_save = new /savefile(path) // MELBERT TODO; probably dumb, move to a pref datum
+
+	READ_FILE(player_save["loadout_list"] , loadout_list)
 	loadout_list = sanitize_loadout_list(loadout_list)
 
 /datum/preferences/save_character()
@@ -22,7 +24,9 @@
 	if(!.)
 		return
 
-	WRITE_FILE(S["loadout_list"], loadout_list)
+	var/savefile/player_save = new /savefile(path) // MELBERT TODO; probably dumb, move to a pref datum
+
+	WRITE_FILE(player_save["loadout_list"], loadout_list)
 
 /datum/preferences/update_preferences(current_version, savefile/S)
 	. = ..()

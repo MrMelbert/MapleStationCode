@@ -126,7 +126,7 @@
 		mob_in_range.playsound_local(turf_source, soundin, vol, vary, frequency, SOUND_FALLOFF_EXPONENT, channel, pressure_affected, played_sound, maxdistance, falloff_distance, 1, use_reverb)
 
 	for(var/mob/dead_mob_in_range as anything in SSmobs.dead_players_by_zlevel[source_z])
-		if(!dead_mob_in_range.client?.prefs?.hear_speech_sounds)
+		if(!dead_mob_in_range.client?.prefs?.read_preference(/datum/preference/toggle/toggle_speech))
 			continue
 		if(get_dist(dead_mob_in_range, turf_source) > maxdistance)
 			continue
@@ -143,7 +143,7 @@
 
 	// Don't bother playing sounds to clientless mobs to save time
 	if(!client?.prefs?.read_preference(/datum/preference/toggle/toggle_radio))
-		continue
+		return
 
 	// We only deal with radio messages from this point
 	if(!message_mods[MODE_HEADSET] && !message_mods[RADIO_EXTENSION])

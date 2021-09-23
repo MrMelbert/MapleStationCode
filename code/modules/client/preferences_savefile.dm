@@ -144,12 +144,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return
 	path = "data/player_saves/[ckey[1]]/[ckey]/[filename]"
 
-/*
- * MELBERT TODO IN THIS PROC:
- *
- * load and sanitize hear_speech_sounds
- * load and sanitize hear_radio_sounds
- */
 /datum/preferences/proc/load_preferences()
 	if(!path)
 		return FALSE
@@ -299,89 +293,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(needs_update == -2) //fatal, can't load any data
 		return FALSE
 
-<<<<<<< HEAD
-	//Species
-	var/species_id
-	READ_FILE(S["species"], species_id)
-	if(species_id)
-		var/newtype = GLOB.species_list[species_id]
-		if(newtype)
-			pref_species = new newtype
-
-
-	//Character
-	READ_FILE(S["real_name"], real_name)
-	READ_FILE(S["gender"], gender)
-	READ_FILE(S["body_type"], body_type)
-	READ_FILE(S["age"], age)
-	READ_FILE(S["hair_color"], hair_color)
-	READ_FILE(S["facial_hair_color"], facial_hair_color)
-	READ_FILE(S["eye_color"], eye_color)
-	READ_FILE(S["skin_tone"], skin_tone)
-	READ_FILE(S["hairstyle_name"], hairstyle)
-	READ_FILE(S["facial_style_name"], facial_hairstyle)
-	READ_FILE(S["underwear"], underwear)
-	READ_FILE(S["underwear_color"], underwear_color)
-	READ_FILE(S["undershirt"], undershirt)
-	READ_FILE(S["socks"], socks)
-	READ_FILE(S["backpack"], backpack)
-	READ_FILE(S["jumpsuit_style"], jumpsuit_style)
-	READ_FILE(S["uplink_loc"], uplink_spawn_loc)
-	READ_FILE(S["playtime_reward_cloak"], playtime_reward_cloak)
-	READ_FILE(S["phobia"], phobia)
-	READ_FILE(S["randomise"],  randomise)
-	READ_FILE(S["feature_mcolor"], features["mcolor"])
-	READ_FILE(S["feature_ethcolor"], features["ethcolor"])
-	READ_FILE(S["feature_lizard_tail"], features["tail_lizard"])
-	READ_FILE(S["feature_lizard_snout"], features["snout"])
-	READ_FILE(S["feature_lizard_horns"], features["horns"])
-	READ_FILE(S["feature_lizard_frills"], features["frills"])
-	READ_FILE(S["feature_lizard_spines"], features["spines"])
-	READ_FILE(S["feature_lizard_body_markings"], features["body_markings"])
-	READ_FILE(S["feature_lizard_legs"], features["legs"])
-	READ_FILE(S["feature_moth_wings"], features["moth_wings"])
-	READ_FILE(S["feature_moth_antennae"], features["moth_antennae"])
-	READ_FILE(S["feature_moth_markings"], features["moth_markings"])
-	READ_FILE(S["persistent_scars"] , persistent_scars)
-
-	// NON-MODULE CHANGES:
-	READ_FILE(S["feature_head_tentacles"], features["head_tentacles"])
-	READ_FILE(S["runechat_color"] , runechat_color)
-	READ_FILE(S["flavor_text"] , flavor_text)
-	READ_FILE(S["security_records"] , security_records)
-	READ_FILE(S["medical_records"] , medical_records)
-	READ_FILE(S["general_records"] , general_records)
-	READ_FILE(S["exploitable_info"] , exploitable_info)
-	READ_FILE(S["loadout_list"] , loadout_list)
-	// NON-MODULE CHANGES END
-
-	if(!CONFIG_GET(flag/join_with_mutant_humans))
-		features["tail_human"] = "none"
-		features["ears"] = "none"
-	else
-		READ_FILE(S["feature_human_tail"], features["tail_human"])
-		READ_FILE(S["feature_human_ears"], features["ears"])
-
-	//Custom names
-	for(var/custom_name_id in GLOB.preferences_custom_names)
-		var/savefile_slot_name = custom_name_id + "_name" //TODO remove this
-		READ_FILE(S[savefile_slot_name], custom_names[custom_name_id])
-
-	READ_FILE(S["preferred_ai_core_display"], preferred_ai_core_display)
-	READ_FILE(S["prefered_security_department"], prefered_security_department)
-
-	// This is the version when the random security department was removed.
-	// When the minimum is higher than that version, it's impossible for someone to have the "Random" department.
-	#if SAVEFILE_VERSION_MIN > 40
-	#warn The prefered_security_department check in preferences_savefile.dm is no longer necessary.
-	#endif
-
-	if (!(prefered_security_department in GLOB.security_depts_prefs))
-		prefered_security_department = SEC_DEPT_NONE
-
-	//Jobs
-	READ_FILE(S["joblessrole"], joblessrole)
-=======
 	// Read everything into cache
 	for (var/preference_type in GLOB.preference_entries)
 		var/datum/preference/preference = GLOB.preference_entries[preference_type]
@@ -395,7 +306,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["randomise"],  randomise)
 	READ_FILE(S["persistent_scars"] , persistent_scars)
 
->>>>>>> remotes/tg/master
 	//Load prefs
 	READ_FILE(S["job_preferences"], job_preferences)
 
@@ -408,79 +318,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
 
 	//Sanitize
-<<<<<<< HEAD
-	real_name = reject_bad_name(real_name)
-	gender = sanitize_gender(gender)
-	body_type = sanitize_gender(body_type, FALSE, FALSE, gender)
-	if(!real_name)
-		real_name = random_unique_name(gender)
-
-	for(var/custom_name_id in GLOB.preferences_custom_names)
-		var/namedata = GLOB.preferences_custom_names[custom_name_id]
-		custom_names[custom_name_id] = reject_bad_name(custom_names[custom_name_id],namedata["allow_numbers"])
-		if(!custom_names[custom_name_id])
-			custom_names[custom_name_id] = get_default_name(custom_name_id)
-
-	if(!features["mcolor"] || features["mcolor"] == "#000")
-		features["mcolor"] = pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F")
-
-	if(!features["ethcolor"] || features["ethcolor"] == "#000")
-		features["ethcolor"] = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)]
-
-	randomise = SANITIZE_LIST(randomise)
-
-	hairstyle = sanitize_inlist(hairstyle, GLOB.hairstyles_list)
-	facial_hairstyle = sanitize_inlist(facial_hairstyle, GLOB.facial_hairstyles_list)
-	underwear = sanitize_inlist(underwear, GLOB.underwear_list)
-	undershirt = sanitize_inlist(undershirt, GLOB.undershirt_list)
-	socks = sanitize_inlist(socks, GLOB.socks_list)
-	age = sanitize_integer(age, AGE_MIN, AGE_MAX, initial(age))
-	hair_color = sanitize_hexcolor(hair_color, 3, 0)
-	facial_hair_color = sanitize_hexcolor(facial_hair_color, 3, 0)
-	underwear_color = sanitize_hexcolor(underwear_color, 3, 0)
-	eye_color = sanitize_hexcolor(eye_color, 3, 0)
-	skin_tone = sanitize_inlist(skin_tone, GLOB.skin_tones)
-	backpack = sanitize_inlist(backpack, GLOB.backpacklist, initial(backpack))
-	jumpsuit_style = sanitize_inlist(jumpsuit_style, GLOB.jumpsuitlist, initial(jumpsuit_style))
-	uplink_spawn_loc = sanitize_inlist(uplink_spawn_loc, GLOB.uplink_spawn_loc_list_save, initial(uplink_spawn_loc))
-	playtime_reward_cloak = sanitize_integer(playtime_reward_cloak)
-	features["mcolor"] = sanitize_hexcolor(features["mcolor"], 3, 0)
-	features["ethcolor"] = copytext_char(features["ethcolor"], 1, 7)
-	features["tail_lizard"] = sanitize_inlist(features["tail_lizard"], GLOB.tails_list_lizard)
-	features["tail_human"] = sanitize_inlist(features["tail_human"], GLOB.tails_list_human, "None")
-	features["snout"] = sanitize_inlist(features["snout"], GLOB.snouts_list)
-	features["horns"] = sanitize_inlist(features["horns"], GLOB.horns_list)
-	features["ears"] = sanitize_inlist(features["ears"], GLOB.ears_list, "None")
-	features["frills"] = sanitize_inlist(features["frills"], GLOB.frills_list)
-	features["spines"] = sanitize_inlist(features["spines"], GLOB.spines_list)
-	features["body_markings"] = sanitize_inlist(features["body_markings"], GLOB.body_markings_list)
-	features["feature_lizard_legs"] = sanitize_inlist(features["legs"], GLOB.legs_list, "Normal Legs")
-	features["moth_wings"] = sanitize_inlist(features["moth_wings"], GLOB.moth_wings_list, "Plain")
-	features["moth_antennae"] = sanitize_inlist(features["moth_antennae"], GLOB.moth_antennae_list, "Plain")
-	features["moth_markings"] = sanitize_inlist(features["moth_markings"], GLOB.moth_markings_list, "None")
-
-	// NON-MODULE CHANGE: -- Pref Sanitization --
-	//features["head_tentacles"] = sanitize_inlist(features["head_tentacles"], GLOB.head_tentacles_list, "Long")
-
-	//runechat_color = sanitize_hexcolor(runechat_color)
-	flavor_text = STRIP_HTML_SIMPLE(sanitize_text(flavor_text), MAX_MESSAGE_LEN)
-	security_records = STRIP_HTML_SIMPLE(sanitize_text(security_records), MAX_FLAVOR_LEN)
-	medical_records = STRIP_HTML_SIMPLE(sanitize_text(medical_records), MAX_FLAVOR_LEN)
-	general_records = STRIP_HTML_SIMPLE(sanitize_text(general_records), MAX_FLAVOR_LEN)
-	exploitable_info = STRIP_HTML_SIMPLE(sanitize_text(exploitable_info), MAX_FLAVOR_LEN)
-
-	loadout_list = sanitize_loadout_list(update_loadout_list(loadout_list))
-	// NON-MODULE CHANGE END
-
-	persistent_scars = sanitize_integer(persistent_scars)
-
-	joblessrole = sanitize_integer(joblessrole, 1, 3, initial(joblessrole))
-=======
 	randomise = SANITIZE_LIST(randomise)
 
 	persistent_scars = sanitize_integer(persistent_scars)
 
->>>>>>> remotes/tg/master
 	//Validate job prefs
 	for(var/j in job_preferences)
 		if(job_preferences[j] != JP_LOW && job_preferences[j] != JP_MEDIUM && job_preferences[j] != JP_HIGH)
@@ -501,69 +342,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return FALSE
 	S.cd = "/character[default_slot]"
 
-<<<<<<< HEAD
-	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX) //load_character will sanitize any bad data, so assume up-to-date.)
-
-	//Character
-	WRITE_FILE(S["real_name"] , real_name)
-	WRITE_FILE(S["gender"] , gender)
-	WRITE_FILE(S["body_type"] , body_type)
-	WRITE_FILE(S["age"] , age)
-	WRITE_FILE(S["hair_color"] , hair_color)
-	WRITE_FILE(S["facial_hair_color"] , facial_hair_color)
-	WRITE_FILE(S["eye_color"] , eye_color)
-	WRITE_FILE(S["skin_tone"] , skin_tone)
-	WRITE_FILE(S["hairstyle_name"] , hairstyle)
-	WRITE_FILE(S["facial_style_name"] , facial_hairstyle)
-	WRITE_FILE(S["underwear"] , underwear)
-	WRITE_FILE(S["underwear_color"] , underwear_color)
-	WRITE_FILE(S["undershirt"] , undershirt)
-	WRITE_FILE(S["socks"] , socks)
-	WRITE_FILE(S["backpack"] , backpack)
-	WRITE_FILE(S["jumpsuit_style"] , jumpsuit_style)
-	WRITE_FILE(S["uplink_loc"] , uplink_spawn_loc)
-	WRITE_FILE(S["playtime_reward_cloak"] , playtime_reward_cloak)
-	WRITE_FILE(S["randomise"] , randomise)
-	WRITE_FILE(S["species"] , pref_species.id)
-	WRITE_FILE(S["phobia"], phobia)
-	WRITE_FILE(S["feature_mcolor"] , features["mcolor"])
-	WRITE_FILE(S["feature_ethcolor"] , features["ethcolor"])
-	WRITE_FILE(S["feature_lizard_tail"] , features["tail_lizard"])
-	WRITE_FILE(S["feature_human_tail"] , features["tail_human"])
-	WRITE_FILE(S["feature_lizard_snout"] , features["snout"])
-	WRITE_FILE(S["feature_lizard_horns"] , features["horns"])
-	WRITE_FILE(S["feature_human_ears"] , features["ears"])
-	WRITE_FILE(S["feature_lizard_frills"] , features["frills"])
-	WRITE_FILE(S["feature_lizard_spines"] , features["spines"])
-	WRITE_FILE(S["feature_lizard_body_markings"] , features["body_markings"])
-	WRITE_FILE(S["feature_lizard_legs"] , features["legs"])
-	WRITE_FILE(S["feature_moth_wings"] , features["moth_wings"])
-	WRITE_FILE(S["feature_moth_antennae"] , features["moth_antennae"])
-	WRITE_FILE(S["feature_moth_markings"] , features["moth_markings"])
-	WRITE_FILE(S["persistent_scars"] , persistent_scars)
-
-	// NON-MODULE CHANGES:
-	//WRITE_FILE(S["feature_head_tentacles"], features["head_tentacles"])
-	//WRITE_FILE(S["runechat_color"] , runechat_color)
-	WRITE_FILE(S["flavor_text"] , flavor_text)
-	WRITE_FILE(S["general_records"] , general_records)
-	WRITE_FILE(S["security_records"] , security_records)
-	WRITE_FILE(S["medical_records"] , medical_records)
-	WRITE_FILE(S["exploitable_info"] , exploitable_info)
-	WRITE_FILE(S["loadout_list"], loadout_list)
-	// NON-MODULE CHANGES END
-
-	//Custom names
-	for(var/custom_name_id in GLOB.preferences_custom_names)
-		var/savefile_slot_name = custom_name_id + "_name" //TODO remove this
-		WRITE_FILE(S[savefile_slot_name],custom_names[custom_name_id])
-
-	WRITE_FILE(S["preferred_ai_core_display"] ,  preferred_ai_core_display)
-	WRITE_FILE(S["prefered_security_department"] , prefered_security_department)
-
-	//Jobs
-	WRITE_FILE(S["joblessrole"] , joblessrole)
-=======
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
@@ -588,7 +366,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["randomise"] , randomise)
 	WRITE_FILE(S["persistent_scars"] , persistent_scars)
 
->>>>>>> remotes/tg/master
 	//Write prefs
 	WRITE_FILE(S["job_preferences"] , job_preferences)
 

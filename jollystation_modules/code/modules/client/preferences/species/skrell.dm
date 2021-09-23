@@ -2,7 +2,7 @@
 /proc/generate_skrell_side_shots(list/sprite_accessories, key, list/sides)
 	var/list/values = list()
 
-	var/icon/skrell = icon('jollystation_modules/icons/mob/human_parts_greyscale.dmi', "skrell_head_m", EAST)
+	var/icon/skrell = icon(DEFAULT_BODYPART_ICON_ORGANIC, "skrell_head_m", EAST)
 	var/icon/eyes = icon('jollystation_modules/icons/mob/skrell_eyes.dmi', "eyes", EAST)
 
 	eyes.Blend(COLOR_GRAY, ICON_MULTIPLY)
