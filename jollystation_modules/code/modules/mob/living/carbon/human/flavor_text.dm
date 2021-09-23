@@ -3,40 +3,22 @@
 GLOBAL_LIST_EMPTY(flavor_texts)
 
 /*
- * Go through all clients with living mobs and generate flavor text datums for them.
+ * Create a flavor text datum for [added_mob].
+ *
+ * Returns TRUE if successful, FALSE otherwise.
  */
-/proc/populate_flavor_texts()
-	for(var/client/found_client as anything in GLOB.clients)
-		if(isliving(found_client.mob))
-			add_client_flavor_text(found_client)
-
-/*
- * Create a flavor text datum for [added_client].
- */
-/proc/add_client_flavor_text(client/added_client)
-	if(!added_client?.prefs)
+/proc/add_mob_flavor_text(mob/living/added_mob)
+	if(!added_mob?.client?.prefs)
 		return FALSE
-	if(!added_client.prefs.flavor_text && !added_client.prefs.general_records && !added_client.prefs.medical_records && !added_client.prefs.security_records)
-		return FALSE
-	if(!isliving(added_client.mob))
+	if(!istype(added_mob))
 		return FALSE
 
-	var/mob/living/added_mob = added_client.mob
 	if(!GLOB.flavor_texts[added_mob.real_name])
-		var/datum/flavor_text/found_text = new /datum/flavor_text(added_client)
-		if(!QDELETED(found_text))
-			GLOB.flavor_texts[added_mob.real_name] = found_text
-			added_mob.linked_flavor = found_text
+		var/datum/flavor_text/found_text = new /datum/flavor_text(added_mob)
+		GLOB.flavor_texts[added_mob.real_name] = found_text
+		added_mob.linked_flavor = found_text
 
 	return TRUE
-
-/// We generate all our flavor texts at the end of setup.
-/datum/controller/subsystem/ticker/setup()
-	. = ..()
-	if(!.)
-		return FALSE
-
-	populate_flavor_texts()
 
 /// Flavor text define for carbons.
 /mob/living
@@ -49,10 +31,10 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 
 /// The actual flavor text datum. This should never be qdeleted - just leave it floating in the global list.
 /datum/flavor_text
-	/// The client that owns this flavor text.
-	var/client/owner
+	/// The mob that owns this flavor text.
+	var/datum/weakref/owner
 	/// The name associated with this flavor text.
-	var/linked_name
+	var/name
 	/// The species associated with this flavor text.
 	var/linked_species
 	/// The actual flavor text.
@@ -66,26 +48,15 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	/// Exploitable info associated with this flavor text
 	var/expl_info
 
-/datum/flavor_text/New(client/linked_client)
-	if(!linked_client?.prefs)
-		stack_trace("Flavor text created [linked_client ? "from a client without a prefs datum" : "without a client"]!")
-		qdel(src)
-		return
+/datum/flavor_text/New(mob/living/initial_linked_mob)
+	owner = WEAKREF(initial_linked_mob)
+	name = initial_linked_mob.client?.prefs?.read_preference(/datum/preference/name/real_name)
 
-	owner = linked_client
-
-	linked_name = owner.prefs.read_preference(/datum/preference/name/real_name)
-	if(issilicon(owner.mob))
+	if(issilicon(initial_linked_mob))
 		linked_species = "silicon"
 	else
-		var/datum/species/our_species = owner.prefs.read_preference(/datum/preference/choiced/species)
+		var/datum/species/our_species =initial_linked_mob.client?.prefs?.read_preference(/datum/preference/choiced/species)
 		linked_species = our_species.id
-
-	flavor_text = owner.prefs.flavor_text
-	gen_records = owner.prefs.general_records
-	med_records = owner.prefs.medical_records
-	sec_records = owner.prefs.security_records
-	expl_info = owner.prefs.exploitable_info
 
 /*
  * Get the flavor text formatted.
@@ -184,35 +155,35 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	. = ..()
 	if(href_list["flavor_text"])
 		if(flavor_text)
-			var/datum/browser/popup = new(usr, "[linked_name]'s flavor text", "[linked_name]'s Flavor Text (expanded)", 500, 200)
-			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s flavor text (expanded)", replacetext(flavor_text, "\n", "<BR>")))
+			var/datum/browser/popup = new(usr, "[name]'s flavor text", "[name]'s Flavor Text (expanded)", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s flavor text (expanded)", replacetext(flavor_text, "\n", "<BR>")))
 			popup.open()
 			return
 
 	if(href_list["general_records"])
 		if(gen_records)
-			var/datum/browser/popup = new(usr, "[linked_name]'s gen rec", "[linked_name]'s General Record", 500, 200)
-			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s general records", replacetext(gen_records, "\n", "<BR>")))
+			var/datum/browser/popup = new(usr, "[name]'s gen rec", "[name]'s General Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s general records", replacetext(gen_records, "\n", "<BR>")))
 			popup.open()
 			return
 
 	if(href_list["security_records"])
 		if(sec_records)
-			var/datum/browser/popup = new(usr, "[linked_name]'s sec rec", "[linked_name]'s Security Record", 500, 200)
-			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s security records", replacetext(sec_records, "\n", "<BR>")))
+			var/datum/browser/popup = new(usr, "[name]'s sec rec", "[name]'s Security Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s security records", replacetext(sec_records, "\n", "<BR>")))
 			popup.open()
 			return
 
 	if(href_list["medical_records"])
 		if(med_records)
-			var/datum/browser/popup = new(usr, "[linked_name]'s med rec", "[linked_name]'s Medical Record", 500, 200)
-			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s medical records", replacetext(med_records, "\n", "<BR>")))
+			var/datum/browser/popup = new(usr, "[name]'s med rec", "[name]'s Medical Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s medical records", replacetext(med_records, "\n", "<BR>")))
 			popup.open()
 			return
 
 	if(href_list["exploitable_info"])
 		if(expl_info)
-			var/datum/browser/popup = new(usr, "[linked_name]'s exp info", "[linked_name]'s Exploitable Info", 500, 200)
-			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[linked_name]'s exploitable information", replacetext(expl_info, "\n", "<BR>")))
+			var/datum/browser/popup = new(usr, "[name]'s exp info", "[name]'s Exploitable Info", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s exploitable information", replacetext(expl_info, "\n", "<BR>")))
 			popup.open()
 			return

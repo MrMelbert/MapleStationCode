@@ -25,7 +25,7 @@
 
 	// the important check - if the visible name is our flavor text name, display our flavor text
 	// if the visible name is not, however, we may be in disguise - so grab the corresponding flavor text from our global list
-	if(shown_name == linked_flavor?.linked_name || findtext(shown_name, linked_flavor?.linked_name))
+	if(shown_name == linked_flavor?.name || findtext(shown_name, linked_flavor?.name))
 		. = linked_flavor
 	else
 		. = GLOB.flavor_texts[shown_name]

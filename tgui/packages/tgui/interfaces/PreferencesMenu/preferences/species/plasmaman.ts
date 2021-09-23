@@ -27,7 +27,16 @@ const Plasmaman: Species = {
       icon: "wind",
       name: "Plasma Healing",
       description: "Plasmamen can heal wounds by consuming plasma.",
-    }, {
+    },
+    // NON-MODULE CHANGE
+    {
+      icon: "user-injured",
+      name: "Pain Resilience",
+      description: "Plasmamen are made of bones, and have very little for \
+        senses. They recieve 25% less pain overall.",
+    },
+    // NON-MODULE CHANGE END
+    {
       icon: "hard-hat",
       name: "Protective Helmet",
       description: "Plasmamen's helmets provide them shielding from the \

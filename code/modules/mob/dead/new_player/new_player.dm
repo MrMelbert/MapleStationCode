@@ -264,11 +264,6 @@
 
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
 
-	/// NON-MODULE CHANGE: // MELBERT TODO: LOOK AT THIS
-	add_client_flavor_text(humanc?.client)
-	after_loadout_equipped(humanc, humanc?.client?.prefs)
-	/// NON-MODULE CHANGE END
-
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CREWMEMBER_JOINED, character, rank)
 
 /mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)

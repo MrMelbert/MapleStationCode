@@ -1,8 +1,8 @@
 // Allows the player to select a runechat color.
 /datum/preference/color/runechat_color
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	savefile_key = "runechat_color"
 	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 
 /datum/preference/color/runechat_color/create_default_value()
 	return "#aaaaaa"
@@ -19,7 +19,4 @@
 	if (!..(value))
 		return FALSE
 
-	if (is_color_dark(value))
-		return FALSE
-
-	return TRUE
+	return !is_color_dark(value)

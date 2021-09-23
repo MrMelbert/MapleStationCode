@@ -1,13 +1,13 @@
 import { createLanguagePerk, Species } from "./base";
 
 const Skrell: Species = {
-  description: "WIP Skrell!",
+  description: "WIP Skrell description!",
   features: {
     good: [{
       icon: "user-injured",
       name: "Pain Resilience",
       description: "Skrell are a bit more resilient to pain, taking \
-        15% less pain overall.",
+        20% less pain overall.",
     }, createLanguagePerk("Skrellian")],
     neutral: [{
       icon: "wine-bottle",
@@ -19,11 +19,11 @@ const Skrell: Species = {
       icon: "tint",
       name: "Abnormal Blood",
       description: "Skrell have a unique \"S\" type blood. Instead of \
-        regaining blood from iron, they instead must take blood from copper.",
+        regaining blood from iron, they instead must take copper for blood.",
     }],
   },
   lore: [
-    "WIP Skrell!",
+    "WIP Skrell lore!",
   ],
 };
 

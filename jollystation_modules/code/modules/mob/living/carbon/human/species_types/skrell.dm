@@ -26,7 +26,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	species_speech_sounds = list('jollystation_modules/sound/voice/huff.ogg' = 120)
 	species_speech_sounds_exclaim = list('jollystation_modules/sound/voice/huff_ask.ogg' = 120)
 	species_speech_sounds_ask = list('jollystation_modules/sound/voice/huff_exclaim.ogg' = 120)
-	species_pain_mod = 0.85
+	species_pain_mod = 0.80
 	limbs_id = "skrell"
 
 // Preset Skrell species
@@ -76,7 +76,8 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	slot = ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES
 	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 	dna_block = DNA_HEAD_TENTACLES_BLOCK
-	preference = "head_tentacles"
+	feature_key = "head_tentacles"
+	preference = "feature_head_tentacles"
 
 /obj/item/organ/external/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
 	. = TRUE

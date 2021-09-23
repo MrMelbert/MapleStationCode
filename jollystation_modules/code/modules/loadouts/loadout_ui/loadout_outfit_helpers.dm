@@ -27,7 +27,7 @@
 	else
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
-	var/list/loadout_datums = loadout_list_to_datums(preference_source?.loadout_list)
+	var/list/loadout_datums = loadout_list_to_datums(preference_source?.read_preference(/datum/preference/loadout))
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
@@ -41,6 +41,24 @@
 	return TRUE
 
 /*
+ * Post-loadout equipping, done after quirks are assigned. (TODO: FIND A BETTER WAY TO DO THIS, maybe.)
+ *
+ * Why in AssignQuirks?
+ *
+ * Because post loadout equipping needs to be done after quirks are assigned
+ * for both latejoiners and roundstart players - this ensures that post-loadout equipping is done
+ * after quirks are done for both types of players easily and modularly.
+ *
+ * Why not extend the other two relevant procs (equip_characters and AttemptLateSpawn)?
+ *
+ * AssignQuirks is passed the mob and the client, which are both needed for loadout equipping
+ * If the procs were extended, it'd lose the relevant vars from the scope of those procs.
+ */
+/datum/controller/subsystem/processing/quirks/AssignQuirks(mob/living/user, client/cli)
+	. = ..()
+	after_loadout_equipped(user, cli?.prefs)
+
+/*
  * Go through after the loadout item is equipped and call post_equip_item.
  *
  * equipper - the mob we're equipping the loadout item to
@@ -52,7 +70,7 @@
 	if(!istype(equipper))
 		return // Not a crash, 'cause this proc could be passed non-humans (AIs, etc) and that's fine
 
-	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(prefs.loadout_list))
+	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(prefs.read_preference(/datum/preference/loadout)))
 		item.post_equip_item(equipper.client?.prefs, equipper)
 
 /*
@@ -83,13 +101,13 @@
  * This is for updating old loadout lists (pre-datumization)
  * to new loadout lists (the formatting was changed).
  *
+ * If you're looking at loadouts fresh, you DON'T need this proc.
+ *
  * passed_list - the loadout list we're sanitizing.
  *
- * returns a list
+ * returns a list, or null if empty
  */
 /proc/update_loadout_list(list/passed_list)
-	RETURN_TYPE(/list)
-
 	var/list/list_to_update = LAZYLISTDUPLICATE(passed_list)
 	for(var/thing in list_to_update) //"thing", 'cause it could be a lot of things
 		if(ispath(thing))
@@ -104,15 +122,13 @@
 
 /*
  * Removes all invalid paths from loadout lists.
- * This is a general sanitization for preference save / load
+ * This is a general sanitization for preference saving / loading.
  *
  * passed_list - the loadout list we're sanitizing.
  *
- * returns a list
+ * returns a list, or null if empty
  */
 /proc/sanitize_loadout_list(list/passed_list)
-	RETURN_TYPE(/list)
-
 	var/list/list_to_clean = LAZYLISTDUPLICATE(passed_list)
 	for(var/path in list_to_clean)
 		if(!ispath(path))

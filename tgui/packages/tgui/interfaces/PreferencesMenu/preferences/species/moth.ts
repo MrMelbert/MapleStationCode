@@ -26,7 +26,16 @@ const Moth: Species = {
       description: "Moths need an extra layer of flash protection to protect \
         themselves, such as against security officers or when welding. Welding \
         masks will work.",
-    }],
+    },
+    // NON-MODULE CHANGE
+    {
+      icon: "user-injured",
+      name: "Pain Vulnerability",
+      description: "A moth's skin is very thin, and their bones fragile. They \
+        take 10% more pain overall.",
+    }
+    // NON-MODULE CHANGE END
+    ],
   },
   lore: [
     "Their homeworld lost to the ages, the moths live aboard the Grand Nomad Fleet. Made up of what could be found, bartered, repaired, or stolen the armada is a colossal patchwork built on a history of politely flagging travelers down and taking their things. Occasionally a moth will decide to leave the fleet, usually to strike out for fortunes to send back home.",

@@ -30,7 +30,8 @@
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
 	owner.open_loadout_ui = src
-	loadout_on_open = LAZYLISTDUPLICATE(owner.prefs.loadout_list)
+	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	loadout_on_open = LAZYLISTDUPLICATE(our_loadout_list)
 	custom_loadout = new()
 	reset_outfit()
 
@@ -81,7 +82,7 @@
 		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
 		if("close_ui")
 			if(params["revert"])
-				owner.prefs.loadout_list = loadout_on_open
+				owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], loadout_on_open)
 			SStgui.close_uis(src)
 			return
 
@@ -99,7 +100,7 @@
 
 		// Clears the loadout list entirely.
 		if("clear_all_items")
-			LAZYNULL(owner.prefs.loadout_list)
+			owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], null)
 
 		// Toggles between viewing favorite job clothes on the dummy.
 		if("toggle_job_clothes")
@@ -120,7 +121,7 @@
 /datum/loadout_manager/proc/select_item(datum/loadout_item/selected_item)
 	var/num_misc_items = 0
 	var/datum/loadout_item/first_misc_found
-	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(owner.prefs.loadout_list))
+	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(owner.prefs.read_preference(/datum/preference/loadout)))
 		if(item.category == selected_item.category)
 			if(item.category == LOADOUT_ITEM_MISC && ++num_misc_items < MAX_ALLOWED_MISC_ITEMS)
 				if(!first_misc_found)
@@ -130,11 +131,15 @@
 			deselect_item(first_misc_found || item)
 			continue
 
-	LAZYSET(owner.prefs.loadout_list, selected_item.item_path, list())
+	var/list/new_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	LAZYSET(new_loadout_list, selected_item.item_path, list())
+	owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], new_loadout_list)
 
 /// Deselect [deselected_item].
 /datum/loadout_manager/proc/deselect_item(datum/loadout_item/deselected_item)
-	LAZYREMOVE(owner.prefs.loadout_list, deselected_item.item_path)
+	var/list/new_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	LAZYREMOVE(new_loadout_list, deselected_item.item_path)
+	owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], new_loadout_list)
 
 /// Select [path] item to [category_slot] slot, and open up the greyscale UI to customize [path] in [category] slot.
 /datum/loadout_manager/proc/select_item_color(datum/loadout_item/item)
@@ -155,8 +160,9 @@
 		allowed_configs += "[initial(colored_item.greyscale_config_inhand_right)]"
 
 	var/slot_starting_colors = initial(colored_item.greyscale_colors)
-	if(INFO_GREYSCALE in owner.prefs.loadout_list[colored_item])
-		slot_starting_colors = owner.prefs.loadout_list[colored_item][INFO_GREYSCALE]
+	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	if(INFO_GREYSCALE in our_loadout_list)
+		slot_starting_colors = our_loadout_list[colored_item][INFO_GREYSCALE]
 
 	menu = new(
 		src,
@@ -182,34 +188,39 @@
 	if(!open_menu)
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	if(!(path in owner.prefs.loadout_list))
+	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	if(!(path in our_loadout_list))
 		to_chat(owner, span_warning("Select the item before attempting to apply greyscale to it!"))
 		return
 
 	var/list/colors = open_menu.split_colors
 	if(colors)
-		owner.prefs.loadout_list[path][INFO_GREYSCALE] = colors.Join("")
+		our_loadout_list[path][INFO_GREYSCALE] = colors.Join("")
+		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
 		update_dummysprite = TRUE
 
 /// Set [item]'s name to input provided.
 /datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)
 	var/current_name = ""
-	if(INFO_NAMED in owner.prefs.loadout_list[item.item_path])
-		current_name = owner.prefs.loadout_list[item.item_path][INFO_NAMED]
+	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	if(INFO_NAMED in our_loadout_list)
+		current_name = our_loadout_list[item.item_path][INFO_NAMED]
 
 	var/input_name = stripped_input(owner, "What name do you want to give [item.name]? Leave blank to clear.", "[item.name] name", current_name, MAX_NAME_LEN)
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
 		return
 
-	if(!(item.item_path in owner.prefs.loadout_list))
+	if(!(item.item_path in our_loadout_list))
 		to_chat(owner, span_warning("Select the item before attempting to name to it!"))
 		return
 
 	if(input_name)
-		owner.prefs.loadout_list[item.item_path][INFO_NAMED] = input_name
+		our_loadout_list[item.item_path][INFO_NAMED] = input_name
+		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
 	else
-		if(INFO_NAMED in owner.prefs.loadout_list[item.item_path])
-			owner.prefs.loadout_list[item.item_path] -= INFO_NAMED
+		if(INFO_NAMED in our_loadout_list[item.item_path])
+			our_loadout_list[item.item_path] -= INFO_NAMED
+			owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
 
 /// Rotate the dummy [DIR] direction, or reset it to SOUTH dir if we're showing all dirs at once.
 /datum/loadout_manager/proc/rotate_model_dir(dir)
@@ -248,7 +259,7 @@
 	var/list/data = list()
 
 	var/list/all_selected_paths = list()
-	for(var/path in owner.prefs.loadout_list)
+	for(var/path in owner.prefs.read_preference(/datum/preference/loadout))
 		all_selected_paths += path
 
 	data["icon64"] = generate_preview()

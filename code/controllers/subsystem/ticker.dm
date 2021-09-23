@@ -405,9 +405,6 @@ SUBSYSTEM_DEF(ticker)
 			if(new_player_mob.client?.prefs?.should_be_random_hardcore(player_assigned_role, new_player_living.mind))
 				new_player_mob.client.prefs.hardcore_random_setup(new_player_living)
 			SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
-		/// NON-MODULE CHANGE: LOADOUTS // ALSO MELBERT TODO: FIGURE OUT A BETTER WAY OF DOING THIS
-		if(ishuman(new_player_living) && (player_assigned_role.job_flags & JOB_EQUIP_RANK))
-			after_loadout_equipped(new_player_living, new_player_mob.client?.prefs)
 
 		CHECK_TICK
 
