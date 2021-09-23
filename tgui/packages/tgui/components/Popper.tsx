@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { createPopper, OptionsGeneric } from "@popperjs/core";
-=======
 import { createPopper } from "@popperjs/core";
->>>>>>> remotes/tg/master
 import { ArgumentsOf } from "common/types";
 import { Component, findDOMfromVNode, InfernoNode, render } from "inferno";
 
@@ -68,13 +64,6 @@ export class Popper extends Component<PopperProps> {
 
   componentWillUnmount() {
     this.popperInstance?.destroy();
-<<<<<<< HEAD
-    this.renderedContent.remove();
-  }
-
-  renderPopperContent(callback: () => void) {
-    render(this.props.popperContent, this.renderedContent, callback);
-=======
     render(null, this.renderedContent, () => this.renderedContent.remove());
   }
 
@@ -87,7 +76,6 @@ export class Popper extends Component<PopperProps> {
       callback,
       this.context,
     );
->>>>>>> remotes/tg/master
   }
 
   render() {

@@ -22,11 +22,7 @@ Juke.setup({ file: import.meta.url }).then((code) => {
   process.exit(code);
 });
 
-<<<<<<< HEAD
 const DME_NAME = 'jollystation';
-=======
-const DME_NAME = 'jollystation';
->>>>>>> remotes/tg/master
 
 export const DefineParameter = new Juke.Parameter({
   type: 'string[]',
@@ -73,10 +69,7 @@ export const DmTarget = new Juke.Target({
     'html/**',
     'icons/**',
     'interface/**',
-<<<<<<< HEAD
     'jollystation_modules/**', // NON-MODULE CHANGE: BUILD OUR FILES!
-=======
->>>>>>> remotes/tg/master
     `${DME_NAME}.dme`,
   ],
   outputs: [
@@ -201,14 +194,11 @@ export const TguiAnalyzeTarget = new Juke.Target({
   executes: () => yarn('tgui:analyze'),
 });
 
-<<<<<<< HEAD
-=======
 export const TguiBenchTarget = new Juke.Target({
   dependsOn: [YarnTarget],
   executes: () => yarn('tgui:bench'),
 });
 
->>>>>>> remotes/tg/master
 export const TestTarget = new Juke.Target({
   dependsOn: [DmTestTarget, TguiTestTarget],
 });

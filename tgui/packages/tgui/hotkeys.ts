@@ -31,12 +31,9 @@ const hotKeysAcquired = [
 // State of passed-through keys.
 const keyState: Record<string, boolean> = {};
 
-<<<<<<< HEAD
-=======
 // Custom listeners for key events
 const keyListeners: ((key: KeyEvent) => void)[] = [];
 
->>>>>>> remotes/tg/master
 /**
  * Converts a browser keycode to BYOND keycode.
  */
@@ -184,11 +181,6 @@ export const setupHotKeys = () => {
     releaseHeldKeys();
   });
   globalEvents.on('key', (key: KeyEvent) => {
-<<<<<<< HEAD
-    handlePassthrough(key);
-  });
-};
-=======
     for (const keyListener of keyListeners) {
       keyListener(key);
     }
@@ -224,4 +216,3 @@ export const listenForKeyEvents = (
     keyListeners.splice(keyListeners.indexOf(callback), 1);
   };
 };
->>>>>>> remotes/tg/master

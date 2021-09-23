@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { useBackend, useLocalState } from '../backend';
-=======
 import { useBackend } from '../backend';
->>>>>>> remotes/tg/master
 import { multiline } from 'common/string';
 import { BlockQuote, Button, Dimmer, Section, Stack } from '../components';
 import { BooleanLike } from 'common/react';

@@ -26,10 +26,7 @@ type GreyscaleMenuData = {
   sprites: SpriteData;
   generate_full_preview: boolean;
   unlocked: boolean;
-<<<<<<< HEAD
-=======
   monitoring_files: boolean;
->>>>>>> remotes/tg/master
   sprites_dir: string;
   icon_state: string;
   refreshing: boolean;
@@ -296,23 +293,6 @@ export const GreyscaleModifyMenu = (props, context) => {
         <ConfigDisplay />
         <ColorDisplay />
         <IconStatesDisplay />
-<<<<<<< HEAD
-        {
-          !!data.unlocked
-            && <Button content="Refresh Icon File" onClick={() => act("refresh_file")} />
-        }
-        <Button
-          content="Apply"
-          onClick={() => act("apply")}
-          mx={1}
-        />
-        <Button.Checkbox
-          content="Full Preview"
-          disabled={!data.generate_full_preview && !data.unlocked}
-          checked={data.generate_full_preview}
-          onClick={() => act("toggle_full_preview")}
-        />
-=======
         <Flex direction="column">
           {
             !!data.unlocked
@@ -355,7 +335,6 @@ export const GreyscaleModifyMenu = (props, context) => {
             />
           </Flex.Item>
         </Flex>
->>>>>>> remotes/tg/master
         <PreviewDisplay />
         {
           !!data.refreshing && <LoadingAnimation />

@@ -44,7 +44,6 @@ endmap
 
 map multiz_debug
 endmap
-<<<<<<< HEAD
 
 ##JOLLY MAPS##
 
@@ -55,5 +54,3 @@ endmap
 map pubbystation
 	votable
 endmap
-=======
->>>>>>> remotes/tg/master

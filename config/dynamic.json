@@ -1,7 +1,6 @@
 {
 	"Dynamic": {},
 	"Roundstart": {
-<<<<<<< HEAD
 		"Extended": {
 			"cost": 1,
 			"scaling_cost": 10,
@@ -24,11 +23,6 @@
 		"Traitors": {
 			"cost": 101,
 			"scaling_cost": 101,
-=======
-		"Traitors": {
-			"cost": 8,
-			"scaling_cost": 9,
->>>>>>> remotes/tg/master
 			"weight": 0,
 			"required_candidates": 1,
 			"minimum_required_age": 0,

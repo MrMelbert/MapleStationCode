@@ -22,11 +22,7 @@ if [ -d ".git" ]; then
   cp -r .git/logs/* $1/.git/logs/
 fi
 
-<<<<<<< HEAD
 cp jollystation.dmb jollystation.rsc $1/
-=======
-cp tgstation.dmb tgstation.rsc $1/
->>>>>>> remotes/tg/master
 cp -r _maps/* $1/_maps/
 cp -r icons/runtime/* $1/icons/runtime/
 cp -r sound/runtime/* $1/sound/runtime/

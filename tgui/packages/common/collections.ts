@@ -77,8 +77,6 @@ export const map: MapFunction = <T, U>(iterateeFn) =>
     throw new Error(`map() can't iterate on type ${typeof collection}`);
   };
 
-<<<<<<< HEAD
-=======
 /**
  * Given a collection, will run each element through an iteratee function.
  * Will then filter out undefined values.
@@ -98,7 +96,6 @@ export const filterMap = <T, U>(collection: T[], iterateeFn: (
   return finalCollection;
 };
 
->>>>>>> remotes/tg/master
 const COMPARATOR = (objA, objB) => {
   const criteriaA = objA.criteria;
   const criteriaB = objB.criteria;
@@ -121,11 +118,6 @@ const COMPARATOR = (objA, objB) => {
  * of running each element in a collection thru each iteratee.
  *
  * Iteratees are called with one argument (value).
-<<<<<<< HEAD
- *
- * @returns {any[]}
-=======
->>>>>>> remotes/tg/master
  */
 export const sortBy = <T>(
   ...iterateeFns: ((input: T) => unknown)[]
@@ -159,11 +151,8 @@ export const sortBy = <T>(
 
 export const sort = sortBy();
 
-<<<<<<< HEAD
-=======
 export const sortStrings = sortBy<string>();
 
->>>>>>> remotes/tg/master
 /**
  * Returns a range of numbers from start to end, exclusively.
  * For example, range(0, 5) will return [0, 1, 2, 3, 4].
@@ -276,8 +265,6 @@ export const zipWith = <T, U>(iterateeFn: (...values: T[]) => U) =>
   (...arrays: T[][]): U[] => {
     return map((values: T[]) => iterateeFn(...values))(zip(...arrays));
   };
-<<<<<<< HEAD
-=======
 
 const binarySearch = <T, U = unknown>(
   getKey: (value: T) => U,
@@ -323,4 +310,3 @@ export const binaryInsertWith = <T, U = unknown>(getKey: (value: T) => U):
     return copy;
   };
 };
->>>>>>> remotes/tg/master

@@ -1,11 +1,6 @@
 import { multiline } from 'common/string';
-<<<<<<< HEAD
-import { useBackend, useLocalState, useSharedState } from '../backend';
-import { BlockQuote, Box, Button, Dimmer, Dropdown, Modal, Section, Stack } from '../components';
-=======
 import { useBackend, useSharedState } from '../backend';
 import { Box, Button, Dimmer, Dropdown, Section, Stack } from '../components';
->>>>>>> remotes/tg/master
 import { Window } from '../layouts';
 
 const hivestyle = {

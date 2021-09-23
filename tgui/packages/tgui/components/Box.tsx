@@ -5,11 +5,7 @@
  */
 
 import { BooleanLike, classes, pureComponentHooks } from 'common/react';
-<<<<<<< HEAD
-import { createVNode, InfernoNode } from 'inferno';
-=======
 import { createVNode, InfernoNode, SFC } from 'inferno';
->>>>>>> remotes/tg/master
 import { ChildFlags, VNodeFlags } from 'inferno-vnode-flags';
 import { CSS_COLORS } from '../constants';
 
@@ -260,11 +256,7 @@ export const computeBoxClassName = (props: BoxProps) => {
   ]);
 };
 
-<<<<<<< HEAD
-export const Box = (props: BoxProps) => {
-=======
 export const Box: SFC<BoxProps> = (props: BoxProps) => {
->>>>>>> remotes/tg/master
   const {
     as = 'div',
     className,
@@ -286,13 +278,9 @@ export const Box: SFC<BoxProps> = (props: BoxProps) => {
     computedClassName,
     children,
     ChildFlags.UnknownChildren,
-<<<<<<< HEAD
-    computedProps);
-=======
     computedProps,
     undefined,
   );
->>>>>>> remotes/tg/master
 };
 
 Box.defaultHooks = pureComponentHooks;

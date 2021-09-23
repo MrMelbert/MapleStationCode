@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { useBackend, useLocalState } from '../backend';
-import { Blink, BlockQuote, Box, Dimmer, Icon, Section, Stack } from '../components';
-=======
 import { useBackend } from '../backend';
 import { Icon, Section, Stack } from '../components';
->>>>>>> remotes/tg/master
 import { BooleanLike } from 'common/react';
 import { Window } from '../layouts';
 

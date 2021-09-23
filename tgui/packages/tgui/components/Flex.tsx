@@ -5,23 +5,14 @@
  */
 
 import { BooleanLike, classes, pureComponentHooks } from 'common/react';
-<<<<<<< HEAD
-import { Box, BoxProps, unit } from './Box';
-
-export interface FlexProps extends BoxProps {
-=======
 import { BoxProps, computeBoxClassName, computeBoxProps, unit } from './Box';
 
 export type FlexProps = BoxProps & {
->>>>>>> remotes/tg/master
   direction?: string | BooleanLike;
   wrap?: string | BooleanLike;
   align?: string | BooleanLike;
   justify?: string | BooleanLike;
   inline?: BooleanLike;
-<<<<<<< HEAD
-}
-=======
 };
 
 export const computeFlexClassName = (props: FlexProps) => {
@@ -33,7 +24,6 @@ export const computeFlexClassName = (props: FlexProps) => {
     computeBoxClassName(props),
   ]);
 };
->>>>>>> remotes/tg/master
 
 export const computeFlexProps = (props: FlexProps) => {
   const {
@@ -45,21 +35,7 @@ export const computeFlexProps = (props: FlexProps) => {
     inline,
     ...rest
   } = props;
-<<<<<<< HEAD
-  return {
-    className: classes([
-      'Flex',
-      Byond.IS_LTE_IE10 && (
-        direction === 'column'
-          ? 'Flex--iefix--column'
-          : 'Flex--iefix'
-      ),
-      inline && 'Flex--inline',
-      className,
-    ]),
-=======
   return computeBoxProps({
->>>>>>> remotes/tg/master
     style: {
       ...rest.style,
       'flex-direction': direction,
@@ -68,18 +44,6 @@ export const computeFlexProps = (props: FlexProps) => {
       'justify-content': justify,
     },
     ...rest,
-<<<<<<< HEAD
-  };
-};
-
-export const Flex = props => (
-  <Box {...computeFlexProps(props)} />
-);
-
-Flex.defaultHooks = pureComponentHooks;
-
-export interface FlexItemProps extends BoxProps {
-=======
   });
 };
 
@@ -99,15 +63,11 @@ export const Flex = props => {
 Flex.defaultHooks = pureComponentHooks;
 
 export type FlexItemProps = BoxProps & {
->>>>>>> remotes/tg/master
   grow?: number;
   order?: number;
   shrink?: number;
   basis?: string | BooleanLike;
   align?: string | BooleanLike;
-<<<<<<< HEAD
-}
-=======
 };
 
 export const computeFlexItemClassName = (props: FlexItemProps) => {
@@ -117,7 +77,6 @@ export const computeFlexItemClassName = (props: FlexItemProps) => {
     computeBoxClassName(props),
   ]);
 };
->>>>>>> remotes/tg/master
 
 export const computeFlexItemProps = (props: FlexItemProps) => {
   const {
@@ -132,17 +91,7 @@ export const computeFlexItemProps = (props: FlexItemProps) => {
     align,
     ...rest
   } = props;
-<<<<<<< HEAD
-  return {
-    className: classes([
-      'Flex__item',
-      Byond.IS_LTE_IE10 && 'Flex__item--iefix',
-      Byond.IS_LTE_IE10 && (grow && grow > 0) && 'Flex__item--iefix--grow',
-      className,
-    ]),
-=======
   return computeBoxProps({
->>>>>>> remotes/tg/master
     style: {
       ...style,
       'flex-grow': grow !== undefined && Number(grow),
@@ -152,14 +101,6 @@ export const computeFlexItemProps = (props: FlexItemProps) => {
       'align-self': align,
     },
     ...rest,
-<<<<<<< HEAD
-  };
-};
-
-const FlexItem = props => (
-  <Box {...computeFlexItemProps(props)} />
-);
-=======
   });
 };
 
@@ -175,7 +116,6 @@ const FlexItem = props => {
     />
   );
 };
->>>>>>> remotes/tg/master
 
 FlexItem.defaultHooks = pureComponentHooks;
 

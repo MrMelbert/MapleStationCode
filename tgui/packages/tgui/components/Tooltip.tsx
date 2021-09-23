@@ -7,11 +7,7 @@ const DEFAULT_PLACEMENT = "top";
 
 type TooltipProps = {
   children?: InfernoNode;
-<<<<<<< HEAD
-  content: string;
-=======
   content: InfernoNode;
->>>>>>> remotes/tg/master
   position?: Placement,
 };
 
@@ -19,14 +15,11 @@ type TooltipState = {
   hovered: boolean;
 };
 
-<<<<<<< HEAD
-=======
 const DISABLE_EVENT_LISTENERS = [{
   name: "eventListeners",
   enabled: false,
 }];
 
->>>>>>> remotes/tg/master
 export class Tooltip extends Component<TooltipProps, TooltipState> {
   state = {
     hovered: false,
@@ -65,10 +58,7 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
       <Popper
         options={{
           placement: this.props.position || "auto",
-<<<<<<< HEAD
-=======
           modifiers: DISABLE_EVENT_LISTENERS,
->>>>>>> remotes/tg/master
         }}
         popperContent={
           <div
@@ -81,10 +71,7 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
         }
         additionalStyles={{
           "pointer-events": "none",
-<<<<<<< HEAD
-=======
           "z-index": 2,
->>>>>>> remotes/tg/master
         }}>
         {this.props.children}
       </Popper>
