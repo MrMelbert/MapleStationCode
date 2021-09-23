@@ -3,6 +3,7 @@
 #Ignore everything in datafolder and subdirectories
 /data/**/*
 /tmp/**/*
+<<<<<<< HEAD
 /data/logs/*
 /data/next_map.json
 /data/npc_saves/*
@@ -17,6 +18,8 @@
 /data/npc_saves/Poly.json
 /data/npc_saves/Punpun.json
 /data/roundend_reports/
+=======
+>>>>>>> remotes/tg/master
 
 #Ignore byond config folder.
 /cfg/**/*
@@ -210,7 +213,10 @@ Temporary Items
 /tools/LinuxOneShot/TGS_Config
 /tools/LinuxOneShot/TGS_Instances
 /tools/LinuxOneShot/TGS_Logs
+<<<<<<< HEAD
 
 # SQL and other config ignores
 /config/dbconfig.txt
 /config/whitelist.txt
+=======
+>>>>>>> remotes/tg/master

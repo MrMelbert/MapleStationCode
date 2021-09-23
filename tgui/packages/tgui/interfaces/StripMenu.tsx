@@ -366,6 +366,7 @@ export const StripMenu = (props, context) => {
                           {slot.image && (
                             <Box
                               as="img"
+<<<<<<< HEAD
                               src={resolveAsset(slot.image)}
                               opacity={0.7}
                               style={{
@@ -377,6 +378,11 @@ export const StripMenu = (props, context) => {
                                 transform:
                                   "translateX(-50%) translateY(-50%) scale(0.8)",
                               }}
+=======
+                              className="centered-image"
+                              src={resolveAsset(slot.image)}
+                              opacity={0.7}
+>>>>>>> remotes/tg/master
                             />
                           )}
 

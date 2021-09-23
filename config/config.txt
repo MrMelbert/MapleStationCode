@@ -36,10 +36,14 @@ ROUND_END_COUNTDOWN 90
 ## You need to set up your database to use the SQL based system.
 ## This flag is automatically enabled if SQL_ENABLED isn't
 <<<<<<< HEAD
+<<<<<<< HEAD
 #ADMIN_LEGACY_SYSTEM
 =======
 ADMIN_LEGACY_SYSTEM
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+ADMIN_LEGACY_SYSTEM
+>>>>>>> remotes/tg/master
 
 ##Uncomment this to stop any admins loaded by the legacy system from having their rank edited by the permissions panel
 #PROTECT_LEGACY_ADMINS
@@ -93,20 +97,30 @@ LOG_ADMIN
 
 ## log admin chat
 <<<<<<< HEAD
+<<<<<<< HEAD
 #LOG_ADMINCHAT
 =======
 LOG_ADMINCHAT
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+LOG_ADMINCHAT
+>>>>>>> remotes/tg/master
 
 ## log client access (logon/logoff)
 LOG_ACCESS
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 ## Enables log entries for logins that failed due to suspicious circumstances (banned player, CID randomiser, spoofed BYOND version, etc.) to a dedicated file.
 LOG_SUSPICIOUS_LOGIN
 
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+## Enables log entries for logins that failed due to suspicious circumstances (banned player, CID randomiser, spoofed BYOND version, etc.) to a dedicated file.
+LOG_SUSPICIOUS_LOGIN
+
+>>>>>>> remotes/tg/master
 ## log game actions (start of round, results, etc.)
 LOG_GAME
 
@@ -169,11 +183,17 @@ LOG_CLONING
 LOG_SHUTTLE
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 ## Log all timers on timer auto reset
 # LOG_TIMERS_ON_BUCKET_RESET
 
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+## Log all timers on timer auto reset
+# LOG_TIMERS_ON_BUCKET_RESET
+
+>>>>>>> remotes/tg/master
 ##Log camera pictures - Must have picture logging enabled
 PICTURE_LOGGING_CAMERA
 
@@ -197,20 +217,28 @@ ID_CONSOLE_JOBSLOT_DELAY 30
 
 ## allow players to initiate a restart vote
 <<<<<<< HEAD
+<<<<<<< HEAD
 ALLOW_VOTE_RESTART
 =======
 #ALLOW_VOTE_RESTART
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+#ALLOW_VOTE_RESTART
+>>>>>>> remotes/tg/master
 
 ## allow players to initiate a mode-change vote
 #ALLOW_VOTE_MODE
 
 ## allow players to initiate a map-change vote
 <<<<<<< HEAD
+<<<<<<< HEAD
 ALLOW_VOTE_MAP
 =======
 #ALLOW_VOTE_MAP
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+#ALLOW_VOTE_MAP
+>>>>>>> remotes/tg/master
 
 ## min delay (deciseconds) between voting sessions (default 10 minutes)
 VOTE_DELAY 6000
@@ -259,10 +287,14 @@ CHECK_RANDOMIZER
 
 ## Set to prevent anyone but those ckeys listed in config/whitelist.txt and config/admins.txt from joining your server
 <<<<<<< HEAD
+<<<<<<< HEAD
 USEWHITELIST
 =======
 #USEWHITELIST
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+#USEWHITELIST
+>>>>>>> remotes/tg/master
 
 ## set a server location for world reboot. Don't include the byond://, just give the address and port.
 ## Don't set this to the same server, BYOND will automatically restart players to the server when it has restarted.
@@ -270,26 +302,36 @@ USEWHITELIST
 
 ## forum address
 <<<<<<< HEAD
+<<<<<<< HEAD
 FORUMURL https://docs.google.com/document/d/1tcM2kTv4crDHqCWZcZu7U7CISuvQLMc5fMJE-JQxVtc/edit
 =======
 # FORUMURL http://tgstation13.org/phpBB/index.php
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+# FORUMURL http://tgstation13.org/phpBB/index.php
+>>>>>>> remotes/tg/master
 
 ## Wiki address
 # WIKIURL http://www.tgstation13.org/wiki
 
 ## Rules address
 <<<<<<< HEAD
+<<<<<<< HEAD
 RULESURL https://discord.com/channels/801124315213987880/801124534182215681/853315055285305406
 
 ## Github address
 GITHUBURL https://github.com/Jolly-66/JollyStationCode
 =======
+=======
+>>>>>>> remotes/tg/master
 # RULESURL http://www.tgstation13.org/wiki/Rules
 
 ## Github address
 # GITHUBURL https://www.github.com/tgstation/tgstation
+<<<<<<< HEAD
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+>>>>>>> remotes/tg/master
 
 ## Discord bot command prefix, if the discord bot is used
 # DISCORDBOTCOMMANDPREFIX ?
@@ -315,10 +357,14 @@ GITHUBURL https://github.com/Jolly-66/JollyStationCode
 ## or your package manager
 ## The default value assumes youtube-dl is in your system PATH
 <<<<<<< HEAD
+<<<<<<< HEAD
  INVOKE_YOUTUBEDL youtube-dl
 =======
 # INVOKE_YOUTUBEDL youtube-dl
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+# INVOKE_YOUTUBEDL youtube-dl
+>>>>>>> remotes/tg/master
 
 ## In-game features
 ##Toggle for having jobs load up from the .txt
@@ -328,6 +374,7 @@ GITHUBURL https://github.com/Jolly-66/JollyStationCode
 #FORBID_SINGULO_POSSESSION
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## Uncomment to show a popup 'reply to' window to every non-admin that receives an adminPM.
 ## The intention is to make adminPMs more visible. (although I fnd popups annoying so this defaults to off)
 #POPUP_ADMIN_PM
@@ -336,6 +383,11 @@ GITHUBURL https://github.com/Jolly-66/JollyStationCode
 ## Only fires when an admin requests it, not every ahelp.
 POPUP_ADMIN_PM
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+## Uncomment to give admins the ability to send a maptext popup to players.
+## Only fires when an admin requests it, not every ahelp.
+POPUP_ADMIN_PM
+>>>>>>> remotes/tg/master
 
 ## Uncomment to allow special 'Easter-egg' events on special holidays such as seasonal holidays and stuff like 'Talk Like a Pirate Day' :3 YAARRR
 ALLOW_HOLIDAYS
@@ -486,6 +538,7 @@ CLIENT_ERROR_BUILD 1421
 ## Hitting the minute limit notifies admins.
 ## Set to 0 or comment out to disable.
 <<<<<<< HEAD
+<<<<<<< HEAD
 SECOND_TOPIC_LIMIT 30
 
 MINUTE_TOPIC_LIMIT 300
@@ -494,6 +547,11 @@ SECOND_TOPIC_LIMIT 10
 
 MINUTE_TOPIC_LIMIT 100
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+SECOND_TOPIC_LIMIT 10
+
+MINUTE_TOPIC_LIMIT 100
+>>>>>>> remotes/tg/master
 
 
 ## CLICK RATE LIMITING
@@ -604,14 +662,18 @@ DEFAULT_VIEW_SQUARE 15x15
 #DISCORD_ROLEID 000000000000000000
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+>>>>>>> remotes/tg/master
 ## How long in seconds after which a hard delete is treated as causing lag. This can be a float and supports a precision as low as nanoseconds.
 #HARD_DELETES_OVERRUN_THRESHOLD 0.5
 
 ## Once a typepath causes overrun from hard deletes this many times, stop hard deleting it on garbage collection failures. (set to 0 to disable)
 #HARD_DELETES_OVERRUN_LIMIT 0
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 #############################
@@ -630,3 +692,11 @@ TRANSFER_TIME_MIN_ALLOWED 54000
 TRANSFER_TIME_BETWEEN_AUTO_VOTES 18000
 =======
 >>>>>>> a6e2fcb3b7a6f5a88b58240f8a3ad3f870354443
+=======
+
+## Sets an MOTD of the server.
+## You can use this multiple times, and the MOTDs will be appended in order.
+## Based on config directory, so "motd.txt" points to "config/motd.txt"
+MOTD motd.txt
+#MOTD motd_extra.txt
+>>>>>>> remotes/tg/master

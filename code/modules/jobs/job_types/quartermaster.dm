@@ -53,7 +53,7 @@
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	glasses = /obj/item/clothing/glasses/sunglasses
 	l_hand = /obj/item/clipboard
-	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced/command/cargo=1, /obj/item/melee/classic_baton/telescopic=1) // NON-MODULE CHANGE
+	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced/command/cargo=1, /obj/item/melee/baton/telescopic=1) // NON-MODULE CHANGE
 
 	chameleon_extras = /obj/item/stamp/qm
 

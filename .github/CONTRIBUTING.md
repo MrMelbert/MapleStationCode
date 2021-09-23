@@ -7,13 +7,21 @@
 	1. [Headcoder](#headcoder)
 	2. [Maintainers](#maintainers)
 	3. [Issue Managers](#issue-managers)
+<<<<<<< HEAD
 5. [Specifications](#specifications)
+=======
+5. [Development Guides](#development-guides)
+>>>>>>> remotes/tg/master
 6. [Pull Request Process](#pull-request-process)
 7. [Porting features/sprites/sounds/tools from other codebases](#porting-featuresspritessoundstools-from-other-codebases)
 8. [Banned content](#banned-content)
 9. [A word on Git](#a-word-on-git)
 
 ## Reporting Issues
+<<<<<<< HEAD
+=======
+
+>>>>>>> remotes/tg/master
 If you ever encounter a bug in-game, the best way to let a coder know about it is with our GitHub Issue Tracker. Please make sure you use the supplied issue template, and include the round ID for the server.
 
 (If you don't have an account, making a new one takes only one minute.)
@@ -88,6 +96,7 @@ Things you **CAN'T** do:
 
 </details>
 
+<<<<<<< HEAD
 ## Specifications
 
 As mentioned before, you are expected to follow these specifications in order to make everyone's lives easier. It'll save both your time and ours, by making sure you don't have to make any changes and we don't have to ask you to. Thank you for reading this section!
@@ -787,6 +796,26 @@ Put stuff that shouldn’t work but does, or should work but doesn’t here so w
 #### Icon hell
 
 The ‘transparent’ icon state causes fucked behavior when used on turfs, for reasons unknown and unknowable
+=======
+## Development Guides
+
+#### Writing readable code 
+[Style guide](./guides/STYLE.md)
+
+#### Writing sane code 
+[Code standards](./guides/STANDARDS.md)
+
+#### Writing understandable code 
+[Autodocumenting code](./guides/AUTODOC.md)
+
+#### Misc
+
+[Policy configuration system](./guides/POLICYCONFIG.md)
+
+[Hard deletes](./guides/HARDDELETES.md)
+
+[UI Development](../tgui/README.md)
+>>>>>>> remotes/tg/master
 
 ## Pull Request Process
 

@@ -5,7 +5,11 @@
 // You do not need to raise this if you are adding new values that have sane defaults.
 // Only raise this value when changing the meaning/format/name/layout of an existing value
 // where you would want the updater procs below to run
+<<<<<<< HEAD
 #define SAVEFILE_VERSION_MAX 40
+=======
+#define SAVEFILE_VERSION_MAX 41
+>>>>>>> remotes/tg/master
 
 /*
 SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Carn
@@ -46,7 +50,11 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		toggles |= SOUND_ENDOFROUND
 
 	if(current_version < 34)
+<<<<<<< HEAD
 		auto_fit_viewport = TRUE
+=======
+		write_preference(/datum/preference/toggle/auto_fit_viewport, TRUE)
+>>>>>>> remotes/tg/master
 
 	if(current_version < 35) //makes old keybinds compatible with #52040, sets the new default
 		var/newkey = FALSE
@@ -70,8 +78,13 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			key_bindings["ShiftQ"] = list("quick_equip_suit_storage")
 
 	if(current_version < 37)
+<<<<<<< HEAD
 		if(clientfps == 0)
 			clientfps = -1
+=======
+		if(read_preference(/datum/preference/numeric/fps) == 0)
+			write_preference(GLOB.preference_entries[/datum/preference/numeric/fps], -1)
+>>>>>>> remotes/tg/master
 
 	if (current_version < 38)
 		var/found_block_movement = FALSE
@@ -93,13 +106,23 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if (current_version < 40)
 		LAZYADD(key_bindings["Space"], "hold_throw_mode")
 
+<<<<<<< HEAD
 /datum/preferences/proc/update_character(current_version, savefile/S)
 	return
+=======
+	if (current_version < 41)
+		migrate_preferences_to_tgui_prefs_menu()
+
+/datum/preferences/proc/update_character(current_version, savefile/savefile)
+	if (current_version < 41)
+		migrate_character_to_tgui_prefs_menu()
+>>>>>>> remotes/tg/master
 
 /// checks through keybindings for outdated unbound keys and updates them
 /datum/preferences/proc/check_keybindings()
 	if(!parent)
 		return
+<<<<<<< HEAD
 	var/list/user_binds = list()
 	for (var/key in key_bindings)
 		for(var/kb_name in key_bindings[key])
@@ -120,6 +143,29 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 				if(!length(key_bindings[classickeytobind]) || classickeytobind == "Unbound") //Only bind to the key if nothing else is bound expect for Unbound
 					LAZYADD(key_bindings[classickeytobind], kb.name)
 					addedbind = TRUE
+=======
+	var/list/binds_by_key = get_key_bindings_by_key(key_bindings)
+	var/list/notadded = list()
+	for (var/name in GLOB.keybindings_by_name)
+		var/datum/keybinding/kb = GLOB.keybindings_by_name[name]
+		if(kb.name in key_bindings)
+			continue // key is unbound and or bound to something
+
+		var/addedbind = FALSE
+		key_bindings[kb.name] = list()
+
+		if(parent.hotkeys)
+			for(var/hotkeytobind in kb.hotkey_keys)
+				if(!length(binds_by_key[hotkeytobind]) && hotkeytobind != "Unbound") //Only bind to the key if nothing else is bound expect for Unbound
+					key_bindings[kb.name] |= hotkeytobind
+					addedbind = TRUE
+		else
+			for(var/classickeytobind in kb.classic_keys)
+				if(!length(binds_by_key[classickeytobind]) && classickeytobind != "Unbound") //Only bind to the key if nothing else is bound expect for Unbound
+					key_bindings[kb.name] |= classickeytobind
+					addedbind = TRUE
+
+>>>>>>> remotes/tg/master
 		if(!addedbind)
 			notadded += kb
 	save_preferences() //Save the players pref so that new keys that were set to Unbound as default are permanently stored
@@ -128,6 +174,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 /datum/preferences/proc/announce_conflict(list/notadded)
 	to_chat(parent, "<span class='warningplain'><b><u>Keybinding Conflict</u></b></span>\n\
+<<<<<<< HEAD
 					<span class='warningplain'><b>There are new <a href='?_src_=prefs;preference=tab;tab=3'>keybindings</a> that default to keys you've already bound. The new ones will be unbound.</b></span>")
 	for(var/item in notadded)
 		var/datum/keybinding/conflicted = item
@@ -135,6 +182,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		LAZYADD(key_bindings["Unbound"], conflicted.name) // set it to unbound to prevent this from opening up again in the future
 		save_preferences()
 
+=======
+					<span class='warningplain'><b>There are new <a href='?src=[REF(src)];open_keybindings=1'>keybindings</a> that default to keys you've already bound. The new ones will be unbound.</b></span>")
+	for(var/item in notadded)
+		var/datum/keybinding/conflicted = item
+		to_chat(parent, span_danger("[conflicted.category]: [conflicted.full_name] needs updating"))
+>>>>>>> remotes/tg/master
 
 
 /datum/preferences/proc/load_path(ckey,filename="preferences.sav")
@@ -161,6 +214,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		fcopy(S, bacpath) //byond helpfully lets you use a savefile for the first arg.
 		return FALSE
 
+<<<<<<< HEAD
 	//general preferences
 	READ_FILE(S["asaycolor"], asaycolor)
 	READ_FILE(S["brief_outfit"], brief_outfit)
@@ -179,12 +233,20 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["tgui_lock"], tgui_lock)
 	READ_FILE(S["buttons_locked"], buttons_locked)
 	READ_FILE(S["windowflash"], windowflashing)
+=======
+	apply_all_client_preferences()
+
+	//general preferences
+	READ_FILE(S["lastchangelog"], lastchangelog)
+
+>>>>>>> remotes/tg/master
 	READ_FILE(S["be_special"] , be_special)
 
 
 	READ_FILE(S["default_slot"], default_slot)
 	READ_FILE(S["chat_toggles"], chat_toggles)
 	READ_FILE(S["toggles"], toggles)
+<<<<<<< HEAD
 	READ_FILE(S["ghost_form"], ghost_form)
 	READ_FILE(S["ghost_orbit"], ghost_orbit)
 	READ_FILE(S["ghost_accs"], ghost_accs)
@@ -209,6 +271,9 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["pda_style"], pda_style)
 	READ_FILE(S["pda_color"], pda_color)
 	READ_FILE(S["darkened_flash"], darkened_flash)
+=======
+	READ_FILE(S["ignoring"], ignoring)
+>>>>>>> remotes/tg/master
 
 	// OOC commendations
 	READ_FILE(S["hearted_until"], hearted_until)
@@ -224,6 +289,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 			parsed_favs += path
 	favorite_outfits = uniqueList(parsed_favs)
 
+<<<<<<< HEAD
 	// NON-MODULE CHANGES: client prefs
 	READ_FILE(S["hear_speech_sounds"] , hear_speech_sounds)
 	READ_FILE(S["hear_radio_sounds"] , hear_radio_sounds)
@@ -232,6 +298,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["key_bindings"], key_bindings)
 	check_keybindings()
 	// hearted
+=======
+	// Custom hotkeys
+	READ_FILE(S["key_bindings"], key_bindings)
+>>>>>>> remotes/tg/master
 
 	//try to fix any outdated data if necessary
 	if(needs_update >= 0)
@@ -241,6 +311,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		fcopy(S, bacpath) //byond helpfully lets you use a savefile for the first arg.
 		update_preferences(needs_update, S) //needs_update = savefile_version if we need an update (positive integer)
 
+<<<<<<< HEAD
 
 
 	//Sanitize
@@ -286,6 +357,18 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	// NON-MODULE CHANGES: sanitization
 	hear_speech_sounds = sanitize_integer(hear_speech_sounds, FALSE, TRUE, initial(hear_speech_sounds))
 	hear_radio_sounds = sanitize_integer(hear_speech_sounds, FALSE, TRUE, initial(hear_radio_sounds))
+=======
+	check_keybindings() // this apparently fails every time and overwrites any unloaded prefs with the default values, so don't load anything after this line or it won't actually save
+	key_bindings_by_key = get_key_bindings_by_key(key_bindings)
+
+	//Sanitize
+	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
+	default_slot = sanitize_integer(default_slot, 1, max_save_slots, initial(default_slot))
+	toggles = sanitize_integer(toggles, 0, (2**24)-1, initial(toggles))
+	be_special = SANITIZE_LIST(be_special)
+	key_bindings = sanitize_keybindings(key_bindings)
+	favorite_outfits = SANITIZE_LIST(favorite_outfits)
+>>>>>>> remotes/tg/master
 
 	if(needs_update >= 0) //save the updated version
 		var/old_default_slot = default_slot
@@ -317,6 +400,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX) //updates (or failing that the sanity checks) will ensure data is not invalid at load. Assume up-to-date
 
+<<<<<<< HEAD
 	//general preferences
 	WRITE_FILE(S["asaycolor"], asaycolor)
 	WRITE_FILE(S["brief_outfit"], brief_outfit)
@@ -334,10 +418,28 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["tgui_lock"], tgui_lock)
 	WRITE_FILE(S["buttons_locked"], buttons_locked)
 	WRITE_FILE(S["windowflash"], windowflashing)
+=======
+	for (var/preference_type in GLOB.preference_entries)
+		var/datum/preference/preference = GLOB.preference_entries[preference_type]
+		if (preference.savefile_identifier != PREFERENCE_PLAYER)
+			continue
+
+		if (!(preference.type in recently_updated_keys))
+			continue
+
+		recently_updated_keys -= preference.type
+
+		if (preference_type in value_cache)
+			write_preference(preference, preference.serialize(value_cache[preference_type]))
+
+	//general preferences
+	WRITE_FILE(S["lastchangelog"], lastchangelog)
+>>>>>>> remotes/tg/master
 	WRITE_FILE(S["be_special"], be_special)
 	WRITE_FILE(S["default_slot"], default_slot)
 	WRITE_FILE(S["toggles"], toggles)
 	WRITE_FILE(S["chat_toggles"], chat_toggles)
+<<<<<<< HEAD
 	WRITE_FILE(S["ghost_form"], ghost_form)
 	WRITE_FILE(S["ghost_orbit"], ghost_orbit)
 	WRITE_FILE(S["ghost_accs"], ghost_accs)
@@ -373,10 +475,27 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return TRUE
 
 /datum/preferences/proc/load_character(slot)
+=======
+	WRITE_FILE(S["ignoring"], ignoring)
+	WRITE_FILE(S["key_bindings"], key_bindings)
+	WRITE_FILE(S["hearted_until"], (hearted_until > world.realtime ? hearted_until : null))
+	WRITE_FILE(S["favorite_outfits"], favorite_outfits)
+	return TRUE
+
+/datum/preferences/proc/load_character(slot)
+	SHOULD_NOT_SLEEP(TRUE)
+
+>>>>>>> remotes/tg/master
 	if(!path)
 		return FALSE
 	if(!fexists(path))
 		return FALSE
+<<<<<<< HEAD
+=======
+
+	character_savefile = null
+
+>>>>>>> remotes/tg/master
 	var/savefile/S = new /savefile(path)
 	if(!S)
 		return FALSE
@@ -393,6 +512,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(needs_update == -2) //fatal, can't load any data
 		return FALSE
 
+<<<<<<< HEAD
 	//Species
 	var/species_id
 	READ_FILE(S["species"], species_id)
@@ -474,6 +594,21 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//Jobs
 	READ_FILE(S["joblessrole"], joblessrole)
+=======
+	// Read everything into cache
+	for (var/preference_type in GLOB.preference_entries)
+		var/datum/preference/preference = GLOB.preference_entries[preference_type]
+		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
+			continue
+
+		value_cache -= preference_type
+		read_preference(preference_type)
+
+	//Character
+	READ_FILE(S["randomise"],  randomise)
+	READ_FILE(S["persistent_scars"] , persistent_scars)
+
+>>>>>>> remotes/tg/master
 	//Load prefs
 	READ_FILE(S["job_preferences"], job_preferences)
 
@@ -486,6 +621,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		update_character(needs_update, S) //needs_update == savefile_version if we need an update (positive integer)
 
 	//Sanitize
+<<<<<<< HEAD
 	real_name = reject_bad_name(real_name)
 	gender = sanitize_gender(gender)
 	body_type = sanitize_gender(body_type, FALSE, FALSE, gender)
@@ -552,17 +688,32 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	persistent_scars = sanitize_integer(persistent_scars)
 
 	joblessrole = sanitize_integer(joblessrole, 1, 3, initial(joblessrole))
+=======
+	randomise = SANITIZE_LIST(randomise)
+
+	persistent_scars = sanitize_integer(persistent_scars)
+
+>>>>>>> remotes/tg/master
 	//Validate job prefs
 	for(var/j in job_preferences)
 		if(job_preferences[j] != JP_LOW && job_preferences[j] != JP_MEDIUM && job_preferences[j] != JP_HIGH)
 			job_preferences -= j
 
+<<<<<<< HEAD
 	all_quirks = SANITIZE_LIST(all_quirks)
+=======
+	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
+>>>>>>> remotes/tg/master
 	validate_quirks()
 
 	return TRUE
 
 /datum/preferences/proc/save_character()
+<<<<<<< HEAD
+=======
+	SHOULD_NOT_SLEEP(TRUE)
+
+>>>>>>> remotes/tg/master
 	if(!path)
 		return FALSE
 	var/savefile/S = new /savefile(path)
@@ -570,6 +721,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return FALSE
 	S.cd = "/character[default_slot]"
 
+<<<<<<< HEAD
 	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX) //load_character will sanitize any bad data, so assume up-to-date.)
 
 	//Character
@@ -631,6 +783,32 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	//Jobs
 	WRITE_FILE(S["joblessrole"] , joblessrole)
+=======
+	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
+		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
+			continue
+
+		if (!(preference.type in recently_updated_keys))
+			continue
+
+		recently_updated_keys -= preference.type
+
+		if (preference.type in value_cache)
+			write_preference(preference, preference.serialize(value_cache[preference.type]))
+
+	WRITE_FILE(S["version"] , SAVEFILE_VERSION_MAX) //load_character will sanitize any bad data, so assume up-to-date.)
+
+	// This is the version when the random security department was removed.
+	// When the minimum is higher than that version, it's impossible for someone to have the "Random" department.
+	#if SAVEFILE_VERSION_MIN > 40
+	#warn The prefered_security_department check in code/modules/client/preferences/security_department.dm is no longer necessary.
+	#endif
+
+	//Character
+	WRITE_FILE(S["randomise"] , randomise)
+	WRITE_FILE(S["persistent_scars"] , persistent_scars)
+
+>>>>>>> remotes/tg/master
 	//Write prefs
 	WRITE_FILE(S["job_preferences"] , job_preferences)
 
@@ -639,6 +817,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	return TRUE
 
+<<<<<<< HEAD
 
 /proc/sanitize_keybindings(value)
 	var/list/base_bindings = sanitize_islist(value,list())
@@ -646,6 +825,13 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		base_bindings[key] = base_bindings[key] & GLOB.keybindings_by_name
 		if(!length(base_bindings[key]))
 			base_bindings -= key
+=======
+/proc/sanitize_keybindings(value)
+	var/list/base_bindings = sanitize_islist(value,list())
+	for(var/keybind_name in base_bindings)
+		if (!(keybind_name in GLOB.keybindings_by_name))
+			base_bindings -= keybind_name
+>>>>>>> remotes/tg/master
 	return base_bindings
 
 #undef SAVEFILE_VERSION_MAX

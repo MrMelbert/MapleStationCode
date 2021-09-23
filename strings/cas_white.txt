@@ -296,7 +296,11 @@ Hygiene.
 The Oh Hi Mark shuttle.
 The asteroid shuttle.
 Razoring the wings off the moths.
+<<<<<<< HEAD
 Wiring the ethereals into the powernet.
+=======
+Wiring the ethereals into the powernet. 
+>>>>>>> remotes/tg/master
 Well-aged miasma.
 Answering directly to the head of personnel.
 An excruciating lizard breakup letter.

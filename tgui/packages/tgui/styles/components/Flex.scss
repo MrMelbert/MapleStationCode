@@ -13,6 +13,7 @@
 }
 
 .Flex--iefix {
+<<<<<<< HEAD
   display: table !important;
   width: 105%;
   border-collapse: collapse;
@@ -49,4 +50,21 @@
 
 .Flex__item--iefix--grow {
   width: auto !important;
+=======
+  display: block;
+}
+
+.Flex--iefix.Flex--inline {
+  display: inline-block;
+}
+
+.Flex__item--iefix {
+  display: inline-block;
+}
+
+.Flex--iefix--column {
+  & > .Flex__item--iefix {
+    display: block;
+  }
+>>>>>>> remotes/tg/master
 }

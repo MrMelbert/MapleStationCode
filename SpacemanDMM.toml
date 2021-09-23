@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 environment = "jollystation.dme"
+=======
+environment = "tgstation.dme"
+>>>>>>> remotes/tg/master
 
 [langserver]
 dreamchecker = true

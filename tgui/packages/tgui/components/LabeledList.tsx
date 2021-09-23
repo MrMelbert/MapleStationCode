@@ -34,6 +34,10 @@ type LabeledListItemProps = {
   /** @deprecated */
   content?: any,
   children?: InfernoNode;
+<<<<<<< HEAD
+=======
+  verticalAlign?: string;
+>>>>>>> remotes/tg/master
 };
 
 const LabeledListItem = (props: LabeledListItemProps) => {
@@ -46,6 +50,10 @@ const LabeledListItem = (props: LabeledListItemProps) => {
     buttons,
     content,
     children,
+<<<<<<< HEAD
+=======
+    verticalAlign = "baseline",
+>>>>>>> remotes/tg/master
   } = props;
   return (
     <tr
@@ -59,7 +67,12 @@ const LabeledListItem = (props: LabeledListItemProps) => {
         className={classes([
           'LabeledList__cell',
           'LabeledList__label',
+<<<<<<< HEAD
         ])}>
+=======
+        ])}
+        verticalAlign={verticalAlign}>
+>>>>>>> remotes/tg/master
         {label ? label + ':' : null}
       </Box>
       <Box
@@ -70,7 +83,12 @@ const LabeledListItem = (props: LabeledListItemProps) => {
           'LabeledList__cell',
           'LabeledList__content',
         ])}
+<<<<<<< HEAD
         colSpan={buttons ? undefined : 2}>
+=======
+        colSpan={buttons ? undefined : 2}
+        verticalAlign={verticalAlign}>
+>>>>>>> remotes/tg/master
         {content}
         {children}
       </Box>

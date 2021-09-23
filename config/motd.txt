@@ -1,5 +1,11 @@
 <!-- Most valid html will work in here, excluding images. -->
 
+<<<<<<< HEAD
 <h1>Welcome to Jolly Station!</h1>
 
 <i>HEY! LISTEN! Don't forget to enable LOOC! It can be enabled by clicking the cog at the top right of the chat menu, and is encouraged to put it in your main chat window.</i>
+=======
+<h1>Welcome to Space Station 13!</h1>
+
+<i>This server is running a /tg/station 13 Git build.</i>
+>>>>>>> remotes/tg/master

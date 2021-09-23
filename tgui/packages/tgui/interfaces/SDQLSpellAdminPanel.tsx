@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import { BooleanLike } from "common/react";
+=======
+>>>>>>> remotes/tg/master
 import { useBackend } from "../backend";
 import { Button, Table } from "../components";
 import { Window } from "../layouts";
@@ -17,7 +20,11 @@ export const SDQLSpellAdminPanel = (props, context) => {
   const { act, data } = useBackend<SDQLSpellAdminPanelData>(context);
 
   return (
+<<<<<<< HEAD
     <Window title="SDQL Spell Admin Panel" width={1200} height={500} resizable>
+=======
+    <Window title="SDQL Spell Admin Panel" width={1200} height={500} theme="admin" resizable>
+>>>>>>> remotes/tg/master
       <Window.Content>
         <Table>
           <Table.Row header>
