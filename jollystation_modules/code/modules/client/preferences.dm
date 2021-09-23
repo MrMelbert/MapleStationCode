@@ -6,21 +6,25 @@
 	var/security_records = ""
 	var/medical_records = ""
 	var/exploitable_info = ""
-	var/runechat_color = "aaa"
 	/// Loadout prefs. Assoc list of [typepaths] to [associated list of item info].
 	var/list/loadout_list
 
-	/// Client preferences
-	var/hear_speech_sounds = TRUE
-	var/hear_radio_sounds = TRUE
-
-// Extension of validate_quirks to ensure people don't get around white/blacklists by changing species.
-/datum/preferences/validate_quirks()
-	for(var/quirk in all_quirks)
-		if(SSquirks.species_blacklist[quirk] && (pref_species.type in SSquirks.species_blacklist[quirk]))
-			all_quirks -= quirk
-			continue
-		if(SSquirks.species_whitelist[quirk] && !(pref_species.type in SSquirks.species_whitelist[quirk]))
-			all_quirks -= quirk
-			continue
+/datum/preferences/load_character(slot)
 	. = ..()
+	if(!.)
+		return
+
+	READ_FILE(S["loadout_list"] , loadout_list)
+	loadout_list = sanitize_loadout_list(loadout_list)
+
+/datum/preferences/save_character()
+	. = ..()
+	if(!.)
+		return
+
+	WRITE_FILE(S["loadout_list"], loadout_list)
+
+/datum/preferences/update_preferences(current_version, savefile/S)
+	. = ..()
+	if (current_version < 41)
+		loadout_list = update_loadout_list(loadout_list)

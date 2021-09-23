@@ -117,8 +117,9 @@
 			listeners += SSmobs.clients_by_zlevel[below_turf.z]
 
 	for(var/mob/mob_in_range as anything in listeners)
-		if(!mob_in_range.client?.prefs?.hear_speech_sounds)
+		if(!mob_in_range.client?.prefs?.read_preference(/datum/preference/toggle/toggle_speech))
 			continue
+
 		if(get_dist(mob_in_range, turf_source) > maxdistance)
 			continue
 
@@ -141,11 +142,8 @@
 		return
 
 	// Don't bother playing sounds to clientless mobs to save time
-	if(!client)
-		return
-
-	if(!client.prefs?.hear_radio_sounds)
-		return
+	if(!client?.prefs?.read_preference(/datum/preference/toggle/toggle_radio))
+		continue
 
 	// We only deal with radio messages from this point
 	if(!message_mods[MODE_HEADSET] && !message_mods[RADIO_EXTENSION])

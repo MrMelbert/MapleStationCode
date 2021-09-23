@@ -146,11 +146,11 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 /// be valid.
 /// If no changes need to be made, will return the same list.
 /// Expects all quirk names to be unique, but makes no other expectations.
-/datum/controller/subsystem/processing/quirks/proc/filter_invalid_quirks(list/quirks)
+/datum/controller/subsystem/processing/quirks/proc/filter_invalid_quirks(list/quirks, datum/preferences/supplied_prefs) // NON-MODULE CHANGE
 	var/list/new_quirks = list()
 	var/list/positive_quirks = list()
 	var/balance = 0
-	
+
 	var/list/all_quirks = get_quirks()
 
 	for (var/quirk_name in quirks)
@@ -177,6 +177,13 @@ PROCESSING_SUBSYSTEM_DEF(quirks)
 
 		if (blacklisted)
 			continue
+
+		// NON-MODULE CHANGE
+		if(species_blacklist[quirk] && (supplied_prefs.read_preference(/datum/preference/choiced/species) in species_blacklist[quirk]))
+			continue
+		if(species_whitelist[quirk] && !(supplied_prefs.read_preference(/datum/preference/choiced/species) in species_whitelist[quirk]))
+			continue
+		// NON-MODULE CHANGE END
 
 		var/value = initial(quirk.value)
 		if (value > 0)

@@ -266,9 +266,7 @@
 
 	/// NON-MODULE CHANGE: // MELBERT TODO: LOOK AT THIS
 	add_client_flavor_text(humanc?.client)
-	if(humanc)
-		for(var/datum/loadout_item/item as anything in loadout_list_to_datums(humanc?.client?.prefs?.loadout_list))
-			item.post_equip_item(humanc.client?.prefs, humanc)
+	after_loadout_equipped(humanc, humanc?.client?.prefs)
 	/// NON-MODULE CHANGE END
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CREWMEMBER_JOINED, character, rank)

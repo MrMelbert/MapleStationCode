@@ -31,14 +31,29 @@
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
-	equipOutfit(equipped_outfit, visuals_only)
-	w_uniform?.swap_to_modular_dmi(src)
+	equipOutfit(equipped_outfit, visuals_only) // equip the outfit
+	w_uniform?.swap_to_modular_dmi(src) // change our uniform's icon if needed
 
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.on_equip_item(preference_source, src, visuals_only)
 
 	regenerate_icons()
 	return TRUE
+
+/*
+ * Go through after the loadout item is equipped and call post_equip_item.
+ *
+ * equipper - the mob we're equipping the loadout item to
+ * prefs - the preferences datum we're equipping from
+ */
+/proc/after_loadout_equipped(mob/living/carbon/human/equipper, datum/preferences/prefs)
+	if(!prefs)
+		CRASH("After_loadout_equipped called without a supplied preference datum.")
+	if(!istype(equipper))
+		return // Not a crash, 'cause this proc could be passed non-humans (AIs, etc) and that's fine
+
+	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(prefs.loadout_list))
+		item.post_equip_item(equipper.client?.prefs, equipper)
 
 /*
  * Takes a list of paths (such as a loadout list)
@@ -50,7 +65,6 @@
  */
 /proc/loadout_list_to_datums(list/loadout_list)
 	RETURN_TYPE(/list)
-
 	. = list()
 
 	if(!GLOB.all_loadout_datums.len)
@@ -66,6 +80,8 @@
 
 /*
  * Removes all invalid paths from loadout lists.
+ * This is for updating old loadout lists (pre-datumization)
+ * to new loadout lists (the formatting was changed).
  *
  * passed_list - the loadout list we're sanitizing.
  *
@@ -75,9 +91,9 @@
 	RETURN_TYPE(/list)
 
 	var/list/list_to_update = LAZYLISTDUPLICATE(passed_list)
-	for(var/thing in list_to_update) //thing, 'cause it could be a lot of things
+	for(var/thing in list_to_update) //"thing", 'cause it could be a lot of things
 		if(ispath(thing))
-			break
+			continue
 		var/our_path = text2path(list_to_update[thing])
 
 		LAZYREMOVE(list_to_update, thing)
@@ -88,6 +104,7 @@
 
 /*
  * Removes all invalid paths from loadout lists.
+ * This is a general sanitization for preference save / load
  *
  * passed_list - the loadout list we're sanitizing.
  *
@@ -103,7 +120,7 @@
 			LAZYREMOVE(list_to_clean, path)
 
 		else if(!(path in GLOB.all_loadout_datums))
-			stack_trace("invalid loadout slot found in loadout list! Path: [path]")
+			stack_trace("invalid loadout item found in loadout list! Path: [path]")
 			LAZYREMOVE(list_to_clean, path)
 
 	return list_to_clean

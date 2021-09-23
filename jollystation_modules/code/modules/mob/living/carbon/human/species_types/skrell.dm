@@ -2,6 +2,10 @@
 /// GLOB list of head tentacle sprites / options
 GLOBAL_LIST_EMPTY(head_tentacles_list)
 
+/proc/randomize_human(mob/living/carbon/human/H)
+	H.dna.features["head_tentacles"] = pick(GLOB.head_tentacles_list)
+	. = ..()
+
 // The datum for Skrell.
 /datum/species/skrell
 	name = "Skrell"
@@ -76,9 +80,9 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 
 /obj/item/organ/external/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
 	. = TRUE
-	if(human.head?.flags_inv & HIDEHAIR)
+	if(istype(human.head) && (human.head.flags_inv & HIDEHAIR))
 		. = FALSE
-	if(human.wear_mask?.flags_inv & HIDEHAIR)
+	if(istype(human.wear_mask) && (human.wear_mask.flags_inv & HIDEHAIR))
 		. = FALSE
 	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
 	if(our_head?.status == BODYPART_ROBOTIC)

@@ -14,9 +14,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  * Create a flavor text datum for [added_client].
  */
 /proc/add_client_flavor_text(client/added_client)
-	if(!added_client)
-		return FALSE
-	if(!added_client.prefs)
+	if(!added_client?.prefs)
 		return FALSE
 	if(!added_client.prefs.flavor_text && !added_client.prefs.general_records && !added_client.prefs.medical_records && !added_client.prefs.security_records)
 		return FALSE
@@ -26,8 +24,9 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	var/mob/living/added_mob = added_client.mob
 	if(!GLOB.flavor_texts[added_mob.real_name])
 		var/datum/flavor_text/found_text = new /datum/flavor_text(added_client)
-		GLOB.flavor_texts[added_mob.real_name] = found_text
-		added_mob.linked_flavor = found_text
+		if(!QDELETED(found_text))
+			GLOB.flavor_texts[added_mob.real_name] = found_text
+			added_mob.linked_flavor = found_text
 
 	return TRUE
 
