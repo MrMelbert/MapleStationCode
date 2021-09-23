@@ -2466,7 +2466,7 @@
 /area/awaymission/spacebattle/cruiser)
 "jE" = (
 /obj/structure/closet/crate,
-/obj/effect/spawner/lootdrop/maintenance,
+/obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)
 "jF" = (
@@ -2489,12 +2489,12 @@
 /area/awaymission/spacebattle/cruiser)
 "jI" = (
 /obj/structure/closet/crate,
-/obj/effect/spawner/lootdrop/maintenance,
+/obj/effect/spawner/random/maintenance,
 /turf/open/floor/engine,
 /area/awaymission/spacebattle/cruiser)
 "jJ" = (
 /obj/structure/closet/crate,
-/obj/effect/spawner/lootdrop/armory_contraband,
+/obj/effect/spawner/random/contraband/armory,
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)
 "jK" = (
@@ -2602,7 +2602,7 @@
 /turf/open/floor/engine,
 /area/awaymission/spacebattle/cruiser)
 "ka" = (
-/obj/effect/spawner/lootdrop/crate_spawner,
+/obj/effect/spawner/random/structure/crate_abandoned,
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)
 "kb" = (

@@ -111,7 +111,7 @@
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "aA" = (
-/obj/effect/loot_site_spawner,
+/obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/maintenance/fore)
 "aB" = (
@@ -605,7 +605,7 @@
 /area/science/xenobiology)
 "cz" = (
 /obj/effect/landmark/start/hangover,
-/obj/effect/spawner/lootdrop/gambling,
+/obj/effect/spawner/random/entertainment/gambling,
 /obj/machinery/camera{
 	c_tag = "Service-Bar 2";
 	dir = 6
@@ -717,7 +717,7 @@
 /area/service/kitchen)
 "dd" = (
 /obj/structure/closet/emcloset,
-/obj/effect/spawner/lootdrop/maintenance/two,
+/obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "df" = (
@@ -1850,7 +1850,7 @@
 	},
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/siding/white,
-/obj/effect/spawner/randomsnackvend,
+/obj/effect/spawner/random/vending/snackvend,
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
 "iX" = (
@@ -2175,7 +2175,7 @@
 /area/mine/production)
 "kM" = (
 /obj/structure/table/wood,
-/obj/effect/spawner/lootdrop/gambling,
+/obj/effect/spawner/random/entertainment/gambling,
 /obj/machinery/newscaster/directional/south,
 /obj/machinery/status_display/evac/directional/west,
 /turf/open/floor/iron/grimy,
@@ -2419,7 +2419,6 @@
 /turf/open/floor/wood/parquet,
 /area/service/bar/atrium)
 "mn" = (
-/obj/structure/chair/stool/directional/east,
 /obj/structure/disposalpipe/segment{
 	dir = 10
 	},
@@ -2969,7 +2968,7 @@
 /obj/structure/sign/departments/xenobio{
 	pixel_x = -32
 	},
-/obj/effect/loot_site_spawner,
+/obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "pH" = (
@@ -3108,7 +3107,7 @@
 /area/service/theater)
 "qr" = (
 /obj/structure/table/wood,
-/obj/effect/spawner/lootdrop/gambling,
+/obj/effect/spawner/random/entertainment/gambling,
 /turf/open/floor/wood,
 /area/hallway/secondary/service)
 "qs" = (
@@ -3517,7 +3516,7 @@
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "sv" = (
-/obj/effect/spawner/lootdrop/two_percent_xeno_egg_spawner,
+/obj/effect/spawner/random/medical/two_percent_xeno_egg_spawner,
 /turf/open/floor/engine,
 /area/science/xenobiology)
 "sx" = (
@@ -3601,7 +3600,7 @@
 /area/hallway/secondary/service)
 "sX" = (
 /obj/structure/rack,
-/obj/effect/spawner/lootdrop/maintenance/two,
+/obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "tb" = (
@@ -3638,7 +3637,7 @@
 /area/service/kitchen)
 "th" = (
 /obj/structure/rack,
-/obj/effect/spawner/lootdrop/maintenance/two,
+/obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/maintenance/starboard/fore)
 "to" = (
@@ -3977,7 +3976,7 @@
 /turf/open/floor/iron/freezer,
 /area/mine/living_quarters)
 "vg" = (
-/obj/effect/loot_site_spawner,
+/obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "vh" = (
@@ -4065,7 +4064,7 @@
 "vP" = (
 /obj/structure/cable,
 /obj/structure/closet,
-/obj/effect/spawner/lootdrop/maintenance,
+/obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "vQ" = (
@@ -4110,7 +4109,7 @@
 "we" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/spawner/lootdrop/donkpockets,
+/obj/effect/spawner/random/food_or_drink/donkpockets,
 /turf/open/floor/iron,
 /area/mine/laborcamp)
 "wf" = (
@@ -4339,7 +4338,7 @@
 /area/science/xenobiology)
 "xy" = (
 /obj/structure/rack,
-/obj/effect/spawner/lootdrop/maintenance/three,
+/obj/effect/spawner/random/maintenance/three,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "xz" = (
@@ -4453,7 +4452,7 @@
 /area/service/bar/atrium)
 "yu" = (
 /obj/structure/rack,
-/obj/effect/spawner/lootdrop/maintenance/two,
+/obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
 "yx" = (
@@ -4791,7 +4790,7 @@
 /turf/open/floor/wood/tile,
 /area/service/theater)
 "AH" = (
-/obj/effect/spawner/lootdrop/maintenance,
+/obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
 "AJ" = (
@@ -5262,7 +5261,7 @@
 /turf/open/floor/iron,
 /area/science/xenobiology)
 "Dv" = (
-/obj/effect/spawner/lootdrop/gambling,
+/obj/effect/spawner/random/entertainment/gambling,
 /obj/structure/table/wood,
 /turf/open/floor/wood/parquet,
 /area/service/bar/atrium)
@@ -5837,7 +5836,7 @@
 /obj/structure/rack,
 /obj/item/clothing/suit/hazardvest,
 /obj/item/wrench,
-/obj/effect/spawner/lootdrop/maintenance/two,
+/obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "GB" = (
@@ -5858,7 +5857,7 @@
 /area/service/theater)
 "GG" = (
 /obj/structure/closet,
-/obj/effect/spawner/lootdrop/maintenance/two,
+/obj/effect/spawner/random/maintenance/two,
 /turf/open/floor/plating,
 /area/maintenance/department/crew_quarters/bar)
 "GJ" = (
@@ -5996,7 +5995,7 @@
 	},
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/siding/white,
-/obj/effect/spawner/randomcolavend,
+/obj/effect/spawner/random/vending/colavend,
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
 "HO" = (
@@ -6173,7 +6172,7 @@
 "IQ" = (
 /obj/structure/cable,
 /obj/structure/table,
-/obj/effect/spawner/lootdrop/maintenance,
+/obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "IZ" = (
@@ -6235,7 +6234,7 @@
 /area/service/bar)
 "Jv" = (
 /obj/structure/rack,
-/obj/effect/spawner/lootdrop/maintenance/two,
+/obj/effect/spawner/random/maintenance/two,
 /obj/item/pickaxe,
 /obj/item/mining_scanner,
 /obj/item/storage/bag/ore,
@@ -8007,7 +8006,7 @@
 /turf/open/floor/plating/snowed/icemoon,
 /area/hallway/secondary/service)
 "TB" = (
-/obj/effect/spawner/lootdrop/gross_decal_spawner,
+/obj/effect/spawner/random/trash/mess,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "TC" = (
@@ -8410,7 +8409,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/mine/laborcamp)
 "VI" = (
-/obj/effect/loot_site_spawner,
+/obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating{
 	icon_state = "platingdmg3"
 	},
@@ -8670,7 +8669,7 @@
 /area/maintenance/fore)
 "XN" = (
 /obj/structure/rack,
-/obj/effect/spawner/lootdrop/minor/bowler_or_that,
+/obj/effect/spawner/random/clothing/bowler_or_that,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "XP" = (
@@ -9052,7 +9051,7 @@
 /turf/open/floor/iron/freezer,
 /area/mine/living_quarters)
 "ZP" = (
-/obj/effect/loot_site_spawner,
+/obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/maintenance/aft)
 "ZR" = (
