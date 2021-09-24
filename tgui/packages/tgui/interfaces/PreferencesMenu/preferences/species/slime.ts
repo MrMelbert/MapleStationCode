@@ -1,6 +1,6 @@
 import { createLanguagePerk, Species } from "./base";
 
-const Slimeperson: Species = {
+const Slime: Species = {
   description: "WIP Slimeperson description!",
   features: {
     good: [{
@@ -46,7 +46,7 @@ const Slimeperson: Species = {
       description: "Slimepeople's blood consists of extremely \
         toxic Slime Jelly, making medical treatment extremely difficult.",
     }, {
-      icon: "pump-medical",
+      icon: "tint-slash",
       name: "Importance of Jelly",
       description: "Being low on blood is much more dangerous, causing you to \
         lose limbs and take heavy damage.",
@@ -57,4 +57,4 @@ const Slimeperson: Species = {
   ],
 };
 
-export default Slimeperson;
+export default Slime;

@@ -14,7 +14,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE)
 	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP, TRAIT_LIGHT_DRINKER)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
-	toxic_food = MEAT | RAW | DAIRY | TOXIC
+	toxic_food = MEAT | RAW | DAIRY | TOXIC | SEAFOOD
 	disliked_food = GROSS
 	liked_food = VEGETABLES | FRUIT
 	payday_modifier = 0.75
@@ -28,6 +28,10 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	species_speech_sounds_ask = list('jollystation_modules/sound/voice/huff_exclaim.ogg' = 120)
 	species_pain_mod = 0.80
 	limbs_id = "skrell"
+
+/datum/species/skrell/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
+	. = ..()
+
 
 // Preset Skrell species
 /mob/living/carbon/human/species/skrell

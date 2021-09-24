@@ -12,6 +12,7 @@
 	var/list/loadout_on_open
 	/// The key of the dummy we use to generate sprites
 	var/dummy_key
+	var/atom/movable/screen/character_preview_view/character_preview_view
 	/// The dir the dummy is facing.
 	var/list/dummy_dir = list(SOUTH)
 	/// A ref to the dummy outfit we're using
@@ -33,7 +34,12 @@
 	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
 	loadout_on_open = LAZYLISTDUPLICATE(our_loadout_list)
 	custom_loadout = new()
-	reset_outfit()
+
+/datum/loadout_manager/Destroy(force, ...)
+	QDEL_NULL(character_preview_view)
+	QDEL_NULL_IF(menu)
+	QDEL_IF(custom_loadout)
+	return ..()
 
 /datum/loadout_manager/ui_close(mob/user)
 	owner?.prefs.save_character()
@@ -42,15 +48,17 @@
 		menu = null
 	owner?.open_loadout_ui = null
 	clear_human_dummy(dummy_key)
+	QDEL_NULL(character_preview_view)
 	qdel(custom_loadout)
 	qdel(src)
 
-/// Initialize our dummy and dummy_key.
-/datum/loadout_manager/proc/init_dummy()
-	dummy_key = "loadoutmanagerUI_[owner.mob]"
-	generate_dummy_lookalike(dummy_key, owner.mob)
-	unset_busy_human_dummy(dummy_key)
-	return
+/// Initialize our character dummy.
+/datum/loadout_manager/proc/create_character_preview_view(mob/user)
+	character_preview_view = new(null, owner?.prefs, user.client)
+	reset_outfit()
+	character_preview_view.register_to_client(user.client)
+
+	return character_preview_view
 
 /datum/loadout_manager/ui_state(mob/user)
 	return GLOB.always_state
@@ -60,6 +68,8 @@
 	if(!ui)
 		ui = new(user, src, "_LoadoutManager")
 		ui.open()
+
+		addtimer(CALLBACK(character_preview_view, /atom/movable/screen/character_preview_view/proc/update_body), 1 SECONDS)
 
 /datum/loadout_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
@@ -109,10 +119,6 @@
 		// Rotates the dummy left or right depending on params["dir"]
 		if("rotate_dummy")
 			rotate_model_dir(params["dir"])
-
-		// Toggles between showing all dirs of the dummy at once.
-		if("show_all_dirs")
-			toggle_model_dirs()
 
 	reset_outfit()
 	return TRUE
@@ -222,38 +228,12 @@
 			our_loadout_list[item.item_path] -= INFO_NAMED
 			owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
 
-/// Rotate the dummy [DIR] direction, or reset it to SOUTH dir if we're showing all dirs at once.
-/datum/loadout_manager/proc/rotate_model_dir(dir)
-	if(dummy_dir.len > 1)
-		dummy_dir = list(SOUTH)
+/// Rotate the preview [dir_string] direction.
+/datum/loadout_manager/proc/rotate_model_dir(dir_string)
+	if(dir_string == "left")
+		character_preview_view.dir = turn(character_preview_view.dir, -90)
 	else
-		if(dir == "left")
-			switch(dummy_dir[1])
-				if(SOUTH)
-					dummy_dir[1] = WEST
-				if(EAST)
-					dummy_dir[1] = SOUTH
-				if(NORTH)
-					dummy_dir[1] = EAST
-				if(WEST)
-					dummy_dir[1] = NORTH
-		else
-			switch(dummy_dir[1])
-				if(SOUTH)
-					dummy_dir[1] = EAST
-				if(EAST)
-					dummy_dir[1] = NORTH
-				if(NORTH)
-					dummy_dir[1] = WEST
-				if(WEST)
-					dummy_dir[1] = SOUTH
-
-/// Toggle between showing all the dirs and just the front dir of the dummy.
-/datum/loadout_manager/proc/toggle_model_dirs()
-	if(dummy_dir.len > 1)
-		dummy_dir = list(SOUTH)
-	else
-		dummy_dir = GLOB.cardinals
+		character_preview_view.dir = turn(character_preview_view.dir, 90)
 
 /datum/loadout_manager/ui_data(mob/user)
 	var/list/data = list()
@@ -262,10 +242,13 @@
 	for(var/path in owner.prefs.read_preference(/datum/preference/loadout))
 		all_selected_paths += path
 
-	data["icon64"] = generate_preview()
+	if (isnull(character_preview_view))
+		character_preview_view = create_character_preview_view(user)
+	else if (character_preview_view.client != owner)
+		character_preview_view.register_to_client(owner)
+
 	data["selected_loadout"] = all_selected_paths
 	data["mob_name"] = owner.prefs.read_preference(/datum/preference/name/real_name)
-	//data["ismoth"] = istype(owner.prefs.pref_species, /datum/species/moth) // Moth's humanflaticcon isn't the same dimensions for some reason
 	data["job_clothes"] = view_job_clothes
 	data["tutorial_status"] = tutorial_status
 	if(tutorial_status)
@@ -275,6 +258,8 @@
 
 /datum/loadout_manager/ui_static_data()
 	var/list/data = list()
+
+	data["character_preview_view"] = character_preview_view.assigned_map
 
 	// [name] is the name of the tab that contains all the corresponding contents.
 	// [title] is the name at the top of the list of corresponding contents.
@@ -305,23 +290,6 @@
 	data["loadout_tabs"] = loadout_tabs
 
 	return data
-
-/// Generate a flat icon preview of our user, if we need to update it.
-/datum/loadout_manager/proc/generate_preview()
-	if(!dummy_key)
-		init_dummy()
-
-	if(update_dummysprite)
-		dummysprite = get_flat_human_icon(
-			null,
-			dummy_key = dummy_key,
-			outfit_override = custom_loadout,
-			showDirs = dummy_dir,
-			prefs = owner.prefs,
-			)
-		update_dummysprite = FALSE
-
-	return icon2base64(dummysprite)
 
 /// Returns a formatted string for use in the UI.
 /datum/loadout_manager/proc/get_tutorial_text()
@@ -380,7 +348,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 	custom_loadout.copy_from(default_outfit)
 	qdel(default_outfit)
 
-	update_dummysprite = TRUE
+	character_preview_view.update_body()
 
 /*
  * Takes an assoc list of [typepath]s to [singleton datum]
