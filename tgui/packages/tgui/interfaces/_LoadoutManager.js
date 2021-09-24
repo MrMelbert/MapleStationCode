@@ -6,27 +6,27 @@ import { CharacterPreview } from "./PreferencesMenu/CharacterPreview";
 export const _LoadoutManager = (props, context) => {
   const { act, data } = useBackend(context);
 
+  const {
+    loadout_tabs,
+    tutorial_status,
+  } = data;
+
   const [selectedTabName, setSelectedTab] = useLocalState(
     context, 'tabs', loadout_tabs[0]?.name);
   const selectedTab = loadout_tabs.find(curTab => {
     return curTab.name === selectedTabName;
   });
 
-  const {
-    loadout_tabs,
-    tutorial_status,
-  } = data;
-
   return (
     <Window
       title="Loadout Manager"
       width={900}
       height={650}>
-      <Window.Content>
+      <Window.Content height="100%">
         { !!tutorial_status && (
           <LoadoutTutorialDimmer />
         )}
-        <Stack grow vertical>
+        <Stack vertical>
           <Stack.Item>
             <Section
               title="Loadout Categories"
@@ -50,7 +50,7 @@ export const _LoadoutManager = (props, context) => {
               </Tabs>
             </Section>
           </Stack.Item>
-          <Stack.Item>
+          <Stack.Item height="500px">
             <LoadoutTabs
               tab = {selectedTab}/>
           </Stack.Item>
@@ -72,7 +72,6 @@ export const LoadoutTutorialDimmer = (props, context) => {
         align="center">
         <Stack.Item
           textAlign="center"
-          fontSize="14px"
           preserveWhitespace>
           {tutorial_text}
         </Stack.Item>
@@ -80,7 +79,6 @@ export const LoadoutTutorialDimmer = (props, context) => {
           <Button
             mt={1}
             align="center"
-            fontSize="20px"
             onClick={() => act('toggle_tutorial')}>
             Okay.
           </Button>
@@ -98,11 +96,11 @@ export const LoadoutTabs = (props, context) => {
   } = data;
 
   return (
-    <Stack>
+    <Stack fill>
       <Stack.Item grow >
-        { props && props.selectedTab && props.selectedTab.contents ? (
+        { props.tab && props.tab.contents ? (
           <Section
-            title={props.selectedTab.title}
+            title={props.tab.title}
             fill
             scrollable
             buttons={(
@@ -115,9 +113,9 @@ export const LoadoutTabs = (props, context) => {
                 onClick={() => act('clear_all_items')} />
             )}>
             <Stack vertical>
-              {props.selectedTab.contents.map(item => (
+              {props.tab.contents.map(item => (
                 <Stack.Item key={item.name}>
-                  <Stack fontSize="15px">
+                  <Stack>
                     <Stack.Item grow align="left">
                       {item.name}
                     </Stack.Item>
@@ -184,7 +182,7 @@ export const LoadoutPreviewSection = (props, context) => {
   return (
     <Section
       title={`Preview: ${mob_name}`}
-      fill
+      grow
       buttons={(
         <Button.Checkbox
           align="center"
@@ -192,13 +190,13 @@ export const LoadoutPreviewSection = (props, context) => {
           checked={job_clothes}
           onClick={() => act('toggle_job_clothes')} />
       )}>
-      <Stack vertical>
-        <Stack.Item>
+      <Stack height="450px" vertical>
+        <Stack.Item grow align="center">
           <CharacterPreview
             height="100%"
             id={character_preview_view} />
-          <Divider />
         </Stack.Item>
+        <Stack.Divider />
         <Stack.Item align="center">
           <Stack>
             <Stack.Item>

@@ -10,35 +10,24 @@
 	var/client/owner
 	/// The current selected loadout list.
 	var/list/loadout_on_open
-	/// The key of the dummy we use to generate sprites
-	var/dummy_key
+	/// The preview dummy. //TODO: closing makes the main menu wonky
 	var/atom/movable/screen/character_preview_view/character_preview_view
-	/// The dir the dummy is facing.
-	var/list/dummy_dir = list(SOUTH)
-	/// A ref to the dummy outfit we're using
-	var/datum/outfit/player_loadout/custom_loadout
 	/// Whether we see our favorite job's clothes on the dummy
 	var/view_job_clothes = TRUE
 	/// Whether we see tutorial text in the UI
 	var/tutorial_status = FALSE
 	/// Our currently open greyscaling menu.
 	var/datum/greyscale_modify_menu/menu
-	/// Whether we need to update our dummy sprite next ui_data or not.
-	var/update_dummysprite = TRUE
-	/// Our preview sprite.
-	var/icon/dummysprite
 
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
 	owner.open_loadout_ui = src
 	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
 	loadout_on_open = LAZYLISTDUPLICATE(our_loadout_list)
-	custom_loadout = new()
 
 /datum/loadout_manager/Destroy(force, ...)
-	QDEL_NULL(character_preview_view)
+	QDEL_NULL_IF(character_preview_view)
 	QDEL_NULL_IF(menu)
-	QDEL_IF(custom_loadout)
 	return ..()
 
 /datum/loadout_manager/ui_close(mob/user)
@@ -47,9 +36,7 @@
 		SStgui.close_uis(menu)
 		menu = null
 	owner?.open_loadout_ui = null
-	clear_human_dummy(dummy_key)
 	QDEL_NULL(character_preview_view)
-	qdel(custom_loadout)
 	qdel(src)
 
 /// Initialize our character dummy.
@@ -203,7 +190,6 @@
 	if(colors)
 		our_loadout_list[path][INFO_GREYSCALE] = colors.Join("")
 		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
-		update_dummysprite = TRUE
 
 /// Set [item]'s name to input provided.
 /datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)
@@ -238,14 +224,14 @@
 /datum/loadout_manager/ui_data(mob/user)
 	var/list/data = list()
 
-	var/list/all_selected_paths = list()
-	for(var/path in owner.prefs.read_preference(/datum/preference/loadout))
-		all_selected_paths += path
-
 	if (isnull(character_preview_view))
 		character_preview_view = create_character_preview_view(user)
 	else if (character_preview_view.client != owner)
 		character_preview_view.register_to_client(owner)
+
+	var/list/all_selected_paths = list()
+	for(var/path in owner.prefs.read_preference(/datum/preference/loadout))
+		all_selected_paths += path
 
 	data["selected_loadout"] = all_selected_paths
 	data["mob_name"] = owner.prefs.read_preference(/datum/preference/name/real_name)
@@ -314,11 +300,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 /datum/loadout_manager/proc/reset_outfit()
 	var/datum/outfit/job/default_outfit
 	if(view_job_clothes)
-		var/datum/job/fav_job = SSjob.GetJobType(SSjob.overflow_role)
-		for(var/selected_job in owner.prefs.job_preferences)
-			if(owner.prefs.job_preferences[selected_job] == JP_HIGH)
-				fav_job = SSjob.GetJob(selected_job)
-				break
+		var/datum/job/fav_job = owner.prefs.get_highest_priority_job() || SSjob.GetJobType(SSjob.overflow_role)
 
 		if(istype(owner.prefs.read_preference(/datum/preference/choiced/species), /datum/species/plasmaman) && fav_job.plasmaman_outfit)
 			default_outfit = new fav_job.plasmaman_outfit()
@@ -345,10 +327,32 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 	else
 		default_outfit = new /datum/outfit()
 
-	custom_loadout.copy_from(default_outfit)
+	character_preview_view.update_body_from_loadout(default_outfit)
 	qdel(default_outfit)
 
-	character_preview_view.update_body()
+/*
+ * Similar to the update_body() proc, but accepts a [/datum/outfit] to be equipped onto the dummy
+ * instead of using the highest priority job of the preferences.
+ *
+ * loadout - an instantiated outfit datum to be applied to the dummy
+ */
+/atom/movable/screen/character_preview_view/proc/update_body_from_loadout(datum/outfit/loadout)
+	var/datum/job/preview_job = preferences.get_highest_priority_job()
+	if(preview_job)
+		if (istype(preview_job,/datum/job/ai) || istype(preview_job,/datum/job/cyborg))
+			return update_body()
+
+	if (isnull(body))
+		create_body()
+	else
+		body.wipe_state()
+
+	// Set up the dummy for its photoshoot
+	preferences.apply_prefs_to(body, TRUE)
+	body.equip_outfit_and_loadout(loadout, preferences, TRUE)
+
+	COMPILE_OVERLAYS(body)
+	appearance = body.appearance
 
 /*
  * Takes an assoc list of [typepath]s to [singleton datum]

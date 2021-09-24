@@ -102,8 +102,14 @@
 	apply_prefs_to(mannequin, TRUE)
 
 	if(preview_job)
-		mannequin.job = preview_job.title
-		mannequin.dress_up_as_job(preview_job, TRUE, src) // NON-MODULE CHANGE
+		// NON-MODULE CHANGE
+		if(!parent.open_loadout_ui || parent.open_loadout_ui.view_job_clothes)
+			mannequin.job = preview_job.title
+			mannequin.dress_up_as_job(preview_job, TRUE, src)
+		else
+			mannequin.job = "Unassigned"
+			mannequin.dress_up_as_job(SSjob.GetJobType(/datum/job/unassigned), TRUE, src)
+		// NON-MODULE CHANGE END
 
 	COMPILE_OVERLAYS(mannequin)
 	return mannequin.appearance
