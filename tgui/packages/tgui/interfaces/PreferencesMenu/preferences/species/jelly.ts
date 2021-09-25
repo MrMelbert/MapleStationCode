@@ -1,6 +1,6 @@
 import { createLanguagePerk, Species } from "./base";
 
-const Slime: Species = {
+const Jelly: Species = {
   description: "WIP Slimeperson description!",
   features: {
     good: [{
@@ -19,16 +19,10 @@ const Slime: Species = {
       description: "Toxic chemicals and food will regenerate a slimeperson's \
         blood levels to much higher than normal.",
     }, {
-      icon: "users",
-      name: "Slime Powers",
-      description: "Slimepeople can come in a variety of types. Some can \
-        split into multiple slime clones, regenerate lost limbs, link with \
-        other people's minds, or accept slime cores for powers.",
-    }, {
       icon: "user-friends",
       name: "Friend of Slimes",
       description: "Slimepeople are friendly with wild slimes.",
-    },  createLanguagePerk("Slime")],
+    }, createLanguagePerk("Slime")],
     neutral: [{
       icon: "syringe",
       name: "Toxins Lover",
@@ -57,4 +51,4 @@ const Slime: Species = {
   ],
 };
 
-export default Slime;
+export default Jelly;

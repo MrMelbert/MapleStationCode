@@ -1,4 +1,6 @@
 /// --- Fax Machines. ---
+// Sprite ported from oldbases with fax machines (Paradise, baystaion, vgstation).
+
 /// GLOB list of all fax machines.
 GLOBAL_LIST_EMPTY(fax_machines)
 

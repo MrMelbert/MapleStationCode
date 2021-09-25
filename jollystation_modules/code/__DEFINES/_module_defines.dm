@@ -5,6 +5,7 @@
 
 /// Language flag for languages added via quirk
 #define LANGUAGE_QUIRK "quirk"
+#define LANGUAGE_PREF "pref"
 
 /// Some string files.
 #define COMPANY_FILE "companies.json"

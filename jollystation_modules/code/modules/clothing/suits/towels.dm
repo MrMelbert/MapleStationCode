@@ -1,4 +1,6 @@
-// -- Towels. --
+/// -- Towels. --
+// Inhand and icon sprites ported from baystation.
+
 /// do_after key, related to towels
 #define DOAFTER_SOURCE_TOWEL "doafter_towel"
 

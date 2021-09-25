@@ -428,6 +428,15 @@ export const JobsPage = () => {
                 name="Security" />
 
               <Gap amount={6} />
+              {/* // NON-MODULE CHANGE */}
+
+              <Department
+                department={Departments.Command}
+                name="Command" />
+
+              <Gap amount={6} />
+
+              {/* // NON-MODULE CHANGE END */}
 
               <Department
                 department={Departments.Medical}

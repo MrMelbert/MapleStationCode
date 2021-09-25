@@ -14,7 +14,7 @@
 // New quirks
 /// Trilingual quirk - Gives the owner a language, either random or a set one.
 /datum/quirk/trilingual
-	name = "Language - Trilingual"
+	name = "Trilingual"
 	desc = "You're trilingual - you know another random language besides common and your native tongue."
 	value = 1
 	gain_text = "<span class='notice'>You understand a new language.</span>"

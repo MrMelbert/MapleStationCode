@@ -1,6 +1,7 @@
 /datum/preference/multiline_text
 	abstract_type = /datum/preference/multiline_text
 	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 
 /datum/preference/multiline_text/apply_to_human(mob/living/carbon/human/target, value)
@@ -25,7 +26,7 @@
 	return null
 
 /datum/preference/multiline_text/flavor
-	savefile_key = "text_flavor"
+	savefile_key = "flavor_text"
 
 /datum/preference/multiline_text/flavor/apply_to_human(mob/living/carbon/human/target, value)
 	. = ..()
@@ -35,7 +36,7 @@
 	target.linked_flavor.flavor_text = value
 
 /datum/preference/multiline_text/exploitable
-	savefile_key = "text_exploitable"
+	savefile_key = "exploitable_info"
 
 /datum/preference/multiline_text/exploitable/apply_to_human(mob/living/carbon/human/target, value)
 	. = ..()
@@ -45,7 +46,7 @@
 	target.linked_flavor.expl_info = value
 
 /datum/preference/multiline_text/general
-	savefile_key = "text_general"
+	savefile_key = "general_records"
 
 /datum/preference/multiline_text/general/apply_to_human(mob/living/carbon/human/target, value)
 	. = ..()
@@ -55,7 +56,7 @@
 	target.linked_flavor.gen_records = value
 
 /datum/preference/multiline_text/security
-	savefile_key = "text_security"
+	savefile_key = "security_records"
 
 /datum/preference/multiline_text/security/apply_to_human(mob/living/carbon/human/target, value)
 	. = ..()
@@ -65,7 +66,7 @@
 	target.linked_flavor.sec_records = value
 
 /datum/preference/multiline_text/medical
-	savefile_key = "text_medical"
+	savefile_key = "medical_records"
 
 /datum/preference/multiline_text/medical/apply_to_human(mob/living/carbon/human/target, value)
 	. = ..()

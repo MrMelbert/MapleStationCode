@@ -38,3 +38,9 @@ export const Science: Department = {
 export const Silicon: Department = {
   head: "AI",
 };
+
+// NON-MODULE CHANGE
+export const Command: Department = {
+  head: "Asset Protection",
+};
+// NON-MODULE CHANGE END

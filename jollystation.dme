@@ -3993,6 +3993,8 @@
 #include "jollystation_modules\code\modules\antagonists\infiltrator\infiltrator.dm"
 #include "jollystation_modules\code\modules\cargo\packs.dm"
 #include "jollystation_modules\code\modules\client\preferences.dm"
+#include "jollystation_modules\code\modules\client\preferences\_preferences.dm"
+#include "jollystation_modules\code\modules\client\preferences\languages.dm"
 #include "jollystation_modules\code\modules\client\preferences\loadout_preference.dm"
 #include "jollystation_modules\code\modules\client\preferences\multiline_preferences.dm"
 #include "jollystation_modules\code\modules\client\preferences\runechat_color.dm"

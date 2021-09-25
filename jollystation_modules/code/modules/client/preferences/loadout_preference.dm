@@ -4,12 +4,25 @@
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 
+// Loadouts are applied with job equip code.
 /datum/preference/loadout/apply_to_human(mob/living/carbon/human/target, value)
 	return
+
+// But after everything is applied, we need to call [post_equip_item] on all of our loadout items.
+/datum/preference/loadout/after_apply_to_human(mob/living/carbon/human/target, datum/preferences/prefs, value)
+	if(!prefs)
+		CRASH("loadout preference after_apply_to_human called without a preference datum.")
+
+	if(!istype(target))
+		return // Not a crash, 'cause this proc could be passed non-humans (AIs, etc) and that's fine
+
+	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(value))
+		item.post_equip_item(prefs, target)
 
 /datum/preference/loadout/deserialize(input, datum/preferences/preferences)
 	return sanitize_loadout_list(input)
 
+// Default value is NULL - the loadout list is a lazylist
 /datum/preference/loadout/create_default_value(datum/preferences/preferences)
 	return null
 

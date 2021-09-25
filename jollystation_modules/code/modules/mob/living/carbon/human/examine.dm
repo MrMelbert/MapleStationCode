@@ -20,9 +20,8 @@
  *		You need to double examine (examine_more) the person, which will display the buttons for each record.
  *		Double-examining wil also print out the full flavor text of the person being examined in addition to links to records.
  *
- *	- Bonus: If you are not connected to the server and someone examines you...
- *		Instead of showing flavor text or records (as they are saved on the client)
- *		an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
+ *	Bonus: If you are not connected to the server and someone examines you...
+ *	an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
  */
 
 // Mob is the person being examined. User is the one doing the examining.

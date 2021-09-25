@@ -1,5 +1,6 @@
-/// Unique examine element. Refactored from the skyrat module by Gandalf2k15.
-/// Attach to an atom with some parameters to give it unique text when examined.
+/// --Unique examine element. --
+// Original element from skyrat-tg (Gandalf2k15), completely refactored and adapted.
+// Attach to an atom with some parameters to give it unique text when examined.
 
 /*
  * Unique examine element parameters

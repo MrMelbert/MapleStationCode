@@ -1,4 +1,13 @@
 /// -- High draconic language. It's like Draconic, but more posh. --
+// Credit to EOBgames for the initial syllables list / concept, changed and adapted for use.
+
+/datum/language
+	// For preferences.
+	/// A list of species this language is whitelisted for on roundstart.
+	var/list/whitelist_species_on_roundstart
+	/// A list of species this language is blacklisted for on roundstart.
+	var/list/blacklist_species_on_roundstart
+
 /datum/language/impdraconic
 	name = "High Draconic"
 	desc = "A distinct dialect of Draconic common to lizards born and raised in the Core Systems of the Lizard Empire."
@@ -18,6 +27,7 @@
 	icon = 'jollystation_modules/icons/misc/language.dmi'
 	icon_state = "lizardred"
 	default_priority = 85
+	whitelist_species_on_roundstart = list(/datum/species/lizard)
 
 // Edit to the base lizard language holder - lizards can understand high draconic.
 /datum/language_holder/lizard

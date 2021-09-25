@@ -41,39 +41,6 @@
 	return TRUE
 
 /*
- * Post-loadout equipping, done after quirks are assigned. (TODO: FIND A BETTER WAY TO DO THIS, maybe.)
- *
- * Why in AssignQuirks?
- *
- * Because post loadout equipping needs to be done after quirks are assigned
- * for both latejoiners and roundstart players - this ensures that post-loadout equipping is done
- * after quirks are done for both types of players easily and modularly.
- *
- * Why not extend the other two relevant procs (equip_characters and AttemptLateSpawn)?
- *
- * AssignQuirks is passed the mob and the client, which are both needed for loadout equipping
- * If the procs were extended, it'd lose the relevant vars from the scope of those procs.
- */
-/datum/controller/subsystem/processing/quirks/AssignQuirks(mob/living/user, client/cli)
-	. = ..()
-	after_loadout_equipped(user, cli?.prefs)
-
-/*
- * Go through after the loadout item is equipped and call post_equip_item.
- *
- * equipper - the mob we're equipping the loadout item to
- * prefs - the preferences datum we're equipping from
- */
-/proc/after_loadout_equipped(mob/living/carbon/human/equipper, datum/preferences/prefs)
-	if(!prefs)
-		CRASH("After_loadout_equipped called without a supplied preference datum.")
-	if(!istype(equipper))
-		return // Not a crash, 'cause this proc could be passed non-humans (AIs, etc) and that's fine
-
-	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(prefs.read_preference(/datum/preference/loadout)))
-		item.post_equip_item(equipper.client?.prefs, equipper)
-
-/*
  * Takes a list of paths (such as a loadout list)
  * and returns a list of their singleton loadout item datums
  *

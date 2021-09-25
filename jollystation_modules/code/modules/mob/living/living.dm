@@ -10,6 +10,7 @@
 
 /// Added vars for mob/living.
 /mob/living
+	// Default human speech-sounds ported from Goonstation.
 	/// Assoc list of [sounds that play on speech for this mob] to [volume].
 	var/mob_speech_sounds = list('jollystation_modules/sound/voice/speak_1.ogg' = 120, \
 								'jollystation_modules/sound/voice/speak_2.ogg' = 120, \
