@@ -27,11 +27,17 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	species_speech_sounds_exclaim = list('jollystation_modules/sound/voice/huff_ask.ogg' = 120)
 	species_speech_sounds_ask = list('jollystation_modules/sound/voice/huff_exclaim.ogg' = 120)
 	species_pain_mod = 0.80
-	limbs_id = "skrell"
 
-/datum/species/skrell/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
+/datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, delta_time, times_fired)
 	. = ..()
+	if(skrell_mob.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
+		skrell_mob.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
 
+/datum/species/skrell/prepare_human_for_preview(mob/living/carbon/human/human)
+	human.dna.features["mcolor"] = sanitize_hexcolor(COLOR_BLUE_GRAY)
+	human.dna.features["head_tentacles"] = "Long"
+	human.update_body()
+	human.update_body_parts()
 
 // Preset Skrell species
 /mob/living/carbon/human/species/skrell

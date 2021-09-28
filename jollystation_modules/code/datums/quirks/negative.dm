@@ -7,8 +7,8 @@
 /datum/quirk/bad_touch
 	value = -2
 
-/datum/quirk/light_drinker
-	desc = "You just can't handle your drinks and get drunk very quickly. (Unallowed: Skrell)"
+/datum/quirk/light_drinker/New()
+	desc += " - (Unallowed: Skrell)"
 
 // Modular quirks
 // More vulnerabile to pain (increased pain modifier)
@@ -111,51 +111,3 @@
 	INVOKE_ASYNC(quirk_holder, /mob.proc/emote, pick(PAIN_EMOTES))
 	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_touch", /datum/mood_event/very_bad_touch)
 	COOLDOWN_START(src, time_since_last_touch, 30 SECONDS)
-
-// Prosthetic limb quirks (targeted limbs)
-/datum/quirk/prosthetic_limb
-	name = "Prosthetic Limb - Random"
-
-/datum/quirk/prosthetic_limb/targeted
-	value = -2
-	abstract_parent_type = /datum/quirk/prosthetic_limb/targeted
-	/// Typepath of what bodypart we're adding onto our person.
-	var/obj/item/bodypart/replacement
-
-/datum/quirk/prosthetic_limb/targeted/add_unique()
-	if(!replacement)
-		CRASH("Targeted prosthetic limb quirk tried to add a null replacement to [quirk_holder]!")
-	var/mob/living/carbon/human/human_holder = quirk_holder
-	if(!istype(human_holder))
-		return
-
-	var/obj/item/bodypart/old_part = human_holder.get_bodypart(initial(replacement.body_zone))
-	var/obj/item/bodypart/prosthetic = new replacement(human_holder)
-
-	prosthetic.replace_limb(human_holder, TRUE)
-	if(old_part)
-		qdel(old_part)
-	human_holder.regenerate_icons()
-
-/datum/quirk/prosthetic_limb/targeted/post_add()
-	return
-
-/datum/quirk/prosthetic_limb/targeted/left_arm
-	name = "Prosthetic Limb - Left Arm"
-	desc = "Your left arm is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/l_arm/robot/surplus
-
-/datum/quirk/prosthetic_limb/targeted/right_arm
-	name = "Prosthetic Limb - Right Arm"
-	desc = "Your right arm is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/r_arm/robot/surplus
-
-/datum/quirk/prosthetic_limb/targeted/left_leg
-	name = "Prosthetic Limb - Left Leg"
-	desc = "Your left leg is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/l_leg/robot/surplus
-
-/datum/quirk/prosthetic_limb/targeted/right_leg
-	name = "Prosthetic Limb - Right Leg"
-	desc = "Your right leg is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/r_leg/robot/surplus

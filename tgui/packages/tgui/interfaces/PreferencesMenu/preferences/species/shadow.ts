@@ -8,11 +8,11 @@ const Shadow: Species = {
   features: {
     good: [{
       icon: "shield-alt",
-      name: "Protected",
+      name: "Shrouded by Darkness",
       description: "Shadowpeople are immune to radiation and diseases.",
     }, {
       icon: "wind",
-      name: "Breathless",
+      name: "Breathless as Shadows",
       description: "Shadowpeople don't need to breathe.",
     }, createLanguagePerk("Shadowtongue")],
     neutral: [],

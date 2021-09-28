@@ -15,7 +15,7 @@ const Jelly: Species = {
         and high temperatures.",
     }, {
       icon: "utensils",
-      name: "Jelly Regeneration",
+      name: "Slime Regeneration",
       description: "Toxic chemicals and food will regenerate a slimeperson's \
         blood levels to much higher than normal.",
     }, {

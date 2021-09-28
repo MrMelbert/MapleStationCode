@@ -20,7 +20,7 @@
 
 		final_icon.Crop(11, 20, 23, 32)
 		final_icon.Scale(32, 32)
-		final_icon.Blend(COLOR_DARK_CYAN, ICON_MULTIPLY)
+		final_icon.Blend(COLOR_BLUE_GRAY, ICON_MULTIPLY)
 
 		values[name] = final_icon
 

@@ -8,7 +8,7 @@ const Pod: Species = {
   features: {
     good: [{
       icon: "leaf",
-      name: "Friend to Nature",
+      name: "Green Thumbs",
       description: "Podpeople are friend to all plants. Hostile sentient \
         plants will not harm them and dangerous botanical produce can \
         be handled without gloves.",
