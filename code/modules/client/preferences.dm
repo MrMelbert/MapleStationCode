@@ -3,25 +3,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 /*
  * MELBERT TODO LIST:
  *
- * - exploitable info
- * - security records
- * - medical records
- * - security records
- * - flavor text
- *
- * - loadout manager -read/write done, need button, test
- *
- * - speech sounds -done, test
- * - radio sounds -done, test
- *
- * - frilles for skrell -done, test
- *
- * - runechat text color -done, test
- *
  * - quirk species black/white lists -done, test
  *
- * - convert languages to nuprefs
- * - convert heights to nuprefs
  */
 
 /datum/preferences
