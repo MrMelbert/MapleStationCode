@@ -8,6 +8,7 @@
 #define HEIGHT_VERY_SMALL "Very Small"
 #define HEIGHT_EXTREMELY_SMALL "Extremely Small"
 
+// MELBERT TODO: make it so you can input your own height
 /datum/preference/choiced/height
 	savefile_key = "character_height"
 	savefile_identifier = PREFERENCE_CHARACTER

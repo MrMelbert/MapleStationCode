@@ -13,7 +13,6 @@
 
 /datum/species/jelly/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = sanitize_hexcolor(COLOR_PINK)
-	human.eye_color = COLOR_ALMOST_BLACK
 	human.hairstyle = "Bob Hair 2"
 
 	human.update_hair()

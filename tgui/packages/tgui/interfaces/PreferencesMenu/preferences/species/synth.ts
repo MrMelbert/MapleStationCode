@@ -40,9 +40,8 @@ const Synth: Species = {
     bad: [{
       icon: "users-cog",
       name: "Error: Disguise Failure",
-      description: "When Synthetics take enough damage, their disguise will \
-        begin to falter and fail. That is, if this feature was actually \
-        implemented, but it doesn't work!",
+      description: "Ion Storms can temporarily mess with your disguise, \
+        causing some of your features to change sporatically.",
     }],
   },
   lore: [

@@ -10,13 +10,12 @@
 	return
 
 
-// MELBERT TODO: pref for synth's species
+// MELBERT TODO: working pref for synth's species
 /datum/species/synth
 	species_pain_mod = 0.5
 
 /datum/species/synth/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.transfer_identity(human)
-	//human.updateappearance(TRUE, TRUE)
+	human.dna.transfer_identity(human) // Makes the synth look like... a synth.
 
 /datum/species/synth/on_ion_storm(mob/living/carbon/human/target)
 	to_chat(target, span_userdanger("[ionnum()]. I0N1C D1STRBANCE D3TCTED!"))
@@ -24,7 +23,6 @@
 	var/datum/dna/original_dna = new
 	target.dna.copy_dna(original_dna)
 	for(var/i in 1 to rand(2, 4))
-		message_admins("Mutating [target]...")
 		addtimer(CALLBACK(src, .proc/mutate_after_time, target), i * 3 SECONDS)
 	addtimer(CALLBACK(src, .proc/return_to_normal, target, original_dna), 30 SECONDS)
 

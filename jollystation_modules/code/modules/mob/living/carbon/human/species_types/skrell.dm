@@ -35,7 +35,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 
 /datum/species/skrell/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = sanitize_hexcolor(COLOR_BLUE_GRAY)
-	human.dna.features["head_tentacles"] = "Long"
 	human.update_body()
 	human.update_body_parts()
 

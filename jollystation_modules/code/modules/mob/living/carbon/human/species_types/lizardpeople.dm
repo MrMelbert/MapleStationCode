@@ -13,10 +13,12 @@
 
 /datum/species/lizard/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = sanitize_hexcolor(COLOR_DARK_LIME)
-	// These 3 don't work and I don't know why or care
-	human.dna.features["horns"] = "Simple"
-	human.dna.features["frills"] = "Short"
-	human.eye_color = COLOR_DARK_RED
+
+	var/obj/item/organ/external/frills/frills = human.getorgan(/obj/item/organ/external/frills)
+	frills?.set_sprite("Short")
+
+	var/obj/item/organ/external/horns/horns = human.getorgan(/obj/item/organ/external/horns)
+	horns?.set_sprite("Simple")
 
 	human.update_body()
 	human.update_body_parts()

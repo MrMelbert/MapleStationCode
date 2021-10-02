@@ -37,8 +37,8 @@ const Jelly: Species = {
     }, {
       icon: "tint",
       name: "Slime Jelly",
-      description: "Slimepeople's blood consists of extremely \
-        toxic Slime Jelly, making medical treatment extremely difficult.",
+      description: "Slimepeople's blood consists of toxic Slime Jelly, \
+        making medical treatment extremely difficult.",
     }, {
       icon: "tint-slash",
       name: "Importance of Jelly",
