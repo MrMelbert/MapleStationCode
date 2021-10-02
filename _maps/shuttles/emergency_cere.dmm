@@ -1640,7 +1640,9 @@
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "TU" = (
-/obj/effect/spawner/random/entertainment/arcade,
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 4
+	},
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},

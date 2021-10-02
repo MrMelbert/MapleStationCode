@@ -963,7 +963,10 @@
 	},
 /area/ctf)
 "sB" = (
-/obj/effect/spawner/random/entertainment/arcade,
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 8;
+	resistance_flags = 64
+	},
 /turf/open/floor/wood,
 /area/ctf)
 "sM" = (
@@ -1522,6 +1525,13 @@
 	resistance_flags = 64
 	},
 /turf/open/floor/iron/dark,
+/area/ctf)
+"Cl" = (
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 4;
+	resistance_flags = 64
+	},
+/turf/open/floor/wood,
 /area/ctf)
 "Cv" = (
 /obj/effect/turf_decal/tile/green,
@@ -3715,9 +3725,9 @@ Ag
 BH
 td
 Bh
+Cl
 sB
-sB
-sB
+Cl
 sB
 QC
 oq
@@ -3867,9 +3877,9 @@ xs
 BH
 td
 Bh
+Cl
 sB
-sB
-sB
+Cl
 sB
 QC
 Lr

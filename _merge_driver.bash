@@ -148,7 +148,7 @@ update_build (){
 echo "Running merge driver. . ."
 echo "====================================================================================="
 echo "Looking for unticked files. . ."
-find_unticked_files "code"
+#find_unticked_files "code"
 echo "Unticked files done."
 echo "====================================================================================="
 echo "Checking for merge conflicts. . ."

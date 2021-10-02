@@ -5578,7 +5578,9 @@
 /turf/open/floor/engine/o2,
 /area/ruin/unpowered/syndicate_lava_base/engineering)
 "yi" = (
-/obj/effect/spawner/random/vending/colavend,
+/obj/effect/spawner/random/vending/colavend{
+	hacked = 1
+	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/red{
 	dir = 1
@@ -5843,7 +5845,9 @@
 /turf/open/floor/engine,
 /area/ruin/unpowered/syndicate_lava_base/testlab)
 "Tt" = (
-/obj/effect/spawner/random/vending/snackvend,
+/obj/effect/spawner/random/vending/snackvend{
+	hacked = 1
+	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/red{

@@ -22955,7 +22955,7 @@
 "fUd" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/bed/roller,
-/obj/item/food/pizzaslice/moldy,
+/obj/item/food/pizzaslice/moldy/bacteria,
 /turf/open/floor/iron/white,
 /area/medical/abandoned)
 "fUk" = (
@@ -25803,11 +25803,6 @@
 /turf/open/floor/iron/dark,
 /area/medical/morgue)
 "gYb" = (
-/obj/structure/table/wood,
-/obj/effect/spawner/random/entertainment/gambling,
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -31438,24 +31433,6 @@
 /area/command/bridge)
 "jgh" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/tile/bar{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/closet/crate,
-/obj/item/storage/box/drinkingglasses,
-/obj/effect/spawner/random/food_or_drink/donkpockets,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/effect/decal/cleanable/dirt,
 /obj/structure/disposalpipe/segment{
 	dir = 6
 	},
@@ -31724,14 +31701,6 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "jlp" = (
-/obj/effect/spawner/random/maintenance,
-/obj/structure/closet,
-/obj/structure/disposalpipe/segment{
-	dir = 5
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/effect/spawner/random/maintenance,
 /obj/structure/closet,
 /obj/structure/closet,
@@ -38638,10 +38607,6 @@
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
 "lMa" = (
-/obj/effect/spawner/random/maintenance,
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -39642,15 +39607,6 @@
 /turf/open/floor/iron/dark,
 /area/command/bridge)
 "mdA" = (
-/obj/effect/spawner/random/maintenance,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/effect/spawner/random/maintenance,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -44132,14 +44088,6 @@
 "nFK" = (
 /obj/effect/spawner/random/vending/snackvend,
 /obj/machinery/light/directional/east,
-/obj/structure/disposalpipe/segment{
-	dir = 9
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/effect/spawner/random/vending/snackvend,
-/obj/machinery/light/directional/east,
 /obj/machinery/light/directional/east,
 /obj/structure/disposalpipe/segment{
 	dir = 9
@@ -45375,13 +45323,6 @@
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "obq" = (
-/obj/effect/spawner/random/structure/crate,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 10
 	},
@@ -53114,16 +53055,6 @@
 /turf/closed/wall,
 /area/service/kitchen/coldroom)
 "qME" = (
-/obj/structure/table/glass,
-/obj/effect/spawner/random/food_or_drink/donkpockets,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/effect/spawner/random/food_or_drink/donkpockets,
 /obj/structure/table/glass,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -54107,19 +54038,6 @@
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "rhH" = (
-/obj/effect/spawner/random/vending/colavend,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 6
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/effect/spawner/random/vending/colavend,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -56385,18 +56303,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/structure/disposalpipe/segment,
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/machinery/airalarm/directional/west,
-/obj/effect/spawner/random/vending/snackvend,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
 /obj/machinery/airalarm/directional/west,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -56701,10 +56607,6 @@
 /turf/open/floor/carpet,
 /area/command/heads_quarters/hos)
 "sdd" = (
-/obj/effect/spawner/random/maintenance,
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -61995,15 +61897,6 @@
 /obj/effect/spawner/random/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/effect/spawner/random/maintenance,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
@@ -66832,18 +66725,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/effect/spawner/random/maintenance,
-/obj/structure/cable,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
 /obj/structure/disposalpipe/junction{
 	dir = 8
 	},
@@ -67890,26 +67771,6 @@
 	dir = 4
 	},
 /obj/item/storage/box/lights/mixed,
-/obj/effect/spawner/random/maintenance,
-/obj/structure/disposalpipe/segment{
-	dir = 5
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/structure/rack,
-/obj/item/clothing/mask/gas,
-/obj/item/reagent_containers/food/drinks/shaker,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/item/cultivator,
-/obj/item/clothing/head/chefhat,
-/obj/machinery/camera{
-	c_tag = "Service - Starboard";
-	dir = 4
-	},
-/obj/item/storage/box/lights/mixed,
 /obj/structure/rack,
 /obj/item/clothing/mask/gas,
 /obj/item/reagent_containers/food/drinks/shaker,
@@ -68080,17 +67941,6 @@
 	},
 /area/maintenance/aft)
 "wfR" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/closet/crate,
-/obj/effect/turf_decal/bot,
-/obj/effect/spawner/random/maintenance,
-/obj/effect/spawner/random/maintenance,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/disposalpipe/segment,
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate,
 /obj/effect/turf_decal/bot,
@@ -71823,12 +71673,6 @@
 "xyt" = (
 /obj/effect/spawner/random/maintenance,
 /obj/structure/cable,
-/obj/machinery/power/apc/auto_name/north,
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/effect/spawner/random/maintenance,
-/obj/structure/cable,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -73288,16 +73132,6 @@
 /turf/open/floor/iron/grimy,
 /area/tcommsat/computer)
 "yeG" = (
-/obj/structure/disposalpipe/segment{
-	dir = 6
-	},
-/obj/effect/spawner/random/structure/crate,
-/obj/machinery/light/dim{
-	dir = 1
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 6
 	},

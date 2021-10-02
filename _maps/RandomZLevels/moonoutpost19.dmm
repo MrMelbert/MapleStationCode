@@ -5641,7 +5641,9 @@
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "mB" = (
-/obj/effect/spawner/random/entertainment/arcade,
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/awaymission/moonoutpost19/arrivals)
 "mC" = (

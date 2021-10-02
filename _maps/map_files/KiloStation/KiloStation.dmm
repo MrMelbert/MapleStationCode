@@ -34624,25 +34624,6 @@
 	name = "Core Modules";
 	req_access_txt = "20"
 	},
-/obj/effect/spawner/random/aimodule/harmful,
-/obj/item/ai_module/supplied/oxygen{
-	pixel_x = -3;
-	pixel_y = -3
-	},
-/obj/structure/table,
-/obj/structure/window/reinforced,
-/obj/structure/window/reinforced{
-	dir = 1;
-	pixel_y = 1
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
-/obj/machinery/door/window/brigdoor/westright{
-	dir = 4;
-	name = "Core Modules";
-	req_access_txt = "20"
-	},
 /obj/effect/spawner/random/aimodule/harmful{
 	spawn_loot_count = 2;
 	spawn_loot_double = 0;
@@ -54189,7 +54170,9 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/effect/spawner/random/entertainment/arcade,
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/commons/fitness/recreation)
 "ngG" = (
@@ -55492,7 +55475,10 @@
 /obj/effect/decal/cleanable/cobweb,
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/rack,
-/obj/effect/spawner/random/clothing/costume,
+/obj/effect/spawner/random/clothing/costume{
+	pixel_x = 4;
+	pixel_y = 4
+	},
 /obj/effect/spawner/random/clothing/kittyears_or_rabbitears,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -68390,7 +68376,9 @@
 	dir = 4
 	},
 /obj/machinery/newscaster/security_unit/directional/west,
-/obj/effect/spawner/random/entertainment/arcade,
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/commons/fitness/recreation)
 "ssb" = (
@@ -70114,25 +70102,6 @@
 /turf/open/floor/iron/dark,
 /area/engineering/supermatter/room)
 "tfj" = (
-/obj/machinery/door/window/brigdoor{
-	dir = 4;
-	name = "Core Modules";
-	req_access_txt = "20"
-	},
-/obj/effect/spawner/random/aimodule/harmless,
-/obj/structure/table,
-/obj/structure/window/reinforced,
-/obj/structure/window/reinforced{
-	dir = 1;
-	pixel_y = 1
-	},
-/obj/machinery/flasher/directional/west{
-	id = "AI";
-	name = "Meatbag Pacifier"
-	},
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/machinery/door/window/brigdoor{
 	dir = 4;
 	name = "Core Modules";
@@ -81505,13 +81474,6 @@
 /turf/open/floor/iron,
 /area/engineering/break_room)
 "xuU" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
-/obj/effect/spawner/random/structure/crate,
-/obj/structure/disposalpipe/segment,
-/obj{
-	name = "---Merge conflict marker---"
-	},
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
 /obj/effect/spawner/random/structure/crate,
