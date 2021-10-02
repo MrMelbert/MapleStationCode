@@ -775,7 +775,7 @@
 /turf/open/floor/plating,
 /area/science/lab)
 "asL" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /turf/open/floor/plating/airless,
 /area/engineering/atmos)
 "asM" = (
@@ -2045,7 +2045,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "aZj" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "Engineering";
@@ -6537,7 +6537,7 @@
 /area/science/research)
 "deK" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "Engineering";
 	name = "engineering security door"
@@ -8306,7 +8306,7 @@
 /turf/open/floor/grass,
 /area/service/library)
 "dUl" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /turf/open/floor/plating,
 /area/engineering/main)
 "dUE" = (
@@ -17957,7 +17957,7 @@
 /turf/closed/wall/r_wall,
 /area/engineering/atmos)
 "ijQ" = (
-/obj/structure/window/plasma/reinforced,
+/obj/structure/window/reinforced/plasma,
 /obj/machinery/power/rad_collector/anchored,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
@@ -20729,7 +20729,7 @@
 /turf/open/floor/plating,
 /area/maintenance/fore)
 "jzl" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/machinery/door/poddoor/preopen{
 	id = "Engineering";
 	name = "engineering security door"
@@ -20850,7 +20850,7 @@
 	},
 /area/hallway/secondary/entry)
 "jBf" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/engineering/gravity_generator)
@@ -20908,7 +20908,7 @@
 	id = "SupermatterExternal";
 	name = "radiation shutters"
 	},
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /turf/open/floor/plating,
 /area/engineering/main)
 "jCi" = (
@@ -22758,7 +22758,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/engine/atmos)
 "kmL" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "SupermatterExternal";
 	name = "radiation shutters"
@@ -23788,7 +23788,7 @@
 /turf/open/floor/iron/showroomfloor,
 /area/science/xenobiology)
 "kHI" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /turf/open/floor/plating,
 /area/engineering/supermatter)
 "kHS" = (
@@ -26617,7 +26617,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/security/prison/mess)
 "lNx" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/engineering/main)
@@ -32806,7 +32806,7 @@
 /turf/open/floor/grass,
 /area/service/hydroponics)
 "ogp" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /turf/open/floor/plating,
 /area/engineering/gravity_generator)
 "ogy" = (
@@ -45619,9 +45619,7 @@
 /turf/open/floor/plating,
 /area/maintenance/disposal)
 "trs" = (
-/obj/structure/window/plasma/reinforced{
-	dir = 1
-	},
+/obj/structure/window/reinforced/plasma,
 /obj/machinery/power/rad_collector/anchored,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
@@ -50628,7 +50626,7 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain/private)
 "vJn" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction,
 /turf/open/floor/plating,
 /area/engineering/main)
@@ -54687,7 +54685,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "xCq" = (
-/obj/effect/spawner/structure/window/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/purple/visible,
 /turf/open/floor/plating,
 /area/engineering/main)
