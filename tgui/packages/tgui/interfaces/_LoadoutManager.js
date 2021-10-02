@@ -1,5 +1,5 @@
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Dimmer, Divider, Section, Stack, Tabs } from '../components';
+import { Box, Button, Dimmer, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 import { CharacterPreview } from "./PreferencesMenu/CharacterPreview";
 
@@ -52,7 +52,7 @@ export const _LoadoutManager = (props, context) => {
           </Stack.Item>
           <Stack.Item height="500px">
             <LoadoutTabs
-              tab = {selectedTab}/>
+              tab={selectedTab} />
           </Stack.Item>
         </Stack>
       </Window.Content>
@@ -169,7 +169,7 @@ export const LoadoutTabs = (props, context) => {
         <LoadoutPreviewSection />
       </Stack.Item>
     </Stack>
-  )
+  );
 };
 
 export const LoadoutPreviewSection = (props, context) => {

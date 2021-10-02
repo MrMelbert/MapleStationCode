@@ -19,7 +19,7 @@ const Synth: Species = {
       description: "Being synthetic, Synths gain many resistances that come \
         with silicons. They're immune to viruses, dismemberment, having \
         limbs disabled, and they don't need to eat or breath.",
-    },{
+    }, {
       icon: "user-injured",
       name: "Major Pain Resilience",
       description: "Being synthetic, Synths are very \
