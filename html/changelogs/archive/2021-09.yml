@@ -291,8 +291,6 @@
   - refactor: refactored some behavior in pride hammer and carp'sie plushie, you may
       notice a few more examines and error messages for fail cases but otherwise it's
       all the same
-<<<<<<< HEAD
-=======
 2021-09-09:
   Ghommie:
   - bugfix: Fixed the chat messages for stepping on objects with the caltrop component.
@@ -780,4 +778,3 @@
   necromanceranne:
   - bugfix: Stickmen flatguns now properly drop out of your hands when picked up,
       as intended.
->>>>>>> remotes/tg/master

@@ -26,9 +26,8 @@ GLOBAL_PROTECT(AdminProcCallHandler)
 
 /mob/proccall_handler/Initialize(mapload)
 	. = ..()
-	if(GLOB.AdminProcCallHandler && GLOB.AdminProcCallHandler != src)
+	if(GLOB.AdminProcCallHandler)
 		return INITIALIZE_HINT_QDEL
-	GLOB.AdminProcCallHandler = src
 
 /mob/proccall_handler/vv_edit_var(var_name, var_value)
 	if(GLOB.AdminProcCallHandler != src)
@@ -50,7 +49,9 @@ GLOBAL_PROTECT(AdminProcCallHandler)
 	if(GLOB.AdminProcCallHandler != src)
 		return ..()
 	if(!force)
+		#ifndef UNIT_TESTS
 		stack_trace("Attempted deletion on [type] - [name], aborting.")
+		#endif
 		return QDEL_HINT_LETMELIVE
 	return ..()
 

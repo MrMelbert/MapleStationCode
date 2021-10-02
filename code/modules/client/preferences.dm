@@ -1,12 +1,5 @@
 GLOBAL_LIST_EMPTY(preferences_datums)
 
-/*
- * MELBERT TODO LIST:
- *
- * - quirk species black/white lists -done, test
- *
- */
-
 /datum/preferences
 	var/client/parent
 	//doohickeys for savefiles
