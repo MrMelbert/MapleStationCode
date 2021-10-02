@@ -73,14 +73,6 @@
 /obj/effect/decal/cleanable/greenglow,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
-"ah" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows";
-	name = "Exterior Window Blast door"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
 "ai" = (
 /obj/effect/decal/cleanable/oil,
 /obj/effect/decal/cleanable/dirt,
@@ -222,14 +214,6 @@
 /area/shuttle/abandoned/cargo)
 "at" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
-/area/shuttle/abandoned/engine)
-"au" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows";
-	name = "Exterior Window Blast door"
-	},
-/turf/open/floor/plating,
 /area/shuttle/abandoned/engine)
 "av" = (
 /turf/closed/wall/mineral/plastitanium/nodiagonal,
@@ -910,18 +894,6 @@
 "bF" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/abandoned/bridge)
-"bG" = (
-/obj/effect/turf_decal/bot,
-/obj/structure/rack,
-/obj/item/storage/box/lights/mixed,
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/firealarm/directional/south,
-/obj/effect/spawner/random/maintenance/two,
-/obj/structure/sign/poster/contraband/random{
-	pixel_x = -32
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
 "bH" = (
 /obj/effect/turf_decal/stripes/corner,
 /obj/effect/decal/cleanable/oil,
@@ -967,14 +939,6 @@
 "bO" = (
 /turf/closed/wall/mineral/plastitanium,
 /area/shuttle/abandoned/crew)
-"bP" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_bridge";
-	name = "Cockpit Emergency Blast door"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bridge)
 "bQ" = (
 /obj/structure/table,
 /obj/machinery/firealarm/directional/north,
@@ -1252,14 +1216,6 @@
 	pixel_y = 3
 	},
 /turf/open/floor/carpet,
-/area/shuttle/abandoned/crew)
-"cs" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows";
-	name = "Exterior Window Blast door"
-	},
-/turf/open/floor/plating,
 /area/shuttle/abandoned/crew)
 "ct" = (
 /obj/structure/shuttle/engine/large{
@@ -1697,23 +1653,6 @@
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/abandoned/bar)
-"dd" = (
-/obj/structure/closet/secure_closet/freezer{
-	locked = 0;
-	name = "fridge"
-	},
-/obj/item/food/sausage,
-/obj/item/reagent_containers/food/drinks/bottle/beer{
-	pixel_x = -3;
-	pixel_y = 3
-	},
-/obj/item/reagent_containers/food/drinks/bottle/beer,
-/obj/item/food/sandwich,
-/obj/effect/turf_decal/trimline/white/filled/line{
-	dir = 1
-	},
-/turf/open/floor/mineral/plastitanium,
-/area/shuttle/abandoned/bar)
 "de" = (
 /obj/machinery/porta_turret/centcom_shuttle/weak{
 	dir = 4;
@@ -1721,14 +1660,6 @@
 	},
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/crew)
-"df" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows";
-	name = "Exterior Window Blast door"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bar)
 "dg" = (
 /obj/machinery/porta_turret/centcom_shuttle/weak{
 	dir = 4;
@@ -1750,6 +1681,75 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
+"hn" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows";
+	name = "Exterior Window Blast door"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/crew)
+"sR" = (
+/obj/effect/turf_decal/bot,
+/obj/structure/rack,
+/obj/item/storage/box/lights/mixed,
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/firealarm/directional/south,
+/obj/effect/spawner/random/maintenance/two,
+/obj/structure/sign/poster/contraband/random{
+	pixel_x = -32
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"xF" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_bridge";
+	name = "Cockpit Emergency Blast door"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bridge)
+"HI" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows";
+	name = "Exterior Window Blast door"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"IW" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows";
+	name = "Exterior Window Blast door"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
+"NF" = (
+/obj/structure/closet/secure_closet/freezer{
+	locked = 0;
+	name = "fridge"
+	},
+/obj/item/food/sausage,
+/obj/item/reagent_containers/food/drinks/bottle/beer{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/reagent_containers/food/drinks/bottle/beer,
+/obj/item/food/sandwich,
+/obj/effect/turf_decal/trimline/white/filled/line{
+	dir = 1
+	},
+/turf/open/floor/mineral/plastitanium,
+/area/shuttle/abandoned/bar)
+"TV" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows";
+	name = "Exterior Window Blast door"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bar)
 
 (1,1,1) = {"
 aa
@@ -1773,17 +1773,17 @@ aa
 aa
 ab
 ac
-ah
+HI
 ac
 am
 ay
 aS
 bm
 ac
-bP
+xF
 bF
-bP
-bP
+xF
+xF
 aa
 aa
 "}
@@ -1801,8 +1801,8 @@ ac
 bQ
 cf
 cv
-bP
-bP
+xF
+xF
 aa
 "}
 (4,1,1) = {"
@@ -1820,14 +1820,14 @@ bR
 cg
 cw
 cM
-bP
-bP
+xF
+xF
 "}
 (5,1,1) = {"
 ac
 ae
 ac
-ah
+HI
 ac
 ao
 aB
@@ -1839,14 +1839,14 @@ ch
 cx
 cN
 cY
-bP
+xF
 "}
 (6,1,1) = {"
 aa
 aa
 aa
 aa
-ah
+HI
 ap
 aC
 aW
@@ -1864,7 +1864,7 @@ aa
 aa
 aa
 aa
-ah
+HI
 aq
 aD
 aX
@@ -1875,7 +1875,7 @@ cj
 cz
 cP
 da
-bP
+xF
 "}
 (8,1,1) = {"
 aa
@@ -1905,13 +1905,13 @@ ac
 aE
 aZ
 bs
-bG
+sR
 bU
 ck
 cA
 cR
 db
-df
+TV
 "}
 (10,1,1) = {"
 aa
@@ -1946,8 +1946,8 @@ bW
 cm
 cC
 cT
-dd
-df
+NF
+TV
 "}
 (12,1,1) = {"
 aa
@@ -1991,7 +1991,7 @@ aa
 aa
 aa
 aa
-ah
+HI
 aJ
 be
 bx
@@ -2000,7 +2000,7 @@ bX
 co
 cF
 cV
-cs
+hn
 aa
 "}
 (15,1,1) = {"
@@ -2036,7 +2036,7 @@ bZ
 cp
 cH
 cX
-cs
+hn
 aa
 "}
 (17,1,1) = {"
@@ -2045,7 +2045,7 @@ aa
 aa
 aa
 aa
-au
+IW
 aM
 bh
 bz
@@ -2063,7 +2063,7 @@ aa
 aa
 aa
 aa
-au
+IW
 aN
 bi
 bA
@@ -2071,7 +2071,7 @@ bK
 ca
 cq
 cJ
-cs
+hn
 aa
 aa
 "}
@@ -2089,7 +2089,7 @@ bK
 cb
 cr
 cK
-cs
+hn
 aa
 aa
 "}
@@ -2101,12 +2101,12 @@ aa
 aa
 at
 at
-au
-au
+IW
+IW
 bM
 bK
-cs
-cs
+hn
+hn
 bK
 aa
 aa

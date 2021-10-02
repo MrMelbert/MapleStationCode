@@ -1072,13 +1072,6 @@
 	},
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/deepstorage)
-"cM" = (
-/obj/machinery/shower{
-	dir = 4
-	},
-/obj/structure/window/plasma/reinforced,
-/turf/open/floor/iron/freezer,
-/area/ruin/space/has_grav/deepstorage)
 "cN" = (
 /turf/open/floor/iron/freezer,
 /area/ruin/space/has_grav/deepstorage)
@@ -1217,12 +1210,6 @@
 	},
 /turf/closed/wall/mineral/iron,
 /area/ruin/space/has_grav/deepstorage/storage)
-"dh" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/spawner/random/entertainment/arcade,
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron,
-/area/ruin/space/has_grav/deepstorage)
 "di" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 4
@@ -2771,6 +2758,13 @@
 	},
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/deepstorage/crusher)
+"Dv" = (
+/obj/machinery/shower{
+	dir = 4
+	},
+/obj/structure/window/reinforced/plasma,
+/turf/open/floor/iron/freezer,
+/area/ruin/space/has_grav/deepstorage)
 "EP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden{
 	dir = 4
@@ -2789,6 +2783,12 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/deepstorage/airlock)
+"UL" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/spawner/random/entertainment/arcade,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/ruin/space/has_grav/deepstorage)
 
 (1,1,1) = {"
 aa
@@ -3592,8 +3592,8 @@ bE
 bW
 dH
 cE
-dh
-dh
+UL
+UL
 dA
 dR
 em
@@ -4059,7 +4059,7 @@ bw
 bM
 af
 cq
-cM
+Dv
 cX
 cp
 hg

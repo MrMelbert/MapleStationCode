@@ -30,18 +30,9 @@
 /obj/structure/cable,
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/shuttle/abandoned/engine)
-"af" = (
-/obj/structure/window/shuttle,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
 "ag" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
-"ah" = (
-/obj/structure/window/shuttle,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/engine)
 "ai" = (
@@ -59,21 +50,6 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/bot,
 /obj/structure/reagent_dispensers/watertank,
-/turf/open/floor/mineral/titanium/tiled/yellow,
-/area/shuttle/abandoned/engine)
-"al" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/airalarm/directional/north,
-/obj/structure/rack,
-/obj/item/storage/toolbox/mechanical{
-	pixel_y = 4
-	},
-/obj/item/stack/sheet/mineral/plasma{
-	amount = 10
-	},
-/obj/effect/spawner/random/decoration/glowstick,
-/obj/effect/spawner/random/decoration/glowstick,
-/obj/effect/spawner/random/decoration/glowstick,
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/shuttle/abandoned/engine)
 "am" = (
@@ -192,13 +168,6 @@
 /obj/machinery/light/red/directional/north,
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/abandoned/cargo)
-"aF" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/airalarm/directional/north,
-/obj/structure/cable,
-/obj/effect/spawner/random/trash/garbage,
-/turf/open/floor/mineral/titanium/tiled/white,
-/area/shuttle/abandoned/cargo)
 "aG" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
@@ -251,15 +220,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 4
 	},
-/turf/open/floor/mineral/titanium/tiled,
-/area/shuttle/abandoned/cargo)
-"aO" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
-	dir = 1
-	},
-/obj/effect/spawner/random/trash/cigbutt,
 /turf/open/floor/mineral/titanium/tiled,
 /area/shuttle/abandoned/cargo)
 "aP" = (
@@ -334,10 +294,6 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
-"aZ" = (
-/obj/structure/window/shuttle,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
 "ba" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/dirt,
@@ -370,12 +326,6 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
-"be" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/bot,
-/obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "bf" = (
@@ -428,15 +378,6 @@
 	},
 /obj/item/shard,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
-"bm" = (
-/obj/effect/decal/cleanable/blood/old,
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/bot,
-/obj/structure/closet/crate,
-/obj/effect/spawner/random/clothing/costume,
-/obj/effect/spawner/random/clothing/costume,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "bn" = (
@@ -571,13 +512,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
-"bH" = (
-/obj/item/shard,
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/bot,
-/obj/effect/spawner/random/structure/crate_abandoned,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
 "bI" = (
 /obj/machinery/door/window/westleft,
 /obj/effect/decal/cleanable/blood/old,
@@ -588,12 +522,6 @@
 /obj/machinery/door/window/eastright,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/mineral/titanium/white,
-/area/shuttle/abandoned/cargo)
-"bK" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/bot,
-/obj/effect/spawner/random/structure/crate_abandoned,
-/turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "bL" = (
 /obj/effect/turf_decal/stripes/line{
@@ -655,13 +583,6 @@
 "bT" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/red/directional/south,
-/turf/open/floor/mineral/titanium/tiled,
-/area/shuttle/abandoned/cargo)
-"bU" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/spawner/random/trash/cigbutt,
 /turf/open/floor/mineral/titanium/tiled,
 /area/shuttle/abandoned/cargo)
 "bV" = (
@@ -780,13 +701,6 @@
 /obj/structure/cable,
 /turf/open/floor/mineral/titanium/tiled,
 /area/shuttle/abandoned/cargo)
-"ch" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/light/red/directional/north,
-/obj/structure/cable,
-/obj/effect/spawner/random/trash/garbage,
-/turf/open/floor/mineral/titanium/tiled,
-/area/shuttle/abandoned/cargo)
 "ci" = (
 /obj/structure/holosign/barrier/atmos/sturdy{
 	layer = 2.64
@@ -836,11 +750,6 @@
 /obj/item/stock_parts/scanning_module,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
-"cm" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/spawner/random/trash/garbage,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
 "cn" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/bot,
@@ -850,19 +759,6 @@
 /obj/item/stack/sheet/iron/fifty,
 /obj/item/stack/rods/fifty,
 /obj/item/stack/sheet/glass/fifty,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
-"co" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/bot,
-/obj/structure/closet/crate{
-	icon_state = "crateopen";
-	name = "DonkCo Build-Ur-Own Microwave Kit (Complimentary DonkCo Donkpockets Included!)"
-	},
-/obj/item/circuitboard/machine/microwave,
-/obj/item/stock_parts/micro_laser,
-/obj/item/stock_parts/manipulator,
-/obj/effect/spawner/random/food_or_drink/donkpockets,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "cp" = (
@@ -887,13 +783,6 @@
 /obj/effect/turf_decal/box/corners,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
-"cs" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
-/obj/effect/spawner/random/trash/garbage,
-/turf/open/floor/mineral/titanium/tiled,
 /area/shuttle/abandoned/cargo)
 "ct" = (
 /obj/effect/decal/cleanable/dirt,
@@ -1095,10 +984,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/abandoned/bridge)
-"cV" = (
-/obj/structure/window/shuttle,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bridge)
 "cW" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/table/optable,
@@ -1290,14 +1175,6 @@
 /obj/structure/chair/comfy/shuttle,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/abandoned/bridge)
-"dr" = (
-/obj/structure/table,
-/obj/effect/decal/cleanable/dirt,
-/obj/item/storage/box/zipties,
-/obj/item/assembly/flash/handheld,
-/obj/item/melee/baton/telescopic,
-/turf/open/floor/mineral/titanium/tiled/blue,
-/area/shuttle/abandoned/bridge)
 "ds" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible{
@@ -1359,6 +1236,129 @@
 /area/shuttle/abandoned/engine)
 "dA" = (
 /turf/closed/wall/mineral/titanium/interior,
+/area/shuttle/abandoned/cargo)
+"fh" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/obj/effect/spawner/random/trash/cigbutt,
+/turf/open/floor/mineral/titanium/tiled,
+/area/shuttle/abandoned/cargo)
+"fV" = (
+/obj/structure/window/reinforced/shuttle,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
+"nV" = (
+/obj/item/shard,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/bot,
+/obj/effect/spawner/random/structure/crate_abandoned,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"sH" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/bot,
+/obj/effect/spawner/random/structure/crate_abandoned,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"ua" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/bot,
+/obj/structure/closet/crate{
+	icon_state = "crateopen";
+	name = "DonkCo Build-Ur-Own Microwave Kit (Complimentary DonkCo Donkpockets Included!)"
+	},
+/obj/item/circuitboard/machine/microwave,
+/obj/item/stock_parts/micro_laser,
+/obj/item/stock_parts/manipulator,
+/obj/effect/spawner/random/food_or_drink/donkpockets,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"uv" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/bot,
+/obj/effect/spawner/random/structure/crate,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"vf" = (
+/obj/structure/window/reinforced/shuttle,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bridge)
+"Fp" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/spawner/random/trash/garbage,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"Gx" = (
+/obj/structure/window/reinforced/shuttle,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
+"Ic" = (
+/obj/effect/decal/cleanable/blood/old,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/bot,
+/obj/structure/closet/crate,
+/obj/effect/spawner/random/clothing/costume,
+/obj/effect/spawner/random/clothing/costume,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"IC" = (
+/obj/structure/table,
+/obj/effect/decal/cleanable/dirt,
+/obj/item/storage/box/zipties,
+/obj/item/assembly/flash/handheld,
+/obj/item/melee/baton/telescopic,
+/turf/open/floor/mineral/titanium/tiled/blue,
+/area/shuttle/abandoned/bridge)
+"Ki" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
+	dir = 1
+	},
+/obj/effect/spawner/random/trash/cigbutt,
+/turf/open/floor/mineral/titanium/tiled,
+/area/shuttle/abandoned/cargo)
+"LM" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/airalarm/directional/north,
+/obj/structure/rack,
+/obj/item/storage/toolbox/mechanical{
+	pixel_y = 4
+	},
+/obj/item/stack/sheet/mineral/plasma{
+	amount = 10
+	},
+/obj/effect/spawner/random/decoration/glowstick,
+/obj/effect/spawner/random/decoration/glowstick,
+/obj/effect/spawner/random/decoration/glowstick,
+/turf/open/floor/mineral/titanium/tiled/yellow,
+/area/shuttle/abandoned/engine)
+"Mv" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/obj/effect/spawner/random/trash/garbage,
+/turf/open/floor/mineral/titanium/tiled,
+/area/shuttle/abandoned/cargo)
+"Rg" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/airalarm/directional/north,
+/obj/structure/cable,
+/obj/effect/spawner/random/trash/garbage,
+/turf/open/floor/mineral/titanium/tiled/white,
+/area/shuttle/abandoned/cargo)
+"Rk" = (
+/obj/structure/window/reinforced/shuttle,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"ZA" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/red/directional/north,
+/obj/structure/cable,
+/obj/effect/spawner/random/trash/garbage,
+/turf/open/floor/mineral/titanium/tiled,
 /area/shuttle/abandoned/cargo)
 
 (1,1,1) = {"
@@ -1456,20 +1456,20 @@ aa
 aE
 aN
 aW
-be
-bm
+uv
+Ic
 bt
 bx
 aW
-bH
-bK
+nV
+sH
 bB
 bR
 bX
 bR
 bx
-be
-bK
+uv
+sH
 bx
 bx
 bx
@@ -1493,11 +1493,11 @@ cI
 (4,1,1) = {"
 aa
 dz
-al
+LM
 au
 aa
-aF
-aO
+Rg
+Ki
 aX
 aX
 aX
@@ -1519,7 +1519,7 @@ aX
 aX
 aX
 aX
-cs
+Mv
 cv
 aJ
 cJ
@@ -1542,13 +1542,13 @@ aA
 aG
 aP
 aY
-aZ
+Rk
 bn
 bu
 by
 bq
 bI
-aZ
+Rk
 bQ
 bR
 bZ
@@ -1578,13 +1578,13 @@ cI
 "}
 (6,1,1) = {"
 aa
-af
-ah
+Gx
+fV
 aw
 aa
 aH
 aP
-aZ
+Rk
 bf
 bo
 bp
@@ -1592,7 +1592,7 @@ bh
 bp
 bp
 bM
-aZ
+Rk
 bR
 ca
 cg
@@ -1627,7 +1627,7 @@ ax
 aa
 aI
 aP
-aZ
+Rk
 bg
 bp
 bp
@@ -1635,10 +1635,10 @@ bz
 bE
 bp
 bN
-aZ
+Rk
 bT
 ca
-ch
+ZA
 bx
 bx
 bx
@@ -1664,13 +1664,13 @@ cI
 "}
 (8,1,1) = {"
 aa
-ah
-ah
+fV
+fV
 ax
 aa
 aG
 aP
-aZ
+Rk
 bh
 bo
 bo
@@ -1678,14 +1678,14 @@ bA
 bp
 bo
 bM
-aZ
+Rk
 bR
 ca
 cg
 bx
 bx
 bx
-cm
+Fp
 bx
 bx
 bx
@@ -1701,7 +1701,7 @@ de
 dk
 cZ
 du
-cV
+vf
 cM
 cM
 "}
@@ -1717,10 +1717,10 @@ aY
 bi
 bq
 bq
-aZ
+Rk
 bF
 bJ
-aZ
+Rk
 bQ
 bR
 cb
@@ -1744,7 +1744,7 @@ da
 dl
 dq
 dv
-cV
+vf
 cM
 cM
 "}
@@ -1765,7 +1765,7 @@ bj
 bj
 bj
 bj
-bU
+fh
 cc
 bS
 bj
@@ -1787,7 +1787,7 @@ df
 cZ
 cZ
 dw
-cV
+vf
 cM
 cM
 "}
@@ -1801,24 +1801,24 @@ aE
 aS
 bb
 bk
-be
+uv
 bt
 bB
 bB
-bK
+sH
 bO
 bx
 bR
 cd
 bR
 bx
-bK
+sH
 cl
 bx
 bx
 bx
-co
-be
+ua
+uv
 bx
 bR
 aS
@@ -1828,9 +1828,9 @@ cU
 db
 dg
 dm
-dr
-cV
-cV
+IC
+vf
+vf
 cM
 cM
 "}
@@ -1867,12 +1867,12 @@ bV
 cA
 cH
 cK
-cV
-cV
-cV
-cV
-cV
-cV
+vf
+vf
+vf
+vf
+vf
+vf
 cM
 cM
 cM

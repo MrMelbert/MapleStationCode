@@ -5,10 +5,6 @@
 "ab" = (
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/escape)
-"ac" = (
-/obj/effect/spawner/structure/window/shuttle,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 "ad" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/escape)
@@ -1128,20 +1124,6 @@
 	},
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
-"cz" = (
-/obj/effect/spawner/random/entertainment/arcade,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/turf/open/floor/iron,
-/area/shuttle/escape)
 "cA" = (
 /obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/blue{
@@ -1657,6 +1639,24 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)
+"TU" = (
+/obj/effect/spawner/random/entertainment/arcade,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/shuttle/escape)
+"ZF" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 
 (1,1,1) = {"
 aa
@@ -1688,11 +1688,11 @@ aa
 aa
 ab
 ab
-ac
-ac
-ac
-ac
-ac
+ZF
+ZF
+ZF
+ZF
+ZF
 ab
 ab
 ab
@@ -1720,9 +1720,9 @@ be
 ab
 bc
 ad
-ac
-ac
-ac
+ZF
+ZF
+ZF
 ad
 bc
 bZ
@@ -1733,8 +1733,8 @@ ab
 ad
 cn
 cn
-cz
-cz
+TU
+TU
 cn
 cn
 ab
@@ -1781,7 +1781,7 @@ aZ
 aZ
 aZ
 aZ
-ac
+ZF
 cU
 da
 dh
@@ -1825,7 +1825,7 @@ ba
 ba
 ba
 bc
-ac
+ZF
 cU
 bc
 da
@@ -1846,9 +1846,9 @@ ao
 ab
 ab
 ab
-ac
+ZF
 bq
-ac
+ZF
 ab
 bF
 bR
@@ -1913,7 +1913,7 @@ bX
 bX
 bX
 bR
-ac
+ZF
 cU
 bc
 bc
@@ -1925,7 +1925,7 @@ dz
 (7,1,1) = {"
 aa
 aa
-ac
+ZF
 af
 aq
 ap
@@ -1937,7 +1937,7 @@ be
 be
 be
 bw
-ac
+ZF
 bH
 bR
 bT
@@ -1969,7 +1969,7 @@ dz
 (8,1,1) = {"
 aa
 aa
-ac
+ZF
 ag
 ar
 aA
@@ -1981,7 +1981,7 @@ be
 be
 be
 by
-ac
+ZF
 bI
 bR
 bT
@@ -2001,7 +2001,7 @@ bW
 bW
 bW
 bR
-ac
+ZF
 cW
 db
 bc
@@ -2013,7 +2013,7 @@ dz
 (9,1,1) = {"
 aa
 aa
-ac
+ZF
 ah
 as
 aB
@@ -2025,7 +2025,7 @@ be
 be
 be
 bw
-ac
+ZF
 bJ
 bR
 bT
@@ -2057,7 +2057,7 @@ dz
 (10,1,1) = {"
 aa
 aa
-ac
+ZF
 ai
 at
 aC
@@ -2101,7 +2101,7 @@ ad
 (11,1,1) = {"
 aa
 aa
-ac
+ZF
 aj
 at
 aC
@@ -2109,10 +2109,10 @@ aC
 aO
 ab
 ab
-ac
+ZF
 bn
 bn
-ac
+ZF
 ad
 aZ
 bc
@@ -2145,7 +2145,7 @@ ad
 (12,1,1) = {"
 aa
 aa
-ac
+ZF
 ak
 au
 aD
@@ -2189,7 +2189,7 @@ dz
 (13,1,1) = {"
 aa
 aa
-ac
+ZF
 al
 av
 aE
@@ -2233,7 +2233,7 @@ dz
 (14,1,1) = {"
 aa
 aa
-ac
+ZF
 am
 aw
 ax
@@ -2301,7 +2301,7 @@ bW
 bW
 bW
 bR
-ac
+ZF
 cj
 cq
 cw
@@ -2389,7 +2389,7 @@ aZ
 aZ
 aZ
 bc
-ac
+ZF
 cl
 cs
 cp
@@ -2469,13 +2469,13 @@ bD
 bP
 ab
 ab
-ac
-ac
-ac
-ac
-ac
-ac
-ac
+ZF
+ZF
+ZF
+ZF
+ZF
+ZF
+ZF
 ab
 ab
 ad
@@ -2524,9 +2524,9 @@ aa
 aa
 ab
 ab
-ac
-ac
-ac
+ZF
+ZF
+ZF
 ab
 ab
 ab
