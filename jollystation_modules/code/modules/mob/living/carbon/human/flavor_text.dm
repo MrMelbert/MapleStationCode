@@ -8,8 +8,6 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  * Returns TRUE if successful, FALSE otherwise.
  */
 /proc/add_mob_flavor_text(mob/living/added_mob)
-	if(!added_mob?.client?.prefs)
-		return FALSE
 	if(!istype(added_mob))
 		return FALSE
 
@@ -50,13 +48,15 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 
 /datum/flavor_text/New(mob/living/initial_linked_mob)
 	owner = WEAKREF(initial_linked_mob)
-	name = initial_linked_mob.client?.prefs?.read_preference(/datum/preference/name/real_name)
+	name = initial_linked_mob.real_name
 
 	if(issilicon(initial_linked_mob))
 		linked_species = "silicon"
+	else if(ishuman(initial_linked_mob))
+		var/mob/living/carbon/human/human_mob = initial_linked_mob
+		linked_species = human_mob.dna?.species?.id
 	else
-		var/datum/species/our_species =initial_linked_mob.client?.prefs?.read_preference(/datum/preference/choiced/species)
-		linked_species = our_species.id
+		linked_species = "simple"
 
 /*
  * Get the flavor text formatted.

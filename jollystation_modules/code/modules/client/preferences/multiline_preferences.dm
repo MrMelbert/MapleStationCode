@@ -2,10 +2,14 @@
 	abstract_type = /datum/preference/multiline_text
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
+	priority = PREFERENCE_PRIORITY_NAMES
 	can_randomize = FALSE
 
 /datum/preference/multiline_text/apply_to_human(mob/living/carbon/human/target, value)
 	if(!value)
+		return FALSE
+
+	if(istype(target, /mob/living/carbon/human/dummy))
 		return FALSE
 
 	if(!target.linked_flavor)

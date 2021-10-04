@@ -40,7 +40,7 @@ Assistant
 /datum/outfit/job/assistant/pre_equip(mob/living/carbon/human/H)
 	..()
 
-	// NON-MODULE CHANGE: LOADOUTS // MELBERT TODO: LOOK AT THIS
+	// NON-MODULE CHANGE: LOADOUTS
 	if(!ispath(uniform, /obj/item/clothing/under/color/grey))
 		return
 

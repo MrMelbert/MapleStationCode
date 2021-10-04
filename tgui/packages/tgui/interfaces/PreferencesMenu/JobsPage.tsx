@@ -413,6 +413,10 @@ export const JobsPage = () => {
               <PriorityHeaders />
               <Department department={Departments.Captain} name="Captain" />
               <Gap amount={6} />
+              {/* // NON-MODULE CHANGE */}
+              <Department department={Departments.Command} name="Command" />
+              <Gap amount={6} />
+              {/* // NON-MODULE CHANGE END */}
               <Department department={Departments.Service} name="Service" />
               <Gap amount={6} />
               <Department department={Departments.Cargo} name="Supply" />
@@ -428,15 +432,6 @@ export const JobsPage = () => {
                 name="Security" />
 
               <Gap amount={6} />
-              {/* // NON-MODULE CHANGE */}
-
-              <Department
-                department={Departments.Command}
-                name="Command" />
-
-              <Gap amount={6} />
-
-              {/* // NON-MODULE CHANGE END */}
 
               <Department
                 department={Departments.Medical}

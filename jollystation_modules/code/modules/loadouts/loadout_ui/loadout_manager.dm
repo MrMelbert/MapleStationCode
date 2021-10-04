@@ -81,19 +81,21 @@
 			if(params["revert"])
 				owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], loadout_on_open)
 			SStgui.close_uis(src)
-			return
+			return FALSE
+
+		if("select_color")
+			select_item_color(interacted_item)
+			return TRUE
+
+		if("set_name")
+			set_item_name(interacted_item)
+			return TRUE
 
 		if("select_item")
 			if(params["deselect"])
 				deselect_item(interacted_item)
 			else
 				select_item(interacted_item)
-
-		if("select_color")
-			select_item_color(interacted_item)
-
-		if("set_name")
-			set_item_name(interacted_item)
 
 		// Clears the loadout list entirely.
 		if("clear_all_items")
@@ -190,6 +192,7 @@
 	if(colors)
 		our_loadout_list[path][INFO_GREYSCALE] = colors.Join("")
 		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+		reset_outfit()
 
 /// Set [item]'s name to input provided.
 /datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)

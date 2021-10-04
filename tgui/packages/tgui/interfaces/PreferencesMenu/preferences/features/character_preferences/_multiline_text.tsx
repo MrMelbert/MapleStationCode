@@ -10,9 +10,8 @@ export const MultilineText = (props: FeatureValueProps<string, string>) => {
           width="80%"
           height="52px"
           value={value}
-          placeholder={value}
           onInput={(e, value) => {
-            props.handleSetValue(value);
+            handleSetValue(value);
           }} />
       </Stack.Item>
     </Stack>
