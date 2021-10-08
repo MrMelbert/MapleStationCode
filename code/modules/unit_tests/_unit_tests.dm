@@ -78,7 +78,7 @@
 #include "plantgrowth_tests.dm"
 #include "preferences.dm"
 #include "projectiles.dm"
-#include "quirks.dm"
+//#include "quirks.dm" NON-MODULE CHANGE - temp. disable this unit test
 #include "rcd.dm"
 #include "reagent_id_typos.dm"
 #include "reagent_mod_expose.dm"
