@@ -1681,7 +1681,7 @@
 	},
 /obj/structure/cable,
 /obj/structure/table,
-/obj/item/storage/pill_bottle/dice,
+/obj/item/storage/dice,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden/layer4,
 /turf/open/floor/iron,
 /area/security/prison)
@@ -5312,7 +5312,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
 	dir = 5
 	},
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating/airless,
 /area/maintenance/disposal/incinerator)
 "arn" = (
@@ -7716,7 +7716,7 @@
 /area/commons/dorms)
 "ayo" = (
 /obj/structure/table/wood,
-/obj/item/storage/pill_bottle/dice,
+/obj/item/storage/dice,
 /turf/open/floor/carpet,
 /area/commons/dorms)
 "ayq" = (
@@ -25458,7 +25458,7 @@
 /turf/open/floor/iron/corner,
 /area/engineering/lobby)
 "bLS" = (
-/obj/effect/spawner/randomcolavend,
+/obj/effect/spawner/random/vending/colavend,
 /obj/effect/turf_decal/tile/yellow/half{
 	dir = 1
 	},
@@ -25468,7 +25468,7 @@
 	},
 /area/engineering/lobby)
 "bLT" = (
-/obj/effect/spawner/randomsnackvend,
+/obj/effect/spawner/random/vending/snackvend,
 /obj/effect/turf_decal/tile/yellow/half{
 	dir = 1
 	},
@@ -29716,7 +29716,7 @@
 /turf/open/floor/engine/air,
 /area/engineering/atmos)
 "cbC" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating/airless,
 /area/maintenance/disposal/incinerator)
 "cbF" = (
@@ -30472,7 +30472,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/supermatter/room)
 "cfY" = (
@@ -35216,7 +35216,7 @@
 	},
 /area/medical/medbay/central)
 "duy" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating/airless,
 /area/engineering/atmos/experiment_room)
 "duC" = (
@@ -36325,7 +36325,7 @@
 /turf/open/floor/iron,
 /area/cargo/storage)
 "evB" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/supermatter/room)
 "evL" = (
@@ -41384,7 +41384,7 @@
 /area/maintenance/department/engine)
 "iyJ" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "SupermatterExternal";
 	name = "radiation shutters"
@@ -41429,7 +41429,7 @@
 	},
 /area/engineering/gravity_generator)
 "iBo" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers,
 /turf/open/floor/plating,
 /area/engineering/atmos/experiment_room)
@@ -41960,7 +41960,7 @@
 /turf/open/floor/iron/half,
 /area/cargo/storage)
 "iYO" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction{
 	dir = 4
 	},
@@ -45495,7 +45495,7 @@
 /turf/open/floor/iron/dark,
 /area/cargo/miningdock)
 "mkf" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating/airless,
 /area/engineering/atmos)
 "mkp" = (
@@ -45615,7 +45615,7 @@
 /turf/open/floor/iron,
 /area/science/breakroom)
 "mpd" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/supermatter)
 "mps" = (
@@ -51074,7 +51074,7 @@
 /turf/open/floor/iron/dark,
 /area/service/chapel/monastery)
 "qFu" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "SupermatterExternal";
 	name = "radiation shutters"
@@ -52393,7 +52393,7 @@
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible{
 	dir = 5
 	},
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating/airless,
 /area/maintenance/disposal/incinerator)
 "rHh" = (
@@ -54380,7 +54380,7 @@
 /turf/open/floor/iron,
 /area/medical/medbay/central)
 "thi" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/atmos/experiment_room)
 "thT" = (
@@ -54480,7 +54480,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "SupermatterExternal";
 	name = "radiation shutters"
@@ -54825,7 +54825,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 5
 	},
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "SupermatterExternal";
 	name = "radiation shutters"
@@ -59967,7 +59967,7 @@
 /turf/open/floor/iron/smooth_large,
 /area/science/xenobiology)
 "xdQ" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/atmos)
 "xdW" = (
@@ -60368,7 +60368,7 @@
 /area/medical/chemistry)
 "xqI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/supermatter/room)
 "xrG" = (
@@ -60862,7 +60862,7 @@
 	},
 /area/service/chapel/monastery)
 "xKM" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible,
 /turf/open/floor/plating,
 /area/engineering/atmos)
