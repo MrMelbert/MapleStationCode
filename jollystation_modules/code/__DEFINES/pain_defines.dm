@@ -20,14 +20,15 @@
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_MINUS_HEAD list(BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_LIMBS list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
+#define BODY_ZONES_MINUS_CHEST list(BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 
 /// List of some emotes that convey pain.
 #define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s", "groan", "moan")
 
-/// Amount of pain gained from dismembered limb
-#define PAIN_LIMB_DISMEMBERED 65
-/// Amount of pain gained from surgically removed limb (given to the chest)
-#define PAIN_LIMB_REMOVED 20
+/// Amount of pain gained (to chest) from dismembered limb
+#define PAIN_LIMB_DISMEMBERED 90
+/// Amount of pain gained (to chest) from surgically removed limb
+#define PAIN_LIMB_REMOVED 30
 
 /// Max pains for bodyparts
 #define PAIN_LIMB_MAX 70
