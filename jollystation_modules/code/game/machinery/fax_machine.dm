@@ -10,13 +10,17 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /// The time between alerts that the machine contains an unread message.
 #define FAX_UNREAD_ALERT_TIME 3 MINUTES
 
-/// The max amount of chars displayed in a fax message
+/// The max amount of chars displayed in a fax message in the UI
 #define MAX_DISPLAYED_PAPER_CHARS 475
 
 /// Wire IDs for the fax machine
 #define WIRE_SEND_FAXES "Send wire"
 #define WIRE_RECEIVE_FAXES "Receive wire"
 #define WIRE_PAPERWORK "Paperwork wire"
+
+/// VV dropdowns for the fax machine
+#define VV_SEND_FAX "send_fax"
+#define VV_SEND_MARKED_FAX "send_marked_fax"
 
 /// Fax machine design, for techwebs.
 /datum/design/board/fax_machine
@@ -48,6 +52,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	icon = 'jollystation_modules/icons/obj/machines/fax.dmi'
 	base_icon_state = "fax"
 	icon_state = "fax"
+	speech_span = SPAN_ROBOT
 	density = TRUE
 	use_power = IDLE_POWER_USE
 	idle_power_usage = 10
@@ -61,7 +66,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	/// Whether this fax machine is locked.
 	var/locked = TRUE
 	/// Whether this fax machine can receive paperwork to process on SSeconomy ticks.
-	var/can_receive_paperwork = FALSE
+	var/can_receive_paperwork = TRUE
 	/// Whether we have an unread message
 	var/unread_message = FALSE
 	/// The area string this fax machine is set to.
@@ -80,16 +85,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /obj/machinery/fax_machine/Initialize()
 	. = ..()
 	GLOB.fax_machines += src
-	room_tag = get_area_name(src, TRUE) // no proper or improper tags on this
-	name = "[get_area_name(src, FALSE)] [name]"
+	set_room_tag(TRUE)
 	wires = new /datum/wires/fax(src)
-
-/obj/machinery/fax_machine/full/Initialize()
-	. = ..()
-	for(var/i in 1 to max_paperwork)
-		if(LAZYLEN(received_paperwork) >= max_paperwork)
-			continue
-		LAZYADD(received_paperwork, generate_paperwork(src))
 
 /obj/machinery/fax_machine/Destroy()
 	eject_all_paperwork()
@@ -99,6 +96,16 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	GLOB.fax_machines -= src
 	return ..()
 
+/obj/machinery/fax_machine/recieving_disabled
+	can_receive_paperwork = FALSE
+
+/obj/machinery/fax_machine/full/Initialize()
+	. = ..()
+	for(var/i in 1 to max_paperwork)
+		if(LAZYLEN(received_paperwork) >= max_paperwork)
+			continue
+		LAZYADD(received_paperwork, generate_paperwork(src))
+
 /obj/machinery/fax_machine/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -107,6 +114,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		ui.open()
 
 /obj/machinery/fax_machine/ui_state(mob/user)
+	if(!anchored)
+		return UI_DISABLED
 	return GLOB.physical_state
 
 /obj/machinery/fax_machine/ui_data(mob/user)
@@ -155,19 +164,24 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	else
 		data["display_name"] = "\[REDACTED\]"
 
+	data["can_send_cc_messages"] = (allowed(user) || emagged) && COOLDOWN_FINISHED(src, fax_cooldown)
+	data["can_receive"] = can_receive_paperwork
+	data["emagged"] = emagged
+	data["unread_message"] = unread_message
+
 	var/admin_destination = (emagged ? SYNDICATE_FAX_MACHINE : CENTCOM_FAX_MACHINE)
 	var/list/possible_destinations = list()
 	possible_destinations += admin_destination
 	for(var/obj/machinery/fax_machine/machine as anything in GLOB.fax_machines)
+		if(machine == src)
+			continue
+		if(!machine.room_tag)
+			continue
 		if(machine.room_tag in possible_destinations)
 			continue
 		possible_destinations += machine.room_tag
 	data["destination_options"] = possible_destinations
 	data["default_destination"] = admin_destination
-	data["can_send_cc_messages"] = (allowed(user) || emagged) && COOLDOWN_FINISHED(src, fax_cooldown)
-	data["can_receive"] = can_receive_paperwork
-	data["emagged"] = emagged
-	data["unread_message"] = unread_message
 
 	return data
 
@@ -178,7 +192,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	switch(action)
 		if("un_emag_machine")
-			to_chat(usr, span_notice("You restore [src]'s routing information to Central Command."))
+			to_chat(usr, span_notice("You restore [src]'s routing information to [CENTCOM_FAX_MACHINE]."))
 			obj_flags &= ~EMAGGED
 
 		if("toggle_recieving")
@@ -193,12 +207,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		if("print_received_paper")
 			eject_received_paper(usr, FALSE)
 
+		if("print_all_paperwork")
+			eject_all_paperwork_with_delay(usr)
+
 		if("print_select_paperwork")
 			var/obj/item/paper/processed/paper = locate(params["ref"]) in received_paperwork
 			eject_select_paperwork(usr, paper, FALSE)
-
-		if("print_all_paperwork")
-			eject_all_paperwork_with_delay(usr)
 
 		if("delete_select_paperwork")
 			var/obj/item/paper/processed/paper = locate(params["ref"]) in received_paperwork
@@ -210,11 +224,27 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	return TRUE
 
-/obj/machinery/fax_machine/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/I)
-	if(locked && !issilicon(user))
+/obj/machinery/fax_machine/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
+	var/is_user_robot = issilicon(user)
+	if(!panel_open && locked && !is_user_robot)
 		to_chat(user, span_warning("[src]'s maintenance panel is ID locked. Swipe your ID to unlock it."))
 		return FALSE
+
+	. = ..()
+	if(. && panel_open && locked && is_user_robot)
+		to_chat(user, span_notice("Maintenance panel ID lock bypassed."))
+
+/obj/machinery/fax_machine/can_be_unfasten_wrench(mob/user, silent)
+	if(!panel_open)
+		if(!silent)
+			to_chat(user, span_warning("You need to open the maintenance panel to access the bolts!"))
+		return FAILED_UNFASTEN // "failed" instead of "cant", because failed stops afterattacks
 	return ..()
+
+/obj/machinery/fax_machine/default_unfasten_wrench(mob/user, obj/item/wrench, time = 20)
+	. = ..()
+	if(. == SUCCESSFUL_UNFASTEN)
+		set_room_tag(anchored) // Sets the room tag to NULL if unanchored, or the area name if anchored
 
 /obj/machinery/fax_machine/attackby(obj/item/weapon, mob/user, params)
 	if(!isliving(user))
@@ -226,6 +256,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return TRUE
 
 	if(default_deconstruction_crowbar(weapon))
+		return TRUE
+
+	if(default_unfasten_wrench(user, weapon, 3 SECONDS))
 		return TRUE
 
 	if(panel_open && is_wire_tool(weapon))
@@ -265,6 +298,20 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		. += span_notice("Right click to remove the stored fax.")
 
 /*
+ * Set this fax machine's [room_tag] to the current room or null.
+ *
+ * if to_curr_room is TRUE, sets the room_tag to the current area's name.
+ * otherwise, sets it to null.
+ */
+/obj/machinery/fax_machine/proc/set_room_tag(to_curr_room = TRUE)
+	if(to_curr_room)
+		room_tag = get_area_name(src, TRUE) // no proper or improper tags on this
+		name = "[get_area_name(src, FALSE)] [name]"
+	else
+		room_tag = null
+		name = initial(name)
+
+/*
  * Send [stored_paper] from [user] to [destinatoin].
  * if [destination] is an admin fax machine, send it to admins.
  * Otherwise, send it to the corresponding fax machine in the world, looking for (room_tag == [destination])
@@ -296,7 +343,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		for(var/obj/machinery/fax_machine/machine as anything in GLOB.fax_machines)
 			if(machine == src || machine.room_tag == room_tag)
 				continue
-			if(machine.room_tag == destination && machine.receive_paper(stored_paper.better_copy(), room_tag))
+			if(!machine.room_tag)
+				continue
+			if(machine.room_tag == destination && machine.receive_paper(stored_paper.fax_copy(), room_tag))
 				message_admins("[ADMIN_LOOKUPFLW(user)] sent a fax to [ADMIN_VERBOSEJMP(machine)].")
 				found_a_machine = TRUE
 				break
@@ -379,6 +428,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		to_chat(user, span_notice("Fax successfully sent."))
 	else
 		to_chat(user, span_danger("Fax failed to send."))
+		qdel(sent_paper)
 
 /*
  * receive [new_paper] as a fax from [source].
@@ -455,7 +505,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		else
 			message = "Paperwork successfuly processed. Dispensing payment."
 
-	say(span_robot(message))
+	say(message)
 	if(paper_check)
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
 		. = FALSE
@@ -616,7 +666,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
  *
  * returns a new instance of [/obj/item/paper].
  */
-/obj/item/paper/proc/better_copy()
+/obj/item/paper/proc/fax_copy()
 	var/obj/item/paper/new_paper = new()
 
 	new_paper.name = name
@@ -627,7 +677,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	new_paper.stamped = LAZYLISTDUPLICATE(stamped)
 	new_paper.form_fields = form_fields.Copy()
 	new_paper.field_counter = field_counter
-	new_paper.update_appearance()
+	new_paper.update_icon_state()
+	copy_overlays(new_paper, TRUE)
 
 	return new_paper
 
@@ -770,3 +821,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 #undef WIRE_SEND_FAXES
 #undef WIRE_RECEIVE_FAXES
 #undef WIRE_PAPERWORK
+
+#undef VV_SEND_FAX
+#undef VV_SEND_MARKED_FAX

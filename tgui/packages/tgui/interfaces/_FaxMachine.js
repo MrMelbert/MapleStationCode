@@ -78,8 +78,8 @@ export const _FaxMachine = (props, context) => {
                     setTab(2);
                     act('read_last_received');
                   }}>
-                  <Stack grow width="100%">
-                    <Stack.Item grow textAlign="left">
+                  <Stack>
+                    <Stack.Item textAlign="left">
                       <b>received Faxes </b>
                     </Stack.Item>
                     {received_paper && !!unread_message && (
@@ -152,7 +152,6 @@ export const _FaxMachine = (props, context) => {
                   <Stack.Item grow>
                     <Dropdown
                       width="100%"
-                      height="100%"
                       selected={selectedDestination}
                       options={destination_options}
                       onSelected={dest => { setDestination(dest); }} />
@@ -218,7 +217,7 @@ export const _FaxMachine = (props, context) => {
             <Stack.Item height={3} mb={1}>
               {!!selectedPaper && (
                 <Stack vertical align="center" >
-                  <Stack.Item grow>
+                  <Stack.Item>
                     <b>
                       To fulfill this paperwork, stamp accurately
                       and answer the following:

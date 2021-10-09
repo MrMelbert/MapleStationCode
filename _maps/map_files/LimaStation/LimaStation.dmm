@@ -27824,7 +27824,7 @@
 "mkx" = (
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/fax_machine,
+/obj/machinery/fax_machine/recieving_disabled,
 /turf/open/floor/carpet/royalblue,
 /area/command/heads_quarters/hop)
 "mli" = (
@@ -35682,7 +35682,7 @@
 "pml" = (
 /obj/structure/table/wood,
 /obj/machinery/computer/security/telescreen/entertainment/directional/south,
-/obj/machinery/fax_machine,
+/obj/machinery/fax_machine/recieving_disabled,
 /turf/open/floor/carpet/orange,
 /area/service/lawoffice)
 "pmo" = (
