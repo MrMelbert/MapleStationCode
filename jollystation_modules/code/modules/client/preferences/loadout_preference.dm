@@ -19,6 +19,9 @@
 	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(value))
 		item.post_equip_item(prefs, target)
 
+/datum/preference/loadout/serialize(input, datum/preferences/preferences)
+	return sanitize_loadout_list(input)
+
 /datum/preference/loadout/deserialize(input, datum/preferences/preferences)
 	return sanitize_loadout_list(input)
 

@@ -10,41 +10,47 @@
  * returns null otherwise.
  */
 /mob/living/proc/get_visible_flavor(mob/examiner)
-	return null
+	RETURN_TYPE(/datum/flavor_text)
+
+	var/datum/flavor_text/found_flavor = linked_flavor
+	// Simple animals, basic animals, anything that's not a human/silicon is lumped under "simple"
+	if(found_flavor?.linked_species != "simple")
+		return null
+
+	return found_flavor
 
 /mob/living/carbon/human/get_visible_flavor(mob/examiner)
-	//var/face_obscured = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
-	var/shown_name = get_visible_name()
-
 	// your identity is always known to you
 	if(examiner == src)
 		return linked_flavor
 
+	var/shown_name = get_visible_name()
 	if(shown_name == "Unknown")
 		return null
 
+	var/datum/flavor_text/found_flavor
 	// the important check - if the visible name is our flavor text name, display our flavor text
 	// if the visible name is not, however, we may be in disguise - so grab the corresponding flavor text from our global list
 	if(shown_name == linked_flavor?.name || findtext(shown_name, linked_flavor?.name))
-		. = linked_flavor
+		found_flavor = linked_flavor
 	else
-		. = GLOB.flavor_texts[shown_name]
+		found_flavor = GLOB.flavor_texts[shown_name]
 
-	var/datum/flavor_text/found_flavor = .
-
-	// if you are not the species linked to the flavor text, you are not recognizable
+	// if you are not the species linked to the flavor text we found, you are not recognizable
 	if(found_flavor?.linked_species != dna?.species.id)
-		. = null
+		return null
+
+	return found_flavor
 
 /mob/living/silicon/get_visible_flavor(mob/examiner)
-	. = linked_flavor
-
 	if(examiner == src)
-		return
+		return linked_flavor
 
-	var/datum/flavor_text/found_flavor = .
+	var/datum/flavor_text/found_flavor = linked_flavor
 	if(found_flavor?.linked_species != "silicon")
-		. = null
+		return null
+
+	return found_flavor
 
 /mob/proc/check_med_hud_and_access()
 	return FALSE

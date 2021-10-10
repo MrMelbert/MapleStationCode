@@ -35,25 +35,23 @@
 	if(known_identity)
 		expanded_examine += known_identity.get_flavor_and_records_links(user)
 
-	if(linked_flavor)
-		// Admins can view all records.
-		if(user.client.holder && isAdminObserver(user))
-			// Formatted output list of records.
-			var/admin_line = ""
+	if(linked_flavor && user.client.holder && isAdminObserver(user))
+		// Formatted output list of records.
+		var/admin_line = ""
 
-			if(linked_flavor.flavor_text)
-				admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
-			if(linked_flavor.gen_records)
-				admin_line += "<a href='?src=[REF(linked_flavor)];general_records=1'>\[GEN\]</a>"
-			if(linked_flavor.sec_records)
-				admin_line += "<a href='?src=[REF(linked_flavor)];security_records=1'>\[SEC\]</a>"
-			if(linked_flavor.med_records)
-				admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
-			if(linked_flavor.expl_info)
-				admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
+		if(linked_flavor.flavor_text)
+			admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
+		if(linked_flavor.gen_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];general_records=1'>\[GEN\]</a>"
+		if(linked_flavor.sec_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];security_records=1'>\[SEC\]</a>"
+		if(linked_flavor.med_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
+		if(linked_flavor.expl_info)
+			admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
 
-			if(admin_line)
-				expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"
+		if(admin_line)
+			expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"
 
 	// if the mob doesn't have a client, show how long they've been disconnected for.
 	if(!client && last_connection_time)

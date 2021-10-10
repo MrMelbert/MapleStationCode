@@ -64,11 +64,14 @@
 
 
 /*
- * Removes all invalid paths from loadout lists.
+ * Changes the loadout list from being [slot] to [path]
+ * to [path] to [list of data].
+ *
  * This is for updating old loadout lists (pre-datumization)
  * to new loadout lists (the formatting was changed).
  *
- * If you're looking at loadouts fresh, you DON'T need this proc.
+ * If you're looking at loadouts NOW,
+ * you DON'T need this proc or the savefile update extension.
  *
  * passed_list - the loadout list we're sanitizing.
  *

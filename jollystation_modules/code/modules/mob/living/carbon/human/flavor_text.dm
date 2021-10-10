@@ -3,20 +3,28 @@
 GLOBAL_LIST_EMPTY(flavor_texts)
 
 /*
- * Create a flavor text datum for [added_mob].
+ * Gets the mob's flavor text datum from the global associated lists of flavor texts.
+ * If no flavor text was found, create a new flavor text datum for [added_mob]
  *
- * Returns TRUE if successful, FALSE otherwise.
+ * Returns a datum instance - either a new flavor text or a flavor text from the global list
+ * Returns null if the mob was not living or something goes wrong
  */
-/proc/add_mob_flavor_text(mob/living/added_mob)
-	if(!istype(added_mob))
-		return FALSE
+/proc/add_or_get_mob_flavor_text(mob/living/added_mob)
+	RETURN_TYPE(/datum/flavor_text)
 
-	if(!GLOB.flavor_texts[added_mob.real_name])
-		var/datum/flavor_text/found_text = new /datum/flavor_text(added_mob)
+	if(!istype(added_mob))
+		return null
+
+	var/datum/flavor_text/found_text = GLOB.flavor_texts[added_mob.real_name]
+	if(!found_text)
+		found_text = new /datum/flavor_text(added_mob)
 		GLOB.flavor_texts[added_mob.real_name] = found_text
+		if(added_mob.linked_flavor)
+			stack_trace("We just made a new flavor text datum for [added_mob] even though it had flavor text linked already, something is messed up")
 		added_mob.linked_flavor = found_text
 
-	return TRUE
+	return found_text
+
 
 /// Flavor text define for carbons.
 /mob/living
