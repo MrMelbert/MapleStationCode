@@ -78,7 +78,7 @@
 		else
 			parts += span_bold("The heretic didn't research any knowledge!")
 	else
-		parts += span_bold("The heretic never received their Codex! ")
+		parts += span_bold("The heretic never received their Codex!")
 
 	return parts.Join("<br>")
 

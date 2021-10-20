@@ -59,13 +59,13 @@
 	name = "neuter headslug"
 	time = 10 SECONDS
 	implements = list(
-		TOOL_RETRACTOR = 50, // Even a retractor is not too good at it, better get sterile
-		TOOL_HEMOSTAT = 45,
+		TOOL_RETRACTOR = 70, // Even a retractor is not too good at it, better get sterile
+		TOOL_HEMOSTAT = 60,
 		TOOL_SCREWDRIVER = 20,
 		TOOL_WIRECUTTER = 15
 		)
 
-/// MELBERT TODO; this acts funkily
+/// MELBERT TODO: This acts a bit strangely the way it's called in the surgery chain.
 /datum/surgery_step/neuter_ling/try_op(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail)
 	var/obj/item/other_item = user.get_inactive_held_item()
 	if(!other_item?.get_sharpness())
@@ -96,17 +96,17 @@
 			span_notice("[user] successfully locates and neuters the headslug within [target]'s chest!"),
 			span_notice("[user] finishes working within [target]'s chest."))
 
+		var/ling_id = old_ling_datum.changeling_id
+
+		target.mind.remove_antag_datum(/datum/antagonist/changeling)
 		var/datum/antagonist/changeling/new_ling_datum = target.mind.add_antag_datum(/datum/antagonist/changeling/neutered)
-		new_ling_datum.changeling_id = old_ling_datum.changeling_id
+		new_ling_datum.changeling_id = ling_id
 
 		target.do_jitter_animation(30)
-		target.mind.remove_antag_datum(/datum/antagonist/changeling)
 
-		var/revival_message_end = ""
+		var/revival_message_end = "and limply"
 		if(target.getorganslot(ORGAN_SLOT_HEART))
 			revival_message_end = "as their heart beats once more"
-		else
-			revival_message_end = "and limply"
 		if(target.heal_and_revive((target.stat == DEAD ? 50 : 75), span_danger("[target] begins to write unnaturally [revival_message_end], their body struggling to regenerate!")))
 			new_ling_datum.chem_charges += 15
 			var/datum/action/changeling/regenerate/regenerate_action = locate() in target.actions
@@ -148,7 +148,7 @@
 	// ...And if there is, the changeling gets pissed
 	var/datum/antagonist/changeling/our_changeling = is_any_changeling(target)
 	if(our_changeling)
-		to_chat(target, span_changeling("[user] has attempted and failed to neuter our changeling abilities! We may have a chance to break free!"))
+		to_chat(target, span_changeling("[user] has attempted and failed to neuter our changeling abilities! We feel invigorated, we must break free!"))
 		target.do_jitter_animation(50)
 		our_changeling.chem_charges = our_changeling.total_chem_storage
 

@@ -71,7 +71,7 @@
 		else
 			result += span_bold("The changeling never aquired any additional changeling powers!")
 	else
-		result += span_bold("The changeling never recieved their changeling powers! ...Why?")
+		result += span_bold("The changeling never received their changeling powers! ...Why?")
 
 	return result.Join("<br>")
 

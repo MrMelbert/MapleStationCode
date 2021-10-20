@@ -197,7 +197,7 @@
 	new_ling_datum.total_geneticspoints = round(0.5 * our_ling.total_geneticspoints)
 	new_ling_datum.geneticpoints = new_ling_datum.total_geneticspoints
 
-	// MELBERT TODO; probably a better way of doing this
+	// MELBERT TODO: This is kinda hacky.
 	new_ling_datum.all_powers -= /datum/action/changeling/grant_powers
 	new_ling_datum.all_powers -= /datum/action/changeling/pheromone_receptors
 	if(!(locate(/datum/action/changeling/absorb_dna) in owner.actions))
@@ -315,10 +315,12 @@
 
 /// Remove [target] from being temporarily linked to the hivemind.
 /datum/action/changeling/linglink/proc/unlink_target(mob/target)
-	if(HAS_TRAIT(target, TRAIT_LING_LINKED))
-		REMOVE_TRAIT(target, TRAIT_LING_LINKED, "[owner]-[CHANGELING_ABILITY]")
-		to_chat(target, span_changeling("Your mind goes silent - you are left alone once more. You can no longer communicate in the changeling hivemind."))
-		to_chat(owner, span_notice("Our linked creature, [target], has been removed from our hivemind."))
+	if(!HAS_TRAIT(target, TRAIT_LING_LINKED))
+		return
+
+	REMOVE_TRAIT(target, TRAIT_LING_LINKED, "[owner]-[CHANGELING_ABILITY]")
+	to_chat(target, span_changeling("Your mind goes silent - you are left alone once more. You can no longer communicate in the changeling hivemind."))
+	to_chat(owner, span_notice("Our linked creature, [target], has been removed from our hivemind."))
 
 
 #undef PAIN_CLEAR_COOLDOWN

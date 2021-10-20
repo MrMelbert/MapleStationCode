@@ -72,8 +72,7 @@
 
 	return TRUE
 
-
-// MELBERT TODO; hair doesn't stay
+// MELBERT TODO: All DNA is copied over correctly... except for hairstyle. But that's fixable in a mirror, so.
 /datum/action/changeling/sting/temp_transformation/sting_action(mob/user, mob/target)
 	if(!iscarbon(target))
 		return FALSE
@@ -141,7 +140,7 @@
 
 /datum/action/changeling/sting/knock_out/sting_action(mob/user, mob/target)
 	log_combat(user, target, "stung", "knock-out sting")
-	/// 3 units to sleep to trigger + ~3 units per 20 seconds of sleep
+	// 3 units to sleep to trigger. For ever additional 3 units, 20 seconds of sleep.
 	target.reagents?.add_reagent(/datum/reagent/toxin/sodium_thiopental, 12)
 	return TRUE
 

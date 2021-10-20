@@ -49,14 +49,16 @@
 		if(global_mob in GLOB.dead_mob_list)
 			to_chat(global_mob, "[FOLLOW_LINK(global_mob, user)] [message]")
 		else
-			if(!HAS_TRAIT(global_mob, TRAIT_LING_MUTE))
-				switch(global_mob.ling_hive_check())
-					if(LING_HIVE_LING, LING_HIVE_OUTSIDER)
-						to_chat(global_mob, message)
+			if(HAS_TRAIT(global_mob, TRAIT_LING_MUTE))
+				continue
 
-					if(LING_HIVE_NOT_AWOKEN)
-						if(prob(12))
-							to_chat(global_mob, span_changeling("We can faintly sense someone communicating through the hivemind..."))
+			switch(global_mob.ling_hive_check())
+				if(LING_HIVE_LING, LING_HIVE_OUTSIDER)
+					to_chat(global_mob, message)
+
+				if(LING_HIVE_NOT_AWOKEN)
+					if(prob(12))
+						to_chat(global_mob, span_changeling("We can faintly sense someone communicating through the hivemind..."))
 
 // BZ metabolites mute the ling hivemind.
 /datum/reagent/bz_metabolites/on_mob_metabolize(mob/living/carbon/user)

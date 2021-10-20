@@ -25,7 +25,7 @@
 
 /datum/action/changeling/adrenaline/sting_action(mob/living/user)
 	user.adjustStaminaLoss(-75)
-	/// MELBERT TODO; despite being instant, does not get up instantly, due to stam crit?
+	/// MELBERT TODO: Despite being "instant", does not get up instantly, due to stam crit.
 	user.set_resting(FALSE, instant = TRUE)
 	user.SetStun(0)
 	user.SetImmobilized(0)
@@ -54,9 +54,9 @@
 		to_chat(user, span_warning("You are currently uplifting someone!"))
 		return FALSE
 
-	var/datum/antagonist/changeling/our_ling_datum = is_any_changeling(target)
+	var/datum/antagonist/changeling/our_ling_datum = is_any_changeling(user)
 	var/datum/advanced_antag_datum/changeling/our_advanced_datum = our_ling_datum?.linked_advanced_datum
-	if(our_advanced_datum?.no_hard_absorb)
+	if(our_advanced_datum?.no_hard_absorb) // They shouldn't be able to reach this (no ability), but just in case.
 		to_chat(user, span_warning("We gave up the ability to absorb creatures!"))
 		return FALSE
 

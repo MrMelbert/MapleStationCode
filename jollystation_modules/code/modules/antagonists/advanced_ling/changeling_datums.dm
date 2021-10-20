@@ -1,12 +1,12 @@
 /// -- Changeling datums and additions. --
 /datum/antagonist/changeling
+	/// Our changeling ID.
+	var/changeling_id
 	/// Whether this changeling can talk in the hivemind.
-	/// Fresh / neutered changelings need to have the hivemind awoken by another ling..
+	/// Fresh / neutered changelings need to have the hivemind awoken by another ling.
 	var/hivemind_link_awoken = TRUE
 	/// The number of changeling this changeling has uplifted using "Uplift Human".
 	var/changeling_uplifts = 0
-	/// Our changeling ID.
-	var/changeling_id
 
 /datum/antagonist/changeling/on_gain()
 	. = ..()
@@ -45,7 +45,7 @@
 	hivemind_link_awoken = FALSE
 
 /// Neutered changelings, for the neuter changeling surgery.
-/datum/antagonist/changeling/neutered // MELBERT TODO; roundend report
+/datum/antagonist/changeling/neutered
 	name = "Neutered Changeling"
 	ui_name = null
 	hijack_speed = 0
@@ -111,7 +111,7 @@
 	var/list/result = list()
 
 	var/datum/mind/robber_mind = changeling_who_robbed_us?.resolve()
-	var/datum/antagonist/changeling/robber_ling_datum = is_any_changeling(robber_mind.current)
+	var/datum/antagonist/changeling/robber_ling_datum = robber_mind?.has_antag_datum(/datum/antagonist/changeling)
 
 	result += printplayer(owner)
 	if(robber_ling_datum)
@@ -122,7 +122,7 @@
 	return result.Join("<br>")
 
 /// Fresh changeling, from the Uplift Human ability.
-/datum/antagonist/changeling/fresh // MELBERT TODO; roundend report
+/datum/antagonist/changeling/fresh
 	name = "Fresh Changeling"
 	you_are_greet = FALSE
 	show_in_antagpanel = FALSE
@@ -139,7 +139,7 @@
 	var/list/result = list()
 
 	var/datum/mind/parent_ling = granter?.resolve()
-	var/datum/antagonist/changeling/parent_ling_datum = is_any_changeling(parent_ling.current)
+	var/datum/antagonist/changeling/parent_ling_datum = parent_ling?.has_antag_datum(/datum/antagonist/changeling)
 
 	result += printplayer(owner)
 	result += "<b>[owner]</b> was <b>[changeling_id]</b>, a freshly born changeling created by <b>[parent_ling_datum.changeling_id]</b> ([parent_ling])."
