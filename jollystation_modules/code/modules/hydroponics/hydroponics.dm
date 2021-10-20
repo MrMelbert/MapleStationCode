@@ -21,8 +21,11 @@
 	if(curr_sustain != self_sustaining)
 		calculate_nutridrain()
 
+/// Future melbert todo: Move this to a setter for when self-sustaining is made into one.
+/// Updates the nutridrain of the tray based on self sustaining status.
 /obj/machinery/hydroponics/constructable/proc/calculate_nutridrain()
 	var/sustaining_mod = self_sustaining ? 2 : 1
 	nutridrain = initial(nutridrain) / (sustaining_mod * rating)
 
-#undef TRAY_BASE_NUTRIDRAIN
+#undef TRAY_MODIFIED_BASE_NUTRIDRAIN
+#undef TRAY_MODIFIED_BASE_MAXWATER
