@@ -25,12 +25,14 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 			to_chat(src, span_danger("LOOC is globally muted."))
 			return
 		if(!GLOB.dooc_allowed && (mob.stat == DEAD))
-			to_chat(src, span_danger("LOOC for dead mobs has been turned off."))
+			to_chat(src, span_danger("OOC / LOOC for dead mobs has been turned off."))
 			return
 		if(prefs.muted & MUTE_OOC)
 			to_chat(src, span_danger("You cannot use LOOC (muted)."))
 			return
-
+	else
+		if(!GLOB.looc_allowed)
+			to_chat(src, span_danger("LOOC is globally muted, but you are bypassing it as an admin."))
 
 	// Really?
 	if(!SSticker.HasRoundStarted())
@@ -42,12 +44,12 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 
 	// Check for people with OOC muted
 	if(!(prefs.toggles & CHAT_OOC))
-		to_chat(src, span_danger("You have LOOC muted."))
+		to_chat(src, span_danger("You have OOC / LOOC muted."))
 		return
 
 	// Check for people banned from OOC
 	if(is_banned_from(ckey, "OOC"))
-		to_chat(src, span_danger("You have been banned from OOC."))
+		to_chat(src, span_danger("You have been banned from OOC / LOOC."))
 		return
 
 	if(QDELETED(src))
@@ -72,9 +74,9 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 			return
 
 
-	/// Source mob of the message
+	/// Source mob of the message.
 	var/mob/source = mob.get_looc_source()
-	/// EVeryone that can hear it
+	/// Everyone that can hear the message.
 	var/list/heard = get_hearers_in_view(7, source)
 
 	/// The ckey of the source mob
