@@ -16,7 +16,7 @@
 	if(!ishuman(target) || ismonkey(target))//Absorbing monkeys is entirely possible, but it can cause issues with transforming. That's what lesser form is for anyway!
 		if(verbose)
 			to_chat(owner, span_warning("We could gain no benefit from absorbing a lesser creature."))
-		return
+		return FALSE
 
 // Buffs adrenal sacs so they work like old adrenals. Increased chemical cost to compensate.
 /datum/action/changeling/adrenaline
