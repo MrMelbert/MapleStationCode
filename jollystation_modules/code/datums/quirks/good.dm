@@ -15,7 +15,7 @@
 /// Trilingual quirk - Gives the owner a language.
 /datum/quirk/trilingual
 	name = "Trilingual"
-	desc = "You're trilingual - you know another random language besides common and your native tongue."
+	desc = "You're trilingual - you know another random language besides common and your native tongue. (If you take this quirk, you cannot select an additional language.)"
 	icon = "globe"
 	value = 1
 	gain_text = "<span class='notice'>You understand a new language.</span>"

@@ -1,73 +1,163 @@
+// -- Language preference and UI.
 
+/// Simple define to denote no language.
 #define NO_LANGUAGE "No Language"
 
-/datum/preference/choiced/additional_language
+/// List of species IDs of species's that can't get an additional language
+#define BLACKLISTED_SPECIES_FROM_LANGUAGES list(SPECIES_SYNTH_MILITARY, SPECIES_SYNTH, SPECIES_ANDROID)
+
+// Stores a typepath of a language, or "No language" when passed a null / invalid language.
+/datum/preference/additional_language
 	savefile_key = "language"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
 
-/datum/preference/choiced/additional_language/init_possible_values()
-	return list(NO_LANGUAGE, "Skrellian", "Nekomimetic", "Moffic", "Draconic", "High Draconic")
+/datum/preference/additional_language/deserialize(input, datum/preferences/preferences)
+	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
+	var/species_id = initial(species.id)
 
-/datum/preference/choiced/additional_language/create_default_value()
+	if(species_id in BLACKLISTED_SPECIES_FROM_LANGUAGES)
+		return NO_LANGUAGE
+
+	var/datum/language/lang_to_add = GLOB.language_datum_instances[input]
+	if(!lang_to_add)
+		return NO_LANGUAGE
+
+	if(lang_to_add.base_species && lang_to_add.base_species == species_id)
+		return NO_LANGUAGE
+	if(lang_to_add.req_species && lang_to_add.req_species != species_id)
+		return NO_LANGUAGE
+
+	if("Trilingual" in preferences.all_quirks)
+		return NO_LANGUAGE
+
+	return input
+
+/datum/preference/additional_language/serialize(input)
+	return ispath(input) ? input : NO_LANGUAGE
+
+/datum/preference/additional_language/create_default_value()
 	return NO_LANGUAGE
 
-/datum/preference/choiced/additional_language/is_accessible(datum/preferences/preferences)
-	. = ..()
-	if(!.)
-		return
+/datum/preference/additional_language/is_valid(value)
+	return ispath(value) || value == NO_LANGUAGE
 
-	// Not compatible with trilingual.
-	if("Trilingual" in preferences.all_quirks)
-		return FALSE
-
-	return TRUE
-
-// We need to apply our language at the very end
-/datum/preference/choiced/additional_language/apply_to_human(mob/living/carbon/human/target, value)
-	return
-
-/datum/preference/choiced/additional_language/after_apply_to_human(mob/living/carbon/human/target, datum/preferences/prefs, value)
-	if(!prefs)
-		CRASH("language preference after_apply_to_human called without preferences datum.")
-
+/datum/preference/additional_language/apply_to_human(mob/living/carbon/human/target, value)
 	if(value == NO_LANGUAGE)
 		return
 
-	if("Trilingual" in prefs.all_quirks)
-		prefs.write_preference(GLOB.preference_entries[type], NO_LANGUAGE)
+	target.grant_language(value, TRUE, TRUE, LANGUAGE_PREF)
+
+/datum/language
+	// Vars used in determining valid languages for the language preferences.
+	/// The 'base species' of the language, the lizard to the draconic.
+	var/base_species
+	/// The 'required species' of the language, languages that require you be a certain species to know.
+	var/req_species
+
+/datum/language/skrell
+	base_species = SPECIES_SKRELL
+
+/datum/language/draconic
+	base_species = SPECIES_LIZARD
+
+/datum/language/impdraconic
+	req_species = SPECIES_LIZARD
+
+/datum/language/nekomimetic
+	base_species = SPECIES_FELINE
+
+/datum/language/moffic
+	base_species = SPECIES_MOTH
+
+
+/// TGUI for selecting languages.
+/datum/language_picker
+	/// The preferences our ui is linked to
+	var/datum/preferences/owner_prefs
+
+/datum/language_picker/New(datum/preferences/prefs)
+	owner_prefs = prefs
+
+/datum/language_picker/ui_close(mob/user)
+	owner_prefs = null
+	qdel(src)
+
+/datum/language_picker/ui_state(mob/user)
+	return GLOB.always_state
+
+/datum/language_picker/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "_LanguagePicker")
+		ui.open()
+
+/datum/language_picker/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
 		return
 
-	var/datum/language/language_type
-	var/datum/language/language_instance
+	switch(action)
+		if("set_language")
+			if(params["deselecting"])
+				owner_prefs.write_preference(GLOB.preference_entries[/datum/preference/additional_language], NO_LANGUAGE)
+
+			else
+				var/datum/species/species = owner_prefs.read_preference(/datum/preference/choiced/species)
+				var/species_id = initial(species.id)
+				var/lang_path = text2path(params["langType"])
+				var/datum/language/lang_to_add = GLOB.language_datum_instances[lang_path]
+				if(!lang_to_add)
+					return
+
+				// Sanity checking
+				if(lang_to_add.base_species && lang_to_add.base_species == species_id)
+					to_chat(usr, span_warning("Invalid language for current species."))
+					return
+
+				if(lang_to_add.req_species && lang_to_add.req_species != species_id)
+					to_chat(usr, span_warning("Language requires another species."))
+					return
+
+				// Write the preference
+				owner_prefs.write_preference(GLOB.preference_entries[/datum/preference/additional_language], lang_path)
+
+			return TRUE
+
+/datum/language_picker/ui_data(mob/user)
+	var/list/data = list()
+
+	var/datum/species/species = owner_prefs.read_preference(/datum/preference/choiced/species)
+	data["species"] = initial(species.id)
+	data["selected_lang"] = owner_prefs.read_preference(/datum/preference/additional_language)
+	data["trilingual"] = ("Trilingual" in owner_prefs.all_quirks)
+	data["pref_name"] = owner_prefs.read_preference(/datum/preference/name/real_name)
+
+	return data
+
+/datum/language_picker/ui_static_data(mob/user)
+	var/list/data = list()
+
+	data["blacklisted_species"] = BLACKLISTED_SPECIES_FROM_LANGUAGES
+	data["base_languages"] = list()
+	data["bonus_languages"] = list()
+
 	for(var/found_language in GLOB.language_datum_instances)
 		var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
-		if(found_instance.name == value)
-			language_type = found_language
-			language_instance = found_instance
-			break
+		var/list/lang_data = list()
+		lang_data["name"] = found_instance.name
+		lang_data["type"] = found_language
 
-	if(!language_type || !language_instance)
-		CRASH("language preference after_apply_to_human could not find a corresponding [language_type ? "language instance" : "language type"]! passed value: [value]")
+		if(found_instance.base_species)
+			lang_data["barred_species"] = found_instance.base_species
+			data["base_languages"] += list(lang_data)
 
-	var/datum/language_holder/target_languages = target.get_language_holder()
+		if(found_instance.req_species)
+			lang_data["allowed_species"] = found_instance.req_species
+			data["bonus_languages"] += list(lang_data)
 
-	if(language_type in target_languages.spoken_languages)
-		to_chat(prefs.parent, span_notice("You already know the [value] language."))
-		prefs.write_preference(GLOB.preference_entries[type], NO_LANGUAGE)
-		return
-
-	if( \
-		(language_type in target_languages.blocked_languages) \
-		|| (LAZYLEN(language_instance.blacklist_species_on_roundstart) && (target.dna.species in language_instance.blacklist_species_on_roundstart)) \
-		|| (LAZYLEN(language_instance.whitelist_species_on_roundstart) && !(target.dna.species in language_instance.whitelist_species_on_roundstart)) \
-	)
-		to_chat(prefs.parent, span_notice("Your species, [target.dna.species.name], cannot learn the [value] language."))
-		prefs.write_preference(GLOB.preference_entries[type], NO_LANGUAGE)
-		return
-
-	target.grant_language(language_type, TRUE, TRUE, LANGUAGE_PREF)
-	to_chat(prefs.parent, span_notice("Either due to your past or species, you know the [value] language."))
+	return data
 
 #undef NO_LANGUAGE
+#undef BLACKLISTED_SPECIES_FROM_LANGUAGES
