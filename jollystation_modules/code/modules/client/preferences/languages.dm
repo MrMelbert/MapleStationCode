@@ -11,6 +11,7 @@
 	savefile_key = "language"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	priority = PREFERENCE_PRIORITY_NAMES
 	can_randomize = FALSE
 
 /datum/preference/additional_language/deserialize(input, datum/preferences/preferences)
