@@ -22679,9 +22679,7 @@
 /obj/effect/turf_decal/trimline/white/filled/line{
 	dir = 4
 	},
-/turf/open/floor/iron/white/side{
-	dir = 4
-	},
+/turf/open/space/basic,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "kkh" = (
@@ -22739,13 +22737,10 @@
 /turf/open/floor/iron/dark/smooth_half,
 /area/science/lab)
 "kks" = (
-/obj/effect/spawner/random/vending/snackvend,
 /obj/effect/turf_decal/trimline/white/filled/line{
 	dir = 8
 	},
-/turf/open/floor/iron/white/side{
-	dir = 8
-	},
+/turf/open/space/basic,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "kkX" = (
@@ -24490,7 +24485,7 @@
 /obj/effect/turf_decal/trimline/white/filled/line{
 	dir = 8
 	},
-/turf/open/floor/iron,
+/turf/open/space/basic,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "kUT" = (
@@ -33680,10 +33675,13 @@
 /area/security/office)
 "osW" = (
 /obj/structure/table,
-/obj/item/construction/plumbing,
+/obj/item/construction/plumbing{
+	pixel_y = 6
+	},
 /obj/item/construction/plumbing,
 /obj/machinery/light/cold/directional/south,
 /obj/effect/turf_decal/trimline/yellow/filled/line,
+/obj/item/multitool,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "osZ" = (
@@ -34328,8 +34326,13 @@
 /area/medical/virology)
 "oGB" = (
 /obj/machinery/light/cold/directional/south,
-/obj/effect/turf_decal/trimline/yellow/filled/line,
-/turf/open/floor/iron/white,
+/obj/machinery/plumbing/receiver{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/yellow/end{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
 /area/medical/chemistry)
 "oGM" = (
 /obj/machinery/light/directional/west,
@@ -42680,8 +42683,12 @@
 /obj/item/stack/ducts/fifty,
 /obj/item/stack/ducts/fifty,
 /obj/item/stack/ducts/fifty,
-/obj/item/plunger,
-/obj/item/plunger,
+/obj/item/plunger{
+	pixel_x = 3
+	},
+/obj/item/plunger{
+	pixel_x = -3
+	},
 /obj/effect/turf_decal/trimline/yellow/filled/line,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
@@ -46170,6 +46177,15 @@
 /obj/effect/turf_decal/trimline/purple/filled/line,
 /turf/open/floor/iron,
 /area/hallway/primary/starboard)
+"ttV" = (
+/obj/machinery/plumbing/receiver{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/yellow/end{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/medical/chemistry)
 "tub" = (
 /obj/effect/turf_decal/bot,
 /obj/structure/closet{
@@ -49990,6 +50006,11 @@
 /obj/effect/turf_decal/trimline/brown/filled/corner,
 /turf/open/floor/iron,
 /area/cargo/office)
+"vhl" = (
+/obj/effect/turf_decal/trimline/yellow/filled/line,
+/obj/machinery/plumbing/sender,
+/turf/open/floor/iron/white,
+/area/medical/chemistry)
 "vhA" = (
 /obj/machinery/camera{
 	c_tag = "Service - Chapel";
@@ -54397,7 +54418,10 @@
 /area/commons/fitness/recreation)
 "xkN" = (
 /obj/structure/table,
-/obj/item/stack/sheet/iron/fifty,
+/obj/item/stack/sheet/iron/fifty{
+	pixel_x = 3;
+	pixel_y = 3
+	},
 /obj/item/stack/sheet/iron/fifty,
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 10
@@ -55893,6 +55917,7 @@
 	network = list("ss13","medbay")
 	},
 /obj/effect/turf_decal/trimline/yellow/filled/line,
+/obj/machinery/plumbing/sender,
 /turf/open/floor/iron/white,
 /area/medical/chemistry)
 "xRU" = (
@@ -93629,8 +93654,8 @@ kns
 cSu
 cSu
 rbS
-qnM
-eTD
+pMD
+vhT
 tvl
 hjo
 xoX
@@ -93886,7 +93911,7 @@ oao
 qnM
 qnM
 qnM
-qnM
+eTD
 oGB
 tvl
 ofW
@@ -94143,8 +94168,8 @@ qnM
 qnM
 pMD
 cFa
-cFa
 vhT
+ttV
 tvl
 ofW
 xoX
@@ -160450,7 +160475,7 @@ qnM
 qnM
 qnM
 qnM
-eTD
+vhl
 tvl
 xPX
 xPX
