@@ -15144,6 +15144,17 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/hallway/secondary/entry)
+"aZA" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/obj/machinery/holopad,
+/turf/open/floor/wood/parquet,
+/area/security/detectives_office/bridge_officer_office)
 "aZE" = (
 /turf/open/floor/iron/corner,
 /area/hallway/secondary/entry)
@@ -15732,11 +15743,11 @@
 /turf/open/floor/iron,
 /area/security/checkpoint/customs)
 "bbW" = (
+/obj/effect/turf_decal/delivery,
 /obj/machinery/door/poddoor/shutters{
-	id = "jangarage";
+	id = "janigarage";
 	name = "Custodial Closet Shutters"
 	},
-/obj/effect/turf_decal/delivery,
 /turf/open/floor/iron,
 /area/service/janitor)
 "bbX" = (
@@ -16540,14 +16551,12 @@
 /turf/open/floor/iron,
 /area/service/hydroponics)
 "bfp" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
 /obj/machinery/button/door/directional/west{
 	id = "kitchenwindowshutters";
 	name = "Kitchen Winow Shutters Control";
 	req_access_txt = "28"
 	},
+/obj/machinery/oven,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
 "bfr" = (
@@ -32248,8 +32257,8 @@
 /area/service/kitchen)
 "cpn" = (
 /obj/structure/table,
-/obj/item/food/spaghetti,
 /obj/item/holosign_creator/robot_seat/restaurant,
+/obj/item/food/spaghetti/pastatomato,
 /turf/open/floor/iron/cafeteria,
 /area/service/kitchen)
 "cpo" = (
@@ -42342,11 +42351,11 @@
 /turf/open/floor/iron/dark/smooth_edge,
 /area/service/chapel/dock)
 "jqt" = (
+/obj/effect/turf_decal/delivery,
 /obj/machinery/door/poddoor/shutters{
-	id = "jangarage";
+	id = "janigarage";
 	name = "Custodial Closet Shutters"
 	},
-/obj/effect/turf_decal/delivery,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -47601,6 +47610,7 @@
 /area/maintenance/department/engine)
 "nRV" = (
 /obj/machinery/biogenerator,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark/smooth_large,
 /area/service/kitchen)
 "nSc" = (
@@ -94804,7 +94814,7 @@ tPn
 qGQ
 gRF
 axh
-auK
+aZA
 taR
 aAH
 aBB
