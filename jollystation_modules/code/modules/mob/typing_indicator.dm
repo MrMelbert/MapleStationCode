@@ -1,4 +1,5 @@
 /// -- Typing indicator wrappers, for the say hotkey and the emote hotkey. --
+// Typing indicator ported from Russstation, adapted and updated for use.
 
 /mob
 	var/active_typing_indicator = null

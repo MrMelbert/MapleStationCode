@@ -8,6 +8,7 @@
 3. Pulling from the upstream? Did you make sure to resolve the map, .dmi, modular and any other conflicts? Does it compile? Did you run the merge driver? (Don't forget to accept incoming to tgstation.dme first!)
 4. Uploading a map? If its complete.. Did you include images of each department, and a general overview of the map? Uploading it in bits? Include an image per each commit.
 5. Confused? Lost? Don't know what you're doing? Ask for help!
+6. If you uploaded a map, or are preforming an upstream merge, did you add [MDB IGNORE] to your PR title?
 
 ## MODULARITY
 It's important to ALWAYS MAKE SURE to modularize your content! If you need to touch the main game files, ALWAYS use "NON-MODULE" in the comment.

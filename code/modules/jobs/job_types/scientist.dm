@@ -22,7 +22,7 @@
 		/datum/job_department/science,
 		)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/cytology, /obj/item/reagent_containers/glass/beaker)
+	family_heirlooms = list(/obj/item/book/manual/wiki/cytology, /obj/item/reagent_containers/glass/beaker) // NON-MODULE CHANGE
 
 	mail_goodies = list(
 		/obj/item/raw_anomaly_core/random = 10,
@@ -30,7 +30,7 @@
 		/obj/item/camera_bug = 1
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS
 
 
 /datum/outfit/job/scientist

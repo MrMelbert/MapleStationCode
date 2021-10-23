@@ -649,13 +649,6 @@
 /obj/effect/decal/cleanable/shreds,
 /turf/open/floor/iron,
 /area/ctf)
-"mf" = (
-/obj/effect/spawner/randomarcade{
-	dir = 4;
-	resistance_flags = 64
-	},
-/turf/open/floor/wood,
-/area/ctf)
 "mj" = (
 /turf/open/floor/plating/grass,
 /area/ctf)
@@ -969,6 +962,13 @@
 	dir = 4
 	},
 /area/ctf)
+"sB" = (
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 8;
+	resistance_flags = 64
+	},
+/turf/open/floor/wood,
+/area/ctf)
 "sM" = (
 /obj/structure/chair{
 	dir = 8;
@@ -982,7 +982,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/bar,
-/obj/item/reagent_containers/food/drinks/beer,
+/obj/item/reagent_containers/food/drinks/bottle/beer,
 /obj/structure/table/wood{
 	resistance_flags = 64
 	},
@@ -1253,13 +1253,6 @@
 	},
 /obj/effect/turf_decal/tile/bar,
 /turf/open/floor/iron,
-/area/ctf)
-"yi" = (
-/obj/effect/spawner/randomarcade{
-	dir = 8;
-	resistance_flags = 64
-	},
-/turf/open/floor/wood,
 /area/ctf)
 "yp" = (
 /obj/effect/turf_decal/siding/yellow,
@@ -1533,6 +1526,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ctf)
+"Cl" = (
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 4;
+	resistance_flags = 64
+	},
+/turf/open/floor/wood,
+/area/ctf)
 "Cv" = (
 /obj/effect/turf_decal/tile/green,
 /obj/effect/turf_decal/tile/green{
@@ -1641,7 +1641,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/bar,
-/obj/item/reagent_containers/food/drinks/beer,
+/obj/item/reagent_containers/food/drinks/bottle/beer,
 /obj/structure/table/reinforced/ctf,
 /turf/open/floor/iron,
 /area/ctf)
@@ -2026,7 +2026,7 @@
 /obj/structure/window/reinforced/fulltile{
 	max_integrity = 5000;
 	name = "hardened window";
-	obj_integrity = 5000
+	atom_integrity = 5000
 	},
 /turf/open/floor/plating,
 /area/ctf)
@@ -3725,10 +3725,10 @@ Ag
 BH
 td
 Bh
-mf
-yi
-mf
-yi
+Cl
+sB
+Cl
+sB
 QC
 oq
 mB
@@ -3877,10 +3877,10 @@ xs
 BH
 td
 Bh
-mf
-yi
-mf
-yi
+Cl
+sB
+Cl
+sB
 QC
 Lr
 Ad

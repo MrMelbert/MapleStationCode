@@ -13,3 +13,4 @@
 	name = "Cybernetic Cat"
 	icon_state = "catcyber"
 	icon = 'jollystation_modules/icons/mob/mutant_bodyparts.dmi'
+	locked = TRUE

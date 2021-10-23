@@ -258,7 +258,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		G.fields["photo_front"] = photo_front
 		G.fields["photo_side"] = photo_side
 		// NON-MODULE CHANGES:
-		G.fields["past_records"] = C.prefs.general_records
+		G.fields["past_records"] = H.linked_flavor?.gen_records
 		// NON-MODULE CHANGES END
 		general += G
 
@@ -277,7 +277,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		M.fields["notes"] = H.get_quirk_string(!medical, CAT_QUIRK_NOTES)
 		M.fields["notes_d"] = H.get_quirk_string(medical, CAT_QUIRK_NOTES)
 		// NON-MODULE CHANGES:
-		M.fields["past_records"] = C.prefs.medical_records
+		M.fields["past_records"] = H.linked_flavor?.med_records
 		// NON-MODULE CHANGES END
 		medical += M
 
@@ -290,7 +290,7 @@ GLOBAL_DATUM_INIT(data_core, /datum/datacore, new)
 		S.fields["crim"] = list()
 		S.fields["notes"] = "No notes."
 		// NON-MODULE CHANGES:
-		S.fields["past_records"] = C.prefs.security_records
+		S.fields["past_records"] = H.linked_flavor?.sec_records
 		// NON-MODULE CHANGES END
 		security += S
 

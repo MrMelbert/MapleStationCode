@@ -107,11 +107,8 @@
 	if(!istype(new_limb)) // pseudo-bodyparts are not tracked for simplicity (chainsaw arms)
 		return
 
-	if(new_limb.body_zone in body_zones)
-		if(body_zones[new_limb.body_zone]) // if we already have a val assigned to this key
-			remove_bodypart(lost_limb = body_zones[new_limb.body_zone], special = special)
-		else // if we somehow don't have a val assigned to this key
-			body_zones -= new_limb.body_zone
+	if(LAZYACCESS(body_zones, new_limb.body_zone)) // if we already have a val assigned to this key, remove it
+		remove_bodypart(source, body_zones[new_limb.body_zone], special, FALSE)
 
 	LAZYSET(body_zones, new_limb.body_zone, new_limb)
 
@@ -133,13 +130,13 @@
 	SIGNAL_HANDLER
 
 	if(!special)
-		var/limb_removed_pain = dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED
+		var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
 		adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
-		adjust_bodypart_pain(BODY_ZONE_HEAD, limb_removed_pain / 4)
+		adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
 		lost_limb.pain = initial(lost_limb.pain)
 		lost_limb.max_stamina_damage = initial(lost_limb.max_stamina_damage)
 
-	LAZYREMOVE(body_zones, lost_limb)
+	LAZYREMOVE(body_zones, lost_limb.body_zone)
 
 /*
  * Add a pain modifier and update our overall modifier.
@@ -208,7 +205,7 @@
 	for(var/zone in def_zones)
 		var/adjusted_amount = round(amount, 0.01)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		if(!adjusted_bodypart)
+		if(QDELETED(adjusted_bodypart))
 			continue
 		if(amount < 0 && adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
 			continue
@@ -244,8 +241,8 @@
 
 	for(var/zone in def_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		if(!adjusted_bodypart)
-			CRASH("Pain component attempted to adjust_bodypart_pain of untracked or invalid zone [zone].")
+		if(QDELETED(adjusted_bodypart))
+			continue
 		adjusted_bodypart.min_pain = round(clamp(adjusted_bodypart.min_pain + amount, 0, adjusted_bodypart.max_pain), 0.01)
 		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
 
@@ -438,12 +435,15 @@
 
 	check_pain_modifiers(delta_time)
 
-	var/list/shuffled_zones = shuffle(body_zones)
-	for(var/part in shuffled_zones)
+	for(var/part in shuffle(body_zones))
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
 		if(QDELETED(checked_bodypart))
-			stack_trace("Null or invalid bodypart found in [parent]'s pain bodypart list! Bodypart: [checked_bodypart] Zone: [part]")
-			body_zones -= part
+			stack_trace("Pain: QDELETED or NULL bodypart found in [parent]'s body zones!")
+			LAZYREMOVE(body_zones, part)
+			continue
+		if(checked_bodypart.owner != parent)
+			stack_trace("Pain: Limb not owned by [parent] found in their body zones! (owner = [checked_bodypart.owner || "None"])")
+			LAZYREMOVE(body_zones, part)
 			continue
 		if(!checked_bodypart.pain)
 			continue
@@ -680,12 +680,15 @@
  * Get the average pain of all bodyparts as a percent of the total pain.
  */
 /datum/pain/proc/get_average_pain()
+	. = 0
+
 	var/max_total_pain = 0
 	var/total_pain = 0
 	for(var/zone in body_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		total_pain += adjusted_bodypart.pain
-		max_total_pain += adjusted_bodypart.max_pain
+		if(!QDELETED(adjusted_bodypart))
+			total_pain += adjusted_bodypart.pain
+			max_total_pain += adjusted_bodypart.max_pain
 
 	return 100 * total_pain / max_total_pain
 
@@ -703,14 +706,15 @@
 
 	for(var/zone in body_zones)
 		var/obj/item/bodypart/healed_bodypart = body_zones[zone]
-		adjust_bodypart_min_pain(zone, -500)
-		adjust_bodypart_pain(zone, -500)
-		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
+		if(!QDELETED(healed_bodypart))
+			adjust_bodypart_min_pain(zone, -500)
+			adjust_bodypart_pain(zone, -500)
+			REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 	parent.remove_status_effect(STATUS_EFFECT_LIMP_PAIN)
 	parent.remove_status_effect(STATUS_EFFECT_SHARP_PAIN)
 	parent.remove_status_effect(STATUS_EFFECT_MIN_PAIN)
 	for(var/mod in pain_mods)
-		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES)
+		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES || mod == PAIN_MOD_GENETICS)
 			continue
 		unset_pain_modifier(mod)
 
@@ -797,9 +801,11 @@
 		message_admins(" - - - - ")
 		for(var/part in body_zones)
 			var/obj/item/bodypart/checked_bodypart = body_zones[part]
-
-			message_admins("[parent] has [checked_bodypart.pain] pain in [checked_bodypart.name].")
-			message_admins(" * [checked_bodypart.name] has a max pain of [checked_bodypart.max_pain].")
+			if(QDELETED(checked_bodypart))
+				message_admins("[parent] has a qdeleted / null bodyart in their zones list - [part].")
+			else
+				message_admins("[parent] has [checked_bodypart.pain] pain in [checked_bodypart.name].")
+				message_admins(" * [checked_bodypart.name] has a max pain of [checked_bodypart.max_pain].")
 
 		message_admins(" - - - - ")
 		for(var/mod in pain_mods)

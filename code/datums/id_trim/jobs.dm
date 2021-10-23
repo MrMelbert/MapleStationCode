@@ -82,6 +82,7 @@
 	minimal_access = list()
 	config_job = "assistant"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	job = /datum/job/assistant
 
 /datum/id_trim/job/assistant/refresh_trim_access()
 	. = ..()

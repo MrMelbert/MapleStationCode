@@ -972,8 +972,6 @@
   - bugfix: Fixed pAI loudness booster to work when not in holoform
   tralezab code, paxilmaniac sprites:
   - expansion: Added Trash Cannons. Find the recipe in maint!
-<<<<<<< HEAD
-=======
 2021-07-31:
   DAKKA-WAAAGH:
   - rscadd: Casino emergency shuttle
@@ -1001,4 +999,3 @@
   - bugfix: rev art now works correctly!
   wesoda25:
   - admin: Adds logging for cult reaching red eye and halo milestones
->>>>>>> tg/master

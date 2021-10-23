@@ -36,7 +36,7 @@
 	var/list/result = list()
 
 	result += printplayer(owner)
-	result += "<b>[owner]</b> was \a <b>[linked_advanced_datum.name]</b>, sent to infiltrate [station_name()][employer? ", employed by <b>[employer]</b>":""]."
+	result += "<b>[owner]</b> was a/an <b>[linked_advanced_datum.name]</b>, sent to infiltrate [station_name()][employer? ", employed by <b>[employer]</b>":""]."
 	if(linked_advanced_datum.backstory)
 		result += "<b>[owner]'s</b> backstory was the following: <br>[linked_advanced_datum.backstory]"
 
@@ -44,27 +44,26 @@
 	var/uplink_true = FALSE
 	var/purchases = ""
 
-	if(give_uplink)
+	if(linked_advanced_datum.finalized)
 		LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
-		var/datum/uplink_purchase_log/H = GLOB.uplink_purchase_logs_by_key[owner.key]
-		if(H)
+		var/datum/uplink_purchase_log/log = GLOB.uplink_purchase_logs_by_key[owner.key]
+		if(log)
 			uplink_true = TRUE
-			TC_uses = H.total_spent
-			purchases += H.generate_render(FALSE)
+			TC_uses = log.total_spent
+			purchases += log.generate_render(FALSE)
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
-			result += goal.get_roundend_text(count)
-			count++
-		if(uplink_true)
+			result += goal.get_roundend_text(count++)
+		if(linked_advanced_datum.finalized)
 			result += "<br>They were afforded <b>[linked_advanced_datum.starting_points]</b> tc to accomplish these tasks."
 
-	if(uplink_true)
+	if(uplink_true && linked_advanced_datum.finalized)
 		var/uplink_text = span_bold("(used [TC_uses] TC)")
 		uplink_text += "[purchases]"
 		result += uplink_text
-	else if (!give_uplink)
+	else
 		result += span_bold("<br>The [name] never obtained their uplink!")
 
 	return result.Join("<br>")

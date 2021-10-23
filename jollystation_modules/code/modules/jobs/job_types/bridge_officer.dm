@@ -46,7 +46,7 @@
 		/obj/item/storage/box/office_supplies = 1,
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS
 	voice_of_god_power = 1.2 // Not quite command staff.
 
 /datum/outfit/job/bridge_officer
@@ -64,7 +64,7 @@
 	id_trim = /datum/id_trim/job/bridge_officer
 	box = /obj/item/storage/box/survival
 
-	backpack_contents = list(/obj/item/melee/classic_baton/telescopic = 1, /obj/item/modular_computer/tablet/preset/advanced/command = 1, /obj/item/gun/energy/disabler = 1)
+	backpack_contents = list(/obj/item/melee/baton/telescopic = 1, /obj/item/modular_computer/tablet/preset/advanced/command = 1, /obj/item/gun/energy/disabler = 1)
 
 /datum/outfit/job/bridge_officer/pre_equip(mob/living/carbon/human/H)
 	..()

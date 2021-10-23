@@ -15,19 +15,6 @@
 		QDEL_NULL(pain_controller)
 	return ..()
 
-/// Cause [amount] pain of default (BRUTE) damage type to [target_zone]
-#define cause_pain(target_zone, amount) pain_controller?.adjust_bodypart_pain(target_zone, amount)
-/// Cause [amount] pain of [type] damage type to [target_zone]
-#define cause_typed_pain(target_zone, amount, dam_type) pain_controller?.adjust_bodypart_pain(target_zone, amount, dam_type)
-/// Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.
-#define pain_emote(emote, cooldown) pain_controller?.do_pain_emote(emote, cooldown)
-/// Increase the minimum amount of pain [zone] can have for [time]
-#define apply_min_pain(target_zone, amount, time) apply_status_effect(STATUS_EFFECT_MIN_PAIN, target_zone, amount, time)
-/// Set [id] pain mod to [amount]
-#define set_pain_mod(id, amount) pain_controller?.set_pain_modifier(id, amount)
-/// Unset [id] pain mod
-#define unset_pain_mod(id) pain_controller?.unset_pain_modifier(id)
-
 /*
  * Cause [amount] of [dam_type] sharp pain to [target_zones].
  * Sharp pain is for sudden spikes of pain that go away after [duration] deciseconds.

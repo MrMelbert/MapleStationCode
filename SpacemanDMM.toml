@@ -1,3 +1,5 @@
+environment = "jollystation.dme"
+
 [langserver]
 dreamchecker = true
 

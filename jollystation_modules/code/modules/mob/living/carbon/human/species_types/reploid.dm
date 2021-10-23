@@ -18,7 +18,6 @@
 	) //definitively not virus-immune, also their components are not space-proof nor heat-proof
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	meat = null
-	limbs_id = "reploid"
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	wings_icons = list("Robotic")
 	species_language_holder = /datum/language_holder/synthetic

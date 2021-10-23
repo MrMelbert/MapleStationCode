@@ -1,26 +1,17 @@
 // -- Defines for player prefs --
-/datum/preferences
-	/// Character preferences
-	var/flavor_text = ""
-	var/general_records = ""
-	var/security_records = ""
-	var/medical_records = ""
-	var/exploitable_info = ""
-	var/runechat_color = "aaa"
-	/// Loadout prefs. Assoc list of [typepaths] to [associated list of item info].
-	var/list/loadout_list
-
-	/// Client preferences
-	var/hear_speech_sounds = TRUE
-	var/hear_radio_sounds = TRUE
-
-// Extension of validate_quirks to ensure people don't get around white/blacklists by changing species.
-/datum/preferences/validate_quirks()
-	for(var/quirk in all_quirks)
-		if(SSquirks.species_blacklist[quirk] && (pref_species.type in SSquirks.species_blacklist[quirk]))
-			all_quirks -= quirk
-			continue
-		if(SSquirks.species_whitelist[quirk] && !(pref_species.type in SSquirks.species_whitelist[quirk]))
-			all_quirks -= quirk
-			continue
+/datum/preferences/update_preferences(current_version, savefile/S)
 	. = ..()
+	// Update old loadout lists to new loadout lists.
+	if (current_version < 41)
+		// We basically perform a read on /datum/preference/loadout without deserializing.
+		// If the list is deserealized, the sanitization proc removes
+		// all the values we want to update, defeating the point of trying to update.
+		var/datum/preference/preference_entry = GLOB.preference_entries[/datum/preference/loadout]
+		var/savefile/our_file = get_savefile_for_savefile_identifier(preference_entry.savefile_identifier)
+		var/list/loadout_list
+
+		if (!isnull(our_file))
+			READ_FILE(our_file[preference_entry.savefile_key], loadout_list)
+
+		if (LAZYLEN(loadout_list))
+			write_preference(preference_entry, update_loadout_list(loadout_list))

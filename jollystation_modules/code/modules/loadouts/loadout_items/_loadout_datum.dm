@@ -47,12 +47,14 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 /datum/loadout_item/New()
 	if(can_be_named)
+		// If we're a renamable item, insert the "renamable" tooltip at the beginning of the list.
 		if(LAZYLEN(additional_tooltip_contents))
 			additional_tooltip_contents.Insert(1, TOOLTIP_RENAMABLE)
 		else
 			LAZYADD(additional_tooltip_contents, TOOLTIP_RENAMABLE)
 
 	if(can_be_greyscale)
+		// Likewise, if we're greyscaleable, insert the "greyscaleable" tooltip at the beginning of the list (before renamable)
 		if(LAZYLEN(additional_tooltip_contents))
 			additional_tooltip_contents.Insert(1, TOOLTIP_GREYSCALE)
 		else
@@ -63,8 +65,8 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  *
  * By default, just adds the item into the outfit's backpack contents, if non-visual.
  *
- * equipper - If we're equipping out outfit onto a mob at the time, this is the mob it is equipped on. Can be null.
  * outfit - The outfit we're equipping our items into.
+ * equipper - If we're equipping out outfit onto a mob at the time, this is the mob it is equipped on. Can be null.
  * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
  */
 /datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
@@ -73,12 +75,16 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 /*
  * Called When the item is equipped on [equipper].
+ *
+ * preference_source - the datum/preferences our loadout item originated from - cannot be null
+ * equipper - the mob we're equipping this item onto - cannot be null
+ * visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)
  */
 /datum/loadout_item/proc/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(!preference_source)
 		return
 
-	var/list/our_loadout = preference_source?.loadout_list
+	var/list/our_loadout = preference_source?.read_preference(/datum/preference/loadout)
 	if(can_be_greyscale && (INFO_GREYSCALE in our_loadout[item_path]))
 		if(ispath(item_path, /obj/item/clothing))
 			// When an outfit is equipped in preview, get_equipped_items() does not work, so we have to use GetAllContents()
@@ -104,6 +110,9 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 /*
  * Called after the item is equipped on [equipper], at the end of character setup.
+ *
+ * preference_source - the datum/preferences our loadout item originated from - cannot be null
+ * equipper - the mob we're equipping this item onto - cannot be null
  */
 /datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
 	return FALSE

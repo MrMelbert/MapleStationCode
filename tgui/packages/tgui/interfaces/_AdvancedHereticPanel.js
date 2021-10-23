@@ -1,5 +1,5 @@
-import { useBackend, useSharedState } from '../backend';
-import { Button, Divider, Flex, Section } from '../components';
+import { useBackend } from '../backend';
+import { Button, Section } from '../components';
 import { Window } from '../layouts';
 import { AdvancedTraitorPanelBackground } from './_AdvancedTraitorParts';
 import { AdvancedTraitorPanelGoals } from './_AdvancedTraitorParts';
@@ -67,6 +67,7 @@ export const _AdvancedHereticPanel = (props, context) => {
             height="20px"
             content="Toggle Ascending"
             textAlign="center"
+            disabled={goals_finalized}
             checked={can_ascend}
             tooltip="Toggle the ability to ascend. \
                     Disabling ascending rewards 3 bonus charges."
@@ -76,6 +77,7 @@ export const _AdvancedHereticPanel = (props, context) => {
             height="20px"
             content="Toggle Sacrificing"
             textAlign="center"
+            disabled={goals_finalized}
             checked={can_sac}
             tooltip="Toggle the ability to sacrifice. \
                     Disabling sacrificing rewards 3 bonus charges."

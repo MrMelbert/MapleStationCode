@@ -5,6 +5,7 @@
 
 /// Language flag for languages added via quirk
 #define LANGUAGE_QUIRK "quirk"
+#define LANGUAGE_PREF "pref"
 
 /// Some string files.
 #define COMPANY_FILE "companies.json"
@@ -42,4 +43,5 @@
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"
 
 /// QDEL macro that qdel's an item if it exists.
-#define QDEL_IF(item) if(item) { qdel(item); }
+#define QDEL_IF(item) if(!QDELETED(item)) { qdel(item); }
+#define QDEL_NULL_IF(item) if(!QDELETED(item)) { QDEL_NULL(item); }

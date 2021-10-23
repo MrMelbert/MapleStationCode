@@ -1,4 +1,5 @@
 /// -- This file is ONLY for adding the unique_examine element onto items, pre-existing or modular. --
+// Concept taken from skyrat-tg, some descriptions may match.
 
 /// Species defines
 #define LIZARD_SPECIES /datum/species/lizard

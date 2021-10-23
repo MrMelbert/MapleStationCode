@@ -337,8 +337,8 @@
 /obj/structure/closet/cardboard,
 /obj/effect/turf_decal/delivery,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/spawner/lootdrop/space/languagebook,
-/obj/effect/spawner/lootdrop/space/languagebook,
+/obj/effect/spawner/random/exotic/languagebook,
+/obj/effect/spawner/random/exotic/languagebook,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/deepstorage/storage)
 "aX" = (
@@ -766,8 +766,8 @@
 /area/ruin/space/has_grav/deepstorage)
 "cd" = (
 /obj/structure/table,
-/obj/effect/spawner/lootdrop/space/rareseed,
-/obj/effect/spawner/lootdrop/space/rareseed,
+/obj/effect/spawner/random/food_or_drink/seed_rare,
+/obj/effect/spawner/random/food_or_drink/seed_rare,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/deepstorage/hydroponics)
 "cf" = (
@@ -1072,13 +1072,6 @@
 	},
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/deepstorage)
-"cM" = (
-/obj/machinery/shower{
-	dir = 4
-	},
-/obj/structure/window/plasma/reinforced,
-/turf/open/floor/iron/freezer,
-/area/ruin/space/has_grav/deepstorage)
 "cN" = (
 /turf/open/floor/iron/freezer,
 /area/ruin/space/has_grav/deepstorage)
@@ -1217,14 +1210,6 @@
 	},
 /turf/closed/wall/mineral/iron,
 /area/ruin/space/has_grav/deepstorage/storage)
-"dh" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/spawner/randomarcade{
-	dir = 4
-	},
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron,
-/area/ruin/space/has_grav/deepstorage)
 "di" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 4
@@ -1660,7 +1645,7 @@
 "ex" = (
 /obj/structure/table,
 /obj/structure/reagent_dispensers/peppertank/directional/east,
-/obj/effect/spawner/lootdrop/space/fancytool,
+/obj/effect/spawner/random/exotic/tool,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/deepstorage/armory)
 "ey" = (
@@ -2773,6 +2758,13 @@
 	},
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/deepstorage/crusher)
+"Dv" = (
+/obj/machinery/shower{
+	dir = 4
+	},
+/obj/structure/window/reinforced/plasma,
+/turf/open/floor/iron/freezer,
+/area/ruin/space/has_grav/deepstorage)
 "EP" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/yellow/hidden{
 	dir = 4
@@ -2791,6 +2783,14 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/deepstorage/airlock)
+"UL" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/ruin/space/has_grav/deepstorage)
 
 (1,1,1) = {"
 aa
@@ -3594,8 +3594,8 @@ bE
 bW
 dH
 cE
-dh
-dh
+UL
+UL
 dA
 dR
 em
@@ -4061,7 +4061,7 @@ bw
 bM
 af
 cq
-cM
+Dv
 cX
 cp
 hg

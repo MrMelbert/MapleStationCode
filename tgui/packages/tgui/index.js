@@ -18,6 +18,7 @@ import './styles/themes/syndicate.scss';
 import './styles/themes/wizard.scss';
 
 import './styles/themes/jolly-syndicate.scss'; // NON-MODULE CHANGE
+import './styles/themes/admin.scss';
 
 import { perf } from 'common/perf';
 import { setupHotReloading } from 'tgui-dev-server/link/client.cjs';

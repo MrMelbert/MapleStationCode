@@ -79,7 +79,7 @@
 	addtimer(CALLBACK(sac_target, /mob/living/carbon.proc/do_jitter_animation, 100), 4 SECONDS)
 	addtimer(CALLBACK(sac_target, /mob/living/carbon.proc/do_jitter_animation, 100), 8 SECONDS)
 
-	if(!heal_and_revive_target(sac_target, 50)) // If our target is dead, and we fail to revive them, just disembowel them and be done
+	if(!sac_target.heal_and_revive(50, span_danger("[sac_target]'s heart begins to beat with an unholy force as they return from death!"))) // If our target is dead, and we fail to revive them, just disembowel them and be done
 		disembowel_target(sac_target)
 		return
 
@@ -123,7 +123,7 @@
 		disembowel_target()
 		return
 
-	if(!heal_and_revive_target(sac_target, 75)) // If our target died during the short timer, and we fail to revive them, just disembowel them and be done
+	if(!sac_target.heal_and_revive(75, span_danger("[sac_target]'s heart begins to beat with an unholy force as they return from death!"))) // If our target died during the short timer, and we fail to revive them, just disembowel them and be done
 		disembowel_target(sac_target)
 		return
 
@@ -275,35 +275,6 @@
  */
 /datum/eldritch_knowledge/spell/basic/proc/announce_dead_target(turf/landing_turf)
 	priority_announce("Attention, crew. We recorded an anomalous dimensional occurance in: [get_area_name(landing_turf, TRUE)]. We're unsure of what it could be, but something just appeared in the area. We suggest checking it out.", "Central Command Higher Dimensional Affairs")
-
-/*
- * Heals up the [sac_target] to up to [heal_to] brute and burn, and [heal_to / 2] tox and oxy.
- *
- * If the target is dead, also revives them and heals up their organs / restores blood slightly.
- *
- * returns TRUE if the mob is alive, or FALSE if they're dead.
- */
-/datum/eldritch_knowledge/spell/basic/proc/heal_and_revive_target(mob/living/carbon/human/sac_target, heal_to = 75)
-	var/brute_to_heal = heal_to - sac_target.getBruteLoss()
-	var/burn_to_heal = heal_to - sac_target.getFireLoss()
-	var/tox_to_heal = (heal_to/2) - sac_target.getToxLoss()
-	var/oxy_to_heal = (heal_to/2) - sac_target.getOxyLoss()
-	if(brute_to_heal < 0)
-		sac_target.adjustBruteLoss(brute_to_heal, FALSE)
-	if(burn_to_heal < 0)
-		sac_target.adjustFireLoss(burn_to_heal, FALSE)
-	if(tox_to_heal < 0)
-		sac_target.adjustToxLoss(tox_to_heal, FALSE, TRUE)
-	if(oxy_to_heal < 0)
-		sac_target.adjustOxyLoss(oxy_to_heal, FALSE, TRUE)
-
-	var/overall_health = sac_target.getBruteLoss() + sac_target.getFireLoss() + sac_target.getToxLoss() + sac_target.getOxyLoss()
-	if(overall_health < 200 && sac_target.stat == DEAD)
-		sac_target.revive(full_heal = FALSE, admin_revive = FALSE, excess_healing = 10)
-		sac_target.visible_message(span_danger("[sac_target]'s heart begins to beat with an unholy force as they return from death!"))
-	sac_target.updatehealth()
-
-	return sac_target.stat != DEAD
 
 /*
  * "We fucked up" proc that gets called if something goes wrong. Disembowels the [sac_target].

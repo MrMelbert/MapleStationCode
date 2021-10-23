@@ -5,7 +5,6 @@
 //Ready states at roundstart for mob/dead/new_player
 #define PLAYER_NOT_READY 0
 #define PLAYER_READY_TO_PLAY 1
-#define PLAYER_READY_TO_OBSERVE 2
 
 //movement intent defines for the m_intent var
 #define MOVE_INTENT_WALK "walk"
@@ -57,9 +56,8 @@
 #define BODYPART_ORGANIC   1
 #define BODYPART_ROBOTIC   2
 
-#define DEFAULT_BODYPART_ICON_ORGANIC 'jollystation_modules/icons/mob/human_parts_greyscale_js.dmi' //NON-MODULE CHANGE - for the love of god just make these comments
+#define DEFAULT_BODYPART_ICON_ORGANIC 'jollystation_modules/icons/mob/human_parts_greyscale_js.dmi' //NON-MODULE CHANGE - FUTURE EDIT: This define was dehardcoded, should be re-evaoluated at some point.
 #define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augmentation/augments.dmi'
-
 
 #define MONKEY_BODYPART "monkey"
 #define ALIEN_BODYPART "alien"

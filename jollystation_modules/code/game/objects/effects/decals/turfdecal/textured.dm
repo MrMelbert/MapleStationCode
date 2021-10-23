@@ -1,6 +1,6 @@
 /obj/effect/turf_decal/textured
 	name = "textured gray corner"
-	icon = 'jollystation_modules/icons/turf/textured_decals.dmi'
+	icon = 'jollystation_modules/icons/turf/decals.dmi'
 	icon_state = "textured"
 	color = "#5E5C5C"
 

@@ -10,6 +10,7 @@
 
 /// Added vars for mob/living.
 /mob/living
+	// Default human speech-sounds ported from Goonstation.
 	/// Assoc list of [sounds that play on speech for this mob] to [volume].
 	var/mob_speech_sounds = list('jollystation_modules/sound/voice/speak_1.ogg' = 120, \
 								'jollystation_modules/sound/voice/speak_2.ogg' = 120, \
@@ -117,15 +118,16 @@
 			listeners += SSmobs.clients_by_zlevel[below_turf.z]
 
 	for(var/mob/mob_in_range as anything in listeners)
-		if(!mob_in_range.client?.prefs?.hear_speech_sounds)
+		if(!mob_in_range.client?.prefs?.read_preference(/datum/preference/toggle/toggle_speech))
 			continue
+
 		if(get_dist(mob_in_range, turf_source) > maxdistance)
 			continue
 
 		mob_in_range.playsound_local(turf_source, soundin, vol, vary, frequency, SOUND_FALLOFF_EXPONENT, channel, pressure_affected, played_sound, maxdistance, falloff_distance, 1, use_reverb)
 
 	for(var/mob/dead_mob_in_range as anything in SSmobs.dead_players_by_zlevel[source_z])
-		if(!dead_mob_in_range.client?.prefs?.hear_speech_sounds)
+		if(!dead_mob_in_range.client?.prefs?.read_preference(/datum/preference/toggle/toggle_speech))
 			continue
 		if(get_dist(dead_mob_in_range, turf_source) > maxdistance)
 			continue
@@ -141,10 +143,7 @@
 		return
 
 	// Don't bother playing sounds to clientless mobs to save time
-	if(!client)
-		return
-
-	if(!client.prefs?.hear_radio_sounds)
+	if(!client?.prefs?.read_preference(/datum/preference/toggle/toggle_radio))
 		return
 
 	// We only deal with radio messages from this point

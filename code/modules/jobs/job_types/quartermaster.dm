@@ -33,7 +33,8 @@
 		/obj/item/circuitboard/machine/emitter = 3
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS
+	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS
+
 
 	voice_of_god_power = 1.4 // NON-MODULE CHANGE: Command staff
 
@@ -52,7 +53,7 @@
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	glasses = /obj/item/clothing/glasses/sunglasses
 	l_hand = /obj/item/clipboard
-	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced/command/cargo=1, /obj/item/melee/classic_baton/telescopic=1) // NON-MODULE CHANGE
+	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced/command/cargo=1, /obj/item/melee/baton/telescopic=1) // NON-MODULE CHANGE
 
 	chameleon_extras = /obj/item/stamp/qm
 

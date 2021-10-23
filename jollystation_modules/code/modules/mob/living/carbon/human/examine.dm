@@ -20,9 +20,8 @@
  *		You need to double examine (examine_more) the person, which will display the buttons for each record.
  *		Double-examining wil also print out the full flavor text of the person being examined in addition to links to records.
  *
- *	- Bonus: If you are not connected to the server and someone examines you...
- *		Instead of showing flavor text or records (as they are saved on the client)
- *		an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
+ *	Bonus: If you are not connected to the server and someone examines you...
+ *	an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
  */
 
 // Mob is the person being examined. User is the one doing the examining.
@@ -36,25 +35,23 @@
 	if(known_identity)
 		expanded_examine += known_identity.get_flavor_and_records_links(user)
 
-	if(linked_flavor)
-		// Admins can view all records.
-		if(user.client.holder && isAdminObserver(user))
-			// Formatted output list of records.
-			var/admin_line = ""
+	if(linked_flavor && user.client.holder && isAdminObserver(user))
+		// Formatted output list of records.
+		var/admin_line = ""
 
-			if(linked_flavor.flavor_text)
-				admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
-			if(linked_flavor.gen_records)
-				admin_line += "<a href='?src=[REF(linked_flavor)];general_records=1'>\[GEN\]</a>"
-			if(linked_flavor.sec_records)
-				admin_line += "<a href='?src=[REF(linked_flavor)];security_records=1'>\[SEC\]</a>"
-			if(linked_flavor.med_records)
-				admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
-			if(linked_flavor.expl_info)
-				admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
+		if(linked_flavor.flavor_text)
+			admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
+		if(linked_flavor.gen_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];general_records=1'>\[GEN\]</a>"
+		if(linked_flavor.sec_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];security_records=1'>\[SEC\]</a>"
+		if(linked_flavor.med_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
+		if(linked_flavor.expl_info)
+			admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
 
-			if(admin_line)
-				expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"
+		if(admin_line)
+			expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"
 
 	// if the mob doesn't have a client, show how long they've been disconnected for.
 	if(!client && last_connection_time)

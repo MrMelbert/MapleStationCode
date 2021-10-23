@@ -51,13 +51,6 @@
 "ai" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/abandoned/crew)
-"aj" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/crew)
 "ak" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -72,13 +65,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/space_heater,
 /obj/effect/turf_decal/bot,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
-"am" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
 /turf/open/floor/plating,
 /area/shuttle/abandoned/engine)
 "an" = (
@@ -1025,15 +1011,6 @@
 /obj/effect/turf_decal/bot_white,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/engine)
-"bK" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/closet/crate{
-	icon_state = "crateopen"
-	},
-/obj/effect/spawner/lootdrop/maintenance/three,
-/turf/open/floor/iron/dark,
-/area/shuttle/abandoned/cargo)
 "bL" = (
 /obj/effect/turf_decal/arrows/white{
 	dir = 8
@@ -1141,13 +1118,6 @@
 "bQ" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/abandoned/bridge)
-"bR" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_bridge"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bridge)
 "bS" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1181,11 +1151,6 @@
 /obj/item/wrench,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/engine)
-"bU" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/firedoor,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
 "bV" = (
 /obj/effect/turf_decal/box/white/corners{
 	dir = 1
@@ -1208,18 +1173,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"bX" = (
-/obj/effect/turf_decal/box/white/corners,
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/closet/crate,
-/obj/effect/spawner/lootdrop/maintenance/three,
-/turf/open/floor/iron/dark,
-/area/shuttle/abandoned/cargo)
-"bY" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/firedoor,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bar)
 "bZ" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/chair,
@@ -1427,27 +1380,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/abandoned/bar)
-"co" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/table,
-/obj/item/storage/fancy/donut_box{
-	pixel_x = -11;
-	pixel_y = 3
-	},
-/obj/item/reagent_containers/food/drinks/beer{
-	pixel_x = 6;
-	pixel_y = 14
-	},
-/obj/item/food/chocolatebar{
-	pixel_x = 5;
-	pixel_y = -3
-	},
-/obj/effect/turf_decal/tile/bar,
-/obj/effect/turf_decal/tile/bar{
-	dir = 1
-	},
-/turf/open/floor/iron,
-/area/shuttle/abandoned/bar)
 "cq" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -1585,16 +1517,6 @@
 /obj/item/stock_parts/cell/high/plus,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/engine)
-"cy" = (
-/obj/effect/turf_decal/box/white/corners{
-	dir = 1
-	},
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/closet/crate,
-/obj/effect/spawner/lootdrop/maintenance/three,
-/turf/open/floor/iron/dark,
-/area/shuttle/abandoned/cargo)
 "cz" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/chair{
@@ -1718,13 +1640,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/power/apc/auto_name/west,
 /obj/structure/cable,
-/turf/open/floor/iron/dark,
-/area/shuttle/abandoned/cargo)
-"cK" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/closet,
-/obj/effect/spawner/lootdrop/maintenance/three,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
 "cL" = (
@@ -2094,20 +2009,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/abandoned/bar)
-"dn" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/hydroponics/constructable,
-/obj/machinery/airalarm/all_access{
-	dir = 8;
-	pixel_x = 24
-	},
-/obj/effect/turf_decal/tile/green,
-/obj/effect/turf_decal/tile/green{
-	dir = 8
-	},
-/obj/effect/spawner/lootdrop/space/rareseed,
-/turf/open/floor/iron,
-/area/shuttle/abandoned/bar)
 "do" = (
 /obj/machinery/porta_turret/centcom_shuttle/weak{
 	dir = 4
@@ -2389,18 +2290,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"dM" = (
-/obj/effect/turf_decal/box/white/corners{
-	dir = 4
-	},
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/structure/closet/crate{
-	icon_state = "crateopen"
-	},
-/obj/effect/spawner/lootdrop/maintenance/three,
-/turf/open/floor/iron/dark,
-/area/shuttle/abandoned/cargo)
 "dN" = (
 /obj/effect/turf_decal/bot_white,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2542,13 +2431,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"eb" = (
-/obj/effect/spawner/structure/window/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bar)
 "ec" = (
 /obj/structure/sign/warning/vacuum/external{
 	pixel_x = -32
@@ -2606,19 +2488,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/abandoned/bar)
-"eg" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/hydroponics/constructable,
-/obj/machinery/firealarm/directional/east,
-/obj/effect/turf_decal/tile/green{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/green{
-	dir = 4
-	},
-/obj/effect/spawner/lootdrop/space/rareseed,
-/turf/open/floor/iron,
-/area/shuttle/abandoned/bar)
 "eh" = (
 /obj/effect/turf_decal/bot_white,
 /obj/machinery/door/poddoor{
@@ -2669,6 +2538,11 @@
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
+"lG" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/firedoor,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bar)
 "nT" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2696,6 +2570,36 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
+"ss" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
+"tq" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/machinery/hydroponics/constructable,
+/obj/machinery/firealarm/directional/east,
+/obj/effect/turf_decal/tile/green{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 4
+	},
+/obj/effect/spawner/random/food_or_drink/seed_rare,
+/turf/open/floor/iron,
+/area/shuttle/abandoned/bar)
+"wn" = (
+/obj/effect/turf_decal/box/white/corners{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/closet/crate,
+/obj/effect/spawner/random/maintenance/three,
+/turf/open/floor/iron/dark,
+/area/shuttle/abandoned/cargo)
 "wM" = (
 /obj/effect/turf_decal/arrows/white{
 	dir = 4
@@ -2714,6 +2618,25 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
+"AB" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/firedoor,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
+"DL" = (
+/obj/effect/turf_decal/box/white/corners,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/closet/crate,
+/obj/effect/spawner/random/maintenance/three,
+/turf/open/floor/iron/dark,
+/area/shuttle/abandoned/cargo)
+"Eg" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bar)
 "Fb" = (
 /obj/effect/turf_decal/box/white/corners{
 	dir = 8
@@ -2722,6 +2645,83 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
+"If" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/table,
+/obj/item/storage/fancy/donut_box{
+	pixel_x = -11;
+	pixel_y = 3
+	},
+/obj/item/reagent_containers/food/drinks/bottle/beer{
+	pixel_x = 6;
+	pixel_y = 14
+	},
+/obj/item/food/chocolatebar{
+	pixel_x = 5;
+	pixel_y = -3
+	},
+/obj/effect/turf_decal/tile/bar,
+/obj/effect/turf_decal/tile/bar{
+	dir = 1
+	},
+/turf/open/floor/iron,
+/area/shuttle/abandoned/bar)
+"Nw" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/closet,
+/obj/effect/spawner/random/maintenance/three,
+/turf/open/floor/iron/dark,
+/area/shuttle/abandoned/cargo)
+"Sd" = (
+/obj/effect/turf_decal/box/white/corners{
+	dir = 4
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/closet/crate{
+	icon_state = "crateopen"
+	},
+/obj/effect/spawner/random/maintenance/three,
+/turf/open/floor/iron/dark,
+/area/shuttle/abandoned/cargo)
+"Sm" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/structure/closet/crate{
+	icon_state = "crateopen"
+	},
+/obj/effect/spawner/random/maintenance/three,
+/turf/open/floor/iron/dark,
+/area/shuttle/abandoned/cargo)
+"SW" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/machinery/hydroponics/constructable,
+/obj/machinery/airalarm/all_access{
+	dir = 8;
+	pixel_x = 24
+	},
+/obj/effect/turf_decal/tile/green,
+/obj/effect/turf_decal/tile/green{
+	dir = 8
+	},
+/obj/effect/spawner/random/food_or_drink/seed_rare,
+/turf/open/floor/iron,
+/area/shuttle/abandoned/bar)
+"Ww" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/crew)
+"YT" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_bridge"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bridge)
 
 (1,1,1) = {"
 aa
@@ -2787,11 +2787,11 @@ aA
 aN
 bh
 ac
-am
+ss
 ac
 ci
 ac
-am
+ss
 ac
 cY
 el
@@ -2820,7 +2820,7 @@ ab
 "}
 (6,1,1) = {"
 aa
-am
+ss
 aC
 aP
 bj
@@ -2834,7 +2834,7 @@ by
 bj
 ds
 dK
-am
+ss
 aa
 "}
 (7,1,1) = {"
@@ -2864,9 +2864,9 @@ aR
 bk
 ac
 ac
-bU
-bU
-bU
+AB
+AB
+AB
 ac
 ac
 da
@@ -2882,10 +2882,10 @@ aE
 aR
 fa
 bz
-bK
+Sm
 Fb
 bW
-cy
+wn
 cJ
 cP
 db
@@ -2959,14 +2959,14 @@ aR
 bo
 bC
 ap
-bX
+DL
 cm
 bo
-cK
+Nw
 cS
 aF
 aR
-dM
+Sd
 ea
 ei
 "}
@@ -2978,9 +2978,9 @@ aR
 bp
 bD
 bD
-bY
-bY
-bY
+lG
+lG
+lG
 bD
 bD
 df
@@ -3010,21 +3010,21 @@ aa
 "}
 (16,1,1) = {"
 aa
-aj
+Ww
 aH
 aW
 bq
 bD
 bN
 ca
-co
+If
 cA
 cM
 bD
 dg
 dx
 dO
-eb
+Eg
 aa
 "}
 (17,1,1) = {"
@@ -3104,7 +3104,7 @@ ed
 bD
 "}
 (21,1,1) = {"
-aj
+Ww
 av
 aJ
 bb
@@ -3120,7 +3120,7 @@ dk
 dC
 dR
 ee
-eb
+Eg
 "}
 (22,1,1) = {"
 ai
@@ -3142,23 +3142,23 @@ bD
 bD
 "}
 (23,1,1) = {"
-aj
+Ww
 aw
 aK
 bb
 bv
 ai
-bR
+YT
 cg
 cv
 cG
-bR
+YT
 bD
 dm
 dE
 dT
 ef
-eb
+Eg
 "}
 (24,1,1) = {"
 ai
@@ -3167,16 +3167,16 @@ ai
 be
 bw
 ai
-bR
-bR
-bR
-bR
-bR
+YT
+YT
+YT
+YT
+YT
 bD
-dn
+SW
 dF
 dU
-eg
+tq
 bD
 "}
 (25,1,1) = {"

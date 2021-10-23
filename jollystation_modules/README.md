@@ -72,13 +72,31 @@ Defines can only be seen by files if it's been compiled beforehand.
 - Add any defines you need just in that file to the top of the file - make sure to undef it at the end.
 - Add any defines you need to use in core files to their respective core define files, but be sure to comment it.
 
+## ...maps:
+
+Editing the main maps is STRICTLY PROHIBITED! Any PRs that touch Delta, Meta, Ice Box, Tram or Kilo will be closed.
+Do not copy maps either to circumvent this.
+Reguardless of what map you make, you are REQUIRED TO ADD [MDB IGNORE] to your PR title.
+
+But what if I..
+
+Want to make a station?
+- You WILL be required to maintain it, and will be added to codeowners as the owner of the map. Failure to do so will result in the soft removal until its completely removed from the code.
+- Do not make a PR with a giant commit that is the staton. Please for your sanity and ours, splice it up.
+- If you need a guide, follow one of TGs main maps, or one of ours for our modular differences.
+
+Want to make a ruin?
+- Any changes per the upstream you will be required to update.
+- Unlike stations, which will recieve the most and heavy hitting changes, maintaining a small ruin will be more lax in comparission. However, you will still be held accountable for updaating and maintaing your map.
+- Ruins related maps are extempt from being added as a codeowner.
+
 # Important other notes:
 
 This module system edits the launch.json and the build.bat files so VSCODE can compile with this codebase. This might cause problems in the future if either are edited to any extent. Luckily the vscode edits are not necessary for compiling the project and and reasy to redo, so just overrite the changes if it causes conflicts.
 
 # Upstream merge:
 
-The time has come for doom. Pull from upstream and pray.
+The time has come for doom. Pull from upstream and pray. Before you make your PR, you are REQUIRED to add [MDB IGNORE] in your PRs title, this stops the Map Diff bot from rendering.
 
 - Run ./_merge_driver.bash from gitbash (or any bash terminal, I guess) This will do a few things:
 	- A list of all unticked files in the code directory will be printed.

@@ -27,12 +27,12 @@
 	else
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
-	var/list/loadout_datums = loadout_list_to_datums(preference_source?.loadout_list)
+	var/list/loadout_datums = loadout_list_to_datums(preference_source?.read_preference(/datum/preference/loadout))
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
-	equipOutfit(equipped_outfit, visuals_only)
-	w_uniform?.swap_to_modular_dmi(src)
+	equipOutfit(equipped_outfit, visuals_only) // equip the outfit
+	w_uniform?.swap_to_modular_dmi(src) // change our uniform's icon if needed
 
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.on_equip_item(preference_source, src, visuals_only)
@@ -50,7 +50,6 @@
  */
 /proc/loadout_list_to_datums(list/loadout_list)
 	RETURN_TYPE(/list)
-
 	. = list()
 
 	if(!GLOB.all_loadout_datums.len)
@@ -65,19 +64,24 @@
 
 
 /*
- * Removes all invalid paths from loadout lists.
+ * Changes the loadout list from being [slot] to [path]
+ * to [path] to [list of data].
+ *
+ * This is for updating old loadout lists (pre-datumization)
+ * to new loadout lists (the formatting was changed).
+ *
+ * If you're looking at loadouts NOW,
+ * you DON'T need this proc or the savefile update extension.
  *
  * passed_list - the loadout list we're sanitizing.
  *
- * returns a list
+ * returns a list, or null if empty
  */
 /proc/update_loadout_list(list/passed_list)
-	RETURN_TYPE(/list)
-
 	var/list/list_to_update = LAZYLISTDUPLICATE(passed_list)
-	for(var/thing in list_to_update) //thing, 'cause it could be a lot of things
+	for(var/thing in list_to_update) //"thing", 'cause it could be a lot of things
 		if(ispath(thing))
-			break
+			continue
 		var/our_path = text2path(list_to_update[thing])
 
 		LAZYREMOVE(list_to_update, thing)
@@ -88,14 +92,13 @@
 
 /*
  * Removes all invalid paths from loadout lists.
+ * This is a general sanitization for preference saving / loading.
  *
  * passed_list - the loadout list we're sanitizing.
  *
- * returns a list
+ * returns a list, or null if empty
  */
 /proc/sanitize_loadout_list(list/passed_list)
-	RETURN_TYPE(/list)
-
 	var/list/list_to_clean = LAZYLISTDUPLICATE(passed_list)
 	for(var/path in list_to_clean)
 		if(!ispath(path))
@@ -103,7 +106,7 @@
 			LAZYREMOVE(list_to_clean, path)
 
 		else if(!(path in GLOB.all_loadout_datums))
-			stack_trace("invalid loadout slot found in loadout list! Path: [path]")
+			stack_trace("invalid loadout item found in loadout list! Path: [path]")
 			LAZYREMOVE(list_to_clean, path)
 
 	return list_to_clean

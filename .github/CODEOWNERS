@@ -5,10 +5,10 @@
 # to the same file or dir, add them to the end under Multiple Owners
 
 #doshMobile
-/icons/ @doshMobile
 /jollystation_modules/icons/ @doshMobile
 
 #Jolly66
+/code/ @jolly66
 /config/ @Jolly66
 /_maps/map_files/pubbystation.dm @Jolly66
 
