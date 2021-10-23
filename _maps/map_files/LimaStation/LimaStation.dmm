@@ -754,7 +754,7 @@
 /turf/open/floor/plating,
 /area/science/lab)
 "asL" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating/airless,
 /area/engineering/atmos)
 "asM" = (
@@ -2017,7 +2017,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "aZj" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/preopen{
 	id = "Engineering";
@@ -2082,7 +2082,7 @@
 "bal" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/cutewitch,
+/obj/effect/spawner/costume/cutewitch,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "baH" = (
@@ -6512,7 +6512,7 @@
 /area/science/research)
 "deK" = (
 /obj/structure/cable,
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/preopen{
 	id = "Engineering";
 	name = "engineering security door"
@@ -8289,7 +8289,7 @@
 /turf/open/floor/grass,
 /area/service/library)
 "dUl" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/main)
 "dUP" = (
@@ -12287,7 +12287,7 @@
 /area/medical/pharmacy)
 "fIM" = (
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/commie,
+/obj/effect/spawner/costume/commie,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "fIO" = (
@@ -14534,7 +14534,7 @@
 /area/security/brig)
 "gJN" = (
 /obj/structure/closet/crate,
-/obj/effect/spawner/bundle/costume/maid,
+/obj/effect/spawner/costume/maid,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "gJY" = (
@@ -20155,7 +20155,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "jns" = (
-/obj/effect/spawner/randomsnackvend,
+/obj/effect/spawner/random/vending/snackvend,
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 1
 	},
@@ -20388,7 +20388,7 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 5
 	},
-/obj/effect/spawner/randomcolavend,
+/obj/effect/spawner/random/vending/colavend,
 /turf/open/floor/iron/dark,
 /area/security/brig)
 "jrM" = (
@@ -20823,7 +20823,7 @@
 /turf/open/floor/plating,
 /area/maintenance/fore)
 "jzl" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/preopen{
 	id = "Engineering";
 	name = "engineering security door"
@@ -20943,7 +20943,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "jBf" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/engineering/gravity_generator)
@@ -21001,7 +21001,7 @@
 	id = "SupermatterExternal";
 	name = "radiation shutters"
 	},
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/main)
 "jCi" = (
@@ -22676,6 +22676,9 @@
 /area/ai_monitored/turret_protected/ai)
 "kjY" = (
 /obj/effect/spawner/random/vending/colavend,
+/obj/effect/turf_decal/trimline/white/filled/line{
+	dir = 4
+	},
 /turf/open/floor/iron/white/side{
 	dir = 4
 	},
@@ -22737,6 +22740,9 @@
 /area/science/lab)
 "kks" = (
 /obj/effect/spawner/random/vending/snackvend,
+/obj/effect/turf_decal/trimline/white/filled/line{
+	dir = 8
+	},
 /turf/open/floor/iron/white/side{
 	dir = 8
 	},
@@ -22836,7 +22842,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/engine/atmos)
 "kmL" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "SupermatterExternal";
 	name = "radiation shutters"
@@ -23866,7 +23872,7 @@
 /turf/open/floor/iron/showroomfloor,
 /area/science/xenobiology)
 "kHI" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/supermatter)
 "kHS" = (
@@ -24481,9 +24487,10 @@
 /area/service/hydroponics)
 "kUI" = (
 /obj/effect/spawner/random/vending/colavend,
-/turf/open/floor/iron/white/side{
+/obj/effect/turf_decal/trimline/white/filled/line{
 	dir = 8
 	},
+/turf/open/floor/iron,
 /turf/open/floor/iron,
 /area/hallway/secondary/entry)
 "kUT" = (
@@ -26147,7 +26154,7 @@
 "lCA" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/highlander,
+/obj/effect/spawner/costume/highlander,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "lCB" = (
@@ -26752,7 +26759,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/security/prison/mess)
 "lNx" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/engineering/main)
@@ -27336,7 +27343,7 @@
 "lXL" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/griffin,
+/obj/effect/spawner/costume/griffin,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "lXN" = (
@@ -33018,7 +33025,7 @@
 /turf/open/floor/grass,
 /area/service/hydroponics)
 "ogp" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /turf/open/floor/plating,
 /area/engineering/gravity_generator)
 "ogy" = (
@@ -36733,7 +36740,7 @@
 /area/science/xenobiology)
 "pDQ" = (
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/plaguedoctor,
+/obj/effect/spawner/costume/plaguedoctor,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "pDY" = (
@@ -40654,7 +40661,7 @@
 /area/security/detectives_office/bridge_officer_office)
 "rhY" = (
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/wizard,
+/obj/effect/spawner/costume/wizard,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "ris" = (
@@ -43023,7 +43030,7 @@
 /area/science/xenobiology)
 "seb" = (
 /obj/structure/closet/crate,
-/obj/effect/spawner/bundle/costume/mafia,
+/obj/effect/spawner/costume/mafia,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "seh" = (
@@ -46673,7 +46680,7 @@
 /area/maintenance/central/secondary)
 "tGg" = (
 /obj/structure/closet/crate,
-/obj/effect/spawner/bundle/costume/elpresidente,
+/obj/effect/spawner/costume/elpresidente,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "tGv" = (
@@ -49452,7 +49459,7 @@
 "uUd" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/pirate,
+/obj/effect/spawner/costume/pirate,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "uUg" = (
@@ -51061,7 +51068,7 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain/private)
 "vJn" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction,
 /turf/open/floor/plating,
 /area/engineering/main)
@@ -51856,7 +51863,7 @@
 /area/maintenance/disposal/incinerator)
 "wdw" = (
 /obj/structure/table/wood,
-/obj/item/storage/pill_bottle/dice,
+/obj/item/storage/dice,
 /obj/item/razor{
 	pixel_x = -4;
 	pixel_y = 2
@@ -52719,7 +52726,7 @@
 /area/science/misc_lab)
 "wum" = (
 /obj/structure/closet,
-/obj/effect/spawner/bundle/costume/nyangirl,
+/obj/effect/spawner/costume/nyangirl,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "wuD" = (
@@ -55240,7 +55247,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/exit/departure_lounge)
 "xCq" = (
-/obj/effect/spawner/structure/window/reinforced/plasma/reinforced,
+/obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/purple/visible,
 /turf/open/floor/plating,
 /area/engineering/main)
@@ -56436,7 +56443,7 @@
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 1
 	},
-/obj/effect/spawner/randomsnackvend,
+/obj/effect/spawner/random/vending/snackvend,
 /turf/open/floor/iron/dark/smooth_edge,
 /area/security/brig)
 "ydd" = (
