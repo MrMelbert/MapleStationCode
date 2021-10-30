@@ -33,7 +33,7 @@
 
 	picked_dept = pick(possible_choices)
 	impacted_areas = get_areas(picked_dept, possible_choices[picked_dept])
-	message_admins("A solar flare event is set to target the [picked_dept] department.")
+	message_admins("A solar flare event has triggered, targeting the [picked_dept] department.")
 
 /datum/round_event/solar_flare/announce(fake)
 	priority_announce("[command_name()] has issued an emergency solar weather warning for your station. The afflicted area has not yet been detected. Stay alert, report any sightings of activity, and evacuate affected departments.", "Solar Weather Alert")
