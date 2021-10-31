@@ -11922,6 +11922,12 @@
 /obj/effect/spawner/random/trash/mopbucket,
 /turf/open/floor/plating,
 /area/maintenance/port/lower)
+"eZs" = (
+/obj/machinery/status_display/evac/directional/north,
+/turf/open/floor/plating/dirt{
+	initial_gas_mix = "o2=22;n2=82;TEMP=293.15"
+	},
+/area/service/hydroponics/park)
 "eZt" = (
 /obj/structure/table,
 /obj/item/seeds/wheat,
@@ -29713,6 +29719,7 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 8
 	},
+/obj/machinery/status_display/evac/directional/west,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "lLG" = (
@@ -36023,6 +36030,13 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/atmos)
+"nPF" = (
+/obj/structure/flora/junglebush,
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/structure/flora/ausbushes/brflowers,
+/obj/machinery/status_display/evac/directional/south,
+/turf/open/floor/grass,
+/area/service/hydroponics/park)
 "nPO" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -38521,6 +38535,7 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 4
 	},
+/obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/iron,
 /area/hallway/primary/central)
 "oNr" = (
@@ -41464,6 +41479,7 @@
 /obj/machinery/camera{
 	c_tag = "Park - Fore"
 	},
+/obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/grass,
 /area/service/hydroponics/park)
 "pPe" = (
@@ -41904,6 +41920,13 @@
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/fore)
+"pYx" = (
+/obj/effect/turf_decal/trimline/neutral/filled/line{
+	dir = 8
+	},
+/obj/machinery/status_display/evac/directional/west,
+/turf/open/floor/iron,
+/area/hallway/primary/central)
 "pYy" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/window/northleft{
@@ -42678,6 +42701,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/science/xenobiology)
+"qol" = (
+/obj/effect/turf_decal/trimline/neutral/filled/line{
+	dir = 4
+	},
+/obj/machinery/status_display/evac/directional/east,
+/turf/open/floor/iron,
+/area/hallway/primary/central)
 "qoq" = (
 /obj/structure/closet,
 /obj/effect/spawner/random/maintenance/two,
@@ -45794,6 +45824,7 @@
 	dir = 8
 	},
 /obj/structure/towel_rack/warmer/full,
+/obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/iron/cafeteria,
 /area/service/barber)
 "rxM" = (
@@ -62154,6 +62185,7 @@
 /obj/effect/turf_decal/siding/wideplating{
 	dir = 9
 	},
+/obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/iron,
 /area/service/hydroponics/park)
 "xWQ" = (
@@ -156493,7 +156525,7 @@ xkS
 bKW
 aVN
 xPX
-pGy
+eZs
 qZv
 eRm
 rAn
@@ -158300,7 +158332,7 @@ qZv
 kwe
 iWV
 iaQ
-nOh
+nPF
 bnA
 bnA
 bnA
@@ -160621,7 +160653,7 @@ pWh
 tFd
 tfj
 tfj
-tfj
+pYx
 sHv
 ydm
 iBN
@@ -160656,7 +160688,7 @@ tfj
 tfj
 rYx
 tfj
-tfj
+pYx
 qFw
 tfj
 hPd
@@ -161109,7 +161141,7 @@ veO
 gcr
 veO
 mPl
-veO
+qol
 veO
 rfz
 cYv
@@ -161145,7 +161177,7 @@ veO
 veO
 veO
 iMr
-veO
+qol
 veO
 orX
 nLl
