@@ -5,9 +5,11 @@
 	required_container = /obj/item/slime_extract/green
 
 /datum/chemical_reaction/mutation_toxin
+	reaction_tags = REACTION_TAG_EASY
+
+/datum/chemical_reaction/mutation_toxin/lizard_mutation
 	results = list(/datum/reagent/mutationtoxin/lizard = 2)
 	required_reagents = list(/datum/reagent/unstable_mutation = 1, /datum/reagent/consumable/frostoil = 1) //lizerds are cold-blooded
-	reaction_tags = REACTION_TAG_EASY
 
 /datum/chemical_reaction/mutation_toxin/felinid_mutation
 	results = list(/datum/reagent/mutationtoxin/felinid = 2)
