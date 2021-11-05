@@ -1,10 +1,10 @@
 /datum/job/lawyer
 	title = "Lawyer"
-	department_head = list("Head of Personnel", "Head of Security") // NON-MODULE CHANGE
+	department_head = list("Head of Personnel")
 	faction = FACTION_STATION
 	total_positions = 2
 	spawn_positions = 2
-	supervisors = "the head of personnel and head of security" // NON-MODULE CHANGE
+	supervisors = "the head of personnel"
 	selection_color = "#bbe291"
 	exp_granted_type = EXP_TYPE_CREW
 

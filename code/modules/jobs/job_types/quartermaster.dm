@@ -1,15 +1,11 @@
 /datum/job/quartermaster
 	title = "Quartermaster"
-	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD // NON-MODULE CHANGE
-	department_head = list("Captain") // NON-MODULE CHANGE
-	head_announce = list(RADIO_CHANNEL_SUPPLY) // NON-MODULE CHANGE
+	department_head = list("Head of Personnel")
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	req_admin_notify = TRUE // NON-MODULE CHANGE
-	supervisors = "the captain" // NON-MODULE CHANGE
+	supervisors = "the head of personnel"
 	selection_color = "#d7b088"
-	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_SUPPLY
 	exp_granted_type = EXP_TYPE_CREW
 
@@ -19,43 +15,32 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_CAR
 
-	liver_traits = list(TRAIT_ROYAL_METABOLISM) // NON-MODULE CHANGE
+	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM)
 
 	display_order = JOB_DISPLAY_ORDER_QUARTERMASTER
 	bounty_types = CIV_JOB_RANDOM
 	departments_list = list(
 		/datum/job_department/cargo,
-		/datum/job_department/command, // NON-MODULE CHANGE
 		)
-
 	family_heirlooms = list(/obj/item/stamp, /obj/item/stamp/denied)
 	mail_goodies = list(
 		/obj/item/circuitboard/machine/emitter = 3
 	)
-
 	rpg_title = "Steward"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS
 
-
-	voice_of_god_power = 1.4 // NON-MODULE CHANGE: Command staff
-
-
-/datum/job/quartermaster/get_captaincy_announcement(mob/living/captain) // NON-MODULE CHANGE
-	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
 /datum/outfit/job/quartermaster
 	name = "Quartermaster"
 	jobtype = /datum/job/quartermaster
 
-	id = /obj/item/card/id/advanced/silver // NON-MODULE CHANGE
 	id_trim = /datum/id_trim/job/quartermaster
 	uniform = /obj/item/clothing/under/rank/cargo/qm
 	backpack_contents = list(
-		/obj/item/modular_computer/tablet/preset/advanced/command/cargo=  1,
-		/obj/item/melee/baton/telescopic = 1, // NON-MODULE CHANGE
-	)
+		/obj/item/modular_computer/tablet/preset/cargo/quartermaster = 1,
+		)
 	belt = /obj/item/pda/quartermaster
-	ears = /obj/item/radio/headset/heads/headset_qm // NON-MODULE CHANGE
+	ears = /obj/item/radio/headset/headset_cargo
 	glasses = /obj/item/clothing/glasses/sunglasses
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	l_hand = /obj/item/clipboard

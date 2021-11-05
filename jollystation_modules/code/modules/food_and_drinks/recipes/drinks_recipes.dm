@@ -1,5 +1,8 @@
 //Recipes for modular drinks.
 
+/datum/chemical_reaction/drink/tea // This tea recipe is replaced with /datum/chemical_reaction/drink/green_tea.
+	required_reagents = list()
+
 /datum/chemical_reaction/drink/ice_greentea
 	results = list(/datum/reagent/consumable/ice_greentea = 4)
 	required_reagents = list(/datum/reagent/consumable/ice = 1, /datum/reagent/consumable/green_tea = 3)
