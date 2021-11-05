@@ -3,7 +3,7 @@
 /obj/item/clothing/suit/armor/vest/bridge_officer
 	name = "bridge officer's armor vest"
 	desc = "A somewhat flexible but stiff suit of armor. It reminds you of a simpler time."
-	armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 20, BOMB = 15, BIO = 0, RAD = 0, FIRE = 100, ACID = 90, WOUND = 10)
+	armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 20, BOMB = 15, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
 
 //Unused, but we're keeping it
 /obj/item/clothing/suit/armor/vest/bridge_officer/large
@@ -18,7 +18,7 @@
 	desc = "A rigid vest of armor worn by Asset Protection. Rigid and stiff, just like your attitude."
 	icon_state = "bulletproof"
 	inhand_icon_state = "bulletproof"
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 30, BIO = 0, RAD = 0, FIRE = 100, ACID = 90, WOUND = 10)
+	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 30, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
 
 /obj/item/clothing/suit/armor/vest/asset_protection/large
 	name = "asset protection's large armor vest"

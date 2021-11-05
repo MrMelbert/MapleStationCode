@@ -6,7 +6,7 @@
 	worn_icon = 'jollystation_modules/icons/mob/clothing/under/rnd.dmi'
 	icon_state = "ordnance"
 	inhand_icon_state = "w_suit"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 15, BIO = 0, RAD = 10, FIRE = 50, ACID = 0)
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 15, BIO = 0, FIRE = 50, ACID = 0)
 
 /obj/item/clothing/under/rank/rnd/ordnance_tech/skirt
 	name = "ordnance technician's jumpskirt"
@@ -23,7 +23,7 @@
 	worn_icon = 'jollystation_modules/icons/mob/clothing/under/rnd.dmi'
 	icon_state = "xeno"
 	inhand_icon_state = "w_suit"
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 15, RAD = 0, FIRE = 0, ACID = 0)
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 15, FIRE = 0, ACID = 0)
 
 /obj/item/clothing/under/rank/rnd/xenobiologist/skirt
 	name = "xenobiologist's jumpskirt"
