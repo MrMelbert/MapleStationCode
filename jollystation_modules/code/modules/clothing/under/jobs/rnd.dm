@@ -4,13 +4,13 @@
 	name = "ordnance technician's jumpsuit"
 	icon = 'jollystation_modules/icons/obj/clothing/under/rnd.dmi'
 	worn_icon = 'jollystation_modules/icons/mob/clothing/under/rnd.dmi'
-	icon_state = "toxin"
+	icon_state = "ordnance"
 	inhand_icon_state = "w_suit"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 15, BIO = 0, RAD = 10, FIRE = 50, ACID = 0)
 
 /obj/item/clothing/under/rank/rnd/ordnance_tech/skirt
 	name = "ordnance technician's jumpskirt"
-	icon_state = "toxin_skirt"
+	icon_state = "ordnance_skirt"
 	inhand_icon_state = "w_suit"
 	body_parts_covered = CHEST|GROIN|ARMS
 	dying_key = DYE_REGISTRY_JUMPSKIRT

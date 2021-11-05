@@ -89,8 +89,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	wires = new /datum/wires/fax(src)
 
 /obj/machinery/fax_machine/Destroy()
+	INVOKE_ASYNC(src, .proc/eject_stored_paper)
 	eject_all_paperwork()
-	eject_stored_paper()
 	eject_received_paper()
 
 	GLOB.fax_machines -= src

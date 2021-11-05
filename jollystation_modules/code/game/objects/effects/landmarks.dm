@@ -15,7 +15,7 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 /obj/effect/landmark/start/ordnance_tech
 	name = "Ordnance Technician"
 	icon = 'jollystation_modules/icons/mob/landmarks.dmi'
-	icon_state = "Ordnance Technician"
+	icon_state = "Ordnance_Technician"
 
 // BO start location
 /obj/effect/landmark/start/bridge_officer
