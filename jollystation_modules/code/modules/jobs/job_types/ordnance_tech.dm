@@ -1,6 +1,6 @@
-// -- Toxicologist job & outfit datum --
-/datum/job/toxicologist
-	title = "Toxicologist"
+// -- Ordnance Tech job & outfit datum --
+/datum/job/ordnance_tech
+	title = "Ordnance Technician"
 	department_head = list("Research Director")
 	faction = FACTION_STATION
 	total_positions = 1
@@ -13,13 +13,13 @@
 
 //most likely can be subtyped later
 
-	outfit = /datum/outfit/job/scientist/toxicologist
+	outfit = /datum/outfit/job/scientist/ordnance_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_SCI
 
-	display_order = JOB_DISPLAY_ORDER_SCIENTIST
+	display_order = JOB_DISPLAY_ORDER_ORDNANCE_TECH
 	bounty_types = CIV_JOB_SCI
 
 	family_heirlooms = list(/obj/item/toy/nuke)
@@ -40,10 +40,10 @@
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS
 
-/datum/outfit/job/scientist/toxicologist
-	name = "Toxicologist"
+/datum/outfit/job/scientist/ordnance_tech
+	name = "Ordnance Technician"
 	suit = /obj/item/clothing/suit/toggle/labcoat/toxic
-	uniform = /obj/item/clothing/under/rank/rnd/toxicologist
+	uniform = /obj/item/clothing/under/rank/rnd/ordnance_tech
 	belt = /obj/item/pda/science/toxocologist
-	jobtype = /datum/job/toxicologist
-	id_trim = /datum/id_trim/job/toxicologist
+	jobtype = /datum/job/ordnance_tech
+	id_trim = /datum/id_trim/job/ordnance_tech

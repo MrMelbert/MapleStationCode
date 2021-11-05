@@ -26,13 +26,44 @@
 	icon_state = "blueshift"
 	inhand_icon_state = "blueshift"
 
-/obj/item/clothing/suit/toggle/greyscale_parade
+// Subtype of the toggle icon component (i know, ew) for GAGS items
+/datum/component/toggle_icon/greyscale
+	/// Config when toggled.
+	var/toggled_config
+	/// Worn config when toggled.
+	var/toggled_config_worn
+
+/datum/component/toggle_icon/greyscale/Initialize(toggle_noun = "buttons", config, worn_config)
+	. = ..()
+	if(. == COMPONENT_INCOMPATIBLE)
+		return
+
+	if(!config || !worn_config)
+		stack_trace("[type] component initialized without a greyscale config / worn greyscale config!")
+		return COMPONENT_INCOMPATIBLE
+
+	src.toggled_config = config
+	src.toggled_config_worn = worn_config
+
+/datum/component/toggle_icon/greyscale/do_icon_toggle(atom/source, mob/living/user)
+	. = ..()
+	if(isitem(source))
+		var/obj/item/item_source = source
+
+		if(toggled)
+			item_source.set_greyscale(new_config = toggled_config, new_worn_config = toggled_config_worn)
+		else
+			item_source.set_greyscale(new_config = initial(item_source.greyscale_config), new_worn_config = initial(item_source.greyscale_config_worn))
+
+		item_source.update_slot_icon()
+
+// GAGS parade uniform, because why not
+/obj/item/clothing/suit/greyscale_parade
 	name = "tailored parade jacket"
 	desc = "No armor, all fashion, unfortunately."
 	icon_state = "formal"
 	inhand_icon_state = "labcoat"
 	body_parts_covered = CHEST|GROIN|ARMS
-	togglename = "buttons"
 	allowed = list(
 		/obj/item/flashlight,
 		/obj/item/lighter,
@@ -43,7 +74,7 @@
 		/obj/item/stamp,
 		/obj/item/pen,
 		/obj/item/radio,
-		/obj/item/kitchen/knife,
+		/obj/item/knife,
 		/obj/item/reagent_containers/food/drinks/bottle,
 		/obj/item/reagent_containers/food/drinks/flask,
 		/obj/item/storage/fancy/candle_box,
@@ -56,17 +87,7 @@
 	greyscale_colors = "#DDDDDD"
 	greyscale_config = /datum/greyscale_config/parade_formal
 	greyscale_config_worn = /datum/greyscale_config/parade_formal_worn
-	/// Greyscale config to use when toggled.
-	var/toggled_config = /datum/greyscale_config/parade_formal_open
-	/// Greyscale worn config to use when toggled.
-	var/toggled_config_worn = /datum/greyscale_config/parade_formal_open_worn
 
-/obj/item/clothing/suit/toggle/greyscale_parade/suit_toggle()
+/obj/item/clothing/suit/greyscale_parade/Initialize(mapload)
 	. = ..()
-	if(suittoggled)
-		set_greyscale(new_config = toggled_config, new_worn_config = toggled_config_worn)
-	else
-		set_greyscale(new_config = initial(greyscale_config), new_worn_config = initial(greyscale_config_worn))
-	var/mob/living/carbon/our_wearer = loc
-	if(istype(our_wearer))
-		our_wearer.update_inv_wear_suit()
+	AddComponent(/datum/component/toggle_icon/greyscale, "buttons", /datum/greyscale_config/parade_formal_open, /datum/greyscale_config/parade_formal_open_worn)

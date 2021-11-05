@@ -1,15 +1,15 @@
 /// -- Modular RND clothing. --
-/obj/item/clothing/under/rank/rnd/toxicologist
-	desc = "It's made of a special fiber that provides minor protection against explosives and radiation. It has markings that denote the wearer as a toxicologist."
-	name = "toxicologist's jumpsuit"
+/obj/item/clothing/under/rank/rnd/ordnance_tech
+	desc = "It's made of a special fiber that provides minor protection against explosives and radiation. It has markings that denote the wearer as a Ordnance Technician."
+	name = "ordnance technician's jumpsuit"
 	icon = 'jollystation_modules/icons/obj/clothing/under/rnd.dmi'
 	worn_icon = 'jollystation_modules/icons/mob/clothing/under/rnd.dmi'
 	icon_state = "toxin"
 	inhand_icon_state = "w_suit"
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0,ENERGY = 0, BOMB = 15, BIO = 0, RAD = 10, FIRE = 50, ACID = 0)
 
-/obj/item/clothing/under/rank/rnd/toxicologist/skirt
-	name = "toxicologist's jumpskirt"
+/obj/item/clothing/under/rank/rnd/ordnance_tech/skirt
+	name = "ordnance technician's jumpskirt"
 	icon_state = "toxin_skirt"
 	inhand_icon_state = "w_suit"
 	body_parts_covered = CHEST|GROIN|ARMS
