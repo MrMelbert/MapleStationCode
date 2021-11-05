@@ -412,6 +412,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
  * [user] is the admin.
  */
 /obj/machinery/fax_machine/proc/admin_create_fax(mob/user)
+	if(!check_rights_for(user.client, R_ADMIN))
+		return
+
 	var/obj/item/paper/sent_paper = new()
 	var/fax = stripped_multiline_input(user, "Write your fax to send here.", "Send Fax", max_length = MAX_MESSAGE_LEN)
 	if(length(fax))
