@@ -89,9 +89,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	wires = new /datum/wires/fax(src)
 
 /obj/machinery/fax_machine/Destroy()
+	// The eject procs will never sleep if not supplied any arguments.
+	// We invoke async here to shut the compiler up, because
+	// it thinks that it can possibly sleep somehow. It cannot.
 	INVOKE_ASYNC(src, .proc/eject_stored_paper)
-	eject_all_paperwork()
-	eject_received_paper()
+	INVOKE_ASYNC(src, .proc/eject_all_paperwork)
+	INVOKE_ASYNC(src, .proc/eject_received_paper)
 
 	GLOB.fax_machines -= src
 	return ..()
