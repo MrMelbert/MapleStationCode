@@ -1497,7 +1497,7 @@
 /obj/machinery/holopad,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "aMI" = (
 /obj/machinery/power/apc/auto_name/north,
 /obj/structure/cable,
@@ -1806,7 +1806,7 @@
 /obj/structure/cable,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron,
-/area/maintenance/department/cargo)
+/area/cargo/drone_bay)
 "aVC" = (
 /obj/structure/table,
 /obj/machinery/chem_dispenser/drinks/beer,
@@ -3556,7 +3556,8 @@
 "bJl" = (
 /obj/machinery/door/airlock/external{
 	name = "Engineering External Access";
-	req_access_txt = "10;13"
+	req_access_txt = "10;13";
+	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -3686,7 +3687,7 @@
 /turf/open/floor/iron/showroomfloor,
 /area/science/mixing/chamber)
 "bMT" = (
-/obj/effect/landmark/start/toxicologist,
+/obj/effect/landmark/start/ordnance_tech,
 /turf/open/floor/iron/showroomfloor,
 /area/science/mixing/chamber)
 "bNd" = (
@@ -4262,6 +4263,17 @@
 /obj/effect/spawner/random/maintenance/three,
 /turf/open/floor/iron,
 /area/cargo/warehouse)
+"ccl" = (
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 4
+	},
+/obj/machinery/door/airlock/external{
+	name = "Port Docking Bay 1";
+	safety_mode = 1;
+	space_dir = 8
+	},
+/turf/open/floor/plating,
+/area/hallway/secondary/entry)
 "ccq" = (
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "engsm";
@@ -4309,13 +4321,7 @@
 /obj/structure/chair{
 	dir = 8
 	},
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 30;
-	pixel_y = -2;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/iron,
 /area/security/prison)
 "cdP" = (
@@ -4746,7 +4752,7 @@
 /obj/structure/table,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "cqQ" = (
 /obj/machinery/newscaster/directional/south,
 /obj/effect/turf_decal/trimline/brown/filled/line,
@@ -6527,6 +6533,17 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
+"dfA" = (
+/obj/machinery/door/airlock/external{
+	name = "Port Docking Bay 1";
+	safety_mode = 1;
+	space_dir = 8
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/hallway/secondary/entry)
 "dfD" = (
 /obj/machinery/computer/upload/ai,
 /obj/structure/window/reinforced{
@@ -7103,6 +7120,9 @@
 	req_one_access_txt = "1;2;13"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 1
+	},
 /turf/open/floor/plating,
 /area/security/brig)
 "drN" = (
@@ -7526,7 +7546,6 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/landmark/start/station_engineer,
 /obj/structure/railing,
 /turf/open/floor/iron,
 /area/engineering/storage)
@@ -7589,7 +7608,6 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/landmark/start/station_engineer,
 /obj/structure/railing/corner{
 	dir = 8
 	},
@@ -7618,7 +7636,6 @@
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
-/obj/effect/landmark/start/station_engineer,
 /turf/open/floor/iron,
 /area/engineering/storage)
 "dDp" = (
@@ -7629,7 +7646,7 @@
 	dir = 10
 	},
 /turf/open/floor/iron/edge,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "dDt" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -7937,6 +7954,17 @@
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/cargo/office)
+"dLe" = (
+/obj/machinery/door/airlock/external{
+	name = "Atmospherics External Airlock";
+	req_access_txt = "24";
+	space_dir = 2
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/engineering/atmos)
 "dLh" = (
 /obj/structure/lattice/catwalk,
 /turf/open/openspace/airless,
@@ -8110,6 +8138,8 @@
 /area/science/research)
 "dQk" = (
 /obj/machinery/firealarm/directional/south,
+/obj/effect/landmark/start/station_engineer,
+/obj/effect/landmark/start/station_engineer,
 /turf/open/floor/iron,
 /area/engineering/storage)
 "dQv" = (
@@ -8462,7 +8492,8 @@
 "eav" = (
 /obj/machinery/door/airlock/external{
 	name = "Transit Tube External Access";
-	req_access_txt = "65;13"
+	req_access_txt = "65;13";
+	space_dir = 4
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -8759,7 +8790,7 @@
 /turf/open/floor/plating,
 /area/maintenance/department/cargo)
 "ejG" = (
-/obj/machinery/atmospherics/components/unary/outlet_injector/atmos/engine_waste{
+/obj/machinery/atmospherics/components/unary/passive_vent{
 	dir = 1
 	},
 /obj/machinery/light/small/directional/east,
@@ -8945,7 +8976,8 @@
 "enn" = (
 /obj/machinery/door/airlock/external{
 	name = "Transit Tube External Access";
-	req_access_txt = "65;13"
+	req_access_txt = "65;13";
+	space_dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -10484,13 +10516,7 @@
 /area/science/storage)
 "eVh" = (
 /obj/item/paint/anycolor,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 30;
-	pixel_y = -2;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/plating,
 /area/security/prison/safe)
 "eVr" = (
@@ -11095,13 +11121,6 @@
 /turf/closed/wall/r_wall,
 /area/medical/chemistry)
 "fiu" = (
-/obj/item/storage/toolbox/electrical{
-	pixel_x = 1;
-	pixel_y = 6
-	},
-/obj/item/storage/toolbox/mechanical{
-	pixel_y = -8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -11191,7 +11210,7 @@
 	},
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron/edge,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "fka" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -11477,6 +11496,10 @@
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron,
 /area/ai_monitored/command/storage/eva)
+"fqU" = (
+/obj/machinery/rnd/server/master,
+/turf/open/floor/circuit/telecomms/server,
+/area/science/server)
 "fqY" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Brig Control";
@@ -12175,7 +12198,8 @@
 "fFI" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod B";
-	safety_mode = 1
+	safety_mode = 1;
+	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -12473,13 +12497,7 @@
 "fMV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 30;
-	pixel_y = -2;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/iron,
 /area/security/prison)
 "fNb" = (
@@ -12991,7 +13009,8 @@
 "fYG" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod A";
-	safety_mode = 1
+	safety_mode = 1;
+	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -13455,10 +13474,10 @@
 /turf/open/floor/iron/white,
 /area/medical/medbay/lobby)
 "glq" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/components/trinary/filter/flipped/critical{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/engine,
 /area/engineering/main)
 "gls" = (
@@ -14443,7 +14462,7 @@
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 4
 	},
-/turf/open/floor/mech_bay_recharge_floor,
+/turf/open/floor/iron/recharge_floor,
 /area/cargo/storage)
 "gHZ" = (
 /obj/structure/lattice,
@@ -14553,7 +14572,7 @@
 /obj/machinery/newscaster/directional/west,
 /obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "gKc" = (
 /obj/effect/spawner/random/trash/moisture_trap,
 /turf/open/floor/plating,
@@ -14866,12 +14885,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_y = -31;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/south,
 /turf/open/floor/plating,
 /area/security/prison/work)
 "gQF" = (
@@ -15027,7 +15041,7 @@
 /obj/machinery/status_display/evac/directional/west,
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron/smooth_corner,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "gTx" = (
 /obj/effect/landmark/event_spawn,
 /obj/effect/landmark/xeno_spawn,
@@ -16257,12 +16271,7 @@
 	name = "Perma Camera";
 	network = list("ss13","prison")
 	},
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_y = -31;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/south,
 /turf/open/floor/iron,
 /area/security/prison)
 "hwI" = (
@@ -17258,13 +17267,7 @@
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "hWf" = (
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 30;
-	pixel_y = -2;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/iron,
 /area/security/prison)
 "hWl" = (
@@ -17304,7 +17307,8 @@
 "hWC" = (
 /obj/machinery/door/airlock/external{
 	name = "Security External Airlock";
-	req_access_txt = "1"
+	req_access_txt = "1";
+	space_dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -17486,8 +17490,14 @@
 /area/maintenance/central)
 "iaV" = (
 /obj/structure/table,
-/obj/item/book/manual/wiki/robotics_cyborgs,
 /obj/machinery/status_display/evac/directional/north,
+/obj/item/book/manual/wiki/robotics_cyborgs,
+/obj/item/clothing/head/welding{
+	pixel_y = 6
+	},
+/obj/item/clothing/head/welding{
+	pixel_y = 6
+	},
 /turf/open/floor/iron/dark,
 /area/science/robotics/lab)
 "iaX" = (
@@ -17560,7 +17570,8 @@
 /obj/structure/cable,
 /obj/machinery/door/airlock/external{
 	name = "Solar Maintenance";
-	req_access_txt = "10; 13"
+	req_access_txt = "10; 13";
+	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/effect/decal/cleanable/dirt,
@@ -17952,9 +17963,9 @@
 /area/engineering/atmos)
 "ijQ" = (
 /obj/structure/window/reinforced/plasma,
-/obj/machinery/power/rad_collector/anchored,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
+/obj/machinery/power/energy_accumulator/tesla_coil/anchored,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "ika" = (
@@ -18668,13 +18679,7 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 30;
-	pixel_y = -2;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/iron,
 /area/security/prison)
 "iBz" = (
@@ -19805,6 +19810,7 @@
 "jdw" = (
 /obj/effect/turf_decal/stripes,
 /obj/structure/cable,
+/obj/machinery/power/energy_accumulator/grounding_rod/anchored,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "jdI" = (
@@ -20246,11 +20252,11 @@
 /turf/open/floor/iron/showroomfloor,
 /area/science/lab)
 "jpp" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/components/trinary/filter/flipped/critical{
 	dir = 4;
-	filter_type = "n2"
+	filter_type = list(/datum/gas/nitrogen)
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/engine,
 /area/engineering/main)
 "jps" = (
@@ -20421,7 +20427,7 @@
 	},
 /obj/item/crowbar,
 /turf/open/floor/iron/edge,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "jsh" = (
 /turf/closed/wall/r_wall,
 /area/engineering/main)
@@ -21362,7 +21368,7 @@
 	},
 /obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "jKr" = (
 /obj/machinery/camera{
 	c_tag = "Starboard Hallway - Fore Corner"
@@ -21926,12 +21932,7 @@
 	name = "Perma Camera";
 	network = list("ss13","prison")
 	},
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_y = -30;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/south,
 /turf/open/floor/grass,
 /area/security/prison/garden)
 "jXi" = (
@@ -22042,7 +22043,7 @@
 /obj/structure/sign/poster/official/random{
 	pixel_x = 32
 	},
-/turf/open/floor/mech_bay_recharge_floor,
+/turf/open/floor/iron/recharge_floor,
 /area/science/robotics/mechbay)
 "jZg" = (
 /obj/effect/turf_decal/trimline/white/filled/line{
@@ -22293,7 +22294,8 @@
 "kct" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod D";
-	safety_mode = 1
+	safety_mode = 1;
+	space_dir = 4
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -22327,7 +22329,6 @@
 	pixel_x = -5;
 	pixel_y = 3
 	},
-/obj/item/book/manual/wiki/engineering_singulo_tesla,
 /obj/item/radio/off{
 	pixel_x = 6
 	},
@@ -22756,8 +22757,10 @@
 	dir = 1
 	},
 /obj/machinery/door/airlock/external{
-	name = "Escape Pod Two"
+	name = "Escape Pod Two";
+	space_dir = 1
 	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
 /area/security/brig)
 "klc" = (
@@ -23296,7 +23299,8 @@
 /area/service/kitchen)
 "kvW" = (
 /obj/machinery/door/airlock/external{
-	name = "External Docking Port"
+	name = "External Docking Port";
+	space_dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -24110,7 +24114,7 @@
 /turf/open/floor/wood,
 /area/service/bar)
 "kNF" = (
-/obj/machinery/atmospherics/components/unary/outlet_injector/atmos/atmos_waste{
+/obj/machinery/atmospherics/components/unary/passive_vent{
 	dir = 1
 	},
 /turf/open/floor/plating/airless,
@@ -25157,7 +25161,7 @@
 "liT" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "liU" = (
 /obj/docking_port/stationary{
 	dir = 8;
@@ -26339,7 +26343,8 @@
 "lIr" = (
 /obj/machinery/door/airlock/external{
 	name = "Mining Dock Airlock";
-	req_access_txt = "48"
+	req_access_txt = "48";
+	space_dir = 4
 	},
 /obj/effect/turf_decal/loading_area{
 	dir = 4
@@ -26379,7 +26384,7 @@
 /area/science/genetics)
 "lJl" = (
 /obj/effect/turf_decal/stripes/corner,
-/obj/effect/landmark/start/toxicologist,
+/obj/effect/landmark/start/ordnance_tech,
 /turf/open/floor/iron,
 /area/science/mixing)
 "lJs" = (
@@ -27149,7 +27154,7 @@
 /obj/structure/table,
 /obj/machinery/light/small/directional/south,
 /obj/effect/spawner/random/food_or_drink/donkpockets,
-/obj/item/kitchen/knife,
+/obj/item/knife/kitchen,
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "lUK" = (
@@ -28063,7 +28068,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/port)
 "mlW" = (
-/obj/machinery/atmospherics/components/unary/outlet_injector/atmos/engine_waste{
+/obj/machinery/atmospherics/components/unary/passive_vent{
 	dir = 4
 	},
 /obj/structure/lattice/catwalk,
@@ -29344,7 +29349,7 @@
 	dir = 6
 	},
 /turf/open/floor/iron/edge,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "mJG" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
@@ -29483,7 +29488,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/duct,
-/obj/item/radio/intercom/directional/west,
+/obj/item/radio/intercom/prison/directional/west,
 /turf/open/floor/iron,
 /area/security/prison)
 "mNp" = (
@@ -30211,7 +30216,7 @@
 "nap" = (
 /obj/effect/decal/cleanable/generic,
 /turf/closed/wall,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "nar" = (
 /obj/structure/transit_tube/horizontal,
 /obj/machinery/status_display/evac/directional/south,
@@ -30242,7 +30247,7 @@
 /obj/structure/chair/office,
 /obj/structure/cable,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "nbo" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -30421,6 +30426,7 @@
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/visible{
 	dir = 4
 	},
+/obj/item/wrench,
 /turf/open/floor/iron,
 /area/engineering/atmos)
 "nfb" = (
@@ -31116,7 +31122,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
-/obj/effect/landmark/start/station_engineer,
 /obj/structure/railing,
 /turf/open/floor/iron,
 /area/engineering/storage)
@@ -31373,7 +31378,7 @@
 	},
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "nxU" = (
 /obj/structure/transit_tube/horizontal,
 /turf/open/floor/iron/showroomfloor,
@@ -31752,13 +31757,7 @@
 	name = "Perma Camera";
 	network = list("ss13","prison")
 	},
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 32;
-	pixel_y = 0;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/carpet/black,
 /area/security/prison/workout)
 "nES" = (
@@ -31806,13 +31805,7 @@
 /area/service/hydroponics/garden)
 "nFn" = (
 /obj/machinery/light/directional/west,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = -32;
-	pixel_y = 0;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/west,
 /turf/open/floor/iron,
 /area/security/prison/mess)
 "nFo" = (
@@ -31953,12 +31946,7 @@
 /area/science/research)
 "nHC" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_y = 24;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/north,
 /turf/open/floor/iron,
 /area/security/prison/rec)
 "nHJ" = (
@@ -32579,13 +32567,7 @@
 	pixel_y = 4
 	},
 /obj/machinery/light/directional/east,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 32;
-	pixel_y = 0;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/iron/cafeteria,
 /area/security/prison/mess)
 "nWj" = (
@@ -33096,12 +33078,12 @@
 /turf/open/floor/iron/smooth,
 /area/engineering/main)
 "oil" = (
-/obj/machinery/door/airlock/external{
-	name = "Escape Airlock";
-	safety_mode = 1
-	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
+	},
+/obj/machinery/door/airlock/external{
+	name = "Escape Airlock";
+	space_dir = 2
 	},
 /turf/open/floor/plating,
 /area/hallway/secondary/exit/departure_lounge)
@@ -33532,7 +33514,7 @@
 /area/service/chapel)
 "ore" = (
 /obj/structure/cable,
-/obj/effect/landmark/start/toxicologist,
+/obj/effect/landmark/start/ordnance_tech,
 /turf/open/floor/iron/showroomfloor,
 /area/science/mixing)
 "oro" = (
@@ -34785,13 +34767,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/duct,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = 32;
-	pixel_y = 0;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/east,
 /turf/open/floor/iron/freezer,
 /area/security/prison/shower)
 "oQf" = (
@@ -35228,7 +35204,7 @@
 	pixel_y = -32
 	},
 /turf/open/floor/iron/smooth,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "oYJ" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -35339,7 +35315,7 @@
 /turf/open/floor/iron/showroomfloor,
 /area/engineering/lobby)
 "pbp" = (
-/obj/machinery/atmospherics/components/unary/outlet_injector/atmos/atmos_waste{
+/obj/machinery/atmospherics/components/unary/passive_vent{
 	dir = 8
 	},
 /obj/structure/lattice/catwalk,
@@ -35454,7 +35430,7 @@
 	dir = 8;
 	pixel_x = 24
 	},
-/turf/open/floor/mech_bay_recharge_floor,
+/turf/open/floor/iron/recharge_floor,
 /area/science/robotics/mechbay)
 "pdn" = (
 /obj/structure/cable,
@@ -36101,7 +36077,7 @@
 	dir = 8
 	},
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "pqj" = (
 /obj/effect/landmark/start/assistant,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -36496,6 +36472,8 @@
 /area/medical/cryo)
 "pzO" = (
 /obj/effect/turf_decal/stripes,
+/obj/machinery/power/energy_accumulator/tesla_coil/anchored,
+/obj/structure/cable,
 /turf/open/floor/engine,
 /area/engineering/supermatter)
 "pzV" = (
@@ -36536,7 +36514,7 @@
 /obj/structure/disposalpipe/segment,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/structure/cable,
-/obj/effect/landmark/start/toxicologist,
+/obj/effect/landmark/start/ordnance_tech,
 /turf/open/floor/iron,
 /area/science/mixing)
 "pAG" = (
@@ -36747,12 +36725,13 @@
 /turf/open/floor/plating,
 /area/maintenance/central/secondary)
 "pDY" = (
-/obj/machinery/door/airlock/external{
-	name = "Atmospherics External Airlock";
-	req_access_txt = "24"
-	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
+	},
+/obj/machinery/door/airlock/external{
+	name = "Atmospherics External Airlock";
+	req_access_txt = "24";
+	space_dir = 2
 	},
 /turf/open/floor/iron/dark,
 /area/engineering/atmos)
@@ -37041,7 +37020,7 @@
 /turf/open/floor/iron/smooth_corner{
 	dir = 8
 	},
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "pIZ" = (
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/south,
@@ -37828,7 +37807,7 @@
 /obj/item/fuel_pellet,
 /obj/item/fuel_pellet,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "pZS" = (
 /obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron,
@@ -39975,7 +39954,7 @@
 "qTp" = (
 /obj/structure/table,
 /obj/effect/spawner/random/food_or_drink/donkpockets,
-/obj/item/kitchen/knife/plastic,
+/obj/item/knife/plastic,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/cafeteria,
 /area/security/prison/mess)
@@ -40112,6 +40091,17 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/violet/visible,
 /turf/open/floor/iron,
 /area/engineering/atmos)
+"qWc" = (
+/obj/machinery/door/airlock/external{
+	name = "Port Docking Bay 1";
+	safety_mode = 1;
+	space_dir = 4
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 8
+	},
+/turf/open/floor/plating,
+/area/hallway/secondary/entry)
 "qWF" = (
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/wood,
@@ -40912,7 +40902,6 @@
 	dir = 1;
 	network = list("ss13","rd")
 	},
-/obj/machinery/aug_manipulator,
 /turf/open/floor/iron/showroomfloor,
 /area/science/robotics/lab)
 "rpr" = (
@@ -43432,7 +43421,7 @@
 /obj/item/radio/intercom/directional/east,
 /obj/structure/filingcabinet/chestdrawer,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "smp" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/sign/warning/docking,
@@ -43556,7 +43545,7 @@
 /turf/open/floor/iron/smooth_edge{
 	dir = 1
 	},
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "sqJ" = (
 /obj/effect/landmark/event_spawn,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -44503,7 +44492,8 @@
 "sIp" = (
 /obj/machinery/door/airlock/external{
 	name = "Solar Maintenance";
-	req_access_txt = "10; 13"
+	req_access_txt = "10; 13";
+	space_dir = 4
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -44561,7 +44551,7 @@
 	pixel_y = -32
 	},
 /turf/open/floor/iron/smooth,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "sJG" = (
 /obj/machinery/vending/wallmed{
 	pixel_x = -28
@@ -45144,7 +45134,8 @@
 "sUW" = (
 /obj/machinery/door/airlock/external{
 	name = "Supply Dock Airlock";
-	req_access_txt = "31"
+	req_access_txt = "31";
+	space_dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/cargo/storage)
@@ -45232,7 +45223,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
-/obj/effect/landmark/start/toxicologist,
+/obj/effect/landmark/start/ordnance_tech,
 /turf/open/floor/iron/showroomfloor,
 /area/science/mixing)
 "sXf" = (
@@ -45294,7 +45285,7 @@
 /area/service/chapel)
 "sYs" = (
 /turf/closed/wall,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "sYT" = (
 /obj/structure/closet/crate,
 /obj/effect/spawner/random/maintenance/three,
@@ -45337,7 +45328,7 @@
 /turf/open/floor/iron/smooth_edge{
 	dir = 1
 	},
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "tal" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line,
 /obj/machinery/duct,
@@ -45674,7 +45665,7 @@
 /obj/item/exodrone,
 /obj/effect/turf_decal/bot/left,
 /turf/open/floor/iron/smooth,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "tiG" = (
 /obj/machinery/computer/security/telescreen/vault{
 	pixel_x = -32
@@ -45798,12 +45789,7 @@
 /area/medical/pharmacy)
 "tlB" = (
 /obj/machinery/hydroponics/constructable,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_y = -31;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/south,
 /turf/open/floor/iron,
 /area/security/prison/garden)
 "tlK" = (
@@ -46087,7 +46073,6 @@
 /area/maintenance/disposal)
 "trs" = (
 /obj/structure/window/reinforced/plasma,
-/obj/machinery/power/rad_collector/anchored,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
 /turf/open/floor/engine,
@@ -46430,7 +46415,8 @@
 "tzZ" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod C";
-	safety_mode = 1
+	safety_mode = 1;
+	space_dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -47974,7 +47960,7 @@
 /obj/item/exodrone,
 /obj/effect/turf_decal/bot/right,
 /turf/open/floor/iron/smooth,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "ulJ" = (
 /obj/structure/table,
 /obj/effect/turf_decal/stripes/line{
@@ -49107,13 +49093,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/item/radio/intercom/directional/north{
-	desc = "A station intercom. It looks like it has been modified to not broadcast.";
-	name = "prison intercom";
-	pixel_x = -32;
-	pixel_y = 0;
-	prison_radio = 1
-	},
+/obj/item/radio/intercom/prison/directional/west,
 /turf/open/floor/iron,
 /area/security/prison)
 "uLY" = (
@@ -49459,6 +49439,17 @@
 /obj/structure/flora/ausbushes/fernybush,
 /turf/open/floor/grass,
 /area/service/hydroponics)
+"uTx" = (
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 8
+	},
+/obj/machinery/door/airlock/external{
+	name = "Port Docking Bay 1";
+	safety_mode = 1;
+	space_dir = 4
+	},
+/turf/open/floor/plating,
+/area/hallway/secondary/entry)
 "uTG" = (
 /obj/effect/turf_decal/trimline/brown/filled/line,
 /turf/open/floor/iron,
@@ -49815,7 +49806,8 @@
 "vdC" = (
 /obj/machinery/door/airlock/external{
 	name = "Atmospherics External Airlock";
-	req_access_txt = "24"
+	req_access_txt = "24";
+	space_dir = 2
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
@@ -50503,7 +50495,7 @@
 /area/engineering/gravity_generator)
 "vsq" = (
 /turf/open/floor/iron/stairs,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "vsw" = (
 /turf/open/floor/iron,
 /area/maintenance/central/secondary)
@@ -51683,6 +51675,15 @@
 	},
 /turf/open/floor/iron/dark/smooth_edge,
 /area/security/brig)
+"vXG" = (
+/obj/effect/mapping_helpers/airlock/cyclelink_helper,
+/obj/machinery/door/airlock/external{
+	name = "Port Docking Bay 1";
+	safety_mode = 1;
+	space_dir = 1
+	},
+/turf/open/floor/plating,
+/area/hallway/secondary/entry)
 "vYb" = (
 /obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/trimline/blue/filled/line,
@@ -52186,7 +52187,7 @@
 	},
 /obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "wjb" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -52705,6 +52706,13 @@
 	},
 /turf/open/floor/iron,
 /area/engineering/gravity_generator)
+"wto" = (
+/obj/structure/window/reinforced/plasma,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
+/obj/machinery/power/energy_accumulator/grounding_rod/anchored,
+/turf/open/floor/engine,
+/area/engineering/supermatter)
 "wtq" = (
 /obj/machinery/light/directional/west,
 /obj/machinery/airalarm/directional/west,
@@ -53372,7 +53380,8 @@
 "wIZ" = (
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1
+	safety_mode = 1;
+	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -53867,17 +53876,6 @@
 	},
 /obj/machinery/computer/security/telescreen/entertainment/directional/west,
 /turf/open/floor/iron,
-/area/hallway/secondary/exit/departure_lounge)
-"wXd" = (
-/obj/machinery/door/airlock/external{
-	name = "Security Escape Airlock";
-	req_access_txt = "2";
-	safety_mode = 1
-	},
-/obj/effect/mapping_helpers/airlock/cyclelink_helper{
-	dir = 1
-	},
-/turf/open/floor/plating,
 /area/hallway/secondary/exit/departure_lounge)
 "wYf" = (
 /obj/structure/chair/stool{
@@ -55140,12 +55138,11 @@
 /area/space)
 "xzL" = (
 /obj/structure/rack,
-/obj/item/book/manual/wiki/robotics_cyborgs,
-/obj/item/clothing/head/welding{
-	pixel_y = 6
+/obj/item/storage/toolbox/electrical{
+	pixel_y = 5
 	},
-/obj/item/clothing/head/welding{
-	pixel_y = 6
+/obj/item/storage/toolbox/mechanical{
+	pixel_y = -1
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/science/robotics/lab)
@@ -55789,7 +55786,7 @@
 /area/maintenance/department/medical)
 "xPf" = (
 /turf/open/floor/iron/smooth,
-/area/cargo/drone_boy)
+/area/cargo/drone_bay)
 "xPi" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -56578,7 +56575,8 @@
 /obj/machinery/door/airlock/external{
 	name = "Labor Camp Shuttle Airlock";
 	req_access_txt = "2";
-	shuttledocked = 1
+	shuttledocked = 1;
+	space_dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -72067,7 +72065,7 @@ tSS
 jiX
 ccq
 gVe
-ijQ
+wto
 wjx
 hTd
 cTc
@@ -76220,7 +76218,7 @@ pRn
 swZ
 nSl
 tzb
-pDY
+dLe
 cGJ
 xzK
 xzK
@@ -88172,7 +88170,7 @@ xzK
 xzK
 xzK
 juM
-jJG
+qWc
 juM
 juM
 juM
@@ -88184,14 +88182,14 @@ juM
 juM
 juM
 juM
-jJG
+uTx
 juM
 juM
 juM
 juM
 juM
 juM
-jJG
+uTx
 juM
 juM
 juM
@@ -90228,7 +90226,7 @@ xzK
 xzK
 xzK
 juM
-jGl
+ccl
 juM
 juM
 juM
@@ -90240,14 +90238,14 @@ juM
 juM
 juM
 juM
-jGl
+ccl
 juM
 juM
 juM
 juM
 juM
 juM
-jGl
+dfA
 juM
 juM
 juM
@@ -91643,7 +91641,7 @@ bqA
 veW
 oaV
 okn
-wXd
+oil
 xzK
 xzK
 xzK
@@ -92304,7 +92302,7 @@ xzK
 xzK
 xzK
 ehn
-wIZ
+vXG
 hOp
 sxM
 jZg
@@ -102625,7 +102623,7 @@ hnI
 aNo
 hnI
 wzt
-qai
+fqU
 gko
 sHx
 hAZ
