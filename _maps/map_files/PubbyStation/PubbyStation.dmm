@@ -2049,7 +2049,7 @@
 /obj/machinery/door/airlock/external{
 	name = "MiniSat External Access";
 	req_access_txt = "65";
-	space_dir = 2
+	space_dir = null
 	},
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/aisat_interior)
@@ -5280,7 +5280,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Labor Camp Shuttle Airlock";
 	req_access_txt = "2";
-	space_dir = 8
+	space_dir = null
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -5698,7 +5698,7 @@
 "asi" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod";
-	space_dir = 1
+	space_dir = null
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -6740,7 +6740,7 @@
 "avq" = (
 /obj/machinery/door/airlock/external{
 	name = "Labor Camp Shuttle Airlock";
-	space_dir = 8
+	space_dir = null
 	},
 /turf/open/floor/iron/dark,
 /area/security/brig)
@@ -11316,7 +11316,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Solar Maintenance";
 	req_access_txt = "10; 13";
-	space_dir = 4
+	space_dir = null
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -25687,7 +25687,7 @@
 	},
 /obj/machinery/door/airlock/external{
 	req_access_txt = "8";
-	space_dir = 2
+	space_dir = null
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
 /turf/open/floor/plating,
@@ -30781,7 +30781,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Engineering External Access";
 	req_one_access_txt = "10;24";
-	space_dir = 2
+	space_dir = null
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -31415,7 +31415,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Telecommunications External Access";
 	req_access_txt = "61";
-	space_dir = 1
+	space_dir = null
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
@@ -33736,7 +33736,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Supply Dock Airlock";
 	req_access_txt = "31";
-	space_dir = 4
+	space_dir = null
 	},
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/half,
@@ -43829,7 +43829,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Atmospherics External Access";
 	req_access_txt = "24";
-	space_dir = 4
+	space_dir = null
 	},
 /turf/open/floor/plating,
 /area/maintenance/disposal/incinerator)
@@ -44185,7 +44185,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Engineering External Access";
 	req_one_access_txt = "10;24";
-	space_dir = 4
+	space_dir = null
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
 /turf/open/floor/plating,
@@ -48834,7 +48834,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Mining Dock Airlock";
 	req_access_txt = "48";
-	space_dir = 4
+	space_dir = null
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -52595,7 +52595,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Solar Maintenance";
 	req_access_txt = "10; 13";
-	space_dir = 8
+	space_dir = null
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,

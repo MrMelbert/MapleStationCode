@@ -34,7 +34,7 @@
 	desc = "A formal blue suit and tie kitted out with padding for protection worn by the protection units assisting command."
 	icon_state = "blueshift"
 	inhand_icon_state = "blueshift"
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, IRE = 50, ACID = 50, WOUND = 5)
+	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50, WOUND = 5)
 	sensor_mode = SENSOR_COORDS
 	can_adjust = FALSE
 
