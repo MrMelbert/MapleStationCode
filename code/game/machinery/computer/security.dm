@@ -285,7 +285,7 @@
 <th>Criminal Status</th>
 </tr>"}
 					if(!isnull(GLOB.data_core.general))
-						for(var/datum/data/record/R in sortRecord(GLOB.data_core.general, sortBy, order))
+						for(var/datum/data/record/R in sort_record(GLOB.data_core.general, sortBy, order))
 							var/crimstat = ""
 							for(var/datum/data/record/E in GLOB.data_core.security)
 								if((E.fields["name"] == R.fields["name"]) && (E.fields["id"] == R.fields["id"]))
@@ -352,9 +352,8 @@
 						</td></tr></table></td></tr></table>"}
 					else
 						dat += "<br>General Record Lost!<br>"
-					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2))) // NON-MODULE CHANGE
+					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
 						dat += "<font size='4'><b>Security Data</b></font>"
-						dat += "<br>Security Records: <A href='?src=[REF(src)];choice=View Past Security'>View</A>"
 						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields["criminal"]]</A>"
 						dat += "<br><br>Citations: <A href='?src=[REF(src)];choice=Edit Field;field=citation_add'>Add New</A>"
 

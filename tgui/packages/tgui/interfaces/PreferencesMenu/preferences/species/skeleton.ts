@@ -1,36 +1,32 @@
-import { createLanguagePerk, Species } from "./base";
+import { Species } from "./base";
 
 const Skeleton: Species = {
-  description: "WIP Skeleton description!",
+  description: "A rattling skeleton! They descend upon Space Station 13 \
+    Every year to spook the crew! \"I've got a BONE to pick with you!\"",
   features: {
     good: [{
-      icon: "shield-alt",
-      name: "He's Undead, Jim",
-      description: "Skeletons are undead. They're immune to much of what the \
-        living are vulnerable to - Disease, Radiation, Pressure Damage, \
-        Temperature Damage, Toxins and Cellular damage. They are also immune \
-        to piercing.",
+      icon: "user-plus",
+      name: "Limbs Easily Reattached",
+      description: "Skeletons limbs are easily readded, and as such do not \
+        require surgery to restore. Simply pick it up and pop it back in, \
+        champ!",
     }, {
       icon: "skull",
-      name: "Dead Men Tell No Tales",
-      description: "As skeletons are dead, they don't eat, breathe, \
-        process chemicals, or have DNA.",
-    }, createLanguagePerk("Calcic")],
-    neutral: [{
-      icon: "bone",
-      name: "Limber Limbs",
-      description: "Skeleton limbs are very easily detatched by force, but can \
-        be re-attatched similarly as easily.",
+      name: "Undead",
+      description: "The undead do not have the need to eat or breathe, and \
+        most viruses will not be able to infect a walking corpse. Their \
+        worries mostly stop at remaining in one piece, really.",
     }],
+    neutral: [],
     bad: [{
-      icon: "glass-cheers",
-      name: "Milk Drinkers",
-      description: "Skeletons can't use sutures or meshes on themselves, and \
-        can't process any healing chemicals. To heal, they must drink milk!",
+      icon: "user-times",
+      name: "Limbs Easily Dismembered",
+      description: "Skeletons limbs are not secured well, and as such they are \
+        easily dismembered.",
     }],
   },
   lore: [
-    "WIP Skeleton lore!",
+    "Skeletons want to be feared again! Their presence in media has been destroyed, or at least that's what they firmly believe. They're always the first thing fought in an RPG, they're Flanderized into pun rolling JOKES, and it's really starting to get to them. You could say they're deeply RATTLED. Hah.",
   ],
 };
 

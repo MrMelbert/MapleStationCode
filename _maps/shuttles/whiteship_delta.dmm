@@ -15,7 +15,7 @@
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/abandoned/crew)
 "ad" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/docking_port/mobile{
 	callTime = 250;
@@ -34,6 +34,13 @@
 /area/shuttle/abandoned/crew)
 "ae" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
+/area/shuttle/abandoned/bar)
+"af" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
 /area/shuttle/abandoned/bar)
 "ag" = (
 /obj/machinery/porta_turret/centcom_shuttle/weak{
@@ -268,7 +275,7 @@
 /turf/open/floor/wood,
 /area/shuttle/abandoned/crew)
 "aG" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
@@ -303,7 +310,7 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/door/airlock/external/glass{
+/obj/machinery/door/airlock/external/glass/ruin{
 	name = "E.V.A Access"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -412,7 +419,7 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/door/airlock/external/glass{
+/obj/machinery/door/airlock/external/glass/ruin{
 	name = "E.V.A Access"
 	},
 /obj/effect/decal/cleanable/dirt,
@@ -791,6 +798,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/crew)
+"bI" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/crew)
 "bJ" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/table,
@@ -897,6 +911,14 @@
 	dir = 4
 	},
 /turf/open/floor/iron/dark,
+/area/shuttle/abandoned/bridge)
+"bT" = (
+/obj/machinery/door/firedoor,
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_bridge"
+	},
+/turf/open/floor/plating,
 /area/shuttle/abandoned/bridge)
 "bU" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1241,6 +1263,13 @@
 /area/shuttle/abandoned/cargo)
 "cy" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
+/area/shuttle/abandoned/cargo)
+"cz" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "cA" = (
 /obj/machinery/porta_turret/centcom_shuttle/weak{
@@ -1632,7 +1661,7 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
-/obj/machinery/door/airlock/external/glass{
+/obj/machinery/door/airlock/external/glass/ruin{
 	name = "E.V.A Access"
 	},
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1648,7 +1677,7 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/door/airlock/external/glass{
+/obj/machinery/door/airlock/external/glass/ruin{
 	name = "E.V.A Access"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -1819,7 +1848,7 @@
 /turf/open/floor/iron,
 /area/shuttle/abandoned/medbay)
 "dI" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/plating,
@@ -2029,7 +2058,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
 "eb" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
@@ -2037,13 +2066,6 @@
 /area/shuttle/abandoned/medbay)
 "iM" = (
 /turf/closed/wall/mineral/titanium,
-/area/shuttle/abandoned/medbay)
-"iW" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
 /area/shuttle/abandoned/medbay)
 "oo" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2054,13 +2076,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/shuttle/abandoned/crew)
-"sh" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/cargo)
 "so" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/turf_decal/box/white/corners{
@@ -2140,13 +2155,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"Cv" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/crew)
 "DZ" = (
 /obj/effect/turf_decal/delivery/white,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2174,14 +2182,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/abandoned/bar)
-"Gl" = (
-/obj/machinery/door/firedoor,
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_bridge"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bridge)
 "La" = (
 /obj/machinery/airalarm/all_access{
 	dir = 1;
@@ -2206,6 +2206,13 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/abandoned/bar)
+"SY" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/medbay)
 "XP" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/turf_decal/box/white/corners,
@@ -2225,13 +2232,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"Zg" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bar)
 
 (1,1,1) = {"
 aa
@@ -2392,11 +2392,11 @@ aD
 aS
 ac
 bB
-Gl
+bT
 bZ
 ch
 cp
-Gl
+bT
 bB
 vm
 dh
@@ -2411,11 +2411,11 @@ ac
 aT
 ac
 bE
-Gl
-Gl
-Gl
-Gl
-Gl
+bT
+bT
+bT
+bT
+bT
 cE
 vm
 dj
@@ -2424,7 +2424,7 @@ dO
 vm
 "}
 (11,1,1) = {"
-Cv
+bI
 al
 aE
 oo
@@ -2440,7 +2440,7 @@ cS
 dk
 dH
 di
-iW
+SY
 "}
 (12,1,1) = {"
 ac
@@ -2462,23 +2462,23 @@ dQ
 vm
 "}
 (13,1,1) = {"
-Cv
+bI
 am
 aF
 aV
 ac
 bH
 ac
-Cv
+bI
 ac
-Cv
+bI
 ac
 cF
 cR
 dm
 dP
 dR
-iW
+SY
 "}
 (14,1,1) = {"
 ac
@@ -2524,13 +2524,13 @@ ao
 aG
 aY
 bs
-Cv
+bI
 aa
 aa
 aa
 aa
 aa
-iW
+SY
 DZ
 do
 dI
@@ -2595,23 +2595,23 @@ dV
 cy
 "}
 (20,1,1) = {"
-Zg
+af
 FO
 aH
 bb
 bu
 bJ
-Zg
+af
 aa
 aa
 aa
-sh
+cz
 so
 cY
 ds
 dL
 dW
-sh
+cz
 "}
 (21,1,1) = {"
 ae
@@ -2671,23 +2671,23 @@ cK
 cy
 "}
 (24,1,1) = {"
-Zg
+af
 av
 ae
 bg
 ae
 bN
-Zg
+af
 aa
 aa
 aa
-sh
+cz
 cL
 cy
 dw
 cy
 dZ
-sh
+cz
 "}
 (25,1,1) = {"
 ae

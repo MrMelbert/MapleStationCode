@@ -312,7 +312,7 @@
 /turf/closed/wall/r_wall,
 /area/ruin/space/has_grav/abandonedzoo)
 "bG" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/effect/turf_decal/tile/green{
 	dir = 1
@@ -401,30 +401,6 @@
 "bX" = (
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/abandonedzoo)
-"fB" = (
-/obj/machinery/power/apc/unlocked{
-	dir = 8;
-	environ = 0;
-	lighting = 0;
-	name = "Worn-out APC";
-	pixel_x = -25
-	},
-/obj/structure/rack,
-/obj/item/melee/baton/security/cattleprod,
-/obj/effect/spawner/random/maintenance,
-/obj/structure/cable,
-/obj/machinery/power/apc/unlocked{
-	dir = 8;
-	environ = 0;
-	lighting = 0;
-	name = "Worn-out APC";
-	pixel_x = -25
-	},
-/obj/structure/rack,
-/obj/item/melee/baton/security/cattleprod,
-/obj/structure/cable,
-/turf/open/floor/iron/dark/side,
-/area/ruin/space/has_grav/abandonedzoo)
 "gE" = (
 /mob/living/simple_animal/hostile/bee,
 /turf/open/floor/grass,
@@ -479,7 +455,7 @@
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "lo" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
@@ -616,6 +592,20 @@
 /obj/machinery/light/directional/north,
 /mob/living/simple_animal/hostile/carp,
 /turf/open/floor/plating,
+/area/ruin/space/has_grav/abandonedzoo)
+"LD" = (
+/obj/structure/rack,
+/obj/effect/spawner/random/maintenance,
+/obj/structure/cable,
+/obj/machinery/power/apc/unlocked{
+	dir = 8;
+	environ = 0;
+	lighting = 0;
+	name = "Worn-out APC";
+	pixel_x = -25
+	},
+/obj/item/melee/baton/security/cattleprod,
+/turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "Mb" = (
 /mob/living/simple_animal/hostile/bee,
@@ -764,7 +754,7 @@ as
 ar
 ac
 at
-fB
+LD
 Ck
 Ck
 be

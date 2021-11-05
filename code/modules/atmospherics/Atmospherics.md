@@ -38,7 +38,7 @@ Now then, into the breach.
  The air controller is, at its core, quite simple, yet it is absolutely fundamental to the atmospheric system. The air controller is the clock which triggers all continuous actions within the atmos system, such as vents distributing air or gas moving between tiles. The actions taken by the air controller are quite simple, and will be enumerated here. Much of the substance of the air ticker is due to the game's master controller, whose intricacies I will not delve into for this document. I will however go into more detail about how SSAir in particular works in Chapter 6. In any case, this is a simplified list of the air controller's actions in a single tick:
 1. Rebuild Pipenets
     - Runs each time SSAir processes, sometimes out of order. It ensures that no pipeline sit unresolved or unbuilt
-    - Processes the `rebuild_queue` list into the `expansion_queue` list, and then builds a full pipeline piecemeal. We do a ton of fenagling here to reduce overrun 
+    - Processes the `rebuild_queue` list into the `expansion_queue` list, and then builds a full pipeline piecemeal. We do a ton of fenagling here to reduce overrun
 2. Pipenets
     - Updates the internal gasmixes of attached pipe machinery, and reacts the gases in a pipeline
 	- Calls `process()` on each `/datum/pipenet` in the `networks` list
@@ -239,7 +239,7 @@ So then, what does superconduction do, and what do all these damn vars mean.
 
 As I mentioned above, superconduction shares heat where heat can't normally travel. It does this by heating up the turf the heat is in, not the gasmix, the turf itself. This temperature is then shared with adjacent turfs, based on `thermal_conductivity`, a value between 0 and 1 that slows the heat share. Turfs also have a `heat_capacity`, which is how hard it is to heat, along with providing a threshold for the lowest temperature that can melt the turf.
 
-There's one more, and it's a doozy. `atmos_superconductivity` is a set of directions that we cannot share with. I know. It's set in CanAtmosPass(), a rather heady set of procs that build `atmos_adjacent_turfs`, and also modify `atmos_superconductivity`.
+There's one more, and it's a doozy. `atmos_superconductivity` is a set of directions that we cannot share with. I know. It's set in can_atmos_pass(), a rather heady set of procs that build `atmos_adjacent_turfs`, and also modify `atmos_superconductivity`.
 
 So then, a review.
 

@@ -29,19 +29,19 @@
 	name = "the captain's antique laser gun."
 	targetitem = /obj/item/gun/energy/laser/captain
 	difficulty = 5
-	excludefromjob = list("Captain", "Bridge Officer") // NON-MODULE changes
+	excludefromjob = list("Captain")
 
 /datum/objective_item/steal/hoslaser
 	name = "the head of security's personal laser gun."
 	targetitem = /obj/item/gun/energy/e_gun/hos
 	difficulty = 10
-	excludefromjob = list("Head Of Security", "Bridge Officer") // NON-MODULE changes
+	excludefromjob = list("Head Of Security")
 
 /datum/objective_item/steal/handtele
 	name = "a hand teleporter."
 	targetitem = /obj/item/hand_tele
 	difficulty = 5
-	excludefromjob = list("Captain", "Research Director", "Bridge Officer") // NON-MODULE changes
+	excludefromjob = list("Captain", "Research Director")
 
 /datum/objective_item/steal/jetpack
 	name = "the Captain's jetpack."
@@ -51,7 +51,7 @@
 
 /datum/objective_item/steal/magboots
 	name = "the chief engineer's advanced magnetic boots."
-	targetitem =  /obj/item/clothing/shoes/magboots/advance
+	targetitem = /obj/item/clothing/shoes/magboots/advance
 	difficulty = 5
 	excludefromjob = list("Chief Engineer")
 
@@ -71,7 +71,7 @@
 	name = "the nuclear authentication disk."
 	targetitem = /obj/item/disk/nuclear
 	difficulty = 5
-	excludefromjob = list("Captain", "Bridge Officer") // NON-MODULE changes
+	excludefromjob = list("Captain")
 
 /datum/objective_item/steal/nukedisc/check_special_completion(obj/item/disk/nuclear/N)
 	return !N.fake
@@ -80,7 +80,7 @@
 	name = "a reflector trenchcoat."
 	targetitem = /obj/item/clothing/suit/hooded/ablative
 	difficulty = 3
-	excludefromjob = list("Head of Security", "Warden", "Bridge Officer") // NON-MODULE changes
+	excludefromjob = list("Head of Security", "Warden")
 
 /datum/objective_item/steal/reactive
 	name = "the reactive teleport armor."
@@ -106,6 +106,7 @@
 	name = "the source code for Project Goon from the master R&D server mainframe."
 	targetitem = /obj/item/computer_hardware/hard_drive/cluster/hdd_theft
 	difficulty = 10
+	excludefromjob = list("Research Director","Scientist", "Geneticist", "Roboticist")
 
 /datum/objective_item/steal/hdd_extraction/New()
 	special_equipment += /obj/item/paper/guides/antag/hdd_extraction
@@ -129,7 +130,7 @@
 	name = "28 moles of plasma (full tank)."
 	targetitem = /obj/item/tank
 	difficulty = 3
-	excludefromjob = list("Chief Engineer","Research Director","Station Engineer","Scientist","Atmospheric Technician", "Toxicologist", "Xenobiologist") // NON-MODULE changes
+	excludefromjob = list("Chief Engineer","Research Director","Station Engineer","Scientist","Atmospheric Technician")
 
 /datum/objective_item/steal/plasma/check_special_completion(obj/item/tank/T)
 	var/target_amount = text2num(name)
@@ -170,7 +171,7 @@
 	name = "an unused sample of slime extract."
 	targetitem = /obj/item/slime_extract
 	difficulty = 3
-	excludefromjob = list("Research Director","Scientist", "Xenobiologist") // NON-MODULE changes
+	excludefromjob = list("Research Director","Scientist")
 
 /datum/objective_item/steal/slime/check_special_completion(obj/item/slime_extract/E)
 	if(E.Uses > 0)
