@@ -77,7 +77,7 @@
 		/obj/effect/solar_flare/emp = 4,
 	)
 
-	var/obj/effect/solar_flare/spawned_flare = pickweight(flare_types_to_weight)
+	var/obj/effect/solar_flare/spawned_flare = pick_weight(flare_types_to_weight)
 	new spawned_flare(destination, TRUE)
 
 /*
