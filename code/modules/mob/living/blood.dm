@@ -293,8 +293,8 @@
 		"O-" = list("O-"),
 		"O+" = list("O-", "O+"),
 		"L" = list("L"),
-		"S" = list("S"),
-		"U" = list("A-", "A+", "B-", "B+", "O-", "O+", "AB-", "AB+", "L", "U", "S") // NON-MODULE Edit Adding Skrell blood support to U
+		"S" = list("S"), // NON_MODULE CHANGE: S type blood
+		"U" = list("A-", "A+", "B-", "B+", "O-", "O+", "AB-", "AB+", "L", "U", "S") // NON-MODULE Change: S type blood
 	)
 
 	var/safe = bloodtypes_safe[bloodtype]

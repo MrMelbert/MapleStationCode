@@ -100,7 +100,7 @@
 // - Science
 //   - Scientist
 //   - Xenobiologist
-//   - Toxicologist
+//   - Ordnance Tech
 //   - Roboticist
 //   - Geneticist
 //   - Research Director (Turtleneck, Vest, and Suit)
@@ -362,7 +362,7 @@
 /obj/item/clothing/under/rank/rnd/geneticist/skirt
 	use_modular_dmi = FALSE
 
-/obj/item/clothing/under/rank/rnd/toxicologist/skirt
+/obj/item/clothing/under/rank/rnd/ordnance_tech/skirt
 	use_modular_dmi = FALSE
 
 /obj/item/clothing/under/rank/rnd/xenobiologist/skirt

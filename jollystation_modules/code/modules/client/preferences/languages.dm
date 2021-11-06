@@ -16,20 +16,17 @@
 
 /datum/preference/additional_language/deserialize(input, datum/preferences/preferences)
 	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
+	var/datum/language/lang_to_add = input
 	var/species_id = initial(species.id)
 
 	if(species_id in BLACKLISTED_SPECIES_FROM_LANGUAGES)
 		return NO_LANGUAGE
-
-	var/datum/language/lang_to_add = GLOB.language_datum_instances[input]
-	if(!lang_to_add)
+	if(!ispath(lang_to_add))
 		return NO_LANGUAGE
-
-	if(lang_to_add.base_species && lang_to_add.base_species == species_id)
+	if(initial(lang_to_add.base_species) && initial(lang_to_add.base_species) == species_id)
 		return NO_LANGUAGE
-	if(lang_to_add.req_species && lang_to_add.req_species != species_id)
+	if(initial(lang_to_add.req_species) && initial(lang_to_add.req_species) != species_id)
 		return NO_LANGUAGE
-
 	if("Trilingual" in preferences.all_quirks)
 		return NO_LANGUAGE
 

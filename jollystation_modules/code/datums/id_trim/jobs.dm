@@ -1,57 +1,75 @@
 /// --ID Trims for modular jobs. --
+// -Modular changes for jobs.-
+/datum/id_trim/job/cargo_technician
+	extra_access = list(ACCESS_MINING, ACCESS_MINING_STATION) // Removed Quartermaster's office from extra access.
+
+/datum/id_trim/job/quartermaster
+	trim_icon = 'jollystation_modules/icons/obj/card.dmi'
+	extra_access = list(ACCESS_RESEARCH, ACCESS_RND)
+
+/datum/id_trim/job/quartermaster/New()
+	minimal_access |= list(ACCESS_HEADS, ACCESS_SEC_DOORS, ACCESS_SECURITY)
+	if(minimal_access.Remove(ACCESS_QM))
+		minimal_wildcard_access |= list(ACCESS_QM)
+	return ..()
+
+/datum/id_trim/job/research_director
+	trim_icon = 'jollystation_modules/icons/obj/card.dmi'
+
+/datum/id_trim/job/scientist
+	trim_icon = 'jollystation_modules/icons/obj/card.dmi'
+	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_RESEARCH, ACCESS_RND, ACCESS_TECH_STORAGE)
+
+// -New job trims.-
 //Asset Protection
 /datum/id_trim/job/asset_protection
 	assignment = "Asset Protection"
 	trim_icon = 'jollystation_modules/icons/obj/card.dmi'
 	trim_state = "trim_assetprotection"
-	full_access = list(ACCESS_MEDICAL, ACCESS_ENGINE, ACCESS_BRIG, ACCESS_COURT, ACCESS_ARMORY, ACCESS_SEC_DOORS, ACCESS_SECURITY,
-						ACCESS_MAINT_TUNNELS, ACCESS_CONSTRUCTION, ACCESS_MORGUE, ACCESS_CARGO, ACCESS_HEADS, ACCESS_RC_ANNOUNCE, ACCESS_KEYCARD_AUTH,
-						ACCESS_RESEARCH, ACCESS_MECH_SECURITY, ACCESS_MINERAL_STOREROOM, ACCESS_WEAPONS,
-						ACCESS_LAWYER, ACCESS_EVA, ACCESS_FORENSICS_LOCKERS, ACCESS_EXTERNAL_AIRLOCKS)
-	wildcard_access = list(ACCESS_BRIG)
-	minimal_access = list(ACCESS_MEDICAL, ACCESS_ENGINE, ACCESS_BRIG, ACCESS_COURT, ACCESS_ARMORY, ACCESS_SEC_DOORS, ACCESS_SECURITY,
-						ACCESS_MAINT_TUNNELS, ACCESS_CONSTRUCTION, ACCESS_MORGUE, ACCESS_CARGO, ACCESS_MAILSORTING, ACCESS_HEADS,
-						ACCESS_RESEARCH, ACCESS_MECH_SECURITY, ACCESS_MINERAL_STOREROOM, ACCESS_WEAPONS, ACCESS_EXTERNAL_AIRLOCKS,
-						ACCESS_RC_ANNOUNCE, ACCESS_KEYCARD_AUTH,)
-	minimal_wildcard_access = list(ACCESS_BRIG)
+	extra_access = list(ACCESS_ENGINE, ACCESS_MAILSORTING)
+	minimal_access = list(ACCESS_BRIG, ACCESS_CARGO, ACCESS_CONSTRUCTION, ACCESS_COURT, ACCESS_EVA, ACCESS_EXTERNAL_AIRLOCKS,
+					ACCESS_FORENSICS_LOCKERS, ACCESS_HEADS, ACCESS_KEYCARD_AUTH, ACCESS_LAWYER, ACCESS_MAINT_TUNNELS,
+					ACCESS_MECH_SECURITY, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM, ACCESS_MORGUE, ACCESS_RC_ANNOUNCE,
+					ACCESS_RESEARCH, ACCESS_SEC_DOORS, ACCESS_SECURITY, ACCESS_WEAPONS)
+	minimal_wildcard_access = list(ACCESS_ARMORY)
 	config_job = "asset_protection"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOS, ACCESS_CHANGE_IDS)
+	job = /datum/job/asset_protection
 
 // Bridge Officer
 /datum/id_trim/job/bridge_officer
 	assignment = "Bridge Officer"
 	trim_icon = 'jollystation_modules/icons/obj/card.dmi'
 	trim_state = "trim_bridgeofficer"
-	full_access = list(ACCESS_MEDICAL, ACCESS_BRIG, ACCESS_COURT, ACCESS_SECURITY, ACCESS_LAWYER, ACCESS_SEC_DOORS,
-						ACCESS_MAINT_TUNNELS, ACCESS_CONSTRUCTION, ACCESS_CARGO, ACCESS_HEADS, ACCESS_RC_ANNOUNCE, ACCESS_KEYCARD_AUTH,
-						ACCESS_RESEARCH, ACCESS_MINERAL_STOREROOM, ACCESS_WEAPONS,
-						)
-	wildcard_access = list(ACCESS_BRIG)
-	minimal_access = list(ACCESS_MEDICAL, ACCESS_BRIG, ACCESS_COURT, ACCESS_ARMORY, ACCESS_SEC_DOORS, ACCESS_SECURITY,
-						ACCESS_MAINT_TUNNELS, ACCESS_CONSTRUCTION, ACCESS_MORGUE, ACCESS_CARGO, ACCESS_MAILSORTING, ACCESS_HEADS,
-						ACCESS_RESEARCH, ACCESS_MINERAL_STOREROOM, ACCESS_WEAPONS, ACCESS_RC_ANNOUNCE, ACCESS_KEYCARD_AUTH,)
-	minimal_wildcard_access = list(ACCESS_BRIG)
+	extra_access = list(ACCESS_RESEARCH, ACCESS_RND)
+	extra_wildcard_access = list(ACCESS_ARMORY)
+	minimal_access = list(ACCESS_BRIG, ACCESS_CARGO, ACCESS_CONSTRUCTION, ACCESS_COURT, ACCESS_HEADS, ACCESS_KEYCARD_AUTH,
+					ACCESS_LAWYER, ACCESS_MAILSORTING, ACCESS_MAINT_TUNNELS, ACCESS_MEDICAL, ACCESS_MINERAL_STOREROOM,
+					ACCESS_RC_ANNOUNCE, ACCESS_SEC_DOORS, ACCESS_SECURITY, ACCESS_WEAPONS)
+	minimal_wildcard_access = list(ACCESS_VAULT)
 	config_job = "bridge_officer"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
+	job = /datum/job/bridge_officer
 
-// Toxicologist
-/datum/id_trim/job/toxicologist
-	assignment = "Toxicologist"
+// ordnance technician
+/datum/id_trim/job/ordnance_tech
+	assignment = "Ordnance Technician"
 	trim_icon = 'jollystation_modules/icons/obj/card.dmi'
-	trim_state = "trim_toxicologist"
-	full_access = list(ACCESS_ROBOTICS, ACCESS_RND, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_RESEARCH, ACCESS_XENOBIOLOGY,
-					ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_TECH_STORAGE, ACCESS_GENETICS, ACCESS_AUX_BASE)
-	minimal_access = list(ACCESS_RND, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_RESEARCH, ACCESS_MINERAL_STOREROOM, ACCESS_MECH_SCIENCE,)
-	config_job = "toxicologist"
+	trim_state = "trim_ordnance_tech"
+	extra_access = list(ACCESS_GENETICS, ACCESS_ROBOTICS, ACCESS_XENOBIOLOGY)
+	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE,
+					ACCESS_RESEARCH, ACCESS_RND)
+	config_job = "Ordnance Technician"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
+	job = /datum/job/ordnance_tech
 
 // Xenobiologist
 /datum/id_trim/job/xenobiologist
 	assignment = "Xenobiologist"
 	trim_icon = 'jollystation_modules/icons/obj/card.dmi'
 	trim_state = "trim_xenobiologist"
-	full_access = list(ACCESS_ROBOTICS, ACCESS_RND, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE, ACCESS_RESEARCH, ACCESS_XENOBIOLOGY,
-					ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_TECH_STORAGE, ACCESS_GENETICS, ACCESS_AUX_BASE)
-	minimal_access = list(ACCESS_RND, ACCESS_RESEARCH, ACCESS_XENOBIOLOGY, ACCESS_MINERAL_STOREROOM, ACCESS_MECH_SCIENCE,)
+	extra_access = list(ACCESS_GENETICS, ACCESS_ROBOTICS, ACCESS_ORDNANCE, ACCESS_ORDNANCE_STORAGE)
+	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_RESEARCH, ACCESS_RND, ACCESS_XENOBIOLOGY)
 	config_job = "xenobiologist"
 	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
+	job = /datum/job/xenobiologist

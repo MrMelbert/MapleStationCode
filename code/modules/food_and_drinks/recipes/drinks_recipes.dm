@@ -452,9 +452,9 @@
 	results = list(/datum/reagent/consumable/coffee = 5)
 	required_reagents = list(/datum/reagent/toxin/coffeepowder = 1, /datum/reagent/water = 5)
 
-// /datum/chemical_reaction/drink/tea // NON-MODULE CHANGE: This recipe now makes green tea instead, in the modular drinks_recipes.dm file.
-//	results = list(/datum/reagent/consumable/tea = 5)
-//	required_reagents = list(/datum/reagent/toxin/teapowder = 1, /datum/reagent/water = 5)
+/datum/chemical_reaction/drink/tea
+	results = list(/datum/reagent/consumable/tea = 5)
+	required_reagents = list(/datum/reagent/toxin/teapowder = 1, /datum/reagent/water = 5)
 
 /datum/chemical_reaction/drink/eggnog
 	results = list(/datum/reagent/consumable/ethanol/eggnog = 15)
@@ -497,8 +497,8 @@
 	reaction_tags = REACTION_TAG_DRINK | REACTION_TAG_EASY | REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_TOXIN | REACTION_TAG_OXY
 
 /datum/chemical_reaction/drink/squirt_cider
-	results = list(/datum/reagent/consumable/ethanol/squirt_cider = 1)
-	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/consumable/tomatojuice = 1, /datum/reagent/consumable/nutriment = 1)
+	results = list(/datum/reagent/consumable/ethanol/squirt_cider = 4)
+	required_reagents = list(/datum/reagent/water = 2, /datum/reagent/consumable/tomatojuice = 2, /datum/reagent/consumable/nutriment = 1, /datum/reagent/consumable/salt = 1)
 	mix_message = "The mix swirls and turns a bright red that reminds you of an apple's skin."
 	reaction_tags = REACTION_TAG_DRINK | REACTION_TAG_EASY | REACTION_TAG_OTHER
 

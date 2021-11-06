@@ -18,7 +18,7 @@
 	human.dna.transfer_identity(human) // Makes the synth look like... a synth.
 
 /datum/species/synth/on_ion_storm(mob/living/carbon/human/target)
-	to_chat(target, span_userdanger("[ionnum()]. I0N1C D1STRBANCE D3TCTED!"))
+	to_chat(target, span_userdanger("[ion_num()]. I0N1C D1STRBANCE D3TCTED!"))
 	target.slurring = max(0, target.slurring + 20)
 	var/datum/dna/original_dna = new
 	target.dna.copy_dna(original_dna)
@@ -46,7 +46,7 @@
 	species_pain_mod = 0
 
 /datum/species/synth/military/on_ion_storm(mob/living/carbon/human/target)
-	to_chat(target, span_userdanger("[ionnum()]. I0N1C DISTURBANCE DETECTED. MILITARY SHIELDING ENGAGED."))
+	to_chat(target, span_userdanger("[ion_num()]. I0N1C DISTURBANCE DETECTED. MILITARY SHIELDING ENGAGED."))
 
 /datum/species/android/on_ion_storm(mob/living/carbon/human/target)
-	to_chat(target, span_userdanger("[ionnum()]. I0N1C DISTURBANCE DETECTED."))
+	to_chat(target, span_userdanger("[ion_num()]. I0N1C DISTURBANCE DETECTED."))

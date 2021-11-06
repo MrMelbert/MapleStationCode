@@ -30,7 +30,7 @@
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/crew)
 "ah" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/docking_port/mobile{
 	callTime = 250;
@@ -51,6 +51,13 @@
 "ai" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/abandoned/crew)
+"aj" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/crew)
 "ak" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -65,6 +72,13 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/space_heater,
 /obj/effect/turf_decal/bot,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
+"am" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
 /turf/open/floor/plating,
 /area/shuttle/abandoned/engine)
 "an" = (
@@ -332,7 +346,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/crew)
 "aI" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
@@ -425,7 +439,7 @@
 /area/shuttle/abandoned/engine)
 "aQ" = (
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
@@ -494,7 +508,7 @@
 "aV" = (
 /obj/machinery/door/firedoor,
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -1118,6 +1132,13 @@
 "bQ" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/abandoned/bridge)
+"bR" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_bridge"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bridge)
 "bS" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1151,6 +1172,11 @@
 /obj/item/wrench,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/engine)
+"bU" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/firedoor,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
 "bV" = (
 /obj/effect/turf_decal/box/white/corners{
 	dir = 1
@@ -1173,6 +1199,11 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
+"bY" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/firedoor,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bar)
 "bZ" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/chair,
@@ -1285,7 +1316,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/bridge)
 "ch" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
@@ -1301,7 +1332,7 @@
 /turf/open/floor/plating,
 /area/shuttle/abandoned/engine)
 "cj" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
 	},
@@ -2050,7 +2081,7 @@
 /area/shuttle/abandoned/engine)
 "dt" = (
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -2077,7 +2108,7 @@
 "dw" = (
 /obj/machinery/door/firedoor,
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
@@ -2314,7 +2345,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/bar)
 "dP" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/plating,
@@ -2431,6 +2462,13 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
+"eb" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/obj/machinery/door/poddoor{
+	id = "whiteship_windows"
+	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bar)
 "ec" = (
 /obj/structure/sign/warning/vacuum/external{
 	pixel_x = -32
@@ -2449,7 +2487,7 @@
 /obj/item/kitchen/rollingpin{
 	pixel_x = 8
 	},
-/obj/item/kitchen/knife{
+/obj/item/knife/kitchen{
 	pixel_x = 16
 	},
 /obj/item/reagent_containers/food/condiment/sugar{
@@ -2504,7 +2542,7 @@
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "ej" = (
-/obj/machinery/door/airlock/external,
+/obj/machinery/door/airlock/external/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
 	},
@@ -2538,11 +2576,6 @@
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"lG" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/firedoor,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bar)
 "nT" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2570,13 +2603,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"ss" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
 "tq" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/hydroponics/constructable,
@@ -2618,11 +2644,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"AB" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/firedoor,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
 "DL" = (
 /obj/effect/turf_decal/box/white/corners,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2630,13 +2651,6 @@
 /obj/effect/spawner/random/maintenance/three,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
-"Eg" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bar)
 "Fb" = (
 /obj/effect/turf_decal/box/white/corners{
 	dir = 8
@@ -2708,20 +2722,6 @@
 /obj/effect/spawner/random/food_or_drink/seed_rare,
 /turf/open/floor/iron,
 /area/shuttle/abandoned/bar)
-"Ww" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_windows"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/crew)
-"YT" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/obj/machinery/door/poddoor{
-	id = "whiteship_bridge"
-	},
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bridge)
 
 (1,1,1) = {"
 aa
@@ -2787,11 +2787,11 @@ aA
 aN
 bh
 ac
-ss
+am
 ac
 ci
 ac
-ss
+am
 ac
 cY
 el
@@ -2820,7 +2820,7 @@ ab
 "}
 (6,1,1) = {"
 aa
-ss
+am
 aC
 aP
 bj
@@ -2834,7 +2834,7 @@ by
 bj
 ds
 dK
-ss
+am
 aa
 "}
 (7,1,1) = {"
@@ -2864,9 +2864,9 @@ aR
 bk
 ac
 ac
-AB
-AB
-AB
+bU
+bU
+bU
 ac
 ac
 da
@@ -2978,9 +2978,9 @@ aR
 bp
 bD
 bD
-lG
-lG
-lG
+bY
+bY
+bY
 bD
 bD
 df
@@ -3010,7 +3010,7 @@ aa
 "}
 (16,1,1) = {"
 aa
-Ww
+aj
 aH
 aW
 bq
@@ -3024,7 +3024,7 @@ bD
 dg
 dx
 dO
-Eg
+eb
 aa
 "}
 (17,1,1) = {"
@@ -3104,7 +3104,7 @@ ed
 bD
 "}
 (21,1,1) = {"
-Ww
+aj
 av
 aJ
 bb
@@ -3120,7 +3120,7 @@ dk
 dC
 dR
 ee
-Eg
+eb
 "}
 (22,1,1) = {"
 ai
@@ -3142,23 +3142,23 @@ bD
 bD
 "}
 (23,1,1) = {"
-Ww
+aj
 aw
 aK
 bb
 bv
 ai
-YT
+bR
 cg
 cv
 cG
-YT
+bR
 bD
 dm
 dE
 dT
 ef
-Eg
+eb
 "}
 (24,1,1) = {"
 ai
@@ -3167,11 +3167,11 @@ ai
 be
 bw
 ai
-YT
-YT
-YT
-YT
-YT
+bR
+bR
+bR
+bR
+bR
 bD
 SW
 dF

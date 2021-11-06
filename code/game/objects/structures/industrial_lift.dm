@@ -142,7 +142,7 @@ GLOBAL_LIST_EMPTY(lifts)
 	base_icon_state = "catwalk"
 	density = FALSE
 	anchored = TRUE
-	armor = list(MELEE = 50, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 80, ACID = 50)
+	armor = list(MELEE = 50, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
 	max_integrity = 50
 	layer = LATTICE_LAYER //under pipes
 	plane = FLOOR_PLANE
@@ -283,7 +283,8 @@ GLOBAL_LIST_EMPTY(lifts)
 
 			collided.throw_at()
 			//if going EAST, will turn to the NORTHEAST or SOUTHEAST and throw the ran over guy away
-			collided.throw_at(throw_target, 200, 4)
+			var/datum/callback/land_slam = new(collided, /mob/living/.proc/tram_slam_land)
+			collided.throw_at(throw_target, 200, 4, callback = land_slam)
 	forceMove(destination)
 	for(var/atom/movable/thing as anything in things2move)
 		thing.forceMove(destination)

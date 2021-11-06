@@ -70,7 +70,7 @@
 	RegisterSignal(parent, COMSIG_LIVING_REVIVE, .proc/start_pain_processing)
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, .proc/stop_pain_processing)
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_all_pain)
-	RegisterSignal(parent, COMSIG_MOB_HEALTHSCANNED, .proc/on_analyzed)
+	RegisterSignal(parent, COMSIG_LIVING_HEALTHSCAN, .proc/on_analyzed)
 	RegisterSignal(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), .proc/check_lying_pain_modifier)
 
 /*
@@ -89,7 +89,7 @@
 		COMSIG_LIVING_REVIVE,
 		COMSIG_LIVING_DEATH,
 		COMSIG_LIVING_POST_FULLY_HEAL,
-		COMSIG_MOB_HEALTHSCANNED,
+		COMSIG_LIVING_HEALTHSCAN,
 		COMSIG_LIVING_SET_BODY_POSITION,
 		COMSIG_LIVING_SET_BUCKLED
 	))

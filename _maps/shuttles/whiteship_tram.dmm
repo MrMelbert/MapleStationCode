@@ -11,7 +11,7 @@
 /area/shuttle/abandoned/engine)
 "ad" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/door/airlock/external/glass,
+/obj/machinery/door/airlock/external/glass/ruin,
 /obj/docking_port/mobile{
 	dir = 2;
 	dwidth = 6;
@@ -30,9 +30,18 @@
 /obj/structure/cable,
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/shuttle/abandoned/engine)
+"af" = (
+/obj/structure/window/reinforced/shuttle,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
 "ag" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/engine)
+"ah" = (
+/obj/structure/window/reinforced/shuttle,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/engine)
 "ai" = (
@@ -61,7 +70,7 @@
 /area/shuttle/abandoned/engine)
 "an" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/door/airlock/external/glass,
+/obj/machinery/door/airlock/external/glass/ruin,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/engine)
@@ -292,6 +301,10 @@
 /obj/structure/shuttle/engine/propulsion{
 	dir = 1
 	},
+/turf/open/floor/plating,
+/area/shuttle/abandoned/cargo)
+"aZ" = (
+/obj/structure/window/reinforced/shuttle,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "ba" = (
@@ -984,6 +997,10 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/abandoned/bridge)
+"cV" = (
+/obj/structure/window/reinforced/shuttle,
+/turf/open/floor/plating,
+/area/shuttle/abandoned/bridge)
 "cW" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/table/optable,
@@ -1244,10 +1261,6 @@
 /obj/effect/spawner/random/trash/cigbutt,
 /turf/open/floor/mineral/titanium/tiled,
 /area/shuttle/abandoned/cargo)
-"fV" = (
-/obj/structure/window/reinforced/shuttle,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
 "nV" = (
 /obj/item/shard,
 /obj/effect/decal/cleanable/dirt,
@@ -1280,20 +1293,11 @@
 /obj/effect/spawner/random/structure/crate,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
-"vf" = (
-/obj/structure/window/reinforced/shuttle,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/bridge)
 "Fp" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/trash/garbage,
 /turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
-"Gx" = (
-/obj/structure/window/reinforced/shuttle,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/shuttle/abandoned/engine)
 "Ic" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/cleanable/dirt,
@@ -1348,10 +1352,6 @@
 /obj/structure/cable,
 /obj/effect/spawner/random/trash/garbage,
 /turf/open/floor/mineral/titanium/tiled/white,
-/area/shuttle/abandoned/cargo)
-"Rk" = (
-/obj/structure/window/reinforced/shuttle,
-/turf/open/floor/plating,
 /area/shuttle/abandoned/cargo)
 "ZA" = (
 /obj/effect/decal/cleanable/dirt,
@@ -1542,13 +1542,13 @@ aA
 aG
 aP
 aY
-Rk
+aZ
 bn
 bu
 by
 bq
 bI
-Rk
+aZ
 bQ
 bR
 bZ
@@ -1578,13 +1578,13 @@ cI
 "}
 (6,1,1) = {"
 aa
-Gx
-fV
+af
+ah
 aw
 aa
 aH
 aP
-Rk
+aZ
 bf
 bo
 bp
@@ -1592,7 +1592,7 @@ bh
 bp
 bp
 bM
-Rk
+aZ
 bR
 ca
 cg
@@ -1627,7 +1627,7 @@ ax
 aa
 aI
 aP
-Rk
+aZ
 bg
 bp
 bp
@@ -1635,7 +1635,7 @@ bz
 bE
 bp
 bN
-Rk
+aZ
 bT
 ca
 ZA
@@ -1664,13 +1664,13 @@ cI
 "}
 (8,1,1) = {"
 aa
-fV
-fV
+ah
+ah
 ax
 aa
 aG
 aP
-Rk
+aZ
 bh
 bo
 bo
@@ -1678,7 +1678,7 @@ bA
 bp
 bo
 bM
-Rk
+aZ
 bR
 ca
 cg
@@ -1701,7 +1701,7 @@ de
 dk
 cZ
 du
-vf
+cV
 cM
 cM
 "}
@@ -1717,10 +1717,10 @@ aY
 bi
 bq
 bq
-Rk
+aZ
 bF
 bJ
-Rk
+aZ
 bQ
 bR
 cb
@@ -1744,7 +1744,7 @@ da
 dl
 dq
 dv
-vf
+cV
 cM
 cM
 "}
@@ -1787,7 +1787,7 @@ df
 cZ
 cZ
 dw
-vf
+cV
 cM
 cM
 "}
@@ -1829,8 +1829,8 @@ db
 dg
 dm
 IC
-vf
-vf
+cV
+cV
 cM
 cM
 "}
@@ -1867,12 +1867,12 @@ bV
 cA
 cH
 cK
-vf
-vf
-vf
-vf
-vf
-vf
+cV
+cV
+cV
+cV
+cV
+cV
 cM
 cM
 cM

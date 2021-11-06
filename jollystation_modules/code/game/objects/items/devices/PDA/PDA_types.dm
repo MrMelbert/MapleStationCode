@@ -30,9 +30,9 @@
 /obj/item/pda/science
 	ttone = "beep"
 
-/// Toxicologist PDA
+/// ordnance technician PDA
 /obj/item/pda/science/toxocologist
-	name = "toxicologist PDA"
+	name = "ordnance technician PDA"
 	greyscale_config = /datum/greyscale_config/pda/stripe_two_color
 	greyscale_colors = "#e2e2e2#000099#40e0d0#9e00ea"
 	ttone = "boom"

@@ -12,10 +12,10 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 	icon_state = "Xenobiologist"
 
 // Toxins start location
-/obj/effect/landmark/start/toxicologist
-	name = "Toxicologist"
+/obj/effect/landmark/start/ordnance_tech
+	name = "Ordnance Technician"
 	icon = 'jollystation_modules/icons/mob/landmarks.dmi'
-	icon_state = "Toxicologist"
+	icon_state = "Ordnance_Technician"
 
 // BO start location
 /obj/effect/landmark/start/bridge_officer

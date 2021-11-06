@@ -889,7 +889,7 @@
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
 "dZ" = (
-/obj/machinery/door/airlock/external/glass,
+/obj/machinery/door/airlock/external/glass/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
@@ -1052,7 +1052,7 @@
 /obj/effect/turf_decal/stripes/asteroid/line{
 	dir = 4
 	},
-/obj/machinery/door/airlock/external/glass,
+/obj/machinery/door/airlock/external/glass/ruin,
 /obj/structure/fans/tiny,
 /turf/open/floor/iron,
 /area/engineering/storage)
@@ -1060,6 +1060,14 @@
 /obj/structure/lattice/catwalk,
 /turf/open/openspace,
 /area/engineering/storage)
+"gK" = (
+/obj/machinery/atmospherics/components/unary/portables_connector/visible{
+	dir = 8;
+	icon_state = "connector_map-2"
+	},
+/obj/machinery/portable_atmospherics/canister/plasma,
+/turf/open/floor/plating,
+/area/construction)
 "gW" = (
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/plating,
@@ -1219,7 +1227,7 @@
 /turf/open/floor/plating,
 /area/engineering/storage)
 "oh" = (
-/obj/machinery/door/airlock/external/glass,
+/obj/machinery/door/airlock/external/glass/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
 	},
@@ -1457,7 +1465,7 @@
 /turf/open/floor/plating,
 /area/construction)
 "CA" = (
-/obj/machinery/door/airlock/external/glass,
+/obj/machinery/door/airlock/external/glass/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
 	},
@@ -1579,20 +1587,12 @@
 /turf/open/floor/plating,
 /area/engineering/storage)
 "Kd" = (
-/obj/machinery/door/airlock/external/glass,
+/obj/machinery/door/airlock/external/glass/ruin,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
 	},
 /turf/open/floor/plating,
 /area/hallway/secondary/entry)
-"Kg" = (
-/obj/machinery/atmospherics/components/unary/portables_connector/visible{
-	dir = 8;
-	icon_state = "connector_map-2"
-	},
-/obj/machinery/portable_atmospherics/canister/plasma,
-/turf/open/floor/plating,
-/area/construction)
 "Kw" = (
 /obj/effect/turf_decal/stripes/asteroid/line{
 	dir = 1
@@ -1730,6 +1730,10 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron,
 /area/hallway/secondary/service)
+"WR" = (
+/obj/effect/spawner/random/entertainment/arcade,
+/turf/open/floor/iron,
+/area/hallway/primary/central)
 "XN" = (
 /obj/structure/railing,
 /turf/open/floor/plating,
@@ -1739,10 +1743,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/hallway/secondary/service)
-"Yf" = (
-/obj/effect/spawner/random/entertainment/arcade,
-/turf/open/floor/iron,
-/area/hallway/primary/central)
 "Zc" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -2781,7 +2781,7 @@ dn
 dn
 dn
 dn
-Kg
+gK
 dn
 dL
 cN
@@ -3574,7 +3574,7 @@ dV
 aI
 aI
 ak
-Yf
+WR
 bE
 co
 bO

@@ -1,31 +1,24 @@
 // -- Hydroponics tray additions --
 #define TRAY_MODIFIED_BASE_NUTRIDRAIN 0.5
-#define TRAY_MODIFIED_BASE_MAXWATER 200
 
 /obj/machinery/hydroponics/constructable
-	// Max water is doubled so they don't need to rely on autogrow for all their trays
-	maxwater = TRAY_MODIFIED_BASE_MAXWATER
 	// Nutriment drain is halved so they can not worry about fertilizer as much
 	nutridrain = TRAY_MODIFIED_BASE_NUTRIDRAIN
+
+/obj/machinery/hydroponics/set_self_sustaining(new_value)
+	var/old_self_sustaining = self_sustaining
+	. = ..()
+	if(self_sustaining != old_self_sustaining)
+		if(self_sustaining)
+			nutridrain /= 2
+		else
+			nutridrain *= 2
 
 /obj/machinery/hydroponics/constructable/RefreshParts()
 	. = ..()
 	// Dehardcodes the nutridrain scaling factor
-	calculate_nutridrain()
-
-/obj/machinery/hydroponics/constructable/CtrlClick(mob/user)
-	var/curr_sustain = self_sustaining
-	. = ..()
-	// Hacky check to see if we actually toggled sustaining or not
-	// because I don't want to touch the main file
-	if(curr_sustain != self_sustaining)
-		calculate_nutridrain()
-
-/// Future melbert todo: Move this to a setter for when self-sustaining is made into one.
-/// Updates the nutridrain of the tray based on self sustaining status.
-/obj/machinery/hydroponics/constructable/proc/calculate_nutridrain()
-	var/sustaining_mod = self_sustaining ? 2 : 1
-	nutridrain = initial(nutridrain) / (sustaining_mod * rating)
+	nutridrain = initial(nutridrain) / rating
+	// Adds a flat 100 max water (doesn't really matter cause autogrow)
+	maxwater += 100
 
 #undef TRAY_MODIFIED_BASE_NUTRIDRAIN
-#undef TRAY_MODIFIED_BASE_MAXWATER

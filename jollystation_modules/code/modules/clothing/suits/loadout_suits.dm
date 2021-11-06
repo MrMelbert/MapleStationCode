@@ -3,7 +3,7 @@
 	name = "heirloom goliath cloak"
 	icon_state = "goliath_cloak"
 	desc = "A thick and rugged cape made out of materials from monsters native to the planet known as Lavaland. This one is quite old and has survived quite a beating, and offers little to no protection anymore."
-	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/pickaxe, /obj/item/kitchen/knife/combat/bone, /obj/item/kitchen/knife/combat/survival)
+	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/pickaxe, /obj/item/knife/combat/bone, /obj/item/knife/combat/survival)
 	hoodtype = /obj/item/clothing/head/hooded/cloakhood/goliath_heirloom
 	body_parts_covered = CHEST|GROIN|ARMS
 
