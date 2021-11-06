@@ -51228,7 +51228,6 @@
 	},
 /obj/machinery/door/airlock/external{
 	name = "Escape Airlock";
-	safety_mode = 1;
 	space_dir = 8
 	},
 /turf/open/floor/plating,

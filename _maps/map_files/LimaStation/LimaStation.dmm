@@ -4269,7 +4269,6 @@
 	},
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1;
 	space_dir = 8
 	},
 /turf/open/floor/plating,
@@ -6536,7 +6535,6 @@
 "dfA" = (
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1;
 	space_dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
@@ -12198,7 +12196,6 @@
 "fFI" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod B";
-	safety_mode = 1;
 	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
@@ -13009,7 +13006,6 @@
 "fYG" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod A";
-	safety_mode = 1;
 	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
@@ -22294,7 +22290,6 @@
 "kct" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod D";
-	safety_mode = 1;
 	space_dir = 4
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
@@ -40094,7 +40089,6 @@
 "qWc" = (
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1;
 	space_dir = 4
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
@@ -46415,7 +46409,6 @@
 "tzZ" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod C";
-	safety_mode = 1;
 	space_dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
@@ -49445,7 +49438,6 @@
 	},
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1;
 	space_dir = 4
 	},
 /turf/open/floor/plating,
@@ -51679,7 +51671,6 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1;
 	space_dir = 1
 	},
 /turf/open/floor/plating,
@@ -53380,7 +53371,6 @@
 "wIZ" = (
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1;
 	space_dir = 1
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
