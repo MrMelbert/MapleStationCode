@@ -7765,7 +7765,7 @@
 "dGG" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod D";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -20472,7 +20472,7 @@
 "jtc" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod B";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
@@ -20531,7 +20531,7 @@
 "jtQ" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod A";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
@@ -21147,7 +21147,7 @@
 "jGl" = (
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 4
@@ -21300,7 +21300,7 @@
 "jJG" = (
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -26322,7 +26322,7 @@
 "lIh" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Pod C";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
@@ -28530,7 +28530,7 @@
 "mrZ" = (
 /obj/machinery/door/airlock/external{
 	name = "Escape Airlock";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -32804,7 +32804,7 @@
 /obj/machinery/door/airlock/external{
 	name = "Security Escape Airlock";
 	req_access_txt = "2";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/plating,
@@ -43902,7 +43902,7 @@
 "sxM" = (
 /obj/machinery/door/airlock/external{
 	name = "Port Docking Bay 1";
-	safety_mode = 1
+	
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 1
