@@ -4093,6 +4093,7 @@
 #include "jollystation_modules\code\modules\clothing\under\jobs\security.dm"
 #include "jollystation_modules\code\modules\events\resource_drift.dm"
 #include "jollystation_modules\code\modules\events\resource_pods.dm"
+#include "jollystation_modules\code\modules\events\solar_flare.dm"
 #include "jollystation_modules\code\modules\food_and_drinks\drinks.dm"
 #include "jollystation_modules\code\modules\food_and_drinks\recipes\drinks_recipes.dm"
 #include "jollystation_modules\code\modules\hydroponics\hydroponics.dm"
