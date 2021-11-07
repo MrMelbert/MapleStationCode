@@ -4,7 +4,7 @@
 	var/type = pickweight(list("ClownOp")) = 1))
 	if("ClownOp")
 		name = pick(GLOB.clown_names)
-			outfit = /datum/outfit/job/clown
+			outfit = /datum/outfit/job/clownop
 			belt = null
 			backpack_contents = list()
 			if(prob(70))
