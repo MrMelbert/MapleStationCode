@@ -1,10 +1,11 @@
 //Extends Hivelord, which is also the base for Legions!
 
 /obj/effect/mob_spawn/human/corpse/damaged/legioninfested/Initialize(mapload)
-	var/type = pickweight(list("ClownOp")) = 1))
-	if("ClownOp")
-		name = pick(GLOB.clown_names)
-			outfit = /datum/outfit/job/clownop
+	var/type = pickweight(list("None" = 99, "ClownOp" = 1))
+	switch(type)
+		if("ClownOp")
+			name = pick(GLOB.clown_names)
+			outfit = /datum/outfit/job/clown
 			belt = null
 			backpack_contents = list()
 			if(prob(70))
@@ -15,3 +16,5 @@
 				l_pocket = pickweight(list(/obj/item/bikehorn/golden = 3, /obj/item/bikehorn/airhorn= 1 ))
 			if(prob(10))
 				r_pocket = /obj/item/implanter/sad_trombone
+		if("None")
+		
