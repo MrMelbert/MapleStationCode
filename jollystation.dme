@@ -4185,6 +4185,7 @@
 #include "jollystation_modules\code\modules\research\designs\medical_designs.dm"
 #include "jollystation_modules\code\modules\research\techweb\all_nodes.dm"
 #include "jollystation_modules\code\modules\surgery\organs\ears.dm"
+#include "jollystation_modules\code\modules\surgery\organs\tails.dm"
 #include "jollystation_modules\code\modules\uplink\uplink_devices.dm"
 #include "jollystation_modules\code\modules\uplink\uplink_infiltrator.dm"
 #include "jollystation_modules\code\modules\uplink\uplink_items.dm"
