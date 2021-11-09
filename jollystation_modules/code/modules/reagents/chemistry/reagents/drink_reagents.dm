@@ -95,7 +95,7 @@
 	color = "#BEAE7E" // rgb: 190, 174, 126
 	quality = -4 //this is godawful, though i dont think negative quality actually does anything
 	nutriment_factor = 2 * REAGENTS_METABOLISM //somehow more filling than pure nutriment
-	taste_description = "bubbles, milk, whatever the hell pepsi is and a want to die" //pepsi doesnt exist so its space cola as a replacement
+	taste_description = "bubbles, milk, whatever the hell pepis is and a want to die" //pepis is canon now, its the rival brand to Space Cola. Renember to rename this to explicitly say pepis if it gets added in.
 	glass_icon_state = "pilk" //the sprite has what is intended to be foam on top as pilk makes that in real life
 	glass_name = "glass of pilk"
 	glass_desc = "A horrid bubbling combination of milk and cola. You are a fucking alchemist and no-one can tell you otherwise."
