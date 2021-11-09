@@ -4182,6 +4182,7 @@
 #include "jollystation_modules\code\modules\reagents\chemistry\withdrawal\go_juice_addiction.dm"
 #include "jollystation_modules\code\modules\reagents\chemistry\withdrawal\luciferium_addiction.dm"
 #include "jollystation_modules\code\modules\reagents\chemistry\withdrawal\psychite_addiction.dm"
+#include "jollystation_modules\code\modules\research\designs\limbgrower_designs.dm"
 #include "jollystation_modules\code\modules\research\designs\medical_designs.dm"
 #include "jollystation_modules\code\modules\research\techweb\all_nodes.dm"
 #include "jollystation_modules\code\modules\surgery\organs\ears.dm"
