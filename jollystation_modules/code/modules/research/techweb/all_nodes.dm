@@ -14,13 +14,3 @@
 		"cybernetic_stomach_tier2",
 		"cybernetic_cat_ears",
 	)
-
-// adds the gotdamn fox tail to the limbgrower. why? iunno
-/datum/techweb_node/xenoorgan_biotech
-	design_ids = list(
-		"limbdesign_ethereal",
-		"limbdesign_felinid",
-		"limbdesign_lizard",
-		"limbdesign_plasmaman",
-		"limbdesign_foxtail"
-	)

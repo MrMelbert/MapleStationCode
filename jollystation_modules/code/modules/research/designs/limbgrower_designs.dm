@@ -8,12 +8,5 @@
 	build_path = /obj/item/organ/tail/cat/fox
 	category = list("other")
 
-/obj/item/disk/design_disk/limbs/foxtail
-	name = "Fox Tail Design Disk"
-	limb_designs = list(/datum/design/foxtail)
-
-/datum/design/limb_disk/foxtail
-	name = "Fox Tail Design Disk"
-	desc = "Contains designs for the limbgrower- a fox tail."
-	id = "limbdesign_foxtail"
-	build_path = /obj/item/disk/design_disk/limbs/foxtail
+/obj/item/disk/design_disk/limbs/felinid
+	limb_designs = list(/datum/design/cat_tail, /datum/design/cat_ears, /datum/design/foxtail)
