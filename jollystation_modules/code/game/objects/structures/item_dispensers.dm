@@ -1,10 +1,4 @@
-/*
-		Original sprites from Goonstation, the code was all me.
-		I saw the sprites and felt an irresistible urge to code them in myself.
-*/
-
-//////////////////////////////////
-//////      Dispensers      //////
+/// Dispensers, sprites from Goon.
 
 /obj/structure/item_dispenser
 	name = "empty item dispenser"
@@ -155,9 +149,7 @@
 	else
 		to_chat(user, span_warning("There are no [item_name]\s left in [src]."))
 
-//////      Dispensers      //////
-//////////////////////////////////
-//////  Pre-set Dispensers  //////
+/// Pre-set Dispensers
 
 /obj/structure/item_dispenser/glasses
 	icon_state = "dispenser_glasses"
@@ -195,9 +187,7 @@
 	stock = /obj/item/bodybag
 	stocked = TRUE
 
-////////  Pre-set Dispensers  /////////
-///////////////////////////////////////
-/// Wallframe for custom dispensers ///
+/// Empty Dispenser Wallframes
 
 /obj/item/wallframe/item_dispenser
 	name = "item dispenser frame"
