@@ -79,12 +79,12 @@
 			playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 			SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, I, user)
 			contents += I
-			balloon_alert(user, "You insert [I] into [src].")
+			balloon_alert(user, "inserted [I]")
 			if(contents.len == 1)
 				update_icon(UPDATE_OVERLAYS)
 			return
 		else
-			to_chat(user, span_notice("You can't fit more [item_name]\s in [src]!"))
+			to_chat(user, span_warning("You can't fit [item_name] into [src]!"))
 			return
 	if(!stocked)
 		if(I.w_class <= WEIGHT_CLASS_SMALL)
@@ -99,7 +99,7 @@
 			if(contents.len == 1)
 				update_icon(UPDATE_OVERLAYS)
 		else
-			to_chat(user, span_notice("[I] is too big to fit in [src]!"))
+			to_chat(user, span_warning("[I] is too big to fit in [src]!"))
 		return
 	return ..()
 
@@ -130,7 +130,7 @@
 				qdel(src)
 			return
 		else
-			to_chat(user, span_notice("[src] needs to be empty to be deconstructed!"))
+			to_chat(user, span_warning("[src] needs to be empty to be deconstructed!"))
 			return
 	return ..()
 
@@ -148,12 +148,12 @@
 		SEND_SIGNAL(src, COMSIG_TRY_STORAGE_TAKE, grabbies, user)
 		user.put_in_hands(grabbies)
 		contents -= grabbies
-		balloon_alert(user, "You take \a [item_name] from [src]")
+		balloon_alert(user, "took [item_name]")
 		playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 		if(contents.len <= 0)
 			update_icon(UPDATE_OVERLAYS)
 	else
-		to_chat(user, span_notice("There are no [item_name]\s left in [src]."))
+		to_chat(user, span_warning("There are no [item_name]\s left in [src]."))
 
 //////      Dispensers      //////
 //////////////////////////////////
