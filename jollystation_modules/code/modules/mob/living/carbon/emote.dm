@@ -3,7 +3,6 @@
 /datum/emote/living/carbon/slow_clap
 	key = "clap_slow"
 	message = "slowly claps their hands."
-	key_third_person "slowly claps"
 	muzzle_ignore = TRUE
 	hands_use_check = TRUE
 	emote_type = EMOTE_AUDIBLE
