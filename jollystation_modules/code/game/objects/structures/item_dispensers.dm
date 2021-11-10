@@ -79,7 +79,7 @@
 			playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 			SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, I, user)
 			contents += I
-			to_chat(user, span_notice("You insert [I] into [src]."))
+			balloon_alert(user, "You insert [I] into [src].")
 			if(contents.len == 1)
 				update_icon(UPDATE_OVERLAYS)
 			return
@@ -104,7 +104,6 @@
 	return ..()
 
 /obj/structure/item_dispenser/attackby_secondary(obj/item/I, mob/user, params)
-	. = ..()
 	if(!stocked && I.tool_behaviour == TOOL_SCREWDRIVER)
 		var/changed_charges = input(user, "Input amount of items this dispenser can allow. It must be an amount between 1 and 8.", "Item Dispenser") as num|null
 		if(changed_charges > 8) // Stops people from being shitters
@@ -149,7 +148,7 @@
 		SEND_SIGNAL(src, COMSIG_TRY_STORAGE_TAKE, grabbies, user)
 		user.put_in_hands(grabbies)
 		contents -= grabbies
-		to_chat(user, span_notice("You take \a [item_name] from [src]"))
+		balloon_alert(user, "You take \a [item_name] from [src]")
 		playsound(loc, 'sound/machines/click.ogg', 15, TRUE, -3)
 		if(contents.len <= 0)
 			update_icon(UPDATE_OVERLAYS)
