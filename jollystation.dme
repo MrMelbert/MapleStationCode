@@ -4143,6 +4143,7 @@
 #include "jollystation_modules\code\modules\mob\dead\new_player\sprite_accessories.dm"
 #include "jollystation_modules\code\modules\mob\living\emote.dm"
 #include "jollystation_modules\code\modules\mob\living\living.dm"
+#include "jollystation_modules\code\modules\mob\living\carbon\emote.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_bodyparts.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_causes.dm"
 #include "jollystation_modules\code\modules\mob\living\carbon\pain_effects.dm"
