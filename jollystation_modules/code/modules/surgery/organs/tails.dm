@@ -2,6 +2,8 @@
 	name = "fox tail"
 	desc = "A severed fox tail. Geckers."
 	tail_type = "Fox"
+	icon = 'jollystation_modules/icons/obj/surgery.dmi'
+	icon_state = "severedfoxtail"
 
 /obj/item/organ/tail/cat/fox/Insert(mob/living/carbon/human/tail_owner, special = FALSE, drop_if_replaced = TRUE)
 	..()

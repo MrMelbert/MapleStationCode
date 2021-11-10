@@ -18,3 +18,11 @@
 /datum/chemical_reaction/drink/green_tea
 	results = list(/datum/reagent/consumable/green_tea = 5)
 	required_reagents = list(/datum/reagent/toxin/teapowder = 1, /datum/reagent/water = 5) //tea powder is obtained from tea plants.
+
+/datum/chemical_reaction/drink/pilk
+	results = list(/datum/reagent/consumable/pilk = 2)
+	required_reagents = list(/datum/reagent/consumable/milk = 1, /datum/reagent/consumable/space_cola = 1)
+
+/datum/chemical_reaction/drink/pilk/peg_nog
+	results = list(/datum/reagent/consumable/ethanol/peg_nog = 2)
+	required_reagents = list(/datum/reagent/consumable/ethanol/eggnog = 1, /datum/reagent/consumable/space_cola = 1)
