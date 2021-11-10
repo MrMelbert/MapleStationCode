@@ -3,7 +3,7 @@
 /obj/structure/item_dispenser
 	name = "empty item dispenser"
 	desc = "A small wall-mounted receptacle which can dispense a specific item."
-	icon = 'jollystation_modules/icons/obj/itemdispenser.dmi'
+	icon = 'goon/icons/obj/itemdispenser.dmi'
 	icon_state = "dispenser_generic"
 	anchored = TRUE
 	density = FALSE
@@ -192,7 +192,7 @@
 /obj/item/wallframe/item_dispenser
 	name = "item dispenser frame"
 	desc = "An empty frame for an item dispenser."
-	icon = 'jollystation_modules/icons/obj/itemdispenser.dmi'
+	icon = 'goon/icons/obj/itemdispenser.dmi'
 	icon_state = "dispenserframe"
 	custom_materials = list(/datum/material/plastic = 500, /datum/material/iron = 100)
 	result_path = /obj/structure/item_dispenser
