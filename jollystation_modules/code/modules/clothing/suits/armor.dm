@@ -3,7 +3,7 @@
 /obj/item/clothing/suit/armor/vest/bridge_officer
 	name = "bridge officer's armor vest"
 	desc = "A somewhat flexible but stiff suit of armor. It reminds you of a simpler time."
-	armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 20, BOMB = 15, BIO = 0, RAD = 0, FIRE = 100, ACID = 90, WOUND = 10)
+	armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 20, BOMB = 15, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
 
 //Unused, but we're keeping it
 /obj/item/clothing/suit/armor/vest/bridge_officer/large
@@ -18,7 +18,7 @@
 	desc = "A rigid vest of armor worn by Asset Protection. Rigid and stiff, just like your attitude."
 	icon_state = "bulletproof"
 	inhand_icon_state = "bulletproof"
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 30, BIO = 0, RAD = 0, FIRE = 100, ACID = 90, WOUND = 10)
+	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 30, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
 
 /obj/item/clothing/suit/armor/vest/asset_protection/large
 	name = "asset protection's large armor vest"
@@ -26,13 +26,44 @@
 	icon_state = "blueshift"
 	inhand_icon_state = "blueshift"
 
-/obj/item/clothing/suit/toggle/greyscale_parade
+// Subtype of the toggle icon component (i know, ew) for GAGS items
+/datum/component/toggle_icon/greyscale
+	/// Config when toggled.
+	var/toggled_config
+	/// Worn config when toggled.
+	var/toggled_config_worn
+
+/datum/component/toggle_icon/greyscale/Initialize(toggle_noun = "buttons", config, worn_config)
+	. = ..()
+	if(. == COMPONENT_INCOMPATIBLE)
+		return
+
+	if(!config || !worn_config)
+		stack_trace("[type] component initialized without a greyscale config / worn greyscale config!")
+		return COMPONENT_INCOMPATIBLE
+
+	src.toggled_config = config
+	src.toggled_config_worn = worn_config
+
+/datum/component/toggle_icon/greyscale/do_icon_toggle(atom/source, mob/living/user)
+	. = ..()
+	if(isitem(source))
+		var/obj/item/item_source = source
+
+		if(toggled)
+			item_source.set_greyscale(new_config = toggled_config, new_worn_config = toggled_config_worn)
+		else
+			item_source.set_greyscale(new_config = initial(item_source.greyscale_config), new_worn_config = initial(item_source.greyscale_config_worn))
+
+		item_source.update_slot_icon()
+
+// GAGS parade uniform, because why not
+/obj/item/clothing/suit/greyscale_parade
 	name = "tailored parade jacket"
 	desc = "No armor, all fashion, unfortunately."
 	icon_state = "formal"
 	inhand_icon_state = "labcoat"
 	body_parts_covered = CHEST|GROIN|ARMS
-	togglename = "buttons"
 	allowed = list(
 		/obj/item/flashlight,
 		/obj/item/lighter,
@@ -43,7 +74,7 @@
 		/obj/item/stamp,
 		/obj/item/pen,
 		/obj/item/radio,
-		/obj/item/kitchen/knife,
+		/obj/item/knife,
 		/obj/item/reagent_containers/food/drinks/bottle,
 		/obj/item/reagent_containers/food/drinks/flask,
 		/obj/item/storage/fancy/candle_box,
@@ -56,17 +87,8 @@
 	greyscale_colors = "#DDDDDD"
 	greyscale_config = /datum/greyscale_config/parade_formal
 	greyscale_config_worn = /datum/greyscale_config/parade_formal_worn
-	/// Greyscale config to use when toggled.
-	var/toggled_config = /datum/greyscale_config/parade_formal_open
-	/// Greyscale worn config to use when toggled.
-	var/toggled_config_worn = /datum/greyscale_config/parade_formal_open_worn
+	flags_1 = IS_PLAYER_COLORABLE_1
 
-/obj/item/clothing/suit/toggle/greyscale_parade/suit_toggle()
+/obj/item/clothing/suit/greyscale_parade/Initialize(mapload)
 	. = ..()
-	if(suittoggled)
-		set_greyscale(new_config = toggled_config, new_worn_config = toggled_config_worn)
-	else
-		set_greyscale(new_config = initial(greyscale_config), new_worn_config = initial(greyscale_config_worn))
-	var/mob/living/carbon/our_wearer = loc
-	if(istype(our_wearer))
-		our_wearer.update_inv_wear_suit()
+	AddComponent(/datum/component/toggle_icon/greyscale, "buttons", /datum/greyscale_config/parade_formal_open, /datum/greyscale_config/parade_formal_open_worn)

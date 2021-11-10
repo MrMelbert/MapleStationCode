@@ -15,7 +15,7 @@
 	paycheck = PAYCHECK_MEDIUM
 	paycheck_department = ACCOUNT_SCI
 
-	display_order = JOB_DISPLAY_ORDER_SCIENTIST
+	display_order = JOB_DISPLAY_ORDER_XENOBIOLOGIST
 	bounty_types = CIV_JOB_SCI
 
 	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)

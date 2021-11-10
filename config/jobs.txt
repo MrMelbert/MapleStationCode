@@ -8,6 +8,8 @@ Head of Security=1,1
 Chief Engineer=1,1
 Research Director=1,1
 Chief Medical Officer=1,1
+Asset Protection=1,1
+Bridge Officer=1,1
 
 Assistant=-1,-1
 Prisoner=0,2
@@ -40,7 +42,7 @@ Psychologist=1,1
 
 Scientist=5,3
 Roboticist=2,2
-Toxins Mixologist=1,1
+Ordnance Technician=1,1
 Xenobiologist=2,1
 
 Warden=1,1

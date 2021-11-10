@@ -5,6 +5,10 @@
 "ab" = (
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/escape)
+"ac" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/turf/open/floor/plating,
+/area/shuttle/escape)
 "ad" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/escape)
@@ -541,7 +545,7 @@
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "bj" = (
-/turf/open/floor/mech_bay_recharge_floor,
+/turf/open/floor/iron/recharge_floor,
 /area/shuttle/escape)
 "bk" = (
 /obj/structure/chair/comfy/shuttle{
@@ -1124,6 +1128,22 @@
 	},
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
+"cz" = (
+/obj/effect/spawner/random/entertainment/arcade{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/shuttle/escape)
 "cA" = (
 /obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/blue{
@@ -1639,26 +1659,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)
-"TU" = (
-/obj/effect/spawner/random/entertainment/arcade{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/turf/open/floor/iron,
-/area/shuttle/escape)
-"ZF" = (
-/obj/effect/spawner/structure/window/reinforced/shuttle,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 
 (1,1,1) = {"
 aa
@@ -1690,11 +1690,11 @@ aa
 aa
 ab
 ab
-ZF
-ZF
-ZF
-ZF
-ZF
+ac
+ac
+ac
+ac
+ac
 ab
 ab
 ab
@@ -1722,9 +1722,9 @@ be
 ab
 bc
 ad
-ZF
-ZF
-ZF
+ac
+ac
+ac
 ad
 bc
 bZ
@@ -1735,8 +1735,8 @@ ab
 ad
 cn
 cn
-TU
-TU
+cz
+cz
 cn
 cn
 ab
@@ -1783,7 +1783,7 @@ aZ
 aZ
 aZ
 aZ
-ZF
+ac
 cU
 da
 dh
@@ -1827,7 +1827,7 @@ ba
 ba
 ba
 bc
-ZF
+ac
 cU
 bc
 da
@@ -1848,9 +1848,9 @@ ao
 ab
 ab
 ab
-ZF
+ac
 bq
-ZF
+ac
 ab
 bF
 bR
@@ -1915,7 +1915,7 @@ bX
 bX
 bX
 bR
-ZF
+ac
 cU
 bc
 bc
@@ -1927,7 +1927,7 @@ dz
 (7,1,1) = {"
 aa
 aa
-ZF
+ac
 af
 aq
 ap
@@ -1939,7 +1939,7 @@ be
 be
 be
 bw
-ZF
+ac
 bH
 bR
 bT
@@ -1971,7 +1971,7 @@ dz
 (8,1,1) = {"
 aa
 aa
-ZF
+ac
 ag
 ar
 aA
@@ -1983,7 +1983,7 @@ be
 be
 be
 by
-ZF
+ac
 bI
 bR
 bT
@@ -2003,7 +2003,7 @@ bW
 bW
 bW
 bR
-ZF
+ac
 cW
 db
 bc
@@ -2015,7 +2015,7 @@ dz
 (9,1,1) = {"
 aa
 aa
-ZF
+ac
 ah
 as
 aB
@@ -2027,7 +2027,7 @@ be
 be
 be
 bw
-ZF
+ac
 bJ
 bR
 bT
@@ -2059,7 +2059,7 @@ dz
 (10,1,1) = {"
 aa
 aa
-ZF
+ac
 ai
 at
 aC
@@ -2103,7 +2103,7 @@ ad
 (11,1,1) = {"
 aa
 aa
-ZF
+ac
 aj
 at
 aC
@@ -2111,10 +2111,10 @@ aC
 aO
 ab
 ab
-ZF
+ac
 bn
 bn
-ZF
+ac
 ad
 aZ
 bc
@@ -2147,7 +2147,7 @@ ad
 (12,1,1) = {"
 aa
 aa
-ZF
+ac
 ak
 au
 aD
@@ -2191,7 +2191,7 @@ dz
 (13,1,1) = {"
 aa
 aa
-ZF
+ac
 al
 av
 aE
@@ -2235,7 +2235,7 @@ dz
 (14,1,1) = {"
 aa
 aa
-ZF
+ac
 am
 aw
 ax
@@ -2303,7 +2303,7 @@ bW
 bW
 bW
 bR
-ZF
+ac
 cj
 cq
 cw
@@ -2391,7 +2391,7 @@ aZ
 aZ
 aZ
 bc
-ZF
+ac
 cl
 cs
 cp
@@ -2471,13 +2471,13 @@ bD
 bP
 ab
 ab
-ZF
-ZF
-ZF
-ZF
-ZF
-ZF
-ZF
+ac
+ac
+ac
+ac
+ac
+ac
+ac
 ab
 ab
 ad
@@ -2526,9 +2526,9 @@ aa
 aa
 ab
 ab
-ZF
-ZF
-ZF
+ac
+ac
+ac
 ab
 ab
 ab

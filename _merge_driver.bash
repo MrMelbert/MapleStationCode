@@ -12,7 +12,7 @@ find_unticked_files (){
 
 	NEED_NEWLINE=1
 	NUM_DOTS=0
-	for file in $(find $1 -name "*.dm" -or -name "*.js" -type f); do
+	for file in $(find $1 -name "*.dm" -type f); do
 		if [ ! -f $file ]; then
 			continue
 		fi
@@ -31,6 +31,7 @@ find_unticked_files (){
 				NEED_NEWLINE=0
 			fi
 			echo "$FILE_NAME was found to not be in tgstation.dme / unticked!"
+			rm $file
 			NUM_DOTS=0
 		else
 			NEED_NEWLINE=1
@@ -147,9 +148,13 @@ update_build (){
 
 echo "Running merge driver. . ."
 echo "====================================================================================="
-echo "Looking for unticked files. . ."
-find_unticked_files "code"
-echo "Unticked files done."
+echo "Do you want to find and remove unticked files? This takes a long time. It also may potentially delete core files by accident. (Y / N)"
+read unticked_input
+if [ "$unticked_input" == 'y' ]; then
+	echo "Looking for unticked files. . ."
+	find_unticked_files "code"
+	echo "Unticked files done."
+fi
 echo "====================================================================================="
 echo "Checking for merge conflicts. . ."
 find_all_in_dir "code"

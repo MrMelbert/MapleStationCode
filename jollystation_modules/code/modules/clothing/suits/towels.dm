@@ -31,6 +31,7 @@
 	greyscale_config_inhand_left = /datum/greyscale_config/towel_inhand_left
 	greyscale_config_inhand_right = /datum/greyscale_config/towel_inhand_right
 	greyscale_colors = "#dddddd"
+	flags_1 = IS_PLAYER_COLORABLE_1
 
 	/// Whether our tower is warm and comfy.
 	var/warm_towel = FALSE

@@ -89,9 +89,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	wires = new /datum/wires/fax(src)
 
 /obj/machinery/fax_machine/Destroy()
-	eject_all_paperwork()
-	eject_stored_paper()
-	eject_received_paper()
+	// The eject procs will never sleep if not supplied any arguments.
+	// We invoke async here to shut the compiler up, because
+	// it thinks that it can possibly sleep somehow. It cannot.
+	INVOKE_ASYNC(src, .proc/eject_stored_paper)
+	INVOKE_ASYNC(src, .proc/eject_all_paperwork)
+	INVOKE_ASYNC(src, .proc/eject_received_paper)
 
 	GLOB.fax_machines -= src
 	return ..()
@@ -409,6 +412,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
  * [user] is the admin.
  */
 /obj/machinery/fax_machine/proc/admin_create_fax(mob/user)
+	if(!check_rights_for(user.client, R_ADMIN))
+		return
+
 	var/obj/item/paper/sent_paper = new()
 	var/fax = stripped_multiline_input(user, "Write your fax to send here.", "Send Fax", max_length = MAX_MESSAGE_LEN)
 	if(length(fax))

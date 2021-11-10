@@ -442,7 +442,7 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
 "Df" = (
-/turf/open/floor/mech_bay_recharge_floor,
+/turf/open/floor/iron/recharge_floor,
 /area/shuttle/escape)
 "Dr" = (
 /obj/structure/chair/comfy/shuttle{

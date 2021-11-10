@@ -96,7 +96,7 @@ This module system edits the launch.json and the build.bat files so VSCODE can c
 
 # Upstream merge:
 
-The time has come for doom. Pull from upstream and pray. Before you make your PR, you are REQUIRED to add [MDB IGNORE] in your PRs title, this stops the Map Diff bot from rendering.
+The time has come for doom. Pull from upstream and pray. Before you make your PR, you are REQUIRED to add [MDB IGNORE] and [IDB IGNORE] in your PRs title, this stops the Map Diff bot from rendering.
 
 - Run ./_merge_driver.bash from gitbash (or any bash terminal, I guess) This will do a few things:
 	- A list of all unticked files in the code directory will be printed.
