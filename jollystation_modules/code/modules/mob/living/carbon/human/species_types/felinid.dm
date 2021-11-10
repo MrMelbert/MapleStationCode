@@ -4,6 +4,14 @@
 									'jollystation_modules/sound/voice/meow2.ogg' = 50,
 									'jollystation_modules/sound/voice/meow3.ogg' = 50)
 
+species_speech_sounds_ask = list('jollystation_modules/sound/voice/meow1.ogg' = 50, \
+									'jollystation_modules/sound/voice/meow2.ogg' = 50,
+									'jollystation_modules/sound/voice/meow3.ogg' = 50)
+
+species_speech_sounds_exclaim = list('jollystation_modules/sound/voice/meow1.ogg' = 50, \
+									'jollystation_modules/sound/voice/meow2.ogg' = 50,
+									'jollystation_modules/sound/voice/meow3.ogg' = 50)
+
 //adds fox tail option
 /datum/species/human/felinid/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
     . = ..()
