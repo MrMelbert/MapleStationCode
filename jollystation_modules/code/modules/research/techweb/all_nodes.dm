@@ -5,12 +5,6 @@
 
 /// Adds cybernetic cat ears to cybernetic organs.
 /datum/techweb_node/cyber_organs
-	design_ids = list(
-		"cybernetic_ears",
-		"cybernetic_eyes_improved",
-		"cybernetic_heart_tier2",
-		"cybernetic_liver_tier2",
-		"cybernetic_lungs_tier2",
-		"cybernetic_stomach_tier2",
+	module_designs = list(
 		"cybernetic_cat_ears",
 	)
