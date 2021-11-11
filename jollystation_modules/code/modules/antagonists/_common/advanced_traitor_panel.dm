@@ -1,79 +1,33 @@
 /// -- The advanced traitor panuel UI datum. --
-/// Defines for tutorial state.
-#define TUTORIAL_OFF -1
-/// Defines for state of the background tutorial.
-#define TUTORIAL_BACKGROUND_START 0
-#define TUTORIAL_BACKGROUND_NAME 1
-#define TUTORIAL_BACKGROUND_EMPLOYER 2
-#define TUTORIAL_BACKGROUND_BACKSTORY 3
-#define TUTORIAL_BACKGROUND_END (TUTORIAL_BACKGROUND_BACKSTORY+1)
-/// Defines for state of the objective tutorial.
-#define TUTORIAL_OBJECTIVE_START 0
-#define TUTORIAL_OBJECTIVE_ADD_GOAL 1
-#define TUTORIAL_OBJECTIVE_EDIT_GOAL 2
-#define TUTORIAL_OBJECTIVE_INTENSITIES 3
-#define TUTORIAL_OBJECTIVE_SIM_OBJECTIVES 4
-#define TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA 5
-#define TUTORIAL_OBJECTIVE_END (TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA+1)
 
-/// The actual datum advanced traitor goal panel used to set and finalized goals.
-/datum/advanced_antag_panel
-	/// The mob viewing this panel.
-	var/mob/viewer
-	/// The antag datum linked to this panel.
-	var/datum/advanced_antag_datum/owner_datum
-	/// The UI currently opened.
-	var/datum/tgui/open_ui
-	/// The UI we're going to open.
-	var/ui_to_open = "_AdvancedTraitorPanel"
-	/// The current state of the background tutorial.
-	var/background_tutorial_state = TUTORIAL_OFF
-	/// The current state of the objective tutorial.
-	var/objective_tutorial_state = TUTORIAL_OFF
-
-/datum/advanced_antag_panel/New(mob/user, datum/advanced_antag_datum/owner_datum)
-	if(istype(user))
-		viewer = user
-	else
-		var/client/user_client = user
-		viewer = user_client.mob
-
-	src.owner_datum = owner_datum
-
-/datum/advanced_antag_panel/ui_close()
-	open_ui = null
-	LAZYREMOVE(owner_datum.open_panels, viewer)
-	qdel(src)
-
-/datum/advanced_antag_panel/ui_interact(mob/user, datum/tgui/ui)
+/datum/advanced_antag_datum/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, ui_to_open)
+		ui = new(user, src, advanced_panel_type)
 		ui.open()
-		open_ui = ui
 
-/datum/advanced_antag_panel/ui_state(mob/user)
-	if(viewer != owner_datum.linked_antagonist.owner.current)
-		to_chat(user, "You are viewing [owner_datum.linked_antagonist.owner.current]'s advanced traitor panel as an admin.")
-		message_admins("[ADMIN_LOOKUPFLW(user)] is viewing [ADMIN_LOOKUPFLW(owner_datum.linked_antagonist.owner.current)]'s advanced traitor panel as an admin.")
+/datum/advanced_antag_datum/ui_state(mob/user)
+	if(user != linked_antagonist.owner.current)
+		to_chat(user, "You are viewing [linked_antagonist.owner.current]'s advanced traitor panel as an admin.")
+		message_admins("[ADMIN_LOOKUPFLW(user)] is viewing [ADMIN_LOOKUPFLW(linked_antagonist.owner.current)]'s advanced traitor panel as an admin.")
 		return GLOB.admin_state
 	else
 		return GLOB.always_state
 
-/datum/advanced_antag_panel/ui_data(mob/user)
+/datum/advanced_antag_datum/ui_data(mob/user)
 	var/list/data = list()
 
-	data["antag_type"] = owner_datum.linked_antagonist.name
-	data["name"] = owner_datum.name
-	data["employer"] = owner_datum.employer
-	data["backstory"] = owner_datum.backstory
-	data["goals_finalized"] = owner_datum.finalized
-	data["finalize_text"] = owner_datum.get_finalize_text()
+	data["antag_type"] = linked_antagonist.name
+	data["name"] = name
+	data["employer"] = employer
+	data["backstory"] = backstory
+	data["goals_finalized"] = finalized
+	data["finalize_text"] = get_finalize_text()
 	data["backstory_tutorial_text"] = get_backstory_tutorial_text(background_tutorial_state)
 	data["objective_tutorial_text"] = get_objective_tutorial_text(objective_tutorial_state)
 
 	var/goal_num = 1
-	for(var/datum/advanced_antag_goal/found_goal in owner_datum.our_goals)
+	for(var/datum/advanced_antag_goal/found_goal in our_goals)
 		var/list/goal_data = list(
 			id = goal_num,
 			ref = REF(found_goal),
@@ -100,16 +54,17 @@
 
 	return data
 
-/datum/advanced_antag_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/advanced_antag_datum/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return
-	if(!owner_datum)
-		CRASH("Advanced traitor panel being operated with no advanced antag datum.")
+	if(usr != linked_antagonist.owner.current)
+		to_chat(usr, "You can't edit [linked_antagonist.owner]'s goals!")
+		return // third parties can look around the UI but no touching
 
 	var/datum/advanced_antag_goal/edited_goal
 	if(params["goal_ref"])
-		edited_goal = locate(params["goal_ref"]) in owner_datum.our_goals
+		edited_goal = locate(params["goal_ref"]) in our_goals
 		if(!edited_goal)
 			CRASH("Advanced_traitor_panel passed a reference parameter to a goal that it could not locate!")
 
@@ -117,77 +72,66 @@
 		// Tutorial stuff
 		if("begin_background_tutorial")
 			background_tutorial_state = (background_tutorial_state == TUTORIAL_OFF ? TUTORIAL_BACKGROUND_START : TUTORIAL_OFF)
-			. = TRUE
 
 		if("begin_objective_tutorial")
 			objective_tutorial_state = (objective_tutorial_state == TUTORIAL_OFF ? TUTORIAL_OBJECTIVE_START : TUTORIAL_OFF)
-			. = TRUE
 
 		if("proceede_beginner_tutorial")
 			background_tutorial_state++
 			if(background_tutorial_state == TUTORIAL_BACKGROUND_END)
 				background_tutorial_state = TUTORIAL_OFF
-			. = TRUE
 
 		if("proceede_objective_tutorial")
 			objective_tutorial_state++
 			if(objective_tutorial_state == TUTORIAL_OBJECTIVE_END)
 				objective_tutorial_state = TUTORIAL_OFF
-			. = TRUE
 
 		/// Background stuff
 		if("set_name")
-			owner_datum.set_name(params["name"])
-			. = TRUE
+			set_name(params["name"])
 
 		if("set_employer")
-			owner_datum.set_employer(params["employer"])
-			. = TRUE
+			set_employer(params["employer"])
 
 		if("set_backstory")
-			owner_datum.set_backstory(params["backstory"])
-			. = TRUE
+			set_backstory(params["backstory"])
 
 		/// Goal Stuff
 		if("add_advanced_goal")
-			if(LAZYLEN(owner_datum.our_goals) >= ADV_TRAITOR_MAX_GOALS)
+			if(LAZYLEN(our_goals) >= ADV_TRAITOR_MAX_GOALS)
 				to_chat(usr, "Maximum amount of goals reached.")
 				return
 
-			owner_datum.add_advanced_goal()
-			. = TRUE
+			add_advanced_goal()
 
 		if("remove_advanced_goal")
-			owner_datum.remove_advanced_goal(edited_goal)
-			. = TRUE
+			if(LAZYLEN(our_goals) == 1)
+				to_chat(usr, "You can't remove your last goal.")
+				return
+			remove_advanced_goal(edited_goal)
 
 		if("set_goal_text")
 			edited_goal.set_goal_text(params["newgoal"])
-			. = TRUE
 
 		if("set_goal_intensity")
 			edited_goal.set_intensity(params["newlevel"])
-			. = TRUE
 
 		if("set_note_text")
 			edited_goal.set_note_text(params["newtext"])
-			. = TRUE
 
 		if("add_similar_objective")
 			if(LAZYLEN(edited_goal.similar_objectives) >= ADV_TRAITOR_MAX_SIMILAR_OBJECTIVES)
 				to_chat(usr, "Maximum amount of similar objectives reached for this goal.")
 				return
 
-			var/new_objective_type = input("Add an objective:", "Objective type", null) as null|anything in owner_datum.possible_objectives
+			var/new_objective_type = input("Add an objective:", "Objective type", null) as null|anything in possible_objectives
 			if(!new_objective_type)
 				return
 
-			new_objective_type = owner_datum.possible_objectives[new_objective_type]
+			new_objective_type = possible_objectives[new_objective_type]
 			var/datum/objective/objective_to_add = new new_objective_type
 			objective_to_add.admin_edit(usr)
 			edited_goal.add_similar_objective(objective_to_add)
-
-			. = TRUE
 
 		if("remove_similar_objective")
 			var/datum/objective/removed_objective = locate(params["objective_ref"]) in edited_goal.similar_objectives
@@ -195,26 +139,23 @@
 				CRASH("Advanced_traitor_panel passed a reference to an objective belonging to a goal that could not be located!")
 
 			edited_goal.remove_similar_objective(removed_objective)
-			. = TRUE
 
 		if("clear_sim_objectives")
 			QDEL_LIST(edited_goal.similar_objectives)
-			. = TRUE
 
 		if("toggle_check_all_objectives")
 			edited_goal.check_all_objectives = !edited_goal.check_all_objectives
-			. = TRUE
 
 		if("toggle_always_succeed")
 			edited_goal.always_succeed = !edited_goal.always_succeed
-			. = TRUE
 
 		/// Finalize
 		if("finalize_goals")
-			owner_datum.post_finalize_actions()
-			. = TRUE
+			post_finalize_actions()
 
-/datum/advanced_antag_panel/proc/get_backstory_tutorial_text(current_step)
+	return TRUE
+
+/datum/advanced_antag_datum/proc/get_backstory_tutorial_text(current_step)
 	switch(current_step)
 		if(TUTORIAL_BACKGROUND_START)
 			return {"This top section is mostly flavor about your antagonist - What makes you tick.
@@ -245,7 +186,7 @@ You can this box to anything, or leave it empty. Having a backstory is not neces
 		else
 			return null
 
-/datum/advanced_antag_panel/proc/get_objective_tutorial_text(current_step)
+/datum/advanced_antag_datum/proc/get_objective_tutorial_text(current_step)
 	switch(current_step)
 		if(TUTORIAL_OBJECTIVE_START)
 			return {"This lower section is the important part of your antagonist - What's your job? What's the plan?
@@ -302,78 +243,3 @@ If enabled, your objective will always show up as successful at round end, even 
 If you don't set any similar objectives, success won't even be checked at the end of the round - it's entirely up to you."}
 		else
 			return null
-
-/datum/advanced_antag_panel/heretic
-	ui_to_open = "_AdvancedHereticPanel"
-
-/datum/advanced_antag_panel/heretic/ui_data(mob/user)
-	. = ..()
-	var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
-	.["can_ascend"] = our_heretic.ascension_enabled
-	.["can_sac"] = our_heretic.sacrifices_enabled
-
-/datum/advanced_antag_panel/heretic/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
-	. = ..()
-	if(.)
-		return
-
-	/// Hacky Heretic Stuff
-	switch(action)
-		if("toggle_ascension")
-			var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
-			if(our_heretic.finalized)
-				return
-			our_heretic.ascension_enabled = !our_heretic.ascension_enabled
-			. = TRUE
-
-		if("toggle_sacrificing")
-			var/datum/advanced_antag_datum/heretic/our_heretic = owner_datum
-			if(our_heretic.finalized)
-				return
-			our_heretic.sacrifices_enabled = !our_heretic.sacrifices_enabled
-			. = TRUE
-
-/datum/advanced_antag_panel/changeling
-	ui_to_open = "_AdvancedChangelingPanel"
-
-/datum/advanced_antag_panel/changeling/ui_data(mob/user)
-	. = ..()
-	var/datum/advanced_antag_datum/changeling/ling_datum = owner_datum
-	.["cannot_absorb"] = ling_datum.no_hard_absorb
-	.["changeling_id"] = ling_datum.our_changeling.changeling_id
-
-/datum/advanced_antag_panel/changeling/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
-	. = ..()
-	if(.)
-		return
-
-	/// Ling Stuff
-	switch(action)
-		if("set_ling_id")
-			var/datum/advanced_antag_datum/changeling/ling_datum = owner_datum
-			ling_datum.our_changeling.changeling_id = params["changeling_id"]
-			. = TRUE
-
-		if("toggle_absorb")
-			var/datum/advanced_antag_datum/changeling/our_ling = owner_datum
-			if(our_ling.finalized)
-				return
-			our_ling.no_hard_absorb = !our_ling.no_hard_absorb
-			. = TRUE
-
-
-#undef TUTORIAL_OFF
-
-#undef TUTORIAL_BACKGROUND_START
-#undef TUTORIAL_BACKGROUND_NAME
-#undef TUTORIAL_BACKGROUND_EMPLOYER
-#undef TUTORIAL_BACKGROUND_BACKSTORY
-#undef TUTORIAL_BACKGROUND_END
-
-#undef TUTORIAL_OBJECTIVE_START
-#undef TUTORIAL_OBJECTIVE_ADD_GOAL
-#undef TUTORIAL_OBJECTIVE_EDIT_GOAL
-#undef TUTORIAL_OBJECTIVE_INTENSITIES
-#undef TUTORIAL_OBJECTIVE_SIM_OBJECTIVES
-#undef TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA
-#undef TUTORIAL_OBJECTIVE_END

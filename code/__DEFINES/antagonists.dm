@@ -167,7 +167,7 @@ GLOBAL_LIST_INIT(normal_employers, list(
 #define UPLINK_THEME_UNDERWORLD_MARKET "neutral"
 
 /// Checks if the given mob is a blood cultist
-#define IS_CULTIST(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/cult))
+#define IS_CULTIST(mob) (mob?.mind?.has_antag_datum(/datum/antagonist/cult) || mob?.mind?.has_antag_datum(/datum/antagonist/advanced_cult)) // NON-MODULE CHANGE
 
 /// Checks if the given mind is a leader of the monkey antagonists
 #define IS_MONKEY_LEADER(mind) mind?.has_antag_datum(/datum/antagonist/monkey/leader)

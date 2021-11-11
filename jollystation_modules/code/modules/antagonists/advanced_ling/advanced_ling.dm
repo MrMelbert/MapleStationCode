@@ -84,21 +84,14 @@
 	employer = ""
 	// Changelings have default 4 points, and gain 0.5 points per intensity level
 	starting_points = 4
-	advanced_panel_type = /datum/advanced_antag_panel/changeling
-	/// Our antag datum linked to our advanced antag.
+	advanced_panel_type = "_AdvancedChangelingPanel"
 	var/datum/antagonist/changeling/our_changeling
 	/// Whether our changeling can hard absorb (husk) people.
 	var/no_hard_absorb = FALSE
 
-/datum/advanced_antag_datum/changeling/New(datum/antagonist/linked_antag)
-	. = ..()
-	our_changeling = linked_antag
-
-/datum/advanced_antag_datum/changeling/Destroy()
-	our_changeling = null
-	. = ..()
-
 /datum/advanced_antag_datum/changeling/modify_antag_points()
+	var/datum/antagonist/changeling/our_changeling = linked_antagonist
+
 	starting_points = get_antag_points_from_goals()
 	our_changeling.geneticpoints = starting_points
 	our_changeling.total_geneticspoints = starting_points
@@ -124,6 +117,7 @@
 		return
 
 	if(no_hard_absorb)
+		var/datum/antagonist/changeling/our_changeling = linked_antagonist
 		our_changeling.all_powers -= /datum/action/changeling/absorb_dna
 		var/datum/action/changeling/absorb_dna/dna_power = locate() in our_changeling.purchasedpowers
 		dna_power?.Remove(linked_antagonist.owner.current)
@@ -137,3 +131,26 @@
 /datum/advanced_antag_datum/changeling/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are a mysterious changeling sent to [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
 	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+
+/datum/advanced_antag_datum/changeling/ui_data(mob/user)
+	. = ..()
+	var/datum/antagonist/changeling/our_changeling = linked_antagonist
+	.["cannot_absorb"] = no_hard_absorb
+	.["changeling_id"] = our_changeling.changeling_id
+
+/datum/advanced_antag_datum/changeling/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	/// Ling Stuff
+	switch(action)
+		if("set_ling_id")
+			our_changeling.changeling_id = params["changeling_id"]
+
+		if("toggle_absorb")
+			if(finalized)
+				return
+			no_hard_absorb = !no_hard_absorb
+
+	return TRUE

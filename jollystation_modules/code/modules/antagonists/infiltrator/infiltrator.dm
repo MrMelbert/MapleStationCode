@@ -107,10 +107,9 @@
 
 /datum/antagonist/traitor/advanced/intiltrator/pod_spawn/finalize_antag()
 	. = ..()
-	if(linked_advanced_datum.open_panels[owner.current])
-		SStgui.close_uis(linked_advanced_datum.open_panels[owner.current])
+	SStgui.close_user_uis(owner, linked_advanced_datum)
 	if(!spawn_infiltrator_pod(owner.current, silent))
-		message_admins("Cannot pod-spawn [owner.current] as infiltrator.")
+		message_admins("Cannot pod-spawn [owner.current] as infiltrator - they have not been launched anywhere. Consider sending them via pod manually.")
 
 /datum/antagonist/traitor/advanced/intiltrator/pod_spawn/proc/spawn_infiltrator_pod(mob/living/infiltrator, silent)
 	if(!istype(infiltrator))

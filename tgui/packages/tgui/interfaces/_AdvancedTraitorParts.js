@@ -1,9 +1,27 @@
-import { useBackend, useSharedState } from '../backend';
-import { Box, Button, Divider, Input, LabeledList, Modal, NumberInput, RoundGauge, Stack, Tabs, TextArea, Tooltip } from '../components';
+import { useBackend, useLocalState } from '../backend';
+import { Box, Button, Divider, Input, LabeledList, Modal, NumberInput, RoundGauge, Section, Stack, Tabs, TextArea, Tooltip } from '../components';
+import { Window } from '../layouts';
+
+export const AdvancedTraitorWindow = (props, context) => {
+  const {
+    children,
+    theme = 'jolly-syndicate',
+  } = props;
+  return (
+    <Window
+      title="Antagonist Goal Panel"
+      width={550}
+      height={650}
+      theme={theme}>
+      <Window.Content>
+        {children}
+      </Window.Content>
+    </Window>
+  );
+};
 
 export const AdvancedTraitorTutorialModal = (props, context) => {
   const { act } = useBackend(context);
-
   return (
     <Modal>
       <Box
@@ -23,7 +41,35 @@ export const AdvancedTraitorTutorialModal = (props, context) => {
   );
 };
 
-export const AdvancedTraitorPanelBackground = (props, context) => {
+export const AdvancedTraitorBackgroundSection = (props, context) => {
+  const { act, data } = useBackend(context);
+  const {
+    antag_type,
+    backstory_tutorial_text,
+  } = data;
+  const { children } = props;
+
+  return (
+    <Section
+      title={`${ antag_type } Background`}
+      buttons={(
+        <Button
+          content="Tutorial: Background"
+          color="good"
+          onClick={() => act('begin_background_tutorial')}
+        />
+      )}>
+      { backstory_tutorial_text && (
+        <AdvancedTraitorTutorialModal
+          text={backstory_tutorial_text}
+          tutorialAct="proceede_beginner_tutorial" />
+      )}
+      {children || <AdvancedTraitorBackground />}
+    </Section>
+  );
+};
+
+export const AdvancedTraitorBackground = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     name,
@@ -67,7 +113,58 @@ export const AdvancedTraitorPanelBackground = (props, context) => {
   );
 };
 
-export const AdvancedTraitorPanelGoals = (props, context) => {
+export const AdvancedTraitorGoalsSection = (props, context) => {
+  const { act, data } = useBackend(context);
+  const {
+    antag_type,
+    objective_tutorial_text,
+    finalize_text,
+    goals_finalized,
+    goals = [],
+  } = data;
+  const { children } = props;
+
+  return (
+    <Section
+      title={`${ antag_type } Objectives`}
+      buttons={(
+        <Button
+          content="Tutorial: Objectives"
+          color="good"
+          onClick={() => act('begin_objective_tutorial')}
+        />
+      )}>
+      { objective_tutorial_text && (
+        <AdvancedTraitorTutorialModal
+          text={objective_tutorial_text}
+          tutorialAct="proceede_objective_tutorial" />
+      )}
+      <Button
+        width="85px"
+        height="20px"
+        icon="plus"
+        content="Add Goal"
+        textAlign="center"
+        onClick={() => act('add_advanced_goal')} />
+      {children}
+      { goals_finalized === 0 && (
+        <Button.Confirm
+          width="112px"
+          height="20px"
+          icon="exclamation-circle"
+          content="Finalize Goals"
+          color="bad"
+          textAlign="center"
+          tooltip={finalize_text}
+          onClick={() => act('finalize_goals')} />)}
+      { !!goals.length && (
+        <AdvancedTraitorGoals />
+      )}
+    </Section>
+  );
+};
+
+export const AdvancedTraitorGoals = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     goals = [],
@@ -76,7 +173,7 @@ export const AdvancedTraitorPanelGoals = (props, context) => {
   const [
     selectedGoalID,
     setSelectedGoal,
-  ] = useSharedState(context, 'goals', goals[0]?.id);
+  ] = useLocalState(context, 'goals', goals[0]?.id);
 
   const selectedGoal = goals.find(goal => {
     return goal.id === selectedGoalID;

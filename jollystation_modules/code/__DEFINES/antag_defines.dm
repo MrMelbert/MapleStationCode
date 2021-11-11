@@ -27,6 +27,9 @@
 /// Number of influences gained per intensity level
 #define ADV_HERETIC_INFLUENCE_PER_INTENSITY 0.33
 
+#define ADV_CULTIST_MAX_SPELLS_NORUNE 1
+#define ADV_CULTIST_MAX_SPELLS_RUNE 5
+
 /// The initial number of points for changelings
 #define ADV_CHANGELING_INITIAL_POINTS 4
 /// The max number of points for changelings
@@ -89,3 +92,21 @@
 
 /// Infiltrator antag type
 #define ROLE_INFILTRATOR "Infiltrator"
+
+// Antag UI tutorial defines
+/// Defines for tutorial state.
+#define TUTORIAL_OFF -1
+/// Defines for state of the background tutorial.
+#define TUTORIAL_BACKGROUND_START 0
+#define TUTORIAL_BACKGROUND_NAME 1
+#define TUTORIAL_BACKGROUND_EMPLOYER 2
+#define TUTORIAL_BACKGROUND_BACKSTORY 3
+#define TUTORIAL_BACKGROUND_END (TUTORIAL_BACKGROUND_BACKSTORY+1)
+/// Defines for state of the objective tutorial.
+#define TUTORIAL_OBJECTIVE_START 0
+#define TUTORIAL_OBJECTIVE_ADD_GOAL 1
+#define TUTORIAL_OBJECTIVE_EDIT_GOAL 2
+#define TUTORIAL_OBJECTIVE_INTENSITIES 3
+#define TUTORIAL_OBJECTIVE_SIM_OBJECTIVES 4
+#define TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA 5
+#define TUTORIAL_OBJECTIVE_END (TUTORIAL_OBJECTIVE_SIM_OBJECTIVES_EXTRA+1)

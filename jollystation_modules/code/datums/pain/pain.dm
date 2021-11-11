@@ -739,9 +739,9 @@
  * Only sends a vague description of how much pain, instead of a detailed report -
  * it's up to the patient to elaborate on which limbs hurt and how much they hurt.
  *
- * adds text to [analyzer_text] list in place
+ * adds text to [render_list] list in place
  */
-/datum/pain/proc/on_analyzed(mob/living/carbon/source, mob/living/carbon/human/user, list/analyzer_text)
+/datum/pain/proc/on_analyzed(datum/source, list/render_list, advanced)
 	SIGNAL_HANDLER
 
 	var/amount = ""
@@ -771,10 +771,10 @@
 			tip += "Treat wounds and abate pain with long rest, anesthetic, cryogenics, or stasis, and heavy painkilling medication."
 
 	if(amount && tip)
-		analyzer_text += "<span class='alert ml-1'>"
-		analyzer_text += span_bold("Subject is experiencing [amount] pain. ")
-		analyzer_text += tip
-		analyzer_text += "</span>"
+		render_list += "<span class='alert ml-1'>"
+		render_list += span_bold("Subject is experiencing [amount] pain. ")
+		render_list += tip
+		render_list += "</span>\n"
 
 // ------ Pain debugging stuff. ------
 /datum/pain/vv_get_dropdown()

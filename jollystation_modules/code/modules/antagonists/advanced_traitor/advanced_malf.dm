@@ -71,16 +71,6 @@
 	name = "Advanced Malfunctioning AI"
 	employer = "The Syndicate"
 	starting_points = 20
-	/// Our antag datum linked to our advanced antag.
-	var/datum/antagonist/malf_ai/our_ai
-
-/datum/advanced_antag_datum/malf_ai/New(datum/antagonist/linked_antag)
-	. = ..()
-	our_ai = linked_antag
-
-/datum/advanced_antag_datum/malf_ai/Destroy()
-	our_ai = null
-	. = ..()
 
 /datum/advanced_antag_datum/malf_ai/modify_antag_points()
 	var/mob/living/silicon/ai/traitor_ai = linked_antagonist.owner.current
@@ -103,4 +93,5 @@
 
 /datum/advanced_antag_datum/malf_ai/set_employer(employer)
 	. = ..()
+	var/datum/antagonist/malf_ai/our_ai = linked_antagonist
 	our_ai.employer = src.employer

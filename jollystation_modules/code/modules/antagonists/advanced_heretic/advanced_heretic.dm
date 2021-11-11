@@ -90,21 +90,11 @@
 	name = "Advanced Heretic"
 	employer = "The Mansus"
 	starting_points = 0
-	advanced_panel_type = /datum/advanced_antag_panel/heretic
-	/// Our linked antagonist typecasted to heretic_plus.
-	var/datum/antagonist/heretic/advanced/our_heretic
+	advanced_panel_type = "_AdvancedHereticPanel"
 	/// Whether our heretic is allowed to ascend.
 	var/ascension_enabled = TRUE
 	/// Whether our heretic is allowed to sacrifice.
 	var/sacrifices_enabled = TRUE
-
-/datum/advanced_antag_datum/heretic/New(datum/antagonist/linked_antag)
-	. = ..()
-	our_heretic = linked_antag
-
-/datum/advanced_antag_datum/heretic/Destroy()
-	our_heretic = null
-	. = ..()
 
 /// Modify out codex with oour [starting_points].
 /datum/advanced_antag_datum/heretic/modify_antag_points()
@@ -146,6 +136,7 @@ You can still edit your goals after finalizing, but you will not be able to re-e
 	if(!.)
 		return
 
+	var/datum/antagonist/heretic/our_heretic = linked_antagonist
 	if(!ascension_enabled)
 		if(our_heretic.gain_knowledge(/datum/eldritch_knowledge/no_ascension))
 			log_codex_ciatrix("[key_name(our_heretic.owner.current)] gave up the ability to ascend.")
@@ -171,6 +162,30 @@ You can still edit your goals after finalizing, but you will not be able to re-e
 /datum/advanced_antag_datum/heretic/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are a cultic follower sent to [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
 	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+
+
+/datum/advanced_antag_datum/heretic/ui_data(mob/user)
+	. = ..()
+	.["can_ascend"] = ascension_enabled
+	.["can_sac"] = sacrifices_enabled
+
+/datum/advanced_antag_datum/heretic/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("toggle_ascension")
+			if(finalized)
+				return
+			ascension_enabled = !ascension_enabled
+
+		if("toggle_sacrificing")
+			if(finalized)
+				return
+			sacrifices_enabled = !sacrifices_enabled
+
+	return TRUE
 
 /datum/objective/sacrifice_ecult/adv
 	name = "sacrifice"

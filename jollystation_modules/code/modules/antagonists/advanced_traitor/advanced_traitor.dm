@@ -97,18 +97,8 @@
 	name = "Advanced Traitor"
 	employer = "The Syndicate"
 	starting_points = 8
-	/// Our antag datum linked to our advanced antag.
-	var/datum/antagonist/traitor/our_traitor
 	/// Hijack speed = (starting telecrystals * this modifier)
 	var/hijack_speed_modifier = 0.025
-
-/datum/advanced_antag_datum/traitor/New(datum/antagonist/linked_antag)
-	. = ..()
-	our_traitor = linked_antag
-
-/datum/advanced_antag_datum/traitor/Destroy()
-	our_traitor = null
-	. = ..()
 
 /datum/advanced_antag_datum/traitor/modify_antag_points()
 	var/datum/component/uplink/made_uplink = linked_antagonist.owner.find_syndicate_uplink()
@@ -131,4 +121,5 @@
 
 /datum/advanced_antag_datum/traitor/set_employer(employer)
 	. = ..()
+	var/datum/antagonist/traitor/our_traitor = linked_antagonist
 	our_traitor.employer = src.employer
