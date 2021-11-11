@@ -7,4 +7,4 @@
 /datum/techweb_node/cyber_organs
 	module_designs = list(
 		"cybernetic_cat_ears",
-	)
+		)
