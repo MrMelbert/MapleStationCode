@@ -1,14 +1,4 @@
 
-/obj/item/melee/cultblade/dagger/advanced
-	desc = "A special and strange dagger said to be used by cultists to prepare rituals, scribe runes, and combat heretics alike."
-
-/obj/item/melee/cultblade/dagger/advanced/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/advanced_ritual_item, can_scrape_runes = FALSE, can_move_buildings = FALSE)
-
-/obj/item/melee/cultblade/dagger/advanced/attack_self(mob/user)
-	SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_SELF, user) // Hacky hacky hacky
-
 /obj/item/clockwork_slab
 	name = "clockwork slab"
 	desc = "A slab of brass covered in cogs and gizmos used by agents of Rat'var to invoke their spells."
@@ -24,7 +14,9 @@
 
 /obj/item/clockwork_slab/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/advanced_ritual_item, required_cult_style = CULT_STYLE_RATVAR, turfs_that_boost_us = /turf/open/floor/bronze)
+	AddComponent(/datum/component/advanced_ritual_item, \
+		required_cult_style = CULT_STYLE_RATVAR, \
+		turfs_that_boost_us = /turf/open/floor/bronze)
 
 /datum/action/item_action/cult_dagger/slab
 	name = "Draw Clockwork Rune"
@@ -33,3 +25,6 @@
 	button_icon_state = "draw"
 	buttontooltipstyle = "cult"
 	background_icon_state = "bg_demon"
+
+/obj/item/stack/sheet/bronze/ten
+	amount = 10

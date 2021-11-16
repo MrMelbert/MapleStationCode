@@ -46,33 +46,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 /obj/item/reagent_containers/blood/skrell
 	blood_type = "S"
 
-// Skrell Tongue. Could use a sprite.
-/obj/item/organ/tongue/skrell
-	name = "skrellian tongue"
-	desc = "The source of the Skrellian people's warbling voice."
-	say_mod = "warbles"
-	var/static/list/languages_possible_skrell = typecacheof(list(
-		/datum/language/common,
-		/datum/language/uncommon,
-		/datum/language/draconic,
-		/datum/language/codespeak,
-		/datum/language/monkey,
-		/datum/language/narsie,
-		/datum/language/beachbum,
-		/datum/language/aphasia,
-		/datum/language/piratespeak,
-		/datum/language/moffic,
-		/datum/language/sylvan,
-		/datum/language/shadowtongue,
-		/datum/language/terrum,
-		/datum/language/nekomimetic,
-		/datum/language/skrell
-	))
-
-/obj/item/organ/tongue/skrell/Initialize(mapload)
-	. = ..()
-	languages_possible = languages_possible_skrell
-
 // Copper restores blood for Skrell instead of iron.
 /datum/reagent/copper/on_mob_life(mob/living/carbon/C, delta_time)
 	if((isskrell(C)) && (C.blood_volume < BLOOD_VOLUME_NORMAL))

@@ -153,9 +153,6 @@ GLOBAL_LIST_EMPTY(cult_themes)
 		. -= "Summon Cultist"
 		. -= "Boil Blood"
 
-/obj/item/stack/sheet/bronze/ten
-	amount = 10
-
 /datum/cult_theme/ratvarcult
 	name = CULT_STYLE_RATVAR
 	faction = "cult"

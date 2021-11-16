@@ -105,8 +105,8 @@
  */
 /datum/component/advanced_ritual_item/proc/destroy_girder(obj/structure/girder/cult/cult_girder, mob/living/cultist)
 	cultist.visible_message(
-		span_warning("[cultist] strikes [target] with [source]!"),
-		span_notice("You demolish [target].")
+		span_warning("[cultist] strikes [cult_girder] with [parent]!"),
+		span_notice("You demolish [cult_girder].")
 		)
 	new /obj/item/stack/sheet/runed_metal(cult_girder.drop_location(), 1)
 	qdel(cult_girder)

@@ -44,28 +44,3 @@
 								/datum/language/impdraconic = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/draconic = list(LANGUAGE_ATOM),
 							/datum/language/impdraconic = list(LANGUAGE_ATOM))
-
-// Edit to lizard tongues - lizard tongues can speak high draconic.
-/obj/item/organ/tongue/lizard
-	var/static/list/languages_possible_draconic = typecacheof(list(
-		/datum/language/common,
-		/datum/language/uncommon,
-		/datum/language/draconic,
-		/datum/language/codespeak,
-		/datum/language/monkey,
-		/datum/language/narsie,
-		/datum/language/beachbum,
-		/datum/language/aphasia,
-		/datum/language/piratespeak,
-		/datum/language/moffic,
-		/datum/language/sylvan,
-		/datum/language/shadowtongue,
-		/datum/language/terrum,
-		/datum/language/nekomimetic,
-		/datum/language/skrell,
-		/datum/language/impdraconic
-	))
-
-/obj/item/organ/tongue/lizard/Initialize(mapload)
-	. = ..()
-	languages_possible = languages_possible_draconic
