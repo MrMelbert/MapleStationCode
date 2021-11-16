@@ -46,12 +46,16 @@
 	var/datum/advanced_antag_datum/heretic/our_heretic = linked_advanced_datum
 	parts += printplayer(owner)
 	parts += "<b>[owner]</b> was a/an <b>[our_heretic.name]</b>[our_heretic.employer? ", a follower of <b>[our_heretic.employer]</b>":""]."
+	if(our_heretic.backstory)
+		parts += "<b>[owner]'s</b> backstory was the following: <br>[our_heretic.backstory]"
+
 	if(our_heretic.sacrifices_enabled)
 		parts += span_bold("Sacrifices Made: [total_sacrifices]")
 	else
 		parts += span_bold("The heretic gave up the rite of sacrifice!")
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
+		parts += "<b>[owner]'s</b> objectives:"
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
 			parts += goal.get_roundend_text(count++)

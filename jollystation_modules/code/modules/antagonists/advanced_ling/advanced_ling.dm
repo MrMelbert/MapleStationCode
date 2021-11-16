@@ -50,6 +50,7 @@
 		result += "<b>[owner]'s</b> backstory was the following: <br>[our_ling.backstory]"
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
+		result += "<b>[owner]'s</b> objectives:"
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
 			result += goal.get_roundend_text(count++)
@@ -67,7 +68,7 @@
 				bought_powers += power.name
 
 		if(bought_powers.len)
-			result += span_bold("The changeling aquired the following powers: [english_list(bought_powers)].")
+			result += span_bold("The changeling had the following powers: [english_list(bought_powers)].")
 		else
 			result += span_bold("The changeling never aquired any additional changeling powers!")
 	else

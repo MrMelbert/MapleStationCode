@@ -64,7 +64,8 @@ export const AdvancedTraitorBackgroundSection = (props, context) => {
           text={backstory_tutorial_text}
           tutorialAct="proceede_beginner_tutorial" />
       )}
-      {children || <AdvancedTraitorBackground />}
+      {children
+        || <AdvancedTraitorBackground employerName={props.employerName} />}
     </Section>
   );
 };
@@ -88,7 +89,7 @@ export const AdvancedTraitorBackground = (props, context) => {
               name: value,
             })} />
         </LabeledList.Item>
-        <LabeledList.Item label="Employer">
+        <LabeledList.Item label={props.employerName || "Employer"}>
           <Input
             width="40%"
             value={employer}

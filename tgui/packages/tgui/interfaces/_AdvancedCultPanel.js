@@ -1,7 +1,7 @@
 import { useBackend } from '../backend';
-import { Button, Input, LabeledList, Stack, TextArea } from '../components';
-import { AdvancedTraitorWindow } from './_AdvancedTraitorParts';
+import { Button, Dropdown, Input, LabeledList, Stack, TextArea } from '../components';
 import { AdvancedTraitorBackgroundSection } from './_AdvancedTraitorParts';
+import { AdvancedTraitorWindow } from './_AdvancedTraitorParts';
 import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedCultPanel = (props, context) => {
@@ -13,7 +13,9 @@ export const _AdvancedCultPanel = (props, context) => {
 
   return (
     <AdvancedTraitorWindow theme="abductor">
-      <AdvancedTraitorBackgroundSection />
+      <AdvancedTraitorBackgroundSection>
+        <AdvancedCultBackground />
+      </AdvancedTraitorBackgroundSection>
       <AdvancedTraitorGoalsSection>
         <Button.Checkbox
           height="20px"
@@ -29,15 +31,17 @@ export const _AdvancedCultPanel = (props, context) => {
   );
 };
 
-export const AdvancedChangelingBackground = (props, context) => {
+export const AdvancedCultBackground = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     name,
     employer,
     backstory,
-    changeling_id,
+    cult_style,
+    cult_style_options = [],
     goals_finalized,
   } = data;
+
   return (
     <Stack vertical>
       <Stack.Item>
@@ -53,7 +57,7 @@ export const AdvancedChangelingBackground = (props, context) => {
                     name: value,
                   })} />
               </LabeledList.Item>
-              <LabeledList.Item label="Employer">
+              <LabeledList.Item label="Diety">
                 <Input
                   width="90%"
                   value={employer}
@@ -66,13 +70,14 @@ export const AdvancedChangelingBackground = (props, context) => {
           </Stack.Item>
           <Stack.Item width="40%">
             <LabeledList align="center">
-              <LabeledList.Item label="Changeling ID">
-                <Input
-                  value={changeling_id}
-                  placeholder={changeling_id}
+              <LabeledList.Item label="Cult Style">
+                <Dropdown
+                  width="100%"
+                  selected={cult_style}
+                  options={cult_style_options}
                   disabled={goals_finalized}
-                  onInput={(e, value) => act('set_ling_id', {
-                    changeling_id: value,
+                  onSelected={value => act('set_cult_style', {
+                    cult_style: value,
                   })} />
               </LabeledList.Item>
             </LabeledList>

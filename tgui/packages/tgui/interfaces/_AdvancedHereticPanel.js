@@ -14,7 +14,7 @@ export const _AdvancedHereticPanel = (props, context) => {
 
   return (
     <AdvancedTraitorWindow theme="wizard">
-      <AdvancedTraitorBackgroundSection />
+      <AdvancedTraitorBackgroundSection employerName="Deity" />
       <AdvancedTraitorGoalsSection>
         <Button.Checkbox
           width="140px"

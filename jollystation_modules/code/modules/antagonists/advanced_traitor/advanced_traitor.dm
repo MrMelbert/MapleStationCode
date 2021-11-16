@@ -72,6 +72,7 @@
 			purchases += log.generate_render(FALSE)
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
+		result += "<b>[owner]'s</b> objectives:"
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
 			result += goal.get_roundend_text(count++)

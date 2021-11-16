@@ -28,7 +28,10 @@
 #define ADV_HERETIC_INFLUENCE_PER_INTENSITY 0.33
 
 #define ADV_CULTIST_MAX_SPELLS_NORUNE 1
-#define ADV_CULTIST_MAX_SPELLS_RUNE 5
+#define ADV_CULTIST_MAX_SPELLS_RUNE 4
+
+#define CULT_STYLE_NARSIE "Nar'sian Cult"
+#define CULT_STYLE_RATVAR "Rat'varian Cult"
 
 /// The initial number of points for changelings
 #define ADV_CHANGELING_INITIAL_POINTS 4

@@ -72,29 +72,36 @@
 		// Tutorial stuff
 		if("begin_background_tutorial")
 			background_tutorial_state = (background_tutorial_state == TUTORIAL_OFF ? TUTORIAL_BACKGROUND_START : TUTORIAL_OFF)
+			. = TRUE
 
 		if("begin_objective_tutorial")
 			objective_tutorial_state = (objective_tutorial_state == TUTORIAL_OFF ? TUTORIAL_OBJECTIVE_START : TUTORIAL_OFF)
+			. = TRUE
 
 		if("proceede_beginner_tutorial")
 			background_tutorial_state++
 			if(background_tutorial_state == TUTORIAL_BACKGROUND_END)
 				background_tutorial_state = TUTORIAL_OFF
+			. = TRUE
 
 		if("proceede_objective_tutorial")
 			objective_tutorial_state++
 			if(objective_tutorial_state == TUTORIAL_OBJECTIVE_END)
 				objective_tutorial_state = TUTORIAL_OFF
+			. = TRUE
 
 		/// Background stuff
 		if("set_name")
 			set_name(params["name"])
+			. = TRUE
 
 		if("set_employer")
 			set_employer(params["employer"])
+			. = TRUE
 
 		if("set_backstory")
 			set_backstory(params["backstory"])
+			. = TRUE
 
 		/// Goal Stuff
 		if("add_advanced_goal")
@@ -103,21 +110,26 @@
 				return
 
 			add_advanced_goal()
+			. = TRUE
 
 		if("remove_advanced_goal")
 			if(LAZYLEN(our_goals) == 1)
 				to_chat(usr, "You can't remove your last goal.")
 				return
 			remove_advanced_goal(edited_goal)
+			. = TRUE
 
 		if("set_goal_text")
 			edited_goal.set_goal_text(params["newgoal"])
+			. = TRUE
 
 		if("set_goal_intensity")
 			edited_goal.set_intensity(params["newlevel"])
+			. = TRUE
 
 		if("set_note_text")
 			edited_goal.set_note_text(params["newtext"])
+			. = TRUE
 
 		if("add_similar_objective")
 			if(LAZYLEN(edited_goal.similar_objectives) >= ADV_TRAITOR_MAX_SIMILAR_OBJECTIVES)
@@ -132,6 +144,7 @@
 			var/datum/objective/objective_to_add = new new_objective_type
 			objective_to_add.admin_edit(usr)
 			edited_goal.add_similar_objective(objective_to_add)
+			. = TRUE
 
 		if("remove_similar_objective")
 			var/datum/objective/removed_objective = locate(params["objective_ref"]) in edited_goal.similar_objectives
@@ -139,21 +152,24 @@
 				CRASH("Advanced_traitor_panel passed a reference to an objective belonging to a goal that could not be located!")
 
 			edited_goal.remove_similar_objective(removed_objective)
+			. = TRUE
 
 		if("clear_sim_objectives")
 			QDEL_LIST(edited_goal.similar_objectives)
+			. = TRUE
 
 		if("toggle_check_all_objectives")
 			edited_goal.check_all_objectives = !edited_goal.check_all_objectives
+			. = TRUE
 
 		if("toggle_always_succeed")
 			edited_goal.always_succeed = !edited_goal.always_succeed
+			. = TRUE
 
 		/// Finalize
 		if("finalize_goals")
-			post_finalize_actions()
+			. = post_finalize_actions()
 
-	return TRUE
 
 /datum/advanced_antag_datum/proc/get_backstory_tutorial_text(current_step)
 	switch(current_step)

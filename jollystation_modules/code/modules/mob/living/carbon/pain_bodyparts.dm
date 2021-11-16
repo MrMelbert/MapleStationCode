@@ -159,6 +159,40 @@
 	pain = PAIN_CHEST_MAX
 	bodypart_pain_modifier = 0.5
 
+// Chests can't go below 100 max_stamina_damage for stam crit reasons
+// So this override is here until stamina damage is improved a bit
+/obj/item/bodypart/chest/on_gain_pain_effects(amount)
+	if(!owner)
+		return FALSE
+
+	var/base_max_stamina_damage = initial(max_stamina_damage)
+
+	switch(pain)
+		if(10 to 25)
+			max_stamina_damage = base_max_stamina_damage - 5
+		if(25 to 50)
+			max_stamina_damage = base_max_stamina_damage - 12
+		if(50 to 65)
+			max_stamina_damage = base_max_stamina_damage - 20
+
+	return TRUE
+
+/obj/item/bodypart/chest/on_lose_pain_effects(amount)
+	if(!owner)
+		return FALSE
+
+	var/base_max_stamina_damage = initial(max_stamina_damage)
+	switch(pain)
+		if(0 to 10)
+			max_stamina_damage = base_max_stamina_damage
+		if(10 to 25)
+			max_stamina_damage = base_max_stamina_damage - 5
+		if(25 to 50)
+			max_stamina_damage = base_max_stamina_damage - 12
+
+	return TRUE
+
+
 /obj/item/bodypart/chest/pain_feedback(delta_time, healing_pain)
 	if(!owner || !pain)
 		return FALSE

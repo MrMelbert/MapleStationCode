@@ -57,6 +57,7 @@
 		result += "<b>[owner]'s</b> backstory was the following: <br>[linked_advanced_datum.backstory]"
 
 	if(LAZYLEN(linked_advanced_datum.our_goals))
+		result += "<b>[owner]'s</b> objectives:"
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
 			result += goal.get_roundend_text(count++)
