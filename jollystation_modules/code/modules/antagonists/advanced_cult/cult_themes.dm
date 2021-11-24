@@ -8,6 +8,8 @@ GLOBAL_LIST_EMPTY(cult_themes)
 /datum/cult_theme
 	/// The name of the theme. Something like "Nar'sian cult".
 	var/name
+	/// Default deity of the theme.
+	var/default_deity
 	/// The faction this cult gives.
 	var/faction
 	/// The language this cult gives. Typepath.
@@ -78,6 +80,7 @@ GLOBAL_LIST_EMPTY(cult_themes)
 
 /datum/cult_theme/proc/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
 	if(!LAZYLEN(GLOB.rune_types))
+		GLOB.rune_types = list()
 		var/static/list/possible_rune_types = (subtypesof(/obj/effect/rune) - /obj/effect/rune/malformed)
 		for(var/obj/effect/rune/rune as anything in possible_rune_types)
 			GLOB.rune_types[initial(rune.cultist_name)] = rune
@@ -86,6 +89,7 @@ GLOBAL_LIST_EMPTY(cult_themes)
 
 /datum/cult_theme/narsie
 	name = CULT_STYLE_NARSIE
+	default_deity = "Nar'sie"
 	faction = "cult"
 	language = /datum/language/narsie
 	on_gain_sound = 'sound/ambience/antag/bloodcult.ogg'
@@ -155,6 +159,7 @@ GLOBAL_LIST_EMPTY(cult_themes)
 
 /datum/cult_theme/ratvarcult
 	name = CULT_STYLE_RATVAR
+	default_deity = "Rat'var"
 	faction = "cult"
 	on_gain_sound = 'sound/magic/clockwork/ark_activation.ogg'
 	ritual_item = /obj/item/clockwork_slab
@@ -166,4 +171,4 @@ GLOBAL_LIST_EMPTY(cult_themes)
 	)
 
 /datum/cult_theme/ratvarcult/on_chose_breakdown(mob/living/cultist)
-	to_chat(cultist, span_cultbold("The [name] is a cult that focuses on stealth and cunning."))
+	to_chat(cultist, span_heavy_brass("The [name] is a cult that focuses on stealth and cunning."))

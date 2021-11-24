@@ -6,17 +6,17 @@
 	var/can_scrape_runes = TRUE
 	/// Whether we can hit cult buildings to unanchor them
 	var/can_move_buildings = TRUE
+
+	var/examine_message
 	/// What antag datum is required to use this
 	var/required_antag_datum
-	/// What cult style is required to use this
-	var/required_cult_style
 	/// A list of turfs that we scribe runes at double speed on
 	var/list/turfs_that_boost_us
 
 /datum/component/advanced_ritual_item/Initialize(
 	can_scrape_runes = TRUE,
 	can_move_buildings = TRUE,
-	required_cult_style = CULT_STYLE_NARSIE,
+	examine_message,
 	required_antag_datum = /datum/antagonist/advanced_cult,
 	turfs_that_boost_us = /turf/open/floor/engine/cult,
 	)
@@ -24,9 +24,9 @@
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
+	src.examine_message = examine_message
 	src.can_scrape_runes = can_scrape_runes
 	src.can_move_buildings = can_move_buildings
-	src.required_cult_style = required_cult_style
 	src.required_antag_datum = required_antag_datum
 
 	if(islist(turfs_that_boost_us))
@@ -36,7 +36,9 @@
 
 /datum/component/advanced_ritual_item/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, .proc/try_scribe_rune)
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
+
+	if(examine_message)
+		RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
 
 	if(can_scrape_runes || can_move_buildings)
 		RegisterSignal(parent, COMSIG_ITEM_ATTACK_OBJ, .proc/try_hit_thing)
@@ -50,11 +52,11 @@
  * Signal proc for [COMSIG_PARENT_EXAMINE]. Tells the examiner, if they're someone
  * who can use the item (pass the antag check), that it's a valid ritual item.
  */
-/datum/component/advanced_ritual_item/proc/on_examine(mob/examiner, list/examine_text)
+/datum/component/advanced_ritual_item/proc/on_examine(datum/source, mob/examiner, list/examine_text)
 	if(!check_antag_datum(examiner))
 		return
 
-	examine_text += span_cult("[parent] is the ritual item for your cult, and you can use it to inscribe runes of power.")
+	examine_text += examine_message
 
 /*
  * Signal proc for [COMSIG_ITEM_ATTACK_SELF]. Allows the user to scribe runes.
@@ -154,7 +156,7 @@
  */
 /datum/component/advanced_ritual_item/proc/check_antag_datum(mob/living/cultist)
 	var/datum/antagonist/advanced_cult/cult = cultist.mind.has_antag_datum(required_antag_datum)
-	return (cult && (cult.cultist_style.name == required_cult_style))
+	return (cult && istype(parent, cult.cultist_style.ritual_item))
 
 /*
  * Wraps the entire act of [proc/actually_scribe_rune] to ensure it properly enables or disables [var/drawing_a_rune]

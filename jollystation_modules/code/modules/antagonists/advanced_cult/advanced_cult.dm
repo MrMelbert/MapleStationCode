@@ -190,6 +190,7 @@
 			if(theme)
 				theme.on_chose_breakdown(usr)
 				our_cultist.cultist_style = theme
+				our_cultist.linked_advanced_datum.set_employer(theme.default_deity)
 			else
 				to_chat(usr, "Something went wrong and you selected an invalid theme.")
 				stack_trace("[usr] selected an invalid cult theme ([params["cult_style"]])!")
