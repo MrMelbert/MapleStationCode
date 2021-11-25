@@ -13,9 +13,9 @@
 
 /obj/item/clockwork_slab/Initialize(mapload)
 	. = ..()
-	var/examine_text = {"Allows the scribing of sigils and access to the powers of the cult of Rat'var.\n
-Can be used on <b>cult structures</b> to move them around.\n
-Can also be used on <b>sigils or runes</b> to clear them away.\n
+	var/examine_text = {"Allows the scribing of sigils and access to the powers of the cult of Rat'var.
+Can be used on <b>cult structures</b> to move them around.
+Can also be used on <b>sigils or runes</b> to clear them away.
 Can block melee attacks for followers of Rat'var when held in hand."}
 
 	AddComponent(/datum/component/cult_ritual_item/advanced, \
@@ -38,8 +38,8 @@ Can block melee attacks for followers of Rat'var when held in hand."}
 	return FALSE
 
 /datum/action/item_action/ritual_item/slab
-	name = "Draw Clockwork Rune"
-	desc = "Use the clockwork slab to create a powerful rune."
+	name = "Draw Clockwork Sigil"
+	desc = "Use the clockwork slab to create a powerful sigil."
 	icon_icon = 'icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "draw"
 	buttontooltipstyle = "cult"

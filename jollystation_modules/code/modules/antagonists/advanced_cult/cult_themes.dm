@@ -33,6 +33,7 @@ GLOBAL_LIST_EMPTY(cult_themes)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement on_chose_breakdown!")
 
+/// Helper proc to use that gets a fitting span for the cult theme.
 /datum/cult_theme/proc/our_cult_span(message, bold = FALSE, italics = FALSE, large = FALSE)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement cult_span!")

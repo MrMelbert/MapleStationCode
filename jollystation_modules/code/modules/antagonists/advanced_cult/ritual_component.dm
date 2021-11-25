@@ -15,7 +15,7 @@
 
 	var/list/allowed_runes = our_theme.get_allowed_runes(user_antag)
 	if(!LAZYLEN(allowed_runes))
-		to_chat(cultist, span_cult("There appears to be no runes to scribe. Contact your god about this!"))
+		to_chat(cultist, "There appears to be no runes to scribe. Contact your god about this!")
 		stack_trace("[type] - [cultist] attempted to scribe a rune, but the global rune list is empty!")
 		return FALSE
 

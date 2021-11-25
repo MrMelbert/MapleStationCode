@@ -51,7 +51,7 @@
 /datum/cult_theme/ratvarcult/get_start_making_rune_text(mob/living/cultist)
 	var/list/text = list()
 	text["visible_message"] = span_warning("[cultist] begins outlining out a strange design!")
-	text["self_message"] = span_brass("You begin drawing a sigil of the Ratvar.")
+	text["self_message"] = span_brass("You begin drawing a sigil of Ratvar.")
 	return text
 
 /datum/cult_theme/ratvarcult/get_end_making_rune_text(mob/living/cultist)
