@@ -10,6 +10,10 @@ GLOBAL_LIST_EMPTY(cult_themes)
 	var/name
 	/// Default deity of the theme.
 	var/default_deity
+	/// Whether scribing a rune takes blood / causes damage.
+	var/scribing_takes_blood = TRUE
+	/// Sound that plays when this cult draws a rune
+	var/scribe_sound
 	/// The faction this cult gives.
 	var/faction
 	/// The language this cult gives. Typepath.
@@ -20,15 +24,23 @@ GLOBAL_LIST_EMPTY(cult_themes)
 	var/obj/item/ritual_item
 	/// The materials this cult uses to make things. Typepath.
 	var/obj/item/ritual_materials
+	/// List of runes this cult theme can invoke.
 	var/list/allowed_runes
 
 /// Called when the cult theme is chosen in the UI.
 /// Gives a short explanantion of the cult type.
 /datum/cult_theme/proc/on_chose_breakdown(mob/living/cultist)
+	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement on_chose_breakdown!")
+
+/datum/cult_theme/proc/our_cult_span(message, bold = FALSE, italics = FALSE, large = FALSE)
+	SHOULD_CALL_PARENT(FALSE)
+	CRASH("Cult theme [type] did not implement cult_span!")
 
 /// Called when a new cultist is made.
 /datum/cult_theme/proc/on_cultist_made(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
+	SHOULD_CALL_PARENT(TRUE)
+
 	if(faction)
 		cultist.faction |= faction
 
@@ -40,10 +52,14 @@ GLOBAL_LIST_EMPTY(cult_themes)
 
 /// Called when a new cult team is made. [cultist_mind] is the leader of the cult.
 /datum/cult_theme/proc/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/cultist_mind)
+	SHOULD_CALL_PARENT(TRUE)
+
 	equip_cultist(cultist_mind.current)
 
 /// Called when a cultist is removed from the cult.
 /datum/cult_theme/proc/on_cultist_lost(mob/living/cultist)
+	SHOULD_CALL_PARENT(TRUE)
+
 	if(faction)
 		cultist.faction -= faction
 
@@ -53,6 +69,8 @@ GLOBAL_LIST_EMPTY(cult_themes)
 
 /// Called when a cult leader creates a new cult team.
 /datum/cult_theme/proc/equip_cultist(mob/living/cultist)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
 	if(!ishuman(cultist))
 		return
 	var/mob/living/carbon/human/human_cultist = cultist
@@ -76,99 +94,25 @@ GLOBAL_LIST_EMPTY(cult_themes)
 
 /// Called when the cultist is made.
 /datum/cult_theme/proc/give_spells(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
+	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement give_spells!")
 
 /datum/cult_theme/proc/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
-	if(!LAZYLEN(GLOB.rune_types))
-		GLOB.rune_types = list()
-		var/static/list/possible_rune_types = (subtypesof(/obj/effect/rune) - /obj/effect/rune/malformed)
-		for(var/obj/effect/rune/rune as anything in possible_rune_types)
-			GLOB.rune_types[initial(rune.cultist_name)] = rune
+	SHOULD_CALL_PARENT(TRUE)
+	return LAZYCOPY(allowed_runes)
 
-	return allowed_runes.Copy()
+/datum/cult_theme/proc/get_start_making_rune_text(mob/living/cultist)
+	SHOULD_CALL_PARENT(FALSE)
+	CRASH("Cult theme [type] did not implement get_start_making_rune_text!")
 
-/datum/cult_theme/narsie
-	name = CULT_STYLE_NARSIE
-	default_deity = "Nar'sie"
-	faction = "cult"
-	language = /datum/language/narsie
-	on_gain_sound = 'sound/ambience/antag/bloodcult.ogg'
-	ritual_item = /obj/item/melee/cultblade/dagger/advanced
-	ritual_materials = /obj/item/stack/sheet/runed_metal/ten
-	allowed_runes =  list(
-		"Offer",
-		"Empower",
-		"Teleport",
-		"Revive",
-		"Barrier",
-		"Summon Cultist",
-		"Boil Blood",
-		"Spirit Realm"
-	)
+/datum/cult_theme/proc/get_end_making_rune_text(mob/living/cultist)
+	SHOULD_CALL_PARENT(FALSE)
+	CRASH("Cult theme [type] did not implement get_end_making_rune_text!")
 
-/datum/cult_theme/narsie/on_chose_breakdown(mob/living/cultist)
-	to_chat(cultist, span_cultbold("The [name] is a cult that focuses on strength and brute force."))
+/datum/cult_theme/proc/get_start_invoking_magic_text(added_magic)
+	SHOULD_CALL_PARENT(FALSE)
+	CRASH("Cult theme [type] did not implement get_start_invoking_magic_text!")
 
-/datum/cult_theme/narsie/on_cultist_made(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
-	. = ..()
-	if(!ishuman(cultist))
-		return
-
-	var/datum/team/advanced_cult/our_team = cultist_datum.get_team()
-	if(our_team.cult_risen)
-		our_team.arise_given_cultist(cultist, no_sound = TRUE)
-	if(our_team.cult_ascendent)
-		our_team.ascend_given_cultist(cultist, no_sound = TRUE)
-
-/datum/cult_theme/narsie/on_cultist_lost(mob/living/cultist)
-	. = ..()
-	if(!ishuman(cultist))
-		return
-
-	var/mob/living/carbon/human/human_cultist = cultist
-	var/obj/item/organ/eyes/cultist_eyes = human_cultist.getorganslot(ORGAN_SLOT_EYES)
-	human_cultist.eye_color = cultist_eyes.old_eye_color
-	human_cultist.dna.update_ui_block(DNA_EYE_COLOR_BLOCK)
-	REMOVE_TRAIT(human_cultist, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
-	human_cultist.remove_overlay(HALO_LAYER)
-	human_cultist.update_body()
-
-/datum/cult_theme/narsie/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/cultist_mind)
-	cult_team.arise_button = new()
-	cult_team.arise_button.Grant(cultist_mind.current)
-	cult_team.ascend_button = new()
-	cult_team.ascend_button.Grant(cultist_mind.current)
-
-/datum/cult_theme/narsie/give_spells(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
-	var/datum/action/innate/cult/blood_magic/advanced/new_magic = new()
-	for(var/datum/action/innate/cult/blood_spell/magic as anything in subtypesof(/datum/action/innate/cult/blood_spell))
-		if(initial(magic.blacklisted_by_default))
-			continue
-		LAZYADD(new_magic.all_allowed_spell_types, magic)
-	cultist_datum.our_magic = new_magic
-	cultist_datum.our_magic.Grant(cultist)
-
-/datum/cult_theme/narsie/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
-	. = ..()
-	var/datum/advanced_antag_datum/cultist/cultist = cultist_datum.linked_advanced_datum
-	if(cultist.no_conversion)
-		. -= "Offer"
-		. -= "Revive"
-		. -= "Summon Cultist"
-		. -= "Boil Blood"
-
-/datum/cult_theme/ratvarcult
-	name = CULT_STYLE_RATVAR
-	default_deity = "Rat'var"
-	faction = "cult"
-	on_gain_sound = 'sound/magic/clockwork/ark_activation.ogg'
-	ritual_item = /obj/item/clockwork_slab
-	ritual_materials = /obj/item/stack/sheet/bronze/ten
-	allowed_runes =  list(
-		"Offer",
-		"Empower",
-		"Teleport",
-	)
-
-/datum/cult_theme/ratvarcult/on_chose_breakdown(mob/living/cultist)
-	to_chat(cultist, span_heavy_brass("The [name] is a cult that focuses on stealth and cunning."))
+/datum/cult_theme/proc/get_end_invoking_magic_text(added_magic)
+	SHOULD_CALL_PARENT(FALSE)
+	CRASH("Cult theme [type] did not implement get_end_invoking_magic_text!")

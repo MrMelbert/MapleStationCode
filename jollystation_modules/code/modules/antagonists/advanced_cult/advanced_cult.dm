@@ -21,7 +21,6 @@
 	var/datum/team/advanced_cult/team
 	/// Our magic action (lets us invoke spells and stuff)
 	var/datum/action/innate/our_magic
-	var/list/possible_runes
 
 /datum/antagonist/advanced_cult/Destroy()
 	. = ..()
@@ -82,12 +81,10 @@
 	linked_advanced_datum.greet_message(owner.current)
 
 /datum/antagonist/advanced_cult/master/finalize_antag()
-	. = ..()
 	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum
 	team = new(owner)
 	team.no_conversion = our_cultist.no_conversion
-
-	possible_runes = cultist_style.get_allowed_runes(src)
+	. = ..()
 
 /datum/antagonist/advanced_cult/master/roundend_report()
 	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum

@@ -10,18 +10,18 @@
 	force = 4
 	throwforce = 6
 	block_chance = 25 // The slab protects
-	actions_types = list(/datum/action/item_action/cult_dagger/slab)
 
 /obj/item/clockwork_slab/Initialize(mapload)
 	. = ..()
 	var/examine_text = {"Allows the scribing of sigils and access to the powers of the cult of Rat'var.\n
-		Can be used on <b>cult structures</b> to move them around.\n
-		Can also be used on <b>sigils or runes</b> to clear them away.\n
-		Can block melee attacks for followers of Rat'var when held in hand."}
+Can be used on <b>cult structures</b> to move them around.\n
+Can also be used on <b>sigils or runes</b> to clear them away.\n
+Can block melee attacks for followers of Rat'var when held in hand."}
 
-	AddComponent(/datum/component/advanced_ritual_item, \
-		examine_message = span_brass(examine_text), \
-		turfs_that_boost_us = /turf/open/floor/bronze)
+	AddComponent(/datum/component/cult_ritual_item/advanced, \
+		span_brass(examine_text), \
+		/datum/action/item_action/ritual_item/slab, \
+		/turf/open/floor/bronze)
 
 /obj/item/clockwork_slab/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
 	var/block_message = "[owner] blocks [attack_text] with [src]"
@@ -37,7 +37,7 @@
 
 	return FALSE
 
-/datum/action/item_action/cult_dagger/slab
+/datum/action/item_action/ritual_item/slab
 	name = "Draw Clockwork Rune"
 	desc = "Use the clockwork slab to create a powerful rune."
 	icon_icon = 'icons/mob/actions/actions_cult.dmi'

@@ -45,7 +45,7 @@
 	SIGNAL_HANDLER
 
 	if(!isliving(user))
-	return
+		return
 
 	if(effects_we_clear[target.type]) // Make sure we get all subtypes and everything
 		INVOKE_ASYNC(src, .proc/do_remove_effect, target, user)

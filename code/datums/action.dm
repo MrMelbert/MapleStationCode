@@ -531,7 +531,7 @@
 	if(owner.can_equip(target_item, ITEM_SLOT_HANDS))
 		owner.temporarilyRemoveItemFromInventory(target_item)
 		owner.put_in_hands(target_item)
-		target_item.attack_self(oner)
+		target_item.attack_self(owner)
 		return
 
 	if(!isliving(owner))

@@ -9,6 +9,10 @@
 /// Trait for people who were recently funnyhanded and won't recieve any side effects (but will recieve stamina damage)
 #define TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS "no_funny_hand_side_effects"
 
+// Sic semper tyrannis (disables fuu majin)
+/datum/action/innate/cult/blood_spell/stun
+	blacklisted_by_default = TRUE
+
 /datum/action/innate/cult/blood_spell/disable
 	name = "Disable"
 	desc = "Empowers your hand to mute and cause heavy stamina damage to a victim on contact. Has multiple uses."
