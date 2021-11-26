@@ -3,6 +3,7 @@
 	desc = "Empowers a slab to disable and mute targets when hit."
 	examine_hint = "deal heavy stamina damage and knock down targets hit. Non-mindshielded targets will also be silenced."
 	button_icon_state = "Kindle"
+	invocation = "Cb'jre Bh'gntr!"
 	charges = 4
 
 /datum/action/item_action/cult/clock_spell/disable/activate()

@@ -27,9 +27,11 @@
 /// Number of influences gained per intensity level
 #define ADV_HERETIC_INFLUENCE_PER_INTENSITY 0.33
 
+/// The max number of spells a cultist can invoke with and without a rune.
 #define ADV_CULTIST_MAX_SPELLS_NORUNE 1
 #define ADV_CULTIST_MAX_SPELLS_RUNE 4
 
+/// Styles of cult.
 #define CULT_STYLE_NARSIE "Nar'sian Cult"
 #define CULT_STYLE_RATVAR "Rat'varian Cult"
 

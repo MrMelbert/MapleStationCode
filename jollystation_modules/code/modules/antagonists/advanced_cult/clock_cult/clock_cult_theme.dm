@@ -3,6 +3,7 @@
 	name = CULT_STYLE_RATVAR
 	default_deity = "Rat'var"
 	faction = "cult"
+	language = /datum/language/ratvarian
 	scribing_takes_blood = FALSE
 	scribe_sound = 'sound/items/sheath.ogg'
 	on_gain_sound = 'sound/magic/clockwork/ark_activation.ogg'
