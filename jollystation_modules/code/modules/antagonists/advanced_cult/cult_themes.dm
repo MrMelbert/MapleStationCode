@@ -20,6 +20,10 @@ GLOBAL_LIST_EMPTY(cult_themes)
 	var/datum/language/language
 	/// The sound effect that is played when someone joins the cult.
 	var/on_gain_sound
+	/// The type of magic invoker we give to cultists. Typepath.
+	var/datum/action/innate/cult/blood_magic/advanced/magic_type
+	/// The parent paths of magic spells we can invoke. Typepath.
+	var/list/datum/action/magic_subtypes
 	/// The item this cult uses to make rituals. Typepath.
 	var/obj/item/ritual_item
 	/// The materials this cult uses to make things. Typepath.
@@ -95,9 +99,20 @@ GLOBAL_LIST_EMPTY(cult_themes)
 
 /// Called when the cultist is made.
 /datum/cult_theme/proc/give_spells(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
-	SHOULD_CALL_PARENT(FALSE)
-	CRASH("Cult theme [type] did not implement give_spells!")
+	var/datum/action/innate/cult/blood_magic/advanced/new_magic = new magic_type()
+	var/list/possible_spell_types = list()
+	for(var/type in magic_subtypes)
+		for(var/subtype in subtypesof(type))
+			possible_spell_types |= subtype
 
+	for(var/datum/action/innate/cult/magic as anything in possible_spell_types)
+		if(initial(magic.blacklisted_by_default))
+			continue
+		LAZYSET(new_magic.all_allowed_spell_types, initial(magic.name), magic)
+	cultist_datum.our_magic = new_magic
+	cultist_datum.our_magic.Grant(cultist)
+
+/// Called when a cultist scribes a rune.
 /datum/cult_theme/proc/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
 	SHOULD_CALL_PARENT(TRUE)
 	return LAZYCOPY(allowed_runes)
@@ -110,10 +125,10 @@ GLOBAL_LIST_EMPTY(cult_themes)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement get_end_making_rune_text!")
 
-/datum/cult_theme/proc/get_start_invoking_magic_text(added_magic)
+/datum/cult_theme/proc/get_start_invoking_magic_text(added_magic, atom/target)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement get_start_invoking_magic_text!")
 
-/datum/cult_theme/proc/get_end_invoking_magic_text(added_magic)
+/datum/cult_theme/proc/get_end_invoking_magic_text(added_magic, atom/target)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement get_end_invoking_magic_text!")

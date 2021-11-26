@@ -2,7 +2,7 @@
 /// Simple define for "remove spell" in the input list.
 #define REMOVE_SPELL_ENTRY "(REMOVE SPELL)"
 
-/datum/action/innate/cult/blood_spell
+/datum/action/innate/cult
 	/// Spells that are not included in the spell list by default.
 	var/blacklisted_by_default = FALSE
 
@@ -55,7 +55,16 @@
 	if(QDELETED(src) || owner.incapacitated() || !added_spell || (rune && !(rune in range(1, owner))) || (spells.len >= limit))
 		return
 
-	to_chat(owner, our_theme.get_start_invoking_magic_text(initial(added_spell.name)))
+	var/requires_item = ispath(added_spell, /datum/action/item_action)
+	var/obj/item/ritual_item
+
+	if(requires_item)
+		ritual_item = owner.is_holding_item_of_type(our_theme.ritual_item)
+		if(!ritual_item)
+			to_chat(owner, our_theme.our_cult_span("This type of magic needs to be invoked into a ritual item!", italics = TRUE))
+			return
+
+	to_chat(owner, our_theme.get_start_invoking_magic_text(initial(added_spell.name), ritual_item))
 	SEND_SOUND(owner, sound(our_theme.scribe_sound, 0, 1, 10))
 
 	if(channeling)
@@ -67,18 +76,46 @@
 		channeling = FALSE
 		return
 
+	if(QDELETED(src) || owner.incapacitated() || (rune && !(rune in range(1, owner))) || (spells.len >= limit))
+		channeling = FALSE
+		return
+
+	if(requires_item && (QDELETED(ritual_item) || !owner.is_holding(ritual_item)))
+		channeling = FALSE
+		return
+
 	if(our_theme.scribing_takes_blood && ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.bleed(rune ? 40 : 10)
 		human_owner.cause_pain(pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 8)
 
-	var/datum/action/innate/cult/new_spell = new added_spell(owner)
-	new_spell.Grant(owner, src)
+	var/datum/action/new_spell
+	if(requires_item)
+		new_spell = new added_spell(ritual_item, src)
+		new_spell.Grant(owner)
+	else
+		new_spell = new added_spell(owner)
+		new_spell.Grant(owner, src)
+
 	spells += new_spell
 	Positioning()
 
-	to_chat(owner, our_theme.get_start_invoking_magic_text(new_spell.name))
+	to_chat(owner, our_theme.get_end_invoking_magic_text(new_spell.name, ritual_item))
 	channeling = FALSE
+
+/datum/action/innate/cult/blood_magic/advanced/Positioning()
+	var/list/screen_loc_split = splittext(button.screen_loc, ",")
+	var/list/screen_loc_X = splittext(screen_loc_split[1], ":")
+	var/list/screen_loc_Y = splittext(screen_loc_split[2], ":")
+	var/pix_X = text2num(screen_loc_X[2])
+
+	for(var/datum/action/spell as anything in spells)
+		if(!spell.button.locked)
+			continue
+
+		var/order = pix_X + spells.Find(spell) * 31
+		spell.button.screen_loc = "[screen_loc_X[1]]:[order],[screen_loc_Y[1]]:[screen_loc_Y[2]]"
+		spell.button.moved = spell.button.screen_loc
 
 /*
  * Check for any sources of anti-magic between [target] and [user].
@@ -86,7 +123,7 @@
  * If [target] has antimagic, returns TRUE and shows a halo around the target. Also fancy effects.
  * Otherwise returns false.
  */
-/obj/item/melee/blood_magic/proc/anti_blood_magic_check(mob/living/target, mob/living/user)
+/proc/anti_cult_magic_check(mob/living/target, mob/living/user)
 	var/anti_magic_source = target.anti_magic_check()
 	if(anti_magic_source)
 		target.mob_light(_range = 2, _color = LIGHT_COLOR_HOLY_MAGIC, _duration = 10 SECONDS)

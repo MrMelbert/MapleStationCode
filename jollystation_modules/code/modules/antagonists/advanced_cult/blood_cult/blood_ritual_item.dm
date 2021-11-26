@@ -50,7 +50,5 @@ Striking a noncultist, however, will tear their flesh."}
 /datum/action/item_action/ritual_item/dagger
 	name = "Draw Blood Rune"
 	desc = "Use the ritual dagger to create a blood rune."
-	icon_icon = 'icons/mob/actions/actions_cult.dmi'
-	button_icon_state = "draw"
 	buttontooltipstyle = "cult"
 	background_icon_state = "bg_demon"

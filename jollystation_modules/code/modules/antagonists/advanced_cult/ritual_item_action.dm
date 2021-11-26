@@ -3,8 +3,6 @@
 	desc = "Use your ritual item to create a powerful."
 	icon_icon = 'icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "draw"
-	buttontooltipstyle = "cult"
-	background_icon_state = "bg_demon"
 
 /datum/action/item_action/ritual_item/Grant(mob/M)
 	if(!IS_CULTIST(M))

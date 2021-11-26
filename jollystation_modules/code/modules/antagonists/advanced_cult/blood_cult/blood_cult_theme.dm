@@ -6,6 +6,8 @@
 	language = /datum/language/narsie
 	scribe_sound = 'sound/weapons/slice.ogg'
 	on_gain_sound = 'sound/ambience/antag/bloodcult.ogg'
+	magic_type = /datum/action/innate/cult/blood_magic/advanced
+	magic_subtypes = list(/datum/action/innate/cult/blood_spell)
 	ritual_item = /obj/item/melee/cultblade/advanced_dagger
 	ritual_materials = /obj/item/stack/sheet/runed_metal/ten
 	allowed_runes =  list(
@@ -68,15 +70,6 @@
 	cult_team.ascend_button = new()
 	cult_team.ascend_button.Grant(cultist_mind.current)
 
-/datum/cult_theme/narsie/give_spells(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
-	var/datum/action/innate/cult/blood_magic/advanced/new_magic = new()
-	for(var/datum/action/innate/cult/blood_spell/magic as anything in subtypesof(/datum/action/innate/cult/blood_spell))
-		if(initial(magic.blacklisted_by_default))
-			continue
-		LAZYSET(new_magic.all_allowed_spell_types, initial(magic.name), magic)
-	cultist_datum.our_magic = new_magic
-	cultist_datum.our_magic.Grant(cultist)
-
 /datum/cult_theme/narsie/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
 	. = ..()
 	var/datum/advanced_antag_datum/cultist/cultist = cultist_datum.linked_advanced_datum
@@ -98,8 +91,8 @@
 	text["self_message"] = span_cult("You finish drawing the arcane markings of the Geometer.")
 	return text
 
-/datum/cult_theme/ratvarcult/get_start_invoking_magic_text(added_magic)
+/datum/cult_theme/narsie/get_start_invoking_magic_text(added_magic, atom/target)
 	return span_cult("You begin to carve the unnatural symbols for the spell [added_magic] into your flesh!")
 
-/datum/cult_theme/ratvarcult/get_end_invoking_magic_text(added_magic)
+/datum/cult_theme/narsie/get_end_invoking_magic_text(added_magic, atom/target)
 	return span_cult("Your wounds glow with power, you have prepared a [added_magic] invocation!")

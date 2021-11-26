@@ -7,8 +7,8 @@
 	worn_icon_state = "dread_ipad"
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_SMALL
-	force = 4
-	throwforce = 6
+	force = 0
+	throwforce = 5
 	block_chance = 25 // The slab protects
 
 /obj/item/clockwork_slab/Initialize(mapload)
@@ -40,10 +40,8 @@ Can block melee attacks for followers of Rat'var when held in hand."}
 /datum/action/item_action/ritual_item/slab
 	name = "Draw Clockwork Sigil"
 	desc = "Use the clockwork slab to create a powerful sigil."
-	icon_icon = 'icons/mob/actions/actions_cult.dmi'
-	button_icon_state = "draw"
-	buttontooltipstyle = "cult"
-	background_icon_state = "bg_demon"
+	buttontooltipstyle = "plasmafire" // Close enough
+	background_icon_state = "bg_clock"
 
 /obj/item/stack/sheet/bronze/ten
 	amount = 10

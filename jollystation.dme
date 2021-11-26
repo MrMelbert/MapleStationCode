@@ -4057,6 +4057,8 @@
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\clock_cult_theme.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\clock_language.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\clock_magic.dm"
+#include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\clock_magic_disable.dm"
+#include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\clock_magic_slab.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\clock_ritual_item.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_heretic\advanced_heretic.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_heretic\eldritch_knowledge.dm"

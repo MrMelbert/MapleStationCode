@@ -20,7 +20,7 @@
 	/// Our cult team
 	var/datum/team/advanced_cult/team
 	/// Our magic action (lets us invoke spells and stuff)
-	var/datum/action/innate/our_magic
+	var/datum/action/innate/cult/blood_magic/advanced/our_magic
 
 /datum/antagonist/advanced_cult/Destroy()
 	. = ..()
@@ -149,7 +149,7 @@
 		cult_magic.rune_limit += 1
 
 /datum/advanced_antag_datum/cultist/get_finalize_text()
-	return "Finalizing will allow you to use blood magic and grant you your equipment. You will [no_conversion ? "not":""] be able to convert humans to your cult[no_conversion ? ", but you will gain +1 max spell slots ([ADV_CULTIST_MAX_SPELLS_NORUNE + 1] unempowered, [ADV_CULTIST_MAX_SPELLS_RUNE + 1] empowered).":""]. You can still edit your goals after finalizing!"
+	return "Finalizing will allow you to use cult magic and grant you your equipment. You will [no_conversion ? "not":""] be able to convert crewmembers to your cult[no_conversion ? ", but you will gain +1 max spell slots ([ADV_CULTIST_MAX_SPELLS_NORUNE + 1] unempowered, [ADV_CULTIST_MAX_SPELLS_RUNE + 1] empowered).":""]. You can still edit your goals after finalizing!"
 
 /datum/advanced_antag_datum/cultist/log_goals_on_finalize()
 	. = ..()

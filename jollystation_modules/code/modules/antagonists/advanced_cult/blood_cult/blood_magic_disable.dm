@@ -4,11 +4,6 @@
 // You can only hit the same person every 3 seconds.
 // The mute + slurring is can only be applied to the same person every 12 seconds.
 
-/// Trait for people who were recently funnyhanded and can't be for a few seconds. (See TRAIT_IWASBATONNED)
-#define TRAIT_I_WAS_FUNNY_HANDED "i_was_funny_handed"
-/// Trait for people who were recently funnyhanded and won't recieve any side effects (but will recieve stamina damage)
-#define TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS "no_funny_hand_side_effects"
-
 // Sic semper tyrannis (disables fuu majin)
 /datum/action/innate/cult/blood_spell/stun
 	blacklisted_by_default = TRUE
@@ -60,17 +55,16 @@
 	user.mob_light(_range = 3, _color = LIGHT_COLOR_LIGHT_CYAN, _duration = 0.3 SECONDS)
 
 	var/applied_effects = FALSE
-	if(anti_blood_magic_check(target, user))
+	if(anti_cult_magic_check(target, user))
 		applied_effects = TRUE
 	else
-		living_target.flash_act(1, TRUE)
+		if(living_target.getStaminaLoss() >= 70)
+			living_target.flash_act(1, TRUE, visual = TRUE, length = 3 SECONDS)
+		else
+			living_target.Knockdown(1 SECONDS)
 		living_target.apply_damage(75, STAMINA, BODY_ZONE_CHEST)
-		living_target.Knockdown(1 SECONDS)
-		//living_target.dropItemToGround(living_target.get_active_held_item())
-		//living_target.dropItemToGround(living_target.get_inactive_held_item())
 
 		if(!HAS_TRAIT_FROM(target, TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS, REF(user)))
-
 			applied_effects = TRUE
 			if(HAS_TRAIT(target, TRAIT_MINDSHIELD))
 				to_chat(user, span_cultitalic("[target] is enveloped in a brilliant flash of blue, but their mind is too strong to be silenced!"))
@@ -121,6 +115,3 @@
 		carbon_target.stuttering += 15
 		carbon_target.cultslurring += 18
 		carbon_target.Jitter(3 SECONDS)
-
-#undef TRAIT_I_WAS_FUNNY_HANDED
-#undef TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS

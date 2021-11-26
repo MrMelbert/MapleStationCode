@@ -10,6 +10,7 @@
 #define ALLOY_COLOR "#42474D"
 
 #define span_brass(str) ("<font color = [BRASS_COLOR]>" + str + "</font>")
+#define span_brasstalics(str) ("<i><font color = [BRASS_COLOR]>" + str + "</font></i>")
 #define span_large_brass(str) ("<font size = '185%' color = [BRASS_COLOR]>" + str + "</font>")
 #define span_heavy_brass(str) ("<font color = [BRASS_COLOR]><b><i>" + str + "</i></b></font>")
 #define span_alloy(str) ("<font color = [ALLOY_COLOR]>" + str + "</font>")

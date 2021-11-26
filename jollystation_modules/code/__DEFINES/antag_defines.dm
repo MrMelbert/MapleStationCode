@@ -33,6 +33,11 @@
 #define CULT_STYLE_NARSIE "Nar'sian Cult"
 #define CULT_STYLE_RATVAR "Rat'varian Cult"
 
+/// Trait for people who were recently funnyhanded and can't be for a few seconds. (See TRAIT_IWASBATONNED)
+#define TRAIT_I_WAS_FUNNY_HANDED "i_was_funny_handed"
+/// Trait for people who were recently funnyhanded and won't recieve any side effects (but will recieve stamina damage)
+#define TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS "no_funny_hand_side_effects"
+
 /// The initial number of points for changelings
 #define ADV_CHANGELING_INITIAL_POINTS 4
 /// The max number of points for changelings
