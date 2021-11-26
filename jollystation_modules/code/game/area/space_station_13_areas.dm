@@ -18,6 +18,36 @@
 	icon = 'jollystation_modules/icons/turf/areas.dmi'
 	icon_state = "ap_office"
 
+/area/service/hydroponics/park
+	name = "Park"
+
+/area/service/bar/lower
+	name = "Lower Bar"
+	sound_environment = SOUND_AREA_WOODFLOOR
+
+/area/service/barber
+	name = "Salon"
+	icon_state = "cafeteria" // yeah ok
+
+/area/science/robotics/abandoned
+	name = "\improper Abandoned Robotics"
+	icon_state = "abandoned_sci"
+	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+
+/area/service/kitchen/abandoned
+	name = "\improper Abandoned Kitchen"
+	icon_state = "kitchen"
+	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+
+/area/maintenance/starboard/lower
+	name = "Lower Starboard Maintenance"
+	icon_state = "smaint"
+
+/area/maintenance/port/lower
+	name = "Lower Port Maintenance"
+	icon_state = "pmaint"
+
+
 //Berry Physics Space Ruin
 /area/ruin/space/has_grav/powered/berry_physics
 	name = "Berry Physics"
