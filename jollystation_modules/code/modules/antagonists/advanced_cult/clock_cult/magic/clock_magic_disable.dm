@@ -1,6 +1,6 @@
 /datum/action/item_action/cult/clock_spell/disable
 	name = "Slab: Disable"
-	desc = "Empowers a slab to disable and mute targets when hit."
+	desc = "Empowers the slab to disable and mute targets on hit."
 	examine_hint = "deal heavy stamina damage and knock down targets hit with the slab. Non-mindshielded targets will also be silenced."
 	button_icon_state = "kindle"
 	invocation = "Cb'jre Bh'gntr!"
@@ -19,7 +19,7 @@
 		span_brasstalics("You attempt to disable [living_target] with [target]!")
 		)
 
-	user.mob_light(_range = 3, _color = LIGHT_COLOR_HALOGEN, _duration = 0.8 SECONDS)
+	user.mob_light(_range = 3, _color = LIGHT_COLOR_TUNGSTEN, _duration = 0.8 SECONDS)
 
 	if(anti_cult_magic_check(victim, user))
 		return TRUE
@@ -75,6 +75,13 @@
 	return TRUE
 
 /obj/effect/temp_visual/kindle
-	icon = "jollystation_modules/icons/effects/clockwork_effects.dmi"
+	icon = 'jollystation_modules/icons/effects/clockwork_effects.dmi'
 	icon_state = "volt_hit"
 	randomdir = FALSE
+	layer = BELOW_MOB_LAYER
+	alpha = 155
+	duration = 11
+
+/obj/effect/temp_visual/kindle/Initialize(mapload)
+	. = ..()
+	animate(src, alpha = 0, time = 10, easing = EASE_OUT)

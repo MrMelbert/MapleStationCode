@@ -21,14 +21,17 @@
 	if(new_magic)
 		magic_source = new_magic
 	base_desc = desc
-	desc = base_desc +  "<br><b><u>Has [charges] use\s remaining</u></b>."
+	desc = base_desc + "<br><b><u>Has [charges] use\s remaining</u></b>."
 
 /datum/action/item_action/cult/Grant(mob/M)
 	if(!IS_CULTIST(M) || M != magic_source?.owner)
 		Remove(owner)
 		return
 
-	return ..()
+	. = ..()
+	button.locked = TRUE
+	button.ordered = FALSE
+	magic_source.Positioning()
 
 /datum/action/item_action/cult/Destroy()
 	if(active)
@@ -147,13 +150,12 @@
  * and updates the description if there are charges remaining.
  */
 /datum/action/item_action/cult/proc/after_successful_spell(mob/living/user)
+	charges--
 	if(invocation)
 		user.whisper(invocation, language = /datum/language/common, forced = "cult invocation")
-	if(--charges <= 0)
-		qdel(src)
-		return
-
 	desc = base_desc + "<br><b><u>Has [charges] use\s remaining</u></b>."
+	if(charges <= 0)
+		qdel(src)
 
 /datum/action/item_action/cult/clock_spell
 	icon_icon = 'jollystation_modules/icons/mob/actions/actions_clockcult.dmi'

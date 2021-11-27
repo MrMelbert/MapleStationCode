@@ -23,7 +23,8 @@
 /datum/antagonist/advanced_cult/on_gain()
 	if(!LAZYLEN(GLOB.cult_themes))
 		generate_cult_themes()
-	cultist_style = GLOB.cult_themes[CULT_STYLE_NARSIE]
+	if(!cultist_style)
+		cultist_style = GLOB.cult_themes[CULT_STYLE_NARSIE]
 	return ..()
 
 /datum/antagonist/advanced_cult/Destroy()
@@ -66,6 +67,11 @@
 /datum/antagonist/advanced_cult/master/on_gain()
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
+
+	if(!LAZYLEN(GLOB.cult_themes))
+		generate_cult_themes()
+
+	cultist_style = GLOB.cult_themes[pick(GLOB.cult_themes)]
 
 	var/list/objectives_to_choose = GLOB.admin_objective_list.Copy()
 	objectives_to_choose -= blacklisted_similar_objectives

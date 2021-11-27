@@ -1,6 +1,6 @@
 /datum/action/item_action/cult/clock_spell/teleport // Must be cast with a slab, stronger.
 	name = "Slab: Teleport"
-	desc = "Empowers a slab to teleport you and anyone who you are dragging to a sigil of teleportation."
+	desc = "Empowers the slab to teleport you and anyone who you are dragging to a sigil of teleportation."
 	examine_hint = "use on yourself to teleport you, and anyone who you are dragging, to a target sigil of teleportation."
 	button_icon_state = "teleport"
 	invocation = "Trg Zr Gur'er!"
@@ -20,7 +20,7 @@
 		to_chat(user, span_warning("There are no valid sigils to teleport to!"))
 		return TRUE
 
-	var/turf/our_turf = get_turf(src)
+	var/turf/our_turf = get_turf(user)
 	if(is_away_level(our_turf.z))
 		to_chat(user, span_cultitalic("You are not in the right dimension!"))
 		return TRUE
@@ -58,7 +58,7 @@
 	user.whisper(invocation, language = /datum/language/common, forced = "cult invocation")
 	var/turf/origin = get_turf(user)
 	var/mob/living/brought_along
-	var/pulled_tp_result
+	var/pulled_tp_result = FALSE
 	if(isliving(user.pulling))
 		brought_along = user.pulling
 
@@ -80,6 +80,11 @@
 		span_hear("You hear a whoosh.")
 		)
 
+	if(pulled_tp_result)
+		user.start_pulling(brought_along, suppress_message = TRUE)
+
+	playsound(origin, 'sound/magic/teleport_diss.ogg', 50, TRUE)
+	playsound(target_turf, 'sound/magic/teleport_app.ogg', 50, TRUE)
 	to_chat(user, span_brasstalics("[target] glows in a flash of yellow as you speak the invocation, and you appear somewhere else!"))
 	if(pulled_tp_result)
 		to_chat(brought_along, span_warning("You suddenly appear somewhere else in a flash of yellow!"))
@@ -136,6 +141,8 @@
 		span_hear("You hear a whoosh.")
 		)
 
+	playsound(origin, 'sound/magic/teleport_diss.ogg', 50, TRUE)
+	playsound(dest, 'sound/magic/teleport_app.ogg', 50, TRUE)
 	to_chat(user, span_brasstalics("You glow in a brilliant purple light as you suddenly appear on the [picked_rune.listkey] sigil!"))
 	if(ishuman(user))
 		to_chat(user, span_warning("You feel unwell after invoking [name]..."))

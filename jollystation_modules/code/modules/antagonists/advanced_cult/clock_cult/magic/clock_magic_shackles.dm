@@ -1,18 +1,18 @@
 
 /datum/action/item_action/cult/clock_spell/shackle
 	name = "Slab: Shackle"
-	desc = "Empowers a slab to enchain and silence targets after a short time."
+	desc = "Empowers the slab to enchain and silence targets after a short time."
 	examine_hint = "wrap the target in brass chains, restraining them and silencing them for a short time."
 	button_icon_state = "hateful_manacles"
 	invocation = "Rap'unva Fbhy!"
-	charges = 4
+	charges = 2
 	manually_handle_charges = TRUE
 
 /datum/action/item_action/cult/clock_spell/shackle/do_hit_spell_effects(mob/living/victim, mob/living/user)
 	if(IS_CULTIST(victim) || !iscarbon(victim))
 		return FALSE
 
-	var/mob/living/carbon/carbon_target = target
+	var/mob/living/carbon/carbon_target = victim
 	if(carbon_target.canBeHandcuffed())
 		INVOKE_ASYNC(src, .proc/cuff_victim, victim, user)
 	else
