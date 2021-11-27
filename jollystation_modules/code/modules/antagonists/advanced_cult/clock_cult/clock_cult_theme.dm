@@ -13,8 +13,8 @@
 	ritual_materials = /obj/item/stack/sheet/bronze/ten
 	allowed_runes =  list(
 		"Sigil of Transmission",
-		"Empower",
-		"Teleport",
+		"Sigil of Empowering",
+		"Sigil of Submission",
 	)
 
 /datum/cult_theme/ratvarcult/on_chose_breakdown(mob/living/cultist)

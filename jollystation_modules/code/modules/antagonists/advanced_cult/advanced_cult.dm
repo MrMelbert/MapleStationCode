@@ -20,13 +20,6 @@
 	/// Our magic action (lets us invoke spells and stuff)
 	var/datum/action/innate/cult/blood_magic/advanced/our_magic
 
-/datum/antagonist/advanced_cult/on_gain()
-	if(!LAZYLEN(GLOB.cult_themes))
-		generate_cult_themes()
-	if(!cultist_style)
-		cultist_style = GLOB.cult_themes[CULT_STYLE_NARSIE]
-	return ..()
-
 /datum/antagonist/advanced_cult/Destroy()
 	cultist_style = null
 	return ..()
@@ -175,9 +168,6 @@
 
 /datum/advanced_antag_datum/cultist/ui_static_data(mob/user)
 	var/list/data = list()
-
-	if(!LAZYLEN(GLOB.cult_themes))
-		generate_cult_themes()
 
 	var/list/themes = list()
 	for(var/datum/cult_theme/theme as anything in GLOB.cult_themes)

@@ -4,7 +4,7 @@
 	desc = "Empowers the slab to enchain and silence targets after a short time."
 	examine_hint = "wrap the target in brass chains, restraining them and silencing them for a short time."
 	button_icon_state = "hateful_manacles"
-	invocation = "Rap'unva Fbhy!"
+	invocation = "Rap'unva Gurve Fbhy!"
 	charges = 2
 	manually_handle_charges = TRUE
 

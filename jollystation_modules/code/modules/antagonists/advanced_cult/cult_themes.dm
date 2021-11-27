@@ -1,9 +1,9 @@
 /// Global list of instantiated cult theme datums - assoc list of [name] to [instantiated datum]
-GLOBAL_LIST_EMPTY(cult_themes)
+GLOBAL_LIST(cult_themes)
 
 /proc/generate_cult_themes()
 	for(var/datum/cult_theme/theme as anything in subtypesof(/datum/cult_theme))
-		GLOB.cult_themes[initial(theme.name)] = new theme()
+		LAZYSET(GLOB.cult_themes, initial(theme.name), new theme())
 
 /datum/cult_theme
 	/// The name of the theme. Something like "Nar'sian cult".
