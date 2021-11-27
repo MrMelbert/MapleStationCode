@@ -24,14 +24,14 @@ Can block melee attacks for followers of Rat'var when held in hand."}
 		/turf/open/floor/bronze)
 
 /obj/item/clockwork_slab/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	var/block_message = "[owner] blocks [attack_text] with [src]"
+	var/block_message = "[owner] blocks [attack_text] with [src]!"
 	if(owner.get_active_held_item() != src)
-		block_message = "[owner] blocks [attack_text] with [src] in their offhand"
+		block_message = "[owner] blocks [attack_text] with [src] in their offhand!"
 
 	var/datum/antagonist/advanced_cult/cultist = IS_CULTIST(owner)
-	if(cultist && istype(cultist.cultist_style.ritual_item, type) && prob(final_block_chance) && attack_type != PROJECTILE_ATTACK)
+	if(cultist && istype(src, cultist.cultist_style.ritual_item) && prob(final_block_chance) && attack_type != PROJECTILE_ATTACK)
 		new /obj/effect/particle_effect/sparks(get_turf(owner))
-		playsound(get_turf(owner), 'sound/weapons/resonator_blast.ogg', 100, TRUE)
+		playsound(get_turf(owner), 'sound/weapons/resonator_blast.ogg', 60, TRUE)
 		owner.visible_message(span_danger("[block_message]"))
 		return TRUE
 

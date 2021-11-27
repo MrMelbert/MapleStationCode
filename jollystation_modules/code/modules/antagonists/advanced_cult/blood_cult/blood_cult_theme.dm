@@ -63,12 +63,15 @@
 	human_cultist.remove_overlay(HALO_LAYER)
 	human_cultist.update_body()
 
-/datum/cult_theme/narsie/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/cultist_mind)
+/datum/cult_theme/narsie/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/lead_cultist)
 	. = ..()
-	cult_team.arise_button = new()
-	cult_team.arise_button.Grant(cultist_mind.current)
-	cult_team.ascend_button = new()
-	cult_team.ascend_button.Grant(cultist_mind.current)
+	var/datum/action/innate/cult/arise_the_cult/arise_action = new(lead_cultist.current)
+	arise_action.Grant(lead_cultist.current)
+	LAZYADD(cult_team.leader_actions, arise_action)
+
+	var/datum/action/innate/cult/ascend_the_cult/ascend_action = new(lead_cultist.current)
+	ascend_action.Grant(lead_cultist.current)
+	LAZYADD(cult_team.leader_actions, ascend_action)
 
 /datum/cult_theme/narsie/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
 	. = ..()

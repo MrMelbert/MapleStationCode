@@ -2,10 +2,7 @@
 /datum/action/innate/cult/clock_spell/slab
 	name = "Replicant"
 	desc = "Allows you to create a new Clockwork Slab."
-	icon_icon = 'jollystation_modules/icons/mob/actions/actions_clockcult.dmi'
-	button_icon_state = "Replicant"
-	background_icon_state = "bg_clock"
-	buttontooltipstyle = "plasmafire"
+	button_icon_state = "replicant"
 
 /datum/action/innate/cult/clock_spell/slab/Activate()
 	var/turf/owner_turf = get_turf(owner)

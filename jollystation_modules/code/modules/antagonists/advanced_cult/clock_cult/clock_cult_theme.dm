@@ -12,7 +12,7 @@
 	ritual_item = /obj/item/clockwork_slab
 	ritual_materials = /obj/item/stack/sheet/bronze/ten
 	allowed_runes =  list(
-		"Offer",
+		"Sigil of Transmission",
 		"Empower",
 		"Teleport",
 	)

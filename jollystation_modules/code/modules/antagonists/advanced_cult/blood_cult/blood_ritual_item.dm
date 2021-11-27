@@ -35,11 +35,12 @@ Striking a noncultist, however, will tear their flesh."}
 		/datum/action/item_action/ritual_item/dagger)
 
 /obj/item/melee/cultblade/advanced_dagger/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
-	var/block_message = "[owner] parries [attack_text] with [src]"
+	var/block_message = "[owner] parries [attack_text] with [src]!"
 	if(owner.get_active_held_item() != src)
-		block_message = "[owner] parries [attack_text] with [src] in their offhand"
+		block_message = "[owner] parries [attack_text] with [src] in their offhand!"
 
-	if(IS_CULTIST(owner) && prob(final_block_chance) && attack_type != PROJECTILE_ATTACK)
+	var/datum/antagonist/advanced_cult/cultist = IS_CULTIST(owner)
+	if(cultist && istype(src, cultist.cultist_style.ritual_item) && prob(final_block_chance) && attack_type != PROJECTILE_ATTACK)
 		new /obj/effect/temp_visual/cult/sparks(get_turf(owner))
 		playsound(src, 'sound/weapons/parry.ogg', 100, TRUE)
 		owner.visible_message(span_danger("[block_message]"))

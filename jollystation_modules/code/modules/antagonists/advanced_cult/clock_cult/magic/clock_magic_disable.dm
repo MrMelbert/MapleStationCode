@@ -1,20 +1,15 @@
 /datum/action/item_action/cult/clock_spell/disable
 	name = "Slab: Disable"
 	desc = "Empowers a slab to disable and mute targets when hit."
-	examine_hint = "deal heavy stamina damage and knock down targets hit. Non-mindshielded targets will also be silenced."
-	button_icon_state = "Kindle"
+	examine_hint = "deal heavy stamina damage and knock down targets hit with the slab. Non-mindshielded targets will also be silenced."
+	button_icon_state = "kindle"
 	invocation = "Cb'jre Bh'gntr!"
 	charges = 4
 
-/datum/action/item_action/cult/clock_spell/disable/activate()
-	. = ..()
-	to_chat(owner, span_brass("You empower [target] to shine a bright light at your next target, disabling them."))
-
-/datum/action/item_action/cult/clock_spell/disable/deactivate()
-	to_chat(owner, span_brass("You withdraw the power into [target]."))
-	. = ..()
-
 /datum/action/item_action/cult/clock_spell/disable/do_hit_spell_effects(mob/living/victim, mob/living/user)
+	if(IS_CULTIST(victim))
+		return
+
 	if(HAS_TRAIT_FROM(victim, TRAIT_I_WAS_FUNNY_HANDED, REF(user)))
 		return FALSE
 
@@ -34,7 +29,7 @@
 	else
 		living_target.Knockdown(1 SECONDS)
 	living_target.apply_damage(75, STAMINA, BODY_ZONE_CHEST)
-
+	new /obj/effect/temp_visual/kindle(get_turf(victim))
 	var/final_hit = living_target.getStaminaLoss() >= 100
 
 	if(issilicon(victim))
@@ -48,6 +43,13 @@
 		to_chat(target, span_userdanger("A bright white light washes over you, overloading your system[iscyborg(victim)?" and draining your cell":""]!"))
 		victim.visible_message(
 			span_warning("[victim] overloads and shuts down!"),
+			ignored_mobs = list(user, victim)
+			)
+	else if(isbot(victim))
+		victim.emp_act(EMP_HEAVY)
+		to_chat(user, span_brasstalics("[victim] is enveloped in a bright white flash, overloading it!"))
+		victim.visible_message(
+			span_warning("[victim] overloads!"),
 			ignored_mobs = list(user, victim)
 			)
 
@@ -71,3 +73,8 @@
 	playsound(get_turf(user), 'sound/magic/blind.ogg', 10, FALSE, SILENCED_SOUND_EXTRARANGE, pressure_affected = FALSE, ignore_walls = FALSE)
 
 	return TRUE
+
+/obj/effect/temp_visual/kindle
+	icon = "jollystation_modules/icons/effects/clockwork_effects.dmi"
+	icon_state = "volt_hit"
+	randomdir = FALSE

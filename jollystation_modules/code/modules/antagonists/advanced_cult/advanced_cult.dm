@@ -1,6 +1,4 @@
 
-#define CULT_STYLES list(CULT_STYLE_RATVAR, CULT_STYLE_NARSIE)
-
 /datum/antagonist/advanced_cult
 	ui_name = null
 	show_in_antagpanel = FALSE
@@ -22,9 +20,15 @@
 	/// Our magic action (lets us invoke spells and stuff)
 	var/datum/action/innate/cult/blood_magic/advanced/our_magic
 
+/datum/antagonist/advanced_cult/on_gain()
+	if(!LAZYLEN(GLOB.cult_themes))
+		generate_cult_themes()
+	cultist_style = GLOB.cult_themes[CULT_STYLE_NARSIE]
+	return ..()
+
 /datum/antagonist/advanced_cult/Destroy()
-	. = ..()
 	cultist_style = null
+	return ..()
 
 /datum/antagonist/advanced_cult/get_team()
 	return team
@@ -63,10 +67,6 @@
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
 
-	if(!LAZYLEN(GLOB.cult_themes))
-		generate_cult_themes()
-	cultist_style = GLOB.cult_themes[CULT_STYLE_NARSIE]
-
 	var/list/objectives_to_choose = GLOB.admin_objective_list.Copy()
 	objectives_to_choose -= blacklisted_similar_objectives
 	objectives_to_choose += cult_objectives
@@ -84,7 +84,7 @@
 	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum
 	team = new(owner)
 	team.no_conversion = our_cultist.no_conversion
-	. = ..()
+	return ..()
 
 /datum/antagonist/advanced_cult/master/roundend_report()
 	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum
@@ -107,7 +107,7 @@
 	return parts.Join("<br>")
 
 /datum/antagonist/advanced_cult/roundend_report_footer()
-	return "<br>And thus finalizes another ritual on board [station_name()]."
+	return "<br>And thus closes the veil on board [station_name()]."
 
 /datum/antagonist/advanced_cult/convertee
 	name = "Converted Cultist"
@@ -116,7 +116,7 @@
 	. = ..()
 	var/datum/team/our_team = get_team()
 	if(!our_team)
-		CRASH("Advanced cultist converted to someone without a team!")
+		CRASH("Advanced cultist converted by someone without a team!")
 	our_team.add_member(owner)
 
 /datum/antagonist/advanced_cult/deconverted_master
@@ -165,8 +165,21 @@
 	. = ..()
 	var/datum/antagonist/advanced_cult/our_cultist = linked_antagonist
 	.["cannot_convert"] = no_conversion
-	.["cult_style"] = our_cultist.cultist_style
-	.["cult_style_options"] = CULT_STYLES
+	.["cult_style"] = our_cultist.cultist_style.name
+
+/datum/advanced_antag_datum/cultist/ui_static_data(mob/user)
+	var/list/data = list()
+
+	if(!LAZYLEN(GLOB.cult_themes))
+		generate_cult_themes()
+
+	var/list/themes = list()
+	for(var/datum/cult_theme/theme as anything in GLOB.cult_themes)
+		themes |= theme
+
+	data["cult_style_options"] = themes
+
+	return data
 
 /datum/advanced_antag_datum/cultist/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()

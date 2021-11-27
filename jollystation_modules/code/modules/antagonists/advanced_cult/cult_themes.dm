@@ -56,10 +56,10 @@ GLOBAL_LIST_EMPTY(cult_themes)
 	give_spells(cultist_datum, cultist)
 
 /// Called when a new cult team is made. [cultist_mind] is the leader of the cult.
-/datum/cult_theme/proc/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/cultist_mind)
+/datum/cult_theme/proc/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/lead_cultist)
 	SHOULD_CALL_PARENT(TRUE)
 
-	equip_cultist(cultist_mind.current)
+	equip_cultist(lead_cultist.current)
 
 /// Called when a cultist is removed from the cult.
 /datum/cult_theme/proc/on_cultist_lost(mob/living/cultist)

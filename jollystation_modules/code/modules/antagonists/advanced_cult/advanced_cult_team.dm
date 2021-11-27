@@ -8,15 +8,12 @@
 	var/no_conversion = TRUE
 	/// A list of weakrefs to members who were deconverted from this cult.
 	var/list/datum/weakref/lost_members
-
 	/// Whether the cult is risen, enabled for some styles.
 	var/cult_risen = FALSE
 	/// Whether the cult is ascendent, enabled for some styles.
 	var/cult_ascendent = FALSE
-	/// An action button given to the cult leader to arise the cult at will.
-	var/datum/action/innate/cult/arise_the_cult/arise_button
-	/// An action button given to the cult leader to ascend the cult at will.
-	var/datum/action/innate/cult/ascend_the_cult/ascend_button
+	/// List of bonus actions the leader only gets.
+	var/list/datum/action/leader_actions
 
 /datum/team/advanced_cult/New(starting_members)
 	. = ..()
@@ -29,8 +26,7 @@
 
 /datum/team/advanced_cult/Destroy(force, ...)
 	original_cultist = null
-	QDEL_NULL_IF(arise_button)
-	QDEL_NULL_IF(ascend_button)
+	QDEL_LAZYLIST(leader_actions)
 	return ..()
 
 /datum/team/advanced_cult/remove_member(datum/mind/member)
