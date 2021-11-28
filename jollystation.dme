@@ -4068,6 +4068,7 @@
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\runes\conversion_sigil.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\runes\empower_sigil.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\runes\teleport_sigil.dm"
+#include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\runes\trap_rune.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_heretic\advanced_heretic.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_heretic\eldritch_knowledge.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_ling\advanced_ling.dm"

@@ -81,7 +81,7 @@
 		)
 
 	if(pulled_tp_result)
-		user.start_pulling(brought_along, suppress_message = TRUE)
+		user.start_pulling(brought_along, supress_message = TRUE)
 
 	playsound(origin, 'sound/magic/teleport_diss.ogg', 50, TRUE)
 	playsound(target_turf, 'sound/magic/teleport_app.ogg', 50, TRUE)
