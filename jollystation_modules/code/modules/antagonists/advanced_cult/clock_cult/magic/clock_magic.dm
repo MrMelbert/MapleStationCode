@@ -54,6 +54,11 @@
 
 /// Activate the spell, registering signals to make it function.
 /datum/action/item_action/cult/proc/activate(silent = FALSE)
+	if(!owner.is_holding(target) && !owner.put_in_hands(target)) // TODO: Bugs the pocket, some reason
+		if(!silent)
+			to_chat(owner, span_warning("You fail to invoke the power of [src]!"))
+		return
+
 	active = TRUE
 	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, .proc/try_spell_effects)
@@ -153,7 +158,7 @@
 	charges--
 	if(invocation)
 		user.whisper(invocation, language = /datum/language/common, forced = "cult invocation")
-	desc = base_desc + "<br><b><u>Has [charges] use\s remaining</u></b>."
+	desc = base_desc + "<br><b><u>Has [charges] use\s remaining</u></b>." // TODO: Doesn't work
 	if(charges <= 0)
 		qdel(src)
 

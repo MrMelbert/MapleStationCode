@@ -15,6 +15,7 @@
 		"Sigil of Transmission",
 		"Sigil of Empowering",
 		"Sigil of Submission",
+		"Sigil of Transgression",
 	)
 
 /datum/cult_theme/ratvarcult/on_chose_breakdown(mob/living/cultist)

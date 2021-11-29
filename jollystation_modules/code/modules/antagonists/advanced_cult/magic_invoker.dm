@@ -123,8 +123,8 @@
  * If [target] has antimagic, returns TRUE and shows a halo around the target. Also fancy effects.
  * Otherwise returns false.
  */
-/proc/anti_cult_magic_check(mob/living/target, mob/living/user)
-	var/anti_magic_source = target.anti_magic_check()
+/proc/anti_cult_magic_check(mob/living/target, mob/living/user, use_charges = 1)
+	var/anti_magic_source = target.anti_magic_check(TRUE, TRUE, chargecost = use_charges)
 	if(anti_magic_source)
 		target.mob_light(_range = 2, _color = LIGHT_COLOR_HOLY_MAGIC, _duration = 10 SECONDS)
 		var/mutable_appearance/forbearance = mutable_appearance('icons/effects/genetics.dmi', "servitude", -MUTATIONS_LAYER)

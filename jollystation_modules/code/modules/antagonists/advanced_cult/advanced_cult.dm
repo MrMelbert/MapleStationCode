@@ -38,6 +38,7 @@
 
 /datum/antagonist/advanced_cult/finalize_antag()
 	cultist_style.on_cultist_made(src, owner.current)
+	owner.special_role = ROLE_CULTIST
 
 /datum/antagonist/advanced_cult/on_removal()
 	cultist_style.on_cultist_lost(owner.current)

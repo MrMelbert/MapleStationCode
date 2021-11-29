@@ -40,6 +40,10 @@
 /// Trait for people who were recently funnyhanded and won't recieve any side effects (but will recieve stamina damage)
 #define TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS "no_funny_hand_side_effects"
 
+#define CONVERSION_NOT_ALLOWED 0
+#define CONVERSION_FAILED 1
+#define CONVERSION_SUCCESS 2
+
 /// The initial number of points for changelings
 #define ADV_CHANGELING_INITIAL_POINTS 4
 /// The max number of points for changelings

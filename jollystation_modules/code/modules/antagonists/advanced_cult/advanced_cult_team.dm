@@ -33,6 +33,26 @@
 	. = ..()
 	lost_members += WEAKREF(member)
 
+/datum/team/advanced_cult/proc/can_join_cult(mob/living/convertee)
+	if(no_conversion)
+		return CONVERSION_NOT_ALLOWED
+
+	if(!isliving(convertee) || issilicon(convertee) || isbot(convertee) || isdrone(convertee))
+		return CONVERSION_FAILED
+
+	// if(convertee.client && convertee.mind)
+	// 	if(ishuman(convertee) && (convertee.mind.holy_role))
+	// 		return CONVERSION_FAILED
+	// 	if(convertee.mind.unconvertable)
+	// 		return CONVERSION_FAILED
+	// else
+	// 	return CONVERSION_FAILED
+
+	if(HAS_TRAIT(convertee, TRAIT_MINDSHIELD))
+		return CONVERSION_FAILED
+
+	return CONVERSION_SUCCESS
+
 /datum/team/advanced_cult/roundend_report()
 	var/datum/antagonist/advanced_cult/cultist = original_cultist.has_antag_datum(/datum/antagonist/advanced_cult)
 	if(no_conversion) //handled by the original cultist's roundend report
