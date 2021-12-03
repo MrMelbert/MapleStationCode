@@ -56393,6 +56393,10 @@
 	},
 /turf/open/floor/iron/large,
 /area/hallway/primary/central)
+"ukU" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/green/visible,
+/turf/open/floor/engine,
+/area/engineering/supermatter/room)
 "ulf" = (
 /obj/structure/table/glass,
 /obj/effect/spawner/random/food_or_drink/donkpockets,
@@ -58102,6 +58106,10 @@
 /area/science/robotics/mechbay)
 "vyo" = (
 /obj/machinery/portable_atmospherics/canister,
+/obj/machinery/atmospherics/components/unary/portables_connector/visible{
+	dir = 1
+	},
+/obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
@@ -59264,10 +59272,10 @@
 /area/service/lawoffice)
 "wst" = (
 /obj/machinery/portable_atmospherics/canister/nitrogen,
-/obj/effect/turf_decal/stripes/line,
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
 	dir = 1
 	},
+/obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/bot,
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
@@ -92351,7 +92359,7 @@ bfZ
 nZX
 cgv
 thT
-wza
+ukU
 vyo
 uRk
 rYH
