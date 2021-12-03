@@ -10,6 +10,10 @@
 	var/charges = 1
 	/// The base description, so we can edit it.
 	var/base_desc
+	/// The overlay that is shown when invoked.
+	var/active_overlay_name
+	/// The file the overlay is made from.
+	var/active_overlay_file
 	/// If FALSE, after_successful_spell() will be called automatically after a spell is used.
 	/// If set to TRUE, you will need to handle saying the invocation and reducing the charges manually.
 	var/manually_handle_charges = FALSE
@@ -54,24 +58,42 @@
 
 /// Activate the spell, registering signals to make it function.
 /datum/action/item_action/cult/proc/activate(silent = FALSE)
-	if(!owner.is_holding(target) && !owner.put_in_hands(target)) // TODO: Bugs the pocket, some reason
-		if(!silent)
-			to_chat(owner, span_warning("You fail to invoke the power of [src]!"))
-		return
+	var/obj/item/target_item = target
+
+	if(!owner.is_holding(target_item))
+		if(owner.can_equip(target_item, ITEM_SLOT_HANDS))
+			owner.temporarilyRemoveItemFromInventory(target_item)
+			owner.put_in_hands(target_item)
+		else
+			if(!silent)
+				to_chat(owner, span_warning("You fail to invoke the power of [src]!"))
+			return
 
 	active = TRUE
 	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, .proc/try_spell_effects)
-	RegisterSignal(target, COMSIG_ITEM_DROPPED, .proc/drop_deactivate)
-	RegisterSignal(target, COMSIG_ITEM_EQUIPPED, .proc/equip_deactivate)
+	RegisterSignal(target, COMSIG_ITEM_PICKUP, .proc/equip_deactivate)
+	if(active_overlay_name)
+		RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_update_overlays)
+		target_item.update_icon(UPDATE_OVERLAYS)
 
 	if(!silent)
 		to_chat(owner, span_brass("You invoke the power of [src] into [target]."))
 
 /// Deactivate the spell, unregistering all the signals.
 /datum/action/item_action/cult/proc/deactivate(silent = FALSE)
+	var/obj/item/target_item = target
+
 	active = FALSE
-	UnregisterSignal(target, list(COMSIG_PARENT_EXAMINE, COMSIG_ITEM_ATTACK, COMSIG_ITEM_DROPPED, COMSIG_ITEM_EQUIPPED))
+	if(active_overlay_name)
+		target_item.update_icon(UPDATE_OVERLAYS)
+
+	UnregisterSignal(target, list(
+		COMSIG_PARENT_EXAMINE,
+		COMSIG_ITEM_ATTACK,
+		COMSIG_ITEM_PICKUP,
+		COMSIG_ATOM_UPDATE_OVERLAYS,
+		))
 
 	if(!silent)
 		to_chat(owner, span_brass("You withdraw the power of [src] from [target]."))
@@ -82,10 +104,22 @@
 /datum/action/item_action/cult/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	if(!IS_CULTIST(user))
+	if(isliving(user) && !IS_CULTIST(user)) // observers / dead people can see it
 		return
 
 	examine_list += span_alloy("[name] is currently readied on [target], which will [examine_hint]")
+
+/*
+ * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS].
+ */
+/datum/action/item_action/cult/proc/on_update_overlays(datum/source, list/overlays)
+	SIGNAL_HANDLER
+
+	if(!active_overlay_name)
+		return
+
+	if(active)
+		overlays += mutable_appearance(active_overlay_file || icon_icon, active_overlay_name, ABOVE_OBJ_LAYER)
 
 /*
  * Signal proc for [COMSIG_ITEM_ATTACK].
@@ -114,22 +148,13 @@
 		INVOKE_ASYNC(src, .proc/after_successful_spell, user)
 
 /*
- * Signal proc for [COMSIG_ITEM_DROPPED]
- * Un-invokes the spell when the item is dropped.
- */
-/datum/action/item_action/cult/proc/drop_deactivate(datum/source, mob/living/user)
-	SIGNAL_HANDLER
-
-	deactivate(TRUE)
-
-/*
- * Signal proc for [COMSIG_ITEM_EQUIPPED]
+ * Signal proc for [COMSIG_ITEM_PICKUP]
  * Un-invokes the spell when the item is equipped (picked up) by a non-cultist.
  */
-/datum/action/item_action/cult/proc/equip_deactivate(datum/source, mob/living/taker)
+/datum/action/item_action/cult/proc/equip_deactivate(datum/source, mob/grabber)
 	SIGNAL_HANDLER
 
-	if(IS_CULTIST(taker))
+	if(IS_CULTIST(grabber))
 		return
 
 	deactivate(TRUE)
@@ -166,6 +191,7 @@
 	icon_icon = 'jollystation_modules/icons/mob/actions/actions_clockcult.dmi'
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough
+	active_overlay_file = 'icons/obj/clockwork_objects.dmi'
 
 /datum/action/item_action/cult/clock_spell/IsAvailable()
 	if(owner)

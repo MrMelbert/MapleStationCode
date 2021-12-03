@@ -5,6 +5,7 @@
 	examine_hint = "wrap the target in brass chains, restraining them and silencing them for a short time."
 	button_icon_state = "hateful_manacles"
 	invocation = "Rap'unva Gurve Fbhy!"
+	active_overlay_name = "hateful_manacles"
 	charges = 2
 	manually_handle_charges = TRUE
 

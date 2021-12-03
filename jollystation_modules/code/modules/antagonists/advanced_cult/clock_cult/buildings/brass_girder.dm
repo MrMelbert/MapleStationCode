@@ -8,6 +8,11 @@
 /obj/structure/girder/brass/Initialize(mapload)
 	. = ..()
 	new /obj/effect/temp_visual/brass/girder(loc)
+	ADD_CLOCKCULT_FILTER(src)
+
+/obj/structure/girder/brass/Destroy()
+	REMOVE_CLOCKCULT_FILTER(src)
+	return ..()
 
 /obj/structure/girder/brass/attackby(obj/item/weapon, mob/user, params)
 	add_fingerprint(user)
@@ -62,6 +67,11 @@
 /turf/closed/wall/mineral/brass/Initialize(mapload)
 	. = ..()
 	new /obj/effect/temp_visual/brass/wall(src)
+	ADD_CLOCKCULT_FILTER(src)
+
+/turf/closed/wall/mineral/brass/Destroy()
+	REMOVE_CLOCKCULT_FILTER(src)
+	return ..()
 
 /turf/closed/wall/mineral/brass/examine(mob/user)
 	. = ..()
@@ -70,7 +80,6 @@
 		if(living_user.dizziness <= 25 && prob(66))
 			living_user.dizziness += 10
 			. += span_hypnophrase("The shifting symbols cause you to feel dizzy...")
-
 
 /obj/effect/temp_visual/brass
 	icon = 'jollystation_modules/icons/effects/clockwork_effects.dmi'

@@ -48,6 +48,9 @@
 #define CONVERSION_HOLY 2
 #define CONVERSION_SUCCESS 3
 
+#define ADD_CLOCKCULT_FILTER(target) target.add_filter("ratvar_glow", 5, list("type" = "outline", "size" = 1, "color" = "#cc9900", "flags" = 0))
+#define REMOVE_CLOCKCULT_FILTER(target) target.remove_filter("ratvar_glow")
+
 /// The initial number of points for changelings
 #define ADV_CHANGELING_INITIAL_POINTS 4
 /// The max number of points for changelings

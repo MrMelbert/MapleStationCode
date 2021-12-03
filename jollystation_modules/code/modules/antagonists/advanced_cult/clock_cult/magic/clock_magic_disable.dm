@@ -4,6 +4,7 @@
 	examine_hint = "deal heavy stamina damage and knock down targets hit with the slab. Non-mindshielded targets will also be silenced."
 	button_icon_state = "kindle"
 	invocation = "Cb'jre Bh'gntr!"
+	active_overlay_name = "volt"
 	charges = 4
 
 /datum/action/item_action/cult/clock_spell/disable/do_hit_spell_effects(mob/living/victim, mob/living/user)
