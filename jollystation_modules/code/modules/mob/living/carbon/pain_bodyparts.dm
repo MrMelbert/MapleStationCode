@@ -192,7 +192,6 @@
 
 	return TRUE
 
-
 /obj/item/bodypart/chest/pain_feedback(delta_time, healing_pain)
 	if(!owner || !pain)
 		return FALSE
