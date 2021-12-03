@@ -21,7 +21,9 @@ Can block melee attacks for followers of Rat'var when held in hand."}
 	AddComponent(/datum/component/cult_ritual_item/advanced, \
 		span_brass(examine_text), \
 		/datum/action/item_action/ritual_item/slab, \
-		/turf/open/floor/bronze)
+		/turf/open/floor/bronze, \
+		/obj/structure/girder/brass, \
+		/obj/structure/destructible/brass)
 
 /obj/item/clockwork_slab/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
 	var/block_message = "[owner] blocks [attack_text] with [src]!"
@@ -42,6 +44,3 @@ Can block melee attacks for followers of Rat'var when held in hand."}
 	desc = "Use the clockwork slab to create a powerful sigil."
 	buttontooltipstyle = "plasmafire" // Close enough
 	background_icon_state = "bg_clock"
-
-/obj/item/stack/sheet/bronze/ten
-	amount = 10

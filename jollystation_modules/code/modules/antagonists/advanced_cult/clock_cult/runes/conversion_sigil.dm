@@ -33,11 +33,15 @@
 	. = ..()
 
 /obj/effect/rune/clock_convert/proc/invoke_wrapper(mob/living/convertee, mob/living/user)
+	animate(src, color = COLOR_MAGENTA, time = 6 SECONDS)
+	addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 6 SECONDS)
+
 	rune_in_use = TRUE
 	invoke_process(convertee, user)
 	rune_in_use = FALSE
 
-	revert_color()
+	animate(src, color = initial(color), time = 0.5 SECONDS)
+	addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 0.5 SECONDS)
 
 /obj/effect/rune/clock_convert/proc/invoke_process(mob/living/convertee, mob/living/user)
 	var/datum/antagonist/advanced_cult/cultist = user.mind.has_antag_datum(/datum/antagonist/advanced_cult, TRUE)
@@ -47,7 +51,8 @@
 		to_chat(user, span_warning("For some reason or another, you could not begin to invoke the [cultist_name]. Contact your local god!"))
 		return
 
-	switch(cult_team.can_join_cult(convertee))
+	var/can_we_convert = cult_team.can_join_cult(convertee)
+	switch(can_we_convert)
 		if(CONVERSION_NOT_ALLOWED)
 			var/list/invocations = list(
 				"Zl wbhearl vf zl bja...",
@@ -57,8 +62,9 @@
 			if(!invoke_do_afters(convertee, user, invocations))
 				return FALSE
 
-			do_torment(convertee, user, protected = FALSE)
-		if(CONVERSION_FAILED)
+			do_torment(convertee, user, protected = can_we_convert)
+
+		if(CONVERSION_MINDSHIELDED, CONVERSION_HOLY)
 			var/list/invocations = list(
 				"Engine'f Yv'tug Vf Haf'gbc-cnoyr...",
 				"Ab Fuv'ryq Abe Zvaq Pna Erf'v-fg.",
@@ -68,7 +74,8 @@
 			if(!invoke_do_afters(convertee, user, invocations))
 				return FALSE
 
-			do_torment(convertee, user, protected = TRUE)
+			do_torment(convertee, user, protected = can_we_convert)
+
 		if(CONVERSION_SUCCESS)
 			var/list/invocations = list(
 				"Ongur Va Gur Yv'tug Bs Engine!",
@@ -85,9 +92,6 @@
 
 /obj/effect/rune/clock_convert/proc/invoke_do_afters(mob/living/convertee, mob/living/user, list/invocations)
 	for(var/i in 1 to invocations.len)
-		animate(src, color = COLOR_MAGENTA, time = 2 SECONDS)
-		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 2 SECONDS)
-		addtimer(CALLBACK(src, .proc/revert_color, 2 SECONDS), 3 SECONDS)
 		if(!do_after(user, 6 SECONDS, convertee))
 			fail_invoke()
 			return FALSE
@@ -109,10 +113,6 @@
 		user.say(invocations[i], language = /datum/language/common, ignore_spam = TRUE, forced = "cult invocation")
 
 	return TRUE
-
-/obj/effect/rune/clock_convert/proc/revert_color(duration = 5)
-	animate(src, color = initial(color), time = duration)
-	addtimer(CALLBACK(src, /atom/proc/update_atom_colour), duration)
 
 /obj/effect/rune/clock_convert/proc/do_convert(mob/living/convertee, mob/living/user, datum/team/advanced_cult/cult)
 	if(!cult)
@@ -142,5 +142,25 @@
 	return TRUE
 
 /obj/effect/rune/clock_convert/proc/do_torment(mob/living/convertee, mob/living/user, protected)
-	//if(cult.can_join_cult(convertee) == CONVERSION_SUCCESS)
-	//	return FALSE
+	if(protected)
+		var/obj/item/implant/mindshield/their_shield = locate(/obj/item/implant/mindshield) in convertee
+		if(their_shield)
+			qdel(their_shield)
+
+		convertee.adjustOrganLoss(ORGAN_SLOT_BRAIN, 100, 150)
+		convertee.do_jitter_animation(100)
+
+		if(protected == CONVERSION_HOLY)
+			to_chat(convertee, span_userdanger("Your faith attempts to protect you, but you begin falter as unnatural forces invade your mind!"))
+		else
+			to_chat(convertee, span_userdanger("Your mindshield attempts to protect you, but begins to lose strength as unnatural forces invade your mind!"))
+
+	else
+		convertee.adjustOrganLoss(ORGAN_SLOT_BRAIN, 100, 150)
+		convertee.do_jitter_animation(100)
+
+
+	if(iscarbon(convertee))
+		var/mob/living/carbon/carbon_convertee = convertee
+		carbon_convertee.gain_trauma(/datum/brain_trauma/hypnosis, TRAUMA_LIMIT_LOBOTOMY, "There are forces beyond my understanding at play...")
+	ADD_TRAIT(convertee, TRAIT_WAS_ON_CONVERSION_RUNE, REF(user))

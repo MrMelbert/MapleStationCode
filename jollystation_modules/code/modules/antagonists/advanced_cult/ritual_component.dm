@@ -1,5 +1,42 @@
 /// Component for advanced ritual items
 /datum/component/cult_ritual_item/advanced
+	var/girder_type
+	var/cult_building_type
+
+/datum/component/cult_ritual_item/advanced/Initialize(
+		examine_message,
+		action = /datum/action/item_action/cult_dagger,
+		turfs_that_boost_us = /turf/open/floor/engine/cult,
+		girder_type = /obj/structure/girder/cult,
+		cult_building_type = /obj/structure/destructible/cult,
+		)
+
+	. = ..()
+	if(. == COMPONENT_INCOMPATIBLE)
+		return
+
+	src.girder_type = girder_type
+	src.cult_building_type = cult_building_type
+
+/datum/component/cult_ritual_item/advanced/try_hit_object(datum/source, obj/structure/target, mob/cultist)
+	if(!isliving(cultist) || !IS_CULTIST(cultist))
+		return
+
+	if(istype(target, girder_type))
+		INVOKE_ASYNC(src, .proc/do_destroy_girder, target, cultist)
+		return COMPONENT_NO_AFTERATTACK
+
+	if(istype(target, cult_building_type))
+		INVOKE_ASYNC(src, .proc/do_unanchor_structure, target, cultist)
+		return COMPONENT_NO_AFTERATTACK
+
+/datum/component/cult_ritual_item/advanced/do_destroy_girder(obj/structure/girder/cult_girder, mob/living/cultist)
+	playsound(cult_girder, 'sound/weapons/resonator_blast.ogg', 40, TRUE, ignore_walls = FALSE)
+	cultist.visible_message(
+		span_warning("[cultist] strikes [cult_girder] with [parent]!"),
+		span_notice("You demolish [cult_girder].")
+		)
+	cult_girder.deconstruct()
 
 /datum/component/cult_ritual_item/advanced/do_scribe_rune(obj/item/tool, mob/living/cultist)
 	var/turf/our_turf = get_turf(cultist)

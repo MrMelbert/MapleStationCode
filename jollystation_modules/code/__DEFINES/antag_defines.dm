@@ -39,10 +39,14 @@
 #define TRAIT_I_WAS_FUNNY_HANDED "i_was_funny_handed"
 /// Trait for people who were recently funnyhanded and won't recieve any side effects (but will recieve stamina damage)
 #define TRAIT_NO_FUNNY_HAND_SIDE_EFFECTS "no_funny_hand_side_effects"
+/// Trait for people who were ""sacrificed"" by a cultist and shouldn't get more side effects
+#define TRAIT_WAS_ON_CONVERSION_RUNE "no_sac_side_effects"
 
+#define CONVERSION_FAILED -1
 #define CONVERSION_NOT_ALLOWED 0
-#define CONVERSION_FAILED 1
-#define CONVERSION_SUCCESS 2
+#define CONVERSION_MINDSHIELDED 1
+#define CONVERSION_HOLY 2
+#define CONVERSION_SUCCESS 3
 
 /// The initial number of points for changelings
 #define ADV_CHANGELING_INITIAL_POINTS 4

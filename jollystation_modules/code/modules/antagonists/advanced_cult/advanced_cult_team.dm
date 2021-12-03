@@ -37,19 +37,23 @@
 	if(no_conversion)
 		return CONVERSION_NOT_ALLOWED
 
+	if(HAS_TRAIT(convertee, TRAIT_WAS_ON_CONVERSION_RUNE))
+		return CONVERSION_FAILED
+
 	if(!isliving(convertee) || issilicon(convertee) || isbot(convertee) || isdrone(convertee))
 		return CONVERSION_FAILED
 
 	// if(convertee.client && convertee.mind)
 	// 	if(ishuman(convertee) && (convertee.mind.holy_role))
-	// 		return CONVERSION_FAILED
+	// 		return CONVERSION_HOLY
 	// 	if(convertee.mind.unconvertable)
 	// 		return CONVERSION_FAILED
 	// else
 	// 	return CONVERSION_FAILED
 
 	if(HAS_TRAIT(convertee, TRAIT_MINDSHIELD))
-		return CONVERSION_FAILED
+		return CONVERSION_MINDSHIELDED
+
 
 	return CONVERSION_SUCCESS
 

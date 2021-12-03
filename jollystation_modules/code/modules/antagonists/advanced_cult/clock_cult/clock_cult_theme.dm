@@ -10,7 +10,7 @@
 	magic_type = /datum/action/innate/cult/blood_magic/advanced/clock
 	magic_subtypes = list(/datum/action/innate/cult/clock_spell, /datum/action/item_action/cult/clock_spell)
 	ritual_item = /obj/item/clockwork_slab
-	ritual_materials = /obj/item/stack/sheet/bronze/ten
+	ritual_materials = /obj/item/stack/sheet/brass/ten
 	allowed_runes =  list(
 		"Sigil of Transmission",
 		"Sigil of Empowering",
@@ -35,15 +35,6 @@
 		return span_brasstalics(message)
 
 	return span_brass(message)
-
-/datum/cult_theme/ratvarcult/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
-	. = ..()
-	var/datum/advanced_antag_datum/cultist/cultist = cultist_datum.linked_advanced_datum
-	if(cultist.no_conversion)
-		. -= "Offer"
-		. -= "Revive"
-		. -= "Summon Cultist"
-		. -= "Boil Blood"
 
 /datum/cult_theme/ratvarcult/get_start_making_rune_text(mob/living/cultist)
 	var/list/text = list()
