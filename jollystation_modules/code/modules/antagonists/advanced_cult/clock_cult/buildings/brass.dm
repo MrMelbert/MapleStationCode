@@ -33,6 +33,14 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 	material_type = /datum/material/brass
 	has_unique_girder = TRUE
 
+/obj/item/stack/sheet/brass/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	. = ..()
+	ADD_CLOCKCULT_FILTER(src)
+
+/obj/item/stack/sheet/brass/Destroy()
+	REMOVE_CLOCKCULT_FILTER(src)
+	return ..()
+
 /obj/item/stack/sheet/brass/attack_self(mob/living/user)
 	if(!IS_CULTIST(user))
 		to_chat(user, span_warning("Only one with forbidden knowledge could hope to work this metal..."))
