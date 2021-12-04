@@ -30242,10 +30242,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/engineering/transit_tube)
-"ceB" = (
-/obj/structure/window/reinforced/fulltile,
-/turf/open/floor/plating,
-/area/service/chapel/office)
 "ceC" = (
 /obj/machinery/camera{
 	c_tag = "Chapel Crematorium";
@@ -30558,10 +30554,6 @@
 /obj/item/paper/fluff/holodeck/disclaimer,
 /turf/open/floor/iron/large,
 /area/commons/fitness/recreation)
-"cgG" = (
-/obj/structure/window/reinforced/fulltile,
-/turf/open/floor/plating,
-/area/service/chapel/monastery)
 "cgH" = (
 /turf/open/floor/grass,
 /area/service/hydroponics/garden/monastery)
@@ -30678,10 +30670,12 @@
 /obj/structure/water_source/puddle,
 /obj/item/reagent_containers/glass/bucket,
 /obj/effect/landmark/event_spawn,
+/obj/structure/cable,
 /turf/open/floor/grass,
 /area/service/hydroponics/garden/monastery)
 "chl" = (
 /obj/structure/flora/ausbushes/sunnybush,
+/obj/structure/cable,
 /turf/open/floor/grass,
 /area/service/hydroponics/garden/monastery)
 "chp" = (
@@ -33689,7 +33683,7 @@
 /turf/open/floor/iron/half,
 /area/cargo/storage)
 "cxM" = (
-/obj/structure/window/reinforced/fulltile,
+/obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/service/library/lounge)
 "cxX" = (
@@ -74046,9 +74040,9 @@ gas
 bOw
 bOw
 ccu
-ceB
+cBM
 cef
-ceB
+cBM
 cfN
 cfN
 cfN
@@ -74303,9 +74297,9 @@ bOw
 bOw
 bUC
 bOw
-ceB
+cBM
 csM
-ceB
+cBM
 cfN
 cfN
 cfN
@@ -74560,9 +74554,9 @@ bOw
 bOw
 bOw
 bOw
-ceB
+cBM
 cee
-ceB
+cBM
 cfN
 cfN
 cfN
@@ -74817,9 +74811,9 @@ bOw
 bSm
 bOw
 bUC
-ceB
+cBM
 cef
-ceB
+cBM
 cfN
 cfN
 cfN
@@ -75852,13 +75846,13 @@ cfm
 qGk
 cvy
 bWV
-cgG
-cgG
+fIT
+fIT
 vBG
-cuY
+xsf
 bWV
-cgG
-cgG
+fIT
+fIT
 bWV
 wyu
 eDY
@@ -76108,15 +76102,15 @@ bWV
 cfm
 eDB
 udr
-cgG
+fIT
 chi
 cid
 cuM
-cgH
+qXR
 cvb
 ciT
 cvh
-cgG
+fIT
 wyu
 eDY
 cwa
@@ -76365,15 +76359,15 @@ ceK
 cfm
 fnN
 odO
-cgG
+fIT
 cid
 cuA
 cib
-cgH
+qXR
 cgH
 ciS
 cid
-cgG
+fIT
 wyu
 wIx
 cwc
@@ -76626,7 +76620,7 @@ bWV
 cun
 cuB
 cic
-cgH
+qXR
 chG
 ciT
 cjo
@@ -76879,7 +76873,7 @@ csS
 ozR
 eDB
 odO
-cgG
+fIT
 cgk
 cuA
 ciS
@@ -76887,7 +76881,7 @@ chk
 cgH
 cgH
 cvi
-cgG
+fIT
 wyu
 gZW
 cwa
@@ -77136,7 +77130,7 @@ oaM
 nkK
 ubN
 odO
-cgG
+fIT
 cuo
 ciV
 cgI
@@ -77144,7 +77138,7 @@ chl
 cib
 cvg
 cid
-cgG
+fIT
 wyu
 eDY
 cwe
@@ -77650,15 +77644,15 @@ mcn
 cfm
 eDB
 odO
-cgG
+fIT
 ciV
 cgH
 jcg
-qXR
+cgH
 cic
 ciV
 cjq
-cgG
+fIT
 wyu
 wPl
 cwg
@@ -77907,15 +77901,15 @@ bWV
 cfm
 eDB
 odO
-cgG
+fIT
 cgm
 cuE
 cuO
-qXR
+cgH
 ciE
 ciW
 cjr
-cgG
+fIT
 wyu
 vVk
 whQ
@@ -78165,13 +78159,13 @@ cfm
 eDB
 odO
 bWV
-cgG
-cgG
+fIT
+fIT
 bWV
-xsf
+cuY
 bWV
-cgG
-cgG
+fIT
+fIT
 bWV
 wyu
 eDY
