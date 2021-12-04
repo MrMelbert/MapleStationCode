@@ -11,7 +11,7 @@
 	ritual_item = /obj/item/melee/cultblade/advanced_dagger
 	ritual_materials = /obj/item/stack/sheet/runed_metal/ten
 	allowed_runes =  list(
-		"Offer",
+		"Sanctimonious Offer",
 		"Empower",
 		"Teleport",
 		"Revive",
@@ -77,7 +77,6 @@
 	. = ..()
 	var/datum/advanced_antag_datum/cultist/cultist = cultist_datum.linked_advanced_datum
 	if(cultist.no_conversion)
-		. -= "Offer"
 		. -= "Revive"
 		. -= "Summon Cultist"
 		. -= "Boil Blood"

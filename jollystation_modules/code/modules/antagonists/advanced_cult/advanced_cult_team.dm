@@ -2,6 +2,7 @@
 /datum/team/advanced_cult
 	name = "Advanced Cult"
 	member_name = "Cultist"
+	var/datum/cult_theme/team_theme
 	/// The original cultist / cult leader.
 	var/datum/mind/original_cultist
 	/// Whether people can be converted to join this team.
@@ -15,17 +16,18 @@
 	/// List of bonus actions the leader only gets.
 	var/list/datum/action/leader_actions
 
-/datum/team/advanced_cult/New(starting_members)
+/datum/team/advanced_cult/New(starting_members, theme)
 	. = ..()
 	if(starting_members && !islist(starting_members))
 		original_cultist = starting_members
 		name = "[original_cultist]'s cult"
 
-	var/datum/antagonist/advanced_cult/our_cultist = original_cultist.has_antag_datum(/datum/antagonist/advanced_cult)
-	our_cultist.cultist_style.on_cultist_team_made(src, original_cultist)
+	team_theme = theme
+	team_theme.on_cultist_team_made(src, original_cultist)
 
 /datum/team/advanced_cult/Destroy(force, ...)
 	original_cultist = null
+	team_theme = null
 	QDEL_LAZYLIST(leader_actions)
 	return ..()
 
@@ -58,12 +60,11 @@
 	return CONVERSION_SUCCESS
 
 /datum/team/advanced_cult/roundend_report()
-	var/datum/antagonist/advanced_cult/cultist = original_cultist.has_antag_datum(/datum/antagonist/advanced_cult)
 	if(no_conversion) //handled by the original cultist's roundend report
 		return
 
+	var/datum/antagonist/advanced_cult/cultist = original_cultist.has_antag_datum(/datum/antagonist/advanced_cult)
 	var/list/report = list()
-
 	var/list/members_minus_head = LAZYCOPY(members) - original_cultist
 
 	report += "<span class='header'>[name]:</span>"

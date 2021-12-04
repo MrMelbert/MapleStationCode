@@ -82,7 +82,7 @@
 
 /datum/antagonist/advanced_cult/master/finalize_antag()
 	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum
-	team = new(owner)
+	team = new(owner, cultist_style)
 	team.no_conversion = our_cultist.no_conversion
 	return ..()
 
@@ -143,8 +143,8 @@
 		return
 
 	var/datum/antagonist/advanced_cult/our_cultist = linked_antagonist
-	var/datum/action/innate/cult/blood_magic/advanced/cult_magic = our_cultist.our_magic
 	if(no_conversion)
+		var/datum/action/innate/cult/blood_magic/advanced/cult_magic = our_cultist.our_magic
 		cult_magic.runeless_limit += 1
 		cult_magic.rune_limit += 1
 
