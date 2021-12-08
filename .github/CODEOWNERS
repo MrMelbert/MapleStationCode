@@ -4,17 +4,20 @@
 # In the event that multiple org members are to be informed of changes
 # to the same file or dir, add them to the end under Multiple Owners
 
+#CRITAWAKETS
+/_maps/map_files/PubbyStation/PubbyStation.dm @CRITAWAKETS
+
 #doshMobile
 /jollystation_modules/icons/ @doshMobile
 
 #Jolly66
 /code/ @jolly66
 /config/ @Jolly66
-/_maps/map_files/pubbystation.dm @Jolly66
+/_maps/map_files/PubbyStation/PubbyStation.dm @Jolly66
 
 #mrmelbert
 
 
 #sqnztb
 /_maps/ @sqnztb
-/_maps/map_files/limastation.dm @sqnztb
+/_maps/map_files/LimaStation/LimaStation.dm @sqnztb
