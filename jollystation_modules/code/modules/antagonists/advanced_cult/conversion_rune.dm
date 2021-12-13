@@ -153,20 +153,25 @@
 		if(their_shield)
 			qdel(their_shield)
 
-		convertee.adjustOrganLoss(ORGAN_SLOT_BRAIN, 100, 150)
-		convertee.do_jitter_animation(100)
-
+		convertee.adjustOrganLoss(ORGAN_SLOT_BRAIN, 70, 100)
 		if(protected == CONVERSION_HOLY)
-			to_chat(convertee, span_userdanger("Your faith attempts to protect you, but you begin falter as unnatural forces invade your mind!"))
+			to_chat(convertee, span_userdanger("Your faith aprotects you, but you begin falter as unnatural forces invade your mind!"))
 		else
-			to_chat(convertee, span_userdanger("Your mindshield attempts to protect you, but begins to lose strength as unnatural forces invade your mind!"))
+			to_chat(convertee, span_userdanger("Your mindshield protects you, but begins to lose strength as unnatural forces invade your mind!"))
 
 	else
 		convertee.adjustOrganLoss(ORGAN_SLOT_BRAIN, 100, 150)
-		convertee.do_jitter_animation(100)
+		to_chat(convertee, span_userdanger("An unnatural force begins to invade your mind!"))
 
-
+	convertee.do_jitter_animation(100)
 	if(iscarbon(convertee))
 		var/mob/living/carbon/carbon_convertee = convertee
 		carbon_convertee.gain_trauma(/datum/brain_trauma/hypnosis, TRAUMA_LIMIT_LOBOTOMY, "There are forces beyond my understanding at play...")
+
+	if(ishuman(convertee))
+		var/mob/living/carbon/human/human_convertee = convertee
+		if(!protected)
+			human_convertee.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
+		human_convertee.cause_pain(BODY_ZONES_ALL, 65)
+
 	ADD_TRAIT(convertee, TRAIT_WAS_ON_CONVERSION_RUNE, REF(user))

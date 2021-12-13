@@ -1,5 +1,6 @@
 GLOBAL_LIST_INIT(brass_recipes, list ( \
-	new /datum/stack_recipe("brass door", /obj/machinery/door/airlock/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
+	new /datum/stack_recipe("tinker's cache (can make replica fabricators, wraith specs, and truesight lenses)", /obj/structure/destructible/brass/tinkers_cache, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
+	new /datum/stack_recipe("brass door", /obj/machinery/door/airlock/cult/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	new /datum/stack_recipe("brass girder", /obj/structure/girder/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	))
 
@@ -44,12 +45,12 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 /obj/item/stack/sheet/brass/attack_self(mob/living/user)
 	if(!IS_CULTIST(user))
 		to_chat(user, span_warning("Only one with forbidden knowledge could hope to work this metal..."))
-		return FALSE
+		return TRUE
 	var/turf/our_turf = get_turf(user)
 	var/area/our_area = get_area(user)
 	if((!is_station_level(our_turf.z) && !is_mining_level(our_turf.z)) || (our_area && !(our_area.area_flags & CULT_PERMITTED)))
 		to_chat(user, span_warning("The veil is not weak enough here."))
-		return FALSE
+		return TRUE
 	return ..()
 
 /obj/item/stack/sheet/brass/get_main_recipes()
@@ -64,3 +65,8 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 
 /obj/item/stack/sheet/brass/five
 	amount = 5
+
+/obj/effect/temp_visual/brass
+	icon = 'jollystation_modules/icons/effects/clockwork_effects.dmi'
+	randomdir = FALSE
+	duration = 20

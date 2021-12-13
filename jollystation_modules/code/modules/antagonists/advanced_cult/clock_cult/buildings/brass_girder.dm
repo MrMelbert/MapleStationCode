@@ -1,3 +1,4 @@
+// Brass girders.
 /obj/structure/girder/brass
 	name = "brass gear"
 	desc = "A girder made out of brass, made to resemble a gear."
@@ -51,6 +52,7 @@
 		new /obj/item/stack/sheet/brass(drop_location(), 1)
 	qdel(src)
 
+// And brass walls.
 /turf/closed/wall/mineral/brass
 	name = "brass clockwork wall"
 	desc = "A brass wall engraved with meticulous symbols. Studying them causes you to feel slightly ill."
@@ -75,17 +77,13 @@
 
 /turf/closed/wall/mineral/brass/examine(mob/user)
 	. = ..()
-	if(isliving(user) && !IS_CULTIST(user))
+	if(isliving(user) && !IS_CULTIST(user)) // Non-cultist get a lil woozy when examining.
 		var/mob/living/living_user = user
 		if(living_user.dizziness <= 25 && prob(66))
 			living_user.dizziness += 10
 			. += span_hypnophrase("The shifting symbols cause you to feel dizzy...")
 
-/obj/effect/temp_visual/brass
-	icon = 'jollystation_modules/icons/effects/clockwork_effects.dmi'
-	randomdir = FALSE
-	duration = 20
-
+// Visual effects to make brass girders and walls glow on creation.
 /obj/effect/temp_visual/brass/girder
 	icon_state = "ratvargearglow"
 

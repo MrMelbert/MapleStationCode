@@ -5,6 +5,7 @@
 	button_icon_state = "teleport"
 	invocation = "Trg Zr Gur'er!"
 	active_overlay_name = "geis"
+	active_overlay_held_name = "slab_geis"
 	charges = 2
 	manually_handle_charges = TRUE
 

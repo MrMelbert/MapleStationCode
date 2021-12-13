@@ -14,6 +14,12 @@
 	var/active_overlay_name
 	/// The file the overlay is made from.
 	var/active_overlay_file
+	/// The overlay that is shown in hand invoked.
+	var/active_overlay_held_name
+	/// The file that the left hand overlay takes from.
+	var/active_overlay_lhand_file
+	/// The file that the right hand overlay takes from.
+	var/active_overlay_rhand_file
 	/// If FALSE, after_successful_spell() will be called automatically after a spell is used.
 	/// If set to TRUE, you will need to handle saying the invocation and reducing the charges manually.
 	var/manually_handle_charges = FALSE
@@ -72,10 +78,14 @@
 	active = TRUE
 	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, .proc/try_spell_effects)
-	RegisterSignal(target, COMSIG_ITEM_PICKUP, .proc/equip_deactivate)
+	RegisterSignal(target, COMSIG_ITEM_PICKUP, .proc/on_equipped)
 	if(active_overlay_name)
-		RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_update_overlays)
+		RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_item_update_overlays)
 		target_item.update_icon(UPDATE_OVERLAYS)
+	if(active_overlay_held_name && owner)
+		RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_mob_update_overlays)
+		RegisterSignal(target, COMSIG_ITEM_PRE_UNEQUIP, .proc/on_pre_dropped)
+		owner.update_icon(UPDATE_OVERLAYS)
 
 	if(!silent)
 		to_chat(owner, span_brass("You invoke the power of [src] into [target]."))
@@ -87,13 +97,17 @@
 	active = FALSE
 	if(active_overlay_name)
 		target_item.update_icon(UPDATE_OVERLAYS)
+	if(active_overlay_held_name && owner)
+		owner.update_icon(UPDATE_OVERLAYS)
 
 	UnregisterSignal(target, list(
 		COMSIG_PARENT_EXAMINE,
 		COMSIG_ITEM_ATTACK,
 		COMSIG_ITEM_PICKUP,
+		COMSIG_ITEM_PRE_UNEQUIP,
 		COMSIG_ATOM_UPDATE_OVERLAYS,
 		))
+	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
 
 	if(!silent)
 		to_chat(owner, span_brass("You withdraw the power of [src] from [target]."))
@@ -110,9 +124,9 @@
 	examine_list += span_alloy("[name] is currently readied on [target], which will [examine_hint]")
 
 /*
- * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS].
+ * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the slab itself.
  */
-/datum/action/item_action/cult/proc/on_update_overlays(datum/source, list/overlays)
+/datum/action/item_action/cult/proc/on_item_update_overlays(obj/item/source, list/overlays)
 	SIGNAL_HANDLER
 
 	if(!active_overlay_name)
@@ -120,6 +134,49 @@
 
 	if(active)
 		overlays += mutable_appearance(active_overlay_file || icon_icon, active_overlay_name, ABOVE_OBJ_LAYER)
+
+/*
+ * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the mob holding the slab.
+ */
+/datum/action/item_action/cult/proc/on_mob_update_overlays(mob/living/source, list/overlays)
+	SIGNAL_HANDLER
+
+	if(!active_overlay_held_name)
+		return
+
+	if(active)
+		var/our_file
+		var/held_hand = source.get_held_index_of_item(target)
+		if(!held_hand)
+			return
+
+		if(held_hand % 2 == 0)
+			our_file = active_overlay_rhand_file
+		else
+			our_file = active_overlay_lhand_file
+
+		overlays += mutable_appearance(our_file, active_overlay_held_name, ABOVE_MOB_LAYER)
+
+/*
+ * Signal proc for [COMSIG_ITEM_PICKUP]
+ * Un-invokes the spell when the item is equipped (picked up) by a non-cultist.
+ */
+/datum/action/item_action/cult/proc/on_equipped(datum/source, mob/grabber)
+	SIGNAL_HANDLER
+
+	if(IS_CULTIST(grabber))
+		if(active && active_overlay_held_name)
+			owner?.update_icon(UPDATE_OVERLAYS)
+		return
+
+	deactivate(TRUE)
+/*
+ * Signal proc for [COMSIG_ITEM_PRE_UNEQUIP]
+ */
+/datum/action/item_action/cult/proc/on_pre_dropped(datum/source)
+	SIGNAL_HANDLER
+
+	owner?.update_icon(UPDATE_OVERLAYS)
 
 /*
  * Signal proc for [COMSIG_ITEM_ATTACK].
@@ -147,17 +204,6 @@
 	if(!manually_handle_charges && . == COMPONENT_NO_AFTERATTACK)
 		INVOKE_ASYNC(src, .proc/after_successful_spell, user)
 
-/*
- * Signal proc for [COMSIG_ITEM_PICKUP]
- * Un-invokes the spell when the item is equipped (picked up) by a non-cultist.
- */
-/datum/action/item_action/cult/proc/equip_deactivate(datum/source, mob/grabber)
-	SIGNAL_HANDLER
-
-	if(IS_CULTIST(grabber))
-		return
-
-	deactivate(TRUE)
 
 /*
  * Called when (user) hits themselves with (target).
@@ -192,6 +238,8 @@
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough
 	active_overlay_file = 'icons/obj/clockwork_objects.dmi'
+	active_overlay_lhand_file = 'icons/mob/inhands/antag/clockwork_lefthand.dmi'
+	active_overlay_rhand_file = 'icons/mob/inhands/antag/clockwork_righthand.dmi'
 
 /datum/action/item_action/cult/clock_spell/IsAvailable()
 	if(owner)
@@ -234,5 +282,7 @@
 /datum/action/innate/cult/blood_magic/advanced/clock
 	name = "Prepare Clockwork Magic"
 	desc = "Invoke clockwork magic into your slab. This is easier by a <b>sigil of power</b>."
+	icon_icon = 'jollystation_modules/icons/mob/actions/actions_clockcult.dmi'
+	button_icon_state = "hierophant_slab"
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough

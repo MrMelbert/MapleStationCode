@@ -1,6 +1,8 @@
 /// Component for advanced ritual items
 /datum/component/cult_ritual_item/advanced
+	/// The type of girder we can one-hit.
 	var/girder_type
+	/// Our types of buildings we can anchor or unanchor.
 	var/cult_building_type
 
 /datum/component/cult_ritual_item/advanced/Initialize(

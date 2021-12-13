@@ -5,6 +5,7 @@
 	button_icon_state = "kindle"
 	invocation = "Cb'jre Bh'gntr!"
 	active_overlay_name = "volt"
+	active_overlay_held_name = "slab_volt"
 	charges = 4
 
 /datum/action/item_action/cult/clock_spell/disable/do_hit_spell_effects(mob/living/victim, mob/living/user)

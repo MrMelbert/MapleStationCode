@@ -153,9 +153,13 @@
 
 /datum/advanced_antag_datum/cultist/log_goals_on_finalize()
 	. = ..()
+
 	if(!no_conversion)
 		message_admins("Conversion enabled: [ADMIN_LOOKUPFLW(linked_antagonist.owner.current)] finalized their goals with the ability convert others enabled.")
 	log_game("[key_name(linked_antagonist.owner.current)] finalized their goals with conversion [no_conversion ? "disabled":"enabled"].")
+
+	var/datum/antagonist/advanced_cult/our_cultist = linked_antagonist
+	log_game("[key_name(linked_antagonist.owner.current)] created a cult with the [our_cultist.cultist_style] theme.")
 
 /datum/advanced_antag_datum/cultist/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are a magical cultist on board [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))

@@ -120,3 +120,9 @@
 
 	LAZYREMOVE(people_we_dazed, source)
 	UnregisterSignal(source, COMSIG_PARENT_QDELETING)
+
+/obj/effect/rune/clock_trap/conceal()
+	return
+
+/obj/effect/rune/clock_trap/reveal()
+	return

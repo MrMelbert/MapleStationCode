@@ -5,6 +5,9 @@
 	icon = 'icons/obj/clockwork_objects.dmi'
 	icon_state = "dread_ipad"
 	worn_icon_state = "dread_ipad"
+	lefthand_file = 'icons/mob/inhands/antag/clockwork_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/antag/clockwork_righthand.dmi'
+	inhand_icon_state = "clockwork_slab"
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_SMALL
 	force = 0
@@ -21,7 +24,7 @@ Can block melee attacks for followers of Rat'var when held in hand."}
 	AddComponent(/datum/component/cult_ritual_item/advanced, \
 		span_brass(examine_text), \
 		/datum/action/item_action/ritual_item/slab, \
-		/turf/open/floor/bronze, \
+		typesof(/turf/open/floor/engine/cult/brass), \
 		/obj/structure/girder/brass, \
 		/obj/structure/destructible/brass)
 

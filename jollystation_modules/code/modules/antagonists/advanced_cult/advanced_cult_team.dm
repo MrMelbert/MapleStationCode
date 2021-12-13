@@ -70,6 +70,7 @@
 	report += "<span class='header'>[name]:</span>"
 	report += printplayer(original_cultist)
 	report += "<b>[original_cultist]</b> was a/an <b>[cultist.linked_advanced_datum.name]</b>, a follower of <b>[cultist.linked_advanced_datum.employer || "no gods"]</b> and the leader of the cult!"
+	report += "<br>Their cult was of the <b>[cultist.cultist_style]</b> style."
 	if(LAZYLEN(members_minus_head))
 		report += "<br>Followers of [name] at shift end:"
 		report += printplayerlist(members_minus_head)
