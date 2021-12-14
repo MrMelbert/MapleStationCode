@@ -76,19 +76,19 @@
 			return
 
 	active = TRUE
-	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
 	RegisterSignal(target, COMSIG_ITEM_ATTACK, .proc/try_spell_effects)
-	RegisterSignal(target, COMSIG_ITEM_PICKUP, .proc/on_equipped)
+	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
+	RegisterSignal(target, COMSIG_ITEM_EQUIPPED, .proc/on_equipped)
 	if(active_overlay_name)
 		RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_item_update_overlays)
 		target_item.update_icon(UPDATE_OVERLAYS)
-	if(active_overlay_held_name && owner)
-		RegisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_mob_update_overlays)
-		RegisterSignal(target, COMSIG_ITEM_PRE_UNEQUIP, .proc/on_pre_dropped)
-		owner.update_icon(UPDATE_OVERLAYS)
+	if(active_overlay_held_name)
+		RegisterSignal(magic_source.owner, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_mob_update_overlays)
+		RegisterSignal(target, COMSIG_ITEM_DROPPED, .proc/on_dropped)
+		magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
 	if(!silent)
-		to_chat(owner, span_brass("You invoke the power of [src] into [target]."))
+		to_chat(magic_source.owner, span_brass("You invoke the power of [src] into [target]."))
 
 /// Deactivate the spell, unregistering all the signals.
 /datum/action/item_action/cult/proc/deactivate(silent = FALSE)
@@ -97,20 +97,20 @@
 	active = FALSE
 	if(active_overlay_name)
 		target_item.update_icon(UPDATE_OVERLAYS)
-	if(active_overlay_held_name && owner)
-		owner.update_icon(UPDATE_OVERLAYS)
+	if(active_overlay_held_name)
+		magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
 	UnregisterSignal(target, list(
-		COMSIG_PARENT_EXAMINE,
 		COMSIG_ITEM_ATTACK,
-		COMSIG_ITEM_PICKUP,
-		COMSIG_ITEM_PRE_UNEQUIP,
+		COMSIG_PARENT_EXAMINE,
+		COMSIG_ITEM_EQUIPPED,
+		COMSIG_ITEM_DROPPED,
 		COMSIG_ATOM_UPDATE_OVERLAYS,
 		))
-	UnregisterSignal(owner, COMSIG_ATOM_UPDATE_OVERLAYS)
+	UnregisterSignal(magic_source.owner, COMSIG_ATOM_UPDATE_OVERLAYS)
 
 	if(!silent)
-		to_chat(owner, span_brass("You withdraw the power of [src] from [target]."))
+		to_chat(magic_source.owner, span_brass("You withdraw the power of [src] from [target]."))
 
 /*
  * Signal proc for [COMSIG_PARENT_EXAMINE].
@@ -129,11 +129,10 @@
 /datum/action/item_action/cult/proc/on_item_update_overlays(obj/item/source, list/overlays)
 	SIGNAL_HANDLER
 
-	if(!active_overlay_name)
+	if(!active || !active_overlay_name)
 		return
 
-	if(active)
-		overlays += mutable_appearance(active_overlay_file || icon_icon, active_overlay_name, ABOVE_OBJ_LAYER)
+	overlays += mutable_appearance(active_overlay_file || icon_icon, active_overlay_name, ABOVE_OBJ_LAYER)
 
 /*
  * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the mob holding the slab.
@@ -141,42 +140,41 @@
 /datum/action/item_action/cult/proc/on_mob_update_overlays(mob/living/source, list/overlays)
 	SIGNAL_HANDLER
 
-	if(!active_overlay_held_name)
+	if(!active || !active_overlay_held_name)
 		return
 
-	if(active)
-		var/our_file
-		var/held_hand = source.get_held_index_of_item(target)
-		if(!held_hand)
-			return
+	var/our_file
+	var/held_hand = source.get_held_index_of_item(target)
+	if(!held_hand)
+		return
 
-		if(held_hand % 2 == 0)
-			our_file = active_overlay_rhand_file
-		else
-			our_file = active_overlay_lhand_file
+	if(held_hand % 2 == 0)
+		our_file = active_overlay_rhand_file
+	else
+		our_file = active_overlay_lhand_file
 
-		overlays += mutable_appearance(our_file, active_overlay_held_name, ABOVE_MOB_LAYER)
+	overlays += mutable_appearance(our_file, active_overlay_held_name, ABOVE_MOB_LAYER)
 
 /*
- * Signal proc for [COMSIG_ITEM_PICKUP]
+ * Signal proc for [COMSIG_ITEM_EQUIPPED]
  * Un-invokes the spell when the item is equipped (picked up) by a non-cultist.
  */
 /datum/action/item_action/cult/proc/on_equipped(datum/source, mob/grabber)
 	SIGNAL_HANDLER
 
 	if(IS_CULTIST(grabber))
-		if(active && active_overlay_held_name)
-			owner?.update_icon(UPDATE_OVERLAYS)
+		magic_source.owner.update_icon(UPDATE_OVERLAYS)
 		return
 
 	deactivate(TRUE)
+
 /*
- * Signal proc for [COMSIG_ITEM_PRE_UNEQUIP]
+ * Signal proc for [COMSIG_ITEM_DROPPED]
  */
-/datum/action/item_action/cult/proc/on_pre_dropped(datum/source)
+/datum/action/item_action/cult/proc/on_dropped(datum/source, mob/user)
 	SIGNAL_HANDLER
 
-	owner?.update_icon(UPDATE_OVERLAYS)
+	magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
 /*
  * Signal proc for [COMSIG_ITEM_ATTACK].
@@ -286,3 +284,15 @@
 	button_icon_state = "hierophant_slab"
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough
+
+// Clocky temp effects. Slightly transparent, fade out over a second.
+/obj/effect/temp_visual/clock
+	icon = 'jollystation_modules/icons/effects/clockwork_effects.dmi'
+	randomdir = FALSE
+	layer = BELOW_MOB_LAYER
+	alpha = 155
+	duration = 11
+
+/obj/effect/temp_visual/clock/Initialize(mapload)
+	. = ..()
+	animate(src, alpha = 0, time = 10, easing = EASE_OUT)

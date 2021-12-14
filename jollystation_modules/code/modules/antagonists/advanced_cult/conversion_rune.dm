@@ -155,7 +155,7 @@
 
 		convertee.adjustOrganLoss(ORGAN_SLOT_BRAIN, 70, 100)
 		if(protected == CONVERSION_HOLY)
-			to_chat(convertee, span_userdanger("Your faith aprotects you, but you begin falter as unnatural forces invade your mind!"))
+			to_chat(convertee, span_userdanger("Your faith protects you, but you begin falter as unnatural forces invade your mind!"))
 		else
 			to_chat(convertee, span_userdanger("Your mindshield protects you, but begins to lose strength as unnatural forces invade your mind!"))
 

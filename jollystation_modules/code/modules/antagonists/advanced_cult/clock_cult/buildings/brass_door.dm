@@ -11,7 +11,7 @@
 /obj/effect/temp_visual/brass/door
 	icon_state = "ratvardoorglow"
 
-/obj/effect/temp_visual/kindle/door_opening
+/obj/effect/temp_visual/clock/disable/door_opening
 	layer = ABOVE_MOB_LAYER
 
 // And brass airlock.
@@ -20,7 +20,7 @@
 	icon = 'icons/obj/doors/airlocks/clockwork/pinion_airlock.dmi'
 	overlays_file = 'icons/obj/doors/airlocks/clockwork/overlays.dmi'
 	assemblytype = /obj/structure/door_assembly/door_assembly_brass
-	openingoverlaytype = /obj/effect/temp_visual/kindle/door_opening
+	openingoverlaytype = /obj/effect/temp_visual/clock/disable/door_opening
 
 /obj/machinery/door/airlock/cult/brass/Initialize(mapload)
 	. = ..()

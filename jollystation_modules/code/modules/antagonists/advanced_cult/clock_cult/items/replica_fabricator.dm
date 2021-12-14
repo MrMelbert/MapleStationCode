@@ -1,4 +1,5 @@
-// Replica fabricator. In this iteration, it's a fast RCD.
+// The Replica fabricator.
+// It's a buffed RCD.
 // TODO; maybe make it so it calls a "ratvar_act" on whatever it makes. Or something.
 /obj/item/construction/rcd/clock
 	name = "replica fabricator"
@@ -58,4 +59,4 @@
 		user.apply_damage(12, def_zone = affecting.body_zone, forced = TRUE, wound_bonus = CANT_WOUND)
 
 	user.Paralyze(1.5 SECONDS)
-	new /obj/effect/temp_visual/kindle(get_turf(user))
+	new /obj/effect/temp_visual/clock/disable(get_turf(user))

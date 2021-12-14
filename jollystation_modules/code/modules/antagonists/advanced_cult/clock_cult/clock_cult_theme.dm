@@ -1,11 +1,12 @@
-
+// Clockcult ~2~ 3, Electric Boogaloo.
 /datum/cult_theme/ratvarcult
 	name = CULT_STYLE_RATVAR
 	default_deity = "Rat'var"
-	faction = "cult"
+	faction = "ratvar"
+	hud_name = "clockwork"
 	language = /datum/language/ratvarian
 	scribing_takes_blood = FALSE
-	scribe_sound = 'sound/items/sheath.ogg'
+	scribe_sound = 'sound/items/sheath.ogg' //TODO: maybe a better sound
 	on_gain_sound = 'sound/magic/clockwork/ark_activation.ogg'
 	magic_type = /datum/action/innate/cult/blood_magic/advanced/clock
 	magic_subtypes = list(/datum/action/innate/cult/clock_spell, /datum/action/item_action/cult/clock_spell)

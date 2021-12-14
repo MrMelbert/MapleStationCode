@@ -16,6 +16,8 @@ GLOBAL_LIST(cult_themes)
 	var/scribe_sound
 	/// The faction this cult gives.
 	var/faction
+	/// The name of the hud applied by this theme.
+	var/hud_name = "cult"
 	/// The language this cult gives. Typepath.
 	var/datum/language/language
 	/// The sound effect that is played when someone joins the cult.
@@ -52,6 +54,9 @@ GLOBAL_LIST(cult_themes)
 	if(language)
 		cultist.grant_language(language, TRUE, TRUE, LANGUAGE_CULTIST)
 
+	if(hud_name)
+		cultist_datum.add_antag_hud(ANTAG_HUD_CULT, hud_name, cultist)
+
 	cultist.playsound_local(get_turf(cultist), on_gain_sound, 80, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	give_spells(cultist_datum, cultist)
 
@@ -67,10 +72,10 @@ GLOBAL_LIST(cult_themes)
 
 	if(faction)
 		cultist.faction -= faction
-
 	if(language)
 		cultist.remove_language(language, TRUE, TRUE, LANGUAGE_CULTIST)
-
+	if(hud_name)
+		cultist_datum.remove_antag_hud(ANTAG_HUD_CULT, cultist)
 
 /// Called when a cult leader creates a new cult team.
 /datum/cult_theme/proc/equip_cultist(mob/living/cultist)

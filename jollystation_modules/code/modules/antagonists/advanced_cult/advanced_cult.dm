@@ -3,8 +3,6 @@
 	ui_name = null
 	show_in_antagpanel = FALSE
 	job_rank = ROLE_CULTIST
-	antag_hud_type = ANTAG_HUD_CULT
-	antag_hud_name = "cult"
 	roundend_category = "cultists"
 	antagpanel_category = "Cult"
 	suicide_cry = "FOR MY GOD!!"

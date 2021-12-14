@@ -31,7 +31,7 @@
 	else
 		living_target.Knockdown(1 SECONDS)
 	living_target.apply_damage(75, STAMINA, BODY_ZONE_CHEST)
-	new /obj/effect/temp_visual/kindle(get_turf(victim))
+	new /obj/effect/temp_visual/clock/disable(get_turf(victim))
 	var/final_hit = living_target.getStaminaLoss() >= 100
 
 	if(issilicon(victim))
@@ -76,14 +76,5 @@
 
 	return TRUE
 
-/obj/effect/temp_visual/kindle
-	icon = 'jollystation_modules/icons/effects/clockwork_effects.dmi'
+/obj/effect/temp_visual/clock/disable
 	icon_state = "volt_hit"
-	randomdir = FALSE
-	layer = BELOW_MOB_LAYER
-	alpha = 155
-	duration = 11
-
-/obj/effect/temp_visual/kindle/Initialize(mapload)
-	. = ..()
-	animate(src, alpha = 0, time = 10, easing = EASE_OUT)

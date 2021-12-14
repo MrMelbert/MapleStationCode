@@ -5,9 +5,12 @@
 	light_power = 2
 	break_sound = 'sound/hallucinations/veryfar_noise.ogg'
 	debris = list(/obj/item/stack/sheet/brass = 1)
-	var/success_message
 	var/cult_examine_tip
 	COOLDOWN_DECLARE(use_cooldown)
+
+/obj/structure/destructible/brass/Initialize(mapload)
+	. = ..()
+
 
 /obj/structure/destructible/brass/examine(mob/user)
 	. = ..()
@@ -45,12 +48,14 @@
 
 	COOLDOWN_START(src, use_cooldown, 5 MINUTES)
 	for(var/item_to_make in spawned_items)
-		new item_to_make(get_turf(src))
-		if(success_message)
-			to_chat(user, span_brasstalics(success_message))
+		var/obj/item/made_item = new item_to_make(get_turf(src))
+		succcess_message(user, made_item)
 
 /obj/structure/destructible/brass/proc/open_radial_and_get_item(mob/living/user)
 	CRASH("[type] - open_radial_and_get_item() not implemented.")
+
+/obj/structure/destructible/brass/proc/succcess_message(mob/living/user, obj/item/spawned_item)
+	to_chat(user, span_brass("[src] whirrs as a [spawned_item.name] is produced."))
 
 /obj/structure/destructible/brass/set_anchored(anchorvalue)
 	. = ..()

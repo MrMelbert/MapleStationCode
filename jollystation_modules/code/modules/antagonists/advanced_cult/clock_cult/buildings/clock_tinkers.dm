@@ -2,13 +2,16 @@
 #define WRAITH_SPEC "Wraith Specs"
 #define TRUESIGHT_LENS "Truesight Lens"
 
+// The tinker's cache
+// produces utility items
 /obj/structure/destructible/brass/tinkers_cache
-	name = "Tinkerer's Cache"
+	name = "tinkerer's cache"
 	desc = "A cache of gizmos and gears constructed by a follower of Ratvar."
 	icon_state = "tinkerers_cache"
-	success_message = "The chache"
-	cult_examine_tip = "A Rat'varian cultist can use it to create replica fabricators, wraith specs, and truesight lenses."
-	break_message = "<span class = 'warning'>The cache crumbles, its incessant ticking ceasing.</span>"
+	cult_examine_tip = "Can be used to create replica fabricators, wraith specs, and truesight lenses."
+	break_message = "<span class='warning'>The cache crumbles, its incessant ticking ceasing.</span>"
+	light_range = 2
+	light_color = "#ff9900"
 
 /obj/structure/destructible/brass/tinkers_cache/open_radial_and_get_item(mob/living/user)
 	var/list/items = list(
@@ -22,9 +25,9 @@
 		if(REPLICA_FAB)
 			. += /obj/item/construction/rcd/clock
 		if(WRAITH_SPEC)
-			. += /obj/item
+			. += /obj/item/clothing/glasses/wraith_specs
 		if(TRUESIGHT_LENS)
-			. += /obj/item
+			. += /obj/item/binoculars/truesight_lens
 
 #undef REPLICA_FAB
 #undef WRAITH_SPEC
