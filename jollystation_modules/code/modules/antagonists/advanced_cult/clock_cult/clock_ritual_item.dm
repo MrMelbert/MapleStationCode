@@ -1,4 +1,4 @@
-
+// Clockwork slab babyyy
 /obj/item/clockwork_slab
 	name = "clockwork slab"
 	desc = "A slab of brass covered in cogs and gizmos used by agents of Rat'var to invoke their spells."

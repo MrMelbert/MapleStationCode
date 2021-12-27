@@ -44,7 +44,7 @@
 		return
 
 	var/mob/living/target = examined
-	if(user.stat != CONSCIOUS || user.is_blind())
+	if(source.stat != CONSCIOUS || source.is_blind())
 		return
 	if(target.stat != CONSCIOUS)
 		return

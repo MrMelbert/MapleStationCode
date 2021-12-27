@@ -1,4 +1,4 @@
-
+// Ratvarian language.
 /datum/language/ratvarian
 	name = "Ratvarian"
 	desc = "A timeless language full of power and incomprehensible to the unenlightened."

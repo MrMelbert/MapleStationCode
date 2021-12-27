@@ -4050,6 +4050,7 @@
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\advanced_cult_team.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\conversion_rune.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\cult_themes.dm"
+#include "jollystation_modules\code\modules\antagonists\advanced_cult\deconversion.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\magic_invoker.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\ritual_component.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\ritual_item_action.dm"

@@ -20,6 +20,7 @@
 
 /datum/antagonist/advanced_cult/Destroy()
 	cultist_style = null
+	QDEL_NULL(our_magic)
 	return ..()
 
 /datum/antagonist/advanced_cult/get_team()
@@ -33,6 +34,10 @@
 /datum/antagonist/advanced_cult/on_mindshield(mob/implanter)
 	if(!silent)
 		to_chat(owner.current, span_warning("You feel something interfering with your mental conditioning, but you resist it!"))
+		if(affected_by_implants && iscarbon(owner.current))
+			var/mob/living/carbon/carbon_current = owner.current
+			carbon_current.jitteriness += 8
+			carbon_current.stuttering += 6
 
 /datum/antagonist/advanced_cult/finalize_antag()
 	cultist_style.on_cultist_made(src, owner.current)
@@ -93,6 +98,7 @@
 
 	parts += printplayer(owner)
 	parts += "<b>[owner]</b> was a/an <b>[our_cultist.name]</b>[our_cultist.employer? ", a follower of <b>[our_cultist.employer]</b>":""]."
+	parts += "Their cult was of the <b>[cultist_style]</b> style."
 	if(our_cultist.backstory)
 		parts += "<b>[owner]'s</b> backstory was the following: <br>[our_cultist.backstory]"
 
@@ -117,9 +123,42 @@
 		CRASH("Advanced cultist converted by someone without a team!")
 	our_team.add_member(owner)
 
-/datum/antagonist/advanced_cult/deconverted_master
+// Antag datum given to adv cultist leaders who were deconverted.
+/datum/antagonist/deconverted_cult_master
 	name = "Deconverted Cult Master"
+	ui_name = null
+	show_in_antagpanel = FALSE
+	roundend_category = "cultists"
+	antagpanel_category = "Cult"
+	suicide_cry = "FOR THE LOST GODS!!"
+	antag_moodlet = /datum/mood_event/cult_lost
+	/// The theme we had before being deconverted. Just a string, no need to hold a ref.
+	var/old_theme
 
+/datum/antagonist/deconverted_cult_master/roundend_report()
+	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum
+	var/list/parts = list()
+
+	parts += printplayer(owner)
+	parts += "<b>[owner]</b> was a/an <b>[our_cultist.name]</b>[our_cultist.employer? ", a follower of <b>[our_cultist.employer]</b>":""]."
+	parts += "Their cult was of the <b>[old_theme]</b> style."
+	if(our_cultist.backstory)
+		parts += "<b>[owner]'s</b> backstory was the following: <br>[our_cultist.backstory]"
+
+	if(LAZYLEN(linked_advanced_datum.our_goals))
+		parts += "<b>[owner]'s</b> objectives:"
+		var/count = 1
+		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
+			parts += goal.get_roundend_text(count++)
+
+	parts += span_redtext("<br>[owner] was deconverted by the crew!")
+	return parts.Join("<br>")
+
+// Deconverted cultist moodlet
+/datum/mood_event/cult_lost
+	description = "<span class='boldwarning'>THE GODS HAVE ABANDONED US!!</span>\n"
+	mood_change = -8
+	hidden = TRUE
 
 /// The advanced antag datum for traitor.
 /datum/advanced_antag_datum/cultist
@@ -173,7 +212,7 @@
 	var/list/data = list()
 
 	var/list/themes = list()
-	for(var/datum/cult_theme/theme as anything in GLOB.cult_themes)
+	for(var/theme in GLOB.cult_themes)
 		themes |= theme
 
 	data["cult_style_options"] = themes

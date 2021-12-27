@@ -45,13 +45,13 @@
 	if(!isliving(convertee) || issilicon(convertee) || isbot(convertee) || isdrone(convertee))
 		return CONVERSION_FAILED
 
-	// if(convertee.client && convertee.mind)
-	// 	if(ishuman(convertee) && (convertee.mind.holy_role))
-	// 		return CONVERSION_HOLY
-	// 	if(convertee.mind.unconvertable)
-	// 		return CONVERSION_FAILED
-	// else
-	// 	return CONVERSION_FAILED
+	if(convertee.client && convertee.mind)
+		if(ishuman(convertee) && (convertee.mind.holy_role))
+			return CONVERSION_HOLY
+		if(convertee.mind.unconvertable)
+			return CONVERSION_FAILED
+	else
+		return CONVERSION_FAILED
 
 	if(HAS_TRAIT(convertee, TRAIT_MINDSHIELD))
 		return CONVERSION_MINDSHIELDED
@@ -63,14 +63,20 @@
 	if(no_conversion) //handled by the original cultist's roundend report
 		return
 
+	if(!original_cultist)
+		return
+
 	var/datum/antagonist/advanced_cult/cultist = original_cultist.has_antag_datum(/datum/antagonist/advanced_cult)
+	if(!cultist?.linked_advanced_datum)
+		return
+
 	var/list/report = list()
 	var/list/members_minus_head = LAZYCOPY(members) - original_cultist
 
 	report += "<span class='header'>[name]:</span>"
 	report += printplayer(original_cultist)
 	report += "<b>[original_cultist]</b> was a/an <b>[cultist.linked_advanced_datum.name]</b>, a follower of <b>[cultist.linked_advanced_datum.employer || "no gods"]</b> and the leader of the cult!"
-	report += "<br>Their cult was of the <b>[cultist.cultist_style]</b> style."
+	report += "Their cult was of the <b>[cultist.cultist_style]</b> style."
 	if(LAZYLEN(members_minus_head))
 		report += "<br>Followers of [name] at shift end:"
 		report += printplayerlist(members_minus_head)

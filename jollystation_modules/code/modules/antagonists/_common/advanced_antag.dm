@@ -20,6 +20,8 @@
 
 	/// -- UI STUFF --
 
+	/// Whether the antag can actually open and edit the ui.
+	var/can_use_ui = TRUE
 	/// The type of advanced panel datum we make / open
 	var/advanced_panel_type = "_AdvancedTraitorPanel"
 	/// The current state of the background tutorial.
@@ -70,12 +72,15 @@
 	to_chat(antagonist, span_danger("In your goal panel, you should set a few goals to get started and finalize them to receive your uplink. If you're not sure how to use the panel or its functions, use the tutorial built into the UI."))
 
 /* Updates the user's currently open TGUI panel, or open a new panel if they don't have one.
- * Checks the open_panels list if our user already has a panel opened. If so, try to update the ui instead of opening a new one.
- * If the user is not in the open_panels list, create a new panel and add the panel/user to the open_panels list.
+ * If user is the antagonist itself, and can_use_ui is FALSE, does nothing.
  *
  * user - the mob opening the panel (usually the antagonist themselves, but sometimes admins)
  */
 /datum/advanced_antag_datum/proc/show_advanced_antag_panel(mob/user)
+	if(user == linked_antagonist.owner.current && !can_use_ui)
+		to_chat(user, span_warning("You can no longer use this."))
+		return
+
 	ui_interact(user)
 
 /// Modify the traitor's starting_points (TC, processing points, etc) based on their goals's intensity levels.

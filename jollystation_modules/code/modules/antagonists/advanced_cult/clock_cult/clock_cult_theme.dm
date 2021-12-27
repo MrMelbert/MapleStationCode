@@ -54,3 +54,22 @@
 
 /datum/cult_theme/ratvarcult/get_end_invoking_magic_text(added_magic, atom/target)
 	return span_brass("[target ? "[target] tocks, as you":"You"] invoke [added_magic]!")
+
+/datum/cult_theme/ratvarcult/pick_deconversion_line()
+	return pick(list(
+		"Un'vy Engine..",
+		"Cen'vfr gur zn-puvar..",
+		"GUR GV'PX'VAT QB-RF ABG F'GBC!",
+		"Hap'rn-fvat..",
+		"Gv'px Gb'px..",
+		"FNG NAN!",
+		"Ur'yc Rat'var.."
+	))
+
+/datum/cult_theme/ratvarcult/pick_god_shame_line()
+	return pick(list(
+		"Do not give in, my return counts on you.",
+		"Scour this poison, you must - or else!",
+		"All this power, and you still falter?",
+		"The cogs will not continue to turn without you.",
+	))

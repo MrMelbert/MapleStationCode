@@ -1,4 +1,4 @@
-/// -- The advanced traitor panuel UI datum. --
+/// -- The advanced traitor panuel UI. --
 
 /datum/advanced_antag_datum/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -6,10 +6,17 @@
 		ui = new(user, src, advanced_panel_type)
 		ui.open()
 
+/datum/advanced_antag_datum/ui_status(mob/user)
+	if (user == linked_antagonist.owner.current && !can_use_ui)
+		return UI_CLOSE
+
+	return UI_INTERACTIVE
+
 /datum/advanced_antag_datum/ui_state(mob/user)
 	if(user != linked_antagonist.owner.current)
 		to_chat(user, "You are viewing [linked_antagonist.owner.current]'s advanced traitor panel as an admin.")
-		message_admins("[ADMIN_LOOKUPFLW(user)] is viewing [ADMIN_LOOKUPFLW(linked_antagonist.owner.current)]'s advanced traitor panel as an admin.")
+		if(isliving(user)) // If they're in a mob...
+			message_admins("[ADMIN_LOOKUPFLW(user)] is viewing [ADMIN_LOOKUPFLW(linked_antagonist.owner.current)]'s advanced traitor panel as an admin.")
 		return GLOB.admin_state
 	else
 		return GLOB.always_state

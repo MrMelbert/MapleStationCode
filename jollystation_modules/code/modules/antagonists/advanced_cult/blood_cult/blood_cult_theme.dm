@@ -98,3 +98,23 @@
 
 /datum/cult_theme/narsie/get_end_invoking_magic_text(added_magic, atom/target)
 	return span_cult("Your wounds glow with power, you have prepared a [added_magic] invocation!")
+
+/datum/cult_theme/narsie/pick_deconversion_line()
+	return pick(list(
+		"Av'te Nar'Sie..",
+		"Pa'lid Mors..",
+		"INO INO ORA ANA!",
+		"SAT ANA!",
+		"Daim'niodeis Arc'iai Le'eones..",
+		"R'ge Na'sie..",
+		"Diabo us Vo'iscum..",
+		"Eld' Mon Nobis..",
+	))
+
+/datum/cult_theme/narsie/pick_god_shame_line()
+	return pick(list(
+		"Your blood is your bond - you are nothing without it",
+		"Do not forget your place",
+		"All that power, and you still fail?",
+		"If you cannot scour this poison, I shall scour your meager life!",
+	))
