@@ -112,7 +112,7 @@
 	var/turf/origin = get_turf(teleported_person)
 
 	if(!do_teleport(teleported_person, target_turf, channel = TELEPORT_CHANNEL_CULT))
-		to_chat(teleported_person, span_warning("Your teleport fails, leaving [teleported_person] where they began!"))
+		to_chat(caster, span_warning("Your teleport fails, leaving [teleported_person] where they began!"))
 		return
 
 	origin.visible_message(

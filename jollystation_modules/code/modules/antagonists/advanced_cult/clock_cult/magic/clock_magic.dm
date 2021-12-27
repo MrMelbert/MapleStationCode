@@ -284,6 +284,7 @@
 	button_icon_state = "hierophant_slab"
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough
+	rune_that_empowers_us = /obj/effect/rune/empower/clock
 
 // Clocky temp effects. Slightly transparent, fade out over a second.
 /obj/effect/temp_visual/clock

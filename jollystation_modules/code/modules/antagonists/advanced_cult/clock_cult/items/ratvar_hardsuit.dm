@@ -15,7 +15,7 @@
 	icon_state = "clockwork_cuirass"
 	inhand_icon_state = "clockwork_cuirass_inhand"
 	w_class = WEIGHT_CLASS_BULKY
-	allowed = list(/obj/item/clockwork_slab, /obj/item/melee/ratvar_spear, /obj/item/tank/internals)
+	allowed = list(/obj/item/clockwork_slab, /obj/item/melee/ratvar_spear, /obj/item/tank/internals, /obj/item/construction/rcd/clock)
 	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 60, BOMB = 50, BIO = 30, FIRE = 100, ACID = 100)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/clock
 	slowdown = 0

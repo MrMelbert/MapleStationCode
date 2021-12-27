@@ -44,7 +44,7 @@
 	else
 		return ..()
 
-/obj/structure/girder/brass/narsie_act() // what that dog doin'?
+/obj/structure/girder/brass/narsie_act(force, ignore_mobs, probability) // what that dog doin'?
 	return
 
 /obj/structure/girder/brass/deconstruct(disassembled = TRUE)
@@ -82,6 +82,9 @@
 		if(living_user.dizziness <= 25 && prob(66))
 			living_user.dizziness += 10
 			. += span_hypnophrase("The shifting symbols cause you to feel dizzy...")
+
+/turf/closed/wall/mineral/brass/narsie_act(force, ignore_mobs, probability)
+	return
 
 // Visual effects to make brass girders and walls glow on creation.
 /obj/effect/temp_visual/brass/girder

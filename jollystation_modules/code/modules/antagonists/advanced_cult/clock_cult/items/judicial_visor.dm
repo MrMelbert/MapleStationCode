@@ -44,6 +44,8 @@
 		return
 
 	var/mob/living/target = examined
+	if(user.stat != CONSCIOUS || user.is_blind())
+		return
 	if(target.stat != CONSCIOUS)
 		return
 	if(IS_CULTIST(target))
@@ -56,19 +58,25 @@
 		to_chat(source, span_warning("[examined] is too far to feel our gaze."))
 		return
 
-	target.apply_damage(15, BURN)
-	target.jitteriness = clamp(target.jitteriness + 6, 0, 30)
-	to_chat(target, span_userdanger("You feel a searing gaze bear down onto you from the [dir2text(get_dir(examined, source))]!"))
-	to_chat(source, span_warning("You gaze harshly upon [examined], searing them!"))
+	// This point on, our attack was successful
+	COOLDOWN_START(src, examine_damage_cooldown, 10 SECONDS)
 	playsound(get_turf(source), 'sound/weapons/marauder.ogg', 50, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 	playsound(get_turf(examined), 'sound/weapons/sear.ogg', 30, TRUE, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE)
-	COOLDOWN_START(src, examine_damage_cooldown, 10 SECONDS)
 	new /obj/effect/temp_visual/clock/marker(get_turf(examined))
 
 	// Sets our icon to the "off" state.
 	icon_state = "[base_icon_state]_0"
 	source.update_inv_glasses()
 	addtimer(CALLBACK(src, .proc/reset_icon, source), 10 SECONDS)
+
+	if(anti_cult_magic_check(target, source))
+		return
+
+	// And THIS point on, is where attack effects are done to the target
+	target.apply_damage(15, BURN)
+	target.jitteriness = clamp(target.jitteriness + 6, 0, 30)
+	to_chat(target, span_userdanger("You feel a searing gaze bear down onto you from the [dir2text(get_dir(examined, source))]!"))
+	to_chat(source, span_warning("You gaze harshly upon [examined], searing them!"))
 
 /// Resets the icon to the "on" state.
 /obj/item/clothing/glasses/judicial_visor/proc/reset_icon(mob/living/carbon/human/source)
@@ -78,3 +86,4 @@
 // Visual effect for the visor.
 /obj/effect/temp_visual/clock/marker
 	icon_state = "judicial_marker"
+	layer = ABOVE_MOB_LAYER

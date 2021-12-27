@@ -6,4 +6,3 @@
 	invocation = "Gjb Fgha, N Gry-rc'beg, Naq Rzc!"
 	icon = 'jollystation_modules/icons/effects/clockwork_effects.dmi'
 	icon_state = "sigiltransmission"
-	req_cultists = 1

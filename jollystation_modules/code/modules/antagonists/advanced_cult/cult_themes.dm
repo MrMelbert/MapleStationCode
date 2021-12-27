@@ -67,7 +67,7 @@ GLOBAL_LIST(cult_themes)
 	equip_cultist(lead_cultist.current)
 
 /// Called when a cultist is removed from the cult.
-/datum/cult_theme/proc/on_cultist_lost(mob/living/cultist)
+/datum/cult_theme/proc/on_cultist_lost(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(faction)
@@ -101,6 +101,7 @@ GLOBAL_LIST(cult_themes)
 		to_chat(cultist, "You weren't given one or both of your ritual items correctly. Contact your local god!")
 	else
 		SEND_SIGNAL(human_cultist.back, COMSIG_TRY_STORAGE_SHOW, human_cultist)
+		to_chat(cultist, our_cult_span("You were given a [new_ritual_item.name] and some [new_ritual_mats.name] to grow your cult. They are in your backpack - use them wisely."))
 
 /// Called when the cultist is made.
 /datum/cult_theme/proc/give_spells(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)

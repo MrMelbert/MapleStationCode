@@ -39,7 +39,7 @@
 	owner.special_role = ROLE_CULTIST
 
 /datum/antagonist/advanced_cult/on_removal()
-	cultist_style.on_cultist_lost(owner.current)
+	cultist_style.on_cultist_lost(src, owner.current)
 	if(!silent)
 		owner.current.visible_message(span_deconversion_message("<span class'warningplain'>[owner.current] looks like [owner.current.p_theyve()] just reverted to [owner.current.p_their()] old faith!</span>"), null, null, null, owner.current)
 		to_chat(owner.current, span_userdanger("An unfamiliar white light flashes through your mind, cleansing the taint of your old god and all your memories as their servant."))

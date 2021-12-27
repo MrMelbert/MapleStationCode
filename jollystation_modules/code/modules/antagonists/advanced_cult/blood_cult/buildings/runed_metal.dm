@@ -1,3 +1,9 @@
+// Make runed metal not rigid.
+/datum/material/runedmetal/New()
+	. = ..()
+	categories -= MAT_CATEGORY_RIGID
+
+// Real cult walls have a special examine for non-cultists.
 /turf/closed/wall/mineral/cult/examine(mob/user)
 	. = ..()
 	if(isliving(user) && !IS_CULTIST(user))

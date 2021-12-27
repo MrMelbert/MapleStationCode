@@ -1,10 +1,9 @@
 #define JUDICIAL_VISOR "Judicial Visor"
-#define RATVAR_SPEAR "Ratv'varian Spear"
+#define RATVAR_SPEAR "Rat'varian Spear"
 #define BRASS_ARMOR "Brass Armor"
 
 // The daemon forge
 // produces combat items
-// TODO: learn how to use emissives to make this look nicer.
 /obj/structure/destructible/brass/daemon_forge
 	name = "daemon forge"
 	desc = "A forge used by follower of Ratvar to construct more advanced creations."

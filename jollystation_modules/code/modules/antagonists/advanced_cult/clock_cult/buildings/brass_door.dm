@@ -7,6 +7,9 @@
 	airlock_type = /obj/machinery/door/airlock/cult/brass
 	glass_type = /obj/machinery/door/airlock/cult/brass/glass
 
+/obj/structure/door_assembly/door_assembly_brass/narsie_act()
+	return
+
 // Door effects.
 /obj/effect/temp_visual/brass/door
 	icon_state = "ratvardoorglow"

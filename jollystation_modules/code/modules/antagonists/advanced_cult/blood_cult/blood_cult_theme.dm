@@ -50,7 +50,7 @@
 	if(our_team.cult_ascendent)
 		our_team.ascend_given_cultist(cultist, no_sound = TRUE)
 
-/datum/cult_theme/narsie/on_cultist_lost(mob/living/cultist)
+/datum/cult_theme/narsie/on_cultist_lost(datum/antagonist/advanced_cult/cultist_datum, mob/living/cultist)
 	. = ..()
 	if(!ishuman(cultist))
 		return

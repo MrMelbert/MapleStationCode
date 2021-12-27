@@ -86,7 +86,6 @@
 	// Changelings have default 4 points, and gain 0.5 points per intensity level
 	starting_points = 4
 	advanced_panel_type = "_AdvancedChangelingPanel"
-	var/datum/antagonist/changeling/our_changeling
 	/// Whether our changeling can hard absorb (husk) people.
 	var/no_hard_absorb = FALSE
 
@@ -147,6 +146,7 @@
 	/// Ling Stuff
 	switch(action)
 		if("set_ling_id")
+			var/datum/antagonist/changeling/our_changeling = linked_antagonist
 			our_changeling.changeling_id = params["changeling_id"]
 
 		if("toggle_absorb")

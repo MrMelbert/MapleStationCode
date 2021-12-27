@@ -8,10 +8,6 @@
 	var/cult_examine_tip
 	COOLDOWN_DECLARE(use_cooldown)
 
-/obj/structure/destructible/brass/Initialize(mapload)
-	. = ..()
-
-
 /obj/structure/destructible/brass/examine(mob/user)
 	. = ..()
 	. += span_notice("\The [src] is [anchored ? "":"not "]secured to the floor.")

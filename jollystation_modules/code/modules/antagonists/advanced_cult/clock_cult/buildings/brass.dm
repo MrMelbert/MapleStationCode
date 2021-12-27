@@ -1,5 +1,6 @@
 GLOBAL_LIST_INIT(brass_recipes, list ( \
 	new /datum/stack_recipe("tinker's cache (can make replica fabricators, wraith specs, and truesight lenses)", /obj/structure/destructible/brass/tinkers_cache, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
+	new /datum/stack_recipe("daemon forge (can make judicial visors, ratvarian spears, and brass hardened armor)", /obj/structure/destructible/brass/daemon_forge, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	new /datum/stack_recipe("brass door (stuns non-cultists who attempt entry)", /obj/machinery/door/airlock/cult/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	new /datum/stack_recipe("brass girder (can be destroyed by slabs in one hit)", /obj/structure/girder/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	))
@@ -9,7 +10,7 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 	desc = "Pybpx phyg? Lrf Engine, Lrf!"
 	color = "#92661A"
 	greyscale_colors = "#92661A"
-	categories = list(MAT_CATEGORY_RIGID = TRUE, MAT_CATEGORY_ITEM_MATERIAL = TRUE)
+	categories = list(MAT_CATEGORY_ITEM_MATERIAL = TRUE)
 	sheet_type = /obj/item/stack/sheet/bronze
 	value_per_unit = 0.75
 	armor_modifiers = list(MELEE = 1.2, BULLET = 1.2, LASER = 1, ENERGY = 1, BOMB = 1.2, BIO = 1.2, FIRE = 1.5, ACID = 1.5)
@@ -33,6 +34,7 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 	grind_results = list(/datum/reagent/iron = 5, /datum/reagent/copper = 15)
 	material_type = /datum/material/brass
 	has_unique_girder = TRUE
+	tableVariant = /obj/structure/table/reinforced/brass
 
 /obj/item/stack/sheet/brass/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
 	. = ..()
