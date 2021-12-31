@@ -49,11 +49,6 @@
       added. These components are the "Begin Animation", "Animation Step", "Add Filter",
       "Filter Remover", "Filter Parameter Helper", and "Animation & Filter Bitflag
       Helper" components. Refer to their descriptions for more information.
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> b396e73eb7a880ea83535400fc5abcb31f560b16
 2021-10-03:
   Ghilker:
   - qol: 'Allow players to build a girder on a turf by r-clicking the turf with a
@@ -1039,7 +1034,3 @@
   - rscdel: The remnants of the Old Mining Base are gone. We've always had the crater
       observatory.
   - qol: New Icebox Terrain
-<<<<<<< HEAD
->>>>>>> a351edecd99453b0ac2d1cf1ae7b75b91a6c4b9e
-=======
->>>>>>> b396e73eb7a880ea83535400fc5abcb31f560b16

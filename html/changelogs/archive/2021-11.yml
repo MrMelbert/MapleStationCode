@@ -137,8 +137,6 @@
       do so successfully.
   vincentiusvin:
   - bugfix: fixed some buttons having zero width
-<<<<<<< HEAD
-=======
 2021-11-06:
   KittyNoodle:
   - bugfix: Radstorms dont mutate people who are immune to rads
@@ -949,4 +947,3 @@
   - rscadd: Deltastation - Service and arrivals complete revamp! Cargo tweaks!
   Thunder12345:
   - bugfix: Some erroneous green paint has been scraped off the hydroponics airlocks.
->>>>>>> b396e73eb7a880ea83535400fc5abcb31f560b16
