@@ -1,6 +1,10 @@
 /// -- Advanced Antag for Malf AIs. --
 /// Proc to give the malf their hacked module.
 /datum/antagonist/malf_ai/finalize_antag()
+	if(give_objectives)
+		employer = pick(GLOB.ai_employers)
+		malfunction_flavor = strings(MALFUNCTION_FLAVOR_FILE, employer)
+
 	add_law_zero()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/malf.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	owner.current.grant_language(/datum/language/codespeak, TRUE, TRUE, LANGUAGE_MALF)

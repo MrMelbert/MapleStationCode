@@ -370,8 +370,6 @@ ROUNDSTART_RACES skeleton
 ROUNDSTART_NO_HARD_CHECK slime
 ROUNDSTART_NO_HARD_CHECK military_synth
 
-## Uncomment to give players the choice of joining as a human with mutant bodyparts before they join the game
-JOIN_WITH_MUTANT_HUMANS
 
 ##Overflow job. Default is assistant
 OVERFLOW_JOB Assistant
@@ -477,3 +475,6 @@ MAXFINE 2000
 ## Warning: SDQL is a powerful tool and can break many things or expose security sensitive information.
 ## Giving players access to it has major security concerns, be careful and deliberate when using this feature.
 #SDQL_SPELLS
+
+## Whether native FoV is enabled for all people.
+#NATIVE_FOV

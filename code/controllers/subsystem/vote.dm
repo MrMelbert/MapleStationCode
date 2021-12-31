@@ -94,7 +94,7 @@ SUBSYSTEM_DEF(vote)
 			text += "<b>[question]</b>"
 		else
 			text += "<b>[capitalize(mode)] Vote</b>"
-		for(var/i=1,i<=choices.len,i++)
+		for(var/i in 1 to choices.len)
 			var/votes = choices[choices[i]]
 			if(!votes)
 				votes = 0
@@ -141,7 +141,7 @@ SUBSYSTEM_DEF(vote)
 			// No delay in case the restart is due to lag
 			SSticker.Reboot("Restart vote successful.", "restart vote", 1)
 		else
-			to_chat(world, "<span style='boldannounce'>Notice:Restart vote will not restart the server automatically because there are active admins on.</span>")
+			to_chat(world, span_boldannounce("Notice: Restart vote will not restart the server automatically because there are active admins on."))
 			message_admins("A restart vote has passed, but there are active admins on with +server, so it has been canceled. If you wish, you may restart the server.")
 
 	return .
@@ -201,20 +201,20 @@ SUBSYSTEM_DEF(vote)
 				for(var/valid_map in maps)
 					choices.Add(valid_map)
 			if("custom")
-				question = stripped_input(usr,"What is the vote for?")
+				question = tgui_input_text(usr, "What is the vote for?", "Custom Vote")
 				if(!question)
 					return FALSE
-				for(var/i=1,i<=10,i++)
-					var/option = capitalize(stripped_input(usr,"Please enter an option or hit cancel to finish"))
+				for(var/i in 1 to 10)
+					var/option = tgui_input_text(usr, "Please enter an option or hit cancel to finish", "Options", max_length = MAX_NAME_LEN)
 					if(!option || mode || !usr.client)
 						break
-					choices.Add(option)
+					choices.Add(capitalize(option))
 			// NON-MODULE CHANGE: AUTOTRANSFER
 			if("transfer")
 				var/mob/dead/observer/caller = usr
 				//Observers/ghosts don't get to decide when a shuttle-call vote happens
 				if(!lower_admin && istype(caller))
-					to_chat(usr, "<span class='warning'>[caller.started_as_observer? "You are not taking part in the round." : "You have died in the round."] If you think it should end, call a restart vote instead.</span>")
+					to_chat(usr, span_warning("[caller.started_as_observer? "You are not taking part in the round." : "You have died in the round."] If you think it should end, call a restart vote instead."))
 					return FALSE
 
 				SScrewtransfer.transfer_votes_attempted++

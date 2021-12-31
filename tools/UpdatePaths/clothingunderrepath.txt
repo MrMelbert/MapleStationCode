@@ -105,8 +105,8 @@
 /obj/item/clothing/under/lawyer : /obj/item/clothing/under/rank/civilian/lawyer
 /obj/item/clothing/under/lawyer/black : /obj/item/clothing/under/rank/civilian/lawyer/black
 /obj/item/clothing/under/lawyer/black/skirt : /obj/item/clothing/under/rank/civilian/lawyer/black/skirt
-/obj/item/clothing/under/lawyer/female : /obj/item/clothing/under/rank/civilian/lawyer/female
-/obj/item/clothing/under/lawyer/female/skirt : /obj/item/clothing/under/rank/civilian/lawyer/female/skirt
+/obj/item/clothing/under/lawyer/female : /obj/item/clothing/under/rank/civilian/lawyer/beige
+/obj/item/clothing/under/lawyer/female/skirt : /obj/item/clothing/under/rank/civilian/lawyer/beige/skirt
 /obj/item/clothing/under/lawyer/red : /obj/item/clothing/under/rank/civilian/lawyer/red
 /obj/item/clothing/under/lawyer/red/skirt : /obj/item/clothing/under/rank/civilian/lawyer/red/skirt
 /obj/item/clothing/under/lawyer/blue : /obj/item/clothing/under/rank/civilian/lawyer/blue
@@ -194,4 +194,3 @@
 /obj/item/clothing/under/hosparademale : /obj/item/clothing/under/rank/security/head_of_security/parade
 /obj/item/clothing/under/hosparadefem : /obj/item/clothing/under/rank/security/head_of_security/parade/female
 /obj/item/clothing/under/rank/security/spacepol : /obj/item/clothing/under/rank/security/officer/spacepol
-

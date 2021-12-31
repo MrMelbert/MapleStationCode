@@ -1,6 +1,9 @@
 // -- Ordnance Tech job & outfit datum --
 /datum/job/ordnance_tech
 	title = "Ordnance Technician"
+	description = "Complete your bomb in the first half hour of the \
+		shift, make the station shake repeatedly as you refine cores, \
+		then sit around as you have nothing else to do."
 	department_head = list("Research Director")
 	faction = FACTION_STATION
 	total_positions = 1

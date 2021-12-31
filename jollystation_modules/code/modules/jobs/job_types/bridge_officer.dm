@@ -1,6 +1,8 @@
 // -- Bridge Officer job & outfit datum --
 /datum/job/bridge_officer
 	title = "Bridge Officer"
+	description = "File paperwork to Central Command via your fax machine. \
+		Pretend to be a head of staff. Fetch coffee for the real heads of staff instead.",
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list("Captain")
 	faction = FACTION_STATION

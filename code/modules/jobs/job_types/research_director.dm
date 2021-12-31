@@ -1,7 +1,10 @@
 /datum/job/research_director
-	title = "Research Director"
+	title = JOB_RESEARCH_DIRECTOR
+	description = "Supervise research efforts, ensure Robotics is in working \
+		order, make sure the AI and its Cyborgs aren't rogue, replacing them if \
+		they are"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
-	department_head = list("Captain")
+	department_head = list(JOB_CAPTAIN)
 	head_announce = list("Science")
 	faction = FACTION_STATION
 	total_positions = 1
@@ -36,9 +39,8 @@
 		/obj/item/borg/upgrade/ai = 2
 	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/cytology, /obj/item/reagent_containers/glass/beaker) //NON-MODULE CHANGE
+	family_heirlooms = list(/obj/item/toy/plush/slimeplushie)
 	rpg_title = "Archmagister"
-
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS
 
 	voice_of_god_power = 1.4 //Command staff has authority
@@ -72,11 +74,12 @@
 	chameleon_extras = /obj/item/stamp/rd
 	skillchips = list(/obj/item/skillchip/job/research_director)
 
-/datum/outfit/job/rd/rig
-	name = "Research Director (Hardsuit)"
+/datum/outfit/job/rd/mod
+	name = "Research Director (MODsuit)"
 
-	suit = /obj/item/clothing/suit/space/hardsuit/rd
 	suit_store = /obj/item/tank/internals/oxygen
+	back = /obj/item/mod/control/pre_equipped/research
+	suit = null
 	mask = /obj/item/clothing/mask/breath
 	l_hand = null
 	internals_slot = ITEM_SLOT_SUITSTORE

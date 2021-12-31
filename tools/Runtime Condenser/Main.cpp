@@ -123,24 +123,24 @@ inline void forward_progress(FILE * inputFile) {
 		if (safe_substr(nextLine, 0, 3) == " - ") {
 			nextLine->erase(0, 3);
 		}
-<<<<<<< HEAD
 
-=======
-
+		//strip out any timestamps.
+		if (nextLine->length() >= 10) {
 			if ((*nextLine)[0] == '[' && (*nextLine)[3] == ':' && (*nextLine)[6] == ':' && (*nextLine)[9] == ']')
+				nextLine->erase(0, 10);
 			else if (nextLine->length() >= 26 && ((*nextLine)[0] == '[' && (*nextLine)[5] == '-' && (*nextLine)[14] == ':' && (*nextLine)[20] == '.' && (*nextLine)[24] == ']'))
 				nextLine->erase(0, 26);
 		}
 	} while (!endofbuffer && nextLine->length() < 1);
-<<<<<<< HEAD
 
-=======
-
->>>>>>> a351edecd99453b0ac2d1cf1ae7b75b91a6c4b9e
 }
 //deallocates to, copys from to to.
 inline void string_send(string * &from, string * &to) {
+	delete(to);
+	to = new string(*from);
+}
 inline void printprogressbar(unsigned short progress /*as percent*/) {
+	double const modifer = 100.0L/(double)PROGRESS_BAR_INNER_WIDTH;
 	size_t bars = (double)progress/modifer;
 	cerr << "\r[" << string(bars, '=') << ((progress < 100) ? ">" : "") << string(PROGRESS_BAR_INNER_WIDTH-(bars+((progress < 100) ? 1 : 0)), ' ') << "] " << progress << "%";
 	cerr.flush();

@@ -39,7 +39,7 @@ This of course means they can store that location in memory in another object's 
 
 /proc/someshit(mem_location)
     var/datum/some_obj = new()
-    some_obj.reference = mem_location 
+    some_obj.reference = mem_location
 ```
 
 But what happens when you get rid of the object we're passing around references to? If we just cleared it out from memory, everything that holds a reference to it would suddenly be pointing to nowhere, or worse, something totally different!
@@ -94,7 +94,7 @@ Let's briefly go over the more painful ones yeah?
 
 ### Sleeping procs
 
-Any proc that calls `sleep()`, `spawn()`, or anything that creates a seperate "thread" (not technically a thread, but it's the same in these terms. Not gonna cause any race conditions tho) will hang references to any var inside it. This includes the usr it started from, the src it was called on, and any vars created as a part of processing
+Any proc that calls `sleep()`, `spawn()`, or anything that creates a separate "thread" (not technically a thread, but it's the same in these terms. Not gonna cause any race conditions tho) will hang references to any var inside it. This includes the usr it started from, the src it was called on, and any vars created as a part of processing
 
 ### Static vars
 
@@ -128,7 +128,7 @@ You can read more about what each of these do in that file, but the long and sho
 
 It'll tell you what object is holding the ref if it's in an object, or what pattern of list transversal was required to find the ref if it's hiding in a list of some sort
 
-## Techniques For Fixing Hard Deletes 
+## Techniques For Fixing Hard Deletes
 
 Once you've found the issue, it becomes a matter of making sure the ref is cleared as a part of Destroy(). I'm gonna walk you through a few patterns and discuss how you might go about fixing them
 

@@ -1,6 +1,8 @@
 // -- Xenobiologist job & outfit datum --
 /datum/job/xenobiologist
 	title = "Xenobiologist"
+	description = "Feed slimes all shift, never exit xenobiology for any reason. \
+		Leave after two hours as an unkillable god with an army of monsters.",
 	department_head = list("Research Director")
 	faction = FACTION_STATION
 	total_positions = 2
