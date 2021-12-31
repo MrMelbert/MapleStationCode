@@ -1,7 +1,7 @@
 // -- QM changes --
 /datum/job/quartermaster
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
-	department_head = list("Captain")
+	department_head = list(JOB_CAPTAIN)
 	head_announce = list(RADIO_CHANNEL_SUPPLY)
 	req_admin_notify = TRUE
 	supervisors = "the captain"

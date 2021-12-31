@@ -237,10 +237,6 @@
 	use_modular_dmi = FALSE
 	should_not_squish = TRUE
 
-/obj/item/clothing/under/rank/civilian/lawyer/female/skirt
-	use_modular_dmi = FALSE
-	should_not_squish = TRUE
-
 /obj/item/clothing/under/rank/civilian/lawyer/red/skirt
 	use_modular_dmi = FALSE
 	should_not_squish = TRUE

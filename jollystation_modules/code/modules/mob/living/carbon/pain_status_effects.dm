@@ -8,7 +8,7 @@
 	id = "limp_pain"
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/limp/pain
-	examine_text = "<span class='danger'>They're limping with every move.</span>"
+	examine_text = "They're limping with every move."
 
 /datum/status_effect/limp/pain/on_apply()
 	. = ..()
@@ -20,6 +20,7 @@
 		return FALSE
 
 	RegisterSignal(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST), .proc/update_limp)
+	examine_text = span_warning("[owner.p_theyre(TRUE)] limping with every move.")
 
 /datum/status_effect/limp/pain/on_remove()
 	. = ..()
@@ -190,7 +191,7 @@
 	tick_interval = 5 SECONDS
 	processing_speed = STATUS_EFFECT_NORMAL_PROCESS
 	alert_type = null
-	examine_text = "They're holding something pack to a limb."
+	examine_text = "They're holding a pack to a limb."
 	/// The item we're using to heal pain.
 	var/obj/item/pressed_item
 	/// The mob holding the [pressed_item] to [owner]. Can be [owner].
@@ -294,7 +295,7 @@
 	var/mob/living/carbon/human/human_owner = owner
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	held_bodypart?.bodypart_pain_modifier /= pain_modifier
-	QDEL_IF(pressed_item.GetComponent(/datum/component/make_item_slow))
+	qdel(pressed_item.GetComponent(/datum/component/make_item_slow))
 	UnregisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
 	UnregisterSignal(holder, COMSIG_MOVABLE_MOVED)
 
@@ -313,7 +314,7 @@
 
 	var/mob/living/carbon/human/human_owner = owner
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
-	examine_text = span_danger("[holder == owner ? "They're" : "[holder] is"] pressing a cold [pressed_item.name] against their [held_bodypart.name].")
+	examine_text = span_danger("[holder == owner ? "[owner.p_theyre(TRUE)]" : "[holder] is"] pressing a cold [pressed_item.name] against [owner.p_their()] [held_bodypart.name].")
 	to_chat(human_owner, span_green("You wince as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.name], but eventually the chill starts to dull the pain."))
 	human_owner.pain_emote("wince", 3 SECONDS)
 
@@ -336,7 +337,7 @@
 
 	var/mob/living/carbon/human/human_owner = owner
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
-	examine_text = span_danger("[holder == owner ? "They're" : "[holder] is"] pressing a warm [pressed_item.name] against their [held_bodypart.name].")
+	examine_text = span_danger("[holder == owner ? "[owner.p_theyre(TRUE)]" : "[holder] is"] pressing a warm [pressed_item.name] against [owner.p_their()] [held_bodypart.name].")
 	to_chat(human_owner, span_green("You gasp as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.name], but eventually the warmth starts to dull the pain."))
 	human_owner.pain_emote("gasp", 3 SECONDS)
 

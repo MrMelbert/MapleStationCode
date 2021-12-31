@@ -4,19 +4,17 @@
 	ui_name = null
 	hijack_speed = 1
 	advanced_antag_path = /datum/advanced_antag_datum/traitor/infiltrator
-	antag_hud_type = ANTAG_HUD_OPS
 	antag_hud_name = "synd"
 
 /datum/antagonist/traitor/advanced/intiltrator/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/living_antag = mob_override || owner.current
-	add_antag_hud(antag_hud_type, antag_hud_name, living_antag)
+	add_team_hud(living_antag)
 	living_antag.faction |= ROLE_SYNDICATE
 	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/infiltrator))
 	living_antag.mind.special_role = ROLE_INFILTRATOR
 
 /datum/antagonist/traitor/advanced/intiltrator/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/living_antag = mob_override || owner.current
-	remove_antag_hud(antag_hud_type, living_antag)
 	living_antag.faction -= ROLE_SYNDICATE
 	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/unassigned))
 	living_antag.mind.special_role = null

@@ -4,7 +4,7 @@
 	description = "File paperwork to Central Command via your fax machine. \
 		Pretend to be a head of staff. Fetch coffee for the real heads of staff instead."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
-	department_head = list("Captain")
+	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1

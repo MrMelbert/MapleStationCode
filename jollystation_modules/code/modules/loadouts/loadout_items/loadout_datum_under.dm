@@ -198,6 +198,15 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Black Suit"
 	item_path = /obj/item/clothing/under/suit/black
 
+
+/datum/loadout_item/under/formal/executive_suit_alt
+	name = "Beige and Blue Suit"
+	item_path = /obj/item/clothing/under/rank/civilian/lawyer/beige
+
+/datum/loadout_item/under/formal/executive_skirt_alt
+	name = "Beige and Blue Suitskirt"
+	item_path = /obj/item/clothing/under/rank/civilian/lawyer/beige/skirt
+
 /datum/loadout_item/under/formal/black_suitskirt
 	name = "Black Suitskirt"
 	item_path = /obj/item/clothing/under/suit/black/skirt
@@ -265,14 +274,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/formal/executive_skirt
 	name = "Executive Suitskirt"
 	item_path = /obj/item/clothing/under/suit/black_really/skirt
-
-/datum/loadout_item/under/formal/executive_suit_alt
-	name = "Executive Suit Alt"
-	item_path = /obj/item/clothing/under/rank/civilian/lawyer/female
-
-/datum/loadout_item/under/formal/executive_skirt_alt
-	name = "Executive Suitskirt Alt"
-	item_path = /obj/item/clothing/under/rank/civilian/lawyer/female/skirt
 
 /datum/loadout_item/under/formal/green_suit
 	name = "Green Suit"

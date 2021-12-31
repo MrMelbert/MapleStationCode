@@ -89,7 +89,7 @@
 		if(RATVAR_SPEAR)
 			. += /obj/item/melee/ratvar_spear
 		if(BRASS_ARMOR)
-			. += /obj/item/clothing/suit/space/hardsuit/clock
+			. += /obj/item/clothing/suit/hooded/clock
 
 #undef JUDICIAL_VISOR
 #undef RATVAR_SPEAR

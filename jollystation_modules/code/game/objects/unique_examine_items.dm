@@ -26,8 +26,7 @@
 
 	var/datum/job_department/sec_department = SSjob.get_department_type(/datum/job_department/security)
 	for(var/datum/job/job as anything in sec_department.department_jobs)
-		if(!(job.title in .))
-			. |= job.title
+		. |= job.title
 
 // SYNDICATE / SYNDICATE TOY ITEMS //
 

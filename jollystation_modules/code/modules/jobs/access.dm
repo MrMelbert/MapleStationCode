@@ -5,4 +5,4 @@
 
 // All heads of staff jobs added via module files.
 /proc/get_all_module_heads()
-	return list("Quartermaster", "Bridge Officer", "Asset Protection")
+	return list(JOB_QUARTERMASTER, "Bridge Officer", "Asset Protection")

@@ -3,7 +3,9 @@
 	name = CULT_STYLE_RATVAR
 	default_deity = "Rat'var"
 	faction = "ratvar"
-	hud_name = "clockwork"
+	cultist_hud_name = "clockwork"
+	cultist_lead_hud_name = "clockwork_lead"
+	cultist_hud_icon = 'jollystation_modules/icons/mob/huds/antag_hud.dmi'
 	language = /datum/language/ratvarian
 	scribing_takes_blood = FALSE
 	scribe_sound = 'sound/items/sheath.ogg' //TODO: maybe a better sound

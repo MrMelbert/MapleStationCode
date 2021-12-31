@@ -14,7 +14,7 @@
 	new /obj/item/clothing/shoes/laceup(src)
 	new /obj/item/radio/headset/heads/bridge_officer(src)
 	new /obj/item/clothing/head/beret/black/bridge_officer(src)
-	new /obj/item/clothing/glasses/sunglasses/garb(src)
+	new /obj/item/clothing/glasses/sunglasses/gar(src)
 	new /obj/item/clothing/suit/armor/vest/bridge_officer(src)
 	new /obj/item/cartridge/hop(src)
 	new /obj/item/assembly/flash/handheld(src)

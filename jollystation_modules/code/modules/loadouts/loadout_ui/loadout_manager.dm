@@ -26,8 +26,8 @@
 	loadout_on_open = LAZYLISTDUPLICATE(our_loadout_list)
 
 /datum/loadout_manager/Destroy(force, ...)
-	QDEL_NULL_IF(character_preview_view)
-	QDEL_NULL_IF(menu)
+	QDEL_NULL(character_preview_view)
+	QDEL_NULL(menu)
 	return ..()
 
 /datum/loadout_manager/ui_close(mob/user)
@@ -36,7 +36,6 @@
 		SStgui.close_uis(menu)
 		menu = null
 	owner?.open_loadout_ui = null
-	QDEL_NULL(character_preview_view)
 	qdel(src)
 
 /// Initialize our character dummy.

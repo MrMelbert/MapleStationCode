@@ -19,7 +19,11 @@ GLOBAL_LIST(cult_themes)
 	/// The faction this cult gives.
 	var/faction
 	/// The name of the hud applied by this theme.
-	var/hud_name = "cult"
+	var/cultist_hud_name = "cult"
+	/// The name of the hud applied to the cult master by this theme.
+	var/cultist_lead_hud_name = "cultmaster"
+	/// The icon file we grab our hud from
+	var/cultist_hud_icon = 'icons/mob/huds/antag_hud.dmi'
 	/// The language this cult gives. Typepath.
 	var/datum/language/language
 	/// The sound effect that is played when someone joins the cult.
@@ -74,8 +78,10 @@ GLOBAL_LIST(cult_themes)
 	if(language)
 		cultist.grant_language(language, TRUE, TRUE, LANGUAGE_CULTIST)
 
-	if(hud_name)
-		cultist_datum.add_antag_hud(ANTAG_HUD_CULT, hud_name, cultist)
+	if(cultist_hud_name)
+		cultist_datum.antag_hud_name = cultist_hud_name
+		cultist_datum.hud_icon = cultist_hud_icon
+		cultist_datum.add_team_hud(cultist, /datum/antagonist/advanced_cult)
 
 	cultist.playsound_local(get_turf(cultist), on_gain_sound, 80, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	give_spells(cultist_datum, cultist)
@@ -88,6 +94,9 @@ GLOBAL_LIST(cult_themes)
  */
 /datum/cult_theme/proc/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/lead_cultist)
 	SHOULD_CALL_PARENT(TRUE)
+
+	var/datum/antagonist/advanced_cult/master/lead_antag_datum = lead_cultist.has_antag_datum(/datum/antagonist/advanced_cult/master)
+	lead_antag_datum?.antag_hud_name = cultist_lead_hud_name
 
 	equip_cultist(lead_cultist.current)
 
@@ -104,8 +113,6 @@ GLOBAL_LIST(cult_themes)
 		cultist.faction -= faction
 	if(language)
 		cultist.remove_language(language, TRUE, TRUE, LANGUAGE_CULTIST)
-	if(hud_name)
-		cultist_datum.remove_antag_hud(ANTAG_HUD_CULT, cultist)
 
 /*
  * Equips a cultist with a set of ritual items.
