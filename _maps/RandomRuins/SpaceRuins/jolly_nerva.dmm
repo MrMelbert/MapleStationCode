@@ -88,7 +88,7 @@
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/nerva)
 "hw" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/components/unary/portables_connector/visible/layer4,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/nerva)
 "hS" = (
@@ -228,7 +228,7 @@
 /area/ruin/space/has_grav/nerva)
 "BD" = (
 /obj/structure/cable,
-/obj/machinery/power/apc/auto_name/north,
+/obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron/dark/side{
 	dir = 5
 	},
