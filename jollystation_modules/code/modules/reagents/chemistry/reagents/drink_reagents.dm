@@ -1,5 +1,4 @@
 //New drink reagents for Jollystation.
-
 /datum/reagent/consumable/green_tea //seperate from regular tea because its different in almost every way
 	name = "Green Tea"
 	description = "Some nice green tea. A very traditional drink in Space Japanese culture."
@@ -7,6 +6,7 @@
 	quality = DRINK_GOOD
 	taste_description = "tart green tea"
 	glass_icon_state = "green_teaglass"
+	glass_icon_file = 'jollystation_modules/icons/obj/drinks.dmi'
 	glass_name = "glass of green tea"
 	glass_desc = "It just doesn't feel right to drink this without a cup..."
 	glass_price = DRINK_PRICE_MEDIUM
@@ -30,6 +30,7 @@
 	quality = DRINK_VERYGOOD
 	taste_description = "tart cold green tea" //iced green tea has a weird but amazing taste IRL, hard to describe it
 	glass_icon_state = "iced_green_teaglass"
+	glass_icon_file = 'jollystation_modules/icons/obj/drinks.dmi'
 	glass_name = "iced green tea"
 	glass_desc = "A delicious beverage for any time of the year. Much better with a lot of sugar." //Now THIS is actually a hint, as sugar rush turns it into Green Hill Tea.
 	glass_price = DRINK_PRICE_MEDIUM
@@ -54,6 +55,7 @@
 	glass_price = DRINK_PRICE_HIGH
 	taste_description = "flowers and being able to do anything"
 	glass_icon_state = "green_hill_tea"
+	glass_icon_file = 'jollystation_modules/icons/obj/drinks.dmi'
 	glass_name = "Green Hill Tea"
 	glass_desc = "A strong stimulant, though for some it doesnt matter, as the taste opens your heart."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
@@ -97,6 +99,7 @@
 	nutriment_factor = 2 * REAGENTS_METABOLISM //somehow more filling than pure nutriment
 	taste_description = "bubbles, milk, whatever the hell pepis is and a want to die" //pepis is canon now, its the rival brand to Space Cola. Renember to rename this to explicitly say pepis if it gets added in.
 	glass_icon_state = "pilk" //the sprite has what is intended to be foam on top as pilk makes that in real life
+	glass_icon_file = 'jollystation_modules/icons/obj/drinks.dmi'
 	glass_name = "glass of pilk"
 	glass_desc = "A horrid bubbling combination of milk and cola. You are a fucking alchemist and no-one can tell you otherwise."
 	glass_price = DRINK_PRICE_MEDIUM
@@ -121,6 +124,7 @@
 	boozepwr = 20
 	taste_description = "getting pegged" //oh no
 	glass_icon_state = "peg_nog"
+	glass_icon_file = 'jollystation_modules/icons/obj/drinks.dmi'
 	glass_name = "glass of peg nog"
 	glass_desc = "Its time to get PEGGED!"
 	glass_price = DRINK_PRICE_MEDIUM

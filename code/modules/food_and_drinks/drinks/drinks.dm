@@ -148,7 +148,7 @@
 		return
 	var/obj/item/broken_bottle/B = new (loc)
 	B.icon_state = icon_state
-	var/icon/I = new('jollystation_modules/icons/obj/drinks.dmi', src.icon_state) // NON-MODULE CHANGE: repath to our own drinks.dmi
+	var/icon/I = new(icon, src.icon_state) // NON-MODULE CHANGE: use the original dmi instead
 	I.Blend(B.broken_outline, ICON_OVERLAY, rand(5), 1)
 	I.SwapColor(rgb(255, 0, 220, 255), rgb(0, 0, 0, 0))
 	B.icon = I
