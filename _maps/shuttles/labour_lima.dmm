@@ -21,12 +21,10 @@
 /area/shuttle/labor)
 "j" = (
 /obj/structure/table/reinforced,
-/obj/structure/reagent_dispensers/peppertank{
-	pixel_x = -31
-	},
 /obj/item/restraints/handcuffs{
 	pixel_y = 9
 	},
+/obj/structure/reagent_dispensers/wall/peppertank/directional/west,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)
 "k" = (
