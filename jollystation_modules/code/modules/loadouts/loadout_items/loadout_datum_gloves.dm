@@ -63,11 +63,11 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 	item_path = /obj/item/clothing/gloves/color/normal_yellow
 	additional_tooltip_contents = list("NON-INSULATING - This item is purely cosmetic and provide no shock insulation.")
 
-/datum/loadout_item/gloves/yellow
+/datum/loadout_item/gloves/white
 	name = "White Gloves"
 	item_path = /obj/item/clothing/gloves/color/white
 
-/datum/loadout_item/gloves/yellow
+/datum/loadout_item/gloves/bone
 	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
 	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
