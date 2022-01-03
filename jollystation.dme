@@ -4222,6 +4222,7 @@
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\magic\clock_magic.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\magic\clock_magic_conceal.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\magic\clock_magic_disable.dm"
+#include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\magic\clock_magic_item_conversion.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\magic\clock_magic_shackles.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\magic\clock_magic_slab.dm"
 #include "jollystation_modules\code\modules\antagonists\advanced_cult\clock_cult\magic\clock_magic_teleport.dm"

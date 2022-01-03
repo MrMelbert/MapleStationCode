@@ -76,7 +76,7 @@
 			return
 
 	active = TRUE
-	RegisterSignal(target, COMSIG_ITEM_ATTACK, .proc/try_spell_effects)
+	RegisterSignal(target, COMSIG_ITEM_PRE_ATTACK, .proc/try_spell_effects)
 	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
 	RegisterSignal(target, COMSIG_ITEM_EQUIPPED, .proc/on_equipped)
 	if(active_overlay_name)
@@ -101,7 +101,7 @@
 		magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
 	UnregisterSignal(target, list(
-		COMSIG_ITEM_ATTACK,
+		COMSIG_ITEM_PRE_ATTACK,
 		COMSIG_PARENT_EXAMINE,
 		COMSIG_ITEM_EQUIPPED,
 		COMSIG_ITEM_DROPPED,
@@ -177,26 +177,33 @@
 	magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
 /*
- * Signal proc for [COMSIG_ITEM_ATTACK].
+ * Signal proc for [COMSIG_ITEM_PRE_ATTACK].
  *
  * Calls do_self_spell_effects() if (user) hits themselves with (target).
- * Calls do_hit_spell_effects() if (user) hits (victim) with (target).
- *
+ * Calls do_hit_spell_effects() if (user) hits (a mob, hit) with (target).
+ * Calls do_atom_spell_effects() if (user) hits (a non-mob atom, hit) with (target).
+
  * If either return TRUE, and manually_handle_charges is FALSE,
  * then we call after_successful_spell().
  */
-/datum/action/item_action/cult/proc/try_spell_effects(datum/source, mob/living/victim, mob/living/user)
+/datum/action/item_action/cult/proc/try_spell_effects(datum/source, atom/hit, mob/user, params)
 	SIGNAL_HANDLER
 
 	if(!IS_CULTIST(user))
 		return
 
-	if(victim == user)
-		if(do_self_spell_effects(user))
-			. = COMPONENT_NO_AFTERATTACK
 
-	else
-		if(do_hit_spell_effects(victim, user))
+	if(isliving(hit))
+		if(hit == user)
+			if(do_self_spell_effects(user))
+				. = COMPONENT_NO_AFTERATTACK
+
+		else
+			if(do_hit_spell_effects(hit, user))
+				. = COMPONENT_NO_AFTERATTACK
+
+	else if(!ismob(hit))
+		if(do_atom_spell_effects(hit, user))
 			. = COMPONENT_NO_AFTERATTACK
 
 	if(!manually_handle_charges && . == COMPONENT_NO_AFTERATTACK)
@@ -216,6 +223,13 @@
  * Return TRUE to return COMPONENT_NO_AFTERATTACK.
  */
 /datum/action/item_action/cult/proc/do_hit_spell_effects(mob/living/victim, mob/living/user)
+
+/*
+ * Called when (user) hits (hit) with (target).
+ *
+ * Return TRUE to return COMPONENT_NO_AFTERATTACK.
+ */
+/datum/action/item_action/cult/proc/do_atom_spell_effects(atom/hit, mob/living/user)
 
 /*
  * Called after a spell is successfuly cast.

@@ -129,7 +129,18 @@
 		qdel(conversion_effect)
 		return
 
+	if(QDELETED(src) || QDELETED(target_turf) || QDELETED(user))
+		qdel(conversion_effect)
+		return
+
 	for(var/obj/thing in target_turf)
+		if(QDELETED(src) || QDELETED(user))
+			qdel(conversion_effect)
+			return
+
+		if(QDELETED(thing))
+			continue
+
 		// Effects can be skipped
 		if(iseffect(thing))
 			continue
@@ -159,11 +170,24 @@
 			if(!do_after(user, 1 SECONDS, thing))
 				qdel(conversion_effect)
 				return
+
+			if(QDELETED(src) || QDELETED(user))
+				qdel(conversion_effect)
+				return
+
+			if(QDELETED(thing))
+				continue
+
 			conversion_effect.completion_fade(200)
 
 		thing.ratvar_act()
 		playsound(target_turf, 'sound/machines/click.ogg', 50, TRUE)
 
+	if(QDELETED(src) || QDELETED(target_turf) || QDELETED(user))
+		qdel(conversion_effect)
+		return
+
+	target_turf.visible_message(span_brass("[target_turf] glows a bright blue as it suddenly appears encased in brass!"), ignored_mobs = user)
 	to_chat(user, span_brass("You use [src] to convert [target_turf] to brass."))
 	target_turf.ratvar_act(FALSE)
 	animate(conversion_effect, alpha = 0, time = 0.5 SECONDS)
