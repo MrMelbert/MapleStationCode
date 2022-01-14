@@ -1,7 +1,7 @@
 // -- Modular mod theme changes. -- (Modception.)
 
 /datum/mod_theme/engineering // Engineer
-	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 10, BOMB = 40, BIO = 100, FIRE = 100, ACID = 25, WOUND = 10)
+	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 10, BOMB = 30, BIO = 100, FIRE = 100, ACID = 25, WOUND = 10)
 
 /datum/mod_theme/atmospheric // Atmospheric Technician
 	armor = list(MELEE = 10, BULLET = 5, LASER = 10, ENERGY = 10, BOMB = 40, BIO = 100, FIRE = 100, ACID = 75, WOUND = 10)
