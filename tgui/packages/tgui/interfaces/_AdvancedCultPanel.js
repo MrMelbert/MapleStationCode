@@ -8,7 +8,7 @@ export const _AdvancedCultPanel = (props, context) => {
   const { act, data } = useBackend(context);
   const {
     goals_finalized,
-    cannot_convert,
+    can_convert,
   } = data;
 
   return (
@@ -22,7 +22,7 @@ export const _AdvancedCultPanel = (props, context) => {
           content="Enable Conversion"
           textAlign="center"
           disabled={goals_finalized}
-          checked={!cannot_convert}
+          checked={can_convert}
           tooltip="If checked, the ability to convert will be enabled. \
             Disabling conversion rewards +1 max spell slots."
           onClick={() => act('toggle_conversion')} />

@@ -6,7 +6,7 @@
 	/// The original cultist / cult leader.
 	var/datum/mind/original_cultist
 	/// Whether people can be converted to join this team.
-	var/no_conversion = TRUE
+	var/conversion_allowed = FALSE
 	/// A list of weakrefs to members who were deconverted from this cult.
 	var/list/datum/weakref/lost_members
 	/// Whether the cult is risen, enabled for some styles.
@@ -36,7 +36,7 @@
 	lost_members += WEAKREF(member)
 
 /datum/team/advanced_cult/proc/can_join_cult(mob/living/convertee)
-	if(no_conversion)
+	if(!conversion_allowed)
 		return CONVERSION_NOT_ALLOWED
 
 	if(HAS_TRAIT(convertee, TRAIT_WAS_ON_CONVERSION_RUNE))
@@ -60,9 +60,6 @@
 	return CONVERSION_SUCCESS
 
 /datum/team/advanced_cult/roundend_report()
-	if(no_conversion) //handled by the original cultist's roundend report
-		return
-
 	if(!original_cultist)
 		return
 
@@ -71,30 +68,34 @@
 		return
 
 	var/list/report = list()
-	var/list/members_minus_head = LAZYCOPY(members) - original_cultist
 
-	report += "<span class='header'>[name]:</span>"
+	report += "<span class='header'>[name]:</span><br>"
 	report += printplayer(original_cultist)
-	report += "<b>[original_cultist]</b> was a/an <b>[cultist.linked_advanced_datum.name]</b>, a follower of <b>[cultist.linked_advanced_datum.employer || "no gods"]</b> and the leader of the cult!"
-	report += "Their cult was of the <b>[cultist.cultist_style]</b> style."
-	if(LAZYLEN(members_minus_head))
-		report += "<br>Followers of [name] at shift end:"
-		report += printplayerlist(members_minus_head)
-	if(LAZYLEN(lost_members))
-		report += "<br>Followers of [name] who were deconverted:"
-		var/list/lost_members_refs = list()
-		for(var/datum/weakref/member as anything in lost_members)
-			lost_members_refs += member.resolve()
-		report += printplayerlist(lost_members_refs)
+	report += "<b>[original_cultist]</b> was a/an <b>[cultist.linked_advanced_datum.name]</b>, a follower of <b>[cultist.linked_advanced_datum.employer || "no gods"]</b> [conversion_allowed ? "and the leader of the cult!":""]"
+	report += "Their cult was of the <b>[cultist.cultist_style]</b> style. The ability to convert was <b>[conversion_allowed ? "enabled":"disabled"]</b>."
+	if(cultist.linked_advanced_datum.backstory)
+		report += "Their backstory was the following: <br>[cultist.linked_advanced_datum.backstory]"
 
-	var/total_members = LAZYLEN(lost_members) + LAZYLEN(members_minus_head)
-	if(total_members <= 0)
-		report += "<br>[original_cultist] did not convert anyone to their cult!<br>"
-	else
-		report += "<br>[total_members] crewmembers in total were converted to [name].<br>"
+	if(conversion_allowed)
+		var/list/members_minus_head = LAZYCOPY(members) - original_cultist
+		if(LAZYLEN(members_minus_head))
+			report += "<br>Followers of [name] at shift end:"
+			report += printplayerlist(members_minus_head)
+		if(LAZYLEN(lost_members))
+			report += "<br>Followers of [name] who were deconverted:"
+			var/list/lost_members_refs = list()
+			for(var/datum/weakref/member as anything in lost_members)
+				lost_members_refs += member?.resolve()
+			report += printplayerlist(lost_members_refs)
+
+		var/total_members = LAZYLEN(lost_members) + LAZYLEN(members_minus_head)
+		if(total_members <= 0)
+			report += "<br>No one was converted to [name]!"
+		else
+			report += "<br>[total_members] crewmembers in total were converted to [name]."
 
 	if(LAZYLEN(cultist.linked_advanced_datum.our_goals))
-		report += "[original_cultist] set the following objectives for their cult:"
+		report += "<br><b>[original_cultist]</b>[conversion_allowed ? " set the following objectives for their cult:" : "'s objectives:"]"
 		var/count = 1
 		for(var/datum/advanced_antag_goal/goal as anything in cultist.linked_advanced_datum.our_goals)
 			report += goal.get_roundend_text(count++)

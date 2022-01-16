@@ -86,32 +86,8 @@
 /datum/antagonist/advanced_cult/master/finalize_antag()
 	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum
 	team = new(owner, cultist_style)
-	team.no_conversion = our_cultist.no_conversion
+	team.conversion_allowed = our_cultist.conversion_allowed
 	return ..()
-
-/datum/antagonist/advanced_cult/master/roundend_report()
-	var/datum/advanced_antag_datum/cultist/our_cultist = linked_advanced_datum
-	if(!our_cultist.no_conversion) //handled by the team roundend report
-		return
-
-	var/list/parts = list()
-
-	parts += printplayer(owner)
-	parts += "<b>[owner]</b> was a/an <b>[our_cultist.name]</b>[our_cultist.employer? ", a follower of <b>[our_cultist.employer]</b>":""]."
-	parts += "Their cult was of the <b>[cultist_style]</b> style."
-	if(our_cultist.backstory)
-		parts += "<b>[owner]'s</b> backstory was the following: <br>[our_cultist.backstory]"
-
-	if(LAZYLEN(linked_advanced_datum.our_goals))
-		parts += "<b>[owner]'s</b> objectives:"
-		var/count = 1
-		for(var/datum/advanced_antag_goal/goal as anything in linked_advanced_datum.our_goals)
-			parts += goal.get_roundend_text(count++)
-
-	return parts.Join("<br>")
-
-/datum/antagonist/advanced_cult/roundend_report_footer()
-	return "<br>And thus closes the veil on board [station_name()]."
 
 /datum/antagonist/advanced_cult/convertee
 	name = "Converted Cultist"
@@ -166,7 +142,7 @@
 	employer = "Nar'Sie"
 	advanced_panel_type = "_AdvancedCultPanel"
 	/// Whether our cultist can convert people.
-	var/no_conversion = FALSE
+	var/conversion_allowed = TRUE
 
 /datum/advanced_antag_datum/cultist/modify_antag_points()
 	return 0 // Cult has no "points" to modify
@@ -180,20 +156,28 @@
 		return
 
 	var/datum/antagonist/advanced_cult/our_cultist = linked_antagonist
-	if(no_conversion)
+	if(!conversion_allowed)
 		var/datum/action/innate/cult/blood_magic/advanced/cult_magic = our_cultist.our_magic
 		cult_magic.runeless_limit += 1
 		cult_magic.rune_limit += 1
 
 /datum/advanced_antag_datum/cultist/get_finalize_text()
-	return "Finalizing will allow you to use cult magic and grant you your equipment. You will [no_conversion ? "not":""] be able to convert crewmembers to your cult[no_conversion ? ", but you will gain +1 max spell slots ([ADV_CULTIST_MAX_SPELLS_NORUNE + 1] unempowered, [ADV_CULTIST_MAX_SPELLS_RUNE + 1] empowered).":""]. You can still edit your goals after finalizing!"
+	var/conversion_message
+
+	if(conversion_allowed)
+		conversion_message = "You will be able to convert crewmembers to your cult"
+	else
+		conversion_message = "You will not be able to convert crewmembers to your cult, but you will gain +1 max spell slots \
+			([ADV_CULTIST_MAX_SPELLS_NORUNE + 1] unempowered, [ADV_CULTIST_MAX_SPELLS_RUNE + 1] empowered)"
+
+	return "Finalizing will allow you to use cult magic and grant you your equipment. [conversion_message]. You can still edit your goals after finalizing!"
 
 /datum/advanced_antag_datum/cultist/log_goals_on_finalize()
 	. = ..()
 
-	if(!no_conversion)
+	if(conversion_allowed)
 		message_admins("Conversion enabled: [ADMIN_LOOKUPFLW(linked_antagonist.owner.current)] finalized their goals with the ability convert others enabled.")
-	log_game("[key_name(linked_antagonist.owner.current)] finalized their goals with conversion [no_conversion ? "disabled":"enabled"].")
+	log_game("[key_name(linked_antagonist.owner.current)] finalized their goals with conversion [conversion_allowed ? "enabled":"disabled"].")
 
 	var/datum/antagonist/advanced_cult/our_cultist = linked_antagonist
 	log_game("[key_name(linked_antagonist.owner.current)] created a cult with the [our_cultist.cultist_style] theme.")
@@ -205,7 +189,7 @@
 /datum/advanced_antag_datum/cultist/ui_data(mob/user)
 	. = ..()
 	var/datum/antagonist/advanced_cult/our_cultist = linked_antagonist
-	.["cannot_convert"] = no_conversion
+	.["can_convert"] = conversion_allowed
 	.["cult_style"] = our_cultist.cultist_style.name
 
 /datum/advanced_antag_datum/cultist/ui_static_data(mob/user)
@@ -228,7 +212,7 @@
 		if("toggle_conversion")
 			if(finalized)
 				return
-			no_conversion = !no_conversion
+			conversion_allowed = !conversion_allowed
 
 		if("set_cult_style")
 			if(finalized)

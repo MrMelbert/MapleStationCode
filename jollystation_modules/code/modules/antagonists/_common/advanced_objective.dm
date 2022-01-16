@@ -57,7 +57,7 @@
 /// Number is the number in the list that this objective is. (1 to 5)
 /datum/advanced_antag_goal/proc/get_roundend_text(number)
 	var/datum/advanced_antag_datum/our_antag_datum = our_antag
-	var/formatted_text = "<br><B>Objective #[number]</B>: [goal]"
+	var/formatted_text = "<b>Objective #[number]</b>: [goal]"
 	if(LAZYLEN(similar_objectives) || always_succeed)
 		if(check_relative_success())
 			formatted_text += span_greentext("<br>The [our_antag_datum.name] succeeded this goal!")
@@ -66,7 +66,7 @@
 	if(notes)
 		formatted_text += span_info("<br>Extra info they had about this goal: [notes]")
 
-	return formatted_text
+	return formatted_text + "<br>"
 
 /// Loop through all our similar objectives and see if we completed them.
 /// If [check_all_objectives] is true, we need all objectives in the list to be successful to return TRUE.
