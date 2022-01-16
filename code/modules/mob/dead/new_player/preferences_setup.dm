@@ -103,7 +103,7 @@
 
 	if(preview_job)
 		mannequin.job = preview_job.title
-		mannequin.dress_up_as_job(preview_job, TRUE)
+		mannequin.dress_up_as_job(preview_job, TRUE, src) // NON-MODULE CHANGE
 
 	COMPILE_OVERLAYS(mannequin)
 	return mannequin.appearance
