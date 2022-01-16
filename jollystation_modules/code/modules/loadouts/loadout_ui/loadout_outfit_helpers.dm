@@ -32,7 +32,6 @@
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 
 	equipOutfit(equipped_outfit, visuals_only) // equip the outfit
-	w_uniform?.swap_to_modular_dmi(src) // change our uniform's icon if needed
 
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.on_equip_item(preference_source, src, visuals_only)
