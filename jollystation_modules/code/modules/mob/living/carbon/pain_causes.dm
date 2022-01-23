@@ -83,6 +83,10 @@
 		carbon_owner.cause_pain(BODY_ZONES_ALL, -1.5)
 
 // Painkiller withdraw = pain
+
+/datum/addiction/opiods
+	withdrawal_stage_messages = list("My body aches all over...", "I need some pain relief...", "It hurts all over...I need some opiods!")
+
 /datum/addiction/opiods/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
 	if(!affected_carbon.pain_controller)

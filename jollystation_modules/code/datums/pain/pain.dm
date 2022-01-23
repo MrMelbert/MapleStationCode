@@ -262,9 +262,9 @@
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
 
-	if(amount > 12 && prob(20))
+	if(amount > 12 && prob(25))
 		do_pain_emote("scream", 5 SECONDS)
-	else if(amount > 6 && prob(25))
+	else if(amount > 6 && prob(10))
 		do_pain_emote(pick(PAIN_EMOTES))
 
 /*
@@ -480,14 +480,6 @@
 		else
 			unset_pain_modifier(PAIN_MOD_DROWSY)
 
-	if(HAS_TRAIT(parent, TRAIT_OFF_STATION_PAIN_RESISTANCE))
-		if(is_station_level(parent.z))
-			if(unset_pain_modifier(PAIN_MOD_OFF_STATION))
-				to_chat(parent, span_notice("Returning to the station, you feel much more vulnerable to incoming pain."))
-		else
-			if(isturf(parent.loc) && set_pain_modifier(PAIN_MOD_OFF_STATION, 0.6))
-				to_chat(parent, span_notice("As you depart from the station, you feel more resilient to incoming pain."))
-
 	if(parent.IsSleeping())
 		var/sleeping_turf = get_turf(parent)
 		var/sleeping_modifier = 0.8
@@ -550,37 +542,53 @@
 		to_chat(parent, span_danger(pick("Everything aches.", "Everything feels sore.")))
 		if(parent.staminaloss < 5)
 			parent.apply_damage(10, STAMINA)
-	else if(DT_PROB(1, delta_time))
+
+	else if(parent.stuttering <= 12 && DT_PROB(6, delta_time))
+		parent.stuttering += 5
+
+	else if(parent.jitteriness <= 20 && DT_PROB(2, delta_time))
 		parent.Jitter(5)
-	else if(DT_PROB(1, delta_time))
+
+	else if(parent.dizziness <= 12 && DT_PROB(2, delta_time))
 		parent.Dizzy(2)
 
 /*
  * Effects caused by medium pain. (~250-400 pain)
  */
 /datum/pain/proc/med_pain_effects(delta_time)
-	if(DT_PROB(0.05, delta_time))
-		if(is_undergoing_shock())
-			return
-		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
-		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
-		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+
+	if(parent.stuttering <= 25 && DT_PROB(8, delta_time))
+		parent.stuttering += 8
+
 	else if(DT_PROB(3, delta_time))
 		to_chat(parent, span_bold(span_danger(pick("Everything hurts.", "Everything feels very sore.", "It hurts."))))
 		do_pain_emote("scream", 5 SECONDS)
 		if(parent.staminaloss < 30)
 			parent.apply_damage(10, STAMINA)
+
 	else if(DT_PROB(6, delta_time) && parent.staminaloss <= 60)
 		parent.apply_damage(20 * pain_modifier, STAMINA)
 		if(do_pain_emote("gasp"))
 			parent.visible_message(span_warning("[parent] doubles over in pain!"))
-	else if(DT_PROB(0.5, delta_time))
+
+	else if(!is_undergoing_shock() && DT_PROB(0.05, delta_time))
+		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
+		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
+		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+
+	else if(!parent.IsKnockdown() && DT_PROB(0.5, delta_time))
 		parent.Knockdown(15 * pain_modifier)
 		parent.visible_message(span_warning("[parent] collapses from pain!"))
-	else if(DT_PROB(1, delta_time))
+
+	else if(parent.jitteriness <= 30 && DT_PROB(1, delta_time))
 		parent.Jitter(10)
-	else if(DT_PROB(1, delta_time))
+
+	else if(parent.dizziness <= 20 && DT_PROB(1, delta_time))
 		parent.Dizzy(5)
+
+	else if(DT_PROB(3, delta_time))
+		do_pain_emote("cry", 6 SECONDS)
+
 	else if(DT_PROB(3, delta_time))
 		var/obj/item/held_item = parent.get_active_held_item()
 		if(held_item && parent.dropItemToGround(held_item))
@@ -592,39 +600,49 @@
  * Effects caused by extremely high pain. (~400-500 pain)
  */
 /datum/pain/proc/high_pain_effects(delta_time)
-	if(DT_PROB(0.5, delta_time))
-		if(is_undergoing_shock())
-			return
-		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
-		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
-		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+
+	if(parent.stuttering <= 40 && DT_PROB(12, delta_time))
+		parent.stuttering += 8
+
 	else if(DT_PROB(3, delta_time))
 		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!")))
 		do_pain_emote("scream", 5 SECONDS)
 		if(parent.staminaloss < 50)
 			parent.apply_damage(10, STAMINA)
-	else if(DT_PROB(2, delta_time))
+
+	else if(parent.staminaloss <= 75 && DT_PROB(5, delta_time))
+		parent.apply_damage(30 * pain_modifier, STAMINA)
+		if(do_pain_emote("gasp"))
+			parent.visible_message(span_warning("[parent] doubles over in pain!"))
+
+	else if(!is_undergoing_shock() && DT_PROB(0.5, delta_time))
+		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
+		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
+		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+
+	else if(!parent.IsKnockdown() && DT_PROB(2, delta_time))
 		parent.Knockdown(15 * pain_modifier)
 		parent.visible_message(span_warning("[parent] collapses from pain!"))
+
 	else if(DT_PROB(1, delta_time))
 		parent.vomit(50)
-	else if(DT_PROB(1, delta_time))
+
+	else if(parent.jitteriness <= 30 && DT_PROB(1, delta_time))
 		do_pain_emote("wince")
 		parent.Jitter(15)
+
 	else if(DT_PROB(1, delta_time))
 		parent.set_confusion(min(parent.get_confusion() + 4, 12))
+
 	else if(DT_PROB(4, delta_time))
 		do_pain_emote("cry", 6 SECONDS)
+
 	else if(DT_PROB(8, delta_time))
 		var/obj/item/held_item = parent.get_active_held_item()
 		if(held_item && parent.dropItemToGround(held_item))
 			to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
 			parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
 			parent.emote("gasp")
-	else if(DT_PROB(12, delta_time) && parent.staminaloss <= 75)
-		parent.apply_damage(30 * pain_modifier, STAMINA)
-		if(do_pain_emote("gasp"))
-			parent.visible_message(span_warning("[parent] doubles over in pain!"))
 
 /*
  * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
@@ -669,7 +687,7 @@
 	if(!COOLDOWN_FINISHED(src, time_since_last_pain_message))
 		return FALSE
 
-	if(parent.stat == DEAD)
+	if(parent.stat >= UNCONSCIOUS)
 		return FALSE
 
 	parent.emote(emote)
@@ -693,7 +711,7 @@
 	return 100 * total_pain / max_total_pain
 
 /*
- * Returns TRUE if we are undergoing shock.
+ * Returns a disease datum (Truthy value) if we are undergoing shock.
  */
 /datum/pain/proc/is_undergoing_shock()
 	return locate(/datum/disease/shock) in parent.diseases
@@ -713,8 +731,15 @@
 	parent.remove_status_effect(STATUS_EFFECT_LIMP_PAIN)
 	parent.remove_status_effect(STATUS_EFFECT_SHARP_PAIN)
 	parent.remove_status_effect(STATUS_EFFECT_MIN_PAIN)
+
+	var/datum/disease/shock/shock_disease = is_undergoing_shock()
+	shock_disease?.cure()
+
+	// Future todo: Pain mods should be datums or something, cause this is wack
+	var/static/list/unremovable_pain_mods = list(PAIN_MOD_QUIRK, PAIN_MOD_SPECIES, PAIN_MOD_GENETICS)
+
 	for(var/mod in pain_mods)
-		if(mod == PAIN_MOD_QUIRK || mod == PAIN_MOD_SPECIES || mod == PAIN_MOD_GENETICS)
+		if(mod in unremovable_pain_mods)
 			continue
 		unset_pain_modifier(mod)
 

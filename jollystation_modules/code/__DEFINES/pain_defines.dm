@@ -23,7 +23,7 @@
 #define BODY_ZONES_MINUS_CHEST list(BODY_ZONE_HEAD, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 
 /// List of some emotes that convey pain.
-#define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s", "groan", "moan")
+#define PAIN_EMOTES list("wince", "gasp", "grimace", "shiver", "sway", "twitch_s", "whimper", "inhale_s", "exhale_s", "groan")
 
 /// Amount of pain gained (to chest) from dismembered limb
 #define PAIN_LIMB_DISMEMBERED 90
@@ -56,7 +56,6 @@
 #define MOVESPEED_ID_PAIN "pain_movespeed"
 #define ACTIONSPEED_ID_PAIN "pain_actionspeed"
 #define TRAIT_EXTRA_PAIN "extra_pain"
-#define TRAIT_OFF_STATION_PAIN_RESISTANCE "pain_resistance_off_station"
 
 //Originally in pain_helpers.dm, moved here for superseding issues
 /// Cause [amount] pain of default (BRUTE) damage type to [target_zone]

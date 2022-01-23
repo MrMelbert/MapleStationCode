@@ -99,6 +99,8 @@
 		// - decrease in body temperature
 		if(2)
 			cure_text = "Subject is in stage two of shock. Provide additional pain relief, assist in maintaining a high body temperature and stop further blood loss to prevent cardiac arrest."
+			if(DT_PROB(10, delta_time))
+				affected_mob.stuttering = max(50, affected_mob.stuttering + 5)
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_danger("Your chest feels wrong!"))
 				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
@@ -122,6 +124,10 @@
 		// cardiac arrest
 		if(3)
 			cure_text = "Subject is in stage three of shock. Cardiac arrest is imminent - urgent action is needed."
+			if(DT_PROB(10, delta_time))
+				affected_mob.stuttering = max(60, affected_mob.stuttering + 5)
+			if(DT_PROB(8, delta_time))
+				affected_mob.slurring = max(18, affected_mob.slurring + 5)
 			if(DT_PROB(33, delta_time))
 				if(affected_mob.can_heartattack())
 					to_chat(affected_mob, span_userdanger("Your heart stops!"))
