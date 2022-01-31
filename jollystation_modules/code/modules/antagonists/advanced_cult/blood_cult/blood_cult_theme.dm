@@ -76,7 +76,7 @@
 /datum/cult_theme/narsie/get_allowed_runes(datum/antagonist/advanced_cult/cultist_datum)
 	. = ..()
 	var/datum/advanced_antag_datum/cultist/cultist = cultist_datum.linked_advanced_datum
-	if(!cultist?.conversion_allowed)
+	if(!cultist?.conversion_allowed) // If the cultist has no linked datum, it's a convertee, so it's safe to assume conversion is allowed
 		. -= "Revive"
 		. -= "Summon Cultist"
 		. -= "Boil Blood"
