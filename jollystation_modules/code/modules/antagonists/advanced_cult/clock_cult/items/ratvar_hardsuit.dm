@@ -18,6 +18,7 @@
 	name = "\improper Rat'varian clockwork suit"
 	desc = "A heavily-armored exosuit worn by warriors of the Rat'varian cult. It can withstand hard vacuum."
 	icon_state = "clockwork_cuirass"
+	worn_icon_state = "clockwork_cuirass"
 	inhand_icon_state = "clockwork_cuirass_inhand"
 	w_class = WEIGHT_CLASS_BULKY
 	allowed = list(/obj/item/clockwork_slab, /obj/item/melee/ratvar_spear, /obj/item/tank/internals, /obj/item/construction/rcd/clock)
@@ -28,3 +29,8 @@
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	resistance_flags = NONE
+
+// Hack to get around hooded things changing their icon state
+/obj/item/clothing/suit/hooded/clock/ToggleHood()
+	. = ..()
+	icon_state = initial(icon_state)
