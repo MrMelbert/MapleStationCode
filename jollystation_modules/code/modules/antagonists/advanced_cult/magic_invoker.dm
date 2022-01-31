@@ -86,7 +86,7 @@
 
 	if(our_theme.scribing_takes_blood && ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		human_owner.bleed(rune ? 40 : 10)
+		human_owner.bleed(rune ? 10 : 40)
 		human_owner.cause_pain(pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 8)
 
 	var/datum/action/new_spell

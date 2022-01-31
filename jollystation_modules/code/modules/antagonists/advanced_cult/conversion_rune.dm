@@ -118,7 +118,7 @@
 		return FALSE
 
 	convertee.heal_and_revive(50, span_warning("[convertee] writhes in pain as the sigil below [convertee.p_them()] flashes!"))
-	to_chat(convertee, span_heavy_brass("AAAAAAAAAAAAAA-"))
+	to_chat(convertee, cult.team_theme.our_cult_span("AAAAAAAAAAAAAA-", bold = TRUE))
 
 	var/datum/antagonist/advanced_cult/new_cultist = convertee.mind.add_antag_datum(/datum/antagonist/advanced_cult/convertee)
 	if(!new_cultist)
