@@ -4167,6 +4167,7 @@
 #include "jollystation_modules\code\game\objects\items\other_loadout_items\loadout_inhand_items.dm"
 #include "jollystation_modules\code\game\objects\items\other_loadout_items\loadout_pocket_items.dm"
 #include "jollystation_modules\code\game\objects\items\storage\boxes.dm"
+#include "jollystation_modules\code\game\objects\items\storage\garment.dm"
 #include "jollystation_modules\code\game\objects\items\storage\storage.dm"
 #include "jollystation_modules\code\game\objects\structures\fluff.dm"
 #include "jollystation_modules\code\game\objects\structures\item_dispensers.dm"
