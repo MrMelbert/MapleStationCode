@@ -1417,6 +1417,7 @@ The options:
                     E = ['text_event', E[1], '']
                 else:
                     E = []   # EOT with a delta-time of 0; ignore it.
+
         if E and not (E[0] in exclude):
             #if ( $exclusive_event_callback ):
             #    &{ $exclusive_event_callback }( @E );
@@ -1534,6 +1535,7 @@ def _encode(events_lol, unknown_callback=None, never_add_eot=False,
             if (status != last_status) or no_running_status:
                 data.append(struct.pack('>B', status))
             data.append(parameters)
+
             last_status = status
             continue
         else:
@@ -1643,3 +1645,4 @@ def _encode(events_lol, unknown_callback=None, never_add_eot=False,
                 data.append(_ber_compressed_int(dtime)+event_data)
 
     return b''.join(data)
+
