@@ -14,10 +14,10 @@
 		generate_name()
 
 /datum/antagonist/changeling/finalize_antag()
-	create_actions()
-	reset_powers()
-	create_initial_profile()
 	owner.current.grant_all_languages(FALSE, FALSE, TRUE) //Grants omnitongue. We are able to transform our body after all.
+	create_emporium()
+	create_innate_actions()
+	create_initial_profile()
 	play_changeling_sound()
 	if(hivemind_link_awoken)
 		to_chat(owner.current, span_bold(span_changeling("You can communicate in the changeling hivemind using \"[MODE_TOKEN_CHANGELING]\".")))

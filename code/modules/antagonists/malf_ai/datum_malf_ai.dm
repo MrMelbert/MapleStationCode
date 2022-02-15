@@ -141,7 +141,7 @@
 	if(!malf_ai || !istype(malf_ai))
 		return
 
-	var/law = give_objectives ? malfunction_flavor["zeroth_law"] : "Accomplish your objectives at all costs."
+	var/law = malfunction_flavor["zeroth_law"]
 	//very purposefully not changing this with flavor, i don't want cyborgs throwing the round for their AI's roleplay suggestion
 	var/law_borg = "Accomplish your AI's objectives at all costs."
 
