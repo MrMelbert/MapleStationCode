@@ -59,7 +59,7 @@ SUBSYSTEM_DEF(crewtransfer)
 /// returns TRUE if it successfully called a vote, FALSE if it failed.
 /datum/controller/subsystem/crewtransfer/proc/autocall_crew_transfer_vote()
 	//we won't call a vote if we shouldn't be able to leave
-	if(SSshuttle.emergencyNoEscape)
+	if(SSshuttle.emergency_no_escape)
 		message_admins("Automatic crew transfer vote prevented due to hostile situation.")
 		return FALSE
 
@@ -94,7 +94,7 @@ SUBSYSTEM_DEF(crewtransfer)
 	else
 		message_admins("A crew transfer vote has passed, but the shuttle was already called. Recalling the shuttle ingame is disabled.")
 		to_chat(world, "<span style='boldannounce'>Crew transfer vote failed on account of shuttle being called.</span>")
-	SSshuttle.adminEmergencyNoRecall = TRUE // Don't let one guy overrule democracy by recalling afterwards
+	SSshuttle.admin_emergency_no_recall = TRUE // Don't let one guy overrule democracy by recalling afterwards
 	transfer_vote_successful = TRUE
 
 	return TRUE

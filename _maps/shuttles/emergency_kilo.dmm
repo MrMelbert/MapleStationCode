@@ -1600,6 +1600,13 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
+"lI" = (
+/obj/effect/turf_decal/delivery,
+/obj/machinery/stasis{
+	dir = 4
+	},
+/turf/open/floor/mineral/plastitanium,
+/area/shuttle/escape)
 "NC" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
@@ -1772,7 +1779,7 @@ bD
 bK
 cg
 cm
-cu
+lI
 cE
 cN
 cW

@@ -38,9 +38,9 @@
 	chemical_cost = 50
 	dna_cost = 2
 	/// Our DNA we're using to target.
-	var/datum/changelingprofile/selected_dna
+	var/datum/changeling_profile/selected_dna
 
-/datum/action/changeling/sting/temp_transformation/Trigger()
+/datum/action/changeling/sting/temp_transformation/Trigger(trigger_flags)
 	var/mob/user = usr
 	var/datum/antagonist/changeling/changeling = is_any_changeling(user)
 	if(changeling.chosen_sting)

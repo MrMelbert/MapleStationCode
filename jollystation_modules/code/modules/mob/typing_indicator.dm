@@ -20,7 +20,7 @@
 
 		if(ishuman(src))
 			var/mob/living/carbon/human/human_src = src
-			if(human_src.dna.check_mutation(MUT_MUTE) || human_src.silent) //Check for mute or silent, remove the overlay if true
+			if(human_src.dna.check_mutation(/datum/mutation/human/mute) || human_src.silent) //Check for mute or silent, remove the overlay if true
 				QDEL_NULL(typing_indicator)
 
 		if(stat != CONSCIOUS || is_muzzled())

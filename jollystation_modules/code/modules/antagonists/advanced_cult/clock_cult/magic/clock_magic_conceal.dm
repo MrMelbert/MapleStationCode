@@ -11,7 +11,7 @@
 	/// Whether our next use will reveal or conceal.
 	var/revealing = FALSE
 
-/datum/action/item_action/cult/clock_spell/conceal/Trigger()
+/datum/action/item_action/cult/clock_spell/conceal/Trigger(trigger_flags)
 	if(revealing)
 		reveal_nearby()
 	else

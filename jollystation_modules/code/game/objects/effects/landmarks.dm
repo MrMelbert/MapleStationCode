@@ -2,8 +2,6 @@
 
 // Global list for generic lockers
 GLOBAL_LIST_EMPTY(locker_landmarks)
-/// Global list of all heretic sacrifice landmarks (contains all 4 subtypes of landmarks)
-GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 
 // XB start location
 /obj/effect/landmark/start/xenobiologist
@@ -56,27 +54,3 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 /obj/effect/landmark/locker_spawner/asset_protection_equipment
 	name = "asset protection locker"
 	spawned_path = /obj/structure/closet/secure_closet/asset_protection
-
-/obj/effect/landmark/heretic
-	name = "heretic sacrifice landmark"
-	icon_state = "x"
-
-/obj/effect/landmark/heretic/Initialize()
-	. = ..()
-	GLOB.heretic_sacrifice_landmarks += src
-
-/obj/effect/landmark/heretic/Destroy()
-	GLOB.heretic_sacrifice_landmarks -= src
-	return ..()
-
-/obj/effect/landmark/heretic/ash
-	name = "ash heretic sacrifice landmark"
-
-/obj/effect/landmark/heretic/flesh
-	name = "flesh heretic sacrifice landmark"
-
-/obj/effect/landmark/heretic/void
-	name = "void heretic sacrifice landmark"
-
-/obj/effect/landmark/heretic/rust
-	name = "rust heretic sacrifice landmark"

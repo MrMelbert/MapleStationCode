@@ -1343,6 +1343,18 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)
+"WX" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/obj/machinery/stasis{
+	dir = 4
+	},
+/turf/open/floor/iron/white,
+/area/shuttle/escape)
 
 (1,1,1) = {"
 aa
@@ -1757,7 +1769,7 @@ ay
 aE
 aE
 aL
-aQ
+WX
 af
 aY
 ba

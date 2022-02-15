@@ -148,7 +148,7 @@
 				return
 
 			new_objective_type = possible_objectives[new_objective_type]
-			var/datum/objective/objective_to_add = new new_objective_type
+			var/datum/objective/objective_to_add = new new_objective_type()
 			objective_to_add.admin_edit(usr)
 			edited_goal.add_similar_objective(objective_to_add)
 			. = TRUE

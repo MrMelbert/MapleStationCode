@@ -51,7 +51,7 @@
 		magic_source = null
 	return ..()
 
-/datum/action/item_action/cult/Trigger()
+/datum/action/item_action/cult/Trigger(trigger_flags)
 	var/obj/item/item_target = target
 	for(var/datum/action/item_action/cult/spell in item_target.actions)
 		if(spell != src && spell.active)

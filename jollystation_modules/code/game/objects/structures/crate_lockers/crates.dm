@@ -48,22 +48,29 @@
 
 /obj/structure/closet/crate/resource_cache/syndicate/PopulateContents()
 	. = ..()
+	if(!bonus_mats)
+		return
 	// 5% chance that a syndicate crate spawns with some syndicate contraband.
-	if(bonus_mats && prob(5))
-		contraband_value += rand(-3, 2)
-		message_admins("A [name] at [ADMIN_VERBOSEJMP(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
-		log_game("A [name] at [loc_name(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
-		var/list/uplink_items = get_uplink_items(UPLINK_TRAITORS, FALSE)
-		while(contraband_value)
-			var/category = pick(uplink_items)
-			var/item = pick(uplink_items[category])
-			var/datum/uplink_item/I = uplink_items[category][item]
-			if(!I.surplus || prob(100 - I.surplus))
-				continue
-			if(contraband_value < I.cost)
-				continue
-			contraband_value -= I.cost
-			new I.item(src)
+	if(prob(95))
+		return
+
+	contraband_value += rand(-3, 2)
+	message_admins("A [name] at [ADMIN_VERBOSEJMP(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
+	log_game("A [name] at [loc_name(loc)] was populated with contraband syndicate items (tc value = [contraband_value]).")
+	var/list/uplink_items = list()
+	for(var/datum/uplink_item/item_path as anything in SStraitor.uplink_items_by_type)
+		var/datum/uplink_item/item = SStraitor.uplink_items_by_type[item_path]
+		if(item.purchasable_from & UPLINK_TRAITORS)
+			uplink_items += item
+
+	while(contraband_value)
+		var/datum/uplink_item/uplink_item = pick(uplink_items)
+		if(!uplink_item.surplus || prob(100 - uplink_item.surplus))
+			continue
+		if(contraband_value < uplink_item.cost)
+			continue
+		contraband_value -= uplink_item.cost
+		new uplink_item.item(src)
 
 /// Centcom crates have usual advanced building mats found on NT stations
 /obj/structure/closet/crate/resource_cache/centcom

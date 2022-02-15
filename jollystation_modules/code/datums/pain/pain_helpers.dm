@@ -23,7 +23,7 @@
 	if(!islist(target_zones))
 		target_zones = list(target_zones)
 	for(var/zone in target_zones)
-		apply_status_effect(STATUS_EFFECT_SHARP_PAIN, zone, amount, dam_type, duration)
+		apply_status_effect(/datum/status_effect/sharp_pain, zone, amount, dam_type, duration)
 
 /*
  * Set [id] pain modifier to [amount], and

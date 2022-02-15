@@ -192,21 +192,19 @@
 
 	new_ling_datum.granter = WEAKREF(owner.mind)
 	new_ling_datum.total_chem_storage = round(0.66 * our_ling.total_chem_storage)
-	new_ling_datum.chem_storage = new_ling_datum.total_chem_storage
 	new_ling_datum.chem_charges = 10
-	new_ling_datum.total_geneticspoints = round(0.5 * our_ling.total_geneticspoints)
-	new_ling_datum.geneticpoints = new_ling_datum.total_geneticspoints
+	new_ling_datum.total_genetic_points = round(0.5 * our_ling.total_genetic_points)
+	new_ling_datum.genetic_points = new_ling_datum.genetic_points
 
 	// MELBERT TODO: This is kinda hacky.
 	new_ling_datum.all_powers -= /datum/action/changeling/grant_powers
 	new_ling_datum.all_powers -= /datum/action/changeling/pheromone_receptors
-	if(!(locate(/datum/action/changeling/absorb_dna) in owner.actions))
-		new_ling_datum.all_powers -= /datum/action/changeling/absorb_dna
 
 	new_ling_datum.finalize_antag()
+	new_ling_datum.create_innate_actions(our_ling)
 	new_ling_datum.antag_memory += "[owner.mind] is your hive leader. Assist them where possible."
 
-	var/datum/objective/custom/custom_objective = new
+	var/datum/objective/custom/custom_objective = new()
 	custom_objective.explanation_text = "Assist the changeling [owner.mind], your hive leader."
 	custom_objective.owner = target.mind
 	new_ling_datum.objectives += custom_objective

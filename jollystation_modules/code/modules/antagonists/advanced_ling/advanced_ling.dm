@@ -5,7 +5,6 @@
 	ui_name = null
 	hijack_speed = 0.5
 	give_objectives = FALSE
-	you_are_greet = FALSE
 	hivemind_link_awoken = FALSE
 	/// List of objectives changelings can get in addition to the base ones
 	var/static/list/ling_objectives = list(
@@ -18,6 +17,15 @@
 
 /datum/antagonist/changeling/advanced/create_initial_profile()
 	add_new_profile(owner.current, TRUE)
+
+/datum/antagonist/changeling/advanced/create_innate_actions()
+	. = ..()
+	var/datum/advanced_antag_datum/changeling/adv_ling = linked_advanced_datum
+	if(adv_ling?.no_hard_absorb)
+		var/datum/action/changeling/absorb_dna/dna_power = locate() in innate_powers
+		if(dna_power)
+			innate_powers -= dna_power
+			QDEL_NULL(dna_power)
 
 /datum/antagonist/changeling/advanced/on_gain()
 	if(!GLOB.admin_objective_list)
@@ -60,19 +68,18 @@
 	if(our_ling.no_hard_absorb)
 		result += "The changeling gave up the ability to absorb humans!"
 
-	var/list/powers = purchasedpowers
-	if(powers.len && linked_advanced_datum.finalized)
-		var/list/bought_powers = list()
-		for(var/datum/action/changeling/power as anything in powers)
-			if(power.dna_cost > 0)
+	if(linked_advanced_datum.finalized)
+		if(length(purchased_powers))
+			var/list/bought_powers = list()
+			for(var/datum/action/changeling/power as anything in purchased_powers)
 				bought_powers += power.name
 
-		if(bought_powers.len)
 			result += span_bold("The changeling had the following powers: [english_list(bought_powers)].")
 		else
 			result += span_bold("The changeling never aquired any additional changeling powers!")
+
 	else
-		result += span_bold("The changeling never received their changeling powers! ...Why?")
+		result += span_bold("The changeling never finalized their goals!")
 
 	return result.Join("<br>")
 
@@ -93,11 +100,10 @@
 	var/datum/antagonist/changeling/our_changeling = linked_antagonist
 
 	starting_points = get_antag_points_from_goals()
-	our_changeling.geneticpoints = starting_points
-	our_changeling.total_geneticspoints = starting_points
+	our_changeling.genetic_points = starting_points
+	our_changeling.total_genetic_points = starting_points
 
 	our_changeling.chem_charges = starting_points * 2
-	our_changeling.chem_storage = round((starting_points * ADV_CHANGELING_CHEM_PER_POINTS) + (10 * no_hard_absorb))
 	our_changeling.total_chem_storage = round((starting_points * ADV_CHANGELING_CHEM_PER_POINTS) + (10 * no_hard_absorb))
 
 /datum/advanced_antag_datum/changeling/get_antag_points_from_goals()
@@ -109,7 +115,9 @@
 
 /datum/advanced_antag_datum/changeling/get_finalize_text()
 	var/starting_points = get_antag_points_from_goals()
-	return "Finalizing will give you your cellular emporium with [starting_points] genetic points, and [round((starting_points * ADV_CHANGELING_CHEM_PER_POINTS) + (10 * no_hard_absorb))] total chemical storage. [no_hard_absorb ? "You will not be able to absorb humans. ":""]You can still edit your goals after finalizing!"
+	return "Finalizing will give you your cellular emporium with [starting_points] genetic points, \
+		and [round((starting_points * ADV_CHANGELING_CHEM_PER_POINTS) + (10 * no_hard_absorb))] total chemical storage. \
+		[no_hard_absorb ? "You will not be able to absorb humans. ":""]You can still edit your goals after finalizing!"
 
 /datum/advanced_antag_datum/changeling/post_finalize_actions()
 	. = ..()
@@ -118,9 +126,9 @@
 
 	if(no_hard_absorb)
 		var/datum/antagonist/changeling/our_changeling = linked_antagonist
-		our_changeling.all_powers -= /datum/action/changeling/absorb_dna
-		var/datum/action/changeling/absorb_dna/dna_power = locate() in our_changeling.purchasedpowers
-		dna_power?.Remove(linked_antagonist.owner.current)
+		var/datum/action/changeling/absorb_dna/dna_power = locate() in our_changeling.innate_powers
+		our_changeling.innate_powers -= dna_power
+		QDEL_NULL(dna_power)
 
 /datum/advanced_antag_datum/changeling/log_goals_on_finalize()
 	. = ..()

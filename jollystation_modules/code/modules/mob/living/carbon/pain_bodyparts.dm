@@ -22,7 +22,7 @@
 	/// The last type of pain we received.
 	var/last_received_pain_type = BRUTE
 
-/obj/item/bodypart/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE)
+/obj/item/bodypart/receive_damage(brute = 0, burn = 0, stamina = 0, blocked = 0, updating_health = TRUE, required_status = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, attack_direction = null)
 	. = ..()
 	if(!.)
 		return
@@ -118,7 +118,7 @@
 	if(!owner || !pain)
 		return FALSE
 
-	if(owner.has_status_effect(STATUS_EFFECT_DETERMINED))
+	if(owner.has_status_effect(/datum/status_effect/determined))
 		return FALSE
 
 	var/list/feedback_phrases = list()
@@ -196,7 +196,7 @@
 	if(!owner || !pain)
 		return FALSE
 
-	if(owner.has_status_effect(STATUS_EFFECT_DETERMINED))
+	if(owner.has_status_effect(/datum/status_effect/determined))
 		return FALSE
 
 	var/list/feedback_phrases = list()
@@ -298,7 +298,7 @@
 		return FALSE
 
 	if(get_modified_pain() >= 40 && DT_PROB(5, delta_time))
-		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
+		if(owner.apply_status_effect(/datum/status_effect/limp/pain))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
 	return TRUE
@@ -318,7 +318,7 @@
 		return FALSE
 
 	if(get_modified_pain() >= 40 && DT_PROB(5, delta_time))
-		if(owner.apply_status_effect(STATUS_EFFECT_LIMP_PAIN))
+		if(owner.apply_status_effect(/datum/status_effect/limp/pain))
 			to_chat(owner, span_danger("Your [name] hurts to walk on!"))
 
 	return TRUE

@@ -453,7 +453,7 @@
 			if(checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss)))
 				COOLDOWN_START(src, time_since_last_pain_message, 4 SECONDS)
 
-	if(!parent.has_status_effect(STATUS_EFFECT_DETERMINED))
+	if(!parent.has_status_effect(/datum/status_effect/determined))
 		switch(get_average_pain())
 			if(10 to 40)
 				low_pain_effects(delta_time)
@@ -728,9 +728,9 @@
 			adjust_bodypart_min_pain(zone, -500)
 			adjust_bodypart_pain(zone, -500)
 			REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
-	parent.remove_status_effect(STATUS_EFFECT_LIMP_PAIN)
-	parent.remove_status_effect(STATUS_EFFECT_SHARP_PAIN)
-	parent.remove_status_effect(STATUS_EFFECT_MIN_PAIN)
+	parent.remove_status_effect(/datum/status_effect/limp/pain)
+	parent.remove_status_effect(/datum/status_effect/sharp_pain)
+	parent.remove_status_effect(/datum/status_effect/minimum_bodypart_pain)
 
 	var/datum/disease/shock/shock_disease = is_undergoing_shock()
 	shock_disease?.cure()

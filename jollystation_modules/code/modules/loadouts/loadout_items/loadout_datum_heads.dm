@@ -237,7 +237,7 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 
 /datum/loadout_item/head/sunflower
 	name = "Sunflower"
-	item_path = /obj/item/grown/sunflower
+	item_path = /obj/item/food/grown/sunflower
 
 /datum/loadout_item/head/harebell
 	name = "Harebell"

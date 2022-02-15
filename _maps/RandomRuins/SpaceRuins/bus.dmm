@@ -321,6 +321,11 @@
 	icon_state = "bus"
 	},
 /area/ruin/unpowered/no_grav)
+"XK" = (
+/obj/structure/closet/crate/grave,
+/obj/item/clothing/head/collectable/swat,
+/turf/open/floor/plating/asteroid/airless,
+/area/ruin/unpowered/no_grav)
 
 (1,1,1) = {"
 aa
@@ -428,7 +433,7 @@ aa
 ab
 ab
 ab
-ad
+XK
 ad
 aj
 am

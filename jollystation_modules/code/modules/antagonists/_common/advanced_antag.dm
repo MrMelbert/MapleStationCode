@@ -14,7 +14,7 @@
 	/// Lazylist of our goals datums linked to this antag.
 	var/list/datum/advanced_antag_goal/our_goals
 	/// List of objectives we can add to similar objectives.
-	var/static/list/possible_objectives = list()
+	var/list/possible_objectives = list()
 	/// Whether our goals are finalized.
 	var/finalized = FALSE
 

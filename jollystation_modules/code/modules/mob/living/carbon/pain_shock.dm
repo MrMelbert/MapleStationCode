@@ -42,10 +42,10 @@
 	qdel(src)
 
 /datum/disease/shock/after_add()
-	affected_mob.apply_status_effect(STATUS_EFFECT_LOWBLOODPRESSURE)
+	affected_mob.apply_status_effect(/datum/status_effect/low_blood_pressure)
 
 /datum/disease/shock/remove_disease()
-	affected_mob.remove_status_effect(STATUS_EFFECT_LOWBLOODPRESSURE)
+	affected_mob.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
 /datum/disease/shock/stage_act(delta_time, times_fired)
 	. = ..()

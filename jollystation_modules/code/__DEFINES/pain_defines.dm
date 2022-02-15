@@ -1,14 +1,5 @@
 // -- Defines for the pain system. --
 
-/// Pained Limp status effect
-#define STATUS_EFFECT_LIMP_PAIN /datum/status_effect/limp/pain
-/// Low blood pressure
-#define STATUS_EFFECT_LOWBLOODPRESSURE /datum/status_effect/low_blood_pressure
-/// Sharp pain
-#define STATUS_EFFECT_SHARP_PAIN /datum/status_effect/sharp_pain
-/// Minimum pain
-#define STATUS_EFFECT_MIN_PAIN /datum/status_effect/minimum_bodypart_pain
-
 /// Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
 #define COMSIG_CARBON_PAIN_GAINED "pain_gain"
 /// Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
@@ -65,7 +56,7 @@
 /// Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.
 #define pain_emote(emote, cooldown) pain_controller?.do_pain_emote(emote, cooldown)
 /// Increase the minimum amount of pain [zone] can have for [time]
-#define apply_min_pain(target_zone, amount, time) apply_status_effect(STATUS_EFFECT_MIN_PAIN, target_zone, amount, time)
+#define apply_min_pain(target_zone, amount, time) apply_status_effect(/datum/status_effect/minimum_bodypart_pain, target_zone, amount, time)
 /// Set [id] pain mod to [amount]
 #define set_pain_mod(id, amount) pain_controller?.set_pain_modifier(id, amount)
 /// Unset [id] pain mod

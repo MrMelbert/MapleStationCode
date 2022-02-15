@@ -73,34 +73,3 @@
 /// Humans check for DIGITIGRADE in species_traits
 /mob/living/carbon/human/is_digitigrade()
 	return (DIGITIGRADE in dna?.species?.species_traits)
-
-/*
- * Heals up the [target] to up to [heal_to] brute and burn, and [heal_to / 2] tox and oxy.
- *
- * If the target is dead, also revives them and heals up their organs / restores blood slightly.
- * If we have a [revive_message], play a visible message if the revive was successful.
- *
- * returns TRUE if the mob is alive, or FALSE if they're dead.
- */
-/mob/living/proc/heal_and_revive(heal_to = 75, revive_message)
-	var/brute_to_heal = heal_to - getBruteLoss()
-	var/burn_to_heal = heal_to - getFireLoss()
-	var/tox_to_heal = (heal_to/2) - getToxLoss()
-	var/oxy_to_heal = (heal_to/2) - getOxyLoss()
-	if(brute_to_heal < 0)
-		adjustBruteLoss(brute_to_heal, FALSE)
-	if(burn_to_heal < 0)
-		adjustFireLoss(burn_to_heal, FALSE)
-	if(tox_to_heal < 0)
-		adjustToxLoss(tox_to_heal, FALSE, TRUE)
-	if(oxy_to_heal < 0)
-		adjustOxyLoss(oxy_to_heal, FALSE, TRUE)
-
-	var/overall_health = getBruteLoss() + getFireLoss() + getToxLoss() + getOxyLoss()
-	if(overall_health < 200 && stat == DEAD)
-		revive(FALSE, FALSE, 10)
-		if(revive_message)
-			visible_message(revive_message)
-	updatehealth()
-
-	return stat != DEAD

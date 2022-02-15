@@ -107,8 +107,6 @@
 	return ..()
 
 /datum/antagonist/changeling/on_gain()
-
-/datum/antagonist/changeling/on_gain()
 	/// NON-MODULE CHANGE: ADVANCED CHANGELINGS
 	if(give_objectives)
 		finalize_antag()
