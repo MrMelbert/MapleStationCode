@@ -11521,7 +11521,6 @@
 /area/command/teleporter)
 "aMa" = (
 /obj/structure/closet/crate,
-/obj/effect/turf_decal/stripes/corner,
 /obj/effect/turf_decal/tile/blue,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
@@ -11533,6 +11532,7 @@
 /obj/effect/turf_decal/tile/blue/anticorner{
 	dir = 4
 	},
+/obj/effect/turf_decal/stripes/corner,
 /turf/open/floor/iron/large,
 /area/command/teleporter)
 "aMd" = (
@@ -12172,12 +12172,12 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/command/teleporter)
 "aOF" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 10
-	},
 /obj/structure/chair/stool/bar/directional/north,
 /obj/effect/turf_decal/tile/blue/anticorner{
 	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 10
 	},
 /turf/open/floor/iron/corner{
 	dir = 4
@@ -12195,10 +12195,10 @@
 /turf/open/floor/iron/edge,
 /area/command/teleporter)
 "aOI" = (
+/obj/effect/turf_decal/tile/blue/anticorner,
 /obj/effect/turf_decal/stripes/line{
 	dir = 6
 	},
-/obj/effect/turf_decal/tile/blue/anticorner,
 /turf/open/floor/iron/corner{
 	dir = 1
 	},
@@ -12480,21 +12480,21 @@
 /obj/machinery/computer/teleporter{
 	dir = 1
 	},
-/obj/effect/turf_decal/delivery,
 /obj/effect/turf_decal/tile/blue/full,
+/obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/dark/smooth_large,
 /area/command/teleporter)
 "aPO" = (
 /obj/machinery/teleport/station,
-/obj/effect/turf_decal/delivery,
 /obj/effect/turf_decal/tile/blue/full,
+/obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/dark/smooth_large,
 /area/command/teleporter)
 "aPP" = (
 /obj/machinery/teleport/hub,
-/obj/effect/turf_decal/delivery,
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/blue/full,
+/obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/dark/smooth_large,
 /area/command/teleporter)
 "aPQ" = (
@@ -20977,7 +20977,7 @@
 /area/medical/medbay/lobby)
 "bvw" = (
 /obj/effect/turf_decal/delivery,
-/obj/machinery/modular_computer/console/preset/civilian{
+/obj/machinery/computer/rdconsole{
 	dir = 4
 	},
 /turf/open/floor/iron/smooth_large,
