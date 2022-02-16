@@ -13301,7 +13301,7 @@
 	},
 /area/cargo/qm)
 "aTm" = (
-/obj/machinery/suit_storage_unit/standard_unit,
+/obj/machinery/suit_storage_unit/industrial/loader,
 /turf/open/floor/wood,
 /area/cargo/qm)
 "aTo" = (
@@ -17370,7 +17370,6 @@
 /obj/structure/table,
 /obj/item/stack/sheet/iron/five,
 /obj/item/stack/cable_coil/five,
-/obj/item/circuitboard/machine/paystand,
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron,
 /area/commons/vacant_room/commissary)
@@ -22650,6 +22649,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/blue/half,
+/obj/machinery/suit_storage_unit/medical,
 /turf/open/floor/iron/white/smooth_half,
 /area/medical/storage)
 "bAP" = (
@@ -33337,10 +33337,6 @@
 /area/service/chapel/monastery)
 "cvy" = (
 /obj/structure/cable,
-/obj/machinery/power/apc/highcap/five_k{
-	name = "Chapel APC";
-	pixel_y = -26
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
@@ -33353,6 +33349,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
+/obj/machinery/power/apc/auto_name/directional/south,
 /turf/open/floor/iron/dark/smooth_edge,
 /area/service/chapel/monastery)
 "cvA" = (
@@ -34074,7 +34071,7 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/service/library)
 "cAT" = (
-/obj/structure/destructible/cult/tome,
+/obj/structure/destructible/cult/item_dispenser/archives/library,
 /turf/open/floor/iron/dark/smooth_large,
 /area/service/library)
 "cAU" = (
