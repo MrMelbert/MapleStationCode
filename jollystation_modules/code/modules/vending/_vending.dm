@@ -1,21 +1,24 @@
 /// -- Extension of /obj/machinery/vending to add products, contraband, and premium items to vendors. --
 /obj/machinery/vending
 	/// Assoc list of products you want to add (typepath - amount)
-	var/added_products = list()
+	var/list/added_products
 	/// Assoc list of contraband you want to add (typepath - amount)
-	var/added_contraband = list()
+	var/list/added_contraband
 	/// Assoc list of premium items you want to add (typepath - amount)
-	var/added_premium = list()
+	var/list/added_premium
 
 /obj/machinery/vending/Initialize()
 	add_module_items(products, added_products)
 	add_module_items(contraband, added_contraband)
 	add_module_items(premium, added_premium)
 
-	. = ..()
+	return ..()
 
 /// Adds the items from list_to_add into list_adding_to, removing items if they become negative.
 /obj/machinery/vending/proc/add_module_items(list/list_adding_to, list/list_to_add)
+	if(!LAZYLEN(list_to_add))
+		return
+
 	for(var/item in list_to_add)
 		if(list_adding_to[item])
 			list_adding_to[item] += list_to_add[item]

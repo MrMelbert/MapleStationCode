@@ -10,3 +10,13 @@
 	id_additions = list(
 		"cybernetic_cat_ears",
 		)
+
+/datum/techweb_node/base
+	id_additions = list(
+		"fax_machine",
+		)
+
+/datum/techweb_node/exp_surgery
+	id_additions = list(
+		"surgery_neuter_ling",
+		)

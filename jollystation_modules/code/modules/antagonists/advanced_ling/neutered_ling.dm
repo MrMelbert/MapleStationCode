@@ -9,11 +9,6 @@
  * - if the target is not a changeling, screws all their internal chest organs
  */
 
-// Experimental surgery unocks it.
-/datum/techweb_node/exp_surgery/New()
-	. = ..()
-	design_ids += "surgery_neuter_ling"
-
 // The design of the surgery.
 /datum/design/surgery/neuter_changeling
 	name = "Neuter Changeling"

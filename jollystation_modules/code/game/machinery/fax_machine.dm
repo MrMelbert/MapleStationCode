@@ -31,10 +31,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	category = list("Misc. Machinery")
 	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_SECURITY | DEPARTMENTAL_FLAG_CARGO
 
-/datum/techweb_node/base/New()
-	design_ids += "fax_machine"
-	. = ..()
-
 /// Fax machine circuit.
 /obj/item/circuitboard/machine/fax_machine
 	name = "Fax Machine (Machine Board)"
@@ -43,6 +39,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	req_components = list(
 		/obj/item/stack/sheet/mineral/silver = 1,
 		/obj/item/stack/sheet/glass = 1,
+		/obj/item/stock_parts/micro_laser = 1,
 		)
 
 /// Fax machine. Sends messages, receives messages, sends paperwork, receives paperwork.
@@ -89,14 +86,18 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	wires = new /datum/wires/fax(src)
 
 /obj/machinery/fax_machine/Destroy()
-	// The eject procs will never sleep if not supplied any arguments.
-	// We invoke async here to shut the compiler up, because
-	// it thinks that it can possibly sleep somehow. It cannot.
-	INVOKE_ASYNC(src, .proc/eject_stored_paper)
-	INVOKE_ASYNC(src, .proc/eject_all_paperwork)
-	INVOKE_ASYNC(src, .proc/eject_received_paper)
+	QDEL_NULL(stored_paper)
+	QDEL_NULL(received_paper)
+	QDEL_LIST(received_paperwork)
 
 	GLOB.fax_machines -= src
+	return ..()
+
+/obj/machinery/fax_machine/on_deconstruction()
+	eject_stored_paper()
+	eject_all_paperwork()
+	eject_received_paper()
+
 	return ..()
 
 /obj/machinery/fax_machine/recieving_disabled
@@ -230,12 +231,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /obj/machinery/fax_machine/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver)
 	var/is_user_robot = issilicon(user)
 	if(!panel_open && locked && !is_user_robot)
-		to_chat(user, span_warning("[src]'s maintenance panel is ID locked. Swipe your ID to unlock it."))
+		balloon_alert(user, "panel locked!")
 		return FALSE
 
 	. = ..()
 	if(. && panel_open && locked && is_user_robot)
-		to_chat(user, span_notice("Maintenance panel ID lock bypassed."))
+		balloon_alert(user, "panel lock bypassed")
 
 /obj/machinery/fax_machine/can_be_unfasten_wrench(mob/user, silent)
 	if(!panel_open)
@@ -271,6 +272,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(istype(weapon, /obj/item/paper/processed))
 		insert_processed_paper(weapon, user)
 		return TRUE
+
 	else if(istype(weapon, /obj/item/paper))
 		var/obj/item/paper/inserted_paper = weapon
 		if(inserted_paper.was_faxed_from in GLOB.admin_fax_destinations)
@@ -284,7 +286,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		if(check_access(weapon.GetID()) && !panel_open)
 			locked = !locked
 			playsound(src, 'sound/machines/terminal_eject.ogg', 30, FALSE)
-			balloon_alert(user, "[locked ? "maintenance panel locked" : "maintenance panel unlocked"]")
+			balloon_alert(user, "panel [locked ? "locked" : "unlocked"]")
 			return TRUE
 
 	return ..()
@@ -299,6 +301,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	. = ..()
 	if(stored_paper)
 		. += span_notice("Right click to remove the stored fax.")
+	. += span_notice("The maintenance panel is [locked ? "locked" : "unlocked"]. Swipe your ID card to [locked ? "unlock" : "lock"] it.")
 
 /*
  * Set this fax machine's [room_tag] to the current room or null.
@@ -714,7 +717,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!required_question)
 		return
 
-	last_answer = input(user, required_question, "Paperwork") as null | text
+	last_answer = tgui_input_text(user, required_question, "Paperwork")
 
 /*
  * Generate a random question based on our paper's data.
@@ -760,6 +763,9 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return FAIL_NO_ANSWER
 	if(!LAZYLEN(stamped))
 		return FAIL_NO_STAMP
+	if(paper_data["redacts_present"])
+		return PAPERWORK_SUCCESS
+
 	if(paper_data["errors_present"])
 		if(!("stamp-deny" in stamped))
 			return FAIL_NOT_DENIED
@@ -783,7 +789,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		WIRE_PAPERWORK,
 	)
 	add_duds(1)
-	. = ..()
+	return ..()
 
 /datum/wires/fax/get_status()
 	var/obj/machinery/fax_machine/machine = holder

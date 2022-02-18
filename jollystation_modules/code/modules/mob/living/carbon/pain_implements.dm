@@ -381,10 +381,7 @@
 /obj/item/shock_blanket/proc/check_protection(mob/living/source)
 	SIGNAL_HANDLER
 
-	if(source.body_position == LYING_DOWN)
-		enable_protection(source)
-		return
-	if(source.buckled)
+	if(source.body_position == LYING_DOWN || source.buckled)
 		enable_protection(source)
 		return
 
