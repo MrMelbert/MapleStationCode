@@ -43,7 +43,7 @@
 
 	if(finalize_antag)
 		finalize_antag()
-	 // NON-MODULE CHANGE END
+	// NON-MODULE CHANGE END
 
 	return ..()
 
