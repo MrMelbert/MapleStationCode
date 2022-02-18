@@ -4,7 +4,7 @@
 
 // The tinker's cache
 // produces utility items
-/obj/structure/destructible/brass/tinkers_cache
+/obj/structure/destructible/cult/item_dispenser/tinkers_cache
 	name = "tinkerer's cache"
 	desc = "A cache of gizmos and gears constructed by a follower of Ratvar."
 	icon_state = "tinkerers_cache"
@@ -13,21 +13,26 @@
 	light_range = 2
 	light_color = "#ff9900"
 
-/obj/structure/destructible/brass/tinkers_cache/open_radial_and_get_item(mob/living/user)
-	var/list/items = list(
-		REPLICA_FAB = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "replica_fabricator"),
-		WRAITH_SPEC = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "wraith_specs"),
-		TRUESIGHT_LENS = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "truesight_lens")
-		)
-	var/choice = show_radial_menu(user, src, items, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
-	. = list()
-	switch(choice)
-		if(REPLICA_FAB)
-			. += /obj/item/construction/rcd/clock
-		if(WRAITH_SPEC)
-			. += /obj/item/clothing/glasses/wraith_specs
-		if(TRUESIGHT_LENS)
-			. += /obj/item/binoculars/truesight_lens
+/obj/structure/destructible/cult/item_dispenser/tinkers_cache/setup_options()
+	var/static/list/cache_items = list(
+		REPLICA_FAB = list(
+			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "replica_fabricator"),
+			OUTPUT_ITEMS = list(/obj/item/construction/rcd/clock),
+			),
+		WRAITH_SPEC = list(
+			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "wraith_specs"),
+			OUTPUT_ITEMS = list(/obj/item/clothing/glasses/wraith_specs),
+			),
+		TRUESIGHT_LENS = list(
+			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "truesight_lens"),
+			OUTPUT_ITEMS = list(/obj/item/binoculars/truesight_lens),
+			),
+	)
+
+	options = cache_items
+
+/obj/structure/destructible/cult/item_dispenser/tinkers_cache/succcess_message(mob/living/user, obj/item/spawned_item)
+	to_chat(user, span_brasstalics("You assemble [spawned_item] from [src]!"))
 
 #undef REPLICA_FAB
 #undef WRAITH_SPEC

@@ -6,18 +6,25 @@
 	advanced_antag_path = /datum/advanced_antag_datum/traitor/infiltrator
 	antag_hud_name = "synd"
 
+/datum/antagonist/traitor/advanced/intiltrator/on_gain()
+	equip_infiltrator_outfit()
+	return ..()
+
+/datum/antagonist/traitor/advanced/intiltrator/set_name_on_add()
+	name = "Infiltrator"
+
 /datum/antagonist/traitor/advanced/intiltrator/apply_innate_effects(mob/living/mob_override)
 	var/mob/living/living_antag = mob_override || owner.current
 	add_team_hud(living_antag)
 	living_antag.faction |= ROLE_SYNDICATE
-	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/infiltrator))
-	living_antag.mind.special_role = ROLE_INFILTRATOR
+	owner.set_assigned_role(SSjob.GetJobType(/datum/job/infiltrator))
+	owner.special_role = ROLE_INFILTRATOR
 
 /datum/antagonist/traitor/advanced/intiltrator/remove_innate_effects(mob/living/mob_override)
 	var/mob/living/living_antag = mob_override || owner.current
 	living_antag.faction -= ROLE_SYNDICATE
-	living_antag.mind.set_assigned_role(SSjob.GetJobType(/datum/job/unassigned))
-	living_antag.mind.special_role = null
+	owner.set_assigned_role(SSjob.GetJobType(/datum/job/unassigned))
+	owner.special_role = null
 
 /datum/antagonist/traitor/advanced/intiltrator/on_removal()
 	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = locate() in owner.current
@@ -28,7 +35,15 @@
 	if(weapons_implant)
 		to_chat(owner.current, span_danger("You hear a click in your [prob(50) ? "right" : "left"] arm as your [weapons_implant.name] deactivates and becomes non-functional!"))
 		qdel(weapons_implant)
-	. = ..()
+
+	var/obj/item/organ/brain/their_brain = owner.current.getorganslot(ORGAN_SLOT_BRAIN)
+	if(their_brain)
+		var/obj/item/skillchip/disk_verifier/disky_chip = locate() in their_brain
+		if(disky_chip)
+			their_brain.remove_skillchip(disky_chip)
+			qdel(disky_chip)
+
+	return ..()
 
 /datum/antagonist/traitor/advanced/intiltrator/roundend_report()
 	var/list/result = list()
@@ -75,15 +90,19 @@
 	if (!istype(traitor_mob))
 		return
 
-	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = new(traitor_mob, traitor_mob, UPLINK_INFILTRATOR)
-	var/obj/item/implant/weapons_auth/weapons_implant = new(traitor_mob)
+	var/obj/item/implant/uplink/infiltrator/infiltrator_implant = new()
+	var/obj/item/implant/weapons_auth/weapons_implant = new()
 	infiltrator_implant.implant(traitor_mob, traitor_mob, TRUE, TRUE)
 	weapons_implant.implant(traitor_mob, traitor_mob, TRUE, TRUE)
 	if(!silent)
 		to_chat(traitor_mob, span_boldnotice("[employer] has cunningly implanted you with an [infiltrator_implant.name] to assist in your infiltration. You can trigger the uplink to stealthily access it."))
 		to_chat(traitor_mob, span_boldnotice("[employer] has wisely implanted you with a [weapons_implant.name] to allow you to use syndicate weaponry. You can now fire weapons with Syndicate firing pins."))
 
-	uplink_ref = WEAKREF(owner.find_syndicate_uplink())
+	// MELBERT TODO; Fix this upstream
+	var/datum/component/uplink/made = infiltrator_implant.GetComponent(/datum/component/uplink)
+	made?.uplink_handler?.uplink_flag = infiltrator_implant.uplink_flag
+
+	handle_uplink()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
 /datum/antagonist/traitor/advanced/intiltrator/proc/equip_infiltrator_outfit(strip = FALSE)
@@ -98,11 +117,6 @@
 /datum/antagonist/traitor/advanced/intiltrator/pod_spawn
 	name = "Infiltrator (Pod spawn)"
 	advanced_antag_path = /datum/advanced_antag_datum/traitor/infiltrator/podspawn
-
-/datum/antagonist/traitor/advanced/intiltrator/pod_spawn/on_gain()
-	name = "Infiltrator"
-	equip_infiltrator_outfit()
-	return ..()
 
 /datum/antagonist/traitor/advanced/intiltrator/pod_spawn/finalize_antag()
 	. = ..()
@@ -123,7 +137,7 @@
 		return FALSE
 
 	var/obj/structure/closet/supplypod/infiltrator_pod = new(null, STYLE_SYNDICATE)
-	infiltrator_pod.explosionSize = list(0,0,1,1)
+	infiltrator_pod.explosionSize = list(0, 0, 1, 1)
 	infiltrator_pod.bluespace = TRUE
 
 	var/turf/picked_turf = pick(possible_spawns)

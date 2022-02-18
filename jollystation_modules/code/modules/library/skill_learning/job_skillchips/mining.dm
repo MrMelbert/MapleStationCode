@@ -47,7 +47,3 @@
 /obj/item/storage/box/skillchips/cargo/PopulateContents()
 	new /obj/item/skillchip/job/off_z_pain_resistance(src)
 	new /obj/item/skillchip/job/off_z_pain_resistance(src)
-
-/obj/structure/closet/secure_closet/quartermaster/PopulateContents()
-	..()
-	new /obj/item/storage/box/skillchips/cargo(src)

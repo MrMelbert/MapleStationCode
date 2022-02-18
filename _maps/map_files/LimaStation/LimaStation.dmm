@@ -8976,7 +8976,7 @@
 	},
 /obj/machinery/camera{
 	c_tag = "Central Hallway - Bar";
-	dir = 8
+	dir = 4
 	},
 /turf/open/floor/iron,
 /area/hallway/primary/upper)
@@ -61500,7 +61500,8 @@
 /area/cargo/storage)
 "xrv" = (
 /obj/machinery/camera{
-	c_tag = "Medbay - Pharmacy"
+	c_tag = "Medbay - Pharmacy";
+	dir = 1
 	},
 /obj/machinery/light/directional/north,
 /obj/structure/table/glass,

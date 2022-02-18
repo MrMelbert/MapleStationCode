@@ -24,18 +24,8 @@ export const _AdvancedHereticPanel = (props, context) => {
           disabled={goals_finalized}
           checked={can_ascend}
           tooltip="Toggle the ability to ascend. \
-            Disabling ascending rewards 3 bonus charges."
+            Disabling ascending rewards 2 bonus knowledge points."
           onClick={() => act('toggle_ascension')} />
-        <Button.Checkbox
-          width="140px"
-          height="20px"
-          content="Toggle Sacrificing"
-          textAlign="center"
-          disabled={goals_finalized}
-          checked={can_sac}
-          tooltip="Toggle the ability to sacrifice. \
-            Disabling sacrificing rewards 3 bonus charges."
-          onClick={() => act('toggle_sacrificing')} />
       </AdvancedTraitorGoalsSection>
     </AdvancedTraitorWindow>
   );

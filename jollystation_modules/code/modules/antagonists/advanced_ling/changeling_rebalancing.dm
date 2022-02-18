@@ -1,23 +1,4 @@
 // -- Rebalancing of other ling actions --
-
-/datum/action/changeling/can_sting(mob/living/user, mob/target)
-	. = ..()
-	if(!.)
-		return
-
-	if(req_human && (!ishuman(user) || ismonkey(user)))
-		return FALSE
-
-/datum/antagonist/changeling/can_absorb_dna(mob/living/carbon/human/target, verbose = TRUE)
-	. = ..()
-	if(!.)
-		return
-
-	if(!ishuman(target) || ismonkey(target))//Absorbing monkeys is entirely possible, but it can cause issues with transforming. That's what lesser form is for anyway!
-		if(verbose)
-			to_chat(owner, span_warning("We could gain no benefit from absorbing a lesser creature."))
-		return FALSE
-
 // Buffs adrenal sacs so they work like old adrenals. Increased chemical cost to compensate.
 /datum/action/changeling/adrenaline
 	desc = "We evolve additional sacs of adrenaline throughout our body. Costs 40 chemicals."
@@ -61,3 +42,22 @@
 		return FALSE
 
 	. = ..()
+
+
+/datum/action/changeling/pheromone_receptors/can_be_used_by(mob/user)
+	. = ..()
+	if(!.)
+		return
+
+	var/static/list/lings_that_cannot_use_this = list(
+		/datum/antagonist/changeling/fresh,
+		/datum/antagonist/fallen_changeling,
+		/datum/antagonist/changeling/headslug,
+	)
+
+	var/datum/antagonist/ling_datum = is_any_changeling(user)
+	if(ling_datum.type in lings_that_cannot_use_this)
+		to_chat(user, span_changeling("You are not developed enough as a changeling to use this!"))
+		return FALSE
+
+	return TRUE

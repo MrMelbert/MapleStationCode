@@ -46,8 +46,8 @@
 	if(changeling.chosen_sting)
 		unset_sting(user)
 		return
-	selected_dna = changeling.select_dna("Select the target DNA: ", "Target DNA")
-	if(!selected_dna)
+	selected_dna = changeling.select_dna()
+	if(QDELETED(src) || QDELETED(changeling) || !selected_dna)
 		return
 	if(NOTRANSSTING in selected_dna.dna.species.species_traits)
 		to_chat(user, span_notice("That DNA is not compatible with changeling retrovirus!"))

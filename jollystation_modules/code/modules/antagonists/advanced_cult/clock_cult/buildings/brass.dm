@@ -1,6 +1,6 @@
 GLOBAL_LIST_INIT(brass_recipes, list ( \
-	new /datum/stack_recipe("tinker's cache (can make replica fabricators, wraith specs, and truesight lenses)", /obj/structure/destructible/brass/tinkers_cache, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
-	new /datum/stack_recipe("daemon forge (can make judicial visors, ratvarian spears, and brass hardened armor)", /obj/structure/destructible/brass/daemon_forge, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
+	new /datum/stack_recipe("tinker's cache (can make replica fabricators, wraith specs, and truesight lenses)", /obj/structure/destructible/cult/item_dispenser/tinkers_cache, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
+	new /datum/stack_recipe("daemon forge (can make judicial visors, ratvarian spears, and brass hardened armor)", /obj/structure/destructible/cult/item_dispenser/daemon_forge, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	new /datum/stack_recipe("brass door (stuns non-cultists who attempt entry)", /obj/machinery/door/airlock/cult/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	new /datum/stack_recipe("brass girder (can be destroyed by slabs in one hit)", /obj/structure/girder/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
 	))
@@ -21,6 +21,16 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 	victim.apply_damage(10, BRUTE, BODY_ZONE_HEAD, wound_bonus = 5)
 	return TRUE
 
+/datum/material/brass/on_applied(atom/source, amount, material_flags)
+	. = ..()
+	if(material_flags & MATERIAL_COLOR)
+		ADD_CLOCKCULT_FILTER(source)
+
+/datum/material/brass/on_removed(atom/source, amount, material_flags)
+	if(material_flags & MATERIAL_COLOR)
+		REMOVE_CLOCKCULT_FILTER(source)
+	return ..()
+
 /obj/item/stack/sheet/brass
 	name = "brass"
 	desc = "It's not bronze, but actually sheets of brass metal that seem to glint purple and yellow when glanced at from certain angles."
@@ -35,14 +45,6 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 	material_type = /datum/material/brass
 	has_unique_girder = TRUE
 	tableVariant = /obj/structure/table/reinforced/brass
-
-/obj/item/stack/sheet/brass/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
-	. = ..()
-	ADD_CLOCKCULT_FILTER(src)
-
-/obj/item/stack/sheet/brass/Destroy()
-	REMOVE_CLOCKCULT_FILTER(src)
-	return ..()
 
 /obj/item/stack/sheet/brass/attack_self(mob/living/user)
 	if(!IS_CULTIST(user))

@@ -2,7 +2,6 @@
 /// Advanced traitor, but for heretics!
 /datum/antagonist/heretic/advanced
 	name = "Advanced Heretic"
-	ui_name = null
 	finalize_antag = FALSE
 	/// Static list of extra objectives heretics have.
 	var/static/list/heretic_objectives = list(
@@ -85,6 +84,11 @@
 /datum/antagonist/heretic/advanced/roundend_report_footer()
 	return "<br>And thus closes another book on board [station_name()]."
 
+/datum/antagonist/heretic/advanced/ui_status(mob/user, datum/ui_state/state)
+	if(!linked_advanced_datum?.finalized)
+		return UI_DISABLED
+	return ..()
+
 /// The advanced antag datum for heretics.
 /datum/advanced_antag_datum/heretic
 	name = "Advanced Heretic"
@@ -108,7 +112,7 @@
 	var/finalized_influences = ADV_HERETIC_INITIAL_INFLUENCE
 	var/max_influnces = ADV_HERETIC_MAX_INFLUENCE
 	if(!ascension_enabled)
-		finalized_influences += 3
+		finalized_influences += ADV_HERETIC_NO_ASCENSION_INFLUENCE
 		max_influnces += ADV_HERETIC_NO_ASCENSION_MAX
 
 	for(var/datum/advanced_antag_goal/goal as anything in our_goals)

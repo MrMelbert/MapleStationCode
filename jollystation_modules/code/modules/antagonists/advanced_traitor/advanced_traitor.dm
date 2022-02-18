@@ -4,23 +4,30 @@
 /// Proc to give the traitor their uplink and play the sound.
 /datum/antagonist/traitor/finalize_antag()
 	if(!linked_advanced_datum)
-		var/faction = prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN
-		pick_employer(faction)
+		pick_employer(prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN)
 		traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
 
-	if(give_uplink)
-		owner.give_uplink(silent = TRUE, antag_datum = src)
+	if(give_uplink || linked_advanced_datum?.finalized)
+		owner.give_uplink(silent = FALSE, antag_datum = src)
+		handle_uplink()
 
-	if(give_objectives)
-		forge_traitor_objectives()
+	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
+// MELBERT TODO: UPLINKS DON'T WORK SKREEEE
+/// Proc to handled the uplink items and the uplink handler after an uplink is given.
+/datum/antagonist/traitor/proc/handle_uplink()
 	var/datum/component/uplink/uplink = owner.find_syndicate_uplink()
+	if(!uplink)
+		CRASH("handle_uplink() has been called on someone with no apparent syndicate uplink. Weird!")
+
 	uplink_ref = WEAKREF(uplink)
-	if(uplink && !linked_advanced_datum)
-		if(uplink_handler)
-			uplink.uplink_handler = uplink_handler
-		else
-			uplink_handler = uplink.uplink_handler
+
+	if(uplink_handler)
+		uplink.uplink_handler = uplink_handler
+	else
+		uplink_handler = uplink.uplink_handler
+
+	if(!linked_advanced_datum)
 		uplink_handler.has_progression = TRUE
 		SStraitor.register_uplink_handler(uplink_handler)
 
@@ -30,27 +37,17 @@
 		if(uplink_handler.progression_points < SStraitor.current_global_progression)
 			uplink_handler.progression_points = SStraitor.current_global_progression * SStraitor.newjoin_progression_coeff
 
-		var/list/uplink_items = list()
-		for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
-			if(item.item && !item.cant_discount && (item.purchasable_from & uplink_handler.uplink_flag) && item.cost > 1)
-				if(!length(item.restricted_roles) && !length(item.restricted_species))
-					uplink_items += item
-					continue
-				if((uplink_handler.assigned_role in item.restricted_roles) || (uplink_handler.assigned_species in item.restricted_species))
-					uplink_items += item
-					continue
-		uplink_handler.extra_purchasable += create_uplink_sales(uplink_sale_count, /datum/uplink_category/discounts, -1, uplink_items)
+	var/list/uplink_items = list()
+	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
+		if(item.item && !item.cant_discount && (item.purchasable_from & uplink_handler.uplink_flag) && item.cost > 1)
+			if(!length(item.restricted_roles) && !length(item.restricted_species))
+				uplink_items += item
+				continue
+			if((uplink_handler.assigned_role in item.restricted_roles) || (uplink_handler.assigned_species in item.restricted_species))
+				uplink_items += item
+				continue
 
-	if(give_objectives)
-		forge_traitor_objectives()
-
-	var/faction = prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN
-
-	pick_employer(faction)
-
-	traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
-
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
+	uplink_handler.extra_purchasable += create_uplink_sales(uplink_sale_count, /datum/uplink_category/discounts, -1, uplink_items)
 
 /// The Advanced Traitor antagonist datum.
 /datum/antagonist/traitor/advanced
@@ -69,6 +66,10 @@
 	/// Typepath of what advanced antag datum gets instantiated to this antag.
 	var/advanced_antag_path = /datum/advanced_antag_datum/traitor
 
+/datum/antagonist/traitor/advanced/New(give_objectives = FALSE)
+	. = ..()
+	src.give_objectives = FALSE
+
 /datum/antagonist/traitor/advanced/on_gain()
 	if(!GLOB.admin_objective_list)
 		generate_admin_objective_list()
@@ -77,13 +78,15 @@
 	objectives_to_choose -= blacklisted_similar_objectives
 	objectives_to_choose += traitor_objectives
 
-	if(findtext(name, "Advanced"))
-		name = "Traitor"
+	set_name_on_add()
 
 	linked_advanced_datum = new advanced_antag_path(src)
 	linked_advanced_datum.setup_advanced_antag()
 	linked_advanced_datum.possible_objectives = objectives_to_choose
 	return ..()
+
+/datum/antagonist/traitor/advanced/proc/set_name_on_add()
+	name = "Traitor"
 
 /// Greet the antag with big menacing text.
 /datum/antagonist/traitor/advanced/greet()

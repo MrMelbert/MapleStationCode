@@ -1,14 +1,6 @@
 /// -- This file is ONLY for adding the unique_examine element onto items, pre-existing or modular. --
 // Concept taken from skyrat-tg, some descriptions may match.
 
-/// Species defines
-#define LIZARD_SPECIES /datum/species/lizard
-/// Faction defines
-#define HERETIC_FACTION "heretics"
-
-/// json for extra fun lines to show up when examining certain heretic stuff
-#define HERETIC_REALITY_MESSAGES "pierced_reality.json"
-
 /*
  * Get the job TITLES of all jobs that are in the security department,
  * and all the jobs that are ONLY in the command department
@@ -21,7 +13,7 @@
 
 	var/datum/job_department/command_department = SSjob.get_department_type(/datum/job_department/command)
 	for(var/datum/job/job as anything in command_department.department_jobs)
-		if(job.departments_bitflags == DEPARTMENT_BITFLAG_COMMAND) // we only want people with COMMAND only
+		if(job.departments_bitflags == DEPARTMENT_BITFLAG_COMMAND) // we only want people with command ONLY (captain, asset protection)
 			. |= job.title
 
 	var/datum/job_department/sec_department = SSjob.get_department_type(/datum/job_department/security)
@@ -117,7 +109,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"A lizardperson's tail is important in keeping balance and warding off enemies in combat situations. \
 		You can't help but feel disappointed and saddened looking at this, knowing a fellow kin was robbed of such a thing.", \
-		EXAMINE_CHECK_SPECIES, LIZARD_SPECIES)
+		EXAMINE_CHECK_SPECIES, /datum/species/lizard)
 
 /obj/item/reagent_containers/food/drinks/bottle/wine/Initialize(mapload)
 	. = ..()
@@ -140,17 +132,17 @@
 		In addition, holding it it will permanently grant you X-ray vision.", \
 		EXAMINE_CHECK_FACTION, ROLE_WIZARD)
 
-/obj/item/forbidden_book
+/obj/item/codex_cicatrix
 	name = "suspicious purple book"
 	desc = "A purple book clasped with a heavy iron lock and bound in a firm leather."
 
-/obj/item/forbidden_book/Initialize()
+/obj/item/codex_cicatrix/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The Codex Cicatrix - the book of knowledge holding all the secrets of the veil between the worlds, the Mansus. \
 		Discovered by Wizard Federation aeons ago but locked away deep in the shelving of the highest security libraries of the Spindward Galaxy, \
 		the book was recently stolen during a raid by the Cybersun Industries - which is how you got into contact with it.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+		EXAMINE_CHECK_FACTION, FACTION_HERETIC)
 	AddElement(/datum/element/unique_examine, \
 		"The Codex Cicatrix - the book of knowledge that supposedly holds all the secrets of the viel between the worlds.. \
 		Discovered by Wizard Federation long ago, but locked away deep in the shelving of the highest security libraries of the Spindward Galaxy, \
@@ -166,31 +158,30 @@
 		"A fake Codex Cicatrix - the book of knowledge holding all the secrets of the veil between the worlds, the Mansus. \
 		While the book was recently discovered, copied, and spread due to a recent Cybersun Industries raid on a high-security library, \
 		it seems as if Nanotrasen has already began marketing and selling fake toy copies for children... interesting.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION, real_name = "Codex Cicatrix")
+		EXAMINE_CHECK_FACTION, FACTION_HERETIC, real_name = "Codex Cicatrix")
 
-
-/obj/effect/eldritch/big/Initialize()
+/obj/effect/heretic_rune/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The transumation circle - the site to most known rituals involving unlocking the key to the veil between worlds. \
 		Many concentric black ink circles are drawn amidst a larger, thick green circle, weakening the chains of reality \
 		and allowing a seekers of ancient powers to access the mysteries of the Mansus.", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+		EXAMINE_CHECK_FACTION, FACTION_HERETIC)
 
-/obj/effect/reality_smash/Initialize()
+/obj/effect/heretic_influence/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A pierce in reality - a weakness in the veil that allows power to be gleamed from the Mansus.\
-		\n[span_hypnophrase(pick_list(HERETIC_REALITY_MESSAGES, "examine_reality"))]", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+		\n[span_hypnophrase(pick_list(HERETIC_INFLUENCE_FILE, "drain_message"))]", \
+		EXAMINE_CHECK_FACTION, FACTION_HERETIC)
 
-/obj/effect/broken_illusion/Initialize()
+/obj/effect/visible_heretic_influence/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A tapped pierce in reality - this one has been sapped of power. \
 		There is nothing here for Them any longer.\
-		\n[span_hypnophrase(pick_list(HERETIC_REALITY_MESSAGES, "examine_reality"))]", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION)
+		\n[span_hypnophrase(pick_list(HERETIC_INFLUENCE_FILE, "drain_message"))]", \
+		EXAMINE_CHECK_FACTION, FACTION_HERETIC)
 	AddElement(/datum/element/unique_examine, \
 		span_hypnophrase("A harrowing reminder of the \
 		<span class='big hypnophrase'>fragility of our reality</span>, \
@@ -207,14 +198,21 @@
 	AddElement(/datum/element/unique_examine, \
 		"A pierced reality - a weakness in the veil that allows power to be gleamed from the Mansus. \
 		This one is fake, however. How'd they even make this?", \
-		EXAMINE_CHECK_FACTION, HERETIC_FACTION, real_name = "Pierced Reality")
+		EXAMINE_CHECK_FACTION, FACTION_HERETIC, real_name = "Pierced Reality")
 
 /obj/effect/rune/Initialize()
 	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"A rune of blood inscribed by the followers of the Geometer Nar'sie \
-		to channel powerful blood magics through the invoker.", \
-		EXAMINE_CHECK_FACTION, "cult")
+	// MELBERT TODO: Improve this with advanced cult code.
+	if(icon == 'icons/obj/rune.dmi')
+		AddElement(/datum/element/unique_examine, \
+			"A rune of blood inscribed by the followers of the Geometer Nar'sie \
+			to channel powerful blood magics through the invoker.", \
+			EXAMINE_CHECK_FACTION, "cult")
+	else
+		AddElement(/datum/element/unique_examine, \
+			"A sigil of power inscribed by the followers of the Clockwork God Rat'var \
+			to channel powerful clock magics through the invoker.", \
+			EXAMINE_CHECK_FACTION, "cult")
 
 /obj/effect/decal/cleanable/crayon/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
 	. = ..()
@@ -281,11 +279,11 @@
 		reducing slowdown without sacrificing safety or usability.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
-/obj/item/clothing/suit/space/hardsuit/engine/elite/Initialize()
+/obj/item/mod/control/pre_equipped/advanced/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
-		"The Chief Engineer's spotless advanced hardsuit - a sleek white design of the standard engineering \
-		and atmospheric hardsuits with improved resistance to fire and radiation.", \
+		"The Chief Engineer's spotless advanced MODsuit - a sleek white design of the standard engineering \
+		and atmospheric MODsuits with improved mobility and resistance to fire and radiation.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
 /obj/item/card/id/advanced/gold/captains_spare/Initialize()
@@ -314,7 +312,7 @@
 		as their weapon of choice for most of their lives. While most have abandoned this practice since, \
 		some are still allowed by the company to carry a ceremonial or traiditional weapon - \
 		provided they aren't used for attacking others, of course.", \
-		EXAMINE_CHECK_SPECIES, LIZARD_SPECIES)
+		EXAMINE_CHECK_SPECIES, /datum/species/lizard)
 
 // MOBS //
 
@@ -433,8 +431,3 @@
 		The closest place on the station to the gods above is in front of the altar, \
 		and it's where the most successful prayers and rituals take place.", \
 		EXAMINE_CHECK_TRAIT, TRAIT_SPIRITUAL)
-
-#undef LIZARD_SPECIES
-#undef HERETIC_FACTION
-
-#undef HERETIC_REALITY_MESSAGES

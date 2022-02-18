@@ -20,10 +20,10 @@
 #define ADV_HERETIC_INITIAL_INFLUENCE 0
 /// Max amount of influence charges for heretic advanced traitors.
 #define ADV_HERETIC_MAX_INFLUENCE 5
+/// The number of changes given for disabling ascension
+#define ADV_HERETIC_NO_ASCENSION_INFLUENCE 2
 /// This number is added onto the max influences if ascencion is given up.
-#define ADV_HERETIC_NO_ASCENSION_MAX 3
-/// This number is added onto the max influences if sacrificing is given up.
-#define ADV_HERETIC_NO_SAC_MAX 3
+#define ADV_HERETIC_NO_ASCENSION_MAX 2
 /// Number of influences gained per intensity level
 #define ADV_HERETIC_INFLUENCE_PER_INTENSITY 0.33
 

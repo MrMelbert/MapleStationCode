@@ -44,9 +44,10 @@
 	linked_antagonist.antag_memory += "Use the \"Antagonist - Set Goals\" verb to set your goals.<br>"
 
 	/// Only giving them one objective as a reminder - "Set your goals". Only shows up in their memory.
-	var/datum/objective/custom/custom_objective = new
+	var/datum/objective/custom/custom_objective = new()
 	custom_objective.explanation_text = "Set your custom goals via the IC tab."
 	custom_objective.owner = linked_antagonist.owner
+	custom_objective.completed = TRUE
 	linked_antagonist.objectives += custom_objective
 
 	add_advanced_goal()

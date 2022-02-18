@@ -26,7 +26,7 @@ Can block melee attacks for followers of Rat'var when held in hand."}
 		/datum/action/item_action/ritual_item/slab, \
 		typesof(/turf/open/floor/engine/cult/brass), \
 		/obj/structure/girder/brass, \
-		/obj/structure/destructible/brass)
+		/obj/structure/destructible/cult)
 
 /obj/item/clockwork_slab/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
 	var/block_message = "[owner] blocks [attack_text] with [src]!"

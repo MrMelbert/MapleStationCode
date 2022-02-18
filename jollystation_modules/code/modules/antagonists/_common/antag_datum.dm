@@ -49,4 +49,4 @@
 /datum/antagonist/on_removal()
 	if(linked_advanced_datum)
 		qdel(linked_advanced_datum)
-	. = ..()
+	return ..()

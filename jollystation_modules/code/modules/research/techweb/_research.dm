@@ -3,24 +3,30 @@
 
 /datum/techweb_node
 	/// Additions to the ids that are unlocked from a node
-	var/id_additions = list()
+	var/list/id_additions
 	/// Removals to the ids that are unlocked from a node
-	var/id_removals = list()
+	var/list/id_removals
 	/// Additions to ids that are required to have been researched in order to research a node
-	var/prereq_id_add = list()
+	var/list/prereq_id_add
 	/// Removals to ids that are required to have been researched in order to research a node
-	var/prereq_id_del = list()
+	var/list/prereq_id_del
 	/// Additional experiments that can be done to reduce research costs
-	var/discounts_add = list()
+	var/list/discounts_add
 	/// Additional experiments that are required in order to complete a node
-	var/experiment_add = list()
+	var/list/experiment_add
 
 
 /datum/techweb_node/New()
 	. = ..()
-	design_ids += id_additions
-	design_ids -= id_removals
-	prereq_ids += prereq_id_add
-	prereq_ids -= prereq_id_del
-	discount_experiments += discounts_add
-	required_experiments += experiment_add
+	if(LAZYLEN(id_additions))
+		design_ids += id_additions
+	if(LAZYLEN(id_removals))
+		design_ids -= id_removals
+	if(LAZYLEN(prereq_id_add))
+		prereq_ids += prereq_id_add
+	if(LAZYLEN(prereq_id_del))
+		prereq_ids -= prereq_id_del
+	if(LAZYLEN(discounts_add))
+		discount_experiments += discounts_add
+	if(LAZYLEN(experiment_add))
+		required_experiments += experiment_add

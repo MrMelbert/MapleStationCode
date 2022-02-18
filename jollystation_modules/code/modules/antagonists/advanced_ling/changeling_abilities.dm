@@ -96,13 +96,31 @@
 	icon_icon = 'jollystation_modules/icons/mob/actions/actions_changeling.dmi'
 	button_icon_state = "grant_powers"
 	helptext = "Requires the victim be dead or unconscious. On success, the victim is implanted with a changeling headslug, granting them changling powers. \
-		The victim gains genetic points equals to half our max genetics points. This abilities goes on a very long cooldown after use, and can only be used twice."
+		The victim gains genetic points equal to half our max genetics points. This abilities goes on a very long cooldown after use, and can only be used twice."
 	chemical_cost = 0
 	dna_cost = 3
 	/// Whether we're currently uplifting them
 	var/is_uplifting = FALSE
 	/// The cooldown for uplifting
 	COOLDOWN_DECLARE(uplift_cooldown)
+
+/datum/action/changeling/grant_powers/can_be_used_by(mob/user)
+	. = ..()
+	if(!.)
+		return
+
+	var/static/list/lings_that_cannot_use_this = list(
+		/datum/antagonist/changeling/fresh,
+		/datum/antagonist/fallen_changeling,
+		/datum/antagonist/changeling/headslug,
+	)
+
+	var/datum/antagonist/ling_datum = is_any_changeling(user)
+	if(ling_datum.type in lings_that_cannot_use_this)
+		to_chat(user, span_changeling("You are not developed enough as a changeling to use this!"))
+		return FALSE
+
+	return TRUE
 
 /datum/action/changeling/grant_powers/can_sting(mob/living/user)
 	. = ..()
@@ -194,11 +212,7 @@
 	new_ling_datum.total_chem_storage = round(0.66 * our_ling.total_chem_storage)
 	new_ling_datum.chem_charges = 10
 	new_ling_datum.total_genetic_points = round(0.5 * our_ling.total_genetic_points)
-	new_ling_datum.genetic_points = new_ling_datum.genetic_points
-
-	// MELBERT TODO: This is kinda hacky.
-	new_ling_datum.all_powers -= /datum/action/changeling/grant_powers
-	new_ling_datum.all_powers -= /datum/action/changeling/pheromone_receptors
+	new_ling_datum.genetic_points = new_ling_datum.total_genetic_points
 
 	new_ling_datum.finalize_antag()
 	new_ling_datum.create_innate_actions(our_ling)
