@@ -2,7 +2,7 @@
 /obj/item/melee/cultblade/advanced_dagger
 	name = "ritual dagger"
 	desc = "A special and strange dagger said to be used by cultists to prepare rituals, scribe runes, and combat heretics alike."
-	icon = 'icons/obj/wizard.dmi'
+	icon = 'icons/obj/cult/items_and_weapons.dmi'
 	icon_state = "render"
 	inhand_icon_state = "cultdagger"
 	worn_icon_state = "render"
