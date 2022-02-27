@@ -209,6 +209,10 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_MONKEY_TAIL_BLOCK] = construct_block(GLOB.tails_list_monkey.Find(features["tail_monkey"]), GLOB.tails_list_monkey.len)
 	if(features["head_tentacles"]) // NON-MODULE CHANGE
 		L[DNA_HEAD_TENTACLES_BLOCK] = construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len)
+	if(features["ipc_screen"]) // NON-MODULE CHANGE
+		L[DNA_IPC_SCREEN_BLOCK] = construct_block(GLOB.ipc_screen_list.Find(features["ipc_screen"]), GLOB.ipc_screen_list.len)
+	if(features["reploid_antenna"]) // NON-MODULE CHANGE
+		L[DNA_REPLOID_ANTENNA_BLOCK] = construct_block(GLOB.reploid_antenna_list.Find(features["reploid_antenna"]), GLOB.reploid_antenna_list.len)
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -343,6 +347,10 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list_monkey.Find(features["tail_monkey"]), GLOB.tails_list_monkey.len))
 		if(DNA_HEAD_TENTACLES_BLOCK) // NON-MODULE CHANGE
 			set_uni_feature_block(blocknumber, construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len))
+		if(DNA_IPC_SCREEN_BLOCK) // NON-MODULE CHANGE
+			set_uni_feature_block(blocknumber, construct_block(GLOB.ipc_screen_list.Find(features["ipc_screen"]), GLOB.ipc_screen_list.len))
+		if(DNA_REPLOID_ANTENNA_BLOCK) // NON-MODULE CHANGE
+			set_uni_feature_block(blocknumber, construct_block(GLOB.reploid_antenna_list.Find(features["reploid_antenna"]), GLOB.reploid_antenna_list.len))
 
 
 //Please use add_mutation or activate_mutation instead
@@ -600,6 +608,10 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["tail_monkey"] = GLOB.tails_list_monkey[deconstruct_block(get_uni_feature_block(features, DNA_MONKEY_TAIL_BLOCK), GLOB.tails_list_monkey.len)]
 	if(dna.features["head_tentacles"]) // NON-MODULE CHANGE
 		dna.features["head_tentacles"] = GLOB.head_tentacles_list[deconstruct_block(get_uni_feature_block(features, DNA_HEAD_TENTACLES_BLOCK), GLOB.head_tentacles_list.len)]
+	if(dna.features["ipc_screen"]) // NON-MODULE CHANGE
+		dna.features["ipc_screen"] = GLOB.ipc_screen_list[deconstruct_block(get_uni_feature_block(features, DNA_IPC_SCREEN_BLOCK), GLOB.ipc_screen_list.len)]
+	if(dna.features["reploid_antenna"]) // NON-MODULE CHANGE
+		dna.features["reploid_antenna"] = GLOB.reploid_antenna_list[deconstruct_block(get_uni_feature_block(features, DNA_REPLOID_ANTENNA_BLOCK), GLOB.reploid_antenna_list.len)]
 
 	for(var/obj/item/organ/external/external_organ in internal_organs)
 		external_organ.mutate_feature(features, src)

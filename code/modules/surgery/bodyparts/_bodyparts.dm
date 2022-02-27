@@ -883,6 +883,13 @@
 				aux.overlays += aux_em_block
 
 	else
+
+		var/is_ipc = FALSE //NON-MODULE CHANGE
+		if(isreploid(owner))
+			var/datum/species/reploid/owner_reploid = owner.dna.species
+			if(owner_reploid.ipc_limbs)
+				is_ipc = TRUE
+
 		if(should_draw_greyscale)
 			limb.icon = icon_greyscale
 			if(should_draw_gender)
@@ -891,6 +898,11 @@
 				limb.icon_state = "digitigrade_[use_digitigrade]_[body_zone]"
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
+
+		else if(is_ipc)// NON-MODULE CHANGE
+			limb.icon = 'jollystation_modules/icons/mob/ipc_parts.dmi'
+			limb.icon_state = "[species_id]_[body_zone]"
+
 		else
 			limb.icon = 'icons/mob/human_parts.dmi'
 			if(should_draw_gender)

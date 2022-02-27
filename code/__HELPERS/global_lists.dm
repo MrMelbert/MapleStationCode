@@ -34,6 +34,8 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/monkey, GLOB.tails_list_monkey)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles, GLOB.head_tentacles_list) //NON-MODULE CHANGE
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/reploid_antenna, GLOB.reploid_antenna_list) //NON-MODULE CHANGE
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_screen, GLOB.ipc_screen_list) //NON-MODULE CHANGE
 
 	//Species
 	for(var/spath in subtypesof(/datum/species))

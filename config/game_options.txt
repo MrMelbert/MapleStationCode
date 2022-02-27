@@ -323,7 +323,7 @@ ROUNDSTART_RACES ethereal
 ROUNDSTART_RACES jelly
 #ROUNDSTART_RACES abductor
 ROUNDSTART_RACES synth
-#ROUNDSTART_RACES reploid - Removed temporarily until features done
+ROUNDSTART_RACES reploid
 ROUNDSTART_RACES pod
 
 ## Races that are straight upgrades. If these are on expect powergamers to always pick them

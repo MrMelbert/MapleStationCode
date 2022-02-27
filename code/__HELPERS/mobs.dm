@@ -87,8 +87,12 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
 	if(!GLOB.head_tentacles_list.len) // NON-MODULE CHANGE: Head Tentacles initialize
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles, GLOB.head_tentacles_list)
+	if(!GLOB.ipc_screen_list.len) // NON-MODULE CHANGE: IPC Screen initialize
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/ipc_screen, GLOB.ipc_screen_list)
+	if(!GLOB.reploid_antenna_list.len) // NON-MODULE CHANGE: Reploid Antenna initialize
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/reploid_antenna, GLOB.reploid_antenna_list)
 
-	// NON-MODULE CHANGE: Holy shit, this return is ass. Reformatted it for future sanity. Contains a non-module change.
+	// NON-MODULE CHANGE: Holy shit, this return is ass. Reformatted it for future sanity. Contains non-module changes.
 	return(list(
 		"mcolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
 		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
@@ -108,6 +112,8 @@
 		"moth_markings" = pick(GLOB.moth_markings_list),
 		"tail_monkey" = "None",
 		"head_tentacles" = pick(GLOB.head_tentacles_list),
+		"ipc_screen" = pick(GLOB.ipc_screen_list),
+		"reploid_antenna" = pick(GLOB.reploid_antenna_list),
 	))
 
 /proc/random_hairstyle(gender)
