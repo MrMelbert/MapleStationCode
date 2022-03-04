@@ -29,19 +29,22 @@
 	if(value == LIMBS_IPC)
 		target_species.ipc_screen = TRUE //If we're an IPC, we're taking the screen
 		target_species.ipc_limbs = TRUE
-		target.dna.species.use_skintones = FALSE
-		target.dna.species.species_traits -= NOEYESPRITES
-		target.dna.species.species_traits -= FACEHAIR
-		target.dna.species.species_traits -= HAIR
-		target.dna.species.species_traits -= LIPS
+		target_species.use_skintones = FALSE
+		target_species.species_traits |= NOEYESPRITES
+		target_species.species_traits -= FACEHAIR
+		target_species.species_traits -= HAIR
+		target_species.species_traits -= LIPS
 	else
 		target_species.ipc_screen = FALSE
 		target_species.ipc_limbs = FALSE
-		target.dna.species.species_traits |= NOEYESPRITES
-		target.dna.species.species_traits |= FACEHAIR
-		target.dna.species.species_traits |= HAIR
-		target.dna.species.species_traits |= LIPS
+		target_species.species_traits -= NOEYESPRITES
+		target_species.species_traits |= FACEHAIR
+		target_species.species_traits |= HAIR
+		target_species.species_traits |= LIPS
 		target_species.limbs_id = value //IPC limbs are overriden by another value later on
+
+	target.update_body_parts_head_only() //Required to get eyes to show up again.
+	target.update_body()
 
 /datum/preference/choiced/reploid_ipc_screen
 	savefile_key = "reploid_ipc_screen"
@@ -131,12 +134,18 @@
 		return TRUE
 
 /datum/preference/choiced/reploid_ipc_limbs/init_possible_values()
-	return assoc_to_keys(GLOB.reploid_limbs_ipc_list) //Located in jollystation_modules/_globalvars/lists/reploid.dm
+	return assoc_to_keys(GLOB.reploid_limbs_ipc_list) //Located in jollystation_modules/datums/reploid_limb.dm
 
 /datum/preference/choiced/reploid_ipc_limbs/apply_to_human(mob/living/carbon/human/target, value)
 	var/datum/species/reploid/target_species = target.dna.species
 	if(!target_species.ipc_limbs)
 		return
 
-	var/datum/reploid_limb/limb_type = GLOB.reploid_limbs_ipc_list[value]
+	target_species.use_skintones = FALSE
+
+	var/datum/reploid_limb/limb_type = GLOB.reploid_limbs_ipc_list[value] //Located in jollystation_modules/datums/reploid_limb.dm
+	if(limb_type.colorable)
+		target_species.species_traits |= MUTCOLORS
+	else
+		target_species.species_traits -= MUTCOLORS
 	limb_type.apply_limb_id(target_species)

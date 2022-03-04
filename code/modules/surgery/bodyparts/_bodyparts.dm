@@ -890,7 +890,11 @@
 			if(owner_reploid.ipc_limbs)
 				is_ipc = TRUE
 
-		if(should_draw_greyscale)
+		if(is_ipc) // NON-MODULE CHANGE
+			limb.icon = 'jollystation_modules/icons/mob/ipc_parts.dmi'
+			limb.icon_state = "[species_id]_[body_zone]"
+
+		else if(should_draw_greyscale) //NON-MODULE CHANGE
 			limb.icon = icon_greyscale
 			if(should_draw_gender)
 				limb.icon_state = "[species_id]_[body_zone]_[icon_gender]"
@@ -898,10 +902,6 @@
 				limb.icon_state = "digitigrade_[use_digitigrade]_[body_zone]"
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
-
-		else if(is_ipc)// NON-MODULE CHANGE
-			limb.icon = 'jollystation_modules/icons/mob/ipc_parts.dmi'
-			limb.icon_state = "[species_id]_[body_zone]"
 
 		else
 			limb.icon = 'icons/mob/human_parts.dmi'
