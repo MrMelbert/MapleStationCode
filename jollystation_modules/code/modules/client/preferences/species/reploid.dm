@@ -18,7 +18,7 @@
 	return LIMBS_HUMAN
 
 /datum/preference/choiced/reploid_limbs/init_possible_values()
-	return assoc_to_keys(GLOB.reploid_limb_list) //Located in jollystation_modules/_globalvars/lists/reploid.dm
+	return assoc_to_keys(GLOB.reploid_limb_id_list) //Located in jollystation_modules/_globalvars/lists/reploid.dm
 
 /datum/preference/choiced/reploid_limbs/apply_to_human(mob/living/carbon/human/target, value)
 	if(!istype(target.dna.species, /datum/species/reploid))
@@ -30,11 +30,17 @@
 		target_species.ipc_screen = TRUE //If we're an IPC, we're taking the screen
 		target_species.ipc_limbs = TRUE
 		target.dna.species.use_skintones = FALSE
-		target.dna.species.species_traits -= (MUTCOLORS, EYECOLOR, FACEHAIR, LIPS) //This doesnt work and doesnt compile, fix this
+		target.dna.species.species_traits -= NOEYESPRITES
+		target.dna.species.species_traits -= FACEHAIR
+		target.dna.species.species_traits -= HAIR
+		target.dna.species.species_traits -= LIPS
 	else
 		target_species.ipc_screen = FALSE
 		target_species.ipc_limbs = FALSE
-		target.dna.species.species_traits |= (EYECOLOR, FACEHAIR, LIPS)
+		target.dna.species.species_traits |= NOEYESPRITES
+		target.dna.species.species_traits |= FACEHAIR
+		target.dna.species.species_traits |= HAIR
+		target.dna.species.species_traits |= LIPS
 		target_species.limbs_id = value //IPC limbs are overriden by another value later on
 
 /datum/preference/choiced/reploid_ipc_screen
@@ -125,11 +131,12 @@
 		return TRUE
 
 /datum/preference/choiced/reploid_ipc_limbs/init_possible_values()
-	return assoc_to_keys(GLOB.ipc_limb_list) //Located in jollystation_modules/_globalvars/lists/reploid.dm
+	return assoc_to_keys(GLOB.reploid_limbs_ipc_list) //Located in jollystation_modules/_globalvars/lists/reploid.dm
 
 /datum/preference/choiced/reploid_ipc_limbs/apply_to_human(mob/living/carbon/human/target, value)
 	var/datum/species/reploid/target_species = target.dna.species
 	if(!target_species.ipc_limbs)
 		return
 
-	target_species.limbs_id = value
+	var/datum/reploid_limb/limb_type = GLOB.reploid_limbs_ipc_list[value]
+	limb_type.apply_limb_id(target_species)
