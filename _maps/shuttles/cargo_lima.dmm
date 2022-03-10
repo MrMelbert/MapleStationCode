@@ -19,7 +19,8 @@
 	},
 /obj/machinery/conveyor{
 	dir = 8;
-	id = "Cargo Belt"
+	id = "cargodelivery";
+	name = "Cargo Belt"
 	},
 /turf/open/floor/plating,
 /area/shuttle/supply)
