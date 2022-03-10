@@ -449,7 +449,7 @@
 		if(BODY_ZONE_R_LEG)
 			prosthetic = new/obj/item/bodypart/r_leg/robot/surplus(quirk_holder)
 			slot_string = "right leg"
-	prosthetic.replace_limb(human_holder)
+	prosthetic.replace_limb(human_holder, TRUE) // NON-MODULE CHANGE
 	qdel(old_part)
 	human_holder.regenerate_icons()
 
