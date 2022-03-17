@@ -31,22 +31,32 @@
 	///Set true by prefs if they have an IPC head. Shows an IPC screen on the mob and gives the mob an action button to change their screen.
 	var/ipc_screen = FALSE
 	var/datum/action/innate/screen_change/screen
-	///Used for bodypart icon selection in _bodyparts.dm, determined by prefs
+	///Are we currently using IPC limbs? Used for some checks here and in _bodyparts.dm
 	var/ipc_limbs = FALSE
 
 /datum/species/reploid/on_species_gain(mob/living/carbon/human/C)
 	. = ..()
-	C.set_safe_hunger_level()
+
+	if(ipc_limbs)
+		use_skintones = FALSE
+		var/datum/reploid_limb/limb_type = GLOB.reploid_limbs_ipc_list[value] //Located in jollystation_modules/datums/reploid_limb.dm
+		if(limb_type.colorable)
+			species_traits |= MUTCOLORS
+		else
+			species_traits -= MUTCOLORS
+		limb_type.apply_limb_id(target_species)
 
 	if(ipc_screen && !screen)
-		screen = new
+		screen = new(src)
 		screen.Grant(C)
 
 /datum/species/reploid/on_species_loss(mob/living/carbon/human/C)
 	. = ..()
 	if(screen)
 		screen.Remove(C)
+	..()
 
+///Used for changing the screen of IPCs from a list of all screens
 /datum/action/innate/screen_change
 	name = "Screen Change"
 	check_flags = AB_CHECK_CONSCIOUS

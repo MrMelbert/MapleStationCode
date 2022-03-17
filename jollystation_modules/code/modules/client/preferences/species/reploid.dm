@@ -41,10 +41,7 @@
 		target_species.species_traits |= FACEHAIR
 		target_species.species_traits |= HAIR
 		target_species.species_traits |= LIPS
-		target_species.limbs_id = value //IPC limbs are overriden by another value later on
-
-	target.update_body_parts_head_only() //Required to get eyes to show up again.
-	target.update_body()
+		target_species.limbs_id = value
 
 /datum/preference/choiced/reploid_ipc_screen
 	savefile_key = "reploid_ipc_screen"
@@ -96,7 +93,7 @@
 	savefile_key = "reploid_skintones"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	priority = PREFERENCE_PRIORITY_NAMES
+	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS
 	can_randomize = FALSE
 	default_value = TRUE
 

@@ -1,32 +1,49 @@
 import { Species } from "./base";
 
 const Reploid: Species = {
-  description: "A rattling skeleton! They descend upon Space Station 13 \
-    Every year to spook the crew! \"I've got a BONE to pick with you!\"",
+  description: "Reploids (short for Replica Android) are the next generation of advanced humanoid robotics. \
+    They're made from an open-source design that has been changed by many manufacturers to \
+    suit whatever is needed for their purposes, leading to an immense variery of Reploid models.",
   features: {
     good: [{
-      icon: "user-plus",
-      name: "Limbs Easily Reattached",
-      description: "Skeletons limbs are easily readded, and as such do not \
-        require surgery to restore. Simply pick it up and pop it back in, \
-        champ!",
+      icon: "burger",
+      name: "No Hunger",
+      description: "Reploids have no need for food, and thus do not need to eat!",
     }, {
-      icon: "skull",
-      name: "Undead",
-      description: "The undead do not have the need to eat or breathe, and \
-        most viruses will not be able to infect a walking corpse. Their \
-        worries mostly stop at remaining in one piece, really.",
+      icon: "lungs",
+      name: "No O2? No Problem!",
+      description: "Reploids do not breathe. Usually this is a good thing, but keep in mind CPR requires breathing to do!",
+    }, {
+      icon: "radiation",
+      name: "Radiation Immunity",
+      description: "Reploids are immune to the effects of radiation. \
+        Okay, positrons may jumble up their circuits, but that's fine, nothing to worry about.",
     }],
-    neutral: [],
+    neutral: [{
+      icon: "screwdriver-wrench",
+      name: "Unfinished Species",
+      description: "This species is not finished yet and is going to recieve gameplay reworks in the future.",
+    }, {
+      icon: "sliders",
+      name: "Highly Customizable",
+      description: "Reploids are highly customizable and able to come in all shapes and sizes! Try out fun combinations, see what you can make!",
+    }],
     bad: [{
-      icon: "user-times",
-      name: "Limbs Easily Dismembered",
-      description: "Skeletons limbs are not secured well, and as such they are \
-        easily dismembered.",
+      icon: "dna",
+      name: "Jeanless",
+      description: "Reploids do not have DNA, and are therefore unable to benefit from genetic superpowers.",
+    }, {
+      icon: "arrows-rotate",
+      name: "No Metabolism",
+      description: "Reploids do not have any metabolism to speak of. Therefore, healing from damage is much more difficult.",
     }],
   },
   lore: [
-    "Skeletons want to be feared again! Their presence in media has been destroyed, or at least that's what they firmly believe. They're always the first thing fought in an RPG, they're Flanderized into pun rolling JOKES, and it's really starting to get to them. You could say they're deeply RATTLED. Hah.",
+    "The original design for Replica Androids stems from a Nanotrasen research project to construct a new modular \
+    synthetic lifeform. However, the design got leaked and released to the galactic internet. Now, anyone can make their \
+    own version of a Reploid. There are however some secrets held by the research project to this day, \
+    as their design is strikingly unlike any robotics ever made by Nanotrasen in the past. \
+    Perhaps Reploids have an older ancestor which they were derived from?",
   ],
 };
 

@@ -954,6 +954,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					accessory = GLOB.head_tentacles_list[source.dna.features["head_tentacles"]]
 				if("ipc_screen") // NON-MODULE CHANGE
 					accessory = GLOB.ipc_screen_list[source.dna.features["ipc_screen"]]
+				if("reploid_antenna") // NON-MODULE CHANGE
+					accessory = GLOB.reploid_antenna_list[source.dna.features["reploid_antenna"]]
 
 			if(!accessory || accessory.icon_state == "none")
 				continue
