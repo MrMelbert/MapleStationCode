@@ -4350,6 +4350,7 @@
 #include "jollystation_modules\code\game\objects\structures\crate_lockers\closets\secure\bridge_officer.dm"
 #include "jollystation_modules\code\game\objects\structures\crate_lockers\closets\secure\quartermaster.dm"
 #include "jollystation_modules\code\modules\admin\smites\pain_smite.dm"
+#include "jollystation_modules\code\modules\admin\smites\tabletide.dm"
 #include "jollystation_modules\code\modules\antagonists\_common\advanced_antag.dm"
 #include "jollystation_modules\code\modules\antagonists\_common\advanced_objective.dm"
 #include "jollystation_modules\code\modules\antagonists\_common\advanced_traitor_panel.dm"
