@@ -1,6 +1,4 @@
 // -- Modular Skrell species --
-/// GLOB list of head tentacle sprites / options
-GLOBAL_LIST_EMPTY(head_tentacles_list)
 
 /randomize_human(mob/living/carbon/human/H)
 	H.dna.features["head_tentacles"] = pick(GLOB.head_tentacles_list)

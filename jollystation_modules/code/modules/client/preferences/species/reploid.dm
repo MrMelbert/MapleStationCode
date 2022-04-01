@@ -11,9 +11,6 @@
 
 	return ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/reploid)
 
-/datum/preference/choiced/reploid_limbs/deserialize(input, datum/preferences/preferences)
-	return sanitize_inlist(input, get_choices_serialized(), LIMBS_HUMAN)
-
 /datum/preference/choiced/reploid_limbs/create_default_value()
 	return LIMBS_HUMAN
 
@@ -42,7 +39,34 @@
 		target_species.species_traits |= HAIR
 		target_species.species_traits |= LIPS
 		target_species.limbs_id = value
+/*
+/datum/preference/choiced/generate_reploid_ipc_screen_shots/init_possible_values()
+	var/list/values = list()
 
+	var/icon/reploid = icon(DEFAULT_BODYPART_ICON_ORGANIC, "skrell_head_m", SOUTH)
+
+	for (var/name in GLOB.body_markings_list)
+		var/datum/sprite_accessory/sprite_accessory = GLOB.body_markings_list[name]
+
+		var/icon/final_icon = icon(lizard)
+
+		if (sprite_accessory.icon_state != "none")
+			var/icon/body_markings_icon = icon(
+				'icons/mob/mutant_bodyparts.dmi',
+				"m_body_markings_[sprite_accessory.icon_state]_ADJ",
+			)
+
+			final_icon.Blend(body_markings_icon, ICON_OVERLAY)
+
+		final_icon.Blend(COLOR_VIBRANT_LIME, ICON_MULTIPLY)
+		final_icon.Crop(10, 8, 22, 23)
+		final_icon.Scale(26, 32)
+		final_icon.Crop(-2, 1, 29, 32)
+
+		values[name] = final_icon
+
+	return values
+*/
 /datum/preference/choiced/reploid_ipc_screen
 	savefile_key = "reploid_ipc_screen"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -73,7 +97,7 @@
 	savefile_key = "reploid_antenna"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	priority = PREFERENCE_PRIORITY_NAME_MODIFICATIONS
+	priority = PREFERENCE_PRIORITY_NAMES
 	can_randomize = TRUE
 	relevant_mutant_bodypart = "reploid_antenna"
 
@@ -140,9 +164,9 @@
 
 	target_species.use_skintones = FALSE
 
-	var/datum/reploid_limb/limb_type = GLOB.reploid_limbs_ipc_list[value] //Located in jollystation_modules/datums/reploid_limb.dm
-	if(limb_type.colorable)
+	target_species.limb_type = GLOB.reploid_limbs_ipc_list[value] //Located in jollystation_modules/datums/reploid_limb.dm
+	if(target_species.limb_type.colorable)
 		target_species.species_traits |= MUTCOLORS
 	else
 		target_species.species_traits -= MUTCOLORS
-	limb_type.apply_limb_id(target_species)
+	target_species.limb_type.apply_limb_id(target_species)

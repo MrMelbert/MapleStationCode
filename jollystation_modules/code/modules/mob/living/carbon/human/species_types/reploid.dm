@@ -30,30 +30,31 @@
 	species_language_holder = /datum/language_holder/synthetic
 	///Set true by prefs if they have an IPC head. Shows an IPC screen on the mob and gives the mob an action button to change their screen.
 	var/ipc_screen = FALSE
-	var/datum/action/innate/screen_change/screen
+	var/datum/action/innate/screen_change/screen_changer
 	///Are we currently using IPC limbs? Used for some checks here and in _bodyparts.dm
 	var/ipc_limbs = FALSE
+	///What reploid limb type are we using, if any?
+	var/datum/reploid_limb/limb_type
 
 /datum/species/reploid/on_species_gain(mob/living/carbon/human/C)
 	. = ..()
 
 	if(ipc_limbs)
 		use_skintones = FALSE
-		var/datum/reploid_limb/limb_type = GLOB.reploid_limbs_ipc_list[value] //Located in jollystation_modules/datums/reploid_limb.dm
 		if(limb_type.colorable)
 			species_traits |= MUTCOLORS
 		else
 			species_traits -= MUTCOLORS
-		limb_type.apply_limb_id(target_species)
+		limb_type.apply_limb_id(src)
 
-	if(ipc_screen && !screen)
-		screen = new(src)
-		screen.Grant(C)
+	if(ipc_screen)
+		screen_changer = new
+		screen_changer.Grant(C)
 
 /datum/species/reploid/on_species_loss(mob/living/carbon/human/C)
 	. = ..()
-	if(screen)
-		screen.Remove(C)
+	if(screen_changer)
+		screen_changer.Remove(C)
 	..()
 
 ///Used for changing the screen of IPCs from a list of all screens

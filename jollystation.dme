@@ -4308,6 +4308,7 @@
 #include "jollystation_modules\code\__DEFINES\spans.dm"
 #include "jollystation_modules\code\__HELPERS\text_helpers.dm"
 #include "jollystation_modules\code\_globalvars\lists\reploid.dm"
+#include "jollystation_modules\code\_globalvars\lists\species.dm"
 #include "jollystation_modules\code\controllers\configuration\entries\autotransfer.dm"
 #include "jollystation_modules\code\controllers\subsystem\autotransfer.dm"
 #include "jollystation_modules\code\controllers\subsystem\economy.dm"
