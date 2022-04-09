@@ -4,7 +4,7 @@
 /obj/item/clothing/glasses/judicial_visor
 	name = "judicial visor"
 	desc = "A Rat'varian brass visor with a purple eye guard that occasionally flares brightly."
-	icon = 'icons/obj/clockwork_objects.dmi'
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	base_icon_state = "judicial_visor"
 	icon_state = "judicial_visor_1"
 	inhand_icon_state = "trayson-meson"

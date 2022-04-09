@@ -2,7 +2,7 @@
 /obj/structure/girder/brass
 	name = "brass gear"
 	desc = "A girder made out of brass, made to resemble a gear."
-	icon = 'icons/obj/clockwork_objects.dmi'
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "wall_gear"
 	can_displace = FALSE
 

@@ -3,7 +3,7 @@
 /obj/item/melee/ratvar_spear
 	name = "rat'varian spear"
 	desc = "A mechanical spear made of genuine brass. It menaces as you stare upon it."
-	icon = 'icons/obj/clockwork_objects.dmi'
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	worn_icon = 'icons/mob/clothing/belt.dmi'
 	lefthand_file = 'icons/mob/inhands/antag/clockwork_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/antag/clockwork_righthand.dmi'

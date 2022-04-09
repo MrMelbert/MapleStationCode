@@ -2,7 +2,7 @@
 /obj/item/clockwork_slab
 	name = "clockwork slab"
 	desc = "A slab of brass covered in cogs and gizmos used by agents of Rat'var to invoke their spells."
-	icon = 'icons/obj/clockwork_objects.dmi'
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "dread_ipad"
 	worn_icon_state = "dread_ipad"
 	lefthand_file = 'icons/mob/inhands/antag/clockwork_lefthand.dmi'

@@ -21,7 +21,7 @@
 /obj/item/construction/rcd/clock
 	name = "replica fabricator"
 	desc = "A cryptic looking device that can be used by ratvarian cultists to construct and deconstruct at rapid pace."
-	icon = 'icons/obj/clockwork_objects.dmi'
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "replica_fabricator"
 	lefthand_file = 'icons/mob/inhands/antag/clockwork_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/antag/clockwork_righthand.dmi'

@@ -6,6 +6,8 @@
 	base_name = "bronze airlock"
 	airlock_type = /obj/machinery/door/airlock/cult/brass
 	glass_type = /obj/machinery/door/airlock/cult/brass/glass
+	material_type = /obj/item/stack/sheet/brass
+	material_amt = 1 //Costs only one brass to make, no duplication here!
 
 /obj/structure/door_assembly/door_assembly_brass/narsie_act()
 	return
