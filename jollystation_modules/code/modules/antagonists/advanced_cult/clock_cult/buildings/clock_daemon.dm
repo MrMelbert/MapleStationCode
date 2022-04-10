@@ -7,11 +7,13 @@
 /obj/structure/destructible/cult/item_dispenser/daemon_forge
 	name = "daemon forge"
 	desc = "A forge used by follower of Ratvar to construct more advanced creations."
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "tinkerers_daemon"
 	cult_examine_tip = "A Rat'varian cultist can use it to create judicial visors, ratvarian spears, and brass armor."
 	break_message = "<span class='warning'>The forge crumbles, spilling out alloys and brass.</span>"
 	light_range = 1.5
 	light_color = "#ffff99"
+	debris = list(/obj/item/stack/sheet/brass = 1)
 	/// A mutable / emissive appearance to make our forge glow.
 	var/static/mutable_appearance/glow
 	/// A list of mutable appearances of overlay runes for our forge. We shuffle through this every 2 seconds.
@@ -78,11 +80,11 @@
 /obj/structure/destructible/cult/item_dispenser/daemon_forge/setup_options()
 	var/static/list/clock_forge_items = list(
 		JUDICIAL_VISOR = list(
-			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "judicial_visor_1"),
+			PREVIEW_IMAGE = image(icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi', icon_state = "judicial_visor_1"),
 			OUTPUT_ITEMS = list(/obj/item/clothing/glasses/judicial_visor),
 			),
 		RATVAR_SPEAR = list(
-			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "ratvarian_spear"),
+			PREVIEW_IMAGE = image(icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi', icon_state = "ratvarian_spear"),
 			OUTPUT_ITEMS = list(/obj/item/melee/ratvar_spear),
 			),
 		BRASS_ARMOR = list(

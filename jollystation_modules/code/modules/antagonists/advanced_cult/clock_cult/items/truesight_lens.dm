@@ -3,7 +3,7 @@
 /obj/item/binoculars/truesight_lens
 	name = "truesight lens"
 	desc = "A yellow lens created by Rat'varian worshippers to spy great distances."
-	icon = 'icons/obj/clockwork_objects.dmi'
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "truesight_lens"
 	inhand_icon_state = "none"
 	worn_icon_state = "none"

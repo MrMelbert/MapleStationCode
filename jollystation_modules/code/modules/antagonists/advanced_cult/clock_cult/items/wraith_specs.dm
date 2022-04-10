@@ -7,7 +7,7 @@
 /obj/item/clothing/glasses/wraith_specs
 	name = "wraith specs"
 	desc = "A set of glasses constructed by worshippers of Rat'var to grant them eyes of a wraith, greatly enhancing their sight."
-	icon = 'icons/obj/clockwork_objects.dmi'
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "wraith_specs"
 	worn_icon_state = "wraith_specs"
 	inhand_icon_state = "trayson-meson"

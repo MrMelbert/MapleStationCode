@@ -7,24 +7,26 @@
 /obj/structure/destructible/cult/item_dispenser/tinkers_cache
 	name = "tinkerer's cache"
 	desc = "A cache of gizmos and gears constructed by a follower of Ratvar."
+	icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "tinkerers_cache"
 	cult_examine_tip = "Can be used to create replica fabricators, wraith specs, and truesight lenses."
 	break_message = "<span class='warning'>The cache crumbles, its incessant ticking ceasing.</span>"
 	light_range = 2
 	light_color = "#ff9900"
+	debris = list(/obj/item/stack/sheet/brass = 1)
 
 /obj/structure/destructible/cult/item_dispenser/tinkers_cache/setup_options()
 	var/static/list/cache_items = list(
 		REPLICA_FAB = list(
-			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "replica_fabricator"),
+			PREVIEW_IMAGE = image(icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi', icon_state = "replica_fabricator"),
 			OUTPUT_ITEMS = list(/obj/item/construction/rcd/clock),
 			),
 		WRAITH_SPEC = list(
-			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "wraith_specs"),
+			PREVIEW_IMAGE = image(icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi', icon_state = "wraith_specs"),
 			OUTPUT_ITEMS = list(/obj/item/clothing/glasses/wraith_specs),
 			),
 		TRUESIGHT_LENS = list(
-			PREVIEW_IMAGE = image(icon = 'icons/obj/clockwork_objects.dmi', icon_state = "truesight_lens"),
+			PREVIEW_IMAGE = image(icon = 'jollystation_modules/icons/obj/clockwork_objects.dmi', icon_state = "truesight_lens"),
 			OUTPUT_ITEMS = list(/obj/item/binoculars/truesight_lens),
 			),
 	)
