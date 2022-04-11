@@ -1,4 +1,4 @@
-environment = "jollystation.dme"
+environment = "maplestation.dme"
 
 [langserver]
 dreamchecker = true

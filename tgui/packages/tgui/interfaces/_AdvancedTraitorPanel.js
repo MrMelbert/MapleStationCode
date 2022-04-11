@@ -4,7 +4,7 @@ import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedTraitorPanel = () => {
   return (
-    <AdvancedTraitorWindow theme="jolly-syndicate">
+    <AdvancedTraitorWindow theme="maple-syndicate">
       <AdvancedTraitorBackgroundSection />
       <AdvancedTraitorGoalsSection />
     </AdvancedTraitorWindow>

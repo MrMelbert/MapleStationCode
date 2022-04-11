@@ -22,7 +22,7 @@ Juke.setup({ file: import.meta.url }).then((code) => {
   process.exit(code);
 });
 
-const DME_NAME = 'jollystation';
+const DME_NAME = 'maplestation';
 
 export const DefineParameter = new Juke.Parameter({
   type: 'string[]',
@@ -69,7 +69,7 @@ export const DmTarget = new Juke.Target({
     'html/**',
     'icons/**',
     'interface/**',
-    'jollystation_modules/**', // NON-MODULE CHANGE: BUILD OUR FILES!
+    'maplestation_modules/**', // NON-MODULE CHANGE: BUILD OUR FILES!
     `${DME_NAME}.dme`,
   ],
   outputs: [

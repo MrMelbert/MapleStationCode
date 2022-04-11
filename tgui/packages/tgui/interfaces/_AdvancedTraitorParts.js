@@ -5,7 +5,7 @@ import { Window } from '../layouts';
 export const AdvancedTraitorWindow = (props, context) => {
   const {
     children,
-    theme = 'jolly-syndicate',
+    theme = 'maple-syndicate',
   } = props;
   return (
     <Window

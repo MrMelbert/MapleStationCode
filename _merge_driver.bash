@@ -111,7 +111,7 @@ find_all_in_dir (){
 
 # updates the DME to the new version
 #
-# supply two arguments: the new tgstation.dme, and the old jollystation.dme
+# supply two arguments: the new tgstation.dme, and the old maplestation.dme
 update_dme (){
 
 	if [ ! -f $1 ]; then
@@ -120,7 +120,7 @@ update_dme (){
 	fi
 
 	if [ ! -f $2 ]; then
-		echo "!! update_dme error:: $2 file not found. This should be the old jollystation.dme."
+		echo "!! update_dme error:: $2 file not found. This should be the old maplestation.dme."
 		return 1
 	fi
 
@@ -132,7 +132,7 @@ update_dme (){
 
 	tempfile=temp_"$1"
 	sed '$d' $1 >> $tempfile
-	grep '#include "jollystation_modules' $2 >> $tempfile
+	grep '#include "maplestation_modules' $2 >> $tempfile
 	echo "// END_INCLUDE" >> $tempfile
 	cp $tempfile $2
 	rm $tempfile
@@ -142,7 +142,7 @@ update_dme (){
 
 #update the build file
 update_build (){
-	sed -i 's/tgstation/jollystation/g' tools/build/build.js
+	sed -i 's/tgstation/maplestation/g' tools/build/build.js
 	return 0
 }
 
@@ -162,7 +162,7 @@ find_all_in_dir "tgui"
 echo "Conflict checking done."
 echo "====================================================================================="
 echo "Updating DME. . ."
-update_dme tgstation.dme jollystation.dme
+update_dme tgstation.dme maplestation.dme
 echo "DME update done."
 echo "====================================================================================="
 echo "Updating build.js. . ."

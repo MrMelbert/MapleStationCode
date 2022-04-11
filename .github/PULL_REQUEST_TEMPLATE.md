@@ -1,5 +1,5 @@
 <!-- Hi! Thanks for contributing to our code! Please make sure to check the check list below. -->
-<!-- Please make sure that modulairty is in order to prevent headaches later. For more information, check the README.md in /jollystation_modules/ -->
+<!-- Please make sure that modulairty is in order to prevent headaches later. For more information, check the README.md in /maplestation_modules/ -->
 
 ## CHECK LIST
 

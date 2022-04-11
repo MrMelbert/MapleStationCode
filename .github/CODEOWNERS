@@ -8,15 +8,10 @@
 /_maps/map_files/PubbyStation/PubbyStation.dm @CRITAWAKETS
 
 #doshMobile
-/jollystation_modules/icons/ @doshMobile
-
-#Jolly66
-/code/ @jolly66
-/config/ @Jolly66
-/_maps/map_files/PubbyStation/PubbyStation.dm @Jolly66
+/maplestation_modules/icons/ @doshMobile
 
 #mrmelbert
-
+/maplestation_modules/
 
 #sqnztb
 /_maps/ @sqnztb
