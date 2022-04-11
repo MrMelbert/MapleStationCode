@@ -120,7 +120,7 @@ update_dme (){
 	fi
 
 	if [ ! -f $2 ]; then
-		echo "!! update_dme error:: $2 file not found. This should be the old maplestation.dme."
+		echo "!! update_dme error: $2 file not found. This should be the old maplestation.dme."
 		return 1
 	fi
 
@@ -148,14 +148,6 @@ update_build (){
 
 echo "Running merge driver. . ."
 echo "====================================================================================="
-echo "Do you want to find and remove unticked files? This takes a long time. It also may potentially delete core files by accident. (Y / N)"
-read unticked_input
-if [ "$unticked_input" == 'y' ]; then
-	echo "Looking for unticked files. . ."
-	find_unticked_files "code"
-	echo "Unticked files done."
-fi
-echo "====================================================================================="
 echo "Checking for merge conflicts. . ."
 find_all_in_dir "code"
 find_all_in_dir "tgui"
@@ -164,6 +156,14 @@ echo "==========================================================================
 echo "Updating DME. . ."
 update_dme tgstation.dme maplestation.dme
 echo "DME update done."
+echo "====================================================================================="
+echo "Do you want to find and remove unticked files? This takes a long time. It also may potentially delete core files by accident. (Y / N)"
+read unticked_input
+if [ "$unticked_input" == 'y' ]; then
+	echo "Looking for unticked files. . ."
+	find_unticked_files "code"
+	echo "Unticked files done."
+fi
 echo "====================================================================================="
 echo "Updating build.js. . ."
 update_build
