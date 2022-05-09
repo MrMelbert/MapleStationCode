@@ -12,7 +12,6 @@
 /obj/projectile/bullet/shotgun_meteorslug
 	paralyze = 0
 	knockdown = 50
-	stamina = 35
 
 /obj/projectile/bullet/shotgun_meteorslug/on_hit(atom/target, blocked = FALSE)
 	. = ..()
