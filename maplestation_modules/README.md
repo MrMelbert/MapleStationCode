@@ -166,6 +166,8 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\jobs\job_types\quartermaster.dm
 - code\modules\language\language_holder.dm
 - code\modules\mob\dead\new_player\new_player.dm
+- code\modules\mob\living\damage_procs.dm
+- code\modules\mob\living\living_defense.dm
 - code\modules\mob\living\carbon\human\human.dm
 - code\modules\mob\living\carbon\human\human_update_icons.dm
 - code\modules\mob\living\carbon\human\species.dm
