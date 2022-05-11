@@ -16,6 +16,6 @@
 /obj/projectile/bullet/shotgun_meteorslug/on_hit(atom/target, blocked = FALSE)
 	. = ..()
 	if(iscarbon(target))
-		var/mob/living/carbon/M = target
-		if(M.pain_controller)
-			M.cause_pain(BODY_ZONES_ALL, 50) //OW MY BONES
+		var/mob/living/carbon/unfortunate_soul = target
+		if(unfortunate_soul.pain_controller)
+			unfortunate_soul.sharp_pain(BODY_ZONES_ALL, 50) //OW MY BONES
