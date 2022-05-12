@@ -36,8 +36,8 @@
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	heat_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	resistance_flags = NONE
-	strip_delay = 80
-	equip_delay_other = 80
+	strip_delay = 8 SECONDS
+	equip_delay_other = 8 SECONDS
 
 // Hack to get around hooded things changing their icon state
 /obj/item/clothing/suit/hooded/clock/ToggleHood()
