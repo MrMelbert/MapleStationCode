@@ -15,8 +15,8 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
 	actions_types = list()
-	strip_delay = 50
-	equip_delay_other = 50
+	strip_delay = 5 SECONDS
+	equip_delay_other = 5 SECONDS
 
 /obj/item/clothing/suit/hooded/clock
 	name = "\improper Rat'varian clockwork suit"
