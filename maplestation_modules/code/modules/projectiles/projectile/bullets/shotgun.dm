@@ -11,7 +11,7 @@
 //Overrides meteorslug to have no stun, lower knockdown but also causes a lot of PAIN
 /obj/projectile/bullet/shotgun_meteorslug
 	paralyze = 0
-	knockdown = 50
+	knockdown = 5 SECONDS
 
 /obj/projectile/bullet/shotgun_meteorslug/on_hit(atom/target, blocked = FALSE)
 	. = ..()
