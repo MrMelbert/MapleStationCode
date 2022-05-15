@@ -2302,6 +2302,7 @@
 /obj/effect/turf_decal/tile/bar{
 	dir = 4
 	},
+/obj/machinery/chem_master/condimaster,
 /turf/open/floor/iron/dark,
 /area/service/bar)
 "ahQ" = (
