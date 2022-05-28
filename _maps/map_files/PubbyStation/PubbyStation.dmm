@@ -2302,6 +2302,8 @@
 /obj/effect/turf_decal/tile/bar{
 	dir = 4
 	},
+/obj/machinery/chem_master/condimaster,
+/obj/structure/extinguisher_cabinet/directional/west,
 /turf/open/floor/iron/dark,
 /area/service/bar)
 "ahQ" = (
@@ -13241,11 +13243,11 @@
 	},
 /area/service/bar)
 "aSQ" = (
-/obj/effect/landmark/xeno_spawn,
 /obj/item/storage/box/beanbag,
 /obj/item/assembly/mousetrap,
 /obj/item/storage/box/mousetraps,
 /obj/machinery/light/directional/east,
+/obj/structure/closet/crate/wooden,
 /turf/open/floor/wood,
 /area/service/bar)
 "aSR" = (
@@ -14143,7 +14145,6 @@
 /area/service/bar)
 "aWm" = (
 /obj/structure/disposalpipe/segment,
-/obj/item/storage/box/drinkingglasses,
 /obj/machinery/firealarm/directional/east,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -14399,6 +14400,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
+/obj/machinery/newscaster/directional/west,
 /turf/open/floor/iron/dark,
 /area/hallway/secondary/service)
 "aWY" = (
@@ -14421,7 +14423,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 10
 	},
-/obj/machinery/newscaster/directional/east,
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -35488,6 +35489,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
+/obj/effect/landmark/xeno_spawn,
 /turf/open/floor/wood,
 /area/service/bar)
 "dGR" = (
@@ -52127,7 +52129,6 @@
 /turf/open/floor/iron/white,
 /area/science/xenobiology)
 "rof" = (
-/obj/structure/extinguisher_cabinet/directional/west,
 /obj/effect/turf_decal/tile/bar{
 	dir = 4
 	},
@@ -52622,6 +52623,18 @@
 	dir = 8
 	},
 /area/hallway/primary/central)
+"rBD" = (
+/obj/structure/table/reinforced,
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/machinery/door/firedoor,
+/obj/item/storage/box/drinkingglasses,
+/turf/open/floor/iron/dark,
+/area/service/bar)
 "rBL" = (
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 5
@@ -93512,9 +93525,9 @@ aPE
 aRU
 aPE
 aPE
-was
-aWh
 aPE
+aWh
+was
 aPE
 aYZ
 liQ
@@ -95057,7 +95070,7 @@ aPE
 cpb
 wzu
 beB
-aYg
+rBD
 aZd
 dXz
 lTf
