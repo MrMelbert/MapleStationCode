@@ -171,6 +171,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\mob\living\carbon\human\human.dm
 - code\modules\mob\living\carbon\human\human_update_icons.dm
 - code\modules\mob\living\carbon\human\species.dm
+- code\modules\mob\living\carbon\human\species_types\golems.dm
 - code\modules\modular_computers\file_system\programs\jobmanagement.dm
 - code\modules\reagents\chemistry\reagents\other_reagents.dm
 - code\modules\surgery\bodyparts\_bodyparts.dm

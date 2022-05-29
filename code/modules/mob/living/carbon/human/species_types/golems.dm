@@ -38,6 +38,7 @@
 	// changes, only the Random Golem type can be chosen
 	limbs_id = "golem"
 	fixed_mut_color = "#aaaaaa"
+	mutantlungs = null //NON-MODULE CHANGE: NOBREATH used to handle lung removal, but not anymore
 	var/info_text = "As an <span class='danger'>Iron Golem</span>, you don't have any special traits."
 	var/random_eligible = TRUE //If false, the golem subtype can't be made through golem mutation toxin
 

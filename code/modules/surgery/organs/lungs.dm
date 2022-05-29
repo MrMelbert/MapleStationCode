@@ -506,8 +506,9 @@
 		owner.visible_message(span_danger("[owner] grabs [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe!"))
 		failed = TRUE
 
-/obj/item/organ/lungs/get_availability(datum/species/owner_species)
-	return !(TRAIT_NOBREATH in owner_species.inherent_traits)
+///NON-MODULE CHANGE: This is just an old bit of code from before ways of editing species' lungs directly were a thing. It's a bug fix, so it's non-modular
+// /obj/item/organ/lungs/get_availability(datum/species/owner_species)
+//	return !(TRAIT_NOBREATH in owner_species.inherent_traits)
 
 /obj/item/organ/lungs/plasmaman
 	name = "plasma filter"
