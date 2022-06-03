@@ -6,7 +6,7 @@
 // ...But if you examine anything you'd be unable to see normally, you'll recieve eye damage.
 /obj/item/clothing/glasses/wraith_specs
 	name = "wraith specs"
-	desc = "A set of glasses constructed by worshippers of Rat'var to grant them eyes of a wraith, greatly enhancing their sight."
+	desc = "A set of glasses constructed by worshippers of Rat-Var to grant them eyes of a wraith, greatly enhancing their sight."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "wraith_specs"
 	worn_icon_state = "wraith_specs"

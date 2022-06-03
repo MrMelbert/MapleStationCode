@@ -1,6 +1,6 @@
 // Ratvarian language.
 /datum/language/ratvarian
-	name = "Ratvarian"
+	name = "Rat-varian"
 	desc = "A timeless language full of power and incomprehensible to the unenlightened."
 	//ask_verb = "requests"
 	//exclaim_verb = "proclaims"

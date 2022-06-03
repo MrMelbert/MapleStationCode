@@ -1,15 +1,15 @@
 #define JUDICIAL_VISOR "Judicial Visor"
-#define RATVAR_SPEAR "Rat'varian Spear"
+#define RATVAR_SPEAR "Rat-varian Spear"
 #define BRASS_ARMOR "Brass Armor"
 
 // The daemon forge
 // produces combat items
 /obj/structure/destructible/cult/item_dispenser/daemon_forge
 	name = "daemon forge"
-	desc = "A forge used by follower of Ratvar to construct more advanced creations."
+	desc = "A forge used by follower of Rat-Var to construct more advanced creations."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "tinkerers_daemon"
-	cult_examine_tip = "A Rat'varian cultist can use it to create judicial visors, ratvarian spears, and brass armor."
+	cult_examine_tip = "A Rat-varian cultist can use it to create judicial visors, ratvarian spears, and brass armor."
 	break_message = "<span class='warning'>The forge crumbles, spilling out alloys and brass.</span>"
 	light_range = 1.5
 	light_color = "#ffff99"
