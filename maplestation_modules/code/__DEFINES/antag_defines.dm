@@ -33,7 +33,7 @@
 
 /// Styles of cult.
 #define CULT_STYLE_NARSIE "Nar'sian Cult"
-#define CULT_STYLE_RATVAR "Rat-varian Cult"
+#define CULT_STYLE_RATVAR "Rat'varian Cult"
 
 /// Trait for people who were recently funnyhanded and can't be for a few seconds. (See TRAIT_IWASBATONNED)
 #define TRAIT_I_WAS_FUNNY_HANDED "i_was_funny_handed"

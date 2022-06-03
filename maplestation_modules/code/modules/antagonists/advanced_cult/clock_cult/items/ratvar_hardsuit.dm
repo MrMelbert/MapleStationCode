@@ -1,7 +1,7 @@
 // Clockwork hardsuit and helemet.
 /obj/item/clothing/head/hooded/clock
-	name = "\improper Rat-varian clockwork suit"
-	desc = "A heavily-armored helmet worn by warriors of the Rat-varian cult. It can withstand hard vacuum."
+	name = "\improper Rat'varian clockwork suit"
+	desc = "A heavily-armored helmet worn by warriors of the Rat'varian cult. It can withstand hard vacuum."
 	icon_state = "clockwork_helmet"
 	inhand_icon_state = "clockwork_helmet_inhand"
 	armor = list(MELEE = 40, BULLET = 35, LASER = 30, ENERGY = 40, BOMB = 50, BIO = 30, FIRE = 100, ACID = 100, WOUND = 10)
@@ -19,8 +19,8 @@
 	equip_delay_other = 5 SECONDS
 
 /obj/item/clothing/suit/hooded/clock
-	name = "\improper Rat-varian clockwork suit"
-	desc = "A heavily-armored exosuit worn by warriors of the Rat-varian cult. It can withstand hard vacuum."
+	name = "\improper Rat'varian clockwork suit"
+	desc = "A heavily-armored exosuit worn by warriors of the Rat'varian cult. It can withstand hard vacuum."
 	icon_state = "clockwork_cuirass"
 	worn_icon_state = "clockwork_cuirass"
 	inhand_icon_state = "clockwork_cuirass_inhand"

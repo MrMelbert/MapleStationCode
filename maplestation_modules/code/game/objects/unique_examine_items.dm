@@ -210,7 +210,7 @@
 			EXAMINE_CHECK_FACTION, "cult")
 	else
 		AddElement(/datum/element/unique_examine, \
-			"A sigil of power inscribed by the followers of the Clockwork God Rat-Var \
+			"A sigil of power inscribed by the followers of the Clockwork God Rat'var \
 			to channel powerful clock magics through the invoker.", \
 			EXAMINE_CHECK_FACTION, "cult")
 

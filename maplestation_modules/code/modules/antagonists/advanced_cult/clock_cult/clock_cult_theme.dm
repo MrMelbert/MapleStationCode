@@ -1,7 +1,7 @@
 // Clockcult ~2~ 3, Electric Boogaloo.
 /datum/cult_theme/ratvarcult
 	name = CULT_STYLE_RATVAR
-	default_deity = "Rat-Var" //Formal name, Rat-Var. Informally can be referred to as Ratvar. Rat'Var is cursed and invokes Nar'Sie.
+	default_deity = "Rat'var" //Formal name, Rat'var. Informally can be referred to as Ratvar. Rat-Var is not in use.
 	faction = "ratvar"
 	cultist_hud_name = "clockwork"
 	cultist_lead_hud_name = "clockwork_lead"
@@ -42,13 +42,13 @@
 /datum/cult_theme/ratvarcult/get_start_making_rune_text(mob/living/cultist)
 	var/list/text = list()
 	text["visible_message"] = span_warning("[cultist] begins outlining out a strange design!")
-	text["self_message"] = span_brass("You begin drawing a sigil of Rat-Var.")
+	text["self_message"] = span_brass("You begin drawing a sigil of Rat'var.")
 	return text
 
 /datum/cult_theme/ratvarcult/get_end_making_rune_text(mob/living/cultist)
 	var/list/text = list()
 	text["visible_message"] = span_warning("[cultist] creates a strange, bright circle.")
-	text["self_message"] = span_brass("You finish drawing the arcane markings of Rat-Var.")
+	text["self_message"] = span_brass("You finish drawing the arcane markings of Rat'var.")
 	return text
 
 /datum/cult_theme/ratvarcult/get_start_invoking_magic_text(added_magic, atom/target)
@@ -65,7 +65,7 @@
 		"Hap'rn-fvat..",
 		"Gv'px Gb'px..",
 		"FNG NAN!",
-		"Ur'yc Rat-Var.."
+		"Ur'yc Rat'var.."
 	))
 
 /datum/cult_theme/ratvarcult/pick_god_shame_line() //Not given out by Ratvar, but by the leader of the clockwork cult. Ratvar's against the clockwork cult, and they're trying to bring him back.

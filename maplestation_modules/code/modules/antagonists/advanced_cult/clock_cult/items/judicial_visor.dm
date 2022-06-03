@@ -3,7 +3,7 @@
 // but they are told what direction you are afterwards.
 /obj/item/clothing/glasses/judicial_visor
 	name = "judicial visor"
-	desc = "A Rat-varian brass visor with a purple eye guard that occasionally flares brightly."
+	desc = "A Rat'varian brass visor with a purple eye guard that occasionally flares brightly."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	base_icon_state = "judicial_visor"
 	icon_state = "judicial_visor_1"

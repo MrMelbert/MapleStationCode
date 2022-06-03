@@ -1,7 +1,7 @@
-// A real Rat-varian Spear.
+// A real Rat'varian Spear.
 // Slightly less force than an E.L., more armor pen and throwforce.
 /obj/item/melee/ratvar_spear
-	name = "rat-varian spear"
+	name = "rat'varian spear"
 	desc = "A mechanical spear made of genuine brass. It menaces as you stare upon it."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	worn_icon = 'icons/mob/clothing/belt.dmi'

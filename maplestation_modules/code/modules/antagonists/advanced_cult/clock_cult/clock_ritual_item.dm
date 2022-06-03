@@ -1,7 +1,7 @@
 // Clockwork slab babyyy
 /obj/item/clockwork_slab
 	name = "clockwork slab"
-	desc = "A slab of brass covered in cogs and gizmos used by agents of Rat-Var to invoke their spells."
+	desc = "A slab of brass covered in cogs and gizmos used by agents of Rat'var to invoke their spells."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "dread_ipad"
 	worn_icon_state = "dread_ipad"
@@ -16,10 +16,10 @@
 
 /obj/item/clockwork_slab/Initialize(mapload)
 	. = ..()
-	var/examine_text = {"Allows the scribing of sigils and access to the powers of the cult of Rat-Var.
+	var/examine_text = {"Allows the scribing of sigils and access to the powers of the cult of Rat'var.
 Can be used on <b>cult structures</b> to move them around.
 Can also be used on <b>sigils or runes</b> to clear them away.
-Can block melee attacks for followers of Rat-Var when held in hand."}
+Can block melee attacks for followers of Rat'var when held in hand."}
 
 	AddComponent(/datum/component/cult_ritual_item/advanced, \
 		span_brass(examine_text), \

@@ -1,7 +1,7 @@
 /datum/action/item_action/cult/clock_spell/item_conversion
 	name = "Slab: Brass Touch"
 	desc = "Empowers the slab to convert structures and items into brass after a channel."
-	examine_hint = "channels on the target structure or item, morphing it into a brass Rat-varian version if possible. Turns iron into brass sheets."
+	examine_hint = "channels on the target structure or item, morphing it into a brass Rat'varian version if possible. Turns iron into brass sheets."
 	button_icon_state = "integration_cog"
 	invocation = "Gb-hpu bs oen'ff!"
 	active_overlay_name = "compromise"
