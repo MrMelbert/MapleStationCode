@@ -15,5 +15,8 @@
 		"stamp-chap" = 'icons/stamp_icons/large_stamp-chap.png',
 		"stamp-mime" = 'icons/stamp_icons/large_stamp-mime.png',
 		"stamp-centcom" = 'icons/stamp_icons/large_stamp-centcom.png',
-		"stamp-syndicate" = 'icons/stamp_icons/large_stamp-syndicate.png'
+		//NON-MODULE EDIT: New stamps for Bridge Officer and Asset Protection, stamp-syndicate has a comma added at the end to function
+		"stamp-syndicate" = 'icons/stamp_icons/large_stamp-syndicate.png',
+		"stamp-bo" = 'maplestation_modules/icons/stamp_icons/large_stamp-bo.png',
+		"stamp-ap" = 'maplestation_modules/icons/stamp_icons/large_stamp-ap.png',
 	)

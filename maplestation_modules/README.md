@@ -147,6 +147,7 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\modules\antagonists\eldritch_cult\eldritch_effects.dm
 - code\modules\antagonists\eldritch_cult\eldritch_knowledge.dm
 - code\modules\antagonists\traitor\datum_traitor.dm
+- code\modules\asset_cache\assets\paper.dm
 - code\modules\client\client_procs.dm
 - code\modules\client\preferences_savefile.dm
 - code\modules\client\preferences_toggles.dm
