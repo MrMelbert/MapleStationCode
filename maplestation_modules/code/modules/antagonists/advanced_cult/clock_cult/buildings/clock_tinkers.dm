@@ -6,7 +6,7 @@
 // produces utility items
 /obj/structure/destructible/cult/item_dispenser/tinkers_cache
 	name = "tinkerer's cache"
-	desc = "A cache of gizmos and gears constructed by a follower of Ratvar."
+	desc = "A cache of gizmos and gears constructed by a follower of Rat'var."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "tinkerers_cache"
 	cult_examine_tip = "Can be used to create replica fabricators, wraith specs, and truesight lenses."

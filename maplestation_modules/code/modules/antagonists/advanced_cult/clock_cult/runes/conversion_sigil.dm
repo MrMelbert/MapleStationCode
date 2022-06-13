@@ -2,7 +2,7 @@
 	name = "sigil"
 	desc = "An odd collection of symbols that glint when shined light upon."
 	cultist_name = "Sigil of Submission"
-	cultist_desc = "subject a non-cultist to the power of Rat'var, converting the victim to your cult. \
+	cultist_desc = "subject a non-cultist to the eternal power of the machine, converting the victim to your cult. \
 		If you opted out of conversion, or the victim is mindshielded, subjects them to torment instead."
 	invocation = "Fho'zvg Gb Engine!"
 	icon = 'maplestation_modules/icons/effects/clockwork_effects.dmi'

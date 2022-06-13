@@ -6,7 +6,7 @@
 // produces combat items
 /obj/structure/destructible/cult/item_dispenser/daemon_forge
 	name = "daemon forge"
-	desc = "A forge used by follower of Ratvar to construct more advanced creations."
+	desc = "A forge used by followers of Rat'var to construct more advanced creations."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "tinkerers_daemon"
 	cult_examine_tip = "A Rat'varian cultist can use it to create judicial visors, ratvarian spears, and brass armor."
