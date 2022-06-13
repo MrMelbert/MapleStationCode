@@ -4550,6 +4550,7 @@
 #include "maplestation_modules\code\modules\research\designs\autolathe_designs.dm"
 #include "maplestation_modules\code\modules\research\designs\limbgrower_designs.dm"
 #include "maplestation_modules\code\modules\research\designs\medical_designs.dm"
+#include "maplestation_modules\code\modules\research\designs\wiremod_designs.dm"
 #include "maplestation_modules\code\modules\research\techweb\_research.dm"
 #include "maplestation_modules\code\modules\research\techweb\all_nodes.dm"
 #include "maplestation_modules\code\modules\surgery\organs\ears.dm"
