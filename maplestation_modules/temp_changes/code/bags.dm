@@ -21,4 +21,3 @@
 
 /obj/item/storage/bag/chemistry
 	icon = 'maplestation_modules/temp_changes/icons/bags.dmi'
-	icon_state = "chembag"
