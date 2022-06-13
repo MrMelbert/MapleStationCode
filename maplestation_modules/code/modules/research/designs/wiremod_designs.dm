@@ -1,3 +1,4 @@
+/// Multitool has no right to be that expensive compared to normal multitools
 /datum/design/circuit_multitool
 	materials = list(/datum/material/iron = 200, /datum/material/glass = 200)
 
