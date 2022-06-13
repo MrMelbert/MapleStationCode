@@ -19,6 +19,7 @@
 	new /obj/item/tape(src)
 	new /obj/item/circuitboard/machine/fax_machine(src)
 	new /obj/item/stack/sheet/mineral/silver(src, 3)
+	new /obj/item/stamp/bo(src)
 
 // Bridge Officer album for their locker
 /obj/item/storage/photo_album/bo

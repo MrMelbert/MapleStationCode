@@ -4539,6 +4539,7 @@
 #include "maplestation_modules\code\modules\mod\mod_theme.dm"
 #include "maplestation_modules\code\modules\modular_computers\computers\item\tablet_presets.dm"
 #include "maplestation_modules\code\modules\movespeed\modifiers\reagent.dm"
+#include "maplestation_modules\code\modules\paperwork\stamps.dm"
 #include "maplestation_modules\code\modules\projectiles\ammunition\ballistic\shotgun.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\shotgun.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\drink_reagents.dm"
