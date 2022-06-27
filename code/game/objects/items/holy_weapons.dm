@@ -714,3 +714,15 @@
 	attack_verb_simple = list("stab", "poke", "slash", "clock")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the belt."
+
+/obj/item/nullrod/spear/amber_blade // stat-wise this is identical to the above spear, save for being an edged weapon. This will probably make a coder somewhere happy.
+	name = "amber blade"
+	desc = "A rapier-like sword made from the amber of an alien root-tree."
+	icon_state = "amber_blade"
+	inhand_icon_state = "amber_blade"
+	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
+	sharpness = SHARP_EDGED
+	attack_verb_continuous = list("stabs", "cuts", "slashes", "power attacks")
+	attack_verb_simple = list("stab", "cut", "slash", "power attack")
+	menu_description = "A blade which penetrates armor slightly. Can be worn only on the belt."
