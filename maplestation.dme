@@ -4496,6 +4496,7 @@
 #include "maplestation_modules\code\modules\loadouts\loadout_ui\loadout_outfit_helpers.dm"
 #include "maplestation_modules\code\modules\mining\machine_vending.dm"
 #include "maplestation_modules\code\modules\mining\mining_redemption.dm"
+#include "maplestation_modules\code\modules\mining\ores_coins.dm"
 #include "maplestation_modules\code\modules\mob\logout.dm"
 #include "maplestation_modules\code\modules\mob\mob.dm"
 #include "maplestation_modules\code\modules\mob\mob_defines.dm"
