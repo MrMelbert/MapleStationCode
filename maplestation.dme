@@ -4563,4 +4563,6 @@
 #include "maplestation_modules\code\modules\uplink\uplink_infiltrator.dm"
 #include "maplestation_modules\code\modules\uplink\uplink_items.dm"
 #include "maplestation_modules\code\modules\vending\_vending.dm"
+#include "maplestation_modules\temp_changes\code\bags.dm"
+#include "maplestation_modules\temp_changes\code\drinks.dm"
 // END_INCLUDE
