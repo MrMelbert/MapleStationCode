@@ -139,6 +139,26 @@ export const LoadoutTabs = (props, context) => {
                           })} />
                       </Stack.Item>
                     )}
+                    { !!item.is_reskinnable
+                    && (
+                      <Stack.Item>
+                        <Button
+                          icon="theater-masks"
+                          onClick={() => act('set_skin', {
+                            path: item.path,
+                          })} />
+                      </Stack.Item>
+                    )}
+                    { !!item.is_layer_adjustable
+                    && (
+                      <Stack.Item>
+                        <Button
+                          icon="arrow-down"
+                          onClick={() => act('set_layer', {
+                            path: item.path,
+                          })} />
+                      </Stack.Item>
+                    )}
                     <Stack.Item>
                       <Button.Checkbox
                         checked={selected_loadout.includes(item.path)}
