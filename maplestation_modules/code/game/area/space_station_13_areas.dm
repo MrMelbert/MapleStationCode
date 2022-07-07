@@ -47,6 +47,8 @@
 	name = "Lower Port Maintenance"
 	icon_state = "pmaint"
 
+/area/tcommsat/oldaisat/stationside
+	name = "\improper Abandoned AI Satellite"
 
 //Berry Physics Space Ruin
 /area/ruin/space/has_grav/powered/berry_physics
