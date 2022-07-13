@@ -113,6 +113,12 @@
 	description = "benis"
 	mappath = "_maps/templates/holodeck_skatepark.dmm"
 
+/datum/map_template/holodeck/baseball
+	name = "Holodeck - Baseball Field"
+	template_id = "holodeck_baseball"
+	description = "benis"
+	mappath = "_maps/templates/holodeck_baseball.dmm"
+
 //bad evil no good programs
 
 /datum/map_template/holodeck/medicalsim
