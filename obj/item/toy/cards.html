@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;item&#x2F;toy&#x2F;cards - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/item/toy/cards.html#var">Var Details</a> - <a href="obj/item/toy/cards.html#proc">Proc Details</a></header>
+<main>
+<h1>cards <aside>/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/toy/cards.html">toy/cards</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/toys.dm#L739">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;toys.dm 739"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="obj/item/toy/cards.html#var/deckstyle">deckstyle</a></th><td>Artistic style of the deck</td></tr>
+            <tr><th><a href="obj/item/toy/cards.html#var/parentdeck">parentdeck</a></th><td>The parent deck of the cards</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/item/toy/cards.html#proc/add_card">add_card</a></th><td></td></tr>
+            <tr><th><a href="obj/item/toy/cards.html#proc/apply_card_vars">apply_card_vars</a></th><td></td></tr>
+            <tr><th><a href="obj/item/toy/cards.html#proc/draw_card">draw_card</a></th><td>Are we adding a hand of cards to the deck?
+Are we adding to a hand of cards?</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/deckstyle"><aside class="declaration">var </aside>deckstyle
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/toys.dm#L745">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;toys.dm 745"/></a></h3>
+        <p>Artistic style of the deck</p><h3 id="var/parentdeck"><aside class="declaration">var </aside>parentdeck
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/weakref.html">weakref</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/toys.dm#L743">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;toys.dm 743"/></a></h3>
+        <p>The parent deck of the cards</p><h2 id="proc">Proc Details</h2><h3 id="proc/add_card"><aside class="declaration">proc </aside>add_card<aside>(/<a href="mob.html">mob</a>/user, /list/cards, /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/toy/cards.html">toy/cards</a>/card_to_add) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/toys.dm#L787">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;toys.dm 787"/></a></aside>
+        </h3>
+        <h2 id="add-card">add_card</h2>
+<p>Adds a card to the deck (or hand of cards).</p>
+<p>Arguments:</p>
+<ul>
+<li>mob/user - The user adding the card.</li>
+<li>list/cards - The list of cards the user is adding to.</li>
+<li>obj/item/toy/cards/card_to_add - The card (or hand of cards) that will be added back into the deck</li>
+</ul><h3 id="proc/apply_card_vars"><aside class="declaration">proc </aside>apply_card_vars<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/toy/cards.html">toy/cards</a>/newobj, /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/toy/cards.html">toy/cards</a>/sourceobj) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/toys.dm#L773">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;toys.dm 773"/></a></aside>
+        </h3>
+        <h2 id="apply-card-vars">apply_card_vars</h2>
+<p>Applies variables for supporting multiple types of card deck</p><h3 id="proc/draw_card"><aside class="declaration">proc </aside>draw_card<aside>(/<a href="mob.html">mob</a>/user, /list/cards, /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/toy/cards.html">toy/cards</a>/<a href="obj/item/toy/cards/singlecard.html">singlecard</a>/forced_card) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/toys.dm#L827">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;toys.dm 827"/></a></aside>
+        </h3>
+        <p>Are we adding a hand of cards to the deck?
+Are we adding to a hand of cards?</p>
+<h2 id="draw-card">draw_card</h2>
+<p>Draws a card from the deck (or hand of cards).</p>
+<p>Arguments:</p>
+<ul>
+<li>mob/user - The user drawing from the deck.</li>
+<li>list/cards - The list of cards the user is drawing from.</li>
+<li>obj/item/toy/cards/singlecard/forced_card (optional) - Used to force the card drawn from the deck</li>
+</ul></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/2fb3940bf230bc8c21d21dc104e93ecf6555f111">2fb3940</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

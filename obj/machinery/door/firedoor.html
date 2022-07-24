@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;machinery&#x2F;door&#x2F;firedoor - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/machinery/door/firedoor.html#var">Var Details</a> - <a href="obj/machinery/door/firedoor.html#proc">Proc Details</a></header>
+<main>
+<h1>firedoor <aside>/<a href="obj.html">obj</a>/<a href="obj/machinery.html">machinery</a>/<a href="obj/machinery/door.html">door</a>/<a href="obj/machinery/door/firedoor.html">firedoor</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L6">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 6"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/affecting_areas">affecting_areas</a></th><td>List of areas we handle. See CalculateAffectingAreas()</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/alarm_type">alarm_type</a></th><td>Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/being_held_open">being_held_open</a></th><td>Tracks if the firelock is being held open by a crowbar. If so, we don't close until they walk away</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/is_playing_alarm">is_playing_alarm</a></th><td>Keeps track of if we're playing the alarm sound loop (as only one firelock per group should be). Used during power changes.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/light_xoffset">light_xoffset</a></th><td>X offset for the overlay lights, so that they line up with the thin border firelocks</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/light_yoffset">light_yoffset</a></th><td>Y offset for the overlay lights, so that they line up with the thin border firelocks</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/luminosity">luminosity</a></th><td>Trick to get the glowing overlay visible from a distance</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/merger_id">merger_id</a></th><td>The merger_id and merger_typecache variables are used to make rows of firelocks activate at the same time.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/my_area">my_area</a></th><td>For the few times we affect only the area we're actually in. Set during Init. If we get moved, we don't update, but this is consistant with fire alarms and also kinda funny so call it intentional.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/soundloop">soundloop</a></th><td>looping sound datum for our fire alarm siren.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#var/warn_lights">warn_lights</a></th><td>Overlay object for the warning lights. This and some plane settings allows the lights to glow in the dark.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/CalculateAffectingAreas">CalculateAffectingAreas</a></th><td>Calculates what areas we should worry about.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/activate">activate</a></th><td>Proc that handles activation of the firelock and all this details</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/adjust_lights_starting_offset">adjust_lights_starting_offset</a></th><td>Sets the offset for the warning lights.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/correct_state">correct_state</a></th><td>Corrects the current state of the door, based on if alarm_type is set.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/remove_from_areas">remove_from_areas</a></th><td>Removes us from any lists of areas in the affecting_areas list, then clears affecting_areas</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/reset">reset</a></th><td>Proc that handles reset steps</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/start_activation_process">start_activation_process</a></th><td>Begins activation process of us and our neighbors.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/try_to_crowbar">try_to_crowbar</a></th><td>We check for adjacency when using the primary attack.</td></tr>
+            <tr><th><a href="obj/machinery/door/firedoor.html#proc/try_to_crowbar_secondary">try_to_crowbar_secondary</a></th><td>A simple toggle for firedoors between on and off</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/affecting_areas"><aside class="declaration">var </aside>affecting_areas
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L37">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 37"/></a></h3>
+        <p>List of areas we handle. See CalculateAffectingAreas()</p><h3 id="var/alarm_type"><aside class="declaration">var </aside>alarm_type
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L44">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 44"/></a></h3>
+        <p>Type of alarm when active. See code/defines/firealarm.dm for the list. This var being null means there is no alarm.</p><h3 id="var/being_held_open"><aside class="declaration">var </aside>being_held_open
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L41">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 41"/></a></h3>
+        <p>Tracks if the firelock is being held open by a crowbar. If so, we don't close until they walk away</p><h3 id="var/is_playing_alarm"><aside class="declaration">var </aside>is_playing_alarm
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L54">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 54"/></a></h3>
+        <p>Keeps track of if we're playing the alarm sound loop (as only one firelock per group should be). Used during power changes.</p><h3 id="var/light_xoffset"><aside class="declaration">var </aside>light_xoffset
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L31">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 31"/></a></h3>
+        <p>X offset for the overlay lights, so that they line up with the thin border firelocks</p><h3 id="var/light_yoffset"><aside class="declaration">var </aside>light_yoffset
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L33">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 33"/></a></h3>
+        <p>Y offset for the overlay lights, so that they line up with the thin border firelocks</p><h3 id="var/luminosity">luminosity
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L29">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 29"/></a></h3>
+        <p>Trick to get the glowing overlay visible from a distance</p><h3 id="var/merger_id"><aside class="declaration">var </aside>merger_id
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L46">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 46"/></a></h3>
+        <p>The merger_id and merger_typecache variables are used to make rows of firelocks activate at the same time.</p><h3 id="var/my_area"><aside class="declaration">var </aside>my_area
+            <aside>&ndash; /<a href="area.html">area</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L39">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 39"/></a></h3>
+        <p>For the few times we affect only the area we're actually in. Set during Init. If we get moved, we don't update, but this is consistant with fire alarms and also kinda funny so call it intentional.</p><h3 id="var/soundloop"><aside class="declaration">var </aside>soundloop
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/looping_sound.html">looping_sound</a>/firealarm</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L52">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 52"/></a></h3>
+        <p>looping sound datum for our fire alarm siren.</p><h3 id="var/warn_lights"><aside class="declaration">var </aside>warn_lights
+            <aside>&ndash; /mutable_appearance</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L49">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 49"/></a></h3>
+        <p>Overlay object for the warning lights. This and some plane settings allows the lights to glow in the dark.</p><h2 id="proc">Proc Details</h2><h3 id="proc/CalculateAffectingAreas"><aside class="declaration">proc </aside>CalculateAffectingAreas<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L116">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 116"/></a></aside>
+        </h3>
+        <p>Calculates what areas we should worry about.</p>
+<p>This proc builds a list of areas we are in and areas we border
+and writes it to affecting_areas.</p><h3 id="proc/activate"><aside class="declaration">proc </aside>activate<aside>(code) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L203">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 203"/></a></aside>
+        </h3>
+        <p>Proc that handles activation of the firelock and all this details</p>
+<p>Sets the alarm_type variable based on the single arg, which is in turn
+used by several procs to understand the intended state of the fire lock.
+Also calls set_status() on all fire alarms in all affected areas, tells
+the area the firelock sits in to report the event (AI, alarm consoles, etc)
+and finally calls correct_state(), which will handle opening or closing
+this fire lock.</p><h3 id="proc/adjust_lights_starting_offset"><aside class="declaration">proc </aside>adjust_lights_starting_offset<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L88">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 88"/></a></aside>
+        </h3>
+        <p>Sets the offset for the warning lights.</p>
+<p>Used for special firelocks with light overlays that don't line up to their sprite.</p><h3 id="proc/correct_state"><aside class="declaration">proc </aside>correct_state<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L435">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 435"/></a></aside>
+        </h3>
+        <p>Corrects the current state of the door, based on if alarm_type is set.</p>
+<p>This proc is called after weld and power restore events. Gives the
+illusion that the door is constantly attempting to move without actually
+having to process it. Timers also call this, so that if alarm_type
+changes during the timer, the door doesn't close or open incorrectly.</p><h3 id="proc/remove_from_areas"><aside class="declaration">proc </aside>remove_from_areas<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L137">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 137"/></a></aside>
+        </h3>
+        <p>Removes us from any lists of areas in the affecting_areas list, then clears affecting_areas</p>
+<p>Undoes everything done in the CalculateAffectingAreas() proc, to clean up prior to deletion.
+Calls reset() first, in case any alarms need to be cleared first.</p><h3 id="proc/reset"><aside class="declaration">proc </aside>reset<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L225">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 225"/></a></aside>
+        </h3>
+        <p>Proc that handles reset steps</p>
+<p>Clears the alarm state and attempts to open the firelock.</p><h3 id="proc/start_activation_process"><aside class="declaration">proc </aside>start_activation_process<aside>(code) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L183">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 183"/></a></aside>
+        </h3>
+        <p>Begins activation process of us and our neighbors.</p>
+<p>This proc will call activate() on every fire lock (including us) listed
+in the merge group datum. Returns without doing anything if our alarm_type
+was already set, as that means that we're already active.</p>
+<p>Arguments:
+code should be one of three defined alarm types, or can be not supplied. Will dictate the color of the fire alarm lights, and defults to &quot;firelock_alarm_type_generic&quot;</p><h3 id="proc/try_to_crowbar">try_to_crowbar<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/acting_object, /<a href="mob.html">mob</a>/user) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L333">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 333"/></a></aside>
+        </h3>
+        <p>We check for adjacency when using the primary attack.</p><h3 id="proc/try_to_crowbar_secondary"><aside class="parent"><a title="/obj/machinery/door" href="obj/machinery/door.html#proc/try_to_crowbar_secondary">&uarr;</a></aside>try_to_crowbar_secondary<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/acting_object, /<a href="mob.html">mob</a>/user) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/machinery/doors/firedoor.dm#L352">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;machinery&#x2F;doors&#x2F;firedoor.dm 352"/></a></aside>
+        </h3>
+        <p>A simple toggle for firedoors between on and off</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/2fb3940bf230bc8c21d21dc104e93ecf6555f111">2fb3940</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

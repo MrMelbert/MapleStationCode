@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;__DEFINES&#x2F;mobs.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="code/__DEFINES/mobs.html#define">Define Details</a></header>
+<main>
+<h1>code/__DEFINES/mobs.dm 
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BLOOD_REGEN_FACTOR">BLOOD_REGEN_FACTOR</a></th><td>How efficiently humans regenerate blood.</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/HUMAN_BODY">HUMAN_BODY</a></th><td>Body type bitfields for allowed_animal_origin used to check compatible surgery body types (use NONE for no matching body type)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BEAT_FAST">BEAT_FAST</a></th><td>Heartbeat is beating fast for hard crit</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BEAT_SLOW">BEAT_SLOW</a></th><td>Heartbeat is beating slow for soft crit</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BEAT_NONE">BEAT_NONE</a></th><td>Heartbeat is gone... He's dead Jim :(</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SHOCK_NOGLOVES">SHOCK_NOGLOVES</a></th><td>Flags used by the flags parameter of electrocute act.
+Makes it so that the shock doesn't take gloves into account.</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SHOCK_TESLA">SHOCK_TESLA</a></th><td>Used when the shock is from a tesla bolt.</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SHOCK_ILLUSION">SHOCK_ILLUSION</a></th><td>Used when an illusion shocks something. Makes the shock deal stamina damage and not trigger certain secondary effects.</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SHOCK_NOSTUN">SHOCK_NOSTUN</a></th><td>The shock doesn't stun.</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/INCORPOREAL_MOVE_BASIC">INCORPOREAL_MOVE_BASIC</a></th><td>normal movement, see: <a href="mob/living.html#var/incorporeal_move" title="/mob/living">/mob/living/var/incorporeal_move</a></td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/INCORPOREAL_MOVE_SHADOW">INCORPOREAL_MOVE_SHADOW</a></th><td>leaves a trail of shadows</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/INCORPOREAL_MOVE_JAUNT">INCORPOREAL_MOVE_JAUNT</a></th><td>is blocked by holy water/salt</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/RECENT_EXAMINE_MAX_WINDOW">RECENT_EXAMINE_MAX_WINDOW</a></th><td>How long it takes for an examined atom to be removed from recent_examines. Should be the max of the below time windows</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/EXAMINE_MORE_WINDOW">EXAMINE_MORE_WINDOW</a></th><td>If you examine the same atom twice in this timeframe, we call examine_more() instead of examine()</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/EYE_CONTACT_WINDOW">EYE_CONTACT_WINDOW</a></th><td>If you examine another mob who's successfully examined you during this duration of time, you two try to make eye contact. Cute!</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/YAWN_PROPAGATION_EXAMINE_WINDOW">YAWN_PROPAGATION_EXAMINE_WINDOW</a></th><td>If you yawn while someone nearby has examined you within this time frame, it will force them to yawn as well. Tradecraft!</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/EYE_CONTACT_RANGE">EYE_CONTACT_RANGE</a></th><td>How far away you can be to make eye contact with someone while examining</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/CAN_SUCCUMB">CAN_SUCCUMB</a></th><td>Returns whether or not the given mob can succumb</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/STANDING_UP">STANDING_UP</a></th><td>Mob is standing up, usually associated with lying_angle value of 0.</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/LYING_DOWN">LYING_DOWN</a></th><td>Mob is lying down, usually associated with lying_angle values of 90 or 270.</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/PIXEL_Y_OFFSET_LYING">PIXEL_Y_OFFSET_LYING</a></th><td>How much a mob's sprite should be moved when they're lying down</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SPAWN_MEGAFAUNA">SPAWN_MEGAFAUNA</a></th><td>Define for spawning megafauna instead of a mob for cave gen</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SQUASHED_SHOULD_BE_DOWN">SQUASHED_SHOULD_BE_DOWN</a></th><td>Squash flags. For squashable element
+Whether or not the squashing requires the squashed mob to be lying down</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SQUASHED_SHOULD_BE_GIBBED">SQUASHED_SHOULD_BE_GIBBED</a></th><td>Whether or not to gib when the squashed mob is moved over</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/THROW_MODE_DISABLED">THROW_MODE_DISABLED</a></th><td>Throw modes, defines whether or not to turn off throw mode after</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SIGN_ONE_HAND">SIGN_ONE_HAND</a></th><td>Sign Language defines</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/TOTAL_LAYERS">TOTAL_LAYERS</a></th><td>Total number of layers for mob overlays</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/MUTATIONS_LAYER">MUTATIONS_LAYER</a></th><td>Mutations layer - Tk headglows, cold resistance glow, etc</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BODY_BEHIND_LAYER">BODY_BEHIND_LAYER</a></th><td>Mutantrace features (tail when looking south) that must appear behind the body parts</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BODYPARTS_LAYER">BODYPARTS_LAYER</a></th><td>Initially &quot;AUGMENTS&quot;, this was repurposed to be a catch-all bodyparts flag</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BODY_ADJ_LAYER">BODY_ADJ_LAYER</a></th><td>Mutantrace features (snout, body markings) that must appear above the body parts</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BODY_LAYER">BODY_LAYER</a></th><td>Underwear, undershirts, socks, eyes, lips(makeup)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/FRONT_MUTATIONS_LAYER">FRONT_MUTATIONS_LAYER</a></th><td>Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/DAMAGE_LAYER">DAMAGE_LAYER</a></th><td>Damage indicators (cuts and burns)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/UNIFORM_LAYER">UNIFORM_LAYER</a></th><td>Jumpsuit clothing layer</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/ID_LAYER">ID_LAYER</a></th><td>ID card layer (might be deprecated)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/ID_CARD_LAYER">ID_CARD_LAYER</a></th><td>ID card layer</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/HANDS_PART_LAYER">HANDS_PART_LAYER</a></th><td>Hands body part layer (or is this for the arm? not sure...)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/GLOVES_LAYER">GLOVES_LAYER</a></th><td>Gloves layer</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SHOES_LAYER">SHOES_LAYER</a></th><td>Shoes layer</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/EARS_LAYER">EARS_LAYER</a></th><td>Ears layer (Spessmen have ears? Wow)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SUIT_LAYER">SUIT_LAYER</a></th><td>Suit layer (armor, hardsuits, etc.)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/GLASSES_LAYER">GLASSES_LAYER</a></th><td>Glasses layer</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BELT_LAYER">BELT_LAYER</a></th><td>Belt layer</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/SUIT_STORE_LAYER">SUIT_STORE_LAYER</a></th><td>Suit storage layer (tucking a gun or baton underneath your armor)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/NECK_LAYER">NECK_LAYER</a></th><td>Neck layer (for wearing ties and bedsheets)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BACK_LAYER">BACK_LAYER</a></th><td>Back layer (for backpacks and equipment on your back)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/HAIR_LAYER">HAIR_LAYER</a></th><td>Hair layer (mess with the fro and you got to go!)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/FACEMASK_LAYER">FACEMASK_LAYER</a></th><td>Facemask layer (gas masks, breath masks, etc.)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/HEAD_LAYER">HEAD_LAYER</a></th><td>Head layer (hats, helmets, etc.)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/HANDCUFF_LAYER">HANDCUFF_LAYER</a></th><td>Handcuff layer (when your hands are cuffed)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/LEGCUFF_LAYER">LEGCUFF_LAYER</a></th><td>Legcuff layer (when your feet are cuffed)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/HANDS_LAYER">HANDS_LAYER</a></th><td>Hands layer (for the actual hand, not the arm... I think?)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BODY_FRONT_LAYER">BODY_FRONT_LAYER</a></th><td>Body front layer. Usually used for mutant bodyparts that need to be in front of stuff (e.g. cat ears)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/ABOVE_BODY_FRONT_GLASSES_LAYER">ABOVE_BODY_FRONT_GLASSES_LAYER</a></th><td>Special body layer that actually require to be above the hair (e.g. lifted welding goggles)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/ABOVE_BODY_FRONT_HEAD_LAYER">ABOVE_BODY_FRONT_HEAD_LAYER</a></th><td>Special body layer for the rare cases where something on the head needs to be above everything else (e.g. flowers)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/HALO_LAYER">HALO_LAYER</a></th><td>Blood cult ascended halo layer, because there's currently no better solution for adding/removing</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/FIRE_LAYER">FIRE_LAYER</a></th><td>Fire layer when you're on fire</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/EXTERNAL_FRONT">EXTERNAL_FRONT</a></th><td>Draws organ on the BODY_FRONT_LAYER</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/EXTERNAL_ADJACENT">EXTERNAL_ADJACENT</a></th><td>Draws organ on the BODY_ADJ_LAYER</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/EXTERNAL_BEHIND">EXTERNAL_BEHIND</a></th><td>Draws organ on the BODY_BEHIND_LAYER</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/ALL_EXTERNAL_OVERLAYS">ALL_EXTERNAL_OVERLAYS</a></th><td>Draws organ on all EXTERNAL layers</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/UNDER_SUIT_LAYER">UNDER_SUIT_LAYER</a></th><td>The layer underneath the suit</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/UNDER_HEAD_LAYER">UNDER_HEAD_LAYER</a></th><td>The layer underneath the head (for hats)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/ABOVE_SHOES_LAYER">ABOVE_SHOES_LAYER</a></th><td>The layer above shoes</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/ABOVE_BODY_FRONT_LAYER">ABOVE_BODY_FRONT_LAYER</a></th><td>The layer above mutant body parts</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/BE_CLOSE">BE_CLOSE</a></th><td>If silicons need to be next to the atom to use this</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/NO_DEXTERITY">NO_DEXTERITY</a></th><td>If other mobs (monkeys, aliens, etc) can use this</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/FLOOR_OKAY">FLOOR_OKAY</a></th><td>If mobs can use this while resting</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/RESIZE_DEFAULT_SIZE">RESIZE_DEFAULT_SIZE</a></th><td>The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/CLIENT_FROM_VAR">CLIENT_FROM_VAR</a></th><td>Get the client from the var</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/VOMIT_TOXIC">VOMIT_TOXIC</a></th><td>The mob will vomit a green color</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/VOMIT_PURPLE">VOMIT_PURPLE</a></th><td>The mob will vomit a purple color</td></tr>
+        <tr><th><a href="code/__DEFINES/mobs.html#define/NO_BUCKLE_LYING">NO_BUCKLE_LYING</a></th><td>Possible value of <a href="atom/movable.html#var/buckle_lying" title="/atom/movable">/atom/movable/buckle_lying</a>. If set to a different (positive-or-zero) value than this, the buckling thing will force a lying angle on the buckled.</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/ABOVE_BODY_FRONT_GLASSES_LAYER"><aside class="declaration">#define </aside>ABOVE_BODY_FRONT_GLASSES_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L570">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 570"/></a>
+    </h3>
+    <p>Special body layer that actually require to be above the hair (e.g. lifted welding goggles)</p><h3 id="define/ABOVE_BODY_FRONT_HEAD_LAYER"><aside class="declaration">#define </aside>ABOVE_BODY_FRONT_HEAD_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L572">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 572"/></a>
+    </h3>
+    <p>Special body layer for the rare cases where something on the head needs to be above everything else (e.g. flowers)</p><h3 id="define/ABOVE_BODY_FRONT_LAYER"><aside class="declaration">#define </aside>ABOVE_BODY_FRONT_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L600">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 600"/></a>
+    </h3>
+    <p>The layer above mutant body parts</p><h3 id="define/ABOVE_SHOES_LAYER"><aside class="declaration">#define </aside>ABOVE_SHOES_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L598">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 598"/></a>
+    </h3>
+    <p>The layer above shoes</p><h3 id="define/ALL_EXTERNAL_OVERLAYS"><aside class="declaration">#define </aside>ALL_EXTERNAL_OVERLAYS
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L586">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 586"/></a>
+    </h3>
+    <p>Draws organ on all EXTERNAL layers</p><h3 id="define/BACK_LAYER"><aside class="declaration">#define </aside>BACK_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L554">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 554"/></a>
+    </h3>
+    <p>Back layer (for backpacks and equipment on your back)</p><h3 id="define/BEAT_FAST"><aside class="declaration">#define </aside>BEAT_FAST
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L79">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 79"/></a>
+    </h3>
+    <p>Heartbeat is beating fast for hard crit</p><h3 id="define/BEAT_NONE"><aside class="declaration">#define </aside>BEAT_NONE
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L83">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 83"/></a>
+    </h3>
+    <p>Heartbeat is gone... He's dead Jim :(</p><h3 id="define/BEAT_SLOW"><aside class="declaration">#define </aside>BEAT_SLOW
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L81">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 81"/></a>
+    </h3>
+    <p>Heartbeat is beating slow for soft crit</p><h3 id="define/BELT_LAYER"><aside class="declaration">#define </aside>BELT_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L548">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 548"/></a>
+    </h3>
+    <p>Belt layer</p><h3 id="define/BE_CLOSE"><aside class="declaration">#define </aside>BE_CLOSE
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L604">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 604"/></a>
+    </h3>
+    <p>If silicons need to be next to the atom to use this</p><h3 id="define/BLOOD_REGEN_FACTOR"><aside class="declaration">#define </aside>BLOOD_REGEN_FACTOR
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L25">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 25"/></a>
+    </h3>
+    <p>How efficiently humans regenerate blood.</p><h3 id="define/BODYPARTS_LAYER"><aside class="declaration">#define </aside>BODYPARTS_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L520">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 520"/></a>
+    </h3>
+    <p>Initially &quot;AUGMENTS&quot;, this was repurposed to be a catch-all bodyparts flag</p><h3 id="define/BODY_ADJ_LAYER"><aside class="declaration">#define </aside>BODY_ADJ_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L522">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 522"/></a>
+    </h3>
+    <p>Mutantrace features (snout, body markings) that must appear above the body parts</p><h3 id="define/BODY_BEHIND_LAYER"><aside class="declaration">#define </aside>BODY_BEHIND_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L518">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 518"/></a>
+    </h3>
+    <p>Mutantrace features (tail when looking south) that must appear behind the body parts</p><h3 id="define/BODY_FRONT_LAYER"><aside class="declaration">#define </aside>BODY_FRONT_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L568">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 568"/></a>
+    </h3>
+    <p>Body front layer. Usually used for mutant bodyparts that need to be in front of stuff (e.g. cat ears)</p><h3 id="define/BODY_LAYER"><aside class="declaration">#define </aside>BODY_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L524">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 524"/></a>
+    </h3>
+    <p>Underwear, undershirts, socks, eyes, lips(makeup)</p><h3 id="define/CAN_SUCCUMB"><aside class="declaration">#define </aside>CAN_SUCCUMB
+            <aside>(target)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L444">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 444"/></a>
+    </h3>
+    <p>Returns whether or not the given mob can succumb</p><h3 id="define/CLIENT_FROM_VAR"><aside class="declaration">#define </aside>CLIENT_FROM_VAR
+            <aside>(I)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L616">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 616"/></a>
+    </h3>
+    <p>Get the client from the var</p><h3 id="define/DAMAGE_LAYER"><aside class="declaration">#define </aside>DAMAGE_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L528">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 528"/></a>
+    </h3>
+    <p>Damage indicators (cuts and burns)</p><h3 id="define/EARS_LAYER"><aside class="declaration">#define </aside>EARS_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L542">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 542"/></a>
+    </h3>
+    <p>Ears layer (Spessmen have ears? Wow)</p><h3 id="define/EXAMINE_MORE_WINDOW"><aside class="declaration">#define </aside>EXAMINE_MORE_WINDOW
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L431">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 431"/></a>
+    </h3>
+    <p>If you examine the same atom twice in this timeframe, we call examine_more() instead of examine()</p><h3 id="define/EXTERNAL_ADJACENT"><aside class="declaration">#define </aside>EXTERNAL_ADJACENT
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L582">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 582"/></a>
+    </h3>
+    <p>Draws organ on the BODY_ADJ_LAYER</p><h3 id="define/EXTERNAL_BEHIND"><aside class="declaration">#define </aside>EXTERNAL_BEHIND
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L584">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 584"/></a>
+    </h3>
+    <p>Draws organ on the BODY_BEHIND_LAYER</p><h3 id="define/EXTERNAL_FRONT"><aside class="declaration">#define </aside>EXTERNAL_FRONT
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L580">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 580"/></a>
+    </h3>
+    <p>Draws organ on the BODY_FRONT_LAYER</p><h3 id="define/EYE_CONTACT_RANGE"><aside class="declaration">#define </aside>EYE_CONTACT_RANGE
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L438">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 438"/></a>
+    </h3>
+    <p>How far away you can be to make eye contact with someone while examining</p><h3 id="define/EYE_CONTACT_WINDOW"><aside class="declaration">#define </aside>EYE_CONTACT_WINDOW
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L433">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 433"/></a>
+    </h3>
+    <p>If you examine another mob who's successfully examined you during this duration of time, you two try to make eye contact. Cute!</p><h3 id="define/FACEMASK_LAYER"><aside class="declaration">#define </aside>FACEMASK_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L558">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 558"/></a>
+    </h3>
+    <p>Facemask layer (gas masks, breath masks, etc.)</p><h3 id="define/FIRE_LAYER"><aside class="declaration">#define </aside>FIRE_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L576">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 576"/></a>
+    </h3>
+    <p>Fire layer when you're on fire</p><h3 id="define/FLOOR_OKAY"><aside class="declaration">#define </aside>FLOOR_OKAY
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L610">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 610"/></a>
+    </h3>
+    <p>If mobs can use this while resting</p><h3 id="define/FRONT_MUTATIONS_LAYER"><aside class="declaration">#define </aside>FRONT_MUTATIONS_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L526">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 526"/></a>
+    </h3>
+    <p>Mutations that should appear above body, body_adj and bodyparts layer (e.g. laser eyes)</p><h3 id="define/GLASSES_LAYER"><aside class="declaration">#define </aside>GLASSES_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L546">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 546"/></a>
+    </h3>
+    <p>Glasses layer</p><h3 id="define/GLOVES_LAYER"><aside class="declaration">#define </aside>GLOVES_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L538">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 538"/></a>
+    </h3>
+    <p>Gloves layer</p><h3 id="define/HAIR_LAYER"><aside class="declaration">#define </aside>HAIR_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L556">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 556"/></a>
+    </h3>
+    <p>Hair layer (mess with the fro and you got to go!)</p><h3 id="define/HALO_LAYER"><aside class="declaration">#define </aside>HALO_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L574">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 574"/></a>
+    </h3>
+    <p>Blood cult ascended halo layer, because there's currently no better solution for adding/removing</p><h3 id="define/HANDCUFF_LAYER"><aside class="declaration">#define </aside>HANDCUFF_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L562">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 562"/></a>
+    </h3>
+    <p>Handcuff layer (when your hands are cuffed)</p><h3 id="define/HANDS_LAYER"><aside class="declaration">#define </aside>HANDS_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L566">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 566"/></a>
+    </h3>
+    <p>Hands layer (for the actual hand, not the arm... I think?)</p><h3 id="define/HANDS_PART_LAYER"><aside class="declaration">#define </aside>HANDS_PART_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L536">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 536"/></a>
+    </h3>
+    <p>Hands body part layer (or is this for the arm? not sure...)</p><h3 id="define/HEAD_LAYER"><aside class="declaration">#define </aside>HEAD_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L560">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 560"/></a>
+    </h3>
+    <p>Head layer (hats, helmets, etc.)</p><h3 id="define/HUMAN_BODY"><aside class="declaration">#define </aside>HUMAN_BODY
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L68">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 68"/></a>
+    </h3>
+    <p>Body type bitfields for allowed_animal_origin used to check compatible surgery body types (use NONE for no matching body type)</p><h3 id="define/ID_CARD_LAYER"><aside class="declaration">#define </aside>ID_CARD_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L534">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 534"/></a>
+    </h3>
+    <p>ID card layer</p><h3 id="define/ID_LAYER"><aside class="declaration">#define </aside>ID_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L532">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 532"/></a>
+    </h3>
+    <p>ID card layer (might be deprecated)</p><h3 id="define/INCORPOREAL_MOVE_BASIC"><aside class="declaration">#define </aside>INCORPOREAL_MOVE_BASIC
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L286">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 286"/></a>
+    </h3>
+    <p>normal movement, see: <a href="mob/living.html#var/incorporeal_move" title="/mob/living">/mob/living/var/incorporeal_move</a></p><h3 id="define/INCORPOREAL_MOVE_JAUNT"><aside class="declaration">#define </aside>INCORPOREAL_MOVE_JAUNT
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L288">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 288"/></a>
+    </h3>
+    <p>is blocked by holy water/salt</p><h3 id="define/INCORPOREAL_MOVE_SHADOW"><aside class="declaration">#define </aside>INCORPOREAL_MOVE_SHADOW
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L287">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 287"/></a>
+    </h3>
+    <p>leaves a trail of shadows</p><h3 id="define/LEGCUFF_LAYER"><aside class="declaration">#define </aside>LEGCUFF_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L564">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 564"/></a>
+    </h3>
+    <p>Legcuff layer (when your feet are cuffed)</p><h3 id="define/LYING_DOWN"><aside class="declaration">#define </aside>LYING_DOWN
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L450">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 450"/></a>
+    </h3>
+    <p>Mob is lying down, usually associated with lying_angle values of 90 or 270.</p><h3 id="define/MUTATIONS_LAYER"><aside class="declaration">#define </aside>MUTATIONS_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L516">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 516"/></a>
+    </h3>
+    <p>Mutations layer - Tk headglows, cold resistance glow, etc</p><h3 id="define/NECK_LAYER"><aside class="declaration">#define </aside>NECK_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L552">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 552"/></a>
+    </h3>
+    <p>Neck layer (for wearing ties and bedsheets)</p><h3 id="define/NO_BUCKLE_LYING"><aside class="declaration">#define </aside>NO_BUCKLE_LYING
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L624">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 624"/></a>
+    </h3>
+    <p>Possible value of <a href="atom/movable.html#var/buckle_lying" title="/atom/movable">/atom/movable/buckle_lying</a>. If set to a different (positive-or-zero) value than this, the buckling thing will force a lying angle on the buckled.</p><h3 id="define/NO_DEXTERITY"><aside class="declaration">#define </aside>NO_DEXTERITY
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L606">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 606"/></a>
+    </h3>
+    <p>If other mobs (monkeys, aliens, etc) can use this</p><h3 id="define/PIXEL_Y_OFFSET_LYING"><aside class="declaration">#define </aside>PIXEL_Y_OFFSET_LYING
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L453">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 453"/></a>
+    </h3>
+    <p>How much a mob's sprite should be moved when they're lying down</p><h3 id="define/RECENT_EXAMINE_MAX_WINDOW"><aside class="declaration">#define </aside>RECENT_EXAMINE_MAX_WINDOW
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L429">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 429"/></a>
+    </h3>
+    <p>How long it takes for an examined atom to be removed from recent_examines. Should be the max of the below time windows</p><h3 id="define/RESIZE_DEFAULT_SIZE"><aside class="declaration">#define </aside>RESIZE_DEFAULT_SIZE
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L613">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 613"/></a>
+    </h3>
+    <p>The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)</p><h3 id="define/SHOCK_ILLUSION"><aside class="declaration">#define </aside>SHOCK_ILLUSION
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L282">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 282"/></a>
+    </h3>
+    <p>Used when an illusion shocks something. Makes the shock deal stamina damage and not trigger certain secondary effects.</p><h3 id="define/SHOCK_NOGLOVES"><aside class="declaration">#define </aside>SHOCK_NOGLOVES
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L278">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 278"/></a>
+    </h3>
+    <p>Flags used by the flags parameter of electrocute act.
+Makes it so that the shock doesn't take gloves into account.</p><h3 id="define/SHOCK_NOSTUN"><aside class="declaration">#define </aside>SHOCK_NOSTUN
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L284">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 284"/></a>
+    </h3>
+    <p>The shock doesn't stun.</p><h3 id="define/SHOCK_TESLA"><aside class="declaration">#define </aside>SHOCK_TESLA
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L280">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 280"/></a>
+    </h3>
+    <p>Used when the shock is from a tesla bolt.</p><h3 id="define/SHOES_LAYER"><aside class="declaration">#define </aside>SHOES_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L540">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 540"/></a>
+    </h3>
+    <p>Shoes layer</p><h3 id="define/SIGN_ONE_HAND"><aside class="declaration">#define </aside>SIGN_ONE_HAND
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L506">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 506"/></a>
+    </h3>
+    <p>Sign Language defines</p><h3 id="define/SPAWN_MEGAFAUNA"><aside class="declaration">#define </aside>SPAWN_MEGAFAUNA
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L456">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 456"/></a>
+    </h3>
+    <p>Define for spawning megafauna instead of a mob for cave gen</p><h3 id="define/SQUASHED_SHOULD_BE_DOWN"><aside class="declaration">#define </aside>SQUASHED_SHOULD_BE_DOWN
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L461">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 461"/></a>
+    </h3>
+    <p>Squash flags. For squashable element
+Whether or not the squashing requires the squashed mob to be lying down</p><h3 id="define/SQUASHED_SHOULD_BE_GIBBED"><aside class="declaration">#define </aside>SQUASHED_SHOULD_BE_GIBBED
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L463">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 463"/></a>
+    </h3>
+    <p>Whether or not to gib when the squashed mob is moved over</p><h3 id="define/STANDING_UP"><aside class="declaration">#define </aside>STANDING_UP
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L448">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 448"/></a>
+    </h3>
+    <p>Mob is standing up, usually associated with lying_angle value of 0.</p><h3 id="define/SUIT_LAYER"><aside class="declaration">#define </aside>SUIT_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L544">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 544"/></a>
+    </h3>
+    <p>Suit layer (armor, hardsuits, etc.)</p><h3 id="define/SUIT_STORE_LAYER"><aside class="declaration">#define </aside>SUIT_STORE_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L550">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 550"/></a>
+    </h3>
+    <p>Suit storage layer (tucking a gun or baton underneath your armor)</p><h3 id="define/THROW_MODE_DISABLED"><aside class="declaration">#define </aside>THROW_MODE_DISABLED
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L488">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 488"/></a>
+    </h3>
+    <p>Throw modes, defines whether or not to turn off throw mode after</p><h3 id="define/TOTAL_LAYERS"><aside class="declaration">#define </aside>TOTAL_LAYERS
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L514">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 514"/></a>
+    </h3>
+    <p>Total number of layers for mob overlays</p><h3 id="define/UNDER_HEAD_LAYER"><aside class="declaration">#define </aside>UNDER_HEAD_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L594">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 594"/></a>
+    </h3>
+    <p>The layer underneath the head (for hats)</p><h3 id="define/UNDER_SUIT_LAYER"><aside class="declaration">#define </aside>UNDER_SUIT_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L592">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 592"/></a>
+    </h3>
+    <p>The layer underneath the suit</p><h3 id="define/UNIFORM_LAYER"><aside class="declaration">#define </aside>UNIFORM_LAYER
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L530">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 530"/></a>
+    </h3>
+    <p>Jumpsuit clothing layer</p><h3 id="define/VOMIT_PURPLE"><aside class="declaration">#define </aside>VOMIT_PURPLE
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L621">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 621"/></a>
+    </h3>
+    <p>The mob will vomit a purple color</p><h3 id="define/VOMIT_TOXIC"><aside class="declaration">#define </aside>VOMIT_TOXIC
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L619">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 619"/></a>
+    </h3>
+    <p>The mob will vomit a green color</p><h3 id="define/YAWN_PROPAGATION_EXAMINE_WINDOW"><aside class="declaration">#define </aside>YAWN_PROPAGATION_EXAMINE_WINDOW
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/__DEFINES/mobs.dm#L435">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;mobs.dm 435"/></a>
+    </h3>
+    <p>If you yawn while someone nearby has examined you within this time frame, it will force them to yawn as well. Tradecraft!</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/2fb3940bf230bc8c21d21dc104e93ecf6555f111">2fb3940</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

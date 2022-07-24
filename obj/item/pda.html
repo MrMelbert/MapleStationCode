@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;item&#x2F;pda - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/item/pda.html#var">Var Details</a> - <a href="obj/item/pda.html#proc">Proc Details</a></header>
+<main>
+<h1>pda <aside>/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/pda.html">pda</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L13">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 13"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="obj/item/pda.html#var/account_id">account_id</a></th><td>account id of the ID held</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/background_color">background_color</a></th><td>The currently selected background color.</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/cartridge">cartridge</a></th><td>Current cartridge</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/default_cartridge">default_cartridge</a></th><td>Typepath of the default cartridge to use</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/font_index">font_index</a></th><td>This int tells DM which font is currently selected and lets DM know when the last font has been selected
+so that it can cycle back to the first font when &quot;toggle font&quot; is pressed again.</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/font_mode">font_mode</a></th><td>The currently selected font.</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/icon_alert">icon_alert</a></th><td>Icon to be overlayed for message alerts. Taken from the pda icon file.</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/icon_inactive_pai">icon_inactive_pai</a></th><td>Same as above but for an inactive pAI.</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/icon_pai">icon_pai</a></th><td>Icon to be overlayed when an active pAI is slotted in.</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/owner">owner</a></th><td>String name of owner</td></tr>
+            <tr><th><a href="obj/item/pda.html#var/ui_mode">ui_mode</a></th><td>Controls what menu the PDA will display. 0 is hub; the rest are either built in or based on cartridge.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/item/pda.html#proc/cloak_pda">cloak_pda</a></th><td>See above, we don't want jerry from accounting to try and message nullspace his new bike</td></tr>
+            <tr><th><a href="obj/item/pda.html#proc/display_pda">display_pda</a></th><td>Callbacks for preloading pdas</td></tr>
+            <tr><th><a href="obj/item/pda.html#proc/explode">explode</a></th><td>Called when someone replies to a rigged PDA message. It explodes.
+from_message_menu : whether it's caused by the target opening the message menu too early.</td></tr>
+            <tr><th><a href="obj/item/pda.html#proc/get_types_to_preload">get_types_to_preload</a></th><td>Return a list of types you want to pregenerate and use later
+Do not pass in things that care about their init location, or expect extra input
+Also as a curtiousy to me, don't pass in any bombs</td></tr>
+            <tr><th><a href="obj/item/pda.html#proc/on_light_eater">on_light_eater</a></th><td>Special light eater handling</td></tr>
+            <tr><th><a href="obj/item/pda.html#proc/send_message">send_message</a></th><td>Prompts the user to input and send a message to another PDA.
+the everyone arg is used for mass messaging from lawyer and captain carts.
+rigged for PDA bombs. fakename and fakejob for forged messages (also PDA bombs).</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/account_id"><aside class="declaration">var </aside>account_id
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L93">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 93"/></a></h3>
+        <p>account id of the ID held</p><h3 id="var/background_color"><aside class="declaration">var </aside>background_color
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L59">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 59"/></a></h3>
+        <p>The currently selected background color.</p><h3 id="var/cartridge"><aside class="declaration">var </aside>cartridge
+            <aside>&ndash; /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/cartridge.html">cartridge</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L42">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 42"/></a></h3>
+        <p>Current cartridge</p><h3 id="var/default_cartridge"><aside class="declaration">var </aside>default_cartridge
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L40">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 40"/></a></h3>
+        <p>Typepath of the default cartridge to use</p><h3 id="var/font_index"><aside class="declaration">var </aside>font_index
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L55">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 55"/></a></h3>
+        <p>This int tells DM which font is currently selected and lets DM know when the last font has been selected
+so that it can cycle back to the first font when &quot;toggle font&quot; is pressed again.</p><h3 id="var/font_mode"><aside class="declaration">var </aside>font_mode
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L57">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 57"/></a></h3>
+        <p>The currently selected font.</p><h3 id="var/icon_alert"><aside class="declaration">var </aside>icon_alert
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L46">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 46"/></a></h3>
+        <p>Icon to be overlayed for message alerts. Taken from the pda icon file.</p><h3 id="var/icon_inactive_pai"><aside class="declaration">var </aside>icon_inactive_pai
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L50">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 50"/></a></h3>
+        <p>Same as above but for an inactive pAI.</p><h3 id="var/icon_pai"><aside class="declaration">var </aside>icon_pai
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L48">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 48"/></a></h3>
+        <p>Icon to be overlayed when an active pAI is slotted in.</p><h3 id="var/owner"><aside class="declaration">var </aside>owner
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L38">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 38"/></a></h3>
+        <p>String name of owner</p><h3 id="var/ui_mode"><aside class="declaration">var </aside>ui_mode
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L44">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 44"/></a></h3>
+        <p>Controls what menu the PDA will display. 0 is hub; the rest are either built in or based on cartridge.</p><h2 id="proc">Proc Details</h2><h3 id="proc/cloak_pda"><aside class="declaration">proc </aside>cloak_pda<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L1332">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 1332"/></a></aside>
+        </h3>
+        <p>See above, we don't want jerry from accounting to try and message nullspace his new bike</p><h3 id="proc/display_pda"><aside class="declaration">proc </aside>display_pda<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L1328">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 1328"/></a></aside>
+        </h3>
+        <p>Callbacks for preloading pdas</p><h3 id="proc/explode"><aside class="declaration">proc </aside>explode<aside>(/<a href="mob.html">mob</a>/target, /<a href="mob.html">mob</a>/bomber, from_message_menu) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L1192">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 1192"/></a></aside>
+        </h3>
+        <p>Called when someone replies to a rigged PDA message. It explodes.
+from_message_menu : whether it's caused by the target opening the message menu too early.</p><h3 id="proc/get_types_to_preload"><aside class="declaration">proc </aside>get_types_to_preload<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L1321">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 1321"/></a></aside>
+        </h3>
+        <p>Return a list of types you want to pregenerate and use later
+Do not pass in things that care about their init location, or expect extra input
+Also as a curtiousy to me, don't pass in any bombs</p><h3 id="proc/on_light_eater"><aside class="declaration">proc </aside>on_light_eater<aside>(/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/pda.html">pda</a>/source, /<a href="datum.html">datum</a>/light_eater) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L987">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 987"/></a></aside>
+        </h3>
+        <p>Special light eater handling</p><h3 id="proc/send_message"><aside class="declaration">proc </aside>send_message<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/user, /list/obj/item/pda/targets, everyone, rigged, fakename, fakejob) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/game/objects/items/devices/PDA/PDA.dm#L786">
+        <img src="git.png" width="16" height="16" title="code&#x2F;game&#x2F;objects&#x2F;items&#x2F;devices&#x2F;PDA&#x2F;PDA.dm 786"/></a></aside>
+        </h3>
+        <p>Prompts the user to input and send a message to another PDA.
+the everyone arg is used for mass messaging from lawyer and captain carts.
+rigged for PDA bombs. fakename and fakejob for forged messages (also PDA bombs).</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/2fb3940bf230bc8c21d21dc104e93ecf6555f111">2fb3940</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

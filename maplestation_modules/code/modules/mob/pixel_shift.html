@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>maplestation_modules&#x2F;code&#x2F;modules&#x2F;mob&#x2F;pixel_shift.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="maplestation_modules/code/modules/mob/pixel_shift.html#define">Define Details</a></header>
+<main>
+<h1>maplestation_modules/code/modules/mob/pixel_shift.dm 
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/modules/mob/pixel_shift.dm">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;mob&#x2F;pixel_shift.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="maplestation_modules/code/modules/mob/pixel_shift.html#define/COMSIG_KB_LIVING_PIXELSHIFT">COMSIG_KB_LIVING_PIXELSHIFT</a></th><td>-- Pixelshifting UI and component. --
+Keybinding hotkey signal.</td></tr>
+        <tr><th><a href="maplestation_modules/code/modules/mob/pixel_shift.html#define/COMSIG_PIXELSHIFT_POSY">COMSIG_PIXELSHIFT_POSY</a></th><td>Signals to pixelshift certain directions.</td></tr>
+        <tr><th><a href="maplestation_modules/code/modules/mob/pixel_shift.html#define/COMSIG_PIXELSHIFT_RESET">COMSIG_PIXELSHIFT_RESET</a></th><td>Signal to reset the user's pixelshift, but not stop pixelshifting.</td></tr>
+        <tr><th><a href="maplestation_modules/code/modules/mob/pixel_shift.html#define/COMSIG_PIXELSHIFT_STOP">COMSIG_PIXELSHIFT_STOP</a></th><td>Signal to stop pixelshifting.</td></tr>
+        <tr><th><a href="maplestation_modules/code/modules/mob/pixel_shift.html#define/PIXELSHIFT_Y_LIMIT">PIXELSHIFT_Y_LIMIT</a></th><td>Defines for mins and maxs of x and y shifts.</td></tr>
+        <tr><th>/<a href="datum.html">datum</a>/keybinding/mob/living/pixel_shift</th><td>Keybind to open up the pixelshift UI / toggle pixelshifting.</td></tr>
+        <tr><th><a href="datum&#x2F;pixel_shift_ui.html">&#x2F;datum&#x2F;pixel_shift_ui</a></th><td>Datum to hold the pixel shift UI and enable pixel shifting.</td></tr>
+        <tr><th><a href="datum&#x2F;component&#x2F;pixel_shift.html">&#x2F;datum&#x2F;component&#x2F;pixel_shift</a></th><td>Pixel shift component, applied to any mob/living.
+Allows the user to shift around their pixel_x and pixel_y offset.
+This component tracks their shifting and updates their offsets as they pixelshift.</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/COMSIG_KB_LIVING_PIXELSHIFT"><aside class="declaration">#define </aside>COMSIG_KB_LIVING_PIXELSHIFT
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/modules/mob/pixel_shift.dm#L3">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;mob&#x2F;pixel_shift.dm 3"/></a>
+    </h3>
+    <p>-- Pixelshifting UI and component. --
+Keybinding hotkey signal.</p><h3 id="define/COMSIG_PIXELSHIFT_POSY"><aside class="declaration">#define </aside>COMSIG_PIXELSHIFT_POSY
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/modules/mob/pixel_shift.dm#L6">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;mob&#x2F;pixel_shift.dm 6"/></a>
+    </h3>
+    <p>Signals to pixelshift certain directions.</p><h3 id="define/COMSIG_PIXELSHIFT_RESET"><aside class="declaration">#define </aside>COMSIG_PIXELSHIFT_RESET
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/modules/mob/pixel_shift.dm#L12">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;mob&#x2F;pixel_shift.dm 12"/></a>
+    </h3>
+    <p>Signal to reset the user's pixelshift, but not stop pixelshifting.</p><h3 id="define/COMSIG_PIXELSHIFT_STOP"><aside class="declaration">#define </aside>COMSIG_PIXELSHIFT_STOP
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/modules/mob/pixel_shift.dm#L14">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;mob&#x2F;pixel_shift.dm 14"/></a>
+    </h3>
+    <p>Signal to stop pixelshifting.</p><h3 id="define/PIXELSHIFT_Y_LIMIT"><aside class="declaration">#define </aside>PIXELSHIFT_Y_LIMIT
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/modules/mob/pixel_shift.dm#L17">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;mob&#x2F;pixel_shift.dm 17"/></a>
+    </h3>
+    <p>Defines for mins and maxs of x and y shifts.</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/2fb3940bf230bc8c21d21dc104e93ecf6555f111">2fb3940</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

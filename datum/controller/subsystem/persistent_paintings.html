@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;controller&#x2F;subsystem&#x2F;persistent_paintings - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/controller/subsystem/persistent_paintings.html#var">Var Details</a> - <a href="datum/controller/subsystem/persistent_paintings.html#proc">Proc Details</a></header>
+<main>
+<h1>persistent_paintings <aside>/<a href="datum.html">datum</a>/<a href="datum/controller/subsystem.html">controller/subsystem</a>/<a href="datum/controller/subsystem/persistent_paintings.html">persistent_paintings</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L90">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 90"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/controller/subsystem/persistent_paintings.html#var/painting_frames">painting_frames</a></th><td>A list of painting frames that this controls</td></tr>
+            <tr><th><a href="datum/controller/subsystem/persistent_paintings.html#var/paintings">paintings</a></th><td>A list of /datum/paintings saved or ready to be saved this round.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/controller/subsystem/persistent_paintings.html#proc/get_paintings_with_tag">get_paintings_with_tag</a></th><td>Returns paintings with given tag.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/persistent_paintings.html#proc/painting_ui_data">painting_ui_data</a></th><td>Generates painting data ready to be consumed by ui</td></tr>
+            <tr><th><a href="datum/controller/subsystem/persistent_paintings.html#proc/save_paintings">save_paintings</a></th><td>Saves all persistent paintings</td></tr>
+            <tr><th><a href="datum/controller/subsystem/persistent_paintings.html#proc/save_to_file">save_to_file</a></th><td>Saves all currently tracked painting data to file</td></tr>
+            <tr><th><a href="datum/controller/subsystem/persistent_paintings.html#proc/update_format">update_format</a></th><td>Updates paintings data format to latest if necessary</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/painting_frames"><aside class="declaration">var </aside>painting_frames
+            <aside>&ndash; /list/obj/structure/sign/painting</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L96">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 96"/></a></h3>
+        <p>A list of painting frames that this controls</p><h3 id="var/paintings"><aside class="declaration">var </aside>paintings
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L99">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 99"/></a></h3>
+        <p>A list of /datum/paintings saved or ready to be saved this round.</p><h2 id="proc">Proc Details</h2><h3 id="proc/get_paintings_with_tag"><aside class="declaration">proc </aside>get_paintings_with_tag<aside>(tag_name) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L129">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 129"/></a></aside>
+        </h3>
+        <p>Returns paintings with given tag.</p><h3 id="proc/painting_ui_data"><aside class="declaration">proc </aside>painting_ui_data<aside>(filter, admin) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L116">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 116"/></a></aside>
+        </h3>
+        <p>Generates painting data ready to be consumed by ui</p><h3 id="proc/save_paintings"><aside class="declaration">proc </aside>save_paintings<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L189">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 189"/></a></aside>
+        </h3>
+        <p>Saves all persistent paintings</p><h3 id="proc/save_to_file"><aside class="declaration">proc </aside>save_to_file<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L197">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 197"/></a></aside>
+        </h3>
+        <p>Saves all currently tracked painting data to file</p><h3 id="proc/update_format"><aside class="declaration">proc </aside>update_format<aside>(current_data) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/code/controllers/subsystem/persistent_paintings.dm#L137">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;persistent_paintings.dm 137"/></a></aside>
+        </h3>
+        <p>Updates paintings data format to latest if necessary</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/2fb3940bf230bc8c21d21dc104e93ecf6555f111">2fb3940</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

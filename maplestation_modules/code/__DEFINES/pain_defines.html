@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="maplestation_modules/code/__DEFINES/pain_defines.html#define">Define Details</a></header>
+<main>
+<h1>maplestation_modules/code/__DEFINES/pain_defines.dm 
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/COMSIG_CARBON_PAIN_GAINED">COMSIG_CARBON_PAIN_GAINED</a></th><td>Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/COMSIG_CARBON_PAIN_LOST">COMSIG_CARBON_PAIN_LOST</a></th><td>Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/COMSIG_TEMPERATURE_PACK_EXPIRED">COMSIG_TEMPERATURE_PACK_EXPIRED</a></th><td>Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/BODY_ZONES_ALL">BODY_ZONES_ALL</a></th><td>Various lists of body zones affected by pain.</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/PAIN_EMOTES">PAIN_EMOTES</a></th><td>List of some emotes that convey pain.</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/PAIN_LIMB_DISMEMBERED">PAIN_LIMB_DISMEMBERED</a></th><td>Amount of pain gained (to chest) from dismembered limb</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/PAIN_LIMB_REMOVED">PAIN_LIMB_REMOVED</a></th><td>Amount of pain gained (to chest) from surgically removed limb</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/PAIN_LIMB_MAX">PAIN_LIMB_MAX</a></th><td>Max pains for bodyparts</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/PAIN_MOD_CHEMS">PAIN_MOD_CHEMS</a></th><td>Keys for pain modifiers</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/PAIN_LIMB_PARALYSIS">PAIN_LIMB_PARALYSIS</a></th><td>ID for traits and modifiers gained by pain</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/cause_pain">cause_pain</a></th><td>Cause [amount] pain of default (BRUTE) damage type to [target_zone]</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/cause_typed_pain">cause_typed_pain</a></th><td>Cause [amount] pain of [type] damage type to [target_zone]</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/pain_emote">pain_emote</a></th><td>Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/apply_min_pain">apply_min_pain</a></th><td>Increase the minimum amount of pain [zone] can have for [time]</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/set_pain_mod">set_pain_mod</a></th><td>Set [id] pain mod to [amount]</td></tr>
+        <tr><th><a href="maplestation_modules/code/__DEFINES/pain_defines.html#define/unset_pain_mod">unset_pain_mod</a></th><td>Unset [id] pain mod</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/BODY_ZONES_ALL"><aside class="declaration">#define </aside>BODY_ZONES_ALL
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L11">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 11"/></a>
+    </h3>
+    <p>Various lists of body zones affected by pain.</p><h3 id="define/COMSIG_CARBON_PAIN_GAINED"><aside class="declaration">#define </aside>COMSIG_CARBON_PAIN_GAINED
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L4">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 4"/></a>
+    </h3>
+    <p>Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)</p><h3 id="define/COMSIG_CARBON_PAIN_LOST"><aside class="declaration">#define </aside>COMSIG_CARBON_PAIN_LOST
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L6">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 6"/></a>
+    </h3>
+    <p>Sent when a carbon loses pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)</p><h3 id="define/COMSIG_TEMPERATURE_PACK_EXPIRED"><aside class="declaration">#define </aside>COMSIG_TEMPERATURE_PACK_EXPIRED
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L8">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 8"/></a>
+    </h3>
+    <p>Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)</p><h3 id="define/PAIN_EMOTES"><aside class="declaration">#define </aside>PAIN_EMOTES
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L17">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 17"/></a>
+    </h3>
+    <p>List of some emotes that convey pain.</p><h3 id="define/PAIN_LIMB_DISMEMBERED"><aside class="declaration">#define </aside>PAIN_LIMB_DISMEMBERED
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L20">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 20"/></a>
+    </h3>
+    <p>Amount of pain gained (to chest) from dismembered limb</p><h3 id="define/PAIN_LIMB_MAX"><aside class="declaration">#define </aside>PAIN_LIMB_MAX
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L25">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 25"/></a>
+    </h3>
+    <p>Max pains for bodyparts</p><h3 id="define/PAIN_LIMB_PARALYSIS"><aside class="declaration">#define </aside>PAIN_LIMB_PARALYSIS
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L46">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 46"/></a>
+    </h3>
+    <p>ID for traits and modifiers gained by pain</p><h3 id="define/PAIN_LIMB_REMOVED"><aside class="declaration">#define </aside>PAIN_LIMB_REMOVED
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L22">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 22"/></a>
+    </h3>
+    <p>Amount of pain gained (to chest) from surgically removed limb</p><h3 id="define/PAIN_MOD_CHEMS"><aside class="declaration">#define </aside>PAIN_MOD_CHEMS
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L30">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 30"/></a>
+    </h3>
+    <p>Keys for pain modifiers</p><h3 id="define/apply_min_pain"><aside class="declaration">#define </aside>apply_min_pain
+            <aside>(target_zone, amount, time)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L59">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 59"/></a>
+    </h3>
+    <p>Increase the minimum amount of pain [zone] can have for [time]</p><h3 id="define/cause_pain"><aside class="declaration">#define </aside>cause_pain
+            <aside>(target_zone, amount)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L53">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 53"/></a>
+    </h3>
+    <p>Cause [amount] pain of default (BRUTE) damage type to [target_zone]</p><h3 id="define/cause_typed_pain"><aside class="declaration">#define </aside>cause_typed_pain
+            <aside>(target_zone, amount, dam_type)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L55">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 55"/></a>
+    </h3>
+    <p>Cause [amount] pain of [type] damage type to [target_zone]</p><h3 id="define/pain_emote"><aside class="declaration">#define </aside>pain_emote
+            <aside>(emote, cooldown)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L57">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 57"/></a>
+    </h3>
+    <p>Do pain related [emote] from a mob, and start a [cooldown] long cooldown before a pain emote can be done again.</p><h3 id="define/set_pain_mod"><aside class="declaration">#define </aside>set_pain_mod
+            <aside>(id, amount)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L61">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 61"/></a>
+    </h3>
+    <p>Set [id] pain mod to [amount]</p><h3 id="define/unset_pain_mod"><aside class="declaration">#define </aside>unset_pain_mod
+            <aside>(id)</aside>
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/2fb3940bf230bc8c21d21dc104e93ecf6555f111/maplestation_modules/code/__DEFINES/pain_defines.dm#L63">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;__DEFINES&#x2F;pain_defines.dm 63"/></a>
+    </h3>
+    <p>Unset [id] pain mod</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/2fb3940bf230bc8c21d21dc104e93ecf6555f111">2fb3940</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>
