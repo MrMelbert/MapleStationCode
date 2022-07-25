@@ -6668,10 +6668,6 @@
 /obj/machinery/duct,
 /turf/open/floor/iron/showroomfloor,
 /area/medical/virology)
-"czY" = (
-/obj/structure/extinguisher_cabinet/directional/east,
-/turf/closed/wall,
-/area/maintenance/starboard/lower)
 "cAi" = (
 /turf/open/openspace,
 /area/medical/virology)
@@ -24910,6 +24906,11 @@
 "jri" = (
 /turf/closed/wall,
 /area/command/heads_quarters/captain/private)
+"jro" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/extinguisher_cabinet/directional/south,
+/turf/open/floor/plating,
+/area/maintenance/starboard/lower)
 "jrC" = (
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
 /obj/machinery/atmospherics/components/binary/pump{
@@ -35838,10 +35839,6 @@
 	},
 /turf/open/floor/iron/freezer,
 /area/commons/toilet)
-"mWA" = (
-/obj/structure/cable,
-/turf/closed/wall,
-/area/maintenance/port/lower)
 "mWB" = (
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
@@ -42023,10 +42020,6 @@
 /obj/item/stock_parts/cell/high/plus,
 /turf/open/floor/iron/checker,
 /area/science/robotics/lab)
-"pbJ" = (
-/obj/structure/cable,
-/turf/open/space/basic,
-/area/space)
 "pbR" = (
 /obj/structure/grille,
 /obj/structure/cable,
@@ -88530,7 +88523,7 @@ ymg
 ymg
 ymg
 ymg
-mWA
+sag
 sag
 sag
 xGv
@@ -91101,7 +91094,7 @@ ymg
 ymg
 ymg
 wNX
-pbJ
+ymg
 sag
 sag
 afD
@@ -102410,7 +102403,7 @@ fWs
 akP
 qvD
 cXY
-czY
+gXm
 vhK
 oho
 mjg
@@ -102666,7 +102659,7 @@ wWd
 jBZ
 wWd
 wWd
-wWd
+jro
 gXm
 gXm
 gXm
