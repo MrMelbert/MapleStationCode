@@ -82,12 +82,36 @@
 			SStgui.close_uis(src)
 			return FALSE
 
+		// Future todo: This can be de-hardcoded and handled on loadout items themselves, may be neat.
 		if("select_color")
+			if(!interacted_item.can_be_greyscale)
+				return
+
 			select_item_color(interacted_item)
 			return TRUE
 
 		if("set_name")
+			if(!interacted_item.can_be_named)
+				return
+
 			set_item_name(interacted_item)
+			return TRUE
+
+		if("set_skin")
+			if(!interacted_item.can_be_reskinned)
+				return
+
+			set_skin(interacted_item)
+			return TRUE
+
+		if("set_layer")
+			if(!istype(interacted_item, /datum/loadout_item/accessory))
+				return
+			var/datum/loadout_item/accessory/accessory = interacted_item
+			if(!accessory.can_be_layer_adjusted)
+				return
+
+			set_layer(interacted_item)
 			return TRUE
 
 		if("select_item")
@@ -211,10 +235,50 @@
 	if(input_name)
 		our_loadout_list[item.item_path][INFO_NAMED] = input_name
 		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
-	else
-		if(INFO_NAMED in our_loadout_list[item.item_path])
-			our_loadout_list[item.item_path] -= INFO_NAMED
+
+	else if(INFO_NAMED in our_loadout_list[item.item_path])
+		our_loadout_list[item.item_path] -= INFO_NAMED
+		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+
+/// Set [item]'s skin.
+/datum/loadout_manager/proc/set_skin(datum/loadout_item/item)
+	var/current_reskin = ""
+	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	if(INFO_RESKIN in our_loadout_list)
+		current_reskin = our_loadout_list[item.item_path][INFO_RESKIN]
+
+	var/obj/item/item_template = new item.item_path()
+	var/list/choices = item_template.unique_reskin.Copy()
+	choices["Default"] = 1
+	qdel(item_template)
+
+	var/input_skin = tgui_input_list(owner, "What skin do you want this to be?", "Reskin", choices, current_reskin)
+	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
+		return
+
+	if(!(item.item_path in our_loadout_list))
+		to_chat(owner, span_warning("Select the item before attempting to reskin to it!"))
+		return
+
+	if(!input_skin || input_skin == "Default")
+		if(INFO_RESKIN in our_loadout_list[item.item_path])
+			our_loadout_list[item.item_path] -= INFO_RESKIN
 			owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+
+	else
+		our_loadout_list[item.item_path][INFO_RESKIN] = input_skin
+		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+
+/// Set [item]'s layer, for accessories.
+/datum/loadout_manager/proc/set_layer(datum/loadout_item/accessory/item)
+	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
+	if(!(item.item_path in our_loadout_list))
+		to_chat(owner, span_warning("Select the item before attempting to modify its layer to it!"))
+		return
+
+	our_loadout_list[item.item_path][INFO_LAYER] = !our_loadout_list[item.item_path][INFO_LAYER]
+	to_chat(owner, span_boldnotice("[item] will now appear [our_loadout_list[item.item_path][INFO_LAYER] ? "above" : "below"] suits."))
+	owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
 
 /// Rotate the preview [dir_string] direction.
 /datum/loadout_manager/proc/rotate_model_dir(dir_string)
@@ -376,6 +440,14 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 		formatted_item["path"] = item.item_path
 		formatted_item["is_greyscale"] = item.can_be_greyscale
 		formatted_item["is_renamable"] = item.can_be_named
+		formatted_item["is_reskinnable"] = item.can_be_reskinned
+
+		// This pains me on a deep level
+		formatted_item["is_layer_adjustable"] = FALSE
+		if(istype(item, /datum/loadout_item/accessory))
+			var/datum/loadout_item/accessory/accessory = item
+			formatted_item["is_layer_adjustable"] = accessory.can_be_layer_adjusted
+
 		if(LAZYLEN(item.additional_tooltip_contents))
 			formatted_item["tooltip_text"] = item.additional_tooltip_contents.Join("\n")
 

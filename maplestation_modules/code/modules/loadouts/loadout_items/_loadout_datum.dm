@@ -38,6 +38,8 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	var/can_be_greyscale = FALSE
 	/// Whether this item can be renamed.
 	var/can_be_named = FALSE
+	/// Whether this item can be reskinned.
+	var/can_be_reskinned = FALSE
 	/// The category of the loadout item.
 	var/category
 	/// The actual item path of the loadout item.
@@ -48,17 +50,25 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 /datum/loadout_item/New()
 	if(can_be_named)
 		// If we're a renamable item, insert the "renamable" tooltip at the beginning of the list.
-		if(LAZYLEN(additional_tooltip_contents))
-			additional_tooltip_contents.Insert(1, TOOLTIP_RENAMABLE)
-		else
-			LAZYADD(additional_tooltip_contents, TOOLTIP_RENAMABLE)
+		add_tooltip(TOOLTIP_RENAMABLE, inverse_order = TRUE)
 
 	if(can_be_greyscale)
 		// Likewise, if we're greyscaleable, insert the "greyscaleable" tooltip at the beginning of the list (before renamable)
-		if(LAZYLEN(additional_tooltip_contents))
-			additional_tooltip_contents.Insert(1, TOOLTIP_GREYSCALE)
-		else
-			LAZYADD(additional_tooltip_contents, TOOLTIP_GREYSCALE)
+		add_tooltip(TOOLTIP_GREYSCALE, inverse_order = TRUE)
+
+	if(can_be_reskinned)
+		add_tooltip(TOOLTIP_RESKINNABLE)
+
+/// Helper to add a tooltip to our tooltip list.
+/// If inverse_order is TRUE, we will add to the front instead of the back.
+/datum/loadout_item/proc/add_tooltip(tooltip, inverse_order = FALSE)
+	if(!additional_tooltip_contents)
+		additional_tooltip_contents = list()
+
+	if(inverse_order)
+		additional_tooltip_contents.Insert(1, tooltip)
+	else
+		additional_tooltip_contents.Add(tooltip)
 
 /*
  * Place our [var/item_path] into [outfit].
@@ -81,32 +91,32 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  * visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)
  */
 /datum/loadout_item/proc/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE)
+	SHOULD_CALL_PARENT(TRUE)
 	if(!preference_source)
-		return
+		return null
 
-	var/list/our_loadout = preference_source?.read_preference(/datum/preference/loadout)
+	var/obj/item/equipped_item = locate(item_path) in equipper.get_all_contents()
+	if(!equipped_item)
+		CRASH("[type] on_equip_item(): Could not locate clothing item (path: [item_path]) in [equipper]'s [visuals_only ? "visible":"all"] contents!")
+
+	var/list/our_loadout = preference_source.read_preference(/datum/preference/loadout)
 	if(can_be_greyscale && (INFO_GREYSCALE in our_loadout[item_path]))
-		if(ispath(item_path, /obj/item/clothing))
-			// When an outfit is equipped in preview, get_equipped_items() does not work, so we have to use GetAllContents()
-			var/obj/item/clothing/equipped_item = locate(item_path) in (visuals_only ? equipper.get_all_contents() : equipper.get_equipped_items())
-			if(equipped_item)
-				equipped_item.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
-			else
-				stack_trace("[type] on_equip_item(): Could not locate clothing item (path: [item_path]) in [equipper]'s [visuals_only ? "visible":"all"] contents to set greyscaling!")
+		equipped_item.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
 
-		else if(!visuals_only)
-			var/obj/item/other_item = locate(item_path) in equipper.get_all_gear()
-			if(other_item)
-				other_item.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
-			else
-				stack_trace("[type] on_equip_item(): Could not locate backpack item (path: [item_path]) in [equipper]'s contents to set greyscaling!")
+	if(can_be_named && (INFO_NAMED in our_loadout[item_path]) && !visuals_only)
+		equipped_item.name = our_loadout[item_path][INFO_NAMED]
 
-	if(can_be_named && !visuals_only && (INFO_NAMED in our_loadout[item_path]))
-		var/obj/item/equipped_item = locate(item_path) in equipper.get_all_gear()
-		if(equipped_item)
-			equipped_item.name = our_loadout[item_path][INFO_NAMED]
+	if(can_be_reskinned && (INFO_RESKIN in our_loadout[item_path]))
+		var/skin_chosen = our_loadout[item_path][INFO_RESKIN]
+		if(skin_chosen in equipped_item.unique_reskin)
+			equipped_item.current_skin = skin_chosen
+			equipped_item.icon_state = equipped_item.unique_reskin[skin_chosen]
+			equipper.update_inv_wear_suit()
 		else
-			stack_trace("[type] on_equip_item(): Could not locate item (path: [item_path]) in [equipper]'s contents to set name!")
+			our_loadout[item_path] -= INFO_RESKIN
+			preference_source.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout)
+
+	return equipped_item
 
 /*
  * Called after the item is equipped on [equipper], at the end of character setup.
