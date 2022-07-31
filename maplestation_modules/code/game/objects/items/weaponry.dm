@@ -11,10 +11,11 @@
 	/// The overlay this will add to the bat sheathe
 	var/belt_sprite = "-basic"
 	obj_flags = UNIQUE_RENAME
-	unique_reskin = list("Default" = "baseball_bat",
-						"Pretty Pink Bat" = "baseball_bat_kitty",
-						"Magical Bat" = "baseball_bat_magic"
-						)
+	unique_reskin = list(
+		"Default" = "baseball_bat",
+		"Pretty Pink Bat" = "baseball_bat_kitty",
+		"Magical Bat" = "baseball_bat_magic"
+		)
 
 // Home Run Bat
 /obj/item/melee/baseball_bat/homerun

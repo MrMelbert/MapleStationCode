@@ -41,8 +41,8 @@
 		return
 	if(length(contents))
 		var/obj/item/bat = contents[1]
-		user.balloon_alert_to_viewers("unsheathes [bat]")
+		user.balloon_alert_to_viewers("unsheathes bat")
 		user.put_in_hands(bat)
 		update_icon()
 	else
-		balloon_alert(user, "empty")
+		balloon_alert(user, "empty!")
