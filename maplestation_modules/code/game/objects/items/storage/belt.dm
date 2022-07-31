@@ -28,7 +28,7 @@
 /obj/item/storage/belt/baseball/examine(mob/user)
 	. = ..()
 	if(length(contents))
-		. += "<span class='notice'>Alt-click it to quickly draw the bat.</span>"
+		. += span_notice("Alt-click it to quickly draw the bat.")
 
 /obj/item/storage/belt/baseball/update_icon_state()
 	. = ..()
