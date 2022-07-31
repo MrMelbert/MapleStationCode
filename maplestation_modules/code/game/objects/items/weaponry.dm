@@ -8,14 +8,14 @@
 	icon = 'maplestation_modules/icons/obj/weapons.dmi'
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/bats_lefthand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/bats_righthand.dmi'
-	/// The overlay this will add to the bat sheathe
-	var/belt_sprite = "-basic"
 	obj_flags = UNIQUE_RENAME
 	unique_reskin = list(
 		"Default" = "baseball_bat",
 		"Pretty Pink Bat" = "baseball_bat_kitty",
 		"Magical Bat" = "baseball_bat_magic"
 		)
+	/// The overlay this will add to the bat sheathe
+	var/belt_sprite = "-basic"
 
 // Home Run Bat
 /obj/item/melee/baseball_bat/homerun
