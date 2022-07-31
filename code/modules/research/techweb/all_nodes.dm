@@ -284,6 +284,7 @@
 		"comp_trigonometry",
 		"comp_typecast",
 		"comp_typecheck",
+		"comp_view_sensor",
 		"compact_remote_shell",
 		"component_printer",
 		"integrated_circuit",
@@ -508,7 +509,8 @@
 		"stack_machine",
 		"tesla_coil",
 		"thermomachine",
-		"w-recycler" , "emitter",
+		"w-recycler",
+		"emitter",
 		"welding_goggles",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 12500)
