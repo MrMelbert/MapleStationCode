@@ -29016,6 +29016,7 @@
 /obj/machinery/modular_computer/console/preset/engineering,
 /obj/item/radio/intercom/directional/north,
 /obj/effect/turf_decal/tile/yellow/full,
+/obj/structure/cable,
 /turf/open/floor/iron/smooth_large,
 /area/engineering/main)
 "bYe" = (
@@ -36342,6 +36343,7 @@
 	dir = 1
 	},
 /obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
 /turf/open/floor/engine,
 /area/engineering/supermatter/room)
 "evP" = (

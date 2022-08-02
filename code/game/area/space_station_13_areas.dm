@@ -696,6 +696,22 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "\improper Public Mining Storage"
 	icon_state = "mining"
 
+//Commons - Baseball
+/area/commons/baseball
+	name = "\improper Baseball Field"
+	icon_state = "baseball"
+	mood_bonus = 5
+	mood_message = "<span class='nicegreen'>Nothing like coming to see a ball game!</span>\n"
+	mood_trait = TRAIT_EXTROVERT
+
+/area/commons/baseball/view
+	name = "\improper Baseball Viewing Area"
+	icon_state = "baseball_view"
+
+/area/commons/baseball/locker
+	name = "\improper Baseball Locker Room"
+	icon_state = "baseball_locker"
+
 //Service
 
 /area/service
