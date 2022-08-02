@@ -3740,7 +3740,6 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/command/gateway)
 "bwQ" = (
-/obj/machinery/light/directional/west,
 /obj/effect/landmark/start/hangover,
 /obj/structure/chair/stool/bar/directional/west,
 /turf/open/floor/wood,
@@ -23013,6 +23012,16 @@
 	},
 /turf/closed/wall/r_wall,
 /area/engineering/atmos)
+"iEf" = (
+/obj/effect/turf_decal/trimline/green/filled/line{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/machinery/light/warm/directional/south,
+/turf/open/floor/iron,
+/area/hallway/primary/upper)
 "iEm" = (
 /obj/structure/window{
 	dir = 8
@@ -165454,7 +165463,7 @@ siC
 kDA
 qIo
 qIo
-qIo
+iEf
 owR
 owR
 qPS
