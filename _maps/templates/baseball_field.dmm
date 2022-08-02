@@ -761,9 +761,6 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/commons/baseball/view)
-"WH" = (
-/turf/open/floor/plating/grass/lavaland,
-/area/commons/baseball)
 "Xd" = (
 /obj/structure/table,
 /turf/open/floor/iron,
@@ -967,7 +964,7 @@ vf
 vf
 vf
 vf
-WH
+vf
 xC
 AL
 ll
@@ -990,7 +987,7 @@ yW
 vf
 vf
 vf
-WH
+vf
 xC
 AL
 ll
@@ -1013,7 +1010,7 @@ sC
 yW
 vf
 vf
-WH
+vf
 xC
 US
 KM
@@ -1036,7 +1033,7 @@ yW
 vf
 vf
 vf
-WH
+vf
 xC
 AL
 ms
@@ -1059,7 +1056,7 @@ vf
 vf
 vf
 vf
-WH
+vf
 JS
 TK
 ZV
@@ -1082,7 +1079,7 @@ vf
 vf
 vf
 vf
-WH
+vf
 xC
 Im
 vf

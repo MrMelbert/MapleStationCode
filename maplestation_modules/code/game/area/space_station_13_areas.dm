@@ -98,6 +98,7 @@
 //Commons - Baseball
 /area/commons/baseball
 	name = "\improper Baseball Field"
+	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "baseball"
 	mood_bonus = 5
 	mood_message = "<span class='nicegreen'>Nothing like coming to see a ball game!</span>\n"
@@ -105,8 +106,10 @@
 
 /area/commons/baseball/view
 	name = "\improper Baseball Viewing Area"
+	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "baseball_view"
 
 /area/commons/baseball/locker
 	name = "\improper Baseball Locker Room"
+	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "baseball_locker"
