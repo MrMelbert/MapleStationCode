@@ -195,7 +195,8 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 		new/datum/stack_recipe("ten-gallon hat", /obj/item/clothing/head/cowboy_hat_white, 2), \
 		new/datum/stack_recipe("deputy hat", /obj/item/clothing/head/cowboy_hat_red, 2), \
 		new/datum/stack_recipe("drifter hat", /obj/item/clothing/head/cowboy_hat_grey, 2), \
-		)),
+		)), \
+	new/datum/stack_recipe("bat sheathe", /obj/item/storage/belt/baseball, 4), // NON-MODULE
 ))
 
 /obj/item/stack/sheet/leather/get_main_recipes()
