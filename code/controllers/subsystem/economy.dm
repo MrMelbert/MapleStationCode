@@ -59,8 +59,8 @@ SUBSYSTEM_DEF(economy)
 /datum/controller/subsystem/economy/Initialize(timeofday)
 	//removes cargo from the split
 	var/budget_to_hand_out = round(budget_pool / department_accounts.len -1)
-	if(time2text(world.timeofday, "DDD") == SUNDAY)
-		mail_blocked = TRUE
+	// if(time2text(world.timeofday, "DDD") == SUNDAY) NON-MODULE
+	//	mail_blocked = TRUE NON-MODULE
 	for(var/dep_id in department_accounts)
 		if(dep_id == ACCOUNT_CAR) //cargo starts with NOTHING
 			new /datum/bank_account/department(dep_id, 0)
