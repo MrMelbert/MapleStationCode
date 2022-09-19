@@ -389,7 +389,7 @@
 /obj/item/folder/blue,
 /obj/item/clothing/under/rank/centcom/commander,
 /obj/item/clothing/head/centhat{
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0);
+	armor = list("melee"=0,"bullet"=0,"laser"=0,"energy"=0,"bomb"=0,"bio"=0);
 	desc = "A replica hat of a Central Commander's attire. It has a small tag on it saying, 'It's good to be emperor.'";
 	name = "Replica CentCom hat"
 	},
@@ -4454,7 +4454,7 @@
 	},
 /obj/item/reagent_containers/food/drinks/bottle/beer{
 	desc = "Whatever it is, it reeks of foul, putrid froth.";
-	list_reagents = list(/datum/reagent/consumable/ethanol/bacchus_blessing = 15);
+	list_reagents = list(/datum/reagent/consumable/ethanol/bacchus_blessing=15);
 	name = "Delta-Down";
 	pixel_x = 5;
 	pixel_y = 5
@@ -4508,6 +4508,7 @@
 /obj/structure/table,
 /obj/item/trash/popcorn,
 /obj/machinery/light/directional/west,
+/obj/item/kitchen/fork/plastic,
 /turf/open/floor/iron/cafeteria,
 /area/security/prison)
 "aNJ" = (
@@ -4683,15 +4684,17 @@
 /turf/open/floor/iron/white,
 /area/security/prison/safe)
 "aPs" = (
-/obj/structure/table,
-/obj/item/kitchen/fork/plastic,
+/obj/machinery/vending/sustenance,
 /turf/open/floor/iron/cafeteria,
 /area/security/prison)
 "aPt" = (
-/obj/machinery/vending/sustenance,
 /obj/machinery/camera/directional/south{
 	c_tag = "Permabrig - Kitchen";
 	network = list("ss13","prison")
+	},
+/obj/machinery/griddle,
+/obj/structure/window{
+	dir = 8
 	},
 /turf/open/floor/iron/cafeteria,
 /area/security/prison)
@@ -34603,7 +34606,7 @@
 /obj/machinery/camera/directional/east{
 	c_tag = "Engineering - Supermatter Foyer";
 	name = "engineering camera";
-	network = list("ss13", "engine")
+	network = list("ss13","engine")
 	},
 /obj/structure/rack,
 /obj/item/analyzer,
@@ -43216,7 +43219,7 @@
 /obj/machinery/camera/directional/north{
 	c_tag = "Engineering - Freezers";
 	name = "engineering camera";
-	network = list("ss13", "engine")
+	network = list("ss13","engine")
 	},
 /turf/open/floor/iron,
 /area/engineering/supermatter/room)
@@ -45035,7 +45038,7 @@
 /obj/machinery/camera/directional/west{
 	c_tag = "Engineering - Supermatter Room Port";
 	name = "engineering camera";
-	network = list("ss13", "engine")
+	network = list("ss13","engine")
 	},
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
@@ -51004,10 +51007,6 @@
 /area/service/kitchen/abandoned)
 "iCN" = (
 /obj/structure/table,
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/reagent_dispensers/servingdish,
 /obj/structure/reagent_dispensers/servingdish,
 /obj/item/clothing/head/chefhat,
 /turf/open/floor/iron/cafeteria,
@@ -63734,7 +63733,7 @@
 /obj/machinery/camera/directional/east{
 	c_tag = "Engineering - Supermatter Room Starboard";
 	name = "engineering camera";
-	network = list("ss13", "engine")
+	network = list("ss13","engine")
 	},
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron,
@@ -63983,7 +63982,7 @@
 /obj/machinery/camera/directional/east{
 	c_tag = "Engineering - Supermatter";
 	name = "engineering camera";
-	network = list("ss13", "engine")
+	network = list("ss13","engine")
 	},
 /obj/structure/sign/warning/radiation{
 	pixel_x = 32
@@ -71587,7 +71586,7 @@
 /obj/machinery/camera/directional/north{
 	c_tag = "Engineering - Supermatter Emitters";
 	name = "engineering camera";
-	network = list("ss13", "engine")
+	network = list("ss13","engine")
 	},
 /obj/effect/landmark/event_spawn,
 /obj/machinery/power/emitter{
@@ -78099,7 +78098,7 @@
 /obj/item/folder/red,
 /obj/item/toy/gun,
 /obj/item/clothing/head/beret/sec{
-	armor = list("melee" = 0, "bullet" = 0, "laser" = 0, "energy" = 0, "bomb" = 0, "bio" = 0);
+	armor = list("melee"=0,"bullet"=0,"laser"=0,"energy"=0,"bomb"=0,"bio"=0);
 	desc = "A replica beret resembling that of a special operations officer under Nanotrasen.";
 	name = "replica officer's beret"
 	},
@@ -83718,7 +83717,7 @@
 /obj/machinery/camera/directional/south{
 	c_tag = "Engineering - Supermatter Room Aft";
 	name = "engineering camera";
-	network = list("ss13", "engine")
+	network = list("ss13","engine")
 	},
 /turf/open/floor/iron,
 /area/engineering/supermatter/room)
@@ -87277,10 +87276,6 @@
 	},
 /turf/open/floor/wood,
 /area/service/theater)
-"scA" = (
-/obj/structure/chair/stool/directional/east,
-/turf/open/floor/iron/cafeteria,
-/area/security/prison)
 "scE" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -165377,7 +165372,7 @@ hXT
 oWK
 oWK
 bbt
-scA
+aNK
 aKV
 wOH
 eGN
