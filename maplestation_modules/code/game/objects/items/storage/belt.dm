@@ -23,6 +23,7 @@
 		/obj/item/melee/baseball_bat/homerun,
 		/obj/item/melee/baseball_bat/barbed,
 		/obj/item/melee/baseball_bat/ablative,
+		/obj/item/melee/baseball_bat/golden,
 		))
 
 /obj/item/storage/belt/baseball/examine(mob/user)
