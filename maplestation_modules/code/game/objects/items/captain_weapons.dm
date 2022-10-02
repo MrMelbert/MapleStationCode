@@ -1,7 +1,7 @@
 GLOBAL_VAR(captain_weapon_picked)
 //Weapons for the captain to use in melee.
 /obj/item/melee/sabre/Initialize(mapload)
-	..()
+	. = ..()
 	if(!GLOB.captain_weapon_picked && istype(src, /obj/item/melee/sabre))
 		AddComponent(/datum/component/subtype_picker, GLOB.captain_weapons, CALLBACK(src, .proc/on_captain_weapon_picked))
 
