@@ -2,7 +2,7 @@ GLOBAL_VAR(captain_weapon_picked)
 //Weapons for the captain to use in melee.
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
-	if(!GLOB.captain_weapon_picked && istype(src, /obj/item/melee/sabre))
+	if(!GLOB.captain_weapon_picked)
 		AddComponent(/datum/component/subtype_picker, GLOB.captain_weapons, CALLBACK(src, .proc/on_captain_weapon_picked))
 
 ///Probably doesn't need to be a proc, but this is used when the captain's weapon is chosen to make sure you can keep picking the sabre over and over. Has to be a global list so that its on the next weapon.
