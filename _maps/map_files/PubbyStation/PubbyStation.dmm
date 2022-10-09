@@ -36919,6 +36919,8 @@
 	},
 /obj/effect/turf_decal/tile/red,
 /obj/item/book/manual/chef_recipes,
+/obj/item/reagent_containers/food/condiment/rice,
+/obj/item/reagent_containers/food/condiment/flour,
 /turf/open/floor/iron/white,
 /area/security/prison)
 "eTj" = (
@@ -38922,9 +38924,7 @@
 /area/engineering/supermatter/room)
 "gqx" = (
 /obj/effect/turf_decal/trimline/red/filled/line,
-/obj/structure/table,
-/obj/item/shovel/spade,
-/obj/item/shovel/spade,
+/obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/iron,
 /area/security/prison)
 "gsP" = (
@@ -49656,9 +49656,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/red,
-/obj/structure/table,
-/obj/item/reagent_containers/food/condiment/rice,
-/obj/item/reagent_containers/food/condiment/flour,
+/obj/machinery/griddle,
 /turf/open/floor/iron/white,
 /area/security/prison)
 "pqw" = (
@@ -53321,8 +53319,22 @@
 	pixel_x = 32
 	},
 /obj/structure/table,
-/obj/item/cultivator,
-/obj/item/cultivator,
+/obj/item/cultivator{
+	pixel_y = 5;
+	pixel_x = 5
+	},
+/obj/item/cultivator{
+	pixel_y = 5;
+	pixel_x = 5
+	},
+/obj/item/shovel/spade{
+	pixel_y = -2;
+	pixel_x = -2
+	},
+/obj/item/shovel/spade{
+	pixel_y = -2;
+	pixel_x = -2
+	},
 /turf/open/floor/iron,
 /area/security/prison)
 "sbX" = (

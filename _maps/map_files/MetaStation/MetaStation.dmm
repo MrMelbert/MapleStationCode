@@ -38851,6 +38851,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 1
 	},
+/obj/machinery/griddle,
 /turf/open/floor/iron/white,
 /area/security/prison)
 "lFM" = (

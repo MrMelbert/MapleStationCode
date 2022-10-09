@@ -6695,6 +6695,14 @@
 /obj/structure/sign/warning/pods,
 /turf/closed/wall,
 /area/hallway/secondary/entry)
+"aQY" = (
+/obj/effect/turf_decal/trimline/red/filled/line,
+/obj/effect/turf_decal/trimline/red/filled/corner{
+	dir = 4
+	},
+/obj/machinery/duct,
+/turf/open/floor/iron,
+/area/security/prison)
 "aQZ" = (
 /obj/effect/spawner/structure/window/reinforced/tinted,
 /turf/open/floor/plating,
@@ -11509,6 +11517,11 @@
 /obj/effect/decal/cleanable/cobweb,
 /turf/open/floor/plating,
 /area/maintenance/central/greater)
+"cFw" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/griddle,
+/turf/open/floor/iron/cafeteria,
+/area/security/prison/mess)
 "cFF" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 4
@@ -26739,6 +26752,7 @@
 "ilM" = (
 /obj/item/radio/intercom/prison/directional/south,
 /obj/effect/turf_decal/trimline/red/filled/line,
+/obj/machinery/duct,
 /turf/open/floor/iron,
 /area/security/prison)
 "ims" = (
@@ -26893,6 +26907,7 @@
 /obj/effect/turf_decal/trimline/red/corner{
 	dir = 8
 	},
+/obj/machinery/duct,
 /turf/open/floor/iron,
 /area/security/prison/garden)
 "ioP" = (
@@ -28766,6 +28781,11 @@
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/white,
 /area/science/research)
+"iZG" = (
+/obj/effect/turf_decal/trimline/red/filled/line,
+/obj/machinery/duct,
+/turf/open/floor/iron,
+/area/security/prison)
 "iZK" = (
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 4
@@ -41122,6 +41142,12 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/sink/kitchen{
+	desc = "A sink used for washing one's hands and face. It looks rusty and home-made.";
+	dir = 4;
+	name = "old sink";
+	pixel_x = -12
+	},
 /turf/open/floor/iron,
 /area/security/prison/garden)
 "nEN" = (
@@ -45672,6 +45698,7 @@
 /area/command/heads_quarters/hop)
 "pmq" = (
 /obj/effect/turf_decal/trimline/neutral/filled/corner,
+/obj/machinery/duct,
 /turf/open/floor/iron,
 /area/security/prison/garden)
 "pmr" = (
@@ -57716,6 +57743,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/duct,
 /turf/open/floor/iron,
 /area/security/prison/garden)
 "tKg" = (
@@ -60966,6 +60994,7 @@
 "uPl" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/trimline/red/filled/corner,
+/obj/machinery/duct,
 /turf/open/floor/iron,
 /area/security/prison)
 "uPn" = (
@@ -61933,6 +61962,18 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/aisat/hallway)
+"vma" = (
+/obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/public/glass{
+	name = "Prison Garden"
+	},
+/obj/effect/turf_decal/trimline/red/filled/line{
+	dir = 1
+	},
+/obj/effect/turf_decal/trimline/red/filled/line,
+/obj/machinery/duct,
+/turf/open/floor/iron,
+/area/security/prison/garden)
 "vmd" = (
 /obj/machinery/door/firedoor,
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -89375,7 +89416,7 @@ fnk
 pmL
 tkJ
 tfO
-tfO
+cFw
 oXH
 maZ
 pxG
@@ -94253,7 +94294,7 @@ fGY
 cIh
 ftR
 aFl
-pmL
+iZG
 ojx
 ojx
 ojx
@@ -94510,7 +94551,7 @@ pyA
 cIh
 oJB
 smK
-qOq
+aQY
 nTn
 dhe
 dhe
@@ -94767,7 +94808,7 @@ bkY
 bkY
 pNB
 jiS
-pNB
+vma
 bkY
 bkY
 dhe
