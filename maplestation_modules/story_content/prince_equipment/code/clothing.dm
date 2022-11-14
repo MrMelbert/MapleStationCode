@@ -40,7 +40,7 @@
 
 /obj/item/clothing/suit/toggle/labcoat/cmo/special
 	name = "elaborate medical lab coat"
-	desc = "A labcoat made from specialized, high quality fabric to rebell blood and other fluids."
+	desc = "A labcoat made from specialized, high quality fabric to repel blood and other fluids."
 	icon = 'maplestation_modules/story_content/prince_equipment/icons/doctor_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/prince_equipment/icons/doctor_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/prince_equipment/icons/doctor_lhand.dmi'
