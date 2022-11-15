@@ -626,7 +626,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	if(!silent)
 		flick("fax_receive", src)
-		balloon_alert_to_viewers("removed fax")
+		balloon_alert_to_viewers("removed paper")
 	if(user && user.CanReach(src))
 		user.put_in_hands(stored_paper)
 	else
