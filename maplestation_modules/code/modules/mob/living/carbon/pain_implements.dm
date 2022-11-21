@@ -483,7 +483,7 @@
 	. = ..()
 	name = "emergency [name]"
 
-// Change the contents of emergency first-aid kids.
+// Change the contents of first-aid kids.
 /obj/item/storage/firstaid/emergency/Initialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
@@ -494,7 +494,7 @@
 /obj/item/storage/firstaid/emergency/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
+	var/static/list/items_inside = list(
 		/obj/item/healthanalyzer/wound = 1,
 		/obj/item/stack/medical/gauze = 1,
 		/obj/item/stack/medical/suture/emergency = 1,
@@ -506,6 +506,53 @@
 	)
 	generate_items_inside(items_inside, src)
 
+/obj/item/storage/firstaid/regular/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/medical/suture = 2,
+		/obj/item/stack/medical/mesh = 2,
+		/obj/item/reagent_containers/hypospray/medipen = 1,
+		/obj/item/reagent_containers/hypospray/medipen/morphine = 1,
+	)
+	generate_items_inside(items_inside, src)
+
+/obj/item/storage/firstaid/brute/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/reagent_containers/pill/patch/libital = 3,
+		/obj/item/stack/medical/gauze = 1,
+		/obj/item/storage/pill_bottle/probital = 1,
+		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
+		/obj/item/reagent_containers/hypospray/medipen/brute_painkiller = 1,
+	)
+	generate_items_inside(items_inside, src)
+
+/obj/item/storage/firstaid/burn/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/reagent_containers/pill/patch/aiuri = 3,
+		/obj/item/reagent_containers/spray/hercuri = 1,
+		/obj/item/stack/medical/ointment = 1,
+		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 1,
+		/obj/item/reagent_containers/hypospray/medipen/burn_painkiller = 1,
+	)
+	generate_items_inside(items_inside, src)
+
+/obj/item/storage/firstaid/advanced/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/reagent_containers/pill/patch/synthflesh = 3,
+		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee = 1,
+		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
+		/obj/item/stack/medical/gauze = 1,
+		/obj/item/storage/pill_bottle/penacid = 1
+	)
+	generate_items_inside(items_inside, src)
 
 // Pain implements added to various vendors.
 /obj/machinery/vending/drugs

@@ -20,21 +20,6 @@
 		if(user.pain_controller.pain_modifier > 0.5)
 			user.clear_alert("numbed")
 
-// Morphine buff to actually work as a painkiller
-/datum/reagent/medicine/morphine
-	addiction_types = list(/datum/addiction/opioids = 30) //5u = 100 progress, 25-30u = addiction
-	pain_modifier = 0.5
-
-/datum/reagent/medicine/painkiller/morphine/on_mob_life(mob/living/carbon/M, delta_time, times_fired) // NON-MODULE CHANGE
-	. = ..()
-	M.adjustBruteLoss(-0.2 * REM * delta_time, FALSE)
-	M.adjustFireLoss(-0.1 * REM * delta_time, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -0.3)
-	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
-		M.adjust_disgust(1.5 * REM * delta_time)
-
-	return TRUE
-
 // Muscle stimulant is functionally morphine without downsides (it's rare)
 /datum/reagent/medicine/muscle_stimulant
 	pain_modifier = 0.5

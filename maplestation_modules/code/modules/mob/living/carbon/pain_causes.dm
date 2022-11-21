@@ -26,16 +26,12 @@
 
 /datum/symptom/fire/Firestacks_stage_4(mob/living/carbon/M, datum/disease/advance/A)
 	. = ..()
-	if(!istype(M))
-		return
 	M.cause_typed_pain(BODY_ZONES_ALL, 5, BURN)
 	M.flash_pain_overlay(1)
 	M.pain_emote("scream", 5 SECONDS)
 
 /datum/symptom/fire/Firestacks_stage_5(mob/living/carbon/M, datum/disease/advance/A)
 	. = ..()
-	if(!istype(M))
-		return
 	M.cause_typed_pain(BODY_ZONES_ALL, 10, BURN)
 	M.flash_pain_overlay(1)
 	M.pain_emote("scream", 5 SECONDS)

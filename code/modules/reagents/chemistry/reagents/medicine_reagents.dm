@@ -593,6 +593,7 @@
 	holder.remove_reagent(/datum/reagent/toxin/histamine, 3 * REM * delta_time)
 	..()
 
+/*
 /datum/reagent/medicine/morphine
 	name = "Morphine"
 	description = "A painkiller that allows the patient to move at full speed even when injured. Causes drowsiness and eventually unconsciousness in high doses. Overdose will cause a variety of effects, ranging from minor to lethal."
@@ -631,7 +632,7 @@
 		M.Dizzy(2)
 		M.Jitter(2)
 	..()
-
+*/
 
 /datum/reagent/medicine/oculine
 	name = "Oculine"
