@@ -130,6 +130,8 @@
 
 
 //SLEEPING
+
+// NON-MODULE CHANGE : REFACTORED SLEEPING
 /datum/status_effect/incapacitating/sleeping
 	id = "sleeping"
 	alert_type = /atom/movable/screen/alert/status_effect/asleep
