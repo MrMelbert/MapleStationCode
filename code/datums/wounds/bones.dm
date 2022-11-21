@@ -392,7 +392,7 @@
 		var/painkiller_bonus = 0
 		if(victim.drunkenness > 10)
 			painkiller_bonus += 10
-		if(victim.reagents.has_reagent(/datum/reagent/medicine/morphine))
+		if(victim.reagents.has_reagent(/datum/reagent/medicine/painkiller/morphine)) // NON-MODULE CHANGE
 			painkiller_bonus += 20
 		if(victim.reagents.has_reagent(/datum/reagent/determination))
 			painkiller_bonus += 10

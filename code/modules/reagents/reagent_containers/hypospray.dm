@@ -167,13 +167,15 @@
 	amount_per_transfer_from_this = 50
 	list_reagents = list(/datum/reagent/medicine/stimulants = 50)
 
+/*
 /obj/item/reagent_containers/hypospray/medipen/morphine
 	name = "morphine medipen"
 	desc = "A rapid way to get you out of a tight situation and fast! You'll feel rather drowsy, though."
 	icon_state = "morphen"
 	inhand_icon_state = "morphen"
 	base_icon_state = "morphen"
-	list_reagents = list(/datum/reagent/medicine/morphine = 10)
+	list_reagents = list(/datum/reagent/medicine/painkiller/morphine = 10) // NON-MODULE CHANGE
+*/
 
 /obj/item/reagent_containers/hypospray/medipen/oxandrolone
 	name = "oxandrolone medipen"

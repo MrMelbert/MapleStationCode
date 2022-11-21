@@ -135,21 +135,8 @@
 	alert_type = /atom/movable/screen/alert/status_effect/asleep
 	needs_update_stat = TRUE
 	tick_interval = 2 SECONDS
-	var/mob/living/carbon/carbon_owner
-	var/mob/living/carbon/human/human_owner
-
-/datum/status_effect/incapacitating/sleeping/on_creation(mob/living/new_owner)
-	. = ..()
-	if(.)
-		if(iscarbon(owner)) //to avoid repeated istypes
-			carbon_owner = owner
-		if(ishuman(owner))
-			human_owner = owner
-
-/datum/status_effect/incapacitating/sleeping/Destroy()
-	carbon_owner = null
-	human_owner = null
-	return ..()
+	var/healing_power = -0.2
+	var/pain_modifier = 0.8
 
 /datum/status_effect/incapacitating/sleeping/on_apply()
 	. = ..()
@@ -160,12 +147,31 @@
 		tick_interval = -1
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), .proc/on_owner_insomniac)
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE), .proc/on_owner_sleepy)
+	RegisterSignal(owner, list(
+		SIGNAL_ADDTRAIT(TRAIT_ON_ANESTHETIC),
+		SIGNAL_REMOVETRAIT(TRAIT_ON_ANESTHETIC),
+		COMSIG_MOVABLE_MOVED,
+	), .proc/update_modifiers)
+
+	// Make sure the values are all updated
+	update_modifiers(owner)
 
 /datum/status_effect/incapacitating/sleeping/on_remove()
-	UnregisterSignal(owner, list(SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE)))
+	UnregisterSignal(owner, list(
+		SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE),
+		SIGNAL_REMOVETRAIT(TRAIT_SLEEPIMMUNE),
+		SIGNAL_ADDTRAIT(TRAIT_ON_ANESTHETIC),
+		SIGNAL_REMOVETRAIT(TRAIT_ON_ANESTHETIC),
+		COMSIG_MOVABLE_MOVED,
+	))
+
 	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
 		REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 		tick_interval = initial(tick_interval)
+
+	if(iscarbon(owner))
+		var/mob/living/carbon/carbon_owner = owner
+		carbon_owner.unset_pain_mod(PAIN_MOD_SLEEP)
 	return ..()
 
 ///If the mob is sleeping and gain the TRAIT_SLEEPIMMUNE we remove the TRAIT_KNOCKEDOUT and stop the tick() from happening
@@ -180,27 +186,51 @@
 	ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	tick_interval = initial(tick_interval)
 
+/datum/status_effect/incapacitating/sleeping/proc/update_modifiers(mob/living/source)
+	SIGNAL_HANDLER
+
+	healing_power = initial(healing_power)
+	pain_modifier = initial(pain_modifier)
+
+	if(locate(/obj/structure/bed) in owner.loc)
+		healing_power -= 0.3
+		pain_modifier -= 0.15
+
+	else
+		if(locate(/obj/structure/table) in owner.loc)
+			healing_power -= 0.1
+		if(locate(/obj/structure/table/optable) in owner.loc)
+			pain_modifier -= 0.2
+
+	if(locate(/obj/item/bedsheet) in owner.loc)
+		healing_power -= 0.1
+		pain_modifier -= 0.15
+
+	if(HAS_TRAIT(owner, TRAIT_ON_ANESTHETIC))
+		healing_power -= 0.2
+		pain_modifier -= 0.5
+
+	if(iscarbon(owner))
+		var/mob/living/carbon/carbon_owner = owner
+		carbon_owner.set_pain_mod(PAIN_MOD_SLEEP, max(pain_modifier, 0.1))
+
 /datum/status_effect/incapacitating/sleeping/tick()
 	if(owner.maxHealth)
 		var/health_ratio = owner.health / owner.maxHealth
-		var/healing = -0.2
-		if((locate(/obj/structure/bed) in owner.loc))
-			healing -= 0.3
-		else if((locate(/obj/structure/table) in owner.loc))
-			healing -= 0.1
-		for(var/obj/item/bedsheet/bedsheet in range(owner.loc,0))
-			if(bedsheet.loc != owner.loc) //bedsheets in your backpack/neck don't give you comfort
-				continue
-			healing -= 0.1
-			break //Only count the first bedsheet
 		if(health_ratio > 0.8)
-			owner.adjustBruteLoss(healing)
-			owner.adjustFireLoss(healing)
-			owner.adjustToxLoss(healing * 0.5, TRUE, TRUE)
-		owner.adjustStaminaLoss(healing)
-	if(human_owner?.drunkenness)
-		human_owner.drunkenness *= 0.997 //reduce drunkenness by 0.3% per tick, 6% per 2 seconds
-	if(carbon_owner)
+			owner.adjustBruteLoss(healing_power, FALSE)
+			owner.adjustFireLoss(healing_power, FALSE)
+			owner.adjustToxLoss(healing_power * 0.5, TRUE, TRUE)
+		owner.adjustStaminaLoss(healing_power)
+
+	if(ishuman(owner))
+		var/mob/living/carbon/human_owner = owner
+		if(human_owner.drunkenness)
+			//reduce drunkenness by 0.3% per tick, 6% per 2 seconds
+			human_owner.drunkenness *= 0.997
+
+	if(iscarbon(owner))
+		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.handle_dreams()
 	if(prob(2) && owner.health > owner.crit_threshold)
 		owner.emote("snore")

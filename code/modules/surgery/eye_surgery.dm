@@ -19,6 +19,7 @@
 		TOOL_SCREWDRIVER = 45,
 		/obj/item/pen = 25)
 	time = 64
+	pain_amount = 9
 
 /datum/surgery/eye_surgery/can_start(mob/user, mob/living/carbon/target)
 	var/obj/item/organ/eyes/target_eyes = target.getorganslot(ORGAN_SLOT_EYES)
@@ -31,7 +32,7 @@
 	display_results(user, target, span_notice("You begin to fix [target]'s eyes..."),
 		span_notice("[user] begins to fix [target]'s eyes."),
 		span_notice("[user] begins to perform surgery on [target]'s eyes."))
-	display_pain(target, "You feel a stabbing pain in your eyes!")
+	give_surgery_pain(target, "You feel a stabbing pain in your eyes!", target_zone = target_zone)
 
 /datum/surgery_step/fix_eyes/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	var/obj/item/organ/eyes/target_eyes = target.getorganslot(ORGAN_SLOT_EYES)
@@ -39,7 +40,7 @@
 	display_results(user, target, span_notice("You succeed in fixing [target]'s eyes."),
 		span_notice("[user] successfully fixes [target]'s eyes!"),
 		span_notice("[user] completes the surgery on [target]'s eyes."))
-	display_pain(target, "Your vision blurs, but it seems like you can see a little better now!")
+	give_surgery_pain(target, "Your vision blurs, but it seems like you can see a little better now!", target_zone = target_zone)
 	target.cure_blind(list(EYE_DAMAGE))
 	target.set_blindness(0)
 	target.cure_nearsighted(list(EYE_DAMAGE))
@@ -52,11 +53,11 @@
 		display_results(user, target, span_warning("You accidentally stab [target] right in the brain!"),
 			span_warning("[user] accidentally stabs [target] right in the brain!"),
 			span_warning("[user] accidentally stabs [target] right in the brain!"))
-		display_pain(target, "You feel a visceral stabbing pain right through your head, into your brain!")
+		give_surgery_pain(target, "You feel a visceral stabbing pain right through your head, into your brain!", target_zone = target_zone)
 		target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 70)
 	else
 		display_results(user, target, span_warning("You accidentally stab [target] right in the brain! Or would have, if [target] had a brain."),
 			span_warning("[user] accidentally stabs [target] right in the brain! Or would have, if [target] had a brain."),
 			span_warning("[user] accidentally stabs [target] right in the brain!"))
-		display_pain(target, "You feel a visceral stabbing pain right through your head!") // dunno who can feel pain w/o a brain but may as well be consistent.
+		give_surgery_pain(target, "You feel a visceral stabbing pain right through your head!", target_zone = target_zone) // dunno who can feel pain w/o a brain but may as well be consistent.
 	return FALSE

@@ -31,7 +31,7 @@
 		display_results(user, target, span_notice("You begin to augment [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to augment [target]'s [parse_zone(user.zone_selected)] with [aug]."),
 			span_notice("[user] begins to augment [target]'s [parse_zone(user.zone_selected)]."))
-		display_pain(target, "You feel a horrible pain in your [parse_zone(user.zone_selected)]!")
+		give_surgery_pain(target, "You feel a horrible pain in your [parse_zone(user.zone_selected)]!", target_zone = target_zone)
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
@@ -63,8 +63,9 @@
 		display_results(user, target, span_notice("You successfully augment [target]'s [parse_zone(target_zone)]."),
 			span_notice("[user] successfully augments [target]'s [parse_zone(target_zone)] with [tool]!"),
 			span_notice("[user] successfully augments [target]'s [parse_zone(target_zone)]!"))
-		display_pain(target, "Your [parse_zone(target_zone)] comes awash with synthetic sensation!", mechanical_surgery = TRUE)
+		give_surgery_pain(target, "Your [parse_zone(target_zone)] comes awash with synthetic sensation!", mechanical_surgery = TRUE, target_zone = target_zone)
 		log_combat(user, target, "augmented", addition="by giving him new [parse_zone(target_zone)] COMBAT MODE: [uppertext(user.combat_mode)]")
+		target.apply_min_pain(target_zone, 15, 2 MINUTES)
 	else
 		to_chat(user, span_warning("[target] has no organic [parse_zone(target_zone)] there!"))
 	return ..()

@@ -10,6 +10,15 @@
 	var/require_all_chems = TRUE    //any on the list or all on the list?
 	var/silicons_obey_prob = FALSE
 
+	/// Moodlet given if a surgery is done without anesthetics
+	var/surgery_moodlet = /datum/mood_event/surgery
+	/// Pain overlay flashed if a surgery is done without anesthetics
+	var/pain_overlay_severity = 1
+	/// How much pain this gives (given out in give_surgery_pain, so this might be given out twice)
+	var/pain_amount = 0
+	/// What type of pain this gives
+	var/pain_type = BRUTE
+
 /datum/surgery_step/proc/try_op(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	var/success = FALSE
 	if(surgery.organ_to_manipulate && !target.getorganslot(surgery.organ_to_manipulate))
@@ -188,8 +197,32 @@
  * * pain_message - The message to be displayed
  * * mechanical_surgery - Boolean flag that represents if a surgery step is done on a mechanical limb (therefore does not force scream)
  */
-/datum/surgery_step/proc/display_pain(mob/living/target, pain_message, mechanical_surgery = FALSE)
-	if(target.stat < UNCONSCIOUS)
-		to_chat(target, span_userdanger(pain_message))
-		if(prob(30) && !mechanical_surgery)
-			target.emote("scream")
+/datum/surgery_step/proc/give_surgery_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone, target_zone = target_zone)
+	// Only feels pain if we feels pain
+	if(!target.pain_controller || target.pain_controller.pain_modifier <= 0.5 || pain_amount <= 0)
+		return FALSE
+
+	// No pain from mechanics but still show the message (usually)
+	if(mechanical_surgery)
+		if(prob(70))
+			to_chat(target, span_userdanger(pain_message))
+		return FALSE
+
+	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+
+	if((target.IsSleeping() || target.IsUnconscious()) && HAS_TRAIT(target, TRAIT_ON_ANESTHETIC))
+		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/anesthetic)
+		return FALSE
+
+	else
+		if(ispath(surgery_moodlet, /datum/mood_event))
+			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", surgery_moodlet)
+		if(pain_overlay_severity == 1 || pain_overlay_severity == 2)
+			target.flash_pain_overlay(pain_overlay_severity)
+
+	// No message if the pain emtoe fails
+	if(!target.pain_controller.do_pain_emote())
+		return FALSE
+
+	to_chat(target, span_userdanger(pain_message))
+	return TRUE

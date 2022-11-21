@@ -137,7 +137,7 @@
 	update_burden(FALSE)
 
 /// Signal to increase burden_level (see update_burden proc) if a limb is removed
-/datum/mutation/human/burdened/proc/limbs_removed_burden(datum/source, obj/item/bodypart/old_limb, special)
+/datum/mutation/human/burdened/proc/limbs_removed_burden(datum/source, obj/item/bodypart/old_limb, dismembered, special)
 	SIGNAL_HANDLER
 
 	if(special) //something we don't wanna consider, like instaswapping limbs

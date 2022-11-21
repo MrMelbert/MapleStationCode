@@ -64,14 +64,30 @@
 	description = "<span class='boldwarning'>STOP THE PAIN!</span>\n"
 	mood_change = -15
 
+// Applied when you go under the knife with anesthesia
 /datum/mood_event/anesthetic
-	description = "<span class='nicegreen'>Thank science for modern medicine.</span>\n"
+	description = "Thank science for modern medicine."
 	mood_change = 2
-	timeout = 5 MINUTES
+	timeout = 6 MINUTES
 
+// Applied by most surgeries if you get operated on without anesthetics
 /datum/mood_event/surgery
+	description = "They're operating on me while I'm awake!"
 	mood_change = -6
-	timeout = 2 MINUTES
+	timeout = 3 MINUTES
 
+// Applied by some surgeries that are especially bad without anesthetics
 /datum/mood_event/surgery/major
-	mood_change = -9
+	description = "THEY'RE CUTTING ME OPEN!!"
+	mood_change = -10
+	timeout = 6 MINUTES
+
+/atom/movable/screen/alert/numbed
+	name = "Numbed"
+	desc = "Your body is numb, painless. You're under the effect of some kind of painkiller."
+	icon_state = "drugged"
+
+/datum/mood_event/narcotic_light
+	description = "I feel numb."
+	mood_change = 4
+	timeout = 3 MINUTES

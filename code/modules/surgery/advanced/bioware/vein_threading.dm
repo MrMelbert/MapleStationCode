@@ -16,18 +16,23 @@
 	name = "thread veins"
 	accept_hand = TRUE
 	time = 125
+	surgery_moodlet = /datum/mood_event/surgery/major
+	pain_overlay_severity = 2
+	pain_amount = 15
+	pain_type = BURN
 
 /datum/surgery_step/thread_veins/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You start weaving [target]'s circulatory system."),
 		span_notice("[user] starts weaving [target]'s circulatory system."),
 		span_notice("[user] starts manipulating [target]'s circulatory system."))
-	display_pain(target, "Your entire body burns in agony!")
+	give_surgery_pain(target, "Your entire body burns in agony!", target_zone = target_zone)
+	target.cause_typed_pain(BODY_ZONES_ALL, 25, BURN)
 
 /datum/surgery_step/thread_veins/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(user, target, span_notice("You weave [target]'s circulatory system into a resistant mesh!"),
 		span_notice("[user] weaves [target]'s circulatory system into a resistant mesh!"),
 		span_notice("[user] finishes manipulating [target]'s circulatory system."))
-	display_pain(target, "You can feel your blood pumping through reinforced veins!")
+	give_surgery_pain(target, "You can feel your blood pumping through reinforced veins!", target_zone = target_zone)
 	new /datum/bioware/threaded_veins(target)
 	return ..()
 

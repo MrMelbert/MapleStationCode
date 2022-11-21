@@ -2,7 +2,7 @@
 // Species pain modifiers.
 /datum/species/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
-	if(!isnull(species_pain_mod))
+	if(isnum(species_pain_mod)&& species_pain_mod != 1)
 		C.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
 
 /datum/species/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
@@ -25,10 +25,6 @@
 	A.affected_mob.unset_pain_mod(PAIN_MOD_YOUTH)
 
 // Some Traumas
-/datum/brain_trauma/mild/concussion/on_life(delta_time, times_fired)
-	. = ..()
-	if(DT_PROB(1, delta_time))
-		owner.cause_pain(BODY_ZONE_HEAD, 10)
 
 /datum/brain_trauma/special/tenacity/on_gain()
 	. = ..()
@@ -41,7 +37,7 @@
 // Near death experience
 /mob/living/carbon/human/set_health(new_value)
 	. = ..()
-	if(HAS_TRAIT_FROM(src, TRAIT_SIXTHSENSE, "near-death"))
+	if(HAS_TRAIT_FROM(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT))
 		SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "near-death", /datum/mood_event/deaths_door)
 		set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
 	else

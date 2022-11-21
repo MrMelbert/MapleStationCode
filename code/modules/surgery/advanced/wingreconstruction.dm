@@ -24,12 +24,14 @@
 	time = 200
 	chems_needed = list(/datum/reagent/medicine/c2/synthflesh)
 	require_all_chems = FALSE
+	pain_amount = 9
+	pain_type = BURN
 
 /datum/surgery_step/wing_reconstruction/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to fix [target]'s charred wing membranes..."),
 		span_notice("[user] begins to fix [target]'s charred wing membranes."),
 		span_notice("[user] begins to perform surgery on [target]'s charred wing membranes."))
-	display_pain(target, "Your wings sting like hell!")
+	give_surgery_pain(target, "Your wings sting like hell!", target_zone = target_zone)
 
 /datum/surgery_step/wing_reconstruction/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(ishuman(target))
@@ -37,7 +39,7 @@
 		display_results(user, target, span_notice("You succeed in reconstructing [target]'s wings."),
 			span_notice("[user] successfully reconstructs [target]'s wings!"),
 			span_notice("[user] completes the surgery on [target]'s wings."))
-		display_pain(target, "You can feel your wings again!")
+		give_surgery_pain(target, "You can feel your wings again!", target_zone = target_zone)
 		var/obj/item/organ/external/wings/moth/wings = target.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
 		wings?.heal_wings()
 

@@ -17,18 +17,23 @@
 	name = "reinforce ligaments"
 	accept_hand = TRUE
 	time = 125
+	surgery_moodlet = /datum/mood_event/surgery/major
+	pain_overlay_severity = 2
+	pain_amount = 10
+	pain_type = BURN
 
 /datum/surgery_step/reinforce_ligaments/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You start reinforcing [target]'s ligaments."),
 		span_notice("[user] starts reinforce [target]'s ligaments."),
 		span_notice("[user] starts manipulating [target]'s ligaments."))
-	display_pain(target, "Your limbs burn with severe pain!")
+	give_surgery_pain(target, "Your limbs burn with severe pain!", target_zone = target_zone)
+	target.cause_typed_pain(BODY_ZONES_LIMBS, 20, BURN)
 
 /datum/surgery_step/reinforce_ligaments/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(user, target, span_notice("You reinforce [target]'s ligaments!"),
 		span_notice("[user] reinforces [target]'s ligaments!"),
 		span_notice("[user] finishes manipulating [target]'s ligaments."))
-	display_pain(target, "Your limbs feel more secure, but also more frail.")
+	give_surgery_pain(target, "Your limbs feel more secure, but also more frail.", target_zone = target_zone)
 	new /datum/bioware/reinforced_ligaments(target)
 	return ..()
 

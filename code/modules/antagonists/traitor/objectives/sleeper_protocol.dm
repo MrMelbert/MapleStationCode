@@ -87,6 +87,7 @@
 
 /datum/surgery_step/brainwash/sleeper_agent
 	time = 25 SECONDS
+	pain_amount = 36
 	var/list/possible_objectives = list(
 		"You love the Syndicate",
 		"Do not trust Nanotrasen",
@@ -101,7 +102,7 @@
 	display_results(user, target, span_notice("You begin to brainwash [target]..."),
 		span_notice("[user] begins to fix [target]'s brain."),
 		span_notice("[user] begins to perform surgery on [target]'s brain."))
-	display_pain(target, "Your head pounds with unimaginable pain!") // Same message as other brain surgeries
+	give_surgery_pain(target, "Your head pounds with unimaginable pain!", target_zone = target_zone) // Same message as other brain surgeries
 
 /datum/surgery_step/brainwash/sleeper_agent/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(target.stat == DEAD)

@@ -27,6 +27,8 @@
 		/obj/item = 30) // 30% success with any hot item.
 	time = 100
 	chems_needed = list(/datum/reagent/medicine/spaceacillin,/datum/reagent/consumable/virus_food,/datum/reagent/toxin/formaldehyde)
+	pain_amount = 24
+	pain_type = BURN
 
 /datum/surgery_step/viral_bond/tool_check(mob/user, obj/item/tool)
 	if(implement_type == TOOL_WELDER || implement_type == /obj/item)
@@ -38,13 +40,13 @@
 	display_results(user, target, span_notice("You start heating [target]'s bone marrow with [tool]..."),
 		span_notice("[user] starts heating [target]'s bone marrow with [tool]..."),
 		span_notice("[user] starts heating something in [target]'s chest with [tool]..."))
-	display_pain(target, "You feel a searing heat spread through your chest!")
+	give_surgery_pain(target, "You feel a searing heat spread through your chest!", target_zone = target_zone)
 
 /datum/surgery_step/viral_bond/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	display_results(user, target, span_notice("[target]'s bone marrow begins pulsing slowly. The viral bonding is complete."),
 		span_notice("[target]'s bone marrow begins pulsing slowly."),
 		span_notice("[user] finishes the operation."))
-	display_pain(target, "You feel a faint throbbing in your chest.")
+	give_surgery_pain(target, "You feel a faint throbbing in your chest.", target_zone = target_zone)
 	for(var/datum/disease/infected_disease as anything in target.diseases)
 		infected_disease.carrier = TRUE
 	return TRUE

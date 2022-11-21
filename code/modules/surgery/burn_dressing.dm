@@ -32,6 +32,8 @@
 		TOOL_WIRECUTTER = 40)
 	time = 30
 	repeatable = TRUE
+	pain_amount = 12
+	pain_type = BURN
 	/// How much sanitization is added per step
 	var/sanitization_added = 0.5
 	/// How much infestation is removed per step (positive number)
@@ -67,7 +69,7 @@
 		display_results(user, target, span_notice("You begin to excise infected flesh from [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to excise infected flesh from [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to excise infected flesh from [target]'s [parse_zone(user.zone_selected)]."))
-		display_pain(target, "The infection in your [parse_zone(user.zone_selected)] stings like hell! It feels like you're being stabbed!")
+		give_surgery_pain(target, "The infection in your [parse_zone(user.zone_selected)] stings like hell! It feels like you're being stabbed!", target_zone = target_zone)
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
@@ -122,7 +124,7 @@
 		display_results(user, target, span_notice("You begin to dress the burns on [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(user.zone_selected)]."))
-		display_pain(target, "The burns on your [parse_zone(user.zone_selected)] sting like hell!")
+		give_surgery_pain(target, "The burns on your [parse_zone(user.zone_selected)] sting like hell!", target_zone = target_zone)
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 

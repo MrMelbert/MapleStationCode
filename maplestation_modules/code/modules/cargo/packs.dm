@@ -193,7 +193,7 @@
 	cost = CARGO_CRATE_VALUE * 4
 	crate_name = "medipen shipment"
 	contains = list(
-		/obj/item/reagent_containers/hypospray/medipen/painkiller,
-		/obj/item/reagent_containers/hypospray/medipen/painkiller,
-		/obj/item/reagent_containers/hypospray/medipen/painkiller,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
 		)

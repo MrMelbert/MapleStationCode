@@ -17,18 +17,23 @@
 	name = "reshape ligaments"
 	accept_hand = TRUE
 	time = 125
+	surgery_moodlet = /datum/mood_event/surgery/major
+	pain_overlay_severity = 2
+	pain_amount = 10
+	pain_type = BURN
 
 /datum/surgery_step/reshape_ligaments/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You start reshaping [target]'s ligaments into a hook-like shape."),
 		span_notice("[user] starts reshaping [target]'s ligaments into a hook-like shape."),
 		span_notice("[user] starts manipulating [target]'s ligaments."))
-	display_pain(target, "Your limbs burn with severe pain!")
+	give_surgery_pain(target, "Your limbs burn with severe pain!", target_zone = target_zone)
+	target.cause_typed_pain(BODY_ZONES_LIMBS, 20, BURN)
 
 /datum/surgery_step/reshape_ligaments/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(user, target, span_notice("You reshape [target]'s ligaments into a connective hook!"),
 		span_notice("[user] reshapes [target]'s ligaments into a connective hook!"),
 		span_notice("[user] finishes manipulating [target]'s ligaments."))
-	display_pain(target, "Your limbs feel... strangely loose.")
+	give_surgery_pain(target, "Your limbs feel... strangely loose.", target_zone = target_zone)
 	new /datum/bioware/hooked_ligaments(target)
 	return ..()
 

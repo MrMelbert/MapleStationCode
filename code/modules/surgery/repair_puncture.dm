@@ -37,6 +37,7 @@
 		TOOL_SCALPEL = 85,
 		TOOL_WIRECUTTER = 40)
 	time = 3 SECONDS
+	pain_amount = 16
 
 /datum/surgery_step/repair_innards/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	var/datum/wound/pierce/pierce_wound = surgery.operated_wound
@@ -52,7 +53,7 @@
 	display_results(user, target, span_notice("You begin to realign the torn blood vessels in [target]'s [parse_zone(user.zone_selected)]..."),
 		span_notice("[user] begins to realign the torn blood vessels in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 		span_notice("[user] begins to realign the torn blood vessels in [target]'s [parse_zone(user.zone_selected)]."))
-	display_pain(target, "You feel a horrible stabbing pain in your [parse_zone(user.zone_selected)]!")
+	give_surgery_pain(target, "You feel a horrible stabbing pain in your [parse_zone(user.zone_selected)]!", target_zone = target_zone)
 
 /datum/surgery_step/repair_innards/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	var/datum/wound/pierce/pierce_wound = surgery.operated_wound
@@ -99,7 +100,7 @@
 	display_results(user, target, span_notice("You begin to meld some of the split blood vessels in [target]'s [parse_zone(user.zone_selected)]..."),
 		span_notice("[user] begins to meld some of the split blood vessels in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 		span_notice("[user] begins to meld some of the split blood vessels in [target]'s [parse_zone(user.zone_selected)]."))
-	display_pain(target, "You're being burned inside your [parse_zone(user.zone_selected)]!")
+	give_surgery_pain(target, "You're being burned inside your [parse_zone(user.zone_selected)]!", target_zone = target_zone)
 
 /datum/surgery_step/seal_veins/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	var/datum/wound/pierce/pierce_wound = surgery.operated_wound
