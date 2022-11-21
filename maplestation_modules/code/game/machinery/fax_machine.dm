@@ -329,12 +329,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return FALSE
 
 	if(!sending_enabled)
-		balloon_alert_to_viewers("[src] cannot send faxes")
+		balloon_alert_to_viewers("can't send faxes!")
 		playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 		return FALSE
 
 	if(!stored_paper || !length(stored_paper.info) || !COOLDOWN_FINISHED(src, fax_cooldown))
-		balloon_alert_to_viewers("fax failed to send")
+		balloon_alert_to_viewers("fax failed to send!")
 		playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 		return FALSE
 
@@ -429,7 +429,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	var/title = input(user, "Write the paper's title here. Leave blank for default title (\"paper\")", "Send Fax") as null | text
 	if(title)
-		sent_paper.name = fax
+		sent_paper.name = title
 
 	var/source = input(user, "Who's sending this fax? Leave blank for default name (\"Central Command\", or \"the Syndicate\" if emagged)", "Send Fax") as null | text
 	sent_paper.update_appearance()
@@ -486,7 +486,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!unread_message)
 		return FALSE
 
-	say(span_robot("Fax received from [source]!"))
+	say("Fax received from [source]!")
 	playsound(src, 'sound/machines/terminal_processing.ogg', 50, FALSE)
 	addtimer(CALLBACK(src, .proc/alert_received_paper, source), FAX_UNREAD_ALERT_TIME)
 
@@ -626,7 +626,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	if(!silent)
 		flick("fax_receive", src)
-		balloon_alert_to_viewers("removed [stored_paper]")
+		balloon_alert_to_viewers("removed paper")
 	if(user && user.CanReach(src))
 		user.put_in_hands(stored_paper)
 	else
@@ -646,7 +646,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	if(!silent)
 		flick("fax_receive", src)
-		balloon_alert_to_viewers("removed [received_paper]")
+		balloon_alert_to_viewers("removed paper")
 	if(user && user.CanReach(src))
 		user.put_in_hands(received_paper)
 	else
