@@ -181,40 +181,52 @@
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	tick_interval = -1
+	update_modifiers()
 
 ///If the mob has the TRAIT_SLEEPIMMUNE but somehow looses it we make him sleep and restart the tick()
 /datum/status_effect/incapacitating/sleeping/proc/on_owner_sleepy(mob/living/source)
 	SIGNAL_HANDLER
 	ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	tick_interval = initial(tick_interval)
+	update_modifiers()
 
 /datum/status_effect/incapacitating/sleeping/proc/update_modifiers(mob/living/source)
 	SIGNAL_HANDLER
 
+	calculate_modifiers()
+
+	if(iscarbon(owner))
+		var/mob/living/carbon/carbon_owner = owner
+		carbon_owner.set_pain_mod(PAIN_MOD_SLEEP, max(pain_modifier, 0.1))
+
+/datum/status_effect/incapacitating/sleeping/proc/calculate_modifiers()
 	healing_power = initial(healing_power)
 	pain_modifier = initial(pain_modifier)
+
+	// Not asleep, don't care
+	if(!HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
+		return
+
+	if(HAS_TRAIT(owner, TRAIT_ON_ANESTHETIC))
+		healing_power -= 0.2
+		pain_modifier -= 0.5
 
 	if(locate(/obj/structure/bed) in owner.loc)
 		healing_power -= 0.3
 		pain_modifier -= 0.15
 
 	else
-		if(locate(/obj/structure/table) in owner.loc)
+		var/obj/structure/table/back_pain = locate() in owner.loc
+		if(!isnull(back_pain))
 			healing_power -= 0.1
-		if(locate(/obj/structure/table/optable) in owner.loc)
+		if(istype(back_pain, /obj/structure/table/optable))
 			pain_modifier -= 0.2
+			// No, a bedsheet doesn't make surgery more comfortable
+			return
 
 	if(locate(/obj/item/bedsheet) in owner.loc)
 		healing_power -= 0.1
 		pain_modifier -= 0.15
-
-	if(HAS_TRAIT(owner, TRAIT_ON_ANESTHETIC))
-		healing_power -= 0.2
-		pain_modifier -= 0.5
-
-	if(iscarbon(owner))
-		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.set_pain_mod(PAIN_MOD_SLEEP, max(pain_modifier, 0.1))
 
 /datum/status_effect/incapacitating/sleeping/tick()
 	if(owner.maxHealth)

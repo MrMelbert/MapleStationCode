@@ -515,7 +515,7 @@
 			if(70 to INFINITY)
 				high_pain_effects(delta_time)
 
-	if(!parent.has_status_effect(/datum/status_effect/grouped/stasis))
+	if(!IS_IN_STASIS(parent) || !parent.on_fire)
 		decay_pain(delta_time)
 
 /**

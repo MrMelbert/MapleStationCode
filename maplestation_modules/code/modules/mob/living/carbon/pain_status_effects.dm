@@ -382,17 +382,14 @@
 	if(!human_owner.pain_controller)
 		return FALSE
 
-	RegisterSignal(human_owner, COMSIG_LIVING_EXTINGUISHED, .proc/remove_on_signal)
-	RegisterSignal(human_owner, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_on_signal)
+	RegisterSignal(human_owner, list(COMSIG_LIVING_EXTINGUISHED, COMSIG_LIVING_POST_FULLY_HEAL), .proc/remove_on_signal)
 	human_owner.pain_controller.adjust_bodypart_pain(BODY_ZONES_ALL, pain_amount, BURN)
-	human_owner.pain_controller.natural_pain_decay = 0
 	return TRUE
 
 /datum/status_effect/pain_from_fire/on_remove()
 	var/mob/living/carbon/human/human_owner = owner
 	UnregisterSignal(human_owner, list(COMSIG_LIVING_EXTINGUISHED, COMSIG_LIVING_POST_FULLY_HEAL))
 	human_owner.pain_controller.adjust_bodypart_pain(BODY_ZONES_ALL, -0.75 * pain_amount, BURN)
-	human_owner.pain_controller.natural_pain_decay = human_owner.pain_controller.base_pain_decay
 
 /// When signalled, terminate.
 /datum/status_effect/pain_from_fire/proc/remove_on_signal(datum/source)

@@ -44,23 +44,33 @@
 		SEND_SIGNAL(src, COMSIG_CLEAR_MOOD_EVENT, "near-death")
 		unset_pain_mod(PAIN_MOD_NEAR_DEATH)
 
-// Stasis - This is a bit of a cop-out.
-/obj/machinery/stasis/chill_out(mob/living/carbon/target)
+// Stasis gives you a pain modifier and stops pain decay
+//
+// This is kind of a cop-out, I admit:
+// Loigcally, you shouldn't feel any pain on stasis, since all of your body systems are frozen
+// However, for balance this kneecaps surgery by making it a no-brainer to use stasis
+//
+// As a result, I'm opting to add just a decent pain modifier instead
+/datum/status_effect/grouped/stasis/on_apply()
 	. = ..()
-	if(!istype(target) || target != occupant)
-		return
-	if(!target.pain_controller)
-		return
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.set_pain_mod(id, 0.5)
 
-	target.set_pain_mod(PAIN_MOD_STASIS, 0.3)
-	target.pain_controller.natural_pain_decay = 0 // No pain decay on stasis!
+/datum/status_effect/grouped/stasis/on_remove()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.unset_pain_mod(id)
+	return ..()
 
-/obj/machinery/stasis/thaw_them(mob/living/carbon/target)
+/datum/status_effect/determined/on_apply()
 	. = ..()
-	if(!istype(target))
-		return
-	if(!target.pain_controller)
-		return
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.set_pain_mod(id, 0.625)
 
-	target.unset_pain_mod(PAIN_MOD_STASIS)
-	target.pain_controller.natural_pain_decay = target.pain_controller.base_pain_decay
+/datum/status_effect/determined/on_remove()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.unset_pain_mod(id)
+	return ..()

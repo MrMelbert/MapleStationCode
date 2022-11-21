@@ -199,7 +199,7 @@
  */
 /datum/surgery_step/proc/give_surgery_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone, target_zone = target_zone)
 	// Only feels pain if we feels pain
-	if(!target.pain_controller || target.pain_controller.pain_modifier <= 0.5 || pain_amount <= 0)
+	if(!target.pain_controller || target.pain_controller.pain_modifier <= PAIN_MOD_TO_IGNORE_SURGERY || pain_amount <= 0)
 		return FALSE
 
 	// No pain from mechanics but still show the message (usually)
