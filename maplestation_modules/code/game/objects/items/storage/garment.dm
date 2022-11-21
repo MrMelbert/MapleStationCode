@@ -42,6 +42,12 @@
 	new /obj/item/clothing/glasses/hud/security/sunglasses/gars(src)
 	new /obj/item/clothing/glasses/hud/security/sunglasses/eyepatch(src)
 
+// Making it so that all garment bags can hold a little more stuff.
+/obj/item/storage/bag/garment/ComponentInitialize()
+	. = ..()
+	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
+	STR.max_items = 20
+
 // This here's a special subtype that'll vacuum up all clothing items in the locker and put it in the bag roundstart.
 /obj/item/storage/bag/garment/magic
 	/// A list of types which, if we encounter, we won't grab up.
