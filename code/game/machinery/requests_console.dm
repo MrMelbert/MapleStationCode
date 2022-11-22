@@ -274,6 +274,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 			// NON-MODULE CHANGE
 			if(istext(announceAuth))
 				message += "\n - [announceAuth]"
+
 		minor_announce(message, "[department] Announcement:", html_encode = FALSE)
 		GLOB.news_network.SubmitArticle(message, department, "Station Announcements", null)
 		usr.log_talk(message, LOG_SAY, tag="station announcement from [src]")

@@ -729,7 +729,11 @@
 		input = user.treat_message(input) //Adds slurs and so on. Someone should make this use languages too.
 	// NON-MODULE CHANGE
 	if(authorize_job && authorize_name)
-		input += "\n\n - [authorize_job] [authorize_name]"
+		if(authorize_job == authorize_name)
+			input += "\n\n - [authorize_name]"
+		else
+			input += "\n\n - [authorize_job] [authorize_name]"
+
 	var/list/players = get_communication_players()
 	SScommunications.make_announcement(user, is_ai, input, syndicate || (obj_flags & EMAGGED), players)
 	deadchat_broadcast(" made a priority announcement from [span_name("[get_area_name(usr, TRUE)]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)
