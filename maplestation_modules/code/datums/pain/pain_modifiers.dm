@@ -16,23 +16,23 @@
 		return
 	switch(A.stage)
 		if(5)
-			A.affected_mob.set_pain_mod(PAIN_MOD_YOUTH, 0.9)
+			A.affected_mob.set_pain_mod(name, 0.9)
 
 /datum/symptom/youth/End(datum/disease/advance/A)
 	. = ..()
 	if(!.)
 		return
-	A.affected_mob.unset_pain_mod(PAIN_MOD_YOUTH)
+	A.affected_mob.unset_pain_mod(name)
 
 // Some Traumas
 
 /datum/brain_trauma/special/tenacity/on_gain()
 	. = ..()
-	owner.set_pain_mod(PAIN_MOD_TENACITY, 0)
+	owner.set_pain_mod(name, 0)
 
 /datum/brain_trauma/special/tenacity/on_lose()
-	owner.unset_pain_mod(PAIN_MOD_TENACITY)
-	. = ..()
+	owner.unset_pain_mod(name)
+	return ..()
 
 // Near death experience
 /mob/living/carbon/human/set_health(new_value)
