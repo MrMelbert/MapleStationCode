@@ -59,5 +59,5 @@
 		display_results(user, target, span_warning("You accidentally stab [target] right in the brain! Or would have, if [target] had a brain."),
 			span_warning("[user] accidentally stabs [target] right in the brain! Or would have, if [target] had a brain."),
 			span_warning("[user] accidentally stabs [target] right in the brain!"))
-		give_surgery_pain(target, "You feel a visceral stabbing pain right through your head!", target_zone = target_zone) // dunno who can feel pain w/o a brain but may as well be consistent.
+		give_surgery_pain(target, "You feel a visceral stabbing pain right through your head!", target_zone = target_zone) // dunno who can feel pain w/o a brain but may as well be consistent. // NON-MODULE CHANGE
 	return FALSE

@@ -69,7 +69,7 @@
 		display_results(user, target, span_notice("You begin to excise infected flesh from [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to excise infected flesh from [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to excise infected flesh from [target]'s [parse_zone(user.zone_selected)]."))
-		give_surgery_pain(target, "The infection in your [parse_zone(user.zone_selected)] stings like hell! It feels like you're being stabbed!", target_zone = target_zone)
+		give_surgery_pain(target, "The infection in your [parse_zone(user.zone_selected)] stings like hell! It feels like you're being stabbed!", target_zone = target_zone) // NON-MODULE CHANGE
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
@@ -124,7 +124,7 @@
 		display_results(user, target, span_notice("You begin to dress the burns on [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(user.zone_selected)]."))
-		give_surgery_pain(target, "The burns on your [parse_zone(user.zone_selected)] sting like hell!", target_zone = target_zone)
+		give_surgery_pain(target, "The burns on your [parse_zone(user.zone_selected)] sting like hell!", target_zone = target_zone) // NON-MODULE CHANGE
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 

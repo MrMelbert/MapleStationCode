@@ -213,7 +213,7 @@
 	targeted_zone = BODY_ZONE_CHEST,
 	pain_heal_amount = 0,
 	pain_modifier = 1,
-	temperature_change = 0
+	temperature_change = 0,
 )
 
 	src.holder = holder

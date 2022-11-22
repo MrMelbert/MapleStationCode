@@ -46,7 +46,7 @@
 	display_results(user, target, span_notice("You begin to brainwash [target]..."),
 		span_notice("[user] begins to fix [target]'s brain."),
 		span_notice("[user] begins to perform surgery on [target]'s brain."))
-	give_surgery_pain(target, "Your head pounds with unimaginable pain!", target_zone = target_zone) // Same message as other brain surgeries
+	give_surgery_pain(target, "Your head pounds with unimaginable pain!", target_zone = target_zone) // Same message as other brain surgeries // NON-MODULE CHANGE
 
 /datum/surgery_step/brainwash/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(!target.mind)

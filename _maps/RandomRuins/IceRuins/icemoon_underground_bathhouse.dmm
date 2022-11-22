@@ -40,7 +40,7 @@
 /obj/item/food/spaghetti/pastatomato{
 	desc = "Just how mom used to make it.";
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/tomatojuice = 10, /datum/reagent/consumable/nutriment/vitamin = 4, /datum/reagent/pax = 5, /datum/reagent/medicine/psicodine = 10, /datum/reagent/medicine/painkiller/morphine = 5);
-	/name = "soul food";
+	name = "soul food";
 	tastes = list("nostalgia" = 1, "happiness" = 1)
 	},
 /turf/open/floor/wood,

@@ -28,6 +28,7 @@ Borg Hypospray
 	var/bypass_protection = 0 //If the hypospray can go through armor or thick material
 
 	var/list/datum/reagents/reagent_list = list()
+	// NON-MODULE CHANGE
 	var/list/reagent_ids = list(
 		/datum/reagent/medicine/c2/convermol,
 		/datum/reagent/medicine/c2/libital,
