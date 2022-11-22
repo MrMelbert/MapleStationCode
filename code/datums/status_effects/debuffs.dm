@@ -173,7 +173,7 @@
 
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.unset_pain_mod(PAIN_MOD_SLEEP)
+		carbon_owner.unset_pain_mod(id)
 	return ..()
 
 ///If the mob is sleeping and gain the TRAIT_SLEEPIMMUNE we remove the TRAIT_KNOCKEDOUT and stop the tick() from happening
@@ -197,7 +197,7 @@
 
 	if(iscarbon(owner))
 		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.set_pain_mod(PAIN_MOD_SLEEP, max(pain_modifier, 0.1))
+		carbon_owner.set_pain_mod(id, max(pain_modifier, 0.1))
 
 /datum/status_effect/incapacitating/sleeping/proc/calculate_modifiers()
 	healing_power = initial(healing_power)

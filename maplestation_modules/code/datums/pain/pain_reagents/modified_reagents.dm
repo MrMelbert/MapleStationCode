@@ -105,7 +105,7 @@
 
 /datum/reagent/nitrous_oxide/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	UnregisterSignal(owner, list(SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT)))
+	UnregisterSignal(user, list(SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT)))
 	remove_anesthetic(user)
 
 /datum/reagent/nitrous_oxide/proc/apply_anesthetic(mob/living/carbon/source)

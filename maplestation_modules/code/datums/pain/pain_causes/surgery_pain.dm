@@ -45,7 +45,7 @@
 /datum/surgery_step/fix_eyes
 	pain_amount = 9
 
-datum/surgery_step/gastrectomy
+/datum/surgery_step/gastrectomy
 	pain_amount = 20
 
 /datum/surgery_step/heal
