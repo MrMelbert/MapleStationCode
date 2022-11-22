@@ -4330,6 +4330,7 @@
 #include "maplestation_modules\code\datums\pain\pain_implements.dm"
 #include "maplestation_modules\code\datums\pain\pain_modifiers.dm"
 #include "maplestation_modules\code\datums\pain\pain_shock.dm"
+#include "maplestation_modules\code\datums\pain\scrubber_tweak.dm"
 #include "maplestation_modules\code\datums\pain\pain_causes\disease_pain.dm"
 #include "maplestation_modules\code\datums\pain\pain_causes\generic_pain_causes.dm"
 #include "maplestation_modules\code\datums\pain\pain_causes\opioid_addiction_pain.dm"

@@ -248,6 +248,7 @@
 	name = "survival painkiller medipen"
 	desc = "A medipen that contains a dosage of painkilling chemicals. \
 		WARNING: Do not use in combination with alcohol. Can cause drowsiness."
+	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "painkiller_stimpen"
 	base_icon_state = "painkiller_stimpen"
 	volume = 30
@@ -264,6 +265,7 @@
 	name = "emergency painkiller medipen"
 	desc = "A medipen that contains a dosage of heavy painkilling chemicals. \
 		WARNING: Do not use in combination with alcohol. Can cause drowsiness and addiction."
+	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "painkiller"
 	base_icon_state = "painkiller"
 	volume = 25
@@ -277,6 +279,7 @@
 /obj/item/reagent_containers/hypospray/medipen/brute_painkiller
 	name = "ibaltifen painkiller medipen"
 	desc = "An autoinjector containing ibaltifen, used to treat pain caused by bruises and broken limbs. WARNING: Do not use in combination with alcohol."
+	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "burn_painkiller_pen"
 	base_icon_state = "burn_painkiller_pen"
 	inhand_icon_state = "salacid"
@@ -285,6 +288,7 @@
 /obj/item/reagent_containers/hypospray/medipen/burn_painkiller
 	name = "anurifen painkiller medipen"
 	desc = "An autoinjector containing anurifen, used to treat pain caused by bruises and broken limbs. WARNING: Do not use in combination with alcohol."
+	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "brute_painkiller_pen"
 	base_icon_state = "brute_painkiller_pen"
 	inhand_icon_state = "oxapen"
@@ -530,7 +534,7 @@
 	)
 	generate_items_inside(items_inside, src)
 
-/obj/item/storage/firstaid/burn/PopulateContents()
+/obj/item/storage/firstaid/fire/PopulateContents()
 	if(empty)
 		return
 	var/static/list/items_inside = list(
