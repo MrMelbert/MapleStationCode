@@ -28,9 +28,6 @@
 		/obj/item/knife = 45,
 		/obj/item/shard = 25)
 	time = 16
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 60
 
 /datum/surgery_step/incise_heart/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to make an incision in [target]'s heart..."),
@@ -70,9 +67,6 @@
 		/obj/item/stack/package_wrap = 15,
 		/obj/item/stack/cable_coil = 5)
 	time = 90
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 30
 
 /datum/surgery_step/coronary_bypass/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to graft a bypass onto [target]'s heart..."),

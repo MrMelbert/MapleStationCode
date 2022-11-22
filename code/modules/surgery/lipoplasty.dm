@@ -22,7 +22,6 @@
 		/obj/item/hatchet = 35,
 		/obj/item/knife/butcher = 25)
 	time = 64
-	pain_amount = 16
 
 /datum/surgery_step/cut_fat/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	user.visible_message(span_notice("[user] begins to cut away [target]'s excess fat."), span_notice("You begin to cut away [target]'s excess fat..."))

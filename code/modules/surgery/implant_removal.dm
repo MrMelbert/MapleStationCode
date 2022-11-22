@@ -18,7 +18,6 @@
 		TOOL_CROWBAR = 65,
 		/obj/item/kitchen/fork = 35)
 	time = 64
-	pain_amount = 24
 	var/obj/item/implant/implant
 
 /datum/surgery_step/extract_implant/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

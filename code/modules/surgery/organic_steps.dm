@@ -9,7 +9,6 @@
 		/obj/item/shard = 45,
 		/obj/item = 30) // 30% success with any sharp item.
 	time = 16
-	pain_amount = 12
 
 /datum/surgery_step/incise/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to make an incision in [target]'s [parse_zone(target_zone)]..."),
@@ -35,9 +34,6 @@
 				target_bodypart.generic_bleedstacks += 10
 	return ..()
 
-/datum/surgery_step/incise/nobleed
-	pain_amount = 3
-
 /datum/surgery_step/incise/nobleed/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]..."),
 		span_notice("[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]."),
@@ -53,7 +49,6 @@
 		/obj/item/stack/package_wrap = 35,
 		/obj/item/stack/cable_coil = 15)
 	time = 24
-	pain_amount = 3
 
 /datum/surgery_step/clamp_bleeders/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to clamp bleeders in [target]'s [parse_zone(target_zone)]..."),
@@ -80,7 +75,6 @@
 		TOOL_WIRECUTTER = 35,
 		/obj/item/stack/rods = 35)
 	time = 24
-	pain_amount = 12
 
 /datum/surgery_step/retract_skin/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to retract the skin in [target]'s [parse_zone(target_zone)]..."),
@@ -97,8 +91,6 @@
 		TOOL_WELDER = 70,
 		/obj/item = 30) // 30% success with any hot item.
 	time = 24
-	pain_amount = 12
-	pain_type = BURN
 
 /datum/surgery_step/close/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to mend the incision in [target]'s [parse_zone(target_zone)]..."),
@@ -135,9 +127,6 @@
 		/obj/item/knife/butcher = 25,
 		/obj/item = 20) //20% success (sort of) with any sharp item with a force>=10
 	time = 54
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	// no pain_amount here because it uses apply_damage, which causes pain
 
 /datum/surgery_step/saw/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to saw through the bone in [target]'s [parse_zone(target_zone)]..."),
@@ -168,7 +157,6 @@
 		TOOL_SCREWDRIVER = 25,
 		/obj/item/kitchen/spoon = 20)
 	time = 30
-	pain_amount = 24
 
 /datum/surgery_step/drill/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to drill into the bone in [target]'s [parse_zone(target_zone)]..."),

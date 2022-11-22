@@ -24,7 +24,6 @@
 		/obj/item/hatchet = 40,
 		/obj/item/knife/butcher = 25)
 	time = 64
-	pain_amount = 16 // Losing a limb also applies pain to chest
 
 /datum/surgery_step/sever_limb/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to sever [target]'s [parse_zone(target_zone)]..."),

@@ -16,17 +16,13 @@
 	name = "ground nerves"
 	accept_hand = TRUE
 	time = 155
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 15
-	pain_type = BURN
 
 /datum/surgery_step/ground_nerves/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You start rerouting [target]'s nerves."),
 		span_notice("[user] starts rerouting [target]'s nerves."),
 		span_notice("[user] starts manipulating [target]'s nervous system."))
 	give_surgery_pain(target, "Your entire body goes numb!", target_zone = target_zone)
-	target.cause_typed_pain(BODY_ZONES_ALL, 15, BURN)
+	target.cause_typed_pain(BODY_ZONES_ALL, 15, BURN) // NON-MODULE CHANGE
 
 /datum/surgery_step/ground_nerves/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(user, target, span_notice("You successfully reroute [target]'s nervous system!"),

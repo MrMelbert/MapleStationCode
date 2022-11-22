@@ -30,9 +30,6 @@
 		/obj/item/shard = 25,
 		/obj/item = 20)
 	time = 100
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 40
 
 /datum/surgery_step/lobotomize/tool_check(mob/user, obj/item/tool)
 	if(implement_type == /obj/item && !tool.get_sharpness())

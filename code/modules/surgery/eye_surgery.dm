@@ -19,7 +19,6 @@
 		TOOL_SCREWDRIVER = 45,
 		/obj/item/pen = 25)
 	time = 64
-	pain_amount = 9
 
 /datum/surgery/eye_surgery/can_start(mob/user, mob/living/carbon/target)
 	var/obj/item/organ/eyes/target_eyes = target.getorganslot(ORGAN_SLOT_EYES)

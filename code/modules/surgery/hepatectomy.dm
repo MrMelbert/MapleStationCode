@@ -28,9 +28,6 @@
 		/obj/item/knife = 45,
 		/obj/item/shard = 35)
 	time = 52
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 20
 
 /datum/surgery_step/hepatectomy/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to cut out a damaged piece of [target]'s liver..."),

@@ -10,15 +10,6 @@
 	var/require_all_chems = TRUE    //any on the list or all on the list?
 	var/silicons_obey_prob = FALSE
 
-	/// Moodlet given if a surgery is done without anesthetics
-	var/surgery_moodlet = /datum/mood_event/surgery
-	/// Pain overlay flashed if a surgery is done without anesthetics
-	var/pain_overlay_severity = 1
-	/// How much pain this gives (given out in give_surgery_pain, so this might be given out twice)
-	var/pain_amount = 0
-	/// What type of pain this gives
-	var/pain_type = BRUTE
-
 /datum/surgery_step/proc/try_op(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	var/success = FALSE
 	if(surgery.organ_to_manipulate && !target.getorganslot(surgery.organ_to_manipulate))
@@ -189,6 +180,7 @@
 	if(!target_detailed)
 		var/you_feel = pick("a brief pain", "your body tense up", "an unnerving sensation")
 		target.show_message(vague_message, MSG_VISUAL, span_notice("You feel [you_feel] as you are operated on."))
+
 /**
  * Sends a pain message to the target, including a chance of screaming.
  *

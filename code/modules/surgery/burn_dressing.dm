@@ -32,8 +32,6 @@
 		TOOL_WIRECUTTER = 40)
 	time = 30
 	repeatable = TRUE
-	pain_amount = 12
-	pain_type = BURN
 	/// How much sanitization is added per step
 	var/sanitization_added = 0.5
 	/// How much infestation is removed per step (positive number)

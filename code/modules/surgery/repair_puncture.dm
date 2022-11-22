@@ -37,7 +37,6 @@
 		TOOL_SCALPEL = 85,
 		TOOL_WIRECUTTER = 40)
 	time = 3 SECONDS
-	pain_amount = 16
 
 /datum/surgery_step/repair_innards/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	var/datum/wound/pierce/pierce_wound = surgery.operated_wound

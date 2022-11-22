@@ -20,9 +20,6 @@
 		/obj/item/pen = 15) //don't worry, pouring some alcohol on their open brain will get that chance to 100
 	repeatable = TRUE
 	time = 100 //long and complicated
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 24
 
 /datum/surgery/brain_surgery/can_start(mob/user, mob/living/carbon/target)
 	var/obj/item/organ/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)

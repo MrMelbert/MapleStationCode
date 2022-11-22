@@ -18,7 +18,6 @@
 	implements = list(/obj/item = 100)
 	repeatable = TRUE
 	time = 32
-	pain_amount = 16
 
 	var/obj/item/item_for_cavity
 

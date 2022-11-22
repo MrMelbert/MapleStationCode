@@ -26,9 +26,6 @@
 		TOOL_SCREWDRIVER = 35,
 		/obj/item/pen = 15)
 	time = 40
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 40
 
 /datum/surgery_step/pacify/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to pacify [target]..."),

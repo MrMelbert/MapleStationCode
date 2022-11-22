@@ -27,9 +27,6 @@
 		/obj/item/knife = 45,
 		/obj/item/shard = 35)
 	time = 42
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 20
 
 /datum/surgery_step/lobectomy/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to make an incision in [target]'s lungs..."),

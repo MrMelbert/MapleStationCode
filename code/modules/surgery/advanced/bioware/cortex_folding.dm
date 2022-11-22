@@ -23,9 +23,6 @@
 	name = "fold cortex"
 	accept_hand = TRUE
 	time = 125
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 40
 
 /datum/surgery_step/fold_cortex/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You start folding [target]'s outer cerebral cortex into a fractal pattern."),

@@ -87,7 +87,6 @@
 
 /datum/surgery_step/brainwash/sleeper_agent
 	time = 25 SECONDS
-	pain_amount = 36
 	var/list/possible_objectives = list(
 		"You love the Syndicate",
 		"Do not trust Nanotrasen",

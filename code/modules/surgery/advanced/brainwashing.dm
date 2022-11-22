@@ -33,10 +33,6 @@
 		/obj/item/stack/package_wrap = 35,
 		/obj/item/stack/cable_coil = 15)
 	time = 200
-	// melbert todo move this out
-	surgery_moodlet = /datum/mood_event/surgery/major
-	pain_overlay_severity = 2
-	pain_amount = 40
 	var/objective
 
 /datum/surgery_step/brainwash/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

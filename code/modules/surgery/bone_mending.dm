@@ -55,7 +55,6 @@
 		/obj/item/stack/sticky_tape/super = 50,
 		/obj/item/stack/sticky_tape = 30)
 	time = 40
-	pain_amount = 16
 
 /datum/surgery_step/repair_bone_hairline/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	if(surgery.operated_wound)
@@ -97,7 +96,6 @@
 		/obj/item/stack/sticky_tape/super = 40,
 		/obj/item/stack/sticky_tape = 20)
 	time = 40
-	pain_amount = 24
 
 /datum/surgery_step/reset_compound_fracture/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	if(surgery.operated_wound)

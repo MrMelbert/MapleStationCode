@@ -1,41 +1,4 @@
 // -- Causes of pain, from non-modular actions --
-// Disease symptoms
-/datum/symptom/headache/Activate(datum/disease/advance/A)
-	. = ..()
-	if(!.)
-		return
-	switch(A.stage)
-		if(4)
-			A.affected_mob.sharp_pain(BODY_ZONE_HEAD, 3 * power)
-			A.affected_mob.flash_pain_overlay(1)
-		if(5)
-			A.affected_mob.sharp_pain(BODY_ZONE_HEAD, 5 * power)
-			A.affected_mob.flash_pain_overlay(2)
-
-/datum/symptom/flesh_eating/Activate(datum/disease/advance/A)
-	. = ..()
-	if(!.)
-		return
-	switch(A.stage)
-		if(2, 3)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 3 * (pain ? 2 : 1))
-			A.affected_mob.flash_pain_overlay(1, 2 SECONDS)
-		if(4, 5)
-			A.affected_mob.cause_pain(BODY_ZONES_ALL, 12 * (pain ? 2 : 1))
-			A.affected_mob.flash_pain_overlay(2, 2 SECONDS)
-
-/datum/symptom/fire/Firestacks_stage_4(mob/living/carbon/M, datum/disease/advance/A)
-	. = ..()
-	M.cause_typed_pain(BODY_ZONES_ALL, 5, BURN)
-	M.flash_pain_overlay(1)
-	M.pain_emote("scream", 5 SECONDS)
-
-/datum/symptom/fire/Firestacks_stage_5(mob/living/carbon/M, datum/disease/advance/A)
-	. = ..()
-	M.cause_typed_pain(BODY_ZONES_ALL, 10, BURN)
-	M.flash_pain_overlay(1)
-	M.pain_emote("scream", 5 SECONDS)
-
 /datum/brain_trauma/mild/concussion/on_life(delta_time, times_fired)
 	. = ..()
 	if(DT_PROB(1, delta_time))
@@ -56,32 +19,6 @@
 	if(iscarbon(owner) && !owner.on_fire)
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.cause_pain(BODY_ZONES_ALL, -1.5)
-
-// Painkiller withdraw = pain
-
-/datum/addiction/opioids
-	withdrawal_stage_messages = list("My body aches all over...", "I need some pain relief...", "It hurts all over...I need some opioids!")
-
-/datum/addiction/opioids/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, delta_time)
-	. = ..()
-	if(!affected_carbon.pain_controller)
-		return
-	if(affected_carbon.pain_controller.get_average_pain() <= 20 && DT_PROB(8, delta_time))
-		affected_carbon.cause_pain(BODY_ZONES_ALL, 0.5 * delta_time)
-
-/datum/addiction/opioids/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, delta_time)
-	. = ..()
-	if(!affected_carbon.pain_controller)
-		return
-	if(affected_carbon.pain_controller.get_average_pain() <= 35 && DT_PROB(8, delta_time))
-		affected_carbon.cause_pain(BODY_ZONES_ALL, 1 * delta_time)
-
-/datum/addiction/opioids/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, delta_time)
-	. = ..()
-	if(!affected_carbon.pain_controller)
-		return
-	if(affected_carbon.pain_controller.get_average_pain() <= 50 && DT_PROB(8, delta_time))
-		affected_carbon.cause_pain(BODY_ZONES_ALL, 1.5 * delta_time)
 
 // Regen cores.
 /datum/status_effect/regenerative_core/on_apply()
