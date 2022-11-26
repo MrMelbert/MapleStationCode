@@ -24,6 +24,7 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.physiology.bleed_mod *= 1.25
+	return TRUE
 
 /datum/status_effect/high_blood_pressure/on_remove()
 	if(ishuman(owner))

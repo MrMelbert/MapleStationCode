@@ -180,6 +180,7 @@
 	if(!target_detailed)
 		var/you_feel = pick("a brief pain", "your body tense up", "an unnerving sensation")
 		target.show_message(vague_message, MSG_VISUAL, span_notice("You feel [you_feel] as you are operated on."))
+
 /**
  * Sends a pain message to the target, including a chance of screaming.
  *
@@ -188,8 +189,32 @@
  * * pain_message - The message to be displayed
  * * mechanical_surgery - Boolean flag that represents if a surgery step is done on a mechanical limb (therefore does not force scream)
  */
-/datum/surgery_step/proc/display_pain(mob/living/target, pain_message, mechanical_surgery = FALSE)
-	if(target.stat < UNCONSCIOUS)
-		to_chat(target, span_userdanger(pain_message))
-		if(prob(30) && !mechanical_surgery)
-			target.emote("scream")
+/datum/surgery_step/proc/give_surgery_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone, target_zone = target_zone)
+	// Only feels pain if we feels pain
+	if(!target.pain_controller || target.pain_controller.pain_modifier <= PAIN_MOD_TO_IGNORE_SURGERY || pain_amount <= 0)
+		return FALSE
+
+	// No pain from mechanics but still show the message (usually)
+	if(mechanical_surgery)
+		if(prob(70))
+			to_chat(target, span_userdanger(pain_message))
+		return FALSE
+
+	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+
+	if((target.IsSleeping() || target.IsUnconscious()) && HAS_TRAIT(target, TRAIT_ON_ANESTHETIC))
+		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/anesthetic)
+		return FALSE
+
+	else
+		if(ispath(surgery_moodlet, /datum/mood_event))
+			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", surgery_moodlet)
+		if(pain_overlay_severity == 1 || pain_overlay_severity == 2)
+			target.flash_pain_overlay(pain_overlay_severity)
+
+	// No message if the pain emtoe fails
+	if(!target.pain_controller.do_pain_emote())
+		return FALSE
+
+	to_chat(target, span_userdanger(pain_message))
+	return TRUE

@@ -22,6 +22,7 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.physiology.bleed_mod /= WOUND_DETERMINATION_BLEED_MOD
+
 	return ..()
 
 /datum/status_effect/limp

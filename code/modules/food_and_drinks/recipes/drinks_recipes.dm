@@ -315,7 +315,7 @@
 
 /datum/chemical_reaction/drink/neurotoxin
 	results = list(/datum/reagent/consumable/ethanol/neurotoxin = 2)
-	required_reagents = list(/datum/reagent/consumable/ethanol/gargle_blaster = 1, /datum/reagent/medicine/morphine = 1)
+	required_reagents = list(/datum/reagent/consumable/ethanol/gargle_blaster = 1, /datum/reagent/medicine/painkiller/morphine = 1) // NON-MODULE CHANGE
 	reaction_tags = REACTION_TAG_DRINK | REACTION_TAG_EASY | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/drink/snowwhite
@@ -688,7 +688,7 @@
 
 /datum/chemical_reaction/drink/the_juice
 	results = list(/datum/reagent/consumable/ethanol/the_juice = 5)
-	required_reagents = list(/datum/reagent/consumable/mushroom_tea = 1, /datum/reagent/bluespace = 1, /datum/reagent/toxin/mindbreaker = 1, /datum/reagent/consumable/ethanol/neurotoxin = 1, /datum/reagent/medicine/morphine = 1)
+	required_reagents = list(/datum/reagent/consumable/mushroom_tea = 1, /datum/reagent/bluespace = 1, /datum/reagent/toxin/mindbreaker = 1, /datum/reagent/consumable/ethanol/neurotoxin = 1, /datum/reagent/medicine/painkiller/morphine = 1) // NON-MODULE CHANGE
 	mix_message = "The liquids all swirl together into a deep purple."
 
 /datum/chemical_reaction/drink/admiralty

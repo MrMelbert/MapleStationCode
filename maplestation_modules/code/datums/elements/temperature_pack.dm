@@ -4,7 +4,7 @@
  * limbs experiencing pain to reduce it.
  */
 /datum/element/temperature_pack
-	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
+	element_flags = ELEMENT_BESPOKE
 	id_arg_index = 2
 	/// Amount of pain we restore every tick in the targeted limb.
 	var/pain_heal_rate = 0
@@ -91,7 +91,17 @@
 		span_notice("[user] press [parent] against [target == user ? "their" : "[target]'s" ] [targeted_bodypart.name]."),
 		span_notice("You press [parent] against [target == user ? "your" : "[target]'s" ] [targeted_bodypart.name].")
 	)
-	if(temperature_change > 0)
-		target.apply_status_effect(/datum/status_effect/temperature_pack/heat, user, parent, targeted_zone, pain_heal_rate, pain_modifier_on_limb, temperature_change)
-	else
-		target.apply_status_effect(/datum/status_effect/temperature_pack/cold, user, parent, targeted_zone, pain_heal_rate, pain_modifier_on_limb, temperature_change)
+
+	var/selected_effect = temperature_change > 0 \
+		? /datum/status_effect/temperature_pack/heat \
+		: /datum/status_effect/temperature_pack/cold
+
+	target.apply_status_effect(
+		selected_effect,
+		user,
+		parent,
+		targeted_zone,
+		pain_heal_rate,
+		pain_modifier_on_limb,
+		temperature_change,
+	)

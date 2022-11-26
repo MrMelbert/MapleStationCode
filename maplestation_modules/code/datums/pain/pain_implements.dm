@@ -11,7 +11,11 @@
 // Holding a beer to your busted arm, now that's classic
 /obj/item/reagent_containers/food/drinks/beer/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/temperature_pack, pain_heal_rate = 0.3, pain_modifier_on_limb = 0.9, temperature_change = -2)
+	if(reagents.get_reagent_amount(/datum/reagent/consumable/ethanol/beer) > 1)
+		AddElement(/datum/element/temperature_pack, \
+			pain_heal_rate = 0.3, \
+			pain_modifier_on_limb = 0.9, \
+			temperature_change = -2)
 
 // Frozen items become usable temperature packs.
 /obj/item/make_frozen_visual()
@@ -159,25 +163,25 @@
 /obj/item/reagent_containers/pill/morphine/diluted
 	desc = "Used to treat major to severe pain. Causes moderate drowsiness. Mildly addictive."
 	icon_state = "pill11"
-	list_reagents = list(/datum/reagent/medicine/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain)
+	list_reagents = list(/datum/reagent/medicine/painkiller/morphine = 5) // Lasts ~1 minute, heals ~10 pain per bodypart (~100 pain) // NON-MODULE CHANGE
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/syringe/morphine
 	name = "syringe (morphine)"
 	desc = "Contains three injections of Morphine. Used to treat major to severe pain. Causes moderate drowsiness. Mildly addictive."
-	list_reagents = list(/datum/reagent/medicine/morphine = 15)
+	list_reagents = list(/datum/reagent/medicine/painkiller/morphine = 15) // NON-MODULE CHANGE
 
 /obj/item/reagent_containers/pill/oxycodone
 	name = "oxycodone pill"
 	desc = "Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
 	icon_state = "pill12"
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 5) // Lasts ~1 minute, heals ~20 pain per bodypart (~200 pain)
+	list_reagents = list(/datum/reagent/medicine/painkiller/oxycodone = 5) // Lasts ~1 minute, heals ~20 pain per bodypart (~200 pain)
 	rename_with_volume = TRUE
 
 /obj/item/reagent_containers/syringe/oxycodone
 	name = "syringe (oxycodone)"
 	desc = "Contains three injections of Oxycodone. Used to treat severe to extreme pain. Rapid acting, may cause delirium. Very addictive."
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 15)
+	list_reagents = list(/datum/reagent/medicine/painkiller/oxycodone = 15)
 
 /obj/item/reagent_containers/pill/aspirin_para_coffee
 	name = "aspirin/paracetamol/caffeine pill"
@@ -230,27 +234,65 @@
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/pill/oxycodone(src)
 
-/// Miner pen. Heals about 30 pain to all limbs, causes ~150 addiction
+/obj/item/reagent_containers/hypospray/medipen/morphine
+	name = "morphine medipen"
+	desc = "A medipen that contains a dosage of painkilling morphine. \
+		WARNING: Do not use in combination with alcohol. Can cause drowsiness and addiction."
+	icon_state = "morphen"
+	inhand_icon_state = "morphen"
+	base_icon_state = "morphen"
+	list_reagents = list(/datum/reagent/medicine/painkiller/morphine = 10) // Heals ~20 pain (per limb)
+
+/// Miner pen. Heals about 30 pain to all limbs, causes ~150 addiction points
 /obj/item/reagent_containers/hypospray/medipen/survival/painkiller
 	name = "survival painkiller medipen"
-	desc = "A medipen that contains a dosage of painkilling chemicals. WARNING: Do not use in combination with alcohol. Can cause drowsiness."
+	desc = "A medipen that contains a dosage of painkilling chemicals. \
+		WARNING: Do not use in combination with alcohol. Can cause drowsiness."
 	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "painkiller_stimpen"
 	base_icon_state = "painkiller_stimpen"
-	volume = 20
-	amount_per_transfer_from_this = 20
-	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 7.5, /datum/reagent/medicine/painkiller/aspirin_para_coffee = 5, /datum/reagent/medicine/morphine = 5, /datum/reagent/medicine/modafinil = 2.5)
+	volume = 30
+	amount_per_transfer_from_this = 30
+	list_reagents = list(
+		/datum/reagent/medicine/painkiller/paracetamol = 10, // Heals ~10 pain (per limb)
+		/datum/reagent/medicine/painkiller/aspirin_para_coffee = 5, // Heals ~7.5 pain (per limb)
+		/datum/reagent/medicine/painkiller/morphine = 5, // Heals ~10 pain (per limb), causes drowsy
+		/datum/reagent/medicine/synaptizine = 10, // Cures drowsy from morphine
+	)
 
-/// Medkit pen. Heals about 35 pain to all limbs, causes ~450 addiction
-/obj/item/reagent_containers/hypospray/medipen/painkiller
+/// Medkit pen. Heals about 35 pain to all limbs, causes ~450 addiction points
+/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller
 	name = "emergency painkiller medipen"
-	desc = "A medipen that contains a dosage of heavy painkilling chemicals. WARNING: Do not use in combination with alcohol. Can cause drowsiness and addiction."
+	desc = "A medipen that contains a dosage of heavy painkilling chemicals. \
+		WARNING: Do not use in combination with alcohol. Can cause drowsiness and addiction."
 	icon = 'maplestation_modules/icons/obj/syringe.dmi'
 	icon_state = "painkiller"
 	base_icon_state = "painkiller"
-	volume = 15
-	amount_per_transfer_from_this = 15
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 7.5, /datum/reagent/medicine/morphine = 5, /datum/reagent/medicine/modafinil = 2.5)
+	volume = 25
+	amount_per_transfer_from_this = 25
+	list_reagents = list(
+		/datum/reagent/medicine/painkiller/oxycodone = 7.5, // Heals ~25 pain (per limb)
+		/datum/reagent/medicine/painkiller/morphine = 5, // Heals ~10 pain (per limb), causes drowsy
+		/datum/reagent/medicine/synaptizine = 10, // Cures drowsyness from morphine
+	)
+
+/obj/item/reagent_containers/hypospray/medipen/brute_painkiller
+	name = "ibaltifen painkiller medipen"
+	desc = "An autoinjector containing ibaltifen, used to treat pain caused by bruises and broken limbs. WARNING: Do not use in combination with alcohol."
+	icon = 'maplestation_modules/icons/obj/syringe.dmi'
+	icon_state = "burn_painkiller_pen"
+	base_icon_state = "burn_painkiller_pen"
+	inhand_icon_state = "salacid"
+	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/ibaltifen = 10) // ~20-25 pain healing (if brute pain, per limb)
+
+/obj/item/reagent_containers/hypospray/medipen/burn_painkiller
+	name = "anurifen painkiller medipen"
+	desc = "An autoinjector containing anurifen, used to treat pain caused by bruises and broken limbs. WARNING: Do not use in combination with alcohol."
+	icon = 'maplestation_modules/icons/obj/syringe.dmi'
+	icon_state = "brute_painkiller_pen"
+	base_icon_state = "brute_painkiller_pen"
+	inhand_icon_state = "oxapen"
+	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/anurifen = 10) // ~20-25 pain healing (if burn pain, per limb)
 
 /*
  * Shock blanket item. Hit someone to cover them with the blanket.
@@ -264,6 +306,7 @@
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/pain_items_lhand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/pain_items_rhand.dmi'
 	icon_state = "shockblanket"
+	base_icon_state = "shockblanket"
 	worn_icon_state = "shockblanket"
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound =  'sound/items/handling/cloth_pickup.ogg'
@@ -294,18 +337,10 @@
 	. = ..()
 	. += span_notice("To use: Apply to a patient experiencing shock or loss of body temperature. Keep patient still and lying down for maximum effect.")
 
-/obj/item/shock_blanket/pickup(mob/user)
-	. = ..()
-	icon_state = initial(icon_state)
-	layer = initial(layer)
-
-/obj/item/shock_blanket/dropped(mob/user)
-	. = ..()
-	if(locate(/obj/structure/bed) in loc)
-		icon_state = "[initial(icon_state)]_dropped"
-		layer = MOB_LAYER
-
 /obj/item/shock_blanket/attack_self(mob/user, modifiers)
+	. = ..()
+	if(.)
+		return
 	if(!user.dropItemToGround(src))
 		return
 
@@ -314,16 +349,15 @@
 	icon_state = "[initial(icon_state)]_dropped"
 	layer = MOB_LAYER
 
-	return ..()
 
 /obj/item/shock_blanket/pre_attack(atom/target, mob/living/user, params)
 	. = ..()
+	if(.)
+		return
 
 	if(ishuman(target))
 		try_shelter_mob(target, user)
 		return TRUE
-
-	return
 
 /*
  * Try to equip [target] with [src], done by [user].
@@ -373,6 +407,15 @@
 	. = ..()
 	disable_protection(user)
 	UnregisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED, COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_PRE_MOVE))
+
+	if(locate(/obj/structure/bed) in loc)
+		icon_state = "[base_icon_state]_dropped"
+		layer = MOB_LAYER
+
+/obj/item/shock_blanket/pickup(mob/user)
+	. = ..()
+	icon_state = base_icon_state
+	layer = initial(layer)
 
 /*
  * Check if we should be recieving temperature protection.
@@ -424,15 +467,15 @@
 
 	var/target_temp = wearer.get_body_temp_normal(apply_change = FALSE)
 	if(wearer.bodytemperature > target_temp)
-		wearer.adjust_bodytemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, target_temp)
+		wearer.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, target_temp)
 	else if(wearer.bodytemperature < (target_temp + 1))
-		wearer.adjust_bodytemperature(12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, 0, target_temp)
+		wearer.adjust_bodytemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, target_temp)
 	if(ishuman(wearer))
 		var/mob/living/carbon/human/human_wearer = wearer
 		if(human_wearer.coretemperature > target_temp)
-			human_wearer.adjust_coretemperature(-12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, target_temp)
+			human_wearer.adjust_coretemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, target_temp)
 		else if(human_wearer.coretemperature < (target_temp + 1))
-			human_wearer.adjust_coretemperature(12 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * delta_time, 0, target_temp)
+			human_wearer.adjust_coretemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, target_temp)
 
 /obj/item/shock_blanket/emergency
 	desc = "An emergency variant shock blanket intended to be placed in medkits for field treatment. Faster to apply to patients, but more restrictive to movement."
@@ -444,7 +487,7 @@
 	. = ..()
 	name = "emergency [name]"
 
-// Change the contents of emergency first-aid kids.
+// Change the contents of first-aid kids.
 /obj/item/storage/firstaid/emergency/Initialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
@@ -455,18 +498,65 @@
 /obj/item/storage/firstaid/emergency/PopulateContents()
 	if(empty)
 		return
-	var/static/items_inside = list(
+	var/static/list/items_inside = list(
 		/obj/item/healthanalyzer/wound = 1,
 		/obj/item/stack/medical/gauze = 1,
 		/obj/item/stack/medical/suture/emergency = 1,
 		/obj/item/stack/medical/ointment = 1,
 		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
-		/obj/item/reagent_containers/hypospray/medipen/painkiller = 2,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 2,
 		/obj/item/storage/pill_bottle/iron = 1,
 		/obj/item/shock_blanket/emergency = 1,
 	)
 	generate_items_inside(items_inside, src)
 
+/obj/item/storage/firstaid/regular/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/stack/medical/gauze = 1,
+		/obj/item/stack/medical/suture = 2,
+		/obj/item/stack/medical/mesh = 2,
+		/obj/item/reagent_containers/hypospray/medipen = 1,
+		/obj/item/reagent_containers/hypospray/medipen/morphine = 1,
+	)
+	generate_items_inside(items_inside, src)
+
+/obj/item/storage/firstaid/brute/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/reagent_containers/pill/patch/libital = 3,
+		/obj/item/stack/medical/gauze = 1,
+		/obj/item/storage/pill_bottle/probital = 1,
+		/obj/item/reagent_containers/hypospray/medipen/salacid = 1,
+		/obj/item/reagent_containers/hypospray/medipen/brute_painkiller = 1,
+	)
+	generate_items_inside(items_inside, src)
+
+/obj/item/storage/firstaid/fire/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/reagent_containers/pill/patch/aiuri = 3,
+		/obj/item/reagent_containers/spray/hercuri = 1,
+		/obj/item/stack/medical/ointment = 1,
+		/obj/item/reagent_containers/hypospray/medipen/oxandrolone = 1,
+		/obj/item/reagent_containers/hypospray/medipen/burn_painkiller = 1,
+	)
+	generate_items_inside(items_inside, src)
+
+/obj/item/storage/firstaid/advanced/PopulateContents()
+	if(empty)
+		return
+	var/static/list/items_inside = list(
+		/obj/item/reagent_containers/pill/patch/synthflesh = 3,
+		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee = 1,
+		/obj/item/reagent_containers/hypospray/medipen/atropine = 2,
+		/obj/item/stack/medical/gauze = 1,
+		/obj/item/storage/pill_bottle/penacid = 1
+	)
+	generate_items_inside(items_inside, src)
 
 // Pain implements added to various vendors.
 /obj/machinery/vending/drugs
@@ -477,14 +567,14 @@
 		/obj/item/shock_blanket = 3,
 		/obj/item/temperature_pack/cold = 2,
 		/obj/item/temperature_pack/heat = 2,
-		)
+	)
 
 /obj/machinery/vending/wallmed
 	added_products = list(
 		/obj/item/shock_blanket/emergency = 2,
 		/obj/item/temperature_pack/cold = 1,
 		/obj/item/temperature_pack/heat = 1,
-		)
+	)
 
 #undef FROZEN_ITEM_PAIN_RATE
 #undef FROZEN_ITEM_PAIN_MODIFIER

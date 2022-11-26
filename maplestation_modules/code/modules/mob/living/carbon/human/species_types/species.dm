@@ -16,4 +16,4 @@
 											'maplestation_modules/sound/voice/speak_3_exclaim.ogg' = 120, \
 											'maplestation_modules/sound/voice/speak_4_exclaim.ogg' = 120)
 	/// Pain modifier that this species receives.
-	var/species_pain_mod = null
+	var/species_pain_mod = 1

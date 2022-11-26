@@ -28,7 +28,17 @@ Borg Hypospray
 	var/bypass_protection = 0 //If the hypospray can go through armor or thick material
 
 	var/list/datum/reagents/reagent_list = list()
-	var/list/reagent_ids = list(/datum/reagent/medicine/c2/convermol, /datum/reagent/medicine/c2/libital, /datum/reagent/medicine/c2/multiver, /datum/reagent/medicine/c2/aiuri, /datum/reagent/medicine/epinephrine, /datum/reagent/medicine/spaceacillin, /datum/reagent/medicine/salglu_solution)
+	// NON-MODULE CHANGE
+	var/list/reagent_ids = list(
+		/datum/reagent/medicine/c2/convermol,
+		/datum/reagent/medicine/c2/libital,
+		/datum/reagent/medicine/c2/multiver,
+		/datum/reagent/medicine/c2/aiuri,
+		/datum/reagent/medicine/epinephrine,
+		/datum/reagent/medicine/spaceacillin,
+		/datum/reagent/medicine/salglu_solution,
+		/datum/reagent/medicine/painkiller/paracetamol,
+	)
 	var/accepts_reagent_upgrades = TRUE //If upgrades can increase number of reagents dispensed.
 	var/list/modes = list() //Basically the inverse of reagent_ids. Instead of having numbers as "keys" and strings as values it has strings as keys and numbers as values.
 								//Used as list for input() in shakers.
@@ -192,7 +202,7 @@ Borg Hypospray
 		/datum/reagent/medicine/syndicate_nanites,
 		/datum/reagent/medicine/inacusiate,
 		/datum/reagent/medicine/potass_iodide,
-		/datum/reagent/medicine/morphine,
+		/datum/reagent/medicine/painkiller/morphine, // NON-MODULE CHANGE
 	)
 	bypass_protection = TRUE
 	accepts_reagent_upgrades = FALSE

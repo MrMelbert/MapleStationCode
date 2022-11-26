@@ -10,7 +10,7 @@
 	contraband = TRUE
 	contains = list(
 		/obj/item/reagent_containers/glass/bottle/luciferium,
-		)
+	)
 
 /datum/supply_pack/medical/luciferium_bottles
 	name = "Luciferium Shipment"
@@ -23,7 +23,7 @@
 		/obj/item/reagent_containers/glass/bottle/luciferium,
 		/obj/item/reagent_containers/glass/bottle/luciferium,
 		/obj/item/reagent_containers/glass/bottle/luciferium,
-		)
+	)
 
 /datum/supply_pack/goody/go_juice_bottle
 	name = "Go-Juice Bottle"
@@ -33,7 +33,7 @@
 	contraband = TRUE
 	contains = list(
 		/obj/item/reagent_containers/glass/bottle/gojuice,
-		)
+	)
 
 /datum/supply_pack/medical/go_juice_bottles
 	name = "Go-Juice Shipment"
@@ -46,7 +46,7 @@
 		/obj/item/reagent_containers/glass/bottle/gojuice,
 		/obj/item/reagent_containers/glass/bottle/gojuice,
 		/obj/item/reagent_containers/glass/bottle/gojuice,
-		)
+	)
 
 /datum/supply_pack/medical/psychoids
 	name = "Psychoid Variety Shipment"
@@ -59,7 +59,7 @@
 		/obj/item/reagent_containers/glass/bottle/yayo,
 		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
 		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
-		)
+	)
 
 /datum/supply_pack/medical/psychoids/fill(obj/structure/closet/crate/spawned_crate)
 	for(var/i in 1 to 3)
@@ -74,7 +74,7 @@
 	contains = list(
 		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
 		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
-		)
+	)
 
 /datum/supply_pack/goody/oxycodone_syringe
 	name = "Oxycodone Syringe"
@@ -82,8 +82,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 4
 	contains = list(
-		/obj/item/reagent_containers/syringe/oxycodone
-		)
+		/obj/item/reagent_containers/syringe/oxycodone,
+	)
 
 /datum/supply_pack/goody/morphine_syringe
 	name = "Morphine Syringe"
@@ -91,8 +91,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 3
 	contains = list(
-		/obj/item/reagent_containers/syringe/morphine
-		)
+		/obj/item/reagent_containers/syringe/morphine,
+	)
 
 
 /obj/item/storage/pill_bottle/prescription/aspirin_para_coffee
@@ -105,8 +105,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 7.5
 	contains = list(
-		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee
-		)
+		/obj/item/storage/pill_bottle/prescription/aspirin_para_coffee,
+	)
 
 /obj/item/storage/pill_bottle/prescription/paracetamol
 	pill_type = /obj/item/reagent_containers/pill/paracetamol
@@ -118,8 +118,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
-		/obj/item/storage/pill_bottle/prescription/paracetamol
-		)
+		/obj/item/storage/pill_bottle/prescription/paracetamol,
+	)
 
 /obj/item/storage/pill_bottle/prescription/aspirin
 	pill_type = /obj/item/reagent_containers/pill/aspirin
@@ -131,8 +131,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
-		/obj/item/storage/pill_bottle/prescription/aspirin
-		)
+		/obj/item/storage/pill_bottle/prescription/aspirin,
+	)
 
 /obj/item/storage/pill_bottle/prescription/ibuprofen
 	pill_type = /obj/item/reagent_containers/pill/ibuprofen
@@ -144,8 +144,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
-		/obj/item/storage/pill_bottle/prescription/ibuprofen
-		)
+		/obj/item/storage/pill_bottle/prescription/ibuprofen,
+	)
 
 /obj/item/storage/pill_bottle/prescription/happiness
 	pill_type = /obj/item/reagent_containers/pill/happinesspsych
@@ -157,8 +157,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
-		/obj/item/storage/pill_bottle/prescription/happiness
-		)
+		/obj/item/storage/pill_bottle/prescription/happiness,
+	)
 
 /obj/item/storage/pill_bottle/prescription/psicodine
 	pill_type = /obj/item/reagent_containers/pill/psicodine
@@ -170,8 +170,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_HARD * 5
 	contains = list(
-		/obj/item/storage/pill_bottle/prescription/psicodine
-		)
+		/obj/item/storage/pill_bottle/prescription/psicodine,
+	)
 
 /datum/supply_pack/medical/painkiller_syringes
 	name = "Painkiller Syringe Shipment"
@@ -185,7 +185,7 @@
 		/obj/item/reagent_containers/syringe/paracetamol,
 		/obj/item/reagent_containers/syringe/aspirin,
 		/obj/item/reagent_containers/syringe/aspirin,
-		)
+	)
 
 /datum/supply_pack/medical/painkiller_pens
 	name = "Painkiller Medipen Shipment"
@@ -193,7 +193,7 @@
 	cost = CARGO_CRATE_VALUE * 4
 	crate_name = "medipen shipment"
 	contains = list(
-		/obj/item/reagent_containers/hypospray/medipen/painkiller,
-		/obj/item/reagent_containers/hypospray/medipen/painkiller,
-		/obj/item/reagent_containers/hypospray/medipen/painkiller,
-		)
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
+	)
