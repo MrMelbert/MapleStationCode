@@ -35,6 +35,8 @@
 
 	/// The name of the user who logged in
 	var/authorize_name
+	/// NON-MODULE CHANGE - The job of who is logged in
+	var/authorize_job
 
 	/// The access that the card had on login
 	var/list/authorize_access
@@ -374,6 +376,7 @@
 				authenticated = FALSE
 				authorize_access = null
 				authorize_name = null
+				authorize_job = null // NON-MODULE CHANGE
 				playsound(src, 'sound/machines/terminal_off.ogg', 50, FALSE)
 				return
 
@@ -381,6 +384,7 @@
 				authenticated = TRUE
 				authorize_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION))
 				authorize_name = "Unknown"
+				authorize_job = "Unknown" // NON-MODULE CHANGE
 				to_chat(usr, span_warning("[src] lets out a quiet alarm as its login is overridden."))
 				playsound(src, 'sound/machines/terminal_alert.ogg', 25, FALSE)
 			else if(isliving(usr))
@@ -389,7 +393,8 @@
 				if (check_access(id_card))
 					authenticated = TRUE
 					authorize_access = id_card.access.Copy()
-					authorize_name = "[id_card.registered_name] - [id_card.assignment]"
+					authorize_name = id_card.registered_name // NON-MODULE CHANGE
+					authorize_job = id_card.assignment // NON-MODULE CHANGE
 
 			state = STATE_MAIN
 			playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
@@ -514,7 +519,7 @@
 				data["shuttleLastCalled"] = FALSE
 				data["aprilFools"] = SSevents.holidays && SSevents.holidays[APRIL_FOOLS]
 				data["alertLevel"] = get_security_level()
-				data["authorizeName"] = authorize_name
+				data["authorizeName"] = "[authorize_name] - [authorize_job]" // NON-MODULE CHANGE
 				data["canLogOut"] = !issilicon(user)
 				data["shuttleCanEvacOrFailReason"] = SSshuttle.canEvac(user)
 				if(syndicate)
@@ -722,6 +727,13 @@
 		to_chat(user, span_warning("You find yourself unable to speak."))
 	else
 		input = user.treat_message(input) //Adds slurs and so on. Someone should make this use languages too.
+	// NON-MODULE CHANGE
+	if(authorize_job && authorize_name)
+		if(authorize_job == authorize_name)
+			input += "\n\n - [authorize_name]"
+		else
+			input += "\n\n - [authorize_job] [authorize_name]"
+
 	var/list/players = get_communication_players()
 	SScommunications.make_announcement(user, is_ai, input, syndicate || (obj_flags & EMAGGED), players)
 	deadchat_broadcast(" made a priority announcement from [span_name("[get_area_name(usr, TRUE)]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)

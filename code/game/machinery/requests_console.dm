@@ -271,6 +271,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 		if(isliving(usr))
 			var/mob/living/L = usr
 			message = L.treat_message(message)
+			// NON-MODULE CHANGE
+			if(istext(announceAuth))
+				message += "\n - [announceAuth]"
+
 		minor_announce(message, "[department] Announcement:", html_encode = FALSE)
 		GLOB.news_network.SubmitArticle(message, department, "Station Announcements", null)
 		usr.log_talk(message, LOG_SAY, tag="station announcement from [src]")
@@ -442,7 +446,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 			updateUsrDialog()
 		if(screen == REQ_SCREEN_ANNOUNCE)
 			if (ACCESS_RC_ANNOUNCE in ID.access)
-				announceAuth = TRUE
+				announceAuth = "[ID.assignment] [ID.registered_name]" // NON-MODULE CHANGE
 			else
 				announceAuth = FALSE
 				to_chat(user, span_warning("You are not authorized to send announcements!"))
