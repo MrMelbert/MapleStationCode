@@ -74,7 +74,7 @@
 		return FALSE
 	return TRUE
 
-/*
+/**
  * Enable the hud and any other features of the goggles.
  * If the user / equipper is not a cultist, hurt them instead.
  */
@@ -109,7 +109,7 @@
 	user.update_glasses_color(src, TRUE)
 	return TRUE
 
-/*
+/**
  * Disable the hud and any other features of the goggles.
  */
 /obj/item/clothing/glasses/wraith_specs/proc/disable_glasses(mob/living/carbon/human/user)
@@ -128,7 +128,7 @@
 	user.update_glasses_color(src, FALSE)
 	return TRUE
 
-/*
+/**
  * Signal proc for [COMSIG_MOB_EXAMINATE]
  */
 /obj/item/clothing/glasses/wraith_specs/proc/on_user_examinate(datum/source, atom/examined)

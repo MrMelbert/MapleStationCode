@@ -18,7 +18,7 @@
 	return ..()
 
 
-/*
+/**
  * Signal proc for [COMSIG_MOVABLE_Z_CHANGED].
  *
  * Checks if the new Z is valid for the skillchip.

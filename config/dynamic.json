@@ -80,19 +80,11 @@
 
 		"Revolution": {
 			"weight": 0
-		},
-
-		"Families": {
-			"weight": 0
 		}
 	},
 
 	"Midround": {
 		"Syndicate Sleeper Agent": {
-			"weight": 0
-		},
-
-		"Family Head Aspirants": {
 			"weight": 0
 		},
 
@@ -129,10 +121,6 @@
 		},
 
 		"Abductors": {
-			"weight": 0
-		},
-
-		"Swarmers": {
 			"weight": 0
 		},
 

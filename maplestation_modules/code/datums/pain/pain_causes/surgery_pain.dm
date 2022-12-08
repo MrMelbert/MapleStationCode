@@ -3,10 +3,42 @@
 	var/surgery_moodlet = /datum/mood_event/surgery
 	/// Pain overlay flashed if a surgery is done without anesthetics
 	var/pain_overlay_severity = 1
-	/// How much pain this gives (given out in give_surgery_pain, so this might be given out twice)
+	/// How much pain this gives (given out in display_pain, so this might be given out twice)
 	var/pain_amount = 0
 	/// What type of pain this gives
 	var/pain_type = BRUTE
+
+// Regex for updating existing display pain calls:
+// display_pain\((.+)\) -> display_pain($1, target_zone = target_zone)
+/datum/surgery_step/display_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone = target_zone)
+	// Only feels pain if we feels pain
+	if(!target.pain_controller || target.pain_controller.pain_modifier <= PAIN_MOD_TO_IGNORE_SURGERY || pain_amount <= 0)
+		return FALSE
+
+	// No pain from mechanics but still show the message (usually)
+	if(mechanical_surgery)
+		if(prob(70))
+			to_chat(target, span_userdanger(pain_message))
+		return FALSE
+
+	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+
+	if((target.IsSleeping() || target.IsUnconscious()) && HAS_TRAIT(target, TRAIT_ON_ANESTHETIC))
+		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/anesthetic)
+		return FALSE
+
+	else
+		if(ispath(surgery_moodlet, /datum/mood_event))
+			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", surgery_moodlet)
+		if(pain_overlay_severity == 1 || pain_overlay_severity == 2)
+			target.flash_pain_overlay(pain_overlay_severity)
+
+	// No message if the pain emote fails
+	if(!target.pain_controller.do_pain_emote())
+		return FALSE
+
+	to_chat(target, span_userdanger(pain_message))
+	return TRUE
 
 /datum/surgery_step/brainwash/sleeper_agent
 	pain_amount = 36
@@ -35,6 +67,7 @@
 /datum/surgery_step/incise_heart
 	surgery_moodlet = /datum/mood_event/surgery/major
 	pain_overlay_severity = 2
+	// It is extremely unlikely this surgery is done on alive people to feel (most) of this
 	pain_amount = 60
 
 /datum/surgery_step/coronary_bypass
@@ -42,11 +75,31 @@
 	pain_overlay_severity = 2
 	pain_amount = 30
 
+/datum/surgery_step/coronary_bypass/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
+	. = ..()
+	// Reduces pain from surgery a bit on success
+	target.cause_typed_pain(target_zone, pain_amount * -0.25, pain_type)
+
+/datum/surgery_step/coronary_bypass/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery)
+	. = ..()
+	// Double pain from surgery
+	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+
 /datum/surgery_step/fix_eyes
 	pain_amount = 9
 
 /datum/surgery_step/gastrectomy
 	pain_amount = 20
+
+/datum/surgery_step/gastrectomy/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
+	. = ..()
+	// Reduces pain from surgery a bit on success
+	target.cause_typed_pain(target_zone, pain_amount * -0.75, pain_type)
+
+/datum/surgery_step/gastrectomy/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery)
+	. = ..()
+	// Double pain from surgery
+	target.cause_typed_pain(target_zone, pain_amount, pain_type)
 
 /datum/surgery_step/heal
 	pain_amount = 9
@@ -55,6 +108,16 @@
 	surgery_moodlet = /datum/mood_event/surgery/major
 	pain_overlay_severity = 2
 	pain_amount = 20
+
+/datum/surgery_step/hepatectomy/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
+	. = ..()
+	// Reduces pain from surgery a bit on success
+	target.cause_typed_pain(target_zone, pain_amount * -0.75, pain_type)
+
+/datum/surgery_step/hepatectomy/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery)
+	. = ..()
+	// Double pain from surgery
+	target.cause_typed_pain(target_zone, pain_amount, pain_type)
 
 /datum/surgery_step/extract_implant
 	pain_amount = 24

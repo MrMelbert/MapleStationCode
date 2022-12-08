@@ -30,7 +30,7 @@
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
 
-/*
+/**
  * Signal proc for [COMSIG_MOB_EXAMINATE].
  */
 /obj/item/clothing/glasses/judicial_visor/proc/on_user_examinate(mob/living/carbon/human/source, atom/examined)

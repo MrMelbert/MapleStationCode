@@ -396,7 +396,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 	character_preview_view.update_body_from_loadout(default_outfit)
 	qdel(default_outfit)
 
-/*
+/**
  * Similar to the update_body() proc, but accepts a [/datum/outfit] to be equipped onto the dummy
  * instead of using the highest priority job of the preferences.
  *
@@ -420,7 +420,7 @@ to avoid an untimely and sudden death by fire or suffocation at the start of the
 	COMPILE_OVERLAYS(body)
 	appearance = body.appearance
 
-/*
+/**
  * Takes an assoc list of [typepath]s to [singleton datum]
  * And formats it into an object for TGUI.
  *

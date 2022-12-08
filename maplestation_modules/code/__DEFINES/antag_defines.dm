@@ -74,7 +74,7 @@
 /// Source for the mob trait.
 #define CHANGELING_ABILITY "trait_source_ling"
 
-// Defines for Hivemind Chat, for changelings.
+// Defines for Hivemind Chat, for changelings. // MELBERT TODO RIP OUT
 /// Mob trait for linglinked mobs.
 #define TRAIT_LING_LINKED "ling_linked"
 /// Mob trait for hivemind muted mobs.

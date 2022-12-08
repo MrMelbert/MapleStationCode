@@ -22,7 +22,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	species_language_holder = /datum/language_holder/skrell
 	say_mod = "warbles"
 	exotic_bloodtype = "S"
-	mutanttongue = /obj/item/organ/tongue/skrell
+	mutanttongue = /obj/item/organ/internal/tongue/skrell
 	species_speech_sounds = list('maplestation_modules/sound/voice/huff.ogg' = 120)
 	species_speech_sounds_exclaim = list('maplestation_modules/sound/voice/huff_ask.ogg' = 120)
 	species_speech_sounds_ask = list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120)
@@ -48,7 +48,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 
 // Copper restores blood for Skrell instead of iron.
 /datum/reagent/copper/on_mob_life(mob/living/carbon/C, delta_time)
-	if((isskrell(C)) && (C.blood_volume < BLOOD_VOLUME_NORMAL))
+	if(is_species(C, /datum/species/skrell) && C.blood_volume < BLOOD_VOLUME_NORMAL)
 		C.blood_volume += 0.5 * delta_time
 	..()
 

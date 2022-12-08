@@ -32,7 +32,7 @@
 
 	. = ..()
 
-/*
+/**
  * Wraps [.proc/invoke_process] to ensure [var/rune_in_use] is properly set.
  */
 /obj/effect/rune/conversion/proc/invoke_wrapper(mob/living/convertee, mob/living/user)
@@ -40,7 +40,7 @@
 	invoke_process(convertee, user)
 	rune_in_use = FALSE
 
-/*
+/**
  * The actual process of invoking the rune on [convertee] by [user]. Sleeps.
  */
 /obj/effect/rune/conversion/proc/invoke_process(mob/living/convertee, mob/living/user)
@@ -73,7 +73,7 @@
 
 	return TRUE
 
-/*
+/**
  * Causes multiple do_afters, similar to how changeling absorbing works,
  * based on the length of the invocations list passed into it.
  *
@@ -107,7 +107,7 @@
 
 	return TRUE
 
-/*
+/**
  * Actually convert [convertee] to [cult] by [user].
  */
 /obj/effect/rune/conversion/proc/do_convert(mob/living/convertee, mob/living/user, datum/team/advanced_cult/cult)
@@ -139,7 +139,7 @@
 
 	return TRUE
 
-/*
+/**
  * For when [user] has conversion disabled, or [convertee] is a protected role, such as chaplain or mindshielded.
  * Protected is a return value, from can_join_cult(). Will be 0, 1, or 2. see antag_defines.dm for more informaiton.
  *

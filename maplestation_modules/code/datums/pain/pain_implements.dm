@@ -86,7 +86,7 @@
 			if(active)
 				. += "active_cold_overlay"
 
-/*
+/**
  * Activate [src] from [user], making it into a temperature pack that can be used, that expires in 5 minutes.
  */
 /obj/item/temperature_pack/proc/activate_pack(mob/user)
@@ -96,7 +96,7 @@
 	active = TRUE
 	update_appearance()
 
-/*
+/**
  * Deactivate [src], making it unusable, and sending signal [COMSIG_TEMPERATURE_PACK_EXPIRED].
  */
 /obj/item/temperature_pack/proc/deactivate_pack()
@@ -294,7 +294,7 @@
 	inhand_icon_state = "oxapen"
 	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/anurifen = 10) // ~20-25 pain healing (if burn pain, per limb)
 
-/*
+/**
  * Shock blanket item. Hit someone to cover them with the blanket.
  * If they lie down and stay still, it will regulate their body temperature.
  */
@@ -359,7 +359,7 @@
 		try_shelter_mob(target, user)
 		return TRUE
 
-/*
+/**
  * Try to equip [target] with [src], done by [user].
  * Basically, the ability to equip someone just by hitting them with the blanket,
  * instead of needing to use the strip menu.
@@ -383,7 +383,7 @@
 	do_shelter_mob(target, user)
 	return TRUE
 
-/*
+/**
  * Actually equip [target] with [src], done by [user].
  *
  * target - the mob being equipped
@@ -417,7 +417,7 @@
 	icon_state = base_icon_state
 	layer = initial(layer)
 
-/*
+/**
  * Check if we should be recieving temperature protection.
  * We only give protection if we're lying down or buckled - if we're moving, we don't get anything.
  */
@@ -430,7 +430,7 @@
 
 	disable_protection(source)
 
-/*
+/**
  * Enable the temperature protection.
  */
 /obj/item/shock_blanket/proc/enable_protection(mob/living/source)
@@ -444,7 +444,7 @@
 		to_chat(source, span_notice("You feel [temp_change] as [src] begins regulating your body temperature."))
 		START_PROCESSING(SSobj, src)
 
-/*
+/**
  * Disable the temperature protection.
  */
 /obj/item/shock_blanket/proc/disable_protection(mob/living/source)

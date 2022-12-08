@@ -1,6 +1,7 @@
 /// Sends information needed for uplinks
 /datum/asset/json/uplink
 	name = "uplink"
+	early = TRUE
 
 /datum/asset/json/uplink/generate()
 	var/list/data = list()
@@ -8,7 +9,7 @@
 	var/list/items = list()
 	for(var/datum/uplink_category/category as anything in subtypesof(/datum/uplink_category))
 		categories += category
-	categories = sortTim(categories, .proc/cmp_uplink_category_desc)
+	categories = sortTim(categories, GLOBAL_PROC_REF(cmp_uplink_category_desc))
 
 	var/list/new_categories = list()
 	for(var/datum/uplink_category/category as anything in categories)
@@ -30,6 +31,7 @@
 				"restricted_roles" = item.restricted_roles,
 				"restricted_species" = item.restricted_species,
 				"progression_minimum" = item.progression_minimum,
+				"cost_override_string" = item.cost_override_string,
 			))
 		}
 		SStraitor.uplink_items += item

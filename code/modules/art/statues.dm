@@ -1,7 +1,7 @@
 /obj/structure/statue
 	name = "statue"
 	desc = "Placeholder. Yell at Firecage if you SOMEHOW see this."
-	icon = 'icons/obj/statue.dmi'
+	icon = 'icons/obj/art/statue.dmi'
 	icon_state = ""
 	density = TRUE
 	anchored = FALSE
@@ -23,11 +23,16 @@
 	AddElement(/datum/element/beauty, impressiveness * 75)
 	AddComponent(/datum/component/simple_rotation)
 
+/obj/structure/statue/wrench_act(mob/living/user, obj/item/tool)
+	. = ..()
+	if(flags_1 & NODECONSTRUCT_1)
+		return FALSE
+	default_unfasten_wrench(user, tool)
+	return TOOL_ACT_TOOLTYPE_SUCCESS
+
 /obj/structure/statue/attackby(obj/item/W, mob/living/user, params)
 	add_fingerprint(user)
 	if(!(flags_1 & NODECONSTRUCT_1))
-		if(default_unfasten_wrench(user, W))
-			return
 		if(W.tool_behaviour == TOOL_WELDER)
 			if(!W.tool_start_check(user, amount=0))
 				return FALSE
@@ -40,6 +45,9 @@
 				deconstruct(TRUE)
 			return
 	return ..()
+
+/obj/structure/statue/AltClick(mob/user)
+	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/structure/statue/deconstruct(disassembled = TRUE)
 	if(!(flags_1 & NODECONSTRUCT_1))
@@ -116,6 +124,10 @@
 /obj/structure/statue/gold/rd
 	name = "statue of the research director"
 	icon_state = "rd"
+
+/obj/structure/statue/gold/qm
+	name = "statue of the quartermaster"
+	icon_state = "qm"
 
 //////////////////////////silver///////////////////////////////////////
 
@@ -197,7 +209,7 @@
 /obj/structure/statue/sandstone/venus //call me when we add marble i guess
 	name = "statue of a pure maiden"
 	desc = "An ancient marble statue. The subject is depicted with a floor-length braid and is wielding a toolbox. By Jove, it's easily the most gorgeous depiction of a woman you've ever seen. The artist must truly be a master of his craft. Shame about the broken arm, though."
-	icon = 'icons/obj/statuelarge.dmi'
+	icon = 'icons/obj/art/statuelarge.dmi'
 	icon_state = "venus"
 
 /////////////////////snow/////////////////////////////////////////
@@ -240,10 +252,18 @@
 	impressiveness = 100
 	abstract_type = /obj/structure/statue/elder_atmosian //This one is uncarvable
 
+///////////Goliath//////////////////////////////////////////////////
+/obj/structure/statue/goliath
+	desc = "A lifelike statue of a horrifying monster."
+	icon = 'icons/mob/simple/lavaland/lavaland_monsters.dmi'
+	icon_state = "goliath"
+	name = "goliath"
+
+///////////Other Stuff//////////////////////////////////////////////
 /obj/item/chisel
 	name = "chisel"
 	desc = "Breaking and making art since 4000 BC. This one uses advanced technology to allow the creation of lifelike moving statues."
-	icon = 'icons/obj/statue.dmi'
+	icon = 'icons/obj/art/statue.dmi'
 	icon_state = "chisel"
 	inhand_icon_state = "screwdriver_nuke"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
@@ -278,7 +298,7 @@
 	AddElement(/datum/element/eyestab)
 	AddElement(/datum/element/wall_engraver)
 	//deals 200 damage to statues, meaning you can actually kill one in ~250 hits
-	AddElement(/datum/element/bane, /mob/living/simple_animal/hostile/statue, damage_multiplier = 40)
+	AddElement(/datum/element/bane, /mob/living/simple_animal/hostile/netherworld/statue, damage_multiplier = 40)
 
 /obj/item/chisel/Destroy()
 	prepared_block = null
@@ -340,7 +360,7 @@ Moving interrupts
 /obj/item/chisel/proc/set_block(obj/structure/carving_block/B,mob/living/user)
 	prepared_block = B
 	tracked_user = user
-	RegisterSignal(tracked_user,COMSIG_MOVABLE_MOVED,.proc/break_sculpting)
+	RegisterSignal(tracked_user,COMSIG_MOVABLE_MOVED, PROC_REF(break_sculpting))
 	to_chat(user,span_notice("You prepare to work on [B]."),type=MESSAGE_TYPE_INFO)
 
 /obj/item/chisel/dropped(mob/user, silent)
@@ -373,8 +393,8 @@ Moving interrupts
 
 /obj/structure/carving_block
 	name = "block"
-	desc = "ready for sculpting."
-	icon = 'icons/obj/statue.dmi'
+	desc = "Ready for sculpting."
+	icon = 'icons/obj/art/statue.dmi'
 	icon_state = "block"
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS | MATERIAL_ADD_PREFIX
 	density = TRUE
@@ -444,7 +464,7 @@ Moving interrupts
 		new_statue.set_custom_materials(custom_materials)
 		var/mutable_appearance/ma = current_target
 		new_statue.name = "statue of [ma.name]"
-		new_statue.desc = "statue depicting [ma.name]"
+		new_statue.desc = "A carved statue depicting [ma.name]."
 		qdel(src)
 
 /obj/structure/carving_block/proc/set_completion(value)
@@ -499,7 +519,7 @@ Moving interrupts
 	name = "custom statue"
 	icon_state = "base"
 	obj_flags = CAN_BE_HIT | UNIQUE_RENAME
-	appearance_flags = TILE_BOUND | PIXEL_SCALE | KEEP_TOGETHER //Added keep together in case targets has weird layering
+	appearance_flags = TILE_BOUND | PIXEL_SCALE | KEEP_TOGETHER | LONG_GLIDE //Added keep together in case targets has weird layering
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
 	/// primary statue overlay
 	var/mutable_appearance/content_ma
@@ -517,9 +537,47 @@ Moving interrupts
 	content_ma.pixel_x = 0
 	content_ma.pixel_y = 0
 	content_ma.alpha = 255
+
+	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, GAME_PLANE_UPPER, GAME_PLANE_FOV_HIDDEN, GAME_PLANE_UPPER, GAME_PLANE_UPPER_FOV_HIDDEN, FLOOR_PLANE)
+
+	/// Ideally we'd have knowledge what we're removing but i'd have to be done on target appearance retrieval
+	var/list/overlays_to_remove = list()
+	for(var/mutable_appearance/special_overlay as anything in content_ma.overlays)
+		var/mutable_appearance/real = new()
+		real.appearance = special_overlay
+		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
+			continue
+		overlays_to_remove += real
+	content_ma.overlays -= overlays_to_remove
+
+	var/list/underlays_to_remove = list()
+	for(var/mutable_appearance/special_underlay as anything in content_ma.underlays)
+		var/mutable_appearance/real = new()
+		real.appearance = special_underlay
+		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
+			continue
+		underlays_to_remove += real
+	content_ma.underlays -= underlays_to_remove
+
 	content_ma.appearance_flags &= ~KEEP_APART //Don't want this
 	content_ma.filters = filter(type="color",color=greyscale_with_value_bump,space=FILTER_COLOR_HSV)
+	update_content_planes()
 	update_appearance()
+
+/obj/structure/statue/custom/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
+	if(same_z_layer)
+		return ..()
+	update_content_planes()
+	update_appearance()
+
+/obj/structure/statue/custom/proc/update_content_planes()
+	if(!content_ma)
+		return
+	var/turf/our_turf = get_turf(src)
+	// MA's stored in the overlays list are not actually mutable, they've been flattened
+	// This proc unflattens them, updates them, and then reapplies
+	var/list/created = update_appearance_planes(list(content_ma), GET_TURF_PLANE_OFFSET(our_turf))
+	content_ma = created[1]
 
 /obj/structure/statue/custom/update_overlays()
 	. = ..()

@@ -1,6 +1,7 @@
 /// This proc replaces the initialize calls of /turf/open/floor/engine/cult to allow it to be overriden.
-/turf/open/floor/engine/cult/proc/make_culty()
-	new /obj/effect/temp_visual/cult/turf/floor(src)
+/turf/open/floor/engine/cult/proc/make_culty(mapload)
+	if(!mapload)
+		new /obj/effect/temp_visual/cult/turf/floor(src)
 	realappearance = new /obj/effect/cult_turf/overlay/floor/bloodcult(src)
 	realappearance.linked = src
 
@@ -21,8 +22,9 @@
 	/// The effect type used to create our "real" appearance.
 	var/floor_effect_type = /obj/effect/cult_turf/overlay/floor/clockcult
 
-/turf/open/floor/engine/cult/brass/make_culty()
-	new /obj/effect/temp_visual/brass/floor(src)
+/turf/open/floor/engine/cult/brass/make_culty(mapload)
+	if(!mapload)
+		new /obj/effect/temp_visual/brass/floor(src)
 	realappearance = new floor_effect_type(src)
 	realappearance.linked = src
 	ADD_CLOCKCULT_FILTER(src)

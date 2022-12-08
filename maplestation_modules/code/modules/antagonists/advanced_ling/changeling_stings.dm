@@ -16,7 +16,7 @@
 	. = ..()
 	user.hud_used.lingstingdisplay.icon = initial(user.hud_used.lingstingdisplay.icon)
 
-/*
+/**
  * Simple proc to check if [target] is in range of [user] according to the user's [var/sting_range]
  */
 /datum/action/changeling/sting/proc/check_range(mob/user, mob/target)
@@ -91,7 +91,7 @@
 		log_combat(user, carbon_target, "stung", "permanent transformation sting", "- New identity is '[selected_dna.dna.real_name]'.")
 	return sting_transform(carbon_target, selected_dna.dna)
 
-/*
+/**
  * Transform [target] into the [transform_dna] DNA, changing the target's appearance.
  */
 /datum/action/changeling/sting/temp_transformation/proc/sting_transform(mob/living/carbon/target, datum/dna/transform_dna)

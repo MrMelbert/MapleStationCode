@@ -63,7 +63,7 @@
 	if(spawn_mecha_type)
 		var/obj/vehicle/sealed/mecha/M = new spawn_mecha_type (get_turf(src))
 		if(istype(M))
-			INVOKE_ASYNC(src, .proc/enter_mecha, M)
+			INVOKE_ASYNC(src, PROC_REF(enter_mecha), M)
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/enter_mecha(obj/vehicle/sealed/mecha/M)
@@ -74,7 +74,7 @@
 	targets_from = WEAKREF(M)
 	allow_movement_on_non_turfs = TRUE //duh
 	var/do_ranged = 0
-	for(var/equip in mecha.equipment)
+	for(var/equip in mecha.flat_equipment)
 		var/obj/item/mecha_parts/mecha_equipment/ME = equip
 		if(ME.range & MECHA_RANGED)
 			do_ranged = 1
@@ -136,7 +136,7 @@
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/mecha_reload()
 	if(mecha)
-		for(var/equip in mecha.equipment)
+		for(var/equip in mecha.flat_equipment)
 			var/obj/item/mecha_parts/mecha_equipment/ME = equip
 			if(ME.needs_rearm())
 				ME.rearm()
@@ -145,7 +145,7 @@
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/get_mecha_equip_by_flag(flag = MECHA_RANGED)
 	. = list()
 	if(mecha)
-		for(var/equip in mecha.equipment)
+		for(var/equip in mecha.flat_equipment)
 			var/obj/item/mecha_parts/mecha_equipment/ME = equip
 			if((ME.range & flag) && ME.action_checks(ME)) //this looks weird, but action_checks() just needs any atom, so I spoofed it here
 				. += ME
@@ -231,7 +231,7 @@
 				if(LAZYACCESSASSOC(mecha.occupant_actions, src, /datum/action/vehicle/sealed/mecha/mech_defense_mode) && !mecha.defense_mode)
 					var/datum/action/vehicle/sealed/mecha/mech_defense_mode/action = mecha.occupant_actions[src][/datum/action/vehicle/sealed/mecha/mech_defense_mode]
 					action.Trigger(forced_state = TRUE)
-					addtimer(CALLBACK(action, /datum/action/vehicle/sealed/mecha/mech_defense_mode.proc/Trigger, FALSE), 100) //10 seconds of defense, then toggle off
+					addtimer(CALLBACK(action, TYPE_PROC_REF(/datum/action/vehicle/sealed/mecha/mech_defense_mode, Trigger), FALSE), 100) //10 seconds of defense, then toggle off
 
 			else if(prob(retreat_chance))
 				//Speed boost if possible
@@ -239,7 +239,7 @@
 					var/datum/action/vehicle/sealed/mecha/mech_overload_mode/action = mecha.occupant_actions[src][/datum/action/vehicle/sealed/mecha/mech_overload_mode]
 					mecha.leg_overload_mode = FALSE
 					action.Trigger(forced_state = TRUE)
-					addtimer(CALLBACK(action, /datum/action/vehicle/sealed/mecha/mech_overload_mode.proc/Trigger, FALSE), 100) //10 seconds of speeeeed, then toggle off
+					addtimer(CALLBACK(action, TYPE_PROC_REF(/datum/action/vehicle/sealed/mecha/mech_overload_mode, Trigger), FALSE), 100) //10 seconds of speeeeed, then toggle off
 
 				retreat_distance = 50
 				addtimer(VARSET_CALLBACK(src, retreat_distance, 0), 10 SECONDS)

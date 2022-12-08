@@ -4,7 +4,7 @@
 /// Proc to give the traitor their uplink and play the sound.
 /datum/antagonist/traitor/finalize_antag()
 	if(!linked_advanced_datum)
-		pick_employer(prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN)
+		pick_employer()
 		traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
 
 	if(give_uplink || linked_advanced_datum?.finalized)

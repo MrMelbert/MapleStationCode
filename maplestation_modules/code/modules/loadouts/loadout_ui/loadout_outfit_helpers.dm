@@ -4,7 +4,7 @@
 /datum/outfit/player_loadout
 	name = "Player Loadout"
 
-/*
+/**
  * Actually equip our mob with our job outfit and our loadout items.
  * Loadout items override the pre-existing item in the corresponding slot of the job outfit.
  * Some job items are preserved after being overridden - belt items, ear items, and glasses.
@@ -39,7 +39,7 @@
 	regenerate_icons()
 	return TRUE
 
-/*
+/**
  * Takes a list of paths (such as a loadout list)
  * and returns a list of their singleton loadout item datums
  *
@@ -62,7 +62,7 @@
 		. |= GLOB.all_loadout_datums[path]
 
 
-/*
+/**
  * Changes the loadout list from being [slot] to [path]
  * to [path] to [list of data].
  *
@@ -89,7 +89,7 @@
 
 	return list_to_update
 
-/*
+/**
  * Removes all invalid paths from loadout lists.
  * This is a general sanitization for preference saving / loading.
  *

@@ -8,7 +8,7 @@
 	earliest_start = 20 MINUTES
 
 /datum/round_event/solar_flare
-	announceWhen = 5
+	announce_when = 5
 
 	/// Whether the event was announced or hidden
 	var/was_announced = TRUE
@@ -62,7 +62,7 @@
 			return
 		addtimer(CALLBACK(src, .proc/trigger_flare, pick_n_take(our_areas)), i SECONDS)
 
-/*
+/**
  * Trigger a solar flare effect at a random non-dense turf in [chosen_area].
  */
 /datum/round_event/solar_flare/proc/trigger_flare(area/chosen_area)
@@ -80,7 +80,7 @@
 	var/obj/effect/solar_flare/spawned_flare = pick_weight(flare_types_to_weight)
 	new spawned_flare(destination, TRUE)
 
-/*
+/**
  * Get a random non-dense turf of all the turfs in [chosen_area].
  */
 /datum/round_event/solar_flare/proc/get_valid_turf_from_area(area/chosen_area)
@@ -96,7 +96,7 @@
 
 	return pick(turfs)
 
-/*
+/**
  * Get all areas associated with a department.
  */
 /datum/round_event/solar_flare/proc/get_areas(department, area_path)

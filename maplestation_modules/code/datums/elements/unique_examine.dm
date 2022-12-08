@@ -2,7 +2,7 @@
 // Original element from skyrat-tg (Gandalf2k15), completely refactored and adapted.
 // Attach to an atom with some parameters to give it unique text when examined.
 
-/*
+/**
  * Unique examine element parameters
  * Attach this element to an atom to give it unique examine text if it's double examined by certain people!
  *
@@ -17,8 +17,8 @@
  */
 
 /datum/element/unique_examine
-	element_flags = ELEMENT_BESPOKE|ELEMENT_DETACH
-	id_arg_index = 2
+	element_flags = ELEMENT_BESPOKE
+	argument_hash_start_idx = 2
 	/// The requirement setting for special descriptions. See examine_defines.dm for more info.
 	var/desc_requirement = EXAMINE_CHECK_NONE
 	/// The special description that is triggered when desc_requirements are met. Make sure you set the correct EXAMINE_CHECK!

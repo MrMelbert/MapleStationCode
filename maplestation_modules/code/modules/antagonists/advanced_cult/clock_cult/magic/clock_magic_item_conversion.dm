@@ -19,7 +19,7 @@
 	INVOKE_ASYNC(src, .proc/wrap_convert_atom, hit, user)
 	return TRUE
 
-/*
+/**
  * Wraps [proc/convert_atom] to ensure [var/currently_casting] is enabled and disabled correctly.
  */
 /datum/action/item_action/cult/clock_spell/item_conversion/proc/wrap_convert_atom(atom/hit, mob/living/user)
@@ -27,7 +27,7 @@
 	convert_atom(hit, user)
 	currently_casting = FALSE
 
-/*
+/**
  * Call ratvat_act() on [hit] after a two do-afters and some time.
  */
 /datum/action/item_action/cult/clock_spell/item_conversion/proc/convert_atom(atom/hit, mob/living/user)

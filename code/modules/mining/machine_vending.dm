@@ -14,25 +14,25 @@
 		new /datum/data/mining_equipment("10 Marker Beacons", /obj/item/stack/marker_beacon/ten, 100),
 		new /datum/data/mining_equipment("30 Marker Beacons", /obj/item/stack/marker_beacon/thirty, 300),
 		new /datum/data/mining_equipment("Skeleton Key", /obj/item/skeleton_key, 777),
-		new /datum/data/mining_equipment("Whiskey", /obj/item/reagent_containers/food/drinks/bottle/whiskey, 100),
-		new /datum/data/mining_equipment("Absinthe", /obj/item/reagent_containers/food/drinks/bottle/absinthe/premium, 100),
+		new /datum/data/mining_equipment("Whiskey", /obj/item/reagent_containers/cup/glass/bottle/whiskey, 100),
+		new /datum/data/mining_equipment("Absinthe", /obj/item/reagent_containers/cup/glass/bottle/absinthe/premium, 100),
 		new /datum/data/mining_equipment("Bubblegum Gum Packet", /obj/item/storage/box/gum/bubblegum, 100),
 		new /datum/data/mining_equipment("Cigar", /obj/item/clothing/mask/cigarette/cigar/havana, 150),
 		new /datum/data/mining_equipment("Soap", /obj/item/soap/nanotrasen, 200),
 		new /datum/data/mining_equipment("Laser Pointer", /obj/item/laser_pointer, 300),
 		new /datum/data/mining_equipment("Alien Toy", /obj/item/clothing/mask/facehugger/toy, 300),
-		new /datum/data/mining_equipment("Stabilizing Serum", /obj/item/hivelordstabilizer, 400),
+		new /datum/data/mining_equipment("Stabilizing Serum", /obj/item/mining_stabilizer, 400),
 		new /datum/data/mining_equipment("Fulton Beacon", /obj/item/fulton_core, 400),
 		new /datum/data/mining_equipment("Shelter Capsule", /obj/item/survivalcapsule, 400),
 		new /datum/data/mining_equipment("GAR Meson Scanners", /obj/item/clothing/glasses/meson/gar, 500),
 		new /datum/data/mining_equipment("Explorer's Webbing", /obj/item/storage/belt/mining, 500),
 		new /datum/data/mining_equipment("Point Transfer Card", /obj/item/card/mining_point_card, 500),
 		new /datum/data/mining_equipment("Survival Medipen", /obj/item/reagent_containers/hypospray/medipen/survival, 500),
-		new /datum/data/mining_equipment("Brute First-Aid Kit", /obj/item/storage/firstaid/brute, 600),
+		new /datum/data/mining_equipment("Brute Medkit", /obj/item/storage/medkit/brute, 600),
 		new /datum/data/mining_equipment("Tracking Implant Kit", /obj/item/storage/box/minertracker, 600),
 		new /datum/data/mining_equipment("Jaunter", /obj/item/wormhole_jaunter, 750),
 		new /datum/data/mining_equipment("Kinetic Crusher", /obj/item/kinetic_crusher, 750),
-		new /datum/data/mining_equipment("Kinetic Accelerator", /obj/item/gun/energy/kinetic_accelerator, 750),
+		new /datum/data/mining_equipment("Kinetic Accelerator", /obj/item/gun/energy/recharge/kinetic_accelerator, 750),
 		new /datum/data/mining_equipment("Advanced Scanner", /obj/item/t_scanner/adv_mining_scanner, 800),
 		new /datum/data/mining_equipment("Resonator", /obj/item/resonator, 800),
 		new /datum/data/mining_equipment("Luxury Medipen", /obj/item/reagent_containers/hypospray/medipen/survival/luxury, 1000),
@@ -42,10 +42,11 @@
 		new /datum/data/mining_equipment("Mining Conscription Kit", /obj/item/storage/backpack/duffelbag/mining_conscript, 1500),
 		new /datum/data/mining_equipment("Space Cash", /obj/item/stack/spacecash/c1000, 2000),
 		new /datum/data/mining_equipment("Diamond Pickaxe", /obj/item/pickaxe/diamond, 2000),
+		new /datum/data/mining_equipment("Kheiral Cuffs", /obj/item/kheiral_cuffs, 2000),
 		new /datum/data/mining_equipment("Super Resonator", /obj/item/resonator/upgraded, 2500),
 		new /datum/data/mining_equipment("Jump Boots", /obj/item/clothing/shoes/bhop, 2500),
 		new /datum/data/mining_equipment("Ice Hiking Boots", /obj/item/clothing/shoes/winterboots/ice_boots, 2500),
-		new /datum/data/mining_equipment("Mining MODsuit", /obj/item/mod/control/pre_equipped/mining, 2500),
+		new /datum/data/mining_equipment("Mining MODsuit", /obj/item/mod/control/pre_equipped/mining, 3000),
 		new /datum/data/mining_equipment("Luxury Shelter Capsule", /obj/item/survivalcapsule/luxury, 3000),
 		new /datum/data/mining_equipment("Luxury Bar Capsule", /obj/item/survivalcapsule/luxuryelite, 10000),
 		new /datum/data/mining_equipment("Nanotrasen Minebot", /mob/living/simple_animal/hostile/mining_drone, 800),
@@ -158,7 +159,7 @@
 
 /obj/machinery/mineral/equipment_vendor/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/mining_voucher))
-		RedeemVoucher(I, user)
+		redeem_voucher(I, user)
 		return
 	if(default_deconstruction_screwdriver(user, "mining-open", "mining", I))
 		return
@@ -166,38 +167,56 @@
 		return
 	return ..()
 
-/obj/machinery/mineral/equipment_vendor/proc/RedeemVoucher(obj/item/mining_voucher/voucher, mob/redeemer)
-	var/items = list("Survival Capsule and Explorer's Webbing", "Resonator Kit", "Minebot Kit", "Extraction and Rescue Kit", "Crusher Kit", "Mining Conscription Kit")
+/**
+ * Allows user to redeem a mining voucher for one set of a mining equipment
+ *
+ * * Arguments:
+ * * voucher The mining voucher that is being used to redeem the mining equipment
+ * * redeemer The mob that is redeeming the mining equipment
+ */
+/obj/machinery/mineral/equipment_vendor/proc/redeem_voucher(obj/item/mining_voucher/voucher, mob/redeemer)
+	var/static/list/set_types
+	if(!set_types)
+		set_types = list()
+		for(var/datum/voucher_set/static_set as anything in subtypesof(/datum/voucher_set))
+			set_types[initial(static_set.name)] = new static_set
 
-	var/selection = tgui_input_list(redeemer, "Pick your equipment", "Mining Voucher Redemption", sort_list(items))
-	if(isnull(selection))
+	var/list/items = list()
+	for(var/set_name in set_types)
+		var/datum/voucher_set/current_set = set_types[set_name]
+		var/datum/radial_menu_choice/option = new
+		option.image = image(icon = current_set.icon, icon_state = current_set.icon_state)
+		option.info = span_boldnotice(current_set.description)
+		items[set_name] = option
+
+	var/selection = show_radial_menu(redeemer, src, items, custom_check = CALLBACK(src, PROC_REF(check_menu), voucher, redeemer), radius = 38, require_near = TRUE, tooltips = TRUE)
+	if(!selection)
 		return
-	if(!Adjacent(redeemer) || QDELETED(voucher) || voucher.loc != redeemer)
-		return
-	var/drop_location = drop_location()
-	switch(selection)
-		if("Survival Capsule and Explorer's Webbing")
-			new /obj/item/storage/belt/mining/vendor(drop_location)
-		if("Resonator Kit")
-			new /obj/item/extinguisher/mini(drop_location)
-			new /obj/item/resonator(drop_location)
-		if("Minebot Kit")
-			new /mob/living/simple_animal/hostile/mining_drone(drop_location)
-			new /obj/item/weldingtool/hugetank(drop_location)
-			new /obj/item/clothing/head/welding(drop_location)
-			new /obj/item/borg/upgrade/modkit/minebot_passthrough(drop_location)
-		if("Extraction and Rescue Kit")
-			new /obj/item/extraction_pack(drop_location)
-			new /obj/item/fulton_core(drop_location)
-			new /obj/item/stack/marker_beacon/thirty(drop_location)
-		if("Crusher Kit")
-			new /obj/item/extinguisher/mini(drop_location)
-			new /obj/item/kinetic_crusher(drop_location)
-		if("Mining Conscription Kit")
-			new /obj/item/storage/backpack/duffelbag/mining_conscript(drop_location)
+
+	var/datum/voucher_set/chosen_set = set_types[selection]
+	for(var/item in chosen_set.set_items)
+		new item(drop_location())
 
 	SSblackbox.record_feedback("tally", "mining_voucher_redeemed", 1, selection)
 	qdel(voucher)
+
+/**
+ * Checks if we are allowed to interact with a radial menu
+ *
+ * * Arguments:
+ * * voucher The mining voucher that is being used to redeem a mining equipment
+ * * redeemer The living mob interacting with the menu
+ */
+/obj/machinery/mineral/equipment_vendor/proc/check_menu(obj/item/mining_voucher/voucher, mob/living/redeemer)
+	if(!istype(redeemer))
+		return FALSE
+	if(redeemer.incapacitated())
+		return FALSE
+	if(QDELETED(voucher))
+		return FALSE
+	if(!redeemer.is_holding(voucher))
+		return FALSE
+	return TRUE
 
 /obj/machinery/mineral/equipment_vendor/ex_act(severity, target)
 	do_sparks(5, TRUE, src)
@@ -236,28 +255,45 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /**********************Mining Point Card**********************/
-
+#define TO_USER_ID "To ID"
+#define TO_POINT_CARD "To Card"
 /obj/item/card/mining_point_card
-	name = "mining points card"
-	desc = "A small card preloaded with mining points. Swipe your ID card over it to transfer the points, then discard."
+	name = "mining point transfer card"
+	desc = "A small, reusable card for transferring mining points. Swipe your ID card over it to start the process."
 	icon_state = "data_1"
 	var/points = 500
 
 /obj/item/card/mining_point_card/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/card/id))
-		if(points)
-			var/obj/item/card/id/C = I
-			C.mining_points += points
-			to_chat(user, span_info("You transfer [points] points to [C]."))
-			points = 0
-		else
-			to_chat(user, span_alert("There's no points left on [src]."))
+	if(isidcard(I))
+		var/obj/item/card/id/swiped = I
+		balloon_alert(user, "starting transfer")
+		var/point_movement = tgui_alert(user, "To ID (from card) or to card (from ID)?", "Mining Points Transfer", list(TO_USER_ID, TO_POINT_CARD))
+		if(!point_movement)
+			return
+		var/amount = tgui_input_number(user, "How much do you want to transfer? ID Balance: [swiped.mining_points], Card Balance: [points]", "Transfer Points", min_value = 0, round_value = 1)
+		if(!amount)
+			return
+		switch(point_movement)
+			if(TO_USER_ID)
+				if(amount > points)
+					amount = points
+				swiped.mining_points += amount
+				points -= amount
+				to_chat(user, span_notice("You transfer [amount] mining points from [src] to [swiped]."))
+			if(TO_POINT_CARD)
+				if(amount > swiped.mining_points)
+					amount = swiped.mining_points
+				swiped.mining_points -= amount
+				points += amount
+				to_chat(user, span_notice("You transfer [amount] mining points from [swiped] to [src]."))
 	..()
 
 /obj/item/card/mining_point_card/examine(mob/user)
 	. = ..()
-	. += span_alert("There's [points] point\s on the card.")
+	. += span_notice("There's [points] point\s on the card.")
 
+#undef TO_POINT_CARD
+#undef TO_USER_ID
 /obj/item/storage/backpack/duffelbag/mining_conscript
 	name = "mining conscription kit"
 	desc = "A kit containing everything a crewmember needs to support a shaft miner in the field."
@@ -272,6 +308,6 @@
 	new /obj/item/encryptionkey/headset_mining(src)
 	new /obj/item/clothing/mask/gas/explorer(src)
 	new /obj/item/card/id/advanced/mining(src)
-	new /obj/item/gun/energy/kinetic_accelerator(src)
+	new /obj/item/gun/energy/recharge/kinetic_accelerator(src)
 	new /obj/item/knife/combat/survival(src)
 	new /obj/item/flashlight/seclite(src)

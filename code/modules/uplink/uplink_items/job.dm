@@ -43,6 +43,14 @@
 	restricted_roles = list(JOB_ASSISTANT)
 	surplus = 0
 
+/datum/uplink_item/role_restricted/oldtoolboxclean
+	name = "Ancient Toolbox"
+	desc = "An iconic toolbox design notorious with Assistants everywhere, this design was especially made to become more robust the more telecrystals it has inside it! Tools and insulated gloves included."
+	item = /obj/item/storage/toolbox/mechanical/old/clean
+	cost = 2
+	restricted_roles = list(JOB_ASSISTANT)
+	surplus = 0
+
 // Low progression cost
 
 /datum/uplink_item/role_restricted/clownpin
@@ -201,12 +209,12 @@
 	desc = "An implant that grants you a recharging laser gun inside your arm. Weak to EMPs. Comes with a syndicate autosurgeon for immediate self-application."
 	progression_minimum = 30 MINUTES
 	cost = 10
-	item = /obj/item/autosurgeon/organ/syndicate/laser_arm
+	item = /obj/item/autosurgeon/syndicate/laser_arm
 	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR)
 
 /datum/uplink_item/role_restricted/chemical_gun
 	name = "Reagent Dartgun"
-	desc = "A heavily modified syringe gun which is capable of synthesizing its own chemical darts using input reagents. Can hold 100u of reagents."
+	desc = "A heavily modified syringe gun which is capable of synthesizing its own chemical darts using input reagents. Can hold 90u of reagents."
 	progression_minimum = 30 MINUTES
 	item = /obj/item/gun/chem
 	cost = 12
@@ -224,24 +232,18 @@
 /datum/uplink_item/role_restricted/clown_bomb
 	name = "Clown Bomb"
 	desc = "The Clown bomb is a hilarious device capable of massive pranks. It has an adjustable timer, \
-			with a minimum of 60 seconds, and can be bolted to the floor with a wrench to prevent \
-			movement. The bomb is bulky and cannot be moved; upon ordering this item, a smaller beacon will be \
-			transported to you that will teleport the actual bomb to it upon activation. Note that this bomb can \
-			be defused, and some crew may attempt to do so."
+		with a minimum of %MIN_BOMB_TIMER seconds, and can be bolted to the floor with a wrench to prevent \
+		movement. The bomb is bulky and cannot be moved; upon ordering this item, a smaller beacon will be \
+		transported to you that will teleport the actual bomb to it upon activation. Note that this bomb can \
+		be defused, and some crew may attempt to do so."
 	progression_minimum = 30 MINUTES
 	item = /obj/item/sbeacondrop/clownbomb
 	cost = 15
 	restricted_roles = list(JOB_CLOWN)
 
-/datum/uplink_item/role_restricted/concealed_weapon_bay
-	name = "Concealed Weapon Bay"
-	desc = "A modification for non-combat mechas that allows them to equip one piece of equipment designed for combat mechs. \
-			It also hides the equipped weapon from plain sight. \
-			Only one can fit on a mecha."
-	progression_minimum = 30 MINUTES
-	item = /obj/item/mecha_parts/concealed_weapon_bay
-	cost = 3
-	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR)
+/datum/uplink_item/role_restricted/clown_bomb/New()
+	. = ..()
+	desc = replacetext(desc, "%MIN_BOMB_TIMER", SYNDIEBOMB_MIN_TIMER_SECONDS)
 
 /datum/uplink_item/role_restricted/clowncar
 	name = "Clown Car"
@@ -255,6 +257,17 @@
 	item = /obj/vehicle/sealed/car/clowncar
 	cost = 20
 	restricted_roles = list(JOB_CLOWN)
+
+/datum/uplink_item/role_restricted/concealed_weapon_bay
+	name = "Concealed Weapon Bay"
+	desc = "A modification for non-combat exosuits that allows them to equip one piece of equipment designed for combat units. \
+			Attach to an exosuit with an existing equipment to disguise the bay as that equipment. The sacrificed equipment will be lost.\
+			Alternatively, you can attach the bay to an empty equipment slot, but the bay will not be concealed. Once the bay is \
+			attached, an exosuit weapon can be fitted inside."
+	progression_minimum = 30 MINUTES
+	item = /obj/item/mecha_parts/mecha_equipment/concealed_weapon_bay
+	cost = 3
+	restricted_roles = list(JOB_ROBOTICIST, JOB_RESEARCH_DIRECTOR)
 
 /datum/uplink_item/role_restricted/his_grace
 	name = "His Grace"

@@ -25,6 +25,9 @@
 	/// [Subsystem Flags][SS_NO_INIT] to control binary behavior. Flags must be set at compile time or before preinit finishes to take full effect. (You can also restart the mc to force them to process again)
 	var/flags = NONE
 
+	/// Which stage does this subsystem init at. Earlier stages can fire while later stages init.
+	var/init_stage = INITSTAGE_MAIN
+
 	/// This var is set to TRUE after the subsystem has been initialized.
 	var/initialized = FALSE
 
@@ -53,10 +56,10 @@
 
 	/// Running average of the amount of tick usage (in percents of a game tick) the subsystem has spent past its allocated time without pausing
 	var/tick_overrun = 0
-	
+
 	/// How much of a tick (in percents of a tick) were we allocated last fire.
 	var/tick_allocation_last = 0
-	
+
 	/// How much of a tick (in percents of a tick) do we get allocated by the mc on avg.
 	var/tick_allocation_avg = 0
 
@@ -110,10 +113,10 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 	set waitfor = FALSE
 	. = SS_IDLE
-	
+
 	tick_allocation_last = Master.current_ticklimit-(TICK_USAGE)
 	tick_allocation_avg = MC_AVERAGE(tick_allocation_avg, tick_allocation_last)
-	
+
 	. = SS_SLEEPING
 	fire(resumed)
 	. = state
@@ -251,18 +254,14 @@
 /// Called after the config has been loaded or reloaded.
 /datum/controller/subsystem/proc/OnConfigLoad()
 
-//used to initialize the subsystem AFTER the map has loaded
-/datum/controller/subsystem/Initialize(start_timeofday)
-	initialized = TRUE
-	SEND_SIGNAL(src, COMSIG_SUBSYSTEM_POST_INITIALIZE, start_timeofday)
-	var/time = (REALTIMEOFDAY - start_timeofday) / 10
-	var/msg = "Initialized [name] subsystem within [time] second[time == 1 ? "" : "s"]!"
-	to_chat(world, span_boldannounce("[msg]"))
-	log_world(msg)
-	return time
+/**
+ * Used to initialize the subsystem. This is expected to be overriden by subtypes.
+ */
+/datum/controller/subsystem/Initialize()
+	return SS_INIT_NONE
 
 /datum/controller/subsystem/stat_entry(msg)
-	if(can_fire && !(SS_NO_FIRE & flags))
+	if(can_fire && !(SS_NO_FIRE & flags) && init_stage <= Master.init_stage_completed)
 		msg = "[round(cost,1)]ms|[round(tick_usage,1)]%([round(tick_overrun,1)]%)|[round(ticks,0.1)]\t[msg]"
 	else
 		msg = "OFFLINE\t[msg]"

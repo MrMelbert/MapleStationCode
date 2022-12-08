@@ -17,9 +17,10 @@
 		var/obj/effect/mob_spawn/ghost_role/ghost_role = allocate(role_spawn_path)
 
 		if(ghost_role.outfit_override)
-			Fail("[ghost_role.type] has a defined \"outfit_override\" list, which is only for mapping. Do not set this!")
+			TEST_FAIL("[ghost_role.type] has a defined \"outfit_override\" list, which is only for mapping. Do not set this!")
 
-		if(ghost_role.mob_type != /mob/living/carbon/human)
+		var/human_type = /mob/living/carbon/human // this exists to prevent being caught by checks
+		if(ghost_role.mob_type != human_type)
 			//vars that must not be set if the mob type isn't human
 			var/list/human_only_vars = list(
 				"mob_species",
@@ -32,7 +33,7 @@
 			)
 			for(var/human_only_var in human_only_vars)
 				if(ghost_role.vars[human_only_var])
-					Fail("[ghost_role.type] has a defined \"[human_only_var]\" HUMAN ONLY var, but this type doesn't spawn humans.")
+					TEST_FAIL("[ghost_role.type] has a defined \"[human_only_var]\" HUMAN ONLY var, but this type doesn't spawn humans.")
 
 		//vars that must be set on
 		var/list/required_vars = list(
@@ -46,6 +47,6 @@
 			if(required_var == "prompt_name" && !ghost_role.prompt_ghost)
 				continue //only case it makes sense why you shouldn't have a prompt_name
 			if(!ghost_role.vars[required_var])
-				Fail("[ghost_role.type] must have \"[required_var]\" defined. Reason: [required_vars[required_var]]")
+				TEST_FAIL("[ghost_role.type] must have \"[required_var]\" defined. Reason: [required_vars[required_var]]")
 
 		qdel(ghost_role)

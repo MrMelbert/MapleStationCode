@@ -99,7 +99,6 @@
 
 /datum/antagonist/fallen_changeling
 	show_in_antagpanel = FALSE
-	soft_antag = TRUE
 	/// Our changeling ID before we lost everything.
 	var/previous_changeling_id = ""
 	/// Weakref to the mind of the changeling that stole our powers.
@@ -125,7 +124,6 @@
 	show_in_antagpanel = FALSE
 	give_objectives = FALSE
 	give_innates = FALSE
-	soft_antag = TRUE
 	hivemind_link_awoken = FALSE
 	/// Weakref to a mob of whoever made us into a ling
 	var/datum/weakref/granter

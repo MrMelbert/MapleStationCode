@@ -14,7 +14,7 @@
 	QDEL_NULL(pain_controller)
 	return ..()
 
-/*
+/**
  * Cause [amount] of [dam_type] sharp pain to [target_zones].
  * Sharp pain is for sudden spikes of pain that go away after [duration] deciseconds.
  */
@@ -26,7 +26,7 @@
 	for(var/zone in target_zones)
 		apply_status_effect(/datum/status_effect/sharp_pain, zone, amount, dam_type, duration)
 
-/*
+/**
  * Set [id] pain modifier to [amount], and
  * unset it automatically after [time] deciseconds have elapsed.
  */
@@ -38,7 +38,7 @@
 	set_pain_mod(id, amount)
 	addtimer(CALLBACK(pain_controller, /datum/pain.proc/unset_pain_modifier, id), time)
 
-/*
+/**
  * Returns the bodypart pain of [zone].
  * If [get_modified] is TRUE, returns the bodypart's pain multiplied by any modifiers affecting it.
  */

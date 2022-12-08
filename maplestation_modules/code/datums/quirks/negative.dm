@@ -57,7 +57,7 @@
 	REMOVE_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	UnregisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HUGGED, COMSIG_CARBON_HEADPAT))
 
-/*
+/**
  * Causes pain to arm zones if they're targeted, and the chest zone otherwise.
  *
  * source - quirk_holder / the mob being touched
@@ -77,7 +77,7 @@
 	to_chat(quirk_holder, span_danger("[toucher] touches you, causing a wave of sharp pain throughout your body!"))
 	actually_hurt(pain_zone, 9)
 
-/*
+/**
  * Causes pain to the head when they're headpatted.
  *
  * source - quirk_holder / the mob being touched
@@ -95,7 +95,7 @@
 	to_chat(quirk_holder, span_danger("[patter] taps your head, causing a sensation of pain!"))
 	actually_hurt(BODY_ZONE_HEAD, 7)
 
-/*
+/**
  * Actually cause the pain to the target limb, causing a visual effect, emote, and a negative moodlet.
  *
  * zone - the body zone being affected

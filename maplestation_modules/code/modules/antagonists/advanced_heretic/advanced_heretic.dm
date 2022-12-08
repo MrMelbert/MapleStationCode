@@ -1,8 +1,19 @@
 /// -- Advanced heretic datum --
+
+/datum/antagonist/heretic/finalize_antag()
+	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ecult_op.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)//subject to change
+
+	for(var/starting_knowledge in GLOB.heretic_start_knowledge)
+		gain_knowledge(starting_knowledge)
+
+	GLOB.reality_smash_track.add_tracked_mind(owner)
+	addtimer(CALLBACK(src, .proc/passive_influence_gain), passive_gain_timer) // Gain +1 knowledge every 20 minutes.
+
 /// Advanced traitor, but for heretics!
 /datum/antagonist/heretic/advanced
 	name = "Advanced Heretic"
 	finalize_antag = FALSE
+	give_objectives = FALSE
 	/// Static list of extra objectives heretics have.
 	var/static/list/heretic_objectives = list(
 		"minor sacrifice" = /datum/objective/minor_sacrifice,
@@ -28,15 +39,6 @@
 
 /datum/antagonist/heretic/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
-
-/datum/antagonist/heretic/advanced/finalize_antag()
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ecult_op.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)//subject to change
-
-	for(var/starting_knowledge in GLOB.heretic_start_knowledge)
-		gain_knowledge(starting_knowledge)
-
-	GLOB.reality_smash_track.add_tracked_mind(owner)
-	addtimer(CALLBACK(src, .proc/passive_influence_gain), passive_gain_timer) // Gain +1 knowledge every 20 minutes.
 
 /datum/antagonist/heretic/advanced/forge_primary_objectives()
 	return FALSE

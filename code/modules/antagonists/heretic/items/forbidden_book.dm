@@ -12,6 +12,7 @@
 	. = ..()
 	AddComponent(/datum/component/effect_remover, \
 		success_feedback = "You remove %THEEFFECT.", \
+		tip_text = "Clear rune", \
 		effects_we_clear = list(/obj/effect/heretic_rune))
 
 /obj/item/codex_cicatrix/examine(mob/user)
@@ -49,7 +50,7 @@
 	icon_state = "[base_icon_state]_open"
 	flick("[base_icon_state]_opening", src)
 
-	addtimer(CALLBACK(src, .proc/close_animation), 5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(close_animation)), 5 SECONDS)
 
 /*
  * Plays a closing animation and resets the icon state.

@@ -6,6 +6,13 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 /datum/loadout_item/pocket_items
 	category = LOADOUT_ITEM_MISC
 
+/datum/loadout_item/pocket_items/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
+	if(visuals_only)
+		return
+
+	return ..()
+
 // The wallet loadout item is special, and puts the player's ID and other small items into it on initialize (fancy!)
 /datum/loadout_item/pocket_items/wallet
 	name = "Wallet"
@@ -18,13 +25,12 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 
 // We didn't spawn any item yet, so nothing to call here.
 /datum/loadout_item/pocket_items/wallet/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
-	SHOULD_CALL_PARENT(FALSE)
-	return FALSE
+	return null
 
 // We add our wallet at the very end of character initialization (after quirks, etc) to ensure the backpack / their ID is all set by now.
 /datum/loadout_item/pocket_items/wallet/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
 	var/obj/item/card/id/advanced/id_card = equipper.get_item_by_slot(ITEM_SLOT_ID)
-	if(istype(id_card, /obj/item/storage/wallet))
+	if(istype(id_card, /obj/item/storage/wallet)) // Wallets station trait guard
 		return
 
 	var/obj/item/storage/wallet/wallet = new(equipper)

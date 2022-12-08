@@ -49,7 +49,7 @@
 		if(4 to 6)
 			. += "towel_rack_filled_full"
 
-/*
+/**
  * Add [added_towel] into the rack, if we can.
  *
  * added_towel - the towel we're adding to the rack
@@ -71,7 +71,7 @@
 	update_appearance()
 	return TRUE
 
-/*
+/**
  * Remove the last towel from the rack. Last in, first out.
  *
  * user - the mob who is removing the towel
@@ -133,7 +133,7 @@
 	if(!added_towel.warm_towel)
 		addtimer(CALLBACK(src, .proc/heat_towel, added_towel), 30 SECONDS)
 
-/*
+/**
  * Heat [warmed_towel] (set its warm_towel var to TRUE), called after a timer.
  *
  * warmed_towel - the towel we're warming up

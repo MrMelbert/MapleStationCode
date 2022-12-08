@@ -2,7 +2,7 @@
 /// Global list of all flavor texts we have generated. Associated list of [mob name] to [datum ref]
 GLOBAL_LIST_EMPTY(flavor_texts)
 
-/*
+/**
  * Gets the mob's flavor text datum from the global associated lists of flavor texts.
  * If no flavor text was found, create a new flavor text datum for [added_mob]
  *
@@ -66,7 +66,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	else
 		linked_species = "simple"
 
-/*
+/**
  * Get the flavor text formatted.
  *
  * examiner - who's POV we're gettting this flavor text from
@@ -84,7 +84,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	if(.)
 		. += "\n"
 
-/*
+/**
  * Get the href buttons for all the mob's records, formatted.
  *
  * examiner - who's POV we're gettting the records from
@@ -117,7 +117,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	if(.)
 		. += "\n"
 
-/*
+/**
  * All-In-One proc that gets the flavor text and record hrefs and formats it into one message.
  *
  * examiner - who's POV we're gettting this flavor text from

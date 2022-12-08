@@ -66,7 +66,7 @@
 		else
 			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel)
 
-/*
+/**
  * Check if our [target_turf] is valid to try to dry and begin a do_after.
  * If the turf is valid, try a do_after, and if successful, call [do_dry_floor].
  *
@@ -99,7 +99,7 @@
 	do_dry_floor(target_turf, user)
 	return TRUE
 
-/*
+/**
  * Actually dry the floor, removing a minute of wetness from [target_turf] and washing it lightly.
  *
  * target_turf - the turf we're drying
@@ -112,7 +112,7 @@
 	target_turf.MakeDry(ALL, TRUE, 1 MINUTES)
 	target_turf.wash(CLEAN_WASH)
 
-/*
+/**
  * Begin drying off a [target_mob] with [src].
  * If [target_mob] is on fire, call [try_extinguish_mob].
  * Otherwise, begin a do_after, and call [do_dry_mob] afterwards.
@@ -148,7 +148,7 @@
 		do_dry_mob(target_mob, user)
 	return TRUE
 
-/*
+/**
  * Actually dry the mob, giving them a moodlet if the towel is warm and washing them.
  * Also removes negative firestacks (wetness).
  *
@@ -168,7 +168,7 @@
 		if(prob(66)) //66% chance to cool the towel after
 			cool_towel()
 
-/*
+/**
  * Has a chance to remove some firestacks from [target_mob], or set [src] on fire.
  *
  * target_mob - the mob we're extinguishing
@@ -212,7 +212,7 @@
 
 	return
 
-/*
+/**
  * Check if our [target_turf] is valid to place our towel on.
  * If the turf is valid, begin a do_after, and if the turf is valid still after the do_after call [do_place_towel].
  *
@@ -242,7 +242,7 @@
 	do_place_towel(target_turf, user)
 	return TRUE
 
-/*
+/**
  * Check if our [target_turf] contains invalid atmos.
  *
  * target_turf - the turf we're checking
@@ -269,7 +269,7 @@
 
 	return TRUE
 
-/*
+/**
  * Actually place our towel on [target_turf].
  *
  * target_turf - the turf we're putting the towel
@@ -356,7 +356,7 @@
 
 	try_pick_up(picker_up)
 
-/*
+/**
  * Attempt to pick up the towel. Run through a few checks and a do-after, then call [do_pick_up]
  *
  * picker_up - the mob who is trying to pick up the towel.
@@ -383,7 +383,7 @@
 	do_pick_up(picker_up)
 	return TRUE
 
-/*
+/**
  * Actually pick up the towel, moving the item to [picker_up], and deleting [src].
  * If any mobs walk onto the towel while being picked up, give them a slip.
  *

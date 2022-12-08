@@ -112,7 +112,7 @@
 	if(!silent)
 		to_chat(magic_source.owner, span_brass("You withdraw the power of [src] from [target]."))
 
-/*
+/**
  * Signal proc for [COMSIG_PARENT_EXAMINE].
  */
 /datum/action/item_action/cult/proc/on_examine(datum/source, mob/user, list/examine_list)
@@ -123,7 +123,7 @@
 
 	examine_list += span_alloy("[name] is currently readied on [target], which will [examine_hint]")
 
-/*
+/**
  * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the slab itself.
  */
 /datum/action/item_action/cult/proc/on_item_update_overlays(obj/item/source, list/overlays)
@@ -134,7 +134,7 @@
 
 	overlays += mutable_appearance(active_overlay_file || icon_icon, active_overlay_name, ABOVE_OBJ_LAYER)
 
-/*
+/**
  * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the mob holding the slab.
  */
 /datum/action/item_action/cult/proc/on_mob_update_overlays(mob/living/source, list/overlays)
@@ -155,7 +155,7 @@
 
 	overlays += mutable_appearance(our_file, active_overlay_held_name, ABOVE_MOB_LAYER)
 
-/*
+/**
  * Signal proc for [COMSIG_ITEM_EQUIPPED]
  * Un-invokes the spell when the item is equipped (picked up) by a non-cultist.
  */
@@ -168,7 +168,7 @@
 
 	deactivate(TRUE)
 
-/*
+/**
  * Signal proc for [COMSIG_ITEM_DROPPED]
  */
 /datum/action/item_action/cult/proc/on_dropped(datum/source, mob/user)
@@ -176,7 +176,7 @@
 
 	magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
-/*
+/**
  * Signal proc for [COMSIG_ITEM_PRE_ATTACK].
  *
  * Calls do_self_spell_effects() if (user) hits themselves with (target).
@@ -210,28 +210,28 @@
 		INVOKE_ASYNC(src, .proc/after_successful_spell, user)
 
 
-/*
+/**
  * Called when (user) hits themselves with (target).
  *
  * Return TRUE to return COMPONENT_NO_AFTERATTACK.
  */
 /datum/action/item_action/cult/proc/do_self_spell_effects(mob/living/user)
 
-/*
+/**
  * Called when (user) hits (victim) with (target).
  *
  * Return TRUE to return COMPONENT_NO_AFTERATTACK.
  */
 /datum/action/item_action/cult/proc/do_hit_spell_effects(mob/living/victim, mob/living/user)
 
-/*
+/**
  * Called when (user) hits (hit) with (target).
  *
  * Return TRUE to return COMPONENT_NO_AFTERATTACK.
  */
 /datum/action/item_action/cult/proc/do_atom_spell_effects(atom/hit, mob/living/user)
 
-/*
+/**
  * Called after a spell is successfuly cast.
  * Forces the user to say the invocation,
  * Reduces the amount of charges,

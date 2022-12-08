@@ -117,7 +117,7 @@
 		spell.button.screen_loc = "[screen_loc_X[1]]:[order],[screen_loc_Y[1]]:[screen_loc_Y[2]]"
 		spell.button.moved = spell.button.screen_loc
 
-/*
+/**
  * Check for any sources of anti-magic between [target] and [user].
  *
  * If [target] has antimagic, returns TRUE and shows a halo around the target. Also fancy effects.

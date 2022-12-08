@@ -194,12 +194,12 @@ If you make a derivative work from this code, you must include this notification
 		D.visible_message(span_danger("[A] throws [D]!"), \
 						span_userdanger("You're thrown by [A]!"), span_hear("You hear aggressive shuffling and a loud thud!"), null, A)
 		to_chat(A, span_danger("You throw [D]!"))
-		playsound(A.loc, "swing_hit", 50, TRUE)
+		playsound(A.loc, SFX_SWING_HIT, 50, TRUE)
 		var/turf/T = get_edge_target_turf(A, A.dir)
 		if (T && isturf(T))
 			if (!D.stat)
 				D.emote("scream")
-			D.throw_at(T, 10, 4, A, TRUE, TRUE, callback = CALLBACK(D, /mob/living.proc/Paralyze, 20))
+			D.throw_at(T, 10, 4, A, TRUE, TRUE, callback = CALLBACK(D, TYPE_PROC_REF(/mob/living, Paralyze), 20))
 	log_combat(A, D, "has thrown with wrestling")
 	return
 
@@ -207,7 +207,7 @@ If you make a derivative work from this code, you must include this notification
 	set waitfor = FALSE
 	if (D)
 		animate(D, transform = matrix(180, MATRIX_ROTATE), time = 1, loop = 0)
-	sleep(15)
+	sleep(1.5 SECONDS)
 	if (D)
 		animate(D, transform = null, time = 1, loop = 0)
 
@@ -268,7 +268,7 @@ If you make a derivative work from this code, you must include this notification
 				D.pixel_y = D.base_pixel_y
 			return
 
-		sleep(1)
+		sleep(0.1 SECONDS)
 
 	if (A && D)
 		A.pixel_x = A.base_pixel_x
@@ -296,7 +296,7 @@ If you make a derivative work from this code, you must include this notification
 		D.visible_message(span_danger("[A] [fluff] [D]!"), \
 						span_userdanger("You're [fluff]ed by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, span_danger("You [fluff] [D]!"))
-		playsound(A.loc, "swing_hit", 50, TRUE)
+		playsound(A.loc, SFX_SWING_HIT, 50, TRUE)
 		if (!D.stat)
 			D.emote("scream")
 			D.Paralyze(40)
@@ -336,13 +336,13 @@ If you make a derivative work from this code, you must include this notification
 			A.setDir(turn(A.dir, 90))
 
 		A.forceMove(D.loc)
-		addtimer(CALLBACK(src, .proc/CheckStrikeTurf, A, T), 4)
+		addtimer(CALLBACK(src, PROC_REF(CheckStrikeTurf), A, T), 4)
 
 		D.visible_message(span_danger("[A] headbutts [D]!"), \
 						span_userdanger("You're headbutted by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, span_danger("You headbutt [D]!"))
 		D.adjustBruteLoss(rand(10,20))
-		playsound(A.loc, "swing_hit", 50, TRUE)
+		playsound(A.loc, SFX_SWING_HIT, 50, TRUE)
 		D.Unconscious(20)
 	log_combat(A, D, "headbutted")
 
@@ -356,7 +356,7 @@ If you make a derivative work from this code, you must include this notification
 	D.visible_message(span_danger("[A] roundhouse-kicks [D]!"), \
 					span_userdanger("You're roundhouse-kicked by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), COMBAT_MESSAGE_RANGE, A)
 	to_chat(A, span_danger("You roundhouse-kick [D]!"))
-	playsound(A.loc, "swing_hit", 50, TRUE)
+	playsound(A.loc, SFX_SWING_HIT, 50, TRUE)
 	D.adjustBruteLoss(rand(10,20))
 
 	var/turf/T = get_edge_target_turf(A, get_dir(A, get_step_away(D, A)))
@@ -391,7 +391,7 @@ If you make a derivative work from this code, you must include this notification
 						span_danger("You climb onto [surface]!"))
 		A.pixel_y = A.base_pixel_y + 10
 		falling = 1
-		sleep(10)
+		sleep(1 SECONDS)
 
 	if (A && D)
 		// These are necessary because of the sleep call.
@@ -413,7 +413,7 @@ If you make a derivative work from this code, you must include this notification
 
 		if(A)
 			animate(A, transform = matrix(90, MATRIX_ROTATE), time = 1, loop = 0)
-		sleep(10)
+		sleep(1 SECONDS)
 		if(A)
 			animate(A, transform = null, time = 1, loop = 0)
 
@@ -422,7 +422,7 @@ If you make a derivative work from this code, you must include this notification
 		D.visible_message(span_danger("[A] leg-drops [D]!"), \
 						span_userdanger("You're leg-dropped by [A]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, A)
 		to_chat(A, span_danger("You leg-drop [D]!"))
-		playsound(A.loc, "swing_hit", 50, TRUE)
+		playsound(A.loc, SFX_SWING_HIT, 50, TRUE)
 		A.emote("scream")
 
 		if (falling == 1)
@@ -468,7 +468,7 @@ If you make a derivative work from this code, you must include this notification
 
 /obj/item/storage/belt/champion/wrestling/equipped(mob/user, slot)
 	. = ..()
-	if(slot == ITEM_SLOT_BELT)
+	if(slot & ITEM_SLOT_BELT)
 		style.teach(user, TRUE)
 	return
 

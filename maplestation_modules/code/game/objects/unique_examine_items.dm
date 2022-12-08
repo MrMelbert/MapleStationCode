@@ -1,7 +1,7 @@
 /// -- This file is ONLY for adding the unique_examine element onto items, pre-existing or modular. --
 // Concept taken from skyrat-tg, some descriptions may match.
 
-/*
+/**
  * Get the job TITLES of all jobs that are in the security department,
  * and all the jobs that are ONLY in the command department
  *

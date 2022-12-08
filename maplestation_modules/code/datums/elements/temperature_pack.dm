@@ -1,11 +1,11 @@
-/*
+/**
  * Element to make an item into a "temperature pack".
  * Temperature packs are hot or cold things that can be pressed against
  * limbs experiencing pain to reduce it.
  */
 /datum/element/temperature_pack
 	element_flags = ELEMENT_BESPOKE
-	id_arg_index = 2
+	argument_hash_start_idx = 2
 	/// Amount of pain we restore every tick in the targeted limb.
 	var/pain_heal_rate = 0
 	/// Pain modifier put on the limb we're targeting.
@@ -33,7 +33,7 @@
 		COMSIG_PARENT_EXAMINE,
 	))
 
-/*
+/**
  * Edit the examine text to show the item can be used as a temperature pack.
  */
 /datum/element/temperature_pack/proc/get_examine_text(obj/item/source, mob/examiner, list/examine_list)
@@ -42,7 +42,7 @@
 	if(pain_heal_rate > 0)
 		examine_list += span_notice("Right-clicking on a hurt limb with this item can help soothe pain.")
 
-/*
+/**
  * Try to apply [source] item onto [target] mob from [user].
  */
 /datum/element/temperature_pack/proc/try_apply_to_limb(obj/item/source, atom/target, mob/user, params)
@@ -79,7 +79,7 @@
 
 	INVOKE_ASYNC(src, .proc/apply_to_limb, source, target, user, targeted_zone)
 
-/*
+/**
  * Actually apply [parent] temperature pack to [targeted_zone] limb on [target] mob from [user].
  */
 /datum/element/temperature_pack/proc/apply_to_limb(obj/item/parent, mob/living/carbon/target, mob/user, targeted_zone)

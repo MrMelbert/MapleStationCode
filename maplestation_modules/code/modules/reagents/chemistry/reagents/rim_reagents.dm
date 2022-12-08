@@ -104,7 +104,7 @@
 	. = ..()
 	return TRUE
 
-/*
+/**
  * Slow and stop blood loss.
  */
 /datum/reagent/medicine/luciferium/proc/adjust_bleed_wounds(mob/living/carbon/user, delta_time)
@@ -120,7 +120,7 @@
 	if(bloodiest_wound)
 		bloodiest_wound.blood_flow = max(0, bloodiest_wound.blood_flow - (0.5 * REM * delta_time))
 
-/*
+/**
  * Stop the effects of the chem.
  */
 /datum/reagent/medicine/luciferium/proc/stop_effects(mob/living/user)
@@ -224,7 +224,7 @@
 	. = ..()
 	return TRUE
 
-/*
+/**
  * Remove the effects of the drug.
  */
 /datum/reagent/drug/gojuice/proc/stop_effects(mob/living/user)

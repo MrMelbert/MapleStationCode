@@ -5,7 +5,8 @@
 		/obj/item/pda/heads/asset_protection = list(REGION_COMMAND),
 		/obj/item/pda/heads/bridge_officer = list(REGION_COMMAND),
 		/obj/item/pda/science/toxocologist = list(REGION_RESEARCH),
-		/obj/item/pda/science/xenobiologist = list(REGION_RESEARCH),)
+		/obj/item/pda/science/xenobiologist = list(REGION_RESEARCH),
+	)
 
 // Bridge Officer PDA.
 /obj/item/pda/heads/bridge_officer

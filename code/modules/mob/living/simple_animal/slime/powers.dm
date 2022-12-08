@@ -11,7 +11,7 @@
 	background_icon_state = "bg_alien"
 	var/needs_growth = NO_GROWTH_NEEDED
 
-/datum/action/innate/slime/IsAvailable()
+/datum/action/innate/slime/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return
@@ -60,7 +60,7 @@
 		Feedstop()
 		return FALSE
 
-	if(issilicon(M))
+	if(issilicon(M) || M.mob_biotypes & MOB_ROBOTIC)
 		return FALSE
 
 	if(isanimal(M))

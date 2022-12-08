@@ -16,7 +16,7 @@
 /obj/item/clothing/shoes/jackboots/medical
 	name = "medical boots"
 	desc = "Medical grade boots with slots for medical pens. This particular pair seems to have thicker soles on the bottom."
-	permeability_coefficient = 0.01
+	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 95, FIRE = 0, ACID = 0)
 	icon = 'maplestation_modules/story_content/prince_equipment/icons/doctor_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/prince_equipment/icons/doctor_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/prince_equipment/icons/doctor_lhand.dmi'

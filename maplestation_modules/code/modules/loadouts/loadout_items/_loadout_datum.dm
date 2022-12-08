@@ -3,7 +3,7 @@
 /// Global list of ALL loadout datums instantiated.
 GLOBAL_LIST_EMPTY(all_loadout_datums)
 
-/*
+/**
  * Generate a list of singleton loadout_item datums from all subtypes of [type_to_generate]
  *
  * returns a list of singleton datums.
@@ -70,7 +70,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	else
 		additional_tooltip_contents.Add(tooltip)
 
-/*
+/**
  * Place our [var/item_path] into [outfit].
  *
  * By default, just adds the item into the outfit's backpack contents, if non-visual.
@@ -83,7 +83,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
-/*
+/**
  * Called When the item is equipped on [equipper].
  *
  * preference_source - the datum/preferences our loadout item originated from - cannot be null
@@ -91,9 +91,8 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  * visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)
  */
 /datum/loadout_item/proc/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE)
-	SHOULD_CALL_PARENT(TRUE)
 	if(!preference_source)
-		return null
+		return
 
 	var/obj/item/equipped_item = locate(item_path) in equipper.get_all_contents()
 	if(!equipped_item)
@@ -118,7 +117,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 	return equipped_item
 
-/*
+/**
  * Called after the item is equipped on [equipper], at the end of character setup.
  *
  * preference_source - the datum/preferences our loadout item originated from - cannot be null

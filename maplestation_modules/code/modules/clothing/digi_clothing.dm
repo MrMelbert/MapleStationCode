@@ -33,7 +33,7 @@
 	if(has_digi_support) // Try to swap if we have digi support
 		swap_digitigrade_dmi(user, slot)
 
-/*
+/**
  * Swap our clothing item to an alternate dmi if applicable.
  *
  * user - the mob who has equipped the clothing
