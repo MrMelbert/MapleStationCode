@@ -24,12 +24,12 @@
 	target.cause_typed_pain(target_zone, pain_amount, pain_type)
 
 	if((target.IsSleeping() || target.IsUnconscious()) && HAS_TRAIT(target, TRAIT_ON_ANESTHETIC))
-		SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", /datum/mood_event/anesthetic)
+		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		return FALSE
 
 	else
 		if(ispath(surgery_moodlet, /datum/mood_event))
-			SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "surgery", surgery_moodlet)
+			target.add_mood_event("surgery", surgery_moodlet)
 		if(pain_overlay_severity == 1 || pain_overlay_severity == 2)
 			target.flash_pain_overlay(pain_overlay_severity)
 

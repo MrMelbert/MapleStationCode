@@ -112,7 +112,7 @@
 		else
 			M.adjust_disgust(4 * REM * delta_time)
 	else
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "full_on_pilk", /datum/mood_event/full_on_pilk, name)
+		M.add_mood_event("full_on_pilk", /datum/mood_event/full_on_pilk, name)
 	..()
 
 /datum/reagent/consumable/ethanol/peg_nog
@@ -137,5 +137,5 @@
 		else
 			M.adjust_disgust(7 * REM * delta_time)
 	else
-		SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pegged", /datum/mood_event/pegged, name)
+		M.add_mood_event("pegged", /datum/mood_event/pegged, name)
 	..()

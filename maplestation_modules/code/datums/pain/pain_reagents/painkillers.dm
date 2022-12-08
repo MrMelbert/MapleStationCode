@@ -9,11 +9,11 @@
 	if(current_cycle >= 5)
 		switch(pain_modifier)
 			if(0 to 0.45)
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_heavy, name)
+				M.add_mood_event("numb", /datum/mood_event/narcotic_heavy, name)
 			if(0.45 to 0.55)
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_medium, name)
+				M.add_mood_event("numb", /datum/mood_event/narcotic_medium, name)
 			else
-				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "numb", /datum/mood_event/narcotic_light, name)
+				M.add_mood_event("numb", /datum/mood_event/narcotic_light, name)
 
 	// However, drinking with painkillers is toxic.
 	var/highest_boozepwr = 0

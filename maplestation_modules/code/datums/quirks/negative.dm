@@ -109,7 +109,7 @@
 	new /obj/effect/temp_visual/annoyed(quirk_holder.loc)
 	carbon_holder.cause_pain(zone, amount)
 	INVOKE_ASYNC(quirk_holder, /mob.proc/emote, pick(PAIN_EMOTES))
-	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_touch", /datum/mood_event/very_bad_touch)
+	quirk_holder.add_mood_event("bad_touch", /datum/mood_event/very_bad_touch)
 	COOLDOWN_START(src, time_since_last_touch, 30 SECONDS)
 
 // Prosthetic limb quirks (targeted limbs)

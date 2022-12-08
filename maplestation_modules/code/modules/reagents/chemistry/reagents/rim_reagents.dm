@@ -193,7 +193,7 @@
 /datum/reagent/drug/gojuice/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
 	user.add_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/gojuice)
+	user.add_mood_event(type, /datum/mood_event/gojuice)
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	ADD_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 
@@ -229,7 +229,7 @@
  */
 /datum/reagent/drug/gojuice/proc/stop_effects(mob/living/user)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 
@@ -257,11 +257,11 @@
 
 /datum/reagent/drug/flake/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/flake)
+	user.add_mood_event(type, /datum/mood_event/flake)
 
 /datum/reagent/drug/flake/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 
 /obj/item/reagent_containers/glass/bottle/flake
 	name = "flake bottle"
@@ -285,12 +285,12 @@
 
 /datum/reagent/drug/yayo/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/yayo)
+	user.add_mood_event(type, /datum/mood_event/yayo)
 	user.add_movespeed_modifier(/datum/movespeed_modifier/reagent/yayo)
 
 /datum/reagent/drug/yayo/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/yayo)
 
 /datum/reagent/drug/yayo/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
@@ -324,11 +324,11 @@
 
 /datum/reagent/psychite_tea/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/psychite_tea)
+	user.add_mood_event(type, /datum/mood_event/psychite_tea)
 
 /datum/reagent/psychite_tea/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 
 /datum/reagent/psychite_tea/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
 	user.drowsyness = max(user.drowsyness - (3 * REM * delta_time), 0)

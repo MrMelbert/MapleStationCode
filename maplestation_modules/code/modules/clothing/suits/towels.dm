@@ -62,9 +62,9 @@
 	. = ..()
 	if((slot_flags & slot) && warm_towel)
 		if(islizard(user))
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel_lizard)
+			user.add_mood_event("warm_towel", /datum/mood_event/warm_towel_lizard)
 		else
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel)
+			user.add_mood_event("warm_towel", /datum/mood_event/warm_towel)
 
 /**
  * Check if our [target_turf] is valid to try to dry and begin a do_after.
@@ -162,9 +162,9 @@
 	target_mob.set_fire_stacks(max(0, target_mob.fire_stacks))
 	if(warm_towel)
 		if(islizard(target_mob))
-			SEND_SIGNAL(target_mob, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel_lizard)
+			target_mob.add_mood_event("warm_towel", /datum/mood_event/warm_towel_lizard)
 		else
-			SEND_SIGNAL(target_mob, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel)
+			target_mob.add_mood_event("warm_towel", /datum/mood_event/warm_towel)
 		if(prob(66)) //66% chance to cool the towel after
 			cool_towel()
 
@@ -325,17 +325,17 @@
 
 	if(our_towel.warm_towel)
 		if(islizard(arrived))
-			SEND_SIGNAL(arrived, COMSIG_ADD_MOOD_EVENT, "on_towel", /datum/mood_event/on_warm_towel_lizard)
+			arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel_lizard)
 		else
-			SEND_SIGNAL(arrived, COMSIG_ADD_MOOD_EVENT, "on_towel", /datum/mood_event/on_warm_towel)
+			arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel)
 	else
-		SEND_SIGNAL(arrived, COMSIG_ADD_MOOD_EVENT, "on_towel", /datum/mood_event/on_towel)
+		arrived.add_mood_event("on_towel", /datum/mood_event/on_towel)
 
 /// Signal from whenever an atom exits a turf with a towel on top.
 /obj/structure/beach_towel/proc/on_exited(datum/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
 
-	SEND_SIGNAL(gone, COMSIG_CLEAR_MOOD_EVENT, "on_towel")
+	gone.clear_mood_event("on_towel")
 
 /obj/structure/beach_towel/examine(mob/user)
 	. = ..()

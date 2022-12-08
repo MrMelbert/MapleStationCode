@@ -710,22 +710,22 @@
 			parent.mob_surgery_speed_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/light_pain)
+			parent.add_mood_event("pain", /datum/mood_event/light_pain)
 		if(40 to 60)
 			parent.mob_surgery_speed_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/med_pain)
+			parent.add_mood_event("pain", /datum/mood_event/med_pain)
 		if(60 to 80)
 			parent.mob_surgery_speed_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/heavy_pain)
+			parent.add_mood_event("pain", /datum/mood_event/heavy_pain)
 		if(80 to INFINITY)
 			parent.mob_surgery_speed_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
-			SEND_SIGNAL(parent, COMSIG_ADD_MOOD_EVENT, "pain", /datum/mood_event/crippling_pain)
+			parent.add_mood_event("pain", /datum/mood_event/crippling_pain)
 
 /**
  * Clears all pain related attributes
@@ -734,7 +734,7 @@
 	parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
 	parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 	parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
-	SEND_SIGNAL(parent, COMSIG_CLEAR_MOOD_EVENT, "pain")
+	parent.clear_mood_event("pain")
 
 /**
  * Run a pain related emote, if a few checks are successful.
