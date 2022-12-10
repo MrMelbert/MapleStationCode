@@ -25,6 +25,6 @@
 	"Squad Tactics": "When this creature attacks an opponent's creature and defeats it in combat, the owner of the defeated card takes 1 lifeshard of damage from combat",
 	"Stamina": "How often a unit can be tapped to attack or use abilities.",
 	"Taunt": "All opposing creature attacks must be directed towards the creature with Taunt",
-	"TdBlocker": "Takes attacks first, then other cards without tdblocker will be able to be attacked. if tapped will be unable to block. Whoever is being attacked may decide which TdBlocker units are attacked in any order.",
+	"TdBlocker": "Takes attacks first, then other cards without tdblocker will be able to be attacked. If tapped will be unable to block. Whoever is being attacked may decide which TdBlocker units are attacked in any order.",
 	"Unique": "May only be played normally once, not counting other ways they may enter the field such as conversion or cards that produce more units."
 }

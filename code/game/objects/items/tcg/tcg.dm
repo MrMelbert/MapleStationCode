@@ -365,6 +365,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	name = "Trading Card Pack Red: Tiny Dances And The Everything Tree"
 	desc = "Contains ten cards of varying rarity from the TDATET Red set. Collect them all!"
 	icon_state = "cardpack_tdatet"
+	custom_price = PAYCHECK_CREW
 	series = "tdatet"
 	contains_coin = 0
 	card_count = 9
@@ -374,7 +375,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"rare" = 100,
 		"epic" = 30,
 		"legendary" = 5)
-	rarity_table = list(
+	guar_rarity = list(
 		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,
@@ -390,54 +391,44 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		. += "\t[span_info("Dances is rather cute, but the card prints are awful.")]"
 	return .
 
-/obj/item/cardpack/tdatet_g
+/obj/item/cardpack/tdatet/green
 	name = "Trading Card Pack Green: Tiny Dances And The Everything Tree"
 	desc = "Contains ten cards of varying rarity from the TDATET Green set. Collect them all!"
-	icon_state = "cardpack_tdatet"
-	series = "tdatet"
-	contains_coin = 0
-	card_count = 9
 	rarity_table = list(
 		"guncommon" = 300,
 		"grare" = 100,
 		"gepic" = 30,
 		"glegendary" = 5)
-	rarity_table = list(
+	guar_rarity = list(
 		"guncommon" = 300,
 		"grare" = 100,
 		"gepic" = 30,
 		"glegendary" = 5)
 
-/obj/item/cardpack/tdatet_b
+/obj/item/cardpack/tdatet/blue
 	name = "Trading Card Pack Blue: Tiny Dances And The Everything Tree"
 	desc = "Contains ten cards of varying rarity from the TDATET Blue set. Collect them all!"
-	icon_state = "cardpack_tdatet"
-	series = "tdatet"
-	contains_coin = 0
-	card_count = 9
 	rarity_table = list(
 		"buncommon" = 300,
 		"brare" = 100,
 		"bepic" = 30,
 		"blegendary" = 5)
-	rarity_table = list(
+	guar_rarity = list(
 		"buncommon" = 300,
 		"brare" = 100,
 		"bepic" = 30,
 		"blegendary" = 5)
 
-/obj/item/cardpack/tdatet_m
+/obj/item/cardpack/tdatet/mixed
 	name = "Trading Card Pack Mixed: Tiny Dances And The Everything Tree"
 	desc = "Contains five cards of varying rarity from the TDATET Mixed set. This one has green/blue costs and all color resource costs, recommended to get after getting Green/Blue generators. Collect them all!"
-	icon_state = "cardpack_tdatet"
-	series = "tdatet"
 	contains_coin = 0
-	card_count = 4
+	card_count = 5
 	rarity_table = list(
 		"muncommon" = 300,
 		"mepic" = 30,
 		"mlegendary" = 5)
-	rarity_table = list(
+	guar_rarity = list(
 		"muncommon" = 150,
 		"mepic" = 30,
 		"mlegendary" = 5)
@@ -446,6 +437,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 	name = "Trading Card Base: Tiny Dances And The Everything Tree"
 	desc = "Contains the 2 base cards of the game and flipper to start your adventure!"
 	icon_state = "cardpack_tdatet"
+	custom_price = 25
 	series = "tdatet"
 	contains_coin = 100
 	card_count = 1
@@ -470,7 +462,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"epic" = 30,
 		"legendary" = 5)
 	guaranteed_count = 5
-	rarity_table = list(
+	guar_rarity = list(
 		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,

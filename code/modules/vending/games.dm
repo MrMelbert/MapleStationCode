@@ -32,7 +32,13 @@
 		/obj/item/canvas/nineteen_nineteen = 5,
 		/obj/item/canvas/twentythree_nineteen = 5,
 		/obj/item/canvas/twentythree_twentythree = 5,
-		/obj/item/paint_palette = 3
+		/obj/item/paint_palette = 3,
+		/obj/item/cardpack/tdatet = 20,
+		/obj/item/cardpack/tdatet_base = 20,
+		/obj/item/cardpack/tdatet_box = 20,
+		/obj/item/cardpack/tdatet/green = 10,
+		/obj/item/cardpack/tdatet/blue = 10,
+		/obj/item/cardpack/tdatet/mixed = 10
 	)
 	contraband = list(
 		/obj/item/dice/fudge = 9,
