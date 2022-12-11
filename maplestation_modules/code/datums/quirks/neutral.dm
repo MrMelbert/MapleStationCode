@@ -1,3 +1,4 @@
+// --Adds the neutral quirk to start with TDATET cards and a binder to quickly play a game and store said cards.
 /datum/quirk/item_quirk/cardcollector
 	name = "Card Collector"
 	desc = "You carry your personal card binder and fresh packs of unopened cards, it's time to duel!"

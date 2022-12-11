@@ -4,7 +4,8 @@ SUBSYSTEM_DEF(trading_card_game)
 	init_order = INIT_ORDER_TCG
 	var/card_directory = "strings/tcg"
 	/// List of card files to load
-	var/list/card_files = list("set_one.json", "set_two.json", "set_tdatet.json") //NON-MODULE START The current subsystem will not be able to read keywords, but i have included the additions from the tg version in the case this updates, as well as set_tdatet.json as i am unable to see a way to have the subsystem read from other folders as of now. They are stored within strings/tcg/
+	// NON-MODULE START: The current subsystem will not be able to read keywords, but i have included the additions from the tg version in the case this updates, as well as set_tdatet.json as i am unable to see a way to have the subsystem read from other folders as of now. They are stored within strings/tcg/
+	var/list/card_files = list("set_one.json", "set_two.json", "set_tdatet.json")
 	/// List of keyword files
 	/// These allow you to add on hovor logic to parts of a card's text, displaying extra info
 	var/list/keyword_files = list("keywords.json")

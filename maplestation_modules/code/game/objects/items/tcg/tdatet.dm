@@ -1,4 +1,4 @@
-/*Tiny Dances And The Everything Tree is based on the abandonded steam game "Prismata". I have attempted
+/* --Tiny Dances And The Everything Tree is based on the abandonded steam game "Prismata". I have attempted
 to apply it to the ss13 card subsystem to see how it would work within the game, many of the mechanics have
 been moved as best as possible with the main difference of how the cards are obtained being in packs instead
 of copies of cards shared between two players. To help alleviate the RNG of cardpacks some cards are given the
