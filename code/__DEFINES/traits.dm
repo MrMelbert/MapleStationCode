@@ -836,39 +836,3 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// This mob heals from cult pylons.
 #define TRAIT_HEALS_FROM_CULT_PYLONS "heals_from_cult_pylons"
-
-/// Ignore Crew monitor Z levels
-#define TRAIT_MULTIZ_SUIT_SENSORS "multiz_suit_sensors"
-
-/// Ignores body_parts_covered during the add_fingerprint() proc. Works both on the person and the item in the glove slot.
-#define TRAIT_FINGERPRINT_PASSTHROUGH "fingerprint_passthrough"
-
-/// this object has been frozen
-#define TRAIT_FROZEN "frozen"
-
-/// Currently fishing
-#define TRAIT_GONE_FISHING "fishing"
-
-/// Makes a species be better/worse at tackling depending on their wing's status
-#define TRAIT_TACKLING_WINGED_ATTACKER "tacking_winged_attacker"
-
-/// Makes a species be frail and more likely to roll bad results if they hit a wall
-#define TRAIT_TACKLING_FRAIL_ATTACKER "tackling_frail_attacker"
-
-/// Makes a species be better/worse at defending against tackling depending on their tail's status
-#define TRAIT_TACKLING_TAILED_DEFENDER "tackling_tailed_defender"
-
-/// Is runechat for this atom/movable currently disabled, regardless of prefs or anything?
-#define TRAIT_RUNECHAT_HIDDEN "runechat_hudden"
-
-/// some trait sorces dirived from bodyparts BODYPART_TRAIT is generic.
-#define BODYPART_TRAIT "bodypart"
-#define HEAD_TRAIT "head"
-#define CHEST_TRAIT "chest"
-#define RIGHT_ARM_TRAIT "right_arm"
-#define LEFT_ARM_TRAIT "left_arm"
-#define RIGHT_LEG_TRAIT "right_leg"
-#define LEFT_LEG_TRAIT "left_leg"
-
-/// This target has recently been shot by a marksman coin and is very briefly immune to being hit by one again to prevent recursion
-#define TRAIT_RECENTLY_COINED "trait_recently_coined"
