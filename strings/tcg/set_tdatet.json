@@ -1381,7 +1381,7 @@
 		},
 		{
 			"id": "tesla_coil",
-			"name": "Tesla_coil",
+			"name": "Tesla Coil",
 			"desc": "Setting it up is dangerous, but it denies the area easily.",
 			"rules": "4{$Limit} {$Fragile} When placed Gain 2 Default Dances, Tap to sacrifice a Default Dances to gain 3 Attack.",
 			"icon_state": "template_greenblue",
@@ -1423,7 +1423,7 @@
 		},
 		{
 			"id": "arms_race",
-			"name": "arms_race",
+			"name": "Arms Race",
 			"desc": "Rushing to dominate the battlefield.",
 			"rules": "4{$Limit} Spell: construct a Tarsier with 2 build turns, construct a Gauss Cannon, construct a Steelsplitter, and construct 4 Default Dances for your opponent.",
 			"icon_state": "template_base",
@@ -1437,7 +1437,7 @@
 		},
 		{
 			"id": "the_wincer",
-			"name": "the_wincer",
+			"name": "The Wincer",
 			"desc": "Large enough to remove bits of planet.",
 			"rules": "{$Unique} {$Fragile} 3 build turns, tap to sacrifice 5 Miner Dances to gain 15 Attack be {$Exhausted} for 3 turns.",
 			"icon_state": "template_base",
@@ -1451,7 +1451,7 @@
 		},
 		{
 			"id": "valkyrion",
-			"name": "valkyrion",
+			"name": "Valkyrion",
 			"desc": "Its attacks are so potent, residue Gaussite activate on its targets.",
 			"rules": "4{$Limit} {$TdBlocker} Tap to gain 4 Attack and construct 2 barriers on your opponent's coming turn.",
 			"icon_state": "template_base",
@@ -1465,7 +1465,7 @@
 		},
 		{
 			"id": "colossus",
-			"name": "colossus",
+			"name": "Colossus",
 			"desc": "We avoid this, but mess with enemy signals so they run into it instead.",
 			"rules": "4{$Limit} {$Fragile} {$TdBlocker} Tap to gain 3 Attack.",
 			"icon_state": "template_base",
@@ -1479,7 +1479,7 @@
 		},
 		{
 			"id": "centurion",
-			"name": "centurion",
+			"name": "Centurion",
 			"desc": "Using all the engineering prowess we know, we can utilize our resources to produce this.",
 			"rules": "{$Unique} {$Prompt} {$TdBlocker} Gain 2 Attack per turn.",
 			"icon_state": "template_base",
