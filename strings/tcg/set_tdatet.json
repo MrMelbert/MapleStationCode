@@ -2,7 +2,7 @@
 	"templates": [
 		{
 			"template": "default",
-			"icon": "icons/runtime/tcg/tdatet.dmi",
+			"icon": "maplestation_modules/icons/runtime/tcg/tdatet.dmi",
 			"series": "tdatet"
 		}
 	],
