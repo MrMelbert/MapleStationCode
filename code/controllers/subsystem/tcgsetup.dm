@@ -9,7 +9,7 @@ SUBSYSTEM_DEF(trading_card_game)
 	/// These allow you to add on hovor logic to parts of a card's text, displaying extra info
 	var/list/keyword_files = list("keywords.json")
 	/// What cardpack types to load
-	var/card_packs = list(/obj/item/cardpack/series_one, /obj/item/cardpack/resin, /obj/item/cardpack/tdatet)
+	var/card_packs = list(/obj/item/cardpack/series_one, /obj/item/cardpack/resin, /obj/item/cardpack/tdatet) // NON-MODULE CHANGE
 	var/list/cached_guar_rarity = list()
 	var/list/cached_rarity_table = list()
 	/// List of all cards by series, with cards cached by rarity to make those lookups faster

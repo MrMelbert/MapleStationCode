@@ -361,11 +361,11 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"epic" = 30,
 		"legendary" = 5)
 
-/obj/item/cardpack/tdatet
+/obj/item/cardpack/tdatet // NON-MODULE CHANGE
 	name = "Trading Card Pack Red: Tiny Dances And The Everything Tree"
 	desc = "Contains ten cards of varying rarity from the TDATET Red set. Collect them all!"
 	icon_state = "cardpack_tdatet"
-	custom_price = PAYCHECK_CREW
+	custom_price = PAYCHECK_ASSISTANT
 	series = "tdatet"
 	contains_coin = 0
 	card_count = 9
@@ -382,7 +382,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"legendary" = 5)
 
 
-/obj/item/cardpack/tdatet/examine_more(mob/user)
+/obj/item/cardpack/tdatet/examine_more(mob/user) // NON-MODULE CHANGE
 	. = ..()
 	. += span_notice("<i>You browse the back of the pack...</i>")
 	. += "\t[span_info("Tiny Dances And The Everything Tree is a cute pack for those getting into cardgames.")]"
@@ -391,7 +391,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		. += "\t[span_info("Dances is rather cute, but the card prints are awful.")]"
 	return .
 
-/obj/item/cardpack/tdatet/green
+/obj/item/cardpack/tdatet/green // NON-MODULE CHANGE
 	name = "Trading Card Pack Green: Tiny Dances And The Everything Tree"
 	desc = "Contains ten cards of varying rarity from the TDATET Green set. Collect them all!"
 	rarity_table = list(
@@ -405,7 +405,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"gepic" = 30,
 		"glegendary" = 5)
 
-/obj/item/cardpack/tdatet/blue
+/obj/item/cardpack/tdatet/blue // NON-MODULE CHANGE
 	name = "Trading Card Pack Blue: Tiny Dances And The Everything Tree"
 	desc = "Contains ten cards of varying rarity from the TDATET Blue set. Collect them all!"
 	rarity_table = list(
@@ -419,7 +419,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"bepic" = 30,
 		"blegendary" = 5)
 
-/obj/item/cardpack/tdatet/mixed
+/obj/item/cardpack/tdatet/mixed // NON-MODULE CHANGE
 	name = "Trading Card Pack Mixed: Tiny Dances And The Everything Tree"
 	desc = "Contains five cards of varying rarity from the TDATET Mixed set. This one has green/blue costs and all color resource costs, recommended to get after getting Green/Blue generators. Collect them all!"
 	contains_coin = 0
@@ -433,7 +433,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"mepic" = 30,
 		"mlegendary" = 5)
 
-/obj/item/cardpack/tdatet_base
+/obj/item/cardpack/tdatet_base // NON-MODULE CHANGE
 	name = "Trading Card Base: Tiny Dances And The Everything Tree"
 	desc = "Contains the 2 base cards of the game and flipper to start your adventure!"
 	icon_state = "cardpack_tdatet"
@@ -448,7 +448,7 @@ GLOBAL_LIST_EMPTY(tcgcard_radial_choices)
 		"tdbase2" = 900,
 		"tdbase2foil" = 60)
 
-/obj/item/cardpack/tdatet_box
+/obj/item/cardpack/tdatet_box // NON-MODULE CHANGE
 	name = "Trading Card Pack Red Box: Tiny Dances And The Everything Tree"
 	desc = "Contains 28 cards of varying rarity from the TDATET Red set, 5 being a guaranteed uncommon or higher! Along with flipper. Great for getting started!"
 	icon_state = "cardpack_tdatet_case"

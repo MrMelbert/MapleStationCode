@@ -33,12 +33,12 @@
 		/obj/item/canvas/twentythree_nineteen = 5,
 		/obj/item/canvas/twentythree_twentythree = 5,
 		/obj/item/paint_palette = 3,
-		/obj/item/cardpack/tdatet = 20,
-		/obj/item/cardpack/tdatet_base = 20,
-		/obj/item/cardpack/tdatet_box = 20,
-		/obj/item/cardpack/tdatet/green = 10,
-		/obj/item/cardpack/tdatet/blue = 10,
-		/obj/item/cardpack/tdatet/mixed = 10
+		/obj/item/cardpack/tdatet = 20, // NON-MODULE CHANGE
+		/obj/item/cardpack/tdatet_base = 20, // NON-MODULE CHANGE
+		/obj/item/cardpack/tdatet_box = 20, // NON-MODULE CHANGE
+		/obj/item/cardpack/tdatet/green = 10, // NON-MODULE CHANGE
+		/obj/item/cardpack/tdatet/blue = 10, // NON-MODULE CHANGE
+		/obj/item/cardpack/tdatet/mixed = 10 // NON-MODULE CHANGE
 	)
 	contraband = list(
 		/obj/item/dice/fudge = 9,

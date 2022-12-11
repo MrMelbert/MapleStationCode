@@ -353,7 +353,7 @@
 		)
 	)
 
-/datum/quirk/item_quirk/cardcollector
+/datum/quirk/item_quirk/cardcollector // NON-MODULE CHANGE
 	name = "Card Collector"
 	desc = "You carry your personal card binder and fresh packs of unopened cards, it's time to duel!"
 	icon = "diamond"
@@ -362,8 +362,8 @@
 	gain_text = "<span class='notice'>You trust in the heart of the cards.</span>"
 	lose_text = "<span class='danger'>You forget what these funny bookmarks used to be.</span>"
 	medical_record_text = "Patient mentions their card collection as a stress-relieving hobby."
-	mail_goodies = list(/obj/item/cardpack/series_one)
-	//Will replace with whatever cardpack I have in mind if i get to it, but might leave as is for other servers.
+	//mail_goodies = list(/obj/item/cardpack/series_one)
+	//Will replace with whatever cardpack I have in mind if i get to it, but might leave as is for other servers. commented out since maple doesnt have mail goodies.
 
 /datum/quirk/item_quirk/cardcollector/add_unique()
 	var/mob/living/carbon/human/human_holder = quirk_holder
@@ -462,7 +462,7 @@
  */
 /datum/quirk/gamer/proc/gamed()
 	SIGNAL_HANDLER
-	
+
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	// Remove withdrawal malus
 	SEND_SIGNAL(human_holder, COMSIG_CLEAR_MOOD_EVENT, "gamer_withdrawal")
@@ -470,7 +470,7 @@
 	if (gaming_withdrawal_timer)
 		deltimer(gaming_withdrawal_timer)
 	gaming_withdrawal_timer = addtimer(CALLBACK(src, .proc/enter_withdrawal), GAMING_WITHDRAWAL_TIME, TIMER_STOPPABLE)
-	
+
 
 /datum/quirk/gamer/proc/gamer_moment()
 	// It was a heated gamer moment...
