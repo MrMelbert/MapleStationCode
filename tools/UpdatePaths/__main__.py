@@ -117,12 +117,16 @@ def update_path(dmm_data, replacement_string, verbose=False):
                 if prop_value == "@SKIP":
                     out_props.pop(prop_name, None)
                     continue
-                if prop_value.startswith("@OLD"):
-                    params = prop_value.split(":")
-                    if prop_name in old_props:
-                        out_props[prop_name] = old_props[params[1]] if len(params) > 1 else old_props[prop_name]
+                try:
+                    if prop_value.startswith("@OLD"):
+                        params = prop_value.split(":")
+                        if prop_name in old_props:
+                            out_props[prop_name] = old_props[params[1]] if len(params) > 1 else old_props[prop_name]
+                        continue
+                    out_props[prop_name] = prop_value
+                except:
+                    print("Error in prop parsing")
                     continue
-                out_props[prop_name] = prop_value
             if out_props:
                 out += props_to_string(out_props)
             out_paths.append(out)
@@ -169,9 +173,18 @@ def update_all_maps(map_directory, updates, verbose=False):
 
 
 def main(args):
+    run_all = False
+
     if args.inline:
         print("Using replacement:", args.update_source)
         updates = [args.update_source]
+    elif run_all:
+        updates = []
+        for script in os.listdir("."):
+            print(f"Loading script: ", script)
+            with open(script) as f:
+                updates += [line for line in f if line and not line.startswith("#") and not line.isspace()]
+        print(f"Using {len(updates)} replacements from files")
     else:
         with open(args.update_source) as f:
             updates = [line for line in f if line and not line.startswith("#") and not line.isspace()]

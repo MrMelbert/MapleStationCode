@@ -2,7 +2,7 @@
 // Species pain modifiers.
 /datum/species/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
-	if(isnum(species_pain_mod)&& species_pain_mod != 1)
+	if(isnum(species_pain_mod) && species_pain_mod != 1)
 		C.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
 
 /datum/species/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
@@ -73,4 +73,16 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.unset_pain_mod(id)
+	return ..()
+
+/datum/status_effect/inebriated/drunk/on_apply()
+	. = ..()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.set_pain_mod(PAIN_MOD_DRUNK, 0.9)
+
+/datum/status_effect/inebriated/drunk/on_remove()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.unset_pain_mod(PAIN_MOD_DRUNK)
 	return ..()

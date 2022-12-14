@@ -15,7 +15,7 @@
 
 	var/mob/living/carbon/carbon_target = victim
 	if(carbon_target.canBeHandcuffed())
-		INVOKE_ASYNC(src, .proc/cuff_victim, victim, user)
+		INVOKE_ASYNC(src, PROC_REF(cuff_victim), victim, user)
 	else
 		to_chat(user, span_warning("This victim doesn't have enough arms to complete the restraint!"))
 
@@ -42,7 +42,7 @@
 
 	victim.set_handcuffed(new /obj/item/restraints/handcuffs/energy/clock(victim))
 	victim.update_handcuffed()
-	victim.silent += 5
+	victim.adjust_silence(10 SECONDS)
 	to_chat(user, span_notice("You shackle [victim]."))
 	log_combat(user, victim, "shackled")
 	after_successful_spell(user)

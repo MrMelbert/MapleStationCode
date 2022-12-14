@@ -16,6 +16,7 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_COMMAND
 	exp_granted_type = EXP_TYPE_CREW
+	config_tag = "BRIDGE_OFFICER"
 
 	outfit = /datum/outfit/job/bridge_officer
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel
@@ -36,27 +37,28 @@
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
 		/obj/item/food/donut/apple = 10,
-		/obj/item/reagent_containers/food/drinks/coffee = 10,
+		/obj/item/reagent_containers/cup/glass/coffee = 10,
 		/obj/item/food/donut/blumpkin = 5,
 		/obj/item/food/donut/caramel = 5,
 		/obj/item/food/donut/berry = 5,
 		/obj/item/food/donut/matcha = 5,
 		/obj/item/storage/fancy/cigarettes/cigars/havana = 5,
 		/obj/item/clothing/mask/whistle = 5,
-		/obj/item/reagent_containers/food/drinks/mug/tea = 5,
-		/obj/item/reagent_containers/food/drinks/mug/coco = 1,
+		/obj/item/reagent_containers/cup/glass/mug/tea = 5,
+		/obj/item/reagent_containers/cup/glass/mug/coco = 1,
 		/obj/item/storage/box/office_supplies = 1,
 	)
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Guildperson"
+	crewmonitor_priority = 59
 
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"
 	jobtype = /datum/job/bridge_officer
 
 	id = /obj/item/card/id/advanced/silver
-	belt = /obj/item/pda/heads/bridge_officer
+	belt = /obj/item/modular_computer/tablet/pda/heads/bridge_officer
 	ears = /obj/item/radio/headset/heads/bridge_officer
 	glasses = /obj/item/clothing/glasses/sunglasses
 	gloves = /obj/item/clothing/gloves/color/white
@@ -66,7 +68,7 @@
 	id_trim = /datum/id_trim/job/bridge_officer
 	box = /obj/item/storage/box/survival
 
-	backpack_contents = list(/obj/item/melee/baton/telescopic = 1, /obj/item/modular_computer/tablet/preset/advanced/command = 1, /obj/item/gun/energy/disabler = 1)
+	backpack_contents = list(/obj/item/melee/baton/telescopic = 1, /obj/item/gun/energy/disabler = 1)
 
 /datum/outfit/job/bridge_officer/pre_equip(mob/living/carbon/human/H)
 	..()

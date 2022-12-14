@@ -15,7 +15,7 @@
 	inhand_icon_state = "g_suit"
 	body_parts_covered = CHEST|GROIN|ARMS
 	dying_key = DYE_REGISTRY_JUMPSKIRT
-	fitted = FEMALE_UNIFORM_TOP
+	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 
 /obj/item/clothing/under/costume/gladiator/loadout
 	desc = "An almost pristine light-weight gladitorial armor set inspired by those the Ash Walkers wear. It's unarmored and looks very dated."
@@ -24,10 +24,8 @@
 	name = "tailored jumpsuit"
 	desc = "A tailor made custom jumpsuit."
 	greyscale_colors = "#eeeeee"
-	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/clothing/under/color/jumpskirt/greyscale
 	name = "tailored jumpskirt"
 	desc = "A tailor made custom jumpskirt."
 	greyscale_colors = "#eeeeee"
-	flags_1 = IS_PLAYER_COLORABLE_1

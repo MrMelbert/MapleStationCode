@@ -55,13 +55,8 @@
 	if(!ishuman(cultist))
 		return
 
-	var/mob/living/carbon/human/human_cultist = cultist
-	var/obj/item/organ/eyes/cultist_eyes = human_cultist.getorganslot(ORGAN_SLOT_EYES)
-	human_cultist.eye_color = cultist_eyes.old_eye_color
-	human_cultist.dna.update_ui_block(DNA_EYE_COLOR_BLOCK)
-	REMOVE_TRAIT(human_cultist, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
-	human_cultist.remove_overlay(HALO_LAYER)
-	human_cultist.update_body()
+	cultist.RemoveElement(/datum/element/cult_eyes)
+	cultist.RemoveElement(/datum/element/cult_halo)
 
 /datum/cult_theme/narsie/on_cultist_team_made(datum/team/advanced_cult/cult_team, datum/mind/lead_cultist)
 	. = ..()

@@ -1,53 +1,49 @@
 /// -- Modular areas, for ruins/modular maps/etc --
 // Drone Bay Area
-/area/engineering/atmos/control_center
+/area/station/engineering/atmos/control_center
 	name = "Atmospherics Control Center"
 
-/area/engineering/atmos/experiment_room
+/area/station/engineering/atmos/experiment_room
 	name = "Atmospherics Experimentation Room"
 
 //BO Office
-/area/security/detectives_office/bridge_officer_office //This should inherient det offices ambient?
+/area/station/security/detectives_office/bridge_officer_office //This should inherient det offices ambient?
 	name = "Bridge Officer's Office"
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "bo_office"
 
 //AP Office, possibly going unused? We're adding it anyway, fuck you
-/area/command/ap_office
+/area/station/command/ap_office
 	name = "Asset Protection's Office"
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "ap_office"
 
-/area/service/hydroponics/park
+/area/station/service/hydroponics/park
 	name = "Park"
 
-/area/service/bar/lower
+/area/station/service/bar/lower
 	name = "Lower Bar"
 	sound_environment = SOUND_AREA_WOODFLOOR
 
-/area/service/barber
-	name = "Salon"
-	icon_state = "cafeteria" // yeah ok
-
-/area/science/robotics/abandoned
+/area/station/science/robotics/abandoned
 	name = "\improper Abandoned Robotics"
 	icon_state = "abandoned_sci"
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
-/area/service/kitchen/abandoned
+/area/station/service/kitchen/abandoned
 	name = "\improper Abandoned Kitchen"
 	icon_state = "kitchen"
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
 
-/area/maintenance/starboard/lower
+/area/station/maintenance/starboard/lower
 	name = "Lower Starboard Maintenance"
 	icon_state = "smaint"
 
-/area/maintenance/port/lower
+/area/station/maintenance/port/lower
 	name = "Lower Port Maintenance"
 	icon_state = "pmaint"
 
-/area/tcommsat/oldaisat/stationside
+/area/station/tcommsat/oldaisat/stationside
 	name = "\improper Abandoned AI Satellite"
 
 //Berry Physics Space Ruin
@@ -60,43 +56,12 @@
 	name = "NERVA Beacon"
 	icon_state = "green"
 
-/area/solars/nerva
+/area/station/solars/nerva
 	name = "NERVA Beacon Solar Array"
 	icon_state = "panelsP"
 
-// Rooms for where heretic sacrifices send people.
-/area/heretic_sacrifice
-	name = "Mansus"
-	icon_state = "away"
-	has_gravity = STANDARD_GRAVITY
-	ambience_index = AMBIENCE_SPOOKY
-	sound_environment = SOUND_ENVIRONMENT_CAVE
-	area_flags = UNIQUE_AREA | NOTELEPORT | HIDDEN_AREA | BLOCK_SUICIDE
-
-/area/heretic_sacrifice/Initialize(mapload)
-	if(!ambientsounds)
-		ambientsounds = GLOB.ambience_assoc[ambience_index]
-		ambientsounds += 'sound/ambience/ambiatm1.ogg'
-	. = ..()
-
-/area/heretic_sacrifice/ash //also, default
-	name = "Mansus Ash Gate"
-
-/area/heretic_sacrifice/void
-	name = "Mansus Void Gate"
-	sound_environment = SOUND_ENVIRONMENT_UNDERWATER
-
-/area/heretic_sacrifice/flesh
-	name = "Mansus Flesh Gate"
-	sound_environment = SOUND_ENVIRONMENT_STONEROOM
-
-/area/heretic_sacrifice/rust
-	name = "Mansus Rust Gate"
-	ambience_index = AMBIENCE_REEBE
-	sound_environment = SOUND_ENVIRONMENT_SEWER_PIPE
-	
 //Commons - Baseball
-/area/commons/baseball
+/area/station/commons/baseball
 	name = "\improper Baseball Field"
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "baseball"
@@ -104,12 +69,12 @@
 	mood_message = "<span class='nicegreen'>Nothing like coming to see a ball game!</span>\n"
 	mood_trait = TRAIT_EXTROVERT
 
-/area/commons/baseball/view
+/area/station/commons/baseball/view
 	name = "\improper Baseball Viewing Area"
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "baseball_view"
 
-/area/commons/baseball/locker
+/area/station/commons/baseball/locker
 	name = "\improper Baseball Locker Room"
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "baseball_locker"

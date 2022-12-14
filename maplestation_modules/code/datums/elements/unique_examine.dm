@@ -58,8 +58,8 @@
 				return ELEMENT_INCOMPATIBLE
 
 	if(hint)
-		RegisterSignal(thing, COMSIG_PARENT_EXAMINE, .proc/hint_at)
-	RegisterSignal(thing, COMSIG_PARENT_EXAMINE_MORE, .proc/examine)
+		RegisterSignal(thing, COMSIG_PARENT_EXAMINE, PROC_REF(hint_at))
+	RegisterSignal(thing, COMSIG_PARENT_EXAMINE_MORE, PROC_REF(examine))
 
 /datum/element/unique_examine/Detach(atom/thing)
 	. = ..()
@@ -140,7 +140,7 @@
 		if(EXAMINE_CHECK_SKILLCHIP)
 			if(ishuman(examiner))
 				var/mob/living/carbon/human/human_examiner = examiner
-				var/obj/item/organ/brain/examiner_brain = human_examiner.getorganslot(ORGAN_SLOT_BRAIN)
+				var/obj/item/organ/internal/brain/examiner_brain = human_examiner.getorganslot(ORGAN_SLOT_BRAIN)
 				if(examiner_brain)
 					for(var/obj/item/skillchip/checked_skillchip in examiner_brain.skillchips)
 						if(checked_skillchip.active && (checked_skillchip.type in special_desc_req))

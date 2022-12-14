@@ -62,7 +62,7 @@
 /datum/reagent/drug/space_drugs
 	pain_modifier = 0.8
 
-/datum/reagent/drug/fentanyl
+/datum/reagent/toxin/fentanyl
 	pain_modifier = 0.5
 
 //Alcohol reduces pain based on boozepwr
@@ -98,8 +98,8 @@
 
 /datum/reagent/nitrous_oxide/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), .proc/apply_anesthetic)
-	RegisterSignal(user, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), .proc/remove_anesthetic)
+	RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), PROC_REF(apply_anesthetic))
+	RegisterSignal(user, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(remove_anesthetic))
 	if(HAS_TRAIT(user, TRAIT_KNOCKEDOUT))
 		apply_anesthetic(user)
 

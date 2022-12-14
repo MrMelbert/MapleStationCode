@@ -55,7 +55,7 @@
 	user.mob_light(_range = 3, _color = LIGHT_COLOR_LIGHT_CYAN, _duration = 0.3 SECONDS)
 
 	var/applied_effects = FALSE
-	if(anti_cult_magic_check(target, user))
+	if(living_target.can_block_magic())
 		applied_effects = TRUE
 	else
 		if(living_target.getStaminaLoss() >= 70)
@@ -111,7 +111,7 @@
 		to_chat(user, span_cultitalic("[target] is enveloped in a briliant flash of blue, preventing them from speaking!"))
 		to_chat(target, span_userdanger("A cold wave of light washes over you, sapping you of energy!"))
 
-		carbon_target.silent += 8
-		carbon_target.stuttering += 15
-		carbon_target.cultslurring += 18
-		carbon_target.Jitter(3 SECONDS)
+		carbon_target.adjust_silence(16 SECONDS)
+		carbon_target.adjust_stutter(30 SECONDS)
+		carbon_target.adjust_timed_status_effect(36 SECONDS, /datum/status_effect/speech/slurring/cult)
+		carbon_target.adjust_jitter(60 SECONDS)

@@ -47,9 +47,12 @@
 	results = list(/datum/reagent/mutationtoxin/shadow = 2)
 	required_reagents = list(/datum/reagent/unstable_mutation/empowered = 1, /datum/reagent/liquid_dark_matter = 1)
 
+/*
+Disabled as synths don't exist
 /datum/chemical_reaction/mutation_toxin/synth_mutation
 	results = list(/datum/reagent/mutationtoxin/synth = 2)
 	required_reagents = list(/datum/reagent/unstable_mutation/empowered = 1, /datum/reagent/iron = 1)
+*/
 
 /datum/chemical_reaction/mutation_toxin/skrell_mutation
 	results = list(/datum/reagent/mutationtoxin/skrell = 2)

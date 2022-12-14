@@ -29,7 +29,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	id = "fax_machine"
 	build_path = /obj/item/circuitboard/machine/fax_machine
 	category = list("Misc. Machinery")
-	departmental_flags = DEPARTMENTAL_FLAG_SERVICE | DEPARTMENTAL_FLAG_SECURITY | DEPARTMENTAL_FLAG_CARGO
+	departmental_flags = DEPARTMENT_BITFLAG_SERVICE | DEPARTMENT_BITFLAG_SECURITY | DEPARTMENT_BITFLAG_CARGO
 
 /// Fax machine circuit.
 /obj/item/circuitboard/machine/fax_machine
@@ -54,7 +54,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	use_power = IDLE_POWER_USE
 	idle_power_usage = 10
 	active_power_usage = 100
-	req_one_access = list(ACCESS_HEADS, ACCESS_LAWYER)
+	req_one_access = list(ACCESS_COMMAND, ACCESS_LAWYER)
 	circuit = /obj/item/circuitboard/machine/fax_machine
 	/// Whether this machine can send faxes
 	var/sending_enabled = TRUE
@@ -83,7 +83,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	. = ..()
 	GLOB.fax_machines += src
 	set_room_tag(TRUE)
-	wires = new /datum/wires/fax(src)
+	wires = new /datum/wires/fax2(src)
 
 /obj/machinery/fax_machine/Destroy()
 	QDEL_NULL(stored_paper)
@@ -131,7 +131,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	for(var/obj/item/paper/processed/paper as anything in received_paperwork)
 		var/list/found_paper_data = list()
 		found_paper_data["title"] = paper.name
-		found_paper_data["contents"] = TextPreview(remove_all_tags(paper.info), MAX_DISPLAYED_PAPER_CHARS)
+		found_paper_data["contents"] = TextPreview(remove_all_tags(paper.get_raw_text()), MAX_DISPLAYED_PAPER_CHARS)
 		found_paper_data["required_answer"] = paper.required_question
 		found_paper_data["ref"] = REF(paper)
 		found_paper_data["num"] = iterator++
@@ -142,14 +142,14 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(stored_paper)
 		var/list/stored_paper_data = list()
 		stored_paper_data["title"] = stored_paper.name
-		stored_paper_data["contents"] = TextPreview(remove_all_tags(stored_paper.info), MAX_DISPLAYED_PAPER_CHARS)
+		stored_paper_data["contents"] = TextPreview(remove_all_tags(stored_paper.get_raw_text()), MAX_DISPLAYED_PAPER_CHARS)
 		stored_paper_data["ref"] = REF(stored_paper_data)
 		data["stored_paper"] = stored_paper_data
 
 	if(received_paper)
 		var/list/received_paper_data = list()
 		received_paper_data["title"] = received_paper.name
-		received_paper_data["contents"] = TextPreview(remove_all_tags(received_paper.info), MAX_DISPLAYED_PAPER_CHARS)
+		received_paper_data["contents"] = TextPreview(remove_all_tags(received_paper.get_raw_text()), MAX_DISPLAYED_PAPER_CHARS)
 		received_paper_data["source"] = received_paper.was_faxed_from
 		received_paper_data["ref"] = REF(received_paper)
 		data["received_paper"] = received_paper_data
@@ -333,14 +333,14 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 		return FALSE
 
-	if(!stored_paper || !length(stored_paper.info) || !COOLDOWN_FINISHED(src, fax_cooldown))
+	if(!stored_paper || !length(stored_paper.get_raw_text()) || !COOLDOWN_FINISHED(src, fax_cooldown))
 		balloon_alert_to_viewers("fax failed to send!")
 		playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 		return FALSE
 
 	var/message = "INCOMING FAX: FROM \[[station_name()]\], AUTHOR \[[user]\]: "
-	message += remove_all_tags(stored_paper.info)
-	message += LAZYLEN(stored_paper.stamped) ? " --- The message is stamped." : ""
+	message += remove_all_tags(stored_paper.get_raw_text())
+	message += LAZYLEN(stored_paper.stamp_cache) ? " --- The message is stamped." : ""
 	if(destination in GLOB.admin_fax_destinations)
 		message_admins("[ADMIN_LOOKUPFLW(user)] sent a fax to [destination].")
 		send_fax_to_admins(user, message, ((obj_flags & EMAGGED) ? "crimson" : "orange"), destination)
@@ -351,7 +351,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 				continue
 			if(!machine.room_tag)
 				continue
-			if(machine.room_tag == destination && machine.receive_paper(stored_paper.fax_copy(), room_tag))
+			if(machine.room_tag == destination && machine.receive_paper(stored_paper.copy(), room_tag))
 				message_admins("[ADMIN_LOOKUPFLW(user)] sent a fax to [ADMIN_VERBOSEJMP(machine)].")
 				found_a_machine = TRUE
 				break
@@ -421,7 +421,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	var/obj/item/paper/sent_paper = new()
 	var/fax = stripped_multiline_input(user, "Write your fax to send here.", "Send Fax", max_length = MAX_MESSAGE_LEN)
 	if(length(fax))
-		sent_paper.info = fax
+		sent_paper.add_raw_text(fax)
 	else
 		to_chat(user, span_warning("No contents inputted."))
 		qdel(sent_paper)
@@ -488,7 +488,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	say("Fax received from [source]!")
 	playsound(src, 'sound/machines/terminal_processing.ogg', 50, FALSE)
-	addtimer(CALLBACK(src, .proc/alert_received_paper, source), FAX_UNREAD_ALERT_TIME)
+	addtimer(CALLBACK(src, PROC_REF(alert_received_paper), source), FAX_UNREAD_ALERT_TIME)
 
 /**
  * Check if [checked_paper] has had its paperwork fulfilled successfully.
@@ -582,7 +582,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 	if(received_paperwork[1])
 		eject_select_paperwork(user, received_paperwork[1], FALSE)
-		addtimer(CALLBACK(src, .proc/eject_all_paperwork_with_delay, user), 2 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(eject_all_paperwork_with_delay), user), 2 SECONDS)
 
 /**
  * Remove [paper] from the list of [received_paperwork] and
@@ -595,7 +595,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(!paper)
 		return
 
-	if(user && user.CanReach(src))
+	if(user?.CanReach(src))
 		user.put_in_hands(paper)
 	else
 		paper.forceMove(drop_location())
@@ -668,29 +668,6 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	/// If this paper was sent via fax, where it came from.
 	var/was_faxed_from
 
-/**
- * Make a new instance of [/obj/item/paper] with most of the same vars as [src].
- * Works better / copies more things than the pre-existing [proc/copy] for paper.
- * [paper_to_copy] - an instance of paper.
- *
- * returns a new instance of [/obj/item/paper].
- */
-/obj/item/paper/proc/fax_copy()
-	var/obj/item/paper/new_paper = new()
-
-	new_paper.name = name
-	new_paper.desc = desc
-	new_paper.info = info
-	new_paper.color = color
-	new_paper.stamps = LAZYLISTDUPLICATE(stamps)
-	new_paper.stamped = LAZYLISTDUPLICATE(stamped)
-	new_paper.form_fields = form_fields.Copy()
-	new_paper.field_counter = field_counter
-	new_paper.update_icon_state()
-	copy_overlays(new_paper, TRUE)
-
-	return new_paper
-
 /obj/item/paper/processed
 	name = "\proper classified paperwork"
 	desc = "Some classified paperwork sent by the big men themselves."
@@ -705,7 +682,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 
 /obj/item/paper/processed/attackby(obj/item/weapon, mob/living/user, params)
 	if(istype(weapon, /obj/item/pen) || istype(weapon, /obj/item/toy/crayon))
-		INVOKE_ASYNC(src, .proc/answer_question, user)
+		INVOKE_ASYNC(src, PROC_REF(answer_question), user)
 		return TRUE
 
 	return ..()
@@ -761,16 +738,16 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /obj/item/paper/processed/proc/check_requirements()
 	if(isnull(last_answer))
 		return FAIL_NO_ANSWER
-	if(!LAZYLEN(stamped))
+	if(!LAZYLEN(stamp_cache))
 		return FAIL_NO_STAMP
 	if(paper_data["redacts_present"])
 		return PAPERWORK_SUCCESS
 
 	if(paper_data["errors_present"])
-		if(!("stamp-deny" in stamped))
+		if(!("stamp-deny" in stamp_cache))
 			return FAIL_NOT_DENIED
 	else
-		if("stamp-deny" in stamped)
+		if("stamp-deny" in stamp_cache)
 			return FAIL_INCORRECTLY_DENIED
 		if(!findtext(last_answer, needed_answer))
 			return FAIL_QUESTION_WRONG
@@ -778,11 +755,11 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	return PAPERWORK_SUCCESS
 
 /// Wires for the fax machine
-/datum/wires/fax
+/datum/wires/fax2
 	holder_type = /obj/machinery/fax_machine
 	proper_name = "Fax Machine"
 
-/datum/wires/fax/New(atom/holder)
+/datum/wires/fax2/New(atom/holder)
 	wires = list(
 		WIRE_SEND_FAXES,
 		WIRE_RECEIVE_FAXES,
@@ -791,7 +768,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	add_duds(1)
 	return ..()
 
-/datum/wires/fax/get_status()
+/datum/wires/fax2/get_status()
 	var/obj/machinery/fax_machine/machine = holder
 	var/list/status = list()
 	var/service_light_intensity
@@ -806,7 +783,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	status += "The bluespace transceiver is glowing [machine.can_receive_paperwork ? "blue" : "red"]."
 	return status
 
-/datum/wires/fax/on_pulse(wire, user)
+/datum/wires/fax2/on_pulse(wire, user)
 	var/obj/machinery/fax_machine/machine = holder
 	switch(wire)
 		if(WIRE_SEND_FAXES)
@@ -818,7 +795,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 				machine.receiving_enabled = FALSE
 				addtimer(VARSET_CALLBACK(machine, receiving_enabled, TRUE), 30 SECONDS)
 
-/datum/wires/fax/on_cut(wire, mend)
+/datum/wires/fax2/on_cut(wire, mend)
 	var/obj/machinery/fax_machine/machine = holder
 	switch(wire)
 		if(WIRE_SEND_FAXES)

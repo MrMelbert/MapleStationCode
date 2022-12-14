@@ -16,7 +16,7 @@
 		to_chat(user, span_warning("You are currently channeling [src]!"))
 		return TRUE
 
-	INVOKE_ASYNC(src, .proc/wrap_convert_atom, hit, user)
+	INVOKE_ASYNC(src, PROC_REF(wrap_convert_atom), hit, user)
 	return TRUE
 
 /**

@@ -66,14 +66,12 @@
 	/// The name of the dogtag owner
 	var/display_name
 
-/obj/item/clothing/accessory/cosmetic_dogtag/Initialize()
+/obj/item/clothing/accessory/cosmetic_dogtag/Initialize(mapload)
 	. = ..()
-	var/mob/living/dogtag_owner
-	if(ismob(loc))
-		dogtag_owner = loc
-	else if(ismob(loc.loc))
-		dogtag_owner = loc.loc
+	if(isnull(loc))
+		return
 
+	var/mob/living/dogtag_owner = get(loc, /mob)
 	if(dogtag_owner)
 		display_name = dogtag_owner.real_name
 
@@ -86,7 +84,7 @@
 
 /obj/item/clothing/accessory/cosmetic_dogtag/on_uniform_equip(obj/item/clothing/under/attached_clothes, user)
 	. = ..()
-	RegisterSignal(attached_clothes, COMSIG_PARENT_EXAMINE,.proc/on_examine)
+	RegisterSignal(attached_clothes, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
 
 /obj/item/clothing/accessory/cosmetic_dogtag/on_uniform_dropped(obj/item/clothing/under/attached_clothes, user)
 	. = ..()

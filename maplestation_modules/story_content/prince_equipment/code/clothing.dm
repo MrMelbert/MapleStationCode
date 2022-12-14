@@ -11,7 +11,7 @@
 	// Inhand: "uni"
 	// Worn: "uni"
 	icon_state = "uni"
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/shoes/jackboots/medical
 	name = "medical boots"

@@ -15,4 +15,4 @@
 			if(!istype(table, /obj/structure/table/glass))
 				table.tablepush(target, target)
 				sleep(1)
-	do_teleport(target, get_safe_random_station_turf(list(/area/medical/treatment_center, /area/commons/lounge))) // Show 'em what happened.
+	do_teleport(target, get_safe_random_station_turf(list(/area/station/medical/treatment_center, /area/station/commons/lounge))) // Show 'em what happened.

@@ -58,9 +58,11 @@
 
 	return
 
-/obj/item/towel/equipped(mob/user, slot, initial)
+/obj/item/towel/equipped(mob/living/user, slot, initial)
 	. = ..()
-	if((slot_flags & slot) && warm_towel)
+	if(!isliving(user) || !warm_towel)
+		return
+	if(slot_flags & slot)
 		if(islizard(user))
 			user.add_mood_event("warm_towel", /datum/mood_event/warm_towel_lizard)
 		else
@@ -308,8 +310,8 @@
 	set_greyscale(our_towel.greyscale_colors)
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-		COMSIG_ATOM_EXITED = .proc/on_exited,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+		COMSIG_ATOM_EXITED = PROC_REF(on_exited),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -323,19 +325,25 @@
 /obj/structure/beach_towel/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
 
+	if(!isliving(arrived))
+		return
+	var/mob/living/living_arrived = arrived
 	if(our_towel.warm_towel)
 		if(islizard(arrived))
-			arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel_lizard)
+			living_arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel_lizard)
 		else
-			arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel)
+			living_arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel)
 	else
-		arrived.add_mood_event("on_towel", /datum/mood_event/on_towel)
+		living_arrived.add_mood_event("on_towel", /datum/mood_event/on_towel)
 
 /// Signal from whenever an atom exits a turf with a towel on top.
 /obj/structure/beach_towel/proc/on_exited(datum/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
 
-	gone.clear_mood_event("on_towel")
+	if(!isliving(gone))
+		return
+	var/mob/living/living_gone = gone
+	living_gone.clear_mood_event("on_towel")
 
 /obj/structure/beach_towel/examine(mob/user)
 	. = ..()
@@ -364,7 +372,7 @@
  * return FALSE if we cannot pick up the towel and TRUE otherwise
  */
 /obj/structure/beach_towel/proc/try_pick_up(mob/living/carbon/picker_up)
-	if(!picker_up.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, TRUE, FALSE))
+	if(!picker_up.canUseTopic(src, be_close = TRUE, no_tk = TRUE, need_hands = TRUE))
 		return FALSE
 
 	var/turf/our_turf = get_turf(src)

@@ -142,7 +142,7 @@ GLOBAL_LIST(cult_themes)
 	if(failed_to_equip_a_slot)
 		to_chat(cultist, "You weren't given one or both of your ritual items correctly. Contact your local god!")
 	else
-		SEND_SIGNAL(human_cultist.back, COMSIG_TRY_STORAGE_SHOW, human_cultist)
+		human_cultist.back.atom_storage.show_contents(human_cultist)
 		to_chat(cultist, our_cult_span("You were given a [new_ritual_item.name] and some [new_ritual_mats.name] to grow your cult. They are in your backpack - use them wisely."))
 
 /**

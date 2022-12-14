@@ -23,8 +23,8 @@
 	src.pain_modifier_on_limb = pain_modifier_on_limb
 	src.temperature_change = temperature_change
 
-	RegisterSignal(target, COMSIG_ITEM_ATTACK_SECONDARY, .proc/try_apply_to_limb)
-	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/get_examine_text)
+	RegisterSignal(target, COMSIG_ITEM_ATTACK_SECONDARY, PROC_REF(try_apply_to_limb))
+	RegisterSignal(target, COMSIG_PARENT_EXAMINE, PROC_REF(get_examine_text))
 
 /datum/element/temperature_pack/Detach(obj/target)
 	. = ..()
@@ -77,7 +77,7 @@
 
 	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN // And past THIS point, no attack
 
-	INVOKE_ASYNC(src, .proc/apply_to_limb, source, target, user, targeted_zone)
+	INVOKE_ASYNC(src, PROC_REF(apply_to_limb), source, target, user, targeted_zone)
 
 /**
  * Actually apply [parent] temperature pack to [targeted_zone] limb on [target] mob from [user].

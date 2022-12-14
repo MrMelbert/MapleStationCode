@@ -2,11 +2,8 @@
 	name = "Reploid"
 	id = SPECIES_REPLOID
 	species_traits = list(NOBLOOD,EYECOLOR,HAIR,FACEHAIR,LIPS,HAS_FLESH)
-	default_color = "FFFFFF"
 	use_skintones = 1
 	inherent_traits = list(
-		TRAIT_ADVANCEDTOOLUSER,
-		TRAIT_CAN_STRIP,
 		TRAIT_NODISMEMBER,
 		TRAIT_NOLIMBDISABLE,
 		TRAIT_NOHUNGER,

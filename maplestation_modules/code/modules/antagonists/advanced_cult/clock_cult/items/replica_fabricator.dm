@@ -81,7 +81,7 @@
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	if(user.combat_mode)
-		INVOKE_ASYNC(src, .proc/convert_tile, get_turf(target), user)
+		INVOKE_ASYNC(src, PROC_REF(convert_tile), get_turf(target), user)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	return ..()

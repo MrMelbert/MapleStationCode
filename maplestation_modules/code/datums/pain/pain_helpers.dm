@@ -36,7 +36,7 @@
 	if(time <= 0)
 		return
 	set_pain_mod(id, amount)
-	addtimer(CALLBACK(pain_controller, /datum/pain.proc/unset_pain_modifier, id), time)
+	addtimer(CALLBACK(pain_controller, TYPE_PROC_REF(/datum/pain, unset_pain_modifier), id), time)
 
 /**
  * Returns the bodypart pain of [zone].

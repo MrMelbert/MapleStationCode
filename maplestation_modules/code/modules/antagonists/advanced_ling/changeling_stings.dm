@@ -9,12 +9,16 @@
 	var/hud_icon = 'icons/hud/screen_changeling.dmi'
 
 /datum/action/changeling/sting/set_sting(mob/user)
-	user.hud_used.lingstingdisplay.icon = hud_icon
-	. = ..()
+	var/datum/antagonist/changeling/our_ling = is_any_changeling(user)
+	if(our_ling)
+		our_ling.lingstingdisplay.icon = hud_icon
+	return ..()
 
 /datum/action/changeling/sting/unset_sting(mob/user)
 	. = ..()
-	user.hud_used.lingstingdisplay.icon = initial(user.hud_used.lingstingdisplay.icon)
+	var/datum/antagonist/changeling/our_ling = is_any_changeling(user)
+	if(our_ling)
+		our_ling.lingstingdisplay.icon = initial(our_ling.lingstingdisplay.icon)
 
 /**
  * Simple proc to check if [target] is in range of [user] according to the user's [var/sting_range]
@@ -66,7 +70,7 @@
 		if(DOING_INTERACTION(user, DOAFTER_SOURCE_LINGSTING))
 			return FALSE
 
-		if(!do_mob(user, target, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, .proc/check_range, user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
+		if(!do_mob(user, target, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_range), user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
 			to_chat(user, span_warning("We could not complete the sting on [target]."))
 			return FALSE
 
@@ -86,7 +90,7 @@
 	// Monkeys and dead people are transformed permanently. Alive humans are only transformed for a few minutes.
 	if(!ismonkey(carbon_target) && target.stat != DEAD)
 		log_combat(user, carbon_target, "stung", "temporary transformation sting", "- New identity is '[selected_dna.dna.real_name]'")
-		addtimer(CALLBACK(src, .proc/sting_transform, carbon_target, old_dna), ((carbon_target.stat ? 1 : 0.5) * TRANSFORMATION_STING_DURATION))
+		addtimer(CALLBACK(src, PROC_REF(sting_transform), carbon_target, old_dna), ((carbon_target.stat ? 1 : 0.5) * TRANSFORMATION_STING_DURATION))
 	else
 		log_combat(user, carbon_target, "stung", "permanent transformation sting", "- New identity is '[selected_dna.dna.real_name]'.")
 	return sting_transform(carbon_target, selected_dna.dna)
@@ -133,7 +137,7 @@
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_LINGSTING))
 		return FALSE
 
-	if(!do_mob(user, target, 3 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, .proc/check_range, user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
+	if(!do_mob(user, target, 3 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_range), user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
 		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
 	return TRUE
@@ -174,7 +178,7 @@
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_LINGSTING))
 		return FALSE
 
-	if(!do_mob(user, target, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, .proc/check_range, user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
+	if(!do_mob(user, target, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_range), user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
 		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
 	return TRUE

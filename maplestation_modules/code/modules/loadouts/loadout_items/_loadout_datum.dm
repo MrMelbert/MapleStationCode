@@ -25,8 +25,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 			continue
 
 		var/datum/loadout_item/spawned_type = new found_type()
-		GLOB.all_loadout_datums[spawned_type.item_path] = spawned_type
-		. |= spawned_type
+		. += spawned_type
 
 /// Loadout item datum.
 /// Holds all the information about each loadout items.
@@ -35,19 +34,34 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	/// Displayed name of the loadout item.
 	var/name
 	/// Whether this item has greyscale support.
+	/// Only works if the item is compatible with the GAGS system of coloring.
+	/// Set automatically to TRUE for all items that have the flag [IS_PLAYER_COLORABLE_1].
+	/// If you really want it to not be colorable set this to [DONT_GREYSCALE]
 	var/can_be_greyscale = FALSE
 	/// Whether this item can be renamed.
+	/// I recommend you apply this sparingly becuase it certainly can go wrong (or get reset / overridden easily)
 	var/can_be_named = FALSE
 	/// Whether this item can be reskinned.
+	/// Only works if the item has a "unique reskin" list set.
 	var/can_be_reskinned = FALSE
 	/// The category of the loadout item.
 	var/category
 	/// The actual item path of the loadout item.
-	var/item_path
-	/// List of additional text for the tooltip displayed on this item.
+	var/obj/item/item_path
+	/// Lazylist of additional text for the tooltip displayed on this item.
 	var/list/additional_tooltip_contents
 
 /datum/loadout_item/New()
+	if(can_be_greyscale == DONT_GREYSCALE)
+		// Explicitly be false if we don't want this to greyscale
+		can_be_greyscale = FALSE
+	else if(initial(item_path.flags_1) & IS_PLAYER_COLORABLE_1)
+		// Otherwise set this automatically to true if it is actually colorable
+		can_be_greyscale = TRUE
+		// This means that one can add a greyscale item that does not have player colorable set
+		// but is still modifyable as a greyscale item in the loadout menu by setting it to true manually
+		// Why? I HAVE NO IDEA why you would do that but you sure can
+
 	if(can_be_named)
 		// If we're a renamable item, insert the "renamable" tooltip at the beginning of the list.
 		add_tooltip(TOOLTIP_RENAMABLE, inverse_order = TRUE)
@@ -57,7 +71,17 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		add_tooltip(TOOLTIP_GREYSCALE, inverse_order = TRUE)
 
 	if(can_be_reskinned)
+		// No need to repeat myself but I will, insert the reskinnable tooltip at the end if we have a reskin available
 		add_tooltip(TOOLTIP_RESKINNABLE)
+
+	if(GLOB.all_loadout_datums[item_path])
+		stack_trace("Loadout datum collision detected! [item_path] is shared between multiple loadout datums.")
+	GLOB.all_loadout_datums[item_path] = src
+
+/datum/loadout_item/Destroy()
+	GLOB.all_loadout_datums -= item_path
+	stack_trace("Who's destroying loadout item datums?! This shouldn't really ever be done!")
+	return ..()
 
 /// Helper to add a tooltip to our tooltip list.
 /// If inverse_order is TRUE, we will add to the front instead of the back.
@@ -104,13 +128,14 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 	if(can_be_named && (INFO_NAMED in our_loadout[item_path]) && !visuals_only)
 		equipped_item.name = our_loadout[item_path][INFO_NAMED]
+		equipped_item.renamedByPlayer = TRUE
 
 	if(can_be_reskinned && (INFO_RESKIN in our_loadout[item_path]))
 		var/skin_chosen = our_loadout[item_path][INFO_RESKIN]
 		if(skin_chosen in equipped_item.unique_reskin)
 			equipped_item.current_skin = skin_chosen
 			equipped_item.icon_state = equipped_item.unique_reskin[skin_chosen]
-			equipper.update_inv_wear_suit()
+			equipper.update_worn_oversuit()
 		else
 			our_loadout[item_path] -= INFO_RESKIN
 			preference_source.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout)

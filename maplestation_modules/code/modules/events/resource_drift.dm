@@ -27,7 +27,7 @@
 	priority_announce("[get_source()] Expect [get_debris()][num_caches - rand(1, 2)] to [num_caches + rand(1, 3)] caches of resources to drift near your station soon.", "Nanotrasen News Network")
 
 /datum/round_event/resource_drift/setup()
-	startWhen = rand(40, 60)
+	start_when = rand(40, 60)
 	possible_crates = subtypesof(/obj/structure/closet/crate/resource_cache/normal)
 
 	num_caches = rand(3, 8)
@@ -65,7 +65,7 @@
 
 	// Now, spawn the caches and yeet them towards the station
 	for(var/crate in picked_crates)
-		addtimer(CALLBACK(src, .proc/spawn_and_throw_crate, crate, pick_n_take(spawn_locations)), (4 SECONDS * num_caches--))
+		addtimer(CALLBACK(src, PROC_REF(spawn_and_throw_crate), crate, pick_n_take(spawn_locations)), (4 SECONDS * num_caches--))
 
 /**
  * Spawns the supplied crate path [selected_cache_path] at [spawn_loc].

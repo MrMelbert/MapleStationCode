@@ -57,19 +57,11 @@
 
 /mob/living/carbon/human/check_med_hud_and_access()
 	var/list/access = wear_id?.GetAccess()
-	return LAZYLEN(access) && HAS_TRAIT(src, TRAIT_MEDICAL_HUD) && (ACCESS_MEDICAL in access)
+	return HAS_TRAIT(src, TRAIT_MEDICAL_HUD) && (ACCESS_MEDICAL in access)
 
 /mob/proc/check_sec_hud_and_access()
 	return FALSE
 
 /mob/living/carbon/human/check_sec_hud_and_access()
 	var/list/access = wear_id?.GetAccess()
-	return LAZYLEN(access) && HAS_TRAIT(src, TRAIT_SECURITY_HUD) && (ACCESS_SECURITY in access)
-
-/// Mob proc for checking digitigrades. Non-humans are always FALSE
-/mob/proc/is_digitigrade()
-	return FALSE
-
-/// Humans check for DIGITIGRADE in species_traits
-/mob/living/carbon/human/is_digitigrade()
-	return (DIGITIGRADE in dna?.species?.species_traits)
+	return  HAS_TRAIT(src, TRAIT_SECURITY_HUD) && (ACCESS_SECURITY in access)

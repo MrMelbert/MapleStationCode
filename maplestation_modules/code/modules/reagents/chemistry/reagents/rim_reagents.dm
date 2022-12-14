@@ -140,7 +140,7 @@
 	list_reagents = list(/datum/reagent/medicine/luciferium = 5)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/glass/bottle/luciferium
+/obj/item/reagent_containers/cup/glass/bottle/luciferium
 	name = "luciferium bottle"
 	desc = "A bottle of luciferium, an extremely effective but dangerous medicine that can save someone from the brink of death \
 		at the cost of permanent reliance on the drug to maintain the mechanite structure it creates."
@@ -212,9 +212,8 @@
 	if(DT_PROB(33, delta_time))
 		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * delta_time)
 	user.drowsyness = max(user.drowsyness - (4 * REM * delta_time), 0)
-	user.Jitter(4 * REM * delta_time)
-	. = ..()
-	return TRUE
+	user.set_jitter_if_lower(8 SECONDS * REM * delta_time)
+	return ..()
 
 /datum/reagent/drug/gojuice/overdose_process(mob/living/user, delta_time, times_fired)
 	if(DT_PROB(66, delta_time))
@@ -238,7 +237,7 @@
 	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/fuel/oil = 1, /datum/reagent/consumable/sugar = 1)
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
 
-/obj/item/reagent_containers/glass/bottle/gojuice
+/obj/item/reagent_containers/cup/glass/bottle/gojuice
 	name = "go-juice bottle"
 	desc = "A small bottle of Go-Juice, an effective but addictive combat stimulant."
 	volume = 20
@@ -263,7 +262,7 @@
 	. = ..()
 	user.clear_mood_event(type)
 
-/obj/item/reagent_containers/glass/bottle/flake
+/obj/item/reagent_containers/cup/glass/bottle/flake
 	name = "flake bottle"
 	desc = "A small bottle that contains Flake, a very addictive and often smoked drug produced from psychoid leaves that causes temporary euphoria."
 	volume = 20
@@ -302,7 +301,7 @@
 	. = ..()
 	return TRUE
 
-/obj/item/reagent_containers/glass/bottle/yayo
+/obj/item/reagent_containers/cup/glass/bottle/yayo
 	name = "yayo bottle"
 	desc = "A small bottle that contains Yayo, a powdery drug produced from psychoid leaves snorted to produce a high, suppress pain, and prevent tiredness."
 	volume = 20
@@ -332,8 +331,8 @@
 
 /datum/reagent/psychite_tea/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
 	user.drowsyness = max(user.drowsyness - (3 * REM * delta_time), 0)
-	user.dizziness = max(user.dizziness - (2 * REM * delta_time), 0)
-	user.jitteriness = max(user.jitteriness - (2 * REM * delta_time), 0)
+	user.adjust_dizzy(-4 SECONDS * REM * delta_time)
+	user.adjust_jitter(-4 SECONDS * REM * delta_time)
 	user.AdjustSleeping(-20 * REM * delta_time)
 	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, user.get_body_temp_normal())
 	. = ..()

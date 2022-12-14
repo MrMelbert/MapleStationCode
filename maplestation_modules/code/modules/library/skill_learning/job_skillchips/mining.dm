@@ -10,7 +10,7 @@
 
 /obj/item/skillchip/job/off_z_pain_resistance/on_activate(mob/living/carbon/user, silent = FALSE)
 	. = ..()
-	RegisterSignal(user, COMSIG_MOVABLE_Z_CHANGED, .proc/check_z)
+	RegisterSignal(user, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(check_z))
 
 /obj/item/skillchip/job/off_z_pain_resistance/on_deactivate(mob/living/carbon/user, silent = FALSE)
 	UnregisterSignal(user, COMSIG_MOVABLE_Z_CHANGED)

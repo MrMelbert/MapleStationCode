@@ -13,11 +13,11 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/green_tea/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.dizziness = max(M.dizziness - (2 * REM * delta_time), 0)
+	M.adjust_dizzy(-4 SECONDS * REM * delta_time)
+	M.adjust_jitter(-6 SECONDS * REM * delta_time)
 	M.drowsyness = max(M.drowsyness - (1 * REM * delta_time), 0)
-	M.jitteriness = max(M.jitteriness - (3 * REM * delta_time), 0)
 	M.AdjustSleeping(-20 * REM * delta_time)
-	M.adjustToxLoss(-0.5, 0) //the major difference between base tea and green tea, this one's a great anti-tox.
+	M.adjustToxLoss(-0.5, FALSE) //the major difference between base tea and green tea, this one's a great anti-tox.
 	M.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
 	..()
 	. = TRUE
@@ -37,10 +37,10 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/icetea/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.dizziness = max(M.dizziness - (2 * REM * delta_time), 0)
+	M.adjust_dizzy(-4 SECONDS * REM * delta_time)
 	M.drowsyness = max(M.drowsyness - (1 * REM * delta_time), 0)
 	M.AdjustSleeping(-40 * REM * delta_time)
-	M.adjustToxLoss(-0.5, 0)
+	M.adjustToxLoss(-0.5, FALSE)
 	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
 	..()
 	. = TRUE
@@ -81,7 +81,7 @@
 	var/mob/living/carbon/human/overdosed_human = M
 	overdosed_human.hair_color = "15F" //blue hair, oh no
 	overdosed_human.facial_hair_color = "15F"
-	overdosed_human.update_hair()
+	overdosed_human.update_body_parts()
 	..()
 
 /obj/item/reagent_containers/food/drinks/mug/green_tea //admin-only because there's no way to obtain a cup version of green tea

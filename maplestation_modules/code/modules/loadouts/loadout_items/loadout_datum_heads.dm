@@ -14,70 +14,25 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	else
 		outfit.head = item_path
 
-/datum/loadout_item/head/black_beanie
-	name = "Black Beanie"
-	item_path = /obj/item/clothing/head/beanie/black
+/datum/loadout_item/head/beanie
+	name = "Greyscale Beanie"
+	item_path = /obj/item/clothing/head/beanie
 
 /datum/loadout_item/head/christmas_beanie
 	name = "Christmas Beanie"
 	item_path = /obj/item/clothing/head/beanie/christmas
 
-/datum/loadout_item/head/cyan_beanie
-	name = "Cyan Beanie"
-	item_path = /obj/item/clothing/head/beanie/cyan
-
-/datum/loadout_item/head/dark_blue_beanie
-	name = "Dark Blue Beanie"
-	item_path = /obj/item/clothing/head/beanie/darkblue
-
-/datum/loadout_item/head/green_beanie
-	name = "Green Beanie"
-	item_path = /obj/item/clothing/head/beanie/green
-
-/datum/loadout_item/head/orange_beanie
-	name = "Orange Beanie"
-	item_path = /obj/item/clothing/head/beanie/orange
-
-/datum/loadout_item/head/purple_beanie
-	name = "Purple Beanie"
-	item_path = /obj/item/clothing/head/beanie/purple
-
-/datum/loadout_item/head/red_beanie
-	name = "Red Beanie"
-	item_path = /obj/item/clothing/head/beanie/red
-
-/datum/loadout_item/head/striped_beanie
-	name = "Striped Beanie"
-	item_path = /obj/item/clothing/head/beanie/striped
-
-/datum/loadout_item/head/striped_red_beanie
-	name = "Striped Red Beanie"
-	item_path = /obj/item/clothing/head/beanie/stripedred
-
-/datum/loadout_item/head/striped_blue_beanie
-	name = "Striped Blue Beanie"
-	item_path = /obj/item/clothing/head/beanie/stripedblue
-
-/datum/loadout_item/head/striped_green_beanie
-	name = "Striped Green Beanie"
-	item_path = /obj/item/clothing/head/beanie/stripedgreen
-
-/datum/loadout_item/head/white_beanie
-	name = "White Beanie"
-	item_path = /obj/item/clothing/head/beanie
-
-/datum/loadout_item/head/yellow_beanie
-	name = "Yellow Beanie"
-	item_path = /obj/item/clothing/head/beanie/yellow
+/datum/loadout_item/head/fancy_cap
+	name = "Greyscale Fancy Cap"
+	item_path = /obj/item/clothing/head/costume/fancy
 
 /datum/loadout_item/head/greyscale_beret
 	name = "Greyscale Beret"
-	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/head/beret/greyscale
 
 /datum/loadout_item/head/greyscale_beret/badge
 	name = "Greyscale Beret (with badge)"
-	item_path = /obj/item/clothing/head/beret/greyscale
+	item_path = /obj/item/clothing/head/beret/greyscale_badge
 
 /datum/loadout_item/head/black_beret
 	name = "Black Beret"
@@ -97,7 +52,7 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 
 /datum/loadout_item/head/delinquent_cap
 	name = "Delinquent Cap"
-	item_path = /obj/item/clothing/head/delinquent
+	item_path = /obj/item/clothing/head/costume/delinquent
 
 /datum/loadout_item/head/green_cap
 	name = "Green Cap"
@@ -149,23 +104,23 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 
 /datum/loadout_item/head/dark_blue_hardhat
 	name = "Dark Blue Hardhat"
-	item_path = /obj/item/clothing/head/hardhat/dblue
+	item_path = /obj/item/clothing/head/utility/hardhat/dblue
 
 /datum/loadout_item/head/orange_hardhat
 	name = "Orange Hardhat"
-	item_path = /obj/item/clothing/head/hardhat/orange
+	item_path = /obj/item/clothing/head/utility/hardhat/orange
 
 /datum/loadout_item/head/red_hardhat
 	name = "Red Hardhat"
-	item_path = /obj/item/clothing/head/hardhat/red
+	item_path = /obj/item/clothing/head/utility/hardhat/red
 
 /datum/loadout_item/head/white_hardhat
 	name = "White Hardhat"
-	item_path = /obj/item/clothing/head/hardhat/white
+	item_path = /obj/item/clothing/head/utility/hardhat/white
 
 /datum/loadout_item/head/yellow_hardhat
 	name = "Yellow Hardhat"
-	item_path = /obj/item/clothing/head/hardhat
+	item_path = /obj/item/clothing/head/utility/hardhat
 
 /datum/loadout_item/head/gladiator_helmet
 	name = "Gladiator Helmet"
@@ -173,51 +128,51 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 
 /datum/loadout_item/head/mail_cap
 	name = "Mail Cap"
-	item_path = /obj/item/clothing/head/mailman
+	item_path = /obj/item/clothing/head/costume/mailman
 
 /datum/loadout_item/head/nurse_hat
 	name = "Nurse Hat"
-	item_path = /obj/item/clothing/head/nursehat
+	item_path = /obj/item/clothing/head/costume/nursehat
 
 /datum/loadout_item/head/kitty_ears
 	name = "Kitty Ears"
-	item_path = /obj/item/clothing/head/kitty
+	item_path = /obj/item/clothing/head/costume/kitty
 
 /datum/loadout_item/head/rabbit_ears
 	name = "Rabbit Ears"
-	item_path = /obj/item/clothing/head/rabbitears
+	item_path = /obj/item/clothing/head/costume/rabbitears
 
 /datum/loadout_item/head/bandana
-	name = "Bandana"
-	item_path = /obj/item/clothing/head/bandana
+	name = "Bandana Thin"
+	item_path = /obj/item/clothing/head/costume/tmc
 
 /datum/loadout_item/head/rastafarian
 	name = "Rastafarian Cap"
-	item_path = /obj/item/clothing/head/beanie/rasta
+	item_path = /obj/item/clothing/head/rasta
 
 /datum/loadout_item/head/top_hat
 	name = "Top Hat"
-	item_path = /obj/item/clothing/head/that
+	item_path = /obj/item/clothing/head/hats/tophat
 
 /datum/loadout_item/head/bowler_hat
 	name = "Bowler Hat"
-	item_path = /obj/item/clothing/head/bowler
+	item_path = /obj/item/clothing/head/hats/bowler
 
 /datum/loadout_item/head/bear_pelt
 	name = "Bear Pelt"
-	item_path = /obj/item/clothing/head/bearpelt
+	item_path = /obj/item/clothing/head/costume/bearpelt
 
 /datum/loadout_item/head/ushanka
 	name ="Ushanka"
-	item_path = /obj/item/clothing/head/ushanka
+	item_path = /obj/item/clothing/head/costume/ushanka
 
 /datum/loadout_item/head/plague_doctor
 	name = "Plague Doctor Cap"
-	item_path = /obj/item/clothing/head/plaguedoctorhat
+	item_path = /obj/item/clothing/head/bio_hood/plague
 
 /datum/loadout_item/head/wedding_veil
 	name = "Wedding Veil"
-	item_path = /obj/item/clothing/head/weddingveil
+	item_path = /obj/item/clothing/head/costume/weddingveil
 
 /datum/loadout_item/head/poppy
 	name = "Poppy"
@@ -247,3 +202,7 @@ GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/hea
 	name = "Rainbow Bunch"
 	item_path = /obj/item/food/grown/rainbow_flower
 	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
+
+/datum/loadout_item/head/wig
+	name = "Wig"
+	item_path = /obj/item/clothing/head/wig/natural

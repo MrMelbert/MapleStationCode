@@ -1,10 +1,7 @@
-// -- Extra mob/ level procs and extensions --
-/mob/living/carbon/human/sec_hud_set_ID()
-	. = ..()
-	var/image/holder = hud_list[ID_HUD]
-	var/obj/item/card/id/id = wear_id?.GetID()
-	if(!id?.trim)
-		holder.icon = 'icons/mob/huds/hud.dmi'
-		return
+/mob
+	/// Last time a client was connected to this mob.
+	var/last_connection_time = 0
 
-	holder.icon = id.trim.sechud_icon
+/mob/Logout()
+	. = ..()
+	last_connection_time = world.time

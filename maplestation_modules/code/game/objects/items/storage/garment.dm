@@ -43,10 +43,9 @@
 	new /obj/item/clothing/glasses/hud/security/sunglasses/eyepatch(src)
 
 // Making it so that all garment bags can hold a little more stuff.
-/obj/item/storage/bag/garment/ComponentInitialize()
+/obj/item/storage/bag/garment/Initialize(mapload)
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 20
+	atom_storage.max_slots = 20
 
 // This here's a special subtype that'll vacuum up all clothing items in the locker and put it in the bag roundstart.
 /obj/item/storage/bag/garment/magic
@@ -60,12 +59,13 @@
 		return
 
 	for(var/obj/item/clothing/locker_clothing in loc)
-		if(locker_clothing.type in blacklisted_types)
+		if(is_type_in_list(locker_clothing, blacklisted_types))
 			continue
 
-		SEND_SIGNAL(src, COMSIG_TRY_STORAGE_INSERT, locker_clothing, null, TRUE, TRUE)
+		atom_storage.attempt_insert(locker_clothing, override = TRUE, force = TRUE)
 
 /obj/item/storage/bag/garment/magic/quartermaster
 	name = "quartermaster's garment bag"
 	desc = "A bag for storing extra clothes and shoes. This one belongs to the quartermaster."
-	blacklisted_types = list(/obj/item/clothing/suit/fire/firefighter, /obj/item/clothing/mask/gas)
+	// I don't feel the need to cache this because only 1 should ever exist
+	blacklisted_types = list(/obj/item/clothing/suit/utility/fire, /obj/item/clothing/mask/gas)

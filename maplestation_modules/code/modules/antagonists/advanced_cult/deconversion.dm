@@ -11,7 +11,7 @@
 	if(!istype(cult_datum))
 		return ..() // We're dealing with a normal cultist so we don't need to bother
 
-	user.jitteriness = min(user.jitteriness + (2 * delta_time), 10)
+	user.adjust_jitter_up_to(4 SECONDS * delta_time, 20 SECONDS)
 
 	for(var/datum/action/spell as anything in cult_datum.our_magic?.spells)
 		var/deleted_a_spell = FALSE
@@ -30,8 +30,8 @@
 
 	data["misc"] += delta_time SECONDS * REM
 	if(data["misc"] >= (25 SECONDS)) // ~10 units
-		user.stuttering = min(user.stuttering + (2 * delta_time), 10)
-		user.Dizzy(0.5 SECONDS)
+		user.adjust_stutter_up_to(4 SECONDS * delta_time, 20 SECONDS)
+		user.set_dizzy_if_lower(10 SECONDS)
 
 		if(DT_PROB(10, delta_time))
 			user.say(cult_datum.cultist_style.pick_deconversion_line(), forced = "holy water")
@@ -42,7 +42,7 @@
 					span_userdanger("You have a seizure!")
 					)
 
-				user.Jitter(5 SECONDS)
+				user.set_jitter_if_lower(10 SECONDS)
 				user.Paralyze(6 SECONDS)
 				to_chat(user, cult_datum.cultist_style.our_cult_span(cult_datum.cultist_style.pick_god_shame_line(), bold = TRUE, large = TRUE))
 
@@ -62,8 +62,9 @@
 
 		user.mind.remove_antag_datum(cult_datum.type)
 		user.Unconscious(15 SECONDS)
-		user.jitteriness = 0
-		user.stuttering *= 1.5 // Ah fuck I can't believe you've done this
+		user.remove_status_effect(/datum/status_effect/jitter)
+		var/amount_stutter = user.get_timed_status_effect_duration(/datum/status_effect/speech/stutter)
+		user.adjust_stutter(amount_stutter * 0.5) // Ah fuck I can't believe you've done this
 		holder.remove_reagent(type, volume)
 		return
 

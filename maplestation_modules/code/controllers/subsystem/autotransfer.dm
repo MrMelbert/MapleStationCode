@@ -1,14 +1,16 @@
-/** Crew Transfer Vote SS
-  *
-  * Tracks information about Crew transfer votes and calls auto transfer votes.
-  *
-  * If enabled, calls a vote [minimum_transfer_time] into the round, and every [minimum_time_between_votes] after that.
-  *
-  */
+/**
+ * ## Crew Transfer Vote SS
+ *
+ * Tracks information about Crew transfer votes and calls auto transfer votes.
+ *
+ * If enabled, calls a vote [minimum_transfer_time] into the round, and every [minimum_time_between_votes] after that.
+ *
+ */
 SUBSYSTEM_DEF(crewtransfer)
 	name = "Crew Transfer Vote"
-	wait = 600
+	wait = 60 SECONDS // Upped in init
 	runlevels = RUNLEVEL_GAME
+
 	/// Number of votes attempted total, including auto and manual votes
 	var/transfer_votes_attempted = 0
 	/// Minimum shift length before automatic votes begin - from config.
@@ -17,23 +19,35 @@ SUBSYSTEM_DEF(crewtransfer)
 	var/minimum_time_between_votes = 0
 	/// We stop calling votes if a vote passed
 	var/transfer_vote_successful = FALSE
+	/// What do we say when the shuttle's called
+	var/shuttle_call_reason = "Crew transfer vote successful."
 
 /datum/controller/subsystem/crewtransfer/Initialize(timeofday)
-
 	if(!CONFIG_GET(flag/transfer_auto_vote_enabled))
 		can_fire = FALSE
 
+	// Disable if we're in testing mode, it'd get annoying
+	#ifdef TESTING
+	can_fire = FALSE
+	#endif
+
+	// Disable if we're unit testing, it doesn't make sense
+	#ifdef UNIT_TESTS
+	can_fire = FALSE
+	#endif
+
 	minimum_transfer_time = CONFIG_GET(number/transfer_time_min_allowed)
 	minimum_time_between_votes = CONFIG_GET(number/transfer_time_between_auto_votes)
+	shuttle_call_reason = CONFIG_GET(string/transfer_call_reason)
 	wait = minimum_transfer_time //first vote will fire at [minimum_transfer_time]
 
-	return ..()
+	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/crewtransfer/fire()
 	//we can't vote if we don't have a functioning democracy
-	if(!SSvote)
+	if(!SSvote || !SSvote.initialized)
 		disable_vote()
-		CRASH("Voting subsystem not found, but the crew transfer vote subsystem is!")
+		CRASH("The crew transfer vote system tried to fire, but no vote subsystem / no initialized vote subsystem was found!")
 
 	//if it fires before it's supposed to be allowed, cut it out
 	if(world.time - SSticker.round_start_time < minimum_transfer_time)
@@ -52,7 +66,8 @@ SUBSYSTEM_DEF(crewtransfer)
 /// prevents the crew transfer SS from firing.
 /datum/controller/subsystem/crewtransfer/proc/disable_vote()
 	can_fire = FALSE
-	message_admins("[name] system has been disabled and automatic votes will no longer be called.")
+	log_shuttle("[name] subsystem has been disabled and automatic votes will no longer be called.")
+	message_admins("[name] subsystem has been disabled and automatic votes will no longer be called.")
 	return TRUE
 
 /// Call an crew transfer vote from the server if a vote isn't running.
@@ -60,16 +75,19 @@ SUBSYSTEM_DEF(crewtransfer)
 /datum/controller/subsystem/crewtransfer/proc/autocall_crew_transfer_vote()
 	//we won't call a vote if we shouldn't be able to leave
 	if(SSshuttle.emergency_no_escape)
-		message_admins("Automatic crew transfer vote prevented due to hostile situation.")
+		log_shuttle("Automatic crew transfer vote delayed due to a hostile situation.")
+		message_admins("Automatic crew transfer vote delayed due to a hostile situation.")
 		return FALSE
 
 	//we won't call a vote if a vote is running
-	if(SSvote.mode)
-		message_admins("Automatic crew transfer vote prevented due to ongoing vote.")
+	if(SSvote.current_vote)
+		log_shuttle("Automatic crew transfer vote delayed due to ongoing vote.")
+		message_admins("Automatic crew transfer vote delayed due to ongoing vote.")
 		return FALSE
 
+	log_shuttle("Automatic crew transfer vote initiated.")
 	message_admins("Automatic crew transfer vote initiated.")
-	SSvote.initiate_vote("transfer", "the server", TRUE)
+	SSvote.initiate_vote(/datum/vote/autotransfer, "the server", forced = TRUE)
 	return TRUE
 
 /// initiates the shuttle call and logs it.
@@ -78,22 +96,23 @@ SUBSYSTEM_DEF(crewtransfer)
 		/// The multiplier on the shuttle's timer
 		var/shuttle_time_mult = 1
 		/// Security level (for timer multiplier)
-		var/security_num = seclevel2num(get_security_level())
-		switch(security_num)
+		switch(SSsecurity_level.get_current_level_as_number())
 			if(SEC_LEVEL_GREEN)
 				shuttle_time_mult = 2 // = ~20 minutes
 			if(SEC_LEVEL_BLUE)
 				shuttle_time_mult = 1.5 // = ~15 minutes
 
-		SSshuttle.emergency.request(reason = "\nReason:\n\nCrew transfer vote successful, dispatching shuttle for shift transfer.", set_coefficient = shuttle_time_mult)
+		SSshuttle.emergency.request(reason = "\nReason:\n\n[shuttle_call_reason]", set_coefficient = shuttle_time_mult)
 
 		log_shuttle("A crew transfer vote has passed. The shuttle has been called, and recalling the shuttle ingame is disabled.")
 		message_admins("A crew transfer vote has passed. The shuttle has been called, and recalling the shuttle ingame is disabled.")
 		deadchat_broadcast("A crew transfer vote has passed. The shuttle is being dispatched.",  message_type = DEADCHAT_ANNOUNCEMENT)
 		SSblackbox.record_feedback("text", "shuttle_reason", 1, "Crew Transfer Vote")
+
 	else
+		log_shuttle("A crew transfer vote has passed, but the shuttle was already called. Recalling the shuttle ingame is disabled.")
 		message_admins("A crew transfer vote has passed, but the shuttle was already called. Recalling the shuttle ingame is disabled.")
-		to_chat(world, "<span style='boldannounce'>Crew transfer vote failed on account of shuttle being called.</span>")
+		to_chat(world, span_boldannounce("Crew transfer vote failed on account of shuttle being called."))
 	SSshuttle.admin_emergency_no_recall = TRUE // Don't let one guy overrule democracy by recalling afterwards
 	transfer_vote_successful = TRUE
 

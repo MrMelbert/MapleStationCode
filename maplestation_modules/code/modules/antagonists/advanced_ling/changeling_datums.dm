@@ -29,21 +29,6 @@
 /datum/antagonist/changeling/proc/play_changeling_sound()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ling_aler.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
-/// Generate a changeling name for our ling, if they don't have their own.
-/datum/antagonist/changeling/proc/generate_name()
-	var/honorific
-	if(owner.current.gender == FEMALE)
-		honorific = "Ms."
-	else if(owner.current.gender == MALE)
-		honorific = "Mr."
-	else
-		honorific = "Mx."
-
-	if(GLOB.possible_abductor_names.len)
-		changeling_id = "[honorific] [pick_n_take(GLOB.possible_abductor_names)]"
-	else
-		changeling_id = "[honorific] [rand(1, 999)]"
-
 /datum/antagonist/changeling/headslug
 	hivemind_link_awoken = FALSE
 

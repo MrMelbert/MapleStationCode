@@ -1,9 +1,45 @@
-GLOBAL_LIST_INIT(brass_recipes, list ( \
-	new /datum/stack_recipe("tinker's cache (can make replica fabricators, wraith specs, and truesight lenses)", /obj/structure/destructible/cult/item_dispenser/tinkers_cache, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
-	new /datum/stack_recipe("daemon forge (can make judicial visors, ratvarian spears, and brass hardened armor)", /obj/structure/destructible/cult/item_dispenser/daemon_forge, 3, time = 4 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
-	new /datum/stack_recipe("brass door (stuns non-cultists who attempt entry)", /obj/machinery/door/airlock/cult/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
-	new /datum/stack_recipe("brass girder (can be destroyed by slabs in one hit)", /obj/structure/girder/brass, 1, time = 5 SECONDS, one_per_turf = TRUE, on_floor = TRUE), \
-	))
+GLOBAL_LIST_INIT(brass_recipes, list( \
+	new /datum/stack_recipe/radial( \
+		title = "tinker's cache", \
+		result_type = /obj/structure/destructible/cult/item_dispenser/tinkers_cache, \
+		req_amount = 3, \
+		time = 4 SECONDS, \
+		one_per_turf = TRUE, \
+		on_solid_ground = TRUE, \
+		desc = span_brass("Tinker's Cache: Can make Replica Fabricators, Wraith Specs, and Truesight Lenses."), \
+		required_noun = "brass sheet", \
+	), \
+	new /datum/stack_recipe/radial( \
+		title = "daemon forge", \
+		result_type = /obj/structure/destructible/cult/item_dispenser/daemon_forge, \
+		req_amount = 3, \
+		time = 4 SECONDS, \
+		one_per_turf = TRUE, \
+		on_solid_ground = TRUE, \
+		desc = span_brass("Daemon Forge: Can make Judicial Visors, Ratvarian Spears, and Brass Hardened Armor."), \
+		required_noun = "brass sheet", \
+	), \
+	new /datum/stack_recipe/radial( \
+		title = "brass door", \
+		result_type = /obj/machinery/door/airlock/cult/brass, \
+		req_amount = 1, \
+		time = 5 SECONDS, \
+		one_per_turf = TRUE, \
+		on_solid_ground = TRUE, \
+		desc = span_brass("Brass door: Stuns non-cultists who attempt entry."), \
+		required_noun = "brass sheet", \
+	), \
+	new /datum/stack_recipe/radial( \
+		title = "brass girder", \
+		result_type = /obj/structure/girder/brass, \
+		req_amount = 1, \
+		time = 5 SECONDS, \
+		one_per_turf = TRUE, \
+		on_solid_ground = TRUE, \
+		desc = span_brass("Brass girder: Can be destroyed by slabs in one hit."), \
+		required_noun = "brass sheet", \
+	), \
+))
 
 /datum/material/brass
 	name = "brass"
@@ -45,6 +81,7 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 	material_type = /datum/material/brass
 	has_unique_girder = TRUE
 	tableVariant = /obj/structure/table/reinforced/brass
+	use_radial = TRUE
 
 /obj/item/stack/sheet/brass/attack_self(mob/living/user)
 	if(!IS_CULTIST(user))

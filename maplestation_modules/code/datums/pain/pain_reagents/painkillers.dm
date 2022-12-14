@@ -91,8 +91,8 @@
 	..()
 	if(DT_PROB(18, delta_time))
 		M.drop_all_held_items()
-		M.Dizzy(2)
-		M.Jitter(2)
+		M.set_dizzy_if_lower(4 SECONDS)
+		M.set_jitter_if_lower(4 SECONDS)
 
 // Aspirin. Bad at headaches, good at everything else, okay at fevers.
 // Use healing chest and limb pain primarily.
@@ -135,14 +135,13 @@
 		M.adjust_disgust(3 * REM * delta_time)
 	// ...Hallucinations after a while...
 	if(current_cycle >= 15 && DT_PROB(75 * max(1 - creation_purity, 0.5), delta_time))
-		M.hallucination = clamp(M.hallucination + 3 * REM * delta_time, 0, 20)
+		M.adjust_hallucinations_up_to(6 SECONDS * REM * delta_time, 40 SECONDS)
 	// ...Dizziness after a longer while...
 	if(current_cycle >= 20 && DT_PROB(50 * max(1 - creation_purity, 0.5), delta_time))
-		M.dizziness = clamp(M.dizziness + (1 * REM * delta_time), 0, 5)
+		M.adjust_dizzy_up_to(2 SECONDS * REM * delta_time, 10 SECONDS)
 	// ...And finally, confusion
 	if(current_cycle >= 25 && DT_PROB(30 * max(1 - creation_purity, 0.5), delta_time))
-		M.set_confusion(clamp(M.get_confusion() + 2, 1, 6))
-
+		M.adjust_confusion_up_to(4 SECONDS, 12 SECONDS)
 	..()
 	return TRUE
 
@@ -217,7 +216,7 @@
 		M.adjust_disgust(min(current_cycle * 0.02, 2.4) * REM * delta_time)
 	// ...and dizziness.
 	if(current_cycle >= 25 && DT_PROB(30 * max(1 - creation_purity, 0.5), delta_time))
-		M.dizziness = clamp(M.dizziness + (1 * REM * delta_time), 0, 5)
+		M.adjust_dizzy_up_to(2 SECONDS * REM * delta_time, 10 SECONDS)
 
 	..()
 	return TRUE
@@ -237,7 +236,7 @@
 		M.drowsyness += 1 * REM * delta_time
 	// ...And dizziness
 	if(DT_PROB(85 * max(1 - creation_purity, 0.5), delta_time))
-		M.dizziness += 2 * REM * delta_time
+		M.adjust_dizzy(4 SECONDS * REM * delta_time)
 
 	return ..()
 
@@ -284,11 +283,11 @@
 	M.adjustBruteLoss(-0.3 * REM * delta_time, FALSE)
 	M.adjustFireLoss(-0.2 * REM * delta_time, FALSE)
 	M.cause_pain(BODY_ZONES_ALL, -0.6 * REM * delta_time)
-	M.set_drugginess(10 * REM * delta_time)
+	M.set_drugginess(20 SECONDS * REM * delta_time)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && DT_PROB(40, delta_time))
 		M.adjust_disgust(2 * REM * delta_time)
 	if(DT_PROB(33, delta_time))
-		M.dizziness = clamp(M.dizziness + (1 * REM * delta_time), 0, 5)
+		M.adjust_dizzy_up_to(2 SECONDS * REM * delta_time, 10 SECONDS)
 
 	..()
 	return TRUE
@@ -314,10 +313,10 @@
 				human_mob.drop_all_held_items()
 			if(4)
 				to_chat(human_mob, span_danger("You feel your heart skip a beat."))
-				human_mob.Jitter(3 * REM * delta_time)
+				human_mob.set_jitter_if_lower(6 SECONDS * REM * delta_time)
 			if(5)
 				to_chat(human_mob, span_danger("You feel the world spin."))
-				human_mob.Dizzy(3 * REM * delta_time)
+				human_mob.set_dizzy_if_lower(6 SECONDS * REM * delta_time)
 			if(6)
 				to_chat(human_mob, span_userdanger("You feel your heart seize and stop completely!"))
 				if(human_mob.stat == CONSCIOUS)
@@ -355,7 +354,7 @@
 		return
 
 	for(var/obj/item/bodypart/part as anything in M.bodyparts)
-		if(part.status == BODYPART_ROBOTIC)
+		if(!IS_ORGANIC_LIMB(part))
 			continue
 
 		var/final_pain_heal_amount = -1 * pain_heal_amount * REM * delta_time

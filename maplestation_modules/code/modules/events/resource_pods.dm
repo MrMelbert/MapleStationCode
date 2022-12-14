@@ -37,7 +37,7 @@
 							[num_pods] of the resource caches are being shared with your station. They'll arrive shortly in: [impact_area.name].", "Nanotrasen News Network")
 
 /datum/round_event/resource_pods/setup()
-	startWhen = rand(10, 25)
+	start_when = rand(10, 25)
 	impact_area = find_event_area()
 	if(!impact_area)
 		stack_trace("Resource pods: No valid areas for cargo pod found.")
@@ -102,7 +102,7 @@
 		else
 			landing_turf = pick(valid_turfs)
 
-		addtimer(CALLBACK(src, .proc/launch_pod, landing_turf, crate), (2 SECONDS * num_pods--))
+		addtimer(CALLBACK(src,  PROC_REF(launch_pod), landing_turf, crate), (2 SECONDS * num_pods--))
 
 /**
  * Launch the supplied crate path [crate] via pod to the target turf [landing_turf].
@@ -138,17 +138,17 @@
 	if(!allowed_areas)
 		///Places that we shouldn't send crates.
 		var/list/safe_area_types = typecacheof(list(
-			/area/maintenance,
-			/area/tcommsat,
-			/area/ai_monitored,
-			/area/engineering/supermatter,
+			/area/station/maintenance,
+			/area/station/tcommsat,
+			/area/station/ai_monitored,
+			/area/station/engineering/supermatter,
 			/area/shuttle,
-			/area/solars,
+			/area/station/solars,
 		))
 
 		allowed_areas = make_associative(GLOB.the_station_areas) - safe_area_types
 
-	var/list/possible_areas = typecache_filter_list(GLOB.sortedAreas,allowed_areas)
+	var/list/possible_areas = typecache_filter_list(get_sorted_areas(), allowed_areas)
 	if (length(possible_areas))
 		var/chosen_area = pick(possible_areas)
 		while(possible_areas)

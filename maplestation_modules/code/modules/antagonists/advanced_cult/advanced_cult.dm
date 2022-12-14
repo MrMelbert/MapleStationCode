@@ -36,8 +36,8 @@
 		to_chat(owner.current, span_warning("You feel something interfering with your mental conditioning, but you resist it!"))
 		if(affected_by_implants && iscarbon(owner.current))
 			var/mob/living/carbon/carbon_current = owner.current
-			carbon_current.jitteriness += 8
-			carbon_current.stuttering += 6
+			carbon_current.adjust_jitter(16 SECONDS)
+			carbon_current.adjust_stutter(12 SECONDS)
 
 /datum/antagonist/advanced_cult/finalize_antag()
 	cultist_style.on_cultist_made(src, owner.current)
@@ -184,7 +184,7 @@
 
 /datum/advanced_antag_datum/cultist/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are a magical cultist on board [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
-	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_three), antagonist), 3 SECONDS)
 
 /datum/advanced_antag_datum/cultist/ui_data(mob/user)
 	. = ..()

@@ -18,10 +18,9 @@
 
 	if(value)
 		target.dna.species.species_traits |= HAIR
-		target.update_hair()
 	else
 		target.dna.species.species_traits -= HAIR
-		target.update_hair()
+	target.update_body_parts()
 
 /* TODO: This doesn't work, make it work later but it's not that important
 

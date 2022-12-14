@@ -131,7 +131,7 @@
 		deltimer(added_towel.cooling_timer_id)
 		added_towel.cooling_timer_id = null
 	if(!added_towel.warm_towel)
-		addtimer(CALLBACK(src, .proc/heat_towel, added_towel), 30 SECONDS)
+		addtimer(CALLBACK(src, PROC_REF(heat_towel), added_towel), 30 SECONDS)
 
 /**
  * Heat [warmed_towel] (set its warm_towel var to TRUE), called after a timer.
@@ -157,7 +157,7 @@
 
 	var/obj/item/towel/removed_towel = .
 	if(removed_towel.warm_towel)
-		removed_towel.cooling_timer_id = addtimer(CALLBACK(removed_towel, /obj/item/towel.proc/cool_towel), 3 MINUTES, TIMER_STOPPABLE)
+		removed_towel.cooling_timer_id = addtimer(CALLBACK(removed_towel, TYPE_PROC_REF(/obj/item/towel, cool_towel)), 3 MINUTES, TIMER_STOPPABLE)
 
 /// Preset filled towel warming rack (all the towels are warm, too)
 /obj/structure/towel_rack/warmer/full/Initialize()

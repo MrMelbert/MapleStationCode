@@ -32,9 +32,9 @@
 	#endif
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
-	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy))
+	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy) || istype(new_parent, /mob/living/carbon/human/consistent))
 		qdel(src) // If we're not a carbon, or a dummy, delete us
-		return
+		return null
 
 	parent = new_parent
 
@@ -70,18 +70,18 @@
  * Register all of our signals with our parent.
  */
 /datum/pain/proc/register_pain_signals()
-	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, .proc/add_bodypart)
-	RegisterSignal(parent, COMSIG_CARBON_GAIN_WOUND, .proc/add_wound_pain)
-	RegisterSignal(parent, COMSIG_CARBON_LOSE_WOUND, .proc/remove_wound_pain)
-	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, .proc/remove_bodypart)
-	RegisterSignal(parent, COMSIG_LIVING_HEALTHSCAN, .proc/on_analyzed)
-	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, .proc/remove_all_pain)
-	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, .proc/add_damage_pain)
-	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, .proc/on_parent_statchance)
-	RegisterSignal(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), .proc/check_lying_pain_modifier)
+	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(add_bodypart))
+	RegisterSignal(parent, COMSIG_CARBON_GAIN_WOUND, PROC_REF(add_wound_pain))
+	RegisterSignal(parent, COMSIG_CARBON_LOSE_WOUND, PROC_REF(remove_wound_pain))
+	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(remove_bodypart))
+	RegisterSignal(parent, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_analyzed))
+	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(remove_all_pain))
+	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(add_damage_pain))
+	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(on_parent_statchance))
+	RegisterSignal(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_lying_pain_modifier))
 
 	if(ishuman(parent))
-		RegisterSignal(parent, COMSIG_HUMAN_BURNING, .proc/on_burn_tick)
+		RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
 
 /**
  * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
@@ -235,9 +235,9 @@
 		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
 
 		if(adjusted_amount > 0)
-			INVOKE_ASYNC(src, .proc/on_pain_gain, adjusted_bodypart, amount, dam_type)
+			INVOKE_ASYNC(src, PROC_REF(on_pain_gain), adjusted_bodypart, amount, dam_type)
 		else if(adjusted_amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-			INVOKE_ASYNC(src, .proc/on_pain_loss, adjusted_bodypart, amount, dam_type)
+			INVOKE_ASYNC(src, PROC_REF(on_pain_loss), adjusted_bodypart, amount, dam_type)
 
 		#ifdef TESTING
 		if(print_debug_messages && (print_debug_decay || abs(adjusted_amount) > 1))
@@ -360,8 +360,8 @@
 		// Note: 99% of sources of toxdamage is done through adjusttoxloss, and as such doesn't go through this
 		if(TOX)
 			def_zone = BODY_ZONE_CHEST
-			var/obj/item/organ/liver/our_liver = source.getorganslot(ORGAN_SLOT_LIVER)
-			var/obj/item/organ/stomach/our_stomach = source.getorganslot(ORGAN_SLOT_STOMACH)
+			var/obj/item/organ/internal/liver/our_liver = source.getorganslot(ORGAN_SLOT_LIVER)
+			var/obj/item/organ/internal/stomach/our_stomach = source.getorganslot(ORGAN_SLOT_STOMACH)
 			if(our_liver)
 				pain = damage / our_liver.toxTolerance
 				switch(our_liver.damage)
@@ -397,7 +397,7 @@
 		// Note: 99% of sources of oxydamage is done through adjustoxyloss, and as such doesn't go through this
 		if(OXY)
 			def_zone = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
-			var/obj/item/organ/lungs/our_lungs = source.getorganslot(ORGAN_SLOT_LUNGS)
+			var/obj/item/organ/internal/lungs/our_lungs = source.getorganslot(ORGAN_SLOT_LUNGS)
 			if(our_lungs)
 				switch(our_lungs.damage)
 					if(20 to 50)
@@ -488,12 +488,6 @@
 	for(var/part in shuffle(body_zones))
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
 		if(QDELETED(checked_bodypart))
-			stack_trace("Pain: QDELETED or NULL bodypart found in [parent]'s body zones!")
-			body_zones -= part
-			continue
-		if(checked_bodypart.owner != parent)
-			stack_trace("Pain: Limb not owned by [parent] found in their body zones! (owner = [checked_bodypart.owner || "None"])")
-			body_zones -= part
 			continue
 		if(!checked_bodypart.pain)
 			continue
@@ -522,13 +516,6 @@
  * Check which additional pain modifiers should be applied.
  */
 /datum/pain/proc/check_pain_modifiers(delta_time)
-	// This sucks and should be replaced when drunk is a status effect
-	if(parent.drunkenness)
-		if(parent.drunkenness > 10)
-			set_pain_modifier(PAIN_MOD_DRUNK, 0.9)
-		else
-			unset_pain_modifier(PAIN_MOD_DRUNK)
-
 	// This sucks and should be replaced when drowsy is a status effect
 	if(parent.drowsyness)
 		if(parent.drowsyness > 8)
@@ -591,55 +578,42 @@
  * Effects caused by low pain. (~100-250 pain)
  */
 /datum/pain/proc/low_pain_effects(delta_time)
-	if(parent.stuttering <= 12 && DT_PROB(4, delta_time))
-		parent.stuttering += 4
-
-	else if(DT_PROB(3, delta_time))
+	// emotes
+	if(DT_PROB(3, delta_time))
 		to_chat(parent, span_danger(pick("Everything aches.", "Everything feels sore.")))
-		if(parent.staminaloss < 5)
+		if(parent.getStaminaLoss() <= 5)
 			parent.apply_damage(10, STAMINA)
 
-	else if(parent.jitteriness <= 20 && DT_PROB(2, delta_time))
-		parent.Jitter(5)
+	// various effects
+	if(DT_PROB(5, delta_time))
+		parent.adjust_stutter_up_to(4 SECONDS, 12 SECONDS)
 
-	else if(parent.dizziness <= 12 && DT_PROB(2, delta_time))
-		parent.Dizzy(2)
+	if(DT_PROB(5, delta_time))
+		parent.adjust_dizzy_up_to(4 SECONDS, 12 SECONDS)
+
+	if(DT_PROB(5, delta_time))
+		parent.adjust_jitter_up_to(10 SECONDS, 40 SECONDS)
 
 /**
  * Effects caused by medium pain. (~250-400 pain)
  */
 /datum/pain/proc/med_pain_effects(delta_time)
-	if(parent.stuttering <= 18 && DT_PROB(4, delta_time))
-		parent.stuttering += 6
-
-	else if(DT_PROB(3, delta_time))
+	// emotes
+	if(DT_PROB(3, delta_time))
 		to_chat(parent, span_bolddanger(pick("Everything hurts.", "Everything feels very sore.", "It hurts.")))
-		do_pain_emote("scream", 5 SECONDS)
-		if(parent.staminaloss < 30)
+		do_pain_emote(prob(50) ? "cry" : "scream", 5 SECONDS)
+		if(parent.getStaminaLoss() <= 30)
 			parent.apply_damage(10, STAMINA)
 
-	else if(parent.staminaloss <= 60 && DT_PROB(6, delta_time))
+	else if(parent.getStaminaLoss() <= 60 && DT_PROB(6, delta_time))
 		parent.apply_damage(20 * pain_modifier, STAMINA)
 		if(do_pain_emote("gasp"))
 			parent.visible_message(span_warning("[parent] doubles over in pain!"))
 
-	else if(!is_undergoing_shock() && DT_PROB(0.05, delta_time))
-		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
-		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
-		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
-
+	// messing you up
 	else if(!parent.IsKnockdown() && DT_PROB(0.5, delta_time))
-		parent.Knockdown(15 * pain_modifier)
+		parent.Knockdown(2 SECONDS * pain_modifier)
 		parent.visible_message(span_warning("[parent] collapses from pain!"))
-
-	else if(parent.jitteriness <= 30 && DT_PROB(1, delta_time))
-		parent.Jitter(10)
-
-	else if(parent.dizziness <= 20 && DT_PROB(1, delta_time))
-		parent.Dizzy(5)
-
-	else if(DT_PROB(3, delta_time))
-		do_pain_emote("cry", 6 SECONDS)
 
 	else if(DT_PROB(3, delta_time))
 		var/obj/item/held_item = parent.get_active_held_item()
@@ -648,52 +622,71 @@
 			parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
 			do_pain_emote("gasp")
 
-/**
- * Effects caused by extremely high pain. (~400-500 pain)
- */
-/datum/pain/proc/high_pain_effects(delta_time)
-	if(parent.stuttering <= 24 && DT_PROB(4, delta_time))
-		parent.stuttering += 8
-
-	else if(DT_PROB(3, delta_time))
-		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!")))
-		do_pain_emote("scream", 5 SECONDS)
-		if(parent.staminaloss < 50)
-			parent.apply_damage(10, STAMINA)
-
-	else if(parent.staminaloss <= 75 && DT_PROB(5, delta_time))
-		parent.apply_damage(30 * pain_modifier, STAMINA)
-		if(do_pain_emote("gasp"))
-			parent.visible_message(span_warning("[parent] doubles over in pain!"))
-
-	else if(!is_undergoing_shock() && DT_PROB(0.5, delta_time))
+	// shock
+	if(!is_undergoing_shock() && parent.health <= parent.maxHealth * 0.5 && DT_PROB(0.015, delta_time))
 		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
 		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
 
-	else if(!parent.IsKnockdown() && DT_PROB(2, delta_time))
-		parent.Knockdown(15 * pain_modifier)
-		parent.visible_message(span_warning("[parent] collapses from pain!"))
+	// other effects
+	if(DT_PROB(5, delta_time))
+		parent.adjust_stutter_up_to(12 SECONDS, 36 SECONDS)
 
-	else if(DT_PROB(1, delta_time))
+	if(DT_PROB(5, delta_time))
+		parent.adjust_jitter_up_to(20 SECONDS, 60 SECONDS)
+
+	if(DT_PROB(5, delta_time))
+		parent.adjust_dizzy_up_to(10 SECONDS, 40 SECONDS)
+
+
+/**
+ * Effects caused by extremely high pain. (~400-500 pain)
+ */
+/datum/pain/proc/high_pain_effects(delta_time)
+	// emotes
+	if(DT_PROB(1, delta_time))
 		parent.vomit(50)
 
-	else if(parent.jitteriness <= 30 && DT_PROB(1, delta_time))
-		do_pain_emote("wince")
-		parent.Jitter(15)
+	if(DT_PROB(3, delta_time))
+		to_chat(parent, span_userdanger(pick("Stop the pain!", "Everything hurts!")))
+		do_pain_emote(prob(50) ? "cry" : "scream", 5 SECONDS)
+		if(parent.getStaminaLoss() <= 50)
+			parent.apply_damage(10, STAMINA)
 
-	else if(DT_PROB(1, delta_time))
-		parent.set_confusion(min(parent.get_confusion() + 4, 12))
+	else if(parent.getStaminaLoss() <= 75 && DT_PROB(5, delta_time))
+		parent.apply_damage(30 * pain_modifier, STAMINA)
+		if(do_pain_emote("gasp"))
+			parent.visible_message(span_warning("[parent] doubles over in pain!"))
 
-	else if(DT_PROB(4, delta_time))
-		do_pain_emote("cry", 6 SECONDS)
+	// messing you up
+	if(!parent.IsKnockdown() && DT_PROB(2, delta_time))
+		parent.Knockdown(4 SECONDS * pain_modifier)
+		parent.visible_message(span_warning("[parent] collapses from pain!"))
 
 	else if(DT_PROB(8, delta_time))
 		var/obj/item/held_item = parent.get_active_held_item()
 		if(held_item && parent.dropItemToGround(held_item))
 			to_chat(parent, span_danger("Your fumble though the pain and drop [held_item]!"))
 			parent.visible_message(span_warning("[parent] fumbles around and drops [held_item]!"), ignored_mobs = parent)
-			parent.emote("gasp")
+			do_pain_emote("gasp")
+
+	// shock
+	if(!is_undergoing_shock() && DT_PROB(0.05, delta_time))
+		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
+		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
+		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+
+	// other effects
+	if(DT_PROB(5, delta_time))
+		parent.adjust_stutter_up_to(16 SECONDS, 48 SECONDS)
+
+	if(DT_PROB(5, delta_time))
+		do_pain_emote("wince")
+		parent.adjust_jitter_up_to(30 SECONDS, 120 SECONDS)
+
+	if(DT_PROB(5, delta_time))
+		parent.adjust_confusion_up_to(8 SECONDS, 24 SECONDS)
+		parent.adjust_dizzy_up_to(15 SECONDS, 80 SECONDS)
 
 /**
  * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
@@ -784,8 +777,12 @@
 /**
  * Remove all pain, pain paralysis, side effects, etc. from our mob after we're fully healed by something (like an adminheal)
  */
-/datum/pain/proc/remove_all_pain(datum/source, adminheal)
+/datum/pain/proc/remove_all_pain(datum/source, heal_flags)
 	SIGNAL_HANDLER
+
+	// Idreally pain would have its own heal flag but we live in a society
+	if(!(heal_flags & (HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS)))
+		return
 
 	// These should be handled by signal later but they're ok now
 	parent.remove_status_effect(/datum/status_effect/limp/pain)

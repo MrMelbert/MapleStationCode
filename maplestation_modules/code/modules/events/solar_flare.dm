@@ -20,18 +20,18 @@
 	var/list/area/impacted_areas
 
 /datum/round_event/solar_flare/setup()
-	startWhen = rand(45, 90) // 1 == 1 second.
-	endWhen = startWhen + rand(90, 150)
+	start_when = rand(45, 90) // 1 == 1 second.
+	end_when = start_when + rand(90, 150)
 	time_between_flares += rand(-1, 1)
 
 	var/static/list/possible_choices = list(
-		DEPARTMENT_SECURITY = /area/security,
-		DEPARTMENT_COMMAND = /area/command,
-		DEPARTMENT_SERVICE = /area/service,
-		DEPARTMENT_SCIENCE = /area/science,
-		DEPARTMENT_ENGINEERING = /area/engineering,
-		DEPARTMENT_MEDICAL = /area/medical,
-		DEPARTMENT_CARGO = /area/cargo,
+		DEPARTMENT_SECURITY = /area/station/security,
+		DEPARTMENT_COMMAND = /area/station/command,
+		DEPARTMENT_SERVICE = /area/station/service,
+		DEPARTMENT_SCIENCE = /area/station/science,
+		DEPARTMENT_ENGINEERING = /area/station/engineering,
+		DEPARTMENT_MEDICAL = /area/station/medical,
+		DEPARTMENT_CARGO = /area/station/cargo,
 	)
 
 	picked_dept = pick(possible_choices)
@@ -60,7 +60,7 @@
 	for(var/i in 0 to rand(2, 4))
 		if(!LAZYLEN(our_areas))
 			return
-		addtimer(CALLBACK(src, .proc/trigger_flare, pick_n_take(our_areas)), i SECONDS)
+		addtimer(CALLBACK(src,  PROC_REF(trigger_flare), pick_n_take(our_areas)), i SECONDS)
 
 /**
  * Trigger a solar flare effect at a random non-dense turf in [chosen_area].
@@ -106,38 +106,38 @@
 	// There's much more OOP ways to do this, but whatever
 	switch(department)
 		if(DEPARTMENT_SECURITY)
-			. -= typesof(/area/security/checkpoint)
-			. -= /area/security/detectives_office/bridge_officer_office
+			. -= typesof(/area/station/security/checkpoint)
+			. -= /area/station/security/detectives_office/bridge_officer_office
 
 		if(DEPARTMENT_COMMAND)
-			. -= /area/command/gateway
-			. += /area/security/detectives_office/bridge_officer_office
+			. -= /area/station/command/gateway
+			. += /area/station/security/detectives_office/bridge_officer_office
 
 		if(DEPARTMENT_SERVICE)
-			. -= /area/service/electronic_marketing_den
-			. -= /area/service/abandoned_gambling_den
-			. -= /area/service/abandoned_gambling_den/gaming
-			. -= /area/service/theater/abandoned
-			. -= /area/service/library/abandoned
-			. -= /area/service/hydroponics/garden/abandoned
+			. -= /area/station/service/electronic_marketing_den
+			. -= /area/station/service/abandoned_gambling_den
+			. -= /area/station/service/abandoned_gambling_den/gaming
+			. -= /area/station/service/theater/abandoned
+			. -= /area/station/service/library/abandoned
+			. -= /area/station/service/hydroponics/garden/abandoned
 
 		if(DEPARTMENT_CARGO)
-			. += /area/security/checkpoint/supply
+			. += /area/station/security/checkpoint/supply
 
 		if(DEPARTMENT_ENGINEERING)
-			. -= /area/engineering/supermatter
-			. -= /area/engineering/supermatter/room
-			. -= /area/engineering/gravity_generator
-			. += /area/security/checkpoint/engineering
+			. -= /area/station/engineering/supermatter
+			. -= /area/station/engineering/supermatter/room
+			. -= /area/station/engineering/gravity_generator
+			. += /area/station/security/checkpoint/engineering
 
 		if(DEPARTMENT_SCIENCE)
-			. -= /area/science/research/abandoned
-			. += /area/security/checkpoint/science
-			. += /area/security/checkpoint/science/research
+			. -= /area/station/science/research/abandoned
+			. += /area/station/security/checkpoint/science
+			. += /area/station/security/checkpoint/science/research
 
 		if(DEPARTMENT_MEDICAL)
-			. -= /area/medical/abandoned
-			. += /area/security/checkpoint/medical
+			. -= /area/station/medical/abandoned
+			. += /area/station/security/checkpoint/medical
 
 // Solar flare. Causes a diamond of fire centered on the initial turf.
 /obj/effect/solar_flare
@@ -196,7 +196,7 @@
 		LAZYADD(already_heated_things, hit_mob)
 		hit_mob.apply_damage((clamp((radius - curr_radius), 0.5, 3) * 30), BURN, spread_damage = TRUE)
 		hit_mob.adjust_fire_stacks(clamp(radius - curr_radius, 1, 5))
-		hit_mob.IgniteMob()
+		hit_mob.ignite_mob()
 
 // Larger flare. Double radius.
 /obj/effect/solar_flare/large

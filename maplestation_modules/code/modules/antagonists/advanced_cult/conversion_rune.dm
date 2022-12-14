@@ -28,12 +28,12 @@
 	visible_message(span_warning("[src] pulses a mesmerizing shade!"))
 	var/mob/living/convertee = pick(myriad_targets)
 
-	INVOKE_ASYNC(src, .proc/invoke_wrapper, convertee, user)
+	INVOKE_ASYNC(src, PROC_REF(invoke_wrapper), convertee, user)
 
 	. = ..()
 
 /**
- * Wraps [.proc/invoke_process] to ensure [var/rune_in_use] is properly set.
+ * Wraps [invoke_process] to ensure [var/rune_in_use] is properly set.
  */
 /obj/effect/rune/conversion/proc/invoke_wrapper(mob/living/convertee, mob/living/user)
 	rune_in_use = TRUE
@@ -96,13 +96,13 @@
 			fail_invoke()
 			return FALSE
 
-		if(anti_cult_magic_check(convertee, user))
+		if(convertee.can_block_magic())
 			fail_invoke()
 			return FALSE
 
 		if(convertee.getStaminaLoss() <= 100)
 			convertee.apply_damage(50, STAMINA, BODY_ZONE_CHEST)
-		convertee.stuttering += 10
+		convertee.adjust_stutter(20 SECONDS)
 		user.say(invocations[i], language = /datum/language/common, ignore_spam = TRUE, forced = "cult invocation")
 
 	return TRUE
@@ -134,8 +134,8 @@
 	if(ishuman(convertee))
 		var/mob/living/carbon/human/human_convertee = convertee
 		human_convertee.uncuff()
-		human_convertee.stuttering = 0
-		human_convertee.cultslurring = 0
+		human_convertee.remove_status_effect(/datum/status_effect/speech/stutter)
+		human_convertee.remove_status_effect(/datum/status_effect/speech/slurring/cult)
 
 	return TRUE
 
