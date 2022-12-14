@@ -11,6 +11,7 @@
 	// Inhand: "uni"
 	// Worn: "uni"
 	icon_state = "uni"
+	inhand_icon_state = "uni"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/shoes/jackboots/medical
@@ -25,6 +26,7 @@
 	// Inhand: "boots"
 	// Worn: "boots"
 	icon_state = "boots"
+	inhand_icon_state = "boots"
 
 /obj/item/clothing/gloves/color/latex/nitrile/special
 	name = "high grade nitriles"
@@ -37,6 +39,7 @@
 	// Inhand: "gloves"
 	// Worn: "gloves"
 	icon_state = "gloves"
+	inhand_icon_state = "gloves"
 
 /obj/item/clothing/suit/toggle/labcoat/cmo/special
 	name = "elaborate medical lab coat"
@@ -63,6 +66,7 @@
 	// Inhand: "belt"
 	// Worn: "belt"
 	icon_state = "belt"
+	inhand_icon_state = "belt"
 
 // Clothes to the bag
 /obj/item/storage/bag/garment/chief_medical/PopulateContents()

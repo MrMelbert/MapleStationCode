@@ -5,8 +5,8 @@
 	desc = "A yellow lens created by Rat'varian worshippers to spy great distances."
 	icon = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	icon_state = "truesight_lens"
-	inhand_icon_state = "none"
-	worn_icon_state = "none"
+	inhand_icon_state = null
+	worn_icon_state = null
 	slot_flags = NONE
 	zoom_out_amt = 0
 	zoom_amt = 9

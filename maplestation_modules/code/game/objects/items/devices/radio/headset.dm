@@ -18,7 +18,6 @@
 	name = "\proper the asset protection officer's bowman headset"
 	desc = "The headset of the man or woman in charge of assisting and protecting the heads of staff. Protects ears from flashbangs."
 	icon_state = "com_headset_alt"
-	inhand_icon_state = "com_headset_alt"
 
 /obj/item/radio/headset/heads/asset_protection/alt/Initialize()
 	. = ..()

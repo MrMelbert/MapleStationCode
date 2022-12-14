@@ -19,11 +19,8 @@
 
 /datum/reagent/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	if(QDELETED(user))
-		return
 	if(isnull(pain_modifier) || !istype(user))
 		return
-
 	user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
 	if(user.pain_controller.pain_modifier > 0.5)
 		user.clear_alert("numbed")

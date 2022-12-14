@@ -32,7 +32,7 @@
 	#endif
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
-	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy) || istype(new_parent, /mob/living/carbon/human/consistent))
+	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy))
 		qdel(src) // If we're not a carbon, or a dummy, delete us
 		return null
 
