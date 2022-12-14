@@ -9,7 +9,7 @@
 	/// Whether bonus mats will get added to the crate on spawn.
 	var/bonus_mats = TRUE
 
-/obj/structure/closet/crate/resource_cache/PopulateContents()
+/obj/structure/closet/crate/resource_cache/populate_contents_immediate()
 	. = ..()
 	// Add in our resources from the assoc list of resources
 	resources = string_assoc_list(resources)
@@ -46,7 +46,7 @@
 	// The max amount of TC we can spend hidden contraband
 	var/contraband_value = 8
 
-/obj/structure/closet/crate/resource_cache/syndicate/PopulateContents()
+/obj/structure/closet/crate/resource_cache/syndicate/populate_contents_immediate()
 	. = ..()
 	if(!bonus_mats)
 		return

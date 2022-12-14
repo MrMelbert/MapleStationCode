@@ -3,7 +3,7 @@
 	name = "heirloom bone bracers"
 	desc = "These bone bracers are made of real goliath bone, but have been degraded from years in combat and offer no protection."
 	icon_state = "bracers"
-	inhand_icon_state = "bracers"
+	inhand_icon_state = null
 	heat_protection = HANDS
 	cold_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT

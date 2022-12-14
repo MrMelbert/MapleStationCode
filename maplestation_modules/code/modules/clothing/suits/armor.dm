@@ -10,21 +10,21 @@
 	name = "bridge officer's large armor vest"
 	desc = "A larger, yet still comfortable suit of armor worn by Bridge Officers who prefer function over form."
 	icon_state = "blueshift"
-	inhand_icon_state = "blueshift"
+	inhand_icon_state = "armor"
 
 //AP Armor
 /obj/item/clothing/suit/armor/vest/asset_protection
 	name = "asset protection's armor vest"
 	desc = "A rigid vest of armor worn by Asset Protection. Rigid and stiff, just like your attitude."
 	icon_state = "bulletproof"
-	inhand_icon_state = "bulletproof"
+	inhand_icon_state = "armor"
 	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 30, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
 
 /obj/item/clothing/suit/armor/vest/asset_protection/large
 	name = "asset protection's large armor vest"
 	desc = "A SUPPOSEDLY bulkier, heavier armor that Asset Protection can use when the situation calls for it. Feels identical to your other one."
 	icon_state = "blueshift"
-	inhand_icon_state = "blueshift"
+	inhand_icon_state = "armor"
 
 // Subtype of the toggle icon component (i know, ew) for GAGS items
 /datum/component/toggle_icon/greyscale

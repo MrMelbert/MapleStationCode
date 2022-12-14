@@ -40,6 +40,9 @@
 	// Worn: "gloves"
 	icon_state = "gloves"
 	inhand_icon_state = "gloves"
+	greyscale_colors = null
+	greyscale_config_inhand_left = null
+	greyscale_config_inhand_right = null
 
 /obj/item/clothing/suit/toggle/labcoat/cmo/special
 	name = "elaborate medical lab coat"
