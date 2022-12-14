@@ -314,9 +314,7 @@
 /turf/open/floor/catwalk_floor,
 /area/station/maintenance/department/security)
 "T" = (
-/obj/structure/sink{
-	pixel_y = 15
-	},
+/obj/structure/sink/directional/south,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/station/maintenance/department/security)

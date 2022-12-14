@@ -9,7 +9,7 @@
 		return COMPONENT_INCOMPATIBLE
 
 /datum/component/supermatter_glow/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_SUPERMATTER_PROCESS_ATMOS, .proc/update_effects) // When we are added, we listen for this signal and send the proc.
+	RegisterSignal(parent, COMSIG_SUPERMATTER_PROCESS_ATMOS, PROC_REF(update_effects)) // When we are added, we listen for this signal and send the proc.
 
 /datum/component/supermatter_glow/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_SUPERMATTER_PROCESS_ATMOS)
@@ -100,6 +100,3 @@
 
 	if(our_supermatter.internal_energy > POWER_PENALTY_THRESHOLD) // Tesla delamination
 		return TESLA_DELAMINATION
-
-
-

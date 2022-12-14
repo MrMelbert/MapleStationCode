@@ -11,7 +11,7 @@
 	requires_power = FALSE
 
 
-// Ruin solars define, /area/solars was moved to /area/station/solars, causing the solars specific areas to lose their properties
+// Ruin solars define, /area/station/solars was moved to /area/station/solars, causing the solars specific areas to lose their properties
 /area/ruin/space/solars
 	requires_power = FALSE
 	area_flags = UNIQUE_AREA | AREA_USES_STARLIGHT

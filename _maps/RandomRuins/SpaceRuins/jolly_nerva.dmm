@@ -128,12 +128,6 @@
 	dir = 10
 	},
 /area/ruin/space/has_grav/nerva)
-"lY" = (
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
-/turf/open/floor/iron/dark/corner,
-/area/ruin/space/has_grav/nerva)
 "nd" = (
 /obj/structure/cable,
 /obj/machinery/door/airlock/external/glass,
@@ -165,7 +159,7 @@
 "re" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 1
 	},
 /turf/open/floor/iron/dark/corner{
 	dir = 1
@@ -198,7 +192,7 @@
 	charge = 0
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 8
 	},
 /turf/open/floor/iron/dark/corner{
 	dir = 4
@@ -233,6 +227,12 @@
 	dir = 5
 	},
 /area/ruin/space/has_grav/nerva)
+"BH" = (
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+	},
+/turf/open/floor/iron/dark/corner,
+/area/ruin/space/has_grav/nerva)
 "DE" = (
 /obj/machinery/light/directional{
 	dir = 8
@@ -260,7 +260,7 @@
 /area/ruin/space/has_grav/nerva)
 "GO" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 8
 	},
 /turf/open/floor/iron/dark/corner{
 	dir = 8
@@ -353,7 +353,7 @@
 /turf/open/floor/iron,
 /area/ruin/space/has_grav/nerva)
 "OO" = (
-/obj/machinery/gravity_generator/main/station,
+/obj/machinery/gravity_generator/main,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/nerva)
 "Py" = (
@@ -380,7 +380,7 @@
 /area/ruin/space/has_grav/nerva)
 "RL" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 4
 	},
 /turf/open/floor/iron/dark/corner{
 	dir = 1
@@ -678,7 +678,7 @@ yG
 gx
 Kn
 Fj
-lY
+yi
 ED
 ED
 ED
@@ -756,7 +756,7 @@ vZ
 RD
 Zp
 Uw
-yi
+BH
 il
 gX
 Wb

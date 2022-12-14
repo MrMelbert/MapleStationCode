@@ -191,7 +191,7 @@
 
 		if (!(message in known_failures))
 			known_failures[message] = TRUE
-			stack_trace("[target] [message]")
+			// stack_trace("[target] [message]") // non-module change
 
 		RegisterSignals(target, signal_type, proctype, override)
 		return

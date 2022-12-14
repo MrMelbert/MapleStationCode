@@ -1,4 +1,5 @@
 /// All of the default reagent lists for each hypospray (+ hacked variants)
+// NON-MODULE CHANGE
 #define BASE_MEDICAL_REAGENTS list(\
 		/datum/reagent/medicine/c2/aiuri,\
 		/datum/reagent/medicine/c2/convermol,\
@@ -6,6 +7,7 @@
 		/datum/reagent/medicine/c2/libital,\
 		/datum/reagent/medicine/c2/multiver,\
 		/datum/reagent/medicine/salglu_solution,\
+		/datum/reagent/medicine/painkiller/paracetamol,\
 		/datum/reagent/medicine/spaceacillin\
 	)
 #define EXPANDED_MEDICAL_REAGENTS list(\
@@ -45,9 +47,10 @@
 #define HACKED_CLOWN_REAGENTS list(\
 		/datum/reagent/consumable/superlaughter\
 	)
+// NON-MODULE CHANGE
 #define BASE_SYNDICATE_REAGENTS list(\
 		/datum/reagent/medicine/inacusiate,\
-		/datum/reagent/medicine/morphine,\
+		/datum/reagent/medicine/painkiller/morphine,\
 		/datum/reagent/medicine/potass_iodide,\
 		/datum/reagent/medicine/syndicate_nanites\
 	)

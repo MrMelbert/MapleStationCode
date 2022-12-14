@@ -972,7 +972,7 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "xU" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 1
 	},
 /obj/machinery/light/cold/directional/south,
 /obj/effect/turf_decal/siding/thinplating_new/light{
@@ -1454,7 +1454,7 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Gy" = (
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 8
+	dir = 4
 	},
 /obj/machinery/light/cold/directional/north,
 /turf/open/floor/mineral/titanium/tiled/white,
@@ -1660,11 +1660,6 @@
 /obj/structure/fans/tiny,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"KL" = (
-/obj/structure/chair/stool/bar/directional/north,
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "KS" = (
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 8
@@ -1692,7 +1687,7 @@
 "LD" = (
 /obj/machinery/light/cold/directional/south,
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 4
+	dir = 1
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
@@ -1791,7 +1786,7 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "NQ" = (
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 1
+	dir = 8
 	},
 /obj/machinery/light/cold/directional/south,
 /turf/open/floor/mineral/titanium/tiled/white,
@@ -1923,10 +1918,6 @@
 	dir = 1
 	},
 /turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"QY" = (
-/obj/structure/chair/stool/bar/directional/east,
-/turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Rg" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -2362,10 +2353,6 @@
 "YL" = (
 /obj/structure/barricade/wooden,
 /turf/open/floor/mineral/titanium/tiled/yellow,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"YP" = (
-/obj/structure/chair/stool/bar/directional/north,
-/turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "YU" = (
 /obj/machinery/light/warm/directional/west,
@@ -3284,7 +3271,7 @@ Ok
 Bo
 pI
 eC
-KL
+pI
 Bo
 Ok
 Dk
@@ -3733,7 +3720,7 @@ MX
 dJ
 MX
 xm
-oi
+pC
 ZV
 up
 Ok
@@ -3883,13 +3870,13 @@ Dk
 Bo
 bN
 La
-iP
+oi
 Bj
 Sh
 Bj
 mb
 Sh
-pC
+iP
 wo
 uG
 Ok
@@ -4530,7 +4517,7 @@ sU
 sU
 sU
 sU
-QY
+ME
 sU
 QV
 BY
@@ -4609,7 +4596,7 @@ Zk
 sU
 ba
 zM
-YP
+mc
 QV
 BY
 BY

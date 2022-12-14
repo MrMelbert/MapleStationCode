@@ -105,11 +105,15 @@ There are several things that need to be remembered:
 		var/woman
 		if(!uniform_overlay)
 			//BEGIN SPECIES HANDLING
-			if((dna?.species.bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
-				icon_file = DIGITIGRADE_UNIFORM_FILE
 			if((dna?.species.bodytype & BODYTYPE_MONKEY) && (uniform.supports_variations_flags & CLOTHING_MONKEY_VARIATION))
 				icon_file = MONKEY_UNIFORM_FILE
-
+			else if((dna?.species.bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+				// NON-MODULE CHANGE kapu why
+				if(uniform.greyscale_config_worn && uniform.digitigrade_greyscale_config_worn && uniform.greyscale_colors)
+					icon_file = SSgreyscale.GetColoredIconByType(uniform.digitigrade_greyscale_config_worn, uniform.greyscale_colors)
+				else
+					icon_file = uniform.digitigrade_file
+				// NON-MODULE CHANGE END
 			//Female sprites have lower priority than digitigrade sprites
 			else if(dna.species.sexes && (dna.species.bodytype & BODYTYPE_HUMANOID) && physique == FEMALE && !(uniform.female_sprite_flags & NO_FEMALE_UNIFORM)) //Agggggggghhhhh
 				woman = TRUE
@@ -312,11 +316,12 @@ There are several things that need to be remembered:
 		var/icon_file
 		update_hud_shoes(worn_item)
 
-		//(Currently) unused digitigrade handling
-		/*if((dna.species.bodytype & BODYTYPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+		// NON-MODULE CHANGE becuase kapu why
+		if((dna.species.bodytype & BODYTYPE_DIGITIGRADE) && (worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			var/obj/item/bodypart/leg = src.get_bodypart(BODY_ZONE_L_LEG)
 			if(leg.limb_id == "digitigrade")//Snowflakey and bad. But it makes it look consistent.
-				icon_file = DIGITIGRADE_SHOES_FILE*/
+				icon_file = worn_item.digitigrade_file
+		// NON_MODULE CHANGE END
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			icon_file = DEFAULT_SHOES_FILE
@@ -424,10 +429,11 @@ There are several things that need to be remembered:
 		update_hud_wear_suit(worn_item)
 		var/icon_file
 
-		//More currently unused digitigrade handling
-		/*if(dna.species.bodytype & BODYTYPE_DIGITIGRADE)
+		// NON-MODULE CHANGE because kapu why
+		if(dna.species.bodytype & BODYTYPE_DIGITIGRADE)
 			if(worn_item.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION)
-				icon_file = DIGITIGRADE_SUIT_FILE*/
+				icon_file = worn_item.digitigrade_file
+		// NON-MODULE CHANGE END
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 			icon_file = DEFAULT_SUIT_FILE
@@ -810,7 +816,7 @@ generate/load female uniform sprites matching all previously decided variables
 			if(parent_eyes)
 				add_overlay(parent_eyes.generate_body_overlay(src))
 			else
-				var/mutable_appearance/missing_eyes = mutable_appearance('icons/mob/species/human/human_face.dmi', "eyes_missing", -BODY_LAYER)
+				var/mutable_appearance/missing_eyes = mutable_appearance(missing_eye_file, "eyes_missing", -BODY_LAYER) // NON-MODULE CHANGE
 				if(OFFSET_FACE in dna.species.offset_features)
 					missing_eyes.pixel_x += dna.species.offset_features[OFFSET_FACE][1]
 					missing_eyes.pixel_y += dna.species.offset_features[OFFSET_FACE][2]

@@ -150,8 +150,7 @@
 		apply_effect(drowsy, EFFECT_DROWSY, blocked)
 
 	if(stamina)
-		var/armor_check = check_projectile_armor(def_zone, P, is_silent = TRUE) //NON-MODULE CHANGE: Actually apply the armor to the stamina damage!
-		apply_damage(stamina, STAMINA, null, armor_check) //NON-MODULE CHANGE
+		apply_damage(stamina, STAMINA, null, blocked)
 
 	if(jitter && (status_flags & CANSTUN) && !HAS_TRAIT(src, TRAIT_STUNIMMUNE))
 		adjust_jitter(jitter)

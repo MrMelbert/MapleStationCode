@@ -576,15 +576,15 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/opioids = 10)
 
-/datum/reagent/medicine/morphine/on_mob_metabolize(mob/living/L)
+/datum/reagent/medicine/painkiller/morphine/on_mob_metabolize(mob/living/L) // NON-MODULE CHANGE
 	..()
 	L.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
 
-/datum/reagent/medicine/morphine/on_mob_end_metabolize(mob/living/L)
+/datum/reagent/medicine/painkiller/morphine/on_mob_end_metabolize(mob/living/L) // NON-MODULE CHANGE
 	L.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
 	..()
 
-/datum/reagent/medicine/morphine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/medicine/painkiller/morphine/on_mob_life(mob/living/carbon/M, delta_time, times_fired) // NON-MODULE CHANGE
 	if(current_cycle >= 5)
 		M.add_mood_event("numb", /datum/mood_event/narcotic_medium, name)
 	switch(current_cycle)
@@ -597,7 +597,7 @@
 			. = TRUE
 	..()
 
-/datum/reagent/medicine/morphine/overdose_process(mob/living/M, delta_time, times_fired)
+/datum/reagent/medicine/painkiller/morphine/overdose_process(mob/living/M, delta_time, times_fired) // NON-MODULE CHANGE
 	if(DT_PROB(18, delta_time))
 		M.drop_all_held_items()
 		M.set_dizzy_if_lower(4 SECONDS)

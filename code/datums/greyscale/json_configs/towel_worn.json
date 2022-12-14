@@ -1,0 +1,10 @@
+{
+	"towel_worn": [
+		{
+			"type": "icon_state",
+			"icon_state": "towel_worn",
+			"blend_mode": "overlay",
+			"color_ids": [ 1 ]
+		}
+	]
+}
