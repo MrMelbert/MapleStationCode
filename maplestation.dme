@@ -5046,6 +5046,7 @@
 #include "maplestation_modules\code\modules\jobs\job_types\antagonists\infiltrator.dm"
 #include "maplestation_modules\code\modules\jobs\job_types\antagonists\syndicate.dm"
 #include "maplestation_modules\code\modules\language\highdraconic.dm"
+#include "maplestation_modules\code\modules\language\japanese.dm"
 #include "maplestation_modules\code\modules\language\language_holder.dm"
 #include "maplestation_modules\code\modules\language\skrellian.dm"
 #include "maplestation_modules\code\modules\library\skill_learning\job_skillchips\mining.dm"
