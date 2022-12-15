@@ -23,7 +23,12 @@
 		if(initial(prosthetic_type.abstract_parent_type) == prosthetic_type)
 			continue
 
+		var/does_have_a_prosthetic = FALSE
 		var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
 		dummy.add_quirk(prosthetic_type)
 		for(var/obj/item/bodypart/part as anything in dummy.bodyparts)
 			TEST_ASSERT_EQUAL(part.pain, 0, "Dummy had pain from the quirk [prosthetic_type].")
+			if(part.bodytype & BODYTYPE_ROBOTIC)
+				does_have_a_prosthetic = TRUE
+
+		TEST_ASSERT(does_have_a_prosthetic, "Dummy didn't actually get a prosthetic replacement for any limbs.")
