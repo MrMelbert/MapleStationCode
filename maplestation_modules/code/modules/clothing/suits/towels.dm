@@ -58,15 +58,17 @@
 
 	return
 
-/obj/item/towel/equipped(mob/user, slot, initial)
+/obj/item/towel/equipped(mob/living/user, slot, initial)
 	. = ..()
-	if((slot_flags & slot) && warm_towel)
+	if(!isliving(user) || !warm_towel)
+		return
+	if(slot_flags & slot)
 		if(islizard(user))
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel_lizard)
+			user.add_mood_event("warm_towel", /datum/mood_event/warm_towel_lizard)
 		else
-			SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel)
+			user.add_mood_event("warm_towel", /datum/mood_event/warm_towel)
 
-/*
+/**
  * Check if our [target_turf] is valid to try to dry and begin a do_after.
  * If the turf is valid, try a do_after, and if successful, call [do_dry_floor].
  *
@@ -99,7 +101,7 @@
 	do_dry_floor(target_turf, user)
 	return TRUE
 
-/*
+/**
  * Actually dry the floor, removing a minute of wetness from [target_turf] and washing it lightly.
  *
  * target_turf - the turf we're drying
@@ -112,7 +114,7 @@
 	target_turf.MakeDry(ALL, TRUE, 1 MINUTES)
 	target_turf.wash(CLEAN_WASH)
 
-/*
+/**
  * Begin drying off a [target_mob] with [src].
  * If [target_mob] is on fire, call [try_extinguish_mob].
  * Otherwise, begin a do_after, and call [do_dry_mob] afterwards.
@@ -148,7 +150,7 @@
 		do_dry_mob(target_mob, user)
 	return TRUE
 
-/*
+/**
  * Actually dry the mob, giving them a moodlet if the towel is warm and washing them.
  * Also removes negative firestacks (wetness).
  *
@@ -162,13 +164,13 @@
 	target_mob.set_fire_stacks(max(0, target_mob.fire_stacks))
 	if(warm_towel)
 		if(islizard(target_mob))
-			SEND_SIGNAL(target_mob, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel_lizard)
+			target_mob.add_mood_event("warm_towel", /datum/mood_event/warm_towel_lizard)
 		else
-			SEND_SIGNAL(target_mob, COMSIG_ADD_MOOD_EVENT, "warm_towel", /datum/mood_event/warm_towel)
+			target_mob.add_mood_event("warm_towel", /datum/mood_event/warm_towel)
 		if(prob(66)) //66% chance to cool the towel after
 			cool_towel()
 
-/*
+/**
  * Has a chance to remove some firestacks from [target_mob], or set [src] on fire.
  *
  * target_mob - the mob we're extinguishing
@@ -212,7 +214,7 @@
 
 	return
 
-/*
+/**
  * Check if our [target_turf] is valid to place our towel on.
  * If the turf is valid, begin a do_after, and if the turf is valid still after the do_after call [do_place_towel].
  *
@@ -242,7 +244,7 @@
 	do_place_towel(target_turf, user)
 	return TRUE
 
-/*
+/**
  * Check if our [target_turf] contains invalid atmos.
  *
  * target_turf - the turf we're checking
@@ -269,7 +271,7 @@
 
 	return TRUE
 
-/*
+/**
  * Actually place our towel on [target_turf].
  *
  * target_turf - the turf we're putting the towel
@@ -308,8 +310,8 @@
 	set_greyscale(our_towel.greyscale_colors)
 
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-		COMSIG_ATOM_EXITED = .proc/on_exited,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
+		COMSIG_ATOM_EXITED = PROC_REF(on_exited),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -323,19 +325,25 @@
 /obj/structure/beach_towel/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
 
+	if(!isliving(arrived))
+		return
+	var/mob/living/living_arrived = arrived
 	if(our_towel.warm_towel)
 		if(islizard(arrived))
-			SEND_SIGNAL(arrived, COMSIG_ADD_MOOD_EVENT, "on_towel", /datum/mood_event/on_warm_towel_lizard)
+			living_arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel_lizard)
 		else
-			SEND_SIGNAL(arrived, COMSIG_ADD_MOOD_EVENT, "on_towel", /datum/mood_event/on_warm_towel)
+			living_arrived.add_mood_event("on_towel", /datum/mood_event/on_warm_towel)
 	else
-		SEND_SIGNAL(arrived, COMSIG_ADD_MOOD_EVENT, "on_towel", /datum/mood_event/on_towel)
+		living_arrived.add_mood_event("on_towel", /datum/mood_event/on_towel)
 
 /// Signal from whenever an atom exits a turf with a towel on top.
 /obj/structure/beach_towel/proc/on_exited(datum/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
 
-	SEND_SIGNAL(gone, COMSIG_CLEAR_MOOD_EVENT, "on_towel")
+	if(!isliving(gone))
+		return
+	var/mob/living/living_gone = gone
+	living_gone.clear_mood_event("on_towel")
 
 /obj/structure/beach_towel/examine(mob/user)
 	. = ..()
@@ -356,7 +364,7 @@
 
 	try_pick_up(picker_up)
 
-/*
+/**
  * Attempt to pick up the towel. Run through a few checks and a do-after, then call [do_pick_up]
  *
  * picker_up - the mob who is trying to pick up the towel.
@@ -364,7 +372,7 @@
  * return FALSE if we cannot pick up the towel and TRUE otherwise
  */
 /obj/structure/beach_towel/proc/try_pick_up(mob/living/carbon/picker_up)
-	if(!picker_up.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, TRUE, FALSE))
+	if(!picker_up.canUseTopic(src, be_close = TRUE, no_tk = TRUE, need_hands = TRUE))
 		return FALSE
 
 	var/turf/our_turf = get_turf(src)
@@ -383,7 +391,7 @@
 	do_pick_up(picker_up)
 	return TRUE
 
-/*
+/**
  * Actually pick up the towel, moving the item to [picker_up], and deleting [src].
  * If any mobs walk onto the towel while being picked up, give them a slip.
  *

@@ -6,9 +6,6 @@ GLOBAL_LIST_INIT(loadout_jumpsuits, generate_loadout_items(/datum/loadout_item/u
 /// Underslot - Formal Suit Items (Deletes overrided items)
 GLOBAL_LIST_INIT(loadout_undersuits, generate_loadout_items(/datum/loadout_item/under/formal))
 
-/// Underslot - Misc. Under Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/under/miscellaneous))
-
 /datum/loadout_item/under
 	category = LOADOUT_ITEM_UNIFORM
 
@@ -25,159 +22,85 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 
 /datum/loadout_item/under/jumpsuit/greyscale
 	name = "Greyscale Jumpsuit"
-	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/under/color/greyscale
 
 /datum/loadout_item/under/jumpsuit/greyscale_skirt
 	name = "Greyscale Jumpskirt"
-	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/under/color/jumpskirt/greyscale
 
 /datum/loadout_item/under/jumpsuit/random
 	name = "Random Jumpsuit"
+	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/clothing/under/color/random
 	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
 
+/datum/loadout_item/under/jumpsuit/random/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+	return
+
 /datum/loadout_item/under/jumpsuit/random_skirt
 	name = "Random Jumpskirt"
+	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/clothing/under/color/jumpskirt/random
 	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
 
-/datum/loadout_item/under/jumpsuit/black
-	name = "Black Jumpsuit"
-	item_path = /obj/item/clothing/under/color/black
+/datum/loadout_item/under/jumpsuit/random_skirt/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+	return
 
-/datum/loadout_item/under/jumpsuit/black_skirt
-	name = "Black Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/black
+/datum/loadout_item/under/jumpsuit/jeans
+	name = "Jeans"
+	item_path = /obj/item/clothing/under/pants/jeans
 
-/datum/loadout_item/under/jumpsuit/blue
-	name = "Blue Jumpsuit"
-	item_path = /obj/item/clothing/under/color/blue
+/datum/loadout_item/under/jumpsuit/shorts
+	name = "Shorts"
+	item_path = /obj/item/clothing/under/shorts
 
-/datum/loadout_item/under/jumpsuit/blue_skirt
-	name = "Blue Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/blue
+/datum/loadout_item/under/jumpsuit/track
+	name = "Track Pants"
+	item_path = /obj/item/clothing/under/pants/track
 
-/datum/loadout_item/under/jumpsuit/brown
-	name = "Brown Jumpsuit"
-	item_path = /obj/item/clothing/under/color/brown
+/datum/loadout_item/under/jumpsuit/camo
+	name = "Camo Pants"
+	item_path = /obj/item/clothing/under/pants/camo
 
-/datum/loadout_item/under/jumpsuit/brown_skirt
-	name = "Brown Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/brown
+/datum/loadout_item/under/jumpsuit/kilt
+	name = "Kilt"
+	item_path = /obj/item/clothing/under/costume/kilt
 
-/datum/loadout_item/under/jumpsuit/darkblue
-	name = "Dark Blue Jumpsuit"
-	item_path = /obj/item/clothing/under/color/darkblue
+/datum/loadout_item/under/jumpsuit/gladiator
+	name = "Gladiator Armor"
+	item_path = /obj/item/clothing/under/costume/gladiator/loadout
 
-/datum/loadout_item/under/jumpsuit/darkblue_skirt
-	name = "Dark Blue Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/darkblue
+/datum/loadout_item/under/jumpsuit/treasure_hunter
+	name = "Treasure Hunter"
+	item_path = /obj/item/clothing/under/rank/civilian/curator/treasure_hunter
 
-/datum/loadout_item/under/jumpsuit/darkgreen
-	name = "Dark Green Jumpsuit"
-	item_path = /obj/item/clothing/under/color/darkgreen
+/datum/loadout_item/under/jumpsuit/overalls
+	name = "Overalls"
+	item_path = /obj/item/clothing/under/misc/overalls
 
-/datum/loadout_item/under/jumpsuit/darkgreen_skirt
-	name = "Dark Green Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/darkgreen
+/datum/loadout_item/under/jumpsuit/pj_blue
+	name = "Mailman Jumpsuit"
+	item_path = /obj/item/clothing/under/misc/mailman
 
-/datum/loadout_item/under/jumpsuit/green
-	name = "Green Jumpsuit"
-	item_path = /obj/item/clothing/under/color/green
+/datum/loadout_item/under/jumpsuit/vice_officer
+	name = "Vice Officer Jumpsuit"
+	item_path = /obj/item/clothing/under/misc/vice_officer
 
-/datum/loadout_item/under/jumpsuit/green_skirt
-	name = "Green Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/green
+/datum/loadout_item/under/jumpsuit/soviet
+	name = "Soviet Uniform"
+	item_path = /obj/item/clothing/under/costume/soviet
 
-/datum/loadout_item/under/jumpsuit/grey
-	name = "Grey Jumpsuit"
-	item_path = /obj/item/clothing/under/color/grey
+/datum/loadout_item/under/jumpsuit/redcoat
+	name = "Redcoat"
+	item_path = /obj/item/clothing/under/costume/redcoat
 
-/datum/loadout_item/under/jumpsuit/grey_skirt
-	name = "Grey Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/grey
+/datum/loadout_item/under/jumpsuit/pj_red
+	name = "Red PJs"
+	item_path = /obj/item/clothing/under/misc/pj/red
 
-/datum/loadout_item/under/jumpsuit/lightbrown
-	name = "Light Brown Jumpsuit"
-	item_path = /obj/item/clothing/under/color/lightbrown
-
-/datum/loadout_item/under/jumpsuit/ightbrown_skirt
-	name = "Light Brown Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/lightbrown
-
-/datum/loadout_item/under/jumpsuit/lightpurple
-	name = "Light Purple Jumpsuit"
-	item_path = /obj/item/clothing/under/color/lightpurple
-
-/datum/loadout_item/under/jumpsuit/lightpurple_skirt
-	name = "Light Purple Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/lightpurple
-
-/datum/loadout_item/under/jumpsuit/maroon
-	name = "Maroon Jumpsuit"
-	item_path = /obj/item/clothing/under/color/maroon
-
-/datum/loadout_item/under/jumpsuit/maroon_skirt
-	name = "Maroon Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/maroon
-
-/datum/loadout_item/under/jumpsuit/irange
-	name = "Orange Jumpsuit"
-	item_path = /obj/item/clothing/under/color/orange
-
-/datum/loadout_item/under/jumpsuit/orange_skirt
-	name = "Orange Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/orange
-
-/datum/loadout_item/under/jumpsuit/pin
-	name = "Pink Jumpsuit"
-	item_path = /obj/item/clothing/under/color/pink
-
-/datum/loadout_item/under/jumpsuit/pink_skirt
-	name = "Pink Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/pink
-
-/datum/loadout_item/under/jumpsuit/rainbow
-	name = "Rainbow Jumpsuit"
-	item_path = /obj/item/clothing/under/color/rainbow
-
-/datum/loadout_item/under/jumpsuit/rainbow_skirt
-	name = "Rainbow Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/rainbow
-
-/datum/loadout_item/under/jumpsuit/red
-	name = "Red Jumpsuit"
-	item_path = /obj/item/clothing/under/color/red
-
-/datum/loadout_item/under/jumpsuit/red_skirt
-	name = "Red Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/red
-
-/datum/loadout_item/under/jumpsuit/teal
-	name = "Teal Jumpsuit"
-	item_path = /obj/item/clothing/under/color/teal
-
-/datum/loadout_item/under/jumpsuit/teal_skirt
-	name = "Teal Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/teal
-
-/datum/loadout_item/under/jumpsuit/yellow
-	name = "Yellow Jumpsuit"
-	item_path = /obj/item/clothing/under/color/yellow
-
-/datum/loadout_item/under/jumpsuit/yellow_skirt
-	name = "Yellow Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/yellow
-
-/datum/loadout_item/under/jumpsuit/white
-	name = "White Jumpsuit"
-	item_path = /obj/item/clothing/under/color/white
-
-/datum/loadout_item/under/jumpsuit/white_skirt
-	name = "White Jumpskirt"
-	item_path = /obj/item/clothing/under/color/jumpskirt/white
+/datum/loadout_item/under/jumpsuit/pj_blue
+	name = "Blue PJs"
+	item_path = /obj/item/clothing/under/misc/pj/blue
 
 // formal undersuits
 /datum/loadout_item/under/formal
@@ -198,7 +121,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Black Suit"
 	item_path = /obj/item/clothing/under/suit/black
 
-
 /datum/loadout_item/under/formal/executive_suit_alt
 	name = "Beige and Blue Suit"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/beige
@@ -211,17 +133,13 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Black Suitskirt"
 	item_path = /obj/item/clothing/under/suit/black/skirt
 
-/datum/loadout_item/under/formal/black_tango
-	name = "Black Tango Dress"
-	item_path = /obj/item/clothing/under/dress/blacktango
+/datum/loadout_item/under/formal/tango
+	name = "Tango Dress"
+	item_path = /obj/item/clothing/under/dress/tango
 
 /datum/loadout_item/under/formal/Black_twopiece
 	name = "Black Two-Piece Suit"
 	item_path = /obj/item/clothing/under/suit/blacktwopiece
-
-/datum/loadout_item/under/formal/black_skirt
-	name = "Black Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt
 
 /datum/loadout_item/under/formal/black_lawyer_suit
 	name = "Black Lawyer Suit"
@@ -247,17 +165,17 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Blue Lawyer Suitskirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/blue/skirt
 
-/datum/loadout_item/under/formal/blue_skirt
-	name = "Blue Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/blue
-
-/datum/loadout_item/under/formal/blue_skirt_plaid
-	name = "Blue Plaid Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/plaid/blue
-
 /datum/loadout_item/under/formal/burgundy_suit
 	name = "Burgundy Suit"
 	item_path = /obj/item/clothing/under/suit/burgundy
+
+/datum/loadout_item/under/formal/buttondown_slacks
+	name = "Button Down with Slacks"
+	item_path = /obj/item/clothing/under/costume/buttondown/slacks
+
+/datum/loadout_item/under/formal/buttondown_shorts
+	name = "Button Down with Shorts"
+	item_path = /obj/item/clothing/under/costume/buttondown/shorts
 
 /datum/loadout_item/under/formal/charcoal_suit
 	name = "Charcoal Suit"
@@ -279,9 +197,13 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Green Suit"
 	item_path = /obj/item/clothing/under/suit/green
 
-/datum/loadout_item/under/formal/green_skirt_plaid
-	name = "Green Plaid Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/plaid/green
+/datum/loadout_item/under/formal/skirt_greyscale
+	name = "Greyscale Skirt"
+	item_path = /obj/item/clothing/under/dress/skirt
+
+/datum/loadout_item/under/formal/plaid_skirt_greyscale
+	name = "Greyscale Plaid Skirt"
+	item_path = /obj/item/clothing/under/dress/skirt/plaid
 
 /datum/loadout_item/under/formal/navy_suit
 	name = "Navy Suit"
@@ -303,14 +225,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Purple Suitskirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/purpsuit/skirt
 
-/datum/loadout_item/under/formal/purple_skirt
-	name = "Purple Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/purple
-
-/datum/loadout_item/under/formal/purple_skirt_plaid
-	name = "Purple Plaid Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/plaid/purple
-
 /datum/loadout_item/under/formal/red_suit
 	name = "Red Suit"
 	item_path = /obj/item/clothing/under/suit/red
@@ -326,14 +240,6 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/formal/red_gown
 	name = "Red Evening Gown"
 	item_path = /obj/item/clothing/under/dress/redeveninggown
-
-/datum/loadout_item/under/formal/red_skirt
-	name = "Red Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/red
-
-/datum/loadout_item/under/formal/red_skirt_plaid
-	name = "Red Plaid Skirt"
-	item_path = /obj/item/clothing/under/dress/skirt/plaid
 
 /datum/loadout_item/under/formal/sailor
 	name = "Sailor Suit"
@@ -375,6 +281,10 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 	name = "Teal Suitskirt"
 	item_path = /obj/item/clothing/under/suit/teal/skirt
 
+/datum/loadout_item/under/formal/turtleneck_skirt
+	name = "Turtleneck Skirt"
+	item_path = /obj/item/clothing/under/dress/skirt/turtleskirt
+
 /datum/loadout_item/under/formal/tuxedo
 	name = "Tuxedo Suit"
 	item_path = /obj/item/clothing/under/suit/tuxedo
@@ -394,118 +304,3 @@ GLOBAL_LIST_INIT(loadout_miscunders, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/formal/white_skirt
 	name = "White Suitskirt"
 	item_path = /obj/item/clothing/under/suit/white/skirt
-
-// misc undersuits
-/datum/loadout_item/under/miscellaneous
-
-/datum/loadout_item/under/miscellaneous/camo
-	name = "Camo Pants"
-	item_path = /obj/item/clothing/under/pants/camo
-
-/datum/loadout_item/under/miscellaneous/jeans_classic
-	name = "Classic Jeans"
-	item_path = /obj/item/clothing/under/pants/classicjeans
-
-/datum/loadout_item/under/miscellaneous/jeans_black
-	name = "Black Jeans"
-	item_path = /obj/item/clothing/under/pants/blackjeans
-
-/datum/loadout_item/under/miscellaneous/black
-	name = "Black Pants"
-	item_path = /obj/item/clothing/under/pants/black
-
-/datum/loadout_item/under/miscellaneous/black_short
-	name = "Black Shorts"
-	item_path = /obj/item/clothing/under/shorts/black
-
-/datum/loadout_item/under/miscellaneous/blue_short
-	name = "Blue Shorts"
-	item_path = /obj/item/clothing/under/shorts/blue
-
-/datum/loadout_item/under/miscellaneous/green_short
-	name = "Green Shorts"
-	item_path = /obj/item/clothing/under/shorts/green
-
-/datum/loadout_item/under/miscellaneous/grey_short
-	name = "Grey Shorts"
-	item_path = /obj/item/clothing/under/shorts/grey
-
-/datum/loadout_item/under/miscellaneous/jeans
-	name = "Jeans"
-	item_path = /obj/item/clothing/under/pants/jeans
-
-/datum/loadout_item/under/miscellaneous/khaki
-	name = "Khaki Pants"
-	item_path = /obj/item/clothing/under/pants/khaki
-
-/datum/loadout_item/under/miscellaneous/jeans_musthang
-	name = "Must Hang Jeans"
-	item_path = /obj/item/clothing/under/pants/mustangjeans
-
-/datum/loadout_item/under/miscellaneous/purple_short
-	name = "Purple Shorts"
-	item_path = /obj/item/clothing/under/shorts/purple
-
-/datum/loadout_item/under/miscellaneous/red
-	name = "Red Pants"
-	item_path = /obj/item/clothing/under/pants/red
-
-/datum/loadout_item/under/miscellaneous/red_short
-	name = "Red Shorts"
-	item_path = /obj/item/clothing/under/shorts/red
-
-/datum/loadout_item/under/miscellaneous/tam
-	name = "Tan Pants"
-	item_path = /obj/item/clothing/under/pants/tan
-
-/datum/loadout_item/under/miscellaneous/track
-	name = "Track Pants"
-	item_path = /obj/item/clothing/under/pants/track
-
-/datum/loadout_item/under/miscellaneous/jeans_youngfolk
-	name = "Young Folks Jeans"
-	item_path = /obj/item/clothing/under/pants/youngfolksjeans
-
-/datum/loadout_item/under/miscellaneous/white
-	name = "White Pants"
-	item_path = /obj/item/clothing/under/pants/white
-
-/datum/loadout_item/under/miscellaneous/kilt
-	name = "Kilt"
-	item_path = /obj/item/clothing/under/costume/kilt
-
-/datum/loadout_item/under/miscellaneous/gladiator
-	name = "Gladiator Armor"
-	item_path = /obj/item/clothing/under/costume/gladiator/loadout
-
-/datum/loadout_item/under/miscellaneous/treasure_hunter
-	name = "Treasure Hunter"
-	item_path = /obj/item/clothing/under/rank/civilian/curator/treasure_hunter
-
-/datum/loadout_item/under/miscellaneous/overalls
-	name = "Overalls"
-	item_path = /obj/item/clothing/under/misc/overalls
-
-/datum/loadout_item/under/miscellaneous/pj_blue
-	name = "Mailman Jumpsuit"
-	item_path = /obj/item/clothing/under/misc/mailman
-
-/datum/loadout_item/under/miscellaneous/vice_officer
-	name = "Vice Officer Jumpsuit"
-	item_path = /obj/item/clothing/under/misc/vice_officer
-
-/datum/loadout_item/under/miscellaneous/soviet
-	name = "Soviet Uniform"
-	item_path = /obj/item/clothing/under/costume/soviet
-
-/datum/loadout_item/under/miscellaneous/redcoat
-	name = "Redcoat"
-	item_path = /obj/item/clothing/under/costume/redcoat
-
-/datum/loadout_item/under/miscellaneous/pj_red
-	name = "Red PJs"
-	item_path = /obj/item/clothing/under/misc/pj/red
-
-/datum/loadout_item/under/miscellaneous/pj_blue
-	name = "Blue PJs"
-	item_path = /obj/item/clothing/under/misc/pj/blue

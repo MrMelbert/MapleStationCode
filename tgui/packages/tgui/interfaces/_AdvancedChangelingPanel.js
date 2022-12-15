@@ -6,10 +6,7 @@ import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedChangelingPanel = (props, context) => {
   const { act, data } = useBackend(context);
-  const {
-    goals_finalized,
-    cannot_absorb,
-  } = data;
+  const { goals_finalized, cannot_absorb } = data;
 
   return (
     <AdvancedTraitorWindow theme="neutral">
@@ -25,7 +22,8 @@ export const _AdvancedChangelingPanel = (props, context) => {
           checked={cannot_absorb}
           tooltip="If checked, the ability to use absorb will be disabled. \
             Disabling absorbing rewards +10 max chemical storage."
-          onClick={() => act('toggle_absorb')} />
+          onClick={() => act('toggle_absorb')}
+        />
       </AdvancedTraitorGoalsSection>
     </AdvancedTraitorWindow>
   );
@@ -33,13 +31,7 @@ export const _AdvancedChangelingPanel = (props, context) => {
 
 export const AdvancedChangelingBackground = (props, context) => {
   const { act, data } = useBackend(context);
-  const {
-    name,
-    employer,
-    backstory,
-    changeling_id,
-    goals_finalized,
-  } = data;
+  const { name, employer, backstory, changeling_id, goals_finalized } = data;
   return (
     <Stack vertical>
       <Stack.Item>
@@ -51,18 +43,24 @@ export const AdvancedChangelingBackground = (props, context) => {
                   width="90%"
                   value={name}
                   placeholder={name}
-                  onInput={(e, value) => act('set_name', {
-                    name: value,
-                  })} />
+                  onInput={(e, value) =>
+                    act('set_name', {
+                      name: value,
+                    })
+                  }
+                />
               </LabeledList.Item>
               <LabeledList.Item label="Employer">
                 <Input
                   width="90%"
                   value={employer}
                   placeholder={employer}
-                  onInput={(e, value) => act('set_employer', {
-                    employer: value,
-                  })} />
+                  onInput={(e, value) =>
+                    act('set_employer', {
+                      employer: value,
+                    })
+                  }
+                />
               </LabeledList.Item>
             </LabeledList>
           </Stack.Item>
@@ -73,9 +71,12 @@ export const AdvancedChangelingBackground = (props, context) => {
                   value={changeling_id}
                   placeholder={changeling_id}
                   disabled={goals_finalized}
-                  onInput={(e, value) => act('set_ling_id', {
-                    changeling_id: value,
-                  })} />
+                  onInput={(e, value) =>
+                    act('set_ling_id', {
+                      changeling_id: value,
+                    })
+                  }
+                />
               </LabeledList.Item>
             </LabeledList>
           </Stack.Item>
@@ -90,9 +91,12 @@ export const AdvancedChangelingBackground = (props, context) => {
               height="54px"
               value={backstory}
               placeholder={backstory}
-              onInput={(e, value) => act('set_backstory', {
-                backstory: value,
-              })} />
+              onInput={(e, value) =>
+                act('set_backstory', {
+                  backstory: value,
+                })
+              }
+            />
           </LabeledList.Item>
         </LabeledList>
       </Stack.Item>

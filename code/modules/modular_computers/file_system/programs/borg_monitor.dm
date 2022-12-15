@@ -1,12 +1,12 @@
 /datum/computer_file/program/borg_monitor
 	filename = "siliconnect"
 	filedesc = "SiliConnect"
-	category = PROGRAM_CATEGORY_ROBO
+	category = PROGRAM_CATEGORY_SCI
 	ui_header = "borg_mon.gif"
 	program_icon_state = "generic"
 	extended_desc = "This program allows for remote monitoring of station cyborgs."
 	requires_ntnet = TRUE
-	transfer_access = ACCESS_ROBOTICS
+	transfer_access = list(ACCESS_ROBOTICS)
 	size = 5
 	tgui_id = "NtosCyborgRemoteMonitor"
 	program_icon = "project-diagram"
@@ -47,7 +47,7 @@
 	borgo.logevent("File request by [username]: /var/logs/syslog")
 	return TRUE
 
-/datum/computer_file/program/borg_monitor/process_tick()
+/datum/computer_file/program/borg_monitor/process_tick(delta_time)
 	if(!DL_source)
 		DL_progress = -1
 		return
@@ -144,7 +144,7 @@
 
 ///This proc is used to determin if a borg should be shown in the list (based on the borg's scrambledcodes var). Syndicate version overrides this to show only syndicate borgs.
 /datum/computer_file/program/borg_monitor/proc/evaluate_borg(mob/living/silicon/robot/R)
-	if((get_turf(computer)).z != (get_turf(R)).z)
+	if(!is_valid_z_level(get_turf(computer), get_turf(R)))
 		return FALSE
 	if(R.scrambledcodes)
 		return FALSE
@@ -162,21 +162,21 @@
 /datum/computer_file/program/borg_monitor/syndicate
 	filename = "roboverlord"
 	filedesc = "Roboverlord"
-	category = PROGRAM_CATEGORY_ROBO
+	category = PROGRAM_CATEGORY_SCI
 	ui_header = "borg_mon.gif"
 	program_icon_state = "generic"
 	extended_desc = "This program allows for remote monitoring of mission-assigned cyborgs."
 	requires_ntnet = FALSE
 	available_on_ntnet = FALSE
 	available_on_syndinet = TRUE
-	transfer_access = null
+	transfer_access = list()
 	tgui_id = "NtosCyborgRemoteMonitorSyndicate"
 
 /datum/computer_file/program/borg_monitor/syndicate/run_emag()
 	return FALSE
 
 /datum/computer_file/program/borg_monitor/syndicate/evaluate_borg(mob/living/silicon/robot/R)
-	if((get_turf(computer)).z != (get_turf(R)).z)
+	if(!is_valid_z_level(get_turf(computer), get_turf(R)))
 		return FALSE
 	if(!R.scrambledcodes)
 		return FALSE

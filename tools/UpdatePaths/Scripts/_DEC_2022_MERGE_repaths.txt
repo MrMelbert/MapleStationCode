@@ -1,0 +1,21 @@
+/area/engineering/@SUBTYPES : /area/station/engineering/@SUBTYPES {@OLD}
+/area/security/@SUBTYPES : /area/station/security/@SUBTYPES {@OLD}
+/area/command/@SUBTYPES : /area/station/command/@SUBTYPES {@OLD}
+/area/service/@SUBTYPES : /area/station/service/@SUBTYPES {@OLD}
+/area/science/@SUBTYPES : /area/station/science/@SUBTYPES {@OLD}
+/area/medical/@SUBTYPES : /area/station/medical/@SUBTYPES {@OLD}
+/area/maintenance/@SUBTYPES : /area/station/maintenance/@SUBTYPES {@OLD}
+/area/tcommsat/@SUBTYPES : /area/station/tcommsat/@SUBTYPES {@OLD}
+/area/commons/@SUBTYPES : /area/station/commons/@SUBTYPES {@OLD}
+
+/obj/item/storage/firstaid/@SUBTYPES : /obj/item/storage/medkit/@SUBTYPES {@OLD}
+
+/obj/structure/janitorialcart : /obj/structure/mop_bucket/janitorialcart {@OLD}
+
+/obj/item/clothing/head/rabbitears : /obj/item/clothing/head/costume/rabbitears {@OLD}
+
+/obj/machinery/atmospherics/components/unary/outlet_injector/atmos/@SUBTYPES : /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/@SUBTYPES {@OLD}
+/obj/machinery/atmospherics/components/unary/vent_pump/siphon/atmos/@SUBTYPES : /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/@SUBTYPES {@OLD}
+/obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/atmos/@SUBTYPES : /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/@SUBTYPES {@OLD}
+/obj/machinery/air_sensor/atmos/@SUBTYPES : /obj/machinery/air_sensor/@SUBTYPES {@OLD}
+/obj/machinery/air_sensor/atmos_control/tank/@SUBTYPES : /obj/machinery/atmos_control/@SUBTYPES {@OLD}

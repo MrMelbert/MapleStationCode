@@ -97,9 +97,6 @@
 /// log virology data
 /datum/config_entry/flag/log_virus
 
-/// log cloning actions.
-/datum/config_entry/flag/log_cloning
-
 /// log assets
 /datum/config_entry/flag/log_asset
 
@@ -118,6 +115,9 @@
 /// log economy actions
 /datum/config_entry/flag/log_econ
 
+/// log traitor objectives
+/datum/config_entry/flag/log_traitor
+
 /// log admin chat messages
 /datum/config_entry/flag/log_adminchat
 	protection = CONFIG_ENTRY_LOCKED
@@ -130,6 +130,9 @@
 
 /// log telecomms messages
 /datum/config_entry/flag/log_telecomms
+
+/// log speech indicators(started/stopped speaking)
+/datum/config_entry/flag/log_speech_indicators
 
 /// log certain expliotable parrots and other such fun things in a JSON file of twitter valid phrases.
 /datum/config_entry/flag/log_twitter
@@ -161,6 +164,14 @@
 /// allow votes to change map
 /datum/config_entry/flag/allow_vote_map
 
+/// allow players to vote to re-do the map vote
+/datum/config_entry/flag/allow_rock_the_vote
+
+/// the number of times we allow players to rock the vote
+/datum/config_entry/number/max_rocking_votes
+	default = 1
+	min_val = 1
+
 /// minimum time between voting sessions (deciseconds, 10 minute default)
 /datum/config_entry/number/vote_delay
 	default = 6000
@@ -173,7 +184,8 @@
 	integer = FALSE
 	min_val = 0
 
-/// vote does not default to nochange/norestart.
+/// If disabled, non-voters will automatically have their votes added to certain vote options
+/// (For example: restart votes will default to "no restart", map votes will default to their preferred map / default map, rocking the vote will default to "no")
 /datum/config_entry/flag/default_no_vote
 
 /// Prevents dead people from voting.
@@ -218,10 +230,6 @@
 
 /datum/config_entry/flag/allow_holidays
 
-/datum/config_entry/number/tick_limit_mc_init //SSinitialization throttling
-	default = TICK_LIMIT_MC_INIT_DEFAULT
-	min_val = 0 //oranges warned us
-	integer = FALSE
 
 /datum/config_entry/flag/admin_legacy_system //Defines whether the server uses the legacy admin system with admins.txt or the SQL system
 	protection = CONFIG_ENTRY_LOCKED
@@ -344,6 +352,8 @@
 	protection = CONFIG_ENTRY_LOCKED | CONFIG_ENTRY_HIDDEN
 
 /datum/config_entry/flag/show_irc_name
+
+/datum/config_entry/flag/no_default_techweb_link
 
 /datum/config_entry/flag/see_own_notes //Can players see their own admin notes
 
@@ -543,7 +553,7 @@
 
 /datum/config_entry/flag/resume_after_initializations/ValidateAndSet(str_val)
 	. = ..()
-	if(. && Master.current_runlevel)
+	if(. && MC_RUNNING())
 		world.sleep_offline = !config_entry_value
 
 /datum/config_entry/number/rounds_until_hard_restart
@@ -596,10 +606,15 @@
 /datum/config_entry/string/urgent_ahelp_message
 	default = "This ahelp is urgent!"
 
+/datum/config_entry/string/ahelp_message
+	default = ""
+
 /datum/config_entry/string/urgent_ahelp_user_prompt
 	default = "There are no admins currently on. Do not press the button below if your ahelp is a joke, a request or a question. Use it only for cases of obvious grief."
 
-/datum/config_entry/string/adminhelp_webhook_url
+/datum/config_entry/string/urgent_adminhelp_webhook_url
+
+/datum/config_entry/string/regular_adminhelp_webhook_url
 
 /datum/config_entry/string/adminhelp_webhook_pfp
 
@@ -621,3 +636,12 @@
 /datum/config_entry/flag/forbid_all_profiling
 
 /datum/config_entry/flag/forbid_admin_profiling
+
+
+/datum/config_entry/flag/morgue_cadaver_disable_nonhumans
+	default = FALSE
+
+/datum/config_entry/number/morgue_cadaver_other_species_probability
+	default = 50
+
+/datum/config_entry/string/morgue_cadaver_override_species

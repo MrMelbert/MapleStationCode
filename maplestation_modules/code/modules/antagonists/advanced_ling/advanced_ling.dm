@@ -138,7 +138,7 @@
 
 /datum/advanced_antag_datum/changeling/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are a mysterious changeling sent to [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
-	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_three), antagonist), 3 SECONDS)
 
 /datum/advanced_antag_datum/changeling/ui_data(mob/user)
 	. = ..()

@@ -6,10 +6,7 @@ import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedCultPanel = (props, context) => {
   const { act, data } = useBackend(context);
-  const {
-    goals_finalized,
-    can_convert,
-  } = data;
+  const { goals_finalized, can_convert } = data;
 
   return (
     <AdvancedTraitorWindow theme="abductor">
@@ -25,7 +22,8 @@ export const _AdvancedCultPanel = (props, context) => {
           checked={can_convert}
           tooltip="If checked, the ability to convert will be enabled. \
             Disabling conversion rewards +1 max spell slots."
-          onClick={() => act('toggle_conversion')} />
+          onClick={() => act('toggle_conversion')}
+        />
       </AdvancedTraitorGoalsSection>
     </AdvancedTraitorWindow>
   );
@@ -53,18 +51,24 @@ export const AdvancedCultBackground = (props, context) => {
                   width="90%"
                   value={name}
                   placeholder={name}
-                  onInput={(e, value) => act('set_name', {
-                    name: value,
-                  })} />
+                  onInput={(e, value) =>
+                    act('set_name', {
+                      name: value,
+                    })
+                  }
+                />
               </LabeledList.Item>
               <LabeledList.Item label="Diety">
                 <Input
                   width="90%"
                   value={employer}
                   placeholder={employer}
-                  onInput={(e, value) => act('set_employer', {
-                    employer: value,
-                  })} />
+                  onInput={(e, value) =>
+                    act('set_employer', {
+                      employer: value,
+                    })
+                  }
+                />
               </LabeledList.Item>
             </LabeledList>
           </Stack.Item>
@@ -76,9 +80,12 @@ export const AdvancedCultBackground = (props, context) => {
                   selected={cult_style}
                   options={cult_style_options}
                   disabled={goals_finalized}
-                  onSelected={value => act('set_cult_style', {
-                    cult_style: value,
-                  })} />
+                  onSelected={(value) =>
+                    act('set_cult_style', {
+                      cult_style: value,
+                    })
+                  }
+                />
               </LabeledList.Item>
             </LabeledList>
           </Stack.Item>
@@ -93,9 +100,12 @@ export const AdvancedCultBackground = (props, context) => {
               height="54px"
               value={backstory}
               placeholder={backstory}
-              onInput={(e, value) => act('set_backstory', {
-                backstory: value,
-              })} />
+              onInput={(e, value) =>
+                act('set_backstory', {
+                  backstory: value,
+                })
+              }
+            />
           </LabeledList.Item>
         </LabeledList>
       </Stack.Item>

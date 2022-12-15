@@ -29,21 +29,6 @@
 /datum/antagonist/changeling/proc/play_changeling_sound()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ling_aler.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
-/// Generate a changeling name for our ling, if they don't have their own.
-/datum/antagonist/changeling/proc/generate_name()
-	var/honorific
-	if(owner.current.gender == FEMALE)
-		honorific = "Ms."
-	else if(owner.current.gender == MALE)
-		honorific = "Mr."
-	else
-		honorific = "Mx."
-
-	if(GLOB.possible_abductor_names.len)
-		changeling_id = "[honorific] [pick_n_take(GLOB.possible_abductor_names)]"
-	else
-		changeling_id = "[honorific] [rand(1, 999)]"
-
 /datum/antagonist/changeling/headslug
 	hivemind_link_awoken = FALSE
 
@@ -99,7 +84,6 @@
 
 /datum/antagonist/fallen_changeling
 	show_in_antagpanel = FALSE
-	soft_antag = TRUE
 	/// Our changeling ID before we lost everything.
 	var/previous_changeling_id = ""
 	/// Weakref to the mind of the changeling that stole our powers.
@@ -125,7 +109,6 @@
 	show_in_antagpanel = FALSE
 	give_objectives = FALSE
 	give_innates = FALSE
-	soft_antag = TRUE
 	hivemind_link_awoken = FALSE
 	/// Weakref to a mob of whoever made us into a ling
 	var/datum/weakref/granter

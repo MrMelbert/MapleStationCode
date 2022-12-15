@@ -4,7 +4,7 @@
 /turf/open/floor/grass/fairy,
 /area/ruin/powered/shuttle)
 "bW" = (
-/obj/item/reagent_containers/glass/bucket/wooden,
+/obj/item/reagent_containers/cup/bucket/wooden,
 /turf/open/floor/plating,
 /area/ruin/powered/shuttle)
 "cI" = (
@@ -12,7 +12,7 @@
 /area/ruin/powered/shuttle)
 "de" = (
 /obj/item/flashlight/lantern,
-/turf/open/floor/plating/asteroid/snow/icemoon,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "ec" = (
 /obj/item/clothing/suit/hooded/wintercoat,
@@ -42,13 +42,13 @@
 /area/ruin/powered/shuttle)
 "lH" = (
 /obj/structure/barricade/wooden/crude/snow,
-/turf/open/floor/plating/asteroid/snow/icemoon,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "mN" = (
 /turf/closed/wall/mineral/wood,
 /area/ruin/powered/shuttle)
 "oJ" = (
-/obj/structure/sink,
+/obj/structure/sink/directional/south,
 /turf/open/floor/plating,
 /area/ruin/powered/shuttle)
 "pI" = (
@@ -73,7 +73,7 @@
 /area/ruin/powered/shuttle)
 "EV" = (
 /obj/item/storage/bag/plants/portaseeder,
-/obj/item/storage/firstaid/medical,
+/obj/item/storage/medkit/surgery,
 /obj/item/storage/bag/ore,
 /obj/structure/table/wood,
 /turf/open/floor/grass/fairy,
@@ -108,7 +108,7 @@
 /turf/open/floor/grass/fairy,
 /area/ruin/powered/shuttle)
 "OU" = (
-/turf/open/floor/plating/asteroid/snow/icemoon,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "QD" = (
 /turf/template_noop,
@@ -125,18 +125,18 @@
 /area/ruin/powered/shuttle)
 "Wb" = (
 /obj/structure/barricade/wooden/snowed,
-/turf/open/floor/plating/asteroid/snow/icemoon,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "Wc" = (
-/obj/structure/flora/tree/pine,
-/turf/open/floor/plating/asteroid/snow/icemoon,
+/obj/structure/flora/tree/pine/style_random,
+/turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "WK" = (
 /obj/machinery/portable_atmospherics/canister/oxygen,
 /turf/open/floor/grass/fairy,
 /area/ruin/powered/shuttle)
 "Xh" = (
-/obj/structure/flora/tree/jungle/small,
+/obj/structure/flora/tree/jungle/small/style_random,
 /turf/open/floor/grass/fairy,
 /area/ruin/powered/shuttle)
 "XI" = (

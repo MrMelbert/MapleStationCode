@@ -6,11 +6,7 @@ import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedHereticPanel = (props, context) => {
   const { act, data } = useBackend(context);
-  const {
-    goals_finalized,
-    can_ascend,
-    can_sac,
-  } = data;
+  const { goals_finalized, can_ascend, can_sac } = data;
 
   return (
     <AdvancedTraitorWindow theme="wizard">
@@ -25,7 +21,8 @@ export const _AdvancedHereticPanel = (props, context) => {
           checked={can_ascend}
           tooltip="Toggle the ability to ascend. \
             Disabling ascending rewards 2 bonus knowledge points."
-          onClick={() => act('toggle_ascension')} />
+          onClick={() => act('toggle_ascension')}
+        />
       </AdvancedTraitorGoalsSection>
     </AdvancedTraitorWindow>
   );

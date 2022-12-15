@@ -9,12 +9,14 @@
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_assignment(if_no_id = "No id", if_no_job = "No job", hand_first = TRUE)
 	var/obj/item/card/id/id = get_idcard(hand_first)
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+		return if_no_id
 	if(id)
 		. = id.assignment
 	else
-		var/obj/item/pda/pda = wear_id
+		var/obj/item/modular_computer/pda = wear_id
 		if(istype(pda))
-			. = pda.ownjob
+			. = pda.saved_job
 		else
 			return if_no_id
 	if(!.)
@@ -24,17 +26,21 @@
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_authentification_name(if_no_id = "Unknown")
 	var/obj/item/card/id/id = get_idcard(FALSE)
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+		return if_no_id
 	if(id)
 		return id.registered_name
-	var/obj/item/pda/pda = wear_id
+	var/obj/item/modular_computer/pda = wear_id
 	if(istype(pda))
-		return pda.owner
+		return pda.saved_identification
 	return if_no_id
 
 //repurposed proc. Now it combines get_id_name() and get_face_name() to determine a mob's name variable. Made into a separate proc as it'll be useful elsewhere
 /mob/living/carbon/human/get_visible_name()
 	var/face_name = get_face_name("")
 	var/id_name = get_id_name("")
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+		return "Unknown"
 	if(name_override)
 		return name_override
 	if(face_name)
@@ -47,6 +53,8 @@
 
 //Returns "Unknown" if facially disfigured and real_name if not. Useful for setting name when Fluacided or when updating a human's name variable
 /mob/living/carbon/human/proc/get_face_name(if_no_face="Unknown")
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+		return if_no_face //We're Unknown, no face information for you
 	if( wear_mask && (wear_mask.flags_inv&HIDEFACE) ) //Wearing a mask which hides our face, use id-name if possible
 		return if_no_face
 	if( head && (head.flags_inv&HIDEFACE) )
@@ -60,19 +68,16 @@
 //Useful when player is being seen by other mobs
 /mob/living/carbon/human/proc/get_id_name(if_no_id = "Unknown")
 	var/obj/item/storage/wallet/wallet = wear_id
-	var/obj/item/pda/pda = wear_id
+	var/obj/item/modular_computer/tablet/pda/pda = wear_id
 	var/obj/item/card/id/id = wear_id
-	var/obj/item/modular_computer/tablet/tablet = wear_id
+	if(HAS_TRAIT(src, TRAIT_UNKNOWN))
+		. = if_no_id //You get NOTHING, no id name, good day sir
 	if(istype(wallet))
 		id = wallet.front_id
 	if(istype(id))
 		. = id.registered_name
-	else if(istype(pda))
-		. = pda.owner
-	else if(istype(tablet))
-		var/obj/item/computer_hardware/card_slot/card_slot = tablet.all_components[MC_CARD]
-		if(card_slot?.stored_card)
-			. = card_slot.stored_card.registered_name
+	else if(istype(pda) && pda.computer_id_slot)
+		. = pda.computer_id_slot.registered_name
 	if(!.)
 		. = if_no_id //to prevent null-names making the mob unclickable
 	return
@@ -88,25 +93,20 @@
 	return dna.species.handle_chemicals(R, src, delta_time, times_fired)
 	// if it returns 0, it will run the usual on_mob_life for that reagent. otherwise, it will stop after running handle_chemicals for the species.
 
-
-/mob/living/carbon/human/can_track(mob/living/user)
-	if(istype(head, /obj/item/clothing/head))
-		var/obj/item/clothing/head/hat = head
-		if(hat.blockTracking)
-			return 0
-
-	return ..()
-
 /mob/living/carbon/human/can_use_guns(obj/item/G)
 	. = ..()
 	if(G.trigger_guard == TRIGGER_GUARD_NORMAL)
-		if(HAS_TRAIT(src, TRAIT_CHUNKYFINGERS))
+		if(check_chunky_fingers())
 			balloon_alert(src, "fingers are too big!")
 			return FALSE
 	if(HAS_TRAIT(src, TRAIT_NOGUNS))
 		to_chat(src, span_warning("You can't bring yourself to use a ranged weapon!"))
 		return FALSE
 
+/mob/living/carbon/human/proc/check_chunky_fingers()
+	if(HAS_TRAIT_NOT_FROM(src, TRAIT_CHUNKYFINGERS, RIGHT_ARM_TRAIT) && HAS_TRAIT_NOT_FROM(src, TRAIT_CHUNKYFINGERS, LEFT_ARM_TRAIT))
+		return TRUE
+	return (active_hand_index % 2) ? HAS_TRAIT_FROM(src, TRAIT_CHUNKYFINGERS, LEFT_ARM_TRAIT) : HAS_TRAIT_FROM(src, TRAIT_CHUNKYFINGERS, RIGHT_ARM_TRAIT)
 /mob/living/carbon/human/get_policy_keywords()
 	. = ..()
 	. += "[dna.species.type]"
@@ -114,7 +114,7 @@
 /// When we're joining the game in [/mob/dead/new_player/proc/create_character], we increment our scar slot then store the slot in our mind datum.
 /mob/living/carbon/human/proc/increment_scar_slot()
 	var/check_ckey = ckey || client?.ckey
-	if(!check_ckey || !mind || !client?.prefs.persistent_scars)
+	if(!check_ckey || !mind || !client?.prefs.read_preference(/datum/preference/toggle/persistent_scars))
 		return
 
 	var/path = "data/player_saves/[check_ckey[1]]/[check_ckey]/scars.sav"
@@ -159,7 +159,7 @@
 
 /// Read all the scars we have for the designated character/scar slots, verify they're good/dump them if they're old/wrong format, create them on the user, and write the scars that passed muster back to the file
 /mob/living/carbon/human/proc/load_persistent_scars()
-	if(!ckey || !mind?.original_character_slot_index || !client?.prefs.persistent_scars)
+	if(!ckey || !mind?.original_character_slot_index || !client?.prefs.read_preference(/datum/preference/toggle/persistent_scars))
 		return
 
 	var/path = "data/player_saves/[ckey[1]]/[ckey]/scars.sav"
@@ -184,8 +184,8 @@
 	WRITE_FILE(F["scar[char_index]-[scar_index]"], sanitize_text(valid_scars))
 
 /// Save any scars we have to our designated slot, then write our current slot so that the next time we call [/mob/living/carbon/human/proc/increment_scar_slot] (the next round we join), we'll be there
-/mob/living/carbon/human/proc/save_persistent_scars(nuke=FALSE)
-	if(!ckey || !mind?.original_character_slot_index || !client?.prefs.persistent_scars)
+/mob/living/carbon/human/proc/save_persistent_scars(nuke = FALSE)
+	if(!ckey || !mind?.original_character_slot_index || !client?.prefs.read_preference(/datum/preference/toggle/persistent_scars))
 		return
 
 	var/path = "data/player_saves/[ckey[1]]/[ckey]/scars.sav"
@@ -215,7 +215,7 @@
 	var/t_his = p_their()
 	var/t_is = p_are()
 	//This checks to see if the body is revivable
-	if(key || !getorgan(/obj/item/organ/brain) || ghost?.can_reenter_corpse)
+	if(key || !getorgan(/obj/item/organ/internal/brain) || ghost?.can_reenter_corpse)
 		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life...")
 	else
 		return span_deadsay("[t_He] [t_is] limp and unresponsive; there are no signs of life and [t_his] soul has departed...")
@@ -231,7 +231,7 @@
 
 /// Fully randomizes everything according to the given flags.
 /mob/living/carbon/human/proc/randomize_human_appearance(randomize_flags = ALL)
-	var/datum/preferences/preferences = new
+	var/datum/preferences/preferences = new(new /datum/client_interface)
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (!preference.included_in_randomization_flags(randomize_flags))

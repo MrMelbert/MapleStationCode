@@ -45,7 +45,7 @@ endmap
 map multiz_debug
 endmap
 
-##JOLLY MAPS##
+##MAPLE MAPS##
 
 map limastation
 	votable

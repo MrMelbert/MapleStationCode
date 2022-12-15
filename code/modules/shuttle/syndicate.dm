@@ -1,4 +1,4 @@
-#define SYNDICATE_CHALLENGE_TIMER 20 MINUTES
+#define SYNDICATE_CHALLENGE_TIMER (20 MINUTES)
 
 /obj/machinery/computer/shuttle/syndicate
 	name = "syndicate shuttle terminal"
@@ -66,7 +66,7 @@
 	view_range = 5.5
 	x_offset = -7
 	y_offset = -1
-	whitelist_turfs = list(/turf/open/space, /turf/open/floor/plating, /turf/open/lava, /turf/closed/mineral, /turf/open/openspace)
+	whitelist_turfs = list(/turf/open/space, /turf/open/floor/plating, /turf/open/lava, /turf/closed/mineral, /turf/open/openspace, /turf/open/misc)
 	see_hidden = TRUE
 
 #undef SYNDICATE_CHALLENGE_TIMER

@@ -59,13 +59,13 @@
 /datum/advanced_antag_datum/proc/greet_message(mob/antagonist)
 	to_chat(antagonist, span_alertsyndie("You are a [name]!"))
 	antagonist.playsound_local(get_turf(antagonist), 'maplestation_modules/sound/radiodrum.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
-	addtimer(CALLBACK(src, .proc/greet_message_two, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_two), antagonist), 3 SECONDS)
 
 /// Give them details on what their role actually means to them, then move to greet_three after 3 seconds.
 /// antagonist - the mob being greeted, the antagonist.
 /datum/advanced_antag_datum/proc/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are a story driven antagonist! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
-	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_three), antagonist), 3 SECONDS)
 
 /// Give them a short guide on how to use the goal panel, and what all the buttons do.
 /// antagonist - the mob being greeted, the antagonist.

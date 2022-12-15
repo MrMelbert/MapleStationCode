@@ -7,4 +7,4 @@
 
 /datum/heretic_knowledge/no_ascension/New()
 	. = ..()
-	banned_knowledge = subtypesof(/datum/heretic_knowledge/final)
+	banned_knowledge = subtypesof(/datum/heretic_knowledge/ultimate)

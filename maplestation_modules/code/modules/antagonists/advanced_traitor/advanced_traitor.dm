@@ -4,7 +4,7 @@
 /// Proc to give the traitor their uplink and play the sound.
 /datum/antagonist/traitor/finalize_antag()
 	if(!linked_advanced_datum)
-		pick_employer(prob(75) ? FACTION_SYNDICATE : FACTION_NANOTRASEN)
+		pick_employer()
 		traitor_flavor = strings(TRAITOR_FLAVOR_FILE, employer)
 
 	if(give_uplink || linked_advanced_datum?.finalized)
@@ -13,7 +13,6 @@
 
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
-// MELBERT TODO: UPLINKS DON'T WORK SKREEEE
 /// Proc to handled the uplink items and the uplink handler after an uplink is given.
 /datum/antagonist/traitor/proc/handle_uplink()
 	var/datum/component/uplink/uplink = owner.find_syndicate_uplink()

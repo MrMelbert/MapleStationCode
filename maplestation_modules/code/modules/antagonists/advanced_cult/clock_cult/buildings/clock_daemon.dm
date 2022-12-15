@@ -32,9 +32,9 @@
 	. = ..()
 	START_PROCESSING(SSmachines, src)
 	if(!glow)
-		glow = mutable_appearance(icon, "tinkerglow", alpha = src.alpha)
+		glow = mutable_appearance(icon, "tinkerglow", offset_spokesman = src, alpha = src.alpha)
 		glow.color = COLOR_YELLOW
-		glow.overlays += emissive_appearance(icon, "tinkerglow", alpha = glow.alpha)
+		glow.overlays += emissive_appearance(icon, "tinkerglow", offset_spokesman = src, alpha = glow.alpha)
 	add_overlay(glow)
 
 /obj/structure/destructible/cult/item_dispenser/daemon_forge/Destroy()
@@ -53,9 +53,9 @@
 		rune_cache[picked] = rune
 
 	if(!glow)
-		glow = mutable_appearance(icon, "tinkerglow", alpha = 175)
+		glow = mutable_appearance(icon, "tinkerglow", offset_spokesman = src, alpha = 175)
 		glow.color = COLOR_YELLOW
-		glow.overlays += emissive_appearance(icon, "tinkerglow", alpha = glow.alpha)
+		glow.overlays += emissive_appearance(icon, "tinkerglow", offset_spokesman = src, alpha = glow.alpha)
 
 	. += glow
 	. += rune_cache[picked]

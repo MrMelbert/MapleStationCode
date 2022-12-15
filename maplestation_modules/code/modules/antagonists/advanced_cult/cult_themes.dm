@@ -39,7 +39,7 @@ GLOBAL_LIST(cult_themes)
 	/// List of runes this cult theme can invoke.
 	var/list/allowed_runes
 
-/*
+/**
  * Called when the cult theme is chosen in the UI.
  *
  * Gives a short explanantion of the cult type.
@@ -49,7 +49,7 @@ GLOBAL_LIST(cult_themes)
 	CRASH("Cult theme [type] did not implement on_chose_breakdown!")
 
 
- /*
+ /**
   * Helper proc to use that gets a fitting span for the cult theme.
   *
   * Returns the message passed in, with the cult span applied.
@@ -63,7 +63,7 @@ GLOBAL_LIST(cult_themes)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement cult_span!")
 
-/*
+/**
  * Called when a new cultist is made of this theme.
  *
  * cultist_datum - the antag datum of the cultist created
@@ -86,7 +86,7 @@ GLOBAL_LIST(cult_themes)
 	cultist.playsound_local(get_turf(cultist), on_gain_sound, 80, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	give_spells(cultist_datum, cultist)
 
-/*
+/**
  * Called when a new cult team is made by a cultist of this theme.
  *
  * cult_team - the team that was created
@@ -100,7 +100,7 @@ GLOBAL_LIST(cult_themes)
 
 	equip_cultist(lead_cultist.current)
 
-/*
+/**
  *  Called when a cultist of this theme is deconverted.
  *
  * cultist_datum - the antag datum of the cultist being deconverted. Deleted after this proc (but not by this proc)
@@ -114,7 +114,7 @@ GLOBAL_LIST(cult_themes)
 	if(language)
 		cultist.remove_language(language, TRUE, TRUE, LANGUAGE_CULTIST)
 
-/*
+/**
  * Equips a cultist with a set of ritual items.
  * Called whenever a new cult team is made, giving the leader their initial tools.
  *
@@ -142,10 +142,10 @@ GLOBAL_LIST(cult_themes)
 	if(failed_to_equip_a_slot)
 		to_chat(cultist, "You weren't given one or both of your ritual items correctly. Contact your local god!")
 	else
-		SEND_SIGNAL(human_cultist.back, COMSIG_TRY_STORAGE_SHOW, human_cultist)
+		human_cultist.back.atom_storage.show_contents(human_cultist)
 		to_chat(cultist, our_cult_span("You were given a [new_ritual_item.name] and some [new_ritual_mats.name] to grow your cult. They are in your backpack - use them wisely."))
 
-/*
+/**
  * Gives a cultist of this theme their corresponding spell creator action and initalizes it.
  * Sets the allowed spell list and such here.
  * Called when a cultist is made.
@@ -167,7 +167,7 @@ GLOBAL_LIST(cult_themes)
 	cultist_datum.our_magic = new_magic
 	cultist_datum.our_magic.Grant(cultist)
 
-/*
+/**
  * Get a list of all runes a cultist of this theme can make.
  * Called when a cultist scribes a rune.
  *
@@ -181,42 +181,42 @@ GLOBAL_LIST(cult_themes)
 
 	return LAZYCOPY(allowed_runes)
 
-/*
+/**
  * Get the text displayed when a [cultist] of this theme starts to make a rune.
  */
 /datum/cult_theme/proc/get_start_making_rune_text(mob/living/cultist)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement get_start_making_rune_text!")
 
-/*
+/**
  * Get the text displayed when a [cultist] of this theme finishes making a rune.
  */
 /datum/cult_theme/proc/get_end_making_rune_text(mob/living/cultist)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement get_end_making_rune_text!")
 
-/*
+/**
  * Get the text displayed when a [cultist] of this theme starts invoking magic.
  */
 /datum/cult_theme/proc/get_start_invoking_magic_text(added_magic, atom/target)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement get_start_invoking_magic_text!")
 
-/*
+/**
  * Get the text displayed when a [cultist] of this theme finishes invoking magic.
  */
 /datum/cult_theme/proc/get_end_invoking_magic_text(added_magic, atom/target)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement get_end_invoking_magic_text!")
 
-/*
+/**
  * Get the text displayed to a [cultist] of this theme is being deconverted.
  */
 /datum/cult_theme/proc/pick_deconversion_line()
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement pick_deconversion_line!")
 
-/*
+/**
  * Get the text displayed to a [cultist] of this theme is being deconverted, and is shamed by their god.
  */
 /datum/cult_theme/proc/pick_god_shame_line()

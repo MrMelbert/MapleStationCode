@@ -1,6 +1,6 @@
 /// Neutered changeling surgery.
 
-/*
+/**
  * Neuter changeling surgery.
  * - locked behind experimental surgery (uncommon to get)
  * - requires them to be headless
@@ -38,7 +38,7 @@
 	target_mobtypes = list(/mob/living/carbon/human)
 	possible_locs = list(BODY_ZONE_CHEST)
 	requires_bodypart_type = 0
-	ignore_clothes = TRUE
+	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_IGNORE_CLOTHES
 
 /datum/surgery/advanced/neuter_ling/can_start(mob/user, mob/living/carbon/target)
 	. = ..()

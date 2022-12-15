@@ -3,7 +3,7 @@ GLOBAL_VAR(captain_weapon_picked)
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
 	if(!GLOB.captain_weapon_picked)
-		AddComponent(/datum/component/subtype_picker, GLOB.captain_weapons, CALLBACK(src, .proc/on_captain_weapon_picked))
+		AddComponent(/datum/component/subtype_picker, GLOB.captain_weapons, CALLBACK(src, PROC_REF(on_captain_weapon_picked)))
 
 ///Probably doesn't need to be a proc, but this is used when the captain's weapon is chosen to make sure you can keep picking the sabre over and over. Has to be a global list so that its on the next weapon.
 /obj/item/melee/sabre/proc/on_captain_weapon_picked(obj/item/melee/sabre/captain_weapon_picked)
@@ -24,6 +24,7 @@ GLOBAL_VAR(captain_weapon_picked)
 	desc = "The captain's own laser rapier, designed to ruin any obnoxious security cameras. Marked with the logo of a company named TriOptimum."
 	icon = 'maplestation_modules/icons/obj/weapons.dmi'
 	icon_state = "laser_rapier"
+	inhand_icon_state = "laser_rapier"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
 	force = 5 //The golden hilt is very blunt
@@ -36,7 +37,17 @@ GLOBAL_VAR(captain_weapon_picked)
 	. = ..()
 	if(!proximity)
 		return
-	if(blade_active) //deals double damage to cameras
-		if(istype(target, /obj/machinery/camera))
-			var/obj/machinery/targetted_camera = target
-			targetted_camera.take_damage(damage_amount = src.force, sound_effect = null, armour_penetration = src.armour_penetration)
+	if(!blade_active)
+		return
+
+	//deals double damage to cameras
+	if(!istype(target, /obj/machinery/camera))
+		return
+	//Techncially this cast is not necessary at all because take damage is atom level
+	//but not all overrides of take damage pass parameters so we can't use named args. Grr
+	var/obj/machinery/camera/casted_for_dumb_reason = target
+	casted_for_dumb_reason.take_damage(
+		damage_amount = force,
+		sound_effect = FALSE,
+		armour_penetration = armour_penetration,
+	)

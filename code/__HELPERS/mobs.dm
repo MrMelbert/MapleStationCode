@@ -59,10 +59,12 @@
 	return pick(GLOB.backpacklist)
 
 /proc/random_features()
+	if(!GLOB.tails_list.len)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/, GLOB.tails_list,  add_blank = TRUE)
 	if(!GLOB.tails_list_human.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human,  add_blank = TRUE)
 	if(!GLOB.tails_list_lizard.len)
-		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/lizard, GLOB.tails_list_lizard, add_blank = TRUE)
 	if(!GLOB.snouts_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
 	if(!GLOB.horns_list.len)
@@ -85,16 +87,16 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
 	if(!GLOB.moth_markings_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_markings, GLOB.moth_markings_list)
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 	if(!GLOB.head_tentacles_list.len) // NON-MODULE CHANGE: Head Tentacles initialize
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles, GLOB.head_tentacles_list)
 
-	// NON-MODULE CHANGE: Holy shit, this return is ass. Reformatted it for future sanity. Contains a non-module change.
+	//For now we will always return none for tail_human and ears. | "For now" he says.
 	return(list(
 		"mcolor" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
 		"ethcolor" = GLOB.color_list_ethereal[pick(GLOB.color_list_ethereal)],
-		"tail_lizard" = pick(GLOB.tails_list_lizard),
-		"tail_human" = "None",
-		"wings" = "None",
+		"tail_cat" = "None",
+		"tail_lizard" = "Smooth",
 		"snout" = pick(GLOB.snouts_list),
 		"horns" = pick(GLOB.horns_list),
 		"ears" = "None",
@@ -107,6 +109,7 @@
 		"moth_antennae" = pick(GLOB.moth_antennae_list),
 		"moth_markings" = pick(GLOB.moth_markings_list),
 		"tail_monkey" = "None",
+		"pod_hair" = pick(GLOB.pod_hair_list),
 		"head_tentacles" = pick(GLOB.head_tentacles_list),
 	))
 
@@ -340,6 +343,8 @@ GLOBAL_LIST_EMPTY(species_list)
 	if(progress)
 		progbar = new(user, delay, target || user)
 
+	SEND_SIGNAL(user, COMSIG_DO_AFTER_BEGAN)
+
 	var/endtime = world.time + delay
 	var/starttime = world.time
 	. = TRUE
@@ -378,7 +383,7 @@ GLOBAL_LIST_EMPTY(species_list)
 
 	if(interaction_key)
 		LAZYREMOVE(user.do_afters, interaction_key)
-
+	SEND_SIGNAL(user, COMSIG_DO_AFTER_ENDED)
 
 ///Timed action involving at least one mob user and a list of targets. interaction_key is the assoc key under which the do_after is capped under, and the max interaction count is how many of this interaction you can do at once.
 /proc/do_after_mob(mob/user, list/targets, time = 3 SECONDS, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1)
@@ -525,7 +530,7 @@ GLOBAL_LIST_EMPTY(species_list)
 // Displays a message in deadchat, sent by source. source is not linkified, message is, to avoid stuff like character names to be linkified.
 // Automatically gives the class deadsay to the whole message (message + source)
 /proc/deadchat_broadcast(message, source=null, mob/follow_target=null, turf/turf_target=null, speaker_key=null, message_type=DEADCHAT_REGULAR, admin_only=FALSE)
-	message = span_deadsay("[source]<span class='linkify'>[message]</span>")
+	message = span_deadsay("[source][span_linkify(message)]")
 
 	for(var/mob/M in GLOB.player_list)
 		var/chat_toggles = TOGGLES_DEFAULT_CHAT
@@ -636,7 +641,7 @@ GLOBAL_LIST_EMPTY(species_list)
 			return
 		AM.setDir(i)
 		callperrotate?.Invoke()
-		sleep(1)
+		sleep(0.1 SECONDS)
 	if(set_original_dir)
 		AM.setDir(originaldir)
 
@@ -763,26 +768,53 @@ GLOBAL_LIST_EMPTY(species_list)
 		if(mob.ckey == key)
 			return mob
 
-///Return a string for the specified body zone
+///Return a string for the specified body zone. Should be used for parsing non-instantiated bodyparts, otherwise use [/obj/item/bodypart/var/plaintext_zone]
 /proc/parse_zone(zone)
-	if(zone == BODY_ZONE_PRECISE_R_HAND)
-		return "right hand"
-	else if (zone == BODY_ZONE_PRECISE_L_HAND)
-		return "left hand"
-	else if (zone == BODY_ZONE_L_ARM)
-		return "left arm"
-	else if (zone == BODY_ZONE_R_ARM)
-		return "right arm"
-	else if (zone == BODY_ZONE_L_LEG)
-		return "left leg"
-	else if (zone == BODY_ZONE_R_LEG)
-		return "right leg"
-	else if (zone == BODY_ZONE_PRECISE_L_FOOT)
-		return "left foot"
-	else if (zone == BODY_ZONE_PRECISE_R_FOOT)
-		return "right foot"
-	else
-		return zone
+	switch(zone)
+		if(BODY_ZONE_CHEST)
+			return "chest"
+		if(BODY_ZONE_HEAD)
+			return "head"
+		if(BODY_ZONE_PRECISE_R_HAND)
+			return "right hand"
+		if(BODY_ZONE_PRECISE_L_HAND)
+			return "left hand"
+		if(BODY_ZONE_L_ARM)
+			return "left arm"
+		if(BODY_ZONE_R_ARM)
+			return "right arm"
+		if(BODY_ZONE_L_LEG)
+			return "left leg"
+		if(BODY_ZONE_R_LEG)
+			return "right leg"
+		if(BODY_ZONE_PRECISE_L_FOOT)
+			return "left foot"
+		if(BODY_ZONE_PRECISE_R_FOOT)
+			return "right foot"
+		if(BODY_ZONE_PRECISE_GROIN)
+			return "groin"
+		else
+			return zone
+
+///Takes a zone and returns it's "parent" zone, if it has one.
+/proc/deprecise_zone(precise_zone)
+	switch(precise_zone)
+		if(BODY_ZONE_PRECISE_GROIN)
+			return BODY_ZONE_CHEST
+		if(BODY_ZONE_PRECISE_EYES)
+			return BODY_ZONE_HEAD
+		if(BODY_ZONE_PRECISE_MOUTH)
+			return BODY_ZONE_HEAD
+		if(BODY_ZONE_PRECISE_R_HAND)
+			return BODY_ZONE_R_ARM
+		if(BODY_ZONE_PRECISE_L_HAND)
+			return BODY_ZONE_L_ARM
+		if(BODY_ZONE_PRECISE_L_FOOT)
+			return BODY_ZONE_L_LEG
+		if(BODY_ZONE_PRECISE_R_FOOT)
+			return BODY_ZONE_R_LEG
+		else
+			return precise_zone
 
 ///Returns the direction that the initiator and the target are facing
 /proc/check_target_facings(mob/living/initiator, mob/living/target)
@@ -812,7 +844,7 @@ GLOBAL_LIST_EMPTY(species_list)
 		mob_occupant = head.brainmob
 
 	else if(isorgan(occupant))
-		var/obj/item/organ/brain/brain = occupant
+		var/obj/item/organ/internal/brain/brain = occupant
 		mob_occupant = brain.brainmob
 
 	return mob_occupant
@@ -867,7 +899,7 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 	GLOB.dview_mob.loc = center
 
-	GLOB.dview_mob.see_invisible = invis_flags
+	GLOB.dview_mob.set_invis_see(invis_flags)
 
 	. = view(range, GLOB.dview_mob)
 	GLOB.dview_mob.loc = null
@@ -901,7 +933,7 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 #define FOR_DVIEW(type, range, center, invis_flags) \
 	GLOB.dview_mob.loc = center;           \
-	GLOB.dview_mob.see_invisible = invis_flags; \
+	GLOB.dview_mob.set_invis_see(invis_flags); \
 	for(type in view(range, GLOB.dview_mob))
 
 #define FOR_DVIEW_END GLOB.dview_mob.loc = null

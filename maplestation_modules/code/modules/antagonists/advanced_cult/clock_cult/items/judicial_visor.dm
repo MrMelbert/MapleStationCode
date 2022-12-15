@@ -24,13 +24,13 @@
 	if(slot != ITEM_SLOT_EYES)
 		return
 	if(ishuman(user) && IS_CULTIST(user))
-		RegisterSignal(user, COMSIG_MOB_EXAMINATE, .proc/on_user_examinate)
+		RegisterSignal(user, COMSIG_MOB_EXAMINATE, PROC_REF(on_user_examinate))
 
 /obj/item/clothing/glasses/judicial_visor/dropped(mob/user)
 	. = ..()
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
 
-/*
+/**
  * Signal proc for [COMSIG_MOB_EXAMINATE].
  */
 /obj/item/clothing/glasses/judicial_visor/proc/on_user_examinate(mob/living/carbon/human/source, atom/examined)
@@ -66,22 +66,22 @@
 
 	// Sets our icon to the "off" state.
 	icon_state = "[base_icon_state]_0"
-	source.update_inv_glasses()
-	addtimer(CALLBACK(src, .proc/reset_icon, source), 10 SECONDS)
+	source.update_worn_glasses()
+	addtimer(CALLBACK(src, PROC_REF(reset_icon), source), 10 SECONDS)
 
-	if(anti_cult_magic_check(target, source))
+	if(target.can_block_magic())
 		return
 
 	// And THIS point on, is where attack effects are done to the target
 	target.apply_damage(15, BURN)
-	target.jitteriness = clamp(target.jitteriness + 6, 0, 30)
+	target.adjust_jitter_up_to(12 SECONDS, 60 SECONDS)
 	to_chat(target, span_userdanger("You feel a searing gaze bear down onto you from the [dir2text(get_dir(examined, source))]!"))
 	to_chat(source, span_warning("You gaze harshly upon [examined], searing them!"))
 
 /// Resets the icon to the "on" state.
 /obj/item/clothing/glasses/judicial_visor/proc/reset_icon(mob/living/carbon/human/source)
 	icon_state = "[base_icon_state]_1"
-	source.update_inv_glasses()
+	source.update_worn_glasses()
 
 // Visual effect for the visor.
 /obj/effect/temp_visual/clock/marker

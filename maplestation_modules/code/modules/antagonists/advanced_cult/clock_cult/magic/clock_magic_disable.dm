@@ -23,7 +23,7 @@
 
 	user.mob_light(_range = 3, _color = LIGHT_COLOR_TUNGSTEN, _duration = 0.8 SECONDS)
 
-	if(anti_cult_magic_check(victim, user))
+	if(victim.can_block_magic())
 		return TRUE
 
 	if(living_target.getStaminaLoss() >= 70)
@@ -65,10 +65,10 @@
 			if(!final_hit)
 				to_chat(user, span_brass("[victim] is enveloped in a white flash, preventing them from speaking!"))
 				to_chat(victim, span_userdanger("A bright white light washes over you, sapping you of energy and voice!"))
-			carbon_target.silent += 4
+			carbon_target.adjust_silence(8 SECONDS)
 
-		carbon_target.stuttering += 8
-		carbon_target.Jitter(4 SECONDS)
+		carbon_target.adjust_stutter(16 SECONDS)
+		carbon_target.adjust_jitter(8 SECONDS)
 
 	ADD_TRAIT(victim, TRAIT_I_WAS_FUNNY_HANDED, REF(user))
 	addtimer(TRAIT_CALLBACK_REMOVE(victim, TRAIT_I_WAS_FUNNY_HANDED, REF(user)), 3 SECONDS)

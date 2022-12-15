@@ -210,7 +210,7 @@
 	if(hacked_door.operating || !hacked_door.density)
 		return
 
-	INVOKE_ASYNC(src, .proc/start_hacking, hacked_door, user)
+	INVOKE_ASYNC(src, PROC_REF(start_hacking), hacked_door, user)
 	return TRUE
 
 /* Begin a do-after to see if we can open the door.
@@ -230,7 +230,7 @@
  */
 /obj/item/card/doorhacker/proc/hack_door(obj/machinery/door/hacked_door, mob/living/user)
 	if(hacked_door.can_open_async() && hacked_door.hasPower())
-		INVOKE_ASYNC(hacked_door, /obj/machinery/door/.proc/open)
+		INVOKE_ASYNC(hacked_door, TYPE_PROC_REF(/obj/machinery/door, open))
 		to_chat(user, span_notice("You nullify the access requirements of \the [hacked_door], opening it temporarily."))
 		playsound(drop_location(), 'sound/machines/ding.ogg', 50, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, ignore_walls = FALSE)
 		if(hacked_door.autoclose)
@@ -240,13 +240,13 @@
 			var/obj/machinery/door/airlock/hacked_airlock = hacked_door
 			hacked_airlock.aiDisabledIdScanner = TRUE
 			addtimer(VARSET_CALLBACK(hacked_airlock, aiDisabledIdScanner, FALSE), (DOORHACKER_AUTOCLOSE_TIME - 5 SECONDS))
-		addtimer(CALLBACK(hacked_door, /obj/machinery/door/.proc/close), DOORHACKER_AUTOCLOSE_TIME)
+		addtimer(CALLBACK(hacked_door, TYPE_PROC_REF(/obj/machinery/door, close)), DOORHACKER_AUTOCLOSE_TIME)
 	else
 		to_chat(user, span_warning("You nullify the access requirements of \the [hacked_door], but it fails to open."))
 		playsound(drop_location(), 'sound/machines/buzz-sigh.ogg', 20, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE, ignore_walls = FALSE)
 
 	recent_hacks = min(DOORHACKER_MAX_HACKS, recent_hacks + 1)
-	addtimer(CALLBACK(src, .proc/lower_hacks), DOORHACKER_HACK_COOLDOWN)
+	addtimer(CALLBACK(src, PROC_REF(lower_hacks)), DOORHACKER_HACK_COOLDOWN)
 
 /// Lowers the recent hack charges.
 /obj/item/card/doorhacker/proc/lower_hacks()

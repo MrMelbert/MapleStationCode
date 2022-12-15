@@ -1,8 +1,19 @@
 /// -- Advanced heretic datum --
+
+/datum/antagonist/heretic/finalize_antag()
+	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ecult_op.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)//subject to change
+
+	for(var/starting_knowledge in GLOB.heretic_start_knowledge)
+		gain_knowledge(starting_knowledge)
+
+	GLOB.reality_smash_track.add_tracked_mind(owner)
+	addtimer(CALLBACK(src, PROC_REF(passive_influence_gain)), passive_gain_timer) // Gain +1 knowledge every 20 minutes.
+
 /// Advanced traitor, but for heretics!
 /datum/antagonist/heretic/advanced
 	name = "Advanced Heretic"
 	finalize_antag = FALSE
+	give_objectives = FALSE
 	/// Static list of extra objectives heretics have.
 	var/static/list/heretic_objectives = list(
 		"minor sacrifice" = /datum/objective/minor_sacrifice,
@@ -28,15 +39,6 @@
 
 /datum/antagonist/heretic/advanced/greet()
 	linked_advanced_datum.greet_message(owner.current)
-
-/datum/antagonist/heretic/advanced/finalize_antag()
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ecult_op.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)//subject to change
-
-	for(var/starting_knowledge in GLOB.heretic_start_knowledge)
-		gain_knowledge(starting_knowledge)
-
-	GLOB.reality_smash_track.add_tracked_mind(owner)
-	addtimer(CALLBACK(src, .proc/passive_influence_gain), passive_gain_timer) // Gain +1 knowledge every 20 minutes.
 
 /datum/antagonist/heretic/advanced/forge_primary_objectives()
 	return FALSE
@@ -145,7 +147,7 @@ You can still edit your goals after finalizing, but you will not be able to re-e
 
 /datum/advanced_antag_datum/heretic/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are a cultic follower sent to [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
-	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_three), antagonist), 3 SECONDS)
 
 /datum/advanced_antag_datum/heretic/ui_data(mob/user)
 	. = ..()

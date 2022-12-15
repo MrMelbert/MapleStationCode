@@ -1,7 +1,7 @@
 /// -- This file is ONLY for adding the unique_examine element onto items, pre-existing or modular. --
 // Concept taken from skyrat-tg, some descriptions may match.
 
-/*
+/**
  * Get the job TITLES of all jobs that are in the security department,
  * and all the jobs that are ONLY in the command department
  *
@@ -98,7 +98,7 @@
 
 // DRINKS //
 
-/obj/item/reagent_containers/food/drinks/bottle/lizardwine/Initialize()
+/obj/item/reagent_containers/cup/glass/bottle/lizardwine/Initialize()
 	. = ..()
 	var/vintage = rand(GLOB.year_integer + 450, GLOB.year_integer + 555) // Wine has an actual vintage var but lizardwine is special
 	AddElement(/datum/element/unique_examine, \
@@ -111,7 +111,7 @@
 		You can't help but feel disappointed and saddened looking at this, knowing a fellow kin was robbed of such a thing.", \
 		EXAMINE_CHECK_SPECIES, /datum/species/lizard)
 
-/obj/item/reagent_containers/food/drinks/bottle/wine/Initialize(mapload)
+/obj/item/reagent_containers/cup/glass/bottle/wine/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A bottle of fine [name]. Classic, refreshing, usually comes with a sharp taste. \
@@ -382,18 +382,6 @@
 		killing the queen is crucial in killing the hive. \
 		When slain, releases a psychic scream along the alien hivemind, confusing and disorienting their kin and offspring.", \
 		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
-
-/mob/living/simple_animal/pet/dog/corgi/exoticcorgi/dufresne/Initialize()
-	. = ..()
-	AddElement(/datum/element/unique_examine, \
-		"A peculiar and unusual corgi. You don't know if this corgi comes from Nar'Sie, \
-		Ratvar or the Eldritch Gods. Whatever it may be, best to keep your distance.", \
-		EXAMINE_CHECK_JOB, list("Chaplain"))
-	AddElement(/datum/element/unique_examine, \
-		"The tale of King Dufresne is a pecuilar one. Some say, Joey Petunia \
-		was the one who solved the riddle! Whatever happened, this corgi is now \
-		in the posession of Guirec Raaz. ", \
-		EXAMINE_CHECK_NONE, hint = FALSE)
 
 // MACHINES //
 

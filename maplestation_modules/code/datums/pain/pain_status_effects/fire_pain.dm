@@ -3,6 +3,9 @@
 	id = "sharp_pain_from_fire"
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
+	remove_on_fullheal = TRUE
+	heal_flag_necessary = HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS
+
 	/// Amount of pain being given
 	var/pain_amount = 0
 
@@ -31,7 +34,7 @@
 	if(!human_owner.pain_controller)
 		return FALSE
 
-	RegisterSignal(human_owner, list(COMSIG_LIVING_EXTINGUISHED, COMSIG_LIVING_POST_FULLY_HEAL), .proc/remove_on_signal)
+	RegisterSignal(human_owner, COMSIG_LIVING_EXTINGUISHED, PROC_REF(remove_on_signal))
 	human_owner.pain_controller.adjust_bodypart_pain(BODY_ZONES_ALL, pain_amount, BURN)
 	return TRUE
 

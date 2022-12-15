@@ -20,7 +20,7 @@
 
 /obj/item/clothing/glasses/wraith_specs/Initialize()
 	. = ..()
-	INVOKE_ASYNC(src, .proc/weldingvisortoggle)
+	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle))
 
 /obj/item/clothing/glasses/wraith_specs/examine(mob/user)
 	. = ..()
@@ -30,7 +30,7 @@
 
 /obj/item/clothing/glasses/wraith_specs/attack_self(mob/user, modifiers)
 	. = ..()
-	INVOKE_ASYNC(src, .proc/weldingvisortoggle, user)
+	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle), user)
 
 /obj/item/clothing/glasses/wraith_specs/equipped(mob/user, slot)
 	. = ..()
@@ -74,7 +74,7 @@
 		return FALSE
 	return TRUE
 
-/*
+/**
  * Enable the hud and any other features of the goggles.
  * If the user / equipper is not a cultist, hurt them instead.
  */
@@ -83,7 +83,7 @@
 		if(user.is_blind())
 			return FALSE
 
-		var/obj/item/organ/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/internal/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
 		if(!eyes)
 			return FALSE
 
@@ -97,10 +97,10 @@
 
 	for(var/hud in SPEC_HUDS)
 		var/datum/atom_hud/new_hud = GLOB.huds[hud]
-		new_hud.add_hud_to(user)
+		new_hud.show_to(user)
 	ADD_TRAIT(user, TRAIT_MEDICAL_HUD, GLASSES_TRAIT)
 	ADD_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, GLASSES_TRAIT)
-	RegisterSignal(user, COMSIG_MOB_EXAMINATE, .proc/on_user_examinate)
+	RegisterSignal(user, COMSIG_MOB_EXAMINATE, PROC_REF(on_user_examinate))
 
 	darkness_view = 8
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
@@ -109,7 +109,7 @@
 	user.update_glasses_color(src, TRUE)
 	return TRUE
 
-/*
+/**
  * Disable the hud and any other features of the goggles.
  */
 /obj/item/clothing/glasses/wraith_specs/proc/disable_glasses(mob/living/carbon/human/user)
@@ -117,7 +117,7 @@
 	REMOVE_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, GLASSES_TRAIT)
 	for(var/hud in SPEC_HUDS)
 		var/datum/atom_hud/removed_hud = GLOB.huds[hud]
-		removed_hud.remove_hud_from(user)
+		removed_hud.hide_from(user)
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
 
 	darkness_view = 2
@@ -128,7 +128,7 @@
 	user.update_glasses_color(src, FALSE)
 	return TRUE
 
-/*
+/**
  * Signal proc for [COMSIG_MOB_EXAMINATE]
  */
 /obj/item/clothing/glasses/wraith_specs/proc/on_user_examinate(datum/source, atom/examined)
@@ -141,7 +141,7 @@
 	if(human_source.is_blind())
 		return
 
-	var/obj/item/organ/eyes/eyes = human_source.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/internal/eyes/eyes = human_source.getorganslot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		return
 

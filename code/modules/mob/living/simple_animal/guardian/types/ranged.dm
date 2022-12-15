@@ -24,7 +24,7 @@
 	carp_fluff_string = "<span class='holoparasite'>CARP CARP CARP! Caught one, it's a ranged carp. This fishy can watch people pee in the ocean.</span>"
 	miner_fluff_string = "<span class='holoparasite'>You encounter... Diamond, a powerful projectile thrower.</span>"
 	see_invisible = SEE_INVISIBLE_LIVING
-	see_in_dark = 8
+	see_in_dark = NIGHTVISION_FOV_RANGE
 	toggle_button_type = /atom/movable/screen/guardian/toggle_mode
 	var/list/snares = list()
 	var/toggle = FALSE
@@ -114,7 +114,7 @@
 /obj/effect/snare/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -122,7 +122,7 @@
 	SIGNAL_HANDLER
 	if(isliving(AM) && spawner && spawner.summoner && AM != spawner && !spawner.hasmatchingsummoner(AM))
 		to_chat(spawner.summoner, "[span_danger("<B>[AM] has crossed surveillance snare, [name].")]</B>")
-		var/list/guardians = spawner.summoner.hasparasites()
+		var/list/guardians = spawner.summoner.get_all_linked_holoparasites()
 		for(var/para in guardians)
 			to_chat(para, "[span_danger("<B>[AM] has crossed surveillance snare, [name].")]</B>")
 

@@ -232,9 +232,9 @@
 	if(!.)
 		return FALSE
 
-	if(amount > 5)
+	if(amount >= 10)
 		// Large amounts of head pain causes minor brain damage
-		owner.apply_damage(pain / 5, BRAIN)
+		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, pain / 5, 180)
 
 	return TRUE
 
@@ -280,16 +280,8 @@
 
 	return TRUE
 
-// --- Right Leg ---
-/obj/item/bodypart/r_leg/robot
-	pain = PAIN_LIMB_MAX
-	bodypart_pain_modifier = 0.2
-
-/obj/item/bodypart/r_leg/robot/surplus
-	pain = 40
-	bodypart_pain_modifier = 0.8
-
-/obj/item/bodypart/r_leg/processed_pain_effects(delta_time)
+// --- Legs ---
+/obj/item/bodypart/leg/processed_pain_effects(delta_time)
 	if(!owner || !pain)
 		return FALSE
 
@@ -298,40 +290,40 @@
 			to_chat(owner, span_danger("Your [parse_zone(body_zone)] hurts to walk on!"))
 
 	return TRUE
+
+// --- Right Leg ---
+/obj/item/bodypart/leg/right/robot
+	pain = PAIN_LIMB_MAX
+	bodypart_pain_modifier = 0.2
+
+/obj/item/bodypart/leg/right/robot/surplus
+	pain = 40
+	bodypart_pain_modifier = 0.8
 
 // --- Left Leg ---
-/obj/item/bodypart/l_leg/robot
+/obj/item/bodypart/leg/left/robot
 	pain = PAIN_LIMB_MAX
 	bodypart_pain_modifier = 0.2
 
-/obj/item/bodypart/l_leg/robot/surplus
+/obj/item/bodypart/leg/left/robot/surplus
 	pain = 40
 	bodypart_pain_modifier = 0.8
 
-/obj/item/bodypart/l_leg/processed_pain_effects(delta_time)
-	if(!owner || !pain)
-		return FALSE
-
-	if(get_modified_pain() >= 40 && DT_PROB(5, delta_time))
-		if(owner.apply_status_effect(/datum/status_effect/limp/pain))
-			to_chat(owner, span_danger("Your [parse_zone(body_zone)] hurts to walk on!"))
-
-	return TRUE
 
 // --- Right Arm ---
-/obj/item/bodypart/r_arm/robot
+/obj/item/bodypart/arm/right/robot
 	pain = PAIN_LIMB_MAX
 	bodypart_pain_modifier = 0.2
 
-/obj/item/bodypart/r_arm/robot/surplus
+/obj/item/bodypart/arm/right/robot/surplus
 	pain = 40
 	bodypart_pain_modifier = 0.8
 
 // --- Left Arm ---
-/obj/item/bodypart/l_arm/robot
+/obj/item/bodypart/arm/right/robot
 	pain = PAIN_LIMB_MAX
 	bodypart_pain_modifier = 0.2
 
-/obj/item/bodypart/l_arm/robot/surplus
+/obj/item/bodypart/arm/left/robot/surplus
 	pain = 40
 	bodypart_pain_modifier = 0.8

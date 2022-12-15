@@ -9,6 +9,10 @@
 	var/tamperproof = 0
 	damage_deflection = 25
 
+/obj/structure/closet/crate/secure/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_MISSING_ITEM_ERROR, TRAIT_GENERIC)
+
 /obj/structure/closet/crate/secure/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
 	if(prob(tamperproof) && damage_amount >= DAMAGE_PRECISION)
 		boom()
@@ -19,8 +23,7 @@
 	if(user)
 		to_chat(user, span_danger("The crate's anti-tamper system activates!"))
 		log_bomber(user, "has detonated a", src)
-	for(var/obj/loot in src)
-		SSexplosions.high_mov_atom += loot
+	dump_contents()
 	explosion(src, heavy_impact_range = 1, light_impact_range = 5, flash_range = 5)
 	qdel(src)
 
@@ -52,7 +55,7 @@
 /obj/structure/closet/crate/secure/freezer/pizza
 	name = "secure pizza crate"
 	desc = "An insulated crate with a lock on it, used to secure pizza."
-	req_access = list(28)
+	req_access = list(ACCESS_KITCHEN)
 	tamperproof = 10
 
 /obj/structure/closet/crate/secure/freezer/pizza/PopulateContents()

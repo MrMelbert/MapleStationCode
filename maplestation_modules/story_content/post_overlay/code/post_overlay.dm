@@ -18,7 +18,7 @@
 
 /obj/item/story_post_overlay_granter //Just an item to make getting the overlay easy.
 	name = "Post Overlay Granter"
-	icon = 'icons/obj/items_and_weapons.dmi'
+	icon = 'icons/obj/weapons/items_and_weapons.dmi'
 	icon_state = "duffelcurse"
 	desc = "If you have this, either an admin wants to do something wacky or something seriously wrong has happened."
 

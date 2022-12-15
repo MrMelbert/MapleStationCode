@@ -18,14 +18,24 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 
 /datum/loadout_item/suit/winter_coat_greyscale
 	name = "Greyscale Winter Coat"
-	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/suit/hooded/wintercoat/custom
 
 /datum/loadout_item/suit/parade_jacket_greyscale
 	name = "Greyscale Parade Jacket"
-	can_be_greyscale = TRUE
 	item_path = /obj/item/clothing/suit/greyscale_parade
 	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
+
+/datum/loadout_item/suit/big_jacket
+	name = "Greyscale Jacket Large"
+	item_path = /obj/item/clothing/suit/jacket/oversized
+
+/datum/loadout_item/suit/fancy_jacket
+	name = "Greyscale Fur Coat"
+	item_path = /obj/item/clothing/suit/jacket/fancy
+
+/datum/loadout_item/suit/sweater
+	name = "Greyscale Sweater"
+	item_path = /obj/item/clothing/suit/toggle/jacket/sweater
 
 /datum/loadout_item/suit/denim_overalls
 	name = "Denim Overalls"
@@ -48,25 +58,12 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 	item_path = /obj/item/clothing/suit/apron/purple_bartender
 
 /datum/loadout_item/suit/suspenders_greyscale
-	name = "Greyscale Suspenders"
-	can_be_greyscale = TRUE
-	item_path = /obj/item/clothing/suit/toggle/suspenders/greyscale
-
-/datum/loadout_item/suit/Suspenders_blue
-	name = "Blue Suspenders"
-	item_path = /obj/item/clothing/suit/toggle/suspenders/blue
-
-/datum/loadout_item/suit/suspenders_grey
-	name = "Grey Suspenders"
-	item_path = /obj/item/clothing/suit/toggle/suspenders/gray
-
-/datum/loadout_item/suit/suspenders_red
-	name = "Red Suspenders"
+	name = "Suspenders"
 	item_path = /obj/item/clothing/suit/toggle/suspenders
 
 /datum/loadout_item/suit/white_dress
 	name = "White Dress"
-	item_path = /obj/item/clothing/suit/whitedress
+	item_path = /obj/item/clothing/suit/costume/whitedress
 
 /datum/loadout_item/suit/labcoat
 	name = "Labcoat"
@@ -83,19 +80,19 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 
 /datum/loadout_item/suit/poncho
 	name = "Poncho"
-	item_path = /obj/item/clothing/suit/poncho
+	item_path = /obj/item/clothing/suit/costume/poncho
 
 /datum/loadout_item/suit/poncho_green
 	name = "Green Poncho"
-	item_path = /obj/item/clothing/suit/poncho/green
+	item_path = /obj/item/clothing/suit/costume/poncho/green
 
 /datum/loadout_item/suit/poncho_red
 	name = "Red Poncho"
-	item_path = /obj/item/clothing/suit/poncho/red
+	item_path = /obj/item/clothing/suit/costume/poncho/red
 
 /datum/loadout_item/suit/wawaiian_shirt
 	name = "Hawaiian Shirt"
-	item_path = /obj/item/clothing/suit/hawaiian
+	item_path = /obj/item/clothing/suit/costume/hawaiian
 
 /datum/loadout_item/suit/bomber_jacket
 	name = "Bomber Jacket"
@@ -119,7 +116,7 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 
 /datum/loadout_item/suit/leather_coat
 	name = "Leather Coat"
-	item_path = /obj/item/clothing/suit/jacket/leather/overcoat
+	item_path = /obj/item/clothing/suit/jacket/leather/biker
 
 /datum/loadout_item/suit/brown_letterman
 	name = "Brown Letterman"
@@ -144,3 +141,15 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 /datum/loadout_item/suit/grass_skirt
 	name = "Grass Skirt"
 	item_path = /obj/item/clothing/suit/grasskirt
+
+/datum/loadout_item/suit/ethereal_cloak
+	name = "Ethereal Cloak"
+	item_path = /obj/item/clothing/suit/hooded/ethereal_raincoat
+
+/datum/loadout_item/suit/moth_cloak
+	name = "Mothic Cloak"
+	item_path = /obj/item/clothing/suit/mothcoat
+
+/datum/loadout_item/suit/moth_cloak_winter
+	name = "Mothic Winter Cloak"
+	item_path = /obj/item/clothing/suit/mothcoat/winter

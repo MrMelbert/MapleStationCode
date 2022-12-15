@@ -11,12 +11,18 @@
 	BB_CUSTOMER_SAID_CANT_FIND_SEAT_LINE = FALSE)
 	planning_subtrees = list(/datum/ai_planning_subtree/robot_customer)
 
+/datum/ai_controller/robot_customer/Destroy()
+	// clear possible datum refs
+	blackboard[BB_CUSTOMER_CURRENT_ORDER] = null
+	blackboard[BB_CUSTOMER_CUSTOMERINFO] = null
+	return ..()
+
 /datum/ai_controller/robot_customer/TryPossessPawn(atom/new_pawn)
 	if(!istype(new_pawn, /mob/living/simple_animal/robot_customer))
 		return AI_CONTROLLER_INCOMPATIBLE
-	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, .proc/on_attackby)
-	RegisterSignal(new_pawn, COMSIG_LIVING_GET_PULLED, .proc/on_get_pulled)
-	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, .proc/on_get_punched)
+	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
+	RegisterSignal(new_pawn, COMSIG_LIVING_GET_PULLED, PROC_REF(on_get_pulled))
+	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, PROC_REF(on_get_punched))
 	return ..() //Run parent at end
 
 /datum/ai_controller/robot_customer/UnpossessPawn(destroy)
@@ -31,13 +37,17 @@
 		eat_order(I, attending_venue)
 		return COMPONENT_NO_AFTERATTACK
 	else
-		INVOKE_ASYNC(src, .proc/warn_greytider, user)
+		INVOKE_ASYNC(src, PROC_REF(warn_greytider), user)
 
 
 /datum/ai_controller/robot_customer/proc/eat_order(obj/item/order_item, datum/venue/attending_venue)
 	if(!blackboard[BB_CUSTOMER_EATING])
 		blackboard[BB_CUSTOMER_EATING] = TRUE
 		attending_venue.on_get_order(pawn, order_item)
+		var/our_order = blackboard[BB_CUSTOMER_CURRENT_ORDER]
+		if(isdatum(our_order))
+			qdel(our_order)
+		blackboard[BB_CUSTOMER_CURRENT_ORDER] = null
 
 
 ///Called when
@@ -45,7 +55,7 @@
 	SIGNAL_HANDLER
 
 
-	INVOKE_ASYNC(src, .proc/async_on_get_pulled, source, puller)
+	INVOKE_ASYNC(src, PROC_REF(async_on_get_pulled), source, puller)
 
 /datum/ai_controller/robot_customer/proc/async_on_get_pulled(datum/source, mob/living/puller)
 	var/mob/living/simple_animal/robot_customer/customer = pawn
@@ -94,4 +104,4 @@
 		return
 
 	if(living_hitter.combat_mode)
-		INVOKE_ASYNC(src, .proc/warn_greytider, living_hitter)
+		INVOKE_ASYNC(src, PROC_REF(warn_greytider), living_hitter)

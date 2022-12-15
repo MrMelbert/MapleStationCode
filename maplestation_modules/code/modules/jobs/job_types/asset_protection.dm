@@ -16,6 +16,7 @@
 	exp_required_type = EXP_TYPE_CREW
 	exp_required_type_department = EXP_TYPE_COMMAND
 	exp_granted_type = EXP_TYPE_CREW
+	config_tag = "ASSET_PROTECTION"
 
 	outfit = /datum/outfit/job/asset_protection
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security
@@ -47,13 +48,14 @@
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	voice_of_god_power = 1.2 // Not quite command staff.
 	rpg_title = "Paladin"
+	crewmonitor_priority = 9
 
 /datum/outfit/job/asset_protection
 	name = "Asset Protection"
 	jobtype = /datum/job/asset_protection
 
 	id = /obj/item/card/id/advanced/silver
-	belt = /obj/item/pda/heads/asset_protection
+	belt = /obj/item/modular_computer/tablet/pda/heads/asset_protection
 	ears = /obj/item/radio/headset/heads/asset_protection/alt
 	glasses = /obj/item/clothing/glasses/sunglasses
 	neck = /obj/item/clothing/neck/tie/black

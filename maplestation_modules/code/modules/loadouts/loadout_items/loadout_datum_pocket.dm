@@ -6,6 +6,13 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 /datum/loadout_item/pocket_items
 	category = LOADOUT_ITEM_MISC
 
+/datum/loadout_item/pocket_items/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
+	if(visuals_only)
+		return
+
+	return ..()
+
 // The wallet loadout item is special, and puts the player's ID and other small items into it on initialize (fancy!)
 /datum/loadout_item/pocket_items/wallet
 	name = "Wallet"
@@ -14,17 +21,16 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 
 // We add our wallet manually, later, so no need to put it in any outfits.
 /datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
-	return FALSE
+	return
 
 // We didn't spawn any item yet, so nothing to call here.
 /datum/loadout_item/pocket_items/wallet/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
-	SHOULD_CALL_PARENT(FALSE)
-	return FALSE
+	return
 
 // We add our wallet at the very end of character initialization (after quirks, etc) to ensure the backpack / their ID is all set by now.
 /datum/loadout_item/pocket_items/wallet/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
 	var/obj/item/card/id/advanced/id_card = equipper.get_item_by_slot(ITEM_SLOT_ID)
-	if(istype(id_card, /obj/item/storage/wallet))
+	if(istype(id_card, /obj/item/storage/wallet)) // Wallets station trait guard
 		return
 
 	var/obj/item/storage/wallet/wallet = new(equipper)
@@ -33,21 +39,19 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 		equipper.equip_to_slot_if_possible(wallet, ITEM_SLOT_ID, initial = TRUE)
 		id_card.forceMove(wallet)
 
-		if(equipper.back)
-			var/list/backpack_stuff = list()
-			SEND_SIGNAL(equipper.back, COMSIG_TRY_STORAGE_RETURN_INVENTORY, backpack_stuff, FALSE)
-			for(var/obj/item/thing in backpack_stuff)
-				if(wallet.contents.len >= 3)
-					break
-				if(thing.w_class <= WEIGHT_CLASS_SMALL)
-					SEND_SIGNAL(wallet, COMSIG_TRY_STORAGE_INSERT, thing, equipper, TRUE, FALSE)
+		for(var/obj/item/thing in equipper?.back)
+			if(wallet.contents.len >= 3)
+				break
+			if(thing.w_class > WEIGHT_CLASS_SMALL)
+				continue
+			wallet.atom_storage.attempt_insert(thing, override = TRUE, force = TRUE)
+
 	else
 		if(!equipper.equip_to_slot_if_possible(wallet, slot = ITEM_SLOT_BACKPACK, initial = TRUE))
 			wallet.forceMove(equipper.drop_location())
 
 /datum/loadout_item/pocket_items/beach_towel
 	name = "Beach Towel"
-	can_be_greyscale = TRUE
 	item_path = /obj/item/towel/beach
 
 /datum/loadout_item/pocket_items/towel
@@ -56,7 +60,7 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 
 /datum/loadout_item/pocket_items/rag
 	name = "Rag"
-	item_path = /obj/item/reagent_containers/glass/rag
+	item_path = /obj/item/reagent_containers/cup/rag
 
 /datum/loadout_item/pocket_items/gum_pack
 	name = "Pack of Gum"
@@ -119,11 +123,11 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 
 /datum/loadout_item/pocket_items/plush/lizard_greyscale
 	name = "Greyscale Lizard Plush"
-	can_be_greyscale = TRUE
 	item_path = /obj/item/toy/plush/lizard_plushie/greyscale
 
 /datum/loadout_item/pocket_items/plush/lizard_random
 	name = "Random Lizard Plush"
+	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/toy/plush/lizard_plushie
 	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
 

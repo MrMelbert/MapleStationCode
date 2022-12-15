@@ -3,7 +3,7 @@
 	/// The file the glass's icon is located.
 	var/glass_icon_file = 'icons/obj/drinks.dmi'
 
-/obj/item/reagent_containers/food/drinks/drinkingglass/update_icon_state()
+/obj/item/reagent_containers/cup/glass/drinkingglass/update_icon_state()
 	if(!reagents.total_volume)
 		icon = initial(icon)
 		return ..()

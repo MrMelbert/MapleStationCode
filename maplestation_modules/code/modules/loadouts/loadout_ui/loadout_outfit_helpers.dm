@@ -4,7 +4,7 @@
 /datum/outfit/player_loadout
 	name = "Player Loadout"
 
-/*
+/**
  * Actually equip our mob with our job outfit and our loadout items.
  * Loadout items override the pre-existing item in the corresponding slot of the job outfit.
  * Some job items are preserved after being overridden - belt items, ear items, and glasses.
@@ -28,18 +28,21 @@
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
 	var/list/loadout_datums = loadout_list_to_datums(preference_source?.read_preference(/datum/preference/loadout))
+	// Place any loadout items into the outfit before going forward
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
-
-	equipOutfit(equipped_outfit, visuals_only) // equip the outfit
-
+	// Equip the outfit loadout items included
+	equipOutfit(equipped_outfit, visuals_only)
+	// Handle any snowflake on_equips
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.on_equip_item(preference_source, src, visuals_only)
-
-	regenerate_icons()
+	// On_equips may have changed our style so run another update
+	// Equip outfit does its own update body so it's a waste to do this every time
+	if(length(loadout_datums))
+		update_body()
 	return TRUE
 
-/*
+/**
  * Takes a list of paths (such as a loadout list)
  * and returns a list of their singleton loadout item datums
  *
@@ -51,45 +54,17 @@
 	RETURN_TYPE(/list)
 	. = list()
 
-	if(!GLOB.all_loadout_datums.len)
+	if(!length(GLOB.all_loadout_datums))
 		CRASH("No loadout datums in the global loadout list!")
 
 	for(var/path in loadout_list)
-		if(!GLOB.all_loadout_datums[path])
+		if(!istype(GLOB.all_loadout_datums[path], /datum/loadout_item))
 			stack_trace("Could not find ([path]) loadout item in the global list of loadout datums!")
 			continue
 
 		. |= GLOB.all_loadout_datums[path]
 
-
-/*
- * Changes the loadout list from being [slot] to [path]
- * to [path] to [list of data].
- *
- * This is for updating old loadout lists (pre-datumization)
- * to new loadout lists (the formatting was changed).
- *
- * If you're looking at loadouts NOW,
- * you DON'T need this proc or the savefile update extension.
- *
- * passed_list - the loadout list we're sanitizing.
- *
- * returns a list, or null if empty
- */
-/proc/update_loadout_list(list/passed_list)
-	var/list/list_to_update = LAZYLISTDUPLICATE(passed_list)
-	for(var/thing in list_to_update) //"thing", 'cause it could be a lot of things
-		if(ispath(thing))
-			continue
-		var/our_path = text2path(list_to_update[thing])
-
-		LAZYREMOVE(list_to_update, thing)
-		if(ispath(our_path))
-			LAZYSET(list_to_update, our_path, list())
-
-	return list_to_update
-
-/*
+/**
  * Removes all invalid paths from loadout lists.
  * This is a general sanitization for preference saving / loading.
  *
@@ -101,11 +76,11 @@
 	var/list/list_to_clean = LAZYLISTDUPLICATE(passed_list)
 	for(var/path in list_to_clean)
 		if(!ispath(path))
-			stack_trace("invalid path found in loadout list! (Path: [path])")
+			// stack_trace("invalid path found in loadout list! (Path: [path])")
 			LAZYREMOVE(list_to_clean, path)
 
-		else if(!(path in GLOB.all_loadout_datums))
-			stack_trace("invalid loadout item found in loadout list! Path: [path]")
+		else if(!istype(GLOB.all_loadout_datums[path], /datum/loadout_item))
+			// stack_trace("invalid loadout item found in loadout list! Path: [path]")
 			LAZYREMOVE(list_to_clean, path)
 
 	return list_to_clean

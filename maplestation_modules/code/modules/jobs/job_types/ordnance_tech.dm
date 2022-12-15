@@ -13,13 +13,14 @@
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
+	config_tag = "TOXINS"
 
 //most likely can be subtyped later
 
 	outfit = /datum/outfit/job/scientist/ordnance_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SCI
 
 	display_order = JOB_DISPLAY_ORDER_ORDNANCE_TECH
@@ -43,11 +44,12 @@
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Dwarven Miner"
+	crewmonitor_priority = 34
 
 /datum/outfit/job/scientist/ordnance_tech
 	name = "Ordnance Technician"
 	suit = /obj/item/clothing/suit/toggle/labcoat/toxic
 	uniform = /obj/item/clothing/under/rank/rnd/ordnance_tech
-	belt = /obj/item/pda/science/toxocologist
+	belt = /obj/item/modular_computer/tablet/pda/ordnance
 	jobtype = /datum/job/ordnance_tech
 	id_trim = /datum/id_trim/job/ordnance_tech

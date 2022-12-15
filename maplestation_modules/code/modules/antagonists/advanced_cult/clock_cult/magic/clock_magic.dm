@@ -35,13 +35,9 @@
 
 /datum/action/item_action/cult/Grant(mob/M)
 	if(!IS_CULTIST(M) || M != magic_source?.owner)
-		Remove(owner)
 		return
 
-	. = ..()
-	button.locked = TRUE
-	button.ordered = FALSE
-	magic_source.Positioning()
+	return ..()
 
 /datum/action/item_action/cult/Destroy()
 	if(active)
@@ -76,15 +72,15 @@
 			return
 
 	active = TRUE
-	RegisterSignal(target, COMSIG_ITEM_PRE_ATTACK, .proc/try_spell_effects)
-	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
-	RegisterSignal(target, COMSIG_ITEM_EQUIPPED, .proc/on_equipped)
+	RegisterSignal(target, COMSIG_ITEM_PRE_ATTACK, PROC_REF(try_spell_effects))
+	RegisterSignal(target, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(target, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 	if(active_overlay_name)
-		RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_item_update_overlays)
+		RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_item_update_overlays))
 		target_item.update_icon(UPDATE_OVERLAYS)
 	if(active_overlay_held_name)
-		RegisterSignal(magic_source.owner, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_mob_update_overlays)
-		RegisterSignal(target, COMSIG_ITEM_DROPPED, .proc/on_dropped)
+		RegisterSignal(magic_source.owner, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_mob_update_overlays))
+		RegisterSignal(target, COMSIG_ITEM_DROPPED, PROC_REF(on_dropped))
 		magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
 	if(!silent)
@@ -112,7 +108,7 @@
 	if(!silent)
 		to_chat(magic_source.owner, span_brass("You withdraw the power of [src] from [target]."))
 
-/*
+/**
  * Signal proc for [COMSIG_PARENT_EXAMINE].
  */
 /datum/action/item_action/cult/proc/on_examine(datum/source, mob/user, list/examine_list)
@@ -123,7 +119,7 @@
 
 	examine_list += span_alloy("[name] is currently readied on [target], which will [examine_hint]")
 
-/*
+/**
  * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the slab itself.
  */
 /datum/action/item_action/cult/proc/on_item_update_overlays(obj/item/source, list/overlays)
@@ -134,7 +130,7 @@
 
 	overlays += mutable_appearance(active_overlay_file || icon_icon, active_overlay_name, ABOVE_OBJ_LAYER)
 
-/*
+/**
  * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the mob holding the slab.
  */
 /datum/action/item_action/cult/proc/on_mob_update_overlays(mob/living/source, list/overlays)
@@ -155,7 +151,7 @@
 
 	overlays += mutable_appearance(our_file, active_overlay_held_name, ABOVE_MOB_LAYER)
 
-/*
+/**
  * Signal proc for [COMSIG_ITEM_EQUIPPED]
  * Un-invokes the spell when the item is equipped (picked up) by a non-cultist.
  */
@@ -168,7 +164,7 @@
 
 	deactivate(TRUE)
 
-/*
+/**
  * Signal proc for [COMSIG_ITEM_DROPPED]
  */
 /datum/action/item_action/cult/proc/on_dropped(datum/source, mob/user)
@@ -176,7 +172,7 @@
 
 	magic_source.owner.update_icon(UPDATE_OVERLAYS)
 
-/*
+/**
  * Signal proc for [COMSIG_ITEM_PRE_ATTACK].
  *
  * Calls do_self_spell_effects() if (user) hits themselves with (target).
@@ -207,31 +203,31 @@
 			. = COMPONENT_NO_AFTERATTACK
 
 	if(!manually_handle_charges && . == COMPONENT_NO_AFTERATTACK)
-		INVOKE_ASYNC(src, .proc/after_successful_spell, user)
+		INVOKE_ASYNC(src, PROC_REF(after_successful_spell), user)
 
 
-/*
+/**
  * Called when (user) hits themselves with (target).
  *
  * Return TRUE to return COMPONENT_NO_AFTERATTACK.
  */
 /datum/action/item_action/cult/proc/do_self_spell_effects(mob/living/user)
 
-/*
+/**
  * Called when (user) hits (victim) with (target).
  *
  * Return TRUE to return COMPONENT_NO_AFTERATTACK.
  */
 /datum/action/item_action/cult/proc/do_hit_spell_effects(mob/living/victim, mob/living/user)
 
-/*
+/**
  * Called when (user) hits (hit) with (target).
  *
  * Return TRUE to return COMPONENT_NO_AFTERATTACK.
  */
 /datum/action/item_action/cult/proc/do_atom_spell_effects(atom/hit, mob/living/user)
 
-/*
+/**
  * Called after a spell is successfuly cast.
  * Forces the user to say the invocation,
  * Reduces the amount of charges,
@@ -249,11 +245,11 @@
 	icon_icon = 'maplestation_modules/icons/mob/actions/actions_clockcult.dmi'
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough
-	active_overlay_file = 'icons/obj/clockwork_objects.dmi'
+	active_overlay_file = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
 	active_overlay_lhand_file = 'icons/mob/inhands/antag/clockwork_lefthand.dmi'
 	active_overlay_rhand_file = 'icons/mob/inhands/antag/clockwork_righthand.dmi'
 
-/datum/action/item_action/cult/clock_spell/IsAvailable()
+/datum/action/item_action/cult/clock_spell/IsAvailable(feedback)
 	if(owner)
 		if(!IS_CULTIST(owner) || owner.incapacitated() || charges <= 0)
 			return FALSE
@@ -276,9 +272,7 @@
 	base_desc = desc
 	desc += "<br><b><u>Has [charges] use\s remaining</u></b>."
 	all_magic = magic_source
-	. = ..()
-	button.locked = TRUE
-	button.ordered = FALSE
+	return ..()
 
 /datum/action/innate/cult/clock_spell/Remove()
 	if(all_magic)
@@ -286,7 +280,7 @@
 		all_magic = null
 	return ..()
 
-/datum/action/innate/cult/clock_spell/IsAvailable()
+/datum/action/innate/cult/clock_spell/IsAvailable(feedback)
 	if(!IS_CULTIST(owner) || owner.incapacitated() || charges <= 0)
 		return FALSE
 	return ..()

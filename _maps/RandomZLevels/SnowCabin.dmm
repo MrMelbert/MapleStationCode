@@ -6,13 +6,13 @@
 	icon_state = "snowgrass";
 	name = "frozen flora"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "ab" = (
 /turf/closed/indestructible/rock/snow,
 /area/awaymission/cabin/caves/mountain)
 "ac" = (
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "ad" = (
 /turf/closed/wall/mineral/wood,
@@ -24,10 +24,10 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 9
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "af" = (
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "ag" = (
 /obj/structure/fence{
@@ -36,14 +36,14 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 1
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "ah" = (
 /obj/structure/fence/door/opened,
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 1
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "ai" = (
 /obj/structure/fence{
@@ -52,7 +52,7 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 5
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "aj" = (
 /obj/structure/chair/office/light{
@@ -73,7 +73,7 @@
 /area/awaymission/cabin/caves/mountain)
 "ak" = (
 /obj/structure/table/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "al" = (
 /obj/structure/table/wood,
@@ -81,14 +81,14 @@
 	desc = "A slightly battered looking TV. Various infomercials play on a loop, accompanied by a jaunty tune.";
 	name = "Television Screen"
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "am" = (
 /obj/structure/chair/comfy{
 	color = "#B22222";
 	dir = 8
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "an" = (
 /turf/closed/wall/mineral/wood,
@@ -114,19 +114,12 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "as" = (
-/obj/structure/sink{
-	dir = 8;
-	pixel_x = 11
-	},
+/obj/structure/sink/directional/west,
 /obj/structure/mirror/directional/north,
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "at" = (
-/obj/structure/sink{
-	dir = 4;
-	pixel_x = -12;
-	pixel_y = 2
-	},
+/obj/structure/sink/directional/east,
 /obj/structure/mirror/directional/north,
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
@@ -197,9 +190,8 @@
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/effect/baseturf_helper/asteroid/snow,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "aF" = (
 /obj/machinery/power/apc/auto_name/directional/north,
@@ -211,12 +203,10 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 9
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "aH" = (
-/obj/machinery/shower{
-	dir = 1
-	},
+/obj/machinery/shower/directional/north,
 /obj/structure/curtain,
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
@@ -249,9 +239,8 @@
 	},
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "aN" = (
 /obj/structure/chair/wood{
@@ -284,34 +273,32 @@
 	name = "geothermal generator"
 	},
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "aR" = (
-/obj/machinery/door/window/westright{
-	name = "fireplace"
+/obj/machinery/door/window/right/directional/west{
+	name = "Fireplace"
 	},
 /obj/structure/fireplace,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "aS" = (
-/obj/structure/sink/kitchen{
+/obj/structure/sink/kitchen/directional/south{
 	desc = "A sink used for washing one's hands and face. It looks rusty and home-made";
-	name = "sink";
-	pixel_y = 28
+	name = "sink"
 	},
-/obj/structure/janitorialcart,
+/obj/structure/mop_bucket/janitorialcart,
 /obj/item/mop,
-/obj/item/reagent_containers/glass/bucket,
+/obj/item/reagent_containers/cup/bucket,
 /obj/item/clothing/suit/caution,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "aT" = (
-/obj/machinery/door/window/eastleft{
-	name = "fireplace"
+/obj/machinery/door/window/left/directional/east{
+	name = "Fireplace"
 	},
 /obj/structure/fireplace,
 /obj/effect/decal/cleanable/dirt,
@@ -319,8 +306,8 @@
 /area/awaymission/cabin)
 "aU" = (
 /obj/structure/fireplace,
-/obj/machinery/door/window/westright{
-	name = "fireplace"
+/obj/machinery/door/window/right/directional/west{
+	name = "Fireplace"
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
@@ -331,8 +318,8 @@
 /area/awaymission/cabin)
 "aW" = (
 /obj/structure/fireplace,
-/obj/machinery/door/window/eastleft{
-	name = "fireplace"
+/obj/machinery/door/window/left/directional/east{
+	name = "Fireplace"
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
@@ -364,7 +351,7 @@
 /area/awaymission/cabin)
 "bc" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/britcup,
+/obj/item/reagent_containers/cup/glass/britcup,
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "bd" = (
@@ -383,8 +370,8 @@
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "bg" = (
-/obj/machinery/door/window/westleft{
-	name = "manager's desk"
+/obj/machinery/door/window/left/directional/west{
+	name = "Manager's Desk"
 	},
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
@@ -456,6 +443,18 @@
 /turf/open/floor/carpet,
 /area/awaymission/cabin)
 "bu" = (
+/obj/item/clothing/suit/hooded/wintercoat/hydro{
+	name = "service winter coat";
+	pixel_y = 4
+	},
+/obj/item/clothing/suit/hooded/wintercoat/hydro{
+	name = "service winter coat";
+	pixel_y = 4
+	},
+/obj/item/clothing/suit/hooded/wintercoat/hydro{
+	name = "service winter coat";
+	pixel_y = 4
+	},
 /obj/structure/table/wood,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
@@ -480,10 +479,9 @@
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/cabin)
 "bz" = (
-/obj/structure/sink/kitchen{
+/obj/structure/sink/kitchen/directional/south{
 	desc = "A sink used for washing one's hands and face. It looks rusty and home-made";
-	name = "sink";
-	pixel_y = 28
+	name = "sink"
 	},
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/cabin)
@@ -510,17 +508,11 @@
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "bG" = (
-/obj/structure/sink{
-	dir = 4;
-	pixel_x = -12;
-	pixel_y = 2
-	},
+/obj/structure/sink/directional/east,
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "bH" = (
-/obj/machinery/shower{
-	dir = 1
-	},
+/obj/machinery/shower/directional/north,
 /obj/structure/curtain,
 /obj/item/soap/nanotrasen{
 	pixel_x = -1;
@@ -532,17 +524,14 @@
 /turf/open/lava,
 /area/awaymission/cabin/caves/mountain)
 "bJ" = (
-/obj/structure/sink{
-	dir = 8;
-	pixel_x = 11
-	},
+/obj/structure/sink/directional/west,
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "bK" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 1
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "bL" = (
 /obj/structure/bed,
@@ -576,7 +565,7 @@
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "bS" = (
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "bT" = (
 /obj/machinery/light/small/directional/west,
@@ -589,7 +578,7 @@
 /area/awaymission/cabin)
 "bU" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/drinks/shaker,
+/obj/item/reagent_containers/cup/glass/shaker,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "bV" = (
@@ -617,7 +606,7 @@
 /obj/structure/chair/wood{
 	dir = 4
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "cf" = (
 /obj/structure/table/wood,
@@ -640,40 +629,28 @@
 	pixel_x = -5;
 	pixel_y = -2
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "cg" = (
 /obj/structure/chair/wood{
 	dir = 8
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "ch" = (
-/obj/structure/flora/stump{
+/obj/structure/flora/tree/stump{
 	desc = "Breaking it should be easy.";
 	max_integrity = 20;
 	name = "old stump"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "ci" = (
 /obj/structure/chair/wood,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cj" = (
-/obj/structure/table,
-/obj/item/clothing/suit/hooded/wintercoat/hydro{
-	name = "service winter coat";
-	pixel_y = 4
-	},
-/obj/item/clothing/suit/hooded/wintercoat/hydro{
-	name = "service winter coat";
-	pixel_y = 4
-	},
-/obj/item/clothing/suit/hooded/wintercoat/hydro{
-	name = "service winter coat";
-	pixel_y = 4
-	},
+/obj/machinery/griddle,
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/cabin)
 "ck" = (
@@ -710,7 +687,7 @@
 	set_cap = 1;
 	set_luminosity = 4
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin)
 "cs" = (
 /obj/structure/table/wood,
@@ -726,7 +703,7 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cu" = (
-/obj/machinery/atmospherics/components/binary/thermomachine/freezer/on{
+/obj/machinery/atmospherics/components/unary/thermomachine/freezer/on{
 	dir = 1
 	},
 /obj/machinery/light/directional/east,
@@ -748,7 +725,6 @@
 /obj/structure/cable,
 /obj/structure/musician/piano{
 	desc = "Very theatrical.";
-	icon_state = "piano";
 	name = "theatre piano"
 	},
 /turf/open/floor/wood,
@@ -761,7 +737,7 @@
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cB" = (
-/obj/machinery/door/window/eastleft,
+/obj/machinery/door/window/left/directional/east,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "cC" = (
@@ -775,7 +751,7 @@
 	pixel_y = -32;
 	req_access = null
 	},
-/obj/machinery/door/window/westleft{
+/obj/machinery/door/window/left/directional/west{
 	name = "Bar"
 	},
 /turf/open/floor/wood,
@@ -784,11 +760,6 @@
 /obj/machinery/light/directional/north,
 /obj/structure/cable,
 /turf/open/floor/wood,
-/area/awaymission/cabin)
-"cF" = (
-/obj/structure/table,
-/obj/structure/cable,
-/turf/open/floor/iron/cafeteria,
 /area/awaymission/cabin)
 "cG" = (
 /obj/structure/closet/secure_closet/freezer/meat/open,
@@ -810,18 +781,18 @@
 /area/awaymission/cabin)
 "cJ" = (
 /obj/structure/table,
-/obj/item/reagent_containers/food/condiment/peppermill{
+/obj/item/reagent_containers/condiment/peppermill{
 	pixel_x = 8;
 	pixel_y = 10
 	},
-/obj/item/reagent_containers/food/condiment/peppermill{
+/obj/item/reagent_containers/condiment/peppermill{
 	pixel_x = 8
 	},
-/obj/item/reagent_containers/food/condiment/saltshaker{
+/obj/item/reagent_containers/condiment/saltshaker{
 	pixel_x = -8;
 	pixel_y = 10
 	},
-/obj/item/reagent_containers/food/condiment/saltshaker{
+/obj/item/reagent_containers/condiment/saltshaker{
 	pixel_x = -8
 	},
 /obj/structure/cable,
@@ -829,7 +800,7 @@
 /area/awaymission/cabin)
 "cK" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/drinks/sillycup/smallcarton{
+/obj/item/reagent_containers/cup/glass/sillycup/smallcarton{
 	pixel_y = 4
 	},
 /turf/open/floor/wood,
@@ -869,7 +840,7 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 9
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "cS" = (
 /obj/machinery/button/door/directional/north{
@@ -879,9 +850,8 @@
 /area/awaymission/cabin)
 "cT" = (
 /obj/vehicle/ridden/atv,
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "cU" = (
 /obj/machinery/light/directional/north,
@@ -893,49 +863,47 @@
 /area/awaymission/cabin)
 "cW" = (
 /obj/item/shovel,
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "cX" = (
 /obj/structure/reagent_dispensers/fueltank,
-/turf/open/floor/plating{
-	icon_state = "platingdmg1"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "cY" = (
 /obj/vehicle/ridden/atv{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "cZ" = (
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "da" = (
 /obj/structure/chair,
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 1
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "db" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dc" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/drinks/bottle/vodka/badminka{
+/obj/item/reagent_containers/cup/glass/bottle/vodka/badminka{
 	desc = "A fancy bottle of vodka. The name isn't in Galactic Common though.";
 	name = "Porosha Vodka"
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dd" = (
 /obj/effect/turf_decal/weather/snow/corner{
@@ -945,7 +913,7 @@
 	desc = "A comfortable, secure seat. It has a more sturdy looking buckling system, for making it harder to get dragged into the ring.";
 	name = "announcer seat"
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "de" = (
 /obj/effect/turf_decal/weather/snow/corner{
@@ -953,92 +921,89 @@
 	},
 /obj/structure/table/reinforced,
 /obj/item/hourglass,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "df" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 5
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dg" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 8
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dh" = (
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "di" = (
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dj" = (
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/snowforest)
 "dk" = (
 /obj/structure/chair,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dl" = (
 /obj/structure/chair,
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dm" = (
 /obj/structure/table/reinforced,
-/obj/item/pda/syndicate{
-	background_color = "#0039A6";
-	default_cartridge = /obj/item/cartridge/virus/mime;
-	desc = "A portable microcomputer by Thinktronic Systems, LTD. Seems like it may have useful information on it.";
-	name = "soviet PDA";
-	note = "<b>TRANSLATED TO GALACTIC COMMON:</b><br>My partner has left to help those Nanotrasen fucks three days ago. They said that a distress signal came from down south and they had to check it out. How fucking long does it take to investigate a mining outpost? Either those Nanotrasen fuckers betrayed us or something really did go wrong. Either way, I'm leaving before this becomes an issue for me and anyone else here. That dumb idiot."
+/obj/item/modular_computer/tablet/pda/syndicate{
+	desc = "A portable microcomputer by Thinktronic Systems, LTD.";
+	inserted_disk = /obj/item/computer_disk/virus/mime;
+	name = "soviet tablet"
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dn" = (
 /obj/structure/table/reinforced,
 /obj/item/megaphone/sec{
 	name = "soviet megaphone"
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "do" = (
 /obj/structure/table/reinforced,
 /obj/item/cigbutt/cigarbutt,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dp" = (
 /obj/machinery/vending/sovietsoda,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dq" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dr" = (
 /obj/effect/decal/cleanable/blood,
 /obj/item/reagent_containers/pill/patch/libital,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ds" = (
 /obj/effect/decal/cleanable/blood/gibs,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dt" = (
 /obj/structure/closet/secure_closet/freezer/fridge/open,
-/obj/item/reagent_containers/food/condiment/mayonnaise,
+/obj/item/reagent_containers/condiment/mayonnaise,
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "du" = (
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "dv" = (
 /obj/structure{
@@ -1051,9 +1016,8 @@
 	},
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "dw" = (
 /mob/living/simple_animal/hostile/bear/snow{
@@ -1063,20 +1027,20 @@
 	name = "fat space polar bear";
 	speed = 3
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dx" = (
 /obj/structure/fence{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "dy" = (
 /obj/structure/fence/door,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "dz" = (
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	name = "packed snow";
 	slowdown = 0
 	},
@@ -1089,17 +1053,17 @@
 	set_cap = 1;
 	set_luminosity = 4
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin)
 "dC" = (
 /obj/structure/fence,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "dD" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 9
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "dE" = (
 /obj/structure/chair{
@@ -1108,43 +1072,43 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 8
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dF" = (
 /obj/structure/chair{
 	dir = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dG" = (
 /obj/structure/kitchenspike,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dH" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 8
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "dI" = (
 /obj/structure/table,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dJ" = (
 /obj/structure/kitchenspike,
 /obj/effect/decal/cleanable/blood/gibs,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dK" = (
 /obj/structure/chair{
 	dir = 8
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dL" = (
 /obj/structure/fence/door/opened,
 /obj/structure/barricade/wooden/crude/snow,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "dM" = (
 /obj/structure/chair{
@@ -1153,63 +1117,63 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dN" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 10
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "dO" = (
 /obj/structure/chair{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dP" = (
 /obj/item/shard,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dQ" = (
 /obj/item/lighter/greyscale,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dR" = (
 /obj/structure/chair{
 	dir = 8
 	},
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dS" = (
 /obj/effect/decal/cleanable/blood/gibs/limb,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dT" = (
 /obj/item/broken_bottle,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dU" = (
 /obj/item/chair,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dV" = (
 /obj/effect/decal/cleanable/blood/gibs/body,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dW" = (
 /obj/item/reagent_containers/pill/patch/libital,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "dX" = (
 /mob/living/simple_animal/pet/penguin/emperor,
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/snowforest)
 "dY" = (
 /mob/living/simple_animal/pet/penguin/baby,
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/snowforest)
 "dZ" = (
 /obj/structure/chair{
@@ -1226,12 +1190,12 @@
 	name = "fat space polar bear";
 	speed = 3
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ea" = (
 /obj/item/food/fishmeat/carp,
 /obj/item/food/fishmeat/carp,
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/snowforest)
 "eb" = (
 /obj/structure/closet,
@@ -1247,9 +1211,8 @@
 /area/awaymission/cabin)
 "ec" = (
 /obj/machinery/light/directional/south,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "ed" = (
 /obj/effect/decal/cleanable/dirt,
@@ -1263,7 +1226,7 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 1
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "eg" = (
 /obj/structure/cable,
@@ -1287,14 +1250,14 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 8
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/snowforest)
 "el" = (
 /obj/effect/light_emitter{
 	set_cap = 1;
 	set_luminosity = 4
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin)
 "em" = (
 /obj/effect/turf_decal/weather/snow/corner{
@@ -1308,7 +1271,7 @@
 	set_cap = 1;
 	set_luminosity = 4
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin)
 "eo" = (
 /obj/structure/cable,
@@ -1322,15 +1285,15 @@
 	set_cap = 1;
 	set_luminosity = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin)
 "eq" = (
 /obj/machinery/door/poddoor/shutters{
 	id = "garage_cabin";
-	name = "garage door"
+	name = "Garage Door"
 	},
 /obj/structure/fans/tiny,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin)
 "er" = (
 /obj/effect/turf_decal/weather/snow/corner,
@@ -1338,11 +1301,11 @@
 	set_cap = 1;
 	set_luminosity = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin)
 "es" = (
 /obj/structure/fluff/fokoff_sign,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "et" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1355,7 +1318,7 @@
 /area/awaymission/cabin)
 "ev" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/glass/rag,
+/obj/item/reagent_containers/cup/rag,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "ew" = (
@@ -1369,7 +1332,7 @@
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "ex" = (
 /obj/structure/closet/crate/wooden,
@@ -1393,10 +1356,10 @@
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "ey" = (
-/obj/structure/sign/warning/nosmoking/circle,
+/obj/structure/sign/warning/no_smoking/circle,
 /turf/closed/wall/mineral/wood,
 /area/awaymission/cabin/snowforest)
 "ez" = (
@@ -1404,12 +1367,12 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 5
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eA" = (
 /obj/structure/table/wood,
 /obj/item/chainsaw,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "eB" = (
 /obj/structure/reagent_dispensers/water_cooler,
@@ -1429,14 +1392,14 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eD" = (
 /obj/structure/bonfire/dense{
 	desc = "Multiple logs thrown together into a pile hastily. Let's burn it for fun!.";
 	name = "pile of logs"
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eE" = (
 /obj/structure/table/wood,
@@ -1450,7 +1413,7 @@
 /obj/item/grown/log/tree{
 	pixel_x = 14
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eF" = (
 /obj/structure/table/wood,
@@ -1461,45 +1424,45 @@
 /obj/item/grown/log/tree{
 	pixel_x = 7
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eG" = (
 /obj/structure/mineral_door/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "eH" = (
 /obj/structure/grille,
 /obj/structure/window/reinforced/fulltile/ice{
 	name = "frozen window"
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/lumbermill)
 "eI" = (
 /obj/effect/turf_decal/stripes/red/corner,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eJ" = (
 /obj/effect/turf_decal/stripes/red/line,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eK" = (
 /obj/machinery/conveyor_switch/oneway{
 	id = "lumbermill"
 	},
 /obj/effect/turf_decal/stripes/red/line,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eL" = (
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 8
+	dir = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eM" = (
 /obj/effect/turf_decal/stripes/red/line{
 	dir = 4
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eN" = (
 /obj/structure/bookcase/random,
@@ -1512,7 +1475,7 @@
 	icon_state = "snowgrass3";
 	name = "frozen flora"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eP" = (
 /obj/structure/reagent_dispensers/wall/peppertank/directional/north,
@@ -1531,7 +1494,7 @@
 	desc = "If I forgot where the gateway was then I can just call the station with this phone! Wait, where's the phone lines?";
 	name = "phone"
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "eR" = (
 /obj/machinery/conveyor{
@@ -1539,7 +1502,7 @@
 	id = "lumbermill"
 	},
 /obj/effect/turf_decal/stripes/red/full,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/lumbermill)
 "eS" = (
 /obj/machinery/recycler/lumbermill{
@@ -1551,39 +1514,39 @@
 	},
 /obj/effect/turf_decal/stripes/red/full,
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/lumbermill)
 "eT" = (
 /obj/structure/closet/crate/wooden{
 	anchored = 1
 	},
 /obj/effect/turf_decal/delivery/red,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/lumbermill)
 "eU" = (
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 4
+	dir = 1
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eV" = (
 /obj/effect/turf_decal/stripes/red/line{
 	dir = 1
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eW" = (
 /obj/effect/turf_decal/stripes/red/line{
 	dir = 1
 	},
 /obj/item/wrench,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eX" = (
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 1
+	dir = 8
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "eY" = (
 /obj/structure/closet/crate/wooden,
@@ -1600,7 +1563,7 @@
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "eZ" = (
 /obj/structure/closet/crate/wooden,
@@ -1619,14 +1582,14 @@
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
 /obj/item/stack/sheet/mineral/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "fa" = (
 /obj/structure/fence,
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 6
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "fb" = (
 /obj/structure/fence{
@@ -1635,14 +1598,14 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 10
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "fc" = (
 /obj/structure/fence{
 	dir = 4
 	},
 /obj/effect/turf_decal/weather/snow/corner,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "fd" = (
 /obj/structure/fence{
@@ -1651,17 +1614,17 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 6
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "fe" = (
 /obj/structure/table/wood,
 /obj/item/shovel,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "ff" = (
 /obj/structure/table/wood,
 /obj/item/key/atv,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "fg" = (
 /obj/structure/filingcabinet/security,
@@ -1691,7 +1654,7 @@
 /area/awaymission/cabin/caves/mountain)
 "fi" = (
 /obj/item/trash/can,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "fk" = (
 /obj/machinery/computer/secure_data{
@@ -1746,19 +1709,10 @@
 /turf/open/floor/iron/dark,
 /area/awaymission/cabin/caves/mountain)
 "fo" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/structure/displaycase{
 	start_showpiece_type = /obj/item/dice/d6/space;
-	trophy_message = "Stolen from dice collector before he could enjoy his day."
+	desc = "Contains an artifact stolen from dice collector before he could enjoy his day."
 	},
 /turf/open/floor/iron/dark,
 /area/awaymission/cabin/caves/mountain)
@@ -1809,16 +1763,7 @@
 /turf/open/floor/iron/dark,
 /area/awaymission/cabin/caves/mountain)
 "fv" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/floor/iron/dark,
 /area/awaymission/cabin/caves/mountain)
 "fw" = (
@@ -1837,16 +1782,7 @@
 	},
 /area/awaymission/cabin/caves/mountain)
 "fz" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/light_emitter{
 	name = "outdoor light";
 	set_cap = 3;
@@ -1945,7 +1881,7 @@
 /area/awaymission/cabin/caves/mountain)
 "fL" = (
 /obj/effect/decal/cleanable/dirt,
-/mob/living/simple_animal/mouse{
+/mob/living/basic/mouse{
 	faction = list("sewer")
 	},
 /turf/open/floor/carpet,
@@ -2053,7 +1989,7 @@
 	speed = 3;
 	wander = 0
 	},
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	name = "packed snow";
 	slowdown = 0
 	},
@@ -2084,29 +2020,11 @@
 	anchored = 1;
 	desc = "He keeps breaking out somehow due to the help of cultists that utilize cargo shipments or atmospherical sabotage."
 	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/indestructible,
 /area/awaymission/cabin/caves/mountain)
 "gf" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/light_emitter{
 	name = "outdoor light";
 	set_cap = 3;
@@ -2120,45 +2038,18 @@
 	desc = "Don't try it.";
 	name = "\improper Nanotrasen Saber SMG"
 	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/indestructible,
 /area/awaymission/cabin/caves/mountain)
 "gh" = (
 /obj/structure/sign/poster/contraband/free_drone{
 	desc = "This poster seems to be meant for a bunch of machines that used to be deployed on space stations."
 	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/indestructible,
 /area/awaymission/cabin/caves/mountain)
 "gi" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/indestructible,
 /area/awaymission/cabin/caves/mountain)
 "gj" = (
@@ -2171,16 +2062,7 @@
 	mouse_opacity = 0;
 	name = "\improper secret escape route"
 	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/light_emitter{
 	name = "outdoor light";
 	set_cap = 3;
@@ -2193,29 +2075,11 @@
 	desc = "An ancient canvas that was used to produce art so fine, the universe can't handle it!";
 	name = "Ancient Canvas Art"
 	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/indestructible,
 /area/awaymission/cabin/caves/mountain)
 "gl" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/item/nullrod/claymore/multiverse{
 	anchored = 1;
 	force = 4
@@ -2227,29 +2091,11 @@
 	desc = "An open sleeper. It looks as though it would be awaiting another patient.";
 	dir = 4
 	},
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /turf/open/indestructible,
 /area/awaymission/cabin/caves/mountain)
 "gn" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/structure/showcase/mecha/marauder{
 	desc = "Used by vigilantes in the past to fight ruffians causing trouble in neighborhoods and space stations.";
 	icon_state = "seraph";
@@ -2274,16 +2120,7 @@
 /turf/open/floor/engine,
 /area/awaymission/cabin/caves/mountain)
 "gq" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/structure/sign/poster/official/do_not_question{
 	pixel_x = 32
 	},
@@ -2383,16 +2220,7 @@
 	},
 /area/awaymission/cabin/caves/mountain)
 "gF" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/effect/light_emitter{
 	name = "outdoor light";
 	set_cap = 3;
@@ -2411,16 +2239,7 @@
 /turf/open/floor/iron/dark,
 /area/awaymission/cabin/caves/mountain)
 "gG" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/structure/sign/poster/official/space_cops{
 	pixel_y = 32
 	},
@@ -2438,32 +2257,14 @@
 /turf/open/floor/carpet,
 /area/awaymission/cabin/caves/mountain)
 "gJ" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/structure/sign/poster/official/no_erp{
 	pixel_y = -32
 	},
 /turf/open/floor/iron/dark,
 /area/awaymission/cabin/caves/mountain)
 "gK" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/item/food/egg/rainbow{
 	desc = "Was an egg really worth this much effort?";
 	name = "easter egg"
@@ -2497,23 +2298,14 @@
 /obj/structure/fence/door{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "gP" = (
-/obj/structure/flora/tree/pine,
-/turf/open/floor/plating/asteroid/snow,
+/obj/structure/flora/tree/pine/style_random,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "gQ" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/item/banhammer{
 	desc = "I'm sorry, sir, but fun actions are illegal.";
 	name = "fun baton"
@@ -2528,21 +2320,12 @@
 	icon_state = "snowgrass2";
 	name = "frozen flora"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "gS" = (
-/obj/effect/turf_decal/tile/blue{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/blue{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue/fourcorners,
 /obj/item/clothing/shoes/sneakers/brown,
-/obj/item/clothing/head/helmet/police{
+/obj/item/clothing/head/hats/warden/police{
 	armor = list("melee" = 5, "bullet" = 5, "laser" = 5, "energy" = 2, "bomb" = 15, "bio" = 0, "fire" = 20, "acid" = 20);
 	desc = "I am the law!"
 	},
@@ -2568,19 +2351,19 @@
 	icon_state = "snowgrass_sw";
 	name = "frozen flora"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "gW" = (
-/obj/structure/flora/tree/dead,
-/turf/open/floor/plating/asteroid/snow,
+/obj/structure/flora/tree/dead/style_random,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "gX" = (
-/obj/structure/flora/stump{
+/obj/structure/flora/tree/stump{
 	desc = "Breaking it should be easy.";
 	max_integrity = 20;
 	name = "old stump"
 	},
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	name = "packed snow";
 	slowdown = 0
 	},
@@ -2589,12 +2372,12 @@
 /obj/structure/table/wood,
 /obj/item/clothing/suit/hooded/wintercoat/hydro,
 /obj/item/clothing/ears/earmuffs,
-/obj/item/clothing/head/hardhat,
-/turf/open/floor/wood/cold,
+/obj/item/clothing/head/utility/hardhat,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "gZ" = (
 /obj/item/chair/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "ha" = (
 /obj/structure/chair/wood/wings{
@@ -2627,11 +2410,11 @@
 "he" = (
 /obj/structure/table/wood,
 /obj/structure/cable,
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_y = -2
 	},
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_x = 8;
 	pixel_y = 8
@@ -2641,16 +2424,14 @@
 "hf" = (
 /obj/machinery/space_heater,
 /obj/effect/decal/remains/robot,
-/obj/structure/sign/warning/fire{
-	pixel_y = 32
-	},
+/obj/structure/sign/warning/fire/directional/north,
 /obj/machinery/space_heater,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/awaymission/cabin)
 "hg" = (
 /obj/machinery/door/airlock/maintenance{
-	name = "janitor closet"
+	name = "Janitor Closet"
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
@@ -2742,7 +2523,7 @@
 /area/awaymission/cabin)
 "hv" = (
 /obj/structure/table/reinforced,
-/obj/item/clothing/head/welding{
+/obj/item/clothing/head/utility/welding{
 	pixel_y = 4
 	},
 /obj/effect/decal/cleanable/dirt,
@@ -2753,9 +2534,8 @@
 /obj/item/lightreplacer,
 /obj/item/storage/toolbox/mechanical,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating{
-	icon_state = "panelscorched"
-	},
+/obj/effect/mapping_helpers/burnt_floor,
+/turf/open/floor/plating,
 /area/awaymission/cabin)
 "hx" = (
 /obj/structure/cable,
@@ -2766,7 +2546,7 @@
 /area/awaymission/cabin)
 "hy" = (
 /obj/machinery/door/airlock/maintenance{
-	name = "heater storage"
+	name = "Heater Storage"
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
@@ -2809,7 +2589,7 @@
 /area/awaymission/cabin)
 "hF" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_y = 2
 	},
@@ -2860,17 +2640,17 @@
 /obj/structure/statue/snow/snowman{
 	anchored = 1
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "hO" = (
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "hP" = (
 /obj/item/candle/infinite,
 /turf/open/floor/plating/snowed,
 /area/awaymission/cabin/caves)
 "hQ" = (
-/obj/item/reagent_containers/food/drinks/bottle/beer,
+/obj/item/reagent_containers/cup/glass/bottle/beer,
 /turf/open/floor/plating/snowed,
 /area/awaymission/cabin/caves)
 "hR" = (
@@ -2886,20 +2666,20 @@
 	melee_damage_upper = 8;
 	wander = 0
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "hT" = (
 /obj/structure/statue/snow/snowlegion{
 	anchored = 1
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "hU" = (
 /obj/item/toy/figure/clown{
 	desc = "Shut up, we don't talk about him.";
 	name = "exploration squad Clown"
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "hV" = (
 /obj/structure/statue/snow/snowman{
@@ -2921,11 +2701,11 @@
 	pixel_y = 8;
 	throwforce = 2
 	},
-/obj/item/shield/riot/roman/fake{
+/obj/item/shield/roman/fake{
 	layer = 3.01;
 	pixel_x = -7
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "hW" = (
 /obj/item/toy/figure/borg{
@@ -2934,19 +2714,19 @@
 	pixel_x = 8;
 	toysay = "I. AM. ALIVE."
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "hX" = (
 /obj/item/clothing/suit/armor/vest/russian_coat{
 	pixel_x = 16;
 	pixel_y = 16
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "hY" = (
 /obj/effect/decal/cleanable/blood/gibs,
 /obj/item/reagent_containers/pill/patch/libital,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "hZ" = (
 /obj/structure/chair{
@@ -2956,42 +2736,42 @@
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 8
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ia" = (
 /obj/effect/decal/cleanable/blood,
 /obj/item/shard/plasma,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ib" = (
 /obj/item/hatchet/wooden,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ic" = (
 /obj/effect/decal/cleanable/blood,
 /obj/item/trash/popcorn{
 	pixel_y = 12
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "id" = (
 /obj/structure/chair{
 	dir = 1
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ie" = (
 /obj/structure/chair{
 	dir = 1
 	},
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "if" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 10
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ig" = (
 /obj/item/toy/figure/dsquad{
@@ -2999,7 +2779,7 @@
 	name = "exploration squad Officer";
 	toysay = "We're top secret until we're not!"
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "ih" = (
 /obj/item/toy/figure/md{
@@ -3008,7 +2788,7 @@
 	pixel_x = -8;
 	toysay = "Guess I'll be useless until stuns are involved!"
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "ii" = (
 /turf/closed/indestructible/syndicate,
@@ -3025,9 +2805,7 @@
 	name = "vault door"
 	},
 /obj/effect/decal/cleanable/dirt/dust,
-/turf/open/floor/mineral/plastitanium/red{
-	name = "soviet floor"
-	},
+/turf/open/floor/mineral/plastitanium/red/snow_cabin,
 /area/awaymission/cabin/caves/sovietcave)
 "il" = (
 /obj/item/toy/mecha/deathripley{
@@ -3035,7 +2813,7 @@
 	name = "exploraton squad Ripley";
 	pixel_y = 15
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "im" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -3081,18 +2859,18 @@
 /area/awaymission/cabin/caves/sovietcave)
 "is" = (
 /obj/structure/closet/secure_closet/freezer/kitchen,
-/obj/item/reagent_containers/food/condiment/enzyme,
+/obj/item/reagent_containers/condiment/enzyme,
 /turf/open/floor/iron/freezer,
 /area/awaymission/cabin)
 "it" = (
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "iu" = (
 /obj/item/grenade/barrier{
 	pixel_x = -14;
 	pixel_y = 14
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "iv" = (
 /turf/closed/wall/mineral/snow,
@@ -3103,11 +2881,11 @@
 /area/awaymission/cabin/caves)
 "ix" = (
 /obj/effect/decal/cleanable/shreds,
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "iy" = (
 /obj/item/paper/pamphlet/gateway,
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "iz" = (
 /turf/closed/wall/ice,
@@ -3130,7 +2908,7 @@
 /area/awaymission/cabin/caves)
 "iE" = (
 /obj/effect/decal/cleanable/shreds,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "iF" = (
 /obj/item/shovel{
@@ -3141,7 +2919,7 @@
 /obj/effect/decal/remains/human{
 	color = "#72e4fa"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "iG" = (
 /obj/structure/fluff/iced_abductor,
@@ -3161,13 +2939,13 @@
 /turf/open/floor/plating/snowed,
 /area/awaymission/cabin/caves)
 "iK" = (
-/obj/structure/flora/rock/icy{
+/obj/structure/flora/rock/icy/style_random{
 	desc = "A mountain rock."
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "iL" = (
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	floor_variance = 0;
 	icon_state = "snow_dug";
 	slowdown = 1
@@ -3178,11 +2956,11 @@
 /area/awaymission/cabin/caves)
 "iN" = (
 /obj/machinery/icecream_vat,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "iO" = (
 /obj/structure/chair,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "iP" = (
 /obj/structure/sign/picture_frame{
@@ -3196,7 +2974,7 @@
 /area/awaymission/cabin/caves)
 "iR" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_x = -7;
 	pixel_y = -2
@@ -3205,7 +2983,7 @@
 /area/awaymission/cabin)
 "iS" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_x = 7;
 	pixel_y = 2
@@ -3214,7 +2992,7 @@
 /area/awaymission/cabin)
 "iT" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_x = -4;
 	pixel_y = 4
@@ -3223,12 +3001,12 @@
 /area/awaymission/cabin)
 "iU" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_x = -5;
 	pixel_y = 2
 	},
-/obj/item/reagent_containers/food/drinks/mug/coco{
+/obj/item/reagent_containers/cup/glass/mug/coco{
 	desc = "Still hot!";
 	pixel_x = 7;
 	pixel_y = -2
@@ -3388,9 +3166,9 @@
 "js" = (
 /obj/machinery/light/directional/east,
 /obj/structure/table,
-/obj/item/storage/firstaid/regular,
-/obj/item/storage/firstaid/brute,
-/obj/item/storage/firstaid/fire,
+/obj/item/storage/medkit/regular,
+/obj/item/storage/medkit/brute,
+/obj/item/storage/medkit/fire,
 /turf/open/floor/iron/white,
 /area/awaymission/cabin)
 "jt" = (
@@ -3414,7 +3192,7 @@
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/shoes/winterboots,
 /obj/item/clothing/shoes/winterboots,
-/obj/item/clothing/neck/stripedbluescarf,
+/obj/item/clothing/neck/large_scarf/blue,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "jv" = (
@@ -3426,7 +3204,7 @@
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/shoes/winterboots,
 /obj/item/clothing/shoes/winterboots,
-/obj/item/clothing/neck/stripedgreenscarf,
+/obj/item/clothing/neck/large_scarf/green,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "jw" = (
@@ -3438,7 +3216,7 @@
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/shoes/winterboots,
 /obj/item/clothing/shoes/winterboots,
-/obj/item/clothing/neck/stripedredscarf,
+/obj/item/clothing/neck/large_scarf/red,
 /turf/open/floor/wood,
 /area/awaymission/cabin)
 "jx" = (
@@ -3451,14 +3229,14 @@
 /area/awaymission/cabin)
 "jy" = (
 /obj/structure/table/wood/fancy,
-/obj/item/reagent_containers/food/drinks/bottle/wine{
+/obj/item/reagent_containers/cup/glass/bottle/wine{
 	pixel_y = 4
 	},
-/obj/item/reagent_containers/food/drinks/drinkingglass{
+/obj/item/reagent_containers/cup/glass/drinkingglass{
 	pixel_x = -7;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/food/drinks/drinkingglass{
+/obj/item/reagent_containers/cup/glass/drinkingglass{
 	pixel_x = 7;
 	pixel_y = 3
 	},
@@ -3482,7 +3260,7 @@
 /area/awaymission/cabin)
 "jB" = (
 /obj/effect/baseturf_helper/asteroid/snow,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jC" = (
 /obj/structure/cable,
@@ -3542,7 +3320,7 @@
 /area/awaymission/cabin/caves/mountain)
 "jM" = (
 /obj/machinery/space_heater,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jN" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -3552,24 +3330,20 @@
 	},
 /area/awaymission/cabin/caves/sovietcave)
 "jO" = (
-/obj/structure/sign/warning/nosmoking{
-	pixel_x = 32
-	},
-/turf/open/floor/wood/cold,
+/obj/structure/sign/warning/no_smoking/directional/east,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jP" = (
-/obj/structure/sign/warning/nosmoking{
-	pixel_x = -32
-	},
-/turf/open/floor/wood/cold,
+/obj/structure/sign/warning/no_smoking/directional/west,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jQ" = (
 /obj/structure/table/wood,
-/obj/structure/sign/warning/nosmoking/circle{
+/obj/structure/sign/warning/no_smoking/circle{
 	pixel_x = -16;
 	pixel_y = 32
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jR" = (
 /obj/structure/table/wood,
@@ -3607,12 +3381,12 @@
 	pixel_x = 3;
 	throwforce = 4
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jS" = (
 /obj/structure/table/wood,
-/obj/item/storage/firstaid/brute,
-/turf/open/floor/wood/cold,
+/obj/item/storage/medkit/brute,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jT" = (
 /obj/structure/table/wood,
@@ -3627,20 +3401,20 @@
 	pixel_x = 5;
 	pixel_y = 4
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jU" = (
 /obj/structure/chair/wood,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jV" = (
 /mob/living/simple_animal/bot/firebot,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jW" = (
 /obj/structure/table/wood,
 /obj/item/gun/energy/floragun,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jX" = (
 /obj/structure/table/wood,
@@ -3648,14 +3422,14 @@
 	pixel_x = -6;
 	pixel_y = 12
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jY" = (
 /obj/structure/table/wood,
 /obj/item/razor{
 	pixel_y = 3
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "jZ" = (
 /obj/structure/table/wood,
@@ -3663,12 +3437,12 @@
 	pixel_x = -7;
 	pixel_y = 3
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "ka" = (
 /obj/structure/table/wood,
 /obj/item/extinguisher,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "kb" = (
 /obj/structure/table/wood,
@@ -3676,7 +3450,7 @@
 	pixel_x = 4;
 	pixel_y = 6
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "kc" = (
 /obj/structure/table/wood,
@@ -3686,7 +3460,7 @@
 /obj/item/flashlight{
 	pixel_y = 15
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "kd" = (
 /obj/structure/table/wood,
@@ -3696,33 +3470,33 @@
 /obj/item/pen{
 	pixel_y = 3
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "ke" = (
 /obj/structure/table/wood,
 /obj/item/restraints/legcuffs/beartrap{
 	pixel_y = 7
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "kf" = (
 /obj/structure/table/wood,
 /obj/item/paper_bin,
 /obj/item/pen/fountain,
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "kg" = (
-/obj/structure/flora/tree/pine,
-/turf/open/floor/plating/asteroid/snow,
+/obj/structure/flora/tree/pine/style_random,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin)
 "kh" = (
-/obj/structure/flora/rock/icy{
+/obj/structure/flora/rock/icy/style_random{
 	desc = "A mountain rock."
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "ki" = (
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/caves)
 "kj" = (
 /obj/structure/mineral_door/wood,
@@ -3746,49 +3520,23 @@
 /obj/structure/sign{
 	pixel_x = 32
 	},
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	floor_variance = 0;
 	icon_state = "snow_dug";
 	slowdown = 1
 	},
 /area/awaymission/cabin/caves)
-"ko" = (
-/turf/open/floor/wood/cold{
-	icon_state = "wood-broken"
-	},
-/area/awaymission/cabin/caves)
-"kp" = (
-/turf/open/floor/wood/cold{
-	icon_state = "wood-broken4"
-	},
-/area/awaymission/cabin/caves)
-"kq" = (
-/turf/open/floor/wood/cold{
-	icon_state = "wood-broken5"
-	},
-/area/awaymission/cabin/caves)
-"kr" = (
-/turf/open/floor/wood/cold{
-	icon_state = "wood-broken3"
-	},
-/area/awaymission/cabin/caves)
-"ks" = (
-/turf/open/floor/wood/cold{
-	icon_state = "wood-broken2"
-	},
-/area/awaymission/cabin/caves)
 "kt" = (
 /obj/structure/barricade/wooden/snowed,
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	floor_variance = 0;
 	icon_state = "snow_dug";
 	slowdown = 1
 	},
 /area/awaymission/cabin/caves)
 "ku" = (
-/turf/open/floor/wood/cold{
-	icon_state = "wood-broken7"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/caves)
 "kv" = (
 /obj/structure/barricade/wooden/snowed,
@@ -3798,7 +3546,7 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kw" = (
 /obj/effect/light_emitter{
@@ -3806,7 +3554,7 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "kx" = (
 /obj/effect/light_emitter{
@@ -3814,10 +3562,10 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "ky" = (
-/obj/structure/flora/stump{
+/obj/structure/flora/tree/stump{
 	desc = "Breaking it should be easy.";
 	max_integrity = 20;
 	name = "old stump"
@@ -3827,7 +3575,7 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kz" = (
 /obj/structure/statue/snow/snowman{
@@ -3841,11 +3589,11 @@
 /obj/item/staff{
 	layer = 3.01
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kA" = (
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	name = "packed snow";
 	slowdown = 0
 	},
@@ -3855,7 +3603,7 @@
 	anchored = 1;
 	name = "I Don't Know"
 	},
-/obj/item/clothing/head/bishopmitre{
+/obj/item/clothing/head/chaplain/bishopmitre{
 	pixel_x = -1;
 	pixel_y = 16
 	},
@@ -3866,14 +3614,14 @@
 	name = "holy staff";
 	pixel_y = -2
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kC" = (
 /obj/structure/statue/snow/snowman{
 	anchored = 1;
 	name = "Because"
 	},
-/obj/item/clothing/head/scarecrow_hat{
+/obj/item/clothing/head/costume/scarecrow_hat{
 	desc = "A replica straw hat that isn't actually made out of straw";
 	name = "synthetic straw hat";
 	pixel_x = -1;
@@ -3882,7 +3630,7 @@
 /obj/item/gun/ballistic/shotgun/toy/unrestricted{
 	pixel_y = -2
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kD" = (
 /obj/structure/table/wood,
@@ -3920,11 +3668,11 @@
 	pixel_x = 3;
 	throwforce = 4
 	},
-/obj/structure/sign/warning/nosmoking/circle{
+/obj/structure/sign/warning/no_smoking/circle{
 	pixel_x = 16;
 	pixel_y = -32
 	},
-/turf/open/floor/wood/cold,
+/turf/open/floor/wood/freezing,
 /area/awaymission/cabin/lumbermill)
 "kE" = (
 /obj/structure/closet,
@@ -3974,7 +3722,7 @@
 "kK" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/drinks/bottle/vodka,
+/obj/item/reagent_containers/cup/glass/bottle/vodka,
 /turf/open/floor/mineral/plastitanium/red{
 	name = "soviet floor"
 	},
@@ -4036,7 +3784,7 @@
 	anchored = 1;
 	name = "Why"
 	},
-/obj/item/clothing/head/bandana{
+/obj/item/clothing/head/costume/pirate/bandana{
 	pixel_x = -1;
 	pixel_y = -1
 	},
@@ -4046,11 +3794,11 @@
 	name = "frozen throwing star";
 	throwforce = 1
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kQ" = (
-/obj/structure/flora/tree/pine,
-/turf/open/floor/plating/asteroid/snow,
+/obj/structure/flora/tree/pine/style_random,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kR" = (
 /obj/effect/decal/cleanable/dirt,
@@ -4062,15 +3810,15 @@
 "kS" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/effect/decal/remains/human,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kT" = (
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kU" = (
 /obj/effect/decal/remains/human,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kV" = (
 /obj/effect/light_emitter{
@@ -4079,11 +3827,11 @@
 	set_luminosity = 6
 	},
 /obj/effect/decal/remains/human,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kW" = (
 /obj/effect/decal/cleanable/oil,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kX" = (
 /obj/effect/decal/cleanable/dirt,
@@ -4094,7 +3842,7 @@
 "kY" = (
 /obj/effect/decal/remains/human,
 /obj/item/shovel,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "kZ" = (
 /obj/effect/decal/cleanable/insectguts,
@@ -4113,7 +3861,7 @@
 "la" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/crowbar/large,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lb" = (
 /obj/effect/decal/cleanable/cobweb,
@@ -4134,14 +3882,14 @@
 	name = "icy wind"
 	},
 /obj/effect/decal/cleanable/shreds,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "le" = (
 /obj/effect/decal/cleanable/glitter/blue{
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lf" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -4154,7 +3902,7 @@
 	desc = "It's still alive.";
 	icon_state = "snowlegion_alive"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lg" = (
 /obj/effect/decal/cleanable/glitter/blue{
@@ -4162,12 +3910,12 @@
 	name = "icy wind"
 	},
 /obj/effect/decal/cleanable/oil,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lh" = (
 /obj/effect/decal/remains/human,
 /obj/item/reagent_containers/spray/pepper/empty,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "li" = (
 /obj/effect/decal/cleanable/glitter/blue{
@@ -4175,7 +3923,7 @@
 	name = "icy wind"
 	},
 /obj/effect/decal/cleanable/generic,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lj" = (
 /obj/effect/decal/remains/xeno,
@@ -4183,7 +3931,7 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lk" = (
 /obj/effect/decal/remains/human,
@@ -4191,11 +3939,11 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "ll" = (
 /obj/structure/barricade/wooden/snowed,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lm" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -4204,7 +3952,7 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "ln" = (
 /obj/item/weldingtool/mini,
@@ -4212,7 +3960,7 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lo" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -4220,7 +3968,7 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lp" = (
 /obj/structure/statue/snow/snowlegion{
@@ -4228,14 +3976,14 @@
 	desc = "It's still alive.";
 	icon_state = "snowlegion_alive"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lq" = (
 /obj/effect/decal/cleanable/glitter/blue{
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/mob/living/simple_animal/hostile/statue{
+/mob/living/simple_animal/hostile/netherworld/statue{
 	desc = "Just a snowman. Just a snowman. Oh god, it's just a snowman.";
 	faction = list("statue","mining");
 	health = 5000;
@@ -4248,7 +3996,7 @@
 	melee_damage_upper = 65;
 	name = "Frosty"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lr" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -4257,7 +4005,7 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "ls" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -4266,7 +4014,7 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lt" = (
 /obj/effect/decal/cleanable/glitter/blue{
@@ -4278,13 +4026,13 @@
 	desc = "It's still alive.";
 	icon_state = "snowlegion_alive"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lu" = (
 /obj/structure/statue/snow/snowman{
 	anchored = 1
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lv" = (
 /obj/effect/decal/cleanable/glitter/blue{
@@ -4292,7 +4040,7 @@
 	name = "icy wind"
 	},
 /obj/effect/decal/cleanable/molten_object/large,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lw" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -4305,7 +4053,7 @@
 	desc = "It's not bloody for some reason. Dear god.";
 	name = "human skull"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lx" = (
 /obj/effect/decal/cleanable/glitter/blue{
@@ -4313,7 +4061,7 @@
 	name = "icy wind"
 	},
 /obj/effect/decal/cleanable/plasma,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "ly" = (
 /obj/item/chair/stool,
@@ -4321,7 +4069,7 @@
 	desc = "It looks like fancy glitter to me.";
 	name = "icy wind"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lz" = (
 /obj/structure/sign/poster/official/cleanliness{
@@ -4335,14 +4083,14 @@
 	name = "icy wind"
 	},
 /obj/effect/decal/remains/xeno/larva,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lB" = (
 /obj/structure/statue/snow/snowman{
 	anchored = 1;
 	desc = "You didn't seriously examine each snowman to see if their description is different, did you?"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lC" = (
 /obj/machinery/conveyor{
@@ -4351,30 +4099,30 @@
 	},
 /obj/effect/turf_decal/stripes/red/full,
 /obj/structure/barricade/wooden/snowed,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/lumbermill)
 "lE" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/hatchet/wooden,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lF" = (
 /obj/effect/mine/stun,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lG" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/grenade/chem_grenade/large,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lH" = (
 /obj/effect/decal/remains/human,
 /obj/structure/light_construct/directional/south,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lI" = (
 /obj/structure/light_construct/directional/south,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lJ" = (
 /obj/effect/decal/cleanable/blood/old,
@@ -4390,7 +4138,7 @@
 	pixel_x = -3;
 	pixel_y = -5
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lK" = (
 /obj/item/pickaxe{
@@ -4399,7 +4147,7 @@
 	name = "damaged pickaxe";
 	throwforce = 4
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lL" = (
 /obj/effect/decal/remains/human,
@@ -4409,16 +4157,16 @@
 	name = "damaged pickaxe";
 	throwforce = 4
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lM" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/item/shovel,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lN" = (
 /obj/item/pickaxe/drill,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lP" = (
 /obj/effect/light_emitter{
@@ -4429,7 +4177,7 @@
 /turf/closed/wall/ice,
 /area/awaymission/cabin/caves)
 "lQ" = (
-/obj/structure/sign/warning/enginesafety{
+/obj/structure/sign/warning/engine_safety{
 	desc = "A sign detailing the various safety protocols when working on-site to ensure a safe shift. It seems to particularly focus on how dangerous the sawblade is.";
 	name = "\improper LUMBERMILL SAFETY"
 	},
@@ -4441,10 +4189,10 @@
 	name = "wooden box"
 	},
 /obj/item/paper{
-	info = "Moving these crates through a tunnel that isn't even finished yet is really annoying. It's such a pain in the ass to haul even a single crate to the cabin. It made sense to haul food and other goods however these are fake fucking trophies. Why do they even need these fake artifacts for some asshole's trophy case? We'll just leave the crates in the cave that has all those bones inside. Fuck it.";
+	default_raw_text = "Moving these crates through a tunnel that isn't even finished yet is really annoying. It's such a pain in the ass to haul even a single crate to the cabin. It made sense to haul food and other goods however these are fake fucking trophies. Why do they even need these fake artifacts for some asshole's trophy case? We'll just leave the crates in the cave that has all those bones inside. Fuck it.";
 	name = "Shipment Delivery Note"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lS" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -4460,8 +4208,8 @@
 	},
 /area/awaymission/cabin/caves/sovietcave)
 "lW" = (
-/obj/structure/flora/tree/dead,
-/turf/open/floor/plating/asteroid/snow,
+/obj/structure/flora/tree/dead/style_random,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "lX" = (
 /obj/effect/light_emitter{
@@ -4469,13 +4217,13 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	name = "packed snow";
 	slowdown = 0
 	},
 /area/awaymission/cabin/caves)
 "lY" = (
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	name = "packed snow";
 	slowdown = 0
 	},
@@ -4487,18 +4235,18 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	name = "packed snow";
 	slowdown = 0
 	},
 /area/awaymission/cabin/caves)
 "ma" = (
-/obj/structure/flora/stump{
+/obj/structure/flora/tree/stump{
 	desc = "Breaking it should be easy.";
 	max_integrity = 20;
 	name = "old stump"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mc" = (
 /obj/structure/flora{
@@ -4507,7 +4255,7 @@
 	icon_state = "snowgrass2";
 	name = "frozen flora"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "md" = (
 /obj/effect/light_emitter{
@@ -4515,8 +4263,8 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/obj/structure/flora/tree/pine,
-/turf/open/floor/plating/asteroid/snow,
+/obj/structure/flora/tree/pine/style_random,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "me" = (
 /obj/structure/flora{
@@ -4525,11 +4273,11 @@
 	icon_state = "snowgrass3";
 	name = "frozen flora"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mf" = (
 /obj/machinery/light/directional/north,
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	floor_variance = 0;
 	icon_state = "snow_dug";
 	slowdown = 1
@@ -4544,7 +4292,7 @@
 	speak = list("Blyat!","Rawr!","GRR!","Growl!");
 	wander = 0
 	},
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	floor_variance = 0;
 	icon_state = "snow_dug";
 	slowdown = 1
@@ -4552,7 +4300,7 @@
 /area/awaymission/cabin/caves)
 "mh" = (
 /obj/machinery/light/directional/east,
-/turf/open/floor/plating/asteroid/snow{
+/turf/open/misc/asteroid/snow/snow_cabin{
 	floor_variance = 0;
 	icon_state = "snow_dug";
 	slowdown = 1
@@ -4591,17 +4339,17 @@
 	dir = 4
 	},
 /obj/structure/sign/nanotrasen,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "ml" = (
 /obj/structure/fence{
 	dir = 4
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mm" = (
 /obj/structure/fence/door,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mn" = (
 /obj/structure/fence/cut/large{
@@ -4669,7 +4417,7 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mu" = (
 /obj/effect/light_emitter{
@@ -4677,7 +4425,7 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mv" = (
 /obj/effect/light_emitter{
@@ -4688,11 +4436,10 @@
 /turf/open/floor/plating/snowed/smoothed,
 /area/awaymission/cabin/caves)
 "mw" = (
-/obj/structure/sign/warning{
-	name = "\improper SAWBLADE WARNING";
-	pixel_x = -32
+/obj/structure/sign/warning/directional/west{
+	name = "\improper SAWBLADE WARNING"
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "my" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -4711,7 +4458,7 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mA" = (
 /obj/effect/light_emitter{
@@ -4731,7 +4478,7 @@
 	set_cap = 3;
 	set_luminosity = 6
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mD" = (
 /obj/structure/closet/crate/wooden{
@@ -4739,7 +4486,7 @@
 	name = "wooden box"
 	},
 /obj/item/fakeartefact,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mE" = (
 /obj/effect/light_emitter{
@@ -4774,7 +4521,7 @@
 	speed = 7;
 	wander = 0
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "mI" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -4793,6 +4540,11 @@
 	name = "Soviet Hatch"
 	},
 /area/awaymission/cabin/caves/sovietcave)
+"mL" = (
+/obj/machinery/oven,
+/obj/item/plate/oven_tray,
+/turf/open/floor/iron/cafeteria,
+/area/awaymission/cabin)
 "mM" = (
 /obj/machinery/door/airlock/hatch,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -4823,7 +4575,7 @@
 	name = "wooden box"
 	},
 /obj/item/fakeartefact,
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "mR" = (
 /obj/effect/decal/cleanable/vomit/old,
@@ -4853,7 +4605,7 @@
 	speed = 7;
 	wander = 0
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "mU" = (
 /obj/effect/turf_decal/weather/snow,
@@ -4875,14 +4627,14 @@
 /area/awaymission/cabin/caves)
 "mY" = (
 /obj/effect/turf_decal/weather/snow,
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "mZ" = (
 /obj/item/key/atv,
 /obj/effect/decal/remains/human{
 	color = "#72e4fa"
 	},
-/turf/open/floor/plating/ice/smooth,
+/turf/open/misc/ice/smooth,
 /area/awaymission/cabin/caves)
 "na" = (
 /obj/vehicle/ridden/atv{
@@ -4892,12 +4644,10 @@
 /area/awaymission/cabin/caves)
 "nb" = (
 /obj/effect/turf_decal/weather/snow,
-/obj/item/pda/syndicate{
-	background_color = "#0039A6";
-	default_cartridge = /obj/item/cartridge/virus/clown;
-	desc = "A portable microcomputer by Thinktronic Systems, LTD. Seems like it may have useful information on it.";
-	name = "soviet PDA";
-	note = "<b>TRANSLATED TO GALACTIC COMMON:</b><br>DO NOT GO SOUTH."
+/obj/item/modular_computer/tablet/pda/syndicate{
+	desc = "A portable microcomputer by Thinktronic Systems, LTD.";
+	inserted_disk = /obj/item/computer_disk/virus/clown;
+	name = "soviet tablet"
 	},
 /obj/effect/decal/remains/human{
 	color = "#72e4fa"
@@ -4923,18 +4673,18 @@
 	mouse_opacity = 0;
 	name = ""
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "nh" = (
 /obj/effect/turf_decal/weather/snow/corner,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "ni" = (
 /obj/structure/chair{
 	dir = 1
 	},
 /obj/effect/turf_decal/weather/snow/corner,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "nj" = (
 /obj/structure/chair{
@@ -4942,13 +4692,13 @@
 	},
 /obj/effect/decal/cleanable/blood,
 /obj/effect/turf_decal/weather/snow/corner,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "nk" = (
 /obj/effect/turf_decal/weather/snow/corner{
 	dir = 6
 	},
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest/sovietsurface)
 "nl" = (
 /obj/structure/ladder/unbreakable/rune{
@@ -4958,7 +4708,7 @@
 	id = "GETMEOUTOFHEREYOUFUCKS";
 	name = "\improper Return Rune"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "nm" = (
 /obj/structure/ladder/unbreakable/rune{
@@ -4967,7 +4717,7 @@
 	id = "GETMEOUTOFHEREYOUFUCKS";
 	name = "\improper Emergency Escape Rune"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "nn" = (
 /obj/structure/sign/warning/explosives,
@@ -5038,28 +4788,28 @@
 	invoke_damage = 60;
 	name = "ice rune"
 	},
-/obj/item/clothing/suit/snowman{
+/obj/item/clothing/suit/costume/snowman{
 	desc = "The dead body of a snowman. There's holes to stick your own body in it.";
 	name = "snowman corpse"
 	},
-/obj/item/clothing/head/snowman{
+/obj/item/clothing/head/costume/snowman{
 	desc = "The head of a dead snowman. There's enough room inside for your own head.";
 	pixel_x = -1;
 	pixel_y = 10
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow/snow_cabin,
 /area/awaymission/cabin/caves)
 "nJ" = (
 /obj/effect/turf_decal/stripes/red/line,
 /obj/structure/barricade/wooden/snowed,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "nK" = (
 /obj/effect/turf_decal/stripes/red/line{
 	dir = 1
 	},
 /obj/structure/barricade/wooden/snowed,
-/turf/open/floor/plating/snowed/temperatre,
+/turf/open/floor/plating/snowed/snow_cabin,
 /area/awaymission/cabin/snowforest)
 "nL" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -5153,6 +4903,10 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/cabin)
+"Zr" = (
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/mineral/plastitanium/red/snow_cabin,
+/area/awaymission/cabin/caves/sovietcave)
 
 (1,1,1) = {"
 ab
@@ -21175,8 +20929,8 @@ it
 it
 ki
 ki
-kq
-ks
+ku
+ku
 ki
 ki
 ki
@@ -21430,7 +21184,7 @@ ab
 it
 it
 it
-ko
+ku
 ki
 ki
 ki
@@ -25030,7 +24784,7 @@ ki
 ki
 ki
 ki
-kr
+ku
 it
 it
 gx
@@ -25285,7 +25039,7 @@ it
 ki
 ki
 ki
-kp
+ku
 ki
 ki
 it
@@ -30761,7 +30515,7 @@ an
 bx
 bO
 cJ
-cF
+by
 cJ
 hz
 an
@@ -31015,7 +30769,7 @@ hy
 aq
 eg
 an
-by
+mL
 bO
 bO
 bO
@@ -58289,7 +58043,7 @@ lJ
 it
 lp
 ik
-im
+Zr
 ip
 jK
 im
@@ -58803,7 +58557,7 @@ it
 it
 it
 ik
-im
+Zr
 ip
 im
 im

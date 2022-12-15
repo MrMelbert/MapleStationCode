@@ -25,7 +25,7 @@
 /datum/antagonist/get_admin_commands()
 	. = ..()
 	if(linked_advanced_datum)
-		.["View Goals"] = CALLBACK(src, .proc/show_advanced_traitor_panel, usr)
+		.["View Goals"] = CALLBACK(src, PROC_REF(show_advanced_traitor_panel), usr)
 
 /datum/antagonist/antag_listing_commands()
 	. = ..()

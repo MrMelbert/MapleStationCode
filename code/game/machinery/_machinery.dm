@@ -107,9 +107,9 @@
 		//1 = use idle_power_usage
 		//2 = use active_power_usage
 	///the amount of static power load this machine adds to its area's power_usage list when use_power = IDLE_POWER_USE
-	var/idle_power_usage = 0
+	var/idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
 	///the amount of static power load this machine adds to its area's power_usage list when use_power = ACTIVE_POWER_USE
-	var/active_power_usage = 0
+	var/active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION
 	///the current amount of static power usage this machine is taking from its area
 	var/static_power_usage = 0
 	var/power_channel = AREA_USAGE_EQUIP
@@ -130,7 +130,7 @@
 	var/subsystem_type = /datum/controller/subsystem/machines
 	var/obj/item/circuitboard/circuit // Circuit to be created and inserted when the machinery is created
 
-	var/interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN | INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_SET_MACHINE
+	var/interaction_flags_machine = INTERACT_MACHINE_WIRES_IF_OPEN|INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_OPEN_SILICON|INTERACT_MACHINE_SET_MACHINE
 	var/fair_market_price = 69
 	var/market_verb = "Customer"
 	var/payment_department = ACCOUNT_ENG
@@ -143,6 +143,11 @@
 	var/last_used_time = 0
 	/// Mobtype of last user. Typecast to [/mob/living] for initial() usage
 	var/mob/living/last_user_mobtype
+	/// Do we want to hook into on_enter_area and on_exit_area?
+	/// Disables some optimizations
+	var/always_area_sensitive = FALSE
+	///Multiplier for power consumption.
+	var/machine_power_rectifier = 1
 
 /obj/machinery/Initialize(mapload)
 	if(!armor)
@@ -188,15 +193,22 @@
  * proc to call when the machine starts to require power after a duration of not requiring power
  * sets up power related connections to its area if it exists and becomes area sensitive
  * does not affect power usage itself
+ *
+ * Returns TRUE if it triggered a full registration, FALSE otherwise
+ * We do this so machinery that want to sidestep the area sensitiveity optimization can
  */
 /obj/machinery/proc/setup_area_power_relationship()
-	become_area_sensitive(INNATE_TRAIT)
-
 	var/area/our_area = get_area(src)
 	if(our_area)
-		RegisterSignal(our_area, COMSIG_AREA_POWER_CHANGE, .proc/power_change)
-	RegisterSignal(src, COMSIG_ENTER_AREA, .proc/on_enter_area)
-	RegisterSignal(src, COMSIG_EXIT_AREA, .proc/on_exit_area)
+		RegisterSignal(our_area, COMSIG_AREA_POWER_CHANGE, PROC_REF(power_change))
+
+	if(HAS_TRAIT_FROM(src, TRAIT_AREA_SENSITIVE, INNATE_TRAIT)) // If we for some reason have not lost our area sensitivity, there's no reason to set it back up
+		return FALSE
+
+	become_area_sensitive(INNATE_TRAIT)
+	RegisterSignal(src, COMSIG_ENTER_AREA, PROC_REF(on_enter_area))
+	RegisterSignal(src, COMSIG_EXIT_AREA, PROC_REF(on_exit_area))
+	return TRUE
 
 /**
  * proc to call when the machine stops requiring power after a duration of requiring power
@@ -208,18 +220,27 @@
 	if(our_area)
 		UnregisterSignal(our_area, COMSIG_AREA_POWER_CHANGE)
 
+	if(always_area_sensitive)
+		return
+
 	lose_area_sensitivity(INNATE_TRAIT)
 	UnregisterSignal(src, COMSIG_ENTER_AREA)
 	UnregisterSignal(src, COMSIG_EXIT_AREA)
 
 /obj/machinery/proc/on_enter_area(datum/source, area/area_to_register)
 	SIGNAL_HANDLER
+	// If we're always area sensitive, and this is called while we have no power usage, do nothing and return
+	if(always_area_sensitive && use_power == NO_POWER_USE)
+		return
 	update_current_power_usage()
 	power_change()
-	RegisterSignal(area_to_register, COMSIG_AREA_POWER_CHANGE, .proc/power_change)
+	RegisterSignal(area_to_register, COMSIG_AREA_POWER_CHANGE, PROC_REF(power_change))
 
 /obj/machinery/proc/on_exit_area(datum/source, area/area_to_unregister)
 	SIGNAL_HANDLER
+	// If we're always area sensitive, and this is called while we have no power usage, do nothing and return
+	if(always_area_sensitive && use_power == NO_POWER_USE)
+		return
 	unset_static_power()
 	UnregisterSignal(area_to_unregister, COMSIG_AREA_POWER_CHANGE)
 
@@ -349,7 +370,7 @@
 /obj/machinery/proc/can_be_occupant(atom/movable/occupant_atom)
 	return occupant_typecache ? is_type_in_typecache(occupant_atom, occupant_typecache) : isliving(occupant_atom)
 
-/obj/machinery/proc/close_machine(atom/movable/target = null)
+/obj/machinery/proc/close_machine(atom/movable/target)
 	state_open = FALSE
 	set_density(TRUE)
 	if(!target)
@@ -464,6 +485,21 @@
 
 	return TRUE
 
+///Get a valid powered area to reference for power use, mainly for wall-mounted machinery that isn't always mapped directly in a powered location.
+/obj/machinery/proc/get_room_area(area/machine_room)
+	var/area/machine_area = get_area(src)
+	if(!machine_area.always_unpowered) ///check our loc first to see if its a powered area
+		machine_room = machine_area
+		return machine_room
+	var/turf/mounted_wall = get_step(src,dir)
+	if (mounted_wall && istype(mounted_wall, /turf/closed))
+		var/area/wall_area = get_area(mounted_wall)
+		if(!wall_area.always_unpowered) //loc area wasn't good, checking adjacent wall for a good area to use
+			machine_room = wall_area
+			return machine_room
+	machine_room = machine_area ///couldn't find a proper powered area on loc or adjacent wall, defaulting back to loc and blaming mappers
+	return machine_room
+
 ///makes this machine draw power from its area according to which use_power mode it is set to
 /obj/machinery/proc/update_current_power_usage()
 	if(static_power_usage)
@@ -540,6 +576,10 @@
 		to_chat(user, span_warning("This machine requires sight to use."))
 		return FALSE
 
+	// machines have their own lit up display screens and LED buttons so we don't need to check for light
+	if((interaction_flags_machine & INTERACT_MACHINE_REQUIRES_LITERACY) && !user.can_read(src, READING_CHECK_LITERACY))
+		return FALSE
+
 	if(panel_open && !(interaction_flags_machine & INTERACT_MACHINE_OPEN))
 		return FALSE
 
@@ -607,8 +647,8 @@
 		return attack_hand(user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
-	user.visible_message(span_danger("[user.name] smashes against \the [src.name] with its paws."), null, null, COMBAT_MESSAGE_RANGE)
-	take_damage(4, BRUTE, MELEE, 1)
+	var/damage = take_damage(4, BRUTE, MELEE, 1)
+	user.visible_message(span_danger("[user] smashes [src] with [user.p_their()] paws[damage ? "." : ", without leaving a mark!"]"), null, null, COMBAT_MESSAGE_RANGE)
 
 /obj/machinery/attack_hulk(mob/living/carbon/user)
 	. = ..()
@@ -677,8 +717,20 @@
 	..()
 	RefreshParts()
 
-/obj/machinery/proc/RefreshParts() //Placeholder proc for machines that are built using frames.
-	return
+/obj/machinery/proc/RefreshParts()
+	SHOULD_CALL_PARENT(TRUE)
+	//reset to baseline
+	idle_power_usage = initial(idle_power_usage)
+	active_power_usage = initial(active_power_usage)
+	if(!component_parts || !component_parts.len)
+		return
+	var/parts_energy_rating = 0
+	for(var/obj/item/stock_parts/part in component_parts)
+		parts_energy_rating += part.energy_rating
+
+	idle_power_usage = initial(idle_power_usage) * (1 + parts_energy_rating)
+	active_power_usage = initial(active_power_usage) * (1 + parts_energy_rating)
+	update_current_power_usage()
 
 /obj/machinery/proc/default_pry_open(obj/item/crowbar)
 	. = !(state_open || panel_open || is_operational || (flags_1 & NODECONSTRUCT_1)) && crowbar.tool_behaviour == TOOL_CROWBAR
@@ -707,6 +759,7 @@
 		part.forceMove(loc)
 	LAZYCLEARLIST(component_parts)
 	return ..()
+
 
 /**
  * Spawns a frame where this machine is. If the machine was not disassmbled, the
@@ -798,7 +851,7 @@
 	return TRUE
 
 /obj/proc/can_be_unfasten_wrench(mob/user, silent) //if we can unwrench this object; returns SUCCESSFUL_UNFASTEN and FAILED_UNFASTEN, which are both TRUE, or CANT_UNFASTEN, which isn't.
-	if(!(isfloorturf(loc) || istype(loc, /turf/open/indestructible)) && !anchored)
+	if(!(isfloorturf(loc) || isindestructiblefloor(loc)) && !anchored)
 		to_chat(user, span_warning("[src] needs to be on the floor to be secured!"))
 		return FAILED_UNFASTEN
 	return SUCCESSFUL_UNFASTEN
@@ -819,7 +872,7 @@
 	wrench.play_tool_sound(src, 50)
 	var/prev_anchored = anchored
 	//as long as we're the same anchored state and we're either on a floor or are anchored, toggle our anchored state
-	if(!wrench.use_tool(src, user, time, extra_checks = CALLBACK(src, .proc/unfasten_wrench_check, prev_anchored, user)))
+	if(!wrench.use_tool(src, user, time, extra_checks = CALLBACK(src, PROC_REF(unfasten_wrench_check), prev_anchored, user)))
 		return FAILED_UNFASTEN
 	if(!anchored && ground.is_blocked_turf(exclude_mobs = TRUE, source_atom = src))
 		to_chat(user, span_notice("You fail to secure [src]."))
@@ -886,10 +939,10 @@
 					var/obj/item/stack/secondary_inserted = new secondary_stack.merge_type(null,used_amt)
 					component_parts += secondary_inserted
 				else
-					if(SEND_SIGNAL(replacer_tool, COMSIG_TRY_STORAGE_TAKE, secondary_part, src))
+					if(replacer_tool.atom_storage.attempt_remove(secondary_part, src))
 						component_parts += secondary_part
 						secondary_part.forceMove(src)
-				SEND_SIGNAL(replacer_tool, COMSIG_TRY_STORAGE_INSERT, primary_part, null, null, TRUE)
+				replacer_tool.atom_storage.attempt_insert(primary_part, user, TRUE)
 				component_parts -= primary_part
 				to_chat(user, span_notice("[capitalize(primary_part.name)] replaced with [secondary_part.name]."))
 				shouldplaysound = 1 //Only play the sound when parts are actually replaced!
@@ -902,11 +955,34 @@
 	return TRUE
 
 /obj/machinery/proc/display_parts(mob/user)
-	. = list()
-	. += span_notice("It contains the following parts:")
-	for(var/obj/item/C in component_parts)
-		. += span_notice("[icon2html(C, user)] \A [C].")
-	. = jointext(., "")
+	var/list/part_count = list()
+	for(var/obj/item/component_part in component_parts)
+		if(part_count[component_part.name])
+			part_count[component_part.name]++
+			continue
+
+		if(isstack(component_part))
+			var/obj/item/stack/stack_part = component_part
+			part_count[component_part.name] = stack_part.amount
+		else
+			part_count[component_part.name] = 1
+
+	var/list/printed_components = list()
+
+	var/text = span_notice("It contains the following parts:")
+	for(var/obj/item/component_part as anything in component_parts)
+		if(printed_components[component_part.name])
+			continue //already printed so skip
+		
+		var/part_name = component_part.name
+		if (isstack(component_part))
+			var/obj/item/stack/stack_part = component_part
+			part_name = stack_part.singular_name
+		
+		text += span_notice("[icon2html(component_part, user)] [part_count[component_part.name]] [part_name]\s.")
+		printed_components[component_part.name] = TRUE
+
+	return text
 
 /obj/machinery/examine(mob/user)
 	. = ..()
@@ -923,7 +999,10 @@
 				. += "It appears heavily damaged."
 			if(0 to 25)
 				. += span_warning("It's falling apart!")
-	if(user.research_scanner && component_parts)
+
+/obj/machinery/examine_more(mob/user)
+	. = ..()
+	if(HAS_TRAIT(user, TRAIT_RESEARCH_SCANNER) && component_parts)
 		. += display_parts(user, TRUE)
 
 //called on machinery construction (i.e from frame to machinery) but not on initialization
@@ -967,10 +1046,15 @@
 	take_damage(500, BRUTE, MELEE, 1)
 
 /obj/machinery/vv_edit_var(vname, vval)
-	if(vname == "occupant")
+	if(vname == NAMEOF(src, occupant))
 		set_occupant(vval)
 		datum_flags |= DF_VAR_EDITED
 		return TRUE
+	if(vname == NAMEOF(src, machine_stat))
+		set_machine_stat(vval)
+		datum_flags |= DF_VAR_EDITED
+		return TRUE
+
 	return ..()
 
 /**

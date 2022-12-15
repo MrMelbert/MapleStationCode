@@ -14,6 +14,5 @@
 	bare_wound_bonus = -10
 	embedding = list(embed_chance=15, fall_chance=10, jostle_chance=2, ignore_throwspeed_threshold=TRUE, pain_mult=1, jostle_pain_mult=1.2, rip_time=5)
 
-/obj/item/spear/bonespear/ceremonial/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/two_handed, force_unwielded=5, force_wielded=9, icon_wielded="[icon_prefix]1")
+	force_unwielded = 5
+	force_wielded = 9

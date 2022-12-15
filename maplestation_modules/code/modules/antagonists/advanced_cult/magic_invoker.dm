@@ -103,47 +103,4 @@
 	to_chat(owner, our_theme.get_end_invoking_magic_text(new_spell.name, ritual_item))
 	channeling = FALSE
 
-/datum/action/innate/cult/blood_magic/advanced/Positioning()
-	var/list/screen_loc_split = splittext(button.screen_loc, ",")
-	var/list/screen_loc_X = splittext(screen_loc_split[1], ":")
-	var/list/screen_loc_Y = splittext(screen_loc_split[2], ":")
-	var/pix_X = text2num(screen_loc_X[2])
-
-	for(var/datum/action/spell as anything in spells)
-		if(!spell.button.locked)
-			continue
-
-		var/order = pix_X + spells.Find(spell) * 31
-		spell.button.screen_loc = "[screen_loc_X[1]]:[order],[screen_loc_Y[1]]:[screen_loc_Y[2]]"
-		spell.button.moved = spell.button.screen_loc
-
-/*
- * Check for any sources of anti-magic between [target] and [user].
- *
- * If [target] has antimagic, returns TRUE and shows a halo around the target. Also fancy effects.
- * Otherwise returns false.
- */
-/proc/anti_cult_magic_check(mob/living/target, mob/living/user, use_charges = 1)
-	var/anti_magic_source = target.anti_magic_check(TRUE, TRUE, chargecost = use_charges)
-	if(anti_magic_source)
-		target.mob_light(_range = 2, _color = LIGHT_COLOR_HOLY_MAGIC, _duration = 10 SECONDS)
-		var/mutable_appearance/forbearance = mutable_appearance('icons/effects/genetics.dmi', "servitude", -MUTATIONS_LAYER)
-		target.add_overlay(forbearance)
-		addtimer(CALLBACK(target, /atom/proc/cut_overlay, forbearance), 100)
-
-		if(isitem(anti_magic_source))
-			var/obj/item/ams_object = anti_magic_source
-			target.visible_message(
-				span_warning("[target] starts to glow in a halo of light!"),
-				span_userdanger("Your [ams_object.name] begins to glow, emitting a blanket of holy light which surrounds you and protects you!")
-				)
-		else
-			target.visible_message(
-				span_warning("[target] starts to glow in a halo of light!"),
-				span_userdanger("A feeling of warmth washes over you, rays of holy light surround your body and protect you!")
-				)
-		return TRUE
-
-	return FALSE
-
 #undef REMOVE_SPELL_ENTRY

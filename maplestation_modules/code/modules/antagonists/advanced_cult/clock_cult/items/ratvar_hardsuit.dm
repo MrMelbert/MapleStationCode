@@ -3,7 +3,7 @@
 	name = "\improper Rat'varian clockwork suit"
 	desc = "A heavily-armored helmet worn by warriors of the Rat'varian cult. It can withstand hard vacuum."
 	icon_state = "clockwork_helmet"
-	inhand_icon_state = "clockwork_helmet_inhand"
+	inhand_icon_state = null
 	armor = list(MELEE = 40, BULLET = 35, LASER = 30, ENERGY = 40, BOMB = 50, BIO = 30, FIRE = 100, ACID = 100, WOUND = 10)
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | PLASMAMAN_HELMET_EXEMPT
 	flags_inv = HIDEMASK | HIDEEARS | HIDEEYES | HIDEFACE | HIDEHAIR | HIDEFACIALHAIR | HIDESNOUT
@@ -23,7 +23,7 @@
 	desc = "A heavily-armored exosuit worn by warriors of the Rat'varian cult. It can withstand hard vacuum."
 	icon_state = "clockwork_cuirass"
 	worn_icon_state = "clockwork_cuirass"
-	inhand_icon_state = "clockwork_cuirass_inhand"
+	inhand_icon_state = null
 	w_class = WEIGHT_CLASS_BULKY
 	allowed = list(/obj/item/clockwork_slab, /obj/item/melee/ratvar_spear, /obj/item/tank/internals, /obj/item/construction/rcd/clock)
 	hoodtype = /obj/item/clothing/head/hooded/clock

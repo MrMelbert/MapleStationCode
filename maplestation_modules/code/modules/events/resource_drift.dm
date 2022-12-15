@@ -27,7 +27,7 @@
 	priority_announce("[get_source()] Expect [get_debris()][num_caches - rand(1, 2)] to [num_caches + rand(1, 3)] caches of resources to drift near your station soon.", "Nanotrasen News Network")
 
 /datum/round_event/resource_drift/setup()
-	startWhen = rand(40, 60)
+	start_when = rand(40, 60)
 	possible_crates = subtypesof(/obj/structure/closet/crate/resource_cache/normal)
 
 	num_caches = rand(3, 8)
@@ -65,9 +65,9 @@
 
 	// Now, spawn the caches and yeet them towards the station
 	for(var/crate in picked_crates)
-		addtimer(CALLBACK(src, .proc/spawn_and_throw_crate, crate, pick_n_take(spawn_locations)), (4 SECONDS * num_caches--))
+		addtimer(CALLBACK(src, PROC_REF(spawn_and_throw_crate), crate, pick_n_take(spawn_locations)), (4 SECONDS * num_caches--))
 
-/*
+/**
  * Spawns the supplied crate path [selected_cache_path] at [spawn_loc].
  * After being spawned, the crate is thrown towards a random human, or a communications console if there are no humans.
  */
@@ -96,7 +96,7 @@
 	// Toss it with big range and okay speed at the target
 	selected_cache.throw_at(target, 200, 2)
 
-/*
+/**
  * Generate a "source event" / reason as to why the crates and debris are spawning.
  */
 /datum/round_event/resource_drift/proc/get_source()
@@ -107,7 +107,7 @@
 	. = replacetext(., "$party_one", pick_n_take(parties))
 	. = replacetext(., "$party_two", pick_n_take(parties))
 
-/*
+/**
  * Picks a adjective describing the amount of debris being thrown and returns it.
  */
 /datum/round_event/resource_drift/proc/get_debris()

@@ -12,7 +12,7 @@
 			BP = def_zone
 		else
 			if(!def_zone)
-				def_zone = ran_zone(def_zone)
+				def_zone = get_random_valid_zone(def_zone)
 			BP = get_bodypart(check_zone(def_zone))
 			if(!BP)
 				BP = bodyparts[1]
@@ -61,15 +61,21 @@
 		amount += BP.burn_dam
 	return amount
 
-
 /mob/living/carbon/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_status)
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
 		take_overall_damage(amount, 0, 0, updating_health, required_status)
 	else
-		heal_overall_damage(abs(amount), 0, 0, required_status ? required_status : BODYPART_ORGANIC, updating_health)
+		heal_overall_damage(abs(amount), 0, 0, required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
+
+/mob/living/carbon/setBruteLoss(amount, updating_health = TRUE, forced = FALSE)
+	var/current = getBruteLoss()
+	var/diff = amount - current
+	if(!diff)
+		return
+	adjustBruteLoss(diff, updating_health, forced)
 
 /mob/living/carbon/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE, required_status)
 	if(!forced && (status_flags & GODMODE))
@@ -77,8 +83,15 @@
 	if(amount > 0)
 		take_overall_damage(0, amount, 0, updating_health, required_status)
 	else
-		heal_overall_damage(0, abs(amount), 0, required_status ? required_status : BODYPART_ORGANIC, updating_health)
+		heal_overall_damage(0, abs(amount), 0, required_status ? required_status : BODYTYPE_ORGANIC, updating_health)
 	return amount
+
+/mob/living/carbon/setFireLoss(amount, updating_health = TRUE, forced = FALSE)
+	var/current = getFireLoss()
+	var/diff = amount - current
+	if(!diff)
+		return
+	adjustFireLoss(diff, updating_health, forced)
 
 /mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
 	if(!forced && HAS_TRAIT(src, TRAIT_TOXINLOVER)) //damage becomes healing and healing becomes damage
@@ -159,7 +172,7 @@
 	var/list/obj/item/bodypart/parts = list()
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
-		if(status && (BP.status != status))
+		if(status && !(BP.bodytype & status))
 			continue
 		if((brute && BP.brute_dam) || (burn && BP.burn_dam) || (stamina && BP.stamina_dam))
 			parts += BP
@@ -170,7 +183,7 @@
 	var/list/obj/item/bodypart/parts = list()
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
-		if(status && (BP.status != status))
+		if(status && !(BP.bodytype & status))
 			continue
 		if(BP.brute_dam + BP.burn_dam < BP.max_damage)
 			parts += BP

@@ -9,11 +9,11 @@
 /datum/advanced_antag_datum/traitor/infiltrator/greet_message(mob/antagonist)
 	to_chat(antagonist, span_alertsyndie("You are an [name]!"))
 	antagonist.playsound_local(get_turf(antagonist), 'maplestation_modules/sound/radiodrum.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
-	addtimer(CALLBACK(src, .proc/greet_message_two, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_two), antagonist), 3 SECONDS)
 
 /datum/advanced_antag_datum/traitor/infiltrator/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are an agent sent to infiltrate [station_name()]! You can set your goals to whatever you think would make an interesting story or round. You have access to your goal panel via verb in your IC tab."))
-	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_three), antagonist), 3 SECONDS)
 
 /datum/advanced_antag_datum/traitor/infiltrator/podspawn
 	name = "Advanced Infiltrator (Pod spawn)"
@@ -23,4 +23,4 @@
 
 /datum/advanced_antag_datum/traitor/infiltrator/podspawn/greet_message_two(mob/antagonist)
 	to_chat(antagonist, span_danger("You are an agent preparing to infiltrate [station_name()]! You can set your goals to whatever you think would make an interesting story or round. Finalizing your goals will drop you into a random maintenance room on the station. You have access to your goal panel via verb in your IC tab."))
-	addtimer(CALLBACK(src, .proc/greet_message_three, antagonist), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(greet_message_three), antagonist), 3 SECONDS)

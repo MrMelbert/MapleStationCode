@@ -1,5 +1,5 @@
 <!-- Most valid html will work in here, excluding images. -->
 
-<h1>Welcome to Jolly Station!</h1>
+<h1>Welcome to MapleStation!</h1>
 
 <i>HEY! LISTEN! Don't forget to enable LOOC! It can be enabled by clicking the cog at the top right of the chat menu, and is encouraged to put it in your main chat window.</i>

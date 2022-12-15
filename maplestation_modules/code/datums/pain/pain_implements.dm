@@ -18,15 +18,21 @@
 			temperature_change = -2)
 
 // Frozen items become usable temperature packs.
-/obj/item/make_frozen_visual()
+/datum/element/frozen/Attach(datum/target)
 	. = ..()
-	if(obj_flags & FROZEN)
-		AddElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
+	if(. == ELEMENT_INCOMPATIBLE)
+		return
+	if(!isitem(target))
+		return
 
-/obj/item/make_unfrozen()
+	target.AddElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
+
+/datum/element/frozen/Detach(datum/source, ...)
 	. = ..()
-	if(!(obj_flags & FROZEN))
-		RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
+	if(!isitem(source))
+		return
+
+	source.RemoveElement(/datum/element/temperature_pack, FROZEN_ITEM_PAIN_RATE, FROZEN_ITEM_PAIN_MODIFIER, FROZEN_ITEM_TEMPERATURE_CHANGE)
 
 /// Temperature packs (heat packs, cold packs). Apply to hurt limb to un-hurty.
 /obj/item/temperature_pack
@@ -59,10 +65,15 @@
 
 /obj/item/temperature_pack/attack_self(mob/user, modifiers)
 	. = ..()
-	if(!used)
-		used = !used
-		activate_pack(user)
-		return TRUE
+	if(.)
+		return
+
+	if(used)
+		return
+
+	used = TRUE
+	activate_pack(user)
+	return TRUE
 
 /obj/item/temperature_pack/examine(mob/user)
 	. = ..()
@@ -86,17 +97,17 @@
 			if(active)
 				. += "active_cold_overlay"
 
-/*
+/**
  * Activate [src] from [user], making it into a temperature pack that can be used, that expires in 5 minutes.
  */
 /obj/item/temperature_pack/proc/activate_pack(mob/user)
-	addtimer(CALLBACK(src, .proc/deactivate_pack), 5 MINUTES)
+	addtimer(CALLBACK(src, PROC_REF(deactivate_pack)), 5 MINUTES)
 	to_chat(user, span_notice("You crack [src], [temperature_change > 0 ? "heating it up" : "cooling it down"]."))
 	AddElement(/datum/element/temperature_pack, pain_heal_amount, pain_limb_modifier, temperature_change)
 	active = TRUE
 	update_appearance()
 
-/*
+/**
  * Deactivate [src], making it unusable, and sending signal [COMSIG_TEMPERATURE_PACK_EXPIRED].
  */
 /obj/item/temperature_pack/proc/deactivate_pack()
@@ -201,9 +212,8 @@
 	if(pill_type)
 		name = "[initial(pill_type.name)] bottle"
 	if(num_pills)
-		var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-		STR.max_items = num_pills
-		STR.max_combined_w_class = num_pills
+		atom_storage.max_slots = num_pills
+		atom_storage.max_total_storage = num_pills
 
 /obj/item/storage/pill_bottle/prescription/PopulateContents()
 	if(num_pills && pill_type)
@@ -214,13 +224,13 @@
 	name = "bottle of painkillers"
 	desc = "Contains multiple pills used to treat anywhere from mild to extreme pain. CAUTION: Do not take in conjunction with alcohol."
 	icon = 'maplestation_modules/icons/obj/chemical.dmi'
-	custom_premium_price = PAYCHECK_HARD * 1.5
+	custom_price = PAYCHECK_CREW * 3
+	custom_premium_price = PAYCHECK_CREW * 3
 
 /obj/item/storage/pill_bottle/painkillers/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 14
-	STR.max_combined_w_class = 14
+	atom_storage.max_slots = 14
+	atom_storage.max_total_storage = 14
 
 /obj/item/storage/pill_bottle/painkillers/PopulateContents()
 	for(var/i in 1 to 3)
@@ -294,7 +304,7 @@
 	inhand_icon_state = "oxapen"
 	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/anurifen = 10) // ~20-25 pain healing (if burn pain, per limb)
 
-/*
+/**
  * Shock blanket item. Hit someone to cover them with the blanket.
  * If they lie down and stay still, it will regulate their body temperature.
  */
@@ -324,7 +334,7 @@
 	throwforce = 0
 	throw_speed = 1
 	throw_range = 2
-	custom_price = PAYCHECK_MEDIUM
+	custom_price = PAYCHECK_CREW * 2
 
 /obj/item/shock_blanket/Initialize(mapload)
 	. = ..()
@@ -359,7 +369,7 @@
 		try_shelter_mob(target, user)
 		return TRUE
 
-/*
+/**
  * Try to equip [target] with [src], done by [user].
  * Basically, the ability to equip someone just by hitting them with the blanket,
  * instead of needing to use the strip menu.
@@ -383,7 +393,7 @@
 	do_shelter_mob(target, user)
 	return TRUE
 
-/*
+/**
  * Actually equip [target] with [src], done by [user].
  *
  * target - the mob being equipped
@@ -392,16 +402,19 @@
 /obj/item/shock_blanket/proc/do_shelter_mob(mob/living/carbon/human/target, mob/living/user)
 	if(target.equip_to_slot_if_possible(src, ITEM_SLOT_OCLOTHING, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
 		to_chat(user, span_notice("You wrap [target == user ? "yourself" : "[target]"] with [src], helping regulate body temperature."))
-		user.update_inv_hands()
+		user.update_held_items() // melbert todo, is this necessary?
 	else
 		to_chat(user, span_warning("You can't quite reach and fail to wrap [target == user ? "yourself" : "[target]"] with [src]."))
 
 /obj/item/shock_blanket/equipped(mob/user, slot)
 	. = ..()
+	if(!isliving(user))
+		return
+
 	if(slot_flags & slot)
-		enable_protection(user)
-		RegisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), .proc/check_protection)
-		RegisterSignal(user, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_PRE_MOVE), .proc/disable_protection)
+		RegisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_protection))
+		RegisterSignal(user, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_PRE_MOVE), PROC_REF(disable_protection))
+		try_enable(user)
 
 /obj/item/shock_blanket/dropped(mob/user, silent)
 	. = ..()
@@ -417,25 +430,29 @@
 	icon_state = base_icon_state
 	layer = initial(layer)
 
-/*
+/// If we can enable protection, does so. Returns true on success.
+/obj/item/shock_blanket/proc/try_enable(mob/living/source)
+	if(source.body_position == LYING_DOWN || source.buckled)
+		enable_protection(source)
+		return TRUE
+	return FALSE
+
+/**
  * Check if we should be recieving temperature protection.
  * We only give protection if we're lying down or buckled - if we're moving, we don't get anything.
  */
 /obj/item/shock_blanket/proc/check_protection(mob/living/source)
 	SIGNAL_HANDLER
 
-	if(source.body_position == LYING_DOWN || source.buckled)
-		enable_protection(source)
+	if(try_enable(source))
 		return
 
 	disable_protection(source)
 
-/*
+/**
  * Enable the temperature protection.
  */
 /obj/item/shock_blanket/proc/enable_protection(mob/living/source)
-	SIGNAL_HANDLER
-
 	if(istype(source) && !(datum_flags & DF_ISPROCESSING))
 		var/temp_change = "warmer"
 		if(source.bodytemperature > source.get_body_temp_normal(apply_change = FALSE))
@@ -444,7 +461,7 @@
 		to_chat(source, span_notice("You feel [temp_change] as [src] begins regulating your body temperature."))
 		START_PROCESSING(SSobj, src)
 
-/*
+/**
  * Disable the temperature protection.
  */
 /obj/item/shock_blanket/proc/disable_protection(mob/living/source)
@@ -488,14 +505,13 @@
 	name = "emergency [name]"
 
 // Change the contents of first-aid kids.
-/obj/item/storage/firstaid/emergency/Initialize()
+/obj/item/storage/medkit/emergency/Initialize()
 	. = ..()
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_w_class = WEIGHT_CLASS_SMALL
-	STR.max_items = 12
-	STR.max_combined_w_class = 12
+	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
+	atom_storage.max_slots = 12
+	atom_storage.max_total_storage = 16
 
-/obj/item/storage/firstaid/emergency/PopulateContents()
+/obj/item/storage/medkit/emergency/PopulateContents()
 	if(empty)
 		return
 	var/static/list/items_inside = list(
@@ -510,7 +526,7 @@
 	)
 	generate_items_inside(items_inside, src)
 
-/obj/item/storage/firstaid/regular/PopulateContents()
+/obj/item/storage/medkit/regular/PopulateContents()
 	if(empty)
 		return
 	var/static/list/items_inside = list(
@@ -522,7 +538,7 @@
 	)
 	generate_items_inside(items_inside, src)
 
-/obj/item/storage/firstaid/brute/PopulateContents()
+/obj/item/storage/medkit/brute/PopulateContents()
 	if(empty)
 		return
 	var/static/list/items_inside = list(
@@ -534,7 +550,7 @@
 	)
 	generate_items_inside(items_inside, src)
 
-/obj/item/storage/firstaid/fire/PopulateContents()
+/obj/item/storage/medkit/fire/PopulateContents()
 	if(empty)
 		return
 	var/static/list/items_inside = list(
@@ -546,7 +562,7 @@
 	)
 	generate_items_inside(items_inside, src)
 
-/obj/item/storage/firstaid/advanced/PopulateContents()
+/obj/item/storage/medkit/advanced/PopulateContents()
 	if(empty)
 		return
 	var/static/list/items_inside = list(
@@ -560,20 +576,39 @@
 
 // Pain implements added to various vendors.
 /obj/machinery/vending/drugs
-	added_premium = list(/obj/item/storage/pill_bottle/painkillers = 2)
-
+	added_categories = list(
+		list(
+			"name" = "Pain",
+			"icon" = "pills",
+			"products" = list(
+				/obj/item/storage/pill_bottle/painkillers = 2,
+			)
+		),
+	)
 /obj/machinery/vending/medical
-	added_products = list(
-		/obj/item/shock_blanket = 3,
-		/obj/item/temperature_pack/cold = 2,
-		/obj/item/temperature_pack/heat = 2,
+	added_categories = list(
+		list(
+			"name" = "Pain",
+			"icon" = "pills",
+			"products" = list(
+				/obj/item/shock_blanket/emergency = 3,
+				/obj/item/temperature_pack/cold = 2,
+				/obj/item/temperature_pack/heat = 2,
+			)
+		),
 	)
 
 /obj/machinery/vending/wallmed
-	added_products = list(
-		/obj/item/shock_blanket/emergency = 2,
-		/obj/item/temperature_pack/cold = 1,
-		/obj/item/temperature_pack/heat = 1,
+	added_categories = list(
+		list(
+			"name" = "Pain",
+			"icon" = "pills",
+			"products" = list(
+				/obj/item/shock_blanket/emergency = 2,
+				/obj/item/temperature_pack/cold = 1,
+				/obj/item/temperature_pack/heat = 1,
+			)
+		),
 	)
 
 #undef FROZEN_ITEM_PAIN_RATE

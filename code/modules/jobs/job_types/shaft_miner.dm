@@ -2,19 +2,22 @@
 	title = JOB_SHAFT_MINER
 	description = "Travel to strange lands. Mine ores. \
 		Meet strange creatures. Kill them for their gold."
-	department_head = list(JOB_HEAD_OF_PERSONNEL)
+	department_head = list(JOB_QUARTERMASTER)
 	faction = FACTION_STATION
 	total_positions = 3
 	spawn_positions = 3
-	supervisors = "the quartermaster and the head of personnel"
+	supervisors = SUPERVISOR_QM
 	selection_color = "#dcba97"
 	exp_granted_type = EXP_TYPE_CREW
+	config_tag = "SHAFT_MINER"
 
 	outfit = /datum/outfit/job/miner
 	plasmaman_outfit = /datum/outfit/plasmaman/mining
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_CAR
+
+	mind_traits = list(TRAIT_DETECT_STORM)
 
 	display_order = JOB_DISPLAY_ORDER_SHAFT_MINER
 	bounty_types = CIV_JOB_MINE
@@ -39,7 +42,7 @@
 		/obj/item/mining_voucher = 1,
 		/obj/item/stack/marker_beacon/ten = 1,
 		)
-	belt = /obj/item/pda/shaftminer
+	belt = /obj/item/modular_computer/tablet/pda/shaftminer
 	ears = /obj/item/radio/headset/headset_cargo/mining
 	gloves = /obj/item/clothing/gloves/color/black
 	shoes = /obj/item/clothing/shoes/workboots/mining
@@ -51,7 +54,7 @@
 	duffelbag = /obj/item/storage/backpack/duffelbag/explorer
 
 	box = /obj/item/storage/box/survival/mining
-	chameleon_extras = /obj/item/gun/energy/kinetic_accelerator
+	chameleon_extras = /obj/item/gun/energy/recharge/kinetic_accelerator
 
 /datum/outfit/job/miner/equipped
 	name = "Shaft Miner (Equipment)"
@@ -60,7 +63,7 @@
 	suit_store = /obj/item/tank/internals/oxygen
 	backpack_contents = list(
 		/obj/item/flashlight/seclite = 1,
-		/obj/item/gun/energy/kinetic_accelerator = 1,
+		/obj/item/gun/energy/recharge/kinetic_accelerator = 1,
 		/obj/item/knife/combat/survival = 1,
 		/obj/item/mining_voucher = 1,
 		/obj/item/stack/marker_beacon/ten = 1,
