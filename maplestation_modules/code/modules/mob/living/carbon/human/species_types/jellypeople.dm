@@ -40,3 +40,39 @@
 
 /obj/item/bodypart/chest/jelly
 	limb_id = SPECIES_SLIMEPERSON
+
+// Stargazers inherent jelly limbs so we gotta do this too
+/datum/species/jelly/stargazer
+	bodypart_overrides = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/stargazer,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/stargazer,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/stargazer,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/stargazer,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/stargazer,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/stargazer,
+	)
+/obj/item/bodypart/head/stargazer
+	limb_id = SPECIES_JELLYPERSON
+	is_dimorphic = TRUE
+	dmg_overlay_type = null
+
+/obj/item/bodypart/chest/stargazer
+	limb_id = SPECIES_JELLYPERSON
+	is_dimorphic = TRUE
+	dmg_overlay_type = null
+
+/obj/item/bodypart/arm/left/stargazer
+	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
+
+/obj/item/bodypart/arm/right/stargazer
+	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
+
+/obj/item/bodypart/leg/left/stargazer
+	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
+
+/obj/item/bodypart/leg/right/stargazer
+	limb_id = SPECIES_JELLYPERSON
+	dmg_overlay_type = null
