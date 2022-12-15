@@ -1,5 +1,5 @@
 
-# The JollyStation Module Folder
+# MapleStation Modules Folder
 
 ## MODULES ARE YOU:
 
@@ -13,20 +13,11 @@ What does this mean to you? This means if you want to add something, you should 
 
 ## ...icons to this fork:
 
-ALWAYS add icons to a new .dmi in the `maplestation_modules/icons` folder. Icons are notorious for causing awful terrible impossible-to-resolve-easy merge conflicts so never ever add them to normal codebase .dmi files. Adding icons can be complicated for things
-such as jumpsuits and IDs, so be sure to ask for help if it gets confusing.
+ALWAYS add icons to a new .dmi in the `maplestation_modules/icons` folder. Icon are rather difficult for to resolve merge conflicts so we opt to completely override our files on merge. Adding icons can be complicated for things such as jumpsuits and IDs, so be sure to ask for help if it gets confusing.
 
 ## ...a one-off object, datum, etc. to this fork:
 
-Create all new content in a new .dm file in the `maplestation_modules/code` folder. For the sake of organization, we mimic the folder path of the place we would normally add something to /tg/, but in our modules folder instead. For example, if you want to add a positive quirk, make the file path `maplestation_modules/code/datums/quirks/good.dm`. If the folder doesn't exist: Make it, and follow this formatting, even if it involves you making a bunch of empty folders.
-
-If you're adding a new file, please add a comment (example below) with a short explanation of what the file is extending or adding.
-
-`// --This file contains mob/living/carbon/human proc extensions.`
-
-VERY IMPORTANT:
-
-After you make your new folder with your new .dm file, you need to add it to OUR dme. DO NOT ADD IT TO TGSTATION.DME. You need to add it to maplestation.dme in alphabetical order - VSCODE will do this automatically if you tick the file.
+Create all new content in a new .dm file in the `maplestation_modules/code` folder. For the sake of organization, we attempt to mimic the folder path of the place we would normally add something to /tg/, but in our modules folder instead. For example, if you want to add a positive quirk, make the file path `maplestation_modules/code/datums/quirks/good.dm`. Sometimes it may make sense to put your change somewhere else rather than creating a million empty folders - just use logic and try to leave your changes in places that follow logic.
 
 ## ...a minor change to a pre-existing object, datum, etc.:
 
@@ -61,6 +52,7 @@ var/epic_variable = 3 // NON-MODULE CHANGE
 
 - What DOES matter: The formatting of the first part of the comment! The comment MUST start with `// NON-MODULE`, space included, exact number of forward slashes, capitalized.
 - What doesnt matter: what follows above. `// NON-MODULE CHANGE`, `// NON-MODULE CHANGE START`, `// NON-MODULE CHANGES`, `// NON-MODULE CHANGE: I did stuff`
+
 ## ...custom things to vendors:
 
 Go to `maplestation_modules/code/modules/vending/_vending.dm` and use the template provided to add or remove items from vendors. Follow the provided template there.
@@ -74,117 +66,13 @@ Defines can only be seen by files if it's been compiled beforehand.
 
 ## ...maps:
 
-Editing the main maps is STRICTLY PROHIBITED! Any PRs that touch Delta, Meta, Ice Box, Tram or Kilo will be closed.
-Do not copy maps either to circumvent this.
-Reguardless of what map you make, you are REQUIRED TO ADD [MDB IGNORE] to your PR title.
+Don't edit /tg/station maps with sweeping changes! Like with icons, map merge conflicts are difficult to resolve, so we simply override the maps with the never versions on updates, so any changes made will be lost.
 
-But what if I..
+But what if I want to make a station?
+- You will be expected to help maintain it. It's not guaranteed that it will be updated with future changes, which means after updates your map likely will not be playable until fixed.
 
-Want to make a station?
-- You WILL be required to maintain it, and will be added to codeowners as the owner of the map. Failure to do so will result in the soft removal until its completely removed from the code.
-- Do not make a PR with a giant commit that is the staton. Please for your sanity and ours, splice it up.
-- If you need a guide, follow one of TGs main maps, or one of ours for our modular differences.
+## ...some other file:
 
-Want to make a ruin?
-- Any changes per the upstream you will be required to update.
-- Unlike stations, which will recieve the most and heavy hitting changes, maintaining a small ruin will be more lax in comparission. However, you will still be held accountable for updaating and maintaing your map.
-- Ruins related maps are extempt from being added as a codeowner.
+If you made an edit to some other file, like a json or js file in some strange corner of the code base, it would be wise to leave a comment *somewhere* that you did this, otherwise it is very likely your change will be reset automatically.
 
-# Important other notes:
-
-This module system edits the launch.json and the build.bat files so VSCODE can compile with this codebase. This might cause problems in the future if either are edited to any extent. Luckily the vscode edits are not necessary for compiling the project and and reasy to redo, so just overrite the changes if it causes conflicts.
-
-# Upstream merge:
-
-The time has come for doom. Pull from upstream and pray. Before you make your PR, you are REQUIRED to add [MDB IGNORE] and [IDB IGNORE] in your PRs title, this stops the Map Diff bot from rendering.
-
-- Run ./_merge_driver.bash from gitbash (or any bash terminal, I guess) This will do a few things:
-	- A list of all unticked files in the code directory will be printed.
-		- Either delete the unticked files, or leave them if you desire.
-	- All files with merge conflict markers will be parsed through.
-		- All JSON files with merge conflicts will need to be resolved manually.
-		- All JS and DM files that don't have a modular comment will have its merge conflicts automatically resolved.
-		- All JS and DM files with a modular comment will need to be resolved manually.
-	- maplestation.dme will be updated to tgstation.dme automatically.
-	- build.js, if it was changed, will attempt to update automatically. Merge conflicts may persist in the file.
-- After the merge driver is ran, minor maintenance and resolving merge conflicts will be expected. Then, it's done.
-
-Everything should be set to try to compile. If there are errors, try to solve them. If it compiles and the game itself seems wonky, then call your local coder and cry.
-
-- Make sure that (to maintainers and Jolly) the commit message is not the garbled mess that it is. Change it. Please.
-
-# Files that have 'non-module' comments in the main code:
-
-To prevent me from accidentally accept incoming on files with module changes, I'm doing this for the future.
-
-- code\__DEFINES\chat.dm
-- code\__DEFINES\DNA.dm
-- code\__DEFINES\is_helpers.dm
-- code\__DEFINES\reagents.dm
-- code\__DEFINES\say.dm
-- code\__HELPERS\global_lists.dm
-- code\__HELPERS\icons.dm
-- code\__HELPERS\mobs.dm
-- code\controllers\subsystem\id_access.dm
-- code\controllers\subsystems\job.dm
-- code\controllers\subsystem\mapping.dm
-- code\controllers\subsystem\vote.dm
-- code\datums\chatmessage.dm
-- code\datums\datacore.dm
-- code\datums\dna.dm
-- code\datums\id_trim\jobs.dm
-- code\datums\mapgen\Cavegens\LavalandGenerator.dm
-- code\datums\greyscale\json_configs\plushie_lizard.json
-- code\game\world.dm
-- code\game\gamemodes\objective_items.dm
-- code\game\machinery\computer\crew.dm
-- code\game\machinery\computer\medical.dm
-- code\game\machinery\computer\security.dm
-- code\game\objects\items\devices\PDA\PDA.dm
-- code\game\objects\items\plushes.dm
-- code\game\objects\items\scanners.dm
-- code\modules\admin\create_mob.dm
-- code\modules\antagonists\eldritch_cult\eldritch_effects.dm
-- code\modules\antagonists\eldritch_cult\eldritch_knowledge.dm
-- code\modules\antagonists\traitor\datum_traitor.dm
-- code\modules\asset_cache\assets\paper.dm
-- code\modules\client\client_procs.dm
-- code\modules\client\preferences_savefile.dm
-- code\modules\client\preferences_toggles.dm
-- code\modules\client\preferences.dm
-- code\modules\clothing\under\_under.dm
-- code\modules\food_and_drinks\drinks\drinks.dm
-- code\modules\food_and_drinks\drinks\drinks\bottle.dm
-- code\modules\food_and_drinks\recipes\drinks_recipes.dm
-- code\modules\jobs\jobs.dm
-- code\modules\jobs\job_types\_job.dm
-- code\modules\jobs\job_types\cargo_technician.dm
-- code\modules\jobs\job_types\head_of_personnel.dm
-- code\modules\jobs\job_types\lawyer.dm
-- code\modules\jobs\job_types\research_director.dm
-- code\modules\jobs\job_types\scientist.dm
-- code\modules\jobs\job_types\shaft_miner.dm
-- code\modules\jobs\job_types\quartermaster.dm
-- code\modules\language\language_holder.dm
-- code\modules\mob\dead\new_player\new_player.dm
-- code\modules\mob\living\damage_procs.dm
-- code\modules\mob\living\living_defense.dm
-- code\modules\mob\living\carbon\human\human.dm
-- code\modules\mob\living\carbon\human\human_update_icons.dm
-- code\modules\mob\living\carbon\human\species.dm
-- code\modules\modular_computers\file_system\programs\jobmanagement.dm
-- code\modules\reagents\chemistry\reagents\other_reagents.dm
-- code\modules\surgery\bodyparts\_bodyparts.dm
-- code\modules\surgery\bodyparts\dismemberment.dm
-- code\modules\surgery\bodyparts\helpers.dm
-- code\modules\surgery\organs\lungs.dm
-- code\modules\surgery\organs\tongue.dm
-- code\modules\unit_tests\heretic_knowledge.dm
-
-# Interface files with non-module comments
-- interface\interface.dm
-- interface\skin.dmf
-
-# Tools with non-module comments
-- tgui\packages\tgui\index.js
-- tgui\packages\tgui-panel\chat\constants.js
+A good place to leave this comment would be wherever the file is read in its corresponding DM file. If you can't find a good place to put it, just leave it in the readme below.
