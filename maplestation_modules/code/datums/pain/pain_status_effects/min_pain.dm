@@ -2,8 +2,10 @@
 /datum/status_effect/minimum_bodypart_pain
 	id = "min_bodypart_pain"
 	status_type = STATUS_EFFECT_MULTIPLE
-	on_remove_on_mob_delete = TRUE
 	alert_type = null
+	remove_on_fullheal = TRUE
+	heal_flag_necessary = HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS
+
 	/// The min pain we're setting the bodypart to
 	var/min_amount = 0
 	/// The zone we're afflicting

@@ -3,6 +3,8 @@
 	id = "limp_pain"
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/limp/pain
+	remove_on_fullheal = TRUE
+	heal_flag_necessary = HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS
 
 /datum/status_effect/limp/pain/on_apply()
 	. = ..()
@@ -21,7 +23,8 @@
 /datum/status_effect/limp/pain/on_remove()
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST))
-	to_chat(owner, span_green("Your pained limp stops!"))
+	if(!QDELING(owner))
+		to_chat(owner, span_green("Your pained limp stops!"))
 
 /datum/status_effect/limp/pain/update_limp()
 	var/mob/living/carbon/human/limping_human = owner

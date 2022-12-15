@@ -144,6 +144,7 @@
 
 	lost_limb.pain = initial(lost_limb.pain)
 	lost_limb.max_stamina_damage = initial(lost_limb.max_stamina_damage)
+	REMOVE_TRAIT(lost_limb, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 	body_zones -= lost_limb.body_zone
 
 /**
@@ -207,7 +208,8 @@
 	if(!islist(def_zones))
 		def_zones = list(def_zones)
 
-	if(!amount)
+	// No pain at all
+	if(amount == 0)
 		return
 
 	for(var/zone in shuffle(def_zones))
@@ -215,23 +217,31 @@
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[check_zone(zone)]
 		if(QDELETED(adjusted_bodypart))
 			continue
-		if(amount < 0 && adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
+		// Pain is negative (healing) and we're at min pain
+		if(adjusted_amount < 0 && adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
 			continue
-		if(amount > 0 && adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
-			continue
+		// Pain is positive (dealing)
 		if(adjusted_amount > 0)
-			#ifdef TESTING
-			var/pre_adjusted = adjusted_amount
-			#endif
+			// ...and we're at max pain
+			if(adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
+				continue
 
-			adjusted_bodypart.last_received_pain_type = dam_type
+			// Adjust incoming dealt pain by modifiers
 			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
+			// Pain modifiers results in us taking 0 pain
+			// (If someone adds a negative pain mod and causes "inverse pain" (which you shouldn't) this needs to go)
+			if(adjusted_amount <= 0)
+				continue
 
-			#ifdef TESTING
-			if(print_debug_messages)
-				testing("[pre_adjusted] was adjusted down to [adjusted_amount]. (Modifiers: [pain_modifier], [adjusted_bodypart.bodypart_pain_modifier])")
-			#endif
+			// Officially recieving pain at this point
+			adjusted_bodypart.last_received_pain_type = dam_type
 
+		#ifdef TESTING
+		if(print_debug_messages)
+			testing("[amount] was adjusted down to [adjusted_amount]. (Modifiers: [pain_modifier], [adjusted_bodypart.bodypart_pain_modifier])")
+		#endif
+
+		// Actually do the pain addition / subtraction here
 		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
 
 		if(adjusted_amount > 0)
@@ -509,7 +519,7 @@
 			if(70 to INFINITY)
 				high_pain_effects(delta_time)
 
-	if(!IS_IN_STASIS(parent) || !parent.on_fire)
+	if(!IS_IN_STASIS(parent) && !parent.on_fire)
 		decay_pain(delta_time)
 
 /**
@@ -563,16 +573,19 @@
  */
 /datum/pain/proc/decay_pain(delta_time)
 	natural_decay_counter++
-	if(natural_decay_counter % 5 == 0) // every 10 seconds
-		natural_decay_counter = 0
-		if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-			natural_pain_decay = max(natural_pain_decay - 0.016, -1) // 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
-		else
-			natural_pain_decay = base_pain_decay
+	if(natural_decay_counter % 5 != 0) // every 10 seconds
+		return
 
-		// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
-		var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
-		adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
+	natural_decay_counter = 0
+	if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+		// 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
+		natural_pain_decay = max(natural_pain_decay - 0.016, -1)
+	else
+		natural_pain_decay = base_pain_decay
+
+	// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
+	var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
+	adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
 
 /**
  * Effects caused by low pain. (~100-250 pain)
@@ -780,18 +793,9 @@
 /datum/pain/proc/remove_all_pain(datum/source, heal_flags)
 	SIGNAL_HANDLER
 
-	// Idreally pain would have its own heal flag but we live in a society
+	// Ideally pain would have its own heal flag but we live in a society
 	if(!(heal_flags & (HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS)))
 		return
-
-	// These should be handled by signal later but they're ok now
-	parent.remove_status_effect(/datum/status_effect/limp/pain)
-	parent.remove_status_effect(/datum/status_effect/sharp_pain)
-	parent.remove_status_effect(/datum/status_effect/pain_from_fire)
-	parent.remove_status_effect(/datum/status_effect/minimum_bodypart_pain)
-
-	var/datum/disease/shock/shock_disease = is_undergoing_shock()
-	shock_disease?.cure()
 
 	for(var/zone in body_zones)
 		var/obj/item/bodypart/healed_bodypart = body_zones[zone]
@@ -799,6 +803,7 @@
 			continue
 		adjust_bodypart_min_pain(zone, -healed_bodypart.max_pain)
 		adjust_bodypart_pain(zone, -healed_bodypart.max_pain)
+		// Shouldn't be necessary but you never know!
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
 	clear_pain_attributes()
@@ -811,7 +816,6 @@
 
 	if(source.stat == DEAD && (datum_flags & DF_ISPROCESSING))
 		STOP_PROCESSING(SSpain, src)
-
 	else
 		START_PROCESSING(SSpain, src)
 

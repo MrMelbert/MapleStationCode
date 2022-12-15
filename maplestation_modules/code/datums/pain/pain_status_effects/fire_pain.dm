@@ -4,6 +4,8 @@
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
 	remove_on_fullheal = TRUE
+	heal_flag_necessary = HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS
+
 	/// Amount of pain being given
 	var/pain_amount = 0
 
