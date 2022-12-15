@@ -69,8 +69,7 @@
 /datum/language/moffic
 	base_species = SPECIES_MOTH
 
-/datum/language/yangyu
-    base_species = SPECIES_HUMAN
+
 
 
 /// TGUI for selecting languages.
