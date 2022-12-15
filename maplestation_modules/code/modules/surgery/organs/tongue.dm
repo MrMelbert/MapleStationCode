@@ -2,6 +2,8 @@
 /obj/item/organ/internal/tongue
 	var/static/list/languages_possible_modular = typecacheof(list(
 		/datum/language/ratvarian
+		/datum/language/skrellian,
+        /datum/language/yangyu
 	))
 
 /obj/item/organ/internal/tongue/Initialize(mapload)
