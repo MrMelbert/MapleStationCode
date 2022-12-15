@@ -38,11 +38,11 @@ If your idea doesn't have a chance in hell of getting merged to the upstream, or
 
 - Add a comment before and after your changed code so the spot is known in the future that something was changed.
 Something like so:
-```
+```dm
 var/epic_variable = 3 // NON-MODULE CHANGE
 ```
 
-```
+```dm
 // NON-MODULE CHANGE START
 /obj/foo/bar/proc/do_thing()
 	to_chat(world, "I added a proc to something")
