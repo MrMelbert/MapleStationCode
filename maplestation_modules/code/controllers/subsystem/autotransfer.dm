@@ -4,7 +4,6 @@
  * Tracks information about Crew transfer votes and calls auto transfer votes.
  *
  * If enabled, calls a vote [minimum_transfer_time] into the round, and every [minimum_time_between_votes] after that.
- *
  */
 SUBSYSTEM_DEF(crewtransfer)
 	name = "Crew Transfer Vote"
@@ -36,11 +35,13 @@ SUBSYSTEM_DEF(crewtransfer)
 	can_fire = FALSE
 	#endif
 
+	if(!can_fire)
+		return SS_INIT_NO_NEED
+
 	minimum_transfer_time = CONFIG_GET(number/transfer_time_min_allowed)
 	minimum_time_between_votes = CONFIG_GET(number/transfer_time_between_auto_votes)
 	shuttle_call_reason = CONFIG_GET(string/transfer_call_reason)
 	wait = minimum_transfer_time //first vote will fire at [minimum_transfer_time]
-
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/crewtransfer/fire()
@@ -87,8 +88,7 @@ SUBSYSTEM_DEF(crewtransfer)
 
 	log_shuttle("Automatic crew transfer vote initiated.")
 	message_admins("Automatic crew transfer vote initiated.")
-	SSvote.initiate_vote(/datum/vote/autotransfer, "the server", forced = TRUE)
-	return TRUE
+	return SSvote.initiate_vote(/datum/vote/autotransfer, "the server", forced = TRUE)
 
 /// initiates the shuttle call and logs it.
 /datum/controller/subsystem/crewtransfer/proc/initiate_crew_transfer()
@@ -99,8 +99,8 @@ SUBSYSTEM_DEF(crewtransfer)
 		switch(SSsecurity_level.get_current_level_as_number())
 			if(SEC_LEVEL_GREEN)
 				shuttle_time_mult = 2 // = ~20 minutes
-			if(SEC_LEVEL_BLUE)
-				shuttle_time_mult = 1.5 // = ~15 minutes
+			if(SEC_LEVEL_BLUE, SEC_LEVEL_RED)
+				shuttle_time_mult = 1.5 // = ~15 minutes, =~7.5 minutes
 
 		SSshuttle.emergency.request(reason = "\nReason:\n\n[shuttle_call_reason]", set_coefficient = shuttle_time_mult)
 
@@ -108,12 +108,11 @@ SUBSYSTEM_DEF(crewtransfer)
 		message_admins("A crew transfer vote has passed. The shuttle has been called, and recalling the shuttle ingame is disabled.")
 		deadchat_broadcast("A crew transfer vote has passed. The shuttle is being dispatched.",  message_type = DEADCHAT_ANNOUNCEMENT)
 		SSblackbox.record_feedback("text", "shuttle_reason", 1, "Crew Transfer Vote")
-
 	else
 		log_shuttle("A crew transfer vote has passed, but the shuttle was already called. Recalling the shuttle ingame is disabled.")
 		message_admins("A crew transfer vote has passed, but the shuttle was already called. Recalling the shuttle ingame is disabled.")
 		to_chat(world, span_boldannounce("Crew transfer vote failed on account of shuttle being called."))
+
 	SSshuttle.admin_emergency_no_recall = TRUE // Don't let one guy overrule democracy by recalling afterwards
 	transfer_vote_successful = TRUE
-
 	return TRUE

@@ -3,6 +3,7 @@
 
 /datum/vote/autotransfer
 	name = "Crew Transfer"
+	message = "Click to initiate an OOC Crew Transfer vote, calling the emergency shuttle on success."
 	default_choices = list(
 		CHOICE_SHUTTLE,
 		CHOICE_CONTINUE,

@@ -1,11 +1,11 @@
 // -- Auto-transfer config values. --
 /// Allow people to call votes to end the round OOCly
 /datum/config_entry/flag/allow_vote_transfer
-	default = 0 // Disabled
+	default = FALSE // Disabled
 
 /// Automatic crew transfer votes that start at [transfer_time_min_allowed] and happen every [transfer_time_between_auto_votes]
 /datum/config_entry/flag/transfer_auto_vote_enabled
-	default = 1 // Enabled
+	default = TRUE // Enabled
 
 /// Minimum shift length before transfer votes can begin
 /datum/config_entry/number/transfer_time_min_allowed
@@ -20,4 +20,4 @@
 	min_val = 2 MINUTES
 
 /datum/config_entry/string/transfer_call_reason
-	default = "Crew transfer vote successful."
+	default = "Crew transfer vote successful, dispatching shuttle for shift change."
