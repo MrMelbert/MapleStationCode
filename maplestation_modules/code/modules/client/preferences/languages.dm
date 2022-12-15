@@ -23,9 +23,9 @@
 		return NO_LANGUAGE
 	if(!ispath(lang_to_add))
 		return NO_LANGUAGE
-	if(initial(lang_to_add.base_species) && initial(lang_to_add.base_species) == species_id)
+	if(initial(lang_to_add.banned_from_species_id) && initial(lang_to_add.banned_from_species_id) == species_id)
 		return NO_LANGUAGE
-	if(initial(lang_to_add.req_species) && initial(lang_to_add.req_species) != species_id)
+	if(initial(lang_to_add.required_species_id) && initial(lang_to_add.required_species_id) != species_id)
 		return NO_LANGUAGE
 	if("Trilingual" in preferences.all_quirks)
 		return NO_LANGUAGE
@@ -49,37 +49,61 @@
 
 /datum/language
 	// Vars used in determining valid languages for the language preferences.
+	/// Whether this language is available as a pref.
+	var/available_as_pref = FALSE
 	/// The 'base species' of the language, the lizard to the draconic.
-	var/base_species
+	/// Players cannot select this language in the preferences menu if they already have this species set.
+	var/banned_from_species_id
 	/// The 'required species' of the language, languages that require you be a certain species to know.
-	var/req_species
+	/// Players cannot select this language in the preferences menu if they do not have this species set.
+	var/required_species_id
 
 /datum/language/skrell
-	base_species = SPECIES_SKRELL
+	available_as_pref = TRUE
+	banned_from_species_id = SPECIES_SKRELL
 
 /datum/language/draconic
-	base_species = SPECIES_LIZARD
+	available_as_pref = TRUE
+	banned_from_species_id = SPECIES_LIZARD
 
 /datum/language/impdraconic
-	req_species = SPECIES_LIZARD
+	available_as_pref = TRUE
+	required_species_id = SPECIES_LIZARD
 
 /datum/language/nekomimetic
-	base_species = SPECIES_FELINE
+	available_as_pref = TRUE
+	banned_from_species_id = SPECIES_FELINE
 
 /datum/language/moffic
-	base_species = SPECIES_MOTH
+	available_as_pref = TRUE
+	banned_from_species_id = SPECIES_MOTH
 
+/datum/language/uncommon
+	available_as_pref = TRUE
+	required_species_id = SPECIES_HUMAN
+
+/datum/language/piratespeak
+	available_as_pref = TRUE
 
 /// TGUI for selecting languages.
 /datum/language_picker
 	/// The preferences our ui is linked to
 	var/datum/preferences/owner_prefs
+	/// Static list of all "base" languages learnable via ui
+	/// (roundstart languages, languages readily available / common)
+	var/static/list/base_languages
+	/// Static list of all "bonus" languages learnable via ui
+	/// (rarer languages, not typically available roundstart, dictated by a required_species_id)
+	var/static/list/bonus_languages
 
 /datum/language_picker/New(datum/preferences/prefs)
 	owner_prefs = prefs
 
-/datum/language_picker/ui_close(mob/user)
+/datum/language_picker/Destroy()
 	owner_prefs = null
+	return ..()
+
+/datum/language_picker/ui_close(mob/user)
 	qdel(src)
 
 /datum/language_picker/ui_state(mob/user)
@@ -98,28 +122,28 @@
 
 	switch(action)
 		if("set_language")
+			var/datum/preference/additional_language/language_pref = GLOB.preference_entries[/datum/preference/additional_language]
 			if(params["deselecting"])
-				owner_prefs.write_preference(GLOB.preference_entries[/datum/preference/additional_language], NO_LANGUAGE)
+				owner_prefs.write_preference(language_pref, NO_LANGUAGE)
 
 			else
 				var/datum/species/species = owner_prefs.read_preference(/datum/preference/choiced/species)
 				var/species_id = initial(species.id)
-				var/lang_path = text2path(params["langType"])
+				var/lang_path = text2path(params["lang_type"])
 				var/datum/language/lang_to_add = GLOB.language_datum_instances[lang_path]
-				if(!lang_to_add)
+				if(!istype(lang_to_add) || !lang_to_add.available_as_pref)
 					return
 
-				// Sanity checking
-				if(lang_to_add.base_species && lang_to_add.base_species == species_id)
+				// Sanity checking - Buttons are disabled in UI but you can never rely on that
+				if(lang_to_add.banned_from_species_id && lang_to_add.banned_from_species_id == species_id)
 					to_chat(usr, span_warning("Invalid language for current species."))
 					return
-
-				if(lang_to_add.req_species && lang_to_add.req_species != species_id)
+				if(lang_to_add.required_species_id && lang_to_add.required_species_id != species_id)
 					to_chat(usr, span_warning("Language requires another species."))
 					return
 
 				// Write the preference
-				owner_prefs.write_preference(GLOB.preference_entries[/datum/preference/additional_language], lang_path)
+				owner_prefs.write_preference(language_pref, lang_path)
 
 			return TRUE
 
@@ -127,34 +151,36 @@
 	var/list/data = list()
 
 	var/datum/species/species = owner_prefs.read_preference(/datum/preference/choiced/species)
-	data["species"] = initial(species.id)
 	data["selected_lang"] = owner_prefs.read_preference(/datum/preference/additional_language)
-	data["trilingual"] = ("Trilingual" in owner_prefs.all_quirks)
 	data["pref_name"] = owner_prefs.read_preference(/datum/preference/name/real_name)
+	data["trilingual"] = ("Trilingual" in owner_prefs.all_quirks)
+	data["species"] = initial(species.id)
 
 	return data
 
 /datum/language_picker/ui_static_data(mob/user)
 	var/list/data = list()
 
+	if(!base_languages || !bonus_languages)
+		base_languages = list()
+		bonus_languages = list()
+
+		for(var/found_language in GLOB.language_datum_instances)
+			var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
+			if(!found_instance.available_as_pref)
+				continue
+
+			var/list/lang_data = list()
+			lang_data["name"] = found_instance.name
+			lang_data["type"] = found_language
+			lang_data["barred_species"] = found_instance.banned_from_species_id
+			lang_data["allowed_species"] = found_instance.required_species_id
+			// Having a required species makes it a bouns language, otherwise it's a base language
+			UNTYPED_LIST_ADD(found_instance.required_species_id ? bonus_languages : base_languages, lang_data)
+
 	data["blacklisted_species"] = BLACKLISTED_SPECIES_FROM_LANGUAGES
-	data["base_languages"] = list()
-	data["bonus_languages"] = list()
-
-	for(var/found_language in GLOB.language_datum_instances)
-		var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
-		var/list/lang_data = list()
-		lang_data["name"] = found_instance.name
-		lang_data["type"] = found_language
-
-		if(found_instance.base_species)
-			lang_data["barred_species"] = found_instance.base_species
-			data["base_languages"] += list(lang_data)
-
-		if(found_instance.req_species)
-			lang_data["allowed_species"] = found_instance.req_species
-			data["bonus_languages"] += list(lang_data)
-
+	data["base_languages"] = base_languages
+	data["bonus_languages"] = bonus_languages
 	return data
 
 #undef NO_LANGUAGE
