@@ -8,13 +8,18 @@
 	gain_text = "<span class='notice'>You trust in the heart of the cards.</span>"
 	lose_text = "<span class='danger'>You forget what these funny bookmarks used to be.</span>"
 	medical_record_text = "Patient mentions their card collection as a stress-relieving hobby."
-	//mail_goodies = list(/obj/item/cardpack/series_one)
-	//Will replace with whatever cardpack I have in mind if i get to it, but might leave as is for other servers. commented out since maple doesnt have mail goodies.
+	mail_goodies = list(/obj/item/cardpack/tdatet,
+		/obj/item/cardpack/tdatet/green,
+		/obj/item/cardpack/tdatet/blue,
+		/obj/item/cardpack/tdatet/mixed,
+		/obj/item/cardpack/tdatet_box
+		)
+	//A chance to get a cardpack for tdatet in the mail.
 
 /datum/quirk/item_quirk/cardcollector/add_unique()
 	var/mob/living/carbon/human/human_holder = quirk_holder
 	var/obj/item/storage/card_binder/personal/card_binder = new(get_turf(human_holder))
-	/*Will be commented out until figure out persistence, which is unlikely but this will stay here just incase!
+	/*Will be commented out until someone figures out persistence, which is unlikely but this will stay here just incase!
 	card_binder.persistence_id = "personal_[human_holder.last_mind?.key]" // this is a persistent binder, the ID is tied to the account's key to avoid tampering, just like the Photo album.
 	card_binder.persistence_load() */
 	card_binder.name = "[human_holder.real_name]'s card binder"

@@ -123,6 +123,11 @@ but so far they just reside in the red set. Balancing will be done after a few g
 		"epic" = 30,
 		"legendary" = 5)
 
+/obj/item/cardpack/tdatet_box/debug
+	name = "Trading Card Debug Box: Tiny Dances And The Everything Tree"
+	desc = "Contains every card to admire and check. You have infact collected them all."
+	drop_all_cards = TRUE
+
 /obj/item/storage/card_binder/personal
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "binder_green"
