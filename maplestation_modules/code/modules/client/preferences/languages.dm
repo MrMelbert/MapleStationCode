@@ -21,7 +21,7 @@
 
 	if(species_id in BLACKLISTED_SPECIES_FROM_LANGUAGES)
 		return NO_LANGUAGE
-	if(!ispath(lang_to_add))
+	if(!ispath(lang_to_add, /datum/language))
 		return NO_LANGUAGE
 	if(initial(lang_to_add.banned_from_species_id) && initial(lang_to_add.banned_from_species_id) == species_id)
 		return NO_LANGUAGE
@@ -33,7 +33,7 @@
 	return input
 
 /datum/preference/additional_language/serialize(input)
-	return ispath(input) ? input : NO_LANGUAGE
+	return ispath(input, /datum/language) ? input : NO_LANGUAGE
 
 /datum/preference/additional_language/create_default_value()
 	return NO_LANGUAGE
