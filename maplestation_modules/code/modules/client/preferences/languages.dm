@@ -4,7 +4,7 @@
 #define NO_LANGUAGE "No Language"
 
 /// List of species IDs of species's that can't get an additional language
-#define BLACKLISTED_SPECIES_FROM_LANGUAGES list(SPECIES_SYNTH_MILITARY, SPECIES_SYNTH, SPECIES_ANDROID)
+#define BLACKLISTED_SPECIES_FROM_LANGUAGES list(SPECIES_SYNTH, SPECIES_ANDROID)
 
 // Stores a typepath of a language, or "No language" when passed a null / invalid language.
 /datum/preference/additional_language

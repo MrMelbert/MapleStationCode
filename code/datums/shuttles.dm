@@ -4,7 +4,13 @@
 	name = "Base Shuttle Template"
 	var/prefix = "_maps/shuttles/"
 	var/suffix
+	/**
+	 * Port ID is the place this template should be docking at, set on '/obj/docking_port/stationary'
+	 * Because getShuttle() compares port_id to shuttle_id to find an already existing shuttle,
+	 * you should set shuttle_id to be the same as port_id if you want them to be replacable.
+	 */
 	var/port_id
+	///ID of the shuttle, make sure it matches port_id if necessary.
 	var/shuttle_id
 
 	var/description
@@ -52,7 +58,7 @@
 							locate(.[MAP_MAXX], .[MAP_MAXY], .[MAP_MAXZ]))
 	for(var/i in 1 to turfs.len)
 		var/turf/place = turfs[i]
-		if(istype(place, /turf/open/space)) // This assumes all shuttles are loaded in a single spot then moved to their real destination.
+		if(isspaceturf(place)) // This assumes all shuttles are loaded in a single spot then moved to their real destination.
 			continue
 		if(length(place.baseturfs) < 2) // Some snowflake shuttle shit
 			continue
@@ -61,31 +67,33 @@
 		place.baseturfs = baseturfs_string_list(sanity, place)
 
 		for(var/obj/docking_port/mobile/port in place)
+			if(!isnull(port_x_offset))
+				switch(port.dir) // Yeah this looks a little ugly but mappers had to do this in their head before
+					if(NORTH)
+						port.width = width
+						port.height = height
+						port.dwidth = port_x_offset - 1
+						port.dheight = port_y_offset - 1
+					if(EAST)
+						port.width = height
+						port.height = width
+						port.dwidth = height - port_y_offset
+						port.dheight = port_x_offset - 1
+					if(SOUTH)
+						port.width = width
+						port.height = height
+						port.dwidth = width - port_x_offset
+						port.dheight = height - port_y_offset
+					if(WEST)
+						port.width = height
+						port.height = width
+						port.dwidth = port_y_offset - 1
+						port.dheight = width - port_x_offset
+			// initTemplateBounds explicitly ignores the shuttle's docking port, to ensure that it calculates the bounds of the shuttle correctly
+			// so we need to manually initialize it here
+			SSatoms.InitializeAtoms(list(port))
 			if(register)
 				port.register()
-			if(isnull(port_x_offset))
-				continue
-			switch(port.dir) // Yeah this looks a little ugly but mappers had to do this in their head before
-				if(NORTH)
-					port.width = width
-					port.height = height
-					port.dwidth = port_x_offset - 1
-					port.dheight = port_y_offset - 1
-				if(EAST)
-					port.width = height
-					port.height = width
-					port.dwidth = height - port_y_offset
-					port.dheight = port_x_offset - 1
-				if(SOUTH)
-					port.width = width
-					port.height = height
-					port.dwidth = width - port_x_offset
-					port.dheight = height - port_y_offset
-				if(WEST)
-					port.width = height
-					port.height = width
-					port.dwidth = port_y_offset - 1
-					port.dheight = width - port_x_offset
 
 //Whatever special stuff you want
 /datum/map_template/shuttle/post_load(obj/docking_port/mobile/M)
@@ -157,6 +165,10 @@
 	port_id = "snowdin"
 	who_can_purchase = null
 
+/datum/map_template/shuttle/ert
+	port_id = "ert"
+	who_can_purchase = null
+
 // Shuttles start here:
 
 /datum/map_template/shuttle/emergency/backup
@@ -167,12 +179,12 @@
 /datum/map_template/shuttle/emergency/construction
 	suffix = "construction"
 	name = "Build your own shuttle kit"
-	description = "For the enterprising shuttle engineer! The chassis will dock upon purchase, but launch will have to be authorized as usual via shuttle call. Comes stocked with construction materials. Unlocks the ability to buy shuttle engine crates from cargo."
-	admin_notes = "No brig, no medical facilities, no shuttle console."
+	description = "For the enterprising shuttle engineer! The chassis will dock upon purchase, but launch will have to be authorized as usual via shuttle call. Comes stocked with construction materials. Unlocks the ability to buy shuttle engine crates from cargo, which allow you to speed up shuttle transit time."
+	admin_notes = "No brig, no medical facilities."
 	credit_cost = CARGO_CRATE_VALUE * 5
 	who_can_purchase = list(ACCESS_CAPTAIN, ACCESS_CE)
 
-/datum/map_template/shuttle/emergency/airless/post_load()
+/datum/map_template/shuttle/emergency/construction/post_load()
 	. = ..()
 	//enable buying engines from cargo
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shuttle_engine]
@@ -409,6 +421,15 @@
 	admin_notes = "ONLY NINETIES KIDS REMEMBER. Uses the fun balloon and drone from the Emergency Bar."
 	credit_cost = CARGO_CRATE_VALUE * 5
 
+/datum/map_template/shuttle/emergency/basketball
+	suffix = "bballhooper"
+	name = "Basketballer's Stadium"
+	description = "Hoop, man, hoop! Get your shooting game on with this sleek new basketball stadium! Do keep in mind that several other features \
+	that you may expect to find common-place on other shuttles aren't present to give you this sleek stadium at an affordable cost. \
+	It also wasn't manufactured to deal with the form-factor of some of your stations... good luck with that."
+	admin_notes = "A larger shuttle built around a basketball stadium: entirely impractical but just a complete blast!"
+	credit_cost = CARGO_CRATE_VALUE * 10
+
 /datum/map_template/shuttle/emergency/wabbajack
 	suffix = "wabbajack"
 	name = "NT Lepton Violet"
@@ -444,6 +465,12 @@
 	description = "A luxurious casino packed to the brim with everything you need to start new gambling addicitions!"
 	admin_notes = "The ship is a bit chunky, so watch where you park it."
 	credit_cost = 7777
+
+/datum/map_template/shuttle/emergency/shadow
+	suffix = "shadow"
+	name = "The NTSS Shadow"
+	description = "Guaranteed to get you somewhere FAST. With a custom-built plasma engine, this bad boy will put more distance between you and certain danger than any other!"
+	credit_cost = CARGO_CRATE_VALUE * 50
 
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"
@@ -487,7 +514,7 @@
 
 /datum/map_template/shuttle/whiteship/pubby
 	suffix = "pubby"
-	name = "NT White UFO"
+	name = "NT Science Vessel"
 
 /datum/map_template/shuttle/whiteship/cere
 	suffix = "cere"
@@ -512,6 +539,15 @@
 /datum/map_template/shuttle/whiteship/pod
 	suffix = "whiteship_pod"
 	name = "Salvage Pod"
+
+/datum/map_template/shuttle/whiteship/personalshuttle
+	suffix = "personalshuttle"
+	name = "Personal Travel Shuttle"
+
+/datum/map_template/shuttle/whiteship/obelisk
+	suffix = "obelisk"
+	name = "Obelisk"
+	admin_notes = "Not actually an obelisk, has nonsentient cult constructs."
 
 /datum/map_template/shuttle/cargo/kilo
 	suffix = "kilo"
@@ -571,6 +607,10 @@
 /datum/map_template/shuttle/labour/box
 	suffix = "box"
 	name = "labour shuttle (Box)"
+
+/datum/map_template/shuttle/labour/generic
+	suffix = "generic"
+	name = "labour shuttle (Generic)"
 
 /datum/map_template/shuttle/arrival/donut
 	suffix = "donut"
@@ -719,5 +759,10 @@
 /datum/map_template/shuttle/snowdin/excavation
 	suffix = "excavation"
 	name = "Snowdin Excavation Elevator"
+
+// Custom ERT shuttles
+/datum/map_template/shuttle/ert/bounty
+	suffix = "bounty"
+	name = "Bounty Hunter ERT Shuttle"
 
 #undef EMAG_LOCKED_SHUTTLE_COST

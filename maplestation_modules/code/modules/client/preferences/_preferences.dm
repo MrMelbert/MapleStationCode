@@ -1,6 +1,6 @@
 // -- Base preferences exentions. --
 
-/*
+/**
  * Post preference transfer handling, done after quirks are assigned. (TODO: FIND A BETTER WAY TO DO THIS, maybe.)
  *
  * Why in AssignQuirks?

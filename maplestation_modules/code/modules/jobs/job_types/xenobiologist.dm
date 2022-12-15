@@ -10,11 +10,12 @@
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	exp_granted_type = EXP_TYPE_CREW
+	config_tag = "XENOBIO"
 
 	outfit = /datum/outfit/job/scientist/xenobiologist
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_CREW
 	paycheck_department = ACCOUNT_SCI
 
 	display_order = JOB_DISPLAY_ORDER_XENOBIOLOGIST
@@ -24,7 +25,7 @@
 
 	mail_goodies = list(
 		/obj/item/toy/plush/slimeplushie = 25,
-		/obj/item/reagent_containers/glass/beaker/bluespace = 20,
+		/obj/item/reagent_containers/cup/beaker/bluespace = 20,
 		/obj/item/slimepotion/slime/sentience = 15,
 		/obj/item/slimepotion/slime/docility = 15,
 		/obj/item/slimepotion/slime/steroid = 10,
@@ -43,11 +44,12 @@
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 	rpg_title = "Beast Tamer"
+	crewmonitor_priority = 35
 
 /datum/outfit/job/scientist/xenobiologist
 	name = "Xenobiologist"
 	suit = /obj/item/clothing/suit/toggle/labcoat/xenobio
 	uniform = /obj/item/clothing/under/rank/rnd/xenobiologist
-	belt = /obj/item/pda/science/xenobiologist
+	belt = /obj/item/modular_computer/tablet/pda/xenobiologist
 	jobtype = /datum/job/xenobiologist
 	id_trim = /datum/id_trim/job/xenobiologist

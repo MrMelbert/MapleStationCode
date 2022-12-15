@@ -6,19 +6,19 @@
 /turf/open/space,
 /area/space)
 "ad" = (
-/obj/structure/shuttle/engine/propulsion/right{
+/obj/machinery/power/shuttle_engine/propulsion/right{
 	dir = 1
 	},
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate2)
 "ae" = (
-/obj/structure/shuttle/engine/propulsion{
+/obj/machinery/power/shuttle_engine/propulsion{
 	dir = 1
 	},
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate2)
 "af" = (
-/obj/structure/shuttle/engine/propulsion/left{
+/obj/machinery/power/shuttle_engine/propulsion/left{
 	dir = 1
 	},
 /turf/open/space,
@@ -27,7 +27,7 @@
 /turf/closed/wall/mineral/plastitanium,
 /area/awaymission/spacebattle/syndicate2)
 "ai" = (
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 1
 	},
 /obj/structure/window/reinforced,
@@ -81,19 +81,19 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/awaymission/spacebattle/syndicate2)
 "aw" = (
-/obj/structure/shuttle/engine/propulsion/right{
+/obj/machinery/power/shuttle_engine/propulsion/right{
 	dir = 1
 	},
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate3)
 "ax" = (
-/obj/structure/shuttle/engine/propulsion{
+/obj/machinery/power/shuttle_engine/propulsion{
 	dir = 1
 	},
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate3)
 "ay" = (
-/obj/structure/shuttle/engine/propulsion/left{
+/obj/machinery/power/shuttle_engine/propulsion/left{
 	dir = 1
 	},
 /turf/open/space,
@@ -107,7 +107,7 @@
 /turf/closed/wall/mineral/plastitanium,
 /area/awaymission/spacebattle/syndicate3)
 "aC" = (
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 1
 	},
 /obj/structure/window/reinforced,
@@ -140,19 +140,19 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/awaymission/spacebattle/syndicate2)
 "aP" = (
-/obj/structure/shuttle/engine/propulsion/right{
+/obj/machinery/power/shuttle_engine/propulsion/right{
 	dir = 1
 	},
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate1)
 "aQ" = (
-/obj/structure/shuttle/engine/propulsion{
+/obj/machinery/power/shuttle_engine/propulsion{
 	dir = 1
 	},
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate1)
 "aR" = (
-/obj/structure/shuttle/engine/propulsion/left{
+/obj/machinery/power/shuttle_engine/propulsion/left{
 	dir = 1
 	},
 /turf/open/space,
@@ -165,7 +165,7 @@
 /turf/closed/wall/mineral/plastitanium,
 /area/awaymission/spacebattle/syndicate1)
 "aV" = (
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 1
 	},
 /obj/structure/window/reinforced,
@@ -173,7 +173,7 @@
 /area/awaymission/spacebattle/syndicate1)
 "aW" = (
 /obj/structure/window/reinforced,
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 1
 	},
 /obj/structure/window/reinforced{
@@ -183,7 +183,7 @@
 /area/awaymission/spacebattle/syndicate2)
 "aX" = (
 /obj/structure/window/reinforced,
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 1
 	},
 /obj/structure/window/reinforced{
@@ -333,7 +333,7 @@
 	},
 /area/awaymission/spacebattle/cruiser)
 "bI" = (
-/obj/structure/shuttle/engine/propulsion/right{
+/obj/machinery/power/shuttle_engine/propulsion/right{
 	dir = 1
 	},
 /turf/open/space,
@@ -343,7 +343,7 @@
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)
 "bK" = (
-/obj/structure/shuttle/engine/propulsion/left{
+/obj/machinery/power/shuttle_engine/propulsion/left{
 	dir = 1
 	},
 /turf/open/space,
@@ -359,7 +359,7 @@
 /area/awaymission/spacebattle/cruiser)
 "bN" = (
 /obj/structure/window/reinforced,
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 1
 	},
 /obj/structure/window/reinforced{
@@ -372,7 +372,7 @@
 /area/awaymission/spacebattle/cruiser)
 "bP" = (
 /obj/structure/window/reinforced,
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 1
 	},
 /obj/structure/window/reinforced{
@@ -399,13 +399,13 @@
 /turf/closed/wall/mineral/titanium,
 /area/awaymission/spacebattle/cruiser)
 "bX" = (
-/obj/structure/shuttle/engine/propulsion/burst/left{
+/obj/machinery/power/shuttle_engine/propulsion/burst/left{
 	dir = 8
 	},
 /turf/open/space,
 /area/awaymission/spacebattle/cruiser)
 "bY" = (
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 8
 	},
 /obj/structure/window/reinforced{
@@ -418,11 +418,6 @@
 	dir = 4
 	},
 /turf/open/floor/iron,
-/area/awaymission/spacebattle/cruiser)
-"ca" = (
-/turf/open/floor/iron{
-	icon_state = "damaged5"
-	},
 /area/awaymission/spacebattle/cruiser)
 "cb" = (
 /obj/machinery/computer/pod{
@@ -440,7 +435,7 @@
 /turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "cf" = (
-/obj/structure/shuttle/engine/propulsion{
+/obj/machinery/power/shuttle_engine/propulsion{
 	dir = 8
 	},
 /turf/open/space,
@@ -460,21 +455,6 @@
 /mob/living/simple_animal/hostile/syndicate,
 /turf/open/floor/mineral/plastitanium/red,
 /area/awaymission/spacebattle/syndicate1)
-"cm" = (
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
-/area/awaymission/spacebattle/cruiser)
-"cn" = (
-/turf/open/floor/iron{
-	icon_state = "damaged3"
-	},
-/area/awaymission/spacebattle/cruiser)
-"cp" = (
-/turf/open/floor/iron{
-	icon_state = "damaged1"
-	},
-/area/awaymission/spacebattle/cruiser)
 "cq" = (
 /obj/effect/mob_spawn/corpse/human/engineer{
 	mob_name = "Rosen Miller";
@@ -500,9 +480,8 @@
 "cw" = (
 /obj/item/ammo_casing/c10mm,
 /obj/item/ammo_casing/c10mm,
-/turf/open/floor/iron{
-	icon_state = "damaged2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "cx" = (
 /obj/item/stack/sheet/iron,
@@ -536,7 +515,7 @@
 /area/awaymission/spacebattle/cruiser)
 "cD" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/condiment/enzyme,
+/obj/item/reagent_containers/condiment/enzyme,
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/spacebattle/cruiser)
 "cE" = (
@@ -579,9 +558,8 @@
 /turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "cN" = (
-/turf/open/floor/iron{
-	icon_state = "damaged2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "cO" = (
 /obj/effect/landmark/awaystart,
@@ -662,7 +640,7 @@
 /turf/open/floor/plating/airless,
 /area/awaymission/spacebattle/cruiser)
 "df" = (
-/obj/structure/shuttle/engine/propulsion/right{
+/obj/machinery/power/shuttle_engine/propulsion/right{
 	dir = 8
 	},
 /turf/open/space,
@@ -850,7 +828,7 @@
 /area/awaymission/spacebattle/cruiser)
 "dR" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/condiment/peppermill,
+/obj/item/reagent_containers/condiment/peppermill,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -926,9 +904,8 @@
 	mob_name = "Clay Dawson";
 	name = "Clay Dawson"
 	},
-/turf/open/floor/iron{
-	icon_state = "damaged5"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "eb" = (
 /obj/effect/spawner/structure/window/hollow/reinforced/middle{
@@ -1129,7 +1106,7 @@
 /area/awaymission/spacebattle/cruiser)
 "eU" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/condiment/saltshaker,
+/obj/item/reagent_containers/condiment/saltshaker,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -1428,12 +1405,6 @@
 	dir = 8
 	},
 /turf/open/floor/iron,
-/area/awaymission/spacebattle/cruiser)
-"fL" = (
-/obj/item/stack/sheet/iron,
-/turf/open/floor/iron{
-	icon_state = "damaged1"
-	},
 /area/awaymission/spacebattle/cruiser)
 "fM" = (
 /obj/item/ammo_casing/shotgun,
@@ -1776,7 +1747,7 @@
 /turf/open/floor/plating/airless,
 /area/awaymission/spacebattle/syndicate7)
 "gR" = (
-/obj/structure/shuttle/engine/heater,
+/obj/machinery/power/shuttle_engine/heater,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -1844,7 +1815,7 @@
 /turf/closed/wall/mineral/plastitanium,
 /area/awaymission/spacebattle/syndicate7)
 "hd" = (
-/obj/structure/shuttle/engine/propulsion,
+/obj/machinery/power/shuttle_engine/propulsion,
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate4)
 "he" = (
@@ -1885,7 +1856,7 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/awaymission/spacebattle/syndicate7)
 "hl" = (
-/obj/structure/shuttle/engine/heater{
+/obj/machinery/power/shuttle_engine/heater{
 	dir = 4
 	},
 /obj/structure/window/reinforced{
@@ -1894,7 +1865,7 @@
 /turf/open/floor/plating/airless,
 /area/awaymission/spacebattle/syndicate7)
 "hm" = (
-/obj/structure/shuttle/engine/propulsion/right{
+/obj/machinery/power/shuttle_engine/propulsion/right{
 	dir = 4
 	},
 /turf/open/space,
@@ -1909,7 +1880,7 @@
 /area/awaymission/spacebattle/cruiser)
 "hp" = (
 /obj/structure/closet/crate/medical,
-/obj/item/storage/firstaid/fire,
+/obj/item/storage/medkit/fire,
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)
 "hq" = (
@@ -1938,7 +1909,7 @@
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/syndicate7)
 "hv" = (
-/obj/structure/shuttle/engine/propulsion/left{
+/obj/machinery/power/shuttle_engine/propulsion/left{
 	dir = 4
 	},
 /turf/open/space,
@@ -1959,7 +1930,7 @@
 /area/awaymission/spacebattle/cruiser)
 "hz" = (
 /obj/structure/closet/crate/medical,
-/obj/item/storage/firstaid/regular,
+/obj/item/storage/medkit/regular,
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)
 "hA" = (
@@ -1981,7 +1952,7 @@
 /area/awaymission/spacebattle/cruiser)
 "hD" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/firstaid/regular,
+/obj/item/storage/medkit/regular,
 /turf/open/floor/iron/white,
 /area/awaymission/spacebattle/cruiser)
 "hE" = (
@@ -1991,9 +1962,8 @@
 /area/awaymission/spacebattle/cruiser)
 "hF" = (
 /obj/item/stack/sheet/iron,
-/turf/open/floor/iron{
-	icon_state = "damaged3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "hI" = (
 /obj/structure/table/reinforced,
@@ -2039,12 +2009,6 @@
 /obj/structure/rack,
 /turf/open/floor/engine,
 /area/awaymission/spacebattle/cruiser)
-"hQ" = (
-/obj/item/stack/sheet/iron,
-/turf/open/floor/iron{
-	icon_state = "damaged4"
-	},
-/area/awaymission/spacebattle/cruiser)
 "hS" = (
 /obj/machinery/computer/shuttle{
 	dir = 4
@@ -2063,9 +2027,7 @@
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/syndicate7)
 "hV" = (
-/obj/machinery/shower{
-	dir = 4
-	},
+/obj/machinery/shower/directional/east,
 /obj/item/bikehorn/rubberducky,
 /turf/open/floor/iron/freezer,
 /area/awaymission/spacebattle/cruiser)
@@ -2073,9 +2035,7 @@
 /turf/open/floor/iron/freezer,
 /area/awaymission/spacebattle/cruiser)
 "hX" = (
-/obj/machinery/shower{
-	dir = 8
-	},
+/obj/machinery/shower/directional/west,
 /turf/open/floor/iron/freezer,
 /area/awaymission/spacebattle/cruiser)
 "hY" = (
@@ -2084,7 +2044,7 @@
 /area/awaymission/spacebattle/cruiser)
 "hZ" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/firstaid/fire,
+/obj/item/storage/medkit/fire,
 /turf/open/floor/iron/white,
 /area/awaymission/spacebattle/cruiser)
 "ib" = (
@@ -2092,24 +2052,20 @@
 /turf/open/floor/iron/freezer,
 /area/awaymission/spacebattle/cruiser)
 "id" = (
-/obj/item/storage/firstaid/regular,
+/obj/item/storage/medkit/regular,
 /turf/open/floor/iron/white,
 /area/awaymission/spacebattle/cruiser)
 "ie" = (
 /obj/structure/table/reinforced,
-/obj/item/storage/firstaid/o2,
+/obj/item/storage/medkit/o2,
 /turf/open/floor/iron/white,
 /area/awaymission/spacebattle/cruiser)
 "if" = (
-/obj/machinery/shower{
-	dir = 4
-	},
+/obj/machinery/shower/directional/east,
 /turf/open/floor/iron/freezer,
 /area/awaymission/spacebattle/cruiser)
 "ig" = (
-/obj/machinery/shower{
-	dir = 8
-	},
+/obj/machinery/shower/directional/west,
 /obj/item/soap,
 /turf/open/floor/iron/freezer,
 /area/awaymission/spacebattle/cruiser)
@@ -2154,10 +2110,7 @@
 /turf/open/floor/iron/white,
 /area/awaymission/spacebattle/cruiser)
 "io" = (
-/obj/structure/sink{
-	dir = 8;
-	pixel_x = 11
-	},
+/obj/structure/sink/directional/west,
 /turf/open/floor/iron/freezer,
 /area/awaymission/spacebattle/cruiser)
 "ip" = (
@@ -2193,12 +2146,11 @@
 "iu" = (
 /obj/effect/mob_spawn/corpse/human/syndicatesoldier,
 /obj/item/gun/ballistic/automatic/c20r,
-/turf/open/floor/iron{
-	icon_state = "damaged2"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "iv" = (
-/obj/structure/shuttle/engine/propulsion/burst/right{
+/obj/machinery/power/shuttle_engine/propulsion/burst/right{
 	dir = 8
 	},
 /turf/open/space,
@@ -2266,14 +2218,14 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/awaymission/spacebattle/syndicate5)
 "iR" = (
-/obj/structure/shuttle/engine/heater,
+/obj/machinery/power/shuttle_engine/heater,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "iS" = (
-/obj/structure/shuttle/engine/propulsion,
+/obj/machinery/power/shuttle_engine/propulsion,
 /turf/open/space,
 /area/space/nearstation)
 "iT" = (
@@ -2281,14 +2233,14 @@
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/syndicate5)
 "iW" = (
-/obj/structure/shuttle/engine/heater,
+/obj/machinery/power/shuttle_engine/heater,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
 /turf/open/floor/plating/airless,
 /area/awaymission/spacebattle/syndicate5)
 "iX" = (
-/obj/structure/shuttle/engine/propulsion,
+/obj/machinery/power/shuttle_engine/propulsion,
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate5)
 "iZ" = (
@@ -2317,18 +2269,18 @@
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/syndicate6)
 "ji" = (
-/obj/structure/shuttle/engine/heater,
+/obj/machinery/power/shuttle_engine/heater,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
 /turf/open/floor/plating/airless,
 /area/awaymission/spacebattle/syndicate6)
 "jj" = (
-/obj/structure/shuttle/engine/propulsion,
+/obj/machinery/power/shuttle_engine/propulsion,
 /turf/open/space,
 /area/awaymission/spacebattle/syndicate6)
 "jk" = (
-/turf/open/floor/plating/asteroid/airless,
+/turf/open/misc/asteroid/airless,
 /area/space/nearstation)
 "jl" = (
 /turf/closed/wall/mineral/plasma,
@@ -2496,9 +2448,8 @@
 /obj/item/ammo_casing/c10mm,
 /obj/item/ammo_casing/c10mm,
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/iron{
-	icon_state = "damaged3"
-	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron,
 /area/awaymission/spacebattle/cruiser)
 "jN" = (
 /obj/structure/closet/crate,
@@ -2518,7 +2469,7 @@
 /area/awaymission/spacebattle/cruiser)
 "jP" = (
 /obj/structure/closet/crate/internals,
-/obj/item/storage/firstaid/o2,
+/obj/item/storage/medkit/o2,
 /turf/open/floor/engine,
 /area/awaymission/spacebattle/cruiser)
 "jQ" = (
@@ -22198,7 +22149,7 @@ ab
 ab
 ab
 bT
-ca
+cN
 cc
 cc
 cc
@@ -22458,7 +22409,7 @@ bM
 bM
 bM
 cc
-cp
+cN
 cc
 cr
 kl
@@ -22971,9 +22922,9 @@ bO
 bO
 bO
 ci
-cm
+cN
 cw
-cp
+cN
 cc
 cQ
 cc
@@ -23228,8 +23179,8 @@ hy
 bO
 bO
 ci
-cn
-cm
+cN
+cN
 cM
 cc
 cc
@@ -23742,7 +23693,7 @@ bM
 bM
 bM
 bM
-cp
+cN
 cc
 cN
 cc
@@ -25833,7 +25784,7 @@ cc
 cc
 cc
 iu
-cp
+cN
 bT
 ab
 ab
@@ -26088,7 +26039,7 @@ cc
 cc
 cc
 cc
-cp
+cN
 cN
 cN
 bT
@@ -33263,7 +33214,7 @@ cc
 cc
 cc
 cc
-cn
+cN
 cc
 cc
 cc
@@ -33519,9 +33470,9 @@ cc
 cc
 it
 cc
-fL
-cn
-cn
+hF
+cN
+cN
 cc
 cc
 cc
@@ -34034,8 +33985,8 @@ dU
 dU
 dU
 ex
-cp
-fL
+cN
+hF
 fc
 bT
 fo
@@ -34307,7 +34258,7 @@ gy
 gy
 gy
 bT
-cp
+cN
 cc
 bT
 cK
@@ -34550,7 +34501,7 @@ cc
 ez
 cc
 cc
-cp
+cN
 cd
 fq
 jO
@@ -34564,8 +34515,8 @@ gy
 gy
 gy
 cK
-cp
-cp
+cN
+cN
 bT
 cK
 cK
@@ -34807,10 +34758,10 @@ cc
 cc
 cc
 cQ
-cn
+cN
 hs
 jM
-cp
+cN
 cK
 gy
 gy
@@ -35061,10 +35012,10 @@ dB
 dV
 ei
 ei
-cn
-cm
-cm
-cn
+cN
+cN
+cN
+cN
 cK
 hF
 fM
@@ -35576,9 +35527,9 @@ dh
 dh
 bT
 eC
-cn
-fL
-cp
+cN
+hF
+cN
 jK
 fs
 fO
@@ -35592,7 +35543,7 @@ hq
 dh
 dh
 bT
-cp
+cN
 cc
 bT
 cJ
@@ -35826,9 +35777,9 @@ ab
 ab
 bT
 cc
-cm
+cN
 cK
-cm
+cN
 cc
 cc
 bT
@@ -35847,9 +35798,9 @@ gZ
 bT
 cc
 cQ
-cn
+cN
 hs
-cn
+cN
 cc
 bT
 ab
@@ -36082,11 +36033,11 @@ ab
 ab
 ab
 bT
-fL
-cp
+hF
+cN
 hs
-cm
-hQ
+cN
+hF
 cc
 bT
 jy
@@ -36104,9 +36055,9 @@ gZ
 bT
 cc
 cc
-cp
+cN
 bT
-cn
+cN
 cc
 bT
 ab
@@ -36340,7 +36291,7 @@ ab
 ab
 bT
 cc
-cp
+cN
 hs
 hF
 cc
@@ -50732,7 +50683,7 @@ ab
 ab
 bT
 cc
-cm
+cN
 cc
 cc
 cc
@@ -50988,11 +50939,11 @@ ab
 ab
 ab
 bT
-cm
-cn
-cp
-cp
-cn
+cN
+cN
+cN
+cN
+cN
 cc
 dJ
 cc
@@ -51248,7 +51199,7 @@ bM
 bM
 bM
 bM
-cm
+cN
 it
 cc
 cc
@@ -51506,7 +51457,7 @@ bO
 dc
 Wv
 bM
-cp
+cN
 cc
 cc
 cQ
@@ -51762,9 +51713,9 @@ gJ
 bO
 bO
 dr
-cn
-cp
-cn
+cN
+cN
+cN
 cc
 jz
 cc
@@ -52019,7 +51970,7 @@ hy
 bO
 bO
 dr
-ca
+cN
 ea
 cc
 cc
@@ -52278,7 +52229,7 @@ bO
 Wv
 bM
 cc
-ca
+cN
 cc
 cc
 dJ
@@ -52534,8 +52485,8 @@ bM
 bM
 bM
 cc
-cn
-cp
+cN
+cN
 cQ
 cc
 cc
@@ -53044,7 +52995,7 @@ ab
 ab
 ab
 bT
-cp
+cN
 cc
 cc
 dJ

@@ -1,11 +1,11 @@
-import { CheckboxInput, FeatureChoiced, FeatureDropdownInput, FeatureToggle } from "./base";
+import { CheckboxInput, FeatureChoiced, FeatureDropdownInput, FeatureToggle } from './base';
 
 export const feature_head_tentacles: FeatureChoiced = {
-  name: "Head Tentacles",
+  name: 'Head Tentacles',
   component: FeatureDropdownInput,
 };
 
 export const hair_lizard: FeatureToggle = {
-  name: "Hair Lizard",
+  name: 'Hair Lizard',
   component: CheckboxInput,
 };

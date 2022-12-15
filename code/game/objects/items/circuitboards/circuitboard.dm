@@ -5,11 +5,13 @@
 
 /obj/item/circuitboard
 	name = "circuit board"
+	/// extension that is applied after the initial name AKA (Computer/Machine Board)
+	var/name_extension = null
 	icon = 'icons/obj/module.dmi'
 	icon_state = "circuit_map"
 	inhand_icon_state = "electronic"
-	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
+	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	custom_materials = list(/datum/material/glass = 1000)
 	w_class = WEIGHT_CLASS_SMALL
 	grind_results = list(/datum/reagent/silicon = 20)
@@ -17,8 +19,12 @@
 	var/build_path = null
 	///determines if the circuit board originated from a vendor off station or not.
 	var/onstation = TRUE
+	///determines if the board requires specific levels of parts. (ie specifically a femto menipulator vs generic manipulator)
+	var/specific_parts = FALSE
 
 /obj/item/circuitboard/Initialize(mapload)
+	if(name_extension)
+		name = "[initial(name)] [name_extension]"
 	set_greyscale(new_config = /datum/greyscale_config/circuit)
 	return ..()
 
@@ -62,6 +68,7 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
 */
 
 /obj/item/circuitboard/machine
+	name_extension = "(Machine Board)"
 	var/needs_anchored = TRUE // Whether this machine must be anchored to be constructed.
 	var/list/req_components // Components required by the machine.
 							// Example: list(/obj/item/stock_parts/matter_bin = 5)
@@ -94,10 +101,32 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
 
 /obj/item/circuitboard/machine/examine(mob/user)
 	. = ..()
-	if(LAZYLEN(req_components))
-		var/list/nice_list = list()
-		for(var/atom/component as anything in req_components)
-			if(!ispath(component))
-				continue
-			nice_list += list("[req_components[component]] [initial(component.name)]")
-		. += span_notice("Required components: [english_list(nice_list)].")
+	if(!LAZYLEN(req_components))
+		. += span_info("It requires no components.")
+		return .
+
+	var/list/nice_list = list()
+	for(var/atom/component_path as anything in req_components)
+		if(!ispath(component_path))
+			continue
+
+		var/component_name = initial(component_path.name)
+		var/component_amount = req_components[component_path]
+
+		if(ispath(component_path, /obj/item/stack))
+			var/obj/item/stack/stack_path = component_path
+			if(initial(stack_path.singular_name))
+				component_name = initial(stack_path.singular_name) //e.g. "glass sheet" vs. "glass"
+
+		else if(ispath(component_path, /obj/item/stock_parts) && !specific_parts)
+			var/obj/item/stock_parts/stock_part = component_path
+			if(initial(stock_part.base_name))
+				component_name = initial(stock_part.base_name)
+		else if(ispath(component_path, /obj/item/stock_parts))
+			var/obj/item/stock_parts/stock_part = component_path
+			if(initial(stock_part.name))
+				component_name = initial(stock_part.name)
+
+		nice_list += list("[component_amount] [component_name]\s")
+
+	. += span_info("It requires [english_list(nice_list)].")

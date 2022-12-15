@@ -2,7 +2,7 @@
 /obj/item/cardboard_cutout
 	name = "cardboard cutout"
 	desc = "A vaguely humanoid cardboard cutout. It's completely blank."
-	icon = 'icons/obj/cardboard_cutout.dmi'
+	icon = 'icons/obj/art/cardboard_cutout.dmi'
 	icon_state = "cutout_basic"
 	w_class = WEIGHT_CLASS_BULKY
 	resistance_flags = FLAMMABLE
@@ -25,14 +25,14 @@
 		"Clockwork Cultist" = image(icon = src.icon, icon_state = "cutout_servant"),
 		"Revolutionary" = image(icon = src.icon, icon_state = "cutout_viva"),
 		"Wizard" = image(icon = src.icon, icon_state = "cutout_wizard"),
-		"Shadowling" = image(icon = src.icon, icon_state = "cutout_shadowling"),
+		"Nightmare" = image(icon = src.icon, icon_state = "cutout_nightmare"),
 		"Xenomorph" = image(icon = src.icon, icon_state = "cutout_fukken_xeno"),
 		"Xenomorph Maid" = image(icon = src.icon, icon_state = "cutout_lusty"),
 		"Ash Walker" = image(icon = src.icon, icon_state = "cutout_free_antag"),
 		"Deathsquad Officer" = image(icon = src.icon, icon_state = "cutout_deathsquad"),
 		"Ian" = image(icon = src.icon, icon_state = "cutout_ian"),
-		"Slaughter Demon" = image(icon = 'icons/mob/mob.dmi', icon_state = "daemon"),
-		"Laughter Demon" = image(icon = 'icons/mob/mob.dmi', icon_state = "bowmon"),
+		"Slaughter Demon" = image(icon = 'icons/mob/simple/mob.dmi', icon_state = "daemon"),
+		"Laughter Demon" = image(icon = 'icons/mob/simple/mob.dmi', icon_state = "bowmon"),
 		"Private Security Officer" = image(icon = src.icon, icon_state = "cutout_ntsec")
 	))
 
@@ -100,7 +100,7 @@
  * * user The mob choosing a skin of the cardboard cutout
  */
 /obj/item/cardboard_cutout/proc/change_appearance(obj/item/toy/crayon/crayon, mob/living/user)
-	var/new_appearance = show_radial_menu(user, src, possible_appearances, custom_check = CALLBACK(src, .proc/check_menu, user, crayon), radius = 36, require_near = TRUE)
+	var/new_appearance = show_radial_menu(user, src, possible_appearances, custom_check = CALLBACK(src, PROC_REF(check_menu), user, crayon), radius = 36, require_near = TRUE)
 	if(!new_appearance)
 		return FALSE
 	if(!do_after(user, 1 SECONDS, src, timed_action_flags = IGNORE_HELD_ITEM))
@@ -151,10 +151,10 @@
 			name = "[pick(GLOB.wizard_first)], [pick(GLOB.wizard_second)]"
 			desc = "A cardboard cutout of a wizard."
 			icon_state = "cutout_wizard"
-		if("Shadowling")
-			name = "Unknown"
-			desc = "A cardboard cutout of a shadowling."
-			icon_state = "cutout_shadowling"
+		if("Nightmare")
+			name = "[pick(GLOB.nightmare_names)]"
+			desc = "A cardboard cutout of a nightmare."
+			icon_state = "cutout_nightmare"
 		if("Xenomorph")
 			name = "alien hunter ([rand(1, 999)])"
 			desc = "A cardboard cutout of a xenomorph."
@@ -180,12 +180,12 @@
 		if("Slaughter Demon")
 			name = "slaughter demon"
 			desc = "A cardboard cutout of a slaughter demon."
-			icon = 'icons/mob/mob.dmi'
+			icon = 'icons/mob/simple/mob.dmi'
 			icon_state = "daemon"
 		if("Laughter Demon")
 			name = "laughter demon"
 			desc = "A cardboard cutout of a laughter demon."
-			icon = 'icons/mob/mob.dmi'
+			icon = 'icons/mob/simple/mob.dmi'
 			icon_state = "bowmon"
 		if("Private Security Officer")
 			name = "Private Security Officer"

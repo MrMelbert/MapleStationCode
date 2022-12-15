@@ -9,7 +9,7 @@
 
 ///Cooldown on planning if planning failed last time
 
-#define AI_FAILED_PLANNING_COOLDOWN 1.5 SECONDS
+#define AI_FAILED_PLANNING_COOLDOWN (1.5 SECONDS)
 
 ///Flags for ai_behavior new()
 #define AI_CONTROLLER_INCOMPATIBLE (1<<0)
@@ -68,6 +68,7 @@
 #define BB_MONKEY_CURRENT_PRESS_TARGET "BB_monkey_current_press_target"
 #define BB_MONKEY_CURRENT_GIVE_TARGET "BB_monkey_current_give_target"
 #define BB_MONKEY_TARGET_DISPOSAL "BB_monkey_target_disposal"
+#define BB_MONKEY_TARGET_MONKEYS "BB_monkey_target_monkeys"
 #define BB_MONKEY_DISPOSING "BB_monkey_disposing"
 #define BB_MONKEY_RECRUIT_COOLDOWN "BB_monkey_recruit_cooldown"
 
@@ -108,7 +109,7 @@
 ///The implant the AI was created from
 #define BB_MOD_IMPLANT "BB_mod_implant"
 ///Range for a MOD AI controller.
-#define MOD_AI_RANGE 100
+#define MOD_AI_RANGE 200
 
 ///Vending machine AI controller blackboard keys
 #define BB_VENDING_CURRENT_TARGET "BB_vending_current_target"
@@ -141,7 +142,7 @@
 /// Basically, what is our vision/hearing range.
 #define BB_HOSTILE_VISION_RANGE 10
 /// After either being given a verbal order or a pointing order, ignore further of each for this duration
-#define AI_HOSTILE_COMMAND_COOLDOWN 2 SECONDS
+#define AI_HOSTILE_COMMAND_COOLDOWN (2 SECONDS)
 
 // hostile command modes (what pointing at something/someone does depending on the last order the carp heard)
 /// Don't do anything (will still react to stuff around them though)
@@ -161,17 +162,20 @@
 #define BB_DOG_ORDER_MODE "BB_DOG_ORDER_MODE"
 #define BB_DOG_PLAYING_DEAD "BB_DOG_PLAYING_DEAD"
 #define BB_DOG_HARASS_TARGET "BB_DOG_HARASS_TARGET"
+#define BB_DOG_HARASS_FRUSTRATION "BB_DOG_HARASS_FRUSTRATION"
 
 /// Basically, what is our vision/hearing range for picking up on things to fetch/
 #define AI_DOG_VISION_RANGE	10
 /// What are the odds someone petting us will become our friend?
 #define AI_DOG_PET_FRIEND_PROB 15
 /// After this long without having fetched something, we clear our ignore list
-#define AI_FETCH_IGNORE_DURATION 30 SECONDS
+#define AI_FETCH_IGNORE_DURATION (30 SECONDS)
 /// After being ordered to heel, we spend this long chilling out
-#define AI_DOG_HEEL_DURATION 20 SECONDS
+#define AI_DOG_HEEL_DURATION (20 SECONDS)
 /// After either being given a verbal order or a pointing order, ignore further of each for this duration
-#define AI_DOG_COMMAND_COOLDOWN	2 SECONDS
+#define AI_DOG_COMMAND_COOLDOWN (2 SECONDS)
+/// If the dog is set to harass someone but doesn't bite them for this long, give up
+#define AI_DOG_HARASS_FRUSTRATE_TIME (50 SECONDS)
 
 // dog command modes (what pointing at something/someone does depending on the last order the dog heard)
 /// Don't do anything (will still react to stuff around them though)
@@ -193,12 +197,9 @@
 #define BB_BANE_BATMAN "BB_bane_batman"
 //yep thats it
 
-
-//Hunting defines
-#define SUCCESFUL_HUNT_COOLDOWN 5 SECONDS
-
 ///Hunting BB keys
 #define BB_CURRENT_HUNTING_TARGET "BB_current_hunting_target"
+#define BB_LOW_PRIORITY_HUNTING_TARGET "BB_low_priority_hunting_target"
 #define BB_HUNTING_COOLDOWN "BB_HUNTING_COOLDOWN"
 
 ///Basic Mob Keys
@@ -213,3 +214,14 @@
 #define BB_BASIC_MOB_CURRENT_TARGET "BB_basic_current_target"
 #define BB_BASIC_MOB_CURRENT_TARGET_HIDING_LOCATION "BB_basic_current_target_hiding_location"
 #define BB_TARGETTING_DATUM "targetting_datum"
+///some behaviors that check current_target also set this on deep crit mobs
+#define BB_BASIC_MOB_EXECUTION_TARGET "BB_basic_execution_target"
+
+///list of foods this mob likes
+#define BB_BASIC_FOODS "BB_basic_foods"
+
+///Bileworm AI keys
+
+#define BB_BILEWORM_SPEW_BILE "BB_bileworm_spew_bile"
+#define BB_BILEWORM_RESURFACE "BB_bileworm_resurface"
+#define BB_BILEWORM_DEVOUR "BB_bileworm_devour"

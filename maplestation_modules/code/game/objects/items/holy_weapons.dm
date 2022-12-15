@@ -1,4 +1,3 @@
-// LOLOLOLOLOLOLOLOLOLOLOLOLOLO
 // name says enough! this is for chaplain weapons. If you want to add boring NORMAL weapons, make a new .dm (or use it if someone already made it)
 /obj/item/nullrod/spear/amber_blade
 	name = "amber blade"

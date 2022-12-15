@@ -6,12 +6,9 @@
 
 /datum/action/item_action/ritual_item/Grant(mob/M)
 	if(!IS_CULTIST(M))
-		Remove(owner)
 		return
 
-	. = ..()
-	button.screen_loc = "6:157,4:-2"
-	button.moved = "6:157,4:-2"
+	return ..()
 
 /datum/action/item_action/ritual_item/Trigger(trigger_flags)
 	for(var/obj/item/held_item as anything in owner.held_items) // In case we were already holding a dagger

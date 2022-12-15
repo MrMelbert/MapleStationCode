@@ -171,7 +171,7 @@
 
 	var/obj/item/paper/processed/spawned_paper = new(destination_machine)
 	spawned_paper.paper_data = processed_paper_data
-	spawned_paper.info = "[paper_time_period] - [paper_occasion]: [paper_contents]"
+	spawned_paper.add_raw_text("[paper_time_period] - [paper_occasion]: [paper_contents]")
 	spawned_paper.generate_requirements()
 	spawned_paper.update_appearance()
 

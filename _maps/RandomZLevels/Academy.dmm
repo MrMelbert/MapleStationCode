@@ -43,7 +43,7 @@
 "aj" = (
 /obj/machinery/power/apc/unlocked{
 	dir = 1;
-	pixel_y = 25
+	pixel_y = 23
 	},
 /obj/structure/cable,
 /turf/open/floor/carpet,
@@ -58,7 +58,7 @@
 /area/awaymission/academy/headmaster)
 "aq" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/drinks/coffee,
+/obj/item/reagent_containers/cup/glass/coffee,
 /turf/open/floor/carpet,
 /area/awaymission/academy/headmaster)
 "ar" = (
@@ -100,7 +100,7 @@
 /area/awaymission/academy/headmaster)
 "aC" = (
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/cup/glass/mug/tea,
 /turf/open/floor/carpet,
 /area/awaymission/academy/headmaster)
 "aE" = (
@@ -230,7 +230,7 @@
 /area/awaymission/academy/headmaster)
 "bi" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/mug/tea,
+/obj/item/reagent_containers/cup/glass/mug/tea,
 /turf/open/floor/carpet,
 /area/awaymission/academy/headmaster)
 "bj" = (
@@ -547,7 +547,7 @@
 /turf/open/floor/carpet,
 /area/awaymission/academy/headmaster)
 "cH" = (
-/obj/structure/sign/warning/nosmoking/circle,
+/obj/structure/sign/warning/no_smoking/circle,
 /turf/closed/wall,
 /area/awaymission/academy/headmaster)
 "cI" = (
@@ -667,9 +667,7 @@
 /turf/open/floor/iron,
 /area/awaymission/academy/classrooms)
 "dk" = (
-/obj/structure/sink/kitchen{
-	pixel_y = 28
-	},
+/obj/structure/sink/kitchen/directional/south,
 /obj/effect/turf_decal/tile/green{
 	dir = 1
 	},
@@ -754,7 +752,7 @@
 /area/awaymission/academy/headmaster)
 "dD" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/glass/bucket,
+/obj/item/reagent_containers/cup/bucket,
 /turf/open/floor/iron,
 /area/awaymission/academy/classrooms)
 "dE" = (
@@ -873,7 +871,7 @@
 "ek" = (
 /obj/machinery/power/apc/unlocked{
 	dir = 1;
-	pixel_y = 25
+	pixel_y = 23
 	},
 /obj/structure/cable,
 /turf/open/floor/iron/grimy,
@@ -1657,7 +1655,7 @@
 "hl" = (
 /obj/machinery/power/apc/unlocked{
 	dir = 1;
-	pixel_y = 25
+	pixel_y = 23
 	},
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -1805,7 +1803,7 @@
 /area/awaymission/academy/academyaft)
 "ib" = (
 /obj/structure/closet,
-/obj/item/reagent_containers/food/drinks/bottle/beer,
+/obj/item/reagent_containers/cup/glass/bottle/beer,
 /obj/item/clothing/under/color/lightpurple,
 /obj/item/poster/random_contraband,
 /turf/open/floor/iron,
@@ -1887,18 +1885,11 @@
 /turf/open/floor/iron,
 /area/awaymission/academy/academyaft)
 "iv" = (
-/obj/structure/sink{
-	dir = 4;
-	pixel_x = -12;
-	pixel_y = 2
-	},
+/obj/structure/sink/directional/east,
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/academy/academyaft)
 "iA" = (
-/obj/structure/sink{
-	dir = 8;
-	pixel_x = 11
-	},
+/obj/structure/sink/directional/west,
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/academy/academyaft)
 "iB" = (
@@ -1943,7 +1934,7 @@
 /turf/open/floor/engine,
 /area/awaymission/academy/academyaft)
 "iQ" = (
-/obj/structure/shuttle/engine/heater,
+/obj/machinery/power/shuttle_engine/heater,
 /obj/structure/window/reinforced{
 	dir = 1
 	},
@@ -2007,15 +1998,15 @@
 /turf/open/floor/iron/white/airless,
 /area/awaymission/academy/academyaft)
 "iY" = (
-/obj/structure/shuttle/engine/propulsion/left,
+/obj/machinery/power/shuttle_engine/propulsion/left,
 /turf/open/space,
 /area/awaymission/academy/academyaft)
 "iZ" = (
-/obj/structure/shuttle/engine/propulsion,
+/obj/machinery/power/shuttle_engine/propulsion,
 /turf/open/space,
 /area/awaymission/academy/academyaft)
 "ja" = (
-/obj/structure/shuttle/engine/propulsion/right,
+/obj/machinery/power/shuttle_engine/propulsion/right,
 /turf/open/space,
 /area/awaymission/academy/academyaft)
 "jb" = (
@@ -2102,7 +2093,7 @@
 "ju" = (
 /obj/structure/window/reinforced,
 /obj/structure/table,
-/obj/item/reagent_containers/food/drinks/trophy/gold_cup,
+/obj/item/reagent_containers/cup/glass/trophy/gold_cup,
 /obj/effect/turf_decal/tile/red,
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -2286,7 +2277,7 @@
 "kh" = (
 /obj/machinery/power/apc/unlocked{
 	dir = 1;
-	pixel_y = 25
+	pixel_y = 23
 	},
 /obj/structure/cable,
 /turf/open/floor/carpet,
@@ -2679,7 +2670,7 @@
 /area/awaymission/academy/academyengine)
 "mj" = (
 /obj/structure/rack,
-/obj/item/book/granter/spell/summonitem,
+/obj/item/book/granter/action/spell/summonitem,
 /obj/item/pen/fourcolor,
 /turf/open/floor/vault,
 /area/awaymission/academy/academyengine)
@@ -2774,7 +2765,7 @@
 /area/awaymission/academy/academyengine)
 "mJ" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/bottle/gin,
+/obj/item/reagent_containers/cup/glass/bottle/gin,
 /turf/open/floor/wood,
 /area/awaymission/academy/academyengine)
 "mK" = (
@@ -2783,7 +2774,7 @@
 /area/awaymission/academy/academyengine)
 "mL" = (
 /obj/structure/table/wood,
-/obj/item/reagent_containers/food/drinks/drinkingglass,
+/obj/item/reagent_containers/cup/glass/drinkingglass,
 /turf/open/floor/wood,
 /area/awaymission/academy/academyengine)
 "mM" = (
@@ -2793,11 +2784,11 @@
 /turf/open/floor/wood,
 /area/awaymission/academy/academyengine)
 "mN" = (
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "mO" = (
 /obj/structure/reagent_dispensers/beerkeg,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "mP" = (
 /obj/effect/decal/remains/human,
@@ -2813,24 +2804,24 @@
 /obj/structure/ladder/unbreakable/rune{
 	id = "academy_coldroom"
 	},
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "mT" = (
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "mU" = (
 /obj/item/food/meat/slab,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "mV" = (
 /obj/item/clothing/gloves/combat,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "mX" = (
 /obj/item/clothing/under/syndicate,
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "mY" = (
 /turf/closed/mineral/random,
@@ -2856,21 +2847,21 @@
 /area/awaymission/academy/academyaft)
 "nj" = (
 /obj/structure/rack,
-/obj/item/reagent_containers/food/drinks/bottle/wine,
-/turf/open/floor/plating/asteroid/snow,
+/obj/item/reagent_containers/cup/glass/bottle/wine,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "nk" = (
 /obj/effect/decal/remains/human,
 /obj/effect/decal/cleanable/blood/old,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "nl" = (
 /obj/item/clothing/mask/gas/syndicate,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "nm" = (
 /mob/living/simple_animal/hostile/bear,
-/turf/open/floor/plating/asteroid/snow,
+/turf/open/misc/asteroid/snow,
 /area/awaymission/academy/academycellar)
 "nn" = (
 /obj/structure/frame/computer{

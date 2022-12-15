@@ -154,14 +154,14 @@
 	y_shift = living_parent.pixel_y
 
 	// Moving at all or the RESET signal will reset the offsets to the base_pixel.
-	RegisterSignal(parent, list(COMSIG_MOVABLE_PRE_MOVE, COMSIG_PIXELSHIFT_RESET), .proc/reset_offsets)
+	RegisterSignal(parent, list(COMSIG_MOVABLE_PRE_MOVE, COMSIG_PIXELSHIFT_RESET), PROC_REF(reset_offsets))
 	// Movement keys in any direction or the pixelshift signals will move the user in a direction.
-	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_NORTH_DOWN, COMSIG_PIXELSHIFT_POSY), .proc/shift_pos_y)
-	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_EAST_DOWN, COMSIG_PIXELSHIFT_POSX), .proc/shift_pos_x)
-	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_SOUTH_DOWN, COMSIG_PIXELSHIFT_NEGY), .proc/shift_neg_y)
-	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_WEST_DOWN, COMSIG_PIXELSHIFT_NEGX), .proc/shift_neg_x)
+	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_NORTH_DOWN, COMSIG_PIXELSHIFT_POSY), PROC_REF(shift_pos_y))
+	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_EAST_DOWN, COMSIG_PIXELSHIFT_POSX), PROC_REF(shift_pos_x))
+	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_SOUTH_DOWN, COMSIG_PIXELSHIFT_NEGY), PROC_REF(shift_neg_y))
+	RegisterSignal(parent, list(COMSIG_KB_MOVEMENT_WEST_DOWN, COMSIG_PIXELSHIFT_NEGX), PROC_REF(shift_neg_x))
 	// Resist, getting pulled, or the STOP signal will reset the user and qdel the component.
-	RegisterSignal(parent, list(COMSIG_LIVING_RESIST, COMSIG_LIVING_GET_PULLED, COMSIG_PIXELSHIFT_STOP), .proc/stop_pixel_shift)
+	RegisterSignal(parent, list(COMSIG_LIVING_RESIST, COMSIG_LIVING_GET_PULLED, COMSIG_PIXELSHIFT_STOP), PROC_REF(stop_pixel_shift))
 
 	to_chat(parent, span_notice("You are now pixel shifting. Movement has been locked. <b>Resist</b> or close the UI to stop pixel shifting."))
 

@@ -51,20 +51,20 @@
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, .proc/OnAttackBy)
-	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, .proc/interact)
+	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(OnAttackBy))
+	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(interact))
 	if(istype(parent, /obj/item/implant))
-		RegisterSignal(parent, COMSIG_IMPLANT_ACTIVATED, .proc/implant_activation)
-		RegisterSignal(parent, COMSIG_IMPLANT_IMPLANTING, .proc/implanting)
-		RegisterSignal(parent, COMSIG_IMPLANT_OTHER, .proc/old_implant)
-		RegisterSignal(parent, COMSIG_IMPLANT_EXISTING_UPLINK, .proc/new_implant)
-	else if(istype(parent, /obj/item/pda))
-		RegisterSignal(parent, COMSIG_PDA_CHANGE_RINGTONE, .proc/new_ringtone)
-		RegisterSignal(parent, COMSIG_PDA_CHECK_DETONATE, .proc/check_detonate)
+		RegisterSignal(parent, COMSIG_IMPLANT_ACTIVATED, PROC_REF(implant_activation))
+		RegisterSignal(parent, COMSIG_IMPLANT_IMPLANTING, PROC_REF(implanting))
+		RegisterSignal(parent, COMSIG_IMPLANT_OTHER, PROC_REF(old_implant))
+		RegisterSignal(parent, COMSIG_IMPLANT_EXISTING_UPLINK, PROC_REF(new_implant))
+	else if(istype(parent, /obj/item/modular_computer/tablet))
+		RegisterSignal(parent, COMSIG_TABLET_CHANGE_ID, PROC_REF(new_ringtone))
+		RegisterSignal(parent, COMSIG_TABLET_CHECK_DETONATE, PROC_REF(check_detonate))
 	else if(istype(parent, /obj/item/radio))
-		RegisterSignal(parent, COMSIG_RADIO_NEW_FREQUENCY, .proc/new_frequency)
+		RegisterSignal(parent, COMSIG_RADIO_NEW_MESSAGE, PROC_REF(new_message))
 	else if(istype(parent, /obj/item/pen))
-		RegisterSignal(parent, COMSIG_PEN_ROTATED, .proc/pen_rotation)
+		RegisterSignal(parent, COMSIG_PEN_ROTATED, PROC_REF(pen_rotation))
 
 	if(owner)
 		src.owner = owner
@@ -84,7 +84,7 @@
 		uplink_handler.purchase_log = purchase_log
 	else
 		uplink_handler = uplink_handler_override
-	RegisterSignal(uplink_handler, COMSIG_UPLINK_HANDLER_ON_UPDATE, .proc/handle_uplink_handler_update)
+	RegisterSignal(uplink_handler, COMSIG_UPLINK_HANDLER_ON_UPDATE, PROC_REF(handle_uplink_handler_update))
 	if(!lockable)
 		active = TRUE
 		locked = FALSE
@@ -135,7 +135,7 @@
 		return
 	active = TRUE
 	if(user)
-		INVOKE_ASYNC(src, .proc/ui_interact, user)
+		INVOKE_ASYNC(src, PROC_REF(ui_interact), user)
 	// an unlocked uplink blocks also opening the PDA or headset menu
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -245,8 +245,10 @@
 				if(!ispath(item_path, /datum/uplink_item))
 					return
 				item = SStraitor.uplink_items_by_type[item_path]
-			uplink_handler.purchase_item(ui.user, item)
+			uplink_handler.purchase_item(ui.user, item, parent)
 		if("lock")
+			if(!lockable)
+				return TRUE
 			active = FALSE
 			locked = TRUE
 			SStgui.close_uis(src)
@@ -320,7 +322,6 @@
 /datum/component/uplink/proc/new_implant(datum/source, datum/component/uplink/uplink)
 	SIGNAL_HANDLER
 
-	uplink.add_telecrystals(uplink_handler.telecrystals)
 	return COMPONENT_DELETE_NEW_IMPLANT
 
 // PDA signal responses
@@ -328,7 +329,6 @@
 /datum/component/uplink/proc/new_ringtone(datum/source, mob/living/user, new_ring_text)
 	SIGNAL_HANDLER
 
-	var/obj/item/pda/master = parent
 	if(trim(lowertext(new_ring_text)) != trim(lowertext(unlock_code)))
 		if(trim(lowertext(new_ring_text)) == trim(lowertext(failsafe_code)))
 			failsafe(user)
@@ -336,15 +336,13 @@
 		return
 	locked = FALSE
 	interact(null, user)
-	to_chat(user, span_hear("The PDA softly beeps."))
-	user << browse(null, "window=pda")
-	master.ui_mode = PDA_UI_HUB
+	to_chat(user, span_hear("The computer softly beeps."))
 	return COMPONENT_STOP_RINGTONE_CHANGE
 
 /datum/component/uplink/proc/check_detonate()
 	SIGNAL_HANDLER
 
-	return COMPONENT_PDA_NO_DETONATE
+	return COMPONENT_TABLET_NO_DETONATE
 
 // Radio signal responses
 
@@ -360,6 +358,21 @@
 	locked = FALSE
 	if(ismob(master.loc))
 		interact(null, master.loc)
+
+/datum/component/uplink/proc/new_message(datum/source, user, message, channel)
+	SIGNAL_HANDLER
+
+	if(channel != RADIO_CHANNEL_UPLINK)
+		return
+
+	if(!findtext(lowertext(message), lowertext(unlock_code)))
+		if(failsafe_code && findtext(lowertext(message), lowertext(failsafe_code)))
+			failsafe()  // no point returning cannot radio, youre probably ded
+		return
+	locked = FALSE
+	interact(null, user)
+	to_chat(user, "As you whisper the code into your headset, a soft chime fills your ears.")
+	return COMPONENT_CANNOT_USE_RADIO
 
 // Pen signal responses
 
@@ -384,18 +397,18 @@
 /datum/component/uplink/proc/setup_unlock_code()
 	unlock_code = generate_code()
 	var/obj/item/P = parent
-	if(istype(parent,/obj/item/pda))
+	if(istype(parent,/obj/item/modular_computer/tablet))
 		unlock_note = "<B>Uplink Passcode:</B> [unlock_code] ([P.name])."
 	else if(istype(parent,/obj/item/radio))
-		unlock_note = "<B>Radio Frequency:</B> [format_frequency(unlock_code)] ([P.name])."
+		unlock_note = "<B>Radio Passcode:</B> [unlock_code] ([P.name], [RADIO_TOKEN_UPLINK] channel)."
 	else if(istype(parent,/obj/item/pen))
 		unlock_note = "<B>Uplink Degrees:</B> [english_list(unlock_code)] ([P.name])."
 
 /datum/component/uplink/proc/generate_code()
-	if(istype(parent,/obj/item/pda))
+	if(istype(parent,/obj/item/modular_computer/tablet))
 		return "[rand(100,999)] [pick(GLOB.phonetic_alphabet)]"
 	else if(istype(parent,/obj/item/radio))
-		return return_unused_frequency()
+		return pick(GLOB.phonetic_alphabet)
 	else if(istype(parent,/obj/item/pen))
 		var/list/L = list()
 		for(var/i in 1 to PEN_ROTATIONS)
@@ -409,6 +422,7 @@
 	if(!T)
 		return
 	message_admins("[ADMIN_LOOKUPFLW(user)] has triggered an uplink failsafe explosion at [AREACOORD(T)] The owner of the uplink was [ADMIN_LOOKUPFLW(owner)].")
-	log_game("[key_name(user)] triggered an uplink failsafe explosion. The owner of the uplink was [key_name(owner)].")
+	user.log_message("triggered an uplink failsafe explosion. Uplink owner: [key_name(owner)].", LOG_ATTACK)
+
 	explosion(parent, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 3)
 	qdel(parent) //Alternatively could brick the uplink.

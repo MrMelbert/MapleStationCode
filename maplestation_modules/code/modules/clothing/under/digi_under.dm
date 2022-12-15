@@ -60,173 +60,155 @@
 // - Beige Suit
 
 /obj/item/clothing/under
-	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
-
-/obj/item/clothing/under/Initialize(mapload)
-	. = ..()
-	// Things that don't cover the legs (skirts)
-	if(!(body_parts_covered & LEGS))
-		should_not_squish = TRUE
-		has_digi_support = FALSE
-
-	// Female uniforms (skirts)
-	if(fitted == FEMALE_UNIFORM_TOP)
-		should_not_squish = TRUE
-		has_digi_support = FALSE
-
-/obj/item/clothing/under/toggle_jumpsuit_adjust()
-	. = ..()
-	var/mob/living/carbon/human/wearer = loc
-	if(!istype(wearer))
-		return
-	if(!. && has_digi_support && wearer.is_digitigrade())
-		fitted = NO_FEMALE_UNIFORM
-	else
-		fitted = initial(fitted)
-	wearer.update_inv_w_uniform()
-
-/obj/item/clothing/under/swap_digitigrade_dmi(mob/user)
-	. = ..()
-	if(!.)
-		return
-
-	if(user.is_digitigrade())
-		fitted = NO_FEMALE_UNIFORM
-	else
-		fitted = initial(fitted)
-
-// -- Misc. Jumpsuits --
-/obj/item/clothing/under/misc
-	has_digi_support = TRUE
+	digitigrade_file = DIGITIGRADE_UNIFORM_FILE
 
 /obj/item/clothing/under/abductor
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/chameleon
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/costume/russian_officer
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/costume/soviet
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/costume/redcoat
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/costume/kilt
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/costume/pirate
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/costume/sailor
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 // -- Pants --
 /obj/item/clothing/under/pants
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 // -- Suits --
 /obj/item/clothing/under/suit
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/suit/henchmen
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 // -- Syndicate --
 /obj/item/clothing/under/syndicate
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/syndicate/rus_army
-	has_digi_support = FALSE
-	should_not_squish = TRUE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 // -- Colored Jumpsuits --
 /obj/item/clothing/under/color
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 	digitigrade_greyscale_config_worn = /datum/greyscale_config/jumpsuit_worn_digi
 
 /obj/item/clothing/under/color/jumpskirt
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/under/rank/prisoner
 	digitigrade_greyscale_config_worn = /datum/greyscale_config/jumpsuit_prison_worn_digi
 
 /obj/item/clothing/under/color/grey/ancient
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 // -- Civilian Jobs --
 /obj/item/clothing/under/rank/civilian
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/civilian/janitor/maid
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/under/rank/civilian/lawyer/galaxy
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/under/rank/civilian/lawyer/galaxy/red
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/under/rank/civilian/cookjorts
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 
 /obj/item/clothing/under/rank/civilian/clown
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/under/rank/civilian/clown/jester
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/civilian/clown/sexy
-	has_digi_support = TRUE
-
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 // -- Cargo --
 /obj/item/clothing/under/rank/cargo
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/cargo/tech
-	has_digi_support = FALSE
+	// actually has its own already
 
 // -- Captain --
 /obj/item/clothing/under/rank/captain
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 // -- Engineering Jobs --
 /obj/item/clothing/under/rank/engineering
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 // -- Medical Jobs --
 /obj/item/clothing/under/rank/medical
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/medical/doctor/nurse
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 // -- Science Jobs --
 /obj/item/clothing/under/rank/rnd
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/rnd/research_director/doctor_hilbert
-	has_digi_support = FALSE
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 // -- Security / Prisoner Jobs --
 /obj/item/clothing/under/rank/security
-	has_digi_support = TRUE
-
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/security/constable
-	has_digi_support = FALSE
-
+	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/under/rank/security/officer/spacepol
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 /obj/item/clothing/under/rank/prisoner
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 
 // -- Extra edits --
 /obj/item/clothing/under/rank/centcom/intern
-	should_not_squish = TRUE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON

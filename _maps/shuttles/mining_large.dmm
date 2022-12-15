@@ -50,7 +50,7 @@
 /obj/effect/turf_decal/tile/brown{
 	dir = 4
 	},
-/obj/item/storage/firstaid/regular,
+/obj/item/storage/medkit/regular,
 /turf/open/floor/iron/dark,
 /area/shuttle/mining/large)
 "g" = (
@@ -182,7 +182,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/stripes/white/corner{
-	dir = 8
+	dir = 4
 	},
 /obj/machinery/light/small/directional/south,
 /obj/item/radio/intercom{
@@ -284,23 +284,23 @@
 	pixel_x = -3;
 	pixel_y = -3
 	},
-/obj/item/clothing/head/hardhat/orange{
+/obj/item/clothing/head/utility/hardhat/orange{
 	name = "protective hat";
 	pixel_y = 9
 	},
-/obj/item/clothing/head/hardhat/orange{
+/obj/item/clothing/head/utility/hardhat/orange{
 	name = "protective hat";
 	pixel_y = 9
 	},
-/obj/item/clothing/head/hardhat/orange{
+/obj/item/clothing/head/utility/hardhat/orange{
 	name = "protective hat";
 	pixel_y = 9
 	},
-/obj/item/clothing/head/hardhat/orange{
+/obj/item/clothing/head/utility/hardhat/orange{
 	name = "protective hat";
 	pixel_y = 9
 	},
-/obj/item/clothing/head/hardhat/orange{
+/obj/item/clothing/head/utility/hardhat/orange{
 	name = "protective hat";
 	pixel_y = 9
 	},
@@ -308,13 +308,7 @@
 /obj/item/pickaxe/emergency,
 /obj/item/pickaxe/emergency,
 /obj/effect/turf_decal/box/white/corners{
-	dir = 1
-	},
-/turf/open/floor/iron/dark,
-/area/shuttle/mining/large)
-"t" = (
-/obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/mining/large)
@@ -342,7 +336,7 @@
 /area/shuttle/mining/large)
 "w" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/ore_box,
@@ -350,7 +344,7 @@
 /area/shuttle/mining/large)
 "x" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
@@ -378,7 +372,7 @@
 "A" = (
 /obj/machinery/light/small/directional/south,
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 4
 	},
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
@@ -419,7 +413,7 @@
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/mining/large)
 "G" = (
-/obj/structure/shuttle/engine/heater,
+/obj/machinery/power/shuttle_engine/heater,
 /obj/structure/window/reinforced{
 	dir = 1;
 	layer = 2.9
@@ -427,14 +421,12 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/mining/large)
 "H" = (
-/obj/structure/sign/warning/vacuum/external{
-	pixel_x = 32
-	},
+/obj/structure/sign/warning/vacuum/external/directional/east,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/shuttle/mining/large)
 "I" = (
-/obj/structure/shuttle/engine/propulsion,
+/obj/machinery/power/shuttle_engine/propulsion,
 /turf/open/floor/plating/airless,
 /area/shuttle/mining/large)
 "J" = (
@@ -445,15 +437,18 @@
 	dir = 1
 	},
 /obj/docking_port/mobile{
-	dwidth = 3;
-	height = 10;
-	id = "mining";
+	shuttle_id = "mining";
 	name = "mining shuttle";
-	port_direction = 2;
-	width = 7
+	port_direction = 2
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
+/area/shuttle/mining/large)
+"U" = (
+/obj/effect/turf_decal/box/white/corners{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
 /area/shuttle/mining/large)
 
 (1,1,1) = {"
@@ -486,7 +481,7 @@ c
 g
 m
 q
-t
+v
 y
 k
 k
@@ -510,7 +505,7 @@ e
 i
 o
 k
-v
+U
 A
 k
 k

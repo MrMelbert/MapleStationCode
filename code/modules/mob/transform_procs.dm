@@ -16,7 +16,7 @@
 
 	new /obj/effect/temp_visual/monkeyify(loc)
 
-	transformation_timer = addtimer(CALLBACK(src, .proc/finish_monkeyize), TRANSFORMATION_DURATION, TIMER_UNIQUE)
+	transformation_timer = addtimer(CALLBACK(src, PROC_REF(finish_monkeyize)), TRANSFORMATION_DURATION, TIMER_UNIQUE)
 
 /mob/living/carbon/proc/finish_monkeyize()
 	transformation_timer = null
@@ -27,6 +27,7 @@
 	set_species(/datum/species/monkey)
 	SEND_SIGNAL(src, COMSIG_HUMAN_MONKEYIZE)
 	uncuff()
+	regenerate_icons()
 	return src
 
 //////////////////////////           Humanize               //////////////////////////////
@@ -47,7 +48,7 @@
 	invisibility = INVISIBILITY_MAXIMUM
 
 	new /obj/effect/temp_visual/monkeyify/humanify(loc)
-	transformation_timer = addtimer(CALLBACK(src, .proc/finish_humanize, species), TRANSFORMATION_DURATION, TIMER_UNIQUE)
+	transformation_timer = addtimer(CALLBACK(src, PROC_REF(finish_humanize), species), TRANSFORMATION_DURATION, TIMER_UNIQUE)
 
 /mob/living/carbon/proc/finish_humanize(species = /datum/species/human)
 	transformation_timer = null
@@ -57,9 +58,10 @@
 	invisibility = 0
 	set_species(species)
 	SEND_SIGNAL(src, COMSIG_MONKEY_HUMANIZE)
+	regenerate_icons()
 	return src
 
-/mob/proc/AIize(transfer_after = TRUE, client/preference_source, move = TRUE)
+/mob/proc/AIize(client/preference_source, move = TRUE)
 	var/list/turf/landmark_loc = list()
 
 	if(!move)
@@ -87,13 +89,6 @@
 
 	var/mob/living/silicon/ai/our_AI = new /mob/living/silicon/ai(pick(landmark_loc), null, src)
 	. = our_AI
-
-	if(mind)
-		if(!transfer_after)
-			mind.active = FALSE
-		mind.transfer_to(our_AI)
-	else if(transfer_after)
-		our_AI.key = key
 
 	if(preference_source)
 		apply_pref_name(/datum/preference/name/ai, preference_source)
@@ -152,7 +147,7 @@
 
 	. = R
 	if(R.ckey && is_banned_from(R.ckey, JOB_CYBORG))
-		INVOKE_ASYNC(R, /mob/living/silicon/robot.proc/replace_banned_cyborg)
+		INVOKE_ASYNC(R, TYPE_PROC_REF(/mob/living/silicon/robot, replace_banned_cyborg))
 	qdel(src)
 
 /mob/living/Robotize(delete_items = 0, transfer_after = TRUE)
@@ -199,14 +194,14 @@
 		qdel(t)
 
 	var/alien_caste = pick("Hunter","Sentinel","Drone")
-	var/mob/living/carbon/alien/humanoid/new_xeno
+	var/mob/living/carbon/alien/adult/new_xeno
 	switch(alien_caste)
 		if("Hunter")
-			new_xeno = new /mob/living/carbon/alien/humanoid/hunter(loc)
+			new_xeno = new /mob/living/carbon/alien/adult/hunter(loc)
 		if("Sentinel")
-			new_xeno = new /mob/living/carbon/alien/humanoid/sentinel(loc)
+			new_xeno = new /mob/living/carbon/alien/adult/sentinel(loc)
 		if("Drone")
-			new_xeno = new /mob/living/carbon/alien/humanoid/drone(loc)
+			new_xeno = new /mob/living/carbon/alien/adult/drone(loc)
 
 	new_xeno.set_combat_mode(TRUE)
 	new_xeno.key = key
@@ -306,7 +301,7 @@
 /mob/living/carbon/human/Animalize()
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
-	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", sort_list(mobtypes, /proc/cmp_typepaths_asc))
+	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", sort_list(mobtypes, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(mobpath))
 		return
 	if(!safe_animal(mobpath))
@@ -340,7 +335,7 @@
 /mob/proc/Animalize()
 
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
-	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", sort_list(mobtypes, /proc/cmp_typepaths_asc))
+	var/mobpath = tgui_input_list(usr, "Which type of mob should [src] turn into?", "Choose a type", sort_list(mobtypes, GLOBAL_PROC_REF(cmp_typepaths_asc)))
 	if(isnull(mobpath))
 		return
 	if(!safe_animal(mobpath))
@@ -385,7 +380,7 @@
 		return TRUE
 	if(ispath(MP, /mob/living/simple_animal/hostile/killertomato))
 		return TRUE
-	if(ispath(MP, /mob/living/simple_animal/mouse))
+	if(ispath(MP, /mob/living/basic/mouse))
 		return TRUE
 	if(ispath(MP, /mob/living/simple_animal/hostile/bear))
 		return TRUE

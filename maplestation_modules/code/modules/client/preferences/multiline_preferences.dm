@@ -1,3 +1,5 @@
+#define MAX_FLAVOR_LEN 2048 // NON-MODULE CHANGES
+
 /datum/preference/multiline_text
 	abstract_type = /datum/preference/multiline_text
 	can_randomize = FALSE
@@ -63,3 +65,5 @@
 /datum/preference/multiline_text/flavor_datum/medical/apply_to_human(mob/living/carbon/human/target, value)
 	var/datum/flavor_text/our_flavor = ..()
 	our_flavor?.med_records = value
+
+#undef MAX_FLAVOR_LEN

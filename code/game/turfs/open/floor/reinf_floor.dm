@@ -18,6 +18,12 @@
 	. += ..()
 	. += span_notice("The reinforcement rods are <b>wrenched</b> firmly in place.")
 
+/turf/open/floor/engine/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode) //no rcd destroying this flooring
+	if(passed_mode == RCD_DECONSTRUCT)
+		to_chat(user, span_warning("The flooring is too thick to be regularly deconstructed!"))
+		return FALSE
+	return ..()
+
 /turf/open/floor/engine/airless
 	initial_gas_mix = AIRLESS_ATMOS
 
@@ -190,20 +196,21 @@
 /turf/open/floor/engine/cult
 	name = "engraved floor"
 	desc = "The air smells strange over this sinister flooring."
-	icon_state = "plating"
+	icon_state = "cult"
 	floor_tile = null
 	var/obj/effect/cult_turf/overlay/floor/bloodcult/realappearance
 
 
 /turf/open/floor/engine/cult/Initialize(mapload)
 	. = ..()
-	make_culty() // NON-MODULE CHANGE
+	icon_state = "plating" //we're redefining the base icon_state here so that the Conceal/Reveal Presence spell works for cultists
+	make_culty(mapload) // NON-MODULE CHANGE
 
 /turf/open/floor/engine/cult/Destroy()
 	be_removed()
 	return ..()
 
-/turf/open/floor/engine/cult/ChangeTurf(path, new_baseturf, flags)
+/turf/open/floor/engine/cult/ChangeTurf(path, new_baseturfs, flags)
 	if(path != type)
 		be_removed()
 	return ..()

@@ -47,17 +47,16 @@
 	if(istype(carbon_holder))
 		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 1.2)
 	ADD_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
-	RegisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HUGGED), .proc/cause_body_pain)
-	RegisterSignal(quirk_holder, COMSIG_CARBON_HEADPAT, .proc/cause_head_pain)
+	RegisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT), PROC_REF(cause_body_pain))
 
 /datum/quirk/allodynia/remove()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
 		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
 	REMOVE_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
-	UnregisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HUGGED, COMSIG_CARBON_HEADPAT))
+	UnregisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT))
 
-/*
+/**
  * Causes pain to arm zones if they're targeted, and the chest zone otherwise.
  *
  * source - quirk_holder / the mob being touched
@@ -72,30 +71,10 @@
 	if(quirk_holder.stat != CONSCIOUS)
 		return
 
-	var/pain_zone = ( toucher.zone_selected == BODY_ZONE_L_ARM ? BODY_ZONE_L_ARM : ( toucher.zone_selected == BODY_ZONE_R_ARM ? BODY_ZONE_R_ARM : BODY_ZONE_CHEST ))
+	to_chat(quirk_holder, span_danger("[toucher] touches you, causing a wave of sharp pain throughout your [parse_zone(toucher.zone_selected)]!"))
+	actually_hurt(deprecise_zone(toucher.zone_selected), 9)
 
-	to_chat(quirk_holder, span_danger("[toucher] touches you, causing a wave of sharp pain throughout your body!"))
-	actually_hurt(pain_zone, 9)
-
-/*
- * Causes pain to the head when they're headpatted.
- *
- * source - quirk_holder / the mob being touched
- * toucher - the mob that's headpatting
- */
-/datum/quirk/allodynia/proc/cause_head_pain(datum/source, mob/living/patter)
-	SIGNAL_HANDLER
-
-	if(!COOLDOWN_FINISHED(src, time_since_last_touch))
-		return
-
-	if(quirk_holder.stat != CONSCIOUS)
-		return
-
-	to_chat(quirk_holder, span_danger("[patter] taps your head, causing a sensation of pain!"))
-	actually_hurt(BODY_ZONE_HEAD, 7)
-
-/*
+/**
  * Actually cause the pain to the target limb, causing a visual effect, emote, and a negative moodlet.
  *
  * zone - the body zone being affected
@@ -108,8 +87,8 @@
 
 	new /obj/effect/temp_visual/annoyed(quirk_holder.loc)
 	carbon_holder.cause_pain(zone, amount)
-	INVOKE_ASYNC(quirk_holder, /mob.proc/emote, pick(PAIN_EMOTES))
-	SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "bad_touch", /datum/mood_event/very_bad_touch)
+	INVOKE_ASYNC(quirk_holder, TYPE_PROC_REF(/mob, emote), pick(PAIN_EMOTES))
+	quirk_holder.add_mood_event("bad_touch", /datum/mood_event/very_bad_touch)
 	COOLDOWN_START(src, time_since_last_touch, 30 SECONDS)
 
 // Prosthetic limb quirks (targeted limbs)
@@ -129,13 +108,7 @@
 	if(!istype(human_holder))
 		return
 
-	var/obj/item/bodypart/old_part = human_holder.get_bodypart(initial(replacement.body_zone))
-	var/obj/item/bodypart/prosthetic = new replacement(human_holder)
-
-	prosthetic.replace_limb(human_holder, TRUE)
-	if(old_part)
-		qdel(old_part)
-	human_holder.regenerate_icons()
+	human_holder.del_and_replace_bodypart(new replacement(human_holder), TRUE)
 
 /datum/quirk/prosthetic_limb/targeted/post_add()
 	return
@@ -143,19 +116,19 @@
 /datum/quirk/prosthetic_limb/targeted/left_arm
 	name = "Prosthetic Limb - Left Arm"
 	desc = "Your left arm is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/l_arm/robot/surplus
+	replacement = /obj/item/bodypart/arm/left/robot/surplus
 
 /datum/quirk/prosthetic_limb/targeted/right_arm
 	name = "Prosthetic Limb - Right Arm"
 	desc = "Your right arm is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/r_arm/robot/surplus
+	replacement = /obj/item/bodypart/arm/right/robot/surplus
 
 /datum/quirk/prosthetic_limb/targeted/left_leg
 	name = "Prosthetic Limb - Left Leg"
 	desc = "Your left leg is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/l_leg/robot/surplus
+	replacement = /obj/item/bodypart/leg/left/robot/surplus
 
 /datum/quirk/prosthetic_limb/targeted/right_leg
 	name = "Prosthetic Limb - Right Leg"
 	desc = "Your right leg is replaced with a prosthetic."
-	replacement = /obj/item/bodypart/r_leg/robot/surplus
+	replacement = /obj/item/bodypart/leg/right/robot/surplus

@@ -4,11 +4,7 @@ import { Window } from '../layouts';
 
 export const _FakeCommandReport = (props, context) => {
   const { act, data } = useBackend(context);
-  const {
-    command_name,
-    command_report_content,
-    announce_contents,
-  } = data;
+  const { command_name, command_report_content, announce_contents } = data;
   return (
     <Window
       title="Send Faked Command Report"
@@ -19,10 +15,7 @@ export const _FakeCommandReport = (props, context) => {
         <Stack vertical>
           <Stack.Item>
             <Section title="Central Command Name:" textAlign="center">
-              <Dropdown
-                width="100%"
-                selected={command_name}
-                disabled={1} />
+              <Dropdown width="100%" selected={command_name} disabled={1} />
             </Section>
           </Stack.Item>
           <Stack.Item>
@@ -31,15 +24,18 @@ export const _FakeCommandReport = (props, context) => {
                 height="200px"
                 mb={1}
                 value={command_report_content}
-                onChange={(e, value) => act("update_report_contents", {
-                  updated_contents: value,
-                })} />
+                onChange={(e, value) =>
+                  act('update_report_contents', {
+                    updated_contents: value,
+                  })
+                }
+              />
               <Stack vertical>
                 <Stack.Item>
                   <Button.Checkbox
                     fluid
                     checked={announce_contents}
-                    onClick={() => act("toggle_announce")}>
+                    onClick={() => act('toggle_announce')}>
                     Announce Contents
                   </Button.Checkbox>
                 </Stack.Item>
@@ -50,7 +46,8 @@ export const _FakeCommandReport = (props, context) => {
                     color="good"
                     textAlign="center"
                     content="Submit Fake Report"
-                    onClick={() => act("submit_report")} />
+                    onClick={() => act('submit_report')}
+                  />
                 </Stack.Item>
               </Stack>
             </Section>

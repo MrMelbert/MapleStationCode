@@ -1,6 +1,6 @@
 /// -- Extension of examine, examine_more, and flavortext code. --
 
-/*
+/**
  *	Flavor text and Personal Records On Examine INS AND OUTS (implementation by mrmelbert)
  *	- Admin ghosts, when examining, are given a list of buttons for all the records of a player.
  *		(This can probably be moved to examine_more if it's too annoying)

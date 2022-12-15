@@ -104,7 +104,7 @@
 	. = ..()
 	return TRUE
 
-/*
+/**
  * Slow and stop blood loss.
  */
 /datum/reagent/medicine/luciferium/proc/adjust_bleed_wounds(mob/living/carbon/user, delta_time)
@@ -120,7 +120,7 @@
 	if(bloodiest_wound)
 		bloodiest_wound.blood_flow = max(0, bloodiest_wound.blood_flow - (0.5 * REM * delta_time))
 
-/*
+/**
  * Stop the effects of the chem.
  */
 /datum/reagent/medicine/luciferium/proc/stop_effects(mob/living/user)
@@ -140,7 +140,7 @@
 	list_reagents = list(/datum/reagent/medicine/luciferium = 5)
 	rename_with_volume = TRUE
 
-/obj/item/reagent_containers/glass/bottle/luciferium
+/obj/item/reagent_containers/cup/glass/bottle/luciferium
 	name = "luciferium bottle"
 	desc = "A bottle of luciferium, an extremely effective but dangerous medicine that can save someone from the brink of death \
 		at the cost of permanent reliance on the drug to maintain the mechanite structure it creates."
@@ -193,7 +193,7 @@
 /datum/reagent/drug/gojuice/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
 	user.add_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/gojuice)
+	user.add_mood_event(type, /datum/mood_event/gojuice)
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	ADD_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 
@@ -212,9 +212,8 @@
 	if(DT_PROB(33, delta_time))
 		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * delta_time)
 	user.drowsyness = max(user.drowsyness - (4 * REM * delta_time), 0)
-	user.Jitter(4 * REM * delta_time)
-	. = ..()
-	return TRUE
+	user.set_jitter_if_lower(8 SECONDS * REM * delta_time)
+	return ..()
 
 /datum/reagent/drug/gojuice/overdose_process(mob/living/user, delta_time, times_fired)
 	if(DT_PROB(66, delta_time))
@@ -224,12 +223,12 @@
 	. = ..()
 	return TRUE
 
-/*
+/**
  * Remove the effects of the drug.
  */
 /datum/reagent/drug/gojuice/proc/stop_effects(mob/living/user)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/gojuice)
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 
@@ -238,7 +237,7 @@
 	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/fuel/oil = 1, /datum/reagent/consumable/sugar = 1)
 	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
 
-/obj/item/reagent_containers/glass/bottle/gojuice
+/obj/item/reagent_containers/cup/glass/bottle/gojuice
 	name = "go-juice bottle"
 	desc = "A small bottle of Go-Juice, an effective but addictive combat stimulant."
 	volume = 20
@@ -257,13 +256,13 @@
 
 /datum/reagent/drug/flake/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/flake)
+	user.add_mood_event(type, /datum/mood_event/flake)
 
 /datum/reagent/drug/flake/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 
-/obj/item/reagent_containers/glass/bottle/flake
+/obj/item/reagent_containers/cup/glass/bottle/flake
 	name = "flake bottle"
 	desc = "A small bottle that contains Flake, a very addictive and often smoked drug produced from psychoid leaves that causes temporary euphoria."
 	volume = 20
@@ -285,12 +284,12 @@
 
 /datum/reagent/drug/yayo/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/yayo)
+	user.add_mood_event(type, /datum/mood_event/yayo)
 	user.add_movespeed_modifier(/datum/movespeed_modifier/reagent/yayo)
 
 /datum/reagent/drug/yayo/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/yayo)
 
 /datum/reagent/drug/yayo/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
@@ -302,7 +301,7 @@
 	. = ..()
 	return TRUE
 
-/obj/item/reagent_containers/glass/bottle/yayo
+/obj/item/reagent_containers/cup/glass/bottle/yayo
 	name = "yayo bottle"
 	desc = "A small bottle that contains Yayo, a powdery drug produced from psychoid leaves snorted to produce a high, suppress pain, and prevent tiredness."
 	volume = 20
@@ -324,16 +323,16 @@
 
 /datum/reagent/psychite_tea/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, type, /datum/mood_event/psychite_tea)
+	user.add_mood_event(type, /datum/mood_event/psychite_tea)
 
 /datum/reagent/psychite_tea/on_mob_end_metabolize(mob/living/user)
 	. = ..()
-	SEND_SIGNAL(user, COMSIG_CLEAR_MOOD_EVENT, type)
+	user.clear_mood_event(type)
 
 /datum/reagent/psychite_tea/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
 	user.drowsyness = max(user.drowsyness - (3 * REM * delta_time), 0)
-	user.dizziness = max(user.dizziness - (2 * REM * delta_time), 0)
-	user.jitteriness = max(user.jitteriness - (2 * REM * delta_time), 0)
+	user.adjust_dizzy(-4 SECONDS * REM * delta_time)
+	user.adjust_jitter(-4 SECONDS * REM * delta_time)
 	user.AdjustSleeping(-20 * REM * delta_time)
 	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, user.get_body_temp_normal())
 	. = ..()

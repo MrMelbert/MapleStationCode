@@ -9,6 +9,8 @@
 	name = "Empowered Mutation Toxin"
 	description = "A stronger version of unstable mutation toxin. This could make some interesting species."
 
+/*
+Disabled as synths don't exist
 /datum/reagent/mutationtoxin/synth
 	name = "Synth Mutation Toxin"
 	description = "A synthetic-looking toxin."
@@ -16,14 +18,7 @@
 	race = /datum/species/synth
 	taste_description = "metallic bones"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/reagent/mutationtoxin/synth/military //uncraftable because milsynths have innate armor that you can stack (read: op)
-	name = "Military Synth Mutation Toxin"
-	description = "A hardened synthetic-looking toxin."
-	color = "#5EFF3B" //RGB: 94, 255, 59
-	race = /datum/species/synth/military
-	taste_description = "titanium bones"
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+*/
 
 /datum/reagent/mutationtoxin/skrell
 	name = "Skrell Mutation Toxin"

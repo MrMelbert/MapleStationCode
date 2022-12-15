@@ -8,7 +8,7 @@
 /mob/living/silicon/robot
 	name = "Cyborg"
 	real_name = "Cyborg"
-	icon = 'icons/mob/robots.dmi'
+	icon = 'icons/mob/silicon/robots.dmi'
 	icon_state = "robot"
 	maxHealth = 100
 	health = 100
@@ -68,8 +68,7 @@
 	var/atom/movable/screen/robot/lamp/lampButton
 
 	///The reference to the built-in tablet that borgs carry.
-	var/obj/item/modular_computer/tablet/integrated/modularInterface
-	var/atom/movable/screen/robot/modPC/interfaceButton
+	var/atom/movable/screen/robot/modpc/interfaceButton
 
 	var/sight_mode = 0
 	hud_possible = list(ANTAG_HUD, DIAG_STAT_HUD, DIAG_HUD, DIAG_BATT_HUD, DIAG_TRACK_HUD)
@@ -85,7 +84,6 @@
 	var/mob/living/silicon/ai/connected_ai = null
 
 	var/opened = FALSE
-	var/emagged = FALSE
 	var/emag_cooldown = 0
 	var/wiresexposed = FALSE
 
@@ -149,7 +147,7 @@
 
 /mob/living/silicon/robot/model/Initialize(mapload)
 	. = ..()
-	INVOKE_ASYNC(model, /obj/item/robot_model.proc/transform_to, set_model, TRUE)
+	INVOKE_ASYNC(model, TYPE_PROC_REF(/obj/item/robot_model, transform_to), set_model, TRUE)
 
 /mob/living/silicon/robot/model/clown
 	set_model = /obj/item/robot_model/clown

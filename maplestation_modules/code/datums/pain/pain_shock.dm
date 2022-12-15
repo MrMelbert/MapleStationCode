@@ -9,7 +9,6 @@
 		and provide pain relievers while monitoring closely. Epineprhine and Saline-Glucose can also help."
 	agent = "Pain"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	permeability_mod = 1
 	desc = "Occurs when a subject enters a state of shock due to high pain, blood loss, heart difficulties, and other injuries. \
 		If left untreated, the subject may experience cardiac arrest."
 	severity = DISEASE_SEVERITY_DANGEROUS
@@ -131,7 +130,7 @@
 					affected_mob.vomit(35, stun = FALSE)
 			if(DT_PROB(2, delta_time))
 				to_chat(affected_mob, span_danger("You feel anxious."))
-				affected_mob.jitteriness += rand(6,8)
+				affected_mob.adjust_jitter(rand(12 SECONDS, 16 SECONDS))
 			if(DT_PROB(6, delta_time))
 				to_chat(affected_mob, span_danger("You feel cold."))
 				affected_mob.pain_emote("shiver", 3 SECONDS)
@@ -148,14 +147,14 @@
 				Supply epinephrine and saline-glucose if condition worsens."
 
 			if(DT_PROB(10, delta_time))
-				affected_mob.stuttering = max(50, affected_mob.stuttering + 5)
+				affected_mob.adjust_stutter_up_to(10 SECONDS, 120 SECONDS)
 			if(DT_PROB(1, delta_time))
 				to_chat(affected_mob, span_danger("Your chest feels wrong!"))
 				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
 				affected_mob.flash_pain_overlay(2)
 			if(DT_PROB(2, delta_time))
 				to_chat(affected_mob, span_danger("You can't focus on anything!"))
-				affected_mob.add_confusion(rand(4,8))
+				affected_mob.adjust_confusion(rand(4 SECONDS, 8 SECONDS))
 			if(DT_PROB(2, delta_time))
 				to_chat(affected_mob, span_danger("You're having difficulties breathing!"))
 				affected_mob.losebreath = clamp(affected_mob.losebreath + 4, 0, 12)
@@ -176,9 +175,9 @@
 			cure_text = "Subject is in stage three of shock. Cardiac arrest is imminent - urgent action is needed. \
 				Prepare a defibrillator on standby and moderate their body temperature."
 			if(DT_PROB(10, delta_time))
-				affected_mob.stuttering = max(60, affected_mob.stuttering + 5)
+				affected_mob.adjust_stutter_up_to(10 SECONDS, 120 SECONDS)
 			if(DT_PROB(8, delta_time))
-				affected_mob.slurring = max(18, affected_mob.slurring + 5)
+				affected_mob.adjust_slurring_up_to(10 SECONDS, 36 SECONDS)
 			if(DT_PROB(2, delta_time))
 				affected_mob.emote("faint")
 			if(DT_PROB(33, delta_time))

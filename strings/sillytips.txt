@@ -1,65 +1,38 @@
-Despite all recent feedback, Leclerc will be returning on [DATA EXPUNGED]
-Did you know?
-Gah-Jeelius social security number is..
-Tracy is canonically 9 foot.
-Dreary is actually Leclerc in a skin suit.
-Seats once tipped the station out of orbit.
-Oxygen once spent all the stations budget on pizza without Mothulia knowing.
-The stations debt is currently -1,432.20.
-On ##-##-25## lets all go to hydroponics and bully Smells. The look in their eyes will be hilarious!
-Leclerc.
-Rasha is harboring a disease but won't tell the crew. Lynch them.
-The Syndicate do not exist. Stop asking to be antag.
-There is no such thing as an "antag token". Stop asking about it in ahelps.
-We removed Lavaland. Fuck you Oranges.
-We rebased to SkyRat code. Please refrain from engaging in sexual intercourse this shift.
-We rebased to Bay code.
-Rhials Duffy is dead.
-The station is actually just a scrap heap.
-Now heading to.. pl_tramstation
-I disabled all the races except for cloth golem. Its a free for all.
-Preround is canon.
-Please tell SQN to port over the singularity engies before I tell her.
-Slips doesn't know how to use the HFR.
-Lima station is just a disguise for a SCP facility.
-Security is no longer a department. Fuck you.
-Medical has been replaced with a singular cloner. Don't destroy it. You only get one.
-Science has been replaced by the SCP foundation. Wait..
-If you spawn in and you're a skeleton, please find the nearest coffin and go to sleep.
-Chaplains are allowed to walk up to you and kick you in your crotch while saying "JESUS BE WITH YOU!".
-If science doesn't catch on fire once, then is it really science?
-The entire engineering department has been replaced by a singular solar. Theres no tracker either.
-This advertisement is brought to you by: HELP I'M STUCK IN THE CODE AAAAAA.
-There will never be a revolution or blood cult. Stop asking.
-You can buy your way to being a cultist or revolutionist! Contact Jolly for his paypal.
-Antagonist? Heretic? Lings? You want it? Its yours my friend! Marked as IC issue.
-This tip has been marked as an IC issue.
-Tell Mortimer his next ticket is marked as IC issue.
-The only thing I know how to code is spaghetti. And this isn't cooking class.
-Aza once beat the shit out of all the pets in sec. What a monster.
-Guirec is extremely hostile. DO NOT ENGAGE.
-Mortmier actually lost the court case. Oxygen took him outback one shift and capped him.
-IceBox is currently back in commission. Thanks for the loan, Joey!
-Teiya is just an assistant with a silver ID that tided into the bridge. Someone please get their parents.
-Dendy is the only canon RD. Leclerc was just some name they gave her.
-Olivia isn't in love with Guirec, shes in love with Poly.
-Poly sqwaks: femboy hypnosis.
-This tip is brought to you by: Relly! You are either AFK or the connection has closed.
-Tracy is actually the tallest crew member. She looking kinda sus!
-AI Vex is just his body managled and maimed, shoved into an AI core and called an AI.
-Gah actually does eat veggies, you're all just assholes.
-THIS MONTHS UPSTREAM MERGE HAD ABOUT 500 MERGE CONFLICTS AND LIKE 90% WERE DMIS. WHAT THE FUCK.
-JayDelGato is missing a tail. Please pin it to them.
-Magic is real. Do you believe in it?
-JollyStation was founded on 1/19/2021.
-Where is the tip, Jolly?
-We once nuked the sounds folder, and by we I mean Jolly, who is me. And made everyone download almost 100mb of data.
-Cloners were reintroduced. We didn't tell you because fuck you.
-Security has been removed. Beepsky is the law.
-Yulice actually tripped over their own two feet once and died.
-Aza isn't missing, but turned into a female human.
-Bartenders who don't splash people with their drinks aren't bartenders.
-The station canonically has chefs, but they never show up.
-We rebased to Paracode. Enjoy your paradise!
-The Beach Episode happened yesterday. You were asleep, dummy.
-Give me your money.
+As the Captain, you can use a whetstone to sharpen your fancy fountain pen for extra robustness.
+As the Lawyer, you are the last bastion of roleplay-focused jobs. Even the curator got a whip to go fight people with, that sellout!
+Ask and you shall receive.
+Blobs are weak to fire! Use a flame thrower for maximum damage!
+Cleanbot.
+Completing your objectives is good practice, but the best antagonists will strive to do more than the bare minimum to really leave an impression.
+DEATH IS IMMINENT!
+Demoman takes skill.
+Did you know that tossing the clown into a singularity will either increase or decrease its size by a large amount?
+Did you know that tossing the clown into the Supermatter engine can destabilize or fix it massively?
+Do not go gentle into that good night.
+FEED ME A STRAY CAT
+Flashbangs can weaken blob tiles, allowing for you and the crew to easily destroy them.
+It's fun to try and predict the round type from the tip of the round message.
+Just like real life the entropy of the game can only increase with time. If things aren't on fire yet, just wait.
+Just the tip?
+Killing the entire station isn't fun except when it is.
+Make sure you put the fresh corpse on a Nanotrasen-Brand Stasis Bed! (Patent Pending)
+Most items have names longer than "soap".
+Occasionally the tip of the round might lie to you. Don't panic, this is normal.
+Plenty of things that aren't traditionally considered weapons can still be used to slowly brutalize someone to death, get creative!
+Some people are unable to read text on a game where half of it is based on text.
+Sometimes a round will just be a bust. C'est la vie.
+Sometimes admins will just do stuff. Roll with it.
+Sometimes you won't be able to avoid dying no matter how good you are at the game. Try not to stress too much about it.
+Space is cold and it will quickly freeze you to death if you don't protect yourself. This isn't how thermodynamics really works but just go with it.
+The bird remembers.
+The more obscure and underused a game mechanic is, the less likely your victims are to be able to deal with it.
+The quartermaster is only a head of staff so their feelings aren’t hurt. Don’t tell them.
+The remake will never come out.
+The wizard is supposed to be extremely strong in one on one combat, stop getting mad about it.
+There are at least 11 ways to get through plastic flaps. How many can you name?
+This game is older than most of the people playing it.
+This is a game that is constantly being developed for. Expect things to be added, removed, fixed, and broken on a daily basis.
+To defeat the slaughter demon, shoot at it until it dies.
+When a round ends nearly everything about it is lost forever, leave your salt behind with it.
+You can win a pulse rifle from the arcade machine. Honest.
+Your sprite represents your hitbox, so that afro makes you easier to kill. The sacrifices we make for style.

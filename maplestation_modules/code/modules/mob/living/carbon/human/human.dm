@@ -35,3 +35,13 @@
 			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s exploitable information", replacetext(linked_flavor.expl_info, "\n", "<BR>")))
 			popup.open()
 			return
+
+/mob/living/carbon/human/sec_hud_set_ID()
+	. = ..()
+	var/image/holder = hud_list[ID_HUD]
+	var/obj/item/card/id/id = wear_id?.GetID()
+	if(!id?.trim)
+		holder.icon = 'icons/mob/huds/hud.dmi'
+		return
+
+	holder.icon = id.trim.sechud_icon

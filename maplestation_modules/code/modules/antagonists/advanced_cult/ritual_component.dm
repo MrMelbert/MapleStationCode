@@ -25,11 +25,11 @@
 		return
 
 	if(istype(target, girder_type))
-		INVOKE_ASYNC(src, .proc/do_destroy_girder, target, cultist)
+		INVOKE_ASYNC(src, PROC_REF(do_destroy_girder), target, cultist)
 		return COMPONENT_NO_AFTERATTACK
 
 	if(istype(target, cult_building_type))
-		INVOKE_ASYNC(src, .proc/do_unanchor_structure, target, cultist)
+		INVOKE_ASYNC(src, PROC_REF(do_unanchor_structure), target, cultist)
 		return COMPONENT_NO_AFTERATTACK
 
 /datum/component/cult_ritual_item/advanced/do_destroy_girder(obj/structure/girder/cult_girder, mob/living/cultist)

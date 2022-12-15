@@ -1,16 +1,17 @@
 // -- Suits with digi support --
-// Some digitigrade pants sprites ported from skyrat-tg / citadel.
+// Some digitigrade suit sprites ported from skyrat-tg / citadel.
 /obj/item/clothing/suit
-	digitigrade_file = 'maplestation_modules/icons/mob/clothing/suit/digi_suit.dmi'
+	digitigrade_file = null // DIGITIGRADE_SUIT_FILE
 
 /obj/item/clothing/suit/armor/hos/trenchcoat
-	should_not_squish = TRUE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/suit/det_suit
-	should_not_squish = TRUE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/suit/hooded/cultrobes/void
-	should_not_squish = TRUE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
 /obj/item/clothing/suit/hooded/explorer
-	has_digi_support = TRUE
+	digitigrade_file = 'maplestation_modules/icons/mob/clothing/suit/digi_suit.dmi'
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION

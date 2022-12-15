@@ -30,40 +30,57 @@
 
 /obj/structure/frame/machine/examine(user)
 	. = ..()
-	if(state == 3 && req_components && req_component_names)
-		var/hasContent = FALSE
-		var/requires = "It requires"
+	if(state != 3)
+		return
 
-		for(var/i = 1 to req_components.len)
-			var/tname = req_components[i]
-			var/amt = req_components[tname]
-			if(amt == 0)
-				continue
-			var/use_and = i == req_components.len
-			requires += "[(hasContent ? (use_and ? ", and" : ",") : "")] [amt] [amt == 1 ? req_component_names[tname] : "[req_component_names[tname]]\s"]"
-			hasContent = TRUE
+	if(!length(req_components))
+		. += span_info("It requires no components.")
+		return .
 
-		if(hasContent)
-			. += "[requires]."
-		else
-			. += "It does not require any more components."
+	if(!req_component_names)
+		stack_trace("[src]'s req_components list has items but its req_component_names list is null!")
+		return
 
-/obj/structure/frame/machine/proc/update_namelist()
+	var/list/nice_list = list()
+	for(var/atom/component as anything in req_components)
+		if(!ispath(component))
+			stack_trace("An item in [src]'s req_components list is not a path!")
+			continue
+		if(!req_components[component])
+			continue
+
+		nice_list += list("[req_components[component]] [req_component_names[component]]\s")
+	. += span_info("It requires [english_list(nice_list, "no more components")].")
+
+/**
+ * Collates the displayed names of the machine's components
+ *
+ * Arguments:
+ * * specific_parts - If true, the component should not use base name, but a specific tier
+ */
+/obj/structure/frame/machine/proc/update_namelist(specific_parts)
 	if(!req_components)
 		return
 
-	req_component_names = new()
-	for(var/tname in req_components)
-		if(ispath(tname, /obj/item/stack))
-			var/obj/item/stack/S = tname
-			var/singular_name = initial(S.singular_name)
-			if(singular_name)
-				req_component_names[tname] = singular_name
+	req_component_names = list()
+	for(var/atom/component_path as anything in req_components)
+		if(!ispath(component_path))
+			continue
+
+		req_component_names[component_path] = initial(component_path.name)
+
+		if(ispath(component_path, /obj/item/stack))
+			var/obj/item/stack/stack_path = component_path
+			if(initial(stack_path.singular_name))
+				req_component_names[component_path] = initial(stack_path.singular_name)
+				continue
+
+		if(ispath(component_path, /obj/item/stock_parts))
+			var/obj/item/stock_parts/stock_part = component_path
+			if(!specific_parts && initial(stock_part.base_name))
+				req_component_names[component_path] = initial(stock_part.base_name)
 			else
-				req_component_names[tname] = initial(S.name)
-		else
-			var/obj/O = tname
-			req_component_names[tname] = initial(O.name)
+				req_component_names[component_path] = initial(stock_part.name)
 
 /obj/structure/frame/machine/proc/get_req_components_amt()
 	var/amt = 0
@@ -123,23 +140,23 @@
 				return
 
 			if(istype(P, /obj/item/circuitboard/machine))
-				var/obj/item/circuitboard/machine/B = P
-				if(!B.build_path)
+				var/obj/item/circuitboard/machine/board = P
+				if(!board.build_path)
 					to_chat(user, span_warning("This circuitboard seems to be broken."))
 					return
-				if(!anchored && B.needs_anchored)
+				if(!anchored && board.needs_anchored)
 					to_chat(user, span_warning("The frame needs to be secured first!"))
 					return
-				if(!user.transferItemToLoc(B, src))
+				if(!user.transferItemToLoc(board, src))
 					return
 				playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 				to_chat(user, span_notice("You add the circuit board to the frame."))
-				circuit = B
+				circuit = board
 				icon_state = "box_2"
 				state = 3
 				components = list()
-				req_components = B.req_components.Copy()
-				update_namelist()
+				req_components = board.req_components.Copy()
+				update_namelist(board.specific_parts)
 				return
 
 			else if(istype(P, /obj/item/circuitboard))
@@ -229,7 +246,7 @@
 				for(var/obj/item/co in replacer)
 					part_list += co
 				//Sort the parts. This ensures that higher tier items are applied first.
-				part_list = sortTim(part_list, /proc/cmp_rped_sort)
+				part_list = sortTim(part_list, GLOBAL_PROC_REF(cmp_rped_sort))
 
 				for(var/path in req_components)
 					while(req_components[path] > 0 && (locate(path) in part_list))
@@ -245,7 +262,7 @@
 							req_components[path] -= used_amt
 						else
 							added_components[part] = path
-							if(SEND_SIGNAL(replacer, COMSIG_TRY_STORAGE_TAKE, part, src))
+							if(replacer.atom_storage.attempt_remove(part, src))
 								req_components[path]--
 
 				for(var/obj/item/part in added_components)
@@ -259,7 +276,7 @@
 					if(!QDELETED(part)) //If we're a stack and we merged we might not exist anymore
 						components += part
 						part.forceMove(src)
-					to_chat(user, span_notice("[part.name] applied."))
+					to_chat(user, span_notice("You add [part] to [src]."))
 				if(added_components.len)
 					replacer.play_rped_sound()
 				return
@@ -267,7 +284,7 @@
 			if(isitem(P) && get_req_components_amt())
 				for(var/I in req_components)
 					if(istype(P, I) && (req_components[I] > 0))
-						if(istype(P, /obj/item/stack))
+						if(isstack(P))
 							var/obj/item/stack/S = P
 							var/used_amt = min(round(S.get_amount()), req_components[I])
 

@@ -26,17 +26,15 @@ DEFINE_BITFIELD(turret_flags, list(
 
 /obj/machinery/porta_turret
 	name = "turret"
-	icon = 'icons/obj/turrets.dmi'
+	icon = 'icons/obj/weapons/turrets.dmi'
 	icon_state = "turretCover"
 	layer = OBJ_LAYER
 	invisibility = INVISIBILITY_OBSERVER //the turret is invisible if it's inside its cover
 	density = TRUE
 	desc = "A covered turret that shoots at its enemies."
-	use_power = IDLE_POWER_USE //this turret uses and requires power
-	idle_power_usage = 50 //when inactive, this turret takes up constant 50 Equipment power
-	active_power_usage = 300 //when active, this turret takes up constant 300 Equipment power
 	req_access = list(ACCESS_SECURITY) /// Only people with Security access
 	power_channel = AREA_USAGE_EQUIP //drains power from the EQUIPMENT channel
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.15
 	max_integrity = 160 //the turret's health
 	integrity_failure = 0.5
 	armor = list(MELEE = 50, BULLET = 30, LASER = 30, ENERGY = 30, BOMB = 30, BIO = 0, FIRE = 90, ACID = 90)
@@ -89,6 +87,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	var/turret_flags = TURRET_FLAG_SHOOT_CRIMINALS | TURRET_FLAG_SHOOT_ANOMALOUS
 	/// Determines if the turret is on
 	var/on = TRUE
+	/// Determines if our projectiles hit our faction
+	var/ignore_faction = FALSE
 	/// Same faction mobs will never be shot at, no matter the other settings
 	var/list/faction = list("turret")
 	/// The spark system, used for generating... sparks?
@@ -118,11 +118,11 @@ DEFINE_BITFIELD(turret_flags, list(
 	if(has_cover)
 		cover = new /obj/machinery/porta_turret_cover(loc)
 		cover.parent_turret = src
-		var/mutable_appearance/base = mutable_appearance('icons/obj/turrets.dmi', "basedark")
+		var/mutable_appearance/base = mutable_appearance('icons/obj/weapons/turrets.dmi', "basedark")
 		base.layer = NOT_HIGH_OBJ_LAYER
 		underlays += base
 	if(!has_cover)
-		INVOKE_ASYNC(src, .proc/popUp)
+		INVOKE_ASYNC(src, PROC_REF(popUp))
 
 /obj/machinery/porta_turret/proc/toggle_on(set_to)
 	var/current = on
@@ -174,7 +174,7 @@ DEFINE_BITFIELD(turret_flags, list(
 		turret_gun.forceMove(src)
 		stored_gun = turret_gun
 
-	RegisterSignal(stored_gun, COMSIG_PARENT_PREQDELETED, .proc/null_gun)
+	RegisterSignal(stored_gun, COMSIG_PARENT_QDELETING, PROC_REF(null_gun))
 	var/list/gun_properties = stored_gun.get_turret_properties()
 
 	//required properties
@@ -356,7 +356,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	toggle_on(FALSE) //turns off the turret temporarily
 	update_appearance()
 	//6 seconds for the traitor to gtfo of the area before the turret decides to ruin his shit
-	addtimer(CALLBACK(src, .proc/toggle_on, TRUE), 6 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(toggle_on), TRUE), 6 SECONDS)
 	//turns it back on. The cover popUp() popDown() are automatically called in process(), no need to define it here
 
 /obj/machinery/porta_turret/emp_act(severity)
@@ -376,7 +376,7 @@ DEFINE_BITFIELD(turret_flags, list(
 		toggle_on(FALSE)
 		remove_control()
 
-		addtimer(CALLBACK(src, .proc/toggle_on, TRUE), rand(60,600))
+		addtimer(CALLBACK(src, PROC_REF(toggle_on), TRUE), rand(60,600))
 
 /obj/machinery/porta_turret/take_damage(damage, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
 	. = ..()
@@ -385,7 +385,7 @@ DEFINE_BITFIELD(turret_flags, list(
 			spark_system.start()
 		if(on && !(turret_flags & TURRET_FLAG_SHOOT_ALL_REACT) && !(obj_flags & EMAGGED))
 			turret_flags |= TURRET_FLAG_SHOOT_ALL_REACT
-			addtimer(CALLBACK(src, .proc/reset_attacked), 60)
+			addtimer(CALLBACK(src, PROC_REF(reset_attacked)), 60)
 
 /obj/machinery/porta_turret/proc/reset_attacked()
 	turret_flags &= ~TURRET_FLAG_SHOOT_ALL_REACT
@@ -628,6 +628,8 @@ DEFINE_BITFIELD(turret_flags, list(
 	A.preparePixelProjectile(target, T)
 	A.firer = src
 	A.fired_from = src
+	if(ignore_faction)
+		A.ignored_factions = faction
 	A.fire()
 	return A
 
@@ -722,7 +724,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	faction = list(ROLE_SYNDICATE)
 	desc = "A ballistic machine gun auto-turret."
 
-/obj/machinery/porta_turret/syndicate/ComponentInitialize()
+/obj/machinery/porta_turret/syndicate/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF | EMP_PROTECT_WIRES)
 
@@ -774,13 +776,10 @@ DEFINE_BITFIELD(turret_flags, list(
 	if(target)
 		setDir(get_dir(base, target))//even if you can't shoot, follow the target
 		shootAt(target)
-		addtimer(CALLBACK(src, .proc/shootAt, target), 5)
-		addtimer(CALLBACK(src, .proc/shootAt, target), 10)
-		addtimer(CALLBACK(src, .proc/shootAt, target), 15)
+		addtimer(CALLBACK(src, PROC_REF(shootAt), target), 5)
+		addtimer(CALLBACK(src, PROC_REF(shootAt), target), 10)
+		addtimer(CALLBACK(src, PROC_REF(shootAt), target), 15)
 		return TRUE
-
-/obj/machinery/porta_turret/syndicate/pod/toolbox
-	max_integrity = 100
 
 /obj/machinery/porta_turret/ai
 	faction = list("silicon")
@@ -828,7 +827,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	faction = list("neutral","silicon","turret")
 	mode = TURRET_LETHAL
 
-/obj/machinery/porta_turret/centcom_shuttle/ComponentInitialize()
+/obj/machinery/porta_turret/centcom_shuttle/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF | EMP_PROTECT_WIRES)
 
@@ -890,15 +889,17 @@ DEFINE_BITFIELD(turret_flags, list(
 	if(!mapload)
 		return
 
-	if(control_area)
-		control_area = get_area_instance_from_text(control_area)
-		if(control_area == null)
-			control_area = get_area(src)
-			stack_trace("Bad control_area path for [src], [src.control_area]")
-	else if(!control_area)
-		control_area = get_area(src)
+	// The actual area that control_area refers to
+	var/area/control_area_instance
 
-	for(var/obj/machinery/porta_turret/T in control_area)
+	if(control_area)
+		control_area_instance = get_area_instance_from_text(control_area)
+		if(!control_area_instance)
+			log_mapping("Bad control_area path for [src] at [AREACOORD(src)]: [control_area]")
+	if(!control_area_instance)
+		control_area_instance = get_area(src)
+
+	for(var/obj/machinery/porta_turret/T in control_area_instance)
 		turrets |= WEAKREF(T)
 
 /obj/machinery/turretid/examine(mob/user)
@@ -1141,8 +1142,8 @@ DEFINE_BITFIELD(turret_flags, list(
 		if(team_color == "blue")
 			if(istype(P, /obj/projectile/beam/lasertag/redtag))
 				toggle_on(FALSE)
-				addtimer(CALLBACK(src, .proc/toggle_on, TRUE), 10 SECONDS)
+				addtimer(CALLBACK(src, PROC_REF(toggle_on), TRUE), 10 SECONDS)
 		else if(team_color == "red")
 			if(istype(P, /obj/projectile/beam/lasertag/bluetag))
 				toggle_on(FALSE)
-				addtimer(CALLBACK(src, .proc/toggle_on, TRUE), 10 SECONDS)
+				addtimer(CALLBACK(src, PROC_REF(toggle_on), TRUE), 10 SECONDS)

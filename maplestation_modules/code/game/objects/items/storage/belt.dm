@@ -12,19 +12,18 @@
 	w_class = WEIGHT_CLASS_BULKY
 	content_overlays = TRUE
 
-/obj/item/storage/belt/baseball/ComponentInitialize()
+/obj/item/storage/belt/baseball/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
-	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
-	STR.max_items = 1
-	STR.max_w_class = WEIGHT_CLASS_HUGE
-	STR.set_holdable(list(
+	atom_storage.max_slots = 1
+	atom_storage.max_specific_storage = WEIGHT_CLASS_HUGE
+	atom_storage.set_holdable(list(
 		/obj/item/melee/baseball_bat,
 		/obj/item/melee/baseball_bat/homerun,
 		/obj/item/melee/baseball_bat/barbed,
 		/obj/item/melee/baseball_bat/ablative,
 		/obj/item/melee/baseball_bat/golden,
-		))
+	))
 
 /obj/item/storage/belt/baseball/examine(mob/user)
 	. = ..()
@@ -38,7 +37,7 @@
 		worn_icon_state += "[bat.belt_sprite]"
 
 /obj/item/storage/belt/baseball/AltClick(mob/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, TRUE))
+	if(!user.canUseTopic(src, be_close = TRUE, no_dexterity = TRUE, need_hands = TRUE))
 		return
 	if(length(contents))
 		var/obj/item/bat = contents[1]
@@ -47,3 +46,9 @@
 		update_icon()
 	else
 		balloon_alert(user, "empty!")
+
+// Add to leather recipes
+// We should genericize this in the future for modular recipes in general
+/obj/item/stack/sheet/leather/get_main_recipes()
+	. = ..()
+	. += list(new /datum/stack_recipe("bat sheathe", /obj/item/storage/belt/baseball, 4))

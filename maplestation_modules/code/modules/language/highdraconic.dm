@@ -2,8 +2,8 @@
 // Credit to EOBgames for the initial syllables list / concept, changed and adapted for use.
 
 /datum/language/impdraconic
-	name = "High Draconic"
-	desc = "A distinct dialect of Draconic common to lizards born and raised in the Core Systems of the Lizard Empire."
+	name = "Tiziran Draconic"
+	desc = "A distinct dialect of Draconic common to lizards born and raised on Tizira."
 	//speech_verb = "hisses"
 	//ask_verb = "hisses"
 	//exclaim_verb = "roars"
@@ -23,24 +23,34 @@
 
 // Edit to the base lizard language holder - lizards can understand high draconic.
 /datum/language_holder/lizard
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/draconic = list(LANGUAGE_ATOM),
-								/datum/language/impdraconic = list(LANGUAGE_ATOM))
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/draconic = list(LANGUAGE_ATOM),
+		/datum/language/impdraconic = list(LANGUAGE_ATOM),
+	)
 
 // Edit to the silverscale language holder - silverscales can speak high draconic.
 /datum/language_holder/lizard/silver
-	understood_languages = list(/datum/language/uncommon = list(LANGUAGE_ATOM),
-								/datum/language/draconic = list(LANGUAGE_ATOM),
-								/datum/language/impdraconic = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/uncommon = list(LANGUAGE_ATOM),
-							/datum/language/draconic = list(LANGUAGE_ATOM),
-							/datum/language/impdraconic = list(LANGUAGE_ATOM))
+	understood_languages = list(
+		/datum/language/uncommon = list(LANGUAGE_ATOM),
+		/datum/language/draconic = list(LANGUAGE_ATOM),
+		/datum/language/impdraconic = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/uncommon = list(LANGUAGE_ATOM),
+		/datum/language/draconic = list(LANGUAGE_ATOM),
+		/datum/language/impdraconic = list(LANGUAGE_ATOM),
+	)
 	selected_language = /datum/language/uncommon
 
 // High draconic language holder
 /datum/language_holder/lizard/impdraconic
-	understood_languages = list(/datum/language/common = list(LANGUAGE_ATOM),
-								/datum/language/draconic = list(LANGUAGE_ATOM),
-								/datum/language/impdraconic = list(LANGUAGE_ATOM))
-	spoken_languages = list(/datum/language/draconic = list(LANGUAGE_ATOM),
-							/datum/language/impdraconic = list(LANGUAGE_ATOM))
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/draconic = list(LANGUAGE_ATOM),
+		/datum/language/impdraconic = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/draconic = list(LANGUAGE_ATOM),
+		/datum/language/impdraconic = list(LANGUAGE_ATOM),
+	)

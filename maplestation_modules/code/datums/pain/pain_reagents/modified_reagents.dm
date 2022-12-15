@@ -10,17 +10,20 @@
 /datum/reagent/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
 	// hi melbert, this should have SHOULD_CALL_PARENT(TRUE)
-	if(!isnull(pain_modifier) && istype(user))
-		if(user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier) && user.pain_controller.pain_modifier <= PAIN_MOD_APPLY_ALERT)
-			// If the painkiller's strong enough give them an alert
-			user.throw_alert("numbed", /atom/movable/screen/alert/numbed)
+	if(isnull(pain_modifier) || !istype(user))
+		return
+
+	if(user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier) && user.pain_controller.pain_modifier <= PAIN_MOD_APPLY_ALERT)
+		// If the painkiller's strong enough give them an alert
+		user.throw_alert("numbed", /atom/movable/screen/alert/numbed)
 
 /datum/reagent/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	if(!isnull(pain_modifier) && istype(user))
-		user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
-		if(user.pain_controller.pain_modifier > 0.5)
-			user.clear_alert("numbed")
+	if(isnull(pain_modifier) || !istype(user))
+		return
+	user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
+	if(user.pain_controller.pain_modifier > 0.5)
+		user.clear_alert("numbed")
 
 // Muscle stimulant is functionally morphine without downsides (it's rare)
 /datum/reagent/medicine/muscle_stimulant
@@ -62,7 +65,7 @@
 /datum/reagent/drug/space_drugs
 	pain_modifier = 0.8
 
-/datum/reagent/drug/fentanyl
+/datum/reagent/toxin/fentanyl
 	pain_modifier = 0.5
 
 //Alcohol reduces pain based on boozepwr
@@ -98,8 +101,8 @@
 
 /datum/reagent/nitrous_oxide/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), .proc/apply_anesthetic)
-	RegisterSignal(user, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), .proc/remove_anesthetic)
+	RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), PROC_REF(apply_anesthetic))
+	RegisterSignal(user, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(remove_anesthetic))
 	if(HAS_TRAIT(user, TRAIT_KNOCKEDOUT))
 		apply_anesthetic(user)
 

@@ -14,6 +14,14 @@
 	var/image/wheels_overlay
 	///Determines the typepath of what the object folds into
 	var/foldabletype = /obj/item/wheelchair
+	///Bell attached to the wheelchair, if we have one.
+	var/obj/structure/desk_bell/bell_attached
+
+/obj/vehicle/ridden/wheelchair/generate_actions()
+	. = ..()
+	if(!bell_attached)
+		return
+	initialize_controller_action_type(/datum/action/vehicle/ridden/wheelchair/bell, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/ridden/wheelchair/Initialize(mapload)
 	. = ..()
@@ -27,10 +35,9 @@
 	new /obj/item/stack/sheet/iron(drop_location(), 1)
 	return ..()
 
-/obj/vehicle/ridden/wheelchair/Moved()
+/obj/vehicle/ridden/wheelchair/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	playsound(src, 'sound/effects/roll.ogg', 75, TRUE)
-
 
 /obj/vehicle/ridden/wheelchair/post_buckle_mob(mob/living/user)
 	. = ..()
@@ -50,18 +57,25 @@
 		qdel(src)
 	return TRUE
 
+/obj/vehicle/ridden/wheelchair/AltClick(mob/user)
+	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
+
 /obj/vehicle/ridden/wheelchair/update_overlays()
 	. = ..()
 	if(has_buckled_mobs())
 		. += wheels_overlay
+	if(bell_attached)
+		. += "wheelchair_bell"
+
 
 /// I assign the ridable element in this so i don't have to fuss with hand wheelchairs and motor wheelchairs having different subtypes
 /obj/vehicle/ridden/wheelchair/proc/make_ridable()
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/wheelchair/hand)
 
+///A reward item for obtaining 5K hardcore random points. Do not use for anything else
 /obj/vehicle/ridden/wheelchair/gold
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_AFFECT_STATISTICS
-	desc = "Damn, he's been through a lot."
+	desc = "Damn, must've been through a lot."
 	icon_state = "gold_wheelchair"
 	overlay_icon = "gold_wheelchair_overlay"
 	max_integrity = 200
@@ -83,6 +97,7 @@
 	///The wheelchair vehicle type we create when we unfold this chair
 	var/unfolded_type = /obj/vehicle/ridden/wheelchair
 
+///A reward item for obtaining 5K hardcore random points. Do not use for anything else
 /obj/item/wheelchair/gold
 	name = "gold wheelchair"
 	desc = "A collapsed, shiny wheelchair that can be carried around."
@@ -99,7 +114,7 @@
 	. = ..()
 	if(over_object != usr || !Adjacent(usr) || !foldabletype)
 		return FALSE
-	if(!ishuman(usr) || !usr.canUseTopic(src, BE_CLOSE))
+	if(!ishuman(usr) || !usr.canUseTopic(src, be_close = TRUE))
 		return FALSE
 	if(has_buckled_mobs())
 		return FALSE
@@ -115,3 +130,28 @@
 	var/obj/vehicle/ridden/wheelchair/wheelchair_unfolded = new unfolded_type(location)
 	wheelchair_unfolded.add_fingerprint(user)
 	qdel(src)
+
+
+///attaches bell to the wheelchair
+/obj/vehicle/ridden/wheelchair/proc/attach_bell(obj/structure/desk_bell/bell)
+	bell_attached = bell
+	bell.forceMove(src)
+	generate_actions()
+	update_appearance()
+
+/obj/vehicle/ridden/wheelchair/examine(mob/user)
+	. =..()
+	if(bell_attached)
+		. += span_notice("There is \a [bell_attached] attached to the handle.")
+
+/obj/vehicle/ridden/wheelchair/Destroy()
+	if(bell_attached)
+		remove_bell()
+	return ..()
+
+/obj/vehicle/ridden/wheelchair/proc/remove_bell()
+	bell_attached.forceMove(get_turf(src))
+	usr.visible_message(span_notice("[bell_attached] falls off!"))
+	bell_attached = null
+	update_appearance()
+

@@ -4,6 +4,17 @@
 	/// A ref to loadout_manager datum.
 	var/datum/loadout_manager/open_loadout_ui = null
 
+
+/atom/movable/screen/map_view/char_preview/loadout
+
+/atom/movable/screen/map_view/char_preview/loadout/Destroy()
+	// Null out the ref before the parent call of destroy
+	// Why? Parent destroy will set the pref's character preview to null
+	// even if we're creating our own to use for loadouts,
+	// and we don't want it to mess with that
+	preferences = null
+	return ..()
+
 /// Datum holder for the loadout manager UI.
 /datum/loadout_manager
 	/// The client of the person using the UI
@@ -11,7 +22,7 @@
 	/// The current selected loadout list.
 	var/list/loadout_on_open
 	/// The preview dummy. //TODO: closing makes the main menu wonky
-	var/atom/movable/screen/character_preview_view/character_preview_view
+	var/atom/movable/screen/map_view/char_preview/loadout/character_preview_view
 	/// Whether we see our favorite job's clothes on the dummy
 	var/view_job_clothes = TRUE
 	/// Whether we see tutorial text in the UI
@@ -28,6 +39,7 @@
 /datum/loadout_manager/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_NULL(menu)
+	owner = null
 	return ..()
 
 /datum/loadout_manager/ui_close(mob/user)
@@ -40,10 +52,10 @@
 
 /// Initialize our character dummy.
 /datum/loadout_manager/proc/create_character_preview_view(mob/user)
-	character_preview_view = new(null, owner?.prefs, user.client)
-	reset_outfit()
-	character_preview_view.register_to_client(user.client)
-
+	character_preview_view = new(null, owner.prefs)
+	character_preview_view.generate_view("character_preview_[REF(character_preview_view)]")
+	character_preview_view.update_body()
+	character_preview_view.display_to(user)
 	return character_preview_view
 
 /datum/loadout_manager/ui_state(mob/user)
@@ -55,7 +67,7 @@
 		ui = new(user, src, "_LoadoutManager")
 		ui.open()
 
-		addtimer(CALLBACK(character_preview_view, /atom/movable/screen/character_preview_view/proc/update_body), 1 SECONDS)
+		addtimer(CALLBACK(character_preview_view, /atom/movable/screen/map_view/char_preview/proc/update_body), 1 SECONDS)
 
 /datum/loadout_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
@@ -132,7 +144,7 @@
 		if("rotate_dummy")
 			rotate_model_dir(params["dir"])
 
-	reset_outfit()
+	character_preview_view.update_body()
 	return TRUE
 
 /// Select [path] item to [category_slot] slot.
@@ -142,8 +154,7 @@
 	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(owner.prefs.read_preference(/datum/preference/loadout)))
 		if(item.category == selected_item.category)
 			if(item.category == LOADOUT_ITEM_MISC && ++num_misc_items < MAX_ALLOWED_MISC_ITEMS)
-				if(!first_misc_found)
-					first_misc_found = item
+				first_misc_found ||= item
 				continue
 
 			deselect_item(first_misc_found || item)
@@ -186,12 +197,12 @@
 		src,
 		usr,
 		allowed_configs,
-		CALLBACK(src, .proc/set_slot_greyscale, colored_item),
+		CALLBACK(src,  PROC_REF(set_slot_greyscale), colored_item),
 		starting_icon_state = initial(colored_item.icon_state),
 		starting_config = initial(colored_item.greyscale_config),
 		starting_colors = slot_starting_colors,
 	)
-	RegisterSignal(menu, COMSIG_PARENT_PREQDELETED, /datum/loadout_manager.proc/cleanup_greyscale_menu)
+	RegisterSignal(menu, COMSIG_PARENT_PREQDELETED, TYPE_PROC_REF(/datum/loadout_manager, cleanup_greyscale_menu))
 	menu.ui_interact(usr)
 
 /// A proc to make sure our menu gets null'd properly when it's deleted.
@@ -207,15 +218,14 @@
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
 	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	if(!(path in our_loadout_list))
-		to_chat(owner, span_warning("Select the item before attempting to apply greyscale to it!"))
-		return
+	if(!our_loadout_list[path])
+		select_item(path)
 
 	var/list/colors = open_menu.split_colors
 	if(colors)
 		our_loadout_list[path][INFO_GREYSCALE] = colors.Join("")
 		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
-		reset_outfit()
+		character_preview_view.update_body()
 
 /// Set [item]'s name to input provided.
 /datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)
@@ -292,8 +302,6 @@
 
 	if (isnull(character_preview_view))
 		character_preview_view = create_character_preview_view(user)
-	else if (character_preview_view.client != owner)
-		character_preview_view.register_to_client(owner)
 
 	var/list/all_selected_paths = list()
 	for(var/path in owner.prefs.read_preference(/datum/preference/loadout))
@@ -334,10 +342,9 @@
 	loadout_tabs += list(list("name" = "Suit", "title" = "Suit Slot Items", "contents" = list_to_data(GLOB.loadout_exosuits)))
 	loadout_tabs += list(list("name" = "Jumpsuit", "title" = "Uniform Slot Items", "contents" = list_to_data(GLOB.loadout_jumpsuits)))
 	loadout_tabs += list(list("name" = "Formal", "title" = "Uniform Slot Items (cont)", "contents" = list_to_data(GLOB.loadout_undersuits)))
-	loadout_tabs += list(list("name" = "Misc. Under", "title" = "Uniform Slot Items (cont)", "contents" = list_to_data(GLOB.loadout_miscunders)))
 	loadout_tabs += list(list("name" = "Accessory", "title" = "Uniform Accessory Slot Items", "contents" = list_to_data(GLOB.loadout_accessory)))
 	loadout_tabs += list(list("name" = "Inhand", "title" = "In-hand Items", "contents" = list_to_data(GLOB.loadout_inhand_items)))
-	loadout_tabs += list(list("name" = "Other", "title" = "Backpack Items (3 max)", "contents" = list_to_data(GLOB.loadout_pocket_items)))
+	loadout_tabs += list(list("name" = "Other", "title" = "Backpack Items ([MAX_ALLOWED_MISC_ITEMS] max)", "contents" = list_to_data(GLOB.loadout_pocket_items)))
 
 	data["loadout_tabs"] = loadout_tabs
 
@@ -362,65 +369,7 @@ Additionally, UNDERSUITS, HELMETS, MASKS, and GLOVES loadout items
 selected by plasmamen will spawn in their backpack instead of overriding their clothes
 to avoid an untimely and sudden death by fire or suffocation at the start of the shift."}
 
-/// Reset our displayed loadout and re-load all its items from the bottom up.
-/datum/loadout_manager/proc/reset_outfit()
-	var/datum/outfit/job/default_outfit
-	if(view_job_clothes)
-		var/datum/job/fav_job = owner.prefs.get_highest_priority_job() || SSjob.GetJobType(SSjob.overflow_role)
-
-		if(istype(owner.prefs.read_preference(/datum/preference/choiced/species), /datum/species/plasmaman) && fav_job.plasmaman_outfit)
-			default_outfit = new fav_job.plasmaman_outfit()
-		else
-			default_outfit = new fav_job.outfit()
-			if(owner.prefs.read_preference(/datum/preference/choiced/jumpsuit) == PREF_SKIRT)
-				default_outfit.uniform = text2path("[default_outfit.uniform]/skirt")
-
-			switch(owner.prefs.read_preference(/datum/preference/choiced/backpack))
-				if(GBACKPACK)
-					default_outfit.back = /obj/item/storage/backpack //Grey backpack
-				if(GSATCHEL)
-					default_outfit.back = /obj/item/storage/backpack/satchel //Grey satchel
-				if(GDUFFELBAG)
-					default_outfit.back = /obj/item/storage/backpack/duffelbag //Grey Duffel bag
-				if(LSATCHEL)
-					default_outfit.back = /obj/item/storage/backpack/satchel/leather //Leather Satchel
-				if(DSATCHEL)
-					default_outfit.back = default_outfit.satchel //Department satchel
-				if(DDUFFELBAG)
-					default_outfit.back = default_outfit.duffelbag //Department duffel bag
-				else
-					default_outfit.back = default_outfit.backpack //Department backpack
-	else
-		default_outfit = new /datum/outfit()
-
-	character_preview_view.update_body_from_loadout(default_outfit)
-	qdel(default_outfit)
-
-/*
- * Similar to the update_body() proc, but accepts a [/datum/outfit] to be equipped onto the dummy
- * instead of using the highest priority job of the preferences.
- *
- * loadout - an instantiated outfit datum to be applied to the dummy
- */
-/atom/movable/screen/character_preview_view/proc/update_body_from_loadout(datum/outfit/loadout)
-	var/datum/job/preview_job = preferences.get_highest_priority_job()
-	if(preview_job)
-		if (istype(preview_job,/datum/job/ai) || istype(preview_job,/datum/job/cyborg))
-			return update_body()
-
-	if (isnull(body))
-		create_body()
-	else
-		body.wipe_state()
-
-	// Set up the dummy for its photoshoot
-	preferences.apply_prefs_to(body, TRUE)
-	body.equip_outfit_and_loadout(loadout, preferences, TRUE)
-
-	COMPILE_OVERLAYS(body)
-	appearance = body.appearance
-
-/*
+/**
  * Takes an assoc list of [typepath]s to [singleton datum]
  * And formats it into an object for TGUI.
  *

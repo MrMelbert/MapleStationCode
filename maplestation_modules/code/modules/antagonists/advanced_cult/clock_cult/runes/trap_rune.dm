@@ -23,7 +23,7 @@
 /obj/effect/rune/clock_trap/Initialize()
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -52,7 +52,7 @@
 		if(victim in people_we_dazed)
 			continue
 
-		if(anti_cult_magic_check(victim))
+		if(victim.can_block_magic())
 			continue
 
 		daze_victim(victim)
@@ -89,7 +89,7 @@
 	if(victim in people_we_dazed)
 		return
 
-	if(anti_cult_magic_check(victim))
+	if(victim.can_block_magic())
 		return
 
 	new /obj/effect/particle_effect/sparks(get_turf(victim))
@@ -102,14 +102,17 @@
 /obj/effect/rune/clock_trap/proc/daze_victim(mob/living/carbon/victim)
 	// Keep track of the people we hit for later. But also don't hard-delete
 	LAZYADD(people_we_dazed, victim)
-	RegisterSignal(victim, COMSIG_PARENT_QDELETING, .proc/clear_references)
+	RegisterSignal(victim, COMSIG_PARENT_QDELETING, PROC_REF(clear_references))
 
-	to_chat(victim, span_userdanger("A bright yellow flash obscures your vision and dazes you!"))
+	if(victim.is_blind())
+		to_chat(victim, span_userdanger("Something warm envelops you and dazes you!"))
+	else
+		to_chat(victim, span_userdanger("A bright yellow flash obscures your vision and dazes you!"))
 
-	victim.flash_act(1, TRUE, TRUE, TRUE, length = 4 SECONDS)
+	victim.flash_act(1, affect_silicon = TRUE, visual = TRUE, length = 4 SECONDS)
 	victim.apply_damage(50, STAMINA, BODY_ZONE_CHEST)
-	victim.dizziness += 15
-	victim.add_confusion(20)
+	victim.adjust_dizzy(30 SECONDS)
+	victim.adjust_confusion(40 SECONDS)
 
 	playsound(get_turf(victim), 'sound/magic/blind.ogg', 15, FALSE, SILENCED_SOUND_EXTRARANGE, pressure_affected = FALSE, ignore_walls = FALSE)
 	victim.mob_light(_range = 2, _color = LIGHT_COLOR_TUNGSTEN, _duration = 0.8 SECONDS)

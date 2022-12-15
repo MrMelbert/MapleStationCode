@@ -114,10 +114,7 @@
 		arise_given_cultist(cultist.current)
 
 /datum/team/advanced_cult/proc/arise_given_cultist(mob/living/carbon/human/human_cultist, no_sound = FALSE)
-	human_cultist.eye_color = BLOODCULT_EYE
-	human_cultist.dna.update_ui_block(DNA_EYE_COLOR_BLOCK)
-	ADD_TRAIT(human_cultist, TRAIT_UNNATURAL_RED_GLOWY_EYES, CULT_TRAIT)
-	human_cultist.update_body()
+	AddElement(/datum/element/cult_eyes)
 	if(!no_sound)
 		SEND_SOUND(human_cultist, pick('sound/hallucinations/i_see_you1.ogg', 'sound/hallucinations/i_see_you2.ogg'))
 
@@ -134,10 +131,7 @@
 
 /datum/team/advanced_cult/proc/ascend_given_cultist(mob/living/carbon/human/human_cultist, no_sound = FALSE)
 	new /obj/effect/temp_visual/cult/sparks(get_turf(human_cultist), human_cultist.dir)
-	var/istate = pick("halo1", "halo2", "halo3", "halo4", "halo5", "halo6")
-	var/mutable_appearance/new_halo_overlay = mutable_appearance('icons/effects/32x64.dmi', istate, -HALO_LAYER)
-	human_cultist.overlays_standing[HALO_LAYER] = new_halo_overlay
-	human_cultist.apply_overlay(HALO_LAYER)
+	AddElement(/datum/element/cult_halo)
 	if(!no_sound)
 		SEND_SOUND(human_cultist, pick('sound/hallucinations/im_here1.ogg', 'sound/hallucinations/im_here2.ogg'))
 
@@ -147,12 +141,12 @@
 	icon_icon = 'maplestation_modules/icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "ascend_eyes"
 
-/datum/action/innate/cult/arise_the_cult/IsAvailable()
+/datum/action/innate/cult/arise_the_cult/IsAvailable(feedback)
 	var/datum/antagonist/advanced_cult/cultist = owner.mind.has_antag_datum(/datum/antagonist/advanced_cult)
 	var/datum/team/advanced_cult/cultist_team = cultist?.get_team()
 	return !cultist_team?.cult_risen
 
-/datum/action/innate/cult/arise_the_cult/Activate()
+/datum/action/innate/cult/arise_the_cult/Activate(feedback)
 	var/datum/antagonist/advanced_cult/cultist = owner.mind.has_antag_datum(/datum/antagonist/advanced_cult)
 	var/datum/team/advanced_cult/cultist_team = cultist?.get_team()
 	if(!cultist_team)
@@ -167,7 +161,7 @@
 	icon_icon = 'maplestation_modules/icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "ascend_halo"
 
-/datum/action/innate/cult/ascend_the_cult/IsAvailable()
+/datum/action/innate/cult/ascend_the_cult/IsAvailable(feedback)
 	var/datum/antagonist/advanced_cult/cultist = owner.mind.has_antag_datum(/datum/antagonist/advanced_cult)
 	var/datum/team/advanced_cult/cultist_team = cultist?.get_team()
 	return cultist_team?.cult_risen && !cultist_team?.cult_ascendent

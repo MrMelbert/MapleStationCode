@@ -22,25 +22,13 @@ GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask)
 	name = "Gas Mask"
 	item_path = /obj/item/clothing/mask/gas
 
-/datum/loadout_item/mask/black_bandana
-	name = "Black Bandana"
-	item_path = /obj/item/clothing/mask/bandana/black
+/datum/loadout_item/mask/bandana_greyscale
+	name = "Bandana"
+	item_path = /obj/item/clothing/mask/bandana
 
-/datum/loadout_item/mask/blue_bandana
-	name = "Blue Bandana"
-	item_path = /obj/item/clothing/mask/bandana/blue
-
-/datum/loadout_item/mask/gold_bandana
-	name = "Gold Bandana"
-	item_path = /obj/item/clothing/mask/bandana/gold
-
-/datum/loadout_item/mask/green_bandana
-	name = "Green Bandana"
-	item_path = /obj/item/clothing/mask/bandana/green
-
-/datum/loadout_item/mask/red_bandana
-	name = "Red Bandana"
-	item_path = /obj/item/clothing/mask/bandana/red
+/datum/loadout_item/mask/bandana_striped_greyscale
+	name = "Striped Bandana"
+	item_path = /obj/item/clothing/mask/bandana/striped
 
 /datum/loadout_item/mask/skull_bandana
 	name = "Skull Bandana"
