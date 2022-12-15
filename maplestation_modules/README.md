@@ -128,7 +128,6 @@ To prevent me from accidentally accept incoming on files with module changes, I'
 - code\controllers\subsystem\id_access.dm
 - code\controllers\subsystems\job.dm
 - code\controllers\subsystem\mapping.dm
-- code\controllers\subsystem\tcgsetup.dm
 - code\controllers\subsystem\vote.dm
 - code\datums\chatmessage.dm
 - code\datums\datacore.dm

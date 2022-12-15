@@ -18,7 +18,7 @@ but so far they just reside in the red set. Balancing will be done after a few g
 	desc = "Contains ten cards of varying rarity from the TDATET Red set. Collect them all!"
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "cardpack_tdatet"
-	custom_price = PAYCHECK_ASSISTANT //A note to change custom prices if maple were to change the economy system
+	custom_price = PAYCHECK_CREW //A note to change custom prices if too expensive/cheap
 	series = "tdatet"
 	contains_coin = 0
 	card_count = 9
@@ -76,7 +76,7 @@ but so far they just reside in the red set. Balancing will be done after a few g
 	name = "Trading Card Pack Mixed: Tiny Dances And The Everything Tree"
 	desc = "Contains five cards of varying rarity from the TDATET Mixed set. This one has green/blue costs and all color resource costs, recommended to get after getting Green/Blue generators. Collect them all!"
 	contains_coin = 0
-	card_count = 5
+	card_count = 4
 	rarity_table = list(
 		"muncommon" = 300,
 		"mepic" = 30,
@@ -131,12 +131,18 @@ but so far they just reside in the red set. Balancing will be done after a few g
 	. = ..()
 	. += span_notice("\The [src] has [contents.len] cards inside.")
 
-/obj/machinery/vending/games //this will add to the library games vendor, another note to place within either cards or other category if vendor were to update as well
-	added_products = list(
+/obj/machinery/vending/games //this will add to the library games vendor under the Other category.
+	added_categories = list(
+		list(
+			"name" = "Other",
+			"icon" = "star",
+			"products" = list(
 		/obj/item/cardpack/tdatet = 20,
 		/obj/item/cardpack/tdatet_base = 20,
 		/obj/item/cardpack/tdatet_box = 20,
 		/obj/item/cardpack/tdatet/green = 10,
 		/obj/item/cardpack/tdatet/blue = 10,
-		/obj/item/cardpack/tdatet/mixed = 10
-		)
+		/obj/item/cardpack/tdatet/mixed = 10,
+			)
+		),
+	)

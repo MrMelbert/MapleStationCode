@@ -4,8 +4,18 @@ SUBSYSTEM_DEF(trading_card_game)
 	init_order = INIT_ORDER_TCG
 	/// Base directory for all related string files
 	var/card_directory = "strings/tcg"
-	var/list/card_files = list("set_one.json","set_two.json", "set_tdatet.json")
+	var/list/card_files = list("set_one.json","set_two.json", "set_tdatet.json") // NON-MODULE CHANGE Added tdate set, also edited keywords.json within strings/tcg as well
+	/// List of keyword files
+	/// These allow you to add on hovor logic to parts of a card's text, displaying extra info
+	var/list/keyword_files = list("keywords.json")
+	/// What cardpack types to load
 	var/card_packs = list(/obj/item/cardpack/series_one, /obj/item/cardpack/resin)
+	var/list/cached_guar_rarity = list()
+	var/list/cached_rarity_table = list()
+	/// List of all cards by series, with cards cached by rarity to make those lookups faster
+	var/list/cached_cards = list()
+	/// List of loaded keywords matched with their hovor text
+	var/list/keywords = list()
 	var/loaded = FALSE
 
 //Let's load the cards before the map fires, so we can load cards on the map safely

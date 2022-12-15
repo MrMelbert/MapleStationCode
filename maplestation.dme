@@ -4996,6 +4996,7 @@
 #include "maplestation_modules\code\modules\antagonists\advanced_traitor\advanced_traitor.dm"
 #include "maplestation_modules\code\modules\antagonists\infiltrator\advanced_infiltrator.dm"
 #include "maplestation_modules\code\modules\antagonists\infiltrator\infiltrator.dm"
+#include "maplestation_modules\code\modules\cargo\costumes_toys.dm"
 #include "maplestation_modules\code\modules\cargo\packs.dm"
 #include "maplestation_modules\code\modules\client\preferences\_preferences.dm"
 #include "maplestation_modules\code\modules\client\preferences\height.dm"
