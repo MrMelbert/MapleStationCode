@@ -10,10 +10,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
-"aZ" = (
-/obj/structure/cable,
-/turf/closed/wall,
-/area/station/commons/baseball/locker)
 "bI" = (
 /obj/structure/window/reinforced{
 	dir = 8
@@ -28,11 +24,10 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "cU" = (
-/obj/structure/window/reinforced/fulltile,
-/obj/structure/grille,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
+/obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/iron,
 /area/station/commons/baseball)
 "dY" = (
@@ -143,6 +138,10 @@
 /obj/machinery/door/airlock,
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
+"iD" = (
+/obj/structure/cable,
+/turf/open/misc/ironsand,
+/area/station/commons/baseball)
 "jf" = (
 /obj/effect/turf_decal/trimline/green/filled/corner{
 	dir = 8
@@ -186,6 +185,7 @@
 /area/station/commons/baseball/view)
 "kE" = (
 /obj/machinery/door/airlock,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
 "kM" = (
@@ -219,9 +219,6 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
 "lp" = (
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 8
-	},
 /obj/machinery/airalarm/directional/east,
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
@@ -288,6 +285,7 @@
 /obj/machinery/door/window/left/directional/west,
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/baseball)
 "qe" = (
@@ -295,15 +293,6 @@
 	dir = 4
 	},
 /turf/open/floor/grass,
-/area/station/commons/baseball)
-"rb" = (
-/obj/structure/chair{
-	dir = 8
-	},
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 8
-	},
-/turf/open/floor/iron,
 /area/station/commons/baseball)
 "ro" = (
 /obj/structure/railing{
@@ -338,7 +327,6 @@
 /obj/item/clothing/under/shorts/blue,
 /obj/item/clothing/under/shorts/blue,
 /obj/effect/turf_decal/tile/blue/full,
-/obj/structure/cable,
 /obj/structure/closet,
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
@@ -586,6 +574,12 @@
 	},
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
+"Hl" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/station/commons/baseball/locker)
 "Ia" = (
 /obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron,
@@ -647,6 +641,9 @@
 /area/station/commons/baseball/view)
 "OU" = (
 /obj/machinery/light/small/directional/south,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 8
+	},
 /turf/open/floor/iron,
 /area/station/commons/baseball)
 "Ql" = (
@@ -1149,7 +1146,7 @@ on
 yW
 yW
 ld
-yW
+iD
 kE
 De
 el
@@ -1172,7 +1169,7 @@ vf
 vf
 yW
 yW
-yW
+iD
 JF
 rK
 UR
@@ -1196,7 +1193,7 @@ wV
 bI
 bI
 qa
-aZ
+JF
 rK
 UR
 lm
@@ -1217,11 +1214,11 @@ zN
 Yj
 gG
 EC
-rb
+EC
 OU
 JF
 hD
-UR
+Hl
 vW
 JF
 "}
