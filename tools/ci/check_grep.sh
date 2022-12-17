@@ -11,7 +11,7 @@ BLUE="\033[0;34m"
 NC="\033[0m" # No Color
 
 st=0
-basecode_path = $1
+basecode_path=$1
 
 # check for ripgrep
 if command -v rg >/dev/null 2>&1; then
