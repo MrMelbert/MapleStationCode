@@ -42,7 +42,7 @@
 	// Inhand: "boots"
 	// Worn: "nobleshoes"
 	icon_state = "nobleshoes"
-	inhand_icon_state = "shoes"
+	inhand_icon_state = "nobleshoes"
 
 /obj/item/clothing/shoes/noblealt
 	name = "white heels"
