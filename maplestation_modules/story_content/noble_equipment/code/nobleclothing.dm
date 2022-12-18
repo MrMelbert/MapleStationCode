@@ -109,3 +109,4 @@
 	// Inhand: "coat"
 	// Worn: "noblecrown"
 	icon_state = "noblecrown"
+	inhand_icon_state = "noblecrown"
