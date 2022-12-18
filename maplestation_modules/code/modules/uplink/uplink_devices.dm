@@ -9,6 +9,7 @@
 	icon_state = "locator"
 	w_class = WEIGHT_CLASS_SMALL
 	/// The syndicate who purchased this beacon - only they can use this item. No sharing.
+	/// MELBERT TODO: This causes hard deletes, should be a weakref.
 	var/mob/owner = null
 	/// The amount of reports we can send before breaking.
 	var/uses = 1
