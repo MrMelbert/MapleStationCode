@@ -4,4 +4,4 @@
 	allow_numbers = TRUE
 
 /datum/preference/name/backup_human
-	allow_numbers = TRUE
+    allow_numbers = TRUE
