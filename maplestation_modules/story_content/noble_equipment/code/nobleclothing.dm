@@ -95,7 +95,7 @@
 	// Inhand: "coat"
 	// Worn: "noblejacket"
 	icon_state = "noblejacket"
-	inhand_icon_state = "coat"
+	inhand_icon_state = "noblejacket"
 
 
 /obj/item/clothing/head/costume/crown/noble
