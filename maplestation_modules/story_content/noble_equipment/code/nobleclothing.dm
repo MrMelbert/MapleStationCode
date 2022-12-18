@@ -55,7 +55,7 @@
 	// Inhand: "shoes"
 	// Worn: "nobleheels"
 	icon_state = "nobleheels"
-	inhand_icon_state = "shoes"
+	inhand_icon_state = "nobleheels"
 
 /obj/item/clothing/gloves/noble
 	name = "black leather gloves"
