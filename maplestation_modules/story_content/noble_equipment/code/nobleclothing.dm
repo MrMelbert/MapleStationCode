@@ -28,7 +28,7 @@
 	// Inhand: "uni"
 	// Worn: "nobledress"
 	icon_state = "nobledress"
-	inhand_icon_state = "uni"
+	inhand_icon_state = "nobledress"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 
 /obj/item/clothing/shoes/noble
