@@ -68,7 +68,7 @@
 	// Inhand: "gloves"
 	// Worn: "noblegloves"
 	icon_state = "noblegloves"
-	inhand_icon_state = "gloves"
+	inhand_icon_state = "noblegloves"
 
 /obj/item/clothing/gloves/noblealt
 	name = "silky sleeves"
