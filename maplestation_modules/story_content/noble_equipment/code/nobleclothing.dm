@@ -80,7 +80,7 @@
 	// Item: "noblesleeves"
 	// Inhand: "gloves"
 	// Worn: "noblesleeves"
-	icon_state = "gnoblesleeves"
+	icon_state = "noblesleeves"
 	inhand_icon_state = "gloves"
 
 /obj/item/clothing/suit/toggle/noble
