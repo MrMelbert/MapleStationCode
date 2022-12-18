@@ -11,7 +11,7 @@
 	// Inhand: "uni"
 	// Worn: "noblesuit"
 	icon_state = "noblesuit"
-	inhand_icon_state = "uni"
+	inhand_icon_state = "noblesuit"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	can_adjust = TRUE
 
