@@ -5077,6 +5077,7 @@
 #include "maplestation_modules\code\modules\mob\living\carbon\human\flavor_text.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\human_helpers.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\skrell_hair.dm"
+#include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\abductor.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\android.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\ethereal.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\felinid.dm"
