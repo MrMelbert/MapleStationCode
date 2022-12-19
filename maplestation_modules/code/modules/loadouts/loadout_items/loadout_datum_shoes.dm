@@ -8,8 +8,8 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 
 /datum/loadout_item/shoes/New()
 	. = ..()
-	var/ignores_digi = initial(item_path.item_flags) & IGNORE_DIGITIGRADE
-	var/supports_digi = initial(item_path.supports_variations_flags) & CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
+	var/ignores_digi = !!(initial(item_path.item_flags) & IGNORE_DIGITIGRADE)
+	var/supports_digi = !!(initial(item_path.supports_variations_flags) & CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)
 	if(ignores_digi || supports_digi)
 		add_tooltip("SUPPORTS DIGITIGRADE - This item can be worn on mobs who have digitigrade legs.")
 

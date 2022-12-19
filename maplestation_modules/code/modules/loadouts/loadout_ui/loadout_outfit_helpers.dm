@@ -27,7 +27,8 @@
 	else
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
-	var/list/loadout_datums = loadout_list_to_datums(preference_source?.read_preference(/datum/preference/loadout))
+	var/list/preference_list = preference_source?.read_preference(/datum/preference/loadout)
+	var/list/loadout_datums = loadout_list_to_datums(preference_list)
 	// Place any loadout items into the outfit before going forward
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
@@ -35,7 +36,7 @@
 	equipOutfit(equipped_outfit, visuals_only)
 	// Handle any snowflake on_equips
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.on_equip_item(preference_source, src, visuals_only)
+		item.on_equip_item(preference_source, src, visuals_only, preference_list)
 	// On_equips may have changed our style so run another update
 	// Equip outfit does its own update body so it's a waste to do this every time
 	if(length(loadout_datums))
@@ -52,17 +53,20 @@
  */
 /proc/loadout_list_to_datums(list/loadout_list)
 	RETURN_TYPE(/list)
-	. = list()
+	var/list/datums = list()
 
 	if(!length(GLOB.all_loadout_datums))
 		CRASH("No loadout datums in the global loadout list!")
 
 	for(var/path in loadout_list)
-		if(!istype(GLOB.all_loadout_datums[path], /datum/loadout_item))
+		var/actual_datum = GLOB.all_loadout_datums[path]
+		if(!istype(actual_datum, /datum/loadout_item))
 			stack_trace("Could not find ([path]) loadout item in the global list of loadout datums!")
 			continue
 
-		. |= GLOB.all_loadout_datums[path]
+		datums += actual_datum
+
+	return datums
 
 /**
  * Removes all invalid paths from loadout lists.
@@ -73,14 +77,18 @@
  * returns a list, or null if empty
  */
 /proc/sanitize_loadout_list(list/passed_list)
-	var/list/list_to_clean = LAZYLISTDUPLICATE(passed_list)
-	for(var/path in list_to_clean)
+	var/list/sanitized_list
+	for(var/path in passed_list)
+		if(istext(path))
+			path = text2path(path)
 		if(!ispath(path))
-			// stack_trace("invalid path found in loadout list! (Path: [path])")
-			LAZYREMOVE(list_to_clean, path)
+			stack_trace("invalid path found in loadout list! (Path: [path])")
+			continue
 
 		else if(!istype(GLOB.all_loadout_datums[path], /datum/loadout_item))
-			// stack_trace("invalid loadout item found in loadout list! Path: [path]")
-			LAZYREMOVE(list_to_clean, path)
+			stack_trace("invalid loadout item found in loadout list! Path: [path]")
+			continue
 
-	return list_to_clean
+		LAZYSET(sanitized_list, path, passed_list[path])
+
+	return sanitized_list

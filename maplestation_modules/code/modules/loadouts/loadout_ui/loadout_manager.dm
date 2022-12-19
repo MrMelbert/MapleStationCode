@@ -1,11 +1,43 @@
 /// -- The loadout manager and UI --
+
 /// Tracking when a client has an open loadout manager, to prevent funky stuff.
 /client
 	/// A ref to loadout_manager datum.
 	var/datum/loadout_manager/open_loadout_ui = null
 
+/// Proc for preferences to render an appearance without the job outfit
+/// Future todo: Repurpose the proc itself to be given an outfit
+/datum/preferences/proc/render_new_loadout_preview_appearance(mob/living/carbon/human/dummy/mannequin)
+	var/datum/job/preview_job = get_highest_priority_job()
 
+	if(preview_job)
+		// Silicons only need a very basic preview since there is no customization for them.
+		if (istype(preview_job,/datum/job/ai))
+			return image('icons/mob/silicon/ai.dmi', icon_state = resolve_ai_icon(read_preference(/datum/preference/choiced/ai_core_display)), dir = SOUTH)
+		if (istype(preview_job,/datum/job/cyborg))
+			return image('icons/mob/silicon/robots.dmi', icon_state = "robot", dir = SOUTH)
+
+	// Set up the dummy for its photoshoot
+	apply_prefs_to(mannequin, TRUE)
+	mannequin.equip_outfit_and_loadout(/datum/outfit/player_loadout, src, TRUE)
+	return mannequin.appearance
+
+// Subtype of character preview for the loadout UI specifically
 /atom/movable/screen/map_view/char_preview/loadout
+	/// Whether we see our favorite job's clothes on the dummy
+	var/view_job_clothes = TRUE
+
+// Crude copy paste but you gotta do what you gotta do
+/atom/movable/screen/map_view/char_preview/loadout/update_body()
+	if (isnull(body))
+		create_body()
+	else
+		body.wipe_state()
+
+	if(view_job_clothes)
+		appearance = preferences.render_new_preview_appearance(body)
+	else
+		appearance = preferences.render_new_loadout_preview_appearance(body)
 
 /atom/movable/screen/map_view/char_preview/loadout/Destroy()
 	// Null out the ref before the parent call of destroy
@@ -16,38 +48,48 @@
 	return ..()
 
 /// Datum holder for the loadout manager UI.
+/// Future todo: Merge this entirely with the prefs UI
 /datum/loadout_manager
 	/// The client of the person using the UI
 	var/client/owner
+	/// Loadout preference singleton for easy access
+	var/datum/preference/loadout/preference
 	/// The current selected loadout list.
-	var/list/loadout_on_open
-	/// The preview dummy. //TODO: closing makes the main menu wonky
+	var/list/loadout
+	/// The preview dummy.
+	/// We use a special subtype so we don't brick our preference menu preview when we're done.
 	var/atom/movable/screen/map_view/char_preview/loadout/character_preview_view
-	/// Whether we see our favorite job's clothes on the dummy
-	var/view_job_clothes = TRUE
 	/// Whether we see tutorial text in the UI
 	var/tutorial_status = FALSE
+	/// Whether, on close, we save the list
+	var/save_on_close = TRUE
 	/// Our currently open greyscaling menu.
 	var/datum/greyscale_modify_menu/menu
 
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
 	owner.open_loadout_ui = src
-	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	loadout_on_open = LAZYLISTDUPLICATE(our_loadout_list)
+	loadout = owner.prefs.read_preference(/datum/preference/loadout)
+	preference = GLOB.preference_entries[/datum/preference/loadout]
 
 /datum/loadout_manager/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_NULL(menu)
 	owner = null
+	preference = null
 	return ..()
 
 /datum/loadout_manager/ui_close(mob/user)
-	owner?.prefs.save_character()
 	if(menu)
 		SStgui.close_uis(menu)
 		menu = null
-	owner?.open_loadout_ui = null
+	if(save_on_close)
+		owner.prefs.write_preference(preference, loadout)
+	if(owner)
+		owner.open_loadout_ui = null
+		// Update our main menu when we're all done
+		if(owner.prefs?.character_preview_view)
+			INVOKE_ASYNC(owner.prefs.character_preview_view, TYPE_PROC_REF(/atom/movable/screen/map_view/char_preview, update_body))
 	qdel(src)
 
 /// Initialize our character dummy.
@@ -66,8 +108,7 @@
 	if(!ui)
 		ui = new(user, src, "_LoadoutManager")
 		ui.open()
-
-		addtimer(CALLBACK(character_preview_view, /atom/movable/screen/map_view/char_preview/proc/update_body), 1 SECONDS)
+		addtimer(CALLBACK(character_preview_view, TYPE_PROC_REF(/atom/movable/screen/map_view/char_preview, update_body)), 1 SECONDS)
 
 /datum/loadout_manager/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
@@ -77,9 +118,12 @@
 	var/datum/loadout_item/interacted_item
 	if(params["path"])
 		interacted_item = GLOB.all_loadout_datums[text2path(params["path"])]
-		if(!interacted_item)
+		if(isnull(interacted_item))
 			stack_trace("Failed to locate desired loadout item (path: [params["path"]]) in the global list of loadout datums!")
 			return
+
+		if(interacted_item.handle_loadout_action(src, action))
+			return TRUE
 
 	switch(action)
 		// Turns the tutorial on and off.
@@ -89,42 +133,9 @@
 
 		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
 		if("close_ui")
-			if(params["revert"])
-				owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], loadout_on_open)
+			save_on_close = FALSE
 			SStgui.close_uis(src)
 			return FALSE
-
-		// Future todo: This can be de-hardcoded and handled on loadout items themselves, may be neat.
-		if("select_color")
-			if(!interacted_item.can_be_greyscale)
-				return
-
-			select_item_color(interacted_item)
-			return TRUE
-
-		if("set_name")
-			if(!interacted_item.can_be_named)
-				return
-
-			set_item_name(interacted_item)
-			return TRUE
-
-		if("set_skin")
-			if(!interacted_item.can_be_reskinned)
-				return
-
-			set_skin(interacted_item)
-			return TRUE
-
-		if("set_layer")
-			if(!istype(interacted_item, /datum/loadout_item/accessory))
-				return
-			var/datum/loadout_item/accessory/accessory = interacted_item
-			if(!accessory.can_be_layer_adjusted)
-				return
-
-			set_layer(interacted_item)
-			return TRUE
 
 		if("select_item")
 			if(params["deselect"])
@@ -134,16 +145,18 @@
 
 		// Clears the loadout list entirely.
 		if("clear_all_items")
-			owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], null)
+			owner.prefs.update_preference(preference, null)
 
 		// Toggles between viewing favorite job clothes on the dummy.
 		if("toggle_job_clothes")
-			view_job_clothes = !view_job_clothes
+			character_preview_view.view_job_clothes = !character_preview_view.view_job_clothes
 
 		// Rotates the dummy left or right depending on params["dir"]
 		if("rotate_dummy")
 			rotate_model_dir(params["dir"])
+			return TRUE
 
+	// Default try to update
 	character_preview_view.update_body()
 	return TRUE
 
@@ -151,7 +164,10 @@
 /datum/loadout_manager/proc/select_item(datum/loadout_item/selected_item)
 	var/num_misc_items = 0
 	var/datum/loadout_item/first_misc_found
-	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(owner.prefs.read_preference(/datum/preference/loadout)))
+	// Future todo:
+	// It's icky that we have to iterate over the global loadout list to convert it to datums
+	// every time an item is selected, it really should be cached in some way
+	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(loadout))
 		if(item.category == selected_item.category)
 			if(item.category == LOADOUT_ITEM_MISC && ++num_misc_items < MAX_ALLOWED_MISC_ITEMS)
 				first_misc_found ||= item
@@ -160,15 +176,13 @@
 			deselect_item(first_misc_found || item)
 			continue
 
-	var/list/new_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	LAZYSET(new_loadout_list, selected_item.item_path, list())
-	owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], new_loadout_list)
+	LAZYSET(loadout, selected_item.item_path, list())
+	owner.prefs.update_preference(preference, loadout)
 
 /// Deselect [deselected_item].
 /datum/loadout_manager/proc/deselect_item(datum/loadout_item/deselected_item)
-	var/list/new_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	LAZYREMOVE(new_loadout_list, deselected_item.item_path)
-	owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], new_loadout_list)
+	LAZYREMOVE(loadout, deselected_item.item_path)
+	owner.prefs.update_preference(preference, loadout)
 
 /// Select [path] item to [category_slot] slot, and open up the greyscale UI to customize [path] in [category] slot.
 /datum/loadout_manager/proc/select_item_color(datum/loadout_item/item)
@@ -188,16 +202,13 @@
 	if(initial(colored_item.greyscale_config_inhand_right))
 		allowed_configs += "[initial(colored_item.greyscale_config_inhand_right)]"
 
-	var/slot_starting_colors = initial(colored_item.greyscale_colors)
-	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	if(INFO_GREYSCALE in our_loadout_list)
-		slot_starting_colors = our_loadout_list[colored_item][INFO_GREYSCALE]
+	var/slot_starting_colors = loadout?[colored_item]?[INFO_GREYSCALE] || initial(colored_item.greyscale_colors)
 
 	menu = new(
 		src,
 		usr,
 		allowed_configs,
-		CALLBACK(src,  PROC_REF(set_slot_greyscale), colored_item),
+		CALLBACK(src, PROC_REF(set_slot_greyscale), item),
 		starting_icon_state = initial(colored_item.icon_state),
 		starting_config = initial(colored_item.greyscale_config),
 		starting_colors = slot_starting_colors,
@@ -213,51 +224,45 @@
 	menu = null
 
 /// Sets [category_slot]'s greyscale colors to the colors in the currently opened [open_menu].
-/datum/loadout_manager/proc/set_slot_greyscale(path, datum/greyscale_modify_menu/open_menu)
+/datum/loadout_manager/proc/set_slot_greyscale(datum/loadout_item/item, datum/greyscale_modify_menu/open_menu)
 	if(!open_menu)
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	if(!our_loadout_list[path])
-		select_item(path)
+	var/raw_path = item.item_path
+	if(!loadout?[raw_path])
+		select_item(item)
 
 	var/list/colors = open_menu.split_colors
-	if(colors)
-		our_loadout_list[path][INFO_GREYSCALE] = colors.Join("")
-		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
-		character_preview_view.update_body()
+	if(!colors)
+		return
+
+	loadout[raw_path][INFO_GREYSCALE] = colors.Join("")
+	owner.prefs.update_preference(preference, loadout)
+	character_preview_view.update_body()
 
 /// Set [item]'s name to input provided.
 /datum/loadout_manager/proc/set_item_name(datum/loadout_item/item)
-	var/current_name = ""
-	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	if(INFO_NAMED in our_loadout_list)
-		current_name = our_loadout_list[item.item_path][INFO_NAMED]
-
+	var/current_name = loadout?[item.item_path]?[INFO_NAMED]
+	var/raw_path = item.item_path
 	var/input_name = stripped_input(owner, "What name do you want to give [item.name]? Leave blank to clear.", "[item.name] name", current_name, MAX_NAME_LEN)
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
 		return
 
-	if(!(item.item_path in our_loadout_list))
-		to_chat(owner, span_warning("Select the item before attempting to name to it!"))
-		return
+	if(!loadout?[raw_path])
+		select_item(item)
 
 	if(input_name)
-		our_loadout_list[item.item_path][INFO_NAMED] = input_name
-		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+		loadout[raw_path][INFO_NAMED] = input_name
+	else
+		loadout[raw_path] -= INFO_NAMED
 
-	else if(INFO_NAMED in our_loadout_list[item.item_path])
-		our_loadout_list[item.item_path] -= INFO_NAMED
-		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+	owner.prefs.update_preference(preference, loadout)
 
 /// Set [item]'s skin.
 /datum/loadout_manager/proc/set_skin(datum/loadout_item/item)
-	var/current_reskin = ""
-	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	if(INFO_RESKIN in our_loadout_list)
-		current_reskin = our_loadout_list[item.item_path][INFO_RESKIN]
-
-	var/obj/item/item_template = new item.item_path()
+	var/raw_path = item.item_path
+	var/current_reskin = loadout?[raw_path]?[INFO_RESKIN]
+	var/obj/item/item_template = new raw_path()
 	var/list/choices = item_template.unique_reskin.Copy()
 	choices["Default"] = 1
 	qdel(item_template)
@@ -266,29 +271,28 @@
 	if(QDELETED(src) || QDELETED(owner) || QDELETED(owner.prefs))
 		return
 
-	if(!(item.item_path in our_loadout_list))
-		to_chat(owner, span_warning("Select the item before attempting to reskin to it!"))
-		return
+	if(!loadout?[raw_path])
+		select_item(item)
 
 	if(!input_skin || input_skin == "Default")
-		if(INFO_RESKIN in our_loadout_list[item.item_path])
-			our_loadout_list[item.item_path] -= INFO_RESKIN
-			owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
-
+		loadout[raw_path] -= INFO_RESKIN
 	else
-		our_loadout_list[item.item_path][INFO_RESKIN] = input_skin
-		owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+		loadout[raw_path][INFO_RESKIN] = input_skin
+
+	owner.prefs.update_preference(preference, loadout)
 
 /// Set [item]'s layer, for accessories.
 /datum/loadout_manager/proc/set_layer(datum/loadout_item/accessory/item)
-	var/list/our_loadout_list = owner.prefs.read_preference(/datum/preference/loadout)
-	if(!(item.item_path in our_loadout_list))
-		to_chat(owner, span_warning("Select the item before attempting to modify its layer to it!"))
-		return
+	var/raw_path = item.item_path
+	if(!loadout?[raw_path])
+		select_item(item)
 
-	our_loadout_list[item.item_path][INFO_LAYER] = !our_loadout_list[item.item_path][INFO_LAYER]
-	to_chat(owner, span_boldnotice("[item] will now appear [our_loadout_list[item.item_path][INFO_LAYER] ? "above" : "below"] suits."))
-	owner.prefs.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout_list)
+	if(isnull(loadout[raw_path][INFO_LAYER]))
+		loadout[raw_path][INFO_LAYER] = FALSE
+
+	loadout[raw_path][INFO_LAYER] = !loadout[raw_path][INFO_LAYER]
+	to_chat(owner, span_boldnotice("[item] will now appear [loadout[raw_path][INFO_LAYER] ? "above" : "below"] suits."))
+	owner.prefs.update_preference(preference, loadout)
 
 /// Rotate the preview [dir_string] direction.
 /datum/loadout_manager/proc/rotate_model_dir(dir_string)
@@ -309,7 +313,7 @@
 
 	data["selected_loadout"] = all_selected_paths
 	data["mob_name"] = owner.prefs.read_preference(/datum/preference/name/real_name)
-	data["job_clothes"] = view_job_clothes
+	data["job_clothes"] = character_preview_view.view_job_clothes
 	data["tutorial_status"] = tutorial_status
 	if(tutorial_status)
 		data["tutorial_text"] = get_tutorial_text()
