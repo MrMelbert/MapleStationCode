@@ -151,9 +151,6 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	if(!equipped_item)
 		CRASH("[type] on_equip_item(): Could not locate clothing item (path: [item_path]) in [equipper]'s [visuals_only ? "visible":"all"] contents!")
 
-	// MELBERT TODO
-	// This doesn't work
-	// It saves and loads them correctly but doesn't read them
 	var/list/item_details = preference_list[item_path]
 
 	if(can_be_greyscale && item_details?[INFO_GREYSCALE])

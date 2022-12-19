@@ -7,10 +7,9 @@
 
 /datum/uplink_item/device_tools/announcement/spawn_item(spawn_path, mob/user, datum/component/uplink/U)
 	. = ..()
-
 	var/obj/item/item_announcer/spawned_device = .
 	if(istype(spawned_device) && user)
-		spawned_device.owner = user
+		spawned_device.owner_ref = WEAKREF(user)
 
 /// -- Modular/additional uplink items --
 /datum/uplink_item/device_tools/announcement/fake_ionstorm

@@ -1,6 +1,4 @@
 // -- Asset Protection job & outfit datum --
-// MELBERT TODO
-// Not in prefs menu
 /datum/job/asset_protection
 	title = "Asset Protection"
 	description = "Protect heads of staff and the captain \

@@ -1,6 +1,4 @@
 // -- Bridge Officer job & outfit datum --
-// MELBERT TODO
-// Not in prefs menu
 /datum/job/bridge_officer
 	title = "Bridge Officer"
 	description = "File paperwork to Central Command via your fax machine. \
