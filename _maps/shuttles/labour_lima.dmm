@@ -54,6 +54,7 @@
 	name = "Labor Shuttle Airlock";
 	req_access_txt = "2"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)
 "z" = (
@@ -97,6 +98,7 @@
 	name = "Labor Shuttle Airlock";
 	req_access_txt = "2"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/plating,
 /area/shuttle/labor)
 "O" = (

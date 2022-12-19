@@ -66,6 +66,7 @@
 	name = "Supply Shuttle Airlock";
 	req_access_txt = "31"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/supply/general,
 /turf/open/floor/plating,
 /area/shuttle/supply)
 "A" = (
@@ -80,6 +81,7 @@
 /obj/docking_port/mobile/supply{
 	anchored = 5
 	},
+/obj/effect/mapping_helpers/airlock/access/any/supply/general,
 /turf/open/floor/plating,
 /area/shuttle/supply)
 "I" = (

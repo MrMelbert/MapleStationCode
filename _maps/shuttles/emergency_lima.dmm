@@ -572,6 +572,7 @@
 	name = "Emergency Shuttle Cockpit";
 	req_access_txt = "19"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/command/general,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "Mk" = (
@@ -585,6 +586,7 @@
 	name = "Emergency Shuttle Airlock";
 	req_access_txt = "2"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape)
 "ND" = (
@@ -753,6 +755,7 @@
 	name = "Emergency Shuttle Brig";
 	req_access_txt = "2"
 	},
+/obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "Xx" = (

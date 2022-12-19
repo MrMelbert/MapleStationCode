@@ -60,6 +60,7 @@
 	name = "mining shuttle";
 	port_direction = 8
 	},
+/obj/effect/mapping_helpers/airlock/access/any/supply/mining,
 /turf/open/floor/plating,
 /area/shuttle/mining)
 "R" = (
