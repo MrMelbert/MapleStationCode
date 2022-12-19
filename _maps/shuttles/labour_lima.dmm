@@ -52,7 +52,7 @@
 "w" = (
 /obj/machinery/door/airlock/shuttle{
 	name = "Labor Shuttle Airlock";
-	req_access_txt = "2"
+	req_access_txt = null
 	},
 /obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/mineral/plastitanium/red,
@@ -96,7 +96,7 @@
 "K" = (
 /obj/machinery/door/airlock/shuttle{
 	name = "Labor Shuttle Airlock";
-	req_access_txt = "2"
+	req_access_txt = null
 	},
 /obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/plating,
@@ -106,7 +106,7 @@
 	id = "gulagshuttleflasher";
 	name = "Flash Control";
 	pixel_y = 28;
-	req_access_txt = "1"
+	req_access_txt = null
 	},
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)
