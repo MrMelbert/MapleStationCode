@@ -32,7 +32,7 @@
 	},
 /obj/docking_port/mobile{
 	dir = 8;
-	id = "laborcamp";
+	shuttle_id = "laborcamp";
 	name = "labor camp shuttle";
 	port_direction = 4
 	},
@@ -58,21 +58,21 @@
 /area/shuttle/labor)
 "z" = (
 /obj/machinery/mineral/stacking_machine/laborstacker{
-	input_dir = 2;
-	output_dir = 1
+	input_dir = 2
 	},
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)
 "B" = (
 /obj/structure/table/reinforced,
+/obj/machinery/mineral/stacking_unit_console,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)
 "D" = (
-/obj/machinery/mineral/labor_claim_console{
-	machinedir = 1;
-	pixel_x = -30
-	},
 /obj/effect/turf_decal/bot,
+/obj/machinery/mineral/labor_claim_console{
+	pixel_x = -32;
+	pixel_y = -4
+	},
 /turf/open/floor/iron,
 /area/shuttle/labor)
 "F" = (
@@ -132,11 +132,6 @@
 "Y" = (
 /obj/structure/chair/office{
 	dir = 1
-	},
-/obj/machinery/mineral/stacking_unit_console{
-	machinedir = 2;
-	pixel_x = 30;
-	pixel_y = 30
 	},
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)
