@@ -57,7 +57,8 @@ but so far they just reside in the red set. Balancing will be done after a few g
 		"guncommon" = 300,
 		"grare" = 100,
 		"gepic" = 30,
-		"glegendary" = 5)
+		"glegendary" = 5,
+	)
 
 /obj/item/cardpack/tdatet/blue
 	name = "Trading Card Pack Blue: Tiny Dances And The Everything Tree"
