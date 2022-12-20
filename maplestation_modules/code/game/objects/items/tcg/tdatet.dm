@@ -27,7 +27,8 @@ but so far they just reside in the red set. Balancing will be done after a few g
 		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,
-		"legendary" = 5)
+		"legendary" = 5,
+	)
 	guar_rarity = list(
 		"uncommon" = 300,
 		"rare" = 100,
@@ -52,7 +53,8 @@ but so far they just reside in the red set. Balancing will be done after a few g
 		"guncommon" = 300,
 		"grare" = 100,
 		"gepic" = 30,
-		"glegendary" = 5)
+		"glegendary" = 5,
+	)
 	guar_rarity = list(
 		"guncommon" = 300,
 		"grare" = 100,
@@ -67,12 +69,14 @@ but so far they just reside in the red set. Balancing will be done after a few g
 		"buncommon" = 300,
 		"brare" = 100,
 		"bepic" = 30,
-		"blegendary" = 5)
+		"blegendary" = 5,
+	)
 	guar_rarity = list(
 		"buncommon" = 300,
 		"brare" = 100,
 		"bepic" = 30,
-		"blegendary" = 5)
+		"blegendary" = 5,
+	)
 
 /obj/item/cardpack/tdatet/mixed
 	name = "Trading Card Pack Mixed: Tiny Dances And The Everything Tree"
@@ -82,11 +86,13 @@ but so far they just reside in the red set. Balancing will be done after a few g
 	rarity_table = list(
 		"muncommon" = 300,
 		"mepic" = 30,
-		"mlegendary" = 5)
+		"mlegendary" = 5,
+	)
 	guar_rarity = list(
 		"muncommon" = 150,
 		"mepic" = 30,
-		"mlegendary" = 5)
+		"mlegendary" = 5,
+	)
 
 /obj/item/cardpack/tdatet_base
 	name = "Trading Card Base: Tiny Dances And The Everything Tree"
@@ -99,10 +105,12 @@ but so far they just reside in the red set. Balancing will be done after a few g
 	card_count = 1
 	rarity_table = list(
 		"tdbase" = 900,
-		"tdbasefoil" = 60)
+		"tdbasefoil" = 60,
+	)
 	guar_rarity = list(
 		"tdbase2" = 900,
-		"tdbase2foil" = 60)
+		"tdbase2foil" = 60,
+	)
 
 /obj/item/cardpack/tdatet_box
 	name = "Trading Card Pack Red Box: Tiny Dances And The Everything Tree"
@@ -117,13 +125,15 @@ but so far they just reside in the red set. Balancing will be done after a few g
 		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,
-		"legendary" = 5)
+		"legendary" = 5,
+	)
 	guaranteed_count = 5
 	guar_rarity = list(
 		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,
-		"legendary" = 5)
+		"legendary" = 5,
+	)
 
 /obj/item/cardpack/tdatet_box/debug
 	name = "Trading Card Debug Box: Tiny Dances And The Everything Tree"
@@ -136,7 +146,7 @@ but so far they just reside in the red set. Balancing will be done after a few g
 
 /obj/item/storage/card_binder/personal/examine(mob/user) // just a minor addition to let examiner know how many cards are within a binder since i got tired counting manually.
 	. = ..()
-	. += span_notice("\The [src] has [contents.len] cards inside.")
+	. += span_notice("[src] has [contents.len] cards inside.")
 
 /obj/machinery/vending/games //this will add to the library games vendor under the Other category.
 	added_categories = list(
@@ -144,12 +154,12 @@ but so far they just reside in the red set. Balancing will be done after a few g
 			"name" = "Other",
 			"icon" = "star",
 			"products" = list(
-		/obj/item/cardpack/tdatet = 20,
-		/obj/item/cardpack/tdatet_base = 20,
-		/obj/item/cardpack/tdatet_box = 20,
-		/obj/item/cardpack/tdatet/green = 10,
-		/obj/item/cardpack/tdatet/blue = 10,
-		/obj/item/cardpack/tdatet/mixed = 10,
+				/obj/item/cardpack/tdatet = 20,
+				/obj/item/cardpack/tdatet_base = 20,
+				/obj/item/cardpack/tdatet_box = 20,
+				/obj/item/cardpack/tdatet/green = 10,
+				/obj/item/cardpack/tdatet/blue = 10,
+				/obj/item/cardpack/tdatet/mixed = 10,
 			)
 		),
 	)
