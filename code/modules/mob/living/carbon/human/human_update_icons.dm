@@ -84,7 +84,7 @@ There are several things that need to be remembered:
 		var/obj/item/clothing/under/uniform = w_uniform
 		update_hud_uniform(uniform)
 
-		if(wear_suit && (wear_suit.flags_inv & HIDEJUMPSUIT))
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_ICLOTHING)
 			return
 
 
@@ -194,6 +194,10 @@ There are several things that need to be remembered:
 	if(gloves)
 		var/obj/item/worn_item = gloves
 		update_hud_gloves(worn_item)
+
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_GLOVES)
+			return
+
 		var/icon_file
 
 		if(!icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item)))
@@ -224,6 +228,9 @@ There are several things that need to be remembered:
 		var/obj/item/worn_item = glasses
 		var/mutable_appearance/glasses_overlay
 		update_hud_glasses(worn_item)
+
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_EYES)
+			return
 
 		var/icon_file
 		if(!(head?.flags_inv & HIDEEYES) && !(wear_mask?.flags_inv & HIDEEYES))
@@ -257,6 +264,9 @@ There are several things that need to be remembered:
 		var/mutable_appearance/ears_overlay
 		update_hud_ears(worn_item)
 
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_EARS)
+			return
+
 		var/icon_file
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
@@ -286,8 +296,8 @@ There are several things that need to be remembered:
 			var/mutable_appearance/neck_overlay
 			var/icon_file
 
-			if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
-				icon_file = 'icons/mob/clothing/neck.dmi'
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_NECK)
+			return
 
 			neck_overlay = worn_item.build_worn_icon(default_layer = NECK_LAYER, default_icon_file = icon_file)
 
@@ -314,6 +324,10 @@ There are several things that need to be remembered:
 		var/obj/item/worn_item = shoes
 		var/mutable_appearance/shoes_overlay
 		var/icon_file
+
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_FEET)
+			return
+
 		update_hud_shoes(worn_item)
 
 		// NON-MODULE CHANGE becuase kapu why
@@ -352,7 +366,8 @@ There are several things that need to be remembered:
 		var/mutable_appearance/s_store_overlay
 		update_hud_s_store(worn_item)
 
-		s_store_overlay = worn_item.build_worn_icon(default_layer = SUIT_STORE_LAYER, default_icon_file = 'icons/mob/clothing/belt_mirror.dmi')
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_SUITSTORE)
+			return
 
 		if(!s_store_overlay)
 			return
@@ -372,6 +387,10 @@ There are several things that need to be remembered:
 		var/obj/item/worn_item = head
 		var/mutable_appearance/head_overlay
 		update_hud_head(worn_item)
+
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_HEAD)
+			return
+
 		var/icon_file
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
@@ -400,6 +419,10 @@ There are several things that need to be remembered:
 		var/obj/item/worn_item = belt
 		var/mutable_appearance/belt_overlay
 		update_hud_belt(worn_item)
+
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_BELT)
+			return
+
 		var/icon_file
 
 		if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
@@ -489,7 +512,8 @@ There are several things that need to be remembered:
 		var/mutable_appearance/mask_overlay
 		var/icon_file = 'icons/mob/clothing/mask.dmi'
 
-		if(!(ITEM_SLOT_MASK & check_obscured_slots()))
+		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_MASK)
+			return
 
 			if(!(icon_exists(icon_file, RESOLVE_ICON_STATE(worn_item))))
 				icon_file = 'icons/mob/clothing/mask.dmi'
