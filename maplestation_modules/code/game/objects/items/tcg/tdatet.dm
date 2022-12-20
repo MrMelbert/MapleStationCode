@@ -32,7 +32,8 @@ but so far they just reside in the red set. Balancing will be done after a few g
 		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,
-		"legendary" = 5)
+		"legendary" = 5,
+	)
 
 
 /obj/item/cardpack/tdatet/examine_more(mob/user)
