@@ -8,6 +8,7 @@
 	gain_text = "<span class='notice'>You trust in the heart of the cards.</span>"
 	lose_text = "<span class='danger'>You forget what these funny bookmarks used to be.</span>"
 	medical_record_text = "Patient mentions their card collection as a stress-relieving hobby."
+	//A chance to get a cardpack for tdatet in the mail.
 	mail_goodies = list(
 		/obj/item/cardpack/tdatet,
 		/obj/item/cardpack/tdatet/green,
@@ -15,7 +16,6 @@
 		/obj/item/cardpack/tdatet/mixed,
 		/obj/item/cardpack/tdatet_box,
 	)
-	//A chance to get a cardpack for tdatet in the mail.
 
 /datum/quirk/item_quirk/cardcollector/add_unique()
 	var/mob/living/carbon/human/human_holder = quirk_holder
