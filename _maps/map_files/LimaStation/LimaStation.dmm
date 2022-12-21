@@ -39215,6 +39215,9 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
+/obj/machinery/light_switch/directional/east{
+	pixel_x = 38
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "nPj" = (
@@ -45557,10 +45560,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
 "pXW" = (
-/obj/machinery/light_switch{
-	pixel_x = 22;
-	pixel_y = 11
-	},
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -46179,7 +46178,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
-/turf/open/floor/iron/dark,
+/turf/open/floor/iron/dark/smooth_large,
 /area/station/science/auxlab)
 "qii" = (
 /obj/effect/decal/cleanable/dirt,
