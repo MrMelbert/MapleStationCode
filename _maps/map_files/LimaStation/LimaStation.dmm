@@ -13038,7 +13038,7 @@
 /obj/effect/spawner/structure/window,
 /obj/machinery/door/poddoor/shutters/indestructible{
 	id = "vacant_l_room";
-	name = "shutters"
+	name = "Shutters"
 	},
 /turf/open/floor/plating,
 /area/station/commons/vacant_room)
