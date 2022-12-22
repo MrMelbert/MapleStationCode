@@ -39,7 +39,11 @@
 /area/station/maintenance/department/science)
 "M" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sink/directional/east,
+/obj/structure/sink{
+	dir = 4;
+	pixel_x = -12;
+	pixel_y = -2
+	},
 /turf/open/floor/iron/smooth,
 /area/station/maintenance/department/science)
 "Q" = (
