@@ -10,7 +10,7 @@
 	// Adjusted: "capturtleneck_r"
 	// Inhand: "uni"
 	// Worn: "capturtleneck"
-	icon_state = "capturtleneck_icon"
+	icon_state = "capturtleneck"
 	inhand_icon_state = "capturtleneck"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	can_adjust = TRUE
@@ -30,7 +30,7 @@
 	// Adjusted: "capskirtleneck_d"
 	// Inhand: "uni"
 	// Worn: "capskirtleneck"
-	icon_state = "capskirtleneck_icon"
+	icon_state = "capskirtleneck"
 	inhand_icon_state = "capskirtleneck"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	can_adjust = TRUE
@@ -48,7 +48,7 @@
 	// Item: "capboots"
 	// Inhand: "capboots"
 	// Worn: "capboots"
-	icon_state = "capboots_icon"
+	icon_state = "capboots"
 	inhand_icon_state = "capboots"
 	strip_delay = 30
 	equip_delay_other = 50
@@ -66,7 +66,7 @@
 	// Item: "capgloves"
 	// Inhand: "capgloves"
 	// Worn: "capgloves"
-	icon_state = "capgloves_icon"
+	icon_state = "capgloves"
 	inhand_icon_state = "capgloves"
 	siemens_coefficient = 0
 	cold_protection = HANDS
@@ -87,7 +87,7 @@
 	// Item: "caparmorvest"
 	// Inhand: "caparmorvest"
 	// Worn: "noblejacket"
-	icon_state = "caparmorvest_icon"
+	icon_state = "caparmorvest"
 	inhand_icon_state = "caparmorvest"
 	body_parts_covered = CHEST|GROIN
 	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 50, BOMB = 25, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
@@ -104,7 +104,7 @@
 	// Item: "capvest"
 	// Inhand: "capvest"
 	// Worn: "capvest"
-	icon_state = "capvest_icon"
+	icon_state = "capvest"
 	inhand_icon_state = "capvest"
 	body_parts_covered = CHEST|GROIN
 	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 50, BOMB = 25, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
