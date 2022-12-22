@@ -585,7 +585,7 @@
 /turf/open/floor/iron/dark/smooth_corner,
 /area/shuttle/syndicate/hallway)
 "bV" = (
-/obj/structure/chair/stool/directional/west,
+/obj/structure/chair/stool/directional/east,
 /turf/open/floor/iron/dark,
 /area/shuttle/syndicate/engineering)
 "bW" = (

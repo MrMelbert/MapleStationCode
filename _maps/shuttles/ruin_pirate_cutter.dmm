@@ -79,7 +79,7 @@
 	dir = 4
 	},
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/effect/turf_decal/tile/red{
@@ -733,8 +733,7 @@
 	},
 /obj/effect/turf_decal/delivery,
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /turf/open/floor/iron/white,
 /area/shuttle/ruin/caravan/pirate)

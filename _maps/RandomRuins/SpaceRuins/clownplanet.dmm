@@ -282,7 +282,7 @@
 "aY" = (
 /obj/structure/flora/bush/lavendergrass/style_random,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/grass{
 	color = "#1eff00"
@@ -330,7 +330,7 @@
 "be" = (
 /obj/structure/flora/bush/flowers_yw/style_random,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/grass{
 	color = "#1eff00"
@@ -469,7 +469,7 @@ aW
 at
 at
 bc
-aE
+aV
 aB
 aj
 aA
@@ -563,7 +563,7 @@ aa
 ae
 am
 am
-aE
+aV
 aq
 ap
 aj
@@ -574,7 +574,7 @@ at
 at
 at
 bc
-aE
+aV
 aj
 ab
 aD
@@ -616,7 +616,7 @@ ae
 ac
 ai
 aM
-aE
+aV
 ak
 aj
 aU
@@ -746,7 +746,7 @@ ae
 ac
 ai
 aO
-aP
+aE
 aj
 ar
 aU
@@ -797,18 +797,18 @@ aa
 ae
 aC
 aC
-aP
+aE
 aj
 ap
 aj
-aV
+aP
 aX
 at
 at
 at
 at
 bd
-aP
+aE
 aj
 ab
 aD

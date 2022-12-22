@@ -210,13 +210,6 @@
 	},
 /turf/open/floor/plating/airless,
 /area/shuttle/ruin/caravan/freighter1)
-"lx" = (
-/obj/effect/turf_decal/box/white/corners{
-	dir = 8
-	},
-/obj/effect/mapping_helpers/broken_floor,
-/turf/open/floor/iron/airless,
-/area/shuttle/ruin/caravan/freighter1)
 "lC" = (
 /obj/machinery/power/port_gen/pacman{
 	anchored = 1
@@ -289,14 +282,15 @@
 	},
 /turf/open/floor/plating/airless,
 /area/shuttle/ruin/caravan/freighter1)
-"ot" = (
-/obj/effect/turf_decal/box/white/corners{
-	dir = 1
-	},
-/turf/open/floor/iron/dark/airless,
-/area/shuttle/ruin/caravan/freighter1)
 "oS" = (
 /turf/open/floor/iron/dark/airless,
+/area/shuttle/ruin/caravan/freighter1)
+"pJ" = (
+/obj/effect/turf_decal/box/white/corners{
+	dir = 4
+	},
+/obj/effect/mapping_helpers/broken_floor,
+/turf/open/floor/iron/airless,
 /area/shuttle/ruin/caravan/freighter1)
 "pR" = (
 /obj/machinery/light/small/directional/south,
@@ -327,7 +321,7 @@
 /area/shuttle/ruin/caravan/freighter1)
 "qM" = (
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/effect/decal/cleanable/dirt,
@@ -378,7 +372,7 @@
 /area/shuttle/ruin/caravan/freighter1)
 "tg" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark/airless,
@@ -387,6 +381,12 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating/airless,
+/area/shuttle/ruin/caravan/freighter1)
+"uy" = (
+/obj/effect/turf_decal/box/white/corners{
+	dir = 8
+	},
+/turf/open/floor/iron/dark/airless,
 /area/shuttle/ruin/caravan/freighter1)
 "uA" = (
 /obj/machinery/light/small/directional/south,
@@ -554,7 +554,7 @@
 /area/shuttle/ruin/caravan/freighter1)
 "DQ" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/closet/crate,
@@ -785,7 +785,7 @@
 /area/shuttle/ruin/caravan/freighter1)
 "OK" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/structure/closet/crate,
 /obj/item/stack/sheet/mineral/uranium{
@@ -945,7 +945,7 @@
 /area/shuttle/ruin/caravan/freighter1)
 "WU" = (
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/effect/decal/cleanable/dirt,
@@ -957,7 +957,7 @@
 /area/shuttle/ruin/caravan/freighter1)
 "WX" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/structure/closet/crate,
 /obj/item/stack/sheet/plasteel/twenty,
@@ -1002,7 +1002,7 @@
 /area/shuttle/ruin/caravan/freighter1)
 "ZZ" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/structure/closet/crate,
 /obj/item/stack/sheet/rglass{
@@ -1102,7 +1102,7 @@ ss
 CU
 ZZ
 hk
-RI
+uy
 NY
 "}
 (8,1,1) = {"
@@ -1113,7 +1113,7 @@ uA
 Fv
 sf
 VT
-ot
+RI
 hk
 AX
 Xh
@@ -1139,7 +1139,7 @@ bR
 El
 ap
 VN
-lx
+xz
 TP
 WX
 Xh
@@ -1152,7 +1152,7 @@ jg
 El
 El
 CU
-xz
+pJ
 Su
 Td
 ur

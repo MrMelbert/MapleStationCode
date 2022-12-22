@@ -15,7 +15,7 @@
 "b" = (
 /obj/machinery/door/poddoor{
 	id = "QMLoaddoor";
-	name = "supply dock loading door"
+	name = "Supply Dock Loading Door"
 	},
 /obj/machinery/conveyor{
 	dir = 8;
@@ -27,7 +27,7 @@
 "c" = (
 /obj/machinery/door/poddoor{
 	id = "QMLoaddoor2";
-	name = "supply dock loading door"
+	name = "Supply Dock Loading Door"
 	},
 /obj/machinery/conveyor{
 	dir = 4;
@@ -57,15 +57,16 @@
 	name = "Loading Doors North";
 	pixel_x = 24;
 	pixel_y = 8;
-	req_access_txt = "31"
+	req_access_txt = null
 	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/supply)
 "y" = (
 /obj/machinery/door/airlock/titanium{
 	name = "Supply Shuttle Airlock";
-	req_access_txt = "31"
+	req_access_txt = null
 	},
+/obj/effect/mapping_helpers/airlock/access/any/supply/general,
 /turf/open/floor/plating,
 /area/shuttle/supply)
 "A" = (
@@ -75,14 +76,12 @@
 "G" = (
 /obj/machinery/door/airlock/titanium{
 	name = "Supply Shuttle Airlock";
-	req_access_txt = "31"
+	req_access_txt = null
 	},
 /obj/docking_port/mobile/supply{
-	anchored = 5;
-	dwidth = 4;
-	height = 6;
-	width = 10
+	anchored = 5
 	},
+/obj/effect/mapping_helpers/airlock/access/any/supply/general,
 /turf/open/floor/plating,
 /area/shuttle/supply)
 "I" = (
