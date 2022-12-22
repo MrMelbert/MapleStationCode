@@ -56,7 +56,7 @@
 	},
 /obj/docking_port/mobile{
 	dir = 4;
-	id = "mining";
+	shuttle_id = "mining";
 	name = "mining shuttle";
 	port_direction = 8
 	},
