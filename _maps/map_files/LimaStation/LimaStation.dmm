@@ -4313,6 +4313,7 @@
 "bEk" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/east,
+/obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/department/electrical)
 "bEq" = (
@@ -50191,6 +50192,11 @@
 /obj/machinery/newscaster/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
+"ryO" = (
+/obj/effect/mapping_helpers/broken_floor,
+/obj/structure/cable,
+/turf/open/floor/plating,
+/area/station/maintenance/department/electrical)
 "ryS" = (
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable,
@@ -176204,8 +176210,8 @@ pyi
 maU
 qdl
 weo
-was
-weo
+rgb
+ryO
 kPb
 maU
 xzK
@@ -177233,7 +177239,7 @@ maU
 swO
 was
 bEk
-was
+rgb
 kPb
 maU
 xzK
