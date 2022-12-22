@@ -450,12 +450,6 @@
 /obj/item/defibrillator/loaded,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"vT" = (
-/obj/effect/turf_decal/stripes/red/corner{
-	dir = 4
-	},
-/turf/open/floor/iron/dark/small,
-/area/shuttle/escape/engine)
 "vU" = (
 /turf/closed/wall/mineral/plastitanium,
 /area/shuttle/escape)
@@ -494,7 +488,7 @@
 	dir = 9
 	},
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron/dark/small,
@@ -562,6 +556,12 @@
 /obj/effect/turf_decal/trimline/neutral/line,
 /turf/open/floor/iron/dark/textured_large,
 /area/shuttle/escape)
+"Bc" = (
+/obj/effect/turf_decal/stripes/red/corner{
+	dir = 1
+	},
+/turf/open/floor/iron/dark/small,
+/area/shuttle/escape/engine)
 "Bm" = (
 /obj/machinery/stasis,
 /obj/effect/turf_decal/tile/blue/opposingcorners,
@@ -1361,13 +1361,13 @@ cH
 Qd
 Fq
 OL
-vT
+wz
 EM
 EM
 Ug
 EM
 EM
-wz
+Bc
 OL
 Fq
 Qd

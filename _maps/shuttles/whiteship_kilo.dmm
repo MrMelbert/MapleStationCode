@@ -13,10 +13,10 @@
 "bF" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/box/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/box/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /obj/item/bikehorn/rubberducky,
@@ -96,7 +96,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/structure/extinguisher_cabinet/directional/north,
 /obj/structure/closet/crate/bin,
@@ -114,7 +114,7 @@
 /area/shuttle/abandoned/bar)
 "gA" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/machinery/light/cold/no_nightlight/directional/south,
 /obj/effect/decal/cleanable/dirt,
@@ -174,8 +174,7 @@
 /obj/effect/decal/cleanable/blood/gibs/old,
 /obj/structure/cable,
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /turf/open/floor/iron/white/corner{
 	dir = 8
@@ -307,7 +306,7 @@
 /obj/machinery/light/small/broken/directional/west,
 /obj/structure/cable,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /turf/open/floor/pod/light,
@@ -509,7 +508,7 @@
 "vM" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/box/corners{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/box/corners,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
@@ -546,7 +545,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/turretid{
@@ -567,8 +566,7 @@
 	},
 /obj/item/stack/cable_coil/cut,
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /turf/open/floor/pod/light,
 /area/shuttle/abandoned/bridge)
@@ -613,11 +611,11 @@
 "BL" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/decal/cleanable/blood,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /turf/open/floor/plating,
@@ -711,10 +709,10 @@
 /area/shuttle/abandoned/crew)
 "In" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
@@ -799,7 +797,7 @@
 "KS" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/turf_decal/stripes/corner,
 /obj/effect/decal/cleanable/cobweb{
@@ -962,7 +960,7 @@
 	dir = 10
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
@@ -1046,7 +1044,7 @@
 	view_range = 14
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/button/door{
