@@ -819,7 +819,7 @@
 /turf/open/floor/stone,
 /area/ruin/space/has_grav/hotel/bar)
 "id" = (
-/obj/structure/chair/stool/directional/west,
+/obj/structure/chair/stool/directional/east,
 /turf/open/floor/stone,
 /area/ruin/space/has_grav/hotel/bar)
 "if" = (
@@ -1380,7 +1380,7 @@
 /area/ruin/space/has_grav/hotel/pool)
 "lW" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/structure/closet/crate,
 /obj/item/clothing/under/syndicate/tacticool,
@@ -1520,7 +1520,7 @@
 /area/ruin/space/has_grav/hotel/bar)
 "mV" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/structure/closet/crate,
 /obj/item/clothing/mask/breath,
@@ -7406,7 +7406,7 @@ Hv
 VV
 aC
 lW
-hE
+sh
 Ct
 VV
 VV
@@ -7478,7 +7478,7 @@ YZ
 YZ
 VV
 hZ
-hG
+hE
 xd
 NG
 LB
@@ -7624,7 +7624,7 @@ WD
 WD
 VV
 aC
-sh
+hG
 mV
 Ct
 VV
@@ -7770,7 +7770,7 @@ WD
 YZ
 VV
 kW
-hG
+hE
 xd
 hZ
 VV

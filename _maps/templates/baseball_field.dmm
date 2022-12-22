@@ -96,6 +96,7 @@
 "gR" = (
 /obj/structure/table,
 /obj/item/reagent_containers/cup/glass/bottle/beer,
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "hb" = (
@@ -492,7 +493,6 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "Ar" = (
-/obj/machinery/light/directional/east,
 /obj/structure/chair,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
@@ -676,8 +676,7 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "RM" = (
-/obj/structure/window/reinforced/fulltile,
-/obj/structure/grille,
+/obj/effect/spawner/structure/window/reinforced,
 /turf/closed/wall,
 /area/station/commons/baseball/view)
 "Tb" = (
@@ -690,13 +689,6 @@
 /obj/structure/chair{
 	dir = 1
 	},
-/turf/open/floor/iron,
-/area/station/commons/baseball/view)
-"TC" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/south,
-/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "TE" = (
@@ -792,13 +784,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
-"Zu" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/machinery/light/directional/west,
-/turf/open/floor/iron,
-/area/station/commons/baseball/view)
 "ZE" = (
 /obj/machinery/light/directional/east,
 /turf/open/floor/iron/white/smooth_large,
@@ -826,7 +811,7 @@ Mx
 yB
 md
 TG
-Zu
+jF
 jF
 jJ
 Ok
@@ -897,7 +882,7 @@ ll
 Bm
 Xd
 ms
-ms
+Wm
 Ok
 "}
 (5,1,1) = {"
@@ -920,7 +905,7 @@ ll
 Bm
 Xd
 ms
-Wm
+ms
 Ok
 "}
 (6,1,1) = {"
@@ -1032,7 +1017,7 @@ vf
 xC
 AL
 ms
-TC
+nP
 RM
 Ok
 Ok
