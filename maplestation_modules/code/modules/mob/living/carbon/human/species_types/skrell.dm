@@ -67,12 +67,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 		SPECIES_PERK_DESC = "No matter how much they eat, the Skrell can never become overweight.",
 	))
 	perks += list(list(
-		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = "utensils",
-		SPECIES_PERK_NAME = "Weight Watchers",
-		SPECIES_PERK_DESC = "No matter how much they eat, the Skrell can never become overweight.",
-	))
-	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "wine-bottle",
 		SPECIES_PERK_NAME = "Light Drinkers",

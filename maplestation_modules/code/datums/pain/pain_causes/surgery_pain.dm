@@ -23,7 +23,7 @@
 
 	target.cause_typed_pain(target_zone, pain_amount, pain_type)
 
-	if((target.IsSleeping() || target.IsUnconscious()) && HAS_TRAIT(target, TRAIT_ON_ANESTHETIC))
+	if((target.IsSleeping() || target.IsUnconscious()) && target.has_status_effect(/datum/status_effect/grouped/anesthetic))
 		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		return FALSE
 

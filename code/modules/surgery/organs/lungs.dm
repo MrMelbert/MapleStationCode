@@ -303,7 +303,7 @@
 			n2o_euphoria = EUPHORIA_INACTIVE
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 			// NON-MODULE CHANGE
-			breather.remove_status_effect(/datum/status_effect/grouped/anesthetic)
+			breather.remove_status_effect(/datum/status_effect/grouped/anesthetic, /datum/gas/nitrous_oxide)
 
 	// BZ
 

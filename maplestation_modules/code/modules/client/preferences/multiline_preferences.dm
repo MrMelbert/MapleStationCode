@@ -26,6 +26,7 @@
 	if(!value)
 		return
 
+	// Doesn't need to apply to the dummy
 	if(istype(target, /mob/living/carbon/human/dummy))
 		return
 
