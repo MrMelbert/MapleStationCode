@@ -14,7 +14,7 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_unkempt"
 
-	/datum/sprite_accessory/hair/unkempt
+/datum/sprite_accessory/hair/styled
 	name = "Styled"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_styled"
