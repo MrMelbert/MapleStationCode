@@ -19,22 +19,30 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 	can_be_layer_adjusted = TRUE
 	add_tooltip(ADJUSTABLE_TOOLTIP, inverse_order = TRUE)
 
+/datum/loadout_item/accessory/handle_loadout_action(datum/loadout_manager/manager, action)
+	switch(action)
+		if("set_layer")
+			if(!can_be_layer_adjusted)
+				return FALSE
+
+			manager.set_layer(src)
+			return TRUE
+
+	return ..()
+
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
 
-/datum/loadout_item/accessory/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/accessory/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE, list/preference_list)
 	. = ..()
 	var/obj/item/clothing/accessory/equipped_item = .
 	var/obj/item/clothing/under/suit = equipper.w_uniform
 	if(!istype(equipped_item))
 		return
 
-	var/list/our_loadout = preference_source.read_preference(/datum/preference/loadout)
-	if(can_be_layer_adjusted && (INFO_LAYER in our_loadout[item_path]))
-		equipped_item.above_suit = our_loadout[item_path][INFO_LAYER]
-
+	equipped_item.above_suit = !!preference_list[item_path]?[INFO_LAYER]
 	if(!istype(suit))
 		return
 

@@ -68,7 +68,7 @@
 	dir = 5
 	},
 /obj/effect/turf_decal/box/corners{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
@@ -166,7 +166,7 @@
 	},
 /obj/effect/turf_decal/stripes/corner,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/brown/opposingcorners,
 /turf/open/floor/mineral/titanium/tiled/yellow,
@@ -193,7 +193,7 @@
 /area/shuttle/escape/brig)
 "aB" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
@@ -244,13 +244,6 @@
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
-"aI" = (
-/obj/effect/turf_decal/stripes/corner,
-/obj/effect/turf_decal/stripes/corner{
-	dir = 1
-	},
-/turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
 "aJ" = (
 /obj/effect/turf_decal/delivery,
 /obj/machinery/door/airlock/security/glass{
@@ -261,13 +254,13 @@
 /area/shuttle/escape/brig)
 "aK" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
-	},
-/obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
-/obj/effect/turf_decal/box/corners{
+/obj/effect/turf_decal/stripes/corner{
 	dir = 1
+	},
+/obj/effect/turf_decal/box/corners{
+	dir = 4
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
@@ -280,10 +273,10 @@
 "aM" = (
 /obj/effect/turf_decal/stripes/corner,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/box/corners{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
@@ -382,7 +375,7 @@
 "aV" = (
 /obj/effect/turf_decal/stripes/corner,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/escape)
@@ -408,7 +401,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/turf_decal/tile/brown/opposingcorners,
 /turf/open/floor/mineral/titanium/tiled/yellow,
@@ -437,7 +430,7 @@
 "bc" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
@@ -488,16 +481,6 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/stripes/line,
-/obj/effect/turf_decal/tile/brown/opposingcorners,
-/turf/open/floor/mineral/titanium/tiled/yellow,
-/area/shuttle/escape)
-"bk" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/obj/effect/turf_decal/stripes/corner{
-	dir = 4
-	},
 /obj/effect/turf_decal/tile/brown/opposingcorners,
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/shuttle/escape)
@@ -567,7 +550,7 @@
 /area/shuttle/escape)
 "bs" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/line{
@@ -622,7 +605,7 @@
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
@@ -652,25 +635,17 @@
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
-"bE" = (
+"bF" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
-/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/stripes/corner,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
-"bF" = (
-/obj/effect/turf_decal/tile/blue/opposingcorners,
-/obj/effect/turf_decal/stripes/corner,
-/obj/effect/turf_decal/stripes/corner{
-	dir = 4
-	},
-/turf/open/floor/mineral/titanium/tiled/white,
-/area/shuttle/escape)
 "bG" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/line{
@@ -761,14 +736,14 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
 "bT" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -777,11 +752,11 @@
 /area/shuttle/escape)
 "bU" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
@@ -795,11 +770,11 @@
 /area/shuttle/escape)
 "bW" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
@@ -824,7 +799,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
@@ -858,7 +833,7 @@
 "cd" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -974,7 +949,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/brown/opposingcorners,
 /turf/open/floor/mineral/titanium/tiled/yellow,
@@ -1032,7 +1007,7 @@
 /area/shuttle/escape)
 "cv" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /turf/open/floor/mineral/titanium/tiled/white,
@@ -1050,7 +1025,7 @@
 "cx" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
@@ -1276,14 +1251,6 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
-"lg" = (
-/obj/effect/turf_decal/tile/blue/opposingcorners,
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/mineral/titanium/tiled/white,
-/area/shuttle/escape)
 "lI" = (
 /obj/effect/turf_decal/delivery,
 /obj/machinery/stasis{
@@ -1301,12 +1268,19 @@
 /area/shuttle/escape)
 "nJ" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
+"ry" = (
+/obj/effect/turf_decal/stripes/corner,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 8
+	},
+/turf/open/floor/mineral/plastitanium/red/brig,
+/area/shuttle/escape/brig)
 "vP" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/line{
@@ -1339,6 +1313,22 @@
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/shuttle/escape)
+"Vu" = (
+/obj/effect/turf_decal/tile/blue/opposingcorners,
+/obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 4
+	},
+/turf/open/floor/mineral/titanium/tiled/white,
+/area/shuttle/escape)
+"Vy" = (
+/obj/effect/turf_decal/tile/blue/opposingcorners,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 4
+	},
+/obj/effect/turf_decal/stripes/line,
+/turf/open/floor/mineral/titanium/tiled/white,
+/area/shuttle/escape)
 "XZ" = (
 /obj/effect/turf_decal/tile/blue/opposingcorners,
 /obj/effect/turf_decal/stripes/corner{
@@ -1346,6 +1336,16 @@
 	},
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/mineral/titanium/tiled/white,
+/area/shuttle/escape)
+"Yy" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/brown/opposingcorners,
+/turf/open/floor/mineral/titanium/tiled/yellow,
 /area/shuttle/escape)
 
 (1,1,1) = {"
@@ -1410,7 +1410,7 @@ aq
 aA
 aA
 aA
-bd
+ry
 bm
 bs
 Vs
@@ -1440,7 +1440,7 @@ aA
 be
 ac
 bt
-br
+Vu
 bK
 as
 bu
@@ -1462,7 +1462,7 @@ ac
 ai
 as
 aC
-aI
+bd
 aT
 bf
 ab
@@ -1521,7 +1521,7 @@ aU
 bg
 bn
 bw
-bE
+br
 bK
 as
 bu
@@ -1575,7 +1575,7 @@ aW
 bh
 bo
 bt
-XZ
+Vy
 bK
 as
 bu
@@ -1656,7 +1656,7 @@ aY
 bj
 ac
 bw
-lg
+XZ
 bK
 as
 bu
@@ -1678,9 +1678,9 @@ aa
 ao
 ax
 aH
-aQ
+Yy
 ck
-bk
+aQ
 bp
 bV
 bG

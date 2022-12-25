@@ -68,7 +68,5 @@
 /// Unset [id] pain mod
 #define unset_pain_mod(id) pain_controller?.unset_pain_modifier(id)
 
-/// Mob is on anesthetic
-#define TRAIT_ON_ANESTHETIC "on_anesthetic"
 /// If the mob enters shock, they will have +1 cure condition (helps cure it faster)
 #define TRAIT_ABATES_SHOCK "shock_abated"

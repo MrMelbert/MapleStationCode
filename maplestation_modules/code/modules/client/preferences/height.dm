@@ -30,7 +30,11 @@
 	if(value == HEIGHT_NO_CHANGE)
 		return
 
+	// Snowflake, but otherwise the dummy in the prefs menu will be resized and you can't see anything
 	if(istype(target, /mob/living/carbon/human/dummy))
+		return
+	// Just inc ase
+	if(!ishuman(target))
 		return
 
 	target.transform = null

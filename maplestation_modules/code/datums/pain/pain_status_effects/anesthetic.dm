@@ -13,14 +13,6 @@
 /datum/status_effect/grouped/anesthetic/get_examine_text()
 	return span_warning("[owner.p_theyre(TRUE)] out cold.")
 
-/datum/status_effect/grouped/anesthetic/on_apply()
-	. = ..()
-	ADD_TRAIT(owner, TRAIT_ON_ANESTHETIC, id)
-
-/datum/status_effect/grouped/anesthetic/on_remove()
-	. = ..()
-	REMOVE_TRAIT(owner, TRAIT_ON_ANESTHETIC, id)
-
 /atom/movable/screen/alert/status_effect/anesthetics
 	name = "Anesthetic"
 	desc = "Everything's woozy... The world goes dark... You're on anesthetics. \

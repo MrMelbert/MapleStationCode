@@ -9,61 +9,74 @@
 	icon_state = "locator"
 	w_class = WEIGHT_CLASS_SMALL
 	/// The syndicate who purchased this beacon - only they can use this item. No sharing.
-	/// MELBERT TODO: This causes hard deletes, should be a weakref.
-	var/mob/owner = null
+	var/datum/weakref/owner_ref
 	/// The amount of reports we can send before breaking.
 	var/uses = 1
 
 /obj/item/item_announcer/examine(mob/user)
 	. = ..()
-	. += span_notice("It has [uses] uses left.")
+	if(!owner_ref || IS_WEAKREF_OF(user, owner_ref) || isobserver(user))
+		. += span_notice("It has [uses] uses left.")
 
 /// Deletes the item when it's used up.
 /obj/item/item_announcer/proc/break_item(mob/user)
-	to_chat(user, span_notice("The [src] breaks down into unrecognizable scrap and ash after being used."))
+	to_chat(user, span_notice("[src] breaks down into unrecognizable scrap and ash after being used."))
 	var/obj/effect/decal/cleanable/ash/spawned_ash = new(drop_location())
 	spawned_ash.desc = "Ashes to ashes, dust to dust. There's a few pieces of scrap in this pile."
 	qdel(src)
+
+/// Checks that the user can use the item, gives a message on failure.
+/obj/item/item_announcer/proc/identity_check(mob/user)
+	if(IS_WEAKREF_OF(user, owner_ref))
+		to_chat(user, span_warning("[icon2html(src, user)] Identity check failed."))
+		return FALSE
+	return TRUE
 
 /// User sends a preset false alarm.
 /obj/item/item_announcer/preset
 	/// The name of the fake event, so we don't have to init it.
 	var/fake_event_name = ""
-	/// What false alarm this item triggers.
-	var/fake_event = null
+	/// What false alarm this item triggers. Typepath, converted to round event controller in initialize.
+	var/datum/round_event_control/fake_event
 
-/obj/item/item_announcer/preset/Initialize()
+/obj/item/item_announcer/preset/Initialize(mapload)
 	. = ..()
-	if(fake_event)
-		for(var/datum/round_event_control/init_event in SSevents.control)
-			if(ispath(fake_event, init_event.type))
-				fake_event = init_event
-				break
+	if(!fake_event)
+		return
+
+	fake_event = locate(fake_event) in SSevents.control
+
+/obj/item/item_announcer/preset/Destroy()
+	fake_event = null
+	return ..()
 
 /obj/item/item_announcer/preset/examine(mob/user)
 	. = ..()
-	. += span_notice("It causes a fake \"[fake_event_name]\" when used.")
+	if(!owner_ref || IS_WEAKREF_OF(user, owner_ref) || isobserver(user))
+		. += span_notice("It causes a fake \"[fake_event_name]\" when used.")
 
 /obj/item/item_announcer/preset/attack_self(mob/user)
 	. = ..()
-	if(owner && owner != user)
-		to_chat(user, span_warning("Identity check failed."))
-	else
-		if(trigger_announcement(user) && uses <= 0)
-			break_item(user)
+	if(.)
+		return
+
+	if(!identity_check(user))
+		return
+	if(trigger_announcement(user) && uses <= 0)
+		break_item(user)
+	return TRUE
 
 /obj/item/item_announcer/preset/proc/trigger_announcement(mob/user)
-	var/datum/round_event_control/falsealarm/triggered_event = new()
+	var/datum/round_event_control/falsealarm/triggered_event = locate() in SSevents.control
 	if(!fake_event)
 		return FALSE
 	triggered_event.forced_type = fake_event
 	triggered_event.runEvent(FALSE)
-	to_chat(user, span_notice("You press the [src], triggering a false alarm for [fake_event_name]."))
+	to_chat(user, span_notice("You press [src], triggering a false alarm for [fake_event_name]."))
 	deadchat_broadcast(span_bold("[user] has triggered a false alarm using a syndicate device!"), follow_target = user)
 	message_admins("[ADMIN_LOOKUPFLW(user)] has triggered a false alarm using a syndicate device: \"[fake_event_name]\".")
 	log_game("[key_name(user)] has triggered a false alarm using a syndicate device: \"[fake_event_name]\".")
 	uses--
-
 	return TRUE
 
 /obj/item/item_announcer/preset/ion
@@ -83,20 +96,23 @@
 	/// Whether the report is an announced report or a classified report.
 	var/announce_contents = TRUE
 
-/obj/item/item_announcer/input/attack_self(mob/user)
-	if(owner && owner != user)
-		to_chat(user, span_warning("Identity check failed."))
-		return TRUE
-	. = ..()
-
 /obj/item/item_announcer/input/examine(mob/user)
 	. = ..()
-	. += span_notice("It sends messages from \"[fake_command_name]\".")
+	if(!owner_ref || IS_WEAKREF_OF(user, owner_ref) || isobserver(user))
+		. += span_notice("It sends messages from \"[fake_command_name]\".")
+
+/obj/item/item_announcer/input/ui_status(mob/user)
+	if(!identity_check(user))
+		return UI_CLOSE
+	return ..()
 
 /obj/item/item_announcer/input/ui_state(mob/user)
 	return GLOB.inventory_state
 
 /obj/item/item_announcer/input/ui_interact(mob/user, datum/tgui/ui)
+	if(!identity_check(user))
+		return
+
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "_FakeCommandReport")
@@ -107,7 +123,6 @@
 	data["command_name"] = fake_command_name
 	data["command_report_content"] = command_report_content
 	data["announce_contents"] = announce_contents
-
 	return data
 
 /obj/item/item_announcer/input/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -124,8 +139,7 @@
 			if(!command_report_content)
 				to_chat(usr, span_danger("You can't send a report with no contents."))
 				return
-			if(owner && usr != owner)
-				to_chat(usr, span_warning("Identity check failed."))
+			if(!identity_check(usr))
 				return
 			if(send_announcement(usr) && uses <= 0)
 				break_item(usr)

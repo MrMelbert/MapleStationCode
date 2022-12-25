@@ -6,7 +6,7 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 /datum/loadout_item/pocket_items
 	category = LOADOUT_ITEM_MISC
 
-/datum/loadout_item/pocket_items/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/pocket_items/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
 	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
 	if(visuals_only)
 		return
@@ -24,7 +24,7 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 	return
 
 // We didn't spawn any item yet, so nothing to call here.
-/datum/loadout_item/pocket_items/wallet/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only)
+/datum/loadout_item/pocket_items/wallet/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
 	return
 
 // We add our wallet at the very end of character initialization (after quirks, etc) to ensure the backpack / their ID is all set by now.

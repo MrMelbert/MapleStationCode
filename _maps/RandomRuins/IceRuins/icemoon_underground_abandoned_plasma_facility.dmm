@@ -943,12 +943,6 @@
 /obj/effect/mapping_helpers/airlock/abandoned,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
-"nC" = (
-/obj/effect/turf_decal/box/corners{
-	dir = 8
-	},
-/turf/open/floor/plating/snowed/smoothed/icemoon,
-/area/icemoon/underground/explored)
 "nD" = (
 /obj/machinery/door/airlock/mining{
 	name = "Interior Access"
@@ -986,7 +980,7 @@
 /area/ruin/plasma_facility/commons)
 "oA" = (
 /obj/effect/turf_decal/box/corners{
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/smooth{
 	initial_gas_mix = "ICEMOON_ATMOS"
@@ -1362,7 +1356,7 @@
 "up" = (
 /obj/effect/decal/cleanable/glass,
 /obj/effect/turf_decal/box/corners{
-	dir = 1
+	dir = 4
 	},
 /mob/living/simple_animal/hostile/asteroid/wolf,
 /turf/open/floor/iron/smooth{
@@ -1976,6 +1970,12 @@
 /obj/item/shard,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
+"Gv" = (
+/obj/effect/turf_decal/box/corners{
+	dir = 4
+	},
+/turf/open/floor/plating/snowed/smoothed/icemoon,
+/area/icemoon/underground/explored)
 "Hp" = (
 /obj/structure/railing/corner,
 /turf/open/lava/plasma/ice_moon,
@@ -2556,7 +2556,7 @@
 	dir = 6
 	},
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/iron/smooth_half{
 	initial_gas_mix = "ICEMOON_ATMOS"
@@ -2578,7 +2578,7 @@
 /area/ruin/plasma_facility/commons)
 "Py" = (
 /obj/effect/turf_decal/box/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/item/wrench,
 /turf/open/floor/plating/snowed/smoothed/icemoon,
@@ -3418,10 +3418,10 @@ AG
 uc
 BY
 Ih
-nC
+hJ
 Py
 Yw
-nC
+hJ
 KN
 Yw
 XI
@@ -3488,10 +3488,10 @@ AG
 vY
 vY
 OM
-hJ
+Gv
 Ih
 Yw
-hJ
+Gv
 Kr
 Yw
 XI

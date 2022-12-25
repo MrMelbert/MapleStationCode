@@ -83,7 +83,7 @@
 /area/shuttle/abandoned/cargo)
 "ao" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -145,7 +145,7 @@
 /area/shuttle/abandoned/cargo)
 "as" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -574,8 +574,7 @@
 	dir = 4
 	},
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /obj/machinery/light/small/built/directional/south,
 /obj/effect/decal/cleanable/blood,
@@ -920,7 +919,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/machinery/firealarm/directional/west,
 /obj/effect/turf_decal/stripes/white/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/cable,
@@ -1212,11 +1211,11 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/effect/turf_decal/stripes/white/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/structure/cable,
@@ -1434,7 +1433,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/structure/cable,
@@ -1476,7 +1475,7 @@
 "cU" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1544,7 +1543,7 @@
 /area/shuttle/abandoned/cargo)
 "db" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/cable,
@@ -1678,7 +1677,7 @@
 /area/shuttle/abandoned/engine)
 "dq" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -1742,8 +1741,7 @@
 /obj/machinery/light/small/built/directional/south,
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/turf_decal/stripes/white/line,
@@ -1975,7 +1973,7 @@
 /area/shuttle/abandoned/engine)
 "dY" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/button/door/directional/west{
@@ -2099,7 +2097,7 @@
 /area/shuttle/abandoned/cargo)
 "fa" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2108,18 +2106,10 @@
 /area/shuttle/abandoned/cargo)
 "hv" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/blood,
-/turf/open/floor/iron/dark,
-/area/shuttle/abandoned/cargo)
-"lC" = (
-/obj/effect/turf_decal/box/white/corners{
-	dir = 4
-	},
-/obj/effect/decal/cleanable/dirt/dust,
-/obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
 "nT" = (
@@ -2132,7 +2122,7 @@
 /area/shuttle/abandoned/cargo)
 "qY" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /mob/living/simple_animal/hostile/syndicate/melee{
@@ -2155,7 +2145,7 @@
 /area/shuttle/abandoned/bar)
 "wn" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2170,6 +2160,14 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/blood,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
+/area/shuttle/abandoned/cargo)
+"xu" = (
+/obj/effect/turf_decal/box/white/corners{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/dark,
 /area/shuttle/abandoned/cargo)
 "DL" = (
@@ -2217,7 +2215,7 @@
 /area/shuttle/abandoned/cargo)
 "Sd" = (
 /obj/effect/turf_decal/box/white/corners{
-	dir = 1
+	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2411,14 +2409,14 @@ aR
 fa
 bz
 Sm
-lC
+Fb
 bW
 wn
 cJ
 cP
 db
 aT
-Fb
+xu
 dY
 eh
 "}
@@ -2432,7 +2430,7 @@ bA
 ap
 aF
 bW
-de
+bo
 ap
 cQ
 dc
@@ -2465,7 +2463,7 @@ ae
 ar
 ap
 aR
-bm
+de
 ap
 ap
 dq
@@ -2473,7 +2471,7 @@ bW
 hv
 ap
 ap
-bo
+bm
 aT
 ap
 dZ
@@ -2484,12 +2482,12 @@ af
 as
 aF
 aR
-de
+bo
 bC
 ap
 DL
 cm
-de
+bo
 Nw
 cS
 aF
