@@ -28,6 +28,7 @@
 
 	// NON-MODULE CHANGE: point to new icons
 	generate_possible_icon_states_list("maplestation_modules/icons/mob/inhands")
+	generate_possible_icon_states_list("maplestation_modules/story_content/captain_equipment")
 	generate_possible_icon_states_list("maplestation_modules/story_content/prince_equipment/icons")
 	// NON-MODULE CHANGE END
 
