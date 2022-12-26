@@ -306,5 +306,5 @@ GLOBAL_LIST_INIT(loadout_undersuits, generate_loadout_items(/datum/loadout_item/
 	item_path = /obj/item/clothing/under/suit/white/skirt
 
 /datum/loadout_item/under/formal/nndress
-    name = "Blue Dress"
-    item_path = /obj/item/clothing/under/dress/nndress
+	name = "Blue Dress"
+	item_path = /obj/item/clothing/under/dress/nndress
