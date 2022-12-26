@@ -20,6 +20,7 @@
 	gain_text = "<span class='danger'>You feel sharper.</span>"
 	lose_text = "<span class='notice'>You feel duller.</span>"
 	medical_record_text = "Patient has Hyperalgesia, and is more susceptible to pain stimuli than most."
+	mail_goodies = list(/obj/item/temperature_pack/cold)
 
 /datum/quirk/pain_vulnerability/add()
 	var/mob/living/carbon/carbon_holder = quirk_holder
@@ -40,6 +41,7 @@
 	gain_text = "<span class='danger'>You feel fragile.</span>"
 	lose_text = "<span class='notice'>You feel less delicate.</span>"
 	medical_record_text = "Patient has Allodynia, and is extremely sensitive to touch, pain, and similar stimuli."
+	mail_goodies = list(/obj/item/temperature_pack/cold, /obj/item/temperature_pack/heat)
 	COOLDOWN_DECLARE(time_since_last_touch)
 
 /datum/quirk/allodynia/add()

@@ -20,16 +20,13 @@
 		item.post_equip_item(prefs, target)
 
 /datum/preference/loadout/serialize(input, datum/preferences/preferences)
+	// Sanitize on save even though it's highly unlikely this will need it
 	return sanitize_loadout_list(input)
 
 /datum/preference/loadout/deserialize(input, datum/preferences/preferences)
-	var/pre_length = length(input)
-	. = sanitize_loadout_list(input)
-	if(length(.) == pre_length)
-		return
-	// Let the client know that their loadout list has been stripped of a few things that we aren't sure of
-	to_chat(preferences.parent?.mob, span_boldannounce("Hey! Your loadout list had some invalid items - \
-		They have been removed from your loadout, please double check it now."))
+	// Sanitize on load to ensure no invalid paths from older saves get in
+	// Pass in the prefernce owner so they can get feedback messages on stuff that failed to load (if they exist)
+	return sanitize_loadout_list(input, preferences.parent?.mob)
 
 // Default value is NULL - the loadout list is a lazylist
 /datum/preference/loadout/create_default_value(datum/preferences/preferences)

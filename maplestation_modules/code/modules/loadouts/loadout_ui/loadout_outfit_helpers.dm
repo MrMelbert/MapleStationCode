@@ -27,7 +27,8 @@
 	else
 		CRASH("Outfit passed to equip_outfit_and_loadout was neither a path nor an instantiated type!")
 
-	var/list/loadout_datums = loadout_list_to_datums(preference_source?.read_preference(/datum/preference/loadout))
+	var/list/preference_list = preference_source?.read_preference(/datum/preference/loadout)
+	var/list/loadout_datums = loadout_list_to_datums(preference_list)
 	// Place any loadout items into the outfit before going forward
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
@@ -35,7 +36,7 @@
 	equipOutfit(equipped_outfit, visuals_only)
 	// Handle any snowflake on_equips
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.on_equip_item(preference_source, src, visuals_only)
+		item.on_equip_item(preference_source, src, visuals_only, preference_list)
 	// On_equips may have changed our style so run another update
 	// Equip outfit does its own update body so it's a waste to do this every time
 	if(length(loadout_datums))
@@ -52,17 +53,20 @@
  */
 /proc/loadout_list_to_datums(list/loadout_list)
 	RETURN_TYPE(/list)
-	. = list()
+	var/list/datums = list()
 
 	if(!length(GLOB.all_loadout_datums))
 		CRASH("No loadout datums in the global loadout list!")
 
 	for(var/path in loadout_list)
-		if(!istype(GLOB.all_loadout_datums[path], /datum/loadout_item))
+		var/actual_datum = GLOB.all_loadout_datums[path]
+		if(!istype(actual_datum, /datum/loadout_item))
 			stack_trace("Could not find ([path]) loadout item in the global list of loadout datums!")
 			continue
 
-		. |= GLOB.all_loadout_datums[path]
+		datums += actual_datum
+
+	return datums
 
 /**
  * Removes all invalid paths from loadout lists.
@@ -72,15 +76,34 @@
  *
  * returns a list, or null if empty
  */
-/proc/sanitize_loadout_list(list/passed_list)
-	var/list/list_to_clean = LAZYLISTDUPLICATE(passed_list)
-	for(var/path in list_to_clean)
-		if(!ispath(path))
-			// stack_trace("invalid path found in loadout list! (Path: [path])")
-			LAZYREMOVE(list_to_clean, path)
+/proc/sanitize_loadout_list(list/passed_list, mob/optional_loadout_owner)
+	var/list/sanitized_list
+	for(var/path in passed_list)
+		// Saving to json has each path in the list as a typepath that will be converted to string
+		// Loading from json has each path in the list as a string that we need to convert back to typepath
+		var/obj/item/real_path = istext(path) ? text2path(path) : path
+		if(!ispath(real_path))
+			#ifdef TESTING
+			// These stack traces are only useful in testing to find out why items aren't being saved when they should be
+			// In a production setting it should be OKAY for the sanitize proc to pick out invalid paths
+			stack_trace("invalid path found in loadout list! (Path: [path])")
+			#endif
+			to_chat(optional_loadout_owner, span_boldnotice("The following invalid item path was found in your loadout: [real_path || "null"]. \
+				It has been removed, renamed, or is otherwise missing - You may want to check your loadout settings."))
+			continue
 
-		else if(!istype(GLOB.all_loadout_datums[path], /datum/loadout_item))
-			// stack_trace("invalid loadout item found in loadout list! Path: [path]")
-			LAZYREMOVE(list_to_clean, path)
+		else if(!istype(GLOB.all_loadout_datums[real_path], /datum/loadout_item))
+			#ifdef TESTING
+			// Same as above, stack trace only useful in testing to find out why items aren't being saved when they should be
+			stack_trace("invalid loadout item found in loadout list! Path: [path]")
+			#endif
+			to_chat(optional_loadout_owner, span_boldnotice("The following invalid loadout item was found in your loadout: [real_path || "null"]. \
+				It has been removed, renamed, or is otherwise missing - You may want to check your loadout settings."))
+			continue
 
-	return list_to_clean
+		// Grab data using real path key
+		var/list/data = passed_list[path]
+		// Set into sanitize list using converted path key
+		LAZYSET(sanitized_list, real_path, LAZYCOPY(data))
+
+	return sanitized_list

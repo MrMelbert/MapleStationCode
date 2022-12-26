@@ -95,6 +95,38 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		additional_tooltip_contents.Add(tooltip)
 
 /**
+ * Takes in an action from a loadout manager and applies it
+ *
+ * Useful for subtypes of loadout items with unique actions
+ */
+/datum/loadout_item/proc/handle_loadout_action(datum/loadout_manager/manager, action)
+	SHOULD_CALL_PARENT(TRUE)
+
+	switch(action)
+		if("select_color")
+			if(!can_be_greyscale)
+				return FALSE
+
+			manager.select_item_color(src)
+			return FALSE
+
+		if("set_name")
+			if(!can_be_named)
+				return FALSE
+
+			manager.set_item_name(src)
+			return FALSE
+
+		if("set_skin")
+			if(!can_be_reskinned)
+				return FALSE
+
+			manager.set_skin(src)
+			return TRUE
+
+	return FALSE
+
+/**
  * Place our [var/item_path] into [outfit].
  *
  * By default, just adds the item into the outfit's backpack contents, if non-visual.
@@ -114,31 +146,31 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  * equipper - the mob we're equipping this item onto - cannot be null
  * visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)
  */
-/datum/loadout_item/proc/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE)
-	if(!preference_source)
-		return
-
+/datum/loadout_item/proc/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE, list/preference_list)
 	var/obj/item/equipped_item = locate(item_path) in equipper.get_all_contents()
 	if(!equipped_item)
 		CRASH("[type] on_equip_item(): Could not locate clothing item (path: [item_path]) in [equipper]'s [visuals_only ? "visible":"all"] contents!")
 
-	var/list/our_loadout = preference_source.read_preference(/datum/preference/loadout)
-	if(can_be_greyscale && (INFO_GREYSCALE in our_loadout[item_path]))
-		equipped_item.set_greyscale(our_loadout[item_path][INFO_GREYSCALE])
+	var/list/item_details = preference_list[item_path]
 
-	if(can_be_named && (INFO_NAMED in our_loadout[item_path]) && !visuals_only)
-		equipped_item.name = our_loadout[item_path][INFO_NAMED]
+	if(can_be_greyscale && item_details?[INFO_GREYSCALE])
+		equipped_item.set_greyscale(item_details[INFO_GREYSCALE])
+		equipper.update_clothing(equipped_item.slot_flags)
+
+	if(can_be_named && item_details?[INFO_NAMED] && !visuals_only)
+		equipped_item.name = item_details[INFO_NAMED]
 		equipped_item.renamedByPlayer = TRUE
 
-	if(can_be_reskinned && (INFO_RESKIN in our_loadout[item_path]))
-		var/skin_chosen = our_loadout[item_path][INFO_RESKIN]
+	if(can_be_reskinned && item_details?[INFO_RESKIN])
+		var/skin_chosen = item_details[INFO_RESKIN]
 		if(skin_chosen in equipped_item.unique_reskin)
 			equipped_item.current_skin = skin_chosen
 			equipped_item.icon_state = equipped_item.unique_reskin[skin_chosen]
 			equipper.update_worn_oversuit()
 		else
-			our_loadout[item_path] -= INFO_RESKIN
-			preference_source.write_preference(GLOB.preference_entries[/datum/preference/loadout], our_loadout)
+			// Not valid
+			item_details -= INFO_RESKIN
+			preference_source.write_preference(GLOB.preference_entries[/datum/preference/loadout], preference_list)
 
 	return equipped_item
 

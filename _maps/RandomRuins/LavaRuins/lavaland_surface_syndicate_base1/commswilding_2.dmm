@@ -107,7 +107,7 @@
 /area/ruin/syndicate_lava_base/telecomms)
 "H" = (
 /obj/machinery/airalarm/syndicate{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/structure/filingcabinet/security,

@@ -71,6 +71,10 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
+"cg" = (
+/obj/structure/chair/stool/bar/directional/north,
+/turf/open/floor/wood,
+/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "cE" = (
 /obj/structure/closet{
 	desc = "It's a storage unit for mining.";
@@ -750,6 +754,10 @@
 "sU" = (
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
+"td" = (
+/obj/structure/chair/stool/bar/directional/east,
+/turf/open/floor/wood,
+/area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "te" = (
 /obj/effect/decal/cleanable/food/tomato_smudge,
 /obj/machinery/light/small/directional/south,
@@ -795,6 +803,11 @@
 /obj/effect/turf_decal/trimline/neutral/arrow_cw,
 /obj/effect/turf_decal/trimline/neutral/mid_joiner,
 /turf/open/floor/mineral/plastitanium,
+/area/ruin/space/has_grav/powered/hilbertresearchfacility)
+"uk" = (
+/obj/structure/chair/stool/bar/directional/north,
+/obj/effect/decal/cleanable/dirt/dust,
+/turf/open/floor/iron/grimy,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "up" = (
 /obj/structure/table/reinforced/plastitaniumglass,
@@ -972,7 +985,7 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "xU" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/machinery/light/cold/directional/south,
 /obj/effect/turf_decal/siding/thinplating_new/light{
@@ -1454,7 +1467,7 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Gy" = (
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/machinery/light/cold/directional/north,
 /turf/open/floor/mineral/titanium/tiled/white,
@@ -1687,7 +1700,7 @@
 "LD" = (
 /obj/machinery/light/cold/directional/south,
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/mineral/titanium/tiled/white,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
@@ -1786,7 +1799,7 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "NQ" = (
 /obj/effect/turf_decal/stripes/red/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/machinery/light/cold/directional/south,
 /turf/open/floor/mineral/titanium/tiled/white,
@@ -3271,7 +3284,7 @@ Ok
 Bo
 pI
 eC
-pI
+uk
 Bo
 Ok
 Dk
@@ -3720,7 +3733,7 @@ MX
 dJ
 MX
 xm
-pC
+oi
 ZV
 up
 Ok
@@ -3870,13 +3883,13 @@ Dk
 Bo
 bN
 La
-oi
+iP
 Bj
 Sh
 Bj
 mb
 Sh
-iP
+pC
 wo
 uG
 Ok
@@ -4517,7 +4530,7 @@ sU
 sU
 sU
 sU
-ME
+td
 sU
 QV
 BY
@@ -4596,7 +4609,7 @@ Zk
 sU
 ba
 zM
-mc
+cg
 QV
 BY
 BY
