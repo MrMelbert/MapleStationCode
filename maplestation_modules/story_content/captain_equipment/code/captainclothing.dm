@@ -31,7 +31,7 @@
 	// Inhand: "uni"
 	// Worn: "capskirtleneck"
 	icon_state = "capskirtleneck"
-	inhand_icon_state = "capskirtleneck"
+	inhand_icon_state = "capturtleneck"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	can_adjust = TRUE
 	sensor_mode = SENSOR_COORDS
