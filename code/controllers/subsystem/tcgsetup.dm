@@ -5,7 +5,7 @@ SUBSYSTEM_DEF(trading_card_game)
 	/// Base directory for all related string files
 	var/card_directory = "strings/tcg"
 	/// List of card files to load
-	var/list/card_files = list("set_one.json", "set_two.json")
+	var/list/card_files = list("set_one.json", "set_two.json", "set_tdatet.json") // NON-MODULE CHANGE Added tdatet set, also edited keywords.json within strings/tcg as well
 	/// List of keyword files
 	/// These allow you to add on hovor logic to parts of a card's text, displaying extra info
 	var/list/keyword_files = list("keywords.json")
