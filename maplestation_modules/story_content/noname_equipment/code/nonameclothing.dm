@@ -1,4 +1,4 @@
-/////baby mode dress/////
+// --- baby mode dress ---
 /obj/item/clothing/under/dress/nndress
     name = "blue dress"
     desc = "A small blue dress. Incredibly silky and poofy."
