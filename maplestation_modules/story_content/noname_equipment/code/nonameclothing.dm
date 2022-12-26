@@ -5,4 +5,3 @@
     icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
     worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
     icon_state = "nndress"
-/////////////////////////
