@@ -621,7 +621,7 @@
 /obj/structure/window/reinforced/plasma/spawner,
 /obj/structure/window/reinforced/plasma/spawner/west,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/plating/airless,
 /area/shuttle/abandoned/engine)
@@ -1075,7 +1075,7 @@
 /obj/structure/window/reinforced/plasma/spawner,
 /obj/structure/window/reinforced/plasma/spawner/east,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/plating/airless,
 /area/shuttle/abandoned/engine)
@@ -1150,7 +1150,7 @@
 	pixel_y = -1
 	},
 /obj/effect/turf_decal/stripes/white/corner{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/iron/dark/textured_large,
 /area/shuttle/abandoned/bridge)
@@ -1159,7 +1159,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/stripes/white/corner{
-	dir = 8
+	dir = 1
 	},
 /turf/open/floor/iron/dark/textured_large,
 /area/shuttle/abandoned/bridge)

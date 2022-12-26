@@ -42,7 +42,7 @@
 		/obj/item/food/donut/berry = 5,
 		/obj/item/food/donut/matcha = 5,
 		/obj/item/storage/fancy/donut_box = 1,
-		/obj/item/melee/baton/security/boomerang/loaded = 1
+		/obj/item/melee/baton/security/boomerang/loaded = 1,
 	)
 
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN

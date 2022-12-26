@@ -953,7 +953,7 @@
 /area/shuttle/escape/brig)
 "Ov" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)

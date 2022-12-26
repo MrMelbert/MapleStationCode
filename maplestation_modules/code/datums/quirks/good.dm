@@ -21,6 +21,7 @@
 	gain_text = "<span class='notice'>You understand a new language.</span>"
 	lose_text = "<span class='notice'>You no longer understand a new language.</span>"
 	medical_record_text = "Patient is trilingual and knows multiple languages."
+	mail_goodies = list(/obj/item/taperecorder)
 	/// The language we added with this quirk.
 	var/added_language
 
@@ -60,6 +61,7 @@
 	gain_text = "<span class='notice'>You no longer have an appendix.</span>"
 	lose_text = "<span class='danger'>You miss your appendix?</span>"
 	medical_record_text = "Patient had appendicitis in the past and has had their appendix surgically removed as a consequence."
+	mail_goodies = list(/obj/item/stack/medical/gauze)
 
 /datum/quirk/no_appendix/post_add()
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
@@ -75,6 +77,7 @@
 	gain_text = "<span class='notice'>You feel duller.</span>"
 	lose_text = "<span class='danger'>You feel sharper.</span>"
 	medical_record_text = "Patient has Hypoalgesia, and is less susceptible to pain stimuli than most."
+	mail_goodies = list(/obj/item/temperature_pack/heat)
 
 /datum/quirk/pain_resistance/add()
 	var/mob/living/carbon/carbon_holder = quirk_holder
