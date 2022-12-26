@@ -5125,6 +5125,7 @@
 #include "maplestation_modules\code\modules\uplink\uplink_items.dm"
 #include "maplestation_modules\code\modules\vending\_vending.dm"
 #include "maplestation_modules\story_content\noble_equipment\code\nobleclothing.dm"
+#include "maplestation_modules\story_content\noname_equipment\code\nonameclothing.dm"
 #include "maplestation_modules\story_content\post_overlay\code\post_overlay.dm"
 #include "maplestation_modules\story_content\prince_equipment\code\clothing.dm"
 // END_INCLUDE
