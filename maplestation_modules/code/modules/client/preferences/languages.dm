@@ -17,32 +17,58 @@
 /datum/preference/additional_language/deserialize(input, datum/preferences/preferences)
 	if(input == NO_LANGUAGE)
 		return NO_LANGUAGE
-
-	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
-	var/datum/language/lang_to_add = text2path(input)
-	var/species_id = initial(species.id)
-
-	if(species_id in BLACKLISTED_SPECIES_FROM_LANGUAGES)
+	if("Trilingual" in preferences.all_quirks)
 		return NO_LANGUAGE
+
+	var/datum/language/lang_to_add = check_input_path(input)
 	if(!ispath(lang_to_add, /datum/language))
 		return NO_LANGUAGE
-	if(initial(lang_to_add.banned_from_species_id) && initial(lang_to_add.banned_from_species_id) == species_id)
+
+	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
+	var/species_id = initial(species.id)
+	if(species_id in BLACKLISTED_SPECIES_FROM_LANGUAGES)
 		return NO_LANGUAGE
-	if(initial(lang_to_add.required_species_id) && initial(lang_to_add.required_species_id) != species_id)
+
+	var/banned = initial(lang_to_add.banned_from_species_id)
+	if(banned && banned == species_id)
 		return NO_LANGUAGE
-	if("Trilingual" in preferences.all_quirks)
+
+	var/req = initial(lang_to_add.required_species_id)
+	if(req && req != species_id)
 		return NO_LANGUAGE
 
 	return lang_to_add
 
 /datum/preference/additional_language/serialize(input)
-	return ispath(input, /datum/language) ? input : NO_LANGUAGE
+	return check_input_path(input) || NO_LANGUAGE
 
 /datum/preference/additional_language/create_default_value()
 	return NO_LANGUAGE
 
 /datum/preference/additional_language/is_valid(value)
-	return ispath(value, /datum/language) || value == NO_LANGUAGE
+	return !!check_input_path(value)
+
+/// Checks if our passed input is valid
+/// Returns NO LANGUAGE if passed NO LANGUAGE (truthy value)
+/// Returns null if the input was invalid (falsy value)
+/// Returns a language typepath if the input was a valid path (truthy value)
+/datum/preference/additional_language/proc/check_input_path(input)
+	if(input == NO_LANGUAGE)
+		return NO_LANGUAGE
+
+	var/path_form = istext(input) ? text2path(input) : input
+	// sometimes we deserialize with a text string that is a path, as they're saved as string in our json save
+	// other times we recieve a full typepath, likely from write preference
+	// we need to support either case just to be inclusive, so here we are	var/path_form = istext(input) ? text2path(input) : input
+	if(!ispath(path_form, /datum/language))
+		return null
+
+	var/datum/language/lang_instance = GLOB.language_datum_instances[path_form]
+	// MAYBE accessed when language datums aren't created so this is just a sanity check
+	if(istype(lang_instance) && !lang_instance.available_as_pref)
+		return null
+
+	return path_form
 
 /datum/preference/additional_language/apply_to_human(mob/living/carbon/human/target, value)
 	if(value == NO_LANGUAGE)
@@ -137,7 +163,11 @@
 				var/species_id = initial(species.id)
 				var/lang_path = text2path(params["lang_type"])
 				var/datum/language/lang_to_add = GLOB.language_datum_instances[lang_path]
-				if(!istype(lang_to_add) || !lang_to_add.available_as_pref)
+				if(!istype(lang_to_add))
+					to_chat(usr, span_warning("Invalid language."))
+					return
+				if(!lang_to_add.available_as_pref)
+					to_chat(usr, span_warning("That language is not available."))
 					return
 
 				// Sanity checking - Buttons are disabled in UI but you can never rely on that
@@ -181,8 +211,11 @@
 			lang_data["type"] = found_language
 			lang_data["barred_species"] = found_instance.banned_from_species_id
 			lang_data["allowed_species"] = found_instance.required_species_id
-			// Having a required species makes it a bouns language, otherwise it's a base language
-			UNTYPED_LIST_ADD(found_instance.required_species_id ? bonus_languages : base_languages, lang_data)
+			// Having a required species makes it a bonus language, otherwise it's a base language
+			if(found_instance.required_species_id)
+				UNTYPED_LIST_ADD(bonus_languages, lang_data)
+			else
+				UNTYPED_LIST_ADD(base_languages, lang_data)
 
 	data["blacklisted_species"] = BLACKLISTED_SPECIES_FROM_LANGUAGES
 	data["base_languages"] = base_languages

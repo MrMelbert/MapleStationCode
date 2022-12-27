@@ -74,7 +74,7 @@ export const _LanguagePicker = (props, context) => {
   } = data;
 
   return (
-    <Window title={pref_name + "'s Languages"} width={385}>
+    <Window title={pref_name + "'s Languages"} height={400} width={385}>
       <Window.Content>
         {!!trilingual && (
           <Dimmer vertical align="center">
