@@ -104,7 +104,7 @@
 /datum/outfit/job/captain/post_equip(mob/living/carbon/human/equipped, visualsOnly)
 	. = ..()
 	var/obj/item/station_charter/banner/celestial_charter = equipped.held_items[LEFT_HANDS]
-	if(!celestial_charter)
+	if(!istype(celestial_charter)) // NON-MODULE CHANGE
 		return
 	celestial_charter.name_type = special_charter
 

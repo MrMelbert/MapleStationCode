@@ -49,16 +49,16 @@ GLOBAL_LIST(cult_themes)
 	CRASH("Cult theme [type] did not implement on_chose_breakdown!")
 
 
- /**
-  * Helper proc to use that gets a fitting span for the cult theme.
-  *
-  * Returns the message passed in, with the cult span applied.
-  *
-  * message - the message being passed
-  * bold - whether it should be bold
-  * italics - whether it should be italicized
-  * large - whether it should be largetext
-  */
+/**
+ * Helper proc to use that gets a fitting span for the cult theme.
+ *
+ * Returns the message passed in, with the cult span applied.
+ *
+ * message - the message being passed
+ * bold - whether it should be bold
+ * italics - whether it should be italicized
+ * large - whether it should be largetext
+ */
 /datum/cult_theme/proc/our_cult_span(message, bold = FALSE, italics = FALSE, large = FALSE)
 	SHOULD_CALL_PARENT(FALSE)
 	CRASH("Cult theme [type] did not implement cult_span!")

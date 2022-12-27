@@ -15,8 +15,11 @@
 	can_randomize = FALSE
 
 /datum/preference/additional_language/deserialize(input, datum/preferences/preferences)
+	if(input == NO_LANGUAGE)
+		return NO_LANGUAGE
+
 	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
-	var/datum/language/lang_to_add = input
+	var/datum/language/lang_to_add = text2path(input)
 	var/species_id = initial(species.id)
 
 	if(species_id in BLACKLISTED_SPECIES_FROM_LANGUAGES)
@@ -30,7 +33,7 @@
 	if("Trilingual" in preferences.all_quirks)
 		return NO_LANGUAGE
 
-	return input
+	return lang_to_add
 
 /datum/preference/additional_language/serialize(input)
 	return ispath(input, /datum/language) ? input : NO_LANGUAGE
@@ -39,7 +42,7 @@
 	return NO_LANGUAGE
 
 /datum/preference/additional_language/is_valid(value)
-	return ispath(value) || value == NO_LANGUAGE
+	return ispath(value, /datum/language) || value == NO_LANGUAGE
 
 /datum/preference/additional_language/apply_to_human(mob/living/carbon/human/target, value)
 	if(value == NO_LANGUAGE)
@@ -83,6 +86,9 @@
 	required_species_id = SPECIES_HUMAN
 
 /datum/language/piratespeak
+	available_as_pref = TRUE
+
+/datum/language/yangyu
 	available_as_pref = TRUE
 
 /// TGUI for selecting languages.

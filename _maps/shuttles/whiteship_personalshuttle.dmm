@@ -487,7 +487,7 @@
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -28
 	},
 /turf/open/floor/mineral/titanium,

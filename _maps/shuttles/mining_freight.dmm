@@ -67,7 +67,7 @@
 "l" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 1
+	dir = 4
 	},
 /obj/machinery/atmospherics/components/binary/valve{
 	dir = 8

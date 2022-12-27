@@ -48,6 +48,9 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	if(skrell_mob.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
 		skrell_mob.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
 
+/datum/species/skrell/randomize_features(mob/living/carbon/human_mob)
+	randomize_external_organs(human_mob)
+
 /datum/species/skrell/get_species_description()
 	return "Skrell are a semi-aquatic species hailing from tropical worlds."
 
@@ -57,12 +60,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 /datum/species/skrell/create_pref_unique_perks()
 	var/list/perks = list()
 
-	perks += list(list(
-		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = "utensils",
-		SPECIES_PERK_NAME = "Weight Watchers",
-		SPECIES_PERK_DESC = "No matter how much they eat, the Skrell can never become overweight.",
-	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "utensils",

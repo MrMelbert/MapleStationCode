@@ -560,11 +560,11 @@
 /area/shuttle/abandoned/bar)
 "bk" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -662,8 +662,7 @@
 	pixel_y = 5
 	},
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 1
@@ -913,7 +912,7 @@
 "bV" = (
 /obj/machinery/light/small/built/directional/south,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 8
+	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/atmospherics/components/tank/air{
@@ -1075,7 +1074,7 @@
 "ck" = (
 /obj/machinery/light/small/built/directional/north,
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/power/smes/engineering{
@@ -1101,7 +1100,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/effect/turf_decal/tile/blue{
@@ -1335,11 +1334,11 @@
 /area/shuttle/abandoned/cargo)
 "cN" = (
 /obj/effect/turf_decal/stripes/corner{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	dir = 4;
+	dir = 8;
 	pixel_x = -24
 	},
 /obj/structure/spider/stickyweb,
@@ -1836,8 +1835,7 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /turf/open/floor/iron/white,
 /area/shuttle/abandoned/medbay)
@@ -1906,7 +1904,7 @@
 "dW" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/turf_decal/box/white/corners{
-	dir = 4
+	dir = 8
 	},
 /obj/structure/spider/stickyweb,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -1959,7 +1957,7 @@
 "so" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/turf_decal/box/white/corners{
-	dir = 8
+	dir = 1
 	},
 /obj/structure/closet/crate,
 /obj/item/grenade/chem_grenade/metalfoam,
@@ -1994,7 +1992,7 @@
 	pixel_y = 24
 	},
 /obj/effect/turf_decal/box/white/corners{
-	dir = 1
+	dir = 4
 	},
 /obj/structure/closet/crate/internals,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -2038,8 +2036,7 @@
 /area/shuttle/abandoned/bar)
 "La" = (
 /obj/machinery/airalarm/all_access{
-	pixel_y = -24;
-	dir = 1
+	pixel_y = -24
 	},
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/closet/secure_closet/freezer{
@@ -2452,9 +2449,9 @@ aa
 aa
 cz
 so
-cY
-ds
 dL
+ds
+dK
 dW
 cz
 "}
@@ -2492,7 +2489,7 @@ cy
 xO
 XP
 dC
-dK
+cY
 dY
 cy
 "}
