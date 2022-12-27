@@ -154,12 +154,40 @@ but so far they just reside in the red set. Balancing will be done after a few g
 			"name" = "Other",
 			"icon" = "star",
 			"products" = list(
+				/obj/item/storage/box/tdatet_starter = 20,
 				/obj/item/cardpack/tdatet = 20,
-				/obj/item/cardpack/tdatet_base = 20,
-				/obj/item/cardpack/tdatet_box = 20,
-				/obj/item/cardpack/tdatet/green = 10,
-				/obj/item/cardpack/tdatet/blue = 10,
-				/obj/item/cardpack/tdatet/mixed = 10,
+				/obj/item/cardpack/tdatet/green = 20,
+				/obj/item/cardpack/tdatet/blue = 20,
+				/obj/item/cardpack/tdatet/mixed = 20,
 			)
 		),
 	)
+
+/obj/item/paper/fluff/tdatet_rules
+	name = "TDATET rules"
+	desc = "Rules to start and play a game of Tiny Dances And The Everything Tree."
+	default_raw_text = @{"
+
+Thank you for testing out our initial prints of Tiny Dances And The Everything Tree!
+While the cards are in an early alpha state we wish for you to playtest the various rules and give feedback.
+
+Set out your Default Dances and Miner Dances cards by counters of some kind (such as a paper) to count how many of that unit you have, you may use counters for any cards labeled Mass.
+Both players get 2 Default Dances and 6 Miner Dances, with the 2nd player starting with an additional Miner Dances.
+Most units will not be active to defend or attack until the next turn unless the unit's card says otherwise.
+A player that has no more units loses, either player may concede as well. If players are unable to add or remove units it is a draw.
+Be sure to check on your economy units and have enough cards to support your units. Gold and Green are the only resources that are saved between turns, so you may need a counter for those.
+Check out the other color set packs at your local game vendor or order online to expand your strategy with more color resources! Be sure to trade and swap cards to have a good balance.
+	"}
+
+/obj/item/storage/box/tdatet_starter
+	name = "TDATET starter box"
+	desc = "Contains rules and cards to help start your dueling journey."
+	custom_price = PAYCHECK_COMMAND
+
+/obj/item/storage/box/tdatet_starter/PopulateContents()
+	var/static/items_inside = list(
+		/obj/item/cardpack/tdatet_box = 1,
+		/obj/item/cardpack/tdatet_base = 1,
+		/obj/item/paper/fluff/tdatet_rules = 1,
+	)
+	generate_items_inside(items_inside,src)

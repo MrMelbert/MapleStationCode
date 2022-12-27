@@ -13,11 +13,10 @@
 
 /datum/supply_pack/costumes_toys/tdatet_base
 	name = "Bulk Bold Beginner's Base Bargain for TDATET"
-	desc = "Contains 5 base pack cards, 5 big red box sets with over 28 red cards each, and 5 complimentary card binders. Great value to invite your friends to play along!"
+	desc = "Contains 5 base pack cards, 5 big red box sets with over 28 red cards each, 5 papers with rules, and 5 complimentary card binders. Great value to invite your friends to play along!"
 	cost = CARGO_CRATE_VALUE * 2
 	contains = list(
-		/obj/item/cardpack/tdatet_base = 5,
-		/obj/item/cardpack/tdatet_box = 5,
+		/obj/item/storage/box/tdatet_starter = 5,
 		/obj/item/storage/card_binder/personal = 5,
 	)
 	crate_name = "TDATET Beginner Booster 5-pack"
