@@ -93,7 +93,7 @@ export const _LanguagePicker = (props, context) => {
         <Section title="Base Racial Languages">
           <Stack vertical>
             {base_languages.map((language) => (
-              <Stack.Item key={language}>
+              <Stack.Item key={language.name}>
                 <LanguageStack
                   language={language}
                   selected_lang={selected_lang}
@@ -113,7 +113,7 @@ export const _LanguagePicker = (props, context) => {
         <Section title="Unique Racial Languages">
           <Stack vertical>
             {bonus_languages.map((language) => (
-              <Stack.Item key={language}>
+              <Stack.Item key={language.name}>
                 <LanguageStack
                   language={language}
                   selected_lang={selected_lang}
