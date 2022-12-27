@@ -31,7 +31,7 @@
 	inhand_icon_state = "nobledress"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	body_parts_covered = CHEST|GROIN|LEGS
-	flags_cover = HIDESHOES
+	flags_inv = HIDESHOES
 
 /obj/item/clothing/shoes/noble
 	name = "fancy loafers"
