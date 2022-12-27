@@ -197,7 +197,7 @@
 /datum/language_picker/ui_static_data(mob/user)
 	var/list/data = list()
 
-	if(!base_languages || !bonus_languages)
+	if(!length(base_languages) && !length(bonus_languages) && length(GLOB.language_datum_instances))
 		base_languages = list()
 		bonus_languages = list()
 
