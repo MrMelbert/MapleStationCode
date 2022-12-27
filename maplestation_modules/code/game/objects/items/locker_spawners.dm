@@ -52,8 +52,14 @@
 // AP Locker summoner
 /obj/item/locker_spawner/asset_protection
 	name = "asset protection equipment beacon"
-	desc = "A beaconm handed out for stalwart asset protection officers being assigned to stations without proper \
+	desc = "A beacon handed out for stalwart asset protection officers being assigned to stations without proper \
 		accommodations made for their occupation. When used, drop-pods in a fully stocked locker of equipment \
 		for use when protecting the command staff of Nanotrasen research stations."
 	requires_job_path = /datum/job/asset_protection
 	spawned_locker_path = /obj/structure/closet/secure_closet/asset_protection
+
+//Drags questionable life choices
+/obj/item/locker_spawner/noble
+	name = "regal equipment beacon"
+	desc = "A beacon gifted to noticeable nobility. This one has the Licht famly emblem engraved on it."
+	spawned_locker_path = /obj/item/storage/bag/garment/noble

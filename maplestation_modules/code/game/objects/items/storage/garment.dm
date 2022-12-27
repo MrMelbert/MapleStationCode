@@ -42,6 +42,20 @@
 	new /obj/item/clothing/glasses/hud/security/sunglasses/gars(src)
 	new /obj/item/clothing/glasses/hud/security/sunglasses/eyepatch(src)
 
+/obj/item/storage/bag/garment/noble
+	name = "regal garment bag"
+	desc = "A bag for storing extra clothes and shoes. This one belongs to the Licht family."
+
+/obj/item/storage/bag/garment/noble/PopulateContents()
+	new /obj/item/clothing/under/rank/noble(src)
+	new /obj/item/clothing/under/rank/noblealt(src)
+	new /obj/item/clothing/shoes/noble(src)
+	new /obj/item/clothing/shoes/noblealt(src)
+	new /obj/item/clothing/gloves/noble(src)
+	new /obj/item/clothing/gloves/noblealt(src)
+	new /obj/item/clothing/suit/toggle/noble(src)
+	new /obj/item/clothing/head/costume/crown/noble(src)
+
 // Making it so that all garment bags can hold a little more stuff.
 /obj/item/storage/bag/garment/Initialize(mapload)
 	. = ..()
