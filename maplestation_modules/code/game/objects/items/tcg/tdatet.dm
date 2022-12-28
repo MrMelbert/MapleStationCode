@@ -185,6 +185,7 @@ Check out the other color set packs at your local game vendor or order online to
 	desc = "Keeps a number on its display. Goes from 0 to 999. Left button to add 1, Right Button to subtract 1, Alt Button to set a number."
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "counter"
+	custom_price = PAYCHECK_LOWER
 	w_class = WEIGHT_CLASS_SMALL
 	var/current_number = 0
 
@@ -201,13 +202,13 @@ Check out the other color set packs at your local game vendor or order online to
 	name = "counter" // or initial(name)
 	name += " - [current_number]"
 
-/obj/item/toy/counter/attack_hand(mob/living/user)//REMINDER DEBUG remove/tweak sounds after testing
+/obj/item/toy/counter/attack_hand(mob/living/user)
 	if(!isturf(loc)) return ..()
 	current_number = clamp(current_number + 1, 0, 999)
 	update_icon(UPDATE_OVERLAYS)
 	update_appearance(UPDATE_NAME)
 	balloon_alert(user, "Raised to [current_number]")
-	playsound(src, 'sound/misc/fingersnap1.ogg', 50, TRUE)
+	playsound(src, 'sound/misc/fingersnap1.ogg', 5, TRUE)
 	return
 
 /obj/item/toy/counter/attack_hand_secondary(mob/living/user)
@@ -215,7 +216,7 @@ Check out the other color set packs at your local game vendor or order online to
 	update_icon(UPDATE_OVERLAYS)
 	update_appearance(UPDATE_NAME)
 	balloon_alert(user, "Lowered to [current_number]")
-	playsound(src, 'sound/misc/fingersnap2.ogg', 50, TRUE)
+	playsound(src, 'sound/misc/fingersnap1.ogg', 5, TRUE)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/toy/counter/AltClick(mob/living/user)
@@ -225,7 +226,7 @@ Check out the other color set packs at your local game vendor or order online to
 		update_icon(UPDATE_OVERLAYS)
 		update_appearance(UPDATE_NAME)
 		balloon_alert(user, "Set to [current_number]")
-	playsound(src, 'sound/misc/knuckles.ogg', 50, TRUE)
+	playsound(src, 'sound/misc/knuckles.ogg', 5, TRUE)
 	return
 
 /obj/item/toy/counter/update_overlays()
