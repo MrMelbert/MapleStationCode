@@ -29,7 +29,7 @@
 /datum/component/pose/proc/on_living_examine(datum/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_info(pose_text)
+	examine_list += span_italics(span_notice(pose_text))
 
 /datum/component/pose/proc/on_incapacitated(datum/source)
 	SIGNAL_HANDLER
@@ -40,17 +40,18 @@
 /mob/living/verb/set_examine()
 	set category = "IC"
 	set name = "Set Examine Text"
-	set desc = "Sets temporary text shown to people on examine. Can be used to pose your character, describe an injury, or more."
+	set desc = "Sets temporary text shown to people on examine. Can be used to pose your character, describe an injury, or anything you can think of."
 
 	if(stat == DEAD || HAS_TRAIT(src, TRAIT_INCAPACITATED))
 		to_chat(usr, span_warning("You can't do this right now!"))
 		return
 
-	var/default = "[p_they(TRUE)] [p_are()]..."
-	var/pose_input = tgui_input_text(usr, "Set temporary examine text here. Leave blank to clear.", "Examine Text", default_text = default, max_length = 85)
+	var/default_text = "[p_they(TRUE)] [p_are()]..."
+	var/pose_input = tgui_input_text(usr, "Set temporary examine text here. Can be used to pose your character, \
+		describe an injury, or anything you can think of. Leave blank to clear.", "Set Examine Text", default = default_text, max_length = 85)
 	if(QDELETED(src))
 		return
-	if(pose_input == default || !length(pose_input))
+	if(pose_input == default_text || !length(pose_input))
 		qdel(GetComponent(/datum/component/pose)) // This is meh but I didn't want to make a signal just for "COMSIG_LIVING_POSE_SET"
 		return
 	if(stat == DEAD || HAS_TRAIT(src, TRAIT_INCAPACITATED))

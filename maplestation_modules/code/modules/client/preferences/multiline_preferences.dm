@@ -68,6 +68,7 @@
 	our_flavor?.med_records = value
 
 /datum/preference/multiline_text/flavor_datum/silicon
+	savefile_key = "silicon_text"
 
 /datum/preference/multiline_text/flavor_datum/silicon/apply_to_human(mob/living/carbon/human/target, value)
 	var/datum/flavor_text/our_flavor = ..()

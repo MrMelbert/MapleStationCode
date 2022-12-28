@@ -31,10 +31,24 @@
  *	an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
  */
 
-// Mob is the person being examined. User is the one doing the examining.
+// Carbon and human examine don't call parent
+// so we need to replicate this across all three
+// Really I should be using the signal but at least this guarantees order
 /mob/living/examine(mob/user)
 	. = ..()
+	. += late_examine(user)
 
+/mob/living/carbon/examine(mob/user)
+	. = ..()
+	. += late_examine(user)
+
+/mob/living/carbon/human/examine(mob/user)
+	. = ..()
+	. += late_examine(user)
+
+/// Mob level examining that happens after the main beef of examine is done
+/mob/living/proc/late_examine(mob/user)
+	. = list()
 	SEND_SIGNAL(src, COMSIG_LIVING_LATE_EXAMINE, user, .)
 
 	// Who's identity are we dealing with? In most cases it's the same as [src], but it could be disguised people, or null.
@@ -71,7 +85,6 @@
 
 	if(length(expanded_examine))
 		expanded_examine = span_info(expanded_examine)
-		expanded_examine += "*---------*\n"
 		. += expanded_examine
 
 // This isn't even an extension of examine_more this is the only definition for /human/examine_more, isn't that neat?
