@@ -159,11 +159,12 @@ but so far they just reside in the red set. Balancing will be done after a few g
 				/obj/item/cardpack/tdatet/green = 20,
 				/obj/item/cardpack/tdatet/blue = 20,
 				/obj/item/cardpack/tdatet/mixed = 20,
+				/obj/item/toy/counter = 20,
 			)
 		),
 	)
 
-/obj/item/paper/fluff/tdatet_rules
+/obj/item/paper/fluff/tdatet_rules //Rules for the game, may need to update later on.
 	name = "TDATET rules"
 	desc = "Rules to start and play a game of Tiny Dances And The Everything Tree."
 	default_raw_text = @{"
@@ -179,9 +180,75 @@ Be sure to check on your economy units and have enough cards to support your uni
 Check out the other color set packs at your local game vendor or order online to expand your strategy with more color resources! Be sure to trade and swap cards to have a good balance.
 	"}
 
+/obj/item/toy/counter //looking at various bits of the ticket counter and card decks, this will store and display a number. Leftclick to add 1, Right click to subract 1, with Altclick to input a number directly. As of now its a placeholder image so the display doesn't change, must look at name or examine.
+	name = "counter - 0"
+	desc = "Keeps a number on its display. Goes from 0 to 999. Left button to add 1, Right Button to subtract 1, Alt Button to set a number."
+	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
+	icon_state = "counter"
+	w_class = WEIGHT_CLASS_SMALL
+	var/current_number = 0
+
+/obj/item/toy/counter/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/drag_pickup)
+
+/obj/item/toy/counter/examine(mob/user)
+	. = ..()
+	. += span_notice("The counter display has #[current_number].")
+
+/obj/item/toy/counter/update_name()
+	. = ..()
+	name = "counter" // or initial(name)
+	name += " - [current_number]"
+
+/obj/item/toy/counter/attack_hand(mob/living/user)//REMINDER DEBUG remove/tweak sounds after testing
+	if(!isturf(loc)) return ..()
+	current_number = clamp(current_number + 1, 0, 999)
+	update_icon(UPDATE_OVERLAYS)
+	update_appearance(UPDATE_NAME)
+	balloon_alert(user, "Raised to [current_number]")
+	playsound(src, 'sound/misc/fingersnap1.ogg', 50, TRUE)
+	return
+
+/obj/item/toy/counter/attack_hand_secondary(mob/living/user)
+	current_number = clamp(current_number - 1, 0, 999)
+	update_icon(UPDATE_OVERLAYS)
+	update_appearance(UPDATE_NAME)
+	balloon_alert(user, "Lowered to [current_number]")
+	playsound(src, 'sound/misc/fingersnap2.ogg', 50, TRUE)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/toy/counter/AltClick(mob/living/user)
+	var/amount = tgui_input_number(usr, message = "New Number To Display", title = "Number Input", default = 0, max_value = 999, min_value = 0, timeout = 0, round_value = TRUE)
+	if(!isnull(amount))
+		current_number = amount
+		update_icon(UPDATE_OVERLAYS)
+		update_appearance(UPDATE_NAME)
+		balloon_alert(user, "Set to [current_number]")
+	playsound(src, 'sound/misc/knuckles.ogg', 50, TRUE)
+	return
+
+/obj/item/toy/counter/update_overlays()
+	. = ..()
+
+	var/ones = current_number % 10
+	var/mutable_appearance/ones_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[ones]")
+	ones_overlay.pixel_w = 0
+	. += ones_overlay
+
+	var/tens = (current_number / 10) % 10
+	var/mutable_appearance/tens_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[tens]")
+	tens_overlay.pixel_w = -5
+	. += tens_overlay
+
+	var/huns = (current_number / 100) % 10
+	var/mutable_appearance/huns_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[huns]")
+	huns_overlay.pixel_w = -10
+	. += huns_overlay
+
 /obj/item/storage/box/tdatet_starter
 	name = "TDATET starter box"
-	desc = "Contains rules and cards to help start your dueling journey."
+	desc = "Contains rules, cards, and counters to help start your dueling journey."
 	custom_price = PAYCHECK_COMMAND
 
 /obj/item/storage/box/tdatet_starter/PopulateContents()
@@ -189,5 +256,6 @@ Check out the other color set packs at your local game vendor or order online to
 		/obj/item/cardpack/tdatet_box = 1,
 		/obj/item/cardpack/tdatet_base = 1,
 		/obj/item/paper/fluff/tdatet_rules = 1,
+		/obj/item/toy/counter = 4,
 	)
 	generate_items_inside(items_inside,src)
