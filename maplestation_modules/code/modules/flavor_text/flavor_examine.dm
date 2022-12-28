@@ -1,4 +1,11 @@
 /// -- Extension of examine, examine_more, and flavortext code. --
+/mob
+	/// Last time a client was connected to this mob.
+	var/last_connection_time = 0
+
+/mob/Logout()
+	. = ..()
+	last_connection_time = world.time
 
 /**
  *	Flavor text and Personal Records On Examine INS AND OUTS (implementation by mrmelbert)
@@ -25,9 +32,11 @@
  */
 
 // Mob is the person being examined. User is the one doing the examining.
-// Extension of /mob/living/carbon/human/examine().
-/mob/living/carbon/human/examine(mob/user)
+/mob/living/examine(mob/user)
 	. = ..()
+
+	SEND_SIGNAL(src, COMSIG_LIVING_LATE_EXAMINE, user, .)
+
 	// Who's identity are we dealing with? In most cases it's the same as [src], but it could be disguised people, or null.
 	var/datum/flavor_text/known_identity = get_visible_flavor(user)
 	var/expanded_examine = ""
@@ -35,7 +44,7 @@
 	if(known_identity)
 		expanded_examine += known_identity.get_flavor_and_records_links(user)
 
-	if(linked_flavor && user.client.holder && isAdminObserver(user))
+	if(linked_flavor && user.client?.holder && isAdminObserver(user))
 		// Formatted output list of records.
 		var/admin_line = ""
 
@@ -49,12 +58,14 @@
 			admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
 		if(linked_flavor.expl_info)
 			admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
+		if(known_identity != linked_flavor)
+			admin_line += "\nThey are currently [isnull(known_identity) ? "disguised and have no visible flavor":"visible as the flavor text of [known_identity.name]"]."
 
 		if(admin_line)
 			expanded_examine += "ADMIN EXAMINE: [ADMIN_LOOKUPFLW(src)] - [admin_line]\n"
 
 	// if the mob doesn't have a client, show how long they've been disconnected for.
-	if(!client && last_connection_time)
+	if(!client && last_connection_time && stat != DEAD)
 		var/formatted_afk_time = span_bold("[round((world.time - last_connection_time) / (60*60), 0.1)]")
 		expanded_examine += span_italics("\n[p_theyve(TRUE)] been unresponsive for [formatted_afk_time] minute(s).\n")
 
@@ -64,11 +75,13 @@
 		. += expanded_examine
 
 // This isn't even an extension of examine_more this is the only definition for /human/examine_more, isn't that neat?
-/mob/living/carbon/human/examine_more(mob/user)
+/mob/living/examine_more(mob/user)
 	. = ..()
 	var/datum/flavor_text/known_identity = get_visible_flavor(user)
 
 	if(known_identity)
 		. += span_info(known_identity.get_flavor_and_records_links(user, FALSE))
-	else
+	else if(ishuman(src))
+		// I hate this istype src but it's easier to handle this here
+		// Not all mobs should say "YOU CAN'T MAKE OUT DETAILS OF THIS PERSON"
 		. += span_smallnoticeital("You can't make out any details of this individual.\n")
