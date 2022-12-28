@@ -48,8 +48,13 @@
 
 	var/default = "[p_they(TRUE)] [p_are()]..."
 	var/pose_input = tgui_input_text(usr, "Set temporary examine text here. Leave blank to clear.", "Examine Text", default_text = default, max_length = 85)
+	if(QDELETED(src))
+		return
 	if(pose_input == default || !length(pose_input))
 		qdel(GetComponent(/datum/component/pose)) // This is meh but I didn't want to make a signal just for "COMSIG_LIVING_POSE_SET"
+		return
+	if(stat == DEAD || HAS_TRAIT(src, TRAIT_INCAPACITATED))
+		to_chat(usr, span_warning("You can't do this right now!"))
 		return
 
 	AddComponent(/datum/component/pose, pose_input)
