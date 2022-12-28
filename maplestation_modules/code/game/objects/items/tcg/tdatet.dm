@@ -182,7 +182,7 @@ Check out the other color set packs at your local game vendor or order online to
 
 /obj/item/toy/counter //looking at various bits of the ticket counter and card decks, this will store and display a number. Leftclick to add 1, Right click to subract 1, with Altclick to input a number directly. As of now its a placeholder image so the display doesn't change, must look at name or examine.
 	name = "counter - 0"
-	desc = "Keeps a number on its display. Goes from 0 to 999. Left button to add 1, Right Button to subtract 1, Alt Button to set a number."
+	desc = "Keeps a number on its display. Needs to be set down to work, when in inventory can click to pick up. When set down click-drag to pickup. Goes from 0 to 999. Left button to add 1, Right Button to subtract 1, Alt Button to set a number."
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "counter"
 	custom_price = PAYCHECK_LOWER
