@@ -74,13 +74,14 @@
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
 	slot_flags = ITEM_SLOT_BACK
 	force = 7
-	armour_penetration = 10
+	armour_penetration = 30
+	throwforce = 20
 	sharpness = SHARP_POINTY
 	w_class = WEIGHT_CLASS_HUGE
 	attack_verb_continuous = list("stabs", "pokes", "slashes")
 	attack_verb_simple = list("stab", "poke", "slash")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the belt."
+	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the back."
 
 /obj/item/nullrod/cleric/Initialize(mapload)
 	. = ..()
