@@ -73,7 +73,7 @@
 	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
 	slot_flags = ITEM_SLOT_BELT
-	worn_icon = "ratvarian_spear"
+	worn_icon_state = "ratvarian_spear"
 	force = 7
 	armour_penetration = 30
 	throwforce = 20
@@ -87,7 +87,7 @@
 /obj/item/nullrod/cleric/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded = 7, force_wielded = 18, icon_wielded = "spear1")
-	
+
 /obj/item/nullrod/cleric/update_icon_state()
 	icon_state = "[base_icon_state]0"
 	return ..()
