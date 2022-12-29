@@ -87,6 +87,7 @@
 /obj/item/nullrod/cleric/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded = 7, force_wielded = 18, icon_wielded = "spear1")
+	
 /obj/item/nullrod/cleric/update_icon_state()
 	icon_state = "[base_icon_state]0"
 	return ..()
