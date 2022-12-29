@@ -65,14 +65,15 @@
 
 /obj/item/nullrod/cleric
 	name = "holy puligard spear"
-	desc = "A decorative holy weapon with white crystals embeded in the shaft of the spear."
+	desc = "A gold-bossed, white crystal embeded spear hailing from the holy land of Gilidan. The weight of the spear requires two handed use. Can be worn on the belt."
 	icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_icons.dmi'
 	icon_state = "spear0"
 	base_icon_state = "spear"
 	inhand_icon_state = null
 	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BELT
+	worn_icon = "ratvarian_spear"
 	force = 7
 	armour_penetration = 30
 	throwforce = 20
@@ -81,7 +82,7 @@
 	attack_verb_continuous = list("stabs", "pokes", "slashes")
 	attack_verb_simple = list("stab", "poke", "slash")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the back."
+	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the belt."
 
 /obj/item/nullrod/cleric/Initialize(mapload)
 	. = ..()
