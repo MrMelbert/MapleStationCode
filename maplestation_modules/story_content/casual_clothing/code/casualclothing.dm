@@ -57,4 +57,4 @@
 	righthand_file = 'maplestation_modules/story_content/casual_clothing/casual_rhand.dmi'
 	icon_state = "sunglasses"
 	inhand_icon_state = "sunglasses"
-	flash_protect = NULL
+	flash_protect = FALSE
