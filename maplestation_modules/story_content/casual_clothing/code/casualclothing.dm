@@ -39,7 +39,7 @@
 	icon_state = "sneakers"
 	inhand_icon_state = "sneakers"
 
-	/obj/item/clothing/neck/cloak/casual
+/obj/item/clothing/neck/cloak/casual
 	name = "fuzzy cloak"
 	desc = "A delicate soft cloak. The inner lining has fleece to keep the wearer warm."
 	icon = 'maplestation_modules/story_content/casual_clothing/casual_icon.dmi'
