@@ -11,7 +11,7 @@
 
 /obj/item/clothing/under/jumpsuit/blueskirt
 	name = "soft blue dress"
-	desc = "A knee length dress that was soft to the touch."
+	desc = "A knee length dress that is soft to the touch."
 	icon = 'maplestation_modules/story_content/casual_clothing/casual_icon.dmi'
 	worn_icon = 'maplestation_modules/story_content/casual_clothing/casual_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/casual_clothing/casual_lhand.dmi'
