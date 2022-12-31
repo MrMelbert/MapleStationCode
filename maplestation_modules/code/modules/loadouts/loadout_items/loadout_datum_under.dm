@@ -104,11 +104,11 @@ GLOBAL_LIST_INIT(loadout_undersuits, generate_loadout_items(/datum/loadout_item/
 
 /datum/loadout_item/under/jumpsuit/hoodie
 	name = "Workout Hoodie"
-	item_path = /obj/item/clothing/under/rank/hoodie
+	item_path = /obj/item/clothing/under/jumpsuit/casualhoodie
 
-/datum/loadout_item/under/jumpsuit/hoodie
-	name = "Blue Dress"
-	item_path = /obj/item/clothing/under/rank/blueskirt
+/datum/loadout_item/under/jumpsuit/casualdress
+	name = "Casual Dress"
+	item_path = /obj/item/clothing/under/jumpsuit/blueskirt
 
 // formal undersuits
 /datum/loadout_item/under/formal
