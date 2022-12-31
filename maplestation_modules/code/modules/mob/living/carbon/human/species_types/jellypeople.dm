@@ -17,7 +17,7 @@
 /datum/species/jelly/get_species_description()
 	return "The highly adaptive Jellypeople are the cumulative result of an extremely high \
 		cellular mutation rate, as well as an inordinate amount of workplace accidents. It's \
-		rare to see one in person, but even rarer to work with one, as less Jellypeople exist \
+		rare to see one in person, but even rarer to work with one, as less permanent Jellypeople exist \
 		than there are days in a year."
 
 /datum/species/jelly/get_species_lore()
