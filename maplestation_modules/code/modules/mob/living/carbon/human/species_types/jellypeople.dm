@@ -37,7 +37,8 @@
 
 		"The oldest Jellyperson alive has their age recorded as 196, despite visibly appearing no older than 9. It's unknown if Jellypeople truly age, or if they simply \
 		do not visibly do so. Whatever the case, scientists agree that their regenerative abilities are a direct factor into their long lifespans. Longevity has had its price \
-		however, as Jellypeople are a sterile race, leaving themselves as their only lasting legacy.",
+		however, as Jellypeople are a sterile race, leaving themselves as their only lasting legacy. Their true total lifespans are unknown, as none have yet to die as a result of \
+		age-related phenomena.",
 
 		"As of 2562, Nanotrasen is aware of less than 50 Slimepeople in existence, with 14 of these being under their employ."
 		)
