@@ -199,35 +199,38 @@ Check out the other color set packs at your local game vendor or order online to
 
 /obj/item/toy/counter/update_name()
 	. = ..()
-	name = "counter" // or initial(name)
-	name += " - [current_number]"
+	name = "counter - [current_number]"
 
 /obj/item/toy/counter/attack_hand(mob/living/user)
-	if(!isturf(loc)) return ..()
+	if(!isturf(loc)) 
+		return ..()
 	current_number = clamp(current_number + 1, 0, 999)
-	update_icon(UPDATE_OVERLAYS)
-	update_appearance(UPDATE_NAME)
-	balloon_alert(user, "Raised to [current_number]")
+	update_appearance(UPDATE_NAME|UPDATE_ICON)
+	balloon_alert(user, "raised to [current_number]")
 	playsound(src, 'sound/misc/fingersnap1.ogg', 5, TRUE)
-	return
+	add_fingerprint(user)
+	return TRUE
 
 /obj/item/toy/counter/attack_hand_secondary(mob/living/user)
+	if(!isturf(loc))
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	current_number = clamp(current_number - 1, 0, 999)
-	update_icon(UPDATE_OVERLAYS)
-	update_appearance(UPDATE_NAME)
-	balloon_alert(user, "Lowered to [current_number]")
+	update_appearance(UPDATE_NAME|UPDATE_ICON)
+	balloon_alert(user, "lowered to [current_number]")
 	playsound(src, 'sound/misc/fingersnap1.ogg', 5, TRUE)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/toy/counter/AltClick(mob/living/user)
+	. = ..()
+	if(!user.canUseTopic(src, be_close = TRUE, need_hands = !iscyborg(user)))
+	    return
 	var/amount = tgui_input_number(usr, message = "New Number To Display", title = "Number Input", default = 0, max_value = 999, min_value = 0, timeout = 0, round_value = TRUE)
 	if(!isnull(amount))
 		current_number = amount
 		update_icon(UPDATE_OVERLAYS)
 		update_appearance(UPDATE_NAME)
-		balloon_alert(user, "Set to [current_number]")
+		balloon_alert(user, "set to [current_number]")
 	playsound(src, 'sound/misc/knuckles.ogg', 5, TRUE)
-	return
 
 /obj/item/toy/counter/update_overlays()
 	. = ..()
@@ -253,10 +256,10 @@ Check out the other color set packs at your local game vendor or order online to
 	custom_price = PAYCHECK_COMMAND
 
 /obj/item/storage/box/tdatet_starter/PopulateContents()
-	var/static/items_inside = list(
+	var/static/list/items_inside = list(
 		/obj/item/cardpack/tdatet_box = 1,
 		/obj/item/cardpack/tdatet_base = 1,
 		/obj/item/paper/fluff/tdatet_rules = 1,
 		/obj/item/toy/counter = 4,
 	)
-	generate_items_inside(items_inside,src)
+	generate_items_inside(items_inside, src)
