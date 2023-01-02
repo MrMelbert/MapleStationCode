@@ -203,7 +203,7 @@ Check out the other color set packs at your local game vendor or order online to
 	name = "counter - [current_number]"
 
 /obj/item/toy/counter/attack_hand(mob/living/user)
-	if(!isturf(loc)) 
+	if(!isturf(loc))
 		return ..()
 	current_number = clamp(current_number + 1, 0, 999)
 	update_appearance(UPDATE_NAME|UPDATE_ICON)
@@ -224,7 +224,7 @@ Check out the other color set packs at your local game vendor or order online to
 /obj/item/toy/counter/AltClick(mob/living/user)
 	. = ..()
 	if(!user.canUseTopic(src, be_close = TRUE, need_hands = !iscyborg(user)))
-	    return
+		return
 	var/amount = tgui_input_number(usr, message = "New Number To Display", title = "Number Input", default = 0, max_value = 999, min_value = 0, timeout = 0, round_value = TRUE)
 	if(!isnull(amount))
 		current_number = amount
