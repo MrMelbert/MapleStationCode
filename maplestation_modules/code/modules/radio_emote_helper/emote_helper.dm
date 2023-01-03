@@ -1,10 +1,8 @@
-/mob/verb/how_do_i_radio_emote
+/mob/verb/how_do_i_radio_emote()
 	set name = "Radio Emote Help"
 	set category = "IC"
 
-	var/header = {"<span class='boldannounce'>
-How do I emote on radio?
-</span>"}
+	var/header = span_boldnotice("How do I emote on radio?")
 
 	var/text = {"<span class='info'>
 You can do a custom radio emote by the following:
@@ -25,4 +23,4 @@ You can also use this to create a custom \"say emote\" (that is, what your messa
 It will automatically insert a comma for you, so you don't need to worry about that.
 </span>"}
 
-	to_chat(usr, examine_block("[header][text]"))
+	to_chat(usr, examine_block("[header]\n[text]"))
