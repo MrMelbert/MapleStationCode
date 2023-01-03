@@ -57,6 +57,6 @@ GLOBAL_LIST_INIT(loadout_necks, generate_loadout_items(/datum/loadout_item/neck)
 	name = "Stethoscope"
 	item_path = /obj/item/clothing/neck/stethoscope
 
-/datum/loadout_item/neck/cloak/casual
+/datum/loadout_item/neck/casual_cloak
 	name = "Fuzzy Cloak"
 	item_path = /obj/item/clothing/neck/cloak/casual
