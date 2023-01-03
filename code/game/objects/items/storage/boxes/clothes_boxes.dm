@@ -167,13 +167,3 @@
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie/leader(src)
-
-//Cleric kit
-/obj/item/storage/box/holy/cleric
-	name = "Puligard Kit"
-
-/obj/item/storage/box/holy/cleric/PopulateContents()
-	new /obj/item/clothing/under/rank/cleric(src)
-	new /obj/item/clothing/under/rank/cleric/skirt(src)
-	new /obj/item/clothing/shoes/cleric(src)
-	new /obj/item/clothing/suit/hooded/cleric(src)

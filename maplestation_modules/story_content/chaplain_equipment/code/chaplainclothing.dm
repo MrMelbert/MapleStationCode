@@ -1,10 +1,10 @@
 /obj/item/clothing/under/rank/cleric
 	name = "puligard unifrom"
 	desc = "A uniform designed for the faithful holy army of Gilidan."
-	icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_icons.dmi'
-	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericrobe"
 	inhand_icon_state = "clericrobe"
 	supports_variations_flags = CLOTHING_NO_VARIATION
@@ -13,10 +13,10 @@
 /obj/item/clothing/under/rank/cleric/skirt
 	name = "puligard uniform skirt"
 	desc = "A uniform designed for the faithful holy army of Gilidan. This uniform is fitted with a skirt."
-	icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_icons.dmi'
-	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericskirt"
 	inhand_icon_state = "clericrobe"
 	supports_variations_flags = CLOTHING_NO_VARIATION
@@ -25,10 +25,10 @@
 /obj/item/clothing/shoes/cleric
 	name = "puligard's shoes"
 	desc = "Soft leather shoes designed for acolyte's of the Puligard church."
-	icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_icons.dmi'
-	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericshoes"
 	inhand_icon_state = "clericshoes"
 	strip_delay = 30
@@ -40,10 +40,10 @@
 /obj/item/clothing/suit/hooded/cleric
 	name = "puligard's cloak"
 	desc = "A soft feathery cloak designed for high ranking officals of the Puligard church."
-	icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_icons.dmi'
-	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clericcloak"
 	inhand_icon_state = "clericcloak"
 	body_parts_covered = CHEST|GROIN
@@ -54,10 +54,10 @@
 /obj/item/clothing/head/hooded/cleirc
 	name = "chaplain's quality carapace"
 	desc = "The hood attached to a Puligard's cloak."
-	icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_icons.dmi'
-	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "clerichood"
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEFACE|HIDEEYES|HIDEFACIALHAIR|HIDEEARS
@@ -66,12 +66,12 @@
 /obj/item/nullrod/cleric
 	name = "holy puligard spear"
 	desc = "A gold-bossed, white crystal embeded spear hailing from the holy land of Gilidan. The weight of the spear requires two handed use. Can be worn on the belt."
-	icon = 'maplestation_modules/story_content/chaplain_equipment/cleric_icons.dmi'
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
 	icon_state = "spear0"
 	base_icon_state = "spear"
 	inhand_icon_state = null
-	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/cleric_rhand.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	slot_flags = ITEM_SLOT_BELT
 	worn_icon_state = "ratvarian_spear"
 	force = 7
@@ -91,3 +91,13 @@
 /obj/item/nullrod/cleric/update_icon_state()
 	icon_state = "[base_icon_state]0"
 	return ..()
+
+//Cleric kit
+/obj/item/storage/box/holy/cleric
+	name = "Puligard Kit"
+
+/obj/item/storage/box/holy/cleric/PopulateContents()
+	new /obj/item/clothing/under/rank/cleric(src)
+	new /obj/item/clothing/under/rank/cleric/skirt(src)
+	new /obj/item/clothing/shoes/cleric(src)
+	new /obj/item/clothing/suit/hooded/cleric(src)
