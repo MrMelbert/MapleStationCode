@@ -187,6 +187,8 @@ Check out the other color set packs at your local game vendor or order online to
 	icon_state = "counter"
 	custom_price = PAYCHECK_LOWER
 	w_class = WEIGHT_CLASS_SMALL
+	obj_flags = UNIQUE_RENAME
+	var/base_name = "counter"
 	var/current_number = 0
 
 /obj/item/toy/counter/Initialize(mapload)
@@ -213,7 +215,10 @@ Check out the other color set packs at your local game vendor or order online to
 
 /obj/item/toy/counter/update_name()
 	. = ..()
-	name = "counter - [current_number]"
+	if(renamedByPlayer)
+		base_name = name
+		renamedByPlayer = FALSE
+	name = "[base_name] - [current_number]"
 
 /obj/item/toy/counter/attack_hand(mob/living/user)
 	if(!isturf(loc))
