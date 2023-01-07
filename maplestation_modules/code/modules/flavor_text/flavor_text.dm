@@ -43,14 +43,24 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	var/name
 	/// The species associated with this flavor text.
 	var/linked_species
+
+	// Shown on examine
 	/// The actual flavor text.
 	var/flavor_text
+	/// Flavor text shown as a silicon
+	var/silicon_text
+
+	// Medical related
 	/// General records associated with this flavor text
 	var/gen_records
 	/// Medical records associated with this flavor text
 	var/med_records
+
+	// Security related
 	/// Security records associated with this flavor text
 	var/sec_records
+
+	// Antag related
 	/// Exploitable info associated with this flavor text
 	var/expl_info
 
@@ -75,14 +85,21 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  * returns a string
  */
 /datum/flavor_text/proc/get_flavor_text(mob/living/carbon/human/examiner, shorten = TRUE)
-	. = flavor_text
+	var/found_text = flavor_text
+	if(linked_species == "silicon")
+		found_text = silicon_text
 
-	if(shorten && length(.) > EXAMINE_FLAVOR_MAX_DISPLAYED)
-		. = TextPreview(., EXAMINE_FLAVOR_MAX_DISPLAYED)
-		. += " <a href='?src=[REF(src)];flavor_text=1'>\[More\]</a>"
+	if(!length(found_text))
+		return
 
-	if(.)
-		. += "\n"
+	if(shorten && length(found_text) > EXAMINE_FLAVOR_MAX_DISPLAYED)
+		found_text = TextPreview(found_text, EXAMINE_FLAVOR_MAX_DISPLAYED)
+		found_text += " <a href='?src=[REF(src)];flavor_text=1'>\[More\]</a>"
+
+	if(found_text)
+		found_text += "\n"
+
+	return found_text
 
 /**
  * Get the href buttons for all the mob's records, formatted.
@@ -135,26 +152,26 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	var/list/added_info = list()
 
 	// If the client has flavor text set.
-	if(flavor_text)
-		var/found_flavor_text = get_flavor_text(examiner, shorten)
+	var/found_flavor_text = get_flavor_text(examiner, shorten)
+	if(found_flavor_text)
 		. += found_flavor_text
 		if(length(found_flavor_text) > EXAMINE_FLAVOR_MAX_DISPLAYED)
 			added_info += "longer flavor text"
 
 	// Antagonists can see expoitable information.
-	if(expl_info && examiner.mind?.antag_datums)
+	if(expl_info && LAZYLEN(examiner.mind?.antag_datums))
 		for(var/datum/antagonist/antag_datum as anything in examiner.mind.antag_datums)
 			if(antag_datum.antag_flags & CAN_SEE_EXPOITABLE_INFO)
 				added_info += "exploitable information"
 				break
 	// Medhuds can see medical and general records, with adequate access.
-	if(examiner.check_med_hud_and_access() && (med_records || gen_records))
+	if((med_records || gen_records) && examiner.check_med_hud_and_access())
 		added_info += "past records"
 	// Sechuds can see security records, with adequate access.
-	else if(examiner.check_sec_hud_and_access() && sec_records)
+	if(sec_records && examiner.check_sec_hud_and_access())
 		added_info += "past records"
 
-	if(added_info.len && shorten)
+	if(length(added_info) && shorten)
 		. += span_smallnoticeital("This individual may have [english_list(added_info, and_text = " or ", final_comma_text = ",")] available if you [EXAMINE_CLOSER_BOLD].\n")
 	else
 		. += get_records_text(examiner)
