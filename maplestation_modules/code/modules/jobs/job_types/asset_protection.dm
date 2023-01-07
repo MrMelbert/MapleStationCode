@@ -19,7 +19,7 @@
 	config_tag = "ASSET_PROTECTION"
 
 	outfit = /datum/outfit/job/asset_protection
-	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security
+	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_SEC

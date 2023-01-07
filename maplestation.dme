@@ -5051,6 +5051,7 @@
 #include "maplestation_modules\code\modules\jobs\job_types\bridge_officer.dm"
 #include "maplestation_modules\code\modules\jobs\job_types\lawyer.dm"
 #include "maplestation_modules\code\modules\jobs\job_types\ordnance_tech.dm"
+#include "maplestation_modules\code\modules\jobs\job_types\psychologist.dm"
 #include "maplestation_modules\code\modules\jobs\job_types\research_director.dm"
 #include "maplestation_modules\code\modules\jobs\job_types\scientist.dm"
 #include "maplestation_modules\code\modules\jobs\job_types\xenobiologist.dm"
