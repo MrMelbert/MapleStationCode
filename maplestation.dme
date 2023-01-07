@@ -5112,6 +5112,7 @@
 #include "maplestation_modules\code\modules\paperwork\stamps.dm"
 #include "maplestation_modules\code\modules\projectiles\ammunition\ballistic\shotgun.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\shotgun.dm"
+#include "maplestation_modules\code\modules\radio_emote_helper\emote_helper.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\drink_reagents.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\mutation_reagents.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\rim_reagents.dm"
