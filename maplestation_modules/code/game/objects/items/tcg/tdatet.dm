@@ -180,7 +180,7 @@ Be sure to check on your economy units and have enough cards to support your uni
 Check out the other color set packs at your local game vendor or order online to expand your strategy with more color resources! Be sure to trade and swap cards to have a good balance.
 	"}
 
-/obj/item/toy/counter //looking at various bits of the ticket counter and card decks, this will store and display a number. Leftclick to add 1, Right click to subract 1, with Altclick to input a number directly. As of now its a placeholder image so the display doesn't change, must look at name or examine.
+/obj/item/toy/counter //looking at various bits of the ticket counter and card decks, this will store and display a number. Leftclick to add 1, Right click to subract 1, with Altclick to input a number directly.
 	name = "counter - 0"
 	desc = "Keeps a number on its display."
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
@@ -191,12 +191,25 @@ Check out the other color set packs at your local game vendor or order online to
 
 /obj/item/toy/counter/Initialize(mapload)
 	. = ..()
+	register_context()
 	AddElement(/datum/element/drag_pickup)
+
+/obj/item/toy/counter/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+
+	if(!isturf(loc))
+		context[SCREENTIP_CONTEXT_ALT_LMB] = "Set number"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	context[SCREENTIP_CONTEXT_LMB] = "Add one"
+	context[SCREENTIP_CONTEXT_RMB] = "Subtract one"
+	context[SCREENTIP_CONTEXT_ALT_LMB] = "Set number"
+	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/toy/counter/examine(mob/user)
 	. = ..()
 	. += span_notice("The counter display has #[current_number].")
-	. += span_notice("Needs to be set down to work, when in inventory can click to pick up. When set down click-drag to pickup. Goes from 0 to 999. Left button to add 1, Right Button to subtract 1, Alt Button to set a number.")
+	. += span_notice("Alt Button to set a number. Needs to be set down to add or subtract, when in inventory can click to pick up. When set down click-drag to pickup. Goes from 0 to 999. Left button to add 1, Right Button to subtract 1.")
 
 /obj/item/toy/counter/update_name()
 	. = ..()
