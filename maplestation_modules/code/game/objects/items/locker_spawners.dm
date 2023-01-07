@@ -58,8 +58,3 @@
 	requires_job_path = /datum/job/asset_protection
 	spawned_locker_path = /obj/structure/closet/secure_closet/asset_protection
 
-//Drags questionable life choices
-/obj/item/locker_spawner/noble
-	name = "regal equipment beacon"
-	desc = "A beacon gifted to noticeable nobility. This one has the Licht famly emblem engraved on it."
-	spawned_locker_path = /obj/item/storage/bag/garment/noble
