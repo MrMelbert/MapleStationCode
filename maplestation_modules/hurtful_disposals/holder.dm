@@ -7,7 +7,7 @@ GLOBAL_VAR_INIT(disposals_damage_chance, 10)
 	if(current_pipe || !active)
 		if(!(locate(/obj/structure/disposaloutlet) in get_turf(src))) /// Checks if there's an outlet so it doesn't keep trying to damage you there.
 			for(var/mob/living/trashed_individual in src)
-				if(prob(10))
+				if(prob(20))
 					playsound(loc, 'sound/effects/clang.ogg', 30, TRUE, FALSE)
 				else if(prob(GLOB.disposals_damage_chance))
 					trashed_individual.apply_damage(1 * GLOB.disposals_damage_markiplier, BRUTE)
