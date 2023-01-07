@@ -92,7 +92,7 @@
 				if(prob(20))
 					playsound(loc, 'sound/effects/clang.ogg', 30, TRUE, FALSE)
 				else if(prob(10))
-					trashed_individual.sharp_pain(BODY_ZONES_ALL, min((. / 2), 2), BRUTE)
+					trashed_individual.sharp_pain(BODY_ZONES_ALL, 2, BRUTE)
 					playsound(src.loc, 'sound/effects/wounds/crack1.ogg', 50, TRUE, FALSE)
 				else if(prob(10))
 					trashed_individual.apply_damage(1, BRUTE)
