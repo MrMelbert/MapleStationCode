@@ -1,4 +1,4 @@
-GLOBAL_VAR_INIT(disposals_damage_markiplier, 1)
+GLOBAL_VAR_INIT(disposals_damage_multiplier, 1)
 GLOBAL_VAR_INIT(disposals_pain_chance, 10)
 GLOBAL_VAR_INIT(disposals_damage_chance, 10)
 
