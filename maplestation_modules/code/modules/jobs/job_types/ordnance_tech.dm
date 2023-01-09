@@ -7,7 +7,7 @@
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 1
-	spawn_positions = 3
+	spawn_positions = 1 // Too many cooks spoil the broth, too many techs ruin the burn mix
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	exp_requirements = 60

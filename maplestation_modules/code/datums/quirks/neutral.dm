@@ -24,7 +24,6 @@
 	card_binder.persistence_id = "personal_[human_holder.last_mind?.key]" // this is a persistent binder, the ID is tied to the account's key to avoid tampering, just like the Photo album.
 	card_binder.persistence_load() */
 	card_binder.name = "[human_holder.real_name]'s card binder"
-	//Will add named cardbinder, starting base 2 cards, and a packbox of 28 Red cards.
+	//Will add named cardbinder, starting base 2 cards, packbox of 28 Red cards, 4 counters, and a paper with rules. Now in a handy box!
 	give_item_to_holder(card_binder, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-	give_item_to_holder(/obj/item/cardpack/tdatet_box, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
-	give_item_to_holder(/obj/item/cardpack/tdatet_base, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
+	give_item_to_holder(/obj/item/storage/box/tdatet_starter, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
