@@ -6,8 +6,9 @@ GLOBAL_VAR_INIT(disposals_damage_chance, 10)
 /// Probability of getting pain every move (only rolls if damage is not rolled)
 GLOBAL_VAR_INIT(disposals_pain_chance, 10)
 
-
-if(!current_pipe && active)
+/obj/structure/disposalholder/try_expel(datum/move_loop/source, succeed, visual_delay)
+    . = ..()
+	if(!current_pipe && active)
 		return
 	
 	// Checks if there's an outlet so it doesn't keep trying to damage you there.
