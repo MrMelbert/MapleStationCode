@@ -7,7 +7,7 @@ GLOBAL_VAR_INIT(disposals_damage_chance, 10)
 GLOBAL_VAR_INIT(disposals_pain_chance, 10)
 
 /obj/structure/disposalholder/try_expel(datum/move_loop/source, succeed, visual_delay)
-    . = ..()
+	. = ..()
 	if(!current_pipe && active)
 		return
 	
