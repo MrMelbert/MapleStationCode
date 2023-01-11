@@ -11,7 +11,6 @@
 	muzzle_type = /obj/effect/projectile/muzzle/laser/ppc
 	tracer_type = /obj/effect/projectile/tracer/laser/ppc
 	impact_type = /obj/effect/projectile/impact/laser/ppc
-	//impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser //Too lazy to make a white version of the impact sprite, so blue time
 	impact_effect_type = null
 	hitscan_light_intensity = 3
 	hitscan_light_range = 0.75
