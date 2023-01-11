@@ -30,8 +30,8 @@
 		MECHA_R_ARM = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/ssrm2,
 		MECHA_UTILITY = list(
 			/obj/item/mecha_parts/mecha_equipment/thrusters/ion,
-			/obj/item/mecha_parts/mecha_equipment/repair_droid
-			), //it heals too
+			/obj/item/mecha_parts/mecha_equipment/repair_droid //it heals too
+			),
 		MECHA_POWER = list(),
 		MECHA_ARMOR = list(),
 	)
