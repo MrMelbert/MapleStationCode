@@ -115,12 +115,12 @@ DEBUG REMINDER Since these are using placeholder art, might want to remove the w
 
 /obj/item/cardpack/tdatet_box
 	name = "Trading Card Pack Red Box: Tiny Dances And The Everything Tree"
-	desc = "Contains 28 cards of varying rarity from the TDATET Red set, 5 being a guaranteed uncommon or higher! Along with flipper. Great for getting started!"
+	desc = "Contains 25 cards of varying rarity from the TDATET Red set, 5 being a guaranteed rare or higher!"
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "cardpack_tdatet_case"
 	series = "tdatet"
 	contains_coin = 0
-	card_count = 23
+	card_count = 20
 	rarity_table = list(
 		"common" = 900,
 		"uncommon" = 300,
@@ -130,7 +130,6 @@ DEBUG REMINDER Since these are using placeholder art, might want to remove the w
 	)
 	guaranteed_count = 5
 	guar_rarity = list(
-		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,
 		"legendary" = 5,
@@ -144,6 +143,14 @@ DEBUG REMINDER Since these are using placeholder art, might want to remove the w
 /obj/item/storage/card_binder/personal
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "binder_green"
+
+/obj/item/storage/card_binder/personal/PopulateContents()
+	var/static/list/items_inside = list(
+		/obj/item/tcgcard/tdatet/animus = 1,
+		/obj/item/tcgcard/tdatet/blastforge = 1,
+		/obj/item/tcgcard/tdatet/conduit = 1,
+	)
+	generate_items_inside(items_inside, src)
 
 /obj/item/storage/card_binder/personal/examine(mob/user) // just a minor addition to let examiner know how many cards are within a binder since i got tired counting manually.
 	. = ..()
@@ -284,3 +291,29 @@ Check out the other color set packs at your local game vendor or order online to
 		/obj/item/toy/counter = 5,
 	)
 	generate_items_inside(items_inside, src)
+
+/obj/item/tcgcard/tdatet
+	series = "tdatet"
+	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
+
+/obj/item/tcgcard/tdatet/animus
+	id = "animus"
+	icon_state = "animus"
+
+/obj/item/tcgcard/tdatet/blastforge
+	id = "blastforge"
+	icon_state = "blastforge"
+
+/obj/item/tcgcard/tdatet/conduit
+	id = "conduit"
+	icon_state = "conduit"
+
+/obj/effect/spawner/random/entertainment/tdatet
+	name = "spawn TDATET creation card"
+	desc = "Spawns 2 creation cards from the TDATET set."
+	spawn_loot_count = 2
+	loot = list(
+		/obj/item/tcgcard/tdatet/animus = 33,
+		/obj/item/tcgcard/tdatet/blastforge = 33,
+		/obj/item/tcgcard/tdatet/conduit = 33,
+	)

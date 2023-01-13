@@ -78,7 +78,7 @@
 			"rarity": "common"
 		},
 		{
-			"id": "animus_gen",
+			"id": "animus",
 			"name": "Animus",
 			"desc": "A generator of Red Replicase, a biological resource for many creatures.",
 			"rules": "Provides 2 Red per turn. Unspent Red is lost between turns.",
