@@ -19,7 +19,7 @@
 	config_tag = "BRIDGE_OFFICER"
 
 	outfit = /datum/outfit/job/bridge_officer
-	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel
+	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND
 	paycheck_department = ACCOUNT_SRV

@@ -154,12 +154,131 @@ but so far they just reside in the red set. Balancing will be done after a few g
 			"name" = "Other",
 			"icon" = "star",
 			"products" = list(
+				/obj/item/storage/box/tdatet_starter = 20,
 				/obj/item/cardpack/tdatet = 20,
-				/obj/item/cardpack/tdatet_base = 20,
-				/obj/item/cardpack/tdatet_box = 20,
-				/obj/item/cardpack/tdatet/green = 10,
-				/obj/item/cardpack/tdatet/blue = 10,
-				/obj/item/cardpack/tdatet/mixed = 10,
+				/obj/item/cardpack/tdatet/green = 20,
+				/obj/item/cardpack/tdatet/blue = 20,
+				/obj/item/cardpack/tdatet/mixed = 20,
+				/obj/item/toy/counter = 20,
 			)
 		),
 	)
+
+/obj/item/paper/fluff/tdatet_rules //Rules for the game, may need to update later on.
+	name = "TDATET rules"
+	desc = "Rules to start and play a game of Tiny Dances And The Everything Tree."
+	default_raw_text = @{"
+
+Thank you for testing out our initial prints of Tiny Dances And The Everything Tree!
+While the cards are in an early alpha state we wish for you to playtest the various rules and give feedback.
+
+Set out your Default Dances and Miner Dances cards by counters of some kind (such as a paper) to count how many of that unit you have, you may use counters for any cards labeled Mass.
+Both players get 2 Default Dances and 6 Miner Dances, with the 2nd player starting with an additional Miner Dances.
+Most units will not be active to defend or attack until the next turn unless the unit's card says otherwise.
+A player that has no more units loses, either player may concede as well. If players are unable to add or remove units it is a draw.
+Be sure to check on your economy units and have enough cards to support your units. Gold and Green are the only resources that are saved between turns, so you may need a counter for those.
+Check out the other color set packs at your local game vendor or order online to expand your strategy with more color resources! Be sure to trade and swap cards to have a good balance.
+	"}
+
+/obj/item/toy/counter //looking at various bits of the ticket counter and card decks, this will store and display a number. Leftclick to add 1, Right click to subract 1, with Altclick to input a number directly.
+	name = "counter - 0"
+	desc = "Keeps a number on its display."
+	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
+	icon_state = "counter"
+	custom_price = PAYCHECK_LOWER
+	w_class = WEIGHT_CLASS_SMALL
+	obj_flags = UNIQUE_RENAME
+	var/base_name = "counter"
+	var/current_number = 0
+
+/obj/item/toy/counter/Initialize(mapload)
+	. = ..()
+	register_context()
+	AddElement(/datum/element/drag_pickup)
+
+/obj/item/toy/counter/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	. = ..()
+
+	if(!isturf(loc))
+		context[SCREENTIP_CONTEXT_ALT_LMB] = "Set number"
+		return CONTEXTUAL_SCREENTIP_SET
+
+	context[SCREENTIP_CONTEXT_LMB] = "Add one"
+	context[SCREENTIP_CONTEXT_RMB] = "Subtract one"
+	context[SCREENTIP_CONTEXT_ALT_LMB] = "Set number"
+	return CONTEXTUAL_SCREENTIP_SET
+
+/obj/item/toy/counter/examine(mob/user)
+	. = ..()
+	. += span_notice("The counter display has #[current_number].")
+	. += span_notice("Alt Button to set a number. Needs to be set down to add or subtract, when in inventory can click to pick up. When set down click-drag to pickup. Goes from 0 to 999. Left button to add 1, Right Button to subtract 1.")
+
+/obj/item/toy/counter/update_name()
+	. = ..()
+	if(renamedByPlayer)
+		base_name = name
+		renamedByPlayer = FALSE
+	name = "[base_name] - [current_number]"
+
+/obj/item/toy/counter/attack_hand(mob/living/user)
+	if(!isturf(loc))
+		return ..()
+	current_number = clamp(current_number + 1, 0, 999)
+	update_appearance(UPDATE_NAME|UPDATE_ICON)
+	balloon_alert(user, "raised to [current_number]")
+	playsound(src, 'sound/misc/fingersnap1.ogg', 5, TRUE)
+	add_fingerprint(user)
+	return TRUE
+
+/obj/item/toy/counter/attack_hand_secondary(mob/living/user)
+	if(!isturf(loc))
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
+	current_number = clamp(current_number - 1, 0, 999)
+	update_appearance(UPDATE_NAME|UPDATE_ICON)
+	balloon_alert(user, "lowered to [current_number]")
+	playsound(src, 'sound/misc/fingersnap1.ogg', 5, TRUE)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/toy/counter/AltClick(mob/living/user)
+	. = ..()
+	if(!user.canUseTopic(src, be_close = TRUE, need_hands = !iscyborg(user)))
+		return
+	var/amount = tgui_input_number(usr, message = "New Number To Display", title = "Number Input", default = 0, max_value = 999, min_value = 0, timeout = 0, round_value = TRUE)
+	if(!isnull(amount))
+		current_number = amount
+		update_icon(UPDATE_OVERLAYS)
+		update_appearance(UPDATE_NAME)
+		balloon_alert(user, "set to [current_number]")
+	playsound(src, 'sound/misc/knuckles.ogg', 5, TRUE)
+
+/obj/item/toy/counter/update_overlays()
+	. = ..()
+
+	var/ones = current_number % 10
+	var/mutable_appearance/ones_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[ones]")
+	ones_overlay.pixel_w = 0
+	. += ones_overlay
+
+	var/tens = (current_number / 10) % 10
+	var/mutable_appearance/tens_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[tens]")
+	tens_overlay.pixel_w = -5
+	. += tens_overlay
+
+	var/huns = (current_number / 100) % 10
+	var/mutable_appearance/huns_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[huns]")
+	huns_overlay.pixel_w = -10
+	. += huns_overlay
+
+/obj/item/storage/box/tdatet_starter
+	name = "TDATET starter box"
+	desc = "Contains rules, cards, and counters to help start your dueling journey."
+	custom_price = PAYCHECK_COMMAND
+
+/obj/item/storage/box/tdatet_starter/PopulateContents()
+	var/static/list/items_inside = list(
+		/obj/item/cardpack/tdatet_box = 1,
+		/obj/item/cardpack/tdatet_base = 1,
+		/obj/item/paper/fluff/tdatet_rules = 1,
+		/obj/item/toy/counter = 4,
+	)
+	generate_items_inside(items_inside, src)

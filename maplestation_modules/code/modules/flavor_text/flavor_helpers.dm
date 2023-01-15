@@ -55,12 +55,18 @@
 /mob/proc/check_med_hud_and_access()
 	return FALSE
 
+/mob/living/silicon/check_med_hud_and_access()
+	return TRUE
+
 /mob/living/carbon/human/check_med_hud_and_access()
 	var/list/access = wear_id?.GetAccess()
 	return HAS_TRAIT(src, TRAIT_MEDICAL_HUD) && (ACCESS_MEDICAL in access)
 
 /mob/proc/check_sec_hud_and_access()
 	return FALSE
+
+/mob/living/silicon/check_sec_hud_and_access()
+	return TRUE
 
 /mob/living/carbon/human/check_sec_hud_and_access()
 	var/list/access = wear_id?.GetAccess()
