@@ -23,9 +23,15 @@
 
 /obj/item/clothing/shoes/heels/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/squeak, list(
-		'maplestation_modules/sound/items/highheel1.ogg'=1,
-		'maplestation_modules/sound/items/highheel2.ogg'=1,), volume_override = 55, chance_override = 50) //50% chance just to not make people tear their ears out
+	AddComponent( \
+		/datum/component/squeak, \
+		custom_sounds = list( \
+			'maplestation_modules/sound/items/highheel1.ogg' = 1, \
+			'maplestation_modules/sound/items/highheel2.ogg' = 1, \
+		), \
+		volume_override = 55, \
+		chance_override = 50, \ //50% chance just to not make people tear their ears out
+	)
 
 /obj/item/clothing/shoes/heels/fancy //the cooler heels
 	name = "fancy high heels"
