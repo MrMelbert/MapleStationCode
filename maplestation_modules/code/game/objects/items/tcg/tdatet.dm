@@ -295,6 +295,7 @@ Check out the other color set packs at your local game vendor or order online to
 /obj/item/tcgcard/tdatet
 	series = "tdatet"
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
+	icon_state = "template_base"
 
 /obj/item/tcgcard/tdatet/animus
 	id = "animus"
