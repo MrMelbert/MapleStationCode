@@ -58,18 +58,13 @@
 	// Worn: "nobleheels"
 	icon_state = "nobleheels"
 	inhand_icon_state = "nobleheels"
+	var/list/walking_sounds = list(
+		'maplestation_modules/sound/items/highheel1.ogg' = 1,
+		'maplestation_modules/sound/items/highheel2.ogg' = 1,)
 
 /obj/item/clothing/shoes/noblealt/Initialize(mapload)
 	. = ..()
-	AddComponent( \
-		/datum/component/squeak, \
-		custom_sounds = list( \
-			'maplestation_modules/sound/items/highheel1.ogg' = 1, \
-			'maplestation_modules/sound/items/highheel2.ogg' = 1, \
-		), \
-		volume_override = 55, \
-		chance_override = 50, \
-	)
+	AddComponent(/datum/component/squeak, custom_sounds = walking_sounds, volume_override = 55, chance_override = 50)
 
 /obj/item/clothing/gloves/noble
 	name = "black leather gloves"
