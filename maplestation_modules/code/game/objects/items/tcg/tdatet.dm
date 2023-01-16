@@ -47,6 +47,15 @@ DEBUG REMINDER Since these are using placeholder art, might want to remove the w
 		. += "\t[span_info("Dances is rather cute, but the card prints are awful.")]"
 	return .
 
+//Starter pack that gives 3 color resource genning cards since I choose not to figure out how to program spawning specific cards that will pass the create and destroy check.
+/obj/item/cardpack/bdateb
+	name = "Trading Card Pack Beginner: Tiny Dances And The Everything Tree"
+	desc = "3 color creation cards to start dueling or trading with. Beginner Devices, Arm The Early Battalion!"
+	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
+	icon_state = "cardpack_tdatet"
+	series = "bdateb"
+	drop_all_cards = TRUE
+
 /obj/item/cardpack/tdatet/green
 	name = "Trading Card Pack Green: Tiny Dances And The Everything Tree"
 	desc = "Contains ten cards of varying rarity from the TDATET Green set. Collect them all!"
@@ -143,14 +152,6 @@ DEBUG REMINDER Since these are using placeholder art, might want to remove the w
 /obj/item/storage/card_binder/personal
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "binder_green"
-
-/obj/item/storage/card_binder/personal/PopulateContents()
-	var/static/list/items_inside = list(
-		/obj/item/tcgcard/tdatet/animus = 1,
-		/obj/item/tcgcard/tdatet/blastforge = 1,
-		/obj/item/tcgcard/tdatet/conduit = 1,
-	)
-	generate_items_inside(items_inside, src)
 
 /obj/item/storage/card_binder/personal/examine(mob/user) // just a minor addition to let examiner know how many cards are within a binder since i got tired counting manually.
 	. = ..()
@@ -287,34 +288,9 @@ Check out the other color set packs at your local game vendor or order online to
 	var/static/list/items_inside = list(
 		/obj/item/cardpack/tdatet_box = 1,
 		/obj/item/cardpack/tdatet_base = 1,
+		/obj/item/cardpack/bdateb = 1,
 		/obj/item/paper/fluff/tdatet_rules = 1,
 		/obj/item/toy/counter = 5,
 	)
 	generate_items_inside(items_inside, src)
 
-/obj/item/tcgcard/tdatet
-	series = "tdatet"
-	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
-	icon_state = "template_base"
-
-/obj/item/tcgcard/tdatet/animus
-	id = "animus"
-	icon_state = "animus"
-
-/obj/item/tcgcard/tdatet/blastforge
-	id = "blastforge"
-	icon_state = "blastforge"
-
-/obj/item/tcgcard/tdatet/conduit
-	id = "conduit"
-	icon_state = "conduit"
-
-/obj/effect/spawner/random/entertainment/tdatet
-	name = "spawn TDATET creation card"
-	desc = "Spawns 2 creation cards from the TDATET set."
-	spawn_loot_count = 2
-	loot = list(
-		/obj/item/tcgcard/tdatet/animus = 33,
-		/obj/item/tcgcard/tdatet/blastforge = 33,
-		/obj/item/tcgcard/tdatet/conduit = 33,
-	)
