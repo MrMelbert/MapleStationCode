@@ -143,10 +143,10 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 		// A. it's not something weird like an AI eye
 		// B. it's nearby (not relayed)
 		// C. target has runechat enabled
-		if(source == mob && close && source.runechat_prefs_check(target.mob))
+		if(target.mob && source == mob && close && source.runechat_prefs_check(target.mob))
 			// EMOTE is close enough. We don't want it to treat the raw message with languages.
 			// I wish it didn't include the asterisk but it's modular this way.
-			mob.create_chat_message(source, raw_message = "(LOOC: [msg])", runechat_flags = EMOTE_MESSAGE)
+			target.mob.create_chat_message(source, raw_message = "(LOOC: [msg])", runechat_flags = EMOTE_MESSAGE)
 
 /// Getter so some mobs can redirect their "message source" to other mobs, see AI for example
 /mob/proc/get_looc_source()
