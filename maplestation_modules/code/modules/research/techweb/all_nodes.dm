@@ -20,3 +20,11 @@
 	id_additions = list(
 		"surgery_neuter_ling",
 	)
+
+///Overrides the solaris laser tech to add in the PPC with a new name and description to accomodate the new weapon
+/datum/techweb_node/mech_laser_heavy
+	display_name = "Exosuit Weapons (Heavy Energy Weapons)"
+	description = "Advanced pieces of mech weaponry"
+	id_additions = list(
+		"mech_ppc",
+	)
