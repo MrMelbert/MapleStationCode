@@ -7,3 +7,4 @@ All individual pieces of story-only content are to be stored in their own folder
 ### LIST OF PLACES WE TOUCH MAIN CODE:
 
 - FILE - PROC/TYPE - RELATED STORY
+- code\game\objects\effects\contraband.dm - proc/randomise(base_type) - Modular posters in general
