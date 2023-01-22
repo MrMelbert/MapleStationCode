@@ -52,7 +52,7 @@
 	allowed = list(/obj/item/storage/book/bible, /obj/item/nullrod, /obj/item/reagent_containers/cup/glass/bottle/holywater, /obj/item/storage/fancy/candle_box, /obj/item/candle, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman)
 
 /obj/item/clothing/head/hooded/cleirc
-	name = "chaplain's quality carapace"
+	name = "puligard's hood"
 	desc = "The hood attached to a Puligard's cloak."
 	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
 	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
