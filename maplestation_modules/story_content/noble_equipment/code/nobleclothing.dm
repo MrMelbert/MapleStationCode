@@ -60,7 +60,8 @@
 	inhand_icon_state = "nobleheels"
 	var/list/walking_sounds = list(
 		'maplestation_modules/sound/items/highheel1.ogg' = 1,
-		'maplestation_modules/sound/items/highheel2.ogg' = 1,)
+		'maplestation_modules/sound/items/highheel2.ogg' = 1,
+	)
 
 /obj/item/clothing/shoes/noblealt/Initialize(mapload)
 	. = ..()
