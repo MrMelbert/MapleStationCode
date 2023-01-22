@@ -12,6 +12,7 @@ placeholder card art in the case that I want to rename them or remove altogether
 such as the various build turns or exhausted mechanics. Perhaps if I really wanted to have this be added
 to any major codebases I will scrub the Dances name so its not as blatant,
 but so far they just reside in the red set. Balancing will be done after a few games, such as rarities.
+DEBUG REMINDER Since these are using placeholder art, might want to remove the white square and N from the basic tcg template when finalizing the artwork.
 */
 /obj/item/cardpack/tdatet
 	name = "Trading Card Pack Red: Tiny Dances And The Everything Tree"
@@ -45,6 +46,15 @@ but so far they just reside in the red set. Balancing will be done after a few g
 	if(HAS_TRAIT(user, TRAIT_CARDCOLLECTOR))
 		. += "\t[span_info("Dances is rather cute, but the card prints are awful.")]"
 	return .
+
+//Starter pack that gives 3 color resource genning cards since I choose not to figure out how to program spawning specific cards that will pass the create and destroy check.
+/obj/item/cardpack/bdateb
+	name = "Trading Card Pack Beginner: Tiny Dances And The Everything Tree"
+	desc = "3 color creation cards to start dueling or trading with. Beginner Devices, Arm The Early Battalion!"
+	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
+	icon_state = "cardpack_tdatet"
+	series = "bdateb"
+	drop_all_cards = TRUE
 
 /obj/item/cardpack/tdatet/green
 	name = "Trading Card Pack Green: Tiny Dances And The Everything Tree"
@@ -114,12 +124,12 @@ but so far they just reside in the red set. Balancing will be done after a few g
 
 /obj/item/cardpack/tdatet_box
 	name = "Trading Card Pack Red Box: Tiny Dances And The Everything Tree"
-	desc = "Contains 28 cards of varying rarity from the TDATET Red set, 5 being a guaranteed uncommon or higher! Along with flipper. Great for getting started!"
+	desc = "Contains 25 cards of varying rarity from the TDATET Red set, 5 being a guaranteed rare or higher!"
 	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
 	icon_state = "cardpack_tdatet_case"
 	series = "tdatet"
-	contains_coin = 100
-	card_count = 23
+	contains_coin = 0
+	card_count = 20
 	rarity_table = list(
 		"common" = 900,
 		"uncommon" = 300,
@@ -129,7 +139,6 @@ but so far they just reside in the red set. Balancing will be done after a few g
 	)
 	guaranteed_count = 5
 	guar_rarity = list(
-		"uncommon" = 300,
 		"rare" = 100,
 		"epic" = 30,
 		"legendary" = 5,
@@ -172,6 +181,7 @@ but so far they just reside in the red set. Balancing will be done after a few g
 Thank you for testing out our initial prints of Tiny Dances And The Everything Tree!
 While the cards are in an early alpha state we wish for you to playtest the various rules and give feedback.
 
+Store all your cards in an easy to grab binder with up to 60 cards instead of a deck. You are able to play any card you can afford.
 Set out your Default Dances and Miner Dances cards by counters of some kind (such as a paper) to count how many of that unit you have, you may use counters for any cards labeled Mass.
 Both players get 2 Default Dances and 6 Miner Dances, with the 2nd player starting with an additional Miner Dances.
 Most units will not be active to defend or attack until the next turn unless the unit's card says otherwise.
@@ -183,7 +193,7 @@ Check out the other color set packs at your local game vendor or order online to
 /obj/item/toy/counter //looking at various bits of the ticket counter and card decks, this will store and display a number. Leftclick to add 1, Right click to subract 1, with Altclick to input a number directly.
 	name = "counter - 0"
 	desc = "Keeps a number on its display."
-	icon = 'maplestation_modules/icons/runtime/tcg/tdatet.dmi'
+	icon = 'maplestation_modules/icons/runtime/tcg/counter.dmi'
 	icon_state = "counter"
 	custom_price = PAYCHECK_LOWER
 	w_class = WEIGHT_CLASS_SMALL
@@ -255,17 +265,17 @@ Check out the other color set packs at your local game vendor or order online to
 	. = ..()
 
 	var/ones = current_number % 10
-	var/mutable_appearance/ones_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[ones]")
+	var/mutable_appearance/ones_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/counter.dmi', "num_[ones]")
 	ones_overlay.pixel_w = 0
 	. += ones_overlay
 
 	var/tens = (current_number / 10) % 10
-	var/mutable_appearance/tens_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[tens]")
+	var/mutable_appearance/tens_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/counter.dmi', "num_[tens]")
 	tens_overlay.pixel_w = -5
 	. += tens_overlay
 
 	var/huns = (current_number / 100) % 10
-	var/mutable_appearance/huns_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/tdatet.dmi', "num_[huns]")
+	var/mutable_appearance/huns_overlay = mutable_appearance('maplestation_modules/icons/runtime/tcg/counter.dmi', "num_[huns]")
 	huns_overlay.pixel_w = -10
 	. += huns_overlay
 
@@ -278,7 +288,9 @@ Check out the other color set packs at your local game vendor or order online to
 	var/static/list/items_inside = list(
 		/obj/item/cardpack/tdatet_box = 1,
 		/obj/item/cardpack/tdatet_base = 1,
+		/obj/item/cardpack/bdateb = 1,
 		/obj/item/paper/fluff/tdatet_rules = 1,
-		/obj/item/toy/counter = 4,
+		/obj/item/toy/counter = 5,
 	)
 	generate_items_inside(items_inside, src)
+
