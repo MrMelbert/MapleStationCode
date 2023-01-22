@@ -22,7 +22,8 @@
 	greyscale_config_worn = /datum/greyscale_config/heels_worn
 	var/list/walking_sounds = list(
 		'maplestation_modules/sound/items/highheel1.ogg' = 1,
-		'maplestation_modules/sound/items/highheel2.ogg' = 1,)
+		'maplestation_modules/sound/items/highheel2.ogg' = 1,
+	)
 
 /obj/item/clothing/shoes/heels/Initialize(mapload)
 	. = ..()
