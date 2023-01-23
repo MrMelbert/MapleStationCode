@@ -34,3 +34,13 @@
 	name = "Digitigrade Prison Jumpsuit Worn"
 	icon_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
 	json_config = 'code/datums/greyscale/json_configs/jumpsuit_prison_worn.json'
+
+/datum/greyscale_config/heels
+	name = "Heels"
+	icon_file = 'maplestation_modules/icons/obj/clothing/shoes/heels.dmi'
+	json_config = 'code/datums/greyscale/json_configs/heels.json'
+
+/datum/greyscale_config/heels_worn
+	name = "Heels Worn"
+	icon_file = 'maplestation_modules/icons/mob/clothing/shoes/heels.dmi'
+	json_config = 'code/datums/greyscale/json_configs/heels.json'
