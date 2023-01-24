@@ -5149,6 +5149,7 @@
 #include "maplestation_modules\story_content\noble_equipment\code\nobleclothing.dm"
 #include "maplestation_modules\story_content\noname_equipment\code\nonameclothing.dm"
 #include "maplestation_modules\story_content\post_overlay\code\post_overlay.dm"
+#include "maplestation_modules\story_content\phoneguy_equipment\code\headphone.dm"
 #include "maplestation_modules\story_content\prince_equipment\code\clothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 // END_INCLUDE
