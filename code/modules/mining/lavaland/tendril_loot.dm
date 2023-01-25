@@ -554,6 +554,28 @@
 		exposed_carbon.adjustBruteLoss(20)
 		exposed_carbon.emote("scream")
 
+/datum/reagent/flightpotion/proc/get_wing_choice(mob/living/carbon/human/needs_wings)
+	var/list/wing_types = needs_wings.dna.species.wing_types.Copy()
+	if(wing_types.len == 1 || !needs_wings.client)
+		return wing_types[1]
+	var/list/radial_wings = list()
+	var/list/name2type = list()
+	for(var/obj/item/organ/external/wings/functional/possible_type as anything in wing_types)
+		var/datum/sprite_accessory/accessory = initial(possible_type.sprite_accessory_override) //get the type
+		accessory = GLOB.wings_list[initial(accessory.name)] //get the singleton instance
+		var/image/img = image(icon = accessory.icon, icon_state = "m_wingsopen_[accessory.icon_state]_BEHIND") //Process the HUD elements
+		img.transform *= 0.5
+		img.pixel_x = -32
+		if(radial_wings[accessory.name])
+			stack_trace("Different wing types with repeated names. Please fix as this may cause issues.")
+		else
+			radial_wings[accessory.name] = img
+			name2type[accessory.name] = possible_type
+	var/wing_name = show_radial_menu(needs_wings, needs_wings, radial_wings, tooltips = TRUE)
+	var/wing_type = name2type[wing_name]
+	if(!wing_type)
+		wing_type = pick(wing_types)
+	return wing_type
 
 /obj/item/jacobs_ladder
 	name = "jacob's ladder"
