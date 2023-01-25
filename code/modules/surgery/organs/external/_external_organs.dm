@@ -20,6 +20,7 @@
 	/// The savefile_key of the preference this relates to. Used for the preferences UI.
 	var/preference
 <<<<<<< HEAD
+<<<<<<< HEAD
 	///With what DNA block do we mutate in mutate_feature() ? For genetics
 	var/dna_block
 
@@ -47,6 +48,14 @@
 	var/color_source = ORGAN_COLOR_INHERIT
 
 >>>>>>> 46be216cc03 (Ultra-modularizes podperson hair restyling (#71381))
+=======
+	///With what DNA block do we mutate in mutate_feature() ? For genetics
+	var/dna_block
+
+	///Set to EXTERNAL_BEHIND, EXTERNAL_FRONT or EXTERNAL_ADJACENT if you want to draw one of those layers as the object sprite. FALSE to use your own
+	///This will not work if it doesn't have a limb to generate it's icon with
+	var/use_mob_sprite_as_obj_sprite = FALSE
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 	///Does this organ have any bodytypes to pass to it's ownerlimb?
 	var/external_bodytypes = NONE
 	///Which flags does a 'modification tool' need to have to restyle us, if it all possible (located in code/_DEFINES/mobs)
@@ -113,10 +122,14 @@
 	. = ..()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if(ownerlimb && !moving)
 =======
 	if(ownerlimb)
 >>>>>>> 46be216cc03 (Ultra-modularizes podperson hair restyling (#71381))
+=======
+	if(ownerlimb && !moving)
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 		remove_from_limb()
 
 		if(use_mob_sprite_as_obj_sprite)
@@ -150,6 +163,7 @@
 	return ..()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ///Update our features after something changed our appearance
 /obj/item/organ/external/proc/mutate_feature(features, mob/living/carbon/human/human)
 	if(!dna_block)
@@ -159,11 +173,17 @@
 	set_sprite(stored_feature_id)
 	if(!sprite_datum)
 >>>>>>> 46be216cc03 (Ultra-modularizes podperson hair restyling (#71381))
+=======
+///Update our features after something changed our appearance
+/obj/item/organ/external/proc/mutate_feature(features, mob/living/carbon/human/human)
+	if(!dna_block)
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 		return
 
 	var/list/feature_list = bodypart_overlay.get_global_feature_list()
 
 	bodypart_overlay.set_appearance_from_name(feature_list[deconstruct_block(get_uni_feature_block(features, dna_block), feature_list.len)])
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 ///If you need to change an external_organ for simple one-offs, use this. Pass the accessory type : /datum/accessory/something
@@ -181,6 +201,8 @@
 	else if(ownerlimb) //are we in a limb?
 		ownerlimb.update_icon_dropped()
 	//else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
+=======
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 
 <<<<<<< HEAD
 /obj/item/organ/external/on_life(delta_time, times_fired)
@@ -190,12 +212,13 @@
 /obj/item/organ/external/proc/simple_change_sprite(accessory_type)
 	var/datum/sprite_accessory/typed_accessory = accessory_type //we only take types for maintainability
 
-	set_sprite(initial(typed_accessory.name))
+	bodypart_overlay.set_appearance(typed_accessory)
 
 	if(owner) //are we in a person?
 		owner.update_body_parts()
 	else if(ownerlimb) //are we in a limb?
 		ownerlimb.update_icon_dropped()
+<<<<<<< HEAD
 	else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
 		generate_and_retrieve_overlays(list(), image_layer = use_mob_sprite_as_obj_sprite) //both fetches and updates our organ sprite, although we only update
 
@@ -216,6 +239,19 @@
 	if(!use_mob_sprite_as_obj_sprite)
 		return
 
+=======
+	//else if(use_mob_sprite_as_obj_sprite) //are we out in the world, unprotected by flesh?
+
+/obj/item/organ/external/on_life(delta_time, times_fired)
+	return
+
+/obj/item/organ/external/update_overlays()
+	. = ..()
+
+	if(!use_mob_sprite_as_obj_sprite)
+		return
+
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 	//Build the mob sprite and use it as our overlay
 	for(var/external_layer in bodypart_overlay.all_layers)
 		if(bodypart_overlay.layers & external_layer)
@@ -322,6 +358,8 @@
 =======
 >>>>>>> 46be216cc03 (Ultra-modularizes podperson hair restyling (#71381))
 
+	bodypart_overlay = /datum/bodypart_overlay/mutant/antennae
+
 	///Are we burned?
 	var/burnt = FALSE
 	///Store our old datum here for if our antennae are healed
@@ -354,10 +392,13 @@
 	antennae.burnt = TRUE
 	burnt = TRUE
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	original_sprite_datum = sprite_datum.name
 	simple_change_sprite(/datum/sprite_accessory/moth_antennae/burnt_off)
 >>>>>>> 46be216cc03 (Ultra-modularizes podperson hair restyling (#71381))
+=======
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 
 ///heal our antennae back up!!
 /obj/item/organ/external/antennae/proc/heal_antennae(datum/source, heal_flags)
@@ -371,6 +412,9 @@
 		antennae.burnt = FALSE
 		burnt = FALSE
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 
 ///Moth antennae datum, with full burning functionality
 /datum/bodypart_overlay/mutant/antennae
@@ -391,9 +435,12 @@
 
 /datum/bodypart_overlay/mutant/antennae/get_base_icon_state()
 	return burnt ? burn_datum.icon_state : sprite_datum.icon_state
+<<<<<<< HEAD
 =======
 		simple_change_sprite(original_sprite_datum)
 >>>>>>> 46be216cc03 (Ultra-modularizes podperson hair restyling (#71381))
+=======
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 
 ///The leafy hair of a podperson
 /obj/item/organ/external/pod_hair
@@ -405,10 +452,14 @@
 
 	preference = "feature_pod_hair"
 <<<<<<< HEAD
+<<<<<<< HEAD
 	use_mob_sprite_as_obj_sprite = TRUE
 =======
 	use_mob_sprite_as_obj_sprite = BODY_ADJ_LAYER
 >>>>>>> 46be216cc03 (Ultra-modularizes podperson hair restyling (#71381))
+=======
+	use_mob_sprite_as_obj_sprite = TRUE
+>>>>>>> 10a344bde0d (External Organ Rework: new bodypart_overlay system (#72734))
 
 	dna_block = DNA_POD_HAIR_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_PLANT

@@ -6,10 +6,8 @@
 
 	zone = BODY_ZONE_PRECISE_GROIN
 	slot = ORGAN_SLOT_EXTERNAL_TAIL
-	layers = EXTERNAL_FRONT|EXTERNAL_BEHIND
 
-	feature_key = "tail"
-	render_key = "tail"
+	bodypart_overlay = /datum/bodypart_overlay/mutant/tail
 
 	dna_block = DNA_TAIL_BLOCK
 	restyle_flags = EXTERNAL_RESTYLE_FLESH

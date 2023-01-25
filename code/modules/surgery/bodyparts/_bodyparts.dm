@@ -892,21 +892,28 @@
 			//add two masked images based on the old one
 			. += leg_source.generate_masked_leg(limb_image, image_dir)
 
+	// And finally put bodypart_overlays on if not husked
 	if(!is_husked)
 		//Draw external organs like horns and frills
-		for(var/obj/item/organ/external/external_organ as anything in external_organs)
-			if(!dropped && !external_organ.can_draw_on_bodypart(owner))
+		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
+			if(!dropped && !overlay.can_draw_on_bodypart(owner)) //if you want different checks for dropped bodyparts, you can insert it here
 				continue
 			//Some externals have multiple layers for background, foreground and between
-			for(var/external_layer in external_organ.all_layers)
-				if(external_organ.layers & external_layer)
-					external_organ.generate_and_retrieve_overlays(
-						.,
-						image_dir,
-						external_organ.bitflag_to_layer(external_layer),
-						limb_gender,
-					)
+			for(var/external_layer in overlay.all_layers)
+				if(overlay.layers & external_layer)
+					. += overlay.get_overlay(external_layer, src)
+
 	return .
+
+///Add a bodypart overlay and call the appropriate update procs
+/obj/item/bodypart/proc/add_bodypart_overlay(datum/bodypart_overlay/overlay)
+	bodypart_overlays += overlay
+	overlay.added_to_limb(src)
+
+///Remove a bodypart overlay and call the appropriate update procs
+/obj/item/bodypart/proc/remove_bodypart_overlay(datum/bodypart_overlay/overlay)
+	bodypart_overlays -= overlay
+	overlay.removed_from_limb(src)
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
