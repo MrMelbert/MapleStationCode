@@ -7,3 +7,6 @@
 	lefthand_file = 'maplestation_modules/story_content/phoneguy_equipment/icons/headphone_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/phoneguy_equipment/icons/headphone_rhand.dmi'
 	icon_state = "phonehead"
+	resistance_flags = ACID_PROOF|FIRE_PROOF
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDEFACE|HIDESNOUT
+	flags_cover = HEADCOVERSEYES|HEADCOVERSMOUTH|PEPPERPROOF	
