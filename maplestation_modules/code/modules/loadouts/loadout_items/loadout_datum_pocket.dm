@@ -230,3 +230,23 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 /datum/loadout_item/pocket_items/d00
 	name = "D00"
 	item_path = /obj/item/dice/d00
+
+/datum/loadout_item/pocket_items/tdatet_pack_red
+	name = "TDATET Red Pack"
+	item_path = /obj/item/cardpack/tdatet
+
+/datum/loadout_item/pocket_items/tdatet_pack_green
+	name = "TDATET Green Pack"
+	item_path = /obj/item/cardpack/tdatet/green
+
+/datum/loadout_item/pocket_items/tdatet_pack_blue
+	name = "TDATET Blue Pack"
+	item_path = /obj/item/cardpack/tdatet/blue
+
+/datum/loadout_item/pocket_items/tdatet_pack_mixed
+	name = "TDATET Mixed Pack"
+	item_path = /obj/item/cardpack/tdatet/mixed
+
+/datum/loadout_item/pocket_items/counter
+	name = "Counter"
+	item_path = /obj/item/toy/counter
