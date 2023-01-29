@@ -37109,7 +37109,6 @@
 /obj/structure/disposalpipe/sorting/wrap{
 	dir = 2
 	},
-/obj/effect/mapping_helpers/mail_sorting/supply/disposals,
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
 "mWU" = (
