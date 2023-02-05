@@ -154,3 +154,7 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 /datum/loadout_item/suit/moth_cloak_winter
 	name = "Mothic Winter Cloak"
 	item_path = /obj/item/clothing/suit/mothcoat/winter
+
+/datum/loadout_item/suit/flannel_jacket
+	name = "Flannel Jacket"
+	item_path = /obj/item/clothing/suit/toggle/flannel
