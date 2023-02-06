@@ -39,6 +39,8 @@
 	return TRUE
 
 /datum/status_effect/pain_from_fire/on_remove()
+	if(QDELING(owner))
+		return
 	var/mob/living/carbon/human/human_owner = owner
 	UnregisterSignal(human_owner, list(COMSIG_LIVING_EXTINGUISHED, COMSIG_LIVING_POST_FULLY_HEAL))
 	human_owner.pain_controller.adjust_bodypart_pain(BODY_ZONES_ALL, -0.75 * pain_amount, BURN)

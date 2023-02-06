@@ -182,8 +182,11 @@
 /datum/species/synth/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.transfer_identity(human) // Makes the synth look like... a synth.
 
-/datum/species/synth/proc/on_ion_storm(mob/living/carbon/human/target)
+/datum/species/synth/proc/on_ion_storm(datum/source)
 	SIGNAL_HANDLER
+
+	/*
+	Source is SSdcs, so this needs to be tweaked.
 
 	to_chat(target, span_userdanger("[ion_num()]. I0N1C D1STRBANCE D3TCTED!"))
 	target.adjust_slurring(40 SECONDS)
@@ -192,6 +195,7 @@
 	for(var/i in 1 to rand(2, 4))
 		addtimer(CALLBACK(src,  PROC_REF(mutate_after_time), target), i * 3 SECONDS)
 	addtimer(CALLBACK(src,  PROC_REF(return_to_normal), target, original_dna), 30 SECONDS)
+	*/
 
 /// For use in a callback in [on_ion_storm].
 /datum/species/synth/proc/mutate_after_time(mob/living/carbon/human/target)
