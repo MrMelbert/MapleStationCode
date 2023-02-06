@@ -55,3 +55,13 @@
 	icon_state = "fleshmass"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
 	gender = NEUTER
+
+/datum/sprite_accessory/frills/big
+	name = "Big"
+	icon_state = "big"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+
+/datum/sprite_accessory/frills/divinity
+	name = "Divinity"
+	icon_state = "divinity"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
