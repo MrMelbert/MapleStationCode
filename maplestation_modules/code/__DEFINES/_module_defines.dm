@@ -47,3 +47,6 @@
 
 /// Modular traits
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"
+
+/// Magic
+#define STORY_MAGIC_BASE_CONSUME_SCORE 50
