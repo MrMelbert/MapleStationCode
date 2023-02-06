@@ -5111,6 +5111,7 @@
 #include "maplestation_modules\code\modules\mob\living\simple_animal\corpse.dm"
 #include "maplestation_modules\code\modules\mob\living\simple_animal\simple_animal.dm"
 #include "maplestation_modules\code\modules\mob\living\simple_animal\bot\bot.dm"
+#include "maplestation_modules\code\modules\mod\mod_control.dm"
 #include "maplestation_modules\code\modules\movespeed\modifiers\reagent.dm"
 #include "maplestation_modules\code\modules\paperwork\stamps.dm"
 #include "maplestation_modules\code\modules\projectiles\ammunition\ballistic\shotgun.dm"
