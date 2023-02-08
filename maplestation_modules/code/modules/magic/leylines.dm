@@ -26,7 +26,7 @@
 
 	SSmagic.stop_processing_leyline(src)
 
-	qdel(intensity)
+	QDEL_NULL(intensity)
 
 /datum/leyline/process(delta_time)
 	adjust_stored_mana(recharge_rate * delta_time) //recharge

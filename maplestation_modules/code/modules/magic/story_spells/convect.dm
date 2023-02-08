@@ -1,43 +1,29 @@
 /datum/component/story_spell/convect
 
-/datum/component/story_spell/convect/handle_precast(atom/cast_on)
+/datum/component/story_spell/convect/handle_can_cast_failure(atom/cast_on)
 	. = ..()
-	if (!istype(spell_parent, /datum/action/cooldown/spell/pointed/convect))
-		return . | SPELL_CANCEL_CAST
-	var/datum/action/cooldown/spell/pointed/convect/convect_spell = spell_parent
 
-	if (!can_cast())
-		to_chat(convect_spell.owner, span_warning("The thrum of the leylines die out. Perhaps you demanded too much mana?"))
-		spell_parent.unset_click_ability(spell_parent.owner)
-		return . | SPELL_CANCEL_CAST
+	//to_chat(convect_spell.owner, span_warning("The thrum of the leylines die out. Perhaps you demanded too much mana?"))
+	spell_parent.unset_click_ability(spell_parent.owner)
+	return . | SPELL_CANCEL_CAST | SPELL_NO_IMMEDIATE_COOLDOWN
 
 /datum/component/story_spell/convect/handle_aftercast(atom/cast_on)
 	. = ..()
 
-	confirm_cast(get_mana_needed_for_cast())
 	if (!can_cast())
-		to_chat(spell_parent.owner, span_warning("The thrum of the leylines die out. Perhaps you demanded too much mana?"))
-		spell_parent.unset_click_ability(spell_parent.owner)
+		handle_can_cast_failure(cast_on)
 
-/datum/component/story_spell/convect/proc/can_cast()
-	var/mana_needed = get_mana_needed_for_cast()
-	var/available_mana = get_available_mana()
-	if (available_mana < mana_needed)
-		return FALSE
-	return TRUE
-
-/datum/component/story_spell/convect/proc/get_mana_needed_for_cast()
+/datum/component/story_spell/convect/get_mana_needed_for_cast()
+	. = ..()
 	if (!istype(spell_parent, /datum/action/cooldown/spell/pointed/convect))
 		return INFINITY //placeholder shit until i improve this
 
 	var/datum/action/cooldown/spell/pointed/convect/convect_spell = spell_parent
-	return ((abs(convect_spell.temperature_for_cast)*0.25) * convect_spell.owner.get_base_casting_cost())
+	return ((abs(convect_spell.temperature_for_cast)*CONVECT_MANA_COST_PER_KELVIN) * convect_spell.owner.get_base_casting_cost())
+	// todo: methodize the casting cost mult part
 
-/datum/component/story_spell/convect/proc/get_available_mana()
-	return SSmagic.get_available_mana()
-
-/datum/component/story_spell/convect/proc/confirm_cast(mana_spent)
-	SSmagic.adjust_stored_mana(-mana_spent)
+/datum/component/story_spell/convect/adjust_mana(atom/cast_on)
+	SSmagic.adjust_stored_mana(-get_mana_needed_for_cast()) //this sucks, i should store this on the component
 
 /datum/action/cooldown/spell/pointed/convect
 	name = "Convect"
@@ -74,18 +60,20 @@
 	. = ..()
 	temperature_for_cast = 0
 
-/// I hate doing the bulk of the work here but I hate having to have extra vars for cross-proc shit.
 /datum/action/cooldown/spell/pointed/convect/cast(atom/cast_on)
 	. = ..()
 
+	var/hot_or_cold
+	var/heat_or_cool
+	if (temperature_for_cast > 0)
+		hot_or_cold = "heat"
+		heat_or_cool = "heat"
+	else
+		hot_or_cold = "cold"
+		heat_or_cool = "cool"
 	if (iscarbon(cast_on))
 		var/mob/living/carbon/carbon_target = cast_on
 		carbon_target.adjust_bodytemperature(temperature_for_cast, use_insulation = TRUE)
-		var/hot_or_cold
-		if (temperature_for_cast > 0)
-			hot_or_cold = "heat"
-		else
-			hot_or_cold = "cold"
 		to_chat(carbon_target, span_warning("You feel a wave of [hot_or_cold] eminate from [owner]..."))
 	else if (is_reagent_container(cast_on))
 		var/obj/item/reagent_containers/container = cast_on
@@ -96,6 +84,7 @@
 		if (turf_air)
 			turf_air.temperature += temperature_for_cast //this sucks.
 			turf_target.air_update_turf()
+	to_chat(owner, span_warning("You [heat_or_cool] [cast_on] by [temperature_for_cast]K."))
 
 /datum/action/cooldown/spell/pointed/convect/after_cast(atom/cast_on)
 	. = ..()
