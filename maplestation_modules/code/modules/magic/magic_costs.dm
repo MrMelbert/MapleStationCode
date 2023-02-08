@@ -1,4 +1,4 @@
-GLOBAL_LIST_INIT(story_magic_costs, typecacheof(/datum/story_magic_cost))
+/*GLOBAL_LIST_INIT(story_magic_costs, typecacheof(/datum/story_magic_cost))
 
 /datum/story_magic_cost
 	var/name = "Base type, do not use"
@@ -122,3 +122,4 @@ GLOBAL_LIST_INIT(story_magic_costs, typecacheof(/datum/story_magic_cost))
 	item.visible_message(span_warning("[item] vanishes!"))
 
 	qdel(item)
+*/
