@@ -5088,7 +5088,6 @@
 #include "maplestation_modules\code\modules\magic\magic.dm"
 #include "maplestation_modules\code\modules\magic\magic_costs.dm"
 #include "maplestation_modules\code\modules\magic\magic_subsystem.dm"
-#include "maplestation_modules\code\modules\magic\TEMPORARY_SPELL_GRANTING.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\convect.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\story_spell_component.dm"
 #include "maplestation_modules\code\modules\mining\machine_vending.dm"
