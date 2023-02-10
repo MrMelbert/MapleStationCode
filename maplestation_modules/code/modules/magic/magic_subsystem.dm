@@ -48,11 +48,11 @@ PROCESSING_SUBSYSTEM_DEF(magic)
 		amount += group.amount
 	return amount
 
-/datum/controller/subsystem/processing/magic/proc/get_all_leyline_mana_amount(var/list/datum/attunement/attunements)
+/datum/controller/subsystem/processing/magic/proc/get_all_leyline_attuned_mana_amount(list/datum/attunement/attunements)
 	var/list/datum/mana_pool/mana = get_all_leyline_mana()
 	var/amount = 0
 	for (var/datum/mana_pool/group as anything in mana)
-		amount += group.get_adjusted_amount(attunements)
+		amount += group.get_attuned_amount(attunements)
 	return amount
 
 /datum/controller/subsystem/processing/magic/proc/adjust_stored_mana(datum/mana_holder/leyline/picked_leyline, amount, list/incoming_attunements)

@@ -31,6 +31,11 @@
 
 	spell_parent = null
 
+/datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/cast_on)
+	. = ..()
+
+	to_chat(spell_parent.owner, span_warning("Insufficient mana!"))
+
 // SIGNAL HANDLERS
 
 /**
@@ -49,13 +54,10 @@
 
 	return can_activate_check(TRUE, cast_on)
 
-/datum/component/uses_mana/story_spell/unable_to_activate()
-	return SPELL_CANCEL_CAST
-
-/datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/cast_on)
+/datum/component/uses_mana/story_spell/can_activate_check_failure(give_feedback, ...)
 	. = ..()
+	return . | SPELL_CANCEL_CAST
 
-	to_chat(spell_parent.owner, span_warning("Insufficient mana!"))
 /**
  * Actions done as the main effect of the spell.
  *
@@ -65,25 +67,3 @@
 /datum/component/uses_mana/story_spell/proc/handle_cast(atom/cast_on)
 	SIGNAL_HANDLER
 	return
-
-/**
- * Actions done after the main cast is finished.
- * This is called after the cooldown's already begun.
- *
- * It can be used to apply late spell effects where order matters
- * (for example, causing smoke *after* a teleport occurs in cast())
- * or to clean up variables or references post-cast.
- */
-/datum/component/uses_mana/story_spell/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	var/cost = -get_mana_required()
-	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
-	for (var/datum/mana_pool/iterated_pool as anything in get_usable_mana(spell_parent.owner))
-		var/mult = iterated_pool.get_attunement_mults(our_attunements)
-		var/multiplied_cost = (cost*mult)
-		cost -= (multiplied_cost)
-		cost += iterated_pool.adjust_mana((multiplied_cost))
-		if (cost == 0) break
-	if (cost != 0)
-		stack_trace("cost was not 0 after react_to_successful_use on [src]")

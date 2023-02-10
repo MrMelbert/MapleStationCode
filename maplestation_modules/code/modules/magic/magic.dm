@@ -1,12 +1,9 @@
 /datum/mana_holder
-	var/max_mana_capacity
-
 	var/datum/mana_pool/mana
 
 /datum/mana_holder/New()
 	. = ..()
 
-	max_mana_capacity = generate_initial_capacity()
 	initialize_mana()
 
 /datum/mana_holder/Destroy(force, ...)
@@ -16,7 +13,7 @@
 	mana = null
 
 /datum/mana_holder/proc/adjust_mana(amount, list/incoming_attunements = GLOB.default_attunements)
-	return mana.adjust_mana(amount, incoming_attunements, max_mana_capacity)
+	return mana.adjust_mana(amount ,incoming_attunements)
 
 /datum/mana_holder/proc/get_attunements()
 	return mana.attunements
@@ -25,14 +22,14 @@
 	return mana
 
 /datum/mana_holder/proc/initialize_mana()
-	mana = new /datum/mana_pool(get_initial_mana_amount(), get_initial_attunements())
+	mana = new /datum/mana_pool(generate_initial_capacity(), get_initial_mana_amount(), get_initial_attunements())
 	return mana
 
 /datum/mana_holder/proc/get_initial_attunements()
 	return GLOB.default_attunements.Copy()
 
 /datum/mana_holder/proc/get_initial_mana_amount()
-	return max_mana_capacity
+	return generate_initial_capacity()
 
 /datum/mana_holder/proc/generate_initial_capacity()
 	return 0
