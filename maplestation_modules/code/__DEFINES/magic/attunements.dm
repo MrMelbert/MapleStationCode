@@ -2,8 +2,8 @@
 
 // Core
 
-#define MAGIC_ELEMENT_FIRE "Fire"
-#define MAGIC_ELEMENT_FROST "Frost"
+#define MAGIC_ELEMENT_FIRE /datum/attunement/fire
+#define MAGIC_ELEMENT_ICE "Frost"
 
 // Alignments
 #define MAGIC_ALIGNMENT_NONE "None"

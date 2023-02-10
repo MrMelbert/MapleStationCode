@@ -10,15 +10,34 @@
 */
 /// Designates the item it's added to as something that "uses mana".
 /datum/component/uses_mana
+    var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+
+/datum/component/uses_mana/proc/get_attunement_dispositions()
+    return attunements
 
 // TODO: Do I need the vararg?
+/// Should return the numerical value of mana needed to use whatever it is we're using.
 /datum/component/uses_mana/proc/get_mana_required(...)
 
 /datum/component/uses_mana/proc/get_usable_mana()
+    return parent.get_available_mana()
 
-/datum/component/uses_mana/proc/is_mana_sufficient(datum/mana_group/group)
+/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana)
+    var/total_effective_mana = 0
+    var/list/datum/attunement/our_attunements = get_attunement_dispositions()
+    for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
+        total_effective_mana += iterated_pool.get_amount(our_attunements)
+    if (total_effective_mana > get_mana_required())
+        return TRUE
 
 /// Should be the primary conditional we use for determining if the thing that "uses mana" can actually
 /// activate the behavior that "uses mana".
 /datum/component/uses_mana/proc/can_activate()
+    PROC_PROTECTED()
     return is_mana_sufficient(get_usable_mana())
+
+/datum/component/uses_mana/proc/can_activate_with_feedback()
+
+/datum/component/uses_mana/proc/react_to_successful_use(...)
+    SIGNAL_HANDLER
+    return

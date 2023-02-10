@@ -1,19 +1,33 @@
-/datum/component/story_spell/convect
+/datum/component/uses_mana/story_spell/convect
 
-/datum/component/story_spell/convect/handle_can_cast_failure(atom/cast_on)
+#define CONVECT_HEAT_ATTUNEMENT 0.5
+#define CONVECT_ICE_ATTUNEMENT 0.5
+/datum/component/uses_mana/convect/get_attunement_dispositions()
+	if (!istype(spell_parent, /datum/action/cooldown/spell/pointed/convect))
+		return attunement_dispositions
+	var/datum/action/cooldown/spell/pointed/convect/convect_spell = spell_parent
+	if (convect_spell.temperature_for_cast == 0)
+		return attunement_dispositions
+	. = attunement_dispositions.Copy()
+	if (convect_spell.temperature_for_cast > 0)
+		.[MAGIC_ELEMENT_FIRE] += CONVECT_HEAT_ATTUNEMENT
+		.[MAGIC_ELEMENT_ICE] -= CONVECT_HEAT_ATTUNEMENT
+		return
+	else 
+		.[MAGIC_ELEMENT_ICE] += CONVECT_ICE_ATTUNEMENT
+		.[MAGIC_ELEMENT_FIRE] -= CONVECT_ICE_ATTUNEMENT
+
+#undef CONVECT_HEAT_ATTUNEMENT
+#undef CONVECT_ICE_ATTUNEMENT
+
+/datum/component/uses_mana/story_spell/convect/handle_can_cast_failure(atom/cast_on)
 	. = ..()
 
 	//to_chat(convect_spell.owner, span_warning("The thrum of the leylines die out. Perhaps you demanded too much mana?"))
 	spell_parent.unset_click_ability(spell_parent.owner)
 	return . | SPELL_CANCEL_CAST | SPELL_NO_IMMEDIATE_COOLDOWN
 
-/datum/component/story_spell/convect/handle_aftercast(atom/cast_on)
-	. = ..()
-
-	if (!can_cast())
-		handle_can_cast_failure(cast_on)
-
-/datum/component/story_spell/convect/get_mana_needed_for_cast()
+/datum/component/uses_mana/story_spell/convect/get_mana_required(...)
 	. = ..()
 	if (!istype(spell_parent, /datum/action/cooldown/spell/pointed/convect))
 		return INFINITY //placeholder shit until i improve this
@@ -21,9 +35,6 @@
 	var/datum/action/cooldown/spell/pointed/convect/convect_spell = spell_parent
 	return ((abs(convect_spell.temperature_for_cast)*CONVECT_MANA_COST_PER_KELVIN) * convect_spell.owner.get_base_casting_cost())
 	// todo: methodize the casting cost mult part
-
-/datum/component/story_spell/convect/adjust_mana(atom/cast_on)
-	SSmagic.adjust_stored_mana(-get_mana_needed_for_cast()) //this sucks, i should store this on the component
 
 /datum/action/cooldown/spell/pointed/convect
 	name = "Convect"
