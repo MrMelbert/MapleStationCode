@@ -77,12 +77,13 @@
 /datum/component/uses_mana/story_spell/react_to_successful_use(atom/cast_on)
 	. = ..()
 
-	var/cost = get_mana_required()
+	var/cost = -get_mana_required()
 	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
 	for (var/datum/mana_pool/iterated_pool as anything in get_usable_mana(spell_parent.owner))
-		for (var/datum/attunement/iterated_attunement as anything in our_attunements)
-			var/mult = iterated_pool.get_attunement_mult(iterated_attunement, our_attunements[iterated_attunement])
-			cost -= iterated_pool.adjust_mana(-(cost*mult))
-			if (cost <= 0) break
-		if (cost > 0)
-			stack_trace("cost was above 0 after react_to_successful_use on [src]")
+		var/mult = iterated_pool.get_attunement_mults(our_attunements)
+		var/multiplied_cost = (cost*mult)
+		cost -= (multiplied_cost)
+		cost += iterated_pool.adjust_mana((multiplied_cost))
+		if (cost == 0) break
+	if (cost != 0)
+		stack_trace("cost was not 0 after react_to_successful_use on [src]")

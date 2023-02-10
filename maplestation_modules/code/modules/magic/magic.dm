@@ -16,7 +16,7 @@
 	mana = null
 
 /datum/mana_holder/proc/adjust_mana(amount, list/incoming_attunements = GLOB.default_attunements)
-	return mana.adjust_mana(amount, incoming_attunements)
+	return mana.adjust_mana(amount, incoming_attunements, max_mana_capacity)
 
 /datum/mana_holder/proc/get_attunements()
 	return mana.attunements

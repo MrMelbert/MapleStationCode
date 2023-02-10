@@ -47,6 +47,7 @@
 	cast_range = 1 //physical touching
 
 	unset_after_click = FALSE
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
 	var/temperature_for_cast = 0 // I FUCKING HATE THIS GAH MELBERT PLEASE HOW DO I KEEP INFO BETWEEN PROCS BETTER
 
