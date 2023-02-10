@@ -14,7 +14,7 @@ PROCESSING_SUBSYSTEM_DEF(magic)
 
 	var/amount_of_leylines = get_leyline_amount()
 	while (amount_of_leylines-- > 0)
-		new /datum/leyline()
+		new /datum/mana_holder/leyline()
 
 	return SS_INIT_SUCCESS
 
@@ -35,27 +35,27 @@ PROCESSING_SUBSYSTEM_DEF(magic)
 	leylines -= leyline_to_process
 
 /datum/controller/subsystem/processing/magic/proc/get_all_leyline_mana()
-	var/list/datum/magic_group/mana = list()
+	var/list/datum/mana_pool/mana = list()
 	for (var/datum/mana_holder/leyline/processing_leyline as anything in leylines)
 		mana += processing_leyline.get_stored_mana()
 
 	return mana
 
 /datum/controller/subsystem/processing/magic/proc/get_all_leyline_raw_mana_amount()
-	var/list/datum/magic_group/mana = get_all_leyline_mana()
+	var/list/datum/mana_pool/mana = get_all_leyline_mana()
 	var/amount = 0
-	for (var/datum/mana_group/group as anything in mana)
-		amount += group.get_raw_amount()
+	for (var/datum/mana_pool/group as anything in mana)
+		amount += group.amount
 	return amount
 
 /datum/controller/subsystem/processing/magic/proc/get_all_leyline_mana_amount(var/list/datum/attunement/attunements)
-	var/list/datum/magic_group/mana = get_all_leyline_mana()
+	var/list/datum/mana_pool/mana = get_all_leyline_mana()
 	var/amount = 0
-	for (var/datum/mana_group/group as anything in mana)
-		amount += group.get_amount(attunements)
+	for (var/datum/mana_pool/group as anything in mana)
+		amount += group.get_adjusted_amount(attunements)
 	return amount
 
 /datum/controller/subsystem/processing/magic/proc/adjust_stored_mana(datum/mana_holder/leyline/picked_leyline, amount, list/incoming_attunements)
 	if (incoming_attunements == null)
 		incoming_attunements = picked_leyline.get_attunements()
-	picked_leyline.adjust_stored_mana(amount, incoming_attunements)
+	picked_leyline.adjust_mana(amount, incoming_attunements)

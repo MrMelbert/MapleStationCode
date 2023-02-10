@@ -8,7 +8,7 @@
 
 /datum/mana_holder/leyline/New()
 	intensity = generate_initial_intensity()
-	
+
 	. = ..()
 
 	recharge_rate = generate_recharge_rate()
@@ -23,7 +23,7 @@
 	QDEL_NULL(intensity)
 
 /datum/mana_holder/leyline/process(delta_time)
-	adjust_stored_mana(recharge_rate * delta_time) //recharge
+	adjust_mana(recharge_rate * delta_time) //recharge
 
 /// GETTERS / SETTERS
 

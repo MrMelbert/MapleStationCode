@@ -1,4 +1,4 @@
-GLOBAL_LIST_INIT(magic_attunements, typecacheof(/datum/attunement))
+GLOBAL_LIST_INIT(magic_attunements, typecacheof(/datum/attunement, ignore_root_path = TRUE))
 GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 

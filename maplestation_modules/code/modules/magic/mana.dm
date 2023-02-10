@@ -1,79 +1,65 @@
 /datum/proc/get_available_mana(var/list/datum/attunement/attunements = GLOB.default_attunements)
-    return SSmagic.get_all_leyline_mana_amount(attunements)
+	return SSmagic.get_all_leyline_mana()
 
 /* DESIGN NOTES
- * This exists because mana will eventually have attunemenents and alignments that will incresae their efficiency in being used
- * on spells/by people with corresponding attunements/alignments, vice versa for conflicting.
- * 
+* This exists because mana will eventually have attunemenents and alignments that will incresae their efficiency in being used
+* on spells/by people with corresponding attunements/alignments, vice versa for conflicting.
+*
 */
 
 /// An abstract representation of collections of mana, as it's impossible to represent each individual mana unit
-/datum/mana_group
-    var/amount = 0
-
-    var/list/attunements
-    var/datum/weakref/our_mana_pool
-
-/datum/mana_group/New(amount, attunements = create_default_attunement_list())
-    . = ..()
-
-    src.amount = amount
-    src.attunements = attunements
-
-/datum/mana_group/Destroy(force, ...)
-	. = ..()
-
-    var/datum/mana_pool = our_mana_pool.resolve()
-    if (mana_pool)
-        mana_pool.mana_groups -= src
-    our_mana_pool = null
-
-    attunements = null
-
-/datum/mana_group/proc/changed_pools(/datum/mana_pool/new_pool)
-    var/datum/mana_pool = our_mana_pool.resolve()
-    if (mana_pool)
-        mana_pool.mana_groups -= src
-    if (new_pool)
-        new_pool.mana_groups += src
-    our_mana_pool = WEAKREF(new_pool)
-
-/// A collection of mana groups
 /datum/mana_pool
-    var/list/mana_group/mana_groups
+	var/amount = 0
+	var/list/datum/attunement/attunements
 
-/datum/mana_pool/New(var/list/mana_group/mana_groups = list())
+/datum/mana_pool/New(amount = 0, attunements = GLOB.default_attunements.Copy())
 	. = ..()
 
-    src.mana_group = mana_groups
+	src.amount = amount
+	src.attunements = attunements
 
 /datum/mana_pool/Destroy(force, ...)
-    . = ..()
+	. = ..()
 
-/datum/mana_pool/proc/get_average_attunements()
-    . = create_default_attunement_list()
-    if (mana_groups.len == 0) return
-    for (var/datum/mana_group/mana as anything in mana_groups)
-        for (attunement as anything in mana.attunements)
-            .[attunement] += mana.attunements[attunement]
-    for (attunement as anything in .)
-        .[attunement] = attunement/(mana_groups.len)
+	attunements = null
+
+#define MANA_POOL_REPLACE_ALL_ATTUNEMENTS "Fuck"
+// TODO BIG FUCKING WARNING THIS EQUATION DOSENT WORK AT ALL
+// Should be fine as long as nothing actually has any attunements
+// Returns how much of "amount" is left.
+/datum/mana_pool/proc/adjust_mana(amount, list/incoming_attunements = GLOB.default_attunements)
+
+	/*if (src.amount == 0)
+		CRASH("src.amount was ZERO in [src]'s adjust_quanity") //why would this happen
+		*/
+	if (amount == 0) return
+
+	var/ratio
+	if (src.amount == 0)
+		ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS
+	else
+		ratio = amount/src.amount
+
+	/*for (var/iterated_attunement as anything in incoming_attunements)
+	// equation formed in desmos, dosent work
+		attunements[iterated_attunement] += (((incoming_attunements[iterated_attunement]) - attunements[iterated_attunement]) * (ratio/2)) */
+
+	. = (amount - min(abs(src.amount), amount))
+	src.amount = max((src.amount + amount), 0)
 
 /// Returns an adjusted amount of "effective" mana, affected by the attunements.
-/datum/mana_pool/proc/get_amount(list/datum/attunement/incoming_attunements)
-    var/mult = 1
-    var/list/attunements = get_average_attunements()
+/datum/mana_pool/proc/get_adjusted_amount(list/datum/attunement/incoming_attunements)
+	var/mult = 1
 
-    for (attunement as anything in incoming_attunements, attunements)
-        mult += get_attunement_mult(attunement, incoming_attunements[attunement])
+	for (var/iterated_attunement as anything in incoming_attunements)
+		mult += (get_attunement_mult(iterated_attunement, incoming_attunements[iterated_attunement])-1)
 
-    return amount*mult
+	return amount*mult
 
-/datum/mana_pool/proc/get_attunement_mult(attunement, intensity, attunements = get_average_attunements())
-    var/raw_value = (1 + ((attunements[attunement]) * (intensity))) // +1 to normalize the fact that attunements start at 0
-    if (raw_value == 0) return 0
-    return 1/raw_value // invert the value from 5 to 0.2 and such: higher attunement matches = less spell cost
+/datum/mana_pool/proc/get_attunement_mult(attunement, intensity)
+	var/raw_value = max((1+((attunements[attunement]) * (intensity))), 0.05) // since attunements start at 0, we offset by 1
+	// use max to prevent us from ever escaping having to use mana
+	return 1/raw_value // invert the value from 5 to 0.2 and such: higher attunement matches = less spell cost
 
-/datum/mana_pool/proc/adjust_mana(amount)
-    
-
+/datum/mana_pool/proc/get_subtracted_value(amount)
+	return amount -= min(src.amount, amount) // never any less than 0

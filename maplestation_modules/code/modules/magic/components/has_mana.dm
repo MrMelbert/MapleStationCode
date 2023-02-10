@@ -1,14 +1,14 @@
 /* Design notes:
 * This component designates the parent datum as, through some mechanism, being a mana "source".
-* 
+*
 * When a request is put in to get available mana sources to a specific entity, datums with these componenets
-* should be what is returned. 
+* should be what is returned.
 * HOW WE WILL GATHER DATUMS WITH THIS: As GetComponent is a crutch, this can likely be done through the use
 * of firing a signal off the entity and having has_mana listen for it. (How? Have EVERY has_mana instance run a proc?
 * THat can get out of hand fast. Need some way to only have things that might actually be available returned. Maybe
 * we can, upon certain evenets occuring, such as an item being picked up, we can add it to a list associated with a
 * specific entity?)
-* WHEN: It is likely the signal will be fired off by uses_mana components searching for available mana sources. When
+/** WHEN: It is likely the signal will be fired off by uses_mana components searching for available mana sources. When
 * players desire to know their available mana, as well.
 *
 * has_mana instances should, at a minimum, have some way to generate mana. It doesn't necessarily have to store mana, just
@@ -47,3 +47,4 @@
 /// Returns ALL of our mana. For external uses, get_mana_we_can_give is perferred.
 /datum/component/has_mana/proc/get_mana()
     return null
+*/

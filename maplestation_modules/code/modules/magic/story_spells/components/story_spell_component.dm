@@ -47,13 +47,15 @@
 /datum/component/uses_mana/story_spell/proc/handle_precast(atom/cast_on)
 	SIGNAL_HANDLER
 
-	if (!can_cast()) // TODO: Maybe make this return a bitflag so we know why it failed/succeeded?
-		return handle_can_cast_failure(cast_on)
+	return can_activate_check(TRUE, cast_on)
 
-/datum/component/uses_mana/story_spell/proc/handle_can_cast_failure(atom/cast_on)
-	to_chat(spell_parent.owner, span_warning("Insufficient mana!")) //placeholder
+/datum/component/uses_mana/story_spell/unable_to_activate()
 	return SPELL_CANCEL_CAST
 
+/datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/cast_on)
+	. = ..()
+
+	to_chat(spell_parent.owner, span_warning("Insufficient mana!"))
 /**
  * Actions done as the main effect of the spell.
  *
@@ -76,12 +78,11 @@
 	. = ..()
 
 	var/cost = get_mana_required()
-	var/list/datum/attunement/attunements = get_attunement_dispositions()
+	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
 	for (var/datum/mana_pool/iterated_pool as anything in get_usable_mana(spell_parent.owner))
-		for (var/datum/attunement/iterated_attunement as anything in attunements)
-			var/mult = iterated_pool.get_attunement_mult(iterated_attunement, attunements[iterated_attunement]))
-			cost -= iterated_pool.get_subtracted_value(cost)
-			iterated_pool.adjust_mana(-(cost*mult))
+		for (var/datum/attunement/iterated_attunement as anything in our_attunements)
+			var/mult = iterated_pool.get_attunement_mult(iterated_attunement, our_attunements[iterated_attunement])
+			cost -= iterated_pool.adjust_mana(-(cost*mult))
 			if (cost <= 0) break
 		if (cost > 0)
 			stack_trace("cost was above 0 after react_to_successful_use on [src]")

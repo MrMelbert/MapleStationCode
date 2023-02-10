@@ -2,28 +2,27 @@
 
 #define CONVECT_HEAT_ATTUNEMENT 0.5
 #define CONVECT_ICE_ATTUNEMENT 0.5
-/datum/component/uses_mana/convect/get_attunement_dispositions()
+/datum/component/uses_mana/story_spell/convect/get_attunement_dispositions()
 	if (!istype(spell_parent, /datum/action/cooldown/spell/pointed/convect))
-		return attunement_dispositions
+		return attunements
 	var/datum/action/cooldown/spell/pointed/convect/convect_spell = spell_parent
 	if (convect_spell.temperature_for_cast == 0)
-		return attunement_dispositions
-	. = attunement_dispositions.Copy()
+		return attunements
+	. = attunements.Copy()
 	if (convect_spell.temperature_for_cast > 0)
 		.[MAGIC_ELEMENT_FIRE] += CONVECT_HEAT_ATTUNEMENT
 		.[MAGIC_ELEMENT_ICE] -= CONVECT_HEAT_ATTUNEMENT
 		return
-	else 
+	else
 		.[MAGIC_ELEMENT_ICE] += CONVECT_ICE_ATTUNEMENT
 		.[MAGIC_ELEMENT_FIRE] -= CONVECT_ICE_ATTUNEMENT
 
 #undef CONVECT_HEAT_ATTUNEMENT
 #undef CONVECT_ICE_ATTUNEMENT
 
-/datum/component/uses_mana/story_spell/convect/handle_can_cast_failure(atom/cast_on)
+/datum/component/uses_mana/story_spell/convect/unable_to_activate(atom/cast_on)
 	. = ..()
 
-	//to_chat(convect_spell.owner, span_warning("The thrum of the leylines die out. Perhaps you demanded too much mana?"))
 	spell_parent.unset_click_ability(spell_parent.owner)
 	return . | SPELL_CANCEL_CAST | SPELL_NO_IMMEDIATE_COOLDOWN
 
@@ -54,7 +53,7 @@
 /datum/action/cooldown/spell/pointed/convect/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/story_spell/convect, src)
+	AddComponent(/datum/component/uses_mana/story_spell/convect, src)
 
 /datum/action/cooldown/spell/pointed/convect/is_valid_target(atom/cast_on)
 	return TRUE //cant call suepr cause i want to be able to use this on myself
