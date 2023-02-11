@@ -19,6 +19,7 @@
 
 /// Returns the "mult" value using the correspondance between attunements and intensity. This value should be multiplied against
 /// the mana cost of an action to determine how much "effective" mana a certain mana source can provide to it.
+/// Should NEVER return anything negative, ever. The minimum is 0.
 /proc/get_raw_attunement_mult_proc(list/datum/attunement/attunements, intensity, attunement)
 	. = GET_RAW_CORRESPONDING_ATTUNEMENT(attunements, intensity, attunement)
 	if (. < 0)

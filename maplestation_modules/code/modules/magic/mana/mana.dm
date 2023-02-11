@@ -63,7 +63,7 @@
 /datum/mana_pool/proc/get_attuned_amount(list/datum/attunement/incoming_attunements, amount_to_adjust = src.amount)
 	var/mult = get_attunement_mults(incoming_attunements)
 
-	return clamp(amount_to_adjust*mult, 0, amount)
+	return clamp(SAFE_DIVIDE(amount_to_adjust, mult), 0, amount)
 
 /datum/mana_pool/proc/get_attunement_mult(attunement, intensity)
 	return GET_RAW_ATTUNEMENT_MULT(attunements, intensity, attunement)

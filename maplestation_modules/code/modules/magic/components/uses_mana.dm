@@ -74,7 +74,7 @@
 	for (var/datum/mana_pool/iterated_pool as anything in pools)
 		var/mult = iterated_pool.get_attunement_mults(our_attunements)
 		var/attuned_cost = cost * mult
-		cost -= SAFE_DIVIDE(iterated_pool.adjust_mana((attuned_cost*mult)), mult)
+		cost -= SAFE_DIVIDE(iterated_pool.adjust_mana((attuned_cost)), mult)
 		if (cost == 0) break
 	if (cost != 0)
 		stack_trace("cost: [cost] was not 0 after react_to_successful_use on [src]")

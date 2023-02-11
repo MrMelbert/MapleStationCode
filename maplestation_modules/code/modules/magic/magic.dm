@@ -12,7 +12,7 @@
 	QDEL_NULL(mana)
 
 /datum/mana_holder/proc/adjust_mana(amount, list/incoming_attunements = GLOB.default_attunements)
-	return mana.adjust_mana(amount ,incoming_attunements)
+	return mana.adjust_mana(amount, incoming_attunements)
 
 /datum/mana_holder/proc/get_attunements()
 	return mana.attunements
