@@ -12,6 +12,7 @@ GLOBAL_LIST_INIT(leyline_intensities, list(
 
 // ^ Only pass integers in since its used for pickweight
 
+/// "Intensities" that will be applied to leylines. Should influence the average capacity/recharge rate/whatever of the leyline.
 /datum/leyline_intensity
 	var/overall_mult
 	var/name = "we fucked up"

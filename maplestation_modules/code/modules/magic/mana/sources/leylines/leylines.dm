@@ -1,6 +1,6 @@
 // defines in _module_defines.dm
 
-/// The global store of mana accessable to all. Simulates leylines. Version 1 -- OTher versions may have more advanced simulation, such as multiple leylines existing
+/// The lines of latent energy that run under the universe. Available to all people in the game. Should be high capacity, but slow to recharge.
 /datum/mana_holder/leyline
 	var/datum/leyline_intensity/intensity
 
@@ -16,11 +16,11 @@
 	SSmagic.start_processing_leyline(src)
 
 /datum/mana_holder/leyline/Destroy(force, ...)
-	. = ..()
-
 	SSmagic.stop_processing_leyline(src)
 
 	QDEL_NULL(intensity)
+
+	return ..()
 
 /datum/mana_holder/leyline/process(delta_time)
 	adjust_mana(recharge_rate * delta_time) //recharge

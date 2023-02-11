@@ -1,7 +1,6 @@
 GLOBAL_LIST_INIT(magic_attunements, typecacheof(/datum/attunement, ignore_root_path = TRUE))
 GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
-
 /proc/create_default_attunement_list()
 	. = list()
 	for (var/iterated_attunement in GLOB.magic_attunements)
@@ -9,6 +8,10 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 // Not touching subtypes right now or compound attunements
 
+/// The "attunement" a certain spell or piece of mana may have. When mana is consumed, it's attunements will be compared to the attunements of
+/// what consumed it, and then the result will be used to generate how much mana will be actually consumed. Matching attunements decreases cost,
+/// vice versa.
+///
 /datum/attunement
 	var/name = "Base attunement"
 	var/desc = "Some fucking dumbass forgot to set desc"

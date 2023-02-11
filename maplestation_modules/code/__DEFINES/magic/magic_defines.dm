@@ -12,6 +12,4 @@
 #define MAGIC_UNIT_OF_MAGNITUDE "TP" // Thaumatergic Potential
 #define STORY_MAGIC_BASE_CONSUME_SCORE 50
 
-
-
 #define CONVECT_MANA_COST_PER_KELVIN 0.25

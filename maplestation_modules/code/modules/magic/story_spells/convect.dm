@@ -66,6 +66,7 @@
 
 	. = ..()
 
+/// Asks the owner for a number via TGUI. If the number isn't 0 or null, sets it to our temperature.
 /datum/action/cooldown/spell/pointed/convect/proc/get_new_cast_temperature()
 	var/temperature = tgui_input_number(owner, "How many degrees (kelvin) do you wish to shift temperature by?", "Convect", null, max_value = INFINITY, min_value = -INFINITY, timeout = 5 SECONDS)
 	if (!temperature)

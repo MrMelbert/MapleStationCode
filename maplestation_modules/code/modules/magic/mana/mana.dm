@@ -65,8 +65,10 @@
 
 	return clamp(SAFE_DIVIDE(amount_to_adjust, mult), 0, amount)
 
+/// Returns our attunement mult of attunement.
 /datum/mana_pool/proc/get_attunement_mult(attunement, intensity)
 	return GET_RAW_ATTUNEMENT_MULT(attunements, intensity, attunement)
 
+/// Returns the combined attunement mults of all entries in the argument.
 /datum/mana_pool/proc/get_attunement_mults(list/attunements)
 	return get_total_attunement_mult(src.attunements, attunements)
