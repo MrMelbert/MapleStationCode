@@ -34,7 +34,7 @@
 /datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/cast_on)
 	. = ..()
 
-	to_chat(spell_parent.owner, span_warning("Insufficient mana!"))
+	spell_parent.owner.balloon_alert(spell_parent.owner, "Insufficient mana!")
 
 // SIGNAL HANDLERS
 

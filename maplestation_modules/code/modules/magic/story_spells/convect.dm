@@ -98,16 +98,23 @@
 	if (iscarbon(cast_on))
 		var/mob/living/carbon/carbon_target = cast_on
 		carbon_target.adjust_bodytemperature(temperature_for_cast, use_insulation = TRUE)
-		to_chat(carbon_target, span_warning("You feel a wave of [hot_or_cold] eminate from [owner]..."))
+		var/just_got_convected_text = span_warning("You feel a wave of [hot_or_cold] eminate from [owner]...")
+		carbon_target.balloon_alert(carbon_target, just_got_convected_text)
+		to_chat(carbon_target, just_got_convected_text)
+
 
 	var/turf/turf_target = get_turf(cast_on)
-	var/datum/gas_mixture/turf_air = turf_target?.return_air()
 	var/datum/gas_mixture/air = cast_on.return_air()
-	if (air)
+	var/datum/gas_mixture/turf_air = turf_target?.return_air()
+	if (air && air != turf_air) // if this has air and we arent a turf
 		air.temperature += temperature_for_cast //this sucks.
-	if (turf_air && air != turf_air)
+		air.react(cast_on)
+	if (isturf(cast_on) && turf_air)
 		turf_air.temperature += temperature_for_cast
+		turf_air.react(turf_target)
 		turf_target?.air_update_turf()
 
-	cast_on.reagents?.expose_temperature(temperature_for_cast)
-	to_chat(owner, span_warning("You [heat_or_cool] [cast_on] by [temperature_for_cast]K."))
+	cast_on.reagents?.expose_temperature((cast_on.reagents?.chem_temp)+temperature_for_cast, 1)
+	var/just_convected_text = span_warning("You [heat_or_cool] [cast_on] by [temperature_for_cast]K.")
+	owner.balloon_alert(owner, just_convected_text)
+	to_chat(owner, just_convected_text)
