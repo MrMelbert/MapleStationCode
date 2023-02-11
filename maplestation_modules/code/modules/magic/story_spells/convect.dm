@@ -1,12 +1,16 @@
 /datum/component/uses_mana/story_spell/pointed/convect
 
+/datum/component/uses_mana/story_spell/pointed/convect/Initialize(datum/action/cooldown/spell/pointed/convect/our_spell)
+	. = ..()
+
+	if (!istype(our_spell))
+		return . | COMPONENT_INCOMPATIBLE
+
 #define CONVECT_HEAT_ATTUNEMENT 0.5
 #define CONVECT_ICE_ATTUNEMENT 0.5
 /datum/component/uses_mana/story_spell/pointed/convect/get_attunement_dispositions()
 	. = ..()
-	if (!istype(spell_parent, /datum/action/cooldown/spell/pointed/convect))
-		return
-	var/datum/action/cooldown/spell/pointed/convect/convect_spell = spell_parent
+	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
 	if (convect_spell.temperature_for_cast == 0)
 		return
 	if (convect_spell.temperature_for_cast > 0)
@@ -22,11 +26,8 @@
 
 /datum/component/uses_mana/story_spell/pointed/convect/get_mana_required(...)
 	. = ..()
-	if (!istype(spell_parent, /datum/action/cooldown/spell/pointed/convect))
-		return INFINITY //placeholder shit until i improve this
-
-	var/datum/action/cooldown/spell/pointed/convect/convect_spell = spell_parent
-	return ((abs(convect_spell.temperature_for_cast)*CONVECT_MANA_COST_PER_KELVIN) * convect_spell.owner.get_base_casting_cost())
+	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
+	return ((abs(convect_spell.temperature_for_cast)*CONVECT_MANA_COST_PER_KELVIN) * convect_spell.owner.get_casting_cost_mult())
 	// todo: methodize the casting cost mult part
 
 /datum/component/uses_mana/story_spell/pointed/convect/react_to_successful_use(atom/cast_on)
@@ -70,19 +71,15 @@
 	if (!temperature)
 		return FALSE
 	temperature_for_cast = temperature
-	owner.balloon_alert(owner, "Casting temperature set to [temperature]K")
+	owner.balloon_alert(owner, "casting temperature set to [temperature]K")
 
 /datum/action/cooldown/spell/pointed/convect/on_activation(mob/on_who)
 	. = ..()
-	if (temperature_for_cast == null)
+	if (!isnum(temperature_for_cast))
 		get_new_cast_temperature()
-		if (temperature_for_cast == null)
+		if (!isnum(temperature_for_cast))
 			unset_click_ability(on_who)
 			return FALSE
-
-/datum/action/cooldown/spell/pointed/convect/on_deactivation(mob/on_who, refund_cooldown)
-	. = ..()
-	//temperature_for_cast = 0
 
 /datum/action/cooldown/spell/pointed/convect/cast(atom/cast_on)
 	. = ..()
@@ -101,7 +98,6 @@
 		var/just_got_convected_text = span_warning("You feel a wave of [hot_or_cold] eminate from [owner]...")
 		carbon_target.balloon_alert(carbon_target, just_got_convected_text)
 		to_chat(carbon_target, just_got_convected_text)
-
 
 	var/turf/turf_target = get_turf(cast_on)
 	var/datum/gas_mixture/air = cast_on.return_air()

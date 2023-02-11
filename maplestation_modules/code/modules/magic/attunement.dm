@@ -4,7 +4,7 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 /proc/create_default_attunement_list()
 	. = list()
-	for (var/iterated_attunement as anything in GLOB.magic_attunements)
+	for (var/iterated_attunement in GLOB.magic_attunements)
 		.[iterated_attunement] = 0 // make it an assoc list
 
 // Not touching subtypes right now or compound attunements

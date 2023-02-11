@@ -1,8 +1,3 @@
-/// Should return a list of all mana pools that this datum can access at the given moment. Defaults to returning leylines.
-/datum/proc/get_available_mana(list/datum/attunement/attunements = GLOB.default_attunements)
-	RETURN_TYPE(/list/datum/mana_pool)
-	return SSmagic.get_all_leyline_mana()
-
 /* DESIGN NOTES
 * This exists because mana will eventually have attunemenents and alignments that will incresae their efficiency in being used
 * on spells/by people with corresponding attunements/alignments, vice versa for conflicting.
@@ -23,11 +18,11 @@
 	src.attunements = attunements
 
 /datum/mana_pool/Destroy(force, ...)
-	. = ..()
-
 	attunements = null
 
-#define MANA_POOL_REPLACE_ALL_ATTUNEMENTS (0<<2)
+	return ..()
+
+#define MANA_POOL_REPLACE_ALL_ATTUNEMENTS (1<<2)
 // TODO BIG FUCKING WARNING THIS EQUATION DOSENT WORK AT ALL
 // Should be fine as long as nothing actually has any attunements
 /// The proc used to modify the mana composition of a mana pool. Should modify attunements in proportion to the ratio
@@ -40,7 +35,8 @@
 	/*if (src.amount == 0)
 		CRASH("src.amount was ZERO in [src]'s adjust_quanity") //why would this happen
 		*/
-	if (amount == 0) return amount
+	if (amount == 0)
+		return amount
 
 	/*var/ratio
 	if (src.amount == 0)

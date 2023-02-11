@@ -1,7 +1,5 @@
 /// The base component to be applied to all spells that interact with the mana system.
 /datum/component/uses_mana/story_spell
-	var/datum/action/cooldown/spell/spell_parent
-
 	can_transfer = FALSE
 
 /datum/component/uses_mana/story_spell/Initialize(datum/action/cooldown/spell/our_spell)
@@ -13,28 +11,22 @@
 /datum/component/uses_mana/story_spell/RegisterWithParent()
 	. = ..()
 
-	if (!istype(parent, /datum/action/cooldown/spell))
-		qdel(src) // i dont know what to do here tbh
-		return . | COMPONENT_INCOMPATIBLE
-	spell_parent = parent
-
-	RegisterSignal(spell_parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
-	RegisterSignal(spell_parent, COMSIG_SPELL_CAST, PROC_REF(handle_cast))
-	RegisterSignal(spell_parent, COMSIG_SPELL_AFTER_CAST, PROC_REF(react_to_successful_use))
+	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
+	RegisterSignal(parent, COMSIG_SPELL_CAST, PROC_REF(handle_cast))
+	RegisterSignal(parent, COMSIG_SPELL_AFTER_CAST, PROC_REF(react_to_successful_use))
 
 /datum/component/uses_mana/story_spell/UnregisterFromParent()
 	. = ..()
 
-	UnregisterSignal(spell_parent, COMSIG_SPELL_BEFORE_CAST)
-	UnregisterSignal(spell_parent, COMSIG_SPELL_CAST)
-	UnregisterSignal(spell_parent, COMSIG_SPELL_AFTER_CAST)
-
-	spell_parent = null
+	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
+	UnregisterSignal(parent, COMSIG_SPELL_CAST)
+	UnregisterSignal(parent, COMSIG_SPELL_AFTER_CAST)
 
 /datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/cast_on)
 	. = ..()
+	var/datum/action/cooldown/spell/spell_parent = parent
 
-	spell_parent.owner.balloon_alert(spell_parent.owner, "Insufficient mana!")
+	spell_parent.owner.balloon_alert(spell_parent.owner, "insufficient mana!")
 
 // SIGNAL HANDLERS
 
