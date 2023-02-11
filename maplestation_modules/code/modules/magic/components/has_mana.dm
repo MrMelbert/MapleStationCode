@@ -27,24 +27,4 @@
 	. = ..()
 
 	RegisterSignal(???, putcomsighere, PROC_REF(mana_request_reaction))
-
-/// Should return itself if it's available to the mana_seeker.
-/datum/component/has_mana/proc/mana_request_reaction(mana_seeker)
-    SIGNAL_HANDLER
-
-    if (is_available_to(mana_seeker))
-        . = src
-
-/// Determines if mana_seeker is able to siphon mana from us.
-/datum/component/has_mana/proc/is_available_to(mana_seeker)
-    return FALSE
-
-/// Returns the specific mana we, at this very moment, are fine with giving mana_seeker.
-/// REQUIRED to be overridden past basetype for proper functionality.
-/datum/component/has_mana/proc/get_mana_we_can_give(mana_seeker)
-    return null
-
-/// Returns ALL of our mana. For external uses, get_mana_we_can_give is perferred.
-/datum/component/has_mana/proc/get_mana()
-    return null
 */

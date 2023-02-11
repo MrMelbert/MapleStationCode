@@ -4,7 +4,7 @@
 
 	can_transfer = FALSE
 
-/datum/component/uses_mana/story_spell/Initialize(var/datum/action/cooldown/spell/our_spell)
+/datum/component/uses_mana/story_spell/Initialize(datum/action/cooldown/spell/our_spell)
 	. = ..()
 
 	if (!istype(our_spell))
