@@ -1,4 +1,6 @@
+/// Should return a list of all mana pools that this datum can access at the given moment. Defaults to returning leylines.
 /datum/proc/get_available_mana(var/list/datum/attunement/attunements = GLOB.default_attunements)
+	RETURN_TYPE(/list/datum/mana_pool)
 	return SSmagic.get_all_leyline_mana()
 
 /* DESIGN NOTES
@@ -25,22 +27,26 @@
 
 	attunements = null
 
-#define MANA_POOL_REPLACE_ALL_ATTUNEMENTS "Fuck"
+#define MANA_POOL_REPLACE_ALL_ATTUNEMENTS (0<<2)
 // TODO BIG FUCKING WARNING THIS EQUATION DOSENT WORK AT ALL
 // Should be fine as long as nothing actually has any attunements
-// Returns how much of "amount" was used.
+/// The proc used to modify the mana composition of a mana pool. Should modify attunements in proportion to the ratio
+/// between the current amount of mana we have and the mana coming in/being removed, as well as the attunements.
+/// Mana pools in general will eventually be refactored to be lists of individual mana pieces with unchanging attunements,
+/// so this is not permanent.
+/// Returns how much of "amount" was used.
 /datum/mana_pool/proc/adjust_mana(amount, list/incoming_attunements = GLOB.default_attunements)
 
 	/*if (src.amount == 0)
 		CRASH("src.amount was ZERO in [src]'s adjust_quanity") //why would this happen
 		*/
-	if (amount == 0) return
+	if (amount == 0) return amount
 
-	var/ratio
+	/*var/ratio
 	if (src.amount == 0)
 		ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS
 	else
-		ratio = amount/src.amount
+		ratio = amount/src.amount*/
 
 	/*for (var/iterated_attunement as anything in incoming_attunements)
 	// equation formed in desmos, dosent work
@@ -68,6 +74,3 @@
 
 /datum/mana_pool/proc/get_attunement_mults(list/attunements)
 	return get_total_attunement_mult(src.attunements, attunements)
-
-/datum/mana_pool/proc/get_subtracted_value(amount)
-	return amount -= min(src.amount, amount) // never any less than 0

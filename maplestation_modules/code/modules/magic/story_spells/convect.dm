@@ -99,11 +99,15 @@
 		var/mob/living/carbon/carbon_target = cast_on
 		carbon_target.adjust_bodytemperature(temperature_for_cast, use_insulation = TRUE)
 		to_chat(carbon_target, span_warning("You feel a wave of [hot_or_cold] eminate from [owner]..."))
+
 	var/turf/turf_target = get_turf(cast_on)
-	if (turf_target != null)
-		var/datum/gas_mixture/turf_air = turf_target.return_air()
-		if (turf_air)
-			turf_air.temperature += temperature_for_cast //this sucks.
-			turf_target.air_update_turf()
+	var/datum/gas_mixture/turf_air = turf_target?.return_air()
+	var/datum/gas_mixture/air = cast_on.return_air()
+	if (air)
+		air.temperature += temperature_for_cast //this sucks.
+	if (turf_air && air != turf_air)
+		turf_air.temperature += temperature_for_cast
+		turf_target?.air_update_turf()
+
 	cast_on.reagents?.expose_temperature(temperature_for_cast)
 	to_chat(owner, span_warning("You [heat_or_cool] [cast_on] by [temperature_for_cast]K."))
