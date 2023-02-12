@@ -1,9 +1,9 @@
 /datum/component/uses_mana/story_spell/pointed/convect
 
-/datum/component/uses_mana/story_spell/pointed/convect/Initialize(datum/action/cooldown/spell/pointed/convect/our_spell)
+/datum/component/uses_mana/story_spell/pointed/convect/Initialize(...)
 	. = ..()
 
-	if (!istype(our_spell))
+	if (!istype(parent, /datum/action/cooldown/spell/pointed/convect))
 		return . | COMPONENT_INCOMPATIBLE
 
 #define CONVECT_HEAT_ATTUNEMENT 0.5
@@ -54,7 +54,7 @@
 /datum/action/cooldown/spell/pointed/convect/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/convect, src)
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/convect)
 
 /datum/action/cooldown/spell/pointed/convect/is_valid_target(atom/cast_on)
 	return TRUE //cant call suepr cause i want to be able to use this on myself

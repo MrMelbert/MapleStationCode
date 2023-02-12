@@ -1,5 +1,5 @@
 /// Should return a list of all mana pools that this datum can access at the given moment. Defaults to returning leylines.
-/datum/proc/get_available_mana(list/datum/attunement/attunements = GLOB.default_attunements.Copy())
+/datum/proc/get_available_mana(list/datum/attunement/attunements = GLOB.default_attunements)
 	RETURN_TYPE(/list/datum/mana_pool)
 	return SSmagic.get_all_leyline_mana()
 
