@@ -11,18 +11,30 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 /// The "attunement" a certain spell or piece of mana may have. When mana is consumed, it's attunements will be compared to the attunements of
 /// what consumed it, and then the result will be used to generate how much mana will be actually consumed. Matching attunements decreases cost,
 /// vice versa.
-///
 /datum/attunement
 	var/name = "Base attunement"
 	var/desc = "Some fucking dumbass forgot to set desc"
 
 	var/list/alignments = list() // no alignments by default
-
+/*
+/datum/attunement/proc/get_intrinsic_mult_increment(atom/caster)
+	return 0
+*/
 /datum/attunement/fire
 	name = "Fire"
 	desc = "Perhaps the most well-known, and often many a mage's first study of the elements, the Fire element covers any heat or other flame related magic."
 
 	alignments = list(MAGIC_ALIGNMENT_CHAOS = 0.1)
+
+/*
+/datum/attunement/fire/get_intrinsic_mult_increment(atom/caster)
+	. = ..()
+
+	if (ishuman(caster))
+		var/mob/living/carbon/human/human_caster = caster
+		if (islizard(human_caster))
+			. += MAGIC_ELEMENT_FIRE_LIZARD_MULT_INCREMENT
+*/
 
 /datum/attunement/ice
 	name = "Ice"

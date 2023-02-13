@@ -69,7 +69,7 @@
 
 	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
 	for (var/datum/mana_pool/iterated_pool as anything in pools)
-		var/mult = iterated_pool.get_attunement_mults(our_attunements)
+		var/mult = iterated_pool.get_overall_attunement_mults(our_attunements)
 		var/attuned_cost = cost * mult
 		cost -= SAFE_DIVIDE(iterated_pool.adjust_mana((attuned_cost)), mult)
 		if (cost == 0)
