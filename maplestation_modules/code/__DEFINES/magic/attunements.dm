@@ -4,6 +4,7 @@
 
 #define MAGIC_ELEMENT_FIRE /datum/attunement/fire
 #define MAGIC_ELEMENT_ICE /datum/attunement/ice
+#define MAGIC_ELEMENT_LIGHT /datum/attunement/light
 // When other elements are used, add them here
 
 // Alignments

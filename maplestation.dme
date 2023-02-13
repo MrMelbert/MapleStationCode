@@ -5098,6 +5098,7 @@
 #include "maplestation_modules\code\modules\magic\mana\sources\leylines\leyline_intensities.dm"
 #include "maplestation_modules\code\modules\magic\mana\sources\leylines\leylines.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\convect.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\flare.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\components\pointed_component.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\components\story_spell_component.dm"
 #include "maplestation_modules\code\modules\mining\machine_vending.dm"
