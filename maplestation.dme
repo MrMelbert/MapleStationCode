@@ -5171,4 +5171,5 @@
 #include "maplestation_modules\story_content\post_overlay\code\post_overlay.dm"
 #include "maplestation_modules\story_content\prince_equipment\code\clothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
+#include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
 // END_INCLUDE
