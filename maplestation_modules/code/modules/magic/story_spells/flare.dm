@@ -1,7 +1,10 @@
 /datum/component/uses_mana/story_spell/conjure_item/flare
+#define FLARE_LIGHT_ATTUNEMENT 0.5
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
-	MAGIC_ELEMENT_LIGHT
+	. = ..()
+	.[MAGIC_ELEMENT_LIGHT] += FLARE_LIGHT_ATTUNEMENT
 
+#undef FLARE_LIGHT_ATTUNEMENT
 #define FLARE_MANA_COST 30
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
@@ -26,6 +29,13 @@
 	delete_old = FALSE
 
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	var/flare_color
+
+/datum/action/cooldown/spell/conjure_item/flare/make_item()
+	var/obj/item/created = ..()
+	created.color = flare_color
+	created.set_light_color(flare_color)
+	return created
 
 /datum/action/cooldown/spell/conjure_item/flare/New(Target, original)
 	. = ..()
@@ -67,10 +77,10 @@
 /obj/item/flashlight/glowstick/magic/proc/decay_finished()
 	qdel(src)
 
-/*WIP: Not sure how to call the color picker on Rightclick and make it work! Way to select a new color for flare before conjuring it.
+//Way to select a new color for flare before conjuring it.
 /datum/action/cooldown/spell/conjure_item/flare/Trigger(trigger_flags, atom/target)
 	if (trigger_flags & TRIGGER_SECONDARY_ACTION)
-		get_new_color()
+		flare_color = get_new_color()
 		return FALSE
 
 	. = ..()
@@ -80,13 +90,12 @@
 	var/mob/user = usr
 	var/new_color
 	while(!new_color)
-		new_color = input(user, "Choose a new color for flare.", "Light Color", new_color) as color|null
+		new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
 		if(!new_color)
 			return
+		/*Commented out, leaving in if later on there is a need for a too dark check.
 		if(is_color_dark(new_color, 50) ) //Colors too dark are rejected
 			to_chat(user, span_warning("That color is too dark! Choose a lighter one."))
-			new_color = null
-	color = new_color
-	update_appearance()
-	return
-*/
+			new_color = null*/
+	return new_color
+
