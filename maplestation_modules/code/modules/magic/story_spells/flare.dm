@@ -1,9 +1,13 @@
 /datum/component/uses_mana/story_spell/conjure_item/flare
+/datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
+	MAGIC_ELEMENT_LIGHT
+
+#define FLARE_MANA_COST 30
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
 	. = ..()
 	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
-	return (30 * flare_spell.owner.get_casting_cost_mult())
+	return (FLARE_MANA_COST * flare_spell.owner.get_casting_cost_mult())
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/react_to_successful_use(atom/cast_on)
 	. = ..()
@@ -12,7 +16,9 @@
 
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"
-	desc = "Conjure lumens into a glob to be thrown to light an area."
+	desc = "Conjure lumens into a glob to be thrown to light an area. Right-click the spell icon to set the light color."
+	icon_icon = 'icons/obj/candle.dmi'
+	button_icon_state = "candle1"
 
 	sound = 'sound/items/match_strike.ogg'
 
@@ -36,6 +42,7 @@
 	on = TRUE
 	var/auto_destroy = TRUE
 
+//Will have the flare start on and slowly burn through its fuel, when it runs out it will fizzle, fade out and delete itself. Similar to magic lockers from the staff.
 /obj/item/flashlight/glowstick/magic/Initialize(mapload)
 	. = ..()
 	if (auto_destroy)
@@ -59,3 +66,27 @@
 
 /obj/item/flashlight/glowstick/magic/proc/decay_finished()
 	qdel(src)
+
+/*WIP: Not sure how to call the color picker on Rightclick and make it work! Way to select a new color for flare before conjuring it.
+/datum/action/cooldown/spell/conjure_item/flare/Trigger(trigger_flags, atom/target)
+	if (trigger_flags & TRIGGER_SECONDARY_ACTION)
+		get_new_color()
+		return FALSE
+
+	. = ..()
+
+
+/datum/action/cooldown/spell/conjure_item/flare/proc/get_new_color()
+	var/mob/user = usr
+	var/new_color
+	while(!new_color)
+		new_color = input(user, "Choose a new color for flare.", "Light Color", new_color) as color|null
+		if(!new_color)
+			return
+		if(is_color_dark(new_color, 50) ) //Colors too dark are rejected
+			to_chat(user, span_warning("That color is too dark! Choose a lighter one."))
+			new_color = null
+	color = new_color
+	update_appearance()
+	return
+*/
