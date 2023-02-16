@@ -9,7 +9,7 @@
 	var/datum/preferences/owner_preferences
 	/// The client of the person using the UI
 	var/client/owner
-	/// Lpellbook preference singleton for easy access
+	/// Spellbook preference singleton for easy access
 	var/datum/preference/spellbook/preference
 	/// The current selected spellbook list.
 	var/list/spellbook
@@ -62,7 +62,7 @@
 
 	switch(action)
 
-		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
+		// Closes the UI
 		if("close_ui")
 			save_on_close = FALSE
 			SStgui.close_uis(src)
@@ -74,7 +74,7 @@
 			else
 				select_item(interacted_item)
 
-		// Clears the loadout list entirely.
+		// Clears the spellbook entirely.
 		if("clear_all_items")
 			owner.prefs.update_preference(preference, null)
 	return TRUE
@@ -93,14 +93,14 @@
 /datum/spellbook_manager/ui_static_data()
 	var/list/data = list()
 
+	// Generate the tabs that will contain the entries
 	// [name] is the name of the tab that contains all the corresponding contents.
 	// [title] is the name at the top of the list of corresponding contents.
-	// [contents] is a formatted list of all the possible items for that slot.
+	// [contents] is a formatted list of all the items under this category.
 	//  - [contents.path] is the path the singleton datum holds
 	//  - [contents.name] is the name of the singleton datum
 	//  - [contents.is_renamable], whether the item can be renamed in the UI
 	//  - [contents.is_greyscale], whether the item can be greyscaled in the UI
-	//  - [contents.tooltip_text], any additional tooltip text that hovers over the item's select button
 
 	var/list/spellbook_tabs = list()
 	spellbook_tabs += list(list("name" = "Thermokinesis", "title" = "Items related to manipulation of temperature", "contents" = list_to_data(GLOB.spellbook_thermokinesis_items)))
@@ -133,6 +133,7 @@
 		formatted_item["icon"] = item.icon
 		formatted_item["entry_type"] = item.get_entry_type()
 		formatted_item["can_be_picked"] = item.can_be_picked
+		//formatted_item["has_params"] = item.has_params()
 
 		if(LAZYLEN(item.additional_tooltip_contents))
 			formatted_item["tooltip_text"] = item.additional_tooltip_contents.Join("\n")

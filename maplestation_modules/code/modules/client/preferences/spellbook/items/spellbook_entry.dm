@@ -28,7 +28,7 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 	var/name
 	/// The description to be displayed under the name.
 	var/description
-	/// This item's place in the world, how people think of it, usually. Displayed under description.
+	/// This item's place in the world. Should include it's importance, how people see it, what it's related to, etc. general worldbuilding.
 	var/lore
 	/// The category of the loadout item.
 	var/category
