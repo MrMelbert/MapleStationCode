@@ -8,14 +8,14 @@
 
 // --- second outfit ---
 /obj/item/clothing/under/dress/nnseconddress
-    name = "fancy blue dress"
-    desc = "A decorated blue dress. Appears silky, but feels rough upon touching it.."
-    icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
-    worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
-    icon_state = "nnseconddress"
-    resistance_flags = INDESTRUCTIBLE
-    armor = list(MELEE = 0, BULLET = -5, LASER = -10, ENERGY = -10, BOMB = 0, BIO = 0, FIRE = -30, ACID = 0)
-    var/handled = FALSE
+	name = "fancy blue dress"
+	desc = "A decorated blue dress. Appears silky, but feels rough upon touching it.."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "nnseconddress"
+	resistance_flags = INDESTRUCTIBLE
+	armor = list(MELEE = 0, BULLET = -5, LASER = -10, ENERGY = -10, BOMB = 0, BIO = 0, FIRE = -30, ACID = 0)
+	var/handled = FALSE
 
 /obj/item/clothing/under/dress/nnseconddress/equipped(mob/user, slot) //gives nono her jellyfishlike traits
 	. = ..()
@@ -45,15 +45,15 @@
 			to_chat(user, "<span class='notice'>You feel your body sow itself back together!</span.?>")
 
 /obj/item/clothing/shoes/nnredshoes
-    name = "fake red shoes"
-    desc = "Red Mary Janes with a shining texture. Gliding your finger over it, it feels like sandpaper.."
-    icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
-    worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
-    icon_state = "nnshoes"
+	name = "fake red shoes"
+	desc = "Red Mary Janes with a shining texture. Gliding your finger over it, it feels like sandpaper.."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "nnshoes"
 
 /obj/item/clothing/head/costume/nnbluebonnet
-    name = "blue bonnet"
-    desc = "A decorated bonnet with various charms."
-    icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
-    worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
-    icon_state = "nnbonnet"
+	name = "blue bonnet"
+	desc = "A decorated bonnet with various charms."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "nnbonnet"

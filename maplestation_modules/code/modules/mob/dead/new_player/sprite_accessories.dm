@@ -20,9 +20,9 @@
 	icon_state = "hair_styled"
 
 /datum/sprite_accessory/hair/himepaper
-    name = "Paperlike Hime Cut"
-    icon = 'maplestation_modules/icons/mob/human_face.dmi'
-    icon_state = "hair_paperlike"
+	name = "Paperlike Hime Cut"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_paperlike"
 
 /datum/sprite_accessory/ears/cat/cyber
 	name = "Cybernetic Cat"
@@ -62,10 +62,10 @@
 	gender = NEUTER
 
 /datum/sprite_accessory/undershirt/whiteblouse
-    name = "White Blouse and Bloomers"
-    icon_state = "blouse"
-    icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
-    gender = NEUTER
+	name = "White Blouse and Bloomers"
+	icon_state = "blouse"
+	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
+	gender = NEUTER
 
 /datum/sprite_accessory/frills/big
 	name = "Big"
@@ -80,6 +80,6 @@
 /// --- Socks ---
 
 /datum/sprite_accessory/socks/pokersocks
-    name = "Mismatched Checkered Socks"
-    icon_state = "mismatchpoker"
-    icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+	name = "Mismatched Checkered Socks"
+	icon_state = "mismatchpoker"
+	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
