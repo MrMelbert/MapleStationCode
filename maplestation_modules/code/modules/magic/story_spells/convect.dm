@@ -33,7 +33,8 @@
 /datum/component/uses_mana/story_spell/pointed/convect/react_to_successful_use(atom/cast_on)
 	. = ..()
 
-	drain_mana()
+	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
+	drain_mana(caster = convect_spell.owner)
 
 /datum/action/cooldown/spell/pointed/convect
 	name = "Convect"

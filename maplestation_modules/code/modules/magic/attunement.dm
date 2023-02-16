@@ -1,9 +1,17 @@
-GLOBAL_LIST_INIT(magic_attunements, typecacheof(/datum/attunement, ignore_root_path = TRUE))
+GLOBAL_LIST_INIT(magic_attunements, create_attunement_list())
+/// List of typepaths - to access the singletons, access magic attunements
 GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
+
+/proc/create_attunement_list()
+	. = list()
+
+	var/list/typecache = typecacheof(/datum/attunement, ignore_root_path = TRUE)
+	for (var/datum/attunement/typepath as anything in typecache)
+		.[typepath] = new typepath
 
 /proc/create_default_attunement_list()
 	. = list()
-	for (var/iterated_attunement in GLOB.magic_attunements)
+	for (var/datum/attunement/iterated_attunement as anything in GLOB.magic_attunements)
 		.[iterated_attunement] = 0 // make it an assoc list
 
 // Not touching subtypes right now or compound attunements
@@ -16,25 +24,32 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 	var/desc = "Some fucking dumbass forgot to set desc"
 
 	var/list/alignments = list() // no alignments by default
-/*
-/datum/attunement/proc/get_intrinsic_mult_increment(atom/caster)
+
+/datum/attunement/Destroy(force, ...)
+	stack_trace("Destroy called on [src], [src.type], a singleton attunement instance!")
+	if (!force)
+		return QDEL_HINT_LETMELIVE //should not be deleted, ever
+	// forced
+	. = ..()
+
+	GLOB.magic_attunements[src.type] = new src.type // recover
+
+/datum/attunement/proc/get_bias_mult_increment(atom/caster)
 	return 0
-*/
+
 /datum/attunement/fire
 	name = "Fire"
 	desc = "Perhaps the most well-known, and often many a mage's first study of the elements, the Fire element covers any heat or other flame related magic."
 
 	alignments = list(MAGIC_ALIGNMENT_CHAOS = 0.1)
 
-/*
-/datum/attunement/fire/get_intrinsic_mult_increment(atom/caster)
+/datum/attunement/fire/get_bias_mult_increment(atom/caster)
 	. = ..()
 
 	if (ishuman(caster))
 		var/mob/living/carbon/human/human_caster = caster
 		if (islizard(human_caster))
 			. += MAGIC_ELEMENT_FIRE_LIZARD_MULT_INCREMENT
-*/
 
 /datum/attunement/ice
 	name = "Ice"
@@ -42,9 +57,23 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	alignments = list(MAGIC_ALIGNMENT_LAW = 0.1)
 
+/datum/attunement/ice/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (ishuman(caster))
+		var/mob/living/carbon/human/human_caster = caster
+		if (ismoth(human_caster))
+			. += MAGIC_ELEMENT_ICE_MOTH_MULT_INCREMENT
+
 /datum/attunement/electric
 	name = "Electric"
 	desc = "An element typically associated with weather, sometimes with divinity, and often technology, electricity is another of the “Classical” elements, albeit not as well known as its siblings."
+
+/datum/attunement/electric/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (issilicon(caster))
+		. += MAGIC_ELEMENT_ELECTRIC_SILICON_MULT_INCREMENT
 
 /datum/attunement/water
 	name = "Water"
@@ -52,11 +81,25 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	alignments = list(MAGIC_ALIGNMENT_GOOD = 0.1)
 
+/datum/attunement/water/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (ishuman(caster))
+		var/mob/living/carbon/human/human_caster = caster
+		if (is_species(human_caster, /datum/species/human))
+			. += MAGIC_ELEMENT_WATER_HUMAN_MULT_INCREMENT
+
 /datum/attunement/life
 	name = "Life"
 	desc = "The driving force of, and most effectively seen in, all living matter. Life is the most far-reaching of all elements, with its effects seen across the galaxy. Most famously, life is known for the Healing sub element, which directly assists a targeted organism. Critically, the force of life does not discriminate, and still affects parasites & bacteria, harmful or not."
 
 	alignments = list(MAGIC_ALIGNMENT_NONE = 0)
+
+/datum/attunement/water/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (iscarbon(caster))
+		. += MAGIC_ELEMENT_LIFE_ORGANIC_MULT_INCREMENT
 
 /datum/attunement/wind
 	name = "Wind"

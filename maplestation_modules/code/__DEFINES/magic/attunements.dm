@@ -1,7 +1,20 @@
+#define CONVERT_TO_ATTUNEMENT_MULT(to_convert) \
+	if (to_convert != 0) { \
+		if (to_convert > 0) { \
+			to_convert = (1/(1+to_convert)); \
+		} \
+		else { \
+			to_convert = (-to_convert+1); \
+		} \
+	} \
 // Elements
 
 // Core
-#define MAGIC_ELEMENT_FIRE_LIZARD_MULT_INCREMENT 0.5
+#define MAGIC_ELEMENT_FIRE_LIZARD_MULT_INCREMENT 0.2
+#define MAGIC_ELEMENT_ICE_MOTH_MULT_INCREMENT 0.2
+#define MAGIC_ELEMENT_ELECTRIC_SILICON_MULT_INCREMENT 0.2
+#define MAGIC_ELEMENT_WATER_HUMAN_MULT_INCREMENT 0.2
+#define MAGIC_ELEMENT_LIFE_ORGANIC_MULT_INCREMENT 0.05
 
 #define MAGIC_ELEMENT_FIRE /datum/attunement/fire
 #define MAGIC_ELEMENT_ICE /datum/attunement/ice
@@ -29,25 +42,36 @@
 /// Returns the "mult" value using the correspondance between attunements and intensity. This value should be multiplied against
 /// the mana cost of an action to determine how much "effective" mana a certain mana source can provide to it.
 /// Should NEVER return anything negative, ever. The minimum is 0.
-/proc/get_total_attunement_mult(list/attunements, list/other_attunements)
+/proc/get_total_attunement_mult(list/mana_attunements, list/user_attunements, atom/caster)
 	. = 1
-	var/total_correspondance = get_total_correspondance(attunements, other_attunements)
+	var/total_correspondance = get_total_correspondance(mana_attunements, user_attunements)
 
 	if (total_correspondance == 0) return
-	if (total_correspondance > 0)
-		. = (1/(1+total_correspondance)) // 1 over correspondance to convert to decimal, 1+total_correspondance so sub-1 correspondances dont INCREASE casting cost
-		if (. > 1)
-			stack_trace("[.] > 1 in get_total_attachment_mult with [total_correspondance]")
-	else
-		. = -total_correspondance
-		if (. < 1)
-			stack_trace("[.] < 1 in get_total_attachment_mult with [total_correspondance]")
-	if (. < 0)
-		stack_trace("[.] < 0 in get_total_attachment_mult with [total_correspondance]")
+	. = convert_to_attunement_mult(total_correspondance)
 
-/*
-/proc/get_total_attunement_inherent_mult(atom/caster, list/attunements = GLOB.magic_attunements)
-	. = 1
+	var/bias_amount = get_total_attunement_bias(caster, mana_attunements)
+	if (bias_amount != 0)
+		. *= convert_to_attunement_mult(bias_amount)
+
+
+/proc/get_total_attunement_bias(atom/caster, list/attunements)
+	. = 0
+	var/total_attunement = 0
 	for (var/datum/attunement/iterated_attunement as anything in attunements)
-		. += iterated_attunement.get_intrinsic_mult_increment(caster)
-*/
+		total_attunement += abs(attunements[iterated_attunement])
+	if (total_attunement == 0)
+		return
+	for (var/datum/attunement/iterated_attunement as anything in attunements)
+		if (attunements[iterated_attunement] == 0)
+			continue
+		var/datum/attunement/singleton_instance = GLOB.magic_attunements[iterated_attunement]
+		. += singleton_instance.get_bias_mult_increment(caster) * ((attunements[iterated_attunement])/total_attunement) //access singleton
+
+/proc/convert_to_attunement_mult(amount)
+	if (amount != 0)
+		if (amount > 0)
+			amount = (1/(1+amount))
+		else
+			amount = (-amount+1)
+	return amount
+// Elements
