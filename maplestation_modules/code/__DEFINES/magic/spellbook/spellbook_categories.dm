@@ -1,4 +1,2 @@
 #define SPELLBOOK_CATEGORY_THERMOKINESIS "Thermokinesis"
 #define SPELLBOOK_CATEGORY_HYDROKINESIS "Hydrokinesis"
-
-#define SPELLBOOK_SPELL "Spell"

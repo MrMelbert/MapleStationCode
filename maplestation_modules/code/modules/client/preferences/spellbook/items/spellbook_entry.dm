@@ -23,19 +23,21 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 		var/datum/spellbook_item/spawned_type = new found_type()
 		. += spawned_type
 
+/// A entry in the spellbook. Can add anything/adjust anything, but should be themed after magic.
+/// Only one instance of any given type should exist at a time. These are singleton instances, and are stored in GLOB.all_spellbook_datums, in a assoc list of (entry.type -> entry singleton).
 /datum/spellbook_item
-	/// Displayed name of the loadout item.
+	/// Displayed name of the spellbook entry.
 	var/name
-	/// The description to be displayed under the name.
+	/// The description of the entry to be displayed under the name.
 	var/description
-	/// This item's place in the world. Should include it's importance, how people see it, what it's related to, etc. general worldbuilding.
+	/// This entry's place in the world. Should include it's importance, how people see it, what it's related to, etc. general worldbuilding.
+	/// Should also include what and who typically has this entry. Note: NEVER make a HARD limit without good reason. Creativity is key,
+	/// and people should be able to make up reasons for whatever they want.
 	var/lore
-	/// The category of the loadout item.
+	/// The category of the item. Should use a define from spellbook_categories.dm.
 	var/category
-	/// The icon that will be displayed next to the entry in the spellbook.
-	var/icon
-	/// Lazylist of additional text for the tooltip displayed on this item.
-	var/list/additional_tooltip_contents
+	/// Returns the type of entry this is. Uses defines from spellbook_entry_types.dm.
+	var/entry_type
 	/// Controls if this item can actually ever be picked by anyone. Useful for purely visual things.
 	var/can_be_picked = TRUE
 
@@ -53,18 +55,14 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 	GLOB.all_spellbook_datums -= type
 	return ..()
 
+/// Called before apply() in spellbook_manager.dm. Used for determining if a specific entry should be enabled/applied.
 /datum/spellbook_item/proc/can_apply(mob/living/carbon/human/target, list/params)
-	return TRUE
+	SHOULD_CALL_PARENT(TRUE)
+	return can_be_picked
 
+/// The effect of the item on the person that picked it. Called when a character spawns in and has this as an enabled entry.
 /datum/spellbook_item/proc/apply(mob/living/carbon/human/target, list/params)
 	return
-
-/datum/spellbook_item/proc/should_apply(client/target)
-	return TRUE
-
-/datum/spellbook_item/proc/get_entry_type()
-	SHOULD_CALL_PARENT(FALSE)
-	CRASH("'get_entry_type' not implemented on [src.type]!")
 
 /**
  * Takes in an action from a spellbook manager and applies it

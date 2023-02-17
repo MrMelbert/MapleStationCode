@@ -13,6 +13,10 @@
 	var/datum/preference/spellbook/preference
 	/// The current selected spellbook list.
 	var/list/spellbook
+	/// Is the disclaimer text open?
+	var/disclaimer_open = TRUE
+	/// Is the magic system explanation open?
+	var/explanation_open = FALSE
 	/// Whether, on close, we save the list
 	var/save_on_close = TRUE
 
@@ -24,6 +28,7 @@
 	preference = GLOB.preference_entries[/datum/preference/spellbook]
 
 /datum/spellbook_manager/Destroy(force, ...)
+	spellbook = null
 	owner = null
 	owner_preferences = null
 	preference = null
@@ -62,6 +67,13 @@
 
 	switch(action)
 
+		if("toggle_disclaimer")
+			toggle_disclaimer()
+			return TRUE
+		if ("toggle_explanation")
+			explanation_open = !explanation_open
+			return TRUE
+
 		// Closes the UI
 		if("close_ui")
 			save_on_close = FALSE
@@ -79,6 +91,9 @@
 			owner.prefs.update_preference(preference, null)
 	return TRUE
 
+/datum/spellbook_manager/proc/toggle_disclaimer()
+	disclaimer_open = !disclaimer_open
+
 /datum/spellbook_manager/ui_data(mob/user)
 	var/list/data = list()
 
@@ -87,6 +102,12 @@
 		all_selected_paths += path
 
 	data["selected_items"] = all_selected_paths
+	data["disclaimer_status"] = disclaimer_open
+	if(disclaimer_open)
+		data["disclaimer_text"] = get_disclaimer_text()
+	data["explanation_status"] = explanation_open
+	if (explanation_open)
+		data["explanation_text"] = get_explanation_text()
 
 	return data
 
@@ -130,20 +151,48 @@
 		formatted_item["name"] = item.name
 		formatted_item["description"] = item.description
 		formatted_item["lore"] = item.lore
-		formatted_item["icon"] = item.icon
-		formatted_item["entry_type"] = item.get_entry_type()
+		formatted_item["entry_type"] = item.entry_type
 		formatted_item["can_be_picked"] = item.can_be_picked
 		//formatted_item["has_params"] = item.has_params()
-
-		if(LAZYLEN(item.additional_tooltip_contents))
-			formatted_item["tooltip_text"] = item.additional_tooltip_contents.Join("\n")
 
 		formatted_list[array_index++] = formatted_item
 	return formatted_list
 
+/// Returns a formatted string for use in the UI.
+/datum/spellbook_manager/proc/get_disclaimer_text()
+	return {"This is the spellbook.
+The spellbook is a character customization menu that allows you to add magical attributes to your character.
+This operates first and foremost as a way to add a mechanical uniqueness to your characters, in the form of magic.
+
+It operates on an honor system, meaning you're allowed to take whatever you want bar a few restrictions.
+This <b>does not mean you can take absolutely everything</b>. This <b>does not mean you are allowed to powergame this.</b>
+When thinking about what to take, you are expected to think in terms of what your character would have. This is not meant to be a
+power boost - and is instead meant to enrich your character with abilities fitting for them.
+<i>You may use the small italicized text under each entry to determine feasibility.</i>
+
+Don't feel like you must strictly abide by the guidelines provided by the entries - they are just that, guidelines. All that is asked is that
+you avoid taking items for the sake of taking them, and that you don't abuse them in a way your character shouldn't."}
+
+/// Returns a formatted string for use in the UI.
+/datum/spellbook_manager/proc/get_explanation_text()
+	return {"All/most entries in the spellbook interact with the magic system in one way or another.
+
+Magic is powered by mana - which is supplied from mana pools. There are various mana pools around you - such as mana crystals, transmutation magic, leylines -
+but all are often inconvenient to use in one way or another, preventing magic from overtaking traditional mechanics in most cases.
+Leylines are accessable to all - and have high overall mana capacity, are often unattuned, and have low recharge.
+This is the primary way magic is powered, and the shared nature makes it very inconsistant to use.
+Mana crystals and transmutation magic is unimplemented.
+
+Mana also often has "attunements" to a given element, as do things that consume mana, such as spells. Mana cost will be multiplied
+by an inverse amount to the amount of attunement between x and y. E.g. If you use a leyline's mana, with attunement of fire -> 1, and apply it to say, firebolt,
+which has an attunement of fire -> 1, your mana cost may be halved, or something like that.
+The inverse happens if attunements contradict, such as fire -> 1 mana going into a frostbolt, which has fire -> -1. This doubles casting cost.
+
+Elements also have intrinsic biases towards certain things, such as fire having a bias towards lizards, allowing them to cast fire magic for less cost."}
+
 /// Select [path] item to [category_slot] slot.
 /datum/spellbook_manager/proc/select_item(datum/spellbook_item/selected_item)
-	if (!selected_item.should_apply(owner))
+	if (!selected_item.can_apply(owner))
 		return FALSE
 
 	LAZYSET(spellbook, selected_item.type, list())

@@ -1,11 +1,11 @@
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Section, Stack, Tabs } from '../components';
+import { Box, Button, Dimmer, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 
 export const _spellbookManager = (props, context) => {
   const { act, data } = useBackend(context);
 
-  const { spellbook_tabs } = data;
+  const { spellbook_tabs, disclaimer_status, explanation_status } = data;
 
   const [selectedTabName, setSelectedTab] = useLocalState(
     context,
@@ -19,9 +19,29 @@ export const _spellbookManager = (props, context) => {
   return (
     <Window title="Spellbook" width={900} height={650} theme="wizard">
       <Window.Content height="100%">
+        {!!disclaimer_status && <SpellbookTermsOfServiceDimmer />}
+        {!!explanation_status && <MagicExplanationDimmer />}
         <Stack vertical>
           <Stack.Item>
-            <Section title="Spellbook Categories" align="center">
+            <Section
+              title="Spellbook Categories"
+              align="center"
+              buttons={
+                <>
+                  <Button
+                    icon="info"
+                    align="center"
+                    content="Terms of service"
+                    onClick={() => act('toggle_disclaimer')}
+                  />
+                  <Button
+                    icon="info"
+                    align="center"
+                    content="Magic system explanation"
+                    onClick={() => act('toggle_explanation')}
+                  />
+                </>
+              }>
               <Tabs fluid align="center">
                 {spellbook_tabs.map((curTab) => (
                   <Tabs.Tab
@@ -43,6 +63,63 @@ export const _spellbookManager = (props, context) => {
   );
 };
 
+export const SpellbookTermsOfServiceDimmer = (props, context) => {
+  const { act, data } = useBackend(context);
+  const { disclaimer_text } = data;
+  return (
+    <Dimmer align="center" textAlign="center">
+      <Stack
+        position="relative"
+        nowrap={false}
+        wrap="wrap"
+        vertical
+        justify="space-evenly">
+        <Stack.Item textAlign="center" vertical preserveWhitespace>
+          {disclaimer_text}
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            mt={1}
+            align="center"
+            onClick={() => act('toggle_disclaimer')}>
+            Okay.
+          </Button>
+        </Stack.Item>
+      </Stack>
+    </Dimmer>
+  );
+};
+
+export const MagicExplanationDimmer = (props, context) => {
+  const { act, data } = useBackend(context);
+  const { explanation_text } = data;
+  return (
+    <Dimmer align="center" textAlign="center">
+      <Stack
+        position="relative"
+        nowrap={false}
+        wrap="wrap"
+        vertical
+        justify="space-evenly">
+        <Stack.Item
+          textAlign="center"
+          vertical
+          preserveWhitespace
+          fontSize="90%">
+          {explanation_text}
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            mt={1}
+            align="center"
+            onClick={() => act('toggle_explanation')}>
+            Okay.
+          </Button>
+        </Stack.Item>
+      </Stack>
+    </Dimmer>
+  );
+};
 export const SpellbookTabs = (props, context) => {
   const { act, data } = useBackend(context);
 
@@ -74,7 +151,7 @@ export const SpellbookTabs = (props, context) => {
                       <Stack.Item vertical align="left" fontSize="150%" bold>
                         {item.name + ': ' + item.entry_type}
                       </Stack.Item>
-                      <Stack.Item vertical align="left">
+                      <Stack.Item vertical preserveWhitespace align="left">
                         {item.description}
                       </Stack.Item>
                       <Stack.Item
@@ -82,6 +159,7 @@ export const SpellbookTabs = (props, context) => {
                         fontSize="90%"
                         italic
                         vertical
+                        preserveWhitespace
                         textColor="#7F92A2">
                         {item.lore}
                       </Stack.Item>
