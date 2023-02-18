@@ -14,7 +14,7 @@
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "nnseconddress"
 	resistance_flags = INDESTRUCTIBLE
-	clothing_traits = list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_NOBREATH, TRAIT_RESISTCOLD, TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTLOWPRESSURE, TRAIT_CAN_USE_FLIGHT_POTION) //gives nono her funny traits
+	clothing_traits = list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_NOBREATH, TRAIT_RESISTCOLD, TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTLOWPRESSURE, TRAIT_CAN_USE_FLIGHT_POTION, TRAIT_SHARPNESS_VULNERABLE) //gives nono her funny traits
 	var/heat_mod = FALSE
 
 /obj/item/clothing/under/dress/nnseconddress/equipped(mob/user, slot) //gives nono her weaknesses
