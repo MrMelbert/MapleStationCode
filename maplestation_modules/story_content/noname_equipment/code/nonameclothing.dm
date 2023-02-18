@@ -22,6 +22,7 @@
 	if(!ishuman(user) || !(slot & slot_flags))
 		return
 	heat_mod = TRUE
+	RegisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
 	var/mob/living/carbon/human/wearer = user
 	wearer.physiology.burn_mod /= 0.5
 
@@ -33,6 +34,12 @@
 		var/mob/living/carbon/human/wearer = user
 		wearer.physiology.burn_mod *= 0.5
 		heat_mod = FALSE
+
+/obj/item/clothing/under/dress/nnseconddress/proc/on_burn(mob/source)
+	SIGNAL_HANDLER
+
+	var/mob/living/carbon/human/wearer = source
+	wearer.apply_damage(5, STAMINA)
 
 /obj/item/clothing/shoes/nnredshoes
 	name = "fake red shoes"
