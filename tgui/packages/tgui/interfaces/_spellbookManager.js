@@ -23,6 +23,7 @@ export const _spellbookManager = (props, context) => {
         {!!explanation_status && <MagicExplanationDimmer />}
         <Stack vertical>
           <Stack.Item>
+            {'b'}
             <Section
               title="Spellbook Categories"
               align="center"
@@ -82,7 +83,7 @@ export const SpellbookTermsOfServiceDimmer = (props, context) => {
             mt={1}
             align="center"
             onClick={() => act('toggle_disclaimer')}>
-            Okay.
+            READ THIS AT LEAST ONCE.
           </Button>
         </Stack.Item>
       </Stack>
@@ -174,6 +175,21 @@ export const SpellbookTabs = (props, context) => {
                             act('select_item', {
                               path: item.type,
                               deselect: selected_items.includes(item.type),
+                            })
+                          }
+                        />
+                        <Button
+                          align="right"
+                          disabled={!!item.has_params === false}
+                          content="Customize"
+                          tooltip={
+                            item.has_params
+                              ? ''
+                              : 'This entry is not customizable.'
+                          }
+                          onClick={() =>
+                            act('customize_item', {
+                              path: item.type,
                             })
                           }
                         />

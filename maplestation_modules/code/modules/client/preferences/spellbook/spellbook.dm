@@ -1,3 +1,5 @@
+/// Spellbook preference entries are stored in a assoc list of (entry typepath -> list(strings, numbers) or null) where the list is parameters that will be
+/// applied to the entry once the character spawns in.
 /datum/preference/spellbook
 	savefile_key = "spellbook"
 	savefile_identifier = PREFERENCE_CHARACTER

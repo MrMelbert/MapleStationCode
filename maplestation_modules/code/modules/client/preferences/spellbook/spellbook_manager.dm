@@ -1,34 +1,35 @@
-/// Tracking when a client has an open loadout manager, to prevent funky stuff.
+/// Tracking when a client has an open currently_selected manager, to prevent funky stuff.
 /client
-	/// A ref to loadout_manager datum.
+	/// A ref to spellbook_manager datum.
 	var/datum/spellbook_manager/open_spellbook_ui = null
 
-/// The "spellbook" - a character creation window that allows people to select spells for their characters.
-/// Datum holder for the loadout manager UI.
+/// The "currently_selected" - a character creation window that allows people to select spells for their characters.
 /datum/spellbook_manager
 	var/datum/preferences/owner_preferences
 	/// The client of the person using the UI
 	var/client/owner
 	/// Spellbook preference singleton for easy access
 	var/datum/preference/spellbook/preference
-	/// The current selected spellbook list.
-	var/list/spellbook
+	/// The current selected currently_selected list.
+	var/list/currently_selected
 	/// Is the disclaimer text open?
 	var/disclaimer_open = TRUE
 	/// Is the magic system explanation open?
 	var/explanation_open = FALSE
 	/// Whether, on close, we save the list
 	var/save_on_close = TRUE
+	/// Our currently open customization customization_menu.
+	var/datum/spellbook_item_customization_menu/customization_menu
 
 /datum/spellbook_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
 	owner_preferences = owner.prefs
 	owner.open_spellbook_ui = src
-	spellbook = owner.prefs.read_preference(/datum/preference/spellbook)
+	currently_selected = owner.prefs.read_preference(/datum/preference/spellbook)
 	preference = GLOB.preference_entries[/datum/preference/spellbook]
 
 /datum/spellbook_manager/Destroy(force, ...)
-	spellbook = null
+	currently_selected = null
 	owner = null
 	owner_preferences = null
 	preference = null
@@ -45,7 +46,7 @@
 
 /datum/spellbook_manager/ui_close(mob/user)
 	if(save_on_close)
-		owner.prefs.write_preference(preference, spellbook)
+		owner.prefs.write_preference(preference, currently_selected)
 	if(owner)
 		owner.open_spellbook_ui = null
 	qdel(src)
@@ -59,7 +60,7 @@
 	if(params["path"])
 		interacted_item = GLOB.all_spellbook_datums[text2path(params["path"])]
 		if(isnull(interacted_item))
-			stack_trace("Failed to locate desired spellbook item (path: [params["path"]]) in the global list of spellbook datums!")
+			stack_trace("Failed to locate desired currently_selected item (path: [params["path"]]) in the global list of currently_selected datums!")
 			return
 
 		if(interacted_item.handle_spellbook_action(src, action))
@@ -86,10 +87,23 @@
 			else
 				select_item(interacted_item)
 
-		// Clears the spellbook entirely.
+		// Clears the currently_selected entirely.
 		if("clear_all_items")
 			owner.prefs.update_preference(preference, null)
 	return TRUE
+
+/datum/spellbook_manager/proc/customize_item(datum/spellbook_item/item, datum/spellbook_item_customization_menu/typepath, list/menu_params)
+	if(customization_menu)
+		to_chat(owner, span_warning("You're already customizing an entry!"))
+		return
+
+	customization_menu = new typepath(params = menu_params, item = item, manager = src)
+
+	RegisterSignal(customization_menu, COMSIG_PARENT_PREQDELETED, TYPE_PROC_REF(/datum/spellbook_manager, cleanup_customization_menu))
+	customization_menu.ui_interact(usr)
+
+/datum/spellbook_manager/proc/cleanup_customization_menu()
+	customization_menu = null
 
 /datum/spellbook_manager/proc/toggle_disclaimer()
 	disclaimer_open = !disclaimer_open
@@ -153,7 +167,7 @@
 		formatted_item["lore"] = item.lore
 		formatted_item["entry_type"] = item.entry_type
 		formatted_item["can_be_picked"] = item.can_be_picked
-		//formatted_item["has_params"] = item.has_params()
+		formatted_item["has_params"] = item.has_params
 
 		formatted_list[array_index++] = formatted_item
 	return formatted_list
@@ -161,7 +175,7 @@
 /// Returns a formatted string for use in the UI.
 /datum/spellbook_manager/proc/get_disclaimer_text()
 	return {"This is the spellbook.
-The spellbook is a character customization menu that allows you to add magical attributes to your character.
+The spellbook is a character customization customization_menu that allows you to add magical attributes to your character.
 This operates first and foremost as a way to add a mechanical uniqueness to your characters, in the form of magic.
 
 It operates on an honor system, meaning you're allowed to take whatever you want bar a few restrictions.
@@ -191,15 +205,15 @@ The inverse happens if attunements contradict, such as fire -> 1 mana going into
 Elements also have intrinsic biases towards certain things, such as fire having a bias towards lizards, allowing them to cast fire magic for less cost."}
 
 /// Select [path] item to [category_slot] slot.
-/datum/spellbook_manager/proc/select_item(datum/spellbook_item/selected_item)
+/datum/spellbook_manager/proc/select_item(datum/spellbook_item/selected_item, list/params)
 	if (!selected_item.can_apply(owner))
 		return FALSE
 
-	LAZYSET(spellbook, selected_item.type, list())
-	owner.prefs.update_preference(preference, spellbook)
+	LAZYSET(currently_selected, selected_item.type, params)
+	owner.prefs.update_preference(preference, currently_selected)
 	return TRUE
 
 /// Deselect [deselected_item].
 /datum/spellbook_manager/proc/deselect_item(datum/spellbook_item/deselected_item)
-	LAZYREMOVE(spellbook, deselected_item.type)
-	owner.prefs.update_preference(preference, spellbook)
+	LAZYREMOVE(currently_selected, deselected_item.type)
+	owner.prefs.update_preference(preference, currently_selected)

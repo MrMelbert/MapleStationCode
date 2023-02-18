@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 		/// Any item without a name is "abstract"
 		if(isnull(initial(found_type.name)))
 			continue
-		if (initial(found_type.category)!= category)
+		if (initial(found_type.category) != category)
 			continue
 
 		var/datum/spellbook_item/spawned_type = new found_type()
@@ -40,6 +40,8 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 	var/entry_type
 	/// Controls if this item can actually ever be picked by anyone. Useful for purely visual things.
 	var/can_be_picked = TRUE
+	/// Does this entry have parameters for customization?
+	var/has_params
 
 /datum/spellbook_item/New()
 	. = ..()
@@ -72,4 +74,32 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 /datum/spellbook_item/proc/handle_spellbook_action(datum/spellbook_manager/manager, action)
 	SHOULD_CALL_PARENT(TRUE)
 
+	switch(action)
+		if("customize_item")
+			if(!has_params)
+				return FALSE
+
+			manager.customize_item(src, get_customization_menu_path(), get_customization_params(manager.owner))
+			return FALSE
+
 	return FALSE
+
+/datum/spellbook_item/proc/get_customization_menu_path()
+	return /datum/spellbook_item_customization_menu
+
+/datum/spellbook_item/proc/get_customization_params(client/owner)
+	var/list/datum/spellbook_customization_entry/entries = generate_customization_params()
+	if (!entries) return
+	var/list/existing_params = get_existing_params(owner)
+	if (existing_params)
+		for (var/key as anything in existing_params)
+			entries[key]?.current_value = existing_params[key]
+
+	return entries
+
+/datum/spellbook_item/proc/get_existing_params(client/owner)
+	var/list/prefs = owner.prefs.read_preference(/datum/preference/spellbook)
+	return prefs?[type]
+
+/datum/spellbook_item/proc/generate_customization_params()
+	return null

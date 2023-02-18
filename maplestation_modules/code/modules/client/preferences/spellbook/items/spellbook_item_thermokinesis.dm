@@ -1,6 +1,6 @@
 GLOBAL_LIST_INIT(spellbook_thermokinesis_items, generate_spellbook_items(SPELLBOOK_CATEGORY_THERMOKINESIS))
 
-/datum/spellbook_item/convect
+/datum/spellbook_item/spell/convect
 	name = "Convect"
 	description = "Manipulate the temperature of anything you can touch."
 	lore = "Often considered the precursor to all thermal magic, convect is one of the most important fundumentals of thermokinesis. \
@@ -9,10 +9,20 @@ GLOBAL_LIST_INIT(spellbook_thermokinesis_items, generate_spellbook_items(SPELLBO
 	While exceptions exist, most users can only manipulate temperature in the direction of their thermokinetic school/predisposition (fire/ice or both)."
 
 	category = SPELLBOOK_CATEGORY_THERMOKINESIS
-	entry_type = SPELLBOOK_SPELL
 
-/datum/spellbook_item/convect/apply(mob/living/carbon/human/target, list/params)
-	. = ..()
+	our_action_typepath = /datum/action/cooldown/spell/pointed/convect
 
-	var/datum/action/cooldown/spell/pointed/convect/convect_spell = new /datum/action/cooldown/spell/pointed/convect(target.mind || target)
-	convect_spell.Grant(target)
+	has_params = TRUE
+
+/datum/spellbook_item/spell/convect/generate_customization_params()
+	. = list()
+	.["test"] = new /datum/spellbook_customization_entry(
+		key = "test",
+		interfacetype = "input",
+		current_value = "gawef"
+	)
+	.["dawawd"] = new /datum/spellbook_customization_entry(
+		key = "dawawd",
+		interfacetype = "input",
+		current_value = "gawef"
+	)
