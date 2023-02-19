@@ -177,14 +177,14 @@
 /// Returns a formatted string for use in the UI.
 /datum/spellbook_manager/proc/get_disclaimer_text()
 	return {"This is the spellbook.
-The spellbook is a character customization customization_menu that allows you to add magical attributes to your character.
+The spellbook is a character customization customization menu that allows you to add magical attributes to your character.
 This operates first and foremost as a way to add a mechanical uniqueness to your characters, in the form of magic.
 
 It operates on an honor system, meaning you're allowed to take whatever you want bar a few restrictions.
-This <b>does not mean you can take absolutely everything</b>. This <b>does not mean you are allowed to powergame this.</b>
+This DOES NOT MEAN YOU CAN TAKE ABSOLUTELY EVERYTHING. This DOES NOT MEAN YOU ARE ALLOWED TO POWERGAME THIS.
 When thinking about what to take, you are expected to think in terms of what your character would have. This is not meant to be a
 power boost - and is instead meant to enrich your character with abilities fitting for them.
-<i>You may use the small italicized text under each entry to determine feasibility.</i>
+You may use the small italicized text under each entry to determine feasibility.
 
 Don't feel like you must strictly abide by the guidelines provided by the entries - they are just that, guidelines. All that is asked is that
 you avoid taking items for the sake of taking them, and that you don't abuse them in a way your character shouldn't."}

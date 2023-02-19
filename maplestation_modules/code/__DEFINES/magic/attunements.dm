@@ -46,14 +46,14 @@
 	. = 1
 	var/total_correspondance = get_total_correspondance(mana_attunements, user_attunements)
 
-	if (total_correspondance == 0) return
-	. = convert_to_attunement_mult(total_correspondance)
+	if (total_correspondance != 0)
+		. = convert_to_attunement_mult(total_correspondance)
 
 	var/bias_amount = get_total_attunement_bias(caster, mana_attunements)
 	if (bias_amount != 0)
 		. *= convert_to_attunement_mult(bias_amount)
 
-
+/// attunements should only ever be attunements of a mana source, not mana pool.
 /proc/get_total_attunement_bias(atom/caster, list/attunements)
 	. = 0
 	var/total_attunement = 0
