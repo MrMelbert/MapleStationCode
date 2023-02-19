@@ -1,6 +1,6 @@
-// -- The loadout item datum and related procs. --
+// -- The spellbook item datum and related procs. --
 
-/// Global list of ALL loadout datums instantiated.
+/// Global list of ALL spellbook datums instantiated.
 GLOBAL_LIST_EMPTY(all_spellbook_datums)
 
 /**
@@ -102,7 +102,7 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 
 	return entries
 
-/// Should always return the existing parameters associated with this type.
+/// Should always return the existing parameters associated with this type. Can be null.
 /datum/spellbook_item/proc/get_existing_params(client/owner)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	var/list/prefs = owner.prefs.read_preference(/datum/preference/spellbook)

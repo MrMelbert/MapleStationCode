@@ -34,6 +34,8 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	GLOB.magic_attunements[src.type] = new src.type // recover
 
+/// Should return how much we want the cost multiplier on a cast to be incremented by.
+/// Inverse - Higher positive increments = lower cost, higher negative increments = higher cost
 /datum/attunement/proc/get_bias_mult_increment(atom/caster)
 	return 0
 
@@ -95,7 +97,7 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	alignments = list(MAGIC_ALIGNMENT_NONE = 0)
 
-/datum/attunement/water/get_bias_mult_increment(atom/caster)
+/datum/attunement/life/get_bias_mult_increment(atom/caster)
 	. = ..()
 
 	if (iscarbon(caster))

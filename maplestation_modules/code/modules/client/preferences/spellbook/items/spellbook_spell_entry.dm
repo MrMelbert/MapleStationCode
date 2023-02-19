@@ -10,5 +10,6 @@
 	apply_params(arglist(list(our_spell) + params))
 	our_spell.Grant(target)
 
+/// Exists primarily for convenience.
 /datum/spellbook_item/spell/proc/apply_params(/datum/action/our_spell, ...)
 	return

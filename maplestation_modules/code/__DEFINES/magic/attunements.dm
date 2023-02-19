@@ -74,4 +74,3 @@
 		else
 			amount = (-amount+1)
 	return amount
-// Elements

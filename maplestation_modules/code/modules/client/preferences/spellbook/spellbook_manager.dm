@@ -1,16 +1,16 @@
-/// Tracking when a client has an open currently_selected manager, to prevent funky stuff.
+/// Tracking when a client has an open spellbook manager, to prevent funky stuff.
 /client
 	/// A ref to spellbook_manager datum.
 	var/datum/spellbook_manager/open_spellbook_ui = null
 
-/// The "currently_selected" - a character creation window that allows people to select spells for their characters.
+/// The "spellbook" - a character creation window that allows people to select spells for their characters.
 /datum/spellbook_manager
 	var/datum/preferences/owner_preferences
 	/// The client of the person using the UI
 	var/client/owner
 	/// Spellbook preference singleton for easy access
 	var/datum/preference/spellbook/preference
-	/// The current selected currently_selected list.
+	/// The current selected entries.
 	var/list/currently_selected
 	/// Is the disclaimer text open?
 	var/disclaimer_open = TRUE
@@ -66,7 +66,7 @@
 	if(params["path"])
 		interacted_item = GLOB.all_spellbook_datums[text2path(params["path"])]
 		if(isnull(interacted_item))
-			stack_trace("Failed to locate desired currently_selected item (path: [params["path"]]) in the global list of currently_selected datums!")
+			stack_trace("Failed to locate desired spellbook item (path: [params["path"]]) in the global list of spellbook item datums!")
 			return
 
 		if(interacted_item.handle_spellbook_action(src, action))
@@ -93,7 +93,7 @@
 			else
 				select_item(interacted_item)
 
-		// Clears the currently_selected entirely.
+		// Clears the selected items entirely.
 		if("clear_all_items")
 			owner.prefs.update_preference(preference, null)
 	return TRUE
@@ -139,10 +139,7 @@
 	// [name] is the name of the tab that contains all the corresponding contents.
 	// [title] is the name at the top of the list of corresponding contents.
 	// [contents] is a formatted list of all the items under this category.
-	//  - [contents.path] is the path the singleton datum holds
-	//  - [contents.name] is the name of the singleton datum
-	//  - [contents.is_renamable], whether the item can be renamed in the UI
-	//  - [contents.is_greyscale], whether the item can be greyscaled in the UI
+	//  - Read the spellbook_item documentation to see what the entries do
 
 	var/list/spellbook_tabs = list()
 	spellbook_tabs += list(list("name" = "Thermokinesis", "title" = "Items related to manipulation of temperature", "contents" = list_to_data(GLOB.spellbook_thermokinesis_items)))
@@ -156,8 +153,6 @@
  * Takes an assoc list of [typepath]s to [singleton datum]
  * And formats it into an object for TGUI.
  *
- * - list[name] is the name of the datum.
- * - list[path] is the typepath of the item.
  */
 /datum/spellbook_manager/proc/list_to_data(list_of_datums)
 	if(!LAZYLEN(list_of_datums))
@@ -211,7 +206,7 @@ The inverse happens if attunements contradict, such as fire -> 1 mana going into
 
 Elements also have intrinsic biases towards certain things, such as fire having a bias towards lizards, allowing them to cast fire magic for less cost."}
 
-/// Select [path] item to [category_slot] slot.
+/// Set selected item -> params.
 /datum/spellbook_manager/proc/select_item(datum/spellbook_item/selected_item, list/params)
 	if (!selected_item.can_apply(owner))
 		return FALSE

@@ -11,34 +11,3 @@ GLOBAL_LIST_INIT(spellbook_thermokinesis_items, generate_spellbook_items(SPELLBO
 	category = SPELLBOOK_CATEGORY_THERMOKINESIS
 
 	our_action_typepath = /datum/action/cooldown/spell/pointed/convect
-
-	has_params = TRUE
-
-/datum/spellbook_item/spell/convect/generate_customization_params()
-	. = list()
-	.["test"] = new /datum/spellbook_customization_entry/any_input(
-		key = "test",
-		name = "test ONE",
-		default_value = "gawef"
-	)
-	.["dawawd"] = new /datum/spellbook_customization_entry/numeric/numeric_input(
-		key = "dawawd",
-		name = "test TWO",
-		default_value = 0,
-		max_value = 100,
-		min_value = 0,
-		min_increment = 1
-	)
-	.["dawawdawdd"] = new /datum/spellbook_customization_entry/boolean(
-		key = "dawawdawdd",
-		name = "test TWO",
-		default_value = FALSE,
-	)
-	.["zx"] = new /datum/spellbook_customization_entry/numeric/slider(
-		key = "zx",
-		name = "test TWO",
-		default_value = 0,
-		max_value = 100,
-		min_value = 0,
-		min_increment = 1
-	)
