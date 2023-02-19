@@ -28,12 +28,13 @@
 
 /obj/item/clothing/under/dress/nnseconddress/dropped(mob/user)
 	. = ..()
-	if(heat_mod)
-		if(!ishuman(user) || QDELING(user))
+	if(!heat_mod)
+		return
+	if(!ishuman(user) || QDELING(user))
 			return
-		var/mob/living/carbon/human/wearer = user
-		wearer.physiology.burn_mod *= 0.5
-		heat_mod = FALSE
+	var/mob/living/carbon/human/wearer = user
+	wearer.physiology.burn_mod *= 0.5
+	heat_mod = FALSE
 
 /obj/item/clothing/under/dress/nnseconddress/proc/on_burn(mob/source)
 	SIGNAL_HANDLER
