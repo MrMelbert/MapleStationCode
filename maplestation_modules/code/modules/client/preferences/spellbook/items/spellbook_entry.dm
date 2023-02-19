@@ -41,6 +41,7 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 	/// Controls if this item can actually ever be picked by anyone. Useful for purely visual things.
 	var/can_be_picked = TRUE
 	/// Does this entry have parameters for customization?
+	/// If this is set to true, you MUST override generate_customization_params.
 	var/has_params
 
 /datum/spellbook_item/New()
@@ -84,22 +85,32 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 
 	return FALSE
 
+/// In the case that a item wants to return a custom menu, this proc exists. Should return a typepath of /datum/spellbook_item_customization_menu
 /datum/spellbook_item/proc/get_customization_menu_path()
 	return /datum/spellbook_item_customization_menu
 
+/// Returns an assoc list of (key: String -> spellbook_customization_entry instance), and applies existing values associated with said key to those instances.
 /datum/spellbook_item/proc/get_customization_params(client/owner)
+	SHOULD_CALL_PARENT(TRUE) // otherwise, we dont apply the existing params
+
 	var/list/datum/spellbook_customization_entry/entries = generate_customization_params()
 	if (!entries) return
 	var/list/existing_params = get_existing_params(owner)
 	if (existing_params)
 		for (var/key as anything in existing_params)
-			entries[key]?.current_value = existing_params[key]
+			entries[key]?.change_value(existing_params[key])
 
 	return entries
 
+/// Should always return the existing parameters associated with this type.
 /datum/spellbook_item/proc/get_existing_params(client/owner)
+	SHOULD_NOT_OVERRIDE(TRUE)
 	var/list/prefs = owner.prefs.read_preference(/datum/preference/spellbook)
 	return prefs?[type]
 
+/// Generates the assoc list of (key: String -> spellbook_customization_entry instance) entries for use in entry customization.
+/// See spellbook_customization_entry for documentation on the variables you need to set.
+/// This MUST be overridden, but not parent-called, if you use params.
 /datum/spellbook_item/proc/generate_customization_params()
-	return null
+	SHOULD_CALL_PARENT(FALSE)
+	CRASH("[src], [src.type] has has_params set to [has_params] but didn't implement generate_customization_params!")

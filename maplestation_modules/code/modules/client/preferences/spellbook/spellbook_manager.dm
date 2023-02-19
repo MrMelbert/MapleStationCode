@@ -33,6 +33,10 @@
 	owner = null
 	owner_preferences = null
 	preference = null
+
+	if (isdatum(customization_menu)) //avoid bad del
+		qdel(customization_menu)
+	customization_menu = null
 	return ..()
 
 /datum/spellbook_manager/ui_state(mob/user)
@@ -45,6 +49,8 @@
 		ui.open()
 
 /datum/spellbook_manager/ui_close(mob/user)
+	if (istype(customization_menu))
+		customization_menu.ui_close(user)
 	if(save_on_close)
 		owner.prefs.write_preference(preference, currently_selected)
 	if(owner)
@@ -92,6 +98,7 @@
 			owner.prefs.update_preference(preference, null)
 	return TRUE
 
+/// Open a new customization menu and pass our args to it.
 /datum/spellbook_manager/proc/customize_item(datum/spellbook_item/item, datum/spellbook_item_customization_menu/typepath, list/menu_params)
 	if(customization_menu)
 		to_chat(owner, span_warning("You're already customizing an entry!"))

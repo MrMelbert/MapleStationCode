@@ -23,7 +23,6 @@ export const _spellbookManager = (props, context) => {
         {!!explanation_status && <MagicExplanationDimmer />}
         <Stack vertical>
           <Stack.Item>
-            {'b'}
             <Section
               title="Spellbook Categories"
               align="center"
