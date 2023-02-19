@@ -14,7 +14,7 @@
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "nnseconddress"
 	resistance_flags = INDESTRUCTIBLE
-	clothing_traits = list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_NOBREATH, TRAIT_RESISTCOLD, TRAIT_RESISTHIGHPRESSURE, TRAIT_RESISTLOWPRESSURE, TRAIT_CAN_USE_FLIGHT_POTION, TRAIT_SHARPNESS_VULNERABLE) //gives nono her funny traits
+	clothing_traits = list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_SHARPNESS_VULNERABLE) //gives nono her funny traits
 	var/heat_mod = FALSE
 
 /obj/item/clothing/under/dress/nnseconddress/equipped(mob/user, slot) //gives nono her weaknesses
@@ -23,6 +23,7 @@
 		return
 	heat_mod = TRUE
 	RegisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	var/mob/living/carbon/human/wearer = user
 	wearer.physiology.burn_mod /= 0.5
 
@@ -31,10 +32,25 @@
 	if(!heat_mod)
 		return
 	if(!ishuman(user) || QDELING(user))
-			return
+		return
 	var/mob/living/carbon/human/wearer = user
 	wearer.physiology.burn_mod *= 0.5
 	heat_mod = FALSE
+	UnregisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	UnregisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
+
+/obj/item/clothing/under/dress/nnseconddress/proc/on_move(mob/living/carbon/human/source)
+	SIGNAL_HANDLER
+	if(HAS_TRAIT(source, TRAIT_MOVE_VENTCRAWLING))
+		ADD_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
+		ADD_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
+		ADD_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
+		ADD_TRAIT(source, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
+	else
+		REMOVE_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
+		REMOVE_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
+		REMOVE_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
+		REMOVE_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
 
 /obj/item/clothing/under/dress/nnseconddress/proc/on_burn(mob/living/carbon/human/source)
 	SIGNAL_HANDLER
