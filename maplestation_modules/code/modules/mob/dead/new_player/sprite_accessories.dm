@@ -19,6 +19,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_styled"
 
+/datum/sprite_accessory/hair/researcher
+	name = "Researcher"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_researcher"
+
 /datum/sprite_accessory/ears/cat/cyber
 	name = "Cybernetic Cat"
 	icon_state = "catcyber"
