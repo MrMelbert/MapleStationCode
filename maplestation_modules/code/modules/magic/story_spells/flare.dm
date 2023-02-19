@@ -1,16 +1,17 @@
 /datum/component/uses_mana/story_spell/conjure_item/flare
-#define FLARE_LIGHT_ATTUNEMENT 0.5
-/datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
-	. = ..()
-	.[MAGIC_ELEMENT_LIGHT] += FLARE_LIGHT_ATTUNEMENT
 
-#undef FLARE_LIGHT_ATTUNEMENT
-#define FLARE_MANA_COST 30
+/datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
+	//Flare light attunement.
+	var/attunement_amount = 0.5
+	. = ..()
+	.[MAGIC_ELEMENT_LIGHT] += attunement_amount
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
+	//Cost of casting flare before any multipliers.
+	var/flare_cost = 30
 	. = ..()
 	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
-	return (FLARE_MANA_COST * flare_spell.owner.get_casting_cost_mult())
+	return (flare_cost * flare_spell.owner.get_casting_cost_mult())
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/react_to_successful_use(atom/cast_on)
 	. = ..()
@@ -29,6 +30,7 @@
 	delete_old = FALSE
 
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	/// What color the flare created appears to be
 	var/flare_color
 
 /datum/action/cooldown/spell/conjure_item/flare/make_item()
@@ -50,6 +52,7 @@
 	base_icon_state = "mage_flare"
 	color = LIGHT_COLOR_YELLOW
 	on = TRUE
+	actions_types = null
 	var/auto_destroy = TRUE
 
 //Will have the flare start on and slowly burn through its fuel, when it runs out it will fizzle, fade out and delete itself. Similar to magic lockers from the staff.
@@ -80,22 +83,13 @@
 //Way to select a new color for flare before conjuring it.
 /datum/action/cooldown/spell/conjure_item/flare/Trigger(trigger_flags, atom/target)
 	if (trigger_flags & TRIGGER_SECONDARY_ACTION)
-		flare_color = get_new_color()
+		flare_color = get_new_color(usr)
 		return FALSE
 
-	. = ..()
+	return ..()
 
-
-/datum/action/cooldown/spell/conjure_item/flare/proc/get_new_color()
-	var/mob/user = usr
+/datum/action/cooldown/spell/conjure_item/flare/proc/get_new_color(mob/user)
 	var/new_color
-	while(!new_color)
-		new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
-		if(!new_color)
-			return
-		/*Commented out, leaving in if later on there is a need for a too dark check.
-		if(is_color_dark(new_color, 50) ) //Colors too dark are rejected
-			to_chat(user, span_warning("That color is too dark! Choose a lighter one."))
-			new_color = null*/
+	new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
 	return new_color
 
