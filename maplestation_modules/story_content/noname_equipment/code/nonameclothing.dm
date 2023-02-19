@@ -36,11 +36,10 @@
 	wearer.physiology.burn_mod *= 0.5
 	heat_mod = FALSE
 
-/obj/item/clothing/under/dress/nnseconddress/proc/on_burn(mob/source)
+/obj/item/clothing/under/dress/nnseconddress/proc/on_burn(mob/living/carbon/human/source)
 	SIGNAL_HANDLER
 
-	var/mob/living/carbon/human/wearer = source
-	wearer.apply_damage(5, STAMINA)
+	source.apply_damage(5, STAMINA)
 
 /obj/item/clothing/shoes/nnredshoes
 	name = "fake red shoes"
