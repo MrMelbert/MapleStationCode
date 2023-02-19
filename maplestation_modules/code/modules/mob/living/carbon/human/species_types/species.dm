@@ -39,6 +39,6 @@
 	return perks
 
 /datum/species/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H, forced = FALSE, spread_damage = FALSE, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, attack_direction = null)
-	if(HAS_TRAIT(H, "sharpnessvulnerable") && sharpness)
+	if(HAS_TRAIT(H, TRAIT_SHARPNESS_VULNERABLE) && sharpness)
 		damage *= 2
 	return ..()
