@@ -5177,7 +5177,7 @@
 #include "maplestation_modules\story_content\phoneguy_equipment\code\headphone.dm"
 #include "maplestation_modules\story_content\post_overlay\code\post_overlay.dm"
 #include "maplestation_modules\story_content\prince_equipment\code\clothing.dm"
+#include "maplestation_modules\story_content\ritz_equipment\code\ritzclothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
-#include "maplestation_modules\story_content\stranger_equipment\code\ritzclothing.dm"
 // END_INCLUDE
