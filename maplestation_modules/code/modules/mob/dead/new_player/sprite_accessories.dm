@@ -19,11 +19,6 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_styled"
 
-/datum/sprite_accessory/hair/researcher
-	name = "Researcher"
-	icon = 'maplestation_modules/icons/mob/human_face.dmi'
-	icon_state = "hair_researcher"
-
 /datum/sprite_accessory/hair/himepaper
 	name = "Paperlike Hime Cut"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
