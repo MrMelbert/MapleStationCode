@@ -70,7 +70,7 @@
 		update_light()
 
 /obj/item/storage/book/nonamebook/attack_self(mob/user)
-	balloon_alert(user, "The pages twist..")
+	balloon_alert(user, "the pages twist..")
 	toggle_light(user)
 
 /obj/item/storage/book/nonamebook/proc/toggle_light(mob/user)

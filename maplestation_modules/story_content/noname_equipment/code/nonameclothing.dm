@@ -38,6 +38,10 @@
 	heat_mod = FALSE
 	UnregisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
 	UnregisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
+	REMOVE_TRAIT(user, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
 
 /obj/item/clothing/under/dress/nnseconddress/proc/on_move(mob/living/carbon/human/source)
 	SIGNAL_HANDLER
