@@ -74,8 +74,10 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 /datum/attunement/electric/get_bias_mult_increment(atom/caster)
 	. = ..()
 
-	if (issilicon(caster))
-		. += MAGIC_ELEMENT_ELECTRIC_SILICON_MULT_INCREMENT
+	if (isliving(caster))
+		var/mob/living/living_caster = caster
+		if (living_caster.mob_biotypes & MOB_ROBOTIC)
+			. += MAGIC_ELEMENT_ELECTRIC_ROBOTIC_MULT_INCREMENT
 
 /datum/attunement/water
 	name = "Water"
@@ -92,8 +94,10 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 /datum/attunement/life/get_bias_mult_increment(atom/caster)
 	. = ..()
 
-	if (iscarbon(caster))
-		. += MAGIC_ELEMENT_LIFE_ORGANIC_MULT_INCREMENT
+	if (isliving(caster))
+		var/mob/living/living_caster = caster
+		if (living_caster.mob_biotypes & MOB_ORGANIC)
+			. += MAGIC_ELEMENT_LIFE_ORGANIC_MULT_INCREMENT
 
 /datum/attunement/wind
 	name = "Wind"
@@ -110,10 +114,8 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 /datum/attunement/earth/get_bias_mult_increment(atom/caster)
 	. = ..()
 
-	if (ishuman(caster))
-		var/mob/living/carbon/human/human_caster = caster
-		if (ishumanbasic(caster))
-			. += MAGIC_ELEMENT_EARTH_HUMAN_MULT_INCREMENT
+	if (ishumanbasic(caster))
+		. += MAGIC_ELEMENT_EARTH_HUMAN_MULT_INCREMENT
 
 /datum/attunement/light
 	name = "Light"
