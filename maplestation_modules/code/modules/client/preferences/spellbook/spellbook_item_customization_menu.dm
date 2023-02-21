@@ -37,11 +37,13 @@
 /datum/spellbook_customization_entry/proc/generate_ui_data()
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/list)
-	. = list("key" = key,
-			"name" = name,
-			"tooltip" = tooltip,
-			"interfacetype" = interfacetype,
-			"current_value" = get_value())
+	. = list(
+		"key" = key,
+		"name" = name,
+		"tooltip" = tooltip,
+		"interfacetype" = interfacetype,
+		"current_value" = get_value(),
+	)
 
 /// Setter for current_value. Sanitizes new_value before setting current_value to it.
 /datum/spellbook_customization_entry/proc/change_value(new_value)
@@ -96,7 +98,8 @@
 	.["min_increment"] = min_increment
 
 /datum/spellbook_customization_entry/numeric/sanitize_value(value)
-	if (!isnum(value)) return default_value
+	if (!isnum(value))
+		return default_value
 
 	. = clamp(value, min_value, max_value)
 	return round(., min_increment)
@@ -130,7 +133,7 @@
 	manager.customization_menu = null
 	manager = null
 
-	. = ..()
+	return ..()
 
 /datum/spellbook_item_customization_menu/New(list/datum/spellbook_customization_entry/params, datum/spellbook_item/item, datum/spellbook_manager/manager)
 	. = ..()
@@ -145,7 +148,6 @@
 		return
 
 	switch(action)
-
 		if("change_value")
 			change_value(arglist(params))
 			return TRUE

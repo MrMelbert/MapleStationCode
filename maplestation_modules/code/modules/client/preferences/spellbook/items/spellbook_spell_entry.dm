@@ -1,7 +1,6 @@
 /datum/spellbook_item/spell
-
-	var/datum/action/our_action_typepath
 	entry_type = SPELLBOOK_SPELL
+	var/datum/action/our_action_typepath
 
 /datum/spellbook_item/spell/apply(mob/living/carbon/human/target, list/params)
 	. = ..()

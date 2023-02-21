@@ -112,7 +112,7 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	if (ishuman(caster))
 		var/mob/living/carbon/human/human_caster = caster
-		if (is_species(human_caster, /datum/species/human))
+		if (ishumanbasic(caster))
 			. += MAGIC_ELEMENT_EARTH_HUMAN_MULT_INCREMENT
 
 /datum/attunement/light

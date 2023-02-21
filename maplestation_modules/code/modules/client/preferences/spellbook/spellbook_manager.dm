@@ -35,8 +35,7 @@
 	preference = null
 
 	if (isdatum(customization_menu)) //avoid bad del
-		qdel(customization_menu)
-	customization_menu = null
+		QDEL_NULL(customization_menu)
 	return ..()
 
 /datum/spellbook_manager/ui_state(mob/user)
@@ -49,7 +48,7 @@
 		ui.open()
 
 /datum/spellbook_manager/ui_close(mob/user)
-	if (istype(customization_menu))
+	if(istype(customization_menu))
 		customization_menu.ui_close(user)
 	if(save_on_close)
 		owner.prefs.write_preference(preference, currently_selected)

@@ -94,10 +94,11 @@ GLOBAL_LIST_EMPTY(all_spellbook_datums)
 	SHOULD_CALL_PARENT(TRUE) // otherwise, we dont apply the existing params
 
 	var/list/datum/spellbook_customization_entry/entries = generate_customization_params()
-	if (!entries) return
+	if (!entries)
+		return
 	var/list/existing_params = get_existing_params(owner)
 	if (existing_params)
-		for (var/key as anything in existing_params)
+		for (var/key in existing_params)
 			entries[key]?.change_value(existing_params[key])
 
 	return entries
