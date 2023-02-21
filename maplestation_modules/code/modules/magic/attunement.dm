@@ -83,14 +83,6 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	alignments = list(MAGIC_ALIGNMENT_GOOD = 0.1)
 
-/datum/attunement/water/get_bias_mult_increment(atom/caster)
-	. = ..()
-
-	if (ishuman(caster))
-		var/mob/living/carbon/human/human_caster = caster
-		if (is_species(human_caster, /datum/species/human))
-			. += MAGIC_ELEMENT_WATER_HUMAN_MULT_INCREMENT
-
 /datum/attunement/life
 	name = "Life"
 	desc = "The driving force of, and most effectively seen in, all living matter. Life is the most far-reaching of all elements, with its effects seen across the galaxy. Most famously, life is known for the Healing sub element, which directly assists a targeted organism. Critically, the force of life does not discriminate, and still affects parasites & bacteria, harmful or not."
@@ -114,6 +106,14 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 	desc = "The very ground you stand on, a raging earthquake, or an asteroid. Earth is all encompassing of any solid non-living matter."
 
 	alignments = list(MAGIC_ALIGNMENT_LAW = 0.15)
+
+/datum/attunement/earth/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (ishuman(caster))
+		var/mob/living/carbon/human/human_caster = caster
+		if (is_species(human_caster, /datum/species/human))
+			. += MAGIC_ELEMENT_EARTH_HUMAN_MULT_INCREMENT
 
 /datum/attunement/light
 	name = "Light"

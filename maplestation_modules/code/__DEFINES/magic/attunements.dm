@@ -13,7 +13,7 @@
 #define MAGIC_ELEMENT_FIRE_LIZARD_MULT_INCREMENT 0.2
 #define MAGIC_ELEMENT_ICE_MOTH_MULT_INCREMENT 0.2
 #define MAGIC_ELEMENT_ELECTRIC_SILICON_MULT_INCREMENT 0.2
-#define MAGIC_ELEMENT_WATER_HUMAN_MULT_INCREMENT 0.2
+#define MAGIC_ELEMENT_EARTH_HUMAN_MULT_INCREMENT 0.2
 #define MAGIC_ELEMENT_LIFE_ORGANIC_MULT_INCREMENT 0.05
 
 #define MAGIC_ELEMENT_FIRE /datum/attunement/fire
@@ -53,7 +53,7 @@
 	if (bias_amount != 0)
 		. *= convert_to_attunement_mult(bias_amount)
 
-/// attunements should only ever be attunements of a mana source, not mana pool.
+/// attunements should only ever be attunements of a mana source, not mana user.
 /proc/get_total_attunement_bias(atom/caster, list/attunements)
 	. = 0
 	var/total_attunement = 0
