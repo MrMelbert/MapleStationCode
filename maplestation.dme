@@ -5031,7 +5031,7 @@
 #include "maplestation_modules\code\modules\client\preferences\spellbook\spellbook_manager.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_entry.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_item_hydrokinesis.dm"
-#include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_item_thaumatergy.dm"
+#include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_item_thaumaturgy.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_item_thermokinesis.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\items\spellbook_spell_entry.dm"
 #include "maplestation_modules\code\modules\client\verbs\looc.dm"

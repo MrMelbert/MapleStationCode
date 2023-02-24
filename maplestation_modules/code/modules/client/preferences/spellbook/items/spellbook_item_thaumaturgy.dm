@@ -1,4 +1,4 @@
-/*GLOBAL_LIST_INIT(spellbook_thaumatergy_items, generate_spellbook_items(SPELLBOOK_CATEGORY_THAUMATURGY))
+/*GLOBAL_LIST_INIT(spellbook_thaumaturgy_items, generate_spellbook_items(SPELLBOOK_CATEGORY_THAUMATURGY))
 
 /datum/spellbook_item/spell/thaumatergic_sense
 	name = "Thaumatergic Sense"
