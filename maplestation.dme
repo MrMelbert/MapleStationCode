@@ -5119,6 +5119,7 @@
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\lizardpeople.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\monkey.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\mothmen.dm"
+#include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\ornithid.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\plasmamen.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\podpeople.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\reploid.dm"

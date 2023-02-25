@@ -352,6 +352,7 @@ ROUNDSTART_RACES jelly
 ROUNDSTART_RACES synth
 #ROUNDSTART_RACES reploid - Removed temporarily until features done
 ROUNDSTART_RACES pod
+ROUNDSTART_RACES ornithid
 
 ## Races that are straight upgrades. If these are on expect powergamers to always pick them
 ROUNDSTART_RACES skeleton
