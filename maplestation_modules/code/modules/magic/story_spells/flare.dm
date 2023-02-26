@@ -20,7 +20,7 @@
 
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"
-	desc = "Conjure lumens into a glob to be thrown to light an area. Right-click the spell icon to set the light color."
+	desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color."
 	icon_icon = 'icons/obj/candle.dmi'
 	button_icon_state = "candle1"
 
