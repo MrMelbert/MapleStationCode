@@ -8,7 +8,7 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 	Effort is taken to understand lumens and conjuring it out of mana. Those that study might prefer to focus on another school of magic, causing them to skip proper flare casting.\n\
 	A relatively safe spell that dissipates by itself under normal circumstances, the nebulous construct leaves no residue so clean up isn't needed.\n\
 	Considered to be a helpful spell, its short lived life is mostly used to help locate more permanent lighting options.\n\
-	For those interested in the lumenomancy school/predisposition use this spell to further self-study of luminosity and the ability to warp its directions."
+	Those interested in the lumenomancy school/predisposition use this spell to further their understanding of luminosity and their ability to warp its directions."
 
 	category = SPELLBOOK_CATEGORY_LUMENOMANCY
 
