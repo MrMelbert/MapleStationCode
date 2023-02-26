@@ -316,3 +316,7 @@ GLOBAL_LIST_INIT(loadout_undersuits, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/formal/nndress
 	name = "Blue Dress"
 	item_path = /obj/item/clothing/under/dress/nndress
+
+/datum/loadout_item/under/formal/ritzuniform
+	name = "Malheur Research Association uniform"
+	item_path = /obj/item/clothing/under/rank/rnd/mrauniform
