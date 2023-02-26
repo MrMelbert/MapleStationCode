@@ -1,9 +1,17 @@
-GLOBAL_LIST_INIT(magic_attunements, typecacheof(/datum/attunement, ignore_root_path = TRUE))
+GLOBAL_LIST_INIT(magic_attunements, create_attunement_list())
+/// List of typepaths - to access the singletons, access magic attunements
 GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
+
+/proc/create_attunement_list()
+	. = list()
+
+	var/list/typecache = typecacheof(/datum/attunement, ignore_root_path = TRUE)
+	for (var/datum/attunement/typepath as anything in typecache)
+		.[typepath] = new typepath
 
 /proc/create_default_attunement_list()
 	. = list()
-	for (var/iterated_attunement in GLOB.magic_attunements)
+	for (var/datum/attunement/iterated_attunement as anything in GLOB.magic_attunements)
 		.[iterated_attunement] = 0 // make it an assoc list
 
 // Not touching subtypes right now or compound attunements
@@ -11,12 +19,25 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 /// The "attunement" a certain spell or piece of mana may have. When mana is consumed, it's attunements will be compared to the attunements of
 /// what consumed it, and then the result will be used to generate how much mana will be actually consumed. Matching attunements decreases cost,
 /// vice versa.
-///
 /datum/attunement
 	var/name = "Base attunement"
 	var/desc = "Some fucking dumbass forgot to set desc"
 
 	var/list/alignments = list() // no alignments by default
+
+/datum/attunement/Destroy(force, ...)
+	stack_trace("Destroy called on [src], [src.type], a singleton attunement instance!")
+	if (!force)
+		return QDEL_HINT_LETMELIVE //should not be deleted, ever
+	// forced
+	. = ..()
+
+	GLOB.magic_attunements[src.type] = new src.type // recover
+
+/// Should return how much we want the cost multiplier on a cast to be incremented by.
+/// Inverse - Higher positive increments = lower cost, higher negative increments = higher cost
+/datum/attunement/proc/get_bias_mult_increment(atom/caster)
+	return 0
 
 /datum/attunement/fire
 	name = "Fire"
@@ -24,15 +45,39 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	alignments = list(MAGIC_ALIGNMENT_CHAOS = 0.1)
 
+/datum/attunement/fire/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (ishuman(caster))
+		var/mob/living/carbon/human/human_caster = caster
+		if (islizard(human_caster))
+			. += MAGIC_ELEMENT_FIRE_LIZARD_MULT_INCREMENT
+
 /datum/attunement/ice
 	name = "Ice"
 	desc = "Sibling and eternal rival of Fire, Ice centers on the manipulation of the cold, far beyond just water.  Many mages study ice shortly before or after studying fire, and is often used in demonstrations of interactions of the elements."
 
 	alignments = list(MAGIC_ALIGNMENT_LAW = 0.1)
 
+/datum/attunement/ice/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (ishuman(caster))
+		var/mob/living/carbon/human/human_caster = caster
+		if (ismoth(human_caster))
+			. += MAGIC_ELEMENT_ICE_MOTH_MULT_INCREMENT
+
 /datum/attunement/electric
 	name = "Electric"
 	desc = "An element typically associated with weather, sometimes with divinity, and often technology, electricity is another of the “Classical” elements, albeit not as well known as its siblings."
+
+/datum/attunement/electric/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (isliving(caster))
+		var/mob/living/living_caster = caster
+		if (living_caster.mob_biotypes & MOB_ROBOTIC)
+			. += MAGIC_ELEMENT_ELECTRIC_ROBOTIC_MULT_INCREMENT
 
 /datum/attunement/water
 	name = "Water"
@@ -46,6 +91,14 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 
 	alignments = list(MAGIC_ALIGNMENT_NONE = 0)
 
+/datum/attunement/life/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (isliving(caster))
+		var/mob/living/living_caster = caster
+		if (living_caster.mob_biotypes & MOB_ORGANIC)
+			. += MAGIC_ELEMENT_LIFE_ORGANIC_MULT_INCREMENT
+
 /datum/attunement/wind
 	name = "Wind"
 	desc = "Air, breathing, motion, and atmosphere. These are all products of the wind element. Much like Water, many biological life forms depend on this to live."
@@ -57,6 +110,12 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 	desc = "The very ground you stand on, a raging earthquake, or an asteroid. Earth is all encompassing of any solid non-living matter."
 
 	alignments = list(MAGIC_ALIGNMENT_LAW = 0.15)
+
+/datum/attunement/earth/get_bias_mult_increment(atom/caster)
+	. = ..()
+
+	if (ishumanbasic(caster))
+		. += MAGIC_ELEMENT_EARTH_HUMAN_MULT_INCREMENT
 
 /datum/attunement/light
 	name = "Light"
