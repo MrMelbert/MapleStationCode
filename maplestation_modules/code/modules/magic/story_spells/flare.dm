@@ -89,7 +89,7 @@
 	return ..()
 
 /datum/action/cooldown/spell/conjure_item/flare/proc/get_new_color(mob/user)
-	var/new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
+	var/new_color
 	new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
 	return new_color
 
