@@ -1,14 +1,12 @@
 /datum/component/uses_mana/story_spell/conjure_item/flare
+	var/attunement_amount = 0.5
+	var/flare_cost = 30
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
-	//Flare light attunement.
-	var/attunement_amount = 0.5
 	. = ..()
 	.[MAGIC_ELEMENT_LIGHT] += attunement_amount
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
-	//Cost of casting flare before any multipliers.
-	var/flare_cost = 30
 	. = ..()
 	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
 	return (flare_cost * flare_spell.owner.get_casting_cost_mult())
