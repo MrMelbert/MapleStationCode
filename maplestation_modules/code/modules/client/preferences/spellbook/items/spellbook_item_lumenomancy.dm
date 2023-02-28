@@ -11,5 +11,10 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 	Those interested in the lumenomancy school/predisposition use this spell to further their understanding of luminosity and their ability to warp its directions."
 
 	category = SPELLBOOK_CATEGORY_LUMENOMANCY
+	has_params = TRUE
 
 	our_action_typepath = /datum/action/cooldown/spell/conjure_item/flare
+
+/datum/spellbook_item/spell/flare/generate_customization_params()
+	. = list("Less")
+	.["Less"] = new /datum/spellbook_customization_entry/boolean("lesser", "Lesser, weaker version, for those just learning magic or unable to grasp the full concept of luminosity", "A weaker, less lasting flare.", "TRUE")

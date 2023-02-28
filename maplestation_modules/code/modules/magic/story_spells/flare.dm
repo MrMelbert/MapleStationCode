@@ -31,6 +31,12 @@
 	/// What color the flare created appears to be
 	var/flare_color
 
+//Variant that conjures a weaker version
+/datum/spellbook_item/spell/conjure_item/flare/apply_params(datum/action/cooldown/spell/conjure_item/our_spell, lesser)
+	if (lesser)
+		our_spell.item_type = /obj/item/flashlight/glowstick/magic/lesser
+	return
+
 /datum/action/cooldown/spell/conjure_item/flare/make_item()
 	var/obj/item/created = ..()
 	created.color = flare_color
@@ -52,6 +58,16 @@
 	on = TRUE
 	actions_types = null
 	var/auto_destroy = TRUE
+
+/obj/item/flashlight/glowstick/magic/lesser
+	name = "lesser self sustaining flare"
+	desc = "Lumens that stays alight similar to a candle. This one small and appears unstable to sustain itself for long."
+	light_range = 3
+
+/obj/item/flashlight/glowstick/magic/lesser/Initialize(mapload)
+	fuel = rand(10, 1000)
+	set_light_color(color)
+	return ..()
 
 //Will have the flare start on and slowly burn through its fuel, when it runs out it will fizzle, fade out and delete itself. Similar to magic lockers from the staff.
 /obj/item/flashlight/glowstick/magic/Initialize(mapload)
