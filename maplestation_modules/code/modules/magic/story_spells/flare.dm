@@ -35,6 +35,7 @@
 /datum/spellbook_item/spell/conjure_item/flare/apply_params(datum/action/cooldown/spell/conjure_item/our_spell, lesser)
 	if (lesser)
 		our_spell.item_type = /obj/item/flashlight/glowstick/magic/lesser
+		message_admins("IT DID THE THING IT IS LESSER!!!")
 	return
 
 /datum/action/cooldown/spell/conjure_item/flare/make_item()

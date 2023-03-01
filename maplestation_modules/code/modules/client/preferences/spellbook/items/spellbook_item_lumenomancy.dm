@@ -16,5 +16,6 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 	our_action_typepath = /datum/action/cooldown/spell/conjure_item/flare
 
 /datum/spellbook_item/spell/flare/generate_customization_params()
-	. = list("Less")
-	.["Less"] = new /datum/spellbook_customization_entry/boolean("lesser", "Lesser, weaker version, for those just learning magic or unable to grasp the full concept of luminosity", "A weaker, less lasting flare.", "TRUE")
+	. = list()
+	.["lesser"] = new /datum/spellbook_customization_entry/boolean("lesser", "Lesser, weaker version, for those just learning magic or unable to grasp the full concept of luminosity", "A weaker, less lasting flare.")
+	message_admins("IT DID THE THING CUSTOMIZATION ENTRY FOR LESSER!!!")
