@@ -1,4 +1,4 @@
-//copy outfit, but meant for internal usage, sucks, but thats from the original also being bad
+//the copy_outfit admin proc, but reused for internal usage, sucks, but thats from the original also being bad
 /mob/living/carbon/human/proc/copy_to_outfit(datum/outfit/varedit/outfit_copy)
 	//Copy equipment
 	var/list/result = list()
