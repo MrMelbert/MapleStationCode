@@ -2,7 +2,7 @@ GLOBAL_LIST_INIT(spellbook_aeromancy_items, generate_spellbook_items(SPELLBOOK_C
 
 /datum/spellbook_item/spell/airhike
 	name = "Air hike"
-	description = "Force wind beneath one's feet for a boost of movement where one is facing to jump over 2 tiles."
+	description = "Force wind beneath one's feet for a boost of movement where one is facing to jump over 2 tiles or to jump up a Zlevel and a tile ahead."
 	lore = "A somewhat intermediate spell not from its complexity, but applying proper force that won't have the user spin out of control. \
 	A spell that is often grown out of due to its unwieldly application, at least for aeromancers, it is known as a party trick or crude application in the magic community, but it is useful in a pinch.\n\
 	A common experiment for early aeromancers after wondering if applying force to oneself is possible. Those that learn through experimentation require training to consistantly control it, eventually moving onto finer control or dropping it after one too many crashes.\n\
