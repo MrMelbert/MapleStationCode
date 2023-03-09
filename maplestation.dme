@@ -5198,4 +5198,7 @@
 #include "maplestation_modules\story_content\ritz_equipment\code\ritzclothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
+#include "code\datums\bodypart_overlays\bodypart_overlay.dm"
+#include "code\datums\bodypart_overlays\mutant_bodypart_overlay.dm"
+#include "code\datums\bodypart_overlays\simple_bodypart_overlay.dm" //slapping this here because otherwise it won't load.
 // END_INCLUDE
