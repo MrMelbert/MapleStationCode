@@ -1,6 +1,6 @@
 GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK_CATEGORY_LUMENOMANCY))
 
-/datum/spellbook_item/spell/flare
+/datum/spellbook_item/spell/conjure_item/flare
 	name = "Flare"
 	description = "Conjure lumens into a glob to be held or thrown to light an area."
 	lore = "A simple application of lumenomancy, although quite complex enough for those new to magic to have the resulting globule sustain itself for so long. \n\
@@ -11,5 +11,10 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 	Those interested in the lumenomancy school/predisposition use this spell to further their understanding of luminosity and their ability to warp its directions."
 
 	category = SPELLBOOK_CATEGORY_LUMENOMANCY
+	has_params = TRUE
 
 	our_action_typepath = /datum/action/cooldown/spell/conjure_item/flare
+// Customization to allow lesser flare
+/datum/spellbook_item/spell/conjure_item/flare/generate_customization_params()
+	. = list()
+	.["lesser"] = new /datum/spellbook_customization_entry/boolean("lesser", "Lesser, weaker, somewhat cheaper version", "A cheap less lasting flare that fizzles out faster than expected, for those just learning magic or unable to grasp the full concept of luminosity.")
