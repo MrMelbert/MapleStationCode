@@ -9,8 +9,67 @@
 	if(. && notes)
 		. += " This will be invaluable towards our research of silverscale biology - please send more samples if you have any!"
 
+/datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	. = ..()
+
+	RegisterSignal(C, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_gain_organ))
+	RegisterSignal(C, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_lose_organ))
+
+/datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/C)
+	. = ..()
+
+	UnregisterSignal(C, COMSIG_CARBON_GAIN_ORGAN)
+	UnregisterSignal(C, COMSIG_CARBON_LOSE_ORGAN)
+	C.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
+
+/datum/species/lizard/silverscale/proc/on_gain_organ(mob/living/carbon/receiver, obj/item/organ/new_organ, special)
+	SIGNAL_HANDLER
+
+	if (!istongue(new_organ))
+		return
+	var/obj/item/organ/internal/tongue/existing_tongue = receiver.internal_organs_slot[ORGAN_SLOT_TONGUE]
+	if (istype(existing_tongue, /obj/item/organ/internal/tongue/lizard/silver))
+		return
+	if (istype(new_organ, /obj/item/organ/internal/tongue/lizard/silver))
+		receiver.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
+		to_chat(receiver, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... you are once again silverscale."))
+		receiver.transition_filter("silver_glint", 6 SECONDS, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
+
+/datum/species/lizard/silverscale/proc/on_lose_organ(mob/living/carbon/receiver, obj/item/organ/lost_organ, special)
+	SIGNAL_HANDLER
+
+	if (istype(lost_organ, /obj/item/organ/internal/tongue/lizard/silver))
+		receiver.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
+		to_chat(receiver, span_warning("You can feel the arcane powers of the silver tongue slip away - you've lost your silver heritage! You MUST get it back, or else be deemed a traitor by the society!"))
+		receiver.transition_filter("silver_glint", 6 SECONDS, list("type" = "outline", "color" = "#ffffff63", "size" = 0.5))
+
+/datum/mood_event/silverscale_lost_tongue
+	description = "I lost my silvery tongue, the link between me and the silverscale society -- I need it back, or else I'll be considered sub-lizard!"
+	mood_change = -20
+
+/*/mob/living/carbon/human/
+
+/obj/item/organ/internal/tongue/lizard/silver/Insert(mob/living/carbon/tongue_owner, special, drop_if_replaced)
+	. = ..()
+	if (.)
+
+
+/obj/item/organ/internal/tongue/lizard/silver/Remove(mob/living/carbon/tongue_owner, special)
+	. = ..()
+
+	if(issilverscale(tongue_owner) && (type in organ_owner.dna.species.external_organs))
+		organ_owner.add_mood_event("silverscale_lost_tongue", /datum/mood_event/tail_lost) */
+
 /datum/species/lizard/silverscale
 	plural_form = "Silverscales"
+
+/datum/species/lizard/silverscale/New()
+	. = ..()
+
+	inherent_traits += list(
+		TRAIT_CAN_USE_FLIGHT_POTION,
+		TRAIT_TACKLING_TAILED_DEFENDER,
+	)
 
 /datum/species/lizard/silverscale/get_species_description()
 	return "An extremely rare and enigmatic breed of lizardperson, very little is known about them. \
