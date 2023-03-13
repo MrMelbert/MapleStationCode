@@ -5140,6 +5140,7 @@
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\podpeople.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\reploid.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\shadowpeople.dm"
+#include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\silverscale.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\skeletons.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\skrell.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\species.dm"
