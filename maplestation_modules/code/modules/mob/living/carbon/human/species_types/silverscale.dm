@@ -19,6 +19,7 @@
 		. += " This will be invaluable towards our research of silverscale biology - please send more samples if you have any!"
 
 /obj/item/organ/internal/tongue/lizard/silver
+	var/old_skincolor
 	///stored mutcolor for when we turn back off of a silverscale.
 	var/old_mutcolor
 	///stored eye color for when we turn back off of a silverscale.
@@ -55,6 +56,7 @@
 		return
 	var/mob/living/carbon/human/he_who_was_blessed_with_silver = tongue_owner
 
+	old_skincolor = he_who_was_blessed_with_silver.skin_tone
 	old_mutcolor = he_who_was_blessed_with_silver.dna.features["mcolor"]
 	old_eye_color_left = he_who_was_blessed_with_silver.eye_color_left
 	old_eye_color_right = he_who_was_blessed_with_silver.eye_color_right
@@ -65,6 +67,7 @@
 		old_eye_color_left = silver_species.old_eye_color_left
 		old_eye_color_right = silver_species.old_eye_color_right
 
+	he_who_was_blessed_with_silver.skin_tone = "albino"
 	he_who_was_blessed_with_silver.dna.features["mcolor"] = "#eeeeee"
 	he_who_was_blessed_with_silver.eye_color_left = "#0000a0"
 	he_who_was_blessed_with_silver.eye_color_right = "#0000a0"
@@ -81,12 +84,14 @@
 		return
 	var/mob/living/carbon/human/he_who_has_been_outcast = tongue_owner
 
+	he_who_has_been_outcast.skin_tone = old_skincolor
 	he_who_has_been_outcast.dna.features["mcolor"] = old_mutcolor
 	he_who_has_been_outcast.eye_color_left = old_eye_color_left
 	he_who_has_been_outcast.eye_color_right = old_eye_color_right
 
 	he_who_has_been_outcast.remove_filter("silver_glint")
 
+	old_skincolor = null
 	old_mutcolor = null
 	old_eye_color_left = null
 	old_eye_color_right = null
