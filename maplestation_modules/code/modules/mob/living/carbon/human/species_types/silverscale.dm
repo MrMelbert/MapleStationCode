@@ -1,5 +1,12 @@
+/datum/controller/subsystem/research/Initialize()
+	. = ..()
+
+	techweb_point_items += list(
+		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = 80000)
+	)
+
 /datum/export/organ/tongue/lizard/silver
-	cost = CARGO_CRATE_VALUE * 62 // this shit is SO culturally, functionally, and scientifically important.
+	cost = CARGO_CRATE_VALUE * 70 // this shit is SO culturally, functionally, and scientifically important.
 
 	unit_name = "silverscale tongue"
 	export_types = (/obj/item/organ/internal/tongue/lizard/silver)
@@ -33,19 +40,19 @@
 	if (istype(new_organ, /obj/item/organ/internal/tongue/lizard/silver))
 		receiver.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
 		to_chat(receiver, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... you are once again silverscale."))
-		receiver.transition_filter("silver_glint", 6 SECONDS, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
+		receiver.transition_filter("silver_glint", 7, list("size" = 2))
 
 /datum/species/lizard/silverscale/proc/on_lose_organ(mob/living/carbon/receiver, obj/item/organ/lost_organ, special)
 	SIGNAL_HANDLER
 
 	if (istype(lost_organ, /obj/item/organ/internal/tongue/lizard/silver))
 		receiver.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
-		to_chat(receiver, span_warning("You can feel the arcane powers of the silver tongue slip away - you've lost your silver heritage! You MUST get it back, or else be deemed a traitor by the society!"))
-		receiver.transition_filter("silver_glint", 6 SECONDS, list("type" = "outline", "color" = "#ffffff63", "size" = 0.5))
+		to_chat(receiver, span_warning("You can feel the arcane powers of the silver tongue slip away - you've lost your silver heritage! Without it, you are less than silverscale... you MUST get it back!"))
+		receiver.transition_filter("silver_glint", 7, list("size" = 0.5))
 
 /datum/mood_event/silverscale_lost_tongue
 	description = "I lost my silvery tongue, the link between me and the silverscale society -- I need it back, or else I'll be considered sub-lizard!"
-	mood_change = -20
+	mood_change = -25 // God forbid you return to your society without your tongue - you're an outcast, now
 
 /*/mob/living/carbon/human/
 
@@ -95,7 +102,7 @@
 		worlds. While little hard evidence exists of this fact (with the tiziran empire itself often refusing to provide information on \"private citizens\"), many a \
 		frontier silverscale have referenced the greater society in threats, bargains, and the very, very rare plea.",
 
-		"Even with all this enigma, though, one thing is known to those that research: The silvery tongue within every silverscale is of utmost important to them, \
+		"Even with all this enigma, though, one thing is known to those that research: The silvery tongue within every silverscale is of utmost importance to them, \
 		and only traitors to the mysterious \"society\" ever have it removed. It is said to be what gives them their ability to shapeshift into silver statues - how \
 		it does this, nobody knows. How it CAME to do this, remains a mystery. What is known, though, is that these tongues fetch a pretty penny should one manage to obtain it - \
 		and survive.",
@@ -139,7 +146,7 @@
 	),
 	list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON = "user",
+		SPECIES_PERK_ICON = "lightbulb",
 		SPECIES_PERK_NAME = "Silver glow",
 		SPECIES_PERK_DESC = "Your scales constantly eminate a silvery glow - which looks pretty! Until it gives your identity away.",
 	),
@@ -165,7 +172,7 @@
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "money-bill-wave",
 		SPECIES_PERK_NAME = "Valuable Tongue",
-		SPECIES_PERK_DESC = "Your tongue is worth tens of thousands of credits if sold to cargo. Without it, you are less than a silverscale. Don't let people steal it!",
+		SPECIES_PERK_DESC = "Your tongue is worth tens of thousands of credits if sold to cargo, and holds incredible value if put in RND's destructive analyzer. Without it, you are less than a silverscale, and suffer massive mood penalties. Don't let people steal it!",
 	))
 
 	return to_add
