@@ -1,8 +1,10 @@
+// TONGUE CODE BEGIN
+
 /datum/controller/subsystem/research/Initialize()
 	. = ..()
 
 	techweb_point_items += list(
-		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = 80000)
+		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = 65000)
 	)
 
 /datum/export/organ/tongue/lizard/silver
@@ -16,11 +18,115 @@
 	if(. && notes)
 		. += " This will be invaluable towards our research of silverscale biology - please send more samples if you have any!"
 
+/obj/item/organ/internal/tongue/lizard/silver
+	///stored mutcolor for when we turn back off of a silverscale.
+	var/old_mutcolor
+	///stored eye color for when we turn back off of a silverscale.
+	var/old_eye_color_left
+	///See above
+	var/old_eye_color_right
+
+/obj/item/organ/internal/tongue/lizard/silver/Initialize(mapload)
+	. = ..()
+
+	desc += " Whoever this tongue is attached to will inherit the abilities of the silverscale."
+	desc += span_blue(" These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
+	price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
+
+/obj/item/organ/internal/tongue/lizard/silver/Initialize(mapload)
+	. = ..()
+
+	organ_traits += list( //Migrating silverscale traits to the tongue
+		TRAIT_HOLY,
+		TRAIT_NOBREATH,
+		TRAIT_PIERCEIMMUNE,
+		TRAIT_RESISTHIGHPRESSURE,
+		TRAIT_RESISTLOWPRESSURE,
+		TRAIT_VIRUSIMMUNE,
+		TRAIT_WINE_TASTER,
+	)
+
+/obj/item/organ/internal/tongue/lizard/silver/Insert(mob/living/carbon/tongue_owner, special, drop_if_replaced)
+	. = ..()
+
+	tongue_owner.dna.species.armor += 10
+
+	if (!ishuman(tongue_owner))
+		return
+	var/mob/living/carbon/human/he_who_was_blessed_with_silver = tongue_owner
+
+	old_mutcolor = he_who_was_blessed_with_silver.dna.features["mcolor"]
+	old_eye_color_left = he_who_was_blessed_with_silver.eye_color_left
+	old_eye_color_right = he_who_was_blessed_with_silver.eye_color_right
+
+	if (istype(tongue_owner.dna.species, /datum/species/lizard/silverscale))
+		var/datum/species/lizard/silverscale/silver_species = tongue_owner.dna.species
+		old_mutcolor = silver_species.old_mutcolor
+		old_eye_color_left = silver_species.old_eye_color_left
+		old_eye_color_right = silver_species.old_eye_color_right
+
+	he_who_was_blessed_with_silver.dna.features["mcolor"] = "#eeeeee"
+	he_who_was_blessed_with_silver.eye_color_left = "#0000a0"
+	he_who_was_blessed_with_silver.eye_color_right = "#0000a0"
+	he_who_was_blessed_with_silver.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
+
+	tongue_owner.update_body(TRUE)
+
+/obj/item/organ/internal/tongue/lizard/silver/Remove(mob/living/carbon/tongue_owner, special)
+	. = ..()
+
+	tongue_owner.dna.species.armor -= 10
+
+	if (!ishuman(tongue_owner))
+		return
+	var/mob/living/carbon/human/he_who_has_been_outcast = tongue_owner
+
+	he_who_has_been_outcast.dna.features["mcolor"] = old_mutcolor
+	he_who_has_been_outcast.eye_color_left = old_eye_color_left
+	he_who_has_been_outcast.eye_color_right = old_eye_color_right
+
+	he_who_has_been_outcast.remove_filter("silver_glint")
+
+	old_mutcolor = null
+	old_eye_color_left = null
+	old_eye_color_right = null
+
+	tongue_owner.update_body(TRUE)
+
+/datum/action/item_action/organ_action/statue
+	var/modified_modularly = FALSE
+
+/datum/action/item_action/organ_action/statue/Trigger(trigger_flags) // why the fuck were they so fragile before
+	. = ..()
+
+	if (statue)
+		if (modified_modularly)
+			return
+		if (!statue.armor)
+			statue.armor = getArmor()
+		var/datum/armor/statue_armor = statue.armor
+		statue.armor = statue_armor.modifyRating(melee = 50, bullet = 45, laser = 60, energy = 30, bomb = 50)
+
+		modified_modularly = TRUE
+	else
+		modified_modularly = FALSE
+
+// TONGUE CODE END
+
+// LIZARD CODE BEGIN
+
 /datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/C, datum/species/old_species)
 	. = ..()
 
 	RegisterSignal(C, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_gain_organ))
 	RegisterSignal(C, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_lose_organ))
+
+	/*var/mob/living/carbon/human/was_silverscale = C
+	was_silverscale.dna.features["mcolor"] = old_mutcolor
+	was_silverscale.eye_color_left = old_eye_color_left
+	was_silverscale.eye_color_right = old_eye_color_right
+
+	was_silverscale.remove_filter("silver_glint")*/
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/C)
 	. = ..()
@@ -40,7 +146,6 @@
 	if (istype(new_organ, /obj/item/organ/internal/tongue/lizard/silver))
 		receiver.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
 		to_chat(receiver, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... you are once again silverscale."))
-		receiver.transition_filter("silver_glint", 7, list("size" = 2))
 
 /datum/species/lizard/silverscale/proc/on_lose_organ(mob/living/carbon/receiver, obj/item/organ/lost_organ, special)
 	SIGNAL_HANDLER
@@ -48,35 +153,21 @@
 	if (istype(lost_organ, /obj/item/organ/internal/tongue/lizard/silver))
 		receiver.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
 		to_chat(receiver, span_warning("You can feel the arcane powers of the silver tongue slip away - you've lost your silver heritage! Without it, you are less than silverscale... you MUST get it back!"))
-		receiver.transition_filter("silver_glint", 7, list("size" = 0.5))
 
 /datum/mood_event/silverscale_lost_tongue
 	description = "I lost my silvery tongue, the link between me and the silverscale society -- I need it back, or else I'll be considered sub-lizard!"
 	mood_change = -25 // God forbid you return to your society without your tongue - you're an outcast, now
 
-/*/mob/living/carbon/human/
-
-/obj/item/organ/internal/tongue/lizard/silver/Insert(mob/living/carbon/tongue_owner, special, drop_if_replaced)
-	. = ..()
-	if (.)
-
-
-/obj/item/organ/internal/tongue/lizard/silver/Remove(mob/living/carbon/tongue_owner, special)
-	. = ..()
-
-	if(issilverscale(tongue_owner) && (type in organ_owner.dna.species.external_organs))
-		organ_owner.add_mood_event("silverscale_lost_tongue", /datum/mood_event/tail_lost) */
-
 /datum/species/lizard/silverscale
 	plural_form = "Silverscales"
+	armor = 0 //It belongs on the tongue now
 
-/datum/species/lizard/silverscale/New()
-	. = ..()
-
-	inherent_traits += list(
+	inherent_traits = list(
 		TRAIT_CAN_USE_FLIGHT_POTION,
-		TRAIT_TACKLING_TAILED_DEFENDER,
+		TRAIT_TACKLING_TAILED_DEFENDER
 	)
+
+// LIZARD CODE END
 
 /datum/species/lizard/silverscale/get_species_description()
 	return "An extremely rare and enigmatic breed of lizardperson, very little is known about them. \
@@ -114,6 +205,12 @@
 	var/list/to_add = list()
 
 	to_add += list(
+	list(
+		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+		SPECIES_PERK_ICON = "shield",
+		SPECIES_PERK_NAME = "Armored",
+		SPECIES_PERK_DESC = "Your scales are silvery and robust, reducing incoming damage by 10%!"
+	),
 	list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "cubes",
@@ -171,8 +268,10 @@
 	list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "money-bill-wave",
-		SPECIES_PERK_NAME = "Valuable Tongue",
-		SPECIES_PERK_DESC = "Your tongue is worth tens of thousands of credits if sold to cargo, and holds incredible value if put in RND's destructive analyzer. Without it, you are less than a silverscale, and suffer massive mood penalties. Don't let people steal it!",
+		SPECIES_PERK_NAME = "Arcane Tongue",
+		SPECIES_PERK_DESC = "Most if not all of your positive perks are bound to your tongue, which is worth hundreds of thousands of credits to cargo, and \
+		holds incredible research value to RND if they use a destructive analyzer on it. And as if that wasn't worrying enough, you will receive a massive mood debuff if you ever \
+		lose it, as it is central to your identity as a silverscale. Try to stop people from stealing it for themselves!",
 	))
 
 	return to_add
