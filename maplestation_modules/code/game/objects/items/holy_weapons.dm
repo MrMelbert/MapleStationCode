@@ -11,13 +11,13 @@
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
 	sharpness = SHARP_EDGED
 	attack_verb_continuous = list("stabs", "cuts", "slashes", "power attacks") // felt like it needed a 4th like its parent spear, chose power attacks from TES.
-	attack_verb_simple = list("stab", "cut", "slash", "power attack") // fun fact: if the "power attack" verb rolls, there is a small chance of doing increased metaphorical damage!
+	attack_verb_simple = list("stab", "cut", "slash", "power attack") // fun fact: if the "power attack" verb rolls, there is a small chance of doing increased metaphorical damage.
 	menu_description = "A blade which penetrates armor slightly. Can be worn only on the belt."
 
 /obj/item/nullrod/clairen
 	name = "clairen"
 	desc = "A beautiful plasma sword that is not from this time. Perhaps its previous wielder found what it wanted to."
-	/// hey there! head lorer here! note that this has 0 actual lore implications, and is just a nod to the sword's namesake.
+	// hey there! head lorer here! note that this has 0 actual lore implications, and is just a nod to the sword's namesake.
 	force = 3
 	throwforce = 5
 	throw_speed = 3
@@ -31,14 +31,12 @@
 	worn_icon_state = "clairen"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
 	w_class = WEIGHT_CLASS_SMALL
-	armour_penetration = 20 // this is 10 higher than the spear, but 15 less than the scythe series. unsure if this is a good or bad stat placement, given how this is a weapon that depends on this state for storage.
-	// Also this has to be put here because there is no var for setting armor pen on transformed weapons, last i tried was with block chance, and that broke the entire fucking component
 	hitsound = 'sound/weapons/genhit.ogg'
 	attack_verb_continuous = list("stubs","whacks","pokes")
 	attack_verb_simple = list("stub","whack","poke")
 	menu_description = "A transforming plasma sword. Can be changed between an extremely low damaging unlit state that can be stored easily, or a lit state that cannot be stored anywhere. Has an armor pierce grade of 20."
-	var/start_extended = FALSE
-	// same as its origin code (switchblade), this decides if it starts extended or not. due to how nullrods work, there won't be a pre-ignited version.
+	var/start_extended = FALSE 	// same as its origin code (switchblade), this decides if it starts extended or not. due to how nullrods work, there won't be a pre-ignited version.
+
 
 /obj/item/nullrod/clairen/Initialize(mapload)
 	. = ..()
@@ -62,4 +60,6 @@
 	update_appearance(UPDATE_ICON)
 	tool_behaviour = (active ? TOOL_KNIFE : NONE) // Yolo. this will let it work as a knife can.
 	slot_flags = active ? NONE : ITEM_SLOT_BELT // this is to prevent it from being storable in belt.
+	armour_penetration = active ? 20 : NONE  // this ternary grants (successfully) 20 armour piercing to the transformed weapon. active ? X : Y. X = effect while on, Y = effect while off.
+	// this is 10 higher than the spear, but 15 less than the scythe series. unsure if this is a good or bad stat placement, given how this is a weapon that depends on this state for storage.
 	return COMPONENT_NO_DEFAULT_MESSAGE
