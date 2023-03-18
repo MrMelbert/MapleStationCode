@@ -4855,6 +4855,7 @@
 #include "maplestation_modules\code\__DEFINES\_module_defines.dm"
 #include "maplestation_modules\code\__DEFINES\antag_defines.dm"
 #include "maplestation_modules\code\__DEFINES\captain_weapons.dm"
+#include "maplestation_modules\code\__DEFINES\colors.dm"
 #include "maplestation_modules\code\__DEFINES\DNA.dm"
 #include "maplestation_modules\code\__DEFINES\examine_defines.dm"
 #include "maplestation_modules\code\__DEFINES\is_helpers.dm"

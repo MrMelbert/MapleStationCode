@@ -62,6 +62,10 @@
 	attack_verb_continuous = list("stubs","whacks","pokes")
 	attack_verb_simple = list("stub","whack","poke")
 	var/start_extended = FALSE 	// same as its origin code (switchblade), this decides if it starts extended or not.
+	light_system = MOVABLE_LIGHT
+	light_range = 2
+	light_power = 1
+	light_on = FALSE
 
 
 /obj/item/melee/maple_plasma_blade/Initialize(mapload)
@@ -84,6 +88,8 @@
 	balloon_alert(user, "[active ? "ignited":"extinguished"] [src]")
 	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 20, TRUE)
 	update_appearance(UPDATE_ICON)
+	set_light_on(active)
+	set_light_color(COLOR_AMETHYST) // shoutouts to jade for the lighting code.
 	tool_behaviour = (active ? TOOL_KNIFE : NONE) // Yolo. this will let it work as a knife can.
 	slot_flags = active ? NONE : ITEM_SLOT_BELT // this is to prevent it from being storable in belt.
 	return COMPONENT_NO_DEFAULT_MESSAGE
