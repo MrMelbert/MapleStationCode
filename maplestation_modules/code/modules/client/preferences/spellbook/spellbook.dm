@@ -13,7 +13,7 @@
 
 	var/list/list_value = value
 	for (var/datum/spellbook_item/entry in spellbook_list_to_datums(value))
-		entry.apply(target, list_value[entry])
+		entry.apply(target, list_value[entry.type])
 
 /datum/preference/spellbook/deserialize(input, datum/preferences/preferences)
 	return sanitize_spellbook_list(input, preferences.parent?.mob)
