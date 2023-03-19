@@ -76,7 +76,7 @@
 		throwforce_on = 16, \
 		throw_speed_on = throw_speed, \
 		sharpness_on = SHARP_EDGED, \
-		hitsound_on = 'sound/weapons/blade1.ogg', \
+		hitsound_on = 'maplestation_modules/sound/weapons/plasmaslice.ogg', \
 		w_class_on = WEIGHT_CLASS_BULKY, \
 		attack_verb_continuous_on = list("incinerates", "slashes", "singes", "scorches", "tears", "stabs"), \
 		attack_verb_simple_on = list("incinerate", "slash", "singe", "scorch", "tear", "stab"), \
@@ -86,7 +86,7 @@
 /obj/item/melee/maple_plasma_blade/proc/on_transform(obj/item/source, mob/user, active)
 	SIGNAL_HANDLER
 	balloon_alert(user, "[active ? "ignited":"extinguished"] [src]")
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 20, TRUE)
+	playsound(user ? user : src, active ? 'maplestation_modules/sound/weapons/plasmaon.ogg' : 'maplestation_modules/sound/weapons/plasmaoff.ogg', 20, TRUE)
 	update_appearance(UPDATE_ICON)
 	set_light_on(active)
 	set_light_color(COLOR_AMETHYST) // shoutouts to jade for the lighting code.
