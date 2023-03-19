@@ -54,8 +54,8 @@
 	//When Rclick checks there is an open turf above the caster, will send them upwards and forward a single tile.
 	if (zup)
 		cast_on.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
-		cast_on.zMove(target = get_step_multiz(get_turf(usr), UP), z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED)
-		cast_on.visible_message(span_warning("[usr] dashes upwards into the air!"))
+		cast_on.zMove(UP, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED)
+		cast_on.visible_message(span_warning("[cast_on] dashes upwards into the air!"))
 		jumpdistance = 1
 	if (cast_on.throw_at(target, jumpdistance, jumpspeed, spin = FALSE, diagonals_first = TRUE, callback = TRAIT_CALLBACK_REMOVE(cast_on, TRAIT_MOVE_FLOATING, LEAPING_TRAIT)))
 		cast_on.visible_message(span_warning("[usr] dashes forward into the air!"))
