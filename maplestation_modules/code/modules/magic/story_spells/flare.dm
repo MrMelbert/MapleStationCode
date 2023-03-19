@@ -1,6 +1,5 @@
 /datum/component/uses_mana/story_spell/conjure_item/flare
 	var/attunement_amount = 0.5
-	var/flare_cost = 30
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
 	. = ..()
@@ -9,7 +8,7 @@
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
 	. = ..()
 	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
-	return (flare_cost * flare_spell.owner.get_casting_cost_mult())
+	return (flare_spell.flare_cost * flare_spell.owner.get_casting_cost_mult())
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/react_to_successful_use(atom/cast_on)
 	. = ..()
@@ -30,6 +29,17 @@
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 	/// What color the flare created appears to be
 	var/flare_color
+	/// What the mana cost is, affected by Lesser variant.
+	var/flare_cost = 30
+
+//Variant that conjures a weaker version
+/datum/spellbook_item/spell/conjure_item/flare/apply_params(datum/action/cooldown/spell/conjure_item/flare/our_spell, lesser)
+	if (lesser)
+		our_spell.item_type = /obj/item/flashlight/glowstick/magic/lesser
+		our_spell.flare_cost = 10
+		our_spell.name = "Lesser Flare"
+		our_spell.desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color. This weaker version burns up quicker and may fizzle out after casting."
+	return
 
 /datum/action/cooldown/spell/conjure_item/flare/make_item()
 	var/obj/item/created = ..()
@@ -53,6 +63,16 @@
 	actions_types = null
 	//If it should decay and delete itself after it uses all its fuel
 	var/auto_destroy = TRUE
+
+
+/obj/item/flashlight/glowstick/magic/lesser
+	name = "lesser self sustaining flare"
+	desc = "Lumens that stays alight similar to a candle. This one's small and appears unstable to sustain itself for long."
+	light_range = 3
+
+/obj/item/flashlight/glowstick/magic/lesser/Initialize(mapload)
+	. = ..()
+	fuel = rand(2, 100)
 
 //Will have the flare start on and slowly burn through its fuel, when it runs out it will fizzle, fade out and delete itself. Similar to magic lockers from the staff.
 /obj/item/flashlight/glowstick/magic/Initialize(mapload)
