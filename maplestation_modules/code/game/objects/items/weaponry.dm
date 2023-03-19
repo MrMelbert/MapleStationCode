@@ -61,7 +61,6 @@
 	hitsound = 'sound/weapons/genhit.ogg'
 	attack_verb_continuous = list("stubs","whacks","pokes")
 	attack_verb_simple = list("stub","whack","poke")
-	var/start_extended = FALSE 	// same as its origin code (switchblade), this decides if it starts extended or not.
 	light_system = MOVABLE_LIGHT
 	light_range = 2
 	light_power = 1

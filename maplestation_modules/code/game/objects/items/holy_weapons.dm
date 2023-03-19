@@ -35,7 +35,6 @@
 	attack_verb_continuous = list("stubs","whacks","pokes")
 	attack_verb_simple = list("stub","whack","poke")
 	menu_description = "A transforming plasma sword. Can be changed between an extremely low damaging unlit state that can be stored easily, or a lit state that cannot be stored anywhere. Has an armor pierce grade of 20."
-	var/start_extended = FALSE 	// same as its origin code (switchblade), this decides if it starts extended or not. due to how nullrods work, there won't be a pre-ignited version.
 	light_system = MOVABLE_LIGHT
 	light_range = 2
 	light_power = 1
@@ -65,6 +64,6 @@
 	set_light_color(COLOR_CLAIREN_RED) // shoutouts to jade for the lighting code.
 	tool_behaviour = (active ? TOOL_KNIFE : NONE) // Yolo. this will let it work as a knife can.
 	slot_flags = active ? NONE : ITEM_SLOT_BELT // this is to prevent it from being storable in belt.
-	armour_penetration = active ? 20 : NONE  // this ternary grants (successfully) 20 armour piercing to the transformed weapon. active ? X : Y. X = effect while on, Y = effect while off.
+	armour_penetration = active ? 20 : 0  // this ternary grants (successfully) 20 armour piercing to the transformed weapon. active ? X : Y. X = effect while on, Y = effect while off.
 	// this is 10 higher than the spear, but 15 less than the scythe series. unsure if this is a good or bad stat placement, given how this is a weapon that depends on this state for storage.
 	return COMPONENT_NO_DEFAULT_MESSAGE
