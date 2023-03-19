@@ -70,7 +70,6 @@
 /obj/item/melee/maple_plasma_blade/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/transforming, \
-		start_transformed = start_extended, \
 		force_on = 20, \
 		throwforce_on = 16, \
 		throw_speed_on = throw_speed, \

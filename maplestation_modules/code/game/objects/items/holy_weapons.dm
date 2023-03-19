@@ -43,7 +43,6 @@
 /obj/item/nullrod/clairen/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/transforming, \
-		start_transformed = start_extended, \
 		force_on = 18, \
 		throwforce_on = 16, \
 		throw_speed_on = throw_speed, \
