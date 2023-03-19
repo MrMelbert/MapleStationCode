@@ -5,8 +5,9 @@
 	var/pain = 15
 	/// The min amount of pain this limb can experience
 	var/min_pain = 0
-	/// The max amount of pain this limb can experience
-	var/max_pain = PAIN_LIMB_MAX
+	/// The soft cap of pain that this limb can experience
+	/// This is not a hard cap, pain can go above this, but beyond this effects will not worsen
+	var/soft_max_pain = PAIN_LIMB_MAX
 	/// Modifier applied to pain that this part receives
 	var/bodypart_pain_modifier = 1
 	/// The last type of pain we received. Determines what type of pain we're recieving.
@@ -85,10 +86,7 @@
  * healing_pain - if TRUE, the bodypart has gone some time without recieving pain, and is healing.
  */
 /obj/item/bodypart/proc/pain_feedback(delta_time, healing_pain)
-	if(!owner || !pain)
-		return FALSE
-
-	if(owner.has_status_effect(/datum/status_effect/determined))
+	if(!owner)
 		return FALSE
 
 	var/list/feedback_phrases = list()
@@ -128,7 +126,7 @@
 
 // --- Chest ---
 /obj/item/bodypart/chest
-	max_pain = PAIN_CHEST_MAX
+	soft_max_pain = PAIN_CHEST_MAX
 
 /obj/item/bodypart/chest/robot
 	// Augmented limbs start with maximum pain as a trade-off for becoming almost immune to it
@@ -174,10 +172,7 @@
 	return TRUE
 
 /obj/item/bodypart/chest/pain_feedback(delta_time, healing_pain)
-	if(!owner || !pain)
-		return FALSE
-
-	if(owner.has_status_effect(/datum/status_effect/determined))
+	if(!owner)
 		return FALSE
 
 	var/list/feedback_phrases = list()
@@ -221,7 +216,7 @@
 
 // --- Head ---
 /obj/item/bodypart/head
-	max_pain = PAIN_HEAD_MAX
+	soft_max_pain = PAIN_HEAD_MAX
 
 /obj/item/bodypart/head/robot
 	pain = PAIN_HEAD_MAX
@@ -239,7 +234,7 @@
 	return TRUE
 
 /obj/item/bodypart/head/pain_feedback(delta_time, healing_pain)
-	if(!owner || !pain)
+	if(!owner)
 		return FALSE
 
 	var/list/feedback_phrases = list()
@@ -282,14 +277,11 @@
 
 // --- Legs ---
 /obj/item/bodypart/leg/processed_pain_effects(delta_time)
-	if(!owner || !pain)
-		return FALSE
+	if(get_modified_pain() < 40 || !DT_PROB(5, delta_time))
+		return
 
-	if(get_modified_pain() >= 40 && DT_PROB(5, delta_time))
-		if(owner.apply_status_effect(/datum/status_effect/limp/pain))
-			to_chat(owner, span_danger("Your [parse_zone(body_zone)] hurts to walk on!"))
-
-	return TRUE
+	if(owner.apply_status_effect(/datum/status_effect/limp/pain))
+		to_chat(owner, span_danger("Your [parse_zone(body_zone)] hurts to walk on!"))
 
 // --- Right Leg ---
 /obj/item/bodypart/leg/right/robot

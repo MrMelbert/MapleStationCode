@@ -24,12 +24,12 @@
 	/// Cooldown to track last time we sent a pain message.
 	COOLDOWN_DECLARE(time_since_last_pain_message)
 
-	#ifdef TESTING
+#ifdef TESTING
 	/// For testing. Does this pain datum print testing messages when it happens?
 	var/print_debug_messages = TRUE
 	/// For testing. Does this pain datum include ALL test messages, including very small and constant ones (like pain decay)?
 	var/print_debug_decay = FALSE
-	#endif
+#endif
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
 	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy))
@@ -50,13 +50,12 @@
 	register_pain_signals()
 	base_pain_decay = natural_pain_decay
 
-	if(new_parent.stat != DEAD)
-		START_PROCESSING(SSpain, src)
+	addtimer(CALLBACK(src, PROC_REF(start_pain_processing), 1))
 
-	#ifdef TESTING
-	if(!is_station_level(parent.z))
+#ifdef TESTING
+	if(new_parent.z && !is_station_level(new_parent.z))
 		print_debug_messages = FALSE
-	#endif
+#endif
 
 /datum/pain/Destroy()
 	body_zones = null
@@ -65,6 +64,10 @@
 		unregister_pain_signals()
 		parent = null
 	return ..()
+
+/datum/pain/proc/start_pain_processing()
+	if(parent.stat != DEAD)
+		START_PROCESSING(SSpain, src)
 
 /**
  * Register all of our signals with our parent.
@@ -217,15 +220,17 @@
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[check_zone(zone)]
 		if(QDELETED(adjusted_bodypart))
 			continue
-		// Pain is negative (healing) and we're at min pain
-		if(adjusted_amount < 0 && adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
-			continue
-		// Pain is positive (dealing)
-		if(adjusted_amount > 0)
-			// ...and we're at max pain
-			if(adjusted_bodypart.pain >= adjusted_bodypart.max_pain)
+		// Pain is negative (healing)
+		if(adjusted_amount < 0)
+			// Pain is negative and we're at min pain
+			if(adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
 				continue
+			// Pain is negative and we're above soft cap, incraese the healing amount
+			if(adjusted_bodypart.pain >= adjusted_bodypart.soft_max_pain)
+				adjusted_amount *= 2
 
+		// Pain is positive (dealing)
+		else
 			// Adjust incoming dealt pain by modifiers
 			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
 			// Pain modifiers results in us taking 0 pain
@@ -236,23 +241,23 @@
 			// Officially recieving pain at this point
 			adjusted_bodypart.last_received_pain_type = dam_type
 
-		#ifdef TESTING
+#ifdef TESTING
 		if(print_debug_messages)
 			testing("[amount] was adjusted down to [adjusted_amount]. (Modifiers: [pain_modifier], [adjusted_bodypart.bodypart_pain_modifier])")
-		#endif
+#endif
 
 		// Actually do the pain addition / subtraction here
-		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
+		adjusted_bodypart.pain = max(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain)
 
 		if(adjusted_amount > 0)
 			INVOKE_ASYNC(src, PROC_REF(on_pain_gain), adjusted_bodypart, amount, dam_type)
 		else if(adjusted_amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			INVOKE_ASYNC(src, PROC_REF(on_pain_loss), adjusted_bodypart, amount, dam_type)
 
-		#ifdef TESTING
+#ifdef TESTING
 		if(print_debug_messages && (print_debug_decay || abs(adjusted_amount) > 1))
 			testing("PAIN DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
-		#endif
+#endif
 
 	return TRUE
 
@@ -273,8 +278,8 @@
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
 		if(QDELETED(adjusted_bodypart))
 			continue
-		adjusted_bodypart.min_pain = round(clamp(adjusted_bodypart.min_pain + amount, 0, adjusted_bodypart.max_pain), 0.01)
-		adjusted_bodypart.pain = clamp(adjusted_bodypart.pain, adjusted_bodypart.min_pain, adjusted_bodypart.max_pain)
+		adjusted_bodypart.min_pain = min(adjusted_bodypart.min_pain + amount, 0)
+		adjusted_bodypart.pain = max(adjusted_bodypart.pain, adjusted_bodypart.min_pain)
 
 	return TRUE
 
@@ -343,25 +348,23 @@
 	// Attacks with a wound bonus add additional pain (usually, like 2-5)
 	// (Note that if they also succeed in applying a wound, more pain comes from that)
 	// Also, sharp attacks apply a smidge extra pain
-	var/pain = (damage + 0.1 * (max(wound_bonus + bare_wound_bonus, 0))) * (sharpness ? 1.2 : 1)
+	var/pain = (2 * damage) + (0.1 * max(wound_bonus + bare_wound_bonus, 1)) * (sharpness ? 1.2 : 1)
 	switch(damagetype)
 		// Brute pain is dealt to the target zone
 		// pain is just divided by a random number, for variance
 		if(BRUTE)
-			pain /= rand(1.5, 3)
+			pain *= (rand(60, 80) / 100)
 
 		// Burn pain is dealt to the target zone
 		// pain is lower for weaker burns, but scales up for more damaging burns
 		if(BURN)
 			switch(damage)
 				if(1 to 10)
-					pain /= 4
-				if(10 to 15)
-					pain /= 3
-				if(15 to 20)
-					pain /= 2
+					pain *= 0.25
+				if(10 to 20)
+					pain *= 0.5
 				if(20 to INFINITY)
-					pain /= 1.2
+					pain *= 0.75
 
 		// Toxins pain is dealt to the chest (stomach and liver)
 		// Pain is determined by the liver's tox tolerance, liver damage, and stomach damage
@@ -369,6 +372,8 @@
 		//
 		// Note: 99% of sources of toxdamage is done through adjusttoxloss, and as such doesn't go through this
 		if(TOX)
+			if(HAS_TRAIT(parent, TRAIT_TOXINLOVER) || HAS_TRAIT(parent, TRAIT_TOXIMMUNE))
+				return
 			def_zone = BODY_ZONE_CHEST
 			var/obj/item/organ/internal/liver/our_liver = source.getorganslot(ORGAN_SLOT_LIVER)
 			var/obj/item/organ/internal/stomach/our_stomach = source.getorganslot(ORGAN_SLOT_STOMACH)
@@ -381,6 +386,8 @@
 						pain += 2
 					if(80 to INFINITY)
 						pain += 3
+			else if(HAS_TRAIT(parent, TRAIT_NOMETABOLISM))
+				pain = 1
 			else
 				pain = damage * 2
 
@@ -392,6 +399,8 @@
 						pain += 2
 					if(80 to INFINITY)
 						pain += 3
+			else if(HAS_TRAIT(parent, TRAIT_NOHUNGER))
+				pain = 1
 			else
 				pain += 3
 
@@ -406,6 +415,8 @@
 		//
 		// Note: 99% of sources of oxydamage is done through adjustoxyloss, and as such doesn't go through this
 		if(OXY)
+			if(HAS_TRAIT(parent, TRAIT_NOBREATH))
+				return
 			def_zone = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
 			var/obj/item/organ/internal/lungs/our_lungs = source.getorganslot(ORGAN_SLOT_LUNGS)
 			if(our_lungs)
@@ -429,6 +440,8 @@
 
 		// Cellular pain is dealt to all bodyparts
 		if(CLONE)
+			if(HAS_TRAIT(parent, TRAIT_NOCLONELOSS))
+				return
 			def_zone = BODY_ZONES_ALL
 
 		// No pain from stamina loss
@@ -442,12 +455,14 @@
 			return
 
 	if(!def_zone || !pain)
+		if(print_debug_messages)
+			testing("PAIN DEBUG: [parent] recieved damage but no pain. ([def_zone ? "Nullified to [pain]" : "No def zone"])")
 		return
 
-	#ifdef TESTING
+#ifdef TESTING
 	if(print_debug_messages)
-		testing("PAIN DEBUG: [parent] is recieving [pain] of type [damagetype] to the [parse_zone(def_zone)].")
-	#endif
+		testing("PAIN DEBUG: [parent] is recieving [pain] of type [damagetype] to the [parse_zone(def_zone)]. (Original amount: [damage])")
+#endif
 
 	adjust_bodypart_pain(def_zone, pain, damagetype)
 
@@ -461,10 +476,10 @@
 /datum/pain/proc/add_wound_pain(mob/living/carbon/source, datum/wound/applied_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
 
-	#ifdef TESTING
+#ifdef TESTING
 	if(print_debug_messages)
 		testing("PAIN DEBUG: [parent] is recieving a wound of level [applied_wound.severity] to the [parse_zone(wounded_limb.body_zone)].")
-	#endif
+#endif
 
 	adjust_bodypart_min_pain(wounded_limb.body_zone, applied_wound.severity * 5)
 	adjust_bodypart_pain(wounded_limb.body_zone, applied_wound.severity * 7.5)
@@ -493,8 +508,16 @@
  */
 /datum/pain/process(delta_time)
 
-	check_pain_modifiers(delta_time)
+	// This sucks and should be replaced when drowsy is a status effect
+	if(parent.drowsyness)
+		if(parent.drowsyness > 8)
+			set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
+		else
+			unset_pain_modifier(PAIN_MOD_DROWSY)
 
+	var/has_pain = FALSE
+	var/determined = FALSE
+	var/no_recent_pain = COOLDOWN_FINISHED(src, time_since_last_pain_loss)
 	for(var/part in shuffle(body_zones))
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
 		if(QDELETED(checked_bodypart))
@@ -502,15 +525,24 @@
 		if(!checked_bodypart.pain)
 			continue
 		checked_bodypart.processed_pain_effects(delta_time)
+		if(!has_pain)
+			has_pain = TRUE
+			// Only doing this once, when we register if we have pain, to save processing.
+			determined = !!parent.has_status_effect(/datum/status_effect/determined)
 
-		if(!COOLDOWN_FINISHED(src, time_since_last_pain_message))
+		if(determined || !COOLDOWN_FINISHED(src, time_since_last_pain_message))
 			continue
+		// 1% chance per 8 pain being experienced to get a feedback message every second
+		if(!DT_PROB(checked_bodypart.get_modified_pain() / 8, delta_time))
+			continue
+		if(checked_bodypart.pain_feedback(delta_time, no_recent_pain))
+			COOLDOWN_START(src, time_since_last_pain_message, 4 SECONDS)
 
-		if(DT_PROB(checked_bodypart.get_modified_pain() / 8, delta_time))
-			if(checked_bodypart.pain_feedback(delta_time, COOLDOWN_FINISHED(src, time_since_last_pain_loss)))
-				COOLDOWN_START(src, time_since_last_pain_message, 4 SECONDS)
+	if(!has_pain)
+		// no-op if none of our bodyparts is in pain
+		return
 
-	if(!parent.has_status_effect(/datum/status_effect/determined))
+	if(!determined)
 		switch(get_average_pain())
 			if(10 to 40)
 				low_pain_effects(delta_time)
@@ -519,19 +551,8 @@
 			if(70 to INFINITY)
 				high_pain_effects(delta_time)
 
-	if(!IS_IN_STASIS(parent) && !parent.on_fire)
+	if(!IS_IN_STASIS(parent) && !parent.on_fire && parent.stat == CONSCIOUS)
 		decay_pain(delta_time)
-
-/**
- * Check which additional pain modifiers should be applied.
- */
-/datum/pain/proc/check_pain_modifiers(delta_time)
-	// This sucks and should be replaced when drowsy is a status effect
-	if(parent.drowsyness)
-		if(parent.drowsyness > 8)
-			set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
-		else
-			unset_pain_modifier(PAIN_MOD_DROWSY)
 
 /**
  * Whenever we buckle to something or lie down, get a pain bodifier.
@@ -636,7 +657,7 @@
 			do_pain_emote("gasp")
 
 	// shock
-	if(!is_undergoing_shock() && parent.health <= parent.maxHealth * 0.5 && DT_PROB(0.015, delta_time))
+	if(!is_undergoing_shock() /*&& parent.health <= parent.maxHealth * 0.5*/ && DT_PROB(0.1, delta_time))
 		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
 		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
@@ -684,7 +705,7 @@
 			do_pain_emote("gasp")
 
 	// shock
-	if(!is_undergoing_shock() && DT_PROB(0.05, delta_time))
+	if(!is_undergoing_shock() && DT_PROB(0.2, delta_time))
 		parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 		to_chat(parent, span_userdanger("You feel your body start to shut down!"))
 		parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
@@ -777,7 +798,7 @@
 		if(QDELETED(adjusted_bodypart))
 			continue
 		total_pain += adjusted_bodypart.pain
-		max_total_pain += adjusted_bodypart.max_pain
+		max_total_pain += adjusted_bodypart.soft_max_pain
 
 	return 100 * total_pain / max_total_pain
 
@@ -801,8 +822,8 @@
 		var/obj/item/bodypart/healed_bodypart = body_zones[zone]
 		if(QDELETED(healed_bodypart))
 			continue
-		adjust_bodypart_min_pain(zone, -healed_bodypart.max_pain)
-		adjust_bodypart_pain(zone, -healed_bodypart.max_pain)
+		adjust_bodypart_min_pain(zone, -INFINITY)
+		adjust_bodypart_pain(zone, -INFINITY)
 		// Shouldn't be necessary but you never know!
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
@@ -831,13 +852,14 @@
 /datum/pain/proc/on_analyzed(datum/source, list/render_list, advanced, mob/user, mode)
 	SIGNAL_HANDLER
 
+	var/average_pain = get_average_pain()
 	var/amount = ""
 	var/tip = ""
 	var/in_shock = !!is_undergoing_shock()
 	if(in_shock)
 		tip += span_bold("Neurogenic shock has begun and should be treated urgently. ")
 
-	switch(get_average_pain())
+	switch(average_pain)
 		if(5 to 15)
 			amount = "minor"
 			tip += "Pain should subside in time."
@@ -852,7 +874,7 @@
 			if(!in_shock)
 				tip += span_bold("Alert: Potential of neurogenic shock. ")
 			tip += "Treat wounds and abate pain with long rest, cryogenics, and moderate painkilling medication."
-		if(80 to 100)
+		if(80 to INFINITY)
 			amount = "extreme"
 			if(!in_shock)
 				tip += span_bold("Alert: High potential of neurogenic shock. ")
@@ -863,6 +885,10 @@
 		render_list += span_bold("Subject is experiencing [amount] pain. ")
 		render_list += tip
 		render_list += "</span>\n"
+
+#ifdef TESTING
+	debug_print_pain()
+#endif
 
 // ------ Pain debugging stuff. ------
 /datum/pain/vv_get_dropdown()
@@ -883,18 +909,17 @@
 /datum/pain/proc/debug_print_pain()
 
 	var/list/final_print = list()
-	final_print += "<div class='examine_block'><span class='info'>"
-	final_print += "DEBUG PRINTOUT PAIN: [REF(src)]"
+	final_print += "<div class='examine_block'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
 	final_print += "[parent] has an average pain of [get_average_pain()]."
 	final_print += "[parent] has a pain modifier of [pain_modifier]."
 	final_print += " - - - - "
-	final_print += "[parent] bodypart printout: (min / current / max)"
+	final_print += "[parent] bodypart printout: (min / current / soft max)"
 	for(var/part in body_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
 		if(QDELETED(checked_bodypart))
 			final_print += "[parent] has a qdeleted / null bodyart in their zones list - [part]."
 		else
-			final_print += "[checked_bodypart.name]: [checked_bodypart.min_pain] / [checked_bodypart.pain] / [checked_bodypart.max_pain]"
+			final_print += "[checked_bodypart.name]: [checked_bodypart.min_pain] / [checked_bodypart.pain] / [checked_bodypart.soft_max_pain]"
 
 	final_print += " - - - - "
 	final_print += "[parent] pain modifier printout:"
