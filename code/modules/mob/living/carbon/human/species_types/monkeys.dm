@@ -28,7 +28,7 @@
 		TRAIT_VENTCRAWLER_NUDE,
 		TRAIT_WEAK_SOUL,
 	)
-	no_equip = list(
+	no_equip_flags = list(
 		ITEM_SLOT_OCLOTHING,
 		ITEM_SLOT_GLOVES,
 		ITEM_SLOT_FEET,
