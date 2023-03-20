@@ -35,7 +35,7 @@
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 	//-1 from to see the actual distance, e.g 4 goes over 3 tiles
 	var/jumpdistance = 3
-	var/jumpspeed = 1
+	var/jumpspeed = 2
 	var/zup = FALSE
 
 /datum/action/cooldown/spell/airhike/New(Target, original)
@@ -53,27 +53,36 @@
 	ADD_TRAIT(cast_on, TRAIT_MOVE_FLOATING, LEAPING_TRAIT)  //Throwing itself doesn't protect mobs against lava (because gulag).
 	//When Rclick checks there is an open turf above the caster, will send them upwards and forward a single tile.
 	if (zup)
+		var/turf/original_turf = get_turf(cast_on) //get the user's original turf so they can have a leave message
 		cast_on.set_currently_z_moving(CURRENTLY_Z_ASCENDING)
-		cast_on.zMove(UP, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_ALLOW_BUCKLED)
+		cast_on.zMove(UP, z_move_flags = ZMOVE_CHECK_PULLEDBY|ZMOVE_INCAPACITATED_CHECKS)
+		original_turf.visible_message(span_warning("[cast_on] dashes upwards into the air!"))
 		cast_on.visible_message(span_warning("[cast_on] dashes upwards into the air!"))
 		jumpdistance = 1
 	if (cast_on.throw_at(target, jumpdistance, jumpspeed, spin = FALSE, diagonals_first = TRUE, callback = TRAIT_CALLBACK_REMOVE(cast_on, TRAIT_MOVE_FLOATING, LEAPING_TRAIT)))
-		cast_on.visible_message(span_warning("[usr] dashes forward into the air!"))
+		cast_on.visible_message(span_warning("[cast_on] dashes forward into the air!"))
 	else
 		to_chat(cast_on, span_warning("Something prevents you from dashing forward!"))
 	jumpdistance = 3
 	zup = FALSE
 
+//Checks if caster is buckled, which prevents casting spell and using mana
+/datum/action/cooldown/spell/airhike/can_cast_spell(feedback)
+	. = ..()
+	if(!.)
+		return
+	if(owner.buckled)
+		if(feedback)
+			owner.balloon_alert(owner, "can't cast while buckled!")
+		return FALSE
+	return TRUE
+
 //If Rclicked checks upwards a zlevel to see if caster can move up into an open turf.
 /datum/action/cooldown/spell/airhike/Trigger(trigger_flags, atom/target)
 	if (trigger_flags & TRIGGER_SECONDARY_ACTION)
-		var/turf/checking = get_step_multiz(get_turf(usr), UP)
-		if(!istype(checking))
-			to_chat(usr, span_warning("Something prevents you from dashing upwards!"))
-			return FALSE
-		if(!checking.zPassIn(usr, UP, get_turf(usr)))
-			to_chat(usr, span_warning("Something prevents you from dashing upwards!"))
-			return FALSE
-		zup = TRUE
-
+		if(usr.can_z_move(UP, z_move_flags = ZMOVE_INCAPACITATED_CHECKS|ZMOVE_FEEDBACK))
+			zup = TRUE
+			return ..()
+		to_chat(usr, span_warning("Something prevents you from dashing upwards!"))
+		return FALSE
 	return ..()
