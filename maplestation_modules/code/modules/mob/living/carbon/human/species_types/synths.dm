@@ -22,7 +22,7 @@
 	)
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	meat = null
-	wings_icons = list("Robotic")
+	wing_types = list(/obj/item/organ/external/wings/functional/robotic)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
 	species_language_holder = /datum/language_holder/synthetic
 	/// If your health becomes equal to or less than this value, your disguise is supposed to break.
@@ -123,7 +123,8 @@
 /datum/species/synth/proc/assume_disguise(datum/species/S, mob/living/carbon/human/H)
 	if(S && !istype(S, type))
 		name = S.name
-		say_mod = S.say_mod
+		say_mod = S.say_mod // hooo boy am i scared of this one. Basically, in the new tongue rework, "says" is now stored in tongue.
+		// my guess is that we put this on the synth tongue, and have the species/species disguise echo the species to the tongue, which it mimics.
 		sexes = S.sexes
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
@@ -132,8 +133,8 @@
 		meat = S.meat
 		mutant_bodyparts = S.mutant_bodyparts.Copy()
 		mutant_organs = S.mutant_organs.Copy()
-		nojumpsuit = S.nojumpsuit
-		no_equip = S.no_equip.Copy()
+		no_equip_flags = S.no_equip_flags.Copy() // Heads up! this used to have a nojumpsuit copier, but i believe its supposed to use flags only now
+		// also this throws errors lmfao
 		use_skintones = S.use_skintones
 		fixed_mut_color = S.fixed_mut_color
 		hair_color = S.hair_color
@@ -144,8 +145,7 @@
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
 		mutant_bodyparts = list()
-		nojumpsuit = initial(nojumpsuit)
-		no_equip = list()
+		no_equip_flags = list() // same as above. used to have nojumpsuit thing.
 		qdel(fake_species)
 		fake_species = null
 		meat = initial(meat)

@@ -16,7 +16,7 @@
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	meat = null
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
-	wings_icons = list("Robotic")
+	wing_types = list(/obj/item/organ/external/wings/functional/robotic)
 	species_language_holder = /datum/language_holder/synthetic
 
 /datum/species/reploid/on_species_gain(mob/living/carbon/C)

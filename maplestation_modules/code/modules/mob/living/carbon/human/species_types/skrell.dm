@@ -16,7 +16,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
-	say_mod = "warbles"
 	exotic_bloodtype = "S"
 	mutanttongue = /obj/item/organ/internal/tongue/skrell
 	species_speech_sounds = list('maplestation_modules/sound/voice/huff.ogg' = 120)
@@ -34,6 +33,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	)
 
 	mutanteyes = /obj/item/organ/internal/eyes/skrell
+	mutanttongue = /obj/item/organ/internal/tongue/skrell
 
 /datum/species/skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()

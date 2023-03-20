@@ -75,7 +75,8 @@
 		var/mob/living/carbon/exposed_carbon = exposed_mob
 		if(reac_volume < 5 || !(ishumanbasic(exposed_carbon) || islizard(exposed_carbon) || ismoth(exposed_carbon)))
 			return
-		if(exposed_carbon.dna.species.has_innate_wings)
+		if(exposed_carbon.dna.species.has_innate_wings) // has_innate_wings does not exist anymore, with no replacement.
+		// melbert suggested "has /obj/organ/external/wings in mutantorgans" for a possible replacement.
 			exposed_carbon.cause_pain(BODY_ZONE_HEAD, 10)
 			exposed_carbon.cause_pain(BODY_ZONE_CHEST, 45)
 			exposed_carbon.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 18)
