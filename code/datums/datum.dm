@@ -313,7 +313,7 @@
 
 /obj/item/update_filters()
 	. = ..()
-	update_item_action_buttons()
+	update_action_buttons()
 
 /** Update a filter's parameter to the new one. If the filter doesnt exist we won't do anything.
  *
