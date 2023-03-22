@@ -110,12 +110,15 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 /obj/item/organ/external/head_tentacles
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES
-	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT // this *should* be mostly useless now. not touching it because I don't want things to explode. (UNDEFINED VAR)
 	dna_block = DNA_HEAD_TENTACLES_BLOCK
-	feature_key = "head_tentacles" // this i'm not sure of currently. (UNDEFINED VAR)
 	preference = "feature_head_tentacles"
+	bodypart_overlay = /datum/bodypart_overlay/mutant/head_tentacles
 
-/obj/item/organ/external/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human) // can_draw_on_bodypart was moved to /datum/bodypart_overlay, which is why this line throws errors.
+/datum/bodypart_overlay/mutant/head_tentacles
+	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
+	feature_key = "head_tentacles"
+
+/datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(istype(human.head) && (human.head.flags_inv & HIDEHAIR))
 		return FALSE
 	if(istype(human.wear_mask) && (human.wear_mask.flags_inv & HIDEHAIR))
@@ -125,7 +128,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 		return FALSE
 	return TRUE
 
-/obj/item/organ/external/head_tentacles/get_global_feature_list() // global_feature_list is also moved to /datum/bodypart_overlay.
+/datum/bodypart_overlay/mutant/head_tentacles/get_global_feature_list()
 	return GLOB.head_tentacles_list
 
 /obj/item/bodypart/arm/left/skrell
