@@ -141,7 +141,7 @@
 		fake_species = new S.type
 	else
 		name = initial(name)
-		say_mod = initial(say_mod)
+		say_mod = initial(say_mod) // aaaaa more saymod being axed stuff. also says "initial" is a bad variable
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
 		mutant_bodyparts = list()
