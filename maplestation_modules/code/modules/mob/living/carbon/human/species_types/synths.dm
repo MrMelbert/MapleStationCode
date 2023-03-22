@@ -10,7 +10,7 @@
 /datum/species/synth
 	name = "Synth" //inherited from the real species, for health scanners and things
 	id = SPECIES_SYNTH
-	say_mod = "beep boops" //inherited from a user's real species
+	// say_mod = "beep boops" //inherited from a user's real species
 	sexes = FALSE
 	species_traits = list(NOTRANSSTING, NO_DNA_COPY) //all of these + whatever we inherit from the real species
 	inherent_traits = list(
@@ -35,6 +35,7 @@
 	///for getting these values back for assume_disguise()
 	var/list/initial_species_traits
 	var/list/initial_inherent_traits
+
 
 /datum/species/synth/New()
 	initial_species_traits = species_traits.Copy()
@@ -123,8 +124,6 @@
 /datum/species/synth/proc/assume_disguise(datum/species/S, mob/living/carbon/human/H)
 	if(S && !istype(S, type))
 		name = S.name
-		say_mod = S.say_mod // hooo boy am i scared of this one. Basically, in the new tongue rework, "says" is now stored in tongue.
-		// my guess is that we put this on the synth tongue, and have the species/species disguise echo the species to the tongue, which it mimics.
 		sexes = S.sexes
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
@@ -141,7 +140,6 @@
 		fake_species = new S.type
 	else
 		name = initial(name)
-		say_mod = initial(say_mod) // aaaaa more saymod being axed stuff. also says "initial" is a bad variable
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
 		mutant_bodyparts = list()
@@ -158,6 +156,10 @@
 		var/obj/item/bodypart/BP = X
 		BP.update_limb()
 	H.update_body_parts() //to update limb icon cache with the new damage overlays
+	var/obj/item/organ/internal/tongue/disguise_tongue = initial(fake_species.mutanttongue) // handles the say_mod for species disguise.
+	var/obj/item/organ/internal/tongue/my_tongue = mymob.getorgan(/obj/item/organ/internal/tongue)
+	if(disguise_tongue && my_tongue)
+		my_tongue.saymod = initial(disguise_tongue.saymod)
 
 /datum/species/synth/handle_body(mob/living/carbon/human/H)
 	if(fake_species)
