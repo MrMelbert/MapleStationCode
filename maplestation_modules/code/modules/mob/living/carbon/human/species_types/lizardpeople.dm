@@ -18,9 +18,9 @@
 	human.dna.features["mcolor"] = COLOR_DARK_LIME
 
 	var/obj/item/organ/external/frills/frills = human.getorgan(/obj/item/organ/external/frills)
-	frills?.set_sprite("Short") //Update this! this causes an error! "frills?." is no longer used/got repathed
+	frills?.bodypart_overlay.set_appearance_from_name("Short") //updated from "set_sprite". If this doesn't work, theres also just "set_appearence"
 
 	var/obj/item/organ/external/horns/horns = human.getorgan(/obj/item/organ/external/horns)
-	horns?.set_sprite("Simple") //Update this! this also causes an error! "horns?." is no longer used.
+	horns?.bodypart_overlay.set_appearance_from_name("Simple") //same as above.
 
 	human.update_body(is_creating = TRUE)
