@@ -132,7 +132,7 @@
 		meat = S.meat
 		mutant_bodyparts = S.mutant_bodyparts.Copy()
 		mutant_organs = S.mutant_organs.Copy()
-		no_equip_flags = S.no_equip_flags.Copy() // Heads up! this used to have a nojumpsuit copier, but i believe its supposed to use flags only now
+		no_equip_flags = S.no_equip_flags() // Heads up! this used to have a nojumpsuit copier, but i believe its supposed to use flags only now
 		// also this throws errors lmfao
 		use_skintones = S.use_skintones
 		fixed_mut_color = S.fixed_mut_color
@@ -159,7 +159,7 @@
 	var/obj/item/organ/internal/tongue/disguise_tongue = initial(fake_species.mutanttongue) // handles the say_mod for species disguise.
 	var/obj/item/organ/internal/tongue/my_tongue = mymob.getorgan(/obj/item/organ/internal/tongue)
 	if(disguise_tongue && my_tongue)
-		my_tongue.saymod = initial(disguise_tongue.saymod)
+		my_tongue.say_mod = initial(disguise_tongue.say_mod)
 
 /datum/species/synth/handle_body(mob/living/carbon/human/H)
 	if(fake_species)
