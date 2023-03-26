@@ -445,8 +445,6 @@
 /mob/living/carbon/proc/update_hud_back(obj/item/I)
 	return
 
-
-
 //Overlays for the worn overlay so you can overlay while you overlay
 //eg: ammo counters, primed grenade flashing, etc.
 //"icon_file" is used automatically for inhands etc. to make sure it gets the right inhand file
@@ -608,7 +606,9 @@
 		if(!external_organ.can_draw_on_bodypart(owner))
 			continue
 		. += "[external_organ.generate_icon_cache()]"
-
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		. += "-[human_owner.get_mob_height()]"
 	return .
 
 ///Generates a cache key specifically for husks
@@ -618,6 +618,9 @@
 	. += "[husk_type]"
 	. += "-husk"
 	. += "-[body_zone]"
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		. += "-[human_owner.get_mob_height()]"
 	return .
 
 /obj/item/bodypart/head/generate_icon_key()
