@@ -34,8 +34,8 @@ export const _spellbookCustomizationMenu = (props, context) => {
                 )}
                 {element.interfacetype === 'boolean' && (
                   <Button.Checkbox
-                    content={element.name}
                     checked={!!element.current_value === true}
+                    tooltip={element.tooltip}
                     onClick={() =>
                       act('change_value', {
                         key: element.key,
