@@ -6950,7 +6950,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/firealarm/directional/west,
-/obj/machinery/light_switch/directional/east,
 /obj/machinery/light_switch/directional/west{
 	pixel_x = -38
 	},
@@ -8099,7 +8098,6 @@
 "cXY" = (
 /obj/effect/spawner/random/maintenance,
 /obj/structure/rack,
-/obj/machinery/light/small/red/directional/east,
 /obj/effect/spawner/random/engineering/flashlight,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lower)
@@ -9113,8 +9111,8 @@
 /obj/effect/turf_decal/trimline/blue/filled/warning{
 	dir = 1
 	},
-/obj/machinery/portable_atmospherics/canister/oxygen,
 /obj/machinery/status_display/ai/directional/south,
+/obj/machinery/portable_atmospherics/canister/oxygen,
 /turf/open/floor/iron/dark,
 /area/station/medical/coldroom)
 "dpJ" = (
@@ -16509,7 +16507,8 @@
 /obj/machinery/camera{
 	c_tag = "Atmospherics - Central";
 	network = list("ss13","engine");
-	view_range = 10
+	view_range = 10;
+	dir = 9
 	},
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -23887,7 +23886,7 @@
 /obj/structure/closet/secure_closet/security,
 /obj/machinery/camera{
 	c_tag = "Arrivals Security Checkpoint";
-	dir = 1
+	dir = 8
 	},
 /obj/item/crowbar,
 /obj/item/assembly/flash/handheld,
@@ -27319,6 +27318,11 @@
 /obj/structure/flora/bush/fullgrass/style_random,
 /turf/open/floor/grass,
 /area/station/hallway/secondary/command)
+"jQf" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/red/directional/north,
+/turf/open/floor/iron,
+/area/station/maintenance/port/lower)
 "jQg" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/trimline/brown/filled/line,
@@ -36128,14 +36132,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/main)
-"mHH" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/small/red/directional/south,
-/turf/open/floor/plating,
-/area/station/maintenance/port/lower)
 "mHI" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -43374,7 +43370,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/warning{
 	dir = 1
 	},
-/obj/machinery/portable_atmospherics/canister/oxygen,
+/obj/machinery/portable_atmospherics/canister/anesthetic_mix,
 /turf/open/floor/iron/dark,
 /area/station/medical/coldroom)
 "paN" = (
@@ -46040,7 +46036,6 @@
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
 	dir = 1
 	},
-/obj/machinery/portable_atmospherics/canister/oxygen,
 /obj/machinery/camera{
 	c_tag = "Medbay - Cryogenics";
 	dir = 5;
@@ -46053,6 +46048,7 @@
 	dir = 1
 	},
 /obj/machinery/status_display/ai/directional/south,
+/obj/machinery/portable_atmospherics/canister/anesthetic_mix,
 /turf/open/floor/iron,
 /area/station/medical/cryo)
 "pUZ" = (
@@ -62684,12 +62680,12 @@
 /area/station/maintenance/port)
 "vAE" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible,
-/obj/machinery/portable_atmospherics/canister/oxygen,
 /obj/effect/turf_decal/box/white{
 	color = "#52B4E9"
 	},
 /obj/effect/turf_decal/trimline/blue/filled/line,
 /obj/machinery/status_display/evac/directional/north,
+/obj/machinery/portable_atmospherics/canister/anesthetic_mix,
 /turf/open/floor/iron,
 /area/station/medical/cryo)
 "vAL" = (
@@ -64107,7 +64103,6 @@
 /turf/open/floor/iron/showroomfloor,
 /area/station/science/xenobiology)
 "wcK" = (
-/obj/machinery/light/small/red/directional/south,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -98678,8 +98673,8 @@ emY
 nqi
 hov
 sag
-aDd
-mHH
+deJ
+qmd
 sag
 hdM
 hcy
@@ -99706,7 +99701,7 @@ wNX
 ymg
 ymg
 sag
-jkB
+jQf
 wcK
 kap
 gOR
