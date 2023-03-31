@@ -156,9 +156,11 @@
 		var/obj/item/bodypart/BP = X
 		BP.update_limb()
 	H.update_body_parts() //to update limb icon cache with the new damage overlays
+
 	var/obj/item/organ/internal/tongue/disguise_tongue = initial(fake_species.mutanttongue) // handles the say_mod for species disguise.
 	// this (below) is a major make or break for the code, this should set the synth tongue to be identical to the default species tongue the mob is disguised as.
 	var/obj/item/organ/internal/tongue/my_tongue = H.getorgan(/obj/item/organ/internal/tongue)
+	if(my_tongue && disguise_tongue)
 		my_tongue.say_mod = initial(disguise_tongue.say_mod)
 
 /datum/species/synth/handle_body(mob/living/carbon/human/H)
