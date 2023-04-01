@@ -9,7 +9,7 @@
 	species_pain_mod = 1.05
 
 /datum/species/pod/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = "#886600" // player reference :smug:
+	human.dna.features["mcolor"] = "886600" // player reference :smug:
 	human.dna.features["pod_hair"] = "Rose"
 	human.update_body(is_creating = TRUE)
 
