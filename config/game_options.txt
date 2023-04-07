@@ -356,6 +356,7 @@ ROUNDSTART_RACES ornithid
 
 ## Races that are straight upgrades. If these are on expect powergamers to always pick them
 ROUNDSTART_RACES skeleton
+ROUNDSTART_RACES silverscale
 #ROUNDSTART_RACES zombie
 #ROUNDSTART_RACES slime
 #ROUNDSTART_RACES lum

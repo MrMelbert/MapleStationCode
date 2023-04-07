@@ -34,7 +34,7 @@
 	///The ID of a species used to generate the icon. Needs to match the icon_state portion in the limbs file!
 	var/limb_id = SPECIES_HUMAN
 	//Defines what sprite the limb should use if it is also sexually dimorphic.
-	VAR_PROTECTED/limb_gender = "m"
+	var/limb_gender = "m"
 	///Is there a sprite difference between male and female?
 	var/is_dimorphic = FALSE
 	///The actual color a limb is drawn as, set by /proc/update_limb()
@@ -113,6 +113,11 @@
 	var/medium_burn_msg = "blistered"
 	var/heavy_burn_msg = "peeling away"
 
+	//Damage messages used by examine(). the desc that is most common accross all bodyparts gets shown
+
+	var/brute_damage_desc = DEFAULT_BRUTE_EXAMINE_TEXT
+	var/burn_damage_desc = DEFAULT_BURN_EXAMINE_TEXT
+
 	/// The wounds currently afflicting this body part
 	var/list/wounds
 
@@ -140,7 +145,10 @@
 	var/obj/item/hand_item/self_grasp/grasped_by
 
 	///A list of all the external organs we've got stored to draw horns, wings and stuff with (special because we are actually in the limbs unlike normal organs :/ )
+	///If someone ever comes around to making all organs exist in the bodyparts, you can just remove this and use a typed loop
 	var/list/obj/item/organ/external/external_organs = list()
+	///A list of all bodypart overlays to draw
+	var/list/bodypart_overlays = list()
 
 	/// Type of an attack from this limb does. Arms will do punches, Legs for kicks, and head for bites. (TO ADD: tactical chestbumps)
 	var/attack_type = BRUTE
@@ -168,6 +176,9 @@
 	if(can_be_disabled)
 		RegisterSignal(src, SIGNAL_ADDTRAIT(TRAIT_PARALYSIS), PROC_REF(on_paralysis_trait_gain))
 		RegisterSignal(src, SIGNAL_REMOVETRAIT(TRAIT_PARALYSIS), PROC_REF(on_paralysis_trait_loss))
+
+	RegisterSignal(src, COMSIG_ATOM_RESTYLE, PROC_REF(on_attempt_feature_restyle))
+
 	if(!IS_ORGANIC_LIMB(src))
 		grind_results = null
 
@@ -184,8 +195,6 @@
 	if(length(wounds))
 		stack_trace("[type] qdeleted with [length(wounds)] uncleared wounds")
 		wounds.Cut()
-	for(var/external_organ in external_organs)
-		qdel(external_organ)
 	return ..()
 
 /obj/item/bodypart/forceMove(atom/destination) //Please. Never forcemove a limb if its's actually in use. This is only for borgs.
@@ -345,8 +354,13 @@
 	seep_gauze(9999) // destroy any existing gauze if any exists
 	for(var/obj/item/organ/bodypart_organ in get_organs())
 		bodypart_organ.transfer_to_limb(src, owner)
+	for(var/obj/item/organ/external/external in external_organs)
+		external.remove_from_limb()
+		external.forceMove(drop_loc)
 	for(var/obj/item/item_in_bodypart in src)
 		item_in_bodypart.forceMove(drop_loc)
+
+	update_icon_dropped()
 
 ///since organs aren't actually stored in the bodypart themselves while attached to a person, we have to query the owner for what we should have
 /obj/item/bodypart/proc/get_organs()
@@ -796,7 +810,7 @@
 
 	. = list()
 
-	var/image_dir = 0
+	var/image_dir = NONE
 	if(dropped)
 		image_dir = SOUTH
 		if(dmg_overlay_type)
@@ -817,8 +831,6 @@
 		if(aux_zone) //Hand shit
 			aux = image(limb.icon, "[husk_type]_husk_[aux_zone]", -aux_layer, image_dir)
 			. += aux
-		return .
-	//END HUSK SHIIIIT
 
 	//invisibility
 	if(is_invisible)
@@ -839,55 +851,69 @@
 
 	icon_exists(limb.icon, limb.icon_state, TRUE) //Prints a stack trace on the first failure of a given iconstate.
 
-	if(body_zone == BODY_ZONE_R_LEG)
-		var/obj/item/bodypart/leg/right/leg = src
-		var/limb_overlays = limb.overlays
-		var/image/new_limb = leg.generate_masked_right_leg(limb.icon, limb.icon_state, image_dir)
-		if(new_limb)
-			limb = new_limb
-			limb.overlays = limb_overlays
+	if(!is_husked)
+		. += limb
 
-	. += limb
+		if(aux_zone) //Hand shit
+			aux = image(limb.icon, "[limb_id]_[aux_zone]", -aux_layer, image_dir)
+			. += aux
 
-	if(aux_zone) //Hand shit
-		aux = image(limb.icon, "[limb_id]_[aux_zone]", -aux_layer, image_dir)
-		. += aux
+		draw_color = variable_color
+		if(should_draw_greyscale) //Should the limb be colored outside of a forced color?
+			draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
 
-	draw_color = variable_color
-	if(should_draw_greyscale) //Should the limb be colored outside of a forced color?
-		draw_color ||= (species_color) || (skin_tone && skintone2hex(skin_tone))
+		if(draw_color)
+			limb.color = "[draw_color]"
+			if(aux_zone)
+				aux.color = "[draw_color]"
 
-	if(draw_color)
-		limb.color = "[draw_color]"
-		if(aux_zone)
-			aux.color = "[draw_color]"
+		//EMISSIVE CODE START
+		// For some reason this was applied as an overlay on the aux image and limb image before.
+		// I am very sure that this is unnecessary, and i need to treat it as part of the return list
+		// to be able to mask it proper in case this limb is a leg.
+		if(blocks_emissive)
+			var/atom/location = loc || owner || src
+			var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, location, alpha = limb.alpha)
+			limb_em_block.dir = image_dir
+			. += limb_em_block
 
-	//EMISSIVE CODE START
-	if(blocks_emissive)
-		var/atom/location = loc || owner || src
-		var/mutable_appearance/limb_em_block = emissive_blocker(limb.icon, limb.icon_state, location, alpha = limb.alpha)
-		limb_em_block.dir = image_dir
-		limb.overlays += limb_em_block
+			if(aux_zone)
+				var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, location, alpha = aux.alpha)
+				aux_em_block.dir = image_dir
+				. += aux_em_block
+		//EMISSIVE CODE END
 
-		if(aux_zone)
-			var/mutable_appearance/aux_em_block = emissive_blocker(aux.icon, aux.icon_state, location, alpha = aux.alpha)
-			aux_em_block.dir = image_dir
-			aux.overlays += aux_em_block
+	//Ok so legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
+	if((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG))
+		var/obj/item/bodypart/leg/leg_source = src
+		for(var/image/limb_image in .)
+			//remove the old, unmasked image
+			. -= limb_image
+			//add two masked images based on the old one
+			. += leg_source.generate_masked_leg(limb_image, image_dir)
 
-	//EMISSIVE CODE END
-	//Draw external organs like horns and frills
-	for(var/obj/item/organ/external/external_organ as anything in external_organs)
-		if(!dropped && !external_organ.can_draw_on_bodypart(owner))
-			continue
-		//Some externals have multiple layers for background, foreground and between
-		for(var/external_layer in external_organ.all_layers)
-			if(external_organ.layers & external_layer)
-				external_organ.get_overlays(
-					.,
-					image_dir,
-					external_organ.bitflag_to_layer(external_layer),
-					limb_gender,
-				)
+	// And finally put bodypart_overlays on if not husked
+	if(!is_husked)
+		//Draw external organs like horns and frills
+		for(var/datum/bodypart_overlay/overlay as anything in bodypart_overlays)
+			if(!dropped && !overlay.can_draw_on_bodypart(owner)) //if you want different checks for dropped bodyparts, you can insert it here
+				continue
+			//Some externals have multiple layers for background, foreground and between
+			for(var/external_layer in overlay.all_layers)
+				if(overlay.layers & external_layer)
+					. += overlay.get_overlay(external_layer, src)
+
+	return .
+
+///Add a bodypart overlay and call the appropriate update procs
+/obj/item/bodypart/proc/add_bodypart_overlay(datum/bodypart_overlay/overlay)
+	bodypart_overlays += overlay
+	overlay.added_to_limb(src)
+
+///Remove a bodypart overlay and call the appropriate update procs
+/obj/item/bodypart/proc/remove_bodypart_overlay(datum/bodypart_overlay/overlay)
+	bodypart_overlays -= overlay
+	overlay.removed_from_limb(src)
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(TRUE)
@@ -1069,8 +1095,8 @@
 
 ///Loops through all of the bodypart's external organs and update's their color.
 /obj/item/bodypart/proc/recolor_external_organs()
-	for(var/obj/item/organ/external/ext_organ as anything in external_organs)
-		ext_organ.inherit_color(force = TRUE)
+	for(var/datum/bodypart_overlay/mutant/overlay in bodypart_overlays)
+		overlay.inherit_color(src, force = TRUE)
 
 ///A multi-purpose setter for all things immediately important to the icon and iconstate of the limb.
 /obj/item/bodypart/proc/change_appearance(icon, id, greyscale, dimorphic)

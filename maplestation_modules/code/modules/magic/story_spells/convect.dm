@@ -33,7 +33,8 @@
 /datum/component/uses_mana/story_spell/pointed/convect/react_to_successful_use(atom/cast_on)
 	. = ..()
 
-	drain_mana()
+	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
+	drain_mana(caster = convect_spell.owner)
 
 /datum/action/cooldown/spell/pointed/convect
 	name = "Convect"
@@ -104,10 +105,10 @@
 	var/datum/gas_mixture/air = cast_on.return_air()
 	var/datum/gas_mixture/turf_air = turf_target?.return_air()
 	if (air && air != turf_air) // if this has air and we arent a turf
-		air.temperature += temperature_for_cast //this sucks.
+		air.temperature = max(air.temperature + temperature_for_cast, 0) //this sucks.
 		air.react(cast_on)
 	if (isturf(cast_on) && turf_air)
-		turf_air.temperature += temperature_for_cast
+		turf_air.temperature = max(turf_air.temperature + temperature_for_cast, 0)
 		turf_air.react(turf_target)
 		turf_target?.air_update_turf()
 

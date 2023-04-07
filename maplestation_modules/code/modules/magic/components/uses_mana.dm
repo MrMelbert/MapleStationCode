@@ -28,21 +28,21 @@
 	return parent.get_available_mana(attunements)
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
-/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana)
+/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana, atom/caster)
 	var/total_effective_mana = 0
 	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
-		total_effective_mana += iterated_pool.get_attuned_amount(our_attunements)
+		total_effective_mana += iterated_pool.get_attuned_amount(our_attunements, caster)
 	if (total_effective_mana > get_mana_required())
 		return TRUE
 
 /// Should be the raw conditional we use for determining if the thing that "uses mana" can actually
 /// activate the behavior that "uses mana".
-/datum/component/uses_mana/proc/can_activate(...)
-	return is_mana_sufficient(get_available_mana())
+/datum/component/uses_mana/proc/can_activate(atom/caster, ...)
+	return is_mana_sufficient(get_available_mana(), caster)
 
 /// Wrapper for can_activate(). Should return a bitflag that will be passed down to the signal sender on failure.
-/datum/component/uses_mana/proc/can_activate_check(give_feedback = TRUE, ...)
+/datum/component/uses_mana/proc/can_activate_check(give_feedback = TRUE, atom/caster, ...)
 	var/list/argss = args.Copy(2)
 	var/can_activate = can_activate(arglist(argss)) //doesnt return this + can_activate_check_... because returning TRUE/FALSE can gave bitflag implications
 	if (!can_activate)
@@ -65,11 +65,11 @@
 	SIGNAL_HANDLER
 	return
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
-/datum/component/uses_mana/proc/drain_mana(list/datum/mana_pool/pools = get_available_mana(), cost = -get_mana_required(), ...)
+/datum/component/uses_mana/proc/drain_mana(list/datum/mana_pool/pools = get_available_mana(), cost = -get_mana_required(), atom/caster, ...)
 
 	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
 	for (var/datum/mana_pool/iterated_pool as anything in pools)
-		var/mult = iterated_pool.get_attunement_mults(our_attunements)
+		var/mult = iterated_pool.get_overall_attunement_mults(our_attunements, caster)
 		var/attuned_cost = cost * mult
 		cost -= SAFE_DIVIDE(iterated_pool.adjust_mana((attuned_cost)), mult)
 		if (cost == 0)

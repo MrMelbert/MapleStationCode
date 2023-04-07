@@ -53,11 +53,11 @@ PROCESSING_SUBSYSTEM_DEF(magic)
 	return amount
 
 /// Returns the attuned amount of mana for all our leylines, using attunements to generate attunement mults.
-/datum/controller/subsystem/processing/magic/proc/get_all_leyline_attuned_mana_amount(list/datum/attunement/attunements)
+/datum/controller/subsystem/processing/magic/proc/get_all_leyline_attuned_mana_amount(list/datum/attunement/attunements, atom/caster)
 	var/list/datum/mana_pool/mana = get_all_leyline_mana()
 	var/amount = 0
 	for (var/datum/mana_pool/group as anything in mana)
-		amount += group.get_attuned_amount(attunements)
+		amount += group.get_attuned_amount(attunements, caster)
 	return amount
 
 /// Adjusts the mana of picked_leyline by amount, with incoming_attunements.

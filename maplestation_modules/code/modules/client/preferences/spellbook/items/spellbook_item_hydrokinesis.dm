@@ -1,0 +1,1 @@
+GLOBAL_LIST_INIT(spellbook_hydrokinesis_items, generate_spellbook_items(SPELLBOOK_CATEGORY_HYDROKINESIS))

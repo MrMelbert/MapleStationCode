@@ -44,7 +44,8 @@
 /datum/component/uses_mana/story_spell/proc/handle_precast(atom/cast_on)
 	SIGNAL_HANDLER
 
-	return can_activate_check(TRUE, cast_on)
+	var/datum/action/cooldown/spell/parent_spell = parent
+	return can_activate_check(TRUE, parent_spell.owner, cast_on)
 
 /datum/component/uses_mana/story_spell/can_activate_check_failure(give_feedback, ...)
 	. = ..()

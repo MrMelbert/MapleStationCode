@@ -157,4 +157,8 @@
 	. = ..()
 	M.adjust_disgust(-3 * REM * delta_time )
 
+/datum/reagent/consumable/laughter/on_mob_metabolize(mob/living/carbon/user)
+	pain_modifier = pick(0.8, 1, 1, 1, 1, 1.2)
+	return ..()
+
 #undef PAIN_MOD_APPLY_ALERT
