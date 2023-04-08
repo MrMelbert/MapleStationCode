@@ -9,7 +9,7 @@
 		if(!check_rights(R_SPAWN))
 			return
 		if(!client)
-			to_chat(usr, span_warning("That mob has no client and thus no loadout, dingus.")
+			to_chat(usr, span_warning("That mob has no client and thus no loadout, dingus."))
 			return
 		var/used_outfit
 		if(tgui_alert(usr, "Override worn items?.", "Loadout override", list("Yes", "No")) == "Yes")
