@@ -5188,6 +5188,8 @@
 #include "maplestation_modules\code\modules\vehicles\mecha\equipment\weapons\ssrm.dm"
 #include "maplestation_modules\code\modules\vending\_vending.dm"
 #include "maplestation_modules\hurtful_disposals\holder.dm"
+#include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
+#include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
 #include "maplestation_modules\story_content\captain_equipment\code\captainclothing.dm"
 #include "maplestation_modules\story_content\casual_clothing\code\casualclothing.dm"
 #include "maplestation_modules\story_content\chaplain_equipment\code\chaplainclothing.dm"
