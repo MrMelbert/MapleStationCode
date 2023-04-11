@@ -70,8 +70,7 @@
 
 // Flight potion's flavor says "it hurts a shit ton bro", so it should cause decent pain
 /datum/reagent/flightpotion/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
-	var/mob/living/carbon/human/exposed_human = exposed_mob
-	var/has_wings_before = exposed_human.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
+	var/has_wings_before = exposed_mob.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
 	. = ..()
 	if(iscarbon(exposed_mob) && exposed_mob.stat != DEAD)
 		var/mob/living/carbon/exposed_carbon = exposed_mob
