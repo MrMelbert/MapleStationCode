@@ -132,8 +132,7 @@
 		meat = S.meat
 		mutant_bodyparts = S.mutant_bodyparts.Copy()
 		mutant_organs = S.mutant_organs.Copy()
-		no_equip_flags = S.no_equip_flags // Heads up! this used to have a nojumpsuit copier, but i believe its supposed to use flags only now
-		// also this throws errors lmfao
+		no_equip_flags = S.no_equip_flags
 		use_skintones = S.use_skintones
 		fixed_mut_color = S.fixed_mut_color
 		hair_color = S.hair_color
