@@ -21,6 +21,6 @@
 	frills?.bodypart_overlay.set_appearance_from_name("Short")
 
 	var/obj/item/organ/external/horns/horns = human.getorgan(/obj/item/organ/external/horns)
-	horns?.bodypart_overlay.set_appearance_from_name("Simple") //same as above.
+	horns?.bodypart_overlay.set_appearance_from_name("Simple")
 
 	human.update_body(is_creating = TRUE)
