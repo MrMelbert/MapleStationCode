@@ -142,7 +142,7 @@
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
 		mutant_bodyparts = list()
-		no_equip_flags = list() // same as above. used to have nojumpsuit thing.
+		no_equip_flags = NONE
 		qdel(fake_species)
 		fake_species = null
 		meat = initial(meat)
