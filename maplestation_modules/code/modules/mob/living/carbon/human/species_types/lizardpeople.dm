@@ -18,7 +18,7 @@
 	human.dna.features["mcolor"] = COLOR_DARK_LIME
 
 	var/obj/item/organ/external/frills/frills = human.getorgan(/obj/item/organ/external/frills)
-	frills?.bodypart_overlay.set_appearance_from_name("Short") //updated from "set_sprite". If this doesn't work, theres also just "set_appearence"
+	frills?.bodypart_overlay.set_appearance_from_name("Short")
 
 	var/obj/item/organ/external/horns/horns = human.getorgan(/obj/item/organ/external/horns)
 	horns?.bodypart_overlay.set_appearance_from_name("Simple") //same as above.
