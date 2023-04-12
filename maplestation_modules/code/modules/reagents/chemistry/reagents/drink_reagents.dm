@@ -1,4 +1,4 @@
-//New drink reagents for Jollystation.
+//New drink reagents for Maplestation.
 /datum/reagent/consumable/green_tea //seperate from regular tea because its different in almost every way
 	name = "Green Tea"
 	description = "Some nice green tea. A very traditional drink in Space Japanese culture."
@@ -139,3 +139,53 @@
 	else
 		M.add_mood_event("pegged", /datum/mood_event/pegged, name)
 	..()
+
+/datum/reagent/consumable/ethanol/justicars_juice
+	name = "Justicar's Juice"
+	description = "I don't even know what an eminence is, but I want him to recall."
+	metabolization_rate = INFINITY
+	boozepwr = 30
+	quality = DRINK_FANTASTIC
+	taste_description = "cogs and brass"
+	glass_icon_state = "justicars_juice"
+	glass_icon_file = 'maplestation_modules/icons/obj/drinks.dmi'
+	glass_name = "Justicar's Juice"
+	glass_desc = "Just looking at this makes your head spin. How the hell is it ticking?"
+
+
+/datum/reagent/consumable/ethanol/samogon_sonata
+	name = "Samogon Sonata"
+	description = "Unholy mixture of unholy beverages. Should be illegal."
+	boozepwr = 80
+	color = "#1a0942"
+	quality = DRINK_NICE
+	taste_description = "an overwhelming and undescribable taste"
+	glass_icon_state = "samogon_sonata"
+	glass_icon_file = 'maplestation_modules/icons/obj/drinks.dmi'
+	glass_name = "Samogon Sonata"
+	glass_desc = "A special, about unknown family recipe that's prone to make you see stars in your sleep. Likely illegal." 
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/samogon_sonata/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+	switch(current_cycle)
+		if(1 to 20)
+			M.adjust_confusion(2 SECONDS * REM * normalise_creation_purity() * delta_time)
+			M.adjust_drowsyness(2 * REM * normalise_creation_purity() * delta_time)
+		if(20 to 50)
+			M.Sleeping(15 SECONDS * REM * normalise_creation_purity() * delta_time)
+			. = TRUE //this code is old and i do not remember how the fuck i found it, so if there's a better way to knock someone the fuck out, let me know.
+	..()
+
+/datum/reagent/consumable/ethanol/piledriver
+	name = "Piledriver"
+	description = "A mix of vodka, coke, rum and orange juice. Fizzy." 
+	boozepwr = 20
+	color = "#e97617"
+	quality = DRINK_NICE 
+	taste_description = "sweet and fizz"
+	glass_icon_state = "piledriver"
+	glass_icon_file = 'maplestation_modules/icons/obj/drinks.dmi'
+	glass_name = "Pile Driver"
+	glass_desc = "A drink said to be bitter and somewhat spicy. You better not have a sore throat when drinking it." //Va-11 Hall-A reference moment flushed
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
