@@ -20,8 +20,8 @@
 	/// Our challenger
 	var/mob/living/carbon/human/current_challenger = null
 	/// The time given to finish
-	var/timerid
-	/// The player's set time
+	var/timer_id
+	/// The player's set time in minutes
 	var/set_time = 10
 	/// The upper limit on how many reagents are eaten per bite
 	var/difficulty = EGGS_NORMAL
@@ -34,14 +34,14 @@
 
 /obj/item/food/omelette/eggcellent_plate/Initialize()
 	. = ..()
-	RegisterSignal(src, COMSIG_FOOD_CONSUMED, .proc/On_Consume)
+	RegisterSignal(src, COMSIG_FOOD_CONSUMED, .proc/on_consume)
 
 /obj/item/food/omelette/eggcellent_plate/attack(mob/living/M, mob/living/user)
 	if(!current_challenger)
 		current_challenger = M
 		priority_announce("[current_challenger] has begun the Eggcellent Challenge! [current_challenger.p_they(TRUE)] [current_challenger.p_have()] [set_time] minutes to complete this task!", "Sacred Egg Enrichment Center")
 	bite_consumption = rand(1, difficulty)
-	timerid = addtimer(CALLBACK(src, .proc/failed_eggs), set_time MINUTES, TIMER_STOPPABLE)
+	timer_id = addtimer(CALLBACK(src, .proc/failed_eggs), set_time MINUTES, TIMER_STOPPABLE)
 	. = ..()
 
 /obj/item/food/omelette/eggcellent_plate/AltClick(mob/user)
@@ -92,16 +92,16 @@
 					below_time = 30
 			. += span_tinynotice("To turn off Trial Run mode for the current difficulty, set timer below [below_time] minutes.")
 
-/obj/item/food/omelette/eggcellent_plate/proc/On_Consume(atom/eggs, mob/egg_eater, mob/egg_feeder)
+/obj/item/food/omelette/eggcellent_plate/proc/on_consume(atom/eggs, mob/egg_eater, mob/egg_feeder)
 	SIGNAL_HANDLER
 	if(!isliving(usr))
 		return
 	if(usr == current_challenger)
-		deltimer(timerid)
+		deltimer(timer_id)
 		spawn_crown(usr)
 		UnregisterSignal(src, COMSIG_FOOD_CONSUMED)
 	else
-		deltimer(timerid)
+		deltimer(timer_id)
 		spawn_bomb(usr)
 		priority_announce("[usr] has attempted to aid in [current_challenger]'s challenge, a sin which will not be forgiven. Measures have been taken to have [usr.p_them()] atone for this crime.", "Sacred Egg Enrichment Center")
 		UnregisterSignal(src, COMSIG_FOOD_CONSUMED)

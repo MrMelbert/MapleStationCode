@@ -1,4 +1,4 @@
-// Egcellent Challenge
+// Eggcellent Challenge
 /datum/crafting_recipe/food/eggcellent_plate
 	name = "The Eggcellent Challenge"
 	reqs = list(
