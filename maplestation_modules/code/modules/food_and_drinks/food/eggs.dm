@@ -36,9 +36,9 @@
 	. = ..()
 	RegisterSignal(src, COMSIG_FOOD_CONSUMED, .proc/on_consume)
 
-/obj/item/food/omelette/eggcellent_plate/attack(mob/living/M, mob/living/user)
+/obj/item/food/omelette/eggcellent_plate/attack(mob/living/guy, mob/living/user)
 	if(!current_challenger)
-		current_challenger = M
+		current_challenger = guy
 		priority_announce("[current_challenger] has begun the Eggcellent Challenge! [current_challenger.p_they(TRUE)] [current_challenger.p_have()] [set_time] minutes to complete this task!", "Sacred Egg Enrichment Center")
 	bite_consumption = rand(1, difficulty)
 	timer_id = addtimer(CALLBACK(src, .proc/failed_eggs), set_time MINUTES, TIMER_STOPPABLE)
