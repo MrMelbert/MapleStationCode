@@ -140,6 +140,7 @@
 		M.add_mood_event("pegged", /datum/mood_event/pegged, name)
 	..()
 
+// Ported from Yogstation
 /datum/reagent/consumable/ethanol/justicars_juice
 	name = "Justicar's Juice"
 	description = "I don't even know what an eminence is, but I want him to recall."
