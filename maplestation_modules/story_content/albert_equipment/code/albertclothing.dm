@@ -5,4 +5,4 @@
 	icon = 'maplestation_modules/story_content/albert_equipment/icons/albertclothing_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/albert_equipment/icons/albertclothing_worn.dmi'
 	icon_state = "deepred"
-	inhand_icon_state = "deepred"
+	inhand_icon_state = null
