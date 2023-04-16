@@ -1,11 +1,16 @@
 ///Eggcellent///
 
+// Difficulties (changes how many reagents per bite you can eat. With roughly 55+ reagents, this thing is SLOW.)
 #define EGGS_BABY 50
 #define EGGS_EASY 25
 #define EGGS_NORMAL 10
 #define EGGS_HARD 5
 #define EGGS_TRUE_HERO 2
 #define EGGS_NAMELESS_HERO 1
+
+// The maximum time that you can set the challenge to in order to gain a prize
+#define HIGH_DIF_TIME_LIM 20
+#define LOW_DIF_TIME_LIM 15
 
 /obj/item/food/omelette/eggcellent_plate	//FUCK THIS
 	name = "The Eggcellent"
@@ -18,7 +23,7 @@
 	tastes = list("egg" = 1, "cheese" = 1, "biscuit" = 2, "obesity" = 10)
 	foodtypes = MEAT | BREAKFAST | DAIRY | GRAIN
 	/// Our challenger
-	var/mob/living/carbon/human/current_challenger = null
+	var/datum/weakref/current_challenger_weak = null
 	/// The time given to finish
 	var/timer_id
 	/// The player's set time in minutes
@@ -29,34 +34,35 @@
 	var/list/difficulty_list = list(EGGS_BABY, EGGS_EASY, EGGS_NORMAL, EGGS_HARD, EGGS_TRUE_HERO, EGGS_NAMELESS_HERO)
 	/// Name of the difficulty
 	var/diff_name = "Normal"
-	/// I'll be honest I can't remember what this is for but if it doesn't have it it breaks
-	var/amount_list_position = 1
 
-/obj/item/food/omelette/eggcellent_plate/Initialize()
+/obj/item/food/omelette/eggcellent_plate/Initialize(mapload)
 	. = ..()
-	RegisterSignal(src, COMSIG_FOOD_CONSUMED, .proc/on_consume)
+	RegisterSignal(src, COMSIG_FOOD_CONSUMED, PROC_REF(on_consume))
+	RegisterSignal(src, COMSIG_FOOD_EATEN, PROC_REF(begin_challenge))
 
-/obj/item/food/omelette/eggcellent_plate/attack(mob/living/guy, mob/living/user)
-	if(!current_challenger)
-		current_challenger = guy
-		priority_announce("[current_challenger] has begun the Eggcellent Challenge! [current_challenger.p_they(TRUE)] [current_challenger.p_have()] [set_time] minutes to complete this task!", "Sacred Egg Enrichment Center")
+/obj/item/food/omelette/eggcellent_plate/proc/begin_challenge(datum/source, mob/living/eater, mob/living/feeder)
+	if(!current_challenger_weak)
+		current_challenger_weak = WEAKREF(eater)
+		var/mob/living/current_challenger = eater
+		peer_pressure("You notice [current_challenger] begin the Eggcellent Challenge. You can feel that [current_challenger.p_they(TRUE)] probably [current_challenger.p_have()] [set_time] minutes to finish the dish!")
+		timer_id = addtimer(CALLBACK(src, PROC_REF(failed_eggs)), set_time * 1 MINUTES, TIMER_STOPPABLE)
 	bite_consumption = rand(1, difficulty)
-	timer_id = addtimer(CALLBACK(src, .proc/failed_eggs), set_time MINUTES, TIMER_STOPPABLE)
 	. = ..()
 
 /obj/item/food/omelette/eggcellent_plate/AltClick(mob/user)
 	. = ..()
-	if(!current_challenger)
-		set_time = input(user, "Input minutes allowed for challenge", "Eggcellent Challenge") as num|null
+	if(!current_challenger_weak)
+		set_time = tgui_input_number(user, "Input minutes allowed for challenge", "Eggcellent Challenge", default = 10, max_value = 60, min_value = 1) || 10
 
 
 /obj/item/food/omelette/eggcellent_plate/CtrlShiftClick(mob/user)
 	. = ..()
-	if(current_challenger)
+	if(current_challenger_weak)
 		return
-	var/list_len = length(difficulty_list)
-	amount_list_position = (amount_list_position % list_len) + 1
-	difficulty = difficulty_list[amount_list_position]
+	if (difficulty == EGGS_NAMELESS_HERO)
+		difficulty = difficulty_list[difficulty_list.Find(EGGS_BABY)]
+	else
+		difficulty = difficulty_list[difficulty_list.Find(difficulty) + 1]
 	switch(difficulty)
 		if(EGGS_BABY)
 			diff_name = "Baby's First Eggs"
@@ -70,66 +76,62 @@
 			diff_name = "TRUE HERO"
 		if(EGGS_NAMELESS_HERO)
 			diff_name = "NAMELESS HERO"
-		if(!(EGGS_BABY || EGGS_EASY || EGGS_NORMAL || EGGS_HARD || EGGS_TRUE_HERO || EGGS_NAMELESS_HERO))
+		else
 			CRASH("Non-applicable egg difficulty detected")
-	balloon_alert(user, "Difficulty set to [diff_name]")
+	balloon_alert(user, "difficulty set to [diff_name]")
 
 /obj/item/food/omelette/eggcellent_plate/examine(mob/user)
 	. = ..()
-	if(current_challenger && !(user == current_challenger))
+	var/mob/living/current_challenger = current_challenger_weak.resolve()
+	if(current_challenger_weak && !IS_WEAKREF_OF(user, current_challenger_weak))
 		. += span_notice("It looks like [current_challenger] has already begun [current_challenger.p_their()] conquest of this dish. Attempting to assist [current_challenger.p_them()] would be an unimaginable sin.")
 	else
 		. += "The challenger will have [set_time] minutes to finish this dish."
 		. += span_notice("Alt-Clicking this will allow you to change the amount of time that a challenger has to finish this dish.")
 		. += "The current difficulty is set to [diff_name]"
 		. += span_notice("Control-Shift-Clicking this will allow you to change the difficulty of the challenge.")
-		if(difficulty <= EGGS_TRUE_HERO && set_time >= 45 || !(difficulty <= EGGS_TRUE_HERO) && set_time >= 30)
-			var/below_time
-			switch(difficulty)
-				if(EGGS_TRUE_HERO || EGGS_NAMELESS_HERO)
-					below_time = 45
-				else
-					below_time = 30
-			. += span_tinynotice("To turn off Trial Run mode for the current difficulty, set timer below [below_time] minutes.")
+		if((difficulty <= EGGS_TRUE_HERO && set_time >= HIGH_DIF_TIME_LIM) || ((difficulty > EGGS_TRUE_HERO) && set_time >= LOW_DIF_TIME_LIM))
+			. += span_tinynotice("To turn off Trial Run mode for the current difficulty, set timer below [difficulty > EGGS_TRUE_HERO ? HIGH_DIF_TIME_LIM : LOW_DIF_TIME_LIM] minutes.")
 
 /obj/item/food/omelette/eggcellent_plate/proc/on_consume(atom/eggs, mob/egg_eater, mob/egg_feeder)
 	SIGNAL_HANDLER
-	if(!isliving(usr))
+	var/mob/living/current_challenger = current_challenger_weak.resolve()
+	if(!isliving(egg_eater))
 		return
-	if(usr == current_challenger)
-		deltimer(timer_id)
-		spawn_crown(usr)
-		UnregisterSignal(src, COMSIG_FOOD_CONSUMED)
+	if(IS_WEAKREF_OF(egg_eater, current_challenger_weak))
+		spawn_crown(egg_eater)
 	else
-		deltimer(timer_id)
-		spawn_bomb(usr)
-		priority_announce("[usr] has attempted to aid in [current_challenger]'s challenge, a sin which will not be forgiven. Measures have been taken to have [usr.p_them()] atone for this crime.", "Sacred Egg Enrichment Center")
-		UnregisterSignal(src, COMSIG_FOOD_CONSUMED)
+		spawn_bomb(egg_eater)
+		peer_pressure("You see [egg_eater] attempt to aid in [current_challenger]'s challenge, a sin which higher powers will not forgive.")
+
+	UnregisterSignal(src, COMSIG_FOOD_CONSUMED)
+	UnregisterSignal(src, COMSIG_FOOD_EATEN)
+	deltimer(timer_id)
 
 /obj/item/food/omelette/eggcellent_plate/proc/spawn_crown(mob/user)
-	if(difficulty <= EGGS_TRUE_HERO && set_time >= 45 || !(difficulty <= EGGS_TRUE_HERO) && set_time >= 30)
-		priority_announce("[current_challenger] has completed their test run of the Eggcellent Challenge! [current_challenger.p_they(TRUE)] can try again within a shorter timeframe to attempt to gain [current_challenger.p_their()] true prize!", "Sacred Egg Enrichment Center")
+	var/mob/living/current_challenger = current_challenger_weak.resolve()
+	if((difficulty <= EGGS_TRUE_HERO && set_time >= HIGH_DIF_TIME_LIM) || ((difficulty > EGGS_TRUE_HERO) && set_time >= LOW_DIF_TIME_LIM))
+		peer_pressure("It looks like [current_challenger] has completed [current_challenger.p_their()] test run of the Eggcellent Challenge. You think [current_challenger.p_they(TRUE)] should try again within a shorter timeframe to attempt to gain [current_challenger.p_their()] true reward!")
 		return
 	var/obj/item/clothing/head/crown
 	if(difficulty == EGGS_BABY)
-		priority_announce("[current_challenger] has finished [current_challenger.p_their()] 'My First Egg Challenge' playset! We're sure they'll grow up to be quite the capable warrior one day!", "Sacred Egg Enrichment Center")
+		peer_pressure("It looks like [current_challenger] has finished [current_challenger.p_their()] 'My First Egg Challenge' playset. You're sure they'll grow up to be quite the capable warrior one day!")
 		return
 	else if (difficulty <= EGGS_TRUE_HERO)
-		priority_announce("[current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] rightful crown has been delivered unto [current_challenger.p_them()]!", "Sacred Egg Enrichment Center")
-		crown = /obj/item/clothing/head/eggcellent_hat
+		peer_pressure(span_rose("[current_challenger] has completed the challenge! You can feel that higher powers have taken notice, and delivered [current_challenger.p_their(TRUE)] rightful crown to them!"))
+		crown = new /obj/item/clothing/head/eggcellent_hat
 		crown.name = span_mind_control("Eggcellent Hat")
 	else
-		priority_announce("[current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] prize has been delivered unto [current_challenger.p_them()] according to their difficulty!", "Sacred Egg Enrichment Center")
-		new /obj/item/clothing/head/eggcellent_hat(user.loc)
+		peer_pressure("You see [current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] prize has been delivered unto [current_challenger.p_them()] according to their difficulty!")
 		switch(difficulty)
 			if(EGGS_EASY)
-				crown = /obj/item/clothing/head/cone
+				crown = new /obj/item/clothing/head/cone
 				crown.name = "Beginner's Crown"
 			if(EGGS_NORMAL)
-				crown = /obj/item/clothing/head/beret
+				crown = new /obj/item/clothing/head/beret
 				crown.desc = "A rather nice beret as a reward for completing the Eggcelent challenge."
 			if(EGGS_HARD)
-				crown = /obj/item/clothing/head/eggcellent_hat
+				crown = new /obj/item/clothing/head/eggcellent_hat
 				crown.desc = "Closer inspection shows this to be a cheap knockoff of the real deal. Still, it took a good amount of skill to get this far."
 				crown.color = COLOR_VERY_SOFT_YELLOW // cheap materials went bad
 	podspawn(list(
@@ -139,14 +141,18 @@
 	))
 
 /obj/item/food/omelette/eggcellent_plate/proc/spawn_bomb(mob/user)
-	var/obj/item/grenade/frag/P = new /obj/item/grenade/frag(user.loc)
-	P.active = TRUE
-	addtimer(CALLBACK(P, /obj/item/grenade/proc/detonate), rand(2,15))
+	var/obj/item/grenade/frag/failure_grenade = new /obj/item/grenade/frag(user.loc)
+	failure_grenade.active = TRUE
+	addtimer(CALLBACK(failure_grenade, TYPE_PROC_REF(/obj/item/grenade, detonate), rand(0.2 SECONDS, 1.3 SECONDS)))
 
 /obj/item/food/omelette/eggcellent_plate/proc/failed_eggs()
-	priority_announce("[current_challenger] has failed to finish [current_challenger.p_their()] quest in the given timeframe. Measures have been taken accordingly.", "Sacred Egg Enrichment Center")
+	var/mob/living/current_challenger = current_challenger_weak.resolve()
+	peer_pressure("[current_challenger] has failed to finish [current_challenger.p_their()] quest in the given timeframe. You feel no pity in what comes next.")
 	spawn_bomb(current_challenger)
 	qdel(src)
+
+/obj/item/food/omelette/eggcellent_plate/proc/peer_pressure(flavor_text)
+	loc.visible_message(flavor_text)
 
 #undef EGGS_BABY
 #undef EGGS_EASY
@@ -154,3 +160,6 @@
 #undef EGGS_HARD
 #undef EGGS_TRUE_HERO
 #undef EGGS_NAMELESS_HERO
+
+#undef HIGH_DIF_TIME_LIM
+#undef LOW_DIF_TIME_LIM
