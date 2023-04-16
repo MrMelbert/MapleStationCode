@@ -47,7 +47,6 @@
 		peer_pressure("You notice [current_challenger] begin the Eggcellent Challenge. You can feel that [current_challenger.p_they(TRUE)] probably [current_challenger.p_have()] [set_time] minutes to finish the dish!")
 		timer_id = addtimer(CALLBACK(src, PROC_REF(failed_eggs)), set_time * 1 MINUTES, TIMER_STOPPABLE)
 	bite_consumption = rand(1, difficulty)
-	. = ..()
 
 /obj/item/food/omelette/eggcellent_plate/AltClick(mob/user)
 	. = ..()
