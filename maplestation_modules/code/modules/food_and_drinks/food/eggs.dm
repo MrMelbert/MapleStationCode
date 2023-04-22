@@ -41,10 +41,11 @@
 	RegisterSignal(src, COMSIG_FOOD_EATEN, PROC_REF(begin_challenge))
 
 /obj/item/food/omelette/eggcellent_plate/proc/begin_challenge(datum/source, mob/living/eater, mob/living/feeder)
+	SIGNAL_HANDLER
 	if(!current_challenger_weak)
 		current_challenger_weak = WEAKREF(eater)
 		var/mob/living/current_challenger = eater
-		peer_pressure("You notice [current_challenger] begin the Eggcellent Challenge. You can feel that [current_challenger.p_they(TRUE)] probably [current_challenger.p_have()] [set_time] minutes to finish the dish!")
+		peer_pressure("[current_challenger] has begun the Eggcellent Challenge! [current_challenger.p_they(TRUE)] [current_challenger.p_have()] [set_time] minutes to complete this task!")
 		timer_id = addtimer(CALLBACK(src, PROC_REF(failed_eggs)), set_time * 1 MINUTES, TIMER_STOPPABLE)
 	bite_consumption = rand(1, difficulty)
 
@@ -81,8 +82,8 @@
 
 /obj/item/food/omelette/eggcellent_plate/examine(mob/user)
 	. = ..()
-	var/mob/living/current_challenger = current_challenger_weak.resolve()
-	if(current_challenger_weak && !IS_WEAKREF_OF(user, current_challenger_weak))
+	var/mob/living/current_challenger = current_challenger_weak?.resolve()
+	if(!isnull(current_challenger) && current_challenger != user)
 		. += span_notice("It looks like [current_challenger] has already begun [current_challenger.p_their()] conquest of this dish. Attempting to assist [current_challenger.p_them()] would be an unimaginable sin.")
 	else
 		. += "The challenger will have [set_time] minutes to finish this dish."
@@ -101,7 +102,7 @@
 		spawn_crown(egg_eater)
 	else
 		spawn_bomb(egg_eater)
-		peer_pressure("You see [egg_eater] attempt to aid in [current_challenger]'s challenge, a sin which higher powers will not forgive.")
+		peer_pressure("[usr] has attempted to aid in [current_challenger]'s challenge, a sin which will not be forgiven. Measures have been taken to have [usr.p_them()] atone for this crime.")
 
 	UnregisterSignal(src, COMSIG_FOOD_CONSUMED)
 	UnregisterSignal(src, COMSIG_FOOD_EATEN)
@@ -110,18 +111,18 @@
 /obj/item/food/omelette/eggcellent_plate/proc/spawn_crown(mob/user)
 	var/mob/living/current_challenger = current_challenger_weak.resolve()
 	if((difficulty <= EGGS_TRUE_HERO && set_time >= HIGH_DIF_TIME_LIM) || ((difficulty > EGGS_TRUE_HERO) && set_time >= LOW_DIF_TIME_LIM))
-		peer_pressure("It looks like [current_challenger] has completed [current_challenger.p_their()] test run of the Eggcellent Challenge. You think [current_challenger.p_they(TRUE)] should try again within a shorter timeframe to attempt to gain [current_challenger.p_their()] true reward!")
+		peer_pressure("[current_challenger] has completed their test run of the Eggcellent Challenge! [current_challenger.p_they(TRUE)] can try again within a shorter timeframe to attempt to gain [current_challenger.p_their()] true prize!")
 		return
 	var/obj/item/clothing/head/crown
 	if(difficulty == EGGS_BABY)
-		peer_pressure("It looks like [current_challenger] has finished [current_challenger.p_their()] 'My First Egg Challenge' playset. You're sure they'll grow up to be quite the capable warrior one day!")
+		peer_pressure("[current_challenger] has finished [current_challenger.p_their()] 'My First Egg Challenge' playset! We're sure they'll grow up to be quite the capable warrior one day!")
 		return
 	else if (difficulty <= EGGS_TRUE_HERO)
-		peer_pressure(span_rose("[current_challenger] has completed the challenge! You can feel that higher powers have taken notice, and delivered [current_challenger.p_their(TRUE)] rightful crown to them!"))
+		peer_pressure("[current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] rightful crown has been delivered unto [current_challenger.p_them()]!")
 		crown = new /obj/item/clothing/head/eggcellent_hat
 		crown.name = span_mind_control("Eggcellent Hat")
 	else
-		peer_pressure("You see [current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] prize has been delivered unto [current_challenger.p_them()] according to their difficulty!")
+		peer_pressure("[current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] prize has been delivered unto [current_challenger.p_them()] according to their difficulty!")
 		switch(difficulty)
 			if(EGGS_EASY)
 				crown = new /obj/item/clothing/head/cone
@@ -146,12 +147,12 @@
 
 /obj/item/food/omelette/eggcellent_plate/proc/failed_eggs()
 	var/mob/living/current_challenger = current_challenger_weak.resolve()
-	peer_pressure("[current_challenger] has failed to finish [current_challenger.p_their()] quest in the given timeframe. You feel no pity in what comes next.")
+	peer_pressure("[current_challenger] has failed to finish [current_challenger.p_their()] quest in the given timeframe. Measures have been taken accordingly.")
 	spawn_bomb(current_challenger)
 	qdel(src)
 
 /obj/item/food/omelette/eggcellent_plate/proc/peer_pressure(flavor_text)
-	loc.visible_message(flavor_text)
+	priority_announce(flavor_text, title = "Sacred House of Egg Learning & Litigation", has_important_message = TRUE, players = viewers(loc))
 
 #undef EGGS_BABY
 #undef EGGS_EASY
