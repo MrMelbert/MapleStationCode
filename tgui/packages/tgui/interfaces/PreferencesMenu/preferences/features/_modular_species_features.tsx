@@ -9,3 +9,8 @@ export const hair_lizard: FeatureToggle = {
   name: 'Hair Lizard',
   component: CheckboxInput,
 };
+
+export const feature_arm_wings: FeatureChoiced = {
+  name: 'Wings',
+  component: FeatureDropdownInput,
+};

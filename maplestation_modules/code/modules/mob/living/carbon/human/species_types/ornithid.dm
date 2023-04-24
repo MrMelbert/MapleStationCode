@@ -3,13 +3,13 @@
 	name = "\improper Ornithid"
 	plural_form = "Ornithids"
 	id = SPECIES_ORNITHID
-	say_mod = "squawks"
 	species_traits = list(MUTCOLORS, EYECOLOR, HAIR, FACEHAIR, LIPS, HAS_FLESH, HAS_BONE)
 	inherent_traits = list(
 		TRAIT_LIGHT_DRINKER
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	// mutant_bodyparts = list("ears" = "Avian", "legs" = "Normal Legs") // avian ears NYI
+	mutant_bodyparts = list("ears" = "Avian", /obj/item/organ/external/wings/functional/armwingss = "monochrome") // avian ears NYI
+	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	//external_organs = list(
 	//
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
@@ -28,8 +28,8 @@
 	species_cookie = /obj/item/food/ // [-TODO-] change this to nuts
 	meat = /obj/item/food/meat/slab/chicken
 	skinned_type = /obj/item/stack/sheet/animalhide/human
-	disliked_food = DAIRY | CLOTH | GROSS | SUGAR
-	liked_food = FRUIT | SEAFOOD | NUTS | BUGS
+	disliked_food = DAIRY | CLOTH | GROSS | SUGAR // Chocolate is toxic to birds (but not to these guys, they just find it nasty). Also, this forces a dietary difference ala lizards.
+	liked_food = FRUIT | SEAFOOD | NUTS | BUGS // birds like dice(d) nuts. Also bugs.
 
 	inert_mutation = /datum/mutation/human/dwarfism
 	species_language_holder = /datum/language_holder/lizard // maybe make this yangyu, since that's now going **mostly** unused
