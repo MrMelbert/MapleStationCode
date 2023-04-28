@@ -21,7 +21,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/snouts, GLOB.snouts_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/horns,GLOB.horns_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/ears, GLOB.ears_list)
-	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.wings_list, roundstart = FALSE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings_open, GLOB.wings_open_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/frills, GLOB.frills_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)

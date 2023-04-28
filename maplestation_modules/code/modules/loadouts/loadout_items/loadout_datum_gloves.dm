@@ -71,3 +71,7 @@ GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/glov
 	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
 	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
+
+/datum/loadout_item/gloves/mragloves
+	name = "Malheur Research Association gloves"
+	item_path = /obj/item/clothing/gloves/mragloves

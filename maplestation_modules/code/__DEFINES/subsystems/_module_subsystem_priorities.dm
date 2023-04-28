@@ -1,0 +1,1 @@
+#define FIRE_PRIORITY_MAGIC 10

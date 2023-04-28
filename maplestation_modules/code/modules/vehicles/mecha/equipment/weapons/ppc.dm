@@ -6,7 +6,7 @@
 	icon_state = "mecha_ppc"
 	energy_drain = 150
 	projectile = /obj/projectile/beam/ppc
-	fire_sound = 'maplestation_modules/sound/weapons/ppc.ogg'
+	fire_sound = 'maplestation_modules/sound/weapons/mecha/ppc.ogg'
 	harmful = TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/ppc/hellstar //admin-only
@@ -15,4 +15,4 @@
 	icon_state = "mecha_ppc_er"
 	energy_drain = 200
 	projectile = /obj/projectile/beam/ppc/hellstar
-	fire_sound = 'maplestation_modules/sound/weapons/erppc.ogg'
+	fire_sound = 'maplestation_modules/sound/weapons/mecha/erppc.ogg'

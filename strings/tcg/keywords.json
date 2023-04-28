@@ -10,7 +10,7 @@
 	"Faction": "Groupings of cards that can often share effects and traits together",
 	"First Strike": "This creature has attack priority in combat",
 	"Fragile":"May take damage which will not heal between turns.",
-	"Frontline": "May be attacked directly even when there are {$TdBlocker}s on the field. Attacker may decide which to attack before normal TdBlockers",
+	"Frontline": "May be attacked directly even when there are TdBlockers on the field. Attacker may decide which to attack before normal TdBlockers",
 	"Fury": "The creature must attack at every possibility",
 	"Graytide": "When this creature enters the battlefield, it gains +1/+1 for the number of creatures on your side of the field with Graytide, until the end of the turn",
 	"Hivemind": "The creature enters combat with a hivemind token on it.The first time this card would take damage, remove that token instead. This does not apply to immediate removal effects, only points of damage",

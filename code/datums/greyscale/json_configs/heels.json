@@ -1,0 +1,18 @@
+{
+	"heels": [
+		{
+			"type": "icon_state",
+			"icon_state": "heels",
+			"blend_mode": "overlay",
+			"color_ids": [ 1 ]
+		}
+	],
+	"fancy_heels": [
+		{
+			"type": "icon_state",
+			"icon_state": "fancy_heels",
+			"blend_mode": "overlay",
+			"color_ids": [ 1 ]
+		}
+	]
+}
