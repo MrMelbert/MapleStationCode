@@ -90,6 +90,8 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/pod_hair, GLOB.pod_hair_list)
 	if(!GLOB.head_tentacles_list.len) // NON-MODULE CHANGE: Head Tentacles initialize
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles, GLOB.head_tentacles_list)
+	if(!GLOB.arm_wings_list.len) // NON-MODULE CHANGE: Arm Wings initialize
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/arm_wings, GLOB.arm_wings_list)
 
 	//For now we will always return none for tail_human and ears. | "For now" he says.
 	return(list(
@@ -111,6 +113,7 @@
 		"tail_monkey" = "None",
 		"pod_hair" = pick(GLOB.pod_hair_list),
 		"head_tentacles" = pick(GLOB.head_tentacles_list),
+		"arm_wings" = pick(GLOB.arm_wings_list)
 	))
 
 /proc/random_hairstyle(gender)

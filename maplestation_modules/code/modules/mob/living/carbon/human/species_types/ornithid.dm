@@ -1,3 +1,6 @@
+/// GLOB list of armwings sprites / options
+GLOBAL_LIST_EMPTY(arm_wings_list)
+
 /datum/species/human/ornithid
 	// the biggest bird
 	name = "\improper Ornithid"
@@ -8,7 +11,7 @@
 		TRAIT_LIGHT_DRINKER
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutant_bodyparts = list("ears" = "Avian", /obj/item/organ/external/wings/functional/armwingss = "monochrome") // avian ears NYI
+	mutant_bodyparts = list(/obj/item/organ/external/wings/functional/armwings = "monochrome") // avian ears NYI ("ears" = "Avian",)
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	//external_organs = list(
 	//
@@ -25,7 +28,7 @@
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 
-	species_cookie = /obj/item/food/ // [-TODO-] change this to nuts
+	species_cookie = /obj/item/food/semki/healthy // humans get chocolate, lizards get meat. What to birds get? Seed.
 	meat = /obj/item/food/meat/slab/chicken
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	disliked_food = DAIRY | CLOTH | GROSS | SUGAR // Chocolate is toxic to birds (but not to these guys, they just find it nasty). Also, this forces a dietary difference ala lizards.
