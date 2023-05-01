@@ -39,6 +39,10 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 //	digitigrade_customization = DIGITIGRADE_OPTIONAL // Maybe, Maybe.
 
 // defines limbs/bodyparts.
+
+/datum/bodypart_overlay/mutant/arm_wings/get_global_feature_list()
+	return GLOB.arm_wings_list
+
 /obj/item/bodypart/arm/left/ornithid
 	limb_id = SPECIES_ORNITHID
 	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi' // NYI! THIS IS A PLACEHOLDER BECAUSE OF MAPLE MODULARITY
