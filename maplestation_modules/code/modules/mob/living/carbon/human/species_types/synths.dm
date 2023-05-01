@@ -36,6 +36,9 @@
 	var/list/initial_species_traits
 	var/list/initial_inherent_traits
 
+	/// Hack ahead
+	/// We need to react to [COMSIG_GLOB_ION_STORM], unfortunately we can't do that easily in a species, so we keep a weakref from Grant
+	var/datum/weakref/silly_owner_weakref
 
 /datum/species/synth/New()
 	initial_species_traits = species_traits.Copy()
@@ -48,11 +51,13 @@
 	RegisterSignal(H, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(SSdcs, COMSIG_GLOB_ION_STORM, PROC_REF(on_ion_storm))
 	H.set_safe_hunger_level()
+	silly_owner_weakref = WEAKREF(H)
 
 /datum/species/synth/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	UnregisterSignal(H, COMSIG_MOB_SAY)
 	UnregisterSignal(SSdcs, COMSIG_GLOB_ION_STORM)
+	silly_owner_weakref = null
 
 /datum/species/synth/get_species_description()
 	return "Synths are disguised robots."
@@ -132,8 +137,7 @@
 		meat = S.meat
 		mutant_bodyparts = S.mutant_bodyparts.Copy()
 		mutant_organs = S.mutant_organs.Copy()
-		no_equip_flags = S.no_equip_flags // Heads up! this used to have a nojumpsuit copier, but i believe its supposed to use flags only now
-		// also this throws errors lmfao
+		no_equip_flags = S.no_equip_flags
 		use_skintones = S.use_skintones
 		fixed_mut_color = S.fixed_mut_color
 		hair_color = S.hair_color
@@ -143,7 +147,7 @@
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
 		mutant_bodyparts = list()
-		no_equip_flags = list() // same as above. used to have nojumpsuit thing.
+		no_equip_flags = NONE
 		qdel(fake_species)
 		fake_species = null
 		meat = initial(meat)
@@ -186,8 +190,12 @@
 /datum/species/synth/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.transfer_identity(human) // Makes the synth look like... a synth.
 
-/datum/species/synth/proc/on_ion_storm(mob/living/carbon/human/target)
+/datum/species/synth/proc/on_ion_storm(datum/source)
 	SIGNAL_HANDLER
+
+	var/mob/living/carbon/human/target = silly_owner_weakref?.resolve()
+	if(QDELETED(target))
+		return
 
 	to_chat(target, span_userdanger("[ion_num()]. I0N1C D1STRBANCE D3TCTED!"))
 	target.adjust_slurring(40 SECONDS)

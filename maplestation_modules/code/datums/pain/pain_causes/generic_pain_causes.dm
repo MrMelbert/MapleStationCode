@@ -70,15 +70,13 @@
 
 // Flight potion's flavor says "it hurts a shit ton bro", so it should cause decent pain
 /datum/reagent/flightpotion/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
-	var/mob/living/carbon/human/exposed_human = exposed_mob
-	var/has_wings_before = exposed_human.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
+	var/has_wings_before = exposed_mob.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
 	. = ..()
 	if(iscarbon(exposed_mob) && exposed_mob.stat != DEAD)
 		var/mob/living/carbon/exposed_carbon = exposed_mob
 		if(reac_volume < 5 || !(ishumanbasic(exposed_carbon) || islizard(exposed_carbon) || ismoth(exposed_carbon)))
 			return
 		if(has_wings_before)
-		// melbert suggested "has /obj/organ/external/wings in mutantorgans" for a possible replacement.
 			exposed_carbon.cause_pain(BODY_ZONE_HEAD, 10)
 			exposed_carbon.cause_pain(BODY_ZONE_CHEST, 45)
 			exposed_carbon.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 18)
