@@ -1,5 +1,5 @@
-/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/ssrm2
-	name = "\improper SSRM-2 missile rack"
+/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/ssrm2 //this thing is disgustingly OP
+	name = "\improper SSRM-2 missile rack \"Kit Fox\""
 	desc = "A streak SRM-2 for combat exosuits. Fires two short range missiles at once."
 	projectiles = 20
 	projectile_delay = 0.2
