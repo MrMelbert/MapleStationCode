@@ -26,3 +26,15 @@
 /datum/chemical_reaction/drink/pilk/peg_nog
 	results = list(/datum/reagent/consumable/ethanol/peg_nog = 2)
 	required_reagents = list(/datum/reagent/consumable/ethanol/eggnog = 1, /datum/reagent/consumable/space_cola = 1)
+
+/datum/chemical_reaction/drink/justicars_juice
+	results = list(/datum/reagent/consumable/ethanol/justicars_juice = 4)
+	required_reagents = list(/datum/reagent/consumable/lemonjuice = 1, /datum/reagent/consumable/ethanol/cognac = 1, /datum/reagent/iron = 1, /datum/reagent/consumable/ethanol/tequila_sunrise = 1)
+
+/datum/chemical_reaction/drink/samogon_sonata
+	results = list(/datum/reagent/consumable/ethanol/samogon_sonata = 2)
+	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/consumable/ethanol/black_russian = 1, /datum/reagent/consumable/ethanol/hooch = 1)
+
+/datum/chemical_reaction/drink/pile_driver
+	results = list(/datum/reagent/consumable/ethanol/piledriver = 2)
+	required_reagents = list(/datum/reagent/consumable/ethanol/rum_coke = 1, /datum/reagent/consumable/ethanol/screwdrivercocktail = 1)
