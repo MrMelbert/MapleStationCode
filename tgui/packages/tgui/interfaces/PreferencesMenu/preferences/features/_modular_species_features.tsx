@@ -11,6 +11,6 @@ export const hair_lizard: FeatureToggle = {
 };
 
 export const feature_arm_wings: FeatureChoiced = {
-  name: 'Wings',
+  name: 'Arm Wings',
   component: FeatureDropdownInput,
 };
