@@ -74,9 +74,9 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 
 	to_add += list(
 		list(
- 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
- 		SPECIES_PERK_ICON = "dove",
- 		SPECIES_PERK_NAME = "Airborne",
+		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+		SPECIES_PERK_ICON = "dove",
+		SPECIES_PERK_NAME = "Airborne",
 		SPECIES_PERK_DESC = "!!!!NYI!!!! Is it a bird? is it a plane? Of course its a bird you dumbass, \
 		Ornithids are lightweight winged avians, and can, as a result, fly.",
 		),
