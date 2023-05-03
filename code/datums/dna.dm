@@ -223,7 +223,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(features["head_tentacles"]) // NON-MODULE CHANGE
 		L[DNA_HEAD_TENTACLES_BLOCK] = construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len)
 	if(features["arm_wings"]) // NON-MODULE CHANGE
-		L[DNA_ORNITHID_WINGS_BLOCK] = construct_block(GLOB.arm_wings_list.Find(features["arm_wings"]), GLOB.arm_wings_list.len)
+		L[DNA_ARM_WINGS_BLOCK] = construct_block(GLOB.arm_wings_list.Find(features["arm_wings"]), GLOB.arm_wings_list.len)
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)

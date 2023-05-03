@@ -15,7 +15,7 @@
 /obj/item/organ/external/wings/functional/arm_wings
 	name = "Arm Wings"
 	desc = "aaaaa" // filler
-	dna_block = DNA_ORNITHID_WINGS_BLOCK
+	dna_block = DNA_ARM_WINGS_BLOCK
 	sprite_accessory_override = /datum/sprite_accessory/arm_wings
 	preference = "feature_arm_wings"
 
@@ -24,16 +24,16 @@
 /proc/generate_ornithid_side_shots(list/sprite_accessories, key, list/sides)
 	var/list/values = list()
 
-	var/icon/ornithid = icon('maplestation_modules/icons/mob/skrell_parts_greyscale.dmi', "skrell_head_m", EAST)
-	var/icon/eyes = icon('maplestation_modules/icons/mob/skrell_eyes.dmi', "eyes", EAST)
+	var/icon/ornithid = icon('icons/mob/species/human/human_face.dmi', "head", EAST)
+	var/icon/eyes = icon('icons/mob/species/human/human_face.dmi', "eyes", EAST)
+	eyes.Blend(COLOR_CLAIREN_RED, ICON_MULTIPLY)
 
-	eyes.Blend(COLOR_ALMOST_BLACK, ICON_MULTIPLY)
 	ornithid.Blend(eyes, ICON_OVERLAY)
 
 	for (var/name in sprite_accessories)
 		var/datum/sprite_accessory/sprite_accessory = sprite_accessories[name]
 
-		var/icon/final_icon = icon(skrell)
+		var/icon/final_icon = icon(ornithid)
 
 		if (sprite_accessory.icon_state != "none")
 			for(var/side in sides)
@@ -56,7 +56,7 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()
-	return generate_skrell_side_shots(GLOB.arm_wings_list, "arm_wings", list("ADJ", "FRONT"))
+	return generate_ornithid_side_shots(GLOB.arm_wings_list, "arm_wings", list("ADJ", "FRONT"))
 
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value

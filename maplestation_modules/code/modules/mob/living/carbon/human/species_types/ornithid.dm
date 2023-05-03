@@ -6,12 +6,12 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	name = "\improper Ornithid"
 	plural_form = "Ornithids"
 	id = SPECIES_ORNITHID
-	species_traits = list(MUTCOLORS, EYECOLOR, HAIR, FACEHAIR, LIPS, HAS_FLESH, HAS_BONE)
+	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, HAS_FLESH, HAS_BONE)
 	inherent_traits = list(
 		TRAIT_LIGHT_DRINKER
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutant_bodyparts = list(/obj/item/organ/external/wings/functional/armwings = "monochrome") // avian ears NYI ("ears" = "Avian",)
+	mutant_bodyparts = list(/obj/item/organ/external/wings/functional/arm_wings = "monochrome") // avian ears NYI ("ears" = "Avian",)
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	//external_organs = list(
 	//
@@ -21,9 +21,9 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid, // NYI
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ornithid, // NYI
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/, // just because they are still *partially* human, or otherwise human resembling
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/ornithid, // NYI
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/ornithid, // NYI
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/ornithid, //NYI
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/, // NYI
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right, /// NYI
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/, //NYI
 	)
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
@@ -59,19 +59,6 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
-
-/obj/item/bodypart/leg/left/ornithid
-	limb_id = SPECIES_ORNITHID
-	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi'
-
-/obj/item/bodypart/leg/right/ornithid
-	limb_id = SPECIES_ORNITHID
-	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi'
-
-/obj/item/bodypart/chest/ornithid
-	limb_id = SPECIES_ORNITHID
-	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi'
-
 
 // section for lore/perks
 /datum/species/human/ornithid/get_species_lore()
