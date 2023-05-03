@@ -6,10 +6,6 @@
 	/// Priority for the job on the crew monitor.
 	var/crewmonitor_priority = -1
 
-/datum/id_trim
-	/// Icon file for the sechud.
-	var/sechud_icon = 'icons/mob/huds/hud.dmi'
-
 // Update crew monitor with new jobs
 /datum/crewmonitor/New()
 	. = ..()

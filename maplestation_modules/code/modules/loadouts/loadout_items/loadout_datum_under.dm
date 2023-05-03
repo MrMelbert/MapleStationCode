@@ -102,6 +102,18 @@ GLOBAL_LIST_INIT(loadout_undersuits, generate_loadout_items(/datum/loadout_item/
 	name = "Blue PJs"
 	item_path = /obj/item/clothing/under/misc/pj/blue
 
+/datum/loadout_item/under/jumpsuit/hoodie
+	name = "Workout Hoodie"
+	item_path = /obj/item/clothing/under/jumpsuit/casualhoodie
+
+/datum/loadout_item/under/jumpsuit/casualdress
+	name = "Casual Dress"
+	item_path = /obj/item/clothing/under/jumpsuit/blueskirt
+
+/datum/loadout_item/under/jumpsuit/albertshirt
+	name = "Deep Red Shirt"
+	item_path = /obj/item/clothing/under/jumpsuit/albertshirt
+
 // formal undersuits
 /datum/loadout_item/under/formal
 
@@ -304,3 +316,11 @@ GLOBAL_LIST_INIT(loadout_undersuits, generate_loadout_items(/datum/loadout_item/
 /datum/loadout_item/under/formal/white_skirt
 	name = "White Suitskirt"
 	item_path = /obj/item/clothing/under/suit/white/skirt
+
+/datum/loadout_item/under/formal/nndress
+	name = "Blue Dress"
+	item_path = /obj/item/clothing/under/dress/nndress
+
+/datum/loadout_item/under/formal/ritzuniform
+	name = "Malheur Research Association uniform"
+	item_path = /obj/item/clothing/under/rank/rnd/mrauniform

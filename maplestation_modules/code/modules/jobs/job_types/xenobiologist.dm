@@ -5,8 +5,8 @@
 		Leave after two hours as an unkillable god with an army of monsters."
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
-	total_positions = 2
-	spawn_positions = 3
+	total_positions = 3
+	spawn_positions = 2 // 2 seats in XB normally, 1 can be doing Cyto or assisting.
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	exp_granted_type = EXP_TYPE_CREW

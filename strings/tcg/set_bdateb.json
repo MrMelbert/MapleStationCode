@@ -1,0 +1,53 @@
+{
+	"templates": [
+		{
+			"template": "default",
+			"icon": "maplestation_modules/icons/runtime/tcg/tdatet.dmi",
+			"series": "bdateb"
+		}
+	],
+	"cards": [
+		{
+			"id": "animus",
+			"name": "Animus",
+			"desc": "A generator of Red Replicase, a biological resource for many creatures.",
+			"rules": "Provides 2 Red per turn. Unspent Red is lost between turns.",
+			"icon_state": "animus",
+			"power": "0",
+			"resolve": "2",
+			"faction": "Default",
+			"summoncost": "6",
+			"cardtype": "Creation",
+			"cardsubtype": "Red",
+			"rarity": "uncommon"
+		},
+		{
+			"id": "blastforge",
+			"name": "Blastforge",
+			"desc": "Strong Behemium ingots are used in durable machinery plating, but must be formed quickly while fresh from the forge.",
+			"rules": "Gain 1 Blue, unused Blue is lost between turns.",
+			"icon_state": "blastforge",
+			"power": "0",
+			"resolve": "3",
+			"faction": "Default",
+			"summoncost": "5",
+			"cardtype": "Creation",
+			"cardsubtype": "Blue",
+			"rarity": "buncommon"
+		},
+		{
+			"id": "conduit",
+			"name": "Conduit",
+			"desc": "Synthesizing Gaussite has its benefits. The material, while not too sturdy, stores easily.",
+			"rules": "{$Fragile} Gain 1 green, which is saved between turns.",
+			"icon_state": "conduit",
+			"power": "0",
+			"resolve": "3",
+			"faction": "Default",
+			"summoncost": "4",
+			"cardtype": "Creation",
+			"cardsubtype": "Green",
+			"rarity": "guncommon"
+		}
+	]
+}

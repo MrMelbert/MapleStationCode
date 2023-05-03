@@ -5,7 +5,7 @@
 # to the same file or dir, add them to the end under Multiple Owners
 
 #CRITAWAKETS
-/_maps/map_files/PubbyStation/PubbyStation.dm @CRITAWAKETS
+# /_maps/map_files/PubbyStation/PubbyStation.dm @CRITAWAKETS
 
 #doshMobile
 /maplestation_modules/icons/ @doshMobile
@@ -14,5 +14,4 @@
 /maplestation_modules/
 
 #sqnztb
-/_maps/ @sqnztb
 /_maps/map_files/LimaStation/LimaStation.dm @sqnztb

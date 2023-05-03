@@ -8,6 +8,7 @@
 	species_speech_sounds_ask = list()
 	species_speech_sounds_exclaim = list()
 
+// adds hair to the lizards.
 /datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	if(C.client?.prefs?.read_preference(/datum/preference/toggle/hair_lizard))
 		species_traits |= HAIR
@@ -17,9 +18,9 @@
 	human.dna.features["mcolor"] = COLOR_DARK_LIME
 
 	var/obj/item/organ/external/frills/frills = human.getorgan(/obj/item/organ/external/frills)
-	frills?.set_sprite("Short")
+	frills?.bodypart_overlay.set_appearance_from_name("Short")
 
 	var/obj/item/organ/external/horns/horns = human.getorgan(/obj/item/organ/external/horns)
-	horns?.set_sprite("Simple")
+	horns?.bodypart_overlay.set_appearance_from_name("Simple")
 
 	human.update_body(is_creating = TRUE)

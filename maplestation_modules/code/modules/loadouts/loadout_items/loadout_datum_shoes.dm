@@ -77,3 +77,23 @@ GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes
 /datum/loadout_item/shoes/sandals
 	name = "Sandals"
 	item_path = /obj/item/clothing/shoes/sandal
+
+/datum/loadout_item/shoes/trainers
+	name = "Workout Trainers"
+	item_path = /obj/item/clothing/shoes/trainers
+
+/datum/loadout_item/shoes/sneaker
+	name = "Casual Sneakers"
+	item_path = /obj/item/clothing/shoes/trainers/casual
+
+/datum/loadout_item/shoes/heels
+	name = "High Heels"
+	item_path = /obj/item/clothing/shoes/heels
+
+/datum/loadout_item/shoes/fancy_heels
+	name = "Fancy High Heels"
+	item_path = /obj/item/clothing/shoes/heels/fancy
+
+/datum/loadout_item/shoes/mrashoes
+	name = "Malheur Research Association boots"
+	item_path = /obj/item/clothing/shoes/mrashoes

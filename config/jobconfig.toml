@@ -13,7 +13,7 @@
 ## The game will not read any line that is commented out with a '#', as to allow you to defer to codebase defaults.
 ## If you want to override the codebase values, add the value and then uncomment that line by removing the # from the job key's name.
 ## Ensure that the key is flush, do not introduce any whitespaces when you uncomment a key. For example:
-## "# Total Positions" should always be changed to "Total Positions", no additional spacing. 
+## "# Total Positions" should always be changed to "Total Positions", no additional spacing.
 ## Best of luck editing!
 
 [AI]
@@ -193,8 +193,8 @@
 [SCIENTIST]
 "# Playtime Requirements" = 60
 "# Required Account Age" = 0
-"# Spawn Positions" = 3
-"# Total Positions" = 5
+"# Spawn Positions" = 3 # NON-MODULE EDIT
+"# Total Positions" = 3 # NON-MODULE EDIT
 
 [SECURITY_OFFICER]
 "# Playtime Requirements" = 300
@@ -223,5 +223,30 @@
 [WARDEN]
 "# Playtime Requirements" = 300
 "# Required Account Age" = 7
+"# Spawn Positions" = 1
+"# Total Positions" = 1
+
+# MODULE JOBS
+[BRIDGE_OFFICER]
+"# Playtime Requirements" = 300
+"# Required Account Age" = 10
+"# Spawn Positions" = 1
+"# Total Positions" = 1
+
+[ASSET_PROTECTION]
+"# Playtime Requirements" = 300
+"# Required Account Age" = 10
+"# Spawn Positions" = 1
+"# Total Positions" = 1
+
+[XENOBIO]
+"# Playtime Requirements" = 300
+"# Required Account Age" = 0
+"# Spawn Positions" = 2
+"# Total Positions" = 3
+
+[TOXINS]
+"# Playtime Requirements" = 300
+"# Required Account Age" = 0
 "# Spawn Positions" = 1
 "# Total Positions" = 1

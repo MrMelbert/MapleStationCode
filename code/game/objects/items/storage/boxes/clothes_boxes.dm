@@ -167,4 +167,3 @@
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 	new /obj/item/clothing/suit/hooded/chaplain_hoodie/leader(src)
-

@@ -10,7 +10,7 @@
 /datum/species/synth
 	name = "Synth" //inherited from the real species, for health scanners and things
 	id = SPECIES_SYNTH
-	say_mod = "beep boops" //inherited from a user's real species
+	// say_mod = "beep boops" //inherited from a user's real species
 	sexes = FALSE
 	species_traits = list(NOTRANSSTING, NO_DNA_COPY) //all of these + whatever we inherit from the real species
 	inherent_traits = list(
@@ -22,7 +22,7 @@
 	)
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	meat = null
-	wings_icons = list("Robotic")
+	wing_types = list(/obj/item/organ/external/wings/functional/robotic)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
 	species_language_holder = /datum/language_holder/synthetic
 	/// If your health becomes equal to or less than this value, your disguise is supposed to break.
@@ -36,6 +36,10 @@
 	var/list/initial_species_traits
 	var/list/initial_inherent_traits
 
+	/// Hack ahead
+	/// We need to react to [COMSIG_GLOB_ION_STORM], unfortunately we can't do that easily in a species, so we keep a weakref from Grant
+	var/datum/weakref/silly_owner_weakref
+
 /datum/species/synth/New()
 	initial_species_traits = species_traits.Copy()
 	initial_inherent_traits = inherent_traits.Copy()
@@ -47,11 +51,13 @@
 	RegisterSignal(H, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(SSdcs, COMSIG_GLOB_ION_STORM, PROC_REF(on_ion_storm))
 	H.set_safe_hunger_level()
+	silly_owner_weakref = WEAKREF(H)
 
 /datum/species/synth/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	UnregisterSignal(H, COMSIG_MOB_SAY)
 	UnregisterSignal(SSdcs, COMSIG_GLOB_ION_STORM)
+	silly_owner_weakref = null
 
 /datum/species/synth/get_species_description()
 	return "Synths are disguised robots."
@@ -123,7 +129,6 @@
 /datum/species/synth/proc/assume_disguise(datum/species/S, mob/living/carbon/human/H)
 	if(S && !istype(S, type))
 		name = S.name
-		say_mod = S.say_mod
 		sexes = S.sexes
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
@@ -132,20 +137,17 @@
 		meat = S.meat
 		mutant_bodyparts = S.mutant_bodyparts.Copy()
 		mutant_organs = S.mutant_organs.Copy()
-		nojumpsuit = S.nojumpsuit
-		no_equip = S.no_equip.Copy()
+		no_equip_flags = S.no_equip_flags
 		use_skintones = S.use_skintones
 		fixed_mut_color = S.fixed_mut_color
 		hair_color = S.hair_color
 		fake_species = new S.type
 	else
 		name = initial(name)
-		say_mod = initial(say_mod)
 		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
 		mutant_bodyparts = list()
-		nojumpsuit = initial(nojumpsuit)
-		no_equip = list()
+		no_equip_flags = NONE
 		qdel(fake_species)
 		fake_species = null
 		meat = initial(meat)
@@ -158,6 +160,12 @@
 		var/obj/item/bodypart/BP = X
 		BP.update_limb()
 	H.update_body_parts() //to update limb icon cache with the new damage overlays
+
+	var/obj/item/organ/internal/tongue/disguise_tongue = initial(fake_species.mutanttongue) // handles the say_mod for species disguise.
+	// this (below) is a major make or break for the code, this should set the synth tongue to be identical to the default species tongue the mob is disguised as.
+	var/obj/item/organ/internal/tongue/my_tongue = H.getorgan(/obj/item/organ/internal/tongue)
+	if(my_tongue && disguise_tongue)
+		my_tongue.say_mod = initial(disguise_tongue.say_mod)
 
 /datum/species/synth/handle_body(mob/living/carbon/human/H)
 	if(fake_species)
@@ -182,8 +190,12 @@
 /datum/species/synth/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.transfer_identity(human) // Makes the synth look like... a synth.
 
-/datum/species/synth/proc/on_ion_storm(mob/living/carbon/human/target)
+/datum/species/synth/proc/on_ion_storm(datum/source)
 	SIGNAL_HANDLER
+
+	var/mob/living/carbon/human/target = silly_owner_weakref?.resolve()
+	if(QDELETED(target))
+		return
 
 	to_chat(target, span_userdanger("[ion_num()]. I0N1C D1STRBANCE D3TCTED!"))
 	target.adjust_slurring(40 SECONDS)

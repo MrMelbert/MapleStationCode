@@ -197,3 +197,8 @@
 		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
 		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
 	)
+/datum/supply_pack/goody/crew_plasma_sword_pack // this is, in effect, now a placeholder/current thing only. there are plans to rework this to instead require upgrades to get this to be good.
+	name = "Plasma Blade Case"
+	desc = "A premium (standard) case containing a highly advanced (dangerously volatile) NT Plasma Sword. Requires permit for open carry and use, but not for purchase."
+	cost = PAYCHECK_CREW * 30 // this should equal roughly 1500 credits on average.
+	contains = list(/obj/item/melee/maple_plasma_blade)
