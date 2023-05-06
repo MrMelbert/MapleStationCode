@@ -10,5 +10,5 @@
 /obj/item/mod/module/helmet_desync/on_install()
 	mod.helmet_desync = TRUE
 
-/obj/item/mod/module/helmet_desync/on_uninstall()
+/obj/item/mod/module/helmet_desync/on_uninstall(deleting = FALSE)
 	mod.helmet_desync = FALSE
