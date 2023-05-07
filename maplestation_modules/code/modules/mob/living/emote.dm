@@ -16,5 +16,5 @@
 	stat_allowed = SOFT_CRIT
 
 /datum/emote/living/blush/run_emote(mob/user, params, type_override, intentional)
-	..()
-	playsound(user,'maplestation_modules/sound/emote/blush.ogg',80)
+	. = ..()
+	playsound(user, 'maplestation_modules/sound/emote/blush.ogg', 80)
