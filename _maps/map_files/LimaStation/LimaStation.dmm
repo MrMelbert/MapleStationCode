@@ -3160,8 +3160,8 @@
 	},
 /obj/effect/mapping_helpers/airlock/access/any/medical/surgery,
 /obj/machinery/door/firedoor,
-/turf/open/floor/plating,
-/area/station/medical/treatment_center)
+/turf/open/floor/iron,
+/area/station/medical/surgery)
 "biJ" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
