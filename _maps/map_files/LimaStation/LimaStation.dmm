@@ -3153,6 +3153,15 @@
 /obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos/experiment_room)
+"biF" = (
+/obj/machinery/door/airlock/medical/glass{
+	name = "Surgical Suite";
+	req_access_txt = null
+	},
+/obj/effect/mapping_helpers/airlock/access/any/medical/surgery,
+/obj/machinery/door/firedoor,
+/turf/open/floor/plating,
+/area/station/medical/treatment_center)
 "biJ" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -172198,7 +172207,7 @@ aWQ
 vUm
 vUm
 hWv
-qsV
+biF
 lMj
 hez
 alL
