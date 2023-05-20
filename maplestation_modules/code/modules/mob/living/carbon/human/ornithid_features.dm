@@ -56,7 +56,7 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()
-	return generate_ornithid_side_shots(GLOB.arm_wings_list, "arm_wings", list("ADJ", "FRONT"))
+	return possible_values_for_sprite_accessory_list_for_body_part(GLOB.arm_wings_list, "arm_wings", list("ADJ", "BEHIND", "FRONT"))
 
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value

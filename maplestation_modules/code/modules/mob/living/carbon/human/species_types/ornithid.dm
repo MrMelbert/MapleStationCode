@@ -8,15 +8,17 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	id = SPECIES_ORNITHID
 	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, HAS_FLESH, HAS_BONE)
 	inherent_traits = list(
-		TRAIT_LIGHT_DRINKER
+		TRAIT_LIGHT_DRINKER,
+		TRAIT_TACKLING_WINGED_ATTACKER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	mutant_bodyparts = list(/obj/item/organ/external/wings/functional/arm_wings = "monochrome") // avian ears NYI ("ears" = "Avian",)
+	//mutant_bodyparts = list() // avian ears NYI ("ears" = "Avian",)
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
-	//external_organs = list(
+	external_organs = list(
+		/obj/item/organ/external/wings/functional/arm_wings = "monochrome"
 	//
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
-	//)
+	)
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid, // NYI
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ornithid, // NYI
