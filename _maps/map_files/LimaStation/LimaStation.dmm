@@ -7357,6 +7357,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
+"cIX" = (
+/obj/machinery/modular_computer/console/preset/curator,
+/obj/structure/window{
+	dir = 4
+	},
+/obj/structure/window{
+	dir = 1
+	},
+/turf/open/floor/carpet/blue,
+/area/station/service/library)
 "cJd" = (
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 4
@@ -28431,10 +28441,12 @@
 "kgF" = (
 /obj/item/radio/intercom/directional/south,
 /obj/machinery/light/warm/directional/south,
-/obj/effect/turf_decal/siding/wood{
-	dir = 8
+/obj/machinery/door/window/right/directional/east{
+	name = "Library Desk Door";
+	req_access_txt = null;
+	req_access = list("library")
 	},
-/turf/open/floor/iron/sepia,
+/turf/open/floor/carpet/blue,
 /area/station/service/library)
 "kgG" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -41908,11 +41920,6 @@
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
 "ozZ" = (
-/obj/machinery/door/window/right/directional/east{
-	name = "Library Desk Door";
-	req_access_txt = null;
-	req_access = list("library")
-	},
 /obj/machinery/camera{
 	c_tag = "Service - Library"
 	},
@@ -41924,9 +41931,6 @@
 "oAa" = (
 /obj/structure/window{
 	dir = 1
-	},
-/obj/structure/window{
-	dir = 4
 	},
 /obj/machinery/libraryscanner,
 /turf/open/floor/carpet/blue,
@@ -161910,7 +161914,7 @@ ptG
 ptG
 ptG
 aOy
-pMg
+cIX
 kgF
 ptG
 ptG
