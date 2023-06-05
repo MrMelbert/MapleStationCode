@@ -17,13 +17,25 @@ conflict_start_pattern = r'<<<<<<<\s.*?\n'
 conflict_middle_pattern = r'=======\n'
 conflict_end_pattern = r'>>>>>>>.*?\n'
 
+def validate_dirs(dirs: list):
+    if "tgs" in dirs:
+        dirs.remove("tgs")
+    if "unit_tests" in dirs:
+        dirs.remove("unit_tests")
+
+def is_valid_file(filepath: str):
+    return filepath.endswith(".dm") or filepath.endswith(".js") or filepath.endswith(".tsx")
+
 def solve_file_conflicts(filepath: str):
-    with open(filepath, "r") as checked_file:
+    with open(filepath, "r", encoding = "utf-8") as checked_file:
         checked_file_contents = checked_file.read()
+
+    if "<<<<<<<" not in checked_file_contents:
+        return 0
 
     if re.search(r'\/{2,}\s*non(\s|-)*module', checked_file_contents):
         print("Non-module edit found in " + filepath + ", and must be resolved manually.")
-        return
+        return 0
 
     conflict_sections = re.findall(
         f'{conflict_start_pattern}(.*?){conflict_middle_pattern}(.*?){conflict_end_pattern}',
@@ -31,26 +43,33 @@ def solve_file_conflicts(filepath: str):
         flags = re.DOTALL
     )
 
+    resolved = 0
     for conflict in conflict_sections:
         incoming_changes = conflict[1]
         checked_file_contents = checked_file_contents.replace(''.join(conflict), incoming_changes)
+        resolved += 1
 
-    with open(filepath, "w") as checked_file:
+    with open(filepath, "w", encoding = "utf-8") as checked_file:
         checked_file.write(checked_file_contents)
 
-def solve_conflicts_in_dir(dir: str):
-    for root, subdirs, files in os.walk(dir):
-        if "tgs" in subdirs:
-            subdirs.remove("tgs")
-        if "unit_tests" in subdirs:
-            subdirs.remove("unit_tests")
+    print("Conflicts resolved in " + filepath)
+    return resolved
 
+def solve_conflicts_in_dir(dir: str):
+    total_resolved = 0
+    for root, subdirs, files in os.walk(dir):
+        validate_dirs(subdirs)
         for file in files:
+            if not is_valid_file(file):
+                continue
+
             path = os.path.join(root, file)
             try:
-                solve_file_conflicts(path)
+                total_resolved += solve_file_conflicts(path)
             except:
                 print("Error resolving conflicts in " + path)
+
+    print("\"Sovlve conflicts\" in dir " + dir + " done - Total conflicts resolved: " + str(total_resolved))
 
 def find_unticked_files(dir: str):
     if not dir:
@@ -58,7 +77,7 @@ def find_unticked_files(dir: str):
         return
 
     ticked_files = []
-    with open(tgstation_dme, "r") as dme_f:
+    with open(tgstation_dme, "r", encoding = "utf-8") as dme_f:
         for line in dme_f:
             match = re.search(r'([\w.-]+\.dm)', line)
             if match:
@@ -67,31 +86,26 @@ def find_unticked_files(dir: str):
     files_removed = 0
     files_iterated = 1
     for root, subdirs, files in os.walk(dir):
-        if "tgs" in subdirs:
-            subdirs.remove("tgs")
-        if "unit_tests" in subdirs:
-            subdirs.remove("unit_tests")
-
+        validate_dirs(subdirs)
         for file in files:
-            if not file.endswith(".dm"):
+            if not is_valid_file(file):
                 continue
+
             files_iterated += 1
-            if files_iterated % 3 == 0:
-                print(".", end = "")
             if file in ticked_files:
                 continue
             path = os.path.join(root, file)
             # os.remove(path)
-            print("\nFile not found in dme, removing: " + path)
+            print("File not found in dme, removing: " + path)
             files_removed += 1
 
-    print("\n\"Find Unticked\" Done - total iterated " + str(files_iterated) + ", removed " + str(files_removed))
+    print("\"Find Unticked\" done - total iterated " + str(files_iterated) + ", removed " + str(files_removed))
 
 def update_dme():
     num_old = 0
     num_new = 0
     combined_files = ""
-    with open(tgstation_dme, "r") as new_dme:
+    with open(tgstation_dme, "r", encoding = "utf-8") as new_dme:
         for line in new_dme:
             if "<<<<<<<" in line:
                 print("Conflict found in DME file, aborting")
@@ -102,7 +116,7 @@ def update_dme():
             if not line.startswith("//"):
                 num_old += 1
 
-    with open(our_dme, "r") as old_dme:
+    with open(our_dme, "r", encoding = "utf-8") as old_dme:
         for line in old_dme:
             if our_files not in line:
                 continue
@@ -110,25 +124,26 @@ def update_dme():
             num_new += 1
 
     combined_files += "// END_INCLUDE\n"
-    print("\n\"Update DME\" Done - tg dme " + str(num_old) + ", our dme " + str(num_new))
-
-    with open(our_dme, "w") as old_dme:
+    with open(our_dme, "w", encoding = "utf-8") as old_dme:
         old_dme.write(combined_files)
 
+    print("\"Update DME\" Done - tg dme " + str(num_old) + ", our dme " + str(num_new))
+
 def update_build():
-    with open(tgstation_build_path, "r+") as build_file:
+    with open(tgstation_build_path, "r+", encoding = "utf-8") as build_file:
         build_file_text = build_file.read()
         build_file_text = build_file_text.replace(tgstation, us)
         build_file.seek(0)
         build_file.write(build_file_text)
         build_file.truncate()
+    print("\"Update build\" done")
 
 if __name__ == "__main__":
     print("Running merge driver.")
 
     print("=== 1. Resolving conflicts automatically... ===")
-    solve_file_conflicts(tgstation_files)
-    solve_file_conflicts(tgstation_ui_files)
+    solve_conflicts_in_dir(tgstation_files)
+    solve_conflicts_in_dir(tgstation_ui_files)
 
     print("=== 2. Updating dme... ===")
     update_dme()
