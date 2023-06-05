@@ -1,7 +1,7 @@
 ///The new variations of the marauder and seraph with the new weapons
 /obj/vehicle/sealed/mecha/combat/marauder/upgraded
 	name = "\improper Marauder II-N"
-	desc = "An upgraded variant of the venerable Marauder, featuring the latest in military technologies. New composite armor technologies result in harder armor, but the inability to mount armor packages."
+	desc = "An upgraded variant of the venerable Marauder, featuring the latest in military technologies. New titan-carbide armor technologies result in harder armor, but the inability to mount armor packages."
 	armor = list(MELEE = 60, BULLET = 80, LASER = 70, ENERGY = 60, BOMB = 30, BIO = 0, FIRE = 100, ACID = 100)
 	max_equip_by_category = list(
 		MECHA_UTILITY = 3,
@@ -9,9 +9,9 @@
 		MECHA_ARMOR = 0, //No armor packages otherwise the increased armor would be insane
 	)
 	equip_by_category = list(
-		MECHA_L_ARM = /obj/item/mecha_parts/mecha_equipment/weapon/energy/ppc/hellstar,
-		MECHA_R_ARM = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/ssrm2,
-		MECHA_UTILITY = list(/obj/item/mecha_parts/mecha_equipment/thrusters/ion),
+		MECHA_L_ARM = null,
+		MECHA_R_ARM = null,
+		MECHA_UTILITY = list(),
 		MECHA_POWER = list(),
 		MECHA_ARMOR = list(),
 	)
@@ -26,12 +26,9 @@
 		MECHA_ARMOR = 0,
 	)
 	equip_by_category = list(
-		MECHA_L_ARM = /obj/item/mecha_parts/mecha_equipment/weapon/energy/ppc/hellstar,
-		MECHA_R_ARM = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/ssrm2,
-		MECHA_UTILITY = list(
-			/obj/item/mecha_parts/mecha_equipment/thrusters/ion,
-			/obj/item/mecha_parts/mecha_equipment/repair_droid //it heals too
-			),
+		MECHA_L_ARM = null,
+		MECHA_R_ARM = null,
+		MECHA_UTILITY = list(),
 		MECHA_POWER = list(),
 		MECHA_ARMOR = list(),
 	)
