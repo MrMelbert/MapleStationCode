@@ -34,7 +34,7 @@
 	description = "Advanced mech energy weapons, in case regular lasers just weren't enough."
 	id_additions = list(
 		"mech_ppc",
-		"mech_erlargelaser"
+		"mech_erlargelaser",
 	)
 
 /// Overrides the Ultra AC/2 tech to contain all of the autocannons

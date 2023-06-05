@@ -169,10 +169,10 @@
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/er_laser
 	materials = list(
-		/datum/material/iron=8000,
-		/datum/material/gold=2000,
-		/datum/material/diamond=2000,
-		)
+		/datum/material/iron = 8000,
+		/datum/material/gold = 2000,
+		/datum/material/diamond = 2000,
+	)
 	construction_time = 100
 	category = list(
 		RND_CATEGORY_MECHFAB_EQUIPMENT,
@@ -195,10 +195,10 @@
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/pulsed_laser
 	materials = list(
-		/datum/material/iron=6000,
-		/datum/material/gold=2000,
-		/datum/material/titanium=4000,
-		)
+		/datum/material/iron = 6000,
+		/datum/material/gold = 2000,
+		/datum/material/titanium = 4000,
+	)
 	construction_time = 100
 	category = list(
 		RND_CATEGORY_MECHFAB_EQUIPMENT,
