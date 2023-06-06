@@ -44,6 +44,13 @@
 		if(OOC_CHANNEL)
 			client.ooc(entry)
 			return TRUE
+		if(ADMIN_CHANNEL)
+			client.cmd_admin_say(entry)
+			return TRUE
+		// NON-MODULE CHANGE
+		if(LOOC_CHANNEL)
+			client.looc(entry)
+			return TRUE
 	return FALSE
 
 /**

@@ -8,7 +8,7 @@
 	/datum/language/xenocommon )
 
 // Rebalance of existing quirks
-/datum/quirk/jolly //haha
+/datum/quirk/jolly
 	value = 3
 
 // New quirks

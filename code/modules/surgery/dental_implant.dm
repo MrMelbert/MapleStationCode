@@ -19,7 +19,7 @@
 		span_notice("[user] begins to wedge \the [tool] in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to wedge something in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "Something's being jammed into your [parse_zone(target_zone)]!", target_zone = target_zone)
+	display_pain(target, "Something's being jammed into your [parse_zone(target_zone)]!")
 
 /datum/surgery_step/insert_pill/success(mob/user, mob/living/carbon/target, target_zone, obj/item/reagent_containers/pill/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(!istype(tool))
@@ -29,7 +29,7 @@
 
 	var/datum/action/item_action/hands_free/activate_pill/pill_action = new(tool)
 	pill_action.name = "Activate [tool.name]"
-	pill_action.UpdateButtons()
+	pill_action.build_all_button_icons()
 	pill_action.target = tool
 	pill_action.Grant(target) //The pill never actually goes in an inventory slot, so the owner doesn't inherit actions from it
 

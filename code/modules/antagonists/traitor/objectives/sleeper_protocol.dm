@@ -12,7 +12,7 @@
 	progression_minimum = 0 MINUTES
 
 	progression_reward = list(8 MINUTES, 15 MINUTES)
-	telecrystal_reward = 0
+	telecrystal_reward = 1
 
 	var/list/limited_to = list(
 		JOB_CHIEF_MEDICAL_OFFICER,
@@ -88,7 +88,7 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	var/obj/item/organ/internal/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/internal/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!target_brain)
 		return FALSE
 	return TRUE
@@ -113,7 +113,7 @@
 		span_notice("[user] begins to fix [target]'s brain."),
 		span_notice("[user] begins to perform surgery on [target]'s brain."),
 	)
-	display_pain(target, "Your head pounds with unimaginable pain!", target_zone = target_zone) // Same message as other brain surgeries
+	display_pain(target, "Your head pounds with unimaginable pain!") // Same message as other brain surgeries
 
 /datum/surgery_step/brainwash/sleeper_agent/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(target.stat == DEAD)
@@ -125,9 +125,8 @@
 	target.gain_trauma(new /datum/brain_trauma/mild/phobia/conspiracies(), TRAUMA_RESILIENCE_LOBOTOMY)
 
 /datum/traitor_objective/sleeper_protocol/everybody //Much harder for non-med and non-robo
-
 	progression_minimum = 30 MINUTES
-	progression_reward = list(15 MINUTES, 20 MINUTES)
-	telecrystal_reward = list(2, 3)
+	progression_reward = list(8 MINUTES, 15 MINUTES)
+	telecrystal_reward = 1
 
 	inverted_limitation = TRUE

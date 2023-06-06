@@ -96,8 +96,7 @@ export const CharacterPreferenceWindow = (props, context) => {
             />
           </Stack.Item>
 
-          {/*
-          NON-MODULE CHANGE: Removing the byond premium banner
+          {/* // NON-MODULE CHANGE
           {!data.content_unlocked && (
             <Stack.Item align="center">
               Buy BYOND premium for more slots!

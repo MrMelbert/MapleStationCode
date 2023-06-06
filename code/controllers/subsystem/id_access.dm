@@ -159,7 +159,7 @@ SUBSYSTEM_DEF(id_access)
 			"pdas" = list(),
 		),
 		"[ACCESS_HOP]" = list(
-			"regions" = list(REGION_GENERAL, REGION_SUPPLY),
+			"regions" = list(REGION_GENERAL),
 			"head" = JOB_HEAD_OF_PERSONNEL,
 			"templates" = list(),
 			"pdas" = list(),
@@ -231,7 +231,7 @@ SUBSYSTEM_DEF(id_access)
 				if(!(whitelisted_region in manager_regions))
 					continue
 				var/list/manager_pdas = manager_info["pdas"]
-				var/obj/item/modular_computer/tablet/pda/fake_pda = pda_path
+				var/obj/item/modular_computer/pda/fake_pda = pda_path
 				manager_pdas[pda_path] = initial(fake_pda.name)
 				station_pda_templates[pda_path] = initial(fake_pda.name)
 
@@ -258,6 +258,7 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_MEDICAL]"] = "Medical"
 	desc_by_access["[ACCESS_GENETICS]"] = "Genetics Lab"
 	desc_by_access["[ACCESS_MORGUE]"] = "Morgue"
+	desc_by_access["[ACCESS_MORGUE_SECURE]"] = "Coroner"
 	desc_by_access["[ACCESS_SCIENCE]"] = "R&D Lab"
 	desc_by_access["[ACCESS_ORDNANCE]"] = "Ordnance Lab"
 	desc_by_access["[ACCESS_ORDNANCE_STORAGE]"] = "Ordnance Storage"
