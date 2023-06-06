@@ -1,5 +1,7 @@
 import os
 import re
+import subprocess
+import sys
 
 tgstation = "tgstation"
 us = "maplestation"
@@ -13,15 +15,7 @@ our_files = us + "_modules"
 
 tgstation_build_path = "tools/build/build.js"
 
-conflict_start_pattern = r'<<<<<<<\s.*?\n'
-conflict_middle_pattern = r'=======\n'
-conflict_end_pattern = r'>>>>>>>.*?\n'
-
-def validate_dirs(dirs: list):
-    if "tgs" in dirs:
-        dirs.remove("tgs")
-    if "unit_tests" in dirs:
-        dirs.remove("unit_tests")
+conflict_pattern = r'<<<<<<<\s.*?\n(.*?)=======\n(.*?)>>>>>>>\s.*?\n'
 
 def is_valid_file(filepath: str):
     return filepath.endswith(".dm") or filepath.endswith(".js") or filepath.endswith(".tsx")
@@ -37,28 +31,17 @@ def solve_file_conflicts(filepath: str):
         print("Non-module edit found in " + filepath + ", and must be resolved manually.")
         return 0
 
-    conflict_sections = re.findall(
-        f'{conflict_start_pattern}(.*?){conflict_middle_pattern}(.*?){conflict_end_pattern}',
-        checked_file_contents,
-        flags = re.DOTALL
-    )
+    if os.path.isfile(".git/index.lock"):
+        print("Git index lock exists, possible error detected")
+        os.sys.remove(".git/index.lock")
 
-    resolved = 0
-    for conflict in conflict_sections:
-        incoming_changes = conflict[1]
-        checked_file_contents = checked_file_contents.replace(''.join(conflict), incoming_changes)
-        resolved += 1
-
-    with open(filepath, "w", encoding = "utf-8") as checked_file:
-        checked_file.write(checked_file_contents)
-
-    print("Conflicts resolved in " + filepath)
-    return resolved
+    subprocess.run(["git", "checkout", "--theirs", filepath], stdin = subprocess.DEVNULL, stdout = subprocess.DEVNULL, stderr = subprocess.DEVNULL)
+    # print("Resolved conflicts in " + filepath)
+    return 1
 
 def solve_conflicts_in_dir(dir: str):
     total_resolved = 0
     for root, subdirs, files in os.walk(dir):
-        validate_dirs(subdirs)
         for file in files:
             if not is_valid_file(file):
                 continue
@@ -69,7 +52,10 @@ def solve_conflicts_in_dir(dir: str):
             except:
                 print("Error resolving conflicts in " + path)
 
-    print("\"Sovlve conflicts\" in dir " + dir + " done - Total conflicts resolved: " + str(total_resolved))
+            if total_resolved % 4 == 0:
+                print(".", end = "")
+
+    print("\n\"Solve conflicts\" in dir " + dir + " done - Total conflicts resolved: " + str(total_resolved))
 
 def find_unticked_files(dir: str):
     if not dir:
@@ -86,16 +72,23 @@ def find_unticked_files(dir: str):
     files_removed = 0
     files_iterated = 1
     for root, subdirs, files in os.walk(dir):
-        validate_dirs(subdirs)
+        if "tgs" in subdirs:
+            subdirs.remove("tgs")
+        if "unit_tests" in subdirs:
+            subdirs.remove("unit_tests")
+
         for file in files:
             if not is_valid_file(file):
                 continue
 
             files_iterated += 1
+            if files_iterated % 4 == 0:
+                print(".", end = "")
+
             if file in ticked_files:
                 continue
             path = os.path.join(root, file)
-            # os.remove(path)
+            os.remove(path)
             print("File not found in dme, removing: " + path)
             files_removed += 1
 
@@ -141,17 +134,28 @@ def update_build():
 if __name__ == "__main__":
     print("Running merge driver.")
 
+    # try:
+    #     upstream_origin = sys.argv[1]
+    # except IndexError:
+    #     print("No upstream origin specified, using default: \"upstream-tg\"")
+    #     upstream_origin = "upstream-tg"
+    # except:
+    #     print("Unknown error parsing arguments")
+
+    # subprocess.run(["git", "fetch", upstream_origin, "master"])
+    # subprocess.run(["git", "pull", upstream_origin, "master", "--allow-unrelated-histories"])
+
     print("=== 1. Resolving conflicts automatically... ===")
     solve_conflicts_in_dir(tgstation_files)
     solve_conflicts_in_dir(tgstation_ui_files)
 
     print("=== 2. Updating dme... ===")
-    update_dme()
+    # update_dme()
 
     print("=== 3. Updating build... ===")
-    update_build()
+    # update_build()
 
     print("=== 4. Removing unticked files... ===")
-    find_unticked_files(tgstation_files)
+    # find_unticked_files(tgstation_files)
 
     print("Merge driver done.")
