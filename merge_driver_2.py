@@ -100,7 +100,10 @@ def find_unticked_files(dir: str):
     ticked_files = []
     with open(tgstation_dme, "r", encoding = "utf-8") as dme_f:
         for line in dme_f:
-            match = re.search(r'([\w.-]+\.dm)', line)
+            if line.startswith("//"):
+                continue
+
+            match = re.search(r'#include "(.+)"', line)
             if match:
                 ticked_files.append(match.group(1))
 
@@ -120,9 +123,9 @@ def find_unticked_files(dir: str):
             if files_iterated % 4 == 0:
                 print(".", end = "")
 
-            if file in ticked_files:
-                continue
             path = os.path.join(root, file)
+            if path in ticked_files:
+                continue
             os.remove(path)
             print("\nFile not found in dme, removing: " + path)
             files_removed += 1
