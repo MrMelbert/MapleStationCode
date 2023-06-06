@@ -113,7 +113,7 @@ def find_unticked_files(dir: str):
             subdirs.remove("unit_tests")
 
         for file in files:
-            if not is_valid_file(file):
+            if not file.endswith(".dm"):
                 continue
 
             files_iterated += 1
@@ -124,7 +124,7 @@ def find_unticked_files(dir: str):
                 continue
             path = os.path.join(root, file)
             os.remove(path)
-            print("File not found in dme, removing: " + path)
+            print("\nFile not found in dme, removing: " + path)
             files_removed += 1
 
     print("\n\"Find Unticked\" done - total iterated " + str(files_iterated) + ", removed " + str(files_removed))
@@ -174,29 +174,29 @@ def update_build():
 if __name__ == "__main__":
     print("Running merge driver.")
 
-    try:
-        upstream_origin = sys.argv[1]
-    except IndexError:
-        print("No upstream origin specified, using default: \"upstream-tg\"")
-        upstream_origin = "upstream-tg"
+    # try:
+    #     upstream_origin = sys.argv[1]
+    # except IndexError:
+    #     print("No upstream origin specified, using default: \"upstream-tg\"")
+    #     upstream_origin = "upstream-tg"
 
-    subprocess.run(["git", "fetch", upstream_origin, "master"])
-    subprocess.run(["git", "pull", upstream_origin, "master", "--allow-unrelated-histories"])
+    # subprocess.run(["git", "fetch", upstream_origin, "master"])
+    # subprocess.run(["git", "pull", upstream_origin, "master", "--allow-unrelated-histories"])
 
-    print("=== 1. Resolving conflicts automatically... ===")
-    solve_conflicts_in_dir(tgstation_files)
-    solve_conflicts_in_dir(tgstation_ui_files)
+    # print("=== 1. Resolving conflicts automatically... ===")
+    # solve_conflicts_in_dir(tgstation_files)
+    # solve_conflicts_in_dir(tgstation_ui_files)
 
-    print("=== 2. Updating dme... ===")
-    update_dme()
+    # print("=== 2. Updating dme... ===")
+    # update_dme()
 
-    print("=== 3. Updating build... ===")
-    update_build()
+    # print("=== 3. Updating build... ===")
+    # update_build()
 
     print("=== 4. Removing unticked files... ===")
     find_unticked_files(tgstation_files)
 
-    print("=== 5. Cleaing up misc files... ===")
-    solve_conflicts_in_dir(".", [tgstation_files, tgstation_ui_files])
+    # print("=== 5. Cleaing up misc files... ===")
+    # solve_conflicts_in_dir(".", [tgstation_files, tgstation_ui_files])
 
     print("Merge driver done.")
