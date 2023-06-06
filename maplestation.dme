@@ -5211,6 +5211,7 @@
 #include "maplestation_modules\hurtful_disposals\holder.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
+#include "maplestation_modules\story_content\armored_corps\code\clothing\aylie_cloak.dm"
 #include "maplestation_modules\story_content\armored_corps\code\mecha_weapons\laser_override.dm"
 #include "maplestation_modules\story_content\armored_corps\code\mecha_weapons\ppc_override.dm"
 #include "maplestation_modules\story_content\armored_corps\code\techweb\all_nodes.dm"
