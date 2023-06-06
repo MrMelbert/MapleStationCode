@@ -43,7 +43,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	C.missing_eye_file = initial(C.missing_eye_file)
 	return ..()
 
-/datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, delta_time, times_fired)
+/datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(skrell_mob.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
 		skrell_mob.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
@@ -101,9 +101,9 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	blood_type = "S"
 
 // Copper restores blood for Skrell instead of iron.
-/datum/reagent/copper/on_mob_life(mob/living/carbon/C, delta_time)
+/datum/reagent/copper/on_mob_life(mob/living/carbon/C, seconds_per_tick)
 	if(is_species(C, /datum/species/skrell) && C.blood_volume < BLOOD_VOLUME_NORMAL)
-		C.blood_volume += 0.5 * delta_time
+		C.blood_volume += 0.5 * seconds_per_tick
 	..()
 
 // Organ for Skrell head tentacles.

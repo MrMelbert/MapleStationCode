@@ -12,13 +12,13 @@
 	glass_price = DRINK_PRICE_MEDIUM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/green_tea/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjust_dizzy(-4 SECONDS * REM * delta_time)
-	M.adjust_jitter(-6 SECONDS * REM * delta_time)
-	M.drowsyness = max(M.drowsyness - (1 * REM * delta_time), 0)
-	M.AdjustSleeping(-20 * REM * delta_time)
+/datum/reagent/consumable/green_tea/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+	M.adjust_dizzy(-4 SECONDS * REM * seconds_per_tick)
+	M.adjust_jitter(-6 SECONDS * REM * seconds_per_tick)
+	M.drowsyness = max(M.drowsyness - (1 * REM * seconds_per_tick), 0)
+	M.AdjustSleeping(-20 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE) //the major difference between base tea and green tea, this one's a great anti-tox.
-	M.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, M.get_body_temp_normal())
+	M.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, M.get_body_temp_normal())
 	..()
 	. = TRUE
 
@@ -36,12 +36,12 @@
 	glass_price = DRINK_PRICE_MEDIUM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/icetea/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.adjust_dizzy(-4 SECONDS * REM * delta_time)
-	M.drowsyness = max(M.drowsyness - (1 * REM * delta_time), 0)
-	M.AdjustSleeping(-40 * REM * delta_time)
+/datum/reagent/consumable/icetea/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+	M.adjust_dizzy(-4 SECONDS * REM * seconds_per_tick)
+	M.drowsyness = max(M.drowsyness - (1 * REM * seconds_per_tick), 0)
+	M.AdjustSleeping(-40 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
+	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, M.get_body_temp_normal())
 	..()
 	. = TRUE
 
@@ -68,13 +68,13 @@
 	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/green_hill_tea)
 	..()
 
-/datum/reagent/consumable/green_hill_tea/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	M.AdjustSleeping(-40 * REM * delta_time)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, M.get_body_temp_normal())
+/datum/reagent/consumable/green_hill_tea/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+	M.AdjustSleeping(-40 * REM * seconds_per_tick)
+	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, M.get_body_temp_normal())
 	..()
 	. = TRUE
 
-/datum/reagent/consumable/green_hill_tea/overdose_process(mob/living/M, delta_time, times_fired)
+/datum/reagent/consumable/green_hill_tea/overdose_process(mob/living/M, seconds_per_tick, times_fired)
 	if(!ishuman(M))
 		return
 
@@ -105,12 +105,12 @@
 	glass_price = DRINK_PRICE_MEDIUM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/pilk/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/consumable/pilk/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	if(!isfelinid(M)) //felinids love pilk
 		if(isskeleton(M))
 			M.adjustBruteLoss(1, 0) //ITS POISON
 		else
-			M.adjust_disgust(4 * REM * delta_time)
+			M.adjust_disgust(4 * REM * seconds_per_tick)
 	else
 		M.add_mood_event("full_on_pilk", /datum/mood_event/full_on_pilk, name)
 	..()
@@ -130,12 +130,12 @@
 	glass_price = DRINK_PRICE_MEDIUM
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/ethanol/peg_nog/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/consumable/ethanol/peg_nog/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	if(!isfelinid(M)) //felinids love peg nog too!
 		if(isskeleton(M))
 			M.adjustBruteLoss(2, 0) //when drinking this you wish for bone hurting juice
 		else
-			M.adjust_disgust(7 * REM * delta_time)
+			M.adjust_disgust(7 * REM * seconds_per_tick)
 	else
 		M.add_mood_event("pegged", /datum/mood_event/pegged, name)
 	..()
@@ -164,29 +164,28 @@
 	glass_icon_state = "samogon_sonata"
 	glass_icon_file = 'maplestation_modules/icons/obj/drinks.dmi'
 	glass_name = "Samogon Sonata"
-	glass_desc = "A special, about unknown family recipe that's prone to make you see stars in your sleep. Likely illegal." 
+	glass_desc = "A special, about unknown family recipe that's prone to make you see stars in your sleep. Likely illegal."
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/consumable/ethanol/samogon_sonata/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/consumable/ethanol/samogon_sonata/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	switch(current_cycle)
 		if(1 to 20)
-			M.adjust_confusion(2 SECONDS * REM * normalise_creation_purity() * delta_time)
-			M.adjust_drowsyness(2 * REM * normalise_creation_purity() * delta_time)
+			M.adjust_confusion(2 SECONDS * REM * normalise_creation_purity() * seconds_per_tick)
+			M.adjust_drowsyness(2 * REM * normalise_creation_purity() * seconds_per_tick)
 		if(20 to 50)
-			M.Sleeping(15 SECONDS * REM * normalise_creation_purity() * delta_time)
+			M.Sleeping(15 SECONDS * REM * normalise_creation_purity() * seconds_per_tick)
 			. = TRUE //this code is old and i do not remember how the fuck i found it, so if there's a better way to knock someone the fuck out, let me know.
 	..()
 
 /datum/reagent/consumable/ethanol/piledriver
 	name = "Piledriver"
-	description = "A mix of vodka, coke, rum and orange juice. Fizzy." 
+	description = "A mix of vodka, coke, rum and orange juice. Fizzy."
 	boozepwr = 20
 	color = "#e97617"
-	quality = DRINK_NICE 
+	quality = DRINK_NICE
 	taste_description = "sweet and fizz"
 	glass_icon_state = "piledriver"
 	glass_icon_file = 'maplestation_modules/icons/obj/drinks.dmi'
 	glass_name = "Pile Driver"
 	glass_desc = "A drink said to be bitter and somewhat spicy. You better not have a sore throat when drinking it." //Va-11 Hall-A reference moment flushed
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-

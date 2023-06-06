@@ -1,7 +1,7 @@
 // -- Causes of pain, from non-modular actions --
-/datum/brain_trauma/mild/concussion/on_life(delta_time, times_fired)
+/datum/brain_trauma/mild/concussion/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	if(DT_PROB(1, delta_time))
+	if(SPT_PROB(1, seconds_per_tick))
 		owner.cause_pain(BODY_ZONE_HEAD, 10)
 
 // Shocks

@@ -476,7 +476,7 @@
 
 	STOP_PROCESSING(SSobj, src)
 
-/obj/item/shock_blanket/process(delta_time)
+/obj/item/shock_blanket/process(seconds_per_tick)
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer))
 		disable_protection()
@@ -484,15 +484,15 @@
 
 	var/target_temp = wearer.get_body_temp_normal(apply_change = FALSE)
 	if(wearer.bodytemperature > target_temp)
-		wearer.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, target_temp)
+		wearer.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, target_temp)
 	else if(wearer.bodytemperature < (target_temp + 1))
-		wearer.adjust_bodytemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, target_temp)
+		wearer.adjust_bodytemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, target_temp)
 	if(ishuman(wearer))
 		var/mob/living/carbon/human/human_wearer = wearer
 		if(human_wearer.coretemperature > target_temp)
-			human_wearer.adjust_coretemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, target_temp)
+			human_wearer.adjust_coretemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, target_temp)
 		else if(human_wearer.coretemperature < (target_temp + 1))
-			human_wearer.adjust_coretemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, target_temp)
+			human_wearer.adjust_coretemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, target_temp)
 
 /obj/item/shock_blanket/emergency
 	desc = "An emergency variant shock blanket intended to be placed in medkits for field treatment. Faster to apply to patients, but more restrictive to movement."

@@ -23,47 +23,47 @@
 	affected_carbon.set_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT, 1.2)
 	to_chat(affected_carbon, span_userdanger("Your [name] withdrawal has begun to set in... You feel ill."))
 
-/datum/addiction/luciferium/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, delta_time)
+/datum/addiction/luciferium/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
-	if(affected_carbon.pain_controller.get_average_pain() <= 33 && DT_PROB(8, delta_time))
+	if(affected_carbon.pain_controller.get_average_pain() <= 33 && SPT_PROB(8, seconds_per_tick))
 		affected_carbon.cause_pain(pick(BODY_ZONES_ALL), 3)
 
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type)
-	if(current_addiction_cycle >= (WITHDRAWAL_STAGE1_START_CYCLE + 3) && DT_PROB(33, delta_time))
-		affected_carbon.mind.active_addictions[type] -= delta_time
+	if(current_addiction_cycle >= (WITHDRAWAL_STAGE1_START_CYCLE + 3) && SPT_PROB(33, seconds_per_tick))
+		affected_carbon.mind.active_addictions[type] -= seconds_per_tick
 
-/datum/addiction/luciferium/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon, delta_time)
+/datum/addiction/luciferium/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
 	affected_carbon.set_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT, 1.3)
 	to_chat(affected_carbon, span_userdanger("Your [name] withdrawal progresses... Your body feels heavy."))
 
-/datum/addiction/luciferium/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, delta_time)
+/datum/addiction/luciferium/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
-	if(affected_carbon.pain_controller.get_average_pain() <= 66 && DT_PROB(8, delta_time))
+	if(affected_carbon.pain_controller.get_average_pain() <= 66 && SPT_PROB(8, seconds_per_tick))
 		affected_carbon.cause_pain(pick(BODY_ZONES_ALL), 5)
-	affected_carbon.adjustCloneLoss(0.2 * delta_time, FALSE)
+	affected_carbon.adjustCloneLoss(0.2 * seconds_per_tick, FALSE)
 
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type)
-	if(current_addiction_cycle >= (WITHDRAWAL_STAGE2_START_CYCLE + 3) && DT_PROB(33, delta_time))
-		affected_carbon.mind.active_addictions[type] -= delta_time
+	if(current_addiction_cycle >= (WITHDRAWAL_STAGE2_START_CYCLE + 3) && SPT_PROB(33, seconds_per_tick))
+		affected_carbon.mind.active_addictions[type] -= seconds_per_tick
 
-/datum/addiction/luciferium/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon, delta_time)
+/datum/addiction/luciferium/withdrawal_enters_stage_3(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
 	affected_carbon.set_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT, 1.4)
 	to_chat(affected_carbon, span_userdanger("Your [name] withdrawal is killing you!"))
 
-/datum/addiction/luciferium/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, delta_time)
+/datum/addiction/luciferium/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
-	if(DT_PROB(12, delta_time))
+	if(SPT_PROB(12, seconds_per_tick))
 		affected_carbon.cause_pain(pick(BODY_ZONES_ALL), 8)
 
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type)
 
-	affected_carbon.adjustBruteLoss(clamp(round(0.00002 * (current_addiction_cycle ** 2), 0.1), 0.5, 8) * delta_time, FALSE)
-	affected_carbon.adjustCloneLoss(clamp(round(0.00002 * (current_addiction_cycle ** 2), 0.1), 0.5, 8) * delta_time, FALSE)
+	affected_carbon.adjustBruteLoss(clamp(round(0.00002 * (current_addiction_cycle ** 2), 0.1), 0.5, 8) * seconds_per_tick, FALSE)
+	affected_carbon.adjustCloneLoss(clamp(round(0.00002 * (current_addiction_cycle ** 2), 0.1), 0.5, 8) * seconds_per_tick, FALSE)
 
-	if(current_addiction_cycle >= (WITHDRAWAL_STAGE3_START_CYCLE + 3) && DT_PROB(33, delta_time))
-		affected_carbon.mind.active_addictions[type] -= delta_time
+	if(current_addiction_cycle >= (WITHDRAWAL_STAGE3_START_CYCLE + 3) && SPT_PROB(33, seconds_per_tick))
+		affected_carbon.mind.active_addictions[type] -= seconds_per_tick
 
 /datum/addiction/luciferium/end_withdrawal(mob/living/carbon/affected_carbon)
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type)

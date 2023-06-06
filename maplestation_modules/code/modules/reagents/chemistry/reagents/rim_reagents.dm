@@ -59,35 +59,35 @@
 	if(methods & INJECT)
 		exposed_mob.visible_message(span_warning("The [name] nanomachine web disintegrates upon injection into [exposed_mob]!"))
 
-/datum/reagent/medicine/luciferium/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
+/datum/reagent/medicine/luciferium/on_mob_life(mob/living/carbon/user, seconds_per_tick, times_fired)
 	if(overdosed)
 		return ..()
 
 	// Heals pain and tons of damage (based on purity)
-	user.cause_pain(BODY_ZONES_ALL, -1 * REM * delta_time)
-	user.adjustCloneLoss(-8 * REM * delta_time, FALSE)
-	user.adjustBruteLoss(-5 * REM * delta_time, FALSE)
-	user.adjustFireLoss(-5 * REM * delta_time, FALSE)
-	user.adjustOxyLoss(-3 * REM * delta_time, FALSE)
-	user.adjustToxLoss(-3 * REM * delta_time, FALSE, TRUE)
-	adjust_bleed_wounds(user, delta_time)
+	user.cause_pain(BODY_ZONES_ALL, -1 * REM * seconds_per_tick)
+	user.adjustCloneLoss(-8 * REM * seconds_per_tick, FALSE)
+	user.adjustBruteLoss(-5 * REM * seconds_per_tick, FALSE)
+	user.adjustFireLoss(-5 * REM * seconds_per_tick, FALSE)
+	user.adjustOxyLoss(-3 * REM * seconds_per_tick, FALSE)
+	user.adjustToxLoss(-3 * REM * seconds_per_tick, FALSE, TRUE)
+	adjust_bleed_wounds(user, seconds_per_tick)
 	if(user.blood_volume < BLOOD_VOLUME_NORMAL)
-		user.blood_volume = min(user.blood_volume + (5 * REM * delta_time), BLOOD_VOLUME_NORMAL)
+		user.blood_volume = min(user.blood_volume + (5 * REM * seconds_per_tick), BLOOD_VOLUME_NORMAL)
 
 	// Improves / fixes eyesight
-	user.adjust_blindness(-2 * REM * delta_time)
-	user.adjust_blurriness(-2 * REM * delta_time)
-	user.adjustOrganLoss(ORGAN_SLOT_EYES, -3 * REM * delta_time )
+	user.adjust_blindness(-2 * REM * seconds_per_tick)
+	user.adjust_blurriness(-2 * REM * seconds_per_tick)
+	user.adjustOrganLoss(ORGAN_SLOT_EYES, -3 * REM * seconds_per_tick )
 
 	// Removes scars
-	if(DT_PROB(8, delta_time))
+	if(SPT_PROB(8, seconds_per_tick))
 		var/datum/scar/scar_to_remove = pick(user.all_scars)
 		if(scar_to_remove)
 			LAZYREMOVE(user.all_scars, scar_to_remove)
 
 	// Can cure permanent traumas
-	user.adjustOrganLoss(ORGAN_SLOT_BRAIN, -3 * REM * delta_time)
-	if(DT_PROB(5, delta_time))
+	user.adjustOrganLoss(ORGAN_SLOT_BRAIN, -3 * REM * seconds_per_tick)
+	if(SPT_PROB(5, seconds_per_tick))
 		var/static/list/curable_traumas = shuffle(subtypesof(/datum/brain_trauma/severe) + subtypesof(/datum/brain_trauma/mild))
 		for(var/trauma in curable_traumas)
 			if(user.has_trauma_type(trauma))
@@ -95,7 +95,7 @@
 				break
 
 	// Can cure wounds, too
-	if(DT_PROB(6, delta_time))
+	if(SPT_PROB(6, seconds_per_tick))
 		var/list/shuffled_wounds = shuffle(user.all_wounds)
 		for(var/datum/wound/wound as anything in shuffled_wounds)
 			wound.remove_wound()
@@ -107,7 +107,7 @@
 /**
  * Slow and stop blood loss.
  */
-/datum/reagent/medicine/luciferium/proc/adjust_bleed_wounds(mob/living/carbon/user, delta_time)
+/datum/reagent/medicine/luciferium/proc/adjust_bleed_wounds(mob/living/carbon/user, seconds_per_tick)
 	if(!user.blood_volume || !user.all_wounds)
 		return
 
@@ -118,7 +118,7 @@
 				bloodiest_wound = iter_wound
 
 	if(bloodiest_wound)
-		bloodiest_wound.blood_flow = max(0, bloodiest_wound.blood_flow - (0.5 * REM * delta_time))
+		bloodiest_wound.blood_flow = max(0, bloodiest_wound.blood_flow - (0.5 * REM * seconds_per_tick))
 
 /**
  * Stop the effects of the chem.
@@ -205,21 +205,21 @@
 	. = ..()
 	stop_effects(user)
 
-/datum/reagent/drug/gojuice/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
+/datum/reagent/drug/gojuice/on_mob_life(mob/living/carbon/user, seconds_per_tick, times_fired)
 	if(overdosed)
 		return ..()
 
-	if(DT_PROB(33, delta_time))
-		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * delta_time)
-	user.drowsyness = max(user.drowsyness - (4 * REM * delta_time), 0)
-	user.set_jitter_if_lower(8 SECONDS * REM * delta_time)
+	if(SPT_PROB(33, seconds_per_tick))
+		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * seconds_per_tick)
+	user.drowsyness = max(user.drowsyness - (4 * REM * seconds_per_tick), 0)
+	user.set_jitter_if_lower(8 SECONDS * REM * seconds_per_tick)
 	return ..()
 
-/datum/reagent/drug/gojuice/overdose_process(mob/living/user, delta_time, times_fired)
-	if(DT_PROB(66, delta_time))
-		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * delta_time)
-	if(DT_PROB(50, delta_time))
-		user.adjustToxLoss(1 * REM * delta_time, FALSE)
+/datum/reagent/drug/gojuice/overdose_process(mob/living/user, seconds_per_tick, times_fired)
+	if(SPT_PROB(66, seconds_per_tick))
+		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * seconds_per_tick)
+	if(SPT_PROB(50, seconds_per_tick))
+		user.adjustToxLoss(1 * REM * seconds_per_tick, FALSE)
 	. = ..()
 	return TRUE
 
@@ -292,12 +292,12 @@
 	user.clear_mood_event(type)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/yayo)
 
-/datum/reagent/drug/yayo/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
-	if(DT_PROB(clamp(current_cycle, 5, 80), delta_time))
-		user.adjustOrganLoss(ORGAN_SLOT_LIVER, 1 * REM * delta_time)
-	if(DT_PROB(30, delta_time))
-		user.AdjustSleeping(-100 * REM * delta_time)
-	user.drowsyness = max(user.drowsyness - (12 * REM * delta_time), 0)
+/datum/reagent/drug/yayo/on_mob_life(mob/living/carbon/user, seconds_per_tick, times_fired)
+	if(SPT_PROB(clamp(current_cycle, 5, 80), seconds_per_tick))
+		user.adjustOrganLoss(ORGAN_SLOT_LIVER, 1 * REM * seconds_per_tick)
+	if(SPT_PROB(30, seconds_per_tick))
+		user.AdjustSleeping(-100 * REM * seconds_per_tick)
+	user.drowsyness = max(user.drowsyness - (12 * REM * seconds_per_tick), 0)
 	. = ..()
 	return TRUE
 
@@ -329,12 +329,12 @@
 	. = ..()
 	user.clear_mood_event(type)
 
-/datum/reagent/psychite_tea/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
-	user.drowsyness = max(user.drowsyness - (3 * REM * delta_time), 0)
-	user.adjust_dizzy(-4 SECONDS * REM * delta_time)
-	user.adjust_jitter(-4 SECONDS * REM * delta_time)
-	user.AdjustSleeping(-20 * REM * delta_time)
-	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, user.get_body_temp_normal())
+/datum/reagent/psychite_tea/on_mob_life(mob/living/carbon/user, seconds_per_tick, times_fired)
+	user.drowsyness = max(user.drowsyness - (3 * REM * seconds_per_tick), 0)
+	user.adjust_dizzy(-4 SECONDS * REM * seconds_per_tick)
+	user.adjust_jitter(-4 SECONDS * REM * seconds_per_tick)
+	user.AdjustSleeping(-20 * REM * seconds_per_tick)
+	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, user.get_body_temp_normal())
 	. = ..()
 	return TRUE
 

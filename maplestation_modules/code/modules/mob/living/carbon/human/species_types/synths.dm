@@ -119,10 +119,10 @@
 
 	return perks
 
-/datum/species/synth/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
+/datum/species/synth/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, seconds_per_tick, times_fired)
 	if(chem.type == /datum/reagent/medicine/c2/synthflesh)
-		chem.expose_mob(H, TOUCH, 2 * REAGENTS_EFFECT_MULTIPLIER * delta_time, FALSE) //heal a little
-		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
+		chem.expose_mob(H, TOUCH, 2 * REAGENTS_EFFECT_MULTIPLIER * seconds_per_tick, FALSE) //heal a little
+		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * seconds_per_tick)
 		return TRUE
 	return ..()
 

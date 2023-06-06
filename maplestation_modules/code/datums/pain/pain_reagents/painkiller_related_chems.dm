@@ -19,11 +19,11 @@
 	ph = 10.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/medicine/dimenhydrinate/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/medicine/dimenhydrinate/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()
-	M.adjust_disgust(-8 * REM * delta_time)
+	M.adjust_disgust(-8 * REM * seconds_per_tick)
 	if(M.nutrition > NUTRITION_LEVEL_FULL - 25) // Boosts hunger to a bit, assuming you've been vomiting
-		M.adjust_nutrition(2 * HUNGER_FACTOR * REM * delta_time)
+		M.adjust_nutrition(2 * HUNGER_FACTOR * REM * seconds_per_tick)
 
 /datum/chemical_reaction/medicine/dimenhydrinate
 	results = list(/datum/reagent/medicine/dimenhydrinate = 3)
@@ -41,10 +41,10 @@
 	ph = 10.6
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/medicine/ondansetron/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/medicine/ondansetron/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()
-	if(DT_PROB(8, delta_time))
+	if(SPT_PROB(8, seconds_per_tick))
 		M.drowsyness++
-	if(DT_PROB(15, delta_time) && M.get_bodypart_pain(BODY_ZONE_HEAD) <= PAIN_HEAD_MAX / 4)
+	if(SPT_PROB(15, seconds_per_tick) && M.get_bodypart_pain(BODY_ZONE_HEAD) <= PAIN_HEAD_MAX / 4)
 		M.cause_pain(BODY_ZONE_HEAD, 4)
-	M.adjust_disgust(-10 * REM * delta_time)
+	M.adjust_disgust(-10 * REM * seconds_per_tick)
