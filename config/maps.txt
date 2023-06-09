@@ -45,6 +45,23 @@ map northstar
 	votable
 endmap
 
+## // NON-MODULE CHANGE
+
+##MAPLE MAPS##
+
+map limastation
+	votable
+endmap
+
+map kilostation
+	votable
+endmap
+
+map pubbystation
+	votable
+endmap
+
+##DEBUG MAPS##
 
 map runtimestation
 endmap

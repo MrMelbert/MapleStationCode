@@ -47,6 +47,10 @@ export const JOB2ICON = {
   'Syndicate Operative': 'dragon',
   'Virologist': 'virus',
   'Warden': 'handcuffs',
+  'Xenobiologist': 'bug', // Non-module change
+  'Ordnance Technician': 'bomb', // Non-module change
+  'Asset Protection': 'person-military-pointing', // Non-module change
+  'Bridge Officer': 'paperclip', // Non-module change
 } as const;
 
 export type AvailableJob = keyof typeof JOB2ICON;
