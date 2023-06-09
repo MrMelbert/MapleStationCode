@@ -72,16 +72,7 @@
 	},
 /obj/effect/mapping_helpers/airlock/access/all/science/research,
 /obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "aG" = (
@@ -91,30 +82,19 @@
 /area/ruin/space/has_grav/abandonedzoo)
 "aI" = (
 /obj/structure/table/reinforced,
-/obj/machinery/computer/med_data/laptop{
+/obj/machinery/computer/records/medical/laptop{
 	dir = 8;
 	pixel_y = 1
 	},
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "aK" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
+/obj/structure/window/reinforced/spawner/directional/east,
 /turf/template_noop,
 /area/template_noop)
 "aL" = (
 /obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "aN" = (
@@ -137,9 +117,7 @@
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "aQ" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/template_noop,
 /area/template_noop)
 "aT" = (
@@ -369,31 +347,13 @@
 	},
 /obj/item/wirecutters,
 /obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
 "kp" = (
 /obj/machinery/light/small/directional/west,
 /obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "kF" = (
@@ -451,24 +411,15 @@
 "wc" = (
 /obj/machinery/light/small/directional/east,
 /obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "wF" = (
 /obj/machinery/door/airlock/hatch{
 	name = "Bio-Research Station"
 	},
-/obj/effect/turf_decal/tile/green/fourcorners,
 /obj/structure/cable,
+/obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "xW" = (
@@ -477,8 +428,8 @@
 /turf/open/misc/asteroid,
 /area/ruin/space/has_grav/abandonedzoo)
 "Ck" = (
-/obj/effect/turf_decal/tile/green/fourcorners,
 /obj/structure/cable,
+/obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "Ct" = (
@@ -504,21 +455,19 @@
 /area/ruin/space/has_grav/abandonedzoo)
 "Ig" = (
 /obj/machinery/light/directional/north,
-/mob/living/simple_animal/hostile/carp,
+/mob/living/basic/carp,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
 "LD" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/maintenance,
 /obj/structure/cable,
-/obj/machinery/power/apc/unlocked{
-	dir = 8;
+/obj/machinery/power/apc/worn_out/directional/west{
 	environ = 0;
-	lighting = 0;
-	name = "Worn-out APC";
-	pixel_x = -25
+	lighting = 0
 	},
 /obj/item/melee/baton/security/cattleprod,
+/obj/effect/mapping_helpers/apc/unlocked,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "Mb" = (
@@ -531,8 +480,8 @@
 /turf/open/floor/grass,
 /area/ruin/space/has_grav/abandonedzoo)
 "Mm" = (
-/obj/effect/turf_decal/tile/green/fourcorners,
 /obj/structure/reagent_dispensers/watertank,
+/obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "Ng" = (

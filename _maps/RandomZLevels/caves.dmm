@@ -550,7 +550,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bZ" = (
-/mob/living/simple_animal/hostile/retaliate/bat{
+/mob/living/basic/bat{
 	desc = "A rare breed of bat which roosts deep in caves.";
 	name = "Cave Bat"
 	},
@@ -691,9 +691,7 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
 "cB" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/effect/decal/cleanable/xenoblood,
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
@@ -745,9 +743,7 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
 "cO" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/machinery/door/window/left/directional/east,
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
@@ -776,7 +772,7 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
 "cT" = (
-/obj/structure/window/reinforced,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/machinery/door/window{
 	base_state = "right";
 	dir = 4;
@@ -785,7 +781,7 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
 "cU" = (
-/mob/living/simple_animal/hostile/retaliate/bat{
+/mob/living/basic/bat{
 	desc = "A rare breed of bat which roosts deep in caves.";
 	name = "Cave Bat"
 	},
@@ -798,9 +794,7 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
 "cW" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
+/obj/structure/window/reinforced/spawner/directional/east,
 /turf/open/floor/plating,
 /area/awaymission/caves/research)
 "cX" = (
@@ -1003,7 +997,7 @@
 /turf/open/floor/iron,
 /area/awaymission/caves/northblock)
 "dO" = (
-/mob/living/simple_animal/hostile/retaliate/bat{
+/mob/living/basic/bat{
 	desc = "A rare breed of bat which roosts deep in caves.";
 	name = "Cave Bat"
 	},
@@ -1088,9 +1082,7 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/bmp_asteroid)
 "ek" = (
-/obj/structure/window{
-	dir = 8
-	},
+/obj/structure/window/spawner/directional/west,
 /mob/living/simple_animal/hostile/mining_drone,
 /turf/open/floor/plating,
 /area/awaymission/caves/listeningpost)
@@ -1121,10 +1113,8 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/listeningpost)
 "es" = (
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/south,
 /mob/living/simple_animal/hostile/mining_drone,
 /turf/open/floor/plating,
 /area/awaymission/caves/listeningpost)
@@ -1336,9 +1326,7 @@
 /turf/open/floor/plating,
 /area/awaymission/caves/listeningpost)
 "fn" = (
-/obj/structure/closet/crate{
-	icon_state = "crateopen"
-	},
+/obj/structure/closet/crate/preopen,
 /obj/item/paper/fluff/awaymissions/caves/shipment_receipt,
 /obj/item/organ/internal/eyes/robotic/thermals,
 /obj/item/gun/energy/laser/captain/scattershot,
@@ -1348,7 +1336,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "fo" = (
-/mob/living/simple_animal/hostile/asteroid/fugu,
+/mob/living/basic/wumborian_fugu,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1716,7 +1704,7 @@
 /turf/open/floor/iron/recharge_floor,
 /area/awaymission/caves/bmp_asteroid)
 "gN" = (
-/obj/structure/holohoop,
+/obj/structure/hoop,
 /turf/open/floor/iron/dark{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1728,7 +1716,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gP" = (
-/obj/item/toy/beach_ball/holoball,
+/obj/item/toy/basketball,
 /turf/open/floor/iron/dark{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1757,7 +1745,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gU" = (
-/obj/structure/holohoop{
+/obj/structure/hoop{
 	dir = 1
 	},
 /turf/open/floor/iron/dark{
@@ -1802,7 +1790,7 @@
 /turf/open/floor/iron,
 /area/awaymission/caves/northblock)
 "kE" = (
-/mob/living/simple_animal/hostile/giant_spider/hunter,
+/mob/living/basic/giant_spider/hunter,
 /turf/open/floor/iron,
 /area/awaymission/caves/bmp_asteroid)
 "lp" = (
@@ -1845,7 +1833,7 @@
 /area/awaymission/caves/northblock)
 "rk" = (
 /obj/structure/spider/stickyweb,
-/mob/living/simple_animal/hostile/giant_spider/hunter,
+/mob/living/basic/giant_spider/hunter,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1881,7 +1869,7 @@
 /obj/machinery/sleeper{
 	dir = 8
 	},
-/mob/living/simple_animal/hostile/giant_spider/hunter,
+/mob/living/basic/giant_spider/hunter,
 /turf/open/floor/iron,
 /area/awaymission/caves/bmp_asteroid)
 "vU" = (
@@ -1919,7 +1907,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ep" = (
-/mob/living/simple_animal/hostile/giant_spider/hunter,
+/mob/living/basic/giant_spider/hunter,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1931,7 +1919,7 @@
 "FS" = (
 /obj/machinery/light/small/built/directional/north,
 /obj/structure/spider/stickyweb,
-/mob/living/simple_animal/hostile/giant_spider/hunter,
+/mob/living/basic/giant_spider/hunter,
 /turf/open/floor/iron,
 /area/awaymission/caves/bmp_asteroid)
 "Gt" = (
@@ -1943,7 +1931,7 @@
 /turf/open/floor/iron,
 /area/awaymission/caves/listeningpost)
 "GX" = (
-/mob/living/simple_animal/hostile/giant_spider/nurse,
+/mob/living/basic/giant_spider/nurse,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1992,7 +1980,7 @@
 /area/awaymission/caves/listeningpost)
 "PV" = (
 /obj/item/mjollnir,
-/mob/living/simple_animal/hostile/giant_spider/nurse,
+/mob/living/basic/giant_spider/nurse,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},

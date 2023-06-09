@@ -121,7 +121,7 @@
 /obj/item/greentext/quiet{
 	anchored = 1
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "aA" = (
 /obj/machinery/door/airlock/bananium/glass{
@@ -189,17 +189,13 @@
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "aN" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/bed,
 /obj/item/bedsheet/random,
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "aO" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
+/obj/structure/window/reinforced/spawner/directional/west,
 /obj/structure/bed{
 	dir = 4
 	},
@@ -288,9 +284,7 @@
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "bf" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/machinery/power/shuttle_engine/heater,
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)

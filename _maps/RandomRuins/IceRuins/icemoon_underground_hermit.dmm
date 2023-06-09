@@ -1,112 +1,120 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
-"bz" = (
-/obj/item/flashlight/lantern,
-/turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
-"bW" = (
+"cg" = (
 /obj/item/reagent_containers/cup/bucket/wooden,
 /turf/open/floor/plating,
-/area/ruin/powered/shuttle)
+/area/ruin/powered/hermit)
 "cI" = (
+/obj/item/storage/toolbox/emergency,
 /turf/open/floor/plating,
-/area/ruin/powered/shuttle)
+/area/ruin/powered/hermit)
 "de" = (
 /obj/item/flashlight/lantern,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "ec" = (
-/obj/item/clothing/suit/hooded/wintercoat,
-/turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"ei" = (
-/obj/machinery/hydroponics/soil,
-/turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
-"gr" = (
-/turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
-"ha" = (
+/obj/structure/chair/comfy/beige,
 /obj/machinery/light/directional/west,
+/obj/machinery/light/directional/north,
 /turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"hv" = (
-/obj/structure/bonfire/prelit,
-/turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"hN" = (
-/turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"ii" = (
+/area/ruin/powered/hermit)
+"gr" = (
+/obj/machinery/portable_atmospherics/canister/oxygen,
+/turf/open/floor/grass/fairy,
+/area/ruin/powered/hermit)
+"ha" = (
 /obj/effect/mob_spawn/ghost_role/human/hermit,
 /turf/open/floor/wood,
-/area/ruin/powered/shuttle)
+/area/ruin/powered/hermit)
+"hN" = (
+/obj/structure/bonfire/prelit,
+/turf/open/floor/wood,
+/area/ruin/powered/hermit)
+"ii" = (
+/obj/item/clothing/suit/hooded/wintercoat,
+/turf/open/floor/wood,
+/area/ruin/powered/hermit)
+"kR" = (
+/turf/open/floor/grass/fairy,
+/area/ruin/powered/hermit)
 "lH" = (
 /obj/structure/barricade/wooden/crude/snow,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "mN" = (
-/turf/closed/wall/mineral/wood,
-/area/ruin/powered/shuttle)
-"oJ" = (
-/obj/structure/sink/directional/south,
-/turf/open/floor/plating,
-/area/ruin/powered/shuttle)
-"pI" = (
-/obj/item/chair/wood/wings,
-/turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"sC" = (
-/obj/item/gun/ballistic/rifle/boltaction/pipegun/prime,
-/obj/structure/table/wood,
-/obj/item/flashlight/lantern,
-/turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"sM" = (
-/obj/structure/chair/comfy/beige,
 /obj/machinery/light/directional/west,
-/obj/machinery/light/directional/north,
 /turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"wH" = (
-/obj/item/tank/internals/emergency_oxygen/engi,
+/area/ruin/powered/hermit)
+"ny" = (
+/obj/machinery/hydroponics/soil,
+/obj/machinery/light/directional/north,
 /turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
-"EV" = (
-/obj/item/storage/bag/plants/portaseeder,
-/obj/item/storage/medkit/surgery,
-/obj/item/storage/bag/ore,
-/obj/structure/table/wood,
-/turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
-"GU" = (
-/obj/item/storage/toolbox/emergency,
-/turf/open/floor/plating,
-/area/ruin/powered/shuttle)
-"II" = (
-/obj/item/paper/guides/jobs/hydroponics,
-/turf/open/floor/plating,
-/area/ruin/powered/shuttle)
-"JI" = (
+/area/ruin/powered/hermit)
+"nR" = (
 /obj/machinery/door/airlock/wood{
 	name = "Frozen Shack"
 	},
 /obj/structure/fans/tiny/invisible,
 /turf/open/floor/wood,
-/area/ruin/powered/shuttle)
-"Oe" = (
-/obj/item/seeds/plump,
-/obj/item/seeds/plump,
-/obj/item/seeds/tower,
-/obj/item/seeds/reishi,
-/obj/structure/table/wood,
-/obj/item/food/grown/mushroom/glowshroom,
+/area/ruin/powered/hermit)
+"oJ" = (
+/obj/structure/glowshroom/single,
 /turf/open/floor/plating,
-/area/ruin/powered/shuttle)
-"ON" = (
-/obj/machinery/hydroponics/soil,
-/obj/machinery/light/directional/north,
+/area/ruin/powered/hermit)
+"qY" = (
+/obj/structure/sink/directional/south,
+/turf/open/floor/plating,
+/area/ruin/powered/hermit)
+"ry" = (
+/obj/item/shovel,
+/turf/open/floor/plating,
+/area/ruin/powered/hermit)
+"sC" = (
+/obj/item/chair/wood/wings,
+/turf/open/floor/wood,
+/area/ruin/powered/hermit)
+"tN" = (
+/obj/item/flashlight/lantern,
 /turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
+/area/ruin/powered/hermit)
+"wH" = (
+/obj/machinery/light/directional/east,
+/turf/open/floor/grass/fairy,
+/area/ruin/powered/hermit)
+"Aj" = (
+/turf/closed/wall/mineral/wood,
+/area/icemoon/underground/explored)
+"AG" = (
+/turf/open/floor/plating,
+/area/ruin/powered/hermit)
+"EV" = (
+/obj/item/pickaxe/improvised,
+/obj/structure/table/wood,
+/obj/item/knife/combat,
+/turf/open/floor/grass/fairy,
+/area/ruin/powered/hermit)
+"Gm" = (
+/obj/item/gun/ballistic/rifle/boltaction/pipegun/prime,
+/obj/structure/table/wood,
+/obj/item/flashlight/lantern,
+/turf/open/floor/wood,
+/area/ruin/powered/hermit)
+"GU" = (
+/obj/item/paper/guides/jobs/hydroponics,
+/turf/open/floor/plating,
+/area/ruin/powered/hermit)
+"GV" = (
+/turf/closed/wall/mineral/wood,
+/area/ruin/powered/hermit)
+"JH" = (
+/obj/item/storage/bag/plants/portaseeder,
+/obj/item/storage/medkit/surgery,
+/obj/item/storage/bag/ore,
+/obj/structure/table/wood,
+/turf/open/floor/grass/fairy,
+/area/ruin/powered/hermit)
+"JI" = (
+/turf/open/floor/wood,
+/area/ruin/powered/hermit)
 "OU" = (
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
@@ -114,15 +122,9 @@
 /turf/template_noop,
 /area/template_noop)
 "Si" = (
-/obj/structure/glowshroom/single,
-/turf/open/floor/plating,
-/area/ruin/powered/shuttle)
-"UL" = (
-/obj/item/pickaxe/improvised,
-/obj/structure/table/wood,
-/obj/item/knife/combat,
+/obj/structure/flora/tree/jungle/small/style_random,
 /turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
+/area/ruin/powered/hermit)
 "Wb" = (
 /obj/structure/barricade/wooden/snowed,
 /turf/open/misc/asteroid/snow/icemoon,
@@ -132,23 +134,24 @@
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "WK" = (
-/obj/machinery/portable_atmospherics/canister/oxygen,
+/obj/item/tank/internals/emergency_oxygen/engi,
 /turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
-"Xh" = (
-/obj/structure/flora/tree/jungle/small/style_random,
+/area/ruin/powered/hermit)
+"Xn" = (
+/obj/machinery/hydroponics/soil,
 /turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
-"XI" = (
-/obj/machinery/light/directional/east,
-/turf/open/floor/grass/fairy,
-/area/ruin/powered/shuttle)
+/area/ruin/powered/hermit)
 "Yi" = (
-/obj/item/shovel,
+/obj/item/seeds/plump,
+/obj/item/seeds/plump,
+/obj/item/seeds/tower,
+/obj/item/seeds/reishi,
+/obj/structure/table/wood,
+/obj/item/food/grown/mushroom/glowshroom,
 /turf/open/floor/plating,
-/area/ruin/powered/shuttle)
+/area/ruin/powered/hermit)
 "YN" = (
-/turf/closed/mineral/snowmountain/icemoon,
+/turf/closed/mineral/snowmountain/icemoon/unscrapeable,
 /area/icemoon/underground/explored)
 
 (1,1,1) = {"
@@ -174,16 +177,16 @@ QD
 QD
 QD
 QD
-QD
-QD
 YN
-QD
-QD
-QD
-QD
-QD
+YN
+YN
+YN
+YN
+YN
+YN
+YN
+YN
 OU
-QD
 QD
 QD
 "}
@@ -191,14 +194,14 @@ QD
 QD
 QD
 QD
-QD
 YN
 YN
 YN
 YN
 YN
-QD
-QD
+YN
+YN
+YN
 YN
 YN
 YN
@@ -208,7 +211,6 @@ YN
 (4,1,1) = {"
 QD
 QD
-QD
 YN
 YN
 YN
@@ -221,11 +223,13 @@ YN
 YN
 YN
 YN
-OU
+YN
+YN
 "}
 (5,1,1) = {"
 QD
-QD
+YN
+YN
 YN
 YN
 YN
@@ -235,25 +239,24 @@ YN
 OU
 OU
 lH
-YN
 OU
 OU
 OU
 OU
 "}
 (6,1,1) = {"
-QD
 YN
 YN
 YN
-cI
-mN
-mN
-mN
-mN
-mN
-mN
-OU
+YN
+AG
+AG
+GV
+GV
+GV
+GV
+GV
+GV
 OU
 OU
 Wc
@@ -262,34 +265,34 @@ OU
 (7,1,1) = {"
 YN
 YN
-ei
-Oe
+YN
+Xn
 Yi
-mN
-sM
+ry
+GV
 ec
 ii
 ha
 mN
+GV
 OU
 OU
 OU
 lH
-OU
 "}
 (8,1,1) = {"
 YN
-ei
-gr
-II
+YN
+Xn
+kR
 GU
 cI
-hv
-hN
-hN
+AG
 hN
 JI
-OU
+JI
+JI
+nR
 OU
 OU
 Wc
@@ -297,36 +300,36 @@ OU
 "}
 (9,1,1) = {"
 YN
-ON
-gr
-Xh
+Aj
+ny
+kR
 Si
 oJ
-hN
-hN
-pI
+qY
+JI
+JI
 sC
-mN
+Gm
+GV
 OU
 OU
 OU
 de
-OU
 "}
 (10,1,1) = {"
 YN
-ei
-bz
-gr
-bW
-cI
-cI
-cI
-mN
-mN
-mN
+YN
+Xn
+tN
+kR
+cg
+AG
+AG
+AG
+GV
+GV
+GV
 Wb
-OU
 OU
 OU
 OU
@@ -335,41 +338,43 @@ OU
 YN
 YN
 YN
-ei
-gr
-gr
-XI
+YN
+Xn
+kR
+kR
 wH
 WK
 gr
+kR
 YN
 YN
-OU
 OU
 OU
 Wc
 "}
 (12,1,1) = {"
 QD
-QD
 YN
 YN
-UL
+YN
+YN
 EV
+JH
+Aj
 YN
 YN
 YN
 YN
 YN
-YN
-OU
 OU
 OU
 OU
 "}
 (13,1,1) = {"
 QD
-QD
+YN
+YN
+YN
 YN
 YN
 YN
@@ -380,42 +385,40 @@ YN
 YN
 OU
 OU
-OU
-OU
-OU
+Wc
 OU
 "}
 (14,1,1) = {"
 QD
 QD
-QD
-QD
 YN
 YN
 YN
 YN
 YN
-OU
-OU
-OU
-OU
+YN
+YN
+YN
+YN
+YN
 Wc
 OU
-QD
+OU
+OU
 "}
 (15,1,1) = {"
 QD
 QD
 QD
 QD
-QD
-QD
-QD
+YN
+YN
+YN
+YN
 OU
 OU
 OU
 OU
-Wc
 OU
 OU
 OU
@@ -432,10 +435,10 @@ QD
 QD
 QD
 QD
+QD
 OU
 OU
 QD
 QD
 QD
-OU
 "}
