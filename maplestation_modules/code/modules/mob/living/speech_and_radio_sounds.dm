@@ -1,31 +1,56 @@
 /// -- mob/living vars and overrides. --
 
-/// Bitflags for what kind of sound we're making
-#define SOUND_NORMAL (1<<0)
-#define SOUND_QUESTION (1<<1)
-#define SOUND_EXCLAMATION (1<<2)
-
 /// Default, middle frequency
 #define DEFAULT_FREQUENCY 44100
 
-/// Added vars for mob/living.
-/mob/living
-	// Default human speech-sounds ported from Goonstation.
-	/// Assoc list of [sounds that play on speech for this mob] to [volume].
-	var/mob_speech_sounds = list(
+/**
+ * Gets the sound this mob plays when they speak
+ *
+ * Returns null or a statically cached list (via string_assoc_list)
+ */
+/mob/living/proc/get_speech_sounds(sound_type)
+	// These sounds have been ported from Goonstation.
+	return string_assoc_list(list(
 		'maplestation_modules/sound/voice/speak_1.ogg' = 120,
 		'maplestation_modules/sound/voice/speak_2.ogg' = 120,
 		'maplestation_modules/sound/voice/speak_3.ogg' = 120,
 		'maplestation_modules/sound/voice/speak_4.ogg' = 120,
-	)
-	/// Assoc list of [sounds that play on radio message] to [volume].
-	var/mob_radio_sounds = list(
+	))
+
+/mob/living/basic/get_speech_sounds(sound_type)
+	return
+
+/mob/living/simple_animal/get_speech_sounds(sound_type)
+	return
+
+/mob/living/simple_animal/bot/get_speech_sounds(sound_type)
+	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
+
+/mob/living/silicon/get_speech_sounds(sound_type)
+	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
+
+/mob/living/carbon/get_speech_sounds(sound_type)
+	return dna?.species?.get_species_speech_sound(sound_type)
+
+/**
+ * Gets the sound this mob plays when they transmit over radio (to other people on the radio)
+ *
+ * Returns null or a statically cached list (via string_assoc_list)
+ */
+/mob/living/proc/get_radio_sounds()
+	return string_assoc_list(list(
 		'maplestation_modules/sound/voice/radio.ogg' = 75,
 		'maplestation_modules/sound/voice/radio_2.ogg' = 75,
-	)
+	))
+
+/mob/living/simple_animal/bot/get_radio_sounds()
+	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
+
+/mob/living/silicon/get_radio_sounds()
+	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
 
 /// Extend say so we can have talking make sounds.
-/mob/living/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null)
+/mob/living/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, message_range = 7, datum/saymode/saymode = null)
 	. = ..()
 
 	// If say failed for some reason we should probably fail
@@ -40,16 +65,16 @@
 	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		return
 
-	/// Our list of sounds we're going to play
-	var/list/chosen_speech_sounds
-	/// Whether this is a question, an exclamation, or neither
+	var/list/sound_pool = get_speech_sounds()
+	if(!LAZYLEN(sound_pool))
+		return
+
+	// Whether this is a question, an exclamation, or neither
 	var/sound_type
-	/// What frequency we pass to playsound for variance
+	// What frequency we pass to playsound for variance. Melbert todo : Add pref for frequency
 	var/sound_frequency = DEFAULT_FREQUENCY
-	/// The last char of the message.
-	var/msg_end = copytext_char(message, -1)
 	// Determine if this is a question, an exclamation, or neither and update sound_type and sound_frequency accordingly.
-	switch(msg_end)
+	switch(copytext_char(message, -1))
 		if("?")
 			sound_type = SOUND_QUESTION
 			sound_frequency = rand(DEFAULT_FREQUENCY, 55000) //questions are raised in the end
@@ -60,33 +85,34 @@
 			sound_type = SOUND_NORMAL
 			sound_frequency = round((get_rand_frequency() + get_rand_frequency())/2) //normal speaking is just the average of 2 random frequencies (to trend to the middle)
 
-	/// our speaker (src) typecasted into a human.
-	var/mob/living/carbon/human/human_speaker = src
-	// If we ARE a human, check for species specific speech sounds
-	if(istype(human_speaker) && human_speaker.dna?.species)
-		if(sound_type & SOUND_QUESTION)
-			chosen_speech_sounds = human_speaker.dna.species.species_speech_sounds_ask
-		if(sound_type & SOUND_EXCLAMATION)
-			chosen_speech_sounds = human_speaker.dna.species.species_speech_sounds_exclaim
-		if(sound_type & SOUND_NORMAL || !LAZYLEN(chosen_speech_sounds)) //default sounds if the other ones are empty
-			chosen_speech_sounds = human_speaker.dna.species.species_speech_sounds
-	// If we're not a human with a species, use the mob speech sounds
-	else if(LAZYLEN(mob_speech_sounds))
-		chosen_speech_sounds = mob_speech_sounds
-
-	if(!LAZYLEN(chosen_speech_sounds))
-		return
-
 	var/list/message_mods = list()
 	message = get_message_mods(message, message_mods)
 
-	/// Pick a sound from our found sounds and play it.
-	var/picked_sound = pick(chosen_speech_sounds)
+	// Pick a sound from our found sounds and play it.
+	var/picked_sound = pick(sound_pool)
 	if(message_mods[WHISPER_MODE])
-		playspeechsound(picked_sound, max(10, (chosen_speech_sounds[picked_sound] - 10)), TRUE, -10, sound_frequency, TRUE, FALSE, SILENCED_SOUND_EXTRARANGE)
+		playspeechsound(
+			soundin = picked_sound,
+			vol = max(10, (chosen_speech_sounds[picked_sound] - 10)),
+			vary = TRUE,
+			extrarange = -10,
+			frequency = sound_frequency,
+			pressure_affected = TRUE,
+			ignore_walls = FALSE,
+			fallof_distance = SILENCED_SOUND_EXTRARANGE,
+		)
 	else
-		playspeechsound(picked_sound, chosen_speech_sounds[picked_sound], TRUE, -10, sound_frequency, TRUE, FALSE)
+		playspeechsound(
+			soundin = picked_sound,
+			vol = chosen_speech_sounds[picked_sound],
+			vary = TRUE,
+			extrarange = -1-10,
+			frequency = sound_frequency,
+			pressure_affected = TRUE,
+			ignore_walls = FALSE,
+		)
 
+/// This is literally a copy paste of playsound that respects the "speech sounds" pref
 /mob/living/proc/playspeechsound(soundin, vol as num, vary, extrarange as num, frequency = null, pressure_affected = TRUE, ignore_walls = TRUE, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, use_reverb = TRUE, channel = 0)
 	var/turf/turf_source = get_turf(src)
 
@@ -143,22 +169,20 @@
 	. = ..()
 
 	// No message = no sound.
-	if(!message)
+	if(!message || !client)
 		return
 
 	// Don't bother playing sounds to clientless mobs to save time
-	if(!client?.prefs?.read_preference(/datum/preference/toggle/toggle_radio))
+	if(!client.prefs.read_preference(/datum/preference/toggle/toggle_radio))
 		return
 
 	// We only deal with radio messages from this point
 	if(!message_mods[MODE_HEADSET] && !message_mods[RADIO_EXTENSION])
 		return
 
-	/// The list of chosen sounds we hear.
-	var/list/chosen_speech_sounds
-	/// Speaker typecasted into a virtual speaker (Radios use virtualspeakers)
+	// Speaker typecasted into a virtual speaker (Radios use virtualspeakers)
 	var/atom/movable/virtualspeaker/vspeaker = speaker
-	/// Speaker typecasted into a /mob/living
+	// Speaker typecasted into a /mob/living
 	var/mob/living/living_speaker
 	// Speaker is either a virtual speaker or a mob - whatever it is it needs to be a mob in the end.
 	if(istype(vspeaker))
@@ -170,19 +194,23 @@
 	else
 		return
 
-	chosen_speech_sounds = living_speaker.mob_radio_sounds
-
-	if(!LAZYLEN(chosen_speech_sounds))
+	var/list/sound_pool = living_speaker.get_radio_sounds()
+	if(!LAZYLEN(sound_pool))
 		return
 
-	/// Pick a sound from our found sounds and play it.
-	var/picked_sound = pick(chosen_speech_sounds)
-	if(living_speaker == src)
-		playsound(src, picked_sound, chosen_speech_sounds[picked_sound], vary = TRUE, extrarange = -13, ignore_walls = FALSE)
-	else
-		playsound(src, picked_sound, chosen_speech_sounds[picked_sound] - 15, vary = TRUE, extrarange = -15, ignore_walls = FALSE)
+	// Pick a sound from our found sounds and play it.
+	var/picked_sound = pick(sound_pool)
+	var/radio_sound_vol = chosen_speech_sounds[picked_sound]
+	if(living_speaker != src)
+		chosen_speech_sounds[picked_sound] -= 10
 
-#undef SOUND_NORMAL
-#undef SOUND_QUESTION
-#undef SOUND_EXCLAMATION
+	// It would be pretty cool to make this come from nearby intercoms, if that's how they're hearing the radio -
+	// But that's for a later time. At least when I undertand vspeakers more
+	playsound_local(
+		source = get_turf(src),
+		soundin = picked_sound,
+		vol = radio_sound_vol,
+		vary = TRUE,
+	)
+
 #undef DEFAULT_FREQUENCY

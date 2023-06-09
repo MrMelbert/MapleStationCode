@@ -70,14 +70,17 @@
 	var/datum/round_event_control/falsealarm/triggered_event = locate() in SSevents.control
 	if(!fake_event)
 		return FALSE
-	triggered_event.forced_type = fake_event
-	triggered_event.runEvent(FALSE)
+	RegisterSignal(triggered_event, COMSIG_CREATED_ROUND_EVENT, PROC_REF(modify_forced_event)) // melbert todo test
+	triggered_event.run_event(event_cause = "syndicate false alarm device")
 	to_chat(user, span_notice("You press [src], triggering a false alarm for [fake_event_name]."))
-	deadchat_broadcast(span_bold("[user] has triggered a false alarm using a syndicate device!"), follow_target = user)
 	message_admins("[ADMIN_LOOKUPFLW(user)] has triggered a false alarm using a syndicate device: \"[fake_event_name]\".")
-	log_game("[key_name(user)] has triggered a false alarm using a syndicate device: \"[fake_event_name]\".")
 	uses--
 	return TRUE
+
+/obj/item/item_announcer/preset/proc/modify_forced_event(datum/round_event_control/falsealarm/source, datum/round_event/falsealarm/event)
+	SIGNAL_HANDLER
+	event.forced_type = fake_event
+	UnregisterSignal(source, COMSIG_CREATED_ROUND_EVENT)
 
 /obj/item/item_announcer/preset/ion
 	fake_event_name = "Ion Storm"

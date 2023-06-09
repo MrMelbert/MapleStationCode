@@ -75,8 +75,8 @@
 		user.blood_volume = min(user.blood_volume + (5 * REM * seconds_per_tick), BLOOD_VOLUME_NORMAL)
 
 	// Improves / fixes eyesight
-	user.adjust_blindness(-2 * REM * seconds_per_tick)
-	user.adjust_blurriness(-2 * REM * seconds_per_tick)
+	user.adjust_eye_blur(-4 SECONDS * REM * seconds_per_tick)
+	user.adjust_temp_blindness(-4 SECONDS * REM * seconds_per_tick)
 	user.adjustOrganLoss(ORGAN_SLOT_EYES, -3 * REM * seconds_per_tick )
 
 	// Removes scars
@@ -211,7 +211,7 @@
 
 	if(SPT_PROB(33, seconds_per_tick))
 		user.adjustOrganLoss(ORGAN_SLOT_BRAIN, rand(1, 3) * REM * seconds_per_tick)
-	user.drowsyness = max(user.drowsyness - (4 * REM * seconds_per_tick), 0)
+	user.adjust_drowsiness(-5 SECONDS * REM * seconds_per_tick)
 	user.set_jitter_if_lower(8 SECONDS * REM * seconds_per_tick)
 	return ..()
 
@@ -296,8 +296,8 @@
 	if(SPT_PROB(clamp(current_cycle, 5, 80), seconds_per_tick))
 		user.adjustOrganLoss(ORGAN_SLOT_LIVER, 1 * REM * seconds_per_tick)
 	if(SPT_PROB(30, seconds_per_tick))
-		user.AdjustSleeping(-100 * REM * seconds_per_tick)
-	user.drowsyness = max(user.drowsyness - (12 * REM * seconds_per_tick), 0)
+		user.AdjustSleeping(-10 SECONDS * REM * seconds_per_tick)
+	user.adjust_drowsiness(-12 SECONDS * REM * seconds_per_tick)
 	. = ..()
 	return TRUE
 
@@ -330,7 +330,7 @@
 	user.clear_mood_event(type)
 
 /datum/reagent/psychite_tea/on_mob_life(mob/living/carbon/user, seconds_per_tick, times_fired)
-	user.drowsyness = max(user.drowsyness - (3 * REM * seconds_per_tick), 0)
+	user.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
 	user.adjust_dizzy(-4 SECONDS * REM * seconds_per_tick)
 	user.adjust_jitter(-4 SECONDS * REM * seconds_per_tick)
 	user.AdjustSleeping(-20 * REM * seconds_per_tick)

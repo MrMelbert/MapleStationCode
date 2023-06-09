@@ -9,7 +9,7 @@
 	total_positions = 1
 	spawn_positions = 1 // Too many cooks spoil the broth, too many techs ruin the burn mix
 	supervisors = "the research director"
-	selection_color = "#ffeeff"
+	// selection_color = "#ffeeff"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW

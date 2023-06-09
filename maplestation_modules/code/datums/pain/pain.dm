@@ -143,7 +143,6 @@
 		adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
 
 	lost_limb.pain = initial(lost_limb.pain)
-	lost_limb.max_stamina_damage = initial(lost_limb.max_stamina_damage)
 	REMOVE_TRAIT(lost_limb, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 	body_zones -= lost_limb.body_zone
 
@@ -370,8 +369,8 @@
 		// Note: 99% of sources of toxdamage is done through adjusttoxloss, and as such doesn't go through this
 		if(TOX)
 			def_zone = BODY_ZONE_CHEST
-			var/obj/item/organ/internal/liver/our_liver = source.getorganslot(ORGAN_SLOT_LIVER)
-			var/obj/item/organ/internal/stomach/our_stomach = source.getorganslot(ORGAN_SLOT_STOMACH)
+			var/obj/item/organ/internal/liver/our_liver = source.get_organ_slot(ORGAN_SLOT_LIVER)
+			var/obj/item/organ/internal/stomach/our_stomach = source.get_organ_slot(ORGAN_SLOT_STOMACH)
 			if(our_liver)
 				pain = damage / our_liver.toxTolerance
 				switch(our_liver.damage)
@@ -407,7 +406,7 @@
 		// Note: 99% of sources of oxydamage is done through adjustoxyloss, and as such doesn't go through this
 		if(OXY)
 			def_zone = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
-			var/obj/item/organ/internal/lungs/our_lungs = source.getorganslot(ORGAN_SLOT_LUNGS)
+			var/obj/item/organ/internal/lungs/our_lungs = source.get_organ_slot(ORGAN_SLOT_LUNGS)
 			if(our_lungs)
 				switch(our_lungs.damage)
 					if(20 to 50)
@@ -493,8 +492,6 @@
  */
 /datum/pain/process(seconds_per_tick)
 
-	check_pain_modifiers(seconds_per_tick)
-
 	for(var/part in shuffle(body_zones))
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
 		if(QDELETED(checked_bodypart))
@@ -521,17 +518,6 @@
 
 	if(!IS_IN_STASIS(parent) && !parent.on_fire)
 		decay_pain(seconds_per_tick)
-
-/**
- * Check which additional pain modifiers should be applied.
- */
-/datum/pain/proc/check_pain_modifiers(seconds_per_tick)
-	// This sucks and should be replaced when drowsy is a status effect
-	if(parent.drowsyness)
-		if(parent.drowsyness > 8)
-			set_pain_modifier(PAIN_MOD_DROWSY, 0.95)
-		else
-			unset_pain_modifier(PAIN_MOD_DROWSY)
 
 /**
  * Whenever we buckle to something or lie down, get a pain bodifier.

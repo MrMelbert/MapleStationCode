@@ -44,7 +44,7 @@
 /datum/reagent/medicine/ondansetron/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()
 	if(SPT_PROB(8, seconds_per_tick))
-		M.drowsyness++
+		M.adjust_drowsiness(2 SECONDS * REM * seconds_per_tick)
 	if(SPT_PROB(15, seconds_per_tick) && M.get_bodypart_pain(BODY_ZONE_HEAD) <= PAIN_HEAD_MAX / 4)
 		M.cause_pain(BODY_ZONE_HEAD, 4)
 	M.adjust_disgust(-10 * REM * seconds_per_tick)

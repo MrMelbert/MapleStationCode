@@ -117,7 +117,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	// Antagonists can see exploitable info.
 	if(examiner.mind?.antag_datums && expl_info)
 		for(var/datum/antagonist/antag_datum as anything in examiner.mind.antag_datums)
-			if(antag_datum.antag_flags & CAN_SEE_EXPOITABLE_INFO)
+			if(antag_datum.antag_flags & FLAG_CAN_SEE_EXPOITABLE_INFO)
 				. += "<a href='?src=[REF(src)];exploitable_info=1'>\[Exploitable Info\]</a>"
 				break
 
@@ -161,7 +161,7 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	// Antagonists can see expoitable information.
 	if(expl_info && LAZYLEN(examiner.mind?.antag_datums))
 		for(var/datum/antagonist/antag_datum as anything in examiner.mind.antag_datums)
-			if(antag_datum.antag_flags & CAN_SEE_EXPOITABLE_INFO)
+			if(antag_datum.antag_flags & FLAG_CAN_SEE_EXPOITABLE_INFO)
 				added_info += "exploitable information"
 				break
 	// Medhuds can see medical and general records, with adequate access.

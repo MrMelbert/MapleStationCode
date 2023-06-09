@@ -201,11 +201,7 @@
 	. = ..()
 	icon_state = "plating" //we're redefining the base icon_state here so that the Conceal/Reveal Presence spell works for cultists
 
-	if (!mapload)
-		new /obj/effect/temp_visual/cult/turf/floor(src)
-
-	realappearance = new /obj/effect/cult_turf(src)
-	realappearance.linked = src
+	make_culty() // NON-MODULE CHANGE
 
 /turf/open/floor/engine/cult/Destroy()
 	be_removed()

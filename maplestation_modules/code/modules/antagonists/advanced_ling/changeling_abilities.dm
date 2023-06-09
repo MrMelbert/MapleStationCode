@@ -16,7 +16,7 @@
 /datum/action/changeling/passive_mimicvoice
 	name = "Adaptive Mimic Voice"
 	desc = "We adjust our vocal glands to passively always sound as if it were our visible identity's voice."
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
 	button_icon_state = "mimic_voice_passive"
 	helptext = "Passive. Functions similarly to the chameleon voice changer mask."
 	chemical_cost = 0
@@ -51,7 +51,7 @@
 	name = "Nervous System Realignment"
 	desc = "We realign our nervous system, making us naturally more resistant to pain. \
 		Can be activated to reboot our nervous system, removing all pain on use."
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
 	button_icon_state = "system_reboot"
 	helptext = "Passively reduces the amount of pain you recieve. On active, removes all pain instantly - though this action has a cooldown period."
 	chemical_cost = 15
@@ -93,7 +93,7 @@
 /datum/action/changeling/grant_powers
 	name = "Uplift Human"
 	desc = "After a long period, we integrate a victim into our changeling hivemind, granting them changeling powers. Requires us to strangle them."
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
 	button_icon_state = "grant_powers"
 	helptext = "Requires the victim be dead or unconscious. On success, the victim is implanted with a changeling headslug, granting them changling powers. \
 		The victim gains genetic points equal to half our max genetics points. This abilities goes on a very long cooldown after use, and can only be used twice."
@@ -197,7 +197,7 @@
 				target.sharp_pain(BODY_ZONE_CHEST, 75, BRUTE, 20 SECONDS)
 
 		SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("Grant Powers", "[i]"))
-		if(!do_mob(owner, target, (i * 8 SECONDS)))
+		if(!do_after(owner, (i * 8 SECONDS), target))
 			to_chat(owner, span_warning("Our uplifting of [target] has been interrupted!"))
 			return FALSE
 		if(QDELETED(src))

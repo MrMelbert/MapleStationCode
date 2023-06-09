@@ -304,6 +304,14 @@
 	inhand_icon_state = "oxapen"
 	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/anurifen = 10) // ~20-25 pain healing (if burn pain, per limb)
 
+/datum/armor/shock_blanket
+	laser = 20
+	energy = 20
+	bomb = 20
+	bio = 10
+	fire = 100
+	acid = 50
+
 /**
  * Shock blanket item. Hit someone to cover them with the blanket.
  * If they lie down and stay still, it will regulate their body temperature.
@@ -328,7 +336,7 @@
 	cold_protection = CHEST|GROIN|LEGS|ARMS
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	armor = list(MELEE = 0, BULLET = 0, LASER = 20, ENERGY = 20, BOMB = 20, BIO = 10, FIRE = 100, ACID = 50)
+	armor_type = /datum/armor/shock_blanket
 	equip_delay_self = 2 SECONDS
 	slowdown = 1.5
 	throwforce = 0

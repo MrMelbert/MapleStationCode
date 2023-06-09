@@ -7,4 +7,4 @@
 		/obj/item/food/meatball = 3,
 	)
 	result = /obj/item/food/omelette/eggcellent_plate
-	subcategory = CAT_EGG
+	category = CAT_EGG

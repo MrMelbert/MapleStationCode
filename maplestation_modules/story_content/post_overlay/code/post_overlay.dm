@@ -1,6 +1,6 @@
 /datum/action/innate/story_post_overlay
 	name = "Toggle Post Overlay"
-	icon_icon = 'icons/obj/wizard.dmi' //Not making a sprite for something people won't see, so fireball because it looks like a generic soul.
+	button_icon = 'icons/obj/wizard.dmi' //Not making a sprite for something people won't see, so fireball because it looks like a generic soul.
 	button_icon_state = "fireball"
 
 /datum/action/innate/story_post_overlay/Activate()
@@ -18,9 +18,10 @@
 
 /obj/item/story_post_overlay_granter //Just an item to make getting the overlay easy.
 	name = "Post Overlay Granter"
-	icon = 'icons/obj/weapons/items_and_weapons.dmi'
-	icon_state = "duffelcurse"
 	desc = "If you have this, either an admin wants to do something wacky or something seriously wrong has happened."
+	icon = 'icons/obj/weapons/hand.dmi'
+	icon_state = "duffelcurse"
+	inhand_icon_state = "duffelcurse"
 
 /obj/item/story_post_overlay_granter/attack_self(mob/user)
 	var/datum/action/innate/story_post_overlay/overlay_action = new(user)

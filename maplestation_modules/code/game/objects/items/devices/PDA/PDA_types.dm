@@ -60,5 +60,5 @@
 	greyscale_colors = "#e2e2e2#000099#6eaec8#9e00ea"
 	starting_programs = list(
 		// Lesser scientist but at least you can scan stuff
-		/datum/computer_file/program/phys_scanner/chemistry,
+		/datum/computer_file/program/maintenance/phys_scanner,
 	)

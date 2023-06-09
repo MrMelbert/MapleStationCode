@@ -21,7 +21,7 @@
 			to_chat(target, span_userdanger(pain_message))
 		return FALSE
 
-	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+	target.cause_pain(target_zone, pain_amount, pain_type)
 
 	if((target.IsSleeping() || target.IsUnconscious()) && target.has_status_effect(/datum/status_effect/grouped/anesthetic))
 		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
@@ -78,12 +78,12 @@
 /datum/surgery_step/coronary_bypass/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	. = ..()
 	// Reduces pain from surgery a bit on success
-	target.cause_typed_pain(target_zone, pain_amount * -0.25, pain_type)
+	target.cause_pain(target_zone, pain_amount * -0.25, pain_type)
 
 /datum/surgery_step/coronary_bypass/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery)
 	. = ..()
 	// Double pain from surgery
-	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+	target.cause_pain(target_zone, pain_amount, pain_type)
 
 /datum/surgery_step/fix_eyes
 	pain_amount = 9
@@ -94,12 +94,12 @@
 /datum/surgery_step/gastrectomy/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	. = ..()
 	// Reduces pain from surgery a bit on success
-	target.cause_typed_pain(target_zone, pain_amount * -0.75, pain_type)
+	target.cause_pain(target_zone, pain_amount * -0.75, pain_type)
 
 /datum/surgery_step/gastrectomy/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery)
 	. = ..()
 	// Double pain from surgery
-	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+	target.cause_pain(target_zone, pain_amount, pain_type)
 
 /datum/surgery_step/heal
 	pain_amount = 9
@@ -112,12 +112,12 @@
 /datum/surgery_step/hepatectomy/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	. = ..()
 	// Reduces pain from surgery a bit on success
-	target.cause_typed_pain(target_zone, pain_amount * -0.75, pain_type)
+	target.cause_pain(target_zone, pain_amount * -0.75, pain_type)
 
 /datum/surgery_step/hepatectomy/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery)
 	. = ..()
 	// Double pain from surgery
-	target.cause_typed_pain(target_zone, pain_amount, pain_type)
+	target.cause_pain(target_zone, pain_amount, pain_type)
 
 /datum/surgery_step/extract_implant
 	pain_amount = 24

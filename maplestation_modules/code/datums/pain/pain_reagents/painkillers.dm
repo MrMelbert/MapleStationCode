@@ -67,21 +67,20 @@
 	switch(current_cycle)
 		if(16) //~3u
 			to_chat(M, span_warning("You start to feel tired..."))
-			M.blur_eyes(1) // just a hint teehee
+			M.adjust_eye_blur(2 SECONDS * REM * seconds_per_tick) // just a hint teehee
 			if(prob(50))
 				M.emote("yawn")
 
 		if(24 to 36) // 5u to 7.5u
-			if(M.drowsyness <= 3 && SPT_PROB(33, seconds_per_tick))
-				M.adjust_drowsyness(1 * REM * seconds_per_tick)
+			if(SPT_PROB(33, seconds_per_tick))
+				M.adjust_drowsiness_up_to(1 * REM * seconds_per_tick, 6 SECONDS)
 
 		if(36 to 48) // 7.5u to 10u
-			if(M.drowsyness <= 6 && SPT_PROB(66, seconds_per_tick))
-				M.adjust_drowsyness(1 * REM * seconds_per_tick)
+			if(SPT_PROB(66, seconds_per_tick))
+				M.adjust_drowsiness_up_to(1 * REM * seconds_per_tick, 12 SECONDS)
 
 		if(48 to INFINITY) //10u onward
-			if(M.drowsyness <= 9)
-				M.adjust_drowsyness(1 * REM * seconds_per_tick)
+			M.adjust_drowsiness_up_to(1 * REM * seconds_per_tick, 20 SECONDS)
 			M.Sleeping(4 SECONDS * REM * seconds_per_tick)
 
 	..()
@@ -233,7 +232,7 @@
 		M.adjust_disgust(3 * REM * seconds_per_tick)
 	// ...Drowsyness...
 	if(SPT_PROB(75 * max(1 - creation_purity, 0.5), seconds_per_tick))
-		M.drowsyness += 1 * REM * seconds_per_tick
+		M.adjust_drowsiness(2 SECONDS * REM * seconds_per_tick)
 	// ...And dizziness
 	if(SPT_PROB(85 * max(1 - creation_purity, 0.5), seconds_per_tick))
 		M.adjust_dizzy(4 SECONDS * REM * seconds_per_tick)

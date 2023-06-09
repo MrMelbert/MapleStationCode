@@ -47,3 +47,8 @@
 
 /// Modular traits
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"
+
+/// Bitflags for speech sounds
+#define SOUND_NORMAL (1<<0)
+#define SOUND_QUESTION (1<<1)
+#define SOUND_EXCLAMATION (1<<2)

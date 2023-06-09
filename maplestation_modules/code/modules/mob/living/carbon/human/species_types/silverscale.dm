@@ -107,14 +107,18 @@
 	if (statue)
 		if (modified_modularly)
 			return
-		if (!statue.armor)
-			statue.armor = getArmor()
-		var/datum/armor/statue_armor = statue.armor
-		statue.armor = statue_armor.modifyRating(melee = 50, bullet = 45, laser = 60, energy = 30, bomb = 50)
 
+		statue.set_armor(/datum/armor/silverscale_statue_armor)
 		modified_modularly = TRUE
 	else
 		modified_modularly = FALSE
+
+/datum/armor/silverscale_statue_armor
+	melee = 50
+	bullet = 50
+	laser = 75
+	energy = 50
+	bomb = 50
 
 // TONGUE CODE END
 
@@ -145,7 +149,7 @@
 
 	if (!istongue(new_organ))
 		return
-	var/obj/item/organ/internal/tongue/existing_tongue = receiver.getorganslot(ORGAN_SLOT_TONGUE)
+	var/obj/item/organ/internal/tongue/existing_tongue = receiver.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if (istype(existing_tongue, /obj/item/organ/internal/tongue/lizard/silver))
 		return
 	if (istype(new_organ, /obj/item/organ/internal/tongue/lizard/silver))

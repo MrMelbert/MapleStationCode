@@ -372,7 +372,7 @@
  * return FALSE if we cannot pick up the towel and TRUE otherwise
  */
 /obj/structure/beach_towel/proc/try_pick_up(mob/living/carbon/picker_up)
-	if(!picker_up.canUseTopic(src, be_close = TRUE, no_tk = TRUE, need_hands = TRUE))
+	if(!picker_up.can_perform_action(src, NEED_HANDS|FORBID_TELEKINESIS_REACH))
 		return FALSE
 
 	var/turf/our_turf = get_turf(src)

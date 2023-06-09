@@ -37,7 +37,7 @@
 	. = ..()
 	affected_carbon.adjust_nutrition(-HUNGER_FACTOR * seconds_per_tick)
 	if(SPT_PROB(66, seconds_per_tick))
-		affected_carbon.drowsyness = min(affected_carbon.drowsyness + 1 * REM * seconds_per_tick, 8)
+		affected_carbon.adjust_drowsiness_up_to(2 SECONDS * REM * seconds_per_tick, 10 SECONDS)
 	if(SPT_PROB(8, seconds_per_tick))
 		affected_carbon.adjust_confusion(10 SECONDS)
 
@@ -50,7 +50,7 @@
 	. = ..()
 	affected_carbon.adjust_nutrition(-HUNGER_FACTOR * seconds_per_tick)
 	if(SPT_PROB(75, seconds_per_tick))
-		affected_carbon.drowsyness = min(affected_carbon.drowsyness + 1 * REM * seconds_per_tick, 16)
+		affected_carbon.adjust_drowsiness_up_to(2 SECONDS * REM * seconds_per_tick, 20 SECONDS)
 	if(SPT_PROB(8, seconds_per_tick))
 		affected_carbon.adjust_confusion(16 SECONDS)
 

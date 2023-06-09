@@ -25,7 +25,7 @@
 
 /datum/addiction/luciferium/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
-	if(affected_carbon.pain_controller.get_average_pain() <= 33 && SPT_PROB(8, seconds_per_tick))
+	if(affected_carbon.pain_controller?.get_average_pain() <= 33 && SPT_PROB(8, seconds_per_tick))
 		affected_carbon.cause_pain(pick(BODY_ZONES_ALL), 3)
 
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type)
@@ -39,7 +39,7 @@
 
 /datum/addiction/luciferium/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
-	if(affected_carbon.pain_controller.get_average_pain() <= 66 && SPT_PROB(8, seconds_per_tick))
+	if(affected_carbon.pain_controller?.get_average_pain() <= 66 && SPT_PROB(8, seconds_per_tick))
 		affected_carbon.cause_pain(pick(BODY_ZONES_ALL), 5)
 	affected_carbon.adjustCloneLoss(0.2 * seconds_per_tick, FALSE)
 

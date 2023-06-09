@@ -8,7 +8,7 @@
 	total_positions = 3
 	spawn_positions = 2 // 2 seats in XB normally, 1 can be doing Cyto or assisting.
 	supervisors = "the research director"
-	selection_color = "#ffeeff"
+	// selection_color = "#ffeeff"
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "XENOBIO"
 

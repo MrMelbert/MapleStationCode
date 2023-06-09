@@ -1,8 +1,11 @@
 /// -- Loadout shoes --
 /obj/item/clothing/shoes/jackboots/loadout
 	desc = "Tall Nanotrasen-issue combat boots for combat scenarios or combat situations. All combat, all the time. These ones come from a military surplus store and have laces."
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 75, FIRE = 0, ACID = 0)
+	armor_type = /datum/armor/loadout_jackboots
 	can_be_tied = TRUE
+
+/datum/armor/loadout_jackboots
+	bio = 75
 
 /obj/item/clothing/shoes/sneakers/greyscale
 	name = "tailored shoes"

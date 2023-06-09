@@ -37,7 +37,7 @@
 		worn_icon_state += "[bat.belt_sprite]"
 
 /obj/item/storage/belt/baseball/AltClick(mob/user)
-	if(!user.canUseTopic(src, be_close = TRUE, no_dexterity = TRUE, need_hands = TRUE))
+	if(!user.can_perform_action(src, NEED_HANDS|FORBID_TELEKINESIS_REACH))
 		return
 	if(length(contents))
 		var/obj/item/bat = contents[1]

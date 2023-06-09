@@ -32,20 +32,10 @@
 	if(!owner)
 		return FALSE
 
-	var/base_max_stamina_damage = initial(max_stamina_damage)
-
-	switch(pain)
-		if(10 to 25)
-			max_stamina_damage = base_max_stamina_damage / 1.2
-		if(25 to 50)
-			max_stamina_damage = base_max_stamina_damage / 1.5
-		if(50 to 65)
-			max_stamina_damage = base_max_stamina_damage / 2
-		if(65 to INFINITY)
-			if(can_be_disabled && !HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
-				to_chat(owner, span_userdanger("Your [parse_zone(body_zone)] goes numb from the pain!"))
-				ADD_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
-				update_disabled()
+	if(pain >= 65 && can_be_disabled && !HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
+		to_chat(owner, span_userdanger("Your [parse_zone(body_zone)] goes numb from the pain!"))
+		ADD_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
+		update_disabled()
 
 	return TRUE
 
@@ -58,14 +48,6 @@
 	if(!owner)
 		return FALSE
 
-	var/base_max_stamina_damage = initial(max_stamina_damage)
-	switch(pain)
-		if(0 to 10)
-			max_stamina_damage = base_max_stamina_damage
-		if(10 to 25)
-			max_stamina_damage = base_max_stamina_damage / 1.2
-		if(25 to 50)
-			max_stamina_damage = base_max_stamina_damage / 1.5
 	if(pain < 65 && HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
 		to_chat(owner, span_green("You can feel your [parse_zone(body_zone)] again!"))
 		REMOVE_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
@@ -139,39 +121,6 @@
 	// augmented limbs lose pain very rapidly and take very little in the way of pain.
 	// Why not a 0 modifier? I feel like it'll be unfun if they can just completely ignore the system.
 	bodypart_pain_modifier = 0.2
-
-// Chests can't go below 100 max_stamina_damage for stam crit reasons
-// So this override is here until stamina damage is improved a bit
-/obj/item/bodypart/chest/on_gain_pain_effects(amount)
-	if(!owner)
-		return FALSE
-
-	var/base_max_stamina_damage = initial(max_stamina_damage)
-
-	switch(pain)
-		if(10 to 25)
-			max_stamina_damage = base_max_stamina_damage - 5
-		if(25 to 50)
-			max_stamina_damage = base_max_stamina_damage - 12
-		if(50 to 65)
-			max_stamina_damage = base_max_stamina_damage - 20
-
-	return TRUE
-
-/obj/item/bodypart/chest/on_lose_pain_effects(amount)
-	if(!owner)
-		return FALSE
-
-	var/base_max_stamina_damage = initial(max_stamina_damage)
-	switch(pain)
-		if(0 to 10)
-			max_stamina_damage = base_max_stamina_damage
-		if(10 to 25)
-			max_stamina_damage = base_max_stamina_damage - 5
-		if(25 to 50)
-			max_stamina_damage = base_max_stamina_damage - 12
-
-	return TRUE
 
 /obj/item/bodypart/chest/pain_feedback(seconds_per_tick, healing_pain)
 	if(!owner || !pain)

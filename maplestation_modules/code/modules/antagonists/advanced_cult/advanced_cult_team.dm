@@ -138,7 +138,7 @@
 /datum/action/innate/cult/arise_the_cult
 	name = "Arise the Cult"
 	desc = "Arise the cult, granting all members of the cult glowing red eyes."
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_cult.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "ascend_eyes"
 
 /datum/action/innate/cult/arise_the_cult/IsAvailable(feedback)
@@ -158,7 +158,7 @@
 /datum/action/innate/cult/ascend_the_cult
 	name = "Ascend the Cult"
 	desc = "Ascend the cult, granting all members of the cult floating halos."
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_cult.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "ascend_halo"
 
 /datum/action/innate/cult/ascend_the_cult/IsAvailable(feedback)

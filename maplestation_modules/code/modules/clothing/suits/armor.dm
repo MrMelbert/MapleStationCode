@@ -1,9 +1,20 @@
 /// -- Modular armor items. --
 // BO Armor
+/datum/armor/bridge_vest
+	melee = 25
+	bullet = 20
+	laser = 20
+	energy = 20
+	bomb = 15
+	bio = 0
+	fire = 100
+	acid = 90
+	wound = 10
+
 /obj/item/clothing/suit/armor/vest/bridge_officer
 	name = "bridge officer's armor vest"
 	desc = "A somewhat flexible but stiff suit of armor. It reminds you of a simpler time."
-	armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 20, BOMB = 15, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
+	armor_type = /datum/armor/bridge_vest
 
 //Unused, but we're keeping it
 /obj/item/clothing/suit/armor/vest/bridge_officer/large
@@ -13,12 +24,23 @@
 	inhand_icon_state = "armor"
 
 //AP Armor
+/datum/armor/ap_vest
+	melee = 40
+	bullet = 40
+	laser = 40
+	energy = 40
+	bomb = 30
+	bio = 0
+	fire = 100
+	acid = 90
+	wound = 10
+
 /obj/item/clothing/suit/armor/vest/asset_protection
 	name = "asset protection's armor vest"
 	desc = "A rigid vest of armor worn by Asset Protection. Rigid and stiff, just like your attitude."
 	icon_state = "bulletproof"
 	inhand_icon_state = "armor"
-	armor = list(MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 30, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
+	armor_type = /datum/armor/ap_vest
 
 /obj/item/clothing/suit/armor/vest/asset_protection/large
 	name = "asset protection's large armor vest"

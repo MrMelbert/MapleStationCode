@@ -22,14 +22,11 @@
 			A.affected_mob.cause_pain(BODY_ZONES_ALL, 12 * (pain ? 2 : 1))
 			A.affected_mob.flash_pain_overlay(2, 2 SECONDS)
 
-/datum/symptom/fire/Firestacks_stage_4(mob/living/carbon/M, datum/disease/advance/A)
+/datum/symptom/fire/Activate(datum/disease/advance/A)
 	. = ..()
-	M.cause_typed_pain(BODY_ZONES_ALL, 5, BURN)
-	M.flash_pain_overlay(1)
-	M.pain_emote("scream", 5 SECONDS)
-
-/datum/symptom/fire/Firestacks_stage_5(mob/living/carbon/M, datum/disease/advance/A)
-	. = ..()
-	M.cause_typed_pain(BODY_ZONES_ALL, 10, BURN)
-	M.flash_pain_overlay(1)
-	M.pain_emote("scream", 5 SECONDS)
+	if(!.)
+		return
+	var/mob/living/living_mob = A.affected_mob
+	living_mob.cause_pain(BODY_ZONES_ALL, 5 * power, BURN)
+	living_mob.flash_pain_overlay(1)
+	living_mob.pain_emote("scream", 5 SECONDS)

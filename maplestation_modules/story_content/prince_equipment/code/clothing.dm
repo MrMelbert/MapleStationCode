@@ -17,7 +17,6 @@
 /obj/item/clothing/shoes/jackboots/medical
 	name = "medical boots"
 	desc = "Medical grade boots with slots for medical pens. This particular pair seems to have thicker soles on the bottom."
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 95, FIRE = 0, ACID = 0)
 	icon = 'maplestation_modules/story_content/prince_equipment/icons/doctor_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/prince_equipment/icons/doctor_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/prince_equipment/icons/doctor_lhand.dmi'
@@ -27,6 +26,10 @@
 	// Worn: "boots"
 	icon_state = "boots"
 	inhand_icon_state = "boots"
+	armor_type = /datum/armor/medical_boots
+
+/datum/armor/medical_boots
+	bio = 95
 
 /obj/item/clothing/gloves/color/latex/nitrile/special
 	name = "high grade nitriles"

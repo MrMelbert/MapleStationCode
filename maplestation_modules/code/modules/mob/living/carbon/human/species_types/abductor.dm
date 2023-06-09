@@ -1,3 +1,6 @@
+/datum/species/abductor/get_species_speech_sounds(sound_type)
+	return
+
 /datum/species/abductor/get_species_description()
 	return "Abductors, colloquially known as \"Greys\" (or \"Grays\"), are pale skinned inquisitive aliens who can't commicate to the average crew-member."
 
