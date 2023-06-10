@@ -1,7 +1,6 @@
 /// Holding place for all non-species ornithid features that are unique to it. (sprite overlays for wings, ears)
 /datum/sprite_accessory/arm_wings
 	icon = 'maplestation_modules/icons/mob/armwings.dmi'
-	color_src = ORGAN_COLOR_HAIR
 
 /datum/sprite_accessory/arm_wings/monochrome
 	name = "Monochrome"
@@ -11,6 +10,7 @@
 /datum/sprite_accessory/arm_wings/monochrome_short
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
+	color_src = ORGAN_COLOR_HAIR
 
 /obj/item/organ/external/wings/arm_wings
 	name = "Arm Wings"
@@ -22,6 +22,7 @@
 
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"
+	color_source = ORGAN_COLOR_HAIR
 	layers = EXTERNAL_ADJACENT | EXTERNAL_BEHIND | EXTERNAL_FRONT
 
 /datum/bodypart_overlay/mutant/wings/arm_wings/New()
