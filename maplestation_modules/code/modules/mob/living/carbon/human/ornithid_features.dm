@@ -12,12 +12,29 @@
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
 
-/obj/item/organ/external/wings/functional/arm_wings
+/obj/item/organ/external/wings/arm_wings
 	name = "Arm Wings"
 	desc = "aaaaa" // filler
 	dna_block = DNA_ARM_WINGS_BLOCK
-	sprite_accessory_override = /datum/sprite_accessory/arm_wings
+
+	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/arm_wings
 	preference = "feature_arm_wings"
+
+/datum/bodypart_overlay/mutant/wings/arm_wings
+	feature_key = "arm_wings"
+	layers = EXTERNAL_ADJACENT | EXTERNAL_BEHIND | EXTERNAL_FRONT
+
+/datum/bodypart_overlay/mutant/wings/arm_wings/New()
+	. = ..()
+
+/datum/bodypart_overlay/mutant/wings/arm_wings/get_global_feature_list()
+	return GLOB.arm_wings_list
+
+/datum/bodypart_overlay/mutant/wings/arm_wings/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
+		return TRUE
+	return FALSE
+
 
 /// YES, I GET IT. THIS SHOULD BE IN ITS OWN FILE WITH THE REST. DNM UNTIL I PUT THIS IN ITS PROPER FILE! THIS IS JUST SO I CAN HAVE EVERYTHING ALL IN ONE PLACE DURING EARLY STAGES!!!!
 
@@ -56,7 +73,11 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()
-	return possible_values_for_sprite_accessory_list_for_body_part(GLOB.arm_wings_list, "arm_wings", list("ADJ", "BEHIND", "FRONT"))
+	return possible_values_for_sprite_accessory_list_for_body_part(
+		GLOB.arm_wings_list,
+		"arm_wings",
+		list( "BEHIND", "FRONT", "ADJ"),
+		)
 
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value

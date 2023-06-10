@@ -15,7 +15,7 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	//mutant_bodyparts = list() // avian ears NYI ("ears" = "Avian",)
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
-		/obj/item/organ/external/wings/functional/arm_wings = "monochrome"
+		/obj/item/organ/external/wings/arm_wings = "monochrome"
 	//
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
 	)
@@ -42,9 +42,6 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 
 // defines limbs/bodyparts.
 
-/datum/bodypart_overlay/mutant/arm_wings/get_global_feature_list()
-	return GLOB.arm_wings_list
-
 /obj/item/bodypart/arm/left/ornithid
 	limb_id = SPECIES_ORNITHID
 	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi' // NYI! THIS IS A PLACEHOLDER BECAUSE OF MAPLE MODULARITY
@@ -69,7 +66,7 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	)
 
 /datum/species/human/ornithid/get_species_description()
-	return "Ornithids are a collective group of various human descendant or otherwise resembling sentient avian beings."
+	return "Ornithids are a collective group of various human descendant or otherwise resembling sentient avian beings." // i'll get to this later kek
 
 /datum/species/human/ornithid/create_pref_unique_perks()
 	var/list/to_add = list()
