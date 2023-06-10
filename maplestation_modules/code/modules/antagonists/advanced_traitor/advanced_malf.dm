@@ -2,7 +2,8 @@
 /// Proc to give the malf their hacked module.
 /datum/antagonist/malf_ai/finalize_antag()
 	if(give_objectives)
-		employer = pick(GLOB.ai_employers)
+		if(!employer)
+			employer = pick(GLOB.ai_employers)
 		malfunction_flavor = strings(MALFUNCTION_FLAVOR_FILE, employer)
 
 	add_law_zero()

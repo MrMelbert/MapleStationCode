@@ -31,14 +31,9 @@
 	owner.special_role = job_rank
 	if(give_objectives)
 		forge_ai_objectives()
-	if(!employer)
-		employer = pick(GLOB.ai_employers)
 
-	malfunction_flavor = strings(MALFUNCTION_FLAVOR_FILE, employer)
-
-	add_law_zero()
-	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/malf.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
-	owner.current.grant_language(/datum/language/codespeak, TRUE, TRUE, LANGUAGE_MALF)
+	if(finalize_antag) // NON-MODULE CHANGE
+		finalize_antag()
 
 	return ..()
 
