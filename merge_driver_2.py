@@ -174,32 +174,57 @@ def update_build():
     print("\"Update build\" done")
     # This should also update CI
 
+def clean_tgui():
+    existing = {}
+    for root, subdirs, files in os.walk("tgui/packages/tgui/interfaces"):
+        inner_existing = {}
+        for file in files:
+            if not file.endswith(".js") and not file.endswith(".tsx"):
+                continue
+            matches = re.search(r'(.+?)\.(.+)', file)
+            if not matches:
+                continue
+            first_match = matches.group(1)
+            if first_match in ["index", "constants"]:
+                continue
+            if first_match in existing:
+                if first_match in inner_existing:
+                    print("Duplicate file found in same dir, removing: " + file + " and " + inner_existing[first_match])
+                    os.remove(os.path.join(root, first_match + ".js"))
+                else:
+                    print("Duplicate file found, this may be intended: " + file + " and " + existing[first_match])
+            else:
+                existing[first_match] = file
+                inner_existing[first_match] = file
+
 if __name__ == "__main__":
     print("Running merge driver.")
 
-    # try:
-    #     upstream_origin = sys.argv[1]
-    # except IndexError:
-    #     print("No upstream origin specified, using default: \"upstream-tg\"")
-    #     upstream_origin = "upstream-tg"
+    try:
+        upstream_origin = sys.argv[1]
+    except IndexError:
+        print("No upstream origin specified, using default: \"upstream-tg\"")
+        upstream_origin = "upstream-tg"
 
-    # subprocess.run(["git", "fetch", upstream_origin, "master"])
-    # subprocess.run(["git", "pull", upstream_origin, "master", "--allow-unrelated-histories"])
+    subprocess.run(["git", "fetch", upstream_origin, "master"])
+    subprocess.run(["git", "pull", upstream_origin, "master", "--allow-unrelated-histories"])
 
-    # print("=== 1. Resolving conflicts automatically... ===")
-    # solve_conflicts_in_dir(tgstation_files)
-    # solve_conflicts_in_dir(tgstation_ui_files)
+    print("=== 1. Resolving conflicts automatically... ===")
+    solve_conflicts_in_dir(tgstation_files)
+    solve_conflicts_in_dir(tgstation_ui_files)
 
-    # print("=== 2. Updating dme... ===")
-    # update_dme()
+    print("=== 2. Updating dme... ===")
+    update_dme()
 
-    # print("=== 3. Updating build... ===")
-    # update_build()
+    print("=== 3. Updating build... ===")
+    update_build()
 
     print("=== 4. Removing unticked files... ===")
     find_unticked_files(tgstation_files)
 
-    # print("=== 5. Cleaing up misc files... ===")
-    # solve_conflicts_in_dir(".", [tgstation_files, tgstation_ui_files])
+    print("=== 5. Cleaing up misc files... ===")
+    solve_conflicts_in_dir(".", [tgstation_files, tgstation_ui_files])
+
+    clean_tgui()
 
     print("Merge driver done.")

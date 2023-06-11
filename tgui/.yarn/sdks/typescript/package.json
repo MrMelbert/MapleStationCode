@@ -1,10 +1,6 @@
 {
   "name": "typescript",
-<<<<<<< HEAD
-  "version": "4.3.5-sdk",
-=======
   "version": "4.9.4-sdk",
->>>>>>> d63121b05e245cb95c54ab34611effb560281f07
   "main": "./lib/typescript.js",
   "type": "commonjs"
 }
