@@ -5,10 +5,10 @@
 	desc = "A thick and rugged cape made out of materials from monsters \
 		native to the planet known as Lavaland. This one is quite old \
 		and has survived quite a beating, and offers little to no protection anymore."
-	hoodtype = /obj/item/clothing/head/hooded/cloakhood/goliath_heirloom
+	hoodtype = /obj/item/clothing/head/hooded/cloakhood/goliath/heirloom
 	armor_type = /datum/armor/none
 
-/obj/item/clothing/head/hooded/cloakhood/heirloom
+/obj/item/clothing/head/hooded/cloakhood/goliath/heirloom
 	name = "heirloom goliath cloak hood"
 	desc = "A snug hood made out of materials from goliaths and watchers. \
 		This hood is quite worn and offers very little protection now."

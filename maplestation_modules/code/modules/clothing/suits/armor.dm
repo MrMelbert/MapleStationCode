@@ -90,7 +90,7 @@
 		/obj/item/flashlight,
 		/obj/item/lighter,
 		/obj/item/storage/box/matches,
-		/obj/item/modular_computer/tablet,
+		/obj/item/modular_computer/pda,
 		/obj/item/toy,
 		/obj/item/stamp,
 		/obj/item/pen,
