@@ -20,6 +20,8 @@
 	name = "Post Overlay Granter"
 	desc = "If you have this, either an admin wants to do something wacky or something seriously wrong has happened."
 	icon = 'icons/obj/weapons/hand.dmi'
+	lefthand_file = 'icons/mob/inhands/items/touchspell_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/touchspell_righthand.dmi'
 	icon_state = "duffelcurse"
 	inhand_icon_state = "duffelcurse"
 

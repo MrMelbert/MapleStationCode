@@ -1,19 +1,18 @@
 /// -- Loadout suits (the outer, exosuit kind) --
-/obj/item/clothing/suit/hooded/cloak/goliath_heirloom
+/obj/item/clothing/suit/hooded/cloak/goliath/heirloom
 	name = "heirloom goliath cloak"
 	icon_state = "goliath_cloak"
-	desc = "A thick and rugged cape made out of materials from monsters native to the planet known as Lavaland. This one is quite old and has survived quite a beating, and offers little to no protection anymore."
-	allowed = list(/obj/item/flashlight, /obj/item/tank/internals, /obj/item/pickaxe, /obj/item/knife/combat/bone, /obj/item/knife/combat/survival)
+	desc = "A thick and rugged cape made out of materials from monsters \
+		native to the planet known as Lavaland. This one is quite old \
+		and has survived quite a beating, and offers little to no protection anymore."
 	hoodtype = /obj/item/clothing/head/hooded/cloakhood/goliath_heirloom
-	body_parts_covered = CHEST|GROIN|ARMS
+	armor_type = /datum/armor/none
 
-/obj/item/clothing/head/hooded/cloakhood/goliath_heirloom
+/obj/item/clothing/head/hooded/cloakhood/heirloom
 	name = "heirloom goliath cloak hood"
-	icon_state = "golhood"
-	desc = "A snug hood made out of materials from goliaths and watchers. This hood is quite worn and offers very little protection now."
-	clothing_flags = SNUG_FIT
-	flags_inv = HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR
-	transparent_protection = HIDEMASK
+	desc = "A snug hood made out of materials from goliaths and watchers. \
+		This hood is quite worn and offers very little protection now."
+	armor_type = /datum/armor/none
 
 /obj/item/clothing/suit/toggle/suspenders/greyscale
 	name = "tailored suspenders"
@@ -36,7 +35,7 @@
 	allowed += list(
 		/obj/item/flashlight,
 		/obj/item/lighter,
-		/obj/item/modular_computer/tablet/pda,
+		/obj/item/modular_computer/pda,
 		/obj/item/radio,
 		/obj/item/storage/bag/books,
 		/obj/item/storage/fancy/cigarettes,

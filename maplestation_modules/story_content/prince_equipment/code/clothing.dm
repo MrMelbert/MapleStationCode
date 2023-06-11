@@ -11,6 +11,7 @@
 	// Inhand: "uni"
 	// Worn: "uni"
 	icon_state = "uni"
+	worn_icon_state = "uni"
 	inhand_icon_state = "uni"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 
@@ -25,6 +26,7 @@
 	// Inhand: "boots"
 	// Worn: "boots"
 	icon_state = "boots"
+	worn_icon_state = "boots"
 	inhand_icon_state = "boots"
 	armor_type = /datum/armor/medical_boots
 
@@ -42,6 +44,7 @@
 	// Inhand: "gloves"
 	// Worn: "gloves"
 	icon_state = "gloves"
+	worn_icon_state = "gloves"
 	inhand_icon_state = "gloves"
 	greyscale_colors = null
 	greyscale_config_inhand_left = null
@@ -59,6 +62,7 @@
 	// Inhand: "coat"
 	// Worn: "coat"
 	icon_state = "coat"
+	worn_icon_state = "coat"
 	inhand_icon_state = "coat"
 
 /obj/item/storage/belt/medical/cmo
@@ -72,6 +76,7 @@
 	// Inhand: "belt"
 	// Worn: "belt"
 	icon_state = "belt"
+	worn_icon_state = "belt"
 	inhand_icon_state = "belt"
 
 // Clothes to the bag

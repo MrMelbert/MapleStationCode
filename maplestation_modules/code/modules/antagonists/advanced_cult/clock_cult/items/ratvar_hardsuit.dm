@@ -2,6 +2,7 @@
 /obj/item/clothing/head/hooded/clock
 	name = "\improper Rat'varian clockwork suit"
 	desc = "A heavily-armored helmet worn by warriors of the Rat'varian cult. It can withstand hard vacuum."
+	icon = 'icons/mob/clothing/head/chaplain.dmi'
 	icon_state = "clockwork_helmet"
 	inhand_icon_state = null
 	armor_type = /datum/armor/clockword_suit
@@ -21,6 +22,7 @@
 /obj/item/clothing/suit/hooded/clock
 	name = "\improper Rat'varian clockwork suit"
 	desc = "A heavily-armored exosuit worn by warriors of the Rat'varian cult. It can withstand hard vacuum."
+	icon = 'icons/obj/clothing/suits/chaplain.dmi'
 	icon_state = "clockwork_cuirass"
 	worn_icon_state = "clockwork_cuirass"
 	inhand_icon_state = null

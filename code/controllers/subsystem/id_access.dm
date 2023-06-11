@@ -217,7 +217,7 @@ SUBSYSTEM_DEF(id_access)
 		var/datum/id_trim/trim = trim_singletons_by_path[trim_path]
 		centcom_job_templates[trim_path] = trim.assignment
 
-	var/list/all_pda_paths = typesof(/obj/item/modular_computer/tablet/pda)
+	var/list/all_pda_paths = typesof(/obj/item/modular_computer/pda)
 	var/list/pda_regions = PDA_PAINTING_REGIONS + get_modular_PDA_regions() // NON-MODULE CHANGE
 	for(var/pda_path in all_pda_paths)
 		if(!(pda_path in pda_regions))

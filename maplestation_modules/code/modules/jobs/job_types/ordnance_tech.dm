@@ -50,6 +50,6 @@
 	name = "Ordnance Technician"
 	suit = /obj/item/clothing/suit/toggle/labcoat/toxic
 	uniform = /obj/item/clothing/under/rank/rnd/ordnance_tech
-	belt = /obj/item/modular_computer/tablet/pda/ordnance
+	belt = /obj/item/modular_computer/pda/ordnance
 	jobtype = /datum/job/ordnance_tech
 	id_trim = /datum/id_trim/job/ordnance_tech
