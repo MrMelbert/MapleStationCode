@@ -1,15 +1,19 @@
+/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/scattershot
+	name = "\improper LB 10-X AC \"Scattershot\"" //refer to UAC/2 name change comment
+	desc = "A weapon for combat exosuits. Shoots a spread of pellets. Nobody knows what the LB stands for."
+
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/lmg
-	name = "\improper Ultra AC/2" //this entire time it was mispelled, and the proper version looks way cooler
+	name = "\improper Ultra AC/2 \"Koshi\"" //this entire time it was mispelled, and the proper version looks way cooler. Also has a calling name now to differentiate it from the others.
 	desc = "A weapon for combat exosuits. Shoots a rapid, three shot burst. Utilizes magnetic loading for faster firing." //override for lore purposes, explains what "Ultra" even means
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/lmg/slow //weaker version of the AC2 for lore purposes, used by non-NT factions
-	name = "\improper Autocannon/2"
+	name = "\improper Autocannon/2 \"Vulcan\""
 	desc = "A weapon for combat exosuits. Shoots a three shot burst."
 	equip_cooldown = 15
 	projectile_delay = 3
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_5
-	name = "\improper Autocannon/5"
+	name = "\improper Autocannon/5 \"Hermes\""
 	desc = "A weapon for combat exosuits. Fires two rounds at high speed. Notably good at range."
 	icon = 'maplestation_modules/icons/mecha/mecha_equipment.dmi'
 	icon_state = "mecha_ac5"
@@ -25,12 +29,12 @@
 	ammo_type = MECHA_AMMO_AC5
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_5/ultra //ultra ACs from this point on aren't printable and thus are rarer to get
-	name = "\improper Ultra AC/5"
+	name = "\improper Ultra AC/5 \"Daishi\""
 	desc = "A weapon for combat exosuits. Fires two rounds at high speed. Notably good at range. Utilizes magnetic loading for faster firing."
 	equip_cooldown = 15
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_10
-	name = "\improper Autocannon/10"
+	name = "\improper Autocannon/10 \"Urbie\""
 	desc = "A weapon for combat exosuits. Fires a singular armor-piercing round."
 	icon = 'maplestation_modules/icons/mecha/mecha_equipment.dmi'
 	icon_state = "mecha_ac10"
@@ -44,12 +48,12 @@
 	ammo_type = MECHA_AMMO_AC10
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_10/ultra
-	name = "\improper Ultra AC/10"
+	name = "\improper Ultra AC/10 \"Masakari\""
 	desc = "A weapon for combat exosuits. Fires a singular armor-piercing round. Utilizes magnetic loading for faster firing."
 	equip_cooldown = 10
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_20
-	name = "\improper Autocannon/20"
+	name = "\improper Autocannon/20 \"Atlas\""
 	desc = "A weapon for combat exosuits. Fires a singular slow gigantic slug."
 	icon = 'maplestation_modules/icons/mecha/mecha_equipment.dmi'
 	icon_state = "mecha_ac20"
@@ -63,5 +67,5 @@
 	ammo_type = MECHA_AMMO_AC20
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_20/ultra
-	name = "\improper Ultra AC/20"
+	name = "\improper Ultra AC/20 \"Kodiak\""
 	desc = "A weapon for combat exosuits. Fires a singular slow gigantic slug. Utilizes magnetic loading for faster firing."
