@@ -1,4 +1,4 @@
-//Faster moving pandora for the Conceptual away mission. Moves faster but hits for less.
+//WIP:Turn into basic mob, might retool abilities if unable to keep close to Pandora. Faster moving pandora for the Conceptual away mission. Moves faster but hits for less.
 /mob/living/simple_animal/hostile/asteroid/elite/pandora/threat
 	name = "Concept of Threat"
 	desc = "The sharp corners and pulsing charges put you on edge."
@@ -82,22 +82,27 @@
 	name = "Pure Heart"
 	desc = "The warmth and beating rhythm is comforting at an instinctual level."
 
-//WIP:Make fade away like magic flares when dead or atleast delete corpse.
-/mob/living/simple_animal/hostile/concept
+/*WIP:Scramble tiles for a longer time. Perhaps include it in 2nd boss somehow.
+/datum/action/cooldown/spell/spacetime_dist/concept
+	name = "Spacetime Distortion Longer"
+	scramble_radius = 3
+	duration = 2 MINUTES
+*/
+//WIP:Turn into basic mob, del on death.
+/mob/living/basic/concept_hunger
 	name = "Concept of Hunger"
 	desc = "An non-distinct mass of light?"
 	icon = 'icons/effects/light_overlays/light_32.dmi'
 	icon_state = "light"
-	flip_on_death = TRUE
-	del_on_death = 1
+	icon_living = "light"
 	mob_biotypes = MOB_SPIRIT
 	maxHealth = 10 //easy to kill
 	health = 10
+	gender = NEUTER
+	basic_mob_flags = DEL_ON_DEATH
 	melee_damage_lower = 5
 	melee_damage_upper = 8
 	attack_verb_continuous = "bites"
 	attack_verb_simple = "bite"
 	attack_sound = 'sound/weapons/bite.ogg'
 	attack_vis_effect = ATTACK_EFFECT_BITE
-	search_objects = 1
-	wanted_objects = list(/obj/item/food/meat, /obj/item/stack/ore/diamond)

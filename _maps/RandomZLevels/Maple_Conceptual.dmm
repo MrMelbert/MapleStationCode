@@ -44,7 +44,7 @@
 /turf/open/indestructible/concept,
 /area/awaymission/conceptual)
 "R" = (
-/mob/living/simple_animal/hostile/concept,
+/mob/living/basic/concept_hunger,
 /turf/open/indestructible/concept,
 /area/awaymission/conceptual)
 "Z" = (
