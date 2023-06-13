@@ -20,7 +20,7 @@
 		var/obj/effect/landmark/to_place = new mark_type()
 		to_place.find_spot_to_place()
 		if(isnull(to_place.loc))
-			stack_trace("Could not find a spot to place [mark_type]!")
+			log_world("Could not find a spot to place [mark_type]!")
 			qdel(to_place)
 
 /obj/effect/landmark/proc/find_spot_to_place()
