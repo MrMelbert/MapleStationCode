@@ -94,7 +94,7 @@
 
 /obj/item/melee/psych_rock
 	name = "heavy paperweight"
-	desc = "A rock designed specifically to hold down paper stacks. "
+	desc = "A rock designed specifically to hold down stacks of paper from the wind. Although, it is way heavier than it should be."
 	icon = 'maplestation_modules/icons/obj/weapons.dmi'
 	icon_state = "psych_rock"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/rock_lefthand.dmi'
