@@ -33,7 +33,7 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 4
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "gv" = (
 /obj/structure/closet,
@@ -44,8 +44,7 @@
 	name = "Emergency Shuttle Airlock"
 	},
 /obj/docking_port/mobile/emergency{
-	dir = 2;
-	port_direction = 2
+	dir = 2
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
@@ -150,16 +149,6 @@
 	},
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
-"sT" = (
-/obj/structure/window{
-	dir = 4
-	},
-/obj/structure/window{
-	dir = 8
-	},
-/obj/machinery/light/directional/north,
-/turf/open/floor/grass,
-/area/shuttle/escape)
 "ts" = (
 /turf/open/floor/plating,
 /area/shuttle/escape)
@@ -219,13 +208,13 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 8
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "wK" = (
 /obj/structure/table/reinforced,
 /obj/machinery/recharger,
 /obj/machinery/light/directional/east,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "wN" = (
 /obj/structure/table,
@@ -249,14 +238,9 @@
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
-"xb" = (
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window{
-	dir = 4
-	},
-/turf/open/floor/grass,
+"xn" = (
+/obj/machinery/status_display/evac/directional/north,
+/turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "xp" = (
 /obj/structure/table/reinforced,
@@ -270,7 +254,7 @@
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "xQ" = (
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "yP" = (
 /obj/effect/turf_decal/tile/brown{
@@ -297,6 +281,14 @@
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
+"Ak" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/obj/effect/turf_decal/bot,
+/obj/machinery/status_display/evac/directional/west,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
 "AI" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 4
@@ -319,6 +311,7 @@
 	dir = 4
 	},
 /obj/structure/flora/rock/pile,
+/obj/machinery/light/directional/north,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "BF" = (
@@ -370,16 +363,6 @@
 "Df" = (
 /turf/open/floor/iron/recharge_floor,
 /area/shuttle/escape)
-"Dr" = (
-/obj/structure/chair/comfy/shuttle{
-	dir = 4
-	},
-/obj/effect/turf_decal/bot,
-/obj/machinery/status_display/evac{
-	pixel_x = -32
-	},
-/turf/open/floor/mineral/titanium,
-/area/shuttle/escape)
 "Ds" = (
 /obj/structure/window{
 	dir = 8
@@ -402,7 +385,7 @@
 /obj/structure/table/reinforced,
 /obj/machinery/light/directional/east,
 /obj/item/restraints/handcuffs,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "Ev" = (
 /obj/machinery/door/airlock/shuttle{
@@ -537,7 +520,7 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 1
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "JS" = (
 /obj/structure/table/reinforced,
@@ -587,7 +570,7 @@
 	req_access_txt = null
 	},
 /obj/effect/mapping_helpers/airlock/access/any/security/general,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "ND" = (
 /obj/machinery/power/shuttle_engine/propulsion{
@@ -609,7 +592,7 @@
 	pixel_x = -24;
 	pixel_y = -6
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "Os" = (
 /obj/structure/closet/emcloset,
@@ -988,8 +971,8 @@ Uq
 OQ
 QH
 YA
+YA
 BK
-xb
 Ds
 Uq
 jE
@@ -1006,7 +989,7 @@ jE
 Uq
 AI
 AI
-AI
+Ak
 AI
 AI
 AI
@@ -1059,13 +1042,13 @@ YA
 "}
 (15,1,1) = {"
 YA
-jE
+xn
 Uq
 Qg
 QH
 YA
-sT
-xb
+YA
+BK
 Qs
 Uq
 jE
@@ -1082,8 +1065,8 @@ jE
 Uq
 AI
 AI
-Dr
 AI
+Ak
 AI
 AI
 Uq
@@ -1140,7 +1123,7 @@ Uq
 nA
 QH
 YA
-BK
+YA
 Bx
 Ds
 Uq
@@ -1158,7 +1141,7 @@ DC
 Uq
 AI
 AI
-AI
+Ak
 AI
 AI
 AI
