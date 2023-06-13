@@ -100,10 +100,9 @@
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/rock_lefthand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/rock_righthand.dmi'
 	inhand_icon_state = "psych_rock"
-	force = 14
+	force = 15
 	wound_bonus = 10
 	throwforce = 16
-	demolition_mod = 1.25
 	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/paper_bin/Initialize(mapload)
