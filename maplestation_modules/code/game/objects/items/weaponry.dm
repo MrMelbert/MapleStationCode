@@ -106,8 +106,8 @@
 	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/paper_bin/Initialize(mapload)
-    . = ..()
-    var/static/paperweight_spawned = FALSE
-    if(mapload && !paperweight_spawned  && istype(get_area(src), /area/station/medical/psychology))
-        new /obj/item/melee/psych_rock(loc)
-        paperweight_spawned = TRUE
+	. = ..()
+	var/static/paperweight_spawned = FALSE
+	if(mapload && !paperweight_spawned  && istype(get_area(src), /area/station/medical/psychology))
+		new /obj/item/melee/psych_rock(loc)
+		paperweight_spawned = TRUE
