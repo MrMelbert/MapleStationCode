@@ -1,7 +1,7 @@
 /// GLOB list of armwings sprites / options
 GLOBAL_LIST_EMPTY(arm_wings_list)
 
-/datum/species/human/ornithid
+/datum/species/ornithid
 	// the biggest bird
 	name = "\improper Ornithid"
 	plural_form = "Ornithids"

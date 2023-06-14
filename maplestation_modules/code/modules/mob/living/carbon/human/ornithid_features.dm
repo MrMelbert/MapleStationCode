@@ -16,14 +16,15 @@
 	name = "Arm Wings"
 	desc = "aaaaa" // filler
 	dna_block = DNA_ARM_WINGS_BLOCK
-
+	alternate_worn_layer = HANDS_LAYER
 	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/arm_wings
 	preference = "feature_arm_wings"
 
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"
 	color_source = ORGAN_COLOR_HAIR
-	layers = EXTERNAL_ADJACENT | EXTERNAL_BEHIND | EXTERNAL_FRONT
+	layers = EXTERNAL_FRONT
+
 
 /datum/bodypart_overlay/mutant/wings/arm_wings/New()
 	. = ..()
@@ -71,6 +72,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Arm Wings"
+	relevant_external_organ = /obj/item/organ/external/wings/arm_wings
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()
