@@ -1,4 +1,23 @@
 /// Holding place for all non-species ornithid features that are unique to it. (sprite overlays for wings, ears)
+/obj/item/organ/external/wings/functional/arm_wings
+	name = "Arm Wings"
+	desc = "They're wings, that go on your arm. Get your chicken wings jokes out now."
+	dna_block = DNA_ARM_WINGS_BLOCK
+	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/arm_wings
+	preference = "feature_arm_wings"
+
+/obj/item/organ/external/wings/functional/arm_wings/can_fly(mob/living/carbon/human/human)
+	if(HAS_TRAIT(human, TRAIT_RESTRAINED)) // prevents from flying if cuffed/restrained.
+		to_chat(human, span_warning("You are restrained! You cannot fly!"))
+		return FALSE
+	return ..()
+
+/obj/item/organ/external/wings/functional/arm_wings/toggle_flight(mob/living/carbon/human/human)
+	if(!HAS_TRAIT_FROM(human, TRAIT_MOVE_FLYING, SPECIES_FLIGHT_TRAIT))
+		ADD_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src))
+	else
+		REMOVE_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src))
+	return ..()
 /datum/sprite_accessory/arm_wings
 	icon = 'maplestation_modules/icons/mob/armwings.dmi'
 
@@ -11,20 +30,10 @@
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
 	color_src = ORGAN_COLOR_HAIR
-
-/obj/item/organ/external/wings/arm_wings
-	name = "Arm Wings"
-	desc = "aaaaa" // filler
-	dna_block = DNA_ARM_WINGS_BLOCK
-	alternate_worn_layer = HANDS_LAYER
-	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/arm_wings
-	preference = "feature_arm_wings"
-
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"
 	color_source = ORGAN_COLOR_HAIR
 	layers = EXTERNAL_FRONT
-
 
 /datum/bodypart_overlay/mutant/wings/arm_wings/New()
 	. = ..()
@@ -72,7 +81,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
 	main_feature_name = "Arm Wings"
-	relevant_external_organ = /obj/item/organ/external/wings/arm_wings
+	relevant_external_organ = /obj/item/organ/external/wings/functional/arm_wings
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()

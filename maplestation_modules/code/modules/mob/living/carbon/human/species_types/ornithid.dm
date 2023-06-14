@@ -15,7 +15,7 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	//mutant_bodyparts = list() // avian ears NYI ("ears" = "Avian",)
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
-		/obj/item/organ/external/wings/arm_wings = "monochrome"
+		/obj/item/organ/external/wings/functional/arm_wings = "monochrome"
 	//
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
 	)
@@ -23,9 +23,9 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid, // NYI
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ornithid, // NYI
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/, // just because they are still *partially* human, or otherwise human resembling
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/, // NYI
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right, /// NYI
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/, //NYI
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/,
 	)
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
