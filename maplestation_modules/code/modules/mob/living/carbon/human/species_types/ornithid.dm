@@ -60,15 +60,15 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 
 // section for lore/perks
-/datum/species/human/ornithid/get_species_lore()
+/datum/species/ornithid/get_species_lore()
 	return list(
 		"bird lore"
 	)
 
-/datum/species/human/ornithid/get_species_description()
+/datum/species/ornithid/get_species_description()
 	return "Ornithids are a collective group of various human descendant or otherwise resembling sentient avian beings." // i'll get to this later kek
 
-/datum/species/human/ornithid/create_pref_unique_perks()
+/datum/species/ornithid/create_pref_unique_perks()
 	var/list/to_add = list()
 
 	to_add += list(
