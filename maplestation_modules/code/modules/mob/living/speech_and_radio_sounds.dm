@@ -93,6 +93,7 @@
 		speech_sound_rangemod = -14 // 3 range
 
 	playsound(
+		source = src,
 		soundin = picked_sound,
 		vol = speech_sound_vol,
 		vary = TRUE,
@@ -108,6 +109,7 @@
 		if(LAZYLEN(radio_sound_pool))
 			var/picked_radio_sound = pick(radio_sound_pool)
 			playsound(
+				source = src,
 				soundin = picked_radio_sound,
 				vol = max(radio_sound_pool[picked_radio_sound] - 10, 10),
 				vary = TRUE,
@@ -124,11 +126,11 @@
 		return
 
 	// No message = no sound.
-	if(!message || !client)
+	if(!message)
 		return
 
 	// Don't bother playing sounds to clientless mobs to save time
-	if(!client.prefs.read_preference(/datum/preference/toggle/toggle_radio))
+	if(!client?.prefs.read_preference(/datum/preference/toggle/toggle_radio))
 		return
 
 	// We only deal with radio messages from this point
