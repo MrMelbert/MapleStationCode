@@ -40,11 +40,6 @@
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
-	// Item: "nobledress"
-	// Sleeves adjusted: "uni_r" (UNUSED)
-	// Adjusted: "uni_d"
-	// Inhand: "uni"
-	// Worn: "nobledress"
 	icon_state = "nobledressalt"
 	inhand_icon_state = "nobledressalt"
 	supports_variations_flags = CLOTHING_NO_VARIATION
@@ -92,9 +87,6 @@
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
-	// Item: "nobleheels"
-	// Inhand: "shoes"
-	// Worn: "nobleheels"
 	icon_state = "nobleheelsalt"
 	inhand_icon_state = "nobleheelsalt"
 	var/list/walking_sounds = list(
@@ -139,9 +131,6 @@
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
-	// Item: "noblesleeves"
-	// Inhand: "gloves"
-	// Worn: "noblesleeves"
 	icon_state = "noblesleevesalt"
 	inhand_icon_state = "noblesleevesalt"
 
@@ -158,7 +147,6 @@
 	// Worn: "noblejacket"
 	icon_state = "noblejacket"
 	inhand_icon_state = "noblejacket"
-
 
 /obj/item/clothing/head/costume/crown/noble
 	name = "jewled tiara"
