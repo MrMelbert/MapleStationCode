@@ -1,4 +1,5 @@
 //Hoods for winter coats and chaplain hoodie etc
+//NON-MODULAR EDIT: Adds functionality from SR/Bubberstation for neck-slot equips to also have toggleable hoods.
 
 /obj/item/clothing/suit/hooded
 	actions_types = list(/datum/action/item_action/toggle_hood)
