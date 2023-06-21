@@ -61,6 +61,7 @@
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	can_adjust = TRUE
+	flag_inv = HIDESHOES
 
 /obj/item/clothing/head/costume/crown/winterprincess
 	name = "jeweled tiara"
@@ -80,9 +81,10 @@
 	lefthand_file = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_rhand.dmi'
 	icon_state = "wintercloak_down"
+	worn_icon_state = "wintercloak"
 	inhand_icon_state = "wintercloak"
 	slot_flags = ITEM_SLOT_NECK|ITEM_SLOT_OCLOTHING
-	body_parts_covered = CHEST|GROIN|ARMS
+	body_parts_covered = CHEST|ARMS
 	hoodtype = /obj/item/clothing/head/hooded/winterprincess
 
 /obj/item/clothing/head/hooded/winterprincess
@@ -90,7 +92,7 @@
 	desc = "A warm, puffy, furry hood. It can be drawn forward to conceal one's face from stinging air and blocks most light."
 	icon = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_worn.dmi'
-	icon_state = "wintercloak"
+	icon_state = "wintercloak_hood"
 	inhand_icon_state = null
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEEARS
