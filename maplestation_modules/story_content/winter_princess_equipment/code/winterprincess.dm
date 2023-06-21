@@ -81,7 +81,6 @@
 	lefthand_file = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_rhand.dmi'
 	icon_state = "wintercloak_down"
-	worn_icon_state = "wintercloak"
 	inhand_icon_state = "wintercloak"
 	slot_flags = ITEM_SLOT_NECK|ITEM_SLOT_OCLOTHING
 	body_parts_covered = CHEST|ARMS
