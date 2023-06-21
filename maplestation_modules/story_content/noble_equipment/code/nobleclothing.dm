@@ -33,6 +33,24 @@
 	body_parts_covered = CHEST|GROIN|LEGS
 	flags_inv = HIDESHOES
 
+/obj/item/clothing/under/rank/noblealtfin
+	name = "formal dress"
+	desc = "A dress made from silk. The dress is embroidered with an elaborate purple pattern."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	// Item: "nobledress"
+	// Sleeves adjusted: "uni_r" (UNUSED)
+	// Adjusted: "uni_d"
+	// Inhand: "uni"
+	// Worn: "nobledress"
+	icon_state = "nobledressalt"
+	inhand_icon_state = "nobledressalt"
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	body_parts_covered = CHEST|GROIN|LEGS
+	flags_inv = HIDESHOES
+
 /obj/item/clothing/shoes/noble
 	name = "fancy loafers"
 	desc = "Hard leather loafers with thick soles on the bottom, the leather lightly shines in the light."
@@ -67,6 +85,27 @@
 	. = ..()
 	AddComponent(/datum/component/squeak, custom_sounds = walking_sounds, volume_override = 55, chance_override = 50)
 
+/obj/item/clothing/shoes/noblealtfin
+	name = "white heels"
+	desc = "Delicate white heels with a gold clasp and dark violet liner. This pair looks very well cared for."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	// Item: "nobleheels"
+	// Inhand: "shoes"
+	// Worn: "nobleheels"
+	icon_state = "nobleheelsalt"
+	inhand_icon_state = "nobleheelsalt"
+	var/list/walking_sounds = list(
+		'maplestation_modules/sound/items/highheel1.ogg' = 1,
+		'maplestation_modules/sound/items/highheel2.ogg' = 1,
+	)
+
+/obj/item/clothing/shoes/noblealtfin/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/squeak, custom_sounds = walking_sounds, volume_override = 55, chance_override = 50)
+
 /obj/item/clothing/gloves/noble
 	name = "black leather gloves"
 	desc = "Tough black leather gloves with the top section cut off for breathability."
@@ -92,6 +131,19 @@
 	// Worn: "noblesleeves"
 	icon_state = "noblesleeves"
 	inhand_icon_state = "noblesleeves"
+
+/obj/item/clothing/gloves/noblealtfin
+	name = "silky sleeves"
+	desc = "Delicate white sleeves detatched from their intended partner. Wearing them makes you feel just a tad more delicate."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	// Item: "noblesleeves"
+	// Inhand: "gloves"
+	// Worn: "noblesleeves"
+	icon_state = "noblesleevesalt"
+	inhand_icon_state = "noblesleevesalt"
 
 /obj/item/clothing/suit/toggle/noble
 	name = "quality suit coat"
