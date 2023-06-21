@@ -9,7 +9,7 @@
 	///Whether the hood is flipped up
 	var/hood_up = FALSE
 	/// MS EDIT ADD: What should be added to the end of the icon state when the hood is up? Set to "" for the suit sprite to not change at all, original "_t"
-	var/hood_up_affix = ""
+	var/hood_up_affix = "_t"
 
 /obj/item/clothing/suit/hooded/Initialize(mapload)
 	. = ..()
@@ -30,11 +30,11 @@
 	ToggleHood()
 
 /obj/item/clothing/suit/hooded/item_action_slot_check(slot, mob/user)
-	if(slot & ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK)//MS EDIT: Allows cloaks/neckslot items to have toggleable hoods.
+	if(slot & ITEM_SLOT_OCLOTHING||ITEM_SLOT_NECK)//MS EDIT: Allows cloaks/neckslot items to have toggleable hoods.
 		return TRUE
 
 /obj/item/clothing/suit/hooded/equipped(mob/user, slot)
-	if(!(slot & ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK))//MS EDIT: Allows cloaks/neckslot items to have toggleable hoods.
+	if(!(slot & ITEM_SLOT_OCLOTHING||ITEM_SLOT_NECK))//MS EDIT: Allows cloaks/neckslot items to have toggleable hoods.
 		RemoveHood()
 	return ..()
 
@@ -64,7 +64,7 @@
 		if(!ishuman(loc))
 			return
 		var/mob/living/carbon/human/H = loc
-		if(H.wear_suit != src)
+		if(H.is_holding(src)) //MS EDIT: Changes check from wearing a suit to holding (so hood can be raised from any valid slot)
 			to_chat(H, span_warning("You must be wearing [src] to put up the hood!"))
 			return
 		if(H.head)
