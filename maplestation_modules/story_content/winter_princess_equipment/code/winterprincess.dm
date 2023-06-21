@@ -9,7 +9,6 @@
 	inhand_icon_state = "gemdress"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	body_parts_covered = CHEST|GROIN|LEGS
-	flags_inv = HIDESHOES
 	can_adjust = FALSE
 
 /obj/item/clothing/gloves/winterprincess
