@@ -1,5 +1,4 @@
 //Hoods for winter coats and chaplain hoodie etc
-//NON-MODULAR EDIT: Adds functionality from SR/Bubberstation for neck-slot equips to also have toggleable hoods.
 
 /obj/item/clothing/suit/hooded
 	actions_types = list(/datum/action/item_action/toggle_hood)
@@ -9,16 +8,11 @@
 	var/alternative_mode = FALSE
 	///Whether the hood is flipped up
 	var/hood_up = FALSE
-	/// What should be added to the end of the icon state when the hood is up? Set to "" for the suit sprite to not change at all
-	var/hood_up_affix = "_t"
-	/// Are we zipped? Mostly relevant for wintercoats, leaving this here to simplify logic and so someone else can extend it if they ever wish to.
-	var/zipped = FALSE
 
 /obj/item/clothing/suit/hooded/Initialize(mapload)
 	. = ..()
 	if(!alternative_mode)
 		MakeHood()
-
 
 /obj/item/clothing/suit/hooded/Destroy()
 	. = ..()
@@ -34,23 +28,16 @@
 	ToggleHood()
 
 /obj/item/clothing/suit/hooded/item_action_slot_check(slot, mob/user)
-	if(slot & ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK)
+	if(slot & ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK)//MS EDIT: Allows cloaks/neckslot items to have toggleable hoods.
 		return TRUE
 
 /obj/item/clothing/suit/hooded/equipped(mob/user, slot)
-	if(!(slot & ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK))
+	if(!(slot & ITEM_SLOT_OCLOTHING|ITEM_SLOT_NECK))//MS EDIT: Allows cloaks/neckslot items to have toggleable hoods.
 		RemoveHood()
 	return ..()
 
-/obj/item/clothing/suit/hooded/on_outfit_equip(mob/living/carbon/human/outfit_wearer, visuals_only, item_slot)
-	if(visuals_only)
-		MakeHood()
-	ToggleHood()
-
 /obj/item/clothing/suit/hooded/proc/RemoveHood()
-	icon_state = "[initial(icon_state)]"
-	worn_icon_state = icon_state
-	zipped = FALSE
+	src.icon_state = "[initial(icon_state)]"
 	hood_up = FALSE
 
 	if(hood)
@@ -64,6 +51,8 @@
 		if(alternative_mode)
 			QDEL_NULL(hood)
 
+	update_action_buttons()
+
 /obj/item/clothing/suit/hooded/dropped()
 	..()
 	RemoveHood()
@@ -73,7 +62,7 @@
 		if(!ishuman(loc))
 			return
 		var/mob/living/carbon/human/H = loc
-		if(H.is_holding(src))
+		if(H.wear_suit != src)
 			to_chat(H, span_warning("You must be wearing [src] to put up the hood!"))
 			return
 		if(H.head)
@@ -87,10 +76,9 @@
 					RemoveHood()
 				return
 			hood_up = TRUE
-			icon_state = "[initial(icon_state)][hood_up_affix]"
-			worn_icon_state = icon_state
-			zipped = TRUE // Just to maintain the same behavior, and so we avoid any bugs that otherwise relied on this behavior of zipping the jacket when bringing up the hood
+			icon_state = "[initial(icon_state)]_t"
 			H.update_worn_oversuit()
+			update_action_buttons()
 	else
 		RemoveHood()
 
