@@ -40,6 +40,7 @@
 
 /obj/item/clothing/suit/hooded/proc/RemoveHood()
 	src.icon_state = "[initial(icon_state)]"
+	worn_icon_state = icon_state
 	hood_up = FALSE
 
 	if(hood)
