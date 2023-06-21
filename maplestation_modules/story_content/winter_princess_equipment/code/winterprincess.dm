@@ -10,6 +10,7 @@
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	body_parts_covered = CHEST|GROIN|LEGS
 	flags_inv = HIDESHOES
+	can_adjust = FALSE
 
 /obj/item/clothing/gloves/winterprincess
 	name = "golden wristlets"
@@ -78,7 +79,7 @@
 	righthand_file = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_rhand.dmi'
 	icon_state = "wintercloak_down"
 	inhand_icon_state = "wintercloak"
-	slot_flags = ITEM_SLOT_NECK
+	slot_flags = ITEM_SLOT_NECK|ITEM_SLOT_OCLOTHING
 	body_parts_covered = CHEST|GROIN|ARMS
 	hoodtype = /obj/item/clothing/head/hooded/winterprincess
 
