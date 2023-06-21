@@ -61,7 +61,7 @@
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	can_adjust = TRUE
-	flag_inv = HIDESHOES
+	flags_inv = HIDESHOES
 
 /obj/item/clothing/head/costume/crown/winterprincess
 	name = "jeweled tiara"
