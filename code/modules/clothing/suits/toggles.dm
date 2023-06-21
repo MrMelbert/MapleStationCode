@@ -63,8 +63,6 @@
 		if(alternative_mode)
 			QDEL_NULL(hood)
 
-	update_item_action_buttons()
-
 /obj/item/clothing/suit/hooded/dropped()
 	..()
 	RemoveHood()
@@ -92,7 +90,6 @@
 			worn_icon_state = icon_state
 			zipped = TRUE // Just to maintain the same behavior, and so we avoid any bugs that otherwise relied on this behavior of zipping the jacket when bringing up the hood
 			H.update_worn_oversuit()
-			H.update_mob_action_buttons()
 	else
 		RemoveHood()
 
