@@ -81,7 +81,7 @@
 	AddComponent(/datum/component/squeak, custom_sounds = walking_sounds, volume_override = 55, chance_override = 50)
 
 /obj/item/clothing/shoes/noblealtfin
-	name = "white heels"
+	name = "white lined heels"
 	desc = "Delicate white heels with a gold clasp and dark violet liner. This pair looks very well cared for."
 	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'

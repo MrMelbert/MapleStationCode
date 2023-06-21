@@ -5227,5 +5227,6 @@
 #include "maplestation_modules\story_content\ritz_equipment\code\ritzclothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
+#include "maplestation_modules\story_content\winter_princess_equipment\code\beacon.dm"
 #include "maplestation_modules\story_content\winter_princess_equipment\code\winterprincess.dm"
 // END_INCLUDE

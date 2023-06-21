@@ -16,3 +16,17 @@
 	name = "regal equipment beacon"
 	desc = "A beacon gifted to noticeable nobility. This one has the Licht famly emblem engraved on it."
 	spawned_locker_path = /obj/item/storage/bag/garment/noble
+
+/obj/item/storage/bag/garment/noblealt
+	name = "noble garment bag"
+	desc = "A bag for storing newly-retrimmed noblewear. This one belongs to the one member of the Licht family under House Finster."
+
+/obj/item/storage/bag/garment/noble/PopulateContents()
+	new /obj/item/clothing/under/rank/noblealtfin(src)
+	new /obj/item/clothing/shoes/noblealtfin(src)
+	new /obj/item/clothing/gloves/noblealtfin(src)
+
+/obj/item/locker_spawner/noble
+	name = "noble equipment beacon"
+	desc = "A beacon gifted to recently-resituated nobility. This one has the Licht famly emblem engraved on it under the sigil of House Finster."
+	spawned_locker_path = /obj/item/storage/bag/garment/noblealt
