@@ -49,7 +49,7 @@
 	. = ..()
 	AddComponent(/datum/component/squeak, custom_sounds = walking_sounds, volume_override = 55, chance_override = 50)
 
-/obj/item/clothing/suit/toggle/winterprincess
+/obj/item/clothing/under/rank/winterprincess/ballgown
 	name = "umbral ballgown"
 	desc = "A voluminous purple ball gown - beyond its white, lacy interior, its translucent trail and sleeves can be released to cast a wide, gentle shadow."
 	icon = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_item.dmi'
@@ -58,6 +58,9 @@
 	righthand_file = 'maplestation_modules/story_content/winter_princess_equipment/icons/winterprincess_rhand.dmi'
 	icon_state = "ballgown"
 	inhand_icon_state = "ballgown"
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	body_parts_covered = CHEST|GROIN|LEGS|ARMS
+	can_adjust = TRUE
 
 /obj/item/clothing/head/costume/crown/winterprincess
 	name = "jeweled tiara"
