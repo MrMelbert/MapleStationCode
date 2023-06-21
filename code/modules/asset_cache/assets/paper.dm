@@ -20,4 +20,5 @@
 		"stamp-syndicate" = 'icons/stamp_icons/large_stamp-syndicate.png',
 		"stamp-bo" = 'maplestation_modules/icons/stamp_icons/large_stamp-bo.png',
 		"stamp-ap" = 'maplestation_modules/icons/stamp_icons/large_stamp-ap.png',
+		"stamp-amb" = 'maplestation_modules/icons/stamp_icons/large_stamp-amb.png',
 	)
