@@ -79,6 +79,7 @@
 				return
 			hood_up = TRUE
 			icon_state = "[initial(icon_state)][hood_up_affix]" //MS EDIT ADD: allows setting hooded outfit icon-states according to variable affix
+			worn_icon_state = icon_state
 			H.update_worn_oversuit()
 			update_action_buttons()
 	else
