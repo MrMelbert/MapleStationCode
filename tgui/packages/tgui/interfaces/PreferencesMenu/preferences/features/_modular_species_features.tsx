@@ -14,3 +14,13 @@ export const feature_arm_wings: FeatureChoiced = {
   name: 'Arm Wings',
   component: FeatureDropdownInput,
 };
+
+export const feature_avian_tail: FeatureChoiced = {
+  name: 'Tail',
+  component: FeatureDropdownInput,
+};
+
+export const feature_avian_ears: FeatureChoiced = {
+  name: 'Ears',
+  component: FeatureDropdownInput,
+};

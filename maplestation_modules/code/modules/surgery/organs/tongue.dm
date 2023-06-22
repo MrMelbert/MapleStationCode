@@ -27,8 +27,8 @@
 
 /obj/item/organ/internal/tongue/ornithid
 	name = "avian tongue"
-	desc = "A seemingly normal looking tongue which causes ones voice to squawk. However that works."
-	say_mod = "squawks"
+	desc = "A seemingly normal looking tongue which causes ones voice to caw. However that works."
+	say_mod = "caws"
 
 /obj/item/organ/internal/tongue/lizard
 	languages_native = list(/datum/language/draconic, /datum/language/impdraconic)

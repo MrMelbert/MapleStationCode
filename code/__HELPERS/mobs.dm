@@ -92,6 +92,10 @@
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/head_tentacles, GLOB.head_tentacles_list)
 	if(!GLOB.arm_wings_list.len) // NON-MODULE CHANGE: Arm Wings initialize
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/arm_wings, GLOB.arm_wings_list)
+	if(!GLOB.tails_list_avian.len) // NON-MODULE CHANGE: Avian Tails initialize
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/avian, GLOB.tails_list_avian)
+	if(!GLOB.avian_ears_list.len) // NON-MODULE CHANGE: Avian Ears initialize
+		init_sprite_accessory_subtypes(/datum/sprite_accessory/plumage, GLOB.avian_ears_list)
 
 	//For now we will always return none for tail_human and ears. | "For now" he says.
 	return(list(
@@ -112,8 +116,10 @@
 		"moth_markings" = pick(GLOB.moth_markings_list),
 		"tail_monkey" = "None",
 		"pod_hair" = pick(GLOB.pod_hair_list),
-		"head_tentacles" = pick(GLOB.head_tentacles_list),
-		"arm_wings" = pick(GLOB.arm_wings_list)
+		"head_tentacles" = pick(GLOB.head_tentacles_list), // Non-Module Changes from here on, see above
+		"arm_wings" = pick(GLOB.arm_wings_list),
+		"tail_avian" = pick(GLOB.tails_list_avian),
+		"ears_avian" = pick(GLOB.avian_ears_list), // end Non-Module Changes
 	))
 
 /proc/random_hairstyle(gender)

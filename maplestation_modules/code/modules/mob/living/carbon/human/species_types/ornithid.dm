@@ -1,5 +1,8 @@
 /// GLOB list of armwings sprites / options
 GLOBAL_LIST_EMPTY(arm_wings_list)
+/// GLOB list of other features (ears, tails)
+GLOBAL_LIST_EMPTY(avian_ears_list)
+GLOBAL_LIST_EMPTY(tails_list_avian)
 
 /datum/species/ornithid
 	// the biggest bird
@@ -12,10 +15,11 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 		TRAIT_TACKLING_WINGED_ATTACKER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	//mutant_bodyparts = list() // avian ears NYI ("ears" = "Avian",)
+	use_skintones = 1
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
-		/obj/item/organ/external/wings/functional/arm_wings = "monochrome"
+		/obj/item/organ/external/wings/functional/arm_wings = "monochrome",
+		/obj/item/organ/external/plumage = "hermes"
 	//
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
 	)
@@ -28,9 +32,10 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/,
 	)
 	payday_modifier = 0.75
+	species_pain_mod = 1.20 // Fuck it, this will fill a niche that isn't implemented yet.
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 
-	species_cookie = /obj/item/food/semki/healthy // humans get chocolate, lizards get meat. What to birds get? Seed.
+	species_cookie = /obj/item/food/semki/healthy // humans get chocolate, lizards get meat. What do birds get? Seed.
 	meat = /obj/item/food/meat/slab/chicken
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	disliked_food = DAIRY | CLOTH | GROSS | SUGAR // Chocolate is toxic to birds (but not to these guys, they just find it nasty). Also, this forces a dietary difference ala lizards.
@@ -59,7 +64,7 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
 	unarmed_miss_sound = 'sound/weapons/slashmiss.ogg'
 
-// section for lore/perks
+// section for lore/perk descs
 /datum/species/ornithid/get_species_lore()
 	return list(
 		"bird lore"
@@ -76,15 +81,22 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
 		SPECIES_PERK_ICON = "dove",
 		SPECIES_PERK_NAME = "Airborne",
-		SPECIES_PERK_DESC = "!!!!NYI!!!! Is it a bird? is it a plane? Of course its a bird you dumbass, \
+		SPECIES_PERK_DESC = "Is it a bird? is it a plane? Of course its a bird you dumbass, \
 		Ornithids are lightweight winged avians, and can, as a result, fly.",
 		),
 		list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 		SPECIES_PERK_ICON = "wind",
 		SPECIES_PERK_NAME = "Wind Elemental Alignment",
-		SPECIES_PERK_DESC = "Naturally one with the skies, Ornithids enjoy higher proficiency with Wind magic. \
+		SPECIES_PERK_DESC = "|NYI| Naturally one with the skies, Ornithids enjoy higher proficiency with Wind magic. \
 			However, despite their Human origins, they suffer a malus with Earth magic.",
+		),
+		list(
+		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+		SPECIES_PERK_ICON = "wind",
+		SPECIES_PERK_NAME = "Altered Tastes",
+		SPECIES_PERK_DESC = "Ornithids have altered tastes from their human counterparts. \
+			They dislike the taste of Dairy and Sweets, but like the taste of Bugs, Nuts, Fruits, and Seafood",
 		),
 		list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
@@ -92,6 +104,13 @@ GLOBAL_LIST_EMPTY(arm_wings_list)
 		SPECIES_PERK_NAME = "Lightweights",
 		SPECIES_PERK_DESC = "As a result of their reduced average weight, \
 			Ornithids have a lower alcohol tolerance. Pansies.",
+		),
+		list(
+		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+		SPECIES_PERK_ICON = "feather",
+		SPECIES_PERK_NAME = "Hyper-Sensitive Nerves",
+		SPECIES_PERK_DESC = "Ornithids have incredibly sensistive nerves compared to their human counterparts, \
+			Taking 1.2x pain, 1.5x damage to their ears, and get stunned for 2x longer when flying.", // the 2x stun length only applies when flying, and is inherited from functional wings.
 		),
 	)
 	return to_add
