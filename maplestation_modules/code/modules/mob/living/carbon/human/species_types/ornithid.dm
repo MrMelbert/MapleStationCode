@@ -92,12 +92,6 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 			However, despite their Human origins, they suffer a malus with Earth magic.",
 		),
 		list(
-		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON = "wind",
-		SPECIES_PERK_NAME = "Altered Tastes",
-		SPECIES_PERK_DESC = "Ornithids have altered tastes from their human counterparts. \
-			They dislike the taste of Dairy and Sweets, but like the taste of Bugs, Nuts, Fruits, and Seafood",
-		),
 		list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "feather",
