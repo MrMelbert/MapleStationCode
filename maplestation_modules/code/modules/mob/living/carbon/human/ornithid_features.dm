@@ -42,6 +42,7 @@
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"
 	layers = EXTERNAL_FRONT
+	color_source = ORGAN_COLOR_HAIR
 
 /datum/bodypart_overlay/mutant/wings/arm_wings/New()
 	. = ..()
@@ -67,6 +68,13 @@
 /datum/bodypart_overlay/mutant/tail/avian
 	feature_key = "tail_avian"
 	layers = EXTERNAL_BEHIND | EXTERNAL_FRONT
+	color_source = ORGAN_COLOR_HAIR
+
+/datum/bodypart_overlay/mutant/tail/avian/New()
+	. = ..()
+
+/datum/bodypart_overlay/mutant/tail/avian/get_global_feature_list()
+	return GLOB.tails_list_avian
 
 /datum/sprite_accessory/tails/avian
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'
@@ -74,7 +82,7 @@
 /datum/sprite_accessory/tails/avian/eagle
 	name = "Eagle"
 	icon_state = "eagle"
-	color_src = HAIR
+
 
 /* /datum/sprite_accessory/tails/avian/swallow
 	name = "Swallow"
@@ -100,8 +108,15 @@
 	bodypart_overlay = /datum/bodypart_overlay/mutant/plumage
 
 /datum/bodypart_overlay/mutant/plumage
-	feature_key = "plumage"
+	feature_key = "ears_avian"
 	layers = EXTERNAL_FRONT
+	color_source = ORGAN_COLOR_HAIR
+
+/datum/bodypart_overlay/mutant/plumage/New()
+	. = ..()
+
+/datum/bodypart_overlay/mutant/plumage/get_global_feature_list()
+	return GLOB.avian_ears_list
 
 /datum/sprite_accessory/plumage
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'
@@ -109,7 +124,7 @@
 /datum/sprite_accessory/plumage/hermes
 	name = "Hermes"
 	icon_state = "hermes"
-	color_src = HAIR
+
 
 /// YES, I GET IT. THIS SHOULD BE IN ITS OWN FILE WITH THE REST. DNM UNTIL I PUT THIS IN ITS PROPER FILE! THIS IS JUST SO I CAN HAVE EVERYTHING ALL IN ONE PLACE DURING EARLY STAGES!!!!
 // code for setting preferences
@@ -164,6 +179,8 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
 	relevant_external_organ = /obj/item/organ/external/tail/avian
+	should_generate_icons = TRUE
+
 
 /datum/preference/choiced/tail_avian/init_possible_values()
 	return possible_values_for_sprite_accessory_list_for_body_part(
@@ -188,6 +205,8 @@
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
 	relevant_external_organ = /obj/item/organ/external/plumage
+	should_generate_icons = TRUE
+
 
 /datum/preference/choiced/plumage/init_possible_values()
 	return possible_values_for_sprite_accessory_list_for_body_part(
