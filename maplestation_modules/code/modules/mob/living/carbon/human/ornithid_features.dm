@@ -76,7 +76,7 @@
 	icon_state = "eagle"
 	color_src = HAIR
 
- /* /datum/sprite_accessory/tails/avian/swallow
+/* /datum/sprite_accessory/tails/avian/swallow
 	name = "Swallow"
 	icon_state = "swallow"
 	color_src = HAIR */
