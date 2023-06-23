@@ -14,7 +14,8 @@
 		to_chat(human, span_warning("You are restrained! You cannot fly!"))
 		return FALSE
 	return ..() // todo: add code for checking if arms are disabled through paralysis or damage
-/datum/movespeed_modifier/arm_wing_flight // putting it here because this is the relevant file
+
+/datum/movespeed_modifier/arm_wing_flight // putting it here because this is the relevant file, and insular use case.
 	multiplicative_slowdown = -0.2
 	// if there is a way to blacklist regular walking using "blacklisted_movetypes" let me know
 	// THIS SHOULD ONLY APPLY WHEN THE USER IS FLYING (or floating, because that makes sense, i guess)!!!!
@@ -84,7 +85,7 @@
 	icon_state = "eagle"
 
 
-/* /datum/sprite_accessory/tails/avian/swallow
+/* /datum/sprite_accessory/tails/avian/swallow // commented this out for the time being
 	name = "Swallow"
 	icon_state = "swallow"
 	color_src = HAIR */
@@ -124,3 +125,7 @@
 /datum/sprite_accessory/plumage/hermes
 	name = "Hermes"
 	icon_state = "hermes"
+
+/* /datum/sprite_accessory/plumage/kresnik // similar to swallow tail, this is commented out for the time being.
+	name = "Kresnik"
+	icon_state = "kresnik" */
