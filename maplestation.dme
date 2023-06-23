@@ -5034,6 +5034,7 @@
 #include "maplestation_modules\code\modules\client\preferences\toggle_radio.dm"
 #include "maplestation_modules\code\modules\client\preferences\toggle_speech.dm"
 #include "maplestation_modules\code\modules\client\preferences\species\lizard.dm"
+#include "maplestation_modules\code\modules\client\preferences\species\ornithid.dm"
 #include "maplestation_modules\code\modules\client\preferences\species\skrell.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\spellbook.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\spellbook_helpers.dm"
