@@ -87,8 +87,6 @@
 		list("FRONT"),
 		)
 
-/* /datum/preference/choiced/plumage/init_possible_values()
-	return assoc_to_keys(GLOB.avian_ears_list) */
 
 /datum/preference/choiced/plumage/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["ears_avian"] = value
