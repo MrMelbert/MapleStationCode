@@ -58,7 +58,7 @@
 // end armwings code
 // begin ears & tail code
 
-/obj/item/organ/external/tail/avian
+/* /obj/item/organ/external/tail/avian
 	name = "tail"
 	preference = "feature_avian_tail"
 	dna_block = DNA_AVIAN_TAIL_BLOCK
@@ -82,7 +82,7 @@
 
 /datum/sprite_accessory/tails/avian/eagle
 	name = "Eagle"
-	icon_state = "eagle"
+	icon_state = "eagle" */ // commented this out because ultimately, I decided to keep this unused for the time being. visuals, being a pain in the ass to work with, etc.
 
 
 /* /datum/sprite_accessory/tails/avian/swallow // commented this out for the time being
@@ -126,6 +126,6 @@
 	name = "Hermes"
 	icon_state = "hermes"
 
-/* /datum/sprite_accessory/plumage/kresnik // similar to swallow tail, this is commented out for the time being.
+/* /datum/sprite_accessory/plumage/kresnik // similar to tails, this is commented out for the time being.
 	name = "Kresnik"
 	icon_state = "kresnik" */

@@ -42,8 +42,7 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	liked_food = FRUIT | SEAFOOD | NUTS | BUGS // birds like dice(d) nuts. Also bugs.
 
 	inert_mutation = /datum/mutation/human/dwarfism
-	species_language_holder = /datum/language_holder/lizard // maybe make this yangyu, since that's now going **mostly** unused
-//	digitigrade_customization = DIGITIGRADE_OPTIONAL // Maybe, Maybe.
+	species_language_holder = /datum/language_holder/yangyu // doing this because yangyu is really just, mostly unused otherwise.
 
 // defines limbs/bodyparts.
 

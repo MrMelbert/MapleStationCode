@@ -15,10 +15,10 @@ export const feature_arm_wings: FeatureChoiced = {
   component: FeatureDropdownInput,
 };
 
-export const feature_avian_tail: FeatureChoiced = {
+/* export const feature_avian_tail: FeatureChoiced = {
   name: 'Tail',
   component: FeatureDropdownInput,
-};
+}; */ // temporarily disabled pending when i want it/someone else wants it
 
 export const feature_avian_ears: FeatureChoiced = {
   name: 'Ears',

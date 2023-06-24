@@ -224,8 +224,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_HEAD_TENTACLES_BLOCK] = construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len)
 	if(features["arm_wings"]) // NON-MODULE CHANGE
 		L[DNA_ARM_WINGS_BLOCK] = construct_block(GLOB.arm_wings_list.Find(features["arm_wings"]), GLOB.arm_wings_list.len)
-	if(features["tail_avian"]) // NON-MODULE CHANGE
-		L[DNA_AVIAN_TAIL_BLOCK] = construct_block(GLOB.tails_list_avian.Find(features["tail_avian"]), GLOB.tails_list_avian.len)
+	/* if(features["tail_avian"]) // NON-MODULE CHANGE
+		L[DNA_AVIAN_TAIL_BLOCK] = construct_block(GLOB.tails_list_avian.Find(features["tail_avian"]), GLOB.tails_list_avian.len) */
 	if(features["ears_avian"]) // NON-MODULE CHANGE
 		L[DNA_AVIAN_EARS_BLOCK] = construct_block(GLOB.avian_ears_list.Find(features["ears_avian"]), GLOB.avian_ears_list.len)
 
@@ -364,8 +364,11 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.head_tentacles_list.Find(features["head_tentacles"]), GLOB.head_tentacles_list.len))
 		if(DNA_ARM_WINGS_BLOCK) // NON-MODULE CHANGE
 			set_uni_feature_block(blocknumber, construct_block(GLOB.arm_wings_list.Find(features["arm_wings"]), GLOB.arm_wings_list.len))
-		if(DNA_AVIAN_TAIL_BLOCK) // NON-MODULE CHANGE
-			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list_avian.Find(features["tail_avian"]), GLOB.tails_list_avian.len))
+		/* if(DNA_AVIAN_TAIL_BLOCK) // NON-MODULE CHANGE
+			set_uni_feature_block(blocknumber, construct_block(GLOB.tails_list_avian.Find(features["tail_avian"]), GLOB.tails_list_avian.len))*/
+		if(DNA_AVIAN_EARS_BLOCK) // NON-MODULE CHANGE
+			set_uni_feature_block(blocknumber, construct_block(GLOB.avian_ears_list.Find(features["ears_avian"]), GLOB.avian_ears_list.len))
+
 
 //Please use add_mutation or activate_mutation instead
 /datum/dna/proc/force_give(datum/mutation/human/HM)
@@ -623,8 +626,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["head_tentacles"] = GLOB.head_tentacles_list[deconstruct_block(get_uni_feature_block(features, DNA_HEAD_TENTACLES_BLOCK), GLOB.head_tentacles_list.len)]
 	if(dna.features["arm_wings"]) // NON-MODULE CHANGE
 		dna.features["arm_wings"] = GLOB.arm_wings_list[deconstruct_block(get_uni_feature_block(features, DNA_ARM_WINGS_BLOCK), GLOB.arm_wings_list.len)]
-	if(dna.features["tail_avian"]) // NON-MODULE CHANGE
-		dna.features["tail_avian"] = GLOB.tails_list_avian[deconstruct_block(get_uni_feature_block(features, DNA_AVIAN_TAIL_BLOCK), GLOB.tails_list_avian.len)]
+	/* if(dna.features["tail_avian"]) // NON-MODULE CHANGE
+		dna.features["tail_avian"] = GLOB.tails_list_avian[deconstruct_block(get_uni_feature_block(features, DNA_AVIAN_TAIL_BLOCK), GLOB.tails_list_avian.len)] */
 	if(dna.features["ears_avian"]) // NON-MODULE CHANGE
 		dna.features["ears_avian"] = GLOB.avian_ears_list[deconstruct_block(get_uni_feature_block(features, DNA_AVIAN_EARS_BLOCK), GLOB.avian_ears_list.len)]
 
