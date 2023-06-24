@@ -18,8 +18,8 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	use_skintones = 1
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
-		/obj/item/organ/external/wings/functional/arm_wings = "monochrome",
-		/obj/item/organ/external/plumage = "hermes"
+		/obj/item/organ/external/wings/functional/arm_wings = "Monochrome",
+		/obj/item/organ/external/plumage = "Hermes"
 	//
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
 	)
