@@ -21,6 +21,6 @@ export const feature_arm_wings: FeatureChoiced = {
 }; */ // temporarily disabled pending when i want it/someone else wants it
 
 export const feature_avian_ears: FeatureChoiced = {
-  name: 'Ears',
+  name: 'Plumage',
   component: FeatureDropdownInput,
 };

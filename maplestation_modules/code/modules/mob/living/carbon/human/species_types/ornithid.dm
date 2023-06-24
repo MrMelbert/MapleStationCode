@@ -91,7 +91,6 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 			However, despite their Human origins, they suffer a malus with Earth magic.",
 		),
 		list(
-		list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = "feather",
 		SPECIES_PERK_NAME = "Lightweights",
@@ -105,6 +104,6 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 		SPECIES_PERK_DESC = "Ornithids have incredibly sensistive nerves compared to their human counterparts, \
 			Taking 1.2x pain, 1.5x damage to their ears, and get stunned for 2x longer when flying.", // the 2x stun length only applies when flying, and is inherited from functional wings.
 		),
-	))
+	)
 	return to_add
 

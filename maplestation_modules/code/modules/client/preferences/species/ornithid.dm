@@ -71,9 +71,10 @@
 	return initial(tail.name) */
 
 /datum/preference/choiced/plumage
+	main_feature_name = "Plumage"
 	savefile_key = "feature_avian_ears"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	category = PREFERENCE_CATEGORY_FEATURES
 	can_randomize = FALSE
 	relevant_external_organ = /obj/item/organ/external/plumage
 	should_generate_icons = TRUE
@@ -86,8 +87,8 @@
 		list("FRONT"),
 		)
 
-/datum/preference/choiced/plumage/init_possible_values()
-	return assoc_to_keys(GLOB.avian_ears_list)
+/* /datum/preference/choiced/plumage/init_possible_values()
+	return assoc_to_keys(GLOB.avian_ears_list) */
 
 /datum/preference/choiced/plumage/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["ears_avian"] = value

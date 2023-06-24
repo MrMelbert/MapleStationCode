@@ -105,8 +105,12 @@
 	name = "Plumage"
 	desc = "Some feathers to ruffle. Seems the person who lost this definitely had theirs."
 	preference = "feature_avian_ears"
+
+	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'
+
 	dna_block = DNA_AVIAN_EARS_BLOCK // putting this as a reminder to future c*ders, this used to be part of ears.
 	bodypart_overlay = /datum/bodypart_overlay/mutant/plumage
+	use_mob_sprite_as_obj_sprite = TRUE
 
 /datum/bodypart_overlay/mutant/plumage
 	feature_key = "ears_avian"
