@@ -1,19 +1,14 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "d" = (
 /obj/machinery/power/shuttle_engine/heater,
-/obj/structure/window/reinforced{
-	dir = 1;
-	layer = 2.9
-	},
-/obj/structure/window/reinforced{
-	dir = 4;
-	layer = 2.9
-	},
-/obj/structure/window/reinforced{
-	dir = 8;
-	layer = 2.9
-	},
+/obj/structure/window/reinforced/survival_pod/spawner/directional/north,
+/obj/structure/window/reinforced/survival_pod/spawner/directional/west,
+/obj/structure/window/reinforced/survival_pod/spawner/directional/east,
 /turf/open/floor/plating,
+/area/shuttle/mining)
+"g" = (
+/obj/structure/closet/crate,
+/turf/open/floor/mineral/titanium/white,
 /area/shuttle/mining)
 "h" = (
 /obj/effect/spawner/structure/window/reinforced/shuttle,
@@ -24,6 +19,9 @@
 /area/shuttle/mining)
 "y" = (
 /obj/structure/table,
+/obj/item/pickaxe,
+/obj/item/tank/internals/emergency_oxygen,
+/obj/item/clothing/mask/gas,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/mining)
 "B" = (
@@ -121,7 +119,7 @@ I
 N
 T
 N
-G
+g
 i
 "}
 (5,1,1) = {"
