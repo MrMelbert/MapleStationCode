@@ -9746,10 +9746,13 @@
 /area/station/science/ordnance/storage)
 "aXN" = (
 /obj/machinery/igniter/incinerator_ordmix,
-/mob/living/basic/chicken/kentucky{
-	desc = "A timeless classic.";
+/mob/living/basic/chicken{
 	name = "Kentucky";
-	unsuitable_atmos_damage = 0
+	desc = "It's a classic.";
+	unsuitable_atmos_damage = 0;
+	unsuitable_cold_damage = 0;
+	unsuitable_heat_damage = 3;
+	health = 30
 	},
 /turf/open/floor/engine/vacuum,
 /area/station/science/ordnance/burnchamber)
@@ -77758,6 +77761,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/box,
+/obj/effect/landmark/atmospheric_sanity/ignore_area,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "vAQ" = (
