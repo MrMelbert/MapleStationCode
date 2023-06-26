@@ -37,10 +37,8 @@
 /turf/open/floor/plating,
 /area/shuttle/supply)
 "d" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/machinery/power/shuttle_engine/heater,
+/obj/structure/window/reinforced/survival_pod/spawner/directional/north,
 /turf/open/floor/plating/airless,
 /area/shuttle/supply)
 "e" = (
@@ -80,13 +78,6 @@
 	},
 /obj/effect/mapping_helpers/airlock/access/any/supply/general,
 /turf/open/floor/plating,
-/area/shuttle/supply)
-"I" = (
-/obj/machinery/power/shuttle_engine/heater,
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/turf/open/floor/plating/airless,
 /area/shuttle/supply)
 "K" = (
 /obj/machinery/power/shuttle_engine/propulsion,
@@ -160,7 +151,7 @@ T
 T
 W
 W
-I
+d
 K
 "}
 (5,1,1) = {"
@@ -172,7 +163,7 @@ T
 T
 W
 W
-I
+d
 K
 "}
 (6,1,1) = {"

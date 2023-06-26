@@ -92,6 +92,14 @@
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
+"kn" = (
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/window/spawner/directional/south,
+/obj/structure/flora/grass/jungle/b/style_random,
+/obj/structure/flora/bush/flowers_pp/style_random,
+/turf/open/floor/grass,
+/area/shuttle/escape)
 "mq" = (
 /obj/structure/chair/office{
 	dir = 1
@@ -99,16 +107,10 @@
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "nA" = (
-/obj/structure/window{
-	dir = 1
-	},
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window{
-	dir = 4
-	},
-/obj/structure/flora/grass/jungle,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/window/spawner/directional/north,
+/obj/structure/flora/grass/jungle/a/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "oa" = (
@@ -119,12 +121,27 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
+"qb" = (
+/obj/machinery/light/directional/south,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/bush/grassy/style_random,
+/turf/open/floor/grass,
+/area/shuttle/escape)
 "qD" = (
 /obj/structure/extinguisher_cabinet{
 	pixel_x = 26
 	},
 /obj/machinery/light/directional/east,
 /turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
+"qT" = (
+/obj/machinery/light/directional/north,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/bush/grassy/style_random,
+/obj/structure/flora/bush/lavendergrass/style_random,
+/turf/open/floor/grass,
 /area/shuttle/escape)
 "rh" = (
 /obj/effect/turf_decal/tile/brown{
@@ -153,11 +170,8 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "tw" = (
-/obj/structure/extinguisher_cabinet{
-	pixel_x = -5;
-	pixel_y = 30
-	},
 /obj/machinery/light/directional/north,
+/obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "ua" = (
@@ -180,6 +194,14 @@
 	pixel_y = 12
 	},
 /turf/open/floor/mineral/titanium/blue,
+/area/shuttle/escape)
+"us" = (
+/obj/machinery/light/directional/south,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/bush/fullgrass/style_random,
+/obj/structure/flora/bush/flowers_pp/style_random,
+/turf/open/floor/grass,
 /area/shuttle/escape)
 "uz" = (
 /turf/open/floor/mineral/titanium/yellow,
@@ -209,6 +231,12 @@
 	dir = 8
 	},
 /turf/open/floor/mineral/plastitanium/red,
+/area/shuttle/escape)
+"vJ" = (
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/north,
+/obj/structure/flora/bush/flowers_yw/style_random,
+/turf/open/floor/grass,
 /area/shuttle/escape)
 "wK" = (
 /obj/structure/table/reinforced,
@@ -304,14 +332,12 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "Bx" = (
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window{
-	dir = 4
-	},
-/obj/structure/flora/rock/pile,
 /obj/machinery/light/directional/north,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/rock/pile/style_random,
+/obj/structure/flora/bush/fullgrass/style_random,
+/obj/structure/flora/bush/sparsegrass/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "BF" = (
@@ -328,55 +354,47 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "BK" = (
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window{
-	dir = 4
-	},
 /obj/machinery/light/directional/north,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/bush/style_random,
+/obj/structure/flora/bush/flowers_br/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "BU" = (
-/obj/structure/window/reinforced{
-	dir = 4
-	},
-/obj/structure/window/reinforced{
-	dir = 1;
-	layer = 2.9
-	},
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/structure/window/reinforced,
+/obj/structure/window/spawner/directional/north,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/bush/flowers_pp/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "Cd" = (
 /obj/machinery/power/shuttle_engine/heater{
 	dir = 8
 	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
+/obj/structure/window/reinforced/survival_pod/spawner/directional/east,
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
 "Df" = (
 /turf/open/floor/iron/recharge_floor,
 /area/shuttle/escape)
 "Ds" = (
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window,
-/obj/structure/window{
-	dir = 4
-	},
-/obj/structure/flora/grass/jungle,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/window/spawner/directional/south,
+/obj/structure/flora/grass/jungle/a/style_random,
+/obj/structure/flora/bush/grassy/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "DC" = (
 /obj/machinery/light/directional/north,
 /turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
+"DX" = (
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/south,
+/obj/structure/flora/bush/generic/style_random,
+/obj/structure/flora/bush/sparsegrass/style_random,
+/turf/open/floor/grass,
 /area/shuttle/escape)
 "DZ" = (
 /turf/open/floor/circuit,
@@ -425,6 +443,12 @@
 "Gu" = (
 /turf/template_noop,
 /area/template_noop)
+"Gv" = (
+/obj/structure/window/spawner/directional/south,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/bush/flowers_yw/style_random,
+/turf/open/floor/grass,
+/area/shuttle/escape)
 "Hn" = (
 /obj/machinery/computer/communications{
 	dir = 8
@@ -597,16 +621,18 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "OQ" = (
-/obj/structure/window{
-	dir = 1
-	},
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window{
-	dir = 4
-	},
-/obj/structure/flora/rock/pile,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/window/spawner/directional/north,
+/obj/structure/flora/rock/pile/style_random,
+/obj/structure/flora/bush/flowers_br/style_random,
+/turf/open/floor/grass,
+/area/shuttle/escape)
+"Pf" = (
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/south,
+/obj/structure/flora/bush/fullgrass/style_random,
+/obj/structure/flora/bush/flowers_pp/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "Pw" = (
@@ -621,36 +647,27 @@
 /turf/open/floor/circuit,
 /area/shuttle/escape)
 "Qg" = (
-/obj/structure/window{
-	dir = 1
-	},
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window{
-	dir = 4
-	},
-/obj/structure/flora/grass/both,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/window/spawner/directional/north,
+/obj/structure/flora/grass/jungle/b/style_random,
+/obj/structure/flora/bush/flowers_yw/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "Qs" = (
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window,
-/obj/structure/window{
-	dir = 4
-	},
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/window/spawner/directional/south,
+/obj/structure/flora/bush/fullgrass/style_random,
+/obj/structure/flora/bush/reed/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "QH" = (
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window{
-	dir = 4
-	},
 /obj/machinery/light/directional/south,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/east,
+/obj/structure/flora/bush/fullgrass/style_random,
+/obj/structure/flora/bush/lavendergrass/style_random,
 /turf/open/floor/grass,
 /area/shuttle/escape)
 "RC" = (
@@ -710,6 +727,13 @@
 	pixel_y = 2
 	},
 /turf/open/floor/mineral/titanium/blue,
+/area/shuttle/escape)
+"VI" = (
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/north,
+/obj/structure/flora/bush/fullgrass/style_random,
+/obj/structure/flora/bush/flowers_br/style_random,
+/turf/open/floor/grass,
 /area/shuttle/escape)
 "VK" = (
 /obj/structure/chair/comfy/beige{
@@ -818,7 +842,7 @@ Jb
 br
 AI
 AI
-RC
+YA
 HK
 BF
 BF
@@ -1042,10 +1066,10 @@ YA
 xn
 Uq
 Qg
-QH
+qb
 YA
 YA
-BK
+qT
 Qs
 Uq
 jE
@@ -1118,11 +1142,11 @@ YA
 jE
 Uq
 nA
-QH
+us
 YA
 YA
 Bx
-Ds
+kn
 Uq
 jE
 Os
@@ -1309,7 +1333,7 @@ Gu
 Gu
 Gu
 YA
-BU
+Gv
 hf
 Uq
 oa
@@ -1385,13 +1409,13 @@ Gu
 Gu
 Gu
 YA
-BU
+DX
 oa
 jE
 oa
 jE
 oa
-BU
+VI
 YA
 Gu
 Gu
@@ -1405,11 +1429,11 @@ Gu
 Gu
 YA
 Tn
-BU
+Pf
 Hn
 zJ
 jK
-BU
+vJ
 Tn
 YA
 Gu
