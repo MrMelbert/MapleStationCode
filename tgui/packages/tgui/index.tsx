@@ -26,6 +26,8 @@ import './styles/themes/syndicate.scss';
 import './styles/themes/wizard.scss';
 import './styles/themes/admin.scss';
 
+import './styles/themes/maple-syndicate.scss'; // NON-MODULE CHANGE
+
 import { StoreProvider, configureStore } from './store';
 
 import { captureExternalLinks } from './links';
