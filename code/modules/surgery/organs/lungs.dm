@@ -512,10 +512,6 @@
 		if(old_n2o_pp >= n2o_para_min || old_n2o_pp <= 0.01)
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 
-		// NON-MODULE CHANGE // MELBERT TODO MODULARIZE ME
-		if(n2o_pp <= n2o_sleep_min && !breather.IsSleeping())
-			breather.remove_status_effect(/datum/status_effect/grouped/anesthetic, /datum/gas/nitrous_oxide)
-
 		if(prob(20))
 			n2o_euphoria = EUPHORIA_ACTIVE
 			breather.emote(pick("giggle", "laugh"))
@@ -534,10 +530,6 @@
 	// Enough to make the mob sleep.
 	if(n2o_pp > n2o_sleep_min)
 		breather.Sleeping(min(breather.AmountSleeping() + 100, 200))
-
-	// NON-MODULE CHANGE // MELBERT TODO MODULARIZE ME
-	if(breather.IsSleeping())
-		breather.apply_status_effect(/datum/status_effect/grouped/anesthetic, /datum/gas/nitrous_oxide)
 
 /// N2O side-effects. "Too much N2O!"
 /obj/item/organ/internal/lungs/proc/safe_n2o(mob/living/carbon/breather, datum/gas_mixture/breath, old_n2o_pp)

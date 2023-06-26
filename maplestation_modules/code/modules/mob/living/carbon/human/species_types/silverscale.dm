@@ -19,6 +19,7 @@
 		. += " This will be invaluable towards our research of silverscale biology - please send more samples if you have any!"
 
 /obj/item/organ/internal/tongue/lizard/silver
+	/// Stored skin color for turning back off of a silverscale.
 	var/old_skincolor
 	///stored mutcolor for when we turn back off of a silverscale.
 	var/old_mutcolor
@@ -34,9 +35,6 @@
 	desc += span_blue(" These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
 	price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
 
-/obj/item/organ/internal/tongue/lizard/silver/Initialize(mapload)
-	. = ..()
-
 	organ_traits += list( //Migrating silverscale traits to the tongue
 		TRAIT_HOLY,
 		TRAIT_NOBREATH,
@@ -50,13 +48,10 @@
 /obj/item/organ/internal/tongue/lizard/silver/Insert(mob/living/carbon/tongue_owner, special, drop_if_replaced)
 	. = ..()
 
-	tongue_owner.dna.species.armor += 10
-
-	if (!ishuman(tongue_owner))
+	if (!ishuman(tongue_owner) || isnull(tongue_owner.dna))
 		return
 	var/mob/living/carbon/human/he_who_was_blessed_with_silver = tongue_owner
 
-	old_skincolor = he_who_was_blessed_with_silver.skin_tone
 	old_mutcolor = he_who_was_blessed_with_silver.dna.features["mcolor"]
 	old_eye_color_left = he_who_was_blessed_with_silver.eye_color_left
 	old_eye_color_right = he_who_was_blessed_with_silver.eye_color_right
@@ -73,14 +68,14 @@
 	he_who_was_blessed_with_silver.eye_color_right = "#0000a0"
 	he_who_was_blessed_with_silver.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
 
+	he_who_was_blessed_with_silver.physiology?.damage_resistance += 10
+
 	tongue_owner.update_body(TRUE)
 
 /obj/item/organ/internal/tongue/lizard/silver/Remove(mob/living/carbon/tongue_owner, special)
 	. = ..()
 
-	tongue_owner.dna.species.armor -= 10
-
-	if (!ishuman(tongue_owner))
+	if (!ishuman(tongue_owner) || isnull(tongue_owner.dna))
 		return
 	var/mob/living/carbon/human/he_who_has_been_outcast = tongue_owner
 
@@ -95,6 +90,8 @@
 	old_mutcolor = null
 	old_eye_color_left = null
 	old_eye_color_right = null
+
+	he_who_has_been_outcast.physiology?.damage_resistance -= 10
 
 	tongue_owner.update_body(TRUE)
 
@@ -130,13 +127,6 @@
 	RegisterSignal(C, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_gain_organ))
 	RegisterSignal(C, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_lose_organ))
 
-	/*var/mob/living/carbon/human/was_silverscale = C
-	was_silverscale.dna.features["mcolor"] = old_mutcolor
-	was_silverscale.eye_color_left = old_eye_color_left
-	was_silverscale.eye_color_right = old_eye_color_right
-
-	was_silverscale.remove_filter("silver_glint")*/
-
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/C)
 	. = ..()
 
@@ -171,18 +161,25 @@
 	plural_form = "Silverscales"
 	armor = 0 //It belongs on the tongue now
 
+	mutantlungs = /obj/item/organ/internal/lungs
 	inherent_traits = list(
 		TRAIT_CAN_USE_FLIGHT_POTION,
-		TRAIT_TACKLING_TAILED_DEFENDER
+		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
+
+/datum/species/lizard/silverscale/prepare_human_for_preview(mob/living/carbon/human/human)
+	. = ..()
+	// Would've thought they already get this... but I guess not?
+	var/obj/item/organ/internal/tongue/lizard/silver/the_silver_thing = new(human)
+	the_silver_thing.Insert(human, TRUE, FALSE)
 
 // LIZARD CODE END
 
 /datum/species/lizard/silverscale/get_species_description()
 	return "An extremely rare and enigmatic breed of lizardperson, very little is known about them. \
-	The only common characteristic between them is their extreme ego, absurd elitism, and untouchable mystery. \
-	While they do venture out in hunting parties or in egregiously extravagant tours (both done in total enigma), one must ask: \
-	Why is THIS one here?"
+		The only common characteristic between them is their extreme ego, absurd elitism, and untouchable mystery. \
+		While they do venture out in hunting parties or in egregiously extravagant tours (both done in total enigma), one must ask: \
+		Why is THIS one here?"
 
 /datum/species/lizard/silverscale/get_species_lore()
 	return list(
