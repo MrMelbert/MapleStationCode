@@ -15,7 +15,7 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 		TRAIT_TACKLING_WINGED_ATTACKER,
 	)
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
-	use_skintones = 1
+	use_skintones = TRUE
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
 		/obj/item/organ/external/wings/functional/arm_wings = "Monochrome",
