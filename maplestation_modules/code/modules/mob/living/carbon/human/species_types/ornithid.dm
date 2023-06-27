@@ -19,16 +19,15 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	external_organs = list(
 		/obj/item/organ/external/wings/functional/arm_wings = "Monochrome",
 		/obj/item/organ/external/plumage = "Hermes"
-	//
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
 	)
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid, // NYI
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ornithid, // NYI
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/, // just because they are still *partially* human, or otherwise human resembling
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head, // just because they are still *partially* human, or otherwise human resembling
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest,
 	)
 	payday_modifier = 0.75
 	species_pain_mod = 1.20 // Fuck it, this will fill a niche that isn't implemented yet.

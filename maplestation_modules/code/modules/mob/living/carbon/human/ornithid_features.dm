@@ -113,10 +113,6 @@
 	feature_key = "ears_avian"
 	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_HAIR
-
-/datum/bodypart_overlay/mutant/plumage/New()
-	. = ..()
-
 /datum/bodypart_overlay/mutant/plumage/get_global_feature_list()
 	return GLOB.avian_ears_list
 
