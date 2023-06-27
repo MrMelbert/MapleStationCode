@@ -18,22 +18,24 @@
 		new contents(src, amount)
 
 	// A chance to add in some extra metal or glass
-	if(bonus_mats && prob(66))
-		switch(rand(1, 200))
-			if(1 to 9)
+	if(bonus_mats && prob(20))
+		switch(rand(0, 70))
+			if(0 to 10)
 				new /obj/item/stack/sheet/iron(src, 5)
-			if(10 to 24)
+			if(10 to 15)
 				new /obj/item/stack/sheet/iron(src, 10)
-			if(15 to 34)
+			if(15 to 35)
 				new /obj/item/stack/sheet/glass(src, 5)
-			if(35 to 49)
+			if(35 to 50)
 				new /obj/item/stack/sheet/glass(src, 10)
-			if(50 to 59)
+			if(50 to 60)
 				new /obj/item/stack/sheet/mineral/gold(src, 4)
-			if(60 to 69)
+			if(60 to 70)
 				new /obj/item/stack/sheet/mineral/silver(src, 8)
-			if(70 to INFINITY)
-				pass() // get nothing, you lose, good day sir
+
+			else
+				stack_trace("Invalid bonus mat roll")
+				new /obj/item/stack/sheet/cardboard(src, 1) // uh yea
 
 /// Special crates are specialized and can have rare materials
 /obj/structure/closet/crate/resource_cache/special
