@@ -17,7 +17,7 @@
 
 /datum/movespeed_modifier/arm_wing_flight // putting it here because this is the relevant file, and insular use case.
 	multiplicative_slowdown = -0.2
-	// if there is a way to blacklist regular walking using "blacklisted_movetypes" let me know
+	movetypes = FLOATING|FLYING
 	// THIS SHOULD ONLY APPLY WHEN THE USER IS FLYING (or floating, because that makes sense, i guess)!!!!
 
 /obj/item/organ/external/wings/functional/arm_wings/toggle_flight(mob/living/carbon/human/human)
@@ -28,7 +28,7 @@
 		REMOVE_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src))
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/arm_wing_flight)
 	return ..()
-	
+
 /datum/sprite_accessory/arm_wings
 	icon = 'maplestation_modules/icons/mob/armwings.dmi'
 
