@@ -39,7 +39,7 @@
 		GLOB.arm_wings_list,
 		"arm_wings",
 		list("FRONT"),
-		)
+	)
 
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value
