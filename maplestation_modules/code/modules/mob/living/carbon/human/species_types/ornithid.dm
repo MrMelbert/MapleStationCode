@@ -43,6 +43,8 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 	inert_mutation = /datum/mutation/human/dwarfism
 	species_language_holder = /datum/language_holder/yangyu // doing this because yangyu is really just, mostly unused otherwise.
 
+/datum/species/ornithid/randomize_features(mob/living/carbon/human_mob)
+	randomize_external_organs(human_mob)
 // defines limbs/bodyparts.
 
 /obj/item/bodypart/arm/left/ornithid
