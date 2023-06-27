@@ -28,6 +28,7 @@
 		REMOVE_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src))
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/arm_wing_flight)
 	return ..()
+	
 /datum/sprite_accessory/arm_wings
 	icon = 'maplestation_modules/icons/mob/armwings.dmi'
 
@@ -44,10 +45,6 @@
 	feature_key = "arm_wings"
 	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_HAIR
-
-/datum/bodypart_overlay/mutant/wings/arm_wings/New()
-	. = ..()
-
 /datum/bodypart_overlay/mutant/wings/arm_wings/get_global_feature_list()
 	return GLOB.arm_wings_list
 
