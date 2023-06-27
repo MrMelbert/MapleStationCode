@@ -9,7 +9,6 @@
 	ornithid.Blend(eyes, ICON_OVERLAY)
 
 	for (var/name in sprite_accessories)
-		var/datum/sprite_accessory/sprite_accessory = sprite_accessories[name]
 
 		var/icon/final_icon = icon(ornithid)
 
