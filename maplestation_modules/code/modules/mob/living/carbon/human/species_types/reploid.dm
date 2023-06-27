@@ -1,9 +1,10 @@
 /datum/species/reploid //not much yet in terms of code, waiting until datum preferences to really expand this into being more than a generic version of humanoid robots.
 	name = "Reploid"
 	id = SPECIES_REPLOID
-	species_traits = list(NOBLOOD,EYECOLOR,HAIR,FACEHAIR,LIPS,HAS_FLESH)
+	species_traits = list(EYECOLOR, HAIR ,FACEHAIR, LIPS)
 	use_skintones = 1
 	inherent_traits = list(
+		TRAIT_NOBLOOD,
 		TRAIT_NODISMEMBER,
 		TRAIT_NOLIMBDISABLE,
 		TRAIT_NOHUNGER,

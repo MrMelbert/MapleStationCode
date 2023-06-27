@@ -1,7 +1,7 @@
 import { useBackend, useLocalState } from '../backend';
 import { Box, Button, Dimmer, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
-import { CharacterPreview } from './PreferencesMenu/CharacterPreview';
+import { CharacterPreview } from './common/CharacterPreview';
 
 export const _LoadoutManager = (props, context) => {
   const { act, data } = useBackend(context);

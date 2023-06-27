@@ -1,14 +1,15 @@
 /// This proc replaces the initialize calls of /turf/open/floor/engine/cult to allow it to be overriden.
 /turf/open/floor/engine/cult/proc/make_culty(mapload)
-	if(!mapload)
+	if (!mapload)
 		new /obj/effect/temp_visual/cult/turf/floor(src)
-	realappearance = new /obj/effect/cult_turf/overlay/floor/bloodcult(src)
+
+	realappearance = new /obj/effect/cult_turf(src)
 	realappearance.linked = src
 
 // The "real apperance" overlay for clockcult floors
-/obj/effect/cult_turf/overlay/floor/clockcult
+/obj/effect/cult_turf/clockcult
 
-/obj/effect/cult_turf/overlay/floor/clockcult_nocross
+/obj/effect/cult_turf/clockcult_nocross
 	icon_state = "reebe"
 
 // The glowing visual effect played when brass floors are created.
@@ -20,7 +21,7 @@
 	name = "engraved brass floor"
 	desc = "Some brass tiles, engraved with strange runes."
 	/// The effect type used to create our "real" appearance.
-	var/floor_effect_type = /obj/effect/cult_turf/overlay/floor/clockcult
+	var/floor_effect_type = /obj/effect/cult_turf/clockcult
 
 /turf/open/floor/engine/cult/brass/make_culty(mapload)
 	if(!mapload)
@@ -36,4 +37,4 @@
 /turf/open/floor/engine/cult/brass/flat
 	name = "brass floor"
 	desc = "A large, smooth brass tile."
-	floor_effect_type = /obj/effect/cult_turf/overlay/floor/clockcult_nocross
+	floor_effect_type = /obj/effect/cult_turf/clockcult_nocross

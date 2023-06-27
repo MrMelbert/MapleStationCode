@@ -18,6 +18,10 @@
 		/datum/surgery_step/sever_limb,
 	)
 
+/datum/surgery/amputation/can_start(mob/user, mob/living/patient)
+	if(HAS_TRAIT(patient, TRAIT_NODISMEMBER))
+		return FALSE
+	return ..()
 
 /datum/surgery_step/sever_limb
 	name = "sever limb (circular saw)"
@@ -41,7 +45,7 @@
 		span_notice("[user] begins to sever [target]'s [parse_zone(target_zone)]!"),
 		span_notice("[user] begins to sever [target]'s [parse_zone(target_zone)]!"),
 	)
-	display_pain(target, "You feel a gruesome pain in your [parse_zone(target_zone)]'s joint!", target_zone = target_zone)
+	display_pain(target, "You feel a gruesome pain in your [parse_zone(target_zone)]'s joint!")
 
 
 /datum/surgery_step/sever_limb/success(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
@@ -52,7 +56,7 @@
 		span_notice("[user] severs [target]'s [parse_zone(target_zone)]!"),
 		span_notice("[user] severs [target]'s [parse_zone(target_zone)]!"),
 	)
-	display_pain(target, "You can no longer feel your severed [parse_zone(target_zone)]!", target_zone = target_zone)
+	display_pain(target, "You can no longer feel your severed [parse_zone(target_zone)]!")
 	if(surgery.operated_bodypart)
 		var/obj/item/bodypart/target_limb = surgery.operated_bodypart
 		target_limb.drop_limb()

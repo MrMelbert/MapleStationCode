@@ -15,7 +15,7 @@
 	bioware_target = BIOWARE_CORTEX
 
 /datum/surgery/advanced/bioware/cortex_imprint/can_start(mob/user, mob/living/carbon/target)
-	var/obj/item/organ/internal/brain/target_brain = target.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/internal/brain/target_brain = target.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(!target_brain)
 		return FALSE
 	return ..()
@@ -33,7 +33,7 @@
 		span_notice("[user] starts carving [target]'s outer cerebral cortex into a self-imprinting pattern."),
 		span_notice("[user] begins to perform surgery on [target]'s brain."),
 	)
-	display_pain(target, "Your head throbs with gruesome pain, it's nearly too much to handle!", target_zone = target_zone)
+	display_pain(target, "Your head throbs with gruesome pain, it's nearly too much to handle!")
 
 /datum/surgery_step/imprint_cortex/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(
@@ -43,12 +43,12 @@
 		span_notice("[user] reshapes [target]'s outer cerebral cortex into a self-imprinting pattern!"),
 		span_notice("[user] completes the surgery on [target]'s brain."),
 	)
-	display_pain(target, "Your brain feels stronger... more resillient!", target_zone = target_zone)
+	display_pain(target, "Your brain feels stronger... more resillient!")
 	new /datum/bioware/cortex_imprint(target)
 	return ..()
 
 /datum/surgery_step/imprint_cortex/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	if(target.getorganslot(ORGAN_SLOT_BRAIN))
+	if(target.get_organ_slot(ORGAN_SLOT_BRAIN))
 		display_results(
 			user,
 			target,
@@ -56,7 +56,7 @@
 			span_warning("[user] screws up, damaging the brain!"),
 			span_notice("[user] completes the surgery on [target]'s brain."),
 		)
-		display_pain(target, "Your brain throbs with intense pain; Thinking hurts!", target_zone = target_zone)
+		display_pain(target, "Your brain throbs with intense pain; Thinking hurts!")
 		target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 60)
 		target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
 	else

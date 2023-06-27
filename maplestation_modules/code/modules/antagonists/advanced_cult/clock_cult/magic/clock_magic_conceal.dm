@@ -3,7 +3,7 @@
 	name = "Slab: Conceal"
 	desc = "Alternates between hiding and revealing nearby cult structures and runes."
 	invocation = "Erg'hea Gb Error!"
-	icon_icon = 'icons/mob/actions/actions_cult.dmi'
+	button_icon = 'icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "gone"
 	charges = 10
 	/// The sound that will play on next invocation.
@@ -19,7 +19,7 @@
 
 	SEND_SOUND(owner, sound(curr_sound, 0, 1, 25))
 	after_successful_spell(owner)
-	UpdateButtons()
+	build_all_button_icons()
 
 /datum/action/item_action/cult/clock_spell/conceal/proc/reveal_nearby()
 	owner.visible_message(

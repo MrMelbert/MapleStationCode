@@ -28,7 +28,7 @@
 		span_notice("[user] starts manipulating [target]'s ligaments."),
 	)
 	display_pain(target, "Your limbs burn with severe pain!", target_zone = target_zone)
-	target.cause_typed_pain(BODY_ZONES_LIMBS, 20, BURN) // NON-MODULE CHANGE
+	target.cause_pain(BODY_ZONES_LIMBS, 20, BURN) // NON-MODULE CHANGE
 
 /datum/surgery_step/reshape_ligaments/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(
@@ -49,10 +49,8 @@
 
 /datum/bioware/hooked_ligaments/on_gain()
 	..()
-	ADD_TRAIT(owner, TRAIT_LIMBATTACHMENT, EXPERIMENTAL_SURGERY_TRAIT)
-	ADD_TRAIT(owner, TRAIT_EASYDISMEMBER, EXPERIMENTAL_SURGERY_TRAIT)
+	owner.add_traits(list(TRAIT_LIMBATTACHMENT, TRAIT_EASYDISMEMBER), EXPERIMENTAL_SURGERY_TRAIT)
 
 /datum/bioware/hooked_ligaments/on_lose()
 	..()
-	REMOVE_TRAIT(owner, TRAIT_LIMBATTACHMENT, EXPERIMENTAL_SURGERY_TRAIT)
-	REMOVE_TRAIT(owner, TRAIT_EASYDISMEMBER, EXPERIMENTAL_SURGERY_TRAIT)
+	owner.remove_traits(list(TRAIT_LIMBATTACHMENT, TRAIT_EASYDISMEMBER), EXPERIMENTAL_SURGERY_TRAIT)

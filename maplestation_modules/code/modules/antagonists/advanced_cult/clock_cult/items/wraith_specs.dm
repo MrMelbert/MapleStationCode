@@ -14,7 +14,8 @@
 	flags_cover = GLASSESCOVERSEYES
 	flags_inv = HIDEEYES
 	vision_flags = SEE_TURFS|SEE_MOBS|SEE_OBJS
-	visor_vars_to_toggle = VISOR_VISIONFLAGS | VISOR_DARKNESSVIEW
+	visor_vars_to_toggle = VISOR_VISIONFLAGS
+	color_cutoffs = list(30, 20, 5)
 	glass_colour_type = /datum/client_colour/glass_colour/yellow
 	actions_types = list(/datum/action/item_action/toggle)
 
@@ -37,10 +38,13 @@
 	if(slot != ITEM_SLOT_EYES)
 		return
 	if(ishuman(user) && !up)
+		if(IS_CULTIST(user))
+			attach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD))
 		enable_glasses(user)
 
 /obj/item/clothing/glasses/wraith_specs/dropped(mob/user)
 	. = ..()
+	detach_clothing_traits(list(TRAIT_NEARSIGHTED_CORRECTED, TRAIT_MEDICAL_HUD, TRAIT_DIAGNOSTIC_HUD))
 	if(ishuman(user) && !up)
 		disable_glasses(user)
 
@@ -58,7 +62,7 @@
 			else // not up = we're putting the glasses up (off our eyes)
 				disable_glasses(user)
 
-	. = ..()
+	return ..()
 
 /obj/item/clothing/glasses/wraith_specs/visor_toggling()
 	. = ..()
@@ -83,14 +87,14 @@
 		if(user.is_blind())
 			return FALSE
 
-		var/obj/item/organ/internal/eyes/eyes = user.getorganslot(ORGAN_SLOT_EYES)
+		var/obj/item/organ/internal/eyes/eyes = user.get_organ_slot(ORGAN_SLOT_EYES)
 		if(!eyes)
 			return FALSE
 
 		to_chat(user, span_danger("[src] shines brightly directly into your eyes, burning them!"))
+		eyes.apply_organ_damage(25)
 		user.flash_act()
-		user.blur_eyes(5 SECONDS)
-		eyes.applyOrganDamage(25)
+		user.adjust_eye_blur(20 SECONDS)
 		user.apply_damage(10, BURN, BODY_ZONE_HEAD)
 		user.pain_emote("scream", 6 SECONDS)
 		return FALSE
@@ -102,10 +106,6 @@
 	ADD_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, GLASSES_TRAIT)
 	RegisterSignal(user, COMSIG_MOB_EXAMINATE, PROC_REF(on_user_examinate))
 
-	darkness_view = 8
-	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
-	vision_correction = TRUE
-	user.clear_fullscreen("nearsighted")
 	user.update_glasses_color(src, TRUE)
 	return TRUE
 
@@ -113,18 +113,11 @@
  * Disable the hud and any other features of the goggles.
  */
 /obj/item/clothing/glasses/wraith_specs/proc/disable_glasses(mob/living/carbon/human/user)
-	REMOVE_TRAIT(user, TRAIT_MEDICAL_HUD, GLASSES_TRAIT)
-	REMOVE_TRAIT(user, TRAIT_DIAGNOSTIC_HUD, GLASSES_TRAIT)
 	for(var/hud in SPEC_HUDS)
 		var/datum/atom_hud/removed_hud = GLOB.huds[hud]
 		removed_hud.hide_from(user)
 	UnregisterSignal(user, COMSIG_MOB_EXAMINATE)
 
-	darkness_view = 2
-	lighting_alpha = null
-	vision_correction = FALSE
-	if(HAS_TRAIT(user, TRAIT_NEARSIGHT))
-		user.overlay_fullscreen("nearsighted", /atom/movable/screen/fullscreen/impaired, 1)
 	user.update_glasses_color(src, FALSE)
 	return TRUE
 
@@ -141,7 +134,7 @@
 	if(human_source.is_blind())
 		return
 
-	var/obj/item/organ/internal/eyes/eyes = human_source.getorganslot(ORGAN_SLOT_EYES)
+	var/obj/item/organ/internal/eyes/eyes = human_source.get_organ_slot(ORGAN_SLOT_EYES)
 	if(!eyes)
 		return
 
@@ -150,7 +143,7 @@
 
 	to_chat(source, span_danger("Your eyes burn as you fixate on [examined]!"))
 	human_source.flash_act(visual = TRUE)
-	human_source.blur_eyes(0.5 SECONDS)
-	eyes.applyOrganDamage(10)
+	human_source.adjust_eye_blur(1.5 SECONDS)
+	eyes.apply_organ_damage(10)
 
 #undef SPEC_HUDS

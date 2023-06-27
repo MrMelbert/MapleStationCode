@@ -304,6 +304,14 @@
 	inhand_icon_state = "oxapen"
 	list_reagents = list(/datum/reagent/medicine/painkiller/specialized/anurifen = 10) // ~20-25 pain healing (if burn pain, per limb)
 
+/datum/armor/shock_blanket
+	laser = 20
+	energy = 20
+	bomb = 20
+	bio = 10
+	fire = 100
+	acid = 50
+
 /**
  * Shock blanket item. Hit someone to cover them with the blanket.
  * If they lie down and stay still, it will regulate their body temperature.
@@ -328,7 +336,7 @@
 	cold_protection = CHEST|GROIN|LEGS|ARMS
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	armor = list(MELEE = 0, BULLET = 0, LASER = 20, ENERGY = 20, BOMB = 20, BIO = 10, FIRE = 100, ACID = 50)
+	armor_type = /datum/armor/shock_blanket
 	equip_delay_self = 2 SECONDS
 	slowdown = 1.5
 	throwforce = 0
@@ -476,7 +484,7 @@
 
 	STOP_PROCESSING(SSobj, src)
 
-/obj/item/shock_blanket/process(delta_time)
+/obj/item/shock_blanket/process(seconds_per_tick)
 	var/mob/living/carbon/wearer = loc
 	if(!istype(wearer))
 		disable_protection()
@@ -484,15 +492,15 @@
 
 	var/target_temp = wearer.get_body_temp_normal(apply_change = FALSE)
 	if(wearer.bodytemperature > target_temp)
-		wearer.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, target_temp)
+		wearer.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, target_temp)
 	else if(wearer.bodytemperature < (target_temp + 1))
-		wearer.adjust_bodytemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, target_temp)
+		wearer.adjust_bodytemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, target_temp)
 	if(ishuman(wearer))
 		var/mob/living/carbon/human/human_wearer = wearer
 		if(human_wearer.coretemperature > target_temp)
-			human_wearer.adjust_coretemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, target_temp)
+			human_wearer.adjust_coretemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, target_temp)
 		else if(human_wearer.coretemperature < (target_temp + 1))
-			human_wearer.adjust_coretemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * delta_time, 0, target_temp)
+			human_wearer.adjust_coretemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, target_temp)
 
 /obj/item/shock_blanket/emergency
 	desc = "An emergency variant shock blanket intended to be placed in medkits for field treatment. Faster to apply to patients, but more restrictive to movement."

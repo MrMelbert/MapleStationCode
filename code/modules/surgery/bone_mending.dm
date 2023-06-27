@@ -77,7 +77,7 @@
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)]."),
 		)
-		display_pain(target, "Your [parse_zone(user.zone_selected)] aches with pain!", target_zone = target_zone)
+		display_pain(target, "Your [parse_zone(user.zone_selected)] aches with pain!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
@@ -126,7 +126,7 @@
 			span_notice("[user] begins to reset the bone in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to reset the bone in [target]'s [parse_zone(user.zone_selected)]."),
 		)
-		display_pain(target, "The aching pain in your [parse_zone(user.zone_selected)] is overwhelming!", target_zone = target_zone)
+		display_pain(target, "The aching pain in your [parse_zone(user.zone_selected)] is overwhelming!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
@@ -173,7 +173,7 @@
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)]."),
 		)
-		display_pain(target, "The aching pain in your [parse_zone(user.zone_selected)] is overwhelming!", target_zone = target_zone)
+		display_pain(target, "The aching pain in your [parse_zone(user.zone_selected)] is overwhelming!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 

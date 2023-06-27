@@ -9,7 +9,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the heads of staff and the captain"
-	selection_color = "#ddddff"
+	// selection_color = "#ddddff"
 	req_admin_notify = TRUE
 	minimal_player_age = 10
 	exp_requirements = 180
@@ -55,7 +55,7 @@
 	jobtype = /datum/job/asset_protection
 
 	id = /obj/item/card/id/advanced/silver
-	belt = /obj/item/modular_computer/tablet/pda/heads/asset_protection
+	belt = /obj/item/modular_computer/pda/heads/asset_protection
 	ears = /obj/item/radio/headset/heads/asset_protection/alt
 	glasses = /obj/item/clothing/glasses/sunglasses
 	neck = /obj/item/clothing/neck/tie/black

@@ -138,14 +138,11 @@
 
 		// Skillchip checks
 		if(EXAMINE_CHECK_SKILLCHIP)
-			if(ishuman(examiner))
-				var/mob/living/carbon/human/human_examiner = examiner
-				var/obj/item/organ/internal/brain/examiner_brain = human_examiner.getorganslot(ORGAN_SLOT_BRAIN)
-				if(examiner_brain)
-					for(var/obj/item/skillchip/checked_skillchip in examiner_brain.skillchips)
-						if(checked_skillchip.active && (checked_skillchip.type in special_desc_req))
-							composed_message += "You note the following because of your implanted [span_readable_yellow(span_bold(checked_skillchip.name))]: <br>"
-							break
+			var/obj/item/organ/internal/brain/examiner_brain = examiner.get_organ_slot(ORGAN_SLOT_BRAIN)
+			for(var/obj/item/skillchip/checked_skillchip in examiner_brain?.skillchips)
+				if(checked_skillchip.active && (checked_skillchip.type in special_desc_req))
+					composed_message += "You note the following because of your implanted [span_readable_yellow(span_bold(checked_skillchip.name))]: <br>"
+					break
 
 		// Trait checks
 		if(EXAMINE_CHECK_TRAIT)

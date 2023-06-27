@@ -64,7 +64,7 @@
 		span_notice("[user] begins to realign the torn blood vessels in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 		span_notice("[user] begins to realign the torn blood vessels in [target]'s [parse_zone(user.zone_selected)]."),
 	)
-	display_pain(target, "You feel a horrible stabbing pain in your [parse_zone(user.zone_selected)]!", target_zone = target_zone)
+	display_pain(target, "You feel a horrible stabbing pain in your [parse_zone(user.zone_selected)]!")
 
 /datum/surgery_step/repair_innards/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	var/datum/wound/pierce/pierce_wound = surgery.operated_wound
@@ -123,7 +123,7 @@
 		span_notice("[user] begins to meld some of the split blood vessels in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 		span_notice("[user] begins to meld some of the split blood vessels in [target]'s [parse_zone(user.zone_selected)]."),
 	)
-	display_pain(target, "You're being burned inside your [parse_zone(user.zone_selected)]!", target_zone = target_zone)
+	display_pain(target, "You're being burned inside your [parse_zone(user.zone_selected)]!")
 
 /datum/surgery_step/seal_veins/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	var/datum/wound/pierce/pierce_wound = surgery.operated_wound

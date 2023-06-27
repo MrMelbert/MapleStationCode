@@ -1,9 +1,9 @@
 // -- Felinid species additions --
 /datum/species/human/felinid
-	species_speech_sounds = list(
+
+/datum/species/human/felinid/get_species_speech_sounds(sound_type)
+	return string_assoc_list(list(
 		'maplestation_modules/sound/voice/meow1.ogg' = 50,
 		'maplestation_modules/sound/voice/meow2.ogg' = 50,
 		'maplestation_modules/sound/voice/meow3.ogg' = 50,
-	)
-	species_speech_sounds_ask = list()
-	species_speech_sounds_exclaim = list()
+	))

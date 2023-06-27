@@ -8,8 +8,8 @@
 	buildstack = /obj/item/stack/sheet/brass
 	max_integrity = 200
 	damage_deflection = 6
-	smoothing_groups = list(SMOOTH_GROUP_BRONZE_TABLES)
-	canSmoothWith = list(SMOOTH_GROUP_BRONZE_TABLES)
+	smoothing_groups = SMOOTH_GROUP_BRONZE_TABLES
+	canSmoothWith = SMOOTH_GROUP_BRONZE_TABLES
 
 /obj/structure/table/reinforced/brass/Initialize(mapload, _buildstack)
 	. = ..()
