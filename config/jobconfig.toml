@@ -55,8 +55,8 @@
 [CARGO_TECHNICIAN]
 "# Playtime Requirements" = 0
 "# Required Account Age" = 0
-"# Spawn Positions" = 2
-"# Total Positions" = 3
+"# Spawn Positions" = 3
+"# Total Positions" = 5
 
 [CHAPLAIN]
 "# Playtime Requirements" = 0
@@ -93,6 +93,12 @@
 "# Required Account Age" = 0
 "# Spawn Positions" = 1
 "# Total Positions" = 2
+
+[CORONER]
+"# Playtime Requirements" = 0
+"# Required Account Age" = 0
+"# Spawn Positions" = 1
+"# Total Positions" = 1
 
 [CURATOR]
 "# Playtime Requirements" = 0
@@ -223,30 +229,5 @@
 [WARDEN]
 "# Playtime Requirements" = 300
 "# Required Account Age" = 7
-"# Spawn Positions" = 1
-"# Total Positions" = 1
-
-# MODULE JOBS
-[BRIDGE_OFFICER]
-"# Playtime Requirements" = 300
-"# Required Account Age" = 10
-"# Spawn Positions" = 1
-"# Total Positions" = 1
-
-[ASSET_PROTECTION]
-"# Playtime Requirements" = 300
-"# Required Account Age" = 10
-"# Spawn Positions" = 1
-"# Total Positions" = 1
-
-[XENOBIO]
-"# Playtime Requirements" = 300
-"# Required Account Age" = 0
-"# Spawn Positions" = 2
-"# Total Positions" = 3
-
-[TOXINS]
-"# Playtime Requirements" = 300
-"# Required Account Age" = 0
 "# Spawn Positions" = 1
 "# Total Positions" = 1

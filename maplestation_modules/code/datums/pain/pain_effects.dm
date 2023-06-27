@@ -5,7 +5,7 @@
 	icon_state = "painoverlay"
 	layer = UI_DAMAGE_LAYER
 
-/mob/living/carbon/proc/flash_pain_overlay(severity = 1, time = 10)
+/mob/living/proc/flash_pain_overlay(severity = 1, time = 1 SECONDS)
 	overlay_fullscreen("pain", /atom/movable/screen/fullscreen/pain, severity)
 	clear_fullscreen("pain", time)
 

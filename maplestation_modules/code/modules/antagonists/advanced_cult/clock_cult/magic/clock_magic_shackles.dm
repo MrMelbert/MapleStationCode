@@ -32,7 +32,7 @@
 		span_userdanger("[user] points [target] at you, and bright yellow chains begin to form around your wrists!")
 		)
 
-	if(!do_mob(user, victim, 3 SECONDS))
+	if(!do_after(user, 3 SECONDS, victim))
 		to_chat(user, span_warning("You fail to shackle [victim]."))
 		return
 

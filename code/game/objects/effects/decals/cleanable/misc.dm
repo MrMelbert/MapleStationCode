@@ -44,6 +44,7 @@
 
 /obj/effect/decal/cleanable/glass/ex_act()
 	qdel(src)
+	return TRUE
 
 /obj/effect/decal/cleanable/glass/plasma
 	icon_state = "plasmatiny"
@@ -54,6 +55,11 @@
 /obj/effect/decal/cleanable/glass/plastitanium
 	icon_state = "plastitaniumtiny"
 
+//Screws that are dropped on the Z level below when deconstructing a reinforced floor plate.
+/obj/effect/decal/cleanable/glass/plastitanium/screws //I don't know how to sprite scattered screws, this can work until a spriter gets their hands on it.
+	name = "pile of screws"
+	desc = "Looks like they fell from the ceiling"
+
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"
 	desc = "Someone should clean that up."
@@ -61,8 +67,8 @@
 	icon_state = "dirt"
 	base_icon_state = "dirt"
 	smoothing_flags = NONE
-	smoothing_groups = list(SMOOTH_GROUP_CLEANABLE_DIRT)
-	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_CLEANABLE_DIRT)
+	smoothing_groups = SMOOTH_GROUP_CLEANABLE_DIRT
+	canSmoothWith = SMOOTH_GROUP_CLEANABLE_DIRT + SMOOTH_GROUP_WALLS
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	beauty = -75
 
@@ -186,6 +192,9 @@
 /obj/effect/decal/cleanable/shreds/ex_act(severity, target)
 	if(severity >= EXPLODE_DEVASTATE) //so shreds created during an explosion aren't deleted by the explosion.
 		qdel(src)
+		return TRUE
+
+	return FALSE
 
 /obj/effect/decal/cleanable/shreds/Initialize(mapload, oldname)
 	pixel_x = rand(-10, 10)
@@ -247,6 +256,14 @@
 	desc = "Torn pieces of cardboard and paper, left over from a package."
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "paper_shreds"
+
+/obj/effect/decal/cleanable/wrapping/pinata
+	name = "pinata shreds"
+	desc = "Torn pieces of papier-mâché, left over from a pinata"
+	icon_state = "pinata_shreds"
+
+/obj/effect/decal/cleanable/wrapping/pinata/syndie
+	icon_state = "syndie_pinata_shreds"
 
 /obj/effect/decal/cleanable/garbage
 	name = "decomposing garbage"

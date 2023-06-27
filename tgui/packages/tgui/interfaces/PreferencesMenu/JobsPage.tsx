@@ -399,10 +399,11 @@ export const JobsPage = () => {
 
               <PriorityHeaders />
 
-              {/* NON-MODULE CHANGE FOR COMMAND JOBS */}
+              {/* // NON-MODULE CHANGE */}
               <Department department="Command">
                 <Gap amount={6} />
               </Department>
+              {/* // NON-MODULE CHANGE */}
 
               <Department department="Security">
                 <Gap amount={6} />

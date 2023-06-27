@@ -3,6 +3,7 @@
 	species_pain_mod = 0.5
 	hair_color = "mutcolor"
 	hair_alpha = 150
+	mutanteyes = /obj/item/organ/internal/eyes
 
 /datum/species/jelly/New()
 	. = ..()
@@ -64,8 +65,12 @@
 /obj/item/bodypart/chest/jelly
 	limb_id = SPECIES_SLIMEPERSON
 
+/datum/species/jelly/luminescent
+	mutanteyes = /obj/item/organ/internal/eyes
+
 // Stargazers inherent jelly limbs so we gotta do this too
 /datum/species/jelly/stargazer
+	mutanteyes = /obj/item/organ/internal/eyes/jelly
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/stargazer,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/stargazer,
@@ -74,6 +79,7 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/stargazer,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/stargazer,
 	)
+
 /obj/item/bodypart/head/stargazer
 	limb_id = SPECIES_JELLYPERSON
 	is_dimorphic = TRUE

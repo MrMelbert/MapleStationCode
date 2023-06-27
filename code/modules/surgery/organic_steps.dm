@@ -20,7 +20,7 @@
 		span_notice("[user] begins to make an incision in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to make an incision in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a stabbing in your [parse_zone(target_zone)].", target_zone = target_zone)
+	display_pain(target, "You feel a stabbing in your [parse_zone(target_zone)].")
 
 /datum/surgery_step/incise/tool_check(mob/user, obj/item/tool)
 	if(implement_type == /obj/item && !tool.get_sharpness())
@@ -31,7 +31,7 @@
 /datum/surgery_step/incise/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if ishuman(target)
 		var/mob/living/carbon/human/human_target = target
-		if (!(NOBLOOD in human_target.dna.species.species_traits))
+		if (!HAS_TRAIT(human_target, TRAIT_NOBLOOD))
 			display_results(
 				user,
 				target,
@@ -52,7 +52,7 @@
 		span_notice("[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a <i>careful</i> stabbing in your [parse_zone(target_zone)].", target_zone = target_zone)
+	display_pain(target, "You feel a <i>careful</i> stabbing in your [parse_zone(target_zone)].")
 
 //clamp bleeders
 /datum/surgery_step/clamp_bleeders
@@ -73,7 +73,7 @@
 		span_notice("[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a pinch as the bleeding in your [parse_zone(target_zone)] is slowed.", target_zone = target_zone)
+	display_pain(target, "You feel a pinch as the bleeding in your [parse_zone(target_zone)] is slowed.")
 
 /datum/surgery_step/clamp_bleeders/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	if(locate(/datum/surgery_step/saw) in surgery.steps)
@@ -105,7 +105,7 @@
 		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a severe stinging pain spreading across your [parse_zone(target_zone)] as the skin is pulled back!", target_zone = target_zone)
+	display_pain(target, "You feel a severe stinging pain spreading across your [parse_zone(target_zone)] as the skin is pulled back!")
 
 //close incision
 /datum/surgery_step/close
@@ -127,7 +127,7 @@
 		span_notice("[user] begins to mend the incision in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to mend the incision in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "Your [parse_zone(target_zone)] is being burned!", target_zone = target_zone)
+	display_pain(target, "Your [parse_zone(target_zone)] is being burned!")
 
 /datum/surgery_step/close/tool_check(mob/user, obj/item/tool)
 	if(implement_type == TOOL_WELDER || implement_type == /obj/item)
@@ -156,7 +156,7 @@
 		/obj/item/fireaxe = 50,
 		/obj/item/hatchet = 35,
 		/obj/item/knife/butcher = 25,
-		/obj/item = 20) //20% success (sort of) with any sharp item with a force>=10
+		/obj/item = 20) //20% success (sort of) with any sharp item with a force >= 10
 	time = 54
 	preop_sound = list(
 		/obj/item/circular_saw = 'sound/surgery/saw.ogg',
@@ -176,7 +176,7 @@
 		span_notice("[user] begins to saw through the bone in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to saw through the bone in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a horrid ache spread through the inside of your [parse_zone(target_zone)]!", target_zone = target_zone)
+	display_pain(target, "You feel a horrid ache spread through the inside of your [parse_zone(target_zone)]!")
 
 /datum/surgery_step/saw/tool_check(mob/user, obj/item/tool)
 	if(implement_type == /obj/item && !(tool.get_sharpness() && (tool.force >= 10)))
@@ -192,7 +192,7 @@
 		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"),
 		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"),
 	)
-	display_pain(target, "It feels like something just broke in your [parse_zone(target_zone)]!", target_zone = target_zone)
+	display_pain(target, "It feels like something just broke in your [parse_zone(target_zone)]!")
 	return ..()
 
 //drill bone
@@ -214,7 +214,7 @@
 		span_notice("[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a horrible piercing pain in your [parse_zone(target_zone)]!", target_zone = target_zone)
+	display_pain(target, "You feel a horrible piercing pain in your [parse_zone(target_zone)]!")
 
 /datum/surgery_step/drill/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(

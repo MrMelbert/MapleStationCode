@@ -1,19 +1,19 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "ac" = (
-/obj/structure/window/reinforced/spawner/north,
-/obj/structure/window/reinforced/spawner,
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/structure/window/reinforced/spawner/directional/south,
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/grille,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "af" = (
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/structure/grille,
 /obj/item/shard,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "ak" = (
-/obj/structure/chair/sofa/left{
+/obj/structure/chair/sofa/left/brown{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/hidden,
@@ -48,34 +48,22 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "aM" = (
-/obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "aT" = (
-/obj/structure/window/reinforced/spawner/east,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/frame/computer{
 	anchored = 1;
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "aW" = (
@@ -109,14 +97,11 @@
 /turf/open/floor/plating,
 /area/ruin/plasma_facility/operations)
 "bv" = (
+/obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
-/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "bD" = (
@@ -133,20 +118,11 @@
 /turf/open/floor/iron/white/smooth_large,
 /area/ruin/plasma_facility/commons)
 "bM" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "bT" = (
@@ -215,16 +191,6 @@
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "dc" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -233,6 +199,7 @@
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 4
 	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "dr" = (
@@ -240,16 +207,13 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "dx" = (
-/obj/effect/turf_decal/tile/brown,
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
 /obj/item/chair,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/built/directional/east,
+/obj/effect/turf_decal/tile/brown/opposingcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/operations)
 "dz" = (
@@ -257,20 +221,11 @@
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "dG" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/table_frame,
 /obj/item/shard,
 /obj/effect/decal/cleanable/glass,
 /obj/item/stock_parts/capacitor,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "dO" = (
@@ -322,21 +277,12 @@
 	},
 /area/ruin/plasma_facility/commons)
 "dY" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/broken/directional/north,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "ed" = (
@@ -344,19 +290,10 @@
 /turf/open/floor/plating/snowed/icemoon,
 /area/ruin/plasma_facility/operations)
 "eC" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "eD" = (
@@ -367,7 +304,7 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "eM" = (
-/obj/structure/window/reinforced/spawner,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/effect/decal/cleanable/glass,
 /obj/item/shard{
 	pixel_x = 11;
@@ -439,7 +376,7 @@
 /obj/machinery/conveyor{
 	id = "fire_facility_smelt"
 	},
-/obj/structure/window/reinforced/spawner/west,
+/obj/structure/window/reinforced/spawner/directional/west,
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
@@ -476,7 +413,7 @@
 	dir = 4
 	},
 /obj/structure/table/glass,
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/item/paper/crumpled/muddy{
 	pixel_x = -8;
 	pixel_y = 4
@@ -496,7 +433,7 @@
 /obj/structure/rack,
 /obj/machinery/light/small/broken/directional/east,
 /obj/item/pickaxe,
-/obj/item/clothing/head/utility/hardhat/weldhat/orange,
+/obj/item/clothing/head/utility/hardhat/welding/orange,
 /turf/open/floor/iron/smooth{
 	initial_gas_mix = "ICEMOON_ATMOS"
 	},
@@ -537,26 +474,26 @@
 /area/ruin/plasma_facility/commons)
 "hN" = (
 /obj/structure/grille,
-/obj/structure/window/reinforced/spawner,
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/window/reinforced/spawner/directional/south,
+/obj/structure/window/reinforced/spawner/directional/east,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/commons)
 "hR" = (
 /turf/closed/wall/ice,
 /area/ruin/plasma_facility/operations)
 "hV" = (
-/obj/structure/window/reinforced/spawner/west,
+/obj/structure/window/reinforced/spawner/directional/west,
 /obj/structure/grille,
 /obj/item/shard,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/commons)
 "hX" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/broken/directional/south,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/brown/anticorner,
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/light/small/broken/directional/south,
 /turf/open/floor/iron/corner{
 	dir = 1
 	},
@@ -632,7 +569,7 @@
 	id = "mining_internal";
 	name = "fire_facility_smelt"
 	},
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -643,10 +580,10 @@
 	},
 /area/ruin/plasma_facility/operations)
 "ja" = (
-/obj/effect/turf_decal/tile/brown/full,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/brown/full,
 /turf/open/floor/iron/large,
 /area/ruin/plasma_facility/commons)
 "jb" = (
@@ -655,7 +592,7 @@
 	pixel_x = 15;
 	pixel_y = 14
 	},
-/mob/living/simple_animal/hostile/retaliate/frog{
+/mob/living/basic/frog{
 	name = "Peter Jr."
 	},
 /turf/open/floor/plating/icemoon,
@@ -687,12 +624,12 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "jT" = (
-/obj/structure/window/reinforced/spawner,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/structure/grille,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "kh" = (
-/obj/structure/window/reinforced/spawner,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/structure/frame/computer{
 	anchored = 1;
 	dir = 4
@@ -705,21 +642,19 @@
 	},
 /area/ruin/plasma_facility/operations)
 "ku" = (
+/obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/brown/anticorner{
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/corner{
 	dir = 4
 	},
 /area/ruin/plasma_facility/commons)
 "kA" = (
-/obj/structure/closet/crate{
-	icon_state = "crateopen"
-	},
+/obj/structure/closet/crate/preopen,
 /obj/item/stack/ore/plasma,
 /obj/item/stack/ore/plasma,
 /obj/item/stack/ore/plasma,
@@ -805,20 +740,11 @@
 /turf/open/floor/wood/large,
 /area/ruin/plasma_facility/commons)
 "lW" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "lX" = (
@@ -865,10 +791,6 @@
 /turf/open/floor/plating,
 /area/ruin/plasma_facility/commons)
 "mN" = (
-/obj/effect/turf_decal/tile/brown/half{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/purple/half,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -876,6 +798,10 @@
 	name = "Ore Processing"
 	},
 /obj/effect/mapping_helpers/airlock/abandoned,
+/obj/effect/turf_decal/tile/brown/half{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/purple/half,
 /turf/open/floor/iron/textured_half,
 /area/ruin/plasma_facility/operations)
 "nk" = (
@@ -904,36 +830,30 @@
 /area/ruin/plasma_facility/commons)
 "no" = (
 /obj/structure/transit_tube/station/reverse,
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "nq" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/vehicle/ridden/wheelchair,
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 1
 	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/vehicle/ridden/wheelchair,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
 /area/ruin/plasma_facility/commons)
 "nu" = (
-/obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/brown/half,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "nz" = (
@@ -1009,8 +929,7 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "oS" = (
-/obj/effect/turf_decal/tile/neutral/full,
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/structure/transit_tube/station/reverse/flipped{
 	dir = 1
 	},
@@ -1020,6 +939,7 @@
 /obj/structure/transit_tube_pod{
 	dir = 4
 	},
+/obj/effect/turf_decal/tile/neutral/full,
 /turf/open/floor/iron/textured_large,
 /area/ruin/plasma_facility/commons)
 "oW" = (
@@ -1033,44 +953,38 @@
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/commons)
 "pj" = (
-/obj/effect/turf_decal/tile/brown/half{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/north,
+/obj/effect/turf_decal/tile/brown/half{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
 /area/ruin/plasma_facility/commons)
 "pl" = (
-/obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+/obj/effect/turf_decal/tile/brown/half,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "pn" = (
-/obj/effect/turf_decal/tile/brown/full,
 /obj/item/kirbyplants{
 	icon_state = "applebush"
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/full,
 /turf/open/floor/iron/large,
 /area/ruin/plasma_facility/commons)
 "pt" = (
 /obj/structure/table,
-/obj/item/paperslip{
+/obj/item/paper/paperslip{
 	pixel_x = 15;
 	pixel_y = -16
 	},
@@ -1079,11 +993,11 @@
 /turf/open/floor/wood/large,
 /area/ruin/plasma_facility/commons)
 "pw" = (
-/obj/effect/turf_decal/tile/brown/full,
 /obj/effect/turf_decal/bot_white{
 	color = "#0560fc"
 	},
 /obj/structure/ore_box,
+/obj/effect/turf_decal/tile/brown/full,
 /turf/open/floor/iron/textured_large,
 /area/ruin/plasma_facility/commons)
 "pC" = (
@@ -1099,8 +1013,8 @@
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "qv" = (
-/obj/structure/window/reinforced/spawner/west,
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/grille,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/commons)
@@ -1168,30 +1082,25 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/glass,
-/obj/structure/window/reinforced/spawner,
+/obj/structure/window/reinforced/spawner/directional/south,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "rF" = (
-/obj/effect/turf_decal/tile/brown/half{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/effect/decal/cleanable/dirt,
 /obj/item/wallframe/airalarm{
 	pixel_y = 10
 	},
+/obj/effect/turf_decal/tile/brown/half{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
 /area/ruin/plasma_facility/commons)
 "rS" = (
 /obj/effect/turf_decal/bot/left,
-/obj/structure/closet/crate{
-	icon_state = "crateopen"
-	},
+/obj/structure/closet/crate/preopen,
 /obj/item/stack/sheet/mineral/plasma/thirty,
 /turf/open/floor/iron/smooth_half{
 	initial_gas_mix = "ICEMOON_ATMOS"
@@ -1203,28 +1112,17 @@
 /turf/open/misc/asteroid/snow/icemoon,
 /area/ruin/plasma_facility)
 "sq" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/table/reinforced/rglass,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/disk/design_disk/modkit_disc/resonator_blast,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "sr" = (
 /obj/structure/railing{
 	dir = 5
 	},
-/obj/structure/closet/crate{
-	icon_state = "crateopen"
-	},
+/obj/structure/closet/crate/preopen,
 /obj/item/stack/sheet/mineral/silver,
 /obj/item/stack/sheet/mineral/silver,
 /obj/item/stack/sheet/mineral/silver,
@@ -1304,7 +1202,7 @@
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/commons)
 "tC" = (
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/grille,
 /obj/item/shard,
 /turf/open/floor/plating/icemoon,
@@ -1346,7 +1244,7 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/glass,
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "uo" = (
@@ -1364,16 +1262,13 @@
 	},
 /area/ruin/plasma_facility/operations)
 "uq" = (
-/obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/brown/half,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "ux" = (
@@ -1434,12 +1329,12 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "wg" = (
-/obj/effect/turf_decal/tile/brown,
 /obj/structure/frame/computer{
 	anchored = 1;
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown,
 /turf/open/floor/iron/dark/side{
 	dir = 8
 	},
@@ -1452,22 +1347,13 @@
 	},
 /area/ruin/plasma_facility/operations)
 "wu" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 4
 	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "wF" = (
@@ -1494,21 +1380,16 @@
 /turf/open/floor/stone,
 /area/ruin/plasma_facility/commons)
 "wZ" = (
-/obj/structure/window/reinforced/unanchored{
-	dir = 1
-	},
+/obj/structure/window/reinforced/unanchored/spawner/directional/north,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "xd" = (
-/obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/south,
+/obj/effect/turf_decal/tile/brown/half,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "xV" = (
@@ -1532,14 +1413,11 @@
 /turf/open/floor/stone,
 /area/ruin/plasma_facility/commons)
 "yv" = (
+/obj/machinery/light_switch/directional/south,
 /obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
-/obj/machinery/light_switch/directional/south,
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "yL" = (
@@ -1548,7 +1426,7 @@
 /area/ruin/plasma_facility/operations)
 "zb" = (
 /obj/structure/rack,
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/item/storage/medkit/fire,
 /obj/item/storage/medkit/regular{
 	pixel_x = -3;
@@ -1577,18 +1455,15 @@
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "zO" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/edge{
 	dir = 4
 	},
@@ -1614,37 +1489,31 @@
 "Ak" = (
 /obj/structure/bed/maint,
 /obj/item/bedsheet/dorms,
-/obj/item/candle{
+/obj/item/flashlight/flare/candle{
 	pixel_x = 12;
 	pixel_y = 9
 	},
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "An" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/blood/tracks,
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 1
 	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/blood/tracks,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
 /area/ruin/plasma_facility/commons)
 "Au" = (
-/obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/edge,
 /area/ruin/plasma_facility/commons)
 "AG" = (
@@ -1690,16 +1559,13 @@
 /turf/open/floor/plating,
 /area/ruin/plasma_facility/commons)
 "BM" = (
-/obj/effect/turf_decal/tile/brown/half{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
@@ -1720,15 +1586,12 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "BZ" = (
-/obj/effect/turf_decal/tile/brown/half{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/brown/half,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/mining{
 	name = "Processing Control"
 	},
+/obj/effect/turf_decal/tile/brown/full,
 /turf/open/floor/iron/textured_half,
 /area/ruin/plasma_facility/operations)
 "Cb" = (
@@ -1746,16 +1609,13 @@
 /turf/open/floor/plating,
 /area/ruin/plasma_facility/commons)
 "Co" = (
-/obj/effect/turf_decal/tile/brown,
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
 /obj/machinery/conveyor_switch/oneway{
 	id = "fire_facility_smelt";
 	name = "mining conveyor"
 	},
 /obj/effect/decal/cleanable/dirt,
 /mob/living/simple_animal/hostile/skeleton/plasmaminer,
+/obj/effect/turf_decal/tile/brown/opposingcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/operations)
 "CA" = (
@@ -1821,24 +1681,15 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "DN" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "DQ" = (
-/obj/effect/turf_decal/tile/brown/full,
 /obj/item/kirbyplants{
 	icon_state = "applebush"
 	},
+/obj/effect/turf_decal/tile/brown/full,
 /turf/open/floor/iron/large,
 /area/ruin/plasma_facility/commons)
 "DR" = (
@@ -1911,9 +1762,7 @@
 "FD" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/railing/corner,
-/obj/structure/closet/crate{
-	icon_state = "crateopen"
-	},
+/obj/structure/closet/crate/preopen,
 /obj/item/stack/sheet/mineral/uranium/five,
 /obj/item/stack/sheet/mineral/uranium/five,
 /obj/item/stack/sheet/mineral/uranium/five,
@@ -1944,7 +1793,7 @@
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "FP" = (
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/item/soap/homemade{
 	pixel_y = 2
 	},
@@ -1965,8 +1814,8 @@
 "Go" = (
 /obj/effect/decal/cleanable/glass,
 /obj/structure/grille/broken,
-/obj/structure/window/reinforced/spawner/east,
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/east,
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/item/shard,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
@@ -2051,8 +1900,8 @@
 /area/icemoon/underground/explored)
 "Ij" = (
 /obj/structure/grille,
-/obj/structure/window/reinforced/spawner/east,
-/obj/structure/window/reinforced/spawner,
+/obj/structure/window/reinforced/spawner/directional/east,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/item/shard,
 /obj/effect/decal/cleanable/glass,
 /turf/open/floor/plating/icemoon,
@@ -2063,14 +1912,14 @@
 /turf/open/lava/plasma/ice_moon,
 /area/ruin/plasma_facility/operations)
 "IJ" = (
-/obj/structure/window/reinforced/spawner,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/effect/decal/cleanable/glass,
 /obj/item/shard,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "IU" = (
-/obj/structure/chair/sofa/right{
+/obj/structure/chair/sofa/right/brown{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/general/hidden,
@@ -2107,16 +1956,13 @@
 	},
 /area/ruin/plasma_facility/commons)
 "Jp" = (
-/obj/effect/turf_decal/tile/neutral/half,
-/obj/effect/turf_decal/tile/neutral/half{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/command/glass{
 	name = "Operations"
 	},
 /obj/effect/mapping_helpers/airlock/abandoned,
+/obj/effect/turf_decal/tile/neutral/full,
 /turf/open/floor/iron/dark/textured_half,
 /area/ruin/plasma_facility/commons)
 "Ju" = (
@@ -2151,20 +1997,11 @@
 /turf/open/floor/wood/large,
 /area/ruin/plasma_facility/commons)
 "JD" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
 /obj/machinery/light/small/broken/directional/west,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "JQ" = (
@@ -2296,7 +2133,7 @@
 	pixel_x = 3;
 	pixel_y = 4
 	},
-/obj/item/paperslip,
+/obj/item/paper/paperslip,
 /obj/item/paper{
 	pixel_x = 7
 	},
@@ -2313,8 +2150,8 @@
 /turf/open/floor/plating,
 /area/ruin/plasma_facility/commons)
 "Mc" = (
-/obj/effect/turf_decal/tile/brown/full,
 /obj/structure/closet/firecloset,
+/obj/effect/turf_decal/tile/brown/full,
 /turf/open/floor/iron/large,
 /area/ruin/plasma_facility/commons)
 "Mi" = (
@@ -2346,7 +2183,7 @@
 /area/ruin/plasma_facility/operations)
 "MN" = (
 /obj/structure/grille/broken,
-/obj/structure/window/reinforced/spawner,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/effect/decal/cleanable/glass,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
@@ -2392,10 +2229,6 @@
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/operations)
 "Ng" = (
-/obj/effect/turf_decal/tile/green/half,
-/obj/effect/turf_decal/tile/green/half{
-	dir = 1
-	},
 /obj/machinery/door/airlock/medical{
 	name = "Sickbay"
 	},
@@ -2403,17 +2236,15 @@
 	note_info = "DO NOT ENTER!!!"
 	},
 /obj/effect/decal/cleanable/blood/tracks,
+/obj/effect/turf_decal/tile/green/full,
 /turf/open/floor/iron/white/textured_half,
 /area/ruin/plasma_facility/commons)
 "Nm" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 1
 	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
@@ -2440,10 +2271,9 @@
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 8
 	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
-/obj/effect/turf_decal/tile/neutral,
 /turf/open/floor/iron/edge{
 	dir = 8
 	},
@@ -2453,8 +2283,8 @@
 /turf/closed/wall,
 /area/icemoon/underground/explored)
 "NX" = (
-/obj/structure/window/reinforced/spawner/west,
-/obj/structure/window/reinforced/spawner/north,
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/structure/grille/broken,
 /obj/effect/decal/cleanable/glass,
 /obj/effect/decal/cleanable/dirt,
@@ -2483,16 +2313,6 @@
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
 "OC" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/chair/office/light{
 	dir = 4
 	},
@@ -2502,6 +2322,7 @@
 /obj/effect/decal/cleanable/dirt,
 /mob/living/simple_animal/hostile/skeleton/plasmaminer/jackhammer,
 /obj/machinery/light_switch/directional/south,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "OF" = (
@@ -2529,22 +2350,13 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "Ps" = (
-/obj/structure/window/reinforced/spawner/east,
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/table/reinforced/rglass,
 /obj/item/toy/plush/plasmamanplushie{
 	name = "Aurem Negative Fourteen"
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "Pt" = (
@@ -2591,14 +2403,11 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "PB" = (
+/obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 1
 	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
@@ -2625,9 +2434,9 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "PZ" = (
-/obj/effect/turf_decal/tile/neutral/full,
 /obj/effect/turf_decal/bot_red,
 /obj/machinery/suit_storage_unit,
+/obj/effect/turf_decal/tile/neutral/full,
 /turf/open/floor/iron/textured_large,
 /area/ruin/plasma_facility/commons)
 "Qh" = (
@@ -2660,7 +2469,7 @@
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "QJ" = (
-/obj/machinery/mineral/equipment_vendor,
+/obj/machinery/computer/order_console/mining,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/broken/directional/west,
 /turf/open/floor/wood/large,
@@ -2714,17 +2523,14 @@
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
 "RK" = (
-/obj/effect/turf_decal/tile/brown/half{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/brown/half{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
@@ -2791,10 +2597,7 @@
 /obj/effect/turf_decal/tile/brown/half{
 	dir = 1
 	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
@@ -2809,16 +2612,6 @@
 /turf/open/floor/stone,
 /area/ruin/plasma_facility/commons)
 "TK" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -2826,6 +2619,7 @@
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 4
 	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/commons)
 "TO" = (
@@ -2878,10 +2672,7 @@
 /area/ruin/plasma_facility/operations)
 "VD" = (
 /obj/effect/turf_decal/tile/brown/half,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
 /turf/open/floor/iron/edge,
@@ -2908,7 +2699,7 @@
 /turf/open/floor/plating,
 /area/ruin/plasma_facility/commons)
 "Wd" = (
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/window/reinforced/spawner/directional/east,
 /obj/structure/grille,
 /turf/open/floor/plating/icemoon,
 /area/ruin/plasma_facility/commons)
@@ -2939,22 +2730,19 @@
 /turf/open/lava/plasma/ice_moon,
 /area/ruin/plasma_facility/operations)
 "WK" = (
+/obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/brown/anticorner{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/corner,
 /area/ruin/plasma_facility/commons)
 "WU" = (
-/obj/effect/turf_decal/tile/brown,
-/obj/effect/turf_decal/tile/brown{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light_switch/directional/east,
+/obj/effect/turf_decal/tile/brown/opposingcorners,
 /turf/open/floor/iron,
 /area/ruin/plasma_facility/operations)
 "Xh" = (
@@ -2998,13 +2786,13 @@
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
 "XS" = (
-/obj/structure/window/reinforced/spawner/west,
+/obj/structure/window/reinforced/spawner/directional/west,
 /obj/structure/toilet,
 /obj/structure/curtain,
 /turf/open/floor/iron/freezer,
 /area/ruin/plasma_facility/commons)
 "XT" = (
-/obj/structure/window/reinforced/spawner/west,
+/obj/structure/window/reinforced/spawner/directional/west,
 /obj/structure/grille/broken,
 /obj/effect/decal/cleanable/glass,
 /obj/structure/transit_tube/horizontal,
@@ -3021,22 +2809,22 @@
 /turf/open/floor/plating,
 /area/ruin/plasma_facility/commons)
 "XW" = (
-/obj/effect/turf_decal/tile/brown/full,
 /obj/effect/turf_decal/bot_white{
 	color = "#0560fc"
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/item/pickaxe,
+/obj/effect/turf_decal/tile/brown/full,
 /turf/open/floor/iron/textured_large,
 /area/ruin/plasma_facility/commons)
 "Yw" = (
 /turf/open/floor/plating/snowed/smoothed/icemoon,
 /area/icemoon/underground/explored)
 "YC" = (
-/obj/effect/turf_decal/tile/neutral/full,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/caution,
 /obj/machinery/light_switch/directional/south,
+/obj/effect/turf_decal/tile/neutral/full,
 /turf/open/floor/iron/textured_large,
 /area/ruin/plasma_facility/commons)
 "YI" = (
@@ -3061,16 +2849,13 @@
 /turf/open/lava/plasma/ice_moon,
 /area/icemoon/underground/explored)
 "Zk" = (
-/obj/effect/turf_decal/tile/brown/half{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/item/paper/crumpled/bloody{
 	default_raw_text = "I've sealed the place off. I'm taking the last snowtreader to look for help. Please, if you find this place, leave. It's not safe here. We made them angry."
 	},
+/obj/effect/turf_decal/tile/brown/half{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
@@ -3096,7 +2881,7 @@
 	pixel_x = -3;
 	pixel_y = 17
 	},
-/obj/item/paperslip{
+/obj/item/paper/paperslip{
 	pixel_x = -5;
 	pixel_y = 15
 	},
@@ -3125,19 +2910,10 @@
 /turf/open/floor/stone,
 /area/ruin/plasma_facility/commons)
 "ZB" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/filingcabinet/chestdrawer/wheeled,
 /obj/effect/decal/cleanable/glass,
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/textured,
 /area/ruin/plasma_facility/commons)
 "ZC" = (

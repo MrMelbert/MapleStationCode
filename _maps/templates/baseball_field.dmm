@@ -1,22 +1,16 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "aM" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "bI" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/structure/table,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/baseball)
 "cJ" = (
@@ -54,17 +48,11 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "fM" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/west,
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/machinery/light/floor,
 /turf/open/floor/grass,
-/area/station/commons/baseball)
-"gd" = (
-/obj/machinery/light/directional/south,
-/turf/open/misc/ironsand,
 /area/station/commons/baseball)
 "gh" = (
 /obj/effect/turf_decal/trimline/white/line{
@@ -84,9 +72,6 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "gG" = (
-/obj/structure/chair{
-	dir = 8
-	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
@@ -100,12 +85,10 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "hb" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/north,
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/machinery/light/floor,
 /turf/open/floor/grass,
 /area/station/commons/baseball)
 "hu" = (
@@ -157,23 +140,26 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/commons/baseball/view)
+"jB" = (
+/obj/effect/turf_decal/trimline/white/line{
+	dir = 4
+	},
+/obj/machinery/light/floor,
+/turf/open/misc/ironsand,
+/area/station/commons/baseball)
 "jE" = (
 /obj/structure/table,
 /obj/item/food/hotdog,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "jF" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "jJ" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/structure/table,
 /obj/effect/spawner/random/food_or_drink/donkpockets,
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "ki" = (
@@ -197,14 +183,12 @@
 /turf/open/floor/iron/white/smooth_large,
 /area/station/commons/baseball)
 "lj" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "ll" = (
@@ -224,14 +208,12 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
 "md" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/west,
 /obj/structure/chair{
 	dir = 1
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "ms" = (
@@ -253,33 +235,23 @@
 /obj/structure/closet,
 /turf/open/floor/iron/cafeteria,
 /area/station/commons/baseball/locker)
-"on" = (
-/obj/machinery/light/directional/north,
-/turf/open/misc/grass,
-/area/station/commons/baseball)
 "ps" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/grass,
 /area/station/commons/baseball)
 "pG" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/grass,
 /area/station/commons/baseball)
 "pM" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "qa" = (
@@ -388,23 +360,13 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
 "wV" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/structure/table,
 /obj/item/phone,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
-/area/station/commons/baseball)
-"xc" = (
-/obj/machinery/light/directional/east,
-/turf/open/misc/ironsand,
-/area/station/commons/baseball)
-"xt" = (
-/obj/machinery/light/directional/south,
-/turf/open/floor/iron/white/smooth_large,
 /area/station/commons/baseball)
 "xC" = (
 /obj/effect/turf_decal/trimline/white/line,
@@ -424,27 +386,21 @@
 /turf/open/misc/grass,
 /area/station/commons/baseball)
 "yB" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/structure/window/reinforced/spawner/directional/west,
 /obj/structure/chair{
 	dir = 1
 	},
-/obj/structure/window/reinforced{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "yU" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/structure/chair{
 	dir = 8
 	},
-/obj/structure/window/reinforced,
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/structure/window/reinforced/spawner/directional/south,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "yW" = (
@@ -455,23 +411,18 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "zp" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/machinery/light/floor,
 /turf/open/floor/grass,
 /area/station/commons/baseball)
 "zu" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/structure/chair{
 	dir = 8
 	},
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "zN" = (
@@ -497,9 +448,7 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "AL" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
+/obj/structure/window/reinforced/spawner/directional/north,
 /obj/structure/chair{
 	dir = 1
 	},
@@ -550,10 +499,8 @@
 /turf/open/floor/plating,
 /area/station/commons/baseball/view)
 "Gj" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/machinery/vending/boozeomat/all_access,
+/obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "Gl" = (
@@ -561,13 +508,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
-"GB" = (
-/obj/effect/turf_decal/trimline/white/line{
-	dir = 4
-	},
-/obj/machinery/light/directional/east,
-/turf/open/misc/ironsand,
-/area/station/commons/baseball)
 "He" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 1
@@ -588,10 +528,6 @@
 /obj/structure/railing,
 /turf/open/misc/ironsand,
 /area/station/commons/baseball)
-"Im" = (
-/obj/machinery/light/directional/west,
-/turf/open/misc/grass,
-/area/station/commons/baseball)
 "Iy" = (
 /obj/structure/chair{
 	dir = 4
@@ -605,9 +541,9 @@
 "JF" = (
 /turf/closed/wall,
 /area/station/commons/baseball/locker)
-"JS" = (
+"Kc" = (
 /obj/effect/turf_decal/trimline/white/line,
-/obj/machinery/light/directional/south,
+/obj/machinery/light/floor,
 /turf/open/misc/ironsand,
 /area/station/commons/baseball)
 "KM" = (
@@ -623,12 +559,10 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
 "Mx" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/effect/turf_decal/trimline/white/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/grass,
 /area/station/commons/baseball)
 "NW" = (
@@ -675,20 +609,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
+"Rh" = (
+/obj/machinery/light/floor,
+/turf/open/misc/ironsand,
+/area/station/commons/baseball)
 "RM" = (
 /obj/effect/spawner/structure/window/reinforced,
-/turf/closed/wall,
+/turf/open/floor/plating,
 /area/station/commons/baseball/view)
 "Tb" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/structure/chair{
 	dir = 1
 	},
-/obj/structure/chair{
-	dir = 1
-	},
+/obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "TE" = (
@@ -697,12 +630,10 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "TG" = (
-/obj/structure/window/reinforced{
-	dir = 8
-	},
 /obj/effect/turf_decal/trimline/green/filled/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "TJ" = (
@@ -712,26 +643,20 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "TK" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/structure/chair{
 	dir = 1
 	},
-/obj/structure/window/reinforced{
-	dir = 4
-	},
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/structure/window/reinforced/spawner/directional/east,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "UP" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
 /obj/effect/turf_decal/trimline/white/line{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/grass,
 /area/station/commons/baseball)
 "UR" = (
@@ -739,9 +664,7 @@
 /turf/open/floor/iron,
 /area/station/commons/baseball/locker)
 "US" = (
-/obj/structure/window/reinforced{
-	dir = 1
-	},
+/obj/structure/window/reinforced/spawner/directional/north,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
 "Wm" = (
@@ -784,10 +707,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/commons/baseball/view)
-"ZE" = (
-/obj/machinery/light/directional/east,
-/turf/open/floor/iron/white/smooth_large,
-/area/station/commons/baseball)
 "ZV" = (
 /obj/machinery/door/window/left/directional/east,
 /turf/open/floor/iron,
@@ -867,7 +786,7 @@ pG
 hu
 yW
 yW
-xc
+Rh
 yW
 yW
 yW
@@ -876,7 +795,7 @@ yW
 yW
 yW
 yW
-xC
+Kc
 AL
 ll
 Bm
@@ -889,7 +808,7 @@ Ok
 pG
 hu
 yW
-gd
+Rh
 ld
 yW
 yW
@@ -899,8 +818,8 @@ yW
 yW
 yW
 yW
-xt
-AL
+ld
+Tb
 ll
 Bm
 Xd
@@ -946,7 +865,7 @@ vf
 vf
 vf
 xC
-AL
+Tb
 ll
 jf
 YL
@@ -969,7 +888,7 @@ vf
 vf
 vf
 xC
-AL
+Tb
 ll
 nP
 zn
@@ -1015,7 +934,7 @@ vf
 vf
 vf
 xC
-AL
+Tb
 ms
 nP
 RM
@@ -1037,7 +956,7 @@ vf
 vf
 vf
 vf
-JS
+xC
 TK
 ZV
 nP
@@ -1061,7 +980,7 @@ vf
 vf
 vf
 xC
-Im
+vf
 vf
 JF
 im
@@ -1084,7 +1003,7 @@ vf
 vf
 yW
 xC
-yW
+Rh
 vf
 JF
 vQ
@@ -1096,14 +1015,14 @@ JF
 UP
 qe
 qe
-gh
-ZE
-gh
-gh
+jB
+ld
 gh
 gh
 gh
-GB
+gh
+gh
+gh
 gh
 gh
 mJ
@@ -1127,8 +1046,8 @@ zu
 zu
 jF
 yU
-on
-yW
+vf
+Rh
 yW
 ld
 iD

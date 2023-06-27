@@ -15,16 +15,8 @@ GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/gla
 	var/obj/item/clothing/glasses/equipped_glasses = locate(item_path) in equipper.get_equipped_items()
 	if(equipped_glasses.glass_colour_type)
 		equipper.update_glasses_color(equipped_glasses, TRUE)
-	if(equipped_glasses.tint)
-		equipper.update_tint()
-	if(equipped_glasses.vision_correction)
-		equipper.clear_fullscreen("nearsighted")
-	if(equipped_glasses.vision_flags \
-		|| equipped_glasses.darkness_view \
-		|| equipped_glasses.invis_override \
-		|| equipped_glasses.invis_view \
-		|| !isnull(equipped_glasses.lighting_alpha))
-		equipper.update_sight()
+	equipper.update_tint()
+	equipper.update_sight()
 
 /datum/loadout_item/glasses/prescription_glasses
 	name = "Glasses"

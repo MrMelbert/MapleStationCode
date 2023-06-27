@@ -17,5 +17,4 @@
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/unfortunate_soul = target
-		if(unfortunate_soul.pain_controller)
-			unfortunate_soul.sharp_pain(BODY_ZONES_ALL, 50) //OW MY BONES
+		unfortunate_soul.sharp_pain(BODY_ZONES_ALL, 50) //OW MY BONES

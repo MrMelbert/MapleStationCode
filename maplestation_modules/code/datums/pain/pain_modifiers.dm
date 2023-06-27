@@ -86,3 +86,15 @@
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.unset_pain_mod(PAIN_MOD_DRUNK)
 	return ..()
+
+/datum/status_effect/drowsiness/on_apply()
+	. = ..()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.set_pain_mod(id, 0.95)
+
+/datum/status_effect/drowsiness/on_remove()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		human_owner.unset_pain_mod(id)
+	return ..()

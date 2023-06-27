@@ -36,7 +36,7 @@
 		to_chat(owner.current, span_danger("You hear a click in your [prob(50) ? "right" : "left"] arm as your [weapons_implant.name] deactivates and becomes non-functional!"))
 		qdel(weapons_implant)
 
-	var/obj/item/organ/internal/brain/their_brain = owner.current.getorganslot(ORGAN_SLOT_BRAIN)
+	var/obj/item/organ/internal/brain/their_brain = owner.current.get_organ_slot(ORGAN_SLOT_BRAIN)
 	if(their_brain)
 		var/obj/item/skillchip/disk_verifier/disky_chip = locate() in their_brain
 		if(disky_chip)
@@ -129,18 +129,14 @@
 		return FALSE
 
 	// Spawns us somewhere in maintenance via drop pod.
-	var/list/possible_spawns = list()
-	for(var/turf/found_turf in GLOB.xeno_spawn)
-		if(istype(get_area(found_turf), /area/station/maintenance))
-			possible_spawns += found_turf
-	if(!possible_spawns.len)
+	var/turf/picked_turf = find_maintenance_spawn(TRUE)
+	if(isnull(picked_turf))
 		return FALSE
 
 	var/obj/structure/closet/supplypod/infiltrator_pod = new(null, STYLE_SYNDICATE)
 	infiltrator_pod.explosionSize = list(0, 0, 1, 1)
 	infiltrator_pod.bluespace = TRUE
 
-	var/turf/picked_turf = pick(possible_spawns)
 	var/turf/randomized_picked_turf = find_obstruction_free_location(3, picked_turf) || picked_turf
 
 	if(!silent)

@@ -25,10 +25,13 @@
 	wing_types = list(/obj/item/organ/external/wings/functional/robotic)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
 	species_language_holder = /datum/language_holder/synthetic
+	/// 2021:
 	/// If your health becomes equal to or less than this value, your disguise is supposed to break.
 	/// Unfortunately, that feature currently isn't implemented, so currently, all this threshold is
 	/// used for is (I kid you not) determining whether or not your speech uses SPAN_CLOWN while you're
 	/// disguised as a bananium golem. See the handle_speech() proc further down in this file for more information on that check.
+	/// 2023 update:
+	/// Bananium golems are removed, this is now completely dead code. God save us all
 	var/disguise_fail_health = 75
 	///a species to do most of our work for us, unless we're damaged
 	var/datum/species/fake_species
@@ -48,14 +51,12 @@
 /datum/species/synth/on_species_gain(mob/living/carbon/human/H, datum/species/old_species)
 	. = ..()
 	assume_disguise(old_species, H)
-	RegisterSignal(H, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(SSdcs, COMSIG_GLOB_ION_STORM, PROC_REF(on_ion_storm))
 	H.set_safe_hunger_level()
 	silly_owner_weakref = WEAKREF(H)
 
 /datum/species/synth/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
-	UnregisterSignal(H, COMSIG_MOB_SAY)
 	UnregisterSignal(SSdcs, COMSIG_GLOB_ION_STORM)
 	silly_owner_weakref = null
 
@@ -119,10 +120,10 @@
 
 	return perks
 
-/datum/species/synth/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, delta_time, times_fired)
+/datum/species/synth/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, seconds_per_tick, times_fired)
 	if(chem.type == /datum/reagent/medicine/c2/synthflesh)
-		chem.expose_mob(H, TOUCH, 2 * REAGENTS_EFFECT_MULTIPLIER * delta_time, FALSE) //heal a little
-		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * delta_time)
+		chem.expose_mob(H, TOUCH, 2 * REAGENTS_EFFECT_MULTIPLIER * seconds_per_tick, FALSE) //heal a little
+		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * seconds_per_tick)
 		return TRUE
 	return ..()
 
@@ -163,7 +164,7 @@
 
 	var/obj/item/organ/internal/tongue/disguise_tongue = initial(fake_species.mutanttongue) // handles the say_mod for species disguise.
 	// this (below) is a major make or break for the code, this should set the synth tongue to be identical to the default species tongue the mob is disguised as.
-	var/obj/item/organ/internal/tongue/my_tongue = H.getorgan(/obj/item/organ/internal/tongue)
+	var/obj/item/organ/internal/tongue/my_tongue = H.get_organ_by_type(/obj/item/organ/internal/tongue)
 	if(my_tongue && disguise_tongue)
 		my_tongue.say_mod = initial(disguise_tongue.say_mod)
 
@@ -178,14 +179,6 @@
 		fake_species.handle_mutant_bodyparts(H,forced_colour)
 	else
 		return ..()
-
-/datum/species/synth/proc/handle_speech(mob/living/source, list/speech_args)
-	SIGNAL_HANDLER
-
-	if(fake_species && source.health > disguise_fail_health)
-		switch(fake_species.type)
-			if (/datum/species/golem/bananium)
-				speech_args[SPEECH_SPANS] |= SPAN_CLOWN
 
 /datum/species/synth/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.transfer_identity(human) // Makes the synth look like... a synth.

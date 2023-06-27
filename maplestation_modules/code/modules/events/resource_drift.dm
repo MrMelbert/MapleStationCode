@@ -61,7 +61,7 @@
 
 	// Spawn some debris (space dust) in based on the number of caches we're throwing.
 	// In the future this can be buffed up a bit but space dust is laggy.
-	spawn_meteors(num_caches * amt_debris, GLOB.meteorsC)
+	spawn_meteors(num_caches * amt_debris, GLOB.meteors_dust)
 
 	// Now, spawn the caches and yeet them towards the station
 	for(var/crate in picked_crates)

@@ -22,8 +22,8 @@
 
 	return ..()
 
-/datum/mana_holder/leyline/process(delta_time)
-	adjust_mana(recharge_rate * delta_time) //recharge
+/datum/mana_holder/leyline/process(seconds_per_tick)
+	adjust_mana(recharge_rate * seconds_per_tick) //recharge
 
 /// GETTERS / SETTERS
 

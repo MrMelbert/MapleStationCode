@@ -1,13 +1,13 @@
 ///hud action for starting and stopping flight
 /datum/action/innate/flight
 	name = "Toggle Flight"
-	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_IMMOBILE
-	icon_icon = 'icons/mob/actions/actions_items.dmi'
+	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_IMMOBILE|AB_CHECK_INCAPACITATED
+	button_icon = 'icons/mob/actions/actions_items.dmi'
 	button_icon_state = "flight"
 
 /datum/action/innate/flight/Activate()
 	var/mob/living/carbon/human/human = owner
-	var/obj/item/organ/external/wings/functional/wings = human.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
+	var/obj/item/organ/external/wings/functional/wings = human.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 	if(wings && wings.can_fly(human))
 		wings.toggle_flight(human)
 		if(!(human.movement_type & FLYING))
@@ -26,12 +26,11 @@
 	///Are our wings open or closed?
 	var/wings_open = FALSE
 
-/obj/item/organ/external/wings/functional/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
+/obj/item/organ/external/wings/functional/Insert(mob/living/carbon/receiver, special, drop_if_replaced)
 	. = ..()
-
-	if(isnull(fly))
+	if(. && isnull(fly))
 		fly = new
-		fly.Grant(reciever)
+		fly.Grant(receiver)
 
 /obj/item/organ/external/wings/functional/Remove(mob/living/carbon/organ_owner, special, moving)
 	. = ..()
@@ -41,7 +40,7 @@
 	if(wings_open)
 		toggle_flight(organ_owner)
 
-/obj/item/organ/external/wings/functional/on_life(delta_time, times_fired)
+/obj/item/organ/external/wings/functional/on_life(seconds_per_tick, times_fired)
 	. = ..()
 
 	handle_flight(owner)
@@ -102,14 +101,12 @@
 /obj/item/organ/external/wings/functional/proc/toggle_flight(mob/living/carbon/human/human)
 	if(!HAS_TRAIT_FROM(human, TRAIT_MOVE_FLYING, SPECIES_FLIGHT_TRAIT))
 		human.physiology.stun_mod *= 2
-		ADD_TRAIT(human, TRAIT_NO_FLOATING_ANIM, SPECIES_FLIGHT_TRAIT)
-		ADD_TRAIT(human, TRAIT_MOVE_FLYING, SPECIES_FLIGHT_TRAIT)
+		human.add_traits(list(TRAIT_NO_FLOATING_ANIM, TRAIT_MOVE_FLYING), SPECIES_FLIGHT_TRAIT)
 		passtable_on(human, SPECIES_TRAIT)
 		open_wings()
 	else
 		human.physiology.stun_mod *= 0.5
-		REMOVE_TRAIT(human, TRAIT_NO_FLOATING_ANIM, SPECIES_FLIGHT_TRAIT)
-		REMOVE_TRAIT(human, TRAIT_MOVE_FLYING, SPECIES_FLIGHT_TRAIT)
+		human.remove_traits(list(TRAIT_NO_FLOATING_ANIM, TRAIT_MOVE_FLYING), SPECIES_FLIGHT_TRAIT)
 		passtable_off(human, SPECIES_TRAIT)
 		close_wings()
 	human.update_body_parts()
@@ -196,3 +193,9 @@
 	name = "megamoth wings"
 	desc = "Don't get murderous."
 	sprite_accessory_override = /datum/sprite_accessory/wings/megamoth
+
+///fly wings, which relate to flies.
+/obj/item/organ/external/wings/functional/fly
+	name = "fly wings"
+	desc = "Fly as a fly."
+	sprite_accessory_override = /datum/sprite_accessory/wings/fly

@@ -1,13 +1,21 @@
 #!/usr/bin/env node
 
 const {existsSync} = require(`fs`);
+<<<<<<< HEAD
 const {createRequire, createRequireFromPath} = require(`module`);
+=======
+const {createRequire} = require(`module`);
+>>>>>>> d63121b05e245cb95c54ab34611effb560281f07
 const {resolve} = require(`path`);
 
 const relPnpApiPath = "../../../../.pnp.cjs";
 
 const absPnpApiPath = resolve(__dirname, relPnpApiPath);
+<<<<<<< HEAD
 const absRequire = (createRequire || createRequireFromPath)(absPnpApiPath);
+=======
+const absRequire = createRequire(absPnpApiPath);
+>>>>>>> d63121b05e245cb95c54ab34611effb560281f07
 
 if (existsSync(absPnpApiPath)) {
   if (!process.versions.pnp) {

@@ -100,7 +100,7 @@
 		target.do_jitter_animation(30)
 
 		var/revival_message_end = "and limply"
-		if(target.getorganslot(ORGAN_SLOT_HEART))
+		if(target.get_organ_slot(ORGAN_SLOT_HEART))
 			revival_message_end = "as their heart beats once more"
 		if(target.heal_and_revive((target.stat == DEAD ? 50 : 75), span_danger("[target] begins to write unnaturally [revival_message_end], their body struggling to regenerate!")))
 			new_ling_datum.chem_charges += 15
@@ -124,9 +124,9 @@
 
 		target.cause_pain(BODY_ZONE_CHEST, 60)
 		target.cause_pain(BODY_ZONES_LIMBS, 25)
-		for(var/obj/item/organ/stabbed_organ as anything in target.internal_organs)
+		for(var/obj/item/organ/internal/stabbed_organ in target.organs)
 			if(stabbed_organ.zone == BODY_ZONE_CHEST || stabbed_organ.zone == BODY_ZONE_PRECISE_GROIN)
-				stabbed_organ.applyOrganDamage(105) // Breaks all normal organs, severely damages cyber organs
+				stabbed_organ.apply_organ_damage(105) // Breaks all normal organs, severely damages cyber organs
 
 		message_admins("[ADMIN_LOOKUPFLW(user)] attempted to changeling neuter a non-changeling, [ADMIN_LOOKUPFLW(target)] via surgery.")
 
@@ -148,6 +148,6 @@
 		our_changeling.chem_charges = our_changeling.total_chem_storage
 
 	// Causes organ damage nonetheless
-	for(var/obj/item/organ/stabbed_organ as anything in target.internal_organs)
+	for(var/obj/item/organ/internal/stabbed_organ in target.organs)
 		if(stabbed_organ.zone == BODY_ZONE_CHEST || stabbed_organ.zone == BODY_ZONE_PRECISE_GROIN)
-			stabbed_organ.applyOrganDamage(25)
+			stabbed_organ.apply_organ_damage(25)

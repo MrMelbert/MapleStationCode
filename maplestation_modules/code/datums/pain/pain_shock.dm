@@ -84,7 +84,7 @@
 	affected_mob.unset_pain_mod(type)
 	return ..()
 
-/datum/disease/shock/stage_act(delta_time, times_fired)
+/datum/disease/shock/stage_act(seconds_per_tick, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -105,7 +105,7 @@
 		update_stage(2)
 
 	// If we have enough conditions present to cure us, roll for a cure
-	if(stage <= 2 && has_cure(cure_level) && DT_PROB(cure_level, delta_time))
+	if(stage <= 2 && has_cure(cure_level) && SPT_PROB(cure_level, seconds_per_tick))
 		to_chat(affected_mob, span_bold(span_green("Your body feels awake and active again!")))
 		cure()
 		return FALSE
@@ -120,21 +120,21 @@
 				Provide immediate pain relief and stop blood loss to prevent worsening condition. \
 				Keep the patient still and lying down, and be sure to moderate their temprature. \
 				Supply epinephrine and saline-glucose if condition worsens."
-			if(DT_PROB(0.5, delta_time))
+			if(SPT_PROB(0.5, seconds_per_tick))
 				to_chat(affected_mob, span_danger("Your chest feels uncomfortable."))
 				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
 				affected_mob.flash_pain_overlay(1)
-			if(DT_PROB(1, delta_time))
+			if(SPT_PROB(1, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You feel nauseous."))
 				if(prob(50))
 					affected_mob.vomit(35, stun = FALSE)
-			if(DT_PROB(2, delta_time))
+			if(SPT_PROB(2, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You feel anxious."))
 				affected_mob.adjust_jitter(rand(12 SECONDS, 16 SECONDS))
-			if(DT_PROB(6, delta_time))
+			if(SPT_PROB(6, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You feel cold."))
 				affected_mob.pain_emote("shiver", 3 SECONDS)
-			affected_mob.adjust_bodytemperature(-5 * delta_time, affected_mob.get_body_temp_cold_damage_limit() + 5) // Not lethal
+			affected_mob.adjust_bodytemperature(-5 * seconds_per_tick, affected_mob.get_body_temp_cold_damage_limit() + 5) // Not lethal
 
 		// decompensated (or progressive) - unable to maintain themselves
 		// - mental issues
@@ -146,41 +146,41 @@
 				Keep the patient still and lying down, and be sure to moderate their temprature. \
 				Supply epinephrine and saline-glucose if condition worsens."
 
-			if(DT_PROB(10, delta_time))
+			if(SPT_PROB(10, seconds_per_tick))
 				affected_mob.adjust_stutter_up_to(10 SECONDS, 120 SECONDS)
-			if(DT_PROB(1, delta_time))
+			if(SPT_PROB(1, seconds_per_tick))
 				to_chat(affected_mob, span_danger("Your chest feels wrong!"))
 				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
 				affected_mob.flash_pain_overlay(2)
-			if(DT_PROB(2, delta_time))
+			if(SPT_PROB(2, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You can't focus on anything!"))
 				affected_mob.adjust_confusion(rand(4 SECONDS, 8 SECONDS))
-			if(DT_PROB(2, delta_time))
+			if(SPT_PROB(2, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You're having difficulties breathing!"))
 				affected_mob.losebreath = clamp(affected_mob.losebreath + 4, 0, 12)
-			if(DT_PROB(2, delta_time))
+			if(SPT_PROB(2, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You skip a breath!"))
 				affected_mob.pain_emote("gasp", 3 SECONDS)
 				affected_mob.apply_damage(rand(5, 15), OXY)
-			if(DT_PROB(1, delta_time))
+			if(SPT_PROB(1, seconds_per_tick))
 				affected_mob.emote("faint")
-			if(DT_PROB(8, delta_time))
+			if(SPT_PROB(8, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You feel freezing!"))
 				affected_mob.pain_emote("shiver", 3 SECONDS)
-			affected_mob.adjust_bodytemperature(-10 * delta_time, affected_mob.get_body_temp_cold_damage_limit() - 5) // uh oh
+			affected_mob.adjust_bodytemperature(-10 * seconds_per_tick, affected_mob.get_body_temp_cold_damage_limit() - 5) // uh oh
 
 		// irreversible - point of no return, system failure
 		// cardiac arrest
 		if(3)
 			cure_text = "Subject is in stage three of shock. Cardiac arrest is imminent - urgent action is needed. \
 				Prepare a defibrillator on standby and moderate their body temperature."
-			if(DT_PROB(10, delta_time))
+			if(SPT_PROB(10, seconds_per_tick))
 				affected_mob.adjust_stutter_up_to(10 SECONDS, 120 SECONDS)
-			if(DT_PROB(8, delta_time))
+			if(SPT_PROB(8, seconds_per_tick))
 				affected_mob.adjust_slurring_up_to(10 SECONDS, 36 SECONDS)
-			if(DT_PROB(2, delta_time))
+			if(SPT_PROB(2, seconds_per_tick))
 				affected_mob.emote("faint")
-			if(DT_PROB(33, delta_time))
+			if(SPT_PROB(33, seconds_per_tick))
 				if(affected_mob.can_heartattack())
 					to_chat(affected_mob, span_userdanger("Your heart stops!"))
 					affected_mob.visible_message(span_danger("[affected_mob] grabs at their chest and collapses!"), ignored_mobs = affected_mob)
@@ -189,6 +189,6 @@
 					return FALSE
 				else
 					affected_mob.losebreath += 10
-			else if(DT_PROB(10, delta_time))
+			else if(SPT_PROB(10, seconds_per_tick))
 				to_chat(affected_mob, span_userdanger(pick("You feel your heart skip a beat...", "You feel your body shutting down...", "You feel your heart beat irregularly...")))
-			affected_mob.adjust_bodytemperature(-10 * delta_time, affected_mob.get_body_temp_cold_damage_limit() - 20) // welp
+			affected_mob.adjust_bodytemperature(-10 * seconds_per_tick, affected_mob.get_body_temp_cold_damage_limit() - 20) // welp

@@ -42,7 +42,7 @@
 		span_notice("[user] starts heating [target]'s bone marrow with [tool]..."),
 		span_notice("[user] starts heating something in [target]'s chest with [tool]..."),
 	)
-	display_pain(target, "You feel a searing heat spread through your chest!", target_zone = target_zone)
+	display_pain(target, "You feel a searing heat spread through your chest!")
 
 /datum/surgery_step/viral_bond/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	display_results(
@@ -52,7 +52,7 @@
 		span_notice("[target]'s bone marrow begins pulsing slowly."),
 		span_notice("[user] finishes the operation."),
 	)
-	display_pain(target, "You feel a faint throbbing in your chest.", target_zone = target_zone)
+	display_pain(target, "You feel a faint throbbing in your chest.")
 	for(var/datum/disease/infected_disease as anything in target.diseases)
 		infected_disease.carrier = TRUE
 	return TRUE

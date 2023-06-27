@@ -36,7 +36,7 @@
 			span_notice("[user] begins to insert [tool] into [target]'s [target_zone]."),
 			span_notice("[user] begins to insert [tool.w_class > WEIGHT_CLASS_SMALL ? tool : "something"] into [target]'s [target_zone]."),
 		)
-		display_pain(target, "You can feel something being inserted into your [target_zone], it hurts like hell!", target_zone = target_zone)
+		display_pain(target, "You can feel something being inserted into your [target_zone], it hurts like hell!")
 	else
 		display_results(
 			user,
@@ -72,7 +72,7 @@
 				span_notice("[user] pulls [item_for_cavity] out of [target]'s [target_zone]!"),
 				span_notice("[user] pulls [item_for_cavity.w_class > WEIGHT_CLASS_SMALL ? item_for_cavity : "something"] out of [target]'s [target_zone]."),
 			)
-			display_pain(target, "Something is pulled out of your [target_zone]! It hurts like hell!", target_zone = target_zone)
+			display_pain(target, "Something is pulled out of your [target_zone]! It hurts like hell!")
 			user.put_in_hands(item_for_cavity)
 			target_chest.cavity_item = null
 			return ..()

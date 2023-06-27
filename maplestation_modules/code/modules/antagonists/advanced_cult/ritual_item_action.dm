@@ -1,7 +1,7 @@
 /datum/action/item_action/ritual_item
 	name = "Draw Rune"
 	desc = "Use your ritual item to create a powerful."
-	icon_icon = 'icons/mob/actions/actions_cult.dmi'
+	button_icon = 'icons/mob/actions/actions_cult.dmi'
 	button_icon_state = "draw"
 
 /datum/action/item_action/ritual_item/Grant(mob/M)

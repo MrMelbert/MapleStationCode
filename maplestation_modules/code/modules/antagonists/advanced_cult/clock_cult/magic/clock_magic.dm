@@ -128,7 +128,7 @@
 	if(!active || !active_overlay_name)
 		return
 
-	overlays += mutable_appearance(active_overlay_file || icon_icon, active_overlay_name, ABOVE_OBJ_LAYER)
+	overlays += mutable_appearance(active_overlay_file || button_icon, active_overlay_name, ABOVE_OBJ_LAYER)
 
 /**
  * Signal proc for [COMSIG_ATOM_UPDATE_OVERLAYS], for the mob holding the slab.
@@ -242,7 +242,7 @@
 		qdel(src)
 
 /datum/action/item_action/cult/clock_spell
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_clockcult.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_clockcult.dmi'
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough
 	active_overlay_file = 'maplestation_modules/icons/obj/clockwork_objects.dmi'
@@ -256,7 +256,7 @@
 	return ..()
 
 /datum/action/innate/cult/clock_spell
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_clockcult.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_clockcult.dmi'
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough
 	/// The amount of charges on the spell.
@@ -288,7 +288,7 @@
 /datum/action/innate/cult/blood_magic/advanced/clock
 	name = "Prepare Clockwork Magic"
 	desc = "Invoke clockwork magic into your slab. This is easier by a <b>sigil of power</b>."
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_clockcult.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_clockcult.dmi'
 	button_icon_state = "hierophant_slab"
 	background_icon_state = "bg_clock"
 	buttontooltipstyle = "plasmafire" // close enough

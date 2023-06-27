@@ -18,7 +18,7 @@
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"
 	desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color."
-	icon_icon = 'icons/obj/candle.dmi'
+	button_icon = 'icons/obj/candle.dmi'
 	button_icon_state = "candle1"
 
 	sound = 'sound/items/match_strike.ogg'
@@ -58,7 +58,7 @@
 	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
 	icon_state = "mage_flare"
 	base_icon_state = "mage_flare"
-	color = LIGHT_COLOR_YELLOW
+	color = COLOR_VERY_SOFT_YELLOW
 	on = TRUE
 	actions_types = null
 	//If it should decay and delete itself after it uses all its fuel
@@ -111,4 +111,3 @@
 	var/new_color
 	new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
 	return new_color
-

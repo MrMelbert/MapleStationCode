@@ -139,7 +139,7 @@
 /// UI pinpointer that directs a fresh changeling to the hive leader.
 /datum/status_effect/agent_pinpointer/changeling_spawn
 	alert_type = /atom/movable/screen/alert/status_effect/agent_pinpointer/changeling_spawn
-	tick_interval = CHANGELING_PHEROMONE_PING_TIME
+	tick_interval = 1.2 SECONDS
 	minimum_range = 0
 	range_fuzz_factor = 0
 

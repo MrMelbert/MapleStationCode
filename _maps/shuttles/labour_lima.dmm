@@ -51,8 +51,7 @@
 /area/shuttle/labor)
 "w" = (
 /obj/machinery/door/airlock/shuttle{
-	name = "Labor Shuttle Airlock";
-	req_access_txt = null
+	name = "Labor Shuttle Airlock"
 	},
 /obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/mineral/plastitanium/red,
@@ -77,12 +76,9 @@
 /turf/open/floor/iron,
 /area/shuttle/labor)
 "F" = (
-/obj/structure/window/reinforced{
-	dir = 1;
-	layer = 2.9
-	},
 /obj/machinery/power/shuttle_engine/heater,
 /obj/effect/turf_decal/stripes/line,
+/obj/structure/window/reinforced/survival_pod/spawner/directional/north,
 /turf/open/floor/plating/airless,
 /area/shuttle/labor)
 "H" = (
@@ -95,8 +91,7 @@
 /area/shuttle/labor)
 "K" = (
 /obj/machinery/door/airlock/shuttle{
-	name = "Labor Shuttle Airlock";
-	req_access_txt = null
+	name = "Labor Shuttle Airlock"
 	},
 /obj/effect/mapping_helpers/airlock/access/any/security/general,
 /turf/open/floor/plating,
@@ -105,8 +100,7 @@
 /obj/machinery/button/flasher{
 	id = "gulagshuttleflasher";
 	name = "Flash Control";
-	pixel_y = 28;
-	req_access_txt = null
+	pixel_y = 28
 	},
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/labor)

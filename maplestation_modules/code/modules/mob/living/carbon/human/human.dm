@@ -9,7 +9,7 @@
 		if(vedits)
 			result["[s]"] = vedits
 		if(istype(I))
-			outfit_copy.set_equipement_by_slot(s,I.type)
+			outfit_copy.set_equipment_by_slot(s,I.type)
 
 	//Copy access
 	outfit_copy.stored_access = list()

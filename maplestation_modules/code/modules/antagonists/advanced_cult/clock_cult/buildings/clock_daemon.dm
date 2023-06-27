@@ -61,7 +61,7 @@
 	. += rune_cache[picked]
 
 // Process is called every 2 seconds. Handles the changing of the rune overlay between the various types. Probably not very performant.
-/obj/structure/destructible/cult/item_dispenser/daemon_forge/process(delta_time)
+/obj/structure/destructible/cult/item_dispenser/daemon_forge/process(seconds_per_tick)
 	if(!anchored)
 		STOP_PROCESSING(SSmachines, src)
 
