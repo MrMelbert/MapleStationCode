@@ -91,3 +91,28 @@
 	tool_behaviour = (active ? TOOL_KNIFE : NONE) // Yolo. this will let it work as a knife can.
 	slot_flags = active ? NONE : ITEM_SLOT_BELT // this is to prevent it from being storable in belt.
 	return COMPONENT_NO_DEFAULT_MESSAGE
+
+/obj/item/melee/psych_rock
+	name = "heavy paperweight"
+	desc = "A rock designed specifically to hold down stacks of paper from the wind. Although, it is way heavier than it should be."
+	icon = 'maplestation_modules/icons/obj/weapons.dmi'
+	icon_state = "psych_rock"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/rock_lefthand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/rock_righthand.dmi'
+	inhand_icon_state = "psych_rock"
+	var/force_unwielded = 6
+	var/force_wielded = 16
+	wound_bonus = 20
+	throwforce = 16
+	w_class = WEIGHT_CLASS_BULKY
+
+/obj/item/melee/psych_rock/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/two_handed, force_unwielded=force_unwielded, force_wielded=force_wielded)
+
+/obj/item/paper_bin/Initialize(mapload)
+	. = ..()
+	var/static/paperweight_spawned = FALSE
+	if(mapload && !paperweight_spawned  && istype(get_area(src), /area/station/medical/psychology))
+		new /obj/item/melee/psych_rock(loc)
+		paperweight_spawned = TRUE
