@@ -14,7 +14,6 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 		TRAIT_LIGHT_DRINKER,
 		TRAIT_TACKLING_WINGED_ATTACKER,
 	)
-	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID
 	use_skintones = TRUE
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
