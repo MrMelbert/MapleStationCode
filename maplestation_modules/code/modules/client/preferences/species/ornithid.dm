@@ -79,14 +79,12 @@
 	relevant_external_organ = /obj/item/organ/external/plumage
 	should_generate_icons = TRUE
 
-
 /datum/preference/choiced/plumage/init_possible_values()
 	return possible_values_for_sprite_accessory_list_for_body_part(
 		GLOB.avian_ears_list,
 		"ears_avian",
 		list("FRONT"),
-		)
-
+	)
 
 /datum/preference/choiced/plumage/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["ears_avian"] = value
