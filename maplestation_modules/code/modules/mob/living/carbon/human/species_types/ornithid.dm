@@ -2,7 +2,7 @@
 GLOBAL_LIST_EMPTY(arm_wings_list)
 /// GLOB list of other features (ears, tails)
 GLOBAL_LIST_EMPTY(avian_ears_list)
-GLOBAL_LIST_EMPTY(tails_list_avian)
+// GLOBAL_LIST_EMPTY(tails_list_avian)
 
 /datum/species/ornithid
 	// the biggest bird
@@ -37,7 +37,8 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	species_cookie = /obj/item/food/semki/healthy // humans get chocolate, lizards get meat. What do birds get? Seed.
 	meat = /obj/item/food/meat/slab/chicken
 	skinned_type = /obj/item/stack/sheet/animalhide/human
-	disliked_food = DAIRY | CLOTH | GROSS | SUGAR // Chocolate is toxic to birds (but not to these guys, they just find it nasty). Also, this forces a dietary difference ala lizards.
+	toxic_food = SUGAR // chocolate is toxic to birds.
+	disliked_food = DAIRY | CLOTH | GROSS // although these guys are human decendant, a holdover causes dairy to be a little screwy.
 	liked_food = FRUIT | SEAFOOD | NUTS | BUGS // birds like dice(d) nuts. Also bugs.
 
 	inert_mutation = /datum/mutation/human/dwarfism
@@ -76,32 +77,32 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 
 	to_add += list(
 		list(
-		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = "dove",
-		SPECIES_PERK_NAME = "Airborne",
-		SPECIES_PERK_DESC = "Is it a bird? is it a plane? Of course its a bird you dumbass, \
-		Ornithids are lightweight winged avians, and can, as a result, fly.",
+			SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+			SPECIES_PERK_ICON = "dove",
+			SPECIES_PERK_NAME = "Airborne",
+			SPECIES_PERK_DESC = "Is it a bird? is it a plane? Of course its a bird you dumbass, \
+				Ornithids are lightweight winged avians, and can, as a result, fly.",
 		),
 		list(
-		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON = "wind",
-		SPECIES_PERK_NAME = "Wind Elemental Alignment",
-		SPECIES_PERK_DESC = "|NYI| Naturally one with the skies, Ornithids enjoy higher proficiency with Wind magic. \
-			However, despite their Human origins, they suffer a malus with Earth magic.",
+			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
+			SPECIES_PERK_ICON = "wind",
+			SPECIES_PERK_NAME = "Wind Elemental Alignment",
+			SPECIES_PERK_DESC = "|NYI| Naturally one with the skies, Ornithids enjoy higher proficiency with Wind magic. \
+				However, despite their Human origins, they suffer a malus with Earth magic.",
 		),
 		list(
-		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = "feather",
-		SPECIES_PERK_NAME = "Lightweights",
-		SPECIES_PERK_DESC = "As a result of their reduced average weight, \
-			Ornithids have a lower alcohol tolerance. Pansies.",
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = "feather",
+			SPECIES_PERK_NAME = "Lightweights",
+			SPECIES_PERK_DESC = "As a result of their reduced average weight, \
+				Ornithids have a lower alcohol tolerance. Pansies.",
 		),
 		list(
-		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = "note-medical",
-		SPECIES_PERK_NAME = "Hyper-Sensitive Nerves",
-		SPECIES_PERK_DESC = "Ornithids have incredibly sensistive nerves compared to their human counterparts, \
-			Taking 1.2x pain, 1.5x damage to their ears, and get stunned for 2x longer when flying.", // the 2x stun length only applies when flying, and is inherited from functional wings.
+			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+			SPECIES_PERK_ICON = "note-medical",
+			SPECIES_PERK_NAME = "Hyper-Sensitive Nerves",
+			SPECIES_PERK_DESC = "Ornithids have incredibly sensistive nerves compared to their human counterparts, \
+				Taking 1.2x pain, 1.5x damage to their ears, and get stunned for 2x longer when flying.", // the 2x stun length only applies when flying, and is inherited from functional wings.
 		),
 	)
 	return to_add
