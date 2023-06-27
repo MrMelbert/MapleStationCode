@@ -12305,7 +12305,7 @@
 "bmx" = (
 /obj/structure/window/reinforced/spawner/directional/south,
 /obj/effect/turf_decal/sand/plating,
-/turf/open/floor/plating,
+/turf/open/floor/plating/airless,
 /area/space/nearstation)
 "bmz" = (
 /obj/effect/turf_decal/tile/neutral,
@@ -32025,10 +32025,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/hallway/primary/aft)
-"ffr" = (
-/obj/effect/turf_decal/sand/plating,
-/turf/open/space/basic,
-/area/space/nearstation)
 "ffO" = (
 /obj/machinery/atmospherics/components/binary/pump{
 	dir = 4;
@@ -47661,12 +47657,6 @@
 "kMW" = (
 /turf/closed/wall/r_wall,
 /area/station/maintenance/central)
-"kNc" = (
-/obj/structure/transit_tube,
-/obj/effect/turf_decal/sand/plating,
-/obj/structure/disposalpipe/segment,
-/turf/open/floor/plating,
-/area/space/nearstation)
 "kNl" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/closed/wall/r_wall,
@@ -65853,6 +65843,7 @@
 /obj/effect/landmark/blobstart,
 /obj/effect/spawner/random/trash/cigbutt,
 /obj/effect/spawner/random/trash/cigbutt,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "rkz" = (
@@ -77076,6 +77067,7 @@
 	},
 /obj/effect/mapping_helpers/broken_floor,
 /obj/structure/chair/stool,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "vjy" = (
@@ -77234,6 +77226,7 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "vmU" = (
@@ -105424,7 +105417,7 @@ cwy
 cwy
 vpc
 nmC
-cwy
+cwq
 amh
 soP
 cwy
@@ -105668,20 +105661,20 @@ acm
 acm
 acm
 acm
-ffr
+acK
 kBs
 cwy
 oEo
 cwy
 cwy
 cwy
-cwy
+cwq
 kbO
 nAs
 cwy
 vmL
 bof
-cwy
+cwq
 gsT
 cwy
 cwq
@@ -106193,7 +106186,7 @@ nHd
 cmm
 cwy
 cwy
-cwy
+cwq
 quv
 cwy
 xCu
@@ -106452,7 +106445,7 @@ cwy
 cLe
 cwy
 czu
-cwy
+cwq
 krq
 usm
 aNu
@@ -107732,8 +107725,8 @@ fRa
 vVS
 gYl
 cIg
-kNc
-kNc
+gYl
+gYl
 gWM
 byx
 sLw
@@ -107987,7 +107980,7 @@ acm
 acm
 cmU
 cmU
-cnR
+cmU
 aeU
 aeU
 aeU
