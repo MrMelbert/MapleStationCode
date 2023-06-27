@@ -15,7 +15,7 @@
 		species_traits |= HAIR
 	return ..()
 
-/datum/species/lizard/prepare_human_for_preview(mob/living/carbon/human/human) // this is used to generate the previews in the species menu of the prefs tab.
+/datum/species/lizard/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = COLOR_DARK_LIME
 
 	var/obj/item/organ/external/frills/frills = human.get_organ_by_type(/obj/item/organ/external/frills)
