@@ -45,10 +45,6 @@
 	feature_key = "arm_wings"
 	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_HAIR
-
-/datum/bodypart_overlay/mutant/wings/arm_wings/New()
-	. = ..()
-
 /datum/bodypart_overlay/mutant/wings/arm_wings/get_global_feature_list()
 	return GLOB.arm_wings_list
 
