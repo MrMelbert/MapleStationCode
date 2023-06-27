@@ -32,6 +32,8 @@
 				new /obj/item/stack/sheet/mineral/gold(src, 4)
 			if(60 to 69)
 				new /obj/item/stack/sheet/mineral/silver(src, 8)
+			if(70 to INFINITY)
+				pass() // get nothing, you lose, good day sir
 
 /// Special crates are specialized and can have rare materials
 /obj/structure/closet/crate/resource_cache/special

@@ -66,7 +66,7 @@
 	limb_id = SPECIES_SLIMEPERSON
 
 /datum/species/jelly/luminescent
-	mutanteyes = /obj/item/organ/internal/eyes/jelly
+	mutanteyes = /obj/item/organ/internal/eyes
 
 // Stargazers inherent jelly limbs so we gotta do this too
 /datum/species/jelly/stargazer
