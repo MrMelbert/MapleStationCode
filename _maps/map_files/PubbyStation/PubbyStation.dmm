@@ -13481,8 +13481,8 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/hydroponics)
 "aUX" = (
-/obj/machinery/icecream_vat,
 /obj/machinery/light/directional/west,
+/obj/machinery/vending/wardrobe/chef_wardrobe,
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/kitchen/coldroom)
 "aUZ" = (
@@ -13858,7 +13858,7 @@
 	},
 /area/station/service/hydroponics)
 "aVW" = (
-/obj/machinery/vending/wardrobe/chef_wardrobe,
+/obj/machinery/icecream_vat,
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/kitchen/coldroom)
 "aVZ" = (
@@ -15618,12 +15618,8 @@
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics)
 "bce" = (
-/obj/structure/table,
-/obj/machinery/microwave{
-	pixel_x = -3;
-	pixel_y = 6
-	},
 /obj/machinery/airalarm/directional/north,
+/obj/machinery/oven/range,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "bcg" = (
@@ -16338,7 +16334,9 @@
 	name = "Kitchen Window Shutters Control";
 	req_access = list("kitchen")
 	},
-/obj/machinery/oven,
+/obj/structure/rack,
+/obj/item/stack/package_wrap,
+/obj/item/hand_labeler,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "bfr" = (
@@ -19853,6 +19851,7 @@
 /obj/structure/bodycontainer/morgue{
 	dir = 1
 	},
+/obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron/dark/smooth_half{
 	dir = 1
 	},
@@ -31684,10 +31683,14 @@
 /turf/open/floor/iron/dark,
 /area/station/service/bar/atrium)
 "cpq" = (
-/obj/machinery/deepfryer,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
 /obj/machinery/light/directional/west,
+/obj/structure/table,
+/obj/machinery/microwave{
+	pixel_x = -3;
+	pixel_y = 6
+	},
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "cpt" = (
@@ -31695,8 +31698,12 @@
 /turf/open/floor/iron/dark,
 /area/station/service/bar/atrium)
 "cpu" = (
-/obj/machinery/deepfryer,
 /obj/machinery/newscaster/directional/west,
+/obj/structure/table,
+/obj/machinery/microwave{
+	pixel_x = -3;
+	pixel_y = 6
+	},
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "cpw" = (
@@ -31726,14 +31733,8 @@
 	},
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
-"cpy" = (
-/obj/machinery/food_cart,
-/turf/open/floor/iron/cafeteria,
-/area/station/service/kitchen)
 "cpz" = (
-/obj/structure/rack,
-/obj/item/stack/package_wrap,
-/obj/item/hand_labeler,
+/obj/machinery/deepfryer,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "cpA" = (
@@ -44514,6 +44515,15 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
+"lFN" = (
+/obj/structure/bodycontainer/morgue{
+	dir = 1
+	},
+/obj/machinery/status_display/ai/directional/south,
+/turf/open/floor/iron/dark/smooth_half{
+	dir = 1
+	},
+/area/station/medical/morgue)
 "lGp" = (
 /obj/structure/chair/wood{
 	dir = 1
@@ -46885,6 +46895,7 @@
 "nAZ" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
+/obj/machinery/holopad,
 /turf/open/floor/iron/dark/textured,
 /area/station/medical/morgue)
 "nBt" = (
@@ -51130,6 +51141,14 @@
 "qOE" = (
 /turf/open/floor/iron/dark/smooth_half,
 /area/station/service/library/lounge)
+"qOR" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/food_cart,
+/turf/open/floor/iron/showroomfloor,
+/area/station/service/kitchen/coldroom)
 "qPu" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
@@ -52008,16 +52027,12 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/science)
 "rxV" = (
-/obj/structure/table,
-/obj/machinery/microwave{
-	pixel_x = -3;
-	pixel_y = 6
-	},
 /obj/machinery/requests_console/directional/north{
 	department = "Kitchen";
 	name = "Kitchen Requests Console"
 	},
 /obj/effect/mapping_helpers/requests_console/supplies,
+/obj/machinery/oven/range,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "ryC" = (
@@ -85300,7 +85315,7 @@ fno
 lNd
 guE
 bqV
-bso
+lFN
 tqC
 rMZ
 bye
@@ -89904,7 +89919,7 @@ aRO
 aSH
 wRf
 iNR
-iNR
+qOR
 afu
 hwo
 sJO
@@ -90684,7 +90699,7 @@ bbg
 jks
 jks
 sTY
-cpy
+cpA
 bgk
 nHc
 ble
@@ -91198,7 +91213,7 @@ cpn
 bch
 bdq
 sUg
-cpA
+cpz
 bgk
 jmf
 ble
