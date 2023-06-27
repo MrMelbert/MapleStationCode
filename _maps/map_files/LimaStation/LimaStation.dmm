@@ -2068,10 +2068,12 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 1
 	},
-/obj/structure/item_dispenser/bodybag{
-	pixel_y = 32
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/paper/guides/jobs/medical/morgue{
+	pixel_y = 32;
+	pixel_x = 6
+	},
+/obj/structure/noticeboard/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "aQP" = (
@@ -4609,11 +4611,13 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/structure/sign/poster/official/random/directional/south,
 /obj/machinery/camera{
 	c_tag = "Medbay - Morgue";
 	dir = 5;
 	network = list("ss13","medbay")
+	},
+/obj/structure/item_dispenser/bodybag{
+	pixel_y = -31
 	},
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
@@ -5619,6 +5623,15 @@
 /obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"cgp" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/neutral,
+/obj/structure/bodycontainer/morgue,
+/obj/structure/sign/poster/official/random/directional/south,
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "cgr" = (
 /obj/machinery/flasher/portable,
 /obj/structure/cable,
@@ -20853,6 +20866,17 @@
 	},
 /turf/open/floor/iron/smooth,
 /area/station/engineering/storage)
+"hHH" = (
+/obj/effect/turf_decal/trimline/blue/filled/line,
+/obj/effect/turf_decal/siding/thinplating/dark,
+/obj/structure/closet{
+	name = "janitorial supplies"
+	},
+/obj/item/storage/box/bodybags,
+/obj/item/pushbroom,
+/obj/item/reagent_containers/spray/cleaner,
+/turf/open/floor/iron/dark,
+/area/station/medical/morgue)
 "hIa" = (
 /obj/machinery/camera{
 	c_tag = "MiniSat - Foyer";
@@ -23857,8 +23881,8 @@
 /area/station/security/prison/rec)
 "iLh" = (
 /obj/machinery/vending/drugs,
-/obj/effect/turf_decal/tile/blue/opposingcorners,
-/obj/effect/turf_decal/tile/yellow/opposingcorners{
+/obj/effect/turf_decal/tile/yellow/opposingcorners,
+/obj/effect/turf_decal/tile/blue/opposingcorners{
 	dir = 1
 	},
 /turf/open/floor/iron,
@@ -167677,11 +167701,11 @@ clv
 xqI
 hVB
 aah
-nDl
+hHH
 miY
 jzr
 jzr
-jzr
+cgp
 kCy
 cAi
 cAi
@@ -168443,7 +168467,7 @@ wdQ
 pJR
 wVK
 hBh
-hBI
+pJR
 hBh
 rHE
 hVB
