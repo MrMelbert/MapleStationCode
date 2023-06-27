@@ -13,10 +13,6 @@
 
 		var/icon/final_icon = icon(ornithid)
 
-		if (sprite_accessory.icon_state != "none")
-			for(var/side in sides)
-				var/icon/accessory_icon = icon(sprite_accessory.icon, "m_[key]_[sprite_accessory.icon_state]_[side]", EAST)
-				final_icon.Blend(accessory_icon, ICON_OVERLAY)
 
 		final_icon.Crop(11, 20, 23, 32)
 		final_icon.Scale(32, 32)
