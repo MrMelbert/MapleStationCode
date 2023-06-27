@@ -37484,9 +37484,6 @@
 /obj/machinery/status_display/evac/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/medical/chemistry)
-"nrn" = (
-/turf/closed/wall/r_wall,
-/area/station/medical/medbay/central)
 "nrx" = (
 /obj/structure/cable,
 /obj/structure/chair/office,
@@ -37654,9 +37651,6 @@
 /obj/machinery/newscaster/directional/west,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
-"nuS" = (
-/turf/closed/wall/r_wall,
-/area/station/medical/morgue)
 "nvb" = (
 /turf/closed/wall/r_wall,
 /area/station/engineering/lobby)
@@ -42045,6 +42039,8 @@
 	department = "Medical";
 	name = "Morgue Requests Console"
 	},
+/obj/effect/mapping_helpers/requests_console/assistance,
+/obj/effect/mapping_helpers/requests_console/information,
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "oUk" = (
@@ -169243,8 +169239,8 @@ pJR
 pJR
 hVB
 nhw
-nuS
-nuS
+hVB
+hVB
 rGO
 fEH
 anl
@@ -170014,11 +170010,11 @@ hPH
 hPH
 lpr
 uta
-nuS
-nuS
-nuS
-nuS
-nuS
+hVB
+hVB
+hVB
+hVB
+hVB
 kCy
 iLK
 sXB
@@ -170272,7 +170268,7 @@ hPH
 bGI
 shX
 ruC
-nrn
+xNZ
 iLh
 mef
 rjj
@@ -171261,7 +171257,7 @@ aHn
 aHn
 aHn
 rNX
-aHn
+sEg
 sEg
 sEg
 sEg
@@ -171518,7 +171514,7 @@ mwg
 wyW
 boG
 mua
-aHn
+sEg
 wox
 wox
 wox
@@ -171775,7 +171771,7 @@ chV
 oKy
 geq
 cWu
-aHn
+sEg
 wox
 wox
 wox
@@ -172032,7 +172028,7 @@ pRk
 qTf
 oKy
 jTv
-aHn
+sEg
 wox
 wox
 wox
@@ -172289,7 +172285,7 @@ pRk
 qTf
 pvs
 jTv
-aHn
+sEg
 wox
 wox
 wox
@@ -172546,7 +172542,7 @@ qpy
 pvs
 qTf
 mRW
-aHn
+sEg
 wox
 wox
 wox
@@ -172803,7 +172799,7 @@ fnr
 oKy
 oKy
 vUH
-aHn
+sEg
 wox
 wox
 wox
@@ -173060,7 +173056,7 @@ fnr
 oKy
 qTf
 gbl
-aHn
+sEg
 wox
 wox
 wox
@@ -173317,7 +173313,7 @@ fnr
 xLK
 qTf
 tpN
-aHn
+sEg
 wox
 wox
 wox
@@ -173574,7 +173570,7 @@ fnr
 fyA
 oKy
 qrU
-aHn
+sEg
 wox
 wox
 wox
@@ -173831,7 +173827,7 @@ xyJ
 qTf
 oKy
 wvE
-aHn
+sEg
 sEg
 sEg
 sEg

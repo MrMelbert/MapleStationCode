@@ -18181,6 +18181,8 @@
 	},
 /obj/machinery/light/small/directional/east,
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/effect/mapping_helpers/requests_console/information,
+/obj/effect/mapping_helpers/requests_console/assistance,
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "bmi" = (
@@ -103783,9 +103785,9 @@ aiS
 aiS
 aiS
 sFK
-aiS
-aiS
-aiS
+atn
+atn
+atn
 avm
 axy
 avm
@@ -104040,7 +104042,7 @@ aaa
 aaa
 aiT
 sFK
-aiS
+atn
 aur
 aur
 aur
@@ -104051,7 +104053,7 @@ aur
 aur
 aur
 aur
-aEj
+atn
 aEj
 aEj
 aEj
@@ -104297,7 +104299,7 @@ aaa
 aaa
 aiT
 sFK
-aiS
+atn
 aur
 aur
 aur
@@ -104308,7 +104310,7 @@ aur
 aur
 aur
 hRG
-aEj
+atn
 aFN
 aGK
 aHs
@@ -104554,7 +104556,7 @@ aht
 aht
 aiS
 asm
-aiS
+atn
 aur
 aur
 aur
@@ -104565,7 +104567,7 @@ aur
 aur
 aur
 aur
-aEj
+atn
 aFO
 aGL
 aHt
@@ -104811,7 +104813,7 @@ aaa
 aaa
 aiT
 sFK
-aiS
+atn
 aur
 aur
 aur
@@ -104822,7 +104824,7 @@ aur
 aur
 aur
 aur
-aEj
+atn
 aFP
 aGM
 aFi
@@ -105068,7 +105070,7 @@ aaa
 aaa
 aiT
 sFK
-aiS
+atn
 uSL
 aur
 aur
@@ -105079,7 +105081,7 @@ aur
 aur
 aur
 qJP
-aEj
+atn
 aFQ
 aGN
 aGN
@@ -105325,7 +105327,7 @@ aht
 aht
 aiS
 sFK
-aiS
+atn
 aur
 aur
 aur
@@ -105336,7 +105338,7 @@ aur
 aur
 aur
 aur
-aEj
+atn
 aEj
 aEj
 aEj
@@ -105582,7 +105584,7 @@ aaa
 aaa
 aiT
 asm
-aiS
+atn
 aur
 aur
 aur
@@ -105593,7 +105595,7 @@ aur
 aur
 aur
 aur
-aEj
+atn
 noT
 aFi
 aFi
@@ -105839,7 +105841,7 @@ aaa
 aaa
 aiT
 sFK
-aiS
+atn
 aur
 aur
 aur
@@ -105850,7 +105852,7 @@ aur
 aur
 aur
 aur
-aEj
+atn
 odG
 aFi
 yiL
@@ -106096,7 +106098,7 @@ aaa
 aaa
 aiS
 sFK
-aiS
+atn
 aur
 aur
 aur
@@ -106107,7 +106109,7 @@ aur
 aur
 aur
 aur
-aEj
+atn
 aEj
 aEj
 sSs
@@ -106353,18 +106355,18 @@ aaa
 aaa
 aiT
 sFK
-aiS
-aiS
-aiS
-aiS
+atn
+atn
+atn
+atn
 ngO
 avm
 avm
 ngO
-aEj
-aEj
-aEj
-aEj
+atn
+atn
+atn
+atn
 yiL
 yiL
 yiL
