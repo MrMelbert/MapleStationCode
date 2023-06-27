@@ -28,6 +28,7 @@
 		REMOVE_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src))
 		human.remove_movespeed_modifier(/datum/movespeed_modifier/arm_wing_flight)
 	return ..()
+	
 /datum/sprite_accessory/arm_wings
 	icon = 'maplestation_modules/icons/mob/armwings.dmi'
 
