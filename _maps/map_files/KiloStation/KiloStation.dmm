@@ -6978,6 +6978,7 @@
 /area/station/hallway/primary/central/fore)
 "aKV" = (
 /obj/structure/flora/bush/jungle/c/style_random,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/grass,
 /area/station/medical/psychology)
 "aKY" = (
@@ -7611,6 +7612,7 @@
 /area/station/medical/psychology)
 "aOb" = (
 /obj/structure/flora/bush/large/style_random,
+/obj/machinery/newscaster/directional/north,
 /turf/open/floor/grass,
 /area/station/medical/psychology)
 "aOd" = (
@@ -25799,6 +25801,9 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 8
+	},
 /turf/open/floor/wood/parquet,
 /area/station/commons/fitness/recreation/entertainment)
 "cWX" = (
@@ -31153,6 +31158,8 @@
 	dir = 1
 	},
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/wood/parquet,
 /area/station/commons/fitness/recreation/entertainment)
 "eRk" = (
@@ -33178,6 +33185,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue,
+/obj/structure/sign/poster/official/help_others/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/psychology)
 "fzm" = (
@@ -39738,6 +39746,9 @@
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 4
+	},
 /turf/open/floor/wood/parquet,
 /area/station/commons/fitness/recreation/entertainment)
 "hUK" = (
@@ -57382,6 +57393,8 @@
 	},
 /obj/machinery/door/firedoor,
 /obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation/entertainment)
 "oiw" = (
@@ -80420,13 +80433,6 @@
 /obj/structure/cable,
 /turf/closed/wall/rust,
 /area/station/maintenance/department/electrical)
-"wic" = (
-/obj/structure/sign/warning/secure_area/directional/north,
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating,
-/area/station/maintenance/port/greater)
 "wig" = (
 /obj/structure/table,
 /obj/effect/turf_decal/tile/neutral{
@@ -83617,7 +83623,6 @@
 	dir = 5
 	},
 /obj/structure/cable,
-/obj/machinery/newscaster/directional/north,
 /turf/open/floor/grass,
 /area/station/medical/psychology)
 "xoK" = (
@@ -98250,7 +98255,7 @@ bDi
 bFD
 cRb
 bLq
-wic
+tSE
 pMK
 sLU
 bPG
