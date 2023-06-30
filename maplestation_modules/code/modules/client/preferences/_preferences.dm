@@ -29,3 +29,53 @@
 /// See above. Called at the very end of player initialization.
 /datum/preference/proc/after_apply_to_human(mob/living/carbon/human/target, datum/preferences/prefs, value)
 	return
+
+/// Extension of preferences/ui_act to do more actions when new preferences are added.
+/datum/preferences/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if (.)
+		return
+
+	var/mob/user = usr
+	switch (action)
+		// Loadout UI
+		if ("open_loadout_manager")
+			if(parent.open_loadout_ui)
+				parent.open_loadout_ui.ui_interact(user)
+			else
+				var/datum/loadout_manager/tgui = new(user)
+				tgui.ui_interact(user)
+			return TRUE
+		// Language UI
+		if ("open_language_picker")
+			var/datum/language_picker/tgui = new(user)
+			tgui.ui_interact(user)
+			return TRUE
+		// Spellbook UI
+		if ("open_spellbook")
+			if(parent.open_spellbook_ui)
+				parent.open_spellbook_ui.ui_interact(user)
+			else
+				var/datum/spellbook_manager/tgui = new(user)
+				tgui.ui_interact(user)
+			return TRUE
+		// Playing test sounds from speech frequency pref
+		if ("play_test_speech_sound")
+			var/mob/living/carbon/human/dummy = character_preview_view?.body
+			if(isnull(dummy))
+				return TRUE // ???
+
+			var/list/speech_sounds_to_try = dummy.get_speech_sounds()
+			if(!length(speech_sounds_to_try))
+				return
+
+			var/picked_sound = pick(speech_sounds_to_try)
+			var/speech_vol = speech_sounds_to_try[picked_sound]
+			var/speech_freq_to_try = round((get_rand_frequency() + get_rand_frequency()) / 2) * dummy.speech_sound_frequency_modifier
+			user.playsound_local(
+				turf_source = get_turf(user),
+				soundin = picked_sound,
+				vol = speech_vol,
+				vary = TRUE,
+				frequency = speech_freq_to_try,
+			)
