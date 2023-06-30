@@ -67,11 +67,38 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 // section for lore/perk descs
 /datum/species/ornithid/get_species_lore()
 	return list(
-		"bird lore"
+		"Much to the chagrin of the collective, the term \"Ornithid\" is in effect, a dumping ground of the various human-derived avian animalids. \
+		Several cultural and geneological groups can fall under this banner, with sometimes only those directly related bare any resemblance to eachother.",
+
+		"while countless other groups exist, the three most common ornithid groups known to Nanotrasen are the conniving Izulukin, The wandering Vagrants, and The traditionalist Tengu.",
+
+		"the Izulukin are an infamous bunch, being heavily overrepresented in privateer populations, always hungering for blood and gold. \
+		above all else, however, the Izulukin are obsessed with \"Genetic Perfection\", always finding ways to eliminate maladaptive or \"non-beneficial\" genes. \
+		this behavior is prevalent in their culture, with many izulukin activating latent genes to given themselves \"Super Powers\" so as to earn an edge in combat, and in culture.",
+
+		"of all the Izulukin's activities, they are most known for their contracts with witches, warlocks, and other dark-mages, binding a living member to a mage, \
+		until the bound member perishes, passing on to a chosen descendant should the contract owner perish themself. \
+		In addition, another activity they are infamous for is their almost vampiric obsession with the blood of biological organisms, \
+		harvesting it to be used in the production of various synthetic proteins, which form the core of their diet.",
+
+		"The third most populous groups are the simply named Vagrants, a typical group of wanderers who have no true home accross the stars, \
+		often working as traders, bounty hunters, and other nomadic professions. They are well known for a very effecient style of living, \
+		mixing efficient equipment and armor with casual wear, leaving little scraps left to waste.",
+
+		"The most populous of the three groups, the culture of the Tengu bares a striking resemblance to Edo Period Japan on earth, with their primary language, \
+		Yangyu, appearing to be based upon Japanese. They have a rigid, class-based society, with one's cultural importance and percieved morality holding more importance than wealth; \
+		which unsurprisingly, ends up funneled to the top regardless.",
+
+		"While there are many \"Born\" Tengu, many are cultural immigrants from various portions of the galaxy, most notably those who have fled or been exiled from the Izulukin."
+
 	)
 
 /datum/species/ornithid/get_species_description()
-	return "Ornithids are a collective group of various human descendant or otherwise resembling sentient avian beings." // i'll get to this later kek
+	return list(
+		"Ornithids are a collective group of various human descendant, or otherwise resembling, sentient avian beings.",
+		"Their most well known physical trait are their reduced weight, and feathery \"wings\" protuding from their arms, which they can use to fly.",
+		"There are countless various types and groups of Ornithids, with a variety of backgrounds both known and unknown by NT. "
+	)
 
 /datum/species/ornithid/create_pref_unique_perks()
 	var/list/to_add = list()
