@@ -34,30 +34,3 @@
 
 /datum/preference/loadout/is_valid(value)
 	return isnull(value) || islist(value)
-
-/// Extension of preferences/ui_act to open the loadout manager.
-/datum/preferences/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
-	. = ..()
-	if (.)
-		return
-
-	switch (action)
-		if ("open_loadout_manager")
-			if(parent.open_loadout_ui)
-				parent.open_loadout_ui.ui_interact(usr)
-			else
-				var/datum/loadout_manager/tgui = new(usr)
-				tgui.ui_interact(usr)
-			return TRUE
-		if ("open_language_picker")
-			var/datum/language_picker/tgui = new(src)
-			tgui.ui_interact(usr)
-			return TRUE
-		if ("open_spellbook")
-			if(parent.open_spellbook_ui)
-				parent.open_spellbook_ui.ui_interact(usr)
-			else
-				var/datum/spellbook_manager/tgui = new(usr)
-				tgui.ui_interact(usr)
-			return TRUE
-

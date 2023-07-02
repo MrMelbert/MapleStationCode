@@ -3,6 +3,15 @@
 /// Default, middle frequency
 #define DEFAULT_FREQUENCY 44100
 
+/mob/living
+	/// Modifier to speech sounds frequency
+	/// Lower = longer, deeper speech sounds
+	/// Higher = quicker, higher-pitch speech sounds
+	var/speech_sound_frequency_modifier = 1
+
+/mob/living/silicon
+	speech_sound_frequency_modifier = -1 // is set from preferences when we first speak.
+
 /**
  * Gets the sound this mob plays when they speak
  *
@@ -77,6 +86,12 @@
 		else
 			sound_type = SOUND_NORMAL
 			sound_frequency = round((get_rand_frequency() + get_rand_frequency()) / 2) //normal speaking is just the average of 2 random frequencies (to trend to the middle)
+
+	// [speech_sound_frequency_modifier] is set directly for humans via pref [apply_to_humans], but for other mobs we need to double-check
+	if(speech_sound_frequency_modifier == -1)
+		speech_sound_frequency_modifier = client?.prefs?.read_preference(/datum/preference/numeric/frequency_modifier) || 1
+
+	sound_frequency *= speech_sound_frequency_modifier
 
 	var/list/sound_pool = get_speech_sounds(sound_type)
 	if(!LAZYLEN(sound_pool))
