@@ -22,8 +22,8 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
 	)
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid, // NYI
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ornithid, // NYI
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/ornithid,
 		BODY_ZONE_HEAD = /obj/item/bodypart/head, // just because they are still *partially* human, or otherwise human resembling
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right,
@@ -37,7 +37,7 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 	meat = /obj/item/food/meat/slab/chicken
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	toxic_food = SUGAR // chocolate is toxic to birds.
-	disliked_food = DAIRY | CLOTH | GROSS // although these guys are human decendant, a holdover causes dairy to be a little screwy.
+	disliked_food = DAIRY | CLOTH | GROSS
 	liked_food = FRUIT | SEAFOOD | NUTS | BUGS // birds like dice(d) nuts. Also bugs.
 
 	inert_mutation = /datum/mutation/human/dwarfism
@@ -45,11 +45,12 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 
 /datum/species/ornithid/randomize_features(mob/living/carbon/human_mob)
 	randomize_external_organs(human_mob)
+
 // defines limbs/bodyparts.
 
 /obj/item/bodypart/arm/left/ornithid
 	limb_id = SPECIES_ORNITHID
-	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi' // NYI! THIS IS A PLACEHOLDER BECAUSE OF MAPLE MODULARITY
+	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi'
 	unarmed_attack_verb = "slash"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'
@@ -58,7 +59,7 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 
 /obj/item/bodypart/arm/right/ornithid
 	limb_id = SPECIES_ORNITHID
-	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi' // NYI! THIS IS A PLACEHOLDER BECAUSE OF MAPLE MODULARITY
+	icon_greyscale = 'maplestation_modules/icons/mob/ornithid_parts_greyscale.dmi'
 	unarmed_attack_verb = "slash"
 	unarmed_attack_effect = ATTACK_EFFECT_CLAW
 	unarmed_attack_sound = 'sound/weapons/slice.ogg'

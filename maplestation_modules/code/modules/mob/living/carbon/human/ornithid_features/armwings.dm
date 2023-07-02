@@ -17,13 +17,13 @@
 		return FALSE
 	return ..()
 
-/datum/movespeed_modifier/arm_wing_flight 
+/datum/movespeed_modifier/arm_wing_flight
 	multiplicative_slowdown = -0.2
 	movetypes = FLOATING|FLYING
 
 /obj/item/organ/external/wings/functional/arm_wings/toggle_flight(mob/living/carbon/human/human)
 	if(!HAS_TRAIT_FROM(human, TRAIT_MOVE_FLYING, SPECIES_FLIGHT_TRAIT))
-		ADD_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src)) //  If someone knows how to get the crossed out markers to appear in hand, please let me know
+		ADD_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src))
 		human.add_movespeed_modifier(/datum/movespeed_modifier/arm_wing_flight)
 	else
 		REMOVE_TRAIT(human, TRAIT_HANDS_BLOCKED, REF(src))
@@ -42,12 +42,12 @@
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
 	color_src = HAIR
-	
+
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"
 	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_HAIR
-	
+
 /datum/bodypart_overlay/mutant/wings/arm_wings/get_global_feature_list()
 	return GLOB.arm_wings_list
 

@@ -55,8 +55,6 @@
 		list("FRONT", "BEHIND"),
 		)
 
-/datum/preference/choiced/tail_avian/init_possible_values()
-	return assoc_to_keys(GLOB.tails_list_avian)
 
 /datum/preference/choiced/tail_avian/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_avian"] = value
