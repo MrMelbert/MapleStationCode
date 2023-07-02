@@ -12,7 +12,10 @@
 	if(HAS_TRAIT(human, TRAIT_RESTRAINED)) // prevents from flying if cuffed/restrained.
 		to_chat(human, span_warning("You are restrained! You cannot fly!"))
 		return FALSE
-	return ..() // todo: add code for checking if arms are disabled through paralysis or damage
+	if(human.usable_hands < 2)
+		to_chat(human, span_warning ("You need both of your hands to fly!"))
+		return FALSE
+	return ..()
 
 /datum/movespeed_modifier/arm_wing_flight // putting it here because this is the relevant file, and insular use case.
 	multiplicative_slowdown = -0.2
