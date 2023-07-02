@@ -9,15 +9,14 @@
 	//However, there is no "both arms" storage, and having one for each arm is sort of inefficient. Leaving very few methods that could fix this, most of which are harder than what I can do or necessitate a refactor of code. Too Bad!
 
 /obj/item/organ/external/wings/functional/arm_wings/can_fly(mob/living/carbon/human/human)
-	if(HAS_TRAIT(human, TRAIT_RESTRAINED)) // prevents from flying if cuffed/restrained.
+	if(HAS_TRAIT(human, TRAIT_RESTRAINED))
 		to_chat(human, span_warning("You are restrained! You cannot fly!"))
 		return FALSE
 	return ..() // todo: add code for checking if arms are disabled through paralysis or damage
 
-/datum/movespeed_modifier/arm_wing_flight // putting it here because this is the relevant file, and insular use case.
+/datum/movespeed_modifier/arm_wing_flight 
 	multiplicative_slowdown = -0.2
 	movetypes = FLOATING|FLYING
-	// THIS SHOULD ONLY APPLY WHEN THE USER IS FLYING (or floating, because that makes sense, i guess)!!!!
 
 /obj/item/organ/external/wings/functional/arm_wings/toggle_flight(mob/living/carbon/human/human)
 	if(!HAS_TRAIT_FROM(human, TRAIT_MOVE_FLYING, SPECIES_FLIGHT_TRAIT))
@@ -40,10 +39,12 @@
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
 	color_src = HAIR
+	
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"
 	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_HAIR
+	
 /datum/bodypart_overlay/mutant/wings/arm_wings/get_global_feature_list()
 	return GLOB.arm_wings_list
 
