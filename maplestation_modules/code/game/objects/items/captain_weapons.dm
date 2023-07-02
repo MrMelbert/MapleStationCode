@@ -11,7 +11,7 @@ GLOBAL_VAR(captain_weapon_picked)
 
 /obj/item/melee/baseball_bat/golden
 	name = "Il Batto Doro"
-	desc = "A bat wrapped in hooked wires meant to dig into the flesh of the undead, although it works just as well on the living."
+	desc = "A bat made entirely out of 24-karat gold. It's incredibly heavy, but perfect for turning assistant kneecaps into powder."
 	icon_state = "baseball_bat_golden"
 	inhand_icon_state = "baseball_bat_golden"
 	force = 30 //OUCH
