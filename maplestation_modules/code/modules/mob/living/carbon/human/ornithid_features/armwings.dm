@@ -13,7 +13,7 @@
 		to_chat(human, span_warning("You are restrained! You cannot fly!"))
 		return FALSE
 	if(human.usable_hands < 2)
-		to_chat(human, span_warning ("You need both of your hands to fly!"))
+		to_chat(human, span_warning("You need both of your hands to fly!"))
 		return FALSE
 	return ..()
 
