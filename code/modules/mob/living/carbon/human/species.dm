@@ -759,6 +759,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					accessory = GLOB.caps_list[source.dna.features["caps"]]
 				if("head_tentacles") // NON-MODULE CHANGE // melbert todo : maybe not necessary anymore
 					accessory = GLOB.head_tentacles_list[source.dna.features["head_tentacles"]]
+				if("arm_wings")	// NON-MODULE CHANGE
+					accessory = GLOB.arm_wings_list[source.dna.features["arm_wings"]]
 
 			if(!accessory || accessory.icon_state == "none")
 				continue
