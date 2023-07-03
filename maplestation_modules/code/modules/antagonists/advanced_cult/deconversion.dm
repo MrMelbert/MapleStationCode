@@ -1,6 +1,6 @@
 // Override of holywater's on_mob_life.
 // Turns out holywater never calls parent anyways, crazy
-/datum/reagent/water/holywater/on_mob_life(mob/living/carbon/user, delta_time, times_fired)
+/datum/reagent/water/holywater/on_mob_life(mob/living/carbon/user, seconds_per_tick, times_fired)
 	if(!data)
 		data = list("misc" = 0)
 
@@ -11,32 +11,32 @@
 	if(!istype(cult_datum))
 		return ..() // We're dealing with a normal cultist so we don't need to bother
 
-	user.adjust_jitter_up_to(4 SECONDS * delta_time, 20 SECONDS)
+	user.adjust_jitter_up_to(4 SECONDS * seconds_per_tick, 20 SECONDS)
 
 	for(var/datum/action/spell as anything in cult_datum.our_magic?.spells)
 		var/deleted_a_spell = FALSE
 		// 12% chance per tick to lose innate spells
-		if(istype(spell, /datum/action/innate/cult) && DT_PROB(12, delta_time))
+		if(istype(spell, /datum/action/innate/cult) && SPT_PROB(12, seconds_per_tick))
 			deleted_a_spell = TRUE
 			qdel(spell)
 
 		// 6% chance per tick to lose item spells
-		if(istype(spell, /datum/action/item_action) && (spell.target in user.get_all_contents()) && DT_PROB(6, delta_time))
+		if(istype(spell, /datum/action/item_action) && (spell.target in user.get_all_contents()) && SPT_PROB(6, seconds_per_tick))
 			deleted_a_spell = TRUE
 			qdel(spell)
 
 		if(deleted_a_spell)
 			to_chat(user, cult_datum.cultist_style.our_cult_span("Your magic falters as holy water scours your body!", bold = TRUE, large = TRUE))
 
-	data["misc"] += delta_time SECONDS * REM
+	data["misc"] += seconds_per_tick SECONDS * REM
 	if(data["misc"] >= (25 SECONDS)) // ~10 units
-		user.adjust_stutter_up_to(4 SECONDS * delta_time, 20 SECONDS)
+		user.adjust_stutter_up_to(4 SECONDS * seconds_per_tick, 20 SECONDS)
 		user.set_dizzy_if_lower(10 SECONDS)
 
-		if(DT_PROB(10, delta_time))
+		if(SPT_PROB(10, seconds_per_tick))
 			user.say(cult_datum.cultist_style.pick_deconversion_line(), forced = "holy water")
 
-			if(DT_PROB(15, delta_time))
+			if(SPT_PROB(15, seconds_per_tick))
 				user.visible_message(
 					span_danger("[user] starts having a seizure!"),
 					span_userdanger("You have a seizure!")
@@ -69,4 +69,4 @@
 		return
 
 	current_cycle++
-	holder.remove_reagent(type, 1 * REAGENTS_METABOLISM * delta_time)
+	holder.remove_reagent(type, 1 * REAGENTS_METABOLISM * seconds_per_tick)

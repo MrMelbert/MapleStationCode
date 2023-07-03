@@ -12,7 +12,7 @@
 	)
 
 /datum/surgery/lobectomy/can_start(mob/user, mob/living/carbon/target)
-	var/obj/item/organ/internal/lungs/target_lungs = target.getorganslot(ORGAN_SLOT_LUNGS)
+	var/obj/item/organ/internal/lungs/target_lungs = target.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(target_lungs)
 		if(target_lungs.damage > 60 && !target_lungs.operated)
 			return TRUE
@@ -40,12 +40,12 @@
 		span_notice("[user] begins to make an incision in [target]."),
 		span_notice("[user] begins to make an incision in [target]."),
 	)
-	display_pain(target, "You feel a stabbing pain in your chest!", target_zone = target_zone)
+	display_pain(target, "You feel a stabbing pain in your chest!")
 
 /datum/surgery_step/lobectomy/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target
-		var/obj/item/organ/internal/lungs/target_lungs = human_target.getorganslot(ORGAN_SLOT_LUNGS)
+		var/obj/item/organ/internal/lungs/target_lungs = human_target.get_organ_slot(ORGAN_SLOT_LUNGS)
 		target_lungs.operated = TRUE
 		human_target.setOrganLoss(ORGAN_SLOT_LUNGS, 60)
 		display_results(
@@ -55,7 +55,7 @@
 			span_notice("Successfully removes a piece of [human_target]'s lungs."),
 			"",
 		)
-		display_pain(target, "Your chest hurts like hell, but breathng becomes slightly easier.", target_zone = target_zone)
+		display_pain(target, "Your chest hurts like hell, but breathing becomes slightly easier.")
 	return ..()
 
 /datum/surgery_step/lobectomy/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -68,7 +68,7 @@
 			span_warning("[user] screws up!"),
 			span_warning("[user] screws up!"),
 		)
-		display_pain(target, "You feel a sharp stab in your chest; the wind is knocked out of you and it hurts to catch your breath!", target_zone = target_zone)
+		display_pain(target, "You feel a sharp stab in your chest; the wind is knocked out of you and it hurts to catch your breath!")
 		human_target.losebreath += 4
 		human_target.adjustOrganLoss(ORGAN_SLOT_LUNGS, 10)
 	return FALSE

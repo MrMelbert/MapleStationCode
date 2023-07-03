@@ -171,7 +171,7 @@
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
-/obj/effect/solar_flare/process(delta_time)
+/obj/effect/solar_flare/process(seconds_per_tick)
 	for(var/select_turf in turfs_to_heat)
 		do_flare(select_turf)
 

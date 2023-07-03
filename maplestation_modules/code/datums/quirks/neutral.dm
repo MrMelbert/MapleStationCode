@@ -2,7 +2,7 @@
 /datum/quirk/item_quirk/cardcollector
 	name = "Card Collector"
 	desc = "You carry your personal card binder and fresh packs of unopened cards, it's time to duel!"
-	icon = "diamond"
+	icon = FA_ICON_DIAMOND
 	value = 0
 	mob_trait = TRAIT_CARDCOLLECTOR //The only instance of this being used is for an examine more of the TdateT packs for a single line of text, I may use this to show rarity rates or other silly things someone that likes cards would notice.
 	gain_text = "<span class='notice'>You trust in the heart of the cards.</span>"

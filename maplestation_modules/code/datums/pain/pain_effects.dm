@@ -5,7 +5,7 @@
 	icon_state = "painoverlay"
 	layer = UI_DAMAGE_LAYER
 
-/mob/living/carbon/proc/flash_pain_overlay(severity = 1, time = 10)
+/mob/living/proc/flash_pain_overlay(severity = 1, time = 1 SECONDS)
 	overlay_fullscreen("pain", /atom/movable/screen/fullscreen/pain, severity)
 	clear_fullscreen("pain", time)
 
@@ -49,19 +49,19 @@
 	multiplicative_slowdown = 0.5
 
 /datum/mood_event/light_pain
-	description = "<span class='warning'>Everything aches.</span>\n"
+	description = "Everything aches."
 	mood_change = -3
 
 /datum/mood_event/med_pain
-	description = "<span class='warning'>Everything feels sore.</span>\n"
+	description = "Everything feels sore."
 	mood_change = -6
 
 /datum/mood_event/heavy_pain
-	description = "<span class='boldwarning'>Everything hurts!</span>\n"
+	description = "Everything hurts!"
 	mood_change = -10
 
 /datum/mood_event/crippling_pain
-	description = "<span class='boldwarning'>STOP THE PAIN!</span>\n"
+	description = "STOP THE PAIN!"
 	mood_change = -15
 
 // Applied when you go under the knife with anesthesia

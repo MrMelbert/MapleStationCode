@@ -273,7 +273,7 @@
 	dir = 8;
 	pixel_y = 6
 	},
-/obj/structure/window/reinforced,
+/obj/structure/window/reinforced/spawner/directional/south,
 /obj/structure/curtain,
 /turf/open/floor/iron/freezer,
 /area/mine/living_quarters)
@@ -465,12 +465,17 @@
 	dir = 4
 	},
 /area/mine/mechbay)
-"eC" = (
-/obj/machinery/camera/autoname/directional/east{
-	network = list("labor")
+"eF" = (
+/obj/docking_port/stationary{
+	dir = 2;
+	dwidth = 11;
+	height = 24;
+	name = "lavaland wastes";
+	shuttle_id = "whiteship_lavaland";
+	width = 35
 	},
 /turf/open/misc/asteroid/basalt/lava_land_surface,
-/area/mine/laborcamp/production)
+/area/lavaland/surface/outdoors)
 "eJ" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -699,10 +704,10 @@
 /turf/open/floor/plating,
 /area/mine/maintenance/public/north)
 "gu" = (
-/obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/telecomms/relay/preset/mining,
 /obj/machinery/light/directional/south,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/mine/maintenance/service/comms)
 "gv" = (
@@ -825,9 +830,7 @@
 /obj/structure/sink/directional/east,
 /obj/structure/mirror/directional/west,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
-/obj/structure/sign/poster/official/cleanliness{
-	pixel_y = 32
-	},
+/obj/structure/sign/poster/official/cleanliness/directional/north,
 /turf/open/floor/iron/freezer,
 /area/mine/living_quarters)
 "hg" = (
@@ -1458,9 +1461,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/no_erp{
-	pixel_y = -32
-	},
+/obj/structure/sign/poster/official/no_erp/directional/south,
 /turf/open/floor/iron/smooth,
 /area/mine/laborcamp/quarters)
 "jZ" = (
@@ -1995,9 +1996,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/ripped{
-	pixel_y = -32
-	},
+/obj/structure/sign/poster/ripped/directional/south,
 /turf/open/floor/iron/smooth_edge{
 	dir = 1
 	},
@@ -2039,9 +2038,7 @@
 	},
 /obj/effect/spawner/random/trash/graffiti,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/work_for_a_future{
-	pixel_x = -32
-	},
+/obj/structure/sign/poster/official/work_for_a_future/directional/west,
 /turf/open/floor/iron/smooth,
 /area/mine/laborcamp/quarters)
 "mk" = (
@@ -2443,10 +2440,8 @@
 /area/lavaland/surface/outdoors)
 "np" = (
 /obj/structure/closet/crate,
-/obj/structure/window{
-	dir = 8
-	},
-/obj/structure/window,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/window/spawner/directional/south,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 10
 	},
@@ -3109,9 +3104,7 @@
 	pixel_y = 6
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/cleanliness{
-	pixel_y = 32
-	},
+/obj/structure/sign/poster/official/cleanliness/directional/north,
 /turf/open/floor/iron/freezer,
 /area/mine/laborcamp/quarters)
 "rO" = (
@@ -3124,9 +3117,7 @@
 /obj/effect/turf_decal/siding/yellow{
 	dir = 4
 	},
-/obj/structure/sign/poster/official/corporate_perks_vacation{
-	pixel_x = -32
-	},
+/obj/structure/sign/poster/official/corporate_perks_vacation/directional/west,
 /turf/open/floor/iron/edge{
 	dir = 4
 	},
@@ -3643,7 +3634,7 @@
 /turf/open/floor/iron/dark/textured_large,
 /area/mine/laborcamp/security)
 "uR" = (
-/obj/structure/chair/sofa/corner{
+/obj/structure/chair/sofa/corner/brown{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/bar/opposingcorners{
@@ -4023,9 +4014,7 @@
 /area/lavaland/surface/outdoors)
 "yi" = (
 /obj/machinery/hydroponics/constructable,
-/obj/structure/window{
-	dir = 8
-	},
+/obj/structure/window/spawner/directional/west,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 8
@@ -4233,7 +4222,7 @@
 /area/mine/cafeteria)
 "zw" = (
 /obj/structure/curtain,
-/obj/structure/window,
+/obj/structure/window/spawner/directional/south,
 /obj/machinery/shower/directional/south,
 /obj/item/soap,
 /turf/open/floor/iron/freezer,
@@ -4409,7 +4398,7 @@
 	network = list("labor")
 	},
 /turf/open/misc/asteroid/basalt/lava_land_surface,
-/area/mine/laborcamp/security)
+/area/lavaland/surface/outdoors)
 "Ax" = (
 /obj/structure/plasticflaps,
 /obj/machinery/conveyor{
@@ -4499,7 +4488,7 @@
 /turf/open/floor/plating,
 /area/mine/maintenance/service)
 "AT" = (
-/obj/structure/chair/sofa/left,
+/obj/structure/chair/sofa/left/brown,
 /obj/effect/turf_decal/tile/bar/opposingcorners{
 	dir = 1
 	},
@@ -4562,7 +4551,7 @@
 /turf/open/floor/iron/smooth_edge,
 /area/mine/laborcamp)
 "Bw" = (
-/obj/machinery/mineral/equipment_vendor,
+/obj/machinery/computer/order_console/mining,
 /obj/effect/turf_decal/trimline/brown/filled/line,
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 1
@@ -4652,9 +4641,7 @@
 "Cc" = (
 /obj/structure/bed,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/work_for_a_future{
-	pixel_x = 32
-	},
+/obj/structure/sign/poster/official/work_for_a_future/directional/east,
 /turf/open/floor/iron/smooth,
 /area/mine/laborcamp/quarters)
 "Cf" = (
@@ -4699,10 +4686,10 @@
 /obj/structure/chair{
 	dir = 4
 	},
+/obj/item/radio/intercom/directional/west,
 /obj/effect/turf_decal/tile/bar/opposingcorners{
 	dir = 1
 	},
-/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron/checker,
 /area/mine/cafeteria)
 "Cr" = (
@@ -5062,11 +5049,11 @@
 /area/mine/laborcamp/production)
 "EH" = (
 /obj/structure/cable,
-/obj/effect/turf_decal/tile/bar/opposingcorners{
-	dir = 1
-	},
 /obj/structure/disposalpipe/segment{
 	dir = 6
+	},
+/obj/effect/turf_decal/tile/bar/opposingcorners{
+	dir = 1
 	},
 /turf/open/floor/iron/checker,
 /area/mine/cafeteria)
@@ -5131,12 +5118,12 @@
 /area/mine/laborcamp/production)
 "Fb" = (
 /obj/structure/table,
-/obj/effect/turf_decal/tile/bar/opposingcorners{
-	dir = 1
-	},
 /obj/machinery/newscaster/directional/north,
 /obj/item/plate/large,
 /obj/item/kitchen/fork,
+/obj/effect/turf_decal/tile/bar/opposingcorners{
+	dir = 1
+	},
 /turf/open/floor/iron/checker,
 /area/mine/cafeteria)
 "Fc" = (
@@ -5619,9 +5606,7 @@
 /area/mine/production)
 "HA" = (
 /obj/machinery/hydroponics/constructable,
-/obj/structure/window{
-	dir = 8
-	},
+/obj/structure/window/spawner/directional/west,
 /obj/machinery/light/small/directional/north,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 9
@@ -5698,7 +5683,7 @@
 	},
 /area/mine/laborcamp)
 "Ii" = (
-/obj/machinery/computer/secure_data,
+/obj/machinery/computer/records/security,
 /obj/structure/cable,
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 9
@@ -5878,17 +5863,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/mine/laborcamp/security)
-"Ju" = (
-/obj/docking_port/stationary{
-	dir = 2;
-	dwidth = 11;
-	height = 22;
-	name = "lavaland wastes";
-	shuttle_id = "whiteship_lavaland";
-	width = 35
-	},
-/turf/open/misc/asteroid/basalt/lava_land_surface,
-/area/lavaland/surface/outdoors)
 "Jx" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
@@ -6103,7 +6077,7 @@
 /turf/open/floor/iron/dark,
 /area/mine/laborcamp/security)
 "KB" = (
-/obj/structure/chair/sofa,
+/obj/structure/chair/sofa/middle/brown,
 /obj/effect/turf_decal/tile/bar/opposingcorners{
 	dir = 1
 	},
@@ -6355,7 +6329,7 @@
 	},
 /area/mine/production)
 "Mq" = (
-/obj/structure/chair/sofa/right{
+/obj/structure/chair/sofa/right/brown{
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/bar/opposingcorners{
@@ -6473,7 +6447,7 @@
 "Nh" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/misc/asteroid/basalt/lava_land_surface,
-/area/mine/laborcamp/production)
+/area/lavaland/surface/outdoors)
 "Ni" = (
 /obj/structure/closet/emcloset,
 /obj/effect/turf_decal/stripes/corner{
@@ -6552,9 +6526,7 @@
 /area/lavaland/surface/outdoors)
 "NG" = (
 /obj/machinery/hydroponics/constructable,
-/obj/structure/window{
-	dir = 8
-	},
+/obj/structure/window/spawner/directional/west,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 8
@@ -6739,7 +6711,7 @@
 /turf/open/floor/iron,
 /area/mine/cafeteria)
 "Pf" = (
-/obj/machinery/mineral/equipment_vendor,
+/obj/machinery/computer/order_console/mining,
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 1
 	},
@@ -7307,9 +7279,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/report_crimes{
-	pixel_x = -32
-	},
+/obj/structure/sign/poster/official/report_crimes/directional/west,
 /turf/open/floor/iron/smooth,
 /area/mine/laborcamp)
 "SF" = (
@@ -7349,12 +7319,12 @@
 /area/mine/production)
 "SY" = (
 /obj/structure/table,
-/obj/effect/turf_decal/tile/bar/opposingcorners{
-	dir = 1
-	},
 /obj/item/kitchen/fork{
 	pixel_x = -7;
 	pixel_y = 4
+	},
+/obj/effect/turf_decal/tile/bar/opposingcorners{
+	dir = 1
 	},
 /turf/open/floor/iron/checker,
 /area/mine/cafeteria)
@@ -7482,9 +7452,7 @@
 "TN" = (
 /obj/effect/turf_decal/bot,
 /obj/structure/ore_box,
-/obj/structure/sign/poster/official/do_not_question{
-	pixel_y = 32
-	},
+/obj/structure/sign/poster/official/do_not_question/directional/north,
 /turf/open/floor/iron/smooth,
 /area/mine/laborcamp/production)
 "TQ" = (
@@ -7562,7 +7530,7 @@
 /turf/open/floor/iron/dark/textured_large,
 /area/mine/production)
 "Uf" = (
-/obj/structure/window,
+/obj/structure/window/spawner/directional/south,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 6
 	},
@@ -7604,7 +7572,6 @@
 	},
 /area/mine/hydroponics)
 "UB" = (
-/obj/structure/bed/roller,
 /obj/structure/bed/roller,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -7856,10 +7823,10 @@
 /area/mine/laborcamp/security)
 "Xc" = (
 /obj/structure/table/wood,
+/obj/item/toy/cards/deck,
 /obj/effect/turf_decal/tile/bar/opposingcorners{
 	dir = 1
 	},
-/obj/item/toy/cards/deck,
 /turf/open/floor/iron/checker,
 /area/mine/cafeteria)
 "Xe" = (
@@ -7916,9 +7883,7 @@
 /obj/effect/turf_decal/siding/yellow{
 	dir = 8
 	},
-/obj/structure/sign/poster/official/high_class_martini{
-	pixel_x = 32
-	},
+/obj/structure/sign/poster/official/high_class_martini/directional/east,
 /turf/open/floor/iron/edge{
 	dir = 8
 	},
@@ -8041,6 +8006,9 @@
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment,
 /obj/effect/mapping_helpers/airlock/access/any/engineering/maintenance/departmental,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 1
+	},
 /turf/open/floor/plating,
 /area/mine/maintenance/living/north)
 "XW" = (
@@ -8056,8 +8024,8 @@
 /obj/machinery/door/airlock/security{
 	name = "Labor Camp Gate Monitoring"
 	},
-/obj/effect/turf_decal/tile/red/fourcorners,
 /obj/effect/mapping_helpers/airlock/access/any/security/brig,
+/obj/effect/turf_decal/tile/red/fourcorners,
 /turf/open/floor/iron/dark,
 /area/mine/laborcamp/security)
 "XZ" = (
@@ -8338,9 +8306,6 @@
 "ZI" = (
 /obj/structure/table/wood,
 /obj/machinery/light/directional/east,
-/obj/effect/turf_decal/tile/bar/opposingcorners{
-	dir = 1
-	},
 /obj/item/reagent_containers/cup/glass/drinkingglass/shotglass{
 	pixel_x = -3;
 	pixel_y = 7
@@ -8348,6 +8313,9 @@
 /obj/item/reagent_containers/cup/glass/drinkingglass/shotglass{
 	pixel_x = 6;
 	pixel_y = 5
+	},
+/obj/effect/turf_decal/tile/bar/opposingcorners{
+	dir = 1
 	},
 /turf/open/floor/iron/checker,
 /area/mine/cafeteria)
@@ -22246,7 +22214,7 @@ ab
 ab
 Nh
 ab
-eC
+At
 ab
 ab
 an
@@ -54369,8 +54337,8 @@ ab
 ab
 ab
 ab
-am
-am
+ab
+ab
 ab
 ab
 ab
@@ -54621,14 +54589,14 @@ am
 am
 am
 am
-am
-am
-am
-am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -54869,8 +54837,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
 am
 am
 am
@@ -54880,12 +54846,14 @@ am
 am
 am
 am
-am
-am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -55126,10 +55094,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -55140,10 +55104,14 @@ am
 am
 am
 am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -55383,12 +55351,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -55399,8 +55361,14 @@ am
 am
 am
 am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -55640,14 +55608,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -55658,6 +55618,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -55898,14 +55866,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -55915,6 +55875,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -56155,14 +56123,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -56171,6 +56131,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -56413,20 +56381,20 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -56670,14 +56638,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -56687,7 +56647,15 @@ am
 ab
 ab
 ab
-Ju
+eF
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -56927,20 +56895,20 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -57185,19 +57153,19 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -57442,20 +57410,20 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -57699,20 +57667,20 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -57956,14 +57924,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -57971,6 +57931,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -58214,20 +58182,20 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -58471,20 +58439,20 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -58728,14 +58696,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -58743,6 +58703,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -58986,20 +58954,20 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -59243,14 +59211,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -59258,6 +59218,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -59500,14 +59468,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -59515,6 +59475,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -59757,14 +59725,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -59774,6 +59734,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -60015,14 +59983,6 @@ fQ
 fQ
 fQ
 fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
-fQ
 am
 am
 am
@@ -60033,6 +59993,14 @@ am
 am
 am
 am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -60284,16 +60252,16 @@ am
 am
 am
 am
-am
-am
-am
-am
-am
-am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 ab
@@ -60544,14 +60512,14 @@ am
 am
 am
 am
-am
-am
-am
-am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 aj
@@ -60801,15 +60769,15 @@ am
 am
 am
 am
-am
-am
-am
-am
-am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 aj
@@ -61060,13 +61028,13 @@ am
 am
 am
 am
-am
-am
-am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 ab
 ab
 aj
@@ -61320,11 +61288,11 @@ am
 am
 am
 am
-am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
+ab
 ab
 aj
 aj
@@ -61578,10 +61546,10 @@ am
 am
 am
 am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
 ab
 aj
 aj
@@ -61837,10 +61805,10 @@ am
 am
 am
 am
-am
-am
-am
-am
+ab
+ab
+ab
+ab
 aj
 aj
 aj
@@ -62096,9 +62064,9 @@ am
 am
 am
 am
-am
-am
-am
+ab
+ab
+ab
 aj
 aj
 aj

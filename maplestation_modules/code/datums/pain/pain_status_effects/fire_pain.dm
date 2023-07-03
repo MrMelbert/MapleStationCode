@@ -39,6 +39,8 @@
 	return TRUE
 
 /datum/status_effect/pain_from_fire/on_remove()
+	if(QDELING(owner))
+		return
 	var/mob/living/carbon/human/human_owner = owner
 	UnregisterSignal(human_owner, COMSIG_LIVING_EXTINGUISHED)
 

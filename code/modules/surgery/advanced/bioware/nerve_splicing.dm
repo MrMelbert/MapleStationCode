@@ -28,7 +28,7 @@
 		span_notice("[user] starts manipulating [target]'s nervous system."),
 	)
 	display_pain(target, "Your entire body goes numb!", target_zone = target_zone)
-	target.cause_typed_pain(BODY_ZONES_ALL, 15, BURN) // NON-MODULE CHANGE
+	target.cause_pain(BODY_ZONES_ALL, 15, BURN) // NON-MODULE CHANGE
 
 /datum/surgery_step/splice_nerves/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(
@@ -40,6 +40,8 @@
 	)
 	display_pain(target, "You regain feeling in your body; It feels like everything's happening around you in slow motion!", target_zone = target_zone)
 	new /datum/bioware/spliced_nerves(target)
+	if(target.ckey)
+		SSblackbox.record_feedback("nested tally", "nerve_splicing", 1, list("[target.ckey]", "got"))
 	return ..()
 
 /datum/bioware/spliced_nerves
@@ -50,7 +52,9 @@
 /datum/bioware/spliced_nerves/on_gain()
 	..()
 	owner.physiology.stun_mod *= 0.5
+	owner.physiology.stamina_mod *= 0.8
 
 /datum/bioware/spliced_nerves/on_lose()
 	..()
 	owner.physiology.stun_mod *= 2
+	owner.physiology.stamina_mod *= 1.25

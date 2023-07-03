@@ -9,7 +9,7 @@
 	total_positions = 1
 	spawn_positions = 1 // Too many cooks spoil the broth, too many techs ruin the burn mix
 	supervisors = "the research director"
-	selection_color = "#ffeeff"
+	// selection_color = "#ffeeff"
 	exp_requirements = 60
 	exp_required_type = EXP_TYPE_CREW
 	exp_granted_type = EXP_TYPE_CREW
@@ -50,6 +50,6 @@
 	name = "Ordnance Technician"
 	suit = /obj/item/clothing/suit/toggle/labcoat/toxic
 	uniform = /obj/item/clothing/under/rank/rnd/ordnance_tech
-	belt = /obj/item/modular_computer/tablet/pda/ordnance
+	belt = /obj/item/modular_computer/pda/ordnance
 	jobtype = /datum/job/ordnance_tech
 	id_trim = /datum/id_trim/job/ordnance_tech

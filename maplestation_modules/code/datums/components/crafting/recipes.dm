@@ -5,9 +5,8 @@
 				/obj/item/stack/rods = 10,
 				)
 	tool_behaviors = list(TOOL_WELDER, TOOL_WIRECUTTER)
-	time = 15
-	category = CAT_WEAPONRY
-	subcategory = CAT_WEAPON
+	time = 1.5 SECONDS
+	category = CAT_WEAPON_MELEE
 
 /datum/crafting_recipe/home_bat
 	name = "Homerun Bat"
@@ -17,9 +16,8 @@
 				/obj/item/stock_parts/cell/hyper = 1,
 				)
 	tool_behaviors = list(TOOL_WIRECUTTER, TOOL_SCREWDRIVER)
-	time = 20
-	category = CAT_WEAPONRY
-	subcategory = CAT_WEAPON
+	time = 2 SECONDS
+	category = CAT_WEAPON_MELEE
 
 /datum/crafting_recipe/metal_bat
 	name = "Metal Bat"
@@ -28,6 +26,5 @@
 				/obj/item/stack/sheet/mineral/plastitanium = 20,
 				)
 	tool_behaviors = list(TOOL_WELDER, TOOL_SCREWDRIVER, TOOL_WRENCH)
-	time = 20
-	category = CAT_WEAPONRY
-	subcategory = CAT_WEAPON
+	time = 2 SECONDS
+	category = CAT_WEAPON_MELEE

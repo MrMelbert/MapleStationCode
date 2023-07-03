@@ -6,10 +6,16 @@
 	desc = "A formal blue suit and tie kitted out with padding for protection worn by the officers that work the bridge. Someone owes you a beer..."
 	icon_state = "blueshift"
 	inhand_icon_state = null
-	armor = list(MELEE = 5, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50, WOUND = 5)
+	armor_type = /datum/armor/brige_uniform
 	sensor_mode = SENSOR_COORDS
 	can_adjust = FALSE
 
+/datum/armor/brige_uniform
+	melee = 5
+	fire = 50
+	acid = 50
+	bio = 10
+	wound = 5
 
 /obj/item/clothing/under/rank/security/bridge_officer/black
 	name = "bridge officer suit"
@@ -34,11 +40,11 @@
 	desc = "A formal blue suit and tie kitted out with padding for protection worn by the protection units assisting command."
 	icon_state = "blueshift"
 	inhand_icon_state = null
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50, WOUND = 5)
+	armor_type = /datum/armor/brige_uniform
 	sensor_mode = SENSOR_COORDS
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/security/officer/grey/asset_protection
 	name = "asset protection uniform"
 	desc = "It gives you unease, the grey. But hey, that tie looks swanky! ..Is it even a tie?"
-	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50, WOUND = 5)
+	armor_type = /datum/armor/brige_uniform

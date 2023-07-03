@@ -70,7 +70,14 @@
 		if(DOING_INTERACTION(user, DOAFTER_SOURCE_LINGSTING))
 			return FALSE
 
-		if(!do_mob(user, target, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_range), user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
+		if(!do_after(
+			user,
+			1 SECONDS,
+			target,
+			timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE,
+			extra_checks = CALLBACK(src, PROC_REF(check_range), user, target),
+			interaction_key = DOAFTER_SOURCE_LINGSTING,
+		))
 			to_chat(user, span_warning("We could not complete the sting on [target]."))
 			return FALSE
 
@@ -121,7 +128,7 @@
 		of the sting when complete, and will be able to call for help or attempt to run for a short period of time until falling asleep. \
 		The chemical takes about 20 seconds to kick in, and lasts for roughly 1 minute."
 	hud_icon = 'maplestation_modules/icons/hud/screen_changeling.dmi'
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
 	button_icon_state = "sting_sleep"
 	chemical_cost = 40
 	dna_cost = 2
@@ -137,7 +144,14 @@
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_LINGSTING))
 		return FALSE
 
-	if(!do_mob(user, target, 3 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_range), user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
+	if(!do_after(
+		user,
+		3 SECONDS,
+		target,
+		timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE,
+		extra_checks = CALLBACK(src, PROC_REF(check_range), user, target),
+		interaction_key = DOAFTER_SOURCE_LINGSTING,
+	))
 		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
 	return TRUE
@@ -162,7 +176,7 @@
 		dealing roughly 50 toxins damage to the victim over time, as well as fatiguing them and causing brain damage. Costs 30 chemicals."
 	helptext = "The sting takes a second to prepare, during which you must remain in range of the victim. \
 		The target will feel the toxins entering their body when the sting is complete, but will be unaware the sting itself occured."
-	icon_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_changeling.dmi'
 	button_icon_state = "sting_poison"
 	chemical_cost = 30
 	dna_cost = 2
@@ -178,7 +192,14 @@
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_LINGSTING))
 		return FALSE
 
-	if(!do_mob(user, target, 1 SECONDS, timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(check_range), user, target), interaction_key = DOAFTER_SOURCE_LINGSTING))
+	if(!do_after(
+		user,
+		1 SECONDS,
+		target,
+		timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE,
+		extra_checks = CALLBACK(src, PROC_REF(check_range), user, target),
+		interaction_key = DOAFTER_SOURCE_LINGSTING,
+	))
 		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
 	return TRUE

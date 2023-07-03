@@ -14,3 +14,13 @@
 	icon_state = "torii"
 	icon = 'maplestation_modules/icons/misc/language.dmi'
 	default_priority = 94
+
+/datum/language_holder/yangyu
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/yangyu = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/yangyu = list(LANGUAGE_ATOM),
+	)

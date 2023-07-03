@@ -1,3 +1,4 @@
+
 <!-- Hi! Thanks for contributing to our code! Please make sure to check the check list below. -->
 <!-- Please make sure that modularity is in order to prevent headaches later. For more information, check the README.md in /maplestation_modules/ -->
 
@@ -14,3 +15,6 @@
 It's important to ALWAYS MAKE SURE to modularize your content! If you need to touch the main game files, ALWAYS use "NON-MODULE" in the comment.
 Multi line changes should have "NON-MODULE START / END" to denote the multi line changes, if applicable in succession.
 Images added to master .dmi files will be rejected and you will be asked to modularize them, even if you need to copy the master file.
+
+<!-- This is for upstream merge tracking, please ignore -->
+<!-- // NON-MODULE CHANGE -->

@@ -9,7 +9,13 @@
 
 	if(give_uplink || linked_advanced_datum?.finalized)
 		owner.give_uplink(silent = FALSE, antag_datum = src)
+		generate_replacement_codes()
 		handle_uplink()
+		owner.teach_crafting_recipe(/datum/crafting_recipe/syndicate_uplink_beacon)
+
+	if(give_objectives)
+		forge_traitor_objectives()
+		forge_ending_objective()
 
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 
@@ -25,16 +31,15 @@
 		uplink.uplink_handler = uplink_handler
 	else
 		uplink_handler = uplink.uplink_handler
+	uplink_handler.primary_objectives = objectives
+	uplink_handler.has_progression = TRUE
+	SStraitor.register_uplink_handler(uplink_handler)
 
-	if(!linked_advanced_datum)
-		uplink_handler.has_progression = TRUE
-		SStraitor.register_uplink_handler(uplink_handler)
+	uplink_handler.has_objectives = TRUE
+	uplink_handler.generate_objectives()
 
-		uplink_handler.has_objectives = TRUE
-		uplink_handler.generate_objectives()
-
-		if(uplink_handler.progression_points < SStraitor.current_global_progression)
-			uplink_handler.progression_points = SStraitor.current_global_progression * SStraitor.newjoin_progression_coeff
+	if(uplink_handler.progression_points < SStraitor.current_global_progression)
+		uplink_handler.progression_points = SStraitor.current_global_progression * SStraitor.newjoin_progression_coeff
 
 	var/list/uplink_items = list()
 	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
@@ -45,8 +50,7 @@
 			if((uplink_handler.assigned_role in item.restricted_roles) || (uplink_handler.assigned_species in item.restricted_species))
 				uplink_items += item
 				continue
-
-	uplink_handler.extra_purchasable += create_uplink_sales(uplink_sale_count, /datum/uplink_category/discounts, -1, uplink_items)
+	uplink_handler.extra_purchasable += create_uplink_sales(uplink_sale_count, /datum/uplink_category/discounts, 1, uplink_items)
 
 /// The Advanced Traitor antagonist datum.
 /datum/antagonist/traitor/advanced

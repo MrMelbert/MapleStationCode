@@ -163,6 +163,10 @@ GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_ite
 	name = "Snake Plush"
 	item_path = /obj/item/toy/plush/snakeplushie
 
+/datum/loadout_item/pocket_items/plush/albertcat
+	name = "Albus"
+	item_path = /obj/item/toy/plush/albertcat
+
 /datum/loadout_item/pocket_items/card_binder
 	name = "Card Binder"
 	item_path = /obj/item/storage/card_binder

@@ -76,7 +76,7 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 // MELBERT TODO: These hard delete. Interesting
 /datum/loadout_item/suit/goliath_cloak
 	name = "Heirloom Goliath Cloak"
-	item_path = /obj/item/clothing/suit/hooded/cloak/goliath_heirloom
+	item_path = /obj/item/clothing/suit/hooded/cloak/goliath/heirloom
 	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
 
 /datum/loadout_item/suit/poncho
@@ -97,7 +97,7 @@ GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/su
 
 /datum/loadout_item/suit/bomber_jacket
 	name = "Bomber Jacket"
-	item_path = /obj/item/clothing/suit/jacket
+	item_path = /obj/item/clothing/suit/jacket/bomber
 
 /datum/loadout_item/suit/military_jacket
 	name = "Military Jacket"

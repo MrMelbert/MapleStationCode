@@ -2,14 +2,14 @@
 /// This proc adds modular PDAs into the PDA painter. Don't forget to update it or else you can't paint added PDAs.
 /proc/get_modular_PDA_regions()
 	return list(
-		/obj/item/modular_computer/tablet/pda/heads/asset_protection = list(REGION_COMMAND),
-		/obj/item/modular_computer/tablet/pda/heads/bridge_officer = list(REGION_COMMAND),
-		/obj/item/modular_computer/tablet/pda/ordnance = list(REGION_RESEARCH),
-		/obj/item/modular_computer/tablet/pda/xenobiologist = list(REGION_RESEARCH),
+		/obj/item/modular_computer/pda/heads/asset_protection = list(REGION_COMMAND),
+		/obj/item/modular_computer/pda/heads/bridge_officer = list(REGION_COMMAND),
+		/obj/item/modular_computer/pda/ordnance = list(REGION_RESEARCH),
+		/obj/item/modular_computer/pda/xenobiologist = list(REGION_RESEARCH),
 	)
 
 // Bridge Officer PDA.
-/obj/item/modular_computer/tablet/pda/heads/bridge_officer
+/obj/item/modular_computer/pda/heads/bridge_officer
 	name = "bridge officer PDA"
 	greyscale_config = /datum/greyscale_config/tablet/head
 	greyscale_colors = "#99ccff#000099"
@@ -26,7 +26,7 @@
 	)
 
 // Asset Protection PDA.
-/obj/item/modular_computer/tablet/pda/heads/asset_protection
+/obj/item/modular_computer/pda/heads/asset_protection
 	name = "asset protection PDA"
 	greyscale_config = /datum/greyscale_config/tablet/head
 	greyscale_colors = "#d91a40#3F1514"
@@ -43,7 +43,7 @@
 	)
 
 /// ordnance technician PDA
-/obj/item/modular_computer/tablet/pda/ordnance
+/obj/item/modular_computer/pda/ordnance
 	name = "ordnance technician PDA"
 	greyscale_config = /datum/greyscale_config/tablet/stripe_two_color
 	greyscale_colors = "#e2e2e2#000099#40e0d0#9e00ea"
@@ -54,11 +54,11 @@
 	)
 
 /// Xenobiologist PDA
-/obj/item/modular_computer/tablet/pda/xenobiologist
+/obj/item/modular_computer/pda/xenobiologist
 	name = "xenobiologist PDA"
 	greyscale_config = /datum/greyscale_config/tablet/stripe_two_color
 	greyscale_colors = "#e2e2e2#000099#6eaec8#9e00ea"
 	starting_programs = list(
 		// Lesser scientist but at least you can scan stuff
-		/datum/computer_file/program/phys_scanner/chemistry,
+		/datum/computer_file/program/maintenance/phys_scanner,
 	)

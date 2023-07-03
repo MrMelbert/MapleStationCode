@@ -9,7 +9,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the heads of staff and the captain"
-	selection_color = "#ddddff"
+	// selection_color = "#ddddff"
 	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
@@ -58,7 +58,7 @@
 	jobtype = /datum/job/bridge_officer
 
 	id = /obj/item/card/id/advanced/silver
-	belt = /obj/item/modular_computer/tablet/pda/heads/bridge_officer
+	belt = /obj/item/modular_computer/pda/heads/bridge_officer
 	ears = /obj/item/radio/headset/heads/bridge_officer
 	glasses = /obj/item/clothing/glasses/sunglasses
 	gloves = /obj/item/clothing/gloves/color/white

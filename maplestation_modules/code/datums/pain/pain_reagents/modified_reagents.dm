@@ -121,7 +121,7 @@
 
 // Cryoxadone slowly heals pain, like wounds.
 // It also helps against shock, sort of.
-/datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()
 	if(!.)
 		return
@@ -129,7 +129,7 @@
 
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type) // To negate the fact that being cold is bad for shock
 	M.set_pain_mod(type, 0.5) // Heal pain faster
-	M.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * delta_time)
+	M.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * seconds_per_tick)
 
 /datum/reagent/medicine/cryoxadone/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
@@ -153,8 +153,12 @@
 	pain_modifier = 0.5
 
 // Diphenhydrame helps against disgust slightly
-/datum/reagent/medicine/diphenhydramine/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
+/datum/reagent/medicine/diphenhydramine/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	. = ..()
-	M.adjust_disgust(-3 * REM * delta_time )
+	M.adjust_disgust(-3 * REM * seconds_per_tick )
+
+/datum/reagent/consumable/laughter/on_mob_metabolize(mob/living/carbon/user)
+	pain_modifier = pick(0.8, 1, 1, 1, 1, 1.2)
+	return ..()
 
 #undef PAIN_MOD_APPLY_ALERT

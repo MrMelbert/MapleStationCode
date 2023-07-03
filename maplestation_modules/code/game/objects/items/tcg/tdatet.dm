@@ -251,7 +251,7 @@ Check out the other color set packs at your local game vendor or order online to
 
 /obj/item/toy/counter/AltClick(mob/living/user)
 	. = ..()
-	if(!user.canUseTopic(src, be_close = TRUE, need_hands = !iscyborg(user)))
+	if(!user.can_perform_action(src, iscyborg(user) ? NONE : NEED_HANDS))
 		return
 	var/amount = tgui_input_number(usr, message = "New Number To Display", title = "Number Input", default = 0, max_value = 999, min_value = 0, timeout = 0, round_value = TRUE)
 	if(!isnull(amount))
@@ -293,4 +293,3 @@ Check out the other color set packs at your local game vendor or order online to
 		/obj/item/toy/counter = 5,
 	)
 	generate_items_inside(items_inside, src)
-

@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	name = "Skrell"
 	plural_form = "Skrellian"
 	id = SPECIES_SKRELL
-	species_traits = list(MUTCOLORS, EYECOLOR, LIPS, HAS_FLESH, HAS_BONE)
+	species_traits = list(MUTCOLORS, EYECOLOR, LIPS)
 	inherent_traits = list(TRAIT_LIGHT_DRINKER)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	toxic_food = MEAT | RAW | DAIRY | TOXIC | SEAFOOD
@@ -16,12 +16,8 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
-	say_mod = "warbles"
 	exotic_bloodtype = "S"
 	mutanttongue = /obj/item/organ/internal/tongue/skrell
-	species_speech_sounds = list('maplestation_modules/sound/voice/huff.ogg' = 120)
-	species_speech_sounds_exclaim = list('maplestation_modules/sound/voice/huff_ask.ogg' = 120)
-	species_speech_sounds_ask = list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120)
 	species_pain_mod = 0.80
 
 	bodypart_overrides = list(
@@ -34,6 +30,16 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	)
 
 	mutanteyes = /obj/item/organ/internal/eyes/skrell
+	mutanttongue = /obj/item/organ/internal/tongue/skrell
+
+/datum/species/skrell/get_species_speech_sounds(sound_type)
+	switch(sound_type)
+		if(SOUND_QUESTION)
+			return string_assoc_list(list('maplestation_modules/sound/voice/huff_ask.ogg' = 120))
+		if(SOUND_EXCLAMATION)
+			return string_assoc_list(list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120))
+		else
+			return string_assoc_list(list('maplestation_modules/sound/voice/huff.ogg' = 120))
 
 /datum/species/skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
@@ -43,7 +49,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	C.missing_eye_file = initial(C.missing_eye_file)
 	return ..()
 
-/datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, delta_time, times_fired)
+/datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(skrell_mob.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
 		skrell_mob.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
@@ -101,21 +107,24 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	blood_type = "S"
 
 // Copper restores blood for Skrell instead of iron.
-/datum/reagent/copper/on_mob_life(mob/living/carbon/C, delta_time)
+/datum/reagent/copper/on_mob_life(mob/living/carbon/C, seconds_per_tick)
 	if(is_species(C, /datum/species/skrell) && C.blood_volume < BLOOD_VOLUME_NORMAL)
-		C.blood_volume += 0.5 * delta_time
+		C.blood_volume += 0.5 * seconds_per_tick
 	..()
 
 // Organ for Skrell head tentacles.
 /obj/item/organ/external/head_tentacles
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES
-	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 	dna_block = DNA_HEAD_TENTACLES_BLOCK
-	feature_key = "head_tentacles"
 	preference = "feature_head_tentacles"
+	bodypart_overlay = /datum/bodypart_overlay/mutant/head_tentacles
 
-/obj/item/organ/external/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/head_tentacles
+	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
+	feature_key = "head_tentacles"
+
+/datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(istype(human.head) && (human.head.flags_inv & HIDEHAIR))
 		return FALSE
 	if(istype(human.wear_mask) && (human.wear_mask.flags_inv & HIDEHAIR))
@@ -125,7 +134,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 		return FALSE
 	return TRUE
 
-/obj/item/organ/external/head_tentacles/get_global_feature_list()
+/datum/bodypart_overlay/mutant/head_tentacles/get_global_feature_list()
 	return GLOB.head_tentacles_list
 
 /obj/item/bodypart/arm/left/skrell

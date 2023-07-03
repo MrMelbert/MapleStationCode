@@ -12,6 +12,16 @@
 	resistance_flags = INDESTRUCTIBLE
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
-	strip_delay = 6000 //so people don't steal it. it can probably be made unable to take off but its so much funnier to have it take absurdly long
+	strip_delay = 10 MINUTES //so people don't steal it. it can probably be made unable to take off but its so much funnier to have it take absurdly long
 	slowdown = 2
-	armor = list(MELEE = 100, BULLET = 80, LASER = 50, ENERGY = 50, BOMB = 100, BIO = 100, FIRE = 90, ACID = 90)
+	armor_type = /datum/armor/unobtanium_armor
+
+/datum/armor/unobtanium_armor
+	melee = 100
+	bullet = 80
+	laser = 50
+	energy = 50
+	bomb = 100
+	bio = 100
+	fire = 90
+	acid = 90

@@ -16,7 +16,7 @@
 	can_adjust = TRUE
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0, WOUND = 15)
+	armor_type = /datum/armor/rank_captain
 
 /obj/item/clothing/under/rank/captain/formal/skirt
 	name = "captain's skirtleneck"
@@ -36,7 +36,7 @@
 	can_adjust = TRUE
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 10, FIRE = 0, ACID = 0, WOUND = 15)
+	armor_type = /datum/armor/rank_captain
 
 /obj/item/clothing/shoes/jackboots/captain
 	name = "captain's boots"
@@ -53,8 +53,8 @@
 	strip_delay = 30
 	equip_delay_other = 50
 	resistance_flags = NONE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 0, ACID = 0)
 	can_be_tied = FALSE
+	armor_type = /datum/armor/shoes_jackboots
 
 /obj/item/clothing/gloves/captain/formal
 	name = "captain's black gloves"
@@ -74,8 +74,8 @@
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	strip_delay = 60
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 70, ACID = 50)
 	resistance_flags = NONE
+	armor_type = /datum/armor/captain_gloves
 
 /obj/item/clothing/suit/armor/vest/capformalcarapace
 	name = "captain's quality carapace"
@@ -90,9 +90,9 @@
 	icon_state = "caparmorvest"
 	inhand_icon_state = "caparmorvest"
 	body_parts_covered = CHEST|GROIN
-	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 50, BOMB = 25, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
 	dog_fashion = null
 	resistance_flags = FIRE_PROOF
+	armor_type = /datum/armor/vest_capcarapace
 
 /obj/item/clothing/suit/armor/vest/capvestformal
 	name = "captain's vest"
@@ -107,9 +107,9 @@
 	icon_state = "capvest"
 	inhand_icon_state = "capvest"
 	body_parts_covered = CHEST|GROIN
-	armor = list(MELEE = 50, BULLET = 40, LASER = 50, ENERGY = 50, BOMB = 25, BIO = 0, FIRE = 100, ACID = 90, WOUND = 10)
 	dog_fashion = null
 	resistance_flags = FIRE_PROOF
+	armor_type = /datum/armor/vest_capcarapace
 
 /obj/item/clothing/neck/cloak/capformal
 	name = "captain's half cape"

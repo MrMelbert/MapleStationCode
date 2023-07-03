@@ -316,7 +316,7 @@
 
 // MOBS //
 
-/mob/living/simple_animal/pet/dog/corgi/ian/Initialize()
+/mob/living/basic/pet/dog/corgi/ian/Initialize()
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"It's Ian! Your trusty companion through and through. \

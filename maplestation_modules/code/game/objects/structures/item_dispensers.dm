@@ -188,7 +188,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!user.canUseTopic(src, be_close = TRUE, no_dexterity = TRUE, need_hands = TRUE))
+	if(!user.can_perform_action(src, NEED_HANDS|FORBID_TELEKINESIS_REACH|NEED_DEXTERITY))
 		return
 	if(!stock)
 		balloon_alert(user, "not stocked!")

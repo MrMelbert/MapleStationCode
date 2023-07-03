@@ -8,7 +8,7 @@
 	/datum/language/xenocommon )
 
 // Rebalance of existing quirks
-/datum/quirk/jolly //haha
+/datum/quirk/jolly
 	value = 3
 
 // New quirks
@@ -16,7 +16,7 @@
 /datum/quirk/trilingual
 	name = "Trilingual"
 	desc = "You're trilingual - you know another random language besides common and your native tongue. (If you take this quirk, you cannot select an additional language.)"
-	icon = "globe"
+	icon = FA_ICON_GLOBE
 	value = 1
 	gain_text = "<span class='notice'>You understand a new language.</span>"
 	lose_text = "<span class='notice'>You no longer understand a new language.</span>"
@@ -56,7 +56,7 @@
 /datum/quirk/no_appendix
 	name = "Appendicitis Survivor"
 	desc = "You had a run in with appendicitis in the past and no longer have an appendix."
-	icon = "notes-medical"
+	icon = FA_ICON_NOTES_MEDICAL
 	value = 2
 	gain_text = "<span class='notice'>You no longer have an appendix.</span>"
 	lose_text = "<span class='danger'>You miss your appendix?</span>"
@@ -65,14 +65,14 @@
 
 /datum/quirk/no_appendix/post_add()
 	var/mob/living/carbon/carbon_quirk_holder = quirk_holder
-	var/obj/item/organ/internal/appendix/dumb_appendix = carbon_quirk_holder.getorganslot(ORGAN_SLOT_APPENDIX)
+	var/obj/item/organ/internal/appendix/dumb_appendix = carbon_quirk_holder.get_organ_slot(ORGAN_SLOT_APPENDIX)
 	dumb_appendix?.Remove(quirk_holder, TRUE)
 
 // Less vulnerable to pain (lower pain modifier)
 /datum/quirk/pain_resistance
 	name = "Hypoalgesia"
 	desc = "You're more resistant to pain - Your pain naturally decreases faster and you receive less overall."
-	icon = "fist-raised"
+	icon = FA_ICON_FIST_RAISED
 	value = 8
 	gain_text = "<span class='notice'>You feel duller.</span>"
 	lose_text = "<span class='danger'>You feel sharper.</span>"

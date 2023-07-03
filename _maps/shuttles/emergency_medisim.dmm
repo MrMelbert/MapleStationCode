@@ -56,7 +56,7 @@
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "ft" = (
-/obj/machinery/computer/med_data,
+/obj/machinery/computer/records/medical,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)
 "fL" = (
@@ -107,7 +107,7 @@
 /turf/template_noop,
 /area/shuttle/escape)
 "gt" = (
-/obj/item/candle/infinite{
+/obj/item/flashlight/flare/candle/infinite{
 	anchored = 1;
 	pixel_y = 8
 	},
@@ -182,7 +182,7 @@
 	idle_power_usage = 0;
 	use_power = 0
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "ir" = (
 /obj/structure/chair/comfy/shuttle{
@@ -289,7 +289,7 @@
 /obj/item/hemostat{
 	pixel_x = -4
 	},
-/obj/item/clothing/gloves/color/latex,
+/obj/item/clothing/gloves/latex,
 /obj/item/clothing/mask/surgical,
 /obj/structure/table/reinforced,
 /obj/item/surgicaldrill,
@@ -298,7 +298,7 @@
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)
 "ls" = (
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "mq" = (
 /obj/structure/railing{
@@ -394,7 +394,7 @@
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)
 "rG" = (
-/obj/machinery/capture_the_flag/medisim/blue,
+/obj/machinery/ctf/spawner/medisim/blue,
 /turf/open/indestructible/binary,
 /area/shuttle/escape/simulation)
 "rK" = (
@@ -404,7 +404,7 @@
 /turf/open/floor/stone,
 /area/shuttle/escape/simulation)
 "rQ" = (
-/obj/item/ctf/blue/medisim,
+/obj/item/ctf_flag/blue/medisim,
 /turf/open/floor/mineral/diamond,
 /area/shuttle/escape/simulation)
 "rT" = (
@@ -629,7 +629,7 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/west,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "CM" = (
 /obj/effect/turf_decal/siding/wood,
@@ -695,7 +695,7 @@
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "Fs" = (
-/obj/item/candle/infinite{
+/obj/item/flashlight/flare/candle/infinite{
 	anchored = 1;
 	pixel_y = 8
 	},
@@ -887,6 +887,13 @@
 /obj/item/binoculars,
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
+"KN" = (
+/obj/structure/fluff/big_chain{
+	pixel_y = 9
+	},
+/obj/structure/lattice/catwalk,
+/turf/open/chasm/true,
+/area/shuttle/escape/simulation)
 "LA" = (
 /obj/item/banner/red{
 	anchored = 1
@@ -949,7 +956,7 @@
 	pixel_x = -4;
 	pixel_y = 4
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Ov" = (
 /obj/effect/turf_decal/stripes/corner{
@@ -1040,7 +1047,7 @@
 	name = "Brig"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/security/general,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "RV" = (
 /obj/structure/rack,
@@ -1130,14 +1137,14 @@
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "TE" = (
-/turf/open/chasm,
+/turf/open/chasm/true,
 /area/shuttle/escape/simulation)
 "TI" = (
 /obj/item/binoculars,
 /obj/structure/table/reinforced,
 /obj/item/binoculars,
 /obj/item/binoculars,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "TZ" = (
 /obj/effect/turf_decal/siding/wood/corner{
@@ -1173,7 +1180,7 @@
 "Vn" = (
 /obj/structure/reagent_dispensers/wall/peppertank/directional/west,
 /obj/machinery/light/directional/west,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Vv" = (
 /obj/structure/rack,
@@ -1197,7 +1204,7 @@
 /obj/structure/fluff/big_chain{
 	pixel_y = 9
 	},
-/turf/open/chasm,
+/turf/open/chasm/true,
 /area/shuttle/escape/simulation)
 "Wx" = (
 /obj/structure/railing,
@@ -1229,11 +1236,11 @@
 /turf/open/misc/sandy_dirt,
 /area/shuttle/escape/simulation)
 "Xb" = (
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Xk" = (
 /obj/structure/closet/crate/critter,
-/mob/living/simple_animal/hostile/lizard/space{
+/mob/living/basic/lizard/space{
 	name = "Stows-Away"
 	},
 /turf/open/floor/plating,
@@ -1271,14 +1278,14 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 4
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Ya" = (
 /obj/structure/table/reinforced,
 /obj/item/restraints/handcuffs{
 	pixel_y = 3
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Ye" = (
 /obj/structure/table/reinforced,
@@ -1287,7 +1294,7 @@
 	pixel_y = 2
 	},
 /obj/item/storage/lockbox/loyalty,
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Yj" = (
 /turf/open/floor/carpet/blue,
@@ -1296,7 +1303,7 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 8
 	},
-/turf/open/floor/mineral/plastitanium/red/brig,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Yp" = (
 /obj/machinery/teambuilder/red,
@@ -1341,11 +1348,11 @@
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "Zk" = (
-/obj/machinery/capture_the_flag/medisim/red,
+/obj/machinery/ctf/spawner/medisim/red,
 /turf/open/indestructible/binary,
 /area/shuttle/escape/simulation)
 "Zv" = (
-/obj/item/ctf/red/medisim,
+/obj/item/ctf_flag/red/medisim,
 /turf/open/floor/mineral/gold,
 /area/shuttle/escape/simulation)
 "Zx" = (
@@ -2107,7 +2114,7 @@ xP
 Et
 TE
 rX
-lg
+KN
 Io
 ht
 MN
@@ -2210,7 +2217,7 @@ Xq
 TE
 TE
 TE
-lg
+KN
 VG
 pF
 pF

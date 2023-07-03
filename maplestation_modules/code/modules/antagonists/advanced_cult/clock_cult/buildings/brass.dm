@@ -74,7 +74,7 @@ GLOBAL_LIST_INIT(brass_recipes, list( \
 	icon_state = "sheet-brass"
 	inhand_icon_state = "sheet-brass"
 	icon = 'icons/obj/stack_objects.dmi'
-	mats_per_unit = list(/datum/material/brass = MINERAL_MATERIAL_AMOUNT)
+	mats_per_unit = list(/datum/material/brass = SHEET_MATERIAL_AMOUNT)
 	sheettype = "brass"
 	merge_type = /obj/item/stack/sheet/brass
 	grind_results = list(/datum/reagent/iron = 5, /datum/reagent/copper = 15)

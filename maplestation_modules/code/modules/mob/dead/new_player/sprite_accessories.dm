@@ -29,6 +29,21 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_paperlike"
 
+/datum/sprite_accessory/hair/monalisa
+	name = "Mona Lisa"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_monalisa"
+
+/datum/sprite_accessory/hair/messystripe
+	name = "Messy Stripes"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_messystripe"
+
+/datum/sprite_accessory/hair/looseponytail
+	name = "Loose Ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_loosepony"
+
 /datum/sprite_accessory/ears/cat/cyber
 	name = "Cybernetic Cat"
 	icon_state = "catcyber"

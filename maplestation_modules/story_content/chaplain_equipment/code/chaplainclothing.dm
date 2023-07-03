@@ -34,8 +34,8 @@
 	strip_delay = 30
 	equip_delay_other = 50
 	resistance_flags = NONE
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 90, FIRE = 0, ACID = 0)
 	can_be_tied = FALSE
+	armor_type = /datum/armor/shoes_jackboots
 
 /obj/item/clothing/suit/hooded/cleric
 	name = "puligard's cloak"
@@ -47,9 +47,18 @@
 	icon_state = "clericcloak"
 	inhand_icon_state = "clericcloak"
 	body_parts_covered = CHEST|GROIN
-	armor = list(MELEE = 50, BULLET = 10, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80, WOUND = 20)
 	hoodtype = /obj/item/clothing/head/hooded/cleirc
-	allowed = list(/obj/item/storage/book/bible, /obj/item/nullrod, /obj/item/reagent_containers/cup/glass/bottle/holywater, /obj/item/storage/fancy/candle_box, /obj/item/candle, /obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman)
+	allowed = list( // melbert, replace this with the global
+		/obj/item/book/bible,
+		/obj/item/nullrod,
+		/obj/item/reagent_containers/cup/glass/bottle/holywater,
+		/obj/item/storage/fancy/candle_box,
+		/obj/item/flashlight/flare/candle,
+		/obj/item/tank/internals/emergency_oxygen,
+		/obj/item/tank/internals/plasmaman,
+		/obj/item/gun/ballistic/bow,
+	)
+	armor_type = /datum/armor/armor_riot
 
 /obj/item/clothing/head/hooded/cleirc
 	name = "puligard's hood"
@@ -61,7 +70,7 @@
 	icon_state = "clerichood"
 	body_parts_covered = HEAD
 	flags_inv = HIDEHAIR|HIDEFACE|HIDEEYES|HIDEFACIALHAIR|HIDEEARS
-	armor = list(MELEE = 50, BULLET = 10, LASER = 10, ENERGY = 10, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80, WOUND = 20)
+	armor_type = /datum/armor/armor_riot
 
 /obj/item/nullrod/cleric
 	name = "holy puligard spear"
