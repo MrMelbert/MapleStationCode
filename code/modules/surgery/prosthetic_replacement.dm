@@ -107,7 +107,7 @@
 			span_notice("[user] successfully replaces [target]'s [parse_zone(target_zone)] with [tool]!"),
 			span_notice("[user] successfully replaces [target]'s [parse_zone(target_zone)]!"),
 		)
-		display_pain(target, "You feel synthetic sensation wash from your [parse_zone(target_zone)], which you can feel again!", TRUE)
+		display_pain(target, "You feel synthetic sensation wash from your [parse_zone(target_zone)], which you can feel again!", TRUE, target_zone = target_zone) // NON-MODULE CHANGE
 		return
 	else
 		var/obj/item/bodypart/bodypart_to_attach = target.newBodyPart(target_zone, FALSE, FALSE)
@@ -121,7 +121,7 @@
 			span_notice("[user] finishes attaching [tool]!"),
 			span_notice("[user] finishes the attachment procedure!"),
 		)
-		display_pain(target, "You feel a strange sensation from your new [parse_zone(target_zone)].", TRUE)
+		display_pain(target, "You feel a strange sensation from your new [parse_zone(target_zone)].", TRUE, target_zone = target_zone) // NON-MODULE CHANGE
 		if(istype(tool, /obj/item/chainsaw))
 			qdel(tool)
 			var/obj/item/chainsaw/mounted_chainsaw/new_arm = new(target)

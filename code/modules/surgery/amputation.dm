@@ -45,7 +45,7 @@
 		span_notice("[user] begins to sever [target]'s [parse_zone(target_zone)]!"),
 		span_notice("[user] begins to sever [target]'s [parse_zone(target_zone)]!"),
 	)
-	display_pain(target, "You feel a gruesome pain in your [parse_zone(target_zone)]'s joint!")
+	display_pain(target, "You feel a gruesome pain in your [parse_zone(target_zone)]'s joint!", target_zone = target_zone) // NON-MODULE CHANGE
 
 
 /datum/surgery_step/sever_limb/success(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
@@ -56,7 +56,7 @@
 		span_notice("[user] severs [target]'s [parse_zone(target_zone)]!"),
 		span_notice("[user] severs [target]'s [parse_zone(target_zone)]!"),
 	)
-	display_pain(target, "You can no longer feel your severed [parse_zone(target_zone)]!")
+	display_pain(target, "You can no longer feel your severed [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
 	if(surgery.operated_bodypart)
 		var/obj/item/bodypart/target_limb = surgery.operated_bodypart
 		target_limb.drop_limb()

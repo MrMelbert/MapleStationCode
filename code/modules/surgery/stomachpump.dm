@@ -34,7 +34,7 @@
 		span_notice("[user] begins to pump [target]'s stomach."),
 		span_notice("[user] begins to press on [target]'s chest."),
 	)
-	display_pain(target, "You feel a horrible sloshing feeling in your gut! You're going to be sick!")
+	display_pain(target, "You feel a horrible sloshing feeling in your gut! You're going to be sick!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/stomach_pump/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(ishuman(target))

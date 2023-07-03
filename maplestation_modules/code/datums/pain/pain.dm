@@ -145,12 +145,12 @@
 /datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, dismembered, special)
 	SIGNAL_HANDLER
 
-	if(!special)
+	if(!QDELETED(parent) && !special)
 		var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
 		adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
 		adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
 
-	if(!QDELING(lost_limb))
+	if(!QDELETED(lost_limb))
 		lost_limb.pain = initial(lost_limb.pain)
 		REMOVE_TRAIT(lost_limb, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 

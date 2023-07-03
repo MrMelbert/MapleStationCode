@@ -87,7 +87,7 @@
 
 	new /obj/effect/temp_visual/annoyed(quirk_holder.loc)
 	carbon_holder.cause_pain(zone, amount)
-	INVOKE_ASYNC(quirk_holder, TYPE_PROC_REF(/mob, emote), pick(PAIN_EMOTES))
+	INVOKE_ASYNC(quirk_holder, TYPE_PROC_REF(/mob/living, pain_emote))
 	quirk_holder.add_mood_event("bad_touch", /datum/mood_event/very_bad_touch)
 	COOLDOWN_START(src, time_since_last_touch, 30 SECONDS)
 
@@ -108,7 +108,7 @@
 	if(!istype(human_holder))
 		return
 
-	human_holder.del_and_replace_bodypart(new replacement(human_holder), TRUE)
+	old_limb = human_holder.return_and_replace_bodypart(new replacement(human_holder), special = TRUE)
 
 /datum/quirk/prosthetic_limb/targeted/post_add()
 	return

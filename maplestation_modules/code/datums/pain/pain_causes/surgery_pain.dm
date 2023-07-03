@@ -9,8 +9,8 @@
 	var/pain_type = BRUTE
 
 // Regex for updating existing display pain calls:
-// display_pain\((.+)\) -> display_pain($1, target_zone = target_zone)
-/datum/surgery_step/display_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone = target_zone)
+// display_pain\((.+)\) -> display_pain($1, target_zone = target_zone, target_zone = target_zone) // NON-MODULE CHANGE
+/datum/surgery_step/display_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone) // NON-MODULE CHANGE
 	// Only feels pain if we feels pain
 	if(!target.can_feel_pain() || pain_amount <= 0)
 		return FALSE

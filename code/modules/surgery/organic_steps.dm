@@ -20,7 +20,7 @@
 		span_notice("[user] begins to make an incision in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to make an incision in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a stabbing in your [parse_zone(target_zone)].")
+	display_pain(target, "You feel a stabbing in your [parse_zone(target_zone)].", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/incise/tool_check(mob/user, obj/item/tool)
 	if(implement_type == /obj/item && !tool.get_sharpness())
@@ -52,7 +52,7 @@
 		span_notice("[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a <i>careful</i> stabbing in your [parse_zone(target_zone)].")
+	display_pain(target, "You feel a <i>careful</i> stabbing in your [parse_zone(target_zone)].", target_zone = target_zone) // NON-MODULE CHANGE
 
 //clamp bleeders
 /datum/surgery_step/clamp_bleeders
@@ -73,7 +73,7 @@
 		span_notice("[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a pinch as the bleeding in your [parse_zone(target_zone)] is slowed.")
+	display_pain(target, "You feel a pinch as the bleeding in your [parse_zone(target_zone)] is slowed.", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/clamp_bleeders/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	if(locate(/datum/surgery_step/saw) in surgery.steps)
@@ -105,7 +105,7 @@
 		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a severe stinging pain spreading across your [parse_zone(target_zone)] as the skin is pulled back!")
+	display_pain(target, "You feel a severe stinging pain spreading across your [parse_zone(target_zone)] as the skin is pulled back!", target_zone = target_zone) // NON-MODULE CHANGE
 
 //close incision
 /datum/surgery_step/close
@@ -127,7 +127,7 @@
 		span_notice("[user] begins to mend the incision in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to mend the incision in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "Your [parse_zone(target_zone)] is being burned!")
+	display_pain(target, "Your [parse_zone(target_zone)] is being burned!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/close/tool_check(mob/user, obj/item/tool)
 	if(implement_type == TOOL_WELDER || implement_type == /obj/item)
@@ -176,7 +176,7 @@
 		span_notice("[user] begins to saw through the bone in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to saw through the bone in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a horrid ache spread through the inside of your [parse_zone(target_zone)]!")
+	display_pain(target, "You feel a horrid ache spread through the inside of your [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/saw/tool_check(mob/user, obj/item/tool)
 	if(implement_type == /obj/item && !(tool.get_sharpness() && (tool.force >= 10)))
@@ -192,7 +192,7 @@
 		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"),
 		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"),
 	)
-	display_pain(target, "It feels like something just broke in your [parse_zone(target_zone)]!")
+	display_pain(target, "It feels like something just broke in your [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
 	return ..()
 
 //drill bone
@@ -214,7 +214,7 @@
 		span_notice("[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)]."),
 		span_notice("[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)]."),
 	)
-	display_pain(target, "You feel a horrible piercing pain in your [parse_zone(target_zone)]!")
+	display_pain(target, "You feel a horrible piercing pain in your [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/drill/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(

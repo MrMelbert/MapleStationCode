@@ -59,7 +59,7 @@
 		span_notice("[user] uses [tool] to filter [target]'s blood."),
 		span_notice("[user] uses [tool] on [target]'s chest."),
 	)
-	display_pain(target, "You feel a throbbing pain in your chest!")
+	display_pain(target, "You feel a throbbing pain in your chest!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/filter_blood/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	var/obj/item/blood_filter/bloodfilter = tool
