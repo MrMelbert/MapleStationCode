@@ -121,7 +121,7 @@
 		return
 
 	var/obj/item/bodypart/existing = body_zones[new_limb.body_zone]
-	if(!QDELETED(existing)) // if we already have a val assigned to this key, remove it
+	if(!isnull(existing)) // if we already have a val assigned to this key, remove it
 		remove_bodypart(source, existing, FALSE, special)
 
 	body_zones[new_limb.body_zone] = new_limb
@@ -145,8 +145,12 @@
 /datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, dismembered, special)
 	SIGNAL_HANDLER
 
-	if(lost_limb != body_zones[lost_limb.body_zone])
+	var/bad_zone = lost_limb.body_zone
+	if(lost_limb != body_zones[bad_zone])
 		CRASH("Pain datum tried to remove a bodypart that wasn't being tracked!")
+
+	body_zones -= bad_zone
+	UnregisterSignal(lost_limb, COMSIG_PARENT_QDELETING)
 
 	if(!QDELETED(parent) && !special)
 		var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
@@ -156,9 +160,6 @@
 	if(!QDELETED(lost_limb))
 		lost_limb.pain = initial(lost_limb.pain)
 		REMOVE_TRAIT(lost_limb, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
-
-	body_zones -= lost_limb.body_zone
-	UnregisterSignal(lost_limb, COMSIG_PARENT_QDELETING)
 
 /datum/pain/proc/limb_delete(obj/item/bodypart/source)
 	SIGNAL_HANDLER
@@ -233,6 +234,9 @@
 	for(var/zone in shuffle(def_zones))
 		var/adjusted_amount = round(amount, 0.01)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[check_zone(zone)]
+		if(isnull(adjusted_bodypart)) // it's valid - for if we're passed a zone we don't have
+			continue
+
 		// Pain is negative (healing)
 		if(adjusted_amount < 0)
 			// Pain is negative and we're at min pain
@@ -289,6 +293,9 @@
 
 	for(var/zone in def_zones)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
+		if(isnull(adjusted_bodypart)) // it's valid - for if we're passed a zone we don't have
+			continue
+
 		adjusted_bodypart.min_pain = max(adjusted_bodypart.min_pain + amount, 0) // Negative min pain is a neat idea ("banking pain") but not today
 		adjusted_bodypart.pain = max(adjusted_bodypart.pain, adjusted_bodypart.min_pain)
 
@@ -526,7 +533,7 @@
 	var/no_recent_pain = COOLDOWN_FINISHED(src, time_since_last_pain_loss)
 	for(var/part in shuffle(body_zones))
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
-		if(!checked_bodypart.pain)
+		if(checked_bodypart.pain <= 0)
 			continue
 		checked_bodypart.processed_pain_effects(seconds_per_tick)
 		if(!has_pain)
