@@ -7,8 +7,8 @@
 	heal_flag_necessary = HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS
 
 /datum/status_effect/limp/pain/on_creation(mob/living/new_owner, obj/item/bodypart/next_leg)
-	. = ..()
 	src.next_leg = next_leg
+	return ..()
 
 /datum/status_effect/limp/pain/on_apply()
 	. = ..()
@@ -20,7 +20,7 @@
 		return FALSE
 
 	RegisterSignals(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST), PROC_REF(update_limp))
-	to_chat(owner, span_danger("Your [next_leg.plaintext_zone] hurts to walk on!"))
+	to_chat(owner, span_danger("Your [next_leg?.plaintext_zone || "leg"] hurts to walk on!"))
 
 /datum/status_effect/limp/pain/get_examine_text()
 	return span_warning("[owner.p_theyre(TRUE)] limping with every move.")

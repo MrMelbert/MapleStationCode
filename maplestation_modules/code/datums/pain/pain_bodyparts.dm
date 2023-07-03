@@ -13,6 +13,25 @@
 	/// The last type of pain we received. Determines what type of pain we're recieving.
 	var/last_received_pain_type = BRUTE
 
+// Adds pain to check-self.
+/obj/item/bodypart/check_for_injuries(mob/living/carbon/human/examiner, list/check_list)
+	. = ..()
+	if(owner != examiner || !owner.can_feel_pain()) // haha you thought
+		return
+
+	switch((get_modified_pain() / soft_max_pain) * 100)
+		if(10 to 40)
+			check_list += "\t [span_danger("Your [name] is experiencing mild pain \
+				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch.")]"
+
+		if(40 to 70)
+			check_list += "\t [span_warning("Your [name] is experiencing moderate pain \
+				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
+
+		if(70 to INFINITY)
+			check_list += "\t [span_boldwarning("Your [name] is experiencing severe pain \
+				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
+
 /**
  * Gets our bodypart's effective pain (pain * pain modifiers).
  *
@@ -68,9 +87,6 @@
  * healing_pain - if TRUE, the bodypart has gone some time without recieving pain, and is healing.
  */
 /obj/item/bodypart/proc/pain_feedback(seconds_per_tick, healing_pain)
-	if(!owner)
-		return FALSE
-
 	var/list/feedback_phrases = list()
 	var/static/list/healing_phrases = list(
 		"but is improving",
@@ -120,9 +136,6 @@
 	bodypart_pain_modifier = 0.2
 
 /obj/item/bodypart/chest/pain_feedback(seconds_per_tick, healing_pain)
-	if(!owner)
-		return FALSE
-
 	var/list/feedback_phrases = list()
 	var/list/side_feedback = list()
 	var/static/list/healing_phrases = list(
@@ -177,14 +190,11 @@
 
 	if(amount >= 10)
 		// Large amounts of head pain causes minor brain damage
-		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, pain / 5, 180)
+		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, min(pain / 5, 10), 180)
 
 	return TRUE
 
 /obj/item/bodypart/head/pain_feedback(seconds_per_tick, healing_pain)
-	if(!owner)
-		return FALSE
-
 	var/list/feedback_phrases = list()
 	var/list/side_feedback = list()
 	var/static/list/healing_phrases = list(

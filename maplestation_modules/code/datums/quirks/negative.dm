@@ -48,14 +48,12 @@
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
 		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 1.2)
-	ADD_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	RegisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT), PROC_REF(cause_body_pain))
 
 /datum/quirk/allodynia/remove()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
 		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
-	REMOVE_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	UnregisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT))
 
 /**

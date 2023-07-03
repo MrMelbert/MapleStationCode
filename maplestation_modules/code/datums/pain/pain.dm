@@ -531,7 +531,7 @@
 			// Only doing this once, when we register if we have pain, to save processing.
 			determined = !!parent.has_status_effect(/datum/status_effect/determined)
 
-		if(determined || !COOLDOWN_FINISHED(src, time_since_last_pain_message))
+		if(determined || pain_modifier < 0.5 || !COOLDOWN_FINISHED(src, time_since_last_pain_message))
 			continue
 		// 1% chance per 8 pain being experienced to get a feedback message every second
 		if(!SPT_PROB(checked_bodypart.get_modified_pain() / 8, seconds_per_tick))
@@ -594,7 +594,7 @@
 				if(curr_pain >= 70)
 					parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 			if(SPT_PROB(standard_effect_prob * 1.2, seconds_per_tick) && parent.getStaminaLoss() <= 80)
-				var/stam_taken = ((0.2 * curr_pain) + 8) * pain_modifier // 10 = 10, 100 = 28, good enough
+				var/stam_taken = round((0.2 * curr_pain + 8) * pain_modifier) // 10 = 10, 100 = 28, good enough
 				// First we apply damage, if that succeeds ->
 				// Check how much damage, if above a threshold ->
 				// Run a pain emote, if the pain emote succeeds as well ->

@@ -28,16 +28,12 @@
 /// Amount of pain gained (to chest) from surgically removed limb
 #define PAIN_LIMB_REMOVED 30
 
-/// Max pains for bodyparts
+/// Soft max pains for bodyparts, adds up to 500
 #define PAIN_LIMB_MAX 70
 #define PAIN_CHEST_MAX 120
 #define PAIN_HEAD_MAX 100
 
-/// What pain modifier does a mob need to ignore pain from surgery?
-/// Anesthesia always ignores surgery, pain, even if the modifier doesn't meet this threshold.
-#define PAIN_MOD_TO_IGNORE_SURGERY 0.33
-
-/// Keys for pain modifiers
+// Keys for pain modifiers
 #define PAIN_MOD_CHEMS "chems"
 #define PAIN_MOD_DRUNK "drunk"
 #define PAIN_MOD_LYING "lying"
@@ -47,11 +43,10 @@
 #define PAIN_MOD_SPECIES "species"
 #define PAIN_MOD_OFF_STATION "off-station-pain-resistance"
 
-/// ID for traits and modifiers gained by pain
+// ID for traits and modifiers gained by pain
 #define PAIN_LIMB_PARALYSIS "pain_paralysis"
 #define MOVESPEED_ID_PAIN "pain_movespeed"
 #define ACTIONSPEED_ID_PAIN "pain_actionspeed"
-#define TRAIT_EXTRA_PAIN "extra_pain"
 
 /// If the mob enters shock, they will have +1 cure condition (helps cure it faster)
 #define TRAIT_ABATES_SHOCK "shock_abated"

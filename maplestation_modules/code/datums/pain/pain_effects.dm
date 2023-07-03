@@ -98,7 +98,7 @@
 	if(intentional)
 		return ..()
 
-	// Cut intentional screems if they can't feel pain at the moment
+	// Cut unintentional screems if they can't feel pain at the moment
 	if(!user.can_feel_pain())
 		return FALSE
 

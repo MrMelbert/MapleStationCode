@@ -1,5 +1,3 @@
-#define PAIN_MOD_APPLY_ALERT 0.5
-
 // -- Reagents that modify pain. --
 /datum/reagent
 	/// Modifier applied by this reagent to the mob's pain.
@@ -13,7 +11,7 @@
 	if(isnull(pain_modifier) || !istype(user))
 		return
 
-	if(user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier) && user.pain_controller.pain_modifier <= PAIN_MOD_APPLY_ALERT)
+	if(user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier) && !user.can_feel_pain())
 		// If the painkiller's strong enough give them an alert
 		user.throw_alert("numbed", /atom/movable/screen/alert/numbed)
 
@@ -22,8 +20,11 @@
 	if(isnull(pain_modifier) || !istype(user))
 		return
 	user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
-	if(user.pain_controller.pain_modifier > 0.5)
-		user.clear_alert("numbed")
+
+/datum/reagent/on_mob_delete(mob/living/L)
+	. = ..()
+	if(!isnull(pain_modifier) && L.can_feel_pain())
+		L.clear_alert("numbed")
 
 // Muscle stimulant is functionally morphine without downsides (it's rare)
 /datum/reagent/medicine/muscle_stimulant
@@ -169,5 +170,3 @@
 /datum/reagent/consumable/laughter/on_mob_metabolize(mob/living/carbon/user)
 	pain_modifier = pick(0.8, 1, 1, 1, 1, 1.2)
 	return ..()
-
-#undef PAIN_MOD_APPLY_ALERT
