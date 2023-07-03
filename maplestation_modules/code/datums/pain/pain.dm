@@ -145,6 +145,9 @@
 /datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, dismembered, special)
 	SIGNAL_HANDLER
 
+	if(lost_limb != body_zones[lost_limb.body_zone])
+		CRASH("Pain datum tried to remove a bodypart that wasn't being tracked!")
+
 	if(!QDELETED(parent) && !special)
 		var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
 		adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)

@@ -72,7 +72,7 @@
 		return
 
 	to_chat(quirk_holder, span_danger("[toucher] touches you, causing a wave of sharp pain throughout your [parse_zone(toucher.zone_selected)]!"))
-	actually_hurt(deprecise_zone(toucher.zone_selected), 9)
+	actually_hurt(toucher.zone_selected, 9)
 
 /**
  * Actually cause the pain to the target limb, causing a visual effect, emote, and a negative moodlet.
