@@ -817,14 +817,13 @@
 /datum/pain/proc/on_analyzed(datum/source, list/render_list, advanced, mob/user, mode)
 	SIGNAL_HANDLER
 
-	var/average_pain = get_average_pain()
 	var/amount = ""
 	var/tip = ""
 	var/in_shock = !!is_undergoing_shock()
 	if(in_shock)
 		tip += span_bold("Neurogenic shock has begun and should be treated urgently. ")
 
-	switch(average_pain)
+	switch(get_average_pain())
 		if(5 to 15)
 			amount = "minor"
 			tip += "Pain should subside in time."
