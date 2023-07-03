@@ -41,6 +41,10 @@
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
 	..()
 
+/datum/reagent/medicine/epinephrine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	affected_mob.adjust_pain_shock(-1)
+
 // Atropine fills a simliar niche to epinephrine
 /datum/reagent/medicine/atropine
 	pain_modifier = 0.8
@@ -52,6 +56,10 @@
 /datum/reagent/medicine/atropine/on_mob_end_metabolize(mob/living/carbon/M)
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
 	..()
+
+/datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	affected_mob.adjust_pain_shock(-2)
 
 // Miner's salve is described as a good painkiller
 /datum/reagent/medicine/mine_salve
@@ -121,15 +129,16 @@
 
 // Cryoxadone slowly heals pain, like wounds.
 // It also helps against shock, sort of.
-/datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
+/datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(!.)
 		return
-	var/power = -0.00003 * (M.bodytemperature ** 2) + 3
+	var/power = -0.00003 * (affected_mob.bodytemperature ** 2) + 3
 
-	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type) // To negate the fact that being cold is bad for shock
-	M.set_pain_mod(type, 0.5) // Heal pain faster
-	M.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * seconds_per_tick)
+	ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type) // To negate the fact that being cold is bad for shock
+	affected_mob.set_pain_mod(type, 0.5) // Heal pain faster
+	affected_mob.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * seconds_per_tick)
+	affected_mob.adjust_pain_shock(-power * REM * seconds_per_tick)
 
 /datum/reagent/medicine/cryoxadone/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
