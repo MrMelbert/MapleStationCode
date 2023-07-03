@@ -23,15 +23,15 @@
 
 	target.cause_pain(target_zone, pain_amount, pain_type)
 
-	if((target.IsSleeping() || target.IsUnconscious()) && target.has_status_effect(/datum/status_effect/grouped/anesthetic))
-		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
+	if(target.IsSleeping() || target.IsUnconscious() || target.stat >= UNCONSCIOUS)
+		if(target.has_status_effect(/datum/status_effect/grouped/anesthetic))
+			target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		return FALSE
 
-	else
-		if(ispath(surgery_moodlet, /datum/mood_event))
-			target.add_mood_event("surgery", surgery_moodlet)
-		if(pain_overlay_severity == 1 || pain_overlay_severity == 2)
-			target.flash_pain_overlay(pain_overlay_severity)
+	if(ispath(surgery_moodlet, /datum/mood_event))
+		target.add_mood_event("surgery", surgery_moodlet)
+	if(pain_overlay_severity == 1 || pain_overlay_severity == 2)
+		target.flash_pain_overlay(pain_overlay_severity)
 
 	// No message if the pain emote fails
 	if(!target.pain_controller.do_pain_emote())
