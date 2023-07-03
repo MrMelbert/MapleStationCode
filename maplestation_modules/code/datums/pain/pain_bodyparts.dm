@@ -164,7 +164,7 @@
 		if(110 to INFINITY)
 			var/bonus_emote = pick(PAIN_EMOTES)
 			owner.pain_emote(pick("groan", "scream", bonus_emote))
-			owner.flash_pain_overlay(2)
+			owner.flash_pain_overlay(2, 3 SECONDS)
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "burns to the touch", "feels terrible", "feels constricted")
 			side_feedback += list("You feel your ribs jostle in your [plaintext_zone]")
 

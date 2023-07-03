@@ -22,31 +22,21 @@
 
 	if(added_pain_amount > 0)
 		pain_amount += added_pain_amount
-		// add just the added pain amount
-		var/mob/living/carbon/human/human_owner = owner
-		human_owner.pain_controller?.adjust_bodypart_pain(BODY_ZONES_ALL, added_pain_amount, BURN)
+		owner.cause_pain(BODY_ZONES_ALL, added_pain_amount, BURN)
 
 /datum/status_effect/pain_from_fire/on_apply()
-	if(!ishuman(owner) || pain_amount <= 0)
+	if(isnull(owner.pain_controller) || pain_amount <= 0)
 		return FALSE
 
-	var/mob/living/carbon/human/human_owner = owner
-	if(!human_owner.pain_controller)
-		return FALSE
-
-	RegisterSignal(human_owner, COMSIG_LIVING_EXTINGUISHED, PROC_REF(remove_on_signal))
-	human_owner.pain_controller.adjust_bodypart_pain(BODY_ZONES_ALL, pain_amount, BURN)
+	RegisterSignal(owner, COMSIG_LIVING_EXTINGUISHED, PROC_REF(remove_on_signal))
+	owner.cause_pain(BODY_ZONES_ALL, pain_amount, BURN)
 	return TRUE
 
 /datum/status_effect/pain_from_fire/on_remove()
 	if(QDELING(owner))
 		return
-	var/mob/living/carbon/human/human_owner = owner
-	UnregisterSignal(human_owner, COMSIG_LIVING_EXTINGUISHED)
-
-	if(QDELING(owner))
-		return
-	human_owner.pain_controller.adjust_bodypart_pain(BODY_ZONES_ALL, -0.75 * pain_amount, BURN)
+	UnregisterSignal(owner, COMSIG_LIVING_EXTINGUISHED)
+	owner.cause_pain(BODY_ZONES_ALL, -0.75 * pain_amount, BURN)
 
 /// When signalled, terminate.
 /datum/status_effect/pain_from_fire/proc/remove_on_signal(datum/source)
