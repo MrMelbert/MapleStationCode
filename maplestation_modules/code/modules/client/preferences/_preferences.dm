@@ -48,7 +48,7 @@
 			return TRUE
 		// Language UI
 		if ("open_language_picker")
-			var/datum/language_picker/tgui = new(user)
+			var/datum/language_picker/tgui = new(src)
 			tgui.ui_interact(user)
 			return TRUE
 		// Spellbook UI
