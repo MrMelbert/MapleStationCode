@@ -16,6 +16,11 @@
 	preferences.apply_prefs_to(body, TRUE) // no clothes, no quirks, no nothing.
 	appearance = body.appearance
 
+/atom/movable/screen/map_view/char_preview/limb_viewer/Destroy()
+	/// See [/atom/movable/screen/map_view/char_preview/loadout] for why this is needed.
+	preferences = null
+	return ..()
+
 /client/var/datum/limb_editor/open_limb_editor = null
 
 /datum/limb_editor
@@ -25,6 +30,10 @@
 	var/atom/movable/screen/map_view/char_preview/limb_viewer/character_preview_view
 	/// Assoc list of all selected paths, keyed by their body zones
 	var/list/selected_paths
+
+	var/list/paths_on_last_ui_update
+
+	var/cached_icon
 	/// Debug verb to regenerate all static limb data
 	var/regenerate_limb_data = FALSE
 
@@ -87,6 +96,11 @@
 /datum/limb_editor/ui_state(mob/user)
 	return GLOB.always_state
 
+/datum/limb_editor/ui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/simple/body_zones),
+	)
+
 /datum/limb_editor/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -95,11 +109,16 @@
 		addtimer(CALLBACK(character_preview_view, TYPE_PROC_REF(/atom/movable/screen/map_view/char_preview, update_body)), 1 SECONDS)
 
 /datum/limb_editor/ui_data(mob/user)
-	if(isnull(character_preview_view))
-		character_preview_view = create_character_preview_view(user)
-
 	var/list/data = list()
 	data["selected_limbs"] = flatten_list(selected_paths)
+
+	if(isnull(character_preview_view))
+		character_preview_view = create_character_preview_view(user)
+	if(isnull(cached_icon) || length(selected_paths ^ paths_on_last_ui_update) >= 1)
+		paths_on_last_ui_update = selected_paths.Copy()
+		cached_icon = icon2base64(getFlatIcon(character_preview_view.body, no_anim = TRUE))
+
+	data["preview_flat_icon"] = cached_icon
 	return data
 
 /datum/limb_editor/ui_static_data(mob/user)
@@ -141,9 +160,9 @@
 			)
 			UNTYPED_LIST_ADD(limbs_data, ui_formatted_raw_list)
 
-	data["limbs"] = limbs_data
-	data["character_preview_view"] = character_preview_view.assigned_map
 
+	data["limbs"] = limbs_data
+	// data["character_preview_view"] = character_preview_view.assigned_map
 	return data
 
 /// Rotate the preview [dir_string] direction.
