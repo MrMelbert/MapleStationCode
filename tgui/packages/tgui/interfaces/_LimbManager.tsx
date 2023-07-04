@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { BlockQuote, Button, Section, Stack } from '../components';
+import { BlockQuote, Button, Collapsible, Section, Stack } from '../components';
 import { Window } from '../layouts';
 import { CharacterPreview } from './common/CharacterPreview';
 
