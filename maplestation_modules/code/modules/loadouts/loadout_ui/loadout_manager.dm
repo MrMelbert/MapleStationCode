@@ -1,9 +1,7 @@
 /// -- The loadout manager and UI --
 
 /// Tracking when a client has an open loadout manager, to prevent funky stuff.
-/client
-	/// A ref to loadout_manager datum.
-	var/datum/loadout_manager/open_loadout_ui = null
+/client/var/datum/loadout_manager/open_loadout_ui = null
 
 /// Proc for preferences to render an appearance without the job outfit
 /// Future todo: Repurpose the proc itself to be given an outfit
@@ -20,6 +18,16 @@
 	// Set up the dummy for its photoshoot
 	apply_prefs_to(mannequin, TRUE)
 	mannequin.equip_outfit_and_loadout(/datum/outfit/player_loadout, src, TRUE)
+
+	if(SSquirks?.initialized)
+		// And yes we need to clean all the quirk datums every time
+		mannequin.cleanse_quirk_datums()
+		for(var/quirk_name as anything in all_quirks)
+			var/datum/quirk/quirk_type = SSquirks.quirks[quirk_name]
+			if(!(initial(quirk_type.quirk_flags) & QUIRK_CHANGES_APPEARANCE))
+				continue
+			mannequin.add_quirk(quirk_type, parent)
+
 	return mannequin.appearance
 
 // Subtype of character preview for the loadout UI specifically
