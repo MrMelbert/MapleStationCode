@@ -62,7 +62,7 @@ const DisplayLimbs = (
     <Stack vertical fill>
       {limbs.map((limb_category, index) => (
         <Stack.Item key={index}>
-          <Section title={CAT_TO_READABLE[limb_category.category_name]}>
+          <Collapsible title={CAT_TO_READABLE[limb_category.category_name]}>
             <Stack vertical>
               {limb_category.category_data.length ? (
                 limb_category.category_data.map((limb, index) => (
@@ -79,7 +79,7 @@ const DisplayLimbs = (
                 </Stack.Item>
               )}
             </Stack>
-          </Section>
+          </Collapsible>
         </Stack.Item>
       ))}
     </Stack>
@@ -130,12 +130,12 @@ export const _LimbManager = (props, context) => {
       <Window.Content>
         <Stack fill>
           <Stack.Item width={20}>
-            <Section fill align="center">
+            <Section title="Preview" fill align="center">
               <LimbPreview />
             </Section>
           </Stack.Item>
           <Stack.Item grow>
-            <Section fill>
+            <Section title="Augments" fill scrollable>
               <DisplayLimbs limbs={limbs} selected_limbs={selected_limbs} />
             </Section>
           </Stack.Item>
