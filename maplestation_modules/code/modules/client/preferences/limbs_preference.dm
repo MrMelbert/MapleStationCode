@@ -18,13 +18,11 @@
 /datum/preference/limbs/deserialize(input, datum/preferences/preferences)
 	var/list/corrected_list = list()
 	for(var/limb_zone in input)
-		var/obj/item/bodypart/limb_path_as_text = input[limb_zone]
+		var/obj/item/limb_path_as_text = input[limb_zone]
 		if(istext(limb_path_as_text))
 			// Loading from json loads as text rather than paths we love
 			limb_path_as_text = text2path(limb_path_as_text)
 
-		if(!ispath(limb_path_as_text, /obj/item/bodypart))
-			continue
 		if(isnull(GLOB.limb_loadout_options[limb_path_as_text]))
 			continue
 

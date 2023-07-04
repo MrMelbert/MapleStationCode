@@ -65,19 +65,19 @@
 			return TRUE // nothin else needed
 
 		if("select_path")
-			var/obj/item/bodypart/path_selecting = text2path(params["path_to_use"])
+			var/obj/item/path_selecting = text2path(params["path_to_use"])
 			if(isnull(GLOB.limb_loadout_options[path_selecting]))
 				return
 
-			selected_paths[initial(path_selecting.body_zone)] = path_selecting
+			selected_paths[path_to_list_slot(path_selecting)] = path_selecting
 			. = TRUE
 
 		if("deselect_path")
-			var/obj/item/bodypart/path_deselecting = text2path(params["path_to_use"])
+			var/obj/item/path_deselecting = text2path(params["path_to_use"])
 			if(isnull(GLOB.limb_loadout_options[path_deselecting]))
 				return
 
-			selected_paths -= initial(path_deselecting.body_zone)
+			selected_paths -= path_to_list_slot(path_deselecting)
 			. = TRUE
 
 	if(.)
@@ -116,10 +116,12 @@
 			BODY_ZONE_R_LEG = list(),
 		)
 
-		for(var/obj/item/bodypart/limb_type as anything in GLOB.limb_loadout_options)
-			var/limb_zone = initial(limb_type.body_zone)
-			if(!islist(raw_data[limb_zone]))
-				stack_trace("Invalid limb zone found in limb datums: [limb_zone]")
+		for(var/limb_type in GLOB.limb_loadout_options)
+
+			var/limb_zone = zone_from_path(limb_type)
+
+			if(isnull(limb_zone) || !islist(raw_data[limb_zone]))
+				stack_trace("Invalid limb zone found in limb datums: [limb_zone || "null"]. (From: [limb_type])")
 				continue
 
 			var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_type]
@@ -150,3 +152,27 @@
 		character_preview_view.dir = turn(character_preview_view.dir, -90)
 	else
 		character_preview_view.dir = turn(character_preview_view.dir, 90)
+
+/// Gets a body zone from a typepath given.
+/datum/limb_editor/proc/zone_from_path(path_given)
+	if(ispath(path_given, /obj/item/bodypart))
+		var/obj/item/bodypart/limb_path = path_given
+		return initial(limb_path.body_zone)
+
+	if(ispath(path_given, /obj/item/organ))
+		var/obj/item/organ/organ_path = path_given
+		return deprecise_zone(initial(organ_path.zone))
+
+	CRASH("Invalid path given to zone_from_path(): [path_given]")
+
+/// Gets what slot the given path would occupy, either a zone (if a bodypart) or a slot (if an organ).
+/datum/limb_editor/proc/path_to_list_slot(path_given)
+	if(ispath(path_given, /obj/item/bodypart))
+		var/obj/item/bodypart/limb_path = path_given
+		return initial(limb_path.body_zone)
+
+	if(ispath(path_given, /obj/item/organ))
+		var/obj/item/organ/organ_path = path_given
+		return initial(organ_path.slot)
+
+	CRASH("Invalid path given to path_to_list_slot(): [path_given]")
