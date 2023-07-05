@@ -1,8 +1,9 @@
 import { Component, createRef } from 'inferno';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Box, BlockQuote, Button, Collapsible, Section, Stack } from '../components';
+import { Box, BlockQuote, Button, Section, Stack } from '../components';
 import { Window } from '../layouts';
+import { Connections } from './IntegratedCircuit/Connections';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
   switch (cat) {
@@ -40,6 +41,42 @@ const findCatInXYRange = (x: number, y: number): string | null => {
     return 'r_leg';
   } else if (x >= 110 && x <= 159) {
     return 'l_leg';
+  }
+  return null;
+};
+
+const listPos = { x: 240, y: 50 };
+
+const catToPos = (cat: string | null): { x: number; y: number } => {
+  switch (cat) {
+    case 'chest':
+      return { x: 115, y: 110 };
+    case 'head':
+      return { x: 115, y: 50 };
+    case 'l_arm':
+      return { x: 165, y: 120 };
+    case 'r_arm':
+      return { x: 65, y: 120 };
+    case 'l_leg':
+      return { x: 130, y: 190 };
+    case 'r_leg':
+      return { x: 95, y: 190 };
+    default:
+      return { x: -1, y: -1 };
+  }
+};
+
+const getActiveCategory = (
+  limbs: LimbCategory[],
+  cat: string | null
+): LimbCategory | null => {
+  if (!cat) {
+    return null;
+  }
+  for (const limb_category of limbs) {
+    if (limb_category.category_name === cat) {
+      return limb_category;
+    }
   }
   return null;
 };
@@ -84,18 +121,23 @@ const LimbSelectButton = (
 };
 
 const DisplayLimbs = (
-  props: { selected_limbs: string[]; limbs: LimbCategory[] },
+  props: {
+    selected_limbs: string[];
+    limbs: LimbCategory[];
+    current_selection: string | null;
+  },
   context
 ) => {
   const { data } = useBackend<LimbCategory>(context);
-  const { selected_limbs, limbs } = props;
+  const { selected_limbs, limbs, current_selection } = props;
+
+  const limb_category = getActiveCategory(limbs, current_selection);
 
   return (
     <Stack vertical fill>
-      {limbs.map((limb_category, index) => (
-        <Stack.Item key={index}>
-          <Collapsible
-            title={makeCategoryReadable(limb_category.category_name)}>
+      {limb_category ? (
+        <Stack.Item>
+          <Section title={makeCategoryReadable(limb_category.category_name)}>
             <Stack vertical>
               {limb_category.category_data.length ? (
                 limb_category.category_data.map((limb, index) => (
@@ -112,21 +154,27 @@ const DisplayLimbs = (
                 </Stack.Item>
               )}
             </Stack>
-          </Collapsible>
+          </Section>
         </Stack.Item>
-      ))}
+      ) : (
+        <Stack.Item>
+          {' '}
+          <BlockQuote>Click on a body part to select it.</BlockQuote>{' '}
+        </Stack.Item>
+      )}
     </Stack>
   );
 };
 
 type PreviewProps = {
   preview_flat_icon: string;
+  selected: string | null;
+  onSelect?: (selected: string | null) => void;
 };
 
 type PreviewState = {
   mouseX: number;
   mouseY: number;
-  selected: string | null;
 };
 
 class LimbPreview extends Component<PreviewProps, PreviewState> {
@@ -134,17 +182,31 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
   state: PreviewState = {
     mouseX: -1,
     mouseY: -1,
-    selected: null,
   };
 
   render() {
-    const { mouseX, mouseY, selected } = this.state;
-    const { preview_flat_icon } = this.props;
+    const { mouseX, mouseY } = this.state;
+    const { preview_flat_icon, selected, onSelect } = this.props;
 
     const current_cat = findCatInXYRange(mouseX, mouseY);
 
     const width = '224px';
     const height = '224px';
+
+    const updateXYState = (event) => {
+      const rect = this.ref.current?.getBoundingClientRect();
+      if (!rect) {
+        return { x: -1, y: -1 };
+      }
+      const newX = event.clientX - rect.left;
+      const newY = event.clientY - rect.top;
+      this.setState({
+        mouseX: newX,
+        mouseY: newY,
+      });
+
+      return { x: newX, y: newY };
+    };
 
     return (
       <Stack vertical fill>
@@ -152,9 +214,10 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
           <div
             ref={this.ref}
             style={{
-              width: '100%',
-              height: '100%',
-              position: 'relative',
+              'width': '100%',
+              'height': '100%',
+              'position': 'relative',
+              'z-index': 1,
             }}>
             <Box
               as="img"
@@ -165,29 +228,16 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
               style={{
                 '-ms-interpolation-mode': 'nearest-neighbor',
                 'position': 'absolute',
+                'z-index': 1,
               }}
-              onMouseDown={(event) => {
-                const rect = this.ref.current?.getBoundingClientRect();
-                if (!rect) {
-                  return;
+              onClick={(event) => {
+                const { x, y } = updateXYState(event);
+                if (onSelect) {
+                  onSelect(findCatInXYRange(x, y));
                 }
-                const newX = event.clientX - rect.left;
-                const newY = event.clientY - rect.top;
-                this.setState({
-                  mouseX: newX,
-                  mouseY: newY,
-                  selected: findCatInXYRange(newX, newY),
-                });
               }}
               onMouseMove={(event) => {
-                const rect = this.ref.current?.getBoundingClientRect();
-                if (!rect) {
-                  return;
-                }
-                this.setState({
-                  mouseX: event.clientX - rect.left,
-                  mouseY: event.clientY - rect.top,
-                });
+                updateXYState(event);
               }}
             />
             {selected && (
@@ -201,6 +251,7 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
                   '-ms-interpolation-mode': 'nearest-neighbor',
                   'pointer-events': 'none',
                   'position': 'absolute',
+                  'z-index': 3,
                 }}
               />
             )}
@@ -215,15 +266,88 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
                   '-ms-interpolation-mode': 'nearest-neighbor',
                   'pointer-events': 'none',
                   'position': 'absolute',
+                  'z-index': 2,
                   'opacity': 0.5,
                 }}
               />
             )}
           </div>
         </Stack.Item>
-        <Stack.Item>Selected: {makeCategoryReadable(selected)}</Stack.Item>
-        <Stack.Item>Hovered: {makeCategoryReadable(current_cat)}</Stack.Item>
       </Stack>
+    );
+  }
+}
+
+type LimbManagerInnerProps = {
+  limbs: LimbCategory[];
+  selected_limbs: string[];
+  preview_flat_icon: string;
+};
+
+type LimbManagerInnerState = {
+  current_selection: string | null;
+};
+
+type ConnectionType = {
+  // This should be removed when upstream happens
+  color?: string;
+  from: { x: number; y: number };
+  to: { x: number; y: number };
+};
+
+class LimbManagerInner extends Component<
+  LimbManagerInnerProps,
+  LimbManagerInnerState
+> {
+  ref = createRef<HTMLDivElement>();
+  state: LimbManagerInnerState = {
+    current_selection: null,
+  };
+
+  render() {
+    const { current_selection } = this.state;
+    const { limbs, selected_limbs, preview_flat_icon } = this.props;
+
+    const connections: ConnectionType[] = [];
+    if (current_selection) {
+      const newPos = catToPos(current_selection);
+      newPos.x = newPos.x + 8;
+      newPos.y = newPos.y + 48;
+      const newConnection: ConnectionType = {
+        color: 'red',
+        from: newPos,
+        to: listPos,
+      };
+
+      connections.push(newConnection);
+    }
+
+    return (
+      <Window.Content>
+        <Connections connections={connections} zLayer={4} lineWidth={4} />
+        <Stack fill>
+          <Stack.Item width={20}>
+            <Section title="Preview" fill align="center">
+              <LimbPreview
+                preview_flat_icon={preview_flat_icon}
+                selected={current_selection}
+                onSelect={(new_selection) =>
+                  this.setState({ current_selection: new_selection })
+                }
+              />
+            </Section>
+          </Stack.Item>
+          <Stack.Item grow>
+            <Section title="Augments" fill scrollable>
+              <DisplayLimbs
+                current_selection={current_selection}
+                limbs={limbs}
+                selected_limbs={selected_limbs}
+              />
+            </Section>
+          </Stack.Item>
+        </Stack>
+      </Window.Content>
     );
   }
 }
@@ -234,20 +358,11 @@ export const _LimbManager = (props, context) => {
 
   return (
     <Window title="Limb Manager" width={700} height={365}>
-      <Window.Content>
-        <Stack fill>
-          <Stack.Item width={20}>
-            <Section title="Preview" fill align="center">
-              <LimbPreview preview_flat_icon={preview_flat_icon} />
-            </Section>
-          </Stack.Item>
-          <Stack.Item grow>
-            <Section title="Augments" fill scrollable>
-              <DisplayLimbs limbs={limbs} selected_limbs={selected_limbs} />
-            </Section>
-          </Stack.Item>
-        </Stack>
-      </Window.Content>
+      <LimbManagerInner
+        limbs={limbs}
+        selected_limbs={selected_limbs}
+        preview_flat_icon={preview_flat_icon}
+      />
     </Window>
   );
 };
