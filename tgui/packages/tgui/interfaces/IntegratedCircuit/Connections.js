@@ -28,15 +28,15 @@ export const Connections = (props, context) => {
         // Starting point
         let path = `M ${from.x} ${from.y}`;
         // DEFAULT STYLE
-        // path += `C ${from.x + SVG_CURVE_INTENSITY}, ${from.y},`;
-        // path += `${to.x - SVG_CURVE_INTENSITY}, ${to.y},`;
-        // path += `${to.x}, ${to.y}`;
+        path += `C ${from.x + SVG_CURVE_INTENSITY}, ${from.y},`;
+        path += `${to.x - SVG_CURVE_INTENSITY}, ${to.y},`;
+        path += `${to.x}, ${to.y}`;
 
         // SUBWAY STYLE
-        const yDiff = Math.abs(from.y - (to.y - 16));
-        path += `L ${to.x - yDiff} ${from.y}`;
-        path += `L ${to.x - 16} ${to.y}`;
-        path += `L ${to.x} ${to.y}`;
+        // const yDiff = Math.abs(from.y - (to.y - 16));
+        // path += `L ${to.x - yDiff} ${from.y}`;
+        // path += `L ${to.x - 16} ${to.y}`;
+        // path += `L ${to.x} ${to.y}`;
 
         val.color = val.color || 'blue';
         return (

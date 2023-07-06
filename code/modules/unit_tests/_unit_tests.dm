@@ -180,7 +180,7 @@
 #include "preference_species.dm"
 #include "preferences.dm"
 #include "projectiles.dm"
-// #include "quirks.dm" // NON-MODULE change - disables this unit test for now
+#include "quirks.dm"
 #include "range_return.dm"
 #include "rcd.dm"
 #include "reagent_id_typos.dm"

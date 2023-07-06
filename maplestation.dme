@@ -5654,6 +5654,7 @@
 #include "maplestation_modules\code\modules\research\machinery\_production.dm"
 #include "maplestation_modules\code\modules\research\techweb\_research.dm"
 #include "maplestation_modules\code\modules\research\techweb\all_nodes.dm"
+#include "maplestation_modules\code\modules\surgery\organs\augments_arms.dm"
 #include "maplestation_modules\code\modules\surgery\organs\ears.dm"
 #include "maplestation_modules\code\modules\surgery\organs\eyes.dm"
 #include "maplestation_modules\code\modules\surgery\organs\tongue.dm"
