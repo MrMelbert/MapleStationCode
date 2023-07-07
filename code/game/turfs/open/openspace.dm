@@ -23,7 +23,9 @@
 // I am so sorry
 /turf/open/openspace/Initialize(mapload) // handle plane and layer here so that they don't cover other obs/turfs in Dream Maker
 	. = ..()
-	RegisterSignal(src, COMSIG_ATOM_INITIALIZED_ON, PROC_REF(on_atom_created))
+	if(PERFORM_ALL_TESTS(focus_only/openspace_clear) && !GET_TURF_BELOW(src))
+		stack_trace("[src] was inited as openspace with nothing below it at ([x], [y], [z])")
+	RegisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON, PROC_REF(on_atom_created))
 	var/area/our_area = loc
 	if(istype(our_area, /area/space))
 		force_no_gravity = TRUE
@@ -34,7 +36,7 @@
 	AddElement(/datum/element/turf_z_transparency)
 
 /turf/open/openspace/ChangeTurf(path, list/new_baseturfs, flags)
-	UnregisterSignal(src, COMSIG_ATOM_INITIALIZED_ON)
+	UnregisterSignal(src, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON)
 	return ..()
 
 /**
