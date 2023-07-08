@@ -1,5 +1,6 @@
 /obj/item/organ/internal/ears/cat/cybernetic
 	name = "cybernetic cat ears"
+	desc = "Replacement cat ears that are better than the original model. You're getting closer to becoming the ultimate creature."
 	icon = 'maplestation_modules/icons/obj/clothing/hats.dmi'
 	icon_state = "cyber_kitty"
 	damage_multiplier = 1.5 //slightly better than regular cat ears
@@ -23,4 +24,4 @@
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
-	damage += 40/severity
+	apply_organ_damage(40/severity)
