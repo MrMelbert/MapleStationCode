@@ -5509,6 +5509,7 @@
 #include "maplestation_modules\code\modules\clothing\accessories\accessories.dm"
 #include "maplestation_modules\code\modules\clothing\accessories\loadout_accessories.dm"
 #include "maplestation_modules\code\modules\clothing\glasses\beer_eyepatch.dm"
+#include "maplestation_modules\code\modules\clothing\glasses\hud_eyepatches.dm"
 #include "maplestation_modules\code\modules\clothing\glasses\loadout_glasses.dm"
 #include "maplestation_modules\code\modules\clothing\gloves\loadout_gloves.dm"
 #include "maplestation_modules\code\modules\clothing\head\jobs.dm"
