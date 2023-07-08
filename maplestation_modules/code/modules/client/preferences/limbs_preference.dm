@@ -4,7 +4,6 @@
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 
-// Loadouts are applied with job equip code.
 /datum/preference/limbs/apply_to_human(mob/living/carbon/human/target, value)
 	var/list/in_order_datums = list(
 		// Apply bodyparts first, as organs / implants are housed in bodyparts - to prevent accidental overriding
@@ -48,7 +47,6 @@
 
 	return corrected_list
 
-// Default value is NULL - the loadout list is a lazylist
 /datum/preference/limbs/create_default_value(datum/preferences/preferences)
 	return null
 

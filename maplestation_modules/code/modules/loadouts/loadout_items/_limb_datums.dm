@@ -112,8 +112,7 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 
 /datum/limb_option_datum/organ/eyes
 	name = "Cybernetic Eyes"
-	desc = "A basic pair of robotic eyeballs. Confers no special abilities, you can claim your vision is augmented."
-	limb_path = /obj/item/organ/internal/eyes/robotic
+	limb_path = /obj/item/organ/internal/eyes/robotic/basic
 
 /datum/limb_option_datum/organ/ears
 	name = "Cybernetic Ears"

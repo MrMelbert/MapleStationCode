@@ -161,7 +161,6 @@
 
 
 	data["limbs"] = limbs_data
-	// data["character_preview_view"] = character_preview_view.assigned_map
 	return data
 
 /// Gets a body zone from a typepath given.
