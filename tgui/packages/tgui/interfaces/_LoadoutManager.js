@@ -211,13 +211,13 @@ export const LoadoutPreviewSection = (props, context) => {
                 icon="check-double"
                 color="good"
                 tooltip="Confirm loadout and exit UI."
+                tooltipPosition="bottom"
                 onClick={() => act('close_ui', { revert: 0 })}
               />
             </Stack.Item>
             <Stack.Item>
               <Button
                 icon="chevron-left"
-                tooltip="Turn model preview to the left."
                 onClick={() =>
                   act('rotate_dummy', {
                     dir: 'left',
@@ -230,14 +230,14 @@ export const LoadoutPreviewSection = (props, context) => {
                 icon="sync"
                 disabled={1}
                 tooltip="Toggle viewing all \
-                preview directions at once."
+                  preview directions at once."
+                tooltipPosition="bottom"
                 onClick={() => act('show_all_dirs')}
               />
             </Stack.Item>
             <Stack.Item>
               <Button
                 icon="chevron-right"
-                tooltip="Turn model preview to the right."
                 onClick={() =>
                   act('rotate_dummy', {
                     dir: 'right',
@@ -250,6 +250,7 @@ export const LoadoutPreviewSection = (props, context) => {
                 icon="times"
                 color="bad"
                 tooltip="Revert loadout and exit UI."
+                tooltipPosition="bottom"
                 onClick={() => act('close_ui', { revert: 1 })}
               />
             </Stack.Item>
