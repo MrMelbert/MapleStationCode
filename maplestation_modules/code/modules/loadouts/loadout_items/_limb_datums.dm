@@ -110,13 +110,17 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 	name = "Cybernetic Stomach"
 	limb_path = /obj/item/organ/internal/stomach/cybernetic
 
-/datum/limb_option_datum/organ/eyes
+/datum/limb_option_datum/organ/cybereyes
 	name = "Cybernetic Eyes"
 	limb_path = /obj/item/organ/internal/eyes/robotic/basic
 
-/datum/limb_option_datum/organ/ears
+/datum/limb_option_datum/organ/cyberears
 	name = "Cybernetic Ears"
 	limb_path = /obj/item/organ/internal/ears/cybernetic
+
+/datum/limb_option_datum/organ/cyberears/cat
+	name = "Cybernetic Cat Ears"
+	limb_path = /obj/item/organ/internal/ears/cat/cybernetic
 
 /datum/limb_option_datum/organ/robotongue
 	name = "Voicebox"
