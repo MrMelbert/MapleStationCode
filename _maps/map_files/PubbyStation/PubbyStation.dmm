@@ -29400,9 +29400,7 @@
 	},
 /area/station/engineering/main)
 "ccf" = (
-/obj/effect/turf_decal/textured{
-	dir = 10
-	},
+/obj/effect/turf_decal/textured/gray/half,
 /turf/open/floor/iron/half,
 /area/station/engineering/main)
 "ccg" = (
@@ -51201,18 +51199,6 @@
 	},
 /turf/open/floor/iron/large,
 /area/station/hallway/secondary/entry)
-"qSW" = (
-/obj/effect/turf_decal/textured/dark{
-	dir = 4
-	},
-/obj/effect/turf_decal/textured/dark,
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/iron/smooth_edge{
-	dir = 8
-	},
-/area/station/engineering/supermatter/room)
 "qUk" = (
 /obj/effect/turf_decal/tile/yellow/half,
 /obj/effect/turf_decal/stripes/corner{
