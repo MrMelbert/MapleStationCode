@@ -40,7 +40,7 @@
 /// Defines for extra info blurbs, for loadout items.
 #define TOOLTIP_NO_ARMOR "ARMORLESS - This item has no armor and is entirely cosmetic."
 #define TOOLTIP_NO_DAMAGE "CEREMONIAL - This item has very low force and is cosmetic."
-#define TOOLTIP_RANDOM_COLOR "RANDOM COLOR -This item has a random color and will change every round."
+#define TOOLTIP_RANDOM_COLOR "RANDOM COLOR - This item has a random color and will change every round."
 #define TOOLTIP_GREYSCALE "GREYSCALED - This item can be customized via the greyscale modification UI."
 #define TOOLTIP_RENAMABLE "RENAMABLE - This item can be given a custom name."
 #define TOOLTIP_RESKINNABLE "RESKINNABLE - This item can be reskinned."

@@ -58,23 +58,22 @@
 /// Datum holder for the loadout manager UI.
 /// Future todo: Merge this entirely with the prefs UI
 /datum/loadout_manager
-	/// The client of the person using the UI
-	var/client/owner
-	/// Loadout preference singleton for easy access
-	var/datum/preference/loadout/preference
-	/// The current selected loadout list.
-	var/list/loadout
+	/// Static list of all loadout categories
+	VAR_FINAL/static/list/datum/loadout_category/loadout_categories
 	/// The preview dummy.
 	/// We use a special subtype so we don't brick our preference menu preview when we're done.
-	var/atom/movable/screen/map_view/char_preview/loadout/character_preview_view
-	/// Whether we see tutorial text in the UI
-	var/tutorial_status = FALSE
-	/// Whether, on close, we save the list
-	var/save_on_close = TRUE
+	VAR_FINAL/atom/movable/screen/map_view/char_preview/loadout/character_preview_view
 	/// Our currently open greyscaling menu.
-	var/datum/greyscale_modify_menu/menu
+	VAR_FINAL/datum/greyscale_modify_menu/menu
+	/// Ref to koadout preference singleton for easy access
+	VAR_FINAL/datum/preference/loadout/preference
 
-	var/static/list/loadout_categories
+	/// The client of the person using the UI
+	var/client/owner
+	/// The current selected loadout list.
+	var/list/loadout
+	/// Determines whether to write to preferences when we close the UI or not
+	var/save_on_close = FALSE
 
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
@@ -141,14 +140,8 @@
 			return TRUE
 
 	switch(action)
-		// Turns the tutorial on and off.
-		if("toggle_tutorial")
-			tutorial_status = !tutorial_status
-			return TRUE
-
-		// Closes the UI, reverting our loadout to before edits if params["revert"] is set
 		if("close_ui")
-			save_on_close = FALSE
+			save_on_close = TRUE
 			SStgui.close_uis(src)
 			return FALSE
 
@@ -329,26 +322,11 @@
 	data["selected_loadout"] = all_selected_paths
 	data["mob_name"] = owner.prefs.read_preference(/datum/preference/name/real_name)
 	data["job_clothes"] = character_preview_view.view_job_clothes
-	data["tutorial_status"] = tutorial_status
-	if(tutorial_status)
-		data["tutorial_text"] = get_tutorial_text()
 
 	return data
 
 /datum/loadout_manager/ui_static_data()
 	var/list/data = list()
-
-	data["character_preview_view"] = character_preview_view.assigned_map
-
-	// [name] is the name of the tab that contains all the corresponding contents.
-	// [title] is the name at the top of the list of corresponding contents.
-	// [contents] is a formatted list of all the possible items for that slot.
-	//  - [contents.path] is the path the singleton datum holds
-	//  - [contents.name] is the name of the singleton datum
-	//  - [contents.is_renamable], whether the item can be renamed in the UI
-	//  - [contents.is_greyscale], whether the item can be greyscaled in the UI
-	//  - [contents.tooltip_text], any additional tooltip text that hovers over the item's select button
-
 	var/static/list/loadout_tabs
 	if(isnull(loadout_tabs))
 		loadout_tabs = list()
@@ -360,6 +338,8 @@
 			))
 
 	data["loadout_tabs"] = loadout_tabs
+	data["character_preview_view"] = character_preview_view.assigned_map
+	data["tutorial_text"] = get_tutorial_text()
 
 	return data
 

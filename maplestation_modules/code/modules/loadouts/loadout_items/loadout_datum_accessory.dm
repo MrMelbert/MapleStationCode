@@ -25,9 +25,13 @@
 	can_be_layer_adjusted = TRUE
 	add_tooltip(ADJUSTABLE_TOOLTIP, inverse_order = TRUE)
 
-/datum/loadout_item/accessory/to_ui_data()
+/datum/loadout_item/accessory/get_ui_buttons()
 	. = ..()
-	.["is_layer_adjustable"] = can_be_layer_adjusted
+	if(can_be_layer_adjusted)
+		UNTYPED_LIST_ADD(., list(
+			"icon" = FA_ICON_ARROW_DOWN,
+			"act_key" = "set_layer",
+		))
 
 /datum/loadout_item/accessory/handle_loadout_action(datum/loadout_manager/manager, action)
 	switch(action)
