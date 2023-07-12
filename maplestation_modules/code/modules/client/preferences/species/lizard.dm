@@ -16,6 +16,7 @@
 	if(!islizard(target))
 		return
 
+	// Adding directly here is primarily so the dummy updates
 	if(value)
 		target.dna.species.species_traits |= HAIR
 	else
