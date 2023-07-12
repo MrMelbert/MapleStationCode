@@ -189,11 +189,18 @@ const LoadoutTabDisplay = (
     );
   }
 
-  return category.contents.map((item) => (
-    <Stack.Item key={item.name}>
-      <ItemDisplay item={item} active={selected_loadout.includes(item.path)} />
-    </Stack.Item>
-  ));
+  return (
+    <>
+      {category.contents.map((item) => (
+        <Stack.Item key={item.name}>
+          <ItemDisplay
+            item={item}
+            active={selected_loadout.includes(item.path)}
+          />
+        </Stack.Item>
+      ))}
+    </>
+  );
 };
 
 const SearchDisplay = (props, context) => {
@@ -222,11 +229,18 @@ const SearchDisplay = (props, context) => {
     );
   }
 
-  return validLoadoutItems.map((item) => (
-    <Stack.Item key={item.name}>
-      <ItemDisplay item={item} active={selected_loadout.includes(item.path)} />
-    </Stack.Item>
-  ));
+  return (
+    <>
+      {validLoadoutItems.map((item) => (
+        <Stack.Item key={item.name}>
+          <ItemDisplay
+            item={item}
+            active={selected_loadout.includes(item.path)}
+          />
+        </Stack.Item>
+      ))}
+    </>
+  );
 };
 
 const LoadoutTabs = (props, context) => {
