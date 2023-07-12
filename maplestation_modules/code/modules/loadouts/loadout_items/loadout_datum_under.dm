@@ -1,10 +1,21 @@
 // --- Loadout item datums for under suits ---
 
 /// Underslot - Jumpsuit Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_jumpsuits, generate_loadout_items(/datum/loadout_item/under/jumpsuit))
+/datum/loadout_category/undersuit
+	category_name = "Jumpsuit"
+	ui_title = "Under Suit Slot Items"
+
+/datum/loadout_category/undersuit/get_items()
+	var/static/list/loadout_jumpsuits = generate_loadout_items(/datum/loadout_item/under/jumpsuit)
+	return loadout_jumpsuits
 
 /// Underslot - Formal Suit Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_undersuits, generate_loadout_items(/datum/loadout_item/under/formal))
+/datum/loadout_category/undersuit/formal
+	category_name = "Formal"
+
+/datum/loadout_category/undersuit/formal/get_items()
+	var/static/list/loadout_formalsuits = generate_loadout_items(/datum/loadout_item/under/formal)
+	return loadout_formalsuits
 
 /datum/loadout_item/under
 	category = LOADOUT_ITEM_UNIFORM

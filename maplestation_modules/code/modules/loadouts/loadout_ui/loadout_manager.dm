@@ -74,11 +74,18 @@
 	/// Our currently open greyscaling menu.
 	var/datum/greyscale_modify_menu/menu
 
+	var/static/list/loadout_categories
+
 /datum/loadout_manager/New(user)
 	owner = CLIENT_FROM_VAR(user)
 	owner.open_loadout_ui = src
 	loadout = owner.prefs.read_preference(/datum/preference/loadout)
 	preference = GLOB.preference_entries[/datum/preference/loadout]
+
+	if(isnull(loadout_categories))
+		loadout_categories = list()
+		for(var/category_type in subtypesof(/datum/loadout_category))
+			loadout_categories += new category_type()
 
 /datum/loadout_manager/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
@@ -342,21 +349,15 @@
 	//  - [contents.is_greyscale], whether the item can be greyscaled in the UI
 	//  - [contents.tooltip_text], any additional tooltip text that hovers over the item's select button
 
-	var/list/loadout_tabs = list()
-	loadout_tabs += list(list("name" = "Belt", "title" = "Belt Slot Items", "contents" = list_to_data(GLOB.loadout_belts)))
-	loadout_tabs += list(list("name" = "Ears", "title" = "Ear Slot Items", "contents" = list_to_data(GLOB.loadout_ears)))
-	loadout_tabs += list(list("name" = "Glasses", "title" = "Glasses Slot Items", "contents" = list_to_data(GLOB.loadout_glasses)))
-	loadout_tabs += list(list("name" = "Gloves", "title" = "Glove Slot Items", "contents" = list_to_data(GLOB.loadout_gloves)))
-	loadout_tabs += list(list("name" = "Head", "title" = "Head Slot Items", "contents" = list_to_data(GLOB.loadout_helmets)))
-	loadout_tabs += list(list("name" = "Mask", "title" = "Mask Slot Items", "contents" = list_to_data(GLOB.loadout_masks)))
-	loadout_tabs += list(list("name" = "Neck", "title" = "Neck Slot Items", "contents" = list_to_data(GLOB.loadout_necks)))
-	loadout_tabs += list(list("name" = "Shoes", "title" = "Shoe Slot Items", "contents" = list_to_data(GLOB.loadout_shoes)))
-	loadout_tabs += list(list("name" = "Suit", "title" = "Suit Slot Items", "contents" = list_to_data(GLOB.loadout_exosuits)))
-	loadout_tabs += list(list("name" = "Jumpsuit", "title" = "Uniform Slot Items", "contents" = list_to_data(GLOB.loadout_jumpsuits)))
-	loadout_tabs += list(list("name" = "Formal", "title" = "Uniform Slot Items (cont)", "contents" = list_to_data(GLOB.loadout_undersuits)))
-	loadout_tabs += list(list("name" = "Accessory", "title" = "Uniform Accessory Slot Items", "contents" = list_to_data(GLOB.loadout_accessory)))
-	loadout_tabs += list(list("name" = "Inhand", "title" = "In-hand Items", "contents" = list_to_data(GLOB.loadout_inhand_items)))
-	loadout_tabs += list(list("name" = "Other", "title" = "Backpack Items ([MAX_ALLOWED_MISC_ITEMS] max)", "contents" = list_to_data(GLOB.loadout_pocket_items)))
+	var/static/list/loadout_tabs
+	if(isnull(loadout_tabs))
+		loadout_tabs = list()
+		for(var/datum/loadout_category/category as anything in loadout_categories)
+			UNTYPED_LIST_ADD(loadout_tabs, list(
+				"name" = category.category_name,
+				"title" = category.ui_title,
+				"contents" = category.items_to_ui_data(),
+			))
 
 	data["loadout_tabs"] = loadout_tabs
 
@@ -380,38 +381,3 @@ which will be placed in your backpack to prevent important items being deleted.
 Additionally, UNDERSUITS, HELMETS, MASKS, and GLOVES loadout items
 selected by plasmamen will spawn in their backpack instead of overriding their clothes
 to avoid an untimely and sudden death by fire or suffocation at the start of the shift."}
-
-/**
- * Takes an assoc list of [typepath]s to [singleton datum]
- * And formats it into an object for TGUI.
- *
- * - list[name] is the name of the datum.
- * - list[path] is the typepath of the item.
- */
-/datum/loadout_manager/proc/list_to_data(list_of_datums)
-	if(!LAZYLEN(list_of_datums))
-		return
-
-	var/list/formatted_list = new(length(list_of_datums))
-
-	var/array_index = 1
-	for(var/datum/loadout_item/item as anything in list_of_datums)
-		var/list/formatted_item = list()
-		formatted_item["name"] = item.name
-		formatted_item["path"] = item.item_path
-		formatted_item["is_greyscale"] = item.can_be_greyscale
-		formatted_item["is_renamable"] = item.can_be_named
-		formatted_item["is_reskinnable"] = item.can_be_reskinned
-
-		// This pains me on a deep level
-		formatted_item["is_layer_adjustable"] = FALSE
-		if(istype(item, /datum/loadout_item/accessory))
-			var/datum/loadout_item/accessory/accessory = item
-			formatted_item["is_layer_adjustable"] = accessory.can_be_layer_adjusted
-
-		if(LAZYLEN(item.additional_tooltip_contents))
-			formatted_item["tooltip_text"] = item.additional_tooltip_contents.Join("\n")
-
-		formatted_list[array_index++] = formatted_item
-
-	return formatted_list

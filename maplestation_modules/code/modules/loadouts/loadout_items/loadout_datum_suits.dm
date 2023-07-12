@@ -1,7 +1,13 @@
 // --- Loadout item datums for exosuits / suits ---
 
 /// Exosuit / Outersuit Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_exosuits, generate_loadout_items(/datum/loadout_item/suit))
+/datum/loadout_category/outer_suit
+	category_name = "Suit"
+	ui_title = "Outer Suit Slot Items"
+
+/datum/loadout_category/outer_suit/get_items()
+	var/static/list/loadout_outer_suits = generate_loadout_items(/datum/loadout_item/suit)
+	return loadout_outer_suits
 
 /datum/loadout_item/suit
 	category = LOADOUT_ITEM_SUIT

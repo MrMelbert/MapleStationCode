@@ -3,7 +3,13 @@
 #define ADJUSTABLE_TOOLTIP "LAYER ADJUSTABLE - You can opt to have accessory above or below your suit."
 
 /// Accessory Items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/accessory))
+/datum/loadout_category/accessories
+	category_name = "Accessory"
+	ui_title = "Uniform Accessory Items"
+
+/datum/loadout_category/accessories/get_items()
+	var/static/list/loadout_accessory = generate_loadout_items(/datum/loadout_item/accessory)
+	return loadout_accessory
 
 /datum/loadout_item/accessory
 	category = LOADOUT_ITEM_ACCESSORY
@@ -18,6 +24,10 @@ GLOBAL_LIST_INIT(loadout_accessory, generate_loadout_items(/datum/loadout_item/a
 
 	can_be_layer_adjusted = TRUE
 	add_tooltip(ADJUSTABLE_TOOLTIP, inverse_order = TRUE)
+
+/datum/loadout_item/accessory/to_ui_data()
+	. = ..()
+	.["is_layer_adjustable"] = can_be_layer_adjusted
 
 /datum/loadout_item/accessory/handle_loadout_action(datum/loadout_manager/manager, action)
 	switch(action)

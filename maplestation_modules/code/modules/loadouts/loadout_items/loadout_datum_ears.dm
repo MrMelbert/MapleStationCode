@@ -1,7 +1,13 @@
 // --- Loadout item datums for ears ---
 
 /// Ear Slot Items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_ears, generate_loadout_items(/datum/loadout_item/ears))
+/datum/loadout_category/ears
+	category_name = "Ears"
+	ui_title = "Ear Slot Items"
+
+/datum/loadout_category/ears/get_items()
+	var/static/list/loadout_ears = generate_loadout_items(/datum/loadout_item/ears)
+	return loadout_ears
 
 /datum/loadout_item/ears
 	category = LOADOUT_ITEM_EARS

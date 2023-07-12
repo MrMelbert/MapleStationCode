@@ -1,7 +1,16 @@
 // --- Loadout item datums for backpack / pocket items ---
 
 /// Pocket items (Moved to backpack)
-GLOBAL_LIST_INIT(loadout_pocket_items, generate_loadout_items(/datum/loadout_item/pocket_items))
+/datum/loadout_category/pocket
+	category_name = "Other"
+
+/datum/loadout_category/pocket/New()
+	. = ..()
+	ui_title = "Backpack Items ([MAX_ALLOWED_MISC_ITEMS] max)"
+
+/datum/loadout_category/pocket/get_items()
+	var/static/list/loadout_others = generate_loadout_items(/datum/loadout_item/pocket_items)
+	return loadout_others
 
 /datum/loadout_item/pocket_items
 	category = LOADOUT_ITEM_MISC

@@ -1,7 +1,13 @@
 // --- Loadout item datums for shoes items ---
 
 /// Shoe Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_shoes, generate_loadout_items(/datum/loadout_item/shoes))
+/datum/loadout_category/shoes
+	category_name = "Shoes"
+	ui_title = "Foot Slot Items"
+
+/datum/loadout_category/shoes/get_items()
+	var/static/list/loadout_shoes = generate_loadout_items(/datum/loadout_item/shoes)
+	return loadout_shoes
 
 /datum/loadout_item/shoes
 	category = LOADOUT_ITEM_SHOES

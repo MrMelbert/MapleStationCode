@@ -1,7 +1,13 @@
 // --- Loadout item datums for masks ---
 
 /// Mask Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_masks, generate_loadout_items(/datum/loadout_item/mask))
+/datum/loadout_category/mask
+	category_name = "Mask"
+	ui_title = "Mouth Slot Items"
+
+/datum/loadout_category/mask/get_items()
+	var/static/list/loadout_mask = generate_loadout_items(/datum/loadout_item/mask)
+	return loadout_mask
 
 /datum/loadout_item/mask
 	category = LOADOUT_ITEM_MASK

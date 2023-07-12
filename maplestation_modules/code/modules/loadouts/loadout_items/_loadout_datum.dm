@@ -182,3 +182,14 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  */
 /datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
 	return FALSE
+
+/datum/loadout_item/proc/to_ui_data()
+	SHOULD_CALL_PARENT(TRUE)
+	var/list/formatted_item = list()
+	formatted_item["name"] = name
+	formatted_item["path"] = item_path
+	formatted_item["is_greyscale"] = can_be_greyscale
+	formatted_item["is_renamable"] = can_be_named
+	formatted_item["is_reskinnable"] = can_be_reskinned
+	formatted_item["tooltip_text"] = additional_tooltip_contents.Join("\n")
+	return formatted_item
