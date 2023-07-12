@@ -12,7 +12,7 @@ export const MultilineText = (
           width="80%"
           height={props.box_height || '36px'}
           value={value}
-          onInput={(e, value) => {
+          onChange={(e, value) => {
             handleSetValue(value);
           }}
         />
