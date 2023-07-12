@@ -20,6 +20,10 @@
 		target.dna.species.species_traits |= HAIR
 	else
 		target.dna.species.species_traits -= HAIR
+
+	// Hate using dna features but it's really convenient to stick things
+	// No I'm not adding it to genetics, don't even ask
+	target.dna.features["lizard_has_hair"] = value
 	target.update_body_parts()
 
 // Hair appears as a "feature", even if not visible to lizards that do not have the trait selected
