@@ -2,7 +2,7 @@
 GLOBAL_LIST_EMPTY(arm_wings_list)
 /// GLOB list of other features (ears, tails)
 GLOBAL_LIST_EMPTY(avian_ears_list)
-// GLOBAL_LIST_EMPTY(tails_list_avian)
+GLOBAL_LIST_EMPTY(tails_list_avian)
 
 /datum/species/ornithid
 	// the biggest bird
@@ -18,8 +18,8 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
 		/obj/item/organ/external/wings/functional/arm_wings = "Monochrome",
-		/obj/item/organ/external/plumage = "Hermes"
-	//	/obj/item/organ/external/tail/avian = "[-TODO-]",
+		/obj/item/organ/external/plumage = "Hermes",
+		/obj/item/organ/external/tail/avian = "Eagle",
 	)
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/ornithid,
@@ -68,8 +68,8 @@ GLOBAL_LIST_EMPTY(avian_ears_list)
 // section for lore/perk descs
 /datum/species/ornithid/get_species_lore()
 	return list(
-		"Much to the chagrin of the collective, the term \"Ornithid\" is in effect, a dumping ground of the various human-derived avian animalids. \
-		Several cultural and geneological groups can fall under this banner, with sometimes only those directly related bare any resemblance to eachother.",
+		"Much to the chagrin of the collective, the term \"Ornithid\" is in effect, a dumping ground of the various human-derived avian animalids, making it the second most populous animalid group. \
+		Several cultural and geneological groups can fall under this banner, with sometimes only those directly related to eachother baring any resemblance physically.",
 
 		"while countless other groups exist, the three most common ornithid groups known to Nanotrasen are the conniving Izulukin, The wandering Vagrants, and The traditionalist Tengu.",
 

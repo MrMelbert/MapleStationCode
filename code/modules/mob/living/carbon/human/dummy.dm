@@ -99,8 +99,8 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["tail_lizard"] = "Smooth"
 	target.dna.features["pod_hair"] = "Ivy"
 	target.dna.features["head_tentacles"] = "Long" // NON-MODULE CHANGE
-	target.dna.features["arm_wings"] = "Monochrome" //NON-MODULE CHANGE
-// 	target.dna.features["tail_avian"] = "Eagle" //NON-MODULE CHANGE
+	target.dna.features["arm_wings"] = "Monochrome" // NON-MODULE CHANGE
+	target.dna.features["tail_avian"] = "Eagle" // NON-MODULE CHANGE
 	target.dna.features["ears_avian"] = "Hermes" // NON-MODULE CHANGE
 
 
