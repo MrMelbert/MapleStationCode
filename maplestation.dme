@@ -5345,6 +5345,7 @@
 #include "maplestation_modules\code\datums\shuttles.dm"
 #include "maplestation_modules\code\datums\components\make_item_slow.dm"
 #include "maplestation_modules\code\datums\components\remote_materials.dm"
+#include "maplestation_modules\code\datums\components\stackable_item.dm"
 #include "maplestation_modules\code\datums\components\crafting\recipes.dm"
 #include "maplestation_modules\code\datums\diseases\disease_resistance.dm"
 #include "maplestation_modules\code\datums\elements\temperature_pack.dm"
