@@ -16,26 +16,19 @@
 	if(!islizard(target))
 		return
 
+	// Adding directly here is primarily so the dummy updates
 	if(value)
 		target.dna.species.species_traits |= HAIR
 	else
 		target.dna.species.species_traits -= HAIR
+
+	// Hate using dna features but it's really convenient to stick things
+	// No I'm not adding it to genetics, don't even ask
+	target.dna.features["lizard_has_hair"] = value
 	target.update_body_parts()
 
-/* TODO: This doesn't work, make it work later but it's not that important
-
-// Extending hairstyle and haircolor is_accessible procs.
-// If the parent returned FALSE (due to HAIR not being in SPECIES TRAITS) but should show on the window,
-// Then we check if they're a lizard with hairlizard enabled - if so then they're valid
-// maybe this will work one day
-/datum/preference/choiced/hairstyle/is_accessible(datum/preferences/preferences)
+// Hair appears as a "feature", even if not visible to lizards that do not have the trait selected
+/datum/species/lizard/get_features()
+	species_traits |= HAIR
 	. = ..()
-	if (!. && should_show_on_page(preferences.current_window))
-		return (ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard) && preferences.read_preference(/datum/preference/toggle/hair_lizard))
-
-/datum/preference/color_legacy/hair_color/is_accessible(datum/preferences/preferences)
-	. = ..()
-	if (!. && should_show_on_page(preferences.current_window))
-		return (ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/lizard) && preferences.read_preference(/datum/preference/toggle/hair_lizard))
-
-*/
+	species_traits -= HAIR
