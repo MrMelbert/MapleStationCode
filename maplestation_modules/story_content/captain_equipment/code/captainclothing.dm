@@ -124,8 +124,12 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESUITSTORAGE
 
+/obj/item/storage/bag/garment/cap_cust
+	name = "captain's extended garment bag"
+	desc = "Due to the captain's over-extravagance, a second garment bag had to be requisitioned to hold all of their various outfits."
+
 	// Clothes to the bag
-/obj/item/storage/bag/garment/captain/PopulateContents()
+/obj/item/storage/bag/garment/cap_cust/PopulateContents()
 	. = ..()
 	new /obj/item/clothing/under/rank/captain/formal(src)
 	new /obj/item/clothing/under/rank/captain/formal/skirt(src)
@@ -134,3 +138,7 @@
 	new /obj/item/clothing/suit/armor/vest/capformalcarapace(src)
 	new /obj/item/clothing/suit/armor/vest/capvestformal(src)
 	new /obj/item/clothing/neck/cloak/capformal(src)
+
+/obj/structure/closet/secure_closet/captains/PopulateContents()
+	. = ..()
+	new /obj/item/storage/bag/garment/cap_cust(src)
