@@ -1,7 +1,13 @@
 // --- Loadout item datums for heads ---
 
 /// Head Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_helmets, generate_loadout_items(/datum/loadout_item/head))
+/datum/loadout_category/head
+	category_name = "Head"
+	ui_title = "Head Slot Items"
+
+/datum/loadout_category/head/get_items()
+	var/static/list/loadout_head = generate_loadout_items(/datum/loadout_item/head)
+	return loadout_head
 
 /datum/loadout_item/head
 	category = LOADOUT_ITEM_HEAD

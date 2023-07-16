@@ -1,7 +1,13 @@
 // --- Loadout item datums for belts ---
 
 /// Belt Slot Items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_belts, generate_loadout_items(/datum/loadout_item/belts))
+/datum/loadout_category/belts
+	category_name = "Belt"
+	ui_title = "Belt Slot Items"
+
+/datum/loadout_category/belts/get_items()
+	var/static/list/loadout_belts = generate_loadout_items(/datum/loadout_item/belts)
+	return loadout_belts
 
 /datum/loadout_item/belts
 	category = LOADOUT_ITEM_BELT

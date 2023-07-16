@@ -1,7 +1,13 @@
 // --- Loadout item datums for neck items ---
 
 /// Neck Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_necks, generate_loadout_items(/datum/loadout_item/neck))
+/datum/loadout_category/neck
+	category_name = "Neck"
+	ui_title = "Neck Slot Items"
+
+/datum/loadout_category/neck/get_items()
+	var/static/list/loadout_neck = generate_loadout_items(/datum/loadout_item/neck)
+	return loadout_neck
 
 /datum/loadout_item/neck
 	category = LOADOUT_ITEM_NECK
