@@ -91,3 +91,15 @@
 	description = "I feel numb."
 	mood_change = 4
 	timeout = 3 MINUTES
+
+/datum/emote/living/carbon/human/scream
+
+/datum/emote/living/carbon/human/scream/can_run_emote(mob/living/carbon/human/user, status_check, intentional)
+	if(intentional)
+		return ..()
+
+	// Cut unintentional screems if they can't feel pain at the moment
+	if(!user.can_feel_pain())
+		return FALSE
+
+	return ..()

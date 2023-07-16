@@ -6,7 +6,7 @@
 	max_stages = 3
 	stage_prob = 1
 	cure_text = "Keep the patient still and lying down, maintain a high body temperature, stop blood loss, \
-		and provide pain relievers while monitoring closely. Epineprhine and Saline-Glucose can also help."
+		and provide pain relievers while monitoring closely. Epinephrine and Saline-Glucose can also help."
 	agent = "Pain"
 	viable_mobtypes = list(/mob/living/carbon/human)
 	desc = "Occurs when a subject enters a state of shock due to high pain, blood loss, heart difficulties, and other injuries. \
@@ -36,43 +36,47 @@
 	var/conditions_fulfilled = 0
 
 	// Good: Body temperature is stable (not freezing, we don't care about heat)
-	conditions_fulfilled += (affected_mob.bodytemperature > affected_mob.get_body_temp_cold_damage_limit())
+	if(affected_mob.bodytemperature > affected_mob.get_body_temp_cold_damage_limit())
+		conditions_fulfilled += 1
 	// Good: Sleeping (or unconscious I guess)
-	conditions_fulfilled += (!!affected_mob.IsSleeping() || !!affected_mob.IsUnconscious())
+	if(affected_mob.IsSleeping() || affected_mob.IsUnconscious())
+		conditions_fulfilled += 1
 	// Good: Having this trait (from salgu or epinephrine)
-	conditions_fulfilled += HAS_TRAIT(affected_mob, TRAIT_ABATES_SHOCK)
+	if(HAS_TRAIT(affected_mob, TRAIT_ABATES_SHOCK))
+		conditions_fulfilled += 1
 	// Good: Having lower pain
 	switch(affected_mob.pain_controller.get_average_pain())
-		if(0 to 15)
-			// Guarantees you fulfill enough conditions if you get this low, assuming you have no detractors
+		if(-INFINITY to 10)
+			// Almost guarantees you fulfill enough conditions if you get this low, assuming you have no major detractors
 			// Why? It might confuse some people if the person's like, not experiencing any pain at all
 			// but for some reason is still in shock, because they haven't done one of the other conditions arbitrarily
-			conditions_fulfilled += conditions_required_to_cure
-		if(15 to 40)
+			conditions_fulfilled += (conditions_required_to_cure + 1)
+		if(10 to 30)
 			conditions_fulfilled += 3
-		if(40 to 50)
+		if(30 to 40)
 			conditions_fulfilled += 2
-		if(50 to 60)
+		if(40 to 50)
 			conditions_fulfilled += 1
 
 	// Good: Painkillers (while conscious / in soft crit)
-	if(affected_mob.stat <= SOFT_CRIT)
-		conditions_fulfilled += (affected_mob.pain_controller.pain_modifier <= 0.4)
-		conditions_fulfilled += (affected_mob.pain_controller.pain_modifier <= 0.75)
+	if(affected_mob.stat <= SOFT_CRIT && !affected_mob.can_feel_pain())
+		conditions_fulfilled += 1
 
 	// Bad: Bleeding
-	conditions_fulfilled -= affected_mob.is_bleeding()
-	// Very bad: Woudns
+	if(affected_mob.is_bleeding())
+		conditions_fulfilled -= 1
+	// Very bad: Wounds
 	conditions_fulfilled -= min(LAZYLEN(affected_mob.all_wounds), 4)
 	// Somewhat bad: Standing up
-	conditions_fulfilled -= 2 * (affected_mob.body_position == STANDING_UP)
+	if(affected_mob.body_position == STANDING_UP)
+		conditions_fulfilled -= 2
+	// Bad: In deepcrit (dying)
+	if(affected_mob.stat > SOFT_CRIT)
+		conditions_fulfilled -= 1
 
 	return conditions_fulfilled
 
-/datum/disease/shock/has_cure(cached_cure_level)
-	if(isnull(cached_cure_level))
-		cached_cure_level = check_cure_conditions()
-
+/datum/disease/shock/has_cure(cached_cure_level = check_cure_conditions())
 	return cached_cure_level >= conditions_required_to_cure
 
 /datum/disease/shock/after_add()
@@ -89,7 +93,7 @@
 	if(!.)
 		return
 
-	if(!affected_mob.pain_controller)
+	if(isnull(affected_mob.pain_controller))
 		cure()
 		return FALSE
 
@@ -122,7 +126,7 @@
 				Supply epinephrine and saline-glucose if condition worsens."
 			if(SPT_PROB(0.5, seconds_per_tick))
 				to_chat(affected_mob, span_danger("Your chest feels uncomfortable."))
-				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
+				affected_mob.pain_emote(pick("mumble", "grumble"))
 				affected_mob.flash_pain_overlay(1)
 			if(SPT_PROB(1, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You feel nauseous."))
@@ -150,7 +154,7 @@
 				affected_mob.adjust_stutter_up_to(10 SECONDS, 120 SECONDS)
 			if(SPT_PROB(1, seconds_per_tick))
 				to_chat(affected_mob, span_danger("Your chest feels wrong!"))
-				affected_mob.pain_emote(pick("mumble", "grumble"), 3 SECONDS)
+				affected_mob.pain_emote(pick("mumble", "grumble"))
 				affected_mob.flash_pain_overlay(2)
 			if(SPT_PROB(2, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You can't focus on anything!"))

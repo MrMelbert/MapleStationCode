@@ -167,7 +167,7 @@
 			span_notice("[user] begins to insert [tool] into [target]'s [parse_zone(target_zone)]."),
 			span_notice("[user] begins to insert something into [target]'s [parse_zone(target_zone)]."),
 		)
-		display_pain(target, "You can feel something being placed in your [parse_zone(target_zone)]!")
+		display_pain(target, "You can feel something being placed in your [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
 
 
 	else if(implement_type in implements_extract)
@@ -206,7 +206,7 @@
 					span_notice("[user] begins to extract [target_organ] from [target]'s [parse_zone(target_zone)]."),
 					span_notice("[user] begins to extract something from [target]'s [parse_zone(target_zone)]."),
 				)
-				display_pain(target, "You can feel your [target_organ.name] being removed from your [parse_zone(target_zone)]!")
+				display_pain(target, "You can feel your [target_organ.name] being removed from your [parse_zone(target_zone)]!", target_zone = target_zone) // NON-MODULE CHANGE
 			else
 				return SURGERY_STEP_FAIL
 
@@ -232,7 +232,7 @@
 				span_notice("[user] inserts [tool] into [target]'s [parse_zone(target_zone)]!"),
 				span_notice("[user] inserts something into [target]'s [parse_zone(target_zone)]!"),
 			)
-			display_pain(target, "Your [parse_zone(target_zone)] throbs with pain as your new [tool.name] comes to life!")
+			display_pain(target, "Your [parse_zone(target_zone)] throbs with pain as your new [tool.name] comes to life!", target_zone = target_zone) // NON-MODULE CHANGE
 		else
 			target_organ.forceMove(target.loc)
 
@@ -245,7 +245,7 @@
 				span_notice("[user] successfully extracts [target_organ] from [target]'s [parse_zone(target_zone)]!"),
 				span_notice("[user] successfully extracts something from [target]'s [parse_zone(target_zone)]!"),
 			)
-			display_pain(target, "Your [parse_zone(target_zone)] throbs with pain, you can't feel your [target_organ.name] anymore!")
+			display_pain(target, "Your [parse_zone(target_zone)] throbs with pain, you can't feel your [target_organ.name] anymore!", target_zone = target_zone) // NON-MODULE CHANGE
 			log_combat(user, target, "surgically removed [target_organ.name] from", addition="COMBAT MODE: [uppertext(user.combat_mode)]")
 			target_organ.Remove(target)
 			target_organ.forceMove(get_turf(target))

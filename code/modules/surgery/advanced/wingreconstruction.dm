@@ -35,7 +35,7 @@
 		span_notice("[user] begins to fix [target]'s charred wing membranes."),
 		span_notice("[user] begins to perform surgery on [target]'s charred wing membranes."),
 	)
-	display_pain(target, "Your wings sting like hell!")
+	display_pain(target, "Your wings sting like hell!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/wing_reconstruction/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(ishuman(target))
@@ -47,7 +47,7 @@
 			span_notice("[user] successfully reconstructs [target]'s wings!"),
 			span_notice("[user] completes the surgery on [target]'s wings."),
 		)
-		display_pain(target, "You can feel your wings again!")
+		display_pain(target, "You can feel your wings again!", target_zone = target_zone) // NON-MODULE CHANGE
 		var/obj/item/organ/external/wings/moth/wings = target.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
 		if(istype(wings, /obj/item/organ/external/wings/moth)) //make sure we only heal moth wings.
 			wings.heal_wings(user, ALL)

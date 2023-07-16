@@ -48,14 +48,12 @@
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
 		carbon_holder.set_pain_mod(PAIN_MOD_QUIRK, 1.2)
-	ADD_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	RegisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT), PROC_REF(cause_body_pain))
 
 /datum/quirk/allodynia/remove()
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
 		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
-	REMOVE_TRAIT(quirk_holder, TRAIT_EXTRA_PAIN, ROUNDSTART_TRAIT)
 	UnregisterSignal(quirk_holder, list(COMSIG_LIVING_GET_PULLED, COMSIG_CARBON_HELP_ACT))
 
 /**
@@ -74,7 +72,7 @@
 		return
 
 	to_chat(quirk_holder, span_danger("[toucher] touches you, causing a wave of sharp pain throughout your [parse_zone(toucher.zone_selected)]!"))
-	actually_hurt(deprecise_zone(toucher.zone_selected), 9)
+	actually_hurt(toucher.zone_selected, 9)
 
 /**
  * Actually cause the pain to the target limb, causing a visual effect, emote, and a negative moodlet.
@@ -89,6 +87,6 @@
 
 	new /obj/effect/temp_visual/annoyed(quirk_holder.loc)
 	carbon_holder.cause_pain(zone, amount)
-	INVOKE_ASYNC(quirk_holder, TYPE_PROC_REF(/mob, emote), pick(PAIN_EMOTES))
+	INVOKE_ASYNC(quirk_holder, TYPE_PROC_REF(/mob/living, pain_emote))
 	quirk_holder.add_mood_event("bad_touch", /datum/mood_event/very_bad_touch)
 	COOLDOWN_START(src, time_since_last_touch, 30 SECONDS)

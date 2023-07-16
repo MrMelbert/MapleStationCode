@@ -41,7 +41,7 @@
 		span_notice("[user] begins to make an incision in [target]'s heart."),
 		span_notice("[user] begins to make an incision in [target]'s heart."),
 	)
-	display_pain(target, "You feel a horrendous pain in your heart, it's almost enough to make you pass out!")
+	display_pain(target, "You feel a horrendous pain in your heart, it's almost enough to make you pass out!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/incise_heart/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(ishuman(target))
@@ -95,7 +95,7 @@
 		span_notice("[user] begins to graft something onto [target]'s heart!"),
 		span_notice("[user] begins to graft something onto [target]'s heart!"),
 	)
-	display_pain(target, "The pain in your chest is unbearable! You can barely take it anymore!")
+	display_pain(target, "The pain in your chest is unbearable! You can barely take it anymore!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/coronary_bypass/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	target.setOrganLoss(ORGAN_SLOT_HEART, 60)
@@ -109,7 +109,7 @@
 		span_notice("[user] finishes grafting something onto [target]'s heart."),
 		span_notice("[user] finishes grafting something onto [target]'s heart."),
 	)
-	display_pain(target, "The pain in your chest throbs, but your heart feels better than ever!")
+	display_pain(target, "The pain in your chest throbs, but your heart feels better than ever!", target_zone = target_zone) // NON-MODULE CHANGE
 	return ..()
 
 /datum/surgery_step/coronary_bypass/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
@@ -122,7 +122,7 @@
 			span_warning("[user] screws up, causing blood to spurt out of [target_human]'s chest profusely!"),
 			span_warning("[user] screws up, causing blood to spurt out of [target_human]'s chest profusely!"),
 		)
-		display_pain(target, "Your chest burns; you feel like you're going insane!")
+		display_pain(target, "Your chest burns; you feel like you're going insane!", target_zone = target_zone) // NON-MODULE CHANGE
 		target_human.adjustOrganLoss(ORGAN_SLOT_HEART, 20)
 		var/obj/item/bodypart/target_bodypart = target_human.get_bodypart(target_zone)
 		target_bodypart.adjustBleedStacks(30)

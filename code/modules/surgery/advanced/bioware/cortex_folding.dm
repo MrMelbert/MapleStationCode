@@ -33,7 +33,7 @@
 		span_notice("[user] starts folding [target]'s outer cerebral cortex into a fractal pattern."),
 		span_notice("[user] begins to perform surgery on [target]'s brain."),
 	)
-	display_pain(target, "Your head throbs with gruesome pain, it's nearly too much to handle!")
+	display_pain(target, "Your head throbs with gruesome pain, it's nearly too much to handle!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/fold_cortex/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	display_results(
@@ -43,7 +43,7 @@
 		span_notice("[user] folds [target]'s outer cerebral cortex into a fractal pattern!"),
 		span_notice("[user] completes the surgery on [target]'s brain."),
 	)
-	display_pain(target, "Your brain feels stronger... more flexible!")
+	display_pain(target, "Your brain feels stronger... more flexible!", target_zone = target_zone) // NON-MODULE CHANGE
 	new /datum/bioware/cortex_fold(target)
 	return ..()
 
@@ -56,7 +56,7 @@
 			span_warning("[user] screws up, damaging the brain!"),
 			span_notice("[user] completes the surgery on [target]'s brain."),
 		)
-		display_pain(target, "Your brain throbs with intense pain; thinking hurts!")
+		display_pain(target, "Your brain throbs with intense pain; thinking hurts!", target_zone = target_zone) // NON-MODULE CHANGE
 		target.adjustOrganLoss(ORGAN_SLOT_BRAIN, 60)
 		target.gain_trauma_type(BRAIN_TRAUMA_SEVERE, TRAUMA_RESILIENCE_LOBOTOMY)
 	else

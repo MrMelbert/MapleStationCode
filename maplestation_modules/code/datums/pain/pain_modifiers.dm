@@ -50,7 +50,7 @@
 // Loigcally, you shouldn't feel any pain on stasis, since all of your body systems are frozen
 // However, for balance this kneecaps surgery by making it a no-brainer to use stasis
 //
-// As a result, I'm opting to add just a decent pain modifier instead
+// As a result, I'm opting to add just a "decent" pain modifier instead
 /datum/status_effect/grouped/stasis/on_apply()
 	. = ..()
 	if(ishuman(owner))
@@ -63,6 +63,7 @@
 		human_owner.unset_pain_mod(id)
 	return ..()
 
+// Determination gives a hefty pain modifier
 /datum/status_effect/determined/on_apply()
 	. = ..()
 	if(ishuman(owner))
@@ -75,18 +76,20 @@
 		human_owner.unset_pain_mod(id)
 	return ..()
 
+// Being drunk gives a slight one, note the actual reagent gives one based on its strength
 /datum/status_effect/inebriated/drunk/on_apply()
 	. = ..()
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		human_owner.set_pain_mod(PAIN_MOD_DRUNK, 0.9)
+		human_owner.set_pain_mod(id, 0.9)
 
 /datum/status_effect/inebriated/drunk/on_remove()
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		human_owner.unset_pain_mod(PAIN_MOD_DRUNK)
+		human_owner.unset_pain_mod(id)
 	return ..()
 
+// Being drowsy gives a very slight one
 /datum/status_effect/drowsiness/on_apply()
 	. = ..()
 	if(ishuman(owner))
@@ -98,3 +101,12 @@
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.unset_pain_mod(id)
 	return ..()
+
+// Reacting to all cases of gaining knocked out rather than just sleeping
+/mob/living/on_knockedout_trait_gain(datum/source)
+	. = ..()
+	set_pain_mod(PAIN_MOD_KOD, 0.8)
+
+/mob/living/on_knockedout_trait_loss(datum/source)
+	. = ..()
+	unset_pain_mod(PAIN_MOD_KOD)
