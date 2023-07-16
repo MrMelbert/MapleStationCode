@@ -8,8 +8,7 @@
 	icon = 'maplestation_modules/icons/obj/clothing/masks.dmi'
 	icon_state = "cardinal" // placeholder so missing icons shuts up
 	worn_icon = 'maplestation_modules/icons/mob/clothing/masks.dmi'
-	/* lefthand_file = 'maplestation_modules/icons/mob/inhands/clothing/masks_lefthand.dmi'
-	righthand_file = 'maplestation_modules/icons/mob/inhands/clothing/masks_righthand.dmi'  */ // not really gonna bother making these unless i'm in a particularly creative mood Yellow TODO: actually make these
+	inhand_icon_state = null
 
 /obj/item/clothing/mask/breath/ornithid/cardinal
 	name = "cardinal mask"
