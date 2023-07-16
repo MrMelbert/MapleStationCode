@@ -340,7 +340,7 @@ const LoadoutPreviewSection = (props, context) => {
                 color="good"
                 tooltip="Confirm loadout and exit UI."
                 tooltipPosition="bottom"
-                onClick={() => act('close_ui', { revert: 0 })}
+                onClick={() => act('close_ui')}
               />
             </Stack.Item>
             <Stack.Item>
