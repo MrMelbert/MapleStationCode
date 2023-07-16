@@ -39,7 +39,7 @@
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value
 
-/* /datum/preference/choiced/tail_avian // more unused code.
+/datum/preference/choiced/tail_avian
 	savefile_key = "feature_avian_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
@@ -55,13 +55,12 @@
 		list("FRONT", "BEHIND"),
 		)
 
-
 /datum/preference/choiced/tail_avian/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_avian"] = value
 
 /datum/preference/choiced/tail_avian/create_default_value()
 	var/datum/sprite_accessory/tails/avian/tail = /datum/sprite_accessory/tails/avian
-	return initial(tail.name) */
+	return initial(tail.name)
 
 /datum/preference/choiced/plumage
 	main_feature_name = "Plumage"

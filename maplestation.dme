@@ -5518,6 +5518,7 @@
 #include "maplestation_modules\code\modules\clothing\head\jobs.dm"
 #include "maplestation_modules\code\modules\clothing\head\loadout_helmet.dm"
 #include "maplestation_modules\code\modules\clothing\head\misc.dm"
+#include "maplestation_modules\code\modules\clothing\masks\ornithid_masks.dm"
 #include "maplestation_modules\code\modules\clothing\neck\coconut_bra.dm"
 #include "maplestation_modules\code\modules\clothing\shoes\digi_shoes.dm"
 #include "maplestation_modules\code\modules\clothing\shoes\loadout_shoes.dm"

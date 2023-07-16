@@ -71,3 +71,19 @@
 ///datum/loadout_item/mask/gum
 	//name = "Gum"
 	//item_path = /obj/item/food/bubblegum
+
+/datum/loadout_item/mask/avianmask_cardinal
+	name = "Cardinal Mask"
+	item_path = /obj/item/clothing/mask/breath/ornithid/cardinal
+
+/datum/loadout_item/mask/avianmask_secretary
+	name = "Secretary Bird Mask"
+	item_path = /obj/item/clothing/mask/breath/ornithid/secretary
+
+/datum/loadout_item/mask/avianmask_toucan
+	name = "Toucan Mask"
+	item_path = /obj/item/clothing/mask/breath/ornithid/toucan
+
+/datum/loadout_item/mask/avianmask_bluejay
+	name = "Blue Jay Mask"
+	item_path = /obj/item/clothing/mask/breath/ornithid/bluejay
