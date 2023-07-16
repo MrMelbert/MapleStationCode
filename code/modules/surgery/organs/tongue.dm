@@ -166,6 +166,8 @@
 
 /datum/action/item_action/organ_action/statue/Trigger(trigger_flags)
 	. = ..()
+	if(!.)
+		return
 	if(!iscarbon(owner))
 		to_chat(owner, span_warning("Your body rejects the powers of the tongue!"))
 		return
@@ -201,6 +203,7 @@
 		becoming_statue.forceMove(statue)
 		statue.update_integrity(becoming_statue.health)
 		RegisterSignal(becoming_statue, COMSIG_MOVABLE_MOVED, PROC_REF(human_left_statue))
+	return TRUE
 
 	//somehow they used an exploit/teleportation to leave statue, lets clean up
 /datum/action/item_action/organ_action/statue/proc/human_left_statue(atom/movable/mover, atom/oldloc, direction)
