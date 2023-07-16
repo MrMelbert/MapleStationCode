@@ -35,9 +35,9 @@
 
 // Keys for pain modifiers
 #define PAIN_MOD_CHEMS "chems"
-#define PAIN_MOD_DRUNK "drunk"
 #define PAIN_MOD_LYING "lying"
 #define PAIN_MOD_NEAR_DEATH "near-death"
+#define PAIN_MOD_KOD "ko-d"
 #define PAIN_MOD_RECENT_SHOCK "recently-shocked"
 #define PAIN_MOD_QUIRK "quirk"
 #define PAIN_MOD_SPECIES "species"

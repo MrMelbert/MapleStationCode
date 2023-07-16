@@ -596,11 +596,11 @@
 
 		if(standard_effect_prob > 0)
 			if(SPT_PROB(standard_effect_prob, seconds_per_tick))
-				parent.adjust_stutter_up_to(4 SECONDS * pain_modifier, 12 SECONDS)
+				parent.adjust_stutter_up_to(10 SECONDS * pain_modifier, 30 SECONDS)
 			if(SPT_PROB(standard_effect_prob, seconds_per_tick))
-				parent.adjust_jitter_up_to(10 SECONDS * pain_modifier, 40 SECONDS)
+				parent.adjust_jitter_up_to(20 SECONDS * pain_modifier, 60 SECONDS)
 			if(SPT_PROB(standard_effect_prob, seconds_per_tick))
-				parent.adjust_dizzy_up_to(4 SECONDS * pain_modifier, 12 SECONDS)
+				parent.adjust_dizzy_up_to(10 SECONDS * pain_modifier, 30 SECONDS)
 				if(curr_pain >= 70)
 					parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 			if(SPT_PROB(standard_effect_prob * 1.2, seconds_per_tick) && parent.getStaminaLoss() <= 80)
@@ -642,8 +642,27 @@
 			if(SPT_PROB(very_rare_effect_prob, seconds_per_tick))
 				parent.adjust_confusion_up_to(8 SECONDS, 24 SECONDS)
 
-	if(!IS_IN_STASIS(parent) && !parent.on_fire && parent.stat == CONSCIOUS)
-		decay_pain(seconds_per_tick)
+	// Finally, handle pain decay over time
+	if(IS_IN_STASIS(parent) || parent.on_fire || parent.stat == DEAD)
+		return
+
+	// Decay every 5 ticks / 10 seconds, or 2 ticks / 4 seconds if "sleeping"
+	var/every_x_ticks = HAS_TRAIT(parent, TRAIT_KNOCKEDOUT) ? 2 : 5
+
+	natural_decay_counter++
+	if(natural_decay_counter % every_x_ticks != 0)
+		return
+
+	natural_decay_counter = 0
+	if(COOLDOWN_FINISHED(src, time_since_last_pain_loss) && parent.stat == CONSCIOUS)
+		// 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
+		natural_pain_decay = max(natural_pain_decay - 0.016, -1)
+	else
+		natural_pain_decay = base_pain_decay
+
+	// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
+	var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
+	adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
 
 /**
  * Whenever we buckle to something or lie down, get a pain bodifier.
@@ -676,28 +695,6 @@
 	// The more firestacks, the more pain we apply per burn tick, up to 2 per tick per bodypart.
 	// We can be liberal with this because when they're extinguished most of it will go away.
 	parent.apply_status_effect(/datum/status_effect/pain_from_fire, clamp(parent.fire_stacks * 0.2, 0, 2))
-
-/**
- * Natural pain healing of all of our bodyparts per five process ticks / 10 seconds.
- *
- * Slowly increases overtime if the [parent] has not experienced pain in a minute.
- * Multiplied by the pain modifier, up to 3x decay.
- */
-/datum/pain/proc/decay_pain(seconds_per_tick)
-	natural_decay_counter++
-	if(natural_decay_counter % 5 != 0) // every 10 seconds
-		return
-
-	natural_decay_counter = 0
-	if(COOLDOWN_FINISHED(src, time_since_last_pain_loss))
-		// 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
-		natural_pain_decay = max(natural_pain_decay - 0.016, -1)
-	else
-		natural_pain_decay = base_pain_decay
-
-	// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
-	var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
-	adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
 
 /**
  * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
