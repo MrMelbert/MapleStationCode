@@ -19,7 +19,7 @@
 	name = "\improper Malheur Research buckled loafers"
 	desc = "Ordinary loafers, but they appear to be made with a reinforced leather. Must be standard wear for Malheur Research Uniforms."
 	icon_state = "loafers"
-	equip_delay_other = 50
+	equip_delay_other = 5 SECONDS
 	icon = 'maplestation_modules/story_content/laurence_equipment/icons/laurclothes_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/laurence_equipment/icons/laurclothes_worn.dmi'
 
