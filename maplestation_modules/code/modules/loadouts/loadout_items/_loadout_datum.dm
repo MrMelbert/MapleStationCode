@@ -86,9 +86,9 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 /// Helper to add a tooltip to our tooltip list.
 /// If inverse_order is TRUE, we will add to the front instead of the back.
 /datum/loadout_item/proc/add_tooltip(tooltip, inverse_order = FALSE)
-	if(!additional_tooltip_contents)
-		additional_tooltip_contents = list()
+	LAZYINITLIST(additional_tooltip_contents)
 
+	// No lazyinsert unfortunately
 	if(inverse_order)
 		additional_tooltip_contents.Insert(1, tooltip)
 	else
@@ -182,3 +182,46 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  */
 /datum/loadout_item/proc/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
 	return FALSE
+
+/// Returns a formatted list of data for this loadout item, for use in UIs
+/datum/loadout_item/proc/to_ui_data()
+	RETURN_TYPE(/list)
+	SHOULD_CALL_PARENT(TRUE)
+
+	var/list/formatted_item = list()
+	formatted_item["name"] = name
+	formatted_item["path"] = item_path
+	formatted_item["buttons"] = get_ui_buttons()
+	formatted_item["tooltip_text"] = additional_tooltip_contents
+	return formatted_item
+
+/**
+ * Returns a list of UI buttons for this loadout item
+ * These will automatically be turned into buttons in the UI, according to they icon you provide
+ * act_key should match a key to handle in [handle_loadout_action] - this is how you react to the button being pressed
+ */
+/datum/loadout_item/proc/get_ui_buttons()
+	SHOULD_CALL_PARENT(TRUE)
+	RETURN_TYPE(/list)
+
+	var/list/button_list = list()
+
+	if(can_be_greyscale)
+		UNTYPED_LIST_ADD(button_list, list(
+			"icon" = FA_ICON_PALETTE,
+			"act_key" = "select_color",
+		))
+
+	if(can_be_named)
+		UNTYPED_LIST_ADD(button_list, list(
+			"icon" = FA_ICON_PEN,
+			"act_key" = "set_name",
+		))
+
+	if(can_be_reskinned)
+		UNTYPED_LIST_ADD(button_list, list(
+			"icon" = FA_ICON_THEATER_MASKS,
+			"act_key" = "set_skin",
+		))
+
+	return button_list

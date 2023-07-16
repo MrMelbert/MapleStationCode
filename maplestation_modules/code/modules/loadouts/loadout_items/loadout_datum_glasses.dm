@@ -1,7 +1,13 @@
 // --- Loadout item datums for glasses ---
 
 /// Glasses Slot Items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_glasses, generate_loadout_items(/datum/loadout_item/glasses))
+/datum/loadout_category/glasses
+	category_name = "Glasses"
+	ui_title = "Eye Slot Items"
+
+/datum/loadout_category/glasses/get_items()
+	var/static/list/loadout_glasses = generate_loadout_items(/datum/loadout_item/glasses)
+	return loadout_glasses
 
 /datum/loadout_item/glasses
 	category = LOADOUT_ITEM_GLASSES

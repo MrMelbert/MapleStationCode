@@ -129,6 +129,7 @@
 	var/static/list/bonus_languages
 
 /datum/language_picker/New(datum/preferences/prefs)
+	ASSERT(istype(prefs))
 	owner_prefs = prefs
 
 /datum/language_picker/Destroy()

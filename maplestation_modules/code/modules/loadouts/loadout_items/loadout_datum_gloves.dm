@@ -1,7 +1,13 @@
 // --- Loadout item datums for gloves ---
 
 /// Glove Slot Items (Deletes overrided items)
-GLOBAL_LIST_INIT(loadout_gloves, generate_loadout_items(/datum/loadout_item/gloves))
+/datum/loadout_category/gloves
+	category_name = "Gloves"
+	ui_title = "Glove Slot Items"
+
+/datum/loadout_category/gloves/get_items()
+	var/static/list/loadout_gloves = generate_loadout_items(/datum/loadout_item/gloves)
+	return loadout_gloves
 
 /datum/loadout_item/gloves
 	category = LOADOUT_ITEM_GLOVES

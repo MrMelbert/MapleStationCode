@@ -56,12 +56,6 @@
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	color_src = HAIR
 
-/datum/sprite_accessory/tails_animated/human/fox
-	name = "Fox"
-	icon_state = "fox"
-	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
-	color_src = HAIR
-
 /// -- Undershirts --
 /datum/sprite_accessory/undershirt/ratvarsoul
 	name = "Ratvar's Soul"

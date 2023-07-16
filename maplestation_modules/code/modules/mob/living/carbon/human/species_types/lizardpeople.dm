@@ -11,7 +11,7 @@
 
 // adds hair to the lizards.
 /datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
-	if(C.client?.prefs?.read_preference(/datum/preference/toggle/hair_lizard))
+	if(C.dna?.features["lizard_has_hair"])
 		species_traits |= HAIR
 	return ..()
 

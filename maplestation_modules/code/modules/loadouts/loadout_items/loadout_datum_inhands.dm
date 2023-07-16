@@ -1,7 +1,13 @@
 // --- Loadout item datums for inhand items ---
 
 /// Inhand items (Moves overrided items to backpack)
-GLOBAL_LIST_INIT(loadout_inhand_items, generate_loadout_items(/datum/loadout_item/inhand))
+/datum/loadout_category/inhands
+	category_name = "Inhand"
+	ui_title = "In-hand Items"
+
+/datum/loadout_category/inhands/get_items()
+	var/static/list/loadout_inhand = generate_loadout_items(/datum/loadout_item/inhand)
+	return loadout_inhand
 
 /datum/loadout_item/inhand
 	category = LOADOUT_ITEM_INHAND

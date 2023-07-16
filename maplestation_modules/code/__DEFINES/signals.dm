@@ -2,3 +2,6 @@
 /// for when you prefer something guaranteed to appear at the bottom of the stack
 /// (Flavor text should stay at the very very bottom though)
 #define COMSIG_LIVING_LATE_EXAMINE "late_examine"
+
+/// Item generating their worn icon
+#define COMSIG_ITEM_WORN_ICON_MADE "item_worn_icon_made"

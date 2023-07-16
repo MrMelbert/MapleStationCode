@@ -3,7 +3,7 @@ import { SVG_CURVE_INTENSITY } from './constants';
 import { classes } from '../../../common/react';
 
 export const Connections = (props, context) => {
-  const { connections } = props;
+  const { connections, zLayer = -1, lineWidth = '2px' } = props;
 
   const isColorClass = (str) => {
     if (typeof str === 'string') {
@@ -18,7 +18,7 @@ export const Connections = (props, context) => {
       style={{
         'position': 'absolute',
         'pointer-events': 'none',
-        'z-index': -1,
+        'z-index': zLayer,
       }}>
       {connections.map((val, index) => {
         const from = val.from;
@@ -48,7 +48,7 @@ export const Connections = (props, context) => {
             key={index}
             d={path}
             fill="transparent"
-            stroke-width="2px"
+            stroke-width={lineWidth}
           />
         );
       })}
