@@ -35,7 +35,7 @@
     AddComponent(/datum/component/toggle_icon, "tightness")
 
 // Bag time
-/obj/item/storage/bag/garment/captain/PopulateContents()
+/obj/item/storage/bag/garment/cap_cust/PopulateContents()
 	. = ..()
 	new /obj/item/clothing/under/rank/captain/malheur(src)
 	new /obj/item/clothing/gloves/captain/malheur(src)
