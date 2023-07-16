@@ -60,8 +60,7 @@
 #define DNA_HEAD_TENTACLES_BLOCK 16 // NON-MODULE CHANGE
 #define DNA_ARM_WINGS_BLOCK 17 // NON-MODULE CHANGE
 #define DNA_AVIAN_EARS_BLOCK 18 // NON-MODULE CHANGE
-#define DNA_AVIAN_TAIL_BLOCK 19 // NON-MODULE CHANGE this, alongside other ornithid tailcode is going temporarily unused because tail code sucks
-
+#define DNA_AVIAN_TAIL_BLOCK 19 // NON-MODULE CHANGE
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
 #define DNA_UNIQUE_ENZYMES_LEN 32
