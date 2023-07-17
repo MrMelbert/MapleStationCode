@@ -7,6 +7,11 @@
 #define LEYLINE_BASE_CAPACITY 600
 #define LEYLINE_BASE_RECHARGE 0.1 // Per second, we recharge this much mana
 
+#define MANA_CRYSTAL_BASE_HARDCAP 200
+#define MANA_CRYSTAL_BASE_RECHARGE 0.001
+
+#define MANA_CRYSTAL_BASE_DONATION_RATE 1
+
 #define MAGIC_MATERIAL_NAME "Volite"
 #define MAGIC_UNIT_OF_MEASUREMENT "Vol"
 #define MAGIC_UNIT_OF_MAGNITUDE "TP" // Thaumatergic Potential

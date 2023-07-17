@@ -64,6 +64,7 @@
 /datum/component/uses_mana/proc/react_to_successful_use(...)
 	SIGNAL_HANDLER
 	return
+	
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
 /datum/component/uses_mana/proc/drain_mana(list/datum/mana_pool/pools = get_available_mana(), cost = -get_mana_required(), atom/caster, ...)
 
