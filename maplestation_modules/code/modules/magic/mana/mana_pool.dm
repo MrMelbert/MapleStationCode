@@ -75,7 +75,7 @@
 		transfer_mana_to(mana_pool, transfer_rate)
 
 	// exponential decay
-	var/exp_decay_amount = ((exponential_decay_coeff)*NUM_E)**((-ln(2)/softcap)*amount) Y(d)=80\cdot e^{-\frac{\ln(2)}{5000}\cdot d}
+	var/exp_decay_amount = exponential_decay_coeff*NUM_E**((-ln(2)/softcap)*amount) Y(d)=80\cdot e^{-\frac{\ln(2)}{5000}\cdot d}
 
 /datum/mana_pool/proc/get_transfer_rate_for(datum/mana_pool/target_pool)
 	var/cached_rate = transfer_rates[target_pool]
