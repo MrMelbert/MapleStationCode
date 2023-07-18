@@ -21,12 +21,12 @@
 
 	return ..()
 
+/// Should return a list of all mana pools that this datum can access at the given moment. Defaults to returning nothing.
+/datum/proc/get_available_mana()
+	return null
 
-
-/// Should return a list of all mana pools that this datum can access at the given moment. Defaults to returning leylines.
-/datum/proc/get_available_mana(list/datum/attunement/attunements = GLOB.default_attunements)
-	RETURN_TYPE(/list/datum/mana_pool)
-	return SSmagic.get_all_leyline_mana()
+/atom/get_available_mana()
+	return mana_pool
 
 /// If this mob is casting/using something that costs mana, it should always multiply the cost against this.
 /mob/proc/get_casting_cost_mult()

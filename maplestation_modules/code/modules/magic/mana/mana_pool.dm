@@ -26,79 +26,103 @@
 	var/list/transfer_rates = list()
 	/// List of (mana_pool -> max mana we will give)
 	var/list/transfer_caps = list()
-	/// List of mana pools we are transferring mana to
+	/// List of mana_pools we are transferring mana to
 	var/list/transferring_to = list()
+	/// Assoc list of (mana_pool -> times to skip), used mostly in [start_transfer]
+	var/list/skip_transferring = list()
 
-	var/recharges
+	/// If true, if no cap is specified, we only go up to the softcap of the target when transferring
+	var/transfer_default_softcap
+
 	var/recharge_rate
 	/// The attunements our natural recharge will use
 	var/list/attunement/attunements_to_generate
 
 /datum/mana_pool/New(maximum_mana_capacity, 
 					softcap,
-					exponential_decay_coeff,
 					max_donation_rate,
+					exponential_decay_coeff = DEFAULT_MANA_POOL_EXPONENTIAL_DECAY,
 					recharge_rate = 0,
-					recharges = (recharge_rate != 0)
 					attunements = GLOB.default_attunements.Copy(),
 					attunements_to_generate = null,
+					transfer_default_softcap = TRUE,
 					amount = maximum_mana_capacity
 )
 	. = ..()
 
 	src.maximum_mana_capacity = maximum_mana_capacity
-	src.softcap = softcap
 	src.exponential_decay_coeff = exponential_decay_coeff
+	src.softcap = softcap
 	src.max_donation_rate = max_donation_rate
 	src.recharge_rate = recharge_rate
-	src.recharges = recharges
 	src.attunements = attunements
 	src.attunements_to_generate = attunements_to_generate
+	src.transfer_default_softcap = transfer_default_softcap
 	src.amount = amount
 
 	START_PROCESSING(SSmagic, src)
 
 /datum/mana_pool/Destroy(force, ...)
 	attunements = null
+	attunements_to_generate = null
+
+	QDEL_NULL(transfer_rates)
+	QDEL_NULL(transfer_caps)
+	QDEL_NULL(transferring_to)
+	QDEL_NULL(skip_transferring)
 
 	STOP_PROCESSING(SSmagic, src)
 	return ..()
 
 /datum/mana_pool/process(seconds_per_tick)
 
-	if (recharges)
+	if (recharge_rate != 0)
 		adjust_mana(recharge_rate * seconds_per_tick, attunements_to_generate)
 
 	for (datum/mana_pool/iterated_pool as anything in transferring_to)
-		var/transfer_rate = get_transfer_rate_for(iterated_pool)
+		if (skip_transferring[iterated_pool])
+			skip_transferring[iterated_pool]--
+			continue
 
-		transfer_mana_to(mana_pool, transfer_rate)
+		transfer_mana_to(mana_pool, seconds_per_tick)
 
 	// exponential decay
-	var/exp_decay_amount = exponential_decay_coeff*NUM_E**((-ln(2)/softcap)*amount) Y(d)=80\cdot e^{-\frac{\ln(2)}{5000}\cdot d}
+	if (amount < softcap)
+		adjust_mana((-NUM_E((amount - softcap - exponential_decay_coeff)/(exponential_decay_coeff))) * seconds_per_tick) // not perfect at fucking all, oh well
 
+/datum/mana_pool/proc/transfer_mana_to(datum/mana_pool/target_pool, seconds_per_tick = 1)
+	var/transfer_rate = get_transfer_rate_for(iterated_pool)
+
+	transfer_specific_mana(mana_pool, transfer_rate * seconds_per_tick)
+
+/// Returns the amount of mana we want to give in a given tick
 /datum/mana_pool/proc/get_transfer_rate_for(datum/mana_pool/target_pool)
 	var/cached_rate = transfer_rates[target_pool]
 	return min((cached_rate ? cached_rate : max_donation_rate), get_maximum_transfer_for(target_pool))
 
 /datum/mana_pool/proc/get_maximum_transfer_for(datum/mana_pool/target_pool)
 	var/cached_cap = transfer_caps[target_pool]
-	return (cached_cap ? cached_cap : max_donation_rate)
+	return (cached_cap ? cached_cap : (transfer_default_softcap ? target_pool.softcap : target_pool.maximum_mana_capacity))
 
-/datum/mana_pool/proc/transfer_mana_to(datum/mana_pool/other_pool, amount_to_transfer)
+/datum/mana_pool/proc/transfer_specific_mana(datum/mana_pool/other_pool, amount_to_transfer)
 	// ensure we dont give more than we hold and dont give more than they CAN hold
 	var/adjusted_amount = min(min(amount_to_transfer, maximum_mana_capacity), (other_pool.maximum_mana_capacity - other_pool.amount))
 	// ^^^^ TODO THIS ISNT THA TGOOD I DONT LIKE IT we should instead have remainders returned on adjust mana and plug it into the OTHER adjust mana
 
-	adjust_mana(-adjusted_amount, attunements)
+	adjust_mana(-adjusted_amount)
 	other_pool.adjust_mana(adjusted_amount, attunements)
 
 /datum/mana_pool/proc/start_transfer(datum/mana_pool/target_pool)
 	/*if (target_pool.maximum_mana_capacity <= target_pool.amount)
 		return MANA_POOL_FULL*/
 
-	transferring_to += target_pool
+	if (target_pool in transferring_to)
+		return MANA_POOL_ALREADY_TRANSFERRING
+
+	skip_transferring[target_pool] = TRUE
 	RegisterSignal(target_pool, COMSIG_PARENT_QDELETING, PROC_REF(stop_transfer))
+	transfer_mana_to(target_pool)
+
 	return MANA_POOL_TRANSFER_START
 
 /datum/mana_pool/proc/stop_transfer(datum/mana_pool/target_pool)
@@ -116,7 +140,7 @@
 /// Mana pools in general will eventually be refactored to be lists of individual mana pieces with unchanging attunements,
 /// so this is not permanent.
 /// Returns how much of "amount" was used.
-/datum/mana_pool/proc/adjust_mana(amount, list/incoming_attunements = GLOB.default_attunements)
+/datum/mana_pool/proc/adjust_mana(amount, list/incoming_attunements)
 
 	/*if (src.amount == 0)
 		CRASH("src.amount was ZERO in [src]'s adjust_quanity") //why would this happen
@@ -124,15 +148,17 @@
 	if (amount == 0)
 		return amount
 
-	/*var/ratio
-	if (src.amount == 0)
-		ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS
-	else
-		ratio = amount/src.amount*/
+	if (!isnull(incoming_attunements))
 
-	/*for (var/iterated_attunement as anything in incoming_attunements)
-	// equation formed in desmos, dosent work
-		attunements[iterated_attunement] += (((incoming_attunements[iterated_attunement]) - attunements[iterated_attunement]) * (ratio/2)) */
+		/*var/ratio
+		if (src.amount == 0)
+			ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS
+		else
+			ratio = amount/src.amount*/
+
+		/*for (var/iterated_attunement as anything in incoming_attunements)
+		// equation formed in desmos, dosent work
+			attunements[iterated_attunement] += (((incoming_attunements[iterated_attunement]) - attunements[iterated_attunement]) * (ratio/2)) */
 
 	var/result = clamp(src.amount + amount, 0, maximum_mana_capacity)
 	. = result - src.amount // Return the amount that was used

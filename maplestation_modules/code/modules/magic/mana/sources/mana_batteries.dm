@@ -20,11 +20,6 @@
 		amount = generate_initial_amount(max)
 	)
 
-	return modify_mana_pool(pool)
-
-/obj/item/mana_battery/proc/modify_mana_pool(datum/mana_pool/pool)
-	RETURN_TYPE(datum/mana_pool)
-
 	return pool
 
 /obj/item/mana_battery/proc/generate_max_capacity()
@@ -34,7 +29,7 @@
 	return max
 
 /obj/item/mana_battery/proc/generate_initial_exp_coeff()
-	return 1
+	return DEFAULT_MANA_POOL_EXPONENTIAL_DECAY
 
 /obj/item/mana_battery/proc/generate_recharge_rate()
 	return 0
@@ -56,12 +51,16 @@
 	if (.)
 		return TRUE
 
+	if (!user.mana_pool)
+		balloon_alert(user, "you have no mana pool!")
+		return FALSE
+
 	var/already_transferring = (user in mana_pool.transferring_to)
 	var/results
 	if (already_transferring)
-		results = mana_pool.stop_transfer(user)
+		results = mana_pool.stop_transfer(user.mana_pool)
 	else
-		results = mana_pool.start_transfer(user)
+		results = mana_pool.start_transfer(user.mana_pool)
 
 // Do not use, basetype
 /obj/item/mana_battery/mana_crystal

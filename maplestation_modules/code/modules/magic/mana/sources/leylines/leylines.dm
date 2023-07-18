@@ -4,11 +4,6 @@
 /datum/mana_pool/leyline
 	var/datum/leyline_intensity/intensity
 
-	var/recharge_rate
-	/// The attunements we will attempt to constantly add to ourselves.
-	var/list/attunement/attunements_to_generate
-
-	recharges = TRUE
 
 /datum/mana_pool/leyline/New()
 	intensity = generate_initial_intensity()
@@ -28,7 +23,7 @@
 	return ..()
 
 /datum/mana_pool/leyline/process(seconds_per_tick)
-	adjust_mana(recharge_rate * seconds_per_tick, attunements_to_generate) //recharge
+	. = ..()
 
 /// GETTERS / SETTERS
 
