@@ -95,10 +95,11 @@
 	// can only decay however much amount we are over softcap
 	// imperfect as of now - min(((amount - softcap)/ softcap), 1)) should probably be rounded to either 0 or 1
 	if (amount < softcap)
-		adjust_mana(max(-((((NUM_E**((amount - softcap)/exponential_decay_divisor)) * min(((amount - softcap)/ softcap), 1))) * seconds_per_tick), (softcap - amount))) // almost works
-		// in desmos: f\left(x\right)=\left(\left(-\left(e\right)^{\left(\frac{\left(x-t\right)}{c}\right)}\right)\cdot\left(\frac{\left(x-t\right)}{t}\right)\right)
+		adjust_mana(max(-((((NUM_E**((amount - softcap)/exponential_decay_divisor)) * min(((amount - softcap)/softcap), 1))) * seconds_per_tick), (softcap - amount))) // almost works
+		// in desmos: f\left(x\right)=\max\left(\left(\left(-\left(e\right)^{\left(\frac{\left(x-t\right)}{c}\right)}\right)\cdot h\right),\ \left(t-x\right)\right)
 		// t=50
 		// c=150
+		// h=\min\left(\frac{x-t}{t},\ 1\right)
 
 /datum/mana_pool/proc/transfer_mana_to(datum/mana_pool/target_pool, seconds_per_tick = 1)
 	var/transfer_rate = get_transfer_rate_for(iterated_pool)
