@@ -17,7 +17,7 @@
 	/// The threshold at which mana begins decaying exponentially.
 	// TODO: convert to some kind of list for multiple softcaps?
 	var/softcap
-	var/exponential_decay_coeff
+	var/exponential_decay_divisor
 
 	/// The rate at which we can give mana to any given mana pool
 	var/max_donation_rate
@@ -41,7 +41,7 @@
 /datum/mana_pool/New(maximum_mana_capacity, 
 					softcap,
 					max_donation_rate,
-					exponential_decay_coeff = DEFAULT_MANA_POOL_EXPONENTIAL_DECAY,
+					exponential_decay_divisor = DEFAULT_MANA_POOL_EXPONENTIAL_DECAY,
 					recharge_rate = 0,
 					attunements = GLOB.default_attunements.Copy(),
 					attunements_to_generate = null,
@@ -51,7 +51,7 @@
 	. = ..()
 
 	src.maximum_mana_capacity = maximum_mana_capacity
-	src.exponential_decay_coeff = exponential_decay_coeff
+	src.exponential_decay_divisor = exponential_decay_divisor
 	src.softcap = softcap
 	src.max_donation_rate = max_donation_rate
 	src.recharge_rate = recharge_rate
@@ -74,6 +74,10 @@
 	STOP_PROCESSING(SSmagic, src)
 	return ..()
 
+// order of operations is as follows:
+// 1. we recharge
+// 2. we transfer mana
+// 3. we discharge excess mana
 /datum/mana_pool/process(seconds_per_tick)
 
 	if (recharge_rate != 0)
@@ -87,8 +91,14 @@
 		transfer_mana_to(mana_pool, seconds_per_tick)
 
 	// exponential decay
+	// exponentially decays amount when amount surpasses softcap, with [exponential_decay_divisor] being the (inverse) decay factor
+	// can only decay however much amount we are over softcap
+	// imperfect as of now - min(((amount - softcap)/ softcap), 1)) should probably be rounded to either 0 or 1
 	if (amount < softcap)
-		adjust_mana((-NUM_E((amount - softcap - exponential_decay_coeff)/(exponential_decay_coeff))) * seconds_per_tick) // not perfect at fucking all, oh well
+		adjust_mana(max(-((((NUM_E**((amount - softcap)/exponential_decay_divisor)) * min(((amount - softcap)/ softcap), 1))) * seconds_per_tick), (softcap - amount))) // almost works
+		// in desmos: f\left(x\right)=\left(\left(-\left(e\right)^{\left(\frac{\left(x-t\right)}{c}\right)}\right)\cdot\left(\frac{\left(x-t\right)}{t}\right)\right)
+		// t=50
+		// c=150
 
 /datum/mana_pool/proc/transfer_mana_to(datum/mana_pool/target_pool, seconds_per_tick = 1)
 	var/transfer_rate = get_transfer_rate_for(iterated_pool)

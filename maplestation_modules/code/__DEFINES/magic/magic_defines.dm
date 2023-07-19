@@ -3,7 +3,7 @@
 #define BASE_STORY_MAGIC_CAST_COST_MULT 1
 #define NO_CATALYST_COST_MULT 4
 
-#define DEFAULT_MANA_POOL_EXPONENTIAL_DECAY 6
+#define DEFAULT_MANA_POOL_EXPONENTIAL_DECAY 120 // careful with this value - low numbers will cause some fuckery
 // Assumes we are at average leyline intensity
 #define LEYLINE_BASE_CAPACITY 600
 #define LEYLINE_BASE_RECHARGE 0.1 // Per second, we recharge this much man
