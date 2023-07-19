@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
+
 // defines in _module_defines.dm
 
 /// The lines of latent energy that run under the universe. Available to all people in the game. Should be high capacity, but slow to recharge.
@@ -13,12 +15,12 @@
 	recharge_rate = generate_recharge_rate()
 	attunements_to_generate = generate_attunements()
 
-	SSmagic.start_processing_leyline(src)
+	all_leylines += src
 
 /datum/mana_pool/leyline/Destroy(force, ...)
-	SSmagic.stop_processing_leyline(src)
-
 	QDEL_NULL(intensity)
+
+	all_leylines -= src
 
 	return ..()
 
@@ -42,6 +44,11 @@
 	return new picked_intensity
 
 /datum/mana_pool/leyline/proc/generate_attunements()
-	RETURN_TYPE(/list/attunement)
+	RETURN_TYPE(/list/datum/attunement)
 
 	return GLOB.default_attunements.Copy()
+
+/datum/proc/get_accessable_leylines()
+	RETURN_TYPE(/list/datum/mana_pool/leyline)
+
+	return GLOB.all_leylines.Copy()

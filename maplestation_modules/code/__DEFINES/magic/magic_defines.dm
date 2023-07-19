@@ -3,15 +3,29 @@
 #define BASE_STORY_MAGIC_CAST_COST_MULT 1
 #define NO_CATALYST_COST_MULT 4
 
-#define DEFAULT_MANA_POOL_EXPONENTIAL_DECAY 120 // careful with this value - low numbers will cause some fuckery
 // Assumes we are at average leyline intensity
-#define LEYLINE_BASE_CAPACITY 600
 #define LEYLINE_BASE_RECHARGE 0.1 // Per second, we recharge this much man
 
 #define MANA_CRYSTAL_BASE_HARDCAP 200
 #define MANA_CRYSTAL_BASE_RECHARGE 0.001
 
-#define MANA_CRYSTAL_BASE_DONATION_RATE 1
+#define BASE_MANA_CAPACITY 1000
+#define MANA_CRYSTAL_BASE_MANA_CAPACITY (BASE_MANA_CAPACITY * 0.2)
+#define CARBON_BASE_MANA_CAPACITY (BASE_MANA_CAPACITY)
+#define LEYLINE_BASE_CAPACITY 600 //todo: standardize
+
+// inverse - higher numbers decrease the intensity of the decay
+#define BASE_MANA_EXPONENTIAL_DIVISOR 60 // careful with this value - low numbers will cause some fuckery
+#define BASE_CARBON_MANA_EXPONENTIAL_DIVISOR (BASE_MANA_EXPONENTIAL_DIVISOR * 0.5)
+#define MANA_CRYSTAL_BASE_DECAY_DIVISOR (BASE_MANA_EXPONENTIAL_DIVISOR * 5)
+
+// in vols per second
+#define BASE_MANA_DONATION_RATE (BASE_MANA_CAPACITY * 0.5)
+#define BASE_MANA_CRYSTAL_DONATION_RATE (BASE_MANA_DONATION_RATE * 0.1)
+
+#define BASE_MANA_SOFTCAP_PERCENT_OF_MAX .20 //20 percent
+#define BASE_MANA_CRYSTAL_SOFTCAP_PERCENT 1 //100 percent, so max
+#define BASE_CARBON_MANA_SOFTCAP_PERCENT (BASE_MANA_SOFTCAP_PERCENT_OF_MAX)
 
 #define MAGIC_MATERIAL_NAME "Volite"
 #define MAGIC_UNIT_OF_MEASUREMENT "Vol"

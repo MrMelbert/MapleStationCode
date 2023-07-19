@@ -7,10 +7,8 @@
 	src.mana_pool = generate_mana_pool()
 
 /obj/item/mana_battery/initialize_mana_pool()
-	PRIVATE_PROC(TRUE)
-
 	var/max = generate_max_capacity()
-	var/datum/mana_pool/pool = datum/mana_pool(
+	var/datum/mana_pool/pool = /datum/mana_pool(
 		maximum_mana_capacity = max,
 		softcap = generate_initial_softcap(max),
 		exponential_decay_coeff = generate_initial_exp_coeff(),
@@ -35,7 +33,7 @@
 	return 0
 
 /obj/item/mana_battery/generate_initial_attunements()
-	RETURN_TYPE(/list/attunement)
+	RETURN_TYPE(/list/datum/attunement)
 
 	return GLOB.default_attunements.Copy()
 
