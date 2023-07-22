@@ -8,6 +8,8 @@
 
 /// An abstract representation of collections of mana, as it's impossible to represent each individual mana unit
 /datum/mana_pool
+	var/atom/parent = null
+
 	/// As attunements on mana is actually a tangible thing, and not just a preference, mana attunements should never go below zero.
 	var/list/datum/attunement/attunements
 
@@ -24,13 +26,15 @@
 	var/donation_budget_this_tick
 
 	/// List of (mob -> transfer rate)
-	var/list/transfer_rates = list()
+	var/list/datum/mana_pool/transfer_rates = list()
 	/// List of (mana_pool -> max mana we will give)
-	var/list/transfer_caps = list()
+	var/list/datum/mana_pool/transfer_caps = list()
 	/// List of mana_pools we are transferring mana to
-	var/list/transferring_to = list()
+	var/list/datum/mana_pool/transferring_to = list()
+	/// List of mana_pools transferring to us
+	var/list/datum/mana_pool/transferring_from = list()
 	/// Assoc list of (mana_pool -> times to skip), used mostly in [start_transfer]
-	var/list/skip_transferring = list()
+	var/list/datum/mana_pool/skip_transferring = list()
 
 	/// If true, if no cap is specified, we only go up to the softcap of the target when transferring
 	var/transfer_default_softcap
@@ -38,7 +42,7 @@
 	/// The natural regen rate, detached from transferrals.
 	var/ethereal_recharge_rate
 
-	var/list/datum/mana_pool/intrinsic_recharge_sources
+	var/intrinsic_recharge_sources = MANA_ALL_LEYLINES
 
 	var/discharge_destinations = MANA_ALL_LEYLINES
 	var/discharge_method = MANA_DISCHARGE_SEQUENTIAL
@@ -79,6 +83,7 @@
 	QDEL_NULL(transfer_caps)
 	QDEL_NULL(transferring_to)
 	QDEL_NULL(skip_transferring)
+	QDEL_NULL(transferring_from) // we already have a signal registered, so if we qdel we stop transfers
 
 	STOP_PROCESSING(SSmagic, src)
 	return ..()
@@ -95,8 +100,13 @@
 		adjust_mana(ethereal_recharge_rate * seconds_per_tick, attunements_to_generate)
 
 	for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+		if (!can_transfer(iterated_pool))
+			transferring_to -= iterated_pool
+			skip_transferring -= iterated_pool
+			continue
+
 		if (skip_transferring[iterated_pool])
-			skip_transferring[iterated_pool]--
+			skip_transferring -= iterated_pool
 			continue
 
 		transfer_mana_to(iterated_pool, seconds_per_tick)
@@ -156,10 +166,17 @@
 	/*if (target_pool.maximum_mana_capacity <= target_pool.amount)
 		return MANA_POOL_FULL*/
 
+	if (!can_transfer(target_pool))
+		return MANA_POOL_CANNOT_TRANSFER
+
 	if (target_pool in transferring_to)
 		return MANA_POOL_ALREADY_TRANSFERRING
 
 	skip_transferring[target_pool] = TRUE
+
+	transferring_to += target_pool
+	target_pool.incoming_transfer_start(src)
+
 	RegisterSignal(target_pool, COMSIG_PARENT_QDELETING, PROC_REF(stop_transfer))
 	transfer_mana_to(target_pool)
 
@@ -169,9 +186,17 @@
 	SIGNAL_HANDLER
 
 	transferring_to -= target_pool
+	target_pool.incoming_transfer_end(src)
+
 	UnregisterSignal(target_pool, COMSIG_PARENT_QDELETING)
 
 	return MANA_POOL_TRANSFER_STOP
+
+/datum/mana_pool/proc/incoming_transfer_start(datum/mana_pool/donator)
+	transferring_from += donator
+
+/datum/mana_pool/proc/incoming_transfer_end(datum/mana_pool/donator)
+	transferring_from -= donator
 
 // TODO BIG FUCKING WARNING THIS EQUATION DOSENT WORK AT ALL
 // Should be fine as long as nothing actually has any attunements
@@ -219,6 +244,14 @@
 /datum/mana_pool/proc/get_overall_attunement_mults(list/attunements, atom/caster)
 	return get_total_attunement_mult(src.attunements, attunements, caster)
 
+/datum/mana_pool/proc/can_transfer(datum/mana_pool/target_pool)
+	SHOULD_BE_PURE(TRUE)
+
+	return TRUE
+
 /datum/mana_pool/proc/update_intrinsic_recharge()
+	if (intrinsic_recharge_sources & MANA_ALL_LEYLINES)
+		for (var/datum/mana_pool/leyline/entry as anything in get_accessable_leylines())
+			entry.start_transfer(src)
 
 #undef MANA_POOL_REPLACE_ALL_ATTUNEMENTS

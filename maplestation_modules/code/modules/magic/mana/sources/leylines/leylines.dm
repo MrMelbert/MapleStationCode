@@ -1,7 +1,7 @@
 GLOBAL_LIST_INIT_TYPED(all_leylines, /datum/mana_pool/leyline, generate_initial_leylines())
 
 /proc/generate_initial_leylines()
-	RETURN_TYPE(list/datum/mana_pool/leyline)
+	RETURN_TYPE(/list/datum/mana_pool/leyline)
 
 	var/list/mana_pool/leyline/leylines = list()
 
@@ -10,7 +10,7 @@ GLOBAL_LIST_INIT_TYPED(all_leylines, /datum/mana_pool/leyline, generate_initial_
 		leylines += generate_leyline()
 
 /proc/generate_leyline()
-	RETURN_TYPE(list/datum/mana_pool/leyline)
+	RETURN_TYPE(/list/datum/mana_pool/leyline)
 
 
 
@@ -22,9 +22,8 @@ GLOBAL_LIST_INIT_TYPED(all_leylines, /datum/mana_pool/leyline, generate_initial_
 
 	discharge_destinations = NONE
 
-
 /datum/mana_pool/leyline/New(
-					intensity = generate_initial_intensity()
+					intensity = generate_initial_intensity(),
 					maximum_mana_capacity = (LEYLINE_BASE_CAPACITY * intensity.overall_mult),
 					softcap = maximum_mana_capacity,
 					max_donation_rate = (LEYLINE_BASE_DONATION_RATE * intensity.overall_mult),
@@ -35,18 +34,9 @@ GLOBAL_LIST_INIT_TYPED(all_leylines, /datum/mana_pool/leyline, generate_initial_
 					transfer_default_softcap = TRUE,
 					amount = maximum_mana_capacity,
 )
-	intensity = generate_initial_intensity()
-
 	GLOB.all_leylines += src
 
-	return ..(
-		maximum_mana_capacity = intensity_capacity(),
-		max_donation_rate = intensity_donation(),
-
-	)
-
-	ethereal_recharge_rate = intensity_recharge_rate()
-	attunements_to_generate = generate_attunements()
+	return ..()
 
 
 /datum/mana_pool/leyline/Destroy(force, ...)
@@ -78,4 +68,16 @@ GLOBAL_LIST_INIT_TYPED(all_leylines, /datum/mana_pool/leyline, generate_initial_
 /datum/proc/get_accessable_leylines()
 	RETURN_TYPE(/list/datum/mana_pool/leyline)
 
-	return GLOB.all_leylines.Copy()
+	var/list/datum/mana_pool/leyline/accessable_leylines = list()
+
+	for (var/datum/mana_pool/leyline/entry as anything in GLOB.all_leylines)
+		if (entry.can_entity_access(src))
+			accessable_leylines += entry
+
+	return accessable_leylines
+
+/datum/proc/can_access_leyline(datum/mana_pool/leyline/leyline_in_question)
+	return TRUE
+
+/datum/mana_pool/leyline/proc/can_entity_access(datum/entity)
+	return entity.can_access_leyline(src)

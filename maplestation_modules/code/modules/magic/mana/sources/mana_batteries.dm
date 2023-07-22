@@ -1,5 +1,23 @@
+/datum/mana_pool/mana_battery
+
+/datum/mana_pool/mana_battery/can_transfer(datum/mana_pool/target_pool)
+	if (QDELETED(target_pool.parent))
+		return TRUE
+
+	var/obj/item/mana_battery/battery = parent
+
+	if (battery.loc == target_pool.parent.loc)
+		return TRUE
+
+	if (get_dist(battery, target_pool.parent) > battery.max_allowed_transfer_distance)
+		return TRUE
+
+	return FALSE
+
 /obj/item/mana_battery
 	name = "generic mana battery"
+
+	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
 
 /obj/item/mana_battery/Initialize(mapload)
 	. = ..()
