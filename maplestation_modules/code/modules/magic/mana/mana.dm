@@ -43,7 +43,7 @@
 	return 0
 
 /atom/proc/generate_initial_attunements()
-	RETURN_TYPE(/list/attunement)
+	RETURN_TYPE(/list/datum/attunement)
 
 	return GLOB.default_attunements.Copy()
 

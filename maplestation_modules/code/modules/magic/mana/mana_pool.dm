@@ -43,7 +43,7 @@
 	var/discharge_destinations = MANA_ALL_LEYLINES
 	var/discharge_method = MANA_DISCHARGE_SEQUENTIAL
 	/// The attunements our natural recharge will use
-	var/list/attunement/attunements_to_generate
+	var/list/datum/attunement/attunements_to_generate
 
 /datum/mana_pool/New(maximum_mana_capacity,
 					softcap,
@@ -220,6 +220,5 @@
 	return get_total_attunement_mult(src.attunements, attunements, caster)
 
 /datum/mana_pool/proc/update_intrinsic_recharge()
-
 
 #undef MANA_POOL_REPLACE_ALL_ATTUNEMENTS

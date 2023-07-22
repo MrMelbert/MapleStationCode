@@ -5,10 +5,6 @@ PROCESSING_SUBSYSTEM_DEF(magic)
 	wait = MAGIC_SUBSYSTEM_FIRE_RATE
 	priority = FIRE_PRIORITY_MAGIC
 
-	/// The intrinsic, underlying lines of transient magic in the universe.
-	/// Only a list for future changes. V1 will not have deep leyline simulation, only global variables
-	var/list/datum/mana_holder/leyline/leylines = list()
-
 /datum/controller/subsystem/processing/magic/Initialize()
 	. = ..()
 
