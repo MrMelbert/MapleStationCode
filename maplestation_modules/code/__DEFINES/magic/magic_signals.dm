@@ -1,0 +1,1 @@
+#define COMSIG_MANA_POOL_INTRINSIC_RECHARGE_UPDATE "mana_pool_intrinsic_recharge_update"

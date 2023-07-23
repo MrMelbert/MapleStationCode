@@ -1,69 +1,78 @@
-GLOBAL_LIST_INIT_TYPED(all_leylines, /datum/mana_pool/leyline, generate_initial_leylines())
+GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
 
 /proc/generate_initial_leylines()
 	RETURN_TYPE(/list/datum/mana_pool/leyline)
 
-	var/list/mana_pool/leyline/leylines = list()
+	var/list/datum/mana_pool/leyline/leylines = list()
 
 	var/leylines_to_generate = get_initial_leyline_amount()
 	while (leylines_to_generate-- > 0)
 		leylines += generate_leyline()
 
+	return leylines
+
+/proc/get_initial_leyline_amount()
+	var/datum/leyline_amount/leyline_amount = pick_weight(GLOB.leyline_amounts)
+	return initial(leyline_amount.amount)
+
 /proc/generate_leyline()
-	RETURN_TYPE(/list/datum/mana_pool/leyline)
+	RETURN_TYPE(/datum/mana_pool/leyline)
 
-
-
-// defines in _module_defines.dm
+	return new /datum/mana_pool/leyline()
 
 /// The lines of latent energy that run under the universe. Available to all people in the game. Should be high capacity, but slow to recharge.
 /datum/mana_pool/leyline
-	var/datum/leyline_intensity/intensity
+	var/datum/leyline_variable/leyline_intensity/intensity
+	var/list/datum/leyline_variable/attunement_theme/themes
+
+	maximum_mana_capacity = LEYLINE_BASE_CAPACITY
+
+	ethereal_recharge_rate = LEYLINE_BASE_RECHARGE
+	max_donation_rate_per_second = BASE_LEYLINE_DONATION_RATE
+
+	transfer_method = MANA_DISPERSE_EVENLY
 
 	discharge_destinations = NONE
 
-/datum/mana_pool/leyline/New(
-					intensity = generate_initial_intensity(),
-					maximum_mana_capacity = (LEYLINE_BASE_CAPACITY * intensity.overall_mult),
-					softcap = maximum_mana_capacity,
-					max_donation_rate = (LEYLINE_BASE_DONATION_RATE * intensity.overall_mult),
-					exponential_decay_divisor = BASE_MANA_EXPONENTIAL_DIVISOR,
-					ethereal_recharge_rate = (LEYLINE_BASE_RECHARGE * intensity.overall_mult),
-					attunements = GLOB.default_attunements.Copy(),
-					attunements_to_generate = null,
-					transfer_default_softcap = TRUE,
-					amount = maximum_mana_capacity,
-)
+/datum/mana_pool/leyline/New()
 	GLOB.all_leylines += src
+
+	intensity = generate_initial_intensity()
+	themes = generate_initial_themes()
+
+	for (var/datum/leyline_variable/attunement_theme/theme as anything in themes)
+		theme.adjust_attunements(attunements_to_generate)
+
+	maximum_mana_capacity *= (intensity.overall_mult)
+	softcap = maximum_mana_capacity
+
+	ethereal_recharge_rate *= (intensity.overall_mult)
+	max_donation_rate_per_second *= (intensity.overall_mult)
+
+	amount = maximum_mana_capacity
 
 	return ..()
 
+/datum/mana_pool/leyline/generate_initial_attunements()
+	return attunements_to_generate.Copy()
+
+/datum/mana_pool/leyline/proc/generate_initial_intensity()
+	return new pick_weight(GLOB.leyline_intensities)
+
+/datum/mana_pool/leyline/proc/generate_initial_themes()
+	var/list/datum/leyline_variable/attunement_theme/themes = get_random_attunement_themes()
+
+	return themes
 
 /datum/mana_pool/leyline/Destroy(force, ...)
 	QDEL_NULL(intensity)
+	QDEL_LIST(themes)
 
 	GLOB.all_leylines -= src
 
 	return ..()
 
-/datum/mana_pool/leyline/process(seconds_per_tick)
-	. = ..()
-
 /// GETTERS / SETTERS
-
-// TODO: CHANGE THIS LATER. I want this shit to be RANDOM. Im just bad at MATH.
-/datum/mana_pool/leyline/proc/intensity_capacity()
-	return LEYLINE_BASE_CAPACITY * intensity.overall_mult
-
-/datum/mana_pool/leyline/proc/intensity_donation()
-	return LEYLINE_BASE_DONATION_RATE * intensity.overall_mult
-
-/datum/mana_pool/leyline/proc/intensity_recharge_rate()
-	return LEYLINE_BASE_RECHARGE * intensity.overall_mult
-
-/datum/mana_pool/leyline/proc/generate_initial_intensity()
-	var/datum/leyline_intensity/picked_intensity = pick_weight(GLOB.leyline_intensities)
-	return new picked_intensity
 
 /datum/proc/get_accessable_leylines()
 	RETURN_TYPE(/list/datum/mana_pool/leyline)

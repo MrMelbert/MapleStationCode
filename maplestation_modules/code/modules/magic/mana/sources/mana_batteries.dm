@@ -17,49 +17,11 @@
 /obj/item/mana_battery
 	name = "generic mana battery"
 
+	has_initial_mana_pool = TRUE
 	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
 
-/obj/item/mana_battery/Initialize(mapload)
-	. = ..()
-
-	src.mana_pool = generate_mana_pool()
-
-/obj/item/mana_battery/initialize_mana_pool()
-	var/max = generate_max_capacity()
-	var/datum/mana_pool/pool = /datum/mana_pool(
-		maximum_mana_capacity = max,
-		softcap = generate_initial_softcap(max),
-		exponential_decay_coeff = generate_initial_exp_coeff(),
-		max_donation_rate = generate_donation_rate(max),
-		recharge_rate = generate_recharge_rate(),
-		attunements = generate_initial_attunements(),
-		amount = generate_initial_amount(max)
-	)
-
-	return pool
-
-/obj/item/mana_battery/proc/generate_max_capacity()
-	return 0
-
-/obj/item/mana_battery/proc/generate_initial_softcap(max)
-	return max
-
-/obj/item/mana_battery/proc/generate_initial_exp_coeff()
-	return DEFAULT_MANA_POOL_EXPONENTIAL_DECAY
-
-/obj/item/mana_battery/proc/generate_recharge_rate()
-	return 0
-
-/obj/item/mana_battery/generate_initial_attunements()
-	RETURN_TYPE(/list/datum/attunement)
-
-	return GLOB.default_attunements.Copy()
-
-/obj/item/mana_battery/proc/generate_donation_rate(max)
-	return max
-
-/obj/item/mana_battery/proc/generate_initial_amount(max)
-	return max
+/obj/item/mana_battery/get_initial_mana_pool_type()
+	return /datum/mana_pool/mana_battery
 
 /obj/item/mana_battery/attack_self(mob/user, modifiers)
 	. = ..()
@@ -76,19 +38,29 @@
 	if (already_transferring)
 		results = mana_pool.stop_transfer(user.mana_pool)
 	else
-		results = mana_pool.start_transfer(user.mana_pool)
+		results = mana_pool.start_transfer(user.mana_pool, force_process = TRUE)
 
-// Do not use, basetype
 /obj/item/mana_battery/mana_crystal
 	name = MAGIC_MATERIAL_NAME + " crystal"
-	desc = "placeholder"
+	desc = "Crystalized mana." //placeholder desc
 	icon = 'icons/obj/magic/crystals.dmi' //placeholder
 
-/obj/item/mana_battery/mana_crystal/generate_max_capacity()
-	return MANA_CRYSTAL_BASE_HARDCAP
+// Do not use, basetype
+/datum/mana_pool/mana_battery/mana_crystal
 
-/obj/item/mana_battery/mana_crystal/generate_donation_rate(max)
-	return MANA_CRYSTAL_BASE_DONATION_RATE
+	maximum_mana_capacity = MANA_CRYSTAL_BASE_MANA_CAPACITY
+	softcap = maximum_mana_capacity
+
+	exponential_decay_divisor = MANA_CRYSTAL_BASE_DECAY_DIVISOR
+
+	max_donation_rate_per_second = BASE_MANA_CRYSTAL_DONATION_RATE
+
+/obj/item/mana_battery/mana_crystal/standard
+
+/obj/item/mana_battery/mana_crystal/standard/get_initial_mana_pool_type()
+	return /datum/mana_pool/mana_battery/mana_crystal/standard
+
+/datum/mana_pool/mana_battery/mana_crystal/standard // basically, just, bog standard, none of the variables need to be changed
 
 /obj/item/mana_battery/mana_crystal/small
 	icon_state = '' //placeholder

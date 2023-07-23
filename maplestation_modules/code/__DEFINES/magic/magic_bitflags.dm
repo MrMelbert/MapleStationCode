@@ -1,3 +1,5 @@
+#define ATOM_HAS_INITIAL_MANA_POOL ()
+
 #define NO_MANA_POOL (1<<0)
 #define MANA_POOL_FULL (1<<1)
 
@@ -6,3 +8,5 @@
 
 #define MANA_POOL_ALREADY_TRANSFERRING (1<<4)
 #define MANA_POOL_CANNOT_TRANSFER (1<<5)
+
+#define MANA_POOL_TRANSFER_SKIP_ACTIVE (1<<6)

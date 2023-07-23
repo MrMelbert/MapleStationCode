@@ -10,65 +10,59 @@
 /datum/mana_pool
 	var/atom/parent = null
 
-	/// As attunements on mana is actually a tangible thing, and not just a preference, mana attunements should never go below zero.
+	// As attunements on mana is actually a tangible thing, and not just a preference, mana attunements should never go below zero.
+	/// A abstract representation of the attunements of [amount]. This is just an abstraction of the overall bias of all stored mana - in reality, every Vol has its own attunement.
 	var/list/datum/attunement/attunements
 
-	/// In vols
-	var/amount
-	var/maximum_mana_capacity
+	// In vols
+	/// The absolute maximum [amount] we can hold. Under no circumstances should [amount] ever exceed this value.
+	var/maximum_mana_capacity = BASE_MANA_CAPACITY
+	/// The abstract representation of how many "Vols" this mana pool currently contains.
+	/// Capped at [maximum_mana_capacity], begins decaying exponentially when above [softcap].
+	var/amount = maximum_mana_capacity
 	/// The threshold at which mana begins decaying exponentially.
 	// TODO: convert to some kind of list for multiple softcaps?
-	var/softcap
-	var/exponential_decay_divisor
+	var/softcap = BASE_MANA_SOFTCAP
+	/// The divisor used in exponential decay when [amount] surpasses [softcap]. Lower = A steeper decay curve.
+	var/exponential_decay_divisor = BASE_MANA_EXPONENTIAL_DIVISOR
 
-	/// The rate at which we can give mana to any given mana pool
-	var/max_donation_rate
-	var/donation_budget_this_tick
+	/// The maximum mana we can transfer per second. [donation_budget_per_tick] is set to this, times seconds_per_tick, every process tick.
+	var/max_donation_rate_per_second = BASE_MANA_DONATION_RATE
+	/// The maximum mana we can transfer for this tick. Is used to cap our mana output per tick. Calculated with [max_donation_rate_per_second] * seconds_per_tick.
+	VAR_PROTECTED/donation_budget_this_tick = max_donation_rate_per_second
 
-	/// List of (mob -> transfer rate)
+	/// List of (mana_pool -> transfer rate)
 	var/list/datum/mana_pool/transfer_rates = list()
 	/// List of (mana_pool -> max mana we will give)
 	var/list/datum/mana_pool/transfer_caps = list()
-	/// List of mana_pools we are transferring mana to
+	/// List of (mana_pool -> mana_pool_process_bitflags). Holds pools we are transferring to.
 	var/list/datum/mana_pool/transferring_to = list()
 	/// List of mana_pools transferring to us
 	var/list/datum/mana_pool/transferring_from = list()
-	/// Assoc list of (mana_pool -> times to skip), used mostly in [start_transfer]
-	var/list/datum/mana_pool/skip_transferring = list()
+	/// The priority method we will use to transfer mana to all that we are trying to transfer into. Uses defines from magic_charge_bitflags.dm
+	var/transfer_method = MANA_SEQUENTIAL
 
 	/// If true, if no cap is specified, we only go up to the softcap of the target when transferring
-	var/transfer_default_softcap
+	var/transfer_default_softcap = TRUE
 
-	/// The natural regen rate, detached from transferrals.
-	var/ethereal_recharge_rate
+	/// The natural regen rate, detached from transferrals. Mana generated via this comes from nothing.
+	var/ethereal_recharge_rate = 0
+	/// If we have an ethereal recharge rate,i ths is the attunement set that will be given to the generated mana.
+	var/list/datum/attunement/attunements_to_generate = list()
 
+	/// The mana pool types we will try to discharge excess mana (from exponential decay) into. Uses defines from magic_charge_bitflags.dm.
+	var/discharge_destinations = MANA_ALL_LEYLINES
+	/// The priority method we will use to transfer mana to [discharge_destination] mana pools. Any given type does not guarantee all destinations will receive mana if they are full.
+	/// Uses defines from magic_charge_bitflags.dm.
+	var/discharge_method = MANA_SEQUENTIAL
+
+	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
 	var/intrinsic_recharge_sources = MANA_ALL_LEYLINES
 
-	var/discharge_destinations = MANA_ALL_LEYLINES
-	var/discharge_method = MANA_DISCHARGE_SEQUENTIAL
-	/// The attunements our natural recharge will use
-	var/list/datum/attunement/attunements_to_generate
-
-/datum/mana_pool/New(maximum_mana_capacity,
-					softcap,
-					max_donation_rate,
-					exponential_decay_divisor = BASE_MANA_EXPONENTIAL_DIVISOR,
-					ethereal_recharge_rate = 0,
-					attunements = GLOB.default_attunements.Copy(),
-					attunements_to_generate = null,
-					transfer_default_softcap = TRUE,
-					amount = maximum_mana_capacity
-)
+/datum/mana_pool/New(atom/parent = null, amount = maximum_mana_capacity)
 	. = ..()
 
-	src.maximum_mana_capacity = maximum_mana_capacity
-	src.exponential_decay_divisor = exponential_decay_divisor
-	src.softcap = softcap
-	src.max_donation_rate = max_donation_rate
-	src.ethereal_recharge_rate = ethereal_recharge_rate
-	src.attunements = attunements
-	src.attunements_to_generate = attunements_to_generate
-	src.transfer_default_softcap = transfer_default_softcap
+	src.parent = parent
 	src.amount = amount
 
 	update_intrinsic_recharge()
@@ -82,11 +76,22 @@
 	QDEL_NULL(transfer_rates)
 	QDEL_NULL(transfer_caps)
 	QDEL_NULL(transferring_to)
-	QDEL_NULL(skip_transferring)
 	QDEL_NULL(transferring_from) // we already have a signal registered, so if we qdel we stop transfers
 
 	STOP_PROCESSING(SSmagic, src)
+
+	if (parent.mana_pool != src)
+		stack_trace("[parent].mana_pool was not [src] when src had parent registered!")
+	else
+		parent.mana_pool = null
+	parent = null
+
 	return ..()
+
+/datum/mana_pool/proc/generate_initial_attunements()
+	RETURN_TYPE(/list/datum/attunement)
+
+	return GLOB.default_attunements.Copy()
 
 // order of operations is as follows:
 // 1. we recharge
@@ -94,22 +99,39 @@
 // 3. we discharge excess mana
 /datum/mana_pool/process(seconds_per_tick)
 
-	donation_budget_this_tick = max_donation_rate
+	donation_budget_this_tick = (max_donation_rate_per_second * seconds_per_tick) //TODO: stop float imprecision
 
 	if (ethereal_recharge_rate != 0)
 		adjust_mana(ethereal_recharge_rate * seconds_per_tick, attunements_to_generate)
 
-	for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
-		if (!can_transfer(iterated_pool))
-			transferring_to -= iterated_pool
-			skip_transferring -= iterated_pool
-			continue
+	switch (transfer_method)
+		if (MANA_SEQUENTIAL)
+			for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+				if (amount <= 0 || donation_budget_this_tick <= 0)
+					break
+				if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
+					transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
+					continue
 
-		if (skip_transferring[iterated_pool])
-			skip_transferring -= iterated_pool
-			continue
+				transfer_mana_to(iterated_pool, seconds_per_tick)
 
-		transfer_mana_to(iterated_pool, seconds_per_tick)
+		if (MANA_DISPERSE_EVENLY)
+			var/mana_to_disperse = (donation_budget_this_tick / length(transferring_to))
+
+			for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+				if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
+					transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
+					continue
+
+				transfer_specific_mana(iterated_pool, mana_to_disperse)
+			// ...
+
+	if (parent)
+		if (amount < parent.mana_overload_threshold)
+			var/effect_mult = (((amount / parent.mana_overload_threshold) - 1) * parent.mana_overload_coefficient)
+			parent.process_mana_overload(effect_mult, seconds_per_tick)
+		else if (parent.mana_overloaded)
+			parent.stop_mana_overload()
 
 	if (amount < softcap)
 	// exponential decay
@@ -127,7 +149,11 @@
 
 			switch (discharge_method)
 				if (MANA_DISPERSE_EVENLY)
-					// ...
+					var/mana_to_disperse = (exponential_decay / length(pools_to_discharge_into))
+
+					for (var/datum/mana_pool/iterated_pool as anything in pools_to_discharge_into)
+						transfer_specific_mana(iterated_pool, -mana_to_disperse, FALSE)
+
 				if (MANA_SEQUENTIAL)
 					for (var/datum/mana_pool/iterated_pool as anything in pools_to_discharge_into)
 						exponential_decay -= transfer_specific_mana(iterated_pool, -exponential_decay, FALSE)
@@ -138,9 +164,7 @@
 
 /// Perform a "natural" transfer where we use the default transfer rate, capped by the usual math
 /datum/mana_pool/proc/transfer_mana_to(datum/mana_pool/target_pool, seconds_per_tick = 1)
-	var/transfer_rate = get_transfer_rate_for(target_pool)
-
-	return transfer_specific_mana(target_pool, transfer_rate * seconds_per_tick)
+	return transfer_specific_mana(target_pool, get_transfer_rate_for(target_pool) * seconds_per_tick)
 
 /// Returns the amount of mana we want to give in a given tick
 /datum/mana_pool/proc/get_transfer_rate_for(datum/mana_pool/target_pool)
@@ -162,9 +186,13 @@
 	adjust_mana(-adjusted_amount)
 	return other_pool.adjust_mana(adjusted_amount, attunements)
 
-/datum/mana_pool/proc/start_transfer(datum/mana_pool/target_pool)
+/datum/mana_pool/proc/start_transfer(datum/mana_pool/target_pool, force_process = FALSE)
 	/*if (target_pool.maximum_mana_capacity <= target_pool.amount)
 		return MANA_POOL_FULL*/
+
+	if (target_pool == src)
+		stack_trace("start_transfer called where target_pool was src!")
+		return MANA_POOL_CANNOT_TRANSFER
 
 	if (!can_transfer(target_pool))
 		return MANA_POOL_CANNOT_TRANSFER
@@ -172,18 +200,21 @@
 	if (target_pool in transferring_to)
 		return MANA_POOL_ALREADY_TRANSFERRING
 
-	skip_transferring[target_pool] = TRUE
-
-	transferring_to += target_pool
 	target_pool.incoming_transfer_start(src)
 
 	RegisterSignal(target_pool, COMSIG_PARENT_QDELETING, PROC_REF(stop_transfer))
-	transfer_mana_to(target_pool)
+
+	if (force_process)
+		transferring_to[target_pool] |= MANA_POOL_SKIP_NEXT_TRANSFER
+		transfer_mana_to(target_pool) // you can potentially get all you need instantly
 
 	return MANA_POOL_TRANSFER_START
 
-/datum/mana_pool/proc/stop_transfer(datum/mana_pool/target_pool)
+/datum/mana_pool/proc/stop_transfer(datum/mana_pool/target_pool, forced = FALSE)
 	SIGNAL_HANDLER
+
+	if (!forced && !QDELETED(target_pool) && (transferring_to[target_pool] & MANA_POOL_SKIP_NEXT_TRANSFER))
+		return MANA_POOL_TRANSFER_SKIP_ACTIVE // nope!
 
 	transferring_to -= target_pool
 	target_pool.incoming_transfer_end(src)
@@ -249,9 +280,66 @@
 
 	return TRUE
 
-/datum/mana_pool/proc/update_intrinsic_recharge()
+/datum/mana_pool/proc/set_intrinsic_recharge(new_bitflags)
+	var/old_flags = intrinsic_recharge_sources
+	intrinsic_recharge_sources |= new_bitflags
+	update_intrinsic_recharge(old_flags)
+
+/datum/mana_pool/proc/update_intrinsic_recharge(previous_recharge_sources = NONE)
 	if (intrinsic_recharge_sources & MANA_ALL_LEYLINES)
-		for (var/datum/mana_pool/leyline/entry as anything in get_accessable_leylines())
-			entry.start_transfer(src)
+		for (var/datum/mana_pool/leyline/entry as anything in (get_accessable_leylines() - src))
+
+			if (entry.start_transfer(src) & MANA_POOL_ALREADY_TRANSFERRING)
+				continue
+
+			transferring_from[entry] |= MANA_POOL_INTRINSIC
+
+	else if (previous_recharge_sources & MANA_ALL_LEYLINES)
+		for (var/datum/mana_pool/leyline/entry in transferring_from)
+
+			if (!(transferring_from[entry] & MANA_POOL_INTRINSIC))
+				continue
+
+			entry.stop_transfer(src)
+
+	SEND_SIGNAL(src, COMSIG_MANA_POOL_INTRINSIC_RECHARGE_UPDATE, previous_recharge_sources)
+
+/datum/mana_pool/proc/set_natural_recharge(new_value)
+	ethereal_recharge_rate = new_value
+	if ((ethereal_recharge_rate > 0) && isnull(attunements_to_generate))
+		attunements_to_generate = get_default_attunements_to_generate()
+
+/datum/mana_pool/proc/get_default_attunements_to_generate()
+	RETURN_TYPE(/list/datum/attunement)
+
+	return GLOB.default_attunements.Copy()
+
+/datum/mana_pool/proc/set_max_mana(new_max, change_amount = FALSE, change_softcap = TRUE)
+	var/percent = get_percent_to_max()
+
+	if (change_softcap)
+		var/softcap_percent = get_percent_of_softcap_to_max()
+		softcap = new_max * (softcap_percent / 100)
+
+	if (change_amount)
+		var/percent = get_percent_to_max()
+		amount = new_max * (percent / 100)
+
+	maximum_mana_capacity = new_max
+
+/datum/mana_pool/proc/get_percent_to_max()
+	SHOULD_BE_PURE(TRUE)
+
+	return (amount / maximum_mana_capacity) * 100
+
+/datum/mana_pool/proc/get_percent_to_softcap()
+	SHOULD_BE_PURE(TRUE)
+
+	return (amount / softcap) * 100
+
+/datum/mana_pool/proc/get_percent_of_softcap_to_max()
+	SHOULD_BE_PURE(TRUE)
+
+	return (softcap / maximum_mana_capacity) * 100
 
 #undef MANA_POOL_REPLACE_ALL_ATTUNEMENTS
