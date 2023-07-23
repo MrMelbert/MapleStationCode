@@ -44,6 +44,7 @@
 
 /obj/item/clothing/under/spacer_turtleneck/plain
 	name = "spacer's uniform"
+	desc = "An old ship uniform from the days of spacefarers past. In the old days, engineering wore red and command wore gold. Bears similarity to what would become the Syndicate's tactical turtleneck."
 	icon_state = "turtlefool"
 
 /obj/item/clothing/under/spacer_turtleneck/skirt
@@ -56,5 +57,6 @@
 
 /obj/item/clothing/under/spacer_turtleneck/skirt/plain
 	name = "spacer's skirt"
+	desc = "An old ship uniform from the days of spacefarers past. In the old days, engineering wore red and command wore gold. And women wore less."
 	icon_state = "turtlefool_skirt"
 
