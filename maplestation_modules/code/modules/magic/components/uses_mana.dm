@@ -10,72 +10,136 @@
 */
 /// Designates the item it's added to as something that "uses mana".
 /datum/component/uses_mana
+	var/datum/callback/get_mana_callback
+	var/datum/callback/activate_check_failure_callback
 
-/// Should return a list of attunements. Defaults to GLOB.default_attunements.
-/datum/component/uses_mana/proc/get_attunement_dispositions()
-	return GLOB.default_attunements.Copy()
+	var/datum/callback/get_mana_required_callback
+	var/datum/callback/get_mana_consumed_callback
 
-/// If we have consistant attunements, this should be used to modify them.
-/datum/component/uses_mana/proc/modify_attunements(list/datum/attunement/incoming_attunements)
-	return
+	var/datum/callback/get_user_callback
+
+	var/list/datum/attunement/attunements
+
+	var/pre_use_check_comsig
+	var/post_use_comsig
+
+/datum/component/uses_mana/Initialize(
+	datum/callback/get_mana_callback,
+	datum/callback/activate_check_failure_callback,
+	pre_use_check_comsig,
+	post_use_comsig,
+	datum/callback/get_mana_required_callback,
+	datum/callback/get_mana_consumed_callback,
+	datum/callback/get_user_callback,
+	list/datum/attunement/attunements,
+)
+	. = ..()
+
+	if (isnull(pre_use_check_comsig) || isnull(post_use_comsig))
+		return COMPONENT_INCOMPATIBLE
+
+	if (!isatom(parent) && isnull(get_mana_callback))
+		return COMPONENT_INCOMPATIBLE
+
+	if (isnull(get_mana_required_callback) && isnull(get_mana_consumed_callback))
+		return COMPONENT_INCOMPATIBLE
+
+	src.get_mana_callback = get_mana_callback
+
+	if (isnull(get_mana_to_use()))
+		return COMPONENT_INCOMPATIBLE
+
+	src.activate_check_failure_callback = activate_check_failure_callback
+	src.attunements = attunements
+
+	src.get_mana_required_callback = get_mana_required_callback
+	src.get_mana_consumed_callback = get_mana_consumed_callback
+
+	src.get_user_callback = get_user_callback
+
+	src.pre_use_check_comsig = pre_use_check_comsig
+	src.post_use_comsig = post_use_comsig
+
+/datum/component/uses_mana/RegisterWithParent()
+	. = ..()
+
+	RegisterSignal(parent, pre_use_check_comsig, PROC_REF(can_activate_check))
+	RegisterSignal(parent, post_use_comsig, PROC_REF(react_to_successful_use))
+
+/datum/component/uses_mana/UnregisterFromParent()
+	. = ..()
+
+	UnregisterSignal(parent, pre_use_check_comsig)
+	UnregisterSignal(parent, post_use_comsig)
+
+/datum/component/uses_mana/proc/get_mana_to_use()
+	if (!isnull(get_mana_callback))
+		return get_mana_callback.Invoke()
+	var/atom/atom_parent = parent
+	return atom_parent.mana_pool
 
 // TODO: Do I need the vararg?
 /// Should return the numerical value of mana needed to use whatever it is we're using. Unaffected by attunements.
-/datum/component/uses_mana/proc/get_mana_required(...)
-	return 0
+/datum/component/uses_mana/proc/get_mana_required()
+	if (!isnull(get_mana_required_callback))
+		return get_mana_required_callback.Invoke()
+	return get_mana_consumed()
 
-/datum/component/uses_mana/get_available_mana(list/datum/attunement/attunements)
-	return parent.get_available_mana(attunements)
+/datum/component/uses_mana/proc/get_mana_consumed()
+	return get_mana_consumed_callback.Invoke()
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
-/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana, atom/caster)
+/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana = list(get_mana_to_use), atom/caster)
 	var/total_effective_mana = 0
-	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
+
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
-		total_effective_mana += iterated_pool.get_attuned_amount(our_attunements, caster)
+		total_effective_mana += iterated_pool.get_attuned_amount(attunements, caster)
 	if (total_effective_mana > get_mana_required())
 		return TRUE
 
+/// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
+/datum/component/uses_mana/proc/drain_mana(cost = -get_mana_consumed())
+
+	var/mob/user = get_user_callback.Invoke()
+
+	var/mana_consumed = get_mana_consumed()
+	if (!mana_consumed)
+		return
+
+	var/datum/mana_pool/pool = get_mana_to_use()
+
+	var/mult = pool.get_overall_attunement_mults(attunements, user)
+	var/attuned_cost = (cost * mult)
+	cost -= SAFE_DIVIDE(pool.adjust_mana((attuned_cost)), mult)
+
+	if (cost != 0)
+		stack_trace("cost: [cost] was not 0 after drain_mana on [src]!")
+
 /// Should be the raw conditional we use for determining if the thing that "uses mana" can actually
 /// activate the behavior that "uses mana".
-/datum/component/uses_mana/proc/can_activate(atom/caster, ...)
-	return is_mana_sufficient(get_available_mana(), caster)
+/datum/component/uses_mana/proc/can_activate(atom/caster)
+	return is_mana_sufficient(get_mana_to_use(), caster)
 
 /// Wrapper for can_activate(). Should return a bitflag that will be passed down to the signal sender on failure.
 /datum/component/uses_mana/proc/can_activate_check(give_feedback = TRUE, atom/caster, ...)
+	SIGNAL_HANDLER
+
 	var/list/argss = args.Copy(2)
 	var/can_activate = can_activate(arglist(argss)) //doesnt return this + can_activate_check_... because returning TRUE/FALSE can gave bitflag implications
 	if (!can_activate)
 		return can_activate_check_failure(arglist(args.Copy()))
 
 /// What can_activate_check returns apon failing to activate.
-/datum/component/uses_mana/proc/can_activate_check_failure(give_feedback, ...)
-	PROTECTED_PROC(TRUE)
-	if (give_feedback)
-		give_unable_to_activate_feedback(arglist(args.Copy(2)))
+/datum/component/uses_mana/proc/can_activate_check_failure(...)
+	SIGNAL_HANDLER
+	activate_check_failure_callback?.Invoke(arglist(args))
 	return FALSE
-
-/// If called, should give feedback to the user of the magic, telling them why it failed.
-/datum/component/uses_mana/proc/give_unable_to_activate_feedback(...)
-	PROTECTED_PROC(TRUE)
-	return
 
 /// Should react to a post-use signal given by the parent, and ideally subtract mana, or something.
 /datum/component/uses_mana/proc/react_to_successful_use(...)
 	SIGNAL_HANDLER
+
+	drain_mana()
+
 	return
-	
-/// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
-/datum/component/uses_mana/proc/drain_mana(list/datum/mana_pool/pools = get_available_mana(), cost = -get_mana_required(), atom/caster, ...)
-
-	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
-	for (var/datum/mana_pool/iterated_pool as anything in pools)
-		var/mult = iterated_pool.get_overall_attunement_mults(our_attunements, caster)
-		var/attuned_cost = cost * mult
-		cost -= SAFE_DIVIDE(iterated_pool.adjust_mana((attuned_cost)), mult)
-		if (cost == 0)
-			break
-	if (cost != 0)
-		stack_trace("cost: [cost] was not 0 after react_to_successful_use on [src]")
-
 

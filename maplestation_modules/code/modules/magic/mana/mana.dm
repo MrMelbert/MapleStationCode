@@ -14,6 +14,8 @@
 		mana_pool = initialize_mana_pool()
 
 /atom/Destroy(force, ...)
+
+	set_mana_pool(null)
 	QDEL_NULL(mana_pool)
 
 	return ..()
@@ -36,6 +38,8 @@
 	if (!can_have_mana_pool(new_pool))
 		return FALSE
 
+	SEND_SIGNAL(src, COMSIG_ATOM_MANA_POOL_CHANGED, mana_pool, new_pool)
+
 	if (mana_pool)
 		// do stuff like replacement
 	mana_pool = new_pool
@@ -43,6 +47,19 @@
 	if (isnull(mana_pool))
 		if (mana_overloaded)
 			stop_mana_overload()
+
+/atom/proc/get_mana_pool_lazy()
+
+	if (!can_have_mana_pool())
+		return null
+
+	initialize_mana_pool_if_possible()
+
+	return mana_pool
+
+/atom/proc/initialize_mana_pool_if_possible()
+	if (isnull(mana_pool) && can_have_mana_pool())
+		mana_pool = initialize_mana_pool()
 
 // arg nulalble
 /atom/proc/can_have_mana_pool(datum/mana_pool/new_pool)
@@ -67,4 +84,3 @@
 	var/obj/held_item = src.get_active_held_item()
 	if (!held_item)
 		. *= NO_CATALYST_COST_MULT
-
