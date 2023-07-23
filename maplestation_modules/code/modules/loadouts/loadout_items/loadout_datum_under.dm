@@ -120,6 +120,22 @@
 	name = "Deep Red Shirt"
 	item_path = /obj/item/clothing/under/jumpsuit/albertshirt
 
+/datum/loadout_item/under/jumpsuit/spacer_uniform
+	name = "Spacer's Uniform"
+	item_path = /obj/item/clothing/under/spacer_turtleneck/plain
+
+/datum/loadout_item/under/jumpsuit/spacer_turtleneck
+	name = "Spacer's Turtleneck"
+	item_path = /obj/item/clothing/under/spacer_turtleneck
+
+/datum/loadout_item/under/jumpsuit/spacer_uniform_skirt
+	name = "Spacer's Skirt"
+	item_path = /obj/item/clothing/under/spacer_turtleneck/skirt/plain
+
+/datum/loadout_item/under/jumpsuit/spacer_turtleneck_skirt
+	name = "Spacer's Skirtleneck"
+	item_path = /obj/item/clothing/under/spacer_turtleneck/skirt
+
 // formal undersuits
 /datum/loadout_item/under/formal
 

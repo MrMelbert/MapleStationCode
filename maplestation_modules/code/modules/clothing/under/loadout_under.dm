@@ -29,3 +29,32 @@
 	name = "tailored jumpskirt"
 	desc = "A tailor made custom jumpskirt."
 	greyscale_colors = "#eeeeee"
+
+/obj/item/clothing/under/spacer_turtleneck //skyrat's turtleneck, but recolorable, ported from starbloom
+	name = "spacer's turtleneck"
+	desc = "An old ship uniform from the days of spacefarers past. Bears similarity to what would become the Syndicate's tactical turtleneck."
+	icon = 'maplestation_modules/icons/obj/clothing/under/spacer_turtleneck.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/under/spacer_turtleneck.dmi'
+	icon_state = "turtleneck"
+	greyscale_config = /datum/greyscale_config/spacer_turtleneck
+	greyscale_config_worn = /datum/greyscale_config/spacer_turtleneck_worn
+	greyscale_colors = "#5e483c#1c1c1c#4fb4e6"
+	alt_covers_chest = TRUE
+	flags_1 = IS_PLAYER_COLORABLE_1
+
+/obj/item/clothing/under/spacer_turtleneck/plain
+	name = "spacer's uniform"
+	icon_state = "turtlefool"
+
+/obj/item/clothing/under/spacer_turtleneck/skirt
+	name = "spacer's skirtleneck"
+	desc = "An old ship uniform from the days of spacefarers past. Bears similarity to what would become the Syndicate's tactical skirtleneck."
+	icon_state = "turtleneck_skirt"
+	body_parts_covered = CHEST|GROIN|ARMS
+	dying_key = DYE_REGISTRY_JUMPSKIRT
+	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
+
+/obj/item/clothing/under/spacer_turtleneck/skirt/plain
+	name = "spacer's skirt"
+	icon_state = "turtlefool_skirt"
+
