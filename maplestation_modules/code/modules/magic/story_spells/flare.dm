@@ -1,19 +1,4 @@
-/datum/component/uses_mana/story_spell/conjure_item/flare
-	var/attunement_amount = 0.5
-
-/datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
-	. = ..()
-	.[MAGIC_ELEMENT_LIGHT] += attunement_amount
-
-/datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
-	. = ..()
-	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
-	return (flare_spell.flare_cost * flare_spell.owner.get_casting_cost_mult())
-
-/datum/component/uses_mana/story_spell/conjure_item/flare/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	drain_mana()
+#define FLARE_LIGHT_ATTUNEMENT 0.5
 
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"
@@ -50,7 +35,16 @@
 /datum/action/cooldown/spell/conjure_item/flare/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/conjure_item/flare)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_LIGHT] += FLARE_LIGHT_ATTUNEMENT
+
+	AddComponent(/datum/component/uses_mana,
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
+		post_use_comsig = COMSIG_SPELL_AFTER_CAST,
+		mana_consumed = flare_cost,
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)),
+		attunements = attunements,
+	)
 
 /obj/item/flashlight/glowstick/magic
 	name = "self sustaining flare"
@@ -111,3 +105,5 @@
 	var/new_color
 	new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
 	return new_color
+
+#undef FLARE_LIGHT_ATTUNEMENT

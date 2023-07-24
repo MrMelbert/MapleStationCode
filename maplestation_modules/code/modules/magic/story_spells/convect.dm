@@ -25,12 +25,10 @@
 	update_attunement_dispositions()
 
 	AddComponent(/datum/component/uses_mana,
-		get_mana_callback = PROC_REF(get_mana),
-		activate_check_failure_callback = PROC_REF(insufficient_mana),
-		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST,
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
 		post_use_comsig = COMSIG_SPELL_AFTER_CAST,
-		get_mana_consumed_callback = PROC_REF(get_mana_consumed),
-		get_user_callback = PROC_REF(get_owner),
+		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)),
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)),
 		attunements = src.attunements,
 	)
 
@@ -49,18 +47,9 @@
 
 	return attunements
 
-
-/datum/action/cooldown/spell/pointed/convect/proc/get_mana()
-	return owner.mana_pool
-
-/datum/action/cooldown/spell/pointed/convect/proc/insufficient_mana()
-
 /datum/action/cooldown/spell/pointed/convect/proc/get_mana_consumed()
-	return ((abs(temperature_for_cast) * CONVECT_MANA_COST_PER_KELVIN) * owner.get_casting_cost_mult())
+	return ((abs(temperature_for_cast) * CONVECT_MANA_COST_PER_KELVIN))
 	// todo: methodize the casting cost mult part
-
-/datum/action/cooldown/spell/pointed/convect/proc/get_owner()
-	return owner
 
 /datum/action/cooldown/spell/pointed/convect/is_valid_target(atom/cast_on)
 	return TRUE //cant call suepr cause i want to be able to use this on myself

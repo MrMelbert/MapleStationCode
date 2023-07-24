@@ -76,7 +76,7 @@
 	return mana_pool
 
 /// If this mob is casting/using something that costs mana, it should always multiply the cost against this.
-/mob/proc/get_casting_cost_mult()
+/datum/proc/get_casting_cost_mult()
 	return BASE_STORY_MAGIC_CAST_COST_MULT
 
 /mob/living/carbon/get_casting_cost_mult()
@@ -84,3 +84,12 @@
 	var/obj/held_item = src.get_active_held_item()
 	if (!held_item)
 		. *= NO_CATALYST_COST_MULT
+
+/datum/proc/get_mana()
+	return null
+
+/atom/get_mana()
+	return mana_pool
+
+/datum/action/get_mana()
+	return owner?.mana_pool

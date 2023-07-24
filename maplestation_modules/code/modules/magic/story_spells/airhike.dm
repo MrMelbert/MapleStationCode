@@ -1,15 +1,5 @@
-/datum/component/uses_mana/story_spell/airhike
-	var/attunement_amount = 0.5
-	var/airhike_cost = 30
-
-/datum/component/uses_mana/story_spell/airhike/get_attunement_dispositions()
-	. = ..()
-	.[MAGIC_ELEMENT_WIND] += attunement_amount
-
-/datum/component/uses_mana/story_spell/airhike/get_mana_required(...)
-	. = ..()
-	var/datum/action/cooldown/spell/airhike/airhike_spell = parent
-	return (airhike_cost * airhike_spell.owner.get_casting_cost_mult())
+#define AIRHIKE_ATTUNEMENT_WIND 0.5
+#define AIRHIKE_MANA_COST 30
 
 /datum/component/uses_mana/story_spell/airhike/react_to_successful_use(atom/cast_on)
 	. = ..()
@@ -38,10 +28,21 @@
 	var/jumpspeed = 2
 	var/zup = FALSE
 
+	var/airhike_cost = AIRHIKE_MANA_COST
+
 /datum/action/cooldown/spell/airhike/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/airhike)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_WIND] += AIRHIKE_ATTUNEMENT_WIND
+
+	AddComponent(/datum/component/uses_mana/story_spell/airhike,
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST,
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST,
+		mana_consumed = airhike_cost,
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)),
+		attunements = attunements,
+	)
 
 /datum/action/cooldown/spell/airhike/is_valid_target(atom/cast_on)
 	return iscarbon(cast_on)
@@ -86,3 +87,6 @@
 		to_chat(usr, span_warning("Something prevents you from dashing upwards!"))
 		return FALSE
 	return ..()
+
+#undef AIRHIKE_ATTUNEMENT_WIND
+#undef AIRHIKE_MANA_COST
