@@ -44,3 +44,13 @@
 	name = "Heels Worn"
 	icon_file = 'maplestation_modules/icons/mob/clothing/shoes/heels.dmi'
 	json_config = 'code/datums/greyscale/json_configs/heels.json'
+
+/datum/greyscale_config/spacer_turtleneck
+	name = "Spacer's Turtleneck"
+	icon_file = 'maplestation_modules/icons/mob/clothing/under/spacer_turtleneck.dmi'
+	json_config = 'code/datums/greyscale/json_configs/spacer_turtleneck.json'
+
+/datum/greyscale_config/spacer_turtleneck_worn
+	name = "Spacer's Turtleneck Worn"
+	icon_file = 'maplestation_modules/icons/mob/clothing/under/spacer_turtleneck.dmi'
+	json_config = 'code/datums/greyscale/json_configs/spacer_turtleneck_worn.json'

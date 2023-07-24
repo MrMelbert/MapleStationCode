@@ -1,0 +1,162 @@
+{
+    "turtleneck": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_cargopants",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_sweater",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ],
+    "turtleneck_d": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_cargopants",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_sweater_displaced",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ],
+    "turtleneck_skirt": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_pleatedskirt",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_sweater",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ],
+    "turtleneck_skirt_d": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_pleatedskirt",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_sweater_displaced",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ],
+    "turtlefool": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_jeans",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shirt",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ],
+    "turtlefool_d": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_jeans",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shirt_displaced",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ],
+    "turtlefool_skirt": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_pleatedskirt",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shirt",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ],
+    "turtlefool_skirt_d": [
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_pleatedskirt",
+            "blend_mode": "overlay",
+            "color_ids": [ 1 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shirt_displaced",
+            "blend_mode": "overlay",
+            "color_ids": [ 2 ]
+        },
+        {
+            "type": "icon_state",
+            "icon_state": "greyscale_shoulderpad",
+            "blend_mode": "overlay",
+            "color_ids": [ 3 ]
+        }
+    ]
+}
