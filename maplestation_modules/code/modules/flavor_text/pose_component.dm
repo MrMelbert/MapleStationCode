@@ -1,15 +1,15 @@
-GLOBAL_VAR_INIT(pose_overlay, generate_pose_overlay())
-
-/proc/generate_pose_overlay()
-	var/mutable_appearance/temporary_flavor_text_indicator = mutable_appearance('maplestation_modules/icons/misc/temporary_flavor_text_indicator.dmi', "flavor", FLY_LAYER)
-	temporary_flavor_text_indicator.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART
-	return temporary_flavor_text_indicator
-
 /// Called pose as it is inspired from "set pose" from other servers
 /// Temporary examine text additions for mobs that is lost on death / incapacitation
 /datum/component/pose
 	/// Text shown on examine
 	var/pose_text
+
+	var/static/mutable_appearance/pose_overlay = mutable_appearance(
+		'maplestation_modules/icons/misc/temporary_flavor_text_indicator.dmi',
+		"flavor",
+		FLY_LAYER,
+		appearance_flags = (APPEARANCE_UI_IGNORE_ALPHA|KEEP_APART),
+	)
 
 /datum/component/pose/Initialize(pose_text)
 	if(!isliving(parent))
@@ -24,10 +24,10 @@ GLOBAL_VAR_INIT(pose_overlay, generate_pose_overlay())
 		SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED),
 		SIGNAL_REMOVETRAIT(TRAIT_INCAPACITATED),
 	), PROC_REF(on_incapacitated))
+	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
 
 	var/mob/living/living_parent = parent
-	living_parent.add_overlay(list(GLOB.pose_overlay))
-	living_parent.update_overlays()
+	living_parent.update_appearance(UPDATE_OVERLAYS)
 
 /datum/component/pose/UnregisterFromParent()
 	UnregisterSignal(parent, list(
@@ -36,10 +36,15 @@ GLOBAL_VAR_INIT(pose_overlay, generate_pose_overlay())
 		SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED),
 		SIGNAL_REMOVETRAIT(TRAIT_INCAPACITATED),
 	))
+	UnregisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS)
 
 	var/mob/living/living_parent = parent
-	living_parent.cut_overlay(list(GLOB.pose_overlay))
-	living_parent.update_overlays()
+	living_parent.update_appearance(UPDATE_OVERLAYS)
+
+/datum/component/pose/proc/on_update_overlays(atom/source, list/overlays)
+	SIGNAL_HANDLER
+
+	overlays += pose_overlay
 
 /datum/component/pose/proc/on_living_examine(datum/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
