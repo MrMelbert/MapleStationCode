@@ -98,17 +98,20 @@
 /datum/action/item_action/organ_action/statue
 	var/modified_modularly = FALSE
 
+/datum/action/item_action/organ_action/statue/New(Target)
+	. = ..()
+	statue.set_armor(/datum/armor/silverscale_statue_armor)
+	statue.flags_ricochet |= RICOCHET_SHINY
+
 /datum/action/item_action/organ_action/statue/Trigger(trigger_flags) // why the fuck were they so fragile before
 	. = ..()
-
-	if (statue)
-		if (modified_modularly)
-			return
-
-		statue.set_armor(/datum/armor/silverscale_statue_armor)
-		modified_modularly = TRUE
+	if(!.)
+		return
+	var/mob/living/living_owner = owner
+	if(living_owner.loc == statue)
+		living_owner.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
 	else
-		modified_modularly = FALSE
+		living_owner.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
 
 /datum/armor/silverscale_statue_armor
 	melee = 50
