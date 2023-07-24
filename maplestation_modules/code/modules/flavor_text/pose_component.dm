@@ -1,3 +1,10 @@
+GLOBAL_VAR_INIT(pose_overlay, generate_pose_overlay())
+
+/proc/generate_pose_overlay()
+	var/mutable_appearance/temporary_flavor_text_indicator = mutable_appearance('maplestation_modules/icons/misc/temporary_flavor_text_indicator.dmi', "flavor", FLY_LAYER)
+	temporary_flavor_text_indicator.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART
+	return temporary_flavor_text_indicator
+
 /// Called pose as it is inspired from "set pose" from other servers
 /// Temporary examine text additions for mobs that is lost on death / incapacitation
 /datum/component/pose
@@ -18,6 +25,10 @@
 		SIGNAL_REMOVETRAIT(TRAIT_INCAPACITATED),
 	), PROC_REF(on_incapacitated))
 
+	var/mob/living/living_parent = parent
+	living_parent.add_overlay(list(GLOB.pose_overlay))
+	living_parent.update_overlays()
+
 /datum/component/pose/UnregisterFromParent()
 	UnregisterSignal(parent, list(
 		COMSIG_LIVING_LATE_EXAMINE,
@@ -25,6 +36,10 @@
 		SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED),
 		SIGNAL_REMOVETRAIT(TRAIT_INCAPACITATED),
 	))
+
+	var/mob/living/living_parent = parent
+	living_parent.cut_overlay(list(GLOB.pose_overlay))
+	living_parent.update_overlays()
 
 /datum/component/pose/proc/on_living_examine(datum/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
