@@ -39,6 +39,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_messystripe"
 
+/datum/sprite_accessory/hair/noblebun
+	name = "Noble Bun"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_noblebun"
+
 /datum/sprite_accessory/hair/looseponytail
 	name = "Loose Ponytail"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
