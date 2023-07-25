@@ -86,7 +86,7 @@
 
 /obj/item/clothing/head/costume/crown/noble
 	name = "jewled tiara"
-	desc = "A sparkling tiara set with multiple white and red gems. The center gemstone especially sparkle in the light."
+	desc = "A sparkling tiara set with multiple white and red gems. The center gemstone especially sparkled in the light."
 	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
