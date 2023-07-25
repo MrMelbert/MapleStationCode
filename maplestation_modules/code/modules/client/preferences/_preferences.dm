@@ -38,11 +38,6 @@
 
 	var/mob/user = usr
 	switch (action)
-		// Language UI
-		if ("open_language_picker")
-			var/datum/language_picker/tgui = new(src)
-			tgui.ui_interact(user)
-			return TRUE
 		// Spellbook UI
 		if ("open_spellbook")
 			if(parent.open_spellbook_ui)
