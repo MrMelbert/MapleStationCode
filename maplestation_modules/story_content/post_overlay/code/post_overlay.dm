@@ -2,10 +2,12 @@
 	name = "Toggle Post Overlay"
 	button_icon = 'icons/obj/wizard.dmi' //Not making a sprite for something people won't see, so fireball because it looks like a generic soul.
 	button_icon_state = "fireball"
+	var/custom_overlay_icon = 'maplestation_modules/story_content/post_overlay/icons/post_overlay.dmi' //can be varedited
+	var/custom_overlay_icon_state = "post_overlay"
 
 /datum/action/innate/story_post_overlay/Activate()
 	var/mob/living/carbon/human/user = owner
-	var/mutable_appearance/overlay = mutable_appearance('maplestation_modules/story_content/post_overlay/icons/post_overlay.dmi', "post_overlay", -HALO_LAYER)
+	var/mutable_appearance/overlay = mutable_appearance(custom_overlay_icon, custom_overlay_icon_state, -HALO_LAYER)
 	user.overlays_standing[HALO_LAYER] = overlay //using the halo layer because too lazy to see if there are better layers for something that wont ever conflict
 	user.apply_overlay(HALO_LAYER)
 	active = TRUE
