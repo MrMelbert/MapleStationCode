@@ -109,9 +109,15 @@
 		return
 	var/mob/living/living_owner = owner
 	if(living_owner.loc == statue)
+		for(var/obj/item/whatever in living_owner.held_items)
+			whatever.forceMove(statue)
 		living_owner.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+
 	else
 		living_owner.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+		for(var/obj/item/whatever in statue)
+			whatever.forceMove(living_owner.loc)
+			living_owner.put_in_hands(whatever)
 
 /datum/armor/silverscale_statue_armor
 	melee = 50
