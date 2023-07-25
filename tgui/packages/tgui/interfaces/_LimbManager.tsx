@@ -323,9 +323,14 @@ class LimbManagerInner extends Component<
     }
 
     return (
-      <Window.Content>
-        <Connections connections={connections} zLayer={4} lineWidth={4} />
-        <Stack fill>
+      <>
+        <Connections
+          connections={connections}
+          zLayer={4}
+          lineWidth={4}
+          height="50%"
+        />
+        <Stack height="300px">
           <Stack.Item width={20}>
             <Section title="Preview" fill align="center">
               <LimbPreview
@@ -347,7 +352,7 @@ class LimbManagerInner extends Component<
             </Section>
           </Stack.Item>
         </Stack>
-      </Window.Content>
+      </>
     );
   }
 }
@@ -368,7 +373,9 @@ export const LimbManagerPage = (props, context) => {
 export const _LimbManager = () => {
   return (
     <Window title="Limb Manager" width={700} height={365}>
-      <LimbManagerPage />
+      <Window.Content>
+        <LimbManagerPage />
+      </Window.Content>
     </Window>
   );
 };

@@ -38,14 +38,6 @@
 
 	var/mob/user = usr
 	switch (action)
-		// Limb UI
-		if ("open_limbs")
-			if(parent.open_limb_editor)
-				parent.open_limb_editor.ui_interact(user)
-			else
-				var/datum/limb_editor/tgui = new(user)
-				tgui.ui_interact(user)
-			return TRUE
 		// Language UI
 		if ("open_language_picker")
 			var/datum/language_picker/tgui = new(src)
