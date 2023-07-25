@@ -33,16 +33,26 @@
 			"act_key" = "set_layer",
 		))
 
-/datum/loadout_item/accessory/handle_loadout_action(datum/loadout_manager/manager, action)
+/datum/loadout_item/accessory/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action)
 	switch(action)
 		if("set_layer")
-			if(!can_be_layer_adjusted)
-				return FALSE
-
-			manager.set_layer(src)
-			return TRUE
+			if(can_be_layer_adjusted)
+				set_accessory_layer(manager, user)
+				. = TRUE // update to show the new layer
 
 	return ..()
+
+/datum/loadout_item/accessory/proc/set_accessory_layer(datum/preference_middleware/loadout/manager, mob/user)
+	var/list/loadout = manager.loadout
+	if(!loadout?[item_path])
+		manager.select_item(src)
+
+	if(isnull(loadout[item_path][INFO_LAYER]))
+		loadout[item_path][INFO_LAYER] = FALSE
+
+	loadout[item_path][INFO_LAYER] = !loadout[item_path][INFO_LAYER]
+	to_chat(user, span_boldnotice("[name] will now appear [loadout[item_path][INFO_LAYER] ? "above" : "below"] suits."))
+	manager.preferences.update_preference(manager.preference, loadout)
 
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.accessory)

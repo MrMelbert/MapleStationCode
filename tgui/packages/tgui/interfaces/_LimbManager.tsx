@@ -352,17 +352,23 @@ class LimbManagerInner extends Component<
   }
 }
 
-export const _LimbManager = (props, context) => {
+export const LimbManagerPage = (props, context) => {
   const { act, data } = useBackend<Data>(context);
   const { limbs, selected_limbs, preview_flat_icon } = data;
 
   return (
+    <LimbManagerInner
+      limbs={limbs}
+      selected_limbs={selected_limbs}
+      preview_flat_icon={preview_flat_icon}
+    />
+  );
+};
+
+export const _LimbManager = () => {
+  return (
     <Window title="Limb Manager" width={700} height={365}>
-      <LimbManagerInner
-        limbs={limbs}
-        selected_limbs={selected_limbs}
-        preview_flat_icon={preview_flat_icon}
-      />
+      <LimbManagerPage />
     </Window>
   );
 };

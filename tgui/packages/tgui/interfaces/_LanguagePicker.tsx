@@ -60,7 +60,7 @@ export const LanguageStack = (
   );
 };
 
-export const _LanguagePicker = (props, context) => {
+export const LanguagePage = (props, context) => {
   const { act, data } = useBackend<Data>(context);
 
   const {
@@ -74,57 +74,68 @@ export const _LanguagePicker = (props, context) => {
   } = data;
 
   return (
+    <>
+      {!!trilingual && (
+        <Dimmer vertical align="center">
+          <Stack.Item fontSize="18px">
+            You cannot chose a language with the trilingual quirk.
+          </Stack.Item>
+        </Dimmer>
+      )}
+      {blacklisted_species.includes(species) && (
+        <Dimmer vertical align="center">
+          <Stack.Item fontSize="18px">
+            Your species already starts cannot learn any additional languages.
+          </Stack.Item>
+        </Dimmer>
+      )}
+      <Section title="Base Racial Languages">
+        <Stack vertical>
+          {base_languages.map((language) => (
+            <Stack.Item key={language.name}>
+              <LanguageStack
+                language={language}
+                selected_lang={selected_lang}
+                species={species}
+                tooltip={
+                  language.barred_species && language.barred_species === species
+                    ? `This language cannot be selected by
+                    the "${language.barred_species}" species.`
+                    : ''
+                }
+              />
+            </Stack.Item>
+          ))}
+        </Stack>
+      </Section>
+      <Section title="Unique Racial Languages">
+        <Stack vertical>
+          {bonus_languages.map((language) => (
+            <Stack.Item key={language.name}>
+              <LanguageStack
+                language={language}
+                selected_lang={selected_lang}
+                species={species}
+                tooltip={`This language requires the
+                    the "${language.allowed_species}" species.`}
+              />
+            </Stack.Item>
+          ))}
+        </Stack>
+      </Section>
+    </>
+  );
+};
+
+export const _LanguagePicker = (props, context) => {
+  const { act, data } = useBackend<Data>(context);
+
+  const { pref_name } = data;
+
+  return (
     <Window title={pref_name + "'s Languages"} height={400} width={385}>
       <Window.Content>
-        {!!trilingual && (
-          <Dimmer vertical align="center">
-            <Stack.Item fontSize="18px">
-              You cannot chose a language with the trilingual quirk.
-            </Stack.Item>
-          </Dimmer>
-        )}
-        {blacklisted_species.includes(species) && (
-          <Dimmer vertical align="center">
-            <Stack.Item fontSize="18px">
-              Your species already starts cannot learn any additional languages.
-            </Stack.Item>
-          </Dimmer>
-        )}
-        <Section title="Base Racial Languages">
-          <Stack vertical>
-            {base_languages.map((language) => (
-              <Stack.Item key={language.name}>
-                <LanguageStack
-                  language={language}
-                  selected_lang={selected_lang}
-                  species={species}
-                  tooltip={
-                    language.barred_species &&
-                    language.barred_species === species
-                      ? `This language cannot be selected by
-                    the "${language.barred_species}" species.`
-                      : ''
-                  }
-                />
-              </Stack.Item>
-            ))}
-          </Stack>
-        </Section>
-        <Section title="Unique Racial Languages">
-          <Stack vertical>
-            {bonus_languages.map((language) => (
-              <Stack.Item key={language.name}>
-                <LanguageStack
-                  language={language}
-                  selected_lang={selected_lang}
-                  species={species}
-                  tooltip={`This language requires the
-                    the "${language.allowed_species}" species.`}
-                />
-              </Stack.Item>
-            ))}
-          </Stack>
-        </Section>
+        <LanguagePage />
       </Window.Content>
     </Window>
   );

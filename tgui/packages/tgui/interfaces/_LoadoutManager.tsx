@@ -33,7 +33,7 @@ type Data = {
   tutorial_text: string;
 };
 
-export const _LoadoutManager = (props, context) => {
+export const LoadoutPage = (props, context) => {
   const { data } = useBackend<Data>(context);
   const { loadout_tabs } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
@@ -53,52 +53,57 @@ export const _LoadoutManager = (props, context) => {
   );
 
   return (
+    <Stack vertical fill>
+      <Stack.Item>
+        {!!tutorialStatus && <LoadoutTutorialDimmer />}
+        <Section
+          title="Loadout Categories"
+          align="center"
+          buttons={
+            <>
+              <Button
+                icon="info"
+                align="center"
+                content="Tutorial"
+                onClick={() => setTutorialStatus(true)}
+              />
+              <Input
+                width="200px"
+                onInput={(event) => setSearchLoadout(event.target.value)}
+                placeholder="Search for item"
+                value={searchLoadout}
+              />
+            </>
+          }>
+          <Tabs fluid align="center">
+            {loadout_tabs.map((curTab) => (
+              <Tabs.Tab
+                key={curTab.name}
+                selected={
+                  searchLoadout.length <= 1 && curTab.name === selectedTabName
+                }
+                onClick={() => {
+                  setSelectedTab(curTab.name);
+                  setSearchLoadout('');
+                }}>
+                {curTab.name}
+              </Tabs.Tab>
+            ))}
+          </Tabs>
+        </Section>
+      </Stack.Item>
+      <Stack.Item fill>
+        <LoadoutTabs />
+      </Stack.Item>
+    </Stack>
+  );
+};
+
+export const _LoadoutManager = () => {
+  return (
     <Window title="Loadout Manager" width={900} height={645}>
       <Window.Content height="100%">
-        <Stack vertical>
-          <Stack.Item>
-            {!!tutorialStatus && <LoadoutTutorialDimmer />}
-            <Section
-              title="Loadout Categories"
-              align="center"
-              buttons={
-                <>
-                  <Button
-                    icon="info"
-                    align="center"
-                    content="Tutorial"
-                    onClick={() => setTutorialStatus(true)}
-                  />
-                  <Input
-                    width="200px"
-                    onInput={(event) => setSearchLoadout(event.target.value)}
-                    placeholder="Search for item"
-                    value={searchLoadout}
-                  />
-                </>
-              }>
-              <Tabs fluid align="center">
-                {loadout_tabs.map((curTab) => (
-                  <Tabs.Tab
-                    key={curTab.name}
-                    selected={
-                      searchLoadout.length <= 1 &&
-                      curTab.name === selectedTabName
-                    }
-                    onClick={() => {
-                      setSelectedTab(curTab.name);
-                      setSearchLoadout('');
-                    }}>
-                    {curTab.name}
-                  </Tabs.Tab>
-                ))}
-              </Tabs>
-            </Section>
-          </Stack.Item>
-          <Stack.Item height="500px">
-            <LoadoutTabs />
-          </Stack.Item>
-        </Stack>
+        <LoadoutPage />
       </Window.Content>
     </Window>
   );
@@ -147,8 +152,9 @@ const ItemDisplay = (
           <Button
             icon={button.icon}
             onClick={() =>
-              act(button.act_key, {
+              act('pass_to_loadout_item', {
                 path: item.path,
+                subaction: button.act_key,
               })
             }
           />
@@ -292,7 +298,7 @@ const LoadoutTabs = (props, context) => {
           </Section>
         )}
       </Stack.Item>
-      <Stack.Item grow align="center">
+      <Stack.Item grow fill align="center">
         <LoadoutPreviewSection />
       </Stack.Item>
     </Stack>
@@ -307,6 +313,7 @@ const LoadoutPreviewSection = (props, context) => {
     <Section
       title={`Preview: ${mob_name}`}
       grow
+      height="100%"
       buttons={
         <Button.Checkbox
           align="center"
@@ -315,7 +322,8 @@ const LoadoutPreviewSection = (props, context) => {
           onClick={() => act('toggle_job_clothes')}
         />
       }>
-      <Stack height="450px" vertical>
+      {/* The heights on these sections are fucked, whatever fix it later */}
+      <Stack vertical height="515px">
         <Stack.Item grow align="center">
           {!tutorialStatus && (
             <CharacterPreview height="100%" id={character_preview_view} />
@@ -332,15 +340,6 @@ const LoadoutPreviewSection = (props, context) => {
                     dir: 'left',
                   })
                 }
-              />
-            </Stack.Item>
-            <Stack.Item>
-              <Button
-                icon="check-double"
-                color="good"
-                tooltip="Confirm loadout and exit UI."
-                tooltipPosition="bottom"
-                onClick={() => act('close_ui')}
               />
             </Stack.Item>
             <Stack.Item>

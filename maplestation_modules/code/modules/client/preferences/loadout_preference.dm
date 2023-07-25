@@ -1,7 +1,6 @@
 /datum/preference/loadout
 	savefile_key = "loadout_list"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 
 // Loadouts are applied with job equip code.

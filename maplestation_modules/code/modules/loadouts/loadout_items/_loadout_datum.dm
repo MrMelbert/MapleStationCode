@@ -99,32 +99,125 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  *
  * Useful for subtypes of loadout items with unique actions
  */
-/datum/loadout_item/proc/handle_loadout_action(datum/loadout_manager/manager, action)
+/datum/loadout_item/proc/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action)
 	SHOULD_CALL_PARENT(TRUE)
 
 	switch(action)
 		if("select_color")
-			if(!can_be_greyscale)
-				return FALSE
-
-			manager.select_item_color(src)
-			return FALSE
+			if(can_be_greyscale)
+				set_item_color(manager, user)
+				// no update necessary. no change until they interact with the menu
 
 		if("set_name")
-			if(!can_be_named)
-				return FALSE
-
-			manager.set_item_name(src)
-			return FALSE
+			if(can_be_named)
+				set_name(manager, user)
+				// no update necessary, name is not seen
 
 		if("set_skin")
-			if(!can_be_reskinned)
-				return FALSE
-
-			manager.set_skin(src)
-			return TRUE
+			if(can_be_reskinned)
+				set_skin(manager, user)
+				. = TRUE // do an update to show new skin
 
 	return FALSE
+
+/datum/loadout_item/proc/set_item_color(datum/preference_middleware/loadout/manager, mob/user)
+	if(manager.menu)
+		to_chat(user, span_warning("You already have a greyscaling window open!"))
+		return
+
+	var/list/loadout = manager.loadout
+	var/list/allowed_configs = list()
+	if(initial(item_path.greyscale_config))
+		allowed_configs += "[initial(item_path.greyscale_config)]"
+	if(initial(item_path.greyscale_config_worn))
+		allowed_configs += "[initial(item_path.greyscale_config_worn)]"
+	if(initial(item_path.greyscale_config_inhand_left))
+		allowed_configs += "[initial(item_path.greyscale_config_inhand_left)]"
+	if(initial(item_path.greyscale_config_inhand_right))
+		allowed_configs += "[initial(item_path.greyscale_config_inhand_right)]"
+
+	var/datum/greyscale_modify_menu/menu = new(
+		manager,
+		user,
+		allowed_configs,
+		CALLBACK(src, PROC_REF(set_slot_greyscale), manager),
+		starting_icon_state = initial(item_path.icon_state),
+		starting_config = initial(item_path.greyscale_config),
+		starting_colors = loadout?[item_path]?[INFO_GREYSCALE] || initial(item_path.greyscale_colors),
+	)
+
+	manager.register_greyscale_menu(menu)
+	menu.ui_interact(user)
+
+/// Sets [category_slot]'s greyscale colors to the colors in the currently opened [open_menu].
+/datum/loadout_item/proc/set_slot_greyscale(datum/preference_middleware/loadout/manager, datum/greyscale_modify_menu/open_menu)
+	if(!istype(open_menu))
+		CRASH("set_slot_greyscale called without a greyscale menu!")
+
+	var/list/loadout = manager.loadout
+	if(!loadout?[item_path])
+		manager.select_item(src)
+
+	var/list/colors = open_menu.split_colors
+	if(!colors)
+		return
+
+	loadout[item_path][INFO_GREYSCALE] = colors.Join("")
+	manager.preferences.update_preference(manager.preference, loadout)
+	manager.character_preview_view.update_body()
+
+/datum/loadout_item/proc/set_name(datum/preference_middleware/loadout/manager, mob/user)
+	var/list/loadout = manager.loadout
+	var/input_name = tgui_input_text(
+		user = user,
+		message = "What name do you want to give [name]? Leave blank to clear.",
+		title = "[name] name",
+		default = loadout?[item_path]?[INFO_NAMED], // plop in existing name (if any)
+		max_length = MAX_NAME_LEN,
+	)
+	if(QDELETED(src) || QDELETED(user) || QDELETED(manager) || QDELETED(manager.preferences))
+		return
+
+	if(!islist(loadout?[item_path]))
+		manager.select_item(src)
+
+	if(input_name)
+		loadout[item_path][INFO_NAMED] = input_name
+	else
+		loadout[item_path] -= INFO_NAMED
+
+	manager.preferences.update_preference(manager.preference, loadout)
+
+/datum/loadout_item/proc/set_skin(datum/preference_middleware/loadout/manager, mob/user)
+	var/list/loadout = manager.loadout
+	var/static/list/list/cached_reskins = list()
+	if(!islist(cached_reskins[item_path]))
+		var/obj/item/item_template = new item_path()
+		cached_reskins[item_path] = item_template.unique_reskin.Copy()
+		qdel(item_template)
+
+	var/list/choices = cached_reskins[item_path].Copy()
+	choices["Default"] = TRUE
+
+	var/input_skin = tgui_input_list(
+		user = user,
+		message = "What skin do you want this to be?",
+		title = "Reskin [name]",
+		items = choices,
+		default = loadout?[item_path]?[INFO_RESKIN],
+	)
+	if(QDELETED(src) || QDELETED(user) || QDELETED(manager) || QDELETED(manager.preferences))
+		return
+
+	if(!islist(loadout?[type]))
+		manager.select_item(src)
+
+	if(!input_skin || input_skin == "Default")
+		loadout[item_path] -= INFO_RESKIN
+	else
+		loadout[item_path][INFO_RESKIN] = input_skin
+
+	manager.preferences.update_preference(manager.preference, loadout)
 
 /**
  * Place our [var/item_path] into [outfit].
