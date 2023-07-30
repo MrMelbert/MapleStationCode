@@ -162,12 +162,12 @@
 	data["selected_lang"] = preferences.read_preference(/datum/preference/additional_language)
 	data["pref_name"] = preferences.read_preference(/datum/preference/name/real_name)
 	data["trilingual"] = ("Trilingual" in preferences.all_quirks)
-	data["species"] = initial(species.id)
+	data["species"] = species
 
 	for(var/list/lang_type as anything in base_languages + bonus_languages)
 		var/datum/language/lang_instance = GLOB.language_datum_instances[lang_type["type"]]
-		lang_type["pickable"] = (!lang_instance.banned_from_species || !ispath(species, lang_instance.banned_from_species)) \
-			&& (!lang_instance.required_species || ispath(species, lang_instance.required_species))
+		lang_type["pickable"] = !((lang_instance.banned_from_species && ispath(species, lang_instance.banned_from_species)) \
+			|| (lang_instance.required_species && !ispath(species, lang_instance.required_species)))
 
 	return data
 
