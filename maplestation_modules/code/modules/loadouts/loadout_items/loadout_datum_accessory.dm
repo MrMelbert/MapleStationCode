@@ -1,7 +1,5 @@
 // --- Loadout item datums for accessories ---
 
-#define ADJUSTABLE_TOOLTIP "LAYER ADJUSTABLE - You can opt to have accessory above or below your suit."
-
 /// Accessory Items (Moves overrided items to backpack)
 /datum/loadout_category/accessories
 	category_name = "Accessory"
@@ -11,16 +9,12 @@
 /datum/loadout_item/accessory
 	abstract_type = /datum/loadout_item/accessory
 	// Can we adjust this accessory to be above or below suits?
-	var/can_be_layer_adjusted = FALSE
+	VAR_FINAL/can_be_layer_adjusted = FALSE
 
 /datum/loadout_item/accessory/New()
 	. = ..()
-	var/obj/item/clothing/accessory/accessory = item_path
-	if(!ispath(accessory))
-		return
-
-	can_be_layer_adjusted = TRUE
-	add_tooltip(ADJUSTABLE_TOOLTIP, inverse_order = TRUE)
+	if(!ispath(item_path, /obj/item/clothing/accessory))
+		can_be_layer_adjusted = TRUE
 
 /datum/loadout_item/accessory/get_ui_buttons()
 	. = ..()
@@ -28,6 +22,7 @@
 		UNTYPED_LIST_ADD(., list(
 			"icon" = FA_ICON_ARROW_DOWN,
 			"act_key" = "set_layer",
+			"tooltip" = "You can modify this item to be above or below your over suit."
 		))
 
 /datum/loadout_item/accessory/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action)
@@ -86,7 +81,7 @@
 /datum/loadout_item/accessory/full_pocket_protector
 	name = "Pocket Protector (Filled)"
 	item_path = /obj/item/clothing/accessory/pocketprotector/full
-	additional_tooltip_contents = list("CONTAINS PENS - This item contains multiple pens on spawn.")
+	additional_tooltip_contents = list("Contains multiple pens.")
 
 /datum/loadout_item/accessory/ribbon
 	name = "Ribbon"
@@ -127,7 +122,7 @@
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
 	item_path = /obj/item/clothing/accessory/cosmetic_dogtag
-	additional_tooltip_contents = list("MATCHES NAME - The name inscribed on this item matches your character's name on spawn.")
+	additional_tooltip_contents = list("The name inscribed on this item matches your character's name on spawn.")
 
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
@@ -143,5 +138,3 @@
 	name = "Pride Pin"
 	item_path = /obj/item/clothing/accessory/pride
 	can_be_reskinned = TRUE
-
-#undef ADJUSTABLE_TOOLTIP

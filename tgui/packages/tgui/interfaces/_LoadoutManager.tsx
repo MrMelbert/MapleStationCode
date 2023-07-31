@@ -1,21 +1,20 @@
 import { BooleanLike } from 'common/react';
 import { useBackend, useLocalState } from '../backend';
 import { Box, Button, Dimmer, Input, NoticeBox, Section, Stack, Tabs } from '../components';
-import { Window } from '../layouts';
 import { CharacterPreview } from './common/CharacterPreview';
 
 type typePath = string;
 
 type LoadoutButton = {
   icon: string;
-  act_key: string;
+  act_key?: string;
+  tooltip?: string;
 };
 
 type LoadoutItem = {
   name: string;
   path: typePath;
   buttons: LoadoutButton[];
-  tooltip_text?: string[];
 };
 
 type LoadoutCategory = {
@@ -99,16 +98,6 @@ export const LoadoutPage = (props, context) => {
   );
 };
 
-export const _LoadoutManager = () => {
-  return (
-    <Window title="Loadout Manager" width={900} height={645}>
-      <Window.Content height="100%">
-        <LoadoutPage />
-      </Window.Content>
-    </Window>
-  );
-};
-
 const LoadoutTutorialDimmer = (props, context) => {
   const { data } = useBackend<Data>(context);
   const { tutorial_text } = data;
@@ -144,13 +133,15 @@ const ItemDisplay = (
   const { item, active } = props;
   return (
     <Stack>
-      <Stack.Item grow align="left">
+      <Stack.Item grow align="left" style={{ 'text-transform': 'capitalize' }}>
         {item.name}
       </Stack.Item>
       {item.buttons.map((button) => (
         <Stack.Item key={button.act_key}>
           <Button
             icon={button.icon}
+            tooltip={button.tooltip}
+            disabled={button.act_key === undefined}
             onClick={() =>
               act('pass_to_loadout_item', {
                 path: item.path,
@@ -165,7 +156,6 @@ const ItemDisplay = (
           checked={active}
           content="Select"
           fluid
-          tooltip={item.tooltip_text?.join('\n')}
           onClick={() =>
             act('select_item', {
               path: item.path,

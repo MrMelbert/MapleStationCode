@@ -2,7 +2,6 @@ import { Component, createRef } from 'inferno';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, BlockQuote, Button, Section, Stack } from '../components';
-import { Window } from '../layouts';
 import { Connections } from './IntegratedCircuit/Connections';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
@@ -367,15 +366,5 @@ export const LimbManagerPage = (props, context) => {
       selected_limbs={selected_limbs}
       preview_flat_icon={preview_flat_icon}
     />
-  );
-};
-
-export const _LimbManager = () => {
-  return (
-    <Window title="Limb Manager" width={700} height={365}>
-      <Window.Content>
-        <LimbManagerPage />
-      </Window.Content>
-    </Window>
   );
 };

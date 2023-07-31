@@ -29,7 +29,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	var/abstract_type = /datum/loadout_item
 	/// The actual item path of the loadout item.
 	var/obj/item/item_path
-	/// Lazylist of additional text for the tooltip displayed on this item.
+	/// Lazylist of additional "tooltips" to display about this item.
 	var/list/additional_tooltip_contents
 
 /datum/loadout_item/New(category)
@@ -46,18 +46,6 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		// but is still modifyable as a greyscale item in the loadout menu by setting it to true manually
 		// Why? I HAVE NO IDEA why you would do that but you sure can
 
-	if(can_be_named)
-		// If we're a renamable item, insert the "renamable" tooltip at the beginning of the list.
-		add_tooltip(TOOLTIP_RENAMABLE, inverse_order = TRUE)
-
-	if(can_be_greyscale)
-		// Likewise, if we're greyscaleable, insert the "greyscaleable" tooltip at the beginning of the list (before renamable)
-		add_tooltip(TOOLTIP_GREYSCALE, inverse_order = TRUE)
-
-	if(can_be_reskinned)
-		// No need to repeat myself but I will, insert the reskinnable tooltip at the end if we have a reskin available
-		add_tooltip(TOOLTIP_RESKINNABLE)
-
 	if(isnull(name))
 		name = capitalize(initial(item_path.name))
 
@@ -72,17 +60,6 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 	GLOB.all_loadout_datums -= item_path
 	return ..()
-
-/// Helper to add a tooltip to our tooltip list.
-/// If inverse_order is TRUE, we will add to the front instead of the back.
-/datum/loadout_item/proc/add_tooltip(tooltip, inverse_order = FALSE)
-	LAZYINITLIST(additional_tooltip_contents)
-
-	// No lazyinsert unfortunately
-	if(inverse_order)
-		additional_tooltip_contents.Insert(1, tooltip)
-	else
-		additional_tooltip_contents.Add(tooltip)
 
 /**
  * Takes in an action from a loadout manager and applies it
@@ -276,7 +253,6 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	formatted_item["name"] = name
 	formatted_item["path"] = item_path
 	formatted_item["buttons"] = get_ui_buttons()
-	formatted_item["tooltip_text"] = additional_tooltip_contents
 	return formatted_item
 
 /**
@@ -290,22 +266,32 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 	var/list/button_list = list()
 
+	for(var/tooltip in additional_tooltip_contents)
+		// Not real buttons - have no act - but just provides a "hey, this is special!" tip
+		UNTYPED_LIST_ADD(button_list, list(
+			"icon" = FA_ICON_EXCLAMATION,
+			"tooltip" = tooltip,
+		))
+
 	if(can_be_greyscale)
 		UNTYPED_LIST_ADD(button_list, list(
 			"icon" = FA_ICON_PALETTE,
 			"act_key" = "select_color",
+			"tooltip" = "Modify this item's color via greyscaling!",
 		))
 
 	if(can_be_named)
 		UNTYPED_LIST_ADD(button_list, list(
 			"icon" = FA_ICON_PEN,
 			"act_key" = "set_name",
+			"tooltip" = "Modify the name this item will have.",
 		))
 
 	if(can_be_reskinned)
 		UNTYPED_LIST_ADD(button_list, list(
 			"icon" = FA_ICON_THEATER_MASKS,
 			"act_key" = "set_skin",
+			"tooltip" = "Change the default skin of this item.",
 		))
 
 	return button_list

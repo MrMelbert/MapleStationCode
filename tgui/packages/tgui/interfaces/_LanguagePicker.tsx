@@ -1,6 +1,5 @@
 import { useBackend } from '../backend';
 import { Button, Dimmer, Section, Stack } from '../components';
-import { Window } from '../layouts';
 import { BooleanLike } from 'common/react';
 
 type typePath = string;
@@ -127,19 +126,5 @@ export const LanguagePage = (props, context) => {
         </Stack>
       </Section>
     </>
-  );
-};
-
-export const _LanguagePicker = (props, context) => {
-  const { data } = useBackend<Data>(context);
-
-  const { pref_name } = data;
-
-  return (
-    <Window title={pref_name + "'s Languages"} height={400} width={385}>
-      <Window.Content>
-        <LanguagePage />
-      </Window.Content>
-    </Window>
   );
 };

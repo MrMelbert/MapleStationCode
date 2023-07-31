@@ -24,7 +24,7 @@
 /datum/loadout_item/glasses/prescription_glasses
 	name = "Glasses"
 	item_path = /obj/item/clothing/glasses/regular
-	additional_tooltip_contents = list("PRESCRIPTION - This item functions with the 'nearsighted' quirk.")
+	additional_tooltip_contents = list("These are prescription glasses, and will help you see while nearsighted.")
 
 /datum/loadout_item/glasses/prescription_glasses/circle_glasses
 	name = "Circle Glasses"
@@ -45,7 +45,7 @@
 /datum/loadout_item/glasses/colored_blindfold
 	name = "Colored Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold/white/loadout
-	additional_tooltip_contents = list("MATCHES EYES - This item's color matches your character's eye color on spawn.")
+	additional_tooltip_contents = list("This item's color matches your character's eye color on spawn.")
 
 /datum/loadout_item/glasses/cold_glasses
 	name = "Cold Glasses"

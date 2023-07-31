@@ -17,7 +17,7 @@
 	var/supports_digi = !!(initial(item_path.supports_variations_flags) & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))
 	supports_digitigrade = ignores_digi || supports_digi
 	if(supports_digitigrade)
-		add_tooltip("SUPPORTS DIGITIGRADE - This item can be worn on mobs who have digitigrade legs.")
+		LAZYADD(additional_tooltip_contents, "This item can be worn on characters whom have digitigrade legs.")
 
 // This is snowflake but digitigrade is in general
 // Need to handle shoes that don't fit digitigrade being selected

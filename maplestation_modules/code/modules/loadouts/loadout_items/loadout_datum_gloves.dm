@@ -64,7 +64,7 @@
 /datum/loadout_item/gloves/yellow
 	name = "Yellow Gloves"
 	item_path = /obj/item/clothing/gloves/color/normal_yellow
-	additional_tooltip_contents = list("NON-INSULATING - This item is purely cosmetic and provide no shock insulation.")
+	additional_tooltip_contents = list("This item is purely cosmetic and provide no shock insulation.")
 
 /datum/loadout_item/gloves/white
 	name = "White Gloves"
