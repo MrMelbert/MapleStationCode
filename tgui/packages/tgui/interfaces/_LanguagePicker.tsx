@@ -45,7 +45,7 @@ export const LanguageStack = (
           checked={type === props.selected_lang}
           disabled={!pickable}
           tooltip={props.tooltip}
-          content="Select"
+          content={pickable ? 'Select' : 'Locked'}
           onClick={() =>
             act('set_language', {
               lang_type: type,

@@ -6,13 +6,10 @@
 /datum/loadout_category/accessories
 	category_name = "Accessory"
 	ui_title = "Uniform Accessory Items"
-
-/datum/loadout_category/accessories/get_items()
-	var/static/list/loadout_accessory = generate_loadout_items(/datum/loadout_item/accessory)
-	return loadout_accessory
+	type_to_generate = /datum/loadout_item/accessory
 
 /datum/loadout_item/accessory
-	category = LOADOUT_ITEM_ACCESSORY
+	abstract_type = /datum/loadout_item/accessory
 	// Can we adjust this accessory to be above or below suits?
 	var/can_be_layer_adjusted = FALSE
 
@@ -43,7 +40,7 @@
 	return ..()
 
 /datum/loadout_item/accessory/proc/set_accessory_layer(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = manager.loadout
+	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	if(!loadout?[item_path])
 		manager.select_item(src)
 
@@ -52,7 +49,7 @@
 
 	loadout[item_path][INFO_LAYER] = !loadout[item_path][INFO_LAYER]
 	to_chat(user, span_boldnotice("[name] will now appear [loadout[item_path][INFO_LAYER] ? "above" : "below"] suits."))
-	manager.preferences.update_preference(manager.preference, loadout)
+	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.accessory)

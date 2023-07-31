@@ -4,15 +4,12 @@
 /datum/loadout_category/shoes
 	category_name = "Shoes"
 	ui_title = "Foot Slot Items"
-
-/datum/loadout_category/shoes/get_items()
-	var/static/list/loadout_shoes = generate_loadout_items(/datum/loadout_item/shoes)
-	return loadout_shoes
+	type_to_generate = /datum/loadout_item/shoes
 
 /datum/loadout_item/shoes
-	category = LOADOUT_ITEM_SHOES
-	/// Snowflake, whether these shoes work on digi legs. Don't set this directly
-	var/supports_digitigrade = FALSE
+	abstract_type = /datum/loadout_item/shoes
+	/// Snowflake, whether these shoes work on digi legs.
+	VAR_FINAL/supports_digitigrade = FALSE
 
 /datum/loadout_item/shoes/New()
 	. = ..()
@@ -26,7 +23,7 @@
 // Need to handle shoes that don't fit digitigrade being selected
 // Ideally would be generalized with species can equip or something but OH WELL
 /datum/loadout_item/shoes/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
-	// Supports digi = needs no special handling so we can contiue as normal
+	// Supports digi = needs no special handling so we can continue as normal
 	if(supports_digitigrade)
 		return ..()
 

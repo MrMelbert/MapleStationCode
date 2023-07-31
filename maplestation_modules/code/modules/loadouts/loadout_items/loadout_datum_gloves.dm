@@ -4,13 +4,10 @@
 /datum/loadout_category/gloves
 	category_name = "Gloves"
 	ui_title = "Glove Slot Items"
-
-/datum/loadout_category/gloves/get_items()
-	var/static/list/loadout_gloves = generate_loadout_items(/datum/loadout_item/gloves)
-	return loadout_gloves
+	type_to_generate = /datum/loadout_item/gloves
 
 /datum/loadout_item/gloves
-	category = LOADOUT_ITEM_GLOVES
+	abstract_type = /datum/loadout_item/gloves
 
 /datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))

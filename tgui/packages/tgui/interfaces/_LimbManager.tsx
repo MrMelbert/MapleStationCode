@@ -83,7 +83,7 @@ const getActiveCategory = (
 
 type Data = {
   limbs: LimbCategory[];
-  selected_limbs: string[];
+  selected_limbs: string[] | null;
   preview_flat_icon: string;
 };
 
@@ -99,12 +99,12 @@ type Limb = {
 };
 
 const LimbSelectButton = (
-  props: { select_limb: Limb; selected_limbs: string[] },
+  props: { select_limb: Limb; selected_limbs: string[] | null },
   context
 ) => {
   const { act, data } = useBackend<Limb>(context);
   const { select_limb, selected_limbs } = props;
-  const is_active = selected_limbs.includes(select_limb.path);
+  const is_active = selected_limbs?.includes(select_limb.path);
   return (
     <Button.Checkbox
       checked={is_active}
@@ -122,7 +122,7 @@ const LimbSelectButton = (
 
 const DisplayLimbs = (
   props: {
-    selected_limbs: string[];
+    selected_limbs: string[] | null;
     limbs: LimbCategory[];
     current_selection: string | null;
   },
@@ -280,7 +280,7 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
 
 type LimbManagerInnerProps = {
   limbs: LimbCategory[];
-  selected_limbs: string[];
+  selected_limbs: string[] | null;
   preview_flat_icon: string;
 };
 

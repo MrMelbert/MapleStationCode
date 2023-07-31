@@ -29,23 +29,20 @@
 
 	/// The preview dummy
 	VAR_FINAL/atom/movable/screen/map_view/char_preview/limb_viewer/character_preview_view
-
-	/// Assoc list of all selected paths, keyed by their body zones
-	var/list/selected_paths
 	/// Records all paths that were selected the last time we updated the preview icon
 	/// This is done because we have to use getflat icon (very laggy) rather than byondui
 	/// as byondUI doesn't really allow layering other UI elements such as SVGs above it
-	var/list/paths_on_last_ui_update
+	VAR_FINAL/list/paths_on_last_ui_update
 	/// Caches the last icon we generated, see above
-	var/cached_icon
-
-/datum/preference_middleware/limbs/New(datum/preferences)
-	. = ..()
-	selected_paths = src.preferences.read_preference(/datum/preference/limbs) || list()
+	VAR_FINAL/cached_icon
 
 /datum/preference_middleware/limbs/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	return ..()
+
+/datum/preference_middleware/limbs/on_new_character(mob/user)
+	paths_on_last_ui_update = null
+	cached_icon = null
 
 /// Initialize our character dummy.
 /datum/preference_middleware/limbs/proc/create_character_preview_view(mob/user)
@@ -61,7 +58,8 @@
 	if(isnull(selecting_datum))
 		return TRUE
 
-	selected_paths[selecting_datum.pref_list_slot] = path_selecting
+	var/list/selected_paths = preferences.read_preference(/datum/preference/limbs)
+	LAZYSET(selected_paths, selecting_datum.pref_list_slot, path_selecting)
 	preferences.update_preference(GLOB.preference_entries[/datum/preference/limbs], selected_paths)
 	character_preview_view.update_body()
 	return TRUE
@@ -72,7 +70,8 @@
 	if(isnull(deselecting_datum))
 		return TRUE
 
-	selected_paths -= deselecting_datum.pref_list_slot
+	var/list/selected_paths = preferences.read_preference(/datum/preference/limbs)
+	LAZYREMOVE(selected_paths, deselecting_datum.pref_list_slot)
 	preferences.update_preference(GLOB.preference_entries[/datum/preference/limbs], selected_paths)
 	character_preview_view.update_body()
 	return TRUE
@@ -84,12 +83,13 @@
 
 /datum/preference_middleware/limbs/get_ui_data(mob/user)
 	var/list/data = list()
+	var/list/selected_paths = preferences.read_preference(/datum/preference/limbs)
 	data["selected_limbs"] = flatten_list(selected_paths)
 
 	if(isnull(character_preview_view))
 		character_preview_view = create_character_preview_view(user)
 	if(isnull(cached_icon) || length(selected_paths ^ paths_on_last_ui_update) >= 1)
-		paths_on_last_ui_update = selected_paths.Copy()
+		paths_on_last_ui_update = LAZYLISTDUPLICATE(selected_paths)
 		cached_icon = icon2base64(getFlatIcon(character_preview_view.body, no_anim = TRUE))
 
 	data["preview_flat_icon"] = cached_icon

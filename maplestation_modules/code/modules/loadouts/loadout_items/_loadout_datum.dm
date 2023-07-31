@@ -1,35 +1,14 @@
 // -- The loadout item datum and related procs. --
 
 /// Global list of ALL loadout datums instantiated.
+/// Loadout datums are created by loadout categories.
 GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 /**
- * Generate a list of singleton loadout_item datums from all subtypes of [type_to_generate]
+ * # Loadout item datum
  *
- * returns a list of singleton datums.
+ * Singleton that holds all the information about each loadout items, and how to equip them.
  */
-/proc/generate_loadout_items(type_to_generate)
-	RETURN_TYPE(/list)
-
-	. = list()
-	if(!ispath(type_to_generate))
-		CRASH("generate_loadout_items(): called with an invalid or null path as an argument!")
-
-	for(var/datum/loadout_item/found_type as anything in subtypesof(type_to_generate))
-		/// Any item without a name is "abstract"
-		if(isnull(initial(found_type.name)))
-			continue
-
-		if(!ispath(initial(found_type.item_path)))
-			stack_trace("generate_loadout_items(): Attempted to instantiate a loadout item ([initial(found_type.name)]) with an invalid or null typepath! (got path: [initial(found_type.item_path)])")
-			continue
-
-		var/datum/loadout_item/spawned_type = new found_type()
-		. += spawned_type
-
-/// Loadout item datum.
-/// Holds all the information about each loadout items.
-/// A list of singleton loadout items are generated on initialize.
 /datum/loadout_item
 	/// Displayed name of the loadout item.
 	var/name
@@ -44,14 +23,19 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	/// Whether this item can be reskinned.
 	/// Only works if the item has a "unique reskin" list set.
 	var/can_be_reskinned = FALSE
-	/// The category of the loadout item.
-	var/category
+	/// The category of the loadout item. Set automatically in New
+	VAR_FINAL/datum/loadout_category/category
+	/// The abstract parent of this loadout item, to determine which items to not instantiate
+	var/abstract_type = /datum/loadout_item
 	/// The actual item path of the loadout item.
 	var/obj/item/item_path
 	/// Lazylist of additional text for the tooltip displayed on this item.
 	var/list/additional_tooltip_contents
 
-/datum/loadout_item/New()
+/datum/loadout_item/New(category)
+
+	src.category = category
+
 	if(can_be_greyscale == DONT_GREYSCALE)
 		// Explicitly be false if we don't want this to greyscale
 		can_be_greyscale = FALSE
@@ -74,13 +58,19 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		// No need to repeat myself but I will, insert the reskinnable tooltip at the end if we have a reskin available
 		add_tooltip(TOOLTIP_RESKINNABLE)
 
+	if(isnull(name))
+		name = capitalize(initial(item_path.name))
+
 	if(GLOB.all_loadout_datums[item_path])
 		stack_trace("Loadout datum collision detected! [item_path] is shared between multiple loadout datums.")
 	GLOB.all_loadout_datums[item_path] = src
 
-/datum/loadout_item/Destroy()
+/datum/loadout_item/Destroy(force, ...)
+	if(force)
+		stack_trace("Who's destroying loadout item datums?! This shouldn't really ever be done! (Use FORCE if necessary)")
+		return
+
 	GLOB.all_loadout_datums -= item_path
-	stack_trace("Who's destroying loadout item datums?! This shouldn't really ever be done!")
 	return ..()
 
 /// Helper to add a tooltip to our tooltip list.
@@ -125,7 +115,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		to_chat(user, span_warning("You already have a greyscaling window open!"))
 		return
 
-	var/list/loadout = manager.loadout
+	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	var/list/allowed_configs = list()
 	if(initial(item_path.greyscale_config))
 		allowed_configs += "[initial(item_path.greyscale_config)]"
@@ -154,7 +144,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	if(!istype(open_menu))
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	var/list/loadout = manager.loadout
+	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	if(!loadout?[item_path])
 		manager.select_item(src)
 
@@ -163,11 +153,11 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		return
 
 	loadout[item_path][INFO_GREYSCALE] = colors.Join("")
-	manager.preferences.update_preference(manager.preference, loadout)
+	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 	manager.character_preview_view.update_body()
 
 /datum/loadout_item/proc/set_name(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = manager.loadout
+	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	var/input_name = tgui_input_text(
 		user = user,
 		message = "What name do you want to give [name]? Leave blank to clear.",
@@ -186,10 +176,10 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	else
 		loadout[item_path] -= INFO_NAMED
 
-	manager.preferences.update_preference(manager.preference, loadout)
+	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /datum/loadout_item/proc/set_skin(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = manager.loadout
+	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	var/static/list/list/cached_reskins = list()
 	if(!islist(cached_reskins[item_path]))
 		var/obj/item/item_template = new item_path()
@@ -217,7 +207,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	else
 		loadout[item_path][INFO_RESKIN] = input_skin
 
-	manager.preferences.update_preference(manager.preference, loadout)
+	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /**
  * Place our [var/item_path] into [outfit].
@@ -259,7 +249,8 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		if(skin_chosen in equipped_item.unique_reskin)
 			equipped_item.current_skin = skin_chosen
 			equipped_item.icon_state = equipped_item.unique_reskin[skin_chosen]
-			equipper.update_worn_oversuit()
+			equipper.update_clothing(equipped_item.slot_flags)
+
 		else
 			// Not valid
 			item_details -= INFO_RESKIN

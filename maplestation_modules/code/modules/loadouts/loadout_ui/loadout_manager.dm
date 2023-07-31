@@ -52,6 +52,18 @@
 	preferences = null
 	return ..()
 
+/// Global list of all loadout categories singletons
+/// This is global (rather than just static on the loadout middleware datum)
+/// just so we can ensure it is loaded regardless of whether someone opens the loadout UI
+/// (because it also inits our loadout datums)
+GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
+
+/// Inits the loadout categories list
+/proc/init_loadout_categories()
+	. = list()
+	for(var/category_type in subtypesof(/datum/loadout_category))
+		. += new category_type()
+
 /// Datum holder for the loadout manager UI.
 /// Future todo: Merge this entirely with the prefs UI
 /datum/preference_middleware/loadout
@@ -63,34 +75,15 @@
 		"pass_to_loadout_item" = PROC_REF(action_pass_to_loadout_item),
 	)
 
-	/// Static list of all loadout categories
-	VAR_FINAL/static/list/datum/loadout_category/loadout_categories
 	/// The preview dummy.
 	/// We use a special subtype so we don't brick our preference menu preview when we're done.
 	VAR_FINAL/atom/movable/screen/map_view/char_preview/loadout/character_preview_view
 	/// Our currently open greyscaling menu.
 	VAR_FINAL/datum/greyscale_modify_menu/menu
-	/// Ref to koadout preference singleton for easy access
-	VAR_FINAL/datum/preference/loadout/preference
-
-	/// The current selected loadout list.
-	var/list/loadout
-
-/datum/preference_middleware/loadout/New(datum/preferences)
-	. = ..()
-
-	loadout = src.preferences.read_preference(/datum/preference/loadout)
-	preference = GLOB.preference_entries[/datum/preference/loadout]
-
-	if(isnull(loadout_categories))
-		loadout_categories = list()
-		for(var/category_type in subtypesof(/datum/loadout_category))
-			loadout_categories += new category_type()
 
 /datum/preference_middleware/loadout/Destroy(force, ...)
 	QDEL_NULL(character_preview_view)
 	QDEL_NULL(menu)
-	preference = null
 	return ..()
 
 /// Initialize our character dummy.
@@ -102,7 +95,6 @@
 	return character_preview_view
 
 /datum/preference_middleware/loadout/on_new_character(mob/user)
-	loadout = preferences.read_preference(/datum/preference/loadout)
 	character_preview_view.update_body()
 
 /datum/preference_middleware/loadout/proc/action_select_item(list/params, mob/user)
@@ -120,7 +112,7 @@
 	return TRUE
 
 /datum/preference_middleware/loadout/proc/action_clear_all(list/params, mob/user)
-	preferences.update_preference(preference, null)
+	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], null)
 	character_preview_view.update_body()
 	return TRUE
 
@@ -151,24 +143,23 @@
 
 /// Select [path] item to [category_slot] slot.
 /datum/preference_middleware/loadout/proc/select_item(datum/loadout_item/selected_item)
-	var/num_misc_items = 0
-	var/datum/loadout_item/first_misc_found
-	for(var/datum/loadout_item/item as anything in loadout_list_to_datums(loadout))
-		if(item.category == selected_item.category)
-			if(item.category == LOADOUT_ITEM_MISC && ++num_misc_items < MAX_ALLOWED_MISC_ITEMS)
-				first_misc_found ||= item
-				continue
-
-			deselect_item(first_misc_found || item)
+	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/datum/loadout_item/loadout_datums = loadout_list_to_datums(loadout)
+	for(var/datum/loadout_item/item as anything in loadout_datums)
+		if(item.category != selected_item.category)
 			continue
 
+		if(!item.category.handle_duplicate_entires(src, item, selected_item, loadout_datums))
+			return
+
 	LAZYSET(loadout, selected_item.item_path, list())
-	preferences.update_preference(preference, loadout)
+	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /// Deselect [deselected_item].
 /datum/preference_middleware/loadout/proc/deselect_item(datum/loadout_item/deselected_item)
+	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
 	LAZYREMOVE(loadout, deselected_item.item_path)
-	preferences.update_preference(preference, loadout)
+	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
 	src.menu = open_menu
@@ -202,7 +193,7 @@
 	var/static/list/loadout_tabs
 	if(isnull(loadout_tabs))
 		loadout_tabs = list()
-		for(var/datum/loadout_category/category as anything in loadout_categories)
+		for(var/datum/loadout_category/category as anything in GLOB.loadout_categories)
 			UNTYPED_LIST_ADD(loadout_tabs, list(
 				"name" = category.category_name,
 				"title" = category.ui_title,

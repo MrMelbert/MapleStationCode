@@ -4,21 +4,15 @@
 /datum/loadout_category/undersuit
 	category_name = "Jumpsuit"
 	ui_title = "Under Suit Slot Items"
-
-/datum/loadout_category/undersuit/get_items()
-	var/static/list/loadout_jumpsuits = generate_loadout_items(/datum/loadout_item/under/jumpsuit)
-	return loadout_jumpsuits
+	type_to_generate = /datum/loadout_item/under/jumpsuit
 
 /// Underslot - Formal Suit Items (Deletes overrided items)
 /datum/loadout_category/undersuit/formal
 	category_name = "Formal"
-
-/datum/loadout_category/undersuit/formal/get_items()
-	var/static/list/loadout_formalsuits = generate_loadout_items(/datum/loadout_item/under/formal)
-	return loadout_formalsuits
+	type_to_generate = /datum/loadout_item/under/formal
 
 /datum/loadout_item/under
-	category = LOADOUT_ITEM_UNIFORM
+	abstract_type = /datum/loadout_item/under
 
 /datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))
@@ -30,6 +24,7 @@
 
 // jumpsuit undersuits
 /datum/loadout_item/under/jumpsuit
+	abstract_type = /datum/loadout_item/under/jumpsuit
 
 /datum/loadout_item/under/jumpsuit/greyscale
 	name = "Greyscale Jumpsuit"
@@ -138,6 +133,7 @@
 
 // formal undersuits
 /datum/loadout_item/under/formal
+	abstract_type = /datum/loadout_item/under/formal
 
 /datum/loadout_item/under/formal/amish_suit
 	name = "Amish Suit"

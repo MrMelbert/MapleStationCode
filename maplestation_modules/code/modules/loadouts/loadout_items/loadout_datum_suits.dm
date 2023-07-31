@@ -4,13 +4,10 @@
 /datum/loadout_category/outer_suit
 	category_name = "Suit"
 	ui_title = "Outer Suit Slot Items"
-
-/datum/loadout_category/outer_suit/get_items()
-	var/static/list/loadout_outer_suits = generate_loadout_items(/datum/loadout_item/suit)
-	return loadout_outer_suits
+	type_to_generate = /datum/loadout_item/suit
 
 /datum/loadout_item/suit
-	category = LOADOUT_ITEM_SUIT
+	abstract_type = /datum/loadout_item/suit
 
 /datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	outfit.suit = item_path

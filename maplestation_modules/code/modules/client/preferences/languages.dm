@@ -164,16 +164,6 @@
 	data["trilingual"] = ("Trilingual" in preferences.all_quirks)
 	data["species"] = species
 
-	for(var/list/lang_type as anything in base_languages + bonus_languages)
-		var/datum/language/lang_instance = GLOB.language_datum_instances[lang_type["type"]]
-		lang_type["pickable"] = !((lang_instance.banned_from_species && ispath(species, lang_instance.banned_from_species)) \
-			|| (lang_instance.required_species && !ispath(species, lang_instance.required_species)))
-
-	return data
-
-/datum/preference_middleware/language/get_ui_static_data(mob/user)
-	var/list/data = list()
-
 	// This should all be moved to constant data when I figure out how tee hee
 	if(!length(base_languages) && !length(bonus_languages) && length(GLOB.language_datum_instances))
 		base_languages = list()
@@ -187,7 +177,6 @@
 			var/list/lang_data = list()
 			lang_data["name"] = found_instance.name
 			lang_data["type"] = found_language
-			lang_data["pickable"] = TRUE // updated in ui data
 			if(found_instance.banned_from_species)
 				lang_data["incompatible_with"] = initial(found_instance.banned_from_species.name)
 			if(found_instance.required_species)
@@ -198,9 +187,19 @@
 			else
 				UNTYPED_LIST_ADD(base_languages, lang_data)
 
-	data["blacklisted_species"] = BLACKLISTED_SPECIES_FROM_LANGUAGES
+	for(var/list/lang_type as anything in base_languages + bonus_languages)
+		var/datum/language/lang_instance = GLOB.language_datum_instances[lang_type["type"]]
+		lang_type["pickable"] = !((lang_instance.banned_from_species && ispath(species, lang_instance.banned_from_species)) \
+			|| (lang_instance.required_species && !ispath(species, lang_instance.required_species)))
+
 	data["base_languages"] = base_languages
 	data["bonus_languages"] = bonus_languages
+	return data
+
+/datum/preference_middleware/language/get_ui_static_data(mob/user)
+	var/list/data = list()
+	// Again constant data when I figure it out
+	data["blacklisted_species"] = BLACKLISTED_SPECIES_FROM_LANGUAGES
 	return data
 
 #undef NO_LANGUAGE

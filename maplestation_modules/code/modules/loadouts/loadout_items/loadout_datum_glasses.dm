@@ -4,13 +4,10 @@
 /datum/loadout_category/glasses
 	category_name = "Glasses"
 	ui_title = "Eye Slot Items"
-
-/datum/loadout_category/glasses/get_items()
-	var/static/list/loadout_glasses = generate_loadout_items(/datum/loadout_item/glasses)
-	return loadout_glasses
+	type_to_generate = /datum/loadout_item/glasses
 
 /datum/loadout_item/glasses
-	category = LOADOUT_ITEM_GLASSES
+	abstract_type = /datum/loadout_item/glasses
 
 /datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.glasses)
