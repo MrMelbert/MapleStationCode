@@ -1,5 +1,5 @@
-/datum/keybinding/mob/pixel_shift
-	hotkey_keys = list("B")
+/datum/keybinding/mob/living/pixel_shift
+	hotkey_keys = list("CtrlB")
 	name = "pixel_shift"
 	full_name = "Pixel Shift"
 	description = "Shift your characters offset."
@@ -10,7 +10,8 @@
 	. = ..()
 	if(.)
 		return
-	user.mob.add_pixel_shift_component()
+	user.mob.AddComponent(/datum/component/pixel_shift)
+	return TRUE
 
 /datum/keybinding/mob/pixel_shift/up(client/user)
 	. = ..()

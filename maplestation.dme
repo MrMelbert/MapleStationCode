@@ -5641,7 +5641,6 @@
 #include "maplestation_modules\code\modules\paperwork\stamps.dm"
 #include "maplestation_modules\code\modules\pixel_shift\code\pixel_shift_component.dm"
 #include "maplestation_modules\code\modules\pixel_shift\code\pixel_shift_keybind.dm"
-#include "maplestation_modules\code\modules\pixel_shift\code\pixel_shift_mob.dm"
 #include "maplestation_modules\code\modules\projectiles\ammunition\ballistic\shotgun.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\autocannon.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\gauss.dm"
