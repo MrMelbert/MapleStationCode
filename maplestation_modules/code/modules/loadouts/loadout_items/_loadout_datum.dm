@@ -11,6 +11,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
  */
 /datum/loadout_item
 	/// Displayed name of the loadout item.
+	/// Defaults to the item's name if unset.
 	var/name
 	/// Whether this item has greyscale support.
 	/// Only works if the item is compatible with the GAGS system of coloring.
@@ -47,7 +48,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		// Why? I HAVE NO IDEA why you would do that but you sure can
 
 	if(isnull(name))
-		name = capitalize(initial(item_path.name))
+		name = initial(item_path.name)
 
 	if(GLOB.all_loadout_datums[item_path])
 		stack_trace("Loadout datum collision detected! [item_path] is shared between multiple loadout datums.")

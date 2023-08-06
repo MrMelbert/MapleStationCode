@@ -116,8 +116,6 @@
 /datum/language/shadowtongue
 	available_as_pref = TRUE
 
-
-/// TGUI for selecting languages.
 /datum/preference_middleware/language
 	action_delegations = list(
 		"set_language" = PROC_REF(set_language),

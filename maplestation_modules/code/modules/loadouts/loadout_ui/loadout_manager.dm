@@ -89,7 +89,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 /// Initialize our character dummy.
 /datum/preference_middleware/loadout/proc/create_character_preview_view(mob/user)
 	character_preview_view = new(null, preferences)
-	character_preview_view.generate_view("character_preview_[REF(character_preview_view)]")
+	character_preview_view.generate_view("loadout_character_preview_[REF(character_preview_view)]")
 	character_preview_view.update_body()
 	character_preview_view.display_to(user)
 	return character_preview_view
@@ -124,9 +124,9 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 /datum/preference_middleware/loadout/proc/action_rotate_model_dir(list/params, mob/user)
 	switch(params["dir"])
 		if("left")
-			character_preview_view.dir = turn(character_preview_view.dir, -90)
+			character_preview_view.setDir(turn(character_preview_view.dir, -90))
 		if("right")
-			character_preview_view.dir = turn(character_preview_view.dir, 90)
+			character_preview_view.setDir(turn(character_preview_view.dir, 90))
 
 /datum/preference_middleware/loadout/proc/action_pass_to_loadout_item(list/params, mob/user)
 	var/path_to_use = text2path(params["path"])
@@ -187,7 +187,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 
 /datum/preference_middleware/loadout/get_ui_static_data(mob/user)
 	var/list/data = list()
-	data["character_preview_view"] = character_preview_view.assigned_map
+	data["loadout_preview_view"] = character_preview_view.assigned_map
 
 	// This should all be moved to constant data when I figure out how tee hee
 	var/static/list/loadout_tabs

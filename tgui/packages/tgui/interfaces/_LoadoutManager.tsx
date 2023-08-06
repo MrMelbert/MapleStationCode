@@ -27,7 +27,7 @@ type Data = {
   selected_loadout: typePath[];
   mob_name: string;
   job_clothes: BooleanLike;
-  character_preview_view: string;
+  loadout_preview_view: string;
   loadout_tabs: LoadoutCategory[];
   tutorial_text: string;
 };
@@ -297,7 +297,7 @@ const LoadoutTabs = (props, context) => {
 
 const LoadoutPreviewSection = (props, context) => {
   const { act, data } = useBackend<Data>(context);
-  const { mob_name, job_clothes, character_preview_view } = data;
+  const { mob_name, job_clothes, loadout_preview_view } = data;
   const [tutorialStatus] = useLocalState(context, 'tutorialStatus', false);
   return (
     <Section
@@ -316,7 +316,7 @@ const LoadoutPreviewSection = (props, context) => {
       <Stack vertical height="515px">
         <Stack.Item grow align="center">
           {!tutorialStatus && (
-            <CharacterPreview height="100%" id={character_preview_view} />
+            <CharacterPreview height="100%" id={loadout_preview_view} />
           )}
         </Stack.Item>
         <Stack.Divider />
