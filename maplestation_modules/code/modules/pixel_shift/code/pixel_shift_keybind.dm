@@ -6,13 +6,13 @@
 	category = CATEGORY_MOVEMENT
 	keybind_signal = COMSIG_KB_MOB_PIXEL_SHIFT_DOWN
 
-/datum/keybinding/mob/pixel_shift/down(client/user)
+/datum/keybinding/mob/living/pixel_shift/down(client/user)
 	. = ..()
 	if(.)
 		return
 	user.mob.AddComponent(/datum/component/pixel_shift)
 	return TRUE
 
-/datum/keybinding/mob/pixel_shift/up(client/user)
+/datum/keybinding/mob/living/pixel_shift/up(client/user)
 	. = ..()
 	SEND_SIGNAL(user.mob, COMSIG_KB_MOB_PIXEL_SHIFT_UP)
