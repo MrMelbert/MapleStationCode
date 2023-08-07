@@ -143,15 +143,16 @@
 #undef SIZE_PREF_PRIORITY
 #undef HEIGHT_PREF_PRIORITY
 
-// Some fixes relating to gaining dwarfism roundstart
-
 /mob/living/carbon/human/get_mob_height()
-	if(HAS_TRAIT_FROM(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
+	// If you have roundstart dwarfism (IE: resized), it'll just return normal mob height, so no filters are applied
+	if(HAS_TRAIT_FROM_ONLY(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
 		return mob_height
 
 	return ..()
 
 /mob/living/carbon/human/on_dwarf_trait(datum/source)
-	. = ..()
-	if(HAS_TRAIT_FROM(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
-		passtable_off(src, TRAIT_DWARF)
+	// If you have roundstart dwarfism (IE: resized), don't bother regenning icons or toggling passtable
+	if(HAS_TRAIT_FROM_ONLY(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
+		return
+
+	return ..()
