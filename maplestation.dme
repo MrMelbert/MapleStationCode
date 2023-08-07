@@ -5648,6 +5648,7 @@
 #include "maplestation_modules\code\modules\projectiles\projectile\energy\laser.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\energy\ppc.dm"
 #include "maplestation_modules\code\modules\radio_emote_helper\emote_helper.dm"
+#include "maplestation_modules\code\modules\reagents\machines.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\drink_reagents.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\mutation_reagents.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\rim_reagents.dm"
