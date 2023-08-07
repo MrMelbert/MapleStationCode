@@ -35,7 +35,8 @@
 	desc += span_blue(" These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
 	price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
 
-	organ_traits += list( //Migrating silverscale traits to the tongue
+	//Migrating silverscale traits to the tongue
+	LAZYOR(organ_traits, list(
 		TRAIT_HOLY,
 		TRAIT_NOBREATH,
 		TRAIT_PIERCEIMMUNE,
@@ -43,7 +44,7 @@
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_VIRUSIMMUNE,
 		TRAIT_WINE_TASTER,
-	)
+	))
 
 /obj/item/organ/internal/tongue/lizard/silver/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
@@ -95,12 +96,10 @@
 
 	organ_owner.update_body(TRUE)
 
-	// Eject from statue form if we're still in it for some reason
-	if(isstructure(organ_owner.loc))
-		var/datum/action/item_action/organ_action/statue/transform_action = locate() in actions
-		if(!isnull(transform_action) && organ_owner.loc == transform_action.statue)
-			transform_action.ability_cooldown = -1
-			transform_action.Trigger()
+	for(var/datum/action/item_action/organ_action/statue/statue in actions)
+		if(organ_owner.loc == statue.statue)
+			organ_owner.forceMove(statue.statue.loc)
+			organ_owner.Paralyze(12 SECONDS)
 
 /datum/action/item_action/organ_action/statue
 	var/list/traits_in_statue = list(
@@ -118,30 +117,43 @@
 	. = ..()
 	statue.set_armor(/datum/armor/silverscale_statue_armor)
 	statue.flags_ricochet |= RICOCHET_SHINY
+	RegisterSignal(statue, COMSIG_ATOM_ENTERED, PROC_REF(statue_entered))
+	RegisterSignal(statue, COMSIG_ATOM_EXITED, PROC_REF(statue_exited))
 
 /datum/action/item_action/organ_action/statue/Trigger(trigger_flags)
-	if(statue.content_ma)
-		QDEL_NULL(statue.content_ma)
-		statue.update_appearance()
+	if(owner.loc != statue)
+		statue.cut_overlays()
 
 	. = ..()
 	if(!.)
 		return
-	var/mob/living/living_owner = owner
-	if(living_owner.loc == statue)
-		for(var/obj/item/whatever in living_owner.held_items)
-			whatever.forceMove(statue)
-		living_owner.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
-		living_owner.add_traits(traits_in_statue, REF(src))
-
-	else
-		living_owner.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
-		living_owner.remove_traits(traits_in_statue, REF(src))
-		for(var/obj/item/whatever in statue)
-			whatever.forceMove(living_owner.loc)
-			living_owner.put_in_hands(whatever)
 
 	statue.setDir(owner.dir)
+
+/datum/action/item_action/organ_action/statue/proc/statue_entered(datum/source, mob/living/lizard)
+	SIGNAL_HANDLER
+
+	if(lizard != owner)
+		return
+
+	ASYNC
+		for(var/obj/item/whatever in lizard.held_items)
+			whatever.forceMove(statue)
+		lizard.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+		lizard.add_traits(traits_in_statue, REF(src))
+
+/datum/action/item_action/organ_action/statue/proc/statue_exited(datum/source, mob/living/lizard)
+	SIGNAL_HANDLER
+
+	if(lizard != owner)
+		return
+
+	ASYNC
+		lizard.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+		lizard.remove_traits(traits_in_statue, REF(src))
+		for(var/obj/item/whatever in statue)
+			whatever.forceMove(lizard.loc)
+			lizard.put_in_hands(whatever)
 
 /datum/armor/silverscale_statue_armor
 	melee = 50
