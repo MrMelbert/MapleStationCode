@@ -95,9 +95,12 @@
 
 	organ_owner.update_body(TRUE)
 
-	if(istype(organ_owner.loc, /obj/structure/statue))
-		organ_owner.forceMove(organ_owner.loc.loc)
-		organ_owner.visible_message(span_warning("[organ_owner] tumbles out of [organ_owner.loc]!"))
+	// Eject from statue form if we're still in it for some reason
+	if(isstructure(organ_owner.loc))
+		var/datum/action/item_action/organ_action/statue/transform_action = locate() in actions
+		if(!isnull(transform_action) && organ_owner.loc == transform_action.statue)
+			transform_action.ability_cooldown = -1
+			transform_action.Trigger()
 
 /datum/action/item_action/organ_action/statue
 	var/list/traits_in_statue = list(
