@@ -141,13 +141,10 @@
 
 /datum/action/item_action/organ_action/statue/Trigger(trigger_flags)
 	if(owner.loc != statue)
+		// Fixes a weird bug where the overlays of the previous time you entered statue form stuck around.
 		statue.cut_overlays()
 
-	. = ..()
-	if(!.)
-		return
-
-	statue.setDir(owner.dir)
+	return ..()
 
 /datum/action/item_action/organ_action/statue/proc/statue_entered(datum/source, mob/living/lizard)
 	SIGNAL_HANDLER
@@ -155,14 +152,22 @@
 	if(lizard != owner)
 		return
 
-	for(var/obj/item/whatever in lizard.held_items)
-		whatever.forceMove(statue)
+	// Stops them from futzing around with items + stasis gives you HANDS_BLOCKED so don't yeet our items please
+	for(var/obj/item/whatever in lizard)
+		ADD_TRAIT(whatever, TRAIT_NODROP, REF(src))
+
+	// Applies relevant effects
 	lizard.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
 	lizard.add_traits(traits_in_statue, REF(src))
+
+	// Keeps them either lying down or standing up depending on how they entered the statue
 	if(lizard.body_position == LYING_DOWN)
 		ADD_TRAIT(lizard, TRAIT_FLOORED, REF(src))
 	else
 		ADD_TRAIT(lizard, TRAIT_FORCED_STANDING, REF(src))
+
+	// Ensures it matches your current direction, rather the last direction
+	statue.setDir(lizard.dir)
 
 /datum/action/item_action/organ_action/statue/proc/statue_exited(datum/source, mob/living/lizard)
 	SIGNAL_HANDLER
@@ -170,21 +175,18 @@
 	if(lizard != owner)
 		return
 
+	// Effects are undone in reverse order, just in case (as some of these have immediate effects associated)
 	REMOVE_TRAIT(lizard, TRAIT_FLOORED, REF(src))
 	REMOVE_TRAIT(lizard, TRAIT_FORCED_STANDING, REF(src))
+
 	lizard.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
 	lizard.remove_traits(traits_in_statue, REF(src))
 
-	var/list/obj/item/dropped_things = list()
-	for(var/obj/item/whatever in statue)
-		whatever.forceMove(lizard.loc)
-		if(!QDELETED(whatever))
-			dropped_things += whatever
+	for(var/obj/item/whatever in lizard)
+		REMOVE_TRAIT(whatever, TRAIT_NODROP, REF(src))
 
-	// Put in hands sleeps so here we are
-	ASYNC
-		for(var/obj/item/pick_up_that_can in dropped_things)
-			lizard.put_in_hands(pick_up_that_can)
+	// Matches up dirs again, someone could've rotated our statue
+	lizard.setDir(statue.dir)
 
 /datum/armor/silverscale_statue_armor
 	melee = 50
