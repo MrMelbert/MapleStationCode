@@ -45,19 +45,19 @@
 		TRAIT_WINE_TASTER,
 	)
 
-/obj/item/organ/internal/tongue/lizard/silver/Insert(mob/living/carbon/tongue_owner, special, drop_if_replaced)
+/obj/item/organ/internal/tongue/lizard/silver/on_insert(mob/living/carbon/organ_owner, special)
 	. = ..()
 
-	if (!ishuman(tongue_owner) || isnull(tongue_owner.dna))
+	if (!ishuman(organ_owner) || isnull(organ_owner.dna))
 		return
-	var/mob/living/carbon/human/he_who_was_blessed_with_silver = tongue_owner
+	var/mob/living/carbon/human/he_who_was_blessed_with_silver = organ_owner
 
 	old_mutcolor = he_who_was_blessed_with_silver.dna.features["mcolor"]
 	old_eye_color_left = he_who_was_blessed_with_silver.eye_color_left
 	old_eye_color_right = he_who_was_blessed_with_silver.eye_color_right
 
-	if (istype(tongue_owner.dna.species, /datum/species/lizard/silverscale))
-		var/datum/species/lizard/silverscale/silver_species = tongue_owner.dna.species
+	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
+		var/datum/species/lizard/silverscale/silver_species = organ_owner.dna.species
 		old_mutcolor = silver_species.old_mutcolor
 		old_eye_color_left = silver_species.old_eye_color_left
 		old_eye_color_right = silver_species.old_eye_color_right
@@ -70,14 +70,14 @@
 
 	he_who_was_blessed_with_silver.physiology?.damage_resistance += 10
 
-	tongue_owner.update_body(TRUE)
+	organ_owner.update_body(TRUE)
 
-/obj/item/organ/internal/tongue/lizard/silver/Remove(mob/living/carbon/tongue_owner, special)
+/obj/item/organ/internal/tongue/lizard/silver/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 
-	if (!ishuman(tongue_owner) || isnull(tongue_owner.dna))
+	if (!ishuman(organ_owner) || isnull(organ_owner.dna))
 		return
-	var/mob/living/carbon/human/he_who_has_been_outcast = tongue_owner
+	var/mob/living/carbon/human/he_who_has_been_outcast = organ_owner
 
 	he_who_has_been_outcast.skin_tone = old_skincolor
 	he_who_has_been_outcast.dna.features["mcolor"] = old_mutcolor
@@ -93,25 +93,45 @@
 
 	he_who_has_been_outcast.physiology?.damage_resistance -= 10
 
-	tongue_owner.update_body(TRUE)
+	organ_owner.update_body(TRUE)
+
+	if(istype(organ_owner.loc, /obj/structure/statue))
+		organ_owner.forceMove(organ_owner.loc.loc)
+		organ_owner.visible_message(span_warning("[organ_owner] tumbles out of [organ_owner.loc]!"))
 
 /datum/action/item_action/organ_action/statue
-	var/modified_modularly = FALSE
+	var/list/traits_in_statue = list(
+		TRAIT_HOLY,
+		TRAIT_NOBREATH,
+		TRAIT_RADIMMUNE,
+		TRAIT_RESISTCOLD,
+		TRAIT_RESISTHEAT,
+		TRAIT_RESISTHIGHPRESSURE,
+		TRAIT_RESISTLOWPRESSURE,
+		TRAIT_SHOCKIMMUNE,
+	)
 
 /datum/action/item_action/organ_action/statue/New(Target)
 	. = ..()
 	statue.set_armor(/datum/armor/silverscale_statue_armor)
 	statue.flags_ricochet |= RICOCHET_SHINY
 
-/datum/action/item_action/organ_action/statue/Trigger(trigger_flags) // why the fuck were they so fragile before
+/datum/action/item_action/organ_action/statue/Trigger(trigger_flags)
+	if(statue.content_ma)
+		QDEL_NULL(statue.content_ma)
+		statue.update_appearance()
+
 	. = ..()
 	if(!.)
 		return
 	var/mob/living/living_owner = owner
 	if(living_owner.loc == statue)
 		living_owner.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+		living_owner.add_traits(traits_in_statue, REF(src))
 	else
 		living_owner.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+		living_owner.remove_traits(traits_in_statue, REF(src))
+	statue.setDir(owner.dir)
 
 /datum/armor/silverscale_statue_armor
 	melee = 50
