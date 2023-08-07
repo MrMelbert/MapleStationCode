@@ -4,6 +4,13 @@
 	/// Text shown on examine
 	var/pose_text
 
+	var/static/mutable_appearance/pose_overlay = mutable_appearance(
+		'maplestation_modules/icons/misc/temporary_flavor_text_indicator.dmi',
+		"flavor",
+		FLY_LAYER,
+		appearance_flags = (APPEARANCE_UI_IGNORE_ALPHA|KEEP_APART),
+	)
+
 /datum/component/pose/Initialize(pose_text)
 	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -17,6 +24,10 @@
 		SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED),
 		SIGNAL_REMOVETRAIT(TRAIT_INCAPACITATED),
 	), PROC_REF(on_incapacitated))
+	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_update_overlays))
+
+	var/mob/living/living_parent = parent
+	living_parent.update_appearance(UPDATE_OVERLAYS)
 
 /datum/component/pose/UnregisterFromParent()
 	UnregisterSignal(parent, list(
@@ -25,6 +36,15 @@
 		SIGNAL_ADDTRAIT(TRAIT_INCAPACITATED),
 		SIGNAL_REMOVETRAIT(TRAIT_INCAPACITATED),
 	))
+	UnregisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS)
+
+	var/mob/living/living_parent = parent
+	living_parent.update_appearance(UPDATE_OVERLAYS)
+
+/datum/component/pose/proc/on_update_overlays(atom/source, list/overlays)
+	SIGNAL_HANDLER
+
+	overlays += pose_overlay
 
 /datum/component/pose/proc/on_living_examine(datum/source, mob/examiner, list/examine_list)
 	SIGNAL_HANDLER
