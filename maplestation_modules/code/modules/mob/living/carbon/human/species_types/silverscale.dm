@@ -1,5 +1,7 @@
 // TONGUE CODE BEGIN
 
+#define SILVERSCALE_LOST_TONGUE_MOOD_ID "silverscale_lost_tongue"
+
 /datum/controller/subsystem/research/Initialize()
 	. = ..()
 
@@ -63,6 +65,11 @@
 		old_eye_color_left = silver_species.old_eye_color_left
 		old_eye_color_right = silver_species.old_eye_color_right
 
+		organ_owner.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
+		if (!special)
+			to_chat(organ_owner, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... \
+				you are once again Silverscale."))
+
 	he_who_was_blessed_with_silver.skin_tone = "albino"
 	he_who_was_blessed_with_silver.dna.features["mcolor"] = "#eeeeee"
 	he_who_was_blessed_with_silver.eye_color_left = "#0000a0"
@@ -85,6 +92,12 @@
 	he_who_has_been_outcast.eye_color_left = old_eye_color_left
 	he_who_has_been_outcast.eye_color_right = old_eye_color_right
 
+	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
+		organ_owner.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
+		if (!special)
+			to_chat(organ_owner, span_userdanger("You can feel the arcane powers of the silver tongue slip away - \
+				you've lost your silver heritage! Without it, you are less than Silverscale... you MUST get it back!"))
+
 	he_who_has_been_outcast.remove_filter("silver_glint")
 
 	old_skincolor = null
@@ -102,15 +115,21 @@
 			organ_owner.Paralyze(12 SECONDS)
 
 /datum/action/item_action/organ_action/statue
+	/// Traits granted to the mob when in statue form
+	/// Overlaps with Silverscale traits a bit, don't really care, we're just being thorough
 	var/list/traits_in_statue = list(
 		TRAIT_HOLY,
 		TRAIT_NOBREATH,
+		TRAIT_PIERCEIMMUNE,
+		TRAIT_NODISMEMBER,
 		TRAIT_RADIMMUNE,
 		TRAIT_RESISTCOLD,
 		TRAIT_RESISTHEAT,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_SHOCKIMMUNE,
+		TRAIT_VIRUSIMMUNE,
+		TRAIT_NEVER_WOUNDED,
 	)
 
 /datum/action/item_action/organ_action/statue/New(Target)
@@ -136,11 +155,14 @@
 	if(lizard != owner)
 		return
 
-	ASYNC
-		for(var/obj/item/whatever in lizard.held_items)
-			whatever.forceMove(statue)
-		lizard.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
-		lizard.add_traits(traits_in_statue, REF(src))
+	for(var/obj/item/whatever in lizard.held_items)
+		whatever.forceMove(statue)
+	lizard.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+	lizard.add_traits(traits_in_statue, REF(src))
+	if(lizard.body_position == LYING_DOWN)
+		ADD_TRAIT(lizard, TRAIT_FLOORED, REF(src))
+	else
+		ADD_TRAIT(lizard, TRAIT_FORCED_STANDING, REF(src))
 
 /datum/action/item_action/organ_action/statue/proc/statue_exited(datum/source, mob/living/lizard)
 	SIGNAL_HANDLER
@@ -148,12 +170,21 @@
 	if(lizard != owner)
 		return
 
+	REMOVE_TRAIT(lizard, TRAIT_FLOORED, REF(src))
+	REMOVE_TRAIT(lizard, TRAIT_FORCED_STANDING, REF(src))
+	lizard.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+	lizard.remove_traits(traits_in_statue, REF(src))
+
+	var/list/obj/item/dropped_things = list()
+	for(var/obj/item/whatever in statue)
+		whatever.forceMove(lizard.loc)
+		if(!QDELETED(whatever))
+			dropped_things += whatever
+
+	// Put in hands sleeps so here we are
 	ASYNC
-		lizard.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
-		lizard.remove_traits(traits_in_statue, REF(src))
-		for(var/obj/item/whatever in statue)
-			whatever.forceMove(lizard.loc)
-			lizard.put_in_hands(whatever)
+		for(var/obj/item/pick_up_that_can in dropped_things)
+			lizard.put_in_hands(pick_up_that_can)
 
 /datum/armor/silverscale_statue_armor
 	melee = 50
@@ -162,45 +193,13 @@
 	energy = 50
 	bomb = 50
 
-// TONGUE CODE END
-
-// LIZARD CODE BEGIN
-
-/datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/C, datum/species/old_species)
-	. = ..()
-
-	RegisterSignal(C, COMSIG_CARBON_GAIN_ORGAN, PROC_REF(on_gain_organ))
-	RegisterSignal(C, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_lose_organ))
-
-/datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/C)
-	. = ..()
-
-	UnregisterSignal(C, COMSIG_CARBON_GAIN_ORGAN)
-	UnregisterSignal(C, COMSIG_CARBON_LOSE_ORGAN)
-	C.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
-
-/datum/species/lizard/silverscale/proc/on_gain_organ(mob/living/carbon/receiver, obj/item/organ/new_organ, special)
-	SIGNAL_HANDLER
-
-	if (!istongue(new_organ))
-		return
-	var/obj/item/organ/internal/tongue/existing_tongue = receiver.get_organ_slot(ORGAN_SLOT_TONGUE)
-	if (istype(existing_tongue, /obj/item/organ/internal/tongue/lizard/silver))
-		return
-	if (istype(new_organ, /obj/item/organ/internal/tongue/lizard/silver))
-		receiver.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
-		to_chat(receiver, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... you are once again silverscale."))
-
-/datum/species/lizard/silverscale/proc/on_lose_organ(mob/living/carbon/receiver, obj/item/organ/lost_organ, special)
-	SIGNAL_HANDLER
-
-	if (istype(lost_organ, /obj/item/organ/internal/tongue/lizard/silver))
-		receiver.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
-		to_chat(receiver, span_warning("You can feel the arcane powers of the silver tongue slip away - you've lost your silver heritage! Without it, you are less than silverscale... you MUST get it back!"))
-
 /datum/mood_event/silverscale_lost_tongue
 	description = "I lost my silvery tongue, the link between me and the silverscale society -- I need it back, or else I'll be considered sub-lizard!"
 	mood_change = -25 // God forbid you return to your society without your tongue - you're an outcast, now
+
+// TONGUE CODE END
+
+// LIZARD CODE BEGIN
 
 /datum/species/lizard/silverscale
 	plural_form = "Silverscales"
@@ -211,6 +210,10 @@
 		TRAIT_CAN_USE_FLIGHT_POTION,
 		TRAIT_TACKLING_TAILED_DEFENDER,
 	)
+
+/datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
+	. = ..()
+	C.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
 
 /datum/species/lizard/silverscale/prepare_human_for_preview(mob/living/carbon/human/human)
 	. = ..()
@@ -322,3 +325,5 @@
 	)
 
 	return to_add
+
+#undef SILVERSCALE_LOST_TONGUE_MOOD_ID

@@ -5324,7 +5324,6 @@
 #include "maplestation_modules\code\__DEFINES\keybinding.dm"
 #include "maplestation_modules\code\__DEFINES\living.dm"
 #include "maplestation_modules\code\__DEFINES\mecha.dm"
-#include "maplestation_modules\code\__DEFINES\mobs.dm"
 #include "maplestation_modules\code\__DEFINES\paperwork_defines.dm"
 #include "maplestation_modules\code\__DEFINES\signals.dm"
 #include "maplestation_modules\code\__DEFINES\spans.dm"
