@@ -5634,6 +5634,7 @@
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\skrell.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\species.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\species_types\synths.dm"
+#include "maplestation_modules\code\modules\mob\living\silicon\robot\robot_defines.dm"
 #include "maplestation_modules\code\modules\mob\living\simple_animal\corpse.dm"
 #include "maplestation_modules\code\modules\mod\mod_control.dm"
 #include "maplestation_modules\code\modules\mod\modules\modules_general.dm"
