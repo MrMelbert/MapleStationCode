@@ -6596,6 +6596,7 @@
 	dir = 4
 	},
 /obj/structure/sign/departments/vault/directional/north,
+/obj/structure/tank_holder/extinguisher,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/fore)
 "aIA" = (
@@ -7482,7 +7483,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/structure/extinguisher_cabinet/directional/south,
+/obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/dark/corner,
 /area/station/hallway/primary/central/fore)
 "aNt" = (
@@ -13176,15 +13177,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
-"bua" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 4
-	},
-/obj/machinery/barsign{
-	pixel_y = 32
-	},
-/turf/open/floor/wood,
-/area/station/service/bar/atrium)
 "buc" = (
 /obj/structure/rack,
 /obj/item/storage/toolbox/mechanical{
@@ -27915,6 +27907,7 @@
 /mob/living/carbon/human/species/monkey{
 	name = "mankey"
 	},
+/obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/grass,
 /area/station/medical/virology)
 "dKp" = (
@@ -28218,7 +28211,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/newscaster/directional/south,
+/obj/machinery/barsign/directional/south,
 /turf/open/floor/iron/dark/corner{
 	dir = 8
 	},
@@ -37874,6 +37867,19 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
+"hkf" = (
+/obj/effect/turf_decal/tile/green{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/green{
+	dir = 4
+	},
+/obj/structure/sign/poster/official/random/directional/north,
+/turf/open/floor/iron,
+/area/station/hallway/primary/central/fore)
 "hkx" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -42872,13 +42878,13 @@
 "iYc" = (
 /obj/structure/table,
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/firealarm/directional/west,
 /obj/item/clipboard{
 	pixel_x = 4
 	},
 /obj/effect/decal/cleanable/cobweb,
 /obj/item/book/manual/wiki/tcomms,
 /obj/item/radio,
+/obj/machinery/airalarm/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/computer)
 "iYx" = (
@@ -65423,7 +65429,6 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/dark/corner{
 	dir = 8
 	},
@@ -77517,6 +77522,7 @@
 	id = "virologysurgery";
 	name = "Virology Privacy Shutters"
 	},
+/obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/medical/virology)
 "vhM" = (
@@ -79343,10 +79349,10 @@
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "vMP" = (
-/obj/machinery/airalarm/directional/south,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
+/obj/machinery/firealarm/directional/south,
 /turf/open/floor/engine,
 /area/station/tcommsat/computer)
 "vNn" = (
@@ -79683,7 +79689,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral,
-/obj/structure/sign/poster/official/random/directional/south,
+/obj/machinery/newscaster/directional/south,
 /turf/open/floor/iron/dark/corner,
 /area/station/hallway/primary/central/fore)
 "vTl" = (
@@ -89272,7 +89278,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -90040,7 +90046,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -92133,7 +92139,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -92346,7 +92352,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aeu
@@ -93321,7 +93327,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -93939,7 +93945,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -94132,7 +94138,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -95385,35 +95391,35 @@ aaa
 aaa
 aaa
 aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
+aaa
 aaB
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
 aaa
 aaa
 aaa
@@ -95669,7 +95675,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -96418,7 +96424,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -98827,7 +98833,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -99949,7 +99955,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aeU
 aeU
@@ -104730,7 +104736,7 @@ aeo
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -107700,7 +107706,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -111344,7 +111350,7 @@ wtf
 xta
 gJo
 gJo
-yec
+hkf
 vmm
 jgl
 luW
@@ -111441,7 +111447,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -111825,7 +111831,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -114879,7 +114885,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -115206,7 +115212,7 @@ aPv
 aKe
 aTR
 usW
-bua
+asj
 asj
 wVU
 nuo
@@ -118759,7 +118765,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -118885,7 +118891,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -119654,7 +119660,7 @@ aeU
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -123254,7 +123260,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -124152,7 +124158,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -127498,7 +127504,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 acK
@@ -130903,7 +130909,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -131446,7 +131452,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -131599,7 +131605,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -132446,7 +132452,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -133417,7 +133423,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -134032,7 +134038,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -137037,7 +137043,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -137776,7 +137782,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aaa
@@ -139540,7 +139546,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+aaB
 aaa
 aaa
 aeU
@@ -139912,7 +139918,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -140414,7 +140420,7 @@ aaa
 aaa
 aaa
 aaa
-aaB
+aaa
 aaa
 aaa
 aaa
@@ -141933,7 +141939,7 @@ aaa
 aeo
 aaa
 aaa
-aaa
+aaB
 aaa
 aaQ
 aaa
