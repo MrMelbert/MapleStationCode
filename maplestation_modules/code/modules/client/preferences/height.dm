@@ -1,7 +1,7 @@
 // -- Height preferences --
 
 #define SIZE_PREF_PRIORITY PREFERENCE_PRIORITY_BODY_TYPE
-#define HEIGHT_PREF_PRIORITY PREFERENCE_PRIORITY_BODY_TYPE - 1
+#define HEIGHT_PREF_PRIORITY SIZE_PREF_PRIORITY - 1
 
 #define HEIGHT_EXTREMELY_LARGE "Extremely Large"
 #define HEIGHT_VERY_LARGE "Very Large"
@@ -17,7 +17,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
-	priority = PREFERENCE_PRIORITY_BODY_TYPE // throw this last
+	priority = SIZE_PREF_PRIORITY // throw this last
 
 /datum/preference/choiced/mob_size/init_possible_values()
 	return list(
