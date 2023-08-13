@@ -1,5 +1,8 @@
 // -- Height preferences --
 
+#define SIZE_PREF_PRIORITY PREFERENCE_PRIORITY_BODY_TYPE
+#define HEIGHT_PREF_PRIORITY SIZE_PREF_PRIORITY - 1
+
 #define HEIGHT_EXTREMELY_LARGE "Extremely Large"
 #define HEIGHT_VERY_LARGE "Very Large"
 #define HEIGHT_LARGE "Large"
@@ -14,6 +17,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
+	priority = SIZE_PREF_PRIORITY // throw this last
 
 /datum/preference/choiced/mob_size/init_possible_values()
 	return list(
@@ -28,6 +32,8 @@
 
 /datum/preference/choiced/mob_size/apply_to_human(mob/living/carbon/human/target, value)
 	if(value == HEIGHT_NO_CHANGE)
+		return
+	if(target.get_mob_height() != HUMAN_HEIGHT_MEDIUM) // not compatible, nope
 		return
 
 	// Snowflake, but otherwise the dummy in the prefs menu will be resized and you can't see anything
@@ -62,9 +68,9 @@
 			resize_amount = 0.7
 			y_offset = -5
 
-	if(resize_amount > 1.1)
+	if(value >= HEIGHT_VERY_LARGE)
 		ADD_TRAIT(target, TRAIT_GIANT, ROUNDSTART_TRAIT)
-	else if(resize_amount < 0.9)
+	else if(value <= HEIGHT_VERY_SMALL)
 		ADD_TRAIT(target, TRAIT_DWARF, ROUNDSTART_TRAIT)
 
 	target.resize = resize_amount
@@ -98,6 +104,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
 	can_randomize = FALSE
+	priority = HEIGHT_PREF_PRIORITY
 	var/list/height_to_actual = list(
 		"Shortest" = HUMAN_HEIGHT_SHORTEST,
 		"Short" = HUMAN_HEIGHT_SHORT,
@@ -132,3 +139,20 @@
 	return DEFAULT_HEIGHT
 
 #undef DEFAULT_HEIGHT
+
+#undef SIZE_PREF_PRIORITY
+#undef HEIGHT_PREF_PRIORITY
+
+/mob/living/carbon/human/get_mob_height()
+	// If you have roundstart dwarfism (IE: resized), it'll just return normal mob height, so no filters are applied
+	if(HAS_TRAIT_FROM_ONLY(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
+		return mob_height
+
+	return ..()
+
+/mob/living/carbon/human/on_dwarf_trait(datum/source)
+	// If you have roundstart dwarfism (IE: resized), don't bother regenning icons or toggling passtable
+	if(HAS_TRAIT_FROM_ONLY(src, TRAIT_DWARF, ROUNDSTART_TRAIT))
+		return
+
+	return ..()
