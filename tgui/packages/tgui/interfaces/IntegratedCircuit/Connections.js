@@ -3,7 +3,12 @@ import { SVG_CURVE_INTENSITY } from './constants';
 import { classes } from '../../../common/react';
 
 export const Connections = (props, context) => {
-  const { connections, zLayer = -1, lineWidth = '2px' } = props;
+  const {
+    connections,
+    zLayer = -1,
+    lineWidth = '2px',
+    height = '100%',
+  } = props;
 
   const isColorClass = (str) => {
     if (typeof str === 'string') {
@@ -14,7 +19,7 @@ export const Connections = (props, context) => {
   return (
     <svg
       width="100%"
-      height="100%"
+      height={props.height}
       style={{
         'position': 'absolute',
         'pointer-events': 'none',

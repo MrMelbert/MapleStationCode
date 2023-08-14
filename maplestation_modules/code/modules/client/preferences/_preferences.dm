@@ -38,27 +38,6 @@
 
 	var/mob/user = usr
 	switch (action)
-		// Loadout UI
-		if ("open_loadout_manager")
-			if(parent.open_loadout_ui)
-				parent.open_loadout_ui.ui_interact(user)
-			else
-				var/datum/loadout_manager/tgui = new(user)
-				tgui.ui_interact(user)
-			return TRUE
-		// Limb UI
-		if ("open_limbs")
-			if(parent.open_limb_editor)
-				parent.open_limb_editor.ui_interact(user)
-			else
-				var/datum/limb_editor/tgui = new(user)
-				tgui.ui_interact(user)
-			return TRUE
-		// Language UI
-		if ("open_language_picker")
-			var/datum/language_picker/tgui = new(src)
-			tgui.ui_interact(user)
-			return TRUE
 		// Spellbook UI
 		if ("open_spellbook")
 			if(parent.open_spellbook_ui)

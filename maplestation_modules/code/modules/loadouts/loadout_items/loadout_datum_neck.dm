@@ -4,13 +4,10 @@
 /datum/loadout_category/neck
 	category_name = "Neck"
 	ui_title = "Neck Slot Items"
-
-/datum/loadout_category/neck/get_items()
-	var/static/list/loadout_neck = generate_loadout_items(/datum/loadout_item/neck)
-	return loadout_neck
+	type_to_generate = /datum/loadout_item/neck
 
 /datum/loadout_item/neck
-	category = LOADOUT_ITEM_NECK
+	abstract_type = /datum/loadout_item/neck
 
 /datum/loadout_item/neck/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	outfit.neck = item_path

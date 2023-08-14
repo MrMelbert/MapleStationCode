@@ -1,7 +1,6 @@
 /datum/preference/limbs
 	savefile_key = "limb_list"
 	savefile_identifier = PREFERENCE_CHARACTER
-	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	can_randomize = FALSE
 
 /datum/preference/limbs/apply_to_human(mob/living/carbon/human/target, value)

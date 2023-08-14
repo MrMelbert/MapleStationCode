@@ -2,7 +2,6 @@ import { Component, createRef } from 'inferno';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, BlockQuote, Button, Section, Stack } from '../components';
-import { Window } from '../layouts';
 import { Connections } from './IntegratedCircuit/Connections';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
@@ -83,7 +82,7 @@ const getActiveCategory = (
 
 type Data = {
   limbs: LimbCategory[];
-  selected_limbs: string[];
+  selected_limbs: string[] | null;
   preview_flat_icon: string;
 };
 
@@ -99,12 +98,12 @@ type Limb = {
 };
 
 const LimbSelectButton = (
-  props: { select_limb: Limb; selected_limbs: string[] },
+  props: { select_limb: Limb; selected_limbs: string[] | null },
   context
 ) => {
   const { act, data } = useBackend<Limb>(context);
   const { select_limb, selected_limbs } = props;
-  const is_active = selected_limbs.includes(select_limb.path);
+  const is_active = selected_limbs?.includes(select_limb.path);
   return (
     <Button.Checkbox
       checked={is_active}
@@ -122,7 +121,7 @@ const LimbSelectButton = (
 
 const DisplayLimbs = (
   props: {
-    selected_limbs: string[];
+    selected_limbs: string[] | null;
     limbs: LimbCategory[];
     current_selection: string | null;
   },
@@ -280,7 +279,7 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
 
 type LimbManagerInnerProps = {
   limbs: LimbCategory[];
-  selected_limbs: string[];
+  selected_limbs: string[] | null;
   preview_flat_icon: string;
 };
 
@@ -323,9 +322,14 @@ class LimbManagerInner extends Component<
     }
 
     return (
-      <Window.Content>
-        <Connections connections={connections} zLayer={4} lineWidth={4} />
-        <Stack fill>
+      <>
+        <Connections
+          connections={connections}
+          zLayer={4}
+          lineWidth={4}
+          height="50%"
+        />
+        <Stack height="300px">
           <Stack.Item width={20}>
             <Section title="Preview" fill align="center">
               <LimbPreview
@@ -347,22 +351,20 @@ class LimbManagerInner extends Component<
             </Section>
           </Stack.Item>
         </Stack>
-      </Window.Content>
+      </>
     );
   }
 }
 
-export const _LimbManager = (props, context) => {
+export const LimbManagerPage = (props, context) => {
   const { act, data } = useBackend<Data>(context);
   const { limbs, selected_limbs, preview_flat_icon } = data;
 
   return (
-    <Window title="Limb Manager" width={700} height={365}>
-      <LimbManagerInner
-        limbs={limbs}
-        selected_limbs={selected_limbs}
-        preview_flat_icon={preview_flat_icon}
-      />
-    </Window>
+    <LimbManagerInner
+      limbs={limbs}
+      selected_limbs={selected_limbs}
+      preview_flat_icon={preview_flat_icon}
+    />
   );
 };

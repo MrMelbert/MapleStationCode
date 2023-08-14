@@ -4,13 +4,10 @@
 /datum/loadout_category/inhands
 	category_name = "Inhand"
 	ui_title = "In-hand Items"
-
-/datum/loadout_category/inhands/get_items()
-	var/static/list/loadout_inhand = generate_loadout_items(/datum/loadout_item/inhand)
-	return loadout_inhand
+	type_to_generate = /datum/loadout_item/inhand
 
 /datum/loadout_item/inhand
-	category = LOADOUT_ITEM_INHAND
+	abstract_type = /datum/loadout_item/inhand
 
 /datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.l_hand && !outfit.r_hand)

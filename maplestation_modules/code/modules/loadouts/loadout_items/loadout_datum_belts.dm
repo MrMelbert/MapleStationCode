@@ -4,13 +4,10 @@
 /datum/loadout_category/belts
 	category_name = "Belt"
 	ui_title = "Belt Slot Items"
-
-/datum/loadout_category/belts/get_items()
-	var/static/list/loadout_belts = generate_loadout_items(/datum/loadout_item/belts)
-	return loadout_belts
+	type_to_generate = /datum/loadout_item/belts
 
 /datum/loadout_item/belts
-	category = LOADOUT_ITEM_BELT
+	abstract_type = /datum/loadout_item/belts
 
 /datum/loadout_item/belts/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.belt)
