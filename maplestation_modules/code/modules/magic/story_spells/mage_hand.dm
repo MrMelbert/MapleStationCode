@@ -10,6 +10,7 @@
 	sound = null
 
 	cooldown_time = 20 SECONDS
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
 	school = SCHOOL_PSYCHIC
 	antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND
@@ -18,6 +19,7 @@
 /datum/action/cooldown/spell/apply_mutations/mage_hand/New(Target)
 	. = ..()
 	mutation_duration = cooldown_time * 0.5
+	AddComponent(/datum/component/uses_mana/story_spell/mage_hand)
 
 /datum/action/cooldown/spell/apply_mutations/mage_hand/Grant(mob/grant_to)
 	. = ..()

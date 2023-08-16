@@ -146,6 +146,12 @@
 	spellbook_tabs += list(list("name" = "Hydrokinesis", "title" = "Items related to manipulation of water", "contents" = list_to_data(GLOB.spellbook_hydrokinesis_items)))
 	spellbook_tabs += list(list("name" = "Lumenomancy", "title" = "Items related to manipulation of light", "contents" = list_to_data(GLOB.spellbook_lumenomancy_items)))
 
+	spellbook_tabs += list(list("name" = "Geomancy", "title" = "Items related to manipulation of earth", "contents" = list_to_data(GLOB.spellbook_geomancy_items)))
+	spellbook_tabs += list(list("name" = "Electrokinesis", "title" = "Items related to manipulation of electricity", "contents" = list_to_data(GLOB.spellbook_electrokinesis_items)))
+	spellbook_tabs += list(list("name" = "Misc. Spells", "title" = "Other miscellaneous spells, not associated with any attunements", "contents" = list_to_data(GLOB.spellbook_misc_items)))
+
+
+
 	data["spellbook_tabs"] = spellbook_tabs
 
 	return data
