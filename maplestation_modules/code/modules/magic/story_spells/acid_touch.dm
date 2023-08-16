@@ -2,11 +2,9 @@
 	var/acid_touch_attunement_amount = 0.5
 	var/acid_touch_cost = 50
 
-/*
 /datum/component/uses_mana/story_spell/touch/acid_touch/get_attunement_dispositions()
 	. = ..()
-	.[MAGIC_ELEMENT_POISON] += attunement_amount
-*/
+	.[/datum/attunement/earth] += acid_touch_attunement_amount
 
 /datum/component/uses_mana/story_spell/touch/acid_touch/get_mana_required(...)
 	return ..() * acid_touch_cost
@@ -17,7 +15,7 @@
 		Right click to use on walls or floors."
 	sound = 'sound/weapons/sear.ogg'
 
-	school = SCHOOL_TRANSMUTATION
+	school = SCHOOL_EVOCATION
 	cooldown_time = 1 MINUTES
 
 	hand_path = /obj/item/melee/touch_attack/acid_touch

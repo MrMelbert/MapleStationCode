@@ -5598,6 +5598,8 @@
 #include "maplestation_modules\code\modules\magic\story_spells\airhike.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\convect.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\flare.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\mage_hand.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\shock_touch.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\thaumatergic_sense.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\components\pointed_component.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\components\story_spell_component.dm"
