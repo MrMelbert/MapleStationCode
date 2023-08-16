@@ -25,16 +25,8 @@
 #undef CONVECT_ICE_ATTUNEMENT
 
 /datum/component/uses_mana/story_spell/pointed/convect/get_mana_required(...)
-	. = ..()
 	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
-	return ((abs(convect_spell.temperature_for_cast)*CONVECT_MANA_COST_PER_KELVIN) * convect_spell.owner.get_casting_cost_mult())
-	// todo: methodize the casting cost mult part
-
-/datum/component/uses_mana/story_spell/pointed/convect/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
-	drain_mana(caster = convect_spell.owner)
+	return ..() * abs(convect_spell.temperature_for_cast) * CONVECT_MANA_COST_PER_KELVIN
 
 /datum/action/cooldown/spell/pointed/convect
 	name = "Convect"

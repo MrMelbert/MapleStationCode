@@ -7,14 +7,7 @@
 	.[MAGIC_ELEMENT_WIND] += attunement_amount
 
 /datum/component/uses_mana/story_spell/airhike/get_mana_required(...)
-	. = ..()
-	var/datum/action/cooldown/spell/airhike/airhike_spell = parent
-	return (airhike_cost * airhike_spell.owner.get_casting_cost_mult())
-
-/datum/component/uses_mana/story_spell/airhike/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	drain_mana()
+	return ..() * airhike_cost
 
 //If there isn't enough mana and the Rclick check passes so it won't mess up any future Normal casts
 /datum/component/uses_mana/story_spell/airhike/can_activate_check_failure(give_feedback, ...)

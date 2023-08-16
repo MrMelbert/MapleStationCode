@@ -76,5 +76,3 @@
 			break
 	if (cost != 0)
 		stack_trace("cost: [cost] was not 0 after react_to_successful_use on [src]")
-
-

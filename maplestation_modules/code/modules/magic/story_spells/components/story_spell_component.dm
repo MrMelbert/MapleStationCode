@@ -60,3 +60,11 @@
 /datum/component/uses_mana/story_spell/proc/handle_cast(atom/cast_on)
 	SIGNAL_HANDLER
 	return
+
+/datum/component/uses_mana/story_spell/react_to_successful_use(...)
+	var/datum/action/cooldown/spell/spell = parent
+	drain_mana(caster = spell.owner)
+
+/datum/component/uses_mana/story_spell/get_mana_required()
+	var/datum/action/cooldown/spell/spell = parent
+	return spell.owner.get_casting_cost_mult()
