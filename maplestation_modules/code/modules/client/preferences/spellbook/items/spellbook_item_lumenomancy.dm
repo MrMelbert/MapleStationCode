@@ -18,3 +18,15 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 /datum/spellbook_item/spell/conjure_item/flare/generate_customization_params()
 	. = list()
 	.["lesser"] = new /datum/spellbook_customization_entry/boolean("lesser", "Lesser, weaker, somewhat cheaper version", "A cheap less lasting flare that fizzles out faster than expected, for those just learning magic or unable to grasp the full concept of luminosity.")
+
+/datum/spellbook_item/spell/illusion
+	name = "Illusion"
+	description = "Summon an illusionary clone of yourself at the target location. Looks identical to you, \
+		but will not hold up to physical scrutiny. Has a long range, but lasts for only a short time."
+	lore = "Sometimes known as \"Mirror Image\" by more advanced pracitioners, Illusion is a well practiced spell which bends the light \
+		in such a way to create an almost perfect copy of the caster. Of course, being effectively an advanced trick of the light, \
+		the illusion is not capable of much besides being used to confuse and distract or otherwise look pretty."
+
+	category = SPELLBOOK_CATEGORY_LUMENOMANCY
+
+	our_action_typepath = /datum/action/cooldown/spell/conjure_item/flare
