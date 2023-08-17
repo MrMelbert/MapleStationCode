@@ -6,18 +6,14 @@
 	. = ..()
 	.[/datum/attunement/earth] += acid_touch_attunement_amount
 
-/datum/component/uses_mana/story_spell/touch/acid_touch/get_mana_required(atom/aciding)
+/datum/component/uses_mana/story_spell/touch/acid_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/final_cost = acid_touch_cost
 	final_cost *= ..() // default multiplier
-	if(isturf(aciding))
+	if(isturf(cast_on))
 		final_cost *= 2 // 2x cost for aciding turfs, so it's not a skeleton key
-	if(isobj(aciding))
+	if(isobj(cast_on))
 		final_cost *= 1.5 // 1.5x cost for aciding objects, to make it harder to destroy items
 	return final_cost
-
-/datum/component/uses_mana/story_spell/touch/acid_touch/react_to_successful_use(atom/aciding)
-	var/datum/action/cooldown/spell/spell = parent
-	drain_mana(cost = -1 * get_mana_required(aciding), caster = spell.owner)
 
 /datum/action/cooldown/spell/touch/acid_touch
 	name = "Acid Touch"

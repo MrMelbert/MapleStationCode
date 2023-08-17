@@ -22,11 +22,8 @@
 	UnregisterSignal(parent, COMSIG_SPELL_CAST)
 	UnregisterSignal(parent, COMSIG_SPELL_AFTER_CAST)
 
-/datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/cast_on)
-	. = ..()
-	var/datum/action/cooldown/spell/spell_parent = parent
-
-	spell_parent.owner.balloon_alert(spell_parent.owner, "insufficient mana!")
+/datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/caster, atom/cast_on, ...)
+	caster.balloon_alert(caster, "insufficient mana!")
 
 // SIGNAL HANDLERS
 
@@ -41,13 +38,12 @@
  * - SPELL_NO_FEEDBACK will prevent the spell from calling [proc/spell_feedback] on cast. (invocation), sounds)
  * - SPELL_NO_IMMEDIATE_COOLDOWN will prevent the spell from starting its cooldown between cast and before after_cast.
  */
-/datum/component/uses_mana/story_spell/proc/handle_precast(atom/cast_on)
+/datum/component/uses_mana/story_spell/proc/handle_precast(datum/action/cooldown/spell/source, atom/cast_on)
 	SIGNAL_HANDLER
 
-	var/datum/action/cooldown/spell/parent_spell = parent
-	return can_activate_check(TRUE, parent_spell.owner, cast_on)
+	return can_activate_check(TRUE, source.owner, cast_on)
 
-/datum/component/uses_mana/story_spell/can_activate_check_failure(give_feedback, ...)
+/datum/component/uses_mana/story_spell/can_activate_check_failure(give_feedback, atom/caster, atom/cast_on, ...)
 	. = ..()
 	return . | SPELL_CANCEL_CAST
 
@@ -61,10 +57,11 @@
 	SIGNAL_HANDLER
 	return
 
-/datum/component/uses_mana/story_spell/react_to_successful_use(...)
-	var/datum/action/cooldown/spell/spell = parent
-	drain_mana(caster = spell.owner)
+/datum/component/uses_mana/story_spell/react_to_successful_use(datum/action/cooldown/spell/source, atom/cast_on)
+	drain_mana(null, null, source.owner, cast_on)
 
-/datum/component/uses_mana/story_spell/get_mana_required()
-	var/datum/action/cooldown/spell/spell = parent
-	return spell.owner.get_casting_cost_mult()
+/datum/component/uses_mana/story_spell/get_mana_required(atom/caster, atom/cast_on, ...)
+	if(ismob(caster))
+		var/mob/caster_mob = caster
+		return caster_mob.get_casting_cost_mult()
+	return 1

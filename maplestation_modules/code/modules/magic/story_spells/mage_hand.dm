@@ -1,7 +1,7 @@
 /datum/component/uses_mana/story_spell/mage_hand
 	var/mage_hand_cost = 20
 
-/datum/component/uses_mana/story_spell/mage_hand/get_mana_required(...)
+/datum/component/uses_mana/story_spell/mage_hand/get_mana_required(atom/caster, atom/cast_on, ...)
 	return ..() * mage_hand_cost
 
 // Yeah, it's just a spell that gives you telekinesis for a short period, sue me

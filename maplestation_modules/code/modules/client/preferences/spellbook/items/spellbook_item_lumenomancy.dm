@@ -29,4 +29,4 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 
 	category = SPELLBOOK_CATEGORY_LUMENOMANCY
 
-	our_action_typepath = /datum/action/cooldown/spell/conjure_item/flare
+	our_action_typepath = /datum/action/cooldown/spell/pointed/illusion

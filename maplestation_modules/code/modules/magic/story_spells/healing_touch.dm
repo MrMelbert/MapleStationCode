@@ -6,7 +6,7 @@
 	. = ..()
 	.[/datum/attunement/life] += healing_touch_attunement_amount
 
-/datum/component/uses_mana/story_spell/touch/healing_touch/get_mana_required(...)
+/datum/component/uses_mana/story_spell/touch/healing_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/touch/healing_touch/touch_spell = parent
 	return ..() * (touch_spell.brute_heal + touch_spell.burn_heal + touch_spell.tox_heal + touch_spell.oxy_heal) * healing_touch_cost_per_healed
 

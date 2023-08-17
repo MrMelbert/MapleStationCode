@@ -23,4 +23,4 @@
 )
 	SIGNAL_HANDLER
 
-	react_to_successful_use(victim)
+	react_to_successful_use(source, victim)

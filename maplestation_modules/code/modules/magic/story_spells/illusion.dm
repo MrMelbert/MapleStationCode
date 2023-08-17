@@ -6,7 +6,7 @@
 	. = ..()
 	.[/datum/attunement/light] = illusion_attunement
 
-/datum/component/uses_mana/story_spell/pointed/illusion/get_mana_required(...)
+/datum/component/uses_mana/story_spell/pointed/illusion/get_mana_required(atom/caster, atom/cast_on, ...)
 	return ..() * illusion_cost
 
 /datum/action/cooldown/spell/pointed/illusion

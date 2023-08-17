@@ -6,7 +6,7 @@
 	. = ..()
 	.[MAGIC_ELEMENT_WIND] += attunement_amount
 
-/datum/component/uses_mana/story_spell/airhike/get_mana_required(...)
+/datum/component/uses_mana/story_spell/airhike/get_mana_required(atom/caster, atom/cast_on, ...)
 	return ..() * airhike_cost
 
 //If there isn't enough mana and the Rclick check passes so it won't mess up any future Normal casts

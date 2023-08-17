@@ -5,7 +5,7 @@
 	. = ..()
 	.[MAGIC_ELEMENT_LIGHT] += attunement_amount
 
-/datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
+/datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
 	return ..() * flare_spell.flare_cost
 

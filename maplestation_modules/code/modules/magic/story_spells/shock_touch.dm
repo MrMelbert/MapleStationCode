@@ -6,7 +6,7 @@
 	. = ..()
 	.[/datum/attunement/electric] += shock_touch_attunement_amount
 
-/datum/component/uses_mana/story_spell/touch/shock_touch/get_mana_required(...)
+/datum/component/uses_mana/story_spell/touch/shock_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	return ..() * shock_touch_cost
 
 // Magical shock touch can just subtype normal shock touch relatievly painlessly
