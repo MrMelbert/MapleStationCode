@@ -74,8 +74,8 @@
 
 	victim.adjustBruteLoss(final_brute_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
 	victim.adjustFireLoss(final_burn_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
-	victim.adjustToxLoss(tox_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
-	victim.adjustOxyLoss(oxy_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
+	victim.adjustToxLoss(tox_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
+	victim.adjustOxyLoss(oxy_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
 	victim.updatehealth()
 
 	if(victim.health != starting_health) // healing happened

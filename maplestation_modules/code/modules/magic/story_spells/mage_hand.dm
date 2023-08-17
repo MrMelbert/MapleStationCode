@@ -8,12 +8,12 @@
 /datum/action/cooldown/spell/apply_mutations/mage_hand
 	name = "Mage Hand"
 	desc = "Magically grab an item from a distance."
-	sound = null
+	sound = null // it's supposed to be stealthy
 
 	cooldown_time = 20 SECONDS
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
-	school = SCHOOL_PSYCHIC
+	school = SCHOOL_CONJURATION // or SCHOOL_TRANSLOCATION, or even SCHOOL_PSYCHIC
 	antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND
 	mutations_to_add = list(/datum/mutation/human/telekinesis)
 

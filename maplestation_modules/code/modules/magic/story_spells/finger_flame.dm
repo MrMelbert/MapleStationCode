@@ -18,7 +18,7 @@
 	name = "Finger Flame"
 	desc = "With a snap, conjures a low flame at the tip of your fingers - just enough to light a cigarette."
 	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_HANDS_BLOCKED
-	school = SCHOOL_EVOCATION
+	school = SCHOOL_CONJURATION // can also be SCHOOL_EVOCATION
 	cooldown_time = 2 SECONDS
 	invocation_type = INVOCATION_NONE
 	spell_requirements = NONE
@@ -64,8 +64,8 @@
 	var/obj/item/lighter/finger/lighter = attached_hand
 	lighter.set_lit(FALSE) // not strictly necessary as we qdel, but for the sound fx
 	if(reset_cooldown_after)
-		cast_on.emote("snap")
-		cast_on.visible_message(
+		hand_owner.emote("snap")
+		hand_owner.visible_message(
 			span_rose("<b>[cast_on]</b> dispels the flame with another snap."),
 			span_rose("You dispel the flame with another snap."),
 		)
