@@ -44,8 +44,10 @@
 	. = ..()
 	if(. & SPELL_CANCEL_CAST)
 		return .
-
 	var/mob/caster = usr || owner
+	if(DOING_INTERACTION(caster, REF(src)))
+		return . | SPELL_CANCEL_CAST
+
 	if(!cast_on.apply_status_effect(/datum/status_effect/being_soothed, cast_time * 2)) // extra long duration for leeway but we remove it after anyways
 		cast_on.balloon_alert(caster, "already being soothed!")
 		return . | SPELL_CANCEL_CAST
@@ -55,10 +57,9 @@
 		delay = 5 SECONDS,
 		target = cast_on,
 		timed_action_flags = IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM|IGNORE_SLOWDOWNS,
-		extra_checks = CALLBACK(src, PROC_REF(block_cast), caster, cast_on) \
+		extra_checks = CALLBACK(src, PROC_REF(block_cast), caster, cast_on), \
+		interaction_key = REF(src), \
 	))
-		if(!QDELETED(cast_on) && !QDELETED(caster))
-			cast_on.balloon_alert(caster, "cast resisted!")
 		. |= SPELL_CANCEL_CAST
 
 	cast_on.remove_status_effect(/datum/status_effect/being_soothed)
@@ -67,7 +68,8 @@
 /datum/action/cooldown/spell/pointed/soothe_target/proc/block_cast(mob/living/caster, mob/living/cast_on)
 	if(QDELETED(src) || QDELETED(caster) || QDELETED(cast_on))
 		return FALSE
-	if(!caster.has_status_effect(/datum/status_effect/being_soothed))
+	if(!cast_on.has_status_effect(/datum/status_effect/being_soothed))
+		cast_on.balloon_alert(caster, "cast resisted!")
 		return FALSE
 
 	return TRUE
@@ -151,7 +153,7 @@
 
 	if(!(FACTION_NEUTRAL in owner.faction))
 		had_neutral_before = FALSE
-		owner.factions += FACTION_NEUTRAL
+		owner.faction += FACTION_NEUTRAL
 
 	ADD_TRAIT(owner, TRAIT_PACIFISM, id)
 	to_chat(owner, span_hypnophrase("You feel calm."))
@@ -159,7 +161,7 @@
 
 /datum/status_effect/soothe/on_remove()
 	if(!had_neutral_before)
-		owner.factions -= FACTION_NEUTRAL
+		owner.faction -= FACTION_NEUTRAL
 	REMOVE_TRAIT(owner, TRAIT_PACIFISM, id)
 
 /atom/movable/screen/alert/status_effect/soothed

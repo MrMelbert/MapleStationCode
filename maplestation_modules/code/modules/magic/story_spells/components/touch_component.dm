@@ -26,6 +26,9 @@
 )
 	SIGNAL_HANDLER
 
+	if(source.attached_hand)
+		return NONE // de-activating, so don't block it
+
 	return can_activate_check(TRUE, caster, victim)
 
 /datum/component/uses_mana/story_spell/touch/proc/handle_touch(

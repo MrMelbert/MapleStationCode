@@ -2,6 +2,14 @@
 	var/flame_cost = 5 // very cheap, it's just a lighter
 	var/flame_attunement = 0.2 // flame users make this EVEN cheaper
 
+/datum/component/uses_mana/story_spell/finger_flame/RegisterWithParent()
+	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
+	RegisterSignal(parent, COMSIG_SPELL_CAST, PROC_REF(handle_cast))
+
+/datum/component/uses_mana/story_spell/finger_flame/UnregisterFromParent()
+	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
+	UnregisterSignal(parent, COMSIG_SPELL_CAST)
+
 /datum/component/uses_mana/story_spell/finger_flame/get_attunement_dispositions()
 	. = ..()
 	.[/datum/attunement/fire] = flame_attunement
@@ -9,9 +17,14 @@
 /datum/component/uses_mana/story_spell/finger_flame/get_mana_required(atom/caster, atom/cast_on, ...)
 	return ..() * flame_cost
 
+/datum/component/uses_mana/story_spell/finger_flame/handle_precast(datum/action/cooldown/spell/touch/finger_flame/source, atom/cast_on)
+	if(source.attached_hand)
+		return NONE
+	return ..()
+
 /datum/component/uses_mana/story_spell/finger_flame/handle_cast(datum/action/cooldown/spell/source, atom/cast_on)
-	// this drains mana *on cast*, and not on "touch spell hit", unlike the touch spell component.
-	// whichs means it uses mana when the flame / hand is CREATED instead of used.
+	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.
+	// whichs means it uses mana when the flame / hand is CREATED instead of used
 	react_to_successful_use(source, cast_on)
 
 /datum/action/cooldown/spell/touch/finger_flame
@@ -66,7 +79,7 @@
 	if(reset_cooldown_after)
 		hand_owner.emote("snap")
 		hand_owner.visible_message(
-			span_rose("<b>[cast_on]</b> dispels the flame with another snap."),
+			span_rose("<b>[hand_owner]</b> dispels the flame with another snap."),
 			span_rose("You dispel the flame with another snap."),
 		)
 	return ..()

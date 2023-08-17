@@ -68,4 +68,8 @@
 	melee_damage_upper = 0
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
+	move_force = INFINITY
+	move_resist = INFINITY
+	pull_force = INFINITY
+	sentience_type = SENTIENCE_BOSS
 	// I wanted to make these illusion react to emotes (wave to wave, frown to swears, etc) but maybe later

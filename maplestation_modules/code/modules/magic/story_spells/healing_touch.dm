@@ -42,7 +42,7 @@
 	if(!isliving(cast_on))
 		return FALSE
 	var/mob/living/living_cast_on = cast_on
-	if(living_cast_on.stat != DEAD)
+	if(living_cast_on.stat == DEAD)
 		return FALSE // can't heal the dead
 	if(living_cast_on.mob_biotypes & (MOB_UNDEAD|MOB_SPIRIT))
 		return FALSE // can't heal the (un)dead
@@ -108,7 +108,7 @@
 	if(.)
 		return TRUE
 
-	var/datum/action/cooldown/spell/touch/healing_touch/touch = sppell_which_made_us?.resolve()
+	var/datum/action/cooldown/spell/touch/healing_touch/touch = spell_which_made_us?.resolve()
 	if(!touch?.can_hit_with_hand(target, user))
 		return TRUE // cancel attack chain
 	if(DOING_INTERACTION(user, REF(src)))

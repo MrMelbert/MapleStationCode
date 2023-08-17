@@ -64,7 +64,7 @@
 /obj/item/lighter/finger
 	name = "finger light"
 	desc = "Fire at your fingertips!"
-	inhand_icon_state = null
+	inhand_icon_state = "nothing"
 	item_flags = EXAMINE_SKIP | ABSTRACT
 
 /obj/item/lighter/finger/ignition_effect(atom/A, mob/user)
