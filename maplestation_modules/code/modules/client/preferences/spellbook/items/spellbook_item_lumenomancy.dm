@@ -22,7 +22,7 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 /datum/spellbook_item/spell/illusion
 	name = "Illusion"
 	description = "Summon an illusionary clone of yourself at the target location. Looks identical to you, \
-		but will not hold up to physical scrutiny. Has a long range, but lasts for only a short time."
+		but will not hold up to physical scrutiny. Has a long range, but lasts for only a short time, and is less effective in darker areas."
 	lore = "Sometimes known as \"Mirror Image\" by more advanced pracitioners, Illusion is a well practiced spell which bends the light \
 		in such a way to create an almost perfect copy of the caster. Of course, being effectively an advanced trick of the light, \
 		the illusion is not capable of much besides being used to confuse and distract or otherwise look pretty."

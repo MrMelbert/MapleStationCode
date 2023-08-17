@@ -7,7 +7,7 @@
 
 /datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
 	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
-	return ..() * flare_spell.flare_color
+	return ..() * flare_spell.flare_cost
 
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"
