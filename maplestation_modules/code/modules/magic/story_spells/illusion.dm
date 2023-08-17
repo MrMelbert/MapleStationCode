@@ -61,6 +61,7 @@
 
 // Illusion subtype for summon illusion
 /mob/living/simple_animal/hostile/illusion/conjured
+	desc = "An illusion! What are you hiding..?"
 	AIStatus = AI_OFF
 	density = FALSE
 	melee_damage_lower = 0

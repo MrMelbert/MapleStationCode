@@ -1,6 +1,6 @@
 /datum/component/uses_mana/story_spell/touch/healing_touch
 	var/healing_touch_attunement_amount = 0.5
-	var/healing_touch_cost_per_healed = 4
+	var/healing_touch_cost_per_healed = 2
 
 /datum/component/uses_mana/story_spell/touch/healing_touch/get_attunement_dispositions()
 	. = ..()
@@ -12,7 +12,7 @@
 
 /datum/action/cooldown/spell/touch/healing_touch
 	name = "Healing Touch"
-	desc = "Lay your hands on a target to heal them."
+	desc = "Lay your hands on a living target to heal them."
 	sound = 'sound/magic/staff_healing.ogg'
 
 	school = SCHOOL_RESTORATION // or SCHOOL_HOLY
@@ -26,9 +26,9 @@
 	hand_path = /obj/item/melee/touch_attack/healing_touch
 
 	/// How much brute damage to heal.
-	var/brute_heal = 5
+	var/brute_heal = 10
 	/// How much burn damage to heal.
-	var/burn_heal = 5
+	var/burn_heal = 10
 	/// How much toxin damage to heal.
 	var/tox_heal = 0
 	/// How much oxygen damage to heal.
@@ -39,25 +39,59 @@
 	AddComponent(/datum/component/uses_mana/story_spell/touch/healing_touch)
 
 /datum/action/cooldown/spell/touch/healing_touch/is_valid_target(atom/cast_on)
-	return isliving(cast_on)
+	if(!isliving(cast_on))
+		return FALSE
+	var/mob/living/living_cast_on = cast_on
+	if(living_cast_on.stat != DEAD)
+		return FALSE // can't heal the dead
+	if(living_cast_on.mob_biotypes & (MOB_UNDEAD|MOB_SPIRIT))
+		return FALSE // can't heal the (un)dead
+	if(living_cast_on.mob_biotypes & MOB_ORGANIC)
+		return TRUE // CAN heal the organic
+
+	// everyone else need not apply (robots, golems, whatever)
+	return FALSE
 
 /datum/action/cooldown/spell/touch/healing_touch/cast_on_hand_hit(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
-	victim.adjustBruteLoss(brute_heal, FALSE)
-	victim.adjustFireLoss(burn_heal, FALSE)
-	victim.adjustToxLoss(tox_heal, FALSE, TRUE)
-	victim.adjustOxyLoss(oxy_heal, FALSE)
+	// Brute and burn damage have a little conversion thing going on
+	// where if someone is healed for more than they need, the excess is converted to the other damage type.
+	// I'm not bothering to do this for toxin and oxygen out of thematics and laziness
+	// (Healing touch = touches your skin, not your lungs or stomach or liver)
+	var/final_brute_heal = brute_heal
+	var/final_burn_heal = burn_heal
+
+	var/target_brute = victim.getBruteLoss()
+	var/target_burn = victim.getFireLoss()
+
+	// (This can result in us *gaining* net healing if both values are below each other, but this is fine,
+	// becuase the mob's health will be low enough such that it'll be full healed regardless)
+	if(target_brute < brute_heal)
+		final_burn_heal += (brute_heal - target_brute)
+	if(target_burn < burn_heal)
+		final_brute_heal += (burn_heal - target_burn)
+
+	var/starting_health = victim.health
+
+	victim.adjustBruteLoss(final_brute_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
+	victim.adjustFireLoss(final_burn_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
+	victim.adjustToxLoss(tox_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
+	victim.adjustOxyLoss(oxy_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
 	victim.updatehealth()
-	new /obj/effect/temp_visual/heal(victim.loc, LIGHT_COLOR_HOLY_MAGIC)
-	return TRUE
+
+	if(victim.health != starting_health) // healing happened
+		new /obj/effect/temp_visual/heal(victim.loc, LIGHT_COLOR_HOLY_MAGIC)
+		return TRUE
+
+	return FALSE
 
 /obj/item/melee/touch_attack/healing_touch
 	name = "\improper healing touch"
-	desc = "Banish the shadows!"
+	desc = "Take all my strength into you and be whole once more!"
 	icon = 'icons/obj/weapons/hand.dmi'
 	icon_state = "duffelcurse"
 	inhand_icon_state = "duffelcurse"
 	color = LIGHT_COLOR_HOLY_MAGIC
-
+	/// Tracks if we're using both hands to cast or not, has no tangible effect besides flavortext
 	var/hands_plural = FALSE
 
 /obj/item/melee/touch_attack/healing_touch/Initialize(mapload, datum/action/cooldown/spell/spell)
@@ -68,12 +102,15 @@
 	AddComponent(/datum/component/two_handed, require_twohands = TRUE)
 	hands_plural = TRUE
 
+// I'm putting this override on the touch itself instead of hooking a signal so I can  via doafter, sue me
 /obj/item/melee/touch_attack/healing_touch/attack(mob/target, mob/living/carbon/user)
 	. = ..()
 	if(.)
 		return TRUE
-	if(target == user)
-		return TRUE
+
+	var/datum/action/cooldown/spell/touch/healing_touch/touch = sppell_which_made_us?.resolve()
+	if(!touch?.can_hit_with_hand(target, user))
+		return TRUE // cancel attack chain
 	if(DOING_INTERACTION(user, REF(src)))
 		return TRUE // cancel attack chain
 

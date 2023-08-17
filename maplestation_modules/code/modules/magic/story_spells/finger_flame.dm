@@ -23,7 +23,7 @@
 	invocation_type = INVOCATION_NONE
 	spell_requirements = NONE
 
-	hand_path = /obj/item/lighter/implanted
+	hand_path = /obj/item/lighter/finger
 	draw_message = null
 	drop_message = null
 	can_cast_on_self = TRUE // self burn
@@ -53,15 +53,16 @@
 	. = ..()
 	if(!.)
 		return
-	var/obj/item/lighter/implanted/lighter = attached_hand
+	var/obj/item/lighter/finger/lighter = attached_hand
+	lighter.name = "finger flame"
 	lighter.set_lit(TRUE)
 
 /datum/action/cooldown/spell/touch/finger_flame/remove_hand(mob/living/hand_owner, reset_cooldown_after)
 	if(QDELETED(src) || QDELETED(hand_owner))
 		return ..()
 
-	var/obj/item/lighter/implanted/lighter = attached_hand
-	lighter.set_lit(FALSE) // not strictly necessary but for the sound fx
+	var/obj/item/lighter/finger/lighter = attached_hand
+	lighter.set_lit(FALSE) // not strictly necessary as we qdel, but for the sound fx
 	if(reset_cooldown_after)
 		cast_on.emote("snap")
 		cast_on.visible_message(
