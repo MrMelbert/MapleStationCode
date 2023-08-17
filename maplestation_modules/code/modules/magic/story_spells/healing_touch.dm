@@ -20,7 +20,7 @@
 	invocation_type = INVOCATION_NONE
 	spell_requirements = NONE
 
-	invocation = "Victus sano!"
+	invocation = "Sana manu!"
 	invocation_type = INVOCATION_WHISPER
 
 	hand_path = /obj/item/melee/touch_attack/healing_touch

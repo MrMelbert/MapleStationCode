@@ -11,6 +11,9 @@
 
 // Magical shock touch can just subtype normal shock touch relatievly painlessly
 /datum/action/cooldown/spell/touch/shock/magical
+	invocation = "Con cussa!"
+	invocation_type = INVOCATION_SHOUT
+
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 	antimagic_flags = MAGIC_RESISTANCE
 

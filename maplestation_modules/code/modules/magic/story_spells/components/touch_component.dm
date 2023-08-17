@@ -38,12 +38,13 @@
 
 	react_to_successful_use(source, victim)
 
+// Override to send a signal we can react to
 /datum/action/cooldown/spell/touch/can_hit_with_hand(atom/victim, mob/caster)
 	. = ..()
 	if(!.)
 		return
 
-	if(SEND_SIGNAL(src, COMSIG_SPELL_TOUCH_CAN_HIT, victim, caster, hand) & SPELL_CANCEL_CAST)
+	if(SEND_SIGNAL(src, COMSIG_SPELL_TOUCH_CAN_HIT, victim, caster) & SPELL_CANCEL_CAST)
 		return FALSE
 
 	return TRUE

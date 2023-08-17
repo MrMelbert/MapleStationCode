@@ -98,7 +98,8 @@
 
 	attached_hand = new_hand
 	register_hand_signals()
-	to_chat(cast_on, draw_message)
+	if(draw_message) // NON-MODULE CHANGE / UPSTREAM THIS
+		to_chat(cast_on, draw_message)
 	return TRUE
 
 /**

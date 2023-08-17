@@ -5601,6 +5601,7 @@
 #include "maplestation_modules\code\modules\magic\story_spells\acid_touch.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\airhike.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\convect.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\finger_flame.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\flare.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\healing_touch.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\illusion.dm"

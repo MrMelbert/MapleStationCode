@@ -13,3 +13,15 @@ GLOBAL_LIST_INIT(spellbook_thermokinesis_items, generate_spellbook_items(SPELLBO
 	category = SPELLBOOK_CATEGORY_THERMOKINESIS
 
 	our_action_typepath = /datum/action/cooldown/spell/pointed/convect
+
+/datum/spellbook_item/spell/finger_flame
+	name = "Finger Flame"
+	description = "With a snap, conjures a small flame at the tip of your fingers."
+	lore = "More of a party trick than a real spell, Finger Flame is known far and wide as the showiest trick in a thermomancer's book. \
+		While not particularly useful, it's a fantastic way to get attention, intimidate someone, demonstrate your powers, or light a cigarette.\n\
+		Its low potency makes Finger Flame hardly expensive or tiresome to cast and maintain, \
+		making it a good way to practice your control over fire (or rather, to practice avoiding burning yourself)."
+
+	category = SPELLBOOK_CATEGORY_THERMOKINESIS
+
+	our_action_typepath = /datum/action/cooldown/spell/touch/finger_flame

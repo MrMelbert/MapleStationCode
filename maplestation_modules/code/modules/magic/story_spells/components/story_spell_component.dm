@@ -53,7 +53,7 @@
  * For spells without a click intercept, [cast_on] will be the owner.
  * For click spells, [cast_on] is whatever the owner clicked on in casting the spell.
  */
-/datum/component/uses_mana/story_spell/proc/handle_cast(atom/cast_on)
+/datum/component/uses_mana/story_spell/proc/handle_cast(datum/action/cooldown/spell/source, atom/cast_on)
 	SIGNAL_HANDLER
 	return
 

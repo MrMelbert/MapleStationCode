@@ -44,9 +44,9 @@
 	var/mob/living/simple_animal/hostile/illusion/conjured/decoy = new(castturf)
 	if(!isnull(copy_target))
 		decoy.Copy_Parent(copy_target, conjured_duration, conjured_hp)
-		decoy.face_atom(owner || copy_target)
+		decoy.face_atom(usr || owner || copy_target)
 
-	decoy.fake_spin()
+	decoy.spin(0.4 SECONDS, 0.1 SECONDS)
 	// alpha is based on how bright the turf is. Darker = weaker illusion
 	decoy.alpha = 0
 	animate(decoy, alpha = clamp(255 * castturf.get_lumcount(), 75, 225), time = 0.2 SECONDS)
@@ -67,25 +67,4 @@
 	melee_damage_upper = 0
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
-
-/mob/living/simple_animal/hostile/illusion/conjured/proc/fake_spin()
-	set waitfor = FALSE
-
-	flags_1 |= IS_SPINNING_1
-
-	for(var/i in 1 to 4)
-		stoplag(0.1 SECONDS)
-		if(QDELETED(src))
-			return
-
-		switch(dir)
-			if(NORTH)
-				setDir(EAST)
-			if(SOUTH)
-				setDir(WEST)
-			if(EAST)
-				setDir(SOUTH)
-			if(WEST)
-				setDir(NORTH)
-
-	flags_1 &= ~IS_SPINNING_1
+	// I wanted to make these illusion react to emotes (wave to wave, frown to swears, etc) but maybe later

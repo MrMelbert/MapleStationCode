@@ -62,7 +62,8 @@
 /obj/item/lighter/implanted
 	name = "implanted lighter"
 	desc = "A lighter implanted in your finger."
-	item_flags = EXAMINE_SKIP
+	inhand_icon_state = null
+	item_flags = EXAMINE_SKIP | ABSTRACT
 
 /obj/item/lighter/implanted/ignition_effect(atom/A, mob/user)
 	if(get_temperature())

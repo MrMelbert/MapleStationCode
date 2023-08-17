@@ -23,7 +23,8 @@
 
 	school = SCHOOL_EVOCATION
 	cooldown_time = 1 MINUTES
-	invocation_type = INVOCATION_NONE
+	invocation = "Ac rid!"
+	invocation_type = INVOCATION_SHOUT
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
 	hand_path = /obj/item/melee/touch_attack/acid_touch
