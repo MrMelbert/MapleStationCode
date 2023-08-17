@@ -60,11 +60,6 @@
 	return owner
 
 // Illusion subtype for summon illusion
-/mob/living/simple_animal/hostile/illusion/Copy_Parent(mob/living/original, life = 50, hp = 100, damage = 0, replicate = 0 )
-	maxHealth = hp
-	. = ..()
-	set_health(hp)
-
 /mob/living/simple_animal/hostile/illusion/conjured
 	AIStatus = AI_OFF
 	density = FALSE
