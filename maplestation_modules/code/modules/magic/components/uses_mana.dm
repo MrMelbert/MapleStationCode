@@ -35,7 +35,7 @@
 		total_effective_mana += iterated_pool.get_attuned_amount(our_attunements, caster)
 
 	var/mana_required = get_mana_required(arglist(args.Copy(2)))
-	testing("Checking [mana_required] mana.")
+	testing("Checking [mana_required] / [total_effective_mana] mana.")
 	return mana_required <= total_effective_mana
 
 /// Should be the raw conditional we use for determining if the thing that "uses mana" can actually

@@ -19,6 +19,8 @@
 
 	school = SCHOOL_CONJURATION
 
+	active_msg = "You prepare to summon an illusion."
+	deactive_msg = "You stop preparing to summon an illusion."
 	aim_assist = FALSE
 	cast_range = 20 // For camera memes
 
@@ -26,6 +28,10 @@
 	var/conjured_duration = 8 SECONDS
 	/// HP of the illusionary mob
 	var/conjured_hp = 10
+
+/datum/action/cooldown/spell/pointed/illusion/New(Target)
+	. = ..()
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/illusion)
 
 /datum/action/cooldown/spell/pointed/illusion/is_valid_target(atom/cast_on)
 	var/turf/castturf = get_turf(cast_on)
@@ -36,11 +42,16 @@
 	var/turf/castturf = get_turf(cast_on)
 	var/mob/copy_target = select_copy_target()
 	var/mob/living/simple_animal/hostile/illusion/conjured/decoy = new(castturf)
-	decoy.alpha = clamp(255 * castturf.get_lumcount(), 75, 225) // alpha is based on how bright the turf is. Darker = weaker illusion
-	decoy.fake_spin()
 	if(!isnull(copy_target))
 		decoy.Copy_Parent(copy_target, conjured_duration, conjured_hp)
+		decoy.face_atom(owner || copy_target)
 
+	decoy.fake_spin()
+	// alpha is based on how bright the turf is. Darker = weaker illusion
+	decoy.alpha = 0
+	animate(decoy, alpha = clamp(255 * castturf.get_lumcount(), 75, 225), time = 0.2 SECONDS)
+
+	// with a snap of course
 	owner?.emote("snap")
 
 /// Determines what mob to copy for the illusion
@@ -49,6 +60,11 @@
 	return owner
 
 // Illusion subtype for summon illusion
+/mob/living/simple_animal/hostile/illusion/Copy_Parent(mob/living/original, life = 50, hp = 100, damage = 0, replicate = 0 )
+	maxHealth = hp
+	. = ..()
+	set_health(hp)
+
 /mob/living/simple_animal/hostile/illusion/conjured
 	AIStatus = AI_OFF
 	density = FALSE
@@ -58,6 +74,8 @@
 	environment_smash = ENVIRONMENT_SMASH_NONE
 
 /mob/living/simple_animal/hostile/illusion/conjured/proc/fake_spin()
+	set waitfor = FALSE
+
 	flags_1 |= IS_SPINNING_1
 
 	for(var/i in 1 to 4)

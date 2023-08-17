@@ -9,6 +9,6 @@
 
 /mob/living/carbon/get_casting_cost_mult()
 	. = ..()
-	var/obj/held_item = src.get_active_held_item()
-	if (!held_item)
+	var/obj/item/held_item = get_active_held_item() || get_inactive_held_item()
+	if (isnull(held_item) || (held_item.item_flags & (ABSTRACT|HAND_ITEM)))
 		. *= NO_CATALYST_COST_MULT
