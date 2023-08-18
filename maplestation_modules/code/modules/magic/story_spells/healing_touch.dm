@@ -99,8 +99,6 @@
 	icon_state = "duffelcurse"
 	inhand_icon_state = "duffelcurse"
 	color = LIGHT_COLOR_HOLY_MAGIC
-	/// Tracks if we're using both hands to cast or not, has no tangible effect besides flavortext
-	var/hands_plural = FALSE
 
 /obj/item/melee/touch_attack/healing_touch/Initialize(mapload, datum/action/cooldown/spell/spell)
 	. = ..()
@@ -108,7 +106,6 @@
 	if(!istype(caster) || caster.usable_hands <= 1 || caster.get_num_held_items() > 0)
 		return
 	AddComponent(/datum/component/two_handed, require_twohands = TRUE)
-	hands_plural = TRUE
 
 // I'm putting this override on the touch itself instead of hooking a signal so I can  via doafter, sue me
 /obj/item/melee/touch_attack/healing_touch/attack(mob/target, mob/living/carbon/user)
@@ -122,11 +119,18 @@
 	if(DOING_INTERACTION(user, REF(src)))
 		return TRUE // cancel attack chain
 
-	var/hand_or_hands = (hands_plural && user.usable_hands > 1) ? "hands" : "hand"
+	var/hand_or_hands = HAS_TRAIT(src, TRAIT_WIELDED) ? "hands" : "hand"
 
-	user.visible_message(span_notice("[user] lays [user.p_their()] [hand_or_hands] on [target]..."), span_notice("You lay your [hand_or_hands] on [target]..."), vision_distance = COMBAT_MESSAGE_RANGE)
+	user.visible_message(
+		span_notice("[user] lays [user.p_their()] [hand_or_hands] on [target]..."),
+		span_notice("You lay your [hand_or_hands] on [target]..."),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)
 	if(!do_after(user, 3 SECONDS, target, interaction_key = REF(src)))
 		return TRUE // cancel attack chain
 
-	user.visible_message(span_green("[user]'s [hand_or_hands] glow a brilliant yellow light!"), span_green("Your [hand_or_hands] glow a brilliant yellow light!"))
+	user.visible_message(
+		span_green("[user]'s [hand_or_hands] glow a brilliant yellow light!"),
+		span_green("Your [hand_or_hands] glow a brilliant yellow light!"),
+	)
 	return FALSE // go to after attack (cast)
