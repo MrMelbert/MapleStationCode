@@ -1,6 +1,6 @@
 /datum/component/uses_mana/story_spell/touch/healing_touch
 	var/healing_touch_attunement_amount = 0.5
-	var/healing_touch_cost_per_healed = 2
+	var/healing_touch_cost_per_healed = 1.5
 
 /datum/component/uses_mana/story_spell/touch/healing_touch/get_attunement_dispositions()
 	. = ..()
@@ -8,7 +8,9 @@
 
 /datum/component/uses_mana/story_spell/touch/healing_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/touch/healing_touch/touch_spell = parent
-	return ..() * (touch_spell.brute_heal + touch_spell.burn_heal + touch_spell.tox_heal + touch_spell.oxy_heal) * healing_touch_cost_per_healed
+	return ..() \
+		* (touch_spell.brute_heal + touch_spell.burn_heal + touch_spell.tox_heal + touch_spell.oxy_heal + touch_spell.pain_heal * 3) \
+		* healing_touch_cost_per_healed
 
 /datum/action/cooldown/spell/touch/healing_touch
 	name = "Healing Touch"
@@ -35,6 +37,8 @@
 	var/tox_heal = 0
 	/// How much oxygen damage to heal.
 	var/oxy_heal = 0
+	/// How much pain to heal, applies to all bodyparts
+	var/pain_heal = 4
 
 /datum/action/cooldown/spell/touch/healing_touch/New(Target, original)
 	. = ..()
@@ -73,18 +77,20 @@
 		final_brute_heal += (burn_heal - target_burn)
 
 	var/starting_health = victim.health
+	var/starting_pain = victim.pain_controller?.get_average_pain()
 
 	victim.adjustBruteLoss(-1 * final_brute_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
 	victim.adjustFireLoss(-1 * final_burn_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
 	victim.adjustToxLoss(-1 * tox_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
 	victim.adjustOxyLoss(-1 * oxy_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
+	victim.cause_pain(BODY_ZONES_ALL, -1 * pain_heal)
 	victim.updatehealth()
 
-	if(victim.health != starting_health) // healing happened
-		new /obj/effect/temp_visual/heal(victim.loc, LIGHT_COLOR_HOLY_MAGIC)
-		return TRUE
+	if(victim.health == starting_health && victim.pain_controller?.get_average_pain() == starting_pain)
+		return FALSE
 
-	return FALSE
+	new /obj/effect/temp_visual/heal(victim.loc, LIGHT_COLOR_HOLY_MAGIC)
+	return TRUE
 
 /obj/item/melee/touch_attack/healing_touch
 	name = "\improper healing touch"

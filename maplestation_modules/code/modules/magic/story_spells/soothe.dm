@@ -82,6 +82,7 @@
 /datum/action/cooldown/spell/pointed/soothe_target/cast(mob/living/cast_on)
 	. = ..()
 	cast_on.apply_status_effect(/datum/status_effect/soothe, pacifism_duration)
+	cast_on.cause_pain(BODY_ZONE_HEAD, 5)
 
 // Interregnum effect from while the soothe is being applied that allows the target to resist
 /datum/status_effect/being_soothed
