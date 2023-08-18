@@ -20,6 +20,8 @@
 	desc = "Wet a dry spot, or dry a wet spot. \n\
 		Creating wetness requires water - you can draw upon condensation from your surroundings, \
 		or supply your own by holding a container filled with water."
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
+	button_icon_state = "water"
 	sound =  'sound/effects/slosh.ogg'
 
 	cooldown_time = 10 SECONDS
@@ -146,6 +148,8 @@
 	. = ..()
 	if(wetness_pool.total_volume <= wetness_pool.maximum_volume)
 		addtimer(CALLBACK(src, PROC_REF(regenerate_water)), water_regen_time, TIMER_UNIQUE)
+
+	owner?.face_atom(cast_on)
 
 /datum/action/cooldown/spell/pointed/soft_and_wet/proc/regenerate_water()
 	if(QDELETED(src) || QDELETED(wetness_pool))

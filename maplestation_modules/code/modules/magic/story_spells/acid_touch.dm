@@ -19,6 +19,7 @@
 	name = "Acid Touch"
 	desc = "Empower your fingers with a sticky acid, melting anything you touch. \
 		Right click to use on walls or floors."
+	button_icon_state = "transformslime"
 	sound = 'sound/weapons/sear.ogg'
 
 	school = SCHOOL_EVOCATION

@@ -13,6 +13,8 @@
 /datum/action/cooldown/spell/touch/healing_touch
 	name = "Healing Touch"
 	desc = "Lay your hands on a living target to heal them."
+	button_icon = 'icons/effects/effects.dmi'
+	button_icon_state = "blessed"
 	sound = 'sound/magic/staff_healing.ogg'
 
 	school = SCHOOL_RESTORATION // or SCHOOL_HOLY
@@ -72,10 +74,10 @@
 
 	var/starting_health = victim.health
 
-	victim.adjustBruteLoss(final_brute_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
-	victim.adjustFireLoss(final_burn_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
-	victim.adjustToxLoss(tox_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
-	victim.adjustOxyLoss(oxy_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
+	victim.adjustBruteLoss(-1 * final_brute_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
+	victim.adjustFireLoss(-1 * final_burn_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
+	victim.adjustToxLoss(-1 * tox_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
+	victim.adjustOxyLoss(-1 * oxy_heal, updating_health = FALSE, forced = TRUE, required_biotype = MOB_ORGANIC)
 	victim.updatehealth()
 
 	if(victim.health != starting_health) // healing happened

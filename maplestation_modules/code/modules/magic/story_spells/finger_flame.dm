@@ -30,6 +30,8 @@
 /datum/action/cooldown/spell/touch/finger_flame
 	name = "Finger Flame"
 	desc = "With a snap, conjures a low flame at the tip of your fingers - just enough to light a cigarette."
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
+	button_icon_state = "spark"
 	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_HANDS_BLOCKED
 	school = SCHOOL_CONJURATION // can also be SCHOOL_EVOCATION
 	cooldown_time = 2 SECONDS

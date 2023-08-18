@@ -16,8 +16,10 @@
 /datum/action/cooldown/spell/pointed/soothe_target
 	name = "Soothe"
 	desc = "Attempt to calm a target, preventing them from attacking others for a short time and stopping \
-		and anger, fear, or doubt they may be feeling. This effect can be resisted by sentient targets, \
-		but works on more simple-minded creatures."
+		and anger, fear, or doubt they may be feeling. This effect works on sentient and simple-minded creatures alike, \
+		but can be resisted by the former."
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
+	button_icon_state = "soothe"
 	sound = 'sound/effects/magic.ogg'
 
 	cooldown_time = 2 MINUTES
@@ -70,6 +72,9 @@
 		return FALSE
 	if(!cast_on.has_status_effect(/datum/status_effect/being_soothed))
 		cast_on.balloon_alert(caster, "cast resisted!")
+		return FALSE
+	if(get_dist(cast_on, caster) > cast_range)
+		cast_on.balloon_alert(caster, "out of range!")
 		return FALSE
 
 	return TRUE

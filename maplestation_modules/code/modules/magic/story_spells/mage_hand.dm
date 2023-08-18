@@ -8,6 +8,8 @@
 /datum/action/cooldown/spell/apply_mutations/mage_hand
 	name = "Mage Hand"
 	desc = "Magically grab an item from a distance."
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
+	button_icon_state = "mage_hand"
 	sound = null // it's supposed to be stealthy
 
 	cooldown_time = 20 SECONDS

@@ -12,6 +12,8 @@
 /datum/action/cooldown/spell/pointed/illusion
 	name = "Illusion"
 	desc = "Summon an illusion at the target location. Less effective in dark areas."
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
+	button_icon_state = "illusion"
 	sound = 'sound/effects/magic.ogg'
 
 	cooldown_time = 2 MINUTES
@@ -53,6 +55,7 @@
 
 	// with a snap of course
 	owner?.emote("snap")
+	owner?.face_atom(castturf)
 
 /// Determines what mob to copy for the illusion
 /datum/action/cooldown/spell/pointed/illusion/proc/select_copy_target()
