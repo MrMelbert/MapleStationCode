@@ -209,3 +209,7 @@
 /datum/loadout_item/head/wig
 	name = "Wig"
 	item_path = /obj/item/clothing/head/wig/natural
+
+/datum/loadout_item/head/reshiacap
+	name = "Black Delinquent Cap"
+	item_path = /obj/item/clothing/head/hats/reshiacap

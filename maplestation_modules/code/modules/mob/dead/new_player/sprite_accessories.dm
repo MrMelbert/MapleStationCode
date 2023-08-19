@@ -54,6 +54,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_disheveled"
 
+/datum/sprite_accessory/hair/unkempt2
+	name = "Unkempt Thorned Hair"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_thorns"
+
 /datum/sprite_accessory/ears/cat/cyber
 	name = "Cybernetic Cat"
 	icon_state = "catcyber"

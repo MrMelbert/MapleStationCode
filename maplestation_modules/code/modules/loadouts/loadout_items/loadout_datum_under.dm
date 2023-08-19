@@ -342,3 +342,7 @@
 /datum/loadout_item/under/formal/ritzuniform
 	name = "Malheur Research Association uniform"
 	item_path = /obj/item/clothing/under/rank/rnd/mrauniform
+
+/datum/loadout_item/under/formal/reshiacoat
+	name = "Black Uniform Coat"
+	item_path = /obj/item/clothing/under/jumpsuit/reshiacoat
