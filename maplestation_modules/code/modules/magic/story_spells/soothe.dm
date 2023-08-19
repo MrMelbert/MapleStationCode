@@ -205,12 +205,13 @@
 	to_chat(owner, span_danger("The unnatural calm fades away."))
 
 /datum/status_effect/soothe/tick(seconds_per_tick, times_fired)
-	owner.mob_mood?.set_sanity(owner.mob_mood.sanity + 5, maximum = SANITY_GREAT + 5, override = TRUE)
+	var/seconds_between_ticks = initial(tick_interval) / 10
 
-	var/seconds_between_ticks = initial(tick_interval)
 	owner.adjust_confusion(-2 SECONDS * seconds_between_ticks)
 	owner.adjust_dizzy(-2 SECONDS * seconds_between_ticks)
 	owner.adjust_jitter(-4 SECONDS * seconds_between_ticks)
+
+	owner.mob_mood?.set_sanity(owner.mob_mood.sanity + seconds_between_ticks, maximum = SANITY_GREAT + 5, override = TRUE)
 
 /atom/movable/screen/alert/status_effect/soothed
 	name = "Soothed"
