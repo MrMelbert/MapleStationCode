@@ -14,7 +14,7 @@
 	button_icon_state = "iceknife"
 	sound = 'sound/effects/parry.ogg'
 
-	cooldown_time = 2 SECONDS // change to two minutes later ; this is for testing !!
+	cooldown_time = 1 MINUTES
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
 	invocation = "Ice knife! Replace this with something better later."
@@ -31,7 +31,25 @@
 	name = "ice knife"
 	icon_state = "ice_2"
 	damage_type = BURN
-	damage = 20
+	damage = 15
+
+/turf/open/misc/funny_ice
+	name = "thin ice sheet"
+	desc = "A thin sheet of solid ice. Looks slippery."
+	icon = 'icons/turf/floors/ice_turf.dmi'
+	icon_state = "ice_turf-0"
+	base_icon_state = "ice_turf-0"
+	slowdown = 1
+	bullet_sizzle = TRUE
+	footstep = FOOTSTEP_FLOOR
+	barefootstep = FOOTSTEP_HARD_BAREFOOT
+	clawfootstep = FOOTSTEP_HARD_CLAW
+	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
+
+/turf/open/misc/funny_ice/Initialize(mapload)
+	. = ..()
+	MakeSlippery(TURF_WET_ICE, INFINITY, 0, INFINITY, TRUE)
+
 
 /obj/projectile/magic/ice_knife/on_hit(atom/target)
 	. = ..()
@@ -41,7 +59,7 @@
 	for(var/turf/open/nearby_turf in range(3, src))
 		var/datum/gas_mixture/air = nearby_turf.return_air()
 		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
-		if (air && air != turf_air) // if this has air and we arent a turf
+		if (air && air != turf_air)
 			air.temperature = max(air.temperature + -15, 0)
 			air.react(nearby_turf)
 		if (isturf(nearby_turf) && turf_air)
@@ -49,6 +67,9 @@
 			turf_air.react(nearby_turf)
 			nearby_turf?.air_update_turf()
 	
-	for(var/turf/open/nearby_turf in range(1, src))
-		nearby_turf.MakeSlippery(TURF_WET_ICE, 30 SECONDS)
-		
+	for(var/turf/open/nearby_turf in range(1, src)) // this is fuck ugly, could make a new MakeSlippery flag instead.
+		if(!isclosedturf(nearby_turf) && !islava(nearby_turf))
+			var/ice_turf = /turf/open/misc/funny_ice
+			var/reset_turf = nearby_turf.type
+			nearby_turf.ChangeTurf(ice_turf, flags = CHANGETURF_INHERIT_AIR) // this will also delete decals! consider the comment above. i'm tired.
+			addtimer(CALLBACK(nearby_turf, TYPE_PROC_REF(/turf, ChangeTurf), reset_turf, null, CHANGETURF_INHERIT_AIR), 20 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
