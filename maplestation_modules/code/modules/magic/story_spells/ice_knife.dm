@@ -31,21 +31,24 @@
 	name = "ice knife"
 	icon_state = "ice_2"
 	damage_type = BURN
-	damage = 30
+	damage = 20
 
 /obj/projectile/magic/ice_knife/on_hit(atom/target)
 	. = ..()
+	
+	playsound(loc, 'sound/weapons/ionrifle.ogg', 70, TRUE, FALSE)
 
-	var/turf/target_turf = get_turf(target)
-
-	for(var/turf/open/nearby_turf in range(1, src))
-		nearby_turf.MakeSlippery(TURF_WET_ICE, 300)
+	for(var/turf/open/nearby_turf in range(3, src))
 		var/datum/gas_mixture/air = nearby_turf.return_air()
 		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
 		if (air && air != turf_air) // if this has air and we arent a turf
-			air.temperature = max(air.temperature + -50, 0) //this sucks.
+			air.temperature = max(air.temperature + -15, 0)
 			air.react(nearby_turf)
 		if (isturf(nearby_turf) && turf_air)
-			turf_air.temperature = max(turf_air.temperature + -50, 0)
+			turf_air.temperature = max(turf_air.temperature + -15, 0)
 			turf_air.react(nearby_turf)
 			nearby_turf?.air_update_turf()
+	
+	for(var/turf/open/nearby_turf in range(1, src))
+		nearby_turf.MakeSlippery(TURF_WET_ICE, 30 SECONDS)
+		
