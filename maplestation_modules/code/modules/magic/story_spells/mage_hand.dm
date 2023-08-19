@@ -17,7 +17,7 @@
 
 	school = SCHOOL_CONJURATION // or SCHOOL_TRANSLOCATION, or even SCHOOL_PSYCHIC
 	antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND
-	mutations_to_add = list(/datum/mutation/human/telekinesis)
+	mutations_to_add = list(/datum/mutation/human/telekinesis/mage_hand)
 
 /datum/action/cooldown/spell/apply_mutations/mage_hand/New(Target)
 	. = ..()
@@ -56,3 +56,15 @@
 		corresponding.locked = TRUE
 		corresponding.scrambled = TRUE
 		corresponding.mutadone_proof = TRUE
+
+// Telekinesis but mage hand
+/datum/mutation/human/telekinesis/mage_hand
+	name = "Mage Hand"
+	desc = "A magical inclination that allows the holder to interact with objects through thought."
+	locked = TRUE
+	instability = 0
+	text_gain_indication = span_notice("You prepare your Mage Hand. <b>Click on something to grab it!</b>")
+	text_lose_indication = span_notice("Your Mage Hand fades away.")
+
+/datum/mutation/human/telekinesis/mage_hand/get_visual_indicator()
+	return

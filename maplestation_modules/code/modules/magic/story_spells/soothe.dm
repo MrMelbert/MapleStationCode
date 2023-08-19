@@ -40,7 +40,7 @@
 	AddComponent(/datum/component/uses_mana/story_spell/pointed/soothe)
 
 /datum/action/cooldown/spell/pointed/soothe_target/is_valid_target(atom/cast_on)
-	return isliving(cast_on)
+	return isliving(cast_on) && (cast_on != owner)
 
 /datum/action/cooldown/spell/pointed/soothe_target/before_cast(mob/living/cast_on)
 	. = ..()
@@ -86,7 +86,7 @@
 
 // Interregnum effect from while the soothe is being applied that allows the target to resist
 /datum/status_effect/being_soothed
-	id = "being_soothed"
+	id = "being_magic_soothed"
 	alert_type = /atom/movable/screen/alert/status_effect/being_soothed
 	tick_interval = -1
 
@@ -134,7 +134,7 @@
 
 // Soothe effect that prevents attacks and also stops mob AI from attacking
 /datum/status_effect/soothe
-	id = "soothe"
+	id = "magic_soothe"
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = /atom/movable/screen/alert/status_effect/soothed
 	tick_interval = 5 SECONDS
@@ -170,6 +170,8 @@
 	to_chat(owner, span_hypnophrase("You feel calmer."))
 
 /datum/status_effect/soothe/on_apply()
+	// Some snowflake :tm: behavior, not that this is necessary since pacifism is being added,
+	// but seeing as monkeys are the #1 aggressor here I thought why not go the mile
 	if(istype(owner.ai_controller, /datum/ai_controller/monkey))
 		owner.ai_controller.clear_blackboard_key(BB_MONKEY_CURRENT_ATTACK_TARGET)
 		owner.ai_controller.clear_blackboard_key(BB_MONKEY_ENEMIES)
@@ -180,12 +182,12 @@
 		had_neutral_before = FALSE
 		owner.faction += FACTION_NEUTRAL
 
-	ADD_TRAIT(owner, TRAIT_PACIFISM, id)
-	owner.add_traits(added_traits, id)
+	owner.add_traits(added_traits, TRAIT_STATUS_EFFECT(id))
 	if(owner.mob_mood)
 		pre_sanity = owner.mob_mood?.sanity
 		owner.mob_mood.set_sanity(SANITY_GREAT + 5, maximum = SANITY_MAXIMUM, override = TRUE)
-		owner.mob_mood.mood_screen_object?.add_filter("soothe_filter", 2, list("type" = "outline", "color" = "#8c00ff", "size" = 1))
+		owner.mob_mood.mood_screen_object?.add_filter(TRAIT_STATUS_EFFECT(id), 2, list("type" = "outline", "color" = "#8c00ff", "size" = 2))
+		owner.add_mood_event(TRAIT_STATUS_EFFECT(id), /datum/mood_event/soothed)
 
 	to_chat(owner, span_hypnophrase("You feel calm."))
 	return TRUE
@@ -196,11 +198,12 @@
 
 	if(!had_neutral_before)
 		owner.faction -= FACTION_NEUTRAL
-	owner.remove_traits(added_traits, id)
+	owner.remove_traits(added_traits, TRAIT_STATUS_EFFECT(id))
 
 	if(owner.mob_mood)
 		owner.mob_mood.set_sanity(pre_sanity, maximum = SANITY_MAXIMUM, override = TRUE)
-		owner.mob_mood.mood_screen_object?.remove_filter("soothe_filter")
+		owner.mob_mood.mood_screen_object?.remove_filter(TRAIT_STATUS_EFFECT(id))
+		owner.clear_mood_event(TRAIT_STATUS_EFFECT(id))
 
 	to_chat(owner, span_danger("The unnatural calm fades away."))
 
@@ -217,3 +220,7 @@
 	name = "Soothed"
 	desc = "Some force is being exerted on you, calming you down. All of your rage, fear, and doubt disappear."
 	icon_state = "hypnosis"
+
+/datum/mood_event/soothed
+	description = "To err is human..."
+	mood_change = 25
