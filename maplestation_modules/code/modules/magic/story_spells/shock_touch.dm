@@ -11,6 +11,8 @@
 
 // Magical shock touch can just subtype normal shock touch relatievly painlessly
 /datum/action/cooldown/spell/touch/shock/magical
+	name = "Shocking Grasp"
+
 	invocation = "Con cussa!"
 	invocation_type = INVOCATION_SHOUT
 

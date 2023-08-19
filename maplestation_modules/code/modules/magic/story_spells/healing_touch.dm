@@ -1,3 +1,9 @@
+#define COMSIG_SPELL_HEALING_TOUCH_IS_VALID "spell_healing_touch_is_valid"
+	#define CAN_BE_HEALED (1<<0)
+#define COMSIG_SPELL_HEALING_TOUCH_CAST "spell_healing_touch_cast"
+	#define HEAL_HANDLED (1<<0)
+	#define HEAL_CANCELLED (1<<1)
+
 /datum/component/uses_mana/story_spell/touch/healing_touch
 	var/healing_touch_attunement_amount = 0.5
 	var/healing_touch_cost_per_healed = 1.5
@@ -12,6 +18,7 @@
 		* (touch_spell.brute_heal + touch_spell.burn_heal + touch_spell.tox_heal + touch_spell.oxy_heal + touch_spell.pain_heal * 3) \
 		* healing_touch_cost_per_healed
 
+// Touch based healing spell, very simple. Only works on organic mobs or anything that hooks to the comsig.
 /datum/action/cooldown/spell/touch/healing_touch
 	name = "Healing Touch"
 	desc = "Lay your hands on a living target to heal them."
@@ -45,6 +52,9 @@
 	AddComponent(/datum/component/uses_mana/story_spell/touch/healing_touch)
 
 /datum/action/cooldown/spell/touch/healing_touch/is_valid_target(atom/cast_on)
+	if(SEND_SIGNAL(cast_on, COMSIG_SPELL_HEALING_TOUCH_IS_VALID, src) & CAN_BE_HEALED)
+		return TRUE
+
 	if(!isliving(cast_on))
 		return FALSE
 	var/mob/living/living_cast_on = cast_on
@@ -59,6 +69,12 @@
 	return FALSE
 
 /datum/action/cooldown/spell/touch/healing_touch/cast_on_hand_hit(obj/item/melee/touch_attack/hand, mob/living/victim, mob/living/carbon/caster)
+	var/sigreturn = SEND_SIGNAL(victim, COMSIG_SPELL_HEALING_TOUCH_CAST, src, caster, hand)
+	if(sigreturn & HEAL_HANDLED)
+		return TRUE
+	if(sigreturn & HEAL_CANCELLED)
+		return FALSE
+
 	// Brute and burn damage have a little conversion thing going on
 	// where if someone is healed for more than they need, the excess is converted to the other damage type.
 	// I'm not bothering to do this for toxin and oxygen out of thematics and laziness
@@ -107,7 +123,6 @@
 		return
 	AddComponent(/datum/component/two_handed, require_twohands = TRUE)
 
-// I'm putting this override on the touch itself instead of hooking a signal so I can  via doafter, sue me
 /obj/item/melee/touch_attack/healing_touch/attack(mob/target, mob/living/carbon/user)
 	. = ..()
 	if(.)
@@ -126,6 +141,7 @@
 		span_notice("You lay your [hand_or_hands] on [target]..."),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 	)
+	// I'm putting this behavior on the touch itself instead of hooking a signal so I can via doafter, sue me
 	if(!do_after(user, 3 SECONDS, target, interaction_key = REF(src)))
 		return TRUE // cancel attack chain
 
@@ -134,3 +150,35 @@
 		span_green("Your [hand_or_hands] glow a brilliant yellow light!"),
 	)
 	return FALSE // go to after attack (cast)
+
+// Lets hydroponics trays be healed by healing touch
+/obj/machinery/hydroponics/Initialize(mapload)
+	. = ..()
+	RegisterSignal(src, COMSIG_SPELL_HEALING_TOUCH_IS_VALID, PROC_REF(can_be_healed))
+	RegisterSignal(src, COMSIG_SPELL_HEALING_TOUCH_CAST, PROC_REF(healing_touched))
+
+/obj/machinery/hydroponics/proc/can_be_healed(datum/source)
+	SIGNAL_HANDLER
+
+	if(plant_status == HYDROTRAY_PLANT_DEAD || plant_status == HYDROTRAY_NO_PLANT)
+		return NONE
+	if(myseed.get_gene(/datum/plant_gene/trait/anti_magic))
+		return NONE // maybe i should add feedback to this but i feel like one can connect the dots
+	return CAN_BE_HEALED
+
+/obj/machinery/hydroponics/proc/healing_touched(datum/source, datum/action/cooldown/spell/touch/healing_touch/spell, mob/living/carbon/caster)
+	SIGNAL_HANDLER
+
+	adjust_plant_health(-1 * (spell.brute_heal + spell.burn_heal))
+	adjust_toxic(-2 * spell.tox_heal)
+	if(pestlevel > 1)
+		adjust_pestlevel(pestlevel * 0.5) // increases the amount of pests, you just healed them!
+	if(weedlevel > 2)
+		adjust_pestlevel(weedlevel * 0.5) // increases the amount of weeds, you just healed them!
+	return HEAL_HANDLED
+
+#undef COMSIG_SPELL_HEALING_TOUCH_IS_VALID
+	#undef CAN_BE_HEALED
+#undef COMSIG_SPELL_HEALING_TOUCH_CAST
+	#undef HEAL_HANDLED
+	#undef HEAL_CANCELLED

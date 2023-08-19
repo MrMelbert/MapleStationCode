@@ -4,7 +4,7 @@ GLOBAL_LIST_INIT(spellbook_geomancy_items, generate_spellbook_items(SPELLBOOK_CA
 	name = "Acid Touch"
 	description = "Empowers your finger with a sticky acid, melting anything (or anyone) you touch."
 	lore = "A very volatile spell which has resulted in many a wizard accidentily melting off their own hands. \
-		The acid generated is comparable to that of sulfuric acid.\nThis has lead to the spell gaining wide use \
+		The acid generated is comparable to that of sulfuric acid.\nThis has led to the spell gaining wide use \
 		in the criminal underworld, as it is a very effective way to make entrances or exits, dispose of evidence, \
 		or create a distraction."
 

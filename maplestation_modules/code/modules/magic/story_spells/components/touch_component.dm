@@ -1,5 +1,11 @@
 #define COMSIG_SPELL_TOUCH_CAN_HIT "spell_touch_can_hit"
 
+/**
+ * A preset component for touch spells that use mana
+ *
+ * These spells require mana to activate (channel into your hand)
+ * but does not expend mana until you actually touch someone with it.
+ */
 /datum/component/uses_mana/story_spell/touch
 	can_transfer = FALSE
 

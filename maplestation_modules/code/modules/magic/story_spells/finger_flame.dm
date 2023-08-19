@@ -1,3 +1,4 @@
+// This doesn't use the touch spell component because we use mana on activation rather than touch.
 /datum/component/uses_mana/story_spell/finger_flame
 	var/flame_cost = 5 // very cheap, it's just a lighter
 	var/flame_attunement = 0.2 // flame users make this EVEN cheaper
@@ -27,6 +28,7 @@
 	// whichs means it uses mana when the flame / hand is CREATED instead of used
 	react_to_successful_use(source, cast_on)
 
+// All this spell does is give you a lighter on demand.
 /datum/action/cooldown/spell/touch/finger_flame
 	name = "Finger Flame"
 	desc = "With a snap, conjures a low flame at the tip of your fingers - just enough to light a cigarette."

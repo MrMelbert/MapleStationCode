@@ -137,10 +137,29 @@
 	id = "soothe"
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = /atom/movable/screen/alert/status_effect/soothed
-	tick_interval = -1
+	tick_interval = 5 SECONDS
 	remove_on_fullheal = TRUE
+	/// List of all traits added via this effect
+	var/list/added_traits = list(
+		// Will hardly come into play, but fits
+		TRAIT_ANTICONVULSANT,
+		// No fear
+		TRAIT_FEARLESS,
+		// No rage
+		TRAIT_JOLLY,
+		// No madness
+		TRAIT_MADNESS_IMMUNE,
+		// No fear... again
+		TRAIT_NOFEAR_HOLDUPS,
+		// No rage... again
+		TRAIT_PACIFISM,
+		// No madness... again
+		TRAIT_RDS_SUPPRESSED,
+	)
 	/// Tracks if we had [FACTION_NEUTRAL] before adding
 	var/had_neutral_before = TRUE
+	/// Tracks our sanity level before adding, restores it to the exact value after removing
+	var/pre_sanity = -1
 
 /datum/status_effect/soothe/on_creation(mob/living/new_owner, new_duration = 10 SECONDS)
 	src.duration = new_duration
@@ -162,13 +181,36 @@
 		owner.faction += FACTION_NEUTRAL
 
 	ADD_TRAIT(owner, TRAIT_PACIFISM, id)
+	owner.add_traits(added_traits, id)
+	if(owner.mob_mood)
+		pre_sanity = owner.mob_mood?.sanity
+		owner.mob_mood.set_sanity(SANITY_GREAT + 5, maximum = SANITY_MAXIMUM, override = TRUE)
+		owner.mob_mood.mood_screen_object?.add_filter("soothe_filter", 2, list("type" = "outline", "color" = "#8c00ff", "size" = 1))
+
 	to_chat(owner, span_hypnophrase("You feel calm."))
 	return TRUE
 
 /datum/status_effect/soothe/on_remove()
+	if(QDELING(owner))
+		return
+
 	if(!had_neutral_before)
 		owner.faction -= FACTION_NEUTRAL
-	REMOVE_TRAIT(owner, TRAIT_PACIFISM, id)
+	owner.remove_traits(added_traits, id)
+
+	if(owner.mob_mood)
+		owner.mob_mood.set_sanity(pre_sanity, maximum = SANITY_MAXIMUM, override = TRUE)
+		owner.mob_mood.mood_screen_object?.remove_filter("soothe_filter")
+
+	to_chat(owner, span_danger("The unnatural calm fades away."))
+
+/datum/status_effect/soothe/tick(seconds_per_tick, times_fired)
+	owner.mob_mood?.set_sanity(owner.mob_mood.sanity + 5, maximum = SANITY_GREAT + 5, override = TRUE)
+
+	var/seconds_between_ticks = initial(tick_interval)
+	owner.adjust_confusion(-2 SECONDS * seconds_between_ticks)
+	owner.adjust_dizzy(-2 SECONDS * seconds_between_ticks)
+	owner.adjust_jitter(-4 SECONDS * seconds_between_ticks)
 
 /atom/movable/screen/alert/status_effect/soothed
 	name = "Soothed"
