@@ -174,7 +174,7 @@
 	if(pestlevel > 1)
 		adjust_pestlevel(pestlevel * 0.5) // increases the amount of pests, you just healed them!
 	if(weedlevel > 2)
-		adjust_pestlevel(weedlevel * 0.5) // increases the amount of weeds, you just healed them!
+		adjust_weedlevel(weedlevel * 0.5) // increases the amount of weeds, you just healed them!
 	return HEAL_HANDLED
 
 #undef COMSIG_SPELL_HEALING_TOUCH_IS_VALID
