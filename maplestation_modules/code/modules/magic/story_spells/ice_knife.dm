@@ -6,6 +6,16 @@
 	. = ..()
 	.[/datum/attunement/ice] = ice_knife_attunement
 
+/datum/component/uses_mana/story_spell/pointed/ice_knife/get_mana_required(...)
+	. = ..()
+	var/datum/action/cooldown/spell/pointed/projectile/ice_knife/ice_knife_spell = parent
+	return (ice_knife_cost * ice_knife_spell.owner.get_casting_cost_mult())
+
+/datum/component/uses_mana/story_spell/pointed/ice_knife/react_to_successful_use(atom/cast_on)
+	. = ..()
+
+	drain_mana()
+
 /datum/action/cooldown/spell/pointed/projectile/ice_knife
 
 	name = "Ice Knife"
@@ -27,15 +37,7 @@
 	cast_range = 8
 	projectile_type = /obj/projectile/magic/ice_knife
 
-/obj/projectile/magic/ice_knife
-	name = "ice knife"
-	icon_state = "ice_2"
-	damage_type = BRUTE
-	damage = 15
-	wound_bonus = 50
-	sharpness = SHARP_EDGED
-
-/turf/open/misc/funny_ice
+/turf/open/misc/funny_ice // Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
 	name = "thin ice sheet"
 	desc = "A thin sheet of solid ice. Looks slippery."
 	icon = 'icons/turf/floors/ice_turf.dmi'
@@ -53,6 +55,13 @@
 	. = ..()
 	MakeSlippery(TURF_WET_ICE, INFINITY, 0, INFINITY, TRUE)
 
+/obj/projectile/magic/ice_knife
+	name = "ice knife"
+	icon_state = "ice_2"
+	damage_type = BRUTE
+	damage = 15
+	wound_bonus = 50
+	sharpness = SHARP_EDGED
 
 /obj/projectile/magic/ice_knife/on_hit(atom/target)
 	. = ..()
@@ -64,7 +73,7 @@
 	steam.set_up(10, FALSE, target.loc)
 	steam.start()
 
-	for(var/turf/open/nearby_turf in range(3, src))
+	for(var/turf/open/nearby_turf in range(3, target))
 		var/datum/gas_mixture/air = nearby_turf.return_air()
 		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
 		if (air && air != turf_air)

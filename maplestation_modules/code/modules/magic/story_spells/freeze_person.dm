@@ -6,6 +6,16 @@
 	. = ..()
 	.[/datum/attunement/ice] = freeze_person_attunement
 
+/datum/component/uses_mana/story_spell/pointed/freeze_person/get_mana_required(...)
+	. = ..()
+	var/datum/action/cooldown/spell/pointed/freeze_person/freeze_person_spell = parent
+	return (freeze_person_cost * freeze_person_spell.owner.get_casting_cost_mult())
+
+/datum/component/uses_mana/story_spell/pointed/freeze_person/react_to_successful_use(atom/cast_on)
+	. = ..()
+
+	drain_mana()
+
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
 	desc = "Encase your target in a block of enchanted ice, rendering them immobile and immune to damage."
@@ -36,62 +46,6 @@
 		return FALSE
 	return TRUE
 
-/datum/status_effect/magic_frozen
-	id = "magic_frozen"
-	duration = 100
-	status_type = 3
-	alert_type = /atom/movable/screen/alert/status_effect/magic_frozen
-	var/icon/cube
-	var/can_melt = TRUE
-	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT)
-
-/atom/movable/screen/alert/status_effect/magic_frozen
-	name = "Magically Frozen"
-	desc = "You're frozen inside an ice cube, and cannot move."
-	icon_state = "frozen"
-
-/datum/status_effect/magic_frozen/on_apply()
-	. = ..()
-
-	for(var/turf/open/nearby_turf in range(2, src)) //makes air around it cold
-		var/datum/gas_mixture/air = nearby_turf.return_air()
-		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
-		if (air && air != turf_air)
-			air.temperature = max(air.temperature + -15, 0)
-			air.react(nearby_turf)
-
-	if(!.)
-		return
-	owner.add_traits(trait_list, TRAIT_STATUS_EFFECT(id))
-	owner.status_flags |= GODMODE
-	owner.adjust_bodytemperature(-50)
-	owner.move_resist = INFINITY
-	owner.move_force = INFINITY
-	owner.pull_force = INFINITY
-
-	if(!owner.stat)
-		to_chat(owner, span_userdanger("You become frozen in a cube!"))
-	cube = icon('icons/effects/freeze.dmi', "ice_cube")
-	owner.add_overlay(cube)
-
-/datum/status_effect/magic_frozen/tick()
-	if(can_melt && owner.bodytemperature >= owner.get_body_temp_normal())
-		qdel(src)
-
-/datum/status_effect/magic_frozen/on_remove()
-	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
-	if(!owner.stat)
-		to_chat(owner, span_notice("The cube melts!"))
-	owner.cut_overlay(cube)
-	owner.adjust_bodytemperature(100)
-	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
-	owner.status_flags &= ~GODMODE
-	owner.Knockdown(30)
-	owner.move_resist = initial(owner.move_resist)
-	owner.move_force = initial(owner.move_force)
-	owner.pull_force = initial(owner.pull_force)
-	return ..()
-
 /datum/action/cooldown/spell/pointed/freeze_person/cast(var/mob/living/target)
 	. = ..()
 	var/mob/caster = usr || owner
@@ -101,4 +55,52 @@
 	steam.start()
 
 	caster?.Beam(target, icon_state="bsa_beam", time=5)
-	target.apply_status_effect(/datum/status_effect/magic_frozen)
+	target.apply_status_effect(/datum/status_effect/freon/magic)
+
+/datum/status_effect/freon/magic
+	id = "magic_frozen"
+	duration = 100
+	status_type = 3
+	alert_type = /atom/movable/screen/alert/status_effect/magic_frozen
+	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT)
+
+/atom/movable/screen/alert/status_effect/magic_frozen
+	name = "Magically Frozen"
+	desc = "You're frozen inside an ice cube, and cannot move."
+	icon_state = "frozen"
+
+/datum/status_effect/freon/magic/on_apply()
+	. = ..()
+	if(!.)
+		return
+	for(var/turf/open/nearby_turf in range(2, owner)) //makes air around it cold
+		var/datum/gas_mixture/air = nearby_turf.return_air()
+		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
+		if (air && air != turf_air)
+			air.temperature = max(air.temperature + -15, 0)
+			air.react(nearby_turf)
+
+	owner.add_traits(trait_list, TRAIT_STATUS_EFFECT(id))
+	owner.status_flags |= GODMODE
+	owner.adjust_bodytemperature(-50)
+	owner.move_resist = INFINITY
+	owner.move_force = INFINITY
+	owner.pull_force = INFINITY
+
+/datum/status_effect/freon/magic/owner_resist()
+	return ..()
+
+/datum/status_effect/freon/magic/do_resist() // this still gives a chat message, idk what to do about it.
+	return ..()
+
+/datum/status_effect/freon/magic/on_remove()
+	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
+	owner.adjust_bodytemperature(100)
+	owner.adjust_bodytemperature(-100)
+	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
+	owner.status_flags &= ~GODMODE
+	owner.Knockdown(30)
+	owner.move_resist = initial(owner.move_resist)
+	owner.move_force = initial(owner.move_force)
+	owner.pull_force = initial(owner.pull_force)
+	return ..()
