@@ -30,8 +30,9 @@
 /obj/projectile/magic/ice_knife
 	name = "ice knife"
 	icon_state = "ice_2"
-	damage_type = BURN
+	damage_type = BRUTE
 	damage = 15
+	wound_bonus = 50
 
 /turf/open/misc/funny_ice
 	name = "thin ice sheet"
@@ -41,6 +42,7 @@
 	base_icon_state = "ice_turf-0"
 	slowdown = 1
 	bullet_sizzle = TRUE
+	underfloor_accessibility = UNDERFLOOR_HIDDEN
 	footstep = FOOTSTEP_FLOOR
 	barefootstep = FOOTSTEP_HARD_BAREFOOT
 	clawfootstep = FOOTSTEP_HARD_CLAW
