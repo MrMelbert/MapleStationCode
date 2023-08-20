@@ -4,15 +4,12 @@
 /datum/loadout_category/shoes
 	category_name = "Shoes"
 	ui_title = "Foot Slot Items"
-
-/datum/loadout_category/shoes/get_items()
-	var/static/list/loadout_shoes = generate_loadout_items(/datum/loadout_item/shoes)
-	return loadout_shoes
+	type_to_generate = /datum/loadout_item/shoes
 
 /datum/loadout_item/shoes
-	category = LOADOUT_ITEM_SHOES
-	/// Snowflake, whether these shoes work on digi legs. Don't set this directly
-	var/supports_digitigrade = FALSE
+	abstract_type = /datum/loadout_item/shoes
+	/// Snowflake, whether these shoes work on digi legs.
+	VAR_FINAL/supports_digitigrade = FALSE
 
 /datum/loadout_item/shoes/New()
 	. = ..()
@@ -20,13 +17,13 @@
 	var/supports_digi = !!(initial(item_path.supports_variations_flags) & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))
 	supports_digitigrade = ignores_digi || supports_digi
 	if(supports_digitigrade)
-		add_tooltip("SUPPORTS DIGITIGRADE - This item can be worn on mobs who have digitigrade legs.")
+		LAZYADD(additional_tooltip_contents, "This item can be worn on characters whom have digitigrade legs.")
 
 // This is snowflake but digitigrade is in general
 // Need to handle shoes that don't fit digitigrade being selected
 // Ideally would be generalized with species can equip or something but OH WELL
 /datum/loadout_item/shoes/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
-	// Supports digi = needs no special handling so we can contiue as normal
+	// Supports digi = needs no special handling so we can continue as normal
 	if(supports_digitigrade)
 		return ..()
 

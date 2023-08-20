@@ -4,13 +4,10 @@
 /datum/loadout_category/gloves
 	category_name = "Gloves"
 	ui_title = "Glove Slot Items"
-
-/datum/loadout_category/gloves/get_items()
-	var/static/list/loadout_gloves = generate_loadout_items(/datum/loadout_item/gloves)
-	return loadout_gloves
+	type_to_generate = /datum/loadout_item/gloves
 
 /datum/loadout_item/gloves
-	category = LOADOUT_ITEM_GLOVES
+	abstract_type = /datum/loadout_item/gloves
 
 /datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))
@@ -67,7 +64,7 @@
 /datum/loadout_item/gloves/yellow
 	name = "Yellow Gloves"
 	item_path = /obj/item/clothing/gloves/color/normal_yellow
-	additional_tooltip_contents = list("NON-INSULATING - This item is purely cosmetic and provide no shock insulation.")
+	additional_tooltip_contents = list("This item is purely cosmetic and provide no shock insulation.")
 
 /datum/loadout_item/gloves/white
 	name = "White Gloves"

@@ -9,6 +9,11 @@ import { JobsPage } from './JobsPage';
 import { MainPage } from './MainPage';
 import { SpeciesPage } from './SpeciesPage';
 import { QuirksPage } from './QuirksPage';
+// NON-MODULE IMPORTS
+import { LoadoutPage } from '../_LoadoutManager';
+import { LimbManagerPage } from '../_LimbManager';
+import { LanguagePage } from '../_LanguagePicker';
+// NON-MODULE IMPORTS END
 
 enum Page {
   Antags,
@@ -16,6 +21,9 @@ enum Page {
   Jobs,
   Species,
   Quirks,
+  Loadout, // NON-MODULE CHANGE
+  Limbs, // NON-MODULE CHANGE
+  Languages, // NON-MODULE CHANGE
 }
 
 const CharacterProfiles = (props: {
@@ -76,6 +84,21 @@ export const CharacterPreferenceWindow = (props, context) => {
     case Page.Quirks:
       pageContents = <QuirksPage />;
       break;
+
+    // NON-MODULE CHANGE START
+    case Page.Loadout:
+      pageContents = <LoadoutPage />;
+      break;
+
+    case Page.Limbs:
+      pageContents = <LimbManagerPage />;
+      break;
+
+    case Page.Languages:
+      pageContents = <LanguagePage />;
+      break;
+    // NON-MODULE CHANGE END
+
     default:
       exhaustiveCheck(currentPage);
   }
@@ -96,12 +119,14 @@ export const CharacterPreferenceWindow = (props, context) => {
             />
           </Stack.Item>
 
-          {/* // NON-MODULE CHANGE
+          {/* // NON-MODULE CHANGE : Hide byond premium banner
+
           {!data.content_unlocked && (
             <Stack.Item align="center">
               Buy BYOND premium for more slots!
             </Stack.Item>
           )}
+
           */}
 
           <Stack.Divider />
@@ -117,6 +142,35 @@ export const CharacterPreferenceWindow = (props, context) => {
                   Character
                 </PageButton>
               </Stack.Item>
+
+              {/* // NON-MODULE CHANGE START */}
+              <Stack.Item grow>
+                <PageButton
+                  currentPage={currentPage}
+                  page={Page.Loadout}
+                  setPage={setCurrentPage}>
+                  Loadout
+                </PageButton>
+              </Stack.Item>
+
+              <Stack.Item grow>
+                <PageButton
+                  currentPage={currentPage}
+                  page={Page.Limbs}
+                  setPage={setCurrentPage}>
+                  Limbs
+                </PageButton>
+              </Stack.Item>
+
+              <Stack.Item grow>
+                <PageButton
+                  currentPage={currentPage}
+                  page={Page.Languages}
+                  setPage={setCurrentPage}>
+                  Languages
+                </PageButton>
+              </Stack.Item>
+              {/* // NON-MODULE CHANGE END */}
 
               <Stack.Item grow>
                 <PageButton

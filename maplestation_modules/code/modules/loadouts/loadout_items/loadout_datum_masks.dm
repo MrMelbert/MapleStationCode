@@ -4,13 +4,10 @@
 /datum/loadout_category/mask
 	category_name = "Mask"
 	ui_title = "Mouth Slot Items"
-
-/datum/loadout_category/mask/get_items()
-	var/static/list/loadout_mask = generate_loadout_items(/datum/loadout_item/mask)
-	return loadout_mask
+	type_to_generate = /datum/loadout_item/mask
 
 /datum/loadout_item/mask
-	category = LOADOUT_ITEM_MASK
+	abstract_type = /datum/loadout_item/mask
 
 /datum/loadout_item/mask/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))
