@@ -56,7 +56,7 @@
 	var/expanded_examine = ""
 
 	if(known_identity)
-		expanded_examine += known_identity.get_flavor_and_records_links(user)
+		expanded_examine += known_identity.format_flavor_for_examine(user)
 
 	if(linked_flavor && user.client?.holder && isAdminObserver(user))
 		// Formatted output list of records.
@@ -87,7 +87,7 @@
 	var/datum/flavor_text/known_identity = get_visible_flavor(user)
 
 	if(known_identity)
-		. += span_info(known_identity.get_flavor_and_records_links(user, FALSE))
+		. += span_info(known_identity.format_flavor_for_examine(user, FALSE))
 	else if(ishuman(src))
 		// I hate this istype src but it's easier to handle this here
 		// Not all mobs should say "YOU CAN'T MAKE OUT DETAILS OF THIS PERSON"
