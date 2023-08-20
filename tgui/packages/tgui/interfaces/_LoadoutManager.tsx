@@ -1,21 +1,20 @@
 import { BooleanLike } from 'common/react';
 import { useBackend, useLocalState } from '../backend';
 import { Box, Button, Dimmer, Input, NoticeBox, Section, Stack, Tabs } from '../components';
-import { Window } from '../layouts';
 import { CharacterPreview } from './common/CharacterPreview';
 
 type typePath = string;
 
 type LoadoutButton = {
   icon: string;
-  act_key: string;
+  act_key?: string;
+  tooltip?: string;
 };
 
 type LoadoutItem = {
   name: string;
   path: typePath;
   buttons: LoadoutButton[];
-  tooltip_text?: string[];
 };
 
 type LoadoutCategory = {
@@ -28,12 +27,12 @@ type Data = {
   selected_loadout: typePath[];
   mob_name: string;
   job_clothes: BooleanLike;
-  character_preview_view: string;
+  loadout_preview_view: string;
   loadout_tabs: LoadoutCategory[];
   tutorial_text: string;
 };
 
-export const _LoadoutManager = (props, context) => {
+export const LoadoutPage = (props, context) => {
   const { data } = useBackend<Data>(context);
   const { loadout_tabs } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
@@ -53,54 +52,49 @@ export const _LoadoutManager = (props, context) => {
   );
 
   return (
-    <Window title="Loadout Manager" width={900} height={645}>
-      <Window.Content height="100%">
-        <Stack vertical>
-          <Stack.Item>
-            {!!tutorialStatus && <LoadoutTutorialDimmer />}
-            <Section
-              title="Loadout Categories"
-              align="center"
-              buttons={
-                <>
-                  <Button
-                    icon="info"
-                    align="center"
-                    content="Tutorial"
-                    onClick={() => setTutorialStatus(true)}
-                  />
-                  <Input
-                    width="200px"
-                    onInput={(event) => setSearchLoadout(event.target.value)}
-                    placeholder="Search for item"
-                    value={searchLoadout}
-                  />
-                </>
-              }>
-              <Tabs fluid align="center">
-                {loadout_tabs.map((curTab) => (
-                  <Tabs.Tab
-                    key={curTab.name}
-                    selected={
-                      searchLoadout.length <= 1 &&
-                      curTab.name === selectedTabName
-                    }
-                    onClick={() => {
-                      setSelectedTab(curTab.name);
-                      setSearchLoadout('');
-                    }}>
-                    {curTab.name}
-                  </Tabs.Tab>
-                ))}
-              </Tabs>
-            </Section>
-          </Stack.Item>
-          <Stack.Item height="500px">
-            <LoadoutTabs />
-          </Stack.Item>
-        </Stack>
-      </Window.Content>
-    </Window>
+    <Stack vertical fill>
+      <Stack.Item>
+        {!!tutorialStatus && <LoadoutTutorialDimmer />}
+        <Section
+          title="Loadout Categories"
+          align="center"
+          buttons={
+            <>
+              <Button
+                icon="info"
+                align="center"
+                content="Tutorial"
+                onClick={() => setTutorialStatus(true)}
+              />
+              <Input
+                width="200px"
+                onInput={(event) => setSearchLoadout(event.target.value)}
+                placeholder="Search for item"
+                value={searchLoadout}
+              />
+            </>
+          }>
+          <Tabs fluid align="center">
+            {loadout_tabs.map((curTab) => (
+              <Tabs.Tab
+                key={curTab.name}
+                selected={
+                  searchLoadout.length <= 1 && curTab.name === selectedTabName
+                }
+                onClick={() => {
+                  setSelectedTab(curTab.name);
+                  setSearchLoadout('');
+                }}>
+                {curTab.name}
+              </Tabs.Tab>
+            ))}
+          </Tabs>
+        </Section>
+      </Stack.Item>
+      <Stack.Item fill>
+        <LoadoutTabs />
+      </Stack.Item>
+    </Stack>
   );
 };
 
@@ -139,16 +133,19 @@ const ItemDisplay = (
   const { item, active } = props;
   return (
     <Stack>
-      <Stack.Item grow align="left">
+      <Stack.Item grow align="left" style={{ 'text-transform': 'capitalize' }}>
         {item.name}
       </Stack.Item>
       {item.buttons.map((button) => (
         <Stack.Item key={button.act_key}>
           <Button
             icon={button.icon}
+            tooltip={button.tooltip}
+            disabled={button.act_key === undefined}
             onClick={() =>
-              act(button.act_key, {
+              act('pass_to_loadout_item', {
                 path: item.path,
+                subaction: button.act_key,
               })
             }
           />
@@ -159,7 +156,6 @@ const ItemDisplay = (
           checked={active}
           content="Select"
           fluid
-          tooltip={item.tooltip_text?.join('\n')}
           onClick={() =>
             act('select_item', {
               path: item.path,
@@ -292,7 +288,7 @@ const LoadoutTabs = (props, context) => {
           </Section>
         )}
       </Stack.Item>
-      <Stack.Item grow align="center">
+      <Stack.Item grow fill align="center">
         <LoadoutPreviewSection />
       </Stack.Item>
     </Stack>
@@ -301,12 +297,13 @@ const LoadoutTabs = (props, context) => {
 
 const LoadoutPreviewSection = (props, context) => {
   const { act, data } = useBackend<Data>(context);
-  const { mob_name, job_clothes, character_preview_view } = data;
+  const { mob_name, job_clothes, loadout_preview_view } = data;
   const [tutorialStatus] = useLocalState(context, 'tutorialStatus', false);
   return (
     <Section
       title={`Preview: ${mob_name}`}
       grow
+      height="100%"
       buttons={
         <Button.Checkbox
           align="center"
@@ -315,10 +312,11 @@ const LoadoutPreviewSection = (props, context) => {
           onClick={() => act('toggle_job_clothes')}
         />
       }>
-      <Stack height="450px" vertical>
+      {/* The heights on these sections are fucked, whatever fix it later */}
+      <Stack vertical height="515px">
         <Stack.Item grow align="center">
           {!tutorialStatus && (
-            <CharacterPreview height="100%" id={character_preview_view} />
+            <CharacterPreview height="100%" id={loadout_preview_view} />
           )}
         </Stack.Item>
         <Stack.Divider />
@@ -332,15 +330,6 @@ const LoadoutPreviewSection = (props, context) => {
                     dir: 'left',
                   })
                 }
-              />
-            </Stack.Item>
-            <Stack.Item>
-              <Button
-                icon="check-double"
-                color="good"
-                tooltip="Confirm loadout and exit UI."
-                tooltipPosition="bottom"
-                onClick={() => act('close_ui')}
               />
             </Stack.Item>
             <Stack.Item>

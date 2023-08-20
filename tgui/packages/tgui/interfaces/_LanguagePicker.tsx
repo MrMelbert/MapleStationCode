@@ -1,37 +1,37 @@
 import { useBackend } from '../backend';
 import { Button, Dimmer, Section, Stack } from '../components';
-import { Window } from '../layouts';
 import { BooleanLike } from 'common/react';
+
+type typePath = string;
 
 type Data = {
   pref_name: string; // mob name. "john doe"
-  species: string; // DM species ID
-  selected_lang: string; // language typepath
+  species: typePath; // species typepath
+  selected_lang: typePath | string; // language typepath
   trilingual: BooleanLike;
-  blacklisted_species: string[]; // list of DM species IDs
+  blacklisted_species: typePath[]; // list of species typePaths
   base_languages: Language[];
   bonus_languages: Language[];
 };
 
 type Language = {
   name: string;
-  type: string; // language typepath
-  barred_species: string | null; // DM species ID (or nothing)
-  allowed_species: string | null; // DM species ID (or nothing)
+  type: typePath; // language typepath
+  pickable: BooleanLike;
+  incompatible_with: string | null;
+  requires: string | null;
 };
 
 export const LanguageStack = (
   props: {
     language: Language;
-    species: string;
-    selected_lang: string;
+    selected_lang: typePath;
     tooltip: string;
   },
   context
 ) => {
-  const { act, data } = useBackend<Language>(context);
-
-  const { name, type, barred_species, allowed_species } = props.language;
+  const { act } = useBackend<Language>(context);
+  const { name, type, pickable } = props.language;
 
   return (
     <Stack>
@@ -42,12 +42,9 @@ export const LanguageStack = (
         <Button.Checkbox
           fluid
           checked={type === props.selected_lang}
-          disabled={
-            barred_species === props.species ||
-            (allowed_species !== props.species && allowed_species)
-          }
+          disabled={!pickable}
           tooltip={props.tooltip}
-          content="Select"
+          content={pickable ? 'Select' : 'Locked'}
           onClick={() =>
             act('set_language', {
               lang_type: type,
@@ -60,11 +57,18 @@ export const LanguageStack = (
   );
 };
 
-export const _LanguagePicker = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+const WarningDimmer = (props, context) => {
+  return (
+    <Dimmer vertical align="center">
+      <Stack.Item fontSize="18px">{props.message}</Stack.Item>
+    </Dimmer>
+  );
+};
+
+export const LanguagePage = (props, context) => {
+  const { data } = useBackend<Data>(context);
 
   const {
-    pref_name,
     species,
     selected_lang,
     trilingual,
@@ -74,58 +78,53 @@ export const _LanguagePicker = (props, context) => {
   } = data;
 
   return (
-    <Window title={pref_name + "'s Languages"} height={400} width={385}>
-      <Window.Content>
-        {!!trilingual && (
-          <Dimmer vertical align="center">
-            <Stack.Item fontSize="18px">
-              You cannot chose a language with the trilingual quirk.
+    <>
+      {!!trilingual && (
+        <WarningDimmer
+          message={'You cannot chose a language with the trilingual quirk.'}
+        />
+      )}
+      {blacklisted_species.includes(species) && (
+        <WarningDimmer
+          message={'Your species cannot learn any additional languages.'}
+        />
+      )}
+      <Section title="Base Racial Languages">
+        <Stack vertical>
+          {base_languages.map((language) => (
+            <Stack.Item key={language.name}>
+              <LanguageStack
+                language={language}
+                selected_lang={selected_lang}
+                tooltip={
+                  language.incompatible_with
+                    ? `This language cannot be selected by
+                    the "${language.incompatible_with}" species.`
+                    : ''
+                }
+              />
             </Stack.Item>
-          </Dimmer>
-        )}
-        {blacklisted_species.includes(species) && (
-          <Dimmer vertical align="center">
-            <Stack.Item fontSize="18px">
-              Your species already starts cannot learn any additional languages.
+          ))}
+        </Stack>
+      </Section>
+      <Section title="Unique Racial Languages">
+        <Stack vertical>
+          {bonus_languages.map((language) => (
+            <Stack.Item key={language.name}>
+              <LanguageStack
+                language={language}
+                selected_lang={selected_lang}
+                tooltip={
+                  language.requires
+                    ? `This language requires the
+                    the "${language.requires}" species.`
+                    : ''
+                }
+              />
             </Stack.Item>
-          </Dimmer>
-        )}
-        <Section title="Base Racial Languages">
-          <Stack vertical>
-            {base_languages.map((language) => (
-              <Stack.Item key={language.name}>
-                <LanguageStack
-                  language={language}
-                  selected_lang={selected_lang}
-                  species={species}
-                  tooltip={
-                    language.barred_species &&
-                    language.barred_species === species
-                      ? `This language cannot be selected by
-                    the "${language.barred_species}" species.`
-                      : ''
-                  }
-                />
-              </Stack.Item>
-            ))}
-          </Stack>
-        </Section>
-        <Section title="Unique Racial Languages">
-          <Stack vertical>
-            {bonus_languages.map((language) => (
-              <Stack.Item key={language.name}>
-                <LanguageStack
-                  language={language}
-                  selected_lang={selected_lang}
-                  species={species}
-                  tooltip={`This language requires the
-                    the "${language.allowed_species}" species.`}
-                />
-              </Stack.Item>
-            ))}
-          </Stack>
-        </Section>
-      </Window.Content>
-    </Window>
+          ))}
+        </Stack>
+      </Section>
+    </>
   );
 };

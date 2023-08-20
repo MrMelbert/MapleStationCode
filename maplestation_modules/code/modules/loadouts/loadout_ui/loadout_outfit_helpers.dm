@@ -37,10 +37,7 @@
 	// Handle any snowflake on_equips
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.on_equip_item(preference_source, src, visuals_only, preference_list)
-	// On_equips may have changed our style so run another update
-	// Equip outfit does its own update body so it's a waste to do this every time
-	if(length(loadout_datums))
-		update_body()
+
 	return TRUE
 
 /**
