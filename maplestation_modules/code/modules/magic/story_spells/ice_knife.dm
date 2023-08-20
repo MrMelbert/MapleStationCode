@@ -9,7 +9,7 @@
 /datum/action/cooldown/spell/pointed/projectile/ice_knife
 
 	name = "Ice Knife"
-	desc = "Materialize an explosive shard of ice and fling it at your target."
+	desc = "Throw an ice knife which'll cover nearby floor with a thin, slippery sheet of ice."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
 	button_icon_state = "ice_knife"
 	sound = 'sound/effects/parry.ogg'

@@ -8,7 +8,7 @@
 
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
-	desc = "Well known and effective, this spell will encase your victim in a target of enchanted ice."
+	desc = "Encase your target in a block of enchanted ice, rendering them immobile and immune to damage."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
 	button_icon_state = "benfrozen"
 	sound = 'sound/effects/ice_shovel.ogg'
