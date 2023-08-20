@@ -30,7 +30,9 @@
 	if(!.)
 		return FALSE
 	if(!isliving(cast_on))
-		to_chat(owner, span_warning("You can only freeze living beings!"))
+		var/mob/caster = usr || owner
+		if(caster)
+			cast_on.balloon_alert(caster, "can't freeze that!")
 		return FALSE
 	return TRUE
 
