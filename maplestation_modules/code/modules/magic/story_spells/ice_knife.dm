@@ -17,7 +17,7 @@
 	cooldown_time = 1 MINUTES
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
-	invocation = "Ice knife! Replace this with something better later."
+	invocation = "Ice knife."
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
 
@@ -53,7 +53,7 @@
 
 /obj/projectile/magic/ice_knife/on_hit(atom/target)
 	. = ..()
-	
+
 	playsound(loc, 'sound/weapons/ionrifle.ogg', 70, TRUE, FALSE)
 
 	for(var/turf/open/nearby_turf in range(3, src))
@@ -62,10 +62,6 @@
 		if (air && air != turf_air)
 			air.temperature = max(air.temperature + -15, 0)
 			air.react(nearby_turf)
-		if (isturf(nearby_turf) && turf_air)
-			turf_air.temperature = max(turf_air.temperature + -15, 0)
-			turf_air.react(nearby_turf)
-			nearby_turf?.air_update_turf()
 	
 	for(var/turf/open/nearby_turf in range(1, src)) // this is fuck ugly, could make a new MakeSlippery flag instead.
 		if(!isclosedturf(nearby_turf) && !islava(nearby_turf))
