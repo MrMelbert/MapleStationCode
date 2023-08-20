@@ -56,7 +56,8 @@
 
 /obj/projectile/magic/ice_knife/on_hit(atom/target)
 	. = ..()
-
+	if(. != BULLET_ACT_HIT)
+		return
 	playsound(loc, 'sound/weapons/ionrifle.ogg', 70, TRUE, FALSE)
 
 	var/datum/effect_system/steam_spread/steam = new()
