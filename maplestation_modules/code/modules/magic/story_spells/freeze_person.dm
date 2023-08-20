@@ -8,7 +8,7 @@
 
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
-	desc = "Temporarily freeze your target inside solid ice."
+	desc = "Well known and effective, this spell will encase your victim in a target of enchanted ice."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
 	button_icon_state = "benfrozen"
 	sound = 'sound/effects/ice_shovel.ogg'
@@ -16,7 +16,7 @@
 	cooldown_time = 2 MINUTES
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
-	invocation = "Watch what happens when I cast a spell I don't know!" // replace later.
+	invocation = "Als Eisz'it!" 
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
 
@@ -92,5 +92,11 @@
 
 /datum/action/cooldown/spell/pointed/freeze_person/cast(var/mob/living/target)
 	. = ..()
+	var/mob/caster = usr || owner
 
+	var/datum/effect_system/steam_spread/steam = new()
+	steam.set_up(10, FALSE, target.loc)
+	steam.start()
+
+	caster?.Beam(target, icon_state="bsa_beam", time=5)
 	target.apply_status_effect(/datum/status_effect/magic_frozen)

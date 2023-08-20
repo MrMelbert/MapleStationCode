@@ -11,13 +11,13 @@
 	name = "Ice Knife"
 	desc = "Materialize an explosive shard of ice and fling it at your target."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
-	button_icon_state = "iceknife"
+	button_icon_state = "ice_knife"
 	sound = 'sound/effects/parry.ogg'
 
 	cooldown_time = 1 MINUTES
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
-	invocation = "Ice knife."
+	invocation = "Frig'dus humer'm!" //this one sucks,  ireally wis hi had something better
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
 
@@ -33,6 +33,7 @@
 	damage_type = BRUTE
 	damage = 15
 	wound_bonus = 50
+	sharpness = SHARP_EDGED
 
 /turf/open/misc/funny_ice
 	name = "thin ice sheet"
@@ -57,6 +58,10 @@
 	. = ..()
 
 	playsound(loc, 'sound/weapons/ionrifle.ogg', 70, TRUE, FALSE)
+
+	var/datum/effect_system/steam_spread/steam = new()
+	steam.set_up(10, FALSE, target.loc)
+	steam.start()
 
 	for(var/turf/open/nearby_turf in range(3, src))
 		var/datum/gas_mixture/air = nearby_turf.return_air()
