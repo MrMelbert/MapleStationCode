@@ -1,5 +1,3 @@
-#define COMSIG_GLOB_MANIFEST_BUILT "!manifest_built"
-
 #define MAX_FLAVOR_LEN 2048
 
 /datum/preference/multiline_text
@@ -157,10 +155,4 @@
 	new_crime.valid = FALSE // This makes it so the record is printed as "REDACTED", which I think is cool
 	associated_record.crimes += new_crime
 
-/datum/manifest/build()
-	. = ..()
-	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MANIFEST_BUILT)
-
 #undef MAX_FLAVOR_LEN
-
-#undef COMSIG_GLOB_MANIFEST_BUILT
