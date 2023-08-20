@@ -100,3 +100,7 @@
 /datum/loadout_item/shoes/mrashoes
 	name = "Malheur Research Association boots"
 	item_path = /obj/item/clothing/shoes/mrashoes
+
+/datum/loadout_item/shoes/reshiaboot
+	name = "Short Brown Boots"
+	item_path = /obj/item/clothing/shoes/reshiaboot
