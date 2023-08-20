@@ -20,12 +20,6 @@
  *
  *	- Flavor text is displayed to other players without any pre-requisites. It displays [EXAMINE_FLAVOR_MAX_DISPLAYED] (65 by default) characters before being trimmed.
  *	- Exploitive information is displayed via link to antagonists with the proper flags.
- *	- Security records are displayed via link to people with sechuds that have security access.
- *	- Medical records are displayed via link to people with medhuds that have medical access.
- *
- *	- To actually access the additional records (if you have the allowance to)...
- *		You need to double examine (examine_more) the person, which will display the buttons for each record.
- *		Double-examining wil also print out the full flavor text of the person being examined in addition to links to records.
  *
  *	Bonus: If you are not connected to the server and someone examines you...
  *	an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
