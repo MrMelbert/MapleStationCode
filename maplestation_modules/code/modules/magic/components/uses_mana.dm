@@ -21,42 +21,45 @@
 
 // TODO: Do I need the vararg?
 /// Should return the numerical value of mana needed to use whatever it is we're using. Unaffected by attunements.
-/datum/component/uses_mana/proc/get_mana_required(...)
+/datum/component/uses_mana/proc/get_mana_required(atom/caster, ...)
 	return 0
 
 /datum/component/uses_mana/get_available_mana(list/datum/attunement/attunements)
 	return parent.get_available_mana(attunements)
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
-/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana, atom/caster)
+/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana, atom/caster, ...)
 	var/total_effective_mana = 0
 	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
 		total_effective_mana += iterated_pool.get_attuned_amount(our_attunements, caster)
-	if (total_effective_mana > get_mana_required())
-		return TRUE
+
+	var/mana_required = get_mana_required(arglist(args.Copy(2)))
+	testing("Checking [mana_required] / [total_effective_mana] mana.")
+	return mana_required <= total_effective_mana
 
 /// Should be the raw conditional we use for determining if the thing that "uses mana" can actually
 /// activate the behavior that "uses mana".
 /datum/component/uses_mana/proc/can_activate(atom/caster, ...)
-	return is_mana_sufficient(get_available_mana(), caster)
+	var/list/sufficient_args = list(get_available_mana()) + args
+	return is_mana_sufficient(arglist(sufficient_args))
 
 /// Wrapper for can_activate(). Should return a bitflag that will be passed down to the signal sender on failure.
 /datum/component/uses_mana/proc/can_activate_check(give_feedback = TRUE, atom/caster, ...)
 	var/list/argss = args.Copy(2)
 	var/can_activate = can_activate(arglist(argss)) //doesnt return this + can_activate_check_... because returning TRUE/FALSE can gave bitflag implications
 	if (!can_activate)
-		return can_activate_check_failure(arglist(args.Copy()))
+		return can_activate_check_failure(arglist(args))
 
 /// What can_activate_check returns apon failing to activate.
-/datum/component/uses_mana/proc/can_activate_check_failure(give_feedback, ...)
+/datum/component/uses_mana/proc/can_activate_check_failure(give_feedback, atom/caster, ...)
 	PROTECTED_PROC(TRUE)
 	if (give_feedback)
 		give_unable_to_activate_feedback(arglist(args.Copy(2)))
 	return FALSE
 
 /// If called, should give feedback to the user of the magic, telling them why it failed.
-/datum/component/uses_mana/proc/give_unable_to_activate_feedback(...)
+/datum/component/uses_mana/proc/give_unable_to_activate_feedback(atom/caster, ...)
 	PROTECTED_PROC(TRUE)
 	return
 
@@ -64,17 +67,19 @@
 /datum/component/uses_mana/proc/react_to_successful_use(...)
 	SIGNAL_HANDLER
 	return
+
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
-/datum/component/uses_mana/proc/drain_mana(list/datum/mana_pool/pools = get_available_mana(), cost = -get_mana_required(), atom/caster, ...)
+/datum/component/uses_mana/proc/drain_mana(list/datum/mana_pool/pools = get_available_mana(), cost, atom/caster, ...)
+	if(isnull(cost))
+		cost = -1 * get_mana_required(arglist(args.Copy(3)))
 
 	var/list/datum/attunement/our_attunements = get_attunement_dispositions()
 	for (var/datum/mana_pool/iterated_pool as anything in pools)
 		var/mult = iterated_pool.get_overall_attunement_mults(our_attunements, caster)
 		var/attuned_cost = cost * mult
+		testing("Draining [cost] mana, adjusted to [attuned_cost] by [mult] from [iterated_pool] ([REF(iterated_pool)]) by [caster].")
 		cost -= SAFE_DIVIDE(iterated_pool.adjust_mana((attuned_cost)), mult)
 		if (cost == 0)
 			break
 	if (cost != 0)
 		stack_trace("cost: [cost] was not 0 after react_to_successful_use on [src]")
-
-
