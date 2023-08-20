@@ -50,16 +50,6 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	/// Flavor text shown as a silicon
 	var/silicon_text
 
-	// Medical related
-	/// General records associated with this flavor text
-	var/gen_records
-	/// Medical records associated with this flavor text
-	var/med_records
-
-	// Security related
-	/// Security records associated with this flavor text
-	var/sec_records
-
 	// Antag related
 	/// Exploitable info associated with this flavor text
 	var/expl_info

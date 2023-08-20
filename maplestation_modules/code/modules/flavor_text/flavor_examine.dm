@@ -64,12 +64,6 @@
 
 		if(linked_flavor.flavor_text)
 			admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
-		if(linked_flavor.gen_records)
-			admin_line += "<a href='?src=[REF(linked_flavor)];general_records=1'>\[GEN\]</a>"
-		if(linked_flavor.sec_records)
-			admin_line += "<a href='?src=[REF(linked_flavor)];security_records=1'>\[SEC\]</a>"
-		if(linked_flavor.med_records)
-			admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
 		if(linked_flavor.expl_info)
 			admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
 		if(known_identity != linked_flavor)
