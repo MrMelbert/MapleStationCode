@@ -72,8 +72,9 @@
 			air.react(nearby_turf)
 
 	for(var/turf/open/nearby_turf in range(1, src)) // this is fuck ugly, could make a new MakeSlippery flag instead.
-		if(!isclosedturf(nearby_turf) && !islava(nearby_turf))
-			var/ice_turf = /turf/open/misc/funny_ice
-			var/reset_turf = nearby_turf.type
-			nearby_turf.ChangeTurf(ice_turf, flags = CHANGETURF_INHERIT_AIR) // this will also delete decals! consider the comment above. i'm tired.
-			addtimer(CALLBACK(nearby_turf, TYPE_PROC_REF(/turf, ChangeTurf), reset_turf, null, CHANGETURF_INHERIT_AIR), 20 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
+		if(isgroundlessturf(nearby_turf))
+			continue
+		var/ice_turf = /turf/open/misc/funny_ice
+		var/reset_turf = nearby_turf.type
+		nearby_turf.TerraformTurf(ice_turf, flags = CHANGETURF_INHERIT_AIR) // this will also delete decals! consider the comment above. i'm tired.
+		addtimer(CALLBACK(nearby_turf, TYPE_PROC_REF(/turf, TerraformTurf), reset_turf, null, CHANGETURF_INHERIT_AIR), 20 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
