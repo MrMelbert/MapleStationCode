@@ -34,7 +34,8 @@
 	cast_range = 8
 	projectile_type = /obj/projectile/magic/ice_knife
 
-/turf/open/misc/funny_ice // Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
+/// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
+/turf/open/misc/funny_ice 
 	name = "thin ice sheet"
 	desc = "A thin sheet of solid ice. Looks slippery."
 	icon = 'icons/turf/floors/ice_turf.dmi'
