@@ -11,11 +11,6 @@
 	var/datum/action/cooldown/spell/pointed/projectile/ice_knife/ice_knife_spell = parent
 	return (ice_knife_cost * ice_knife_spell.owner.get_casting_cost_mult())
 
-/datum/component/uses_mana/story_spell/pointed/ice_knife/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	drain_mana()
-
 /datum/action/cooldown/spell/pointed/projectile/ice_knife
 
 	name = "Ice Knife"

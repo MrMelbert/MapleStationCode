@@ -10,12 +10,7 @@
 	. = ..()
 	var/datum/action/cooldown/spell/pointed/freeze_person/freeze_person_spell = parent
 	return (freeze_person_cost * freeze_person_spell.owner.get_casting_cost_mult())
-
-/datum/component/uses_mana/story_spell/pointed/freeze_person/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	drain_mana()
-
+	
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
 	desc = "Encase your target in a block of enchanted ice, rendering them immobile and immune to damage."
