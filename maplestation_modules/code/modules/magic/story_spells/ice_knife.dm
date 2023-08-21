@@ -15,7 +15,6 @@
 	drain_mana()
 
 /datum/action/cooldown/spell/pointed/projectile/ice_knife
-
 	name = "Ice Knife"
 	desc = "Throw an ice knife which'll cover nearby floor with a thin, slippery sheet of ice."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
