@@ -92,7 +92,6 @@
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
-	owner.adjust_bodytemperature(100)
 	owner.adjust_bodytemperature(-100)
 	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags &= ~GODMODE
