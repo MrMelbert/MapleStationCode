@@ -87,11 +87,8 @@
 	owner.move_force = INFINITY
 	owner.pull_force = INFINITY
 
-/datum/status_effect/freon/magic/owner_resist()
-	return ..()
-
-/datum/status_effect/freon/magic/do_resist() // this still gives a chat message, idk what to do about it.
-	return ..()
+/datum/status_effect/freon/magic/do_resist()
+	return 
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
