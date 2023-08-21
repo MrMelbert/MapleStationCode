@@ -5,15 +5,9 @@
 	. = ..()
 	.[MAGIC_ELEMENT_LIGHT] += attunement_amount
 
-/datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(...)
-	. = ..()
+/datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
-	return (flare_spell.flare_cost * flare_spell.owner.get_casting_cost_mult())
-
-/datum/component/uses_mana/story_spell/conjure_item/flare/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	drain_mana()
+	return ..() * flare_spell.flare_cost
 
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"

@@ -282,7 +282,7 @@ GLOBAL_LIST_INIT(preference_entries_by_key, init_preference_entries_by_key())
 
 	if (preference.savefile_identifier == PREFERENCE_PLAYER)
 		preference.apply_to_client_updated(parent, read_preference(preference.type))
-	else
+	else if(preference.category != PREFERENCE_CATEGORY_NON_CONTEXTUAL) // NON-MODULE CHANGE / optimization for stuff which doesn't need an update
 		character_preview_view?.update_body()
 
 	return TRUE
