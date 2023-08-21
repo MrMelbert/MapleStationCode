@@ -1,9 +1,9 @@
 /obj/item/organ/internal/cyberimp/arm/lighter
-	name = "finger-implanted lighter"
+	name = "finger-bound lighter"
 	desc = "Allows you to light cigarettes with the snap of a finger."
 	extend_sound = 'sound/items/welderactivate.ogg'
 	retract_sound = 'sound/items/welderdeactivate.ogg'
-	items_to_create = list(/obj/item/lighter/finger)
+	items_to_create = list(/obj/item/lighter/implanted)
 
 /obj/item/organ/internal/cyberimp/arm/lighter/emp_act(severity)
 	. = ..()
@@ -25,17 +25,15 @@
 
 /obj/item/organ/internal/cyberimp/arm/lighter/Extend(obj/item/augment)
 	. = ..()
-	var/obj/item/lighter/finger/lighter = augment
+	var/obj/item/lighter/implanted/lighter = augment
 	if(!istype(augment) || augment.loc == src)
 		return
-	lighter.name = "[loc]'s [name]"
 	lighter.set_lit(TRUE)
 
 /obj/item/organ/internal/cyberimp/arm/lighter/Retract()
-	var/obj/item/lighter/finger/lighter = active_item
+	var/obj/item/lighter/implanted/lighter = active_item
 	if(istype(lighter))
 		lighter.set_lit(FALSE)
-		lighter.name = initial(lighter.name)
 	return ..()
 
 /obj/item/organ/internal/cyberimp/arm/lighter/proc/on_snap(mob/living/source)
@@ -61,18 +59,24 @@
 /obj/item/organ/internal/cyberimp/arm/lighter/left
 	zone = BODY_ZONE_L_ARM
 
-/obj/item/lighter/finger
-	name = "finger light"
-	desc = "Fire at your fingertips!"
-	inhand_icon_state = "nothing"
-	item_flags = EXAMINE_SKIP | ABSTRACT
+/obj/item/lighter/implanted
+	name = "implanted lighter"
+	desc = "A lighter implanted in your finger."
+	item_flags = EXAMINE_SKIP
 
-/obj/item/lighter/finger/ignition_effect(atom/A, mob/user)
+/obj/item/lighter/implanted/ignition_effect(atom/A, mob/user)
 	if(get_temperature())
 		playsound(user, pick('sound/misc/fingersnap1.ogg', 'sound/misc/fingersnap2.ogg'), 50, TRUE)
 		return span_infoplain(span_rose(
 			"With a snap, [user]'s finger emits a low flame, which they use to light [A] ablaze. \
 			Hot damn, [user.p_theyre()] badass."))
 
-/obj/item/lighter/finger/attack_self(mob/living/user)
+/obj/item/lighter/implanted/attack_self(mob/living/user)
 	return
+
+/obj/item/lighter/implanted/set_lit(new_lit)
+	. = ..()
+	if(lit)
+		name = "\proper [loc]'s finger-light"
+	else
+		name = initial(name)

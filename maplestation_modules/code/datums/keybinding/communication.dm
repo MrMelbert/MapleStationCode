@@ -9,5 +9,5 @@
 	. = ..()
 	if(.)
 		return
-	winset(user, null, "command=[user.tgui_say_create_open_command(LOOC_CHANNEL)]")
+	winset(user, null, "command=[user.tgui_say_create_open_command(LOOC_CHANNEL)]") // melbert todo : why no worky
 	return TRUE

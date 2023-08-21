@@ -73,7 +73,7 @@
 
 	// Whether this is a question, an exclamation, or neither
 	var/sound_type
-	// What frequency we pass to playsound for variance.
+	// What frequency we pass to playsound for variance. Melbert todo : Add pref for frequency
 	var/sound_frequency = DEFAULT_FREQUENCY
 	// Determine if this is a question, an exclamation, or neither and update sound_type and sound_frequency accordingly.
 	switch(copytext_char(message, -1))

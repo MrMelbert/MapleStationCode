@@ -98,8 +98,7 @@
 
 	attached_hand = new_hand
 	register_hand_signals()
-	if(draw_message) // NON-MODULE CHANGE / UPSTREAM THIS
-		to_chat(cast_on, draw_message)
+	to_chat(cast_on, draw_message)
 	return TRUE
 
 /**
@@ -240,7 +239,6 @@
 	switch(secondary_result)
 		// Continue will remove the hand here and stop
 		if(SECONDARY_ATTACK_CONTINUE_CHAIN)
-			SEND_SIGNAL(src, COMSIG_SPELL_TOUCH_HAND_HIT, victim, caster, hand) // NON-MODULE CHANGE / UPSTREAM THIS
 			log_combat(caster, victim, "cast the touch spell [name] on", hand, "(secondary / alt cast)")
 			spell_feedback()
 			remove_hand(caster)

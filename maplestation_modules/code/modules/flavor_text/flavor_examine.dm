@@ -20,6 +20,12 @@
  *
  *	- Flavor text is displayed to other players without any pre-requisites. It displays [EXAMINE_FLAVOR_MAX_DISPLAYED] (65 by default) characters before being trimmed.
  *	- Exploitive information is displayed via link to antagonists with the proper flags.
+ *	- Security records are displayed via link to people with sechuds that have security access.
+ *	- Medical records are displayed via link to people with medhuds that have medical access.
+ *
+ *	- To actually access the additional records (if you have the allowance to)...
+ *		You need to double examine (examine_more) the person, which will display the buttons for each record.
+ *		Double-examining wil also print out the full flavor text of the person being examined in addition to links to records.
  *
  *	Bonus: If you are not connected to the server and someone examines you...
  *	an AFK timer is shown to the examiner, which displays how long you have been disconnected for.
@@ -50,7 +56,7 @@
 	var/expanded_examine = ""
 
 	if(known_identity)
-		expanded_examine += known_identity.format_flavor_for_examine(user)
+		expanded_examine += known_identity.get_flavor_and_records_links(user)
 
 	if(linked_flavor && user.client?.holder && isAdminObserver(user))
 		// Formatted output list of records.
@@ -58,6 +64,12 @@
 
 		if(linked_flavor.flavor_text)
 			admin_line += "<a href='?src=[REF(linked_flavor)];flavor_text=1'>\[FLA\]</a>"
+		if(linked_flavor.gen_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];general_records=1'>\[GEN\]</a>"
+		if(linked_flavor.sec_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];security_records=1'>\[SEC\]</a>"
+		if(linked_flavor.med_records)
+			admin_line += "<a href='?src=[REF(linked_flavor)];medical_records=1'>\[MED\]</a>"
 		if(linked_flavor.expl_info)
 			admin_line += "<a href='?src=[REF(linked_flavor)];exploitable_info=1'>\[EXP\]</a>"
 		if(known_identity != linked_flavor)
@@ -81,7 +93,7 @@
 	var/datum/flavor_text/known_identity = get_visible_flavor(user)
 
 	if(known_identity)
-		. += span_info(known_identity.format_flavor_for_examine(user, FALSE))
+		. += span_info(known_identity.get_flavor_and_records_links(user, FALSE))
 	else if(ishuman(src))
 		// I hate this istype src but it's easier to handle this here
 		// Not all mobs should say "YOU CAN'T MAKE OUT DETAILS OF THIS PERSON"

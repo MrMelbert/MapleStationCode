@@ -50,6 +50,16 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	/// Flavor text shown as a silicon
 	var/silicon_text
 
+	// Medical related
+	/// General records associated with this flavor text
+	var/gen_records
+	/// Medical records associated with this flavor text
+	var/med_records
+
+	// Security related
+	/// Security records associated with this flavor text
+	var/sec_records
+
 	// Antag related
 	/// Exploitable info associated with this flavor text
 	var/expl_info
@@ -75,7 +85,10 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  * returns a string
  */
 /datum/flavor_text/proc/get_flavor_text(mob/living/carbon/human/examiner, shorten = TRUE)
-	var/found_text = linked_species == "silicon" ? silicon_text : flavor_text
+	var/found_text = flavor_text
+	if(linked_species == "silicon")
+		found_text = silicon_text
+
 	if(!length(found_text))
 		return
 
@@ -89,6 +102,39 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 	return found_text
 
 /**
+ * Get the href buttons for all the mob's records, formatted.
+ *
+ * examiner - who's POV we're gettting the records from
+ *
+ * returns a string
+ */
+/datum/flavor_text/proc/get_records_text(mob/living/carbon/human/examiner)
+	if(!examiner)
+		CRASH("get_records_text() called without an examiner argument - proc is not implemented for a null examiner")
+
+	. = ""
+
+	// Antagonists can see exploitable info.
+	if(examiner.mind?.antag_datums && expl_info)
+		for(var/datum/antagonist/antag_datum as anything in examiner.mind.antag_datums)
+			if(antag_datum.antag_flags & FLAG_CAN_SEE_EXPOITABLE_INFO)
+				. += "<a href='?src=[REF(src)];exploitable_info=1'>\[Exploitable Info\]</a>"
+				break
+
+	// Medhuds can see medical records.
+	if(examiner.check_med_hud_and_access())
+		if(med_records)
+			. += "<a href='?src=[REF(src)];medical_records=1'>\[Past Medical Records\]</a>"
+		if(gen_records)
+			. += "<a href='?src=[REF(src)];general_records=1'>\[General Records\]</a>"
+	// Sechuds can see security records.
+	if(sec_records && examiner.check_sec_hud_and_access())
+		. += "<a href='?src=[REF(src)];security_records=1'>\[Past Security Records\]</a>"
+
+	if(.)
+		. += "\n"
+
+/**
  * All-In-One proc that gets the flavor text and record hrefs and formats it into one message.
  *
  * examiner - who's POV we're gettting this flavor text from
@@ -96,23 +142,39 @@ GLOBAL_LIST_EMPTY(flavor_texts)
  *
  * returns a string
  */
-/datum/flavor_text/proc/format_flavor_for_examine(mob/living/carbon/human/examiner, shorten = TRUE)
+/datum/flavor_text/proc/get_flavor_and_records_links(mob/living/carbon/human/examiner, shorten = TRUE)
 	if(!examiner)
-		CRASH("format_flavor_for_examine() called without an examiner argument - proc is not implemented for a null examiner")
+		CRASH("get_flavor_and_records_links() called without an examiner argument - proc is not implemented for a null examiner")
 
-	var/final_text = get_flavor_text(examiner, shorten)
+	. = ""
+
+	// Whether or not we would have additional info on `examine_more()`.
+	var/list/added_info = list()
+
+	// If the client has flavor text set.
+	var/found_flavor_text = get_flavor_text(examiner, shorten)
+	if(found_flavor_text)
+		. += found_flavor_text
+		if(length(found_flavor_text) > EXAMINE_FLAVOR_MAX_DISPLAYED)
+			added_info += "longer flavor text"
 
 	// Antagonists can see expoitable information.
-	if(expl_info)
-		for(var/datum/antagonist/antag_datum as anything in examiner.mind?.antag_datums)
-			if(!(antag_datum.antag_flags & FLAG_CAN_SEE_EXPOITABLE_INFO))
-				continue
-			if(final_text)
-				final_text += "\n"
-			final_text += "<a href='?src=[REF(src)];exploitable_info=1'>\[Exploitable Info\]</a>\n"
-			break
+	if(expl_info && LAZYLEN(examiner.mind?.antag_datums))
+		for(var/datum/antagonist/antag_datum as anything in examiner.mind.antag_datums)
+			if(antag_datum.antag_flags & FLAG_CAN_SEE_EXPOITABLE_INFO)
+				added_info += "exploitable information"
+				break
+	// Medhuds can see medical and general records, with adequate access.
+	if((med_records || gen_records) && examiner.check_med_hud_and_access())
+		added_info += "past records"
+	// Sechuds can see security records, with adequate access.
+	if(sec_records && examiner.check_sec_hud_and_access())
+		added_info += "past records"
 
-	return final_text
+	if(length(added_info) && shorten)
+		. += span_smallnoticeital("This individual may have [english_list(added_info, and_text = " or ", final_comma_text = ",")] available if you [EXAMINE_CLOSER_BOLD].\n")
+	else
+		. += get_records_text(examiner)
 
 /datum/flavor_text/Topic(href, href_list)
 	. = ..()
@@ -120,6 +182,27 @@ GLOBAL_LIST_EMPTY(flavor_texts)
 		if(flavor_text)
 			var/datum/browser/popup = new(usr, "[name]'s flavor text", "[name]'s Flavor Text (expanded)", 500, 200)
 			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s flavor text (expanded)", replacetext(flavor_text, "\n", "<BR>")))
+			popup.open()
+			return
+
+	if(href_list["general_records"])
+		if(gen_records)
+			var/datum/browser/popup = new(usr, "[name]'s gen rec", "[name]'s General Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s general records", replacetext(gen_records, "\n", "<BR>")))
+			popup.open()
+			return
+
+	if(href_list["security_records"])
+		if(sec_records)
+			var/datum/browser/popup = new(usr, "[name]'s sec rec", "[name]'s Security Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s security records", replacetext(sec_records, "\n", "<BR>")))
+			popup.open()
+			return
+
+	if(href_list["medical_records"])
+		if(med_records)
+			var/datum/browser/popup = new(usr, "[name]'s med rec", "[name]'s Medical Record", 500, 200)
+			popup.set_content(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", "[name]'s medical records", replacetext(med_records, "\n", "<BR>")))
 			popup.open()
 			return
 

@@ -9,11 +9,6 @@
 
 /mob/living/carbon/get_casting_cost_mult()
 	. = ..()
-	for(var/obj/item/held_item in held_items)
-		if (held_item.item_flags & (ABSTRACT|HAND_ITEM))
-			continue
-		// valid catalyst, apply no multiplier
-		return
-
-	// no catalyst, it costs more.
-	. *= NO_CATALYST_COST_MULT
+	var/obj/held_item = src.get_active_held_item()
+	if (!held_item)
+		. *= NO_CATALYST_COST_MULT
