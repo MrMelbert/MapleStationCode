@@ -95,7 +95,7 @@
 	owner.adjust_bodytemperature(-100)
 	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags &= ~GODMODE
-	owner.Knockdown(30)
+	owner.Knockdown(3 SECONDS)
 	owner.move_resist = initial(owner.move_resist)
 	owner.move_force = initial(owner.move_force)
 	owner.pull_force = initial(owner.pull_force)
