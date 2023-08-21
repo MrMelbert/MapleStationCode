@@ -6,13 +6,10 @@
 	. = ..()
 	.[/datum/attunement/ice] = ice_knife_attunement
 
-/datum/component/uses_mana/story_spell/pointed/ice_knife/get_mana_required(...)
-	. = ..()
-	var/datum/action/cooldown/spell/pointed/projectile/ice_knife/ice_knife_spell = parent
-	return (ice_knife_cost * ice_knife_spell.owner.get_casting_cost_mult())
+/datum/component/uses_mana/story_spell/pointed/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
+	return ..() * ice_knife_cost
 
 /datum/action/cooldown/spell/pointed/projectile/ice_knife
-
 	name = "Ice Knife"
 	desc = "Throw an ice knife which'll cover nearby floor with a thin, slippery sheet of ice."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
@@ -32,7 +29,8 @@
 	cast_range = 8
 	projectile_type = /obj/projectile/magic/ice_knife
 
-/turf/open/misc/funny_ice // Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
+/// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
+/turf/open/misc/funny_ice 
 	name = "thin ice sheet"
 	desc = "A thin sheet of solid ice. Looks slippery."
 	icon = 'icons/turf/floors/ice_turf.dmi'

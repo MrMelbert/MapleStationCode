@@ -6,11 +6,9 @@
 	. = ..()
 	.[/datum/attunement/ice] = freeze_person_attunement
 
-/datum/component/uses_mana/story_spell/pointed/freeze_person/get_mana_required(...)
-	. = ..()
-	var/datum/action/cooldown/spell/pointed/freeze_person/freeze_person_spell = parent
-	return (freeze_person_cost * freeze_person_spell.owner.get_casting_cost_mult())
-	
+/datum/component/uses_mana/story_spell/pointed/freeze_person/get_mana_required(atom/caster, atom/cast_on, ...)
+	return ..() * freeze_person_cost
+
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
 	desc = "Encase your target in a block of enchanted ice, rendering them immobile and immune to damage."
@@ -82,19 +80,15 @@
 	owner.move_force = INFINITY
 	owner.pull_force = INFINITY
 
-/datum/status_effect/freon/magic/owner_resist()
-	return ..()
-
-/datum/status_effect/freon/magic/do_resist() // this still gives a chat message, idk what to do about it.
-	return ..()
+/datum/status_effect/freon/magic/do_resist()
+	return 
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
-	owner.adjust_bodytemperature(100)
 	owner.adjust_bodytemperature(-100)
 	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags &= ~GODMODE
-	owner.Knockdown(30)
+	owner.Knockdown(3 SECONDS)
 	owner.move_resist = initial(owner.move_resist)
 	owner.move_force = initial(owner.move_force)
 	owner.pull_force = initial(owner.pull_force)
