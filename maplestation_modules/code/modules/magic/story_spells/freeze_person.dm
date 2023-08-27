@@ -9,11 +9,6 @@
 /datum/component/uses_mana/story_spell/pointed/freeze_person/get_mana_required(atom/caster, atom/cast_on, ...)
 	return ..() * freeze_person_cost
 
-/datum/action/cooldown/spell/conjure_item/flare/New(Target, original)
-	. = ..()
-
-	AddComponent(/datum/component/uses_mana/story_spell/conjure_item/flare
-
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
 	desc = "Encase your target in a block of enchanted ice, rendering them immobile and immune to damage."
