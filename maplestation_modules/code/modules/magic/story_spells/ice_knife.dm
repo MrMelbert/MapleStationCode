@@ -29,6 +29,11 @@
 	cast_range = 8
 	projectile_type = /obj/projectile/magic/ice_knife
 
+/datum/action/cooldown/spell/pointed/projectile/ice_knife/New(Target, original)
+	. = ..()
+
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife)
+
 /// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
 /turf/open/misc/funny_ice 
 	name = "thin ice sheet"
