@@ -230,6 +230,8 @@
 	// No pain at all
 	if(amount == 0)
 		return
+	if(amount > 0 && (parent.status_flags & GODMODE))
+		return
 
 	for(var/zone in shuffle(def_zones))
 		var/adjusted_amount = round(amount, 0.01)
@@ -346,15 +348,17 @@
 	damage,
 	damagetype,
 	def_zone,
+	blocked = 0,
 	wound_bonus = 0,
 	bare_wound_bonus = 0,
 	sharpness = NONE,
 	attack_direction,
+	obj/item/attacking_item,
 )
 
 	SIGNAL_HANDLER
 
-	if(damage <= 0)
+	if(damage <= 0 || (parent.status_flags & GODMODE))
 		return
 	if(isbodypart(def_zone))
 		var/obj/item/bodypart/targeted_part = def_zone
