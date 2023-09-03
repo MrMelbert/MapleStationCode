@@ -44,3 +44,11 @@
 		/obj/item/toy,
 		/obj/item/hatchet, //This is a jacket for real lumberjacks
 	)
+
+/obj/item/clothing/suit/chesedjacket // no toggle for this- yet
+	name = "Well-Kept Jacket"
+	desc = "A tidily kept blue jacket, hand tailored and made by someone with a clear dedication to their craft."
+	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
+	icon_state = "chesed_jacket"
+	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
+	blood_overlay_type = "armor"

@@ -60,3 +60,18 @@
 	desc = "An old ship uniform from the days of spacefarers past. In the old days, engineering wore red and command wore gold. And women wore less."
 	icon_state = "turtlefool_skirt"
 
+/obj/item/clothing/under/arbitersuit
+	name = "arbiter's suit"
+	desc = "A curious garb that has varying cultural significance to many Ornithid groups. Doesn't pair well with the color red."
+	icon = 'maplestation_modules/icons/obj/clothing/under/ornithid_clothes.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/under/ornithid_clothes.dmi'
+	icon_state = "arbiter_suit"
+
+/obj/item/clothing/under/chesedsuit
+	name = "blue waistcoat"
+	desc = "A simple and clean blue waist coat, light blue business shirt, and dark purple slacks combo. Smells faintly of coffee."
+	icon = 'maplestation_modules/icons/obj/clothing/under/ornithid_clothes.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/under/ornithid_clothes.dmi'
+	icon_state = "chesed_suit"
+
+

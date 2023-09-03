@@ -346,3 +346,11 @@
 /datum/loadout_item/under/formal/reshiacoat
 	name = "Black Uniform Coat"
 	item_path = /obj/item/clothing/under/jumpsuit/reshiacoat
+
+/datum/loadout_item/under/formal/arbitersuit
+	name = "Arbiter's Suit"
+	item_path = /obj/item/clothing/under/arbitersuit
+
+/datum/loadout_item/under/formal/chesedsuit
+	name = "Blue Waistcoat"
+	item_path = /obj/item/clothing/under/chesedsuit

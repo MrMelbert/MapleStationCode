@@ -43,6 +43,11 @@
 	icon_state = "monochrome_short"
 	color_src = HAIR
 
+/datum/sprite_accessory/arm_wings/pursuant
+	name = "Pursuant"
+	icon_state = "pursuant"
+	color_src = HAIR
+
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"
 	layers = EXTERNAL_FRONT
