@@ -129,3 +129,65 @@
 	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_item.dmi'
 	icon_state = "jokerchip"
 	w_class = WEIGHT_CLASS_TINY
+
+// --- alter ego items ---
+
+/obj/item/cane/atrox
+	name = "flamingo cane"
+	desc = "A cane with a flamingo head ontop. Used to either discipline others or play croquet."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_item.dmi'
+	icon_state = "amcane"
+	inhand_icon_state = "amcane"
+	lefthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_righthand.dmi'
+	force = 5
+	throwforce = 5
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/structure/chair/atrox
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_structure.dmi'
+	icon_state = "amthrone"
+	name = "golden plastic throne"
+	desc = "A shoddily throne painted red and gold. You can see some paint scratched off."
+	max_integrity = 50
+	item_chair = /obj/item/chair/atrox
+
+/obj/item/chair/atrox
+	name = "golden plastic throne"
+	desc = "A relatively light throne. Better hope no one breaks your ego with it."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_structure.dmi'
+	icon_state = "amthrone_toppled"
+	inhand_icon_state = "amthrone"
+	lefthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_righthand.dmi'
+	w_class = WEIGHT_CLASS_NORMAL
+	force = 7
+	throw_range = 5
+	break_chance = 25
+	origin_type = /obj/structure/chair/atrox
+
+/obj/item/storage/bag/atrox
+	name = "unusual red bag"
+	desc = "An unusual red bag carrying items that suit an unusual red prince."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_item.dmi'
+	icon_state = "ambag"
+	w_class = WEIGHT_CLASS_NORMAL
+	var/empty = FALSE
+
+/obj/item/storage/bag/atrox/Initialize(mapload)
+	. = ..()
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.max_total_storage = 21
+	atom_storage.max_slots = 7
+
+/obj/item/storage/bag/atrox/PopulateContents() //loadout item for alter ego
+	if(empty)
+		return
+	var/static/items_inside = list(
+		/obj/item/clothing/head/costume/crown/atrox = 1,
+		/obj/item/clothing/under/jumpsuit/atrox = 1,
+		/obj/item/clothing/shoes/atrox = 1,
+		/obj/item/chair/atrox = 1,
+		/obj/item/chair/plastic = 1, //coping
+		/obj/item/cane/atrox = 1)
+	generate_items_inside(items_inside,src)
