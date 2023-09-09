@@ -170,6 +170,8 @@
 	name = "unusual red bag"
 	desc = "An unusual red bag carrying items that suit an unusual red prince."
 	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_item.dmi'
+	worn_icon_state = "ambag"
 	icon_state = "ambag"
 	w_class = WEIGHT_CLASS_NORMAL
 	var/empty = FALSE
