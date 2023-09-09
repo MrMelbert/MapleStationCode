@@ -148,7 +148,7 @@
 	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_structure.dmi'
 	icon_state = "amthrone"
 	name = "golden plastic throne"
-	desc = "A shoddily throne painted red and gold. You can see some paint scratched off."
+	desc = "A shoddy throne painted red and gold. You can see some paint scratched off if you look close enough."
 	max_integrity = 50
 	item_chair = /obj/item/chair/atrox
 
