@@ -174,7 +174,6 @@
 	worn_icon_state = "ambag"
 	icon_state = "ambag"
 	w_class = WEIGHT_CLASS_NORMAL
-	var/empty = FALSE
 
 /obj/item/storage/bag/atrox/Initialize(mapload)
 	. = ..()
@@ -183,13 +182,12 @@
 	atom_storage.max_slots = 7
 
 /obj/item/storage/bag/atrox/PopulateContents() //loadout item for alter ego
-	if(empty)
-		return
 	var/static/items_inside = list(
 		/obj/item/clothing/head/costume/crown/atrox = 1,
 		/obj/item/clothing/under/jumpsuit/atrox = 1,
 		/obj/item/clothing/shoes/atrox = 1,
 		/obj/item/chair/atrox = 1,
 		/obj/item/chair/plastic = 1, //coping
-		/obj/item/cane/atrox = 1)
-	generate_items_inside(items_inside,src)
+		/obj/item/cane/atrox = 1,
+	)
+	generate_items_inside(items_inside, src)
