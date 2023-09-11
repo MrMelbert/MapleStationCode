@@ -74,3 +74,73 @@
 	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "nnbonnet"
+
+// --- alter ego outfit ---
+
+/obj/item/clothing/head/costume/crown/atrox
+	name = "rosed crown"
+	desc = "A small golden grown adorned with painted red roses. One of them looks unfinished."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "amcrown"
+
+/obj/item/clothing/under/jumpsuit/atrox
+	name = "regal red and black suit"
+	desc = "A regal suit that reminds you of a foul-tempered monarch. Sentence first, verdict last."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "amsuit"
+	resistance_flags = INDESTRUCTIBLE
+	clothing_traits = list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_SHARPNESS_VULNERABLE) //suit gives same traits that nono's dress has
+	var/heat_mod = FALSE
+
+/obj/item/clothing/under/jumpsuit/atrox/equipped(mob/user, slot)
+	. = ..()
+	if(!ishuman(user) || !(slot & slot_flags))
+		return
+	heat_mod = TRUE
+	RegisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	var/mob/living/carbon/human/wearer = user
+	wearer.physiology.burn_mod /= 0.5
+
+/obj/item/clothing/under/jumpsuit/atrox/dropped(mob/user)
+	. = ..()
+	if(!heat_mod)
+		return
+	if(!ishuman(user) || QDELING(user))
+		return
+	var/mob/living/carbon/human/wearer = user
+	wearer.physiology.burn_mod *= 0.5
+	heat_mod = FALSE
+	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(user, COMSIG_HUMAN_BURNING)
+	REMOVE_TRAIT(user, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
+
+/obj/item/clothing/under/jumpsuit/atrox/proc/on_move(mob/living/carbon/human/source)
+	SIGNAL_HANDLER
+	if(HAS_TRAIT(source, TRAIT_MOVE_VENTCRAWLING))
+		ADD_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
+		ADD_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
+		ADD_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
+		ADD_TRAIT(source, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
+	else
+		REMOVE_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
+		REMOVE_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
+		REMOVE_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
+		REMOVE_TRAIT(source, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
+
+/obj/item/clothing/under/jumpsuit/atrox/proc/on_burn(mob/living/carbon/human/source)
+	SIGNAL_HANDLER
+
+	source.apply_damage(5, STAMINA)
+
+/obj/item/clothing/shoes/atrox
+	name = "regal white boots"
+	desc = "White boots with a heart motif. Not a single piece of dirt attaches itself to it."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
+	icon_state = "amboots"
