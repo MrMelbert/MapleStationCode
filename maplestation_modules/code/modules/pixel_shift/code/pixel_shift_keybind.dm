@@ -1,5 +1,5 @@
 /datum/keybinding/mob/living/pixel_shift
-	hotkey_keys = list("CtrlB")
+	hotkey_keys = list("V")
 	name = "pixel_shift"
 	full_name = "Pixel Shift"
 	description = "Shift your characters offset."
