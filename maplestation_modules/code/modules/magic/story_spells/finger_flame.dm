@@ -181,7 +181,7 @@
 				continue
 
 			// We can go through and make the flame now
-			playsound(cast_on, 'maplestation_modules/sound/unathiignite.ogg', 50, TRUE)
+			playsound(cast_on, 'maplestation_modules/sound/magic_fire.ogg', 50, TRUE)
 			if(cast_on.is_mouth_covered())
 				cast_on.visible_message(
 					span_warning("<b>[cast_on]</b> tries to muster a flame, but [cast_on.p_their()] mouth is covered!"),
