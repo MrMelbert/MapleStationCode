@@ -19,7 +19,7 @@
 	.[/datum/attunement/fire] = flame_attunement
 
 /datum/component/uses_mana/story_spell/finger_flame/get_mana_required(atom/caster, atom/cast_on, ...)
-	return COOLDOWN_FINISHED(src, free_use_cooldown) ? 0 : (..() * flame_cost)
+	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (..() * flame_cost) : 0
 
 /datum/component/uses_mana/story_spell/finger_flame/handle_precast(datum/action/cooldown/spell/touch/finger_flame/source, atom/cast_on)
 	if(source.attached_hand)
