@@ -28,7 +28,7 @@
 	var/obj/item/lighter/finger/lighter = augment
 	if(!istype(augment) || augment.loc == src)
 		return
-	lighter.name = "[loc]'s [name]"
+	lighter.name = "[owner]'s [name]"
 	lighter.set_lit(TRUE)
 
 /obj/item/organ/internal/cyberimp/arm/lighter/Retract()
@@ -61,6 +61,7 @@
 /obj/item/organ/internal/cyberimp/arm/lighter/left
 	zone = BODY_ZONE_L_ARM
 
+// Used for finger lighter implant and spell
 /obj/item/lighter/finger
 	name = "finger light"
 	desc = "Fire at your fingertips!"
@@ -76,3 +77,77 @@
 
 /obj/item/lighter/finger/attack_self(mob/living/user)
 	return
+
+/obj/item/lighter/finger/magic
+	name = "finger flame"
+
+// Used for lizard mouth breathing
+/obj/item/lighter/flame
+	name = "flame"
+	desc = "Your ancestors would be proud."
+	icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
+	icon_state = "fire"
+	inhand_icon_state = "nothing"
+	item_flags = EXAMINE_SKIP | ABSTRACT
+	/// World.time we were last lit.
+	VAR_FINAL/world_time_lit = -1
+	/// Tracks seconds between times we've burned someone holding the flame.
+	VAR_FINAL/seconds_burning = 0
+	/// Weakref to the action that created us
+	VAR_FINAL/datum/weakref/origin_ref
+
+/obj/item/lighter/flame/Initialize(mapload, datum/action/cooldown/spell/touch/finger_flame/lizard/origin)
+	. = ..()
+	if(origin)
+		origin_ref = WEAKREF(origin)
+	else
+		item_flags |= DROPDEL
+
+/obj/item/lighter/flame/proc/clear_up(mob/user, do_message = FALSE)
+	var/datum/action/cooldown/spell/touch/finger_flame/lizard/origin = origin_ref?.resolve()
+	if(!QDELETED(origin))
+		origin.remove_hand(user, do_message)
+		return
+
+	qdel(src)
+
+/obj/item/lighter/flame/ignition_effect(atom/A, mob/user)
+	if(!get_temperature())
+		return
+
+	. = span_infoplain(span_rose("[user] breathes a small mote of fire at [A], setting it ablaze. Prehistoric."))
+	clear_up(user, do_message = FALSE)
+
+/obj/item/lighter/flame/attack_self(mob/living/user)
+	clear_up(user, do_message = TRUE)
+
+/obj/item/lighter/flame/set_lit(new_lit)
+	if(lit == new_lit)
+		return
+
+	. = ..()
+	if(lit)
+		world_time_lit = world.time
+
+/obj/item/lighter/flame/process(seconds_per_tick)
+	. = ..()
+	if(world_time_lit + 30 SECONDS > world.time)
+		return
+	var/mob/living/holder = loc
+	if(!istype(holder) || !holder.get_bodypart(BODY_ZONE_HEAD))
+		qdel(src)
+		return
+
+	if(!holder.is_mouth_covered())
+		seconds_burning += seconds_per_tick
+
+		if(seconds_burning >= rand(4, 12))
+			if(holder.apply_damage(2, BURN, BODY_ZONE_HEAD))
+				to_chat(holder, span_warning("The flame [pick("burns", "scorches", "singes", "torches", "sears")] your mouth a little."))
+			seconds_burning = 0
+
+		if(world_time_lit + 60 SECONDS > world.time)
+			return
+
+	to_chat(holder, span_warning("The flame burns out in your mouth."))
+	clear_up(holder, do_message = FALSE)

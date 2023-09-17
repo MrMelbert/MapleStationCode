@@ -80,6 +80,9 @@
 
 	organ_owner.update_body(TRUE)
 
+	// Hack gets around the fact that nobreath / species trait is checked exactly in some places
+	ADD_TRAIT(organ_owner, TRAIT_NOBREATH, SPECIES_TRAIT)
+
 /obj/item/organ/internal/tongue/lizard/silver/on_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 
@@ -113,6 +116,8 @@
 		if(organ_owner.loc == statue.statue)
 			organ_owner.forceMove(statue.statue.loc)
 			organ_owner.Paralyze(12 SECONDS)
+
+	REMOVE_TRAIT(organ_owner, TRAIT_NOBREATH, SPECIES_TRAIT)
 
 /datum/action/item_action/organ_action/statue
 	/// Traits granted to the mob when in statue form
