@@ -138,9 +138,9 @@
 		return FALSE
 	// We have to have some lungs (to breathe), a stomach (to hold the accelerant) and a head (to breathe the flame)
 	var/mob/living/carbon/caster = owner
-	if(HAS_TRAIT_NOT_FROM(caster, TRAIT_NOBREATH, SPECIES_TRAIT) && !caster.get_organ_slot(ORGAN_SLOT_LUNGS))
+	if(!caster.get_organ_slot(ORGAN_SLOT_LUNGS))
 		if(feedback)
-			to_chat(caster, span_warning("You try to muster a flame, but you can't breathe!"))
+			to_chat(caster, span_warning("You try to muster a flame, [HAS_TRAIT(caster, TRAIT_NOBREATH) ? "but you can't breathe!" : "but you can't take in air!"]"))
 		return FALSE
 
 	if(!caster.get_organ_slot(ORGAN_SLOT_STOMACH))
