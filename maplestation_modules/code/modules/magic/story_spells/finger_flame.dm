@@ -107,10 +107,10 @@
 	desc += " Costs mana to conjure, but is free to maintain."
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard
-	name = "Breathe Small Flame"
+	name = "Muster Flame"
 	desc = "Muster all you can to breathe a small mote of fire - just strong enough to light a cigarette. \
 		Requires you consume an accelerant, such as alcohol, welding fuel, or plasma to fuel the flame. \
-		Stronger accelerants require you consume less reagents."
+		(Stronger accelerants require less reagents.)"
 
 	button_icon = 'maplestation_modules/icons/obj/magic_particles.dmi'
 	button_icon_state = "fire-on"
@@ -126,11 +126,33 @@
 		/datum/reagent/napalm = 4,
 		/datum/reagent/fuel = 4,
 		/datum/reagent/toxin/plasma = 4,
+		/datum/reagent/toxin/spore_burning = 2,
 		/datum/reagent/phlogiston = 2,
 		/datum/reagent/hellwater = 2,
-		/datum/reagent/toxin/spore_burning = 2,
 		/datum/reagent/clf3 = 1,
 	)
+
+/datum/action/cooldown/spell/touch/finger_flame/lizard/Grant(mob/grant_to)
+	. = ..()
+	if(!owner)
+		return
+	RegisterSignals(grant_to, list(COMSIG_CARBON_GAIN_MUTATION, COMSIG_CARBON_LOSE_MUTATION), PROC_REF(update_for_firebreath))
+
+/datum/action/cooldown/spell/touch/finger_flame/lizard/Remove(mob/living/remove_from)
+	. = ..()
+	UnregisterSignal(remove_from, list(COMSIG_CARBON_GAIN_MUTATION, COMSIG_CARBON_LOSE_MUTATION))
+
+/datum/action/cooldown/spell/touch/finger_flame/lizard/proc/update_for_firebreath(mob/living/carbon/source)
+	SIGNAL_HANDLER
+	build_all_button_icons(UPDATE_BUTTON_NAME|UPDATE_BUTTON_STATUS)
+
+/datum/action/cooldown/spell/touch/finger_flame/lizard/update_button_name(atom/movable/screen/movable/action_button/button, force)
+	. = ..()
+	var/mob/living/carbon/lizard_owner = owner
+	if(lizard_owner.dna?.check_mutation(/datum/mutation/human/firebreath))
+		button.name += " (Enhanced)"
+		button.desc = "Prepare a small mote of fire in your mouth - just strong enough to light a cigarette. \
+			No accelerant required, as you can breathe fire!"
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard/can_cast_spell(feedback)
 	. = ..()
@@ -166,10 +188,30 @@
 		span_rose("<b>[old_cast_on]</b> swallows the flame."),
 		span_rose("You swallow the flame."),
 	)
+	old_cast_on.adjustOxyLoss(2, FALSE) // gulp
+	old_cast_on.adjustToxLoss(-5, TRUE, TRUE) // most accelerants are toxic, so let's be a little nice for refunds
+
+/// Check before making the hand if the mouth is covered.
+/datum/action/cooldown/spell/touch/finger_flame/lizard/proc/mouth_covered_dumb_lizard(mob/living/carbon/cast_on)
+	if(!cast_on.is_mouth_covered())
+		return FALSE
+
+	cast_on.visible_message(
+		span_warning("<b>[cast_on]</b> tries to muster a flame, but [cast_on.p_their()] mouth is covered!"),
+		span_warning("You try to muster a flame, but your mouth is covered!"),
+	)
+	cast_on.apply_damage(5, BURN, BODY_ZONE_HEAD)
+	cast_on.adjust_fire_stacks(1)
+	cast_on.ignite_mob()
+	return TRUE
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard/create_hand(mob/living/carbon/cast_on)
-	var/obj/item/organ/internal/stomach/stomach = cast_on.get_organ_slot(ORGAN_SLOT_STOMACH)
+	// Firebreath = free casting!
+	if(cast_on.dna?.check_mutation(/datum/mutation/human/firebreath))
+		playsound(cast_on, 'maplestation_modules/sound/magic_fire.ogg', 50, TRUE)
+		return mouth_covered_dumb_lizard(cast_on) || ..()
 
+	var/obj/item/organ/internal/stomach/stomach = cast_on.get_organ_slot(ORGAN_SLOT_STOMACH)
 	var/list/present_accelerants = required_accelerant.Copy()
 	for(var/datum/reagent/inner_reagent as anything in stomach.reagents.reagent_list + cast_on.reagents.reagent_list)
 		for(var/existing_accelerant in present_accelerants)
@@ -180,43 +222,18 @@
 			if(present_accelerants[existing_accelerant] > 0)
 				continue
 
+			var/amount_consumed = required_accelerant[existing_accelerant]
 			// We can go through and make the flame now
 			playsound(cast_on, 'maplestation_modules/sound/magic_fire.ogg', 50, TRUE)
-			if(cast_on.is_mouth_covered())
-				cast_on.visible_message(
-					span_warning("<b>[cast_on]</b> tries to muster a flame, but [cast_on.p_their()] mouth is covered!"),
-					span_warning("You try to muster a flame, but your mouth is covered!"),
-				)
-				cast_on.apply_damage(5, BURN, BODY_ZONE_HEAD)
-				cast_on.adjust_fire_stacks(1)
-				cast_on.ignite_mob()
-				// It's hard to tell how much was in their stomach and how much was in their blood so we'll just remove it from both
-				cast_on.reagents.remove_all_type(existing_accelerant, required_accelerant[existing_accelerant] * 2)
-				stomach.reagents.remove_all_type(existing_accelerant, required_accelerant[existing_accelerant] * 2)
+			if(mouth_covered_dumb_lizard(cast_on))
+				amount_consumed *= 2
+			else if(!..())
 				return FALSE
 
-			var/obj/item/existing_hand = cast_on.get_inactive_held_item()
-			if(istype(existing_hand, hand_path))
-				cast_on.visible_message(
-					span_warning("The flame in <b>[cast_on]</b>'s mouth builds in strength!"),
-					span_warning("You try to muster a flame, but you already have one in your mouth, causing it to strengthen!"),
-				)
-				cast_on.apply_damage(5, BURN, BODY_ZONE_HEAD)
-				cast_on.adjust_fire_stacks(2)
-				cast_on.ignite_mob()
-				// Same as above
-				cast_on.reagents.remove_all_type(existing_accelerant, required_accelerant[existing_accelerant] * 2)
-				stomach.reagents.remove_all_type(existing_accelerant, required_accelerant[existing_accelerant] * 2)
-				existing_hand.transform.Scale(2, 2)
-				return FALSE
-
-			if(..())
-				// Same as above
-				cast_on.reagents.remove_all_type(existing_accelerant, required_accelerant[existing_accelerant])
-				stomach.reagents.remove_all_type(existing_accelerant, required_accelerant[existing_accelerant])
-				return TRUE
-
-			return FALSE
+			// It's hard to tell how much was in their stomach and how much was in their blood so we'll just remove it from both
+			cast_on.reagents.remove_all_type(existing_accelerant, amount_consumed)
+			stomach.reagents.remove_all_type(existing_accelerant, amount_consumed)
+			return TRUE
 
 	to_chat(cast_on, span_warning("You try to muster a flame, but you don't have enough accelerant..."))
 	StartCooldown(3 SECONDS)
