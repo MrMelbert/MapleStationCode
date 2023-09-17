@@ -24,4 +24,4 @@ GLOBAL_LIST_INIT(spellbook_thermokinesis_items, generate_spellbook_items(SPELLBO
 
 	category = SPELLBOOK_CATEGORY_THERMOKINESIS
 
-	our_action_typepath = /datum/action/cooldown/spell/touch/finger_flame
+	our_action_typepath = /datum/action/cooldown/spell/touch/finger_flame/mana
