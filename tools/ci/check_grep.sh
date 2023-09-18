@@ -33,6 +33,8 @@ else
 	code_x_515="-r --include=code/**/!(__byond_version_compat).dm"
 fi
 
+echo -e "-------------------------------------------------"
+echo -e "${BLUE}Grepping $passedcodefiles and $passedmapfiles${NC}"
 echo -e "${BLUE}Using grep provider at $(which $grep)${NC}"
 
 part=0
