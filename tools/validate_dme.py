@@ -33,7 +33,7 @@ offset = total - len(lines)
 print(f"{offset} lines were ignored in output")
 fail_no_include = False
 
-allfiles = glob.glob("code/**/*.dm", recursive = True) + glob.glob("maplestation_modules/code/**/*.dm", recursive = True) # // NON-MODULE CHANGE, but made reduntant next merge anyways
+allfiles = glob.glob("code/**/*.dm", recursive = True) + glob.glob("maplestation_modules/**/*.dm", recursive = True) # // NON-MODULE CHANGE, but made reduntant next merge anyways
 
 for code_file in allfiles:
     dm_path = code_file.replace('/', '\\')
