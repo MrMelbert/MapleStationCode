@@ -20,7 +20,7 @@
 	/// A list of everyone who this rune's afflicted, so we don't double-dip.
 	var/list/people_we_dazed
 
-/obj/effect/rune/clock_trap/Initialize()
+/obj/effect/rune/clock_trap/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),

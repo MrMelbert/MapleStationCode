@@ -79,7 +79,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	/// Cooldown between sending faxes
 	COOLDOWN_DECLARE(fax_cooldown)
 
-/obj/machinery/fax_machine/Initialize()
+/obj/machinery/fax_machine/Initialize(mapload)
 	. = ..()
 	GLOB.fax_machines += src
 	set_room_tag(TRUE)
@@ -103,7 +103,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /obj/machinery/fax_machine/recieving_disabled
 	can_receive_paperwork = FALSE
 
-/obj/machinery/fax_machine/full/Initialize()
+/obj/machinery/fax_machine/full/Initialize(mapload)
 	. = ..()
 	for(var/i in 1 to max_paperwork)
 		if(LAZYLEN(received_paperwork) >= max_paperwork)

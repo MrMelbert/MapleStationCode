@@ -19,7 +19,7 @@
 	cooldown_time = 2 MINUTES
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
-	invocation = "Als Eisz'it!" 
+	invocation = "Als Eisz'it!"
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
 
@@ -44,7 +44,7 @@
 		return FALSE
 	return TRUE
 
-/datum/action/cooldown/spell/pointed/freeze_person/cast(var/mob/living/target)
+/datum/action/cooldown/spell/pointed/freeze_person/cast(mob/living/target)
 	. = ..()
 	var/mob/caster = usr || owner
 
@@ -86,7 +86,7 @@
 	owner.pull_force = INFINITY
 
 /datum/status_effect/freon/magic/do_resist()
-	return 
+	return
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)

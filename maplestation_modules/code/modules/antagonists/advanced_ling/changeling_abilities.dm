@@ -7,8 +7,6 @@
 
 // Defines for "Uplift Human".
 #define UPLIFT_COOLDOWN 20 MINUTES
-// Defines for "Hivemind Link".
-#define HIVELINK_DURATION 10 MINUTES
 
 /datum/action/changeling/mimicvoice
 	name = "Targeted Mimic Voice"
