@@ -176,7 +176,7 @@
 
 /obj/item/clothing/suit/toggle/noble/penrose
 	name = "ancient dinner coat"
-	desc = "A luxurious coat made from an unidentifiable material. The jem on the coat begs you to step closer."
+	desc = "A luxurious coat made from an unidentifiable material. The gem on the coat begs you to step closer."
 	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
