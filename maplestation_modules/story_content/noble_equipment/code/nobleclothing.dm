@@ -198,7 +198,7 @@
 
 /obj/item/clothing/shoes/jackboots/penrose
 	name = "ancient boots"
-	desc = "An old pair of boots made from an nidentifable material. These boots have taken their fair share of steps."
+	desc = "An old pair of boots made from an unidentifable material. These boots have taken their fair share of steps."
 	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
