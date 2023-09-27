@@ -549,7 +549,7 @@ SUBSYSTEM_DEF(job)
 				[CONFIG_GET(flag/jobs_have_minimal_access) ? "full crew, only your job's necessities" : "skeleton crew, additional access may"] \
 				have been added to your ID card."))
 
-	if(ishuman(equipping))
+	if(ishuman(equipping) && (job.job_flags & JOB_CREW_MANIFEST)) // NON-MODULE CHANGE
 		var/mob/living/carbon/human/wageslave = equipping
 		wageslave.add_mob_memory(/datum/memory/key/account, remembered_id = wageslave.account_id)
 
