@@ -26,7 +26,7 @@
 	random_spawns_possible = FALSE
 
 /datum/job/stowaway/get_default_roundstart_spawn_point()
-	return find_maintenance_spawn(atmos_sensitive = TRUE)
+	return find_maintenance_spawn(atmos_sensitive = TRUE, require_darkness = FALSE)
 
 /datum/job/stowaway/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()
@@ -71,21 +71,23 @@
 			backstory_gist = "You are a station reclamation agent, working for Nanotrasen, left behind mistakenly after the last crew departed. \
 				All you want is to get back off this station."
 			backstory_suggested_goal = "Get off the station, preferably without being detained."
-			backstory_equipment_items = list(/obj/item/storage/belt/utility = ITEM_SLOT_BELT)
-			backstory_equipment = "A toolbelt."
+			backstory_equipment_items = list(
+				/obj/item/storage/belt/utility = ITEM_SLOT_BELT,
+				/obj/item/clothing/gloves/color/yellow = ITEM_SLOT_BACKPACK,
+			)
+			backstory_equipment = "A toolbelt and some insulated gloves."
 
 		if(3)
 			var/old_boss = pick_list(COMPANY_FILE, "bad_companies")
 			backstory_gist = "You are an ex-syndicate agent, employed by the [old_boss], who failed your last task and ended up marooned on this station. \
 				You're not sure what to do now, but you're sure you'll think of something."
 			backstory_suggested_goal = "Finish your last objective, or give up your old life and start anew - maybe on the station itself."
-
-			if(stowaway.jumpsuit_style == PREF_SKIRT)
-				backstory_equipment_items = list(/obj/item/clothing/under/syndicate/skirt = ITEM_SLOT_BACKPACK)
-				backstory_equipment = "A syndicate skirturtleneck."
-			else
-				backstory_equipment_items = list(/obj/item/clothing/under/syndicate = ITEM_SLOT_BACKPACK)
-				backstory_equipment = "A syndicate turtleneck."
+			backstory_equipment_items = list(
+				/obj/item/clothing/gloves/combat = ITEM_SLOT_BACKPACK,
+				/obj/item/clothing/mask/gas/syndicate = ITEM_SLOT_BACKPACK,
+				(stowaway.jumpsuit_style == PREF_SKIRT ? /obj/item/clothing/under/syndicate/skirt : /obj/item/clothing/under/syndicate) = ITEM_SLOT_BACKPACK,
+			)
+			backstory_equipment = "A syndicate turtleneck and some insulated combat gloves."
 
 		if(4)
 			var/old_boss = pick_list(COMPANY_FILE, "good_companies")
@@ -106,8 +108,7 @@
 				initial(job_outfit.shoes) = ITEM_SLOT_BACKPACK,
 			)
 			list_clear_nulls(backstory_equipment_items) // if the job doesn't have a head/shoes/whatever, don't spawn it
-			if(length(backstory_equipment_items))
-				backstory_equipment = "Your old uniform."
+			backstory_equipment = "Your old uniform."
 
 		if(6)
 			backstory_gist = "You woke up randomly in the maintenance tunnels, with no memory of who you are or how you got here."
@@ -120,7 +121,7 @@
 
 
 	var/final_info = "<b>[backstory_gist]</b>\n\n[backstory_suggested_goal]"
-	if(backstory_equipment)
+	if(length(backstory_equipment_items) && backstory_equipment)
 		final_info += span_notice("\n\nAdditional equipment: [backstory_equipment]")
 
 	to_chat(owner, examine_block(span_infoplain(final_info)))
