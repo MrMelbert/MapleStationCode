@@ -11599,10 +11599,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"erh" = (
-/obj/effect/landmark/generic_maintenance_landmark,
-/turf/open/floor/engine,
-/area/station/science/xenobiology)
 "err" = (
 /obj/machinery/door/airlock/external{
 	name = "Transit Tube External Access"
@@ -16665,7 +16661,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
 "ggV" = (
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/item/radio/intercom/directional/east,
 /turf/open/floor/iron/sepia,
 /area/station/service/chapel/office)
@@ -59419,7 +59414,6 @@
 "uKZ" = (
 /obj/effect/landmark/event_spawn,
 /obj/effect/landmark/blobstart,
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos/experiment_room)
@@ -114713,7 +114707,7 @@ eGa
 qYG
 nwa
 tYh
-erh
+wTw
 wTw
 jvZ
 vda
