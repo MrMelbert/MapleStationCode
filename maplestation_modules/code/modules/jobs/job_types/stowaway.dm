@@ -87,7 +87,7 @@
 				/obj/item/clothing/mask/gas/syndicate = ITEM_SLOT_BACKPACK,
 				(stowaway.jumpsuit_style == PREF_SKIRT ? /obj/item/clothing/under/syndicate/skirt : /obj/item/clothing/under/syndicate) = ITEM_SLOT_BACKPACK,
 			)
-			backstory_equipment = "A syndicate turtleneck and some insulated combat gloves."
+			backstory_equipment = "A syndicate turtleneck and mask, and some insulated combat gloves."
 
 		if(4)
 			var/old_boss = pick_list(COMPANY_FILE, "good_companies")
