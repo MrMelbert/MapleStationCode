@@ -16,6 +16,10 @@
 			if(m_intent == MOVE_INTENT_RUN)
 				adjust_nutrition(-(HUNGER_FACTOR/10))
 
+		// NON-MODULE CHANGE START
+		if(m_intent == MOVE_INTENT_RUN && !(movement_type & FLYING) && (mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)) && !pulledby)
+			drain_sprint()
+		// NON-MODULE CHANGE END
 
 /mob/living/carbon/set_usable_legs(new_value)
 	. = ..()
