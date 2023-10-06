@@ -5721,4 +5721,5 @@
 #include "maplestation_modules\story_content\ritz_equipment\code\ritzclothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
+#include "maplestation_modules\temp_changes\bottles\bottlecode.dm"
 // END_INCLUDE
