@@ -13,7 +13,7 @@
 
 /datum/techweb_node/base
 	id_additions = list(
-		"fax_machine",
+		"fax_machine_deluxe",
 	)
 
 /datum/techweb_node/exp_surgery

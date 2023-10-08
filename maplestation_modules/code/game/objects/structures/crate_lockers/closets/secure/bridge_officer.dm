@@ -16,8 +16,8 @@
 	new /obj/item/taperecorder(src)
 	new /obj/item/tape(src)
 	new /obj/item/tape(src)
-	new /obj/item/circuitboard/machine/fax_machine(src)
-	new /obj/item/stack/sheet/mineral/silver(src, 3)
+	new /obj/item/circuitboard/machine/fax/deluxe(src)
+	new /obj/item/stack/sheet/mineral/silver(src, 2)
 	new /obj/item/stamp/bo(src)
 
 // Bridge Officer album for their locker

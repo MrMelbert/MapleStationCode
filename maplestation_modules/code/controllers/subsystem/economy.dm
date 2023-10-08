@@ -14,7 +14,7 @@
  */
 /datum/controller/subsystem/economy/proc/send_fax_paperwork()
 	var/list/area/processed_areas = list()
-	for(var/obj/machinery/fax_machine/found_machine as anything in GLOB.fax_machines)
+	for(var/obj/machinery/fax/found_machine as anything in GLOB.fax_machines)
 		/// We only send to one fax machine in an area
 		var/area/area_loc = get_area(found_machine)
 		if(area_loc in processed_areas)
@@ -42,7 +42,7 @@
  *
  * return an instance of [/obj/item/paper/processed].
  */
-/proc/generate_paperwork(obj/machinery/fax_machine/destination_machine)
+/proc/generate_paperwork(obj/machinery/fax/destination_machine)
 	// Percent chance this paper will contain an error, somewhere.
 	var/error_prob = prob(8)
 	// Percent change that something will be redacted from the paper.
@@ -104,7 +104,8 @@
 			"lizard" = random_unique_lizard_name(),
 			"plasmaman" = random_unique_plasmaman_name(),
 			"ethereal" = random_unique_ethereal_name(),
-			"moth" = random_unique_moth_name(),)
+			"moth" = random_unique_moth_name(),
+		)
 		paper_victim_species = pick(possible_names)
 		paper_victim = possible_names[paper_victim_species]
 		all_tracked_data += "victim"
