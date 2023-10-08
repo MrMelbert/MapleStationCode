@@ -51,6 +51,7 @@ export const JOB2ICON = {
   'Ordnance Technician': 'bomb', // Non-module change
   'Asset Protection': 'person-military-pointing', // Non-module change
   'Bridge Officer': 'paperclip', // Non-module change
+  'Stowaway': 'person-through-window', // Non-module change
 } as const;
 
 export type AvailableJob = keyof typeof JOB2ICON;

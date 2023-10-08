@@ -26,7 +26,7 @@
 	name = "dark duffel bag"
 	desc = "A large lightweight duffel bag for holding extra supplies."
 
-/obj/item/storage/backpack/duffelbag/syndie/Initialize()
+/obj/item/storage/backpack/duffelbag/syndie/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"This bag is used to store tactical equipment and is manufactured by Donk Co. \
@@ -41,7 +41,7 @@
 	name = "suspicious turtleneck"
 	var/unique_description = "A tactical, armored turtleneck manufactured by 'neutral' parties, close to the Gorlex Marauders."
 
-/obj/item/clothing/under/syndicate/Initialize()
+/obj/item/clothing/under/syndicate/Initialize(mapload)
 	. = ..()
 	if(unique_description)
 		AddElement(/datum/element/unique_examine, unique_description, EXAMINE_CHECK_SYNDICATE, hint = FALSE)
@@ -63,7 +63,7 @@
 	unique_description = ""
 	var/tacticool_description = "Knockoff, Nanotrasen brand tactical turtleneck - it's not even the right color."
 
-/obj/item/clothing/under/syndicate/tacticool/Initialize()
+/obj/item/clothing/under/syndicate/tacticool/Initialize(mapload)
 	. = ..()
 	if(tacticool_description)
 		AddElement(/datum/element/unique_examine, tacticool_description, EXAMINE_CHECK_SYNDICATE, real_name = name)
@@ -98,7 +98,7 @@
 
 // DRINKS //
 
-/obj/item/reagent_containers/cup/glass/bottle/lizardwine/Initialize()
+/obj/item/reagent_containers/cup/glass/bottle/lizardwine/Initialize(mapload)
 	. = ..()
 	var/vintage = rand(GLOB.year_integer + 450, GLOB.year_integer + 555) // Wine has an actual vintage var but lizardwine is special
 	AddElement(/datum/element/unique_examine, \
@@ -123,7 +123,7 @@
 /obj/item/scrying
 	desc = "A mysterious glowing incandescent orb of crackling energy. Moving your fingers towards it creates arcs of blue electricity."
 
-/obj/item/scrying/Initialize()
+/obj/item/scrying/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A scrying orb - a view into another plane of existance. \
@@ -136,7 +136,7 @@
 	name = "suspicious purple book"
 	desc = "A purple book clasped with a heavy iron lock and bound in a firm leather."
 
-/obj/item/codex_cicatrix/Initialize()
+/obj/item/codex_cicatrix/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The Codex Cicatrix - the book of knowledge holding all the secrets of the veil between the worlds, the Mansus. \
@@ -152,7 +152,7 @@
 /obj/item/toy/eldritch_book
 	name = "suspicious purple book"
 
-/obj/item/toy/eldritch_book/Initialize()
+/obj/item/toy/eldritch_book/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A fake Codex Cicatrix - the book of knowledge holding all the secrets of the veil between the worlds, the Mansus. \
@@ -160,7 +160,7 @@
 		it seems as if Nanotrasen has already began marketing and selling fake toy copies for children... interesting.", \
 		EXAMINE_CHECK_FACTION, FACTION_HERETIC, real_name = "Codex Cicatrix")
 
-/obj/effect/heretic_rune/Initialize()
+/obj/effect/heretic_rune/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The transumation circle - the site to most known rituals involving unlocking the key to the veil between worlds. \
@@ -168,14 +168,14 @@
 		and allowing a seekers of ancient powers to access the mysteries of the Mansus.", \
 		EXAMINE_CHECK_FACTION, FACTION_HERETIC)
 
-/obj/effect/heretic_influence/Initialize()
+/obj/effect/heretic_influence/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A pierce in reality - a weakness in the veil that allows power to be gleamed from the Mansus.\
 		\n[span_hypnophrase(pick_list(HERETIC_INFLUENCE_FILE, "drain_message"))]", \
 		EXAMINE_CHECK_FACTION, FACTION_HERETIC)
 
-/obj/effect/visible_heretic_influence/Initialize()
+/obj/effect/visible_heretic_influence/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A tapped pierce in reality - this one has been sapped of power. \
@@ -193,14 +193,14 @@
 		and began seeking power and strength from a copy of the forbidden Codex Cicatrix.", \
 		EXAMINE_CHECK_MINDSHIELD, hint = FALSE)
 
-/obj/item/toy/reality_pierce/Initialize()
+/obj/item/toy/reality_pierce/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A pierced reality - a weakness in the veil that allows power to be gleamed from the Mansus. \
 		This one is fake, however. How'd they even make this?", \
 		EXAMINE_CHECK_FACTION, FACTION_HERETIC, real_name = "Pierced Reality")
 
-/obj/effect/rune/Initialize()
+/obj/effect/rune/Initialize(mapload)
 	. = ..()
 	// MELBERT TODO: Improve this with advanced cult code.
 	if(icon == 'icons/obj/rune.dmi')
@@ -225,7 +225,7 @@
 
 // ITEMS //
 
-/obj/item/gun/ballistic/revolver/mateba/Initialize()
+/obj/item/gun/ballistic/revolver/mateba/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A refitted revolver that takes .357 caliber, the Mateba Model 6 Unica - \
@@ -233,7 +233,7 @@
 		has been the weapon of choice for Nanotrasen commanding officers in the field for decades.", \
 		EXAMINE_CHECK_JOB, get_sec_and_command_jobs())
 
-/obj/item/gun/energy/laser/captain/Initialize()
+/obj/item/gun/energy/laser/captain/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The pride and joy of every captain in the Spinward. \
@@ -242,7 +242,7 @@
 		this one is modified with a self-recharging cell and hellfire laser rounds.", \
 		EXAMINE_CHECK_JOB, "Captain")
 
-/obj/item/gun/energy/e_gun/hos/Initialize()
+/obj/item/gun/energy/e_gun/hos/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A modernized and remastered version of the captain's antique laser gun, \
@@ -251,7 +251,7 @@
 		it is still used by lead officers for quick response and utility in the event of varying threats.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_SECURITY)
 
-/obj/item/disk/nuclear/Initialize()
+/obj/item/disk/nuclear/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"Every Nanotrasen operated station comes with an installed self-destruct terminal \
@@ -270,7 +270,7 @@
 		is a very sought after object - luckily, it's in good hands...", \
 		EXAMINE_CHECK_SKILLCHIP, /obj/item/skillchip/disk_verifier, hint = FALSE)
 
-/obj/item/clothing/shoes/magboots/advance/Initialize()
+/obj/item/clothing/shoes/magboots/advance/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The Chief Engineer's treasured advanced magboots - a sleek white design of the standard magboots \
@@ -279,14 +279,14 @@
 		reducing slowdown without sacrificing safety or usability.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
-/obj/item/mod/control/pre_equipped/advanced/Initialize()
+/obj/item/mod/control/pre_equipped/advanced/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The Chief Engineer's spotless advanced MODsuit - a sleek white design of the standard engineering \
 		and atmospheric MODsuits with improved mobility and resistance to fire and radiation.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
-/obj/item/card/id/advanced/gold/captains_spare/Initialize()
+/obj/item/card/id/advanced/gold/captains_spare/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The captain's spare ID card - the backup all-access ID card assigned to the care of the captain themselves. \
@@ -295,7 +295,7 @@
 		assuming it doesn't end up in the hands of certain gas-masked individuals, of course.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_COMMAND)
 
-/obj/item/hand_tele/Initialize()
+/obj/item/hand_tele/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The Hand Teleporter, a breakthrough of bluespace technology, is a miniature hand-held version of the \
@@ -305,7 +305,7 @@
 		and even space explorers are often given one for personal usage.", \
 		EXAMINE_CHECK_JOB, list("Captain", "Research Director", "Scientist"))
 
-/obj/item/spear/bonespear/ceremonial/Initialize()
+/obj/item/spear/bonespear/ceremonial/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"It's common tradition for Ash-kin to build and carry their own spear or axe \
@@ -316,7 +316,7 @@
 
 // MOBS //
 
-/mob/living/basic/pet/dog/corgi/ian/Initialize()
+/mob/living/basic/pet/dog/corgi/ian/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"It's Ian! Your trusty companion through and through. \
@@ -324,7 +324,7 @@
 		Ian's birthday is on September 9th - be sure to celebrate!", \
 		EXAMINE_CHECK_JOB, "Head of Personnel")
 
-/mob/living/carbon/alien/Initialize()
+/mob/living/carbon/alien/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph - an alien species designed to hunt and capture live prey. \
@@ -337,7 +337,7 @@
 		when facing these creatures to avoid being 'facehugged' by their offspring.", \
 		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
-/mob/living/simple_animal/hostile/alien/Initialize()
+/mob/living/simple_animal/hostile/alien/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph - an alien species designed to hunt and capture live prey. \
@@ -350,7 +350,7 @@
 		when facing these creatures to avoid being 'facehugged' by their offspring.", \
 		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
-/mob/living/carbon/alien/humanoid/royal/queen/Initialize()
+/mob/living/carbon/alien/humanoid/royal/queen/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph queen - the patriarch of the xenomorph species. \
@@ -367,7 +367,7 @@
 		confusing and disorienting their kin and offspring.", \
 		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
 
-/mob/living/simple_animal/hostile/alien/queen/Initialize()
+/mob/living/simple_animal/hostile/alien/queen/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph queen - the patriarch of the xenomorph species. \
@@ -385,7 +385,7 @@
 
 // MACHINES //
 
-/obj/machinery/computer/communications/Initialize()
+/obj/machinery/computer/communications/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The communications console is the station's one and only link to central command for anything and everything. \
@@ -394,14 +394,14 @@
 		It's good that central command cares.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_COMMAND)
 
-/obj/machinery/power/supermatter_crystal/Initialize()
+/obj/machinery/power/supermatter_crystal/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"Hope you're wearing meson goggles - Crystallized supermatter, one of the most deadly and reactive things in the universe. \
 		Supermatter reacts when shot with energy, turning the light energy of emitters into heated waste gases and bursts of gamma radiation.", \
 		EXAMINE_CHECK_DEPARTMENT, DEPARTMENT_BITFLAG_ENGINEERING)
 
-/obj/machinery/computer/slot_machine/Initialize()
+/obj/machinery/computer/slot_machine/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"Often called 'one armed bandit', 'fruit machine', or just 'slots', \
@@ -412,7 +412,7 @@
 
 // STRUCTURES //
 
-/obj/structure/altar_of_gods/Initialize()
+/obj/structure/altar_of_gods/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"This religious altar is the place where chaplains can commune with their deities and undergo mystical rituals to their gods. \

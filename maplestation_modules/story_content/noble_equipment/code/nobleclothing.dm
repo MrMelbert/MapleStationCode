@@ -160,3 +160,60 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "elegantsatchel"
 	inhand_icon_state = "elegantsatchel"
+
+/obj/item/clothing/under/rank/noble/penrose
+	name = "ancient suit"
+	desc = "A suit made from an unidentifiable material. Staring at it fills you with a sense of existential dread."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "penrosesuit"
+	inhand_icon_state = "penrosesuit"
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	can_adjust = TRUE
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/suit/toggle/noble/penrose
+	name = "ancient dinner coat"
+	desc = "A luxurious coat made from an unidentifiable material. The gem on the coat begs you to step closer."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "penrosecoat"
+	inhand_icon_state = "penrosecoat"
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/gloves/penrose
+	name = "ancient gloves"
+	desc = "Flexable gloves made from an unidentifiable material."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "penrosegloves"
+	inhand_icon_state = "penrosegloves"
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/shoes/jackboots/penrose
+	name = "ancient boots"
+	desc = "An old pair of boots made from an unidentifable material. These boots have taken their fair share of steps."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "penroseboots"
+	inhand_icon_state = "penroseboots"
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/neck/cloak/penrose
+	name = "ancient scarf"
+	desc = "A strong scarf made from an unknown material. You get the feeling there's more to it than meets the eye."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "penrosescarf"
+	inhand_icon_state = "penrosescarf"
+	resistance_flags = FIRE_PROOF|ACID_PROOF

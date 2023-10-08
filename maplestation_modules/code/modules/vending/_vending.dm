@@ -30,7 +30,7 @@
 	 */
 	var/list/added_categories
 
-/obj/machinery/vending/Initialize()
+/obj/machinery/vending/Initialize(mapload)
 	COMBINE_ASSOC_LISTS_DROP_ZERO(products, added_products)
 	COMBINE_ASSOC_LISTS_DROP_ZERO(contraband, added_contraband)
 	COMBINE_ASSOC_LISTS_DROP_ZERO(premium, added_premium)

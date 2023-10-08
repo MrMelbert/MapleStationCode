@@ -197,7 +197,7 @@
 	name = "beach towel"
 	desc = "A colorful beach towel you can use to dry yourself off or soak up some rays."
 
-/obj/item/towel/beach/Initialize()
+/obj/item/towel/beach/Initialize(mapload)
 	. = ..()
 	set_greyscale("#" + random_color())
 

@@ -4718,15 +4718,6 @@
 /obj/structure/cable/layer1,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/computer)
-"bLN" = (
-/obj/structure/table/wood,
-/obj/machinery/light/directional/south,
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
-/obj/machinery/fax,
-/turf/open/floor/wood,
-/area/station/command/heads_quarters/hop)
 "bLV" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -7632,11 +7623,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/port/lower)
-"cSp" = (
-/obj/structure/table/wood,
-/obj/machinery/fax,
-/turf/open/floor/carpet/royalblack,
-/area/station/security/detectives_office/bridge_officer_office)
 "cSu" = (
 /obj/structure/railing/corner,
 /obj/structure/cable,
@@ -11599,10 +11585,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"erh" = (
-/obj/effect/landmark/generic_maintenance_landmark,
-/turf/open/floor/engine,
-/area/station/science/xenobiology)
 "err" = (
 /obj/machinery/door/airlock/external{
 	name = "Transit Tube External Access"
@@ -16664,11 +16646,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
-"ggV" = (
-/obj/effect/landmark/generic_maintenance_landmark,
-/obj/item/radio/intercom/directional/east,
-/turf/open/floor/iron/sepia,
-/area/station/service/chapel/office)
 "ghd" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -22797,6 +22774,12 @@
 /obj/item/book/manual/wiki/engineering_construction,
 /turf/open/floor/iron,
 /area/station/engineering/storage)
+"ipQ" = (
+/obj/effect/landmark/event_spawn,
+/obj/effect/landmark/blobstart,
+/obj/effect/turf_decal/stripes/line,
+/turf/open/floor/iron/dark,
+/area/station/engineering/atmos/experiment_room)
 "ipU" = (
 /obj/item/kirbyplants/random,
 /turf/open/floor/plating,
@@ -26946,6 +26929,15 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/fore)
+"jRe" = (
+/obj/structure/table/wood,
+/obj/machinery/light/directional/south,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/machinery/fax,
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/hop)
 "jRs" = (
 /obj/machinery/button/door{
 	id = "Dorm3";
@@ -43155,12 +43147,6 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/main)
-"pml" = (
-/obj/structure/table/wood,
-/obj/machinery/computer/security/telescreen/entertainment/directional/south,
-/obj/machinery/fax,
-/turf/open/floor/carpet/orange,
-/area/station/service/lawoffice)
 "pmN" = (
 /obj/machinery/light/directional/east,
 /obj/effect/turf_decal/trimline/neutral/filled/line{
@@ -50574,6 +50560,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"rJc" = (
+/obj/structure/table/wood,
+/obj/machinery/fax,
+/turf/open/floor/carpet/royalblack,
+/area/station/security/detectives_office/bridge_officer_office)
 "rJg" = (
 /obj/machinery/computer/camera_advanced/base_construction{
 	dir = 8
@@ -55340,6 +55331,12 @@
 	dir = 1
 	},
 /area/station/engineering/lobby)
+"tlr" = (
+/obj/structure/table/wood,
+/obj/machinery/computer/security/telescreen/entertainment/directional/south,
+/obj/machinery/fax,
+/turf/open/floor/carpet/orange,
+/area/station/service/lawoffice)
 "tlz" = (
 /obj/structure/sign/departments/chemistry/pharmacy,
 /turf/closed/wall,
@@ -59416,13 +59413,6 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/wood/large,
 /area/station/service/library)
-"uKZ" = (
-/obj/effect/landmark/event_spawn,
-/obj/effect/landmark/blobstart,
-/obj/effect/landmark/generic_maintenance_landmark,
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/iron/dark,
-/area/station/engineering/atmos/experiment_room)
 "uLd" = (
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 4
@@ -63756,6 +63746,10 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/department/bridge)
+"wqQ" = (
+/obj/item/radio/intercom/directional/east,
+/turf/open/floor/iron/sepia,
+/area/station/service/chapel/office)
 "wqS" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/maintenance/three,
@@ -86468,7 +86462,7 @@ vln
 aJm
 mJd
 fmT
-uKZ
+ipQ
 vSv
 vzc
 xoJ
@@ -114713,7 +114707,7 @@ eGa
 qYG
 nwa
 tYh
-erh
+wTw
 wTw
 jvZ
 vda
@@ -159944,7 +159938,7 @@ pHr
 dOs
 cGE
 krN
-pml
+tlr
 sgz
 sgz
 sgz
@@ -162208,7 +162202,7 @@ ggR
 acN
 ggR
 bJP
-ggV
+wqQ
 vnX
 rVt
 ful
@@ -172299,7 +172293,7 @@ ora
 rCK
 wBu
 mkx
-bLN
+jRe
 ora
 mQL
 oqB
@@ -174869,7 +174863,7 @@ bhg
 xSz
 atb
 oKe
-cSp
+rJc
 pSG
 dam
 aCS
