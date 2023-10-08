@@ -351,6 +351,10 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /obj/machinery/fax/examine(mob/user)
 	. = ..()
 	. += span_notice("Its maintenance panel is [locked ? "locked" : "unlocked"][panel_open ? ", and open" : ""].")
+	if(stored_paper)
+		. += span_notice("It has a paper in its tray, ready to send somewhere.")
+	if(receive_paper)
+		. += span_notice("Looks like it's received a fax.")
 
 /**
  * Set this fax machine's [room_tag] to the current room or null.
@@ -416,14 +420,17 @@ GLOBAL_LIST_EMPTY(fax_machines)
 			playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 			return FALSE
 
-	balloon_alert(user, "fax sent")
-	flick("[base_icon_state]_send", src)
-	flick_overlay_view(find_overlay_state(stored_paper, "send"), 2 SECONDS)
-	addtimer(CALLBACK(src, PROC_REF(send_paper_print_copy), user, stored_paper), 2 SECONDS)
-	stored_paper = null
-	update_appearance(UPDATE_OVERLAYS)
-	history_add("Send", destination)
+	var/send_overlay = find_overlay_state(stored_paper, "send")
 
+	balloon_alert(user, "fax sent")
+	addtimer(CALLBACK(src, PROC_REF(send_paper_print_copy), user, stored_paper), 2 SECONDS)
+	stored_paper = null // Done here so they can't yoink it out before the callback
+	update_appearance(UPDATE_OVERLAYS)
+
+	flick("[base_icon_state]_send", src)
+	flick_overlay_view(send_overlay, 2 SECONDS)
+
+	history_add("Send", destination)
 	playsound(src, 'sound/machines/terminal_processing.ogg', 35, FALSE)
 	COOLDOWN_START(src, fax_cooldown, FAX_COOLDOWN_TIME)
 	use_power(active_power_usage)
