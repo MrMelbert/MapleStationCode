@@ -54,8 +54,8 @@
 		qdel(gold_beam)
 		balloon_alert(user, "link broken")
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	handle_gold_charges(user, victim.reagents.get_reagent_amount(/datum/reagent/gold, include_subtypes = TRUE))
-	victim.reagents.remove_all_type(/datum/reagent/gold, victim.reagents.get_reagent_amount(/datum/reagent/gold, include_subtypes = TRUE))
+	handle_gold_charges(user, victim.reagents.get_reagent_amount(/datum/reagent/gold) + victim.reagents.get_reagent_amount(/datum/reagent/gold/cursed))
+	victim.reagents.remove_all_type(/datum/reagent/gold, victim.reagents.get_reagent_amount(/datum/reagent/gold) + victim.reagents.get_reagent_amount(/datum/reagent/gold/cursed), strict = FALSE)
 	victim.remove_status_effect(/datum/status_effect/midas_blight)
 	qdel(gold_beam)
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
