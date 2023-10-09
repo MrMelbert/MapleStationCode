@@ -650,6 +650,8 @@
 					SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
 					user.add_mood_event("saved_life", /datum/mood_event/saved_life)
 					log_combat(user, H, "revived", defib)
+					H.adjust_pain_shock(-12) // NON-MODULE CHANGE
+					H.cause_pain(BODY_ZONES_ALL, -16) // NON-MODULE CHANGE
 				do_success()
 				return
 			else if (!H.get_organ_by_type(/obj/item/organ/internal/heart))
