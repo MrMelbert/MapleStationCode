@@ -92,6 +92,7 @@
 /obj/structure/table/wood,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/storage/briefcase,
+/obj/item/folder,
 /obj/item/taperecorder{
 	pixel_x = -4;
 	pixel_y = 4
@@ -3823,8 +3824,7 @@
 	dir = 1
 	},
 /obj/structure/table,
-/obj/item/clipboard,
-/obj/item/folder,
+/obj/machinery/fax/deluxe/starts_enabled,
 /turf/open/floor/iron/dark,
 /area/station/security/courtroom)
 "arL" = (
@@ -4699,12 +4699,16 @@
 /area/station/maintenance/starboard/aft)
 "avU" = (
 /obj/structure/table/wood,
+/obj/item/clipboard{
+	pixel_y = 4;
+	pixel_x = -4
+	},
 /obj/item/paper_bin,
-/obj/item/pen,
 /obj/item/pen/red{
 	pixel_x = 5;
 	pixel_y = 1
 	},
+/obj/item/pen,
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "awb" = (
@@ -29361,10 +29365,7 @@
 /obj/structure/table,
 /obj/effect/turf_decal/bot,
 /obj/structure/mirror/directional/north,
-/obj/machinery/fax{
-	fax_name = "Law Office";
-	name = "Law Office Fax Machine"
-	},
+/obj/machinery/fax/deluxe/starts_enabled,
 /turf/open/floor/iron/dark,
 /area/station/service/lawoffice)
 "els" = (
@@ -42498,7 +42499,7 @@
 "iSf" = (
 /obj/structure/table/wood,
 /obj/machinery/firealarm/directional/north,
-/obj/structure/statue/bronze/marx,
+/obj/machinery/fax,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "iSk" = (
