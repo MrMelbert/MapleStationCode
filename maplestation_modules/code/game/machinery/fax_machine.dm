@@ -353,7 +353,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	. += span_notice("Its maintenance panel is [locked ? "locked" : "unlocked"][panel_open ? ", and open" : ""].")
 	if(stored_paper)
 		. += span_notice("It has a paper in its tray, ready to send somewhere.")
-	if(receive_paper)
+	if(received_paper)
 		. += span_notice("Looks like it's received a fax.")
 
 /**
