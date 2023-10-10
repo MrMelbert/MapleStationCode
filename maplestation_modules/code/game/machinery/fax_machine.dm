@@ -229,7 +229,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		if("print_received_paper")
 			flick("[base_icon_state]_receive", src)
 			flick_overlay_view(find_overlay_state(received_paper, "receive"), 2 SECONDS)
-			balloon_alert_to_viewers("removed paper")
+			balloon_alert(usr, "removed paper")
 			playsound(src, 'sound/machines/printer.ogg', 50, TRUE)
 			if(usr.CanReach(src))
 				usr.put_in_hands(received_paper)
@@ -339,8 +339,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	if(isnull(stored_paper))
 		return SECONDARY_ATTACK_CALL_NORMAL
 
-	flick("[base_icon_state]_receive", src)
-	balloon_alert_to_viewers("removed paper")
+	balloon_alert(user, "removed paper")
 	if(user.CanReach(src))
 		user.put_in_hands(stored_paper)
 	else
@@ -389,12 +388,12 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		return FALSE
 
 	if(!sending_enabled)
-		balloon_alert_to_viewers("can't send faxes!")
+		balloon_alert(user, "can't send faxes!")
 		playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 		return FALSE
 
 	if(!length(stored_paper?.get_raw_text()) || !COOLDOWN_FINISHED(src, fax_cooldown))
-		balloon_alert_to_viewers("fax failed to send!")
+		balloon_alert(user, "fax failed to send!")
 		playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 		return FALSE
 
@@ -416,7 +415,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 				found_a_machine = TRUE
 				break
 		if(!found_a_machine)
-			balloon_alert_to_viewers("destination not found")
+			balloon_alert(user, "destination not found")
 			playsound(src, 'sound/machines/terminal_error.ogg', 50, FALSE)
 			return FALSE
 
