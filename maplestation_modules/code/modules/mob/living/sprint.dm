@@ -17,21 +17,32 @@
 	sprint_bar.icon_state = "prog_bar_[round(((runner.sprint_length / runner.sprint_length_max) * 100), 5)]"
 	. += sprint_bar
 
+/datum/movespeed_modifier/momentum
+	movetypes = GROUND
+	flags = IGNORE_NOSLOW
+	multiplicative_slowdown = -0.1
+
+/mob/living/carbon
+	/// If TRUE, we are being affected by run momentum
+	var/has_momentum = FALSE
+	/// Our last move direction, used for tracking momentum
+	var/momentum_dir = NONE
+	/// How many tiles we've moved in the momentum direction
+	var/momentum_distance = 0
+
 /mob/living/carbon/human
 	m_intent = MOVE_INTENT_WALK
 	/// How many tiles left in your sprint
-	var/sprint_length = 0
+	var/sprint_length = 75
 	/// How many tiles you can sprint before returning to "walk"
-	var/sprint_length_max = 50
+	var/sprint_length_max = 75
 	/// How many tiles you get back per second
-	var/sprint_regen_per_second = 0.5
-
-/mob/living/carbon/human/Initialize(mapload)
-	. = ..()
-	sprint_length = sprint_length_max
+	var/sprint_regen_per_second = 0.75
 
 /mob/living/carbon/human/toggle_move_intent()
 	. = ..()
+	if(!client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))
+		return
 	if(m_intent == MOVE_INTENT_RUN)
 		playsound_local(get_turf(src), 'maplestation_modules/sound/sprintactivate.ogg', 75, vary = FALSE, pressure_affected = FALSE)
 	else
@@ -50,7 +61,7 @@
 	return
 
 /mob/living/carbon/human/adjust_sprint_left(amount)
-	sprint_length = clamp(sprint_length + (amount), 0, sprint_length_max)
+	sprint_length = clamp(sprint_length + amount, 0, sprint_length_max)
 	for(var/atom/movable/screen/mov_intent/selector in hud_used?.static_inventory)
 		selector.update_appearance(UPDATE_OVERLAYS)
 
@@ -68,7 +79,7 @@
 		toggle_move_intent()
 		return
 
-	adjustStaminaLoss(0.5)
+	adjustStaminaLoss(1)
 
 /mob/living/carbon/human/fully_heal(heal_flags)
 	. = ..()
