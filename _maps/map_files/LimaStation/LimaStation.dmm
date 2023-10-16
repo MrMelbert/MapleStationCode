@@ -19480,9 +19480,7 @@
 /obj/machinery/button/door/directional/east{
 	id = "commissaryshutter";
 	name = "Commissary Shutters";
-	normaldoorcontrol = 1;
-	pixel_y = 6;
-	specialfunctions = 4
+	pixel_y = 6
 	},
 /obj/machinery/button/door/directional/east{
 	id = "commissarydoor";
@@ -38101,6 +38099,7 @@
 /obj/machinery/light_switch/directional/south{
 	pixel_x = 5
 	},
+/obj/structure/spirit_board,
 /turf/open/floor/iron/sepia,
 /area/station/service/chapel)
 "nAp" = (
