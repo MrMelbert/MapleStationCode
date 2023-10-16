@@ -17328,6 +17328,7 @@
 	dir = 6
 	},
 /obj/effect/mapping_helpers/airlock/access/any/medical/general,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "gtL" = (
@@ -61058,7 +61059,6 @@
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
 "voL" = (
-/obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/medical/glass{
 	name = "Treatment Center"
 	},
@@ -61067,6 +61067,7 @@
 	dir = 10
 	},
 /obj/effect/mapping_helpers/airlock/access/any/medical/general,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "voY" = (
