@@ -650,6 +650,8 @@
 					SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
 					user.add_mood_event("saved_life", /datum/mood_event/saved_life)
 					log_combat(user, H, "revived", defib)
+					H.adjust_pain_shock(-12) // NON-MODULE CHANGE
+					H.cause_pain(BODY_ZONES_ALL, -16) // NON-MODULE CHANGE
 				do_success()
 				return
 			else if (!H.get_organ_by_type(/obj/item/organ/internal/heart))
@@ -659,6 +661,8 @@
 				playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
 				if(!(heart.organ_flags & ORGAN_FAILING))
 					H.set_heartattack(FALSE)
+					H.adjust_pain_shock(-12) // NON-MODULE CHANGE
+					H.cause_pain(BODY_ZONES_ALL, -16) // NON-MODULE CHANGE
 					user.visible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Patient's heart is now beating again."))
 				else
 					user.visible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Resuscitation failed, heart damage detected."))
