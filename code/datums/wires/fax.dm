@@ -1,3 +1,7 @@
+/*
+
+// NON-MODULE CHANGE: Assuming direct control of fax economy
+
 /datum/wires/fax
 	holder_type = /obj/machinery/fax
 	proper_name = "Fax Unit"
@@ -49,3 +53,4 @@
 			machine.hurl_contents = !mend
 		if(WIRE_LOADCHECK)
 			machine.allow_exotic_faxes = !mend
+*/
