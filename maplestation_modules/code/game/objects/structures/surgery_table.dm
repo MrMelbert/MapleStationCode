@@ -78,13 +78,9 @@
 	if(!can_have_tank_opened(patient))
 		disable_anesthesia(patient)
 		return
-
-	if(!(computer.obj_flags & EMAGGED)) // melbert todo : change this system
-		if(patient.external == attached_tank && patient_set_at + failsafe_time > world.time)
-			disable_anesthesia(patient)
-			balloon_alert_to_viewers("anesthesia safety activated")
-			playsound(src, 'sound/machines/cryo_warning.ogg', 50, TRUE)
-			return
+	if(computer?.is_operational && patient_set_at + failsafe_time < world.time)
+		safety_disable()
+		return
 
 /obj/structure/table/optable/proc/can_have_tank_opened(mob/living/carbon/who)
 	if(!isnull(who.external) && who.external != attached_tank)
@@ -94,6 +90,16 @@
 	if(!istype(who.wear_mask) || !(who.wear_mask.clothing_flags & MASKINTERNALS))
 		return FALSE
 	return TRUE
+
+/obj/structure/table/optable/proc/safety_disable()
+	if(isnull(attached_tank) || patient.external != attached_tank)
+		return
+	if(computer?.obj_flags & EMAGGED)
+		return
+	disable_anesthesia(patient)
+	balloon_alert_to_viewers("anesthesia safety activated")
+	playsound(src, 'sound/machines/cryo_warning.ogg', 50, frequency = 32000)
+	playsound(src, 'sound/machines/doorclick.ogg', 50, vary = FALSE)
 
 /obj/structure/table/optable/proc/enable_anesthesia(mob/living/carbon/new_patient)
 	if(isnull(attached_tank) || !can_have_tank_opened(new_patient))
@@ -115,12 +121,32 @@
 
 	if(patient.external == attached_tank)
 		disable_anesthesia(patient)
-		playsound(src, 'sound/machines/doorclick.ogg', 50, TRUE)
+		playsound(src, 'sound/machines/doorclick.ogg', 50, vary = FALSE)
+
 	else if(isnull(patient.external))
 		enable_anesthesia(patient)
-		playsound(src, 'sound/machines/hiss.ogg', 25, TRUE)
+		playsound(src, 'sound/machines/doorclick.ogg', 50, vary = FALSE)
+		playsound(src, 'sound/machines/hiss.ogg', 25, frequency = 52000)
 
 /obj/machinery/computer/operating
+
+/obj/machinery/computer/operating/emag_act(mob/user, obj/item/card/emag/emag_card)
+	. = ..()
+	if(obj_flags & EMAGGED)
+		return
+	if(!is_operational)
+		return
+
+	obj_flags |= EMAGGED
+	balloon_alert(user, "safeties overridden")
+	playsound(src, 'sound/machines/terminal_alert.ogg', 50, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(src, SFX_SPARKS, 100, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+
+/obj/machinery/computer/operating/on_set_is_operational(old_value)
+	if(is_operational)
+		return
+	// Losing power / getting broken will auto disable anesthesia
+	table.safety_disable()
 
 /obj/machinery/computer/operating/ui_data(mob/user)
 	var/list/data = ..()
@@ -139,7 +165,7 @@
 		return data
 
 	var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
-	data["patient"]["brain"] = isnull(patient_brain) ? 0 : (100 - ((patient_brain.damage / patient_brain.maxHealth) * 100))
+	data["patient"]["brain"] = isnull(patient_brain) ? 0 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
 /*
 	switch(table.patient.get_average_pain())
 		if(-INFINITY to 10)
