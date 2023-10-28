@@ -8,12 +8,44 @@
 	/// Can be set to INFINITY to never auto-disable
 	var/failsafe_time = 6 MINUTES
 
+/obj/structure/table/optable/Initialize(mapload)
+	. = ..()
+	update_appearance(UPDATE_OVERLAYS)
+
 /obj/structure/table/optable/examine(mob/user)
 	. = ..()
 	if(isnull(attached_tank))
 		. += span_notice("It has a clamp on the side for attaching a breath tank.")
 	else
 		. += span_notice("It has \a [attached_tank] attached to it.")
+
+/obj/structure/table/optable/update_overlays()
+	. = ..()
+	if(!isnull(attached_tank))
+		. += mutable_appearance(
+			icon = 'maplestation_modules/icons/obj/surgery_table_overlay.dmi',
+			icon_state = "surgery_[attached_tank.icon_state]",
+			alpha = src.alpha,
+		)
+
+	. += mutable_appearance(
+		icon = 'maplestation_modules/icons/obj/surgery_table_overlay.dmi',
+		icon_state = "patient_light_[patient ? "on" : "off"]",
+		alpha = src.alpha,
+	)
+
+	. += mutable_appearance(
+		icon = 'maplestation_modules/icons/obj/surgery_table_overlay.dmi',
+		icon_state = "anesthesia_light_[patient_set_at == -1 ? "off" : "on"]",
+		alpha = src.alpha,
+	)
+
+	. += emissive_appearance(
+		icon = 'maplestation_modules/icons/obj/surgery_table_overlay.dmi',
+		icon_state = "emissive",
+		offset_spokesman = src,
+		alpha = src.alpha,
+	)
 
 /obj/structure/table/optable/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
 	. = ..()
@@ -37,12 +69,15 @@
 	if(gone == attached_tank)
 		disable_anesthesia(patient)
 		attached_tank = null
+		if(!QDELING(src))
+			update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/table/optable/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/tank/internals))
 		if(isnull(attached_tank))
 			if(user.transferItemToLoc(I, src))
 				attached_tank = I
+				update_appearance(UPDATE_OVERLAYS)
 				balloon_alert_to_viewers("tank attached")
 				playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 			else
@@ -67,6 +102,7 @@
 /obj/structure/table/optable/recheck_patient(mob/living/carbon/potential_patient)
 	var/mob/living/carbon/old_patient = patient
 	. = ..()
+	update_appearance(UPDATE_OVERLAYS)
 	if(patient == potential_patient && patient != old_patient)
 		START_PROCESSING(SSobj, src)
 		return
@@ -118,6 +154,7 @@
 
 	new_patient.open_internals(attached_tank, TRUE)
 	patient_set_at = world.time
+	update_appearance(UPDATE_OVERLAYS)
 
 /// Disables the patient from breathing out of the attached tank.
 /obj/structure/table/optable/proc/disable_anesthesia(mob/living/carbon/old_patient)
@@ -127,6 +164,7 @@
 
 	old_patient.close_externals()
 	patient_set_at = -1
+	update_appearance(UPDATE_OVERLAYS)
 
 /// Toggles the tank on and off, playing a sound as well.
 /obj/structure/table/optable/proc/toggle_anesthesia()
@@ -193,7 +231,7 @@
 		if("toggle_anesthesia")
 			if(iscarbon(usr))
 				var/mob/living/carbon/toggler = usr
-				if(toggler == table.patient && toggler.external != table.attached_tank && table.failsafe_time >= 5 MINUTES)
+				if(toggler == table.patient && table.patient_set_at == -1 && table.failsafe_time >= 5 MINUTES)
 					to_chat(toggler, span_warning("You feel as if you know better than to do that."))
 					return FALSE
 
