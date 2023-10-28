@@ -179,7 +179,7 @@
 		return data
 
 	var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
-	data["patient"]["brain"] = isnull(patient_brain) ? 0 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
+	data["patient"]["brain"] = isnull(patient_brain) ? 100 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
 	// We can also show pain and stuff here if we want.
 
 	return data

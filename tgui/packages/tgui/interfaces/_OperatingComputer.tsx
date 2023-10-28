@@ -118,6 +118,10 @@ const PatientStateView = (
 
   const failsafe_enabled: boolean = anesthesia?.failsafe !== -1;
 
+  const num_to_percent = (num: number) => {
+    return Math.round(num * 10) / 10 + '%';
+  };
+
   return (
     <>
       <Section title="Patient State">
@@ -131,11 +135,18 @@ const PatientStateView = (
             </LabeledList.Item>
             <LabeledList.Item label="Health">
               <ProgressBar
-                value={patient.health}
-                minValue={patient.minHealth}
-                maxValue={patient.maxHealth}
-                color={(patient.health || 0) >= 0 ? 'good' : 'average'}>
-                <AnimatedNumber value={patient.health || 0} />
+                value={patient.health || 0}
+                minValue={patient.minHealth || -100}
+                maxValue={patient.maxHealth || 100}
+                color={
+                  patient.health !== null && patient.health >= 0
+                    ? 'good'
+                    : 'average'
+                }>
+                <AnimatedNumber
+                  value={patient.health || 0}
+                  format={num_to_percent}
+                />
               </ProgressBar>
             </LabeledList.Item>
             {damageTypes.map((type) => (
@@ -143,7 +154,10 @@ const PatientStateView = (
                 <ProgressBar
                   value={(patient[type.type] || 0) / (patient.maxHealth || 1)}
                   color="bad">
-                  <AnimatedNumber value={patient[type.type] || 0} />
+                  <AnimatedNumber
+                    value={patient[type.type] || 0}
+                    format={num_to_percent}
+                  />
                 </ProgressBar>
               </LabeledList.Item>
             ))}
@@ -153,8 +167,6 @@ const PatientStateView = (
         )}
       </Section>
       {anesthesia && (
-        // Anesthesia will only be null if table is null, so this check is redundant
-        // by nature of this component only being rendered if table exists.
         <Section title="Anesthesia">
           {!anesthesia.has_tank && (
             <Dimmer>No anesthesia tank attached.</Dimmer>
