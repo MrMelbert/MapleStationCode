@@ -95,6 +95,8 @@
 		return FALSE
 	if(!istype(who.wear_mask) || !(who.wear_mask.clothing_flags & MASKINTERNALS))
 		return FALSE
+	if(!who.is_mouth_covered())
+		return FALSE // Must have an internals mask + mouth covered
 	return TRUE
 
 /// Called when the safety triggers and attempts to unhook the patient from the tank.
@@ -182,26 +184,26 @@
 
 	return data
 
-/obj/machinery/computer/operating/ui_act(action, params)
+/obj/machinery/computer/operating/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
-	if(isnull(table))
+	if(. || isnull(table))
 		return
 
 	switch(action)
 		if("toggle_anesthesia")
 			if(iscarbon(usr))
 				var/mob/living/carbon/toggler = usr
-				if(toggler == table.patient && toggler.external != table.attached_tank && table.failsafe_time >= 1 MINUTES)
+				if(toggler == table.patient && toggler.external != table.attached_tank && table.failsafe_time >= 5 MINUTES)
 					to_chat(toggler, span_warning("You feel as if you know better than to do that."))
 					return FALSE
 
 			table.toggle_anesthesia()
-			. = TRUE
+			return TRUE
 
 		if("set_failsafe")
 			table.failsafe_time = clamp(text2num(params["new_failsafe_time"]) * 10, 5 SECONDS, 10 MINUTES)
-			. = TRUE
+			return TRUE
 
 		if("disable_failsafe")
 			table.failsafe_time = INFINITY
-			. = TRUE
+			return TRUE

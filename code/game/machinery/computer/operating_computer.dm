@@ -164,9 +164,10 @@
 	switch(action)
 		if("sync")
 			sync_surgeries()
+			return TRUE // NON-MODULE CHANGE
 		if("open_experiments")
 			experiment_handler.ui_interact(usr)
-	return TRUE
+			return TRUE // NON-MODULE CHANGE
 
 #undef MENU_OPERATION
 #undef MENU_SURGERIES

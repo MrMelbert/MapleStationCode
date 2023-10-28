@@ -116,7 +116,7 @@ const PatientStateView = (
   const { act, data } = useBackend<Patient>(context);
   const { patient, procedures, anesthesia } = props;
 
-  const failsafe_enabled: boolean = !!anesthesia && anesthesia.failsafe !== -1;
+  const failsafe_enabled: boolean = anesthesia?.failsafe !== -1;
 
   return (
     <>
@@ -189,10 +189,11 @@ const PatientStateView = (
                   animated
                   unit="seconds"
                   width="100px"
-                  minValue={failsafe_enabled ? 5 : -1}
-                  maxValue={failsafe_enabled ? 600 : -1}
+                  minValue={5}
+                  maxValue={600}
+                  step={1}
                   value={anesthesia.failsafe}
-                  disabled={!failsafe_enabled}
+                  disabled={!failsafe_enabled} // Just in case
                   onChange={(e, value) =>
                     act('set_failsafe', { new_failsafe_time: value })
                   }
@@ -253,7 +254,7 @@ const SurgeryProceduresView = (props: { surgeries: Surgery[] }, context) => {
         onClick={() => act('sync')}
       />
       {surgeries.map((surgery) => (
-        <Section title={surgery.name} key={surgery.name} level={2}>
+        <Section title={surgery.name} key={surgery.name}>
           {surgery.desc}
         </Section>
       ))}
