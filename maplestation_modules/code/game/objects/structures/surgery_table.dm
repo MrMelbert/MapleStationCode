@@ -1,6 +1,11 @@
 /obj/structure/table/optable
-	var/obj/item/tank/internals/attached_tank
-	var/patient_set_at = -1
+	/// Internals tank clamped onto the table.
+	/// Allows an operating computer to easily attach it to the mob and use it for anesthesia.
+	VAR_FINAL/obj/item/tank/internals/attached_tank
+	/// World time when the patient was set onto the tank
+	VAR_FINAL/patient_set_at = -1
+	/// Time after which the anesthesia will be automatically disabled
+	/// Can be set to INFINITY to never auto-disable
 	var/failsafe_time = 6 MINUTES
 
 /obj/structure/table/optable/examine(mob/user)
@@ -82,6 +87,7 @@
 		safety_disable()
 		return
 
+/// Checks if the passed mob is in a valid state to start breathing out of the attached tank.
 /obj/structure/table/optable/proc/can_have_tank_opened(mob/living/carbon/who)
 	if(!isnull(who.external) && who.external != attached_tank)
 		return FALSE
@@ -91,6 +97,7 @@
 		return FALSE
 	return TRUE
 
+/// Called when the safety triggers and attempts to unhook the patient from the tank.
 /obj/structure/table/optable/proc/safety_disable()
 	if(isnull(attached_tank) || patient.external != attached_tank)
 		return
@@ -98,23 +105,28 @@
 		return
 	disable_anesthesia(patient)
 	balloon_alert_to_viewers("anesthesia safety activated")
-	playsound(src, 'sound/machines/cryo_warning.ogg', 50, frequency = 32000)
+	playsound(src, 'sound/machines/cryo_warning.ogg', 50, vary = TRUE, frequency = 0.75)
 	playsound(src, 'sound/machines/doorclick.ogg', 50, vary = FALSE)
 
+/// Enables the patient to start breathing out of the attached tank.
 /obj/structure/table/optable/proc/enable_anesthesia(mob/living/carbon/new_patient)
+	PRIVATE_PROC(TRUE)
 	if(isnull(attached_tank) || !can_have_tank_opened(new_patient))
 		return
 
 	new_patient.open_internals(attached_tank, TRUE)
 	patient_set_at = world.time
 
+/// Disables the patient from breathing out of the attached tank.
 /obj/structure/table/optable/proc/disable_anesthesia(mob/living/carbon/old_patient)
+	PRIVATE_PROC(TRUE)
 	if(isnull(attached_tank) || old_patient?.external != attached_tank)
 		return
 
 	old_patient.close_externals()
 	patient_set_at = -1
 
+/// Toggles the tank on and off, playing a sound as well.
 /obj/structure/table/optable/proc/toggle_anesthesia()
 	if(isnull(patient) || isnull(attached_tank))
 		return
@@ -126,7 +138,7 @@
 	else if(isnull(patient.external))
 		enable_anesthesia(patient)
 		playsound(src, 'sound/machines/doorclick.ogg', 50, vary = FALSE)
-		playsound(src, 'sound/machines/hiss.ogg', 25, frequency = 52000)
+		playsound(src, 'sound/machines/hiss.ogg', 25, vary = TRUE, frequency = 1.5)
 
 /obj/machinery/computer/operating
 
@@ -166,13 +178,8 @@
 
 	var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
 	data["patient"]["brain"] = isnull(patient_brain) ? 0 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
-/*
-	switch(table.patient.get_average_pain())
-		if(-INFINITY to 10)
-			data["patient"]["pain"] = "none"
-		if(10 to 20)
-			data["patient"]["pain"] = "mild"
-*/
+	// We can also show pain and stuff here if we want.
+
 	return data
 
 /obj/machinery/computer/operating/ui_act(action, params)
