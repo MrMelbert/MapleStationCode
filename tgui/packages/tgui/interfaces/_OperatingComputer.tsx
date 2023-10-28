@@ -31,6 +31,7 @@ type Surgery = {
   desc: string;
 };
 
+// If no patient is detected, a patient with no values will be passed to us.
 type Patient = {
   stat: string | null;
   statstate: string | null;
@@ -47,9 +48,9 @@ type Patient = {
 type Procedure = {
   name: string;
   next_step: string;
-  alternative_step: string;
-  chems_needed: string;
-  alt_chems_needed: string;
+  chems_needed: string | null;
+  alternative_step: string | null;
+  alt_chems_needed: string | null;
 };
 
 type AnesthesiaStatus = {
