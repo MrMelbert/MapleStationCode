@@ -57,8 +57,8 @@
 	contains = list(
 		/obj/item/reagent_containers/cup/glass/bottle/flake,
 		/obj/item/reagent_containers/cup/glass/bottle/yayo,
-		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
-		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
+		/obj/item/reagent_containers/cup/glass/mug/psychite_tea,
+		/obj/item/reagent_containers/cup/glass/mug/psychite_tea,
 	)
 
 /datum/supply_pack/medical/psychoids/fill(obj/structure/closet/crate/spawned_crate)
@@ -72,8 +72,8 @@
 	group = GROUP_DRUGS
 	cost = PAYCHECK_CREW * 8
 	contains = list(
-		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
-		/obj/item/reagent_containers/food/drinks/mug/psychite_tea,
+		/obj/item/reagent_containers/cup/glass/mug/psychite_tea,
+		/obj/item/reagent_containers/cup/glass/mug/psychite_tea,
 	)
 
 /datum/supply_pack/goody/oxycodone_syringe
