@@ -338,7 +338,7 @@
 	. = ..()
 	return TRUE
 
-/obj/item/reagent_containers/food/drinks/mug/psychite_tea
+/obj/item/reagent_containers/cup/glass/mug/psychite_tea
 	name = "psychite tea"
 	desc = "A type of Psychite tea brewed from psychoid leaves. Mildly addictive, but improves mood and reduces pain slightly."
 	list_reagents = list(/datum/reagent/psychite_tea = 30)

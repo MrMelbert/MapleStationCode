@@ -9,7 +9,7 @@
 #define DOAFTER_SOURCE_BLANKET "doafter_blanket"
 
 // Holding a beer to your busted arm, now that's classic
-/obj/item/reagent_containers/food/drinks/beer/Initialize(mapload)
+/obj/item/reagent_containers/cup/glass/bottle/beer/Initialize(mapload)
 	. = ..()
 	if(reagents.get_reagent_amount(/datum/reagent/consumable/ethanol/beer) > 1)
 		AddElement(/datum/element/temperature_pack, \
