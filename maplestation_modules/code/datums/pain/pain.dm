@@ -594,7 +594,7 @@
 			shock_buildup = -200 // requires another 200 ticks / 400 seconds / ~6 minutes of pain to go into shock again
 			return
 
-		var/standard_effect_prob = (curr_pain * 0.05) - 0.75 // starts at 10
+		var/standard_effect_prob = (curr_pain * 0.05) - 0.75 // starts at 15, caps at 4.5
 		var/rare_effect_prob = (curr_pain * 0.04) - 1.5 // starts at 40
 		var/very_rare_effect_prob = (curr_pain * 0.03) - 2.25 // starts at 70
 
@@ -622,7 +622,7 @@
 					options.Add("cry", "scream")
 				do_pain_emote(pick(options), 5 SECONDS)
 
-			if(SPT_PROB(rare_effect_prob, seconds_per_tick) && !parent.IsKnockdown())
+			if(SPT_PROB(rare_effect_prob, seconds_per_tick) && parent.body_position != LYING_DOWN)
 				parent.Knockdown(2 SECONDS * pain_modifier)
 				parent.visible_message(span_warning("[parent] collapses from pain!"))
 
