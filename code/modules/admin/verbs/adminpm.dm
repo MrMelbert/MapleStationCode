@@ -555,6 +555,8 @@
 		else
 			log_admin_private("PM: [our_name]->External: [sanitize_text(trim(raw_message))]")
 		for(var/client/lad in GLOB.admins)
+			if(!check_rights_for(lad, R_BAN|R_DEBUG|R_SERVER)) // NON-MODULE CHANGE
+				continue
 			to_chat(lad,
 				type = MESSAGE_TYPE_ADMINPM,
 				html = span_notice("<B>PM: [our_linked_ckey]-&gt;External:</B> [keyword_parsed_msg]"),
@@ -583,6 +585,8 @@
 	//we don't use message_admins here because the sender/receiver might get it too
 	for(var/client/lad in GLOB.admins)
 		if(lad.key == key || lad.key == recipient_key) //check to make sure client/lad isn't the sender or recipient
+			continue
+		if(!check_rights_for(lad, R_BAN|R_DEBUG|R_SERVER)) // NON-MODULE CHANGE
 			continue
 		to_chat(lad,
 			type = MESSAGE_TYPE_ADMINPM,
