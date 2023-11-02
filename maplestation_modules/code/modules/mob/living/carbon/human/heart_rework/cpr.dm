@@ -156,6 +156,6 @@
 /datum/status_effect/cpr_applied/proc/is_effective(mob/checking)
 	if(isnull(checking))
 		return FALSE
-	if(!get_organ_slot(ORGAN_SLOT_HEART)) // A heart is required for CPR to pump your heart
+	if(!checking.get_organ_slot(ORGAN_SLOT_HEART)) // A heart is required for CPR to pump your heart
 		return FALSE
 	return TRUE
