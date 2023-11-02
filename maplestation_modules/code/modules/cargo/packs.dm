@@ -15,7 +15,7 @@
 /datum/supply_pack/medical/luciferium_bottles
 	name = "Luciferium Shipment"
 	desc = "Contains three bottles - sixty units - of Luciferium, an extremely dangerous drug that can cure the most absolute of medicinal issues, but cause permanent addiction. Requires CMO access to open."
-	cost = CARGO_CRATE_VALUE * 30
+	cost = PAYCHECK_COMMAND * 60
 	access = ACCESS_CMO
 	contraband = TRUE
 	crate_name = "luciferium Shipment"
@@ -38,7 +38,7 @@
 /datum/supply_pack/medical/go_juice_bottles
 	name = "Go-Juice Shipment"
 	desc = "Contains three bottles - sixty units - of Go-Juice, a potent but addictive combat stimulant and pain suppressant. Requires armory access to open."
-	cost = CARGO_CRATE_VALUE * 10
+	cost = PAYCHECK_COMMAND * 20
 	contraband = TRUE
 	access = ACCESS_ARMORY
 	crate_name = "go-juice Shipment"
@@ -51,7 +51,7 @@
 /datum/supply_pack/medical/psychoids
 	name = "Psychoid Variety Shipment"
 	desc = "Contains three randomly selected containers of drugs made from the psychoid leaf - Yayo, Flake, or Psychite Tea - often used to reduce pain and raise moods. Requires medical access to open."
-	cost = CARGO_CRATE_VALUE * 8
+	cost = PAYCHECK_COMMAND * 16
 	access = ACCESS_MEDICAL
 	crate_name = "psychoid shipment"
 	contains = list(
@@ -176,7 +176,7 @@
 /datum/supply_pack/medical/painkiller_syringes
 	name = "Painkiller Syringe Shipment"
 	desc = "Contains six syringes of general medicinal painkillers - Ibuprofen, Paracetamol, and Aspirin."
-	cost = CARGO_CRATE_VALUE * 7.5
+	cost = PAYCHECK_COMMAND * 15
 	crate_name = "syringe shipment"
 	contains = list(
 		/obj/item/reagent_containers/syringe/ibuprofen,
@@ -190,15 +190,34 @@
 /datum/supply_pack/medical/painkiller_pens
 	name = "Painkiller Medipen Shipment"
 	desc = "Contains three emergency painkiller medipens."
-	cost = CARGO_CRATE_VALUE * 4
+	cost = PAYCHECK_COMMAND * 8
 	crate_name = "medipen shipment"
 	contains = list(
 		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
 		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
 		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller,
 	)
+
 /datum/supply_pack/goody/crew_plasma_sword_pack // this is, in effect, now a placeholder/current thing only. there are plans to rework this to instead require upgrades to get this to be good.
 	name = "Plasma Blade Case"
 	desc = "A premium (standard) case containing a highly advanced (dangerously volatile) NT Plasma Sword. Requires permit for open carry and use, but not for purchase."
 	cost = PAYCHECK_CREW * 30 // this should equal roughly 1500 credits on average.
 	contains = list(/obj/item/melee/maple_plasma_blade)
+
+/datum/supply_pack/medical/liver_autodoc
+	name = "Liver Replacement Autosurgeon"
+	desc = "Contains an emergency autosurgeon capable of quickly replacing a patient's damaged liver. \
+		Liver not included. Requires surgery access to open."
+	cost = PAYCHECK_COMMAND * 20
+	access = ACCESS_SURGERY
+	contains = list(/obj/item/autosurgeon/only_on_damaged_organs/liver)
+	crate_name = "autosurgeon crate"
+
+/datum/supply_pack/medical/lung_autodoc
+	name = "Lung Replacement Autosurgeon"
+	desc = "Contains an emergency autosurgeon capable of quickly replacing a patient's damaged lungs. \
+		Lungs not included. Requires surgery access to open."
+	cost = PAYCHECK_COMMAND * 20
+	access = ACCESS_SURGERY
+	contains = list(/obj/item/autosurgeon/only_on_damaged_organs/lungs)
+	crate_name = "autosurgeon crate"
