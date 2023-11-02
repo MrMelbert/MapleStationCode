@@ -27,3 +27,10 @@
 	//Will add named cardbinder, starting base 2 cards, packbox of 28 Red cards, 4 counters, and a paper with rules. Now in a handy box!
 	give_item_to_holder(card_binder, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
 	give_item_to_holder(/obj/item/storage/box/tdatet_starter, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
+
+/datum/quirk/cpr_certified
+	name = "CPR Certified"
+	desc = "You are certified to perform CPR on others independent of your job."
+	icon = FA_ICON_HEARTBEAT
+	value = 0
+	mob_trait = TRAIT_CPR_CERTIFIED

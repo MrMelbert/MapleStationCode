@@ -36,8 +36,7 @@
 				HM.on_life(seconds_per_tick, times_fired)
 
 		if(stat != DEAD)
-			//heart attack stuff
-			handle_heart(seconds_per_tick, times_fired)
+			// handle_heart(seconds_per_tick, times_fired) // NON-MODULE CHANGE
 			handle_liver(seconds_per_tick, times_fired)
 
 		dna.species.spec_life(src, seconds_per_tick, times_fired) // for mutantraces
