@@ -12,6 +12,8 @@
 /// Number of "beats" per CPR cycle
 /// This corresponds to N - 1 compressions and 1 breath
 #define BEATS_PER_CPR_CYCLE 16
+// Also I'm kinda cheating here because we do 15 compressions to 1 breath rather than 30 compressions to 2 breaths
+// But it's close enough to the real thing (ratio wise) that I'm OK with it
 
 /mob/living/carbon/human/proc/cpr_process(mob/living/carbon/human/target, beat = 0, panicking = FALSE)
 	set waitfor = FALSE
@@ -21,10 +23,7 @@
 		return
 
 	if(!panicking && target.stat != CONSCIOUS && beat >= BEATS_PER_CPR_CYCLE + 1)
-		if(HAS_TRAIT(src, TRAIT_CPR_CERTIFIED))
-			to_chat(src, span_notice("[target] still isn't up - you pick up the pace."))
-		else
-			to_chat(src, span_warning("[target] still isn't up! You try harder!"))
+		to_chat(src, span_warning("[target] still isn't up[HAS_TRAIT(src, TRAIT_CPR_CERTIFIED) ? " - you pick up the pace." : "! You try harder!"]"))
 		panicking = TRUE
 
 	var/doafter_mod = panicking ? 0.5 : 1
@@ -85,9 +84,12 @@
 			to_chat(target, span_unconscious("You feel a breath of fresh air... which is a sensation you don't recognise..."))
 		else if (!target.get_organ_slot(ORGAN_SLOT_LUNGS))
 			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
+		else if(HAS_TRAIT(src, TRAIT_CPR_CERTIFIED))
+			target.adjustOxyLoss(-20)
+			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
 		else
 			target.adjustOxyLoss(-12)
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
+			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs..."))
 
 		// Breath relieves some of the pressure on the chest
 		var/obj/item/bodypart/chest/chest = target.get_bodypart(BODY_ZONE_CHEST)
@@ -96,26 +98,33 @@
 			chest.heal_damage(brute = 3)
 			target.cause_pain(BODY_ZONE_CHEST, -2)
 
-		log_combat(src, target, "CPRed", addition = "breath")
+		log_combat(src, target, "CPRed", addition = "(breath)")
 
-	else if(beat % (BEATS_PER_CPR_CYCLE / 4) == 0 && panicking && !HAS_TRAIT(src, TRAIT_CPR_CERTIFIED))
-		// Apply damage directly to chest. I would use apply damage but I can't, kinda
+	else if(beat % (BEATS_PER_CPR_CYCLE / 4) == 0 && panicking)
 		var/obj/item/bodypart/chest/chest = target.get_bodypart(BODY_ZONE_CHEST)
 		if(IS_ORGANIC_LIMB(chest))
-			if(prob(1) && target.undergoing_cardiac_arrest())
+			var/critical_success = prob(1) && target.undergoing_cardiac_arrest()
+			if(!HAS_TRAIT(src, TRAIT_CPR_CERTIFIED))
+				// Apply damage directly to chest. I would use apply damage but I can't, kinda
+				if(critical_success)
+					target.set_heartattack(FALSE)
+					to_chat(target, span_warning("You feel immense pressure on your chest, and a sudden wave of pain... and then relief."))
+					chest.receive_damage(brute = 6, wound_bonus = CANT_WOUND, damage_source = "chest compressions")
+					target.cause_pain(BODY_ZONE_CHEST, 12)
+
+				else
+					to_chat(target, span_warning("You feel pressure on your chest!"))
+					chest.receive_damage(brute = 3, wound_bonus = CANT_WOUND, damage_source = "chest compressions")
+					target.cause_pain(BODY_ZONE_CHEST, 2)
+
+				to_chat(src, span_warning("You bruise [target.name]'s chest with the pressure!"))
+
+			else if(critical_success)
 				target.set_heartattack(FALSE)
-				to_chat(target, span_warning("You feel immense pressure on your chest, and a sudden wave of pain... then relief."))
-				chest.receive_damage(brute = 6, wound_bonus = CANT_WOUND, damage_source = "chest compressions")
-				target.cause_pain(BODY_ZONE_CHEST, 12)
+				to_chat(target, span_warning("You pressure fade away from your chest... and then relief."))
+				target.cause_pain(BODY_ZONE_CHEST, 8)
 
-			else
-				to_chat(target, span_warning("You feel pressure on your chest!"))
-				chest.receive_damage(brute = 3, wound_bonus = CANT_WOUND, damage_source = "chest compressions")
-				target.cause_pain(BODY_ZONE_CHEST, 2)
-
-			to_chat(src, span_warning("You bruise [target.name]'s chest with the pressure!"))
-
-		log_combat(src, target, "CPRed", addition = "compression")
+		log_combat(src, target, "CPRed", addition = "(compression)")
 
 	if(target.body_position != LYING_DOWN)
 		return
@@ -132,3 +141,21 @@
 	duration = 1 SECONDS
 	tick_interval = -1
 	status_type = STATUS_EFFECT_REFRESH
+
+/datum/status_effect/cpr_applied/on_apply()
+	if(!is_effective(owner))
+		return FALSE
+	return TRUE
+
+/datum/status_effect/cpr_applied/refresh(effect, ...)
+	if(!is_effective(owner))
+		return
+	return ..()
+
+/// Checks if CPR is effective against this mob
+/datum/status_effect/cpr_applied/proc/is_effective(mob/checking)
+	if(isnull(checking))
+		return FALSE
+	if(!get_organ_slot(ORGAN_SLOT_HEART)) // A heart is required for CPR to pump your heart
+		return FALSE
+	return TRUE

@@ -1,8 +1,3 @@
-/mob/living/carbon/human/setup_organless_effects()
-	. = ..()
-	// You don't spawn with a heart, so, technically... You spawn with a heart attack
-	apply_status_effect(/datum/status_effect/heart_attack)
-
 /obj/item/organ/internal/heart/Stop()
 	if(!beating)
 		return
@@ -36,3 +31,11 @@
 // Glands can't stop beating but they are cringe
 /obj/item/organ/internal/heart/gland/Stop()
 	return FALSE
+
+/*
+// I think this is un-necessary, so I'm commenting it out even if it's SUPPOSED to be a thing
+/mob/living/carbon/human/setup_organless_effects()
+	. = ..()
+	// You don't spawn with a heart, so, technically... You spawn with a heart attack
+	apply_status_effect(/datum/status_effect/heart_attack)
+*/

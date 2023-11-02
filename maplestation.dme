@@ -5571,6 +5571,7 @@
 #include "maplestation_modules\code\modules\language\japanese.dm"
 #include "maplestation_modules\code\modules\language\language_holder.dm"
 #include "maplestation_modules\code\modules\language\skrellian.dm"
+#include "maplestation_modules\code\modules\library\skill_learning\job_skillchips\medbay.dm"
 #include "maplestation_modules\code\modules\library\skill_learning\job_skillchips\mining.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\_limb_datums.dm"
 #include "maplestation_modules\code\modules\loadouts\loadout_items\_loadout_categories.dm"
