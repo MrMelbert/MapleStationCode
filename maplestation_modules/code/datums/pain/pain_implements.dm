@@ -5,9 +5,6 @@
 #define FROZEN_ITEM_PAIN_MODIFIER 0.5
 #define FROZEN_ITEM_TEMPERATURE_CHANGE -5
 
-/// do_after key for using emergency blankets.
-#define DOAFTER_SOURCE_BLANKET "doafter_blanket"
-
 // Holding a beer to your busted arm, now that's classic
 /obj/item/reagent_containers/cup/glass/bottle/beer/Initialize(mapload)
 	. = ..()
@@ -337,7 +334,8 @@
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	armor_type = /datum/armor/shock_blanket
-	equip_delay_self = 2 SECONDS
+	equip_delay_self = 3 SECONDS
+	equip_delay_other = 2 SECONDS
 	slowdown = 1.5
 	throwforce = 0
 	throw_speed = 1
@@ -350,6 +348,7 @@
 		name = pick("space blanket", "safety blanket")
 
 	AddElement(/datum/element/bed_tuckable, 0, 0, 0)
+	AddElement(/datum/element/attack_equip)
 
 /obj/item/shock_blanket/examine(mob/user)
 	. = ..()
@@ -366,53 +365,6 @@
 	to_chat(user, span_notice("You lay out [src] on [bed_below ? "[bed_below]" : "the floor"]."))
 	icon_state = "[initial(icon_state)]_dropped"
 	layer = MOB_LAYER
-
-
-/obj/item/shock_blanket/pre_attack(atom/target, mob/living/user, params)
-	. = ..()
-	if(.)
-		return
-
-	if(ishuman(target))
-		try_shelter_mob(target, user)
-		return TRUE
-
-/**
- * Try to equip [target] with [src], done by [user].
- * Basically, the ability to equip someone just by hitting them with the blanket,
- * instead of needing to use the strip menu.
- *
- * target - the mob being hit with the blanket
- * user - the mob hitting the target
- */
-/obj/item/shock_blanket/proc/try_shelter_mob(mob/living/carbon/human/target, mob/living/user)
-	if(DOING_INTERACTION(user, DOAFTER_SOURCE_BLANKET))
-		return FALSE
-
-	if(target.wear_suit)
-		to_chat(user, span_warning("You need to take off [target == user ? "your" : "their"] [target.wear_suit.name] first!"))
-		return FALSE
-
-	to_chat(user, span_notice("You begin wrapping [target == user ? "yourself" : "[target]"] with [src]..."))
-	visible_message(span_notice("[user] begins wrapping [target == user ? "[user.p_them()]self" : "[target]"] with [src]..."), ignored_mobs = list(user))
-	if(!do_after(user, (target == user ? equip_delay_self : equip_delay_other), target, interaction_key = DOAFTER_SOURCE_BLANKET))
-		return FALSE
-
-	do_shelter_mob(target, user)
-	return TRUE
-
-/**
- * Actually equip [target] with [src], done by [user].
- *
- * target - the mob being equipped
- * user - the mob equipping the target
- */
-/obj/item/shock_blanket/proc/do_shelter_mob(mob/living/carbon/human/target, mob/living/user)
-	if(target.equip_to_slot_if_possible(src, ITEM_SLOT_OCLOTHING, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
-		to_chat(user, span_notice("You wrap [target == user ? "yourself" : "[target]"] with [src], helping regulate body temperature."))
-		user.update_held_items() // melbert todo, is this necessary?
-	else
-		to_chat(user, span_warning("You can't quite reach and fail to wrap [target == user ? "yourself" : "[target]"] with [src]."))
 
 /obj/item/shock_blanket/equipped(mob/user, slot)
 	. = ..()
@@ -622,5 +574,3 @@
 #undef FROZEN_ITEM_PAIN_RATE
 #undef FROZEN_ITEM_PAIN_MODIFIER
 #undef FROZEN_ITEM_TEMPERATURE_CHANGE
-
-#undef DOAFTER_SOURCE_BLANKET
