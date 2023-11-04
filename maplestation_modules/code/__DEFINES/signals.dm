@@ -5,3 +5,8 @@
 
 /// Item generating their worn icon
 #define COMSIG_ITEM_WORN_ICON_MADE "item_worn_icon_made"
+
+/// Entering or exiting a vent.
+#define COMSIG_HANDLE_VENTCRAWLING "handle_ventcrawl"
+	/// Return to block entrance / exit
+	#define COMPONENT_NO_VENT (1<<0)

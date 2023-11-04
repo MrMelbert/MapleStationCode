@@ -24,6 +24,12 @@
 	antimagic_flags = MAGIC_RESISTANCE_HOLY
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
+// Override to add a signal to handle_ventcrawl
+/mob/living/handle_ventcrawl(obj/machinery/atmospherics/components/ventcrawl_target)
+	if(SEND_SIGNAL(src, COMSIG_HANDLE_VENTCRAWLING, ventcrawl_target) & COMPONENT_NO_VENT)
+		return
+	return ..()
+
 /// Component which disallows the mob from entering areas they do not have access to,
 /// without getting permission from someone who does
 /datum/component/verbal_confirmation
@@ -39,6 +45,8 @@
 	var/static/regex/allowed_regex
 	/// Regexes for responses indicating we're explicitly not allowed in
 	var/static/regex/begone_regex
+	/// Weakref to the mob's ID card when shapechanging
+	var/datum/weakref/old_id_card
 
 /datum/component/verbal_confirmation/Initialize()
 	if(!isliving(parent))
@@ -56,12 +64,16 @@
 	RegisterSignal(parent, COMSIG_MOB_SAY, PROC_REF(check_asking))
 	RegisterSignal(parent, COMSIG_MOVABLE_HEAR, PROC_REF(check_allowed))
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(entering_room))
+	RegisterSignal(parent, COMSIG_HANDLE_VENTCRAWLING, PROC_REF(entering_vent))
 
 /datum/component/verbal_confirmation/UnregisterFromParent()
-	UnregisterSignal(parent, list(COMSIG_LIVING_SHAPESHIFTED, COMSIG_LIVING_UNSHAPESHIFTED))
-	UnregisterSignal(parent, COMSIG_MOB_SAY)
-	UnregisterSignal(parent, COMSIG_MOVABLE_HEAR)
-	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
+	UnregisterSignal(parent, list(
+		COMSIG_LIVING_SHAPESHIFTED, COMSIG_LIVING_UNSHAPESHIFTED,
+		COMSIG_MOB_SAY,
+		COMSIG_MOVABLE_HEAR,
+		COMSIG_MOVABLE_MOVED,
+		COMSIG_HANDLE_VENTCRAWLING,
+	))
 
 /datum/component/verbal_confirmation/PostTransfer()
 	if(!isliving(parent))
@@ -70,26 +82,21 @@
 /datum/component/verbal_confirmation/proc/shapechanged(mob/living/source, mob/living/new_mob)
 	SIGNAL_HANDLER
 	new_mob.TakeComponent(src)
+	old_id_card = WEAKREF(source.get_idcard())
 
 /datum/component/verbal_confirmation/proc/get_bitflag_from_mob(mob/living/who)
-	var/obj/item/card/id/their_id = who.get_idcard()
-	if(!istype(their_id) || !istype(their_id.trim, /datum/id_trim/job))
+	var/obj/item/card/id/their_id = who.get_idcard() || old_id_card?.resolve()
+	if(!istype(their_id) || !istype(their_id.trim, /datum/id_trim/job) || get(their_id, /mob/living) != who)
 		return NONE
 
 	var/datum/id_trim/job/their_trim = their_id.trim
 	return their_trim.job.departments_bitflags
 
-/datum/component/verbal_confirmation/proc/is_allowed(mob/living/vampire, area/station/old_area, area/station/checked_area)
+/datum/component/verbal_confirmation/proc/is_allowed(mob/living/vampire, area/station/checked_area)
 	// Non-station areas are always allowed
 	if(!istype(checked_area) || isnull(checked_area.associated_department))
 		return TRUE
-	// Comparing the same area is fine
-	if(old_area == checked_area)
-		return TRUE
-	// If we're going from station to station and it's the same department we can skip some checks
-	if(istype(old_area) && old_area.associated_department == checked_area.associated_department)
-		return TRUE
-	// Medbay is always a free space
+	// Medbay is always free if you're hurt
 	if(vampire.stat != CONSCIOUS && (checked_area.associated_department_flags & DEPARTMENT_BITFLAG_MEDICAL))
 		return TRUE
 
@@ -97,9 +104,7 @@
 	for(var/ref in prior_allowance)
 		all_allowed |= prior_allowance[ref]
 
-	if(all_allowed & DEPARTMENT_BITFLAG_CAPTAIN)
-		return TRUE // Straight from the big dog
-	if(all_allowed & checked_area.associated_department_flags)
+	if(all_allowed & (DEPARTMENT_BITFLAG_CAPTAIN|checked_area.associated_department_flags))
 		return TRUE
 	if(istype(checked_area, /area/station/service/chapel))
 		return TRUE // Go ahead, try waltzing into the chapel
@@ -160,7 +165,13 @@
 
 	var/area/station/old_area = get_area(old_loc)
 	var/area/station/checked_area = get_area(source)
-	if(is_allowed(source, old_area, checked_area))
+	// Comparing the same area is fine
+	if(old_area == checked_area)
+		return
+	// If we're going from station to station and it's the same department we can skip some checks
+	if(istype(old_area) && istype(checked_area) && old_area.associated_department == checked_area.associated_department)
+		return
+	if(is_allowed(source, checked_area))
 		return
 
 	to_chat(source, span_warning("You don't have permission to enter [checked_area]."))
@@ -171,3 +182,14 @@
 		speed = 4,
 		gentle = TRUE,
 	)
+
+/datum/component/verbal_confirmation/proc/entering_vent(mob/living/source, obj/machinery/atmospherics/components/ventcrawl_target)
+	SIGNAL_HANDLER
+
+	var/area/checked_area = get_area(ventcrawl_target)
+	if(is_allowed(source, checked_area))
+		return NONE
+
+	to_chat(source, span_warning("You don't have permission to crawl through that [initial(ventcrawl_target.name)] into [checked_area]."))
+	source.Immobilize(1 SECONDS, ignore_canstun = TRUE)
+	return COMPONENT_NO_VENT
