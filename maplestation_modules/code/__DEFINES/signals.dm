@@ -10,3 +10,6 @@
 #define COMSIG_HANDLE_VENTCRAWLING "handle_ventcrawl"
 	/// Return to block entrance / exit
 	#define COMPONENT_NO_VENT (1<<0)
+
+/// A carbon is being flashed - actually being blinded and taking (eye) damage
+#define COMSIG_CARBON_FLASH_ACT "carbon_flash_act"

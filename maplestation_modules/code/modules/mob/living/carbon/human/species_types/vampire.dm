@@ -1,16 +1,45 @@
 // Vampire Business
+/datum/species/vampire
+	mutanteyes = /obj/item/organ/internal/eyes/night_vision/vampire
 
 // Heart gives you Bat Form, but with a downside
 /obj/item/organ/internal/heart/vampire
 	actions_types = list(/datum/action/cooldown/spell/shapeshift/vampire)
 
-/obj/item/organ/internal/heart/vampire/on_insert(mob/living/carbon/receiver)
+/obj/item/organ/internal/heart/vampire/on_insert(mob/living/carbon/organ_owner)
 	. = ..()
-	receiver.AddComponent(/datum/component/verbal_confirmation)
+	organ_owner.AddComponent(/datum/component/verbal_confirmation)
 
-/obj/item/organ/internal/heart/vampire/on_remove(mob/living/carbon/receiver)
+/obj/item/organ/internal/heart/vampire/on_remove(mob/living/carbon/organ_owner)
 	. = ..()
-	qdel(receiver.GetComponent(/datum/component/verbal_confirmation))
+	qdel(organ_owner.GetComponent(/datum/component/verbal_confirmation))
+
+// Vampire eyes, make you vulnerable to the light, but also has nightvision
+/obj/item/organ/internal/eyes/night_vision/vampire
+	name = "blood red eyes"
+	desc = "A pair of blood red eyes."
+	flash_protect = FLASH_PROTECTION_SENSITIVE
+	low_light_cutoff = list(20, 0, 5)
+	medium_light_cutoff = list(30, 5, 10)
+	high_light_cutoff = list(40, 10, 20)
+
+/obj/item/organ/internal/eyes/night_vision/vampire/on_insert(mob/living/carbon/organ_owner, special)
+	. = ..()
+	RegisterSignal(organ_owner, COMSIG_CARBON_FLASH_ACT, PROC_REF(do_damage))
+
+/obj/item/organ/internal/eyes/night_vision/vampire/on_remove(mob/living/carbon/organ_owner, special)
+	. = ..()
+	UnregisterSignal(organ_owner, COMSIG_CARBON_FLASH_ACT)
+
+/obj/item/organ/internal/eyes/night_vision/vampire/proc/do_damage(mob/living/carbon/source, intensity)
+	SIGNAL_HANDLER
+
+	var/damage = 3 * (intensity - source.get_eye_protection())
+	if(damage <= 0)
+		return
+
+	source.apply_damage(damage, BURN, BODY_ZONE_HEAD, wound_bonus = -10)
+	source.visible_message(span_userdanger("The bright flash burns your skin!"))
 
 // Bat Form transformation my beloved
 /datum/action/cooldown/spell/shapeshift/vampire
@@ -29,6 +58,14 @@
 	if(SEND_SIGNAL(src, COMSIG_HANDLE_VENTCRAWLING, ventcrawl_target) & COMPONENT_NO_VENT)
 		return
 	return ..()
+
+// Override to add a signal to flash act
+/mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
+	. = ..()
+	if(!. || visual)
+		return
+
+	SEND_SIGNAL(src, COMSIG_CARBON_FLASH_ACT, intensity)
 
 /// Component which disallows the mob from entering areas they do not have access to,
 /// without getting permission from someone who does
