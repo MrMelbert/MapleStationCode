@@ -33,9 +33,9 @@
 /mob/living/carbon/human
 	m_intent = MOVE_INTENT_WALK
 	/// How many tiles left in your sprint
-	var/sprint_length = 75
-	/// How many tiles you can sprint before returning to "walk"
-	var/sprint_length_max = 75
+	var/sprint_length = 100
+	/// How many tiles you can sprint before spending stamina
+	var/sprint_length_max = 100
 	/// How many tiles you get back per second
 	var/sprint_regen_per_second = 0.75
 
