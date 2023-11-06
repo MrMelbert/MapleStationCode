@@ -96,7 +96,7 @@
 /datum/quirk/marthon_runner
 	name = "Marathon Runner"
 	desc = "You can run for longer without getting tired."
-	icon = FA_ICON_RUNNING
+	icon = FA_ICON_LUNGS
 	value = 6
 	gain_text = span_notice("You feel like you can run for miles (or kilometers).")
 	lose_text = span_danger("You feel winded.")
