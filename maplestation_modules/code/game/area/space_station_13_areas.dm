@@ -37,11 +37,9 @@
 
 /area/station/maintenance/starboard/lower
 	name = "Lower Starboard Maintenance"
-	icon_state = "smaint"
 
 /area/station/maintenance/port/lower
 	name = "Lower Port Maintenance"
-	icon_state = "pmaint"
 
 /area/station/tcommsat/oldaisat/stationside
 	name = "\improper Abandoned AI Satellite"
