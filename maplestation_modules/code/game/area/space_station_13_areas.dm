@@ -46,6 +46,10 @@
 /area/station/tcommsat/oldaisat/stationside
 	name = "\improper Abandoned AI Satellite"
 
+/area/station/cargo/break_room
+	name = "\improper Cargo Break Room"
+	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
+
 //Berry Physics Space Ruin
 /area/ruin/space/has_grav/powered/berry_physics
 	name = "Berry Physics"
