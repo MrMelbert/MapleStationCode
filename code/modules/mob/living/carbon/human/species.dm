@@ -1121,7 +1121,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(attacker_style?.help_act(user, target) == MARTIAL_ATTACK_SUCCESS)
 		return TRUE
 
-	if(target.body_position == STANDING_UP || target.appears_alive())
+	if(!target.undergoing_cardiac_arrest() && (target.body_position == STANDING_UP || target.appears_alive())) // NON-MODULE CHANGE
 		target.help_shake_act(user)
 		if(target != user)
 			log_combat(user, target, "shaken")

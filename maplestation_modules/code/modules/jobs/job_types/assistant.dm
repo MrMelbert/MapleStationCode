@@ -1,4 +1,6 @@
 // -- Assistant Changes --
+/datum/job/assistant
+	departments_bitflags = DEPARTMENT_BITFLAG_ASSISTANT
 
 // This is done for loadouts, otherwise unique uniforms would be deleted.
 /datum/outfit/job/assistant

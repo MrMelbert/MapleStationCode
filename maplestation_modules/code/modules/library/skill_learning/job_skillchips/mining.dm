@@ -5,8 +5,8 @@
 	skill_name = "Off Station Pain Resistance"
 	skill_description = "For the adventurous in life, this skillchip provides a reduction in pain received when off the station."
 	skill_icon = "fist-raised"
-	activate_message = "<span class='notice'>You feel like you can safely take on the unknown.</span>"
-	deactivate_message = "<span class='notice'>You feel more vulnerable to the unknown.</span>"
+	activate_message = span_notice("You feel like you can safely take on the unknown.")
+	deactivate_message = span_notice("You feel more vulnerable to the unknown.")
 
 /obj/item/skillchip/job/off_z_pain_resistance/on_activate(mob/living/carbon/user, silent = FALSE)
 	. = ..()
@@ -47,3 +47,7 @@
 /obj/item/storage/box/skillchips/cargo/PopulateContents()
 	new /obj/item/skillchip/job/off_z_pain_resistance(src)
 	new /obj/item/skillchip/job/off_z_pain_resistance(src)
+
+/obj/structure/closet/secure_closet/quartermaster/PopulateContents()
+	. = ..()
+	new /obj/item/storage/box/skillchips/cargo(src)

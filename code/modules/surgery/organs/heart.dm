@@ -56,8 +56,7 @@
 
 /obj/item/organ/internal/heart/OnEatFrom(eater, feeder)
 	. = ..()
-	beating = FALSE
-	update_appearance()
+	Stop() // NON-MODULE CHANGE
 
 /obj/item/organ/internal/heart/on_life(seconds_per_tick, times_fired)
 	..()
