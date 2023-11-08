@@ -27,7 +27,8 @@
 	worn_icon = 'maplestation_modules/icons/mob/autopulser.dmi'
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/autopulser_lhand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/autopulser_rhand.dmi'
-	icon_state = "autopulser"
+	icon_state = "autopulser-nocell"
+	base_icon_state = "autopulser"
 
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
@@ -53,6 +54,7 @@
 /obj/item/auto_cpr/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/attack_equip)
+	AddElement(/datum/element/update_icon_updates_onmob)
 
 /obj/item/auto_cpr/Destroy()
 	QDEL_NULL(cell)
@@ -73,6 +75,10 @@
 	. = ..()
 	if(gone == cell)
 		cell = null
+		if(!QDELING(gone))
+			gone.update_appearance()
+		if(!QDELING(src))
+			update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/auto_cpr/screwdriver_act(mob/living/user, obj/item/tool)
 	if(isnull(cell))
@@ -95,6 +101,7 @@
 			return TRUE
 
 		cell = attacking_item
+		update_appearance(UPDATE_ICON_STATE)
 		balloon_alert(user, "cell installed")
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 		return TRUE
@@ -110,6 +117,7 @@
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	pulse_count = 0
+	update_appearance(UPDATE_ICON_STATE)
 
 /obj/item/auto_cpr/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text, final_block_chance, damage, attack_type, damage_type)
 	. = ..()
@@ -139,6 +147,7 @@
 	if(cell.charge < charge_per_pulse)
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, vary = TRUE, frequency = 0.75)
 		wearer.audible_message(span_notice("[src] beeps, indicating that its power cell is empty."))
+		update_appearance(UPDATE_ICON_STATE)
 
 	else if(pulse_count % 5 == 0)
 		playsound(src, 'sound/machines/defib_ready.ogg', 50, vary = TRUE, frequency = 0.75)
@@ -154,10 +163,21 @@
 			)
 
 	pulse_count++
+	// Kickstarst the flashing animation
+	if(pulse_count == 1)
+		update_appearance(UPDATE_ICON_STATE)
 
+/obj/item/auto_cpr/update_icon_state()
+	. = ..()
+	icon_state = base_icon_state
+	if(isnull(cell) || cell.charge < charge_per_pulse)
+		icon_state += "-nocell"
+	else if(pulse_count)
+		icon_state += "-flash"
 
 /obj/item/auto_cpr/loaded
 
 /obj/item/auto_cpr/loaded/Initialize(mapload)
 	. = ..()
 	cell = new /obj/item/stock_parts/cell/upgraded(src)
+	update_appearance(UPDATE_ICON_STATE)
