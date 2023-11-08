@@ -41,6 +41,11 @@
 /area/station/maintenance/port/lower
 	name = "Lower Port Maintenance"
 
+/area/station/maintenance/old_rec
+	name = "\improper Abandoned Recreation Room"
+	icon_state = "maint_dorms"
+	sound_environment = SOUND_AREA_LARGE_ENCLOSED
+
 /area/station/tcommsat/oldaisat/stationside
 	name = "\improper Abandoned AI Satellite"
 
