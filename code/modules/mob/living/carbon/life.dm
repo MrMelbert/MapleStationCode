@@ -778,4 +778,9 @@
 	if(!istype(heart))
 		return
 
-	heart.beating = !status
+	// NON-MODULE CHANGE START
+	if(status)
+		heart.Stop()
+	else
+		heart.Restart()
+	// NON-MODULE CHANGE END
