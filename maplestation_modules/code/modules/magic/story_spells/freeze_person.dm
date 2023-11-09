@@ -35,8 +35,8 @@
 
 /datum/action/cooldown/spell/pointed/freeze_person/is_valid_target(atom/cast_on)
 	. = ..()
-	if(!.)
-		return FALSE
+	//if(!.)
+		//return FALSE
 	if(!isliving(cast_on))
 		var/mob/caster = usr || owner
 		if(caster)
@@ -60,8 +60,8 @@
 	duration = 100
 	status_type = 3
 	alert_type = /atom/movable/screen/alert/status_effect/magic_frozen
-	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT, TRAIT_AI_PAUSED)
-
+	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT, TRAIT_HANDS_BLOCKED, TRAIT_AI_PAUSED)
+w
 /atom/movable/screen/alert/status_effect/magic_frozen
 	name = "Magically Frozen"
 	desc = "You're frozen inside an ice cube, and cannot move."
@@ -77,9 +77,9 @@
 		if (air && air != turf_air)
 			air.temperature = max(air.temperature + -15, 0)
 			air.react(nearby_turf)
-
-	//if(isbasicmob(owner))
 		
+	for(var/obj/item/whatever in owner)
+		ADD_TRAIT(whatever, TRAIT_NODROP, REF(src))
 	owner.add_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags |= GODMODE
 	owner.adjust_bodytemperature(-70)
@@ -88,13 +88,19 @@
 	owner.pull_force = INFINITY
 
 /datum/status_effect/freon/magic/do_resist()
-	return 
+	to_chat(owner, span_notice("You start breaking out of the ice cube..."))
+	if(do_after(owner, (duration - world.time) / 2, owner))
+		if(!QDELETED(src))
+			to_chat(owner, span_notice("You break out of the ice cube!"))
+			owner.remove_status_effect(/datum/status_effect/freon/magic)
+			owner.Knockdown(3 SECONDS)
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
+	for(var/obj/item/whatever in owner)
+		REMOVE_TRAIT(whatever, TRAIT_NODROP, REF(src))
 	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags &= ~GODMODE
-	owner.Knockdown(3 SECONDS)
 	owner.move_resist = initial(owner.move_resist)
 	owner.move_force = initial(owner.move_force)
 	owner.pull_force = initial(owner.pull_force)
