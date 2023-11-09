@@ -11964,18 +11964,9 @@
 	pixel_x = 23;
 	pixel_y = 20
 	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/effect/turf_decal/bot_white,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "eqB" = (
@@ -24815,22 +24806,13 @@
 	dir = 8;
 	network = list("aicore")
 	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/door/window/brigdoor/left/directional/south{
 	name = "Primary AI Core Access";
 	req_access = list("ai_upload")
 	},
 /obj/effect/turf_decal/delivery/white,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "iKm" = (
@@ -26082,6 +26064,12 @@
 /obj/machinery/newscaster/directional/west,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
+"jkH" = (
+/obj/structure/lattice/catwalk,
+/turf/open/openspace{
+	initial_gas_mix = "n2=100;TEMP=80"
+	},
+/area/station/ai_monitored/turret_protected/ai)
 "jkV" = (
 /obj/structure/chair,
 /obj/machinery/holopad,
@@ -38661,6 +38649,7 @@
 	uses = 10
 	},
 /obj/effect/turf_decal/bot_white,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "noX" = (
@@ -40728,8 +40717,8 @@
 /area/station/engineering/transit_tube)
 "nXP" = (
 /obj/structure/cable,
-/obj/structure/lattice/catwalk,
-/turf/open/openspace,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "nYl" = (
 /obj/structure/sign/departments/science,
@@ -40780,6 +40769,7 @@
 	},
 /obj/effect/turf_decal/bot,
 /obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "nYS" = (
@@ -41737,6 +41727,7 @@
 /obj/machinery/ai_slipper{
 	uses = 10
 	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "oox" = (
@@ -46156,16 +46147,6 @@
 	pixel_x = -28;
 	pixel_y = 8
 	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/machinery/door/window/brigdoor/left/directional/north{
@@ -46173,6 +46154,7 @@
 	req_access = list("ai_upload")
 	},
 /obj/effect/turf_decal/delivery/white,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "pLC" = (
@@ -50349,7 +50331,9 @@
 "rbH" = (
 /obj/machinery/status_display/ai/directional/east,
 /obj/structure/lattice/catwalk,
-/turf/open/openspace,
+/turf/open/openspace{
+	initial_gas_mix = "n2=100;TEMP=80"
+	},
 /area/station/ai_monitored/turret_protected/ai)
 "rbS" = (
 /obj/structure/railing{
@@ -51975,8 +51959,8 @@
 /turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/server)
 "rCB" = (
-/obj/structure/lattice/catwalk,
-/turf/open/openspace,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "rCD" = (
 /obj/machinery/door/window/left/directional/west{
@@ -52155,6 +52139,7 @@
 	},
 /obj/effect/turf_decal/bot,
 /obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "rFM" = (
@@ -57451,6 +57436,17 @@
 	},
 /turf/open/floor/iron,
 /area/station/medical/virology)
+"tnB" = (
+/obj/structure/showcase/cyborg/old{
+	dir = 8;
+	pixel_x = 9;
+	pixel_y = 2
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/turf/open/floor/glass/reinforced,
+/area/station/ai_monitored/turret_protected/aisat_interior)
 "tnF" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 1
@@ -184749,7 +184745,7 @@ wkj
 wkj
 wyy
 ghD
-nLQ
+tnB
 rfS
 nLQ
 wEf
@@ -185776,11 +185772,11 @@ wkj
 wkj
 hin
 wjR
-rCB
+jkH
 wwq
 vFO
 wwq
-rCB
+jkH
 wkc
 hin
 wkj
@@ -186033,11 +186029,11 @@ wkj
 wkj
 hin
 uqK
-rCB
+jkH
 rbH
 uqK
 rbH
-rCB
+jkH
 uqK
 hin
 wkj
@@ -186290,11 +186286,11 @@ wkj
 wkj
 hin
 dLA
-rCB
+jkH
 hin
 hin
 hin
-rCB
+jkH
 tWQ
 hin
 wkj
@@ -186547,11 +186543,11 @@ wkj
 hin
 hin
 rCB
-rCB
+jkH
 hin
 xHR
 hin
-rCB
+jkH
 rCB
 hin
 hin
@@ -187061,11 +187057,11 @@ wkj
 hin
 hin
 nXP
-rCB
+jkH
 hin
 izo
 hin
-rCB
+jkH
 nXP
 hin
 hin
@@ -187318,11 +187314,11 @@ wkj
 wkj
 hin
 tLX
-rCB
+jkH
 wwq
 vFO
 wwq
-rCB
+jkH
 cMB
 hin
 wkj
