@@ -50,6 +50,13 @@
 	VAR_FINAL/obj/item/stock_parts/cell/cell
 	/// How much cell charge to use per pulse / compression
 	var/charge_per_pulse = 50
+	/// How much damage / pain we do per pulse
+	var/pulse_force = 0.5
+
+	// Future idea: If we ever decide to model varying
+	// heart rates depending on species / build,
+	// we can make "pulse rate" variable / user input.
+	// Then allow EMP / emag to turn pulse rate up to 11.
 
 /obj/item/auto_cpr/Initialize(mapload)
 	. = ..()
@@ -136,11 +143,13 @@
 	var/mob/living/carbon/human/wearer = loc
 	var/obj/item/bodypart/chest/chest = wearer.get_bodypart(BODY_ZONE_CHEST)
 	if(IS_ORGANIC_LIMB(chest))
-		var/kickstart_heart = prob(1) && wearer.undergoing_cardiac_arrest()
-		chest.receive_damage(brute = (kickstart_heart ? 12 : 0.5), wound_bonus = CANT_WOUND, damage_source = "automatic chest compressions")
-		wearer.cause_pain(BODY_ZONE_CHEST, (kickstart_heart ? 8 : 0.5))
-		if(kickstart_heart)
+		var/final_damage = pulse_force
+		if(prob(1) && wearer.undergoing_cardiac_arrest())
 			wearer.set_heartattack(FALSE)
+			final_damage = min(final_damage * 25, 20)
+
+		chest.receive_damage(brute = final_damage, damage_source = "automatic chest compressions")
+		wearer.cause_pain(BODY_ZONE_CHEST, final_damage)
 
 	wearer.apply_status_effect(/datum/status_effect/cpr_applied)
 
@@ -163,7 +172,7 @@
 			)
 
 	pulse_count++
-	// Kickstarst the flashing animation
+	// Kickstart the flashing animation
 	if(pulse_count == 1)
 		update_appearance(UPDATE_ICON_STATE)
 
@@ -174,6 +183,43 @@
 		icon_state += "-nocell"
 	else if(pulse_count)
 		icon_state += "-flash"
+
+/obj/item/auto_cpr/emag_act(mob/user, obj/item/card/emag/emag_card)
+	. = ..()
+	if(obj_flags & EMAGGED)
+		return
+
+	obj_flags |= EMAGGED
+	playsound(src, SFX_SPARKS, 75, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(src, 'sound/machines/defib_saftyOff.ogg', 50, vary = TRUE, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.75)
+	audible_message(span_warning("[src] beeps loudly!"), hearing_distance = COMBAT_MESSAGE_RANGE)
+	balloon_alert(user, "safeties disabled")
+	pulse_force *= 3
+
+/obj/item/auto_cpr/emp_act(severity)
+	. = ..()
+	if(. & ALL)
+		return
+
+	if(pulse_force != initial(pulse_force))
+		return
+	if(prob(100 - severity * 25)) // More likely at higher severity
+		return
+
+	switch(severity)
+		if(EMP_HEAVY)
+			pulse_force *= 4
+		if(EMP_LIGHT)
+			pulse_force *= 2
+
+	addtimer(CALLBACK(src, PROC_REF(restore_settings)), rand(1 MINUTES, 3 MINUTES) * severity, TIMER_DELETE_ME) // More severity = fixes faster
+	playsound(src, 'sound/machines/defib_saftyOff.ogg', 50, vary = TRUE, frequency = 0.75)
+	audible_message(span_warning("[src] beeps loudly!"))
+
+/obj/item/auto_cpr/proc/restore_settings()
+	pulse_force = initial(pulse_force)
+	playsound(src, 'sound/machines/defib_saftyOn.ogg', 50, vary = TRUE, frequency = 0.75)
+	audible_message(span_notice("[src] beeps once."))
 
 /obj/item/auto_cpr/loaded
 
