@@ -45,14 +45,21 @@
 
 /area/station/maintenance/starboard/lower
 	name = "Lower Starboard Maintenance"
-	icon_state = "smaint"
 
 /area/station/maintenance/port/lower
 	name = "Lower Port Maintenance"
-	icon_state = "pmaint"
+
+/area/station/maintenance/old_rec
+	name = "\improper Abandoned Recreation Room"
+	icon_state = "maint_dorms"
+	sound_environment = SOUND_AREA_LARGE_ENCLOSED
 
 /area/station/tcommsat/oldaisat/stationside
 	name = "\improper Abandoned AI Satellite"
+
+/area/station/cargo/break_room
+	name = "\improper Cargo Break Room"
+	sound_environment = SOUND_AREA_SMALL_SOFTFLOOR
 
 //Berry Physics Space Ruin
 /area/ruin/space/has_grav/powered/berry_physics
