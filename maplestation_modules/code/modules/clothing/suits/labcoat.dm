@@ -42,6 +42,28 @@
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
 		/obj/item/storage/bag/bio,
+		/obj/item/defibrillator/compact,
 		)
 	armor_type = /datum/armor/science_rd
 	species_exception = list(/datum/species/golem)
+
+// Adding combat defib to allowed list of non-modular labcouts and co.
+/obj/item/defibrillator/compact
+	slot_flags = ITEM_SLOT_BELT|ITEM_SLOT_SUITSTORE|ITEM_SLOT_DEX_STORAGE
+	worn_icon = 'icons/mob/clothing/belt.dmi'
+
+/obj/item/clothing/suit/toggle/labcoat/Initialize(mapload)
+	. = ..()
+	allowed += /obj/item/defibrillator/compact
+
+/obj/item/clothing/suit/hooded/wintercoat/medical/Initialize(mapload)
+	. = ..()
+	allowed += /obj/item/defibrillator/compact
+
+/obj/item/clothing/suit/apron/surgical/Initialize(mapload)
+	. = ..()
+	allowed += /obj/item/defibrillator/compact
+
+/datum/mod_theme/medical/New() // Maybe not necessary because the defib MOD exists
+	. = ..()
+	allowed_suit_storage += /obj/item/defibrillator/compact

@@ -99,45 +99,14 @@
 /**
  * Get all areas associated with a department.
  */
-/datum/round_event/solar_flare/proc/get_areas(department, area_path)
+/datum/round_event/solar_flare/proc/get_areas(department, area/station/area_path)
 	RETURN_TYPE(/list)
-	. = subtypesof(area_path)
-
-	// There's much more OOP ways to do this, but whatever
-	switch(department)
-		if(DEPARTMENT_SECURITY)
-			. -= typesof(/area/station/security/checkpoint)
-			. -= /area/station/security/detectives_office/bridge_officer_office
-
-		if(DEPARTMENT_COMMAND)
-			. -= /area/station/command/gateway
-			. += /area/station/security/detectives_office/bridge_officer_office
-
-		if(DEPARTMENT_SERVICE)
-			. -= /area/station/service/electronic_marketing_den
-			. -= /area/station/service/abandoned_gambling_den
-			. -= /area/station/service/abandoned_gambling_den/gaming
-			. -= /area/station/service/theater/abandoned
-			. -= /area/station/service/library/abandoned
-			. -= /area/station/service/hydroponics/garden/abandoned
-
-		if(DEPARTMENT_CARGO)
-			. += /area/station/security/checkpoint/supply
-
-		if(DEPARTMENT_ENGINEERING)
-			. -= /area/station/engineering/supermatter
-			. -= /area/station/engineering/supermatter/room
-			. -= /area/station/engineering/gravity_generator
-			. += /area/station/security/checkpoint/engineering
-
-		if(DEPARTMENT_SCIENCE)
-			. -= /area/station/science/research/abandoned
-			. += /area/station/security/checkpoint/science
-			. += /area/station/security/checkpoint/science/research
-
-		if(DEPARTMENT_MEDICAL)
-			. -= /area/station/medical/abandoned
-			. += /area/station/security/checkpoint/medical
+	var/list/area_pool = list()
+	for(var/area/station/area_type as anything in subtypesof(area_path))
+		if(initial(area_type.associated_department) != department)
+			continue
+		area_pool += area_type
+	return area_pool
 
 // Solar flare. Causes a diamond of fire centered on the initial turf.
 /obj/effect/solar_flare

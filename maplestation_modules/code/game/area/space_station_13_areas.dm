@@ -11,6 +11,8 @@
 	name = "Bridge Officer's Office"
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "bo_office"
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SECURITY
+	associated_department = DEPARTMENT_COMMAND
 
 //AP Office, possibly going unused? We're adding it anyway, fuck you
 /area/station/command/ap_office
@@ -20,6 +22,8 @@
 
 /area/station/service/hydroponics/park
 	name = "Park"
+	associated_department_flags = NONE
+	associated_department = null
 
 /area/station/service/bar/lower
 	name = "Lower Bar"
@@ -29,11 +33,15 @@
 	name = "\improper Abandoned Robotics"
 	icon_state = "abandoned_sci"
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+	associated_department_flags = NONE
+	associated_department = null
 
 /area/station/service/kitchen/abandoned
 	name = "\improper Abandoned Kitchen"
 	icon_state = "kitchen"
 	sound_environment = SOUND_AREA_SMALL_ENCLOSED
+	associated_department_flags = NONE
+	associated_department = null
 
 /area/station/maintenance/starboard/lower
 	name = "Lower Starboard Maintenance"
@@ -85,3 +93,138 @@
 	name = "\improper Baseball Locker Room"
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "baseball_locker"
+
+/area/station
+	/// All department flags that are associated with this department
+	var/associated_department_flags = NONE
+	/// The PRIMARY department this area may be located in
+	var/associated_department
+
+/area/station/security
+	associated_department_flags = DEPARTMENT_BITFLAG_SECURITY
+	associated_department = DEPARTMENT_SECURITY
+
+/area/station/security/checkpoint/medical
+	associated_department_flags = DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_MEDICAL
+	associated_department = DEPARTMENT_MEDICAL
+
+/area/station/security/checkpoint/medical/medsci
+	associated_department_flags = DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_MEDICAL|DEPARTMENT_BITFLAG_SCIENCE
+
+/area/station/security/checkpoint/science
+	associated_department_flags = DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_SCIENCE
+	associated_department = DEPARTMENT_SCIENCE
+
+/area/station/security/checkpoint/engineering
+	associated_department_flags = DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_ENGINEERING
+	associated_department = DEPARTMENT_ENGINEERING
+
+/area/station/security/checkpoint/supply
+	associated_department_flags = DEPARTMENT_BITFLAG_SECURITY|DEPARTMENT_BITFLAG_COMMAND
+	associated_department = DEPARTMENT_COMMAND
+
+/area/station/medical
+	associated_department_flags = DEPARTMENT_BITFLAG_MEDICAL
+	associated_department = DEPARTMENT_MEDICAL
+
+/area/station/medical/abandoned
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/science
+	associated_department_flags = DEPARTMENT_BITFLAG_SCIENCE
+	associated_department = DEPARTMENT_SCIENCE
+
+/area/station/science/research/abandoned
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/service
+	associated_department_flags = DEPARTMENT_BITFLAG_SERVICE
+	associated_department = DEPARTMENT_SERVICE
+
+/area/station/service/electronic_marketing_den
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/service/abandoned_gambling_den
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/service/abandoned_gambling_den/gaming
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/service/theater/abandoned
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/service/library/abandoned
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/service/hydroponics/garden/abandoned
+	associated_department_flags = NONE
+	associated_department = null
+
+/area/station/engineering
+	associated_department_flags = DEPARTMENT_BITFLAG_ENGINEERING
+	associated_department = DEPARTMENT_ENGINEERING
+
+/area/station/supply
+	associated_department_flags = DEPARTMENT_BITFLAG_CARGO
+	associated_department = DEPARTMENT_CARGO
+
+/area/station/command
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND
+	associated_department = DEPARTMENT_COMMAND
+
+/area/station/command/heads_quarters/captain
+	associated_department_flags = DEPARTMENT_BITFLAG_CAPTAIN
+
+/area/station/command/heads_quarters/cmo
+	associated_department = DEPARTMENT_MEDICAL
+
+/area/station/command/heads_quarters/ce
+	associated_department = DEPARTMENT_ENGINEERING
+
+/area/station/command/heads_quarters/rd
+	associated_department = DEPARTMENT_SCIENCE
+
+/area/station/command/heads_quarters/hos
+	associated_department = DEPARTMENT_SECURITY
+
+/area/station/ai_monitored
+	associated_department_flags = DEPARTMENT_BITFLAG_SILICON
+
+/area/station/ai_monitored/command
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
+	associated_department = DEPARTMENT_COMMAND
+
+/area/station/ai_monitored/security
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SECURITY
+	associated_department = DEPARTMENT_BITFLAG_SECURITY
+
+/area/station/ai_monitored/aisat
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
+	associated_department = DEPARTMENT_SILICON
+
+/area/station/ai_monitored/turret_protected/ai
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
+	associated_department = DEPARTMENT_SILICON
+
+/area/station/ai_monitored/turret_protected/aisat
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
+	associated_department = DEPARTMENT_SILICON
+
+/area/station/ai_monitored/turret_protected/aisat_interior
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
+	associated_department = DEPARTMENT_SILICON
+
+/area/station/ai_monitored/turret_protected/ai_upload
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
+	associated_department = DEPARTMENT_SILICON
+
+/area/station/ai_monitored/turret_protected/ai_upload_foyer
+	associated_department_flags = DEPARTMENT_BITFLAG_COMMAND|DEPARTMENT_BITFLAG_SILICON
+	associated_department = DEPARTMENT_SILICON
