@@ -60,7 +60,7 @@
 	duration = 100
 	status_type = 3
 	alert_type = /atom/movable/screen/alert/status_effect/magic_frozen
-	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT)
+	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT, TRAIT_AI_PAUSED)
 
 /atom/movable/screen/alert/status_effect/magic_frozen
 	name = "Magically Frozen"
@@ -78,9 +78,11 @@
 			air.temperature = max(air.temperature + -15, 0)
 			air.react(nearby_turf)
 
+	//if(isbasicmob(owner))
+		
 	owner.add_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags |= GODMODE
-	owner.adjust_bodytemperature(-50)
+	owner.adjust_bodytemperature(-70)
 	owner.move_resist = INFINITY
 	owner.move_force = INFINITY
 	owner.pull_force = INFINITY
@@ -90,7 +92,6 @@
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
-	owner.adjust_bodytemperature(-100)
 	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags &= ~GODMODE
 	owner.Knockdown(3 SECONDS)
