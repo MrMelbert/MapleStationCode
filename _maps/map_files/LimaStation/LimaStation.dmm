@@ -10419,7 +10419,7 @@
 "dIl" = (
 /obj/machinery/holopad/secure,
 /obj/effect/turf_decal/bot,
-/turf/open/floor/circuit/telecomms,
+/turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/server)
 "dIo" = (
 /obj/effect/decal/cleanable/dirt,
@@ -10994,11 +10994,19 @@
 /area/station/science/ordnance)
 "dRB" = (
 /obj/structure/table/reinforced,
-/obj/item/paper_bin{
-	pixel_x = -3;
+/obj/machinery/status_display/ai/directional/west,
+/obj/item/clipboard{
 	pixel_y = 7
 	},
-/obj/machinery/status_display/ai/directional/west,
+/obj/item/folder/yellow{
+	pixel_y = 9
+	},
+/obj/item/electronics/apc{
+	pixel_y = 8
+	},
+/obj/item/electronics/airlock{
+	pixel_y = 5
+	},
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "dRF" = (
@@ -25311,9 +25319,13 @@
 /area/station/science/xenobiology)
 "iOk" = (
 /obj/structure/table/reinforced,
-/obj/item/paper_bin,
 /obj/item/pen,
 /obj/machinery/light/cold/directional/south,
+/obj/item/folder/blue{
+	pixel_y = 5;
+	pixel_x = -4
+	},
+/obj/item/paper_bin,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "iOn" = (
@@ -39570,11 +39582,11 @@
 /area/station/maintenance/port/lower)
 "nxW" = (
 /obj/structure/table/reinforced,
-/obj/item/folder/blue{
-	pixel_y = 2
-	},
-/obj/item/pen,
 /obj/machinery/airalarm/directional/west,
+/obj/item/toy/talking/ai{
+	pixel_y = 6;
+	pixel_x = 18
+	},
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "nxY" = (
@@ -42020,9 +42032,7 @@
 /area/station/science/research)
 "oml" = (
 /obj/structure/table/reinforced,
-/obj/item/folder/blue{
-	pixel_y = 2
-	},
+/obj/machinery/fax,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "omn" = (
@@ -54197,7 +54207,10 @@
 /area/station/service/bar)
 "sjJ" = (
 /obj/structure/table/reinforced,
-/obj/item/phone,
+/obj/item/phone{
+	pixel_x = 5;
+	pixel_y = 2
+	},
 /obj/machinery/light/cold/directional/north,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
@@ -61864,9 +61877,8 @@
 /turf/open/floor/iron/dark/smooth_edge,
 /area/station/security/brig)
 "uMU" = (
-/obj/structure/table/reinforced,
 /obj/machinery/status_display/ai/directional/west,
-/obj/machinery/fax,
+/obj/machinery/photocopier,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "uMX" = (
