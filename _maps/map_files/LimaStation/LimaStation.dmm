@@ -8639,6 +8639,7 @@
 "dbi" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/bot,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron,
 /area/station/engineering/storage)
 "dbk" = (
@@ -12034,7 +12035,7 @@
 "enU" = (
 /obj/effect/turf_decal/bot,
 /obj/machinery/camera{
-	c_tag = "Atmospherics - Closet";
+	c_tag = "Engineering - Closet";
 	dir = 8;
 	network = list("ss13","engine")
 	},
@@ -21845,6 +21846,11 @@
 "hHD" = (
 /obj/effect/turf_decal/bot,
 /obj/machinery/portable_atmospherics/canister/nitrogen,
+/obj/machinery/camera{
+	c_tag = "Atmospherics - Closet";
+	dir = 8;
+	network = list("ss13","engine")
+	},
 /turf/open/floor/iron,
 /area/station/engineering/storage)
 "hHH" = (
@@ -27614,6 +27620,7 @@
 /obj/machinery/door/airlock/maintenance{
 	name = "Xenobiology Maintenance"
 	},
+/obj/effect/mapping_helpers/airlock/access/all/science/xenobio,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lower)
 "jFu" = (
