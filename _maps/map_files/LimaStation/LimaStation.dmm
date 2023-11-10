@@ -1934,10 +1934,6 @@
 /obj/effect/landmark/start/assistant,
 /turf/open/floor/iron,
 /area/station/security/courtroom)
-"aIy" = (
-/obj/structure/lattice/catwalk,
-/turf/open/space/openspace,
-/area/space)
 "aIK" = (
 /obj/effect/spawner/random/structure/crate,
 /obj/effect/spawner/random/maintenance,
@@ -18215,10 +18211,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/medical/pharmacy)
-"gui" = (
-/obj/machinery/rnd/bepis,
-/turf/open/space/basic,
-/area/space)
 "guk" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/maintenance/three,
@@ -106621,7 +106613,7 @@ eoC
 wcl
 wcl
 ymg
-gui
+ymg
 ymg
 ymg
 ymg
@@ -186050,7 +186042,7 @@ xzK
 xzK
 xzK
 xzK
-aIy
+xzK
 xeN
 xzK
 wkj
