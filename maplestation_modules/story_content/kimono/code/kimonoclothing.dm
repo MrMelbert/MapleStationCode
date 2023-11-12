@@ -13,13 +13,13 @@
 
 /obj/item/clothing/under/kimono/red
 	name = "red kimono"
-	desc = "A red kimono made with silk.."
+	desc = "A red kimono made with silk."
 	icon_state = "kimono2"
 	inhand_icon_state = "kimono2"
 
 /obj/item/clothing/under/kimono/purple
 	name = "purple kimono"
-	desc = "A purple kimono made with silk.."
+	desc = "A purple kimono made with silk."
 	icon_state = "kimono3"
 	inhand_icon_state = "kimono3"
 
@@ -47,3 +47,14 @@
 	desc = "A blue cotton yukata."
 	icon_state = "yukata3"
 	inhand_icon_state = "yukata3"
+
+/obj/item/clothing/shoes/sandal/black
+	desc = "A pair of rather plain wooden sandals."
+	name = "sandals"
+	icon = 'maplestation_modules/story_content/kimono/icons/kimono_icon.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/kimono_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_rhand.dmi'
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	icon_state = "blacksandals"
+	inhand_icon_state = "blacksandals"
