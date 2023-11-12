@@ -2,10 +2,10 @@
 	name = "black kimono"
 	desc = "A black kimono made with silk."
 	icon = 'maplestation_modules/story_content/kimono/icons/kimono_icon.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/kimono_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_rhand.dmi'
-	digitigrade_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_digi.dmi'
+	worn_icon = 'maplestation_modules/story_content/kimono/icons/kimono_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/kimono/icons/kimono_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/kimono/icons/kimono_rhand.dmi'
+	digitigrade_file = 'maplestation_modules/story_content/kimono/icons/kimono_digi.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 	icon_state = "kimono1"
 	inhand_icon_state = "kimono1"
@@ -27,10 +27,10 @@
 	name = "black yukata"
 	desc = "A black cotton yukata."
 	icon = 'maplestation_modules/story_content/kimono/icons/kimono_icon.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/kimono_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_rhand.dmi'
-	digitigrade_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_digi.dmi'
+	worn_icon = 'maplestation_modules/story_content/kimono/icons/kimono_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/kimono/icons/kimono_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/kimono/icons/kimono_rhand.dmi'
+	digitigrade_file = 'maplestation_modules/story_content/kimono/icons/kimono_digi.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
 	icon_state = "yukata1"
 	inhand_icon_state = "yukata1"
@@ -49,12 +49,12 @@
 	inhand_icon_state = "yukata3"
 
 /obj/item/clothing/shoes/sandal/black
-	desc = "A pair of rather plain wooden sandals."
-	name = "sandals"
+	desc = "A pair of rather plain black wooden sandals."
+	name = "black sandals"
 	icon = 'maplestation_modules/story_content/kimono/icons/kimono_icon.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/kimono_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/kimono/icons/kimono_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/kimono/icons/kimono_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/kimono/icons/kimono_rhand.dmi'
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	icon_state = "blacksandals"
 	inhand_icon_state = "blacksandals"
