@@ -218,7 +218,7 @@
 	inhand_icon_state = "penrosescarf"
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 
-obj/item/clothing/head/costume/hairpin
+/obj/item/clothing/head/costume/hairpin
 	name = "elaborate hairpin"
 	desc = "A jewled hairpin only made for the most delicate of being."
 	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
