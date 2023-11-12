@@ -7,6 +7,8 @@
 	righthand_file = 'maplestation_modules/story_content/kimono/kimono_rhand.dmi'
 	digitigrade_file = 'maplestation_modules/story_content/kimono/kimono_digi.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
+	body_parts_covered = CHEST|GROIN|ARMS
+	alternate_worn_layer = ABOVE_SHOES_LAYER
 	icon_state = "kimono1"
 	inhand_icon_state = "kimono1"
 	can_adjust = FALSE
@@ -32,6 +34,8 @@
 	righthand_file = 'maplestation_modules/story_content/kimono/kimono_rhand.dmi'
 	digitigrade_file = 'maplestation_modules/story_content/kimono/kimono_digi.dmi'
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION
+	body_parts_covered = CHEST|GROIN|ARMS
+	alternate_worn_layer = ABOVE_SHOES_LAYER
 	icon_state = "yukata1"
 	inhand_icon_state = "yukata1"
 	can_adjust = FALSE

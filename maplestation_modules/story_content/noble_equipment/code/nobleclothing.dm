@@ -239,4 +239,5 @@ obj/item/clothing/head/costume/hairpin
 	inhand_icon_state = "kimono_fancy"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	can_adjust = TRUE
-	body_parts_covered = CHEST|GROIN|LEGS
+	body_parts_covered = CHEST|GROIN|ARMS
+	alternate_worn_layer = ABOVE_SHOES_LAYER
