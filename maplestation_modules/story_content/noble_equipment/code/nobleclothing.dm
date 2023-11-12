@@ -217,3 +217,26 @@
 	icon_state = "penrosescarf"
 	inhand_icon_state = "penrosescarf"
 	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+obj/item/clothing/head/costume/hairpin
+	name = "elaborate hairpin"
+	desc = "A jewled hairpin only made for the most delicate of being."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "hairpin_fancy"
+	inhand_icon_state = "hairpin_fancy"
+
+/obj/item/clothing/under/kimono/fancy
+	name = "fancy kimono"
+	desc = "A beatifuly elaborate kimono made from fine delicate silk."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "kimono_fancy"
+	inhand_icon_state = "kimono_fancy"
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	can_adjust = TRUE
+	body_parts_covered = CHEST|GROIN|LEGS
