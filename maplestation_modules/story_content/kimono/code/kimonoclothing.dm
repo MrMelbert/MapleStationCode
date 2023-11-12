@@ -1,6 +1,6 @@
 /obj/item/clothing/under/kimono
 	name = "black kimono"
-	desc = "A high quality shirt with slacks, it's soft to the touch."
+	desc = "A black kimono made with silk."
 	icon = 'maplestation_modules/story_content/kimono/icons/kimono_icon.dmi'
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/kimono_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_lhand.dmi'
@@ -13,19 +13,19 @@
 
 /obj/item/clothing/under/kimono/red
 	name = "red kimono"
-	desc = "A high quality shirt with slacks, it's soft to the touch."
+	desc = "A red kimono made with silk.."
 	icon_state = "kimono2"
 	inhand_icon_state = "kimono2"
 
 /obj/item/clothing/under/kimono/purple
 	name = "purple kimono"
-	desc = "A high quality shirt with slacks, it's soft to the touch."
+	desc = "A purple kimono made with silk.."
 	icon_state = "kimono3"
 	inhand_icon_state = "kimono3"
 
 /obj/item/clothing/under/yukata
 	name = "black yukata"
-	desc = "A high quality shirt with slacks, it's soft to the touch."
+	desc = "A black cotton yukata."
 	icon = 'maplestation_modules/story_content/kimono/icons/kimono_icon.dmi'
 	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/kimono_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/kimono_lhand.dmi'
@@ -38,12 +38,12 @@
 
 /obj/item/clothing/under/yukata/green
 	name = "green yukata"
-	desc = "A high quality shirt with slacks, it's soft to the touch."
+	desc = "A green cotton yukata."
 	icon_state = "yukata2"
 	inhand_icon_state = "yukata2"
 
 /obj/item/clothing/under/yukata/blue
 	name = "blue yukata"
-	desc = "A high quality shirt with slacks, it's soft to the touch."
+	desc = "A blue cotton yukata."
 	icon_state = "yukata3"
 	inhand_icon_state = "yukata3"
