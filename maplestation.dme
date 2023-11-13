@@ -5718,6 +5718,7 @@
 #include "maplestation_modules\story_content\captain_equipment\code\captainclothing.dm"
 #include "maplestation_modules\story_content\casual_clothing\code\casualclothing.dm"
 #include "maplestation_modules\story_content\chaplain_equipment\code\chaplainclothing.dm"
+#include "maplestation_modules\story_content\kimono\code\kimonoclothing.dm"
 #include "maplestation_modules\story_content\laurence_equipment\code\laurence_clothing.dm"
 #include "maplestation_modules\story_content\noble_equipment\code\beacon.dm"
 #include "maplestation_modules\story_content\noble_equipment\code\nobleclothing.dm"

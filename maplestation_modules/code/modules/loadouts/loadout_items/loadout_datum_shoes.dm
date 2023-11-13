@@ -81,6 +81,10 @@
 	name = "Sandals"
 	item_path = /obj/item/clothing/shoes/sandal
 
+/datum/loadout_item/shoes/blacksandals
+	name = "Black Sandals"
+	item_path = /obj/item/clothing/shoes/sandal/black
+
 /datum/loadout_item/shoes/trainers
 	name = "Workout Trainers"
 	item_path = /obj/item/clothing/shoes/trainers
