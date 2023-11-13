@@ -22,12 +22,12 @@
 		to_chat(src, span_warning("[target.name] is dead!"))
 		return
 
+	var/cpr_certified = HAS_TRAIT(src, TRAIT_CPR_CERTIFIED)
 	if(!panicking && target.stat != CONSCIOUS && beat >= BEATS_PER_CPR_CYCLE + 1)
-		to_chat(src, span_warning("[target] still isn't up[HAS_TRAIT(src, TRAIT_CPR_CERTIFIED) ? " - you pick up the pace." : "! You try harder!"]"))
+		to_chat(src, span_warning("[target] still isn't up[cpr_certified ? " - you pick up the pace." : "! You try harder!"]"))
 		panicking = TRUE
 
 	var/doafter_mod = panicking ? 0.5 : 1
-
 	var/doing_a_breath = FALSE
 	if(beat % BEATS_PER_CPR_CYCLE == 0)
 		if (is_mouth_covered())
@@ -78,16 +78,19 @@
 			)
 
 		target.apply_status_effect(/datum/status_effect/cpr_applied)
+		// compressions help a little bit with oxyloss, to simulate blood flow returning to your body
+		target.adjustOxyLoss(-0.5 * (cpr_certified ? 2 : 1))
 
 	if(doing_a_breath)
 		if(HAS_TRAIT(target, TRAIT_NOBREATH))
 			to_chat(target, span_unconscious("You feel a breath of fresh air... which is a sensation you don't recognise..."))
 		else if (!target.get_organ_slot(ORGAN_SLOT_LUNGS))
 			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
-		else if(HAS_TRAIT(src, TRAIT_CPR_CERTIFIED))
-			target.adjustOxyLoss(-20)
+		else if(cpr_certified)
+			target.adjustOxyLoss(-18)
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
 		else
+			// but breaths are where the real oxyloss is healed
 			target.adjustOxyLoss(-12)
 			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs..."))
 
@@ -104,7 +107,7 @@
 		var/obj/item/bodypart/chest/chest = target.get_bodypart(BODY_ZONE_CHEST)
 		if(IS_ORGANIC_LIMB(chest))
 			var/critical_success = prob(1) && target.undergoing_cardiac_arrest()
-			if(!HAS_TRAIT(src, TRAIT_CPR_CERTIFIED))
+			if(!cpr_certified)
 				// Apply damage directly to chest. I would use apply damage but I can't, kinda
 				if(critical_success)
 					target.set_heartattack(FALSE)
