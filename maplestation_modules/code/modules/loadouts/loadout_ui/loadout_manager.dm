@@ -173,6 +173,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 /datum/preference_middleware/loadout/proc/select_slot(list/params, mob/user)
 	preferences.write_preference(GLOB.preference_entries[/datum/preference/numeric/active_loadout], text2num(params["new_slot"]))
 	character_preview_view.update_body()
+	preferences.character_preview_view?.update_body()
 	preferences.update_static_data_for_all_viewers()
 
 /datum/preference_middleware/loadout/get_ui_data(mob/user)

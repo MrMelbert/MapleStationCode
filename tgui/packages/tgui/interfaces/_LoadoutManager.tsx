@@ -340,6 +340,19 @@ const LoadoutPreviewSection = (props, context) => {
         <Stack.Divider />
         <Stack.Item align="center">
           <Stack>
+            {loadoutSlots(max_loadout_slots).map((slot) => (
+              <Stack.Item key={slot}>
+                <Button
+                  color={slot === current_slot ? 'green' : 'grey'}
+                  content={slot}
+                  onClick={() => act('select_slot', { new_slot: slot })}
+                />
+              </Stack.Item>
+            ))}
+          </Stack>
+        </Stack.Item>
+        <Stack.Item align="center">
+          <Stack>
             <Stack.Item>
               <Button
                 icon="chevron-left"
@@ -350,15 +363,6 @@ const LoadoutPreviewSection = (props, context) => {
                 }
               />
             </Stack.Item>
-            {loadoutSlots(max_loadout_slots).map((slot) => (
-              <Stack.Item key={slot}>
-                <Button
-                  color={slot === current_slot ? 'green' : ''}
-                  content={slot}
-                  onClick={() => act('select_slot', { new_slot: slot })}
-                />
-              </Stack.Item>
-            ))}
             <Stack.Item>
               <Button
                 icon="chevron-right"
