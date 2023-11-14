@@ -93,7 +93,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		to_chat(user, span_warning("You already have a greyscaling window open!"))
 		return
 
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	var/list/allowed_configs = list()
 	if(initial(item_path.greyscale_config))
 		allowed_configs += "[initial(item_path.greyscale_config)]"
@@ -122,7 +122,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	if(!istype(open_menu))
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	if(!loadout?[item_path])
 		manager.select_item(src)
 
@@ -131,11 +131,11 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		return
 
 	loadout[item_path][INFO_GREYSCALE] = colors.Join("")
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 	manager.character_preview_view.update_body()
 
 /datum/loadout_item/proc/set_name(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	var/input_name = tgui_input_text(
 		user = user,
 		message = "What name do you want to give [name]? Leave blank to clear.",
@@ -154,10 +154,10 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	else
 		loadout[item_path] -= INFO_NAMED
 
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 
 /datum/loadout_item/proc/set_skin(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	var/static/list/list/cached_reskins = list()
 	if(!islist(cached_reskins[item_path]))
 		var/obj/item/item_template = new item_path()
@@ -185,7 +185,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 	else
 		loadout[item_path][INFO_RESKIN] = input_skin
 
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 
 /**
  * Place our [var/item_path] into [outfit].
@@ -232,7 +232,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		else
 			// Not valid
 			item_details -= INFO_RESKIN
-			preference_source.write_preference(GLOB.preference_entries[/datum/preference/loadout], preference_list)
+			update_loadout(preference_source, preference_list, save = TRUE)
 
 	return equipped_item
 

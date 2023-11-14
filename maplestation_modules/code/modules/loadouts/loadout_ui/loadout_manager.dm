@@ -112,7 +112,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 	return TRUE
 
 /datum/preference_middleware/loadout/proc/action_clear_all(list/params, mob/user)
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], null)
+	update_loadout(preferences, null)
 	character_preview_view.update_body()
 	return TRUE
 
@@ -143,7 +143,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 
 /// Select [path] item to [category_slot] slot.
 /datum/preference_middleware/loadout/proc/select_item(datum/loadout_item/selected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(preferences)
 	var/list/datum/loadout_item/loadout_datums = loadout_list_to_datums(loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		if(item.category != selected_item.category)
@@ -153,13 +153,13 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 			return
 
 	LAZYSET(loadout, selected_item.item_path, list())
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(preferences, loadout)
 
 /// Deselect [deselected_item].
 /datum/preference_middleware/loadout/proc/deselect_item(datum/loadout_item/deselected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(preferences)
 	LAZYREMOVE(loadout, deselected_item.item_path)
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(preferences, loadout)
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
 	src.menu = open_menu
@@ -176,7 +176,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 		character_preview_view = create_character_preview_view(user)
 
 	var/list/all_selected_paths = list()
-	for(var/path in preferences.read_preference(/datum/preference/loadout))
+	for(var/path in get_active_loadout(preferences))
 		all_selected_paths += path
 
 	data["selected_loadout"] = all_selected_paths
