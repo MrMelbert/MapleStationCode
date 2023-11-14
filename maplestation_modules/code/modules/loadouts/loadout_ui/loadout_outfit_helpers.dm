@@ -18,6 +18,9 @@
  * preference_source - the preferences of the thing we're equipping
  */
 /mob/living/carbon/human/proc/equip_outfit_and_loadout(datum/outfit/outfit, datum/preferences/preference_source, visuals_only = FALSE)
+	if(isnull(preference_source))
+		return equipOutfit(outfit, visuals_only)
+
 	var/datum/outfit/equipped_outfit
 
 	if(ispath(outfit))
@@ -33,7 +36,8 @@
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
 	// Equip the outfit loadout items included
-	equipOutfit(equipped_outfit, visuals_only)
+	if(!equipped_outfit.equip(src, visuals_only))
+		return FALSE
 	// Handle any snowflake on_equips
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.on_equip_item(preference_source, src, visuals_only, preference_list)
