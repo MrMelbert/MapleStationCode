@@ -79,5 +79,5 @@
 
 /datum/preferences/update_character(current_version, list/save_data)
 	. = ..()
-	if(current_version < 44)
+	if(current_version < 43.1)
 		save_loadout(src, save_data?["loadout_list"])
