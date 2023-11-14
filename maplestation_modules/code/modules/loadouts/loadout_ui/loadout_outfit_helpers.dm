@@ -65,26 +65,43 @@
 
 	return datums
 
+/**
+ * Gets the active loadout of the passed preference source.
+ *
+ * Returns a loadout lazylist
+ */
 /proc/get_active_loadout(datum/preferences/preferences)
+	RETURN_TYPE(/list)
 	var/slot = preferences.read_preference(/datum/preference/numeric/active_loadout)
 	var/list/all_loadouts = preferences.read_preference(/datum/preference/loadout)
 	if(slot > length(all_loadouts))
 		return null
 	return all_loadouts[slot]
 
-/proc/update_loadout(datum/preferences/preferences, list/loadout_list, save = FALSE)
+/**
+ * Calls update_preference on the passed preference datum with the passed loadout list
+ */
+/proc/update_loadout(datum/preferences/preferences, list/loadout_list)
+	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], get_updated_loadout_list(preferences, loadout_list))
+
+/**
+ * Calls write_preference on the passed preference datum with the passed loadout list
+ */
+/proc/save_loadout(datum/preferences/preferences, list/loadout_list)
+	preferences.write_preference(GLOB.preference_entries[/datum/preference/loadout], get_updated_loadout_list(preferences, loadout_list))
+
+/**
+ * Returns a list of all loadouts belonging to the passed preference source,
+ * and appends the passed loadout list to the proper index of the list.
+ */
+/proc/get_updated_loadout_list(datum/preferences/preferences, list/loadout_list)
+	RETURN_TYPE(/list)
 	var/slot = preferences.read_preference(/datum/preference/numeric/active_loadout)
 	var/list/new_list = list()
 	for(var/list/loadout in preferences.read_preference(/datum/preference/loadout))
 		UNTYPED_LIST_ADD(new_list, loadout)
-	while(length(new_list) < slot - 1)
+	while(length(new_list) < slot)
 		new_list += null
 
-	UNTYPED_LIST_ADD(new_list, loadout_list)
-
-	if(save)
-		preferences.write_preference(GLOB.preference_entries[/datum/preference/loadout], new_list)
-		return
-
-	ASYNC
-		preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], new_list)
+	new_list[slot] = loadout_list
+	return new_list

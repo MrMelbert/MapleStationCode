@@ -37,3 +37,6 @@
 #define SOUND_NORMAL (1<<0)
 #define SOUND_QUESTION (1<<1)
 #define SOUND_EXCLAMATION (1<<2)
+
+/// Max loadout presets available
+#define MAX_LOADOUTS 5

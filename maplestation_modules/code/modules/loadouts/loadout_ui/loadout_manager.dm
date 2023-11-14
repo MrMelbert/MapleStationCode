@@ -73,6 +73,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 		"toggle_job_clothes" = PROC_REF(action_toggle_job_outfit),
 		"rotate_dummy" = PROC_REF(action_rotate_model_dir),
 		"pass_to_loadout_item" = PROC_REF(action_pass_to_loadout_item),
+		"select_slot" = PROC_REF(select_slot),
 	)
 
 	/// The preview dummy.
@@ -169,6 +170,11 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 	SIGNAL_HANDLER
 	menu = null
 
+/datum/preference_middleware/loadout/proc/select_slot(list/params, mob/user)
+	preferences.write_preference(GLOB.preference_entries[/datum/preference/numeric/active_loadout], text2num(params["new_slot"]))
+	character_preview_view.update_body()
+	preferences.update_static_data_for_all_viewers()
+
 /datum/preference_middleware/loadout/get_ui_data(mob/user)
 	var/list/data = list()
 
@@ -182,6 +188,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 	data["selected_loadout"] = all_selected_paths
 	data["mob_name"] = preferences.read_preference(/datum/preference/name/real_name)
 	data["job_clothes"] = character_preview_view.view_job_clothes
+	data["current_slot"] = preferences.read_preference(/datum/preference/numeric/active_loadout)
 
 	return data
 
@@ -202,6 +209,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 
 	data["loadout_tabs"] = loadout_tabs
 	data["tutorial_text"] = get_tutorial_text()
+	data["max_loadout_slots"] = MAX_LOADOUTS
 	return data
 
 /// Returns a formatted string for use in the UI.

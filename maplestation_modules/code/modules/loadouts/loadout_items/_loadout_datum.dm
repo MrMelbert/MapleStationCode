@@ -232,7 +232,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 		else
 			// Not valid
 			item_details -= INFO_RESKIN
-			update_loadout(preference_source, preference_list, save = TRUE)
+			save_loadout(preference_source, preference_list)
 
 	return equipped_item
 

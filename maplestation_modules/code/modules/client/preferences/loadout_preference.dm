@@ -3,10 +3,13 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	can_randomize = FALSE
 	minimum = 1
-	maximum = 5
+	maximum = MAX_LOADOUTS
 
 /datum/preference/numeric/active_loadout/create_default_value()
 	return minimum
+
+/datum/preference/numeric/active_loadout/apply_to_human(mob/living/carbon/human/target, value)
+	return
 
 /datum/preference/loadout
 	savefile_key = "loadout_list"
@@ -77,4 +80,4 @@
 /datum/preferences/update_character(current_version, list/save_data)
 	. = ..()
 	if(current_version < 44)
-		update_loadout(src, save_data?["loadout_list"], save = TRUE)
+		save_loadout(src, save_data?["loadout_list"])

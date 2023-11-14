@@ -30,6 +30,8 @@ type Data = {
   loadout_preview_view: string;
   loadout_tabs: LoadoutCategory[];
   tutorial_text: string;
+  current_slot: number;
+  max_loadout_slots: number;
 };
 
 export const LoadoutPage = (props, context) => {
@@ -297,8 +299,24 @@ const LoadoutTabs = (props, context) => {
 
 const LoadoutPreviewSection = (props, context) => {
   const { act, data } = useBackend<Data>(context);
-  const { mob_name, job_clothes, loadout_preview_view } = data;
+  const {
+    mob_name,
+    job_clothes,
+    loadout_preview_view,
+    current_slot,
+    max_loadout_slots,
+  } = data;
+
   const [tutorialStatus] = useLocalState(context, 'tutorialStatus', false);
+
+  const loadoutSlots = (maxSlots: number) => {
+    const slots: number[] = [];
+    for (let i = 1; i < maxSlots + 1; i++) {
+      slots.push(i);
+    }
+    return slots;
+  };
+
   return (
     <Section
       title={`Preview: ${mob_name}`}
@@ -332,6 +350,15 @@ const LoadoutPreviewSection = (props, context) => {
                 }
               />
             </Stack.Item>
+            {loadoutSlots(max_loadout_slots).map((slot) => (
+              <Stack.Item key={slot}>
+                <Button
+                  color={slot === current_slot ? 'green' : ''}
+                  content={slot}
+                  onClick={() => act('select_slot', { new_slot: slot })}
+                />
+              </Stack.Item>
+            ))}
             <Stack.Item>
               <Button
                 icon="chevron-right"
