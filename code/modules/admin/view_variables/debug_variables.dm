@@ -41,6 +41,10 @@
 		item = "[name_part] = /icon (<span class='value'>[value]</span>)"
 		#endif
 
+	else if(isappearance(value))
+		var/image/actually_an_appearance = value
+		item = "[name_part] = /appearance (<span class='value'>[actually_an_appearance.icon]</span>)"
+
 	else if (isfile(value))
 		item = "[name_part] = <span class='value'>'[value]'</span>"
 

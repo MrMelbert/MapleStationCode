@@ -37,7 +37,7 @@
 		return
 
 	// Snowflake, but otherwise the dummy in the prefs menu will be resized and you can't see anything
-	if(istype(target, /mob/living/carbon/human/dummy))
+	if(isdummy(target))
 		return
 	// Just in case
 	if(!ishuman(target))
@@ -142,6 +142,19 @@
 
 #undef SIZE_PREF_PRIORITY
 #undef HEIGHT_PREF_PRIORITY
+
+// To speed up the preference menu, we apply 1 filter to the entire mob
+/mob/living/carbon/human/dummy/regenerate_icons()
+	. = ..()
+	apply_height_filters(src, TRUE)
+
+/mob/living/carbon/human/dummy/apply_height_filters(mutable_appearance/appearance, only_apply_in_prefs = FALSE)
+	if(only_apply_in_prefs)
+		return ..()
+
+// Not necessary with above
+/mob/living/carbon/human/dummy/apply_height_offsets(mutable_appearance/appearance, upper_torso)
+	return
 
 /mob/living/carbon/human/get_mob_height()
 	// If you have roundstart dwarfism (IE: resized), it'll just return normal mob height, so no filters are applied
