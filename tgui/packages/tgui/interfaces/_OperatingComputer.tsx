@@ -43,6 +43,8 @@ type Patient = {
   fireLoss: number | null;
   toxLoss: number | null;
   oxyLoss: number | null;
+  bloodVolumePercent: number | null;
+  heartRate: number | null;
 };
 
 type Procedure = {
@@ -123,6 +125,16 @@ const PatientStateView = (
     return Math.round(num * 10) / 10 + '%';
   };
 
+  const num_to_color = (num: number | null) => {
+    if (!num || num <= 33) {
+      return 'bad';
+    }
+    if (num <= 66) {
+      return 'average';
+    }
+    return 'good';
+  };
+
   return (
     <>
       <Section title="Patient State">
@@ -132,20 +144,30 @@ const PatientStateView = (
               {patient.stat || 'No patient detected'}
             </LabeledList.Item>
             <LabeledList.Item label="Blood Type">
-              {patient.blood_type || 'Unable to determine blood type'}
+              {patient.blood_type || 'Unknown'}
+            </LabeledList.Item>
+            <LabeledList.Item label="Heart Rate">
+              {patient.heartRate ? patient.heartRate + ' BPM' : 'No pulse'}
             </LabeledList.Item>
             <LabeledList.Item label="Health">
               <ProgressBar
                 value={patient.health || 0}
                 minValue={patient.minHealth || -100}
                 maxValue={patient.maxHealth || 100}
-                color={
-                  patient.health !== null && patient.health >= 0
-                    ? 'good'
-                    : 'average'
-                }>
+                color={num_to_color(patient.health)}>
                 <AnimatedNumber
                   value={patient.health || 0}
+                  format={num_to_percent}
+                />
+              </ProgressBar>
+            </LabeledList.Item>
+            <LabeledList.Item label="Blood Level">
+              <ProgressBar
+                value={patient.bloodVolumePercent || 0}
+                color={num_to_color(patient.bloodVolumePercent)}
+                maxValue={100}>
+                <AnimatedNumber
+                  value={patient.bloodVolumePercent || 0}
                   format={num_to_percent}
                 />
               </ProgressBar>
