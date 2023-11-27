@@ -1126,7 +1126,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		to_chat(src, span_warning("[target] is dead!"))
 		return FALSE
 
-	if(target.body_position == LYING_DOWN && (target.undergoing_cardiac_arrest() || target.stat != CONSCIOUS))
+	if(target.body_position == LYING_DOWN && (target.undergoing_cardiac_arrest() || target.stat == SOFT_CRIT || target.stat == HARD_CRIT))
 		user.do_cpr(target)
 		return TRUE
 
