@@ -27,12 +27,13 @@
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
+	if(user.combat_mode)
+		return FALSE
 	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 		balloon_alert(user, "unsecured")
 		deconstruct(TRUE)
-		return TRUE
-	return FALSE
+	return TRUE
 
 /obj/machinery/computer/vitals_reader/deconstruct(disassembled)
 	if(flags_1 & NODECONSTRUCT_1)
