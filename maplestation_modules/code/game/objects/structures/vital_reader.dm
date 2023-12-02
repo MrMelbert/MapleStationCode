@@ -53,7 +53,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		return
 
 	if(isnull(patient))
-		. += span_notice("The display is blank.")
+		. += span_notice("The display is currently scanning for a patient.")
 	else if(!issilicon(user) && !user.can_read(src, silent = TRUE))
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
 	else if(get_dist(patient, user) <= 2 || isobserver(user) || issilicon(user))
@@ -74,7 +74,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		return NONE
 
 	context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
-	if(isai(user))
+	if(isAI(user))
 		context[SCREENTIP_CONTEXT_SHIFT_LMB] = "Examine vitals"
 	return CONTEXTUAL_SCREENTIP_SET
 
@@ -83,67 +83,124 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	if(is_operational && !isnull(patient))
 		healthscan(user, patient, advanced = advanced)
 
+/// Returns overlays to be used when active but without a patient detected
+/obj/machinery/computer/vitals_reader/proc/get_scanning_overlays()
+	return list(
+		mutable_appearance(icon, "unknown", alpha = src.alpha),
+		mutable_appearance(icon, "scanning", alpha = src.alpha),
+	)
+
+/**
+ * Returns all overlays to be shown when a simple / basic animal patient is detected
+ *
+ * * hp_color - color being used for general, overrall health
+ */
+/obj/machinery/computer/vitals_reader/proc/get_simple_mob_overlays(hp_color)
+	return list(
+		construct_overlay("mob", hp_color),
+		construct_overlay("bar1", COLOR_GRAY),
+		construct_overlay("bar2", COLOR_GRAY),
+		construct_overlay("bar3", COLOR_GRAY),
+	)
+
+/**
+ * Returns all overlays to be shown when a humanoid patient is detected
+ *
+ * * hp_color - color being used for general, overrall health
+ */
+/obj/machinery/computer/vitals_reader/proc/get_humanoid_overlays(hp_color)
+	var/list/returned_overlays = list()
+
+	for(var/body_zone in BODY_ZONES_ALL)
+		var/obj/item/bodypart/real_part = patient.get_bodypart(body_zone)
+		var/bodypart_color = isnull(real_part) ? COLOR_GRAY : percent_to_color((real_part.brute_dam + real_part.burn_dam) / real_part.max_damage)
+		returned_overlays += construct_overlay("human_[body_zone]", bodypart_color)
+
+	var/blood_volume_color = "#2A72AA"
+	switch(patient.blood_volume)
+		if(-INFINITY to BLOOD_VOLUME_BAD)
+			blood_volume_color = "#BD0600"
+		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
+			blood_volume_color = "#D3980D"
+		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
+			blood_volume_color = "#B9B40D"
+	returned_overlays += construct_overlay("bar1", blood_volume_color)
+
+	var/oxygen_color = "#5D9C11"
+	switch(patient.getOxyLoss())
+		if(50 to INFINITY)
+			oxygen_color = "#BD0600"
+		if(30 to 50)
+			oxygen_color = "#D3980D"
+		if(10 to 30)
+			oxygen_color = "#B9B40D"
+	returned_overlays += construct_overlay("bar2", oxygen_color)
+
+	var/tox_color = "#5D9C11"
+	switch(patient.getToxLoss())
+		if(50 to INFINITY)
+			oxygen_color = "#BD0600"
+		if(30 to 50)
+			oxygen_color = "#D3980D"
+		if(10 to 30)
+			oxygen_color = "#B9B40D"
+	returned_overlays += construct_overlay("bar3", tox_color)
+
+	return returned_overlays
+
 /obj/machinery/computer/vitals_reader/update_overlays()
 	. = ..()
 	if(!active)
 		return
 
-	if(ishuman(patient))
-		. += get_humanoid_overlays()
-
-	else if(isliving(patient))
-		. += get_simple_mob_overlays()
+	if(isnull(patient))
+		. += get_scanning_overlays()
 
 	else
-		. += mutable_appearance(icon, "scanning", alpha = src.alpha)
-		. += emissive_appearance(icon, "scanning_emissive", src, alpha = src.alpha)
+		var/ekg_icon_state = "ekg"
+		if(!patient.appears_alive())
+			ekg_icon_state = "ekg_flat"
+		else if(ishuman(patient))
+			var/mob/living/carbon/human/human_patient = patient
+			switch(human_patient.get_pretend_heart_rate())
+				if(0)
+					ekg_icon_state = "ekg_flat"
+				if(100 to INFINITY)
+					ekg_icon_state = "ekg_fast"
 
-		. += mutable_appearance(icon, "unknown", src, alpha = src.alpha)
-		. += emissive_appearance(icon, "unknown_emissive", alpha = src.alpha)
+		var/hp_color = percent_to_color((patient.maxHealth - patient.health) / patient.maxHealth)
+		. += construct_overlay(ekg_icon_state, hp_color)
 
-/*
-/obj/machinery/computer/vitals_reader/process()
-	. = ..()
-	if(active)
-		update_appearance(UPDATE_OVERLAYS)
-*/
+		if(ishuman(patient))
+			. += get_humanoid_overlays(hp_color)
+		else
+			. += get_simple_mob_overlays(hp_color)
 
-/obj/machinery/computer/vitals_reader/proc/get_humanoid_overlays()
-	. = list()
-	for(var/body_zone in BODY_ZONES_ALL)
-		var/obj/item/bodypart/real_part = patient.get_bodypart(body_zone)
-		var/mutable_appearance/limb_overlay = mutable_appearance(icon, "human_[body_zone]", alpha = src.alpha)
-		limb_overlay.appearance_flags |= RESET_COLOR
-		. += limb_overlay
-		if(isnull(real_part))
-			limb_overlay.color = COLOR_GRAY
-			continue
+	. += emissive_appearance(icon, "outline", src, alpha = src.alpha)
 
-		switch((real_part.brute_dam + real_part.burn_dam) / real_part.max_damage)
-			if(-INFINITY to 0.25)
-				limb_overlay.color = COLOR_GREEN
-			if(0.25 to 0.5)
-				limb_overlay.color = COLOR_YELLOW
-			if(0.5 to INFINITY)
-				limb_overlay.color = COLOR_RED
+/// Converts a percentage to a color
+/obj/machinery/computer/vitals_reader/proc/percent_to_color(percent)
+	if(percent == 0)
+		return "#2A72AA"
 
-	. += emissive_appearance(icon, "human_emissive", src, layer, alpha)
+	switch(percent)
+		if(0 to 0.125)
+			return "#A6BD00"
+		if(0.125 to 0.25)
+			return "#BDA600"
+		if(0.25 to 0.375)
+			return "#BD7E00"
+		if(0.375 to 0.5)
+			return "#BD4200"
 
-/obj/machinery/computer/vitals_reader/proc/get_simple_mob_overlays()
-	. = list()
+	// going over 1 is also bad
+	return "#BD0600"
 
-	var/mutable_appearance/mob_overlay = mutable_appearance(icon, "mob", alpha = src.alpha)
-	mob_overlay.appearance_flags |= RESET_COLOR
-	switch(patient.health / patient.maxHealth)
-		if(-INFINITY to 0.33)
-			mob_overlay.color = COLOR_GREEN
-		if(0.33 to 0.66)
-			mob_overlay.color = COLOR_YELLOW
-		if(0.66 to INFINITY)
-			mob_overlay.color = COLOR_RED
-
-	. += mob_overlay
-	. += emissive_appearance(icon, "mob_emissive", src, alpha = src.alpha)
+/obj/machinery/computer/vitals_reader/proc/construct_overlay(state_to_use, color_to_use)
+	var/mutable_appearance/overlay = mutable_appearance(icon, state_to_use, alpha = src.alpha)
+	overlay.appearance_flags |= RESET_COLOR
+	overlay.color = color_to_use
+	return overlay
 
 /obj/machinery/computer/vitals_reader/interact(mob/user, special_state)
 	. = ..()
@@ -173,7 +230,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/computer/vitals_reader/proc/find_active_patient(scan_attempts = 0)
-	if(!active)
+	if(!active || !isnull(patient) || QDELETED(src))
 		return
 
 	for(var/obj/machinery/nearby_thing in view(3, src))
@@ -200,7 +257,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	RegisterSignals(patient, list(
 		COMSIG_CARBON_POST_REMOVE_LIMB,
 		COMSIG_CARBON_POST_ATTACH_LIMB,
-		COMSIG_LIVING_HEALTH_UPDATE
+		COMSIG_LIVING_HEALTH_UPDATE,
 	), PROC_REF(update_overlay_on_signal))
 	update_appearance(UPDATE_OVERLAYS)
 
