@@ -30,7 +30,6 @@
 
 		list(
 			"name" = "Shoes",
-			"icon" = "socks",
 			"products" = list(
 				/obj/item/clothing/shoes/heels = 3,
 			),
