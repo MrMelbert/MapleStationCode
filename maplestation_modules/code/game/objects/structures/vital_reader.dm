@@ -31,7 +31,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		return FALSE
 	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
-		balloon_alert(user, "unsecured")
+		balloon_alert(user, "detached")
 		deconstruct(TRUE)
 	return TRUE
 
@@ -56,7 +56,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		. += span_notice("The display is blank.")
 	else if(!issilicon(user) && !user.can_read(src, silent = TRUE))
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
-	else if( get_dist(patient, user) <= 2 || isobserver(user) || issilicon(user))
+	else if(get_dist(patient, user) <= 2 || isobserver(user) || issilicon(user))
 		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
 	else
 		. += span_notice("<i>You are too far away to read the display.</i>")
