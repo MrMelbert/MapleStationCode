@@ -23,7 +23,6 @@
 
 		list(
 			"name" = "Suits & Skirts",
-			"icon" = "vest",
 			"products" = list(
 				/obj/item/clothing/suit/toggle/flannel = 3,
 			),
