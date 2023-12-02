@@ -2,7 +2,6 @@
 	added_categories = list(
 	list(
 			"name" = "Head",
-			"icon" = "hat-cowboy",
 			"products" = list(
 				/obj/item/clothing/head/beret/greyscale_badge = 2,
 			),
