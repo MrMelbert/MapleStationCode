@@ -21,7 +21,7 @@
 			),
 		),
 
-	list(
+		list(
 			"name" = "Suits & Skirts",
 			"icon" = "vest",
 			"products" = list(
