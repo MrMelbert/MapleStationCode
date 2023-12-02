@@ -1,6 +1,6 @@
 /obj/machinery/vending/clothing
 	added_categories = list(
-	list(
+		list(
 			"name" = "Head",
 			"products" = list(
 				/obj/item/clothing/head/beret/greyscale_badge = 2,
