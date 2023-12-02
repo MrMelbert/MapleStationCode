@@ -9,7 +9,6 @@
 
 		list(
 			"name" = "Under",
-			"icon" = "shirt",
 			"products" = list(
 				/obj/item/clothing/under/color/greyscale = 5,
 				/obj/item/clothing/under/color/jumpskirt/greyscale = 5,
