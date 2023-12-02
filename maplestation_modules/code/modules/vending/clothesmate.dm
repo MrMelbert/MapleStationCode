@@ -28,7 +28,7 @@
 			),
 		),
 
-	list(
+		list(
 			"name" = "Shoes",
 			"icon" = "socks",
 			"products" = list(
