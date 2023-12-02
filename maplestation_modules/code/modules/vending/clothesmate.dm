@@ -7,7 +7,7 @@
 			),
 		),
 
-	list(
+		list(
 			"name" = "Under",
 			"icon" = "shirt",
 			"products" = list(
