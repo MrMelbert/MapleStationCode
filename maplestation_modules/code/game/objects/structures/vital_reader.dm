@@ -17,28 +17,30 @@
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON
 	use_power = NO_POWER_USE
 
-	var/active = FALSE
-	var/scanning = FALSE
+	/// Whether we perform an advanced scan on examine or not, currently admin only
 	var/advanced = FALSE
-	var/mob/living/patient
+	/// Whether we are on or off
+	VAR_FINAL/active = FALSE
+	/// Reference to the mob that is being tracked / scanned
+	VAR_FINAL/mob/living/patient
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
 	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
-		balloon_alert(user, "[anchored ? "un" : ""]secured")
-		deconstruct()
+		balloon_alert(user, "unsecured")
+		deconstruct(TRUE)
 		return TRUE
 	return FALSE
 
-/obj/machinery/computer/vitals_reader/deconstruct(disassembled, mob/user)
+/obj/machinery/computer/vitals_reader/deconstruct(disassembled)
 	if(flags_1 & NODECONSTRUCT_1)
 		return
+	var/atom/drop_loc = drop_location()
 	if(disassembled)
-		new /obj/item/wallframe/status_display/vitals(drop_location())
+		new /obj/item/wallframe/status_display/vitals(drop_loc)
 	else
-		var/atom/drop_loc = drop_location()
 		new /obj/item/stack/sheet/iron(drop_loc, 2)
 		new /obj/item/shard(drop_loc)
 		new /obj/item/shard(drop_loc)
@@ -51,13 +53,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 	if(isnull(patient))
 		. += span_notice("The display is blank.")
-
 	else if(!issilicon(user) && !user.can_read(src, silent = TRUE))
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
-
-	else if(isobserver(user) || issilicon(user) || get_dist(patient, user) <= 2)
+	else if( get_dist(patient, user) <= 2 || isobserver(user) || issilicon(user))
 		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
-
 	else
 		. += span_notice("<i>You are too far away to read the display.</i>")
 
@@ -74,21 +73,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		return NONE
 
 	context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
-	if(issilicon(user))
-		context[SCREENTIP_CONTEXT_RMB] = "Examine"
+	if(isai(user))
+		context[SCREENTIP_CONTEXT_SHIFT_LMB] = "Examine vitals"
 	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/machinery/computer/vitals_reader/attack_robot_secondary(mob/user, list/modifiers)
-	if(!is_operational)
-		return ..()
-	user.run_examinate(src)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
-/obj/machinery/computer/vitals_reader/attack_ai_secondary(mob/user, list/modifiers)
-	if(!is_operational)
-		return ..()
-	user.run_examinate(src)
-	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+/obj/machinery/computer/vitals_reader/AIShiftClick(mob/user)
+	// Lets AIs perform healthscans on people indirectly (they can't examine)
+	if(is_operational && !isnull(patient))
+		healthscan(user, patient, advanced = advanced)
 
 /obj/machinery/computer/vitals_reader/update_overlays()
 	. = ..()
