@@ -99,7 +99,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	return list(
 		construct_overlay("mob", hp_color),
 		construct_overlay("blood", COLOR_GRAY),
-		construct_overlay("bar9", COLOR_GRAY, 3),
 		construct_overlay("bar9", COLOR_GRAY),
 		construct_overlay("bar9", COLOR_GRAY, -3),
 	)
