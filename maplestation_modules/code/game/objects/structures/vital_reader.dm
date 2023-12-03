@@ -54,7 +54,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 	if(isnull(patient))
 		. += span_notice("The display is currently scanning for a patient.")
-	else if(!issilicon(user) && !user.can_read(src, silent = TRUE))
+	else if(!issilicon(user) && (HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, silent = TRUE)))
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
 	else if(get_dist(patient, user) <= 2 || isobserver(user) || issilicon(user))
 		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
@@ -86,8 +86,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 /// Returns overlays to be used when active but without a patient detected
 /obj/machinery/computer/vitals_reader/proc/get_scanning_overlays()
 	return list(
-		mutable_appearance(icon, "unknown", alpha = src.alpha),
-		mutable_appearance(icon, "scanning", alpha = src.alpha),
+		construct_overlay("unknown"),
+		construct_overlay("scanning"),
 	)
 
 /**
@@ -98,9 +98,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 /obj/machinery/computer/vitals_reader/proc/get_simple_mob_overlays(hp_color)
 	return list(
 		construct_overlay("mob", hp_color),
-		construct_overlay("bar1", COLOR_GRAY),
-		construct_overlay("bar2", COLOR_GRAY),
-		construct_overlay("bar3", COLOR_GRAY),
+		construct_overlay("blood", COLOR_GRAY),
+		construct_overlay("bar9", COLOR_GRAY, 3),
+		construct_overlay("bar9", COLOR_GRAY),
+		construct_overlay("bar9", COLOR_GRAY, -3),
 	)
 
 /**
@@ -116,35 +117,35 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		var/bodypart_color = isnull(real_part) ? COLOR_GRAY : percent_to_color((real_part.brute_dam + real_part.burn_dam) / real_part.max_damage)
 		returned_overlays += construct_overlay("human_[body_zone]", bodypart_color)
 
-	var/blood_volume_color = "#2A72AA"
-	switch(patient.blood_volume)
-		if(-INFINITY to BLOOD_VOLUME_BAD)
-			blood_volume_color = "#BD0600"
-		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-			blood_volume_color = "#D3980D"
-		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
-			blood_volume_color = "#B9B40D"
-	returned_overlays += construct_overlay("bar1", blood_volume_color)
+	if(!patient.blood_volume || HAS_TRAIT(patient, TRAIT_NOBLOOD))
+		returned_overlays += construct_overlay("blood", COLOR_GRAY)
+	else
+		var/blood_color = "#a51919"
+		switch((patient.blood_volume - BLOOD_VOLUME_SURVIVE) / (BLOOD_VOLUME_NORMAL - BLOOD_VOLUME_SURVIVE))
+			if(-INFINITY to 0.2)
+				blood_color = "#a1a1a1"
+			if(0.2 to 0.4)
+				blood_color = "#a18282"
+			if(0.4 to 0.6)
+				blood_color = "#a16363"
+			if(0.6 to 0.8)
+				blood_color = "#a14444"
+			if(0.8 to INFINITY)
+				blood_color = "#a51919"
 
-	var/oxygen_color = "#5D9C11"
-	switch(patient.getOxyLoss())
-		if(50 to INFINITY)
-			oxygen_color = "#BD0600"
-		if(30 to 50)
-			oxygen_color = "#D3980D"
-		if(10 to 30)
-			oxygen_color = "#B9B40D"
-	returned_overlays += construct_overlay("bar2", oxygen_color)
+		returned_overlays += construct_overlay("blood", blood_color)
 
-	var/tox_color = "#5D9C11"
-	switch(patient.getToxLoss())
-		if(50 to INFINITY)
-			oxygen_color = "#BD0600"
-		if(30 to 50)
-			oxygen_color = "#D3980D"
-		if(10 to 30)
-			oxygen_color = "#B9B40D"
-	returned_overlays += construct_overlay("bar3", tox_color)
+	if(HAS_TRAIT(patient, TRAIT_NOBREATH))
+		returned_overlays += construct_overlay("bar9", COLOR_GRAY)
+	else
+		var/oxy_percent = patient.getOxyLoss() / patient.maxHealth
+		returned_overlays += construct_overlay(percent_to_bar(oxy_percent), "#2A72AA")
+
+	if(HAS_TRAIT(patient, TRAIT_TOXIMMUNE))
+		returned_overlays += construct_overlay("bar9", COLOR_GRAY, -3)
+	else
+		var/tox_percent = patient.getToxLoss() / patient.maxHealth
+		returned_overlays += construct_overlay(percent_to_bar(tox_percent), "#5d9c11", -3)
 
 	return returned_overlays
 
@@ -158,18 +159,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 	else
 		var/ekg_icon_state = "ekg"
+		var/resp_icon_state = (patient.losebreath || HAS_TRAIT(patient, TRAIT_NOBREATH)) ? "resp_flat" : "resp"
 		if(!patient.appears_alive())
 			ekg_icon_state = "ekg_flat"
+			resp_icon_state = "resp_flat"
 		else if(ishuman(patient))
 			var/mob/living/carbon/human/human_patient = patient
 			switch(human_patient.get_pretend_heart_rate())
 				if(0)
 					ekg_icon_state = "ekg_flat"
+					resp_icon_state = "resp_flat"
 				if(100 to INFINITY)
 					ekg_icon_state = "ekg_fast"
 
 		var/hp_color = percent_to_color((patient.maxHealth - patient.health) / patient.maxHealth)
 		. += construct_overlay(ekg_icon_state, hp_color)
+		. += construct_overlay(resp_icon_state, "#00f7ff")
 
 		if(ishuman(patient))
 			. += get_humanoid_overlays(hp_color)
@@ -193,13 +198,41 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		if(0.375 to 0.5)
 			return "#BD4200"
 
-	// going over 1 is also bad
 	return "#BD0600"
 
-/obj/machinery/computer/vitals_reader/proc/construct_overlay(state_to_use, color_to_use)
+/// Converts a percentage to a bar icon state
+/obj/machinery/computer/vitals_reader/proc/percent_to_bar(percent)
+	if(percent >= 1)
+		return "bar9"
+	if(percent <= 0)
+		return "bar1"
+
+	switch(percent)
+		if(0 to 0.125)
+			return "bar1"
+		if(0.125 to 0.25)
+			return "bar2"
+		if(0.25 to 0.375)
+			return "bar3"
+		if(0.375 to 0.5)
+			return "bar4"
+		if(0.5 to 0.625)
+			return "bar5"
+		if(0.625 to 0.75)
+			return "bar6"
+		if(0.75 to 0.875)
+			return "bar7"
+		if(0.875 to 1)
+			return "bar8"
+
+	return "bar9" // ??
+
+/obj/machinery/computer/vitals_reader/proc/construct_overlay(state_to_use, color_to_use, y_offset = 0)
 	var/mutable_appearance/overlay = mutable_appearance(icon, state_to_use, alpha = src.alpha)
 	overlay.appearance_flags |= RESET_COLOR
 	overlay.color = color_to_use
+	overlay.pixel_z += 32
+	overlay.pixel_y += -32 + y_offset
 	return overlay
 
 /obj/machinery/computer/vitals_reader/interact(mob/user, special_state)
@@ -288,9 +321,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 
 /obj/machinery/proc/get_patient_for_vitals()
-	return null
-
-/obj/machinery/get_patient_for_vitals()
 	return occupant
 
 /obj/machinery/computer/operating/get_patient_for_vitals()
