@@ -34,9 +34,6 @@
 	AddComponent(/datum/component/uses_mana/story_spell/pointed/freeze_person)
 
 /datum/action/cooldown/spell/pointed/freeze_person/is_valid_target(atom/cast_on)
-	. = ..()
-	//if(!.)
-		//return FALSE
 	if(!isliving(cast_on))
 		var/mob/caster = usr || owner
 		if(caster)
@@ -61,7 +58,7 @@
 	status_type = 3
 	alert_type = /atom/movable/screen/alert/status_effect/magic_frozen
 	var/trait_list = list(TRAIT_IMMOBILIZED, TRAIT_NOBLOOD, TRAIT_MUTE, TRAIT_EMOTEMUTE, TRAIT_RESISTHEAT, TRAIT_HANDS_BLOCKED, TRAIT_AI_PAUSED)
-w
+
 /atom/movable/screen/alert/status_effect/magic_frozen
 	name = "Magically Frozen"
 	desc = "You're frozen inside an ice cube, and cannot move."
