@@ -37884,7 +37884,6 @@
 	pixel_y = 12
 	},
 /obj/item/retractor,
-/obj/effect/mapping_helpers/requests_console/assistance,
 /obj/effect/turf_decal/trimline/blue/filled/line,
 /obj/structure/table/glass,
 /obj/item/hemostat,
