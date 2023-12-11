@@ -17,6 +17,8 @@
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_REQUIRES_DEXTERITY
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON
 	use_power = NO_POWER_USE
+	icon_keyboard = null
+	icon_screen = null
 
 	/// Whether we perform an advanced scan on examine or not, currently admin only
 	var/advanced = FALSE
