@@ -24,6 +24,19 @@
 	VAR_FINAL/active = FALSE
 	/// Reference to the mob that is being tracked / scanned
 	VAR_FINAL/mob/living/patient
+	/// Static typecache of things the vitals display can connect to.
+	/// By default it will connect to these and grab their occupant to display as a patient.
+	var/static/list/connectable_typecache = typecacheof(list(
+		/obj/machinery/abductor/experiment,
+		/obj/machinery/atmospherics/components/unary/cryo_cell,
+		/obj/machinery/computer/operating, // Snowflaked
+		/obj/machinery/dna_scannernew,
+		/obj/machinery/gulag_teleporter,
+		/obj/machinery/hypnochair,
+		/obj/machinery/implantchair,
+		/obj/machinery/sleeper,
+		/obj/machinery/stasis,
+	))
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
@@ -287,10 +300,19 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		return
 
 	for(var/obj/machinery/nearby_thing in view(3, src))
-		var/mob/living/patient = nearby_thing.get_patient_for_vitals()
-		if(istype(patient) && (patient.mob_biotypes & MOB_ORGANIC))
-			set_patient(patient)
-			return
+		if(!is_type_in_typecache(nearby_thing, connectable_typecache))
+			continue
+
+		var/mob/living/patient = nearby_thing.occupant
+		if(istype(nearby_thing, /obj/machinery/computer/operating))
+			var/obj/machinery/computer/operating/op = nearby_thing
+			patient = op.table?.patient
+
+		if(!istype(patient) || !(patient.mob_biotypes & MOB_ORGANIC))
+			continue
+
+		set_patient(patient)
+		return
 
 	if(scan_attempts > 12)
 		toggle_active()
@@ -342,35 +364,3 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 /obj/machinery/computer/vitals_reader/proc/update_overlay_on_signal(...)
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
-
-/**
- * Proc used by vitals displays to find a patient to track.
- *
- * By default, it grabs the current occupant of the machine.
- * This can be overridden by the machine to return a different mob, or to make this machine not link to vitals displays.
- *
- * Return a mob, or null if no patient is found.
- */
-/obj/machinery/proc/get_patient_for_vitals()
-	return occupant
-
-/obj/machinery/computer/get_patient_for_vitals()
-	return null
-
-/obj/machinery/computer/operating/get_patient_for_vitals()
-	return table?.patient
-
-/obj/machinery/gibber/get_patient_for_vitals()
-	return null
-
-/obj/machinery/recharge_station/get_patient_for_vitals()
-	return null
-
-/obj/machinery/skill_station/get_patient_for_vitals()
-	return null
-
-/obj/machinery/bci_implanter/get_patient_for_vitals()
-	return null
-
-/obj/machinery/suit_storage_unit/get_patient_for_vitals()
-	return null
