@@ -3,6 +3,7 @@
 	desc = "Used to build vitals displays. Secure on a wall nearby a stasis bed or operating table."
 	result_path = /obj/machinery/computer/vitals_reader
 
+/// A wall mounted screen that showcases the vitals of a patient nearby.
 /obj/machinery/computer/vitals_reader
 	name = "vitals display"
 	desc = "A small screen that displays the vitals of a patient."
@@ -83,6 +84,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	if(is_operational && !isnull(patient))
 		healthscan(user, patient, advanced = advanced)
 
+#define LOWER_BAR_OFFSET -3
+
 /// Returns overlays to be used when active but without a patient detected
 /obj/machinery/computer/vitals_reader/proc/get_scanning_overlays()
 	return list(
@@ -100,7 +103,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		construct_overlay("mob", hp_color),
 		construct_overlay("blood", COLOR_GRAY),
 		construct_overlay("bar9", COLOR_GRAY),
-		construct_overlay("bar9", COLOR_GRAY, -3),
+		construct_overlay("bar9", COLOR_GRAY, LOWER_BAR_OFFSET),
 	)
 
 /**
@@ -141,10 +144,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		returned_overlays += construct_overlay(percent_to_bar(oxy_percent), "#2A72AA")
 
 	if(HAS_TRAIT(patient, TRAIT_TOXIMMUNE))
-		returned_overlays += construct_overlay("bar9", COLOR_GRAY, -3)
+		returned_overlays += construct_overlay("bar9", COLOR_GRAY, LOWER_BAR_OFFSET)
 	else
 		var/tox_percent = patient.getToxLoss() / patient.maxHealth
-		returned_overlays += construct_overlay(percent_to_bar(tox_percent), "#5d9c11", -3)
+		returned_overlays += construct_overlay(percent_to_bar(tox_percent), "#5d9c11", LOWER_BAR_OFFSET)
 
 	return returned_overlays
 
@@ -226,6 +229,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 	return "bar9" // ??
 
+/**
+ * Helper to construct an overlay for the vitals display
+ *
+ * * state_to_use - icon state to use, required
+ * * color_to_use - color to use, optional
+ * * y_offset - offset to apply to the y position of the overlay, defaults to 0
+ */
 /obj/machinery/computer/vitals_reader/proc/construct_overlay(state_to_use, color_to_use, y_offset = 0)
 	var/mutable_appearance/overlay = mutable_appearance(icon, state_to_use, alpha = src.alpha)
 	overlay.appearance_flags |= RESET_COLOR
@@ -233,6 +243,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	overlay.pixel_z += 32
 	overlay.pixel_y += -32 + y_offset
 	return overlay
+
+#undef LOWER_BAR_OFFSET
 
 /obj/machinery/computer/vitals_reader/interact(mob/user, special_state)
 	. = ..()
@@ -250,6 +262,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	if(!is_operational && active)
 		toggle_active()
 
+/// Toggles whether the display is active or not
 /obj/machinery/computer/vitals_reader/proc/toggle_active()
 	if(active)
 		active = FALSE
@@ -261,6 +274,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		find_active_patient()
 	update_appearance(UPDATE_OVERLAYS)
 
+/**
+ * Recursively checks all nearby machines to find a patient to track.
+ *
+ * This can (and should be) signal driven in the future, but machines don't have a set_occupant proc yet,
+ * so this will do for the moment.
+ *
+ * * scan_attempts - number of times this has been called, used to prevent infinite loops
+ */
 /obj/machinery/computer/vitals_reader/proc/find_active_patient(scan_attempts = 0)
 	if(!active || !isnull(patient) || QDELETED(src))
 		return
@@ -277,6 +298,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 	addtimer(CALLBACK(src, PROC_REF(find_active_patient), scan_attempts + 1), 5 SECONDS)
 
+/// Sets the passed mob as the active patient
+/// If there is already a patient, it will be unset first.
 /obj/machinery/computer/vitals_reader/proc/set_patient(mob/living/new_patient)
 	if(!isnull(patient))
 		unset_patient()
@@ -293,6 +316,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	), PROC_REF(update_overlay_on_signal))
 	update_appearance(UPDATE_OVERLAYS)
 
+/// Unset the current patient.
 /obj/machinery/computer/vitals_reader/proc/unset_patient(...)
 	SIGNAL_HANDLER
 	if(isnull(patient))
@@ -314,13 +338,24 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	if(active)
 		find_active_patient()
 
+/// Signal proc to update the display when a signal is received.
 /obj/machinery/computer/vitals_reader/proc/update_overlay_on_signal(...)
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
 
-
+/**
+ * Proc used by vitals displays to find a patient to track.
+ *
+ * By default, it grabs the current occupant of the machine.
+ * This can be overridden by the machine to return a different mob, or to make this machine not link to vitals displays.
+ *
+ * Return a mob, or null if no patient is found.
+ */
 /obj/machinery/proc/get_patient_for_vitals()
 	return occupant
+
+/obj/machinery/computer/get_patient_for_vitals()
+	return null
 
 /obj/machinery/computer/operating/get_patient_for_vitals()
 	return table?.patient
