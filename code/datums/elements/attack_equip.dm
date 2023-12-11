@@ -18,7 +18,7 @@
 
 /datum/element/attack_equip/proc/on_item_attack(obj/item/attire, mob/living/target, mob/living/user)
 	SIGNAL_HANDLER
-	if(user.combat_mode || !ishuman(target) || target == user)
+	if(user.combat_mode || !ishuman(target)) // NON-MODULE CHANGE : Allow self hit
 		return
 
 	var/mob/living/carbon/human/sharp_dresser = target
@@ -50,6 +50,6 @@
 
 	user.temporarilyRemoveItemFromInventory(attire)
 
-	sharp_dresser.equip_to_slot_if_possible(attire, attire.slot_flags)
+	sharp_dresser.equip_to_slot_if_possible(attire, attire.slot_flags, bypass_equip_delay_self = TRUE) // NON-MODULE CHANGE : Bugged
 
 	return finish_equip_mob(attire, sharp_dresser, user)

@@ -28,6 +28,7 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 		JOB_ASSISTANT,
 		"Bridge Officer", //NON-MODULE CHANGE // MELBERT MODULARIZE ME
 		"Asset Protection", // NON-MODULE CHANGE
+		"Stowaway",
 	)
 
 	//The scaling factor of max total positions in relation to the total amount of people on board the station in %

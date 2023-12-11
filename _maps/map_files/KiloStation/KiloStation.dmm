@@ -92,6 +92,7 @@
 /obj/structure/table/wood,
 /obj/effect/decal/cleanable/dirt,
 /obj/item/storage/briefcase,
+/obj/item/folder,
 /obj/item/taperecorder{
 	pixel_x = -4;
 	pixel_y = 4
@@ -2997,6 +2998,12 @@
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/plating,
 /area/station/maintenance/port/greater)
+"anE" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/mapping_helpers/broken_floor,
+/obj/effect/landmark/generic_maintenance_landmark,
+/turf/open/floor/plating,
+/area/station/maintenance/department/security)
 "anF" = (
 /obj/machinery/flasher/portable,
 /obj/effect/turf_decal/tile/neutral{
@@ -3817,8 +3824,7 @@
 	dir = 1
 	},
 /obj/structure/table,
-/obj/item/clipboard,
-/obj/item/folder,
+/obj/machinery/fax/deluxe/starts_enabled,
 /turf/open/floor/iron/dark,
 /area/station/security/courtroom)
 "arL" = (
@@ -4693,12 +4699,16 @@
 /area/station/maintenance/starboard/aft)
 "avU" = (
 /obj/structure/table/wood,
+/obj/item/clipboard{
+	pixel_y = 4;
+	pixel_x = -4
+	},
 /obj/item/paper_bin,
-/obj/item/pen,
 /obj/item/pen/red{
 	pixel_x = 5;
 	pixel_y = 1
 	},
+/obj/item/pen,
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "awb" = (
@@ -17169,6 +17179,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
 /obj/effect/mapping_helpers/broken_floor,
+/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/plating,
 /area/station/maintenance/department/security)
 "bVp" = (
@@ -20833,6 +20844,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
+/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/plating,
 /area/station/maintenance/aft)
 "clD" = (
@@ -22939,7 +22951,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
-/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/wood,
 /area/station/maintenance/port/fore)
 "cyf" = (
@@ -23837,6 +23848,7 @@
 "cDF" = (
 /obj/machinery/airalarm/directional/east,
 /obj/effect/mapping_helpers/broken_floor,
+/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/wood,
 /area/station/maintenance/department/crew_quarters/bar)
 "cDN" = (
@@ -24107,7 +24119,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/structure/sign/poster/contraband/random/directional/south,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
@@ -24987,7 +24998,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/department/electrical)
@@ -29355,10 +29365,7 @@
 /obj/structure/table,
 /obj/effect/turf_decal/bot,
 /obj/structure/mirror/directional/north,
-/obj/machinery/fax{
-	fax_name = "Law Office";
-	name = "Law Office Fax Machine"
-	},
+/obj/machinery/fax/deluxe/starts_enabled,
 /turf/open/floor/iron/dark,
 /area/station/service/lawoffice)
 "els" = (
@@ -37532,7 +37539,6 @@
 "hek" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
-/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/iron/dark,
 /area/station/security/interrogation)
 "hel" = (
@@ -42493,7 +42499,7 @@
 "iSf" = (
 /obj/structure/table/wood,
 /obj/machinery/firealarm/directional/north,
-/obj/structure/statue/bronze/marx,
+/obj/machinery/fax,
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "iSk" = (
@@ -42678,7 +42684,6 @@
 /turf/open/floor/engine,
 /area/station/engineering/supermatter/room)
 "iUd" = (
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/effect/spawner/random/medical/two_percent_xeno_egg_spawner,
 /turf/open/floor/engine,
 /area/station/science/xenobiology)
@@ -48807,6 +48812,7 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "lcf" = (
@@ -52597,7 +52603,6 @@
 /turf/open/floor/engine,
 /area/station/engineering/supermatter/room)
 "muH" = (
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/effect/landmark/blobstart,
 /obj/effect/landmark/event_spawn,
 /obj/effect/spawner/random/trash/mess,
@@ -53137,6 +53142,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/directional/east,
+/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/plating,
 /area/station/maintenance/department/security)
 "mCW" = (
@@ -56405,7 +56411,6 @@
 /area/station/cargo/warehouse)
 "nON" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/broken_floor,
 /obj/structure/cable,
@@ -63766,6 +63771,7 @@
 	},
 /obj/effect/mapping_helpers/burnt_floor,
 /obj/machinery/atmospherics/components/binary/pump/off/supply/hidden/layer4,
+/obj/effect/landmark/generic_maintenance_landmark,
 /turf/open/floor/plating,
 /area/station/maintenance/port/greater)
 "qpy" = (
@@ -63977,7 +63983,6 @@
 	c_tag = "Autopsy Room";
 	name = "detective camera"
 	},
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/effect/landmark/start/detective,
 /turf/open/floor/iron/dark,
 /area/station/security/detectives_office)
@@ -74059,7 +74064,6 @@
 "tSu" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
@@ -81149,6 +81153,14 @@
 /obj/item/food/grown/poppy/lily,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/monastery)
+"wvR" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/landmark/generic_maintenance_landmark,
+/turf/open/floor/plating,
+/area/station/maintenance/aft)
 "wvW" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -99561,7 +99573,7 @@ cql
 osY
 rkz
 aky
-uaZ
+anE
 keP
 cuF
 hKh
@@ -115511,7 +115523,7 @@ mWQ
 igk
 bFz
 uZY
-wct
+wvR
 bFZ
 bRT
 cEw

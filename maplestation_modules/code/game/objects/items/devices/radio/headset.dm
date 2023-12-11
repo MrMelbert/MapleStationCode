@@ -19,6 +19,6 @@
 	desc = "The headset of the man or woman in charge of assisting and protecting the heads of staff. Protects ears from flashbangs."
 	icon_state = "com_headset_alt"
 
-/obj/item/radio/headset/heads/asset_protection/alt/Initialize()
+/obj/item/radio/headset/heads/asset_protection/alt/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))

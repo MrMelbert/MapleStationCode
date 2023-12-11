@@ -161,3 +161,7 @@
 /datum/loadout_item/suit/flannel_jacket
 	name = "Flannel Jacket"
 	item_path = /obj/item/clothing/suit/toggle/flannel
+
+/datum/loadout_item/suit/chesed_jacket
+	name = "Well-Kept Jacket"
+	item_path = /obj/item/clothing/suit/chesedjacket

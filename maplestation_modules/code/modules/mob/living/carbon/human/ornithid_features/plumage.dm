@@ -33,6 +33,10 @@
 	name = "Hermes"
 	icon_state = "hermes"
 
+/datum/sprite_accessory/plumage/arched
+	name = "Arched"
+	icon_state = "arched"
+
 /* /datum/sprite_accessory/plumage/kresnik // similar to tails (originally!), this is commented out for the time being.
 	name = "Kresnik"
 	icon_state = "kresnik" */

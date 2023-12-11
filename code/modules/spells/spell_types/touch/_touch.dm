@@ -115,9 +115,11 @@
 		unregister_hand_signals()
 		hand_owner?.temporarilyRemoveItemFromInventory(attached_hand)
 		QDEL_NULL(attached_hand)
+	else
+		attached_hand = null // NON-MODULE CHANGE / UPSTREAM THIS
 
 	if(reset_cooldown_after)
-		if(hand_owner)
+		if(hand_owner && drop_message) // NON-MODULE CHANGE / UPSTREAM THIS
 			to_chat(hand_owner, drop_message)
 		reset_spell_cooldown()
 	else

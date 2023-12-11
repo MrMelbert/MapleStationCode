@@ -20,10 +20,10 @@
 /mob/living/proc/get_speech_sounds(sound_type)
 	// These sounds have been ported from Goonstation.
 	return string_assoc_list(list(
-		'maplestation_modules/sound/voice/speak_1.ogg' = 120,
-		'maplestation_modules/sound/voice/speak_2.ogg' = 120,
-		'maplestation_modules/sound/voice/speak_3.ogg' = 120,
-		'maplestation_modules/sound/voice/speak_4.ogg' = 120,
+		'goon/sound/voice/speak_1.ogg' = 120,
+		'goon/sound/voice/speak_2.ogg' = 120,
+		'goon/sound/voice/speak_3.ogg' = 120,
+		'goon/sound/voice/speak_4.ogg' = 120,
 	))
 
 /mob/living/basic/get_speech_sounds(sound_type)
@@ -33,10 +33,10 @@
 	return
 
 /mob/living/simple_animal/bot/get_speech_sounds(sound_type)
-	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
+	return string_assoc_list(list('goon/sound/voice/radio_ai.ogg' = 100))
 
 /mob/living/silicon/get_speech_sounds(sound_type)
-	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
+	return string_assoc_list(list('goon/sound/voice/radio_ai.ogg' = 100))
 
 /mob/living/carbon/get_speech_sounds(sound_type)
 	return dna?.species?.get_species_speech_sounds(sound_type)
@@ -48,15 +48,15 @@
  */
 /mob/living/proc/get_radio_sounds()
 	return string_assoc_list(list(
-		'maplestation_modules/sound/voice/radio.ogg' = 75,
-		'maplestation_modules/sound/voice/radio_2.ogg' = 75,
+		'goon/sound/voice/radio.ogg' = 75,
+		'goon/sound/voice/radio_2.ogg' = 75,
 	))
 
 /mob/living/simple_animal/bot/get_radio_sounds()
-	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
+	return string_assoc_list(list('goon/sound/voice/radio_ai.ogg' = 100))
 
 /mob/living/silicon/get_radio_sounds()
-	return string_assoc_list(list('maplestation_modules/sound/voice/radio_ai.ogg' = 100))
+	return string_assoc_list(list('goon/sound/voice/radio_ai.ogg' = 100))
 
 /// Extend say so we can have talking make sounds.
 /mob/living/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, message_range = 7, datum/saymode/saymode = null)

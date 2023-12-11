@@ -977,13 +977,19 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	else
 		prefix = ""
 
+// NON-MODULE CHANGE START
+	var/postfix = copytext(message, -1)
+	if(!(postfix in list(".", "?", "!")))
+		postfix = ""
+// NON-MODULE CHANGE END
+
 	var/list/rearranged = list()
 	while(word_boundaries.Find(message))
 		var/cword = word_boundaries.match
 		if(length(cword))
 			rearranged += cword
 	shuffle_inplace(rearranged)
-	return "[prefix][jointext(rearranged, " ")]"
+	return "[prefix][jointext(rearranged, " ")][postfix]" // NON-MODULE CHANGE
 
 
 /proc/readable_corrupted_text(text)

@@ -100,7 +100,9 @@
  * Generate a "source event" / reason as to why the crates and debris are spawning.
  */
 /datum/round_event/resource_drift/proc/get_source()
-	var/list/parties = strings(COMPANY_FILE, "companies")
+	var/list/parties = list()
+	parties += strings(COMPANY_FILE, "bad_companies")
+	parties += strings(COMPANY_FILE, "good_companies")
 	parties += list("Space Station [rand(1, 12)]", "Space Station [rand(14, 99)]", "raider", "pirate")
 
 	. = pick_list(RESOURCE_EVENT_FILE, "drift_reasons")

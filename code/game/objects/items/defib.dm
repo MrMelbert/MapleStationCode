@@ -120,18 +120,13 @@
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/defibrillator/attack_hand(mob/user, list/modifiers)
 	if(loc == user)
-		if(slot_flags & ITEM_SLOT_BACK)
-			if(user.get_item_by_slot(ITEM_SLOT_BACK) == src)
-				ui_action_click()
-			else
-				to_chat(user, span_warning("Put the defibrillator on your back first!"))
-
-		else if(slot_flags & ITEM_SLOT_BELT)
-			if(user.get_item_by_slot(ITEM_SLOT_BELT) == src)
-				ui_action_click()
-			else
-				to_chat(user, span_warning("Strap the defibrillator's belt on first!"))
+		// NON-MODULE CHANGE START
+		if(user.get_slot_by_item(src) & slot_flags)
+			ui_action_click()
+		else
+			balloon_alert(user, "equip the unit first!")
 		return
+		// NON-MODULE CHANGE END
 	else if(istype(loc, /obj/machinery/defibrillator_mount))
 		ui_action_click() //checks for this are handled in defibrillator.mount.dm
 	return ..()
@@ -283,9 +278,12 @@
 	nocell_state = "defibcompact-nocell"
 	emagged_state = "defibcompact-emagged"
 
+/*
+// NON-MODULE CHANGE
 /obj/item/defibrillator/compact/item_action_slot_check(slot, mob/user)
 	if(slot & user.getBeltSlot())
 		return TRUE
+*/
 
 /obj/item/defibrillator/compact/loaded/Initialize(mapload)
 	. = ..()
@@ -650,6 +648,8 @@
 					SEND_SIGNAL(H, COMSIG_LIVING_MINOR_SHOCK)
 					user.add_mood_event("saved_life", /datum/mood_event/saved_life)
 					log_combat(user, H, "revived", defib)
+					H.adjust_pain_shock(-12) // NON-MODULE CHANGE
+					H.cause_pain(BODY_ZONES_ALL, -16) // NON-MODULE CHANGE
 				do_success()
 				return
 			else if (!H.get_organ_by_type(/obj/item/organ/internal/heart))
@@ -659,6 +659,8 @@
 				playsound(src, 'sound/machines/defib_zap.ogg', 50, TRUE, -1)
 				if(!(heart.organ_flags & ORGAN_FAILING))
 					H.set_heartattack(FALSE)
+					H.adjust_pain_shock(-12) // NON-MODULE CHANGE
+					H.cause_pain(BODY_ZONES_ALL, -16) // NON-MODULE CHANGE
 					user.visible_message(span_notice("[req_defib ? "[defib]" : "[src]"] pings: Patient's heart is now beating again."))
 				else
 					user.visible_message(span_warning("[req_defib ? "[defib]" : "[src]"] buzzes: Resuscitation failed, heart damage detected."))

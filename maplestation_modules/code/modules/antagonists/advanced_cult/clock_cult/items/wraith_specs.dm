@@ -19,7 +19,7 @@
 	glass_colour_type = /datum/client_colour/glass_colour/yellow
 	actions_types = list(/datum/action/item_action/toggle)
 
-/obj/item/clothing/glasses/wraith_specs/Initialize()
+/obj/item/clothing/glasses/wraith_specs/Initialize(mapload)
 	. = ..()
 	INVOKE_ASYNC(src, PROC_REF(weldingvisortoggle))
 
