@@ -221,3 +221,14 @@
 	access = ACCESS_SURGERY
 	contains = list(/obj/item/autosurgeon/only_on_damaged_organs/lungs)
 	crate_name = "autosurgeon crate"
+
+/datum/supply_pack/costumes_toys/ornithid_mask
+	name = "Ornithid Mask Crate"
+	desc = "A cheap bundle containing all kinds of Ornithid masks."
+	cost = PAYCHECK_COMMAND * 3 //300 cr, selling the crate back actually makes 284 cr
+	contains = list(
+		/obj/item/clothing/mask/breath/ornithid/cardinal,
+		/obj/item/clothing/mask/breath/ornithid/secretary,
+		/obj/item/clothing/mask/breath/ornithid/toucan,
+		/obj/item/clothing/mask/breath/ornithid/bluejay,
+	)
