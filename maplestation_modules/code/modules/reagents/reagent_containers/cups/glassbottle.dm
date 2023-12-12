@@ -1,7 +1,5 @@
-#define BOTTLE_KNOCKDOWN_DEFAULT_DURATION (1.3 SECONDS)
-
 /obj/item/reagent_containers/cup/glass/bottle/blood_wine
-	name = "bottle of lizard wine"
+	name = "bottle of Tiziran blood wine"
 	desc = "A wine made from fermented blood originating from Tizira. Despite the name, the drink does not taste of blood."
 	icon = 'maplestation_modules/icons/obj/bottles.dmi'
 	icon_state = "bloodwinebottle"
