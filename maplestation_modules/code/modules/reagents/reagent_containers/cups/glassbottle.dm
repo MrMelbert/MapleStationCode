@@ -1,6 +1,5 @@
 /obj/item/reagent_containers/cup/glass/bottle/blood_wine
 	name = "bottle of Tiziran blood wine"
-	name = "bottle of lizard wine"
 	desc = "A wine made from fermented blood originating from Tizira. Despite the name, the drink does not taste of blood."
 	icon = 'maplestation_modules/icons/obj/bottles.dmi'
 	icon_state = "bloodwinebottle"
