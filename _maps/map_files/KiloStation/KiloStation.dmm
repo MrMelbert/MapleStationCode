@@ -8459,6 +8459,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/box/corners,
+/obj/machinery/camera/autoname/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
 "aSG" = (
@@ -8575,6 +8576,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
+/obj/machinery/camera/autoname/directional/north,
 /turf/open/floor/iron/large,
 /area/station/service/hydroponics/garden/monastery)
 "aTw" = (
@@ -12794,6 +12796,8 @@
 "btv" = (
 /obj/effect/turf_decal/stripes/line,
 /obj/structure/closet/emcloset,
+/obj/effect/turf_decal/siding/white,
+/obj/machinery/camera/autoname/directional/west,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
 "btC" = (
@@ -13196,6 +13200,12 @@
 	},
 /turf/open/floor/iron/dark/airless,
 /area/station/science/ordnance/freezerchamber)
+"bye" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/cable,
+/obj/structure/sign/warning/electric_shock/directional/west,
+/turf/open/floor/plating/airless,
+/area/space/nearstation)
 "byf" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -15205,7 +15215,7 @@
 /area/station/maintenance/port/greater)
 "bKs" = (
 /obj/machinery/door/airlock/grunge{
-	name = "Chapel Office"
+	name = "Funeral Room"
 	},
 /obj/machinery/door/firedoor,
 /obj/structure/cable,
@@ -28197,6 +28207,7 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 4
 	},
+/obj/machinery/camera/autoname/directional/west,
 /turf/open/floor/wood,
 /area/station/service/chapel)
 "edM" = (
@@ -30545,7 +30556,7 @@
 /area/station/command/heads_quarters/rd)
 "eSM" = (
 /obj/machinery/camera/directional/north{
-	c_tag = "Fore Hallway Monastary Hall";
+	c_tag = "Fore Hallway Garden";
 	name = "fore camera"
 	},
 /obj/effect/turf_decal/tile/neutral{
@@ -33598,6 +33609,7 @@
 	dir = 8
 	},
 /obj/machinery/firealarm/directional/east,
+/obj/machinery/camera/autoname/directional/east,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/hydroponics/garden/monastery)
 "fUt" = (
@@ -33754,6 +33766,7 @@
 	},
 /obj/effect/decal/cleanable/generic,
 /obj/effect/mapping_helpers/broken_floor,
+/obj/machinery/light/small/broken/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "fYm" = (
@@ -33767,7 +33780,7 @@
 /obj/machinery/door/morgue{
 	name = "Religious Equipment";
 	req_access = list("chapel_office");
-	dir = 8
+	dir = 4
 	},
 /turf/open/floor/iron/dark/textured_half{
 	dir = 1
@@ -35033,20 +35046,11 @@
 "gzt" = (
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/effect/turf_decal/siding/white{
 	dir = 4
 	},
 /obj/item/kirbyplants/random,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/hallway/primary/fore)
 "gzy" = (
@@ -35839,6 +35843,7 @@
 /obj/effect/turf_decal/siding/dark/corner{
 	dir = 4
 	},
+/obj/machinery/camera/autoname/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel)
 "gNE" = (
@@ -37259,10 +37264,6 @@
 /turf/open/floor/iron,
 /area/station/security/checkpoint/customs)
 "hkB" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
 /obj/effect/turf_decal/siding/green{
 	dir = 4
 	},
@@ -37270,6 +37271,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden)
 "hlc" = (
@@ -37855,6 +37857,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/burnt_floor,
+/obj/machinery/camera/autoname/directional/east,
 /turf/open/floor/iron/smooth_large,
 /area/station/maintenance/department/chapel/monastery)
 "hyP" = (
@@ -38926,6 +38929,16 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/medical/paramedic)
+"hRc" = (
+/obj/structure/bodycontainer/morgue{
+	dir = 8
+	},
+/obj/effect/turf_decal/trimline/neutral/warning,
+/obj/effect/turf_decal/bot_white,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/iron/dark,
+/area/station/service/chapel/funeral)
 "hRq" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /obj/effect/turf_decal/stripes/line{
@@ -41334,7 +41347,10 @@
 	dir = 1
 	},
 /obj/structure/cable,
-/turf/open/floor/iron,
+/obj/effect/turf_decal/siding/white,
+/turf/open/floor/iron/half{
+	dir = 8
+	},
 /area/station/service/hydroponics/garden/monastery)
 "iIg" = (
 /obj/effect/decal/cleanable/dirt,
@@ -43095,6 +43111,10 @@
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/service/kitchen)
+"joq" = (
+/obj/structure/sign/warning/secure_area,
+/turf/closed/wall,
+/area/station/service/abandoned_gambling_den)
 "jou" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
@@ -43804,6 +43824,11 @@
 /obj/machinery/status_display/ai/directional/south,
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
+"jAd" = (
+/obj/effect/spawner/structure/window/reinforced,
+/obj/structure/curtain/bounty,
+/turf/open/floor/plating,
+/area/station/service/chapel/office)
 "jAe" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
@@ -45983,6 +46008,11 @@
 	},
 /turf/closed/wall/rust,
 /area/station/engineering/atmos)
+"kpA" = (
+/obj/structure/lattice,
+/obj/structure/sign/warning/secure_area/directional/north,
+/turf/open/space/basic,
+/area/space/nearstation)
 "kpE" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -50709,7 +50739,7 @@
 "lUv" = (
 /obj/machinery/door/morgue{
 	name = "Confession Booth (Public)";
-	dir = 4
+	dir = 8
 	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
@@ -55161,6 +55191,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
+/obj/item/radio/intercom/chapel/directional/west,
 /turf/open/floor/cult,
 /area/station/service/chapel/office)
 "nAB" = (
@@ -57341,6 +57372,7 @@
 "osi" = (
 /obj/structure/closet/firecloset/full,
 /obj/effect/turf_decal/stripes/line,
+/obj/effect/turf_decal/siding/white,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
 "osm" = (
@@ -59094,6 +59126,11 @@
 /obj/item/clothing/mask/russian_balaclava,
 /turf/open/floor/iron/dark,
 /area/station/security/lockers)
+"oYR" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/sign/warning/secure_area,
+/turf/closed/wall,
+/area/station/service/abandoned_gambling_den)
 "oYZ" = (
 /turf/closed/wall/rust,
 /area/station/engineering/supermatter/room)
@@ -62147,7 +62184,7 @@
 /obj/machinery/door/morgue{
 	name = "Confession Booth (Chaplain)";
 	req_access = list("chapel_office");
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/dark/textured_half{
 	dir = 1
@@ -62617,6 +62654,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
+/obj/machinery/camera/autoname/directional/west,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/hydroponics/garden/monastery)
 "qhB" = (
@@ -62970,7 +63008,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
 "qnL" = (
-/obj/machinery/camera/autoname/directional/east,
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/structure/table/wood,
 /obj/item/book/bible{
@@ -64935,6 +64972,7 @@
 /area/station/maintenance/fore)
 "qZO" = (
 /obj/machinery/space_heater,
+/obj/structure/sign/poster/official/safety_report/directional/north,
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/station/maintenance/department/chapel/monastery)
 "qZU" = (
@@ -67494,17 +67532,12 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "rOJ" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/effect/turf_decal/siding/white{
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden)
 "rOO" = (
@@ -67558,6 +67591,7 @@
 "rQd" = (
 /obj/machinery/atmospherics/components/tank/air,
 /obj/effect/decal/cleanable/cobweb,
+/obj/structure/sign/poster/official/safety_internals/directional/north,
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/station/maintenance/department/chapel/monastery)
 "rQf" = (
@@ -75225,6 +75259,11 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
+/obj/machinery/camera/directional/west{
+	c_tag = "Fore Hallway Chapel Entrace";
+	name = "fore camera"
+	},
+/obj/machinery/newscaster/directional/west,
 /turf/open/floor/iron/dark/corner{
 	dir = 1
 	},
@@ -75991,6 +76030,7 @@
 /area/station/engineering/supermatter/room)
 "uMe" = (
 /obj/structure/sign/poster/official/no_erp/directional/north,
+/obj/machinery/camera/autoname/directional/north,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
 "uMf" = (
@@ -79765,6 +79805,7 @@
 /obj/effect/mapping_helpers/broken_floor,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/generic,
+/obj/machinery/camera/autoname/directional/east,
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "wfH" = (
@@ -80514,6 +80555,10 @@
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
+"wsQ" = (
+/obj/structure/no_effect_signpost,
+/turf/open/misc/asteroid/airless,
+/area/space/nearstation)
 "wtb" = (
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/effect/turf_decal/caution/stand_clear,
@@ -81334,7 +81379,9 @@
 	dir = 4
 	},
 /obj/structure/cable,
-/turf/open/floor/iron/large,
+/turf/open/floor/iron/half{
+	dir = 8
+	},
 /area/station/service/hydroponics/garden/monastery)
 "wKO" = (
 /obj/machinery/door/airlock/maintenance,
@@ -85518,6 +85565,7 @@
 /obj/structure/cable,
 /obj/machinery/power/smes,
 /obj/machinery/light/small/directional/south,
+/obj/structure/sign/warning/electric_shock/directional/south,
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/station/maintenance/department/chapel/monastery)
 "yec" = (
@@ -102797,7 +102845,7 @@ aeu
 aeu
 aeu
 aeU
-aeU
+wsQ
 aeU
 aeU
 aeu
@@ -103598,10 +103646,10 @@ aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
-iWq
+acm
+acm
+acm
+joq
 eZJ
 vdh
 iWq
@@ -103842,20 +103890,20 @@ acm
 alm
 acm
 acm
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
 aaa
 iWq
 jtj
@@ -104106,14 +104154,14 @@ aaa
 aaa
 aaa
 aaa
+acm
 aaa
 aaa
 aaa
 aaa
 aaa
-aaa
-aaa
-aaa
+acm
+acm
 iWq
 jhL
 aRi
@@ -104363,7 +104411,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+acm
 aaa
 aaa
 aaa
@@ -104620,7 +104668,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+acm
 aaa
 aaa
 aaa
@@ -104877,7 +104925,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+acm
 aaa
 aaa
 aaa
@@ -105134,7 +105182,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+acm
 aaa
 aaa
 aaa
@@ -105391,7 +105439,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+acm
 aaa
 aaa
 aaa
@@ -105633,7 +105681,7 @@ ats
 tph
 wtI
 tph
-acm
+kpA
 acm
 acm
 acm
@@ -105648,7 +105696,7 @@ aaa
 aaa
 aaa
 aaa
-aaa
+acm
 aaa
 aaa
 aaa
@@ -105889,7 +105937,7 @@ cQI
 niY
 ejw
 btv
-kwm
+mBk
 aaa
 aaa
 aaa
@@ -105914,7 +105962,7 @@ acm
 acm
 aaa
 aaa
-eZJ
+oYR
 iWq
 sgv
 iWq
@@ -106146,7 +106194,7 @@ lIG
 sXE
 wKN
 iIf
-mBk
+kwm
 eTb
 vlZ
 eTb
@@ -106172,7 +106220,7 @@ loS
 loS
 loS
 giK
-giK
+bye
 giK
 giK
 cwy
@@ -106661,7 +106709,7 @@ wtI
 tph
 tph
 tph
-acm
+kpA
 acm
 acm
 acm
@@ -106685,7 +106733,7 @@ aaa
 lQe
 acm
 acm
-aeU
+cmU
 aUz
 cmU
 aeu
@@ -107202,8 +107250,8 @@ acm
 acm
 acm
 cmU
-aeU
-aeU
+cmU
+cmU
 jvL
 qzw
 nAx
@@ -107459,7 +107507,7 @@ aaa
 acm
 jvL
 jvL
-rct
+jAd
 jvL
 jvL
 jvL
@@ -108466,7 +108514,7 @@ aaa
 aaa
 aaa
 alm
-aaa
+acm
 acm
 acm
 acm
@@ -111036,7 +111084,7 @@ aaa
 aaa
 aaa
 alm
-aaa
+acm
 acm
 acm
 acm
@@ -112086,7 +112134,7 @@ bdJ
 iKQ
 vwc
 osu
-qUq
+hRc
 qUq
 oWA
 aeu
