@@ -12792,11 +12792,8 @@
 	},
 /area/station/hallway/primary/starboard)
 "btv" = (
-/obj/structure/transit_tube/horizontal{
-	dir = 1
-	},
-/obj/structure/cable,
 /obj/effect/turf_decal/stripes/line,
+/obj/structure/closet/emcloset,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
 "btC" = (
@@ -35283,12 +35280,10 @@
 /turf/open/floor/iron/cafeteria,
 /area/station/security/prison/garden)
 "gCM" = (
-/obj/structure/transit_tube/curved{
-	dir = 4
-	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 9
 	},
+/obj/structure/transit_tube,
 /turf/open/floor/wood/large,
 /area/station/service/chapel)
 "gCO" = (
@@ -36671,14 +36666,6 @@
 "hby" = (
 /turf/closed/wall/rust,
 /area/station/service/chapel)
-"hbB" = (
-/obj/structure/transit_tube/curved/flipped{
-	dir = 1
-	},
-/obj/structure/lattice/catwalk,
-/obj/structure/cable,
-/turf/open/space/basic,
-/area/space/nearstation)
 "hbJ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
@@ -39752,6 +39739,14 @@
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/service/abandoned_gambling_den)
+"ifX" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/cable,
+/obj/structure/transit_tube/curved/flipped{
+	dir = 1
+	},
+/turf/open/space/basic,
+/area/space/nearstation)
 "ige" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -41335,7 +41330,10 @@
 /area/station/maintenance/solars/starboard/aft)
 "iIf" = (
 /obj/effect/turf_decal/stripes/line,
-/obj/structure/closet/emcloset/anchored,
+/obj/structure/transit_tube/horizontal{
+	dir = 1
+	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
 "iIg" = (
@@ -48108,13 +48106,6 @@
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
 /area/station/security/prison)
-"kXS" = (
-/obj/structure/transit_tube/station/dispenser/reverse{
-	dir = 4
-	},
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/station/service/hydroponics/garden/monastery)
 "kYi" = (
 /obj/structure/table/wood,
 /obj/item/vending_refill/cigarette,
@@ -49250,13 +49241,6 @@
 "lsw" = (
 /turf/closed/wall,
 /area/station/engineering/gravity_generator)
-"lsK" = (
-/obj/effect/spawner/structure/window/reinforced,
-/obj/structure/transit_tube/diagonal{
-	dir = 8
-	},
-/turf/open/floor/plating,
-/area/station/service/chapel)
 "lsT" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral,
@@ -50401,6 +50385,11 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
+"lQe" = (
+/obj/structure/transit_tube/horizontal,
+/obj/structure/lattice/catwalk,
+/turf/open/space/basic,
+/area/space/nearstation)
 "lQg" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
@@ -50562,6 +50551,11 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/dark,
 /area/station/maintenance/starboard/aft)
+"lSo" = (
+/obj/effect/spawner/structure/window/reinforced,
+/obj/structure/transit_tube/curved/flipped,
+/turf/open/floor/plating,
+/area/station/service/chapel)
 "lSB" = (
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -55456,7 +55450,10 @@
 /area/station/maintenance/port/fore)
 "nGq" = (
 /obj/item/radio/intercom/directional/east,
-/turf/open/floor/iron,
+/obj/effect/turf_decal/loading_area{
+	dir = 4
+	},
+/turf/open/floor/iron/large,
 /area/station/service/hydroponics/garden/monastery)
 "nGB" = (
 /turf/open/floor/engine/co2,
@@ -61715,6 +61712,9 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 10
 	},
+/obj/structure/transit_tube/station/dispenser/reverse/flipped{
+	dir = 8
+	},
 /turf/open/floor/wood/large,
 /area/station/service/chapel)
 "pRU" = (
@@ -64836,10 +64836,10 @@
 /turf/open/floor/engine,
 /area/station/engineering/gravity_generator)
 "qXP" = (
-/obj/structure/transit_tube/station/dispenser/reverse,
 /obj/effect/turf_decal/siding/wood{
 	dir = 5
 	},
+/obj/structure/closet/emcloset,
 /turf/open/floor/wood/large,
 /area/station/service/chapel)
 "qYi" = (
@@ -68026,6 +68026,13 @@
 /obj/effect/mapping_helpers/mail_sorting/supply/disposals,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"rYE" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/transit_tube/curved{
+	dir = 8
+	},
+/turf/open/space/basic,
+/area/space/nearstation)
 "rYN" = (
 /obj/machinery/firealarm/directional/east,
 /obj/effect/turf_decal/tile/neutral{
@@ -70834,6 +70841,7 @@
 /obj/effect/turf_decal/siding/dark{
 	dir = 1
 	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
 "sYg" = (
@@ -73632,6 +73640,9 @@
 /turf/open/floor/wood,
 /area/station/security/detectives_office)
 "tUY" = (
+/obj/effect/turf_decal/loading_area{
+	dir = 4
+	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
 	},
@@ -80294,6 +80305,14 @@
 	},
 /turf/open/floor/plating,
 /area/station/engineering/atmos/pumproom)
+"wpp" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/cable,
+/obj/structure/transit_tube/horizontal{
+	dir = 1
+	},
+/turf/open/space/basic,
+/area/space/nearstation)
 "wpD" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -81311,9 +81330,10 @@
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "wKN" = (
-/obj/effect/turf_decal/loading_area{
+/obj/structure/transit_tube/station/dispenser/reverse{
 	dir = 4
 	},
+/obj/structure/cable,
 /turf/open/floor/iron/large,
 /area/station/service/hydroponics/garden/monastery)
 "wKO" = (
@@ -85035,6 +85055,13 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"xUz" = (
+/obj/structure/transit_tube/curved{
+	dir = 4
+	},
+/obj/structure/lattice/catwalk,
+/turf/open/space/basic,
+/area/space/nearstation)
 "xUD" = (
 /obj/structure/table/reinforced,
 /obj/effect/turf_decal/tile/neutral,
@@ -85156,6 +85183,12 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/execution/transfer)
+"xXR" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/cable,
+/obj/structure/transit_tube/crossing,
+/turf/open/space/basic,
+/area/space/nearstation)
 "xYa" = (
 /obj/effect/turf_decal/bot,
 /obj/machinery/status_display/shuttle{
@@ -105854,7 +105887,7 @@ iIq
 gTL
 cQI
 niY
-kXS
+ejw
 btv
 kwm
 aaa
@@ -106127,14 +106160,14 @@ vlZ
 eTb
 vlZ
 eTb
-eTb
-hbB
-loS
-loS
-loS
-loS
-loS
-loS
+wpp
+xXR
+wpp
+xXR
+wpp
+xXR
+wpp
+ifX
 loS
 loS
 loS
@@ -106386,13 +106419,13 @@ acm
 acm
 acm
 acm
-jxR
 acm
 acm
 acm
 acm
 acm
 acm
+xUz
 aaa
 aaa
 aeu
@@ -106644,12 +106677,12 @@ aaa
 aaa
 aaa
 acm
-jxR
-acm
 aaa
 aaa
 aaa
-acm
+aaa
+aaa
+lQe
 acm
 acm
 aeU
@@ -106901,12 +106934,12 @@ aaa
 aaa
 aaa
 acm
-acm
-jxR
-acm
 aaa
 aaa
-acm
+aaa
+aaa
+aaa
+lQe
 aaa
 aaa
 acm
@@ -107159,11 +107192,11 @@ aaa
 aaa
 acm
 aaa
-acm
-jxR
-acm
 aaa
-acm
+aaa
+aaa
+aaa
+lQe
 acm
 acm
 acm
@@ -107417,10 +107450,10 @@ aaa
 acm
 aaa
 aaa
-acm
-jxR
-acm
-acm
+aaa
+aaa
+aaa
+lQe
 aaa
 aaa
 acm
@@ -107675,9 +107708,9 @@ acm
 aaa
 aaa
 aaa
-acm
-jxR
-acm
+aaa
+aaa
+lQe
 aaa
 jxg
 jvL
@@ -107933,9 +107966,9 @@ aaa
 aaa
 aaa
 aaa
-acm
-jxR
-acm
+aaa
+lQe
+aaa
 aaa
 rct
 vjE
@@ -108191,8 +108224,8 @@ aaa
 aaa
 aaa
 aaa
+rYE
 acm
-jxR
 acm
 jvL
 pih
@@ -108435,22 +108468,22 @@ aaa
 alm
 aaa
 acm
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
 acm
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
 acm
-lsK
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+jxR
+xcn
 jvL
 jvL
 xGL
@@ -108707,7 +108740,7 @@ aaa
 aaa
 aaa
 acm
-xcn
+lSo
 gCM
 pRQ
 hGs
@@ -111005,19 +111038,19 @@ aaa
 alm
 aaa
 acm
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
-aaa
 acm
-aaa
-aaa
-aaa
-aaa
-aaa
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
+acm
 acm
 acm
 xcn
@@ -111276,7 +111309,7 @@ aaa
 aaa
 aaa
 acm
-aaa
+acm
 acm
 bdJ
 cpr
