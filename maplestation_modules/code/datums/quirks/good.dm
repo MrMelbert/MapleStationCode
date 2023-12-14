@@ -90,3 +90,26 @@
 		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
 
 #undef LANGUAGE_QUIRK_RANDOM_BLACKLIST
+
+/// You can sprint for longer
+/// (Maybe tie this to the mob's lungs? An idea)
+/datum/quirk/marthon_runner
+	name = "Marathon Runner"
+	desc = "You can run for longer without getting tired."
+	icon = FA_ICON_LUNGS
+	value = 6
+	gain_text = span_notice("You feel like you can run for miles (or kilometers).")
+	lose_text = span_danger("You feel winded.")
+	medical_record_text = "Patient can run for longer than most."
+
+/datum/quirk/marthon_runner/add_unique(client/client_source)
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	if(istype(human_holder))
+		human_holder.sprint_length_max *= 1.5
+		human_holder.sprint_length = human_holder.sprint_length_max
+
+/datum/quirk/marthon_runner/remove(client/client_source)
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	if(istype(human_holder))
+		human_holder.sprint_length_max /= 1.5
+		human_holder.sprint_length = human_holder.sprint_length_max

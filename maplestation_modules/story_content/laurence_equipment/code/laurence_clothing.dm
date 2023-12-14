@@ -31,8 +31,8 @@
 	icon_state = "scarf"
 
 /obj/item/clothing/neck/malheur/Initialize(mapload)
-    . = ..()
-    AddComponent(/datum/component/toggle_icon, "tightness")
+	. = ..()
+	AddComponent(/datum/component/toggle_icon, "tightness")
 
 // Bag time
 /obj/item/storage/bag/garment/cap_cust/PopulateContents()

@@ -28,7 +28,7 @@
 
 /datum/fax_panel_interface/New()
 	//Get all faxes, and save them to our list.
-	for(var/obj/machinery/fax/fax in GLOB.machines)
+	for(var/obj/machinery/fax/fax as anything in GLOB.fax_machines) // NON-MODULE CHANGE
 		available_faxes += WEAKREF(fax)
 
 	//Get all stamps
@@ -52,9 +52,10 @@
 
 	for(var/datum/weakref/weakrefed_fax as anything in available_faxes)
 		var/obj/machinery/fax/potential_fax = weakrefed_fax.resolve()
-		if(potential_fax && istype(potential_fax))
-			if(potential_fax.fax_name == name)
-				return potential_fax
+		// NON-MODULE CHANGE START
+		if(istype(potential_fax) && potential_fax.room_tag == name)
+			return potential_fax
+		// NON-MODULE CHANGE END
 	return null
 
 /datum/fax_panel_interface/ui_interact(mob/user, datum/tgui/ui)
@@ -77,8 +78,10 @@
 
 	for(var/datum/weakref/weakrefed_fax as anything in available_faxes)
 		var/obj/machinery/fax/another_fax = weakrefed_fax.resolve()
-		if(another_fax && istype(another_fax))
-			data["faxes"] += list(another_fax.fax_name)
+		// NON-MODULE CHANGE START
+		if(istype(another_fax))
+			data["faxes"] += list(another_fax.room_tag)
+		// NON-MODULE CHANGE END
 
 	return data
 
@@ -136,7 +139,7 @@
 			var/obj/item/paper/our_fax = fax_paper.copy(/obj/item/paper)
 			our_fax.name = fax_paper.name
 			//send
-			action_fax.receive(our_fax, sending_fax_name)
+			action_fax.receive_paper(our_fax, sending_fax_name) // NON-MODULE CHANGE
 			message_admins("[key_name_admin(usr)] has sent a custom fax message to [action_fax.name][ADMIN_FLW(action_fax)][ADMIN_SHOW_PAPER(fax_paper)].")
 			log_admin("[key_name(usr)] has sent a custom fax message to [action_fax.name]")
 

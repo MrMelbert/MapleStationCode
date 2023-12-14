@@ -27,10 +27,16 @@
 #define TOOLTIP_NO_DAMAGE "This item has very low force and is largely cosmetic."
 #define TOOLTIP_RANDOM_COLOR "This item has a random color and will change every round."
 
-/// Modular traits
+// Modular traits
+/// Provides additional resistance to contracting diseases. Should be removed next upstream
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"
+/// Does not harm patients when undergoing CPR
+#define TRAIT_CPR_CERTIFIED "cpr_certified"
 
 /// Bitflags for speech sounds
 #define SOUND_NORMAL (1<<0)
 #define SOUND_QUESTION (1<<1)
 #define SOUND_EXCLAMATION (1<<2)
+
+/// Max loadout presets available
+#define MAX_LOADOUTS 5

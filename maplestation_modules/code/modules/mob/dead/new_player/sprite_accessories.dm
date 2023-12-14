@@ -60,14 +60,14 @@
 	icon_state = "hair_thorns"
 
 /datum/sprite_accessory/hair/himepaper2
-    name = "Princely Hime Cut"
-    icon = 'maplestation_modules/icons/mob/human_face.dmi'
-    icon_state = "hair_princely"
+	name = "Princely Hime Cut"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_princely"
 
 /datum/sprite_accessory/hair/oldmanyaoi
-    name = "United Amateur"
-    icon = 'maplestation_modules/icons/mob/human_face.dmi'
-    icon_state = "hair_oldstriped"
+	name = "United Amateur"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_oldstriped"
 
 /datum/sprite_accessory/ears/cat/cyber
 	name = "Cybernetic Cat"
@@ -80,6 +80,11 @@
 	icon_state = "fox"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	color_src = HAIR
+
+/datum/sprite_accessory/hair/fruity
+	name = "Fruity"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_fruity"
 
 /// -- Undershirts --
 /datum/sprite_accessory/undershirt/ratvarsoul

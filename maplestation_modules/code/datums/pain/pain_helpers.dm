@@ -8,7 +8,7 @@
 	QDEL_NULL(pain_controller)
 	return ..()
 
-/mob/living/carbon/human/Initialize()
+/mob/living/carbon/human/Initialize(mapload)
 	. = ..()
 	var/datum/pain/new_pain_controller = new(src)
 	if(!QDELETED(new_pain_controller))

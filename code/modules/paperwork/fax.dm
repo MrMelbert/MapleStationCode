@@ -1,3 +1,7 @@
+/*
+
+// NON-MODULE CHANGE: Assuming direct control of fax economy
+
 GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department", "NT Complaint Department", "NT Customer Relations", "Nanotrasen Tech Support", "NT Internal Affairs Dept"))
 
 /obj/machinery/fax
@@ -82,7 +86,6 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 	. = ..()
 	if(jammed)
 		. += span_notice("Its output port is jammed and needs cleaning.")
-
 
 /obj/machinery/fax/on_set_is_operational(old_value)
 	if (old_value == FALSE)
@@ -376,6 +379,7 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 	icon_state = "fax"
 	overlays -= remove_overlay
 
+*/
 /**
  * Returns an appropriate icon state to represent a passed item.
  * Arguments:
@@ -401,6 +405,7 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 		return "[state_prefix]_pbiscuit"
 	return "[state_prefix]_paper"
 
+/*
 /**
  * Actually vends an item out of the fax machine.
  * Moved into its own proc to allow a delay for the animation.
@@ -416,6 +421,7 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 		do_sparks(5, TRUE, src)
 		jammed = TRUE
 
+*/
 /**
  * A procedure that makes entries in the history of fax transactions.
  *
@@ -430,12 +436,14 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 	history_data["history_type"] = history_type
 	history_data["history_fax_name"] = history_fax_name
 	history_data["history_time"] = station_time_timestamp()
+	history_data["iterator"] = length(fax_history) + 1 // NON-MODULE CHANGE
 	fax_history += list(history_data)
 
 /// Clears the history of fax operations.
 /obj/machinery/fax/proc/history_clear()
 	fax_history = null
 
+/*
 /**
  * Checks fax names for a match.
  *
@@ -464,7 +472,6 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 	do_sparks(5, TRUE, src)
 	var/check_range = TRUE
 	return electrocute_mob(user, get_area(src), src, 0.7, check_range)
-
 
 /obj/machinery/fax/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
@@ -515,4 +522,4 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 		return CONTEXTUAL_SCREENTIP_SET
 
 	return .
-
+*/

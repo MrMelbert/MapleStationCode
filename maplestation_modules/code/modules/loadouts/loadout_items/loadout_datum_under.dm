@@ -354,3 +354,27 @@
 /datum/loadout_item/under/formal/chesedsuit
 	name = "Blue Waistcoat"
 	item_path = /obj/item/clothing/under/chesedsuit
+
+/datum/loadout_item/under/formal/kimono
+	name = "Black Kimono"
+	item_path = /obj/item/clothing/under/kimono
+
+/datum/loadout_item/under/formal/kimono2
+	name = "Red Kimono"
+	item_path = /obj/item/clothing/under/kimono/red
+
+/datum/loadout_item/under/formal/kimono3
+	name = "Purple Kimono"
+	item_path = /obj/item/clothing/under/kimono/purple
+
+/datum/loadout_item/under/formal/yukata
+	name = "Black Yukata"
+	item_path = /obj/item/clothing/under/yukata
+
+/datum/loadout_item/under/formal/yukata2
+	name = "Green Yukata"
+	item_path = /obj/item/clothing/under/yukata/green
+
+/datum/loadout_item/under/formal/yukata3
+	name = "Blue Yukata"
+	item_path = /obj/item/clothing/under/yukata/blue
