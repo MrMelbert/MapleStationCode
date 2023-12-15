@@ -68,4 +68,4 @@
 	return
 
 /datum/language/eldritch/heard_by_mob_who_lacks_critical_information(mob/living/listener)
-	listener_real.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 100)
+	listener.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 100)
