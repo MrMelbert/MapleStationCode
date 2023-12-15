@@ -68,5 +68,5 @@
 	return
 
 /datum/language/eldritch/heard_by_mob_who_lacks_critical_information(mob/living/listener, atom/movable/speaker)
-	listener.adjustOrganLoss(ORGAN_SLOT_BRAIN, 15, 200)
+	listener.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 100)
 	to_chat(listener, span_danger("Your mind languishes as you hear the words spoken by [speaker]!"))
