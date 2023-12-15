@@ -60,7 +60,7 @@
 	if(. == raw_message)
 		return
 	if(isnull(language))
-	return
+		return
 	var/datum/language/dialect = GLOB.language_datum_instances[language]
 	dialect.heard_by_mob_who_lacks_critical_information(src)
 
