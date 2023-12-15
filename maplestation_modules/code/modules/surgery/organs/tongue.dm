@@ -6,6 +6,7 @@
 		/datum/language/ratvarian,
 		/datum/language/skrell,
 		/datum/language/yangyu,
+		/datum/language/isatoa,
 	)
 
 // Skrell Tongue. Could use a sprite.

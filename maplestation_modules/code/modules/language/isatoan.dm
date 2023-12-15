@@ -55,7 +55,7 @@
 		/datum/language/eldritch = list(LANGUAGE_ATOM),
 	)
 
-/mob/living/translate_language(atom/movable/speaker, datum/language/eldritch, raw_message, list/spans, list/message_mods = list())
+/mob/living/translate_language(atom/movable/speaker, datum/language/language, raw_message, list/spans, list/message_mods = list())
 	. = ..()
 	if(. == raw_message)
 		return
@@ -67,5 +67,6 @@
 /datum/language/proc/heard_by_mob_who_lacks_critical_information(mob/living/listener)
 	return
 
-/datum/language/eldritch/heard_by_mob_who_lacks_critical_information(mob/living/listener)
-	listener.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 100)
+/datum/language/eldritch/heard_by_mob_who_lacks_critical_information(mob/living/listener, atom/movable/speaker)
+	listener.adjustOrganLoss(ORGAN_SLOT_BRAIN, 15, 200)
+	to_chat(listener, span_danger("Your mind languishes as you hear the words spoken by [speaker]!"))
