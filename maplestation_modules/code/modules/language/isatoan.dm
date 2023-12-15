@@ -58,9 +58,9 @@
 /mob/living/translate_language(atom/movable/speaker, datum/language/eldritch, raw_message, list/spans, list/message_mods = list())
 	. = ..()
 	if(. == raw_message)
-	return
+		return
 	if(isnull(language))
-	return
+		return
 	var/datum/language/dialect = GLOB.language_datum_instances[language]
 	dialect.heard_by_mob_who_lacks_critical_information(src)
 
@@ -68,4 +68,4 @@
 	return
 
 /datum/language/eldritch/heard_by_mob_who_lacks_critical_information(mob/living/listener)
-	listener_real.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 100)
+	listener.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10, 100)
