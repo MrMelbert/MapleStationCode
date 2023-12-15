@@ -58,7 +58,7 @@
 /mob/living/translate_language(atom/movable/speaker, datum/language/eldritch, raw_message, list/spans, list/message_mods = list())
 	. = ..()
 	if(. == raw_message)
-	return
+		return
 	if(isnull(language))
 	return
 	var/datum/language/dialect = GLOB.language_datum_instances[language]
