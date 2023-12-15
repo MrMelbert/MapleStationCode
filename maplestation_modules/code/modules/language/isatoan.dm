@@ -17,6 +17,15 @@
 	default_priority = 80
 	available_as_pref = TRUE
 
+/datum/language_holder/skrell
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/isatoa = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/isatoa = list(LANGUAGE_ATOM),
+	)
 
 /datum/language/eldritch
 	name = "Ythralian"
@@ -36,12 +45,22 @@
 	icon = 'maplestation_modules/icons/misc/language.dmi'
 	default_priority = 120
 
+/datum/language_holder/skrell
+	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/eldritch = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
+		/datum/language/eldritch = list(LANGUAGE_ATOM),
+	)
+
 /mob/living/translate_language(atom/movable/speaker, datum/language/eldritch, raw_message, list/spans, list/message_mods = list())
 	. = ..()
 	if(. == raw_message)
-	    return
+	return
 	if(isnull(language))
-	    return
+	return
 	var/datum/language/dialect = GLOB.language_datum_instances[language]
 	dialect.heard_by_mob_who_lacks_critical_information(src)
 
