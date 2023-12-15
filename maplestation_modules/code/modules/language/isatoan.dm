@@ -17,7 +17,7 @@
 	default_priority = 80
 	available_as_pref = TRUE
 
-/datum/language_holder/skrell
+/datum/language_holder/isatoa
 	understood_languages = list(
 		/datum/language/common = list(LANGUAGE_ATOM),
 		/datum/language/isatoa = list(LANGUAGE_ATOM),
