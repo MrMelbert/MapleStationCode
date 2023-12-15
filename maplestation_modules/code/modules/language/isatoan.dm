@@ -45,7 +45,7 @@
 	icon = 'maplestation_modules/icons/misc/language.dmi'
 	default_priority = 120
 
-/datum/language_holder/skrell
+/datum/language_holder/eldritch
 	understood_languages = list(
 		/datum/language/common = list(LANGUAGE_ATOM),
 		/datum/language/eldritch = list(LANGUAGE_ATOM),
