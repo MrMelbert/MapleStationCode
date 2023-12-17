@@ -97,63 +97,6 @@
 	icon = 'maplestation_modules/icons/obj/drinks.dmi'
 	list_reagents = list(/datum/reagent/consumable/green_tea = 30)
 
-/datum/reagent/consumable/pilk
-	name = "Pilk"
-	description = "A horrid bubbling combination of milk and cola. You are a fucking alchemist and no-one can tell you otherwise."
-	color = "#BEAE7E" // rgb: 190, 174, 126
-	quality = -4 //this is godawful, though i dont think negative quality actually does anything
-	nutriment_factor = 2 * REAGENTS_METABOLISM //somehow more filling than pure nutriment
-	taste_description = "bubbles, milk, whatever the hell pepis is and a want to die" //pepis is canon now, its the rival brand to Space Cola. Renember to rename this to explicitly say pepis if it gets added in.
-	glass_price = DRINK_PRICE_MEDIUM
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/glass_style/drinking_glass/pilk
-	required_drink_type = /datum/reagent/consumable/pilk
-	icon = 'maplestation_modules/icons/obj/drinks.dmi'
-	icon_state = "pilk" //the sprite has what is intended to be foam on top as pilk makes that in real life
-	name = "glass of pilk"
-	desc = "A horrid bubbling combination of milk and cola. You are a fucking alchemist and no-one can tell you otherwise."
-
-/datum/reagent/consumable/pilk/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
-	if(isfelinid(M)) //felinids love pilk
-		M.add_mood_event("full_on_pilk", /datum/mood_event/full_on_pilk, name)
-	else if(isskeleton(M))
-		M.adjustBruteLoss(1, FALSE) //ITS POISON
-		. = TRUE
-	else
-		M.adjust_disgust(4 * REM * seconds_per_tick)
-
-	return ..() || .
-
-/datum/reagent/consumable/ethanol/peg_nog
-	name = "Peg Nog"
-	description = "Its time to get PEGGED!"
-	color = "#C1C17B" // rgb: 193, 193, 123
-	quality = -6 //its somehow worse
-	nutriment_factor = 3 * REAGENTS_METABOLISM //more filling
-	boozepwr = 20
-	taste_description = "getting pegged" //oh no
-	glass_price = DRINK_PRICE_MEDIUM
-	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
-
-/datum/glass_style/drinking_glass/peg_nog
-	required_drink_type = /datum/reagent/consumable/ethanol/peg_nog
-	icon = 'maplestation_modules/icons/obj/drinks.dmi'
-	icon_state = "peg_nog"
-	name = "glass of peg nog"
-	desc = "Its time to get PEGGED!"
-
-/datum/reagent/consumable/ethanol/peg_nog/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
-	if(isfelinid(M)) //felinids love peg nog too!
-		M.add_mood_event("pegged", /datum/mood_event/pegged, name)
-	else if(isskeleton(M))
-		M.adjustBruteLoss(2, FALSE) //when drinking this you wish for bone hurting juice
-		. = TRUE
-	else
-		M.adjust_disgust(7 * REM * seconds_per_tick)
-
-	return ..() || .
-
 // Ported from Yogstation
 /datum/reagent/consumable/ethanol/justicars_juice
 	name = "Justicar's Juice"

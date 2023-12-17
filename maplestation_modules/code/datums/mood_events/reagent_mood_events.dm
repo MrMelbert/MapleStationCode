@@ -16,16 +16,6 @@
 	description = "<span class='nicegreen'>I drank some nice, calming psychite tea.</span>\n"
 	mood_change = 8
 
-/datum/mood_event/full_on_pilk
-	description = "<span class='nicegreen'>I am now full on pilk! That was some amazing bubbly goodness!</span>\n"
-	mood_change = 7
-	timeout = 7 MINUTES
-
-/datum/mood_event/pegged
-	description = "<span class='nicegreen'>OH YEAH, NOW IM PEGGED!</span>\n"
-	mood_change = 8
-	timeout = 7 MINUTES
-
 // Addiction moodlets
 /datum/mood_event/luciferium_light
 	mood_change = -4
