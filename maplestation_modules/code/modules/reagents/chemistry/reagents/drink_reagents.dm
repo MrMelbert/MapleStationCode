@@ -211,3 +211,18 @@
 	icon_state = "piledriver"
 	name = "Pile Driver"
 	desc = "A drink said to be bitter and somewhat spicy. You better not have a sore throat when drinking it." //Va-11 Hall-A reference moment flushed
+	
+/datum/reagent/consumable/ethanol/blood_wine
+	name = "Tiziran Blood Wine"
+	description = "A Tiziran wine made from fermented blood."
+	boozepwr = 20
+	quality = DRINK_NICE
+	taste_description = "meat and tanginess"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/blood_wine
+	required_drink_type = /datum/reagent/consumable/ethanol/blood_wine
+	icon = 'maplestation_modules/icons/obj/drinks.dmi'
+	icon_state = "blood_wine"
+	name = "Tiziran Blood Wine"
+	desc = "A wine made from fermented blood originating from Tizira. Despite the name, the drink does not taste of blood."
