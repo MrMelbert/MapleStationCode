@@ -36508,6 +36508,7 @@
 	dir = 8
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/landmark/atmospheric_sanity/ignore_area,
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
 "gTO" = (
@@ -46852,7 +46853,7 @@
 	},
 /obj/effect/spawner/structure/window/hollow/reinforced/middle,
 /obj/structure/cable,
-/turf/open/space/basic,
+/turf/open/floor/plating,
 /area/station/service/hydroponics/garden/monastery)
 "kwu" = (
 /obj/effect/turf_decal/tile/blue{
@@ -74199,6 +74200,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/landmark/atmospheric_sanity/ignore_area,
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/station/maintenance/department/chapel/monastery)
 "tSV" = (
