@@ -1,6 +1,28 @@
+/datum/design/vitals_monitor
+	name = "Vitals Monitor"
+	desc = "A wall mounted computer that displays the vitals of a patient nearby. \
+		Links to stasis beds, operating tables, and other machines that can hold patients \
+		such as cryo cells, sleepers, and more."
+	id = "vitals_monitor"
+	build_type = PROTOLATHE
+	materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
+	build_path = /obj/item/wallframe/status_display/vitals
+	category = list(RND_CATEGORY_COMPUTER + RND_SUBCATEGORY_COMPUTER_MEDICAL)
+	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
+
 /obj/item/wallframe/status_display/vitals
 	name = "vitals display frame"
-	desc = "Used to build vitals displays. Secure on a wall nearby a stasis bed or operating table."
+	desc = "Used to build vitals displays. Secure on a wall nearby a stasis bed, operating table, \
+		or another machine that can hold patients such as cryo cells or sleepers."
+	custom_materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
 	result_path = /obj/machinery/computer/vitals_reader
 
 /// A wall mounted screen that showcases the vitals of a patient nearby.
@@ -42,12 +64,22 @@
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
+/obj/machinery/computer/vitals_reader/attackby(obj/item/weapon, mob/user, params)
+	if(user.combat_mode)
+		return ..()
+	if(weapon.item_flags & SURGICAL_TOOL)
+		// You can flick it on while doing surgery
+		return interact(user)
+	return ..()
+
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
+	if(flags_1 & NODECONSTRUCT_1)
+		return FALSE
 	if(user.combat_mode)
 		return FALSE
+	balloon_alert(user, "detaching...")
 	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
-		balloon_alert(user, "detached")
 		deconstruct(TRUE)
 	return TRUE
 
@@ -65,17 +97,17 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 /obj/machinery/computer/vitals_reader/examine(mob/user)
 	. = ..()
-	if(!is_operational)
+	if(!is_operational || !active || user.is_blind())
 		return
 
 	if(isnull(patient))
 		. += span_notice("The display is currently scanning for a patient.")
-	else if(!issilicon(user) && (HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, silent = TRUE)))
-		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
-	else if(get_dist(patient, user) <= 2 || isobserver(user) || issilicon(user))
-		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
-	else
+	else if(!issilicon(user) && !isobserver(user) && get_dist(patient, user) > 2)
 		. += span_notice("<i>You are too far away to read the display.</i>")
+	else if(HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, reading_check_flags = READING_CHECK_LITERACY, silent = TRUE))
+		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
+	else
+		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
 
 /obj/machinery/computer/vitals_reader/Initialize(mapload, obj/item/circuitboard/C)
 	. = ..()
@@ -86,11 +118,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	return ..()
 
 /obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	if(!isnull(held_item))
-		return NONE
-
-	context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
-	if(isAI(user))
+	if(isnull(held_item) || (held_item.item_flags & SURGICAL_TOOL))
+		context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
+	else if(held_item.tool_behaviour == TOOL_WRENCH)
+		context[SCREENTIP_CONTEXT_LMB] = "Detach"
+	if(!isnull(patient))
 		context[SCREENTIP_CONTEXT_SHIFT_LMB] = "Examine vitals"
 	return CONTEXTUAL_SCREENTIP_SET
 
