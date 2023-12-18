@@ -14,6 +14,18 @@
 	category = list(RND_CATEGORY_COMPUTER + RND_SUBCATEGORY_COMPUTER_MEDICAL)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
 
+/datum/design/vitals_monitor/advanced
+	name = "Advanced Vitals Monitor"
+	desc = "An updated vitals display which performs a more detailed scan of the patient than the basic display."
+	id = "vitals_monitor_advanced"
+	materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
+	build_path = /obj/item/wallframe/status_display/vitals/advanced
+
 /obj/item/wallframe/status_display/vitals
 	name = "vitals display frame"
 	desc = "Used to build vitals displays. Secure on a wall nearby a stasis bed, operating table, \
@@ -24,6 +36,17 @@
 		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
 	)
 	result_path = /obj/machinery/computer/vitals_reader
+
+/obj/item/wallframe/status_display/vitals/advanced
+	name = "advanced vitals display frame"
+	desc = "Used to build advanced vitals displays. Performs a more detailed scan of the patient than the basic display."
+	custom_materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
+	result_path = /obj/machinery/computer/vitals_reader/advanced
 
 /// A wall mounted screen that showcases the vitals of a patient nearby.
 /obj/machinery/computer/vitals_reader
@@ -42,8 +65,10 @@
 	icon_keyboard = null
 	icon_screen = null
 
-	/// Whether we perform an advanced scan on examine or not, currently admin only
+	/// Whether we perform an advanced scan on examine or not
 	var/advanced = FALSE
+	/// Typepath to spawn when deconstructed
+	var/frame = /obj/item/wallframe/status_display/vitals
 	/// Whether we are on or off
 	VAR_FINAL/active = FALSE
 	/// Reference to the mob that is being tracked / scanned
@@ -63,6 +88,13 @@
 	))
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
+
+/obj/machinery/computer/vitals_reader/advanced
+	name = "advanced vitals display"
+	desc = "A small screen that displays the vitals of a patient. \
+		Performs a more detailed scan of the patient than the basic display."
+	frame = /obj/item/wallframe/status_display/vitals/advanced
+	advanced = TRUE
 
 /obj/machinery/computer/vitals_reader/attackby(obj/item/weapon, mob/user, params)
 	if(user.combat_mode)
@@ -88,7 +120,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		return
 	var/atom/drop_loc = drop_location()
 	if(disassembled)
-		new /obj/item/wallframe/status_display/vitals(drop_loc)
+		new frame(drop_loc)
 	else
 		new /obj/item/stack/sheet/iron(drop_loc, 2)
 		new /obj/item/shard(drop_loc)

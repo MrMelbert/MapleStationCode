@@ -16,10 +16,15 @@
 		"fax_machine_deluxe",
 	)
 
+/datum/techweb_node/biotech
+	id_additions = list(
+		"vitals_monitor",
+	)
+
 /datum/techweb_node/adv_biotech
 	id_additions = list(
 		"auto_cpr_device",
-		"vitals_monitor",
+		"vitals_monitor_advanced",
 	)
 
 /datum/techweb_node/exp_surgery
