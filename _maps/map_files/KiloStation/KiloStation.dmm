@@ -39901,11 +39901,10 @@
 /turf/closed/wall/r_wall,
 /area/station/engineering/atmos)
 "idG" = (
-/obj/structure/grille,
-/obj/structure/cable,
 /obj/structure/sign/warning/electric_shock/directional/south,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/broken_floor,
+/obj/effect/spawner/structure/electrified_grille,
 /turf/open/floor/plating/rust,
 /area/station/maintenance/port/fore)
 "idN" = (
@@ -46129,11 +46128,6 @@
 	dir = 1
 	},
 /area/station/service/hydroponics/garden/monastery)
-"kkQ" = (
-/obj/structure/lattice,
-/obj/structure/closet/secure_closet,
-/turf/open/space/basic,
-/area/space/nearstation)
 "kkY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -49113,15 +49107,6 @@
 /obj/structure/tank_holder/extinguisher,
 /turf/open/floor/plating,
 /area/station/maintenance/port/greater)
-"llj" = (
-/obj/structure/chair/pew/right{
-	dir = 1
-	},
-/obj/structure/chair/pew/right{
-	dir = 1
-	},
-/turf/open/floor/wood/large,
-/area/station/service/chapel)
 "llp" = (
 /obj/machinery/ai_slipper{
 	uses = 8
@@ -59872,10 +59857,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"pdh" = (
-/obj/structure/flora/rock/style_random,
-/turf/open/space/basic,
-/area/space)
 "pdi" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -70403,7 +70384,6 @@
 /turf/open/floor/iron,
 /area/station/cargo/office)
 "sBL" = (
-/obj/structure/table/wood,
 /obj/structure/table/wood,
 /obj/item/paper_bin{
 	pixel_y = 5
@@ -110300,7 +110280,7 @@ cdQ
 jGr
 tWt
 pNV
-llj
+pNV
 pNV
 bnJ
 pRf
@@ -114661,7 +114641,7 @@ chD
 chI
 aaa
 acm
-kkQ
+acm
 acm
 acm
 aaQ
@@ -117488,7 +117468,7 @@ aaa
 acm
 aaa
 aaa
-pdh
+aaa
 aaa
 aaa
 aUz
