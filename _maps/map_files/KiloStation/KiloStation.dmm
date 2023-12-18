@@ -3356,6 +3356,10 @@
 	name = "Coroner's Office"
 	},
 /obj/machinery/door/firedoor,
+/obj/effect/turf_decal/stripes/white/corner,
+/obj/effect/turf_decal/stripes/white/corner{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "aqT" = (
@@ -6553,6 +6557,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
+/obj/effect/turf_decal/caution,
 /turf/open/floor/iron/dark,
 /area/station/maintenance/port/greater)
 "aKC" = (
@@ -7499,7 +7504,7 @@
 /obj/effect/turf_decal/box,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron/white,
+/turf/open/floor/iron/white/textured,
 /area/station/medical/paramedic)
 "aOK" = (
 /obj/effect/turf_decal/tile/blue{
@@ -8246,6 +8251,9 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
 	},
+/obj/effect/turf_decal/caution{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/maintenance/port/greater)
 "aRN" = (
@@ -8480,6 +8488,9 @@
 	},
 /obj/effect/turf_decal/box/corners,
 /obj/machinery/camera/autoname/directional/south,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
 "aSG" = (
@@ -9615,7 +9626,9 @@
 	id = "emmd";
 	name = "Emergency Medical Lockdown Shutters"
 	},
-/obj/effect/turf_decal/caution/stand_clear,
+/obj/effect/turf_decal/caution/stand_clear{
+	dir = 4
+	},
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
@@ -10760,8 +10773,10 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/caution/stand_clear,
 /obj/structure/cable,
+/obj/effect/turf_decal/caution/stand_clear{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/central)
 "bdq" = (
@@ -26137,6 +26152,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
 /obj/machinery/duct,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
 "dnf" = (
@@ -35362,14 +35378,14 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
 /obj/machinery/shower/directional/west{
 	name = "emergency shower"
 	},
 /obj/effect/turf_decal/box,
-/turf/open/floor/iron/white,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 8
+	},
+/turf/open/floor/iron/white/textured,
 /area/station/medical/exam_room)
 "gBn" = (
 /obj/effect/turf_decal/tile/yellow,
@@ -36531,6 +36547,9 @@
 	},
 /obj/effect/turf_decal/box/corners{
 	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
@@ -39771,13 +39790,15 @@
 	id = "emmd";
 	name = "Emergency Medical Lockdown Shutters"
 	},
-/obj/effect/turf_decal/caution/stand_clear,
 /obj/machinery/door/firedoor,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/turf_decal/caution/stand_clear{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
 "icM" = (
@@ -44441,7 +44462,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/burnt_floor,
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/plating,
+/turf/open/floor/plating/rust,
 /area/station/maintenance/department/chapel/monastery)
 "jJi" = (
 /obj/effect/turf_decal/stripes/line,
@@ -52852,8 +52873,10 @@
 /area/station/security/prison/safe)
 "mAW" = (
 /obj/machinery/door/firedoor,
-/obj/effect/turf_decal/caution/stand_clear,
 /obj/structure/disposalpipe/segment,
+/obj/effect/turf_decal/caution/stand_clear{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/central)
 "mBk" = (
@@ -54334,6 +54357,9 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/caution{
+	dir = 8
+	},
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "mZc" = (
@@ -60356,6 +60382,9 @@
 	},
 /obj/effect/turf_decal/box/corners{
 	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
@@ -70187,6 +70216,9 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/blood/old,
+/obj/effect/turf_decal/caution{
+	dir = 8
+	},
 /turf/open/floor/plating/rust,
 /area/station/maintenance/department/chapel/monastery)
 "sBa" = (
@@ -71346,6 +71378,9 @@
 "sWF" = (
 /obj/effect/turf_decal/sand/plating,
 /obj/structure/sign/warning/secure_area/directional/west,
+/obj/effect/turf_decal/arrows{
+	dir = 1
+	},
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "sWR" = (
@@ -72357,6 +72392,9 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/box/corners,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
 "tqC" = (
@@ -81204,6 +81242,9 @@
 /obj/machinery/newscaster/directional/south,
 /obj/structure/table,
 /obj/machinery/light/warm/directional/south,
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
 "wuY" = (
