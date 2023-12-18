@@ -5459,6 +5459,10 @@
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 1
+	},
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "aCu" = (
@@ -11405,7 +11409,7 @@
 	dir = 1
 	},
 /mob/living/simple_animal/bot/cleanbot/medbay{
-	maints_access_required = list(22);
+	maints_access_required = list("robotics", "chapel_office");
 	name = "Deacon Scrubsy"
 	},
 /turf/open/floor/iron/dark,
@@ -11659,6 +11663,11 @@
 /mob/living/carbon/human/species/monkey,
 /turf/open/floor/grass,
 /area/station/medical/virology)
+"biE" = (
+/obj/effect/turf_decal/sand/plating,
+/mob/living/simple_animal/bot/cleanbot/medbay,
+/turf/open/floor/plating/airless,
+/area/space/nearstation)
 "biF" = (
 /obj/effect/turf_decal/tile/green,
 /obj/effect/turf_decal/tile/green{
@@ -12358,7 +12367,6 @@
 	dir = 8
 	},
 /obj/structure/extinguisher_cabinet/directional/south,
-/obj/structure/sign/poster/random/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/service)
 "boZ" = (
@@ -14038,7 +14046,8 @@
 /area/station/hallway/primary/port)
 "bCp" = (
 /obj/machinery/mass_driver/chapelgun{
-	dir = 1
+	dir = 1;
+	power = 2
 	},
 /turf/open/floor/plating,
 /area/station/service/chapel/funeral)
@@ -15631,11 +15640,11 @@
 /turf/closed/wall,
 /area/station/hallway/secondary/exit/departure_lounge)
 "bOe" = (
-/obj/structure/bookcase,
 /obj/effect/turf_decal/siding/wood{
 	dir = 5
 	},
 /obj/structure/sign/departments/holy/directional/east,
+/obj/structure/bookcase/random/religion,
 /turf/open/floor/wood/large,
 /area/station/service/chapel)
 "bOi" = (
@@ -15649,6 +15658,16 @@
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
 /area/station/hallway/secondary/entry)
+"bOn" = (
+/obj/machinery/door/airlock/external/glass{
+	name = "External Airlock"
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper{
+	dir = 8
+	},
+/obj/structure/barricade/wooden/crude,
+/turf/open/floor/plating,
+/area/station/maintenance/department/chapel/monastery)
 "bOp" = (
 /obj/effect/turf_decal/stripes/corner,
 /obj/effect/decal/cleanable/dirt,
@@ -21210,20 +21229,17 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/structure/table/wood,
-/obj/item/clothing/under/misc/burial,
-/obj/item/clothing/under/misc/burial{
-	pixel_y = 4;
-	pixel_x = 3
-	},
-/obj/machinery/computer/pod/old/mass_driver_controller/chapelgun{
-	pixel_y = 30
-	},
 /obj/machinery/light_switch/directional/west{
 	pixel_y = -4
 	},
 /obj/machinery/light/small/directional/north,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/machinery/computer/pod/old/mass_driver_controller/chapelgun{
+	pixel_y = 32
+	},
+/obj/structure/closet/secure_closet/personal/cabinet{
+	name = "Personal Belongings Storage"
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "cps" = (
@@ -25427,6 +25443,8 @@
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 4
 	},
+/obj/item/clothing/under/misc/burial,
+/obj/item/food/grown/harebell,
 /turf/open/floor/iron/dark/textured_large,
 /area/station/service/chapel/funeral)
 "dbG" = (
@@ -26557,7 +26575,7 @@
 "dum" = (
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
 /obj/machinery/door/airlock/maintenance,
-/obj/effect/spawner/random/structure/barricade,
+/obj/effect/mapping_helpers/airlock/abandoned,
 /turf/open/floor/plating/rust,
 /area/station/maintenance/department/chapel/monastery)
 "dur" = (
@@ -26752,6 +26770,7 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
 	},
+/obj/structure/sign/calendar/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "dyM" = (
@@ -28075,6 +28094,16 @@
 /obj/effect/landmark/event_spawn,
 /turf/open/floor/iron/showroomfloor,
 /area/station/commons/storage/art)
+"dXF" = (
+/obj/structure/flora/bush/sparsegrass/style_random,
+/obj/structure/flora/bush/lavendergrass/style_random,
+/obj/structure/flora/bush/ferny/style_random,
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/sign/nanotrasen{
+	pixel_x = 32
+	},
+/turf/open/misc/asteroid/airless,
+/area/space/nearstation)
 "dXV" = (
 /obj/machinery/holopad,
 /obj/effect/decal/cleanable/dirt,
@@ -28574,9 +28603,16 @@
 /area/station/command/bridge)
 "egV" = (
 /obj/structure/table/wood,
-/obj/item/soulstone/anybody/chaplain,
-/obj/item/reagent_containers/cup/glass/bottle/holywater,
+/obj/item/soulstone/anybody/chaplain{
+	pixel_y = 2;
+	pixel_x = 4
+	},
 /obj/machinery/light/small/red/directional/south,
+/obj/item/book/granter/action/spell/smoke/lesser{
+	name = "Book of Cloud Chasing";
+	pixel_y = 3;
+	pixel_x = -4
+	},
 /turf/open/floor/cult,
 /area/station/service/chapel/office)
 "ehc" = (
@@ -29617,6 +29653,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
+/obj/structure/sign/poster/official/help_others/directional/south,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "ezt" = (
@@ -33102,6 +33139,8 @@
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 4
 	},
+/obj/item/clothing/under/misc/burial,
+/obj/item/food/grown/harebell,
 /turf/open/floor/iron/dark/textured_large,
 /area/station/service/chapel/funeral)
 "fHS" = (
@@ -33534,8 +33573,8 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/machinery/firealarm/directional/west,
 /obj/effect/turf_decal/bot,
+/obj/machinery/status_display/ai/directional/west,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "fPq" = (
@@ -34113,6 +34152,7 @@
 	},
 /obj/effect/mapping_helpers/requests_console/information,
 /obj/machinery/camera/autoname/directional/east,
+/obj/effect/mapping_helpers/requests_console/assistance,
 /turf/open/floor/wood/tile,
 /area/station/service/chapel/office)
 "gcJ" = (
@@ -34904,6 +34944,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/service/janitor)
+"gsN" = (
+/obj/effect/turf_decal/stripes/corner{
+	dir = 8
+	},
+/turf/open/floor/plating/rust,
+/area/station/maintenance/department/chapel/monastery)
 "gsT" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -35602,8 +35648,17 @@
 /obj/effect/turf_decal/siding/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/item/clipboard,
-/obj/item/folder/yellow,
+/obj/item/clipboard{
+	pixel_x = -14;
+	pixel_y = 3
+	},
+/obj/item/folder/yellow{
+	pixel_x = -12
+	},
+/obj/item/reagent_containers/cup/glass/bottle/holywater{
+	pixel_y = 4;
+	pixel_x = 4
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/chapel/office)
 "gEK" = (
@@ -35965,6 +36020,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
+/obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "gLK" = (
@@ -37099,6 +37155,10 @@
 "heI" = (
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 8
+	},
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "heU" = (
@@ -38205,6 +38265,7 @@
 	dir = 8
 	},
 /obj/machinery/power/port_gen/pacman,
+/obj/machinery/firealarm/directional/east,
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/station/maintenance/department/chapel/monastery)
 "hCi" = (
@@ -40025,7 +40086,10 @@
 /turf/closed/wall,
 /area/station/service/bar)
 "igs" = (
-/obj/effect/spawner/random/trash/graffiti,
+/obj/structure/grille/broken,
+/obj/effect/turf_decal/stripes/corner{
+	dir = 1
+	},
 /turf/open/floor/plating/rust,
 /area/station/maintenance/department/chapel/monastery)
 "igH" = (
@@ -40565,8 +40629,8 @@
 	dir = 8
 	},
 /obj/structure/window/reinforced/spawner/directional/west,
-/obj/structure/bookcase/random/religion,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/bookcase/random/religion,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "irm" = (
@@ -40779,7 +40843,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/south,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -41806,8 +41869,8 @@
 /obj/machinery/airalarm/directional/east,
 /obj/machinery/light/small/directional/north,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
-/obj/structure/bookcase,
 /obj/item/radio/intercom/directional/north,
+/obj/structure/bookcase/random/religion,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "iLk" = (
@@ -43050,6 +43113,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
 /obj/machinery/duct,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 8
+	},
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "jgl" = (
@@ -46062,6 +46129,11 @@
 	dir = 1
 	},
 /area/station/service/hydroponics/garden/monastery)
+"kkQ" = (
+/obj/structure/lattice,
+/obj/structure/closet/secure_closet,
+/turf/open/space/basic,
+/area/space/nearstation)
 "kkY" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -46722,11 +46794,11 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
 /obj/machinery/door/airlock/maintenance,
-/obj/effect/mapping_helpers/airlock/unres{
-	dir = 4
-	},
 /obj/effect/mapping_helpers/airlock/access/any/science/maintenance,
 /obj/effect/mapping_helpers/burnt_floor,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 8
+	},
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "kvx" = (
@@ -48145,10 +48217,10 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
 	dir = 8
 	},
-/obj/effect/mapping_helpers/airlock/unres{
-	dir = 4
-	},
 /obj/effect/mapping_helpers/airlock/access/any/science/maintenance,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/maintenance/starboard/fore)
 "kTb" = (
@@ -48266,7 +48338,6 @@
 /obj/effect/turf_decal/siding/blue{
 	dir = 1
 	},
-/obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "kUM" = (
@@ -50919,8 +50990,8 @@
 /turf/open/floor/iron/dark,
 /area/station/maintenance/starboard/aft)
 "lSo" = (
-/obj/effect/spawner/structure/window/reinforced,
 /obj/structure/transit_tube/curved/flipped,
+/obj/effect/spawner/structure/window/hollow/reinforced/middle,
 /turf/open/floor/plating,
 /area/station/service/chapel)
 "lSB" = (
@@ -51541,6 +51612,10 @@
 /obj/machinery/dna_infuser,
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
+"mcf" = (
+/obj/effect/spawner/random/trash/graffiti,
+/turf/closed/wall/rust,
+/area/station/maintenance/department/chapel/monastery)
 "mcx" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -51866,6 +51941,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable,
 /obj/effect/mapping_helpers/airlock/access/all/security/brig,
+/obj/effect/mapping_helpers/airlock/locked,
 /turf/open/floor/iron/dark,
 /area/station/maintenance/fore)
 "mkS" = (
@@ -52016,6 +52092,10 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/east,
+/obj/structure/noticeboard/captain{
+	dir = 4;
+	pixel_x = 32
+	},
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "mnv" = (
@@ -53048,7 +53128,6 @@
 /area/station/engineering/atmos/storage/gas)
 "mFk" = (
 /obj/machinery/door/airlock/maintenance,
-/obj/effect/mapping_helpers/airlock/abandoned,
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/airlock/unres{
@@ -55575,7 +55654,10 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/machinery/door/window/left/directional/north,
+/obj/machinery/door/window/left/directional/north{
+	name = "Mass Driver Access";
+	req_access = list("crematorium")
+	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
@@ -56568,6 +56650,7 @@
 /obj/machinery/door/airlock/hatch,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark,
 /area/station/maintenance/department/chapel/monastery)
 "nWh" = (
@@ -56782,6 +56865,7 @@
 	dir = 8
 	},
 /obj/item/kirbyplants/random,
+/obj/machinery/firealarm/directional/west,
 /turf/open/floor/iron,
 /area/station/command/bridge)
 "obh" = (
@@ -61515,6 +61599,7 @@
 "pFq" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/trash/moisture_trap,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "pFx" = (
@@ -63951,10 +64036,10 @@
 /obj/machinery/door/airlock/maintenance,
 /obj/structure/barricade/wooden/crude,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/airlock/unres{
-	dir = 8
-	},
 /obj/effect/mapping_helpers/airlock/access/any/medical/maintenance,
+/obj/effect/mapping_helpers/airlock/unres{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/station/maintenance/port/fore)
 "qyy" = (
@@ -63976,7 +64061,6 @@
 /area/station/service/lawoffice)
 "qzw" = (
 /obj/structure/table/wood,
-/obj/item/book/granter/action/spell/smoke/lesser,
 /obj/item/nullrod,
 /obj/machinery/light/small/red/directional/north,
 /turf/open/floor/cult,
@@ -64392,6 +64476,7 @@
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
 /obj/structure/barricade/wooden/crude,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "qGh" = (
@@ -64737,6 +64822,13 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
+"qLn" = (
+/obj/structure/flora/rock,
+/obj/structure/sign/nanotrasen{
+	pixel_x = -32
+	},
+/turf/open/misc/asteroid/airless,
+/area/space/nearstation)
 "qLq" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/sign/poster/ripped/directional/west,
@@ -65226,6 +65318,7 @@
 /obj/effect/turf_decal/trimline/neutral/warning,
 /obj/effect/turf_decal/bot_white,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/structure/sign/poster/random/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/funeral)
 "qUu" = (
@@ -65418,7 +65511,6 @@
 /area/station/maintenance/starboard/aft)
 "qZw" = (
 /obj/machinery/door/airlock/maintenance,
-/obj/effect/mapping_helpers/airlock/abandoned,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/airlock/unres{
 	dir = 1
@@ -65426,6 +65518,7 @@
 /obj/effect/mapping_helpers/airlock/access/all/security/general,
 /obj/effect/spawner/structure/electrified_grille,
 /obj/effect/spawner/random/structure/barricade,
+/obj/effect/mapping_helpers/airlock/locked,
 /turf/open/floor/iron/dark,
 /area/station/maintenance/fore)
 "qZO" = (
@@ -67655,6 +67748,7 @@
 /obj/structure/window/reinforced/spawner/directional/west,
 /obj/machinery/light/small/directional/north,
 /obj/machinery/power/shieldwallgen,
+/obj/structure/sign/poster/official/nanotrasen_logo/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "rIH" = (
@@ -68089,6 +68183,7 @@
 /obj/machinery/atmospherics/components/tank/air,
 /obj/effect/decal/cleanable/cobweb,
 /obj/structure/sign/poster/official/safety_internals/directional/north,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/catwalk_floor/iron_smooth,
 /area/station/maintenance/department/chapel/monastery)
 "rQf" = (
@@ -69182,13 +69277,16 @@
 /obj/machinery/vending/cart{
 	req_access = list("hop")
 	},
-/obj/structure/noticeboard/directional/north,
 /obj/machinery/camera/directional/north{
 	c_tag = "Head of Personnel's Office";
 	name = "command camera"
 	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
+	},
+/obj/structure/noticeboard/hop{
+	dir = 1;
+	pixel_y = 32
 	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
@@ -69204,6 +69302,11 @@
 "sgk" = (
 /obj/structure/table,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/item/paper_bin{
+	pixel_x = -4;
+	pixel_y = 4
+	},
+/obj/item/pen,
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden/monastery)
 "sgm" = (
@@ -69698,6 +69801,14 @@
 /obj/effect/mapping_helpers/airlock/access/all/medical/general,
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/central)
+"sre" = (
+/obj/effect/mapping_helpers/broken_floor,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/department/chapel/monastery)
 "srf" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -70100,6 +70211,7 @@
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/airlock/access/any/service/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating/rust,
 /area/station/maintenance/department/chapel/monastery)
 "syw" = (
@@ -70293,7 +70405,9 @@
 "sBL" = (
 /obj/structure/table/wood,
 /obj/structure/table/wood,
-/obj/item/paper_bin,
+/obj/item/paper_bin{
+	pixel_y = 5
+	},
 /obj/item/pen/fountain,
 /obj/item/radio/intercom/directional/west,
 /obj/effect/turf_decal/siding/wood,
@@ -71456,6 +71570,10 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
+"sYP" = (
+/obj/effect/spawner/random/trash/graffiti,
+/turf/closed/wall,
+/area/station/maintenance/department/chapel/monastery)
 "sYQ" = (
 /obj/machinery/light_switch/directional/west,
 /obj/structure/cable,
@@ -71887,10 +72005,6 @@
 /obj/effect/spawner/random/trash/cigbutt,
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
-"tgp" = (
-/obj/structure/sign/poster/official/help_others,
-/turf/closed/wall,
-/area/station/command/bridge)
 "tgv" = (
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
@@ -75246,6 +75360,11 @@
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/aft)
+"unO" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/plating,
+/area/station/maintenance/department/chapel/monastery)
 "unY" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/public/glass{
@@ -75834,7 +75953,10 @@
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage/tcomms)
 "uzr" = (
-/obj/structure/sign/departments/holy/directional/east,
+/obj/structure/sign/departments/holy/directional/east{
+	name = "Confessional sign";
+	desc = "A sign labelling the chapel's confessional."
+	},
 /obj/item/kirbyplants{
 	icon_state = "plant-10"
 	},
@@ -77844,9 +77966,6 @@
 "vkF" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
-	},
-/obj/machinery/computer/pod/old/mass_driver_controller/chapelgun{
-	pixel_x = 30
 	},
 /turf/open/floor/wood/large,
 /area/station/service/chapel)
@@ -81245,6 +81364,10 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
+/obj/item/storage/box/lights/mixed{
+	pixel_y = 5
+	},
+/obj/item/crowbar/red,
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden/monastery)
 "wuY" = (
@@ -99895,7 +100018,7 @@ acm
 aaa
 aaa
 aaa
-acm
+aaQ
 aaa
 aeu
 aeU
@@ -105247,9 +105370,9 @@ aap
 pld
 gqO
 pld
-pld
+sYP
 dum
-gqO
+mcf
 gqO
 pld
 pld
@@ -105504,8 +105627,8 @@ pld
 gqO
 hxE
 esH
-igs
-vev
+gsN
+sre
 igs
 uUl
 gSL
@@ -105771,7 +105894,7 @@ amu
 inf
 ghW
 fAG
-gqO
+mcf
 lqC
 xwm
 fuJ
@@ -110637,7 +110760,7 @@ aeu
 pld
 pld
 pld
-wWj
+unO
 qNs
 iVK
 gqO
@@ -111663,7 +111786,7 @@ aeu
 aeu
 pld
 pld
-qPL
+bOn
 gqO
 pld
 aeu
@@ -113519,7 +113642,7 @@ aaa
 acm
 aaa
 aaa
-cmU
+biE
 aUz
 aeu
 adH
@@ -114539,7 +114662,7 @@ chD
 chI
 aaa
 acm
-acm
+kkQ
 acm
 acm
 aaQ
@@ -115356,7 +115479,7 @@ lSc
 aeU
 oRc
 bUE
-kmK
+qLn
 tPZ
 ega
 uaP
@@ -116134,7 +116257,7 @@ tEA
 mRh
 vWa
 ezd
-tgp
+dbG
 qFL
 peB
 dbG
@@ -117926,7 +118049,7 @@ lSc
 xbG
 aqg
 cmU
-bPK
+dXF
 tPZ
 gLG
 dGN
