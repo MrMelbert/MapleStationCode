@@ -1,7 +1,7 @@
 /obj/machinery/computer/operating
 
-/obj/machinery/computer/operating/attackby(obj/item/weapon, mob/user, params)
-	if(user.combat_mode)
+/obj/machinery/computer/operating/attackby(obj/item/weapon, mob/living/user, params)
+	if(!istype(user) || user.combat_mode)
 		return ..()
 	if(weapon.item_flags & SURGICAL_TOOL)
 		// You can open it while doing surgery

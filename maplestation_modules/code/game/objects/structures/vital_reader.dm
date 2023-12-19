@@ -85,6 +85,7 @@
 		/obj/machinery/implantchair,
 		/obj/machinery/sleeper,
 		/obj/machinery/stasis,
+		/obj/machinery/vital_floor_scanner,
 	))
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
@@ -96,8 +97,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	frame = /obj/item/wallframe/status_display/vitals/advanced
 	advanced = TRUE
 
-/obj/machinery/computer/vitals_reader/attackby(obj/item/weapon, mob/user, params)
-	if(user.combat_mode)
+/obj/machinery/computer/vitals_reader/attackby(obj/item/weapon, mob/living/user, params)
+	if(!istype(user) || user.combat_mode)
 		return ..()
 	if(weapon.item_flags & SURGICAL_TOOL)
 		// You can flick it on while doing surgery
