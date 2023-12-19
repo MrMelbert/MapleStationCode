@@ -7468,14 +7468,10 @@
 /obj/structure/chair{
 	dir = 8
 	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/effect/landmark/start/assistant,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 8
 	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/landmark/start/assistant,
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
 "aNk" = (
@@ -8784,14 +8780,14 @@
 /area/station/medical/pharmacy)
 "aSy" = (
 /obj/structure/table,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
 /obj/item/stack/medical/gauze,
 /obj/item/stack/medical/mesh,
 /obj/item/stack/medical/suture,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
 "aSz" = (
@@ -9417,10 +9413,6 @@
 /obj/effect/turf_decal/tile/neutral/opposingcorners,
 /turf/open/floor/iron/dark,
 /area/station/service/bar)
-"aVU" = (
-/obj/structure/sign/departments/medbay/alt,
-/turf/closed/wall,
-/area/station/medical/paramedic)
 "aVY" = (
 /obj/structure/bodycontainer/morgue,
 /obj/effect/turf_decal/tile/neutral,
@@ -38677,13 +38669,14 @@
 /area/station/maintenance/department/crew_quarters/bar)
 "hCy" = (
 /obj/structure/table,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral,
 /obj/item/clipboard,
 /obj/item/storage/medkit/regular,
 /obj/structure/cable,
+/obj/machinery/firealarm/directional/north,
+/obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/structure/railing{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
 "hCz" = (
@@ -45336,11 +45329,16 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/light_switch/directional/west,
 /obj/structure/disposalpipe/trunk{
 	dir = 1
 	},
-/obj/machinery/firealarm/directional/south,
+/obj/machinery/newscaster/directional/south,
+/obj/machinery/light_switch/directional/west{
+	pixel_y = -4
+	},
+/obj/machinery/firealarm/directional/west{
+	pixel_y = 6
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/paramedic)
 "jTH" = (
@@ -55527,7 +55525,6 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 1
 	},
-/obj/machinery/firealarm/directional/west,
 /obj/machinery/camera/directional/west{
 	c_tag = "Medbay Lobby";
 	name = "medical camera";
@@ -55537,6 +55534,7 @@
 	dir = 1
 	},
 /obj/structure/disposalpipe/segment,
+/obj/structure/sign/departments/medbay/alt/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "nvh" = (
@@ -64194,7 +64192,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/machinery/newscaster/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/medical/paramedic)
 "qys" = (
@@ -65701,6 +65698,9 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/railing/corner{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "rcu" = (
@@ -71474,6 +71474,9 @@
 	},
 /obj/effect/turf_decal/tile/blue,
 /obj/structure/cable,
+/obj/structure/railing{
+	dir = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "sZk" = (
@@ -79170,19 +79173,18 @@
 /turf/open/floor/iron/dark,
 /area/station/cargo/miningoffice)
 "vIz" = (
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral{
+/obj/machinery/light/directional/north,
+/obj/structure/cable,
+/obj/machinery/computer/vitals_reader/directional/north,
+/obj/machinery/vital_floor_scanner{
 	dir = 1
 	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/machinery/light/directional/north,
-/obj/machinery/medical_kiosk{
-	pixel_y = 4
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 8
 	},
-/obj/effect/turf_decal/box,
-/obj/structure/cable,
+/obj/effect/turf_decal/loading_area/white{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/medbay/lobby)
 "vJk" = (
@@ -86361,6 +86363,23 @@
 	},
 /turf/open/floor/iron,
 /area/station/security/processing)
+"yjS" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/blue,
+/obj/structure/railing/corner{
+	dir = 1
+	},
+/turf/open/floor/iron/white,
+/area/station/medical/medbay/lobby)
 "yjT" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
@@ -108815,7 +108834,7 @@ aNu
 xKX
 lpp
 iCj
-aVU
+aJU
 vIz
 rQf
 vmo
@@ -109074,7 +109093,7 @@ gKh
 qyi
 aJU
 hCy
-aQt
+yjS
 aQr
 ijE
 pnx

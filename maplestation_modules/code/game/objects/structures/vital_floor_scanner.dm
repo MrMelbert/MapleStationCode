@@ -1,5 +1,5 @@
 #define LINK_RANGE 2
-#define SCAN_EFFECT_DURATION 1.5 SECONDS
+#define SCAN_EFFECT_DURATION 1 SECONDS
 
 /datum/design/board/vital_floor_scanner
 	name = "Vitals Scanning Pad"
@@ -23,9 +23,11 @@
 /obj/machinery/vital_floor_scanner
 	name = "vitals scanning pad"
 	desc = "A pad that scans the vitals of anyone who steps on it and displays the results on nearby vitals monitors."
-	icon = 'icons/obj/machines/stasis.dmi'
-	icon_state = "stasis"
-	base_icon_state = "stasis"
+	icon = 'maplestation_modules/icons/obj/floor_scan.dmi'
+	icon_state = "scanner"
+	verb_say = "beeps"
+	verb_ask = "beeps"
+	verb_exclaim = "beeps"
 	density = FALSE
 	obj_flags = CAN_BE_HIT|BLOCKS_CONSTRUCTION
 	circuit = /obj/item/circuitboard/machine/vital_floor_scanner
@@ -112,29 +114,23 @@
 		return
 	if(!isnull(occupant))
 		addtimer(CALLBACK(src, PROC_REF(enable_vitals_nearby)), SCAN_EFFECT_DURATION, TIMER_UNIQUE)
-		new /obj/effect/temp_visual/vital_scan(occupant.loc, occupant)
+		scan_effect()
 
 	else if(!isnull(old_occupant))
 		addtimer(CALLBACK(src, PROC_REF(disable_vitals_nearby)), 1 SECONDS, TIMER_UNIQUE)
 
-/obj/effect/temp_visual/vital_scan
-	name = "scan"
-	layer = ABOVE_ALL_MOB_LAYER
-	plane = GAME_PLANE_FOV_HIDDEN
-	duration = SCAN_EFFECT_DURATION
-	randomdir = FALSE
-
-/obj/effect/temp_visual/vital_scan/Initialize(mapload, atom/movable/scanned)
-	. = ..()
-	for(var/obj/effect/temp_visual/vital_scan/existing in loc)
-		if(existing != src)
-			return INITIALIZE_HINT_QDEL
-
-	dir = scanned.dir
-	appearance = scanned.appearance
-	makeHologram(opacity = 0.75)
-	alpha = 0
-	animate(src, alpha = 255, time = (duration / 2))
+/obj/machinery/vital_floor_scanner/proc/scan_effect()
+	var/image/scan_effect = image(
+		icon = 'maplestation_modules/icons/obj/floor_scan.dmi',
+		loc = occupant,
+		icon_state = "scan_effect",
+		layer = ABOVE_ALL_MOB_LAYER,
+	)
+	scan_effect.alpha = 200
+	animate(scan_effect, alpha = 100, time = SCAN_EFFECT_DURATION * 0.25)
+	animate(scan_effect, alpha = 200, time = SCAN_EFFECT_DURATION * 0.25, loop = -1)
+	SET_PLANE_EXPLICIT(scan_effect, occupant.plane, occupant)
+	occupant.flick_overlay_view(scan_effect, SCAN_EFFECT_DURATION)
 
 #undef LINK_RANGE
 #undef SCAN_EFFECT_DURATION
