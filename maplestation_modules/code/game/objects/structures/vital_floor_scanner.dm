@@ -30,6 +30,9 @@
 	verb_exclaim = "beeps"
 	density = FALSE
 	obj_flags = CAN_BE_HIT|BLOCKS_CONSTRUCTION
+	use_power = IDLE_POWER_USE
+	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
+	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.1
 	circuit = /obj/item/circuitboard/machine/vital_floor_scanner
 	/// Cooldown between successful "scans"
 	COOLDOWN_DECLARE(scan_cooldown)
@@ -47,6 +50,13 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
+/obj/machinery/vital_floor_scanner/examine(mob/user)
+	. = ..()
+	if(isliving(user) && !issilicon(user))
+		. += span_notice("To use: Step on the pad and wait for the scan to complete. \
+			Your results will be displayed on nearby vitals monitors. \
+			<b>Examine</b> the monitor for a detailed breakdown of your vitals.")
+
 /obj/machinery/vital_floor_scanner/proc/on_entered(datum/source, atom/movable/arrived)
 	SIGNAL_HANDLER
 	if(!is_operational)
@@ -59,7 +69,9 @@
 		return
 
 	COOLDOWN_START(src, scan_cooldown, 5 SECONDS)
+	playsound(src, 'sound/machines/chime.ogg', 33, TRUE, frequency = 0.5)
 	set_occupant(arrived)
+	use_power(active_power_usage)
 
 /obj/machinery/vital_floor_scanner/proc/on_exited(datum/source, atom/movable/departed)
 	SIGNAL_HANDLER
@@ -71,6 +83,7 @@
 	if(!is_operational || QDELETED(occupant))
 		return
 
+	playsound(src, 'sound/machines/ping.ogg', 33, TRUE, frequency = 0.75)
 	for(var/obj/machinery/computer/vitals_reader/reader in range(LINK_RANGE, src))
 		if(!reader.is_operational)
 			continue
@@ -117,7 +130,7 @@
 		scan_effect()
 
 	else if(!isnull(old_occupant))
-		addtimer(CALLBACK(src, PROC_REF(disable_vitals_nearby)), 1 SECONDS, TIMER_UNIQUE)
+		disable_vitals_nearby()
 
 /obj/machinery/vital_floor_scanner/proc/scan_effect()
 	var/image/scan_effect = image(

@@ -97,6 +97,25 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	frame = /obj/item/wallframe/status_display/vitals/advanced
 	advanced = TRUE
 
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/advanced, 32)
+
+/obj/machinery/computer/vitals_reader/no_hand
+	name = "automatic vitals display"
+	desc = "A small screen that displays the vitals of a patient. \
+		Has no button to turn it on manually."
+	interaction_flags_atom = NONE
+	interaction_flags_machine = NONE
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
+
+/obj/machinery/computer/vitals_reader/Initialize(mapload, obj/item/circuitboard/C)
+	. = ..()
+	register_context()
+
+/obj/machinery/computer/vitals_reader/Destroy()
+	unset_patient()
+	return ..()
+
 /obj/machinery/computer/vitals_reader/attackby(obj/item/weapon, mob/living/user, params)
 	if(!istype(user) || user.combat_mode)
 		return ..()
@@ -141,14 +160,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
 	else
 		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
-
-/obj/machinery/computer/vitals_reader/Initialize(mapload, obj/item/circuitboard/C)
-	. = ..()
-	register_context()
-
-/obj/machinery/computer/vitals_reader/Destroy()
-	unset_patient()
-	return ..()
 
 /obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	if(isnull(held_item) || (held_item.item_flags & SURGICAL_TOOL))

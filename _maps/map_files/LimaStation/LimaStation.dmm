@@ -20331,13 +20331,13 @@
 /turf/open/floor/plating,
 /area/station/commons/vacant_room)
 "hek" = (
-/obj/machinery/computer/vitals_reader/directional/south,
 /obj/machinery/vital_floor_scanner,
 /obj/effect/turf_decal/loading_area/red,
 /obj/effect/turf_decal/tile/blue/half/contrasted,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
+/obj/machinery/computer/vitals_reader/no_hand/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "hez" = (
@@ -36095,7 +36095,6 @@
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "moo" = (
-/obj/machinery/computer/vitals_reader/directional/south,
 /obj/machinery/vital_floor_scanner,
 /obj/effect/turf_decal/loading_area/red,
 /obj/effect/turf_decal/tile/blue/half/contrasted,
@@ -36103,6 +36102,7 @@
 	dir = 1
 	},
 /obj/machinery/light/directional/west,
+/obj/machinery/computer/vitals_reader/no_hand/directional/south,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "mop" = (
