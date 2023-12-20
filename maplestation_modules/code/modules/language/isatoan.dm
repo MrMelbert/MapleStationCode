@@ -43,7 +43,7 @@
 	)
 	icon_state = "eldritch"
 	icon = 'maplestation_modules/icons/misc/language.dmi'
-	default_priority = 120
+	default_priority = 80
 
 /datum/language_holder/eldritch
 	understood_languages = list(
@@ -62,9 +62,9 @@
 	if(isnull(language))
 		return
 	var/datum/language/dialect = GLOB.language_datum_instances[language]
-	dialect.heard_by_mob_who_lacks_critical_information(src)
+	dialect.heard_by_mob_who_lacks_critical_information(src, speaker)
 
-/datum/language/proc/heard_by_mob_who_lacks_critical_information(mob/living/listener)
+/datum/language/proc/heard_by_mob_who_lacks_critical_information(mob/living/listener, atom/movable/speaker)
 	return
 
 /datum/language/eldritch/heard_by_mob_who_lacks_critical_information(mob/living/listener, atom/movable/speaker)

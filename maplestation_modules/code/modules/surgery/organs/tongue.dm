@@ -3,10 +3,10 @@
 
 /obj/item/organ/internal/tongue/get_possible_languages()
 	return ..() + list(
+		/datum/language/isatoa,
 		/datum/language/ratvarian,
 		/datum/language/skrell,
 		/datum/language/yangyu,
-		/datum/language/isatoa,
 	)
 
 // Skrell Tongue. Could use a sprite.
