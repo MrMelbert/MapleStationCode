@@ -43,7 +43,7 @@
 	mob_trait = TRAIT_CAFFEINE_LOVER //Might aswell love the drinks while we're at it
 	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_PROCESSES
 	gain_text = span_notice("You can't wait to start your day with a nice energizing drink!")
-	lose_text = span_danger("You realize excess amounts caffeine likely has detrimental effects on your cardiovascular system.")
+	lose_text = span_danger("You realize excessive amounts of caffeine likely has detrimental effects on your cardiovascular system.")
 	medical_record_text = "Patient snatched the observation officer's coffee, drank it and then asked for seconds."
 	/// Did we drink literally anything caffeinated in the round?
 	var/caffeine_drank = FALSE
