@@ -61,7 +61,9 @@
 	layer = ABOVE_WINDOW_LAYER
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_REQUIRES_DEXTERITY
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON
-	use_power = NO_POWER_USE
+	use_power = IDLE_POWER_USE
+	idle_power_usage = 0
+	active_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
 	icon_keyboard = null
 	icon_screen = null
 
@@ -102,7 +104,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/advanced, 32)
 /obj/machinery/computer/vitals_reader/no_hand
 	name = "automatic vitals display"
 	desc = "A small screen that displays the vitals of a patient. \
-		Has no button to turn it on manually."
+		It has no button to toggle it manually."
 	interaction_flags_atom = NONE
 	interaction_flags_machine = NONE
 
@@ -119,7 +121,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 /obj/machinery/computer/vitals_reader/attackby(obj/item/weapon, mob/living/user, params)
 	if(!istype(user) || user.combat_mode)
 		return ..()
-	if(weapon.item_flags & SURGICAL_TOOL)
+	if((interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND) && (weapon.item_flags & SURGICAL_TOOL))
 		// You can flick it on while doing surgery
 		return interact(user)
 	return ..()
@@ -163,7 +165,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 
 /obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	if(isnull(held_item) || (held_item.item_flags & SURGICAL_TOOL))
-		context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
+		if(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
+			context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
 	else if(held_item.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_LMB] = "Detach"
 	if(!isnull(patient))
@@ -244,7 +247,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 
 /obj/machinery/computer/vitals_reader/update_overlays()
 	. = ..()
-	if(!active)
+	if(!active || !is_operational)
 		return
 
 	if(isnull(patient))
@@ -278,6 +281,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 
 /// Converts a percentage to a color
 /obj/machinery/computer/vitals_reader/proc/percent_to_color(percent)
+	if(machine_stat & (EMPED|EMAGGED|BROKEN))
+		percent = rand(1, 100) * 0.01
+
 	if(percent == 0)
 		return "#2A72AA"
 
@@ -295,6 +301,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 
 /// Converts a percentage to a bar icon state
 /obj/machinery/computer/vitals_reader/proc/percent_to_bar(percent)
+	if(machine_stat & (EMPED|EMAGGED|BROKEN))
+		percent = rand(1, 100) * 0.01
+
 	if(percent >= 1)
 		return "bar9"
 	if(percent <= 0)
@@ -350,18 +359,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return TRUE
 
 /obj/machinery/computer/vitals_reader/on_set_is_operational(old_value)
-	if(!is_operational && active)
+	if(is_operational)
+		return
+	if(active)
 		toggle_active()
+		return
+	update_appearance(UPDATE_OVERLAYS)
 
 /// Toggles whether the display is active or not
 /obj/machinery/computer/vitals_reader/proc/toggle_active()
 	if(active)
 		active = FALSE
-		update_use_power(NO_POWER_USE)
+		update_use_power(IDLE_POWER_USE)
 		unset_patient()
 	else
 		active = TRUE
-		update_use_power(IDLE_POWER_USE)
+		update_use_power(ACTIVE_POWER_USE)
 		find_active_patient()
 	update_appearance(UPDATE_OVERLAYS)
 
@@ -442,3 +455,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 /obj/machinery/computer/vitals_reader/proc/update_overlay_on_signal(...)
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
+
+/obj/machinery/vitals_reader/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+
+	set_machine_stat(machine_stat | EMPED)
+	addtimer(CALLBACK(src, PROC_REF(fix_emp)), (severity == EMP_HEAVY ? 150 SECONDS : 75 SECONDS))
+
+/obj/machinery/vitals_reader/proc/fix_emp()
+	set_machine_stat(machine_stat & ~EMPED)

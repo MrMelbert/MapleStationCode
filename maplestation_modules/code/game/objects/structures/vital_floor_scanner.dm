@@ -33,6 +33,10 @@
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.1
+	light_range = 1
+	light_power = 0.5
+	light_color = LIGHT_COLOR_ELECTRIC_CYAN
+	light_on = TRUE
 	circuit = /obj/item/circuitboard/machine/vital_floor_scanner
 	/// Cooldown between successful "scans"
 	COOLDOWN_DECLARE(scan_cooldown)
@@ -49,6 +53,7 @@
 		COMSIG_ATOM_EXITED = PROC_REF(on_exited),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/machinery/vital_floor_scanner/examine(mob/user)
 	. = ..()
@@ -56,6 +61,13 @@
 		. += span_notice("To use: Step on the pad and wait for the scan to complete. \
 			Your results will be displayed on nearby vitals monitors. \
 			<b>Examine</b> the monitor for a detailed breakdown of your vitals.")
+
+/obj/machinery/vital_floor_scanner/update_overlays()
+	. = ..()
+	if(!is_operational)
+		return
+
+	. += emissive_appearance(icon, "scanner_emissive", src, alpha = src.alpha)
 
 /obj/machinery/vital_floor_scanner/proc/on_entered(datum/source, atom/movable/arrived)
 	SIGNAL_HANDLER
@@ -98,7 +110,7 @@
 
 /obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby()
 	for(var/obj/machinery/computer/vitals_reader/reader in range(LINK_RANGE, src))
-		if(reader.active && isnull(reader.patient))
+		if(reader.patient == occupant)
 			reader.toggle_active()
 			return
 
@@ -110,10 +122,14 @@
 	return TRUE
 
 /obj/machinery/vital_floor_scanner/on_set_is_operational(old_value)
+	update_appearance(UPDATE_OVERLAYS)
+
 	if(!is_operational)
+		set_light_on(FALSE)
 		set_occupant(null)
 		return
 
+	set_light_on(TRUE)
 	for(var/mob/living/new_mob in loc)
 		if(!can_scan(new_mob))
 			continue
