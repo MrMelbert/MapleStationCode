@@ -10990,20 +10990,9 @@
 /turf/open/floor/iron/dark/textured,
 /area/station/science/ordnance)
 "dRB" = (
-/obj/structure/table/reinforced,
 /obj/machinery/status_display/ai/directional/west,
-/obj/item/clipboard{
-	pixel_y = 7
-	},
-/obj/item/folder/yellow{
-	pixel_y = 9
-	},
-/obj/item/electronics/apc{
-	pixel_y = 8
-	},
-/obj/item/electronics/airlock{
-	pixel_y = 5
-	},
+/obj/effect/turf_decal/bot_white,
+/obj/structure/filingcabinet/chestdrawer,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "dRF" = (
@@ -39586,8 +39575,21 @@
 /obj/structure/table/reinforced,
 /obj/machinery/airalarm/directional/west,
 /obj/item/toy/talking/ai{
-	pixel_y = 6;
-	pixel_x = 18
+	pixel_y = 8;
+	pixel_x = 20
+	},
+/obj/item/clipboard{
+	pixel_y = 7
+	},
+/obj/item/folder/yellow{
+	pixel_y = 9
+	},
+/obj/item/electronics/apc{
+	pixel_y = 1;
+	pixel_x = 1
+	},
+/obj/item/electronics/airlock{
+	pixel_y = 5
 	},
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
@@ -42037,6 +42039,7 @@
 /obj/structure/table/reinforced,
 /obj/machinery/fax,
 /obj/structure/cable,
+/obj/machinery/firealarm/directional/west,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "omn" = (
@@ -54541,7 +54544,7 @@
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
 "spY" = (
-/obj/machinery/firealarm/directional/north,
+/obj/structure/sign/poster/official/ion_rifle/directional/north,
 /turf/open/floor/circuit/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "sqq" = (
@@ -61892,6 +61895,7 @@
 /obj/machinery/status_display/ai/directional/west,
 /obj/machinery/photocopier,
 /obj/structure/cable,
+/obj/effect/turf_decal/bot_white,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/ai_monitored/turret_protected/ai)
 "uMX" = (
