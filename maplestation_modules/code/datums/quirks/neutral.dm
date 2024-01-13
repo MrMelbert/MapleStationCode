@@ -60,7 +60,7 @@
 
 /datum/quirk/caffeinated/add(client/client_source)
 	adjust_sprint_multipliers(0.33, 0.2)
-	RegisterSignals(quirk_holder, list(COMSIG_CARBON_DRINK_CAFFEINE), PROC_REF(drank_caffeine))
+	RegisterSignals(quirk_holder, COMSIG_CARBON_DRINK_CAFFEINE, PROC_REF(drank_caffeine))
 	quirk_holder.add_mood_event("caffeine", /datum/mood_event/no_coffee)
 
 /datum/quirk/caffeinated/process(seconds_per_tick)
@@ -77,7 +77,7 @@
 		if(!caffeine_overdosed)
 			quirk_holder.add_mood_event("caffeine", /datum/mood_event/way_too_high_caffeine)
 			caffeine_overdosed = TRUE
-			addtimer(CALLBACK(PROC_REF(caffeine_overdose)), 4 MINUTES) //wuh oh
+			addtimer(src, CALLBACK(PROC_REF(caffeine_overdose)), 4 MINUTES) //wuh oh
 		return
 
 	if(caffeine_content > 4)
@@ -102,7 +102,7 @@
 	if(caffeine_overdosed)
 		quirk_holder.add_mood_event("caffeine", /datum/mood_event/caffeine_death)
 		var/mob/living/carbon/quirk_carbon = quirk_holder
-		if(quirk_carbon.can_heartattack())
+		if(quirk_carbon.can_heartattack() && !quirk_carbon.undergoing_cardiac_arrest())
 			to_chat(quirk_carbon, span_userdanger("Your heart stops!"))
 			quirk_carbon.visible_message(span_danger("[quirk_carbon] grabs at their chest and collapses!"), ignored_mobs = quirk_carbon)
 			quirk_carbon.set_heartattack(TRUE)
