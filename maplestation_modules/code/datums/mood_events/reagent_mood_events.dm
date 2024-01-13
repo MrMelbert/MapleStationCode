@@ -27,7 +27,7 @@
 	timeout = 7 MINUTES
 
 /datum/mood_event/coffee_lover
-	description = "That coffee hit the spot! I feel so energized!"
+	description = "That coffee was truly delectable!"
 	mood_change = 3
 	timeout = 7 MINUTES
 
