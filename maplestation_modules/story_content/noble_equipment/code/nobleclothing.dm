@@ -241,3 +241,82 @@
 	can_adjust = TRUE
 	body_parts_covered = CHEST|GROIN|ARMS
 	alternate_worn_layer = ABOVE_SHOES_LAYER
+
+/obj/item/clothing/shoes/jackboots/plauge
+	name = "plaguestrider boots"
+	desc = "Sturdy and resilient boots, aptly named for their ability to stride confidently through plague-ridden terrains, offering both protection and mobility for the dedicated healer."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plagueboots"
+	inhand_icon_state = "plagueboots"
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/gloves/latex/nitrile/plauge
+	name = "shadowlace talons"
+	desc = "Gloves with an aura of nocturnal grace, featuring talon-like fingertips adorned in shadowlace, allowing mystery and precision essential for a skilled doctor's interventions."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plaguegloves"
+	inhand_icon_state = "plaguegloves"
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/under/rank/plague
+	name = "shadowlace plague gown"
+	desc = "An exquisite gown shrouded in the elegance of shadowlace, seamlessly blending the mystique of the night with the functionality required for a vigilant doctor, enchanting and purposeful."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plaguedress"
+	inhand_icon_state = "plaguedress"
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	body_parts_covered = CHEST|GROIN|LEGS
+	can_adjust = FLASE
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/mask/nobreath/plague
+	name = "plaguestriders visage"
+	desc = "A meticulously designed and enchanted mask with advanced filtration. It's secondary duty is to protect the idenity of a vigilant healer."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plaguemask"
+	inhand_icon_state = "plaguemask"
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	body_parts_covered = FACE|MOUTH|EYES
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/clothing/head/plague
+	name = "shadowlace bonnet"
+	desc = "A meticulously crafted frilly bonnet adorned with intricate shadowlace, designed to bring an air of mysterious elegance to the diligent healer."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plaguehat"
+	inhand_icon_state = "plaguehat"
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+/obj/item/staff/plague
+	name = "plague warding parasol"
+	desc = "A parasol of dark elegance, intricately designed to not only shield from the sun but also to ward off the invisible threats of disease, combines fashion with practical defense."
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "umbrellafrilly"
+	inhand_icon_state = "umbrellafrilly"
+	resistance_flags = FIRE_PROOF|ACID_PROOF
+
+
+/obj/item/slimecross/regenerative/grey/plague
+	name = "philemon blessed cure-all"
+	desc = "A potent healing extract infused with the divine essence of Philemon, known for its miraculous ability to mend ailments and restore vitality with a touch of divine grace."
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "voidextract"
+	inhand_icon_state = "voidextract"
