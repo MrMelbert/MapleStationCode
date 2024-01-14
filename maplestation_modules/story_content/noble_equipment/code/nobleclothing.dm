@@ -347,7 +347,7 @@
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	armor_type = /datum/armor/plauge
 
-/obj/item/clothing/mask/nobreath/plague/Initialize(...)
+/obj/item/clothing/mask/nobreath/plague/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, INNATE_TRAIT)
 
