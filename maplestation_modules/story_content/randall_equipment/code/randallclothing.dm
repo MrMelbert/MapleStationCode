@@ -40,7 +40,7 @@
 	can_be_bloody = FALSE
 	resistance_flags = INDESTRUCTIBLE
 
-	/obj/item/clothing/gloves/randallgloves/pre_attack(atom/A, mob/living/user, params)
+/obj/item/clothing/gloves/randallgloves/pre_attack(atom/A, mob/living/user, params)
 	. = ..()
 	if(.)
 		return
