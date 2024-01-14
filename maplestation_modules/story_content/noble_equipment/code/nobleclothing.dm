@@ -129,6 +129,25 @@
 	icon_state = "elegantgloves"
 	inhand_icon_state = "elegantgloves"
 
+/obj/item/clothing/gloves/chiffon/pre_attack(atom/A, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(A))
+		return
+
+	if(deprecise_zone(user.zone_selected) != BODY_ZONE_HEAD)
+		return
+
+	var/mob/living/slapped = A
+	user.visible_message(span_warning("[user] slaps [slapped] with [src]!"), span_warning("You slap [slapped] with [src]!"), span_hear("You hear a slap."))
+	playsound(slapped, 'sound/weapons/slap.ogg', get_clamped_volume(), TRUE)
+	slapped.Knockdown(1 SECONDS)
+	user.do_attack_animation(slapped, used_item = src)
+	user.changeNext_move(CLICK_CD_MELEE)
+	return TRUE
+
 //The type path is a lie.
 /obj/item/clothing/shoes/chiffon
 	name = "velvet flats"
@@ -251,7 +270,16 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "plagueboots"
 	inhand_icon_state = "plagueboots"
+	armor_type = /datum/armor/plauge
 	resistance_flags = FIRE_PROOF|ACID_PROOF
+	var/list/walking_sounds = list(
+		'maplestation_modules/sound/items/highheel1.ogg' = 1,
+		'maplestation_modules/sound/items/highheel2.ogg' = 1,
+	)
+
+/obj/item/clothing/shoes/jackboots/plague/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/squeak, custom_sounds = walking_sounds, volume_override = 55, chance_override = 85)
 
 /obj/item/clothing/gloves/latex/nitrile/plague
 	name = "shadowlace talons"
@@ -262,7 +290,29 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "plaguegloves"
 	inhand_icon_state = "plaguegloves"
+	greyscale_config_inhand_left = null
+	greyscale_config_inhand_right = null
 	resistance_flags = FIRE_PROOF|ACID_PROOF
+	armor_type = /datum/armor/plauge
+
+/obj/item/clothing/gloves/latex/nitrile/plague/pre_attack(atom/A, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
+
+	if(!isliving(A))
+		return
+
+	if(deprecise_zone(user.zone_selected) != BODY_ZONE_HEAD)
+		return
+
+	var/mob/living/slapped = A
+	user.visible_message(span_warning("[user] slaps [slapped] with [src]!"), span_warning("You slap [slapped] with [src]!"), span_hear("You hear a slap."))
+	playsound(slapped, 'sound/weapons/slap.ogg', get_clamped_volume(), TRUE)
+	slapped.Knockdown(1 SECONDS)
+	user.do_attack_animation(slapped, used_item = src)
+	user.changeNext_move(CLICK_CD_MELEE)
+	return TRUE
 
 /obj/item/clothing/under/rank/plague
 	name = "shadowlace plague gown"
@@ -274,9 +324,14 @@
 	icon_state = "plaguedress"
 	inhand_icon_state = "plaguedress"
 	supports_variations_flags = CLOTHING_NO_VARIATION
+	clothing_flags = THICKMATERIAL
 	body_parts_covered = CHEST|GROIN|LEGS
 	alternate_worn_layer = ABOVE_SHOES_LAYER
 	resistance_flags = FIRE_PROOF|ACID_PROOF
+	armor_type = /datum/armor/plauge
+
+/datum/armor/plauge
+	bio = 100
 
 /obj/item/clothing/mask/nobreath/plague
 	name = "plaguestriders visage"
@@ -288,8 +343,13 @@
 	icon_state = "plaguebeak"
 	inhand_icon_state = "plaguebeak"
 	supports_variations_flags = CLOTHING_NO_VARIATION
-	body_parts_covered = HEAD
+	body_parts_covered = HIDEFACE
 	resistance_flags = FIRE_PROOF|ACID_PROOF
+	armor_type = /datum/armor/plauge
+
+/obj/item/clothing/mask/nobreath/plague/Initialize(...)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NODROP, INNATE_TRAIT)
 
 /obj/item/clothing/head/plague
 	name = "shadowlace bonnet"
@@ -300,7 +360,9 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "plaguehat"
 	inhand_icon_state = "plaguehat"
+	clothing_flags = THICKMATERIAL | SNUG_FIT
 	resistance_flags = FIRE_PROOF|ACID_PROOF
+	armor_type = /datum/armor/plauge
 
 /obj/item/staff/plague
 	name = "plague warding parasol"
@@ -311,10 +373,26 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "umbrellafrilly"
 	inhand_icon_state = "umbrellafrilly"
+	attack_verb_continuous = list("disciplines")
+	attack_verb_simple = list("discipline")
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 
+/obj/item/staff/plague/attack(mob/living/target_mob, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
 
-/obj/item/slimecross/regenerative/grey/plague
+	target_mob.Knockdown(1 SECONDS)
+
+/obj/item/staff/plague/attack_secondary(mob/living/victim, mob/living/user, params)
+	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	healthscan(user, victim, advanced = TRUE)
+	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/obj/item/philemon_extract
 	name = "philemon blessed cure-all"
 	desc = "A potent healing extract infused with the divine essence of Philemon, known for its miraculous ability to mend ailments and restore vitality with a touch of divine grace."
 	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
@@ -322,3 +400,84 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "voidextract"
 	inhand_icon_state = "voidextract"
+	force = 0
+
+/obj/item/philemon_extract/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	. = ..()
+	if(!proximity_flag || !isliving(target))
+		return
+
+	var/mob/living/healing = target
+	if(healing == user)
+		user.visible_message(
+			span_notice("[user] slathers [src] over [user.p_them()]self, the butterfly detaches and flies away after [user.p_their()] injuries!"),
+			span_notice("You squeeze [src], and it bursts in your hand, the butterfly detaches and flies away after it regenerates your injuries!"),
+		)
+	else
+		user.visible_message(
+			span_notice("As [user] slathers [src] over [healing], the butterfly detaches and flies away after healing [healing.p_their()] injuries!"),
+			span_notice("You squeeze [src], and it bursts over [healing], the butterfly detaches and flies away after healing [healing.p_their()] injuries."),
+        )
+
+	healing.revive(HEAL_ALL)
+	playsound(healing, 'sound/effects/splat.ogg', 40, TRUE)
+
+/obj/item/scalpel/advanced/plague
+	name = ""
+	desc = ""
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = ""
+	inhand_icon_state = ""
+
+/obj/item/retractor/advanced/plague
+	name = ""
+	desc = ""
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = ""
+	inhand_icon_state = ""
+
+/obj/item/bonesetter/plague
+	name = ""
+	desc = ""
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = ""
+	inhand_icon_state = ""
+
+/obj/item/cautery/advanced/plague
+	name = ""
+	desc = ""
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = ""
+	inhand_icon_state = ""
+
+/obj/item/stack/medical/bone_gel/plague
+	name = ""
+	desc = ""
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = ""
+	inhand_icon_state = ""
+
+/obj/item/surgical_drapes/plague
+	name = ""
+	desc = ""
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = ""
+	inhand_icon_state = ""
