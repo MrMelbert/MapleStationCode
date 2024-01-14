@@ -275,7 +275,6 @@
 	inhand_icon_state = "plaguedress"
 	supports_variations_flags = CLOTHING_NO_VARIATION
 	body_parts_covered = CHEST|GROIN|LEGS
-	can_adjust = FLASE
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 
 /obj/item/clothing/mask/nobreath/plague
@@ -288,7 +287,7 @@
 	icon_state = "plaguemask"
 	inhand_icon_state = "plaguemask"
 	supports_variations_flags = CLOTHING_NO_VARIATION
-	body_parts_covered = FACE|MOUTH|EYES
+	body_parts_covered = HEAD
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 
 /obj/item/clothing/head/plague
