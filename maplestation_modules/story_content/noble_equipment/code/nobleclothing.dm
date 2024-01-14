@@ -417,7 +417,7 @@
 		user.visible_message(
 			span_notice("As [user] slathers [src] over [healing], the butterfly detaches and flies away after healing [healing.p_their()] injuries!"),
 			span_notice("You squeeze [src], and it bursts over [healing], the butterfly detaches and flies away after healing [healing.p_their()] injuries."),
-        )
+		)
 
 	healing.revive(HEAL_ALL)
 	playsound(healing, 'sound/effects/splat.ogg', 40, TRUE)
