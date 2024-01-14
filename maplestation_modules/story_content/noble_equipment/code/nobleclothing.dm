@@ -481,3 +481,13 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = ""
 	inhand_icon_state = ""
+
+/obj/item/storage/backpack/satchel/leather/plague
+	name = "remedial satchel"
+	desc = "A finely-crafted leather bag adorned with subtle shadowlace accents, designed to complement the attire of the vigilant doctor. It embodies both practicality and style for the most dedicated healer."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = ""
+	inhand_icon_state = ""
