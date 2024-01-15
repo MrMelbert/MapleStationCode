@@ -115,7 +115,7 @@
 			return
 
 /obj/machinery/vital_floor_scanner/proc/can_scan(mob/living/who)
-	if(!(who.mob_biotypes & MOB_ORGANIC))
+	if(who.mob_biotypes & MOB_ROBOTIC)
 		return FALSE
 	if(who.body_position != STANDING_UP)
 		return FALSE

@@ -399,7 +399,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			var/obj/machinery/computer/operating/op = nearby_thing
 			patient = op.table?.patient
 
-		if(!istype(patient) || !(patient.mob_biotypes & MOB_ORGANIC))
+		if(!istype(patient) || (patient.mob_biotypes & MOB_ROBOTIC))
 			continue
 
 		set_patient(patient)
