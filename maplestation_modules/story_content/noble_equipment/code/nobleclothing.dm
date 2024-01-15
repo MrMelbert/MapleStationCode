@@ -422,4 +422,66 @@
 	healing.revive(HEAL_ALL)
 	playsound(healing, 'sound/effects/splat.ogg', 40, TRUE)
 
+/obj/item/scalpel/advanced/plague
+	name = "flesh render"
+	desc = "A deceptively cruel looking cutting tool. The imposing power from the tool guides a dedicated doctors hand to cut with absolute precision."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plague_scalpel"
+	inhand_icon_state = "plague_scalpel"
 
+/obj/item/retractor/advanced/plague
+	name = "flesh manipulator"
+	desc = "A tool blessed by Philemon that acts as both a retractor and a hemostat. A powerful tool for the most dedicated of healers."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plague_retractor"
+	inhand_icon_state = "plague_retractor"
+
+/obj/item/bonesetter/plague
+	name = "limb mendistry tool"
+	desc = "A precision instrument with adjustable components and intricate tendrils, ensuring the meticulous restoration of limbs under the skilled hands of a dedicated healer."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plague_bonesetter"
+	inhand_icon_state = "plague_bonesetter"
+
+/obj/item/stack/medical/bone_gel/plague
+	name = "bonebond elixir"
+	desc = "A potent mixture of unidentifiable ingredients used by the most attentive doctors. The tendrils within are almost desprate to mend the bones of the injured, still just as painful as regular bone gel."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plague_bone-gel"
+	inhand_icon_state = "plague_bone-gel"
+
+/obj/item/surgical_drapes/plague
+	name = "plagueweaver coverings"
+	desc = "A set of surgical coverings swarming with Philemons blessed butterflies. The butterflies will guide you true, as the most dedicated doctor."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plague_surgical_drapes"
+	inhand_icon_state = "plague_surgical_drapes"
+
+/obj/item/storage/backpack/satchel/leather/plague
+	name = "remedial satchel"
+	desc = "A finely-crafted leather bag adorned with subtle shadowlace accents, designed to complement the attire of the vigilant doctor. It embodies both practicality and style for the most dedicated healer."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plaguebag"
+	inhand_icon_state = "plaguebag"
+
+/obj/item/cautery/advanced/plague
+	name = "shadowflame cautery"
+	desc = "A potent surical tool imbuled with a flame blessed by Philemon. The flame is cool to the touch, only worth while to use on open wounds by the most attentive doctor."
+	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
+	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon_state = "plague_cautery"
+	inhand_icon_state = "plague_cautery"
