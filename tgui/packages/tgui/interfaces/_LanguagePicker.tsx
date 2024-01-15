@@ -78,7 +78,7 @@ export const LanguagePage = (props, context) => {
   } = data;
 
   return (
-    <>
+    <Section>
       {!!trilingual && (
         <WarningDimmer
           message={'You cannot chose a language with the trilingual quirk.'}
@@ -125,6 +125,6 @@ export const LanguagePage = (props, context) => {
           ))}
         </Stack>
       </Section>
-    </>
+    </Section>
   );
 };
