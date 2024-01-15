@@ -13,7 +13,7 @@
 	cost = CARGO_CRATE_VALUE * 70 // this shit is SO culturally, functionally, and scientifically important.
 
 	unit_name = "silverscale tongue"
-	export_types = (/obj/item/organ/internal/tongue/lizard/silver)
+	export_types = list(/obj/item/organ/internal/tongue/lizard/silver)
 
 /datum/export/organ/tongue/lizard/silver/total_printout(datum/export_report/ex, notes = TRUE)
 	. = ..()
