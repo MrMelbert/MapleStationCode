@@ -196,9 +196,10 @@
 /datum/action/item_action/organ_action/statue/proc/statue_deconstructed(datum/source, disassembled)
 	SIGNAL_HANDLER
 	to_chat(owner, span_userdanger("You watch as your statue [disassembled ? "is broken apart" : "is taken apart, piece by piece"] - and with it, your life force!"))
-	statue.loc.visible_message(span_warning("[statue] shatters into dust!"))
-	owner.forceMove(statue.loc)
-	owner.dust(drop_items = TRUE)
+	statue.visible_message(span_warning("[statue] shatters into dust!"))
+	var/mob/living/lizard = owner
+	lizard.forceMove(statue.loc)
+	lizard.dust(drop_items = TRUE)
 
 /datum/armor/silverscale_statue_armor
 	melee = 50
