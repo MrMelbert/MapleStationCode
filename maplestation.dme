@@ -5688,6 +5688,7 @@
 #include "maplestation_modules\code\modules\reagents\chemistry\withdrawal\go_juice_addiction.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\withdrawal\luciferium_addiction.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\withdrawal\psychite_addiction.dm"
+#include "maplestation_modules\code\modules\reagents\reagent_containers\cups\glassbottle.dm"
 #include "maplestation_modules\code\modules\recycling\holder.dm"
 #include "maplestation_modules\code\modules\research\designs\autolathe_designs.dm"
 #include "maplestation_modules\code\modules\research\designs\mecha_designs.dm"
