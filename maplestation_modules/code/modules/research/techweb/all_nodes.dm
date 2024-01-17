@@ -18,6 +18,7 @@
 
 /datum/techweb_node/biotech
 	id_additions = list(
+		"scanning_pad",
 		"vitals_monitor",
 	)
 
