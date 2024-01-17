@@ -95,7 +95,7 @@ export const applyMiddleware = (
     return (reducer, ...args): Store => {
       const store = createStoreFunction(reducer, ...args);
 
-      let dispatch: Dispatch = () => {
+      let dispatch: Dispatch = (action, ...args) => {
         throw new Error(
           'Dispatching while constructing your middleware is not allowed.'
         );
@@ -193,20 +193,4 @@ export const createAction = <TAction extends string>(
   actionCreator.match = (action) => action.type === type;
 
   return actionCreator;
-};
-
-// Implementation specific
-// --------------------------------------------------------
-
-export const useDispatch = <TAction extends Action = AnyAction>(context: {
-  store: Store<unknown, TAction>;
-}): Dispatch<TAction> => {
-  return context.store.dispatch;
-};
-
-export const useSelector = <State, Selected>(
-  context: { store: Store<State, Action> },
-  selector: (state: State) => Selected
-): Selected => {
-  return selector(context.store.getState());
 };

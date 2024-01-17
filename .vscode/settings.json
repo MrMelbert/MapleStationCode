@@ -1,15 +1,25 @@
 {
 	"eslint.nodePath": "./tgui/.yarn/sdks",
 	"eslint.workingDirectories": ["./tgui"],
+<<<<<<< HEAD
 	"prettier.prettierPath": "./tgui/.yarn/sdks/prettier/index.js",
 	"typescript.tsdk": "./tgui/.yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
+=======
+	"prettier.prettierPath": "./tgui/.yarn/sdks/prettier/index.cjs",
+	"typescript.tsdk": "./tgui/.yarn/sdks/typescript/lib",
+  	"typescript.enablePromptUseWorkspaceTsdk": true,
+>>>>>>> upstream-tg/master
 	"search.exclude": {
 		"**/.yarn": true,
 		"**/.pnp.*": true
 	},
 	"editor.codeActionsOnSave": {
+<<<<<<< HEAD
 		"source.fixAll.eslint": true
+=======
+		"source.fixAll.eslint": "explicit"
+>>>>>>> upstream-tg/master
 	},
 	"files.eol": "\n",
 	"files.insertFinalNewline": true,

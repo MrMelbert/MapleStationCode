@@ -93,7 +93,7 @@
 
 	ASSERT(istype(copy))
 	src.copy = copy
-	RegisterSignal(copy, COMSIG_PARENT_QDELETING, PROC_REF(copy_gone))
+	RegisterSignal(copy, COMSIG_QDELETING, PROC_REF(copy_gone))
 
 /datum/status_effect/maintaining_illusion/on_apply()
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_distance))
@@ -116,7 +116,7 @@
 	fading = TRUE
 	animate(copy, time = 0.5 SECONDS, alpha = 0, easing = CUBIC_EASING)
 	addtimer(CALLBACK(copy, TYPE_PROC_REF(/mob/living, death), 0.5 SECONDS))
-	UnregisterSignal(copy, COMSIG_PARENT_QDELETING)
+	UnregisterSignal(copy, COMSIG_QDELETING)
 
 	if(!QDELING(src))
 		qdel(src)

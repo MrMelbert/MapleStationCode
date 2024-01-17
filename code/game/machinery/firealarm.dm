@@ -5,7 +5,7 @@
 /obj/item/wallframe/firealarm
 	name = "fire alarm frame"
 	desc = "Used for building fire alarms."
-	icon = 'icons/obj/firealarm.dmi'
+	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "fire_bitem"
 	result_path = /obj/machinery/firealarm
 	pixel_shift = 26
@@ -13,7 +13,7 @@
 /obj/machinery/firealarm
 	name = "fire alarm"
 	desc = "Pull this in case of emergency. Thus, keep pulling it forever."
-	icon = 'icons/obj/firealarm.dmi'
+	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "fire0"
 	max_integrity = 250
 	integrity_failure = 0.4
@@ -27,8 +27,6 @@
 	light_range = 1.6
 	light_color = LIGHT_COLOR_ELECTRIC_CYAN
 
-	//Trick to get the glowing overlay visible from a distance
-	luminosity = 1
 	//We want to use area sensitivity, let us
 	always_area_sensitive = TRUE
 	///Buildstate for contruction steps
@@ -74,7 +72,15 @@
 		), \
 	)
 
+	var/static/list/hovering_mob_typechecks = list(
+		/mob/living/silicon = list(
+			SCREENTIP_CONTEXT_CTRL_LMB = "Toggle thermal sensors, which control auto-deploy",
+		)
+	)
+	AddElement(/datum/element/contextual_screentip_mob_typechecks, hovering_mob_typechecks)
+	find_and_hang_on_wall()
 	update_appearance()
+
 
 /obj/machinery/firealarm/Destroy()
 	if(my_area)
@@ -139,9 +145,9 @@
 /obj/machinery/firealarm/update_appearance(updates)
 	. = ..()
 	if((my_area?.fire || LAZYLEN(my_area?.active_firelocks)) && !(obj_flags & EMAGGED) && !(machine_stat & (BROKEN|NOPOWER)))
-		set_light(l_power = 3)
+		set_light(l_range = 2.5, l_power = 1.5)
 	else
-		set_light(l_power = 1)
+		set_light(l_range = 1.6, l_power = 1)
 
 /obj/machinery/firealarm/update_icon_state()
 	if(panel_open)
@@ -208,17 +214,18 @@
 	if(prob(50 / severity))
 		alarm()
 
-/obj/machinery/firealarm/emag_act(mob/user)
+/obj/machinery/firealarm/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
-		return
+		return FALSE
 	obj_flags |= EMAGGED
 	update_appearance()
+	visible_message(span_warning("Sparks fly out of [src]!"))
 	if(user)
-		user.visible_message(span_warning("Sparks fly out of [src]!"))
-		user.balloon_alert(user, "speaker disabled!")
+		balloon_alert(user, "speaker disabled")
 		user.log_message("emagged [src].", LOG_ATTACK)
 	playsound(src, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	set_status()
+	return TRUE
 
 /**
  * Signal handler for checking if we should update fire alarm appearance accordingly to a newly set security level
@@ -317,7 +324,7 @@
 
 		if(tool.tool_behaviour == TOOL_WELDER && !user.combat_mode)
 			if(atom_integrity < max_integrity)
-				if(!tool.tool_start_check(user, amount=0))
+				if(!tool.tool_start_check(user, amount=1))
 					return
 
 				to_chat(user, span_notice("You begin repairing [src]..."))
@@ -404,14 +411,13 @@
 
 /obj/machinery/firealarm/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	if((buildstage == FIRE_ALARM_BUILD_NO_CIRCUIT) && (the_rcd.upgrade & RCD_UPGRADE_SIMPLE_CIRCUITS))
-		return list("mode" = RCD_WALLFRAME, "delay" = 20, "cost" = 1)
+		return list("delay" = 2 SECONDS, "cost" = 1)
 	return FALSE
 
-/obj/machinery/firealarm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
-	switch(passed_mode)
+/obj/machinery/firealarm/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, list/rcd_data)
+	switch(rcd_data["[RCD_DESIGN_MODE]"])
 		if(RCD_WALLFRAME)
-			user.visible_message(span_notice("[user] fabricates a circuit and places it into [src]."), \
-			span_notice("You adapt a fire alarm circuit and slot it into the assembly."))
+			balloon_alert(user, "circuit installed")
 			buildstage = FIRE_ALARM_BUILD_NO_WIRES
 			update_appearance()
 			return TRUE
@@ -435,7 +441,7 @@
 	return ..()
 
 /obj/machinery/firealarm/deconstruct(disassembled = TRUE)
-	if(!(flags_1 & NODECONSTRUCT_1))
+	if(!(obj_flags & NO_DECONSTRUCTION))
 		new /obj/item/stack/sheet/iron(loc, 1)
 		if(buildstage > FIRE_ALARM_BUILD_NO_CIRCUIT)
 			var/obj/item/item = new /obj/item/electronics/firealarm(loc)
@@ -462,7 +468,7 @@
 
 // Allows Silicons to disable thermal sensor
 /obj/machinery/firealarm/BorgCtrlClick(mob/living/silicon/robot/user)
-	if(get_dist(src,user) <= user.interaction_range)
+	if(get_dist(src,user) <= user.interaction_range && !(user.control_disabled))
 		AICtrlClick(user)
 		return
 	return ..()
@@ -477,8 +483,9 @@
 	my_area.fire_detect = !my_area.fire_detect
 	for(var/obj/machinery/firealarm/fire_panel in my_area.firealarms)
 		fire_panel.update_icon()
-	to_chat(user, span_notice("You [ my_area.fire_detect ? "enable" : "disable" ] the local firelock thermal sensors!"))
-	user.log_message("[ my_area.fire_detect ? "enabled" : "disabled" ] firelock sensors using [src].", LOG_GAME)
+	if (user)
+		balloon_alert(user, "thermal sensors [my_area.fire_detect ? "enabled" : "disabled"]")
+		user.log_message("[ my_area.fire_detect ? "enabled" : "disabled" ] firelock sensors using [src].", LOG_GAME)
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/firealarm, 26)
 

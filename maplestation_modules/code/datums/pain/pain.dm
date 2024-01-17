@@ -132,7 +132,7 @@
 		adjust_bodypart_pain(new_limb.body_zone, new_limb.pain)
 		adjust_bodypart_pain(BODY_ZONE_CHEST, new_limb.pain / 3)
 
-	RegisterSignal(new_limb, COMSIG_PARENT_QDELETING, PROC_REF(limb_delete))
+	RegisterSignal(new_limb, COMSIG_QDELETING, PROC_REF(limb_delete))
 
 /**
  * Remove a limb from being tracked.
@@ -150,7 +150,7 @@
 		CRASH("Pain datum tried to remove a bodypart that wasn't being tracked!")
 
 	body_zones -= bad_zone
-	UnregisterSignal(lost_limb, COMSIG_PARENT_QDELETING)
+	UnregisterSignal(lost_limb, COMSIG_QDELETING)
 
 	if(!QDELETED(parent) && !special)
 		var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)

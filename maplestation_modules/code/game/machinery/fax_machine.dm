@@ -35,9 +35,10 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /obj/machinery/fax
 	name = "fax machine"
 	desc = "A machine made to send copies of papers to other departments or Central Command. Bureaucratic."
-	icon = 'icons/obj/fax.dmi'
+	icon = 'icons/obj/machines/fax.dmi'
 	base_icon_state = "fax"
 	icon_state = "fax"
+	anchored_tabletop_offset = 6
 	max_integrity = 100
 	pass_flags = PASSTABLE
 	speech_span = SPAN_ROBOT

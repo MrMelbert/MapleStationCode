@@ -7,11 +7,7 @@
 #CRITAWAKETS
 # /_maps/map_files/PubbyStation/PubbyStation.dm @CRITAWAKETS
 
-#doshMobile
-/maplestation_modules/icons/ @doshMobile
-
 #mrmelbert
-/maplestation_modules/
-
-#sqnztb
-/_maps/map_files/LimaStation/LimaStation.dm @sqnztb
+/code/
+/_maps/
+/icons/

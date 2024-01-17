@@ -44,7 +44,11 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	species_language_holder = /datum/language_holder/yangyu // doing this because yangyu is really just, mostly unused otherwise.
 
 /datum/species/ornithid/randomize_features(mob/living/carbon/human_mob)
-	randomize_external_organs(human_mob)
+	var/list/features = ..()
+	features["arm_wings"] = pick(GLOB.arm_wings_list)
+	features["tail_avian"] = pick(GLOB.tails_list_avian)
+	features["ears_avian"] = pick(GLOB.avian_ears_list)
+	return features
 
 // defines limbs/bodyparts.
 
@@ -135,4 +139,3 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 		),
 	)
 	return to_add
-

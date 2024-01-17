@@ -55,7 +55,9 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 		skrell_mob.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
 
 /datum/species/skrell/randomize_features(mob/living/carbon/human_mob)
-	randomize_external_organs(human_mob)
+	var/list/features = ..()
+	features["head_tentacles"] = pick(GLOB.head_tentacles_list)
+	return features
 
 /datum/species/skrell/get_species_description()
 	return "Skrell are a semi-aquatic species hailing from tropical worlds."

@@ -16,14 +16,21 @@
 		generate_name()
 
 /datum/antagonist/changeling/finalize_antag()
-	owner.current.grant_all_languages(FALSE, FALSE, TRUE) //Grants omnitongue. We are able to transform our body after all.
 	create_emporium()
 	if(give_innates)
 		create_innate_actions()
 	create_initial_profile()
 	play_changeling_sound()
-	if(hivemind_link_awoken)
-		to_chat(owner.current, span_bold(span_changeling("You can communicate in the changeling hivemind using \"[MODE_TOKEN_CHANGELING]\".")))
+
+/datum/antagonist/changeling/apply_innate_effects(mob/living/mob_override)
+	. = ..()
+	var/mob/living/ling = mob_override || owner.current
+	ling.get_language_holder().omnitongue = TRUE
+
+/datum/antagonist/changeling/remove_innate_effects(mob/living/mob_override)
+	. = ..()
+	var/mob/living/ling = mob_override || owner.current
+	ling.get_language_holder().omnitongue = FALSE
 
 /// The sound that plays when our changeling is finalized.
 /datum/antagonist/changeling/proc/play_changeling_sound()

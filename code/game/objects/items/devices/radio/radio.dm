@@ -1,17 +1,17 @@
 #define FREQ_LISTENING (1<<0)
 
 /obj/item/radio
-	icon = 'icons/obj/radio.dmi'
+	icon = 'icons/obj/devices/voice.dmi'
 	name = "station bounced radio"
 	icon_state = "walkietalkie"
-	inhand_icon_state = "radio"
+	inhand_icon_state = "walkietalkie"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	worn_icon_state = "radio"
 	desc = "A basic handheld radio that communicates with local telecommunication networks."
 	dog_fashion = /datum/dog_fashion/back
 
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
 	throw_speed = 3
 	throw_range = 7
@@ -91,7 +91,7 @@
 	VAR_PRIVATE/should_update_icon = FALSE
 
 /obj/item/radio/Initialize(mapload)
-	wires = new /datum/wires/radio(src)
+	set_wires(new /datum/wires/radio(src))
 	secure_radio_connections = list()
 	. = ..()
 
@@ -111,6 +111,13 @@
 		update_appearance(UPDATE_ICON)
 
 	AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
+
+	// No subtypes
+	if(type != /obj/item/radio)
+		return
+	AddComponent(/datum/component/slapcrafting,\
+		slapcraft_recipes = list(/datum/crafting_recipe/improv_explosive)\
+	)
 
 /obj/item/radio/Destroy()
 	remove_radio_all(src) //Just to be sure
@@ -278,6 +285,12 @@
 	if(use_command)
 		spans |= SPAN_COMMAND
 
+	var/radio_message = message
+	if(LAZYACCESS(message_mods, WHISPER_MODE))
+		// Radios don't pick up whispers very well
+		radio_message = stars(radio_message)
+		spans |= SPAN_ITALICS
+
 	flick_overlay_view(overlay_mic_active, 5 SECONDS)
 
 	/*
@@ -303,17 +316,14 @@
 		channel = null
 
 	// Nearby active jammers prevent the message from transmitting
-	var/turf/position = get_turf(src)
-	for(var/obj/item/jammer/jammer as anything in GLOB.active_jammers)
-		var/turf/jammer_turf = get_turf(jammer)
-		if(position?.z == jammer_turf.z && (get_dist(position, jammer_turf) <= jammer.range) && !syndie)
-			return
+	if(is_within_radio_jammer_range(src) && !syndie)
+		return
 
 	// Determine the identity information which will be attached to the signal.
 	var/atom/movable/virtualspeaker/speaker = new(null, talking_movable, src)
 
 	// Construct the signal
-	var/datum/signal/subspace/vocal/signal = new(src, freq, speaker, language, message, spans, message_mods)
+	var/datum/signal/subspace/vocal/signal = new(src, freq, speaker, language, radio_message, spans, message_mods)
 
 	// Independent radios, on the CentCom frequency, reach all independent radios
 	if (independent && (freq == FREQ_CENTCOM || freq == FREQ_CTF_RED || freq == FREQ_CTF_BLUE || freq == FREQ_CTF_GREEN || freq == FREQ_CTF_YELLOW))
@@ -342,7 +352,7 @@
 	// Okay, the signal was never processed, send a mundane broadcast.
 	signal.data["compression"] = 0
 	signal.transmission_method = TRANSMISSION_RADIO
-	signal.levels = list(T.z)
+	signal.levels = SSmapping.get_connected_levels(T)
 	signal.broadcast()
 
 /obj/item/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range)
@@ -350,6 +360,13 @@
 	if(radio_freq || !broadcasting || get_dist(src, speaker) > canhear_range)
 		return
 	var/filtered_mods = list()
+
+	if (message_mods[MODE_SING])
+		filtered_mods[MODE_SING] = message_mods[MODE_SING]
+	if (message_mods[WHISPER_MODE])
+		filtered_mods[WHISPER_MODE] = message_mods[WHISPER_MODE]
+	if (message_mods[SAY_MOD_VERB])
+		filtered_mods[SAY_MOD_VERB] = message_mods[SAY_MOD_VERB]
 	if (message_mods[MODE_CUSTOM_SAY_EMOTE])
 		filtered_mods[MODE_CUSTOM_SAY_EMOTE] = message_mods[MODE_CUSTOM_SAY_EMOTE]
 		filtered_mods[MODE_CUSTOM_SAY_ERASE_INPUT] = message_mods[MODE_CUSTOM_SAY_ERASE_INPUT]
@@ -384,7 +401,8 @@
 				return TRUE
 	return FALSE
 
-/obj/item/radio/proc/on_recieve_message()
+/obj/item/radio/proc/on_receive_message(list/data)
+	SEND_SIGNAL(src, COMSIG_RADIO_RECEIVE_MESSAGE, data)
 	flick_overlay_view(overlay_speaker_active, 5 SECONDS)
 
 /obj/item/radio/ui_state(mob/user)
@@ -480,9 +498,9 @@
 	. = ..()
 	if(unscrewed)
 		return
-	if(broadcasting)
+	if(broadcasting && overlay_mic_idle)
 		. += overlay_mic_idle
-	if(listening)
+	if(listening && overlay_speaker_idle)
 		. += overlay_speaker_idle
 
 /obj/item/radio/screwdriver_act(mob/living/user, obj/item/tool)
@@ -527,6 +545,7 @@
 	subspace_transmission = TRUE
 	subspace_switchable = TRUE
 	dog_fashion = null
+	canhear_range = 0
 
 /obj/item/radio/borg/resetChannels()
 	. = ..()

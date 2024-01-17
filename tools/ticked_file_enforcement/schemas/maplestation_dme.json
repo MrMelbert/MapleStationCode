@@ -1,0 +1,7 @@
+{
+	"file": "maplestation.dme",
+	"scannable_directory": "maplestation_modules/",
+	"subdirectories": true,
+	"excluded_files": [],
+	"forbidden_includes": []
+}

@@ -3,7 +3,7 @@
 	name = "mail"
 	gender = NEUTER
 	desc = "An officially postmarked, tamper-evident parcel regulated by CentCom and made of high-quality materials."
-	icon = 'icons/obj/bureaucracy.dmi'
+	icon = 'icons/obj/service/bureaucracy.dmi'
 	icon_state = "mail_small"
 	inhand_icon_state = "paper"
 	worn_icon_state = "paper"
@@ -140,8 +140,11 @@
 // proc that goes after unwrapping a mail.
 /obj/item/mail/proc/after_unwrap(mob/user)
 	user.temporarilyRemoveItemFromInventory(src, force = TRUE)
-	for(var/obj/item/stuff as anything in contents) // Mail and envelope actually can have more than 1 item.
-		user.put_in_hands(stuff)
+	for(var/obj/stuff as anything in contents) // Mail and envelope actually can have more than 1 item.
+		if(isitem(stuff))
+			user.put_in_hands(stuff)
+		else
+			stuff.forceMove(drop_location())
 	playsound(loc, 'sound/items/poster_ripped.ogg', vol = 50, vary = TRUE)
 	qdel(src)
 	return TRUE
@@ -149,14 +152,18 @@
 
 /obj/item/mail/examine_more(mob/user)
 	. = ..()
-	var/list/msg = list(span_notice("<i>You notice the postmarking on the front of the mail...</i>"))
+	if(!postmarked)
+		. += span_info("This mail has no postmarking of any sort...")
+	else
+		. += span_notice("<i>You notice the postmarking on the front of the mail...</i>")
 	var/datum/mind/recipient = recipient_ref.resolve()
 	if(recipient)
-		msg += "\t[span_info("Certified NT mail for [recipient].")]"
+		. += span_info("[postmarked ? "Certified NT" : "Uncertfieid"] mail for [recipient].")
+	else if(postmarked)
+		. += span_info("Certified mail for [GLOB.station_name].")
 	else
-		msg += "\t[span_info("Certified mail for [GLOB.station_name].")]"
-	msg += "\t[span_info("Distribute by hand or via destination tagger using the certified NT disposal system.")]"
-	return msg
+		. += span_info("This is a dead letter mail with no recipient.")
+	. += span_info("Distribute by hand or via destination tagger using the certified NT disposal system.")
 
 /// Accepts a mind to initialize goodies for a piece of mail.
 /obj/item/mail/proc/initialize_for_recipient(datum/mind/recipient)
@@ -205,7 +212,12 @@
 
 	if(prob(25))
 		special_name = TRUE
-		junk = pick(list(/obj/item/paper/pamphlet/gateway, /obj/item/paper/pamphlet/violent_video_games, /obj/item/paper/fluff/junkmail_redpill, /obj/effect/decal/cleanable/ash))
+		junk = pick(list(
+			/obj/item/paper/pamphlet/gateway,
+			/obj/item/paper/pamphlet/violent_video_games,
+			/obj/item/paper/fluff/junkmail_redpill,
+			/obj/effect/decal/cleanable/ash,
+		))
 
 	var/list/junk_names = list(
 		/obj/item/paper/pamphlet/gateway = "[initial(name)] for [pick(GLOB.adjectives)] adventurers",
@@ -241,6 +253,8 @@
 	lid_x = -26
 	lid_y = 2
 	paint_jobs = null
+	///if it'll show the nt mark on the crate
+	var/postmarked = TRUE
 
 /obj/structure/closet/crate/mail/update_icon_state()
 	. = ..()
@@ -250,6 +264,11 @@
 			icon_state = base_icon_state
 	else
 		icon_state = "[base_icon_state]sealed"
+
+/obj/structure/closet/crate/mail/update_overlays()
+	. = ..()
+	if(postmarked)
+		. += "mail_nt"
 
 /// Fills this mail crate with N pieces of mail, where N is the lower of the amount var passed, and the maximum capacity of this crate. If N is larger than the number of alive human players, the excess will be junkmail.
 /obj/structure/closet/crate/mail/proc/populate(amount)
@@ -296,6 +315,19 @@
 	. = ..()
 	populate(INFINITY)
 
+///Used in the mail strike shuttle loan event
+/obj/structure/closet/crate/mail/full/mail_strike
+	desc = "A post crate from somewhere else. It has no NT logo on it."
+	postmarked = FALSE
+
+/obj/structure/closet/crate/mail/full/mail_strike/populate(amount)
+	var/strike_mail_to_spawn = rand(1, storage_capacity-1)
+	for(var/i in 1 to strike_mail_to_spawn)
+		if(prob(95))
+			new /obj/item/mail/mail_strike(src)
+		else
+			new /obj/item/mail/traitor/mail_strike(src)
+	return ..(storage_capacity - strike_mail_to_spawn)
 
 /// Opened mail crate
 /obj/structure/closet/crate/mail/preopen
@@ -306,7 +338,7 @@
 /obj/item/storage/bag/mail
 	name = "mail bag"
 	desc = "A bag for letters, envelopes, and other postage."
-	icon = 'icons/obj/bureaucracy.dmi'
+	icon = 'icons/obj/service/bureaucracy.dmi'
 	icon_state = "mailbag"
 	worn_icon_state = "mailbag"
 	resistance_flags = FLAMMABLE
@@ -330,7 +362,7 @@
 	var/nuclear_option_odds = 0.1
 
 /obj/item/paper/fluff/junkmail_redpill/Initialize(mapload)
-	var/obj/machinery/nuclearbomb/selfdestruct/self_destruct = locate() in GLOB.nuke_list
+	var/obj/machinery/nuclearbomb/selfdestruct/self_destruct = locate() in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/nuclearbomb/selfdestruct)
 	if(!self_destruct || !prob(nuclear_option_odds)) // 1 in 1000 chance of getting 2 random nuke code characters.
 		add_raw_text("<i>You need to escape the simulation. Don't forget the numbers, they help you remember:</i> '[rand(0,9)][rand(0,9)][rand(0,9)]...'")
 		return ..()
@@ -373,7 +405,8 @@
 	playsound(loc, 'sound/items/poster_ripped.ogg', vol = 50, vary = TRUE)
 	for(var/obj/item/stuff as anything in contents) // Mail and envelope actually can have more than 1 item.
 		if(user.put_in_hands(stuff) && armed)
-			log_bomber(user, "opened armed mail made by [made_by_cached_name] ([made_by_cached_ckey]), activating", stuff)
+			var/whomst = made_by_cached_name ? "[made_by_cached_name] ([made_by_cached_ckey])" : "no one in particular"
+			log_bomber(user, "opened armed mail made by [whomst], activating", stuff)
 			INVOKE_ASYNC(stuff, TYPE_PROC_REF(/obj/item, attack_self), user)
 	qdel(src)
 	return TRUE
@@ -404,11 +437,60 @@
 			after_unwrap(user)
 			return TRUE
 
+///Generic mail used in the mail strike shuttle loan event
+/obj/item/mail/mail_strike
+	name = "dead mail"
+	desc = "An unmarked parcel of unknown origins, effectively undeliverable."
+	postmarked = FALSE
+	generic_goodies = list(
+		/obj/effect/spawner/random/entertainment/money_medium = 2,
+		/obj/effect/spawner/random/contraband = 2,
+		/obj/effect/spawner/random/entertainment/money_large = 1,
+		/obj/effect/spawner/random/entertainment/coin = 1,
+		/obj/effect/spawner/random/food_or_drink/any_snack_or_beverage = 1,
+		/obj/effect/spawner/random/entertainment/drugs = 1,
+		/obj/effect/spawner/random/contraband/grenades = 1,
+	)
+
+/obj/item/mail/mail_strike/Initialize(mapload)
+	if(prob(35))
+		stamped = FALSE
+	if(prob(35))
+		name = "dead envelope"
+		icon_state = "mail_large"
+		goodie_count = 2
+		stamp_max = 2
+		stamp_offset_y = 5
+	. = ..()
+	color = pick(COLOR_SILVER, COLOR_DARK, COLOR_DRIED_TAN, COLOR_ORANGE_BROWN, COLOR_BROWN, COLOR_SYNDIE_RED)
+	for(var/goodie in 1 to goodie_count)
+		var/target_good = pick_weight(generic_goodies)
+		new target_good(src)
+
+///Also found in the mail strike shuttle loan. It contains a random grenade that'll be triggered when unwrapped
+/obj/item/mail/traitor/mail_strike
+	name = "dead mail"
+	desc = "An unmarked parcel of unknown origins, effectively undeliverable."
+	postmarked = FALSE
+
+/obj/item/mail/traitor/mail_strike/Initialize(mapload)
+	if(prob(35))
+		stamped = FALSE
+	if(prob(35))
+		name = "dead envelope"
+		icon_state = "mail_large"
+		goodie_count = 2
+		stamp_max = 2
+		stamp_offset_y = 5
+	. = ..()
+	color = pick(COLOR_SILVER, COLOR_DARK, COLOR_DRIED_TAN, COLOR_ORANGE_BROWN, COLOR_BROWN, COLOR_SYNDIE_RED)
+	new /obj/effect/spawner/random/contraband/grenades/dangerous(src)
+
 /obj/item/storage/mail_counterfeit_device
 	name = "GLA-2 mail counterfeit device"
 	desc = "Device that actually able to counterfeit NT's mail. This device also able to place a trap inside of mail for malicious actions. Trap will \"activate\" any item inside of mail. Also it might be used for contraband purposes. Integrated micro-computer will give you great configuration optionality for your needs."
 	w_class = WEIGHT_CLASS_NORMAL
-	icon = 'icons/obj/device_syndie.dmi'
+	icon = 'icons/obj/antags/syndicate_tools.dmi'
 	icon_state = "mail_counterfeit_device"
 
 /obj/item/storage/mail_counterfeit_device/Initialize(mapload)
@@ -442,9 +524,10 @@
 	var/list/mail_recipients_for_input = list("Anyone")
 	var/list/used_names = list()
 	for(var/datum/record/locked/person in sort_record(GLOB.manifest.locked))
-		if(isnull(person.mind_ref))
+		var/datum/mind/locked_mind = person.mind_ref.resolve()
+		if(isnull(locked_mind))
 			continue
-		mail_recipients += person.mind_ref
+		mail_recipients += locked_mind
 		mail_recipients_for_input += avoid_assoc_duplicate_keys(person.name, used_names)
 
 	var/recipient = tgui_input_list(user, "Choose a recipient", "Mail Counterfeiting", mail_recipients_for_input)

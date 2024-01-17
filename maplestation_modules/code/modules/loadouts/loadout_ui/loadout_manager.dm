@@ -164,7 +164,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
 	src.menu = open_menu
-	RegisterSignal(menu, COMSIG_PARENT_QDELETING, PROC_REF(cleanup_greyscale_menu))
+	RegisterSignal(menu, COMSIG_QDELETING, PROC_REF(cleanup_greyscale_menu))
 
 /datum/preference_middleware/loadout/proc/cleanup_greyscale_menu()
 	SIGNAL_HANDLER

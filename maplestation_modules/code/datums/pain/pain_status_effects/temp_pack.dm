@@ -63,7 +63,7 @@
 
 	held_bodypart.bodypart_pain_modifier *= pain_modifier
 	pressed_item.AddComponent(/datum/component/make_item_slow)
-	RegisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects))
+	RegisterSignal(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects))
 	if(holder != owner)
 		RegisterSignal(holder, COMSIG_MOVABLE_MOVED, PROC_REF(check_adjacency))
 	return TRUE
@@ -110,7 +110,7 @@
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	held_bodypart?.bodypart_pain_modifier /= pain_modifier
 	qdel(pressed_item.GetComponent(/datum/component/make_item_slow))
-	UnregisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
+	UnregisterSignal(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
 	UnregisterSignal(holder, COMSIG_MOVABLE_MOVED)
 
 	pressed_item = null

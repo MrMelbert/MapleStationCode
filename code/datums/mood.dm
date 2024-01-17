@@ -50,7 +50,7 @@
 	RegisterSignal(mob_to_make_moody, COMSIG_ENTER_AREA, PROC_REF(check_area_mood))
 	RegisterSignal(mob_to_make_moody, COMSIG_LIVING_REVIVE, PROC_REF(on_revive))
 	RegisterSignal(mob_to_make_moody, COMSIG_MOB_STATCHANGE, PROC_REF(handle_mob_death))
-	RegisterSignal(mob_to_make_moody, COMSIG_PARENT_QDELETING, PROC_REF(clear_parent_ref))
+	RegisterSignal(mob_to_make_moody, COMSIG_QDELETING, PROC_REF(clear_parent_ref))
 
 	mob_to_make_moody.become_area_sensitive(MOOD_DATUM_TRAIT)
 	if(mob_to_make_moody.hud_used)
@@ -63,11 +63,11 @@
 
 	unmodify_hud()
 	mob_parent.lose_area_sensitivity(MOOD_DATUM_TRAIT)
-	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_PARENT_QDELETING))
+	UnregisterSignal(mob_parent, list(COMSIG_MOB_HUD_CREATED, COMSIG_ENTER_AREA, COMSIG_LIVING_REVIVE, COMSIG_MOB_STATCHANGE, COMSIG_QDELETING))
 
 	mob_parent = null
 
-/datum/mood/Destroy(force, ...)
+/datum/mood/Destroy(force)
 	STOP_PROCESSING(SSmood, src)
 	QDEL_LIST_ASSOC_VAL(mood_events)
 	return ..()
@@ -141,6 +141,14 @@
  * * type - (path) any /datum/mood_event
  */
 /datum/mood/proc/add_mood_event(category, type, ...)
+	// we may be passed an instantiated mood datum with a modified timeout
+	// it is to be used as a vehicle to copy data from and then cleaned up afterwards.
+	// why do it this way? because the params list may contain numbers, and we may not necessarily want those to be interpreted as a timeout modifier.
+	// this is only used by the food quality system currently
+	var/datum/mood_event/mood_to_copy_from
+	if (istype(type, /datum/mood_event))
+		mood_to_copy_from = type
+		type = mood_to_copy_from.type
 	if (!ispath(type, /datum/mood_event))
 		CRASH("A non path ([type]), was used to add a mood event. This shouldn't be happening.")
 	if (!istext(category))
@@ -153,7 +161,10 @@
 			clear_mood_event(category)
 		else
 			if (the_event.timeout)
+				if (!isnull(mood_to_copy_from))
+					the_event.timeout = mood_to_copy_from.timeout
 				addtimer(CALLBACK(src, PROC_REF(clear_mood_event), category), the_event.timeout, (TIMER_UNIQUE|TIMER_OVERRIDE))
+			qdel(mood_to_copy_from)
 			return // Don't need to update the event.
 	var/list/params = args.Copy(3)
 
@@ -162,8 +173,11 @@
 	if (QDELETED(the_event)) // the mood event has been deleted for whatever reason (requires a job, etc)
 		return
 
-	mood_events[category] = the_event
 	the_event.category = category
+	if (!isnull(mood_to_copy_from))
+		the_event.timeout = mood_to_copy_from.timeout
+	qdel(mood_to_copy_from)
+	mood_events[category] = the_event
 	update_mood()
 
 	if (the_event.timeout)
@@ -280,7 +294,7 @@
 	mood_screen_object = new
 	mood_screen_object.color = "#4b96c4"
 	hud.infodisplay += mood_screen_object
-	RegisterSignal(hud, COMSIG_PARENT_QDELETING, PROC_REF(unmodify_hud))
+	RegisterSignal(hud, COMSIG_QDELETING, PROC_REF(unmodify_hud))
 	RegisterSignal(mood_screen_object, COMSIG_CLICK, PROC_REF(hud_click))
 
 /// Removes the mood HUD object

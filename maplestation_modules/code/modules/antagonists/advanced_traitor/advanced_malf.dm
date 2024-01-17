@@ -8,7 +8,17 @@
 
 	add_law_zero()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/malf.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
-	owner.current.grant_language(/datum/language/codespeak, TRUE, TRUE, LANGUAGE_MALF)
+	owner.current.grant_language(/datum/language/codespeak, source = LANGUAGE_MALF)
+
+/datum/antagonist/malf_ai/apply_innate_effects(mob/living/mob_override)
+	. = ..()
+	var/datum/atom_hud/data/hackyhud = GLOB.huds[DATA_HUD_MALF_APC]
+	hackyhud.show_to(mob_override || owner.current)
+
+/datum/antagonist/malf_ai/remove_innate_effects(mob/living/mob_override)
+	. = ..()
+	var/datum/atom_hud/data/hackyhud = GLOB.huds[DATA_HUD_MALF_APC]
+	hackyhud.hide_from(mob_override || owner.current)
 
 /// The Advanced Malf datum.
 /datum/antagonist/malf_ai/advanced

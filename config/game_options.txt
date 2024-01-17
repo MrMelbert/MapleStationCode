@@ -34,7 +34,7 @@ COMMENDATION_PERCENT_POLL 0.05
 
 ## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied.
 RUN_DELAY 1.5
-WALK_DELAY 2.5
+WALK_DELAY 4
 
 ## The variables below affect the movement of specific mob types. THIS AFFECTS ALL SUBTYPES OF THE TYPE YOU CHOOSE!
 ## Entries completely override all subtypes. Later entries have precedence over earlier entries.
@@ -347,26 +347,12 @@ ROUNDSTART_RACES lizard
 ROUNDSTART_RACES moth
 ROUNDSTART_RACES plasmaman
 #ROUNDSTART_RACES shadow
-ROUNDSTART_RACES silverscale
 
 ## Races that are better than humans in some ways, but worse in others
 ROUNDSTART_RACES ethereal
 #ROUNDSTART_RACES jelly
 #ROUNDSTART_RACES abductor
-#ROUNDSTART_RACES reploid - Removed temporarily until features done
-ROUNDSTART_RACES pod
-ROUNDSTART_RACES ornithid
-
-## Races that are straight upgrades. If these are on expect powergamers to always pick them
-ROUNDSTART_RACES skeleton
-ROUNDSTART_RACES silverscale
-#ROUNDSTART_RACES zombie
-#ROUNDSTART_RACES slime
-#ROUNDSTART_RACES lum
-#ROUNDSTART_RACES stargazer
-#ROUNDSTART_RACES military_synth
 #ROUNDSTART_RACES synth
-
 
 ## Including all the various golem subtypes that are better than humans in some ways, but worse in others
 #ROUNDSTART_RACES iron_golem
@@ -428,10 +414,12 @@ MORGUE_CADAVER_OTHER_SPECIES_PROBABILITY 50
 #MORGUE_CADAVER_OVERRIDE_SPECIES lizard
 
 
-##Overflow job. Default is assistant
+##Overflow job. Default is assistant.
+## NOTE: This will overwrite anything you put in jobconfig.toml!
 OVERFLOW_JOB Assistant
 
 ## Overflow slot cap. Set to -1 for unlimited. If limited, it will still open up if every other job is full.
+## NOTE: This will overwrite anything you put in jobconfig.toml!
 OVERFLOW_CAP -1
 
 ## Uncomment to bring back old grey suit assistants instead of the now default rainbow colored assistants.
@@ -541,3 +529,21 @@ DISALLOW_TITLE_MUSIC
 ## This is primarily useful for developing tutorials. If you have a proper DB setup, you
 ## don't need (or want) this.
 #GIVE_TUTORIALS_WITHOUT_DB
+
+## Configuration for station traits of each type.
+## The first value (key) is the budget, or the space available to use for station traits of that type. Some take more space than others.
+## The second value (assoc) is the weight associated with said budget compared to the rest for that type.
+POSITIVE_STATION_TRAITS 0 8
+POSITIVE_STATION_TRAITS 1 4
+POSITIVE_STATION_TRAITS 2 2
+POSITIVE_STATION_TRAITS 3 1
+
+NEUTRAL_STATION_TRAITS 0 10
+NEUTRAL_STATION_TRAITS 1 10
+NEUTRAL_STATION_TRAITS 2 3
+NEUTRAL_STATION_TRAITS 2.5 1
+
+NEGATIVE_STATION_TRAITS 0 8
+NEGATIVE_STATION_TRAITS 1 4
+NEGATIVE_STATION_TRAITS 2 2
+NEGATIVE_STATION_TRAITS 3 1
