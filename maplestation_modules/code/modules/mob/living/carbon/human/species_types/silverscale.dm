@@ -195,7 +195,7 @@
 
 /datum/action/item_action/organ_action/statue/proc/statue_deconstructed(datum/source, disassembled)
 	SIGNAL_HANDLER
-	to_chat(owner, span_userdanger("You watch as your statue [disassembled ? "is broken apart" : "is taken apart, piece by piece"] - and with it, your life force!"))
+	to_chat(owner, span_userdanger("You watch as your statue is [disassembled ? "taken apart, piece by piece" : "broken apart"] - and with it, your life force!"))
 	statue.visible_message(span_warning("[statue] shatters into dust!"))
 	var/mob/living/lizard = owner
 	lizard.forceMove(statue.loc)
