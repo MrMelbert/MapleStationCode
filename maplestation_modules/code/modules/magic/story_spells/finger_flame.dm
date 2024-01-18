@@ -231,8 +231,8 @@
 				return FALSE
 
 			// It's hard to tell how much was in their stomach and how much was in their blood so we'll just remove it from both
-			cast_on.reagents.remove_all_type(existing_accelerant, amount_consumed)
-			stomach.reagents.remove_all_type(existing_accelerant, amount_consumed)
+			cast_on.reagents.remove_reagent(existing_accelerant, amount_consumed)
+			stomach.reagents.remove_reagent(existing_accelerant, amount_consumed)
 			return TRUE
 
 	to_chat(cast_on, span_warning("You try to muster a flame, but you don't have enough accelerant..."))

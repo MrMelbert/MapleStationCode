@@ -28,7 +28,7 @@
 		return ..()
 
 	// Does not support digi and our equipper is? We shouldn't mess with it, skip
-	if(equipper.dna?.species?.bodytype & BODYTYPE_DIGITIGRADE)
+	if(equipper.bodytype & BODYTYPE_DIGITIGRADE)
 		return
 
 	// Does not support digi and our equipper is not digi? Continue as normal

@@ -90,13 +90,13 @@
 /obj/item/auto_cpr/screwdriver_act(mob/living/user, obj/item/tool)
 	if(isnull(cell))
 		balloon_alert(user, "no cell!")
-		return TOOL_ACT_SIGNAL_BLOCKING
+		return ITEM_INTERACT_BLOCKING
 
 	user.put_in_hands(cell)
 	balloon_alert(user, "cell removed")
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 	tool.play_tool_sound(src, 50)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/auto_cpr/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/stock_parts/cell))

@@ -36,17 +36,17 @@
 /datum/sprite_accessory/arm_wings/monochrome
 	name = "Monochrome"
 	icon_state = "monochrome"
-	color_src = HAIR
+	color_src = HAIR_COLOR
 
 /datum/sprite_accessory/arm_wings/monochrome_short
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
-	color_src = HAIR
+	color_src = HAIR_COLOR
 
 /datum/sprite_accessory/arm_wings/pursuant
 	name = "Pursuant"
 	icon_state = "pursuant"
-	color_src = HAIR
+	color_src = HAIR_COLOR
 
 /datum/bodypart_overlay/mutant/wings/arm_wings
 	feature_key = "arm_wings"

@@ -408,7 +408,7 @@
 						pain += 2
 					if(80 to INFINITY)
 						pain += 3
-			else if(HAS_TRAIT(parent, TRAIT_NOMETABOLISM))
+			else if(HAS_TRAIT(parent, TRAIT_LIVERLESS_METABOLISM))
 				pain = 1
 			else
 				pain = damage * 2
@@ -459,12 +459,6 @@
 					pain += 1
 				if(50 to INFINITY)
 					pain += 3
-
-		// Cellular pain is dealt to all bodyparts
-		if(CLONE)
-			if(HAS_TRAIT(parent, TRAIT_NOCLONELOSS))
-				return
-			def_zone = BODY_ZONES_ALL
 
 		// No pain from stamina loss
 		// In the future stamina can probably cause very sharp pain and replace stamcrit,
@@ -647,7 +641,7 @@
 				parent.adjust_confusion_up_to(8 SECONDS, 24 SECONDS)
 
 	// Finally, handle pain decay over time
-	if(IS_IN_STASIS(parent) || parent.on_fire || parent.stat == DEAD)
+	if(HAS_TRAIT(parent, TRAIT_STASIS) || parent.on_fire || parent.stat == DEAD)
 		return
 
 	// Decay every 5 ticks / 10 seconds, or 2 ticks / 4 seconds if "sleeping"

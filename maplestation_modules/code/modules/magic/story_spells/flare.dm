@@ -53,11 +53,13 @@
 	icon_state = "mage_flare"
 	base_icon_state = "mage_flare"
 	color = COLOR_VERY_SOFT_YELLOW
-	on = TRUE
 	actions_types = null
 	//If it should decay and delete itself after it uses all its fuel
 	var/auto_destroy = TRUE
 
+/obj/item/flashlight/glowstick/magic/Initialize(mapload)
+	. = ..()
+	set_light_on(TRUE)
 
 /obj/item/flashlight/glowstick/magic/lesser
 	name = "lesser self sustaining flare"

@@ -4,7 +4,6 @@
 #define EXAMINE_FLAVOR_MAX_DISPLAYED 65
 
 /// Language flag for languages added via quirk
-#define LANGUAGE_QUIRK "quirk"
 #define LANGUAGE_PREF "pref"
 
 /// Some string files.

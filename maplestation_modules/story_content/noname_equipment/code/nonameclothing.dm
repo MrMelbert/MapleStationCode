@@ -6,6 +6,100 @@
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "nndress"
 
+/// Component to make a suit item allow the wearer to safely ventcrawl, with some drawbacks
+/datum/component/ventcrawler_clothing
+	/// Tracks if it is currently equipped and applied
+	VAR_FINAL/applied = FALSE
+
+/datum/component/ventcrawler_clothing/Attach()
+	if(!isclothing(parent))
+		return COMPONENT_INCOMPATIBLE
+
+	var/obj/item/clothing/thing = parent
+	thing.attach_clothing_traits(TRAIT_VENTCRAWLER_ALWAYS)
+
+	RegisterSignal(thing, COMSIG_ITEM_EQUIPPED, PROC_REF(outfit_equipped))
+	RegisterSignal(thing, COMSIG_ITEM_DROPPED, PROC_REF(outfit_dropped))
+
+/datum/component/ventcrawler_clothing/Destroy()
+	var/obj/item/clothing/thing = parent
+	thing.detach_clothing_traits(TRAIT_VENTCRAWLER_ALWAYS)
+
+	UnregisterSignal(thing, COMSIG_ITEM_EQUIPPED)
+	UnregisterSignal(thing, COMSIG_ITEM_DROPPED)
+	return ..()
+
+/datum/component/ventcrawler_clothing/proc/outfit_equipped(obj/item/clothing/source, mob/user, slot)
+	SIGNAL_HANDLER
+
+	if(!ishuman(user) || !(slot & source.slot_flags))
+		return
+
+	ASSERT(!applied)
+
+	applied = TRUE
+	RegisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
+	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
+	RegisterSignal(user, COMSIG_MOB_APPLY_DAMAGE_MODIFIERS, PROC_REF(vulnerable_to_stab))
+	var/mob/living/carbon/human/wearer = user
+	wearer.physiology.burn_mod /= 0.5
+
+/datum/component/ventcrawler_clothing/proc/outfit_dropped(obj/item/clothing/source, mob/user)
+	SIGNAL_HANDLER
+
+	if(!applied || !ishuman(user))
+		return
+
+	applied = FALSE
+
+	if(!QDELING(user))
+		var/mob/living/carbon/human/wearer = user
+		wearer.physiology.burn_mod *= 0.5
+
+	UnregisterSignal(user, list(
+		COMSIG_MOVABLE_MOVED,
+		COMSIG_HUMAN_BURNING,
+		COMSIG_MOB_APPLY_DAMAGE_MODIFIERS,
+	))
+	var/obj/item/clothing/thing = parent
+	thing.detach_clothing_traits(list(
+		TRAIT_NOBREATH,
+		TRAIT_RESISTCOLD,
+		TRAIT_RESISTHIGHPRESSURE,
+		TRAIT_RESISTLOWPRESSURE
+	))
+
+/datum/component/ventcrawler_clothing/proc/on_move(mob/living/carbon/human/source, ...)
+	SIGNAL_HANDLER
+
+	if(HAS_TRAIT(source, TRAIT_MOVE_VENTCRAWLING))
+		var/obj/item/clothing/thing = parent
+		thing.attach_clothing_traits(list(
+			TRAIT_NOBREATH,
+			TRAIT_RESISTCOLD,
+			TRAIT_RESISTHIGHPRESSURE,
+			TRAIT_RESISTLOWPRESSURE,
+		))
+	else
+		var/obj/item/clothing/thing = parent
+		thing.detach_clothing_traits(list(
+			TRAIT_NOBREATH,
+			TRAIT_RESISTCOLD,
+			TRAIT_RESISTHIGHPRESSURE,
+			TRAIT_RESISTLOWPRESSURE,
+		))
+
+/datum/component/ventcrawler_clothing/proc/on_burn(mob/living/carbon/human/source)
+	SIGNAL_HANDLER
+
+	source.apply_damage(5, STAMINA, forced = TRUE)
+
+/datum/component/ventcrawler_clothing/proc/vulnerable_to_stab(datum/source, list/damage_mods, damage, damagetype, def_zone, sharpness, ...)
+	SIGNAL_HANDLER
+
+	if(sharpness)
+		damage_mods += 2
+
 // --- second outfit ---
 /obj/item/clothing/under/dress/nnseconddress
 	name = "fancy blue dress"
@@ -14,52 +108,10 @@
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "nnseconddress"
 	resistance_flags = INDESTRUCTIBLE
-	clothing_traits = list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_SHARPNESS_VULNERABLE) //gives nono her funny traits
-	var/heat_mod = FALSE
 
-/obj/item/clothing/under/dress/nnseconddress/equipped(mob/user, slot) //gives nono her weaknesses
+/obj/item/clothing/under/dress/nnseconddress/Initialize(mapload)
 	. = ..()
-	if(!ishuman(user) || !(slot & slot_flags))
-		return
-	heat_mod = TRUE
-	RegisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
-	var/mob/living/carbon/human/wearer = user
-	wearer.physiology.burn_mod /= 0.5
-
-/obj/item/clothing/under/dress/nnseconddress/dropped(mob/user)
-	. = ..()
-	if(!heat_mod)
-		return
-	if(!ishuman(user) || QDELING(user))
-		return
-	var/mob/living/carbon/human/wearer = user
-	wearer.physiology.burn_mod *= 0.5
-	heat_mod = FALSE
-	UnregisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
-	UnregisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
-	REMOVE_TRAIT(user, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
-	REMOVE_TRAIT(user, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
-	REMOVE_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-	REMOVE_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-
-/obj/item/clothing/under/dress/nnseconddress/proc/on_move(mob/living/carbon/human/source)
-	SIGNAL_HANDLER
-	if(HAS_TRAIT(source, TRAIT_MOVE_VENTCRAWLING))
-		ADD_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
-		ADD_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
-		ADD_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-		ADD_TRAIT(source, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
-	else
-		REMOVE_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
-		REMOVE_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
-		REMOVE_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-		REMOVE_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-
-/obj/item/clothing/under/dress/nnseconddress/proc/on_burn(mob/living/carbon/human/source)
-	SIGNAL_HANDLER
-
-	source.apply_damage(5, STAMINA)
+	AddComponent(/datum/component/ventcrawler_clothing)
 
 /obj/item/clothing/shoes/nnredshoes
 	name = "fake red shoes"
@@ -91,52 +143,10 @@
 	worn_icon = 'maplestation_modules/story_content/noname_equipment/icons/nndress_worn.dmi'
 	icon_state = "amsuit"
 	resistance_flags = INDESTRUCTIBLE
-	clothing_traits = list(TRAIT_VENTCRAWLER_ALWAYS, TRAIT_SHARPNESS_VULNERABLE) //suit gives same traits that nono's dress has
-	var/heat_mod = FALSE
 
-/obj/item/clothing/under/jumpsuit/atrox/equipped(mob/user, slot)
+/obj/item/clothing/under/jumpsuit/atrox/Initialize(mapload)
 	. = ..()
-	if(!ishuman(user) || !(slot & slot_flags))
-		return
-	heat_mod = TRUE
-	RegisterSignal(user, COMSIG_HUMAN_BURNING, PROC_REF(on_burn))
-	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_move))
-	var/mob/living/carbon/human/wearer = user
-	wearer.physiology.burn_mod /= 0.5
-
-/obj/item/clothing/under/jumpsuit/atrox/dropped(mob/user)
-	. = ..()
-	if(!heat_mod)
-		return
-	if(!ishuman(user) || QDELING(user))
-		return
-	var/mob/living/carbon/human/wearer = user
-	wearer.physiology.burn_mod *= 0.5
-	heat_mod = FALSE
-	UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
-	UnregisterSignal(user, COMSIG_HUMAN_BURNING)
-	REMOVE_TRAIT(user, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
-	REMOVE_TRAIT(user, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
-	REMOVE_TRAIT(user, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-	REMOVE_TRAIT(user, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
-
-/obj/item/clothing/under/jumpsuit/atrox/proc/on_move(mob/living/carbon/human/source)
-	SIGNAL_HANDLER
-	if(HAS_TRAIT(source, TRAIT_MOVE_VENTCRAWLING))
-		ADD_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
-		ADD_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
-		ADD_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-		ADD_TRAIT(source, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
-	else
-		REMOVE_TRAIT(source, TRAIT_NOBREATH, VENTCRAWLING_TRAIT)
-		REMOVE_TRAIT(source, TRAIT_RESISTCOLD, VENTCRAWLING_TRAIT)
-		REMOVE_TRAIT(source, TRAIT_RESISTHIGHPRESSURE, VENTCRAWLING_TRAIT)
-		REMOVE_TRAIT(source, TRAIT_RESISTLOWPRESSURE, VENTCRAWLING_TRAIT)
-
-/obj/item/clothing/under/jumpsuit/atrox/proc/on_burn(mob/living/carbon/human/source)
-	SIGNAL_HANDLER
-
-	source.apply_damage(5, STAMINA)
+	AddComponent(/datum/component/ventcrawler_clothing)
 
 /obj/item/clothing/shoes/atrox
 	name = "regal white boots"

@@ -8,7 +8,7 @@
 	lefthand_file = 'icons/mob/inhands/antag/clockwork_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/antag/clockwork_righthand.dmi'
 	icon_state = "ratvarian_spear"
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	sharpness = SHARP_POINTY
 	w_class = WEIGHT_CLASS_BULKY
 	force = 25

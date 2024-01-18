@@ -409,6 +409,7 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 		return "[state_prefix]_pbiscuit"
 	return "[state_prefix]_paper"
 
+/*
 /**
  * Actually vends an item out of the fax machine.
  * Moved into its own proc to allow a delay for the animation.
@@ -423,8 +424,8 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 	if (is_type_in_list(vend, exotic_types) && prob(20))
 		do_sparks(5, TRUE, src)
 		jammed = TRUE
-
 */
+
 /**
  * A procedure that makes entries in the history of fax transactions.
  *
@@ -548,7 +549,7 @@ GLOBAL_VAR_INIT(nt_fax_department, pick("NT HR Department", "NT Legal Department
 		if(!send_supply_pod_to_area(new_fax_machine, area_type, force_pod_type))
 			stack_trace("Attempted to forcibly send a fax to [area_type], however the area does not exist or has no valid dropoff spot for a fax machine")
 			return FALSE
-		addtimer(CALLBACK(new_fax_machine, TYPE_PROC_REF(/obj/machinery/fax, receive), fax_item, sender), 10 SECONDS)
+		addtimer(CALLBACK(new_fax_machine, TYPE_PROC_REF(/obj/machinery/fax, receive_paper), fax_item, sender), 10 SECONDS) // NON-MODULE CHANGE
 
 	else
 		return FALSE

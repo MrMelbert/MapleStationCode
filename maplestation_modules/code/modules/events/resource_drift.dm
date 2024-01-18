@@ -86,7 +86,7 @@
 			break
 	// If there's no mobs somehow then let's just chuck it towards the comms consoles (center mass, usually)
 	if(!target)
-		for(var/obj/machinery/computer/communications/console in GLOB.machines)
+		for(var/obj/machinery/computer/communications/console as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/computer/communications))
 			if(console.z == selected_cache.z)
 				target = console
 				break

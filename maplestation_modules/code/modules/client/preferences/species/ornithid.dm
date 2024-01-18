@@ -30,10 +30,12 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/ornithid_wings/init_possible_values()
-	return possible_values_for_sprite_accessory_list_for_body_part(
-		GLOB.arm_wings_list,
-		"arm_wings",
-		list("FRONT"),
+	return assoc_to_keys_features(GLOB.arm_wings_list)
+
+/datum/preference/choiced/ornithid_wings/icon_for(value)
+	return icon(
+		icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi',
+		icon_state = "m_arm_wings_[GLOB.arm_wings_list[value]]_FRONT",
 	)
 
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
@@ -47,13 +49,14 @@
 	relevant_external_organ = /obj/item/organ/external/tail/avian
 	should_generate_icons = TRUE
 
-
 /datum/preference/choiced/tail_avian/init_possible_values()
-	return possible_values_for_sprite_accessory_list_for_body_part(
-		GLOB.tails_list_avian,
-		"tail_avian",
-		list("FRONT", "BEHIND"),
-		)
+	return assoc_to_keys_features(GLOB.tails_list_avian)
+
+/datum/preference/choiced/tail_avian/icon_for(value)
+	return icon(
+		icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi',
+		icon_state = "m_tail_avian_[GLOB.tails_list_avian[value]]_BEHIND",
+	)
 
 /datum/preference/choiced/tail_avian/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["tail_avian"] = value
@@ -72,10 +75,12 @@
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/plumage/init_possible_values()
-	return possible_values_for_sprite_accessory_list_for_body_part(
-		GLOB.avian_ears_list,
-		"ears_avian",
-		list("FRONT"),
+	return assoc_to_keys_features(GLOB.avian_ears_list)
+
+/datum/preference/choiced/plumage/icon_for(value)
+	return icon(
+		icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi',
+		icon_state = "m_ears_avian_[GLOB.avian_ears_list[value]]_FRONT",
 	)
 
 /datum/preference/choiced/plumage/apply_to_human(mob/living/carbon/human/target, value)

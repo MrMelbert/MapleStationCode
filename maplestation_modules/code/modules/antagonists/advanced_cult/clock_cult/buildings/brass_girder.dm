@@ -38,7 +38,7 @@
 			user.visible_message(span_notice("[user] plates [src] with [weapon]."), span_notice("You construct a wall."))
 			material.use(1)
 			var/turf/our_turf = get_turf(src)
-			our_turf.PlaceOnTop(/turf/closed/wall/mineral/brass)
+			our_turf.place_on_top(/turf/closed/wall/mineral/brass)
 			qdel(src)
 
 	else
@@ -48,7 +48,7 @@
 	return
 
 /obj/structure/girder/brass/deconstruct(disassembled = TRUE)
-	if(!(flags_1 & NODECONSTRUCT_1))
+	if(!(obj_flags & NO_DECONSTRUCTION))
 		new /obj/item/stack/sheet/brass(drop_location(), 1)
 	qdel(src)
 

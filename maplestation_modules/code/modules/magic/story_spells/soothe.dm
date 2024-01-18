@@ -98,12 +98,12 @@
 	if(!isnull(owner.mind))
 		// Only sentient mobs can resist the effect
 		RegisterSignals(owner, list(COMSIG_LIVING_RESIST), PROC_REF(generic_block))
-		RegisterSignals(owner, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HUMAN_MELEE_UNARMED_ATTACK, COMSIG_MOB_ITEM_ATTACK), PROC_REF(attack_block))
+		RegisterSignals(owner, list(COMSIG_LIVING_UNARMED_ATTACK, COMSIG_MOB_ITEM_ATTACK), PROC_REF(attack_block))
 	to_chat(owner, span_hypnophrase("You inexplicably start to feel calmer..."))
 	return TRUE
 
 /datum/status_effect/being_soothed/on_remove()
-	UnregisterSignal(owner, list(COMSIG_LIVING_RESIST, COMSIG_LIVING_UNARMED_ATTACK, COMSIG_HUMAN_MELEE_UNARMED_ATTACK))
+	UnregisterSignal(owner, list(COMSIG_LIVING_RESIST, COMSIG_LIVING_UNARMED_ATTACK, COMSIG_MOB_ITEM_ATTACK))
 
 /datum/status_effect/being_soothed/proc/generic_block(datum/source)
 	SIGNAL_HANDLER

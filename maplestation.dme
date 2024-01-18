@@ -6444,6 +6444,7 @@
 #include "maplestation_modules\code\modules\surgery\organs\autosurgeon.dm"
 #include "maplestation_modules\code\modules\surgery\organs\ears.dm"
 #include "maplestation_modules\code\modules\surgery\organs\eyes.dm"
+#include "maplestation_modules\code\modules\surgery\organs\tails.dm"
 #include "maplestation_modules\code\modules\surgery\organs\tongue.dm"
 #include "maplestation_modules\code\modules\uplink\uplink_devices.dm"
 #include "maplestation_modules\code\modules\uplink\uplink_infiltrator.dm"
@@ -6483,8 +6484,4 @@
 #include "maplestation_modules\story_content\ritz_equipment\code\ritzclothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
-#include "maplestation_modules\temp_changes\bottles\bottlecode.dm"
-#include "maplestation_modules\temp_changes\midas_gun\_movespeed.dm"
-#include "maplestation_modules\temp_changes\midas_gun\blight.dm"
-#include "maplestation_modules\temp_changes\midas_gun\hand_of_midas.dm"
 // END_INCLUDE

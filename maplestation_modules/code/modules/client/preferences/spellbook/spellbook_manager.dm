@@ -105,7 +105,7 @@
 
 	customization_menu = new typepath(params = menu_params, item = item, manager = src)
 
-	RegisterSignal(customization_menu, COMSIG_PARENT_PREQDELETED, TYPE_PROC_REF(/datum/spellbook_manager, cleanup_customization_menu))
+	RegisterSignal(customization_menu, COMSIG_QDELETING, TYPE_PROC_REF(/datum/spellbook_manager, cleanup_customization_menu))
 	customization_menu.ui_interact(usr)
 
 /datum/spellbook_manager/proc/cleanup_customization_menu()

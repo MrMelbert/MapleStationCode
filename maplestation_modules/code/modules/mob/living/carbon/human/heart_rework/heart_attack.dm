@@ -69,7 +69,7 @@
 
 	if(ko_timer) // Not yet
 		return
-	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_STABLEHEART) || HAS_TRAIT(owner, TRAIT_NOBLOOD) || IS_IN_STASIS(owner))
+	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_STABLEHEART) || HAS_TRAIT(owner, TRAIT_NOBLOOD) || HAS_TRAIT(owner, TRAIT_STASIS))
 		return
 	if(owner.has_status_effect(/datum/status_effect/cpr_applied))
 		return

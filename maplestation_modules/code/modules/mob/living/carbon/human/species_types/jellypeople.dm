@@ -5,10 +5,6 @@
 	hair_alpha = 150
 	mutanteyes = /obj/item/organ/internal/eyes
 
-/datum/species/jelly/New()
-	. = ..()
-	species_traits |= list(HAIR, FACEHAIR)
-
 /datum/species/jelly/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = COLOR_PINK
 	human.hairstyle = "Bob Hair 2"

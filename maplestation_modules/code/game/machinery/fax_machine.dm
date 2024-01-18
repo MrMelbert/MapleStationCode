@@ -291,7 +291,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /obj/machinery/fax/screwdriver_act(mob/living/user, obj/item/screwdriver)
 	if(default_deconstruction_screwdriver(user, base_icon_state, base_icon_state, screwdriver))
 		update_appearance()
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/machinery/fax/wrench_act(mob/living/user, obj/item/tool)
@@ -299,13 +299,13 @@ GLOBAL_LIST_EMPTY(fax_machines)
 		if(CANT_UNFASTEN)
 			return NONE
 		if(FAILED_UNFASTEN)
-			return TOOL_ACT_SIGNAL_BLOCKING
+			return ITEM_INTERACT_BLOCKING
 		if(SUCCESSFUL_UNFASTEN)
-			return TOOL_ACT_TOOLTYPE_SUCCESS
+			return ITEM_INTERACT_SUCCESS
 	return NONE
 
 /obj/machinery/fax/crowbar_act(mob/living/user, obj/item/tool)
-	return default_deconstruction_crowbar(tool) ? TOOL_ACT_TOOLTYPE_SUCCESS : NONE
+	return default_deconstruction_crowbar(tool) ? ITEM_INTERACT_SUCCESS : NONE
 
 /obj/machinery/fax/attackby(obj/item/weapon, mob/user, params)
 	// This is to catch assemblies
@@ -851,7 +851,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 				machine.receiving_enabled = FALSE
 				addtimer(VARSET_CALLBACK(machine, receiving_enabled, TRUE), 30 SECONDS)
 
-/datum/wires/fax/on_cut(wire, mend)
+/datum/wires/fax/on_cut(wire, mend, source)
 	var/obj/machinery/fax/machine = holder
 	switch(wire)
 		if(WIRE_SEND_FAXES)

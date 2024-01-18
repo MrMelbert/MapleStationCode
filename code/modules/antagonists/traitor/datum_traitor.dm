@@ -75,6 +75,8 @@
 
 	if(finalize_antag)
 		finalize_antag()
+
+	return ..()
 	// NON-MODULE CHANGE END
 
 /* Moved to finalize_antags()

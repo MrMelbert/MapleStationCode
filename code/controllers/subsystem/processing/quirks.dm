@@ -25,7 +25,7 @@ GLOBAL_LIST_INIT_TYPED(quirk_blacklist, /list/datum/quirk, list(
 	list(/datum/quirk/item_quirk/settler, /datum/quirk/freerunning),
 	list(/datum/quirk/numb, /datum/quirk/selfaware),
 	// NON-MODULE CHANGE / BLACKLISTS
-	list(/datum/quirk/allodynia, /datum/quirk/hyperalgesia, /datum/quirk/hypoalgesia),
+	list(/datum/quirk/allodynia, /datum/quirk/pain_vulnerability, /datum/quirk/pain_resistance),
 	list(/datum/quirk/allodynia, /datum/quirk/bad_touch),
 ))
 

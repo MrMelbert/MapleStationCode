@@ -38,7 +38,7 @@
 			added_language = null
 			return
 
-	quirk_holder_languages.grant_language(added_language, TRUE, TRUE, LANGUAGE_QUIRK)
+	quirk_holder_languages.grant_language(added_language, ALL, LANGUAGE_QUIRK)
 
 	var/datum/language/added_language_instance = GLOB.language_datum_instances[added_language]
 	if(quirk_holder_languages.has_language(added_language, TRUE))
@@ -51,7 +51,7 @@
 /datum/quirk/trilingual/remove()
 	if(added_language)
 		var/datum/language_holder/quirk_holder_languages = quirk_holder.get_language_holder()
-		quirk_holder_languages.remove_language(added_language, TRUE, TRUE, LANGUAGE_QUIRK)
+		quirk_holder_languages.remove_language(added_language, ALL, LANGUAGE_QUIRK)
 
 /datum/quirk/no_appendix
 	name = "Appendicitis Survivor"

@@ -35,7 +35,7 @@
 	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife)
 
 /// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
-/turf/open/misc/funny_ice 
+/turf/open/misc/funny_ice
 	name = "thin ice sheet"
 	desc = "A thin sheet of solid ice. Looks slippery."
 	icon = 'icons/turf/floors/ice_turf.dmi'
@@ -61,7 +61,7 @@
 	wound_bonus = 50
 	sharpness = SHARP_EDGED
 
-/obj/projectile/magic/ice_knife/on_hit(atom/target)
+/obj/projectile/magic/ice_knife/on_hit(atom/target, blocked = FALSE, pierce_hit)
 	. = ..()
 	if(. != BULLET_ACT_HIT)
 		return

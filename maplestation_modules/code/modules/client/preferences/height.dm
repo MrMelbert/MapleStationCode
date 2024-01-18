@@ -44,39 +44,28 @@
 		return
 
 	target.transform = null
-
 	var/resize_amount = 1
-	var/y_offset = 0
 
 	switch(value)
 		if(HEIGHT_EXTREMELY_LARGE)
 			resize_amount = 1.5
-			y_offset = 8
 		if(HEIGHT_VERY_LARGE)
 			resize_amount = 1.2
-			y_offset = 3
 		if(HEIGHT_LARGE)
 			resize_amount = 1.1
-			y_offset = 2
 		if(HEIGHT_SMALL)
 			resize_amount = 0.9
-			y_offset = -2
 		if(HEIGHT_VERY_SMALL)
 			resize_amount = 0.8
-			y_offset = -3
 		if(HEIGHT_EXTREMELY_SMALL)
 			resize_amount = 0.7
-			y_offset = -5
 
 	if(value >= HEIGHT_VERY_LARGE)
 		ADD_TRAIT(target, TRAIT_GIANT, ROUNDSTART_TRAIT)
 	else if(value <= HEIGHT_VERY_SMALL)
 		ADD_TRAIT(target, TRAIT_DWARF, ROUNDSTART_TRAIT)
 
-	target.resize = resize_amount
-	target.update_transform()
-	target.base_pixel_y += y_offset
-	target.pixel_y += y_offset
+	target.update_transform(resize_amount)
 
 /datum/preference/choiced/mob_size/is_accessible(datum/preferences/preferences)
 	if(!..(preferences))

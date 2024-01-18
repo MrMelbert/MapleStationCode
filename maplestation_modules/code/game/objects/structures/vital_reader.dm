@@ -52,7 +52,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	return TRUE
 
 /obj/machinery/computer/vitals_reader/deconstruct(disassembled)
-	if(flags_1 & NODECONSTRUCT_1)
+	if(obj_flags & NO_DECONSTRUCTION)
 		return
 	var/atom/drop_loc = drop_location()
 	if(disassembled)

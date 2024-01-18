@@ -115,7 +115,7 @@
 	victim.adjust_confusion(40 SECONDS)
 
 	playsound(get_turf(victim), 'sound/magic/blind.ogg', 15, FALSE, SILENCED_SOUND_EXTRARANGE, pressure_affected = FALSE, ignore_walls = FALSE)
-	victim.mob_light(_range = 2, _color = LIGHT_COLOR_TUNGSTEN, _duration = 0.8 SECONDS)
+	victim.mob_light(range = 2, color = LIGHT_COLOR_TUNGSTEN, duration = 0.8 SECONDS)
 	new /obj/effect/temp_visual/clock/disable(get_turf(victim))
 
 /obj/effect/rune/clock_trap/proc/clear_references(datum/source, force)

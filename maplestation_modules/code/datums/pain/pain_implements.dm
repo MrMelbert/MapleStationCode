@@ -475,7 +475,7 @@
 	if(empty)
 		return
 	var/static/list/items_inside = list(
-		/obj/item/healthanalyzer/wound = 1,
+		/obj/item/healthanalyzer/simple = 1,
 		/obj/item/stack/medical/gauze = 1,
 		/obj/item/stack/medical/suture/emergency = 1,
 		/obj/item/stack/medical/ointment = 1,

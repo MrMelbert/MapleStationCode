@@ -6,11 +6,11 @@
 /obj/item/organ/internal/heart/vampire
 	actions_types = list(/datum/action/cooldown/spell/shapeshift/vampire)
 
-/obj/item/organ/internal/heart/vampire/on_insert(mob/living/carbon/organ_owner)
+/obj/item/organ/internal/heart/vampire/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	organ_owner.AddComponent(/datum/component/verbal_confirmation)
 
-/obj/item/organ/internal/heart/vampire/on_remove(mob/living/carbon/organ_owner)
+/obj/item/organ/internal/heart/vampire/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	qdel(organ_owner.GetComponent(/datum/component/verbal_confirmation))
 
@@ -23,11 +23,11 @@
 	medium_light_cutoff = list(30, 5, 10)
 	high_light_cutoff = list(40, 10, 20)
 
-/obj/item/organ/internal/eyes/night_vision/vampire/on_insert(mob/living/carbon/organ_owner, special)
+/obj/item/organ/internal/eyes/night_vision/vampire/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	RegisterSignal(organ_owner, COMSIG_CARBON_FLASH_ACT, PROC_REF(do_damage))
 
-/obj/item/organ/internal/eyes/night_vision/vampire/on_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/internal/eyes/night_vision/vampire/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 	UnregisterSignal(organ_owner, COMSIG_CARBON_FLASH_ACT)
 
