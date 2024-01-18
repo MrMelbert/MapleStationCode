@@ -30,13 +30,6 @@
 	dir = 1
 	},
 /area/ruin/space/djstation)
-"e" = (
-/obj/machinery/light/directional/east,
-/obj/effect/turf_decal/tile/green/anticorner/contrasted{
-	dir = 4
-	},
-/turf/open/floor/iron/dark,
-/area/ruin/space/djstation)
 "f" = (
 /obj/structure/window/reinforced/tinted/spawner/directional/north,
 /obj/effect/turf_decal/tile/green/half/contrasted{
@@ -222,6 +215,7 @@
 "V" = (
 /obj/modular_map_connector,
 /obj/effect/turf_decal/tile/green/half/contrasted,
+/obj/machinery/light/directional/south,
 /turf/open/floor/iron/dark,
 /area/ruin/space/djstation)
 "W" = (
@@ -229,11 +223,14 @@
 /area/ruin/space/djstation)
 "X" = (
 /obj/structure/cable,
-/obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/green/anticorner/contrasted{
 	dir = 8
 	},
 /turf/open/floor/iron/dark,
+/area/ruin/space/djstation)
+"Z" = (
+/obj/machinery/light/floor,
+/turf/open/floor/wood/parquet,
 /area/ruin/space/djstation)
 
 (1,1,1) = {"
@@ -280,7 +277,7 @@ s
 o
 R
 y
-W
+Z
 f
 I
 U
@@ -294,7 +291,7 @@ v
 R
 W
 W
-e
+x
 L
 u
 Q

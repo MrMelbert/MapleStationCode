@@ -134,8 +134,7 @@
 /obj/machinery/flasher/directional/north{
 	id = "cockpit_flasher"
 	},
-/obj/item/kirbyplants{
-	icon_state = "plant-21";
+/obj/item/kirbyplants/organic/plant21{
 	pixel_x = -3;
 	pixel_y = 3
 	},
@@ -252,7 +251,7 @@
 /turf/open/floor/iron/grimy,
 /area/shuttle/escape)
 "aX" = (
-/mob/living/simple_animal/drone/snowflake/bardrone,
+/mob/living/basic/drone/snowflake/bardrone,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron,
 /area/shuttle/escape)
@@ -273,8 +272,7 @@
 /turf/open/floor/iron/grimy,
 /area/shuttle/escape)
 "bc" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21";
+/obj/item/kirbyplants/organic/plant21{
 	pixel_x = -3;
 	pixel_y = 3
 	},
@@ -394,8 +392,7 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
 "bG" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21";
+/obj/item/kirbyplants/organic/plant21{
 	pixel_x = -3;
 	pixel_y = 3
 	},
@@ -475,9 +472,7 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "bT" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-10"
-	},
+/obj/item/kirbyplants/organic/plant10,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron,
 /area/shuttle/escape)
@@ -504,21 +499,6 @@
 /obj/machinery/light/small/directional/east,
 /turf/open/floor/iron/grimy,
 /area/shuttle/escape)
-"bX" = (
-/obj/machinery/light/directional/west,
-/obj/effect/turf_decal/tile/bar/opposingcorners,
-/turf/open/floor/iron,
-/area/shuttle/escape)
-"bY" = (
-/obj/machinery/light/small/directional/north,
-/obj/effect/turf_decal/tile/bar/opposingcorners,
-/turf/open/floor/iron,
-/area/shuttle/escape)
-"bZ" = (
-/obj/machinery/light/small/directional/south,
-/obj/effect/turf_decal/tile/bar/opposingcorners,
-/turf/open/floor/iron,
-/area/shuttle/escape)
 "ca" = (
 /obj/machinery/light/directional/south,
 /obj/machinery/vending/wallmed/directional/south{
@@ -544,6 +524,10 @@
 /obj/machinery/status_display/evac/directional/south,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron,
+/area/shuttle/escape)
+"Fd" = (
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/iron/grimy,
 /area/shuttle/escape)
 
 (1,1,1) = {"
@@ -580,13 +564,13 @@ aC
 aH
 aL
 ab
-bY
-bH
+aE
+Fd
 aZ
 bc
 aZ
-bH
-bZ
+Fd
+aE
 ab
 bp
 bs
@@ -675,7 +659,7 @@ ab
 aD
 aE
 aE
-bX
+aE
 aE
 aE
 aE

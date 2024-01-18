@@ -9,11 +9,6 @@
 	},
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
-"eD" = (
-/obj/item/kirbyplants/photosynthetic,
-/obj/machinery/light/directional/north,
-/turf/open/floor/plating/abductor,
-/area/shuttle/escape)
 "eU" = (
 /obj/structure/table/abductor,
 /obj/item/stock_parts/subspace/crystal{
@@ -86,10 +81,6 @@
 	},
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape/brig)
-"sG" = (
-/obj/machinery/light/directional/east,
-/turf/open/floor/plating/abductor,
-/area/shuttle/escape)
 "tb" = (
 /obj/structure/chair/comfy/shuttle,
 /turf/open/floor/plating/abductor,
@@ -103,7 +94,6 @@
 /area/shuttle/escape/brig)
 "uW" = (
 /obj/structure/chair/office,
-/obj/machinery/light/directional/east,
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
 "vw" = (
@@ -114,6 +104,13 @@
 /obj/structure/chair/office{
 	dir = 1
 	},
+/turf/open/floor/plating/abductor,
+/area/shuttle/escape)
+"wI" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/machinery/light/directional/south,
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
 "xd" = (
@@ -164,6 +161,13 @@
 /obj/machinery/abductor/experiment,
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
+"Cq" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 8
+	},
+/obj/machinery/light/directional/east,
+/turf/open/floor/plating/abductor,
+/area/shuttle/escape)
 "Ct" = (
 /obj/machinery/door/airlock/abductor{
 	name = "Repair Bay"
@@ -173,21 +177,20 @@
 "Cv" = (
 /turf/template_noop,
 /area/template_noop)
+"CB" = (
+/obj/structure/chair/comfy/shuttle,
+/obj/machinery/light/directional/north,
+/turf/open/floor/plating/abductor,
+/area/shuttle/escape)
 "CT" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 8
 	},
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
-"GO" = (
-/obj/item/kirbyplants/photosynthetic,
-/obj/machinery/light/directional/south,
-/turf/open/floor/plating/abductor,
-/area/shuttle/escape)
 "HK" = (
 /obj/structure/table/abductor,
 /obj/item/storage/box/alienhandcuffs,
-/obj/machinery/light/directional/east,
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape/brig)
 "IL" = (
@@ -207,12 +210,6 @@
 "JK" = (
 /obj/item/lazarus_injector,
 /obj/structure/table/abductor,
-/obj/machinery/light/directional/east,
-/turf/open/floor/plating/abductor,
-/area/shuttle/escape)
-"Lo" = (
-/obj/item/kirbyplants/photosynthetic,
-/obj/machinery/light/directional/west,
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
 "Nz" = (
@@ -250,6 +247,10 @@
 	},
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
+"Ss" = (
+/obj/machinery/light/floor,
+/turf/open/floor/plating/abductor,
+/area/shuttle/escape)
 "Tn" = (
 /obj/structure/table/optable/abductor,
 /obj/item/surgical_drapes,
@@ -264,7 +265,6 @@
 /obj/item/clothing/shoes/sneakers/white,
 /obj/item/clothing/shoes/jackboots,
 /obj/item/clothing/glasses/eyepatch,
-/obj/machinery/light/directional/west,
 /turf/open/floor/plating/abductor,
 /area/shuttle/escape)
 "VR" = (
@@ -351,9 +351,9 @@ nH
 Um
 Um
 Um
-Lo
+vw
 Um
-Lo
+vw
 Um
 Um
 Um
@@ -436,11 +436,11 @@ Cv
 (6,1,1) = {"
 nH
 nH
-eD
+vw
 Um
 CT
 CT
-CT
+Cq
 Um
 Sg
 Sg
@@ -448,11 +448,11 @@ Sg
 Sg
 Sg
 Um
-CT
+Cq
 CT
 CT
 Um
-GO
+vw
 nH
 nH
 "}
@@ -483,14 +483,14 @@ nH
 nH
 zx
 wk
-lK
+Um
 vw
 nH
 vw
 Um
 Um
 Um
-sG
+Um
 Um
 Um
 Um
@@ -505,7 +505,7 @@ nH
 (9,1,1) = {"
 jj
 Nz
-Um
+Ss
 Um
 Um
 nH
@@ -521,7 +521,7 @@ Um
 jj
 Um
 Um
-Um
+Ss
 Tn
 jj
 "}
@@ -535,7 +535,7 @@ nH
 Um
 Um
 Um
-xd
+wI
 nH
 an
 Um
@@ -583,7 +583,7 @@ Um
 Um
 xd
 nH
-an
+CB
 Um
 Um
 Um
@@ -597,7 +597,7 @@ jj
 (13,1,1) = {"
 jj
 xg
-Um
+Ss
 Um
 Um
 nH
@@ -612,8 +612,8 @@ Um
 Um
 jj
 Um
-Um
-Um
+Ss
+Ss
 Um
 jj
 "}
@@ -621,17 +621,17 @@ jj
 nH
 hh
 wk
-sG
+Um
 vw
 nH
 vw
 Um
 Um
 Um
-lK
 Um
 Um
-sG
+Um
+Um
 vw
 nH
 yR
@@ -720,7 +720,7 @@ ui
 ui
 jI
 Um
-Um
+Ss
 Um
 Ct
 Um

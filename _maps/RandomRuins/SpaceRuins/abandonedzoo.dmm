@@ -30,9 +30,7 @@
 /turf/open/floor/grass,
 /area/ruin/space/has_grav/abandonedzoo)
 "ap" = (
-/mob/living/simple_animal/hostile/asteroid/goldgrub{
-	will_burrow = 0
-	},
+/mob/living/basic/mining/goldgrub,
 /turf/open/misc/asteroid,
 /area/ruin/space/has_grav/abandonedzoo)
 "aq" = (
@@ -44,7 +42,7 @@
 /turf/open/misc/asteroid,
 /area/ruin/space/has_grav/abandonedzoo)
 "as" = (
-/mob/living/simple_animal/hostile/asteroid/basilisk,
+/mob/living/basic/mining/basilisk,
 /turf/open/misc/asteroid,
 /area/ruin/space/has_grav/abandonedzoo)
 "at" = (
@@ -101,6 +99,10 @@
 /obj/structure/table/reinforced,
 /obj/item/folder,
 /obj/item/gps/spaceruin,
+/obj/structure/disposalpipe/segment{
+	dir = 9
+	},
+/obj/machinery/light/directional/west,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "aO" = (
@@ -147,11 +149,13 @@
 /obj/structure/table/reinforced,
 /obj/item/cultivator,
 /obj/item/shovel,
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "be" = (
 /obj/structure/frame/machine,
 /obj/structure/cable,
+/obj/machinery/light/directional/west,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "bf" = (
@@ -192,6 +196,7 @@
 "bn" = (
 /obj/structure/table/reinforced,
 /obj/item/food/carrotfries,
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "bp" = (
@@ -263,7 +268,7 @@
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
 "bJ" = (
-/mob/living/simple_animal/crab{
+/mob/living/basic/crab{
 	faction = list("carp")
 	},
 /turf/open/floor/plating,
@@ -301,7 +306,6 @@
 	pixel_x = -3;
 	pixel_y = -1
 	},
-/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "bR" = (
@@ -329,8 +333,13 @@
 "bX" = (
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/abandonedzoo)
+"cl" = (
+/obj/structure/alien/resin/wall,
+/obj/machinery/light/floor/broken,
+/turf/open/floor/plating/airless,
+/area/ruin/space/has_grav/abandonedzoo)
 "gE" = (
-/mob/living/simple_animal/hostile/bee,
+/mob/living/basic/bee,
 /turf/open/floor/grass,
 /area/ruin/space/has_grav/abandonedzoo)
 "ix" = (
@@ -361,7 +370,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
-/obj/machinery/light/directional/west,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "lo" = (
@@ -378,12 +386,11 @@
 /area/template_noop)
 "mY" = (
 /obj/structure/alien/weeds/node,
-/obj/machinery/light/directional/north,
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/abandonedzoo)
 "nY" = (
 /obj/structure/flora/bush/leavy/style_random,
-/mob/living/simple_animal/hostile/bee,
+/mob/living/basic/bee,
 /turf/open/floor/grass,
 /area/ruin/space/has_grav/abandonedzoo)
 "qX" = (
@@ -399,13 +406,13 @@
 "sT" = (
 /obj/structure/cable,
 /obj/machinery/power/shieldwallgen/unlocked/anchored,
+/obj/machinery/light/broken/directional/north,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
 "uA" = (
 /obj/structure/rack,
 /obj/item/crowbar,
 /obj/item/shield/riot,
-/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "wc" = (
@@ -422,10 +429,10 @@
 /obj/effect/turf_decal/tile/green/fourcorners,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
-"xW" = (
-/obj/structure/flora/rock/style_random,
-/obj/machinery/light/directional/south,
-/turf/open/misc/asteroid,
+"xe" = (
+/obj/structure/flora/bush/lavendergrass/style_random,
+/obj/machinery/light/floor,
+/turf/open/floor/grass,
 /area/ruin/space/has_grav/abandonedzoo)
 "Ck" = (
 /obj/structure/cable,
@@ -439,8 +446,11 @@
 	pixel_y = 5
 	},
 /obj/item/storage/box/beakers,
-/obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark/side,
+/area/ruin/space/has_grav/abandonedzoo)
+"Dx" = (
+/obj/machinery/light/floor,
+/turf/open/misc/asteroid,
 /area/ruin/space/has_grav/abandonedzoo)
 "Gh" = (
 /obj/machinery/power/shieldwallgen/unlocked/anchored,
@@ -448,13 +458,11 @@
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav/abandonedzoo)
 "GX" = (
-/obj/machinery/light/directional/south,
 /obj/structure/cable,
 /obj/machinery/power/smes/engineering,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "Ig" = (
-/obj/machinery/light/directional/north,
 /mob/living/basic/carp,
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
@@ -471,12 +479,12 @@
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "Mb" = (
-/mob/living/simple_animal/hostile/bee,
-/mob/living/simple_animal/hostile/bee,
-/mob/living/simple_animal/hostile/bee,
-/mob/living/simple_animal/hostile/bee,
-/mob/living/simple_animal/hostile/bee,
-/mob/living/simple_animal/hostile/bee,
+/mob/living/basic/bee,
+/mob/living/basic/bee,
+/mob/living/basic/bee,
+/mob/living/basic/bee,
+/mob/living/basic/bee,
+/mob/living/basic/bee,
 /turf/open/floor/grass,
 /area/ruin/space/has_grav/abandonedzoo)
 "Mm" = (
@@ -494,7 +502,6 @@
 /obj/item/clipboard,
 /obj/item/clothing/mask/surgical,
 /obj/item/razor,
-/obj/machinery/light/directional/west,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 "Po" = (
@@ -503,10 +510,13 @@
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav/abandonedzoo)
 "PF" = (
-/obj/machinery/light/directional/south,
-/mob/living/simple_animal/hostile/bee,
-/mob/living/simple_animal/hostile/bee,
+/mob/living/basic/bee,
+/mob/living/basic/bee,
 /turf/open/floor/grass,
+/area/ruin/space/has_grav/abandonedzoo)
+"Wj" = (
+/obj/machinery/light/floor,
+/turf/open/floor/plating,
 /area/ruin/space/has_grav/abandonedzoo)
 "Zk" = (
 /obj/machinery/door/airlock/hatch{
@@ -524,7 +534,6 @@
 /obj/item/retractor,
 /obj/item/cautery,
 /obj/item/circular_saw,
-/obj/machinery/light/directional/south,
 /turf/open/floor/iron/dark/side,
 /area/ruin/space/has_grav/abandonedzoo)
 
@@ -595,8 +604,8 @@ aa
 ac
 ai
 ah
-ai
-xW
+Dx
+aj
 ac
 at
 at
@@ -606,7 +615,7 @@ at
 at
 ac
 Ig
-bv
+Wj
 bv
 bv
 ac
@@ -826,7 +835,7 @@ aa
 ac
 Mb
 Mb
-ao
+xe
 PF
 ac
 at
@@ -837,7 +846,7 @@ at
 at
 ac
 mY
-bH
+cl
 bH
 bB
 bT

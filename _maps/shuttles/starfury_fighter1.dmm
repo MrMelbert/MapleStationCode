@@ -54,6 +54,13 @@
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/shuttle/sbc_fighter1)
+"G" = (
+/obj/machinery/camera/directional/west{
+	network = list("SBC_Fighter1");
+	c_tag = "Fighter 1 - Starboard"
+	},
+/turf/template_noop,
+/area/shuttle/sbc_fighter1)
 "H" = (
 /obj/machinery/button/door{
 	id = "SBC_fighter1_bolt";
@@ -63,6 +70,13 @@
 	specialfunctions = 4
 	},
 /turf/open/floor/mineral/plastitanium,
+/area/shuttle/sbc_fighter1)
+"I" = (
+/obj/machinery/camera/directional/east{
+	network = list("SBC_Fighter1");
+	c_tag = "Fighter 1 - Port"
+	},
+/turf/template_noop,
 /area/shuttle/sbc_fighter1)
 "N" = (
 /obj/machinery/turretid{
@@ -110,7 +124,7 @@
 
 (1,1,1) = {"
 a
-a
+I
 v
 f
 f
@@ -146,7 +160,7 @@ q
 "}
 (5,1,1) = {"
 a
-a
+G
 x
 f
 f

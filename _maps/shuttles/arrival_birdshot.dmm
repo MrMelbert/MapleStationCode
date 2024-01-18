@@ -10,16 +10,8 @@
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
-"g" = (
-/obj/structure/chair/comfy/shuttle{
-	dir = 8
-	},
-/obj/machinery/light/dim/directional/west,
-/turf/open/floor/mineral/titanium,
-/area/shuttle/arrival)
 "i" = (
 /obj/structure/closet/wardrobe/black,
-/obj/machinery/light/dim/directional/south,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "n" = (
@@ -47,7 +39,6 @@
 /area/shuttle/arrival)
 "r" = (
 /obj/effect/spawner/random/entertainment/arcade,
-/obj/machinery/light/cold/directional/west,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "u" = (
@@ -63,6 +54,10 @@
 	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
+"z" = (
+/obj/machinery/light/cold/directional/north,
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
 "B" = (
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
@@ -72,9 +67,8 @@
 	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
-"I" = (
-/obj/structure/closet/wardrobe/black,
-/obj/machinery/light/cold/directional/north,
+"G" = (
+/obj/machinery/light/cold/directional/south,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "J" = (
@@ -95,14 +89,6 @@
 	pixel_y = 4
 	},
 /obj/item/storage/toolbox/emergency,
-/obj/machinery/light/dim/directional/west,
-/turf/open/floor/mineral/titanium,
-/area/shuttle/arrival)
-"O" = (
-/obj/structure/chair/comfy/shuttle{
-	dir = 8
-	},
-/obj/machinery/light/dim/directional/east,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "P" = (
@@ -134,6 +120,10 @@
 	dir = 4
 	},
 /turf/open/floor/plating/airless,
+/area/shuttle/arrival)
+"Z" = (
+/obj/machinery/light/floor,
+/turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 
 (1,1,1) = {"
@@ -167,7 +157,7 @@ V
 q
 r
 J
-B
+Z
 J
 M
 q
@@ -194,7 +184,7 @@ Q
 Q
 U
 B
-O
+U
 B
 U
 Q
@@ -211,9 +201,9 @@ V
 (9,1,1) = {"
 a
 Q
-B
+G
 q
-B
+z
 Q
 a
 "}
@@ -230,7 +220,7 @@ V
 Q
 U
 B
-g
+U
 B
 U
 Q
@@ -248,14 +238,14 @@ Q
 F
 B
 B
-B
+Z
 B
 B
 F
 "}
 (14,1,1) = {"
 q
-I
+i
 K
 P
 K
