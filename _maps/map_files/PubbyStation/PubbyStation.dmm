@@ -18861,6 +18861,7 @@
 /obj/machinery/airalarm/directional/north,
 /obj/effect/turf_decal/tile/blue/full,
 /obj/effect/turf_decal/delivery,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/smooth_large,
 /area/station/medical/cryo)
 "bpz" = (
@@ -19389,6 +19390,9 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/simple/cyan/visible{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
 /turf/open/floor/iron/white/smooth_half,
@@ -20472,6 +20476,7 @@
 /obj/item/radio/intercom/directional/north,
 /obj/effect/turf_decal/tile/blue/full,
 /obj/effect/turf_decal/delivery,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron/smooth_large,
 /area/station/medical/cryo)
 "bvg" = (

@@ -1083,6 +1083,7 @@
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 1
 	},
+/obj/effect/turf_decal/tile/blue/half/contrasted,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "asy" = (
@@ -4908,6 +4909,7 @@
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 1
 	},
+/obj/effect/turf_decal/tile/blue/half/contrasted,
 /turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "bGS" = (
@@ -35388,10 +35390,6 @@
 /obj/effect/turf_decal/trimline/blue/filled/line,
 /turf/open/floor/iron,
 /area/station/hallway/primary/aft)
-"mbx" = (
-/obj/structure/cable,
-/turf/closed/wall,
-/area/station/medical/medbay/lobby)
 "mbz" = (
 /obj/effect/turf_decal/trimline/red/filled/line,
 /obj/structure/sign/departments/holy/directional/north,
@@ -37920,7 +37918,7 @@
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/blue/fourcorners,
-/turf/open/floor/iron/white,
+/turf/open/floor/iron,
 /area/station/medical/medbay/lobby)
 "mSF" = (
 /obj/structure/table/wood,
@@ -170418,7 +170416,7 @@ nGq
 bRj
 aiO
 aiO
-mbx
+dGU
 ojY
 pJR
 pJR
