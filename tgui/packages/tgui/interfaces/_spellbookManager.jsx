@@ -3,12 +3,11 @@ import { Box, Button, Dimmer, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 
 export const _spellbookManager = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
 
   const { spellbook_tabs, disclaimer_status, explanation_status } = data;
 
   const [selectedTabName, setSelectedTab] = useLocalState(
-    context,
     'tabs',
     spellbook_tabs[0]?.name
   );
@@ -64,7 +63,7 @@ export const _spellbookManager = (props, context) => {
 };
 
 export const SpellbookTermsOfServiceDimmer = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { disclaimer_text } = data;
   return (
     <Dimmer align="center" textAlign="center">
@@ -91,7 +90,7 @@ export const SpellbookTermsOfServiceDimmer = (props, context) => {
 };
 
 export const MagicExplanationDimmer = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { explanation_text } = data;
   return (
     <Dimmer align="center" textAlign="center">
@@ -121,7 +120,7 @@ export const MagicExplanationDimmer = (props, context) => {
   );
 };
 export const SpellbookTabs = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
 
   const { selected_items } = data;
 

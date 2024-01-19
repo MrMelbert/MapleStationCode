@@ -101,7 +101,7 @@ const LimbSelectButton = (
   props: { select_limb: Limb; selected_limbs: string[] | null },
   context
 ) => {
-  const { act, data } = useBackend<Limb>(context);
+  const { act, data } = useBackend<Limb>();
   const { select_limb, selected_limbs } = props;
   const is_active = selected_limbs?.includes(select_limb.path);
   return (
@@ -127,7 +127,7 @@ const DisplayLimbs = (
   },
   context
 ) => {
-  const { data } = useBackend<LimbCategory>(context);
+  const { data } = useBackend<LimbCategory>();
   const { selected_limbs, limbs, current_selection } = props;
 
   const limb_category = getActiveCategory(limbs, current_selection);

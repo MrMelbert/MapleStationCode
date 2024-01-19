@@ -16,7 +16,7 @@ export const AdvancedTraitorWindow = (props, context) => {
 };
 
 export const AdvancedTraitorTutorialModal = (props, context) => {
-  const { act } = useBackend(context);
+  const { act } = useBackend();
   return (
     <Modal>
       <Box mb={1} textAlign="center" preserveWhitespace>
@@ -35,7 +35,7 @@ export const AdvancedTraitorTutorialModal = (props, context) => {
 };
 
 export const AdvancedTraitorBackgroundSection = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { antag_type, backstory_tutorial_text } = data;
   const { children } = props;
 
@@ -63,7 +63,7 @@ export const AdvancedTraitorBackgroundSection = (props, context) => {
 };
 
 export const AdvancedTraitorBackground = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { name, employer, backstory } = data;
   return (
     <Stack vertical>
@@ -112,7 +112,7 @@ export const AdvancedTraitorBackground = (props, context) => {
 };
 
 export const AdvancedTraitorGoalsSection = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const {
     antag_type,
     objective_tutorial_text,
@@ -165,11 +165,10 @@ export const AdvancedTraitorGoalsSection = (props, context) => {
 };
 
 export const AdvancedTraitorGoals = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { goals = [] } = data;
 
   const [selectedGoalID, setSelectedGoal] = useLocalState(
-    context,
     'goals',
     goals[0]?.id
   );

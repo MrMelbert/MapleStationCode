@@ -4,7 +4,7 @@ import { Window } from '../layouts';
 import { Button } from '../components';
 
 export const _spellbookCustomizationMenu = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
 
   const { entries } = data;
 

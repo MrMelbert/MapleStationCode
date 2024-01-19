@@ -5,7 +5,7 @@ import { AdvancedTraitorBackgroundSection } from './_AdvancedTraitorParts';
 import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedChangelingPanel = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { goals_finalized, cannot_absorb } = data;
 
   return (
@@ -30,7 +30,7 @@ export const _AdvancedChangelingPanel = (props, context) => {
 };
 
 export const AdvancedChangelingBackground = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { name, employer, backstory, changeling_id, goals_finalized } = data;
   return (
     <Stack vertical>

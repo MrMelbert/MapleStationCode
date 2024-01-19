@@ -35,20 +35,17 @@ type Data = {
 };
 
 export const LoadoutPage = (props, context) => {
-  const { data } = useBackend<Data>(context);
+  const { data } = useBackend<Data>();
   const { loadout_tabs } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
-    context,
     'tutorialStatus',
     false
   );
   const [searchLoadout, setSearchLoadout] = useLocalState(
-    context,
     'searchLoadout',
     ''
   );
   const [selectedTabName, setSelectedTab] = useLocalState(
-    context,
     'tabs',
     loadout_tabs[0]?.name
   );
@@ -93,7 +90,7 @@ export const LoadoutPage = (props, context) => {
           </Tabs>
         </Section>
       </Stack.Item>
-      <Stack.Item fill>
+      <Stack.Item>
         <LoadoutTabs />
       </Stack.Item>
     </Stack>
@@ -101,10 +98,9 @@ export const LoadoutPage = (props, context) => {
 };
 
 const LoadoutTutorialDimmer = (props, context) => {
-  const { data } = useBackend<Data>(context);
+  const { data } = useBackend<Data>();
   const { tutorial_text } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
-    context,
     'tutorialStatus',
     false
   );
@@ -131,7 +127,7 @@ const ItemDisplay = (
   props: { item: LoadoutItem; active: boolean },
   context
 ) => {
-  const { act } = useBackend<LoadoutItem>(context);
+  const { act } = useBackend<LoadoutItem>();
   const { item, active } = props;
   return (
     <Stack>
@@ -156,7 +152,6 @@ const ItemDisplay = (
       <Stack.Item>
         <Button.Checkbox
           checked={active}
-          content="Select"
           fluid
           onClick={() =>
             act('select_item', {
@@ -164,7 +159,9 @@ const ItemDisplay = (
               deselect: active,
             })
           }
-        />
+        >
+          Select
+        </Button.Checkbox>
       </Stack.Item>
     </Stack>
   );
@@ -174,7 +171,7 @@ const LoadoutTabDisplay = (
   props: { category: LoadoutCategory | undefined },
   context
 ) => {
-  const { data } = useBackend<Data>(context);
+  const { data } = useBackend<Data>();
   const { selected_loadout } = data;
   const { category } = props;
   if (!category) {
@@ -202,9 +199,9 @@ const LoadoutTabDisplay = (
 };
 
 const SearchDisplay = (props, context) => {
-  const { data } = useBackend<Data>(context);
+  const { data } = useBackend<Data>();
   const { loadout_tabs, selected_loadout } = data;
-  const [searchLoadout] = useLocalState(context, 'searchLoadout', '');
+  const [searchLoadout] = useLocalState('searchLoadout', '');
 
   const allLoadoutItems = () => {
     const concatItems: LoadoutItem[] = [];
@@ -242,14 +239,13 @@ const SearchDisplay = (props, context) => {
 };
 
 const LoadoutTabs = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+  const { act, data } = useBackend<Data>();
   const { loadout_tabs } = data;
   const [selectedTabName] = useLocalState(
-    context,
     'tabs',
     loadout_tabs[0]?.name
   );
-  const [searchLoadout] = useLocalState(context, 'searchLoadout', '');
+  const [searchLoadout] = useLocalState('searchLoadout', '');
   const activeCategory = loadout_tabs.find((curTab) => {
     return curTab.name === selectedTabName;
   });
@@ -271,10 +267,11 @@ const LoadoutTabs = (props, context) => {
                 icon="times"
                 color="red"
                 align="center"
-                content="Clear All Items"
                 tooltip="Clears ALL selected items from all categories."
                 onClick={() => act('clear_all_items')}
-              />
+              >
+                Clear All Items
+              </Button.Confirm>
             }>
             <Stack vertical>
               {searching ? (
@@ -290,7 +287,7 @@ const LoadoutTabs = (props, context) => {
           </Section>
         )}
       </Stack.Item>
-      <Stack.Item grow fill align="center">
+      <Stack.Item grow align="center">
         <LoadoutPreviewSection />
       </Stack.Item>
     </Stack>
@@ -298,7 +295,7 @@ const LoadoutTabs = (props, context) => {
 };
 
 const LoadoutPreviewSection = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+  const { act, data } = useBackend<Data>();
   const {
     mob_name,
     job_clothes,
@@ -307,7 +304,7 @@ const LoadoutPreviewSection = (props, context) => {
     max_loadout_slots,
   } = data;
 
-  const [tutorialStatus] = useLocalState(context, 'tutorialStatus', false);
+  const [tutorialStatus] = useLocalState('tutorialStatus', false);
 
   const loadoutSlots = (maxSlots: number) => {
     const slots: number[] = [];

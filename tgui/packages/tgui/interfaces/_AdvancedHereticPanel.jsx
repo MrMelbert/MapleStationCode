@@ -5,7 +5,7 @@ import { AdvancedTraitorBackgroundSection } from './_AdvancedTraitorParts';
 import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedHereticPanel = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { goals_finalized, can_ascend, can_sac } = data;
 
   return (

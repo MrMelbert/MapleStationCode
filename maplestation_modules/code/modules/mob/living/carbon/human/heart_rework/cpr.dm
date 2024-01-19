@@ -34,7 +34,7 @@
 			to_chat(src, span_warning("Your mouth is covered, so you can only perform compressions!"))
 
 		else if (target.is_mouth_covered())
-			to_chat(src, span_warning("[p_their(TRUE)] mouth is covered, so you can only perform compressions!"))
+			to_chat(src, span_warning("[p_Their()] mouth is covered, so you can only perform compressions!"))
 
 		else if (!get_organ_slot(ORGAN_SLOT_LUNGS))
 			to_chat(src, span_warning("You have no lungs to breathe with, so you can only perform compressions!"))

@@ -19890,7 +19890,6 @@
 	},
 /area/station/science/lab)
 "bsT" = (
-/obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/white/smooth_corner{
 	dir = 8
 	},
@@ -19899,7 +19898,6 @@
 /obj/structure/chair{
 	dir = 8
 	},
-/obj/item/radio/intercom/directional/east,
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
@@ -19985,6 +19983,7 @@
 	dir = 8;
 	name = "Robotics Operating Computer"
 	},
+/obj/machinery/computer/vitals_reader/directional/south,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/science/robotics)
 "btd" = (
@@ -21516,6 +21515,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
+/obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/white/smooth_edge{
 	dir = 1
 	},
@@ -34017,6 +34017,22 @@
 	dir = 1
 	},
 /area/station/service/chapel/storage)
+"cXx" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/purple/half{
+	dir = 1
+	},
+/obj/structure/fireaxecabinet/mechremoval/directional/north,
+/turf/open/floor/iron/edge{
+	dir = 1
+	},
+/area/station/science/robotics)
 "cYd" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
@@ -44511,6 +44527,7 @@
 	dir = 8
 	},
 /obj/effect/landmark/start/hangover,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron/edge{
 	dir = 4
 	},
@@ -98899,7 +98916,7 @@ bhR
 lZc
 bju
 bkt
-blG
+cXx
 bmO
 bnQ
 boY

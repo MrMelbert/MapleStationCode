@@ -5,7 +5,7 @@ import { AdvancedTraitorWindow } from './_AdvancedTraitorParts';
 import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
 
 export const _AdvancedCultPanel = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { goals_finalized, can_convert } = data;
 
   return (
@@ -30,7 +30,7 @@ export const _AdvancedCultPanel = (props, context) => {
 };
 
 export const AdvancedCultBackground = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const {
     name,
     employer,

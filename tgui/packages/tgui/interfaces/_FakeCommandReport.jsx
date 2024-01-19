@@ -3,7 +3,7 @@ import { Button, Dropdown, Section, Stack, TextArea } from '../components';
 import { Window } from '../layouts';
 
 export const _FakeCommandReport = (props, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { command_name, command_report_content, announce_contents } = data;
   return (
     <Window

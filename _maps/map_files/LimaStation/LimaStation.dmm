@@ -4293,7 +4293,6 @@
 /area/station/service/hydroponics/park)
 "bxb" = (
 /obj/structure/table,
-/obj/machinery/airalarm/directional/north,
 /obj/item/stack/sheet/plasteel{
 	amount = 10
 	},
@@ -22831,6 +22830,8 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/effect/turf_decal/bot,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/showroomfloor,
 /area/station/science/robotics/lab)
 "hWz" = (
@@ -35044,11 +35045,11 @@
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "lWw" = (
-/obj/item/radio/intercom/directional/south,
 /obj/machinery/light/directional/south,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron/showroomfloor,
 /area/station/science/robotics/lab)
 "lWB" = (
@@ -49125,7 +49126,7 @@
 "qzT" = (
 /obj/machinery/vending/wardrobe/robo_wardrobe,
 /obj/effect/turf_decal/bot,
-/obj/structure/sign/clock/directional/east,
+/obj/machinery/digital_clock/directional/east,
 /turf/open/floor/iron/showroomfloor,
 /area/station/science/robotics/lab)
 "qzY" = (
@@ -51122,6 +51123,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/effect/turf_decal/bot,
 /turf/open/floor/iron/showroomfloor,
 /area/station/science/robotics/lab)
 "rhL" = (
@@ -53530,7 +53532,7 @@
 "rVc" = (
 /obj/structure/reagent_dispensers/fueltank,
 /obj/effect/turf_decal/bot,
-/obj/structure/sign/warning/secure_area/directional/east,
+/obj/machinery/firealarm/directional/east,
 /turf/open/floor/iron/showroomfloor,
 /area/station/science/robotics/lab)
 "rVf" = (
@@ -63989,7 +63991,7 @@
 /obj/structure/disposalpipe/trunk{
 	dir = 8
 	},
-/obj/machinery/firealarm/directional/east,
+/obj/structure/fireaxecabinet/mechremoval/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/science/robotics/lab)
 "vvu" = (
@@ -178841,7 +178843,7 @@ swN
 bvo
 ojW
 hWw
-wYZ
+vzB
 vem
 toR
 lXs

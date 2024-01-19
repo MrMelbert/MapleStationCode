@@ -42,7 +42,7 @@ type Data = {
 };
 
 export const _FaxMachine = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+  const { act, data } = useBackend<Data>();
   const {
     display_name,
 
@@ -60,16 +60,14 @@ export const _FaxMachine = (props, context) => {
     unread_message,
   } = data;
 
-  const [tab, setTab] = useSharedState(context, 'tab', 1);
+  const [tab, setTab] = useSharedState('tab', 1);
 
   const [selectedPaperTab, setSelectedPaper] = useLocalState(
-    context,
     'ref',
     received_paperwork[0]?.ref
   );
 
   const [destination, setDestination] = useLocalState(
-    context,
     'dest',
     default_destination
   );
@@ -279,7 +277,7 @@ export const _FaxMachine = (props, context) => {
               </Stack>
             </Dimmer>
           )}
-          <Stack vertical grow>
+          <Stack vertical>
             <Stack.Item height={2}>
               {received_paperwork && received_paperwork.length > 0 ? (
                 <Tabs>
