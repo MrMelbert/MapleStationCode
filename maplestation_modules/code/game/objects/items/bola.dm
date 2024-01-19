@@ -93,19 +93,17 @@
 		throw_range += range_increment
 		throw_speed += speed_increment
 
-	spin_loop(spinner, spin_time_with_momentum)
+	var/infi_loop_time = spin_time * 0.8
+	while(can_keep_spinning(spinner))
+		spin_sound(infi_loop_time)
+		animate(src, infi_loop_time, transform = transform.Turn(90), flags = ANIMATION_CONTINUE)
+		sleep(infi_loop_time)
 
 /obj/item/restraints/legcuffs/bola/proc/can_keep_spinning(mob/living/carbon/spinner)
 	return !QDELETED(src) && !QDELETED(spinner) && is_spinning && spinner.throw_mode && spinner.get_active_held_item() == src
 
 /obj/item/restraints/legcuffs/bola/proc/spin_sound(spin_time)
-	playsound(src, 'sound/weapons/punchmiss.ogg', 40, vary = TRUE, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.5 SECONDS / spin_time)
-
-/obj/item/restraints/legcuffs/bola/proc/spin_loop(mob/living/carbon/spinner, spin_time)
-	while(can_keep_spinning(spinner))
-		spin_sound(spin_time)
-		animate(src, spin_time, transform = transform.Turn(90), flags = ANIMATION_CONTINUE)
-		sleep(spin_time)
+	playsound(src, 'sound/weapons/punchmiss.ogg', 40, vary = TRUE, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.33 SECONDS / spin_time)
 
 /obj/item/restraints/legcuffs/bola/proc/stop_spinning()
 	if(!is_spinning)
