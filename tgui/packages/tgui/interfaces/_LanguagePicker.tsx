@@ -9,6 +9,7 @@ type Data = {
   species: typePath; // species typepath
   selected_lang: typePath | string; // language typepath
   trilingual: BooleanLike;
+  bilingual: BooleanLike;
   blacklisted_species: typePath[]; // list of species typePaths
   base_languages: Language[];
   bonus_languages: Language[];
@@ -72,6 +73,7 @@ export const LanguagePage = (props, context) => {
     species,
     selected_lang,
     trilingual,
+    bilingual,
     blacklisted_species = [],
     base_languages = [],
     bonus_languages = [],
@@ -81,7 +83,14 @@ export const LanguagePage = (props, context) => {
     <Section>
       {!!trilingual && (
         <WarningDimmer
-          message={'You cannot chose a language with the trilingual quirk.'}
+          message={'The Trilingual quirk grants you an additional random \
+            language - but you cannot select one while the quirk is active.'}
+        />
+      )}
+      {!!bilingual && (
+        <WarningDimmer
+          message={'You have the Bilingual quirk selected, so use its \
+            selection dropdown instead.'}
         />
       )}
       {blacklisted_species.includes(species) && (

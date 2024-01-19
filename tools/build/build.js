@@ -34,7 +34,7 @@ Juke.setup({ file: import.meta.url }).then((code) => {
   }
 });
 
-const DME_NAME = 'maplestation';
+const DME_NAME = 'maplestation';  // NON-MODULE CHANGE : DUH
 const CUTTER_SUFFIX = '.png.toml'
 
 // Stores the contents of dependencies.sh as a key value pair
@@ -203,6 +203,7 @@ export const DmTarget = new Juke.Target({
     'html/**',
     'icons/**',
     'interface/**',
+    'maplestation_modules/**', // NON-MODULE CHANGE : BUILD OUR FILES
     `${DME_NAME}.dme`,
     NamedVersionFile,
   ],

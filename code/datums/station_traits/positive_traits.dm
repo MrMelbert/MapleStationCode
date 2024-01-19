@@ -234,6 +234,14 @@
 		/datum/job/station_engineer = /obj/item/organ/internal/cyberimp/arm/toolset,
 		/datum/job/virologist = /obj/item/organ/internal/lungs/cybernetic/tier2,
 		/datum/job/warden = /obj/item/organ/internal/cyberimp/eyes/hud/security,
+		// NON-MODULE CHANGE
+		/datum/job/asset_protection = /obj/item/organ/internal/eyes/robotic/thermals,
+		/datum/job/bridge_assistant = /obj/item/organ/internal/eyes/robotic,
+		/datum/job/bridge_officer = /obj/item/organ/internal/eyes/robotic,
+		/datum/job/ordnance_tech = /obj/item/organ/internal/cyberimp/arm/toolset,
+		/datum/job/stowaway = /obj/item/organ/internal/eyes/robotic/xray,
+		/datum/job/xenobiologist = /obj/item/organ/internal/cyberimp/eyes/hud/medical,
+		// NON-MODULE CHANGE END
 	)
 
 /datum/station_trait/cybernetic_revolution/New()

@@ -57,8 +57,8 @@
 /obj/structure/window/reinforced/bronze
 	name = "engraved brass window"
 	desc = "A paper-thin pane of translucent yet reinforced brass."
-	icon = 'icons/obj/smooth_structures/clockwork_window.dmi'
-	icon_state = "clockwork_window_single"
+	icon = 'icons/obj/smooth_structures/structure_variations.dmi'
+	icon_state = "clockwork_window-single"
 	glass_type = /obj/item/stack/sheet/brass
 	max_integrity = 150
 	damage_deflection = 12
@@ -76,6 +76,7 @@
 	return ..()
 
 /obj/structure/window/reinforced/bronze/fulltile
+	icon = 'icons/obj/smooth_structures/clockwork_window.dmi'
 	icon_state = "clockwork_window-0"
 	base_icon_state = "clockwork_window"
 	smoothing_flags = SMOOTH_BITMASK
@@ -83,6 +84,7 @@
 	canSmoothWith = SMOOTH_GROUP_WINDOW_FULLTILE_BRONZE
 	fulltile = TRUE
 	flags_1 = PREVENT_CLICK_UNDER_1
+	obj_flags = CAN_BE_HIT
 	max_integrity = 200
 	glass_amount = 2
 

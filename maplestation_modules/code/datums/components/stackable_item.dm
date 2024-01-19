@@ -60,9 +60,9 @@
 
 /datum/component/stackable_item/Destroy()
 	stacked_on = null
-	QDEL_NULL(can_stack)
-	QDEL_NULL(on_equip)
-	QDEL_NULL(on_drop)
+	can_stack = null
+	on_equip = null
+	on_drop = null
 	return ..()
 
 /datum/component/stackable_item/proc/update_worn_icon(

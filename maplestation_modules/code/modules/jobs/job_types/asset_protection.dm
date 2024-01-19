@@ -1,6 +1,6 @@
 // -- Asset Protection job & outfit datum --
 /datum/job/asset_protection
-	title = "Asset Protection"
+	title = JOB_ASSET_PROTECTION
 	description = "Protect heads of staff and the captain \
 		from foreign threats and themselves. Exert authority over the Bridge Officer."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD

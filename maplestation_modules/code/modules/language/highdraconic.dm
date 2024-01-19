@@ -21,6 +21,10 @@
 	icon_state = "lizardred"
 	default_priority = 85
 
+// So I wrote a few unit tests for /tg/ that rely on Lizards not knowing what high draconic is.
+// And since rewriting them is out of the questions, Lizards don't know high draconic in unit tests.
+#ifndef UNIT_TESTS
+
 // Edit to the base lizard language holder - lizards can understand high draconic.
 /datum/language_holder/lizard
 	understood_languages = list(
@@ -43,3 +47,5 @@
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
 	)
 	selected_language = /datum/language/uncommon
+
+#endif

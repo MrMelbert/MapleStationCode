@@ -83,7 +83,7 @@
 /obj/item/organ/internal/tongue/lizard/silver/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 
-	if (!ishuman(organ_owner) || isnull(organ_owner.dna))
+	if (!ishuman(organ_owner) || isnull(organ_owner.dna) || QDELING(organ_owner))
 		return
 	var/mob/living/carbon/human/he_who_has_been_outcast = organ_owner
 

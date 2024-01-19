@@ -31,6 +31,7 @@
 /datum/quirk/cpr_certified
 	name = "CPR Certified"
 	desc = "You are certified to perform CPR on others independent of your job."
+	medical_record_text = "Patient has completed CPR certification."
 	icon = FA_ICON_HEARTBEAT
 	value = 0
 	mob_trait = TRAIT_CPR_CERTIFIED
