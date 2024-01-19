@@ -185,6 +185,9 @@
 /obj/item/clothing/under/rank/medical/doctor/nurse
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 
+/obj/item/clothing/under/rank/medical/scrubs/coroner
+	supports_variations_flags = CLOTHING_NO_VARIATION // Melbert TODO
+
 // -- Science Jobs --
 /obj/item/clothing/under/rank/rnd
 	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'

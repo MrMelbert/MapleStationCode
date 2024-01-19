@@ -32,6 +32,7 @@
 // Edit to the silverscale language holder - silverscales can speak high draconic.
 /datum/language_holder/lizard/silver
 	understood_languages = list(
+		/datum/language/common = list(LANGUAGE_ATOM),
 		/datum/language/uncommon = list(LANGUAGE_ATOM),
 		/datum/language/draconic = list(LANGUAGE_ATOM),
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
@@ -42,15 +43,3 @@
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
 	)
 	selected_language = /datum/language/uncommon
-
-// High draconic language holder
-/datum/language_holder/lizard/impdraconic
-	understood_languages = list(
-		/datum/language/common = list(LANGUAGE_ATOM),
-		/datum/language/draconic = list(LANGUAGE_ATOM),
-		/datum/language/impdraconic = list(LANGUAGE_ATOM),
-	)
-	spoken_languages = list(
-		/datum/language/draconic = list(LANGUAGE_ATOM),
-		/datum/language/impdraconic = list(LANGUAGE_ATOM),
-	)

@@ -23,5 +23,8 @@ const FeatureSpeechSoundFrequency = (
 
 export const speech_sound_frequency_modifier: FeatureNumeric = {
   name: 'Speech Sound Frequency',
+  description: 'Adjusts the frequency that your speech sounds play at. \
+    A lower number results in deeper, slower speech, while \
+    higher numbers result in higher, faster speech.',
   component: FeatureSpeechSoundFrequency,
 };
