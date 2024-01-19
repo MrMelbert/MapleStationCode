@@ -488,7 +488,7 @@
 	if(ishuman(user) && (slot & ITEM_SLOT_EYES))
 		update_icon(ALL, user)
 		user.update_worn_glasses() //Color might have been changed by update_icon.
-	..()
+	. = ..()
 
 /obj/item/clothing/glasses/blindfold/white/update_icon(updates=ALL, mob/living/carbon/human/user)
 	. = ..()

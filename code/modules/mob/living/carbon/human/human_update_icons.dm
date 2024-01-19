@@ -696,6 +696,9 @@ generate/load female uniform sprites matching all previously decided variables
 
 	standing = center_image(standing, isinhands ? inhand_x_dimension : worn_x_dimension, isinhands ? inhand_y_dimension : worn_y_dimension)
 
+	if(!isinhands && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER))
+		apply_digitigrade_filters(standing)
+
 	//Worn offsets
 	var/list/offsets = get_worn_offsets(isinhands)
 	standing.pixel_x += offsets[1]
@@ -852,5 +855,40 @@ generate/load female uniform sprites matching all previously decided variables
 			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2))
 
 	return appearance
+
+/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance)
+	var/mob/living/carbon/human/wearer = loc
+	if(!istype(wearer) || wearer.is_digitigrade_squished())
+		return
+
+	var/static/list/icon/masks_and_shading
+	if(isnull(masks_and_shading))
+		masks_and_shading = list(
+			"[NORTH]" = list(
+				"mask" = icon('icons/effects/test.dmi', "digi", NORTH),
+				"shading" = icon('icons/effects/test.dmi', "digi_shading", NORTH),
+			),
+			"[SOUTH]" = list(
+				"mask" = icon('icons/effects/test.dmi', "digi", SOUTH),
+				"shading" = icon('icons/effects/test.dmi', "digi_shading", SOUTH),
+			),
+			"[EAST]" = list(
+				"mask" = icon('icons/effects/test.dmi', "digi", EAST),
+				"shading" = icon('icons/effects/test.dmi', "digi_shading", EAST),
+			),
+			"[WEST]" = list(
+				"mask" = icon('icons/effects/test.dmi', "digi", WEST),
+				"shading" = icon('icons/effects/test.dmi', "digi_shading", WEST),
+			),
+		)
+
+	var/dir_to_use = ISDIAGONALDIR(wearer.dir) ? (wearer.dir & (EAST|WEST)) : wearer.dir
+	var/icon/icon_to_use = masks_and_shading["[dir_to_use]"]["mask"]
+	var/icon/shading_to_use = masks_and_shading["[dir_to_use]"]["shading"]
+
+	appearance.remove_filter("Digitigrade")
+	appearance.remove_filter("Digitigrade_shading")
+	appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, x = 0, y = 0, size = 1))
+	appearance.add_filter("Digitigrade_shading", 1, alpha_mask_filter(x = 0, y = 0, icon = shading_to_use, flags = MASK_INVERSE))
 
 #undef RESOLVE_ICON_STATE

@@ -625,6 +625,9 @@
 		playsound(src, drop_sound, DROP_SOUND_VOLUME, ignore_walls = FALSE)
 	user?.update_equipment_speed_mods()
 
+	if(supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER)
+		UnregisterSignal(user, COMSIG_ATOM_DIR_CHANGE)
+
 /// called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
 	SHOULD_CALL_PARENT(TRUE)
@@ -660,7 +663,10 @@
  * polling ghosts while it's just being equipped as a visual preview for a dummy.
  */
 /obj/item/proc/visual_equipped(mob/user, slot, initial = FALSE)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+
+	if((supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER) && (slot & slot_flags))
+		RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
 
 /**
  * Called by on_equipped. Don't call this directly, we want the ITEM_POST_EQUIPPED signal to be sent after everything else.
@@ -1639,3 +1645,8 @@
 
 /obj/item/animate_atom_living(mob/living/owner)
 	new /mob/living/simple_animal/hostile/mimic/copy(drop_location(), src, owner)
+
+/obj/item/proc/update_dir(mob/living/source)
+	SIGNAL_HANDLER
+
+	source.update_clothing(slot_flags)

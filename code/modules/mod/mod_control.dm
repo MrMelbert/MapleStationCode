@@ -445,6 +445,7 @@
 		wearer.emote("scream")
 
 /obj/item/mod/control/visual_equipped(mob/user, slot, initial = FALSE)
+	. = ..()
 	if(slot & slot_flags)
 		set_wearer(user)
 
