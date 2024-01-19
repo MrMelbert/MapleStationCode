@@ -85,7 +85,7 @@
 	for(var/current_spin in 1 to max_spins)
 		spin_time_with_momentum = round(spin_time - (spin_time * 0.33 * (current_spin / max_spins)), 0.5)
 		spin_sound(spin_time_with_momentum)
-		animate(src, spin_time_with_momentum, transform = transform.Turn(90), easing = (current_spin == 1 ? CUBIC_EASING : NONE), flags = ANIMATION_CONTINUE)
+		animate(src, spin_time_with_momentum, transform = transform.Turn(90), easing = (current_spin == 1 ? CUBIC_EASING : NONE)/*, flags = ANIMATION_CONTINUE*/)
 		if(!do_after(spinner, spin_time_with_momentum, spinner, timed_action_flags = IGNORE_USER_LOC_CHANGE|IGNORE_SLOWDOWNS, extra_checks = CALLBACK(src, PROC_REF(can_keep_spinning), spinner)))
 			stop_spinning()
 			return
@@ -96,7 +96,7 @@
 	var/infi_loop_time = spin_time * 0.8
 	while(can_keep_spinning(spinner))
 		spin_sound(infi_loop_time)
-		animate(src, infi_loop_time, transform = transform.Turn(90), flags = ANIMATION_CONTINUE)
+		animate(src, infi_loop_time, transform = transform.Turn(90)/*, flags = ANIMATION_CONTINUE*/)
 		sleep(infi_loop_time)
 
 /obj/item/restraints/legcuffs/bola/proc/can_keep_spinning(mob/living/carbon/spinner)
