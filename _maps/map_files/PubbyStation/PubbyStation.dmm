@@ -57163,6 +57163,15 @@
 	dir = 8
 	},
 /area/station/hallway/primary/central)
+"uZp" = (
+/obj/effect/turf_decal/trimline/brown/filled/line{
+	dir = 8
+	},
+/obj/structure/noticeboard/directional/west,
+/turf/open/floor/iron/edge{
+	dir = 4
+	},
+/area/station/cargo/storage)
 "uZJ" = (
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 6
@@ -57665,6 +57674,15 @@
 /obj/effect/mapping_helpers/airlock/access/all/engineering/external,
 /turf/open/floor/plating,
 /area/station/maintenance/department/science)
+"vtm" = (
+/obj/effect/turf_decal/trimline/brown/filled/line{
+	dir = 8
+	},
+/obj/structure/sign/poster/random/directional/west,
+/turf/open/floor/iron/edge{
+	dir = 4
+	},
+/area/station/cargo/storage)
 "vtD" = (
 /obj/machinery/atmospherics/pipe/smart/simple/yellow/visible{
 	dir = 4
@@ -105962,13 +105980,13 @@ aTw
 aGP
 aEj
 afd
-nNk
+vtm
 rbx
 nNk
 sUc
 jXl
 hXs
-nNk
+uZp
 nTv
 aEj
 uXX

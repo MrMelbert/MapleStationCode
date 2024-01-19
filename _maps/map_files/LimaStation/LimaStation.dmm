@@ -11470,6 +11470,7 @@
 /obj/effect/turf_decal/tile/brown/fourcorners,
 /obj/machinery/computer/order_console/bitrunning,
 /obj/machinery/status_display/evac/directional/north,
+/obj/structure/noticeboard/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/cargo/miningdock)
 "edz" = (

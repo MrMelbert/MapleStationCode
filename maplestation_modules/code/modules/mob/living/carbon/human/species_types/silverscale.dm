@@ -136,7 +136,6 @@
 	. = ..()
 	RegisterSignal(statue, COMSIG_ATOM_ENTERED, PROC_REF(statue_entered))
 	RegisterSignal(statue, COMSIG_ATOM_EXITED, PROC_REF(statue_exited))
-	RegisterSignal(statue, COMSIG_OBJ_DECONSTRUCT, PROC_REF(statue_deconstructed))
 
 /datum/action/cooldown/turn_to_statue/Activate(atom/target)
 	if(owner.loc != statue)

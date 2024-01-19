@@ -127,7 +127,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return ..()
 
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
-	if(flags_1 & NODECONSTRUCT_1)
+	if(obj_flags & NO_DECONSTRUCTION)
 		return FALSE
 	if(user.combat_mode)
 		return FALSE

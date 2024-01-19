@@ -28671,7 +28671,7 @@
 /obj/effect/turf_decal/siding/brown{
 	dir = 1
 	},
-/obj/structure/sign/calendar/directional/east,
+/obj/structure/noticeboard/directional/east,
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 1
 	},
@@ -35624,6 +35624,7 @@
 /obj/effect/turf_decal/siding/brown{
 	dir = 8
 	},
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/iron/checker,
 /area/station/cargo/storage)
 "gGx" = (
@@ -73467,23 +73468,13 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/effect/turf_decal/stripes/corner,
-/obj/effect/spawner/random/maintenance,
-/obj/effect/spawner/random/structure/crate,
 /obj/structure/closet/cardboard,
 /obj/structure/sign/poster/contraband/random/directional/north,
 /obj/effect/mapping_helpers/broken_floor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/visible,
-/obj/merge_conflict_marker{
-	name = "---Merge Conflict Marker---";
-	desc = "A best-effort merge was performed. You must resolve this conflict yourself (manually) and remove this object once complete."
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/effect/decal/cleanable/cobweb/cobweb2,
-/obj/effect/turf_decal/stripes/corner,
-/obj/effect/spawner/random/maintenance,
 /obj/structure/closet/cardboard,
-/obj/structure/sign/poster/contraband/random/directional/north,
 /obj/effect/mapping_helpers/broken_floor,
+/obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard)
 "tAn" = (
@@ -76656,6 +76647,14 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron,
 /area/station/commons/locker)
+"uFM" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/siding/brown{
+	dir = 8
+	},
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/iron/checker,
+/area/station/cargo/storage)
 "uFR" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -128037,7 +128036,7 @@ iAl
 eli
 vJB
 bUS
-gGn
+uFM
 xrm
 gGn
 iHI

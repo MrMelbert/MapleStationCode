@@ -167,6 +167,9 @@
 /obj/item/clothing/under/rank/cargo/tech
 	// actually has its own already
 
+/obj/item/clothing/under/rank/cargo/bitrunner
+	supports_variations_flags = CLOTHING_NO_VARIATION // Melbert TODO
+
 // -- Captain --
 /obj/item/clothing/under/rank/captain
 	digitigrade_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
