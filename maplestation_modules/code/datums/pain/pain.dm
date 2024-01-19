@@ -142,7 +142,7 @@
  * special - whether this limb being removed should have side effects (if TRUE, likely being removed on initialization)
  * dismembered - whether this limb was dismembered
  */
-/datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, dismembered, special)
+/datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, special, dismembered)
 	SIGNAL_HANDLER
 
 	var/bad_zone = lost_limb.body_zone

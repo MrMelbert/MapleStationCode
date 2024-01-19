@@ -27,8 +27,9 @@
 #define TOOLTIP_RANDOM_COLOR "This item has a random color and will change every round."
 
 // Modular traits
-/// Provides additional resistance to contracting diseases. Should be removed next upstream
-#define TRAIT_DISEASE_RESISTANT "disease_resistant"
+/// Essentially a buffed version of TRAIT_VIRUS_RESISTANCE, but not as strong as TRAIT_VIRUS_IMMUNE.
+/// Outright prevents contraction of disease, but if you do get sick, you're not immune to it.
+#define TRAIT_VIRUS_CONTACT_IMMUNE "virus_contact_immune"
 /// Does not harm patients when undergoing CPR
 #define TRAIT_CPR_CERTIFIED "cpr_certified"
 
