@@ -1,6 +1,6 @@
 /datum/action/innate/story_post_overlay
 	name = "Toggle Post Overlay"
-	button_icon = 'icons/obj/wizard.dmi' //Not making a sprite for something people won't see, so fireball because it looks like a generic soul.
+	button_icon = 'icons/effects/magic.dmi' //Not making a sprite for something people won't see, so fireball because it looks like a generic soul.
 	button_icon_state = "fireball"
 	var/custom_overlay_icon = 'maplestation_modules/story_content/post_overlay/icons/post_overlay.dmi' //can be varedited
 	var/custom_overlay_icon_state = "post_overlay"

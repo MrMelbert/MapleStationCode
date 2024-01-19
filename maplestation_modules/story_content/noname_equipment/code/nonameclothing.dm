@@ -11,7 +11,7 @@
 	/// Tracks if it is currently equipped and applied
 	VAR_FINAL/applied = FALSE
 
-/datum/component/ventcrawler_clothing/Attach()
+/datum/component/ventcrawler_clothing/Initialize()
 	if(!isclothing(parent))
 		return COMPONENT_INCOMPATIBLE
 

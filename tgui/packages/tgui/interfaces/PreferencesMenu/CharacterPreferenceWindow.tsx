@@ -128,8 +128,8 @@ export const CharacterPreferenceWindow = (props) => {
 
           */}
 
->>>>>>> upstream-tg/master
           <Stack.Divider />
+          <Stack.Item>
             <Stack fill>
               <Stack.Item grow>
                 <PageButton

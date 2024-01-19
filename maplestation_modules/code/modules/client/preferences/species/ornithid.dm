@@ -2,8 +2,8 @@
 /proc/generate_ornithid_side_shots(list/sprite_accessories, key, list/sides)
 	var/list/values = list()
 
-	var/icon/ornithid = icon('icons/mob/species/human/human_face.dmi', "head", EAST)
-	var/icon/eyes = icon('icons/mob/species/human/human_face.dmi', "eyes", EAST)
+	var/icon/ornithid = icon('icons/mob/human/human_face.dmi', "head", EAST)
+	var/icon/eyes = icon('icons/mob/human/human_face.dmi', "eyes", EAST)
 	eyes.Blend(COLOR_CLAIREN_RED, ICON_MULTIPLY)
 
 	ornithid.Blend(eyes, ICON_OVERLAY)

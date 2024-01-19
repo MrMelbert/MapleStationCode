@@ -1,8 +1,8 @@
-import { Component, createRef } from 'inferno';
+import { Component, createRef } from 'react';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, BlockQuote, Button, Section, Stack } from '../components';
-import { Connections } from './IntegratedCircuit/Connections';
+import { Connections } from './common/Connections';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
   switch (cat) {

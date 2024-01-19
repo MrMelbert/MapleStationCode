@@ -135,10 +135,6 @@
 /datum/loadout_item/under/formal
 	abstract_type = /datum/loadout_item/under/formal
 
-/datum/loadout_item/under/formal/amish_suit
-	name = "Amish Suit"
-	item_path = /obj/item/clothing/under/suit/sl
-
 /datum/loadout_item/under/formal/assistant
 	name = "Assistant Formal"
 	item_path = /obj/item/clothing/under/misc/assistantformal
@@ -166,10 +162,6 @@
 /datum/loadout_item/under/formal/tango
 	name = "Tango Dress"
 	item_path = /obj/item/clothing/under/dress/tango
-
-/datum/loadout_item/under/formal/Black_twopiece
-	name = "Black Two-Piece Suit"
-	item_path = /obj/item/clothing/under/suit/blacktwopiece
 
 /datum/loadout_item/under/formal/black_lawyer_suit
 	name = "Black Lawyer Suit"
@@ -278,10 +270,6 @@
 /datum/loadout_item/under/formal/sailor_skirt
 	name = "Sailor Dress"
 	item_path = /obj/item/clothing/under/dress/sailor
-
-/datum/loadout_item/under/formal/scratch_suit
-	name = "Scratch Suit"
-	item_path = /obj/item/clothing/under/suit/white_on_white
 
 /datum/loadout_item/under/formal/striped_skirt
 	name = "Striped Dress"

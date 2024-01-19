@@ -8,7 +8,7 @@
 
 	if(isnull(sprint_bar))
 		sprint_bar = mutable_appearance(
-			icon = 'icons/effects/progessbar.dmi',
+			icon = 'icons/effects/progressbar.dmi',
 			icon_state = "prog_bar_100",
 		)
 		sprint_bar.pixel_y -= 2

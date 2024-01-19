@@ -56,10 +56,6 @@
 	name = "Purple Suit Jacket"
 	item_path = /obj/item/clothing/suit/toggle/lawyer/purple
 
-/datum/loadout_item/suit/purple_apron
-	name = "Purple Apron"
-	item_path = /obj/item/clothing/suit/apron/purple_bartender
-
 /datum/loadout_item/suit/suspenders_greyscale
 	name = "Suspenders"
 	item_path = /obj/item/clothing/suit/toggle/suspenders
