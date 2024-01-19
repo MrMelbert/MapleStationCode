@@ -13,3 +13,6 @@
 
 /// A carbon is being flashed - actually being blinded and taking (eye) damage
 #define COMSIG_CARBON_FLASH_ACT "carbon_flash_act"
+
+/// A carbon drank some caffeine. (signal, caffeine_content)
+#define COMSIG_CARBON_DRINK_CAFFEINE "carbon_drink_caffeine"

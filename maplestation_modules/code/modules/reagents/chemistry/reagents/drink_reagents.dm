@@ -226,3 +226,121 @@
 	icon_state = "blood_wine"
 	name = "Tiziran Blood Wine"
 	desc = "A wine made from fermented blood originating from Tizira. Despite the name, the drink does not taste of blood."
+
+//the big chunk of caffeine-related additions
+
+//Weak-Level Caffeinated Drinks
+/datum/reagent/consumable/ethanol/kahlua/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_WEAK * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/consumable/ethanol/irishcoffee/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_WEAK * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/consumable/pumpkin_latte/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_WEAK * seconds_per_tick) //girl, you are OPPRESSING the coffee
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/medicine/painkiller/aspirin_para_coffee/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_WEAK * seconds_per_tick)
+
+/datum/reagent/consumable/ethanol/bastion_bourbon/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_WEAK * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/tea_lover)
+
+/datum/reagent/consumable/tea/arnold_palmer/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_WEAK * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/tea_lover)
+
+//Coffee-Level Caffeinated Drinks
+
+/datum/reagent/consumable/coffee/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER)) //we love coffee.
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/consumable/ethanol/thirteenloko/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+
+/datum/reagent/consumable/icecoffee/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/consumable/hot_ice_coffee/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/consumable/soy_latte/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/consumable/cafe_latte/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/coffee_lover)
+
+/datum/reagent/consumable/tea/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/tea_lover)
+
+/datum/reagent/consumable/icetea/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/tea_lover)
+
+/datum/reagent/consumable/green_tea/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/tea_lover)
+
+/datum/reagent/consumable/ice_greentea/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_COFFEE * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/tea_lover)
+
+//Energy-Level Caffeinated Drinks
+
+/datum/reagent/consumable/green_hill_tea/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_ENERGY * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/tea_lover)
+
+/datum/reagent/consumable/grey_bull/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_ENERGY * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/energy_lover)
+
+/datum/reagent/consumable/monkey_energy/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_ENERGY * seconds_per_tick)
+	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
+		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/energy_lover)
+
