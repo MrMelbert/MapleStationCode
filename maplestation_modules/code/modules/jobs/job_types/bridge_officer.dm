@@ -1,4 +1,10 @@
 // -- Bridge Officer job & outfit datum --
+/datum/station_trait/job/bridge_assistant
+	weight = 0
+
+/datum/job/bridge_assistant
+	rpg_title = "Lesser Guildperson"
+
 /datum/job/bridge_officer
 	title = JOB_BRIDGE_OFFICER
 	description = "File paperwork to Central Command via your fax machine. \
@@ -22,7 +28,7 @@
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_SRV
+	paycheck_department = ACCOUNT_CIV
 	bounty_types = CIV_JOB_RANDOM
 
 	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM) // QM normally has this, but since they're a head of staff now I put it here. C'est la vie.
@@ -30,9 +36,9 @@
 	display_order = JOB_DISPLAY_ORDER_BRIDGE_OFFICER
 	departments_list = list(
 		/datum/job_department/command,
-		)
+	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
@@ -46,7 +52,9 @@
 		/obj/item/clothing/mask/whistle = 5,
 		/obj/item/reagent_containers/cup/glass/mug/tea = 5,
 		/obj/item/reagent_containers/cup/glass/mug/coco = 1,
+		/obj/item/pen/fountain = 1,
 		/obj/item/storage/box/office_supplies = 1,
+		/obj/item/storage/fancy/cigarettes = 1,
 	)
 
 	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS
@@ -80,9 +88,9 @@
 	// 0.1% chance on spawn to be given a meme flash in place of a real one.
 	if(r_pocket)
 		if(prob(0.1))
-			backpack_contents += /obj/item/assembly/flash/memorizer
+			LAZYADD(backpack_contents, /obj/item/assembly/flash/memorizer)
 		else
-			backpack_contents += /obj/item/assembly/flash
+			LAZYADD(backpack_contents, /obj/item/assembly/flash)
 	else
 		if(prob(0.1))
 			r_pocket = /obj/item/assembly/flash/memorizer

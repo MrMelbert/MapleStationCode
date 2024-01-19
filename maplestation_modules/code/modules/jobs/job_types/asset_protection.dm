@@ -30,9 +30,9 @@
 	display_order = JOB_DISPLAY_ORDER_ASSET_PROTECTION
 	departments_list = list(
 		/datum/job_department/command,
-		)
+	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
@@ -47,7 +47,7 @@
 
 	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT | JOB_CANNOT_OPEN_SLOTS
 	voice_of_god_power = 1.2 // Not quite command staff.
-	rpg_title = "Paladin"
+	rpg_title = "Royal Guard"
 	crewmonitor_priority = 9
 
 /datum/outfit/job/asset_protection
