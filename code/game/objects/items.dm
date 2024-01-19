@@ -665,7 +665,7 @@
 /obj/item/proc/visual_equipped(mob/user, slot, initial = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	if((supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER) && (slot & slot_flags))
+	if(ishuman(user) && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER) && (slot & slot_flags))
 		RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(update_dir), override = TRUE)
 
 /**
@@ -1646,7 +1646,12 @@
 /obj/item/animate_atom_living(mob/living/owner)
 	new /mob/living/simple_animal/hostile/mimic/copy(drop_location(), src, owner)
 
-/obj/item/proc/update_dir(mob/living/source)
+/obj/item/proc/update_dir(mob/living/carbon/human/source, dir, newdir)
 	SIGNAL_HANDLER
+
+	// if(dir == newdir)
+	// 	return
+	if(!istype(source) || !(source.bodytype & BODYTYPE_DIGITIGRADE))
+		return
 
 	source.update_clothing(slot_flags)

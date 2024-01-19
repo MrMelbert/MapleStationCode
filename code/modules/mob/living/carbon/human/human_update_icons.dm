@@ -858,7 +858,7 @@ generate/load female uniform sprites matching all previously decided variables
 
 /obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance)
 	var/mob/living/carbon/human/wearer = loc
-	if(!istype(wearer) || wearer.is_digitigrade_squished())
+	if(!istype(wearer) || !(wearer.bodytype & BODYTYPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
 		return
 
 	var/static/list/icon/masks_and_shading
@@ -875,20 +875,34 @@ generate/load female uniform sprites matching all previously decided variables
 			"[EAST]" = list(
 				"mask" = icon('icons/effects/test.dmi', "digi", EAST),
 				"shading" = icon('icons/effects/test.dmi', "digi_shading", EAST),
+				"alt" = icon('icons/effects/test.dmi', "digi_alt", EAST),
+				"x" = 2,
 			),
 			"[WEST]" = list(
 				"mask" = icon('icons/effects/test.dmi', "digi", WEST),
 				"shading" = icon('icons/effects/test.dmi', "digi_shading", WEST),
+				"alt" = icon('icons/effects/test.dmi', "digi_alt", WEST),
+				"x" = -2,
 			),
 		)
 
 	var/dir_to_use = ISDIAGONALDIR(wearer.dir) ? (wearer.dir & (EAST|WEST)) : wearer.dir
 	var/icon/icon_to_use = masks_and_shading["[dir_to_use]"]["mask"]
 	var/icon/shading_to_use = masks_and_shading["[dir_to_use]"]["shading"]
+	var/x_offset = masks_and_shading["[dir_to_use]"]["x"] || 0
+	var/icon/alt_icon = masks_and_shading["[dir_to_use]"]["alt"]
 
-	appearance.remove_filter("Digitigrade")
-	appearance.remove_filter("Digitigrade_shading")
-	appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, x = 0, y = 0, size = 1))
-	appearance.add_filter("Digitigrade_shading", 1, alpha_mask_filter(x = 0, y = 0, icon = shading_to_use, flags = MASK_INVERSE))
+	if(alt_icon)
+		var/static/icon/cutoff_filter
+		if(isnull(cutoff_filter))
+			cutoff_filter = icon('icons/effects/test.dmi', "digi_alt_cutoff")
+
+		var/mutable_appearance/second_leg = new(appearance)
+		second_leg.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter))
+		second_leg.add_filter("Digitigrade_second_leg", 1, displacement_map_filter(icon = alt_icon, x = -1 * x_offset, size = 1))
+		appearance.add_overlay(second_leg)
+
+	appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, x = x_offset, size = 1))
+	appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, x = x_offset, blend_mode = BLEND_MULTIPLY))
 
 #undef RESOLVE_ICON_STATE

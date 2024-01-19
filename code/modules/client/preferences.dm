@@ -225,7 +225,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			return TRUE
 		if ("rotate")
-			character_preview_view.dir = turn(character_preview_view.dir, -90)
+			character_preview_view.setDir(turn(character_preview_view.dir, -90))
 
 			return TRUE
 		if ("set_preference")
