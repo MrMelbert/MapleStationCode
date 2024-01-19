@@ -1,7 +1,52 @@
+/datum/design/vitals_monitor
+	name = "Vitals Monitor"
+	desc = "A wall mounted computer that displays the vitals of a patient nearby. \
+		Links to stasis beds, operating tables, and other machines that can hold patients \
+		such as cryo cells, sleepers, and more."
+	id = "vitals_monitor"
+	build_type = PROTOLATHE
+	materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
+	build_path = /obj/item/wallframe/status_display/vitals
+	category = list(RND_CATEGORY_COMPUTER + RND_SUBCATEGORY_COMPUTER_MEDICAL)
+	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
+
+/datum/design/vitals_monitor/advanced
+	name = "Advanced Vitals Monitor"
+	desc = "An updated vitals display which performs a more detailed scan of the patient than the basic display."
+	id = "vitals_monitor_advanced"
+	materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
+	build_path = /obj/item/wallframe/status_display/vitals/advanced
+
 /obj/item/wallframe/status_display/vitals
 	name = "vitals display frame"
-	desc = "Used to build vitals displays. Secure on a wall nearby a stasis bed or operating table."
+	desc = "Used to build vitals displays. Secure on a wall nearby a stasis bed, operating table, \
+		or another machine that can hold patients such as cryo cells or sleepers."
+	custom_materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
 	result_path = /obj/machinery/computer/vitals_reader
+
+/obj/item/wallframe/status_display/vitals/advanced
+	name = "advanced vitals display frame"
+	desc = "Used to build advanced vitals displays. Performs a more detailed scan of the patient than the basic display."
+	custom_materials = list(
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/gold = HALF_SHEET_MATERIAL_AMOUNT,
+		/datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT * 0.5,
+	)
+	result_path = /obj/machinery/computer/vitals_reader/advanced
 
 /// A wall mounted screen that showcases the vitals of a patient nearby.
 /obj/machinery/computer/vitals_reader
@@ -16,12 +61,16 @@
 	layer = ABOVE_WINDOW_LAYER
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_REQUIRES_DEXTERITY
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON
-	use_power = NO_POWER_USE
+	use_power = IDLE_POWER_USE
+	idle_power_usage = 0
+	active_power_usage = BASE_MACHINE_IDLE_CONSUMPTION
 	icon_keyboard = null
 	icon_screen = null
 
-	/// Whether we perform an advanced scan on examine or not, currently admin only
+	/// Whether we perform an advanced scan on examine or not
 	var/advanced = FALSE
+	/// Typepath to spawn when deconstructed
+	var/frame = /obj/item/wallframe/status_display/vitals
 	/// Whether we are on or off
 	VAR_FINAL/active = FALSE
 	/// Reference to the mob that is being tracked / scanned
@@ -38,44 +87,28 @@
 		/obj/machinery/implantchair,
 		/obj/machinery/sleeper,
 		/obj/machinery/stasis,
+		/obj/machinery/vital_floor_scanner,
 	))
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
-/obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
-	if(user.combat_mode)
-		return FALSE
-	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
-		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
-		balloon_alert(user, "detached")
-		deconstruct(TRUE)
-	return TRUE
+/obj/machinery/computer/vitals_reader/advanced
+	name = "advanced vitals display"
+	desc = "A small screen that displays the vitals of a patient. \
+		Performs a more detailed scan of the patient than the basic display."
+	frame = /obj/item/wallframe/status_display/vitals/advanced
+	advanced = TRUE
 
-/obj/machinery/computer/vitals_reader/deconstruct(disassembled)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
-	var/atom/drop_loc = drop_location()
-	if(disassembled)
-		new /obj/item/wallframe/status_display/vitals(drop_loc)
-	else
-		new /obj/item/stack/sheet/iron(drop_loc, 2)
-		new /obj/item/shard(drop_loc)
-		new /obj/item/shard(drop_loc)
-	qdel(src)
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/advanced, 32)
 
-/obj/machinery/computer/vitals_reader/examine(mob/user)
-	. = ..()
-	if(!is_operational)
-		return
+/obj/machinery/computer/vitals_reader/no_hand
+	name = "automatic vitals display"
+	desc = "A small screen that displays the vitals of a patient. \
+		It has no button to toggle it manually."
+	interaction_flags_atom = NONE
+	interaction_flags_machine = NONE
 
-	if(isnull(patient))
-		. += span_notice("The display is currently scanning for a patient.")
-	else if(!issilicon(user) && (HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, silent = TRUE)))
-		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
-	else if(get_dist(patient, user) <= 2 || isobserver(user) || issilicon(user))
-		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
-	else
-		. += span_notice("<i>You are too far away to read the display.</i>")
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 
 /obj/machinery/computer/vitals_reader/Initialize(mapload, obj/item/circuitboard/C)
 	. = ..()
@@ -85,12 +118,58 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	unset_patient()
 	return ..()
 
-/obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
-	if(!isnull(held_item))
-		return NONE
+/obj/machinery/computer/vitals_reader/attackby(obj/item/weapon, mob/living/user, params)
+	if(!istype(user) || user.combat_mode)
+		return ..()
+	if((interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND) && (weapon.item_flags & SURGICAL_TOOL))
+		// You can flick it on while doing surgery
+		return interact(user)
+	return ..()
 
-	context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
-	if(isAI(user))
+/obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
+	if(flags_1 & NODECONSTRUCT_1)
+		return FALSE
+	if(user.combat_mode)
+		return FALSE
+	balloon_alert(user, "detaching...")
+	if(tool.use_tool(src, user, 6 SECONDS, volume = 50))
+		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
+		deconstruct(TRUE)
+	return TRUE
+
+/obj/machinery/computer/vitals_reader/deconstruct(disassembled)
+	if(obj_flags & NO_DECONSTRUCTION)
+		return
+	var/atom/drop_loc = drop_location()
+	if(disassembled)
+		new frame(drop_loc)
+	else
+		new /obj/item/stack/sheet/iron(drop_loc, 2)
+		new /obj/item/shard(drop_loc)
+		new /obj/item/shard(drop_loc)
+	qdel(src)
+
+/obj/machinery/computer/vitals_reader/examine(mob/user)
+	. = ..()
+	if(!is_operational || !active || user.is_blind())
+		return
+
+	if(isnull(patient))
+		. += span_notice("The display is currently scanning for a patient.")
+	else if(!issilicon(user) && !isobserver(user) && get_dist(patient, user) > 2)
+		. += span_notice("<i>You are too far away to read the display.</i>")
+	else if(HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, reading_check_flags = READING_CHECK_LITERACY, silent = TRUE))
+		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
+	else
+		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
+
+/obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(isnull(held_item) || (held_item.item_flags & SURGICAL_TOOL))
+		if(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
+			context[SCREENTIP_CONTEXT_LMB] = "Toggle readout"
+	else if(held_item.tool_behaviour == TOOL_WRENCH)
+		context[SCREENTIP_CONTEXT_LMB] = "Detach"
+	if(!isnull(patient))
 		context[SCREENTIP_CONTEXT_SHIFT_LMB] = "Examine vitals"
 	return CONTEXTUAL_SCREENTIP_SET
 
@@ -168,7 +247,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 /obj/machinery/computer/vitals_reader/update_overlays()
 	. = ..()
-	if(!active)
+	if(!active || !is_operational)
 		return
 
 	if(isnull(patient))
@@ -202,6 +281,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 /// Converts a percentage to a color
 /obj/machinery/computer/vitals_reader/proc/percent_to_color(percent)
+	if(machine_stat & (EMPED|EMAGGED|BROKEN))
+		percent = rand(1, 100) * 0.01
+
 	if(percent == 0)
 		return "#2A72AA"
 
@@ -219,6 +301,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 
 /// Converts a percentage to a bar icon state
 /obj/machinery/computer/vitals_reader/proc/percent_to_bar(percent)
+	if(machine_stat & (EMPED|EMAGGED|BROKEN))
+		percent = rand(1, 100) * 0.01
+
 	if(percent >= 1)
 		return "bar9"
 	if(percent <= 0)
@@ -274,18 +359,22 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 	return TRUE
 
 /obj/machinery/computer/vitals_reader/on_set_is_operational(old_value)
-	if(!is_operational && active)
+	if(is_operational)
+		return
+	if(active)
 		toggle_active()
+		return
+	update_appearance(UPDATE_OVERLAYS)
 
 /// Toggles whether the display is active or not
 /obj/machinery/computer/vitals_reader/proc/toggle_active()
 	if(active)
 		active = FALSE
-		update_use_power(NO_POWER_USE)
+		update_use_power(IDLE_POWER_USE)
 		unset_patient()
 	else
 		active = TRUE
-		update_use_power(IDLE_POWER_USE)
+		update_use_power(ACTIVE_POWER_USE)
 		find_active_patient()
 	update_appearance(UPDATE_OVERLAYS)
 
@@ -310,7 +399,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 			var/obj/machinery/computer/operating/op = nearby_thing
 			patient = op.table?.patient
 
-		if(!istype(patient) || !(patient.mob_biotypes & MOB_ORGANIC))
+		if(!istype(patient) || (patient.mob_biotypes & MOB_ROBOTIC))
 			continue
 
 		set_patient(patient)
@@ -366,3 +455,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader, 32)
 /obj/machinery/computer/vitals_reader/proc/update_overlay_on_signal(...)
 	SIGNAL_HANDLER
 	update_appearance(UPDATE_OVERLAYS)
+
+/obj/machinery/vitals_reader/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+
+	set_machine_stat(machine_stat | EMPED)
+	addtimer(CALLBACK(src, PROC_REF(fix_emp)), (severity == EMP_HEAVY ? 150 SECONDS : 75 SECONDS))
+
+/obj/machinery/vitals_reader/proc/fix_emp()
+	set_machine_stat(machine_stat & ~EMPED)

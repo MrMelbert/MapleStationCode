@@ -14,9 +14,6 @@
 	category = list(RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_MEDICAL)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
 
-/datum/techweb_node/adv_biotech
-	id_additions = list("auto_cpr_device")
-
 /obj/item/auto_cpr
 	name = "autopulser"
 	desc = "A device with straps that can be worn around the chest. \

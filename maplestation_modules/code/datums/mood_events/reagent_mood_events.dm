@@ -22,7 +22,7 @@
 	timeout = 7 MINUTES
 
 /datum/mood_event/pegged
-	description = "<span class='nicegreen'>OH YEAH, NOW IM PEGGED!</span>\n"
+	description = "<span class='nicegreen'>OH YEAH, NOW I'M PEGGED!</span>\n" //:uncannycat:
 	mood_change = 8
 	timeout = 7 MINUTES
 

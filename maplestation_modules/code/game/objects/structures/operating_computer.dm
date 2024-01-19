@@ -1,5 +1,13 @@
 /obj/machinery/computer/operating
 
+/obj/machinery/computer/operating/attackby(obj/item/weapon, mob/living/user, params)
+	if(!istype(user) || user.combat_mode)
+		return ..()
+	if(weapon.item_flags & SURGICAL_TOOL)
+		// You can open it while doing surgery
+		return interact(user)
+	return ..()
+
 /obj/machinery/computer/operating/emag_act(mob/user, obj/item/card/emag/emag_card)
 	. = ..()
 	if(obj_flags & EMAGGED)
