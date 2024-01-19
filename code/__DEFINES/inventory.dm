@@ -138,6 +138,8 @@
 ///has a sprite for monkeys
 #define CLOTHING_MONKEY_VARIATION (1<<3)
 
+#define DIGITIGRADE_VARIATIONS (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)
+
 //flags for covering body parts
 #define GLASSESCOVERSEYES (1<<0)
 #define MASKCOVERSEYES (1<<1) // get rid of some of the other stupidness in these flags
