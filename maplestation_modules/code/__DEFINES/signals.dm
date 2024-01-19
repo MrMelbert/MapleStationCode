@@ -13,3 +13,8 @@
 
 /// A carbon is being flashed - actually being blinded and taking (eye) damage
 #define COMSIG_CARBON_FLASH_ACT "carbon_flash_act"
+
+/// Sent when a carbon enables throw mode
+#define COMSIG_CARBON_THROW_ON "carbon_throw_on"
+/// Sent when a carbon disables throw mode
+#define COMSIG_CARBON_THROW_OFF "carbon_throw_off"
