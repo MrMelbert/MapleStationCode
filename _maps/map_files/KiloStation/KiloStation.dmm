@@ -36965,12 +36965,16 @@
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
 "gZT" = (
-/obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/turf_decal/tile/brown/half/contrasted,
-/obj/effect/turf_decal/tile/yellow,
 /obj/structure/cable,
-/turf/open/floor/iron,
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
+	dir = 1
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
 /area/station/cargo/miningoffice)
 "hae" = (
 /obj/effect/decal/cleanable/dirt,
@@ -52067,12 +52071,15 @@
 	name = "cargo camera";
 	network = list("ss13","qm")
 	},
-/obj/effect/turf_decal/tile/neutral/half/contrasted{
-	dir = 1
-	},
 /obj/machinery/light/small/directional/south,
 /obj/structure/tank_holder/extinguisher,
 /obj/item/radio/intercom/directional/south,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/turf_decal/stripes/corner{
+	dir = 4
+	},
 /turf/open/floor/iron/dark,
 /area/station/cargo/miningoffice)
 "mjM" = (
@@ -72393,7 +72400,9 @@
 /area/station/engineering/supermatter/room)
 "tfm" = (
 /obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron,
+/obj/effect/turf_decal/stripes/corner,
+/obj/effect/turf_decal/tile/neutral/fourcorners,
+/turf/open/floor/iron/dark,
 /area/station/cargo/miningoffice)
 "tfC" = (
 /obj/effect/spawner/structure/window/reinforced/tinted,
@@ -83832,7 +83841,7 @@
 "xcQ" = (
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/mining/glass{
-	name = "Mining Dock"
+	name = "Cargo Bay"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/supply/mining,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -128844,10 +128853,10 @@ hoG
 lUP
 cUt
 ufq
-aaa
 acm
 aaa
 acm
+aaa
 hAx
 pcL
 bUx
