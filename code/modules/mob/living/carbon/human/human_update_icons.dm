@@ -897,12 +897,23 @@ generate/load female uniform sprites matching all previously decided variables
 		if(isnull(cutoff_filter))
 			cutoff_filter = icon('icons/effects/test.dmi', "digi_alt_cutoff")
 
-		var/mutable_appearance/second_leg = new(appearance)
-		second_leg.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter))
-		second_leg.add_filter("Digitigrade_second_leg", 1, displacement_map_filter(icon = alt_icon, x = -1 * x_offset, size = 1))
-		appearance.add_overlay(second_leg)
+		// var/size = 1
+		// pass()
 
-	appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, x = x_offset, size = 1))
-	appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, x = x_offset, blend_mode = BLEND_MULTIPLY))
+		// var/mutable_appearance/first_leg = new(appearance)
+		// first_leg.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter))
+		// first_leg.add_filter("Digitigrade_first_leg", 1, displacement_map_filter(icon = icon_to_use, x = x_offset, size = size))
+		// appearance.add_overlay(first_leg)
+
+		// var/mutable_appearance/second_leg = new(appearance)
+		// // second_leg.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter))
+		// second_leg.add_filter("Digitigrade_second_leg", 1, displacement_map_filter(icon = alt_icon, x = -1 * x_offset, size = size))
+		// appearance.add_overlay(second_leg)
+
+		appearance.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter, flags = MASK_INVERSE))
+
+	else
+		appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, x = x_offset, size = 1))
+		appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, x = x_offset, blend_mode = BLEND_MULTIPLY))
 
 #undef RESOLVE_ICON_STATE
