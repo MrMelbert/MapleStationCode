@@ -711,6 +711,9 @@ generate/load female uniform sprites matching all previously decided variables
 
 	standing = center_image(standing, isinhands ? inhand_x_dimension : worn_x_dimension, isinhands ? inhand_y_dimension : worn_y_dimension)
 
+	if(!isinhands && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER))
+		apply_digitigrade_filters(standing)
+
 	//Worn offsets
 	var/list/offsets = get_worn_offsets(isinhands)
 	standing.pixel_x += offsets[1]
@@ -867,5 +870,42 @@ generate/load female uniform sprites matching all previously decided variables
 			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2))
 
 	return appearance
+
+/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance)
+	var/mob/living/carbon/human/wearer = loc
+	if(!istype(wearer) || !(wearer.bodytype & BODYTYPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
+		return
+
+	var/list/icon/masks_and_shading
+	if(isnull(masks_and_shading))
+		masks_and_shading = list(
+			"[NORTH]" = list(
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", NORTH),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", NORTH),
+			),
+			"[SOUTH]" = list(
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", SOUTH),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", SOUTH),
+			),
+			"[EAST]" = list(
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", EAST),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", EAST),
+				"size" = 127,
+			),
+			"[WEST]" = list(
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", WEST),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", WEST),
+				"size" = 127,
+			),
+		)
+
+	var/dir_to_use = ISDIAGONALDIR(wearer.dir) ? (wearer.dir & (EAST|WEST)) : wearer.dir
+	var/icon/icon_to_use = masks_and_shading["[dir_to_use]"]["mask"]
+	var/icon/shading_to_use = masks_and_shading["[dir_to_use]"]["shading"]
+	var/size = masks_and_shading["[dir_to_use]"]["size"] || 1
+
+	appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, size = size))
+	if(!isnull(shading_to_use))
+		appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, blend_mode = BLEND_MULTIPLY))
 
 #undef RESOLVE_ICON_STATE

@@ -42,6 +42,26 @@
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = SPECIES_LIZARD
 
+/// Checks if this mob is wearing anything that does not have a valid sprite set for digitigrade legs
+/mob/living/carbon/human/proc/is_digitigrade_squished()
+	var/obj/item/clothing/shoes/worn_shoes = get_item_by_slot(ITEM_SLOT_FEET)
+	var/obj/item/clothing/under/worn_suit = get_item_by_slot(ITEM_SLOT_OCLOTHING)
+	var/obj/item/clothing/under/worn_uniform = get_item_by_slot(ITEM_SLOT_ICLOTHING)
+
+	var/uniform_compatible = isnull(worn_uniform) \
+		|| (worn_uniform.supports_variations_flags & DIGITIGRADE_VARIATIONS) \
+		|| !(worn_uniform.body_parts_covered & LEGS) \
+		|| (worn_suit?.flags_inv & HIDEJUMPSUIT) // If suit hides our jumpsuit, it doesn't matter if it squishes
+
+	var/suit_compatible = isnull(worn_suit) \
+		|| (worn_suit.supports_variations_flags & DIGITIGRADE_VARIATIONS) \
+		|| !(worn_suit.body_parts_covered & LEGS)
+
+	var/shoes_compatible = isnull(worn_shoes) \
+		|| (worn_shoes.supports_variations_flags & DIGITIGRADE_VARIATIONS)
+
+	return !uniform_compatible || !suit_compatible || !shoes_compatible
+
 /obj/item/bodypart/leg/left/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
 	limb_id = BODYPART_ID_DIGITIGRADE
@@ -51,22 +71,7 @@
 	. = ..()
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		var/obj/item/clothing/shoes/worn_shoes = human_owner.get_item_by_slot(ITEM_SLOT_FEET)
-		var/uniform_compatible = FALSE
-		var/suit_compatible = FALSE
-		var/shoes_compatible = FALSE
-		if(!(human_owner.w_uniform) || (human_owner.w_uniform.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))) //Checks uniform compatibility
-			uniform_compatible = TRUE
-		if((!human_owner.wear_suit) || (human_owner.wear_suit.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)) || !(human_owner.wear_suit.body_parts_covered & LEGS)) //Checks suit compatability
-			suit_compatible = TRUE
-		if((worn_shoes == null) || (worn_shoes.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)))
-			shoes_compatible = TRUE
-
-		if((uniform_compatible && suit_compatible && shoes_compatible) || (suit_compatible && shoes_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
-			limb_id = BODYPART_ID_DIGITIGRADE
-
-		else
-			limb_id = SPECIES_LIZARD
+		limb_id = human_owner.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
@@ -77,19 +82,4 @@
 	. = ..()
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		var/obj/item/clothing/shoes/worn_shoes = human_owner.get_item_by_slot(ITEM_SLOT_FEET)
-		var/uniform_compatible = FALSE
-		var/suit_compatible = FALSE
-		var/shoes_compatible = FALSE
-		if(!(human_owner.w_uniform) || (human_owner.w_uniform.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))) //Checks uniform compatibility
-			uniform_compatible = TRUE
-		if((!human_owner.wear_suit) || (human_owner.wear_suit.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)) || !(human_owner.wear_suit.body_parts_covered & LEGS)) //Checks suit compatability
-			suit_compatible = TRUE
-		if((worn_shoes == null) || (worn_shoes.supports_variations_flags & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON)))
-			shoes_compatible = TRUE
-
-		if((uniform_compatible && suit_compatible && shoes_compatible) || (suit_compatible && shoes_compatible && human_owner.wear_suit?.flags_inv & HIDEJUMPSUIT)) //If the uniform is hidden, it doesnt matter if its compatible
-			limb_id = BODYPART_ID_DIGITIGRADE
-
-		else
-			limb_id = SPECIES_LIZARD
+		limb_id = human_owner.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE

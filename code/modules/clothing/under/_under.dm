@@ -11,6 +11,7 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	limb_integrity = 30
+	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER
 
 	/// Has this undersuit been freshly laundered and, as such, imparts a mood bonus for wearing
 	var/freshly_laundered = FALSE
