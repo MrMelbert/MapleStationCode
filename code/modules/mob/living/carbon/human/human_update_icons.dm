@@ -861,59 +861,36 @@ generate/load female uniform sprites matching all previously decided variables
 	if(!istype(wearer) || !(wearer.bodytype & BODYTYPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
 		return
 
-	var/static/list/icon/masks_and_shading
+	var/list/icon/masks_and_shading
 	if(isnull(masks_and_shading))
 		masks_and_shading = list(
 			"[NORTH]" = list(
-				"mask" = icon('icons/effects/test.dmi', "digi", NORTH),
-				"shading" = icon('icons/effects/test.dmi', "digi_shading", NORTH),
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", NORTH),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", NORTH),
 			),
 			"[SOUTH]" = list(
-				"mask" = icon('icons/effects/test.dmi', "digi", SOUTH),
-				"shading" = icon('icons/effects/test.dmi', "digi_shading", SOUTH),
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", SOUTH),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", SOUTH),
 			),
 			"[EAST]" = list(
-				"mask" = icon('icons/effects/test.dmi', "digi", EAST),
-				"shading" = icon('icons/effects/test.dmi', "digi_shading", EAST),
-				"alt" = icon('icons/effects/test.dmi', "digi_alt", EAST),
-				"x" = 2,
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", EAST),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", EAST),
+				"size" = 127,
 			),
 			"[WEST]" = list(
-				"mask" = icon('icons/effects/test.dmi', "digi", WEST),
-				"shading" = icon('icons/effects/test.dmi', "digi_shading", WEST),
-				"alt" = icon('icons/effects/test.dmi', "digi_alt", WEST),
-				"x" = -2,
+				"mask" = icon('icons/effects/digi_filters.dmi', "digi", WEST),
+				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", WEST),
+				"size" = 127,
 			),
 		)
 
 	var/dir_to_use = ISDIAGONALDIR(wearer.dir) ? (wearer.dir & (EAST|WEST)) : wearer.dir
 	var/icon/icon_to_use = masks_and_shading["[dir_to_use]"]["mask"]
 	var/icon/shading_to_use = masks_and_shading["[dir_to_use]"]["shading"]
-	var/x_offset = masks_and_shading["[dir_to_use]"]["x"] || 0
-	var/icon/alt_icon = masks_and_shading["[dir_to_use]"]["alt"]
+	var/size = masks_and_shading["[dir_to_use]"]["size"] || 1
 
-	if(alt_icon)
-		var/static/icon/cutoff_filter
-		if(isnull(cutoff_filter))
-			cutoff_filter = icon('icons/effects/test.dmi', "digi_alt_cutoff")
-
-		// var/size = 1
-		// pass()
-
-		// var/mutable_appearance/first_leg = new(appearance)
-		// first_leg.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter))
-		// first_leg.add_filter("Digitigrade_first_leg", 1, displacement_map_filter(icon = icon_to_use, x = x_offset, size = size))
-		// appearance.add_overlay(first_leg)
-
-		// var/mutable_appearance/second_leg = new(appearance)
-		// // second_leg.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter))
-		// second_leg.add_filter("Digitigrade_second_leg", 1, displacement_map_filter(icon = alt_icon, x = -1 * x_offset, size = size))
-		// appearance.add_overlay(second_leg)
-
-		appearance.add_filter("Digitigrade_cutoff", 1, alpha_mask_filter(icon = cutoff_filter, flags = MASK_INVERSE))
-
-	else
-		appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, x = x_offset, size = 1))
-		appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, x = x_offset, blend_mode = BLEND_MULTIPLY))
+	appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, size = size))
+	if(!isnull(shading_to_use))
+		appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, blend_mode = BLEND_MULTIPLY))
 
 #undef RESOLVE_ICON_STATE
