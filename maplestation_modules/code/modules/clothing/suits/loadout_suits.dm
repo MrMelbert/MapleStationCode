@@ -45,10 +45,29 @@
 		/obj/item/hatchet, //This is a jacket for real lumberjacks
 	)
 
-/obj/item/clothing/suit/chesedjacket // no toggle for this- yet
+/obj/item/clothing/suit/toggle/chesedjacket
 	name = "Well-Kept Jacket"
 	desc = "A tidily kept blue jacket, hand tailored and made by someone with a clear dedication to their craft."
 	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
 	icon_state = "chesed_jacket"
+	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
+	blood_overlay_type = "armor"
+
+/obj/item/clothing/suit/toggle/cyrilcloak
+	name = "upholstered blue cloak"
+	desc = "A warm cloak hand sewn by a tailor. Its meant for cold winter climates, not brooding in a dark corner, mind you."
+	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
+	icon_state = "bluecloak"
+	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
+	blood_overlay_type = "armor"
+	body_parts_covered = CHEST|GROIN|ARMS
+	cold_protection = CHEST|GROIN|ARMS
+	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
+
+/obj/item/clothing/suit/matthewjacket
+	name = "Embroidered Clan Jacket"
+	desc = "A red and gold jacket, embroidered with iconography of the Scoria Clan of Spectra."
+	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
+	icon_state = "sclanjacket"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
 	blood_overlay_type = "armor"

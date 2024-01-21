@@ -61,6 +61,7 @@
 #define DNA_ARM_WINGS_BLOCK 17 // NON-MODULE CHANGE
 #define DNA_AVIAN_EARS_BLOCK 18 // NON-MODULE CHANGE
 #define DNA_AVIAN_TAIL_BLOCK 19 // NON-MODULE CHANGE
+#define DNA_FEATHER_COLOR_BLOCK 20 // take a guess. NON-MODULE CHANGE
 
 #define DNA_SEQUENCE_LENGTH 4
 #define DNA_MUTATION_BLOCKS 8
@@ -93,6 +94,9 @@
 #define BLOOD_CLANS 18
 /// Similar to NOEYESPRITES but only excludes the eyeless overlay
 #define NOEYEHOLES 19
+
+/// non-module change. This is the feature to define the color of feathered organs.
+#define FEATHERS 20 // NON-MODULE CHANGE
 
 //organ slots
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"

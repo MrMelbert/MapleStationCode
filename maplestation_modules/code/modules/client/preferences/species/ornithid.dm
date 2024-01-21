@@ -39,6 +39,28 @@
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value
 
+/datum/preference/choiced/ornithid_wings/compile_constant_data()
+	var/list/data = ..()
+
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feather_color"
+
+	return data
+
+/datum/preference/color/feather_color
+	savefile_key = "feather_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	relevant_species_trait = FEATHERS
+
+/datum/preference/color/feather_color/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["feathers"] = value
+
+/datum/preference/color/feather_color/is_valid(value)
+	if (!..(value)) // copying this from mcolor, fairly certain this is just sanity. removed the "too dark" condition, because we're not terry
+		return FALSE
+
+	return TRUE
+
 /datum/preference/choiced/tail_avian
 	savefile_key = "feature_avian_tail"
 	savefile_identifier = PREFERENCE_CHARACTER

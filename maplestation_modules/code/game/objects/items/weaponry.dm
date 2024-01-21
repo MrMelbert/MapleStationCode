@@ -116,3 +116,15 @@
 	if(mapload && !paperweight_spawned  && istype(get_area(src), /area/station/medical/psychology))
 		new /obj/item/melee/psych_rock(loc)
 		paperweight_spawned = TRUE
+
+/obj/item/melee/sabre/maugrim
+	name = "Maugrim"
+	desc = "Hilda Brandt's longsword. It was christened after slaying a space-werewolf of the same name." // todo
+	force = 20
+	block_chance = 33
+	armour_penetration = 10
+	icon_state = "maugrim"
+	icon = 'maplestation_modules/icons/obj/weapons.dmi'
+	inhand_icon_state = "maugrim"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
