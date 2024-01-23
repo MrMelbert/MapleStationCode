@@ -430,6 +430,7 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "plague_scalpel"
 	inhand_icon_state = "plague_scalpel"
+	light_color = "#582640"
 
 /obj/item/retractor/advanced/plague
 	name = "flesh manipulator"
@@ -485,3 +486,4 @@
 	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "plague_cautery"
 	inhand_icon_state = "plague_cautery"
+	light_color = "#582640"
