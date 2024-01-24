@@ -85,7 +85,8 @@
 		/obj/item/melee/baseball_bat/homerun,
 		/obj/item/melee/baseball_bat/barbed,
 		/obj/item/melee/baseball_bat/ablative,
-		/obj/item/melee/baseball_bat/golden,)
+		/obj/item/melee/baseball_bat/golden,
+	)
 	max_weight_class = WEIGHT_CLASS_HUGE
 
 /obj/item/storage/belt/sheathe/baseball/update_icon_state()
