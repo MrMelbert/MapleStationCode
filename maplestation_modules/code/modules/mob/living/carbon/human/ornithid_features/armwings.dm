@@ -51,6 +51,7 @@
 	name = "Pursuant"
 	icon_state = "pursuant"
 	color_src = FEATHERS
+	
 /datum/sprite_accessory/arm_wingsopen/monochrome
 	name = "Monochrome"
 	icon_state = "monochrome"
