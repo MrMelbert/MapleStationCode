@@ -40,32 +40,26 @@
 /datum/sprite_accessory/arm_wings/monochrome
 	name = "Monochrome"
 	icon_state = "monochrome"
-	color_src = FEATHERS
 
 /datum/sprite_accessory/arm_wings/monochrome_short
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
-	color_src = FEATHERS
 
 /datum/sprite_accessory/arm_wings/pursuant
 	name = "Pursuant"
 	icon_state = "pursuant"
-	color_src = FEATHERS
 
 /datum/sprite_accessory/arm_wingsopen/monochrome
 	name = "Monochrome"
 	icon_state = "monochrome"
-	color_src = FEATHERS
 
 /datum/sprite_accessory/arm_wingsopen/monochrome_short
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
-	color_src = FEATHERS
 
 /datum/sprite_accessory/arm_wingsopen/pursuant
 	name = "Pursuant"
 	icon_state = "pursuant"
-	color_src = FEATHERS
 
 /datum/bodypart_overlay/mutant/wings/functional/arm_wings
 	feature_key = "arm_wings"
@@ -75,9 +69,8 @@
 	///Feature render key for opened arm wings
 	open_feature_key = "arm_wingsopen"
 
-
-/datum/bodypart_overlay/mutant/wings/functional/arm_wings/inherit_color(obj/item/bodypart/bodypart_owner, force)
-   draw_color = bodypart_owner.owner.dna.features["feathers"]
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings/inherit_color(obj/item/bodypart/ownerlimb, force) // overriding inherit_color directly because "override_color" for some unspeakable reason gets passed fuck all
+   draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
    return TRUE
 
 /datum/bodypart_overlay/mutant/wings/functional/arm_wings/get_global_feature_list()

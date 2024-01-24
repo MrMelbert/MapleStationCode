@@ -95,8 +95,6 @@
 /// Similar to NOEYESPRITES but only excludes the eyeless overlay
 #define NOEYEHOLES 19
 
-/// non-module change. This is the feature to define the color of feathered organs.
-#define FEATHERS 20 // NON-MODULE CHANGE
 
 //organ slots
 #define ORGAN_SLOT_ADAMANTINE_RESONATOR "adamantine_resonator"

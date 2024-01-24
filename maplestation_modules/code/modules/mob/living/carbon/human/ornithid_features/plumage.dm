@@ -23,8 +23,8 @@
 	layers = EXTERNAL_FRONT
 	color_source = ORGAN_COLOR_OVERRIDE
 
-/datum/bodypart_overlay/mutant/plumage/inherit_color(obj/item/bodypart/bodypart_owner, force)
-   draw_color = bodypart_owner.owner.dna.features["feathers"]
+/datum/bodypart_overlay/mutant/plumage/inherit_color(obj/item/bodypart/ownerlimb, force)
+   draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
    return TRUE
 
 /datum/bodypart_overlay/mutant/plumage/get_global_feature_list()

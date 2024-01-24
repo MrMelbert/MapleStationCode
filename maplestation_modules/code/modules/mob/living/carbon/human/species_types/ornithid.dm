@@ -10,10 +10,11 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	name = "\improper Ornithid"
 	plural_form = "Ornithids"
 	id = SPECIES_ORNITHID
-	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, FEATHERS)
+	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS)
 	inherent_traits = list(
 		TRAIT_LIGHT_DRINKER,
 		TRAIT_TACKLING_WINGED_ATTACKER,
+		TRAIT_FEATHERED,
 	)
 	use_skintones = TRUE
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid

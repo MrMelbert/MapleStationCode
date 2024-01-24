@@ -17,9 +17,11 @@
 /datum/bodypart_overlay/mutant/tail/avian/get_global_feature_list()
 	return GLOB.tails_list_avian
 
-/datum/bodypart_overlay/mutant/tail/avian/inherit_color(obj/item/bodypart/bodypart_owner, force)
-   draw_color = bodypart_owner.owner.dna.features["feathers"]
+/datum/bodypart_overlay/mutant/tail/avian/inherit_color(obj/item/bodypart/ownerlimb, force)
+   draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
    return TRUE
+
+
 /datum/sprite_accessory/tails/avian
 	icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi'
 
