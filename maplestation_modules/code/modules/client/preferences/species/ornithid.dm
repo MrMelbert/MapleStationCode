@@ -55,11 +55,6 @@
 /datum/preference/color/feather_color/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["feathers"] = value
 
-/datum/preference/color/feather_color/is_valid(value)
-	if (!..(value)) // copying this from mcolor, fairly certain this is just sanity. removed the "too dark" condition, because we're not terry
-		return FALSE
-
-	return TRUE
 
 /datum/preference/choiced/tail_avian
 	savefile_key = "feature_avian_tail"
