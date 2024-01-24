@@ -39,7 +39,7 @@
 		balloon_alert(user, "empty!")
 
 /obj/item/storage/belt/sheathe/update_icon_state()
-	icon_state = initial(inhand_icon_state)
+	icon_state = initial(icon_state)
 	inhand_icon_state = initial(inhand_icon_state)
 	worn_icon_state = initial(worn_icon_state)
 	return ..()
@@ -66,7 +66,6 @@
 		icon_state += "-sword"
 		inhand_icon_state += "-sword"
 		worn_icon_state += "-sword"
-	return ..()
 
 // baseball bat sheathe
 /obj/item/storage/belt/sheathe/baseball
