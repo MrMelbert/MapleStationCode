@@ -19,7 +19,7 @@ export const feather_color: Feature<string> = {
   name: 'Feather Color',
   description:
     "The color of your character's feathers. \
-  (Armwings, Plumage). Set to #aaaaa to randomize color.",
+  (Armwings, Plumage).",
   component: FeatureColorInput,
 };
 
