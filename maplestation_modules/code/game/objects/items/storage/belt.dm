@@ -20,8 +20,8 @@
 	AddElement(/datum/element/update_icon_updates_onmob)
 	atom_storage.max_slots = 1
 	atom_storage.max_specific_storage = max_weight_class
-	atom_storage.set_holdable(storable_items
-	)
+	atom_storage.set_holdable(storable_items)
+	
 /obj/item/storage/belt/sheathe/examine(mob/user)
 	. = ..()
 	if(length(contents))
