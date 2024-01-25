@@ -32,6 +32,13 @@
 	id_tag = "l_bathroom1";
 	name = "Unit 1"
 	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
+	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)
 "abb" = (
@@ -4138,6 +4145,13 @@
 /obj/machinery/door/airlock{
 	name = "Unit 3"
 	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
+	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet)
 "bwi" = (
@@ -4950,6 +4964,13 @@
 "bJI" = (
 /obj/machinery/shower/directional/north,
 /obj/effect/turf_decal/stripes/box,
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "shower drain";
+	plane = -6
+	},
 /turf/open/floor/iron/dark/textured_large,
 /area/station/engineering/main)
 "bJJ" = (
@@ -8883,7 +8904,8 @@
 	desc = "Ew, I think I see a hairball.";
 	icon = 'icons/obj/mining_zones/survival_pod.dmi';
 	icon_state = "fan_tiny";
-	name = "shower drain"
+	name = "shower drain";
+	plane = -6
 	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)
@@ -15575,7 +15597,8 @@
 	desc = "Ew, I think I see a hairball.";
 	icon = 'icons/obj/mining_zones/survival_pod.dmi';
 	icon_state = "fan_tiny";
-	name = "shower drain"
+	name = "shower drain";
+	plane = -6
 	},
 /turf/open/floor/iron/textured,
 /area/station/medical/cryo)
@@ -20096,6 +20119,13 @@
 /obj/machinery/shower/directional/north,
 /obj/effect/turf_decal/stripes/box,
 /obj/item/radio/intercom/directional/south,
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "shower drain";
+	plane = -6
+	},
 /turf/open/floor/iron/dark/textured_large,
 /area/station/engineering/main)
 "gYk" = (
@@ -25163,7 +25193,8 @@
 	desc = "Ew, I think I see a hairball.";
 	icon = 'icons/obj/mining_zones/survival_pod.dmi';
 	icon_state = "fan_tiny";
-	name = "shower drain"
+	name = "shower drain";
+	plane = -6
 	},
 /turf/open/floor/iron/white/smooth_corner{
 	dir = 8
@@ -27527,7 +27558,8 @@
 	desc = "Ew, I think I see a hairball.";
 	icon = 'icons/obj/mining_zones/survival_pod.dmi';
 	icon_state = "fan_tiny";
-	name = "shower drain"
+	name = "shower drain";
+	plane = -6
 	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet)
@@ -38032,6 +38064,13 @@
 /obj/machinery/door/airlock{
 	id_tag = "bathroom2";
 	name = "Unit 2"
+	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
 	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet)
@@ -48827,6 +48866,13 @@
 	id_tag = "bathroom1";
 	name = "Unit 1"
 	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
+	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet)
 "qvt" = (
@@ -52264,7 +52310,8 @@
 	desc = "Ew, I think I see a hairball.";
 	icon = 'icons/obj/mining_zones/survival_pod.dmi';
 	icon_state = "fan_tiny";
-	name = "shower drain"
+	name = "shower drain";
+	plane = -6
 	},
 /turf/open/floor/iron/textured,
 /area/station/medical/cryo)
@@ -64100,6 +64147,13 @@
 /obj/machinery/door/airlock{
 	id_tag = "l_bathroom2";
 	name = "Unit 2"
+	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
 	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)

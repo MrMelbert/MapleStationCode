@@ -65,7 +65,7 @@
 	quirk_holder.add_mood_event("caffeine", /datum/mood_event/no_coffee)
 
 /datum/quirk/caffeinated/process(seconds_per_tick)
-	if(HAS_TRAIT(quirk_holder, TRAIT_NOMETABOLISM))
+	if(HAS_TRAIT(quirk_holder, TRAIT_LIVERLESS_METABOLISM))
 		return
 	if(!caffeine_drank)
 		return
@@ -120,4 +120,3 @@
 	sprint_regen_multiplier = new_sprint_regen
 	quirk_human.sprint_length_max *= new_sprint_length
 	quirk_human.sprint_regen_per_second *= new_sprint_regen
-

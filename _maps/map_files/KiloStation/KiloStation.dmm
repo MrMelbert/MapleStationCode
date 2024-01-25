@@ -4756,6 +4756,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/structure/railing/corner/end,
 /turf/open/floor/iron/dark/corner{
 	dir = 8
 	},
@@ -7462,6 +7463,13 @@
 /obj/effect/turf_decal/box,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "shower drain";
+	plane = -6
+	},
 /turf/open/floor/iron/white/textured,
 /area/station/medical/paramedic)
 "aOK" = (
@@ -9918,7 +9926,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/structure/railing/corner,
+/obj/structure/railing/corner/end/flip,
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/bar/atrium)
 "aZS" = (
@@ -13313,6 +13321,12 @@
 	dir = 4
 	},
 /obj/effect/spawner/random/engineering/tracking_beacon,
+/obj/structure/railing/corner/end{
+	dir = 4
+	},
+/obj/structure/railing/corner/end/flip{
+	dir = 8
+	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/bar/atrium)
 "byL" = (
@@ -31560,6 +31574,13 @@
 	id_tag = "Unit_3";
 	name = "Unit 3"
 	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
+	},
 /turf/open/floor/iron/dark,
 /area/station/commons/toilet/restrooms)
 "flr" = (
@@ -32247,6 +32268,13 @@
 	name = "Shower 1"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "shower drain";
+	plane = -6
+	},
 /turf/open/floor/iron/dark,
 /area/station/commons/toilet/restrooms)
 "fwd" = (
@@ -35328,7 +35356,8 @@
 	desc = "Ew, I think I see a hairball.";
 	icon = 'icons/obj/mining_zones/survival_pod.dmi';
 	icon_state = "fan_tiny";
-	name = "shower drain"
+	name = "shower drain";
+	plane = -6
 	},
 /turf/open/floor/iron/white/textured,
 /area/station/medical/exam_room)
@@ -41687,8 +41716,8 @@
 	dir = 4
 	},
 /obj/machinery/duct,
-/obj/structure/railing/corner{
-	dir = 4
+/obj/structure/railing/corner/end{
+	dir = 1
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/bar/atrium)
@@ -42039,9 +42068,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/structure/railing/corner{
-	dir = 8
-	},
+/obj/structure/railing/corner/end,
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/bar/atrium)
 "iPQ" = (
@@ -52785,6 +52812,13 @@
 	id_tag = "Unit_1";
 	name = "Unit 1"
 	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
+	},
 /turf/open/floor/iron/dark,
 /area/station/commons/toilet/restrooms)
 "mzP" = (
@@ -58473,7 +58507,7 @@
 	dir = 4
 	},
 /obj/machinery/duct,
-/obj/structure/railing/corner{
+/obj/structure/railing/corner/end/flip{
 	dir = 1
 	},
 /turf/open/floor/iron/showroomfloor,
@@ -60490,6 +60524,13 @@
 	id_tag = "Unit_2";
 	name = "Unit 2"
 	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "drain";
+	plane = -6
+	},
 /turf/open/floor/iron/dark,
 /area/station/commons/toilet/restrooms)
 "pjO" = (
@@ -62338,7 +62379,8 @@
 	desc = "Ew, I think I see a hairball.";
 	icon = 'icons/obj/mining_zones/survival_pod.dmi';
 	icon_state = "fan_tiny";
-	name = "shower drain"
+	name = "shower drain";
+	plane = -6
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
@@ -65688,7 +65730,7 @@
 	dir = 10
 	},
 /obj/machinery/duct,
-/obj/structure/railing/corner{
+/obj/structure/railing/corner/end/flip{
 	dir = 1
 	},
 /turf/open/floor/iron/showroomfloor,
@@ -66301,8 +66343,8 @@
 	dir = 1
 	},
 /obj/machinery/duct,
-/obj/structure/railing/corner{
-	dir = 4
+/obj/structure/railing/corner/end{
+	dir = 1
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/service/bar/atrium)
@@ -70569,6 +70611,13 @@
 	name = "Shower 2"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "shower drain";
+	plane = -6
+	},
 /turf/open/floor/iron/dark,
 /area/station/commons/toilet/restrooms)
 "syK" = (
@@ -78459,6 +78508,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral,
+/obj/structure/railing/corner/end/flip,
 /turf/open/floor/iron/dark,
 /area/station/service/kitchen)
 "vmL" = (
@@ -83495,6 +83545,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/structure/railing/corner/end/flip,
 /turf/open/floor/iron/dark/corner,
 /area/station/hallway/primary/central/fore)
 "wZE" = (
