@@ -1203,6 +1203,13 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	var/input_length = LAZYLEN(ending)
 	return !!findtext(input_text, ending, -input_length)
 
+/// Generate a grawlix string of length of the text argument.
+/proc/grawlix(text)
+	var/grawlix = ""
+	for(var/iteration in 1 to length_char(text))
+		grawlix += pick("@", "$", "?", "!", "#", "§", "*", "£", "%", "☠", "★", "☆", "¿", "⚡")
+	return grawlix
+
 /// Returns TRUE if the input_text starts with any of the beginnings
 /proc/starts_with_any(input_text, list/beginnings)
 	for(var/beginning in beginnings)
