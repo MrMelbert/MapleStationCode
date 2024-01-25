@@ -4,6 +4,7 @@
 	name = "Lima Station emergency shuttle"
 	credit_cost = CARGO_CRATE_VALUE * 20
 	description = "An oversized evacuation shuttle for a modest station. Fully equipped."
+	occupancy_limit = "70"
 
 /datum/map_template/shuttle/cargo/lima
 	suffix = "lima"

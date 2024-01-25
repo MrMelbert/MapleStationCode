@@ -24735,7 +24735,7 @@
 /area/station/security/execution/transfer)
 "cTD" = (
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/incinerator_ordmix{
-	dir = 4
+	dir = 8
 	},
 /obj/effect/landmark/blobstart,
 /turf/open/floor/engine,
@@ -32554,7 +32554,7 @@
 /area/station/service/janitor)
 "fBO" = (
 /obj/machinery/atmospherics/components/binary/pump,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/visible,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/open/floor/engine,
 /area/station/science/ordnance/burnchamber)
 "fBX" = (
@@ -34645,10 +34645,6 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
-"gps" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
-/area/station/maintenance/fore)
 "gpw" = (
 /turf/closed/wall/rust,
 /area/station/maintenance/space_hut/plasmaman)
@@ -35327,6 +35323,12 @@
 /obj/effect/turf_decal/box,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
+	},
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "shower drain"
 	},
 /turf/open/floor/iron/white/textured,
 /area/station/medical/exam_room)
@@ -49221,7 +49223,6 @@
 /turf/open/floor/iron,
 /area/station/maintenance/disposal/incinerator)
 "lmf" = (
-/obj/structure/bodycontainer/morgue,
 /obj/effect/turf_decal/bot_white,
 /obj/effect/turf_decal/tile/neutral/anticorner/contrasted{
 	dir = 4
@@ -49229,6 +49230,7 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 1
 	},
+/obj/structure/bodycontainer/morgue/beeper_off,
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "lmF" = (
@@ -49781,7 +49783,7 @@
 /turf/open/floor/iron/white,
 /area/station/security/prison/mess)
 "lvs" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/visible,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/closed/wall/r_wall,
 /area/station/maintenance/starboard)
 "lvu" = (
@@ -52337,10 +52339,6 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
-"mtp" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
-/area/station/maintenance/port/greater)
 "mts" = (
 /obj/effect/turf_decal/siding/dark_green{
 	dir = 1
@@ -59537,10 +59535,6 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron,
 /area/station/hallway/primary/central)
-"oTL" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
-/area/station/maintenance/port/fore)
 "oTV" = (
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 8
@@ -62008,10 +62002,6 @@
 /obj/effect/mapping_helpers/airlock/access/all/command/ai_upload,
 /turf/open/floor/engine,
 /area/station/ai_monitored/turret_protected/ai_upload)
-"pJH" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/wall/r_wall,
-/area/station/maintenance/starboard)
 "pJN" = (
 /obj/structure/table,
 /obj/machinery/recharger,
@@ -62344,6 +62334,12 @@
 	},
 /obj/machinery/light/small/directional/south,
 /obj/effect/turf_decal/stripes/corner,
+/obj/structure/fluff{
+	desc = "Ew, I think I see a hairball.";
+	icon = 'icons/obj/mining_zones/survival_pod.dmi';
+	icon_state = "fan_tiny";
+	name = "shower drain"
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "pPT" = (
@@ -81899,7 +81895,6 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/item/soap/nanotrasen,
 /obj/machinery/newscaster/directional/west,
-/obj/effect/landmark/generic_maintenance_landmark,
 /obj/effect/landmark/start/hangover,
 /obj/machinery/button/door/directional/east{
 	id = "Shower_2";
@@ -84341,11 +84336,11 @@
 /area/station/cargo/warehouse)
 "xpQ" = (
 /obj/structure/table/reinforced,
-/obj/item/surgery_tray/full,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/surgery_tray/full,
 /turf/open/floor/iron/dark,
 /area/station/medical/morgue)
 "xqi" = (
@@ -86349,10 +86344,6 @@
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/iron,
 /area/station/security/courtroom)
-"xXa" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/wall/r_wall/rust,
-/area/station/maintenance/starboard)
 "xXg" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
@@ -86466,10 +86457,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/research)
-"xYU" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/wall,
-/area/station/maintenance/starboard/aft)
 "xYZ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -100793,7 +100780,7 @@ amR
 amA
 mYE
 amA
-mtp
+amA
 crP
 cnJ
 iNS
@@ -106921,7 +106908,7 @@ ifQ
 jui
 tvJ
 czn
-oTL
+cwy
 cwq
 cwy
 cwy
@@ -108985,7 +108972,7 @@ cwD
 cwy
 cwq
 cwq
-oTL
+cwy
 cwy
 cwy
 vsH
@@ -113100,7 +113087,7 @@ vfg
 sfS
 dHP
 sfS
-gps
+adH
 adH
 mOB
 icI
@@ -124982,11 +124969,11 @@ hFw
 dzk
 wpH
 bSI
-xYU
+bEg
 bOC
 bEg
 bEg
-xYU
+bEg
 stO
 bGr
 oqo
@@ -129826,7 +129813,7 @@ qiT
 upa
 aIC
 kuB
-pJH
+kuB
 bjs
 bkd
 lax
@@ -130072,11 +130059,11 @@ aim
 kPY
 bEq
 nXg
-pJH
 kuB
-pJH
+kuB
+kuB
 kRX
-xXa
+rGo
 dkL
 uUX
 dFR
@@ -130339,7 +130326,7 @@ mvj
 dFR
 vAx
 vea
-pJH
+kuB
 hNn
 hae
 bkd
@@ -130590,7 +130577,7 @@ eNy
 rPd
 ava
 eZx
-xXa
+rGo
 qav
 uUX
 frQ
