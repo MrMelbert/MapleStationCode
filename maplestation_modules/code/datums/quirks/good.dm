@@ -25,7 +25,7 @@
 	medical_record_text = "Patient is trilingual and knows multiple languages."
 	mail_goodies = list(/obj/item/taperecorder)
 	/// The language we added with this quirk.
-	var/added_language
+	var/datum/language/added_language
 
 /datum/quirk/trilingual/add()
 	var/list/possible_languages = GLOB.all_languages.Copy() - list(
@@ -52,13 +52,9 @@
 
 	quirk_holder_languages.grant_language(added_language, ALL, LANGUAGE_QUIRK)
 
-	var/datum/language/added_language_instance = GLOB.language_datum_instances[added_language]
 	if(quirk_holder_languages.has_language(added_language, ALL))
-		// We understand and speak the added language
-		to_chat(quirk_holder, span_info("You know the [added_language_instance.name] language."))
-	else if(quirk_holder_languages.has_language(added_language, UNDERSTOOD_LANGUAGE))
-		// We understand but may not be able to speak the added language
-		to_chat(quirk_holder, span_info("You understand the [added_language_instance.name] language, but may not be able to speak it with your tongue."))
+		to_chat(quirk_holder, span_info("You know the [initial(added_language.name)] \
+			language[quirk_holder_languages.can_speak_language(added_language) ? "" : ", though you may not be able to speak it with your tongue"]."))
 
 /datum/quirk/trilingual/remove()
 	if(added_language && !QDELETED(quirk_holder))
@@ -99,8 +95,6 @@
 	var/mob/living/carbon/carbon_holder = quirk_holder
 	if(istype(carbon_holder))
 		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
-
-#undef LANGUAGE_QUIRK_RANDOM_BLACKLIST
 
 /datum/quirk/prosthetic_organ
 	icon = FA_ICON_HEART_BROKEN

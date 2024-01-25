@@ -46,6 +46,7 @@
 		/mob/living/simple_animal/hostile/asteroid/wolf,
 		/mob/living/simple_animal/hostile/dark_wizard,
 		/mob/living/simple_animal/hostile/illusion,
+		/mob/living/simple_animal/hostile/illusion/conjured, // NON-MODULE CHANGE
 		/mob/living/simple_animal/hostile/illusion/escape,
 		/mob/living/simple_animal/hostile/illusion/mirage,
 		/mob/living/simple_animal/hostile/megafauna,

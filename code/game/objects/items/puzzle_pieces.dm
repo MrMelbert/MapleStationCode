@@ -301,7 +301,7 @@
 	/// can we be pressed only once?
 	var/single_use = TRUE
 	/// puzzle id we send on press
-	var/id = "0" //null would literally open every puzzle door without an id
+	var/id //null would literally open every puzzle door without an id
 	/// queue size, must match count of objects this activates!
 	var/queue_size = 2
 
@@ -341,7 +341,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle_button, 32)
 	/// were we used successfully?
 	var/used = FALSE
 	/// puzzle id we send if the correct card is swiped
-	var/id = "0"
+	var/id
 	/// queue size, must match count of objects this activates!
 	var/queue_size = 2
 
@@ -370,6 +370,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle_button, 32)
 	return ..()
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/puzzle_keycardpad, 32)
+
+/obj/machinery/puzzle_keycardpad/meme
 
 //
 // blockade

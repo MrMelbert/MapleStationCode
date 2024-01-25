@@ -8,10 +8,10 @@
 		and is now being tableslammed across the station. Please stand by.")
 
 	SEND_SOUND(target, sound('maplestation_modules/sound/slamofthenorthstar.ogg', volume = 40))
-	for(var/area/station_area as anything in GLOB.areas)
-		if(station_area.z == 0 || !is_station_level(station_area.z))
+	for(var/area/station/station_area in GLOB.areas)
+		if(!is_station_level(station_area.z))
 			continue
-		for(var/turf/area_turf as anything in station_area.get_contained_turfs())
+		for(var/turf/area_turf as anything in station_area.get_turfs_from_all_zlevels())
 			var/obj/structure/table/slam_jam = locate() in area_turf
 			if(!QDELETED(slam_jam) && !istype(slam_jam, /obj/structure/table/glass))
 				slam_jam.tablepush(target, target)
