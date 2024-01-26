@@ -53,9 +53,9 @@
 	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
 	blood_overlay_type = "armor"
 
-/obj/item/clothing/suit/toggle/cyrilcloak
-	name = "upholstered blue cloak"
-	desc = "A warm cloak hand sewn by a tailor. Its meant for cold winter climates, not brooding in a dark corner, mind you."
+/obj/item/clothing/suit/cyrilcloak
+	name = "Claw-Sewn Cloak"
+	desc = "A warm cloak hand sewn by a tailor's hand. Its meant for cold winter climates, not brooding in a dark corner, mind you."
 	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
 	icon_state = "bluecloak"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'

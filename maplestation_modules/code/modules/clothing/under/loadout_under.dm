@@ -66,6 +66,7 @@
 	icon = 'maplestation_modules/icons/obj/clothing/under/ornithid_clothes.dmi'
 	worn_icon = 'maplestation_modules/icons/mob/clothing/under/ornithid_clothes.dmi'
 	icon_state = "arbiter_suit"
+	can_adjust = FALSE
 
 /obj/item/clothing/under/chesedsuit
 	name = "blue waistcoat"
@@ -73,5 +74,4 @@
 	icon = 'maplestation_modules/icons/obj/clothing/under/ornithid_clothes.dmi'
 	worn_icon = 'maplestation_modules/icons/mob/clothing/under/ornithid_clothes.dmi'
 	icon_state = "chesed_suit"
-
 
