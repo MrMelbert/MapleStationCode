@@ -1,5 +1,4 @@
 {
-
 	"occasion": {
 		"court case" : 11,
 		"criminal case" : 7,
@@ -18,9 +17,7 @@
 		"brochure" : 0.5,
 		"leaflet" : 0.5,
 		"flyer" : 0.5
-
 	},
-
 	"contents_court_cases": [
 		"subject_one is suing victim for abuse of company funds.",
 		"subject_one is suing subject_two for inter-corporation rivalry.",
@@ -37,8 +34,8 @@
 		"station_name's is requesting a new judge after the sudden death of their previous, and is requesting an authorization.",
 		"victim is requesting for a new lawyer and requires a sign off.",
 		"victim is pending a parole hearing, but station station_name wishes to ignore it, requesting authorization to ignore the parole.",
-		"captain victim of a subject_one station is being tried for misconduct.",
-		"captain victim of a station_name is being tried for misconduct.",
+		"Captain victim of a subject_one station is being tried for misconduct.",
+		"Captain victim of a station_name is being tried for misconduct.",
 		"victim has been caught stealing from EVA and is pending trial. Requesting if trial is permitted.",
 		"victim has been caught stealing from R&D and is pending trial. Requesting if trial is permitted.",
 		"victim has been caught stealing from Engineering and is pending trial. Requesting if trial is permitted.",
@@ -47,7 +44,6 @@
 		"victim has been involved in numerous bar brawls aboard station_name, ordered to seek medical attention, Requesting authorization to send off to a medical-ward.",
 		"victim has been deemed clinically insane. Requesting authorization to send off to a medical-ward."
 	],
-
 	"contents_executions": [
 		"victim @pick(execution_lines) by subject_one for traitorous activity.",
 		"victim @pick(execution_lines) for infiltrating subject_one.",
@@ -66,7 +62,7 @@
 		"victim @pick(execution_lines) for being a mime.",
 		"victim @pick(execution_lines) for killing Ian.",
 		"victim @pick(execution_lines) for killing Runtime.",
-		"victim @pick(execution_lines) for mishandling of their stations Supermatter.",
+		"victim @pick(execution_lines) for mishandling of their station's Supermatter.",
 		"victim @pick(execution_lines) for letting a Singularity loose.",
 		"victim @pick(execution_lines) for letting a Tesla loose.",
 		"victim @pick(execution_lines) for sabotaging the Supermatter.",
@@ -80,29 +76,27 @@
 		"victim @pick(execution_lines) for murdering PunPun.",
 		"victim @pick(execution_lines) for being different.",
 		"victim @pick(execution_lines) for liking pineapples on their pizza.",
-		"victim @pick(execution_lines) for breaking into the armoy.",
+		"victim @pick(execution_lines) for breaking into the armory.",
 		"victim @pick(execution_lines) for shooting the Supermatter."
 	],
-
 	"execution_lines": [
 		"is being executed",
 		"is being re-educated",
 		"is being killed",
-		"is being transfered",
+		"is being transferred",
 		"is slated for transfer",
 		"is slated for re-education",
-		"is being considered for exeuction",
+		"is being considered for execution",
 		"is being considered for re-education",
 		"is being executed via firing line",
 		"is being executed via lethal injection",
-		"is being executed via electri chair",
+		"is being executed via electric chair",
 		"is being re-educated in a third party's facility"
 	],
-
 	"contents_patents": [
 		"subject_one is patenting a revolutionary new blanket that keeps lizardpeople warm.",
-		"subject_one is attemping to patent bluespace.",
-		"subject_one is attemping to patent plasma.",
+		"subject_one is attempting to patent bluespace.",
+		"subject_one is attempting to patent plasma.",
 		"subject_one is patenting a computer that does scientists jobs for them.",
 		"subject_one is prototyping an engine that replaces the Supermatter.",
 		"subject_one is method that makes the Hypertorus Fusion Reactor safer.",
@@ -132,20 +126,12 @@
 		"subject_one working on machines to make evacuation shuttles calmer.",
 		"subject_one has patented a revolutionary [REDACTED]."
 	],
-
 	"contents_random": [
 		"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed bibendum venenatis arcu ac semper.",
 		"Proin commodo nibh purus, ut rhoncus nibh efficitur quis. Quisque euismod.",
 		"Nulla maximus cursus massa, vel bibendum mi sollicitudin eu. Proin at nisi vel mi vehicula.",
 		"Maecenas ullamcorper tempus dui, vel blandit urna viverra nec. Class aptent taciti sociosqu ad litora.",
-		"Leclerc's lawsuit.",
-		"Gah-Jeeliu's medical bill.",
-		"Rasha-Tanaka's requests form.",
-		"Joey Petunia's bombing charges.",
-		"Dendy Doom's missing degree.",
-		"Aza-Zure's missing report.",
-		"Mortimer v. Oxygen case report.",
 		"THIS IS A TEST DOCUMENT. PLEASE IGNORE. PLEASE DO NOT SIGN. PLEASE RETURN TO YOUR STATIONS DESIGNATED OFFICER.",
 		"Is your refrigerator running? Well, you should catch it.",
 		"We're trying to reach you about your shuttles extended warranty.",
@@ -161,7 +147,5 @@
 		"todays security code is:",
 		"todays communications decryption key is:",
 		"Why would a shuttle full of evacuees all snap and beat each other to death the moment they reached safety?"
-
 	]
-
 }

@@ -35,7 +35,7 @@
 	return ..()
 
 /datum/loadout_item/accessory/proc/set_accessory_layer(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	if(!loadout?[item_path])
 		manager.select_item(src)
 
@@ -44,7 +44,7 @@
 
 	loadout[item_path][INFO_LAYER] = !loadout[item_path][INFO_LAYER]
 	to_chat(user, span_boldnotice("[name] will now appear [loadout[item_path][INFO_LAYER] ? "above" : "below"] suits."))
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.accessory)

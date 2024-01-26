@@ -13,7 +13,19 @@
 
 /datum/techweb_node/base
 	id_additions = list(
-		"fax_machine",
+		"fax_machine_deluxe",
+	)
+
+/datum/techweb_node/biotech
+	id_additions = list(
+		"scanning_pad",
+		"vitals_monitor",
+	)
+
+/datum/techweb_node/adv_biotech
+	id_additions = list(
+		"auto_cpr_device",
+		"vitals_monitor_advanced",
 	)
 
 /datum/techweb_node/exp_surgery

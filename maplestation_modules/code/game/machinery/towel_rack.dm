@@ -95,14 +95,14 @@
 	return removed_towel
 
 /// Preset full towel rack
-/obj/structure/towel_rack/full/Initialize()
+/obj/structure/towel_rack/full/Initialize(mapload)
 	. = ..()
 	for(var/towel_num in 1 to max_towels)
 		towels += new /obj/item/towel(src)
 	update_appearance()
 
 /// Preset full beach towel rack
-/obj/structure/towel_rack/full_beach/Initialize()
+/obj/structure/towel_rack/full_beach/Initialize(mapload)
 	. = ..()
 	for(var/towel_num in 1 to max_towels)
 		towels += new /obj/item/towel/beach(src)
@@ -160,7 +160,7 @@
 		removed_towel.cooling_timer_id = addtimer(CALLBACK(removed_towel, TYPE_PROC_REF(/obj/item/towel, cool_towel)), 3 MINUTES, TIMER_STOPPABLE)
 
 /// Preset filled towel warming rack (all the towels are warm, too)
-/obj/structure/towel_rack/warmer/full/Initialize()
+/obj/structure/towel_rack/warmer/full/Initialize(mapload)
 	. = ..()
 	for(var/towel_num in 1 to max_towels)
 		var/obj/item/towel/added_towel = new(src)
@@ -169,7 +169,7 @@
 	update_appearance()
 
 /// Above but with beach towels.
-/obj/structure/towel_rack/warmer/full_beach/Initialize()
+/obj/structure/towel_rack/warmer/full_beach/Initialize(mapload)
 	. = ..()
 	for(var/towel_num in 1 to max_towels)
 		var/obj/item/towel/beach/added_towel = new(src)

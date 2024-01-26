@@ -13,7 +13,7 @@
 	cost = CARGO_CRATE_VALUE * 70 // this shit is SO culturally, functionally, and scientifically important.
 
 	unit_name = "silverscale tongue"
-	export_types = (/obj/item/organ/internal/tongue/lizard/silver)
+	export_types = list(/obj/item/organ/internal/tongue/lizard/silver)
 
 /datum/export/organ/tongue/lizard/silver/total_printout(datum/export_report/ex, notes = TRUE)
 	. = ..()
@@ -138,6 +138,7 @@
 	statue.flags_ricochet |= RICOCHET_SHINY
 	RegisterSignal(statue, COMSIG_ATOM_ENTERED, PROC_REF(statue_entered))
 	RegisterSignal(statue, COMSIG_ATOM_EXITED, PROC_REF(statue_exited))
+	RegisterSignal(statue, COMSIG_OBJ_DECONSTRUCT, PROC_REF(statue_deconstructed))
 
 /datum/action/item_action/organ_action/statue/Trigger(trigger_flags)
 	if(owner.loc != statue)
@@ -187,6 +188,18 @@
 
 	// Matches up dirs again, someone could've rotated our statue
 	lizard.setDir(statue.dir)
+
+/datum/action/item_action/organ_action/statue/statue_destroyed(datum/source)
+	statue = null
+	qdel(src)
+
+/datum/action/item_action/organ_action/statue/proc/statue_deconstructed(datum/source, disassembled)
+	SIGNAL_HANDLER
+	to_chat(owner, span_userdanger("You watch as your statue is [disassembled ? "taken apart, piece by piece" : "broken apart"] - and with it, your life force!"))
+	statue.visible_message(span_warning("[statue] shatters into dust!"))
+	var/mob/living/lizard = owner
+	lizard.forceMove(statue.loc)
+	lizard.dust(drop_items = TRUE)
 
 /datum/armor/silverscale_statue_armor
 	melee = 50

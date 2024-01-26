@@ -4,6 +4,9 @@ set -euo pipefail
 #nb: must be bash to support shopt globstar
 shopt -s globstar extglob
 
+passedcodefiles=$1
+passedmapfiles=$2
+
 #ANSI Escape Codes for colors to increase contrast of errors
 RED="\033[0;31m"
 GREEN="\033[0;32m"
@@ -19,17 +22,19 @@ if command -v rg >/dev/null 2>&1; then
 	if [ ! rg -P '' >/dev/null 2>&1 ] ; then
 		pcre2_support=0
 	fi
-	code_files="code/**/**.dm"
-	map_files="_maps/**/**.dmm"
+	code_files=$passedcodefiles # "code/**/**.dm" // NON-MODULE CHANGE
+	map_files=$passedmapfiles # "_maps/**/**.dmm" // NON-MODULE CHANGE
 	code_x_515="code/**/!(__byond_version_compat).dm"
 else
 	pcre2_support=0
 	grep=grep
-	code_files="-r --include=code/**/**.dm"
-	map_files="-r --include=_maps/**/**.dmm"
+	code_files="-r --include=$passedcodefiles" #"-r --include=code/**/**.dm" // NON-MODULE CHANGE
+	map_files="-r --include=$passedmapfiles" #"-r --include=_maps/**/**.dmm" // NON-MODULE CHANGE
 	code_x_515="-r --include=code/**/!(__byond_version_compat).dm"
 fi
 
+echo -e "-------------------------------------------------"
+echo -e "${BLUE}Grepping $passedcodefiles and $passedmapfiles${NC}"
 echo -e "${BLUE}Using grep provider at $(which $grep)${NC}"
 
 part=0

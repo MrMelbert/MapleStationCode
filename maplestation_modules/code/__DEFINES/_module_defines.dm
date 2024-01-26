@@ -27,10 +27,25 @@
 #define TOOLTIP_NO_DAMAGE "This item has very low force and is largely cosmetic."
 #define TOOLTIP_RANDOM_COLOR "This item has a random color and will change every round."
 
-/// Modular traits
+// Modular traits
+/// Provides additional resistance to contracting diseases. Should be removed next upstream
 #define TRAIT_DISEASE_RESISTANT "disease_resistant"
+/// Does not harm patients when undergoing CPR
+#define TRAIT_CPR_CERTIFIED "cpr_certified"
 
 /// Bitflags for speech sounds
 #define SOUND_NORMAL (1<<0)
 #define SOUND_QUESTION (1<<1)
 #define SOUND_EXCLAMATION (1<<2)
+
+/// Max loadout presets available
+#define MAX_LOADOUTS 5
+
+/// How much "caffeine points" does 1 metabolization tick (0.2u) of a "weak" drink provide
+#define CAFFEINE_POINTS_WEAK 0.1
+
+/// How much "caffeine points" does 1 metabolization tick (0.2u) of coffee provide
+#define CAFFEINE_POINTS_COFFEE 0.2
+
+/// How much "caffeine points" does 1 metabolization tick (0.2u) of energy drinks provide
+#define CAFFEINE_POINTS_ENERGY 0.8 //yes i know energy drinks actually have less caffeine than coffee IRL but this is the FUTURE

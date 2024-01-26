@@ -73,6 +73,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 		"toggle_job_clothes" = PROC_REF(action_toggle_job_outfit),
 		"rotate_dummy" = PROC_REF(action_rotate_model_dir),
 		"pass_to_loadout_item" = PROC_REF(action_pass_to_loadout_item),
+		"select_slot" = PROC_REF(select_slot),
 	)
 
 	/// The preview dummy.
@@ -112,7 +113,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 	return TRUE
 
 /datum/preference_middleware/loadout/proc/action_clear_all(list/params, mob/user)
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], null)
+	update_loadout(preferences, null)
 	character_preview_view.update_body()
 	return TRUE
 
@@ -143,7 +144,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 
 /// Select [path] item to [category_slot] slot.
 /datum/preference_middleware/loadout/proc/select_item(datum/loadout_item/selected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(preferences)
 	var/list/datum/loadout_item/loadout_datums = loadout_list_to_datums(loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		if(item.category != selected_item.category)
@@ -153,13 +154,13 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 			return
 
 	LAZYSET(loadout, selected_item.item_path, list())
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(preferences, loadout)
 
 /// Deselect [deselected_item].
 /datum/preference_middleware/loadout/proc/deselect_item(datum/loadout_item/deselected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(preferences)
 	LAZYREMOVE(loadout, deselected_item.item_path)
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(preferences, loadout)
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
 	src.menu = open_menu
@@ -169,6 +170,12 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 	SIGNAL_HANDLER
 	menu = null
 
+/datum/preference_middleware/loadout/proc/select_slot(list/params, mob/user)
+	preferences.write_preference(GLOB.preference_entries[/datum/preference/numeric/active_loadout], text2num(params["new_slot"]))
+	character_preview_view.update_body()
+	preferences.character_preview_view?.update_body()
+	preferences.update_static_data(user)
+
 /datum/preference_middleware/loadout/get_ui_data(mob/user)
 	var/list/data = list()
 
@@ -176,12 +183,13 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 		character_preview_view = create_character_preview_view(user)
 
 	var/list/all_selected_paths = list()
-	for(var/path in preferences.read_preference(/datum/preference/loadout))
+	for(var/path in get_active_loadout(preferences))
 		all_selected_paths += path
 
 	data["selected_loadout"] = all_selected_paths
 	data["mob_name"] = preferences.read_preference(/datum/preference/name/real_name)
 	data["job_clothes"] = character_preview_view.view_job_clothes
+	data["current_slot"] = preferences.read_preference(/datum/preference/numeric/active_loadout)
 
 	return data
 
@@ -202,6 +210,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 
 	data["loadout_tabs"] = loadout_tabs
 	data["tutorial_text"] = get_tutorial_text()
+	data["max_loadout_slots"] = MAX_LOADOUTS
 	return data
 
 /// Returns a formatted string for use in the UI.
