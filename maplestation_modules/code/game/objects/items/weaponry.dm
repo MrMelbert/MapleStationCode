@@ -142,7 +142,7 @@
 	// this is seperate from the null rod- this will have no anti-magic and higher stats to compensate for it being used by a command member who refuses to use energy guns
 	force = 20
 	sharpness = SHARP_EDGED
-	slot_flags = ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE
+	slot_flags = ITEM_SLOT_BELT | ITEM_SLOT_SUITSTORE
 	block_chance = 25
 	armour_penetration = 20
 	w_class = WEIGHT_CLASS_HUGE
