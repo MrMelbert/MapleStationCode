@@ -1,6 +1,8 @@
-import { AdvancedTraitorWindow } from './_AdvancedTraitorParts';
-import { AdvancedTraitorBackgroundSection } from './_AdvancedTraitorParts';
-import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
+import {
+  AdvancedTraitorBackgroundSection,
+  AdvancedTraitorGoalsSection,
+  AdvancedTraitorWindow,
+} from './_AdvancedTraitorParts';
 
 export const _AdvancedTraitorPanel = () => {
   return (

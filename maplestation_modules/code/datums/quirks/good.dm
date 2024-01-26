@@ -36,7 +36,7 @@
 		/datum/language/ratvarian,
 		/datum/language/uncommon,
 		/datum/language/xenocommon,
-	 )
+	)
 
 	var/datum/language_holder/quirk_holder_languages = quirk_holder.get_language_holder()
 	added_language = pick(possible_languages)

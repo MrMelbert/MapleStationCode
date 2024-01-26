@@ -1,8 +1,13 @@
-import { FeatureNumeric, FeatureNumericData, FeatureNumberInput, FeatureValueProps } from '../base';
-import { Stack, Button } from '../../../../../components';
+import { Button, Stack } from '../../../../../components';
+import {
+  FeatureNumberInput,
+  FeatureNumeric,
+  FeatureNumericData,
+  FeatureValueProps,
+} from '../base';
 
 const FeatureSpeechSoundFrequency = (
-  props: FeatureValueProps<number, number, FeatureNumericData>
+  props: FeatureValueProps<number, number, FeatureNumericData>,
 ) => {
   return (
     <Stack>
@@ -23,7 +28,8 @@ const FeatureSpeechSoundFrequency = (
 
 export const speech_sound_frequency_modifier: FeatureNumeric = {
   name: 'Speech Sound Frequency',
-  description: 'Adjusts the frequency that your speech sounds play at. \
+  description:
+    'Adjusts the frequency that your speech sounds play at. \
     A lower number results in deeper, slower speech, while \
     higher numbers result in higher, faster speech.',
   component: FeatureSpeechSoundFrequency,

@@ -1,8 +1,17 @@
 import { useBackend } from '../backend';
-import { Button, Dropdown, Input, LabeledList, Stack, TextArea } from '../components';
-import { AdvancedTraitorBackgroundSection } from './_AdvancedTraitorParts';
-import { AdvancedTraitorWindow } from './_AdvancedTraitorParts';
-import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
+import {
+  Button,
+  Dropdown,
+  Input,
+  LabeledList,
+  Stack,
+  TextArea,
+} from '../components';
+import {
+  AdvancedTraitorBackgroundSection,
+  AdvancedTraitorGoalsSection,
+  AdvancedTraitorWindow,
+} from './_AdvancedTraitorParts';
 
 export const _AdvancedCultPanel = (props, context) => {
   const { act, data } = useBackend();

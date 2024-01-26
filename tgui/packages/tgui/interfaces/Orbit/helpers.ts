@@ -1,5 +1,6 @@
 import { filter, sortBy } from 'common/collections';
 import { flow } from 'common/fp';
+
 import { HEALTH, THREAT } from './constants';
 import type { AntagGroup, Antagonist, Observable } from './types';
 
@@ -25,6 +26,7 @@ export const getDisplayName = (full_name: string, name?: string) => {
   if (!name) {
     return full_name;
   }
+
   if (
     !full_name?.includes('[') ||
     full_name.match(/\(as /) ||
@@ -32,18 +34,19 @@ export const getDisplayName = (full_name: string, name?: string) => {
   ) {
     return name;
   }
+
   // return only the name before the first ' [' or ' ('
   return `"${full_name.split(/ \[| \(/)[0]}"`;
 };
 
 export const getMostRelevant = (
   searchQuery: string,
-  observables: Observable[][]
+  observables: Observable[][],
 ): Observable => {
   return flow([
     // Filters out anything that doesn't match search
     filter<Observable>((observable) =>
-      isJobOrNameMatch(observable, searchQuery)
+      isJobOrNameMatch(observable, searchQuery),
     ),
     // Sorts descending by orbiters
     sortBy<Observable>((observable) => -(observable.orbiters || 0)),
@@ -81,7 +84,7 @@ const getThreatColor = (orbiters = 0) => {
 export const getDisplayColor = (
   item: Observable,
   heatMap: boolean,
-  color?: string
+  color?: string,
 ) => {
   const { health, orbiters } = item;
   if (typeof health !== 'number') {
@@ -96,7 +99,7 @@ export const getDisplayColor = (
 /** Checks if a full name or job title matches the search. */
 export const isJobOrNameMatch = (
   observable: Observable,
-  searchQuery: string
+  searchQuery: string,
 ) => {
   if (!searchQuery) {
     return true;

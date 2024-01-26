@@ -1,5 +1,19 @@
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Divider, Input, LabeledList, Modal, NumberInput, RoundGauge, Section, Stack, Tabs, TextArea, Tooltip } from '../components';
+import {
+  Box,
+  Button,
+  Divider,
+  Input,
+  LabeledList,
+  Modal,
+  NumberInput,
+  RoundGauge,
+  Section,
+  Stack,
+  Tabs,
+  TextArea,
+  Tooltip,
+} from '../components';
 import { Window } from '../layouts';
 
 export const AdvancedTraitorWindow = (props, context) => {
@@ -9,7 +23,8 @@ export const AdvancedTraitorWindow = (props, context) => {
       title="Antagonist Goal Panel"
       width={550}
       height={650}
-      theme={theme}>
+      theme={theme}
+    >
       <Window.Content>{children}</Window.Content>
     </Window>
   );
@@ -48,7 +63,8 @@ export const AdvancedTraitorBackgroundSection = (props, context) => {
           color="good"
           onClick={() => act('begin_background_tutorial')}
         />
-      }>
+      }
+    >
       {backstory_tutorial_text && (
         <AdvancedTraitorTutorialModal
           text={backstory_tutorial_text}
@@ -131,7 +147,8 @@ export const AdvancedTraitorGoalsSection = (props, context) => {
           color="good"
           onClick={() => act('begin_objective_tutorial')}
         />
-      }>
+      }
+    >
       {objective_tutorial_text && (
         <AdvancedTraitorTutorialModal
           text={objective_tutorial_text}
@@ -170,7 +187,7 @@ export const AdvancedTraitorGoals = (props, context) => {
 
   const [selectedGoalID, setSelectedGoal] = useLocalState(
     'goals',
-    goals[0]?.id
+    goals[0]?.id,
   );
 
   const selectedGoal = goals.find((goal) => {
@@ -188,7 +205,8 @@ export const AdvancedTraitorGoals = (props, context) => {
                 width="20%"
                 key={goal.id}
                 selected={goal.id === selectedGoalID}
-                onClick={() => setSelectedGoal(goal.id)}>
+                onClick={() => setSelectedGoal(goal.id)}
+              >
                 <Stack align="center">
                   <Stack.Item width="80%">Goal: {goal.id}</Stack.Item>
                   <Stack.Item width="20%">
@@ -240,7 +258,8 @@ export const AdvancedTraitorGoals = (props, context) => {
                     <Stack.Item mb={2}>
                       <Tooltip
                         content="Set your goal's intensity level. Check the \
-                          tutorial details/examples about each level.">
+                          tutorial details/examples about each level."
+                      >
                         <RoundGauge
                           size={2}
                           value={selectedGoal.intensity}
@@ -250,11 +269,11 @@ export const AdvancedTraitorGoals = (props, context) => {
                           format={(value) => null}
                           position="relative"
                           ranges={{
-                            'green': [1, 1.8],
-                            'good': [1.8, 2.6],
-                            'yellow': [2.6, 3.4],
-                            'orange': [3.4, 4.2],
-                            'red': [4.2, 5],
+                            green: [1, 1.8],
+                            good: [1.8, 2.6],
+                            yellow: [2.6, 3.4],
+                            orange: [3.4, 4.2],
+                            red: [4.2, 5],
                           }}
                         />
                       </Tooltip>

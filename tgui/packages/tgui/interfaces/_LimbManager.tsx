@@ -1,7 +1,8 @@
 import { Component, createRef } from 'react';
+
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Box, BlockQuote, Button, Section, Stack } from '../components';
+import { BlockQuote, Box, Button, Image, Section, Stack } from '../components';
 import { Connections } from './common/Connections';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
@@ -67,7 +68,7 @@ const catToPos = (cat: string | null): { x: number; y: number } => {
 
 const getActiveCategory = (
   limbs: LimbCategory[],
-  cat: string | null
+  cat: string | null,
 ): LimbCategory | null => {
   if (!cat) {
     return null;
@@ -97,10 +98,10 @@ type Limb = {
   path: string;
 };
 
-const LimbSelectButton = (
-  props: { select_limb: Limb; selected_limbs: string[] | null },
-  context
-) => {
+const LimbSelectButton = (props: {
+  select_limb: Limb;
+  selected_limbs: string[] | null;
+}) => {
   const { act, data } = useBackend<Limb>();
   const { select_limb, selected_limbs } = props;
   const is_active = selected_limbs?.includes(select_limb.path);
@@ -119,14 +120,11 @@ const LimbSelectButton = (
   );
 };
 
-const DisplayLimbs = (
-  props: {
-    selected_limbs: string[] | null;
-    limbs: LimbCategory[];
-    current_selection: string | null;
-  },
-  context
-) => {
+const DisplayLimbs = (props: {
+  selected_limbs: string[] | null;
+  limbs: LimbCategory[];
+  current_selection: string | null;
+}) => {
   const { data } = useBackend<LimbCategory>();
   const { selected_limbs, limbs, current_selection } = props;
 
@@ -213,20 +211,20 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
           <div
             ref={this.ref}
             style={{
-              'width': '100%',
-              'height': '100%',
-              'position': 'relative',
+              width: '100%',
+              height: '100%',
+              position: 'relative',
               'z-index': 1,
-            }}>
-            <Box
-              as="img"
+            }}
+          >
+            <Image
               m={1}
               src={`data:image/jpeg;base64,${preview_flat_icon}`}
               height={width}
               width={height}
+              fixBlur
               style={{
-                '-ms-interpolation-mode': 'nearest-neighbor',
-                'position': 'absolute',
+                position: 'absolute',
                 'z-index': 1,
               }}
               onClick={(event) => {
@@ -240,16 +238,16 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
               }}
             />
             {selected && (
-              <Box
+              <Image
                 as="img"
                 m={1}
                 src={resolveAsset(`body_zones.${selected}.png`)}
                 height={width}
                 width={height}
+                fixBlur
                 style={{
-                  '-ms-interpolation-mode': 'nearest-neighbor',
                   'pointer-events': 'none',
-                  'position': 'absolute',
+                  position: 'absolute',
                   'z-index': 3,
                 }}
               />
@@ -264,9 +262,9 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
                 style={{
                   '-ms-interpolation-mode': 'nearest-neighbor',
                   'pointer-events': 'none',
-                  'position': 'absolute',
+                  position: 'absolute',
                   'z-index': 2,
-                  'opacity': 0.5,
+                  opacity: '0.5',
                 }}
               />
             )}
@@ -356,8 +354,8 @@ class LimbManagerInner extends Component<
   }
 }
 
-export const LimbManagerPage = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+export const LimbManagerPage = () => {
+  const { act, data } = useBackend<Data>();
   const { limbs, selected_limbs, preview_flat_icon } = data;
 
   return (

@@ -569,8 +569,8 @@
 /obj/item/bedsheet,
 /obj/machinery/flasher{
 	id = "Cell 3";
-	pixel_x = 24;
-	pixel_y = -22
+	pixel_x = 28;
+	pixel_y = -27
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
@@ -17157,8 +17157,8 @@
 /obj/item/bedsheet,
 /obj/machinery/flasher{
 	id = "Cell 2";
-	pixel_x = 24;
-	pixel_y = -22
+	pixel_x = 28;
+	pixel_y = -27
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
@@ -21781,16 +21781,12 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
 "hEL" = (
-/obj/effect/spawner/structure/window/reinforced,
-/obj/machinery/door/poddoor/preopen{
-	id = "Secure Gate";
-	name = "Brig Shutters"
-	},
 /obj/machinery/door/poddoor/preopen{
 	id = "Secure Gate";
 	name = "Brig Shutters"
 	},
 /obj/structure/cable,
+/obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/security/brig)
 "hER" = (
@@ -62104,8 +62100,8 @@
 /obj/item/bedsheet,
 /obj/machinery/flasher{
 	id = "Cell 1";
-	pixel_x = 24;
-	pixel_y = -22
+	pixel_x = 28;
+	pixel_y = -27
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
@@ -160733,7 +160729,7 @@ waQ
 eqe
 ofZ
 mhf
-hEL
+rve
 jYK
 xeD
 dBw
@@ -160990,7 +160986,7 @@ bkT
 gqD
 jjp
 uKL
-hEL
+rve
 uUj
 xeD
 dBw

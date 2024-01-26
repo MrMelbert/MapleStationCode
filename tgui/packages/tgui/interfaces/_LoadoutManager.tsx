@@ -1,6 +1,16 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Dimmer, Input, NoticeBox, Section, Stack, Tabs } from '../components';
+import {
+  Box,
+  Button,
+  Dimmer,
+  Input,
+  NoticeBox,
+  Section,
+  Stack,
+  Tabs,
+} from '../components';
 import { CharacterPreview } from './common/CharacterPreview';
 
 type typePath = string;
@@ -34,20 +44,17 @@ type Data = {
   max_loadout_slots: number;
 };
 
-export const LoadoutPage = (props, context) => {
+export const LoadoutPage = () => {
   const { data } = useBackend<Data>();
   const { loadout_tabs } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
     'tutorialStatus',
-    false
+    false,
   );
-  const [searchLoadout, setSearchLoadout] = useLocalState(
-    'searchLoadout',
-    ''
-  );
+  const [searchLoadout, setSearchLoadout] = useLocalState('searchLoadout', '');
   const [selectedTabName, setSelectedTab] = useLocalState(
     'tabs',
-    loadout_tabs[0]?.name
+    loadout_tabs[0]?.name,
   );
 
   return (
@@ -72,7 +79,8 @@ export const LoadoutPage = (props, context) => {
                 value={searchLoadout}
               />
             </>
-          }>
+          }
+        >
           <Tabs fluid align="center">
             {loadout_tabs.map((curTab) => (
               <Tabs.Tab
@@ -83,7 +91,8 @@ export const LoadoutPage = (props, context) => {
                 onClick={() => {
                   setSelectedTab(curTab.name);
                   setSearchLoadout('');
-                }}>
+                }}
+              >
                 {curTab.name}
               </Tabs.Tab>
             ))}
@@ -97,12 +106,12 @@ export const LoadoutPage = (props, context) => {
   );
 };
 
-const LoadoutTutorialDimmer = (props, context) => {
+const LoadoutTutorialDimmer = () => {
   const { data } = useBackend<Data>();
   const { tutorial_text } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
     'tutorialStatus',
-    false
+    false,
   );
   return (
     <Dimmer>
@@ -114,7 +123,8 @@ const LoadoutTutorialDimmer = (props, context) => {
           <Button
             mt={1}
             align="center"
-            onClick={() => setTutorialStatus(false)}>
+            onClick={() => setTutorialStatus(false)}
+          >
             Okay.
           </Button>
         </Stack.Item>
@@ -125,7 +135,7 @@ const LoadoutTutorialDimmer = (props, context) => {
 
 const ItemDisplay = (
   props: { item: LoadoutItem; active: boolean },
-  context
+  context,
 ) => {
   const { act } = useBackend<LoadoutItem>();
   const { item, active } = props;
@@ -167,10 +177,9 @@ const ItemDisplay = (
   );
 };
 
-const LoadoutTabDisplay = (
-  props: { category: LoadoutCategory | undefined },
-  context
-) => {
+const LoadoutTabDisplay = (props: {
+  category: LoadoutCategory | undefined;
+}) => {
   const { data } = useBackend<Data>();
   const { selected_loadout } = data;
   const { category } = props;
@@ -198,7 +207,7 @@ const LoadoutTabDisplay = (
   );
 };
 
-const SearchDisplay = (props, context) => {
+const SearchDisplay = () => {
   const { data } = useBackend<Data>();
   const { loadout_tabs, selected_loadout } = data;
   const [searchLoadout] = useLocalState('searchLoadout', '');
@@ -213,7 +222,7 @@ const SearchDisplay = (props, context) => {
     return concatItems.sort((a, b) => a.name.localeCompare(b.name));
   };
   const validLoadoutItems = allLoadoutItems().filter((item) =>
-    item.name.toLowerCase().includes(searchLoadout.toLowerCase())
+    item.name.toLowerCase().includes(searchLoadout.toLowerCase()),
   );
 
   if (validLoadoutItems.length === 0) {
@@ -241,10 +250,7 @@ const SearchDisplay = (props, context) => {
 const LoadoutTabs = (props, context) => {
   const { act, data } = useBackend<Data>();
   const { loadout_tabs } = data;
-  const [selectedTabName] = useLocalState(
-    'tabs',
-    loadout_tabs[0]?.name
-  );
+  const [selectedTabName] = useLocalState('tabs', loadout_tabs[0]?.name);
   const [searchLoadout] = useLocalState('searchLoadout', '');
   const activeCategory = loadout_tabs.find((curTab) => {
     return curTab.name === selectedTabName;
@@ -272,7 +278,8 @@ const LoadoutTabs = (props, context) => {
               >
                 Clear All Items
               </Button.Confirm>
-            }>
+            }
+          >
             <Stack vertical>
               {searching ? (
                 <SearchDisplay />
@@ -294,7 +301,7 @@ const LoadoutTabs = (props, context) => {
   );
 };
 
-const LoadoutPreviewSection = (props, context) => {
+const LoadoutPreviewSection = () => {
   const { act, data } = useBackend<Data>();
   const {
     mob_name,
@@ -326,7 +333,8 @@ const LoadoutPreviewSection = (props, context) => {
           checked={job_clothes}
           onClick={() => act('toggle_job_clothes')}
         />
-      }>
+      }
+    >
       {/* The heights on these sections are fucked, whatever fix it later */}
       <Stack vertical height="515px">
         <Stack.Item grow align="center">

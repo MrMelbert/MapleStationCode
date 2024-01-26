@@ -1,6 +1,7 @@
-import { useBackend } from '../backend';
-import { Button, Dimmer, Section, Stack } from '../components';
 import { BooleanLike } from 'common/react';
+
+import { useBackend } from '../backend';
+import { Box, Button, Dimmer, Section, Stack } from '../components';
 
 type typePath = string;
 
@@ -23,15 +24,12 @@ type Language = {
   requires: string | null;
 };
 
-export const LanguageStack = (
-  props: {
-    language: Language;
-    selected_lang: typePath;
-    tooltip: string;
-  },
-  context
-) => {
-  const { act } = useBackend<Language>(context);
+export const LanguageStack = (props: {
+  language: Language;
+  selected_lang: typePath;
+  tooltip: string;
+}) => {
+  const { act } = useBackend<Language>();
   const { name, type, pickable } = props.language;
 
   return (
@@ -58,16 +56,16 @@ export const LanguageStack = (
   );
 };
 
-const WarningDimmer = (props, context) => {
+const WarningDimmer = (props) => {
   return (
-    <Dimmer vertical align="center">
-      <Stack.Item fontSize="18px">{props.message}</Stack.Item>
+    <Dimmer align="center">
+      <Box fontSize="18px">{props.message}</Box>
     </Dimmer>
   );
 };
 
-export const LanguagePage = (props, context) => {
-  const { data } = useBackend<Data>(context);
+export const LanguagePage = () => {
+  const { data } = useBackend<Data>();
 
   const {
     species,
@@ -83,14 +81,18 @@ export const LanguagePage = (props, context) => {
     <Section>
       {!!trilingual && (
         <WarningDimmer
-          message={'The Trilingual quirk grants you an additional random \
-            language - but you cannot select one while the quirk is active.'}
+          message={
+            'The Trilingual quirk grants you an additional random \
+            language - but you cannot select one while the quirk is active.'
+          }
         />
       )}
       {!!bilingual && (
         <WarningDimmer
-          message={'You have the Bilingual quirk selected, so use its \
-            selection dropdown instead.'}
+          message={
+            'You have the Bilingual quirk selected, so use its \
+            selection dropdown instead.'
+          }
         />
       )}
       {blacklisted_species.includes(species) && (

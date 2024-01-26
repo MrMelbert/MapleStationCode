@@ -32035,6 +32035,7 @@
 /obj/machinery/teleport/station,
 /obj/machinery/status_display/evac/directional/east,
 /obj/machinery/light/directional/east,
+/obj/effect/turf_decal/bot_red,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "frQ" = (
@@ -45779,7 +45780,6 @@
 /obj/machinery/power/shieldwallgen,
 /obj/effect/turf_decal/bot,
 /obj/structure/window/reinforced/spawner/directional/east,
-/obj/machinery/power/shieldwallgen,
 /obj/machinery/light_switch/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
@@ -51013,7 +51013,6 @@
 /obj/machinery/power/shieldwallgen,
 /obj/effect/turf_decal/bot,
 /obj/machinery/firealarm/directional/west,
-/obj/machinery/power/shieldwallgen,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "lSW" = (
@@ -54463,7 +54462,7 @@
 	dir = 1
 	},
 /obj/machinery/teleport/hub,
-/obj/effect/turf_decal/delivery,
+/obj/effect/turf_decal/delivery/red,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "mXB" = (
@@ -70172,7 +70171,6 @@
 /obj/effect/turf_decal/bot,
 /obj/machinery/light/directional/west,
 /obj/machinery/airalarm/directional/west,
-/obj/machinery/power/shieldwallgen,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "sqC" = (
@@ -70892,12 +70890,12 @@
 /obj/machinery/computer/teleporter{
 	dir = 8
 	},
-/obj/effect/turf_decal/bot,
 /obj/machinery/button/door/directional/east{
 	id = "teleshutter";
 	name = "Teleporter Shutter Toggle";
 	req_access = list("command")
 	},
+/obj/effect/turf_decal/bot_red/right,
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "sCu" = (

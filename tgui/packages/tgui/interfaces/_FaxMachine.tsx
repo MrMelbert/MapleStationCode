@@ -1,6 +1,19 @@
-import { useBackend, useSharedState, useLocalState } from '../backend';
-import { BlockQuote, Box, Button, Dimmer, Divider, Dropdown, Icon, LabeledList, Section, Stack, Tabs } from '../components';
 import { BooleanLike } from 'common/react';
+
+import { useBackend, useLocalState, useSharedState } from '../backend';
+import {
+  BlockQuote,
+  Box,
+  Button,
+  Dimmer,
+  Divider,
+  Dropdown,
+  Icon,
+  LabeledList,
+  Section,
+  Stack,
+  Tabs,
+} from '../components';
 import { Window } from '../layouts';
 
 enum historyType {
@@ -64,12 +77,12 @@ export const _FaxMachine = (props, context) => {
 
   const [selectedPaperTab, setSelectedPaper] = useLocalState(
     'ref',
-    received_paperwork[0]?.ref
+    received_paperwork[0]?.ref,
   );
 
   const [destination, setDestination] = useLocalState(
     'dest',
-    default_destination
+    default_destination,
   );
 
   const selectedPaper = received_paperwork.find((paper) => {
@@ -94,7 +107,8 @@ export const _FaxMachine = (props, context) => {
                 onClick={() => act('un_emag_machine')}
               />
             )
-          }>
+          }
+        >
           Hello, {display_name}!{' '}
           {emagged
             ? 'ERR- ERRoR. ERROR.'
@@ -108,8 +122,10 @@ export const _FaxMachine = (props, context) => {
                   width="30%"
                   icon="copy"
                   selected={tab === 1}
-                  onClick={() => setTab(1)}>
-                  <b>Send A Fax</b>
+                  onClick={() => setTab(1)}
+                  bold
+                >
+                  Send A Fax
                 </Tabs.Tab>
                 <Tabs.Tab
                   width="40%"
@@ -118,14 +134,15 @@ export const _FaxMachine = (props, context) => {
                   onClick={() => {
                     setTab(2);
                     act('read_last_received');
-                  }}>
+                  }}
+                >
                   <Stack>
-                    <Stack.Item textAlign="left">
-                      <b>Received Faxes</b>
+                    <Stack.Item textAlign="left" bold>
+                      Received Faxes
                     </Stack.Item>
                     {received_paper && !!unread_message && (
-                      <Stack.Item grow textAlign="center" color="Yellow">
-                        <i>New!</i>
+                      <Stack.Item grow textAlign="center" color="Yellow" italic>
+                        New!
                       </Stack.Item>
                     )}
                   </Stack>
@@ -134,44 +151,38 @@ export const _FaxMachine = (props, context) => {
                   width="30%"
                   icon="scroll"
                   selected={tab === 3}
-                  onClick={() => setTab(3)}>
-                  <b>History</b>
+                  onClick={() => setTab(3)}
+                  bold
+                >
+                  History
                 </Tabs.Tab>
               </Tabs>
             </Stack.Item>
             <Stack.Item mt={1} height={13}>
               {tab === 1 &&
                 (stored_paper ? (
-                  <Box mt={1}>
-                    <span
-                      style={{
-                        color: emagged ? 'lightgreen' : 'lightblue',
-                        fontWeight: 'bold',
-                      }}>
-                      Message to Send:
-                    </span>
-                    <BlockQuote mt={1}>{stored_paper.contents}</BlockQuote>
+                  <Box mt={1} bold color={emagged ? 'lightgreen' : 'lightblue'}>
+                    Message to Send:
+                    <BlockQuote mt={1} color={''}>
+                      {stored_paper.contents}
+                    </BlockQuote>
                   </Box>
                 ) : (
-                  <Box>
-                    <i>
-                      Insert a paper into the machine to fax its contents
-                      somewhere.
-                    </i>
+                  <Box italic>
+                    Insert a paper into the machine to fax its contents
+                    somewhere.
                   </Box>
                 ))}
               {tab === 2 &&
                 (received_paper ? (
-                  <Box mt={1}>
-                    <span style={{ color: 'gold', fontWeight: 'bold' }}>
-                      Message from {received_paper.source}:
-                    </span>
-                    <BlockQuote mt={1}>{received_paper.contents}</BlockQuote>
+                  <Box mt={1} bold color="gold">
+                    Message from {received_paper.source}:
+                    <BlockQuote mt={1} color={''}>
+                      {received_paper.contents}
+                    </BlockQuote>
                   </Box>
                 ) : (
-                  <Box>
-                    <i>No papers have been received.</i>
-                  </Box>
+                  <Box italic>No papers have been received.</Box>
                 ))}
               {tab === 3 && (
                 <Section scrollable fill>
@@ -179,7 +190,8 @@ export const _FaxMachine = (props, context) => {
                     {history.map((history_item) => (
                       <LabeledList.Item
                         key={history_item.iterator}
-                        label={`${history_item.iterator}`}>
+                        label={`${history_item.iterator}`}
+                      >
                         {history_item.history_type === historyType.Send ? (
                           <Box color="Green">
                             Sent to {history_item.history_fax_name} at{' '}
@@ -258,13 +270,14 @@ export const _FaxMachine = (props, context) => {
               tooltip={
                 can_toggle_can_receive
                   ? (can_receive ? 'Disable' : 'Enable') +
-                  ' the ability for this fax machine \
+                    ' the ability for this fax machine \
                 to receive paperwork every five minutes.'
                   : 'This fax machine cannot receive paperwork.'
               }
               onClick={() => act('toggle_recieving')}
             />
-          }>
+          }
+        >
           {!can_receive && !can_toggle_can_receive && (
             <Dimmer>
               <Stack vertical align="center">
@@ -287,13 +300,14 @@ export const _FaxMachine = (props, context) => {
                       key={paper}
                       textAlign="center"
                       selected={paper.ref === selectedPaperTab}
-                      onClick={() => setSelectedPaper(paper.ref)}>
+                      onClick={() => setSelectedPaper(paper.ref)}
+                    >
                       Paper {paper.num}
                     </Tabs.Tab>
                   ))}
                 </Tabs>
               ) : (
-                <i>No stored paperwork to process.</i>
+                <Box italic>No stored paperwork to process.</Box>
               )}
             </Stack.Item>
             <Stack.Item height={8}>
@@ -311,11 +325,9 @@ export const _FaxMachine = (props, context) => {
             <Stack.Item height={3} mb={1}>
               {!!selectedPaper && (
                 <Stack vertical align="center">
-                  <Stack.Item>
-                    <b>
-                      To fulfill this paperwork, stamp accurately and answer the
-                      following:
-                    </b>
+                  <Stack.Item bold>
+                    To fulfill this paperwork, stamp accurately and answer the
+                    following:
                   </Stack.Item>
                   <Stack.Item>
                     <BlockQuote>{selectedPaper.required_answer}</BlockQuote>

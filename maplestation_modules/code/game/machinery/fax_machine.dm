@@ -79,6 +79,8 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	/// Cooldown between sending faxes
 	COOLDOWN_DECLARE(fax_cooldown)
 
+	var/visible_to_network = TRUE
+
 /obj/machinery/fax/Initialize(mapload)
 	. = ..()
 	GLOB.fax_machines += src
@@ -196,7 +198,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	for(var/obj/machinery/fax/machine as anything in GLOB.fax_machines)
 		if(machine == src)
 			continue
-		if(!machine.room_tag)
+		if(!machine.room_tag || !machine.visible_to_network)
 			continue
 		if(machine.room_tag in possible_destinations)
 			continue

@@ -1,8 +1,10 @@
 import { useBackend } from '../backend';
 import { Button, Input, LabeledList, Stack, TextArea } from '../components';
-import { AdvancedTraitorWindow } from './_AdvancedTraitorParts';
-import { AdvancedTraitorBackgroundSection } from './_AdvancedTraitorParts';
-import { AdvancedTraitorGoalsSection } from './_AdvancedTraitorParts';
+import {
+  AdvancedTraitorBackgroundSection,
+  AdvancedTraitorGoalsSection,
+  AdvancedTraitorWindow,
+} from './_AdvancedTraitorParts';
 
 export const _AdvancedChangelingPanel = (props, context) => {
   const { act, data } = useBackend();

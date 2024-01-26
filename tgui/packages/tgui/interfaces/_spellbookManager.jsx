@@ -9,7 +9,7 @@ export const _spellbookManager = (props, context) => {
 
   const [selectedTabName, setSelectedTab] = useLocalState(
     'tabs',
-    spellbook_tabs[0]?.name
+    spellbook_tabs[0]?.name,
   );
   const selectedTab = spellbook_tabs.find((curTab) => {
     return curTab.name === selectedTabName;
@@ -40,13 +40,15 @@ export const _spellbookManager = (props, context) => {
                     onClick={() => act('toggle_explanation')}
                   />
                 </>
-              }>
+              }
+            >
               <Tabs fluid align="center">
                 {spellbook_tabs.map((curTab) => (
                   <Tabs.Tab
                     key={curTab.name}
                     selected={curTab.name === selectedTabName}
-                    onClick={() => setSelectedTab(curTab.name)}>
+                    onClick={() => setSelectedTab(curTab.name)}
+                  >
                     {curTab.name}
                   </Tabs.Tab>
                 ))}
@@ -72,7 +74,8 @@ export const SpellbookTermsOfServiceDimmer = (props, context) => {
         nowrap={false}
         wrap="wrap"
         vertical
-        justify="space-evenly">
+        justify="space-evenly"
+      >
         <Stack.Item textAlign="center" vertical preserveWhitespace>
           {disclaimer_text}
         </Stack.Item>
@@ -80,7 +83,8 @@ export const SpellbookTermsOfServiceDimmer = (props, context) => {
           <Button
             mt={1}
             align="center"
-            onClick={() => act('toggle_disclaimer')}>
+            onClick={() => act('toggle_disclaimer')}
+          >
             READ THIS AT LEAST ONCE.
           </Button>
         </Stack.Item>
@@ -99,19 +103,22 @@ export const MagicExplanationDimmer = (props, context) => {
         nowrap={false}
         wrap="wrap"
         vertical
-        justify="space-evenly">
+        justify="space-evenly"
+      >
         <Stack.Item
           textAlign="center"
           vertical
           preserveWhitespace
-          fontSize="90%">
+          fontSize="90%"
+        >
           {explanation_text}
         </Stack.Item>
         <Stack.Item>
           <Button
             mt={1}
             align="center"
-            onClick={() => act('toggle_explanation')}>
+            onClick={() => act('toggle_explanation')}
+          >
             Okay.
           </Button>
         </Stack.Item>
@@ -141,7 +148,8 @@ export const SpellbookTabs = (props, context) => {
                 tooltip="Clears ALL selected items from all categories."
                 onClick={() => act('clear_all_items')}
               />
-            }>
+            }
+          >
             <Stack vertical>
               {props.tab.contents.map((item) => (
                 <Stack.Item key={item.name}>
@@ -159,7 +167,8 @@ export const SpellbookTabs = (props, context) => {
                         italic
                         vertical
                         preserveWhitespace
-                        textColor="#7F92A2">
+                        textColor="#7F92A2"
+                      >
                         {item.lore}
                       </Stack.Item>
                       <Stack.Item>

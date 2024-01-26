@@ -1,7 +1,13 @@
 import { useBackend } from '../backend';
-import { Input, NumberInput, Section, Slider, Stack } from '../components';
+import {
+  Button,
+  Input,
+  NumberInput,
+  Section,
+  Slider,
+  Stack,
+} from '../components';
 import { Window } from '../layouts';
-import { Button } from '../components';
 
 export const _spellbookCustomizationMenu = (props, context) => {
   const { act, data } = useBackend();

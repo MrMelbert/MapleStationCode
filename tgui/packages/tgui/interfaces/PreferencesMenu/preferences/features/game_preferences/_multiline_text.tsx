@@ -1,8 +1,8 @@
-import { Feature, FeatureValueProps } from '../base';
 import { Stack, TextArea } from '../../../../../components';
+import { Feature, FeatureValueProps } from '../base';
 
 export const MultilineText = (
-  props: FeatureValueProps<string, string> & { box_height: string | null }
+  props: FeatureValueProps<string, string> & { box_height: string | null },
 ) => {
   const { handleSetValue, value } = props;
   return (
@@ -23,7 +23,8 @@ export const MultilineText = (
 
 export const flavor_text: Feature<string, string> = {
   name: 'Flavor - Flavor Text',
-  description: 'A small snippet of text shown when others examine you, \
+  description:
+    'A small snippet of text shown when others examine you, \
     describing what you may look like.',
   component: (props: FeatureValueProps<string, string>, context) => {
     return <MultilineText {...props} box_height="52px" />;
@@ -38,7 +39,8 @@ export const silicon_text: Feature<string, string> = {
 
 export const exploitable_info: Feature<string, string> = {
   name: 'Flavor - Exploitable Info',
-  description: 'Information about your character made available to \
+  description:
+    'Information about your character made available to \
     players who are antagonists. Can be used to give antagonists \
     more interesting ways of approaching your character.',
   component: MultilineText,
@@ -46,21 +48,24 @@ export const exploitable_info: Feature<string, string> = {
 
 export const general_records: Feature<string, string> = {
   name: 'Flavor - General Records',
-  description: 'Random information about your character\'s history. \
-    Available in medical records consoles.',
+  description:
+    "Random information about your character's history. \
+    Available in medical records consoles.",
   component: MultilineText,
 };
 
 export const security_records: Feature<string, string> = {
   name: 'Flavor - Security Records',
-  description: 'Information about your character\'s criminal past. \
-    Available in security records consoles.',
+  description:
+    "Information about your character's criminal past. \
+    Available in security records consoles.",
   component: MultilineText,
 };
 
 export const medical_records: Feature<string, string> = {
   name: 'Flavor - Medical Records',
-  description: 'Information about your character\'s medical history. \
-    Available in medical records consoles.',
+  description:
+    "Information about your character's medical history. \
+    Available in medical records consoles.",
   component: MultilineText,
 };
