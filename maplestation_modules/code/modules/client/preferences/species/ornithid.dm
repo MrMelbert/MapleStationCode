@@ -40,7 +40,7 @@
 	var/icon/body_icon = get_basic_body_icon(
 		bodypart_list = list(/obj/item/bodypart/chest, /obj/item/bodypart/arm/left, /obj/item/bodypart/arm/right),
 		skintone = "asian1",
-		icon_dir = SOUTH,
+		icon_dir = NORTH,
 	)
 	var/icon/wing_icon = icon(
 		icon = 'maplestation_modules/icons/mob/armwings.dmi',
@@ -74,7 +74,7 @@
 	var/icon/body_icon = get_basic_body_icon(
 		bodypart_list = list(/obj/item/bodypart/chest, /obj/item/bodypart/leg/left, /obj/item/bodypart/leg/right),
 		skintone = "asian1",
-		icon_dir = SOUTH,
+		icon_dir = NORTH,
 	)
 	var/icon/tail_icon = icon(
 		icon = 'maplestation_modules/icons/mob/ornithidfeatures.dmi',
