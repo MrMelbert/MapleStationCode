@@ -37,4 +37,6 @@
 /datum/status_effect/pain_from_fire/proc/remove_on_signal(datum/source)
 	SIGNAL_HANDLER
 
+	if(QDELING(owner) || QDELING(src))
+		return
 	qdel(src)

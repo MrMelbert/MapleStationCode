@@ -324,7 +324,6 @@ const LoadoutPreviewSection = () => {
   return (
     <Section
       title={`Preview: ${mob_name}`}
-      grow
       height="100%"
       buttons={
         <Button.Checkbox
