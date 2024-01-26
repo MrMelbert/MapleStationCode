@@ -2,7 +2,7 @@ import { Component, createRef } from 'react';
 
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { BlockQuote, Box, Button, Image, Section, Stack } from '../components';
+import { BlockQuote, Button, Image, Section, Stack } from '../components';
 import { Connections } from './common/Connections';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
@@ -214,7 +214,7 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
               width: '100%',
               height: '100%',
               position: 'relative',
-              'z-index': 1,
+              zIndex: '1',
             }}
           >
             <Image
@@ -225,7 +225,7 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
               fixBlur
               style={{
                 position: 'absolute',
-                'z-index': 1,
+                zIndex: '1',
               }}
               onClick={(event) => {
                 const { x, y } = updateXYState(event);
@@ -239,31 +239,29 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
             />
             {selected && (
               <Image
-                as="img"
                 m={1}
                 src={resolveAsset(`body_zones.${selected}.png`)}
                 height={width}
                 width={height}
                 fixBlur
                 style={{
-                  'pointer-events': 'none',
+                  pointerEvents: 'none',
                   position: 'absolute',
-                  'z-index': 3,
+                  zIndex: '3',
                 }}
               />
             )}
             {current_cat && current_cat !== selected && (
-              <Box
-                as="img"
+              <Image
                 m={1}
                 src={resolveAsset(`body_zones.${current_cat}.png`)}
                 height={width}
                 width={height}
+                fixBlur
                 style={{
-                  '-ms-interpolation-mode': 'nearest-neighbor',
-                  'pointer-events': 'none',
+                  pointerEvents: 'none',
                   position: 'absolute',
-                  'z-index': 2,
+                  zIndex: '2',
                   opacity: '0.5',
                 }}
               />
@@ -321,12 +319,7 @@ class LimbManagerInner extends Component<
 
     return (
       <>
-        <Connections
-          connections={connections}
-          zLayer={4}
-          lineWidth={4}
-          height="50%"
-        />
+        <Connections connections={connections} zLayer={4} lineWidth={4} />
         <Stack height="300px">
           <Stack.Item width={20}>
             <Section title="Preview" fill align="center">

@@ -1,4 +1,9 @@
-import { CheckboxInput, FeatureChoiced, FeatureDropdownInput, FeatureToggle } from './base';
+import {
+  CheckboxInput,
+  FeatureChoiced,
+  FeatureDropdownInput,
+  FeatureToggle,
+} from './base';
 
 export const feature_head_tentacles: FeatureChoiced = {
   name: 'Head Tentacles',
@@ -7,8 +12,7 @@ export const feature_head_tentacles: FeatureChoiced = {
 
 export const hair_lizard: FeatureToggle = {
   name: 'Hair Lizard',
-  description:
-    "Check to spawn as a Lizard with hair.",
+  description: 'Check to spawn as a Lizard with hair.',
   component: CheckboxInput,
 };
 

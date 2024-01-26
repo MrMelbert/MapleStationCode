@@ -10,7 +10,8 @@ export const _FakeCommandReport = (props, context) => {
       title="Send Faked Command Report"
       width={325}
       height={425}
-      theme="syndicate">
+      theme="syndicate"
+    >
       <Window.Content>
         <Stack vertical>
           <Stack.Item>
@@ -35,7 +36,8 @@ export const _FakeCommandReport = (props, context) => {
                   <Button.Checkbox
                     fluid
                     checked={announce_contents}
-                    onClick={() => act('toggle_announce')}>
+                    onClick={() => act('toggle_announce')}
+                  >
                     Announce Contents
                   </Button.Checkbox>
                 </Stack.Item>

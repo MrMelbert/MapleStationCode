@@ -297,7 +297,7 @@ export const _FaxMachine = (props, context) => {
                   {received_paperwork.map((paper) => (
                     <Tabs.Tab
                       width="12.5%"
-                      key={paper}
+                      key={paper.ref}
                       textAlign="center"
                       selected={paper.ref === selectedPaperTab}
                       onClick={() => setSelectedPaper(paper.ref)}

@@ -74,7 +74,7 @@ export const LoadoutPage = () => {
               />
               <Input
                 width="200px"
-                onInput={(event) => setSearchLoadout(event.target.value)}
+                onInput={(event, value) => setSearchLoadout(value)}
                 placeholder="Search for item"
                 value={searchLoadout}
               />
@@ -141,7 +141,7 @@ const ItemDisplay = (
   const { item, active } = props;
   return (
     <Stack>
-      <Stack.Item grow align="left" style={{ 'text-transform': 'capitalize' }}>
+      <Stack.Item grow align="left" style={{ textTransform: 'capitalize' }}>
         {item.name}
       </Stack.Item>
       {item.buttons.map((button) => (

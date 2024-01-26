@@ -68,7 +68,7 @@ export const CSS_COLORS = [
   'yellow',
 ] as const;
 
-export type CssColor = typeof CSS_COLORS[number];
+export type CssColor = (typeof CSS_COLORS)[number];
 
 /* IF YOU CHANGE THIS KEEP IT IN SYNC WITH CHAT CSS */
 export const RADIO_CHANNELS = [
