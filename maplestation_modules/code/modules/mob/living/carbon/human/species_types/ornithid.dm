@@ -137,7 +137,3 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 		),
 	)
 	return to_add
-
-/datum/species/ornithid/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["feathers"] = "FF3B76"
-	human.update_body(is_creating = TRUE)
