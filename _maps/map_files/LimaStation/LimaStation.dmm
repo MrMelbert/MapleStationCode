@@ -18360,7 +18360,7 @@
 	dir = 1
 	},
 /obj/structure/table/reinforced,
-/obj/item/surgery_tray/full{
+/obj/item/surgery_tray/full/morgue{
 	pixel_y = -2
 	},
 /turf/open/floor/iron/dark,
