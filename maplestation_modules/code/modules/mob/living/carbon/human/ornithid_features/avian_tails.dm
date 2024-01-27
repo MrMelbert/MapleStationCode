@@ -18,8 +18,8 @@
 	return GLOB.tails_list_avian
 
 /datum/bodypart_overlay/mutant/tail/avian/inherit_color(obj/item/bodypart/ownerlimb, force)
-   draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
-   return TRUE
+	draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
+	return TRUE
 
 
 /datum/sprite_accessory/tails/avian

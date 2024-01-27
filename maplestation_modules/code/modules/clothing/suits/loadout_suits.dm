@@ -52,7 +52,7 @@
 	icon_state = "chesed_jacket"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
 	blood_overlay_type = "armor"
-  	clothing_traits = list(TRAIT_CAFFEINE_LOVER)
+	clothing_traits = list(TRAIT_CAFFEINE_LOVER)
 
 /obj/item/clothing/suit/cyrilcloak
 	name = "Claw-Sewn Cloak"

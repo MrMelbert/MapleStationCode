@@ -70,8 +70,8 @@
 	open_feature_key = "arm_wingsopen"
 
 /datum/bodypart_overlay/mutant/wings/functional/arm_wings/inherit_color(obj/item/bodypart/ownerlimb, force) // overriding inherit_color directly because "override_color" for some unspeakable reason gets passed fuck all
-   draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
-   return TRUE
+	draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
+	return TRUE
 
 /datum/bodypart_overlay/mutant/wings/functional/arm_wings/get_global_feature_list()
 	if(wings_open)
