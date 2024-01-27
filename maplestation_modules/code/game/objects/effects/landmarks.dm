@@ -72,7 +72,7 @@
 
 /obj/effect/landmark/start/bridge_officer/find_spot_to_place()
 	var/area/station/command/bridge/bridge = locate() in GLOB.areas
-	for(var/turf/open/open_turf in bridge.get_turfs_from_all_zlevels())
+	for(var/turf/open/open_turf in bridge?.get_turfs_from_all_zlevels())
 		if(locate(/obj/structure/chair) in open_turf)
 			forceMove(open_turf)
 			return
@@ -85,7 +85,7 @@
 
 /obj/effect/landmark/start/asset_protection/find_spot_to_place()
 	var/area/station/command/bridge/bridge = locate() in GLOB.areas
-	for(var/turf/open/open_turf in bridge.get_turfs_from_all_zlevels())
+	for(var/turf/open/open_turf in bridge?.get_turfs_from_all_zlevels())
 		if(locate(/obj/structure/chair) in open_turf)
 			forceMove(open_turf)
 			return

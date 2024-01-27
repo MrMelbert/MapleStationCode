@@ -114,7 +114,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	. = ..()
 	register_context()
 
-/obj/machinery/computer/vitals_reader/Destroy()
+/obj/machinery/computer/vitals_reader/Destroy(force)
 	unset_patient()
 	return ..()
 
@@ -414,13 +414,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 /// Sets the passed mob as the active patient
 /// If there is already a patient, it will be unset first.
 /obj/machinery/computer/vitals_reader/proc/set_patient(mob/living/new_patient)
+	if(QDELING(src))
+		return
 	if(!isnull(patient))
 		unset_patient()
 
 	patient = new_patient
 	RegisterSignals(patient, list(
 		COMSIG_QDELETING,
-		COMSIG_MOVABLE_MOVED
+		COMSIG_MOVABLE_MOVED,
 	), PROC_REF(unset_patient))
 	RegisterSignals(patient, list(
 		COMSIG_CARBON_POST_REMOVE_LIMB,
