@@ -14,18 +14,19 @@
  */
 /datum/controller/subsystem/economy/proc/send_fax_paperwork()
 	var/list/area/processed_areas = list()
-	for(var/obj/machinery/fax_machine/found_machine as anything in GLOB.fax_machines)
-		/// We only send to one fax machine in an area
+	for(var/obj/machinery/fax/found_machine as anything in GLOB.fax_machines)
+		// We only send to one fax machine in an area
 		var/area/area_loc = get_area(found_machine)
-		if(area_loc in processed_areas)
+		if(isnull(area_loc) || processed_areas[area_loc.type])
 			continue
-		processed_areas += area_loc
+		processed_areas[area_loc.type] = TRUE
 
 		if(LAZYLEN(found_machine.received_paperwork) >= found_machine.max_paperwork)
 			continue
 		if(!found_machine.can_receive_paperwork)
 			continue
-
+		if((found_machine.machine_stat & (NOPOWER|BROKEN)) && !(found_machine.interaction_flags_machine & INTERACT_MACHINE_OFFLINE))
+			continue
 		var/num_papers_added = 0
 		for(var/i in 1 to rand(0, 4))
 			if(LAZYLEN(found_machine.received_paperwork) >= found_machine.max_paperwork)
@@ -42,13 +43,15 @@
  *
  * return an instance of [/obj/item/paper/processed].
  */
-/proc/generate_paperwork(obj/machinery/fax_machine/destination_machine)
+/proc/generate_paperwork(obj/machinery/fax/destination_machine)
 	// Percent chance this paper will contain an error, somewhere.
 	var/error_prob = prob(8)
 	// Percent change that something will be redacted from the paper.
 	var/redacted_prob = prob(15)
+	// Whether the base subject is a good corp or a bad one
+	var/good_or_evil = prob(50)
 	// The 'base' subject of the paper.
-	var/paper_base_subject = pick_list(COMPANY_FILE, "companies")
+	var/paper_base_subject = pick_list(COMPANY_FILE, good_or_evil ? "good_companies" : "bad_companies")
 	// The month to this paper's date.
 	var/rand_month = rand(1, 12)
 	// A var tracking the date range we can use for randomizing dates.
@@ -94,9 +97,7 @@
 		paper_primary_subject = paper_base_subject
 		all_tracked_data += "subject_one"
 	if(findtext(paper_contents, "subject_two"))
-		paper_secondary_subject = pick_list(COMPANY_FILE, "companies")
-		if(paper_secondary_subject == paper_base_subject) // okay but what are the odds of picking the same name, threee times?
-			paper_secondary_subject = pick_list(COMPANY_FILE, "companies")
+		paper_secondary_subject = pick_list(COMPANY_FILE, good_or_evil ? "bad_companies" : "good_companies") // reversed
 		all_tracked_data += "subject_two"
 	if(findtext(paper_contents, "victim"))
 		var/list/possible_names = list(
@@ -104,7 +105,8 @@
 			"lizard" = random_unique_lizard_name(),
 			"plasmaman" = random_unique_plasmaman_name(),
 			"ethereal" = random_unique_ethereal_name(),
-			"moth" = random_unique_moth_name(),)
+			"moth" = random_unique_moth_name(),
+		)
 		paper_victim_species = pick(possible_names)
 		paper_victim = possible_names[paper_victim_species]
 		all_tracked_data += "victim"

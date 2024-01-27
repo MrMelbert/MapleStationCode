@@ -115,7 +115,7 @@
 		return TRUE
 	balloon_alert(user, "hold it!")
 	return FALSE
-	
+
 
 /obj/item/mail/attack_self(mob/user)
 	if(!unwrap(user))
@@ -261,7 +261,7 @@
 		if(human.stat == DEAD || !human.mind)
 			continue
 		// Skip wizards, nuke ops, cyborgs; Centcom does not send them mail
-		if(!(human.mind.assigned_role.job_flags & JOB_CREW_MEMBER))
+		if(!(human.mind.assigned_role.job_flags & JOB_CREW_MANIFEST)) // NON-MODULE CHANGE
 			continue
 
 		mail_recipients += human.mind
@@ -391,7 +391,7 @@
 		return TRUE
 	else
 		balloon_alert(user, "tinkering with something...")
-		
+
 		if(!do_after(user, 2 SECONDS, target = src))
 			after_unwrap(user)
 			return FALSE
@@ -446,13 +446,13 @@
 			continue
 		mail_recipients += person.mind_ref
 		mail_recipients_for_input += avoid_assoc_duplicate_keys(person.name, used_names)
-		
+
 	var/recipient = tgui_input_list(user, "Choose a recipient", "Mail Counterfeiting", mail_recipients_for_input)
 	if(isnull(recipient))
 		return FALSE
 	if(!(src in user.contents))
 		return FALSE
-	
+
 	var/index = mail_recipients_for_input.Find(recipient)
 
 	var/obj/item/mail/traitor/shady_mail
@@ -460,7 +460,7 @@
 		shady_mail = new /obj/item/mail/traitor
 	else
 		shady_mail = new /obj/item/mail/traitor/envelope
-	
+
 	shady_mail.made_by_cached_ckey = user.ckey
 	shady_mail.made_by_cached_name = user.mind.name
 

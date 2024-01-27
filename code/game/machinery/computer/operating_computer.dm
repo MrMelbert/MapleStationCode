@@ -79,7 +79,7 @@
 	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "OperatingComputer", name)
+		ui = new(user, src, "_OperatingComputer", name) // NON-MODULE CHANGE
 		ui.open()
 
 /obj/machinery/computer/operating/ui_data(mob/user)
@@ -97,7 +97,7 @@
 		data["patient"] = null
 		return data
 
-	data["table"] = table
+	data["table"] = !!table // NON-MODULE CHANGE
 	data["patient"] = list()
 	if(!table.patient)
 		return data
@@ -164,9 +164,10 @@
 	switch(action)
 		if("sync")
 			sync_surgeries()
+			return TRUE // NON-MODULE CHANGE
 		if("open_experiments")
 			experiment_handler.ui_interact(usr)
-	return TRUE
+			return TRUE // NON-MODULE CHANGE
 
 #undef MENU_OPERATION
 #undef MENU_SURGERIES
