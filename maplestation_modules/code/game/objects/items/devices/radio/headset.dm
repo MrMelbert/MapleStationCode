@@ -22,3 +22,10 @@
 /obj/item/radio/headset/heads/asset_protection/alt/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/wearertargeting/earprotection, list(ITEM_SLOT_EARS))
+
+/obj/item/radio/headset/heads/noble_ambassador
+	name = "\proper the noble ambassador's headset"
+	desc = "The headset of the ambassador from Mu, responsible for upholding their laws and ensuring the crew's wellbeing."
+	icon = 'maplestation_modules/icons/obj/radio.dmi'
+	icon_state = "noble_headset"
+	keyslot = /obj/item/encryptionkey/heads/noble_ambassador
