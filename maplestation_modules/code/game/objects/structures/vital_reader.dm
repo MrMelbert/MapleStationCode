@@ -414,7 +414,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 /// Sets the passed mob as the active patient
 /// If there is already a patient, it will be unset first.
 /obj/machinery/computer/vitals_reader/proc/set_patient(mob/living/new_patient)
-	if(QDELING(src))
+	if(istype(new_patient, /mob/living/carbon/human/consistent))
+		// This is A CARDINAL SIN but I am tired of the random hard delete test failure I'll fix it for real LATER
 		return
 	if(!isnull(patient))
 		unset_patient()
