@@ -54,6 +54,20 @@
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value
 
+/datum/preference/choiced/ornithid_wings/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feather_color"
+	return data
+
+/datum/preference/color/feather_color
+	savefile_key = "feather_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	relevant_inherent_trait = TRAIT_FEATHERED
+
+/datum/preference/color/feather_color/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["feathers"] = value
+
 #define X_TAIL_CROP 16
 #define Y_TAIL_CROP 5
 

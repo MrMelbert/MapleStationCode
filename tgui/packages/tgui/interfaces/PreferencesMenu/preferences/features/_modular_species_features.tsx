@@ -1,6 +1,8 @@
 import {
   CheckboxInput,
+  Feature,
   FeatureChoiced,
+  FeatureColorInput,
   FeatureDropdownInput,
   FeatureToggle,
 } from './base';
@@ -19,6 +21,14 @@ export const hair_lizard: FeatureToggle = {
 export const feature_arm_wings: FeatureChoiced = {
   name: 'Arm Wings',
   component: FeatureDropdownInput,
+};
+
+export const feather_color: Feature<string> = {
+  name: 'Feather Color',
+  description:
+    "The color of your character's feathers. \
+  (Armwings, Plumage).",
+  component: FeatureColorInput,
 };
 
 export const feature_avian_tail: FeatureChoiced = {

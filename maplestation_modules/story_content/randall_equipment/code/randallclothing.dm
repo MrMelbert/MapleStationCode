@@ -40,6 +40,10 @@
 	can_be_bloody = FALSE
 	resistance_flags = INDESTRUCTIBLE
 
+/obj/item/clothing/gloves/randallgloves/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/glove_slapper)
+
 /datum/outfit/randall
 	name = "The United Amateur"
 

@@ -61,7 +61,7 @@
 
 /datum/quirk/caffeinated/add(client/client_source)
 	adjust_sprint_multipliers(0.33, 0.2)
-	RegisterSignals(quirk_holder, COMSIG_CARBON_DRINK_CAFFEINE, PROC_REF(drank_caffeine))
+	RegisterSignal(quirk_holder, COMSIG_CARBON_DRINK_CAFFEINE, PROC_REF(drank_caffeine))
 	quirk_holder.add_mood_event("caffeine", /datum/mood_event/no_coffee)
 
 /datum/quirk/caffeinated/process(seconds_per_tick)

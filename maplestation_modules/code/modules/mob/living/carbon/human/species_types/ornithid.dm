@@ -1,5 +1,6 @@
 /// GLOB list of armwings sprites / options
 GLOBAL_LIST_EMPTY(arm_wings_list)
+GLOBAL_LIST_EMPTY(arm_wingsopen_list)
 /// GLOB list of other features (ears, tails)
 GLOBAL_LIST_EMPTY(avian_ears_list)
 GLOBAL_LIST_EMPTY(tails_list_avian)
@@ -10,6 +11,7 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	plural_form = "Ornithids"
 	id = SPECIES_ORNITHID
 	inherent_traits = list(
+		TRAIT_FEATHERED,
 		TRAIT_LIGHT_DRINKER,
 		TRAIT_TACKLING_WINGED_ATTACKER,
 		TRAIT_USES_SKINTONES,
