@@ -6139,6 +6139,7 @@
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\impact.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\muzzle.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\tracer.dm"
+#include "maplestation_modules\code\game\objects\items\bola.dm"
 #include "maplestation_modules\code\game\objects\items\captain_weapons.dm"
 #include "maplestation_modules\code\game\objects\items\holy_weapons.dm"
 #include "maplestation_modules\code\game\objects\items\locker_spawners.dm"
