@@ -323,3 +323,6 @@
 
 /obj/item/food/rationpack/proc/check_liked(mob/mob) //Nobody likes rationpacks. Nobody.
 	return FOOD_DISLIKED
+
+/obj/item/food/rationpack/make_germ_sensitive(mapload)
+	return // NON-MODULE CHANGE // Let's get this out on a tray... nice
