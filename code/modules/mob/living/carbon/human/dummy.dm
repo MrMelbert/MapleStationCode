@@ -102,6 +102,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["arm_wings"] = "Monochrome" // NON-MODULE CHANGE
 	target.dna.features["tail_avian"] = "Eagle" // NON-MODULE CHANGE
 	target.dna.features["ears_avian"] = "Hermes" // NON-MODULE CHANGE
+	target.dna.features["feathers"] = "#FF3B76" //NON-MODULE CHANGE
 
 
 /// Provides a dummy that is consistently bald, white, naked, etc.

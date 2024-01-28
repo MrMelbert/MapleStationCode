@@ -1,5 +1,6 @@
 /// GLOB list of armwings sprites / options
 GLOBAL_LIST_EMPTY(arm_wings_list)
+GLOBAL_LIST_EMPTY(arm_wingsopen_list)
 /// GLOB list of other features (ears, tails)
 GLOBAL_LIST_EMPTY(avian_ears_list)
 GLOBAL_LIST_EMPTY(tails_list_avian)
@@ -13,6 +14,7 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	inherent_traits = list(
 		TRAIT_LIGHT_DRINKER,
 		TRAIT_TACKLING_WINGED_ATTACKER,
+		TRAIT_FEATHERED,
 	)
 	use_skintones = TRUE
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
@@ -135,4 +137,3 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 		),
 	)
 	return to_add
-

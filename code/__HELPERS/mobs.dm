@@ -121,6 +121,7 @@
 		"head_tentacles" = pick(GLOB.head_tentacles_list), // Non-Module Changes from here on, see above
 		"arm_wings" = pick(GLOB.arm_wings_list),
 		"tail_avian" = pick(GLOB.tails_list_avian),
+		"feathers" = "#[pick("7F","FF")][pick("7F","FF")][pick("7F","FF")]",
 		"ears_avian" = pick(GLOB.avian_ears_list), // end Non-Module Changes
 	))
 

@@ -39,6 +39,31 @@
 /datum/preference/choiced/ornithid_wings/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["arm_wings"] = value
 
+/datum/preference/choiced/ornithid_wings/compile_constant_data()
+	var/list/data = ..()
+
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feather_color"
+
+	return data
+
+/datum/preference/color/feather_color
+	savefile_key = "feather_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+
+/datum/preference/color/feather_color/is_accessible(datum/preferences/preferences) // TEMP: done before the Q1 2024 upstream
+	if(!..(preferences))
+		return FALSE
+
+	var/species_type = preferences.read_preference(/datum/preference/choiced/species)
+	var/datum/species/species = new species_type
+	return (TRAIT_FEATHERED in species.inherent_traits)
+
+
+/datum/preference/color/feather_color/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["feathers"] = value
+
+
 /datum/preference/choiced/tail_avian
 	savefile_key = "feature_avian_tail"
 	savefile_identifier = PREFERENCE_CHARACTER
