@@ -84,7 +84,6 @@
 /area/shuttle/escape)
 "aq" = (
 /obj/item/toy/snappop/phoenix,
-/obj/machinery/light/directional/south,
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/bluespace,
 /area/shuttle/escape)
@@ -102,10 +101,6 @@
 /area/shuttle/escape)
 "au" = (
 /turf/open/chasm,
-/area/shuttle/escape)
-"av" = (
-/obj/machinery/light/directional/north,
-/turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "ay" = (
 /obj/structure/table,
@@ -150,7 +145,7 @@
 "aG" = (
 /obj/structure/table,
 /obj/item/toy/sword,
-/obj/machinery/light/directional/west,
+/obj/machinery/light/small/directional/west,
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "aH" = (
@@ -167,11 +162,6 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"aJ" = (
-/obj/item/toy/snappop/phoenix,
-/obj/machinery/light/small/directional/north,
-/turf/open/floor/bluespace,
-/area/shuttle/escape)
 "aK" = (
 /obj/structure/extinguisher_cabinet/directional/north,
 /obj/item/toy/snappop/phoenix,
@@ -180,7 +170,6 @@
 "aL" = (
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/item/toy/snappop/phoenix,
-/obj/machinery/light/small/directional/east,
 /turf/open/floor/bluespace,
 /area/shuttle/escape)
 "aM" = (
@@ -209,11 +198,6 @@
 	name = "Emergency Shuttle Airlock"
 	},
 /turf/open/floor/plating,
-/area/shuttle/escape)
-"aR" = (
-/obj/item/toy/snappop/phoenix,
-/obj/machinery/light/small/directional/south,
-/turf/open/floor/bluespace,
 /area/shuttle/escape)
 "aS" = (
 /obj/structure/extinguisher_cabinet/directional/south,
@@ -303,6 +287,7 @@
 /area/shuttle/escape)
 "lT" = (
 /obj/machinery/status_display/evac/directional/north,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "ns" = (
@@ -310,12 +295,33 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/bluespace,
 /area/shuttle/escape)
+"oi" = (
+/obj/item/toy/snappop/phoenix,
+/obj/machinery/light/floor,
+/turf/open/floor/bluespace,
+/area/shuttle/escape)
+"Du" = (
+/obj/structure/bed{
+	dir = 4
+	},
+/obj/item/bedsheet/random{
+	dir = 4
+	},
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/mineral/bananium,
+/area/shuttle/escape)
 "RX" = (
 /obj/item/toy/snappop/phoenix,
 /obj/machinery/vending/wallmed/directional/north{
 	use_power = 0
 	},
 /turf/open/floor/bluespace,
+/area/shuttle/escape)
+"Vv" = (
+/obj/structure/bed,
+/obj/item/bedsheet/random,
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/mineral/bananium,
 /area/shuttle/escape)
 "Zf" = (
 /obj/structure/closet/emcloset,
@@ -357,13 +363,13 @@ au
 au
 au
 ab
-aJ
+ak
+Du
 hJ
 hJ
 hJ
-hJ
-hJ
-aR
+Du
+ak
 ab
 aV
 aY
@@ -449,14 +455,14 @@ ag
 ak
 ns
 ab
-av
+aV
 ak
 aC
 aG
 ak
 ak
 ak
-ak
+oi
 ak
 ak
 aq
@@ -550,11 +556,11 @@ aZ
 aV
 aV
 aL
+Vv
 aM
 aM
 aM
-aM
-aM
+Vv
 aL
 ac
 aX

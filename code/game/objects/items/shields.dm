@@ -35,6 +35,10 @@
 	fire = 80
 	acid = 70
 
+/obj/item/shield/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/disarm_attack)
+
 /obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
 	if(transparent && (hitby.pass_flags & PASSGLASS))
 		return FALSE
@@ -57,21 +61,32 @@
 		if(0 to 25)
 			. += span_warning("It's falling apart!")
 
-/obj/item/shield/proc/shatter(mob/living/carbon/human/owner)
-	playsound(owner, shield_break_sound, 50)
-	new shield_break_leftover(get_turf(src))
-
 /obj/item/shield/proc/on_shield_block(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
 	if(!breakable_by_damage || (damage_type != BRUTE && damage_type != BURN))
 		return TRUE
-	if (atom_integrity <= damage)
-		var/turf/owner_turf = get_turf(owner)
-		owner_turf.visible_message(span_warning("[hitby] destroys [src]!"))
-		shatter(owner)
-		qdel(src)
-		return FALSE
-	take_damage(damage)
-	return TRUE
+	var/penetration = 0
+	var/armor_flag = MELEE
+	if(isprojectile(hitby))
+		var/obj/projectile/bang_bang = hitby
+		armor_flag = bang_bang.armor_flag
+		penetration = bang_bang.armour_penetration
+	else if(isitem(hitby))
+		var/obj/item/weapon = hitby
+		penetration = weapon.armour_penetration
+	else if(isanimal(hitby))
+		var/mob/living/simple_animal/critter = hitby
+		penetration = critter.armour_penetration
+	else if(isbasicmob(hitby))
+		var/mob/living/basic/critter = hitby
+		penetration = critter.armour_penetration
+	take_damage(damage, damage_type, armor_flag, armour_penetration = penetration)
+
+/obj/item/shield/atom_destruction(damage_flag)
+	playsound(src, shield_break_sound, 50)
+	new shield_break_leftover(get_turf(src))
+	if(isliving(loc))
+		loc.balloon_alert(loc, "shield broken!")
+	return ..()
 
 /obj/item/shield/buckler
 	name = "wooden buckler"
@@ -100,9 +115,14 @@
 	armor_type = /datum/armor/none
 	max_integrity = 30
 
+/datum/armor/item_shield/riot
+	melee = 80
+	bullet = 20
+	laser = 20
+
 /obj/item/shield/riot
 	name = "riot shield"
-	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
+	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder, less so bullets and laser beams."
 	icon_state = "riot"
 	inhand_icon_state = "riot"
 	custom_materials = list(/datum/material/glass= SHEET_MATERIAL_AMOUNT * 3.75, /datum/material/iron= HALF_SHEET_MATERIAL_AMOUNT)
@@ -110,6 +130,16 @@
 	max_integrity = 75
 	shield_break_sound = 'sound/effects/glassbr3.ogg'
 	shield_break_leftover = /obj/item/shard
+	armor_type = /datum/armor/item_shield/riot
+
+/obj/item/shield/riot/Initialize(mapload)
+	. = ..()
+	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/strobeshield)
+
+	AddComponent(
+		/datum/component/slapcrafting,\
+		slapcraft_recipes = slapcraft_recipe_list,\
+	)
 
 /obj/item/shield/riot/attackby(obj/item/attackby_item, mob/user, params)
 	if(istype(attackby_item, /obj/item/melee/baton))
@@ -168,7 +198,9 @@
 	QDEL_NULL(embedded_flash)
 	return ..()
 
-/obj/item/shield/riot/flash/attack(mob/living/target_mob, mob/user)
+/obj/item/shield/riot/flash/attack(mob/living/target_mob, mob/living/user)
+	if(user.combat_mode)
+		return ..()
 	flash_away(user, target_mob)
 
 /obj/item/shield/riot/flash/attack_self(mob/living/carbon/user)
@@ -231,8 +263,8 @@
 		. += span_info("The mounted bulb has burnt out. You can try replacing it with a new <b>flash</b>.")
 
 /obj/item/shield/energy
-	name = "energy combat shield"
-	desc = "A shield that reflects almost all energy projectiles, but is useless against physical attacks. It can be retracted, expanded, and stored anywhere."
+	name = "combat energy shield"
+	desc = "A hardlight shield capable of reflecting blocked energy projectiles, as well las providing well-rounded defense from most all other attacks."
 	icon_state = "eshield"
 	inhand_icon_state = "eshield"
 	w_class = WEIGHT_CLASS_TINY
@@ -244,8 +276,6 @@
 	throw_speed = 3
 	breakable_by_damage = FALSE
 	block_sound = 'sound/weapons/block_blade.ogg'
-	/// Whether the shield is currently extended and protecting the user.
-	var/enabled = FALSE
 	/// Force of the shield when active.
 	var/active_force = 10
 	/// Throwforce of the shield when active.
@@ -254,22 +284,36 @@
 	var/active_throw_speed = 2
 	/// Whether clumsy people can transform this without side effects.
 	var/can_clumsy_use = FALSE
+	/// The chance for projectiles to be reflected by the shield
+	var/reflection_probability = 50
 
 /obj/item/shield/energy/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/transforming, \
+	AddComponent( \
+		/datum/component/transforming, \
 		force_on = active_force, \
 		throwforce_on = active_throwforce, \
 		throw_speed_on = active_throw_speed, \
 		hitsound_on = hitsound, \
-		clumsy_check = !can_clumsy_use)
+		clumsy_check = !can_clumsy_use, \
+	)
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
+	RegisterSignal(src, COMSIG_ITEM_CAN_DISARM_ATTACK, PROC_REF(can_disarm_attack))
 
 /obj/item/shield/energy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
-	return FALSE
+	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
+		return FALSE
+
+	if(attack_type == PROJECTILE_ATTACK)
+		var/obj/projectile/our_projectile = hitby
+
+		if(our_projectile.reflectable) //We handle this via IsReflect() instead.
+			final_block_chance = 0
+
+	return ..()
 
 /obj/item/shield/energy/IsReflect()
-	return enabled
+	return HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE) && prob(reflection_probability)
 
 /*
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
@@ -277,11 +321,25 @@
 /obj/item/shield/energy/proc/on_transform(obj/item/source, mob/user, active)
 	SIGNAL_HANDLER
 
-	enabled = active
-
-	balloon_alert(user, "[active ? "activated":"deactivated"]")
-	playsound(user ? user : src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, TRUE)
+	if(user)
+		balloon_alert(user, active ? "activated" : "deactivated")
+	playsound(src, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
+
+/obj/item/shield/energy/proc/can_disarm_attack(datum/source, mob/living/victim, mob/living/user, send_message = TRUE)
+	SIGNAL_HANDLER
+	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
+		if(send_message)
+			balloon_alert(user, "activate it first!")
+		return COMPONENT_BLOCK_ITEM_DISARM_ATTACK
+
+/obj/item/shield/energy/advanced
+	name = "advanced combat energy shield"
+	desc = "A hardlight shield capable of reflecting all energy projectiles, as well las providing well-rounded defense from most all other attacks. \
+		Often employed by Nanotrasen deathsquads."
+	icon_state = "advanced_eshield"
+	inhand_icon_state = "advanced_eshield"
+	reflection_probability = 100 //Guaranteed reflection
 
 /obj/item/shield/riot/tele
 	name = "telescopic shield"
@@ -296,27 +354,29 @@
 	throw_speed = 3
 	throw_range = 4
 	w_class = WEIGHT_CLASS_NORMAL
-	/// Whether the shield is extended and protecting the user..
-	var/extended = FALSE
 
 /obj/item/shield/riot/tele/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/transforming, \
+	AddComponent( \
+		/datum/component/transforming, \
 		force_on = 8, \
 		throwforce_on = 5, \
 		throw_speed_on = 2, \
 		hitsound_on = hitsound, \
 		w_class_on = WEIGHT_CLASS_BULKY, \
 		attack_verb_continuous_on = list("smacks", "strikes", "cracks", "beats"), \
-		attack_verb_simple_on = list("smack", "strike", "crack", "beat"))
+		attack_verb_simple_on = list("smack", "strike", "crack", "beat"), \
+	)
+
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
+	RegisterSignal(src, COMSIG_ITEM_CAN_DISARM_ATTACK, PROC_REF(can_disarm_attack))
 
 /obj/item/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
-	if(extended)
+	if(HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return ..()
 	return FALSE
 
-/*
+/**
  * Signal proc for [COMSIG_TRANSFORMING_ON_TRANSFORM].
  *
  * Allows it to be placed on back slot when active.
@@ -324,10 +384,17 @@
 /obj/item/shield/riot/tele/proc/on_transform(obj/item/source, mob/user, active)
 	SIGNAL_HANDLER
 
-	extended = active
 	slot_flags = active ? ITEM_SLOT_BACK : null
-	playsound(user ? user : src, 'sound/weapons/batonextend.ogg', 50, TRUE)
-	balloon_alert(user, "[active ? "extended" : "collapsed"]")
+	if(user)
+		balloon_alert(user, active ? "extended" : "collapsed")
+	playsound(src, 'sound/weapons/batonextend.ogg', 50, TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
+
+/obj/item/shield/riot/tele/proc/can_disarm_attack(datum/source, mob/living/victim, mob/living/user, send_message = TRUE)
+	SIGNAL_HANDLER
+	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
+		if(send_message)
+			balloon_alert(user, "extend it first!")
+		return COMPONENT_BLOCK_ITEM_DISARM_ATTACK
 
 #undef BATON_BASH_COOLDOWN

@@ -83,7 +83,3 @@
 	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
 		return TRUE
 	return FALSE
-
-/datum/bodypart_overlay/mutant/wings/functional/arm_wings/generate_icon_cache()
-	. = ..()
-	. += wings_open ? "open" : "closed"

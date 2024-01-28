@@ -5,7 +5,7 @@
 	desc = "Designed by MI13, the FK-Deception Falty Announcement Device allows an \
 		enterprising syndicate agent attempting to maintain their cover a \
 		one-time faked message (announced or classified) from a certain source."
-	icon = 'icons/obj/device.dmi'
+	icon = 'icons/obj/devices/tracker.dmi'
 	icon_state = "locator"
 	w_class = WEIGHT_CLASS_SMALL
 	/// The syndicate who purchased this beacon - only they can use this item. No sharing.

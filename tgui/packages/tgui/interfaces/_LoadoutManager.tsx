@@ -1,6 +1,16 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Dimmer, Input, NoticeBox, Section, Stack, Tabs } from '../components';
+import {
+  Box,
+  Button,
+  Dimmer,
+  Input,
+  NoticeBox,
+  Section,
+  Stack,
+  Tabs,
+} from '../components';
 import { CharacterPreview } from './common/CharacterPreview';
 
 type typePath = string;
@@ -34,23 +44,17 @@ type Data = {
   max_loadout_slots: number;
 };
 
-export const LoadoutPage = (props, context) => {
-  const { data } = useBackend<Data>(context);
+export const LoadoutPage = () => {
+  const { data } = useBackend<Data>();
   const { loadout_tabs } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
-    context,
     'tutorialStatus',
-    false
+    false,
   );
-  const [searchLoadout, setSearchLoadout] = useLocalState(
-    context,
-    'searchLoadout',
-    ''
-  );
+  const [searchLoadout, setSearchLoadout] = useLocalState('searchLoadout', '');
   const [selectedTabName, setSelectedTab] = useLocalState(
-    context,
     'tabs',
-    loadout_tabs[0]?.name
+    loadout_tabs[0]?.name,
   );
 
   return (
@@ -70,12 +74,13 @@ export const LoadoutPage = (props, context) => {
               />
               <Input
                 width="200px"
-                onInput={(event) => setSearchLoadout(event.target.value)}
+                onInput={(event, value) => setSearchLoadout(value)}
                 placeholder="Search for item"
                 value={searchLoadout}
               />
             </>
-          }>
+          }
+        >
           <Tabs fluid align="center">
             {loadout_tabs.map((curTab) => (
               <Tabs.Tab
@@ -86,27 +91,27 @@ export const LoadoutPage = (props, context) => {
                 onClick={() => {
                   setSelectedTab(curTab.name);
                   setSearchLoadout('');
-                }}>
+                }}
+              >
                 {curTab.name}
               </Tabs.Tab>
             ))}
           </Tabs>
         </Section>
       </Stack.Item>
-      <Stack.Item fill>
+      <Stack.Item>
         <LoadoutTabs />
       </Stack.Item>
     </Stack>
   );
 };
 
-const LoadoutTutorialDimmer = (props, context) => {
-  const { data } = useBackend<Data>(context);
+const LoadoutTutorialDimmer = () => {
+  const { data } = useBackend<Data>();
   const { tutorial_text } = data;
   const [tutorialStatus, setTutorialStatus] = useLocalState(
-    context,
     'tutorialStatus',
-    false
+    false,
   );
   return (
     <Dimmer>
@@ -118,7 +123,8 @@ const LoadoutTutorialDimmer = (props, context) => {
           <Button
             mt={1}
             align="center"
-            onClick={() => setTutorialStatus(false)}>
+            onClick={() => setTutorialStatus(false)}
+          >
             Okay.
           </Button>
         </Stack.Item>
@@ -129,13 +135,13 @@ const LoadoutTutorialDimmer = (props, context) => {
 
 const ItemDisplay = (
   props: { item: LoadoutItem; active: boolean },
-  context
+  context,
 ) => {
-  const { act } = useBackend<LoadoutItem>(context);
+  const { act } = useBackend<LoadoutItem>();
   const { item, active } = props;
   return (
     <Stack>
-      <Stack.Item grow align="left" style={{ 'text-transform': 'capitalize' }}>
+      <Stack.Item grow align="left" style={{ textTransform: 'capitalize' }}>
         {item.name}
       </Stack.Item>
       {item.buttons.map((button) => (
@@ -156,7 +162,6 @@ const ItemDisplay = (
       <Stack.Item>
         <Button.Checkbox
           checked={active}
-          content="Select"
           fluid
           onClick={() =>
             act('select_item', {
@@ -164,17 +169,18 @@ const ItemDisplay = (
               deselect: active,
             })
           }
-        />
+        >
+          Select
+        </Button.Checkbox>
       </Stack.Item>
     </Stack>
   );
 };
 
-const LoadoutTabDisplay = (
-  props: { category: LoadoutCategory | undefined },
-  context
-) => {
-  const { data } = useBackend<Data>(context);
+const LoadoutTabDisplay = (props: {
+  category: LoadoutCategory | undefined;
+}) => {
+  const { data } = useBackend<Data>();
   const { selected_loadout } = data;
   const { category } = props;
   if (!category) {
@@ -201,10 +207,10 @@ const LoadoutTabDisplay = (
   );
 };
 
-const SearchDisplay = (props, context) => {
-  const { data } = useBackend<Data>(context);
+const SearchDisplay = () => {
+  const { data } = useBackend<Data>();
   const { loadout_tabs, selected_loadout } = data;
-  const [searchLoadout] = useLocalState(context, 'searchLoadout', '');
+  const [searchLoadout] = useLocalState('searchLoadout', '');
 
   const allLoadoutItems = () => {
     const concatItems: LoadoutItem[] = [];
@@ -216,7 +222,7 @@ const SearchDisplay = (props, context) => {
     return concatItems.sort((a, b) => a.name.localeCompare(b.name));
   };
   const validLoadoutItems = allLoadoutItems().filter((item) =>
-    item.name.toLowerCase().includes(searchLoadout.toLowerCase())
+    item.name.toLowerCase().includes(searchLoadout.toLowerCase()),
   );
 
   if (validLoadoutItems.length === 0) {
@@ -242,14 +248,10 @@ const SearchDisplay = (props, context) => {
 };
 
 const LoadoutTabs = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+  const { act, data } = useBackend<Data>();
   const { loadout_tabs } = data;
-  const [selectedTabName] = useLocalState(
-    context,
-    'tabs',
-    loadout_tabs[0]?.name
-  );
-  const [searchLoadout] = useLocalState(context, 'searchLoadout', '');
+  const [selectedTabName] = useLocalState('tabs', loadout_tabs[0]?.name);
+  const [searchLoadout] = useLocalState('searchLoadout', '');
   const activeCategory = loadout_tabs.find((curTab) => {
     return curTab.name === selectedTabName;
   });
@@ -271,11 +273,13 @@ const LoadoutTabs = (props, context) => {
                 icon="times"
                 color="red"
                 align="center"
-                content="Clear All Items"
                 tooltip="Clears ALL selected items from all categories."
                 onClick={() => act('clear_all_items')}
-              />
-            }>
+              >
+                Clear All Items
+              </Button.Confirm>
+            }
+          >
             <Stack vertical>
               {searching ? (
                 <SearchDisplay />
@@ -290,15 +294,15 @@ const LoadoutTabs = (props, context) => {
           </Section>
         )}
       </Stack.Item>
-      <Stack.Item grow fill align="center">
+      <Stack.Item grow align="center">
         <LoadoutPreviewSection />
       </Stack.Item>
     </Stack>
   );
 };
 
-const LoadoutPreviewSection = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+const LoadoutPreviewSection = () => {
+  const { act, data } = useBackend<Data>();
   const {
     mob_name,
     job_clothes,
@@ -307,7 +311,7 @@ const LoadoutPreviewSection = (props, context) => {
     max_loadout_slots,
   } = data;
 
-  const [tutorialStatus] = useLocalState(context, 'tutorialStatus', false);
+  const [tutorialStatus] = useLocalState('tutorialStatus', false);
 
   const loadoutSlots = (maxSlots: number) => {
     const slots: number[] = [];
@@ -320,7 +324,6 @@ const LoadoutPreviewSection = (props, context) => {
   return (
     <Section
       title={`Preview: ${mob_name}`}
-      grow
       height="100%"
       buttons={
         <Button.Checkbox
@@ -329,7 +332,8 @@ const LoadoutPreviewSection = (props, context) => {
           checked={job_clothes}
           onClick={() => act('toggle_job_clothes')}
         />
-      }>
+      }
+    >
       {/* The heights on these sections are fucked, whatever fix it later */}
       <Stack vertical height="515px">
         <Stack.Item grow align="center">

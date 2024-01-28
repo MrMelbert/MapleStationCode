@@ -31,6 +31,7 @@
 /datum/quirk/cpr_certified
 	name = "CPR Certified"
 	desc = "You are certified to perform CPR on others independent of your job."
+	medical_record_text = "Patient has completed CPR certification."
 	icon = FA_ICON_HEARTBEAT
 	value = 0
 	mob_trait = TRAIT_CPR_CERTIFIED
@@ -64,7 +65,7 @@
 	quirk_holder.add_mood_event("caffeine", /datum/mood_event/no_coffee)
 
 /datum/quirk/caffeinated/process(seconds_per_tick)
-	if(HAS_TRAIT(quirk_holder, TRAIT_NOMETABOLISM))
+	if(HAS_TRAIT(quirk_holder, TRAIT_LIVERLESS_METABOLISM))
 		return
 	if(!caffeine_drank)
 		return
@@ -119,4 +120,3 @@
 	sprint_regen_multiplier = new_sprint_regen
 	quirk_human.sprint_length_max *= new_sprint_length
 	quirk_human.sprint_regen_per_second *= new_sprint_regen
-

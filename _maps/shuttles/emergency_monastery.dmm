@@ -85,9 +85,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "bc" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-22"
-	},
+/obj/item/kirbyplants/organic/plant22,
 /obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
@@ -259,9 +257,7 @@
 /turf/closed/wall,
 /area/shuttle/escape)
 "do" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-22"
-	},
+/obj/item/kirbyplants/organic/plant22,
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/machinery/airalarm/directional/north,
 /obj/structure/cable,
@@ -1007,8 +1003,7 @@
 /obj/structure/sign/picture_frame/portrait{
 	pixel_y = 28
 	},
-/obj/item/kirbyplants{
-	icon_state = "plant-21";
+/obj/item/kirbyplants/organic/plant21{
 	pixel_y = 3
 	},
 /turf/open/floor/iron/dark,
@@ -1144,7 +1139,8 @@
 "qr" = (
 /obj/item/radio/intercom/directional/north,
 /obj/machinery/requests_console/directional/west{
-	department = "Chapel"
+	department = "Chapel";
+	name = "Monastery Requests Console"
 	},
 /obj/effect/mapping_helpers/requests_console/supplies,
 /obj/structure/closet,
@@ -1435,9 +1431,7 @@
 /turf/open/floor/iron/grimy,
 /area/shuttle/escape)
 "vj" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
+/obj/item/kirbyplants/organic/plant21,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 5
@@ -1495,8 +1489,7 @@
 /turf/open/misc/asteroid,
 /area/shuttle/escape)
 "vU" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21";
+/obj/item/kirbyplants/organic/plant21{
 	pixel_y = 3
 	},
 /turf/open/floor/iron/dark,
@@ -1509,9 +1502,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "vY" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-10"
-	},
+/obj/item/kirbyplants/organic/plant10,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 6
@@ -1597,9 +1588,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "xd" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
+/obj/item/kirbyplants/organic/plant21,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 10
 	},
@@ -1629,15 +1618,12 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "xt" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-22"
-	},
+/obj/item/kirbyplants/organic/plant22,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "xv" = (
 /obj/structure/table/wood,
-/obj/item/kirbyplants{
-	icon_state = "plant-05";
+/obj/item/kirbyplants/organic/plant5{
 	pixel_y = 10
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -2412,9 +2398,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "IL" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-22"
-	},
+/obj/item/kirbyplants/organic/plant22,
 /obj/machinery/camera/directional/north{
 	c_tag = "Monastery Archives Fore";
 	network = list("ss13","monastery")
@@ -2475,7 +2459,7 @@
 /area/shuttle/escape)
 "Ju" = (
 /obj/structure/rack{
-	icon = 'icons/obj/stationobjs.dmi';
+	icon = 'icons/obj/fluff/general.dmi';
 	icon_state = "minibar";
 	name = "skeletal minibar"
 	},
@@ -2603,9 +2587,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "KH" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-08"
-	},
+/obj/item/kirbyplants/organic/plant8,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "KR" = (
@@ -3651,8 +3633,7 @@
 /area/shuttle/escape)
 "Xb" = (
 /obj/structure/table/wood,
-/obj/item/kirbyplants{
-	icon_state = "plant-22";
+/obj/item/kirbyplants/organic/plant22{
 	pixel_y = 8
 	},
 /turf/open/floor/iron/dark,

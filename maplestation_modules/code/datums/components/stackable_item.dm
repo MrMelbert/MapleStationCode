@@ -5,6 +5,7 @@
 	female_uniform = NO_FEMALE_UNIFORM,
 	override_state = null,
 	override_file = null,
+	use_height_offset = TRUE,
 )
 	. = ..()
 	SEND_SIGNAL(src, COMSIG_ITEM_WORN_ICON_MADE, ., default_layer, default_icon_file, isinhands, female_uniform, override_state, override_file)
@@ -43,7 +44,7 @@
 	RegisterSignal(parent, COMSIG_ATOM_EXITED, PROC_REF(atom_exited))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(item_equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(item_dropped))
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(item_attackby))
+	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(item_attackby))
 	RegisterSignals(parent, list(COMSIG_ATOM_DESTRUCTION, COMSIG_OBJ_DECONSTRUCT), PROC_REF(on_deconstruct))
 
 /datum/component/stackable_item/UnregisterFromParent()
@@ -52,16 +53,16 @@
 		COMSIG_ATOM_EXITED,
 		COMSIG_ITEM_EQUIPPED,
 		COMSIG_ITEM_DROPPED,
-		COMSIG_PARENT_ATTACKBY,
+		COMSIG_ATOM_ATTACKBY,
 		COMSIG_ATOM_DESTRUCTION,
 		COMSIG_OBJ_DECONSTRUCT,
 	))
 
 /datum/component/stackable_item/Destroy()
 	stacked_on = null
-	QDEL_NULL(can_stack)
-	QDEL_NULL(on_equip)
-	QDEL_NULL(on_drop)
+	can_stack = null
+	on_equip = null
+	on_drop = null
 	return ..()
 
 /datum/component/stackable_item/proc/update_worn_icon(
@@ -120,7 +121,7 @@
 		return
 
 	on_equip?.Invoke(stacked_on, user, slot)
-	stacked_on.equipped(user, slot)
+	stacked_on.on_equipped(user, slot)
 
 /datum/component/stackable_item/proc/item_dropped(obj/item/source, mob/living/user, silent)
 	SIGNAL_HANDLER
@@ -161,7 +162,7 @@
 	var/equipped_flags = stacked_on.slot_flags
 	if(carbon_loc.get_item_by_slot(equipped_flags) == source) // check that they're in the same slot as our source / parent
 		on_equip?.Invoke(stacked_on, carbon_loc, equipped_flags)
-		stacked_on.equipped(carbon_loc, equipped_flags)
+		stacked_on.on_equipped(carbon_loc, equipped_flags)
 		carbon_loc.update_clothing(equipped_flags)
 
 /datum/component/stackable_item/proc/on_deconstruct(obj/item/source)

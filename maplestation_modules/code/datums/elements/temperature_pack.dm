@@ -24,13 +24,13 @@
 	src.temperature_change = temperature_change
 
 	RegisterSignal(target, COMSIG_ITEM_ATTACK_SECONDARY, PROC_REF(try_apply_to_limb))
-	RegisterSignal(target, COMSIG_PARENT_EXAMINE, PROC_REF(get_examine_text))
+	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(get_examine_text))
 
 /datum/element/temperature_pack/Detach(obj/target)
 	. = ..()
 	UnregisterSignal(target, list(
 		COMSIG_ITEM_ATTACK_SECONDARY,
-		COMSIG_PARENT_EXAMINE,
+		COMSIG_ATOM_EXAMINE,
 	))
 
 /**

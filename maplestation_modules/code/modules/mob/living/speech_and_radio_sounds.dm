@@ -135,7 +135,7 @@
 			)
 
 /// Extend hear so we can have radio messages make radio sounds.
-/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list())
+/mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
 	. = ..()
 	if(!.)
 		return

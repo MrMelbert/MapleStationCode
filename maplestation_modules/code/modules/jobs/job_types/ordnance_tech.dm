@@ -1,6 +1,6 @@
 // -- Ordnance Tech job & outfit datum --
 /datum/job/ordnance_tech
-	title = "Ordnance Technician"
+	title = JOB_ORDNANCE_TECH
 	description = "Complete your bomb in the first half hour of the \
 		shift, make the station shake repeatedly as you refine cores, \
 		then sit around as you have nothing else to do."

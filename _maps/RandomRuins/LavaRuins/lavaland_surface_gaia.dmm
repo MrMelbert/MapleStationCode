@@ -39,6 +39,10 @@
 /mob/living/basic/butterfly/lavaland,
 /turf/open/misc/grass/lavaland,
 /area/ruin/unpowered/gaia)
+"k" = (
+/obj/structure/flora/bush/flowers_br/style_random,
+/turf/open/floor/bronze/filled/lavaland,
+/area/ruin/unpowered/gaia)
 "l" = (
 /obj/item/food/grown/mushroom/angel,
 /turf/open/misc/grass/lavaland,
@@ -75,12 +79,25 @@
 /obj/structure/flora/bush/sunny/style_random,
 /turf/open/misc/grass/lavaland,
 /area/ruin/unpowered/gaia)
+"u" = (
+/obj/structure/flora/grass/jungle/b/style_random,
+/turf/closed/wall/mineral/bronze,
+/area/ruin/unpowered/gaia)
 "v" = (
 /obj/structure/flora/tree/jungle/style_random,
 /turf/open/misc/grass/lavaland,
 /area/ruin/unpowered/gaia)
 "w" = (
 /turf/closed/mineral/volcanic/lava_land_surface,
+/area/ruin/unpowered/gaia)
+"x" = (
+/obj/structure/flora/grass/jungle/a/style_random,
+/turf/open/floor/bronze/filled/lavaland,
+/area/ruin/unpowered/gaia)
+"y" = (
+/obj/structure/flora/bush/stalky/style_random,
+/obj/structure/flora/bush/fullgrass/style_random,
+/turf/open/floor/bronze/filled/lavaland,
 /area/ruin/unpowered/gaia)
 "A" = (
 /obj/structure/flora/bush/stalky/style_random,
@@ -100,6 +117,38 @@
 "D" = (
 /obj/item/food/grown/mushroom/chanterelle,
 /turf/open/misc/grass/lavaland,
+/area/ruin/unpowered/gaia)
+"H" = (
+/obj/structure/flora/grass/jungle/b/style_random,
+/obj/structure/flora/bush/flowers_br/style_random,
+/turf/open/misc/grass/lavaland,
+/area/ruin/unpowered/gaia)
+"J" = (
+/obj/structure/flora/bush/sunny/style_random,
+/obj/structure/flora/bush/flowers_br/style_random,
+/turf/open/misc/grass/lavaland,
+/area/ruin/unpowered/gaia)
+"K" = (
+/turf/closed/wall/mineral/bronze,
+/area/ruin/unpowered/gaia)
+"L" = (
+/obj/structure/flora/bush/fullgrass/style_random,
+/turf/open/floor/bronze/filled/lavaland,
+/area/ruin/unpowered/gaia)
+"M" = (
+/obj/item/mod/construction/lavalandcore,
+/turf/open/misc/grass/lavaland,
+/area/ruin/unpowered/gaia)
+"Q" = (
+/obj/structure/flora/grass/jungle/b/style_random,
+/turf/open/floor/bronze/filled/lavaland,
+/area/ruin/unpowered/gaia)
+"S" = (
+/turf/open/floor/bronze/filled/lavaland,
+/area/ruin/unpowered/gaia)
+"U" = (
+/obj/item/food/grown/mushroom/amanita,
+/turf/open/floor/bronze/filled/lavaland,
 /area/ruin/unpowered/gaia)
 
 (1,1,1) = {"
@@ -128,7 +177,7 @@ a
 w
 w
 c
-b
+Q
 c
 b
 c
@@ -165,7 +214,7 @@ c
 d
 c
 i
-d
+x
 C
 n
 c
@@ -200,9 +249,9 @@ g
 d
 c
 c
-c
+S
 v
-d
+x
 c
 c
 h
@@ -236,9 +285,9 @@ d
 c
 n
 c
-b
+Q
 B
-c
+n
 d
 m
 d
@@ -256,7 +305,7 @@ d
 c
 d
 h
-c
+k
 f
 j
 c
@@ -267,19 +316,19 @@ w
 (10,1,1) = {"
 w
 c
-c
+L
 h
 b
+L
 c
+K
+J
+u
+x
 c
-q
-t
+y
 b
-d
-c
-A
-b
-c
+L
 w
 "}
 (11,1,1) = {"
@@ -287,14 +336,14 @@ w
 d
 e
 i
-n
+k
 d
 c
-t
-c
-c
+J
+M
+L
 n
-c
+L
 c
 q
 c
@@ -302,20 +351,20 @@ w
 "}
 (12,1,1) = {"
 w
-c
+L
 b
 c
 p
 g
-s
-c
-b
-j
+U
+K
+H
+K
 h
-d
+x
 n
 c
-b
+Q
 w
 "}
 (13,1,1) = {"
@@ -328,7 +377,7 @@ d
 b
 c
 c
-n
+k
 c
 c
 b
@@ -345,9 +394,9 @@ n
 c
 c
 b
-c
+L
 b
-c
+j
 h
 i
 C
@@ -362,7 +411,7 @@ l
 j
 c
 n
-c
+L
 c
 g
 c
@@ -382,7 +431,7 @@ c
 c
 g
 c
-c
+L
 c
 n
 c
@@ -417,7 +466,7 @@ c
 b
 n
 c
-c
+L
 j
 g
 c

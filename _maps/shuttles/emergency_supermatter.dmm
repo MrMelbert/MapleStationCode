@@ -259,35 +259,27 @@
 	},
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"bi" = (
-/obj/structure/closet/radiation{
-	anchored = 1
-	},
-/obj/item/clothing/glasses/meson/engine,
-/obj/machinery/light/directional/west,
-/turf/open/floor/mineral/titanium/yellow,
-/area/shuttle/escape)
-"bj" = (
-/obj/structure/closet/radiation{
-	anchored = 1
-	},
-/obj/item/clothing/glasses/meson/engine,
-/obj/machinery/light/directional/east,
-/turf/open/floor/mineral/titanium/yellow,
-/area/shuttle/escape)
 "bk" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
-/obj/machinery/light/directional/west,
+/obj/machinery/light/warm/directional/west,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "bl" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/machinery/light/directional/east,
+/obj/machinery/light/warm/directional/east,
 /turf/open/floor/plating,
+/area/shuttle/escape)
+"fK" = (
+/obj/structure/closet/radiation{
+	anchored = 1
+	},
+/obj/item/clothing/glasses/meson/engine,
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "hD" = (
 /obj/structure/lattice/catwalk,
@@ -311,6 +303,14 @@
 /obj/machinery/status_display/evac{
 	pixel_x = -32
 	},
+/turf/open/floor/mineral/titanium/yellow,
+/area/shuttle/escape)
+"Cc" = (
+/obj/structure/closet/radiation{
+	anchored = 1
+	},
+/obj/item/clothing/glasses/meson/engine,
+/obj/machinery/light/small/directional/east,
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "UA" = (
@@ -370,9 +370,9 @@ be
 "}
 (3,1,1) = {"
 ac
+fK
 ag
 ag
-bi
 Bi
 ag
 ag
@@ -514,9 +514,9 @@ aa
 "}
 (9,1,1) = {"
 ac
+Cc
 ag
 ag
-bj
 pb
 ag
 ag

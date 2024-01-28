@@ -73,7 +73,7 @@
 /area/shuttle/ruin/caravan/syndicate3)
 "hF" = (
 /obj/structure/chair/comfy/shuttle,
-/obj/machinery/light/small/directional/west,
+/obj/machinery/light/small/directional/north,
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/mapping_helpers/apc/syndicate_access,
 /obj/effect/decal/cleanable/dirt,
@@ -84,8 +84,8 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 1
 	},
-/obj/machinery/light/small/directional/west,
 /obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/pod/dark,
 /area/shuttle/ruin/caravan/syndicate3)
 "mJ" = (
@@ -289,7 +289,7 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 4
 	},
-/mob/living/basic/syndicate/ranged/smg/pilot{
+/mob/living/basic/trooper/syndicate/ranged/smg/pilot{
 	environment_smash = 0
 	},
 /turf/open/floor/iron/dark,

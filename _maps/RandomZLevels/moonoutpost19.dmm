@@ -1384,9 +1384,7 @@
 	dir = 8;
 	pixel_x = 11
 	},
-/obj/structure/mirror/directional/east{
-	icon_state = "mirror_broke"
-	},
+/obj/structure/mirror/broken/directional/east,
 /turf/open/floor/iron/freezer,
 /area/awaymission/moonoutpost19/arrivals)
 "mA" = (
@@ -1438,7 +1436,7 @@
 "mJ" = (
 /obj/structure/sign/warning/vacuum{
 	desc = "A beacon used by a teleporter.";
-	icon = 'icons/obj/device.dmi';
+	icon = 'icons/obj/devices/tracker.dmi';
 	icon_state = "beacon";
 	name = "tracking beacon"
 	},
@@ -1755,7 +1753,7 @@
 /obj/structure/cable,
 /obj/effect/turf_decal/lunar_sand,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "oB" = (
 /obj/machinery/light/small/directional/south,
 /obj/structure/closet/toolcloset,
@@ -1764,10 +1762,6 @@
 /obj/item/clothing/under/rank/engineering/atmospheric_technician,
 /turf/open/floor/plating,
 /area/awaymission/moonoutpost19/research)
-"oD" = (
-/obj/machinery/light/directional/west,
-/turf/open/floor/iron/dark,
-/area/awaymission/moonoutpost19/syndicate)
 "oF" = (
 /obj/machinery/door/poddoor/preopen{
 	desc = "A heavy duty blast door that opens mechanically. This one has been applied with an acid-proof coating.";
@@ -1792,7 +1786,7 @@
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "oJ" = (
 /obj/effect/turf_decal/tile/red{
 	dir = 8
@@ -1858,7 +1852,7 @@
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "pe" = (
 /obj/machinery/light/floor,
 /obj/effect/turf_decal/stripes/line{
@@ -1867,7 +1861,7 @@
 /obj/effect/turf_decal/lunar_sand/plating,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "pf" = (
 /obj/structure/chair/stool/directional/west,
 /obj/effect/decal/cleanable/dirt,
@@ -2039,7 +2033,7 @@
 /obj/structure/rack,
 /obj/item/flashlight,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "pY" = (
 /obj/structure/urinal/directional/north,
 /obj/machinery/duct,
@@ -2148,7 +2142,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "qx" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
@@ -2165,7 +2159,7 @@
 /obj/structure/cable,
 /obj/effect/turf_decal/lunar_sand/plating,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "qz" = (
 /obj/machinery/airalarm/directional/west,
 /obj/effect/mapping_helpers/airalarm/all_access,
@@ -2275,7 +2269,7 @@
 	},
 /obj/effect/turf_decal/lunar_sand/plating,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "rp" = (
 /obj/structure/rack,
 /obj/item/stack/ducts/fifty,
@@ -2286,7 +2280,7 @@
 	pixel_x = -7
 	},
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "rr" = (
 /obj/structure/closet/emcloset,
 /obj/structure/window/spawner/directional/south,
@@ -2648,7 +2642,7 @@
 	dir = 4
 	},
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "tH" = (
 /obj/machinery/door/airlock/maintenance{
 	req_access = "201"
@@ -2831,7 +2825,7 @@
 "uM" = (
 /obj/structure/reagent_dispensers/fueltank/large,
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "uO" = (
 /obj/structure/closet/crate/bin,
 /obj/item/food/badrecipe/moldy/bacteria,
@@ -3329,9 +3323,9 @@
 	},
 /obj/structure/cable,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "yN" = (
-/mob/living/simple_animal/pet/cat/space{
+/mob/living/basic/pet/cat/space{
 	desc = "With survival instincts like these, it's no wonder cats survived to the 26th century.";
 	name = "Jones"
 	},
@@ -3386,7 +3380,7 @@
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "zf" = (
-/mob/living/simple_animal/hostile/construct/proteon/hostile,
+/mob/living/basic/construct/proteon/hostile,
 /obj/structure/flora/lunar_plant,
 /turf/open/misc/asteroid/moon{
 	initial_gas_mix = "co2=48.7;n2=13.2;o2=32.4;TEMP=251"
@@ -3464,7 +3458,7 @@
 /obj/item/cigbutt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "zu" = (
 /obj/structure/table,
 /obj/item/shard{
@@ -3590,7 +3584,7 @@
 	puzzle_id = "atvs"
 	},
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Ad" = (
 /turf/open/lava/airless,
 /area/awaymission/moonoutpost19/mines)
@@ -3735,7 +3729,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "AW" = (
 /obj/effect/decal/cleanable/xenoblood{
 	desc = "It's green and acidic. Nothing good could come of this..."
@@ -4192,7 +4186,7 @@
 /turf/open/floor/iron,
 /area/awaymission/moonoutpost19/arrivals)
 "Ec" = (
-/obj/item/stack/tile/iron,
+/obj/item/stack/tile/iron/base,
 /obj/effect/decal/cleanable/crayon,
 /turf/open/misc/asteroid/moon{
 	initial_gas_mix = "co2=48.7;n2=13.2;o2=32.4;TEMP=251"
@@ -5005,7 +4999,7 @@
 	req_access = "201"
 	},
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "JI" = (
 /obj/machinery/light/small/directional/north,
 /obj/effect/turf_decal/stripes/asteroid/line{
@@ -5152,7 +5146,7 @@
 /area/awaymission/moonoutpost19/hive)
 "Kz" = (
 /obj/structure/table,
-/obj/item/storage/secure/briefcase,
+/obj/item/storage/briefcase/secure,
 /obj/item/taperecorder{
 	pixel_x = -3
 	},
@@ -5321,7 +5315,7 @@
 	dir = 1
 	},
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "LU" = (
 /obj/effect/decal/cleanable/blood/tracks{
 	desc = "Your instincts say you shouldn't be following these.";
@@ -5495,6 +5489,10 @@
 	temperature = 251
 	},
 /area/awaymission/moonoutpost19/syndicate)
+"MF" = (
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating,
+/area/awaymission/moonoutpost19/arrivals/shed)
 "MP" = (
 /obj/structure/marker_beacon/burgundy,
 /turf/open/misc/asteroid/moon{
@@ -5560,7 +5558,7 @@
 "Na" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Nb" = (
 /turf/open/floor/iron,
 /area/awaymission/moonoutpost19/arrivals)
@@ -5592,7 +5590,7 @@
 	},
 /area/awaymission/moonoutpost19/mines)
 "Ng" = (
-/obj/item/storage/secure/safe/directional/east,
+/obj/structure/secure_safe/directional/east,
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/item/pen,
 /obj/item/paper/crumpled/awaymissions/moonoutpost19/hastey_note,
@@ -5637,7 +5635,7 @@
 	},
 /obj/structure/chair/plastic,
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Nr" = (
 /obj/machinery/light/small/directional/east,
 /obj/effect/decal/remains/human{
@@ -5701,7 +5699,6 @@
 /turf/open/floor/iron,
 /area/awaymission/moonoutpost19/syndicate)
 "ND" = (
-/obj/machinery/light/directional/west,
 /obj/structure/chair/stool/directional/south,
 /turf/open/floor/iron,
 /area/awaymission/moonoutpost19/syndicate)
@@ -5759,6 +5756,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
+/obj/machinery/light/directional/west,
 /turf/open/floor/iron/dark,
 /area/awaymission/moonoutpost19/syndicate)
 "Oc" = (
@@ -5822,7 +5820,7 @@
 /area/awaymission/moonoutpost19/research)
 "Om" = (
 /turf/closed/indestructible/reinforced,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Ot" = (
 /obj/machinery/light/small/directional/north,
 /obj/machinery/airalarm/directional/north,
@@ -5860,7 +5858,7 @@
 /turf/open/floor/plating,
 /area/awaymission/moonoutpost19/arrivals)
 "OB" = (
-/mob/living/simple_animal/hostile/construct/proteon/hostile,
+/mob/living/basic/construct/proteon/hostile,
 /turf/open/misc/asteroid/moon{
 	initial_gas_mix = "co2=48.7;n2=13.2;o2=32.4;TEMP=251"
 	},
@@ -5896,7 +5894,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "OO" = (
 /obj/structure/alien/weeds/node,
 /mob/living/simple_animal/hostile/alien,
@@ -5997,7 +5995,7 @@
 /obj/item/radio/intercom/directional/west,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Ps" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/bar,
@@ -6160,7 +6158,7 @@
 	dir = 8
 	},
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Ql" = (
 /obj/machinery/computer/aifixer,
 /obj/structure/window/reinforced/spawner/directional/north,
@@ -6194,7 +6192,7 @@
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "Qv" = (
-/obj/item/stack/tile/iron,
+/obj/item/stack/tile/iron/base,
 /turf/open/misc/asteroid/moon{
 	initial_gas_mix = "co2=48.7;n2=13.2;o2=32.4;TEMP=251"
 	},
@@ -6231,7 +6229,7 @@
 "QT" = (
 /obj/effect/turf_decal/lunar_sand,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "QV" = (
 /obj/structure/alien/weeds/node,
 /obj/effect/decal/cleanable/blood,
@@ -6299,7 +6297,7 @@
 "Rl" = (
 /obj/effect/mapping_helpers/burnt_floor,
 /obj/item/flashlight/flare{
-	on = 1
+	start_on = 1
 	},
 /turf/open/floor/iron{
 	initial_gas_mix = "co2=48.7;n2=13.2;o2=32.4;TEMP=251";
@@ -6539,6 +6537,9 @@
 /obj/effect/turf_decal/tile/red/anticorner/contrasted,
 /turf/open/floor/iron,
 /area/awaymission/moonoutpost19/research)
+"SA" = (
+/turf/closed/wall/rust,
+/area/awaymission/moonoutpost19/arrivals/shed)
 "SB" = (
 /turf/open/floor/pod/light,
 /area/awaymission/moonoutpost19/tent)
@@ -6584,7 +6585,7 @@
 	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Tb" = (
 /obj/effect/turf_decal/tile/neutral,
 /turf/open/floor/iron{
@@ -6620,7 +6621,7 @@
 /obj/effect/turf_decal/lunar_sand/plating,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Tp" = (
 /obj/item/pickaxe/drill,
 /turf/open/misc/asteroid/moon{
@@ -6635,6 +6636,7 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 8
 	},
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark,
 /area/awaymission/moonoutpost19/syndicate)
 "Ts" = (
@@ -6972,10 +6974,6 @@
 	temperature = 251
 	},
 /area/awaymission/moonoutpost19/syndicate)
-"VB" = (
-/obj/machinery/light/directional/east,
-/turf/open/floor/iron/dark,
-/area/awaymission/moonoutpost19/syndicate)
 "VC" = (
 /obj/machinery/space_heater,
 /obj/effect/decal/cleanable/dirt,
@@ -7004,7 +7002,7 @@
 	},
 /obj/item/clothing/under/shorts/black,
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "VL" = (
 /obj/structure/table/reinforced,
 /obj/structure/window/reinforced/spawner/directional/west,
@@ -7265,7 +7263,7 @@
 /area/awaymission/moonoutpost19/syndicate)
 "WS" = (
 /obj/item/flashlight/flare{
-	on = 1
+	start_on = 1
 	},
 /turf/open/misc/asteroid/moon{
 	initial_gas_mix = "co2=48.7;n2=13.2;o2=32.4;TEMP=251"
@@ -7399,14 +7397,14 @@
 	dir = 1
 	},
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "XN" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
 /obj/machinery/airalarm/directional/south,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Yb" = (
 /obj/effect/decal/cleanable/xenoblood/xgibs/limb,
 /turf/open/misc/asteroid/moon{
@@ -7427,7 +7425,7 @@
 /obj/structure/table,
 /obj/structure/bedsheetbin,
 /obj/item/clothing/neck/tie/black,
-/obj/item/clothing/under/suit/black,
+/obj/item/clothing/under/costume/buttondown/slacks/service,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
@@ -7447,7 +7445,7 @@
 /turf/open/floor/iron,
 /area/awaymission/moonoutpost19/syndicate)
 "Yh" = (
-/obj/structure/closet/mini_fridge,
+/obj/structure/closet/mini_fridge/grimy,
 /obj/item/food/pizzaslice/margherita,
 /obj/item/food/pizzaslice/margherita{
 	pixel_x = 5;
@@ -7501,7 +7499,7 @@
 	id = "awaymission19atvs"
 	},
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "Yr" = (
 /obj/effect/turf_decal/stripes/asteroid/line,
 /obj/effect/turf_decal/lunar_sand/plating,
@@ -7537,7 +7535,7 @@
 	pixel_x = 4
 	},
 /turf/open/floor/plastic,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "YC" = (
 /obj/structure/cable,
 /obj/structure/lattice/catwalk,
@@ -7752,7 +7750,6 @@
 /turf/open/floor/plating,
 /area/awaymission/moonoutpost19/syndicate)
 "ZF" = (
-/obj/machinery/light/directional/east,
 /obj/machinery/airalarm/directional/east{
 	req_access = "150"
 	},
@@ -7810,7 +7807,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /turf/open/floor/plating,
-/area/awaymission/moonoutpost19/arrivals)
+/area/awaymission/moonoutpost19/arrivals/shed)
 "ZV" = (
 /obj/structure/alien/weeds,
 /obj/structure/bed/nest,
@@ -31655,11 +31652,11 @@ Vb
 Vb
 vv
 Om
-hI
+SA
 Om
-hI
+SA
 Om
-hI
+SA
 Om
 dA
 dA
@@ -31917,7 +31914,7 @@ Pp
 YB
 uM
 JG
-hI
+SA
 dA
 dA
 dA
@@ -32174,7 +32171,7 @@ Nn
 AU
 zt
 LQ
-hI
+SA
 dA
 dA
 dA
@@ -32688,7 +32685,7 @@ Ta
 Na
 pc
 XN
-hI
+SA
 dA
 dA
 dA
@@ -32941,11 +32938,11 @@ Vb
 Ck
 Om
 oz
-CV
+MF
 ZT
 QT
-CV
-hI
+MF
+SA
 dA
 dA
 dA
@@ -41272,7 +41269,7 @@ ac
 at
 tX
 TF
-oD
+DQ
 oJ
 Ob
 Ul
@@ -42300,7 +42297,7 @@ ac
 at
 lC
 UI
-VB
+DQ
 Wg
 Tr
 lV

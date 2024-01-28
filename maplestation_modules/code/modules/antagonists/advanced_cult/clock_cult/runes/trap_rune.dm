@@ -37,7 +37,7 @@
 
 /obj/effect/rune/clock_trap/Destroy(force)
 	for(var/mob/living/carbon/person as anything in people_we_dazed)
-		UnregisterSignal(person, COMSIG_PARENT_QDELETING)
+		UnregisterSignal(person, COMSIG_QDELETING)
 
 	LAZYCLEARLIST(people_we_dazed)
 	return ..()
@@ -102,7 +102,7 @@
 /obj/effect/rune/clock_trap/proc/daze_victim(mob/living/carbon/victim)
 	// Keep track of the people we hit for later. But also don't hard-delete
 	LAZYADD(people_we_dazed, victim)
-	RegisterSignal(victim, COMSIG_PARENT_QDELETING, PROC_REF(clear_references))
+	RegisterSignal(victim, COMSIG_QDELETING, PROC_REF(clear_references))
 
 	if(victim.is_blind())
 		to_chat(victim, span_userdanger("Something warm envelops you and dazes you!"))
@@ -115,14 +115,14 @@
 	victim.adjust_confusion(40 SECONDS)
 
 	playsound(get_turf(victim), 'sound/magic/blind.ogg', 15, FALSE, SILENCED_SOUND_EXTRARANGE, pressure_affected = FALSE, ignore_walls = FALSE)
-	victim.mob_light(_range = 2, _color = LIGHT_COLOR_TUNGSTEN, _duration = 0.8 SECONDS)
+	victim.mob_light(range = 2, color = LIGHT_COLOR_TUNGSTEN, duration = 0.8 SECONDS)
 	new /obj/effect/temp_visual/clock/disable(get_turf(victim))
 
 /obj/effect/rune/clock_trap/proc/clear_references(datum/source, force)
 	SIGNAL_HANDLER
 
 	LAZYREMOVE(people_we_dazed, source)
-	UnregisterSignal(source, COMSIG_PARENT_QDELETING)
+	UnregisterSignal(source, COMSIG_QDELETING)
 
 /obj/effect/rune/clock_trap/conceal()
 	return

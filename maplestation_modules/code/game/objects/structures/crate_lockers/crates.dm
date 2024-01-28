@@ -271,11 +271,13 @@
 // No, it's blacklisted from the events that use it for a reason.
 /obj/structure/closet/crate/resource_cache/random_materials
 	desc = "A steel crate. This one seems like trouble."
+	storage_capacity = 50
 
 /obj/structure/closet/crate/resource_cache/random_materials/Initialize(mapload)
+	var/random_types = subtypesof(/obj/item/stack)
 	for(var/i in 1 to rand(2, 4))
-		resources += list(pick(subtypesof(/obj/item/stack)) = round(rand(1, 50),5))
-	. = ..()
+		resources[pick(random_types)] = round(rand(1, 50), 5)
+	return ..()
 
 //---
 

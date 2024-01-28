@@ -106,7 +106,7 @@
 
 	var/did_alert = FALSE
 	for(var/obj/item/reagent_containers/container in owner)
-		if(container.reagents?.trans_id_to(wetness_pool, water_type, INFINITY) > 0 && !did_alert)
+		if(container.reagents?.trans_to(wetness_pool, INFINITY, 1, water_type) > 0 && !did_alert)
 			container.balloon_alert(owner, "drawing from [container.name]...")
 			did_alert = TRUE
 

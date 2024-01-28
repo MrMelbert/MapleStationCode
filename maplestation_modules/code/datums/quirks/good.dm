@@ -1,57 +1,64 @@
 // -- Good Modular quirks. --
 
-/// Blacklist for the random language quirk. We won't give these languages out.
-#define LANGUAGE_QUIRK_RANDOM_BLACKLIST list( \
-	/datum/language/uncommon, \
-	/datum/language/common, \
-	/datum/language/narsie, \
-	/datum/language/xenocommon )
-
 // Rebalance of existing quirks
 /datum/quirk/jolly
 	value = 3
+
+/datum/quirk/bilingual
+	icon = FA_ICON_GLOBE_EUROPE
+	value = 0
+	desc = "Over the years you've picked up an extra language! \
+		(Made redundant by the Language Picker - use it instead.)"
+	medical_record_text = "Patient is bilingual speaks multiple languages."
 
 // New quirks
 /// Trilingual quirk - Gives the owner a language.
 /datum/quirk/trilingual
 	name = "Trilingual"
-	desc = "You're trilingual - you know another random language besides common and your native tongue. (If you take this quirk, you cannot select an additional language.)"
+	desc = "You're trilingual (or bilingual if you're a human) - \
+		you know another completely random language besides common and your native tongue. \
+		(If you take this quirk, you cannot pick a language via the Language Picker.)"
 	icon = FA_ICON_GLOBE
 	value = 1
-	gain_text = "<span class='notice'>You understand a new language.</span>"
-	lose_text = "<span class='notice'>You no longer understand a new language.</span>"
+	gain_text = span_notice("You understand a new language.")
+	lose_text = span_notice("You no longer understand a new language.")
 	medical_record_text = "Patient is trilingual and knows multiple languages."
 	mail_goodies = list(/obj/item/taperecorder)
 	/// The language we added with this quirk.
-	var/added_language
+	var/datum/language/added_language
 
 /datum/quirk/trilingual/add()
+	var/list/possible_languages = GLOB.all_languages.Copy() - list(
+		/datum/language/common,
+		/datum/language/eldritch,
+		/datum/language/isatoa,
+		/datum/language/narsie,
+		/datum/language/ratvarian,
+		/datum/language/uncommon,
+		/datum/language/xenocommon,
+	)
+
 	var/datum/language_holder/quirk_holder_languages = quirk_holder.get_language_holder()
-	added_language = pick(GLOB.all_languages - LANGUAGE_QUIRK_RANDOM_BLACKLIST)
+	added_language = pick(possible_languages)
 	var/attempts = 1
 	/// Try to find a language this mob doesn't already have.
 	while(quirk_holder_languages.has_language(added_language))
-		added_language = pick(GLOB.all_languages - LANGUAGE_QUIRK_RANDOM_BLACKLIST)
+		added_language = pick(possible_languages)
 		attempts++
 		//If we can't find a language after a dozen or two times, give up.
-		if(attempts > GLOB.all_languages.len)
+		if(attempts > length(possible_languages))
 			added_language = null
 			return
 
-	quirk_holder_languages.grant_language(added_language, TRUE, TRUE, LANGUAGE_QUIRK)
+	quirk_holder_languages.grant_language(added_language, ALL, LANGUAGE_QUIRK)
 
-	var/datum/language/added_language_instance = GLOB.language_datum_instances[added_language]
-	if(quirk_holder_languages.has_language(added_language, TRUE))
-		// We understand and speak the added language
-		to_chat(quirk_holder, span_info("You know the [added_language_instance.name] language."))
-	else if(quirk_holder_languages.has_language(added_language, FALSE))
-		// We understand but may not be able to speak the added language
-		to_chat(quirk_holder, span_info("You understand the [added_language_instance.name] language, but may not be able to speak it with your tongue."))
+	if(quirk_holder_languages.has_language(added_language, ALL))
+		to_chat(quirk_holder, span_info("You know the [initial(added_language.name)] \
+			language[quirk_holder_languages.can_speak_language(added_language) ? "" : ", though you may not be able to speak it with your tongue"]."))
 
 /datum/quirk/trilingual/remove()
-	if(added_language)
-		var/datum/language_holder/quirk_holder_languages = quirk_holder.get_language_holder()
-		quirk_holder_languages.remove_language(added_language, TRUE, TRUE, LANGUAGE_QUIRK)
+	if(added_language && !QDELETED(quirk_holder))
+		quirk_holder.get_language_holder().remove_language(added_language, ALL, LANGUAGE_QUIRK)
 
 /datum/quirk/no_appendix
 	name = "Appendicitis Survivor"
@@ -89,7 +96,8 @@
 	if(istype(carbon_holder))
 		carbon_holder.unset_pain_mod(PAIN_MOD_QUIRK)
 
-#undef LANGUAGE_QUIRK_RANDOM_BLACKLIST
+/datum/quirk/prosthetic_organ
+	icon = FA_ICON_HEART_BROKEN
 
 /// You can sprint for longer
 /// (Maybe tie this to the mob's lungs? An idea)

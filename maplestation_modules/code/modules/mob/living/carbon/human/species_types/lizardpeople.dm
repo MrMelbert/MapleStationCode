@@ -9,11 +9,11 @@
 		'maplestation_modules/sound/voice/lizard_3.ogg' = 80,
 	))
 
-// adds hair to the lizards.
-/datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
-	if(C.dna?.features["lizard_has_hair"])
-		species_traits |= HAIR
-	return ..()
+/datum/species/lizard/replace_body(mob/living/carbon/target, datum/species/new_species)
+	. = ..()
+	if(target.dna?.features["lizard_has_hair"])
+		var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
+		head.head_flags |= (HEAD_HAIR|HEAD_FACIAL_HAIR)
 
 /datum/species/lizard/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = COLOR_DARK_LIME

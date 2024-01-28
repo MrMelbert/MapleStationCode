@@ -37,7 +37,7 @@
 		span_cultitalic("You attempt to wrack [target] with immense pain!")
 		)
 
-	user.mob_light(_range = 3, _color = LIGHT_COLOR_BLOOD_MAGIC, _duration = 0.3 SECONDS)
+	user.mob_light(range = 3, color = LIGHT_COLOR_BLOOD_MAGIC, duration = 0.3 SECONDS)
 
 	if(!human_target.can_block_magic())
 		to_chat(user, span_cultitalic("You curse [human_target] with [src]!"))

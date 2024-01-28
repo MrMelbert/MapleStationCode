@@ -90,7 +90,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 /// Initialize our character dummy.
 /datum/preference_middleware/loadout/proc/create_character_preview_view(mob/user)
 	character_preview_view = new(null, preferences)
-	character_preview_view.generate_view("loadout_character_preview_[REF(character_preview_view)]")
+	character_preview_view.generate_view("loadout_preview_[REF(character_preview_view)]")
 	character_preview_view.update_body()
 	character_preview_view.display_to(user)
 	return character_preview_view
@@ -164,7 +164,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
 	src.menu = open_menu
-	RegisterSignal(menu, COMSIG_PARENT_QDELETING, PROC_REF(cleanup_greyscale_menu))
+	RegisterSignal(menu, COMSIG_QDELETING, PROC_REF(cleanup_greyscale_menu))
 
 /datum/preference_middleware/loadout/proc/cleanup_greyscale_menu()
 	SIGNAL_HANDLER

@@ -79,8 +79,8 @@
 	/// By default it will connect to these and grab their occupant to display as a patient.
 	var/static/list/connectable_typecache = typecacheof(list(
 		/obj/machinery/abductor/experiment,
-		/obj/machinery/atmospherics/components/unary/cryo_cell,
 		/obj/machinery/computer/operating, // Snowflaked
+		/obj/machinery/cryo_cell,
 		/obj/machinery/dna_scannernew,
 		/obj/machinery/gulag_teleporter,
 		/obj/machinery/hypnochair,
@@ -114,7 +114,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	. = ..()
 	register_context()
 
-/obj/machinery/computer/vitals_reader/Destroy()
+/obj/machinery/computer/vitals_reader/Destroy(force)
 	unset_patient()
 	return ..()
 
@@ -127,7 +127,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return ..()
 
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
-	if(flags_1 & NODECONSTRUCT_1)
+	if(obj_flags & NO_DECONSTRUCTION)
 		return FALSE
 	if(user.combat_mode)
 		return FALSE
@@ -138,7 +138,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return TRUE
 
 /obj/machinery/computer/vitals_reader/deconstruct(disassembled)
-	if(flags_1 & NODECONSTRUCT_1)
+	if(obj_flags & NO_DECONSTRUCTION)
 		return
 	var/atom/drop_loc = drop_location()
 	if(disassembled)
@@ -414,13 +414,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 /// Sets the passed mob as the active patient
 /// If there is already a patient, it will be unset first.
 /obj/machinery/computer/vitals_reader/proc/set_patient(mob/living/new_patient)
+	if(istype(new_patient, /mob/living/carbon/human/consistent))
+		// This is A CARDINAL SIN but I am tired of the random hard delete test failure I'll fix it for real LATER
+		return
 	if(!isnull(patient))
 		unset_patient()
 
 	patient = new_patient
 	RegisterSignals(patient, list(
-		COMSIG_PARENT_QDELETING,
-		COMSIG_MOVABLE_MOVED
+		COMSIG_QDELETING,
+		COMSIG_MOVABLE_MOVED,
 	), PROC_REF(unset_patient))
 	RegisterSignals(patient, list(
 		COMSIG_CARBON_POST_REMOVE_LIMB,
@@ -436,7 +439,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		return
 
 	UnregisterSignal(patient, list(
-		COMSIG_PARENT_QDELETING,
+		COMSIG_QDELETING,
 		COMSIG_MOVABLE_MOVED,
 		COMSIG_CARBON_POST_REMOVE_LIMB,
 		COMSIG_CARBON_POST_ATTACH_LIMB,

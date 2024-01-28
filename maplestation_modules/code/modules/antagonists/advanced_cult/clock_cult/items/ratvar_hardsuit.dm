@@ -8,7 +8,7 @@
 	worn_icon_state = "clockwork_helmet"
 	inhand_icon_state = null
 	armor_type = /datum/armor/clockword_suit
-	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | PLASMAMAN_HELMET_EXEMPT
+	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | STACKABLE_HELMET_EXEMPT
 	flags_inv = HIDEMASK | HIDEEARS | HIDEEYES | HIDEFACE | HIDEHAIR | HIDEFACIALHAIR | HIDESNOUT
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	cold_protection = HEAD
@@ -42,6 +42,7 @@
 	resistance_flags = NONE
 	strip_delay = 8 SECONDS
 	equip_delay_other = 8 SECONDS
+	hood_up_affix = ""
 
 /datum/armor/clockword_suit
 	melee = 40
@@ -53,8 +54,3 @@
 	fire = 100
 	acid = 100
 	wound = 10
-
-// Hack to get around hooded things changing their icon state
-/obj/item/clothing/suit/hooded/clock/ToggleHood()
-	. = ..()
-	icon_state = initial(icon_state)

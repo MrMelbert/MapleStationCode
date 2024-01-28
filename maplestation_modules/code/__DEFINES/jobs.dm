@@ -5,3 +5,8 @@
 #define JOB_DISPLAY_ORDER_XENOBIOLOGIST 29.2
 
 #define JOB_SYNDICATE (1<<0)
+
+#define JOB_ASSET_PROTECTION "Asset Protection"
+#define JOB_BRIDGE_OFFICER "Bridge Officer"
+#define JOB_ORDNANCE_TECH "Ordnance Technician"
+#define JOB_XENOBIOLOGIST "Xenobiologist"

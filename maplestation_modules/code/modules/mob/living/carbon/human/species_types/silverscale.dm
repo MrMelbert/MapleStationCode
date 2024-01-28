@@ -48,7 +48,7 @@
 		TRAIT_WINE_TASTER,
 	))
 
-/obj/item/organ/internal/tongue/lizard/silver/on_insert(mob/living/carbon/organ_owner, special)
+/obj/item/organ/internal/tongue/lizard/silver/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 
 	if (!ishuman(organ_owner) || isnull(organ_owner.dna))
@@ -80,10 +80,10 @@
 
 	organ_owner.update_body(TRUE)
 
-/obj/item/organ/internal/tongue/lizard/silver/on_remove(mob/living/carbon/organ_owner, special)
+/obj/item/organ/internal/tongue/lizard/silver/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
 
-	if (!ishuman(organ_owner) || isnull(organ_owner.dna))
+	if (!ishuman(organ_owner) || isnull(organ_owner.dna) || QDELING(organ_owner))
 		return
 	var/mob/living/carbon/human/he_who_has_been_outcast = organ_owner
 
@@ -109,12 +109,12 @@
 
 	organ_owner.update_body(TRUE)
 
-	for(var/datum/action/item_action/organ_action/statue/statue in actions)
+	for(var/datum/action/cooldown/turn_to_statue/statue in actions)
 		if(organ_owner.loc == statue.statue)
 			organ_owner.forceMove(statue.statue.loc)
 			organ_owner.Paralyze(12 SECONDS)
 
-/datum/action/item_action/organ_action/statue
+/datum/action/cooldown/turn_to_statue
 	/// Traits granted to the mob when in statue form
 	/// Overlaps with Silverscale traits a bit, don't really care, we're just being thorough
 	var/list/traits_in_statue = list(
@@ -132,22 +132,19 @@
 		TRAIT_NEVER_WOUNDED,
 	)
 
-/datum/action/item_action/organ_action/statue/New(Target)
+/datum/action/cooldown/turn_to_statue/init_statue()
 	. = ..()
-	statue.set_armor(/datum/armor/silverscale_statue_armor)
-	statue.flags_ricochet |= RICOCHET_SHINY
 	RegisterSignal(statue, COMSIG_ATOM_ENTERED, PROC_REF(statue_entered))
 	RegisterSignal(statue, COMSIG_ATOM_EXITED, PROC_REF(statue_exited))
-	RegisterSignal(statue, COMSIG_OBJ_DECONSTRUCT, PROC_REF(statue_deconstructed))
 
-/datum/action/item_action/organ_action/statue/Trigger(trigger_flags)
+/datum/action/cooldown/turn_to_statue/Activate(atom/target)
 	if(owner.loc != statue)
 		// Fixes a weird bug where the overlays of the previous time you entered statue form stuck around.
 		statue.cut_overlays()
 
 	return ..()
 
-/datum/action/item_action/organ_action/statue/proc/statue_entered(datum/source, mob/living/lizard)
+/datum/action/cooldown/turn_to_statue/proc/statue_entered(datum/source, mob/living/lizard)
 	SIGNAL_HANDLER
 
 	if(lizard != owner)
@@ -170,7 +167,7 @@
 	// Ensures it matches your current direction, rather the last direction
 	statue.setDir(lizard.dir)
 
-/datum/action/item_action/organ_action/statue/proc/statue_exited(datum/source, mob/living/lizard)
+/datum/action/cooldown/turn_to_statue/proc/statue_exited(datum/source, mob/living/lizard)
 	SIGNAL_HANDLER
 
 	if(lizard != owner)
@@ -189,25 +186,6 @@
 	// Matches up dirs again, someone could've rotated our statue
 	lizard.setDir(statue.dir)
 
-/datum/action/item_action/organ_action/statue/statue_destroyed(datum/source)
-	statue = null
-	qdel(src)
-
-/datum/action/item_action/organ_action/statue/proc/statue_deconstructed(datum/source, disassembled)
-	SIGNAL_HANDLER
-	to_chat(owner, span_userdanger("You watch as your statue is [disassembled ? "taken apart, piece by piece" : "broken apart"] - and with it, your life force!"))
-	statue.visible_message(span_warning("[statue] shatters into dust!"))
-	var/mob/living/lizard = owner
-	lizard.forceMove(statue.loc)
-	lizard.dust(drop_items = TRUE)
-
-/datum/armor/silverscale_statue_armor
-	melee = 50
-	bullet = 50
-	laser = 75
-	energy = 50
-	bomb = 50
-
 /datum/mood_event/silverscale_lost_tongue
 	description = "I lost my silvery tongue, the link between me and the silverscale society -- I need it back, or else I'll be considered sub-lizard!"
 	mood_change = -25 // God forbid you return to your society without your tongue - you're an outcast, now
@@ -218,13 +196,8 @@
 
 /datum/species/lizard/silverscale
 	plural_form = "Silverscales"
-	armor = 0 //It belongs on the tongue now
-
+	damage_modifier = 0 //It belongs on the tongue now
 	mutantlungs = /obj/item/organ/internal/lungs
-	inherent_traits = list(
-		TRAIT_CAN_USE_FLIGHT_POTION,
-		TRAIT_TACKLING_TAILED_DEFENDER,
-	)
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	. = ..()

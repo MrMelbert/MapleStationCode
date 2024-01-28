@@ -23,7 +23,7 @@
 	to_chat(owner, span_danger("Your [next_leg?.plaintext_zone || "leg"] hurts to walk on!"))
 
 /datum/status_effect/limp/pain/get_examine_text()
-	return span_warning("[owner.p_theyre(TRUE)] limping with every move.")
+	return span_warning("[owner.p_Theyre()] limping with every move.")
 
 /datum/status_effect/limp/pain/on_remove()
 	. = ..()

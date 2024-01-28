@@ -6,7 +6,7 @@
 	return string_assoc_list(list('maplestation_modules/sound/voice/pod.ogg' = 70, 'maplestation_modules/sound/voice/pod2.ogg' = 60))
 
 /datum/species/pod/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = "886600" // player reference :smug:
+	human.dna.features["mcolor"] = "#886600" // player reference :smug:
 	human.dna.features["pod_hair"] = "Rose"
 	human.update_body(is_creating = TRUE)
 
@@ -32,7 +32,7 @@
 		SPECIES_PERK_ICON = "sun",
 		SPECIES_PERK_NAME = "Photosynthesis",
 		SPECIES_PERK_DESC = "Podpeople feed themselves and heal when exposed to light, \
-			and wilt and starve when living in darkness.",
+			but wilt and starve when living in darkness.",
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,

@@ -40,24 +40,9 @@
 	can_be_bloody = FALSE
 	resistance_flags = INDESTRUCTIBLE
 
-/obj/item/clothing/gloves/randallgloves/pre_attack(atom/A, mob/living/user, params)
+/obj/item/clothing/gloves/randallgloves/Initialize(mapload)
 	. = ..()
-	if(.)
-		return
-
-	if(!isliving(A))
-		return
-
-	if(deprecise_zone(user.zone_selected) != BODY_ZONE_HEAD)
-		return
-
-	var/mob/living/slapped = A
-	user.visible_message(span_warning("[user] slaps [slapped] with [src]!"), span_warning("You slap [slapped] with [src]!"), span_hear("You hear a slap."))
-	playsound(slapped, 'sound/weapons/slap.ogg', get_clamped_volume(), TRUE)
-	slapped.Knockdown(1 SECONDS)
-	user.do_attack_animation(slapped, used_item = src)
-	user.changeNext_move(CLICK_CD_MELEE)
-	return TRUE
+	AddElement(/datum/element/glove_slapper)
 
 /datum/outfit/randall
 	name = "The United Amateur"

@@ -58,12 +58,12 @@
 				return ELEMENT_INCOMPATIBLE
 
 	if(hint)
-		RegisterSignal(thing, COMSIG_PARENT_EXAMINE, PROC_REF(hint_at))
-	RegisterSignal(thing, COMSIG_PARENT_EXAMINE_MORE, PROC_REF(examine))
+		RegisterSignal(thing, COMSIG_ATOM_EXAMINE, PROC_REF(hint_at))
+	RegisterSignal(thing, COMSIG_ATOM_EXAMINE_MORE, PROC_REF(examine))
 
 /datum/element/unique_examine/Detach(atom/thing)
 	. = ..()
-	UnregisterSignal(thing, list(COMSIG_PARENT_EXAMINE, COMSIG_PARENT_EXAMINE_MORE))
+	UnregisterSignal(thing, list(COMSIG_ATOM_EXAMINE, COMSIG_ATOM_EXAMINE_MORE))
 
 /datum/element/unique_examine/proc/hint_at(datum/source, mob/examiner, list/examine_list)
 	// What IS this thing anyways?

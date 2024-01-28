@@ -13,8 +13,11 @@
 	paralyze = 0
 	knockdown = 5 SECONDS
 
-/obj/projectile/bullet/shotgun_meteorslug/on_hit(atom/target, blocked = FALSE)
+/obj/projectile/bullet/shotgun_meteorslug/on_hit(atom/target, blocked = FALSE, pierce_hit)
 	. = ..()
-	if(iscarbon(target))
-		var/mob/living/carbon/unfortunate_soul = target
-		unfortunate_soul.sharp_pain(BODY_ZONES_ALL, 50) //OW MY BONES
+	if(. != BULLET_ACT_HIT)
+		return
+	if(!iscarbon(target))
+		return
+	var/mob/living/carbon/unfortunate_soul = target
+	unfortunate_soul.sharp_pain(BODY_ZONES_ALL, 50) //OW MY BONES

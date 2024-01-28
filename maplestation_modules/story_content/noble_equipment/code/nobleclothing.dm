@@ -129,24 +129,9 @@
 	icon_state = "elegantgloves"
 	inhand_icon_state = "elegantgloves"
 
-/obj/item/clothing/gloves/chiffon/pre_attack(atom/A, mob/living/user, params)
+/obj/item/clothing/gloves/chiffon/Initialize(mapload)
 	. = ..()
-	if(.)
-		return
-
-	if(!isliving(A))
-		return
-
-	if(deprecise_zone(user.zone_selected) != BODY_ZONE_HEAD)
-		return
-
-	var/mob/living/slapped = A
-	user.visible_message(span_warning("[user] slaps [slapped] with [src]!"), span_warning("You slap [slapped] with [src]!"), span_hear("You hear a slap."))
-	playsound(slapped, 'sound/weapons/slap.ogg', get_clamped_volume(), TRUE)
-	slapped.Knockdown(1 SECONDS)
-	user.do_attack_animation(slapped, used_item = src)
-	user.changeNext_move(CLICK_CD_MELEE)
-	return TRUE
+	AddElement(/datum/element/glove_slapper)
 
 //The type path is a lie.
 /obj/item/clothing/shoes/chiffon
@@ -295,24 +280,9 @@
 	resistance_flags = FIRE_PROOF|ACID_PROOF
 	armor_type = /datum/armor/plauge
 
-/obj/item/clothing/gloves/latex/nitrile/plague/pre_attack(atom/A, mob/living/user, params)
+/obj/item/clothing/gloves/latex/nitrile/plague/Initialize(mapload)
 	. = ..()
-	if(.)
-		return
-
-	if(!isliving(A))
-		return
-
-	if(deprecise_zone(user.zone_selected) != BODY_ZONE_HEAD)
-		return
-
-	var/mob/living/slapped = A
-	user.visible_message(span_warning("[user] slaps [slapped] with [src]!"), span_warning("You slap [slapped] with [src]!"), span_hear("You hear a slap."))
-	playsound(slapped, 'sound/weapons/slap.ogg', get_clamped_volume(), TRUE)
-	slapped.Knockdown(1 SECONDS)
-	user.do_attack_animation(slapped, used_item = src)
-	user.changeNext_move(CLICK_CD_MELEE)
-	return TRUE
+	AddElement(/datum/element/glove_slapper)
 
 /obj/item/clothing/under/rank/plague
 	name = "shadowlace plague gown"
@@ -328,7 +298,10 @@
 	body_parts_covered = CHEST|GROIN|LEGS
 	alternate_worn_layer = ABOVE_SHOES_LAYER
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	armor_type = /datum/armor/plauge
+	armor_type = /datum/armor/clothing_under/plague
+
+/datum/armor/clothing_under/plague
+	bio = 100
 
 /datum/armor/plauge
 	bio = 100

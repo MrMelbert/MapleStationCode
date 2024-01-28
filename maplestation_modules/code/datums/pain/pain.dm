@@ -132,7 +132,7 @@
 		adjust_bodypart_pain(new_limb.body_zone, new_limb.pain)
 		adjust_bodypart_pain(BODY_ZONE_CHEST, new_limb.pain / 3)
 
-	RegisterSignal(new_limb, COMSIG_PARENT_QDELETING, PROC_REF(limb_delete))
+	RegisterSignal(new_limb, COMSIG_QDELETING, PROC_REF(limb_delete))
 
 /**
  * Remove a limb from being tracked.
@@ -142,7 +142,7 @@
  * special - whether this limb being removed should have side effects (if TRUE, likely being removed on initialization)
  * dismembered - whether this limb was dismembered
  */
-/datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, dismembered, special)
+/datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, special, dismembered)
 	SIGNAL_HANDLER
 
 	var/bad_zone = lost_limb.body_zone
@@ -150,7 +150,7 @@
 		CRASH("Pain datum tried to remove a bodypart that wasn't being tracked!")
 
 	body_zones -= bad_zone
-	UnregisterSignal(lost_limb, COMSIG_PARENT_QDELETING)
+	UnregisterSignal(lost_limb, COMSIG_QDELETING)
 
 	if(!QDELETED(parent) && !special)
 		var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
@@ -408,7 +408,7 @@
 						pain += 2
 					if(80 to INFINITY)
 						pain += 3
-			else if(HAS_TRAIT(parent, TRAIT_NOMETABOLISM))
+			else if(HAS_TRAIT(parent, TRAIT_LIVERLESS_METABOLISM))
 				pain = 1
 			else
 				pain = damage * 2
@@ -459,12 +459,6 @@
 					pain += 1
 				if(50 to INFINITY)
 					pain += 3
-
-		// Cellular pain is dealt to all bodyparts
-		if(CLONE)
-			if(HAS_TRAIT(parent, TRAIT_NOCLONELOSS))
-				return
-			def_zone = BODY_ZONES_ALL
 
 		// No pain from stamina loss
 		// In the future stamina can probably cause very sharp pain and replace stamcrit,
@@ -647,7 +641,7 @@
 				parent.adjust_confusion_up_to(8 SECONDS, 24 SECONDS)
 
 	// Finally, handle pain decay over time
-	if(IS_IN_STASIS(parent) || parent.on_fire || parent.stat == DEAD)
+	if(HAS_TRAIT(parent, TRAIT_STASIS) || parent.on_fire || parent.stat == DEAD)
 		return
 
 	// Decay every 5 ticks / 10 seconds, or 2 ticks / 4 seconds if "sleeping"

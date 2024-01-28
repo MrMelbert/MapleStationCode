@@ -18,10 +18,6 @@
 
 /datum/surgery/healing/can_start(mob/user, mob/living/patient)
 	. = ..()
-	if(isanimal(patient))
-		var/mob/living/simple_animal/critter = patient
-		if(!critter.healable)
-			return FALSE
 	if(!(patient.mob_biotypes & (MOB_ORGANIC|MOB_HUMANOID)))
 		return FALSE
 
@@ -72,7 +68,7 @@
 				span_notice("[user] attempts to patch some of [target]'s [woundtype]."),
 				span_notice("[user] attempts to patch some of [target]'s [woundtype]."),
 			)
-		display_pain(target, "Your [woundtype] sting like hell!", target_zone = target_zone, target_zone = target_zone) // NON-MODULE CHANGE
+		display_pain(target, "Your [woundtype] sting like hell!", target_zone = target_zone) // NON-MODULE CHANGE
 
 /datum/surgery_step/heal/initiate(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	if(!..())
@@ -86,12 +82,15 @@
 	var/target_msg = "[user] fixes some of [target]'s wounds" //see above
 	var/brute_healed = brutehealing
 	var/burn_healed = burnhealing
+	var/dead_patient = FALSE
 	if(target.stat == DEAD) //dead patients get way less additional heal from the damage they have.
 		brute_healed += round((target.getBruteLoss() * (brute_multiplier * 0.2)),0.1)
 		burn_healed += round((target.getFireLoss() * (burn_multiplier * 0.2)),0.1)
+		dead_patient = TRUE
 	else
 		brute_healed += round((target.getBruteLoss() * brute_multiplier),0.1)
 		burn_healed += round((target.getFireLoss() * burn_multiplier),0.1)
+		dead_patient = FALSE
 	if(!get_location_accessible(target, target_zone))
 		brute_healed *= 0.55
 		burn_healed *= 0.55
@@ -100,6 +99,10 @@
 	target.heal_bodypart_damage(brute_healed,burn_healed)
 
 	user_msg += get_progress(user, target, brute_healed, burn_healed)
+
+	if(HAS_MIND_TRAIT(user, TRAIT_MORBID) && ishuman(user) && !dead_patient) //Morbid folk don't care about tending the dead as much as tending the living
+		var/mob/living/carbon/human/morbid_weirdo = user
+		morbid_weirdo.add_mood_event("morbid_tend_wounds", /datum/mood_event/morbid_tend_wounds)
 
 	display_results(
 		user,

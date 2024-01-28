@@ -10,6 +10,10 @@
 /obj/structure/table,
 /turf/open/floor/pod/light,
 /area/shuttle/hunter)
+"g" = (
+/obj/machinery/light/floor,
+/turf/open/floor/pod/dark,
+/area/shuttle/hunter)
 "h" = (
 /obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,
 /turf/open/floor/plating,
@@ -22,11 +26,25 @@
 /obj/structure/curtain/bounty,
 /turf/open/floor/pod/dark,
 /area/shuttle/hunter)
+"k" = (
+/obj/machinery/suit_storage_unit/standard_unit{
+	storage_type = /obj/item/tank/internals/oxygen/yellow
+	},
+/obj/machinery/light/small/directional/south,
+/turf/open/floor/pod/light,
+/area/shuttle/hunter)
 "l" = (
 /obj/machinery/power/shuttle_engine/propulsion{
 	dir = 8
 	},
 /turf/open/floor/plating/airless,
+/area/shuttle/hunter)
+"m" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/plating,
 /area/shuttle/hunter)
 "n" = (
 /turf/closed/wall/mineral/plastitanium,
@@ -35,6 +53,11 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
+/turf/open/floor/plating,
+/area/shuttle/hunter)
+"q" = (
+/obj/effect/turf_decal/stripes/line,
+/obj/machinery/light/small/directional/west,
 /turf/open/floor/plating,
 /area/shuttle/hunter)
 "r" = (
@@ -104,6 +127,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
+/obj/machinery/light/floor,
 /turf/open/floor/pod/dark,
 /area/shuttle/hunter)
 "D" = (
@@ -202,6 +226,7 @@
 "W" = (
 /obj/structure/table,
 /obj/item/storage/toolbox/mechanical,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/pod/light,
 /area/shuttle/hunter)
 "X" = (
@@ -321,13 +346,13 @@ n
 F
 p
 G
-T
+q
 w
 A
 C
 Z
 Q
-p
+m
 G
 T
 U
@@ -371,7 +396,7 @@ f
 E
 P
 O
-t
+k
 n
 h
 a
@@ -429,7 +454,7 @@ a
 h
 S
 O
-O
+g
 O
 S
 h

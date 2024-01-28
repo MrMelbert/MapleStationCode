@@ -1,8 +1,9 @@
-import { Component, createRef } from 'inferno';
+import { Component, createRef } from 'react';
+
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Box, BlockQuote, Button, Section, Stack } from '../components';
-import { Connections } from './IntegratedCircuit/Connections';
+import { BlockQuote, Button, Image, Section, Stack } from '../components';
+import { Connections } from './common/Connections';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
   switch (cat) {
@@ -67,7 +68,7 @@ const catToPos = (cat: string | null): { x: number; y: number } => {
 
 const getActiveCategory = (
   limbs: LimbCategory[],
-  cat: string | null
+  cat: string | null,
 ): LimbCategory | null => {
   if (!cat) {
     return null;
@@ -97,11 +98,11 @@ type Limb = {
   path: string;
 };
 
-const LimbSelectButton = (
-  props: { select_limb: Limb; selected_limbs: string[] | null },
-  context
-) => {
-  const { act, data } = useBackend<Limb>(context);
+const LimbSelectButton = (props: {
+  select_limb: Limb;
+  selected_limbs: string[] | null;
+}) => {
+  const { act, data } = useBackend<Limb>();
   const { select_limb, selected_limbs } = props;
   const is_active = selected_limbs?.includes(select_limb.path);
   return (
@@ -119,15 +120,12 @@ const LimbSelectButton = (
   );
 };
 
-const DisplayLimbs = (
-  props: {
-    selected_limbs: string[] | null;
-    limbs: LimbCategory[];
-    current_selection: string | null;
-  },
-  context
-) => {
-  const { data } = useBackend<LimbCategory>(context);
+const DisplayLimbs = (props: {
+  selected_limbs: string[] | null;
+  limbs: LimbCategory[];
+  current_selection: string | null;
+}) => {
+  const { data } = useBackend<LimbCategory>();
   const { selected_limbs, limbs, current_selection } = props;
 
   const limb_category = getActiveCategory(limbs, current_selection);
@@ -213,21 +211,21 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
           <div
             ref={this.ref}
             style={{
-              'width': '100%',
-              'height': '100%',
-              'position': 'relative',
-              'z-index': 1,
-            }}>
-            <Box
-              as="img"
+              width: '100%',
+              height: '100%',
+              position: 'relative',
+              zIndex: '1',
+            }}
+          >
+            <Image
               m={1}
               src={`data:image/jpeg;base64,${preview_flat_icon}`}
               height={width}
               width={height}
+              fixBlur
               style={{
-                '-ms-interpolation-mode': 'nearest-neighbor',
-                'position': 'absolute',
-                'z-index': 1,
+                position: 'absolute',
+                zIndex: '1',
               }}
               onClick={(event) => {
                 const { x, y } = updateXYState(event);
@@ -240,33 +238,31 @@ class LimbPreview extends Component<PreviewProps, PreviewState> {
               }}
             />
             {selected && (
-              <Box
-                as="img"
+              <Image
                 m={1}
                 src={resolveAsset(`body_zones.${selected}.png`)}
                 height={width}
                 width={height}
+                fixBlur
                 style={{
-                  '-ms-interpolation-mode': 'nearest-neighbor',
-                  'pointer-events': 'none',
-                  'position': 'absolute',
-                  'z-index': 3,
+                  pointerEvents: 'none',
+                  position: 'absolute',
+                  zIndex: '3',
                 }}
               />
             )}
             {current_cat && current_cat !== selected && (
-              <Box
-                as="img"
+              <Image
                 m={1}
                 src={resolveAsset(`body_zones.${current_cat}.png`)}
                 height={width}
                 width={height}
+                fixBlur
                 style={{
-                  '-ms-interpolation-mode': 'nearest-neighbor',
-                  'pointer-events': 'none',
-                  'position': 'absolute',
-                  'z-index': 2,
-                  'opacity': 0.5,
+                  pointerEvents: 'none',
+                  position: 'absolute',
+                  zIndex: '2',
+                  opacity: '0.5',
                 }}
               />
             )}
@@ -323,12 +319,7 @@ class LimbManagerInner extends Component<
 
     return (
       <>
-        <Connections
-          connections={connections}
-          zLayer={4}
-          lineWidth={4}
-          height="50%"
-        />
+        <Connections connections={connections} zLayer={4} lineWidth={4} />
         <Stack height="300px">
           <Stack.Item width={20}>
             <Section title="Preview" fill align="center">
@@ -356,8 +347,8 @@ class LimbManagerInner extends Component<
   }
 }
 
-export const LimbManagerPage = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
+export const LimbManagerPage = () => {
+  const { act, data } = useBackend<Data>();
   const { limbs, selected_limbs, preview_flat_icon } = data;
 
   return (

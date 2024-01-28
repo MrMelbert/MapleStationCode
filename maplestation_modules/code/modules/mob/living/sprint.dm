@@ -8,7 +8,7 @@
 
 	if(isnull(sprint_bar))
 		sprint_bar = mutable_appearance(
-			icon = 'icons/effects/progessbar.dmi',
+			icon = 'icons/effects/progressbar.dmi',
 			icon_state = "prog_bar_100",
 		)
 		sprint_bar.pixel_y -= 2
@@ -31,7 +31,7 @@
 	var/momentum_distance = 0
 
 /mob/living/carbon/human
-	m_intent = MOVE_INTENT_WALK
+	move_intent = MOVE_INTENT_WALK
 	/// How many tiles left in your sprint
 	var/sprint_length = 100
 	/// How many tiles you can sprint before spending stamina
@@ -43,7 +43,7 @@
 	. = ..()
 	if(!client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))
 		return
-	if(m_intent == MOVE_INTENT_RUN)
+	if(move_intent == MOVE_INTENT_RUN)
 		playsound_local(get_turf(src), 'maplestation_modules/sound/sprintactivate.ogg', 75, vary = FALSE, pressure_affected = FALSE)
 	else
 		playsound_local(get_turf(src), 'maplestation_modules/sound/sprintdeactivate.ogg', 75, vary = FALSE, pressure_affected = FALSE)
@@ -52,7 +52,7 @@
 	. = ..()
 	if(!.)
 		return
-	if(m_intent == MOVE_INTENT_RUN || sprint_length >= sprint_length_max)
+	if(move_intent == MOVE_INTENT_RUN || sprint_length >= sprint_length_max)
 		return
 
 	adjust_sprint_left(sprint_regen_per_second * seconds_per_tick * (body_position == LYING_DOWN ? 2 : 1))

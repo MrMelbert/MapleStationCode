@@ -3,9 +3,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 10
 	},
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
+/obj/item/kirbyplants/organic/plant21,
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/wood,
 /area/shuttle/escape)
@@ -32,11 +30,6 @@
 	dir = 4
 	},
 /turf/open/floor/carpet/royalblue,
-/area/shuttle/escape)
-"bl" = (
-/obj/structure/chair/stool/directional/east,
-/obj/machinery/light/directional/west,
-/turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "bG" = (
 /obj/structure/table,
@@ -81,6 +74,11 @@
 /obj/machinery/space_heater,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
+"cE" = (
+/obj/structure/bed/dogbed,
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/mineral/titanium/purple,
+/area/shuttle/escape)
 "cF" = (
 /obj/structure/chair/sofa/corp/corner{
 	dir = 1
@@ -119,7 +117,6 @@
 /area/shuttle/escape/brig)
 "dL" = (
 /obj/machinery/space_heater,
-/obj/machinery/light/directional/south,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "el" = (
@@ -152,7 +149,6 @@
 /area/shuttle/escape)
 "fI" = (
 /obj/structure/table/reinforced,
-/obj/machinery/light/directional/north,
 /obj/item/storage/fancy/donut_box,
 /turf/open/floor/iron,
 /area/shuttle/escape)
@@ -168,6 +164,7 @@
 /area/shuttle/escape)
 "ge" = (
 /obj/machinery/status_display/evac/directional/east,
+/obj/machinery/light/directional/east,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "gm" = (
@@ -279,6 +276,7 @@
 /obj/item/canvas,
 /obj/item/canvas,
 /obj/machinery/vending/wallmed/directional/west,
+/obj/machinery/light/directional/north,
 /turf/open/floor/sepia,
 /area/shuttle/escape)
 "hg" = (
@@ -303,7 +301,6 @@
 /area/shuttle/escape)
 "iA" = (
 /obj/machinery/status_display/evac/directional/north,
-/obj/machinery/light/directional/north,
 /obj/effect/turf_decal/siding{
 	dir = 1
 	},
@@ -348,7 +345,6 @@
 "kc" = (
 /obj/structure/table/reinforced,
 /obj/structure/extinguisher_cabinet/directional/north,
-/obj/machinery/light/directional/north,
 /obj/item/storage/fancy/donut_box,
 /turf/open/floor/iron,
 /area/shuttle/escape)
@@ -365,11 +361,6 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
-"kn" = (
-/obj/structure/chair/comfy/shuttle,
-/obj/machinery/light/directional/north,
-/turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/escape/brig)
 "kz" = (
 /obj/structure/chair/stool/directional/west,
 /turf/open/floor/wood,
@@ -434,11 +425,6 @@
 /obj/structure/window/reinforced/spawner/directional/north,
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/mineral/titanium,
-/area/shuttle/escape)
-"mi" = (
-/obj/structure/chair/stool/bar/directional/south,
-/obj/machinery/light/directional/west,
-/turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "mm" = (
 /obj/structure/table/wood/poker,
@@ -586,13 +572,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"qp" = (
-/obj/machinery/light/directional/west,
-/obj/effect/turf_decal/siding{
-	dir = 8
-	},
-/turf/open/floor/carpet/royalblue,
-/area/shuttle/escape)
 "qx" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -630,9 +609,7 @@
 /obj/effect/turf_decal/siding{
 	dir = 9
 	},
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
+/obj/item/kirbyplants/organic/plant21,
 /turf/open/floor/carpet/royalblue,
 /area/shuttle/escape)
 "sd" = (
@@ -644,28 +621,27 @@
 /obj/effect/mapping_helpers/airlock/access/all/security/general,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
-"sj" = (
-/obj/effect/spawner/random/entertainment/arcade,
-/obj/machinery/light/directional/north,
-/turf/open/floor/carpet/green,
-/area/shuttle/escape)
 "so" = (
 /obj/structure/table,
 /obj/item/storage/toolbox/emergency,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "su" = (
+/obj/machinery/light/small/directional/west,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "sx" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
 	},
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
+/obj/item/kirbyplants/organic/plant21,
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/wood,
+/area/shuttle/escape)
+"uz" = (
+/obj/structure/bed/dogbed,
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "vi" = (
 /obj/structure/table,
@@ -676,9 +652,7 @@
 /obj/effect/turf_decal/siding{
 	dir = 10
 	},
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
+/obj/item/kirbyplants/organic/plant21,
 /turf/open/floor/carpet/royalblue,
 /area/shuttle/escape)
 "vv" = (
@@ -707,7 +681,6 @@
 /obj/item/clothing/mask/surgical,
 /obj/item/surgicaldrill,
 /obj/item/cautery,
-/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "vK" = (
@@ -781,10 +754,6 @@
 "wK" = (
 /obj/machinery/vending/boozeomat,
 /turf/open/floor/iron/dark,
-/area/shuttle/escape)
-"wZ" = (
-/obj/machinery/light/directional/west,
-/turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "xc" = (
 /obj/item/radio/intercom/directional/east,
@@ -920,7 +889,6 @@
 /area/template_noop)
 "Bl" = (
 /obj/machinery/vending/wallmed/directional/east,
-/obj/machinery/light/directional/east,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "BY" = (
@@ -989,6 +957,7 @@
 "Eh" = (
 /obj/machinery/stasis,
 /obj/machinery/vending/wallmed/directional/east,
+/obj/machinery/light/directional/north,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "Ei" = (
@@ -997,11 +966,6 @@
 	},
 /obj/item/clothing/head/costume/sombrero/green,
 /turf/open/floor/carpet/green,
-/area/shuttle/escape)
-"Ev" = (
-/obj/structure/easel,
-/obj/machinery/light/directional/east,
-/turf/open/floor/sepia,
 /area/shuttle/escape)
 "Ew" = (
 /obj/structure/chair/comfy/black{
@@ -1019,14 +983,9 @@
 /area/shuttle/escape)
 "EL" = (
 /obj/structure/chair/comfy/shuttle,
-/obj/machinery/light/directional/north,
 /obj/item/radio/intercom/directional/north,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
-"Ff" = (
-/obj/machinery/light/directional/east,
-/turf/open/floor/carpet/green,
-/area/shuttle/escape)
 "Fi" = (
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
@@ -1096,9 +1055,12 @@
 	},
 /turf/open/floor/plating/airless,
 /area/shuttle/escape)
+"Jv" = (
+/obj/machinery/light/floor,
+/turf/open/floor/carpet/royalblue,
+/area/shuttle/escape)
 "JB" = (
 /obj/machinery/status_display/evac/directional/south,
-/obj/machinery/light/directional/south,
 /obj/effect/turf_decal/siding,
 /turf/open/floor/carpet/royalblue,
 /area/shuttle/escape)
@@ -1166,7 +1128,7 @@
 "MS" = (
 /obj/structure/mop_bucket,
 /obj/item/mop,
-/mob/living/simple_animal/bot/cleanbot,
+/mob/living/basic/bot/cleanbot,
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "MT" = (
@@ -1229,12 +1191,12 @@
 /area/shuttle/escape)
 "OI" = (
 /obj/machinery/status_display/evac/directional/west,
+/obj/machinery/light/directional/west,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "OR" = (
 /obj/machinery/portable_atmospherics/canister/air,
 /obj/effect/turf_decal/delivery,
-/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "Pb" = (
@@ -1250,6 +1212,7 @@
 /area/shuttle/escape)
 "Pg" = (
 /obj/structure/extinguisher_cabinet/directional/west,
+/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Pu" = (
@@ -1277,7 +1240,12 @@
 /obj/item/storage/box/drinkingglasses,
 /obj/item/reagent_containers/cup/glass/shaker,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron,
+/area/shuttle/escape)
+"PD" = (
+/obj/machinery/light/floor,
+/turf/open/floor/wood,
 /area/shuttle/escape)
 "PM" = (
 /obj/effect/turf_decal/siding/thinplating{
@@ -1287,7 +1255,7 @@
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
 "PP" = (
-/mob/living/simple_animal/bot/medbot{
+/mob/living/basic/bot/medbot{
 	name = "\improper emergency medibot";
 	pixel_x = -3;
 	pixel_y = 2
@@ -1301,6 +1269,7 @@
 /area/shuttle/escape)
 "PW" = (
 /obj/structure/reagent_dispensers/wall/peppertank/directional/east,
+/obj/machinery/light/directional/east,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Qk" = (
@@ -1343,19 +1312,12 @@
 /obj/effect/turf_decal/siding{
 	dir = 1
 	},
+/obj/machinery/light/floor,
 /turf/open/floor/carpet/royalblue,
 /area/shuttle/escape)
-"SQ" = (
-/obj/structure/chair/comfy/shuttle{
-	dir = 1
-	},
-/obj/machinery/light/directional/south,
-/turf/open/floor/mineral/plastitanium/red,
-/area/shuttle/escape/brig)
 "Tb" = (
 /obj/structure/chair/stool/directional/north,
 /obj/effect/turf_decal/siding/wood,
-/obj/machinery/light/directional/south,
 /turf/open/floor/wood,
 /area/shuttle/escape)
 "Ty" = (
@@ -1363,6 +1325,7 @@
 /area/shuttle/escape)
 "TE" = (
 /obj/effect/turf_decal/siding,
+/obj/machinery/light/floor,
 /turf/open/floor/carpet/royalblue,
 /area/shuttle/escape)
 "Ue" = (
@@ -1373,7 +1336,6 @@
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/escape)
 "Vj" = (
-/obj/machinery/light/directional/north,
 /obj/structure/closet/crate/bin,
 /turf/open/floor/carpet/green,
 /area/shuttle/escape)
@@ -1401,7 +1363,6 @@
 /area/shuttle/escape)
 "Wq" = (
 /obj/structure/extinguisher_cabinet/directional/west,
-/obj/machinery/light/directional/west,
 /obj/effect/turf_decal/siding{
 	dir = 8
 	},
@@ -1616,7 +1577,7 @@ Ac
 Fv
 LR
 Km
-Fv
+LR
 CL
 LR
 CL
@@ -1648,16 +1609,16 @@ Uu
 "}
 (7,1,1) = {"
 Uu
-sj
+BY
 yl
 Wp
-mi
+gm
 iN
 OI
 mm
 cb
 Wp
-bl
+qi
 PS
 dL
 Uu
@@ -1811,7 +1772,7 @@ sd
 dy
 dy
 dy
-SQ
+Lv
 Uu
 "}
 (15,1,1) = {"
@@ -1823,7 +1784,7 @@ aS
 aS
 YS
 AA
-RZ
+PD
 kz
 kz
 RZ
@@ -1892,7 +1853,7 @@ Yc
 YN
 Tb
 Uu
-kn
+Ru
 dy
 dp
 Lv
@@ -1907,7 +1868,7 @@ aS
 aS
 Gf
 AA
-RZ
+PD
 Av
 Av
 RZ
@@ -1937,7 +1898,7 @@ vK
 dy
 dy
 oz
-SQ
+Lv
 Uu
 "}
 (21,1,1) = {"
@@ -2075,7 +2036,7 @@ Bl
 Wp
 ge
 Wp
-Ff
+Wp
 Wp
 Wp
 xc
@@ -2083,7 +2044,7 @@ dL
 Uu
 LL
 iz
-Ev
+iz
 iz
 Uu
 "}
@@ -2120,12 +2081,12 @@ Wq
 mn
 mn
 mn
-qp
+mn
 vn
 Uu
 wu
-wZ
-yJ
+Ty
+cE
 mz
 Bj
 "}
@@ -2167,7 +2128,7 @@ kO
 Uu
 fS
 Ty
-yJ
+uz
 mz
 Bj
 "}
@@ -2181,7 +2142,7 @@ Oa
 iA
 KG
 Mb
-Mb
+Jv
 Mb
 jE
 JB

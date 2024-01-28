@@ -1,6 +1,6 @@
 // -- Asset Protection job & outfit datum --
 /datum/job/asset_protection
-	title = "Asset Protection"
+	title = JOB_ASSET_PROTECTION
 	description = "Protect heads of staff and the captain \
 		from foreign threats and themselves. Exert authority over the Bridge Officer."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
@@ -30,9 +30,9 @@
 	display_order = JOB_DISPLAY_ORDER_ASSET_PROTECTION
 	departments_list = list(
 		/datum/job_department/command,
-		)
+	)
 
-	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
+	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/banner/command/mundane)
 
 	mail_goodies = list(
 		/obj/item/food/donut/choco = 10,
@@ -45,9 +45,9 @@
 		/obj/item/melee/baton/security/boomerang/loaded = 1,
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT | JOB_CANNOT_OPEN_SLOTS
 	voice_of_god_power = 1.2 // Not quite command staff.
-	rpg_title = "Paladin"
+	rpg_title = "Royal Guard"
 	crewmonitor_priority = 9
 
 /datum/outfit/job/asset_protection

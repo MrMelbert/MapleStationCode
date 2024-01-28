@@ -1,6 +1,17 @@
 import { BooleanLike } from 'common/react';
+
 import { useBackend, useSharedState } from '../backend';
-import { AnimatedNumber, Button, Dimmer, LabeledList, NoticeBox, ProgressBar, Section, Tabs, NumberInput } from '../components';
+import {
+  AnimatedNumber,
+  Button,
+  Dimmer,
+  LabeledList,
+  NoticeBox,
+  NumberInput,
+  ProgressBar,
+  Section,
+  Tabs,
+} from '../components';
 import { Window } from '../layouts';
 
 const damageTypes = [
@@ -73,8 +84,8 @@ type Data = {
 };
 
 export const _OperatingComputer = (props, context) => {
-  const { act, data } = useBackend<Data>(context);
-  const [tab, setTab] = useSharedState(context, 'tab', 1);
+  const { act, data } = useBackend<Data>();
+  const [tab, setTab] = useSharedState('tab', 1);
 
   const { table, patient, procedures, surgeries, anesthesia } = data;
 
@@ -114,9 +125,9 @@ const PatientStateView = (
     procedures: Procedure[] | null;
     anesthesia: AnesthesiaStatus | null;
   },
-  context
+  context,
 ) => {
-  const { act, data } = useBackend<Patient>(context);
+  const { act, data } = useBackend<Patient>();
   const { patient, procedures, anesthesia } = props;
 
   const failsafe_enabled: boolean = anesthesia?.failsafe !== -1;
@@ -140,7 +151,10 @@ const PatientStateView = (
       <Section title="Patient State">
         {patient ? (
           <LabeledList>
-            <LabeledList.Item label="State" color={patient.statstate}>
+            <LabeledList.Item
+              label="State"
+              color={patient.statstate ?? undefined}
+            >
               {patient.stat || 'No patient detected'}
             </LabeledList.Item>
             <LabeledList.Item label="Blood Type">
@@ -154,7 +168,8 @@ const PatientStateView = (
                 value={patient.health || 0}
                 minValue={patient.minHealth || -100}
                 maxValue={patient.maxHealth || 100}
-                color={num_to_color(patient.health)}>
+                color={num_to_color(patient.health)}
+              >
                 <AnimatedNumber
                   value={patient.health || 0}
                   format={num_to_percent}
@@ -165,7 +180,8 @@ const PatientStateView = (
               <ProgressBar
                 value={patient.bloodVolumePercent || 0}
                 color={num_to_color(patient.bloodVolumePercent)}
-                maxValue={100}>
+                maxValue={100}
+              >
                 <AnimatedNumber
                   value={patient.bloodVolumePercent || 0}
                   format={num_to_percent}
@@ -176,7 +192,8 @@ const PatientStateView = (
               <LabeledList.Item key={type.type} label={type.label}>
                 <ProgressBar
                   value={(patient[type.type] || 0) / (patient.maxHealth || 1)}
-                  color="bad">
+                  color="bad"
+                >
                   <AnimatedNumber
                     value={patient[type.type] || 0}
                     format={num_to_percent}
@@ -279,15 +296,13 @@ const PatientStateView = (
 };
 
 const SurgeryProceduresView = (props: { surgeries: Surgery[] }, context) => {
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { surgeries } = props;
   return (
     <Section title="Advanced Surgery Procedures">
-      <Button
-        icon="download"
-        content="Sync Research Database"
-        onClick={() => act('sync')}
-      />
+      <Button icon="download" onClick={() => act('sync')}>
+        Sync Research Database
+      </Button>
       {surgeries.map((surgery) => (
         <Section title={surgery.name} key={surgery.name}>
           {surgery.desc}

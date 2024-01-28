@@ -10,6 +10,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/warning{
 	dir = 4
 	},
+/obj/machinery/light/floor,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "bc" = (
@@ -57,7 +58,6 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "ea" = (
-/obj/machinery/light/cold/directional/south,
 /obj/structure/chair{
 	desc = "Do keep in mind, we will assess your account 2000 credits for sitting in this chair upon arrival.";
 	dir = 1;
@@ -291,6 +291,10 @@
 	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
+"ri" = (
+/obj/machinery/light/cold/directional/south,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
 "sa" = (
 /obj/structure/table,
 /obj/machinery/recharger,
@@ -301,6 +305,7 @@
 	pixel_y = 9
 	},
 /obj/structure/fireaxecabinet/directional/east,
+/obj/machinery/light/cold/directional/east,
 /turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "st" = (
@@ -312,10 +317,6 @@
 	},
 /obj/effect/turf_decal/trimline/blue/filled/shrink_ccw,
 /turf/open/floor/iron,
-/area/shuttle/escape)
-"su" = (
-/obj/machinery/light/cold/directional/north,
-/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "sQ" = (
 /obj/machinery/door/airlock/public/glass{
@@ -337,10 +338,6 @@
 	},
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
-"tQ" = (
-/obj/machinery/light/small/directional/east,
-/turf/open/floor/mineral/titanium/blue,
-/area/shuttle/escape)
 "uk" = (
 /obj/structure/window/reinforced/tinted/frosted/spawner/directional/north,
 /obj/structure/window/reinforced/tinted/frosted/spawner/directional/west,
@@ -352,10 +349,6 @@
 	pixel_y = 5
 	},
 /turf/open/floor/mineral/titanium,
-/area/shuttle/escape)
-"vt" = (
-/obj/machinery/light/cold/directional/north,
-/turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "vu" = (
 /obj/effect/turf_decal/trimline/blue/filled/warning{
@@ -447,7 +440,6 @@
 /area/shuttle/escape)
 "Ba" = (
 /obj/structure/table,
-/obj/machinery/light/small/directional/west,
 /obj/item/storage/medkit/fire{
 	pixel_x = -4;
 	pixel_y = 3
@@ -468,6 +460,7 @@
 /obj/machinery/vending/wallmed/directional/east{
 	name = "Hooper's First Medical Kit"
 	},
+/obj/machinery/light/small/directional/east,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "BJ" = (
@@ -506,15 +499,6 @@
 /obj/effect/decal/cleanable/oil/slippery,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
-"Ce" = (
-/obj/machinery/light/cold/directional/south,
-/obj/structure/chair{
-	desc = "Do keep in mind, we will assess your account 2000 credits for sitting in this chair upon arrival.";
-	dir = 1;
-	name = "Ringside Seat"
-	},
-/turf/open/floor/mineral/titanium,
-/area/shuttle/escape)
 "Cf" = (
 /obj/effect/turf_decal/stripes/white/line{
 	dir = 6
@@ -528,6 +512,7 @@
 "Db" = (
 /obj/effect/turf_decal/tile/green/diagonal_edge,
 /obj/item/toy/basketball,
+/obj/machinery/light/floor,
 /turf/open/floor/iron/diagonal,
 /area/shuttle/escape)
 "DO" = (
@@ -558,7 +543,6 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "Fp" = (
-/obj/machinery/light/cold/directional/north,
 /obj/structure/rack{
 	name = "Referee's Gear"
 	},
@@ -634,7 +618,6 @@
 	pixel_x = 8;
 	pixel_y = -5
 	},
-/obj/machinery/light/cold/directional/north,
 /obj/item/clothing/head/utility/hardhat/red{
 	name = "A La Penners' Helmet";
 	pixel_x = 8;
@@ -689,7 +672,6 @@
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "MD" = (
-/obj/machinery/light/cold/directional/east,
 /obj/machinery/computer/emergency_shuttle{
 	dir = 8
 	},
@@ -718,7 +700,6 @@
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/escape)
 "Oq" = (
-/obj/machinery/light/cold/directional/north,
 /obj/structure/rack{
 	name = "SPARE B-BALLS"
 	},
@@ -740,6 +721,88 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron,
 /area/shuttle/escape)
+"OX" = (
+/obj/item/clothing/suit/hazardvest{
+	desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks.";
+	name = "emergency lifejacket"
+	},
+/obj/item/clothing/suit/hazardvest{
+	desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks.";
+	name = "emergency lifejacket"
+	},
+/obj/item/clothing/suit/hazardvest{
+	desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks.";
+	name = "emergency lifejacket"
+	},
+/obj/item/clothing/suit/hazardvest{
+	desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks.";
+	name = "emergency lifejacket"
+	},
+/obj/item/clothing/suit/hazardvest{
+	desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks.";
+	name = "emergency lifejacket"
+	},
+/obj/item/tank/internals/emergency_oxygen{
+	pixel_x = 3
+	},
+/obj/item/tank/internals/emergency_oxygen{
+	pixel_x = 3
+	},
+/obj/item/tank/internals/emergency_oxygen{
+	pixel_x = 3
+	},
+/obj/item/tank/internals/emergency_oxygen{
+	pixel_x = 3
+	},
+/obj/item/tank/internals/emergency_oxygen{
+	pixel_x = 3
+	},
+/obj/item/clothing/mask/breath{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/obj/item/clothing/mask/breath{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/obj/item/clothing/mask/breath{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/obj/item/clothing/mask/breath{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/obj/item/clothing/mask/breath{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/obj/item/clothing/head/utility/hardhat/orange{
+	name = "protective hat";
+	pixel_y = 9
+	},
+/obj/item/clothing/head/utility/hardhat/orange{
+	name = "protective hat";
+	pixel_y = 9
+	},
+/obj/item/clothing/head/utility/hardhat/orange{
+	name = "protective hat";
+	pixel_y = 9
+	},
+/obj/item/clothing/head/utility/hardhat/orange{
+	name = "protective hat";
+	pixel_y = 9
+	},
+/obj/item/clothing/head/utility/hardhat/orange{
+	name = "protective hat";
+	pixel_y = 9
+	},
+/obj/structure/closet/crate{
+	name = "lifejackets"
+	},
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
 "Pe" = (
 /obj/effect/turf_decal/stripes/white/line,
 /obj/effect/turf_decal/trimline/red/filled/warning{
@@ -747,6 +810,10 @@
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
+/area/shuttle/escape)
+"PZ" = (
+/obj/machinery/light/small/directional/south,
+/turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape)
 "Qy" = (
 /turf/open/floor/mineral/titanium,
@@ -774,6 +841,7 @@
 	dir = 4
 	},
 /obj/structure/window/reinforced/spawner/directional/north,
+/obj/machinery/light/small/directional/west,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "Sv" = (
@@ -844,6 +912,7 @@
 /obj/effect/turf_decal/trimline/red/filled/warning{
 	dir = 8
 	},
+/obj/machinery/light/floor,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "Ty" = (
@@ -857,10 +926,6 @@
 	dir = 1
 	},
 /turf/open/floor/iron/dark,
-/area/shuttle/escape)
-"TH" = (
-/obj/machinery/light/cold/directional/west,
-/turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "Ua" = (
 /obj/effect/turf_decal/stripes/white/line,
@@ -897,6 +962,11 @@
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
+/area/shuttle/escape)
+"Xz" = (
+/obj/structure/chair/comfy/shuttle,
+/obj/machinery/light/cold/directional/west,
+/turf/open/floor/mineral/titanium/purple,
 /area/shuttle/escape)
 "YB" = (
 /obj/effect/decal/cleanable/blood,
@@ -952,7 +1022,7 @@ Qy
 Qy
 Qy
 Qy
-TH
+Qy
 Qy
 Qy
 KL
@@ -962,9 +1032,9 @@ Tf
 "}
 (3,1,1) = {"
 NO
-KW
+PZ
 NO
-gY
+OX
 Qy
 Qy
 Qy
@@ -979,7 +1049,7 @@ Tf
 "}
 (4,1,1) = {"
 NO
-su
+KW
 IJ
 NO
 IJ
@@ -989,7 +1059,7 @@ vz
 Qy
 vz
 vz
-Qy
+ri
 NO
 QW
 Tf
@@ -1006,7 +1076,7 @@ Sv
 Tu
 BL
 JW
-Ce
+bF
 NO
 QW
 Tf
@@ -1057,16 +1127,16 @@ Jv
 Jv
 Jv
 DW
-Ce
+bF
 NO
 QW
 Tf
 "}
 (9,1,1) = {"
 NO
-vt
+QN
 BJ
-qL
+Xz
 go
 Qy
 HO
@@ -1159,7 +1229,7 @@ Jv
 Jv
 Jv
 Ku
-Ce
+bF
 NO
 QW
 Tf
@@ -1210,7 +1280,7 @@ ff
 ae
 YF
 cD
-Ce
+bF
 NO
 QW
 Tf
@@ -1227,7 +1297,7 @@ df
 Qy
 df
 df
-Qy
+ri
 NO
 QW
 Tf
@@ -1253,7 +1323,7 @@ Tf
 NO
 Uh
 By
-tQ
+Uh
 Ja
 Tg
 Qy

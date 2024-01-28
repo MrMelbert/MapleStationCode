@@ -14,8 +14,8 @@ export class ChannelIterator {
     'Me',
     'OOC',
     'Admin',
-    'LOOC', // NON-MODULE CHANGE
-  ];
+    'LOOC',
+  ]; // NON-MODULE CHANGE
   private readonly blacklist: Channel[] = ['Admin'];
   private readonly quiet: Channel[] = ['OOC', 'Admin', 'LOOC']; // NON-MODULE CHANGE
 
