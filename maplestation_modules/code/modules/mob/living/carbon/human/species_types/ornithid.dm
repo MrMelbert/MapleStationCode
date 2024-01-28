@@ -1,5 +1,6 @@
 /// GLOB list of armwings sprites / options
 GLOBAL_LIST_EMPTY(arm_wings_list)
+GLOBAL_LIST_EMPTY(arm_wingsopen_list)
 /// GLOB list of other features (ears, tails)
 GLOBAL_LIST_EMPTY(avian_ears_list)
 GLOBAL_LIST_EMPTY(tails_list_avian)
@@ -9,12 +10,12 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	name = "\improper Ornithid"
 	plural_form = "Ornithids"
 	id = SPECIES_ORNITHID
-	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS)
 	inherent_traits = list(
+		TRAIT_FEATHERED,
 		TRAIT_LIGHT_DRINKER,
 		TRAIT_TACKLING_WINGED_ATTACKER,
+		TRAIT_USES_SKINTONES,
 	)
-	use_skintones = TRUE
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
 	external_organs = list(
 		/obj/item/organ/external/wings/functional/arm_wings = "Monochrome",
@@ -36,15 +37,20 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	species_cookie = /obj/item/food/semki/healthy // humans get chocolate, lizards get meat. What do birds get? Seed.
 	meat = /obj/item/food/meat/slab/chicken
 	skinned_type = /obj/item/stack/sheet/animalhide/human
-	toxic_food = SUGAR // chocolate is toxic to birds.
-	disliked_food = DAIRY | CLOTH | GROSS
-	liked_food = FRUIT | SEAFOOD | NUTS | BUGS // birds like dice(d) nuts. Also bugs.
 
 	inert_mutation = /datum/mutation/human/dwarfism
 	species_language_holder = /datum/language_holder/yangyu // doing this because yangyu is really just, mostly unused otherwise.
 
 /datum/species/ornithid/randomize_features(mob/living/carbon/human_mob)
-	randomize_external_organs(human_mob)
+	var/list/features = ..()
+	features["feathers"] = "#[random_color()]"
+	return features
+
+/datum/species/ornithid/prepare_human_for_preview(mob/living/carbon/human/human)
+	human.skin_tone = "asian1"
+	human.set_hairstyle("Half-banged Hair")
+	human.set_haircolor(COLOR_BROWNER_BROWN, update = FALSE)
+	human.update_body(TRUE)
 
 // defines limbs/bodyparts.
 
@@ -135,4 +141,3 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 		),
 	)
 	return to_add
-

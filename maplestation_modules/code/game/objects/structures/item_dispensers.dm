@@ -148,41 +148,41 @@
 /obj/structure/item_dispenser/wrench_act(mob/living/user, obj/item/tool)
 	if(curr_charges > 0)
 		balloon_alert(user, "not empty!")
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	balloon_alert(user, "unsecuring...")
 	tool.play_tool_sound(src)
 	if(!tool.use_tool(src, user, 1 SECONDS))
 		balloon_alert(user, "interrupted!")
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 	loc.balloon_alert(user, "unsecured")
 	new /obj/item/wallframe/item_dispenser(get_turf(src))
 	deconstruct(TRUE)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/item_dispenser/screwdriver_act(mob/living/user, obj/item/tool)
 	if(stock)
 		balloon_alert(user, "already configured!")
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	var/changed_charges = tgui_input_number(user, "Input amount of items this dispenser can allow.", "Item Dispenser", max_charges, MAX_DISPENSER_ITEMS, MIN_DISPENSER_ITEMS)
 	if(QDELETED(src) || QDELETED(tool) || QDELETED(user) || !user.is_holding(tool))
-		return
+		return ITEM_INTERACT_BLOCKING
 	if(!isnum(changed_charges) || changed_charges > MAX_DISPENSER_ITEMS || changed_charges < MIN_DISPENSER_ITEMS)
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	balloon_alert(user, "adjusting spring...")
 	tool.play_tool_sound(src)
 	if(!tool.use_tool(src, user, 1 SECONDS))
 		balloon_alert(user, "interrupted!")
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	// max charges changes but not the number of charges in it already
 	max_charges = changed_charges
 	balloon_alert(user, "spring adjusted to [changed_charges]")
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/item_dispenser/attack_hand(mob/user)
 	. = ..()

@@ -18,3 +18,6 @@
 #define COMSIG_CARBON_THROW_ON "carbon_throw_on"
 /// Sent when a carbon disables throw mode
 #define COMSIG_CARBON_THROW_OFF "carbon_throw_off"
+
+/// A carbon drank some caffeine. (signal, caffeine_content)
+#define COMSIG_CARBON_DRINK_CAFFEINE "carbon_drink_caffeine"

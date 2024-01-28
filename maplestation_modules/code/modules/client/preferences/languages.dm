@@ -6,6 +6,9 @@
 /// List of species IDs of species's that can't get an additional language
 #define BLACKLISTED_SPECIES_FROM_LANGUAGES list(/datum/species/synth, /datum/species/android)
 
+/datum/preference/choiced/language
+	savefile_key = "bilingual_language"
+
 // Stores a typepath of a language, or "No language" when passed a null / invalid language.
 /datum/preference/additional_language
 	savefile_key = "language"
@@ -17,6 +20,8 @@
 	if(input == NO_LANGUAGE)
 		return NO_LANGUAGE
 	if("Trilingual" in preferences.all_quirks)
+		return NO_LANGUAGE
+	if("Bilingual" in preferences.all_quirks)
 		return NO_LANGUAGE
 
 	var/datum/language/lang_to_add = check_input_path(input)
@@ -69,7 +74,7 @@
 	if(value == NO_LANGUAGE)
 		return
 
-	target.grant_language(value, TRUE, TRUE, LANGUAGE_PREF)
+	target.grant_language(value, ALL, LANGUAGE_PREF)
 
 /datum/language
 	// Vars used in determining valid languages for the language preferences.
@@ -160,6 +165,7 @@
 	data["selected_lang"] = preferences.read_preference(/datum/preference/additional_language)
 	data["pref_name"] = preferences.read_preference(/datum/preference/name/real_name)
 	data["trilingual"] = ("Trilingual" in preferences.all_quirks)
+	data["bilingual"] = ("Bilingual" in preferences.all_quirks)
 	data["species"] = species
 
 	// This should all be moved to constant data when I figure out how tee hee

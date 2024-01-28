@@ -7,12 +7,8 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	name = "Skrell"
 	plural_form = "Skrellian"
 	id = SPECIES_SKRELL
-	species_traits = list(MUTCOLORS, EYECOLOR, LIPS)
-	inherent_traits = list(TRAIT_LIGHT_DRINKER)
+	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
-	toxic_food = MEAT | RAW | DAIRY | TOXIC | SEAFOOD
-	disliked_food = GROSS
-	liked_food = VEGETABLES | FRUIT
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
@@ -53,9 +49,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	. = ..()
 	if(skrell_mob.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
 		skrell_mob.set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)
-
-/datum/species/skrell/randomize_features(mob/living/carbon/human_mob)
-	randomize_external_organs(human_mob)
 
 /datum/species/skrell/get_species_description()
 	return "Skrell are a semi-aquatic species hailing from tropical worlds."
@@ -148,6 +141,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 /obj/item/bodypart/head/skrell
 	limb_id = SPECIES_SKRELL
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
+	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 
 /obj/item/bodypart/leg/left/skrell
 	limb_id = SPECIES_SKRELL

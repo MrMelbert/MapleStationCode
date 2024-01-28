@@ -41,7 +41,6 @@
 	. = ..()
 	if(affected_carbon.pain_controller?.get_average_pain() <= 66 && SPT_PROB(8, seconds_per_tick))
 		affected_carbon.cause_pain(pick(BODY_ZONES_ALL), 5)
-	affected_carbon.adjustCloneLoss(0.2 * seconds_per_tick, FALSE)
 
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type)
 	if(current_addiction_cycle >= (WITHDRAWAL_STAGE2_START_CYCLE + 3) && SPT_PROB(33, seconds_per_tick))
@@ -60,7 +59,7 @@
 	var/current_addiction_cycle = LAZYACCESS(affected_carbon.mind.active_addictions, type)
 
 	affected_carbon.adjustBruteLoss(clamp(round(0.00002 * (current_addiction_cycle ** 2), 0.1), 0.5, 8) * seconds_per_tick, FALSE)
-	affected_carbon.adjustCloneLoss(clamp(round(0.00002 * (current_addiction_cycle ** 2), 0.1), 0.5, 8) * seconds_per_tick, FALSE)
+	affected_carbon.adjustToxLoss(clamp(round(0.00002 * (current_addiction_cycle ** 2), 0.1), 0.5, 8) * seconds_per_tick, FALSE)
 
 	if(current_addiction_cycle >= (WITHDRAWAL_STAGE3_START_CYCLE + 3) && SPT_PROB(33, seconds_per_tick))
 		affected_carbon.mind.active_addictions[type] -= seconds_per_tick

@@ -81,7 +81,7 @@
 		return 0
 
 	var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
-	if(isnull(heart) || !heart.beating)
+	if(isnull(heart) || !heart.is_beating())
 		return 0
 
 	var/base_amount = 0

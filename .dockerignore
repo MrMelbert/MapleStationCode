@@ -22,6 +22,11 @@ tgstation.int
 tgstation.rsc
 tgstation.lk
 tgstation.dyn.rsc
+maplestation.dmb
+maplestation.int
+maplestation.rsc
+maplestation.lk
+maplestation.dyn.rsc
 *.dll
 Dockerfile
 tools/bootstrap/.cache

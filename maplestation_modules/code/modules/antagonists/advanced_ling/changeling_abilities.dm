@@ -32,18 +32,10 @@
 
 /// Extension of GetVoice for TRAIT_VOICE_MATCHES_ID.
 /mob/living/carbon/human/GetVoice()
-	. = ..()
-	if(HAS_TRAIT(src, TRAIT_VOICE_MATCHES_ID))
-		var/obj/item/card/id/idcard = wear_id.GetID()
-		if(istype(idcard))
-			return idcard.registered_name
-		else
-			return get_face_name()
-
-/mob/living/carbon/human/get_alt_name()
-	if(HAS_TRAIT(src, TRAIT_VOICE_MATCHES_ID))
-		return ""
-	. = ..()
+	if(!HAS_TRAIT(src, TRAIT_VOICE_MATCHES_ID))
+		return ..()
+	var/obj/item/card/id/idcard = get_idcard(FALSE)
+	return istype(idcard) ? idcard.registered_name : get_face_name()
 
 /datum/action/changeling/pain_reduction
 	name = "Nervous System Realignment"
@@ -157,6 +149,8 @@
 	return TRUE
 
 /datum/action/changeling/grant_powers/sting_action(mob/user)
+	SHOULD_CALL_PARENT(FALSE)
+
 	var/datum/antagonist/changeling/our_ling = is_any_changeling(user)
 	var/mob/living/target = user.pulling
 	is_uplifting = TRUE

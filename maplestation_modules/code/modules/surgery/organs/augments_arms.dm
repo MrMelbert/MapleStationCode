@@ -7,7 +7,7 @@
 
 /obj/item/organ/internal/cyberimp/arm/lighter/emp_act(severity)
 	. = ..()
-	if((. & EMP_PROTECT_SELF) || (status == ORGAN_ROBOTIC))
+	if(. & EMP_PROTECT_SELF)
 		return
 	var/obj/item/bodypart/real_hand = hand
 	if(!istype(real_hand))
@@ -15,11 +15,11 @@
 	real_hand.receive_damage(burn = 10 / severity, wound_bonus = 10, damage_source = src)
 	to_chat(owner, span_warning("You feel your [parse_zone(zone)] begin to burn up!"))
 
-/obj/item/organ/internal/cyberimp/arm/lighter/on_insert(mob/living/carbon/arm_owner)
+/obj/item/organ/internal/cyberimp/arm/lighter/on_mob_insert(mob/living/carbon/arm_owner)
 	. = ..()
 	RegisterSignal(arm_owner, COMSIG_MOB_EMOTED("snap"), PROC_REF(on_snap))
 
-/obj/item/organ/internal/cyberimp/arm/lighter/on_remove(mob/living/carbon/arm_owner)
+/obj/item/organ/internal/cyberimp/arm/lighter/on_mob_remove(mob/living/carbon/arm_owner)
 	. = ..()
 	UnregisterSignal(arm_owner, COMSIG_MOB_EMOTED("snap"))
 

@@ -22,24 +22,31 @@
 /// Proc to handled the uplink items and the uplink handler after an uplink is given.
 /datum/antagonist/traitor/proc/handle_uplink()
 	var/datum/component/uplink/uplink = owner.find_syndicate_uplink()
-	if(!uplink)
-		CRASH("handle_uplink() has been called on someone with no apparent syndicate uplink. Weird!")
-
 	uplink_ref = WEAKREF(uplink)
+	if(!uplink)
+		return
 
 	if(uplink_handler)
 		uplink.uplink_handler = uplink_handler
 	else
 		uplink_handler = uplink.uplink_handler
+
+	uplink_handler.uplink_flag = uplink_flag_given
 	uplink_handler.primary_objectives = objectives
-	uplink_handler.has_progression = TRUE
-	SStraitor.register_uplink_handler(uplink_handler)
 
-	uplink_handler.has_objectives = TRUE
-	uplink_handler.generate_objectives()
+	if(!linked_advanced_datum)
+		uplink_handler.has_progression = TRUE
+		SStraitor.register_uplink_handler(uplink_handler)
 
-	if(uplink_handler.progression_points < SStraitor.current_global_progression)
-		uplink_handler.progression_points = SStraitor.current_global_progression * SStraitor.newjoin_progression_coeff
+		if(give_secondary_objectives)
+			uplink_handler.has_objectives = TRUE
+			uplink_handler.generate_objectives()
+
+		uplink_handler.can_replace_objectives = CALLBACK(src, PROC_REF(can_change_objectives))
+		uplink_handler.replace_objectives = CALLBACK(src, PROC_REF(submit_player_objective))
+
+		if(uplink_handler.progression_points < SStraitor.current_global_progression)
+			uplink_handler.progression_points = SStraitor.current_global_progression * SStraitor.newjoin_progression_coeff
 
 	var/list/uplink_items = list()
 	for(var/datum/uplink_item/item as anything in SStraitor.uplink_items)
@@ -62,6 +69,7 @@
 	should_give_codewords = FALSE
 	give_uplink = FALSE
 	finalize_antag = FALSE
+	can_assign_self_objectives = FALSE
 	/// List of objectives traitors can get in addition to the base ones
 	var/static/list/traitor_objectives = list(
 		"exile" = /datum/objective/exile,
@@ -150,6 +158,7 @@
 
 	starting_points = get_antag_points_from_goals()
 	made_uplink.uplink_handler.telecrystals = starting_points
+	made_uplink.uplink_handler.progression_points = 1000 * (starting_points + 1)
 	linked_antagonist.hijack_speed = (starting_points * hijack_speed_modifier) // 20 tc traitor = 0.5 (default traitor hijack speed)
 
 /datum/advanced_antag_datum/traitor/get_antag_points_from_goals()

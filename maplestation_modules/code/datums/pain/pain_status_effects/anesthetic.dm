@@ -19,7 +19,7 @@
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT))
 
 /datum/status_effect/grouped/anesthetic/get_examine_text()
-	return span_warning("[owner.p_theyre(TRUE)] out cold.")
+	return span_warning("[owner.p_Theyre()] out cold.")
 
 /datum/status_effect/grouped/anesthetic/proc/try_removal(datum/source)
 	SIGNAL_HANDLER

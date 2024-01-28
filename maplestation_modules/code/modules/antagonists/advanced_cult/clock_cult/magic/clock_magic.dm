@@ -73,7 +73,7 @@
 
 	active = TRUE
 	RegisterSignal(target, COMSIG_ITEM_PRE_ATTACK, PROC_REF(try_spell_effects))
-	RegisterSignal(target, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(target, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(target, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equipped))
 	if(active_overlay_name)
 		RegisterSignal(target, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(on_item_update_overlays))
@@ -98,7 +98,7 @@
 
 	UnregisterSignal(target, list(
 		COMSIG_ITEM_PRE_ATTACK,
-		COMSIG_PARENT_EXAMINE,
+		COMSIG_ATOM_EXAMINE,
 		COMSIG_ITEM_EQUIPPED,
 		COMSIG_ITEM_DROPPED,
 		COMSIG_ATOM_UPDATE_OVERLAYS,
@@ -109,7 +109,7 @@
 		to_chat(magic_source.owner, span_brass("You withdraw the power of [src] from [target]."))
 
 /**
- * Signal proc for [COMSIG_PARENT_EXAMINE].
+ * Signal proc for [COMSIG_ATOM_EXAMINE].
  */
 /datum/action/item_action/cult/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER

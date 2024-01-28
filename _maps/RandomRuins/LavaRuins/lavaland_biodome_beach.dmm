@@ -37,7 +37,7 @@
 /area/ruin/powered/beach)
 "at" = (
 /obj/machinery/light/directional/north,
-/mob/living/simple_animal/crab{
+/mob/living/basic/crab{
 	name = "Eddie"
 	},
 /turf/open/misc/beach/sand,
@@ -47,7 +47,7 @@
 /turf/open/misc/beach/sand,
 /area/ruin/powered/beach)
 "av" = (
-/obj/effect/overlay/coconut,
+/obj/structure/flora/coconuts,
 /obj/machinery/light/directional/north,
 /turf/open/misc/beach/sand,
 /area/ruin/powered/beach)
@@ -103,7 +103,7 @@
 /turf/open/floor/iron,
 /area/ruin/powered/beach)
 "aU" = (
-/obj/effect/overlay/palmtree_l,
+/obj/structure/flora/tree/palm,
 /turf/open/misc/beach/sand,
 /area/ruin/powered/beach)
 "aW" = (
@@ -117,7 +117,7 @@
 /turf/open/floor/iron,
 /area/ruin/powered/beach)
 "aZ" = (
-/obj/effect/overlay/coconut,
+/obj/structure/flora/coconuts,
 /turf/open/misc/beach/sand,
 /area/ruin/powered/beach)
 "bb" = (
@@ -232,7 +232,7 @@
 /area/ruin/powered/beach)
 "cR" = (
 /obj/structure/chair/wood,
-/obj/machinery/light/directional/north,
+/obj/machinery/light/directional/west,
 /turf/open/misc/beach/sand,
 /area/ruin/powered/beach)
 "cV" = (
@@ -398,7 +398,6 @@
 /turf/open/floor/wood,
 /area/ruin/powered/beach)
 "kb" = (
-/obj/machinery/light/directional/north,
 /obj/structure/sign/poster/contraband/ambrosia_vulgaris/directional/north,
 /turf/open/floor/iron/grimy,
 /area/ruin/powered/beach)
@@ -528,6 +527,11 @@
 /obj/structure/reagent_dispensers/watertank,
 /turf/open/floor/pod/light,
 /area/ruin/powered/beach)
+"qw" = (
+/obj/item/melee/skateboard/hoverboard,
+/obj/machinery/light/directional/west,
+/turf/open/floor/pod/light,
+/area/ruin/powered/beach)
 "qx" = (
 /obj/structure/table/wood,
 /obj/structure/bedsheetbin,
@@ -576,19 +580,8 @@
 /turf/closed/wall/mineral/wood/nonmetal,
 /area/ruin/powered/beach)
 "sM" = (
-/obj/machinery/light/directional/east,
-/obj/structure/closet/secure_closet{
-	icon_state = "cabinet";
-	name = "bartender's closet";
-	req_access = list("bar")
-	},
-/obj/item/clothing/shoes/sandal{
-	desc = "A very fashionable pair of flip-flops.";
-	name = "flip-flops"
-	},
-/obj/item/clothing/neck/beads,
-/obj/item/clothing/glasses/sunglasses/reagent,
-/obj/item/clothing/suit/costume/hawaiian,
+/obj/structure/closet/secure_closet/bar/lavaland_bartender_clothes,
+/obj/machinery/light/small/directional/east,
 /turf/open/floor/wood,
 /area/ruin/powered/beach)
 "sV" = (
@@ -615,7 +608,6 @@
 /obj/item/food/grown/ambrosia/vulgaris,
 /obj/item/food/grown/ambrosia/vulgaris,
 /obj/item/food/grown/ambrosia/vulgaris,
-/obj/machinery/light/directional/south,
 /turf/open/floor/iron/grimy,
 /area/ruin/powered/beach)
 "tg" = (
@@ -744,7 +736,7 @@
 /turf/open/floor/plating,
 /area/ruin/powered/beach)
 "yB" = (
-/mob/living/simple_animal/crab{
+/mob/living/basic/crab{
 	name = "Jonny"
 	},
 /turf/open/misc/beach/sand,
@@ -883,10 +875,6 @@
 	},
 /turf/open/floor/iron/grimy,
 /area/ruin/powered/beach)
-"Dn" = (
-/obj/effect/overlay/palmtree_r,
-/turf/open/misc/beach/sand,
-/area/ruin/powered/beach)
 "Ds" = (
 /obj/structure/closet/secure_closet/freezer/kitchen/all_access,
 /turf/open/floor/wood,
@@ -925,7 +913,6 @@
 "Fi" = (
 /obj/structure/table,
 /obj/machinery/reagentgrinder,
-/obj/machinery/light/small/directional/west,
 /turf/open/floor/wood,
 /area/ruin/powered/beach)
 "Fr" = (
@@ -949,6 +936,7 @@
 /obj/item/book/manual/wiki/barman_recipes,
 /obj/item/reagent_containers/cup/glass/shaker,
 /obj/item/reagent_containers/cup/rag,
+/obj/machinery/light/small/directional/west,
 /turf/open/floor/wood,
 /area/ruin/powered/beach)
 "FR" = (
@@ -992,10 +980,6 @@
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
 /area/ruin/powered/beach)
-"Hn" = (
-/obj/machinery/light/directional/south,
-/turf/open/floor/pod/light,
-/area/ruin/powered/beach)
 "Hy" = (
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron/stairs/left,
@@ -1006,34 +990,7 @@
 	},
 /area/ruin/powered/beach)
 "HW" = (
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/vending_refill/cigarette,
-/obj/item/vending_refill/boozeomat,
-/obj/structure/closet/secure_closet{
-	icon_state = "cabinet";
-	name = "booze storage";
-	req_access = list("bar")
-	},
-/obj/item/storage/backpack/duffelbag,
-/obj/item/etherealballdeployer,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/bottle/beer/light,
-/obj/item/reagent_containers/cup/glass/colocup,
-/obj/item/reagent_containers/cup/glass/colocup,
-/obj/item/reagent_containers/cup/glass/colocup,
-/obj/item/reagent_containers/cup/glass/colocup,
-/obj/item/reagent_containers/cup/glass/colocup,
+/obj/structure/closet/secure_closet/bar/lavaland_bartender_booze,
 /turf/open/floor/wood,
 /area/ruin/powered/beach)
 "Il" = (
@@ -1089,8 +1046,12 @@
 	},
 /turf/open/floor/pod/light,
 /area/ruin/powered/beach)
+"JZ" = (
+/obj/machinery/light/directional/south,
+/turf/open/misc/beach/sand,
+/area/ruin/powered/beach)
 "Km" = (
-/mob/living/simple_animal/crab{
+/mob/living/basic/crab{
 	name = "Jon"
 	},
 /turf/open/misc/beach/sand,
@@ -1132,12 +1093,12 @@
 /turf/closed/wall/mineral/sandstone,
 /area/ruin/powered/beach)
 "MO" = (
-/obj/machinery/light/directional/east,
 /obj/machinery/chem_dispenser/drinks/fullupgrade{
 	dir = 1
 	},
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/obj/machinery/light/small/directional/east,
 /turf/open/floor/wood,
 /area/ruin/powered/beach)
 "MZ" = (
@@ -1230,11 +1191,8 @@
 /obj/structure/closet/cabinet,
 /obj/item/storage/backpack/duffelbag,
 /obj/item/clothing/under/shorts/blue,
-/obj/item/clothing/suit/costume/ianshirt,
-/obj/item/clothing/shoes/sandal{
-	desc = "A very fashionable pair of flip-flops.";
-	name = "flip-flops"
-	},
+/obj/item/clothing/suit/costume/wellworn_shirt/graphic/ian,
+/obj/item/clothing/shoes/sandal/beach,
 /obj/item/clothing/glasses/sunglasses,
 /obj/item/clothing/neck/beads,
 /turf/open/floor/wood,
@@ -1333,6 +1291,11 @@
 /obj/structure/sign/poster/contraband/starkist/directional/north,
 /turf/open/misc/beach/sand,
 /area/ruin/powered/beach)
+"UM" = (
+/obj/machinery/hydroponics/constructable,
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron/grimy,
+/area/ruin/powered/beach)
 "UZ" = (
 /obj/item/stack/sheet/iron/fifty,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -1407,7 +1370,7 @@
 /area/ruin/powered/beach)
 "WF" = (
 /obj/effect/turf_decal/sand,
-/mob/living/simple_animal/crab{
+/mob/living/basic/crab{
 	name = "James"
 	},
 /turf/open/misc/beach/sand,
@@ -1457,15 +1420,12 @@
 "ZN" = (
 /obj/effect/turf_decal/sand,
 /obj/structure/sign/warning/no_smoking/circle/directional/east,
+/obj/machinery/light/directional/east,
 /turf/open/misc/beach/sand,
 /area/ruin/powered/beach)
 "ZS" = (
 /turf/closed/mineral/random/volcanic,
 /area/template_noop)
-"ZZ" = (
-/obj/machinery/light/directional/east,
-/turf/open/floor/pod/light,
-/area/ruin/powered/beach)
 
 (1,1,1) = {"
 aa
@@ -1584,7 +1544,7 @@ ar
 IG
 ar
 ar
-ar
+JZ
 aj
 sM
 aC
@@ -1836,7 +1796,7 @@ Il
 GB
 RE
 Uk
-ar
+am
 ar
 bC
 Ti
@@ -1952,7 +1912,7 @@ Bp
 bW
 MZ
 dX
-Dn
+aU
 aE
 ar
 sl
@@ -2165,7 +2125,7 @@ wY
 wY
 wY
 AE
-AE
+qw
 qf
 MZ
 Bp
@@ -2198,7 +2158,7 @@ VO
 og
 wY
 wY
-Hn
+wY
 Fr
 yc
 Bp
@@ -2290,7 +2250,7 @@ aA
 aA
 ZN
 wY
-ZZ
+wY
 wY
 gC
 oF
@@ -2357,7 +2317,7 @@ IL
 MZ
 sV
 Dg
-sV
+UM
 CZ
 sV
 Zi

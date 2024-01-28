@@ -1,6 +1,7 @@
-import { useBackend } from '../backend';
-import { Button, Dimmer, Section, Stack } from '../components';
 import { BooleanLike } from 'common/react';
+
+import { useBackend } from '../backend';
+import { Box, Button, Dimmer, Section, Stack } from '../components';
 
 type typePath = string;
 
@@ -9,6 +10,7 @@ type Data = {
   species: typePath; // species typepath
   selected_lang: typePath | string; // language typepath
   trilingual: BooleanLike;
+  bilingual: BooleanLike;
   blacklisted_species: typePath[]; // list of species typePaths
   base_languages: Language[];
   bonus_languages: Language[];
@@ -22,15 +24,12 @@ type Language = {
   requires: string | null;
 };
 
-export const LanguageStack = (
-  props: {
-    language: Language;
-    selected_lang: typePath;
-    tooltip: string;
-  },
-  context
-) => {
-  const { act } = useBackend<Language>(context);
+export const LanguageStack = (props: {
+  language: Language;
+  selected_lang: typePath;
+  tooltip: string;
+}) => {
+  const { act } = useBackend<Language>();
   const { name, type, pickable } = props.language;
 
   return (
@@ -57,21 +56,22 @@ export const LanguageStack = (
   );
 };
 
-const WarningDimmer = (props, context) => {
+const WarningDimmer = (props) => {
   return (
-    <Dimmer vertical align="center">
-      <Stack.Item fontSize="18px">{props.message}</Stack.Item>
+    <Dimmer align="center">
+      <Box fontSize="18px">{props.message}</Box>
     </Dimmer>
   );
 };
 
-export const LanguagePage = (props, context) => {
-  const { data } = useBackend<Data>(context);
+export const LanguagePage = () => {
+  const { data } = useBackend<Data>();
 
   const {
     species,
     selected_lang,
     trilingual,
+    bilingual,
     blacklisted_species = [],
     base_languages = [],
     bonus_languages = [],
@@ -81,7 +81,18 @@ export const LanguagePage = (props, context) => {
     <Section>
       {!!trilingual && (
         <WarningDimmer
-          message={'You cannot chose a language with the trilingual quirk.'}
+          message={
+            'The Trilingual quirk grants you an additional random \
+            language - but you cannot select one while the quirk is active.'
+          }
+        />
+      )}
+      {!!bilingual && (
+        <WarningDimmer
+          message={
+            'You have the Bilingual quirk selected, so use its \
+            selection dropdown instead.'
+          }
         />
       )}
       {blacklisted_species.includes(species) && (

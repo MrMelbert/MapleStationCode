@@ -351,7 +351,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_four)
 "bh" = (
-/mob/living/simple_animal/hostile/skeleton,
+/mob/living/basic/skeleton,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -436,7 +436,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_three)
 "bD" = (
-/mob/living/simple_animal/hostile/skeleton,
+/mob/living/basic/skeleton,
 /turf/open/floor/engine/cult{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -544,7 +544,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "bY" = (
-/mob/living/simple_animal/hostile/skeleton,
+/mob/living/basic/skeleton,
 /turf/open/floor/plating{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1083,7 +1083,7 @@
 /area/awaymission/caves/bmp_asteroid)
 "ek" = (
 /obj/structure/window/spawner/directional/west,
-/mob/living/simple_animal/hostile/mining_drone,
+/mob/living/basic/mining_drone,
 /turf/open/floor/plating,
 /area/awaymission/caves/listeningpost)
 "el" = (
@@ -1115,7 +1115,7 @@
 "es" = (
 /obj/structure/window/spawner/directional/west,
 /obj/structure/window/spawner/directional/south,
-/mob/living/simple_animal/hostile/mining_drone,
+/mob/living/basic/mining_drone,
 /turf/open/floor/plating,
 /area/awaymission/caves/listeningpost)
 "et" = (
@@ -1653,7 +1653,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid)
 "gC" = (
-/obj/vehicle/sealed/mecha/working/ripley/mining,
+/obj/vehicle/sealed/mecha/ripley/mining,
 /turf/open/floor/iron/recharge_floor,
 /area/awaymission/caves/bmp_asteroid)
 "gD" = (
@@ -1790,7 +1790,7 @@
 /turf/open/floor/iron,
 /area/awaymission/caves/northblock)
 "kE" = (
-/mob/living/basic/giant_spider/hunter,
+/mob/living/basic/spider/giant/hunter,
 /turf/open/floor/iron,
 /area/awaymission/caves/bmp_asteroid)
 "lp" = (
@@ -1833,7 +1833,7 @@
 /area/awaymission/caves/northblock)
 "rk" = (
 /obj/structure/spider/stickyweb,
-/mob/living/basic/giant_spider/hunter,
+/mob/living/basic/spider/giant/hunter,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1869,7 +1869,7 @@
 /obj/machinery/sleeper{
 	dir = 8
 	},
-/mob/living/basic/giant_spider/hunter,
+/mob/living/basic/spider/giant/hunter,
 /turf/open/floor/iron,
 /area/awaymission/caves/bmp_asteroid)
 "vU" = (
@@ -1907,7 +1907,7 @@
 	},
 /area/awaymission/caves/bmp_asteroid/level_two)
 "Ep" = (
-/mob/living/basic/giant_spider/hunter,
+/mob/living/basic/spider/giant/hunter,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1919,7 +1919,7 @@
 "FS" = (
 /obj/machinery/light/small/built/directional/north,
 /obj/structure/spider/stickyweb,
-/mob/living/basic/giant_spider/hunter,
+/mob/living/basic/spider/giant/hunter,
 /turf/open/floor/iron,
 /area/awaymission/caves/bmp_asteroid)
 "Gt" = (
@@ -1931,7 +1931,7 @@
 /turf/open/floor/iron,
 /area/awaymission/caves/listeningpost)
 "GX" = (
-/mob/living/basic/giant_spider/nurse,
+/mob/living/basic/spider/giant/nurse,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -1958,10 +1958,6 @@
 /obj/item/paper/fluff/awaymissions/caves/omega,
 /turf/open/floor/iron,
 /area/awaymission/caves/research)
-"OE" = (
-/obj/machinery/light/directional/west,
-/turf/open/floor/plating,
-/area/awaymission/caves/research)
 "OX" = (
 /turf/closed/indestructible/oldshuttle{
 	desc = "Go through.";
@@ -1980,7 +1976,7 @@
 /area/awaymission/caves/listeningpost)
 "PV" = (
 /obj/item/mjollnir,
-/mob/living/basic/giant_spider/nurse,
+/mob/living/basic/spider/giant/nurse,
 /turf/open/misc/asteroid/basalt{
 	initial_gas_mix = "n2=23;o2=14;TEMP=2.7"
 	},
@@ -9394,7 +9390,7 @@ bL
 ch
 cr
 cA
-OE
+cr
 cR
 cV
 cr

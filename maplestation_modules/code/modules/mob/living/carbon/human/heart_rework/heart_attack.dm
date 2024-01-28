@@ -64,18 +64,16 @@
 
 	return COMSIG_CARBON_BLOCK_BREATH
 
-/datum/status_effect/heart_attack/tick(seconds_per_tick, times_fired)
-	seconds_per_tick = (initial(tick_interval) / 10) // to remove when upstream merge
-
+/datum/status_effect/heart_attack/tick(seconds_between_ticks)
 	if(ko_timer) // Not yet
 		return
-	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_STABLEHEART) || HAS_TRAIT(owner, TRAIT_NOBLOOD) || IS_IN_STASIS(owner))
+	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_STABLEHEART) || HAS_TRAIT(owner, TRAIT_NOBLOOD) || HAS_TRAIT(owner, TRAIT_STASIS))
 		return
 	if(owner.has_status_effect(/datum/status_effect/cpr_applied))
 		return
 
 	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
-		owner.adjustOxyLoss(4 * seconds_per_tick)
+		owner.adjustOxyLoss(4 * seconds_between_ticks)
 
 	// Tissues die without blood circulation
-	owner.adjustBruteLoss(1 * seconds_per_tick)
+	owner.adjustBruteLoss(1 * seconds_between_ticks)

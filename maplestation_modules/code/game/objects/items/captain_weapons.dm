@@ -24,6 +24,7 @@ GLOBAL_VAR(captain_weapon_picked)
 	desc = "The captain's own laser rapier, designed to ruin any obnoxious security cameras. Marked with the logo of a company named TriOptimum."
 	icon = 'maplestation_modules/icons/obj/weapons.dmi'
 	icon_state = "laser_rapier"
+	base_icon_state = "laser_rapier"
 	inhand_icon_state = "laser_rapier"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
@@ -37,7 +38,7 @@ GLOBAL_VAR(captain_weapon_picked)
 	. = ..()
 	if(!proximity)
 		return
-	if(!blade_active)
+	if(!HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE))
 		return
 
 	//deals double damage to cameras

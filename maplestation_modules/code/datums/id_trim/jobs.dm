@@ -1,22 +1,36 @@
-/// --ID Trims for modular jobs. --
-// -Modular changes for jobs.-
+// Some ID trim changes
+
+// Notably absent: Cardboard trims and RPG trims, because the former is PITA and the latter is ???
+
+// Modular job ID trims
 /datum/id_trim/job/research_director
+	trim_state = "trim_scientist"
 	trim_icon = 'maplestation_modules/icons/obj/card.dmi'
 	sechud_icon = 'maplestation_modules/icons/mob/huds/hud.dmi'
 
 /datum/id_trim/job/scientist
+	trim_state = "trim_scientist"
 	trim_icon = 'maplestation_modules/icons/obj/card.dmi'
 	sechud_icon = 'maplestation_modules/icons/mob/huds/hud.dmi'
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_RESEARCH, ACCESS_SCIENCE, ACCESS_TECH_STORAGE)
 
-// -New job trims.-
-//Asset Protection
+/datum/id_trim/job/quartermaster
+	trim_state = "trim_quartermaster"
+	trim_icon = 'maplestation_modules/icons/obj/card.dmi'
+	sechud_icon = 'maplestation_modules/icons/mob/huds/hud.dmi'
+
+// New job trims
+
+// Asset Protection
 /datum/id_trim/job/asset_protection
 	assignment = "Asset Protection"
 	trim_icon = 'maplestation_modules/icons/obj/card.dmi'
 	trim_state = "trim_assetprotection"
 	sechud_icon = 'maplestation_modules/icons/mob/huds/hud.dmi'
 	sechud_icon_state = "hudassetprotection"
+	department_state = "departmenthead"
+	department_color = COLOR_COMMAND_BLUE
+	subdepartment_color = COLOR_COMMAND_BLUE
 	extra_access = list(ACCESS_ENGINE_EQUIP, ACCESS_SHIPPING)
 	minimal_access = list(ACCESS_BRIG, ACCESS_CARGO, ACCESS_CONSTRUCTION, ACCESS_COURT, ACCESS_EVA,
 		ACCESS_EXTERNAL_AIRLOCKS, ACCESS_DETECTIVE, ACCESS_COMMAND, ACCESS_KEYCARD_AUTH, ACCESS_LAWYER,
@@ -34,6 +48,9 @@
 	trim_state = "trim_bridgeofficer"
 	sechud_icon = 'maplestation_modules/icons/mob/huds/hud.dmi'
 	sechud_icon_state = "hudbridgeofficer"
+	department_state = "departmenthead"
+	department_color = COLOR_COMMAND_BLUE
+	subdepartment_color = COLOR_COMMAND_BLUE
 	extra_access = list(ACCESS_RESEARCH, ACCESS_SCIENCE)
 	extra_wildcard_access = list(ACCESS_ARMORY)
 	minimal_access = list(ACCESS_BRIG, ACCESS_CARGO, ACCESS_CONSTRUCTION, ACCESS_COURT, ACCESS_COMMAND,

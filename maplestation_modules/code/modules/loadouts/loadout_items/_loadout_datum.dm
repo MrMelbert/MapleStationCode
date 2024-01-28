@@ -220,7 +220,7 @@ GLOBAL_LIST_EMPTY(all_loadout_datums)
 
 	if(can_be_named && item_details?[INFO_NAMED] && !visuals_only)
 		equipped_item.name = item_details[INFO_NAMED]
-		equipped_item.renamedByPlayer = TRUE
+		ADD_TRAIT(equipped_item, TRAIT_WAS_RENAMED, "Loadout")
 
 	if(can_be_reskinned && item_details?[INFO_RESKIN])
 		var/skin_chosen = item_details[INFO_RESKIN]

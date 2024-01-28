@@ -11,3 +11,7 @@
 		return
 
 	return ..()
+
+// This is done because gimmick assistants override the jumpsuit anyways
+/datum/outfit/job/assistant/gimmick
+	uniform = /obj/item/clothing/under/color/grey

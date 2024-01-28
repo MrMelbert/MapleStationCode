@@ -66,7 +66,7 @@
 		to_chat(usr, span_warning("You can't do this right now!"))
 		return
 
-	var/default_text = "[p_they(TRUE)] [p_are()]..."
+	var/default_text = "[p_They()] [p_are()]..."
 	var/pose_input = tgui_input_text(usr, "Set temporary examine text here. Can be used to pose your character, \
 		describe an injury, or anything you can think of. Leave blank to clear.", "Set Examine Text", default = default_text, max_length = 85)
 	if(QDELETED(src))

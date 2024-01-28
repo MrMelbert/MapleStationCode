@@ -27,7 +27,7 @@
 		span_notice("[user] starts weaving [target]'s circulatory system."),
 		span_notice("[user] starts manipulating [target]'s circulatory system."),
 	)
-	display_pain(target, "Your entire body burns in agony!", target_zone = target_zone, target_zone = target_zone) // NON-MODULE CHANGE
+	display_pain(target, "Your entire body burns in agony!", target_zone = target_zone) // NON-MODULE CHANGE
 	target.cause_pain(BODY_ZONES_ALL, 25, BURN) // NON-MODULE CHANGE
 
 /datum/surgery_step/thread_veins/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
@@ -38,7 +38,7 @@
 		span_notice("[user] weaves [target]'s circulatory system into a resistant mesh!"),
 		span_notice("[user] finishes manipulating [target]'s circulatory system."),
 	)
-	display_pain(target, "You can feel your blood pumping through reinforced veins!", target_zone = target_zone, target_zone = target_zone) // NON-MODULE CHANGE
+	display_pain(target, "You can feel your blood pumping through reinforced veins!", target_zone = target_zone) // NON-MODULE CHANGE
 	new /datum/bioware/threaded_veins(target)
 	return ..()
 

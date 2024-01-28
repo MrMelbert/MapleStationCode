@@ -13,7 +13,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 /obj/machinery/requests_console
 	name = "requests console"
 	desc = "A console intended to send requests to different departments on the station."
-	icon = 'icons/obj/terminals.dmi'
+	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "req_comp_off"
 	base_icon_state = "req_comp"
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.15
@@ -127,6 +127,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 
 	radio = new /obj/item/radio(src)
 	radio.set_listening(FALSE)
+	find_and_hang_on_wall()
 
 /obj/machinery/requests_console/Destroy()
 	QDEL_NULL(radio)
@@ -202,7 +203,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 			if(message_verified_by)
 				message += "\n - [message_verified_by]"
 			// NON-MODULE CHANGE END
-			minor_announce(message, "[department] Announcement:", html_encode = FALSE)
+			minor_announce(message, "[department] Announcement:", html_encode = FALSE, sound_override = 'sound/misc/announce_dig.ogg')
 			GLOB.news_network.submit_article(message, department, "Station Announcements", null)
 			usr.log_talk(message, LOG_SAY, tag="station announcement from [src]")
 			message_admins("[ADMIN_LOOKUPFLW(usr)] has made a station announcement from [src] at [AREACOORD(usr)].")
@@ -397,7 +398,7 @@ GLOBAL_LIST_EMPTY(req_console_ckey_departments)
 	return ..()
 
 /obj/machinery/requests_console/deconstruct(disassembled = TRUE)
-	if(!(flags_1 & NODECONSTRUCT_1))
+	if(!(obj_flags & NO_DECONSTRUCTION))
 		new /obj/item/wallframe/requests_console(loc)
 	qdel(src)
 
@@ -410,7 +411,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console/auto_name, 30)
 /obj/item/wallframe/requests_console
 	name = "requests console"
 	desc = "An unmounted requests console. Attach it to a wall to use."
-	icon = 'icons/obj/terminals.dmi'
+	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "req_comp_off"
 	result_path = /obj/machinery/requests_console/auto_name
 	pixel_shift = 30

@@ -1,11 +1,10 @@
 /// -- Modular RND clothing. --
-/datum/armor/rnd_scientist
+/datum/armor/clothing_under/science
 	bomb = 10
 	bio = 20
 	fire = 20
-	wound = 5
 
-/datum/armor/ord_scientist
+/datum/armor/clothing_under/science/ord_scientist
 	bomb = 20
 	fire = 50
 
@@ -16,7 +15,7 @@
 	worn_icon = 'maplestation_modules/icons/mob/clothing/under/rnd.dmi'
 	icon_state = "ordnance"
 	inhand_icon_state = "w_suit"
-	armor_type = /datum/armor/ord_scientist
+	armor_type = /datum/armor/clothing_under/science/ord_scientist
 
 /obj/item/clothing/under/rank/rnd/ordnance_tech/skirt
 	name = "ordnance technician's jumpskirt"
@@ -26,7 +25,7 @@
 	dying_key = DYE_REGISTRY_JUMPSKIRT
 	female_sprite_flags = FEMALE_UNIFORM_TOP_ONLY
 
-/datum/armor/xb_scientist
+/datum/armor/clothing_under/science/xb_scientist
 	bio = 50
 	fire = 10
 
@@ -37,7 +36,7 @@
 	worn_icon = 'maplestation_modules/icons/mob/clothing/under/rnd.dmi'
 	icon_state = "xeno"
 	inhand_icon_state = "w_suit"
-	armor_type = /datum/armor/xb_scientist
+	armor_type = /datum/armor/clothing_under/science/xb_scientist
 
 /obj/item/clothing/under/rank/rnd/xenobiologist/skirt
 	name = "xenobiologist's jumpskirt"

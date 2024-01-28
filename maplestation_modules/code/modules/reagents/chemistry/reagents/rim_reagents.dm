@@ -40,7 +40,8 @@
 	ADD_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	ADD_TRAIT(user, TRAIT_COAGULATING, type)
 	// Improved blood filtration (resistance to diseases)
-	ADD_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
+	ADD_TRAIT(user, TRAIT_VIRUS_CONTACT_IMMUNE, type)
+	ADD_TRAIT(user, TRAIT_VIRUS_RESISTANCE, type)
 	// Slight improved vision
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
 
@@ -65,7 +66,6 @@
 
 	// Heals pain and tons of damage (based on purity)
 	user.cause_pain(BODY_ZONES_ALL, -1 * REM * seconds_per_tick)
-	user.adjustCloneLoss(-8 * REM * seconds_per_tick, FALSE)
 	user.adjustBruteLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustFireLoss(-5 * REM * seconds_per_tick, FALSE)
 	user.adjustOxyLoss(-3 * REM * seconds_per_tick, FALSE)
@@ -126,7 +126,8 @@
 /datum/reagent/medicine/luciferium/proc/stop_effects(mob/living/user)
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/luciferium)
 	REMOVE_TRAIT(user, TRAIT_ANTICONVULSANT, type)
-	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
+	REMOVE_TRAIT(user, TRAIT_VIRUS_CONTACT_IMMUNE, type)
+	REMOVE_TRAIT(user, TRAIT_VIRUS_RESISTANCE, type)
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
@@ -158,11 +159,13 @@
 
 /datum/reagent/medicine/penoxycyline/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	ADD_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
+	ADD_TRAIT(user, TRAIT_VIRUS_CONTACT_IMMUNE, type)
+	ADD_TRAIT(user, TRAIT_VIRUS_RESISTANCE, type)
 
 /datum/reagent/medicine/penoxycyline/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	REMOVE_TRAIT(user, TRAIT_DISEASE_RESISTANT, type)
+	REMOVE_TRAIT(user, TRAIT_VIRUS_CONTACT_IMMUNE, type)
+	REMOVE_TRAIT(user, TRAIT_VIRUS_RESISTANCE, type)
 
 /datum/chemical_reaction/penoxycyline
 	results = list(/datum/reagent/medicine/penoxycyline = 2)
