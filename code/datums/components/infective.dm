@@ -59,6 +59,12 @@
 /datum/component/infective/proc/try_infect_eat(datum/source, mob/living/eater, mob/living/feeder)
 	SIGNAL_HANDLER
 
+	// NON-MODULE CHANGE
+	var/obj/item/organ/internal/liver/liver = eater.get_organ_slot(ORGAN_SLOT_LIVER)
+	if(is_type_in_typecache(parent, liver?.disease_free_foods))
+		return
+	// NON-MODULE CHANGE END
+
 	if(!eater.has_quirk(/datum/quirk/deviant_tastes))
 		eater.add_mood_event("disgust", /datum/mood_event/disgust/dirty_food)
 
