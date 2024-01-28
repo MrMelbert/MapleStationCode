@@ -365,10 +365,6 @@
 			to_chat(user, span_warning("That's a terrible idea."))
 		return .
 
-/obj/item/food/deadmouse/make_germ_sensitive(mapload)
-	// NON-MODULE CHANGE // Don't think about this one too much
-	AddComponent(/datum/component/decomposition, mapload, decomp_req_handle, decomp_flags = foodtypes, decomp_result = decomp_type, ant_attracting = ant_attracting, custom_time = decomposition_time, stink_particles = decomposition_particles)
-
 /obj/item/food/deadmouse/moldy
 	name = "moldy dead mouse"
 	desc = "A dead rodent, consumed by mold and rot. There is a slim chance that a lizard might still eat it."
