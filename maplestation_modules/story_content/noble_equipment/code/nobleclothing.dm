@@ -298,7 +298,10 @@
 	body_parts_covered = CHEST|GROIN|LEGS
 	alternate_worn_layer = ABOVE_SHOES_LAYER
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	armor_type = /datum/armor/plauge
+	armor_type = /datum/armor/clothing_under/plague
+
+/datum/armor/clothing_under/plague
+	bio = 100
 
 /datum/armor/plauge
 	bio = 100

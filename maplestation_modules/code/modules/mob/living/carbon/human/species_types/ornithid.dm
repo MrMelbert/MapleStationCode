@@ -46,6 +46,7 @@ GLOBAL_LIST_EMPTY(tails_list_avian)
 	features["arm_wings"] = pick(GLOB.arm_wings_list)
 	features["tail_avian"] = pick(GLOB.tails_list_avian)
 	features["ears_avian"] = pick(GLOB.avian_ears_list)
+	features["feathers"] = "#[random_color()]"
 	return features
 
 /datum/species/ornithid/prepare_human_for_preview(mob/living/carbon/human/human)

@@ -237,7 +237,7 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(features["ears_avian"]) // NON-MODULE CHANGE
 		L[DNA_AVIAN_EARS_BLOCK] = construct_block(GLOB.avian_ears_list.Find(features["ears_avian"]), GLOB.avian_ears_list.len)
 	if(features["feathers"]) // NON-MODULE CHANGE
-		L[DNA_MUTANT_COLOR_BLOCK] = sanitize_hexcolor(features["feathers"], include_crunch = FALSE)
+		L[DNA_FEATHER_COLOR_BLOCK] = sanitize_hexcolor(features["feathers"], include_crunch = FALSE)
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
