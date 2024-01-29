@@ -1,16 +1,26 @@
 // Reworks toggle_move_intent to cycle rather than go back and forth
-/mob/living/toggle_move_intent()
-	switch(move_intent)
-		if(MOVE_INTENT_RUN)
-			move_intent = MOVE_INTENT_SNEAK
-		if(MOVE_INTENT_SNEAK)
-			move_intent = MOVE_INTENT_WALK
-		if(MOVE_INTENT_WALK)
-			move_intent = MOVE_INTENT_RUN
+/mob/living/toggle_move_intent(mob/user, backwards)
 
-	if(hud_used?.static_inventory)
-		for(var/atom/movable/screen/mov_intent/selector in hud_used.static_inventory)
-			selector.update_appearance()
+	if(backwards)
+		switch(move_intent)
+			if(MOVE_INTENT_RUN)
+				move_intent = MOVE_INTENT_WALK
+			if(MOVE_INTENT_WALK)
+				move_intent = MOVE_INTENT_SNEAK
+			if(MOVE_INTENT_SNEAK)
+				move_intent = MOVE_INTENT_RUN
+
+	else
+		switch(move_intent)
+			if(MOVE_INTENT_RUN)
+				move_intent = MOVE_INTENT_SNEAK
+			if(MOVE_INTENT_SNEAK)
+				move_intent = MOVE_INTENT_WALK
+			if(MOVE_INTENT_WALK)
+				move_intent = MOVE_INTENT_RUN
+
+	for(var/atom/movable/screen/mov_intent/selector in hud_used?.static_inventory)
+		selector.update_appearance()
 	update_move_intent_slowdown()
 
 /// Sets the mob's move intent to the passed intent

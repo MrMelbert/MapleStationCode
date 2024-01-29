@@ -1,5 +1,6 @@
 /atom/movable/screen/mov_intent
 	name = "run/walk/sneak cycle"
+	desc = "Cycles between move intents. Right click to cycle backwards."
 	maptext_width = 64
 	maptext_x = 3
 	maptext_y = 20
@@ -8,8 +9,9 @@
 	/// The sprint bar that appears over the bottom of our move selector
 	var/mutable_appearance/sprint_bar
 
-/atom/movable/screen/mov_intent/Click()
-	toggle(usr)
+/atom/movable/screen/mov_intent/Click(location, control, params)
+	var/list/modifiers = params2list(params)
+	cycle_intent(usr, backwards = LAZYACCESS(modifiers, RIGHT_CLICK))
 
 /atom/movable/screen/mov_intent/update_overlays()
 	. = ..()
@@ -23,6 +25,12 @@
 	var/mob/living/carbon/human/runner = hud.mymob
 	sprint_bar.icon_state = "prog_bar_[round(((runner.sprint_length / runner.sprint_length_max) * 100), 5)]"
 	. += sprint_bar
+
+/atom/movable/screen/mov_intent/proc/cycle_intent(mob/living/cycler, backwards = FALSE)
+	if(!istype(cycler))
+		return
+
+	cycler.toggle_move_intent(cycler, backwards)
 
 /datum/movespeed_modifier/momentum
 	movetypes = GROUND
