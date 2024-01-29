@@ -169,7 +169,7 @@
 
 /obj/machinery/vital_floor_scanner/screwdriver_act(mob/living/user, obj/item/tool)
 	balloon_alert(user, "deconstructing...")
-	if(!tool.use_tool(src, user, 4 SECONDS))
+	if(!tool.use_tool(src, user, 4 SECONDS, volume = 50))
 		return ITEM_INTERACT_BLOCKING
 
 	deconstruct(TRUE)
