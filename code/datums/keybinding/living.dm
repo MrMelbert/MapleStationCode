@@ -121,8 +121,8 @@
 /datum/keybinding/living/toggle_move_intent
 	hotkey_keys = list("C")
 	name = "toggle_move_intent"
-	full_name = "Hold to toggle move intent"
-	description = "Held down to cycle to the other move intent, release to cycle back"
+	full_name = "Hold to toggle sprint" // NON-MODULE CHANGE
+	description = "Hold down to enable sprinting. Releasing will return you to walk." // NON-MODULE CHANGE
 	keybind_signal = COMSIG_KB_LIVING_TOGGLEMOVEINTENT_DOWN
 
 /datum/keybinding/living/toggle_move_intent/down(client/user)
@@ -130,19 +130,19 @@
 	if(.)
 		return
 	var/mob/living/M = user.mob
-	M.toggle_move_intent()
+	M.set_move_intent(MOVE_INTENT_RUN) // NON-MODULE CHANGE
 	return TRUE
 
 /datum/keybinding/living/toggle_move_intent/up(client/user)
 	var/mob/living/M = user.mob
-	M.toggle_move_intent()
+	M.set_move_intent(MOVE_INTENT_WALK) // NON-MODULE CHANGE
 	return TRUE
 
 /datum/keybinding/living/toggle_move_intent_alternative
 	hotkey_keys = list("Unbound")
 	name = "toggle_move_intent_alt"
 	full_name = "press to cycle move intent"
-	description = "Pressing this cycle to the opposite move intent, does not cycle back"
+	description = "Pressing this will cycle to the next move intent." // NON-MODULE CHANGE
 	keybind_signal = COMSIG_KB_LIVING_TOGGLEMOVEINTENTALT_DOWN
 
 /datum/keybinding/living/toggle_move_intent_alternative/down(client/user)

@@ -16,8 +16,11 @@
 		"throw" = CALLBACK(target, TYPE_PROC_REF(/mob, throw_item), get_edge_target_turf(target, pick(GLOB.alldirs))),
 		"shove" = CALLBACK(src, PROC_REF(ghost_shove), target),
 		"sit" = CALLBACK(src, PROC_REF(ghost_sit), target),
-		"run" = CALLBACK(src, PROC_REF(ghost_speed), target, MOVE_INTENT_RUN),
-		"walk" = CALLBACK(src, PROC_REF(ghost_speed), target, MOVE_INTENT_WALK),
+		"run" = CALLBACK(target, TYPE_PROC_REF(/mob/living, set_move_intent), MOVE_INTENT_RUN), // NON-MODULE CHANGE
+		"walk" = CALLBACK(target, TYPE_PROC_REF(/mob/living, set_move_intent), MOVE_INTENT_WALK), // NON-MODULE CHANGE
+		"sneak" = CALLBACK(target, TYPE_PROC_REF(/mob/living, set_move_intent), MOVE_INTENT_SNEAK), // NON-MODULE CHANGE
+		"crawl" = CALLBACK(target, TYPE_PROC_REF(/mob/living, set_resting), TRUE), // NON-MODULE CHANGE
+		"stand" = CALLBACK(target, TYPE_PROC_REF(/mob/living, set_resting), FALSE), // NON-MODULE CHANGE
 		), 7 SECONDS)
 
 	to_chat(target, span_revenwarning("You feel a ghastly presence!!!"))
@@ -45,7 +48,4 @@
 	var/obj/structure/chair/sitting_chair = pick(chairs)
 	sitting_chair.buckle_mob(target, check_loc = FALSE)
 
-/datum/smite/ghost_control/proc/ghost_speed(mob/living/target, new_speed)
-	if(target.move_intent == new_speed)
-		return
-	target.toggle_move_intent()
+ // NON-MODULE CHANGE: this proc is gone we don't need it any more

@@ -141,7 +141,7 @@
 //Called when we bump onto a mob
 /mob/living/proc/MobBump(mob/M)
 	//No bumping/swapping/pushing others if you are on walk intent
-	if(move_intent == MOVE_INTENT_WALK)
+	if(move_intent != MOVE_INTENT_RUN)  // NON-MODULE CHANGE
 		return TRUE
 
 	if(SEND_SIGNAL(M, COMSIG_LIVING_PRE_MOB_BUMP, src) & COMPONENT_LIVING_BLOCK_PRE_MOB_BUMP)

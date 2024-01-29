@@ -6381,6 +6381,7 @@
 #include "maplestation_modules\code\modules\mob\living\impede_speech_verb.dm"
 #include "maplestation_modules\code\modules\mob\living\living.dm"
 #include "maplestation_modules\code\modules\mob\living\living_movement.dm"
+#include "maplestation_modules\code\modules\mob\living\sneak.dm"
 #include "maplestation_modules\code\modules\mob\living\speech_and_radio_sounds.dm"
 #include "maplestation_modules\code\modules\mob\living\sprint.dm"
 #include "maplestation_modules\code\modules\mob\living\carbon\human\human.dm"

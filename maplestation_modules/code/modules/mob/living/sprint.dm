@@ -1,5 +1,15 @@
 /atom/movable/screen/mov_intent
+	name = "run/walk/sneak cycle"
+	maptext_width = 64
+	maptext_x = 3
+	maptext_y = 20
+	/// Style applied to the maptext used on the selector
+	var/maptext_style = "text-align:center; -dm-text-outline: 1px black"
+	/// The sprint bar that appears over the bottom of our move selector
 	var/mutable_appearance/sprint_bar
+
+/atom/movable/screen/mov_intent/Click()
+	toggle(usr)
 
 /atom/movable/screen/mov_intent/update_overlays()
 	. = ..()
@@ -7,10 +17,7 @@
 		return
 
 	if(isnull(sprint_bar))
-		sprint_bar = mutable_appearance(
-			icon = 'icons/effects/progressbar.dmi',
-			icon_state = "prog_bar_100",
-		)
+		sprint_bar = mutable_appearance('icons/effects/progressbar.dmi')
 		sprint_bar.pixel_y -= 2
 
 	var/mob/living/carbon/human/runner = hud.mymob
@@ -76,7 +83,7 @@
 
 	// Okay you're gonna stamcrit yourself, slow your roll
 	if(getStaminaLoss() >= maxHealth * 0.9)
-		toggle_move_intent()
+		set_move_intent(MOVE_INTENT_WALK)
 		return
 
 	adjustStaminaLoss(1)
