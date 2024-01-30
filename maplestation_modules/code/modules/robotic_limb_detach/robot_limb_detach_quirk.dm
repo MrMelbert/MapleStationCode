@@ -1,6 +1,6 @@
 /datum/quirk/robot_limb_detach
 	name = "Cybernetic Limb Mounts"
-	desc = "You are able to detach and reattach any installed robotic limbs with very little effort, as long as they're in good condition."
+	desc = "You are able to detach and reattach any installed robotic limbs with very little effort." // ", as long as they're in good condition."
 	gain_text = span_notice("Internal sensors report limb disengagement protocols are ready and waiting.")
 	lose_text = span_notice("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE.")
 	medical_record_text = "Patient bears quick-attach and release limb joint cybernetics."
@@ -22,7 +22,7 @@
 
 /datum/action/cooldown/spell/robot_self_amputation
 	name = "Detach a robotic limb"
-	desc = "Disengage one of your robotic limbs from your cybernetic mounts. Requires you to not be restrained or otherwise under duress. Will not function on wounded limbs - tend to them first."
+	desc = "Disengage one of your robotic limbs from your cybernetic mounts. Requires you to not be restrained or otherwise under duress." // " Will not function on wounded limbs - tend to them first."
 	button_icon_state = "autotomy"
 
 	cooldown_time = 30 SECONDS
