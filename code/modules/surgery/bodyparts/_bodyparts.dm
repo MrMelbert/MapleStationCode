@@ -360,6 +360,10 @@
 
 	if(ishuman(victim))
 		var/mob/living/carbon/human/human_victim = victim
+		// NON-MODULE CHANGE START
+		if (HAS_TRAIT(victim, TRAIT_ROBOTIC_LIMBATTACHMENT) && !(bodytype & BODYTYPE_ROBOTIC)) //if we're trying to attach something that's not robotic, end out
+			return
+		// NON-MODULE CHANGE END
 		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
 			if(!human_victim.get_bodypart(body_zone))
 				user.temporarilyRemoveItemFromInventory(src, TRUE)
