@@ -29,10 +29,12 @@
 	spell_requirements = NONE
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED | AB_CHECK_INCAPACITATED
 
+	var/obj/item/bodypart/limb_to_detach
+
 /datum/action/cooldown/spell/robot_self_amputation/is_valid_target(atom/cast_on)
 	return ishuman(cast_on)
 
-/datum/action/cooldown/spell/robot_self_amputation/cast(mob/living/carbon/human/cast_on)
+/datum/action/cooldown/spell/robot_self_amputation/before_cast(mob/living/carbon/human/cast_on)
 	. = ..()
 
 	if(HAS_TRAIT(cast_on, TRAIT_NODISMEMBER))
@@ -54,9 +56,12 @@
 		to_chat(cast_on, "ERROR: Limb disengagement protocols report no compatible cybernetics currently installed. Seek out a maintenance technician.")
 		return
 
-	var/obj/item/bodypart/limb_to_detach = tgui_input_list(cast_on, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
+	limb_to_detach = tgui_input_list(cast_on, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
 	if (QDELETED(src) || QDELETED(cast_on) || QDELETED(limb_to_detach))
-		return
+		return SPELL_CANCEL_CAST
+
+/datum/action/cooldown/spell/robot_self_amputation/cast(mob/living/carbon/human/cast_on)
+	. = ..()
 
 // This is also technically dead code, because we don't have synth-limb wounds, again I'm leaving this here in case anyone wants to make this *not* dead at some point, or if upstream happens to make it relevant
 //	if (length(limb_to_detach.wounds) >= 1)
