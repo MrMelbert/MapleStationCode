@@ -363,8 +363,8 @@
 		// NON-MODULE CHANGE START
 		if (HAS_TRAIT(victim, TRAIT_ROBOTIC_LIMBATTACHMENT) && !(bodytype & BODYTYPE_ROBOTIC)) //if we're trying to attach something that's not robotic, end out
 			return
+		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT) || HAS_TRAIT(victim, TRAIT_ROBOTIC_LIMBATTACHMENT))
 		// NON-MODULE CHANGE END
-		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT))
 			if(!human_victim.get_bodypart(body_zone))
 				user.temporarilyRemoveItemFromInventory(src, TRUE)
 				if(!try_attach_limb(victim))
