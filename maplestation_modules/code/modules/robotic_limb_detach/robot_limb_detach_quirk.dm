@@ -63,11 +63,10 @@
 /datum/action/cooldown/spell/robot_self_amputation/cast(mob/living/carbon/human/cast_on)
 	. = ..()
 
-// This is also technically dead code, because we don't have synth-limb wounds, again I'm leaving this here in case anyone wants to make this *not* dead at some point, or if upstream happens to make it relevant
-//	if (length(limb_to_detach.wounds) >= 1)
-//		cast_on.balloon_alert(cast_on, "can't detach wounded limbs!")
-//		playsound(cast_on, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-//		return
+	if (length(limb_to_detach.wounds) >= 1)
+		cast_on.balloon_alert(cast_on, "can't detach wounded limbs!")
+		playsound(cast_on, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		return
 
 	cast_on.balloon_alert(cast_on, "detaching limb...")
 	playsound(cast_on, 'sound/items/rped.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
