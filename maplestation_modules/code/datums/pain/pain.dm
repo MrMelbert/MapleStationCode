@@ -126,7 +126,7 @@
 
 	body_zones[new_limb.body_zone] = new_limb
 
-	if(special)
+	if(special || (HAS_TRAIT(source, TRAIT_ROBOTIC_LIMBATTACHMENT) && (new_limb.bodytype & BODYTYPE_ROBOTIC)))
 		new_limb.pain = 0
 	else
 		adjust_bodypart_pain(new_limb.body_zone, new_limb.pain)
@@ -152,10 +152,11 @@
 	body_zones -= bad_zone
 	UnregisterSignal(lost_limb, COMSIG_QDELETING)
 
-	if(!QDELETED(parent) && !special)
-		var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
-		adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
-		adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
+	if(!QDELETED(parent))
+		if(!special && !(HAS_TRAIT(source, TRAIT_ROBOTIC_LIMBATTACHMENT) && (lost_limb.bodytype & BODYTYPE_ROBOTIC)))
+			var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
+			adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
+			adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
 
 	if(!QDELETED(lost_limb))
 		lost_limb.pain = initial(lost_limb.pain)
