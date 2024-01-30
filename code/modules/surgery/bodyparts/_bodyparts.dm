@@ -361,7 +361,7 @@
 	if(ishuman(victim))
 		var/mob/living/carbon/human/human_victim = victim
 		// NON-MODULE CHANGE START
-		if (HAS_TRAIT(victim, TRAIT_ROBOTIC_LIMBATTACHMENT) && !(bodytype & BODYTYPE_ROBOTIC)) //if we're trying to attach something that's not robotic, end out
+		if (!HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT) && !(bodytype & BODYTYPE_ROBOTIC)) //if we're trying to attach something that's not robotic, and we don't have the generic trait, end out
 			return
 		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT) || HAS_TRAIT(victim, TRAIT_ROBOTIC_LIMBATTACHMENT))
 		// NON-MODULE CHANGE END
