@@ -9,33 +9,31 @@
 	icon = FA_ICON_HANDSHAKE_SIMPLE_SLASH
 	quirk_flags = QUIRK_HUMAN_ONLY
 	/// The action we add with this quirk in add(), used for easy deletion later
-	var/datum/action/cooldown/spell/added_action
+	var/datum/action/cooldown/added_action
 
 /datum/quirk/robot_limb_detach/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/datum/action/cooldown/spell/robot_self_amputation/limb_action = new /datum/action/cooldown/spell/robot_self_amputation()
+	var/datum/action/cooldown/robot_self_amputation/limb_action = new /datum/action/cooldown/robot_self_amputation()
 	limb_action.Grant(human_holder)
 	added_action = limb_action
 
 /datum/quirk/robot_limb_detach/remove()
 	QDEL_NULL(added_action)
 
-/datum/action/cooldown/spell/robot_self_amputation
+/datum/action/cooldown/robot_self_amputation
 	name = "Detach a robotic limb"
 	desc = "Disengage one of your robotic limbs from your cybernetic mounts. Requires you to not be restrained or otherwise under duress." // " Will not function on wounded limbs - tend to them first."
+	button_icon = 'icons/mob/actions/actions_spells.dmi'
 	button_icon_state = "autotomy"
 
 	cooldown_time = 1 SECONDS
-	spell_requirements = NONE
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED | AB_CHECK_INCAPACITATED
 
 	var/obj/item/bodypart/limb_to_detach
 
-/datum/action/cooldown/spell/robot_self_amputation/is_valid_target(atom/cast_on)
-	return ishuman(cast_on)
-
-/datum/action/cooldown/spell/robot_self_amputation/before_cast(mob/living/carbon/human/cast_on)
-	. = ..()
+/datum/action/cooldown/robot_self_amputation/Activate(mob/living/carbon/human/cast_on)
+	if(!ishuman(cast_on))
+		return
 
 	if(HAS_TRAIT(cast_on, TRAIT_NODISMEMBER))
 		to_chat(cast_on, span_warning("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE. Seek out a maintenance technician."))
@@ -60,9 +58,6 @@
 	if (QDELETED(src) || QDELETED(cast_on) || QDELETED(limb_to_detach))
 		return SPELL_CANCEL_CAST
 
-/datum/action/cooldown/spell/robot_self_amputation/cast(mob/living/carbon/human/cast_on)
-	. = ..()
-
 	if (length(limb_to_detach.wounds) >= 1)
 		cast_on.balloon_alert(cast_on, "can't detach wounded limbs!")
 		playsound(cast_on, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
@@ -73,6 +68,7 @@
 	cast_on.visible_message(span_notice("[cast_on] shuffles [cast_on.p_their()] [limb_to_detach.name] forward, actuators hissing and whirring as [cast_on.p_they()] disengage[cast_on.p_s()] the limb from its mount..."))
 
 	if(do_after(cast_on, 1 SECONDS))
+		StartCooldown()
 		cast_on.visible_message(span_notice("With a gentle twist, [cast_on] finally pries [cast_on.p_their()] [limb_to_detach.name] free from its socket."))
 		limb_to_detach.drop_limb()
 		cast_on.put_in_hands(limb_to_detach)
