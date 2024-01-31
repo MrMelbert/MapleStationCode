@@ -33,7 +33,7 @@
 	var/obj/item/bodypart/limb_to_detach
 
 /datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/cast_on)
-    return !QDELETED(limb_to_detach) && limb_to_detach.owner == cast_on
+	return !QDELETED(limb_to_detach) && limb_to_detach.owner == cast_on
 
 /datum/action/cooldown/robot_self_amputation/Activate(mob/living/carbon/human/cast_on)
 	if(!ishuman(cast_on))
