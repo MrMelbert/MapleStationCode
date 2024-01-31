@@ -29,6 +29,7 @@
 	cooldown_time = 1 SECONDS
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED | AB_CHECK_INCAPACITATED
 
+	var/list/exclusions = list()
 	var/obj/item/bodypart/limb_to_detach
 
 /datum/action/cooldown/robot_self_amputation/Activate(mob/living/carbon/human/cast_on)
@@ -39,7 +40,6 @@
 		to_chat(cast_on, span_warning("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE. Seek out a maintenance technician."))
 		return
 
-	var/list/exclusions = list()
 	exclusions += BODY_ZONE_CHEST
 	exclusions += BODY_ZONE_HEAD // The code below is redundant in our codebase, but I'm keeping it commented in case someone in the future wants to make it useful
 //	if (!issynthetic(cast_on))
@@ -55,7 +55,7 @@
 		return
 
 	limb_to_detach = tgui_input_list(cast_on, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
-	if (QDELETED(src) || QDELETED(cast_on) || QDELETED(limb_to_detach))
+	if (QDELETED(src) || QDELETED(cast_on) || QDELETED(limb_to_detach) || limb_to_detach.owner != cast_on)
 		return SPELL_CANCEL_CAST
 
 	if (length(limb_to_detach.wounds) >= 1)
