@@ -85,3 +85,4 @@
 	else
 		cast_on.balloon_alert(cast_on, "interrupted!")
 		playsound(cast_on, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	limb_to_detach = null
