@@ -32,6 +32,9 @@
 	var/list/exclusions = list()
 	var/obj/item/bodypart/limb_to_detach
 
+/datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/cast_on)
+    return !QDELETED(limb_to_detach) && limb_to_detach.owner == cast_on
+
 /datum/action/cooldown/robot_self_amputation/Activate(mob/living/carbon/human/cast_on)
 	if(!ishuman(cast_on))
 		return
@@ -67,7 +70,7 @@
 	playsound(cast_on, 'sound/items/rped.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	cast_on.visible_message(span_notice("[cast_on] shuffles [cast_on.p_their()] [limb_to_detach.name] forward, actuators hissing and whirring as [cast_on.p_they()] disengage[cast_on.p_s()] the limb from its mount..."))
 
-	if(do_after(cast_on, 1 SECONDS))
+	if(do_after(cast_on, 1 SECONDS, extra_checks = CALLBACK(src, PROC_REF(detaching_check), cast_on)))
 		StartCooldown()
 		cast_on.visible_message(span_notice("With a gentle twist, [cast_on] finally pries [cast_on.p_their()] [limb_to_detach.name] free from its socket."))
 		limb_to_detach.drop_limb()
