@@ -30,6 +30,7 @@
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED | AB_CHECK_INCAPACITATED
 
 	var/list/exclusions = list(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
+	var/obj/item/bodypart/limb_to_detach
 
 /datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/cast_on)
     return !QDELETED(limb_to_detach) && limb_to_detach.owner == cast_on
@@ -55,7 +56,6 @@
 		to_chat(cast_on, "ERROR: Limb disengagement protocols report no compatible cybernetics currently installed. Seek out a maintenance technician.")
 		return
 
-	var/obj/item/bodypart/limb_to_detach
 	limb_to_detach = tgui_input_list(cast_on, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
 	if (QDELETED(src) || QDELETED(cast_on) || QDELETED(limb_to_detach) || limb_to_detach.owner != cast_on)
 		return SPELL_CANCEL_CAST
