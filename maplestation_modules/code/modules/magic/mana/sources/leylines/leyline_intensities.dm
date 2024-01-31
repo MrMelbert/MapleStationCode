@@ -1,9 +1,4 @@
 GLOBAL_LIST_INIT(leyline_intensities, list(
-	/datum/leyline_intensity/none = 200,
-	/datum/leyline_intensity/minimal = 8000,
-	/datum/leyline_intensity/extremely_low = 11000,
-	/datum/leyline_intensity/low = 5000,
-	/datum/leyline_intensity/below_average = 1000,
 	/datum/leyline_intensity/average = 500,
 	/datum/leyline_intensity/above_average = 100,
 	/datum/leyline_intensity/high = 2,
