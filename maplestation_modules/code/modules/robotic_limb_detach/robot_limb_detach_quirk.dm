@@ -29,7 +29,7 @@
 	cooldown_time = 1 SECONDS
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED | AB_CHECK_INCAPACITATED
 
-	var/list/exclusions = list()
+	var/list/exclusions = list(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
 	var/obj/item/bodypart/limb_to_detach
 
 /datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/cast_on)
@@ -43,8 +43,7 @@
 		to_chat(cast_on, span_warning("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE. Seek out a maintenance technician."))
 		return
 
-	exclusions += BODY_ZONE_CHEST
-	exclusions += BODY_ZONE_HEAD // The code below is redundant in our codebase, but I'm keeping it commented in case someone in the future wants to make it useful
+// The code below is redundant in our codebase, but I'm keeping it commented in case someone in the future wants to make it useful
 //	if (!issynthetic(cast_on))
 //		exclusions += BODY_ZONE_HEAD // no decapitating yourself unless you're a synthetic, who keep their brains in their chest
 
