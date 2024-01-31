@@ -65,12 +65,15 @@
 		cast_on.balloon_alert(cast_on, "can't detach wounded limbs!")
 		playsound(cast_on, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		return
+	var/leg_check = IGNORE_USER_LOC_CHANGE
+	if (istype(limb_to_detach, /obj/item/bodypart/leg))
+		leg_check = null
 
 	cast_on.balloon_alert(cast_on, "detaching limb...")
 	playsound(cast_on, 'sound/items/rped.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	cast_on.visible_message(span_notice("[cast_on] shuffles [cast_on.p_their()] [limb_to_detach.name] forward, actuators hissing and whirring as [cast_on.p_they()] disengage[cast_on.p_s()] the limb from its mount..."))
 
-	if(do_after(cast_on, 1 SECONDS, extra_checks = CALLBACK(src, PROC_REF(detaching_check), cast_on)))
+	if(do_after(cast_on, 1 SECONDS, timed_action_flags = leg_check, extra_checks = CALLBACK(src, PROC_REF(detaching_check), cast_on)))
 		StartCooldown()
 		cast_on.visible_message(span_notice("With a gentle twist, [cast_on] finally pries [cast_on.p_their()] [limb_to_detach.name] free from its socket."))
 		limb_to_detach.drop_limb()
