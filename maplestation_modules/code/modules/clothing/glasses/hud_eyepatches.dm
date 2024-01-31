@@ -8,22 +8,21 @@
 	. = ..()
 	AddComponent(/datum/component/stackable_item, \
 		wearables = list(/obj/item/clothing/glasses/hud), \
+		wearable_descriptor = "a HUD", \
 		can_stack = CALLBACK(src, PROC_REF(can_attach_hud)), \
 		on_drop = CALLBACK(src, PROC_REF(on_drop_patch)), \
 	)
 
 /obj/item/clothing/glasses/eyepatch/proc/can_attach_hud(obj/item/source, obj/item/clothing/glasses/hud/incoming_hud, mob/user)
 	// Basically, stops you from attaching HUDglasses. We only want the ones with one eye covered.
-	return (incoming_hud.flash_protect == 0 && incoming_hud.tint == 0)
+	return !(incoming_hud.flags_cover & GLASSESCOVERSEYES)
 
 /obj/item/clothing/glasses/eyepatch/proc/on_drop_patch(obj/item/clothing/glasses/hud/equipped_hud, mob/living/carbon/user, silent)
-	if(!istype(user))
+	if(!equipped_hud.hud_type)
 		return
-	if(user.glasses != src)
-		return
-	// This is HUGE hack but hud glasses rely on the user.glasses var to be set to the hud glasses
-	// If this ever changes this must be removed because then it will call dropped twice, which isn't bad but can be weird
-	var/obj/item/pre_slot = user.glasses
-	user.glasses = equipped_hud
-	equipped_hud.dropped(user, silent)
-	user.glasses = pre_slot
+
+	// A bit of a hack but HUD code checks that user.glasses == equipped_hud
+	// Which it is not here
+	// So even though equipping the hud works fine, unequipping it will fail
+	var/datum/atom_hud/our_hud = GLOB.huds[equipped_hud.hud_type]
+	our_hud.hide_from(user)
