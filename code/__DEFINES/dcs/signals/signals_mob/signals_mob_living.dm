@@ -247,8 +247,12 @@
 
 /// Sent from a mob to their loc when starting to remove cuffs on itself
 #define COMSIG_MOB_REMOVING_CUFFS "living_removing_cuffs"
-/// Sent as a reply to above from any atom that wishs to stop self-cuff removal
-#define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
+	/// Sent as a reply to above from any atom that wishs to stop self-cuff removal
+	#define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
+
+/// Sent to a mob grabbing another mob: (mob/living/grabbing)
+#define COMSIG_LIVING_GRAB "living_grab"
+	// Return COMPONENT_CANCEL_ATTACK_CHAIN / COMPONENT_SKIP_ATTACK_CHAIN to stop the grab
 
 /// From /datum/element/basic_eating/try_eating()
 #define COMSIG_MOB_PRE_EAT "mob_pre_eat"

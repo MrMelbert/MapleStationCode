@@ -273,13 +273,28 @@
 	adjust_fire_stacks(3)
 	ignite_mob()
 
-/mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = FALSE)
+/**
+ * Called when a mob is grabbing another mob.
+ */
+/mob/living/proc/grab(mob/living/target)
+	if(!istype(target))
+		return FALSE
+	if(SEND_SIGNAL(src, COMSIG_LIVING_GRAB, target) & (COMPONENT_CANCEL_ATTACK_CHAIN|COMPONENT_SKIP_ATTACK))
+		return FALSE
+	if(target.check_block(src, 0, "[src]'s grab"))
+		return FALSE
+	target.grabbedby(src)
+	return TRUE
+
+/**
+ * Called when this mob is grabbed by another mob.
+ */
+/mob/living/proc/grabbedby(mob/living/user, supress_message = FALSE)
 	if(user == src || anchored || !isturf(user.loc) || (src in user.buckled_mobs))
 		return FALSE
 	if(user.has_limbs && !user.get_empty_held_indexes() && !user.is_holding_item_of_type(/obj/item/grabbing_hand))
 		to_chat(user, span_warning("Your hands are full!"))
 		return FALSE
-
 	user.start_pulling(src, supress_message = supress_message)
 	return TRUE
 
@@ -352,17 +367,9 @@
 		if(operations.next_step(user, modifiers))
 			return TRUE
 
-	var/martial_result = user.apply_martial_art(src, modifiers)
-	if (martial_result != MARTIAL_ATTACK_INVALID)
-		return martial_result
-
 	return FALSE
 
 /mob/living/attack_paw(mob/living/carbon/human/user, list/modifiers)
-	var/martial_result = user.apply_martial_art(src, modifiers)
-	if (martial_result != MARTIAL_ATTACK_INVALID)
-		return martial_result
-
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		user.disarm(src)
 		return TRUE

@@ -584,7 +584,7 @@
 		if (!IS_ORGANIC_LIMB(limb))
 			. += limb.brute_dam + limb.burn_dam
 
-/mob/living/carbon/grabbedby(mob/living/carbon/user, supress_message = FALSE)
+/mob/living/carbon/grabbedby(mob/living/user, supress_message = FALSE)
 	if(user != src)
 		return ..()
 
