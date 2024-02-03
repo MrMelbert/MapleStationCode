@@ -206,7 +206,7 @@ export type ServerData = {
   language: {
     base_languages: Language[];
     bonus_languages: Language[];
-    blacklisted_species: string;
+    blacklisted_species: string[];
   };
   // NON-MODULE CHANGE END
   [otheyKey: string]: unknown;
