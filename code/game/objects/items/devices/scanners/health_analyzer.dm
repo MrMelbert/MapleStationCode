@@ -399,7 +399,7 @@
 	else
 		return(jointext(render_list, ""))
 
-/proc/chemscan(mob/living/user, mob/living/target)
+/proc/chemscan(mob/living/user, mob/living/target, tochat = TRUE) // NON-MODULE CHANGE
 	if(user.incapacitated())
 		return
 
@@ -461,8 +461,13 @@
 				render_list += "<span class='alert ml-1'>Subject is extremely allergic to the following chemicals:</span>\n"
 				render_list += "<span class='alert ml-2'>[allergies]</span>\n"
 
-		// we handled the last <br> so we don't need handholding
-		to_chat(user, examine_block(jointext(render_list, "")), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
+		// NON-MODULE CHANGE
+		if(tochat)
+			// we handled the last <br> so we don't need handholding
+			to_chat(user, examine_block(jointext(render_list, "")), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
+		else
+			return jointext(render_list, "")
+		// NON-MODULE CHANGE END
 
 /obj/item/healthanalyzer/AltClick(mob/user)
 	..()

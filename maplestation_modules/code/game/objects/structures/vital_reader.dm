@@ -69,8 +69,12 @@
 
 	/// Whether we perform an advanced scan on examine or not
 	var/advanced = FALSE
+	/// If TRUE, also append a chemical scan to the readout
+	var/chemscan = TRUE
 	/// Typepath to spawn when deconstructed
 	var/frame = /obj/item/wallframe/status_display/vitals
+	/// How many attempts at scanning for a patient do we try before we turn ourself off
+	var/max_scan_attempts = 6
 	/// Whether we are on or off
 	VAR_FINAL/active = FALSE
 	/// Reference to the mob that is being tracked / scanned
@@ -107,6 +111,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/advanced, 32)
 		It has no button to toggle it manually."
 	interaction_flags_atom = NONE
 	interaction_flags_machine = NONE
+	max_scan_attempts = 1
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 
@@ -161,7 +166,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	else if(HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, reading_check_flags = READING_CHECK_LITERACY, silent = TRUE))
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
 	else
-		. += healthscan(user, patient, advanced = advanced, tochat = FALSE)
+		. += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/FALSE, advanced = advanced, tochat = FALSE)
+		. += chemscan(user, patient, tochat = FALSE)
 
 /obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	if(isnull(held_item) || (held_item.item_flags & SURGICAL_TOOL))
@@ -176,7 +182,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 /obj/machinery/computer/vitals_reader/AIShiftClick(mob/user)
 	// Lets AIs perform healthscans on people indirectly (they can't examine)
 	if(is_operational && !isnull(patient))
-		healthscan(user, patient, advanced = advanced)
+		var/entire_printout = ""
+		entire_printout += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/FALSE, advanced = advanced, tochat = FALSE)
+		entire_printout += chemscan(user, patient, tochat = FALSE)
+		to_chat(user, examine_block(entire_printout), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 
 #define LOWER_BAR_OFFSET -3
 
@@ -405,7 +414,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		set_patient(patient)
 		return
 
-	if(scan_attempts > 12)
+	if(scan_attempts > max_scan_attempts)
 		toggle_active()
 		return
 

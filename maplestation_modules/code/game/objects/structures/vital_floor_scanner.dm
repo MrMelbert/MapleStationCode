@@ -54,6 +54,7 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	update_appearance(UPDATE_OVERLAYS)
+	register_context()
 
 /obj/machinery/vital_floor_scanner/examine(mob/user)
 	. = ..()
@@ -61,6 +62,11 @@
 		. += span_notice("To use: Step on the pad and wait for the scan to complete. \
 			Your results will be displayed on nearby vitals monitors. \
 			<b>Examine</b> the monitor for a detailed breakdown of your vitals.")
+
+/obj/machinery/vital_floor_scanner/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(held_item?.tool_behaviour == TOOL_SCREWDRIVER)
+		context[SCREENTIP_CONTEXT_LMB] = "Deconstruct"
+		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/vital_floor_scanner/update_overlays()
 	. = ..()
@@ -108,9 +114,9 @@
 			reader.set_patient(occupant)
 			return
 
-/obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby()
+/obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby(mob/leaving = occupant)
 	for(var/obj/machinery/computer/vitals_reader/reader in range(LINK_RANGE, src))
-		if(reader.patient == occupant)
+		if(reader.active && reader.patient == leaving)
 			reader.toggle_active()
 			return
 
@@ -146,7 +152,7 @@
 		scan_effect()
 
 	else if(!isnull(old_occupant))
-		disable_vitals_nearby()
+		disable_vitals_nearby(old_occupant)
 
 /obj/machinery/vital_floor_scanner/proc/scan_effect()
 	var/image/scan_effect = image(
@@ -160,6 +166,14 @@
 	animate(scan_effect, alpha = 200, time = SCAN_EFFECT_DURATION * 0.25, loop = -1)
 	SET_PLANE_EXPLICIT(scan_effect, occupant.plane, occupant)
 	occupant.flick_overlay_view(scan_effect, SCAN_EFFECT_DURATION)
+
+/obj/machinery/vital_floor_scanner/screwdriver_act(mob/living/user, obj/item/tool)
+	balloon_alert(user, "deconstructing...")
+	if(!tool.use_tool(src, user, 4 SECONDS, volume = 50))
+		return ITEM_INTERACT_BLOCKING
+
+	deconstruct(TRUE)
+	return ITEM_INTERACT_SUCCESS
 
 #undef LINK_RANGE
 #undef SCAN_EFFECT_DURATION
