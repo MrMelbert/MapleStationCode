@@ -362,7 +362,11 @@ export const LimbManagerPage = () => {
     <ServerPreferencesFetcher
       render={(serverData) => {
         return serverData ? (
-          <LimbManagerInner {...serverData.limbs} {...data} />
+          <LimbManagerInner
+            limbs={serverData.limbs}
+            selected_limbs={data.selected_limbs}
+            preview_flat_icon={data.preview_flat_icon}
+          />
         ) : (
           <NoticeBox>Loading...</NoticeBox>
         );

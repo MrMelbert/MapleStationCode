@@ -170,7 +170,11 @@ export const LanguagePage = () => {
     <ServerPreferencesFetcher
       render={(serverData) => {
         return serverData ? (
-          <LanguagePageInner {...serverData.language} />
+          <LanguagePageInner
+            base_languages={serverData.base_languages}
+            bonus_languages={serverData.bonus_languages}
+            blacklisted_species={serverData.blacklisted_species}
+          />
         ) : (
           <NoticeBox>Loading...</NoticeBox>
         );

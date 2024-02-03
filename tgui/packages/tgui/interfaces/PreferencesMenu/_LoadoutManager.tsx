@@ -48,7 +48,11 @@ export const LoadoutPage = () => {
     <ServerPreferencesFetcher
       render={(serverData) => {
         return serverData ? (
-          <LoadoutPageInner {...serverData.loadout} />
+          <LoadoutPageInner
+            tutorial_text={serverData.tutorial_text}
+            loadout_tabs={serverData.loadout_tabs}
+            max_loadout_slots={serverData.max_loadout_slots}
+          />
         ) : (
           <NoticeBox>Loading...</NoticeBox>
         );
