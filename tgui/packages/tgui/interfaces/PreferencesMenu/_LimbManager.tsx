@@ -1,9 +1,17 @@
 import { Component, createRef } from 'react';
 
-import { resolveAsset } from '../assets';
-import { useBackend } from '../backend';
-import { BlockQuote, Button, Image, Section, Stack } from '../components';
-import { Connections } from './common/Connections';
+import { resolveAsset } from '../../assets';
+import { useBackend } from '../../backend';
+import {
+  BlockQuote,
+  Button,
+  Image,
+  NoticeBox,
+  Section,
+  Stack,
+} from '../../components';
+import { Connections } from '../common/Connections';
+import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 const makeCategoryReadable = (cat: string | null): string | null => {
   switch (cat) {
@@ -82,7 +90,7 @@ const getActiveCategory = (
 };
 
 type Data = {
-  limbs: LimbCategory[];
+  // limbs: LimbCategory[];
   selected_limbs: string[] | null;
   preview_flat_icon: string;
 };
@@ -348,14 +356,17 @@ class LimbManagerInner extends Component<
 }
 
 export const LimbManagerPage = () => {
-  const { act, data } = useBackend<Data>();
-  const { limbs, selected_limbs, preview_flat_icon } = data;
+  const { data } = useBackend<Data>();
 
   return (
-    <LimbManagerInner
-      limbs={limbs}
-      selected_limbs={selected_limbs}
-      preview_flat_icon={preview_flat_icon}
+    <ServerPreferencesFetcher
+      render={(serverData) => {
+        return serverData ? (
+          <LimbManagerInner {...serverData.limbs} {...data} />
+        ) : (
+          <NoticeBox>Loading...</NoticeBox>
+        );
+      }}
     />
   );
 };

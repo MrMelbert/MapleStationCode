@@ -1,6 +1,7 @@
 import { BooleanLike } from 'common/react';
+import { useState } from 'react';
 
-import { useBackend, useLocalState } from '../backend';
+import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -10,8 +11,9 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
-import { CharacterPreview } from './common/CharacterPreview';
+} from '../../components';
+import { CharacterPreview } from '../common/CharacterPreview';
+import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 type typePath = string;
 
@@ -38,29 +40,44 @@ type Data = {
   mob_name: string;
   job_clothes: BooleanLike;
   loadout_preview_view: string;
-  loadout_tabs: LoadoutCategory[];
-  tutorial_text: string;
   current_slot: number;
-  max_loadout_slots: number;
 };
 
 export const LoadoutPage = () => {
-  const { data } = useBackend<Data>();
-  const { loadout_tabs } = data;
-  const [tutorialStatus, setTutorialStatus] = useLocalState(
-    'tutorialStatus',
-    false,
+  return (
+    <ServerPreferencesFetcher
+      render={(serverData) => {
+        return serverData ? (
+          <LoadoutPageInner {...serverData.loadout} />
+        ) : (
+          <NoticeBox>Loading...</NoticeBox>
+        );
+      }}
+    />
   );
-  const [searchLoadout, setSearchLoadout] = useLocalState('searchLoadout', '');
-  const [selectedTabName, setSelectedTab] = useLocalState(
-    'tabs',
-    loadout_tabs[0]?.name,
+};
+
+const LoadoutPageInner = (props: {
+  tutorial_text: string;
+  loadout_tabs: LoadoutCategory[];
+  max_loadout_slots: number;
+}) => {
+  const { tutorial_text, loadout_tabs, max_loadout_slots } = props;
+  const [tutorialStatus, setTutorialStatus] = useState<boolean>(false);
+  const [searchLoadout, setSearchLoadout] = useState<string>('');
+  const [selectedTabName, setSelectedTab] = useState<string>(
+    loadout_tabs[0].name,
   );
 
   return (
     <Stack vertical fill>
       <Stack.Item>
-        {!!tutorialStatus && <LoadoutTutorialDimmer />}
+        {!!tutorialStatus && (
+          <LoadoutTutorialDimmer
+            text={tutorial_text}
+            updateTutorialState={setTutorialStatus}
+          />
+        )}
         <Section
           title="Loadout Categories"
           align="center"
@@ -69,12 +86,13 @@ export const LoadoutPage = () => {
               <Button
                 icon="info"
                 align="center"
-                content="Tutorial"
                 onClick={() => setTutorialStatus(true)}
-              />
+              >
+                {'Tutorial'}
+              </Button>
               <Input
                 width="200px"
-                onInput={(event, value) => setSearchLoadout(value)}
+                onInput={(_, value) => setSearchLoadout(value)}
                 placeholder="Search for item"
                 value={searchLoadout}
               />
@@ -100,30 +118,32 @@ export const LoadoutPage = () => {
         </Section>
       </Stack.Item>
       <Stack.Item>
-        <LoadoutTabs />
+        <LoadoutTabs
+          slots={max_loadout_slots}
+          loadout_tabs={loadout_tabs}
+          currentTab={selectedTabName}
+          currentSearch={searchLoadout}
+          currentTutorialStatus={tutorialStatus}
+        />
       </Stack.Item>
     </Stack>
   );
 };
-
-const LoadoutTutorialDimmer = () => {
-  const { data } = useBackend<Data>();
-  const { tutorial_text } = data;
-  const [tutorialStatus, setTutorialStatus] = useLocalState(
-    'tutorialStatus',
-    false,
-  );
+const LoadoutTutorialDimmer = (props: {
+  text: string;
+  updateTutorialState: (newState: boolean) => void;
+}) => {
   return (
     <Dimmer>
       <Stack vertical align="center">
         <Stack.Item textAlign="center" preserveWhitespace>
-          {tutorial_text}
+          {props.text}
         </Stack.Item>
         <Stack.Item>
           <Button
             mt={1}
             align="center"
-            onClick={() => setTutorialStatus(false)}
+            onClick={() => props.updateTutorialState(false)}
           >
             Okay.
           </Button>
@@ -133,10 +153,7 @@ const LoadoutTutorialDimmer = () => {
   );
 };
 
-const ItemDisplay = (
-  props: { item: LoadoutItem; active: boolean },
-  context,
-) => {
+const ItemDisplay = (props: { item: LoadoutItem; active: boolean }) => {
   const { act } = useBackend<LoadoutItem>();
   const { item, active } = props;
   return (
@@ -207,10 +224,13 @@ const LoadoutTabDisplay = (props: {
   );
 };
 
-const SearchDisplay = () => {
+const SearchDisplay = (props: {
+  loadout_tabs: LoadoutCategory[];
+  currentSearch: string;
+}) => {
   const { data } = useBackend<Data>();
-  const { loadout_tabs, selected_loadout } = data;
-  const [searchLoadout] = useLocalState('searchLoadout', '');
+  const { selected_loadout } = data;
+  const { loadout_tabs, currentSearch } = props;
 
   const allLoadoutItems = () => {
     const concatItems: LoadoutItem[] = [];
@@ -222,7 +242,7 @@ const SearchDisplay = () => {
     return concatItems.sort((a, b) => a.name.localeCompare(b.name));
   };
   const validLoadoutItems = allLoadoutItems().filter((item) =>
-    item.name.toLowerCase().includes(searchLoadout.toLowerCase()),
+    item.name.toLowerCase().includes(currentSearch.toLowerCase()),
   );
 
   if (validLoadoutItems.length === 0) {
@@ -247,16 +267,25 @@ const SearchDisplay = () => {
   );
 };
 
-const LoadoutTabs = (props, context) => {
+const LoadoutTabs = (props: {
+  slots: number;
+  loadout_tabs: LoadoutCategory[];
+  currentTab: string;
+  currentSearch: string;
+  currentTutorialStatus: boolean;
+}) => {
   const { act, data } = useBackend<Data>();
-  const { loadout_tabs } = data;
-  const [selectedTabName] = useLocalState('tabs', loadout_tabs[0]?.name);
-  const [searchLoadout] = useLocalState('searchLoadout', '');
+  const {
+    slots,
+    loadout_tabs,
+    currentTab,
+    currentSearch,
+    currentTutorialStatus,
+  } = props;
   const activeCategory = loadout_tabs.find((curTab) => {
-    return curTab.name === selectedTabName;
+    return curTab.name === currentTab;
   });
-
-  const searching = searchLoadout.length > 1;
+  const searching = currentSearch.length > 1;
 
   return (
     <Stack fill>
@@ -282,7 +311,10 @@ const LoadoutTabs = (props, context) => {
           >
             <Stack vertical>
               {searching ? (
-                <SearchDisplay />
+                <SearchDisplay
+                  loadout_tabs={loadout_tabs}
+                  currentSearch={currentSearch}
+                />
               ) : (
                 <LoadoutTabDisplay category={activeCategory} />
               )}
@@ -295,23 +327,22 @@ const LoadoutTabs = (props, context) => {
         )}
       </Stack.Item>
       <Stack.Item grow align="center">
-        <LoadoutPreviewSection />
+        <LoadoutPreviewSection
+          slots={slots}
+          tutorialStatus={currentTutorialStatus}
+        />
       </Stack.Item>
     </Stack>
   );
 };
 
-const LoadoutPreviewSection = () => {
+const LoadoutPreviewSection = (props: {
+  slots: number;
+  tutorialStatus: boolean;
+}) => {
   const { act, data } = useBackend<Data>();
-  const {
-    mob_name,
-    job_clothes,
-    loadout_preview_view,
-    current_slot,
-    max_loadout_slots,
-  } = data;
-
-  const [tutorialStatus] = useLocalState('tutorialStatus', false);
+  const { mob_name, job_clothes, loadout_preview_view, current_slot } = data;
+  const { slots, tutorialStatus } = props;
 
   const loadoutSlots = (maxSlots: number) => {
     const slots: number[] = [];
@@ -344,13 +375,14 @@ const LoadoutPreviewSection = () => {
         <Stack.Divider />
         <Stack.Item align="center">
           <Stack>
-            {loadoutSlots(max_loadout_slots).map((slot) => (
+            {loadoutSlots(slots).map((slot) => (
               <Stack.Item key={slot}>
                 <Button
                   color={slot === current_slot ? 'green' : 'grey'}
-                  content={slot}
                   onClick={() => act('select_slot', { new_slot: slot })}
-                />
+                >
+                  {slot}
+                </Button>
               </Stack.Item>
             ))}
           </Stack>

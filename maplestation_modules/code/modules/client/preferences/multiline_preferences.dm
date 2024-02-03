@@ -17,6 +17,9 @@
 /datum/preference/multiline_text/create_default_value()
 	return null
 
+/datum/preference/multiline_text/compile_constant_data()
+	return list("maximum_length" = max_length)
+
 /// Preferences that add onto flavor text datum
 /datum/preference/multiline_text/flavor_datum
 	abstract_type = /datum/preference/multiline_text/flavor_datum
@@ -62,6 +65,7 @@
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_NON_CONTEXTUAL
 	priority = PREFERENCE_PRIORITY_NAMES
+	max_length = MAX_MESSAGE_LEN
 
 /datum/preference/multiline_text/record/New()
 	. = ..()
