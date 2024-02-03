@@ -32,57 +32,57 @@
 	var/list/exclusions = list(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
 	var/obj/item/bodypart/limb_to_detach
 
-/datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/cast_on)
-	return !QDELETED(limb_to_detach) && limb_to_detach.owner == cast_on
+/datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/target)
+	return !QDELETED(limb_to_detach) && limb_to_detach.owner == target
 
-/datum/action/cooldown/robot_self_amputation/Activate(mob/living/carbon/human/cast_on)
-	if(!ishuman(cast_on))
+/datum/action/cooldown/robot_self_amputation/Activate(mob/living/carbon/human/target)
+	if(!ishuman(target))
 		return
 
-	if(HAS_TRAIT(cast_on, TRAIT_NODISMEMBER))
-		to_chat(cast_on, span_warning("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE. Seek out a maintenance technician."))
+	if(HAS_TRAIT(target, TRAIT_NODISMEMBER))
+		to_chat(target, span_warning("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE. Seek out a maintenance technician."))
 		return
 
 // The code below is redundant in our codebase, but I'm keeping it commented in case someone in the future wants to make it useful
-//	if (!issynthetic(cast_on))
+//	if (!issynthetic(target))
 //		exclusions += BODY_ZONE_HEAD // no decapitating yourself unless you're a synthetic, who keep their brains in their chest
 
 	var/list/robot_parts = list()
-	for (var/obj/item/bodypart/possible_part as anything in cast_on.bodyparts)
+	for (var/obj/item/bodypart/possible_part as anything in target.bodyparts)
 		if ((possible_part.bodytype & BODYTYPE_ROBOTIC) && !(possible_part.body_zone in exclusions)) //only robot limbs and only if they're not crucial to our like, ongoing life, you know?
 			robot_parts += possible_part
 
 	if (!length(robot_parts))
-		to_chat(cast_on, "ERROR: Limb disengagement protocols report no compatible cybernetics currently installed. Seek out a maintenance technician.")
+		to_chat(target, "ERROR: Limb disengagement protocols report no compatible cybernetics currently installed. Seek out a maintenance technician.")
 		return
 
-	limb_to_detach = tgui_input_list(cast_on, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
-	if (QDELETED(src) || QDELETED(cast_on) || QDELETED(limb_to_detach) || limb_to_detach.owner != cast_on)
+	limb_to_detach = tgui_input_list(target, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
+	if (QDELETED(src) || QDELETED(target) || QDELETED(limb_to_detach) || limb_to_detach.owner != target)
 		return SPELL_CANCEL_CAST
 
 	if (length(limb_to_detach.wounds) >= 1)
-		cast_on.balloon_alert(cast_on, "can't detach wounded limbs!")
-		playsound(cast_on, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		target.balloon_alert(target, "can't detach wounded limbs!")
+		playsound(target, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		return
 	var/leg_check = IGNORE_USER_LOC_CHANGE
 	if (istype(limb_to_detach, /obj/item/bodypart/leg))
 		leg_check = NONE
 
-	cast_on.balloon_alert(cast_on, "detaching limb...")
-	playsound(cast_on, 'sound/items/rped.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	cast_on.visible_message(span_notice("[cast_on] shuffles [cast_on.p_their()] [limb_to_detach.name] forward, actuators hissing and whirring as [cast_on.p_they()] disengage[cast_on.p_s()] the limb from its mount..."))
+	target.balloon_alert(target, "detaching limb...")
+	playsound(target, 'sound/items/rped.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	target.visible_message(span_notice("[target] shuffles [target.p_their()] [limb_to_detach.name] forward, actuators hissing and whirring as [target.p_they()] disengage[target.p_s()] the limb from its mount..."))
 
-	if(do_after(cast_on, 1 SECONDS, timed_action_flags = leg_check, extra_checks = CALLBACK(src, PROC_REF(detaching_check), cast_on)))
+	if(do_after(target, 1 SECONDS, timed_action_flags = leg_check, extra_checks = CALLBACK(src, PROC_REF(detaching_check), target)))
 		StartCooldown()
-		cast_on.visible_message(span_notice("With a gentle twist, [cast_on] finally pries [cast_on.p_their()] [limb_to_detach.name] free from its socket."))
+		target.visible_message(span_notice("With a gentle twist, [target] finally pries [target.p_their()] [limb_to_detach.name] free from its socket."))
 		limb_to_detach.drop_limb()
-		cast_on.put_in_hands(limb_to_detach)
-		cast_on.balloon_alert(cast_on, "limb detached!")
+		target.put_in_hands(limb_to_detach)
+		target.balloon_alert(target, "limb detached!")
 		if(prob(5))
-			playsound(cast_on, 'sound/items/champagne_pop.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+			playsound(target, 'sound/items/champagne_pop.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		else
-			playsound(cast_on, 'sound/items/deconstruct.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+			playsound(target, 'sound/items/deconstruct.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	else
-		cast_on.balloon_alert(cast_on, "interrupted!")
-		playsound(cast_on, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		target.balloon_alert(target, "interrupted!")
+		playsound(target, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	limb_to_detach = null
