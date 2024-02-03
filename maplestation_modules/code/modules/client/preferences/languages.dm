@@ -125,12 +125,6 @@
 	action_delegations = list(
 		"set_language" = PROC_REF(set_language),
 	)
-	/// Static list of all "base" languages learnable via ui
-	/// (roundstart languages, languages readily available / common)
-	var/static/list/base_languages
-	/// Static list of all "bonus" languages learnable via ui
-	/// (rarer languages, not typically available roundstart, dictated by a required_species_id)
-	var/static/list/bonus_languages
 
 /datum/preference_middleware/language/proc/set_language(list/params, mob/user)
 	var/datum/preference/additional_language/language_pref = GLOB.preference_entries[/datum/preference/additional_language]
@@ -171,31 +165,29 @@
 
 /datum/preference_middleware/language/get_constant_data()
 	var/list/data = list()
+	var/list/base_languages = list()
+	var/list/bonus_languages = list()
+	for(var/found_language in GLOB.language_datum_instances)
+		var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
+		if(!found_instance.available_as_pref)
+			continue
 
-	if(!length(base_languages) && !length(bonus_languages))
-		base_languages = list()
-		bonus_languages = list()
-		for(var/found_language in GLOB.language_datum_instances)
-			var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
-			if(!found_instance.available_as_pref)
-				continue
+		var/list/lang_data = list()
+		lang_data["name"] = found_instance.name
+		lang_data["type"] = found_language
 
-			var/list/lang_data = list()
-			lang_data["name"] = found_instance.name
-			lang_data["type"] = found_language
+		var/datum/species/banned_species = found_instance.banned_from_species
+		if(banned_species)
+			lang_data["incompatible_with"] = list("name" = initial(banned_species.name), "type" = banned_species)
+		var/datum/species/required_species = found_instance.required_species
+		if(required_species)
+			lang_data["requires"] = list("name" = initial(required_species.name), "type" = required_species)
 
-			var/datum/species/banned_species = found_instance.banned_from_species
-			if(banned_species)
-				lang_data["incompatible_with"] = list("name" = initial(banned_species.name), "type" = banned_species)
-			var/datum/species/required_species = found_instance.required_species
-			if(required_species)
-				lang_data["requires"] = list("name" = initial(required_species.name), "type" = required_species)
-
-			// Having a required species makes it a bonus language, otherwise it's a base language
-			if(found_instance.required_species)
-				UNTYPED_LIST_ADD(bonus_languages, lang_data)
-			else
-				UNTYPED_LIST_ADD(base_languages, lang_data)
+		// Having a required species makes it a bonus language, otherwise it's a base language
+		if(found_instance.required_species)
+			UNTYPED_LIST_ADD(bonus_languages, lang_data)
+		else
+			UNTYPED_LIST_ADD(base_languages, lang_data)
 
 	data["base_languages"] = base_languages
 	data["bonus_languages"] = bonus_languages
