@@ -13,7 +13,7 @@
 
 /datum/quirk/robot_limb_detach/add(client/client_source)
 	var/mob/living/carbon/human/human_holder = quirk_holder
-	var/datum/action/cooldown/robot_self_amputation/limb_action = new /datum/action/cooldown/robot_self_amputation()
+	var/datum/action/cooldown/robot_self_amputation/limb_action = new()
 	limb_action.Grant(human_holder)
 	added_action = limb_action
 
@@ -66,7 +66,7 @@
 		return
 	var/leg_check = IGNORE_USER_LOC_CHANGE
 	if (istype(limb_to_detach, /obj/item/bodypart/leg))
-		leg_check = null
+		leg_check = NONE
 
 	cast_on.balloon_alert(cast_on, "detaching limb...")
 	playsound(cast_on, 'sound/items/rped.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
