@@ -95,7 +95,7 @@ type Data = {
   preview_flat_icon: string;
 };
 
-type LimbCategory = {
+export type LimbCategory = {
   category_name: string;
   category_data: Limb[];
 };
@@ -363,7 +363,7 @@ export const LimbManagerPage = () => {
       render={(serverData) => {
         return serverData ? (
           <LimbManagerInner
-            limbs={serverData.limbs}
+            limbs={serverData.limbs.limbs}
             selected_limbs={data.selected_limbs}
             preview_flat_icon={data.preview_flat_icon}
           />

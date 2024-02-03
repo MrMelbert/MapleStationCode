@@ -26,7 +26,7 @@ type Species = {
   type: typePath;
 };
 
-type Language = {
+export type Language = {
   name: string;
   type: typePath;
   incompatible_with: Species | null;
@@ -171,9 +171,9 @@ export const LanguagePage = () => {
       render={(serverData) => {
         return serverData ? (
           <LanguagePageInner
-            base_languages={serverData.base_languages}
-            bonus_languages={serverData.bonus_languages}
-            blacklisted_species={serverData.blacklisted_species}
+            base_languages={serverData.language.base_languages}
+            bonus_languages={serverData.language.bonus_languages}
+            blacklisted_species={serverData.language.blacklisted_species}
           />
         ) : (
           <NoticeBox>Loading...</NoticeBox>

@@ -29,7 +29,7 @@ type LoadoutItem = {
   buttons: LoadoutButton[];
 };
 
-type LoadoutCategory = {
+export type LoadoutCategory = {
   name: string;
   title: string;
   contents: LoadoutItem[];
@@ -49,9 +49,9 @@ export const LoadoutPage = () => {
       render={(serverData) => {
         return serverData ? (
           <LoadoutPageInner
-            tutorial_text={serverData.tutorial_text}
-            loadout_tabs={serverData.loadout_tabs}
-            max_loadout_slots={serverData.max_loadout_slots}
+            tutorial_text={serverData.loadout.tutorial_text}
+            loadout_tabs={serverData.loadout.loadout_tabs}
+            max_loadout_slots={serverData.loadout.max_loadout_slots}
           />
         ) : (
           <NoticeBox>Loading...</NoticeBox>
