@@ -30,9 +30,8 @@
 	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_HANDS_BLOCKED | AB_CHECK_INCAPACITATED
 
 	var/list/exclusions = list(BODY_ZONE_CHEST, BODY_ZONE_HEAD)
-	var/obj/item/bodypart/limb_to_detach
 
-/datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/target)
+/datum/action/cooldown/robot_self_amputation/proc/detaching_check(mob/living/carbon/human/target, obj/item/bodypart/limb_to_detach)
 	return !QDELETED(limb_to_detach) && limb_to_detach.owner == target
 
 /datum/action/cooldown/robot_self_amputation/Activate(mob/living/carbon/human/target)
@@ -56,7 +55,7 @@
 		to_chat(target, "ERROR: Limb disengagement protocols report no compatible cybernetics currently installed. Seek out a maintenance technician.")
 		return
 
-	limb_to_detach = tgui_input_list(target, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
+	var/obj/item/bodypart/limb_to_detach = tgui_input_list(target, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
 	if (QDELETED(src) || QDELETED(target) || QDELETED(limb_to_detach) || limb_to_detach.owner != target)
 		return SPELL_CANCEL_CAST
 
@@ -72,7 +71,7 @@
 	playsound(target, 'sound/items/rped.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	target.visible_message(span_notice("[target] shuffles [target.p_their()] [limb_to_detach.name] forward, actuators hissing and whirring as [target.p_they()] disengage[target.p_s()] the limb from its mount..."))
 
-	if(do_after(target, 1 SECONDS, timed_action_flags = leg_check, extra_checks = CALLBACK(src, PROC_REF(detaching_check), target)))
+	if(do_after(target, 1 SECONDS, timed_action_flags = leg_check, extra_checks = CALLBACK(src, PROC_REF(detaching_check), target, limb_to_detach)))
 		StartCooldown()
 		target.visible_message(span_notice("With a gentle twist, [target] finally pries [target.p_their()] [limb_to_detach.name] free from its socket."))
 		limb_to_detach.drop_limb()
@@ -85,4 +84,4 @@
 	else
 		target.balloon_alert(target, "interrupted!")
 		playsound(target, 'sound/machines/buzz-sigh.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
-	limb_to_detach = null
+	return TRUE
