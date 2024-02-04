@@ -1,6 +1,6 @@
 /datum/quirk/robot_limb_detach
 	name = "Cybernetic Limb Mounts"
-	desc = "You are able to detach and reattach any installed robotic limbs with very little effort." // ", as long as they're in good condition."
+	desc = "You are able to detach and reattach any installed robotic limbs with very little effort."
 	gain_text = span_notice("Internal sensors report limb disengagement protocols are ready and waiting.")
 	lose_text = span_notice("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE.")
 	medical_record_text = "Patient bears quick-attach and release limb joint cybernetics."
@@ -22,7 +22,7 @@
 
 /datum/action/cooldown/robot_self_amputation
 	name = "Detach a robotic limb"
-	desc = "Disengage one of your robotic limbs from your cybernetic mounts. Requires you to not be restrained or otherwise under duress." // " Will not function on wounded limbs - tend to them first."
+	desc = "Disengage one of your robotic limbs from your cybernetic mounts. Requires you to not be restrained or otherwise under duress."
 	button_icon = 'icons/mob/actions/actions_spells.dmi'
 	button_icon_state = "autotomy"
 
@@ -42,9 +42,6 @@
 		to_chat(target, span_warning("ERROR: LIMB DISENGAGEMENT PROTOCOLS OFFLINE. Seek out a maintenance technician."))
 		return
 
-// The code below is redundant in our codebase, but I'm keeping it commented in case someone in the future wants to make it useful
-//	if (!issynthetic(target))
-//		exclusions += BODY_ZONE_HEAD // no decapitating yourself unless you're a synthetic, who keep their brains in their chest
 
 	var/list/robot_parts = list()
 	for (var/obj/item/bodypart/possible_part as anything in target.bodyparts)
@@ -57,7 +54,7 @@
 
 	var/obj/item/bodypart/limb_to_detach = tgui_input_list(target, "Limb to detach", "Cybernetic Limb Detachment", sort_names(robot_parts))
 	if (QDELETED(src) || QDELETED(target) || QDELETED(limb_to_detach) || limb_to_detach.owner != target)
-		return SPELL_CANCEL_CAST
+		return 
 
 	if (length(limb_to_detach.wounds) >= 1)
 		target.balloon_alert(target, "can't detach wounded limbs!")
