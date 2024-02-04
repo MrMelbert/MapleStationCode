@@ -6446,6 +6446,7 @@
 #include "maplestation_modules\code\modules\research\machinery\_production.dm"
 #include "maplestation_modules\code\modules\research\techweb\_research.dm"
 #include "maplestation_modules\code\modules\research\techweb\all_nodes.dm"
+#include "maplestation_modules\code\modules\robotic_limb_detach\robot_limb_detach_quirk.dm"
 #include "maplestation_modules\code\modules\surgery\organs\augments_arms.dm"
 #include "maplestation_modules\code\modules\surgery\organs\autosurgeon.dm"
 #include "maplestation_modules\code\modules\surgery\organs\ears.dm"
