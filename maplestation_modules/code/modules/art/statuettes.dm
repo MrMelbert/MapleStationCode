@@ -153,7 +153,7 @@
 		set_target(target,user)
 		//skip sculpting time
 		if(current_target != null)
-			create_statue()
+			create_statue(user)
 
 	return . | AFTERATTACK_PROCESSED_ITEM
 
@@ -181,7 +181,7 @@
 	user.balloon_alert(user, "sculpt target is [ma.name]")
 /* seeing if i can skip the sculpting time and/or if setting target works
 /obj/item/modeling_block/attack_self(mob/user)
-	start_sculpting(user)
+	create_statue(user)
 
 /// Starts or continues the sculpting action on the carving block material
 /obj/item/modeling_block/proc/start_sculpting(mob/living/user)
@@ -236,10 +236,11 @@
 	stop_sculpting()
 	*/
 
-/obj/item/modeling_block/proc/create_statue()
+/obj/item/modeling_block/proc/create_statue(mob/user)
 	var/obj/item/statue/custom/new_statue = new(get_turf(src))
 	new_statue.set_visuals(current_target)
 	var/mutable_appearance/ma = current_target
 	new_statue.name = "statuette of [ma.name]"
 	new_statue.desc = "A carved statuette depicting [ma.name]."
+	user.put_in_active_hand(new_statue, TRUE)
 	qdel(src)
