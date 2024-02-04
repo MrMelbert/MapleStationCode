@@ -71,6 +71,15 @@
 	if(content_ma)
 		. += content_ma
 
+/obj/item/statue/custom/equipped(mob/user)
+	. = ..()
+	if(!isturf(src))
+		SET_PLANE_EXPLICIT(src.content_ma, ABOVE_HUD_PLANE, user)
+		update_appearance_planes(content_ma)
+	else
+		SET_PLANE_EXPLICIT(src.content_ma, GAME_PLANE, user)
+		update_appearance_planes(content_ma)
+
 /obj/item/statue/custom/proc/update_content_planes()
 	if(!content_ma)
 		return
@@ -234,4 +243,3 @@
 	new_statue.name = "statuette of [ma.name]"
 	new_statue.desc = "A carved statuette depicting [ma.name]."
 	qdel(src)
-
