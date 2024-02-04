@@ -4,7 +4,7 @@
 	icon = 'icons/obj/art/statue.dmi'
 	icon_state = "base"
 	obj_flags = UNIQUE_RENAME
-	appearance_flags = KEEP_TOGETHER//Added keep together in case targets has weird layering
+	appearance_flags = KEEP_TOGETHER | PIXEL_SCALE | TILE_BOUND//Added keep together in case targets has weird layering
 	w_class = WEIGHT_CLASS_SMALL
 	/// primary statue overlay
 	var/mutable_appearance/content_ma
@@ -31,7 +31,7 @@
 	content_ma.pixel_x = 0
 	content_ma.pixel_y = 0
 	content_ma.alpha = 255
-/*
+
 	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)
 
 	/// Ideally we'd have knowledge what we're removing but i'd have to be done on target appearance retrieval
@@ -52,7 +52,7 @@
 			continue
 		underlays_to_remove += real
 	content_ma.underlays -= underlays_to_remove
-*/
+
 	content_ma.appearance_flags &= ~KEEP_APART //Don't want this
 	content_ma.filters = filter(type="color",color=greyscale_with_value_bump,space=FILTER_COLOR_HSV)
 	update_content_planes()
@@ -66,6 +66,11 @@
 	var/mutable_appearance/clone = new(target_appearance_with_filters)
 	. += clone
 */
+/obj/structure/statue/custom/update_overlays()
+	. = ..()
+	if(content_ma)
+		. += content_ma
+
 /obj/item/statue/custom/proc/update_content_planes()
 	if(!content_ma)
 		return
@@ -138,7 +143,8 @@
 	if (!sculpting && ismovable(target))
 		set_target(target,user)
 		//skip sculpting time
-		create_statue()
+		if(current_target != null)
+			create_statue()
 
 	return . | AFTERATTACK_PROCESSED_ITEM
 
@@ -149,7 +155,7 @@
 		return FALSE
 	//No big icon things
 	var/list/icon_dimensions = get_icon_dimensions(target.icon)
-	if(icon_dimensions["width"] != world.icon_size || icon_dimensions["height"] != world.icon_size)
+	if(icon_dimensions["width"] > 2*world.icon_size || icon_dimensions["height"] > 2*world.icon_size)
 		user.balloon_alert(user, "sculpt target is too big!")
 		return FALSE
 	return TRUE
@@ -222,10 +228,10 @@
 	*/
 
 /obj/item/modeling_block/proc/create_statue()
-		var/obj/item/statue/custom/new_statue = new(get_turf(src))
-		new_statue.set_visuals(current_target)
-		var/mutable_appearance/ma = current_target
-		new_statue.name = "statuette of [ma.name]"
-		new_statue.desc = "A carved statuette depicting [ma.name]."
-		qdel(src)
+	var/obj/item/statue/custom/new_statue = new(get_turf(src))
+	new_statue.set_visuals(current_target)
+	var/mutable_appearance/ma = current_target
+	new_statue.name = "statuette of [ma.name]"
+	new_statue.desc = "A carved statuette depicting [ma.name]."
+	qdel(src)
 
