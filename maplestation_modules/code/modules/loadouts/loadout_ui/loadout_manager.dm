@@ -96,7 +96,7 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 	return character_preview_view
 
 /datum/preference_middleware/loadout/on_new_character(mob/user)
-	character_preview_view.update_body()
+	character_preview_view?.update_body()
 
 /datum/preference_middleware/loadout/proc/action_select_item(list/params, mob/user)
 	var/path_to_use = text2path(params["path"])
@@ -196,17 +196,17 @@ GLOBAL_LIST_INIT(loadout_categories, init_loadout_categories())
 /datum/preference_middleware/loadout/get_ui_static_data(mob/user)
 	var/list/data = list()
 	data["loadout_preview_view"] = character_preview_view.assigned_map
+	return data
 
-	// This should all be moved to constant data when I figure out how tee hee
-	var/static/list/loadout_tabs
-	if(isnull(loadout_tabs))
-		loadout_tabs = list()
-		for(var/datum/loadout_category/category as anything in GLOB.loadout_categories)
-			UNTYPED_LIST_ADD(loadout_tabs, list(
-				"name" = category.category_name,
-				"title" = category.ui_title,
-				"contents" = category.items_to_ui_data(),
-			))
+/datum/preference_middleware/loadout/get_constant_data()
+	var/list/data = list()
+	var/list/loadout_tabs = list()
+	for(var/datum/loadout_category/category as anything in GLOB.loadout_categories)
+		UNTYPED_LIST_ADD(loadout_tabs, list(
+			"name" = category.category_name,
+			"title" = category.ui_title,
+			"contents" = category.items_to_ui_data(),
+		))
 
 	data["loadout_tabs"] = loadout_tabs
 	data["tutorial_text"] = get_tutorial_text()

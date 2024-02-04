@@ -125,12 +125,6 @@
 	action_delegations = list(
 		"set_language" = PROC_REF(set_language),
 	)
-	/// Static list of all "base" languages learnable via ui
-	/// (roundstart languages, languages readily available / common)
-	var/static/list/base_languages
-	/// Static list of all "bonus" languages learnable via ui
-	/// (rarer languages, not typically available roundstart, dictated by a required_species_id)
-	var/static/list/bonus_languages
 
 /datum/preference_middleware/language/proc/set_language(list/params, mob/user)
 	var/datum/preference/additional_language/language_pref = GLOB.preference_entries[/datum/preference/additional_language]
@@ -161,48 +155,42 @@
 /datum/preference_middleware/language/get_ui_data(mob/user)
 	var/list/data = list()
 
-	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
 	data["selected_lang"] = preferences.read_preference(/datum/preference/additional_language)
+	data["selected_species"] = preferences.read_preference(/datum/preference/choiced/species)
 	data["pref_name"] = preferences.read_preference(/datum/preference/name/real_name)
 	data["trilingual"] = ("Trilingual" in preferences.all_quirks)
 	data["bilingual"] = ("Bilingual" in preferences.all_quirks)
-	data["species"] = species
 
-	// This should all be moved to constant data when I figure out how tee hee
-	if(!length(base_languages) && !length(bonus_languages) && length(GLOB.language_datum_instances))
-		base_languages = list()
-		bonus_languages = list()
+	return data
 
-		for(var/found_language in GLOB.language_datum_instances)
-			var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
-			if(!found_instance.available_as_pref)
-				continue
+/datum/preference_middleware/language/get_constant_data()
+	var/list/data = list()
+	var/list/base_languages = list()
+	var/list/bonus_languages = list()
+	for(var/found_language in GLOB.language_datum_instances)
+		var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
+		if(!found_instance.available_as_pref)
+			continue
 
-			var/list/lang_data = list()
-			lang_data["name"] = found_instance.name
-			lang_data["type"] = found_language
-			if(found_instance.banned_from_species)
-				lang_data["incompatible_with"] = initial(found_instance.banned_from_species.name)
-			if(found_instance.required_species)
-				lang_data["requires"] = initial(found_instance.required_species.name)
-			// Having a required species makes it a bonus language, otherwise it's a base language
-			if(found_instance.required_species)
-				UNTYPED_LIST_ADD(bonus_languages, lang_data)
-			else
-				UNTYPED_LIST_ADD(base_languages, lang_data)
+		var/list/lang_data = list()
+		lang_data["name"] = found_instance.name
+		lang_data["type"] = found_language
 
-	for(var/list/lang_type as anything in base_languages + bonus_languages)
-		var/datum/language/lang_instance = GLOB.language_datum_instances[lang_type["type"]]
-		lang_type["pickable"] = !((lang_instance.banned_from_species && ispath(species, lang_instance.banned_from_species)) \
-			|| (lang_instance.required_species && !ispath(species, lang_instance.required_species)))
+		var/datum/species/banned_species = found_instance.banned_from_species
+		if(banned_species)
+			lang_data["incompatible_with"] = list("name" = initial(banned_species.name), "type" = banned_species)
+		var/datum/species/required_species = found_instance.required_species
+		if(required_species)
+			lang_data["requires"] = list("name" = initial(required_species.name), "type" = required_species)
+
+		// Having a required species makes it a bonus language, otherwise it's a base language
+		if(found_instance.required_species)
+			UNTYPED_LIST_ADD(bonus_languages, lang_data)
+		else
+			UNTYPED_LIST_ADD(base_languages, lang_data)
 
 	data["base_languages"] = base_languages
 	data["bonus_languages"] = bonus_languages
-	return data
-
-/datum/preference_middleware/language/get_ui_static_data(mob/user)
-	var/list/data = list()
-	// Again constant data when I figure it out
 	data["blacklisted_species"] = BLACKLISTED_SPECIES_FROM_LANGUAGES
 	return data
 

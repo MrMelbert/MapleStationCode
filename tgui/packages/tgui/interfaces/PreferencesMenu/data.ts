@@ -1,6 +1,9 @@
 import { BooleanLike } from 'common/react';
 
 import { sendAct } from '../../backend';
+import { Language } from './_LanguagePicker'; // NON-MODULE CHANGE
+import { LimbCategory } from './_LimbManager'; // NON-MODULE CHANGE
+import { LoadoutCategory } from './_LoadoutManager'; // NON-MODULE CHANGE
 import { Gender } from './preferences/gender';
 
 export enum Food {
@@ -191,5 +194,20 @@ export type ServerData = {
     randomizable: string[];
   };
   species: Record<string, Species>;
+  // NON-MODULE CHANGE
+  loadout: {
+    tutorial_text: string;
+    loadout_tabs: LoadoutCategory[];
+    max_loadout_slots: number;
+  };
+  limbs: {
+    limbs: LimbCategory[];
+  };
+  language: {
+    base_languages: Language[];
+    bonus_languages: Language[];
+    blacklisted_species: string[];
+  };
+  // NON-MODULE CHANGE END
   [otheyKey: string]: unknown;
 };

@@ -1,43 +1,51 @@
-import { Stack, TextArea } from '../../../../../components';
-import { Feature, FeatureValueProps } from '../base';
+import { Box, TextArea } from '../../../../../components';
+import { Feature, FeatureShortTextData, FeatureValueProps } from '../base';
+
+export type FeatureMultiline = Feature<string, string, FeatureShortTextData>;
+export type FeatureMultilineProps = FeatureValueProps<
+  string,
+  string,
+  FeatureShortTextData
+>;
 
 export const MultilineText = (
-  props: FeatureValueProps<string, string> & { box_height: string | null },
+  props: FeatureMultilineProps & {
+    box_height: string | null;
+  },
 ) => {
-  const { handleSetValue, value } = props;
+  if (!props.serverData) {
+    return <Box>Loading...</Box>;
+  }
   return (
-    <Stack>
-      <Stack.Item grow>
-        <TextArea
-          width="80%"
-          height={props.box_height || '36px'}
-          value={value}
-          onChange={(e, value) => {
-            handleSetValue(value);
-          }}
-        />
-      </Stack.Item>
-    </Stack>
+    <TextArea
+      width="80%"
+      height={props.box_height || '36px'}
+      value={props.value}
+      maxLength={props.serverData.maximum_length || 1024}
+      onChange={(_, new_value) => {
+        props.handleSetValue(new_value);
+      }}
+    />
   );
 };
 
-export const flavor_text: Feature<string, string> = {
+export const flavor_text: FeatureMultiline = {
   name: 'Flavor - Flavor Text',
   description:
     'A small snippet of text shown when others examine you, \
     describing what you may look like.',
-  component: (props: FeatureValueProps<string, string>, context) => {
+  component: (props: FeatureMultilineProps) => {
     return <MultilineText {...props} box_height="52px" />;
   },
 };
 
-export const silicon_text: Feature<string, string> = {
+export const silicon_text: FeatureMultiline = {
   name: 'Flavor - Silicon Flavor Text',
   description: 'Flavor text shown when you are placed into a cyborg or AI.',
   component: MultilineText,
 };
 
-export const exploitable_info: Feature<string, string> = {
+export const exploitable_info: FeatureMultiline = {
   name: 'Flavor - Exploitable Info',
   description:
     'Information about your character made available to \
@@ -46,7 +54,7 @@ export const exploitable_info: Feature<string, string> = {
   component: MultilineText,
 };
 
-export const general_records: Feature<string, string> = {
+export const general_records: FeatureMultiline = {
   name: 'Flavor - General Records',
   description:
     "Random information about your character's history. \
@@ -54,7 +62,7 @@ export const general_records: Feature<string, string> = {
   component: MultilineText,
 };
 
-export const security_records: Feature<string, string> = {
+export const security_records: FeatureMultiline = {
   name: 'Flavor - Security Records',
   description:
     "Information about your character's criminal past. \
@@ -62,7 +70,7 @@ export const security_records: Feature<string, string> = {
   component: MultilineText,
 };
 
-export const medical_records: Feature<string, string> = {
+export const medical_records: FeatureMultiline = {
   name: 'Flavor - Medical Records',
   description:
     "Information about your character's medical history. \

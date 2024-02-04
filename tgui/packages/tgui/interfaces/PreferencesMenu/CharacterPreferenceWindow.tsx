@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useBackend } from '../../backend';
 import { Button, Stack } from '../../components';
 import { Window } from '../../layouts';
-import { LanguagePage } from '../_LanguagePicker'; // NON-MODULE CHANGE
-import { LimbManagerPage } from '../_LimbManager'; // NON-MODULE CHANGE
-import { LoadoutPage } from '../_LoadoutManager'; // NON-MODULE CHANGE
+import { LanguagePage } from './_LanguagePicker'; // NON-MODULE CHANGE
+import { LimbManagerPage } from './_LimbManager'; // NON-MODULE CHANGE
+import { LoadoutPage } from './_LoadoutManager'; // NON-MODULE CHANGE
 import { AntagsPage } from './AntagsPage';
 import { PreferencesMenuData } from './data';
 import { JobsPage } from './JobsPage';
