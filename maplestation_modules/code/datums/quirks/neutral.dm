@@ -95,6 +95,8 @@
 	CRASH("Someone has transcended spacetime and become so caffeinated that it's not even a number anymore.")
 
 /datum/quirk/caffeinated/proc/drank_caffeine(mob/living/carbon/source, beverage_caffeine_content)
+	SIGNAL_HANDLER
+
 	if(!caffeine_drank)
 		caffeine_drank = TRUE
 	caffeine_content += beverage_caffeine_content
