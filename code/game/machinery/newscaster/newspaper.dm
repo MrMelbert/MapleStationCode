@@ -166,33 +166,37 @@
 				return FALSE
 	return FALSE
 
-/obj/item/newspaper/Topic(href, href_list)
-	var/mob/living/U = usr
-	..()
-	if((src in U.contents) || (isturf(loc) && in_range(src, U)))
-		U.set_machine(src)
-		if(href_list["next_page"])
-			if(curr_page == pages+1)
-				return //Don't need that at all, but anyway.
-			if(curr_page == pages) //We're at the middle, get to the end
-				screen = 2
-			else
-				if(curr_page == 0) //We're at the start, get to the middle
-					screen=1
-			curr_page++
-			playsound(loc, SFX_PAGE_TURN, 50, TRUE)
-		else if(href_list["prev_page"])
-			if(curr_page == 0)
-				return
-			if(curr_page == 1)
-				screen = 0
-			else
-				if(curr_page == pages+1) //we're at the end, let's go back to the middle.
-					screen = 1
-			curr_page--
-			playsound(loc, SFX_PAGE_TURN, 50, TRUE)
-		if(ismob(loc))
-			attack_self(loc)
+/// Called when you start reading the paper with both hands
+/obj/item/newspaper/proc/on_wielded(obj/item/source, mob/user)
+	RegisterSignal(user, COMSIG_ATOM_UPDATE_OVERLAYS, PROC_REF(holder_updated_overlays))
+	RegisterSignal(user, COMSIG_HUMAN_GET_VISIBLE_NAME, PROC_REF(holder_checked_name))
+	user.update_appearance(UPDATE_OVERLAYS)
+	user.name = user.get_visible_name()
+
+/// Called when you stop doing that
+/obj/item/newspaper/proc/on_unwielded(obj/item/source, mob/user)
+	UnregisterSignal(user, list(COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_HUMAN_GET_VISIBLE_NAME))
+	user.update_appearance(UPDATE_OVERLAYS)
+	user.name = user.get_visible_name()
+
+/// Called when we're being read and overlays are updated, we should show a big newspaper over the reader
+/obj/item/newspaper/proc/holder_updated_overlays(atom/reader, list/overlays)
+	SIGNAL_HANDLER
+	overlays += mutable_appearance(icon, "newspaper_held_over", ABOVE_MOB_LAYER)
+	overlays += mutable_appearance(icon, "newspaper_held_under", BELOW_MOB_LAYER)
+
+/// Called when someone tries to figure out what our identity is, but they can't see it because of the newspaper
+/obj/item/newspaper/proc/holder_checked_name(mob/living/carbon/human/source, list/identity)
+	SIGNAL_HANDLER
+	identity[VISIBLE_NAME_FACE] = ""
+	identity[VISIBLE_NAME_ID] = ""
+
+/obj/item/newspaper/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(ui)
+		return
+	ui = new(user, src, "Newspaper", name)
+	ui.open()
 
 /obj/item/newspaper/attackby(obj/item/W, mob/living/user, params)
 	if(burn_paper_product_attackby_check(W, user))
