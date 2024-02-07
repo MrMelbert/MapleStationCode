@@ -7,5 +7,12 @@
 
 /obj/structure/closet/secure_closet/noble_ambassador/PopulateContents()
 	new /obj/item/storage/bag/garment/noble_ambassador(src)
+	new /obj/item/storage/backpack/satchel/leather(src)
 	new /obj/item/radio/headset/heads/noble_ambassador(src)
 	new /obj/item/stamp/na(src)
+	new /obj/item/storage/photo_album/noble_ambassador(src)
+
+/obj/item/storage/photo_album/noble_ambassador
+	name = "photo album (Noble Ambassador)"
+	icon_state = "album_blue"
+	persistence_id = "NA"

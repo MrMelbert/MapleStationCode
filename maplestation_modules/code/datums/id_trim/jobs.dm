@@ -99,3 +99,50 @@
 	minimal_wildcard_access = list(ACCESS_VAULT)
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/noble_ambassador
+
+/datum/id_trim/job/noble_ambassador
+	assignment = "Noble Ambassador"
+	intern_alt_name = "Noble Squire"
+	trim_icon = 'maplestation_modules/icons/obj/card.dmi'
+	trim_state = "trim_noble"
+	sechud_icon = 'maplestation_modules/icons/mob/huds/hud.dmi'
+	sechud_icon_state = "hudnoble"
+	minimal_access = list(
+		ACCESS_AUX_BASE,
+		ACCESS_BAR,
+		ACCESS_BRIG_ENTRANCE,
+		ACCESS_CARGO,
+		ACCESS_CHAPEL_OFFICE,
+		ACCESS_CREMATORIUM,
+		ACCESS_COMMAND,
+		ACCESS_COURT,
+		ACCESS_ENGINEERING,
+		ACCESS_EVA,
+		ACCESS_GATEWAY,
+		ACCESS_HYDROPONICS,
+		ACCESS_JANITOR,
+		ACCESS_KEYCARD_AUTH,
+		ACCESS_KITCHEN,
+		ACCESS_LAWYER,
+		ACCESS_LIBRARY,
+		ACCESS_MAINT_TUNNELS,
+		ACCESS_MEDICAL,
+		ACCESS_MINERAL_STOREROOM,
+		ACCESS_MORGUE,
+		ACCESS_MORGUE_SECURE,
+		ACCESS_PSYCHOLOGY,
+		ACCESS_RC_ANNOUNCE,
+		ACCESS_SCIENCE,
+		ACCESS_SERVICE,
+		ACCESS_TELEPORTER,
+		ACCESS_THEATRE,
+		ACCESS_WEAPONS, //nt scared shitless of finding out what happens if they weapons permit check a noble
+	)
+	minimal_wildcard_access = list()
+	extra_access = list()
+	extra_wildcard_access = list()
+	template_access = list(
+		ACCESS_CAPTAIN,
+		ACCESS_CHANGE_IDS,
+	)
+	job = /datum/job/noble_ambassador

@@ -1,8 +1,9 @@
 //The noble ambassador!
 /datum/job/noble_ambassador
-	title = "Noble Ambassador"
+	title = JOB_NOBLE_AMBASSADOR
 	description = "Represent the interests of the Aristocracy of Mu on the station. \
-		Ensure the wellbeing of the crew, and make sure they're being treated well by their superiors."
+		Ensure the wellbeing of the crew, and make sure they're being treated well by their superiors. \
+		Try to not get all your royal tea dumped into space."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD
 	department_head = list(JOB_CAPTAIN)
 	faction = FACTION_STATION
@@ -30,18 +31,24 @@
 	display_order = JOB_DISPLAY_ORDER_NOBLE_AMBASSADOR
 	departments_list = list(
 		/datum/job_department/command,
-		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/toy/plush/finster_fumo)
+	family_heirlooms = list(
+		/obj/item/toy/plush/finster_fumo,
+		/obj/item/food/grown/poppy/geranium/fraxinella,
+	)
 
 	mail_goodies = list(
 		/obj/item/toy/plush/finster_fumo,
+		/obj/item/food/grown/poppy,
+		/obj/item/food/grown/poppy/geranium,
+		/obj/item/food/grown/poppy/lily,
+		/obj/item/reagent_containers/cup/glass/mug/tea,
 	)
 
-	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_BOLD_SELECT_TEXT | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
+	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT | JOB_CANNOT_OPEN_SLOTS
 	voice_of_god_power = 1.4 // Captain-level VoG.
-	rpg_title = "Noble"
+	rpg_title = "Noble" //you already sound like an RPG character
 
 /datum/outfit/job/noble_ambassador
 	name = "Noble Ambassador"
@@ -53,7 +60,6 @@
 	gloves = /obj/item/clothing/gloves/noble
 	uniform = /obj/item/clothing/under/rank/noble
 	suit = /obj/item/clothing/suit/toggle/noble
-	head = /obj/item/clothing/head/costume/crown/noble
 	shoes = /obj/item/clothing/shoes/noble
 	id_trim = /datum/id_trim/job/noble_ambassador
 
