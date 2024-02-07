@@ -4,7 +4,7 @@
 	icon = 'icons/obj/art/statue.dmi'
 	icon_state = "base"
 	obj_flags = UNIQUE_RENAME
-	appearance_flags = KEEP_TOGETHER | PIXEL_SCALE | TILE_BOUND//Added keep together in case targets has weird layering
+	appearance_flags = TILE_BOUND | PIXEL_SCALE | KEEP_TOGETHER//Added keep together in case targets has weird layering
 	w_class = WEIGHT_CLASS_SMALL
 	/// primary statue overlay
 	var/mutable_appearance/content_ma
@@ -16,7 +16,7 @@
 	AddElement(/datum/element/item_scaling, 0.4, 1)
 	AddComponent(/datum/component/simple_rotation)
 
-/obj/structure/statue/AltClick(mob/user)
+/obj/item/statue/AltClick(mob/user)
 	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
 
 /obj/item/statue/custom/Destroy()
@@ -58,15 +58,15 @@
 	update_content_planes()
 	update_appearance()
 /*
-/obj/item/carving_block/update_overlays()
+/obj/item/modeling_block/update_overlays()
 	. = ..()
 	if(!target_appearance_with_filters)
 		return
 	//We're only keeping one instance here that changes in the middle so we have to clone it to avoid managed overlay issues
 	var/mutable_appearance/clone = new(target_appearance_with_filters)
 	. += clone
-*/
-/obj/structure/statue/custom/update_overlays()
+
+/obj/item/statue/custom/update_overlays()
 	. = ..()
 	if(content_ma)
 		. += content_ma
@@ -76,17 +76,19 @@
 	if(!isturf(src))
 		SET_PLANE_EXPLICIT(src.content_ma, ABOVE_HUD_PLANE, user)
 		update_appearance_planes(content_ma)
-	else
-		SET_PLANE_EXPLICIT(src.content_ma, GAME_PLANE, user)
-		update_appearance_planes(content_ma)
 
+/obj/item/statue/custom/dropped(mob/user)
+	. = ..()
+	SET_PLANE_EXPLICIT(src.content_ma, GAME_PLANE, user)
+	update_appearance_planes(content_ma)
+*/
 /obj/item/statue/custom/proc/update_content_planes()
 	if(!content_ma)
 		return
-	var/turf/our_turf = get_turf(src)
+	//var/turf/our_turf = get_turf(src)
 	// MA's stored in the overlays list are not actually mutable, they've been flattened
 	// This proc unflattens them, updates them, and then reapplies
-	var/list/created = update_appearance_planes(list(content_ma), GET_TURF_PLANE_OFFSET(our_turf))
+	var/list/created = update_appearance_planes(list(content_ma), src)
 	content_ma = created[1]
 
 //Inhand version of a carving block that doesnt need a chisel
@@ -237,7 +239,7 @@
 	*/
 
 /obj/item/modeling_block/proc/create_statue(mob/user)
-	var/obj/item/statue/custom/new_statue = new(get_turf(src))
+	var/obj/item/statue/custom/new_statue = new(user.loc)
 	new_statue.set_visuals(current_target)
 	var/mutable_appearance/ma = current_target
 	new_statue.name = "statuette of [ma.name]"
