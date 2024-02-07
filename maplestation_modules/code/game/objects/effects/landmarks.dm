@@ -93,7 +93,7 @@
 
 // NA start location
 /obj/effect/landmark/start/noble_ambassador
-	name = "Noble Ambasasador"
+	name = "Noble Ambassador"
 	icon = 'maplestation_modules/icons/mob/landmarks.dmi'
 	icon_state = "NobleAmbassador"
 
