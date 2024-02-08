@@ -94,10 +94,14 @@
 			sound_frequency = round((get_rand_frequency() + get_rand_frequency()) / 2) //normal speaking is just the average of 2 random frequencies (to trend to the middle)
 
 	// [speech_sound_frequency_modifier] is set directly for humans via pref [apply_to_humans], but for other mobs we need to double-check
-	if(speech_sound_frequency_modifier == -1)
+	if(speech_sound_frequency_modifier == -1 || speech_sound_pitch_modifier == -1)
 		speech_sound_frequency_modifier = client?.prefs?.read_preference(/datum/preference/numeric/frequency_modifier) || 1
-	if(speech_sound_pitch_modifier == -1)
 		speech_sound_pitch_modifier = client?.prefs?.read_preference(/datum/preference/numeric/pitch_modifier) || 1
+		// Santiize some values so it doesn't sound like a demon. Prefer pitch over frequency.
+		var/total_modifier = speech_sound_pitch_modifier + speech_sound_frequency_modifier
+		if(total_modifier < 1.25 || total_modifier > 3.25)
+			speech_sound_frequency_modifier = 1
+			client?.prefs?.write_preference(/datum/preference/numeric/frequency_modifier, 1)
 
 	sound_frequency *= speech_sound_frequency_modifier
 
@@ -113,11 +117,14 @@
 	var/speech_sound_rangemod = -10 // 7 range
 	if(message_mods[WHISPER_MODE])
 		speech_sound_vol = max(speech_sound_vol - 10, 10)
-		speech_sound_rangemod = -14 // 3 range
+		speech_sound_rangemod = -15 // 2 range
 
 	var/sound/the_sound = sound(picked_sound)
 	the_sound.pitch = speech_sound_pitch_modifier
 	the_sound.frequency = sound_frequency
+	if(is_mouth_covered())
+		the_sound.echo[1] = -900
+		speech_sound_vol *= 1.5
 
 	playsound(
 		source = src,
@@ -130,20 +137,26 @@
 		pref_to_use = /datum/preference/toggle/toggle_speech,
 	)
 
-	if(message_mods[MODE_HEADSET] || message_mods[RADIO_EXTENSION])
-		var/list/radio_sound_pool = get_radio_sounds()
-		if(LAZYLEN(radio_sound_pool))
-			var/picked_radio_sound = pick(radio_sound_pool)
-			playsound(
-				source = src,
-				soundin = picked_radio_sound,
-				vol = max(radio_sound_pool[picked_radio_sound] - 10, 10),
-				vary = TRUE,
-				extrarange = -13, // 4 range
-				pressure_affected = TRUE,
-				ignore_walls = FALSE,
-				pref_to_use = /datum/preference/toggle/toggle_radio,
-			)
+/mob/living/radio(message, list/message_mods = list(), list/spans, language)
+	. = ..()
+	if(!.)
+		return
+
+	var/list/radio_sound_pool = get_radio_sounds()
+	if(!LAZYLEN(radio_sound_pool))
+		return
+
+	var/picked_radio_sound = pick(radio_sound_pool)
+	playsound(
+		source = src,
+		soundin = picked_radio_sound,
+		vol = max(radio_sound_pool[picked_radio_sound] - 10, 10),
+		vary = TRUE,
+		extrarange = -15, // 2 range
+		pressure_affected = TRUE,
+		ignore_walls = FALSE,
+		pref_to_use = /datum/preference/toggle/toggle_radio,
+	)
 
 /// Extend hear so we can have radio messages make radio sounds.
 /mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, list/message_mods = list(), message_range=0)
