@@ -35,23 +35,31 @@
 	var/static/list/plane_whitelist = list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)
 
 	/// Ideally we'd have knowledge what we're removing but i'd have to be done on target appearance retrieval
-	var/list/overlays_to_remove = list()
+	var/list/overlays_to_keep = list()
 	for(var/mutable_appearance/special_overlay as anything in content_ma.overlays)
 		var/mutable_appearance/real = new()
 		real.appearance = special_overlay
 		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
-			continue
-		overlays_to_remove += real
-	content_ma.overlays -= overlays_to_remove
+			content_ma.overlays -= real
+			real.plane = FLOAT_PLANE
+			real.layer = FLOAT_LAYER
+			overlays_to_keep += real
+		else
+			content_ma.overlays -= real
+	content_ma.overlays = overlays_to_keep
 
-	var/list/underlays_to_remove = list()
+	var/list/underlays_to_keep = list()
 	for(var/mutable_appearance/special_underlay as anything in content_ma.underlays)
 		var/mutable_appearance/real = new()
 		real.appearance = special_underlay
 		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
-			continue
-		underlays_to_remove += real
-	content_ma.underlays -= underlays_to_remove
+			content_ma.underlays -= real
+			real.plane = FLOAT_PLANE
+			real.layer = FLOAT_LAYER
+			underlays_to_keep += real
+		else
+			content_ma.underlays -= real
+	content_ma.underlays = underlays_to_keep
 
 	content_ma.appearance_flags &= ~KEEP_APART //Don't want this
 	content_ma.filters = filter(type="color",color=greyscale_with_value_bump,space=FILTER_COLOR_HSV)
@@ -85,11 +93,11 @@
 /obj/item/statue/custom/proc/update_content_planes()
 	if(!content_ma)
 		return
-	//var/turf/our_turf = get_turf(src)
+	var/turf/our_turf = get_turf(src)
 	// MA's stored in the overlays list are not actually mutable, they've been flattened
 	// This proc unflattens them, updates them, and then reapplies
-	var/list/created = update_appearance_planes(list(content_ma), src)
-	content_ma = created[1]
+	var/list/created = update_appearance_planes(list(content_ma), GET_TURF_PLANE_OFFSET(our_turf))
+	content_ma = new /mutable_appearance(created[1])
 
 //Inhand version of a carving block that doesnt need a chisel
 /obj/item/modeling_block
@@ -125,15 +133,15 @@
 // Add to plastic recipes
 /obj/item/stack/sheet/plastic/get_main_recipes()
 	. = ..()
-	. += list(new /datum/stack_recipe("Modeling block", /obj/item/modeling_block, 2))
+	. += list(new /datum/stack_recipe("Modeling block", /obj/item/modeling_block, 2, check_density = FALSE))
 
-/*
+
 /obj/item/modeling_block/Destroy()
 	current_target = null
 	target_appearance_with_filters = null
 	return ..()
 
-
+/*
 /obj/item/modeling_block/pre_attack(atom/target, mob/living/user, params)
 	. = ..()
 	/*
@@ -244,5 +252,6 @@
 	var/mutable_appearance/ma = current_target
 	new_statue.name = "statuette of [ma.name]"
 	new_statue.desc = "A carved statuette depicting [ma.name]."
-	user.put_in_active_hand(new_statue, TRUE)
 	qdel(src)
+	user.put_in_active_hand(new_statue, TRUE)
+
