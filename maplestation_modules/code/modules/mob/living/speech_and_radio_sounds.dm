@@ -8,9 +8,15 @@
 	/// Lower = longer, deeper speech sounds
 	/// Higher = quicker, higher-pitch speech sounds
 	var/speech_sound_frequency_modifier = 1
+	/// Modifier to speech sounds pitch
+	/// Like frequency but doesn't affect length
+	/// Lower = deeper speech sounds
+	/// Higher = higher-pitch speech sounds
+	var/speech_sound_pitch_modifier = 1
 
 /mob/living/silicon
 	speech_sound_frequency_modifier = -1 // is set from preferences when we first speak.
+	speech_sound_pitch_modifier = -1 // ditto
 
 /**
  * Gets the sound this mob plays when they speak
@@ -90,6 +96,8 @@
 	// [speech_sound_frequency_modifier] is set directly for humans via pref [apply_to_humans], but for other mobs we need to double-check
 	if(speech_sound_frequency_modifier == -1)
 		speech_sound_frequency_modifier = client?.prefs?.read_preference(/datum/preference/numeric/frequency_modifier) || 1
+	if(speech_sound_pitch_modifier == -1)
+		speech_sound_pitch_modifier = client?.prefs?.read_preference(/datum/preference/numeric/pitch_modifier) || 1
 
 	sound_frequency *= speech_sound_frequency_modifier
 
@@ -107,13 +115,16 @@
 		speech_sound_vol = max(speech_sound_vol - 10, 10)
 		speech_sound_rangemod = -14 // 3 range
 
+	var/sound/the_sound = sound(picked_sound)
+	the_sound.pitch = speech_sound_pitch_modifier
+	the_sound.frequency = sound_frequency
+
 	playsound(
 		source = src,
-		soundin = picked_sound,
+		soundin = the_sound,
 		vol = speech_sound_vol,
-		vary = TRUE,
+		vary = FALSE,
 		extrarange = speech_sound_rangemod,
-		frequency = sound_frequency,
 		pressure_affected = TRUE,
 		ignore_walls = FALSE,
 		pref_to_use = /datum/preference/toggle/toggle_speech,
