@@ -39,6 +39,7 @@
 		TOOL_SCALPEL = 85,
 		TOOL_WIRECUTTER = 40)
 	time = 3 SECONDS
+	preop_sound = 'sound/surgery/hemostat1.ogg'
 
 /datum/surgery_step/repair_innards/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	var/datum/wound/pierce/bleed/pierce_wound = surgery.operated_wound
