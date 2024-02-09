@@ -75,7 +75,12 @@
 		return
 
 	// Add in our new worn icon as an overlay of our item's icon.
-	overlays += stacked_on.build_worn_icon(standing.layer)
+	var/mutable_appearance/created = stacked_on.build_worn_icon(standing.layer)
+	if(isnull(created))
+		return
+
+	created.appearance_flags |= RESET_COLOR
+	overlays += created
 
 /datum/component/stackable_item/proc/atom_exited(obj/item/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
