@@ -1083,7 +1083,7 @@
 /mob/living/carbon/can_be_revived()
 	if(HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
-	if(!get_organ_by_type(/obj/item/organ/internal/brain) && !mind?.has_antag_datum(/datum/antagonist/changeling))
+	if(!get_organ_by_type(/obj/item/organ/internal/brain) && (!IS_CHANGELING(src)))
 		return FALSE
 	return TRUE
 
