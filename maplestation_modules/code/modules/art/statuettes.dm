@@ -128,10 +128,10 @@
 
 	if (!sculpting && ismovable(target))
 		set_target(target,user)
-		//skip sculpting time
+		/*skip sculpting time
 		if(current_target != null)
 			create_statue(user)
-
+		*/
 	return . | AFTERATTACK_PROCESSED_ITEM
 
 /obj/item/modeling_block/proc/is_viable_target(mob/living/user, atom/movable/target)
@@ -156,10 +156,13 @@
 		current_target = target.appearance
 	var/mutable_appearance/ma = current_target
 	user.balloon_alert(user, "sculpt target is [ma.name]")
-/* Seeing if i can skip the sculpting time and/or if setting target works
-/obj/item/modeling_block/attack_self(mob/user)
-	create_statue(user)
 
+/obj/item/modeling_block/attack_self(mob/user)
+	if(current_target)
+		create_statue(user)
+	else
+		balloon_alert(user,"No subject to sculpt selected!")
+/* Seeing if i can skip the sculpting time and/or if setting target works
 /// Starts or continues the sculpting action on the carving block material
 /obj/item/modeling_block/proc/start_sculpting(mob/living/user)
 	user.balloon_alert(user, "sculpting block...")
