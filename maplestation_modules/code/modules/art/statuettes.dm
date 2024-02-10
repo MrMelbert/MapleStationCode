@@ -122,6 +122,18 @@
 	target_appearance_with_filters = null
 	return ..()
 
+// We aim at something nearby to turn into our sculpting target and not bop it
+/obj/item/modeling_block/pre_attack(atom/target, mob/user)
+	. = ..()
+
+	if (!sculpting && ismovable(target))
+		set_target(target,user)
+		/*skip sculpting time
+		if(current_target != null)
+			create_statue(user)
+		*/
+	return TRUE
+
 // We aim at something to turn into our sculpting target
 /obj/item/modeling_block/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
@@ -161,7 +173,7 @@
 	if(current_target)
 		create_statue(user)
 	else
-		balloon_alert(user,"No subject to sculpt selected!")
+		balloon_alert(user,"no subject to sculpt selected")
 /* Seeing if i can skip the sculpting time and/or if setting target works
 /// Starts or continues the sculpting action on the carving block material
 /obj/item/modeling_block/proc/start_sculpting(mob/living/user)
