@@ -42,7 +42,6 @@
 		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
 			content_ma.overlays -= real
 			real.plane = FLOAT_PLANE
-			real.layer = FLOAT_LAYER
 			overlays_to_keep += real
 		else
 			content_ma.overlays -= real
@@ -55,7 +54,6 @@
 		if(PLANE_TO_TRUE(real.plane) in plane_whitelist)
 			content_ma.underlays -= real
 			real.plane = FLOAT_PLANE
-			real.layer = FLOAT_LAYER
 			underlays_to_keep += real
 		else
 			content_ma.underlays -= real
