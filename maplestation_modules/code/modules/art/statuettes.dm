@@ -63,9 +63,10 @@
 
 	content_ma.appearance_flags &= ~KEEP_APART //Don't want this
 	content_ma.filters = filter(type="color",color=greyscale_with_value_bump,space=FILTER_COLOR_HSV)
-	update_content_planes()
+	content_ma.plane = FLOAT_PLANE
+	content_ma.layer = FLOAT_LAYER
 	update_appearance()
-/*
+
 /obj/item/modeling_block/update_overlays()
 	. = ..()
 	if(!target_appearance_with_filters)
@@ -78,26 +79,6 @@
 	. = ..()
 	if(content_ma)
 		. += content_ma
-
-/obj/item/statue/custom/equipped(mob/user)
-	. = ..()
-	if(!isturf(src))
-		SET_PLANE_EXPLICIT(src.content_ma, ABOVE_HUD_PLANE, user)
-		update_appearance_planes(content_ma)
-
-/obj/item/statue/custom/dropped(mob/user)
-	. = ..()
-	SET_PLANE_EXPLICIT(src.content_ma, GAME_PLANE, user)
-	update_appearance_planes(content_ma)
-*/
-/obj/item/statue/custom/proc/update_content_planes()
-	if(!content_ma)
-		return
-	var/turf/our_turf = get_turf(src)
-	// MA's stored in the overlays list are not actually mutable, they've been flattened
-	// This proc unflattens them, updates them, and then reapplies
-	var/list/created = update_appearance_planes(list(content_ma), GET_TURF_PLANE_OFFSET(our_turf))
-	content_ma = new /mutable_appearance(created[1])
 
 //Inhand version of a carving block that doesnt need a chisel
 /obj/item/modeling_block
@@ -141,21 +122,7 @@
 	target_appearance_with_filters = null
 	return ..()
 
-/*
-/obj/item/modeling_block/pre_attack(atom/target, mob/living/user, params)
-	. = ..()
-	/*
-	if(sculpting)
-		return TRUE
-	*/
-	//We're aiming at something next to us
-		set_target(target, user)
-		//skip sculpting time
-		create_statue()
-		return TRUE
-*/
-
-// We aim at something distant.
+// We aim at something to turn into our sculpting target
 /obj/item/modeling_block/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
 
@@ -189,7 +156,7 @@
 		current_target = target.appearance
 	var/mutable_appearance/ma = current_target
 	user.balloon_alert(user, "sculpt target is [ma.name]")
-/* seeing if i can skip the sculpting time and/or if setting target works
+/* Seeing if i can skip the sculpting time and/or if setting target works
 /obj/item/modeling_block/attack_self(mob/user)
 	create_statue(user)
 
