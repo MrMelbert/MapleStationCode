@@ -37917,10 +37917,7 @@
 	codes_txt = "delivery;dir=8";
 	location = "QM #3"
 	},
-/mob/living/simple_animal/bot/mulebot{
-	home_destination = "QM #3";
-	suffix = "#3"
-	},
+/mob/living/simple_animal/bot/mulebot,
 /obj/effect/turf_decal/siding/brown{
 	dir = 4
 	},
@@ -66379,10 +66376,7 @@
 /turf/open/floor/plating/airless,
 /area/station/science/ordnance/bomb)
 "vfL" = (
-/mob/living/simple_animal/bot/mulebot{
-	home_destination = "QM #2";
-	suffix = "#2"
-	},
+/mob/living/simple_animal/bot/mulebot,
 /obj/machinery/navbeacon{
 	codes_txt = "delivery;dir=8";
 	location = "QM #2"
