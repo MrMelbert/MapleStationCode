@@ -23,8 +23,8 @@
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
 
-	active_msg = "You prepare to throw an ice knife."
-	deactive_msg = "You stop preparing to throw an ice knife."
+	active_msg = "You prepare to throw an ice blast."
+	deactive_msg = "You stop preparing to throw an ice blast."
 
 	cast_range = 8
 	projectile_type = /obj/projectile/magic/ice_blast
