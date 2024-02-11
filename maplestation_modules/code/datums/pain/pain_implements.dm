@@ -373,13 +373,13 @@
 
 	if(slot_flags & slot)
 		RegisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_protection))
-		RegisterSignal(user, list(COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_PRE_MOVE), PROC_REF(disable_protection))
+		RegisterSignal(user, list(COMSIG_QDELETING, COMSIG_MOVABLE_PRE_MOVE), PROC_REF(disable_protection))
 		try_enable(user)
 
 /obj/item/shock_blanket/dropped(mob/user, silent)
 	. = ..()
 	disable_protection(user)
-	UnregisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED, COMSIG_PARENT_QDELETING, COMSIG_MOVABLE_PRE_MOVE))
+	UnregisterSignal(user, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED, COMSIG_QDELETING, COMSIG_MOVABLE_PRE_MOVE))
 
 	if(locate(/obj/structure/bed) in loc)
 		icon_state = "[base_icon_state]_dropped"
@@ -475,7 +475,7 @@
 	if(empty)
 		return
 	var/static/list/items_inside = list(
-		/obj/item/healthanalyzer/wound = 1,
+		/obj/item/healthanalyzer/simple = 1,
 		/obj/item/stack/medical/gauze = 1,
 		/obj/item/stack/medical/suture/emergency = 1,
 		/obj/item/stack/medical/ointment = 1,

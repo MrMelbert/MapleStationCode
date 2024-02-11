@@ -8,7 +8,7 @@
 /obj/machinery/power/apc
 	name = "area power controller"
 	desc = "A control terminal for the area's electrical systems."
-
+	icon = 'icons/obj/machines/wallmounts.dmi'
 	icon_state = "apc0"
 	use_power = NO_POWER_USE
 	req_access = null
@@ -71,6 +71,8 @@
 	var/malfhack = FALSE //New var for my changes to AI malf. --NeoFite
 	///Reference to our ai hacker
 	var/mob/living/silicon/ai/malfai = null //See above --NeoFite
+	///Counter for displaying the hacked overlay to mobs within view
+	var/hacked_flicker_counter = 0
 	///State of the electronics inside (missing, installed, secured)
 	var/has_electronics = APC_ELECTRONICS_MISSING
 	///used for the Blackout malf module
@@ -154,6 +156,10 @@
 			offset_old = pixel_x
 			pixel_x = -APC_PIXEL_OFFSET
 
+	hud_list = list(
+		MALF_APC_HUD = image(icon = 'icons/mob/huds/hud.dmi', icon_state = "apc_hacked", pixel_x = src.pixel_x, pixel_y = src.pixel_y)
+	)
+
 	//Assign it to its area. If mappers already assigned an area string fast load the area from it else get the current area
 	var/area/our_area = get_area(loc)
 	if(areastring)
@@ -175,7 +181,7 @@
 		name = "\improper [get_area_name(area, TRUE)] APC"
 
 	//Initialize its electronics
-	wires = new /datum/wires/apc(src)
+	set_wires(new /datum/wires/apc(src))
 	alarm_manager = new(src)
 	AddElement(/datum/element/atmos_sensitive, mapload)
 	// for apcs created during map load make them fully functional
@@ -201,11 +207,20 @@
 	RegisterSignal(SSdcs, COMSIG_GLOB_GREY_TIDE, PROC_REF(grey_tide))
 	update_appearance()
 
-	GLOB.apcs_list += src
+	var/static/list/hovering_mob_typechecks = list(
+		/mob/living/silicon = list(
+			SCREENTIP_CONTEXT_CTRL_LMB = "Toggle power",
+			SCREENTIP_CONTEXT_ALT_LMB = "Toggle equipment power",
+			SCREENTIP_CONTEXT_SHIFT_LMB = "Toggle lighting power",
+			SCREENTIP_CONTEXT_CTRL_SHIFT_LMB = "Toggle environment power",
+		)
+	)
+
+	AddElement(/datum/element/contextual_screentip_bare_hands, rmb_text = "Toggle interface lock")
+	AddElement(/datum/element/contextual_screentip_mob_typechecks, hovering_mob_typechecks)
+	find_and_hang_on_wall()
 
 /obj/machinery/power/apc/Destroy()
-	GLOB.apcs_list -= src
-
 	if(malfai && operating)
 		malfai.malf_picker.processing_time = clamp(malfai.malf_picker.processing_time - 10, 0, 1000)
 	disconnect_from_area()
@@ -218,7 +233,6 @@
 		QDEL_NULL(cell)
 	if(terminal)
 		disconnect_terminal()
-
 	return ..()
 
 /obj/machinery/power/apc/proc/assign_to_area(area/target_area = get_area(src))
@@ -252,14 +266,15 @@
 	area.apc = null
 	area = null
 
-/obj/machinery/power/apc/handle_atom_del(atom/deleting_atom)
-	if(deleting_atom == cell)
+/obj/machinery/power/apc/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(gone == cell)
+		cell.update_appearance()
 		cell = null
 		charging = APC_NOT_CHARGING
 		update_appearance()
 		if(!QDELING(src))
 			SStgui.update_uis(src)
-	return ..()
 
 /obj/machinery/power/apc/examine(mob/user)
 	. = ..()
@@ -284,13 +299,8 @@
 		else
 			. += "The cover is closed."
 
-	. += span_notice("Right-click the APC to [ locked ? "unlock" : "lock"] the interface.")
-
-	if(issilicon(user))
-		. += span_notice("Ctrl-Click the APC to switch the breaker [ operating ? "off" : "on"].")
-
 /obj/machinery/power/apc/deconstruct(disassembled = TRUE)
-	if(flags_1 & NODECONSTRUCT_1)
+	if(obj_flags & NO_DECONSTRUCTION)
 		return
 	if(!(machine_stat & BROKEN))
 		set_broken()
@@ -453,11 +463,13 @@
 			update()
 		if("emergency_lighting")
 			emergency_lights = !emergency_lights
-			for(var/obj/machinery/light/L in area)
-				if(!initial(L.no_low_power)) //If there was an override set on creation, keep that override
-					L.no_low_power = emergency_lights
-					INVOKE_ASYNC(L, TYPE_PROC_REF(/obj/machinery/light/, update), FALSE)
-				CHECK_TICK
+			for (var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
+				for(var/turf/area_turf as anything in zlevel_turfs)
+					for(var/obj/machinery/light/area_light in area_turf)
+						if(!initial(area_light.no_low_power)) //If there was an override set on creation, keep that override
+							area_light.no_low_power = emergency_lights
+							INVOKE_ASYNC(area_light, TYPE_PROC_REF(/obj/machinery/light/, update), FALSE)
+					CHECK_TICK
 	return TRUE
 
 /obj/machinery/power/apc/ui_close(mob/user)
@@ -476,6 +488,11 @@
 		failure_timer--
 		force_update = TRUE
 		return
+
+	if(obj_flags & EMAGGED || malfai)
+		hacked_flicker_counter = hacked_flicker_counter - 1
+		if(hacked_flicker_counter <= 0)
+			flicker_hacked_icon()
 
 	//dont use any power from that channel if we shut that power channel off
 	lastused_light = APC_CHANNEL_IS_ON(lighting) ? area.power_usage[AREA_USAGE_LIGHT] + area.power_usage[AREA_USAGE_STATIC_LIGHT] : 0
@@ -650,10 +667,12 @@
 		INVOKE_ASYNC(src, PROC_REF(break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
-	for(var/obj/machinery/light/breaked_light in area)
-		breaked_light.on = TRUE
-		breaked_light.break_light_tube()
-		stoplag()
+	for (var/list/zlevel_turfs as anything in area.get_zlevel_turf_lists())
+		for(var/turf/area_turf as anything in zlevel_turfs)
+			for(var/obj/machinery/light/breaked_light in area_turf)
+				breaked_light.on = TRUE
+				breaked_light.break_light_tube()
+				stoplag()
 
 /obj/machinery/power/apc/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	return (exposed_temperature > 2000)
@@ -705,7 +724,7 @@
 
 /// Used for full_charge apc helper, which sets apc charge to 100%.
 /obj/machinery/power/apc/proc/set_full_charge()
-	cell.charge = 100
+	cell.charge = cell.maxcharge
 
 /*Power module, used for APC construction*/
 /obj/item/electronics/apc

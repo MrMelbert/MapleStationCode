@@ -40,9 +40,9 @@
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "j" = (
-/obj/machinery/light/directional/north,
 /obj/machinery/requests_console/directional/north{
-	department = "Arrivals shuttle"
+	department = "Arrivals shuttle";
+	name = "Arrival Shuttle Requests Console"
 	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
@@ -107,7 +107,6 @@
 /area/shuttle/arrival)
 "t" = (
 /obj/structure/extinguisher_cabinet/directional/south,
-/obj/machinery/light/directional/south,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "u" = (

@@ -16,8 +16,8 @@
 /obj/structure/table,
 /obj/item/storage/toolbox/emergency,
 /obj/item/crowbar,
-/obj/machinery/light/directional/north,
 /obj/effect/turf_decal/tile/purple/fourcorners,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "af" = (
@@ -38,7 +38,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "ai" = (
-/obj/machinery/modular_computer/console/preset/id,
+/obj/machinery/modular_computer/preset/id,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "aj" = (
@@ -67,8 +67,8 @@
 	pixel_y = 3
 	},
 /obj/item/storage/medkit/o2,
-/obj/machinery/light/directional/north,
 /obj/effect/turf_decal/tile/yellow/fourcorners,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "ao" = (
@@ -212,9 +212,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "aM" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-22"
-	},
+/obj/item/kirbyplants/organic/plant22,
 /obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 1
@@ -230,9 +228,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
 "aP" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-22"
-	},
+/obj/item/kirbyplants/organic/plant22,
 /obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 1
@@ -361,7 +357,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/brown/half/contrasted{
 	dir = 8
 	},
@@ -379,7 +374,6 @@
 	dir = 1
 	},
 /obj/structure/closet,
-/obj/machinery/light/directional/east,
 /obj/effect/turf_decal/tile/brown/half/contrasted{
 	dir = 4
 	},
@@ -565,9 +559,7 @@
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "ca" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
+/obj/item/kirbyplants/organic/plant21,
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "cb" = (
@@ -583,13 +575,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)
-"cd" = (
-/obj/machinery/light/directional/east,
-/obj/item/kirbyplants{
-	icon_state = "plant-21"
-	},
-/turf/open/floor/iron,
-/area/shuttle/escape)
 "ce" = (
 /obj/machinery/door/airlock/medical/glass{
 	name = "Emergency Shuttle Medbay"
@@ -598,7 +583,6 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "cf" = (
-/obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
@@ -609,7 +593,7 @@
 /turf/open/floor/iron,
 /area/shuttle/escape)
 "ch" = (
-/mob/living/simple_animal/bot/medbot{
+/mob/living/basic/bot/medbot{
 	name = "Speedy* Recovery"
 	},
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
@@ -633,7 +617,7 @@
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "ck" = (
-/obj/machinery/atmospherics/components/unary/cryo_cell,
+/obj/machinery/cryo_cell,
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 1
 	},
@@ -1072,6 +1056,34 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)
+"ed" = (
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/iron,
+/area/shuttle/escape)
+"jX" = (
+/obj/effect/turf_decal/tile/neutral/half/contrasted{
+	dir = 8
+	},
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/shuttle/escape)
+"Az" = (
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron/recharge_floor,
+/area/shuttle/escape)
+"Qp" = (
+/obj/item/kirbyplants/organic/plant21,
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron,
+/area/shuttle/escape)
+"Rz" = (
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron/recharge_floor,
+/area/shuttle/escape)
+"Uo" = (
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/iron,
+/area/shuttle/escape)
 
 (1,1,1) = {"
 aa
@@ -1177,18 +1189,18 @@ be
 be
 be
 ab
+ed
+bc
+bc
+bc
 bc
 bQ
 bc
 bc
 bc
-bQ
 bc
-bc
-bc
-bQ
 ca
-ca
+Qp
 cf
 aZ
 aZ
@@ -1547,7 +1559,7 @@ bc
 bc
 bc
 bc
-cg
+Uo
 bc
 ab
 de
@@ -1572,7 +1584,7 @@ aZ
 aZ
 aZ
 aZ
-aZ
+jX
 bL
 bc
 bT
@@ -1700,7 +1712,7 @@ aK
 aP
 ab
 bb
-bj
+Az
 bo
 bs
 bB
@@ -1847,7 +1859,7 @@ bc
 bc
 bc
 bc
-cd
+ca
 ab
 cm
 ct
@@ -1876,7 +1888,7 @@ ab
 ab
 ab
 bb
-bj
+Rz
 dA
 bu
 bD

@@ -94,45 +94,39 @@
 	data["preview_flat_icon"] = cached_icon
 	return data
 
-/datum/preference_middleware/limbs/get_ui_static_data(mob/user)
+/datum/preference_middleware/limbs/get_constant_data()
 	var/list/data = list()
+	var/list/all_limb_data = list()
+	var/list/raw_limb_data = list(
+		BODY_ZONE_HEAD = list(),
+		BODY_ZONE_CHEST = list(),
+		BODY_ZONE_L_ARM = list(),
+		BODY_ZONE_R_ARM = list(),
+		BODY_ZONE_L_LEG = list(),
+		BODY_ZONE_R_LEG = list(),
+	)
 
-	// This should all be moved to constant data when I figure out how tee hee
-	var/static/list/limbs_data
-	if(isnull(limbs_data))
-		var/list/raw_data = list(
-			BODY_ZONE_HEAD = list(),
-			BODY_ZONE_CHEST = list(),
-			BODY_ZONE_L_ARM = list(),
-			BODY_ZONE_R_ARM = list(),
-			BODY_ZONE_L_LEG = list(),
-			BODY_ZONE_R_LEG = list(),
+	for(var/limb_type in GLOB.limb_loadout_options)
+		var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_type]
+		var/limb_zone = limb_datum.ui_zone
+		if(isnull(limb_zone) || !islist(raw_limb_data[limb_zone]))
+			stack_trace("Invalid limb zone found in limb datums: [limb_zone || "null"]. (From: [limb_type])")
+			continue
+
+		var/list/limb_data = list(
+			"name" = limb_datum.name,
+			"tooltip" = limb_datum.desc,
+			"path" = limb_type,
 		)
 
-		for(var/limb_type in GLOB.limb_loadout_options)
-			var/datum/limb_option_datum/limb_datum = GLOB.limb_loadout_options[limb_type]
-			var/limb_zone = limb_datum.ui_zone
+		UNTYPED_LIST_ADD(raw_limb_data[limb_zone], limb_data)
 
-			if(isnull(limb_zone) || !islist(raw_data[limb_zone]))
-				stack_trace("Invalid limb zone found in limb datums: [limb_zone || "null"]. (From: [limb_type])")
-				continue
+	for(var/raw_list_key in raw_limb_data)
+		var/list/ui_formatted_raw_list = list(
+			"category_name" = raw_list_key,
+			"category_data" = raw_limb_data[raw_list_key],
+		)
+		UNTYPED_LIST_ADD(all_limb_data, ui_formatted_raw_list)
 
-			var/list/limb_data = list(
-				"name" = limb_datum.name,
-				"tooltip" = limb_datum.desc,
-				"path" = limb_type,
-			)
-
-			UNTYPED_LIST_ADD(raw_data[limb_zone], limb_data)
-
-		limbs_data = list()
-		for(var/raw_list_key in raw_data)
-			var/list/ui_formatted_raw_list = list(
-				"category_name" = raw_list_key,
-				"category_data" = raw_data[raw_list_key],
-			)
-			UNTYPED_LIST_ADD(limbs_data, ui_formatted_raw_list)
-
-
-	data["limbs"] = limbs_data
+	data["limbs"] = all_limb_data
 	return data

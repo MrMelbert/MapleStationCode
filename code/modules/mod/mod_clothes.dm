@@ -55,5 +55,5 @@
 	heat_protection = FEET|LEGS
 	cold_protection = FEET|LEGS
 	obj_flags = IMMUTABLE_SLOW
-	item_flags = IGNORE_DIGITIGRADE
+	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
 	can_be_tied = FALSE

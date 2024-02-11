@@ -46,9 +46,9 @@
 /area/shuttle/arrival)
 "l" = (
 /obj/machinery/requests_console/directional/north{
-	department = "Arrival shuttle"
+	department = "Arrival shuttle";
+	name = "Arrival Shuttle Requests Console"
 	},
-/obj/machinery/light/directional/north,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "m" = (
@@ -63,6 +63,10 @@
 	dir = 4
 	},
 /turf/open/floor/plating/airless,
+/area/shuttle/arrival)
+"o" = (
+/obj/item/radio/intercom/directional/south,
+/turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "p" = (
 /obj/structure/chair/comfy/shuttle,
@@ -116,11 +120,6 @@
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "y" = (
-/obj/machinery/light/directional/south,
-/turf/open/floor/mineral/titanium/blue,
-/area/shuttle/arrival)
-"z" = (
-/obj/item/radio/intercom/directional/south,
 /obj/machinery/light/directional/south,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
@@ -194,7 +193,7 @@ g
 f
 f
 f
-y
+o
 b
 "}
 (8,1,1) = {"
@@ -239,7 +238,7 @@ l
 r
 r
 r
-z
+y
 b
 "}
 (13,1,1) = {"

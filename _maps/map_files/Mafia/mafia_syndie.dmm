@@ -7,8 +7,7 @@
 	desc = "A storage closet for syndicate conflict resolution operatives.";
 	name = "red closet"
 	},
-/obj/item/clothing/under/syndicate/tacticool,
-/obj/item/clothing/under/syndicate/tacticool/skirt,
+/obj/effect/spawner/random/clothing/syndie,
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/mafia)
 "c" = (
@@ -51,17 +50,7 @@
 	desc = "A storage closet for syndicate conflict resolution operatives.";
 	name = "red closet"
 	},
-/obj/item/clothing/under/syndicate/tacticool,
-/obj/item/clothing/under/syndicate/tacticool/skirt,
-/obj/effect/turf_decal/tile/red/fourcorners,
-/turf/open/floor/iron/dark,
-/area/centcom/mafia)
-"n" = (
-/obj/effect/landmark/mafia,
-/turf/open/floor/mineral/plastitanium,
-/area/centcom/mafia)
-"o" = (
-/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/effect/spawner/random/clothing/syndie,
 /turf/open/floor/iron/dark,
 /area/centcom/mafia)
 "p" = (
@@ -71,14 +60,15 @@
 	max_integrity = 99999;
 	name = "Station Night Shutters"
 	},
-/turf/closed/indestructible/opsglass,
+/obj/effect/spawner/structure/window/reinforced/plasma/plastitanium,
+/turf/open/space/basic,
 /area/centcom/mafia)
 "q" = (
 /obj/structure/chair/office{
 	dir = 1;
 	name = "tactical swivel chair"
 	},
-/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/effect/landmark/mafia,
 /turf/open/floor/iron/dark,
 /area/centcom/mafia)
 "r" = (
@@ -102,27 +92,28 @@
 /turf/open/floor/plating,
 /area/centcom/mafia)
 "w" = (
-/turf/closed/indestructible/syndicate,
+/turf/closed/wall/r_wall,
 /area/centcom/mafia)
 "x" = (
 /obj/structure/chair/office{
 	dir = 4;
 	name = "tactical swivel chair"
 	},
-/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/effect/landmark/mafia,
 /turf/open/floor/iron/dark,
 /area/centcom/mafia)
 "y" = (
 /obj/structure/chair/office{
 	name = "tactical swivel chair"
 	},
+/obj/effect/landmark/mafia,
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/mafia)
 "z" = (
 /obj/structure/chair/office{
 	name = "tactical swivel chair"
 	},
-/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/effect/landmark/mafia,
 /turf/open/floor/iron/dark,
 /area/centcom/mafia)
 "A" = (
@@ -130,6 +121,7 @@
 	dir = 8;
 	name = "tactical swivel chair"
 	},
+/obj/effect/landmark/mafia,
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/mafia)
 "B" = (
@@ -137,6 +129,7 @@
 	dir = 4;
 	name = "tactical swivel chair"
 	},
+/obj/effect/landmark/mafia,
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/mafia)
 "C" = (
@@ -144,7 +137,7 @@
 	dir = 8;
 	name = "tactical swivel chair"
 	},
-/obj/effect/turf_decal/tile/red/fourcorners,
+/obj/effect/landmark/mafia,
 /turf/open/floor/iron/dark,
 /area/centcom/mafia)
 "E" = (
@@ -152,25 +145,21 @@
 	dir = 1;
 	name = "tactical swivel chair"
 	},
+/obj/effect/landmark/mafia,
 /turf/open/floor/mineral/plastitanium,
 /area/centcom/mafia)
-"G" = (
-/obj/item/clothing/under/syndicate/tacticool,
-/obj/structure/closet/syndicate{
-	desc = "A storage closet for syndicate conflict resolution operatives.";
-	name = "red closet"
-	},
-/obj/item/clothing/under/syndicate/tacticool/skirt,
-/obj/effect/turf_decal/tile/red/fourcorners,
-/turf/open/floor/iron/dark,
-/area/centcom/mafia)
 "H" = (
-/obj/effect/landmark/mafia,
-/obj/effect/turf_decal/tile/red/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/mafia)
+"K" = (
+/turf/closed/wall/mineral/plastitanium,
+/area/centcom/mafia)
+"T" = (
+/turf/template_noop,
+/area/template_noop)
 
 (1,1,1) = {"
+T
 a
 a
 a
@@ -192,10 +181,10 @@ a
 a
 a
 a
-a
-a
+T
 "}
 (2,1,1) = {"
+T
 a
 w
 w
@@ -216,14 +205,13 @@ w
 w
 w
 w
-w
-w
 a
+T
 "}
 (3,1,1) = {"
+T
 a
 w
-w
 c
 c
 c
@@ -241,13 +229,13 @@ c
 c
 c
 c
-w
 w
 a
+T
 "}
 (4,1,1) = {"
+T
 a
-w
 w
 c
 g
@@ -267,32 +255,32 @@ h
 k
 c
 w
-w
 a
+T
 "}
 (5,1,1) = {"
 a
-w
+a
 w
 c
 h
 d
 d
 e
-w
-w
+K
+K
 j
-w
+K
 j
-w
-w
+K
+K
 d
 d
 e
 h
 c
 w
-w
+a
 a
 "}
 (6,1,1) = {"
@@ -301,19 +289,19 @@ w
 w
 c
 e
-w
-w
+K
+K
 j
-w
+K
 b
 r
-w
-o
+K
+H
 m
-w
+K
 j
-w
-w
+K
+K
 d
 c
 w
@@ -326,19 +314,19 @@ w
 c
 c
 d
-w
+K
 m
-o
+H
 p
-n
+r
 r
 p
-o
+H
 H
 p
 r
 b
-w
+K
 d
 c
 c
@@ -351,19 +339,19 @@ w
 c
 d
 d
-w
+K
 H
-o
-w
-w
+H
+K
+K
 r
-w
-o
-w
-w
+K
+H
+K
+K
 r
-n
-w
+r
+K
 d
 d
 c
@@ -375,10 +363,10 @@ a
 w
 c
 d
-w
-w
+K
+K
 p
-o
+H
 x
 p
 B
@@ -388,8 +376,8 @@ p
 B
 r
 p
-w
-w
+K
+K
 d
 c
 w
@@ -400,10 +388,10 @@ a
 w
 c
 d
-w
+K
 b
 p
-w
+K
 p
 p
 p
@@ -411,10 +399,10 @@ p
 p
 p
 p
-w
+K
 p
 m
-w
+K
 d
 c
 w
@@ -426,7 +414,7 @@ w
 c
 d
 j
-n
+r
 r
 r
 y
@@ -436,8 +424,8 @@ t
 s
 p
 q
-o
-o
+H
+H
 H
 j
 e
@@ -450,10 +438,10 @@ a
 w
 c
 e
-w
-w
+K
+K
 p
-w
+K
 p
 p
 t
@@ -461,10 +449,10 @@ u
 t
 p
 p
-w
+K
 p
-w
-w
+K
+K
 d
 c
 w
@@ -477,8 +465,8 @@ c
 d
 j
 H
-o
-o
+H
+H
 z
 p
 s
@@ -488,7 +476,7 @@ p
 E
 r
 r
-n
+r
 j
 d
 c
@@ -500,10 +488,10 @@ a
 w
 c
 d
-w
+K
 m
 p
-w
+K
 p
 p
 p
@@ -511,10 +499,10 @@ p
 p
 p
 p
-w
+K
 p
 b
-w
+K
 e
 c
 w
@@ -525,8 +513,8 @@ a
 w
 c
 d
-w
-w
+K
+K
 p
 r
 A
@@ -536,10 +524,10 @@ p
 A
 p
 C
-o
+H
 p
-w
-w
+K
+K
 d
 c
 w
@@ -551,19 +539,19 @@ w
 c
 f
 d
-w
-n
+K
 r
-w
-w
-o
-w
 r
-w
-w
-o
+K
+K
 H
-w
+K
+r
+K
+K
+H
+H
+K
 d
 d
 c
@@ -576,19 +564,19 @@ w
 c
 c
 d
-w
+K
 b
 r
 p
 H
-o
+H
 p
 r
-n
+r
 p
-o
-G
-w
+H
+m
+K
 d
 c
 c
@@ -601,19 +589,19 @@ w
 w
 c
 d
-w
-w
+K
+K
 j
-w
+K
 m
-o
-w
+H
+K
 r
 b
-w
+K
 j
-w
-w
+K
+K
 d
 c
 w
@@ -622,32 +610,32 @@ a
 "}
 (19,1,1) = {"
 a
-w
+a
 w
 c
 h
 e
 d
 d
-w
-w
+K
+K
 j
-w
+K
 j
-w
-w
+K
+K
 d
 e
 d
 h
 c
 w
-w
+a
 a
 "}
 (20,1,1) = {"
+T
 a
-w
 w
 c
 k
@@ -667,13 +655,13 @@ h
 v
 c
 w
-w
 a
+T
 "}
 (21,1,1) = {"
+T
 a
 w
-w
 c
 c
 c
@@ -691,11 +679,12 @@ c
 c
 c
 c
-w
 w
 a
+T
 "}
 (22,1,1) = {"
+T
 a
 w
 w
@@ -716,11 +705,11 @@ w
 w
 w
 w
-w
-w
 a
+T
 "}
 (23,1,1) = {"
+T
 a
 a
 a
@@ -742,6 +731,5 @@ a
 a
 a
 a
-a
-a
+T
 "}

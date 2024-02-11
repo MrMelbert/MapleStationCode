@@ -52,7 +52,7 @@
 		span_cultitalic("You attempt to disable [living_target] with the spell!")
 		)
 
-	user.mob_light(_range = 3, _color = LIGHT_COLOR_LIGHT_CYAN, _duration = 0.3 SECONDS)
+	user.mob_light(range = 3, color = LIGHT_COLOR_LIGHT_CYAN, duration = 0.3 SECONDS)
 
 	var/applied_effects = FALSE
 	if(living_target.can_block_magic())

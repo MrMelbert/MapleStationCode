@@ -1,14 +1,3 @@
-/obj/item/build_worn_icon(
-	default_layer = 0,
-	default_icon_file = null,
-	isinhands = FALSE,
-	female_uniform = NO_FEMALE_UNIFORM,
-	override_state = null,
-	override_file = null,
-)
-	. = ..()
-	SEND_SIGNAL(src, COMSIG_ITEM_WORN_ICON_MADE, ., default_layer, default_icon_file, isinhands, female_uniform, override_state, override_file)
-
 /**
  * Stackble item component
  *
@@ -17,6 +6,8 @@
  * When the parent is equipped, so is the attached item. And when the parent is dropped, so is the attached item.
  */
 /datum/component/stackable_item
+	/// Descriptor for what you can attach to this item.
+	var/wearable_descriptor = ""
 	/// List of types that can be worn.
 	/// Swap to a typecache if people make really large lists.
 	var/list/wearables
@@ -29,67 +20,62 @@
 	/// Optional callback that is called when an item is dropped.
 	var/datum/callback/on_drop
 
-/datum/component/stackable_item/Initialize(list/wearables, datum/callback/can_stack, datum/callback/on_equip, datum/callback/on_drop)
+/datum/component/stackable_item/Initialize(list/wearables, wearable_descriptor, datum/callback/can_stack, datum/callback/on_equip, datum/callback/on_drop)
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	src.wearables = wearables
+	src.wearable_descriptor = wearable_descriptor
 	src.can_stack = can_stack
 	src.on_equip = on_equip
 	src.on_drop = on_drop
 
 /datum/component/stackable_item/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_ITEM_WORN_ICON_MADE, PROC_REF(update_worn_icon))
+	RegisterSignal(parent, COMSIG_ATOM_ATTACKBY, PROC_REF(item_attackby))
+	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(on_examine))
 	RegisterSignal(parent, COMSIG_ATOM_EXITED, PROC_REF(atom_exited))
-	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(item_equipped))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(item_dropped))
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(item_attackby))
+	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(item_equipped))
+	RegisterSignal(parent, COMSIG_ITEM_GET_WORN_OVERLAYS, PROC_REF(update_worn_icon))
 	RegisterSignals(parent, list(COMSIG_ATOM_DESTRUCTION, COMSIG_OBJ_DECONSTRUCT), PROC_REF(on_deconstruct))
 
 /datum/component/stackable_item/UnregisterFromParent()
 	UnregisterSignal(parent, list(
-		COMSIG_ITEM_WORN_ICON_MADE,
-		COMSIG_ATOM_EXITED,
-		COMSIG_ITEM_EQUIPPED,
-		COMSIG_ITEM_DROPPED,
-		COMSIG_PARENT_ATTACKBY,
+		COMSIG_ATOM_ATTACKBY,
 		COMSIG_ATOM_DESTRUCTION,
+		COMSIG_ATOM_EXAMINE,
+		COMSIG_ATOM_EXITED,
+		COMSIG_ITEM_DROPPED,
+		COMSIG_ITEM_EQUIPPED,
+		COMSIG_ITEM_GET_WORN_OVERLAYS,
 		COMSIG_OBJ_DECONSTRUCT,
 	))
 
 /datum/component/stackable_item/Destroy()
 	stacked_on = null
-	QDEL_NULL(can_stack)
-	QDEL_NULL(on_equip)
-	QDEL_NULL(on_drop)
+	can_stack = null
+	on_equip = null
+	on_drop = null
 	return ..()
 
-/datum/component/stackable_item/proc/update_worn_icon(
-	obj/item/source,
-	mutable_appearance/created_icon,
-	default_layer,
-	default_icon_file,
-	isinhands,
-	female_uniform,
-	override_state,
-	override_file,
-)
+/datum/component/stackable_item/proc/on_examine(obj/item/source, mob/user, list/examine_list)
+	SIGNAL_HANDLER
+
+	if(isnull(stacked_on))
+		if(wearable_descriptor)
+			examine_list += span_notice("Looks like you could attach [wearable_descriptor] to it.")
+
+	else
+		examine_list += span_notice("It has \a [stacked_on] attached.")
+
+/datum/component/stackable_item/proc/update_worn_icon(obj/item/source, list/overlays, mutable_appearance/standing, isinhands, ...)
 	SIGNAL_HANDLER
 
 	if(isinhands || isnull(stacked_on))
 		return
 
-	var/mutable_appearance/stacked_overlay = stacked_on.build_worn_icon(
-		default_layer,
-		default_icon_file,
-		isinhands,
-		female_uniform,
-		override_state,
-		override_file,
-	)
-
 	// Add in our new worn icon as an overlay of our item's icon.
-	created_icon.overlays.Add(stacked_overlay)
+	overlays += stacked_on.build_worn_icon(standing.layer)
 
 /datum/component/stackable_item/proc/atom_exited(obj/item/source, atom/movable/gone, direction)
 	SIGNAL_HANDLER
@@ -120,7 +106,7 @@
 		return
 
 	on_equip?.Invoke(stacked_on, user, slot)
-	stacked_on.equipped(user, slot)
+	stacked_on.on_equipped(user, slot)
 
 /datum/component/stackable_item/proc/item_dropped(obj/item/source, mob/living/user, silent)
 	SIGNAL_HANDLER
@@ -161,7 +147,7 @@
 	var/equipped_flags = stacked_on.slot_flags
 	if(carbon_loc.get_item_by_slot(equipped_flags) == source) // check that they're in the same slot as our source / parent
 		on_equip?.Invoke(stacked_on, carbon_loc, equipped_flags)
-		stacked_on.equipped(carbon_loc, equipped_flags)
+		stacked_on.on_equipped(carbon_loc, equipped_flags)
 		carbon_loc.update_clothing(equipped_flags)
 
 /datum/component/stackable_item/proc/on_deconstruct(obj/item/source)

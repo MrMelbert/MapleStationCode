@@ -13,9 +13,7 @@
 
 /datum/loadout_item/shoes/New()
 	. = ..()
-	var/ignores_digi = !!(initial(item_path.item_flags) & IGNORE_DIGITIGRADE)
-	var/supports_digi = !!(initial(item_path.supports_variations_flags) & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))
-	supports_digitigrade = ignores_digi || supports_digi
+	supports_digitigrade = !!(initial(item_path.supports_variations_flags) & (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON))
 	if(supports_digitigrade)
 		LAZYADD(additional_tooltip_contents, "This item can be worn on characters whom have digitigrade legs.")
 
@@ -28,7 +26,7 @@
 		return ..()
 
 	// Does not support digi and our equipper is? We shouldn't mess with it, skip
-	if(equipper.dna?.species?.bodytype & BODYTYPE_DIGITIGRADE)
+	if(equipper.bodytype & BODYTYPE_DIGITIGRADE)
 		return
 
 	// Does not support digi and our equipper is not digi? Continue as normal

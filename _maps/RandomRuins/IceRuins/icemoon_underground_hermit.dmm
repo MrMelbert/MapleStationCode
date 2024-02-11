@@ -13,8 +13,6 @@
 /area/icemoon/underground/explored)
 "ec" = (
 /obj/structure/chair/comfy/beige,
-/obj/machinery/light/directional/west,
-/obj/machinery/light/directional/north,
 /turf/open/floor/wood,
 /area/ruin/powered/hermit)
 "gr" = (
@@ -40,15 +38,6 @@
 /obj/structure/barricade/wooden/crude/snow,
 /turf/open/misc/asteroid/snow/icemoon,
 /area/icemoon/underground/explored)
-"mN" = (
-/obj/machinery/light/directional/west,
-/turf/open/floor/wood,
-/area/ruin/powered/hermit)
-"ny" = (
-/obj/machinery/hydroponics/soil,
-/obj/machinery/light/directional/north,
-/turf/open/floor/grass/fairy,
-/area/ruin/powered/hermit)
 "nR" = (
 /obj/machinery/door/airlock/wood{
 	name = "Frozen Shack"
@@ -74,10 +63,6 @@
 /area/ruin/powered/hermit)
 "tN" = (
 /obj/item/flashlight/lantern,
-/turf/open/floor/grass/fairy,
-/area/ruin/powered/hermit)
-"wH" = (
-/obj/machinery/light/directional/east,
 /turf/open/floor/grass/fairy,
 /area/ruin/powered/hermit)
 "Aj" = (
@@ -273,7 +258,7 @@ GV
 ec
 ii
 ha
-mN
+JI
 GV
 OU
 OU
@@ -301,7 +286,7 @@ OU
 (9,1,1) = {"
 YN
 Aj
-ny
+Xn
 kR
 Si
 oJ
@@ -342,7 +327,7 @@ YN
 Xn
 kR
 kR
-wH
+kR
 WK
 gr
 kR

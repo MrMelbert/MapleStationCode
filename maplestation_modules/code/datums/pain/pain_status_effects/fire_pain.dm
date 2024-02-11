@@ -9,20 +9,15 @@
 	/// Amount of pain being given
 	var/pain_amount = 0
 
-/datum/status_effect/pain_from_fire/on_creation(mob/living/new_owner, pain_amount = 0, duration)
-	if(isnum(duration))
-		src.duration = duration
-
+/datum/status_effect/pain_from_fire/on_creation(mob/living/new_owner, pain_amount = 0)
 	src.pain_amount = pain_amount
 	return ..()
 
-/datum/status_effect/pain_from_fire/refresh(mob/living/new_owner, added_pain_amount = 0, duration)
-	if(isnum(duration))
-		src.duration += duration
-
-	if(added_pain_amount > 0)
-		pain_amount += added_pain_amount
-		owner.cause_pain(BODY_ZONES_ALL, added_pain_amount, BURN)
+/datum/status_effect/pain_from_fire/refresh(mob/living/new_owner, added_pain_amount = 0)
+	if(added_pain_amount <= 0)
+		return
+	pain_amount += added_pain_amount
+	owner.cause_pain(BODY_ZONES_ALL, added_pain_amount, BURN)
 
 /datum/status_effect/pain_from_fire/on_apply()
 	if(isnull(owner.pain_controller) || pain_amount <= 0)
@@ -42,4 +37,6 @@
 /datum/status_effect/pain_from_fire/proc/remove_on_signal(datum/source)
 	SIGNAL_HANDLER
 
+	if(QDELING(owner) || QDELING(src))
+		return
 	qdel(src)

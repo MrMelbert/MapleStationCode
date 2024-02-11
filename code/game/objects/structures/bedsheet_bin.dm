@@ -74,7 +74,7 @@ LINEN BINS
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /obj/item/bedsheet/attack_self(mob/living/user)
-	if(!user.CanReach(src)) //No telekenetic grabbing.
+	if(!user.CanReach(src)) //No telekinetic grabbing.
 		return
 	if(user.body_position != LYING_DOWN)
 		return
@@ -86,7 +86,6 @@ LINEN BINS
 
 /obj/item/bedsheet/proc/coverup(mob/living/sleeper)
 	layer = ABOVE_MOB_LAYER
-	SET_PLANE_IMPLICIT(src, GAME_PLANE_UPPER)
 	pixel_x = 0
 	pixel_y = 0
 	balloon_alert(sleeper, "covered")
@@ -97,7 +96,7 @@ LINEN BINS
 	RegisterSignal(src, COMSIG_ITEM_PICKUP, PROC_REF(on_pickup))
 	RegisterSignal(sleeper, COMSIG_MOVABLE_MOVED, PROC_REF(smooth_sheets))
 	RegisterSignal(sleeper, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(smooth_sheets))
-	RegisterSignal(sleeper, COMSIG_PARENT_QDELETING, PROC_REF(smooth_sheets))
+	RegisterSignal(sleeper, COMSIG_QDELETING, PROC_REF(smooth_sheets))
 
 /obj/item/bedsheet/proc/smooth_sheets(mob/living/sleeper)
 	SIGNAL_HANDLER
@@ -105,7 +104,7 @@ LINEN BINS
 	UnregisterSignal(src, COMSIG_ITEM_PICKUP)
 	UnregisterSignal(sleeper, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(sleeper, COMSIG_LIVING_SET_BODY_POSITION)
-	UnregisterSignal(sleeper, COMSIG_PARENT_QDELETING)
+	UnregisterSignal(sleeper, COMSIG_QDELETING)
 	balloon_alert(sleeper, "smoothed sheets")
 	layer = initial(layer)
 	SET_PLANE_IMPLICIT(src, initial(plane))
@@ -121,7 +120,7 @@ LINEN BINS
 	UnregisterSignal(src, COMSIG_ITEM_PICKUP)
 	UnregisterSignal(sleeper, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(sleeper, COMSIG_LIVING_SET_BODY_POSITION)
-	UnregisterSignal(sleeper, COMSIG_PARENT_QDELETING)
+	UnregisterSignal(sleeper, COMSIG_QDELETING)
 	signal_sleeper = null
 
 /obj/item/bedsheet/attackby(obj/item/I, mob/user, params)
@@ -140,7 +139,7 @@ LINEN BINS
 	// double check the canUseTopic args to make sure it's correct
 	if(!istype(user) || !user.can_perform_action(src, NEED_DEXTERITY))
 		return
-	dir = turn(dir, 180)
+	dir = REVERSE_DIR(dir)
 
 /obj/item/bedsheet/blue
 	icon_state = "sheetblue"
@@ -647,21 +646,21 @@ LINEN BINS
 	..()
 
 /obj/structure/bedsheetbin/screwdriver_act(mob/living/user, obj/item/tool)
-	if(flags_1 & NODECONSTRUCT_1)
+	if(obj_flags & NO_DECONSTRUCTION)
 		return FALSE
 	if(amount)
 		to_chat(user, span_warning("The [src] must be empty first!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	if(tool.use_tool(src, user, 0.5 SECONDS, volume=50))
 		to_chat(user, span_notice("You disassemble the [src]."))
 		new /obj/item/stack/rods(loc, 2)
 		qdel(src)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/bedsheetbin/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool, time = 0.5 SECONDS)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/bedsheetbin/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/bedsheet))

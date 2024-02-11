@@ -28,10 +28,6 @@
 "g" = (
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
-"i" = (
-/obj/machinery/light/directional/west,
-/turf/open/floor/mineral/titanium/blue,
-/area/shuttle/escape)
 "j" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 1
@@ -42,7 +38,6 @@
 /obj/machinery/computer/emergency_shuttle{
 	dir = 8
 	},
-/obj/machinery/light/small/directional/east,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "m" = (
@@ -53,6 +48,18 @@
 	port_direction = 2;
 	preferred_direction = 4
 	},
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/escape)
+"w" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 1
+	},
+/obj/machinery/light/small/directional/south,
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/escape)
+"Q" = (
+/obj/structure/chair/comfy/shuttle,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 
@@ -73,16 +80,16 @@ a
 "}
 (2,1,1) = {"
 b
-f
-i
+Q
+g
 j
 b
 d
 d
 d
 b
-f
-i
+Q
+g
 j
 b
 "}
@@ -105,7 +112,7 @@ c
 b
 f
 g
-j
+w
 b
 d
 d
@@ -113,7 +120,7 @@ d
 b
 f
 g
-j
+w
 b
 "}
 (5,1,1) = {"

@@ -14,9 +14,6 @@
 	category = list(RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_MEDICAL)
 	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
 
-/datum/techweb_node/adv_biotech
-	id_additions = list("auto_cpr_device")
-
 /obj/item/auto_cpr
 	name = "autopulser"
 	desc = "A device with straps that can be worn around the chest. \
@@ -90,13 +87,13 @@
 /obj/item/auto_cpr/screwdriver_act(mob/living/user, obj/item/tool)
 	if(isnull(cell))
 		balloon_alert(user, "no cell!")
-		return TOOL_ACT_SIGNAL_BLOCKING
+		return ITEM_INTERACT_BLOCKING
 
 	user.put_in_hands(cell)
 	balloon_alert(user, "cell removed")
 	playsound(src, 'sound/machines/click.ogg', 50, TRUE)
 	tool.play_tool_sound(src, 50)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/auto_cpr/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item, /obj/item/stock_parts/cell))

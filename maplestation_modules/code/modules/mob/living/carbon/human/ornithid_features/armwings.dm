@@ -3,7 +3,7 @@
 	name = "Arm Wings"
 	desc = "They're wings, that go on your arm. Get your chicken wings jokes out now."
 	dna_block = DNA_ARM_WINGS_BLOCK
-	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/arm_wings
+	bodypart_overlay = /datum/bodypart_overlay/mutant/wings/functional/arm_wings
 	preference = "feature_arm_wings"
 	//Yes, because this is a direct sub-type of functional wings, this means its stored on body, and yes, this means if one or both of the arms are dismembered, there will be floating feathers/wings.
 	//However, there is no "both arms" storage, and having one for each arm is sort of inefficient. Leaving very few methods that could fix this, most of which are harder than what I can do or necessitate a refactor of code. Too Bad!
@@ -33,30 +33,53 @@
 /datum/sprite_accessory/arm_wings
 	icon = 'maplestation_modules/icons/mob/armwings.dmi'
 
+
+/datum/sprite_accessory/arm_wingsopen
+	icon = 'maplestation_modules/icons/mob/armwings.dmi'
+
 /datum/sprite_accessory/arm_wings/monochrome
 	name = "Monochrome"
 	icon_state = "monochrome"
-	color_src = HAIR
 
 /datum/sprite_accessory/arm_wings/monochrome_short
 	name = "Short Monochrome"
 	icon_state = "monochrome_short"
-	color_src = HAIR
 
 /datum/sprite_accessory/arm_wings/pursuant
 	name = "Pursuant"
 	icon_state = "pursuant"
-	color_src = HAIR
 
-/datum/bodypart_overlay/mutant/wings/arm_wings
+/datum/sprite_accessory/arm_wingsopen/monochrome
+	name = "Monochrome"
+	icon_state = "monochrome"
+
+/datum/sprite_accessory/arm_wingsopen/monochrome_short
+	name = "Short Monochrome"
+	icon_state = "monochrome_short"
+
+/datum/sprite_accessory/arm_wingsopen/pursuant
+	name = "Pursuant"
+	icon_state = "pursuant"
+
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings
 	feature_key = "arm_wings"
-	layers = EXTERNAL_FRONT
-	color_source = ORGAN_COLOR_HAIR
+	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
+	color_source = ORGAN_COLOR_OVERRIDE
 
-/datum/bodypart_overlay/mutant/wings/arm_wings/get_global_feature_list()
-	return GLOB.arm_wings_list
+	///Feature render key for opened arm wings
+	open_feature_key = "arm_wingsopen"
 
-/datum/bodypart_overlay/mutant/wings/arm_wings/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings/inherit_color(obj/item/bodypart/ownerlimb, force) // overriding inherit_color directly because "override_color" for some unspeakable reason gets passed fuck all
+	draw_color = ownerlimb?.owner?.dna?.features["feathers"] || "#FFFFFF"
+	return TRUE
+
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings/get_global_feature_list()
+	if(wings_open)
+		return GLOB.arm_wingsopen_list
+	else
+		return GLOB.arm_wings_list
+
+/datum/bodypart_overlay/mutant/wings/functional/arm_wings/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.wear_suit?.flags_inv & HIDEMUTWINGS))
 		return TRUE
 	return FALSE

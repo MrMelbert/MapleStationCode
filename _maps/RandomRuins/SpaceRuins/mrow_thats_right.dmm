@@ -245,7 +245,7 @@
 /obj/structure/bed/dogbed{
 	name = "kitty bed"
 	},
-/mob/living/simple_animal/pet/cat/space,
+/mob/living/basic/pet/cat/space,
 /turf/open/floor/carpet,
 /area/ruin/space/has_grav/powered/cat_man)
 "aS" = (
@@ -293,7 +293,7 @@
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mob_spawn/corpse/human/damaged{
-	outfit_override = list("head" = /obj/item/clothing/head/costume/kitty)
+	outfit_override = list("head"=/obj/item/clothing/head/costume/kitty)
 	},
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/powered/cat_man)
@@ -307,7 +307,6 @@
 /turf/open/floor/carpet,
 /area/ruin/space/has_grav/powered/cat_man)
 "bb" = (
-/obj/machinery/light/directional/east,
 /obj/structure/closet/cabinet,
 /obj/item/gps/spaceruin,
 /turf/open/floor/carpet,
@@ -433,7 +432,7 @@
 "bv" = (
 /obj/machinery/firealarm/directional/east,
 /obj/machinery/computer/atmos_control/noreconnect{
-	atmos_chambers = list("catstation1" = "Chamber 1", "catstation2" = "Chamber 2", "catstation3" = "Chamber 3", "catstation4" = "Chamber 4", "catstation5" = "Chamber 5", "catstation6" = "Chamber 6", "catstationsupply" = "Supply");
+	atmos_chambers = list("catstation1"="Chamber 1","catstation2"="Chamber 2","catstation3"="Chamber 3","catstation4"="Chamber 4","catstation5"="Chamber 5","catstation6"="Chamber 6","catstationsupply"="Supply");
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
@@ -620,7 +619,7 @@
 	name = "kitty bed"
 	},
 /obj/effect/mob_spawn/corpse/human/damaged{
-	outfit_override = list("head" = /obj/item/clothing/head/costume/kitty)
+	outfit_override = list("head"=/obj/item/clothing/head/costume/kitty)
 	},
 /turf/open/floor/plating,
 /area/ruin/space/has_grav/powered/cat_man)
@@ -842,6 +841,10 @@
 /obj/item/organ/external/tail/cat,
 /obj/item/organ/external/tail/cat,
 /turf/open/floor/iron/freezer,
+/area/ruin/space/has_grav/powered/cat_man)
+"gl" = (
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/carpet,
 /area/ruin/space/has_grav/powered/cat_man)
 "Bl" = (
 /obj/machinery/door/airlock/external/ruin,
@@ -1204,7 +1207,7 @@ aH
 ad
 aT
 bb
-aS
+gl
 by
 ad
 bM

@@ -24,7 +24,7 @@
 /turf/open/floor/wood,
 /area/shuttle/escape/simulation)
 "dg" = (
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/grass,
 /area/shuttle/escape/simulation)
 "eb" = (
@@ -61,6 +61,7 @@
 /area/shuttle/escape)
 "fL" = (
 /obj/effect/turf_decal/stripes/corner,
+/obj/machinery/light/floor,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "fW" = (
@@ -105,6 +106,10 @@
 "gj" = (
 /obj/structure/lattice,
 /turf/template_noop,
+/area/shuttle/escape)
+"gn" = (
+/obj/machinery/light/directional/north,
+/turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "gt" = (
 /obj/item/flashlight/flare/candle/infinite{
@@ -264,11 +269,14 @@
 /obj/structure/railing/corner{
 	dir = 8
 	},
-/obj/machinery/light/small/directional/east,
 /turf/template_noop,
 /area/shuttle/escape)
 "kS" = (
 /obj/machinery/light/directional/west,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/escape)
+"lf" = (
+/obj/machinery/light/small/directional/west,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "lg" = (
@@ -299,6 +307,10 @@
 /area/shuttle/escape)
 "ls" = (
 /turf/open/floor/mineral/plastitanium/red,
+/area/shuttle/escape)
+"lY" = (
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "mq" = (
 /obj/structure/railing{
@@ -465,23 +477,20 @@
 	},
 /turf/template_noop,
 /area/shuttle/escape)
-"un" = (
-/obj/structure/bed/roller,
-/obj/machinery/iv_drip,
-/turf/open/floor/mineral/titanium/tiled/blue,
-/area/shuttle/escape)
 "uo" = (
 /obj/structure/lattice/catwalk,
 /obj/structure/railing/corner{
 	dir = 1
 	},
-/obj/machinery/light/small/directional/east,
 /turf/template_noop,
 /area/shuttle/escape)
+"uB" = (
+/obj/machinery/light/directional/east,
+/turf/open/floor/mineral/titanium/white,
+/area/shuttle/escape)
 "uG" = (
-/obj/structure/bed/pod{
-	desc = "An old medical bed, just waiting for replacement with something up to date.";
-	name = "medical bed"
+/obj/structure/bed/medical{
+	dir = 4
 	},
 /obj/structure/curtain,
 /turf/open/floor/mineral/titanium/tiled/blue,
@@ -542,7 +551,7 @@
 /area/shuttle/escape/simulation)
 "yw" = (
 /obj/effect/turf_decal/sand/plating,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/sandy_dirt,
 /area/shuttle/escape/simulation)
 "yx" = (
@@ -639,8 +648,7 @@
 /turf/open/floor/wood,
 /area/shuttle/escape/simulation)
 "CT" = (
-/obj/item/kirbyplants{
-	icon_state = "plant-21";
+/obj/item/kirbyplants/organic/plant21{
 	pixel_x = -3;
 	pixel_y = 3
 	},
@@ -665,7 +673,6 @@
 /obj/item/crowbar,
 /obj/item/storage/medkit/fire,
 /obj/structure/sign/warning/vacuum/external/directional/north,
-/obj/machinery/light/directional/east,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "Eo" = (
@@ -683,10 +690,6 @@
 "EN" = (
 /turf/template_noop,
 /area/template_noop)
-"EV" = (
-/obj/machinery/light/directional/north,
-/turf/open/floor/mineral/titanium/white,
-/area/shuttle/escape)
 "EZ" = (
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
@@ -789,6 +792,10 @@
 	},
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
+"Gj" = (
+/obj/machinery/light/directional/south,
+/turf/open/floor/mineral/titanium/yellow,
+/area/shuttle/escape)
 "Gv" = (
 /obj/machinery/computer{
 	desc = "A computer calculating the medieval times. Uh, wow. Is this bad boy quantum?";
@@ -807,9 +814,8 @@
 	},
 /area/shuttle/escape/simulation)
 "HE" = (
-/obj/structure/bed/roller,
+/obj/structure/bed/medical/emergency,
 /obj/machinery/iv_drip,
-/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/shuttle/escape)
 "HR" = (
@@ -914,19 +920,27 @@
 /turf/open/misc/grass,
 /area/shuttle/escape/simulation)
 "MP" = (
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/sandy_dirt,
 /area/shuttle/escape/simulation)
 "Ng" = (
 /obj/effect/turf_decal/sand,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/sandy_dirt,
 /area/shuttle/escape/simulation)
+"Nh" = (
+/obj/machinery/light/directional/south,
+/turf/open/floor/mineral/titanium/tiled/blue,
+/area/shuttle/escape)
 "Nm" = (
 /turf/open/floor/iron/chapel{
 	dir = 4
 	},
 /area/shuttle/escape/simulation)
+"Nu" = (
+/obj/machinery/light/floor,
+/turf/open/floor/mineral/titanium/white,
+/area/shuttle/escape)
 "NN" = (
 /obj/machinery/door/airlock/command/glass{
 	name = "Cockpit"
@@ -962,6 +976,7 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 4
 	},
+/obj/machinery/light/floor,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "OA" = (
@@ -988,7 +1003,7 @@
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "Pv" = (
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /obj/structure/punji_sticks/spikes,
 /turf/open/misc/grass,
 /area/shuttle/escape/simulation)
@@ -1055,7 +1070,6 @@
 /obj/item/clothing/suit/utility/fire/firefighter,
 /obj/item/clothing/mask/gas,
 /obj/item/clothing/head/utility/hardhat/red,
-/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "Sf" = (
@@ -1128,12 +1142,11 @@
 	pixel_y = 3
 	},
 /obj/item/lazarus_injector,
-/mob/living/simple_animal/bot/medbot{
+/mob/living/basic/bot/medbot{
 	name = "\improper emergency medibot";
 	pixel_x = -3;
 	pixel_y = 2
 	},
-/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/titanium/yellow,
 /area/shuttle/escape)
 "TE" = (
@@ -1179,7 +1192,6 @@
 /area/shuttle/escape)
 "Vn" = (
 /obj/structure/reagent_dispensers/wall/peppertank/directional/west,
-/obj/machinery/light/directional/west,
 /turf/open/floor/mineral/plastitanium/red,
 /area/shuttle/escape/brig)
 "Vv" = (
@@ -1219,10 +1231,6 @@
 /obj/item/paper/crumpled/retired_designs,
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"WN" = (
-/obj/machinery/light/directional/south,
-/turf/open/floor/mineral/titanium/white,
-/area/shuttle/escape)
 "WQ" = (
 /obj/structure/railing/corner,
 /obj/structure/railing/corner{
@@ -1248,7 +1256,7 @@
 "Xq" = (
 /obj/structure/railing,
 /obj/effect/turf_decal/sand/plating,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/sandy_dirt,
 /area/shuttle/escape/simulation)
 "Xv" = (
@@ -1319,7 +1327,6 @@
 /obj/structure/table,
 /obj/machinery/recharger,
 /obj/structure/sign/warning/vacuum/external/directional/south,
-/obj/machinery/light/directional/east,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "YC" = (
@@ -1338,6 +1345,10 @@
 "YU" = (
 /turf/open/floor/carpet/red,
 /area/shuttle/escape/simulation)
+"Zc" = (
+/obj/machinery/light/directional/north,
+/turf/open/floor/mineral/plastitanium/red,
+/area/shuttle/escape/brig)
 "Zf" = (
 /obj/structure/rack,
 /obj/item/crowbar,
@@ -1483,7 +1494,7 @@ Xv
 Xv
 DO
 Ki
-Zx
+Nu
 Pi
 YB
 Xv
@@ -1541,7 +1552,7 @@ Xv
 CT
 Zx
 Zx
-cc
+EZ
 Zx
 Zx
 CT
@@ -1590,11 +1601,11 @@ Xv
 Zx
 EZ
 EZ
-kS
+lf
 Zx
 Zx
 Zx
-kS
+EZ
 Zx
 Zx
 EZ
@@ -1604,11 +1615,11 @@ Pr
 EZ
 Zx
 EZ
-kS
+EZ
 Zx
 Zx
-Zx
-kS
+lY
+EZ
 EZ
 EZ
 Zx
@@ -1625,13 +1636,13 @@ ZB
 ZB
 Xv
 Xv
-Zx
+uB
 Zx
 Kw
 ZB
 Pr
 Zx
-Zx
+uB
 Xv
 Xv
 ZB
@@ -1709,7 +1720,7 @@ hr
 ll
 qM
 so
-un
+HE
 HE
 Xv
 sS
@@ -1769,15 +1780,15 @@ rE
 sy
 uG
 nA
-nA
+Nh
 Be
-EV
+Zx
 Rl
 Rl
 Rl
-WN
+Zx
 RB
-Xb
+Zc
 Xb
 Yk
 Yk
@@ -1973,13 +1984,13 @@ Yj
 Ho
 gt
 pF
-hw
+gn
 FK
 FK
 FK
 FK
 FK
-hw
+Gj
 pF
 Fs
 jf

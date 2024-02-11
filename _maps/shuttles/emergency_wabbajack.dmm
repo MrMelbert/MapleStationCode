@@ -362,6 +362,13 @@
 	},
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
+"jW" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 8
+	},
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/escape)
 "Ec" = (
 /obj/structure/chair/comfy/shuttle{
 	dir = 8
@@ -488,7 +495,7 @@ aq
 ab
 ji
 ji
-ji
+jW
 ji
 be
 bf
@@ -536,7 +543,7 @@ aS
 as
 aI
 aI
-aI
+bo
 aI
 be
 bf

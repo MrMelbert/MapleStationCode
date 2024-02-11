@@ -45,7 +45,7 @@
 	if(!current_challenger_weak)
 		current_challenger_weak = WEAKREF(eater)
 		var/mob/living/current_challenger = eater
-		peer_pressure("[current_challenger] has begun the Eggcellent Challenge! [current_challenger.p_they(TRUE)] [current_challenger.p_have()] [set_time] minutes to complete this task!")
+		peer_pressure("[current_challenger] has begun the Eggcellent Challenge! [current_challenger.p_They()] [current_challenger.p_have()] [set_time] minutes to complete this task!")
 		timer_id = addtimer(CALLBACK(src, PROC_REF(failed_eggs)), set_time * 1 MINUTES, TIMER_STOPPABLE)
 	bite_consumption = rand(1, difficulty)
 
@@ -111,18 +111,18 @@
 /obj/item/food/omelette/eggcellent_plate/proc/spawn_crown(mob/user)
 	var/mob/living/current_challenger = current_challenger_weak.resolve()
 	if((difficulty <= EGGS_TRUE_HERO && set_time >= HIGH_DIF_TIME_LIM) || ((difficulty > EGGS_TRUE_HERO) && set_time >= LOW_DIF_TIME_LIM))
-		peer_pressure("[current_challenger] has completed their test run of the Eggcellent Challenge! [current_challenger.p_they(TRUE)] can try again within a shorter timeframe to attempt to gain [current_challenger.p_their()] true prize!")
+		peer_pressure("[current_challenger] has completed their test run of the Eggcellent Challenge! [current_challenger.p_They()] can try again within a shorter timeframe to attempt to gain [current_challenger.p_their()] true prize!")
 		return
 	var/obj/item/clothing/head/crown
 	if(difficulty == EGGS_BABY)
 		peer_pressure("[current_challenger] has finished [current_challenger.p_their()] 'My First Egg Challenge' playset! We're sure they'll grow up to be quite the capable warrior one day!")
 		return
 	else if (difficulty <= EGGS_TRUE_HERO)
-		peer_pressure("[current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] rightful crown has been delivered unto [current_challenger.p_them()]!")
+		peer_pressure("[current_challenger] has completed the challenge! [current_challenger.p_Their()] rightful crown has been delivered unto [current_challenger.p_them()]!")
 		crown = new /obj/item/clothing/head/eggcellent_hat
 		crown.name = span_mind_control("Eggcellent Hat")
 	else
-		peer_pressure("[current_challenger] has completed the challenge! [current_challenger.p_their(TRUE)] prize has been delivered unto [current_challenger.p_them()] according to their difficulty!")
+		peer_pressure("[current_challenger] has completed the challenge! [current_challenger.p_Their()] prize has been delivered unto [current_challenger.p_them()] according to their difficulty!")
 		switch(difficulty)
 			if(EGGS_EASY)
 				crown = new /obj/item/clothing/head/cone

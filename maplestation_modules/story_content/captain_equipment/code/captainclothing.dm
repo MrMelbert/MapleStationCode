@@ -16,7 +16,7 @@
 	can_adjust = TRUE
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
-	armor_type = /datum/armor/rank_captain
+	armor_type = /datum/armor/clothing_under/rank_captain
 
 /obj/item/clothing/under/rank/captain/formal/skirt
 	name = "captain's skirtleneck"
@@ -36,7 +36,7 @@
 	can_adjust = TRUE
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
-	armor_type = /datum/armor/rank_captain
+	armor_type = /datum/armor/clothing_under/rank_captain
 
 /obj/item/clothing/shoes/jackboots/captain
 	name = "captain's boots"

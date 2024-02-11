@@ -5,7 +5,7 @@
 
 // Assumes we are at average leyline intensity
 #define LEYLINE_BASE_CAPACITY 600
-#define LEYLINE_BASE_RECHARGE 0.1 // Per second, we recharge this much mana
+#define LEYLINE_BASE_RECHARGE 2 // Per second, we recharge this much mana
 
 #define MAGIC_MATERIAL_NAME "Volite"
 #define MAGIC_UNIT_OF_MEASUREMENT "Vol"

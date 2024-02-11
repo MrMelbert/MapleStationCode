@@ -145,10 +145,6 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/supply)
-"B" = (
-/obj/machinery/light/directional/west,
-/turf/open/floor/mineral/titanium,
-/area/shuttle/supply)
 "G" = (
 /obj/machinery/conveyor{
 	dir = 8;
@@ -191,7 +187,7 @@ e
 P
 R
 n
-B
+n
 n
 g
 b

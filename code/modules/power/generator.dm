@@ -35,7 +35,7 @@
 
 	var/L = min(round(lastgenlev / 100000), 11)
 	if(L != 0)
-		. += mutable_appearance('icons/obj/power.dmi', "teg-op[L]")
+		. += mutable_appearance('icons/obj/machines/engine/other.dmi', "teg-op[L]")
 	if(hot_circ && cold_circ)
 		. += "teg-oc[lastcirc]"
 
@@ -96,7 +96,6 @@
 	add_avail(power_output)
 	lastgenlev = power_output
 	lastgen -= power_output
-	..()
 
 /obj/machinery/power/generator/proc/get_menu(include_link = TRUE)
 	var/t = ""

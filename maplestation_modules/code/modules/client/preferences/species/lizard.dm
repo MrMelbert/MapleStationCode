@@ -16,19 +16,27 @@
 	if(!islizard(target))
 		return
 
+	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
 	// Adding directly here is primarily so the dummy updates
 	if(value)
-		target.dna.species.species_traits |= HAIR
+		head.head_flags |= (HEAD_HAIR|HEAD_FACIAL_HAIR)
 	else
-		target.dna.species.species_traits -= HAIR
+		head.head_flags &= ~(HEAD_HAIR|HEAD_FACIAL_HAIR)
 
 	// Hate using dna features but it's really convenient to stick things
 	// No I'm not adding it to genetics, don't even ask
 	target.dna.features["lizard_has_hair"] = value
 	target.update_body_parts()
 
-// Hair appears as a "feature", even if not visible to lizards that do not have the trait selected
+// Manually adding the hair related preferences to the lizard features list
 /datum/species/lizard/get_features()
-	species_traits |= HAIR
-	. = ..()
-	species_traits -= HAIR
+	return ..() | list(
+		"hair_color",
+		"hairstyle_name",
+		"hair_gradient",
+		"hair_gradient_color",
+		"facial_style_name",
+		"facial_hair_color",
+		"facial_hair_gradient",
+		"facial_hair_gradient_color",
+	)

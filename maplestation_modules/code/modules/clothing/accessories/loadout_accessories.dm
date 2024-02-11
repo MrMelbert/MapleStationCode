@@ -56,43 +56,18 @@
 /obj/item/clothing/accessory/allergy_dogtag
 	desc = "A set of dogtags with a list of allergies inscribed."
 
-/obj/item/clothing/accessory/cosmetic_dogtag
+/obj/item/clothing/accessory/dogtag/name
 	name = "dogtags"
 	desc = "A set of old dogtags with someone's name inscribed on them."
 	icon_state = "allergy"
 	above_suit = FALSE
 	minimize_when_attached = TRUE
-	attachment_slot = CHEST
-	/// The name of the dogtag owner
-	var/display_name
 
-/obj/item/clothing/accessory/cosmetic_dogtag/Initialize(mapload)
+/obj/item/clothing/accessory/dogtag/name/Initialize(mapload)
 	. = ..()
 	if(isnull(loc))
 		return
-
-	var/mob/living/dogtag_owner = get(loc, /mob)
-	if(dogtag_owner)
-		display_name = dogtag_owner.real_name
-
-/obj/item/clothing/accessory/cosmetic_dogtag/examine(mob/user)
-	. = ..()
-	if(display_name)
-		. += "The dogtag has a name on it: <b>[display_name]</b>."
-	else
-		. += "The dogtag has a name on it, but it's scratched and hard to read."
-
-/obj/item/clothing/accessory/cosmetic_dogtag/on_uniform_equip(obj/item/clothing/under/attached_clothes, user)
-	. = ..()
-	RegisterSignal(attached_clothes, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
-
-/obj/item/clothing/accessory/cosmetic_dogtag/on_uniform_dropped(obj/item/clothing/under/attached_clothes, user)
-	. = ..()
-	UnregisterSignal(attached_clothes, COMSIG_PARENT_EXAMINE)
-
-///What happens when we examine the uniform
-/obj/item/clothing/accessory/cosmetic_dogtag/proc/on_examine(datum/source, mob/user, list/examine_list)
-	if(display_name)
-		examine_list += "There's a set of dogtags attached. They have a name inscribed: <b>[display_name]</b>."
-	else
-		examine_list += "There's a set of dogtags attached. They have a name inscribed, but it's scratched and hard to read."
+	var/mob/living/dogtag_owner = get(loc, /mob/living)
+	if(isnull(dogtag_owner))
+		return
+	display = "It has a name, \"[dogtag_owner.real_name || "Unknown"]\"."

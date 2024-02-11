@@ -21,7 +21,7 @@
 
 	department_for_prefs = /datum/job_department/assistant
 
-	job_flags = JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_ASSIGN_QUIRKS | JOB_NEW_PLAYER_JOINABLE
+	job_flags = JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_ASSIGN_QUIRKS | JOB_NEW_PLAYER_JOINABLE | JOB_CANNOT_OPEN_SLOTS
 	allow_bureaucratic_error = FALSE
 	random_spawns_possible = FALSE
 

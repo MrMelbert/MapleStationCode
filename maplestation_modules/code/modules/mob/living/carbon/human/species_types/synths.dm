@@ -12,17 +12,16 @@
 	id = SPECIES_SYNTH
 	// say_mod = "beep boops" //inherited from a user's real species
 	sexes = FALSE
-	species_traits = list(NOTRANSSTING, NO_DNA_COPY) //all of these + whatever we inherit from the real species
 	inherent_traits = list(
 		TRAIT_VIRUSIMMUNE,
 		TRAIT_NODISMEMBER,
 		TRAIT_NOLIMBDISABLE,
 		TRAIT_NOHUNGER,
 		TRAIT_NOBREATH,
+		TRAIT_NO_DNA_COPY,
 	)
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
 	meat = null
-	wing_types = list(/obj/item/organ/external/wings/functional/robotic)
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
 	species_language_holder = /datum/language_holder/synthetic
 	/// 2021:
@@ -44,7 +43,6 @@
 	var/datum/weakref/silly_owner_weakref
 
 /datum/species/synth/New()
-	initial_species_traits = species_traits.Copy()
 	initial_inherent_traits = inherent_traits.Copy()
 	return ..()
 
@@ -54,11 +52,18 @@
 	RegisterSignal(SSdcs, COMSIG_GLOB_ION_STORM, PROC_REF(on_ion_storm))
 	H.set_safe_hunger_level()
 	silly_owner_weakref = WEAKREF(H)
+	// Adds robot wings to chest wing options (if it is not already robotic)
+	var/obj/item/bodypart/chest/chest = H.get_bodypart(BODY_ZONE_CHEST)
+	if(!IS_ROBOTIC_LIMB(chest))
+		chest.wing_types |= /obj/item/organ/external/wings/functional/robotic
 
 /datum/species/synth/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_ION_STORM)
 	silly_owner_weakref = null
+	var/obj/item/bodypart/chest/chest = H.get_bodypart(BODY_ZONE_CHEST)
+	if(!IS_ROBOTIC_LIMB(chest))
+		chest.wing_types -= /obj/item/organ/external/wings/functional/robotic
 
 /datum/species/synth/get_species_description()
 	return "Synths are disguised robots."
@@ -120,39 +125,36 @@
 
 	return perks
 
-/datum/species/synth/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, seconds_per_tick, times_fired)
+/*
+/datum/species/synth/handle_chemical(datum/reagent/chem, mob/living/carbon/human/affected, seconds_per_tick, times_fired)
 	if(chem.type == /datum/reagent/medicine/c2/synthflesh)
-		chem.expose_mob(H, TOUCH, 2 * REAGENTS_EFFECT_MULTIPLIER * seconds_per_tick, FALSE) //heal a little
-		H.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * seconds_per_tick)
+		chem.expose_mob(affected, TOUCH, 2 * REAGENTS_EFFECT_MULTIPLIER * seconds_per_tick, FALSE) //heal a little
+		affected.reagents.remove_reagent(chem.type, REAGENTS_METABOLISM * seconds_per_tick)
 		return TRUE
 	return ..()
+*/
 
 /datum/species/synth/proc/assume_disguise(datum/species/S, mob/living/carbon/human/H)
 	if(S && !istype(S, type))
 		name = S.name
 		sexes = S.sexes
-		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
-		species_traits |= S.species_traits
 		inherent_traits |= S.inherent_traits
 		meat = S.meat
 		mutant_bodyparts = S.mutant_bodyparts.Copy()
 		mutant_organs = S.mutant_organs.Copy()
 		no_equip_flags = S.no_equip_flags
-		use_skintones = S.use_skintones
 		fixed_mut_color = S.fixed_mut_color
 		hair_color = S.hair_color
 		fake_species = new S.type
 	else
 		name = initial(name)
-		species_traits = initial_species_traits.Copy()
 		inherent_traits = initial_inherent_traits.Copy()
 		mutant_bodyparts = list()
 		no_equip_flags = NONE
 		qdel(fake_species)
 		fake_species = null
 		meat = initial(meat)
-		use_skintones = 0
 		sexes = 0
 		fixed_mut_color = ""
 		hair_color = ""

@@ -56,9 +56,9 @@
 	name = "Purple Suit Jacket"
 	item_path = /obj/item/clothing/suit/toggle/lawyer/purple
 
-/datum/loadout_item/suit/purple_apron
-	name = "Purple Apron"
-	item_path = /obj/item/clothing/suit/apron/purple_bartender
+/datum/loadout_item/suit/greyscale_suit_jacket
+	name = "Greyscale Suit Jacket"
+	item_path = /obj/item/clothing/suit/toggle/lawyer/greyscale
 
 /datum/loadout_item/suit/suspenders_greyscale
 	name = "Suspenders"
@@ -164,4 +164,12 @@
 
 /datum/loadout_item/suit/chesed_jacket
 	name = "Well-Kept Jacket"
-	item_path = /obj/item/clothing/suit/chesedjacket
+	item_path = /obj/item/clothing/suit/toggle/chesedjacket
+
+/datum/loadout_item/suit/cyrilcloak
+	name = "Claw-Sewn Cloak"
+	item_path = /obj/item/clothing/suit/cyrilcloak
+
+/datum/loadout_item/suit/scoriajacket
+	name = "Embroidered Clan Jacket"
+	item_path = /obj/item/clothing/suit/matthewjacket

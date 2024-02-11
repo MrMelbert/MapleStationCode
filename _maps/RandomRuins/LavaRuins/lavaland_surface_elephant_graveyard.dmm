@@ -145,10 +145,6 @@
 /obj/item/clipboard,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
-"aE" = (
-/obj/effect/decal/cleanable/dirt/dust,
-/turf/open/misc/asteroid/basalt/wasteland,
-/area/ruin/unpowered/elephant_graveyard)
 "aF" = (
 /obj/structure/table,
 /obj/structure/cable,
@@ -204,7 +200,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "aQ" = (
 /obj/structure/cable,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "aR" = (
@@ -223,7 +219,7 @@
 /obj/item/trash/candle,
 /obj/item/trash/can/food/beans,
 /obj/item/trash/can,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /obj/item/cigbutt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -235,7 +231,7 @@
 "aV" = (
 /obj/structure/bed,
 /obj/item/bedsheet/brown,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "aW" = (
@@ -322,7 +318,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "bo" = (
 /obj/item/stack/medical/gauze/improvised,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "bp" = (
@@ -349,7 +345,7 @@
 /obj/item/trash/pistachios,
 /obj/item/trash/chips,
 /obj/item/bedsheet/brown,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "bv" = (
@@ -451,7 +447,7 @@
 /obj/structure/filingcabinet/chestdrawer,
 /obj/effect/decal/cleanable/cobweb,
 /obj/item/paper/fluff/ruins/elephant_graveyard/hypothesis,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/mineral/titanium/white,
 /area/ruin/powered/graveyard_shuttle)
 "bR" = (
@@ -471,16 +467,12 @@
 /area/ruin/unpowered/elephant_graveyard)
 "bU" = (
 /obj/item/light/bulb/broken,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/mineral/titanium/white,
 /area/ruin/powered/graveyard_shuttle)
-"bV" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/mineral/volcanic/lava_land_surface,
-/area/ruin/unpowered/elephant_graveyard)
 "bW" = (
 /obj/effect/decal/cleanable/glass,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /obj/machinery/door/airlock/shuttle{
 	name = "Archaeology Shuttle Airlock"
 	},
@@ -488,13 +480,13 @@
 /area/ruin/powered/graveyard_shuttle)
 "bX" = (
 /obj/effect/decal/remains/human,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /obj/item/clothing/head/fedora/curator,
 /obj/item/clothing/suit/jacket/curator,
 /turf/open/floor/mineral/titanium/white,
 /area/ruin/powered/graveyard_shuttle)
 "bY" = (
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /obj/item/cigbutt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
@@ -528,7 +520,7 @@
 /area/ruin/unpowered/elephant_graveyard)
 "ce" = (
 /obj/structure/stone_tile/slab/cracked,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "cf" = (
@@ -616,24 +608,24 @@
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "cv" = (
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/mineral/titanium/white,
 /area/ruin/powered/graveyard_shuttle)
 "cw" = (
 /obj/structure/closet/crate/grave/filled,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /obj/effect/mob_spawn/corpse/human/skeleton,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "cx" = (
 /obj/item/light/bulb/broken,
 /obj/effect/turf_decal/caution/stand_clear/white,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/mineral/titanium/purple,
 /area/ruin/powered/graveyard_shuttle)
 "cz" = (
 /obj/structure/stone_tile,
-/obj/effect/decal/cleanable/dirt/dust,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/misc/asteroid/basalt/wasteland,
 /area/ruin/unpowered/elephant_graveyard)
 "cA" = (
@@ -811,7 +803,7 @@ bf
 bf
 bf
 cs
-aE
+bB
 bJ
 bf
 bf
@@ -950,7 +942,7 @@ al
 al
 ak
 ae
-aE
+bB
 ae
 ae
 ae
@@ -999,7 +991,7 @@ ae
 ae
 ae
 ae
-aE
+bB
 bf
 bf
 ae
@@ -1131,7 +1123,7 @@ ae
 bf
 ae
 al
-aE
+bB
 ae
 ap
 ae
@@ -1147,7 +1139,7 @@ ae
 bn
 ae
 ae
-aE
+bB
 bw
 bf
 cl
@@ -1209,7 +1201,7 @@ al
 al
 ae
 ae
-aE
+bB
 ae
 ar
 ae
@@ -1241,7 +1233,7 @@ ae
 af
 bf
 bf
-aE
+bB
 bf
 al
 aq
@@ -1257,7 +1249,7 @@ ae
 ba
 ae
 ae
-aE
+bB
 cl
 al
 bf
@@ -1289,7 +1281,7 @@ ae
 aS
 ae
 ae
-aE
+bB
 ae
 ae
 ae
@@ -1342,7 +1334,7 @@ ac
 ac
 bF
 bB
-bV
+ac
 ac
 ac
 "}
@@ -1391,7 +1383,7 @@ ac
 ac
 bf
 aU
-aE
+bB
 bf
 bf
 bf
@@ -1466,7 +1458,7 @@ ab
 bf
 aV
 bl
-aE
+bB
 bu
 bf
 bf

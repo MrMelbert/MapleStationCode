@@ -121,7 +121,7 @@
 
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
-	item_path = /obj/item/clothing/accessory/cosmetic_dogtag
+	item_path = /obj/item/clothing/accessory/dogtag/name
 	additional_tooltip_contents = list("The name inscribed on this item matches your character's name on spawn.")
 
 /datum/loadout_item/accessory/bone_charm

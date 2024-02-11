@@ -63,10 +63,10 @@
 // Not really reactions, but I'm leaving these here
 // Gain oxycodone from juicing poppies
 /obj/item/food/grown/poppy
-	juice_results = list(/datum/reagent/medicine/painkiller/oxycodone = 0)
+	juice_typepath = /datum/reagent/medicine/painkiller/oxycodone
 
 /obj/item/food/grown/poppy/geranium
-	juice_results = null
+	juice_typepath = null
 
 /obj/item/food/grown/poppy/lily
-	juice_results = null
+	juice_typepath = null

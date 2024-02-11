@@ -70,7 +70,6 @@
 /obj/structure/table/wood/poker,
 /obj/item/storage/box/drinkingglasses,
 /obj/item/reagent_containers/cup/glass/bottle/whiskey,
-/obj/machinery/light/directional/south,
 /turf/open/floor/mineral/gold,
 /area/shuttle/escape)
 "o" = (
@@ -87,7 +86,7 @@
 "q" = (
 /obj/structure/statue/plasma/scientist{
 	anchored = 1;
-	custom_materials = list(/datum/material/plasma = 100000)
+	custom_materials = list(/datum/material/plasma=100000)
 	},
 /turf/open/floor/light/colour_cycle/dancefloor_b,
 /area/shuttle/escape)
@@ -207,6 +206,10 @@
 /area/shuttle/escape)
 "R" = (
 /turf/open/floor/light/colour_cycle/dancefloor_b,
+/area/shuttle/escape)
+"S" = (
+/obj/machinery/light/floor,
+/turf/open/floor/mineral/gold,
 /area/shuttle/escape)
 
 (1,1,1) = {"
@@ -332,7 +335,7 @@ N
 (6,1,1) = {"
 c
 f
-j
+S
 n
 c
 r

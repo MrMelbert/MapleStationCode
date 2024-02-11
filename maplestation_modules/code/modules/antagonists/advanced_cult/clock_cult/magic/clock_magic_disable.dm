@@ -21,7 +21,7 @@
 		span_brasstalics("You attempt to disable [living_target] with [target]!")
 		)
 
-	user.mob_light(_range = 3, _color = LIGHT_COLOR_TUNGSTEN, _duration = 0.8 SECONDS)
+	user.mob_light(range = 3, color = LIGHT_COLOR_TUNGSTEN, duration = 0.8 SECONDS)
 
 	if(victim.can_block_magic())
 		return TRUE

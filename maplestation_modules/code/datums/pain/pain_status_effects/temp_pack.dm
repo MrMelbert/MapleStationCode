@@ -63,7 +63,7 @@
 
 	held_bodypart.bodypart_pain_modifier *= pain_modifier
 	pressed_item.AddComponent(/datum/component/make_item_slow)
-	RegisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects))
+	RegisterSignal(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects))
 	if(holder != owner)
 		RegisterSignal(holder, COMSIG_MOVABLE_MOVED, PROC_REF(check_adjacency))
 	return TRUE
@@ -110,7 +110,7 @@
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
 	held_bodypart?.bodypart_pain_modifier /= pain_modifier
 	qdel(pressed_item.GetComponent(/datum/component/make_item_slow))
-	UnregisterSignal(pressed_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
+	UnregisterSignal(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
 	UnregisterSignal(holder, COMSIG_MOVABLE_MOVED)
 
 	pressed_item = null
@@ -134,7 +134,7 @@
 /datum/status_effect/temperature_pack/cold/get_examine_text()
 	var/mob/living/carbon/human/human_owner = owner
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
-	return span_danger("[holder == owner ? "[owner.p_theyre(TRUE)]" : "[holder] is"] pressing a cold [pressed_item.name] against [owner.p_their()] [parse_zone(held_bodypart.body_zone)].")
+	return span_danger("[holder == owner ? "[owner.p_Theyre()]" : "[holder] is"] pressing a cold [pressed_item.name] against [owner.p_their()] [parse_zone(held_bodypart.body_zone)].")
 
 /datum/status_effect/temperature_pack/cold/tick()
 	if(pressed_item.resistance_flags & ON_FIRE)
@@ -161,7 +161,7 @@
 /datum/status_effect/temperature_pack/head/get_examine_text()
 	var/mob/living/carbon/human/human_owner = owner
 	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
-	return span_danger("[holder == owner ? "[owner.p_theyre(TRUE)]" : "[holder] is"] pressing a warm [pressed_item.name] against [owner.p_their()] [held_bodypart.name].")
+	return span_danger("[holder == owner ? "[owner.p_Theyre()]" : "[holder] is"] pressing a warm [pressed_item.name] against [owner.p_their()] [held_bodypart.name].")
 
 /datum/status_effect/temperature_pack/heat/tick()
 	if(HAS_TRAIT(pressed_item, TRAIT_FROZEN))

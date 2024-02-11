@@ -206,6 +206,7 @@ As we want this effect to be on demand, we probably want this to be an usable mo
 - Togglable: You can turn these on and off.
 - Usable: You can use these for a one time effect.
 - Active: You can only have one selected at a time. It gives you a special click effect.
+
 As we have an usable module, we want to set a cooldown time. All modules are also incompatible with themselves, have a specific power cost and complexity varying on how powerful they are, so let's update our definition, and also add a new variable for how much brain damage we'll heal.
 
 ```dm

@@ -1,30 +1,45 @@
 
 // Reagent moodlets
 /datum/mood_event/gojuice
-	description = "<span class='nicegreen'>Feeling pumped but calm. I am the sniper bullet in flight, ready to cut through you.</span>\n"
+	description = "Feeling pumped but calm. I am the sniper bullet in flight, ready to cut through you."
 	mood_change = 3
 
 /datum/mood_event/flake
-	description = "<span class='nicegreen'>So good, so good.</span>\n"
+	description = "So good, so good."
 	mood_change = 20
 
 /datum/mood_event/yayo
-	description = "<span class='nicegreen'>Feeling pumped! Let's do this!</span>\n"
+	description = "Feeling pumped! Let's do this!"
 	mood_change = 20
 
 /datum/mood_event/psychite_tea
-	description = "<span class='nicegreen'>I drank some nice, calming psychite tea.</span>\n"
+	description = "I drank some nice, calming psychite tea."
 	mood_change = 8
 
 /datum/mood_event/full_on_pilk
-	description = "<span class='nicegreen'>I am now full on pilk! That was some amazing bubbly goodness!</span>\n"
+	description = "I am now full on pilk! That was some amazing bubbly goodness!"
 	mood_change = 7
 	timeout = 7 MINUTES
 
 /datum/mood_event/pegged
-	description = "<span class='nicegreen'>OH YEAH, NOW IM PEGGED!</span>\n"
+	description = "OH YEAH, NOW I'M PEGGED!" //:uncannycat:
 	mood_change = 8
 	timeout = 7 MINUTES
+
+/datum/mood_event/coffee_lover
+	description = "That coffee was truly delectable!"
+	mood_change = 3
+	timeout = 7 MINUTES
+
+/datum/mood_event/tea_lover
+	description = "That was a most wonderful spot of tea."
+	mood_change = 3
+	timeout = 7 MINUTES
+
+/datum/mood_event/energy_lover
+	description = "That energy drink was the perfect mix to get you energized! Shame it only really tasted of chemicals."
+	mood_change = 0
+	timeout = 12 MINUTES //lasts longer but you're not really happy
 
 // Addiction moodlets
 /datum/mood_event/luciferium_light

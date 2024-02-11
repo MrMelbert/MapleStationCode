@@ -8,17 +8,13 @@
 	inhand_icon_state = null
 	worn_icon_state = null
 	slot_flags = NONE
-	zoom_out_amt = 0
-	zoom_amt = 9
 
-/obj/item/binoculars/truesight_lens/on_wield(obj/item/source, mob/user)
+/obj/item/binoculars/truesight_lens/on_wield(obj/item/source, mob/living/user)
 	if(!IS_CULTIST(user))
-		return
-
+		user.become_blind(REF(src))
+		to_chat(user, span_warning("As you put your eye to the lens, you suddenly lose your sight!"))
 	return ..()
 
-/obj/item/binoculars/truesight_lens/on_unwield(obj/item/source, mob/user)
-	if(!listeningTo || !IS_CULTIST(user))
-		return
-
+/obj/item/binoculars/truesight_lens/on_unwield(obj/item/source, mob/living/user)
+	user.cure_blind(REF(src))
 	return ..()

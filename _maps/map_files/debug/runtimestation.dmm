@@ -717,6 +717,10 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
+/obj/item/debug/human_spawner{
+	pixel_x = 6;
+	pixel_y = -4
+	},
 /turf/open/floor/iron/white/corner{
 	dir = 1
 	},
@@ -738,6 +742,7 @@
 "cK" = (
 /obj/machinery/light/directional/south,
 /obj/structure/table/glass,
+/obj/item/disk/surgery/debug,
 /obj/item/storage/box/monkeycubes{
 	pixel_x = 6;
 	pixel_y = 1
@@ -752,8 +757,7 @@
 /turf/open/floor/iron/white/corner,
 /area/station/medical/medbay)
 "cL" = (
-/obj/item/storage/backpack/duffelbag/syndie/surgery,
-/obj/item/disk/surgery/debug,
+/obj/item/surgery_tray/full/advanced,
 /obj/structure/table/glass,
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
@@ -1027,6 +1031,7 @@
 "dQ" = (
 /obj/structure/table,
 /obj/machinery/light/directional/south,
+/obj/item/debug/human_spawner,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
 "dR" = (
@@ -1846,6 +1851,10 @@
 /obj/machinery/light_switch/directional/west,
 /turf/open/floor/iron,
 /area/station/construction)
+"iB" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/station/cargo/bitrunning/den)
 "jb" = (
 /obj/machinery/door/airlock,
 /obj/structure/cable,
@@ -1875,6 +1884,12 @@
 /obj/structure/server,
 /turf/open/floor/iron/dark,
 /area/station/science/explab)
+"ks" = (
+/obj/machinery/door/airlock,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "kQ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 8
@@ -1906,6 +1921,10 @@
 /obj/machinery/camera/autoname/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
+"mw" = (
+/obj/machinery/netpod,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "mE" = (
 /obj/structure/cable,
 /obj/machinery/chem_mass_spec,
@@ -1915,6 +1934,13 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
+"nh" = (
+/obj/machinery/power/apc/auto_name/directional/north,
+/obj/structure/cable,
+/obj/machinery/airalarm/directional/east,
+/obj/machinery/computer/quantum_console,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "nn" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 8
@@ -1932,6 +1958,10 @@
 /obj/item/storage/toolbox/syndicate,
 /turf/open/floor/iron,
 /area/station/commons/storage/primary)
+"nE" = (
+/obj/machinery/byteforge,
+/turf/open/floor/circuit/green,
+/area/station/cargo/bitrunning/den)
 "od" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
@@ -1943,6 +1973,12 @@
 /obj/effect/mapping_helpers/airalarm/unlocked,
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
+"ov" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/station/hallway/secondary/entry)
 "oV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
@@ -1950,6 +1986,10 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/iron,
 /area/station/medical/chemistry)
+"pz" = (
+/obj/machinery/quantum_server,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "pA" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /turf/closed/wall/r_wall,
@@ -1965,6 +2005,11 @@
 /obj/machinery/door/airlock/external/glass/ruin,
 /turf/open/floor/plating,
 /area/station/medical/medbay)
+"pZ" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/turf/open/floor/iron,
+/area/station/hallway/secondary/entry)
 "qb" = (
 /obj/machinery/door/airlock,
 /turf/open/floor/plating,
@@ -2114,6 +2159,13 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"wI" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on{
+	dir = 4
+	},
+/obj/item/storage/part_replacer/bluespace/tier4,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "wM" = (
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -2141,6 +2193,9 @@
 /obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"Au" = (
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "AE" = (
 /obj/machinery/airalarm/directional/north,
 /obj/effect/mapping_helpers/airalarm/unlocked,
@@ -2172,6 +2227,10 @@
 /obj/structure/closet/syndicate/resources/everything,
 /turf/open/floor/iron,
 /area/station/science)
+"Cx" = (
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "CQ" = (
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/stripes/line{
@@ -2233,6 +2292,9 @@
 /obj/effect/turf_decal/tile/blue/half/contrasted,
 /turf/open/floor/iron,
 /area/station/command/bridge)
+"EK" = (
+/turf/open/floor/circuit/green,
+/area/station/cargo/bitrunning/den)
 "ES" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
@@ -2280,6 +2342,12 @@
 	},
 /turf/open/floor/engine,
 /area/station/cargo/miningoffice)
+"Ks" = (
+/obj/structure/table/reinforced,
+/obj/machinery/light/directional/south,
+/obj/item/bitrunning_debug,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "Kx" = (
 /obj/structure/table,
 /obj/item/analyzer,
@@ -2364,6 +2432,11 @@
 /obj/machinery/door/airlock/external/glass/ruin,
 /turf/open/floor/plating,
 /area/station/medical/medbay)
+"Qx" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
+/turf/open/floor/iron,
+/area/station/cargo/bitrunning/den)
 "Rb" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -2427,6 +2500,9 @@
 /obj/item/healthanalyzer/advanced,
 /turf/open/floor/iron,
 /area/station/medical/medbay)
+"UM" = (
+/turf/closed/wall/r_wall,
+/area/station/cargo/bitrunning/den)
 "Vg" = (
 /obj/machinery/light/directional/south,
 /obj/structure/cable,
@@ -3125,12 +3201,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+UM
+UM
+UM
+UM
+UM
+UM
 aa
 aa
 aa
@@ -3217,12 +3293,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+UM
+EK
+nE
+Au
+mw
+UM
 aa
 aa
 aa
@@ -3309,12 +3385,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+UM
+pz
+Au
+wI
+mw
+UM
 aa
 aa
 aa
@@ -3401,12 +3477,12 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
+UM
+nh
+Cx
+Qx
+Ks
+UM
 aa
 aa
 aa
@@ -3493,12 +3569,12 @@ em
 em
 em
 em
-em
-em
-em
-dY
-en
-dY
+UM
+UM
+UM
+ks
+iB
+UM
 Tj
 Tj
 Tj
@@ -3588,7 +3664,7 @@ rK
 rK
 vy
 em
-eh
+pZ
 eh
 LW
 lc
@@ -3680,7 +3756,7 @@ qQ
 qQ
 ME
 em
-eh
+pZ
 eh
 LW
 lc
@@ -3772,7 +3848,7 @@ qQ
 qQ
 ME
 em
-eh
+pZ
 eh
 LW
 lc
@@ -3864,7 +3940,7 @@ qQ
 qQ
 CQ
 em
-eh
+ov
 eh
 LW
 lc
@@ -3956,7 +4032,7 @@ qQ
 qQ
 ME
 em
-eh
+pZ
 eh
 LW
 lc
@@ -4048,7 +4124,7 @@ qQ
 qQ
 ma
 em
-eh
+pZ
 eh
 LW
 lc
@@ -4140,7 +4216,7 @@ II
 gl
 gD
 kj
-wM
+pZ
 wM
 LW
 lc

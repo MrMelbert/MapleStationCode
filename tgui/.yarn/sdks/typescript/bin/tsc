@@ -2,20 +2,28 @@
 
 const {existsSync} = require(`fs`);
 <<<<<<< HEAD
+<<<<<<< HEAD
 const {createRequire, createRequireFromPath} = require(`module`);
 =======
 const {createRequire} = require(`module`);
 >>>>>>> d63121b05e245cb95c54ab34611effb560281f07
+=======
+const {createRequire} = require(`module`);
+>>>>>>> upstream-tg/master
 const {resolve} = require(`path`);
 
 const relPnpApiPath = "../../../../.pnp.cjs";
 
 const absPnpApiPath = resolve(__dirname, relPnpApiPath);
 <<<<<<< HEAD
+<<<<<<< HEAD
 const absRequire = (createRequire || createRequireFromPath)(absPnpApiPath);
 =======
 const absRequire = createRequire(absPnpApiPath);
 >>>>>>> d63121b05e245cb95c54ab34611effb560281f07
+=======
+const absRequire = createRequire(absPnpApiPath);
+>>>>>>> upstream-tg/master
 
 if (existsSync(absPnpApiPath)) {
   if (!process.versions.pnp) {

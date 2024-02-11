@@ -20,6 +20,9 @@
 	for(var/datum/job/job as anything in sec_department.department_jobs)
 		. |= job.title
 
+/proc/get_sec_and_command_jobs_cached()
+	return string_list(get_sec_and_command_jobs())
+
 // SYNDICATE / SYNDICATE TOY ITEMS //
 
 /obj/item/storage/backpack/duffelbag/syndie
@@ -35,7 +38,7 @@
 	AddElement(/datum/element/unique_examine, \
 		"A large, dark colored dufflebag commonly used to transport ammunition, tools, and explosives. \
 		Its design makes it much lighter than other duffelbags without sacrificing any space.", \
-		EXAMINE_CHECK_JOB, get_sec_and_command_jobs())
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached())
 
 /obj/item/clothing/under/syndicate
 	name = "suspicious turtleneck"
@@ -45,7 +48,7 @@
 	. = ..()
 	if(unique_description)
 		AddElement(/datum/element/unique_examine, unique_description, EXAMINE_CHECK_SYNDICATE, hint = FALSE)
-		AddElement(/datum/element/unique_examine, "A padded, armored outfit commonly used by syndicate operatives in the field.", EXAMINE_CHECK_JOB, get_sec_and_command_jobs())
+		AddElement(/datum/element/unique_examine, "A padded, armored outfit commonly used by syndicate operatives in the field.", EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached())
 
 /obj/item/clothing/under/syndicate/skirt
 	name = "suspicious skirtleneck"
@@ -147,7 +150,7 @@
 		"The Codex Cicatrix - the book of knowledge that supposedly holds all the secrets of the viel between the worlds.. \
 		Discovered by Wizard Federation long ago, but locked away deep in the shelving of the highest security libraries of the Spindward Galaxy, \
 		the book was recently stolen during a raid by the Cybersun Industries, copied, and widespread to aspiring seekers of power.", \
-		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached(), hint = FALSE)
 
 /obj/item/toy/eldritch_book
 	name = "suspicious purple book"
@@ -203,7 +206,7 @@
 /obj/effect/rune/Initialize(mapload)
 	. = ..()
 	// MELBERT TODO: Improve this with advanced cult code.
-	if(icon == 'icons/obj/rune.dmi')
+	if(icon == 'icons/obj/antags/cult/rune.dmi')
 		AddElement(/datum/element/unique_examine, \
 			"A rune of blood inscribed by the followers of the Geometer Nar'sie \
 			to channel powerful blood magics through the invoker.", \
@@ -231,7 +234,7 @@
 		"A refitted revolver that takes .357 caliber, the Mateba Model 6 Unica - \
 		or as it's commonly known shorthand, either the Mateba or the Unica - \
 		has been the weapon of choice for Nanotrasen commanding officers in the field for decades.", \
-		EXAMINE_CHECK_JOB, get_sec_and_command_jobs())
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached())
 
 /obj/item/gun/energy/laser/captain/Initialize(mapload)
 	. = ..()
@@ -303,7 +306,7 @@
 		While not as powerful independently as a full teleporter gate setup just yet, \
 		these are often entrusted to the Captain for their emergencies, though Research Directors \
 		and even space explorers are often given one for personal usage.", \
-		EXAMINE_CHECK_JOB, list("Captain", "Research Director", "Scientist"))
+		EXAMINE_CHECK_JOB, string_list(list(JOB_CAPTAIN, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST)))
 
 /obj/item/spear/bonespear/ceremonial/Initialize(mapload)
 	. = ..()
@@ -330,12 +333,12 @@
 		"A xenomorph - an alien species designed to hunt and capture live prey. \
 		They reproduce by attaching facehuggers to their prey, impregnating them with the alient seed, \
 		eventually causing the host to burst in a violent display of gore as a new larva writhes out.", \
-		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"))
+		EXAMINE_CHECK_JOB, string_list(list(JOB_CHIEF_MEDICAL_OFFICER, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_XENOBIOLOGIST)))
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph - an alien species designed to hunt live prey. \
 		Weak to flames and laser fire. Facial coverage in the form of biosuits, hardsuits, or riot helmets are of utmost importance \
 		when facing these creatures to avoid being 'facehugged' by their offspring.", \
-		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached(), hint = FALSE)
 
 /mob/living/simple_animal/hostile/alien/Initialize(mapload)
 	. = ..()
@@ -343,12 +346,12 @@
 		"A xenomorph - an alien species designed to hunt and capture live prey. \
 		They reproduce by attaching facehuggers to their prey, impregnating them with the alient seed, \
 		eventually causing the host to burst in a violent display of gore as a new larva writhes out.", \
-		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"))
+		EXAMINE_CHECK_JOB, string_list(list(JOB_CHIEF_MEDICAL_OFFICER, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_XENOBIOLOGIST)))
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph - an alien species designed to hunt live prey. \
 		Weak to flames and laser fire. Facial coverage in the form of biosuits, hardsuits, or riot helmets are of utmost importance \
 		when facing these creatures to avoid being 'facehugged' by their offspring.", \
-		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached(), hint = FALSE)
 
 /mob/living/carbon/alien/humanoid/royal/queen/Initialize(mapload)
 	. = ..()
@@ -358,14 +361,14 @@
 		the small, jumpy alien creature responisble for the alien's method of reproduction. \
 		Leads its sisters and offspring through their alien hivemind - \
 		when slain, releases a psychic screen via the hivemind, greatly disorienting their kin.", \
-		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"), hint = FALSE)
+		EXAMINE_CHECK_JOB, string_list(list(JOB_CHIEF_MEDICAL_OFFICER, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_XENOBIOLOGIST)), hint = FALSE)
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph queen - the patriarch of the xenomorph species. \
 		Leads the nest through their xenomorph hivemind. The source of the xenos - \
 		killing the queen is important in killing the hive. \
 		When slain, releases a psychic scream along the alien hivemind, \
 		confusing and disorienting their kin and offspring.", \
-		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached(), hint = FALSE)
 
 /mob/living/simple_animal/hostile/alien/queen/Initialize(mapload)
 	. = ..()
@@ -375,13 +378,13 @@
 		the small, jumpy alien creature responisble for the alien's method of reproduction. \
 		Leads its sisters and offspring through their alien hivemind - \
 		when slain, releases a psychic screen via the hivemind, greatly disorienting their kin.", \
-		EXAMINE_CHECK_JOB, list("Chief Medical Officer", "Research Director", "Scientist", "Xenobiologist"))
+		EXAMINE_CHECK_JOB, string_list(list(JOB_CHIEF_MEDICAL_OFFICER, JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_XENOBIOLOGIST)))
 	AddElement(/datum/element/unique_examine, \
 		"A xenomorph queen - the patriarch of the xenomorph species. \
 		Leads the nest through their xenomorph hivemind. The source of the xeno menace - \
 		killing the queen is crucial in killing the hive. \
 		When slain, releases a psychic scream along the alien hivemind, confusing and disorienting their kin and offspring.", \
-		EXAMINE_CHECK_JOB, get_sec_and_command_jobs(), hint = FALSE)
+		EXAMINE_CHECK_JOB, get_sec_and_command_jobs_cached(), hint = FALSE)
 
 // MACHINES //
 
