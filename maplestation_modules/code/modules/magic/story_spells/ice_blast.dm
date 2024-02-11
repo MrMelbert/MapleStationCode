@@ -75,7 +75,7 @@
 		var/datum/gas_mixture/air = nearby_turf.return_air()
 		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
 		if (air && air != turf_air)
-			air.temperature = max(air.temperature + -15, 0)
+			air.temperature = max(air.temperature + -15, TCMB)
 			air.react(nearby_turf)
 
 	for(var/turf/open/nearby_turf in range(1, src)) // this is fuck ugly, could make a new MakeSlippery flag instead.
