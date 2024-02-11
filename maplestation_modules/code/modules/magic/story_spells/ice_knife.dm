@@ -45,6 +45,7 @@
 
 /obj/item/knife/combat/ice/Destroy()
 	STOP_PROCESSING(SSobj, src)
+	playsound(src, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
 	return ..()
 
 /obj/item/knife/combat/ice/attack()
