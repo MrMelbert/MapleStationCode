@@ -1,19 +1,19 @@
-/datum/component/uses_mana/story_spell/pointed/ice_knife
-	var/ice_knife_attunement = 0.5
-	var/ice_knife_cost = 25
+/datum/component/uses_mana/story_spell/pointed/ice_blast
+	var/ice_blast_attunement = 0.5
+	var/ice_blast_cost = 25
 
-/datum/component/uses_mana/story_spell/pointed/ice_knife/get_attunement_dispositions()
+/datum/component/uses_mana/story_spell/pointed/ice_blast/get_attunement_dispositions()
 	. = ..()
-	.[/datum/attunement/ice] = ice_knife_attunement
+	.[/datum/attunement/ice] = ice_blast_attunement
 
-/datum/component/uses_mana/story_spell/pointed/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * ice_knife_cost
+/datum/component/uses_mana/story_spell/pointed/ice_blast/get_mana_required(atom/caster, atom/cast_on, ...)
+	return ..() * ice_blast_cost
 
-/datum/action/cooldown/spell/pointed/projectile/ice_knife
-	name = "Ice Knife"
-	desc = "Throw an ice knife which'll cover nearby floor with a thin, slippery sheet of ice."
+/datum/action/cooldown/spell/pointed/projectile/ice_blast
+	name = "Ice blast"
+	desc = "Throw an ice blast which'll cover nearby floor with a thin, slippery sheet of ice."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
-	button_icon_state = "ice_knife"
+	button_icon_state = "ice_blast"
 	sound = 'sound/effects/parry.ogg'
 
 	cooldown_time = 1 MINUTES
@@ -27,12 +27,12 @@
 	deactive_msg = "You stop preparing to throw an ice knife."
 
 	cast_range = 8
-	projectile_type = /obj/projectile/magic/ice_knife
+	projectile_type = /obj/projectile/magic/ice_blast
 
-/datum/action/cooldown/spell/pointed/projectile/ice_knife/New(Target, original)
+/datum/action/cooldown/spell/pointed/projectile/ice_blast/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife)
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_blast)
 
 /// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
 /turf/open/misc/funny_ice
@@ -53,15 +53,15 @@
 	. = ..()
 	MakeSlippery(TURF_WET_ICE, INFINITY, 0, INFINITY, TRUE)
 
-/obj/projectile/magic/ice_knife
-	name = "ice knife"
+/obj/projectile/magic/ice_blast
+	name = "ice blast"
 	icon_state = "ice_2"
 	damage_type = BRUTE
 	damage = 15
 	wound_bonus = 50
 	sharpness = SHARP_EDGED
 
-/obj/projectile/magic/ice_knife/on_hit(atom/target, blocked = FALSE, pierce_hit)
+/obj/projectile/magic/ice_blast/on_hit(atom/target, blocked = FALSE, pierce_hit)
 	. = ..()
 	if(. != BULLET_ACT_HIT)
 		return
