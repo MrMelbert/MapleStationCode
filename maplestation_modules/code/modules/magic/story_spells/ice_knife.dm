@@ -38,7 +38,7 @@
 	throwforce = 12
 	var/expire_time = -1
 
-/obj/item/knife/combat/ice/Initialize()
+/obj/item/knife/combat/ice/Initialize(mapload)
 	. = ..()
 	expire_time = world.time + 20 SECONDS
 	START_PROCESSING(SSobj, src)
