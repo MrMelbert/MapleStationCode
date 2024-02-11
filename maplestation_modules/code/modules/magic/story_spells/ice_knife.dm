@@ -18,7 +18,7 @@
 	item_type = /obj/item/knife/combat/ice
 	delete_old = TRUE
 
-	//cooldown_time = 2 MINUTES
+	cooldown_time = 2 MINUTES
 	invocation = "Ya shpion."
 	invocation_type = INVOCATION_WHISPER
 	school = SCHOOL_CONJURATION
