@@ -58,8 +58,7 @@
 	icon_state = "ice_2"
 	damage_type = BRUTE
 	damage = 15
-	wound_bonus = 50
-	sharpness = SHARP_EDGED
+	wound_bonus = 10
 
 /obj/projectile/magic/ice_blast/on_hit(atom/target, blocked = FALSE, pierce_hit)
 	. = ..()
