@@ -18,11 +18,12 @@
 /datum/round_event/valentines/start()
 	..()
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
-		H.put_in_hands(new /obj/item/valentine)
+		//H.put_in_hands(new /obj/item/valentine) NON-MODULE CHANGE: these cards are terrible, may get replaced with cards you can write like paper
 		var/obj/item/storage/backpack/b = locate() in H.contents
 		new /obj/item/food/candyheart(b)
 		new /obj/item/storage/fancy/heart_box(b)
 
+/* NON-MODULE CHANGE: removes valentines on a server with almost exclusively statics
 	var/list/valentines = list()
 	for(var/mob/living/M in GLOB.player_list)
 		var/turf/current_turf = get_turf(M.mind.current)
@@ -44,6 +45,7 @@
 				forge_valentines_objective(notgoodenough, date)
 		else
 			L.mind.add_antag_datum(/datum/antagonist/heartbreaker)
+*/
 
 /proc/forge_valentines_objective(mob/living/lover,mob/living/date)
 	lover.mind.special_role = "valentine"
