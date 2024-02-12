@@ -10,7 +10,7 @@
 	integrity_failure = 0.5
 	max_integrity = 100
 	armor_type = /datum/armor/item_modular_computer
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
+	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	interaction_flags_mouse_drop = NEED_HANDS | ALLOW_RESTING
 
 	///The ID currently stored in the computer.
