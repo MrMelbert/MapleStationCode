@@ -1486,7 +1486,7 @@
 /area/ruin/plasma_facility/operations)
 "Ak" = (
 /obj/structure/bed/maint,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/item/flashlight/flare/candle{
 	pixel_x = 12;
 	pixel_y = 9

@@ -3917,6 +3917,7 @@
 "Fw" = (
 /obj/effect/decal/cleanable/blood/tracks{
 	name = "replica blood";
+	
 	},
 /obj/effect/mapping_helpers/burnt_floor,
 /obj/effect/decal/cleanable/dirt/dust,

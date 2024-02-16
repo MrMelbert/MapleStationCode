@@ -4697,7 +4697,7 @@
 	specialfunctions = 4
 	},
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
@@ -6052,7 +6052,7 @@
 /area/station/cargo/storage)
 "caG" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/landmark/start/prisoner,
 /obj/structure/sign/poster/contraband/random/directional/north,
 /obj/effect/spawner/random/contraband/prison,
@@ -6427,7 +6427,7 @@
 /area/station/security/prison/safe)
 "chK" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
@@ -9903,7 +9903,7 @@
 /area/station/science/breakroom)
 "dpc" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/spawner/random/contraband/prison,
 /turf/open/floor/iron/grimy,
 /area/station/security/prison/safe)
@@ -11500,7 +11500,7 @@
 /area/station/security/warden)
 "dSX" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /turf/open/floor/carpet/black,
 /area/station/maintenance/starboard/aft)
 "dTe" = (
@@ -35735,7 +35735,7 @@
 /area/station/security/brig)
 "lGt" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/landmark/start/prisoner,
 /obj/effect/spawner/random/contraband/prison,
 /turf/open/floor/iron/grimy,
@@ -42704,7 +42704,7 @@
 	specialfunctions = 4
 	},
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/dorms)
@@ -47129,7 +47129,7 @@
 /area/station/service/hydroponics)
 "piM" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "piN" = (
@@ -48589,7 +48589,7 @@
 /area/station/hallway/secondary/service)
 "pFc" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 5
 	},

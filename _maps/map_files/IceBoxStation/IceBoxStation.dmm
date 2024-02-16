@@ -13837,7 +13837,7 @@
 /obj/structure/bed{
 	dir = 1
 	},
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 1
 	},
 /obj/effect/turf_decal/trimline/red/filled/line{
@@ -15745,7 +15745,7 @@
 /area/station/command/heads_quarters/hos)
 "eEe" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/button/door/directional/south{
 	id = "Dorm6";
 	name = "Cabin Bolt Control";
@@ -26685,7 +26685,7 @@
 /area/station/security/prison/rec)
 "ibH" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/landmark/start/hangover,
 /obj/machinery/button/door/directional/south{
 	id = "Dorm5";
@@ -42879,7 +42879,7 @@
 "mXw" = (
 /obj/structure/bed,
 /obj/machinery/airalarm/directional/north,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/button/door/directional/east{
 	id = "Dorm3";
 	name = "Dorm Bolt Control";
@@ -53024,7 +53024,7 @@
 /area/station/medical/medbay/aft)
 "pPP" = (
 /obj/structure/bed/pod,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood,
 /area/station/maintenance/port/fore)
@@ -53172,7 +53172,7 @@
 "pRQ" = (
 /obj/structure/bed,
 /obj/machinery/airalarm/directional/north,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/effect/landmark/start/hangover,
 /obj/machinery/button/door/directional/east{
 	id = "Dorm4";
@@ -55640,7 +55640,7 @@
 "qDk" = (
 /obj/structure/bed,
 /obj/machinery/airalarm/directional/north,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/button/door/directional/east{
 	id = "Dorm2";
 	name = "Dorm Bolt Control";
@@ -60153,7 +60153,7 @@
 /area/station/commons/dorms/laundry)
 "rVE" = (
 /obj/structure/bed,
-/obj/item/bedsheet/random,
+/obj/effect/spawner/random/bedsheet/any,
 /turf/open/floor/plating,
 /area/station/maintenance/department/medical/morgue)
 "rVV" = (
@@ -75016,7 +75016,7 @@
 /obj/structure/bed{
 	dir = 1
 	},
-/obj/item/bedsheet/dorms{
+/obj/effect/spawner/random/bedsheet{
 	dir = 1
 	},
 /obj/effect/spawner/random/contraband/permabrig_gear,

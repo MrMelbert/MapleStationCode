@@ -2617,7 +2617,7 @@
 "axK" = (
 /obj/effect/decal/cleanable/cobweb,
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/machinery/button/door/directional/west{
 	id = "Cabin4";
@@ -4177,7 +4177,7 @@
 /area/station/cargo/miningoffice)
 "aQF" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/machinery/button/door/directional/west{
 	id = "Cabin5";
@@ -12232,7 +12232,7 @@
 /area/station/service/chapel)
 "cQI" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
@@ -38022,7 +38022,7 @@
 "mCl" = (
 /obj/structure/bed,
 /obj/effect/decal/cleanable/cobweb/cobweb2,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/machinery/button/door/directional/east{
 	id = "Cabin3";
@@ -38651,7 +38651,7 @@
 "mMY" = (
 /obj/structure/bed,
 /obj/effect/decal/cleanable/cobweb,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /obj/effect/landmark/start/hangover,
 /obj/machinery/button/door/directional/west{
@@ -52038,7 +52038,7 @@
 /area/station/ai_monitored/command/nuke_storage)
 "rQW" = (
 /obj/structure/bed,
-/obj/item/bedsheet/dorms,
+/obj/effect/spawner/random/bedsheet,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/machinery/button/door/directional/east{
 	id = "Cabin2";
