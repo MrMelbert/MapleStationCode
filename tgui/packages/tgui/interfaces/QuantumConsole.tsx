@@ -8,6 +8,7 @@ import {
   Section,
   Stack,
   Table,
+  Tabs,
   Tooltip,
 } from 'tgui-core/components';
 
@@ -84,7 +85,7 @@ const getColor = (difficulty: number) => {
     case Difficulty.High:
       return 'bad';
     default:
-      return '';
+      return 'green';
   }
 };
 
@@ -103,6 +104,7 @@ export const QuantumConsole = (props) => {
 
 const AccessView = (props) => {
   const { act, data } = useBackend<Data>();
+  const [tab, setTab] = useSharedState('tab', 0);
 
   if (!isConnected(data)) {
     return <NoticeBox danger>No server connected!</NoticeBox>;
@@ -120,6 +122,10 @@ const AccessView = (props) => {
   } = data;
 
   const sorted = available_domains.sort((a, b) => a.cost - b.cost);
+
+  const filtered = sorted.filter((domain) => {
+    return domain.difficulty === tab;
+  });
 
   let selected;
   if (generated_domain) {
@@ -167,7 +173,45 @@ const AccessView = (props) => {
           scrollable
           title="Virtual Domains"
         >
-          {sorted.map((domain) => (
+          <Tabs fluid>
+            <Tabs.Tab
+              backgroundColor={getColor(Difficulty.None)}
+              textColor="white"
+              selected={tab === 0}
+              onClick={() => setTab(0)}
+              icon="chevron-down"
+            >
+              Peaceful
+            </Tabs.Tab>
+            <Tabs.Tab
+              backgroundColor={getColor(Difficulty.Low)}
+              textColor="black"
+              selected={tab === 1}
+              onClick={() => setTab(1)}
+              icon="chevron-down"
+            >
+              Easy
+            </Tabs.Tab>
+            <Tabs.Tab
+              backgroundColor={getColor(Difficulty.Medium)}
+              textColor="white"
+              selected={tab === 2}
+              onClick={() => setTab(2)}
+              icon="chevron-down"
+            >
+              Medium
+            </Tabs.Tab>
+            <Tabs.Tab
+              backgroundColor={getColor(Difficulty.High)}
+              textColor="white"
+              selected={tab === 3}
+              onClick={() => setTab(3)}
+              icon="chevron-down"
+            >
+              Hard <Icon name="skull" ml={1} />{' '}
+            </Tabs.Tab>
+          </Tabs>
+          {filtered.map((domain) => (
             <DomainEntry key={domain.id} domain={domain} />
           ))}
         </Section>
@@ -237,7 +281,6 @@ const DomainEntry = (props: DomainEntryProps) => {
       title={
         <>
           {name}
-          {difficulty === Difficulty.High && <Icon name="skull" ml={1} />}
           {!!is_modular && name !== '???' && <Icon name="cubes" ml={1} />}
         </>
       }
@@ -246,19 +289,19 @@ const DomainEntry = (props: DomainEntryProps) => {
         <Stack.Item color="label" grow={4}>
           {desc}
           {!!is_modular && ' (Modular)'}
-          {difficulty === Difficulty.High && ' (Hard)'}
         </Stack.Item>
         <Stack.Divider />
         <Stack.Item grow>
           <Table>
             <TableRow>
-              <DisplayDetails amount={cost} color="pink" icon="star" />
+              <Tooltip content="Points cost for deploying domain.">
+                <DisplayDetails amount={cost} color="pink" icon="star" />
+              </Tooltip>
             </TableRow>
             <TableRow>
-              <DisplayDetails amount={difficulty} color="white" icon="skull" />
-            </TableRow>
-            <TableRow>
-              <DisplayDetails amount={reward} color="gold" icon="coins" />
+              <Tooltip content="Reward for competing domain.">
+                <DisplayDetails amount={reward} color="gold" icon="coins" />
+              </Tooltip>
             </TableRow>
           </Table>
         </Stack.Item>
