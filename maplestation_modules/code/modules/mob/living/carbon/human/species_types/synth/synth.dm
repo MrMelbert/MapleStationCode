@@ -55,6 +55,8 @@
 	)
 	/// Reference to the action we give Synths to change species
 	var/datum/action/change_disguise/disguise_action
+	/// Typepath to species to disguise set on species gain, for code shenanigans
+	var/initial_disguise
 
 /datum/species/synth/on_species_gain(mob/living/carbon/human/synth, datum/species/old_species)
 	. = ..()
@@ -67,11 +69,8 @@
 	disguise_action = new(src)
 	disguise_action.Grant(synth)
 
-	var/disguise_type = GLOB.species_list[synth.client?.prefs.read_preference(/datum/preference/choiced/synth_species)] || old_species?.type || /datum/species/human
-	if(ispath(disguise_type, /datum/species/synth) || !(initial(disguise_type.id) in synth.valid_species))
-		disguise_type = /datum/species/human
-
-	disguise_as(synth, disguise_type)
+	if(initial_disguise)
+		disguise_as(synth, initial_disguise)
 
 /datum/species/synth/on_species_loss(mob/living/carbon/human/synth)
 	qdel(synth.GetComponent(/datum/component/ion_storm_randomization))
@@ -158,8 +157,7 @@
 	if(istype(new_species_type, /datum/species))
 		CRASH("disguise_as being passed species datum when it should be passed species typepath")
 
-	if(!isnull(disguise_species))
-		drop_disguise(synth, skip_bodyparts = TRUE)
+	drop_disguise(synth, skip_bodyparts = TRUE)
 
 	disguise_species = new new_species_type()
 
@@ -171,8 +169,7 @@
 
 	synth.add_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
-	handle_body(synth)
-	handle_mutant_bodyparts(synth)
+	synth.update_body(TRUE)
 	regenerate_organs(synth, replace_current = FALSE)
 
 	if(limb_updates_on_change)
@@ -184,6 +181,9 @@
 		RegisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(limb_gained_sig))
 
 /datum/species/synth/proc/drop_disguise(mob/living/carbon/human/synth, skip_bodyparts = FALSE)
+	if(isnull(disguise_species))
+		return
+
 	update_no_equip_flags(synth, initial(no_equip_flags))
 	sexes = initial(sexes)
 	name = initial(name)
@@ -202,8 +202,7 @@
 		UnregisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB)
 
 	QDEL_NULL(disguise_species)
-	handle_body(synth)
-	handle_mutant_bodyparts(synth)
+	synth.update_body(TRUE)
 	regenerate_organs(synth)
 
 /datum/species/synth/proc/limb_lost_sig(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
@@ -318,8 +317,7 @@
 		return
 	var/picked_species = synth_disguise_species[picked]
 	if(ispath(picked_species, /datum/species/synth))
-		if(!isnull(synth_species.disguise_species))
-			synth_species.drop_disguise(synth)
+		synth_species.drop_disguise(synth)
 		return
 
 	if(!istype(synth_species.disguise_species, picked_species))

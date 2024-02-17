@@ -1,3 +1,5 @@
+#define NO_DISGUISE "(No Disguise)"
+
 /datum/preference/choiced/synth_species
 	savefile_key = "feature_synth_species"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -7,6 +9,7 @@
 /datum/preference/choiced/synth_species/init_possible_values()
 	var/datum/species/synth/synth = new()
 	. = synth.valid_species.Copy()
+	. += NO_DISGUISE
 	qdel(synth)
 	return .
 
@@ -17,7 +20,9 @@
 	var/datum/species/synth/synth = target.dna?.species
 	if(!istype(synth))
 		return
-	if(!(value in synth.valid_species))
+	if(value == NO_DISGUISE)
+		synth.drop_disguise(target)
 		return
-
-	synth.disguise_as(target, GLOB.species_list[value])
+	if(value in synth.valid_species)
+		synth.disguise_as(target, GLOB.species_list[value])
+		return
