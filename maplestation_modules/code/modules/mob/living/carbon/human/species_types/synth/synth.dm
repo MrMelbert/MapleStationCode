@@ -68,7 +68,7 @@
 	disguise_action.Grant(synth)
 
 	var/disguise_type = GLOB.species_list[synth.client?.prefs.read_preference(/datum/preference/choiced/synth_species)] || old_species?.type || /datum/species/human
-	if(ispath(disguise_type, /datum/species/synth))
+	if(ispath(disguise_type, /datum/species/synth) || !(initial(disguise_type.id) in synth.valid_species))
 		disguise_type = /datum/species/human
 
 	disguise_as(synth, disguise_type)
