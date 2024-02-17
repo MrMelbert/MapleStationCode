@@ -43,6 +43,7 @@
 
 /// Trait given by an Action datum
 #define ACTION_TRAIT "action"
+
 #define CLOTHING_TRAIT "clothing"
 #define HELMET_TRAIT "helmet"
 /// inherited from the mask
