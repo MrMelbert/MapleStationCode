@@ -6251,6 +6251,7 @@
 #include "maplestation_modules\code\modules\client\preferences\species\lizard.dm"
 #include "maplestation_modules\code\modules\client\preferences\species\ornithid.dm"
 #include "maplestation_modules\code\modules\client\preferences\species\skrell.dm"
+#include "maplestation_modules\code\modules\client\preferences\species\synth.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\spellbook.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\spellbook_helpers.dm"
 #include "maplestation_modules\code\modules\client\preferences\spellbook\spellbook_item_customization_menu.dm"

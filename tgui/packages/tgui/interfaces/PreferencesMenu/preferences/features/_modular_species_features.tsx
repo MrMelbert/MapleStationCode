@@ -18,6 +18,12 @@ export const hair_lizard: FeatureToggle = {
   component: CheckboxInput,
 };
 
+export const feature_synth_species: FeatureChoiced = {
+  name: 'Synth Species',
+  description: 'Determines what species you spawn disguised as.',
+  component: FeatureDropdownInput,
+};
+
 export const feature_arm_wings: FeatureChoiced = {
   name: 'Arm Wings',
   component: FeatureDropdownInput,

@@ -23,6 +23,11 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/target = parent
+	var/datum/species/synth/synth = target.dna.species
+	if(isnull(synth.disguise_species))
+		to_chat(target, span_danger("[ion_num()]. I0n1c D1strbance d3tcted!"))
+		return
+
 	to_chat(target, span_userdanger("[ion_num()]. I0N1C D1STRBANCE D3TCTED!"))
 	original_dna = new()
 	target.dna.copy_dna(original_dna)
@@ -35,6 +40,10 @@
 /// For use in a callback in [on_ion_storm].
 /datum/component/ion_storm_randomization/proc/mutate_after_time()
 	var/mob/living/carbon/human/target = parent
+	var/datum/species/synth/synth = target.dna.species
+	if(isnull(synth.disguise_species))
+		return
+
 	to_chat(target, span_warning("Your disguise glitches!"))
 	target.random_mutate_unique_features()
 	target.random_mutate_unique_identity()
@@ -42,7 +51,9 @@
 /// For use in a callback in [on_ion_storm].
 /datum/component/ion_storm_randomization/proc/return_to_normal()
 	var/mob/living/carbon/human/target = parent
-	to_chat(target, span_notice("Your disguise returns to normal."))
+	var/datum/species/synth/synth = target.dna.species
+	if(!isnull(synth.disguise_species))
+		to_chat(target, span_notice("Your disguise returns to normal."))
 	target.dna.features = original_dna.features.Copy()
 	target.dna.unique_features = original_dna.unique_features
 	target.dna.unique_enzymes = original_dna.unique_enzymes
