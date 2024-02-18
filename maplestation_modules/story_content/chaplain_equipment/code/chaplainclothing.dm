@@ -141,6 +141,11 @@
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "armor_pulisec"
 	inhand_icon_state = "armor_pulisec"
+	greyscale_config = NONE
+	greyscale_config_inhand_left = NONE
+	greyscale_config_inhand_right = NONE
+	greyscale_colors = NONE
+	greyscale_config_worn = NONE
 
 /obj/item/clothing/head/helmet/sec/puligard
 	name = "puligard security uniform"
