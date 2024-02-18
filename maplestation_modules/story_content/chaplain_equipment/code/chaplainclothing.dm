@@ -82,7 +82,7 @@
 	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	slot_flags = ITEM_SLOT_BACK
-	worn_icon_state = "sacredspear"
+	worn_icon_state = "spear0"
 	force = 7
 	armour_penetration = 30
 	throwforce = 20
