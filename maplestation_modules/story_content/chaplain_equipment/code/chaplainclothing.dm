@@ -79,6 +79,7 @@
 	icon_state = "spear0"
 	base_icon_state = "spear"
 	inhand_icon_state = null
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	slot_flags = ITEM_SLOT_BACK
