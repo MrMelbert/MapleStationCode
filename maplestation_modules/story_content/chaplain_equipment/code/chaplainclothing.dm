@@ -161,6 +161,10 @@
 	icon_state = "gloves_pulisec"
 	inhand_icon_state = "gloves_pulisec"
 	greyscale_config = NONE
+	greyscale_config_inhand_left = NONE
+	greyscale_config_inhand_right = NONE
+	greyscale_colors = NONE
+	greyscale_config_worn = NONE
 
 /obj/item/clothing/shoes/jackboots/puligard
 	name = "puligard security jackboots"
