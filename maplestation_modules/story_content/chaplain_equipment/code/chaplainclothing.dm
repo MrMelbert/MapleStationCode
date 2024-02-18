@@ -160,7 +160,7 @@
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "gloves_pulisec"
 	inhand_icon_state = "gloves_pulisec"
-	greyscale_config = NULL
+	greyscale_config = NONE
 
 /obj/item/clothing/shoes/jackboots/puligard
 	name = "puligard security jackboots"
