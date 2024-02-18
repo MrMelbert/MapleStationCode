@@ -241,6 +241,9 @@
 /datum/species/synth/proc/disguise_damage(mob/living/carbon/human/synth)
 	SIGNAL_HANDLER
 
+	if(!limb_updates_on_change)
+		return
+
 	var/list/obj/item/bodypart/changed_limbs = list()
 	for(var/obj/item/bodypart/limb as anything in synth.bodyparts)
 		var/below_threshold = limb.get_damage() / limb.max_damage * 100 < LIMB_DAMAGE_THRESHOLD
