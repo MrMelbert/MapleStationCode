@@ -46,7 +46,7 @@
 		SPECIES_PERK_DESC = "Podpeople must use plant analyzers to scan themselves \
 			instead of heath analyzers.",
 	))
-	to_add += list(list(
+	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 		SPECIES_PERK_ICON = FA_ICON_BIOHAZARD,
 		SPECIES_PERK_NAME = "Weedkiller Susceptability",

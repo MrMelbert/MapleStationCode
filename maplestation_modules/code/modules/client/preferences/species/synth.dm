@@ -31,7 +31,7 @@
 	savefile_key = "feature_synth_damage_threshold"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	priority = PREFERENCE
+	priority = PREFERENCE_PRIORITY_GENDER
 	minimum = -100
 	maximum = 75
 
