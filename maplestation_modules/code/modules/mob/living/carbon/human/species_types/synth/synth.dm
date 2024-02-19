@@ -37,7 +37,7 @@
 	mutantlungs = null
 	mutanteyes = /obj/item/organ/internal/eyes/robotic
 	mutantears = /obj/item/organ/internal/ears/cybernetic
-
+	species_pain_mod = 0.2
 	/// Reference to the species we're disguised as.
 	VAR_FINAL/datum/species/disguise_species
 	/// If TRUE, synth limbs will update when attached and detached.
@@ -54,9 +54,11 @@
 		SPECIES_ORNITHID,
 	)
 	/// Reference to the action we give Synths to change species
-	var/datum/action/change_disguise/disguise_action
+	var/datum/action/cooldown/change_disguise/disguise_action
 	/// Typepath to species to disguise set on species gain, for code shenanigans
 	var/initial_disguise
+	/// If health is lower than this %, the synth will start to show signs of damage.
+	var/disuise_damage_threshold = 25
 
 /datum/species/synth/on_species_gain(mob/living/carbon/human/synth, datum/species/old_species)
 	. = ..()
@@ -101,20 +103,27 @@
 
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = "robot",
+		SPECIES_PERK_ICON = FA_ICON_ROBOT,
 		SPECIES_PERK_NAME = "Robot Rock",
 		SPECIES_PERK_DESC = "Synths are robotic instead of organic, and as such may be affected by or immune to some things \
 			normal humanoids are or aren't.",
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = "user-secret",
+		SPECIES_PERK_ICON = FA_ICON_MEDKIT,
+		SPECIES_PERK_NAME = "Partially Organic",
+		SPECIES_PERK_DESC = "Your limbs are part organic, part synthetic. \
+			Both organic (sutures, meshes) and synthetic (welder, cabling) healing methods work on you.",
+	))
+	perks += list(list(
+		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
+		SPECIES_PERK_ICON = FA_ICON_USER_SECRET,
 		SPECIES_PERK_NAME = "Incognito Mode",
 		SPECIES_PERK_DESC = "Synths are secretly synthetic androids that disguise as another species.",
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = "shield-alt",
+		SPECIES_PERK_ICON = FA_ICON_SHIELD_ALT,
 		SPECIES_PERK_NAME = "Silicon Supremecy",
 		SPECIES_PERK_DESC = "Being synthetic, Synths gain many resistances that come \
 			with silicons. They're immune to viruses, dismemberment, having \
@@ -122,17 +131,24 @@
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON = "theater-masks",
+		SPECIES_PERK_ICON =FA_ICON_THEATER_MASKS,
 		SPECIES_PERK_NAME = "Full Copy",
 		SPECIES_PERK_DESC = "Synths take on some the traits of species they disguise as. \
 			This includes both positive and negative.",
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = "users-cog",
+		SPECIES_PERK_ICON = FA_ICON_USER_COG,
 		SPECIES_PERK_NAME = "Error: Disguise Failure",
-		SPECIES_PERK_DESC = "Ion Storms, damage, or EMPs can temporarily disrupt your disguise, \
+		SPECIES_PERK_DESC = "Ion Storms, can temporarily disrupt your disguise, \
 			causing some of your features to change sporatically.",
+	))
+	perks += list(list(
+		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+		SPECIES_PERK_ICON = FA_ICON_WRENCH,
+		SPECIES_PERK_NAME = "Error: Damage Sustained",
+		SPECIES_PERK_DESC = "Physical damage to your synthetic body can cause your disguise to fail, \
+			revealing your true form.",
 	))
 	return perks
 
@@ -235,9 +251,6 @@
 	limb.change_appearance_into(disguise_species.bodypart_overrides[limb.body_zone], update)
 	return TRUE
 
-#define LIMB_DAMAGE_THRESHOLD 75
-#define SAYMOD_DAMAGE_THRESHOLD 25
-
 /datum/species/synth/proc/disguise_damage(mob/living/carbon/human/synth)
 	SIGNAL_HANDLER
 
@@ -246,7 +259,7 @@
 
 	var/list/obj/item/bodypart/changed_limbs = list()
 	for(var/obj/item/bodypart/limb as anything in synth.bodyparts)
-		var/below_threshold = limb.get_damage() / limb.max_damage * 100 < LIMB_DAMAGE_THRESHOLD
+		var/below_threshold = (limb.max_damage - limb.get_damage()) / limb.max_damage * 100 <= disuise_damage_threshold
 		if(limb.limb_id == BODYPART_ID_SYNTH)
 			if(below_threshold)
 				limb_gained(synth, limb, update = FALSE)
@@ -266,13 +279,10 @@
 
 	var/obj/item/organ/internal/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
 	if(!isnull(tongue))
-		if(synth.health / synth.maxHealth * 100 < SAYMOD_DAMAGE_THRESHOLD)
+		if((synth.getBruteLoss() + synth.getFireLoss()) / synth.maxHealth * 100 <= disuise_damage_threshold)
 			tongue.temp_say_mod = "whirrs"
 		else if(tongue.temp_say_mod == "whirrs")
 			tongue.temp_say_mod = null
-
-#undef LIMB_DAMAGE_THRESHOLD
-#undef SAYMOD_DAMAGE_THRESHOLD
 
 /// Like change appearance, but passing it a bodypart will change the appearance to that of the bodypart.
 /obj/item/bodypart/proc/change_appearance_into(obj/item/bodypart/other_part, update = TRUE)
@@ -295,16 +305,15 @@
 	else
 		update_icon_dropped()
 
-/datum/action/change_disguise
+/datum/action/cooldown/change_disguise
 	name = "Change Disguise Species"
 	desc = "Changes your disguise to another species."
 	button_icon_state = "chameleon_outfit"
 	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_INCAPACITATED
+	cooldown_time = 6 SECONDS
 
-/datum/action/change_disguise/Trigger(trigger_flags)
-	. = ..()
-	if(!.)
-		return
+/datum/action/cooldown/change_disguise/Activate(atom/target)
+	. = TRUE
 
 	var/mob/living/carbon/human/synth = owner
 	var/datum/species/synth/synth_species = synth.dna.species
@@ -315,7 +324,13 @@
 
 	synth_disguise_species["(Drop Disguise)"] = /datum/species/synth
 
-	var/picked = tgui_input_list(owner, "Pick a disguise. Note, you do not gain all abilities (or downsides) of the select species.", "Synth Disguise", synth_disguise_species, synth_species.disguise_species?.name)
+	var/picked = tgui_input_list(
+		owner,
+		"Pick a disguise. Note, you do not gain all abilities (or downsides) of the select species.",
+		"Synth Disguise",
+		synth_disguise_species,
+		synth_species.disguise_species?.name,
+	)
 	if(!picked || QDELETED(src) || QDELETED(synth_species) || QDELETED(synth) || !IsAvailable())
 		return
 	var/picked_species = synth_disguise_species[picked]
@@ -379,7 +394,7 @@
 	limb_id = BODYPART_ID_SYNTH
 	icon_static = 'icons/mob/human/bodyparts.dmi'
 	icon = 'icons/mob/human/bodyparts.dmi'
-	icon_state = "synt_l_arm"
+	icon_state = "synth_l_arm"
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
