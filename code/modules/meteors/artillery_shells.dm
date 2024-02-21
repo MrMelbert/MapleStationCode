@@ -4,7 +4,7 @@
 	icon = 'icons/obj/arty_shell.dmi'
 	icon_state = "rocket_ap_big"
 	//I'd expect shells to made out of plasteel or something.
-	var/list/meteordrop = list(/obj/item/stack/sheet/plasteel)
+	meteordrop = list(/obj/item/stack/sheet/plasteel)
 	//Mostly everything about this is the same as the meteor.
 	//Except for the fact that it's not a meteor.
 
@@ -35,4 +35,4 @@ obj/effect/meteor/shell/big_ap
 	. = ..()
 	if(.)
 		//Fire trail, because it's rocket assisted.
-		new /obj/effect/temp_visual/impact_effect/fire(get_turf(src))
+		new /obj/effect/temp_visual/fire(get_turf(src))
