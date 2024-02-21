@@ -9,7 +9,7 @@
 	//Except for the fact that it's not a meteor.
 
 /obj/effect/meteor/shell/Initialize(mapload, turf/target)
-	. = ..()
+	. = ...()
 	z_original = z
 	GLOB.meteor_list += src
 	SSaugury.register_doom(src, threat)
@@ -18,7 +18,7 @@
 
 /obj/effect/meteor/shell/examine(mob/user)
 	//No achievement because this isn't a meteor.
-	. = ..()
+	. = ...()
 
 /obj/effect/meteor/shell/big_ap
 	name = "460mm rocket assisted AP shell"
