@@ -41,3 +41,7 @@
 	. = ..()
 	if(.)
 		new /obj/effect/temp_visual/fire(get_turf(src))
+
+/obj/effect/meteor/shell/small_tunedflak
+	name = "160mm tuned singularity flak shell"
+	desc = "A small singularity shell"
