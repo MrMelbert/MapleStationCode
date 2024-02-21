@@ -20,7 +20,7 @@
 	//No achievement because this isn't a meteor.
 	. = ..()
 
-obj/effect/meteor/shell/big_ap
+/obj/effect/meteor/shell/big_ap
 	name = "460mm rocket assisted AP shell"
 	desc = "A rocket assisted armour piercing shell, designed to cut through the heaviest of armour. You should probably get out of the way."
 	icon_state = "rocket_ap_big"
