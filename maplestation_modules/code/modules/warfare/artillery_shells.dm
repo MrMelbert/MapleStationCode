@@ -19,7 +19,6 @@
 	hits = 20
 	//Will fuck you up if you get hit by it.
 	hitpwr = EXPLODE_DEVASTATE
-	heavy = TRUE
 	//Made of very hard materials.
 	meteordrop = list(/obj/item/stack/sheet/mineral/plastitanium)
 
@@ -42,6 +41,28 @@
 	if(.)
 		new /obj/effect/temp_visual/fire(get_turf(src))
 
-/obj/effect/meteor/shell/small_tunedflak
+/obj/effect/meteor/shell/small_wmd_he
+	name = "160mm WMD singularity explosive shell"
+	desc = "A small WMD explosive singularity shell, designed to annihilate anything in its path. You should probably run far away."
+	icon_state = "he_wmd_small"
+	hits = 2
+	hitpwr = EXPLODE_LIGHT
+	dropamt = 2
+	heavy = TRUE
+
+/obj/effect/meteor/shell/small_wmd_he/meteor_effect()
+	..()
+	new /obj/effect/singulo_warhead(get_turf(src))
+
+/obj/effect/meteor/shell/small_wmd_flak
 	name = "160mm tuned singularity flak shell"
-	desc = "A small singularity shell"
+	desc = "A small WMD flak singularity shell, designed for explosive area denial. You should probably run far away."
+	icon_state = "flak_wmd_small"
+	hits = 2
+	hitpwr = EXPLODE_LIGHT
+	dropamt = 2
+	heavy = TRUE
+
+/obj/effect/meteor/shell/small_wmd_flak/meteor_effect()
+	..()
+	new /obj/effect/singulo_warhead/tuned(get_turf(src))
