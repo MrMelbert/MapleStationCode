@@ -79,10 +79,11 @@
 	icon_state = "spear0"
 	base_icon_state = "spear"
 	inhand_icon_state = null
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
 	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
-	slot_flags = ITEM_SLOT_BELT
-	worn_icon_state = "ratvarian_spear"
+	slot_flags = ITEM_SLOT_BACK
+	worn_icon_state = "sacredspear"
 	force = 7
 	armour_penetration = 30
 	throwforce = 20
@@ -91,7 +92,7 @@
 	attack_verb_continuous = list("stabs", "pokes", "slashes")
 	attack_verb_simple = list("stab", "poke", "slash")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the belt."
+	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the back."
 
 /obj/item/nullrod/cleric/Initialize(mapload)
 	. = ..()
@@ -110,3 +111,65 @@
 	new /obj/item/clothing/under/rank/cleric/skirt(src)
 	new /obj/item/clothing/shoes/cleric(src)
 	new /obj/item/clothing/suit/hooded/cleric(src)
+
+/obj/item/clothing/under/rank/security/officer/puligard
+	name = "puligard security uniform"
+	desc = "A tailored security uniform typically seen worn by members of the Puligard."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "pulisec"
+	inhand_icon_state = "pulisec"
+
+/obj/item/clothing/mask/gas/sechailer/puligard
+	name = "puligard sechailer"
+	desc = "With the Puligards ingenious technological advancements, they in their infinite wisdom wrap a scarf around their face over their sechailers."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "sechailer_pulisec"
+	inhand_icon_state = "sechailer_pulisec"
+
+/obj/item/clothing/suit/armor/vest/puligard
+	name = "puligard security vest"
+	desc = "A semi ceremonial protective vest worn by frontline Puligard members, the red indicates this one is for security officers."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "armor_pulisec"
+
+/obj/item/clothing/head/helmet/sec/puligard
+	name = "puligard security uniform"
+	desc = "A tailored uniform typically seen worn by members of the Puligard."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "helmet_pulisec"
+	inhand_icon_state = "helmet_pulisec"
+
+/obj/item/clothing/gloves/color/black/puligard
+	name = "puligard security uniform"
+	desc = "Plated gauntlets with soft protective fabric, so the Puligard may enact Her Will without discomfort."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "gloves_pulisec"
+	inhand_icon_state = "gloves_pulisec"
+	greyscale_config = NONE
+	greyscale_config_inhand_left = NONE
+	greyscale_config_inhand_right = NONE
+	greyscale_colors = NONE
+	greyscale_config_worn = NONE
+
+/obj/item/clothing/shoes/jackboots/puligard
+	name = "puligard security jackboots"
+	desc = "A sturdy pair of boots with added metal plating, typically worn by frontline Puligard members."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "jackboots_pulisec"
+	inhand_icon_state = "jackboots_pulisec"
