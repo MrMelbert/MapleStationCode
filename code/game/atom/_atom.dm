@@ -493,11 +493,12 @@
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
-	// NON-MODULE CHANGE
-	if(isnull(dna))
+	if(isnull(dna)) // Xenos
 		return ..()
-
-	return list("[dna.unique_enzymes]" = get_blood_type().type)
+	var/datum/blood_type/blood = get_blood_type()
+	if(isnull(blood)) // Skeletons?
+		return null
+	return list("[dna.unique_enzymes]" = blood.type)
 
 // NON-MODULE CHANGE END
 
