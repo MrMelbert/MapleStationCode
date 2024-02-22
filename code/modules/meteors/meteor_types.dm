@@ -36,17 +36,17 @@
 	var/signature = "motion"
 
 	//Used to determine if the meteor should be spinning.
-	var/spins = TRUE
+	var/spins = TRUE // NON-MODULE CHANGE
 
 	//Used to determine if a player should be awarded an achievement for examining the meteor.
-	var/achievementworthy = TRUE
+	var/achievementworthy = TRUE // NON-MODULE CHANGE
 
 /obj/effect/meteor/Initialize(mapload, turf/target)
 	. = ..()
 	z_original = z
 	GLOB.meteor_list += src
 	SSaugury.register_doom(src, threat)
-	if(spins)
+	if(spins) // NON-MODULE CHANGE
 		SpinAnimation()
 	chase_target(target)
 
@@ -121,7 +121,7 @@
 /obj/effect/meteor/examine(mob/user)
 	. = ..()
 
-	if(achievementworthy)
+	if(achievementworthy) // NON-MODULE CHANGE
 		check_examine_award(user)
 
 /obj/effect/meteor/attackby(obj/item/I, mob/user, params)
