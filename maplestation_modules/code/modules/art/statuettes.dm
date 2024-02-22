@@ -118,10 +118,6 @@
 
 	if (!sculpting && ismovable(target))
 		set_target(target,user)
-		/*skip sculpting time
-		if(current_target != null)
-			create_statue(user)
-		*/
 	return TRUE
 
 // We aim at something to turn into our sculpting target
@@ -130,21 +126,17 @@
 
 	if (!sculpting && ismovable(target))
 		set_target(target,user)
-		/*skip sculpting time
-		if(current_target != null)
-			create_statue(user)
-		*/
 	return . | AFTERATTACK_PROCESSED_ITEM
 
 /obj/item/modeling_block/proc/is_viable_target(mob/living/user, atom/movable/target)
 	//Only things on turfs
 	if(!isturf(target.loc))
-		user.balloon_alert(user, "no sculpt target!")
+		user.balloon_alert(user, "no sculpting subject!")
 		return FALSE
 	//No big icon things
 	var/list/icon_dimensions = get_icon_dimensions(target.icon)
 	if(icon_dimensions["width"] > 2*world.icon_size || icon_dimensions["height"] > 2*world.icon_size)
-		user.balloon_alert(user, "sculpt target is too big!")
+		user.balloon_alert(user, "subject is too big!")
 		return FALSE
 	return TRUE
 
@@ -157,66 +149,13 @@
 	else
 		current_target = target.appearance
 	var/mutable_appearance/ma = current_target
-	user.balloon_alert(user, "sculpt target is [ma.name]")
+	user.balloon_alert(user, "sculpting [target.name]")
 
 /obj/item/modeling_block/attack_self(mob/user)
 	if(current_target)
 		create_statue(user)
 	else
-		balloon_alert(user,"no subject to sculpt selected")
-/* Seeing if i can skip the sculpting time and/or if setting target works
-/// Starts or continues the sculpting action on the carving block material
-/obj/item/modeling_block/proc/start_sculpting(mob/living/user)
-	user.balloon_alert(user, "sculpting block...")
-	playsound(src, pick(usesound), 75, TRUE)
-	sculpting = TRUE
-	//How long whole process takes
-	var/sculpting_time = 30 SECONDS
-	//Single interruptible progress period
-	var/sculpting_period = round(sculpting_time / world.icon_size) //this is just so it reveals pixels line by line for each.
-	var/interrupted = FALSE
-	var/remaining_time = sculpting_time - (prepared_block.completion * sculpting_time)
-
-	var/datum/progressbar/total_progress_bar = new(user, sculpting_time, prepared_block)
-	while(remaining_time > 0 && !interrupted)
-		if(do_after(user, sculpting_period, target = prepared_block, progress = FALSE))
-			var/time_delay = !(remaining_time % SCULPT_SOUND_INCREMENT)
-			if(time_delay)
-				playsound(src, 'sound/effects/break_stone.ogg', 50, TRUE)
-			remaining_time -= sculpting_period
-			prepared_block.set_completion((sculpting_time - remaining_time)/sculpting_time)
-			total_progress_bar.update(sculpting_time - remaining_time)
-		else
-			interrupted = TRUE
-	total_progress_bar.end_progress()
-	if(!interrupted && !QDELETED(prepared_block))
-		prepared_block.create_statue()
-		user.balloon_alert(user, "statue finished")
-	stop_sculpting(silent = !interrupted)
-
-/obj/item/modeling_block/dropped(mob/user, silent)
-	. = ..()
-	stop_sculpting()
-
-/// Cancel the sculpting action
-/obj/item/modeling_block/proc/stop_sculpting(silent = FALSE)
-	sculpting = FALSE
-	if(prepared_block && prepared_block.completion == 0)
-		prepared_block.reset_target()
-	prepared_block = null
-
-	if(!silent && tracked_user)
-		tracked_user.balloon_alert(tracked_user, "sculpting cancelled!")
-
-	if(tracked_user)
-		UnregisterSignal(tracked_user, COMSIG_MOVABLE_MOVED)
-		tracked_user = null
-
-/obj/item/modeling_block/proc/on_moved()
-	SIGNAL_HANDLER
-
-	stop_sculpting()
-	*/
+		balloon_alert(user, "no sculpting subject!")
 
 /obj/item/modeling_block/proc/create_statue(mob/user)
 	var/obj/item/statue/custom/new_statue = new(user.loc)
