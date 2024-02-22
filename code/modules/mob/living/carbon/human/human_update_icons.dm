@@ -102,7 +102,7 @@ There are several things that need to be remembered:
 		var/icon_file
 		var/woman
 		//BEGIN SPECIES HANDLING
-		if((bodyshape & BODYSHAPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+		if((bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			// NON-MODULE CHANGE kapu why
 			if(uniform.greyscale_config_worn && uniform.digitigrade_greyscale_config_worn && uniform.greyscale_colors)
 				icon_file = SSgreyscale.GetColoredIconByType(uniform.digitigrade_greyscale_config_worn, uniform.greyscale_colors)
