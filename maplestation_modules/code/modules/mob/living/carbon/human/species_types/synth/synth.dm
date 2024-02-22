@@ -38,6 +38,7 @@
 	mutanteyes = /obj/item/organ/internal/eyes/robotic
 	mutantears = /obj/item/organ/internal/ears/cybernetic
 	species_pain_mod = 0.2
+	exotic_bloodtype = /datum/blood_type/oil
 	/// Reference to the species we're disguised as.
 	VAR_FINAL/datum/species/disguise_species
 	/// If TRUE, synth limbs will update when attached and detached.
@@ -183,6 +184,9 @@
 	fixed_mut_color = disguise_species.fixed_mut_color
 	hair_color = disguise_species.hair_color
 
+	if(isnull(synth.client?.prefs) || synth.client.prefs.read_preference(/datum/preference/choiced/synth_blood) == "As Disguise")
+		exotic_bloodtype = disguise_species.exotic_bloodtype
+
 	synth.add_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
 	synth.update_body(TRUE)
@@ -205,6 +209,8 @@
 	name = initial(name)
 	fixed_mut_color = initial(fixed_mut_color)
 	hair_color = initial(hair_color)
+
+	exotic_bloodtype = /datum/blood_type/oil
 
 	synth.remove_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 

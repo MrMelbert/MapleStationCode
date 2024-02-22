@@ -33,6 +33,12 @@ export const feature_synth_damage_threshold: FeatureNumeric = {
   component: FeatureNumberInput,
 };
 
+export const feature_synth_blood: FeatureChoiced = {
+  name: 'Synth Blood',
+  description: 'Determines how your blood works.',
+  component: FeatureDropdownInput,
+};
+
 export const feature_arm_wings: FeatureChoiced = {
   name: 'Arm Wings',
   component: FeatureDropdownInput,
