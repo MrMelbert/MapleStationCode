@@ -21,12 +21,21 @@
 	hitpwr = EXPLODE_DEVASTATE
 	//Made of very hard materials.
 	meteordrop = list(/obj/item/stack/sheet/mineral/plastitanium)
+	//For rocket assisted shells.
+	var/fuel = 100
 
 /obj/effect/meteor/shell/big_ap/Move()
 	. = ..()
-	if(.)
+	if(. && fuel > 0)
 		//Fire trail, because it's rocket assisted.
 		new /obj/effect/temp_visual/fire(get_turf(src))
+		fuel--
+
+/obj/effect/meteor/shell/big_ap/meteor_effect()
+	..()
+	//Detonate fuel.
+	if(fuel > 0)
+		explosion(src, heavy_impact_range = 1, light_impact_range = 2, flash_range = 3, adminlog = FALSE)
 
 /obj/effect/meteor/shell/small_ap
 	name = "160mm rocket assisted AP shell"
@@ -35,11 +44,18 @@
 	hits = 8
 	meteordrop = list(/obj/item/stack/sheet/mineral/plastitanium)
 	dropamt = 2
+	var/fuel = 60
 
 /obj/effect/meteor/shell/small_ap/Move()
 	. = ..()
-	if(.)
+	if(. && fuel > 0)
 		new /obj/effect/temp_visual/fire(get_turf(src))
+		fuel--
+
+/obj/effect/meteor/shell/small_ap/meteor_effect()
+	..()
+	if(fuel > 0)
+		explosion(src, light_impact_range = 1, flash_range = 2, adminlog = FALSE)
 
 /obj/effect/meteor/shell/small_wmd_he
 	name = "160mm WMD singularity explosive shell"
