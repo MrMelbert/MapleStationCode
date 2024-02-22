@@ -27,6 +27,11 @@
 		synth.disguise_as(target, GLOB.species_list[value])
 		return
 
+/datum/preference/choiced/synth_species/is_accessible(datum/preferences/preferences)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/synth)
+
+#undef NO_DISGUISE
+
 /datum/preference/numeric/synth_damage_threshold
 	savefile_key = "feature_synth_damage_threshold"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -44,4 +49,5 @@
 		return
 	synth.disuise_damage_threshold = value
 
-#undef NO_DISGUISE
+/datum/preference/numeric/synth_damage_threshold/is_accessible(datum/preferences/preferences)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/synth)
