@@ -77,6 +77,7 @@
 
 /obj/effect/meteor/shell/small_wmd_he/meteor_effect()
 	..()
+	new /obj/effect/temp_visual/space_explosion(get_turf(src))
 	new /obj/effect/singulo_warhead(get_turf(src))
 
 /obj/effect/meteor/shell/small_wmd_flak
@@ -90,4 +91,5 @@
 
 /obj/effect/meteor/shell/small_wmd_flak/meteor_effect()
 	..()
+	new /obj/effect/temp_visual/space_explosion(get_turf(src))
 	new /obj/effect/singulo_warhead/tuned(get_turf(src))
