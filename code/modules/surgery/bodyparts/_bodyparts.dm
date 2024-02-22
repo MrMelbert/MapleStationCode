@@ -1296,9 +1296,10 @@
 		update_icon_dropped()
 
 	//This foot gun needs a safety
-	if(!icon_exists(icon_holder, "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"))
+	var/resulting_icon = "[limb_id]_[body_zone][is_dimorphic ? "_[limb_gender]" : ""]"
+	if(!icon_exists(icon_holder, resulting_icon))
 		reset_appearance()
-		stack_trace("change_appearance([icon], [id], [greyscale], [dimorphic]) generated null icon")
+		stack_trace("change_appearance([icon], [id], [greyscale], [dimorphic]) generated null icon ([resulting_icon])")
 
 ///Resets the base appearance of a limb to it's default values.
 /obj/item/bodypart/proc/reset_appearance()

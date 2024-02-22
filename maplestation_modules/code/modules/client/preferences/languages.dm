@@ -3,9 +3,6 @@
 /// Simple define to denote no language.
 #define NO_LANGUAGE "No Language"
 
-/// List of species IDs of species's that can't get an additional language
-#define BLACKLISTED_SPECIES_FROM_LANGUAGES list(/datum/species/synth, /datum/species/android)
-
 /datum/preference/choiced/language
 	savefile_key = "bilingual_language"
 
@@ -29,9 +26,6 @@
 		return NO_LANGUAGE
 
 	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
-	if(species in BLACKLISTED_SPECIES_FROM_LANGUAGES)
-		return NO_LANGUAGE
-
 	var/banned = initial(lang_to_add.banned_from_species)
 	var/req = initial(lang_to_add.required_species)
 	if((banned && ispath(species, banned)) || (req && !ispath(species, req)))
@@ -191,8 +185,7 @@
 
 	data["base_languages"] = base_languages
 	data["bonus_languages"] = bonus_languages
-	data["blacklisted_species"] = BLACKLISTED_SPECIES_FROM_LANGUAGES
+	data["blacklisted_species"] = list()
 	return data
 
 #undef NO_LANGUAGE
-#undef BLACKLISTED_SPECIES_FROM_LANGUAGES
