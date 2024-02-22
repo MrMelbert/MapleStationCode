@@ -26,9 +26,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	/// Itself is always included in this list
 	var/list/compatible_types = list()
 	/// What reagent is represented by this blood type?
-	var/reagent_type = /datum/reagent/blood
+	var/datum/reagent/reagent_type = /datum/reagent/blood
 	/// What chem is used to restore this blood type (outside of itself, of course)?
-	var/restoration_chem = /datum/reagent/iron
+	var/datum/reagent/restoration_chem = /datum/reagent/iron
 
 /datum/blood_type/New()
 	. = ..()
@@ -169,7 +169,33 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /datum/blood_type/crew/ethereal
 	name = "LE"
+	color = "#97ee63"
 	reagent_type = /datum/reagent/consumable/liquidelectricity
+
+/datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	if(!new_splat)
+		return
+	blood.can_dry = FALSE
+	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned))
+
+/datum/blood_type/crew/ethereal/proc/on_cleaned(obj/effect/decal/cleanable/source, mob/living/user, obj/item/tool, ...)
+	SIGNAL_HANDLER
+
+	if(!istype(tool, /obj/item/mop))
+		return NONE
+	if(!tool.reagents?.has_reagent(chemical_flags = REAGENT_CLEANS))
+		return NONE
+	if(source.bloodiness <= BLOOD_AMOUNT_PER_DECAL * 0.2)
+		return NONE
+	if(!user.electrocute_act(clamp(sqrt(source.bloodiness * BLOOD_PER_UNIT_MODIFIER * 4), 5, 50), source, flags = SHOCK_SUPPRESS_MESSAGE))
+		return NONE
+	playsound(source, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	do_sparks(3, FALSE, source)
+	user.visible_message(
+		span_warning("Upon touching [source] with [tool], the [initial(reagent_type.name)] inside conducts, shocking [user]!"),
+		span_warning("Upon touching [source] with [tool], the [initial(reagent_type.name)] conducts, shocking you!"),
+	)
+	return ITEM_INTERACT_BLOCKING
 
 /// Oil based blood for robot lifeforms
 /datum/blood_type/oil
@@ -177,7 +203,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	color = "#1f1a00"
 	reagent_type = /datum/reagent/fuel/oil
 
-/datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat = FALSE)
+/datum/blood_type/oil/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	if(!new_splat)
 		return
 	// Oil blood will never dry and can be ignited with fire
@@ -201,6 +227,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /// Slimeperson's jelly blood, is also known as "toxic" or "toxin" blood
 /datum/blood_type/slime
 	name = "TOX"
+	color = "#801E28"
 	reagent_type = /datum/reagent/toxin/slimejelly
 
 /// Water based blood for Podpeople primairly

@@ -58,9 +58,7 @@
 
 	AddComponent(\
 		/datum/component/bloody_spreader,\
-		blood_left = INFINITY,\
-		blood_dna = list("meaty DNA" = "MT-"),\
-		diseases = null,\
+		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
 
 /// Called when we get mad at something, either for attacking us or attacking the nearby area

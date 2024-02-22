@@ -1,7 +1,7 @@
 // NON-MODULE CHANGE : This whole file
 
 /obj/effect/decal/cleanable/blood
-	name = "blood"
+	name = "pool of blood"
 	desc = "It's weird and gooey. Perhaps it's the chef's cooking?"
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "floor1"
@@ -10,11 +10,18 @@
 	clean_type = CLEAN_TYPE_BLOOD
 	decal_reagent = /datum/reagent/blood
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
-
+	color = COLOR_BLOOD
+	/// Can this blood dry out?
 	var/can_dry = TRUE
+	/// Is this blood dried out?
 	var/dried = FALSE
-	var/dryname = "dried blood" //when the blood lasts long enough, it becomes dry and gets a new name
-	var/drydesc = "Looks like it's been here a while. Eew." //as above
+
+	/// The "base name" of the blood, IE the "pool of" in "pool of blood"
+	var/base_name = "pool of"
+	/// When dried, this is prefixed to the name
+	var/dry_prefix = "dried"
+	/// When dried, this becomes the desc of the blood
+	var/dry_desc = "Looks like it's been here a while. Eew."
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
@@ -30,6 +37,14 @@
 	STOP_PROCESSING(SSblood_drying, src)
 	return ..()
 
+/obj/effect/decal/cleanable/blood/proc/get_blood_string()
+	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
+	var/list/all_blood_names = list()
+	for(var/dna_sample in all_dna)
+		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+		all_blood_names |= lowertext(initial(blood.reagent_type.name))
+	return english_list(all_blood_names)
+
 /obj/effect/decal/cleanable/blood/process(seconds_per_tick)
 	if(dried || !can_dry)
 		return PROCESS_KILL
@@ -40,16 +55,22 @@
 
 /obj/effect/decal/cleanable/blood/update_name(updates)
 	. = ..()
-	name = dried ? dryname : initial(name)
+	name = initial(name)
+	if(base_name)
+		name = "[base_name] [get_blood_string()]"
+	if(dried && dry_prefix)
+		name = "[dry_prefix] [name]"
 
 /obj/effect/decal/cleanable/blood/update_desc(updates)
 	. = ..()
-	desc = dried ? drydesc : initial(desc)
+	desc = initial(desc)
+	if(dried && dry_desc)
+		desc = dry_desc
 
 ///This is what actually "dries" the blood. Returns true if it's all out of blood to dry, and false otherwise
 /obj/effect/decal/cleanable/blood/proc/dry()
 	dried = TRUE
-	update_appearance(UPDATE_NAME|UPDATE_DESC)
+	update_appearance()
 	reagents?.clear_reagents()
 	// I want to make this animate() to the color but bloodiness is too unpredictable, needs further work
 	var/temp_color = ReadHSV(RGBtoHSV(color || COLOR_WHITE))
@@ -90,7 +111,8 @@
 
 /obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
 	add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
-	return ..()
+	. = ..()
+	dry()
 
 /obj/effect/decal/cleanable/blood/splatter
 	icon_state = "gibbl1"
@@ -110,14 +132,16 @@
 	desc = "They look like tracks left by wheels."
 	random_icon_states = null
 	beauty = -50
-	dryname = "dried tracks"
-	drydesc = "Some old bloody tracks left by wheels. Machines are evil, perhaps."
+	base_name = ""
+	dry_desc = "Some old bloody tracks left by wheels. Machines are evil, perhaps."
 
 /obj/effect/decal/cleanable/blood/trail_holder
+	name = "trail of blood"
 	desc = "Your instincts say you shouldn't be following these."
 	beauty = -50
 	icon_state = null
 	random_icon_states = null
+	base_name = "trail of"
 	var/list/existing_dirs = list()
 
 /obj/effect/decal/cleanable/blood/gibs
@@ -130,8 +154,9 @@
 	random_icon_states = list("gib1", "gib2", "gib3", "gib4", "gib5", "gib6")
 	mergeable_decal = FALSE
 
-	dryname = "rotting gibs"
-	drydesc = "They look bloody and gruesome while some terrible smell fills the air."
+	base_name = ""
+	dry_prefix = "rotting"
+	dry_desc = "They look bloody and gruesome while some terrible smell fills the air."
 	decal_reagent = /datum/reagent/consumable/liquidgibs
 	reagent_amount = 5
 	///Information about the diseases our streaking spawns
@@ -140,6 +165,9 @@
 /obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
 	. = ..()
 	RegisterSignal(src, COMSIG_MOVABLE_PIPE_EJECTING, PROC_REF(on_pipe_eject))
+
+/obj/effect/decal/cleanable/blood/gibs/get_blood_string()
+	return ""
 
 /obj/effect/decal/cleanable/blood/gibs/Destroy()
 	LAZYNULL(streak_diseases)
@@ -228,8 +256,8 @@
 	desc = "Space Jesus, why didn't anyone clean this up? They smell terrible."
 	icon_state = "gib1-old"
 	bloodiness = 0
-	dryname = "old rotting gibs"
-	drydesc = "Space Jesus, why didn't anyone clean this up? They smell terrible."
+	dry_prefix = ""
+	dry_desc = ""
 
 /obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases)
 	add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
@@ -244,8 +272,8 @@
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
 	bloodiness = 0
-	dryname = "dried drips of blood"
-	drydesc = "A dried spattering."
+	base_name = "drips of"
+	dry_desc = "A dried spattering."
 
 //BLOODY FOOTPRINTS
 /obj/effect/decal/cleanable/blood/footprints
@@ -255,6 +283,8 @@
 	icon_state = "blood1"
 	random_icon_states = null
 	bloodiness = 0
+	base_name = ""
+	dry_desc = "HMM... SOMEONE WAS HERE!"
 	var/entered_dirs = 0
 	var/exited_dirs = 0
 
@@ -264,15 +294,15 @@
 	/// List of species that have made footprints here.
 	var/list/species_types = list()
 
-	dryname = "dried footprints"
-	drydesc = "HMM... SOMEONE WAS HERE!"
-
 /obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
 	. = ..()
 	icon_state = "" //All of the footprint visuals come from overlays
 	if(mapload)
 		entered_dirs |= dir //Keep the same appearance as in the map editor
 		update_appearance()
+
+/obj/effect/decal/cleanable/blood/footprints/get_blood_string()
+	return ""
 
 //Rotate all of the footprint directions too
 /obj/effect/decal/cleanable/blood/footprints/setDir(newdir)
@@ -350,6 +380,9 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	pass_flags = PASSTABLE | PASSGRILLE
 	icon_state = "hitsplatter1"
 	random_icon_states = list("hitsplatter1", "hitsplatter2", "hitsplatter3")
+
+	base_name = ""
+
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc
 	/// The cached info about the blood

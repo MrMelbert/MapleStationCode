@@ -107,8 +107,6 @@
 
 /// A helper to see how much blood we're losing per tick
 /mob/living/carbon/proc/get_bleed_rate()
-	if(!blood_volume)
-		return
 	var/bleed_amt = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/iter_bodypart = X
@@ -116,8 +114,6 @@
 	return bleed_amt
 
 /mob/living/carbon/human/get_bleed_rate()
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return
 	. = ..()
 	. *= physiology.bleed_mod
 
@@ -263,6 +259,12 @@
 	return null
 
 /mob/living/silicon/get_blood_type()
+	return GLOB.blood_types[/datum/blood_type/oil]
+
+/mob/living/simple_animal/bot/get_blood_dna_list()
+	return GLOB.blood_types[/datum/blood_type/oil]
+
+/mob/living/basic/bot/get_blood_dna_list()
 	return GLOB.blood_types[/datum/blood_type/oil]
 
 /mob/living/carbon/alien/get_blood_type()

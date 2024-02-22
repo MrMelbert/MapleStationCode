@@ -482,12 +482,14 @@
 /atom/proc/relaydrive(mob/living/user, direction)
 	return !(SEND_SIGNAL(src, COMSIG_RIDDEN_DRIVER_MOVE, user, direction) & COMPONENT_DRIVER_BLOCK_MOVE)
 
+// NON-MODULE CHANGE
+
 ///returns the mob's dna info as a list, to be inserted in an object's blood_DNA list
 /mob/living/proc/get_blood_dna_list()
-	// NON-MODULE CHANGE
 	var/datum/blood_type/blood = get_blood_type()
 	if(!isnull(blood))
 		return list("UNKNOWN DNA" = blood.type)
+	return null
 
 ///Get the mobs dna list
 /mob/living/carbon/get_blood_dna_list()
@@ -496,6 +498,8 @@
 		return ..()
 
 	return list("[dna.unique_enzymes]" = get_blood_type().type)
+
+// NON-MODULE CHANGE END
 
 ///to add a mob's dna info into an object's blood_dna list.
 /atom/proc/transfer_mob_blood_dna(mob/living/injected_mob)
