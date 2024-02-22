@@ -9,10 +9,10 @@
 	plane = ABOVE_GAME_PLANE
 
 	COOLDOWN_DECLARE(detonate_cooldown)
-	var/detonate_delay = 2 SECONDS
+	var/detonate_delay = 1 SECONDS
 
 	//Lifetime of the singularity, 4 seconds by default for untuned warheads.
-	var/lifetime = 4 SECONDS
+	var/lifetime = 8 SECONDS
 
 	//Determines if the warhead should be in area denial mode.
 	var/tuned = FALSE
@@ -46,19 +46,19 @@
 		return
 	COOLDOWN_START(src, detonate_cooldown, detonate_delay)
 	if(cluster)
-		explosion(src, light_impact_range = 4, flame_range = 8, flash_range = 10, ignorecap = TRUE, adminlog = FALSE)
+		explosion(src, light_impact_range = 2, flame_range = 8, flash_range = 10, ignorecap = TRUE, adminlog = FALSE)
 	else
-		explosion(src, light_impact_range = 8, flame_range = 12, flash_range = 16, ignorecap = TRUE, adminlog = FALSE)
+		explosion(src, light_impact_range = 4, flame_range = 12, flash_range = 16, ignorecap = TRUE, adminlog = FALSE)
 
 /obj/effect/singulo_warhead/tuned
 	tuned = TRUE
-	lifetime = 12 SECONDS
+	lifetime = 16 SECONDS
 
-obj/effect/singulo_warhead/cluster
+/obj/effect/singulo_warhead/cluster
 	cluster = TRUE
-	lifetime = 2 SECONDS
+	lifetime = 4 SECONDS
 
-obj/effect/singulo_warhead/tuned_cluster
+/obj/effect/singulo_warhead/tuned_cluster
 	tuned = TRUE
 	cluster = TRUE
 	lifetime = 8 SECONDS
