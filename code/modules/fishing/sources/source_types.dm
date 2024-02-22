@@ -341,7 +341,7 @@
 	)
 	fish_counts = list(
 		/obj/item/stack/sheet/mineral/adamantine = 3,
-		/obj/item/stack/sheet/mineral/mythril = 2,
+		/obj/item/stack/sheet/mineral/runite = 2,
 	)
 
 /datum/fish_source/moisture_trap
