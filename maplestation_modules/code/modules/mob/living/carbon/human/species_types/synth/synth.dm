@@ -261,13 +261,20 @@
 	for(var/obj/item/bodypart/limb as anything in synth.bodyparts)
 		var/below_threshold = (limb.max_damage - limb.get_damage()) / limb.max_damage * 100 <= disuise_damage_threshold
 		if(limb.limb_id == BODYPART_ID_SYNTH)
-			if(below_threshold)
+			if(!below_threshold)
 				limb_gained(synth, limb, update = FALSE)
 				changed_limbs += limb
+				if(istype(limb, /obj/item/bodypart/head))
+					var/obj/item/organ/internal/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+					if(tongue?.temp_say_mod == "whirrs")
+						tongue.temp_say_mod = null
 		else
-			if(!below_threshold)
+			if(below_threshold)
 				limb_lost(synth, limb, update = FALSE)
 				changed_limbs += limb
+				if(istype(limb, /obj/item/bodypart/head))
+					var/obj/item/organ/internal/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
+					tongue?.temp_say_mod = "whirrs"
 
 	var/num_changes = length(changed_limbs)
 	if(num_changes > 0)
@@ -276,13 +283,6 @@
 		else if(num_changes == 1)
 			synth.visible_message(span_warning("[synth]'s [changed_limbs[1].plaintext_zone] changes appearance!"))
 		synth.update_body_parts(TRUE)
-
-	var/obj/item/organ/internal/tongue/tongue = synth.get_organ_slot(ORGAN_SLOT_TONGUE)
-	if(!isnull(tongue))
-		if((synth.getBruteLoss() + synth.getFireLoss()) / synth.maxHealth * 100 <= disuise_damage_threshold)
-			tongue.temp_say_mod = "whirrs"
-		else if(tongue.temp_say_mod == "whirrs")
-			tongue.temp_say_mod = null
 
 /// Like change appearance, but passing it a bodypart will change the appearance to that of the bodypart.
 /obj/item/bodypart/proc/change_appearance_into(obj/item/bodypart/other_part, update = TRUE)
