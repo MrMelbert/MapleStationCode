@@ -6,8 +6,7 @@
 	mutantstomach = /obj/item/organ/internal/stomach/ethereal
 	mutanttongue = /obj/item/organ/internal/tongue/ethereal
 	mutantheart = /obj/item/organ/internal/heart/ethereal
-	exotic_blood = /datum/reagent/consumable/liquidelectricity //Liquid Electricity. fuck you think of something better gamer
-	exotic_bloodtype = "LE"
+	exotic_bloodtype = /datum/blood_type/crew/ethereal // NON-MODULE CHANGE
 	siemens_coeff = 0.5 //They thrive on energy
 	payday_modifier = 1.0
 	inherent_traits = list(

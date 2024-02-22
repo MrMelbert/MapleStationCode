@@ -103,7 +103,7 @@
 	AddComponent(
 		/datum/component/bloody_spreader,\
 		blood_left = INFINITY,\
-		blood_dna = list("Unknown DNA" = "X*"),\
+		blood_dna = list("Unknown DNA" = /datum/blood_type/xenomorph),\
 		diseases = null,\
 	)
 

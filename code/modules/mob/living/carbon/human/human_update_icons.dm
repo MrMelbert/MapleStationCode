@@ -161,6 +161,9 @@ There are several things that need to be remembered:
 
 	apply_overlay(ID_LAYER)
 
+/mob/living/carbon/human
+	var/mutable_appearance/bloody_lefthand_overlay
+	var/mutable_appearance/bloody_righthand_overlay
 
 /mob/living/carbon/human/update_worn_gloves()
 	remove_overlay(GLOVES_LAYER)
@@ -169,19 +172,22 @@ There are several things that need to be remembered:
 		var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_GLOVES) + 1]
 		inv.update_icon()
 
+	// NON-MODULE CHANGE
 	//Bloody hands begin
-	var/mutable_appearance/bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
-	cut_overlay(bloody_overlay)
+	cut_overlay(bloody_lefthand_overlay)
+	cut_overlay(bloody_righthand_overlay)
 	if(!gloves && blood_in_hands && (num_hands > 0))
-		bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
-		if(num_hands < 2)
-			if(has_left_hand(FALSE))
-				bloody_overlay.icon_state = "bloodyhands_left"
-			else if(has_right_hand(FALSE))
-				bloody_overlay.icon_state = "bloodyhands_right"
-
-		add_overlay(bloody_overlay)
-	//Bloody hands end
+		bloody_lefthand_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands_left", -GLOVES_LAYER)
+		bloody_righthand_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands_right", -GLOVES_LAYER)
+		var/overlay_color = get_blood_dna_color()
+		if(has_left_hand(check_disabled = FALSE))
+			bloody_lefthand_overlay.color = overlay_color
+			add_overlay(bloody_lefthand_overlay)
+		if(has_right_hand(check_disabled = FALSE))
+			bloody_righthand_overlay.color = overlay_color
+			add_overlay(bloody_righthand_overlay)
+	// Bloody hands end
+	// NON-MODULE CHANGE END
 
 	if(gloves)
 		var/obj/item/worn_item = gloves

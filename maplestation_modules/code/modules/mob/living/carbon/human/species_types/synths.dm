@@ -24,6 +24,7 @@
 	meat = null
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC
 	species_language_holder = /datum/language_holder/synthetic
+	// exotic_bloodtype = /datum/blood_type/oil
 	/// 2021:
 	/// If your health becomes equal to or less than this value, your disguise is supposed to break.
 	/// Unfortunately, that feature currently isn't implemented, so currently, all this threshold is

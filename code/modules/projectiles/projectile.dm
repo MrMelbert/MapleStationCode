@@ -321,10 +321,7 @@
 				var/splatter_dir = dir
 				if(starting)
 					splatter_dir = get_dir(starting, target_turf)
-				if(isalien(living_target))
-					new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(target_turf, splatter_dir)
-				else
-					new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_turf, splatter_dir)
+				living_target.do_splatter_effect(splatter_dir) // NON-MODULE CHANGE
 				if(prob(33))
 					living_target.add_splatter_floor(target_turf)
 			else if (hit_bodypart?.biological_state & (BIO_METAL|BIO_WIRED))

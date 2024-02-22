@@ -6,8 +6,20 @@
 /// Two mobs one is facing a person, but the other is perpendicular
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
-/proc/random_blood_type()
-	return pick(4;"O-", 36;"O+", 3;"A-", 28;"A+", 1;"B-", 20;"B+", 1;"AB-", 5;"AB+")
+// NON-MODULE CHANGE
+/proc/random_human_blood_type()
+	var/static/list/human_blood_type_weights = list(
+		/datum/blood_type/crew/human/o_minus = 4,
+		/datum/blood_type/crew/human/o_plus = 36,
+		/datum/blood_type/crew/human/a_minus = 28,
+		/datum/blood_type/crew/human/a_plus = 3,
+		/datum/blood_type/crew/human/b_minus = 20,
+		/datum/blood_type/crew/human/b_plus = 1,
+		/datum/blood_type/crew/human/ab_minus = 5,
+		/datum/blood_type/crew/human/ab_plus = 1
+	)
+
+	return pick_weight(human_blood_type_weights)
 
 /proc/random_eye_color()
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))

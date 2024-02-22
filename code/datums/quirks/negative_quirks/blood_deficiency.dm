@@ -26,14 +26,10 @@
  * * seconds_per_tick
  */
 /datum/quirk/blooddeficiency/proc/lose_blood(seconds_per_tick)
-	if(quirk_holder.stat == DEAD)
+	// NON-MODULE CHANGE
+	if(quirk_holder.stat == DEAD || HAS_TRAIT(quirk_holder, TRAIT_NOBLOOD) || quirk_holder.blood_volume <= min_blood || !iscarbon(quirk_holder))
 		return
 
 	var/mob/living/carbon/human/carbon_target = quirk_holder
-	if(HAS_TRAIT(carbon_target, TRAIT_NOBLOOD) && isnull(carbon_target.dna.species.exotic_blood)) //can't lose blood if your species doesn't have any
-		return
-
-	if (carbon_target.blood_volume <= min_blood)
-		return
 	// Ensures that we don't reduce total blood volume below min_blood.
 	carbon_target.blood_volume = max(min_blood, carbon_target.blood_volume - carbon_target.dna.species.blood_deficiency_drain_rate * seconds_per_tick)

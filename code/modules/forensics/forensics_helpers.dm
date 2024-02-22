@@ -62,18 +62,51 @@
 	forensics.add_hiddenprint(suspect)
 	return TRUE
 
+// NON-MODULE CHANGE for blood
+/atom
+	/// Cached mixed color of all blood DNA on us
+	var/blood_dna_color
+
+/atom/proc/get_blood_dna_color()
+	if(blood_dna_color)
+		return blood_dna_color
+
+	var/list/colors = list()
+	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
+	for(var/dna_sample in all_dna)
+		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+		colors += blood.color
+
+	var/final_color = pop(colors)
+	for(var/color in colors)
+		final_color = BlendRGB(final_color, color, 0.5)
+	blood_dna_color = final_color
+	return final_color
+
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
 
 /obj/add_blood_DNA(list/blood_DNA_to_add)
-	. = ..()
 	if (isnull(blood_DNA_to_add))
-		return .
+		return FALSE
 	if (forensics)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 	else
 		forensics = new(src, blood_DNA = blood_DNA_to_add)
+	blood_dna_color = null
+	return TRUE
+
+/obj/effect/decal/cleanable/blood/add_blood_DNA(list/blood_DNA_to_add)
+	var/first_dna = GET_ATOM_BLOOD_DNA_LENGTH(src)
+	if(!..())
+		return FALSE
+
+	color = get_blood_dna_color()
+	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
+	for(var/new_blood in blood_DNA_to_add)
+		var/datum/blood_type/blood = GLOB.blood_types[blood_DNA_to_add[new_blood]]
+		blood.set_up_blood(src, first_dna == 0)
 	return TRUE
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)
@@ -81,9 +114,12 @@
 		return FALSE
 	return ..()
 
+// NON-MODULE CHANGE for blood
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
-	transfer_blood = rand(2, 4)
-	return ..()
+	. = ..()
+	if(.)
+		transfer_blood = rand(2, 4)
+	return .
 
 /turf/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
 	var/obj/effect/decal/cleanable/blood/splatter/blood_splatter = locate() in src
@@ -112,6 +148,7 @@
 			forensics = new(src)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 		blood_in_hands = rand(2, 4)
+	blood_dna_color = null
 	update_worn_gloves()
 	return TRUE
 
