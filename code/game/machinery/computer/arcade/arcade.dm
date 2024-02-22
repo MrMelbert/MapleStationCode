@@ -68,7 +68,8 @@ GLOBAL_LIST_INIT(arcade_prize_pool, list(
 		/obj/item/toy/foamfinger = 2,
 		/obj/item/clothing/glasses/trickblindfold = 2,
 		/obj/item/clothing/mask/party_horn = 2,
-		/obj/item/storage/box/party_poppers = 2))
+		/obj/item/storage/box/party_poppers = 2,
+		/obj/item/toy/plush/peepy = 2)) // NON-MODULE CHANGE: PEEPY
 
 /obj/machinery/computer/arcade
 	name = "random arcade"
