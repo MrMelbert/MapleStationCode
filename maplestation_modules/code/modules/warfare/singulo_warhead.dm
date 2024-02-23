@@ -29,17 +29,20 @@
 	vis_contents += warp
 	if(tuned)
 		START_PROCESSING(SSobj, src)
-	QDEL_IN(src, lifetime)
+	addtimer(CALLBACK(src, PROC_REF(detonate)), lifetime)
 
 /obj/effect/singulo_warhead/Destroy()
+	vis_contents -= warp
+	QDEL_NULL(warp)
+	return ..()
+
+/obj/effect/singulo_warhead/proc/detonate()
 	if(!tuned)
 		if(cluster)
 			explosion(src, devastation_range = 3, heavy_impact_range = 6, light_impact_range = 12, flame_range = 12, flash_range = 15, ignorecap = TRUE, adminlog = FALSE)
 		else
 			explosion(src, devastation_range = 5, heavy_impact_range = 10, light_impact_range = 15, flame_range = 15, flash_range = 20, ignorecap = TRUE, adminlog = FALSE)
-	vis_contents -= warp
-	QDEL_NULL(warp)
-	return ..()
+	qdel(src)
 
 /obj/effect/singulo_warhead/process(seconds_per_tick)
 	if(!COOLDOWN_FINISHED(src, detonate_cooldown))
