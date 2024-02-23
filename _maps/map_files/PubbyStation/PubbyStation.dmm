@@ -60811,6 +60811,14 @@
 	dir = 8
 	},
 /area/station/medical/medbay/lobby)
+"xlN" = (
+/obj/structure/chair/office{
+	dir = 1
+	},
+/obj/structure/cable,
+/obj/effect/landmark/start/noble_ambassador,
+/turf/open/floor/iron/dark,
+/area/station/command/bridge)
 "xmh" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -92991,7 +92999,7 @@ aaa
 aaa
 aqI
 arM
-asR
+xlN
 atU
 auR
 avX

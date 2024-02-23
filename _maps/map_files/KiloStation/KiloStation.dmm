@@ -67904,6 +67904,7 @@
 	},
 /obj/structure/chair/comfy,
 /obj/item/radio/intercom/command/directional/north,
+/obj/effect/landmark/start/noble_ambassador,
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "rFc" = (
