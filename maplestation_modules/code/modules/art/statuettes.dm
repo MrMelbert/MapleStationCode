@@ -115,7 +115,8 @@
 // We aim at something nearby to turn into our sculpting target and not bop it
 /obj/item/modeling_block/pre_attack(atom/target, mob/user)
 	. = ..()
-
+	if(.)
+		return .
 	if (!sculpting && ismovable(target))
 		set_target(target,user)
 	return TRUE
@@ -164,5 +165,5 @@
 	new_statue.name = "statuette of [ma.name]"
 	new_statue.desc = "A carved statuette depicting [ma.name]."
 	qdel(src)
-	user.put_in_active_hand(new_statue, TRUE)
+	user.put_in_active_hand(new_statue)
 
