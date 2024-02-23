@@ -10,6 +10,8 @@
 	//Except for the fact that it's not a meteor.
 	spins = FALSE
 	achievementworthy = FALSE
+	//Shows the shell over the trail.
+	layer = ABOVE_ALL_MOB_LAYER
 
 /obj/effect/meteor/shell/big_ap
 	name = "460mm rocket assisted AP shell"
@@ -93,3 +95,34 @@
 	..()
 	new /obj/effect/temp_visual/space_explosion(get_turf(src))
 	new /obj/effect/singulo_warhead/tuned(get_turf(src))
+
+/obj/effect/meteor/shell/small_cluster_ap
+	name = "160mm cluster AP shell"
+	desc = "A small cluster armour piercing shell, designed to deploy a large amount of AP submunitions. You should probably watch out for submunitions."
+	icon_state = "rocket_ap_big" //TEMP SPRITE.
+	hits = 4
+	dropamt = 2
+	//Fun fact: Canon is 3x this amount.
+	var/submunitions = 64
+	//Deploys this many submunitions per step.
+	var/deployment_rate = 8
+
+/obj/effect/meteor/shell/small_cluster_ap/Move()
+	var/deploys_left = deployment_rate
+	. = ..()
+	if(. && submunitions > 0)
+		while(deploys_left > 0)
+			var/start_turf = get_turf(src)
+			var/turf/destination = spaceDebrisFinishLoc(dir, z) //This might shit submunitions all over the place if it is moving diagonally.
+			new /obj/effect/meteor/shell/tiny_ap_submunition(start_turf, destination)
+			submunitions--
+			deploys_left--
+
+/obj/effect/meteor/shell/tiny_ap_submunition
+	name = "AP submunition"
+	desc = "A small armour piercing submunition, designed for area denial. You should probably watch out for more."
+	icon_state = "rocket_ap_small" //Maybe use a bullet icon. (TEMP SPRITE)
+	hits = 1
+	hitpwr = EXPLODE_LIGHT
+	meteordrop = list(/obj/item/stack/sheet/mineral/plastitanium)
+	dropamt = 1

@@ -8,6 +8,12 @@
 	layer = ABOVE_ALL_MOB_LAYER
 	plane = ABOVE_GAME_PLANE
 
+	light_range = 8
+	light_power = 1
+	light_on = TRUE
+	color = COLOR_RED
+	light_color = COLOR_RED
+
 	COOLDOWN_DECLARE(detonate_cooldown)
 	var/detonate_delay = 1 SECONDS
 
