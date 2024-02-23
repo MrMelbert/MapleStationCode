@@ -1038,11 +1038,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Cringe but blood handles this on its own
 	if(!istype(chem, /datum/reagent/blood))
 		var/datum/blood_type/blood = affected.get_blood_type()
-		if(chem.type == blood.reagent_type)
+		if(chem.type == blood?.reagent_type)
 			affected.blood_volume = min(affected.blood_volume + round(chem.volume, 0.1), BLOOD_VOLUME_MAXIMUM)
 			affected.reagents.del_reagent(chem.type)
 			return COMSIG_MOB_STOP_REAGENT_CHECK
-		if(chem.type == blood.restoration_chem && affected.blood_volume < BLOOD_VOLUME_NORMAL)
+		if(chem.type == blood?.restoration_chem && affected.blood_volume < BLOOD_VOLUME_NORMAL)
 			affected.blood_volume += 0.25 * seconds_per_tick
 			affected.reagents.remove_reagent(chem.type, chem.metabolization_rate * seconds_per_tick)
 			return COMSIG_MOB_STOP_REAGENT_CHECK
