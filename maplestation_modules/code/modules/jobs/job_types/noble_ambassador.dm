@@ -31,7 +31,7 @@
 	display_order = JOB_DISPLAY_ORDER_NOBLE_AMBASSADOR
 	departments_list = list(
 		/datum/job_department/command,
-		)
+	)
 
 	family_heirlooms = list(
 		/obj/item/toy/plush/finster_fumo,
