@@ -9,7 +9,7 @@
 	plane = ABOVE_GAME_PLANE
 
 	light_range = 8
-	light_power = 1
+	light_power = 5
 	light_on = TRUE
 	color = COLOR_RED
 	light_color = COLOR_RED
