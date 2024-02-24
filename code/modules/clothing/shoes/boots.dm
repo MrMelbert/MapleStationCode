@@ -98,6 +98,12 @@
 		can_tape = TRUE, \
 	)
 
+/obj/item/clothing/shoes/jackboots/floortile
+	name = "floortile camouflage jackboots"
+	desc = "Is it just me or is there a pair of jackboots on the floor?"
+	icon_state = "ftc_boots"
+	inhand_icon_state = null
+
 /obj/item/clothing/shoes/winterboots
 	name = "winter boots"
 	desc = "Boots lined with 'synthetic' animal fur."
