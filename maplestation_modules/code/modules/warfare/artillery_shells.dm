@@ -12,6 +12,7 @@
 	achievementworthy = FALSE
 	//Shows the shell over the trail.
 	layer = ABOVE_ALL_MOB_LAYER
+	density = FALSE
 
 /obj/effect/meteor/shell/big_ap
 	name = "460mm rocket assisted AP shell"
@@ -113,7 +114,7 @@
 	if(. && submunitions > 0)
 		while(deploys_left > 0)
 			var/start_turf = get_turf(src)
-			var/turf/destination = spaceDebrisFinishLoc(dir, z) //This might shit submunitions all over the place if it is moving diagonally.
+			var/turf/destination = spaceDebrisStartLoc(dir, z) //This might shit submunitions all over the place if it is moving diagonally.
 			new /obj/effect/meteor/shell/tiny_ap_submunition(start_turf, destination)
 			submunitions--
 			deploys_left--
@@ -122,7 +123,19 @@
 	name = "AP submunition"
 	desc = "A small armour piercing submunition, designed for area denial. You should probably watch out for more."
 	icon_state = "rocket_ap_small" //Maybe use a bullet icon. (TEMP SPRITE)
-	hits = 1
+	hits = 2
 	hitpwr = EXPLODE_LIGHT
-	meteordrop = list(/obj/item/stack/sheet/mineral/plastitanium)
-	dropamt = 1
+	dropamt = 0
+	var/start_delay = TRUE
+	var/actual_delay = 0
+
+/obj/effect/meteor/shell/tiny_ap_submunition/Move()
+	if(start_delay)
+		start_delay = FALSE
+		actual_delay = rand(0, 6)
+
+	if(actual_delay > 0)
+		actual_delay--
+		return FALSE
+
+	. = ..()
