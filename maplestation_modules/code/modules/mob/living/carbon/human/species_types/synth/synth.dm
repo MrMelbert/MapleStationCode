@@ -341,7 +341,7 @@
 	head_flags = initial(other_part.head_flags)
 	return ..()
 
-#define SYNTH_PART_BODYTYPES (BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC)
+#define SYNTH_PART_BODYTYPES (BODYSHAPE_HUMANOID|BODYTYPE_ROBOTIC)
 
 /obj/item/bodypart/head/synth
 	limb_id = BODYPART_ID_SYNTH

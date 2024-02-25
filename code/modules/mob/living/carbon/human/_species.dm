@@ -651,7 +651,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					working_shirt = mutable_appearance(undershirt.icon, undershirt.icon_state, layer = -BODY_LAYER)
 				standing += working_shirt
 
-		if(species_human.socks && species_human.num_legs >= 2 && !(species_human.bodytype & BODYTYPE_DIGITIGRADE))
+		if(species_human.socks && species_human.num_legs >= 2 && !(species_human.bodyshape & BODYSHAPE_DIGITIGRADE))
 			var/datum/sprite_accessory/socks/socks = SSaccessories.socks_list[species_human.socks]
 			if(socks)
 				standing += mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
@@ -861,7 +861,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(ITEM_SLOT_FEET)
 			if(H.num_legs < 2)
 				return FALSE
-			if((H.bodytype & BODYTYPE_DIGITIGRADE) && !(I.supports_variations_flags & (DIGITIGRADE_VARIATIONS)))
+			if((H.bodytype & BODYSHAPE_DIGITIGRADE) && !(I.supports_variations_flags & (DIGITIGRADE_VARIATIONS)))
 				if(!disable_warning)
 					to_chat(H, span_warning("The footwear around here isn't compatible with your feet!"))
 				return FALSE

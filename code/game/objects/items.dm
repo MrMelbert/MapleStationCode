@@ -1739,7 +1739,7 @@
 	SIGNAL_HANDLER
 	// if(dir == newdir)
 	// 	return
-	if(!istype(source) || !(source.bodytype & BODYTYPE_DIGITIGRADE))
+	if(!istype(source) || !(source.bodytype & BODYSHAPE_DIGITIGRADE))
 		return
 
 	source.update_clothing(slot_flags)
