@@ -49,6 +49,7 @@
 	status_type = STATUS_EFFECT_MULTIPLE
 	alert_type = /atom/movable/screen/alert/status_effect/tazed
 	tick_interval = 0.25 SECONDS
+	on_remove_on_mob_delete = TRUE
 	/// What atom is tasing us?
 	var/atom/taser
 	/// What atom is using the atom tasing us? Sometimes the same as the taser, such as with turrets.
