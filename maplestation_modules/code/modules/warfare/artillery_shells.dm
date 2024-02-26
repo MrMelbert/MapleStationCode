@@ -231,7 +231,7 @@
 
 	. = ..()
 
-/obj/effect/meteor/shell/small_wmd_he_submunition/meteor_effect()
+/obj/effect/meteor/shell/small_wmd_flak_submunition/meteor_effect()
 	..()
 	new /obj/effect/temp_visual/space_explosion(get_turf(src))
 	new /obj/effect/singulo_warhead/tuned_cluster(get_turf(src))
