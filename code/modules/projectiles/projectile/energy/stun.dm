@@ -152,7 +152,7 @@
 
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/being_tased)
 	if(!QDELING(owner))
-		owner.adjust_jitter_up_to(20 SECONDS, 1 MINUTES)
+		owner.adjust_jitter_up_to(10 SECONDS, 1 MINUTES)
 
 	taser = null
 	firer = null
@@ -170,6 +170,8 @@
 		if(SPT_PROB(25, seconds_between_ticks))
 			do_sparks(1, FALSE, owner)
 
+	owner.set_stutter_if_lower(10 SECONDS)
+	owner.set_jitter_if_lower(20 SECONDS)
 	owner.cause_pain(BODY_ZONES_ALL, 2 * seconds_between_ticks, BURN)
 	owner.apply_damage(120 * seconds_between_ticks * (owner.pain_controller?.pain_modifier || 1), STAMINA)
 	if(owner.stat <= SOFT_CRIT)
