@@ -10,7 +10,7 @@
 		return ELEMENT_INCOMPATIBLE
 
 	src.required_temp = required_temp
-	RegisterSignal(target, COMSIG_ATOM_ATTACKBY, PROC_REF(attackby_react))
+	RegisterSignal(target, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(attackby_react))
 	RegisterSignal(target, COMSIG_ATOM_FIRE_ACT, PROC_REF(flame_react))
 	RegisterSignal(target, COMSIG_ATOM_BULLET_ACT, PROC_REF(projectile_react))
 	RegisterSignal(target, COMSIG_ATOM_TOOL_ACT(TOOL_WELDER), PROC_REF(welder_react))
@@ -19,7 +19,7 @@
 
 /datum/element/easy_ignite/Detach(datum/source, ...)
 	. = ..()
-	UnregisterSignal(source, COMSIG_ATOM_ATTACKBY)
+	UnregisterSignal(source, COMSIG_ATOM_ITEM_INTERACTION)
 	UnregisterSignal(source, COMSIG_ATOM_FIRE_ACT)
 	UnregisterSignal(source, COMSIG_ATOM_BULLET_ACT)
 	UnregisterSignal(source, COMSIG_ATOM_TOOL_ACT(TOOL_WELDER))
@@ -61,12 +61,12 @@
 	if(exposed_temperature > required_temp)
 		ignite(source)
 
-/datum/element/easy_ignite/proc/attackby_react(obj/item/source, obj/item/thing, mob/user, params)
+/datum/element/easy_ignite/proc/attackby_react(obj/item/source, mob/user, obj/item/tool, modifiers)
 	SIGNAL_HANDLER
 
-	if(item_ignition(source, thing, user))
+	if(item_ignition(source, tool, user))
 		ignite(source, user)
-		return COMPONENT_CANCEL_ATTACK_CHAIN
+		return ITEM_INTERACT_SUCCESS
 
 /datum/element/easy_ignite/proc/projectile_react(obj/item/source, obj/projectile/shot)
 	SIGNAL_HANDLER
