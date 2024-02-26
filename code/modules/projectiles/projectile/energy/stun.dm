@@ -1,3 +1,5 @@
+// NON-MODULE CHANGE : this whole file
+
 /obj/projectile/energy/electrode
 	name = "electrode"
 	icon_state = "spark"
@@ -16,22 +18,19 @@
 	if(pierce_hit)
 		return .
 	do_sparks(1, TRUE, src)
-	if(. == BULLET_ACT_BLOCK || !isliving(target) || blocked >= 100) // Fully blocked by mob or collided with dense object - burst into sparks!
+	if(. == BULLET_ACT_BLOCK || !isliving(target) || blocked >= 100)
 		visible_message(span_warning("The electrodes fail to shock [target], and fall to the ground."))
 		return .
 
-	if(iscarbon(target))
-		var/mob/living/carbon/hulk = target
-		if(hulk.dna?.check_mutation(/datum/mutation/human/hulk))
-			hulk.say(pick(
-				";RAAAAAAAARGH!",
-				";HNNNNNNNNNGGGGGGH!",
-				";GWAAAAAAAARRRHHH!",
-				"NNNNNNNNGGGGGGGGHH!",
-				";AAAAAAARRRGH!",
-			), forced = "hulk")
-
 	var/mob/living/tased = target
+	if(HAS_TRAIT(target, TRAIT_HULK))
+		tased.say(pick(
+			";RAAAAAAAARGH!",
+			";HNNNNNNNNNGGGGGGH!",
+			";GWAAAAAAAARRRHHH!",
+			"NNNNNNNNGGGGGGGGHH!",
+			";AAAAAAARRRGH!",
+		), forced = "hulk")
 	if(tased.apply_status_effect(/datum/status_effect/tased, fired_from, firer))
 		return .
 	visible_message(span_warning("The electrodes fail to shock [target], and fall to the ground."))
@@ -120,7 +119,10 @@
 	return TRUE
 
 /datum/status_effect/tased/on_apply()
-	if(issilicon(owner) || istype(owner, /mob/living/basic/bot) || istype(owner, /mob/living/simple_animal/bot))
+	if(issilicon(owner) \
+		|| istype(owner, /mob/living/basic/bot) \
+		|| istype(owner, /mob/living/simple_animal/bot) \
+		|| HAS_TRAIT(owner, TRAIT_PIERCEIMMUNE))
 		return FALSE
 
 	RegisterSignal(owner, COMSIG_LIVING_RESIST, PROC_REF(try_remove_taser))
@@ -168,6 +170,7 @@
 		if(SPT_PROB(25, seconds_between_ticks))
 			do_sparks(1, FALSE, owner)
 
+	owner.cause_pain(BODY_ZONES_ALL, 2 * seconds_between_ticks, BURN)
 	owner.apply_damage(120 * seconds_between_ticks * (owner.pain_controller?.pain_modifier || 1), STAMINA)
 	if(owner.stat <= SOFT_CRIT)
 		owner.do_jitter_animation(INFINITY) // maximum POWER
@@ -211,6 +214,7 @@
 	)
 	RegisterSignal(tase_line, COMSIG_BEAM_ENTERED, PROC_REF(disrupt_tase))
 	RegisterSignal(tase_line, COMSIG_QDELETING, PROC_REF(end_tase))
+	tase_line.RegisterSignal(owner, COMSIG_LIVING_SET_BODY_POSITION, TYPE_PROC_REF(/datum/beam, redrawing))
 
 /datum/status_effect/tased/proc/block_firing(...)
 	SIGNAL_HANDLER
@@ -244,6 +248,7 @@
 		span_warning("[owner] tries to remove the electrodes!"),
 		span_notice("You try to remove the electrodes!"),
 	)
+	// If embedding was less... difficult to work with, I would make tasers rely on an embedded object to handle this
 	if(!do_after(src, 5 SECONDS, src, extra_checks = CALLBACK(src, PROC_REF(try_remove_taser_checks)), interaction_key = "tazed"))
 		return
 	owner.visible_message(
@@ -258,7 +263,7 @@
 /datum/status_effect/tased/proc/disrupt_tase(datum/beam/source, obj/effect/ebeam/beam_effect, atom/movable/entering)
 	SIGNAL_HANDLER
 
-	if(!isliving(entering))
+	if(!isliving(entering) || entering == taser || entering == firer || entering == owner)
 		return
 	if(entering.pass_flags & (PASSMOB|PASSGRILLE|PASSTABLE))
 		return
@@ -311,7 +316,7 @@
 	light_on = TRUE
 	light_color = COLOR_YELLOW
 	light_power = 1
-	light_range = 1
+	light_range = 1.5
 
 /datum/movespeed_modifier/tasing_someone
 	multiplicative_slowdown = 2
