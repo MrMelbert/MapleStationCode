@@ -50,7 +50,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	data["bsa_unlock"] = GLOB.bsa_unlock
 	return data
 
-/obj/machinery/keycard_auth/ui_status(mob/user)
+/obj/machinery/keycard_auth/ui_status(mob/user, datum/ui_state/state)
 	if(isdrone(user))
 		return UI_CLOSE
 	if(!isanimal_or_basicmob(user))
