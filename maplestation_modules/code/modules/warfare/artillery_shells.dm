@@ -139,3 +139,99 @@
 		return FALSE
 
 	. = ..()
+
+/obj/effect/meteor/shell/big_cluster_wmd_he
+	name = "460mm cluster WMD singularity explosive shell"
+	desc = "A cluster WMD explosive singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
+	icon_state = "rocket_ap_big" //TEMP SPRITE.
+	hits = 4
+	dropamt = 2
+	//Fun fact: Canon is 2x this amount.
+	var/submunitions = 12
+	//Deploys this many submunitions per step.
+	var/deployment_rate = 2
+
+/obj/effect/meteor/shell/small_cluster_ap/Move()
+	var/deploys_left = deployment_rate
+	. = ..()
+	if(. && submunitions > 0)
+		while(deploys_left > 0)
+			var/start_turf = get_turf(src)
+			var/turf/destination = spaceDebrisStartLoc(dir, z) //This might shit submunitions all over the place if it is moving diagonally.
+			new /obj/effect/meteor/shell/small_wmd_he_submunition(start_turf, destination)
+			submunitions--
+			deploys_left--
+
+/obj/effect/meteor/shell/small_wmd_he_submunition
+	name = "explosive WMD submunition"
+	desc = "A small explosive WMD submunition, designed to annihilate anything in its path. You should probably watch out for more."
+	icon_state = "rocket_ap_small" //Maybe use a bullet icon. (TEMP SPRITE)
+	hits = 1
+	hitpwr = EXPLODE_LIGHT
+	dropamt = 0
+	var/start_delay = TRUE
+	var/actual_delay = 0
+
+/obj/effect/meteor/shell/tiny_ap_submunition/Move()
+	if(start_delay)
+		start_delay = FALSE
+		actual_delay = rand(0, 10)
+
+	if(actual_delay > 0)
+		actual_delay--
+		return FALSE
+
+	. = ..()
+
+/obj/effect/meteor/shell/small_wmd_he_submunition/meteor_effect()
+	..()
+	new /obj/effect/temp_visual/space_explosion(get_turf(src))
+	new /obj/effect/singulo_warhead/cluster(get_turf(src))
+
+/obj/effect/meteor/shell/big_cluster_wmd_flask
+	name = "460mm cluster WMD singularity flak shell"
+	desc = "A cluster WMD flak singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
+	icon_state = "rocket_ap_big" //TEMP SPRITE.
+	hits = 4
+	dropamt = 2
+	//Fun fact: Canon is 2x this amount.
+	var/submunitions = 12
+	//Deploys this many submunitions per step.
+	var/deployment_rate = 2
+
+/obj/effect/meteor/shell/small_cluster_ap/Move()
+	var/deploys_left = deployment_rate
+	. = ..()
+	if(. && submunitions > 0)
+		while(deploys_left > 0)
+			var/start_turf = get_turf(src)
+			var/turf/destination = spaceDebrisStartLoc(dir, z) //This might shit submunitions all over the place if it is moving diagonally.
+			new /obj/effect/meteor/shell/small_wmd_flak_submunition(start_turf, destination)
+			submunitions--
+			deploys_left--
+
+/obj/effect/meteor/shell/small_wmd_flak_submunition
+	name = "flak WMD submunition"
+	desc = "A small flak WMD submunition, designed for area denial. You should probably watch out for more."
+	icon_state = "rocket_ap_small" //Maybe use a bullet icon. (TEMP SPRITE)
+	hits = 1
+	hitpwr = EXPLODE_LIGHT
+	dropamt = 0
+	var/start_delay = TRUE
+	var/actual_delay = 0
+
+/obj/effect/meteor/shell/tiny_ap_submunition/Move()
+	if(start_delay)
+		start_delay = FALSE
+		actual_delay = rand(0, 10)
+
+	if(actual_delay > 0)
+		actual_delay--
+		return FALSE
+
+	. = ..()
+
+/obj/effect/meteor/shell/small_wmd_he_submunition/meteor_effect()
+	..()
+	new /obj/effect/temp_visual/space_explosion(get_turf(src))
+	new /obj/effect/singulo_warhead/tuned_cluster(get_turf(src))
