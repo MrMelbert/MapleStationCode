@@ -6,18 +6,19 @@
 	damage_type = BURN
 	hitsound = 'sound/weapons/sear.ogg'
 	hitsound_wall = 'sound/weapons/effects/searwall.ogg'
-	armor_flag = LASER
+	armor_flag = ENERGY
 	eyeblur = 4 SECONDS
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
 	light_system = MOVABLE_LIGHT
-	light_range = 1
-	light_power = 1
-	light_color = COLOR_SOFT_RED
-	ricochets_max = 50 //Honk!
-	ricochet_chance = 80
-	reflectable = REFLECT_NORMAL
+	light_range = 5
+	light_power = 5
+	light_color = COLOR_RED
+	ricochets_max = 0
+	ricochet_chance = 0 //No.
+	reflectable = NONE //Hell no, this is a big ass particle beam.
 	wound_bonus = -20
 	bare_wound_bonus = 10
+	hit_threshhold = TURF_LAYER //Blow up the floors and stuff too.
 
 /obj/projectile/kajari_lance/singularity_pull()
 	return
