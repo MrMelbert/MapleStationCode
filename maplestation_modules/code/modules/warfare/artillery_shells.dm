@@ -151,7 +151,7 @@
 	//Deploys this many submunitions per step.
 	var/deployment_rate = 2
 
-/obj/effect/meteor/shell/small_cluster_ap/Move()
+/obj/effect/meteor/shell/big_cluster_wmd_he/Move()
 	var/deploys_left = deployment_rate
 	. = ..()
 	if(. && submunitions > 0)
@@ -172,7 +172,7 @@
 	var/start_delay = TRUE
 	var/actual_delay = 0
 
-/obj/effect/meteor/shell/tiny_ap_submunition/Move()
+/obj/effect/meteor/shell/small_wmd_he_submunition/Move()
 	if(start_delay)
 		start_delay = FALSE
 		actual_delay = rand(0, 10)
@@ -188,7 +188,7 @@
 	new /obj/effect/temp_visual/space_explosion(get_turf(src))
 	new /obj/effect/singulo_warhead/cluster(get_turf(src))
 
-/obj/effect/meteor/shell/big_cluster_wmd_flask
+/obj/effect/meteor/shell/big_cluster_wmd_flak
 	name = "460mm cluster WMD singularity flak shell"
 	desc = "A cluster WMD flak singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
 	icon_state = "rocket_ap_big" //TEMP SPRITE.
@@ -199,7 +199,7 @@
 	//Deploys this many submunitions per step.
 	var/deployment_rate = 2
 
-/obj/effect/meteor/shell/small_cluster_ap/Move()
+/obj/effect/meteor/shell/big_cluster_wmd_flak/Move()
 	var/deploys_left = deployment_rate
 	. = ..()
 	if(. && submunitions > 0)
@@ -220,7 +220,7 @@
 	var/start_delay = TRUE
 	var/actual_delay = 0
 
-/obj/effect/meteor/shell/tiny_ap_submunition/Move()
+/obj/effect/meteor/shell/small_wmd_flak_submunition/Move()
 	if(start_delay)
 		start_delay = FALSE
 		actual_delay = rand(0, 10)
