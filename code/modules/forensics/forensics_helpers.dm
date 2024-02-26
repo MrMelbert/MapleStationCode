@@ -107,6 +107,7 @@
 	for(var/new_blood in blood_DNA_to_add)
 		var/datum/blood_type/blood = GLOB.blood_types[blood_DNA_to_add[new_blood]]
 		blood.set_up_blood(src, first_dna == 0)
+	update_blood_dried_color()
 	update_appearance()
 	return TRUE
 

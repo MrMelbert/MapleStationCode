@@ -57,6 +57,8 @@
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	if(bloodiness)
+		update_appearance()
 
 /obj/effect/decal/cleanable/Destroy()
 	var/turf/T = get_turf(src)
@@ -71,14 +73,14 @@
 /// Increments or decrements the bloodiness value
 /obj/effect/decal/cleanable/proc/adjust_bloodiness(by_amount)
 	if(by_amount == 0)
-		return
+		return FALSE
 	if(QDELING(src))
-		return
+		return FALSE
 
 	var/old_blood = bloodiness
 	bloodiness = clamp((bloodiness + by_amount), 0, BLOOD_POOL_MAX)
 	update_appearance()
-	return old_blood
+	return TRUE
 
 /// Called before attempting to scoop up reagents from this decal to only load reagents when necessary
 /obj/effect/decal/cleanable/proc/lazy_init_reagents()

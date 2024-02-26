@@ -85,9 +85,10 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 	if(isnull(splatter))
 		splatter = new(blood_turf, bleeding.get_static_viruses())
-	if(QDELETED(splatter)) //Give it up
-		return null
-	splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
+		if(QDELETED(splatter)) //Give it up
+			return null
+	else
+		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
 	splatter.transfer_mob_blood_dna(bleeding) //give blood info to the blood decal.
 	if(temp_blood_DNA)
 		splatter.add_blood_DNA(temp_blood_DNA)

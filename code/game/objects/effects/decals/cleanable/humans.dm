@@ -23,19 +23,30 @@
 	/// When dried, this becomes the desc of the blood
 	var/dry_desc = "Looks like it's been here a while. Eew."
 
-/obj/effect/decal/cleanable/blood/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
-	if(. == INITIALIZE_HINT_QDEL)
-		return
+	var/drying_time = 5 MINUTES
+	var/drying_progress = 0
 
-	if(bloodiness > 0 && !dried)
-		var/base_blood = bloodiness
-		bloodiness = 0
-		adjust_bloodiness(base_blood)
+/obj/effect/decal/cleanable/blood/Initialize(mapload)
+	. = ..()
+	START_PROCESSING(SSblood_drying, src)
+	if(color && can_dry && !dried)
+		update_blood_dried_color()
 
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSblood_drying, src)
 	return ..()
+
+/obj/effect/decal/cleanable/blood/proc/update_blood_dried_color()
+	animate(src)
+	if(!can_dry || dried)
+		return
+	var/temp_color = ReadHSV(RGBtoHSV(color || COLOR_WHITE))
+	var/final_color = HSVtoRGB(hsv(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0)))
+	if(drying_time - drying_progress <= 0)
+		color = final_color
+		return
+
+	animate(src, color = final_color, time = drying_time - drying_progress)
 
 /obj/effect/decal/cleanable/blood/proc/get_blood_string()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
@@ -45,12 +56,23 @@
 		all_blood_names |= lowertext(initial(blood.reagent_type.name))
 	return english_list(all_blood_names)
 
+/obj/effect/decal/cleanable/blood/adjust_bloodiness(by_amount)
+	. = ..()
+	if(!.)
+		return
+	drying_progress -= (by_amount * BLOOD_PER_UNIT_MODIFIER) // goes negative = takes longer to dry
+	if(drying_progress >= drying_time)
+		dry()
+		return
+	update_blood_dried_color()
+
 /obj/effect/decal/cleanable/blood/process(seconds_per_tick)
 	if(dried || !can_dry)
 		return PROCESS_KILL
 
 	adjust_bloodiness(-0.2 * seconds_per_tick)
-	if(bloodiness <= 0)
+	drying_progress += (seconds_per_tick * 1 SECONDS)
+	if(drying_progress >= drying_time)
 		dry()
 
 /obj/effect/decal/cleanable/blood/update_name(updates)
@@ -72,9 +94,7 @@
 	dried = TRUE
 	update_appearance()
 	reagents?.clear_reagents()
-	// I want to make this animate() to the color but bloodiness is too unpredictable, needs further work
-	var/temp_color = ReadHSV(RGBtoHSV(color || COLOR_WHITE))
-	color = HSVtoRGB(hsv(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0)))
+	update_blood_dried_color()
 	STOP_PROCESSING(SSblood_drying, src)
 	return TRUE
 
@@ -88,11 +108,6 @@
 	var/num_reagents = length(reagents_to_add)
 	for(var/reagent_type in reagents_to_add)
 		reagents.add_reagent(reagent_type, round((bloodiness * 0.2 * BLOOD_PER_UNIT_MODIFIER) / num_reagents, CHEMICAL_VOLUME_ROUNDING))
-
-/obj/effect/decal/cleanable/blood/adjust_bloodiness(by_amount)
-	. = ..()
-	if(bloodiness > 0)
-		START_PROCESSING(SSobj, src)
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/merger)
 	if(merger.dried) // New blood will lie on dry blood
