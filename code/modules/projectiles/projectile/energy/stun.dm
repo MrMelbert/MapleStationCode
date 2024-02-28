@@ -299,6 +299,8 @@
 
 /obj/effect/ebeam/react_to_entry/Initialize(mapload, beam_owner)
 	. = ..()
+	if(isnull(owner))
+		return
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 		COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZED_ON = PROC_REF(on_entered),
