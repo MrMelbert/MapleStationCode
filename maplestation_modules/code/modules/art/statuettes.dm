@@ -149,7 +149,6 @@
 		current_target = original.content_ma
 	else
 		current_target = target.appearance
-	var/mutable_appearance/ma = current_target
 	user.balloon_alert(user, "sculpting [target.name]")
 
 /obj/item/modeling_block/attack_self(mob/user)
