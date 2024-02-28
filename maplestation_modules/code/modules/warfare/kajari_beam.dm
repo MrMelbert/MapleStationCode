@@ -2,7 +2,7 @@
 	name = "Kajari particle lance"
 	icon_state = "laser"
 	pass_flags = NONE
-	damage = 20
+	damage = 200
 	damage_type = BURN
 	hitsound = 'sound/weapons/sear.ogg'
 	hitsound_wall = 'sound/weapons/effects/searwall.ogg'
@@ -28,12 +28,13 @@
 /obj/projectile/kajari_lance/prehit_pierce()
 	return PROJECTILE_PIERCE_HIT
 
-/obj/projectile/kajari_lance/can_hit_target(atom/target, direct_target = FALSE, ignore_loc = FALSE, cross_failed = TRUE)
+/obj/projectile/kajari_lance/can_hit_target(atom/target, direct_target = FALSE, ignore_loc = FALSE, cross_failed = FALSE)
 	if(isturf(target))
+		//explosion(src, heavy_impact_range = 2, adminlog = FALSE)
 		return TRUE
 	. = ..()
 
-/obj/projectile/kajari_lance/on_hit(atom/target, blocked = 0, pierce_hit)
+/obj/projectile/kajari_lance/scan_crossed_hit(atom/movable/A)
 	if(explosion_tile_cooldown <= 0)
 		explosion(src, heavy_impact_range = 2, adminlog = FALSE)
 		explosion_tile_cooldown = 6
