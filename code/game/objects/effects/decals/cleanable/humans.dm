@@ -72,7 +72,7 @@
 
 	adjust_bloodiness(-0.2 * seconds_per_tick)
 	drying_progress += (seconds_per_tick * 1 SECONDS)
-	if(drying_progress >= drying_time)
+	if(drying_progress >= drying_time + SSblood_drying.wait) // Do it next tick when we're done
 		dry()
 
 /obj/effect/decal/cleanable/blood/update_name(updates)
@@ -92,8 +92,8 @@
 ///This is what actually "dries" the blood. Returns true if it's all out of blood to dry, and false otherwise
 /obj/effect/decal/cleanable/blood/proc/dry()
 	dried = TRUE
-	update_appearance()
 	reagents?.clear_reagents()
+	update_appearance()
 	update_blood_dried_color()
 	STOP_PROCESSING(SSblood_drying, src)
 	return TRUE
@@ -117,8 +117,9 @@
 /obj/effect/decal/cleanable/blood/handle_merge_decal(obj/effect/decal/cleanable/blood/merger)
 	. = ..()
 	merger.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
-	color = get_blood_dna_color()
 	merger.adjust_bloodiness(bloodiness)
+	merger.drying_progress -= (bloodiness * BLOOD_PER_UNIT_MODIFIER) // goes negative = takes longer to dry
+	merger.update_blood_dried_color()
 
 /obj/effect/decal/cleanable/blood/old
 	bloodiness = 0
@@ -286,7 +287,7 @@
 	desc = "A spattering."
 	icon_state = "drip5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("drip1","drip2","drip3","drip4","drip5")
-	bloodiness = 0
+	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.2 * BLOOD_PER_UNIT_MODIFIER
 	base_name = "drips of"
 	dry_desc = "A dried spattering."
 
@@ -297,7 +298,7 @@
 	icon = 'icons/effects/footprints.dmi'
 	icon_state = "blood1"
 	random_icon_states = null
-	bloodiness = 0
+	bloodiness = 0 // set based on the bloodiness of the foot
 	base_name = ""
 	dry_desc = "HMM... SOMEONE WAS HERE!"
 	var/entered_dirs = 0

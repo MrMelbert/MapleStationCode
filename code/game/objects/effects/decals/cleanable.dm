@@ -77,7 +77,6 @@
 	if(QDELING(src))
 		return FALSE
 
-	var/old_blood = bloodiness
 	bloodiness = clamp((bloodiness + by_amount), 0, BLOOD_POOL_MAX)
 	update_appearance()
 	return TRUE

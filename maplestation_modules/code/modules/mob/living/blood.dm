@@ -76,6 +76,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			SET_PLANE_EXPLICIT(drop_overlay, drop.plane, drop)
 			drop.add_overlay(drop_overlay)
 			drop.transfer_mob_blood_dna(bleeding)
+			var/new_blood = /obj/effect/decal/cleanable/blood/drip::bloodiness
+			drop.adjust_bloodiness(new_blood)
+			drop.drying_progress -= (new_blood * BLOOD_PER_UNIT_MODIFIER)
 			return drop
 
 		temp_blood_DNA = GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
@@ -89,6 +92,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			return null
 	else
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
+		splatter.drying_progress -= (BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
 	splatter.transfer_mob_blood_dna(bleeding) //give blood info to the blood decal.
 	if(temp_blood_DNA)
 		splatter.add_blood_DNA(temp_blood_DNA)
