@@ -254,7 +254,7 @@
 /datum/species/synth/proc/disguise_damage(mob/living/carbon/human/synth)
 	SIGNAL_HANDLER
 
-	if(!limb_updates_on_change)
+	if(!limb_updates_on_change || isnull(disguise_species))
 		return
 
 	var/list/obj/item/bodypart/changed_limbs = list()
