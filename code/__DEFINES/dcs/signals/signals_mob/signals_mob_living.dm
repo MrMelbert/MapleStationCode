@@ -250,6 +250,14 @@
 /// Sent as a reply to above from any atom that wishs to stop self-cuff removal
 #define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
 
+/// From /datum/element/basic_eating/try_eating()
+#define COMSIG_MOB_PRE_EAT "mob_pre_eat"
+	///cancel eating attempt
+	#define COMSIG_MOB_CANCEL_EAT (1<<0)
+
+/// From /datum/element/basic_eating/finish_eating()
+#define COMSIG_MOB_ATE "mob_ate"
+
 #define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
 
 #define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
