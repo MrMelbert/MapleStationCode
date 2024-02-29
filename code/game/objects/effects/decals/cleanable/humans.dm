@@ -11,6 +11,7 @@
 	decal_reagent = /datum/reagent/blood
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	color = COLOR_BLOOD
+	appearance_flags = parent_type::appearance_flags | KEEP_TOGETHER
 	/// Can this blood dry out?
 	var/can_dry = TRUE
 	/// Is this blood dried out?
@@ -23,30 +24,49 @@
 	/// When dried, this becomes the desc of the blood
 	var/dry_desc = "Looks like it's been here a while. Eew."
 
+	/// How long it takes to dry out
 	var/drying_time = 5 MINUTES
+	/// The process to drying out, recorded in deciseconds
 	var/drying_progress = 0
+	/// Color matrix applied to dried blood via filter to make it look dried
+	var/static/list/blood_dry_filter_matrix = list(
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1,
+		-0.75, -0.75, -0.75, 0,
+	)
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSblood_drying, src)
 	if(color && can_dry && !dried)
-		update_blood_dried_color()
+		update_blood_drying_effect()
 
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSblood_drying, src)
 	return ..()
 
-/obj/effect/decal/cleanable/blood/proc/update_blood_dried_color()
-	animate(src)
-	if(!can_dry || dried)
-		return
-	var/temp_color = ReadHSV(RGBtoHSV(color || COLOR_WHITE))
-	var/final_color = HSVtoRGB(hsv(temp_color[1], temp_color[2], max(temp_color[3] - 100, 0)))
-	if(drying_time - drying_progress <= 0)
-		color = final_color
+#define DRY_FILTER_KEY "dry_effect"
+
+/obj/effect/decal/cleanable/blood/proc/update_blood_drying_effect()
+	if(!can_dry)
+		remove_filter(DRY_FILTER_KEY) // I GUESS
 		return
 
-	animate(src, color = final_color, time = drying_time - drying_progress)
+	var/existing_filter = get_filter(DRY_FILTER_KEY)
+	if(dried)
+		if(existing_filter)
+			animate(existing_filter) // just stop existing animations and force it to the end state
+			return
+		add_filter(DRY_FILTER_KEY, 2, color_matrix_filter(blood_dry_filter_matrix))
+		return
+
+	if(!existing_filter)
+		add_filter(DRY_FILTER_KEY, 2, color_matrix_filter())
+	transition_filter(DRY_FILTER_KEY, color_matrix_filter(blood_dry_filter_matrix), drying_time - drying_progress)
+
+#undef DRY_FILTER_KEY
 
 /obj/effect/decal/cleanable/blood/proc/get_blood_string()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
@@ -56,21 +76,11 @@
 		all_blood_names |= lowertext(initial(blood.reagent_type.name))
 	return english_list(all_blood_names)
 
-/obj/effect/decal/cleanable/blood/adjust_bloodiness(by_amount)
-	. = ..()
-	if(!.)
-		return
-	drying_progress -= (by_amount * BLOOD_PER_UNIT_MODIFIER) // goes negative = takes longer to dry
-	if(drying_progress >= drying_time)
-		dry()
-		return
-	update_blood_dried_color()
-
 /obj/effect/decal/cleanable/blood/process(seconds_per_tick)
 	if(dried || !can_dry)
 		return PROCESS_KILL
 
-	adjust_bloodiness(-0.2 * seconds_per_tick)
+	adjust_bloodiness(-0.4 * BLOOD_PER_UNIT_MODIFIER * seconds_per_tick)
 	drying_progress += (seconds_per_tick * 1 SECONDS)
 	if(drying_progress >= drying_time + SSblood_drying.wait) // Do it next tick when we're done
 		dry()
@@ -94,7 +104,7 @@
 	dried = TRUE
 	reagents?.clear_reagents()
 	update_appearance()
-	update_blood_dried_color()
+	update_blood_drying_effect()
 	STOP_PROCESSING(SSblood_drying, src)
 	return TRUE
 
@@ -119,7 +129,7 @@
 	merger.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	merger.adjust_bloodiness(bloodiness)
 	merger.drying_progress -= (bloodiness * BLOOD_PER_UNIT_MODIFIER) // goes negative = takes longer to dry
-	merger.update_blood_dried_color()
+	merger.update_blood_drying_effect()
 
 /obj/effect/decal/cleanable/blood/old
 	bloodiness = 0

@@ -39,7 +39,7 @@
 	return TRUE
 
 /datum/element/decal/blood/apply_overlay(obj/item/source, list/overlay_list)
-	pic.color = source.get_blood_dna_color() // NON-MODULE CHANGE
+	pic.color = source.get_blood_dna_color() || COLOR_BLOOD // NON-MODULE CHANGE
 	return ..()
 
 /datum/element/decal/blood/proc/get_examine_name(datum/source, mob/user, list/override)
