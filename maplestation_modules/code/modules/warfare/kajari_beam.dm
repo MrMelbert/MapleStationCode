@@ -1,6 +1,7 @@
 /obj/projectile/kajari_lance
 	name = "Kajari particle lance"
-	icon_state = "laser"
+	icon = 'maplestation_modules/icons/effects/beam.dmi'
+	icon_state = "kajari_beam"
 	pass_flags = NONE
 	damage = 200
 	damage_type = BURN
@@ -36,16 +37,16 @@
 
 /obj/projectile/kajari_lance/hitscan
 	hitscan = TRUE
-	muzzle_type = /obj/effect/projectile/muzzle/laser/emitter
-	tracer_type = /obj/effect/projectile/tracer/laser/emitter
-	impact_type = /obj/effect/projectile/impact/laser/emitter
+	muzzle_type = /obj/effect/projectile/tracer/laser/kajari
+	tracer_type = /obj/effect/projectile/tracer/laser/kajari
+	impact_type = /obj/effect/projectile/tracer/laser/kajari
 	impact_effect_type = null
 	hitscan_light_intensity = 3
-	hitscan_light_range = 10
+	hitscan_light_range = 16
 	hitscan_light_color_override = COLOR_RED_LIGHT
 	muzzle_flash_intensity = 3
-	muzzle_flash_range = 10
+	muzzle_flash_range = 16
 	muzzle_flash_color_override = COLOR_RED_LIGHT
 	impact_light_intensity = 3
-	impact_light_range = 10
+	impact_light_range = 16
 	impact_light_color_override = COLOR_RED_LIGHT
