@@ -24,11 +24,13 @@
 			var/datum/atom_hud/hud = GLOB.huds[HUD_type]
 			hud.hide_from(eye_owner)
 		toggled_on = FALSE
+		balloon_alert(eye_owner, "hud disabled")
 	else
 		if(HUD_type)
 			var/datum/atom_hud/hud = GLOB.huds[HUD_type]
 			hud.show_to(eye_owner)
 		toggled_on = TRUE
+		balloon_alert(eye_owner, "hud enabled")
 
 /obj/item/organ/internal/cyberimp/eyes/hud/Insert(mob/living/carbon/eye_owner, special = FALSE, movement_flags)
 	. = ..()
