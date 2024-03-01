@@ -26,8 +26,8 @@
 
 /obj/projectile/kajari_lance/scan_moved_turf()
 	if(explosion_tile_cooldown <= 0)
-		explosion(src, devastation_range = 3, heavy_impact_range = 5, light_impact_range = 8, flame_range = 15, flash_range = 15, ignorecap = TRUE, adminlog = FALSE)
-		explosion_tile_cooldown = 4
+		explosion(src, devastation_range = 4, heavy_impact_range = 6, light_impact_range = 10, flame_range = 15, flash_range = 15, ignorecap = TRUE, adminlog = FALSE)
+		explosion_tile_cooldown = 3
 	else
 		explosion_tile_cooldown--
 	return ..()
@@ -50,3 +50,7 @@
 	impact_light_intensity = 3
 	impact_light_range = 16
 	impact_light_color_override = COLOR_RED_LIGHT
+
+/obj/projectile/kajari_lance/generate_hitscan_tracers(cleanup = TRUE, duration = 10, impacting = TRUE)
+	duration = 10
+	. = ..()

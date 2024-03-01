@@ -48,6 +48,7 @@
 	SSaugury.register_doom(src, threat)
 	if(spins) // NON-MODULE CHANGE
 		SpinAnimation()
+	dest = target // NON-MODULE CHANGE
 	chase_target(target)
 
 /obj/effect/meteor/Destroy()
