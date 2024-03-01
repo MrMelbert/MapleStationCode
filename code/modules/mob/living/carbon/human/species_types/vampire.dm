@@ -175,8 +175,8 @@
 			if(victim.stat == DEAD)
 				to_chat(H, span_warning("You need a living victim!"))
 				return
-			if(!victim.blood_volume || !istype(victim.get_blood_type(), /datum/blood_type/crew/human)) // NON-MODULE CHANGE
-				to_chat(H, span_warning("[victim] doesn't have blood!"))
+			if(!istype(victim.get_blood_type(), /datum/blood_type/crew/human)) // NON-MODULE CHANGE
+				to_chat(H, span_warning("[victim] doesn't have valid blood!")) // NON-MODULE CHANGE
 				return
 			COOLDOWN_START(V, drain_cooldown, 3 SECONDS)
 			if(victim.can_block_magic(MAGIC_RESISTANCE_HOLY, charge_cost = 0))
@@ -196,7 +196,7 @@
 			playsound(H, 'sound/items/drink.ogg', 30, TRUE, -2)
 			victim.blood_volume = clamp(victim.blood_volume - drained_blood, 0, BLOOD_VOLUME_MAXIMUM)
 			H.blood_volume = clamp(H.blood_volume + drained_blood, 0, BLOOD_VOLUME_MAXIMUM)
-			if(!victim.blood_volume)
+			if(victim.blood_volume <= 0) // NON-MODULE CHANGE
 				to_chat(H, span_notice("You finish off [victim]'s blood supply."))
 
 /obj/item/organ/internal/heart/vampire

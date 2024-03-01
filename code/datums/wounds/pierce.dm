@@ -33,7 +33,7 @@
 	return ..()
 
 /datum/wound/pierce/bleed/receive_damage(wounding_type, wounding_dmg, wound_bonus)
-	if(victim.stat == DEAD || (wounding_dmg < 5) || !limb.can_bleed() || !victim.blood_volume || !prob(internal_bleeding_chance + wounding_dmg))
+	if(victim.stat == DEAD || (wounding_dmg < 5) || !limb.can_bleed() || !prob(internal_bleeding_chance + wounding_dmg)) // NON-MODULE CHANGE
 		return
 	if(limb.current_gauze?.splint_factor)
 		wounding_dmg *= (1 - limb.current_gauze.splint_factor)

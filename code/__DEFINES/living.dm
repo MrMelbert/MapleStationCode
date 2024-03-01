@@ -14,6 +14,11 @@
 /// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
 #define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
 
+#define COMSIG_HUMAN_ON_HANDLE_BLOOD "human_on_handle_blood"
+	#define HANDLE_BLOOD_HANDLED (1<<0)
+	#define HANDLE_BLOOD_NO_NUTRITION_DRAIN (1<<1)
+	#define HANDLE_BLOOD_NO_EFFECTS (1<<2)
+
 /// Various lists of body zones affected by pain.
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 #define BODY_ZONES_MINUS_HEAD list(BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)

@@ -16,6 +16,8 @@
 	update_fov()
 	gravity_setup()
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
+	if(!blood_volume)
+		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
 
 /mob/living/prepare_huds()
 	..()
@@ -1021,7 +1023,7 @@
 	return
 
 /mob/living/proc/makeTrail(turf/target_turf, turf/start, direction)
-	if(!has_gravity() || !isturf(start) || !blood_volume)
+	if(!has_gravity() || !isturf(start) || HAS_TRAIT(src, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 		return
 
 	var/blood_exists = locate(/obj/effect/decal/cleanable/blood/trail_holder) in start // NON-MODULE CHANGE : Repathing trail to blood
@@ -1054,10 +1056,12 @@
 			TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
 			TH.transfer_mob_blood_dna(src)
 
-/mob/living/carbon/human/makeTrail(turf/T)
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || !is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLOOD))
+// NON-MODULE CHANGE
+/mob/living/carbon/human/makeTrail(turf/target_turf, turf/start, direction)
+	if(!is_bleeding())
 		return
-	..()
+	return ..()
+// NON-MODULE CHANGE END
 
 ///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/makeTrail]
 /mob/living/proc/bleedDragAmount()

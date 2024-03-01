@@ -297,7 +297,7 @@
 
 /datum/reagent/water/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.blood_volume)
+	if(!HAS_TRAIT(affected_mob, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 		affected_mob.blood_volume += 0.1 * REM * seconds_per_tick // water is good for you!
 	affected_mob.adjust_drunk_effect(-0.25 * REM * seconds_per_tick) // and even sobers you up slowly!!
 
