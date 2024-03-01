@@ -12,6 +12,13 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	priority = 10
 	wait = 10 SECONDS
 
+/// Takes the name of a blood type and return the typepath
+/proc/blood_name_to_blood_type(name)
+	for(var/datum/blood_type/blood_type as anything in GLOB.blood_types)
+		if(blood_type.name == name)
+			return blood_type.type
+	return null
+
 /**
  * Blood Types
  *
@@ -33,6 +40,10 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/New()
 	. = ..()
 	compatible_types |= type
+
+/// Gets data to pass to a reagent
+/datum/blood_type/proc/get_blood_data(mob/living/sampled_from)
+	return null
 
 /**
  * Used to handle any unique facets of blood spawned of this blood type
@@ -117,6 +128,38 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /// A base type for all blood used by humans (NOT humanoids), for organization's sake
 /datum/blood_type/crew/human
+
+/datum/blood_type/crew/human/get_blood_data(mob/living/carbon/sampled_from)
+	if(!istype(sampled_from) || isnull(sampled_from.dna))
+		return ..()
+
+	var/list/blood_data = list()
+	//set the blood data
+	blood_data["viruses"] = list()
+
+	for(var/datum/disease/disease as anything in sampled_from.diseases)
+		blood_data["viruses"] += disease.Copy()
+
+	blood_data["blood_DNA"] = sampled_from.dna.unique_enzymes
+	blood_data["resistances"] = LAZYLISTDUPLICATE(sampled_from.disease_resistances)
+
+	var/list/temp_chem = list()
+	for(var/datum/reagent/trace_chem as anything in sampled_from.reagents.reagent_list)
+		temp_chem[trace_chem.type] = trace_chem.volume
+	blood_data["trace_chem"] = list2params(temp_chem)
+
+	blood_data["mind"] = sampled_from.mind || sampled_from.last_mind
+	blood_data["ckey"] = sampled_from.ckey || ckey(sampled_from.last_mind?.key)
+	blood_data["cloneable"] = !HAS_TRAIT_FROM(sampled_from, TRAIT_SUICIDED, REF(sampled_from))
+	blood_data["blood_type"] = sampled_from.dna.human_blood_type
+	blood_data["gender"] = sampled_from.gender
+	blood_data["real_name"] = sampled_from.real_name
+	blood_data["features"] = sampled_from.dna.features
+	blood_data["factions"] = sampled_from.faction
+	blood_data["quirks"] = list()
+	for(var/datum/quirk/sample_quirk as anything in sampled_from.quirks)
+		blood_data["quirks"] += sample_quirk.type
+	return blood_data
 
 /datum/blood_type/crew/human/a_minus
 	name = "A-"

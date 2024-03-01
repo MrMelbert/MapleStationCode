@@ -90,9 +90,6 @@
 	pool.adjust_bloodiness(-1 * delta)
 	change_blood_amount(delta)
 
-	if(HAS_TRAIT(wielder, TRAIT_LIGHT_STEP)) //the character is agile enough to don't mess their clothing and hands just from one blood splatter at floor
-		return
-
 	var/atom/parent_atom = parent
 	parent_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
 
@@ -207,6 +204,9 @@
 	SIGNAL_HANDLER
 
 	if(QDELETED(wielder) || is_obscured() || (wielder.movement_type & MOVETYPES_NOT_TOUCHING_GROUND))
+		return
+	/// The character is agile enough to not mess their clothing and hands just from one blood splatter at floor
+	if(HAS_TRAIT(wielder, TRAIT_LIGHT_STEP))
 		return
 	// Don't share from other feetprints, not super realistic but I think it ruins the effect a bit
 	if(istype(pool, /obj/effect/decal/cleanable/blood/footprints))
