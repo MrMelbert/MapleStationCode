@@ -62,9 +62,18 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 	var/list/temp_blood_DNA
 	if(drip)
+		var/new_blood = /obj/effect/decal/cleanable/blood/drip::bloodiness
 		// Only a certain number of drips (or one large splatter) can be on a given turf.
 		var/obj/effect/decal/cleanable/blood/drip/drop = locate() in blood_turf
 		if(isnull(drop))
+			var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
+			if(!QDELETED(splatter))
+				splatter.adjust_bloodiness(new_blood)
+				splatter.drying_progress -= (new_blood * BLOOD_PER_UNIT_MODIFIER)
+				splatter.update_blood_drying_effect()
+				splatter.transfer_mob_blood_dna(bleeding)
+				return splatter
+
 			drop = new(blood_turf, bleeding.get_static_viruses())
 			if(!QDELETED(drop))
 				drop.transfer_mob_blood_dna(bleeding)
@@ -79,7 +88,6 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			drop_overlay.color = color
 			drop.add_overlay(drop_overlay)
 			// Handle adding blood to the base atom
-			var/new_blood = /obj/effect/decal/cleanable/blood/drip::bloodiness
 			drop.adjust_bloodiness(new_blood)
 			drop.drying_progress -= (new_blood * BLOOD_PER_UNIT_MODIFIER)
 			drop.transfer_mob_blood_dna(bleeding)

@@ -62,8 +62,10 @@
 		add_filter(DRY_FILTER_KEY, 2, color_matrix_filter(blood_dry_filter_matrix))
 		return
 
-	if(!existing_filter)
-		add_filter(DRY_FILTER_KEY, 2, color_matrix_filter())
+	if(existing_filter)
+		remove_filter(DRY_FILTER_KEY)
+
+	add_filter(DRY_FILTER_KEY, 2, color_matrix_filter())
 	transition_filter(DRY_FILTER_KEY, color_matrix_filter(blood_dry_filter_matrix), drying_time - drying_progress)
 
 #undef DRY_FILTER_KEY
@@ -300,6 +302,7 @@
 	bloodiness = BLOOD_AMOUNT_PER_DECAL * 0.2 * BLOOD_PER_UNIT_MODIFIER
 	base_name = "drips of"
 	dry_desc = "A dried spattering."
+	drying_time = 1 MINUTES
 
 //BLOODY FOOTPRINTS
 /obj/effect/decal/cleanable/blood/footprints
@@ -408,6 +411,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	random_icon_states = list("hitsplatter1", "hitsplatter2", "hitsplatter3")
 
 	base_name = ""
+	can_dry = FALSE // No point
 
 	/// The turf we just came from, so we can back up when we hit a wall
 	var/turf/prev_loc

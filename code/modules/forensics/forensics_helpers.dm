@@ -65,11 +65,11 @@
 // NON-MODULE CHANGE for blood
 /atom
 	/// Cached mixed color of all blood DNA on us
-	var/blood_dna_color
+	VAR_PROTECTED/cached_blood_dna_color
 
 /atom/proc/get_blood_dna_color()
-	if(blood_dna_color)
-		return blood_dna_color
+	if(cached_blood_dna_color)
+		return cached_blood_dna_color
 
 	var/list/colors = list()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
@@ -80,8 +80,12 @@
 	var/final_color = pop(colors)
 	for(var/color in colors)
 		final_color = BlendRGB(final_color, color, 0.5)
-	blood_dna_color = final_color
+	cached_blood_dna_color = final_color
 	return final_color
+
+/obj/effect/decal/cleanable/blood/drip/get_blood_dna_color()
+	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
+	return GLOB.blood_types[all_dna[all_dna[1]]]?.color
 
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
@@ -94,7 +98,7 @@
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 	else
 		forensics = new(src, blood_DNA = blood_DNA_to_add)
-	blood_dna_color = null
+	cached_blood_dna_color = null
 	return TRUE
 
 /obj/effect/decal/cleanable/blood/add_blood_DNA(list/blood_DNA_to_add)
@@ -149,7 +153,7 @@
 			forensics = new(src)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 		blood_in_hands = rand(2, 4)
-	blood_dna_color = null
+	cached_blood_dna_color = null
 	update_worn_gloves()
 	return TRUE
 
