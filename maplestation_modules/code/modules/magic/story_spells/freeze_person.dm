@@ -112,8 +112,8 @@
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
 	owner.visible_message(
-		span_danger("The cube around you melts!"),
 		span_danger("The cube around [owner] melts!"),
+		span_danger("The cube around you melts!")
 	)
 	for(var/obj/item/whatever in owner)
 		REMOVE_TRAIT(whatever, TRAIT_NODROP, REF(src))
