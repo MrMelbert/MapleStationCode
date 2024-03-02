@@ -49,6 +49,19 @@
 	steam.set_up(10, FALSE, target.loc)
 	steam.start()
 
+	if (target == caster)
+		caster.visible_message(
+			span_danger("[caster] freezes [caster.p_them()]self into a cube!"),
+			span_danger("You freeze yourself into a cube!"),
+			span_danger("You hear someone being frozen into a cube!")
+		)
+	else
+		caster.visible_message(
+			span_danger("[caster] freezes [target] into a cube!"),
+			span_danger("You freeze [target] into a cube!"),
+			span_danger("You hear someone being frozen into a cube!")
+		)
+
 	caster?.Beam(target, icon_state="bsa_beam", time=5)
 	target.apply_status_effect(/datum/status_effect/freon/magic)
 
@@ -74,7 +87,7 @@
 		if (air && air != turf_air)
 			air.temperature = max(air.temperature + -15, 0)
 			air.react(nearby_turf)
-		
+
 	for(var/obj/item/whatever in owner)
 		ADD_TRAIT(whatever, TRAIT_NODROP, REF(src))
 	owner.add_traits(trait_list, TRAIT_STATUS_EFFECT(id))
@@ -88,12 +101,20 @@
 	to_chat(owner, span_notice("You start breaking out of the ice cube..."))
 	if(do_after(owner, (duration - world.time) / 2, owner))
 		if(!QDELETED(src))
-			to_chat(owner, span_notice("You break out of the ice cube!"))
+			owner.visible_message(
+				span_danger("[owner] breaks out of the ice cube!"),
+				span_danger("You break out of the ice cube!"),
+				span_danger("You hear someone breaking out of an ice cube!")
+			)
 			owner.remove_status_effect(/datum/status_effect/freon/magic)
 			owner.Knockdown(3 SECONDS)
 
 /datum/status_effect/freon/magic/on_remove()
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
+	owner.visible_message(
+		span_danger("The cube around you melts!"),
+		span_danger("The cube around [owner] melts!"),
+	)
 	for(var/obj/item/whatever in owner)
 		REMOVE_TRAIT(whatever, TRAIT_NODROP, REF(src))
 	owner.remove_traits(trait_list, TRAIT_STATUS_EFFECT(id))
