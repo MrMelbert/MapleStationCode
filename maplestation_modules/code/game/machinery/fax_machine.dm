@@ -34,7 +34,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /// Fax machine. Sends messages, receives messages, sends paperwork, receives paperwork.
 /obj/machinery/fax
 	name = "fax machine"
-	desc = "A machine made to send copies of papers to other departments or Central Command. Bureaucratic."
+	desc = "A machine made to send copies of papers to other departments, Central Command or the Aristocracy of Mu. Bureaucratic."
 	icon = 'icons/obj/machines/fax.dmi'
 	base_icon_state = "fax"
 	icon_state = "fax"
@@ -195,6 +195,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 	var/admin_destination = (obj_flags & EMAGGED) ? SYNDICATE_FAX_MACHINE : CENTCOM_FAX_MACHINE
 	var/list/possible_destinations = list()
 	possible_destinations += admin_destination
+	possible_destinations += MU_FAX_MACHINE
 	for(var/obj/machinery/fax/machine as anything in GLOB.fax_machines)
 		if(machine == src)
 			continue
