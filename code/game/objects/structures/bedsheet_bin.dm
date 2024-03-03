@@ -38,7 +38,7 @@ LINEN BINS
 /obj/item/bedsheet/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/surgery_initiator)
-	AddElement(/datum/element/bed_tuckable, 0, 0, 0)
+	AddElement(/datum/element/bed_tuckable, mapload, 0, 0, 0)
 	AddElement(/datum/element/pat_out_fire)
 	if(bedsheet_type == BEDSHEET_DOUBLE)
 		stack_amount *= 2
