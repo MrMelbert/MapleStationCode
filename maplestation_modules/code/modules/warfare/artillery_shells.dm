@@ -100,7 +100,7 @@
 /obj/effect/meteor/shell/small_cluster_ap
 	name = "160mm cluster AP shell"
 	desc = "A small cluster armour piercing shell, designed to deploy a large amount of AP submunitions. You should probably watch out for submunitions."
-	icon_state = "rocket_ap_big" //TEMP SPRITE.
+	icon_state = "cluster_ap_small"
 	hits = 4
 	dropamt = 2
 	//Fun fact: Canon is 3x this amount.
@@ -143,7 +143,7 @@
 /obj/effect/meteor/shell/big_cluster_wmd_he
 	name = "460mm cluster WMD singularity explosive shell"
 	desc = "A cluster WMD explosive singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
-	icon_state = "rocket_ap_big" //TEMP SPRITE.
+	icon_state = "cluster_wmd_big"
 	hits = 4
 	dropamt = 2
 	//Fun fact: Canon is 2x this amount.
@@ -191,7 +191,7 @@
 /obj/effect/meteor/shell/big_cluster_wmd_flak
 	name = "460mm cluster WMD singularity flak shell"
 	desc = "A cluster WMD flak singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
-	icon_state = "rocket_ap_big" //TEMP SPRITE.
+	icon_state = "cluster_wmd_big" //TEMP SPRITE.
 	hits = 4
 	dropamt = 2
 	//Fun fact: Canon is 2x this amount.
@@ -239,7 +239,7 @@
 /obj/effect/meteor/shell/kajari
 	name = "460mm KAJARI WMD shell"
 	desc = "A KAJARI WMD shell, designed to project an incredibly destructive plasma lance. You should consider leaving while you still can."
-	icon_state = "rocket_ap_big" //TEMP SPRITE.
+	icon_state = "kajari_big" //TEMP SPRITE.
 	hits = 8
 	hitpwr = EXPLODE_DEVASTATE
 	//How long until we fire the KAJARI beam.
