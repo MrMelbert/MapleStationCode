@@ -64,7 +64,7 @@
 /datum/element/easy_ignite/proc/attackby_react(obj/item/source, mob/user, obj/item/tool, modifiers)
 	SIGNAL_HANDLER
 
-	if(item_ignition(source, tool, user))
+	if(tool.get_temperature() && item_ignition(source, tool, user))
 		ignite(source, user)
 		return ITEM_INTERACT_SUCCESS
 
@@ -77,7 +77,7 @@
 /datum/element/easy_ignite/proc/welder_react(obj/item/source, mob/user, obj/item/tool)
 	SIGNAL_HANDLER
 
-	if(item_ignition(source, tool, user))
+	if(tool.get_temperature() && item_ignition(source, tool, user))
 		ignite(source, user)
 		return ITEM_INTERACT_SUCCESS
 
