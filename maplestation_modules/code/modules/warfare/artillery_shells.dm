@@ -250,7 +250,7 @@
 	if(fuse <= 0)
 		make_debris()
 		meteor_effect()
-		QDEL_IN(src, 1)
+		QDEL_IN(src, 9)
 	else
 		fuse--
 
@@ -258,6 +258,9 @@
 	..()
 	new /obj/effect/temp_visual/space_explosion(get_turf(src))
 	new /obj/effect/singulo_warhead(get_turf(src))
+	addtimer(CALLBACK(src, PROC_REF(fire_beam)), 8)
+
+/obj/effect/meteor/shell/kajari/proc/fire_beam()
 	var/obj/projectile/A = new /obj/projectile/kajari_lance/hitscan(get_turf(src))
 	A.preparePixelProjectile(dest, get_turf(src))
 	A.firer = src
