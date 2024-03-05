@@ -51,6 +51,6 @@
 	impact_light_range = 16
 	impact_light_color_override = COLOR_RED_LIGHT
 
-/obj/projectile/kajari_lance/generate_hitscan_tracers(cleanup = TRUE, duration = 10, impacting = TRUE)
-	duration = 10
+/obj/projectile/kajari_lance/generate_hitscan_tracers(cleanup = TRUE, duration = 16 SECONDS, impacting = TRUE)
+	duration = 16 SECONDS
 	. = ..()

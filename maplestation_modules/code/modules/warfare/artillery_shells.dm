@@ -122,7 +122,7 @@
 /obj/effect/meteor/shell/tiny_ap_submunition
 	name = "AP submunition"
 	desc = "A small armour piercing submunition, designed for area denial. You should probably watch out for more."
-	icon_state = "rocket_ap_small" //Maybe use a bullet icon. (TEMP SPRITE)
+	icon_state = "sub_ap"
 	hits = 2
 	hitpwr = EXPLODE_LIGHT
 	dropamt = 0
@@ -165,7 +165,7 @@
 /obj/effect/meteor/shell/small_wmd_he_submunition
 	name = "explosive WMD submunition"
 	desc = "A small explosive WMD submunition, designed to annihilate anything in its path. You should probably watch out for more."
-	icon_state = "rocket_ap_small" //Maybe use a bullet icon. (TEMP SPRITE)
+	icon_state = "sub_wmd_he"
 	hits = 1
 	hitpwr = EXPLODE_LIGHT
 	dropamt = 0
@@ -191,7 +191,7 @@
 /obj/effect/meteor/shell/big_cluster_wmd_flak
 	name = "460mm cluster WMD singularity flak shell"
 	desc = "A cluster WMD flak singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
-	icon_state = "cluster_wmd_big" //TEMP SPRITE.
+	icon_state = "cluster_wmd_big" //Deployer looks the same as the HE variant.
 	hits = 4
 	dropamt = 2
 	//Fun fact: Canon is 2x this amount.
@@ -213,7 +213,7 @@
 /obj/effect/meteor/shell/small_wmd_flak_submunition
 	name = "flak WMD submunition"
 	desc = "A small flak WMD submunition, designed for area denial. You should probably watch out for more."
-	icon_state = "rocket_ap_small" //Maybe use a bullet icon. (TEMP SPRITE)
+	icon_state = "sub_wmd_flak"
 	hits = 1
 	hitpwr = EXPLODE_LIGHT
 	dropamt = 0
@@ -239,18 +239,23 @@
 /obj/effect/meteor/shell/kajari
 	name = "460mm KAJARI WMD shell"
 	desc = "A KAJARI WMD shell, designed to project an incredibly destructive plasma lance. You should consider leaving while you still can."
-	icon_state = "kajari_big" //TEMP SPRITE.
+	icon_state = "kajari_big"
 	hits = 8
 	hitpwr = EXPLODE_DEVASTATE
 	//How long until we fire the KAJARI beam.
 	var/fuse = 6
+	//Holy shitcode.
+	var/done = FALSE
 
 /obj/effect/meteor/shell/kajari/Move()
+	if(done)
+		return
 	. = ..()
 	if(fuse <= 0)
+		done = TRUE
 		make_debris()
 		meteor_effect()
-		QDEL_IN(src, 9)
+		QDEL_IN(src, 9 SECONDS)
 	else
 		fuse--
 
@@ -258,7 +263,7 @@
 	..()
 	new /obj/effect/temp_visual/space_explosion(get_turf(src))
 	new /obj/effect/singulo_warhead(get_turf(src))
-	addtimer(CALLBACK(src, PROC_REF(fire_beam)), 8)
+	addtimer(CALLBACK(src, PROC_REF(fire_beam)), 8 SECONDS)
 
 /obj/effect/meteor/shell/kajari/proc/fire_beam()
 	var/obj/projectile/A = new /obj/projectile/kajari_lance/hitscan(get_turf(src))
