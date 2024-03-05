@@ -1,5 +1,5 @@
 /client/proc/warfareEvent()
-	set name = "Start Warfare Module"
+	set name = "Warfare Module"
 	set category = "Admin.Events"
 
 	if(!holder || !check_rights(R_FUN))
