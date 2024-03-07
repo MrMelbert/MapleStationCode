@@ -43,6 +43,14 @@
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
 	var/temperature_for_cast = 25
+	//Minimum temperature able to be chosen when casting
+	var/minimum_temperature_delta = -50
+	//Maximum temperature able to be chosen when casting
+	var/maximum_temperature_delta = 50
+	//Minimum temperature the spell can reach
+	var/minimum_temperature_atmos = T0C - 50
+	//Maximum temperature the spell can reach
+	var/maximum_temperature_atmos = T0C + 100
 
 /datum/action/cooldown/spell/pointed/convect/New(Target, original)
 	. = ..()
@@ -61,7 +69,7 @@
 
 /// Asks the owner for a number via TGUI. If the number isn't 0 or null, sets it to our temperature.
 /datum/action/cooldown/spell/pointed/convect/proc/get_new_cast_temperature()
-	var/temperature = tgui_input_number(owner, "How many degrees (kelvin) do you wish to shift temperature by?", "Convect", null, max_value = INFINITY, min_value = -INFINITY, timeout = 5 SECONDS)
+	var/temperature = tgui_input_number(owner, "How many degrees (kelvin) do you wish to shift temperature by?", "Convect", null, max_value = maximum_temperature_delta, min_value = minimum_temperature_delta, timeout = 5 SECONDS)
 	if (!temperature)
 		return FALSE
 	temperature_for_cast = temperature
@@ -97,10 +105,10 @@
 	var/datum/gas_mixture/air = cast_on.return_air()
 	var/datum/gas_mixture/turf_air = turf_target?.return_air()
 	if (air && air != turf_air) // if this has air and we arent a turf
-		air.temperature = max(air.temperature + temperature_for_cast, 0) //this sucks.
+		air.temperature = clamp(air.temperature + temperature_for_cast, minimum_temperature_atmos, maximum_temperature_atmos) //don't want fusion temperatures in your pocket now dont you
 		air.react(cast_on)
 	if (isturf(cast_on) && turf_air)
-		turf_air.temperature = max(turf_air.temperature + temperature_for_cast, 0)
+		turf_air.temperature = clamp(turf_air.temperature + temperature_for_cast, minimum_temperature_atmos, maximum_temperature_atmos)
 		turf_air.react(turf_target)
 		turf_target?.air_update_turf()
 
