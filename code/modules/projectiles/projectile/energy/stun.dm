@@ -284,7 +284,7 @@
 /// Screen alert for being tased, clicking does a resist (like being on fire or w/e)
 /atom/movable/screen/alert/status_effect/tazed
 	name = "Tased!"
-	desc = "Taser electrodes are shocking you! You can resist to try to remove them."
+	desc = "Taser electrodes are shocking you! You can click this or resist to try to remove them."
 	icon_state = "stun"
 
 /atom/movable/screen/alert/status_effect/tazed/Click(location, control, params)
