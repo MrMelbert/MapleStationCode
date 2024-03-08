@@ -31,5 +31,6 @@
 	impact_type = /obj/effect/projectile/impact/laser/ppc/hellstar
 	damage = 95 //ow fuck
 	armour_penetration = 50 // oh
+	weak_against_armour = FALSE
 	wound_bonus = 0
 	bare_wound_bonus = 20
