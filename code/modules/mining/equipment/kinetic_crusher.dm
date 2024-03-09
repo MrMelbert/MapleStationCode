@@ -30,6 +30,8 @@
 	obj_flags = UNIQUE_RENAME
 	light_system = OVERLAY_LIGHT
 	light_range = 5
+	light_power = 1.2
+	light_color = "#ffff66"
 	light_on = FALSE
 	///List of all crusher trophies attached to this.
 	var/list/obj/item/crusher_trophy/trophies = list()
