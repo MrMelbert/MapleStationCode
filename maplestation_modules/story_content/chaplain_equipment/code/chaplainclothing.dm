@@ -122,6 +122,12 @@
 	icon_state = "pulisec"
 	inhand_icon_state = "pulisec"
 
+/obj/item/clothing/under/rank/security/officer/puligard/alt
+	name = "puligard security uniform"
+	desc = "A tailored security uniform typically seen worn by members of the Puligard. Now with a skirt!"
+	icon_state = "pulisec2"
+	inhand_icon_state = "pulisec2"
+
 /obj/item/clothing/mask/gas/sechailer/puligard
 	name = "puligard sechailer"
 	desc = "With the Puligards ingenious technological advancements, they in their infinite wisdom wrap a scarf around their face over their sechailers."
@@ -137,7 +143,10 @@
 	desc = "A semi ceremonial protective vest worn by frontline Puligard members, the red indicates this one is for security officers."
 	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
 	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "armor_pulisec"
+	inhand_icon_state = "armor_pulisec"
 
 /obj/item/clothing/head/helmet/sec/puligard
 	name = "puligard security uniform"
@@ -164,7 +173,7 @@
 	greyscale_colors = NONE
 	greyscale_config_worn = NONE
 
-/obj/item/clothing/shoes/jackboots/puligard
+/obj/item/clothing/shoes/jackboots/pulisec
 	name = "puligard security jackboots"
 	desc = "A sturdy pair of boots with added metal plating, typically worn by frontline Puligard members."
 	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
@@ -173,3 +182,136 @@
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "jackboots_pulisec"
 	inhand_icon_state = "jackboots_pulisec"
+
+/obj/item/storage/bag/garment/pulisec
+	name = "Puligard Security garment bag"
+	desc = "A bag for storing extra clothes and shoes. This one belongs to the Puligard Security Force."
+
+/obj/item/storage/bag/garment/pulisec/PopulateContents()
+	new /obj/item/clothing/under/rank/security/officer/puligard(src)
+	new /obj/item/clothing/under/rank/security/officer/puligard/alt(src)
+	new /obj/item/clothing/mask/gas/sechailer/puligard(src)
+	new /obj/item/clothing/suit/armor/vest/puligard(src)
+	new /obj/item/clothing/head/helmet/sec/puligard(src)
+	new /obj/item/clothing/gloves/color/black/puligard(src)
+	new /obj/item/clothing/shoes/jackboots/pulisec(src)
+	new /obj/item/clothing/neck/cremona(src)
+
+/obj/item/clothing/under/rank/medical/doctor/puligard
+	name = "puligard medical skirt"
+	desc = "A soft uniform deisgned for medical doctors under the Puligard."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "pulimed"
+	inhand_icon_state = "pulimed"
+
+/obj/item/clothing/under/rank/medical/doctor/puligard/alt
+	name = "puligard medical suit"
+	desc = "A soft yet protective uniform to help the Puligard with battles in the medbay and on the field."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "pulimed2"
+	inhand_icon_state = "pulimed2"
+
+/obj/item/clothing/gloves/latex/nitrile/puligard
+	name = "puligard nitrile gloves"
+	desc = "A pair of thick nitrile gloves outfitted for the Puligard. Compatable with rampant holy crusades!"
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "pulimed_latex"
+	inhand_icon_state = "pulimed_latex"
+
+/obj/item/clothing/shoes/jackboots/puligard
+	name = "puligard medical boots"
+	desc = "Common thick boots for both on field and backline use. This pair is outfitted for Puligard use. Now with added arch support!"
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "pulimed_boots"
+	inhand_icon_state = "pulimed_boots"
+
+/obj/item/clothing/shoes/jackboots/puligard/alt
+	name = "puligard medical jackboots"
+	desc = "Medically outfitted jackboots for use in sterile enviornments. It is lined with two pockets to hide small items."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "pulimed_boots2"
+	inhand_icon_state = "pulimed_boots2"
+
+/obj/item/clothing/mask/surgical/puligard
+	name = "puligard surgical mask"
+	desc = "A protective yet delicate mask used by frontline Puligard members to both conceal their identity and combat against germs."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "pulimed_sterile"
+	inhand_icon_state = "pulimed_sterile"
+
+/obj/item/clothing/suit/toggle/labcoat/puligard
+	name = "puligard medical apron"
+	desc = "A delicately crafted apron used by those in the Puligard. Allows for one to keep tidy when aiding others."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	icon_state = "pulimed_coat"
+	inhand_icon_state = "pulimed_coat"
+
+/obj/item/clothing/suit/toggle/labcoat/puligard/alt
+	name = "puligard medical coat"
+	desc = "A thick coat used by the Puligard. The material is sterile and ready for medical use."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "pulimed_coat2"
+	inhand_icon_state = "pulimed_coat2"
+
+/obj/item/clothing/head/utility/surgerycap/puligard
+	name = "puligard surgery cap"
+	desc = "A soft surgery cap used by frontline Puliard members to tame hair for surgery."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "pulimed_cap"
+	inhand_icon_state = "pulimed_cap"
+
+/obj/item/clothing/neck/cremona
+	name = "puligard holy necklace"
+	desc = "A lightweight amulet bearing used to symbolize the Puligard Holy War Clergy. The blue gem is said to resemble the shade of Her eyes."
+	icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_icons.dmi'
+	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
+	lefthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_lhand.dmi'
+	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
+	icon_state = "cremonacross"
+	inhand_icon_state = "cremonacross"
+	greyscale_config = null
+	greyscale_config_worn = null
+	greyscale_colors = null
+
+/obj/item/storage/bag/garment/pulimed
+	name = "Puligard Medical garment bag"
+	desc = "A bag for storing extra clothes and shoes. This one belongs to the Puligard Medical Force."
+
+/obj/item/storage/bag/garment/pulimed/PopulateContents()
+	new /obj/item/clothing/under/rank/medical/doctor/puligard(src)
+	new /obj/item/clothing/under/rank/medical/doctor/puligard/alt(src)
+	new /obj/item/clothing/gloves/latex/nitrile/puligard(src)
+	new /obj/item/clothing/shoes/jackboots/puligard(src)
+	new /obj/item/clothing/shoes/jackboots/puligard/alt(src)
+	new /obj/item/clothing/mask/surgical/puligard(src)
+	new /obj/item/clothing/suit/toggle/labcoat/puligard(src)
+	new /obj/item/clothing/suit/toggle/labcoat/puligard/alt(src)
+	new /obj/item/clothing/head/utility/surgerycap/puligard(src)
+	new /obj/item/clothing/neck/cremona(src)
