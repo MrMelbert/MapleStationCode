@@ -227,6 +227,9 @@
 	worn_icon = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_worn.dmi'
 	icon_state = "pulimed_latex"
 	inhand_icon_state = "pulimed_latex"
+	greyscale_config = null
+	greyscale_config_worn = null
+	greyscale_colors = null
 
 /obj/item/clothing/shoes/jackboots/puligard
 	name = "puligard medical boots"
