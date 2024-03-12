@@ -34,7 +34,7 @@ GLOBAL_LIST_EMPTY(fax_machines)
 /// Fax machine. Sends messages, receives messages, sends paperwork, receives paperwork.
 /obj/machinery/fax
 	name = "fax machine"
-	desc = "A machine made to send copies of papers to other departments, Central Command or the Aristocracy of Mu. Bureaucratic."
+	desc = "A machine made to send copies of papers to other departments, Central Command, or the Aristocracy of Mu. Bureaucratic."
 	icon = 'icons/obj/machines/fax.dmi'
 	base_icon_state = "fax"
 	icon_state = "fax"
