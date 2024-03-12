@@ -389,6 +389,7 @@
 
 // NON-MODULE CHANGE START
 /obj/structure/closet/body_bag
+	/// Whether you can health-analyzer through the walls of the bodybag
 	var/can_scan_through = FALSE
 
 /obj/structure/closet/body_bag/environmental/hardlight
@@ -426,14 +427,14 @@
 	var/seconds_freezing = -1
 	/// Cooldown for playing the freeze sound effect
 	COOLDOWN_DECLARE(freeze_sound_cd)
-
+	/// Base color filter applied to the bodybag, adjusted based on integrity
 	var/static/list/base_color_filter = list(
 		1, 0, 0,
 		0, 1, 0,
 		0, 0, 2,
 		0, 0, 0,
 	)
-
+	/// Cooldown between filter updates to prevent weirdness
 	COOLDOWN_DECLARE(last_filter_update)
 
 /obj/structure/closet/body_bag/environmental/stasis/Initialize(mapload)
