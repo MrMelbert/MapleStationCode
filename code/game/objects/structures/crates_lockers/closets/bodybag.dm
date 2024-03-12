@@ -392,6 +392,14 @@
 	/// Whether you can health-analyzer through the walls of the bodybag
 	var/can_scan_through = FALSE
 
+/obj/structure/closet/body_bag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	ADD_TRAIT(arrived, TRAIT_FLOORED, REF(src))
+
+/obj/structure/closet/body_bag/Exited(atom/movable/gone, direction)
+	. = ..()
+	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
+
 /obj/structure/closet/body_bag/environmental/hardlight
 	can_scan_through = TRUE
 
@@ -421,7 +429,8 @@
 	icon_state = "holobag_med"
 	breakout_time = 5 SECONDS
 	can_scan_through = TRUE
-	material_drop_amount = 5
+	material_drop = /obj/item/stack/sheet/plastic
+	material_drop_amount = 2
 	appearance_flags = parent_type::appearance_flags | KEEP_TOGETHER
 	/// Tracks how many seconds we've been freezing dudes for
 	var/seconds_freezing = -1
@@ -446,13 +455,18 @@
 	if(!COOLDOWN_FINISHED(src, last_filter_update))
 		return
 
-	COOLDOWN_START(src, last_filter_update, 1 SECONDS)
 	var/damage_percent = 1 - get_integrity_percentage()
 	var/list/new_color_filter = base_color_filter.Copy()
 	new_color_filter[1] -= (0.5 * damage_percent)
 	new_color_filter[5] -= (0.5 * damage_percent)
 	new_color_filter[9] -= (1.25 * damage_percent)
-	transition_filter("stasis_color", color_matrix_filter(new_color_filter), 1 SECONDS)
+
+	if(last_filter_update == -1)
+		modify_filter("stasis_color", color_matrix_filter(new_color_filter), TRUE)
+	else
+		transition_filter("stasis_color", color_matrix_filter(new_color_filter), 1 SECONDS)
+
+	COOLDOWN_START(src, last_filter_update, 1 SECONDS)
 
 /obj/structure/closet/body_bag/environmental/stasis/refresh_air()
 	var/mol_count = 50
@@ -481,7 +495,6 @@
 	if(seconds_freezing != -1)
 		return
 	START_PROCESSING(SSobj, src)
-	ADD_TRAIT(arrived, TRAIT_FLOORED, REF(src))
 
 /obj/structure/closet/body_bag/environmental/stasis/Exited(atom/movable/gone, direction)
 	. = ..()
@@ -489,7 +502,6 @@
 		return
 	seconds_freezing = -1
 	STOP_PROCESSING(SSobj, src)
-	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
 	if(HAS_TRAIT(gone, TRAIT_STASIS))
 		remove_stasis(gone)
 
@@ -515,7 +527,7 @@
 
 /obj/structure/closet/body_bag/environmental/stasis/after_open(mob/living/user, force = FALSE)
 	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in loc))
-		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.5)
+		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.4)
 	COOLDOWN_START(src, freeze_sound_cd, 2 SECONDS)
 
 /obj/structure/closet/body_bag/environmental/stasis/proc/apply_stasis(mob/living/target)
@@ -526,7 +538,7 @@
 
 /obj/structure/closet/body_bag/environmental/stasis/after_close(mob/living/user)
 	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in src))
-		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.4)
+		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.5)
 	COOLDOWN_START(src, freeze_sound_cd, 2 SECONDS)
 
 /obj/structure/closet/body_bag/environmental/stasis/proc/remove_stasis(mob/living/target)
@@ -585,6 +597,7 @@
 /obj/structure/closet/body_bag/environmental/stasis/deconstruct(disassembled = TRUE)
 	if (!(obj_flags & NO_DECONSTRUCTION))
 		new /obj/effect/decal/cleanable/shreds(loc, name)
+		new /obj/item/stack/sheet/cloth(loc, 4)
 		playsound(loc, 'sound/items/duct_tape_rip.ogg', 50, TRUE, frequency = 0.5)
 		for(var/mob/living/left_behind in src)
 			left_behind.Knockdown(3 SECONDS)
@@ -606,8 +619,23 @@
 
 /obj/item/bodybag/stasis/deploy_bodybag(mob/user, atom/location)
 	var/obj/structure/closet/body_bag/environmental/stasis/bag = ..()
-	COOLDOWN_START(bag, last_filter_update, 1 SECONDS)
+	bag.last_filter_update = -1
 	bag.update_integrity(get_integrity())
 	return bag
+
+// The design
+/datum/design/stasis_bag
+	name = "Stasis Bodybag"
+	desc = "A disposal bodybag designed to stabilize patients in the field in critical condition. \
+		The bag itself cannot maintain stasis for long, and will eventually fall apart."
+	id = "stasis_bodybag"
+	build_type = PROTOLATHE
+	materials = list(
+		/datum/material/plastic = 10 * SHEET_MATERIAL_AMOUNT, // Very plastic expensive (but only because cloth cannot be put in the lathe)
+		/datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT,
+	)
+	build_path = /obj/item/bodybag/stasis
+	category = list(RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_MEDICAL)
+	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
 
 // NON-MODULE CHANGE END

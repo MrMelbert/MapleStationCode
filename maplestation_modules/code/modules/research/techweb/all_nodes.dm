@@ -25,6 +25,7 @@
 /datum/techweb_node/adv_biotech
 	id_additions = list(
 		"auto_cpr_device",
+		"stasis_bodybag",
 		"vitals_monitor_advanced",
 	)
 
