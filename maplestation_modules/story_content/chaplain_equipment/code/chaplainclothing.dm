@@ -290,7 +290,7 @@
 	righthand_file = 'maplestation_modules/story_content/chaplain_equipment/icons/cleric_rhand.dmi'
 	icon_state = "pulimed_cap"
 	inhand_icon_state = "pulimed_cap"
-	flags_inv = FALSE
+	flags_inv = NONE
 
 /obj/item/clothing/neck/cremona
 	name = "puligard holy necklace"
