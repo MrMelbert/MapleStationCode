@@ -1238,12 +1238,18 @@
 
 /// if any of our bodyparts are bleeding
 /mob/living/carbon/proc/is_bleeding()
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return FALSE
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		if(part.get_modified_bleed_rate())
 			return TRUE
+	return FALSE
 
 /// get our total bleedrate
 /mob/living/carbon/proc/get_total_bleed_rate()
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return 0
+
 	var/total_bleed_rate = 0
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		total_bleed_rate += part.get_modified_bleed_rate()

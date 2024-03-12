@@ -24,7 +24,7 @@
 	species_cookie = /obj/item/food/meat/slab
 	meat = /obj/item/food/meat/slab/human/mutant/lizard
 	skinned_type = /obj/item/stack/sheet/animalhide/lizard
-	exotic_bloodtype = "L"
+	exotic_bloodtype = /datum/blood_type/crew/lizard // NON-MODULE CHANGE
 	inert_mutation = /datum/mutation/human/firebreath
 	death_sound = 'sound/voice/lizard/deathsound.ogg'
 	species_language_holder = /datum/language_holder/lizard
@@ -45,17 +45,19 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
 
-/datum/species/lizard/on_species_gain(mob/living/carbon/new_lizard, datum/species/old_species, pref_load)
-	. = ..()
-	if(ishuman(new_lizard))
-		update_mail_goodies(new_lizard)
+// NON-MODULE CHANGE
+// /datum/species/lizard/on_species_gain(mob/living/carbon/new_lizard, datum/species/old_species, pref_load)
+// 	. = ..()
+// 	if(ishuman(new_lizard))
+// 		update_mail_goodies(new_lizard)
 
-/datum/species/lizard/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies = list())
-	if(istype(quirk, /datum/quirk/blooddeficiency))
-		mail_goodies += list(
-			/obj/item/reagent_containers/blood/lizard
-		)
-	return ..()
+// /datum/species/lizard/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies = list())
+// 	if(istype(quirk, /datum/quirk/blooddeficiency))
+// 		mail_goodies += list(
+// 			/obj/item/reagent_containers/blood/lizard
+// 		)
+// 	return ..()
+// NON-MODULE CHANGE end
 
 /// Lizards are cold blooded and do not stabilize body temperature naturally
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)

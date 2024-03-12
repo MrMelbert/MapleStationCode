@@ -161,7 +161,6 @@ There are several things that need to be remembered:
 
 	apply_overlay(ID_LAYER)
 
-
 /mob/living/carbon/human/update_worn_gloves()
 	remove_overlay(GLOVES_LAYER)
 
@@ -169,42 +168,42 @@ There are several things that need to be remembered:
 		var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_GLOVES) + 1]
 		inv.update_icon()
 
+	// NON-MODULE CHANGE
 	//Bloody hands begin
-	var/mutable_appearance/bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
-	cut_overlay(bloody_overlay)
-	if(!gloves && blood_in_hands && (num_hands > 0))
-		bloody_overlay = mutable_appearance('icons/effects/blood.dmi', "bloodyhands", -GLOVES_LAYER)
-		if(num_hands < 2)
-			if(has_left_hand(FALSE))
-				bloody_overlay.icon_state = "bloodyhands_left"
-			else if(has_right_hand(FALSE))
-				bloody_overlay.icon_state = "bloodyhands_right"
+	if(isnull(gloves))
+		if(blood_in_hands && num_hands > 0)
+			// When byond gives us filters that respect dirs we can just use an alpha mask for this but until then, two icons weeeee
+			var/mutable_appearance/hands_combined = mutable_appearance(layer = -GLOVES_LAYER)
+			hands_combined.color = get_blood_dna_color()
+			if(has_left_hand(check_disabled = FALSE))
+				hands_combined.overlays += mutable_appearance('icons/effects/blood.dmi', "bloodyhands_left")
+			if(has_right_hand(check_disabled = FALSE))
+				hands_combined.overlays += mutable_appearance('icons/effects/blood.dmi', "bloodyhands_right")
+			overlays_standing[GLOVES_LAYER] = hands_combined
+			apply_overlay(GLOVES_LAYER)
+		return
 
-		add_overlay(bloody_overlay)
-	//Bloody hands end
+	// Bloody hands end
+	var/obj/item/worn_item = gloves
+	update_hud_gloves(worn_item)
 
-	if(gloves)
-		var/obj/item/worn_item = gloves
-		update_hud_gloves(worn_item)
+	if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_GLOVES)
+		return
 
-		if(check_obscured_slots(transparent_protection = TRUE) & ITEM_SLOT_GLOVES)
-			return
+	var/icon_file = 'icons/mob/clothing/hands.dmi'
+	var/mutable_appearance/gloves_overlay = gloves.build_worn_icon(default_layer = GLOVES_LAYER, default_icon_file = icon_file)
 
-		var/icon_file = 'icons/mob/clothing/hands.dmi'
+	var/feature_y_offset = 0
+	//needs to be typed, hand_bodyparts can have nulls
+	for (var/obj/item/bodypart/arm/my_hand in hand_bodyparts)
+		var/list/glove_offset = my_hand.worn_glove_offset?.get_offset()
+		if (glove_offset && (!feature_y_offset || glove_offset["y"] > feature_y_offset))
+			feature_y_offset = glove_offset["y"]
 
-		var/mutable_appearance/gloves_overlay = gloves.build_worn_icon(default_layer = GLOVES_LAYER, default_icon_file = icon_file)
-
-		var/feature_y_offset = 0
-		//needs to be typed, hand_bodyparts can have nulls
-		for (var/obj/item/bodypart/arm/my_hand in hand_bodyparts)
-			var/list/glove_offset = my_hand.worn_glove_offset?.get_offset()
-			if (glove_offset && (!feature_y_offset || glove_offset["y"] > feature_y_offset))
-				feature_y_offset = glove_offset["y"]
-
-		gloves_overlay.pixel_y += feature_y_offset
-		overlays_standing[GLOVES_LAYER] = gloves_overlay
+	gloves_overlay.pixel_y += feature_y_offset
+	overlays_standing[GLOVES_LAYER] = gloves_overlay
 	apply_overlay(GLOVES_LAYER)
-
+	// NON-MODULE CHANGE END
 
 /mob/living/carbon/human/update_worn_glasses()
 	remove_overlay(GLASSES_LAYER)

@@ -36,7 +36,7 @@
 	savefile_key = "feature_synth_damage_threshold"
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
-	priority = PREFERENCE_PRIORITY_GENDER
+	priority = PREFERENCE_PRIORITY_BODY_TYPE
 	minimum = -100
 	maximum = 75
 
@@ -50,4 +50,28 @@
 	synth.disuise_damage_threshold = value
 
 /datum/preference/numeric/synth_damage_threshold/is_accessible(datum/preferences/preferences)
+	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/synth)
+
+/datum/preference/choiced/synth_blood
+	savefile_key = "feature_synth_blood"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	priority = PREFERENCE_PRIORITY_BODY_TYPE
+
+/datum/preference/choiced/synth_blood/init_possible_values()
+	return list("Always Oil", "As Disguise")
+
+/datum/preference/choiced/synth_blood/create_default_value()
+	return "As Disguise"
+
+/datum/preference/choiced/synth_blood/apply_to_human(mob/living/carbon/human/target, value)
+	var/datum/species/synth/synth = target.dna?.species
+	if(!istype(synth))
+		return
+	if(value == "As Disguise" && synth.disguise_species)
+		synth.exotic_bloodtype = synth.disguise_species.exotic_bloodtype
+	else
+		synth.exotic_bloodtype = /datum/blood_type/oil
+
+/datum/preference/choiced/synth_blood/is_accessible(datum/preferences/preferences)
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/synth)
