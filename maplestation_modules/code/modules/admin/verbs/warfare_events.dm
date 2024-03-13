@@ -9,6 +9,7 @@
 /datum/warfare_event
 	var/client/holder //client of whoever is using this datum
 	var/list/selectedShells = list() //list of selected shells to fire
+	var/fireDirection = NORTH //default direction to fire shells (fires from top down)
 
 /datum/warfare_event/New(user)//user can either be a client or a mob due to byondcode(tm)
 	if (istype(user, /client))
@@ -30,6 +31,7 @@
 /datum/warfare_event/ui_data(mob/user)
 	var/list/data = list()
 	data["selectedShells"] = selectedShells
+	data["fireDirection"] = fireDirection
 	return data
 
 /datum/warfare_event/ui_act(action, params)
@@ -60,3 +62,8 @@
 					selectedShells += /obj/effect/meteor/shell/kajari
 				. = TRUE
 				return
+		if("changeDirection")
+			var/direction = params["direction"]
+			fireDirection = direction
+			. = TRUE
+			return
