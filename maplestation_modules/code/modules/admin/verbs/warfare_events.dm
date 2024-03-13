@@ -62,6 +62,30 @@
 					selectedShells += /obj/effect/meteor/shell/kajari
 				. = TRUE
 				return
+		if("removeShell")
+			var/selected = params["selected"]
+			switch(selected)
+				if("bigAP")
+					selectedShells -= /obj/effect/meteor/shell/big_ap
+				if("smallAP")
+					selectedShells -= /obj/effect/meteor/shell/small_ap
+				if("WMDHE")
+					selectedShells -= /obj/effect/meteor/shell/small_wmd_he
+				if("WMDFlak")
+					selectedShells -= /obj/effect/meteor/shell/small_wmd_flak
+				if("clusterAP")
+					selectedShells -= /obj/effect/meteor/shell/small_cluster_ap
+				if("clusterWMDHE")
+					// ADD CONFIRMATION.
+					selectedShells -= /obj/effect/meteor/shell/big_cluster_wmd_he
+				if("clusterWMDFlak")
+					// ADD CONFIRMATION.
+					selectedShells -= /obj/effect/meteor/shell/big_cluster_wmd_flak
+				if("kajari")
+					// ADD CONFIRMATION.
+					selectedShells -= /obj/effect/meteor/shell/kajari
+				. = TRUE
+				return
 		if("changeDirection")
 			var/direction = params["direction"]
 			fireDirection = direction
