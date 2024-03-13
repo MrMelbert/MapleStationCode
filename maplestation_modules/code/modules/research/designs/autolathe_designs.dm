@@ -2,7 +2,7 @@
 	name = "Item Dispenser Frame"
 	id = "item_d_frame"
 	build_type = AUTOLATHE
-	materials = list(/datum/material/iron = SMALL_MATERIAL AMOUNT, /datum/material/plastic = SMALL_MATERIAL_AMOUNT * 2.5)
+	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT, /datum/material/plastic = SMALL_MATERIAL_AMOUNT * 2.5)
 	build_path = /obj/item/wallframe/item_dispenser
 	category = list(
 		RND_CATEGORY_INITIAL,
