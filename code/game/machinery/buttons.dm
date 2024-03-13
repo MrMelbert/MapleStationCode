@@ -24,6 +24,7 @@
 	var/id = null
 	var/initialized_button = 0
 	var/silicon_access_disabled = FALSE
+	interaction_flags_machine = parent_type::interaction_flags_machine | INTERACT_MACHINE_OPEN
 
 /obj/machinery/button/indestructible
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
