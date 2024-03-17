@@ -61,7 +61,6 @@
 					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/kajari
 				. = TRUE
-				return
 		if("removeShell")
 			var/selected = params["selected"]
 			switch(selected)
@@ -85,9 +84,12 @@
 					// ADD CONFIRMATION.
 					selectedShells -= /obj/effect/meteor/shell/kajari
 				. = TRUE
-				return
 		if("changeDirection")
 			var/direction = params["direction"]
 			fireDirection = direction
 			. = TRUE
-			return
+		if("fireShells")
+			for(var/shell in selectedShells)
+				spawn_meteor(shell, fireDirection, null)
+			. = TRUE
+	update_icon()
