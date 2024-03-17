@@ -5,18 +5,22 @@ import { Window } from '../layouts';
 export const WarfareEvent = (props, context) => {
   const { act, data } = useBackend(context);
   // Extract `health` and `color` variables from the `data` object.
-  const { health, color } = data;
+  const { selectedShells, fireDirection } = data;
   return (
     <Window resizable>
       <Window.Content scrollable>
         <Section title="Health status">
           <LabeledList>
-            <LabeledList.Item label="Health">{health}</LabeledList.Item>
-            <LabeledList.Item label="Color">{color}</LabeledList.Item>
+            <LabeledList.Item label="selectedShells">
+              {selectedShells}
+            </LabeledList.Item>
+            <LabeledList.Item label="fireDirection">
+              {fireDirection}
+            </LabeledList.Item>
             <LabeledList.Item label="Button">
               <Button
-                content="Dispatch a 'test' action"
-                onClick={() => act('test')}
+                content="Dispatch a 'fireShells' action"
+                onClick={() => act('fireShells')}
               />
             </LabeledList.Item>
           </LabeledList>
