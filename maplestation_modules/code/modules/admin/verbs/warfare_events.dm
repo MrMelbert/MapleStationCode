@@ -105,4 +105,5 @@
 		if("fireShells")
 			for(var/shell in selectedShells)
 				spawn_meteor(shell, fireDirection, null)
+				selectedShells -= shell
 			. = TRUE

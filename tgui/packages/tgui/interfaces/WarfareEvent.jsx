@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Button, LabeledList, Section } from '../components';
+import { Button, Section } from '../components';
 import { Window } from '../layouts';
 
 export const WarfareEvent = (props, context) => {
@@ -7,23 +7,17 @@ export const WarfareEvent = (props, context) => {
   // Extract `health` and `color` variables from the `data` object.
   const { selectedShells, fireDirection } = data;
   return (
-    <Window resizable>
+    <Window title="Warfare Module" resizable>
       <Window.Content scrollable>
-        <Section title="Health status">
-          <LabeledList>
-            <LabeledList.Item label="selectedShells">
-              {selectedShells}
-            </LabeledList.Item>
-            <LabeledList.Item label="fireDirection">
-              {fireDirection}
-            </LabeledList.Item>
-            <LabeledList.Item label="Button">
-              <Button
-                content="Dispatch a 'fireShells' action"
-                onClick={() => act('fireShells')}
-              />
-            </LabeledList.Item>
-          </LabeledList>
+        <Section title="Volley Configuration">
+          <Button
+            fluid
+            icon="bomb"
+            color="bad"
+            content="Fire Volley"
+            onClick={() => act('fireShells')}
+          />
+          <Section title="Loaded Shells" />
         </Section>
       </Window.Content>
     </Window>
