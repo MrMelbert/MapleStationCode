@@ -43,47 +43,61 @@
 			switch(selected)
 				if("bigAP")
 					selectedShells += /obj/effect/meteor/shell/big_ap
+					. = TRUE
 				if("smallAP")
 					selectedShells += /obj/effect/meteor/shell/small_ap
+					. = TRUE
 				if("WMDHE")
 					selectedShells += /obj/effect/meteor/shell/small_wmd_he
+					. = TRUE
 				if("WMDFlak")
 					selectedShells += /obj/effect/meteor/shell/small_wmd_flak
+					. = TRUE
 				if("clusterAP")
 					selectedShells += /obj/effect/meteor/shell/small_cluster_ap
+					. = TRUE
 				if("clusterWMDHE")
 					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/big_cluster_wmd_he
+					. = TRUE
 				if("clusterWMDFlak")
 					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/big_cluster_wmd_flak
+					. = TRUE
 				if("kajari")
 					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/kajari
-				. = TRUE
+					. = TRUE
 		if("removeShell")
 			var/selected = params["selected"]
 			switch(selected)
 				if("bigAP")
 					selectedShells -= /obj/effect/meteor/shell/big_ap
+					. = TRUE
 				if("smallAP")
 					selectedShells -= /obj/effect/meteor/shell/small_ap
+					. = TRUE
 				if("WMDHE")
 					selectedShells -= /obj/effect/meteor/shell/small_wmd_he
+					. = TRUE
 				if("WMDFlak")
 					selectedShells -= /obj/effect/meteor/shell/small_wmd_flak
+					. = TRUE
 				if("clusterAP")
 					selectedShells -= /obj/effect/meteor/shell/small_cluster_ap
+					. = TRUE
 				if("clusterWMDHE")
 					// ADD CONFIRMATION.
 					selectedShells -= /obj/effect/meteor/shell/big_cluster_wmd_he
+					. = TRUE
 				if("clusterWMDFlak")
 					// ADD CONFIRMATION.
 					selectedShells -= /obj/effect/meteor/shell/big_cluster_wmd_flak
+					. = TRUE
 				if("kajari")
 					// ADD CONFIRMATION.
 					selectedShells -= /obj/effect/meteor/shell/kajari
-				. = TRUE
+					. = TRUE
 		if("changeDirection")
 			var/direction = params["direction"]
 			fireDirection = direction
@@ -92,4 +106,3 @@
 			for(var/shell in selectedShells)
 				spawn_meteor(shell, fireDirection, null)
 			. = TRUE
-	update_icon()
