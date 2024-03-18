@@ -481,12 +481,12 @@
 
 /obj/structure/closet/body_bag/environmental/stasis/examine_status(mob/user)
 	switch(100 * get_integrity_percentage())
-		if(50 to 99)
-			return span_italics("It looks worn.")
+		if(50 to 75)
+			return span_warning("It looks worn.")
 		if(25 to 50)
-			return span_italics("It appears moderately worn.")
+			return span_warning("It appears moderately worn.")
 		if(0 to 25)
-			return span_warning("It's falling apart!")
+			return span_boldwarning("It's falling apart!")
 
 /obj/structure/closet/body_bag/environmental/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
