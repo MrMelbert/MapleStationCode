@@ -73,12 +73,9 @@ PROCESSING_SUBSYSTEM_DEF(station)
 
 		selectable_traits_by_types[initial(trait_typepath.trait_type)][trait_typepath] = initial(trait_typepath.weight)
 
-	var/trait_budget = text2num(pick_weight(CONFIG_GET(keyed_list/station_traits)))
+	var/trait_budget = text2num(pick_weight(CONFIG_GET(keyed_list/station_traits))) || 0
 	var/list/selectable_types = list(STATION_TRAIT_POSITIVE, STATION_TRAIT_NEUTRAL, STATION_TRAIT_NEGATIVE)
-	while(trait_budget > 0)
-		if(!length(selectable_types))
-			break
-
+	while(trait_budget > 0 && length(selectable_types))
 		var/picked_cat = pick(selectable_types)
 		var/list/selectable_traits = selectable_traits_by_types[picked_cat]
 		if(!length(selectable_traits))
