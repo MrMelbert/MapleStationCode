@@ -455,6 +455,14 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	. = ..()
 	ADD_TRAIT(src, TRAIT_BLIND_TOOL, INNATE_TRAIT)
 
+/obj/item/cane/equipped(mob/living/user, slot, initial)
+	. = ..()
+	user.update_limbless_movespeed_mod()
+
+/obj/item/cane/dropped(mob/living/user, silent)
+	. = ..()
+	user.update_limbless_movespeed_mod()
+
 /obj/item/cane/white
 	name = "white cane"
 	desc = "A cane traditionally used by the blind to help them see. Folds down to be easier to transport."
