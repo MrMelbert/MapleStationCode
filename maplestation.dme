@@ -6090,6 +6090,7 @@
 #include "maplestation_modules\code\controllers\subsystem\pain_subsystem.dm"
 #include "maplestation_modules\code\datums\shuttles.dm"
 #include "maplestation_modules\code\datums\components\easy_ignite.dm"
+#include "maplestation_modules\code\datums\components\limbless_aid.dm"
 #include "maplestation_modules\code\datums\components\make_item_slow.dm"
 #include "maplestation_modules\code\datums\components\remote_materials.dm"
 #include "maplestation_modules\code\datums\components\stackable_item.dm"

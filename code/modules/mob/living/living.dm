@@ -2291,13 +2291,17 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	update_limbless_movespeed_mod()
 
+/// Updates the mob's movespeed based on how many limbs they have or are missing.
 /mob/living/proc/update_limbless_movespeed_mod()
 	if(usable_legs < default_num_legs)
 		var/limbless_slowdown = (default_num_legs - usable_legs) * 3
 		if(!usable_legs && usable_hands < default_num_hands)
 			limbless_slowdown += (default_num_hands - usable_hands) * 3
-		for(var/obj/item/cane/thing in held_items)
-			limbless_slowdown *= 0.5
+
+		var/list/slowdown_mods = list()
+		SEND_SIGNAL(src, COMSIG_LIVING_LIMBLESS_MOVESPEED_UPDATE, slowdown_mods)
+		for(var/num in slowdown_mods)
+			limbless_slowdown *= slowdown_mods
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, multiplicative_slowdown = limbless_slowdown)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
