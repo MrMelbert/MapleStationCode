@@ -28,6 +28,11 @@
 		"vitals_monitor_advanced",
 	)
 
+/datum/techweb_node/cryotech
+	id_additions = list(
+		"stasis_bodybag",
+	)
+
 /datum/techweb_node/exp_surgery
 	id_additions = list(
 		"surgery_neuter_ling",
