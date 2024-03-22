@@ -16,6 +16,11 @@
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(on_equip))
 	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(on_drop))
 
+	var/obj/item/item_parent = parent
+	if(isliving(item_parent.loc))
+		var/mob/living/wearer = item_parent.loc
+		on_equip(parent, wearer, wearer.get_slot_by_item(parent))
+
 /datum/component/limbless_aid/UnregisterFromParent()
 	UnregisterSignal(parent, list(COMSIG_ITEM_EQUIPPED, COMSIG_ITEM_DROPPED))
 
