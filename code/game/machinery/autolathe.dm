@@ -380,7 +380,7 @@
 
 /obj/machinery/autolathe/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
 	. = ..()
-	if((!issilicon(usr) && !isAdminGhostAI(usr)) && !Adjacent(usr))
+	if(!can_interact(usr) || (!issilicon(usr) && !isAdminGhostAI(usr)) && !Adjacent(usr)) // Non-modular change
 		return
 	if(busy)
 		balloon_alert(usr, "printing started!")
