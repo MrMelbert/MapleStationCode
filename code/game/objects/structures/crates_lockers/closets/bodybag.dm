@@ -24,6 +24,8 @@
 	var/obj/item/bodybag/foldedbag_instance = null
 	/// The tagged name of the bodybag, also used to check if the bodybag IS tagged.
 	var/tag_name
+	/// Whether you can health-analyzer through the walls of the bodybag
+	var/can_scan_through = FALSE
 
 
 /obj/structure/closet/body_bag/Initialize(mapload)
@@ -173,6 +175,32 @@
 		max_weight_of_contents = A_is_item.w_class
 	folding_bodybag.w_class = max_weight_of_contents
 	the_folder.put_in_hands(folding_bodybag)
+
+/obj/structure/closet/body_bag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	ADD_TRAIT(arrived, TRAIT_FLOORED, REF(src))
+
+/obj/structure/closet/body_bag/Exited(atom/movable/gone, direction)
+	. = ..()
+	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
+
+/obj/structure/closet/body_bag/examine(mob/user)
+	. = ..()
+	if(can_scan_through)
+		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
+
+/obj/structure/closet/body_bag/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return .
+
+	if(!can_scan_through || !istype(tool, /obj/item/healthanalyzer))
+		return .
+
+	for(var/mob/living/frozen in src)
+		return tool.interact_with_atom(frozen, user)
+
+	return .
 
 /// Environmental bags. They protect against bad weather.
 
@@ -370,6 +398,7 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	foldedbag_path = null
 	weather_protection = list(TRAIT_VOIDSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE)
+	can_scan_through = TRUE
 
 /obj/structure/closet/body_bag/environmental/hardlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type in list(BRUTE, BURN))
@@ -382,45 +411,13 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	foldedbag_path = null
 	weather_protection = list(TRAIT_VOIDSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE)
+	can_scan_through = TRUE
 
 /obj/structure/closet/body_bag/environmental/prisoner/hardlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type in list(BRUTE, BURN))
 		playsound(src, 'sound/weapons/egloves.ogg', 80, TRUE)
 
-// NON-MODULE CHANGE START
-/obj/structure/closet/body_bag
-	/// Whether you can health-analyzer through the walls of the bodybag
-	var/can_scan_through = FALSE
-
-/obj/structure/closet/body_bag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	ADD_TRAIT(arrived, TRAIT_FLOORED, REF(src))
-
-/obj/structure/closet/body_bag/Exited(atom/movable/gone, direction)
-	. = ..()
-	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
-
-/obj/structure/closet/body_bag/environmental/hardlight
-	can_scan_through = TRUE
-
-/obj/structure/closet/body_bag/examine(mob/user)
-	. = ..()
-	if(can_scan_through)
-		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
-
-/obj/structure/closet/body_bag/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
-	. = ..()
-	if(. & ITEM_INTERACT_ANY_BLOCKER)
-		return .
-
-	if(!can_scan_through || !istype(tool, /obj/item/healthanalyzer))
-		return .
-
-	for(var/mob/living/frozen in src)
-		return tool.interact_with_atom(frozen, user)
-
-	return .
-
+// NON-MODULE CHANGE / addition
 /obj/structure/closet/body_bag/environmental/stasis
 	name = "stasis bodybag"
 	desc = "A disposable bodybag designed to keep its contents in stasis, preventing decay and further injury. \
@@ -607,35 +604,3 @@
 /obj/structure/closet/body_bag/environmental/stasis/get_remote_view_fullscreens(mob/user)
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 2)
-
-// The thing
-/obj/item/bodybag/stasis
-	name = /obj/structure/closet/body_bag/environmental/stasis::name
-	desc = /obj/structure/closet/body_bag/environmental/stasis::desc
-	max_integrity = /obj/structure/closet/body_bag/environmental/stasis::max_integrity
-	icon = 'maplestation_modules/icons/obj/bodybag.dmi'
-	icon_state = "stasis_bag_folded"
-	unfoldedbag_path = /obj/structure/closet/body_bag/environmental/stasis
-
-/obj/item/bodybag/stasis/deploy_bodybag(mob/user, atom/location)
-	var/obj/structure/closet/body_bag/environmental/stasis/bag = ..()
-	bag.last_filter_update = -1
-	bag.update_integrity(get_integrity())
-	return bag
-
-// The design
-/datum/design/stasis_bag
-	name = "Stasis Bodybag"
-	desc = "A disposal bodybag designed to stabilize patients in the field in critical condition. \
-		The bag itself cannot maintain stasis for long, and will eventually fall apart."
-	id = "stasis_bodybag"
-	build_type = PROTOLATHE
-	materials = list(
-		/datum/material/plastic = 10 * SHEET_MATERIAL_AMOUNT, // Very plastic expensive (but only because cloth cannot be put in the lathe)
-		/datum/material/silver = HALF_SHEET_MATERIAL_AMOUNT,
-	)
-	build_path = /obj/item/bodybag/stasis
-	category = list(RND_CATEGORY_EQUIPMENT + RND_SUBCATEGORY_EQUIPMENT_MEDICAL)
-	departmental_flags = DEPARTMENT_BITFLAG_MEDICAL
-
-// NON-MODULE CHANGE END
