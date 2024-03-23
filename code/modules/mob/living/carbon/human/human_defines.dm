@@ -70,8 +70,6 @@
 
 	var/datum/physiology/physiology
 
-	var/list/datum/bioware/biowares
-
 	var/account_id
 
 	var/hardcore_survival_score = 0
