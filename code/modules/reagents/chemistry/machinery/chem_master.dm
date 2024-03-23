@@ -376,7 +376,8 @@
 		return FALSE
 
 	//use energy
-	use_power(active_power_usage) // Non-module change
+	if(!use_energy(active_power_usage, force = FALSE))
+		return FALSE
 
 	//do the operation
 	. = FALSE
@@ -514,8 +515,9 @@
 	if(!is_printing)
 		return
 
-	//use power
-	use_power(active_power_usage) // Non-module change : can't if use_power, it doesn't return anything, wasn't invented yet
+	//use energy
+	if(!use_energy(active_power_usage, force = FALSE))
+		return FALSE
 
 	//print the stuff
 	var/obj/item/reagent_containers/item = new selected_container(drop_location())

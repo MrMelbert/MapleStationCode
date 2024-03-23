@@ -7,7 +7,6 @@ import {
   ProgressBar,
   Section,
 } from 'tgui-core/components';
-import { toFixed } from 'tgui-core/math';
 import { BooleanLike } from 'tgui-core/react';
 import { toTitleCase } from 'tgui-core/string';
 
@@ -32,6 +31,8 @@ type Data = {
   amount: number;
   energy: number;
   maxEnergy: number;
+  displayedEnergy: string;
+  displayedMaxEnergy: string;
   chemicals: DispensableReagent[];
   recipes: string[];
   recordingRecipe: string[];
@@ -93,7 +94,7 @@ export const ChemDispenser = (props) => {
           <LabeledList>
             <LabeledList.Item label="Energy">
               <ProgressBar value={data.energy / data.maxEnergy}>
-                {toFixed(data.energy) + ' units'}
+                {data.displayedEnergy + ' / ' + data.displayedMaxEnergy}
               </ProgressBar>
             </LabeledList.Item>
           </LabeledList>
