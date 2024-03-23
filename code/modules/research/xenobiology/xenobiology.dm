@@ -927,7 +927,7 @@
 	to_chat(user, span_notice("You slather the blue gunk over the [clothing], fireproofing it."))
 	clothing.name = "fireproofed [clothing.name]"
 	clothing.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	clothing.add_atom_colour("#000080", FIXED_COLOUR_PRIORITY)
+	clothing.add_atom_colour(COLOR_NAVY, FIXED_COLOUR_PRIORITY)
 	clothing.max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	clothing.resistance_flags |= FIRE_PROOF
 	uses --

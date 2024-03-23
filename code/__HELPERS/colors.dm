@@ -55,7 +55,7 @@
 	return rgb(255 - hex2num(textr), 255 - hex2num(textg), 255 - hex2num(textb))
 
 ///Flash a color on the passed mob
-/proc/flash_color(mob_or_client, flash_color="#960000", flash_time=20)
+/proc/flash_color(mob_or_client, flash_color=COLOR_CULT_RED, flash_time=20)
 	var/mob/flashed_mob
 	if(ismob(mob_or_client))
 		flashed_mob = mob_or_client

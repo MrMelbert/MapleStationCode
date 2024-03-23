@@ -5,7 +5,7 @@
 	visual = FALSE
 	organ_flags = ORGAN_ROBOTIC
 	failing_desc = "seems to be broken."
-	var/implant_color = "#FFFFFF"
+	var/implant_color = COLOR_WHITE
 	var/implant_overlay
 
 /obj/item/organ/internal/cyberimp/New(mob/implanted_mob = null)
