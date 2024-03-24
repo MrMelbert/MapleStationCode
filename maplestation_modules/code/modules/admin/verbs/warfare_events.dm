@@ -1,7 +1,8 @@
-/client/proc/warfareEvent()
-	set name = "Warfare Module"
-	set desc = "Allows you to perform various actions related to warfare"
-	set category = "Admin.Events"
+// /client/proc/warfareEvent()
+//	 set name = "Warfare Module"
+//	 set desc = "Allows you to perform various actions related to warfare"
+//	 set category = "Admin.Events"
+// Temporarily disabled.
 
 	var/datum/warfare_event/tgui = new(usr)
 	tgui.ui_interact(usr)
