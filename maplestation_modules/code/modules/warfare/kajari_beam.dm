@@ -1,6 +1,6 @@
 /obj/projectile/kajari_lance
 	name = "Kajari particle lance"
-	icon = 'maplestation_modules/icons/effects/beam.dmi'
+	icon = 'maplestation_modules/icons/effects/kajari.dmi'
 	icon_state = "kajari_beam"
 	pass_flags = NONE
 	damage = 200
