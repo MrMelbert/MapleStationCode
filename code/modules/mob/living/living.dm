@@ -16,6 +16,8 @@
 	update_fov()
 	gravity_setup()
 	ADD_TRAIT(src, TRAIT_UNIQUE_IMMERSE, INNATE_TRAIT)
+	if(!blood_volume)
+		ADD_TRAIT(src, TRAIT_NOBLOOD, INNATE_TRAIT)
 
 /mob/living/prepare_huds()
 	..()
@@ -1021,10 +1023,10 @@
 	return
 
 /mob/living/proc/makeTrail(turf/target_turf, turf/start, direction)
-	if(!has_gravity() || !isturf(start) || !blood_volume)
+	if(!has_gravity() || !isturf(start) || HAS_TRAIT(src, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 		return
 
-	var/blood_exists = locate(/obj/effect/decal/cleanable/trail_holder) in start
+	var/blood_exists = locate(/obj/effect/decal/cleanable/blood/trail_holder) in start // NON-MODULE CHANGE : Repathing trail to blood
 
 	var/trail_type = getTrail()
 	if(!trail_type)
@@ -1046,18 +1048,20 @@
 	if((newdir in GLOB.cardinals) && (prob(50)))
 		newdir = REVERSE_DIR(get_dir(target_turf, start))
 	if(!blood_exists)
-		new /obj/effect/decal/cleanable/trail_holder(start, get_static_viruses())
+		new /obj/effect/decal/cleanable/blood/trail_holder(start, get_static_viruses()) // NON-MODULE CHANGE : Repathing trail to blood
 
-	for(var/obj/effect/decal/cleanable/trail_holder/TH in start)
+	for(var/obj/effect/decal/cleanable/blood/trail_holder/TH in start) // NON-MODULE CHANGE : Repathing trail to blood
 		if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
 			TH.existing_dirs += newdir
 			TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
 			TH.transfer_mob_blood_dna(src)
 
-/mob/living/carbon/human/makeTrail(turf/T)
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || !is_bleeding() || HAS_TRAIT(src, TRAIT_NOBLOOD))
+// NON-MODULE CHANGE
+/mob/living/carbon/human/makeTrail(turf/target_turf, turf/start, direction)
+	if(!is_bleeding())
 		return
-	..()
+	return ..()
+// NON-MODULE CHANGE END
 
 ///Returns how much blood we're losing from being dragged a tile, from [/mob/living/proc/makeTrail]
 /mob/living/proc/bleedDragAmount()

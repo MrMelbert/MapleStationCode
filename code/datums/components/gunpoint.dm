@@ -43,6 +43,7 @@
 		COMSIG_MOB_FIRED_GUN,
 		COMSIG_MOVABLE_SET_GRAB_STATE,
 		COMSIG_LIVING_START_PULL), PROC_REF(trigger_reaction))
+	RegisterSignal(targ, COMSIG_MOVABLE_USING_RADIO, PROC_REF(radio_trigger_reaction)) // NON-MODULE CHANGE
 	RegisterSignal(targ, COMSIG_ATOM_EXAMINE, PROC_REF(examine_target))
 	RegisterSignal(targ, COMSIG_LIVING_PRE_MOB_BUMP, PROC_REF(block_bumps_target))
 	RegisterSignals(targ, list(COMSIG_LIVING_DISARM_HIT, COMSIG_LIVING_GET_PULLED), PROC_REF(cancel))
@@ -150,6 +151,16 @@
 /datum/component/gunpoint/proc/trigger_reaction()
 	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(async_trigger_reaction))
+
+// NON-MODULE CHANGE
+/datum/component/gunpoint/proc/radio_trigger_reaction(datum/source, obj/item/radio)
+	SIGNAL_HANDLER
+	if(radio.loc != source)
+		return NONE
+	INVOKE_ASYNC(src, PROC_REF(async_trigger_reaction))
+	to_chat(source, span_warning("You fail to reach [radio]!"))
+	return COMPONENT_CANNOT_USE_RADIO
+// NON-MODULE CHANGE END
 
 /datum/component/gunpoint/proc/async_trigger_reaction()
 	var/mob/living/shooter = parent

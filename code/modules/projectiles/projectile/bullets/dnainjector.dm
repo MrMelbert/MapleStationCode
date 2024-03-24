@@ -1,4 +1,6 @@
-/obj/projectile/bullet/dnainjector
+// NON-MODULE CHANGE : this whole file
+/*
+/obj/projectile/bullet/dart/dnainjector
 	name = "\improper DNA injector"
 	icon_state = "syringeproj"
 	var/obj/item/dnainjector/injector
@@ -24,3 +26,4 @@
 /obj/projectile/bullet/dnainjector/Destroy()
 	QDEL_NULL(injector)
 	return ..()
+*/

@@ -1,4 +1,3 @@
-
 /datum/preference/choiced/skrell_hair
 	savefile_key = "feature_head_tentacles"
 	savefile_identifier = PREFERENCE_CHARACTER

@@ -1,5 +1,4 @@
 // -- Modular spans and fonts.
-#define span_italics(str) ("<span class='italics'>" + str + "</span>")
 #define span_readable_yellow(str) ("<font color = '#c5c900'>" + str + "</font>")
 
 /// The color of brass
