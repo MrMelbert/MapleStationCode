@@ -10,6 +10,7 @@
 $color-prayer: colors.bg(colors.$purple) !default;
 $color-centcom: colors.bg(colors.$yellow) !default;
 $color-syndicate: colors.bg(colors.$red) !default;
+$color-mu: colors.bg(colors.$pink) !default; //NON-MODULE CHANGE
 $color-nuke: colors.bg(colors.$yellow) !default;
 $color-fax: colors.bg(colors.$green) !default;
 $color-music: colors.bg(colors.$teal) !default;
@@ -21,7 +22,8 @@ $text-color: base.$color-fg !default;
 .RequestManager__request_centcom,
 .RequestManager__request_nuke,
 .RequestManager__request_prayer,
-.RequestManager__request_syndicate {
+.RequestManager__request_syndicate,
+.RequestManager__request_mu {
   margin-right: 0.5rem;
 }
 
@@ -35,6 +37,11 @@ $text-color: base.$color-fg !default;
 
 .RequestManager__request_syndicate {
   color: $color-syndicate;
+}
+
+//NON-MODULE CHANGE
+.RequestManager__request_mu {
+  color: $color-mu;
 }
 
 .RequestManager__request_nuke {

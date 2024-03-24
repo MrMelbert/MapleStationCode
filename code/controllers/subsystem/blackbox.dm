@@ -151,6 +151,10 @@ SUBSYSTEM_DEF(blackbox)
 			record_feedback("tally", "radio_usage", 1, "supply")
 		if(FREQ_CENTCOM)
 			record_feedback("tally", "radio_usage", 1, "centcom")
+		//NON-MODULE CHANGE START
+		if(FREQ_MU)
+			record_feedback("tally", "radio_usage", 1, "mu")
+		//NON-MODULE CHANGE END
 		if(FREQ_AI_PRIVATE)
 			record_feedback("tally", "radio_usage", 1, "ai private")
 		if(FREQ_CTF_RED)

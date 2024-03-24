@@ -249,6 +249,7 @@ const PageMain = (props) => {
     canBuyShuttles,
     canMakeAnnouncement,
     canMessageAssociates,
+    canMessageMu, // NON-MODULE CHANGE
     canRecallShuttles,
     canRequestNuke,
     canSendToSectors,
@@ -268,6 +269,7 @@ const PageMain = (props) => {
 
   const [callingShuttle, setCallingShuttle] = useState(false);
   const [messagingAssociates, setMessagingAssociates] = useState(false);
+  const [messagingMu, setMessagingMu] = useState(false);
   const [messagingSector, setMessagingSector] = useState(null);
   const [requestingNukeCodes, setRequestingNukeCodes] = useState(false);
 
@@ -356,7 +358,6 @@ const PageMain = (props) => {
               onClick={() => act('makePriorityAnnouncement')}
             />
           )}
-
           {!!canToggleEmergencyAccess && (
             <Button.Confirm
               icon="id-card-o"
@@ -367,7 +368,6 @@ const PageMain = (props) => {
               onClick={() => act('toggleEmergencyAccess')}
             />
           )}
-
           {!syndicate && (
             <Button
               icon="desktop"
@@ -375,13 +375,11 @@ const PageMain = (props) => {
               onClick={() => act('setState', { state: STATE_CHANGING_STATUS })}
             />
           )}
-
           <Button
             icon="envelope-o"
             content="Message List"
             onClick={() => act('setState', { state: STATE_MESSAGES })}
           />
-
           {canBuyShuttles !== 0 && (
             <Button
               icon="shopping-cart"
@@ -394,7 +392,6 @@ const PageMain = (props) => {
               onClick={() => act('setState', { state: STATE_BUYING_SHUTTLE })}
             />
           )}
-
           {!!canMessageAssociates && (
             <Button
               icon="comment-o"
@@ -403,7 +400,14 @@ const PageMain = (props) => {
               onClick={() => setMessagingAssociates(true)}
             />
           )}
-
+          {!!canMessageMu && (
+            <Button
+              icon="comment-o"
+              content={`Send message to Mu`}
+              disabled={!importantActionReady}
+              onClick={() => setMessagingMu(true)}
+            />
+          )}
           {!!canRequestNuke && (
             <Button
               icon="radiation"
@@ -412,7 +416,6 @@ const PageMain = (props) => {
               onClick={() => setRequestingNukeCodes(true)}
             />
           )}
-
           {!!emagged && !syndicate && (
             <Button
               icon="undo"
@@ -435,6 +438,22 @@ const PageMain = (props) => {
           onSubmit={(message) => {
             setMessagingAssociates(false);
             act('messageAssociates', {
+              message,
+            });
+          }}
+        />
+      )}
+
+      {!!canMessageMu && messagingMu && (
+        <MessageModal
+          label={`Message to transmit to the Aristocracy of Mu via quantum entanglement`}
+          notice="Please be aware that this process is very expensive, and abuse will lead to immediate auditing. Transmission does not guarantee a response."
+          icon="bullhorn"
+          buttonText="Send"
+          onBack={() => setMessagingMu(false)}
+          onSubmit={(message) => {
+            setMessagingMu(false);
+            act('messageMu', {
               message,
             });
           }}

@@ -56,7 +56,7 @@
 		return
 
 	if (!sender)
-		sender = input("Who is the message from?", "Sender") as null|anything in list(RADIO_CHANNEL_CENTCOM,RADIO_CHANNEL_SYNDICATE)
+		sender = input("Who is the message from?", "Sender") as null|anything in list(RADIO_CHANNEL_CENTCOM,RADIO_CHANNEL_SYNDICATE,RADIO_CHANNEL_MU) //NON-MODULE CHANGE: Adds in the Mu Channel
 		if(!sender)
 			return
 
@@ -69,7 +69,17 @@
 	log_directed_talk(mob, target, input, LOG_ADMIN, "reply")
 	message_admins("[key_name_admin(src)] replied to [key_name_admin(target)]'s [sender] message with: \"[input]\"")
 	target.balloon_alert(target, "you hear a voice")
-	to_chat(target, span_hear("You hear something crackle in your [human_recipient ? "ears" : "radio receiver"] for a moment before a voice speaks. \"Please stand by for a message from [sender == "Syndicate" ? "your benefactor" : "Central Command"]. Message as follows[sender == "Syndicate" ? ", agent." : ":"] <b>[input].</b> Message ends.\""), confidential = TRUE)
+	// NON-MODULE CHANGE START: have to turn this into a switch
+	var/stylized_sender_name = ""
+	switch(sender)
+		if("CentCom")
+			stylized_sender_name = "Central Command"
+		if("Syndicate")
+			stylized_sender_name = "your benefactor"
+		if("Mu")
+			stylized_sender_name = "the Aristocracy of Mu"
+	to_chat(target, span_hear("You hear something crackle in your [human_recipient ? "ears" : "radio receiver"] for a moment before a voice speaks. \"Please stand by for a message from [stylized_sender_name]. Message as follows[sender == "Syndicate" ? ", agent." : ":"] <b>[input].</b> Message ends.\""), confidential = TRUE)
+	// NON-MODULE CHANGE END
 
 	BLACKBOX_LOG_ADMIN_VERB("Headset Message")
 

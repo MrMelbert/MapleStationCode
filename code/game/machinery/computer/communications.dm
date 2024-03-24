@@ -254,6 +254,23 @@
 			usr.log_talk(message, LOG_SAY, tag = "message to [associates]")
 			deadchat_broadcast(" has messaged [associates], \"[message]\" at [span_name("[get_area_name(usr, TRUE)]")].", span_name("[usr.real_name]"), usr, message_type = DEADCHAT_ANNOUNCEMENT)
 			COOLDOWN_START(src, important_action_cooldown, IMPORTANT_ACTION_COOLDOWN)
+		//NON-MODULE CHANGE START
+		if ("messageMu")
+			if (!authenticated_as_non_silicon_captain(usr))
+				return
+			if (!COOLDOWN_FINISHED(src, important_action_cooldown))
+				return
+
+			playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, FALSE)
+			var/message = trim(html_encode(params["message"]), MAX_MESSAGE_LEN)
+
+			message_mu(message, usr)
+			to_chat(usr, span_notice("Message transmitted to Aristocracy of Mu."))
+
+			usr.log_talk(message, LOG_SAY, tag = "message to Mu")
+			deadchat_broadcast(" has messaged Mu, \"[message]\" at [span_name("[get_area_name(usr, TRUE)]")].", span_name("[usr.real_name]"), usr, message_type = DEADCHAT_ANNOUNCEMENT)
+			COOLDOWN_START(src, important_action_cooldown, IMPORTANT_ACTION_COOLDOWN)
+		//NON-MODULE CHANGE END
 		if ("purchaseShuttle")
 			var/can_buy_shuttles_or_fail_reason = can_buy_shuttles(usr)
 			if (can_buy_shuttles_or_fail_reason != TRUE)
@@ -538,6 +555,7 @@
 				data["canBuyShuttles"] = can_buy_shuttles(user)
 				data["canMakeAnnouncement"] = FALSE
 				data["canMessageAssociates"] = FALSE
+				data["canMessageMu"] = FALSE //NON-MODULE CHANGE
 				data["canRecallShuttles"] = !issilicon(user)
 				data["canRequestNuke"] = FALSE
 				data["canSendToSectors"] = FALSE
@@ -556,6 +574,7 @@
 
 				if (authenticated_as_non_silicon_captain(user))
 					data["canMessageAssociates"] = TRUE
+					data["canMessageMu"] = TRUE //NON-MODULE CHANGE
 					data["canRequestNuke"] = TRUE
 
 				if (can_send_messages_to_other_sectors(user))

@@ -74,6 +74,20 @@
 	for(var/obj/machinery/computer/communications/console in GLOB.shuttle_caller_list)
 		console.override_cooldown()
 
+//NON-MODULE CHANGE START
+/// Used by communications consoles to message the Mu Aristocracy
+/proc/message_mu(text, mob/sender)
+	var/msg = copytext_char(sanitize(text), 1, MAX_MESSAGE_LEN)
+	GLOB.requests.message_mu(sender.client, msg)
+	msg = span_adminnotice("<b><font color=plum>MU:</font>[ADMIN_FULLMONTY(sender)] [ADMIN_MU_REPLY(sender)]:</b> [msg]")
+	for(var/client/staff as anything in GLOB.admins)
+		if(staff?.prefs.read_preference(/datum/preference/toggle/comms_notification))
+			SEND_SOUND(staff, sound('sound/misc/server-ready.ogg'))
+	to_chat(GLOB.admins, msg, confidential = TRUE)
+	for(var/obj/machinery/computer/communications/console in GLOB.shuttle_caller_list)
+		console.override_cooldown()
+//NON-MODULE CHANGE END
+
 /// Used by communications consoles to request the nuclear launch codes
 /proc/nuke_request(text, mob/sender)
 	var/msg = copytext_char(sanitize(text), 1, MAX_MESSAGE_LEN)

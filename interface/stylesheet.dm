@@ -5,7 +5,7 @@
 // If you modify this file you ALSO need to modify tgui/packages/tgui-panel/styles/tgchat/chat-light.scss and chat-dark.scss
 // BUT you have to use PX font sizes with are on a x8 scale of these font sizes
 // Sample font-size: DM: 8 CSS: 64px
-
+// NON-MODULE CHANGE: Mu radio added in
 /client/script = {"<style>
 body					{font-family: Verdana, sans-serif;}
 
@@ -50,6 +50,7 @@ em						{font-style: normal;	font-weight: bold;}
 .servradio				{color: #6eaa2c;}
 .syndradio				{color: #6d3f40;}
 .centcomradio			{color: #686868;}
+.muradio				{color: #9d77a3;}
 .aiprivradio			{color: #ff00ff;}
 .redteamradio			{color: #ff0000;}
 .blueteamradio			{color: #0000ff;}

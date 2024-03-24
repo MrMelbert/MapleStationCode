@@ -9,6 +9,7 @@
 	var/list/banned_frequencies = list(
 		FREQ_SYNDICATE,
 		FREQ_CENTCOM,
+		FREQ_MU, //NON-MODULE CHANGE
 		FREQ_CTF_RED,
 		FREQ_CTF_YELLOW,
 		FREQ_CTF_GREEN,

@@ -82,6 +82,7 @@
 #define span_minorannounce(str) ("<span class='minorannounce'>" + str + "</span>")
 #define span_minoralert(str) ("<span class='minoralert'>" + str + "</span>")
 #define span_monkey(str) ("<span class='monkey'>" + str + "</span>")
+#define span_muradio(str) ("<span class='muradio'>" + str + "</span>") //NON-MODULE CHANGE
 #define span_name(str) ("<span class='name'>" + str + "</span>")
 #define span_narsie(str) ("<span class='narsie'>" + str + "</span>")
 #define span_narsiesmall(str) ("<span class='narsiesmall'>" + str + "</span>")
