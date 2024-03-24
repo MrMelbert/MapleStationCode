@@ -3,7 +3,6 @@
 	name = "Bananium Shipment"
 	trait_type = STATION_TRAIT_NEUTRAL
 	weight = 5
-	cost = STATION_TRAIT_COST_LOW
 	report_message = "Rumors has it that the clown planet has been sending support packages to clowns in this system."
 	trait_to_give = STATION_TRAIT_BANANIUM_SHIPMENTS
 
@@ -11,7 +10,6 @@
 	name = "Unnatural atmospherical properties"
 	trait_type = STATION_TRAIT_NEUTRAL
 	weight = 5
-	cost = STATION_TRAIT_COST_LOW
 	show_in_report = TRUE
 	report_message = "System's local planet has irregular atmospherical properties."
 	trait_to_give = STATION_TRAIT_UNNATURAL_ATMOSPHERE
@@ -45,7 +43,6 @@
 	trait_type = STATION_TRAIT_NEUTRAL
 	weight = 5
 	show_in_report = FALSE
-	cost = STATION_TRAIT_COST_LOW
 	report_message = "Ian has gone exploring somewhere in the station."
 
 /datum/station_trait/ian_adventure/on_round_start()
@@ -105,7 +102,6 @@
 	trait_type = STATION_TRAIT_NEUTRAL
 	weight = 10
 	show_in_report = TRUE
-	cost = STATION_TRAIT_COST_MINIMAL
 	report_message = "Something seems to be wrong with the PDAs issued to you all this shift. Nothing too bad though."
 	trait_to_give = STATION_TRAIT_PDA_GLITCHED
 
@@ -138,7 +134,6 @@
 	trait_type = STATION_TRAIT_NEUTRAL
 	weight = 10
 	show_in_report = TRUE
-	cost = STATION_TRAIT_COST_MINIMAL
 	report_message = "Due to a shortage in standard issue jumpsuits, we have provided your assistants with one of our backup supplies."
 	blacklist = list(/datum/station_trait/assistant_gimmicks)
 
@@ -283,7 +278,6 @@
 	name = "Scarves"
 	trait_type = STATION_TRAIT_NEUTRAL
 	weight = 10
-	cost = STATION_TRAIT_COST_MINIMAL
 	show_in_report = TRUE
 	var/list/scarves
 
@@ -317,7 +311,6 @@
 	trait_type = STATION_TRAIT_NEUTRAL
 	show_in_report = TRUE
 	weight = 10
-	cost = STATION_TRAIT_COST_MINIMAL
 	report_message = "It has become temporarily fashionable to use a wallet, so everyone on the station has been issued one."
 
 /datum/station_trait/wallets/New()
