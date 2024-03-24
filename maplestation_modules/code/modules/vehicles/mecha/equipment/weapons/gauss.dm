@@ -25,3 +25,11 @@
 				shake_camera(affected_pilots, 1.5 SECONDS, 3)
 		chassis.take_damage(75)
 	return ..()
+
+/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/gauss/penetrator
+	name = "\improper \"Shadow Cat\" Mech Gauss Rifle (N)"
+	desc = "A weapon for combat exosuits. Uses magnetic propulsion to fire a metallic slug at extremely high velocities. \
+	Upgraded version for internal Nanotrasen usage. Only available in extremely low quantities."
+	equip_cooldown = 50
+	projectile = /obj/projectile/bullet/gauss/penetrator
+	ammo_type = MECHA_AMMO_GAUSS

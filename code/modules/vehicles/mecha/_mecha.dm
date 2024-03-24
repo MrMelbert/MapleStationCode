@@ -208,6 +208,8 @@
 	/// Module selected by default when mech UI is opened
 	var/ui_selected_module_index
 
+	var/mecha_zoom_view_size = 4.5 //NON-MODULE CHANGE : customizable zoom size
+
 /datum/armor/sealed_mecha
 	melee = 20
 	bullet = 10
