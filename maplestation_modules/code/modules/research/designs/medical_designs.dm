@@ -4,7 +4,7 @@
 	id = "cybernetic_cat_ears"
 	build_type = PROTOLATHE | AWAY_LATHE | MECHFAB
 	construction_time = 30
-	materials = list(/datum/material/iron = 250, /datum/material/glass = 400)
+	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 2.5, /datum/material/glass = SMALL_MATERIAL_AMOUNT * 4)
 	build_path = /obj/item/organ/internal/ears/cat/cybernetic
 	category = list(
 		RND_CATEGORY_CYBERNETICS + RND_SUBCATEGORY_CYBERNETICS_ORGANS_MISC

@@ -4,10 +4,6 @@
 	damage = 0
 	paralyze = 0
 
-//New laser scatter projectile type, 11 damage for 6 pellets doing 66 damage in total
-/obj/projectile/beam/weak/laser_scatter
-	damage = 11
-
 //Overrides meteorslug to have no stun, lower knockdown but also causes a lot of PAIN
 /obj/projectile/bullet/shotgun_meteorslug
 	paralyze = 0

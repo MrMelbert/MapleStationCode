@@ -4,7 +4,7 @@
 	id = "mech_ppc"
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/ppc
-	materials = list(/datum/material/iron=10000)
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5)
 	construction_time = 100
 	category = list(
 		RND_CATEGORY_MECHFAB_EQUIPMENT,
@@ -38,7 +38,7 @@
 	id = "mech_ac5"
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_5
-	materials = list(/datum/material/iron=10000)
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5)
 	construction_time = 100
 	category = list(
 		RND_CATEGORY_MECHFAB_EQUIPMENT,
@@ -60,7 +60,7 @@
 	id = "mech_ac5_ammo"
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_ammo/autocannon_5
-	materials = list(/datum/material/iron=4000)
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 	construction_time = 20
 	category = list(
 		RND_CATEGORY_MECHFAB_EQUIPMENT,
@@ -81,7 +81,7 @@
 	desc = "A weapon for combat exosuits. Fires a singular armor-piercing round."
 	id = "mech_ac10"
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_10
-	materials = list(/datum/material/iron=10000)
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5)
 
 /datum/design/mech_ac5_ammo/mech_ac10_ammo
 	name = "Autocannon/10 Ammunition"
@@ -89,8 +89,8 @@
 	id = "mech_ac10_ammo"
 	build_path = /obj/item/mecha_ammo/autocannon_10
 	materials = list(
-		/datum/material/iron = 4000,
-		/datum/material/uranium = 1000,
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2,
+		/datum/material/uranium = HALF_SHEET_MATERIAL_AMOUNT,
 		)
 
 /datum/design/mech_ac5/mech_ac20
@@ -98,7 +98,7 @@
 	desc = "A weapon for combat exosuits. Fires a singular slow gigantic slug."
 	id = "mech_ac20"
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/autocannon_20
-	materials = list(/datum/material/iron=10000)
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5)
 
 /datum/design/mech_ac5_ammo/mech_ac20_ammo
 	name = "Autocannon/20 Ammunition"
@@ -106,9 +106,9 @@
 	id = "mech_ac20_ammo"
 	build_path = /obj/item/mecha_ammo/autocannon_20
 	materials = list(
-		/datum/material/titanium = 2000,
-		/datum/material/plasma = 500,
-		/datum/material/diamond = 400,
+		/datum/material/titanium = SHEET_MATERIAL_AMOUNT,
+		/datum/material/plasma = SMALL_MATERIAL_AMOUNT * 5,
+		/datum/material/diamond = SMALL_MATERIAL_AMOUNT * 4,
 		)
 	construction_time = 50
 
@@ -119,8 +119,8 @@
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/gauss
 	materials = list(
-		/datum/material/iron=10000,
-		/datum/material/gold=2000,
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5,
+		/datum/material/gold = SHEET_MATERIAL_AMOUNT,
 		)
 	construction_time = 100
 	category = list(
@@ -144,8 +144,8 @@
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_ammo/gauss
 	materials = list(
-		/datum/material/iron = 5000,
-		/datum/material/titanium = 1000,
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5,
+		/datum/material/titanium = HALF_SHEET_MATERIAL_AMOUNT,
 		)
 	construction_time = 20
 	category = list(
@@ -169,9 +169,9 @@
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/er_laser
 	materials = list(
-		/datum/material/iron = 8000,
-		/datum/material/gold = 2000,
-		/datum/material/diamond = 2000,
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 4,
+		/datum/material/gold = SHEET_MATERIAL_AMOUNT,
+		/datum/material/diamond = SHEET_MATERIAL_AMOUNT,
 	)
 	construction_time = 100
 	category = list(
@@ -195,9 +195,9 @@
 	build_type = MECHFAB
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/energy/pulsed_laser
 	materials = list(
-		/datum/material/iron = 6000,
-		/datum/material/gold = 2000,
-		/datum/material/titanium = 4000,
+		/datum/material/iron = SHEET_MATERIAL_AMOUNT * 3,
+		/datum/material/gold = SHEET_MATERIAL_AMOUNT,
+		/datum/material/titanium = SHEET_MATERIAL_AMOUNT * 2,
 	)
 	construction_time = 100
 	category = list(
