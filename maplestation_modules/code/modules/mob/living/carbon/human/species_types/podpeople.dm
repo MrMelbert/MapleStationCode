@@ -11,17 +11,22 @@
 	human.update_body(is_creating = TRUE)
 
 /datum/species/pod/get_species_description()
-	return "Podpeople are made of plants!"
+	return "Podpeople are largely peaceful plant based lifeforms, resembling a humanoid figure made of leaves, flowers, and vines."
 
 /datum/species/pod/get_species_lore()
-	return list("Podpserson lore.")
+	return list(
+		"Little is known about the origins of the Podpeople. \
+		Many assume them to be the result of a long forgotten botanical experiment, slowly mutating for years on years until they became the beings they are today. \
+		Ever since they were uncovered long ago, their kind have been found on board stations and planets across the galaxy, \
+		often working in hydroponics bays, kitchens, or science departments, working with plants and other botanical lifeforms.",
+	)
 
 /datum/species/pod/create_pref_unique_perks()
-	var/list/perks = list()
+	var/list/perks = ..()
 
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_POSITIVE_PERK,
-		SPECIES_PERK_ICON = "leaf",
+		SPECIES_PERK_ICON = FA_ICON_LEAF,
 		SPECIES_PERK_NAME = "Green Thumbs",
 		SPECIES_PERK_DESC = "Podpeople are friend to all plants. Hostile sentient \
 			plants will not harm them and dangerous botanical produce can \
@@ -29,25 +34,32 @@
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON = "sun",
+		SPECIES_PERK_ICON = FA_ICON_SUN,
 		SPECIES_PERK_NAME = "Photosynthesis",
 		SPECIES_PERK_DESC = "Podpeople feed themselves and heal when exposed to light, \
 			but wilt and starve when living in darkness.",
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-		SPECIES_PERK_ICON = "first-aid",
+		SPECIES_PERK_ICON = FA_ICON_FIRST_AID,
 		SPECIES_PERK_NAME = "Plant Matter",
 		SPECIES_PERK_DESC = "Podpeople must use plant analyzers to scan themselves \
 			instead of heath analyzers.",
 	))
 	perks += list(list(
 		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
-		SPECIES_PERK_ICON = "paw",
+		SPECIES_PERK_ICON = FA_ICON_BIOHAZARD,
+		SPECIES_PERK_NAME = "Weedkiller Susceptability",
+		SPECIES_PERK_DESC = "Being a floral life form, you are susceptable to anti-florals and will take extra toxin damage from it!"
+	))
+	perks += list(list(
+		SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
+		SPECIES_PERK_ICON = FA_ICON_PAW,
 		SPECIES_PERK_NAME = "Herbivore Target",
 		SPECIES_PERK_DESC = "Being made of plants and leaves, podpeople are a target \
 			of herbivorous creatures such as goats.",
 	))
+
 	return perks
 
 /datum/species/pod/create_pref_damage_perks()

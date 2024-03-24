@@ -20,6 +20,12 @@
 	icon = 'maplestation_modules/icons/turf/areas.dmi'
 	icon_state = "ap_office"
 
+//Noble Ambassador's Office, currently unused
+/area/station/command/noble_ambassador_office
+	name = "Noble Ambassador's Office"
+	icon = 'maplestation_modules/icons/turf/areas.dmi'
+	icon_state = "na_office"
+
 /area/station/service/hydroponics/park
 	name = "Park"
 	associated_department_flags = NONE

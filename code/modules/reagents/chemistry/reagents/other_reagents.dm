@@ -1,13 +1,31 @@
+// NON-MODULE CHANGE : BLOOD REWORK
 /datum/reagent/blood
-	data = list("viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null,"quirks"=null)
+	data = list(
+		// Actually Relevant
+		"viruses" = null, // Refernces to virus datums in this blood
+		"blood_DNA" = null, // DNA of the guy who the blood came from
+		"blood_type" = null, // /datum/blood_type of the blood
+		"resistances" = null, // Viruses the blood is vaccinated against
+		// Unused? (but cool)
+		"trace_chem" = null, // Param list of all chems in the blood at the time the sample was taken (type to volume)
+		// Used for podperson shit
+		"mind" = null, // Ref to the mind of the guy who the blood came from
+		"ckey" = null, // Ckey of the guy who the blood came from
+		"gender" = null, // Gender of the guy when the blood was taken
+		"real_name" = null, // Real name of the guy when the blood was taken
+		"cloneable" = null, // Tracks if the guy who the blood came from suicided or not
+		"factions" = null, // Factions the guy who the blood came from was in
+		"quirks" = null, // Quirk typepaths of the guy who the blood came from had
+	)
 	name = "Blood"
-	color = "#C80000" // rgb: 200, 0, 0
+	color = COLOR_BLOOD
 	metabolization_rate = 12.5 * REAGENTS_METABOLISM //fast rate so it disappears fast.
 	taste_description = "iron"
 	taste_mult = 1.3
 	penetrates_skin = NONE
 	ph = 7.4
 	default_container = /obj/item/reagent_containers/blood
+	chemical_flags = REAGENT_IGNORE_STASIS|REAGENT_DEAD_PROCESS
 
 /datum/glass_style/shot_glass/blood
 	required_drink_type = /datum/reagent/blood
@@ -23,56 +41,53 @@
 /datum/reagent/blood/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
 	mytray.adjust_pestlevel(rand(2, 3))
 
-/datum/reagent/blood/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+/datum/reagent/blood/expose_mob(mob/living/exposed_mob, methods = TOUCH, reac_volume, show_message = TRUE, touch_protection=0)
 	. = ..()
-	if(data && data["viruses"])
-		for(var/thing in data["viruses"])
-			var/datum/disease/strain = thing
+	for(var/datum/disease/strain as anything in data?["viruses"])
+		if(strain.spread_flags & (DISEASE_SPREAD_NON_CONTAGIOUS|DISEASE_SPREAD_SPECIAL))
+			continue
 
-			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+		if(methods & INGEST)
+			if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_STOMACH))
 				continue
 
-			if(methods & INGEST)
-				if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_STOMACH))
-					continue
+			exposed_mob.ForceContractDisease(strain)
 
-				exposed_mob.ForceContractDisease(strain)
-			else if(methods & (INJECT|PATCH))
-				if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_HEART))
-					continue
+		else if(methods & (INJECT|PATCH))
+			if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_HEART))
+				continue
 
-				exposed_mob.ForceContractDisease(strain)
-			else if((methods & VAPOR) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
-				if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_LUNGS))
-					continue
+			exposed_mob.ForceContractDisease(strain)
 
-				exposed_mob.ContactContractDisease(strain)
-			else if((methods & TOUCH) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
-				exposed_mob.ContactContractDisease(strain)
+		else if((methods & VAPOR) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
+			if(!strain.has_required_infectious_organ(exposed_mob, ORGAN_SLOT_LUNGS))
+				continue
 
-	if(data && data["resistances"])
-		if(methods & (INGEST|INJECT)) //have to inject or ingest it. no curefoam/cheap curesprays
-			for(var/stuff in exposed_mob.diseases)
-				var/datum/disease/infection = stuff
-				if(infection.GetDiseaseID() in data["resistances"])
-					if(!infection.bypasses_immunity)
-						infection.cure(add_resistance = FALSE)
+			exposed_mob.ContactContractDisease(strain)
 
-	if(iscarbon(exposed_mob))
-		var/mob/living/carbon/exposed_carbon = exposed_mob
-		if(exposed_carbon.get_blood_id() == type && ((methods & INJECT) || ((methods & INGEST) && HAS_TRAIT(exposed_carbon, TRAIT_DRINKS_BLOOD))))
-			if(!data || !(data["blood_type"] in get_safe_blood(exposed_carbon.dna.blood_type)))
-				exposed_carbon.reagents.add_reagent(/datum/reagent/toxin, reac_volume * 0.5)
-			else
-				exposed_carbon.blood_volume = min(exposed_carbon.blood_volume + round(reac_volume, 0.1), BLOOD_VOLUME_MAXIMUM)
+		else if((methods & TOUCH) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
+			exposed_mob.ContactContractDisease(strain)
 
-			exposed_carbon.reagents.remove_reagent(type, reac_volume) // Because we don't want blood to just lie around in the patient's blood, makes no sense.
+	if(length(data?["resistances"]) && (methods & (INGEST|INJECT)))
+		for(var/datum/disease/infection as anything in exposed_mob.diseases)
+			if(infection.GetDiseaseID() in data["resistances"])
+				if(!infection.bypasses_immunity)
+					infection.cure(add_resistance = FALSE)
 
+	var/datum/blood_type/blood = exposed_mob.get_blood_type()
+	if(blood?.reagent_type == type && ((methods & INJECT) || ((methods & INGEST) && HAS_TRAIT(exposed_mob, TRAIT_DRINKS_BLOOD))))
+		if(data["blood_type"] in blood.compatible_types)
+			exposed_mob.blood_volume = min(exposed_mob.blood_volume + round(reac_volume, 0.1), BLOOD_VOLUME_MAXIMUM)
+		else
+			exposed_mob.reagents.add_reagent(/datum/reagent/toxin, reac_volume * 0.5)
+
+		exposed_mob.reagents.remove_reagent(type, reac_volume) // Because we don't want blood to just lie around in the patient's blood, makes no sense.
 
 /datum/reagent/blood/on_new(list/data)
 	. = ..()
 	if(istype(data))
 		SetViruses(src, data)
+		color = GLOB.blood_types[data["blood_type"]]?.color || COLOR_BLOOD
 
 /datum/reagent/blood/on_merge(list/mix_data)
 	if(data && mix_data)
@@ -126,6 +141,8 @@
 			bloodsplatter.AddComponent(/datum/component/infective, viri_to_add)
 	if(data["blood_DNA"])
 		bloodsplatter.add_blood_DNA(list(data["blood_DNA"] = data["blood_type"]))
+
+// NON-MODULE CHANGE END
 
 /datum/reagent/consumable/liquidgibs
 	name = "Liquid Gibs"
@@ -280,7 +297,7 @@
 
 /datum/reagent/water/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.blood_volume)
+	if(!HAS_TRAIT(affected_mob, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 		affected_mob.blood_volume += 0.1 * REM * seconds_per_tick // water is good for you!
 	affected_mob.adjust_drunk_effect(-0.25 * REM * seconds_per_tick) // and even sobers you up slowly!!
 

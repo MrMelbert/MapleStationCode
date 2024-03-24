@@ -985,16 +985,6 @@
 		return FALSE
 	return ..()
 
-/mob/living/carbon/human/is_bleeding()
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return FALSE
-	return ..()
-
-/mob/living/carbon/human/get_total_bleed_rate()
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
-		return FALSE
-	return ..()
-
 /mob/living/carbon/human/get_exp_list(minutes)
 	. = ..()
 

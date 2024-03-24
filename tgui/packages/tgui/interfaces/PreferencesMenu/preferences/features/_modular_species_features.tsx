@@ -4,6 +4,8 @@ import {
   FeatureChoiced,
   FeatureColorInput,
   FeatureDropdownInput,
+  FeatureNumberInput,
+  FeatureNumeric,
   FeatureToggle,
 } from './base';
 
@@ -16,6 +18,25 @@ export const hair_lizard: FeatureToggle = {
   name: 'Hair Lizard',
   description: 'Check to spawn as a Lizard with hair.',
   component: CheckboxInput,
+};
+
+export const feature_synth_species: FeatureChoiced = {
+  name: 'Synth Species',
+  description: 'Determines what species you spawn disguised as.',
+  component: FeatureDropdownInput,
+};
+
+export const feature_synth_damage_threshold: FeatureNumeric = {
+  name: 'Synth Damage Threshold',
+  description:
+    'Determines how much damage you can take before your disguise is broken.',
+  component: FeatureNumberInput,
+};
+
+export const feature_synth_blood: FeatureChoiced = {
+  name: 'Synth Blood',
+  description: 'Determines how your blood works.',
+  component: FeatureDropdownInput,
 };
 
 export const feature_arm_wings: FeatureChoiced = {

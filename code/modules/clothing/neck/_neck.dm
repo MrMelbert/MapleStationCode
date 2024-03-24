@@ -5,6 +5,7 @@
 	slot_flags = ITEM_SLOT_NECK
 	strip_delay = 40
 	equip_delay_other = 40
+	blood_overlay_type = "mask" // NON-MODULE CHANGE reworking clothing blood overlays
 
 /obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
@@ -14,8 +15,11 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-		if(GET_ATOM_BLOOD_DNA_LENGTH(src))
-			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
+			// NON-MODULE CHANGE reworking clothing blood overlays
+
+// NON-MODULE CHANGE reworking clothing blood overlays
+/obj/item/clothing/neck/appears_bloody()
+	return ..() && (body_parts_covered & HEAD)
 
 /obj/item/clothing/neck/bowtie
 	name = "bow tie"

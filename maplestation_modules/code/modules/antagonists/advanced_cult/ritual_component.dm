@@ -86,7 +86,7 @@
 	var/list/start_message = our_theme.get_start_making_rune_text(cultist)
 	cultist.visible_message(start_message["visible_message"], start_message["self_message"])
 
-	if(our_theme.scribing_takes_blood && cultist.blood_volume)
+	if(our_theme.scribing_takes_blood && !HAS_TRAIT(cultist, TRAIT_NOBLOOD))
 		cultist.apply_damage(initial(rune_to_scribe.scribe_damage), BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), wound_bonus = CANT_WOUND) // *cuts arm* *bone explodes* ever have one of those days?
 
 	var/scribe_mod = initial(rune_to_scribe.scribe_delay)

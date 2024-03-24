@@ -1,3 +1,9 @@
+// These are just here so the newer coders understand global signals better
+#define RegisterGlobalSignal(sig, procref) RegisterSignal(SSdcs, sig, procref)
+#define UnregisterGlobalSignal(sig) UnregisterSignal(SSdcs, sig)
+
+#define COMSIG_GLOB_ION_STORM "!ion_storm"
+
 /// Sent from [/mob/living/examine] late, after the first signal is sent, but BEFORE flavor text handling,
 /// for when you prefer something guaranteed to appear at the bottom of the stack
 /// (Flavor text should stay at the very very bottom though)

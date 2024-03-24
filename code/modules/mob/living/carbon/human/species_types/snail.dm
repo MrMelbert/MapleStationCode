@@ -14,7 +14,7 @@
 
 	mutanteyes = /obj/item/organ/internal/eyes/snail
 	mutanttongue = /obj/item/organ/internal/tongue/snail
-	exotic_blood = /datum/reagent/lube
+	exotic_bloodtype = /datum/blood_type/snail // NON-MODULE CHANGE
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/snail,
@@ -47,8 +47,9 @@
 		if(new_snailperson.dropItemToGround(bag)) //returns TRUE even if its null
 			new_snailperson.equip_to_slot_or_del(new /obj/item/storage/backpack/snail(new_snailperson), ITEM_SLOT_BACK)
 	new_snailperson.AddElement(/datum/element/snailcrawl)
-	if(ishuman(new_snailperson))
-		update_mail_goodies(new_snailperson)
+	// NON-MODULE CHANGE
+	// if(ishuman(new_snailperson))
+	// 	update_mail_goodies(new_snailperson)
 
 /datum/species/snail/on_species_loss(mob/living/carbon/former_snailperson, datum/species/new_species, pref_load)
 	. = ..()
@@ -59,12 +60,13 @@
 		former_snailperson.temporarilyRemoveItemFromInventory(bag, TRUE)
 		qdel(bag)
 
-/datum/species/snail/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies = list())
-	if(istype(quirk, /datum/quirk/blooddeficiency))
-		mail_goodies += list(
-			/obj/item/reagent_containers/blood/snail
-		)
-	return ..()
+// NON-MODULE CHANGE
+// /datum/species/snail/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies = list())
+// 	if(istype(quirk, /datum/quirk/blooddeficiency))
+// 		mail_goodies += list(
+// 			/obj/item/reagent_containers/blood/snail
+// 		)
+// 	return ..()
 
 /obj/item/storage/backpack/snail
 	name = "snail shell"

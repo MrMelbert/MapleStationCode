@@ -278,7 +278,14 @@
 	. = ..()
 	if(!.)
 		return
-	owner.add_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED, TRAIT_STASIS), TRAIT_STATUS_EFFECT(id))
+	// NON-MODULE CHANGE
+	owner.add_traits(list(
+		TRAIT_IMMOBILIZED,
+		TRAIT_HANDS_BLOCKED,
+		TRAIT_TUMOR_SUPPRESSED,
+		TRAIT_SOFTSPOKEN,
+		TRAIT_STASIS,
+	), TRAIT_STATUS_EFFECT(id))
 	owner.add_filter("stasis_status_ripple", 2, list("type" = "ripple", "flags" = WAVE_BOUNDED, "radius" = 0, "size" = 2))
 	var/filter = owner.get_filter("stasis_status_ripple")
 	animate(filter, radius = 0, time = 0.2 SECONDS, size = 2, easing = JUMP_EASING, loop = -1, flags = ANIMATION_PARALLEL)
@@ -291,7 +298,14 @@
 	update_time_of_death()
 
 /datum/status_effect/grouped/stasis/on_remove()
-	owner.remove_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED, TRAIT_STASIS), TRAIT_STATUS_EFFECT(id))
+	// NON-MODULE CHANGE
+	owner.remove_traits(list(
+		TRAIT_IMMOBILIZED,
+		TRAIT_HANDS_BLOCKED,
+		TRAIT_TUMOR_SUPPRESSED,
+		TRAIT_SOFTSPOKEN,
+		TRAIT_STASIS,
+	), TRAIT_STATUS_EFFECT(id))
 	owner.remove_filter("stasis_status_ripple")
 	update_time_of_death()
 	if(iscarbon(owner))
@@ -391,11 +405,11 @@
 
 /datum/status_effect/stacking/saw_bleed/threshold_cross_effect()
 	owner.adjustBruteLoss(bleed_damage)
-	var/turf/T = get_turf(owner)
-	new /obj/effect/temp_visual/bleed/explode(T)
+	// NON-MODULE CHANGE
+	new /obj/effect/temp_visual/bleed/explode(owner.loc)
 	for(var/d in GLOB.alldirs)
-		new /obj/effect/temp_visual/dir_setting/bloodsplatter(T, d)
-	playsound(T, SFX_DESECRATION, 100, TRUE, -1)
+		owner.do_splatter_effect(d)
+	playsound(owner, SFX_DESECRATION, 100, TRUE, -1)
 
 /datum/status_effect/stacking/saw_bleed/bloodletting
 	id = "bloodletting"

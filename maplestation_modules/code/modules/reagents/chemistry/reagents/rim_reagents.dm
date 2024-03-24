@@ -108,7 +108,7 @@
  * Slow and stop blood loss.
  */
 /datum/reagent/medicine/luciferium/proc/adjust_bleed_wounds(mob/living/carbon/user, seconds_per_tick)
-	if(!user.blood_volume || !user.all_wounds)
+	if(HAS_TRAIT(user, TRAIT_NOBLOOD) || !LAZYLEN(user.all_wounds))
 		return
 
 	var/datum/wound/bloodiest_wound
