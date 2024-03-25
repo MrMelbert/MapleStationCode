@@ -5,6 +5,9 @@
 // NON-MODULE CHANGE
 // Sticking these here for now because i'm dumb
 
+/// Updating a mob's movespeed when lacking limbs. (list/modifiers)
+#define COMSIG_LIVING_LIMBLESS_MOVESPEED_UPDATE "living_get_movespeed_modifiers"
+
 // -- Defines for the pain system. --
 
 /// Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)

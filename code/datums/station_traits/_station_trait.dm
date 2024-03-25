@@ -11,8 +11,6 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 	var/trait_processes = FALSE
 	///Chance relative to other traits of its type to be picked
 	var/weight = 10
-	///The cost of the trait, which is removed from the budget.
-	var/cost = STATION_TRAIT_COST_FULL
 	///Whether this trait is always enabled; generally used for debugging
 	var/force = FALSE
 	///Does this trait show in the centcom report?
@@ -22,7 +20,7 @@ GLOBAL_LIST_EMPTY(lobby_station_traits)
 	///What code-trait does this station trait give? gives none if null
 	var/trait_to_give
 	///What traits are incompatible with this one?
-	var/blacklist
+	var/list/blacklist
 	///Extra flags for station traits such as it being abstract, planetary or space only
 	var/trait_flags = STATION_TRAIT_MAP_UNRESTRICTED
 	/// Whether or not this trait can be reverted by an admin
