@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;loadout_item - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/loadout_item.html#var">Var Details</a> - <a href="datum/loadout_item.html#proc">Proc Details</a></header>
+<main>
+<h1>Loadout item datum <aside>/<a href="datum.html">datum</a>/<a href="datum/loadout_item.html">loadout_item</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L12">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 12"/></a></h1>
+
+<p>Singleton that holds all the information about each loadout items, and how to equip them.</p><table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/abstract_type">abstract_type</a></th><td>The abstract parent of this loadout item, to determine which items to not instantiate</td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/additional_tooltip_contents">additional_tooltip_contents</a></th><td>Lazylist of additional &quot;tooltips&quot; to display about this item.</td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/can_be_greyscale">can_be_greyscale</a></th><td>Whether this item has greyscale support.
+Only works if the item is compatible with the GAGS system of coloring.
+Set automatically to TRUE for all items that have the flag <a href="code/__DEFINES/_flags.html#define/IS_PLAYER_COLORABLE_1" title="IS_PLAYER_COLORABLE_1">IS_PLAYER_COLORABLE_1</a>.
+If you really want it to not be colorable set this to <a href="maplestation_modules/code/__DEFINES/_module_defines.html#define/DONT_GREYSCALE" title="DONT_GREYSCALE">DONT_GREYSCALE</a></td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/can_be_named">can_be_named</a></th><td>Whether this item can be renamed.
+I recommend you apply this sparingly becuase it certainly can go wrong (or get reset / overridden easily)</td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/can_be_reskinned">can_be_reskinned</a></th><td>Whether this item can be reskinned.
+Only works if the item has a &quot;unique reskin&quot; list set.</td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/category">category</a></th><td>The category of the loadout item. Set automatically in New</td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/item_path">item_path</a></th><td>The actual item path of the loadout item.</td></tr>
+            <tr><th><a href="datum/loadout_item.html#var/name">name</a></th><td>Displayed name of the loadout item.
+Defaults to the item's name if unset.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/loadout_item.html#proc/get_ui_buttons">get_ui_buttons</a></th><td>Returns a list of UI buttons for this loadout item
+These will automatically be turned into buttons in the UI, according to they icon you provide
+act_key should match a key to handle in [handle_loadout_action] - this is how you react to the button being pressed</td></tr>
+            <tr><th><a href="datum/loadout_item.html#proc/handle_loadout_action">handle_loadout_action</a></th><td>Takes in an action from a loadout manager and applies it</td></tr>
+            <tr><th><a href="datum/loadout_item.html#proc/insert_path_into_outfit">insert_path_into_outfit</a></th><td>Place our [var/item_path] into [outfit].</td></tr>
+            <tr><th><a href="datum/loadout_item.html#proc/on_equip_item">on_equip_item</a></th><td>Called When the item is equipped on [equipper].</td></tr>
+            <tr><th><a href="datum/loadout_item.html#proc/post_equip_item">post_equip_item</a></th><td>Called after the item is equipped on [equipper], at the end of character setup.</td></tr>
+            <tr><th><a href="datum/loadout_item.html#proc/set_slot_greyscale">set_slot_greyscale</a></th><td>Sets [category_slot]'s greyscale colors to the colors in the currently opened [open_menu].</td></tr>
+            <tr><th><a href="datum/loadout_item.html#proc/to_ui_data">to_ui_data</a></th><td>Returns a formatted list of data for this loadout item, for use in UIs</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/abstract_type"><aside class="declaration">var </aside>abstract_type
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L30">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 30"/></a></h3>
+        <p>The abstract parent of this loadout item, to determine which items to not instantiate</p><h3 id="var/additional_tooltip_contents"><aside class="declaration">var </aside>additional_tooltip_contents
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L36">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 36"/></a></h3>
+        <p>Lazylist of additional &quot;tooltips&quot; to display about this item.</p><h3 id="var/can_be_greyscale"><aside class="declaration">var </aside>can_be_greyscale
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L20">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 20"/></a></h3>
+        <p>Whether this item has greyscale support.
+Only works if the item is compatible with the GAGS system of coloring.
+Set automatically to TRUE for all items that have the flag <a href="code/__DEFINES/_flags.html#define/IS_PLAYER_COLORABLE_1" title="IS_PLAYER_COLORABLE_1">IS_PLAYER_COLORABLE_1</a>.
+If you really want it to not be colorable set this to <a href="maplestation_modules/code/__DEFINES/_module_defines.html#define/DONT_GREYSCALE" title="DONT_GREYSCALE">DONT_GREYSCALE</a></p><h3 id="var/can_be_named"><aside class="declaration">var </aside>can_be_named
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L23">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 23"/></a></h3>
+        <p>Whether this item can be renamed.
+I recommend you apply this sparingly becuase it certainly can go wrong (or get reset / overridden easily)</p><h3 id="var/can_be_reskinned"><aside class="declaration">var </aside>can_be_reskinned
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L26">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 26"/></a></h3>
+        <p>Whether this item can be reskinned.
+Only works if the item has a &quot;unique reskin&quot; list set.</p><h3 id="var/category"><aside class="declaration">var </aside>category
+            <aside>&ndash; /<a href="datum.html">datum</a>/<a href="datum/loadout_category.html">loadout_category</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L28">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 28"/></a></h3>
+        <p>The category of the loadout item. Set automatically in New</p><h3 id="var/item_path"><aside class="declaration">var </aside>item_path
+            <aside>&ndash; /<a href="obj.html">obj</a>/<a href="obj/item.html">item</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L32">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 32"/></a></h3>
+        <p>The actual item path of the loadout item.</p><h3 id="var/name"><aside class="declaration">var </aside>name
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L15">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 15"/></a></h3>
+        <p>Displayed name of the loadout item.
+Defaults to the item's name if unset.</p><h2 id="proc">Proc Details</h2><h3 id="proc/get_ui_buttons"><aside class="declaration">proc </aside>get_ui_buttons<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L264">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 264"/></a></aside>
+        </h3>
+        <p>Returns a list of UI buttons for this loadout item
+These will automatically be turned into buttons in the UI, according to they icon you provide
+act_key should match a key to handle in [handle_loadout_action] - this is how you react to the button being pressed</p><h3 id="proc/handle_loadout_action"><aside class="declaration">proc </aside>handle_loadout_action<aside>(/<a href="datum.html">datum</a>/<a href="datum/preference_middleware.html">preference_middleware</a>/<a href="datum/preference_middleware/loadout.html">loadout</a>/manager, /<a href="mob.html">mob</a>/user, action) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L70">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 70"/></a></aside>
+        </h3>
+        <p>Takes in an action from a loadout manager and applies it</p>
+<p>Useful for subtypes of loadout items with unique actions</p><h3 id="proc/insert_path_into_outfit"><aside class="declaration">proc </aside>insert_path_into_outfit<aside>(/<a href="datum.html">datum</a>/<a href="datum/outfit.html">outfit</a>/outfit, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/<a href="mob/living/carbon/human.html">human</a>/equipper, visuals_only) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L199">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 199"/></a></aside>
+        </h3>
+        <p>Place our [var/item_path] into [outfit].</p>
+<p>By default, just adds the item into the outfit's backpack contents, if non-visual.</p>
+<p>outfit - The outfit we're equipping our items into.
+equipper - If we're equipping out outfit onto a mob at the time, this is the mob it is equipped on. Can be null.
+visual - If TRUE, then our outfit is only for visual use (for example, a preview).</p><h3 id="proc/on_equip_item"><aside class="declaration">proc </aside>on_equip_item<aside>(/<a href="datum.html">datum</a>/<a href="datum/preferences.html">preferences</a>/preference_source, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/<a href="mob/living/carbon/human.html">human</a>/equipper, visuals_only, /list/preference_list) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L210">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 210"/></a></aside>
+        </h3>
+        <p>Called When the item is equipped on [equipper].</p>
+<p>preference_source - the datum/preferences our loadout item originated from - cannot be null
+equipper - the mob we're equipping this item onto - cannot be null
+visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)</p><h3 id="proc/post_equip_item"><aside class="declaration">proc </aside>post_equip_item<aside>(/<a href="datum.html">datum</a>/<a href="datum/preferences.html">preferences</a>/preference_source, /<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/<a href="mob/living/carbon.html">carbon</a>/<a href="mob/living/carbon/human.html">human</a>/equipper) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L245">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 245"/></a></aside>
+        </h3>
+        <p>Called after the item is equipped on [equipper], at the end of character setup.</p>
+<p>preference_source - the datum/preferences our loadout item originated from - cannot be null
+equipper - the mob we're equipping this item onto - cannot be null</p><h3 id="proc/set_slot_greyscale"><aside class="declaration">proc </aside>set_slot_greyscale<aside>(/<a href="datum.html">datum</a>/<a href="datum/preference_middleware.html">preference_middleware</a>/<a href="datum/preference_middleware/loadout.html">loadout</a>/manager, /<a href="datum.html">datum</a>/<a href="datum/greyscale_modify_menu.html">greyscale_modify_menu</a>/open_menu) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L121">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 121"/></a></aside>
+        </h3>
+        <p>Sets [category_slot]'s greyscale colors to the colors in the currently opened [open_menu].</p><h3 id="proc/to_ui_data"><aside class="declaration">proc </aside>to_ui_data<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/loadouts/loadout_items/_loadout_datum.dm#L249">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;loadouts&#x2F;loadout_items&#x2F;_loadout_datum.dm 249"/></a></aside>
+        </h3>
+        <p>Returns a formatted list of data for this loadout item, for use in UIs</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/b45c2cf318de551d2386a1d215e16ca1861dfc52">b45c2cf</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.8.0</a></footer>
+</body>
+</html>

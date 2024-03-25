@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;controller&#x2F;subsystem&#x2F;processing&#x2F;quirks - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/controller/subsystem/processing/quirks.html#var">Var Details</a> - <a href="datum/controller/subsystem/processing/quirks.html#proc">Proc Details</a></header>
+<main>
+<h1>quirks <aside>/<a href="datum.html">datum</a>/<a href="datum/controller/subsystem.html">controller/subsystem</a>/<a href="datum/controller/subsystem/processing/quirks.html">processing/quirks</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/code/controllers/subsystem/processing/quirks.dm#L46">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;processing&#x2F;quirks.dm 46"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/quirks.html#var/hardcore_quirks">hardcore_quirks</a></th><td>An assoc list of quirks that can be obtained as a hardcore character, and their hardcore value.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/quirks.html#proc/AssignQuirks">AssignQuirks</a></th><td>Post preference transfer handling, done after quirks are assigned. (TODO: FIND A BETTER WAY TO DO THIS, maybe.)</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/quirks.html#proc/filter_invalid_quirks">filter_invalid_quirks</a></th><td>Cached list of possible quirks
+Takes a list of quirk names and returns a new list of quirks that would
+be valid.
+If no changes need to be made, will return the same list.
+Expects all quirk names to be unique, but makes no other expectations.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/quirks.html#proc/get_quirks">get_quirks</a></th><td>Returns the list of possible quirks</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/hardcore_quirks"><aside class="declaration">var </aside>hardcore_quirks
+            <aside>&ndash; /list</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/code/controllers/subsystem/processing/quirks.dm#L56">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;processing&#x2F;quirks.dm 56"/></a></h3>
+        <p>An assoc list of quirks that can be obtained as a hardcore character, and their hardcore value.</p><h2 id="proc">Proc Details</h2><h3 id="proc/AssignQuirks"><aside class="declaration">proc </aside>AssignQuirks<aside>(/<a href="mob.html">mob</a>/<a href="mob/living.html">living</a>/user, /<a href="client.html">client</a>/cli) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/client/preferences/_preferences.dm#L17">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;client&#x2F;preferences&#x2F;_preferences.dm 17"/></a></aside>
+        </h3>
+        <p>Post preference transfer handling, done after quirks are assigned. (TODO: FIND A BETTER WAY TO DO THIS, maybe.)</p>
+<p>Why in AssignQuirks?</p>
+<p>Because some preferences (post loadout equipping, languages) need to be done after quirks are assigned
+for both latejoiners and roundstart players - this ensures that post pref handling is done
+after quirks are done for both types of players easily and modularly.</p>
+<p>Why not extend the other two relevant procs (equip_characters and AttemptLateSpawn)?</p>
+<p>AssignQuirks is passed the mob and the client, which are both needed for after_prefs_transfer
+If the procs were extended, it'd lose the relevant vars from the scope of those procs.</p><h3 id="proc/filter_invalid_quirks"><aside class="declaration">proc </aside>filter_invalid_quirks<aside>(/list/quirks) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/code/controllers/subsystem/processing/quirks.dm#L170">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;processing&#x2F;quirks.dm 170"/></a></aside>
+        </h3>
+        <p>Cached list of possible quirks
+Takes a list of quirk names and returns a new list of quirks that would
+be valid.
+If no changes need to be made, will return the same list.
+Expects all quirk names to be unique, but makes no other expectations.</p><h3 id="proc/get_quirks"><aside class="declaration">proc </aside>get_quirks<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/code/controllers/subsystem/processing/quirks.dm#L63">
+        <img src="git.png" width="16" height="16" title="code&#x2F;controllers&#x2F;subsystem&#x2F;processing&#x2F;quirks.dm 63"/></a></aside>
+        </h3>
+        <p>Returns the list of possible quirks</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/b45c2cf318de551d2386a1d215e16ca1861dfc52">b45c2cf</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.8.0</a></footer>
+</body>
+</html>

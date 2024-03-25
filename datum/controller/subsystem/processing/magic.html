@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;controller&#x2F;subsystem&#x2F;processing&#x2F;magic - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/controller/subsystem/processing/magic.html#var">Var Details</a> - <a href="datum/controller/subsystem/processing/magic.html#proc">Proc Details</a></header>
+<main>
+<h1>magic <aside>/<a href="datum.html">datum</a>/<a href="datum/controller/subsystem.html">controller/subsystem</a>/<a href="datum/controller/subsystem/processing/magic.html">processing/magic</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L1">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 1"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#var/leylines">leylines</a></th><td>The intrinsic, underlying lines of transient magic in the universe.
+Only a list for future changes. V1 will not have deep leyline simulation, only global variables</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#proc/adjust_stored_mana">adjust_stored_mana</a></th><td>Adjusts the mana of picked_leyline by amount, with incoming_attunements.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#proc/get_all_leyline_attuned_mana_amount">get_all_leyline_attuned_mana_amount</a></th><td>Returns the attuned amount of mana for all our leylines, using attunements to generate attunement mults.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#proc/get_all_leyline_mana">get_all_leyline_mana</a></th><td>Returns a list of all our leylines' mana pools.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#proc/get_all_leyline_raw_mana_amount">get_all_leyline_raw_mana_amount</a></th><td>Returns the raw amount of mana all our leylines have.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#proc/get_leyline_amount">get_leyline_amount</a></th><td>This proc only exists for if we decide to make leylines better simulated.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#proc/start_processing_leyline">start_processing_leyline</a></th><td>Starts processing the leyline, and adds it to our list of leylines.</td></tr>
+            <tr><th><a href="datum/controller/subsystem/processing/magic.html#proc/stop_processing_leyline">stop_processing_leyline</a></th><td>Stops processing the leyline, and removes it from our list of leylines.</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/leylines"><aside class="declaration">var </aside>leylines
+            <aside>&ndash; /list/datum/mana_holder/leyline</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L10">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 10"/></a></h3>
+        <p>The intrinsic, underlying lines of transient magic in the universe.
+Only a list for future changes. V1 will not have deep leyline simulation, only global variables</p><h2 id="proc">Proc Details</h2><h3 id="proc/adjust_stored_mana"><aside class="declaration">proc </aside>adjust_stored_mana<aside>(/<a href="datum.html">datum</a>/<a href="datum/mana_holder.html">mana_holder</a>/<a href="datum/mana_holder/leyline.html">leyline</a>/picked_leyline, amount, /list/incoming_attunements) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L64">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 64"/></a></aside>
+        </h3>
+        <p>Adjusts the mana of picked_leyline by amount, with incoming_attunements.</p><h3 id="proc/get_all_leyline_attuned_mana_amount"><aside class="declaration">proc </aside>get_all_leyline_attuned_mana_amount<aside>(/list/datum/attunement/attunements, /<a href="atom.html">atom</a>/caster) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L56">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 56"/></a></aside>
+        </h3>
+        <p>Returns the attuned amount of mana for all our leylines, using attunements to generate attunement mults.</p><h3 id="proc/get_all_leyline_mana"><aside class="declaration">proc </aside>get_all_leyline_mana<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L40">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 40"/></a></aside>
+        </h3>
+        <p>Returns a list of all our leylines' mana pools.</p><h3 id="proc/get_all_leyline_raw_mana_amount"><aside class="declaration">proc </aside>get_all_leyline_raw_mana_amount<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L48">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 48"/></a></aside>
+        </h3>
+        <p>Returns the raw amount of mana all our leylines have.</p><h3 id="proc/get_leyline_amount"><aside class="declaration">proc </aside>get_leyline_amount<aside>() 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L22">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 22"/></a></aside>
+        </h3>
+        <p>This proc only exists for if we decide to make leylines better simulated.</p><h3 id="proc/start_processing_leyline"><aside class="declaration">proc </aside>start_processing_leyline<aside>(/<a href="datum.html">datum</a>/<a href="datum/mana_holder.html">mana_holder</a>/<a href="datum/mana_holder/leyline.html">leyline</a>/leyline_to_process) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L26">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 26"/></a></aside>
+        </h3>
+        <p>Starts processing the leyline, and adds it to our list of leylines.</p><h3 id="proc/stop_processing_leyline"><aside class="declaration">proc </aside>stop_processing_leyline<aside>(/<a href="datum.html">datum</a>/<a href="datum/mana_holder.html">mana_holder</a>/<a href="datum/mana_holder/leyline.html">leyline</a>/leyline_to_process) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/b45c2cf318de551d2386a1d215e16ca1861dfc52/maplestation_modules/code/modules/magic/magic_subsystem.dm#L33">
+        <img src="git.png" width="16" height="16" title="maplestation_modules&#x2F;code&#x2F;modules&#x2F;magic&#x2F;magic_subsystem.dm 33"/></a></aside>
+        </h3>
+        <p>Stops processing the leyline, and removes it from our list of leylines.</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/b45c2cf318de551d2386a1d215e16ca1861dfc52">b45c2cf</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.8.0</a></footer>
+</body>
+</html>
