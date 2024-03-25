@@ -31,8 +31,9 @@
 	if (lesser)
 		our_spell.item_type = /obj/item/flashlight/glowstick/magic/lesser
 		our_spell.flare_cost = 10
+		our_spell.cooldown_time = 2 MINUTES
 		our_spell.name = "Lesser Flare"
-		our_spell.desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color. This weaker version burns up quicker and may fizzle out after casting."
+		our_spell.desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color. This weaker version burns up quicker and has a considerable cooldown between conjures."
 	return
 
 /datum/action/cooldown/spell/conjure_item/flare/make_item()
@@ -59,6 +60,7 @@
 
 /obj/item/flashlight/glowstick/magic/Initialize(mapload)
 	. = ..()
+	fuel = rand(5 MINUTES, 10 MINUTES)
 	set_light_on(TRUE)
 
 /obj/item/flashlight/glowstick/magic/lesser
@@ -68,7 +70,7 @@
 
 /obj/item/flashlight/glowstick/magic/lesser/Initialize(mapload)
 	. = ..()
-	fuel = rand(2, 100)
+	fuel = rand(1 MINUTES, 5 MINUTES)
 
 //Will have the flare start on and slowly burn through its fuel, when it runs out it will fizzle, fade out and delete itself. Similar to magic lockers from the staff.
 /obj/item/flashlight/glowstick/magic/Initialize(mapload)
