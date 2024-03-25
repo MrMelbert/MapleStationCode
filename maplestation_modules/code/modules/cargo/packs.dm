@@ -164,7 +164,7 @@
 	pill_type = /obj/item/reagent_containers/pill/psicodine
 	num_pills = 3
 
-/datum/supply_pack/goody/happiness
+/datum/supply_pack/goody/psicodine
 	name = "Psicodine Prescription"
 	desc = "Contains a pill bottle of Psicodine."
 	group = GROUP_DRUGS
