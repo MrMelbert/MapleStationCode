@@ -173,6 +173,15 @@
 		/obj/item/storage/pill_bottle/prescription/psicodine,
 	)
 
+/datum/supply_pack/goody/experimental
+	name = "Experimental Medicine Prescription"
+	desc = "Contains a pill bottle of Experimental Medicine required for living with Hereditary Manifold Sickness."
+	group = GROUP_DRUGS
+	cost = PAYCHECK_CREW * 4
+	contains = list(
+		/obj/item/storage/pill_bottle/sansufentanyl,
+	)
+
 /datum/supply_pack/medical/painkiller_syringes
 	name = "Painkiller Syringe Shipment"
 	desc = "Contains six syringes of general medicinal painkillers - Ibuprofen, Paracetamol, and Aspirin."
