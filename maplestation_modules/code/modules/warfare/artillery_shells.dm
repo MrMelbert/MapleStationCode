@@ -36,6 +36,7 @@
 		new /obj/effect/temp_visual/fire(get_turf(src))
 		fuel--
 	if(. && speedfuel > 0)
+		//Converts speedfuel to hits.
 		speedfuel--
 		hits++
 
@@ -43,7 +44,7 @@
 	..()
 	//Detonate fuel.
 	if(fuel > 0)
-		explosion(src, heavy_impact_range = 1, light_impact_range = 2, flash_range = 3, adminlog = FALSE)
+		explosion(src, heavy_impact_range = 2, light_impact_range = 3, flash_range = 4, adminlog = FALSE)
 
 /obj/effect/meteor/shell/small_ap
 	name = "160mm rocket assisted AP shell"
@@ -145,7 +146,6 @@
 	desc = "A cluster WMD explosive singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
 	icon_state = "cluster_wmd_big"
 	hits = 4
-	dropamt = 2
 	//Fun fact: Canon is 2x this amount.
 	var/submunitions = 12
 	//Deploys this many submunitions per step.
@@ -193,7 +193,6 @@
 	desc = "A cluster WMD flak singularity shell, designed to deploy a large amount of WMDs. You should probably watch out for submunitions."
 	icon_state = "cluster_wmd_big" //Deployer looks the same as the HE variant.
 	hits = 4
-	dropamt = 2
 	//Fun fact: Canon is 2x this amount.
 	var/submunitions = 12
 	//Deploys this many submunitions per step.

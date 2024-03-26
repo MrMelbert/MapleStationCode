@@ -45,7 +45,7 @@
 /obj/effect/singulo_warhead/proc/detonate()
 	if(!tuned)
 		if(cluster)
-			explosion(src, devastation_range = 3, heavy_impact_range = 6, light_impact_range = 12, flame_range = 12, flash_range = 15, ignorecap = TRUE, adminlog = FALSE)
+			explosion(src, devastation_range = 4, heavy_impact_range = 8, light_impact_range = 12, flame_range = 12, flash_range = 15, ignorecap = TRUE, adminlog = FALSE)
 		else
 			explosion(src, devastation_range = 5, heavy_impact_range = 10, light_impact_range = 15, flame_range = 15, flash_range = 20, ignorecap = TRUE, adminlog = FALSE)
 	qdel(src)
@@ -55,7 +55,7 @@
 		return
 	COOLDOWN_START(src, detonate_cooldown, detonate_delay)
 	if(cluster)
-		explosion(src, light_impact_range = 2, flame_range = 8, flash_range = 10, ignorecap = TRUE, adminlog = FALSE)
+		explosion(src, light_impact_range = 3, flame_range = 10, flash_range = 12, ignorecap = TRUE, adminlog = FALSE)
 	else
 		explosion(src, light_impact_range = 4, flame_range = 12, flash_range = 16, ignorecap = TRUE, adminlog = FALSE)
 
@@ -65,9 +65,9 @@
 
 /obj/effect/singulo_warhead/cluster
 	cluster = TRUE
-	lifetime = 4 SECONDS
+	lifetime = 6 SECONDS
 
 /obj/effect/singulo_warhead/tuned_cluster
 	tuned = TRUE
 	cluster = TRUE
-	lifetime = 8 SECONDS
+	lifetime = 12 SECONDS
