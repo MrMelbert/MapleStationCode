@@ -16,5 +16,5 @@
 
 /obj/effect/projectile/tracer/laser/kajari
 	name = "kajari lance"
-	icon = 'maplestation_modules/icons/effects/beam.dmi'
+	icon = 'maplestation_modules/icons/effects/kajari.dmi'
 	icon_state = "kajari_beam"
