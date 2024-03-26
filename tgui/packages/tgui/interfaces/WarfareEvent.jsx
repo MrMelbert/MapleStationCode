@@ -4,10 +4,9 @@ import { Window } from '../layouts';
 
 export const WarfareEvent = (props, context) => {
   const { act, data } = useBackend(context);
-  // Extract `health` and `color` variables from the `data` object.
   const { selectedShells, fireDirection } = data;
   return (
-    <Window title="Warfare Module" resizable>
+    <Window title="Warfare Module" resizable theme="admin">
       <Window.Content scrollable>
         <Section title="Volley Configuration">
           <Button
