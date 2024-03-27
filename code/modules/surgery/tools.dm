@@ -328,6 +328,7 @@
 	attack_verb_simple = list("slap")
 	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/generic3.ogg'
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_IGNORE_MOBILITY
 
 /obj/item/surgical_drapes/Initialize(mapload)
 	. = ..()
