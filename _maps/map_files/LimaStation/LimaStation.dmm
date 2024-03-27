@@ -32013,7 +32013,7 @@
 /obj/item/radio/intercom/directional/north,
 /obj/machinery/light/small/directional/north,
 /obj/machinery/camera/directional/north{
-	default_camera_icon = "Courtroom - Fore";
+	name = "Courtroom - Fore";
 	network = list("ss13", "court")
 	},
 /turf/open/floor/wood/parquet,
