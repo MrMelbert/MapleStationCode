@@ -498,7 +498,7 @@
 			selector.update_appearance()
 	update_move_intent_slowdown()
 
-	SEND_SIGNAL(user, COMSIG_MOVE_INTENT_TOGGLED)
+	SEND_SIGNAL(src, COMSIG_MOVE_INTENT_TOGGLED)
 
 ///Moves a mob upwards in z level
 /mob/verb/up()
