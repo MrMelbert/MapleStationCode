@@ -566,10 +566,7 @@
 
 	var/charge_per_item = (final_charge_rate * seconds_per_tick) / cell_count
 	for(var/obj/item/stock_parts/cell/cell as anything in cells_to_charge)
-		var/charge_used = use_power_from_net(charge_per_item, take_any = TRUE)
-		if(charge_used <= 0)
-			break
-		cell.give(charge_used)
+		charge_cell(charge_per_item, cell)
 
 /obj/machinery/suit_storage_unit/proc/shock(mob/user, prb)
 	if(!prob(prb))
