@@ -13395,32 +13395,11 @@
 /turf/open/floor/iron/white,
 /area/station/security/prison/safe)
 "dSD" = (
-/obj/structure/table/reinforced,
-/obj/machinery/door/window/left/directional/north{
-	dir = 8;
-	name = "Reception Window"
-	},
-/obj/machinery/door/poddoor/shutters/preopen{
-	dir = 8;
-	id = "hop";
-	name = "Privacy Shutters"
-	},
-/obj/structure/desk_bell{
-	pixel_x = 7
-	},
-/obj/machinery/door/window/brigdoor{
-	base_state = "rightsecure";
-	dir = 4;
-	icon_state = "rightsecure";
-	name = "Head of Personnel's Desk";
-	req_access = list("hop")
-	},
 /obj/machinery/flasher/directional/south{
 	id = "hopflash";
 	pixel_y = -23
 	},
-/obj/machinery/door/firedoor,
-/turf/open/floor/iron,
+/turf/closed/wall,
 /area/station/command/heads_quarters/hop)
 "dSJ" = (
 /obj/machinery/flasher/directional/north{
@@ -21094,6 +21073,10 @@
 	dir = 8
 	},
 /obj/machinery/light/small/directional/west,
+/obj/machinery/requests_console/directional/west,
+/obj/effect/mapping_helpers/requests_console/assistance,
+/obj/effect/mapping_helpers/requests_console/announcement,
+/obj/effect/mapping_helpers/requests_console/information,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
 "gnD" = (
@@ -21565,6 +21548,12 @@
 /obj/machinery/light/small/dim/directional/west,
 /turf/open/floor/plating,
 /area/station/maintenance/port/greater)
+"gvz" = (
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/station/hallway/primary/central)
 "gvK" = (
 /obj/machinery/newscaster/directional/west,
 /turf/open/floor/iron/dark,
@@ -26496,13 +26485,6 @@
 	},
 /turf/open/floor/plating/snowed/icemoon,
 /area/icemoon/underground/explored)
-"hYW" = (
-/obj/machinery/door/firedoor,
-/obj/effect/turf_decal/tile/red{
-	dir = 4
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/central)
 "hZe" = (
 /obj/effect/turf_decal/trimline/yellow/warning{
 	dir = 1
@@ -26591,9 +26573,10 @@
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "iaS" = (
-/obj/machinery/modular_computer/preset/id,
-/obj/item/paper/fluff/ids_for_dummies,
 /obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 8
+	},
+/obj/structure/chair/office{
 	dir = 8
 	},
 /turf/open/floor/iron,
@@ -60338,9 +60321,6 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/security/processing)
 "rYk" = (
-/obj/structure/chair/office{
-	dir = 8
-	},
 /obj/machinery/button/flasher{
 	id = "hopflash";
 	pixel_x = 8;
@@ -60365,6 +60345,10 @@
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 8
 	},
+/obj/machinery/modular_computer/preset/id{
+	dir = 1
+	},
+/obj/item/paper/fluff/ids_for_dummies,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
 "rYm" = (
@@ -62324,6 +62308,26 @@
 "sAS" = (
 /turf/closed/wall,
 /area/station/commons/storage/art)
+"sAX" = (
+/obj/structure/table/reinforced,
+/obj/machinery/door/window/left/directional/west{
+	name = "Reception Window"
+	},
+/obj/machinery/door/poddoor/shutters/preopen{
+	dir = 8;
+	id = "hop";
+	name = "Privacy Shutters"
+	},
+/obj/structure/desk_bell{
+	pixel_x = 7
+	},
+/obj/machinery/door/window/brigdoor/right/directional/east{
+	name = "Head of Personnel's Desk";
+	req_access = list("hop")
+	},
+/obj/machinery/door/firedoor,
+/turf/open/floor/iron,
+/area/station/command/heads_quarters/hop)
 "sBg" = (
 /obj/structure/closet/crate/grave,
 /turf/open/misc/dirt/dark{
@@ -71301,13 +71305,9 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "vry" = (
-/obj/machinery/requests_console/directional/south{
-	department = "Head of Personnel's Desk";
-	name = "Head of Personnel's Requests Console"
+/obj/machinery/button/photobooth{
+	pixel_y = -26
 	},
-/obj/effect/mapping_helpers/requests_console/announcement,
-/obj/effect/mapping_helpers/requests_console/information,
-/obj/effect/mapping_helpers/requests_console/assistance,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/hop)
 "vrA" = (
@@ -75381,6 +75381,10 @@
 	},
 /turf/closed/wall,
 /area/station/cargo/sorting)
+"wBK" = (
+/obj/machinery/photobooth,
+/turf/open/floor/iron,
+/area/station/hallway/primary/central)
 "wBT" = (
 /obj/machinery/camera/directional/south{
 	c_tag = "Port Hallway Center"
@@ -77372,10 +77376,7 @@
 	req_access = list("brig");
 	specialfunctions = 4
 	},
-/obj/item/paper/crumpled{
-	default_raw_text = "<i>Remember! Corporate spent a lot of money to create this state of the art fashion show. If we EVER even so much as HEAR a rumor that a news crew or corporate rep is coming by, this place needs to be in TIP TOP condition. It's all of our asses (and our pensions) if it's not.";
-	name = "Crumpled Memo"
-	},
+/obj/machinery/photobooth/security,
 /turf/open/floor/iron/smooth,
 /area/station/security/execution/transfer)
 "xgg" = (
@@ -171868,10 +171869,10 @@ thA
 thA
 thA
 thA
-xMq
 psb
 scw
 psb
+iDt
 thA
 thA
 xMq
@@ -172125,10 +172126,10 @@ thA
 thA
 thA
 iDt
-iDt
 scw
 iDt
 scw
+iDt
 thA
 thA
 thA
@@ -172382,10 +172383,10 @@ thA
 thA
 iDt
 iDt
-iDt
 psb
 scw
 psb
+iDt
 thA
 thA
 thA
@@ -237147,10 +237148,10 @@ qrJ
 uLC
 xzh
 dnq
-dnq
 qcu
 bDR
-hYW
+gvz
+mpy
 bep
 ylU
 dnq
@@ -237405,8 +237406,8 @@ nqU
 rcE
 rcE
 rcE
-rcE
 hVc
+jII
 jII
 dnq
 ylU
@@ -237662,8 +237663,8 @@ ydT
 iIA
 fSC
 iIA
-iIA
 cvg
+wBK
 jII
 okb
 ylU
@@ -237919,7 +237920,7 @@ cpm
 cpm
 cpm
 egY
-egY
+sAX
 dSD
 cpm
 pzb
