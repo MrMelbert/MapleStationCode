@@ -146,7 +146,6 @@ export function Input(props: Props) {
 
     if (!autoFocus && !autoSelect) return;
 
-
     setTimeout(() => {
       input.focus();
 
