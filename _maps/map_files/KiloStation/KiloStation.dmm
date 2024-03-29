@@ -3,8 +3,7 @@
 /turf/open/space/basic,
 /area/space)
 "aac" = (
-/obj/machinery/power/smes{
-	charge = 5e+006;
+/obj/machinery/power/smes/full{
 	name = "ai power storage unit"
 	},
 /obj/structure/cable,
@@ -42070,9 +42069,7 @@
 /turf/open/floor/grass,
 /area/station/science/genetics)
 "iZU" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/machinery/airalarm/directional/west,
 /obj/machinery/status_display/evac/directional/north,
 /obj/effect/decal/cleanable/cobweb,
@@ -53075,9 +53072,7 @@
 /turf/open/floor/iron/dark,
 /area/station/service/library)
 "mJV" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes,
 /obj/machinery/light/small/directional/north,
 /obj/structure/sign/warning/electric_shock/directional/north,
 /obj/structure/cable,
@@ -68024,8 +68019,7 @@
 /obj/item/radio/intercom/directional/north,
 /obj/effect/decal/cleanable/cobweb,
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/power/smes{
-	charge = 5e+006;
+/obj/machinery/power/smes/full{
 	name = "ai power storage unit"
 	},
 /obj/structure/cable,
@@ -71665,8 +71659,8 @@
 	dir = 4
 	},
 /obj/machinery/power/smes{
-	capacity = 9e+006;
-	charge = 10000
+	capacity = 1.8e+008;
+	charge = 2e+005
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/effect/turf_decal/bot_red,

@@ -762,9 +762,7 @@
 /turf/open/floor/iron/dark,
 /area/shuttle/ruin/caravan/pirate)
 "RK" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},

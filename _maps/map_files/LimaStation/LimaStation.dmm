@@ -16938,9 +16938,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/cryo)
 "fIP" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/machinery/light/cold/directional/east,
 /obj/effect/turf_decal/delivery/red,
 /obj/structure/cable,
@@ -33769,9 +33767,7 @@
 /area/station/cargo/sorting)
 "kYZ" = (
 /obj/structure/cable,
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/box/red/corners{
 	dir = 1
 	},
@@ -51815,9 +51811,7 @@
 /turf/open/floor/plating/airless,
 /area/station/maintenance/starboard/lower)
 "qEq" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/delivery/red,
 /obj/effect/turf_decal/stripes{
 	dir = 8
@@ -60083,8 +60077,8 @@
 /area/space/nearstation)
 "tcc" = (
 /obj/machinery/power/smes{
-	capacity = 9e+006;
-	charge = 10000
+	capacity = 1.8e+008;
+	charge = 2e+005
 	},
 /obj/structure/cable,
 /obj/effect/decal/cleanable/dirt,

@@ -479,9 +479,7 @@
 /turf/open/floor/iron/white/smooth_half,
 /area/station/ai_monitored/turret_protected/ai)
 "ack" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/iron/white/textured_large,
 /area/station/ai_monitored/turret_protected/ai)
@@ -25879,9 +25877,7 @@
 /turf/open/floor/iron/smooth_large,
 /area/station/engineering/gravity_generator)
 "bTs" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
@@ -29350,9 +29346,7 @@
 /area/station/service/chapel/funeral)
 "cky" = (
 /obj/structure/cable,
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
 "ckA" = (
@@ -31559,9 +31553,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/department/chapel/monastery)
@@ -44867,9 +44859,7 @@
 /turf/open/floor/iron/smooth,
 /area/station/commons/storage/primary)
 "mxy" = (
-/obj/machinery/power/smes{
-	charge = 5e+006
-	},
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/tcommsat/computer)
