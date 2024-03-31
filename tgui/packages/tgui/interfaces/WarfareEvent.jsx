@@ -1,5 +1,5 @@
 import { useBackend } from '../backend';
-import { Button, Flex, Section } from '../components';
+import { Button, Dropdown, Flex, Section } from '../components';
 import { Window } from '../layouts';
 
 export const WarfareEvent = (props, context) => {
@@ -22,22 +22,27 @@ export const WarfareEvent = (props, context) => {
                 color="good"
                 confirmContent="Confirm Shell Volley?"
                 onClick={() => act('fireShells')}
+                textAlign="center"
               >
                 {'Fire Volley'}
               </Button.Confirm>
             </Flex.Item>
             <Flex.Item grow={1}>
-              <Button
+              <Dropdown
                 fluid
                 icon="arrows-rotate"
-                color="good"
-                onClick={() => act('changeDirection')}
-              >
-                {'Change Firing Direction'}
-              </Button>
+                color="blue"
+                selected="Change Firing Direction"
+                noChevron
+                nowrap
+                options={['North', 'South', 'East', 'West']}
+                onSelected={(value) =>
+                  act('changeDirection', { direction: value })
+                }
+              />
             </Flex.Item>
           </Flex>
-          <Section title="Loaded Shells" />
+          <Section title="Shell Menu" />
         </Section>
       </Window.Content>
     </Window>

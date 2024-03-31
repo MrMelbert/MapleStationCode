@@ -100,7 +100,15 @@
 					. = TRUE
 		if("changeDirection")
 			var/direction = params["direction"]
-			fireDirection = direction
+			switch(direction)
+				if("North")
+					fireDirection = 1
+				if("South")
+					fireDirection = 2
+				if("East")
+					fireDirection = 4
+				if("West")
+					fireDirection = 8
 			. = TRUE
 		if("fireShells")
 			for(var/shell in selectedShells)
