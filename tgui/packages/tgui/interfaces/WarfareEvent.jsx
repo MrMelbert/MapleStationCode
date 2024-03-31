@@ -20,19 +20,21 @@ export const WarfareEvent = (props, context) => {
                 fluid
                 icon="bomb"
                 color="good"
-                children="Fire Volley"
                 confirmContent="Confirm Shell Volley?"
                 onClick={() => act('fireShells')}
-              />
+              >
+                {'Fire Volley'}
+              </Button.Confirm>
             </Flex.Item>
             <Flex.Item grow={1}>
               <Button
                 fluid
                 icon="arrows-rotate"
-                color="light-grey"
-                children="Change Firing Direction"
+                color="good"
                 onClick={() => act('changeDirection')}
-              />
+              >
+                {'Change Firing Direction'}
+              </Button>
             </Flex.Item>
           </Flex>
           <Section title="Loaded Shells" />
