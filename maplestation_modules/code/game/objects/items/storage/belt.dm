@@ -69,7 +69,7 @@
 
 /obj/item/storage/belt/sheathe/maugrim/razorwing
 	name = "Razorwing's Sheathe"
-	desc = "The a simple weaved sheathe used for containing a sword."
+	desc = "A simple weaved sheathe used for containing a sword."
 	icon_state = "razorwing_sheathe"
 	inhand_icon_state = "razorwing_sheathe"
 	worn_icon_state = "razorwing_sheathe"
