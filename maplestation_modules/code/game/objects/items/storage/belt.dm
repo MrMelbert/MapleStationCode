@@ -5,7 +5,7 @@
 	righthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_righthand.dmi'
 	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
 	name = "Sheathe Basetype Item"
-	desc = "Whoa there buddy! You've got the Sheathe Basetype, if you're looking for the captain's sheathe, try /obj/item/storage/belt/sabre !" // this will be changed when i bother to post this refactor to tg
+	desc = "Whoa there buddy! You've got the Sheathe Basetype, if you're looking for the captain's sheathe, try /obj/item/storage/belt/sabre !" // this will be changed if i bother to post this refactor to tg
 	var/altclick_tip = "Altclick to draw the ITEM"
 	icon_state = "baseball_pack"
 	inhand_icon_state = "baseball_pack"
@@ -21,7 +21,7 @@
 	atom_storage.max_slots = 1
 	atom_storage.max_specific_storage = max_weight_class
 	atom_storage.set_holdable(storable_items)
-	
+
 /obj/item/storage/belt/sheathe/examine(mob/user)
 	. = ..()
 	if(length(contents))
@@ -44,7 +44,7 @@
 	worn_icon_state = initial(worn_icon_state)
 	return ..()
 
-/obj/item/storage/belt/sheathe/maugrimsheathe
+/obj/item/storage/belt/sheathe/maugrim
 	icon = 'maplestation_modules/icons/obj/clothing/belts.dmi'
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_lefthand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_righthand.dmi'
@@ -60,12 +60,20 @@
 	storable_items = list(/obj/item/melee/sabre/maugrim)
 	max_weight_class = WEIGHT_CLASS_HUGE
 
-/obj/item/storage/belt/sheathe/maugrimsheathe/update_icon_state()
+/obj/item/storage/belt/sheathe/maugrim/update_icon_state()
 	. = ..()
 	if(length(contents))
 		icon_state += "-sword"
 		inhand_icon_state += "-sword"
 		worn_icon_state += "-sword"
+
+/obj/item/storage/belt/sheathe/maugrim/razorwing
+	name = "Razorwing's Sheathe"
+	desc = "The a simple weaved sheathe used for containing a sword."
+	icon_state = "razorwing_sheathe"
+	inhand_icon_state = "razorwing_sheathe"
+	worn_icon_state = "razorwing_sheathe"
+	storable_items = list(/obj/item/melee/sabre/maugrim/razorwing)
 
 // baseball bat sheathe
 /obj/item/storage/belt/sheathe/baseball

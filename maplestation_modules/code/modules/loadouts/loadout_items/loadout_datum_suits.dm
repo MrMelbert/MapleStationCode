@@ -168,7 +168,7 @@
 
 /datum/loadout_item/suit/cyrilcloak
 	name = "Claw-Sewn Cloak"
-	item_path = /obj/item/clothing/suit/cyrilcloak
+	item_path = /obj/item/clothing/suit/toggle/cyrilcloak
 
 /datum/loadout_item/suit/scoriajacket
 	name = "Embroidered Clan Jacket"

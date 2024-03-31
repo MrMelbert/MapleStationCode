@@ -134,14 +134,28 @@
 /obj/item/melee/sabre/maugrim
 	name = "Maugrim"
 	desc = "Hilda Brandt's longsword. It was christened after slaying a space-werewolf of the same name." // todo
-	force = 20
-	block_chance = 33
-	armour_penetration = 10
+	force = 18 // identical the the chappie claymore rod, but without anti-magic
+	block_chance = 30
 	icon_state = "maugrim"
 	icon = 'maplestation_modules/icons/obj/weapons.dmi'
 	inhand_icon_state = "maugrim"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
+
+/obj/item/melee/sabre/maugrim/razorwing
+	name = "Razorwing"
+	desc = "Cyril Pembrooke's Jikdo. Unlike the on-station katanas, this single-edged blade is meant to be straight." // lampshade on how all katanas have been straight-edge, when they're meant to be curved.
+	icon_state = "razorwing"
+	inhand_icon_state = "razorwing"
+	attack_verb_continuous = list("cuts", "slashes", "slices")
+	attack_verb_simple = list("cut", "slash", "slice")
+
+/obj/item/melee/sabre/maugrim/razorwing/Initialize(mapload) // you don't need to ask me to add world building only a few people will ever see.
+	AddElement(/datum/element/unique_examine, \
+		"The tassel is made out of a shed ornithid primary feather. \
+		Judging by the color, it would be a feather from its owner. \
+		Given the importance of these feathers to the flight, its quite common to hold on to these such feathers. ", \
+		EXAMINE_CHECK_SPECIES, /datum/species/ornithid)
 
 /obj/item/melee/sabre/gehenna // matthew's sword when he's asset protection
 	name = "Gehenna"
