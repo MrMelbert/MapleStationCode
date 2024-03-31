@@ -195,6 +195,7 @@
 		Judging by the color, it would be a feather from its owner. \
 		Given the importance of these feathers to the flight, its quite common to hold on to these such feathers. ", \
 		EXAMINE_CHECK_SPECIES, /datum/species/ornithid)
+	AddElement(/datum/element/bane, target_type = /mob/living/basic/heretic_summon, damage_multiplier = 0, added_damage = 2, requires_combat_mode = FALSE) // rare exhange if it ever even happens, nod to the character's specialization in anti-heresy
 
 /obj/item/melee/gehenna // matthew's sword when he's asset protection
 	name = "Gehenna"
