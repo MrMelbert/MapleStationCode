@@ -161,6 +161,15 @@
 	if(istype(sword))
 		playsound(sword, 'sound/items/sheath.ogg', 25, TRUE)
 
+/obj/item/melee/maugrim/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/jousting)
+	AddComponent(/datum/component/butchering, \
+		speed = 3 SECONDS, \
+		effectiveness = 95, \
+		bonus_modifier = 5, \
+	)
+
 /obj/item/melee/maugrim/razorwing
 	name = "Razorwing"
 	desc = "Cyril Pembrooke's Jikdo. Unlike the on-station katanas, this single-edged blade is meant to be straight." // lampshade on how all katanas have been straight-edge, when they're meant to be curved.
@@ -178,15 +187,6 @@
 	var/obj/item/storage/belt/sheathe/maugrim/razorwing/sword = container.real_location?.resolve()
 	if(istype(sword))
 		playsound(sword, 'sound/items/sheath.ogg', 25, TRUE)
-
-/obj/item/melee/maugrim/Initialize(mapload)
-	. = ..()
-	AddComponent(/datum/component/jousting)
-	AddComponent(/datum/component/butchering, \
-		speed = 3 SECONDS, \
-		effectiveness = 95, \
-		bonus_modifier = 5, \
-	)
 
 /obj/item/melee/maugrim/razorwing/Initialize(mapload) // you don't need to ask me to add world building only a few people will ever see.
 	. = ..()
