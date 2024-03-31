@@ -57,7 +57,7 @@
 	worn_icon_state = "maugrim_sheathe"
 	w_class = WEIGHT_CLASS_BULKY
 	content_overlays = TRUE
-	storable_items = list(/obj/item/melee/sabre/maugrim)
+	storable_items = list(/obj/item/melee/maugrim)
 	max_weight_class = WEIGHT_CLASS_HUGE
 
 /obj/item/storage/belt/sheathe/maugrim/update_icon_state()
@@ -73,7 +73,7 @@
 	icon_state = "razorwing_sheathe"
 	inhand_icon_state = "razorwing_sheathe"
 	worn_icon_state = "razorwing_sheathe"
-	storable_items = list(/obj/item/melee/sabre/maugrim/razorwing)
+	storable_items = list(/obj/item/melee/maugrim/razorwing)
 
 // baseball bat sheathe
 /obj/item/storage/belt/sheathe/baseball

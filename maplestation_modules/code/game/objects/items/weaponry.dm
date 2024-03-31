@@ -131,7 +131,7 @@
 		new /obj/item/melee/psych_rock(loc)
 		paperweight_spawned = TRUE
 
-/obj/item/melee/sabre/maugrim
+/obj/item/melee/maugrim
 	name = "Maugrim"
 	desc = "Hilda Brandt's longsword. It was christened after slaying a space-werewolf of the same name." // todo
 	force = 18 // identical the the chappie claymore rod, but without anti-magic
@@ -141,8 +141,27 @@
 	inhand_icon_state = "maugrim"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
+	obj_flags = CONDUCTS_ELECTRICITY
+	throwforce = 16
+	demolition_mod = 0.75
+	w_class = WEIGHT_CLASS_BULKY
+	sharpness = SHARP_EDGED
+	attack_verb_continuous = list("slashes", "cuts")
+	attack_verb_simple = list("slash", "cut")
+	block_sound = 'sound/weapons/parry.ogg'
+	hitsound = 'sound/weapons/rapierhit.ogg'
 
-/obj/item/melee/sabre/maugrim/razorwing
+/obj/item/melee/maugrim/on_exit_storage(datum/storage/container)
+	var/obj/item/storage/belt/sheathe/maugrim/sword = container.real_location?.resolve()
+	if(istype(sword))
+		playsound(sword, 'sound/items/unsheath.ogg', 25, TRUE)
+
+/obj/item/melee/maugrim/on_enter_storage(datum/storage/container)
+	var/obj/item/storage/belt/sheathe/maugrim/sword = container.real_location?.resolve()
+	if(istype(sword))
+		playsound(sword, 'sound/items/sheath.ogg', 25, TRUE)
+
+/obj/item/melee/maugrim/razorwing
 	name = "Razorwing"
 	desc = "Cyril Pembrooke's Jikdo. Unlike the on-station katanas, this single-edged blade is meant to be straight." // lampshade on how all katanas have been straight-edge, when they're meant to be curved.
 	icon_state = "razorwing"
@@ -150,14 +169,34 @@
 	attack_verb_continuous = list("cuts", "slashes", "slices")
 	attack_verb_simple = list("cut", "slash", "slice")
 
-/obj/item/melee/sabre/maugrim/razorwing/Initialize(mapload) // you don't need to ask me to add world building only a few people will ever see.
+/obj/item/melee/maugrim/razorwing/on_exit_storage(datum/storage/container)
+	var/obj/item/storage/belt/sheathe/maugrim/razorwing/sword = container.real_location?.resolve()
+	if(istype(sword))
+		playsound(sword, 'sound/items/unsheath.ogg', 25, TRUE)
+
+/obj/item/melee/maugrim/razorwing/on_enter_storage(datum/storage/container)
+	var/obj/item/storage/belt/sheathe/maugrim/razorwing/sword = container.real_location?.resolve()
+	if(istype(sword))
+		playsound(sword, 'sound/items/sheath.ogg', 25, TRUE)
+
+/obj/item/melee/maugrim/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/jousting)
+	AddComponent(/datum/component/butchering, \
+		speed = 3 SECONDS, \
+		effectiveness = 95, \
+		bonus_modifier = 5, \
+	)
+
+/obj/item/melee/maugrim/razorwing/Initialize(mapload) // you don't need to ask me to add world building only a few people will ever see.
 	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The tassel is made out of a shed ornithid primary feather. \
 		Judging by the color, it would be a feather from its owner. \
 		Given the importance of these feathers to the flight, its quite common to hold on to these such feathers. ", \
 		EXAMINE_CHECK_SPECIES, /datum/species/ornithid)
-/obj/item/melee/sabre/gehenna // matthew's sword when he's asset protection
+
+/obj/item/melee/gehenna // matthew's sword when he's asset protection
 	name = "Gehenna"
 	desc = "The christened blade of Matthew Scoria."
 	icon_state = "amber_blade"
