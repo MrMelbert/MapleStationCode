@@ -151,12 +151,12 @@
 	attack_verb_simple = list("cut", "slash", "slice")
 
 /obj/item/melee/sabre/maugrim/razorwing/Initialize(mapload) // you don't need to ask me to add world building only a few people will ever see.
+	. = ..()
 	AddElement(/datum/element/unique_examine, \
 		"The tassel is made out of a shed ornithid primary feather. \
 		Judging by the color, it would be a feather from its owner. \
 		Given the importance of these feathers to the flight, its quite common to hold on to these such feathers. ", \
 		EXAMINE_CHECK_SPECIES, /datum/species/ornithid)
-
 /obj/item/melee/sabre/gehenna // matthew's sword when he's asset protection
 	name = "Gehenna"
 	desc = "The christened blade of Matthew Scoria."
