@@ -6452,6 +6452,7 @@
 #include "maplestation_modules\code\modules\recycling\holder.dm"
 #include "maplestation_modules\code\modules\research\designs\autolathe_designs.dm"
 #include "maplestation_modules\code\modules\research\designs\mecha_designs.dm"
+#include "maplestation_modules\code\modules\research\designs\mechfabricator_designs.dm"
 #include "maplestation_modules\code\modules\research\designs\medical_designs.dm"
 #include "maplestation_modules\code\modules\research\designs\wiremod_designs.dm"
 #include "maplestation_modules\code\modules\research\machinery\_production.dm"
