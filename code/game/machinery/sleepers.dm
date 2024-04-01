@@ -4,7 +4,7 @@
 	icon = 'icons/obj/machines/sleeper.dmi'
 	icon_state = "sleeper"
 	base_icon_state = "sleeper"
-	density = FALSE
+	density = TRUE
 	obj_flags = BLOCKS_CONSTRUCTION
 	state_open = TRUE
 	circuit = /obj/item/circuitboard/machine/sleeper
@@ -63,11 +63,11 @@
 
 /obj/machinery/sleeper/RefreshParts()
 	. = ..()
-	var/matterbin_rating
+	var/matterbin_rating = 0
 	for(var/datum/stock_part/matter_bin/matterbins in component_parts)
 		matterbin_rating += matterbins.tier
-	efficiency = initial(efficiency) * matterbin_rating
-	min_health = initial(min_health) * matterbin_rating
+	efficiency = initial(efficiency) * max(matterbin_rating, 1)
+	min_health = initial(min_health) * max(matterbin_rating, 1)
 
 	available_chems.Cut()
 	for(var/datum/stock_part/servo/servos in component_parts)
@@ -94,18 +94,29 @@
 	if (!state_open)
 		container_resist_act(user)
 
-/obj/machinery/sleeper/open_machine(drop = TRUE, density_to_set = FALSE)
+/obj/machinery/sleeper/open_machine(drop = TRUE, density_to_set = TRUE)
 	if(!state_open && !panel_open)
 		flick("[initial(icon_state)]-anim", src)
-	return ..()
 
-/obj/machinery/sleeper/close_machine(mob/user, density_to_set = TRUE)
-	if((isnull(user) || istype(user)) && state_open && !panel_open)
-		flick("[initial(icon_state)]-anim", src)
-		..()
-		var/mob/living/mob_occupant = occupant
-		if(mob_occupant && mob_occupant.stat != DEAD)
-			to_chat(mob_occupant, "[enter_message]")
+	var/mob/living/old_occupant_living = occupant
+	. = ..()
+	if(isliving(old_occupant_living))
+		// Tries to move us to the tile in front
+		old_occupant_living.Move(get_step(src, dir))
+
+/obj/machinery/sleeper/close_machine(atom/movable/target, density_to_set = TRUE)
+	if(!isnull(target) && !ismob(target))
+		return
+	if(!state_open || panel_open)
+		return
+	if(!is_operational)
+		return
+
+	flick("[initial(icon_state)]-anim", src)
+	..()
+	var/mob/living/mob_occupant = occupant
+	if(mob_occupant && mob_occupant.stat != DEAD)
+		to_chat(mob_occupant, "[enter_message]")
 
 /obj/machinery/sleeper/emp_act(severity)
 	. = ..()
@@ -115,18 +126,81 @@
 		open_machine()
 
 
-/obj/machinery/sleeper/MouseDrop_T(mob/target, mob/user)
-	if(HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !ISADVANCEDTOOLUSER(user))
+/obj/machinery/sleeper/MouseDrop_T(atom/movable/dropping, mob/user)
+	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return
-	close_machine(target)
+	if(!iscarbon(dropping))
+		return
+
+	try_close_machine(dropping, user)
+
+/obj/machinery/sleeper/proc/try_close_machine(mob/living/carbon/target, mob/living/user, time_to_enter = 5 SECONDS)
+	. = FALSE
+
+	if(!insert_check(target, user))
+		return .
+
+	user.face_atom(src)
+	if(user == target)
+		time_to_enter *= 0.5
+		user.visible_message(
+			span_notice("[user] starts climbing into [src]."),
+			span_notice("You start climbing into [src]."),
+		)
+	else
+		user.visible_message(
+			span_notice("[user] starts placing [target] into [src]."),
+			span_notice("You start placing [target] into [src]."),
+		)
+
+	if(time_to_enter > 0)
+		. = do_after(user, time_to_enter, src, extra_checks = CALLBACK(src, PROC_REF(insert_check), target, user))
+
+	if(.)
+		close_machine(target)
+
+	if(occupant == target)
+		if(user == target)
+			user.visible_message(
+				span_notice("[user] climbs into [src]."),
+				span_notice("You climb into [src]."),
+			)
+		else
+			user.visible_message(
+				span_notice("[user] places [target] into [src]."),
+				span_notice("You place [target] into [src]."),
+			)
+
+	else
+		if(user == target)
+			user.visible_message(
+				span_warning("[user] fails to climb into [src]."),
+				span_warning("You fail to climb into [src]."),
+			)
+		else
+			user.visible_message(
+				span_warning("[user] fails to place [target] into [src]."),
+				span_warning("You fail to place [target] into [src]."),
+			)
+
+	return .
+
+/obj/machinery/sleeper/proc/insert_check(atom/movable/dropping, mob/user)
+	if(!state_open || panel_open || !isnull(occupant))
+		return FALSE
+	if(!user.Adjacent(dropping) || !Adjacent(dropping))
+		return FALSE
+	if(!user.can_perform_action(src, NEED_DEXTERITY|ALLOW_SILICON_REACH|FORBID_TELEKINESIS_REACH))
+		return FALSE
+	return TRUE
 
 /obj/machinery/sleeper/screwdriver_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(occupant)
-		to_chat(user, span_warning("[src] is currently occupied!"))
+		balloon_alert(user, "occupied!")
 		return TRUE
 	if(state_open)
-		to_chat(user, span_warning("[src] must be closed to [panel_open ? "close" : "open"] its maintenance hatch!"))
+		balloon_alert(user, "close it first!")
 		return TRUE
 	if(default_deconstruction_screwdriver(user, "[initial(icon_state)]-o", initial(icon_state), I))
 		return TRUE
@@ -166,10 +240,19 @@
 
 /obj/machinery/sleeper/AltClick(mob/user)
 	. = ..()
-	if(!user.can_perform_action(src, ALLOW_SILICON_REACH))
+	if(DOING_INTERACTION_WITH_TARGET(user, src))
 		return
+	if(user.loc == loc)
+		return
+	if(!user.can_perform_action(src, NEED_DEXTERITY|ALLOW_SILICON_REACH|FORBID_TELEKINESIS_REACH))
+		return
+
 	if(state_open)
-		close_machine()
+		var/mob/living/carbon/scooped = locate() in loc
+		if(scooped)
+			try_close_machine(scooped, user)
+		else
+			close_machine()
 	else
 		open_machine()
 
@@ -369,3 +452,102 @@
 			log_combat(user, occupant, "sprayed [chem] into", addition = "via [src]")
 		return TRUE
 	return ..()
+
+/obj/machinery/sleeper/stasis
+	name = "stasis pod"
+	desc = "An enclosed machine used stabilize patients and keep them in a state of stasis."
+	deconstructable = TRUE
+	min_health = -INFINITY
+	circuit = /obj/item/circuitboard/machine/sleeper/stasis
+	possible_chems = list(
+		list(),
+		list(),
+		list(),
+		list(),
+	)
+	/// Cooldown to prevent sound spam / instantly jumping out of a pod
+	COOLDOWN_DECLARE(open_close_cd)
+
+/obj/machinery/sleeper/stasis/set_occupant(atom/movable/new_occupant)
+	var/mob/living/old_occupant_living = occupant
+	var/mob/living/new_occupant_living = new_occupant
+	. = ..()
+	if(isliving(new_occupant_living))
+		new_occupant_living.enter_stasis(STASIS_MACHINE_EFFECT)
+		RegisterSignal(new_occupant_living, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE, PROC_REF(stasis_move_eject))
+	if(isliving(old_occupant_living))
+		old_occupant_living.exit_stasis(STASIS_MACHINE_EFFECT)
+		UnregisterSignal(old_occupant_living, COMSIG_MOB_CLIENT_PRE_LIVING_MOVE)
+
+/obj/machinery/sleeper/stasis/proc/stasis_move_eject(mob/source, ...)
+	SIGNAL_HANDLER
+	if(!source.can_resist())
+		return NONE
+
+	// Need to register a signal as stasis immobilizes you
+	container_resist_act(source)
+	return COMSIG_MOB_CLIENT_BLOCK_PRE_LIVING_MOVE
+
+/obj/machinery/sleeper/stasis/open_machine(drop, density_to_set)
+	if(!COOLDOWN_FINISHED(src, open_close_cd))
+		return
+
+	. = ..()
+	playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.4)
+	COOLDOWN_START(src, open_close_cd, 1 SECONDS)
+	if(!(dir & NORTH))
+		particles = new /particles/cryo_fog(dir)
+
+/obj/machinery/sleeper/stasis/close_machine(user, density_to_set)
+	if(!COOLDOWN_FINISHED(src, open_close_cd))
+		return
+
+	. = ..()
+	playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.5)
+	COOLDOWN_START(src, open_close_cd, 1 SECONDS)
+	QDEL_NULL(particles)
+
+/obj/machinery/sleeper/stasis/process(seconds_per_tick)
+	. = ..()
+	var/mob/living/patient = occupant
+	if(istype(patient) && !isnull(patient.reagents))
+		if(HAS_TRAIT(patient, TRAIT_CRITICAL_CONDITION))
+			var/epi_amount = patient.reagents.get_reagent_amount(/datum/reagent/medicine/epinephrine)
+			if(epi_amount < 10)
+				patient.reagents.add_reagent(/datum/reagent/medicine/epinephrine, 10 - epi_amount)
+
+		var/update = FALSE
+		for(var/datum/reagent/medicine/medicine in patient.reagents.reagent_list)
+			update ||= patient.reagents.metabolize_reagent(patient, medicine, seconds_per_tick, SSmobs.times_fired, can_overdose = TRUE)
+		if(update)
+			patient.updatehealth()
+
+	if(istype(particles, /particles/cryo_fog))
+		if(particles.count == round(initial(particles.count) * 0.5, 6))
+			particles.spawning = 1
+
+		if(particles.count <= 0)
+			QDEL_NULL(particles)
+		else
+			particles.count -= 6
+
+/particles/cryo_fog
+	icon = 'maplestation_modules/icons/effects/particles.dmi'
+	icon_state = list("chill_1" = 2, "chill_2" = 2, "chill_3" = 1)
+	count = 48
+	spawning = 3
+	lifespan = 1.5 SECONDS
+	fade = 0.5 SECONDS
+	gravity = list(0, -0.1, 0)
+	spin = 0.25
+	grow = 0.05
+	color = "#cafaff77"
+
+/particles/cryo_fog/New(dir)
+	switch(dir)
+		if(SOUTH)
+			position = generator(GEN_VECTOR, list(-8, -10, 0), list(6, -10, 0), NORMAL_RAND)
+		if(EAST)
+			position = generator(GEN_VECTOR, list(-10, -10, 0), list(16, -10, 0), NORMAL_RAND)
+		if(WEST)
+			position = generator(GEN_VECTOR, list(-16, -10, 0), list(10, -10, 0), NORMAL_RAND)

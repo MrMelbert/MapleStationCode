@@ -409,8 +409,8 @@
 		if(HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
 			return
 		// Reagents like Epinephrine stop suffocation at critical health.
-		if(reagents.has_reagent(/datum/reagent/medicine/epinephrine, needs_metabolizing = TRUE))
-			return
+		// if(reagents.has_reagent(/datum/reagent/medicine/epinephrine, needs_metabolizing = TRUE))
+		// 	return
 	// Low pressure.
 	if(breath_pp)
 		var/ratio = safe_breath_min / breath_pp

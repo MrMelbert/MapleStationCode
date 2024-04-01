@@ -904,6 +904,15 @@
 	name = "Party Pod"
 	build_path = /obj/machinery/sleeper/party
 
+/obj/item/circuitboard/machine/sleeper/stasis
+	name = "Stasis Pod"
+	build_path = /obj/machinery/sleeper/stasis
+	req_components = list(
+		/datum/stock_part/scanning_module = 1,
+		/obj/item/stack/cable_coil = 1,
+		/obj/item/stack/sheet/glass = 2,
+	)
+
 /obj/item/circuitboard/machine/smoke_machine
 	name = "Smoke Machine"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL

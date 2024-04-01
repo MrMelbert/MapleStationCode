@@ -4,6 +4,15 @@
 	tick_interval = 2 SECONDS
 	/// TimerID for the initial knock out
 	VAR_FINAL/ko_timer
+	/// These traits may prevent the heart attack from knocking you out
+	var/static/list/trait_sigs = list(
+		SIGNAL_ADDTRAIT(TRAIT_NOBREATH),
+		SIGNAL_REMOVETRAIT(TRAIT_NOBREATH),
+		SIGNAL_ADDTRAIT(TRAIT_STASIS),
+		SIGNAL_REMOVETRAIT(TRAIT_STASIS),
+		SIGNAL_ADDTRAIT(TRAIT_STABLEHEART),
+		SIGNAL_REMOVETRAIT(TRAIT_STABLEHEART),
+	)
 
 /datum/status_effect/heart_attack/on_apply()
 	if(!iscarbon(owner))
@@ -25,33 +34,28 @@
 
 	UnregisterSignal(owner, COMSIG_SPECIES_GAIN)
 	UnregisterSignal(owner, COMSIG_CARBON_ATTEMPT_BREATHE)
-	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBREATH))
-	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOBREATH))
+	UnregisterSignal(owner, trait_sigs)
 
 	if(!QDELING(owner))
 		owner.cause_pain(BODY_ZONE_CHEST, -20)
 
 /datum/status_effect/heart_attack/proc/delayed_ko()
-	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
-		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
+	update_traits()
+	RegisterSignals(owner, trait_sigs, PROC_REF(update_traits))
 	ko_timer = null
 
-	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBREATH), PROC_REF(gained_nobreath))
-	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOBREATH), PROC_REF(lost_nobreath))
+/datum/status_effect/heart_attack/proc/update_traits(datum/source, ...)
+	SIGNAL_HANDLER
+
+	if(HAS_TRAIT(owner, TRAIT_NOBREATH) || HAS_TRAIT(owner, TRAIT_STASIS) || HAS_TRAIT(owner, TRAIT_STABLEHEART))
+		REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
+	else
+		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/heart_attack/proc/species_changed(datum/source, datum/species/new_species, datum/species/old_species)
 	SIGNAL_HANDLER
 	if(isnull(new_species.mutantheart))
 		qdel(src)
-
-/datum/status_effect/heart_attack/proc/gained_nobreath(datum/source)
-	SIGNAL_HANDLER
-	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
-
-/datum/status_effect/heart_attack/proc/lost_nobreath(datum/source)
-	SIGNAL_HANDLER
-	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
-		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/heart_attack/proc/block_breath(datum/source)
 	SIGNAL_HANDLER

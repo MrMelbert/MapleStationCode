@@ -732,3 +732,15 @@
 /// Helper to check if we seem to be alive or not
 /mob/living/proc/appears_alive()
 	return stat != DEAD && !HAS_TRAIT(src, TRAIT_FAKEDEATH)
+
+/mob/living/proc/enter_stasis(source = STASIS_ADMIN)
+	apply_status_effect(/datum/status_effect/grouped/stasis, source)
+
+/mob/living/carbon/enter_stasis(source)
+	. = ..()
+	if(stat == DEAD)
+		return
+	set_heartattack(TRUE)
+
+/mob/living/proc/exit_stasis(source = STASIS_ADMIN)
+	remove_status_effect(/datum/status_effect/grouped/stasis, source)
