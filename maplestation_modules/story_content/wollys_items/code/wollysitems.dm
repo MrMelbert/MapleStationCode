@@ -78,8 +78,8 @@ since some of them are two per character or singleton, i'm gonna save space and 
 	worn_icon_state = "amber_blade"
 	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
 	inhand_icon_state = "amber_blade"
-	lefthand_file = 'maplestation_modules/story_content/wollys_items/icons/mob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'maplestation_modules/story_content/wollys_items/icons/mob/inhands/weapons/swords_righthand.dmi'
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
 	// this is seperate from the null rod- this will have no anti-magic and higher stats to compensate for it being used by a command member who refuses to use energy guns
 	force = 20
 	sharpness = SHARP_EDGED
