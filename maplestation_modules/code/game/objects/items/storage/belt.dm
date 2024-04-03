@@ -44,37 +44,6 @@
 	worn_icon_state = initial(worn_icon_state)
 	return ..()
 
-/obj/item/storage/belt/sheathe/maugrim
-	icon = 'maplestation_modules/icons/obj/clothing/belts.dmi'
-	lefthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_lefthand.dmi'
-	righthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_righthand.dmi'
-	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
-	name = "Maugrim's Sheathe"
-	desc = "A sheathe"
-	altclick_tip = "Altclick to draw the sword"
-	icon_state = "maugrim_sheathe"
-	inhand_icon_state = "maugrim_sheathe"
-	worn_icon_state = "maugrim_sheathe"
-	w_class = WEIGHT_CLASS_BULKY
-	content_overlays = TRUE
-	storable_items = list(/obj/item/melee/maugrim)
-	max_weight_class = WEIGHT_CLASS_HUGE
-
-/obj/item/storage/belt/sheathe/maugrim/update_icon_state()
-	. = ..()
-	if(length(contents))
-		icon_state += "-sword"
-		inhand_icon_state += "-sword"
-		worn_icon_state += "-sword"
-
-/obj/item/storage/belt/sheathe/maugrim/razorwing
-	name = "Razorwing's Sheathe"
-	desc = "A simple weaved sheathe used for containing a sword."
-	icon_state = "razorwing_sheathe"
-	inhand_icon_state = "razorwing_sheathe"
-	worn_icon_state = "razorwing_sheathe"
-	storable_items = list(/obj/item/melee/maugrim/razorwing)
-
 // baseball bat sheathe
 /obj/item/storage/belt/sheathe/baseball
 	icon = 'maplestation_modules/icons/obj/clothing/belts.dmi'

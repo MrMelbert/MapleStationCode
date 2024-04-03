@@ -53,38 +53,3 @@
 	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
 	blood_overlay_type = "armor"
 	clothing_traits = list(TRAIT_CAFFEINE_LOVER)
-
-/obj/item/clothing/suit/toggle/cyrilcloak
-	name = "Claw-Sewn Cloak"
-	desc = "A warm cloak hand sewn by a tailor's hand. Its meant for cold winter climates, not brooding in a dark corner, mind you."
-	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
-	icon_state = "bluecloak"
-	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
-	blood_overlay_type = "armor"
-	body_parts_covered = CHEST|GROIN|ARMS
-	cold_protection = CHEST|GROIN|ARMS
-	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	alternate_worn_layer = (BACK_LAYER - 0.1) // renders above back items, but below hair.
-
-/obj/item/clothing/suit/toggle/cyrilcloak/Initialize(mapload)
-	. = ..()
-	allowed += list(
-		/obj/item/flashlight,
-		/obj/item/lighter,
-		/obj/item/modular_computer/pda,
-		/obj/item/radio,
-		/obj/item/storage/bag/books,
-		/obj/item/storage/fancy/cigarettes,
-		/obj/item/tank/internals/emergency_oxygen,
-		/obj/item/tank/internals/plasmaman,
-		/obj/item/toy,
-		/obj/item/storage/belt/sheathe/maugrim/razorwing,
-	)
-
-/obj/item/clothing/suit/matthewjacket
-	name = "Embroidered Clan Jacket"
-	desc = "A red and gold jacket, embroidered with iconography of the Scoria Clan of Spectra."
-	icon = 'maplestation_modules/icons/obj/clothing/suit.dmi'
-	icon_state = "sclanjacket"
-	worn_icon = 'maplestation_modules/icons/mob/clothing/suit.dmi'
-	blood_overlay_type = "armor"
