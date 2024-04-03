@@ -1,5 +1,5 @@
 /* a collection of items produced by yellow wollywog/wollyhop
- since some of them are two per character or singleton, i'm gonna save space and just port them all into one file
+since some of them are two per character or singleton, i'm gonna save space and just port them all into one file
 */
 // Weapons
 
