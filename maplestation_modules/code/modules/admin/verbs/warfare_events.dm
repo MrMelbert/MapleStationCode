@@ -31,7 +31,6 @@
 /datum/warfare_event/ui_data(mob/user)
 	var/list/data = list()
 	data["selectedShells"] = selectedShells
-	data["fireDirection"] = fireDirection
 	return data
 
 /datum/warfare_event/ui_act(action, params)
