@@ -36,16 +36,16 @@ type Data = {
 };
 
 type ContractData = {
-  id: number;
-  status: number;
-  target: string;
-  target_rank: string;
-  extraction_enroute: BooleanLike;
-  message: string;
   contract: string;
   dropoff: string;
-  payout: number;
+  extraction_enroute: BooleanLike;
+  id: number;
+  message: string;
   payout_bonus: number;
+  payout: number;
+  status: number;
+  target_rank: string;
+  target: string;
 };
 
 const infoEntries = [
