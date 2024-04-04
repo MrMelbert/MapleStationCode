@@ -411,7 +411,7 @@
 	return "[year] [origin] [type]"
 
 /obj/item/reagent_containers/cup/glass/bottle/absinthe
-	name = "extra-strong absinthe"
+	name = "Extra-strong absinthe"
 	desc = "A strong alcoholic drink brewed and distributed by"
 	icon_state = "absinthebottle"
 	list_reagents = list(/datum/reagent/consumable/ethanol/absinthe = 100)
