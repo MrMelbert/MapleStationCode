@@ -8,7 +8,8 @@
 
 /datum/warfare_event
 	var/client/holder //client of whoever is using this datum
-	var/list/selectedShells = list() //list of selected shells to fire
+	var/list/selectedShells = list() //list of selected shells to fire (obj)
+	var/list/selectedNames = list() //list of selected shells to fire (but the name)
 	var/fireDirection = NORTH //default direction to fire shells (fires from top down)
 
 /datum/warfare_event/New(user)//user can either be a client or a mob due to byondcode(tm)
@@ -30,7 +31,7 @@
 
 /datum/warfare_event/ui_data(mob/user)
 	var/list/data = list()
-	data["selectedShells"] = selectedShells
+	data["selectedNames"] = selectedNames
 	return data
 
 /datum/warfare_event/ui_act(action, params)
@@ -40,32 +41,40 @@
 		if("addShell")
 			var/selected = params["selected"]
 			switch(selected)
-				if("bigAP")
+				if("460mm Rocket Assisted AP")
 					selectedShells += /obj/effect/meteor/shell/big_ap
+					selectedNames += "460mm Rocket Assisted AP";
 					. = TRUE
-				if("smallAP")
+				if("160mm Rocket Assisted AP")
 					selectedShells += /obj/effect/meteor/shell/small_ap
+					selectedNames += "160mm Rocket Assisted AP";
 					. = TRUE
-				if("WMDHE")
+				if("160mm HE")
 					selectedShells += /obj/effect/meteor/shell/small_wmd_he
+					selectedNames += "160mm HE";
 					. = TRUE
-				if("WMDFlak")
+				if("160mm Flak")
 					selectedShells += /obj/effect/meteor/shell/small_wmd_flak
+					selectedNames += "160mm Flak";
 					. = TRUE
-				if("clusterAP")
+				if("160mm Cluster AP")
 					selectedShells += /obj/effect/meteor/shell/small_cluster_ap
+					selectedNames += "160mm Cluster AP";
 					. = TRUE
-				if("clusterWMDHE")
+				if("460mm Cluster HE")
 					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/big_cluster_wmd_he
+					selectedNames += "460mm Cluster HE";
 					. = TRUE
-				if("clusterWMDFlak")
+				if("460mm Cluster Flak")
 					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/big_cluster_wmd_flak
+					selectedNames += "460mm Cluster Flak";
 					. = TRUE
-				if("kajari")
+				if("WMD KAJARI")
 					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/kajari
+					selectedNames += "WMD KAJARI";
 					. = TRUE
 		if("removeShell")
 			var/selected = params["selected"]

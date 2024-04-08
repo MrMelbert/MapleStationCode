@@ -1,10 +1,21 @@
 import { useBackend } from '../backend';
-import { Button, Dropdown, Flex, Section } from '../components';
+import { Button, Dropdown, Flex, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 export const WarfareEvent = (props, context) => {
   const { act, data } = useBackend(context);
-  const { selectedShells } = data;
+  const { selectedNames } = data;
+
+  const shellList = [
+    '460mm Rocket Assisted AP',
+    '160mm Rocket Assisted AP',
+    '160mm HE',
+    '160mm Flak',
+    '160mm Cluster AP',
+    '460mm Cluster HE',
+    '460mm Cluster Flak',
+    'WMD KAJARI',
+  ];
 
   return (
     <Window title="Warfare Module" resizable theme="malfunction">
@@ -50,8 +61,35 @@ export const WarfareEvent = (props, context) => {
               align="center"
               justify="space-evenly"
             >
-              <Flex.Item grow={1} />
-              <Flex.Item grow={1} />
+              <Flex.Item grow={1}>
+                <Section title="" />
+              </Flex.Item>
+              <Flex.Item grow={1}>
+                <Section title="Available Shells">
+                  <Stack vertical>
+                    {shellList.map((currentShell) => (
+                      <Stack.Item key={currentShell}>
+                        <Stack fill>
+                          <Stack.Item mt={0.25} textColor="label">
+                            {currentShell}
+                          </Stack.Item>
+                          <Stack.Item>
+                            <Button
+                              icon="plus"
+                              color="good"
+                              onClick={() =>
+                                act('addShell', {
+                                  selected: currentShell,
+                                })
+                              }
+                            />
+                          </Stack.Item>
+                        </Stack>
+                      </Stack.Item>
+                    ))}
+                  </Stack>
+                </Section>
+              </Flex.Item>
             </Flex>
           </Section>
         </Section>
