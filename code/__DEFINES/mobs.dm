@@ -283,12 +283,12 @@
 
 //Charge levels for Ethereals, in joules.
 #define ETHEREAL_CHARGE_NONE 0
-#define ETHEREAL_CHARGE_LOWPOWER (400 KILO JOULES)
-#define ETHEREAL_CHARGE_NORMAL (1 MEGA JOULES)
-#define ETHEREAL_CHARGE_ALMOSTFULL (1.5 MEGA JOULES)
-#define ETHEREAL_CHARGE_FULL (2 MEGA JOULES)
-#define ETHEREAL_CHARGE_OVERLOAD (2.5 MEGA JOULES)
-#define ETHEREAL_CHARGE_DANGEROUS (3 MEGA JOULES)
+#define ETHEREAL_CHARGE_LOWPOWER (0.4 * STANDARD_CELL_CHARGE)
+#define ETHEREAL_CHARGE_NORMAL (1 * STANDARD_CELL_CHARGE)
+#define ETHEREAL_CHARGE_ALMOSTFULL (1.5 * STANDARD_CELL_CHARGE)
+#define ETHEREAL_CHARGE_FULL (2 * STANDARD_CELL_CHARGE)
+#define ETHEREAL_CHARGE_OVERLOAD (2.5 * STANDARD_CELL_CHARGE)
+#define ETHEREAL_CHARGE_DANGEROUS (3 * STANDARD_CELL_CHARGE)
 
 
 #define CRYSTALIZE_COOLDOWN_LENGTH (120 SECONDS)
@@ -450,7 +450,7 @@
 #define MOVEMENT_HUNGER_MULTIPLIER 0.1
 
 /// Factor at which ethereal's charge decreases per second
-#define ETHEREAL_DISCHARGE_RATE (0.8 KILO WATTS) // Rate at which ethereal stomach charge decreases
+#define ETHEREAL_DISCHARGE_RATE (8e-4 * STANDARD_CELL_CHARGE) // Rate at which ethereal stomach charge decreases
 /// How much nutrition eating clothes as moth gives and drains
 #define CLOTHING_NUTRITION_GAIN 15
 #define REAGENTS_METABOLISM 0.2 //How many units of reagent are consumed per second, by default.
