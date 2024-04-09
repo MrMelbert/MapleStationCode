@@ -12,7 +12,12 @@ import {
   Stack,
   Table,
 } from 'tgui/components';
-import { Window } from 'tgui/layouts';
+
+import { createSearch } from '../../common/string';
+import { useBackend } from '../backend';
+import { Input } from '../components';
+import { Window } from '../layouts';
+import { Category } from './PreferencesMenu/antagonists/base';
 
 type VendingData = {
   onstation: boolean;
@@ -24,7 +29,7 @@ type VendingData = {
   coin_records: CoinRecord[];
   hidden_records: HiddenRecord[];
   user: UserData;
-  stock: StockItem[];
+  stock: Record<string, StockItem>[];
   extended_inventory: boolean;
   access: boolean;
   vending_machine_input: CustomInput[];
@@ -81,11 +86,17 @@ export const Vending = (props) => {
     product_records = [],
     coin_records = [],
     hidden_records = [],
-    stock,
+    categories,
   } = data;
 
   const [selectedCategory, setSelectedCategory] = useState(
-    Object.keys(data.categories)[0],
+    Object.keys(categories)[0],
+  );
+
+  const [stockSearch, setStockSearch] = useState('');
+  const stockSearchFn = createSearch(
+    stockSearch,
+    (item: ProductRecord | CustomInput) => item.name,
   );
 
   let inventory: (ProductRecord | CustomInput)[];
@@ -100,12 +111,15 @@ export const Vending = (props) => {
     }
   }
 
-  inventory = inventory
-    // Just in case we still have undefined values in the list
-    .filter((item) => !!item);
+  // Just in case we still have undefined values in the list
+  inventory = inventory.filter((item) => !!item);
+
+  if (stockSearch.length >= 2) {
+    inventory = inventory.filter(stockSearchFn);
+  }
 
   const filteredCategories = Object.fromEntries(
-    Object.entries(data.categories).filter(([categoryName]) => {
+    Object.entries(categories).filter(([categoryName]) => {
       return inventory.find((product) => {
         if ('category' in product) {
           return product.category === categoryName;
@@ -114,7 +128,7 @@ export const Vending = (props) => {
         }
       });
     }),
-  );
+  ) as { [k: string]: Category };
 
   return (
     <Window width={450} height={600}>
@@ -129,19 +143,23 @@ export const Vending = (props) => {
             <ProductDisplay
               custom={custom}
               inventory={inventory}
+              stockSearch={stockSearch}
+              setStockSearch={setStockSearch}
               selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
             />
           </Stack.Item>
 
-          {Object.keys(filteredCategories).length > 1 && (
-            <Stack.Item>
-              <CategorySelector
-                categories={filteredCategories}
-                selectedCategory={selectedCategory!}
-                onSelect={setSelectedCategory}
-              />
-            </Stack.Item>
-          )}
+          {stockSearch.length < 2 &&
+            Object.keys(filteredCategories).length > 1 && (
+              <Stack.Item>
+                <CategorySelector
+                  categories={filteredCategories}
+                  selectedCategory={selectedCategory!}
+                  onSelect={setSelectedCategory}
+                />
+              </Stack.Item>
+            )}
         </Stack>
       </Window.Content>
     </Window>
@@ -155,7 +173,9 @@ export const UserDetails = (props) => {
 
   if (!user) {
     return (
-      <NoticeBox>No ID detected! Contact the Head of Personnel.</NoticeBox>
+      <Section>
+        <NoticeBox>No ID detected! Contact the Head of Personnel.</NoticeBox>
+      </Section>
     );
   } else {
     return (
@@ -181,11 +201,21 @@ export const UserDetails = (props) => {
 /** Displays  products in a section, with user balance at top */
 const ProductDisplay = (props: {
   custom: boolean;
-  selectedCategory: string | null;
   inventory: (ProductRecord | CustomInput)[];
+  stockSearch: string;
+  setStockSearch: (search: string) => void;
+  selectedCategory: string | null;
+  setSelectedCategory: (category: string) => void;
 }) => {
   const { data } = useBackend<VendingData>();
-  const { custom, inventory, selectedCategory } = props;
+  const {
+    custom,
+    inventory,
+    stockSearch,
+    setStockSearch,
+    selectedCategory,
+    setSelectedCategory,
+  } = props;
   const {
     stock,
     onstation,
@@ -200,20 +230,28 @@ const ProductDisplay = (props: {
       scrollable
       title="Products"
       buttons={
-        !!onstation &&
-        user && (
-          <Box fontSize="16px" color="green">
-            {(user && user.cash) || 0}
-            {displayed_currency_name}{' '}
-            <Icon name={displayed_currency_icon} color="gold" />
-          </Box>
-        )
+        <Stack>
+          {!!onstation && user && (
+            <Stack.Item fontSize="16px" color="green">
+              {(user && user.cash) || 0}
+              {displayed_currency_name}{' '}
+              <Icon name={displayed_currency_icon} color="gold" />
+            </Stack.Item>
+          )}
+          <Stack.Item>
+            <Input
+              onInput={(_, value) => setStockSearch(value)}
+              placeholder="Search..."
+              value={stockSearch}
+            />
+          </Stack.Item>
+        </Stack>
       }
     >
       <Table>
         {inventory
           .filter((product) => {
-            if ('category' in product) {
+            if (!stockSearch && 'category' in product) {
               return product.category === selectedCategory;
             } else {
               return true;

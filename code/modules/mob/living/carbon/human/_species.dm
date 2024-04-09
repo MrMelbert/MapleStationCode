@@ -211,6 +211,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		GLOB.roundstart_races = generate_selectable_species_and_languages()
 
 	return GLOB.roundstart_races
+
 /**
  * Generates species available to choose in character setup at roundstart
  *
@@ -221,14 +222,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/list/selectable_species = list()
 
 	for(var/species_type in subtypesof(/datum/species))
-		var/datum/species/species = new species_type
+		var/datum/species/species = GLOB.species_prototypes[species_type]
 		if(species.check_roundstart_eligible())
 			selectable_species += species.id
-			var/datum/language_holder/temp_holder = new species.species_language_holder
+			var/datum/language_holder/temp_holder = GLOB.prototype_language_holders[species.species_language_holder]
 			for(var/datum/language/spoken_language as anything in temp_holder.understood_languages)
 				GLOB.uncommon_roundstart_languages |= spoken_language
-			qdel(temp_holder)
-			qdel(species)
 
 	GLOB.uncommon_roundstart_languages -= /datum/language/common
 	if(!selectable_species.len)
@@ -246,32 +245,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(id in (CONFIG_GET(keyed_list/roundstart_races)))
 		return TRUE
 	return FALSE
-
-/**
- * Generates a random name for a carbon.
- *
- * This generates a random unique name based on a human's species and gender.
- * Arguments:
- * * gender - The gender that the name should adhere to. Use MALE for male names, use anything else for female names.
- * * unique - If true, ensures that this new name is not a duplicate of anyone else's name currently on the station.
- * * last_name - Do we use a given last name or pick a random new one?
- */
-/datum/species/proc/random_name(gender, unique, last_name)
-	if(unique)
-		return random_unique_name(gender)
-
-	var/randname
-	if(gender == MALE)
-		randname = pick(GLOB.first_names_male)
-	else
-		randname = pick(GLOB.first_names_female)
-
-	if(last_name)
-		randname += " [last_name]"
-	else
-		randname += " [pick(GLOB.last_names)]"
-
-	return randname
 
 /**
  * Copies some vars and properties over that should be kept when creating a copy of this species.
@@ -613,7 +586,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
  */
 /datum/species/proc/handle_body(mob/living/carbon/human/species_human)
 	species_human.remove_overlay(BODY_LAYER)
-	var/height_offset = species_human.get_top_offset() // From high changed by varying limb height
 	if(HAS_TRAIT(species_human, TRAIT_INVISIBLE_MAN))
 		return handle_mutant_bodyparts(species_human)
 	var/list/standing = list()
@@ -625,9 +597,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/organ/internal/eyes/eye_organ = species_human.get_organ_slot(ORGAN_SLOT_EYES)
 			if(eye_organ)
 				eye_organ.refresh(call_update = FALSE)
-				for(var/mutable_appearance/eye_overlay in eye_organ.generate_body_overlay(species_human))
-					eye_overlay.pixel_y += height_offset
-					standing += eye_overlay
+				standing += eye_organ.generate_body_overlay(species_human)
 
 		// organic body markings (oh my god this is terrible please rework this to be done on the limbs themselves i beg you)
 		if(HAS_TRAIT(species_human, TRAIT_HAS_MARKINGS))
@@ -638,29 +608,23 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/bodypart/leg/left/left_leg = species_human.get_bodypart(BODY_ZONE_L_LEG)
 			var/datum/sprite_accessory/markings = GLOB.moth_markings_list[species_human.dna.features["moth_markings"]]
 			var/mutable_appearance/marking = mutable_appearance(layer = -BODY_LAYER, appearance_flags = KEEP_TOGETHER)
-			if(noggin && (IS_ORGANIC_LIMB(noggin)))
-				var/mutable_appearance/markings_head_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_head")
-				marking.overlays += markings_head_overlay
+			if(noggin && IS_ORGANIC_LIMB(noggin))
+				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_head")
 
-			if(chest && (IS_ORGANIC_LIMB(chest)))
-				var/mutable_appearance/markings_chest_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_chest")
-				marking.overlays += markings_chest_overlay
+			if(chest && IS_ORGANIC_LIMB(chest))
+				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_chest")
 
-			if(right_arm && (IS_ORGANIC_LIMB(right_arm)))
-				var/mutable_appearance/markings_r_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_arm")
-				marking.overlays += markings_r_arm_overlay
+			if(right_arm && IS_ORGANIC_LIMB(right_arm))
+				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_r_arm")
 
-			if(left_arm && (IS_ORGANIC_LIMB(left_arm)))
-				var/mutable_appearance/markings_l_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_arm")
-				marking.overlays += markings_l_arm_overlay
+			if(left_arm && IS_ORGANIC_LIMB(left_arm))
+				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_l_arm")
 
-			if(right_leg && (IS_ORGANIC_LIMB(right_leg)))
-				var/mutable_appearance/markings_r_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_leg")
-				marking.overlays += markings_r_leg_overlay
+			if(right_leg && IS_ORGANIC_LIMB(right_leg))
+				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_r_leg")
 
-			if(left_leg && (IS_ORGANIC_LIMB(left_leg)))
-				var/mutable_appearance/markings_l_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_leg")
-				marking.overlays += markings_l_leg_overlay
+			if(left_leg && IS_ORGANIC_LIMB(left_leg))
+				marking.overlays += mutable_appearance(markings.icon, "[markings.icon_state]_l_leg")
 
 			standing += marking
 
@@ -676,7 +640,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					underwear_overlay = mutable_appearance(underwear.icon, underwear.icon_state, -BODY_LAYER)
 				if(!underwear.use_static)
 					underwear_overlay.color = species_human.underwear_color
-				underwear_overlay.pixel_y += height_offset
 				standing += underwear_overlay
 
 		if(species_human.undershirt)
@@ -687,7 +650,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 					working_shirt = wear_female_version(undershirt.icon_state, undershirt.icon, BODY_LAYER)
 				else
 					working_shirt = mutable_appearance(undershirt.icon, undershirt.icon_state, -BODY_LAYER)
-				working_shirt.pixel_y += height_offset
 				standing += working_shirt
 
 		if(species_human.socks && species_human.num_legs >= 2 && !(species_human.bodytype & BODYTYPE_DIGITIGRADE))
@@ -929,12 +891,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 				return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_ICLOTHING)
-			var/obj/item/bodypart/chest = H.get_bodypart(BODY_ZONE_CHEST)
-			if(chest && (chest.bodytype & BODYTYPE_MONKEY))
-				if(!(I.supports_variations_flags & CLOTHING_MONKEY_VARIATION))
-					if(!disable_warning)
-						to_chat(H, span_warning("[I] doesn't fit your [chest.name]!"))
-					return FALSE
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_ID)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)

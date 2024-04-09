@@ -63,18 +63,6 @@
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)
 	return
 
-/datum/species/lizard/random_name(gender,unique,lastname)
-	if(unique)
-		return random_unique_lizard_name(gender)
-
-	var/randname = lizard_name(gender)
-
-	if(lastname)
-		randname += " [lastname]"
-
-	return randname
-
-
 /datum/species/lizard/randomize_features()
 	var/list/features = ..()
 	features["body_markings"] = pick(GLOB.body_markings_list)
