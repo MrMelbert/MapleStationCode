@@ -62,7 +62,30 @@ export const WarfareEvent = (props, context) => {
               justify="space-evenly"
             >
               <Flex.Item grow={1}>
-                <Section title="" />
+                <Section title="Loaded Shells">
+                  <Stack vertical>
+                    {selectedNames.map((currentShell) => (
+                      <Stack.Item key={currentShell}>
+                        <Stack fill>
+                          <Stack.Item mt={0.25} textColor="label">
+                            {currentShell}
+                          </Stack.Item>
+                          <Stack.Item>
+                            <Button
+                              icon="minus"
+                              color="bad"
+                              onClick={() =>
+                                act('removeShell', {
+                                  selected: currentShell,
+                                })
+                              }
+                            />
+                          </Stack.Item>
+                        </Stack>
+                      </Stack.Item>
+                    ))}
+                  </Stack>
+                </Section>
               </Flex.Item>
               <Flex.Item grow={1}>
                 <Section title="Available Shells">

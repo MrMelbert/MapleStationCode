@@ -43,68 +43,70 @@
 			switch(selected)
 				if("460mm Rocket Assisted AP")
 					selectedShells += /obj/effect/meteor/shell/big_ap
-					selectedNames += "460mm Rocket Assisted AP";
+					selectedNames += "460mm Rocket Assisted AP"
 					. = TRUE
 				if("160mm Rocket Assisted AP")
 					selectedShells += /obj/effect/meteor/shell/small_ap
-					selectedNames += "160mm Rocket Assisted AP";
+					selectedNames += "160mm Rocket Assisted AP"
 					. = TRUE
 				if("160mm HE")
 					selectedShells += /obj/effect/meteor/shell/small_wmd_he
-					selectedNames += "160mm HE";
+					selectedNames += "160mm HE"
 					. = TRUE
 				if("160mm Flak")
 					selectedShells += /obj/effect/meteor/shell/small_wmd_flak
-					selectedNames += "160mm Flak";
+					selectedNames += "160mm Flak"
 					. = TRUE
 				if("160mm Cluster AP")
 					selectedShells += /obj/effect/meteor/shell/small_cluster_ap
-					selectedNames += "160mm Cluster AP";
+					selectedNames += "160mm Cluster AP"
 					. = TRUE
 				if("460mm Cluster HE")
-					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/big_cluster_wmd_he
-					selectedNames += "460mm Cluster HE";
+					selectedNames += "460mm Cluster HE"
 					. = TRUE
 				if("460mm Cluster Flak")
-					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/big_cluster_wmd_flak
-					selectedNames += "460mm Cluster Flak";
+					selectedNames += "460mm Cluster Flak"
 					. = TRUE
 				if("WMD KAJARI")
-					// ADD CONFIRMATION.
 					selectedShells += /obj/effect/meteor/shell/kajari
-					selectedNames += "WMD KAJARI";
+					selectedNames += "WMD KAJARI"
 					. = TRUE
 		if("removeShell")
 			var/selected = params["selected"]
 			switch(selected)
-				if("bigAP")
+				if("460mm Rocket Assisted AP")
 					selectedShells -= /obj/effect/meteor/shell/big_ap
+					selectedNames -= "460mm Rocket Assisted AP"
 					. = TRUE
-				if("smallAP")
+				if("160mm Rocket Assisted AP")
 					selectedShells -= /obj/effect/meteor/shell/small_ap
+					selectedNames -= "160mm Rocket Assisted AP"
 					. = TRUE
-				if("WMDHE")
+				if("160mm HE")
 					selectedShells -= /obj/effect/meteor/shell/small_wmd_he
+					selectedNames -= "160mm HE"
 					. = TRUE
-				if("WMDFlak")
+				if("160mm Flak")
 					selectedShells -= /obj/effect/meteor/shell/small_wmd_flak
+					selectedNames -= "160mm Flak"
 					. = TRUE
-				if("clusterAP")
+				if("160mm Cluster AP")
 					selectedShells -= /obj/effect/meteor/shell/small_cluster_ap
+					selectedNames -= "160mm Cluster AP"
 					. = TRUE
-				if("clusterWMDHE")
-					// ADD CONFIRMATION.
+				if("460mm Cluster HE")
 					selectedShells -= /obj/effect/meteor/shell/big_cluster_wmd_he
+					selectedNames -= "460mm Cluster HE"
 					. = TRUE
-				if("clusterWMDFlak")
-					// ADD CONFIRMATION.
+				if("460mm Cluster Flak")
 					selectedShells -= /obj/effect/meteor/shell/big_cluster_wmd_flak
+					selectedNames -= "460mm Cluster Flak"
 					. = TRUE
-				if("kajari")
-					// ADD CONFIRMATION.
+				if("WMD KAJARI")
 					selectedShells -= /obj/effect/meteor/shell/kajari
+					selectedNames -= "WMD KAJARI"
 					. = TRUE
 		if("changeDirection")
 			var/direction = params["direction"]
@@ -120,6 +122,10 @@
 			. = TRUE
 		if("fireShells")
 			for(var/shell in selectedShells)
-				spawn_meteor(shell, fireDirection, null)
+				var/list/chosenList = list()
+				chosenList[shell] = 1
+				spawn_meteor(chosenList, fireDirection, null)
 				selectedShells -= shell
+			for(var/name in selectedNames)
+				selectedNames -= name
 			. = TRUE

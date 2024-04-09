@@ -7,7 +7,7 @@
 	damage_type = BURN
 	hitsound = 'sound/weapons/resonator_blast.ogg'
 	hitsound_wall = 'sound/weapons/plasma_cutter.ogg'
-	range = 200
+	range = 300
 	armor_flag = ENERGY
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser //Basically doesn't matter, it will never be stopped.
 	ricochets_max = 0
