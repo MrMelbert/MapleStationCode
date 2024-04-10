@@ -18,7 +18,7 @@ export const WarfareEvent = (props, context) => {
   ];
 
   return (
-    <Window title="Warfare Module" resizable theme="malfunction">
+    <Window title="Warfare Module" resizable theme="deep_red">
       <Window.Content scrollable>
         <Section title="Volley Configuration">
           <Flex
