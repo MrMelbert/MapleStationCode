@@ -138,6 +138,7 @@
 	tanktype = /obj/structure/reagent_dispensers/foamtank
 	sprite_name = "foam_extinguisher"
 	precision = TRUE
+	max_water = 100
 
 /obj/item/extinguisher/advanced/empty
 	starting_water = FALSE
