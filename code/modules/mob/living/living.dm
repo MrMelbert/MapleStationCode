@@ -2301,7 +2301,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		var/list/slowdown_mods = list()
 		SEND_SIGNAL(src, COMSIG_LIVING_LIMBLESS_MOVESPEED_UPDATE, slowdown_mods)
 		for(var/num in slowdown_mods)
-			limbless_slowdown *= slowdown_mods
+			limbless_slowdown *= num
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, multiplicative_slowdown = limbless_slowdown)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
