@@ -23,7 +23,7 @@
 	if(LAZYLEN(channels) || translate_binary || LAZYLEN(language_data))
 		var/list/examine_text_list = list()
 		for(var/i in channels)
-			examine_text_list += "[GLOB.channel_tokens[i]] - [lowertext(i)]"
+			examine_text_list += "[GLOB.channel_tokens[i]] - [LOWER_TEXT(i)]"
 
 		if(translate_binary)
 			examine_text_list += "[GLOB.channel_tokens[MODE_BINARY]] - [MODE_BINARY]"
