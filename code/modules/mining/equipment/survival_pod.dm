@@ -201,7 +201,18 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/window/reinforced/survival_pod/spawne
 	light_color = COLOR_VERY_PALE_LIME_GREEN
 	max_n_of_items = 10
 	pixel_y = -4
-	obj_flags = parent_type::obj_flags | NO_DECONSTRUCTION
+
+/obj/machinery/smartfridge/survival_pod/welder_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/machinery/smartfridge/survival_pod/wrench_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/machinery/smartfridge/survival_pod/screwdriver_act(mob/living/user, obj/item/tool)
+	return NONE
+
+/obj/machinery/smartfridge/survival_pod/crowbar_act(mob/living/user, obj/item/tool)
+	return NONE
 
 /obj/machinery/smartfridge/survival_pod/Initialize(mapload)
 	AddElement(/datum/element/update_icon_blocker)
