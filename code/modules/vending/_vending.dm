@@ -1059,8 +1059,6 @@
 /obj/machinery/vending/exchange_parts(mob/user, obj/item/storage/part_replacer/replacer)
 	if(!istype(replacer))
 		return FALSE
-	if(!replacer.works_from_distance)
-		return FALSE
 	if(!component_parts || !refill_canister)
 		return FALSE
 
