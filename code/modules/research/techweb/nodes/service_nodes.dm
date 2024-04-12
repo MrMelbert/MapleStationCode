@@ -130,7 +130,7 @@
 		"oven",
 		"stove",
 		"range",
-//		"souppot",
+		"souppot",
 		"processor",
 		"gibber",
 		"monkey_recycler",
