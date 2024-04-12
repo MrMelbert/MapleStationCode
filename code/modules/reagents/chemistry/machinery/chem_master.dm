@@ -515,9 +515,11 @@
 	if(!is_printing)
 		return
 
-	//use energy
+	//use power
 	if(!use_energy(active_power_usage, force = FALSE))
-		return FALSE
+		is_printing = FALSE
+		update_appearance(UPDATE_OVERLAYS)
+		return
 
 	//print the stuff
 	var/obj/item/reagent_containers/item = new selected_container(drop_location())
