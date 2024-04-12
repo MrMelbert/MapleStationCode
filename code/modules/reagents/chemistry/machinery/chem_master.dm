@@ -394,7 +394,7 @@
 		return FALSE
 
 	//use energy
-	if(!use_power(active_power_usage)) // Non-module change
+	if(!use_power(active_power_usage, force = FALSE)) // Non-module change
 		return FALSE
 
 	//do the operation
@@ -506,7 +506,9 @@
 		return
 
 	//use power
-	if(!use_power(active_power_usage)) // Non-module change
+	if(!use_power(active_power_usage, force = FALSE)) // Non-module change
+		is_printing = FALSE
+		update_appearance(UPDATE_OVERLAYS)
 		return
 
 	//print the stuff
