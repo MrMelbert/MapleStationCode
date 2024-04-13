@@ -164,13 +164,22 @@
 	pill_type = /obj/item/reagent_containers/pill/psicodine
 	num_pills = 3
 
-/datum/supply_pack/goody/happiness
+/datum/supply_pack/goody/psicodine
 	name = "Psicodine Prescription"
 	desc = "Contains a pill bottle of Psicodine."
 	group = GROUP_DRUGS
 	cost = PAYCHECK_CREW * 5
 	contains = list(
 		/obj/item/storage/pill_bottle/prescription/psicodine,
+	)
+
+/datum/supply_pack/goody/experimental
+	name = "Experimental Medicine Prescription"
+	desc = "Contains a pill bottle of Experimental Medicine required for living with Hereditary Manifold Sickness."
+	group = GROUP_DRUGS
+	cost = PAYCHECK_CREW * 4
+	contains = list(
+		/obj/item/storage/pill_bottle/sansufentanyl,
 	)
 
 /datum/supply_pack/medical/painkiller_syringes
