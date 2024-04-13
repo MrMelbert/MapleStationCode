@@ -17,7 +17,7 @@ GLOBAL_LIST_INIT(spellbook_lumenomancy_items, generate_spellbook_items(SPELLBOOK
 // Customization to allow lesser flare
 /datum/spellbook_item/spell/conjure_item/flare/generate_customization_params()
 	. = list()
-	.["lesser"] = new /datum/spellbook_customization_entry/boolean("lesser", "Lesser, weaker, somewhat cheaper version", "A cheap less lasting flare that fizzles out faster than expected, for those just learning magic or unable to grasp the full concept of luminosity.")
+	.["lesser"] = new /datum/spellbook_customization_entry/boolean("lesser", "Lesser, weaker, somewhat cheaper version", "A cheap less lasting flare that fizzles out faster than normally, along with a considerable cooldown between casts, for those just learning magic or unable to grasp the full concept of luminosity.")
 
 /datum/spellbook_item/spell/illusion
 	name = "Illusion"
