@@ -21,6 +21,12 @@
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipa"
 
+/obj/item/computer_disk/volkan/communication_chip/usb/Initialize(mapload) //add the actual USB port because this one has one
+	. = ..()
+	AddComponent(/datum/component/usb_port, list(
+		/obj/item/circuit_component/ntnet_send/volkan,/obj/item/circuit_component/ntnet_receive/volkan,
+	))
+
 /obj/item/computer_disk/volkan/communication_chip/bare //missing a connector entirely.
 	name = "communication chip"
 	desc = "A small, grey chip. The chip has a white symbol engraved on the top."
@@ -32,6 +38,7 @@
 	desc = "A small, grey chip. It has a connector for a standard NT computer. The chip has a white symbol engraved on the top."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipd"
+
 //---------communication chip data------------
 //I would add proper functionality but it sounds like a DAUNTING task.
 //Instead have a messenger app that cannot be installed in testing but has a custom name :D
@@ -42,6 +49,16 @@
 	size = 1
 	can_run_on_flags = PROGRAM_ALL
 
+//For the USB port: Basically the ntnet sender and receiver, but with a custom name and description.  IC it would be *all* custom but I am lazy and this is pretty damn close :)
+/obj/item/circuit_component/ntnet_send/volkan
+	display_name = "Private Sender"
+	desc = "A private messenger, sends the data via quantum link to a bluespace relay."
+	category = "vnet"
+
+/obj/item/circuit_component/ntnet_receive/volkan
+	name = "Private Receiver"
+	desc = "A private Receiver, receives the data via quantum link from a bluespace relay."
+	category = "vnet"
 
 //---------cool boxes!---------
 //Chip box
