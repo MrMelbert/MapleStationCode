@@ -38,6 +38,7 @@
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/metal_box.dmi'
 	icon_state = "chip_box"
 	foldable_result = null
+	illustration = null
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/storage/box/volkan/chip_box/Initialize(mapload)
