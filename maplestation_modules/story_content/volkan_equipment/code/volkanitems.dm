@@ -8,6 +8,7 @@
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipc"
 	w_class = WEIGHT_CLASS_TINY
+	max_capacity = 1
 	starting_programs = list( //this is a messenger after all
 		/datum/computer_file/program/messenger/volkan,
 	)
