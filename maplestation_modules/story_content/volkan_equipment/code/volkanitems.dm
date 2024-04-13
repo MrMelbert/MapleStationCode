@@ -2,32 +2,45 @@
 //I dont know if what I am doing is correct at all.
 //Sci-fi looking things only.
 //---------comunication chips---------
-/obj/item/circuitboard/volkan/communication_chip //the basic default one
+/obj/item/computer_disk/volkan/communication_chip //the basic default one
 	name = "standard communication chip"
 	desc = "A small, grey chip. It has a connector for a standard NT computer. The chip has a white symbol engraved on the top."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipc"
 	w_class = WEIGHT_CLASS_TINY
+	starting_programs = list( //this is a messenger after all
+		/datum/computer_file/program/messenger/volkan,
+	)
 	drop_sound = "sound/items/handling/disk_drop.ogg"
 	pickup_sound = "sound/items/handling/disk_pickup.ogg"
 
-/obj/item/circuitboard/volkan/communication_chip/usb //this one has a small USB port instead of the default big chonker connector
+/obj/item/computer_disk/volkan/communication_chip/usb //this one has a small USB port instead of the default big chonker connector
 	name = "USB communication chip"
 	desc = "A small, grey chip. It has a connector for a USB. The chip has a white symbol engraved on the top."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipa"
 
-/obj/item/circuitboard/volkan/communication_chip/bare //missing a connector entirely.
+/obj/item/computer_disk/volkan/communication_chip/bare //missing a connector entirely.
 	name = "communication chip"
 	desc = "A small, grey chip. The chip has a white symbol engraved on the top."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipb"
 
-/obj/item/circuitboard/volkan/communication_chip/drone //A default one but with the symbol of the drone. Unlikely to be used but good to have here.
+/obj/item/computer_disk/volkan/communication_chip/drone //A default one but with the symbol of the drone. Unlikely to be used but good to have here.
 	name = "standard communication chip"
 	desc = "A small, grey chip. It has a connector for a standard NT computer. The chip has a white symbol engraved on the top."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipd"
+//---------communication chip data------------
+//I would add proper functionality but it sounds like a DAUNTING task.
+//Instead have a messenger app that cannot be installed in testing but has a custom name :D
+
+/datum/computer_file/program/messenger/volkan
+	filename = "Private Messenger"
+	filedesc = "Secure & Private Messenger"
+	size = 1
+	can_run_on_flags = PROGRAM_ALL
+
 
 //---------cool boxes!---------
 //Chip box
@@ -50,9 +63,9 @@
 
 /obj/item/storage/box/volkan/chip_box/PopulateContents() //various chips. 3 of the basic ones and one of the other two just in case.
 	var/static/items_inside = list(
-		/obj/item/circuitboard/volkan/communication_chip = 3,
-		/obj/item/circuitboard/volkan/communication_chip/usb = 1,
-		/obj/item/circuitboard/volkan/communication_chip/bare = 1,
+		/obj/item/computer_disk/volkan/communication_chip = 3,
+		/obj/item/computer_disk/volkan/communication_chip/usb = 1,
+		/obj/item/computer_disk/volkan/communication_chip/bare = 1,
 	)
 	generate_items_inside(items_inside, src)
 
