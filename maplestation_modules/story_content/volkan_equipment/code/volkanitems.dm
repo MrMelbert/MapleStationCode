@@ -47,7 +47,7 @@
 //Chip box
 //Designed to hold communication chips
 /obj/item/storage/box/volkan/chip_box
-	name = "intricate metal box"
+	name = "small metal box"
 	desc = "A very small rectangular metal box. The box looks like its built to hold specific things."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/metal_box.dmi'
 	icon_state = "chip_box"
@@ -75,7 +75,7 @@
 //NOT for use yet but I am coding this in for when I want to add more Volkan stuff later on :)
 /obj/item/storage/box/volkan/intricate_box
 	name = "intricate metal box"
-	desc = "A lightweight metal box. The box has intricate designs throughout."
+	desc = "A lightweight metal box. The box has intricate engraved designs throughout."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/metal_box.dmi'
 	icon_state = "intricate_box"
 	foldable_result = null
