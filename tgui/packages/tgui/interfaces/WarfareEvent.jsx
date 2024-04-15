@@ -7,18 +7,18 @@ export const WarfareEvent = (props, context) => {
   const { selectedNames } = data;
 
   const shellList = [
-    '460mm Rocket Assisted AP',
     '160mm Rocket Assisted AP',
     '160mm HE',
     '160mm Flak',
     '160mm Cluster AP',
+    '460mm Rocket Assisted AP',
     '460mm Cluster HE',
     '460mm Cluster Flak',
     'WMD KAJARI',
   ];
 
   return (
-    <Window title="Warfare Module" resizable theme="deep_red">
+    <Window title="Warfare Module" resizable theme="admin">
       <Window.Content scrollable>
         <Section title="Volley Configuration">
           <Flex
@@ -58,10 +58,10 @@ export const WarfareEvent = (props, context) => {
             <Flex
               direction="row"
               wrap="nowrap"
-              align="center"
+              align="start"
               justify="space-evenly"
             >
-              <Flex.Item grow={1}>
+              <Flex.Item grow={1} mr={0.75}>
                 <Section title="Loaded Shells">
                   <Stack vertical>
                     {selectedNames.map((currentShell) => (

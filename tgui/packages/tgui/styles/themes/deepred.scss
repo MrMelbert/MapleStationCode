@@ -2,7 +2,7 @@
 @use 'sass:meta';
 
 @use '../colors.scss' with (
-  $primary: #000000,
+  $primary: #ff0000,
   $fg-map-keys: (),
   $bg-map-keys: ()
 );
@@ -11,7 +11,7 @@
   $color-bg-grad-spread: 6%
 );
 
-.theme-deep_red {
+.theme-deepred {
   // Atomic classes
   @include meta.load-css('../atomic/color.scss');
 
@@ -56,7 +56,7 @@
     $with: ('background-color': #ff0000)
   );
 
-  //.Layout__content {
-  //  background-image: url('../../assets/bg-syndicate.svg');
-  //}
+  .Layout__content {
+    background-image: none;
+  }
 }
