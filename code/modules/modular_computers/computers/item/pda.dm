@@ -162,12 +162,6 @@
 	playsound(src, 'sound/machines/pda_button1.ogg', 50, TRUE)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/item/modular_computer/pda/AltClick(mob/user)
-	. = ..()
-	if(.)
-		return
-
-	remove_pen(user)
 
 /obj/item/modular_computer/pda/CtrlClick(mob/user)
 	. = ..()

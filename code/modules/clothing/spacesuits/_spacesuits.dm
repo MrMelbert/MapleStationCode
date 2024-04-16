@@ -54,11 +54,17 @@
 	equip_delay_other = 80
 	resistance_flags = NONE
 	actions_types = list(/datum/action/item_action/toggle_spacesuit)
-	var/temperature_setting = BODYTEMP_NORMAL /// The default temperature setting
-	var/obj/item/stock_parts/power_store/cell = /obj/item/stock_parts/power_store/cell/high /// If this is a path, this gets created as an object in Initialize. // Non-module change, technically, power rework, conflicts with new alt-click
-	var/cell_cover_open = FALSE /// Status of the cell cover on the suit
-	var/thermal_on = FALSE /// Status of the thermal regulator
-	var/show_hud = TRUE /// If this is FALSE the batery status UI will be disabled. This is used for suits that don't use bateries like the changeling's flesh suit mutation.
+	interaction_flags_click = NEED_DEXTERITY
+	/// The default temperature setting
+	var/temperature_setting = BODYTEMP_NORMAL
+	/// If this is a path, this gets created as an object in Initialize.
+	var/obj/item/stock_parts/power_store/cell/cell = /obj/item/stock_parts/power_store/cell/high
+	/// Status of the cell cover on the suit
+	var/cell_cover_open = FALSE
+	/// Status of the thermal regulator
+	var/thermal_on = FALSE
+	/// If this is FALSE the batery status UI will be disabled. This is used for suits that don't use bateries like the changeling's flesh suit mutation.
+	var/show_hud = TRUE
 
 /datum/armor/suit_space
 	bio = 100
@@ -193,10 +199,9 @@
 		return
 
 /// Open the cell cover when ALT+Click on the suit
-/obj/item/clothing/suit/space/AltClick(mob/living/user)
-	if(!user.can_perform_action(src, NEED_DEXTERITY))
-		return ..()
+/obj/item/clothing/suit/space/click_alt(mob/living/user)
 	toggle_spacesuit_cell(user)
+	return CLICK_ACTION_SUCCESS
 
 /// Remove the cell whent he cover is open on CTRL+Click
 /obj/item/clothing/suit/space/CtrlClick(mob/living/user)

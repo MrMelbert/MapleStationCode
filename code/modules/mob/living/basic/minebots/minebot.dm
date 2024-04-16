@@ -122,6 +122,7 @@
 		return ..()
 	set_combat_mode(!combat_mode)
 	balloon_alert(user, "now [combat_mode ? "attacking wildlife" : "collecting loose ore"]")
+	return CLICK_ACTION_SUCCESS
 
 /mob/living/basic/mining_drone/RangedAttack(atom/target)
 	if(!combat_mode)

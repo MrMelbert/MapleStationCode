@@ -27,8 +27,12 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
+	interaction_flags_click = NEED_LITERACY|NEED_LIGHT
+	/// Verbose/condensed
 	var/mode = SCANNER_VERBOSE
+	/// HEALTH/WOUND
 	var/scanmode = SCANMODE_HEALTH
+	/// Advanced health analyzer
 	var/advanced = FALSE
 	custom_price = PAYCHECK_COMMAND
 	/// If this analyzer will give a bonus to wound treatments apon woundscan.
@@ -539,17 +543,13 @@
 			return jointext(render_list, "")
 		// NON-MODULE CHANGE END
 
-/obj/item/healthanalyzer/AltClick(mob/user)
-	..()
-
-	if(!user.can_perform_action(src, NEED_LITERACY|NEED_LIGHT) || user.is_blind())
-		return
-
+/obj/item/healthanalyzer/click_alt(mob/user)
 	if(mode == SCANNER_NO_MODE)
-		return
+		return CLICK_ACTION_BLOCKING
 
 	mode = !mode
 	to_chat(user, mode == SCANNER_VERBOSE ? "The scanner now shows specific limb damage." : "The scanner no longer shows limb damage.")
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/healthanalyzer/advanced
 	name = "advanced health analyzer"
