@@ -1,10 +1,10 @@
 /mob/living/basic/volkan/shoulder_pet
 	name = "Companion"
-	desc = "An intricate, flying drone. It looks at you inquisitively."
+	desc = "An intricate, flying robot. It looks at you inquisitively."
 
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/companions.dmi'
 	icon_state = "drone_fly"
-	icon_living = "drone_fly"
+	icon_living = "drone_walk"
 	icon_dead = "drone_dead"
 
 	density = FALSE
