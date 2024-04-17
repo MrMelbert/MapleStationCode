@@ -43,7 +43,7 @@
 		/datum/pet_command/idle,
 		/datum/pet_command/free,
 		/datum/pet_command/perch,
-		/datum/pet_command/follow/volkan/shoulder_pet,
+		/datum/pet_command/follow,
 		/datum/pet_command/point_targeting/fetch,
 	)
 
@@ -108,7 +108,7 @@
 		return FALSE
 
 	forceMove(get_turf(target))
-	if(!target.buckle_mob(src, TRUE))
+	if(!target.buckle_mob(src,TRUE,FALSE))
 		return FALSE
 
 	to_chat(src, span_notice("You sit on [target]'s shoulder."))
@@ -144,7 +144,6 @@
 
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/pet_planning,
-		/datum/ai_planning_subtree/target_retaliate,
 	)
 
 //perching stuff. perching is using the parrot code :)
