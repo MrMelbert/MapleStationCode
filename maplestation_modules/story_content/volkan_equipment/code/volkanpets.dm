@@ -11,18 +11,26 @@
 	icon_state = "drone_fly"
 	icon_living = "drone_fly"
 	icon_dead = "drone_dead"
+	held_state = "drone_fly"
 
+	gender = NEUTER
 	density = FALSE
 	health = 80
 	maxHealth = 80
 	pass_flags = PASSTABLE | PASSMOB
 	mob_size = MOB_SIZE_SMALL
+	can_be_held = TRUE
+	held_w_class = WEIGHT_CLASS_SMALL
+
 
 	melee_damage_upper = 10
 	melee_damage_lower = 5
 
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
+	attack_verb_continuous = "slams into"
+	attack_verb_simple = "slam into"
+	attack_sound = 'sound/weapons/etherealhit.ogg'
 
 	ai_controller = /datum/ai_controller/basic_controller/volkan/shoulder_pet
 
@@ -63,13 +71,9 @@
 	unique = FALSE)
 	AddComponent(/datum/component/obeys_commands, pet_commands) // follows pet command
 
-/datum/pet_command/follow/volkan/shoulder_pet
-	speech_commands = list("heel", "follow", "come")
-
 ///Proc to run once imprinted
 /mob/living/basic/volkan/shoulder_pet/proc/tamed(mob/living/tamer)
 	visible_message(span_notice("[src] beeps and turns it's head toward [tamer] with it's head tilted."))
-	new /obj/effect/temp_visual/destabilising_tear(drop_location())
 
 
 //perching stuff. Since it is not a parrot I need to copy its code over?? Tell me if there is an easier way to do this.
