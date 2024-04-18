@@ -1,3 +1,6 @@
+///Energy used to say an error message.
+#define ENERGY_TO_SPEAK (0.001 * STANDARD_CELL_CHARGE)
+
 /**
  * # N-spect scanner
  *
@@ -32,8 +35,6 @@
 	var/cell_cover_open = FALSE
 	///Energy used per print.
 	var/energy_per_print = INSPECTOR_ENERGY_USAGE_NORMAL
-	///Energy used to say an error message.
-	var/energy_to_speak = 1 KILO JOULES
 
 /obj/item/inspector/Initialize(mapload)
 	. = ..()
@@ -142,7 +143,7 @@
 		to_chat(user, span_notice("[src] doesn't seem to be on... Perhaps it ran out of power?"))
 		return
 	if(!cell.use(energy_per_print))
-		if(cell.use(energy_to_speak))
+		if(cell.use(ENERGY_TO_SPEAK))
 			say("ERROR! POWER CELL CHARGE LEVEL TOO LOW TO PRINT REPORT!")
 		return
 
@@ -288,7 +289,7 @@
 
 /obj/item/inspector/clown/bananium/proc/check_settings_legality()
 	if(print_sound_mode == INSPECTOR_PRINT_SOUND_MODE_NORMAL && time_mode == INSPECTOR_TIME_MODE_HONK)
-		if(cell.use(energy_to_speak))
+		if(cell.use(ENERGY_TO_SPEAK))
 			say("Setting combination forbidden by Geneva convention revision CCXXIII selected, reverting to defaults")
 		time_mode = INSPECTOR_TIME_MODE_SLOW
 		print_sound_mode = INSPECTOR_PRINT_SOUND_MODE_NORMAL
@@ -326,7 +327,7 @@
 	if(time_mode != INSPECTOR_TIME_MODE_HONK)
 		return ..()
 	if(paper_charges == 0)
-		if(cell.use(energy_to_speak))
+		if(cell.use(ENERGY_TO_SPEAK))
 			say("ERROR! OUT OF PAPER! MAXIMUM PRINTING SPEED UNAVAIBLE! SWITCH TO A SLOWER SPEED TO OR PROVIDE PAPER!")
 		else
 			to_chat(user, "<span class='info'>\The [src] doesn't seem to be on... Perhaps it ran out of power?")
@@ -414,3 +415,6 @@
 		target.MakeSlippery(TURF_WET_WATER, min_wet_time = 10 SECONDS, wet_time_to_add = 5 SECONDS)
 		to_chat(user, span_notice("As you try to fold [src] into the shape of a plane, it disintegrates into water!"))
 		qdel(src)
+//	return CLICK_ACTION_SUCCES // Non-module change : don't have this yet
+
+#undef ENERGY_TO_SPEAK
