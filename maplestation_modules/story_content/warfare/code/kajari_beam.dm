@@ -54,3 +54,8 @@
 /obj/projectile/kajari_lance/generate_hitscan_tracers(cleanup = TRUE, duration = 16 SECONDS, impacting = TRUE)
 	duration = 16 SECONDS
 	. = ..()
+
+/obj/effect/projectile/tracer/laser/kajari
+	name = "kajari lance"
+	icon = 'maplestation_modules/story_content/warfare/icons/kajari.dmi'
+	icon_state = "kajari_beam"
