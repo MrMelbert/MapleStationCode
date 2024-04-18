@@ -151,23 +151,3 @@
 	//we do not want it to fly away from your shoulder without an order.
 	var/walk_chance_when_perched = 0
 
-/**
- * # Pet Command: Perch
- * Tells a pet that can perch, to perch on your shoulder.
- */
-/datum/pet_command/perch
-	command_name = "Perch"
-	command_desc = "Command your pet to perch on your shoulder."
-	radial_icon = 'icons/mob/actions/actions_spells.dmi'
-	radial_icon_state = "repulse"
-	speech_commands = list("perch")
-	command_feedback = "flies up to your shoulder!"
-	var/perch_behavior = /datum/ai_behavior/perch_on_target/
-
-/datum/pet_command/perch/set_command_active(mob/living/parent, mob/living/commander)
-	. = ..()
-	set_command_target(parent, commander)
-
-/datum/pet_command/perch/execute_action(datum/ai_controller/controller)
-	controller.queue_behavior(perch_behavior, BB_CURRENT_PET_TARGET)
-	return SUBTREE_RETURN_FINISH_PLANNING
