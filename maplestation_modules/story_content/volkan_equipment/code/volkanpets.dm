@@ -8,10 +8,14 @@
 	desc = "An intricate, flying robot. It looks at you inquisitively."
 
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/companions.dmi'
+	held_rh = 'maplestation_modules/story_content/volkan_equipment/icons/companions_inhand_rh.dmi'
+	held_lh = 'maplestation_modules/story_content/volkan_equipment/icons/companions_inhand_lh.dmi'
 	icon_state = "drone_fly"
 	icon_living = "drone_fly"
 	icon_dead = "drone_dead"
-	held_state = "drone_fly"
+	held_state = "shoulder_pet"
+
+
 
 	gender = NEUTER
 	density = FALSE
