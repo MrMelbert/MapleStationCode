@@ -78,7 +78,7 @@
 
 	using = new /atom/movable/screen/mov_intent(null, src)
 	using.icon = ui_style
-	using.update_appearance(UPDATE_ICON_STATE) // NON-MODULE CHANGE
+	using.update_appearance() // NON-MODULE CHANGE
 	using.screen_loc = ui_movi
 	static_inventory += using
 

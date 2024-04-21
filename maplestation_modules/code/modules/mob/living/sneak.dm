@@ -1,5 +1,5 @@
 // Reworks toggle_move_intent to cycle rather than go back and forth
-/mob/living/toggle_move_intent(mob/user, backwards)
+/mob/living/toggle_move_intent(backwards)
 
 	if(backwards)
 		switch(move_intent)
