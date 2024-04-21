@@ -137,12 +137,12 @@
 	. = ..()
 	apply_height_filters(src, TRUE)
 
-/mob/living/carbon/human/dummy/apply_height_filters(mutable_appearance/appearance, only_apply_in_prefs = FALSE)
+/mob/living/carbon/human/dummy/apply_height_filters(image/appearance, only_apply_in_prefs = FALSE)
 	if(only_apply_in_prefs)
 		return ..()
 
 // Not necessary with above
-/mob/living/carbon/human/dummy/apply_height_offsets(mutable_appearance/appearance, upper_torso)
+/mob/living/carbon/human/dummy/apply_height_offsets(image/appearance, upper_torso)
 	return
 
 /mob/living/carbon/human/get_mob_height()
