@@ -165,11 +165,3 @@
 /datum/loadout_item/suit/chesed_jacket
 	name = "Well-Kept Jacket"
 	item_path = /obj/item/clothing/suit/toggle/chesedjacket
-
-/datum/loadout_item/suit/cyrilcloak
-	name = "Claw-Sewn Cloak"
-	item_path = /obj/item/clothing/suit/cyrilcloak
-
-/datum/loadout_item/suit/scoriajacket
-	name = "Embroidered Clan Jacket"
-	item_path = /obj/item/clothing/suit/matthewjacket
