@@ -4,6 +4,7 @@
 	return list(
 		/obj/item/modular_computer/pda/heads/asset_protection = list(REGION_COMMAND),
 		/obj/item/modular_computer/pda/heads/bridge_officer = list(REGION_COMMAND),
+		/obj/item/modular_computer/pda/heads/noble_ambassador = list(REGION_COMMAND),
 		/obj/item/modular_computer/pda/ordnance = list(REGION_RESEARCH),
 		/obj/item/modular_computer/pda/xenobiologist = list(REGION_RESEARCH),
 	)
@@ -40,6 +41,19 @@
 		/datum/computer_file/program/robocontrol,
 		// "OH GOD WE'RE ALL GOING TO DIE"
 		/datum/computer_file/program/status,
+	)
+
+// Noble Ambassador PDA.
+/obj/item/modular_computer/pda/heads/noble_ambassador
+	name = "noble ambassador PDA"
+	greyscale_config = /datum/greyscale_config/tablet/head
+	greyscale_colors = "#9d77a3#fdc052"
+	starting_programs = list(
+		/datum/computer_file/program/crew_manifest,
+		/datum/computer_file/program/status,
+		/datum/computer_file/program/science,
+		/datum/computer_file/program/robocontrol,
+		/datum/computer_file/program/budgetorders,
 	)
 
 /// ordnance technician PDA

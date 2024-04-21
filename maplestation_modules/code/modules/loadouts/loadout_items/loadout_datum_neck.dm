@@ -63,3 +63,7 @@
 /datum/loadout_item/neck/casual_cloak
 	name = "Fuzzy Cloak"
 	item_path = /obj/item/clothing/neck/cloak/casual
+
+/datum/loadout_item/neck/cremona_necklace
+	name = "Puligard Holy Necklace"
+	item_path = /obj/item/clothing/neck/cremona

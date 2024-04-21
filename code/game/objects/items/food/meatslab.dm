@@ -16,14 +16,13 @@
 		/datum/component/blood_walk,\
 		blood_type = blood_decal_type,\
 		blood_spawn_chance = 45,\
-		max_blood = custom_materials[custom_materials[1]],\
+		max_blood = 1,\
 	)
 
 	AddComponent(
 		/datum/component/bloody_spreader,\
-		blood_left = custom_materials[custom_materials[1]],\
-		blood_dna = list("meaty DNA" = "MT-"),\
-		diseases = null,\
+		blood_left = 2,\
+		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
 
 /obj/item/food/meat/slab

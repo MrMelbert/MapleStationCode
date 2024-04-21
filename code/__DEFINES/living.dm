@@ -5,6 +5,9 @@
 // NON-MODULE CHANGE
 // Sticking these here for now because i'm dumb
 
+/// Updating a mob's movespeed when lacking limbs. (list/modifiers)
+#define COMSIG_LIVING_LIMBLESS_MOVESPEED_UPDATE "living_get_movespeed_modifiers"
+
 // -- Defines for the pain system. --
 
 /// Sent when a carbon gains pain. (source = mob/living/carbon/human, obj/item/bodypart/affected_bodypart, amount, type)
@@ -13,6 +16,11 @@
 #define COMSIG_CARBON_PAIN_LOST "pain_loss"
 /// Sent when a temperature pack runs out of juice. (source = obj/item/temperature_pack)
 #define COMSIG_TEMPERATURE_PACK_EXPIRED "temp_pack_expired"
+
+#define COMSIG_HUMAN_ON_HANDLE_BLOOD "human_on_handle_blood"
+	#define HANDLE_BLOOD_HANDLED (1<<0)
+	#define HANDLE_BLOOD_NO_NUTRITION_DRAIN (1<<1)
+	#define HANDLE_BLOOD_NO_EFFECTS (1<<2)
 
 /// Various lists of body zones affected by pain.
 #define BODY_ZONES_ALL list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
@@ -53,3 +61,5 @@
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment" // Sticking this here because Melbert told me to
+
+#define COLOR_BLOOD "#c90000"

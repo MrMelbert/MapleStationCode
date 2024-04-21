@@ -288,13 +288,13 @@
 			var/missing_organs = list()
 			if(!humantarget.get_organ_slot(ORGAN_SLOT_BRAIN))
 				missing_organs += "brain"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBLOOD, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_HEART))
+			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBLOOD, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantheart) && !humantarget.get_organ_slot(ORGAN_SLOT_HEART)) // NON-MODULE CHANGE
 				missing_organs += "heart"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBREATH, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_LUNGS))
+			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBREATH, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantlungs) && !humantarget.get_organ_slot(ORGAN_SLOT_LUNGS)) // NON-MODULE CHANGE
 				missing_organs += "lungs"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_LIVERLESS_METABOLISM, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_LIVER))
+			if(!HAS_TRAIT_FROM(humantarget, TRAIT_LIVERLESS_METABOLISM, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantliver) && !humantarget.get_organ_slot(ORGAN_SLOT_LIVER)) // NON-MODULE CHANGE
 				missing_organs += "liver"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOHUNGER, SPECIES_TRAIT) && !humantarget.get_organ_slot(ORGAN_SLOT_STOMACH))
+			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOHUNGER, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantstomach) && !humantarget.get_organ_slot(ORGAN_SLOT_STOMACH)) // NON-MODULE CHANGE
 				missing_organs += "stomach"
 			if(!humantarget.get_organ_slot(ORGAN_SLOT_TONGUE))
 				missing_organs += "tongue"
@@ -364,23 +364,22 @@
 			</span>" // divs do not need extra linebreak
 
 	// Blood Level
-	if(target.has_dna())
-		var/mob/living/carbon/carbontarget = target
-		var/blood_id = carbontarget.get_blood_id()
-		if(blood_id)
-			if(carbontarget.is_bleeding())
+
+	// NON-MODULE CHANGE
+	if(target.has_dna() && target.get_blood_type())
+		if(iscarbon(target))
+			var/mob/living/carbon/bleeder = target
+			if(bleeder.is_bleeding())
 				render_list += "<span class='alert ml-1'><b>Subject is bleeding!</b></span>\n"
-			var/blood_percent = round((carbontarget.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
-			var/blood_type = carbontarget.dna.blood_type
-			if(blood_id != /datum/reagent/blood) // special blood substance
-				var/datum/reagent/R = GLOB.chemical_reagents_list[blood_id]
-				blood_type = R ? R.name : blood_id
-			if(carbontarget.blood_volume <= BLOOD_VOLUME_SAFE && carbontarget.blood_volume > BLOOD_VOLUME_OKAY)
-				render_list += "<span class='alert ml-1'>Blood level: LOW [blood_percent] %, [carbontarget.blood_volume] cl,</span> [span_info("type: [blood_type]")]\n"
-			else if(carbontarget.blood_volume <= BLOOD_VOLUME_OKAY)
-				render_list += "<span class='alert ml-1'>Blood level: <b>CRITICAL [blood_percent] %</b>, [carbontarget.blood_volume] cl,</span> [span_info("type: [blood_type]")]\n"
-			else
-				render_list += "<span class='info ml-1'>Blood level: [blood_percent] %, [carbontarget.blood_volume] cl, type: [blood_type]</span>\n"
+		var/blood_percent = round((target.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
+		var/blood_type = "[target.get_blood_type() || "None"]"
+		if(target.blood_volume <= BLOOD_VOLUME_SAFE && target.blood_volume > BLOOD_VOLUME_OKAY)
+			render_list += "<span class='alert ml-1'>Blood level: LOW [blood_percent] %, [target.blood_volume] cl,</span> [span_info("type: [blood_type]")]\n"
+		else if(target.blood_volume <= BLOOD_VOLUME_OKAY)
+			render_list += "<span class='alert ml-1'>Blood level: <b>CRITICAL [blood_percent] %</b>, [target.blood_volume] cl,</span> [span_info("type: [blood_type]")]\n"
+		else
+			render_list += "<span class='info ml-1'>Blood level: [blood_percent] %, [target.blood_volume] cl, type: [blood_type]</span>\n"
+	// NON-MODULE CHANGE END
 
 	// Cybernetics
 	if(iscarbon(target))

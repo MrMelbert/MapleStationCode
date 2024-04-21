@@ -22,6 +22,7 @@
 
 	sound = 'sound/effects/stealthoff.ogg'
 	school = SCHOOL_TRANSLOCATION
+	cooldown_time = 6 SECONDS
 
 	invocation = "Zo Ka Cha Zo!"
 	invocation_type = INVOCATION_SHOUT

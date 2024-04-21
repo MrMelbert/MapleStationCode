@@ -32,7 +32,7 @@
 	/// A list of items people can receive from mail who have this quirk enabled
 	/// The base weight for the each quirk's mail goodies list to be selected is 5
 	/// then the item selected is determined by pick(selected_quirk.mail_goodies)
-	var/mail_goodies = list()
+	var/list/mail_goodies = list()
 
 /datum/quirk/Destroy()
 	if(quirk_holder)

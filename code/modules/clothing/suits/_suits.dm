@@ -14,7 +14,7 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	slot_flags = ITEM_SLOT_OCLOTHING
-	var/blood_overlay_type = "suit"
+	blood_overlay_type = "suit" // NON-MODULE CHANGE reworking clothing blood overlays
 	limb_integrity = 0 // disabled for most exo-suits
 
 /obj/item/clothing/suit/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
@@ -24,8 +24,7 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damaged[blood_overlay_type]")
-	if(GET_ATOM_BLOOD_DNA_LENGTH(src))
-		. += mutable_appearance('icons/effects/blood.dmi', "[blood_overlay_type]blood")
+		// NON-MODULE CHANGE reworking clothing blood overlays
 
 	var/mob/living/carbon/human/wearer = loc
 	if(!ishuman(wearer) || !wearer.w_uniform)

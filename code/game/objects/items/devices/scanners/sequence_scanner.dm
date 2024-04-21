@@ -126,7 +126,7 @@
 	"UE"=target.dna.unique_enzymes,
 	"UF"=target.dna.unique_features,
 	"name"=target.real_name,
-	"blood_type"=target.dna.blood_type)
+	"blood_type"="[initial(target.dna.human_blood_type.name)]")
 
 /obj/item/sequence_scanner/proc/display_sequence(mob/living/user)
 	if(!LAZYLEN(buffer) || !ready)

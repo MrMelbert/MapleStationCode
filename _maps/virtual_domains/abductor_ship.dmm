@@ -215,7 +215,7 @@
 /turf/open/floor/plating/abductor,
 /area/ruin/space/has_grav/powered/virtual_domain)
 "yt" = (
-/obj/effect/decal/cleanable/blood/xtracks,
+/obj/effect/decal/cleanable/xenoblood/xtracks,
 /turf/open/floor/plating/abductor,
 /area/ruin/space/has_grav/powered/virtual_domain)
 "zX" = (

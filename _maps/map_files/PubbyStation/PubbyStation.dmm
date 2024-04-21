@@ -1641,8 +1641,8 @@
 	},
 /obj/structure/cable,
 /obj/structure/table,
-/obj/item/storage/dice,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden/layer4,
+/obj/item/storage/photo_album/prison,
 /turf/open/floor/iron,
 /area/station/security/prison)
 "afF" = (
@@ -12370,6 +12370,7 @@
 /obj/item/stack/sheet/glass/fifty,
 /obj/item/stack/sheet/iron/fifty,
 /obj/structure/sign/poster/random/directional/north,
+/obj/item/storage/photo_album/bar,
 /turf/open/floor/wood,
 /area/station/service/bar/backroom)
 "aQY" = (
@@ -30938,6 +30939,7 @@
 /obj/item/clothing/head/chaplain/nun_hood,
 /obj/item/clothing/suit/chaplainsuit/nun,
 /obj/item/clothing/suit/chaplainsuit/holidaypriest,
+/obj/item/storage/photo_album/chapel,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/chapel/office)
 "cso" = (
@@ -31995,6 +31997,7 @@
 /area/station/service/library)
 "czD" = (
 /obj/structure/table/wood,
+/obj/item/storage/photo_album/library,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/library)
 "czH" = (
@@ -33573,6 +33576,9 @@
 	dir = 1
 	},
 /obj/structure/table,
+/obj/item/storage/dice{
+	pixel_y = 3
+	},
 /obj/item/toy/cards/deck,
 /turf/open/floor/iron,
 /area/station/security/prison)
@@ -60811,6 +60817,14 @@
 	dir = 8
 	},
 /area/station/medical/medbay/lobby)
+"xlN" = (
+/obj/structure/chair/office{
+	dir = 1
+	},
+/obj/structure/cable,
+/obj/effect/landmark/start/noble_ambassador,
+/turf/open/floor/iron/dark,
+/area/station/command/bridge)
 "xmh" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -92991,7 +93005,7 @@ aaa
 aaa
 aqI
 arM
-asR
+xlN
 atU
 auR
 avX

@@ -57,3 +57,13 @@
 		for use when protecting the command staff of Nanotrasen research stations."
 	requires_job_path = /datum/job/asset_protection
 	spawned_locker_path = /obj/structure/closet/secure_closet/asset_protection
+
+// NA Locker summoner
+/obj/item/locker_spawner/noble_ambassador
+	name = "noble ambassador equipment beacon"
+	desc = "A beacon handed out for refined noble ambassadors being assigned to stations without proper \
+		accommodations made for their occupation. When used, drop-pods in a fully stocked locker of equipment \
+		for use when upholding the laws of joint Mu-Nanotrasen research stations."
+	requires_job_path = /datum/job/noble_ambassador
+	spawned_locker_path = /obj/structure/closet/secure_closet/noble_ambassador
+

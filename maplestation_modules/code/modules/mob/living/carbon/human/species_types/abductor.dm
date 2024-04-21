@@ -2,10 +2,15 @@
 	return
 
 /datum/species/abductor/get_species_description()
-	return "Abductors, colloquially known as \"Greys\" (or \"Grays\"), are pale skinned inquisitive aliens who can't commicate to the average crew-member."
+	return "Abductors, colloquially known as \"Greys\" (or \"Grays\"), \
+		are pale skinned inquisitive aliens who can't communicate well to the average crew-member."
 
 /datum/species/abductor/get_species_lore()
-	return list("Abductor lore.")
+	return list(
+		"Little are known about Abductors. \
+		While they (as a species) have been known to abduct other species of 'lesser intellect' for experimentation, \
+		some have been known to - on rare occasions - work with the very species they abduct, for reasons unknown.",
+	)
 
 /datum/species/abductor/create_pref_unique_perks()
 	var/list/perks = list()
