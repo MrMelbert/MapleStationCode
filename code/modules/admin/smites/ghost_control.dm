@@ -48,4 +48,4 @@
 	var/obj/structure/chair/sitting_chair = pick(chairs)
 	sitting_chair.buckle_mob(target, check_loc = FALSE)
 
- // NON-MODULE CHANGE: this proc is gone we don't need it any more
+// NON-MODULE CHANGE: this proc is gone we don't need it any more
