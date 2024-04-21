@@ -19,7 +19,7 @@
 	grind_results = list(/datum/reagent/mercury = 5, /datum/reagent/iron = 5, /datum/reagent/silicon = 5)
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
-	interaction_flags_click = NEED_LITERACY|NEED_LIGHT
+	interaction_flags_click = NEED_LITERACY|NEED_LIGHT|ALLOW_RESTING
 	/// Boolean whether this has a CD
 	var/cooldown = FALSE
 	/// The time in deciseconds

@@ -10,7 +10,7 @@
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
-	interaction_flags_click = NEED_DEXTERITY
+	interaction_flags_click = NEED_DEXTERITY|ALLOW_RESTING
 	/// Cooldown for usage
 	var/cooldown = 30 SECONDS
 	/// Next available time

@@ -764,7 +764,7 @@
 	post_noise = FALSE
 	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
-	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS
+	interaction_flags_click = NEED_DEXTERITY|NEED_HANDS|ALLOW_RESTING
 
 /obj/item/toy/crayon/spraycan/Initialize(mapload)
 	. = ..()
