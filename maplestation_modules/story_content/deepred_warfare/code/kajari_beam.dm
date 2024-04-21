@@ -57,5 +57,5 @@
 
 /obj/effect/projectile/tracer/laser/kajari
 	name = "kajari lance"
-	icon = 'maplestation_modules/story_content/warfare/icons/kajari.dmi'
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/kajari.dmi'
 	icon_state = "kajari_beam"
