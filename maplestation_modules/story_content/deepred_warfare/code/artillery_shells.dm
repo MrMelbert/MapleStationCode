@@ -1,7 +1,7 @@
 /obj/effect/meteor/shell
 	name = "generic artillery shell"
 	desc = "A generic artillery shell."
-	icon = 'maplestation_modules/story_content/warfare/icons/arty_shell.dmi'
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/arty_shell.dmi'
 	icon_state = "rocket_ap_big"
 	//I'd expect shells to made out of plasteel or something.
 	meteordrop = list(/obj/item/stack/sheet/plasteel)
