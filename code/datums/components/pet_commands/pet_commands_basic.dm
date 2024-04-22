@@ -265,7 +265,7 @@
 	command_desc = "Command your pet to perch on your shoulder."
 	radial_icon = 'icons/mob/actions/actions_minor_antag.dmi'
 	radial_icon_state = "beam_up"
-	speech_commands = list("perch, step up")
+	speech_commands = list("perch", "step up")
 	command_feedback = "flies up!"
 	var/perch_behavior = /datum/ai_behavior/perch_on_target/
 

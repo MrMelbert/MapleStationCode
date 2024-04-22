@@ -1,4 +1,4 @@
-/**
+/*
  * # Volkan's companion.
  * A cool pet for volkan! Basically a better poly. Quiet, efficient, and will sit on his shoulder all the time.
  */
@@ -15,8 +15,6 @@
 	icon_dead = "drone_dead"
 	held_state = "shoulder_pet"
 
-
-
 	gender = NEUTER
 	density = FALSE
 	health = 80
@@ -26,9 +24,8 @@
 	can_be_held = TRUE
 	held_w_class = WEIGHT_CLASS_SMALL
 
-
-	melee_damage_upper = 10
-	melee_damage_lower = 5
+	melee_damage_upper = 5
+	melee_damage_lower = 1
 
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
@@ -60,15 +57,13 @@
 	)
 
 
-
 /mob/living/basic/volkan/shoulder_pet/Initialize(mapload)
 	. = ..()
 	ai_controller.set_blackboard_key(BB_PARROT_PERCH_TYPES, desired_perches)// uses parrot code to perch
 
 	AddElement(/datum/element/simple_flying) //The thing flys.
 	AddComponent(/datum/component/tameable, \
-	food_types = list(/obj/item/stock_parts/cell, \
-	/obj/item/stock_parts/capacitor,), \
+	food_types = list(/obj/item/circuitboard/volkan/imprint_key,), \
 	tame_chance = 100, \
 	bonus_tame_chance = 15, \
 	after_tame = CALLBACK(src, PROC_REF(tamed)), \
