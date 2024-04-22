@@ -6433,7 +6433,6 @@
 #include "maplestation_modules\code\modules\paperwork\stamps.dm"
 #include "maplestation_modules\code\modules\pixel_shift\code\pixel_shift_component.dm"
 #include "maplestation_modules\code\modules\pixel_shift\code\pixel_shift_keybind.dm"
-#include "maplestation_modules\code\modules\projectiles\ammunition\ballistic\shotgun.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\autocannon.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\gauss.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\shotgun.dm"
@@ -6506,4 +6505,5 @@
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanitems.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanpets.dm"
+#include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
 // END_INCLUDE
