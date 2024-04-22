@@ -13,7 +13,7 @@
 	maxHealth = 60
 
 	// But, armour is optimized for thermal and energy damage.
-	var/list/damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0)
+	damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0)
 
 	// Most drones are ranged attackers so they don't deal much melee damage.
 	melee_damage_lower = 5
