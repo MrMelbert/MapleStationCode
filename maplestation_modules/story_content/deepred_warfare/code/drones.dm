@@ -38,9 +38,9 @@
 	minimum_survivable_temperature = TCMB
 
 	// Add this later.
-	// ai_controller =
+	ai_controller = /datum/ai_controller/basic_controller/redgeneric
 
 /mob/living/basic/reddrone/Initialize(mapload)
 	. = ..()
-	var/static/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/cell/redtech/empty = 1, /obj/item/stock_parts/servo/redtech = 1)
+	var/static/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
 	AddElement(/datum/element/death_drops, death_loot)

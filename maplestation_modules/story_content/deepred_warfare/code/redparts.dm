@@ -5,8 +5,9 @@
 	icon_state = "redcell"
 	// Just an EMP resistant bluespace cell.
 	maxcharge = STANDARD_CELL_CHARGE * 40
-	custom_materials = list(/datum/material/glass=HALF_SHEET_MATERIAL_AMOUNT)
 	chargerate = STANDARD_CELL_CHARGE * 4
+	// Useful for scrapping.
+	custom_materials = list(/datum/material/glass=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
 
 /obj/item/stock_parts/cell/redtech/empty
 	empty = TRUE
@@ -23,4 +24,15 @@
 	// Just a reskinned femto servo.
 	rating = 4
 	energy_rating = 10
-	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT)
+	// Useful for scrapping.
+	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/diamond=HALF_SHEET_MATERIAL_AMOUNT)
+
+/obj/item/stock_parts/capacitor/redtech
+	name = "powerful red capacitor"
+	desc = "A powerful red capacitor. Its design is unlike anything you've seen before."
+	icon_state = "redcapacitor"
+	// Reskinned quadratic capacitor.
+	rating = 4
+	energy_rating = 10
+	// Useful for scrapping.
+	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
