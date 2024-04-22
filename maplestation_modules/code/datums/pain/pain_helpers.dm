@@ -41,6 +41,16 @@
 	return pain_controller?.do_pain_emote(emote, cooldown)
 
 /**
+ * Runs a pain message on the pain message cooldown
+ *
+ * * message - the message to send
+ * * painless_message - optional, the message to send if the mob does not feel pain
+ * * cooldown - applies cooldown on doing similar pain messages
+ */
+/mob/living/proc/pain_message(message, painless_message, cooldown)
+	return pain_controller?.do_pain_message(message, painless_message, cooldown)
+
+/**
  * Adjust the minimum pain the target zone can experience for a time
  *
  * This means that the target zone will not be able to go below the specified pain amount
@@ -76,7 +86,7 @@
  * By default mobs cannot feel pain if they have a pain modifier of 0.5 or less.
  */
 /mob/living/proc/can_feel_pain()
-	return pain_controller?.pain_modifier > 0.5
+	return pain_controller?.pain_modifier > 0.5 && !HAS_TRAIT(src, TRAIT_NO_PAIN_EFFECTS)
 
 /**
  * Adjusts the progress of pain shock on the current mob.
@@ -86,6 +96,8 @@
  */
 /mob/living/proc/adjust_pain_shock(amount, down_to = -30)
 	if(isnull(pain_controller))
+		return
+	if(amount > 0 && HAS_TRAIT(src, TRAIT_NO_SHOCK_BUILDUP))
 		return
 
 	ASSERT(isnum(amount))

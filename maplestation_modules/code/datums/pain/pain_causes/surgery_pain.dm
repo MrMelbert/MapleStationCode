@@ -18,26 +18,24 @@
 	// No pain from mechanics but still show the message (usually)
 	if(mechanical_surgery)
 		if(prob(70))
-			to_chat(target, span_userdanger(pain_message))
+			target.pain_message(span_userdanger(pain_message))
 		return FALSE
 
 	target.cause_pain(target_zone, pain_amount, pain_type)
 
-	if(target.IsSleeping() || target.IsUnconscious() || target.stat >= UNCONSCIOUS)
+	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)
 		if(target.has_status_effect(/datum/status_effect/grouped/anesthetic))
 			target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		return FALSE
-
-	if(ispath(surgery_moodlet, /datum/mood_event))
+	if(ispath(surgery_moodlet))
 		target.add_mood_event("surgery", surgery_moodlet)
-	if(pain_overlay_severity == 1 || pain_overlay_severity == 2)
+	if(isnum(pain_overlay_severity))
 		target.flash_pain_overlay(pain_overlay_severity)
-
 	// No message if the pain emote fails
-	if(!target.pain_controller.do_pain_emote())
+	if(!target.pain_emote())
 		return FALSE
-
-	to_chat(target, span_userdanger(pain_message))
+	if(!target.pain_message(span_userdanger(pain_message)))
+		return FALSE
 	return TRUE
 
 /datum/surgery_step/brainwash/sleeper_agent
