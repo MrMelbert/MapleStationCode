@@ -44,11 +44,11 @@
 	var/ranged_cooldown = 3 SECONDS
 	var/projectile_type = /obj/projectile/bullet/coil
 	var/shoot_sound = 'sound/weapons/gun/smg/shot.ogg'
-	var/burst_shots = 8
+	var/burst_amount = 8
 	var/burst_cooldown = 0.25 SECONDS
 
 	var/flying = TRUE
-	var/static/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
+	var/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
 
 /mob/living/basic/reddrone/Initialize(mapload)
 	. = ..()
