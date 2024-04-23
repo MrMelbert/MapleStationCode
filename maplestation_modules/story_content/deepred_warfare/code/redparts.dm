@@ -30,6 +30,7 @@
 /obj/item/stock_parts/capacitor/redtech
 	name = "powerful red capacitor"
 	desc = "A powerful red capacitor. Its design is unlike anything you've seen before."
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redcapacitor"
 	// Reskinned quadratic capacitor.
 	rating = 4

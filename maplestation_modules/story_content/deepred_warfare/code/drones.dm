@@ -32,6 +32,7 @@
 	faction = list(FACTION_DEEPRED)
 	combat_mode = TRUE
 	speech_span = SPAN_ROBOT
+	death_sound = 'sound/voice/borg_deathsound.ogg'
 	death_message = "shudders, then falls to the ground, inoperable."
 
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
@@ -41,11 +42,11 @@
 
 	var/ranged = TRUE
 
-	var/ranged_cooldown = 3 SECONDS
+	var/ranged_cooldown = 6 SECONDS
 	var/projectile_type = /obj/projectile/bullet/coil
 	var/shoot_sound = 'sound/weapons/gun/smg/shot.ogg'
 	var/burst_amount = 8
-	var/burst_cooldown = 0.25 SECONDS
+	var/burst_cooldown = 0.125 SECONDS
 
 	var/flying = TRUE
 	var/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
