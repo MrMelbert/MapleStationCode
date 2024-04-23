@@ -296,8 +296,8 @@
 		type = 2
 	if(I)
 		if(type == 1)
-			changeNext_move(CLICK_CD_BREAKOUT)
-			last_special = world.time + CLICK_CD_BREAKOUT
+			changeNext_move(I.resist_cooldown)
+			last_special = world.time + I.resist_cooldown
 		if(type == 2)
 			changeNext_move(CLICK_CD_RANGE)
 			last_special = world.time + CLICK_CD_RANGE
