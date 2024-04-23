@@ -1,4 +1,4 @@
-/datum/ai_controller/basic_controller/redgeneric
+/datum/ai_controller/basic_controller/rapidlightflying
     blackboard = list()
 
 	ai_traits = null
