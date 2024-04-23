@@ -6496,6 +6496,8 @@
 #include "maplestation_modules\story_content\deepred_warfare\code\drones.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\kajari_beam.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\redparts.dm"
+#include "maplestation_modules\story_content\deepred_warfare\code\redprojectiles.dm"
+#include "maplestation_modules\story_content\deepred_warfare\code\ship_parallax.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\singulo_warhead.dm"
 #include "maplestation_modules\story_content\kimono\code\kimonoclothing.dm"
 #include "maplestation_modules\story_content\laurence_equipment\code\laurence_clothing.dm"
