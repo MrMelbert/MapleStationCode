@@ -281,7 +281,7 @@
 		return
 
 	update_equipment_speed_mods()
-	update_obscured_slots(I)
+	update_obscured_slots(I.flags_inv)
 	hud_used?.update_locked_slots()
 
 /mob/living/carbon/human/toggle_internals(obj/item/tank, is_external = FALSE)
