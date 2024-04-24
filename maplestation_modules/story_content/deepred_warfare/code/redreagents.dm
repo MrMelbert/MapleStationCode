@@ -16,8 +16,54 @@
 
 /datum/reagent/gravitum/aerialite
 	name = "Alloyed Aerialite"
-	description = "A powdered alloy of a strange blue metal. It seems to defy the laws of gravity and is unlike anything you've seen before."
+	description = "A powdered alloy of a strange blue metal that seems to defy the laws of gravity. It is unlike anything you've seen before."
 	color = "#00aaff"
 	taste_description = "the boundless sky"
 	chemical_flags = null
 	taste_mult = 1
+	reagent_state = SOLID
+
+/datum/reagent/resmythril
+	name = "Resonant Mythril"
+	description = "A powdered turquoise metal that seems to resonate with electromagnetic waves. It is unlike anything you've seen before."
+	color = "#14747c"
+	taste_description = "resonance"
+	reagent_state = SOLID
+
+/datum/chemical_reaction/resmythril_emp
+	required_reagents = list(/datum/reagent/uranium = 1, /datum/reagent/resmythril = 1)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS
+
+/datum/chemical_reaction/resmythril_emp/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	var/location = get_turf(holder.my_atom)
+	empulse(location, round(created_volume / 12), round(created_volume / 7), 1)
+	holder.clear_reagents()
+
+/datum/reagent/exodust
+	name = "Prism Dust"
+	description = "A pulverized crystalline dust that seems to be unusually stabilized. It is unlike anything you've seen before."
+	color = "#d3d1ed"
+	taste_description = "a forge of a bygone era"
+	reagent_state = SOLID
+
+/datum/chemical_reaction/exo_stabilizer
+	results = list(/datum/reagent/exotic_stabilizer = 1)
+	required_reagents = list(/datum/reagent/exodust = 1,/datum/reagent/stabilizing_agent = 1)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+
+/datum/reagent/darkplasma
+	name = "Condensed Dark Plasma"
+	description = "A swirling dark liquid that seems to dissipate any light around it. It is unlike anything you've seen before."
+	color = "#0e0033"
+	taste_description = "an endless void"
+
+/datum/chemical_reaction/plasma_vortex
+	required_reagents = list(/datum/reagent/darkplasma = 1)
+	required_temp = 474
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS
+
+/datum/chemical_reaction/plasma_vortex/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	var/turf/T = get_turf(holder.my_atom)
+	var/range = clamp(sqrt(created_volume), 1, 6)
+	do_sparks(2, TRUE, location)
+	goonchem_vortex(T, 0, range)
