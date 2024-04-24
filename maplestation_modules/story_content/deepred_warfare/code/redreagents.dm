@@ -49,7 +49,7 @@
 	holder.clear_reagents()
 
 /datum/reagent/exodust
-	name = "Prism Dust"
+	name = "Crystalline ExoPrism"
 	description = "A pulverized crystalline dust that seems to be unusually stabilized. It is unlike anything you've seen before."
 	color = "#d3d1ed"
 	taste_description = "a forge of a bygone era"
