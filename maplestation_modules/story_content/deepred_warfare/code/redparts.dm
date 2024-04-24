@@ -3,11 +3,13 @@
 	desc = "A strange red power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redcell"
+	connector_type = "redcellconnector"
 	// Just an EMP resistant bluespace cell.
 	maxcharge = STANDARD_CELL_CHARGE * 40
 	chargerate = STANDARD_CELL_CHARGE * 4
 	// Useful for scrapping.
 	custom_materials = list(/datum/material/glass=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
+	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)
 
 /obj/item/stock_parts/cell/redtech/empty
 	empty = TRUE
