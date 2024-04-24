@@ -6,7 +6,6 @@
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 	var/shock_timer = 0
 	
-
 /datum/reagent/consumable/liquidelectricity/auric/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	shock_timer++
