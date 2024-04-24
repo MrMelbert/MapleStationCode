@@ -5,6 +5,7 @@
 	taste_description = "absolute power"
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 	var/shock_timer = 0
+	
 
 /datum/reagent/consumable/liquidelectricity/auric/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -13,6 +14,13 @@
 		shock_timer = 0
 		affected_mob.electrocute_act(rand(10, 30), "Auric Tesla in their body", 1, SHOCK_NOGLOVES)
 		playsound(affected_mob, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+
+/datum/chemical_reaction/auricelectrolysis
+	results = list(/datum/reagent/oxygen = 2.5, /datum/reagent/hydrogen = 5)
+	required_reagents = list(/datum/reagent/consumable/liquidelectricity/auric = 1, /datum/reagent/water = 10)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction zaps suddenly!"
+	mix_sound = 'sound/effects/supermatter.ogg'
 
 /datum/reagent/gravitum/aerialite
 	name = "Alloyed Aerialite"
@@ -33,6 +41,8 @@
 /datum/chemical_reaction/resmythril_emp
 	required_reagents = list(/datum/reagent/uranium = 1, /datum/reagent/resmythril = 1)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS
+	mix_message = "the reaction resonates!"
+	mix_sound = 'sound/machines/defib_zap.ogg'
 
 /datum/chemical_reaction/resmythril_emp/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
@@ -61,6 +71,8 @@
 	required_reagents = list(/datum/reagent/darkplasma = 1)
 	required_temp = 474
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS
+	mix_message = "the reaction destabilizes!"
+	mix_sound = 'sound/machines/defib_zap.ogg'
 
 /datum/chemical_reaction/plasma_vortex/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
