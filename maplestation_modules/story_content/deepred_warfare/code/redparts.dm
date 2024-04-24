@@ -8,7 +8,7 @@
 	maxcharge = STANDARD_CELL_CHARGE * 40
 	chargerate = STANDARD_CELL_CHARGE * 4
 	// Useful for scrapping.
-	custom_materials = list(/datum/material/glass=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
+	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)
 
 /obj/item/stock_parts/cell/redtech/empty
@@ -28,6 +28,7 @@
 	energy_rating = 10
 	// Useful for scrapping.
 	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/diamond=HALF_SHEET_MATERIAL_AMOUNT)
+	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/titanium = 15, /datum/reagent/gravitum/aerialite = 15)
 
 /obj/item/stock_parts/capacitor/redtech
 	name = "powerful red capacitor"
@@ -39,3 +40,4 @@
 	energy_rating = 10
 	// Useful for scrapping.
 	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
+	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)

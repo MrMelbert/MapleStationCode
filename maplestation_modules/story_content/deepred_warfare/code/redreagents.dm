@@ -11,5 +11,13 @@
 	shock_timer++
 	if(shock_timer >= rand(5, 30))
 		shock_timer = 0
-		affected_mob.electrocute_act(rand(10, 30), "Auric Tesla in their body", 1, SHOCK_NOGLOVES) //SHOCK_NOGLOVES because it's caused from INSIDE of you
+		affected_mob.electrocute_act(rand(10, 30), "Auric Tesla in their body", 1, SHOCK_NOGLOVES)
 		playsound(affected_mob, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+
+/datum/reagent/gravitum/aerialite
+	name = "Alloyed Aerialite"
+	description = "A powdered alloy of a strange blue metal. It seems to defy the laws of gravity and is unlike anything you've seen before."
+	color = "#00aaff"
+	taste_description = "the boundless sky"
+	chemical_flags = null
+	taste_mult = 1
