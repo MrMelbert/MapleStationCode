@@ -76,5 +76,4 @@
 /datum/chemical_reaction/plasma_vortex/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
 	var/range = clamp(sqrt(created_volume), 1, 6)
-	do_sparks(2, TRUE, location)
 	goonchem_vortex(T, 0, range)
