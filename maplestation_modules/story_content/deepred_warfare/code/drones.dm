@@ -49,7 +49,7 @@
 	var/burst_cooldown = 0.125 SECONDS
 
 	var/flying = TRUE
-	var/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
+	var/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/capacitor/quadratic/redtech = 1, /obj/item/stock_parts/servo/femto/redtech = 1)
 
 /mob/living/basic/reddrone/Initialize(mapload)
 	. = ..()

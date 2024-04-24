@@ -24,7 +24,7 @@
 	icon_state = "redservo"
 	// Useful for scrapping.
 	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/diamond=HALF_SHEET_MATERIAL_AMOUNT)
-	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/titanium = 15, /datum/reagent/gravitum/aerialite = 15)
+	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/carbon = 15, /datum/reagent/gravitum/aerialite = 15)
 
 /obj/item/stock_parts/capacitor/quadratic/redtech
 	// Reskinned quadratic capacitor.
