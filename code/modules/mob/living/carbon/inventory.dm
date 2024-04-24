@@ -205,7 +205,7 @@
 		return
 
 	update_equipment_speed_mods()
-	update_obscured_slots(I)
+	update_obscured_slots(I.flags_inv)
 	hud_used?.update_locked_slots()
 
 /// Returns TRUE if an air tank compatible helmet is equipped.
