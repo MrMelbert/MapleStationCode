@@ -5,6 +5,7 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redcell"
 	connector_type = "redcellconnector"
+	charge_light_type = null
 	// Useful for scrapping.
 	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/plasma=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/consumable/liquidelectricity/auric = 15)
@@ -12,7 +13,7 @@
 /obj/item/stock_parts/cell/bluespace/redtech/empty
 	empty = TRUE
 
-/obj/item/stock_parts/cell/redtech/Initialize(mapload)
+/obj/item/stock_parts/cell/bluespace/redtech/Initialize(mapload)
 	AddElement(/datum/element/empprotection, EMP_PROTECT_SELF)
 	return ..()
 
@@ -85,3 +86,7 @@
 	// Useful for scrapping.
 	custom_materials = list(/datum/material/iron=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/titanium=HALF_SHEET_MATERIAL_AMOUNT, /datum/material/bluespace=HALF_SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/iron = 15, /datum/reagent/bluespace = 15, /datum/reagent/darkplasma = 15)
+
+/obj/item/stock_parts/matter_bin/bluespace/redtech/update_overlays()
+	. = ..()
+	. += emissive_appearance(icon, "redmatterbinemissive", src, alpha = src.alpha)
