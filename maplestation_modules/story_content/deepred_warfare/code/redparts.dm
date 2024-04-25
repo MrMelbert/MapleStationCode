@@ -35,6 +35,10 @@
 	. = ..()
 	. += emissive_appearance(icon, "redservoemissive", src, alpha = src.alpha)
 
+/obj/item/stock_parts/servo/femto/redtech/Initialize(mapload)
+	. = ..()
+	update_appearance()
+
 /obj/item/stock_parts/capacitor/quadratic/redtech
 	// Reskinned quadratic capacitor.
 	name = "powerful red capacitor"
@@ -48,6 +52,10 @@
 /obj/item/stock_parts/capacitor/quadratic/redtech/update_overlays()
 	. = ..()
 	. += emissive_appearance(icon, "redcapacitoremissive", src, alpha = src.alpha)
+
+/obj/item/stock_parts/capacitor/quadratic/redtech/Initialize(mapload)
+	. = ..()
+	update_appearance()
 
 /obj/item/stock_parts/scanning_module/triphasic/redtech
 	// Reskinned triphasic scanner.
@@ -63,6 +71,10 @@
 	. = ..()
 	. += emissive_appearance(icon, "redscanneremissive", src, alpha = src.alpha)
 
+/obj/item/stock_parts/scanning_module/triphasic/redtech/Initialize(mapload)
+	. = ..()
+	update_appearance()
+
 /obj/item/stock_parts/micro_laser/quadultra/redtech
 	// Reskinned quadultra laser.
 	name = "blazing red micro laser"
@@ -77,6 +89,10 @@
 	. = ..()
 	. += emissive_appearance(icon, "redlaseremissive", src, alpha = src.alpha)
 
+/obj/item/stock_parts/micro_laser/quadultra/redtech/Initialize(mapload)
+	. = ..()
+	update_appearance()
+
 /obj/item/stock_parts/matter_bin/bluespace/redtech
 	// Reskinned bluespace matter bin.
 	name = "compressing red matter bin"
@@ -90,3 +106,7 @@
 /obj/item/stock_parts/matter_bin/bluespace/redtech/update_overlays()
 	. = ..()
 	. += emissive_appearance(icon, "redmatterbinemissive", src, alpha = src.alpha)
+
+/obj/item/stock_parts/matter_bin/bluespace/redtech/Initialize(mapload)
+	. = ..()
+	update_appearance()
