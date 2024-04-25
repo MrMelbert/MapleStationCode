@@ -5,7 +5,7 @@
 	taste_description = "absolute power"
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 	var/shock_timer = 0
-	
+
 /datum/reagent/consumable/liquidelectricity/auric/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	shock_timer++
@@ -71,9 +71,22 @@
 	required_temp = 474
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_DANGEROUS
 	mix_message = "the reaction destabilizes!"
-	mix_sound = 'sound/machines/defib_zap.ogg'
+	mix_sound = 'sound/magic/cosmic_energy.ogg'
 
 /datum/chemical_reaction/plasma_vortex/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/turf/T = get_turf(holder.my_atom)
 	var/range = clamp(sqrt(created_volume), 1, 6)
 	goonchem_vortex(T, 0, range)
+
+/datum/reagent/medicine/adminordrazine/miracle
+	name = "Prototype Miracle Matter"
+	description = "A shifting web of fractal energies, it seems to shift to be a solid, liquid, or gas. It is unlike anything you've seen before."
+	color = "#e6a6e0"
+	taste_description = "a universe far, far away"
+
+/datum/chemical_reaction/miracle_creation
+	results = list(/datum/reagent/medicine/adminordrazine/miracle = 1)
+	required_reagents = list(/datum/reagent/consumable/liquidelectricity/auric = 30, /datum/reagent/gravitum/aerialite = 30, /datum/reagent/resmythril = 30, /datum/reagent/exodust = 30, /datum/reagent/darkplasma = 30)
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
+	mix_message = "the reaction fractalizes!"
+	mix_sound = 'sound/magic/cosmic_expansion.ogg'
