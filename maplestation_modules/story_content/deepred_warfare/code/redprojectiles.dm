@@ -2,6 +2,11 @@
 	name ="10mm coilslug"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "coilslug"
+	range = 60
+	damage = 10
+	armour_penetration = 20
+
+/obj/projectile/bullet/coil/highvelo
 	speed = 0.4
 	range = 80
 	damage = 20
