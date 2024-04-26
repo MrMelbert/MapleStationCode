@@ -7,7 +7,7 @@
 	damage_type = BURN
 	hitsound = 'sound/weapons/resonator_blast.ogg'
 	hitsound_wall = 'sound/weapons/plasma_cutter.ogg'
-	range = 300
+	range = 400
 	armor_flag = ENERGY
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser //Basically doesn't matter, it will never be stopped.
 	ricochets_max = 0
@@ -34,6 +34,12 @@
 
 /obj/projectile/kajari_lance/singularity_pull()
 	return
+
+/obj/projectile/beam/pulse/on_hit(atom/target, blocked = 0, pierce_hit)
+	. = ..()
+	if (!QDELETED(target) && isliving(target))
+		var/mob/living/duster = target
+		duster.dust(just_ash = TRUE, drop_items = FALSE, force = TRUE)
 
 /obj/projectile/kajari_lance/hitscan
 	hitscan = TRUE
