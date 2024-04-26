@@ -3,7 +3,7 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/kajari.dmi'
 	icon_state = "kajari_beam"
 	pass_flags = NONE
-	damage = 600 //Might be overkill, but there is no overkill for Kajari.
+	damage = 3000 //Might be overkill, but there is no overkill for Kajari.
 	damage_type = BURN
 	hitsound = 'sound/weapons/resonator_blast.ogg'
 	hitsound_wall = 'sound/weapons/plasma_cutter.ogg'
@@ -19,7 +19,9 @@
 	projectile_piercing = ALL
 	hit_prone_targets = TRUE
 	can_hit_turfs = TRUE
+
 	var/explosion_tile_cooldown = 6
+	var/forcedust_on_hit = FALSE
 
 /obj/projectile/kajari_lance/prehit_pierce()
 	return PROJECTILE_PIERCE_HIT
@@ -37,7 +39,7 @@
 
 /obj/projectile/beam/pulse/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
-	if (!QDELETED(target) && isliving(target))
+	if (!QDELETED(target) && isliving(target) && forcedust_on_hit)
 		var/mob/living/duster = target
 		duster.dust(just_ash = TRUE, drop_items = FALSE, force = TRUE)
 
@@ -57,8 +59,8 @@
 	impact_light_range = 16
 	impact_light_color_override = COLOR_RED_LIGHT
 
-/obj/projectile/kajari_lance/generate_hitscan_tracers(cleanup = TRUE, duration = 16 SECONDS, impacting = TRUE)
-	duration = 16 SECONDS
+/obj/projectile/kajari_lance/generate_hitscan_tracers(cleanup = TRUE, duration = 30 SECONDS, impacting = TRUE)
+	duration = 30 SECONDS
 	. = ..()
 
 /obj/effect/projectile/tracer/laser/kajari
