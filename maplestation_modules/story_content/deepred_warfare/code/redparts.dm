@@ -1,7 +1,7 @@
 /obj/item/stock_parts/cell/bluespace/redtech
 	// Just an EMP resistant bluespace cell.
-	name = "strange red power cell"
-	desc = "A strange power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
+	name = "processed red power cell"
+	desc = "A processed power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redcell"
 	connector_type = "redcellconnector"
@@ -23,8 +23,8 @@
 
 /obj/item/stock_parts/servo/femto/redtech
 	// Just a reskinned femto servo.
-	name = "precise red servo"
-	desc = "A precise servo module. Its design is unlike anything you've seen before."
+	name = "alloyed red servo"
+	desc = "An alloyed servo module. Its design is unlike anything you've seen before."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redservo"
 	// Useful for scrapping.
@@ -41,8 +41,8 @@
 
 /obj/item/stock_parts/capacitor/quadratic/redtech
 	// Reskinned quadratic capacitor.
-	name = "powerful red capacitor"
-	desc = "A powerful capacitor module. Its design is unlike anything you've seen before."
+	name = "processed red capacitor"
+	desc = "A processed capacitor module. Its design is unlike anything you've seen before."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redcapacitor"
 	// Useful for scrapping.
@@ -59,8 +59,8 @@
 
 /obj/item/stock_parts/scanning_module/triphasic/redtech
 	// Reskinned triphasic scanner.
-	name = "uncanny red scanning module"
-	desc = "An uncanny scanning module. Its design is unlike anything you've seen before."
+	name = "resonant red scanning module"
+	desc = "A resonant scanning module. Its design is unlike anything you've seen before."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redscanner"
 	// Useful for scrapping.
@@ -77,8 +77,8 @@
 
 /obj/item/stock_parts/micro_laser/quadultra/redtech
 	// Reskinned quadultra laser.
-	name = "blazing red micro laser"
-	desc = "A blazing laser module. Its design is unlike anything you've seen before."
+	name = "crystalline red micro laser"
+	desc = "A crystalline laser module. Its design is unlike anything you've seen before."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redlaser"
 	// Useful for scrapping.
@@ -95,8 +95,8 @@
 
 /obj/item/stock_parts/matter_bin/bluespace/redtech
 	// Reskinned bluespace matter bin.
-	name = "compressing red matter bin"
-	desc = "A compressing matter bin. Its design is unlike anything you've seen before."
+	name = "condensed red matter bin"
+	desc = "A condensed matter bin. Its design is unlike anything you've seen before."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redmatterbin"
 	// Useful for scrapping.
