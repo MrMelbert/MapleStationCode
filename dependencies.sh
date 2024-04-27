@@ -26,7 +26,7 @@ export DREAMLUAU_REPO="tgstation/dreamluau"
 export DREAMLUAU_VERSION=0.1.1
 
 #hypnagogic repo
-export CUTTER_REPO=actioninja/hypnagogic
+export CUTTER_REPO=spacestation13/hypnagogic
 
 #hypnagogic git tag
 export CUTTER_VERSION=v3.0.1
