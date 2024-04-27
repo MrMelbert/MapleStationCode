@@ -37,7 +37,7 @@
 /obj/projectile/kajari_lance/singularity_pull()
 	return
 
-/obj/projectile/beam/pulse/on_hit(atom/target, blocked = 0, pierce_hit)
+/obj/projectile/kajari_lance/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
 	if (!QDELETED(target) && isliving(target) && forcedust_on_hit)
 		var/mob/living/duster = target

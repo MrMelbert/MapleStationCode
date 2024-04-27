@@ -3,7 +3,6 @@
 	description = "A processed metallic gel that seems to spark and crackle with electricity. It is unlike anything you've seen before."
 	color = "#fff870"
 	taste_description = "absolute power"
-	metabolization_rate = 2 * REAGENTS_METABOLISM
 	var/shock_timer = 0
 
 /datum/reagent/consumable/liquidelectricity/auric/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -83,6 +82,7 @@
 	description = "A shifting web of fractal energies, it seems to shift to be a solid, liquid, or gas. It is unlike anything you've seen before."
 	color = "#e6a6e0"
 	taste_description = "a universe far, far away"
+	metabolization_rate = 0.05 * REAGENTS_METABOLISM
 
 /datum/chemical_reaction/miracle_creation
 	results = list(/datum/reagent/medicine/adminordrazine/miracle = 1)
