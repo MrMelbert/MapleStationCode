@@ -73,13 +73,15 @@
 	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg' //the sound the mob will make when it turns on.
 	w_class = WEIGHT_CLASS_NORMAL
 
+//activate bot action
 /obj/item/volkan/stored_bot/attack_self(mob/user)
-	playsound(src, startup, ignore_walls = FALSE)// play startup sound
+	playsound(src, startup, 100, ignore_walls = FALSE)// play startup sound
 	addtimer(CALLBACK(src, PROC_REF(spawn_bot)), 0.2 SECONDS) // wait till sound is over
 	spawn_bot()
 
+//spawn the bot
 /obj/item/volkan/stored_bot/proc/spawn_bot()
-	if(QDELETED(src))//we got toasted while animating
+	if(QDELETED(src)) //don't make bot if it got qdeleted in the timer.
 		return
 	//Make mob
 	new mobtype(get_turf(src))
@@ -88,14 +90,13 @@
 	qdel(src)
 
 //Stored Companion
-//Volkan's shoulder companion for within a shift. in storage mode.
+//Volkan's shoulder companion for within a shift. In storage mode.
 /obj/item/volkan/stored_bot/shoulder_pet
 	name = "folded up companion"
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/companions.dmi'
 	icon_state = "drone_stored"
 
 	mobtype = /mob/living/basic/volkan/shoulder_pet
-
 
 //--other misc--
 //Imprint Key
@@ -110,7 +111,35 @@
 
 	w_class = WEIGHT_CLASS_TINY
 
-//---------cool boxes!---------
+
+//---------------------cool boxes!-----------------------
+
+//Unfoldable Box.
+//A box designed to hold both a pet and the communication chips for transit. It is easy to unfold once the items inside has been taken out.
+/obj/item/storage/box/volkan/unfoldable_box
+	name = "unfoldable box"
+	desc = "A large metal box with visible seams."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/metal_box.dmi'
+	icon_state = "unfoldable_box"
+	foldable_result = /obj/item/stack/sheet/iron
+	w_class = WEIGHT_CLASS_NORMAL
+	illustration = null
+
+/obj/item/storage/box/volkan/unfoldable_box/Initialize(mapload)
+	. = ..()
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.numerical_stacking = FALSE
+	atom_storage.max_total_storage = 10
+	atom_storage.max_slots = 3
+
+/obj/item/storage/box/volkan/unfoldable_box/PopulateContents() //The pet, the pet key, and the chip box.
+	var/static/items_inside = list(
+		/obj/item/storage/box/volkan/chip_box = 1,
+		/obj/item/circuitboard/volkan/imprint_key = 1,
+		/obj/item/volkan/stored_bot/shoulder_pet = 1,
+	)
+	generate_items_inside(items_inside, src)
+
 //Chip box
 //Designed to hold communication chips
 /obj/item/storage/box/volkan/chip_box
@@ -137,31 +166,6 @@
 	)
 	generate_items_inside(items_inside, src)
 
-//Unfoldable Box.
-//A box designed to hold both his pet and the communication chips for transit. It is easy to unfold once the items inside has been retreived.
-/obj/item/storage/box/volkan/unfoldable_box
-	name = "unfoldable box"
-	desc = "A large metal box with visible seams."
-	icon = 'maplestation_modules/story_content/volkan_equipment/icons/metal_box.dmi'
-	icon_state = "unfoldable_box"
-	foldable_result = /obj/item/stack/sheet/iron
-	w_class = WEIGHT_CLASS_NORMAL
-	illustration = null
-
-/obj/item/storage/box/volkan/unfoldable_box/Initialize(mapload)
-	. = ..()
-	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
-	atom_storage.numerical_stacking = FALSE
-	atom_storage.max_total_storage = 10
-	atom_storage.max_slots = 3
-
-/obj/item/storage/box/volkan/unfoldable_box/PopulateContents() //The pet, the pet key, and the chip box.
-	var/static/items_inside = list(
-		/obj/item/storage/box/volkan/chip_box = 1,
-		/obj/item/circuitboard/volkan/imprint_key = 1,
-		/obj/item/volkan/stored_bot/shoulder_pet = 1,
-	)
-	generate_items_inside(items_inside, src)
 
 //Intricate box.
 //Designed for gifts and trades.
