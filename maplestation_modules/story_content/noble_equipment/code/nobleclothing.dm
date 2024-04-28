@@ -460,3 +460,35 @@
 	icon_state = "plague_cautery"
 	inhand_icon_state = "plague_cautery"
 	light_color = "#582640"
+
+//As proof of my sprite obsession we will now encroach closer to 500 lines of code :shrivel:
+
+/obj/item/clothing/under/rank/chiffon/alt
+	name = "starry dress"
+	desc = "A dress made from an unidentifiable material, it shimmers in the light with movement to reflect the very stars around you."
+	icon_state = "stardress"
+	inhand_icon_state = "stardress"
+	supports_variations_flags = CLOTHING_NO_VARIATION
+	body_parts_covered = CHEST|GROIN|LEGS
+
+/obj/item/clothing/gloves/chiffon/alt
+	name = "starry gloves"
+	desc = "Delicate black gloves that shimmer in the light with movement."
+	icon_state = "stargloves"
+	inhand_icon_state = "stargloves"
+
+/obj/item/clothing/gloves/chiffon/alt/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/glove_slapper)
+
+/obj/item/clothing/shoes/chiffon/alt
+	name = "purple velvet flats"
+	desc = "Delicate velvet flats in a dark purple color. The flats offered a lot of support for the arch of the foot."
+	icon_state = "starflats"
+	inhand_icon_state = "starflats"
+
+/obj/item/clothing/head/costume/chiffonbow/alt
+	name = "starry bow"
+	desc = "A dainty bow made from similar materials from it matching dress. The fabric seems almost unatural from the way it reflects the stars as it moves."
+	icon_state = "starbow"
+	inhand_icon_state = "starbow"
