@@ -83,6 +83,7 @@ const displayTypeMap = {
   request_prayer: 'PRAYER',
   request_centcom: 'CENTCOM',
   request_syndicate: 'SYNDICATE',
+  request_mu: 'MU', // NON-MODULE CHANGE
   request_nuke: 'NUKE CODE',
   request_fax: 'FAX',
   request_internet_sound: 'INTERNET SOUND',
