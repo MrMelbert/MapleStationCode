@@ -477,10 +477,6 @@
 	icon_state = "stargloves"
 	inhand_icon_state = "stargloves"
 
-/obj/item/clothing/gloves/chiffon/alt/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/glove_slapper)
-
 /obj/item/clothing/shoes/chiffon/alt
 	name = "purple velvet flats"
 	desc = "Delicate velvet flats in a dark purple color. The flats offered a lot of support for the arch of the foot."
