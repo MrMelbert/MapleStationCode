@@ -3,6 +3,8 @@
 	desc = "A cat that is as regal as it is delicate and soft to the touch. Otherwise, KITTY!!"
 	gender = FEMALE
 	icon = 'maplestation_modules/icons/mob/noble_cat.dmi'
+	lefthand_file = 'maplestation_modules/icons/mob/noble_catlhand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/noble_catrhand.dmi'
 	icon_state = "ragdoll"
 	icon_living = "ragdoll"
 	icon_dead = "ragdoll_dead"
