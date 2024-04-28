@@ -137,6 +137,13 @@ export const RADIO_CHANNELS = [
     freq: 1359,
     color: '#dd3535',
   },
+  // NON-MODULE CHANGE START
+  {
+    name: 'Mu',
+    freq: 1401,
+    color: '#9d77a3',
+  },
+  // NON-MODULE CHANGE END
   {
     name: 'AI Private',
     freq: 1447,
