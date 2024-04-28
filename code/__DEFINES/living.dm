@@ -58,8 +58,12 @@
 
 /// If the mob enters shock, they will have +1 cure condition (helps cure it faster)
 #define TRAIT_ABATES_SHOCK "shock_abated"
+/// Pain effects, such as stuttering or feedback messages ("Everything hurts") are disabled.
+#define TRAIT_NO_PAIN_EFFECTS "no_pain_effects"
+/// Shock buildup does not increase, only decrease. No effect if already in shock (unlike abates_shock)
+#define TRAIT_NO_SHOCK_BUILDUP "no_shock_buildup"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
-#define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment" // Sticking this here because Melbert told me to
+#define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
 
 #define COLOR_BLOOD "#c90000"
