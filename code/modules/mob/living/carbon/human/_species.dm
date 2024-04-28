@@ -1068,7 +1068,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	var/obj/item/organ/internal/brain/brain = user.get_organ_slot(ORGAN_SLOT_BRAIN)
 	var/obj/item/bodypart/attacking_bodypart = brain?.get_attacking_limb(target) || user.get_active_hand()
-	var/atk_verb = attacking_bodypart.unarmed_attack_verb
+	var/atk_verb = pick(attacking_bodypart.unarmed_attack_verbs)
 	var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
 	if(atk_effect == ATTACK_EFFECT_BITE)
