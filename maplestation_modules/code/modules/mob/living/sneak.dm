@@ -45,7 +45,8 @@
 
 // Movespeed modifier for sneaking. It's just 1.5x the slowness of walking.
 /datum/movespeed_modifier/config_walk_run/walk/sneak/sync()
-	return ..() * 1.5
+	var/mod = CONFIG_GET(number/movedelay/walk_delay)
+	multiplicative_slowdown = (isnum(mod) ? mod : initial(multiplicative_slowdown)) * 1.5
 
 // Syncs the sneak movespeed modifier with the walk movespeed modifier
 /datum/config_entry/number/movedelay/walk_delay/ValidateAndSet()
@@ -72,4 +73,40 @@
 /datum/keybinding/living/opposite_toggle_move_intent/up(client/user)
 	var/mob/living/M = user.mob
 	M.set_move_intent(MOVE_INTENT_WALK)
+	return TRUE
+
+/datum/keybinding/living/set_move_intent
+	hotkey_keys = list("Unbound")
+	name = "set_move_intent"
+	full_name = "Toggle Run"
+	description = "Press to start sprinting. Press again to stop."
+	keybind_signal = "keybinding_mob_setmoveintent"
+
+/datum/keybinding/living/set_move_intent/down(client/user)
+	. = ..()
+	if(.)
+		return
+	var/mob/living/M = user.mob
+	if(M.move_intent == MOVE_INTENT_RUN)
+		M.set_move_intent(MOVE_INTENT_WALK)
+	else
+		M.set_move_intent(MOVE_INTENT_RUN)
+	return TRUE
+
+/datum/keybinding/living/opposite_set_move_intent
+	hotkey_keys = list("Unbound")
+	name = "opposite_set_move_intent"
+	full_name = "Toggle Sneak"
+	description = "Press to start sneaking. Press again to stop."
+	keybind_signal = "keybinding_mob_oppositesetmoveintent"
+
+/datum/keybinding/living/opposite_set_move_intent/down(client/user)
+	. = ..()
+	if(.)
+		return
+	var/mob/living/M = user.mob
+	if(M.move_intent == MOVE_INTENT_SNEAK)
+		M.set_move_intent(MOVE_INTENT_WALK)
+	else
+		M.set_move_intent(MOVE_INTENT_SNEAK)
 	return TRUE

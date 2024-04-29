@@ -141,7 +141,7 @@
 /datum/keybinding/living/toggle_move_intent_alternative
 	hotkey_keys = list("Unbound")
 	name = "toggle_move_intent_alt"
-	full_name = "press to cycle move intent"
+	full_name = "Press to cycle move intent"
 	description = "Pressing this will cycle to the next move intent." // NON-MODULE CHANGE
 	keybind_signal = COMSIG_KB_LIVING_TOGGLEMOVEINTENTALT_DOWN
 
