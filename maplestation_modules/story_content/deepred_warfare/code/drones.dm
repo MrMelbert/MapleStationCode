@@ -9,8 +9,8 @@
 	mob_biotypes = MOB_ROBOTIC
 
 	// Relatively weak armour.
-	health = 60
-	maxHealth = 60
+	health = 40
+	maxHealth = 40
 
 	// But, armour is optimized for thermal and energy damage.
 	damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0)
@@ -36,7 +36,9 @@
 	death_message = "shudders, then falls to the ground, inoperable."
 
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minimum_survivable_temperature = TCMB
+
+	minimum_survivable_temperature = 0
+	maximum_survivable_temperature = 800
 
 	ai_controller = /datum/ai_controller/basic_controller/rapidlightflying
 
