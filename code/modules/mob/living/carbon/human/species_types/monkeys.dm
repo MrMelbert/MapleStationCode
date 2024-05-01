@@ -160,24 +160,17 @@
 
 /obj/item/organ/brain/primate/on_mob_insert(mob/living/carbon/primate)
 	. = ..()
-	RegisterSignal(primate, COMSIG_MOVABLE_CROSS, PROC_REF(on_crossed), TRUE)
+	RegisterSignal(primate, COMSIG_LIVING_MOB_BUMPED, PROC_REF(on_mob_bump))
 
 /obj/item/organ/brain/primate/on_mob_remove(mob/living/carbon/primate)
 	. = ..()
-	UnregisterSignal(primate, COMSIG_MOVABLE_CROSS)
+	UnregisterSignal(primate, COMSIG_LIVING_MOB_BUMPED)
 
-/obj/item/organ/brain/primate/proc/on_crossed(datum/source, atom/movable/crossed)
+/obj/item/organ/internal/brain/primate/proc/on_mob_bump(mob/source, mob/living/crossing_mob)
 	SIGNAL_HANDLER
-	if(!tripping)
+	if(!tripping || !crossing_mob.combat_mode)
 		return
-	if(IS_DEAD_OR_INCAP(owner) || !isliving(crossed))
-		return
-	var/mob/living/in_the_way_mob = crossed
-	if(iscarbon(in_the_way_mob) && !in_the_way_mob.combat_mode)
-		return
-	if(in_the_way_mob.pass_flags & PASSTABLE)
-		return
-	in_the_way_mob.knockOver(owner)
+	crossing_mob.knockOver(owner)
 
 /obj/item/organ/brain/primate/get_attacking_limb(mob/living/carbon/human/target)
 	return owner.get_bodypart(BODY_ZONE_HEAD)
