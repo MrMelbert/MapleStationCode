@@ -7,14 +7,20 @@
  */
 /datum/ai_controller/basic_controller/rapidlightflying
 	blackboard = list(
-			BB_BASIC_MOB_CURRENT_TARGET
+			BB_BASIC_MOB_CURRENT_TARGET,
+			BB_BASIC_MOB_CURRENT_TARGET_HIDING_LOCATION,
+			BB_TARGET_MINIMUM_STAT = DEAD,
+			BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic,
 	)
 	ai_movement = /datum/ai_movement/jps
 	idle_behavior = /datum/idle_behavior/idle_random_walk
 	planning_subtrees = list(
-			/datum/ai_planning_subtree/maintain_distance/rapidlightflying
+			/datum/ai_planning_subtree/simple_find_target,
+			/datum/ai_planning_subtree/maintain_distance/rapidlightflying,
+			/datum/ai_planning_subtree/attack_obstacle_in_path,
+			/datum/ai_planning_subtree/ranged_skirmish,
 	)
 
 /datum/ai_planning_subtree/maintain_distance/rapidlightflying
-	var/minimum_distance = 3
-	var/maximum_distance = 8
+	minimum_distance = 3
+	maximum_distance = 8
