@@ -230,8 +230,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	compatible_types = list(/datum/blood_type/crew/lizard)
 
 /datum/blood_type/crew/lizard/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
-	blood.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#c9c9c963", "size" = 2))
-	animate(blood.get_filter("silver_glint"), time = new_splat ? 24 SECONDS : 8 SECONDS, alpha = 0)
+	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c963", "size" = 1.5))
 
 /datum/blood_type/crew/skrell
 	name = "S"
