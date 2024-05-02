@@ -12,6 +12,9 @@
 	health = 40
 	maxHealth = 40
 
+	//Fast as fuck.
+	speed = 0.5
+
 	// But, armour is optimized for thermal and energy damage.
 	damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0)
 
