@@ -92,11 +92,6 @@
 		can_dismember = FALSE
 
 /obj/item/bodypart/head/Destroy()
-	// NON-MODULE CHANGE / Not sure why this is necessary. Something is broken
-	for(var/obj/item/organ/organ in src)
-		if(organ.bodypart_owner == src)
-			organ.bodypart_remove(src)
-			qdel(organ)
 	QDEL_NULL(worn_ears_offset)
 	QDEL_NULL(worn_glasses_offset)
 	QDEL_NULL(worn_mask_offset)
