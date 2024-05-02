@@ -223,10 +223,19 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/crew/lizard
 	name = "L"
 	color = "#047200" // Some species of lizards have mutated green blood due to biliverdin build up
+	compatible_types = list(/datum/blood_type/crew/lizard/silver)
+
+/datum/blood_type/crew/lizard/silver
+	color = "#ffffff63"
+	compatible_types = list(/datum/blood_type/crew/lizard)
+
+/datum/blood_type/crew/lizard/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	blood.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#c9c9c963", "size" = 2))
+	animate(blood.get_filter("silver_glint"), time = new_splat ? 24 SECONDS : 8 SECONDS, alpha = 0)
 
 /datum/blood_type/crew/skrell
 	name = "S"
-	color = "#009696" // Did you know octopi have blood blood, thanks to hemocyanin rather than hemoglobin? It binds to copper instead of Iron
+	color = "#009696" // Did you know octopi have blue blood, as it contains hemocyanin rather than hemoglobin? It binds to copper instead of Iron
 	restoration_chem = /datum/reagent/copper
 
 /datum/blood_type/crew/ethereal

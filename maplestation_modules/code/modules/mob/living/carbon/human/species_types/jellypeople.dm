@@ -1,9 +1,16 @@
 // -- Various slime people additions. --
 /datum/species/jelly
 	species_pain_mod = 0.5
-	hair_color = "mutcolor"
-	hair_alpha = 150
+	// Makes Jellypeople look like Slimepeople and not Stargazers
 	mutanteyes = /obj/item/organ/internal/eyes
+	bodypart_overrides = list(
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly/slime,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly/slime,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/jelly/slime,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly/slime,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly/slime,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly/slime,
+	)
 
 /datum/species/jelly/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = COLOR_PINK
@@ -40,64 +47,14 @@
 		"As of 2562, Nanotrasen is aware of less than 50 Slimepeople in existence, with 14 of these being under their employ."
 		)
 
-// Changes jellypeople to look like slimepeople instead of stargazers
-// (Because slimepeople are more customizable / less ugly)
-/obj/item/bodypart/arm/left/jelly
-	limb_id = SPECIES_SLIMEPERSON
-
-/obj/item/bodypart/arm/right/jelly
-	limb_id = SPECIES_SLIMEPERSON
-
-/obj/item/bodypart/head/jelly
-	limb_id = SPECIES_SLIMEPERSON
-	is_dimorphic = FALSE
-
-/obj/item/bodypart/leg/left/jelly
-	limb_id = SPECIES_SLIMEPERSON
-
-/obj/item/bodypart/leg/right/jelly
-	limb_id = SPECIES_SLIMEPERSON
-
-/obj/item/bodypart/chest/jelly
-	limb_id = SPECIES_SLIMEPERSON
-
-/datum/species/jelly/luminescent
-	mutanteyes = /obj/item/organ/internal/eyes
-
-// Stargazers inherent jelly limbs so we gotta do this too
 /datum/species/jelly/stargazer
+	// Makes Stargazers look like Stargazers
 	mutanteyes = /obj/item/organ/internal/eyes/jelly
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/stargazer,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/stargazer,
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/stargazer,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/stargazer,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/stargazer,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/stargazer,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/jelly,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly,
 	)
-
-/obj/item/bodypart/head/stargazer
-	limb_id = SPECIES_JELLYPERSON
-	is_dimorphic = TRUE
-	dmg_overlay_type = null
-
-/obj/item/bodypart/chest/stargazer
-	limb_id = SPECIES_JELLYPERSON
-	is_dimorphic = TRUE
-	dmg_overlay_type = null
-
-/obj/item/bodypart/arm/left/stargazer
-	limb_id = SPECIES_JELLYPERSON
-	dmg_overlay_type = null
-
-/obj/item/bodypart/arm/right/stargazer
-	limb_id = SPECIES_JELLYPERSON
-	dmg_overlay_type = null
-
-/obj/item/bodypart/leg/left/stargazer
-	limb_id = SPECIES_JELLYPERSON
-	dmg_overlay_type = null
-
-/obj/item/bodypart/leg/right/stargazer
-	limb_id = SPECIES_JELLYPERSON
-	dmg_overlay_type = null
