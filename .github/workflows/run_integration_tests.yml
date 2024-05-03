@@ -54,7 +54,7 @@ jobs:
         id: compile_tests
         run: |
           source $HOME/BYOND/byond/bin/byondsetup
-          tools/build/build --ci dm -DCIBUILDING -DANSICOLORS -WError -NWTG0001
+          tools/build/build --ci dm -DCIBUILDING -DANSICOLORS -Werror -ITG0001 -I"loop_checks"
       - name: Run Tests
         id: run_tests
         run: |
