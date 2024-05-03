@@ -232,7 +232,7 @@
 	refresh_bleed_rate()
 
 /obj/item/bodypart/Destroy()
-	if(owner && !QDELETED(owner))
+	if(!QDELETED(owner))
 		forced_removal(special = FALSE, dismembered = TRUE, move_to_floor = FALSE)
 		update_owner(null)
 	for(var/wound in wounds)
@@ -249,6 +249,13 @@
 	QDEL_LIST_ASSOC_VAL(feature_offsets)
 
 	return ..()
+
+/obj/item/bodypart/dump_harddel_info()
+	var/list/all_part_info = list()
+	for(var/obj/item/organ/organ in src)
+		all_part_info += "| [organ]: [organ.dump_harddel_info()]"
+
+	return "Owner: [owner || "null"] [jointext(all_part_info, "")]"
 
 /obj/item/bodypart/ex_act(severity, target)
 	if(owner) //trust me bro you dont want this
