@@ -45,6 +45,11 @@
 		qdel(src)
 		return
 
+	if(QDELING(parent))
+		stack_trace("Adding a forensics datum to a qdeling atom ([parent])")
+		qdel(src)
+		return
+
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(clean_act))
 
 	src.parent = parent
