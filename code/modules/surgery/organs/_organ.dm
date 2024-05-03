@@ -80,9 +80,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)))
 
 /obj/item/organ/Destroy()
-	if(QDELETED(owner) && !QDELETED(bodypart_owner))
+	if(isnull(owner) && !QDELETED(bodypart_owner))
 		bodypart_remove(bodypart_owner)
-	else if(!QDELETED(owner))
+	else if(!isnull(owner))
 		// The special flag is important, because otherwise mobs can die
 		// while undergoing transformation into different mobs.
 		Remove(owner, special=TRUE)
