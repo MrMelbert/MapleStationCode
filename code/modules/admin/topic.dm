@@ -1003,6 +1003,15 @@
 		var/mob/M = locate(href_list["SyndicateReply"])
 		usr.client.admin_headset_message(M, RADIO_CHANNEL_SYNDICATE)
 
+	//NON-MODULE CHANGE START
+	else if(href_list["MuReply"])
+		if(!check_rights(R_ADMIN))
+			return
+
+		var/mob/M = locate(href_list["MuReply"])
+		usr.client.admin_headset_message(M, RADIO_CHANNEL_MU)
+	//NON-MODULE CHANGE END
+
 	else if(href_list["HeadsetMessage"])
 		if(!check_rights(R_ADMIN))
 			return
