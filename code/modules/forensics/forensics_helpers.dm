@@ -105,6 +105,8 @@
 	var/first_dna = GET_ATOM_BLOOD_DNA_LENGTH(src)
 	if(!..())
 		return FALSE
+	if(QDELING(src))
+		return FALSE
 
 	color = get_blood_dna_color()
 	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)

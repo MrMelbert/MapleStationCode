@@ -806,8 +806,9 @@
 /datum/pain/proc/on_parent_statchance(mob/source)
 	SIGNAL_HANDLER
 
-	if(source.stat == DEAD && (datum_flags & DF_ISPROCESSING))
-		STOP_PROCESSING(SSpain, src)
+	if(source.stat == DEAD)
+		if(datum_flags & DF_ISPROCESSING)
+			STOP_PROCESSING(SSpain, src)
 	else
 		START_PROCESSING(SSpain, src)
 
