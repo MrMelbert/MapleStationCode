@@ -4,6 +4,8 @@
 #define REQUEST_CENTCOM "request_centcom"
 /// Requests for the Syndicate
 #define REQUEST_SYNDICATE "request_syndicate"
+/// Requests for Mu
+#define REQUEST_MU "request_mu" //NON-MODULE CHANGE
 /// Requests for the nuke code
 #define REQUEST_NUKE "request_nuke"
 /// Requests somebody from fax
@@ -88,6 +90,18 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
  */
 /datum/request_manager/proc/message_syndicate(client/C, message)
 	request_for_client(C, REQUEST_SYNDICATE, message)
+
+//NON-MODULE CHANGE START
+/**
+ * Creates a request for a Syndicate message
+ *
+ * Arguments:
+ * * C - The client who is sending the request
+ * * message - The message
+ */
+/datum/request_manager/proc/message_mu(client/C, message)
+	request_for_client(C, REQUEST_MU, message)
+//NON-MODULE CHANGE END
 
 /**
  * Creates a request for the nuclear self destruct codes
@@ -216,7 +230,18 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 				to_chat(usr, "Cannot reply to a prayer", confidential = TRUE)
 				return TRUE
 			var/mob/M = request.owner?.mob
-			usr.client.admin_headset_message(M, request.req_type == REQUEST_SYNDICATE ? RADIO_CHANNEL_SYNDICATE : RADIO_CHANNEL_CENTCOM)
+			//NON-MODULE CHANGE START
+			var/channel_to_reply_with = RADIO_CHANNEL_CENTCOM
+			switch(request.req_type)
+				if(REQUEST_CENTCOM)
+					channel_to_reply_with = RADIO_CHANNEL_CENTCOM
+				if(REQUEST_SYNDICATE)
+					channel_to_reply_with = RADIO_CHANNEL_SYNDICATE
+				if(REQUEST_MU)
+					channel_to_reply_with = RADIO_CHANNEL_MU
+
+			usr.client.admin_headset_message(M, channel_to_reply_with)
+			//NON-MODULE CHANGE END
 			return TRUE
 		if ("setcode")
 			if (request.req_type != REQUEST_NUKE)
@@ -267,6 +292,7 @@ GLOBAL_DATUM_INIT(requests, /datum/request_manager, new)
 #undef REQUEST_PRAYER
 #undef REQUEST_CENTCOM
 #undef REQUEST_SYNDICATE
+#undef REQUEST_MU
 #undef REQUEST_NUKE
 #undef REQUEST_FAX
 #undef REQUEST_INTERNET_SOUND

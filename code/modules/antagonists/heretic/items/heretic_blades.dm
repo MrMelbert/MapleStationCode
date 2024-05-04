@@ -102,9 +102,7 @@
 
 	AddComponent(
 		/datum/component/bloody_spreader,\
-		blood_left = INFINITY,\
-		blood_dna = list("Unknown DNA" = "X*"),\
-		diseases = null,\
+		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
 
 // Path of Void's blade

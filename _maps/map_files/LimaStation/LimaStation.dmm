@@ -895,6 +895,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"apP" = (
+/obj/effect/landmark/start/noble_ambassador,
+/turf/open/floor/iron/dark,
+/area/station/command/bridge)
 "apV" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
@@ -2303,6 +2307,8 @@
 "aRw" = (
 /obj/structure/table,
 /obj/machinery/computer/security/telescreen/entertainment/directional/east,
+/obj/item/pen,
+/obj/item/paper_bin,
 /turf/open/floor/iron,
 /area/station/security/prison)
 "aRC" = (
@@ -22970,6 +22976,7 @@
 /obj/machinery/light_switch/directional/north{
 	pixel_x = -6
 	},
+/obj/item/storage/photo_album/chapel,
 /obj/item/storage/crayons{
 	pixel_x = 6
 	},
@@ -30956,6 +30963,7 @@
 /obj/machinery/light_switch/directional/west{
 	pixel_y = 4
 	},
+/obj/item/storage/photo_album/library,
 /obj/item/key/displaycase,
 /turf/open/floor/iron/grimy,
 /area/station/service/library)
@@ -48939,6 +48947,7 @@
 "qwd" = (
 /obj/structure/table,
 /obj/item/radio/intercom/prison/directional/east,
+/obj/item/storage/photo_album/prison,
 /turf/open/floor/iron,
 /area/station/security/prison)
 "qwf" = (
@@ -60348,6 +60357,7 @@
 /obj/structure/cable,
 /obj/machinery/light/directional/west,
 /obj/structure/table/wood,
+/obj/item/storage/photo_album/bar,
 /turf/open/floor/mineral/plastitanium{
 	name = "black plastitanium floor"
 	},
@@ -178598,7 +178608,7 @@ kwg
 hbQ
 pBO
 pBO
-kyk
+apP
 pBO
 pBO
 jAm

@@ -12,7 +12,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell
-	exotic_bloodtype = "S"
+	exotic_bloodtype = /datum/blood_type/crew/skrell
 	mutanttongue = /obj/item/organ/internal/tongue/skrell
 	species_pain_mod = 0.80
 
@@ -94,16 +94,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 // Preset Skrell species
 /mob/living/carbon/human/species/skrell
 	race = /datum/species/skrell
-
-// Skrell bloodbag, for S type blood
-/obj/item/reagent_containers/blood/skrell
-	blood_type = "S"
-
-// Copper restores blood for Skrell instead of iron.
-/datum/reagent/copper/on_mob_life(mob/living/carbon/C, seconds_per_tick)
-	if(is_species(C, /datum/species/skrell) && C.blood_volume < BLOOD_VOLUME_NORMAL)
-		C.blood_volume += 0.5 * seconds_per_tick
-	..()
 
 // Organ for Skrell head tentacles.
 /obj/item/organ/external/head_tentacles

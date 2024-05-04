@@ -20,6 +20,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	RADIO_KEY_SYNDICATE = RADIO_CHANNEL_SYNDICATE,
 	RADIO_KEY_UPLINK = RADIO_CHANNEL_UPLINK,
 	RADIO_KEY_CENTCOM = RADIO_CHANNEL_CENTCOM,
+	RADIO_KEY_MU = RADIO_CHANNEL_MU, //NON-MODULE CHANGE
 
 	// Admin
 	MODE_KEY_ADMIN = MODE_ADMIN,
@@ -206,6 +207,8 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		message = "[randomnote] [message] [randomnote]"
 		spans |= SPAN_SINGING
 
+	if(LAZYACCESS(message_mods,WHISPER_MODE)) // whisper away
+		spans |= SPAN_ITALICS
 
 	if(!message)
 		if(succumbed)

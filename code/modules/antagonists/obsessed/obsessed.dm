@@ -41,8 +41,11 @@
 	victim_dummy.set_haircolor("#bb9966", update = FALSE)
 	victim_dummy.set_hairstyle("Messy", update = TRUE)
 
+	// NON-MODULE CHANGE for blood
 	var/icon/obsessed_icon = render_preview_outfit(preview_outfit)
-	obsessed_icon.Blend(icon('icons/effects/blood.dmi', "uniformblood"), ICON_OVERLAY)
+	var/icon/blood_icon = icon('icons/effects/blood.dmi', "uniformblood")
+	blood_icon.Blend(COLOR_BLOOD, ICON_MULTIPLY)
+	obsessed_icon.Blend(blood_icon, ICON_OVERLAY)
 
 	var/icon/final_icon = finish_preview_icon(obsessed_icon)
 

@@ -73,48 +73,26 @@ PROCESSING_SUBSYSTEM_DEF(station)
 
 		selectable_traits_by_types[initial(trait_typepath.trait_type)][trait_typepath] = initial(trait_typepath.weight)
 
-	var/positive_trait_budget = text2num(pick_weight(CONFIG_GET(keyed_list/positive_station_traits)))
-	var/neutral_trait_budget = text2num(pick_weight(CONFIG_GET(keyed_list/neutral_station_traits)))
-	var/negative_trait_budget = text2num(pick_weight(CONFIG_GET(keyed_list/negative_station_traits)))
-
-	pick_traits(STATION_TRAIT_POSITIVE, positive_trait_budget)
-	pick_traits(STATION_TRAIT_NEUTRAL, neutral_trait_budget)
-	pick_traits(STATION_TRAIT_NEGATIVE, negative_trait_budget)
-
-/**
- * Picks traits of a specific category (e.g. bad or good), initializes them, adds them to the list of traits,
- * then removes them from possible traits as to not roll twice and subtracts their cost from the budget.
- * All until the whole budget is spent or no more traits can be picked with it.
- */
-/datum/controller/subsystem/processing/station/proc/pick_traits(trait_sign, budget)
-	if(!budget)
-		return
-	///A list of traits of the same trait sign
-	var/list/selectable_traits = selectable_traits_by_types[trait_sign]
-	while(budget)
-		///Remove any station trait with a cost bigger than the budget
-		for(var/datum/station_trait/proto_trait as anything in selectable_traits)
-			if(initial(proto_trait.cost) > budget)
-				selectable_traits -= proto_trait
-		///We have spare budget but no trait that can be bought with what's left of it
+	var/trait_budget = text2num(pick_weight(CONFIG_GET(keyed_list/station_traits))) || 0
+	var/list/selectable_types = list(STATION_TRAIT_POSITIVE, STATION_TRAIT_NEUTRAL, STATION_TRAIT_NEGATIVE)
+	while(trait_budget > 0 && length(selectable_types))
+		var/picked_cat = pick(selectable_types)
+		var/list/selectable_traits = selectable_traits_by_types[picked_cat]
 		if(!length(selectable_traits))
-			return
-		//Rolls from the table for the specific trait type
-		var/datum/station_trait/trait_type = pick_weight(selectable_traits)
-		selectable_traits -= trait_type
-		budget -= initial(trait_type.cost)
-		setup_trait(trait_type)
+			selectable_types -= picked_cat
+			continue
+
+		setup_trait(pick_weight(selectable_traits))
+		trait_budget--
 
 ///Creates a given trait of a specific type, while also removing any blacklisted ones from the future pool.
 /datum/controller/subsystem/processing/station/proc/setup_trait(datum/station_trait/trait_type)
 	var/datum/station_trait/trait_instance = new trait_type()
 	station_traits += trait_instance
 	log_game("Station Trait: [trait_instance.name] chosen for this round.")
-	if(!trait_instance.blacklist)
-		return
-	for(var/i in trait_instance.blacklist)
-		var/datum/station_trait/trait_to_remove = i
+	for(var/datum/station_trait/trait_to_remove as anything in trait_instance.blacklist)
 		selectable_traits_by_types[initial(trait_to_remove.trait_type)] -= trait_to_remove
+	selectable_traits_by_types[trait_instance.trait_type] -= trait_type
 
 /// Update station trait lobby buttons for clients who joined before we initialised this subsystem
 /datum/controller/subsystem/processing/station/proc/display_lobby_traits()

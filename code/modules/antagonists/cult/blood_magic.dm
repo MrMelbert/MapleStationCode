@@ -752,7 +752,8 @@
 					uses = 0
 				playsound(get_turf(construct_thing), 'sound/magic/staff_healing.ogg', 25)
 				user.Beam(construct_thing, icon_state="sendbeam", time = 1 SECONDS)
-		if(istype(target, /obj/effect/decal/cleanable/blood) || istype(target, /obj/effect/decal/cleanable/trail_holder) || isturf(target))
+		// NON-MODULE CHANGE for blood
+		if(istype(target, /obj/effect/decal/cleanable/blood) || isturf(target))
 			blood_draw(target, user)
 		..()
 
@@ -761,18 +762,12 @@
 	var/turf/our_turf = get_turf(target)
 	if(our_turf)
 		for(var/obj/effect/decal/cleanable/blood/blood_around_us in range(our_turf,2))
-			if(blood_around_us.blood_state == BLOOD_STATE_HUMAN)
-				if(blood_around_us.bloodiness == 100) //Bonus for "pristine" bloodpools, also to prevent cheese with footprint spam
-					blood_to_gain += 30
-				else
-					blood_to_gain += max((blood_around_us.bloodiness**2)/800,1)
+			// NON-MODULE CHANGE for blood
+			if(blood_around_us.decal_reagent == /datum/reagent/blood)
+				blood_to_gain += max(blood_around_us.bloodiness * 0.12 * BLOOD_PER_UNIT_MODIFIER, 1)
 				new /obj/effect/temp_visual/cult/turf/floor(get_turf(blood_around_us))
 				qdel(blood_around_us)
-		for(var/obj/effect/decal/cleanable/trail_holder/trail_around_us in range(our_turf, 2))
-			if(trail_around_us.blood_state == BLOOD_STATE_HUMAN)
-				blood_to_gain += 5 //These don't get bloodiness, so we'll just increase this by a fixed value
-				new /obj/effect/temp_visual/cult/turf/floor(get_turf(trail_around_us))
-			qdel(trail_around_us)
+		// NON-MODULE CHANGE end
 		if(blood_to_gain)
 			user.Beam(our_turf,icon_state="drainbeam", time = 15)
 			new /obj/effect/temp_visual/cult/sparks(get_turf(user))

@@ -16,6 +16,11 @@
 		"fax_machine_deluxe",
 	)
 
+/datum/techweb_node/mod_advanced
+	id_additions = list(
+		"mod_helmet_desync",
+	)
+
 /datum/techweb_node/biotech
 	id_additions = list(
 		"scanning_pad",
@@ -26,6 +31,11 @@
 	id_additions = list(
 		"auto_cpr_device",
 		"vitals_monitor_advanced",
+	)
+
+/datum/techweb_node/cryotech
+	id_additions = list(
+		"stasis_bodybag",
 	)
 
 /datum/techweb_node/exp_surgery

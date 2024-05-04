@@ -2,7 +2,7 @@
 	name = "Item Dispenser Frame"
 	id = "item_d_frame"
 	build_type = AUTOLATHE
-	materials = list(/datum/material/iron = 100, /datum/material/plastic = 500)
+	materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT, /datum/material/plastic = SMALL_MATERIAL_AMOUNT * 2.5)
 	build_path = /obj/item/wallframe/item_dispenser
 	category = list(
 		RND_CATEGORY_INITIAL,
@@ -13,7 +13,7 @@
 	name = "Shotgun Slug"
 	id = "shotgun_slug"
 	build_type = AUTOLATHE
-	materials = list(/datum/material/iron = 4000)
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 	build_path = /obj/item/ammo_casing/shotgun
 	category = list(
 		RND_CATEGORY_HACKED,
@@ -25,7 +25,7 @@
 	name = "Buckshot Shell"
 	id = "buckshot_shell"
 	build_type = AUTOLATHE
-	materials = list(/datum/material/iron = 4000)
+	materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 2)
 	build_path = /obj/item/ammo_casing/shotgun/buckshot
 	category = list(
 		RND_CATEGORY_HACKED,
