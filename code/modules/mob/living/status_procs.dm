@@ -740,6 +740,13 @@
 	. = ..()
 	if(stat == DEAD)
 		return
+	addtimer(CALLBACK(src, PROC_REF(stasis_heartattack), source), 12 SECONDS)
+
+/mob/living/carbon/proc/stasis_heartattack(source)
+	if(QDELETED(src))
+		return
+	if(!has_status_effect_from_source(/datum/status_effect/grouped/stasis, source))
+		return
 	set_heartattack(TRUE)
 
 /mob/living/proc/exit_stasis(source = STASIS_ADMIN)

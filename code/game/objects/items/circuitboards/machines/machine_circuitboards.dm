@@ -908,8 +908,11 @@
 	name = "Stasis Pod"
 	build_path = /obj/machinery/sleeper/stasis
 	req_components = list(
+		/datum/stock_part/matter_bin = 1,
+		/datum/stock_part/micro_laser = 1,
 		/datum/stock_part/scanning_module = 1,
-		/obj/item/stack/cable_coil = 1,
+		/datum/stock_part/servo = 1,
+		/obj/item/stack/cable_coil = 2,
 		/obj/item/stack/sheet/glass = 2,
 	)
 

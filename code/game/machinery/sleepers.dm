@@ -28,7 +28,7 @@
 	///Used when emagged to scramble which chem is used, eg: mutadone -> morphine
 	var/list/chem_buttons
 	///All chems this sleeper will get, depending on the parts inside.
-	var/list/possible_chems = list(
+	var/list/list/possible_chems = list(
 		list(
 			/datum/reagent/medicine/epinephrine,
 			/datum/reagent/medicine/painkiller/morphine, // NON-MODULE CHANGE
@@ -280,12 +280,13 @@
 				"name" = R.name,
 				"id" = R.type,
 				"allowed" = chem_allowed(chem),
+				"volume" = reagents?.get_reagent_amount(chem) || 0,
 			),
 		)
 
-	data["occupant"] = list()
 	var/mob/living/mob_occupant = occupant
 	if(mob_occupant)
+		data["occupant"] = list()
 		data["occupant"]["name"] = mob_occupant.name
 		switch(mob_occupant.stat)
 			if(CONSCIOUS)
@@ -342,7 +343,7 @@
 				return
 			if(mob_occupant.health < min_health && !ispath(chem, /datum/reagent/medicine/epinephrine))
 				return
-			if(inject_chem(chem, usr))
+			if(inject_chem(chem, usr, params["amount"]))
 				. = TRUE
 				if((obj_flags & EMAGGED) && prob(5))
 					to_chat(usr, span_warning("Chemical system re-route detected, results may not be as expected!"))
@@ -468,6 +469,54 @@
 	/// Cooldown to prevent sound spam / instantly jumping out of a pod
 	COOLDOWN_DECLARE(open_close_cd)
 
+/obj/machinery/sleeper/stasis/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "_StasisPod", name)
+		ui.open()
+
+/obj/machinery/sleeper/stasis/Initialize(mapload)
+	. = ..()
+	create_reagents(50, OPENCONTAINER)
+	RegisterSignals(reagents, list(
+		COMSIG_REAGENTS_ADD_REAGENT,
+		COMSIG_REAGENTS_NEW_REAGENT,
+		COMSIG_REAGENTS_DEL_REAGENT,
+		COMSIG_REAGENTS_CLEAR_REAGENTS,
+	), PROC_REF(update_chems))
+
+	if(mapload)
+		reagents.add_reagent(/datum/reagent/medicine/epinephrine, 40)
+		reagents.add_reagent(/datum/reagent/medicine/coagulant, 10)
+
+/obj/machinery/sleeper/stasis/proc/update_chems(...)
+	SIGNAL_HANDLER
+	possible_chems[1].Cut()
+	for(var/datum/reagent/med as anything in reagents.reagent_list)
+		if(istype(med, /datum/reagent/medicine) || (obj_flags & EMAGGED))
+			possible_chems[1] |= med.type
+	RefreshParts()
+
+/obj/machinery/sleeper/stasis/chem_allowed(chem)
+	return occupant?.reagents?.get_reagent_amount(chem) <= 5 && reagents.get_reagent_amount(chem) > 0
+
+/obj/machinery/sleeper/stasis/inject_chem(chem, mob/user, amount = 10)
+	if(!(chem in available_chems) || !chem_allowed(chem))
+		return FALSE
+	amount = clamp(amount, 0, 10)
+	if(amount <= 0)
+		return FALSE
+	if(amount > reagents.get_reagent_amount(chem))
+		return FALSE
+
+	return reagents.trans_to(
+		target = occupant,
+		amount = amount,
+		target_id = chem_buttons[chem],
+		transferred_by = user,
+		methods = TOUCH,
+	)
+
 /obj/machinery/sleeper/stasis/set_occupant(atom/movable/new_occupant)
 	var/mob/living/old_occupant_living = occupant
 	var/mob/living/new_occupant_living = new_occupant
@@ -511,11 +560,6 @@
 	. = ..()
 	var/mob/living/patient = occupant
 	if(istype(patient) && !isnull(patient.reagents))
-		if(HAS_TRAIT(patient, TRAIT_CRITICAL_CONDITION))
-			var/epi_amount = patient.reagents.get_reagent_amount(/datum/reagent/medicine/epinephrine)
-			if(epi_amount < 10)
-				patient.reagents.add_reagent(/datum/reagent/medicine/epinephrine, 10 - epi_amount)
-
 		var/update = FALSE
 		for(var/datum/reagent/medicine/medicine in patient.reagents.reagent_list)
 			update ||= patient.reagents.metabolize_reagent(patient, medicine, seconds_per_tick, SSmobs.times_fired, can_overdose = TRUE)
