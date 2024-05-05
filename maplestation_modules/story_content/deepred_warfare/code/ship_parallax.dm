@@ -1,7 +1,6 @@
 /atom/movable/screen/parallax_layer/planet/unbidden
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/unbidden_parallax.dmi'
 	icon_state = "unbidden_empty"
-	icon_state = "unbidden_far_ring"
 	blend_mode = BLEND_OVERLAY
 	absolute = TRUE
 	speed = 5
