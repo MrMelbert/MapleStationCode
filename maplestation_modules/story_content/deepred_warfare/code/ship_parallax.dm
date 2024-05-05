@@ -8,7 +8,7 @@
 	layer = 40
 
 	var/distance = 0
-	var/ringed = FALSE
+	var/ringed = TRUE
 
 /atom/movable/screen/parallax_layer/planet/unbidden/proc/get_random_look()
 	return
