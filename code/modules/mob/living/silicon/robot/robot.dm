@@ -326,7 +326,7 @@
 	cut_overlays()
 	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 	icon_state = model.cyborg_base_icon
-	if(stat != DEAD && !(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || IsStun() || IsParalyzed() || low_power_mode)) //Not dead, not stunned.
+	if(stat != DEAD && !(stat == UNCONSCIOUS || IsStun() || IsParalyzed() || low_power_mode)) //Not dead, not stunned.
 		if(!eye_lights)
 			eye_lights = new()
 		if(lamp_enabled || lamp_doom)
@@ -673,17 +673,26 @@
 /mob/living/silicon/robot/update_stat()
 	if(status_flags & GODMODE)
 		return
-	if(stat != DEAD)
-		if(health <= -maxHealth) //die only once
-			death()
-			toggle_headlamp(1)
-			return
-	diag_hud_set_status()
-	diag_hud_set_health()
-	diag_hud_set_aishell()
-	update_health_hud()
-	update_icons() //Updates eye_light overlay
+	if(stat == DEAD)
+		return
+	if(health <= -maxHealth) //die only once
+		death()
+		toggle_headlamp(TRUE)
+		return
+	if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
+		set_stat(UNCONSCIOUS)
+		return
+	if(stat != CONSCIOUS)
+		set_stat(CONSCIOUS)
+		return
 
+/mob/living/silicon/robot/set_stat(new_stat)
+	. = ..()
+	if(isnull(.) || . == stat)
+		return
+	diag_hud_set_status()
+	diag_hud_set_aishell()
+	update_icons() //Updates eye_light overlay
 
 /mob/living/silicon/robot/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
 	. = ..()
@@ -691,13 +700,12 @@
 		return
 
 	if(!QDELETED(builtInCamera) && !wires.is_cut(WIRE_CAMERA))
-		builtInCamera.toggle_cam(src, 0)
+		builtInCamera.toggle_cam(src, FALSE)
 	if(full_heal_flags & HEAL_ADMIN)
 		locked = TRUE
-	src.set_stat(CONSCIOUS)
+	update_stat()
 	notify_ai(AI_NOTIFICATION_NEW_BORG)
 	toggle_headlamp(FALSE, TRUE) //This will reenable borg headlamps if doomsday is currently going on still.
-	update_stat()
 	return TRUE
 
 /mob/living/silicon/robot/fully_replace_character_name(oldname, newname)
@@ -1040,13 +1048,3 @@
 /// Draw power from the robot
 /mob/living/silicon/robot/proc/draw_power(power_to_draw)
 	cell?.use(power_to_draw)
-
-
-/mob/living/silicon/robot/set_stat(new_stat)
-	. = ..()
-	update_stat() // This is probably not needed, but hopefully should be a little sanity check for the spaghetti that borgs are built from
-
-/mob/living/silicon/robot/on_knockedout_trait_loss(datum/source)
-	. = ..()
-	set_stat(CONSCIOUS) //This is a horrible hack, but silicon code forced my hand
-	update_stat()

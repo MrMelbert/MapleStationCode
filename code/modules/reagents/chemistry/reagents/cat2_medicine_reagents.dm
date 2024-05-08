@@ -545,10 +545,11 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	/// List of traits to add/remove from our subject when we are in their system
 	var/static/list/subject_traits = list(
-		TRAIT_STABLEHEART,
+		TRAIT_NOCRITDAMAGE,
 		TRAIT_NOHARDCRIT,
 		TRAIT_NOSOFTCRIT,
-		TRAIT_NOCRITDAMAGE,
+		TRAIT_NO_OXY_PASSOUT,
+		TRAIT_STABLEHEART,
 	)
 
 /atom/movable/screen/alert/penthrite
@@ -560,6 +561,7 @@
 	. = ..()
 	user.throw_alert("penthrite", /atom/movable/screen/alert/penthrite)
 	user.add_traits(subject_traits, type)
+	user.updatehealth()
 
 /datum/reagent/medicine/c2/penthrite/on_mob_life(mob/living/carbon/human/affected_mob, seconds_per_tick, times_fired)
 	. = ..()

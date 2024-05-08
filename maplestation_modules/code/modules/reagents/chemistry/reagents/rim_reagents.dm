@@ -44,6 +44,8 @@
 	ADD_TRAIT(user, TRAIT_VIRUS_RESISTANCE, type)
 	// Slight improved vision
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
+	user.max_consciousness += 10
+	LAZYSET(user.consciousness_modifiers, type, 10)
 
 /datum/reagent/medicine/luciferium/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
@@ -124,6 +126,9 @@
  * Stop the effects of the chem.
  */
 /datum/reagent/medicine/luciferium/proc/stop_effects(mob/living/user)
+	if(!HAS_TRAIT_FROM(user, TRAIT_NOSOFTCRIT, type))
+		return
+
 	user.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/luciferium)
 	REMOVE_TRAIT(user, TRAIT_ANTICONVULSANT, type)
 	REMOVE_TRAIT(user, TRAIT_VIRUS_CONTACT_IMMUNE, type)
@@ -132,6 +137,8 @@
 	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
+	user.max_consciousness -= 10
+	LAZYREMOVE(user.consciousness_modifiers, type)
 
 /obj/item/reagent_containers/pill/luciferium
 	name = "luciferium pill"

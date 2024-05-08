@@ -63,6 +63,9 @@
 /// Shock buildup does not increase, only decrease. No effect if already in shock (unlike abates_shock)
 #define TRAIT_NO_SHOCK_BUILDUP "no_shock_buildup"
 
+#define TRAIT_NO_OXY_PASSOUT "no_oxy_passout"
+#define TRAIT_SOFT_CRIT "paincrit"
+
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
 

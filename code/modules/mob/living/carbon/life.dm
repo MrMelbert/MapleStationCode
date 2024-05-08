@@ -24,11 +24,7 @@
 		if(stat != DEAD)
 			handle_brain_damage(seconds_per_tick, times_fired)
 
-	if(stat == DEAD)
-		stop_sound_channel(CHANNEL_HEARTBEAT)
-	else
-		if(getStaminaLoss() > 0 && stam_regen_start_time <= world.time)
-			adjustStaminaLoss(-INFINITY)
+	if(stat != DEAD)
 		handle_bodyparts(seconds_per_tick, times_fired)
 
 	if(. && mind) //. == not dead
@@ -80,10 +76,10 @@
 	var/datum/gas_mixture/breath
 
 	if(!get_organ_slot(ORGAN_SLOT_BREATHING_TUBE))
-		if(health <= HEALTH_THRESHOLD_FULLCRIT || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_FAILING))
+		if(stat == HARD_CRIT || (pulledby?.grab_state >= GRAB_KILL) || (lungs?.organ_flags & ORGAN_FAILING))
 			losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
-		else if(health <= crit_threshold)
+		else if(stat == SOFT_CRIT)
 			losebreath += 0.25 //You're having trouble breathing in soft crit, so you'll miss a breath one in four times
 
 	//Suffocate

@@ -21,6 +21,14 @@
 	///Stamina damage, or exhaustion. You recover it slowly naturally, and are knocked down if it gets too high. Holodeck and hallucinations deal this.
 	var/staminaloss = 0
 
+	var/consciousness = 100
+	/// Assoc Lazylist of flat modifiers to consciousness.
+	var/list/consciousness_modifiers
+	/// Assoc Lazylist of multipliers to consciousness. Applied after modifiers.
+	var/list/consciousness_multipliers
+
+	var/max_consciousness = 150
+
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
 	///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)
 	var/bruteloss = 0

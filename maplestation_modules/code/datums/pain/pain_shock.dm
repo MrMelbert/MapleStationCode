@@ -82,10 +82,16 @@
 /datum/disease/shock/after_add()
 	affected_mob.apply_status_effect(/datum/status_effect/low_blood_pressure)
 	affected_mob.set_pain_mod(type, 1.2)
+	affected_mob.max_consciousness -= 60
+	ADD_TRAIT(affected_mob, TRAIT_SOFT_CRIT, "shock")
+	affected_mob.updatehealth()
 
 /datum/disease/shock/remove_disease()
 	affected_mob.remove_status_effect(/datum/status_effect/low_blood_pressure)
 	affected_mob.unset_pain_mod(type)
+	affected_mob.max_consciousness += 60
+	REMOVE_TRAIT(affected_mob, TRAIT_SOFT_CRIT, "shock")
+	affected_mob.updatehealth()
 	return ..()
 
 /datum/disease/shock/stage_act(seconds_per_tick, times_fired)

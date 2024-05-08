@@ -527,9 +527,19 @@
 		total_brute += (BP.brute_dam * BP.body_damage_coeff)
 		total_burn += (BP.burn_dam * BP.body_damage_coeff)
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - total_burn - total_brute, DAMAGE_PRECISION))
+	consciousness = calcuate_consciousness()
+	if(CONFIG_GET(flag/near_death_experience))
+		if(consciousness >= 10)
+			REMOVE_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
+			clear_mood_event("near-death")
+			unset_pain_mod(PAIN_MOD_NEAR_DEATH)
+		else if(!HAS_TRAIT(src, TRAIT_NODEATH))
+			ADD_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
+			add_mood_event("near-death", /datum/mood_event/deaths_door)
+			set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
 	update_stat()
 	update_stamina()
-	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD*2) && stat == DEAD )
+	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD * 2) && stat == DEAD)
 		become_husk(BURN)
 	med_hud_set_health()
 	if(stat == SOFT_CRIT)
@@ -537,19 +547,6 @@
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
-
-/mob/living/carbon/update_stamina()
-	var/stam = getStaminaLoss()
-	if(stam > DAMAGE_PRECISION && (maxHealth - stam) <= crit_threshold)
-		if (!stat)
-			enter_stamcrit()
-	else if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA))
-		REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
-		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
-		REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)
-	else
-		return
-	update_stamina_hud()
 
 /mob/living/carbon/update_sight()
 	if(!client)
@@ -805,43 +802,53 @@
 	if(hud_used?.spacesuit)
 		hud_used.spacesuit.icon_state = "spacesuit_[cell_state]"
 
-/mob/living/carbon/set_health(new_value)
-	. = ..()
-	if(. > hardcrit_threshold)
-		if(health <= hardcrit_threshold && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
-			ADD_TRAIT(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
-	else if(health > hardcrit_threshold)
-		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT)
-	if(CONFIG_GET(flag/near_death_experience))
-		if(. > HEALTH_THRESHOLD_NEARDEATH)
-			if(health <= HEALTH_THRESHOLD_NEARDEATH && !HAS_TRAIT(src, TRAIT_NODEATH))
-				ADD_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
-		else if(health > HEALTH_THRESHOLD_NEARDEATH)
-			REMOVE_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
+/mob/living/carbon/proc/calcuate_consciousness()
+	var/new_consciousness = 100
 
+	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
+		new_consciousness -= max(getOxyLoss(), losebreath * 5)
+	if(!HAS_TRAIT(src, TRAIT_TOXINLOVER) && !HAS_TRAIT(src, TRAIT_TOXIMMUNE))
+		new_consciousness -= (5 * sqrt(getToxLoss()))
+	if(!HAS_TRAIT(src, TRAIT_NOBLOOD))
+		switch(blood_volume)
+			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
+				new_consciousness -= 10
+			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
+				new_consciousness -= 20
+			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
+				new_consciousness -= 40
+
+	for(var/mod in consciousness_modifiers)
+		new_consciousness += consciousness_modifiers[mod]
+	for(var/mult in consciousness_multipliers)
+		new_consciousness *= consciousness_multipliers[mult]
+
+	return min(new_consciousness, max_consciousness)
 
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)
-		return
-	if(stat != DEAD)
-		if(health <= HEALTH_THRESHOLD_DEAD && !HAS_TRAIT(src, TRAIT_NODEATH))
-			death()
-			return
-		if(HAS_TRAIT_FROM(src, TRAIT_DISSECTED, AUTOPSY_TRAIT))
-			REMOVE_TRAIT(src, TRAIT_DISSECTED, AUTOPSY_TRAIT)
-		if(health <= hardcrit_threshold && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
-			set_stat(HARD_CRIT)
-		else if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
-			set_stat(UNCONSCIOUS)
-		else if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
-			set_stat(SOFT_CRIT)
-		else
+		if(stat != CONSCIOUS)
 			set_stat(CONSCIOUS)
-	update_damage_hud()
-	update_health_hud()
-	update_stamina_hud()
-	med_hud_set_status()
+		return
 
+	if(consciousness <= 0 && !HAS_TRAIT(src, TRAIT_NODEATH))
+		if(stat != DEAD)
+			death()
+		return
+
+	if(consciousness <= 30 && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
+		if(stat != HARD_CRIT)
+			set_stat(HARD_CRIT)
+		return
+
+	if(HAS_TRAIT(src, TRAIT_SOFT_CRIT) && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
+		if(stat != SOFT_CRIT)
+			set_stat(SOFT_CRIT)
+		return
+
+	if(stat != CONSCIOUS)
+		set_stat(CONSCIOUS)
+		return
 
 //called when we get cuffed/uncuffed
 /mob/living/carbon/proc/update_handcuffed()

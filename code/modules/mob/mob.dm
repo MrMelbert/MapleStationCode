@@ -1538,6 +1538,7 @@
 			. += I.slowdown
 
 /mob/proc/set_stat(new_stat)
+	PROTECTED_PROC(TRUE)
 	if(new_stat == stat)
 		return
 	. = stat

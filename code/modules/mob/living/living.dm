@@ -836,13 +836,14 @@
 		adjustToxLoss(-excess_healing, updating_health = FALSE, forced = TRUE) //slime friendly
 		updatehealth()
 
+	REMOVE_TRAIT(src, TRAIT_DISSECTED, AUTOPSY_TRAIT)
 	grab_ghost(force_grab_ghost)
 	if(full_heal_flags)
 		fully_heal(full_heal_flags)
 
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
 		set_suicide(FALSE)
-		set_stat(UNCONSCIOUS) //the mob starts unconscious,
+		set_stat(HARD_CRIT) //the mob starts unconscious,
 		updatehealth() //then we check if the mob should wake up.
 		if(full_heal_flags & HEAL_ADMIN)
 			get_up(TRUE)
@@ -1350,10 +1351,7 @@
 	return TRUE
 
 /mob/living/proc/update_stamina()
-	return
-
-/mob/living/carbon/alien/update_stamina()
-	return
+	update_stamina_hud()
 
 /mob/living/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
 	stop_pulling()
@@ -2153,55 +2151,45 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/set_stat(new_stat)
 	. = ..()
-	if(isnull(.))
+	if(isnull(.) || . == stat)
 		return
 
-	switch(.) //Previous stat.
-		if(CONSCIOUS)
-			if(stat >= UNCONSCIOUS)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			add_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_INCAPACITATED, TRAIT_FLOORED), STAT_TRAIT)
-		if(SOFT_CRIT)
-			if(stat >= UNCONSCIOUS)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT) //adding trait sources should come before removing to avoid unnecessary updates
-			if(pulledby)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-		if(UNCONSCIOUS)
-			if(stat != HARD_CRIT)
-				cure_blind(UNCONSCIOUS_TRAIT)
-		if(HARD_CRIT)
-			if(stat != UNCONSCIOUS)
-				cure_blind(UNCONSCIOUS_TRAIT)
-		if(DEAD)
-			remove_from_dead_mob_list()
-			add_to_alive_mob_list()
 	switch(stat) //Current stat.
 		if(CONSCIOUS)
-			if(. >= UNCONSCIOUS)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			remove_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_INCAPACITATED, TRAIT_FLOORED, TRAIT_CRITICAL_CONDITION), STAT_TRAIT)
+			remove_traits(list(
+				TRAIT_CRITICAL_CONDITION,
+				TRAIT_FLOORED,
+				TRAIT_HANDS_BLOCKED,
+				TRAIT_IMMOBILIZED,
+				TRAIT_INCAPACITATED,
+				TRAIT_KNOCKEDOUT,
+			), STAT_TRAIT)
+
 		if(SOFT_CRIT)
-			if(pulledby)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT) //adding trait sources should come before removing to avoid unnecessary updates
-			if(. >= UNCONSCIOUS)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-		if(UNCONSCIOUS)
-			if(. != HARD_CRIT)
-				become_blind(UNCONSCIOUS_TRAIT)
-			if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
-				ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-			else
-				REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			add_traits(list(
+				TRAIT_INCAPACITATED,
+				TRAIT_CRITICAL_CONDITION,
+			), STAT_TRAIT)
+
 		if(HARD_CRIT)
-			if(. != UNCONSCIOUS)
-				become_blind(UNCONSCIOUS_TRAIT)
-			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			add_traits(list(
+				TRAIT_CRITICAL_CONDITION,
+				TRAIT_FLOORED,
+				TRAIT_HANDS_BLOCKED,
+				TRAIT_IMMOBILIZED,
+				TRAIT_INCAPACITATED,
+				TRAIT_KNOCKEDOUT,
+			), STAT_TRAIT)
+
 		if(DEAD)
 			REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
+	update_damage_hud()
+	update_health_hud()
+	update_stamina_hud()
+	med_hud_set_status()
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
@@ -2230,17 +2218,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			var/atom/movable/old_buckled = .
 			if(old_buckled.buckle_lying == 0 && (resting || HAS_TRAIT(src, TRAIT_FLOORED))) // The buckle forced us to stay up (like a chair)
 				set_lying_down() // We want to rest or are otherwise floored, so let's drop on the ground.
-
-/mob/living/set_pulledby(new_pulledby)
-	. = ..()
-	if(. == FALSE) //null is a valid value here, we only want to return if FALSE is explicitly passed.
-		return
-	if(pulledby)
-		if(!. && stat == SOFT_CRIT)
-			ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-	else if(. && stat == SOFT_CRIT)
-		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-
 
 /// Updates the grab state of the mob and updates movespeed
 /mob/living/setGrabState(newstate)

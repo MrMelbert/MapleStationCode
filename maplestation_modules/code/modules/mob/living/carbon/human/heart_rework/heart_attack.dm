@@ -30,10 +30,13 @@
 
 	if(!QDELING(owner))
 		owner.cause_pain(BODY_ZONE_CHEST, -20)
+		LAZYREMOVE(owner.consciousness_modifiers, id)
 
 /datum/status_effect/heart_attack/proc/delayed_ko()
 	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
 		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
+		LAZYSET(owner.consciousness_modifiers, id, 50)
+
 	ko_timer = null
 
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBREATH), PROC_REF(gained_nobreath))
@@ -47,11 +50,13 @@
 /datum/status_effect/heart_attack/proc/gained_nobreath(datum/source)
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
+	LAZYREMOVE(owner.consciousness_modifiers, id)
 
 /datum/status_effect/heart_attack/proc/lost_nobreath(datum/source)
 	SIGNAL_HANDLER
 	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
 		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
+		LAZYSET(owner.consciousness_modifiers, id, 50)
 
 /datum/status_effect/heart_attack/proc/block_breath(datum/source)
 	SIGNAL_HANDLER

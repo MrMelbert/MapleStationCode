@@ -526,11 +526,10 @@
 /mob/living/carbon/can_hear()
 	. = FALSE
 	var/obj/item/organ/internal/ears/ears = get_organ_slot(ORGAN_SLOT_EARS)
-	if(ears && !HAS_TRAIT(src, TRAIT_DEAF))
+	if(!isnull(ears) && !HAS_TRAIT(src, TRAIT_DEAF))
 		. = TRUE
-	if(health <= hardcrit_threshold && !HAS_TRAIT(src, TRAIT_NOHARDCRIT))
+	if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
 		. = FALSE
-
 
 /mob/living/carbon/adjustOxyLoss(amount, updating_health = TRUE, forced, required_biotype, required_respiration_type)
 	if(!forced && HAS_TRAIT(src, TRAIT_NOBREATH))
@@ -552,10 +551,13 @@
 * Check to see if we should be passed out from oxyloss
 */
 /mob/living/carbon/proc/check_passout()
+	if(HAS_TRAIT(src, TRAIT_NO_OXY_PASSOUT))
+		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
+		return
+
 	var/mob_oxyloss = getOxyLoss()
 	if(mob_oxyloss >= 50)
-		if(!HAS_TRAIT_FROM(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT))
-			ADD_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
+		ADD_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
 	else if(mob_oxyloss < 50)
 		REMOVE_TRAIT(src, TRAIT_KNOCKEDOUT, OXYLOSS_TRAIT)
 

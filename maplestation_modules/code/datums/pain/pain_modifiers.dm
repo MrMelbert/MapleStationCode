@@ -34,16 +34,6 @@
 	owner.unset_pain_mod(name)
 	return ..()
 
-// Near death experience
-/mob/living/carbon/human/set_health(new_value)
-	. = ..()
-	if(HAS_TRAIT_FROM(src, TRAIT_KNOCKEDOUT, CRIT_HEALTH_TRAIT))
-		src.add_mood_event("near-death", /datum/mood_event/deaths_door)
-		set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
-	else
-		src.clear_mood_event("near-death")
-		unset_pain_mod(PAIN_MOD_NEAR_DEATH)
-
 // Stasis gives you a pain modifier and stops pain decay
 //
 // This is kind of a cop-out, I admit:
@@ -71,6 +61,7 @@
 		human_owner.set_pain_mod(id, 0.625)
 	ADD_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
 	ADD_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
+	LAZYSET(owner.consciousness_multipliers, id, 1.2)
 
 /datum/status_effect/determined/on_remove()
 	if(ishuman(owner))
@@ -78,6 +69,7 @@
 		human_owner.unset_pain_mod(id)
 	REMOVE_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
+	LAZYREMOVE(owner.consciousness_multipliers, id)
 	return ..()
 
 // Fake healthy is supposed to mimic feeling no pain
@@ -114,12 +106,3 @@
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.unset_pain_mod(id)
 	return ..()
-
-// Reacting to all cases of gaining knocked out rather than just sleeping
-/mob/living/on_knockedout_trait_gain(datum/source)
-	. = ..()
-	set_pain_mod(PAIN_MOD_KOD, 0.8)
-
-/mob/living/on_knockedout_trait_loss(datum/source)
-	. = ..()
-	unset_pain_mod(PAIN_MOD_KOD)

@@ -53,7 +53,6 @@
 /// inherited from riding vehicles
 #define VEHICLE_TRAIT "vehicle"
 #define INNATE_TRAIT "innate"
-#define CRIT_HEALTH_TRAIT "crit_health"
 #define OXYLOSS_TRAIT "oxyloss"
 /// Trait sorce for "was recently shocked by something"
 #define WAS_SHOCKED "was_shocked"
@@ -154,7 +153,6 @@
 #define SKILLCHIP_TRAIT "skillchip"
 #define SKILL_TRAIT "skill"
 #define BUSY_FLOORBOT_TRAIT "busy-floorbot"
-#define PULLED_WHILE_SOFTCRIT_TRAIT "pulled-while-softcrit"
 #define LOCKED_BORG_TRAIT "locked-borg"
 /// trait associated to not having locomotion appendages nor the ability to fly or float
 #define LACKING_LOCOMOTION_APPENDAGES_TRAIT "lacking-locomotion-appengades"

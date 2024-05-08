@@ -19,6 +19,11 @@
 		SIGNAL_REMOVETRAIT(TRAIT_PERMANENTLY_ONFIRE),
 	), PROC_REF(update_permanently_on_fire))
 
+	RegisterSignals(src, list(
+		SIGNAL_ADDTRAIT(TRAIT_NO_OXY_PASSOUT),
+		SIGNAL_REMOVETRAIT(TRAIT_NO_OXY_PASSOUT),
+	), PROC_REF(update_oxy_passout))
+
 /**
  * On gain of TRAIT_AGENDER
  *
@@ -126,3 +131,8 @@
 	SIGNAL_HANDLER
 
 	dna?.remove_all_mutations()
+
+///On gain of TRAIT_NO_OXY_PASSOUT, passout status
+/mob/living/carbon/proc/update_oxy_passout(datum/source)
+	SIGNAL_HANDLER
+	check_passout()
