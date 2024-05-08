@@ -1390,45 +1390,32 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	var/bodytemp = humi.bodytemperature
 	// Body temperature is too hot, and we do not have resist traits
 	if(bodytemp > bodytemp_heat_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTHEAT))
-		// Clear cold mood and apply hot mood
-		humi.clear_mood_event("cold")
-		humi.add_mood_event("hot", /datum/mood_event/hot)
-
-		//Remove any slowdown from the cold.
-		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 		// display alerts based on how hot it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
 		if(bodytemp in bodytemp_heat_damage_limit to BODYTEMP_HEAT_WARNING_2)
-			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
+			humi.apply_status_effect(/datum/status_effect/thermia/hyper/one)
 		else if(bodytemp in BODYTEMP_HEAT_WARNING_2 to BODYTEMP_HEAT_WARNING_3)
-			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
+			humi.apply_status_effect(/datum/status_effect/thermia/hyper/two)
 		else
-			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
+			humi.apply_status_effect(/datum/status_effect/thermia/hyper/three)
 
 	// Body temperature is too cold, and we do not have resist traits
 	else if(bodytemp < bodytemp_cold_damage_limit && !HAS_TRAIT(humi, TRAIT_RESISTCOLD))
-		// clear any hot moods and apply cold mood
-		humi.clear_mood_event("hot")
-		humi.add_mood_event("cold", /datum/mood_event/cold)
-		// Apply cold slow down
-		humi.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((bodytemp_cold_damage_limit - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR))
+		var/slowdown_mod = (bodytemp_cold_damage_limit - humi.bodytemperature) / COLD_SLOWDOWN_FACTOR
 		// Display alerts based how cold it is
 		// Can't be a switch due to http://www.byond.com/forum/post/2750423
 		if(bodytemp in BODYTEMP_COLD_WARNING_2 to bodytemp_cold_damage_limit)
-			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
+			humi.apply_status_effect(/datum/status_effect/thermia/hypo/one, slowdown_mod)
 		else if(bodytemp in BODYTEMP_COLD_WARNING_3 to BODYTEMP_COLD_WARNING_2)
-			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
+			humi.apply_status_effect(/datum/status_effect/thermia/hypo/two, slowdown_mod)
 		else
-			humi.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
+			humi.apply_status_effect(/datum/status_effect/thermia/hypo/three, slowdown_mod)
 
 	// We are not to hot or cold, remove status and moods
 	// Optimization here, we check these things based off the old temperature to avoid unneeded work
 	// We're not perfect about this, because it'd just add more work to the base case, and resistances are rare
 	else if (old_bodytemp > bodytemp_heat_damage_limit || old_bodytemp < bodytemp_cold_damage_limit)
-		humi.clear_alert(ALERT_TEMPERATURE)
-		humi.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
-		humi.clear_mood_event("cold")
-		humi.clear_mood_event("hot")
+		humi.remove_status_effect(/datum/status_effect/thermia)
 
 	// Store the old bodytemp for future checking
 	humi.old_bodytemperature = bodytemp

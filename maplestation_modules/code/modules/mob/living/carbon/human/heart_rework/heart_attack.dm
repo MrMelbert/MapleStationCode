@@ -20,43 +20,41 @@
 	return TRUE
 
 /datum/status_effect/heart_attack/on_remove()
-	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	deltimer(ko_timer)
 
-	UnregisterSignal(owner, COMSIG_SPECIES_GAIN)
-	UnregisterSignal(owner, COMSIG_CARBON_ATTEMPT_BREATHE)
-	UnregisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBREATH))
-	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOBREATH))
+	UnregisterSignal(owner, list(
+		COMSIG_CARBON_ATTEMPT_BREATHE,
+		COMSIG_SPECIES_GAIN,
+		SIGNAL_ADDTRAIT(TRAIT_NOBREATH),
+		SIGNAL_REMOVETRAIT(TRAIT_NOBREATH),
+	))
 
 	if(!QDELING(owner))
 		owner.cause_pain(BODY_ZONE_CHEST, -20)
-		LAZYREMOVE(owner.consciousness_modifiers, id)
+		LAZYREMOVE(owner.consciousness_multipliers, id)
+		LAZYREMOVE(owner.max_consciousness_values, id)
 
 /datum/status_effect/heart_attack/proc/delayed_ko()
-	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
-		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
-		LAZYSET(owner.consciousness_modifiers, id, 50)
-
 	ko_timer = null
-
-	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBREATH), PROC_REF(gained_nobreath))
-	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOBREATH), PROC_REF(lost_nobreath))
+	update_nobreath()
+	RegisterSignals(owner, list(
+		SIGNAL_ADDTRAIT(TRAIT_NOBREATH),
+		SIGNAL_REMOVETRAIT(TRAIT_NOBREATH),
+	), PROC_REF(update_nobreath))
 
 /datum/status_effect/heart_attack/proc/species_changed(datum/source, datum/species/new_species, datum/species/old_species)
 	SIGNAL_HANDLER
 	if(isnull(new_species.mutantheart))
 		qdel(src)
 
-/datum/status_effect/heart_attack/proc/gained_nobreath(datum/source)
+/datum/status_effect/heart_attack/proc/update_nobreath(datum/source)
 	SIGNAL_HANDLER
-	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
-	LAZYREMOVE(owner.consciousness_modifiers, id)
-
-/datum/status_effect/heart_attack/proc/lost_nobreath(datum/source)
-	SIGNAL_HANDLER
-	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
-		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
-		LAZYSET(owner.consciousness_modifiers, id, 50)
+	if(HAS_TRAIT(owner, TRAIT_NOBREATH))
+		LAZYREMOVE(owner.consciousness_multipliers, id)
+		LAZYREMOVE(owner.max_consciousness_values, id)
+	else
+		LAZYSET(owner.consciousness_multipliers, id, 0.5)
+		LAZYSET(owner.max_consciousness_values, id, 30)
 
 /datum/status_effect/heart_attack/proc/block_breath(datum/source)
 	SIGNAL_HANDLER

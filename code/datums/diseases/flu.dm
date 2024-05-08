@@ -12,6 +12,14 @@
 	severity = DISEASE_SEVERITY_MINOR
 	required_organ = ORGAN_SLOT_LUNGS
 
+/datum/disease/flu/remove_disease()
+	LAZYREMOVE(affected_mob.consciousness_modifiers, type)
+	return ..()
+
+/datum/disease/flu/update_stage(new_stage)
+	. = ..()
+	LAZYSET(affected_mob.consciousness_modifiers, type, -5 * new_stage)
+
 /datum/disease/flu/stage_act(seconds_per_tick, times_fired)
 	. = ..()
 	if(!.)

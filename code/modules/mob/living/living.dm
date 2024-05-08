@@ -2182,7 +2182,17 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			), STAT_TRAIT)
 
 		if(DEAD)
-			REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			remove_traits(list(
+				TRAIT_CRITICAL_CONDITION,
+				TRAIT_KNOCKEDOUT,
+			), STAT_TRAIT)
+			add_traits(list(
+				TRAIT_FLOORED,
+				TRAIT_HANDS_BLOCKED,
+				TRAIT_IMMOBILIZED,
+				TRAIT_INCAPACITATED,
+			), STAT_TRAIT)
+
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 

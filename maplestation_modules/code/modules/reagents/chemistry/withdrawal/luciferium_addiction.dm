@@ -28,6 +28,7 @@
 	. = ..()
 	affected_carbon.set_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT, 1.2)
 	to_chat(affected_carbon, span_userdanger("Your [name] withdrawal has begun to set in... You feel ill."))
+	LAZYSET(affected_carbon.max_consciousness_values, type, 140)
 
 /datum/addiction/luciferium/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
@@ -42,6 +43,8 @@
 	. = ..()
 	affected_carbon.set_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT, 1.3)
 	to_chat(affected_carbon, span_userdanger("Your [name] withdrawal progresses... Your body feels heavy."))
+	LAZYSET(affected_carbon.max_consciousness_values, type, 130)
+	LAZYSET(affected_carbon.consciousness_modifiers, type, -10)
 
 /datum/addiction/luciferium/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
@@ -56,6 +59,7 @@
 	. = ..()
 	affected_carbon.set_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT, 1.4)
 	to_chat(affected_carbon, span_userdanger("Your [name] withdrawal is killing you!"))
+	LAZYSET(affected_carbon.max_consciousness_values, type, 120)
 
 /datum/addiction/luciferium/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
@@ -75,4 +79,6 @@
 	if(current_addiction_cycle >= WITHDRAWAL_STAGE1_START_CYCLE)
 		to_chat(affected_carbon, span_green("Your [name] withdrawal subsides... You have bought yourself time."))
 	affected_carbon.unset_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT)
+	LAZYREMOVE(affected_carbon.max_consciousness_values, type)
+	LAZYREMOVE(affected_carbon.consciousness_modifiers, type)
 	return ..()

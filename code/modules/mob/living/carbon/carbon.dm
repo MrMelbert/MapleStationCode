@@ -527,7 +527,7 @@
 		total_brute += (BP.brute_dam * BP.body_damage_coeff)
 		total_burn += (BP.burn_dam * BP.body_damage_coeff)
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - total_burn - total_brute, DAMAGE_PRECISION))
-	consciousness = calcuate_consciousness()
+	consciousness = calculate_consciousness()
 	if(CONFIG_GET(flag/near_death_experience))
 		if(consciousness >= 10)
 			REMOVE_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
@@ -542,11 +542,20 @@
 	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD * 2) && stat == DEAD)
 		become_husk(BURN)
 	med_hud_set_health()
-	if(stat == SOFT_CRIT)
-		add_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
+	if(consciousness <= 90)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
+		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
 	else
-		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_softcrit)
+		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
+		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
+
+/datum/movespeed_modifier/carbon_consciousness
+	variable = TRUE
+	flags = IGNORE_NOSLOW
+
+/datum/actionspeed_modifier/carbon_consciousness
+	variable = TRUE
 
 /mob/living/carbon/update_sight()
 	if(!client)
@@ -802,8 +811,9 @@
 	if(hud_used?.spacesuit)
 		hud_used.spacesuit.icon_state = "spacesuit_[cell_state]"
 
-/mob/living/carbon/proc/calcuate_consciousness()
+/mob/living/carbon/proc/calculate_consciousness()
 	var/new_consciousness = 100
+	var/max_consciousness = 150
 
 	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
 		new_consciousness -= max(getOxyLoss(), losebreath * 5)
@@ -813,17 +823,25 @@
 		switch(blood_volume)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 				new_consciousness -= 10
+				max_consciousness = 90
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 				new_consciousness -= 20
+				max_consciousness = 30
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
 				new_consciousness -= 40
+				max_consciousness = 10
+	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && nutrition <= NUTRITION_LEVEL_HUNGRY)
+		new_consciousness -= 20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY))
+		max_consciousness = min(max_consciousness, 120)
 
 	for(var/mod in consciousness_modifiers)
 		new_consciousness += consciousness_modifiers[mod]
 	for(var/mult in consciousness_multipliers)
 		new_consciousness *= consciousness_multipliers[mult]
+	for(var/max_mod in max_consciousness_values)
+		max_consciousness = min(max_consciousness_values[max_mod], max_consciousness)
 
-	return min(new_consciousness, max_consciousness)
+	return min(new_consciousness, max(max_consciousness, 10))
 
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)

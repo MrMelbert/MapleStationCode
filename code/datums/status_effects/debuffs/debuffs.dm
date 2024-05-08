@@ -13,17 +13,11 @@
 	alert_type = null
 	remove_on_fullheal = TRUE
 	heal_flag_necessary = HEAL_CC_STATUS
-	var/needs_update_stat = FALSE
 
 /datum/status_effect/incapacitating/on_creation(mob/living/new_owner, set_duration)
 	if(isnum(set_duration))
 		duration = set_duration
 	return ..()
-
-/datum/status_effect/incapacitating/on_apply()
-	if(needs_update_stat || issilicon(owner))
-		owner.update_stat()
-	return TRUE
 
 //STUN
 /datum/status_effect/incapacitating/stun
@@ -104,7 +98,6 @@
 //UNCONSCIOUS
 /datum/status_effect/incapacitating/unconscious
 	id = "unconscious"
-	needs_update_stat = TRUE
 
 /datum/status_effect/incapacitating/unconscious/on_apply()
 	. = ..()
@@ -117,15 +110,12 @@
 	return ..()
 
 /datum/status_effect/incapacitating/unconscious/tick(seconds_between_ticks)
-	if(owner.getStaminaLoss())
-		owner.adjustStaminaLoss(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
-
+	owner.adjustStaminaLoss(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
 
 //SLEEPING
 /datum/status_effect/incapacitating/sleeping
 	id = "sleeping"
 	alert_type = /atom/movable/screen/alert/status_effect/asleep
-	needs_update_stat = TRUE
 	tick_interval = 2 SECONDS
 
 /datum/status_effect/incapacitating/sleeping/on_apply()

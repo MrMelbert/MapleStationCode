@@ -12,6 +12,7 @@
 /datum/addiction/psychite/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
 	. = ..()
 	affected_carbon.add_movespeed_modifier(/datum/movespeed_modifier/reagent/psychite_addiction)
+	LAZYSET(affected_carbon.max_consciousness_values, type, 140)
 
 /datum/addiction/psychite/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, seconds_per_tick)
 	. = ..()
@@ -30,3 +31,4 @@
 /datum/addiction/psychite/end_withdrawal(mob/living/carbon/affected_carbon)
 	. = ..()
 	affected_carbon.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/psychite_addiction)
+	LAZYREMOVE(affected_carbon.max_consciousness_values, type)

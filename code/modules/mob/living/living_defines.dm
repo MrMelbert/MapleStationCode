@@ -26,8 +26,8 @@
 	var/list/consciousness_modifiers
 	/// Assoc Lazylist of multipliers to consciousness. Applied after modifiers.
 	var/list/consciousness_multipliers
-
-	var/max_consciousness = 150
+	/// Assoc Lazylist of max consciousness values. Smallest one is used, but not beyond 10.
+	var/list/max_consciousness_values
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
 	///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)

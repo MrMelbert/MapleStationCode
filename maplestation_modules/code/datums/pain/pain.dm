@@ -703,17 +703,16 @@
 /datum/pain/proc/refresh_pain_attributes(...)
 	SIGNAL_HANDLER
 
-	if(!parent.can_feel_pain())
-		LAZYREMOVE(parent.consciousness_modifiers, "pain")
-		clear_pain_attributes()
-		return
-
 	var/avg_pain = get_average_pain()
 
 	if(avg_pain <= 10)
 		LAZYREMOVE(parent.consciousness_modifiers, "pain")
 	else
-		LAZYSET(parent.consciousness_modifiers, "pain", -10 * sqrt(avg_pain))
+		LAZYSET(parent.consciousness_modifiers, "pain", -10 * sqrt(avg_pain) * (parent.can_feel_pain(TRUE) ? 1 : 0.5))
+
+	if(!parent.can_feel_pain(FALSE))
+		clear_pain_attributes()
+		return
 
 	switch(avg_pain)
 		if(-INFINITY to 20)

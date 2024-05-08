@@ -123,6 +123,8 @@
 	if(owner.sound_environment_override == SOUND_ENVIRONMENT_PSYCHOTIC)
 		owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
 
+	LAZYREMOVE(owner.max_consciousness_values, id)
+
 /datum/status_effect/inebriated/drunk/set_drunk_value(set_to)
 	. = ..()
 	if(QDELETED(src))
@@ -131,6 +133,8 @@
 	// Return to "tipsyness" when we're below 6.
 	if(drunk_value < TIPSY_THRESHOLD)
 		owner.apply_status_effect(/datum/status_effect/inebriated/tipsy, drunk_value)
+	if(drunk_value > 90)
+		LAZYSET(owner.max_consciousness_values, id, 30)
 
 /datum/status_effect/inebriated/drunk/on_tick_effects()
 	// Handle the Ballmer Peak.
@@ -182,8 +186,8 @@
 	if(drunk_value >= 91)
 		owner.adjustToxLoss(1)
 		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.4)
-		if(owner.stat == CONSCIOUS)
-			attempt_to_blackout()
+		//if(owner.stat == CONSCIOUS)
+		//	attempt_to_blackout()
 
 	// And finally, over 100 - let's be honest, you shouldn't be alive by now.
 	if(drunk_value >= 101)
