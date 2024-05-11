@@ -6386,6 +6386,7 @@
 #include "maplestation_modules\code\modules\mining\mining_redemption.dm"
 #include "maplestation_modules\code\modules\mining\order_consumables.dm"
 #include "maplestation_modules\code\modules\mining\ores_coins.dm"
+#include "maplestation_modules\code\modules\mob\basic\farm_animals\goat\goat_subtypes.dm"
 #include "maplestation_modules\code\modules\mob\dead\new_player\sprite_accessories.dm"
 #include "maplestation_modules\code\modules\mob\living\blood.dm"
 #include "maplestation_modules\code\modules\mob\living\emote.dm"
