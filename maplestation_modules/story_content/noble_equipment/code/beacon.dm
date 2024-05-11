@@ -17,7 +17,10 @@
 	new /obj/item/clothing/shoes/chiffon(src)
 	new /obj/item/clothing/head/costume/chiffonbow(src)
 	new /obj/item/storage/backpack/satchel/leather/chiffon(src)
-	//The satchel is totally a clothing item right...? Right??
+	new /obj/item/clothing/under/rank/chiffon/alt(src)
+	new /obj/item/clothing/gloves/chiffon/alt(src)
+	new /obj/item/clothing/shoes/chiffon/alt(src)
+	new /obj/item/clothing/head/costume/chiffonbow/alt(src)
 
 /obj/item/locker_spawner/noble
 	name = "regal equipment beacon"
