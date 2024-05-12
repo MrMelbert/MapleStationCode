@@ -14,6 +14,7 @@ GLOBAL_LIST_EMPTY(collective_unbiddens) // A list of all unbidden parallax layer
 	var/ringed = TRUE
 
 /atom/movable/screen/parallax_layer/planet/unbidden/Initialize(mapload)
+	. = ..()
 	GLOB.collective_unbiddens += src
 	distance = GLOB.unbidden_distance
 	ringed = GLOB.unbidden_ringed
@@ -21,6 +22,7 @@ GLOBAL_LIST_EMPTY(collective_unbiddens) // A list of all unbidden parallax layer
 
 /atom/movable/screen/parallax_layer/planet/unbidden/Destroy()
 	GLOB.collective_unbiddens -= src
+	return ..()
 
 /atom/movable/screen/parallax_layer/planet/unbidden/proc/get_random_look()
 	return
