@@ -23,7 +23,7 @@
 
 	C.parallax_layers = C.parallax_layers_cached.Copy()
 
-	if (length(C.parallax_layers) > C.parallax_layers_max)
+	if (length(C.parallax_layers) > C.parallax_layers_max + 1) // NON-MODULE CHANGE
 		C.parallax_layers.len = C.parallax_layers_max
 
 	C.screen |= (C.parallax_layers)
