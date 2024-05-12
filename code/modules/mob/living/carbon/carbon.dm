@@ -522,10 +522,9 @@
 		return
 	var/total_burn = 0
 	var/total_brute = 0
-	for(var/X in bodyparts) //hardcoded to streamline things a bit
-		var/obj/item/bodypart/BP = X
-		total_brute += (BP.brute_dam * BP.body_damage_coeff)
-		total_burn += (BP.burn_dam * BP.body_damage_coeff)
+	for(var/obj/item/bodypart/part as anything in bodyparts) //hardcoded to streamline things a bit
+		total_brute += (part.brute_dam * part.body_damage_coeff)
+		total_burn += (part.burn_dam * part.body_damage_coeff)
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - total_burn - total_brute, DAMAGE_PRECISION))
 	consciousness = calculate_consciousness()
 	if(CONFIG_GET(flag/near_death_experience))
