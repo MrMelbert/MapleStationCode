@@ -16,8 +16,9 @@
 		playsound(affected_mob, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /datum/chemical_reaction/auricelectrolysis
-	results = list(/datum/reagent/consumable/liquidelectricity/auric = 1, /datum/reagent/oxygen = 2.5, /datum/reagent/hydrogen = 5)
-	required_reagents = list(/datum/reagent/consumable/liquidelectricity/auric = 1, /datum/reagent/water = 10)
+	results = list(/datum/reagent/oxygen = 10, /datum/reagent/hydrogen = 20)
+	required_reagents = list(/datum/reagent/water = 10)
+	required_catalysts = list(/datum/reagent/consumable/liquidelectricity/auric = 1)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction zaps suddenly!"
 	mix_sound = 'sound/effects/supermatter.ogg'
@@ -51,7 +52,7 @@
 
 /datum/reagent/exodust
 	name = "Crystalline ExoPrism"
-	description = "A pulverized crystalline dust that seems to be unusually stabilized. It is unlike anything you've seen before."
+	description = "A pulverized crystalline dust that seems to be unusually energized. It is unlike anything you've seen before."
 	color = "#d3d1ed"
 	taste_description = "a forge of a bygone era"
 	reagent_state = SOLID
@@ -85,19 +86,43 @@
 	var/range = clamp(sqrt(created_volume), 1, 6)
 	goonchem_vortex(T, 0, range)
 
-/datum/reagent/medicine/adminordrazine/miracle
+/datum/reagent/miracle
 	name = "Prototype Miracle Matter"
 	description = "A shifting web of fractal energies, it seems to shift to be a solid, liquid, or gas. It is unlike anything you've seen before."
 	color = "#e6a6e0"
 	taste_description = "a universe far, far away"
 	metabolization_rate = 0.05 * REAGENTS_METABOLISM
 
+/datum/reagent/miracle/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	radiation_pulse(affected_mob, max_range = 1, threshold = 0.1, chance = 80)
+	if(affected_mob.adjustToxLoss(10 * seconds_per_tick * REM, updating_health = FALSE))
+		return UPDATE_MOB_HEALTH
+
+/datum/reagent/miracle/expose_turf(turf/exposed_turf)
+	. = ..()
+	if(isspaceturf(exposed_turf))
+		return
+
+	radiation_pulse(holder, max_range = 6, threshold = 0.1, chance = 80)
+
+/datum/reagent/miracle/expose_obj(var/obj/exposed_obj)
+	. = ..()
+	radiation_pulse(holder, max_range = 6, threshold = 0.1, chance = 80)
+
+/datum/reagent/miracle/expose_mob(var/mob/living/exposed_mob, var/methods=TOUCH)
+	. = ..()
+	radiation_pulse(exposed_mob, max_range = 6, threshold = 0.1, chance = 80)
+
 /datum/chemical_reaction/miracle_creation
-	results = list(/datum/reagent/medicine/adminordrazine/miracle = 1)
+	results = list(/datum/reagent/miracle = 1)
 	required_reagents = list(/datum/reagent/consumable/liquidelectricity/auric = 30, /datum/reagent/gravitum/aerialite = 30, /datum/reagent/resmythril = 30, /datum/reagent/exodust = 30, /datum/reagent/darkplasma = 30)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_CHEMICAL
 	mix_message = "the reaction fractalizes!"
 	mix_sound = 'sound/magic/cosmic_expansion.ogg'
+
+/datum/chemical_reaction/miracle_creation/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	radiation_pulse(holder, max_range = 6, threshold = 0.1, chance = 80)
 
 /datum/reagent/aggregation_agent
 	name = "Aggregation Agent"
@@ -213,4 +238,13 @@
 	required_reagents = list(/datum/reagent/aggregation_agent = 1, /datum/reagent/consumable/liquidelectricity/auric/redlightning = 2)
 	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_EXPLOSIVE | REACTION_TAG_CHEMICAL
 
-// Miracle matter here.
+/datum/chemical_reaction/true_miracle
+	required_reagents = list(/datum/reagent/aggregation_agent = 150, /datum/reagent/miracle = 1)
+	mob_react = FALSE
+	reaction_flags = REACTION_INSTANT
+	reaction_tags = REACTION_TAG_UNIQUE | REACTION_TAG_OTHER
+
+/datum/chemical_reaction/true_miracle/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	var/location = get_turf(holder.my_atom)
+	for(var/i in 1 to created_volume)
+		new /obj/item/stack/sheet/mineral/plasma(location) // Replace with miracle matter.
