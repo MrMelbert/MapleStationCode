@@ -12,6 +12,7 @@
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	limb_integrity = 30
 	blood_overlay_type = "uniform" // NON-MODULE CHANGE reworking clothing blood overlays
+	interaction_flags_click = ALLOW_RESTING
 
 	/// Has this undersuit been freshly laundered and, as such, imparts a mood bonus for wearing
 	var/freshly_laundered = FALSE
