@@ -1064,6 +1064,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	human_to_equip.equipOutfit(outfit_important_for_life)
 
+/*
 /**
  * Species based handling for irradiation
  *
@@ -1106,6 +1107,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	target.set_facial_hairstyle("Shaved", update = FALSE)
 	target.set_hairstyle("Bald", update = FALSE)
 	target.update_body_parts()
+*/
 
 //////////////////
 // ATTACK PROCS //
