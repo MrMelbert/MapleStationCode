@@ -17,13 +17,13 @@
 		ORGAN_SLOT_STOMACH = /obj/item/organ/internal/stomach/cybernetic/surplus,
 	)
 	var/list/possible_organ_slots = organ_slots.Copy()
-	if(HAS_TRAIT(human_holder, TRAIT_NOBLOOD))
+	if(HAS_TRAIT(human_holder, TRAIT_NOBLOOD) || isnull(human_holder.dna.species.mutantheart)) // NON-MODULE CHANGE
 		possible_organ_slots -= ORGAN_SLOT_HEART
-	if(HAS_TRAIT(human_holder, TRAIT_NOBREATH))
+	if(HAS_TRAIT(human_holder, TRAIT_NOBREATH) || isnull(human_holder.dna.species.mutantlungs)) // NON-MODULE CHANGE
 		possible_organ_slots -= ORGAN_SLOT_LUNGS
-	if(HAS_TRAIT(human_holder, TRAIT_LIVERLESS_METABOLISM))
+	if(HAS_TRAIT(human_holder, TRAIT_LIVERLESS_METABOLISM) || isnull(human_holder.dna.species.mutantliver)) // NON-MODULE CHANGE
 		possible_organ_slots -= ORGAN_SLOT_LIVER
-	if(HAS_TRAIT(human_holder, TRAIT_NOHUNGER))
+	if(HAS_TRAIT(human_holder, TRAIT_NOHUNGER) || isnull(human_holder.dna.species.mutantstomach)) // NON-MODULE CHANGE
 		possible_organ_slots -= ORGAN_SLOT_STOMACH
 	if(!length(organ_slots)) //what the hell
 		return

@@ -41,10 +41,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	///Never, Optional, or Forced digi legs?
 	var/digitigrade_customization = DIGITIGRADE_NEVER
-	///If your race bleeds something other than bog standard blood, change this to reagent id. For example, ethereals bleed liquid electricity.
-	var/datum/reagent/exotic_blood
-	///If your race uses a non standard bloodtype (A+, O-, AB-, etc). For example, lizards have L type blood.
-	var/exotic_bloodtype = ""
+	/// NON-MODULE CHANGE :
+	/// If your race uses a non standard bloodtype (typepath)
+	var/datum/blood_type/exotic_bloodtype
 	///The rate at which blood is passively drained by having the blood deficiency quirk. Some races such as slimepeople can regen their blood at different rates so this is to account for that
 	var/blood_deficiency_drain_rate = BLOOD_REGEN_FACTOR + BLOOD_DEFICIENCY_MODIFIER // slightly above the regen rate so it slowly drains instead of regenerates.
 	///What the species drops when gibbed by a gibber machine.
@@ -471,13 +470,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// Drop the items the new species can't wear
 	INVOKE_ASYNC(src, PROC_REF(worn_items_fit_body_check), human_who_gained_species, TRUE)
 
-	//Assigns exotic blood type if the species has one
-	if(exotic_bloodtype && human_who_gained_species.dna.blood_type != exotic_bloodtype)
-		human_who_gained_species.dna.blood_type = exotic_bloodtype
-	//Otherwise, check if the previous species had an exotic bloodtype and we do not have one and assign a random blood type
-	//(why the fuck is blood type not tied to a fucking DNA block?)
-	else if(old_species.exotic_bloodtype && !exotic_bloodtype)
-		human_who_gained_species.dna.blood_type = random_blood_type()
+	// NON-MODULE CHANGE
+	// //Assigns exotic blood type if the species has one
+	// if(exotic_bloodtype && human_who_gained_species.dna.blood_type != exotic_bloodtype)
+	// 	human_who_gained_species.dna.blood_type = exotic_bloodtype
+	// //Otherwise, check if the previous species had an exotic bloodtype and we do not have one and assign a random blood type
+	// //(why the fuck is blood type not tied to a fucking DNA block?)
+	// else if(old_species.exotic_bloodtype && !exotic_bloodtype)
+	// 	human_who_gained_species.dna.blood_type = random_blood_type()
 
 	//Resets blood if it is excessively high so they don't gib
 	normalize_blood(human_who_gained_species)
@@ -563,44 +563,46 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	SEND_SIGNAL(C, COMSIG_SPECIES_LOSS, src)
 
-/**
- * Proc called when mail goodies need to be updated for this species.
- *
- * Updates the mail goodies if that is required. e.g. for the blood deficiency quirk, which sends bloodbags to quirk holders, update the sent bloodpack to match the species' exotic blood.
- * This is currently only used for the blood deficiency quirk but more can be added as needed.
- * Arguments:
- * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
- */
-/datum/species/proc/update_mail_goodies(mob/living/carbon/human/recipient)
-	update_quirk_mail_goodies(recipient, recipient.get_quirk(/datum/quirk/blooddeficiency))
+// NON-MODULE CHANGE
+// /**
+//  * Proc called when mail goodies need to be updated for this species.
+//  *
+//  * Updates the mail goodies if that is required. e.g. for the blood deficiency quirk, which sends bloodbags to quirk holders, update the sent bloodpack to match the species' exotic blood.
+//  * This is currently only used for the blood deficiency quirk but more can be added as needed.
+//  * Arguments:
+//  * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
+//  */
+// /datum/species/proc/update_mail_goodies(mob/living/carbon/human/recipient)
+// 	update_quirk_mail_goodies(recipient, recipient.get_quirk(/datum/quirk/blooddeficiency))
 
-/**
- * Updates the mail goodies of a specific quirk.
- *
- * Updates the mail goodies belonging to a specific quirk.
- * Add implementation as needed for each individual species. The base species proc should give the species the 'default' version of whatever mail goodies are required.
- * Arguments:
- * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
- * * datum/quirk/quirk - the quirk to update the mail goodies of. Use get_quirk(datum/quirk/some_quirk) to get the actual mob's quirk to pass.
- * * list/mail_goodies - a list of mail goodies. Generally speaking you should not be using this argument on the initial function call. You should instead add to the species' implementation of this proc.
- */
-/datum/species/proc/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies)
-	if(isnull(quirk))
-		return
-	if(length(mail_goodies))
-		quirk.mail_goodies = mail_goodies
-		return
-	if(istype(quirk, /datum/quirk/blooddeficiency))
-		if(HAS_TRAIT(recipient, TRAIT_NOBLOOD) && isnull(recipient.dna.species.exotic_blood))  // TRAIT_NOBLOOD and no exotic blood (yes we have to check for both, jellypeople exist)
-			quirk.mail_goodies = list() // means no blood pack gets sent to them.
-			return
+// NON-MODULE CHANGE
+// /**
+//  * Updates the mail goodies of a specific quirk.
+//  *
+//  * Updates the mail goodies belonging to a specific quirk.
+//  * Add implementation as needed for each individual species. The base species proc should give the species the 'default' version of whatever mail goodies are required.
+//  * Arguments:
+//  * * mob/living/carbon/human/recipient - the mob receiving the mail goodies
+//  * * datum/quirk/quirk - the quirk to update the mail goodies of. Use get_quirk(datum/quirk/some_quirk) to get the actual mob's quirk to pass.
+//  * * list/mail_goodies - a list of mail goodies. Generally speaking you should not be using this argument on the initial function call. You should instead add to the species' implementation of this proc.
+//  */
+// /datum/species/proc/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies)
+// 	if(isnull(quirk))
+// 		return
+// 	if(length(mail_goodies))
+// 		quirk.mail_goodies = mail_goodies
+// 		return
+// 	// NON-MODULE CHANGE
+// 	if(istype(quirk, /datum/quirk/blooddeficiency) && HAS_TRAIT(recipient, TRAIT_NOBLOOD))  // TRAIT_NOBLOOD and no exotic blood (yes we have to check for both, jellypeople exist)
+// 		quirk.mail_goodies = list() // means no blood pack gets sent to them.
+// 		return
 
 
-	// The default case if no species implementation exists. Set quirk's mail_goodies to initial.
-	var/datum/quirk/readable_quirk = new quirk.type
-	quirk.mail_goodies = readable_quirk.mail_goodies
-	qdel(readable_quirk) // We have to do it this way because initial will not work on lists in this version of DM
-	return
+// 	// The default case if no species implementation exists. Set quirk's mail_goodies to initial.
+// 	var/datum/quirk/readable_quirk = new quirk.type
+// 	quirk.mail_goodies = readable_quirk.mail_goodies
+// 	qdel(readable_quirk) // We have to do it this way because initial will not work on lists in this version of DM
+// 	return
 
 /**
  * Handles the body of a human
@@ -636,33 +638,32 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			var/obj/item/bodypart/leg/right/right_leg = species_human.get_bodypart(BODY_ZONE_R_LEG)
 			var/obj/item/bodypart/leg/left/left_leg = species_human.get_bodypart(BODY_ZONE_L_LEG)
 			var/datum/sprite_accessory/markings = GLOB.moth_markings_list[species_human.dna.features["moth_markings"]]
+			var/mutable_appearance/marking = mutable_appearance(layer = -BODY_LAYER, appearance_flags = KEEP_TOGETHER)
 			if(noggin && (IS_ORGANIC_LIMB(noggin)))
-				var/mutable_appearance/markings_head_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_head", -BODY_LAYER)
-				markings_head_overlay.pixel_y += height_offset
-				standing += markings_head_overlay
+				var/mutable_appearance/markings_head_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_head")
+				marking.overlays += markings_head_overlay
 
 			if(chest && (IS_ORGANIC_LIMB(chest)))
-				var/mutable_appearance/markings_chest_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_chest", -BODY_LAYER)
-				markings_chest_overlay.pixel_y += height_offset
-				standing += markings_chest_overlay
+				var/mutable_appearance/markings_chest_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_chest")
+				marking.overlays += markings_chest_overlay
 
 			if(right_arm && (IS_ORGANIC_LIMB(right_arm)))
-				var/mutable_appearance/markings_r_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_arm", -BODY_LAYER)
-				markings_r_arm_overlay.pixel_y += height_offset
-				standing += markings_r_arm_overlay
+				var/mutable_appearance/markings_r_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_arm")
+				marking.overlays += markings_r_arm_overlay
 
 			if(left_arm && (IS_ORGANIC_LIMB(left_arm)))
-				var/mutable_appearance/markings_l_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_arm", -BODY_LAYER)
-				markings_l_arm_overlay.pixel_y += height_offset
-				standing += markings_l_arm_overlay
+				var/mutable_appearance/markings_l_arm_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_arm")
+				marking.overlays += markings_l_arm_overlay
 
 			if(right_leg && (IS_ORGANIC_LIMB(right_leg)))
-				var/mutable_appearance/markings_r_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_leg", -BODY_LAYER)
-				standing += markings_r_leg_overlay
+				var/mutable_appearance/markings_r_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_r_leg")
+				marking.overlays += markings_r_leg_overlay
 
 			if(left_leg && (IS_ORGANIC_LIMB(left_leg)))
-				var/mutable_appearance/markings_l_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_leg", -BODY_LAYER)
-				standing += markings_l_leg_overlay
+				var/mutable_appearance/markings_l_leg_overlay = mutable_appearance(markings.icon, "[markings.icon_state]_l_leg")
+				marking.overlays += markings_l_leg_overlay
+
+			standing += marking
 
 	//Underwear, Undershirts & Socks
 	if(!HAS_TRAIT(species_human, TRAIT_NO_UNDERWEAR))
@@ -1034,10 +1035,20 @@ GLOBAL_LIST_EMPTY(features_by_species)
  **/
 /datum/species/proc/handle_chemical(datum/reagent/chem, mob/living/carbon/human/affected, seconds_per_tick, times_fired)
 	SHOULD_CALL_PARENT(TRUE)
-	if(chem.type == exotic_blood)
-		affected.blood_volume = min(affected.blood_volume + round(chem.volume, 0.1), BLOOD_VOLUME_MAXIMUM)
-		affected.reagents.del_reagent(chem.type)
-		return COMSIG_MOB_STOP_REAGENT_CHECK
+	// NON-MODULE CHANGE
+	// Cringe but blood handles this on its own
+	// This also has problems of its own but that's better fixed later I think
+	if(!istype(chem, /datum/reagent/blood))
+		var/datum/blood_type/blood = affected.get_blood_type()
+		if(chem.type == blood?.reagent_type)
+			affected.blood_volume = min(affected.blood_volume + round(chem.volume, 0.1), BLOOD_VOLUME_MAXIMUM)
+			affected.reagents.del_reagent(chem.type)
+			return COMSIG_MOB_STOP_REAGENT_CHECK
+		if(chem.type == blood?.restoration_chem && affected.blood_volume < BLOOD_VOLUME_NORMAL)
+			affected.blood_volume += 0.25 * seconds_per_tick
+			affected.reagents.remove_reagent(chem.type, chem.metabolization_rate * seconds_per_tick)
+			return COMSIG_MOB_STOP_REAGENT_CHECK
+	// NON-MODULE CHANGE END
 	if(!chem.overdosed && chem.overdose_threshold && chem.volume >= chem.overdose_threshold && !HAS_TRAIT(affected, TRAIT_OVERDOSEIMMUNE))
 		chem.overdosed = TRUE
 		chem.overdose_start(affected)
@@ -1925,22 +1936,14 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			SPECIES_PERK_DESC = "[plural_form] do not have blood.",
 		))
 
-	// Otherwise, check if their exotic blood is a valid typepath
-	else if(ispath(exotic_blood))
-		to_add += list(list(
-			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
-			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = initial(exotic_blood.name),
-			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_blood.name)], which can make recieving medical treatment harder.",
-		))
-
-	// Otherwise otherwise, see if they have an exotic bloodtype set
+	// NON-MODULE CHANGE for blood
+	// Otherwise, check for exotic blood types
 	else if(exotic_bloodtype)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = "Exotic Blood",
-			SPECIES_PERK_DESC = "[plural_form] have \"[exotic_bloodtype]\" type blood, which can make recieving medical treatment harder.",
+			SPECIES_PERK_NAME = initial(exotic_bloodtype.name),
+			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_bloodtype.name)], which can make recieving medical treatment harder.",
 		))
 
 	return to_add

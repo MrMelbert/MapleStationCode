@@ -7,6 +7,7 @@
 	slot_flags = ITEM_SLOT_MASK
 	strip_delay = 40
 	equip_delay_other = 40
+	blood_overlay_type = "mask" // NON-MODULE CHANGE reworking clothing blood overlays
 	var/modifies_speech = FALSE
 	var/mask_adjusted = FALSE
 	var/adjusted_flags = null
@@ -58,8 +59,11 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-		if(GET_ATOM_BLOOD_DNA_LENGTH(src))
-			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
+			// NON-MODULE CHANGE reworking clothing blood overlays
+
+// NON-MODULE CHANGE reworking clothing blood overlays
+/obj/item/clothing/mask/appears_bloody()
+	return ..() && (body_parts_covered & HEAD)
 
 /obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()

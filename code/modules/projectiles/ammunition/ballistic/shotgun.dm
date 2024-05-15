@@ -168,6 +168,23 @@
 /obj/item/ammo_casing/shotgun/dart/attackby()
 	return
 
+// NON-MODULE CHANGE
+/obj/item/ammo_casing/shotgun/dart/ready_proj(atom/target, mob/living/user, quiet, zone_override, atom/fired_from)
+	if(!istype(loaded_projectile, /obj/projectile/bullet/dart))
+		return ..()
+
+	var/obj/projectile/bullet/dart/loaded_dart = loaded_projectile
+
+	var/obj/item/reagent_containers/syringe/real_dart = new()
+	real_dart.reagents.maximum_volume = reagents.maximum_volume
+	real_dart.name = name
+	real_dart.item_flags |= DROPDEL
+
+	reagents.trans_to(real_dart, reagents.maximum_volume, transferred_by = user)
+
+	loaded_dart.add_syringe(real_dart)
+	return ..()
+
 /obj/item/ammo_casing/shotgun/dart/bioterror
 	desc = "An improved shotgun dart filled with deadly toxins. Can be injected with up to 30 units of any chemical."
 	reagent_amount = 30

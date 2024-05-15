@@ -5,7 +5,7 @@
 	righthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_righthand.dmi'
 	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
 	name = "Sheathe Basetype Item"
-	desc = "Whoa there buddy! You've got the Sheathe Basetype, if you're looking for the captain's sheathe, try /obj/item/storage/belt/sabre !" // this will be changed when i bother to post this refactor to tg
+	desc = "Whoa there buddy! You've got the Sheathe Basetype, if you're looking for the captain's sheathe, try /obj/item/storage/belt/sabre !" // this will be changed if i bother to post this refactor to tg
 	var/altclick_tip = "Altclick to draw the ITEM"
 	icon_state = "baseball_pack"
 	inhand_icon_state = "baseball_pack"
@@ -21,7 +21,7 @@
 	atom_storage.max_slots = 1
 	atom_storage.max_specific_storage = max_weight_class
 	atom_storage.set_holdable(storable_items)
-	
+
 /obj/item/storage/belt/sheathe/examine(mob/user)
 	. = ..()
 	if(length(contents))
@@ -43,29 +43,6 @@
 	inhand_icon_state = initial(inhand_icon_state)
 	worn_icon_state = initial(worn_icon_state)
 	return ..()
-
-/obj/item/storage/belt/sheathe/maugrimsheathe
-	icon = 'maplestation_modules/icons/obj/clothing/belts.dmi'
-	lefthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_lefthand.dmi'
-	righthand_file = 'maplestation_modules/icons/mob/inhands/clothes/belts_righthand.dmi'
-	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
-	name = "Maugrim's Sheathe"
-	desc = "A sheathe"
-	altclick_tip = "Altclick to draw the sword"
-	icon_state = "maugrim_sheathe"
-	inhand_icon_state = "maugrim_sheathe"
-	worn_icon_state = "maugrim_sheathe"
-	w_class = WEIGHT_CLASS_BULKY
-	content_overlays = TRUE
-	storable_items = list(/obj/item/melee/sabre/maugrim)
-	max_weight_class = WEIGHT_CLASS_HUGE
-
-/obj/item/storage/belt/sheathe/maugrimsheathe/update_icon_state()
-	. = ..()
-	if(length(contents))
-		icon_state += "-sword"
-		inhand_icon_state += "-sword"
-		worn_icon_state += "-sword"
 
 // baseball bat sheathe
 /obj/item/storage/belt/sheathe/baseball

@@ -131,34 +131,4 @@
 		new /obj/item/melee/psych_rock(loc)
 		paperweight_spawned = TRUE
 
-/obj/item/melee/sabre/maugrim
-	name = "Maugrim"
-	desc = "Hilda Brandt's longsword. It was christened after slaying a space-werewolf of the same name." // todo
-	force = 20
-	block_chance = 33
-	armour_penetration = 10
-	icon_state = "maugrim"
-	icon = 'maplestation_modules/icons/obj/weapons.dmi'
-	inhand_icon_state = "maugrim"
-	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
 
-/obj/item/melee/sabre/gehenna // matthew's sword when he's asset protection
-	name = "Gehenna"
-	desc = "The christened blade of Matthew Scoria."
-	icon_state = "amber_blade"
-	icon = 'maplestation_modules/icons/obj/weapons.dmi'
-	worn_icon_state = "amber_blade"
-	worn_icon = 'maplestation_modules/icons/mob/clothing/belt.dmi'
-	inhand_icon_state = "amber_blade"
-	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_lefthand.dmi'
-	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/swords_righthand.dmi'
-	// this is seperate from the null rod- this will have no anti-magic and higher stats to compensate for it being used by a command member who refuses to use energy guns
-	force = 20
-	sharpness = SHARP_EDGED
-	slot_flags = ITEM_SLOT_BELT | ITEM_SLOT_SUITSTORE
-	block_chance = 25
-	armour_penetration = 20
-	w_class = WEIGHT_CLASS_HUGE
-	attack_verb_continuous = list("stabs", "cuts", "slashes", "power attacks")
-	attack_verb_simple = list("stab", "cut", "slash", "power attack")

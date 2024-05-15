@@ -23,8 +23,8 @@
 	plasmaman_outfit = /datum/outfit/plasmaman // no outfit yet
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_SEC
-	bounty_types = CIV_JOB_SEC
+	paycheck_department = ACCOUNT_SRV
+	bounty_types = CIV_JOB_RANDOM
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM) // The most royal of all metabolism!
 
@@ -62,6 +62,9 @@
 	suit = /obj/item/clothing/suit/toggle/noble
 	shoes = /obj/item/clothing/shoes/noble
 	id_trim = /datum/id_trim/job/noble_ambassador
+	box = /obj/item/storage/box/survival
+
+	backpack_contents = list(/obj/item/melee/baton/telescopic = 1)
 
 /datum/outfit/job/noble_ambassador/pre_equip(mob/living/carbon/human/H)
 	..()

@@ -23,11 +23,11 @@
 
 /datum/action/cooldown/spell/pointed/apetra_vulnera/cast(mob/living/carbon/human/cast_on)
 	. = ..()
-	
+
 	if(IS_HERETIC_OR_MONSTER(cast_on))
 		return FALSE
 
-	if(!cast_on.blood_volume)
+	if(HAS_TRAIT(cast_on, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 		return FALSE
 
 	if(cast_on.can_block_magic(antimagic_flags))
@@ -44,7 +44,7 @@
 		a_limb_got_damaged = TRUE
 		var/datum/wound/slash/crit_wound = new wound_type()
 		crit_wound.apply_wound(bodypart)
-	
+
 	if(!a_limb_got_damaged)
 		var/datum/wound/slash/crit_wound = new wound_type()
 		crit_wound.apply_wound(pick(cast_on.bodyparts))
@@ -53,7 +53,7 @@
 		span_danger("[cast_on]'s scratches and bruises are torn open by an unholy force!"),
 		span_danger("Your scratches and bruises are torn open by some horrible unholy force!")
 	)
-	
+
 	new /obj/effect/temp_visual/cleave(get_turf(cast_on))
 
 	return TRUE

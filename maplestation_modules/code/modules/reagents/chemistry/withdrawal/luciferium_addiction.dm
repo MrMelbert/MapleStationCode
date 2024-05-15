@@ -12,11 +12,17 @@
 	withdrawal_stage_messages = list(
 		"I feel weak... I need some Luciferium.",
 		"I'd punch someone if I don't get some Luciferium!",
-		"It hurts all over! I'd kill for Luciferium!"
-		)
+		"It hurts all over! I'd kill for Luciferium!",
+	)
 	light_withdrawal_moodlet = /datum/mood_event/luciferium_light
 	medium_withdrawal_moodlet = /datum/mood_event/luciferium_medium
 	severe_withdrawal_moodlet = /datum/mood_event/luciferium_heavy
+
+/datum/addiction/luciferium/process_addiction(mob/living/carbon/affected_carbon, seconds_per_tick, times_fired)
+	if(HAS_TRAIT(affected_carbon, TRAIT_STASIS))
+		return
+
+	return ..()
 
 /datum/addiction/luciferium/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon)
 	. = ..()
@@ -69,4 +75,4 @@
 	if(current_addiction_cycle >= WITHDRAWAL_STAGE1_START_CYCLE)
 		to_chat(affected_carbon, span_green("Your [name] withdrawal subsides... You have bought yourself time."))
 	affected_carbon.unset_pain_mod(PAIN_MOD_LUCIFERIUM_ADDICT)
-	. = ..()
+	return ..()

@@ -2,6 +2,16 @@
 
 #define BODYPART_ID_SYNTH "synth"
 
+/mob/living/carbon/human/species/synth
+	race = /datum/species/synth
+
+/mob/living/carbon/human/species/synth/disguised
+
+/mob/living/carbon/human/species/synth/disguised/Initialize(mapload)
+	. = ..()
+	var/datum/species/synth/synth = dna.species
+	synth.disguise_as(src, /datum/species/human)
+
 /datum/species/synth
 	name = "Synth"
 	id = SPECIES_SYNTH
@@ -38,6 +48,7 @@
 	mutanteyes = /obj/item/organ/internal/eyes/robotic
 	mutantears = /obj/item/organ/internal/ears/cybernetic
 	species_pain_mod = 0.2
+	exotic_bloodtype = /datum/blood_type/oil
 	/// Reference to the species we're disguised as.
 	VAR_FINAL/datum/species/disguise_species
 	/// If TRUE, synth limbs will update when attached and detached.
@@ -183,6 +194,9 @@
 	fixed_mut_color = disguise_species.fixed_mut_color
 	hair_color = disguise_species.hair_color
 
+	if(isnull(synth.client?.prefs) || synth.client.prefs.read_preference(/datum/preference/choiced/synth_blood) == "As Disguise")
+		exotic_bloodtype = disguise_species.exotic_bloodtype
+
 	synth.add_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
 	synth.update_body(TRUE)
@@ -205,6 +219,8 @@
 	name = initial(name)
 	fixed_mut_color = initial(fixed_mut_color)
 	hair_color = initial(hair_color)
+
+	exotic_bloodtype = /datum/blood_type/oil
 
 	synth.remove_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
@@ -254,7 +270,7 @@
 /datum/species/synth/proc/disguise_damage(mob/living/carbon/human/synth)
 	SIGNAL_HANDLER
 
-	if(!limb_updates_on_change)
+	if(!limb_updates_on_change || isnull(disguise_species))
 		return
 
 	var/list/obj/item/bodypart/changed_limbs = list()
@@ -354,10 +370,10 @@
 	should_draw_greyscale = FALSE
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
-	biological_state = BIO_ROBOTIC
+	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	head_flags = NONE
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
@@ -369,10 +385,10 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
-	biological_state = BIO_ROBOTIC
+	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	wing_types = list(/obj/item/organ/external/wings/functional/angel, /obj/item/organ/external/wings/functional/robotic)
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
@@ -384,10 +400,10 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
-	biological_state = BIO_ROBOTIC
+	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
 /obj/item/bodypart/arm/left/synth
@@ -398,10 +414,10 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
-	biological_state = BIO_ROBOTIC
+	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
 /obj/item/bodypart/leg/right/synth
@@ -412,10 +428,10 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
-	biological_state = BIO_ROBOTIC
+	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
 /obj/item/bodypart/leg/left/synth
@@ -426,10 +442,10 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
 	brute_modifier = 0.8
 	burn_modifier = 0.8
-	biological_state = BIO_ROBOTIC
+	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
 #undef BODYPART_ID_SYNTH
