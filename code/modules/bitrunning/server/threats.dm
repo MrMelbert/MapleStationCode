@@ -76,7 +76,7 @@
 		job_bans = ROLE_GLITCH, \
 		to_call = to_call, \
 		title = role_name, \
-		header = "Bitrunning Malfunction", \
+		header = "Malfunction", \
 	)
 
 	return mutation_target
