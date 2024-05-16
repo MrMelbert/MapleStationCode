@@ -247,4 +247,4 @@
 /datum/chemical_reaction/true_miracle/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to created_volume)
-		new /obj/item/stack/sheet/mineral/plasma(location) // Replace with miracle matter.
+		new /obj/item/stack/sheet/mineral/miracle_matter(location) // Replace with miracle matter.

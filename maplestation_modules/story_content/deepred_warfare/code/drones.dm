@@ -1,6 +1,7 @@
+// Root of all drones. Is abstract and should not be spawned.
 /mob/living/basic/reddrone
-	name = "light airborne drone"
-	desc = "A small, flying drone. It's equipped with a rapid-fire machinecoil."
+	name = "drone error"
+	desc = "You should not be seeing this error."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/reddrone.dmi'
 	icon_state = "rapid_light_flying"
 	icon_living = "rapid_light_flying"
@@ -8,14 +9,7 @@
 	gender = NEUTER
 	mob_biotypes = MOB_ROBOTIC
 
-	// Relatively weak armour.
-	health = 40
-	maxHealth = 40
-
-	//Fast as fuck.
-	speed = 0.5
-
-	// But, armour is optimized for thermal and energy damage.
+	// Armour is optimized for thermal and energy damage.
 	damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0)
 
 	// Most drones are ranged attackers so they don't deal much melee damage.
@@ -43,24 +37,24 @@
 	minimum_survivable_temperature = 0
 	maximum_survivable_temperature = 800
 
-	ai_controller = /datum/ai_controller/basic_controller/rapidlightflying
-
 	var/ranged = TRUE
 
 	var/ranged_cooldown = 6 SECONDS
 	var/projectile_type = /obj/projectile/bullet/coil
 	var/shoot_sound = 'sound/weapons/gun/smg/shot.ogg'
-	var/burst_amount = 8
+	var/burst_amount = 4
 	var/burst_cooldown = 0.125 SECONDS
 
 	var/flying = TRUE
-	var/static/list/death_loot = list(/obj/item/stack/sheet/plasteel = 3, /obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
+	var/static/list/death_loot
 
 /mob/living/basic/reddrone/Initialize(mapload)
 	. = ..()
 
 	if(flying)
 		AddElement(/datum/element/simple_flying)
+
+	// AddComponent(/datum/component/basic_mob_attack_telegraph, \telegraph_time = 0.5 SECONDS, \sound_path = 'sound/weapons/laser_crank.ogg')
 
 	if(ranged)
 		AddComponent(\
@@ -73,3 +67,21 @@
 		)
 
 	AddElement(/datum/element/death_drops, death_loot)
+
+/mob/living/basic/reddrone/rapid_flying
+	name = "light airborne drone"
+	desc = "A small, flying drone. It's equipped with a rapid-fire machinecoil."
+	icon_state = "rapid_light_flying"
+	icon_living = "rapid_light_flying"
+	icon_dead = "rapid_light_flying_dead"
+
+	// Relatively weak armour.
+	health = 40
+	maxHealth = 40
+
+	//Fast as fuck.
+	speed = 0.5
+
+	ai_controller = /datum/ai_controller/basic_controller/rapidlightflying
+
+	death_loot = list(/obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
