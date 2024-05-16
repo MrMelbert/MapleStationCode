@@ -58,7 +58,7 @@
 		return
 
 	if((organ_flags & (ORGAN_ORGANIC|ORGAN_IRRADIATED)) == (ORGAN_ORGANIC|ORGAN_IRRADIATED))
-		if(SPT_PROB(50, seconds_per_tick))
+		if(SPT_PROB(50, seconds_per_tick) && (isnull(owner) || !HAS_TRAIT(owner, TRAIT_HALT_RADIATION_EFFECTS)))
 			apply_organ_damage(2 * decay_factor * maxHealth * seconds_per_tick)
 			// Chance to gain some free tox damage when taking irradiation organ damage, 50% chance on that to actually feel it
 			if(prob(10) && owner?.apply_damage(1 * seconds_per_tick, TOX, zone) > 0 && owner.stat <= SOFT_CRIT && prob(50))

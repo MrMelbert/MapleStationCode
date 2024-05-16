@@ -94,9 +94,8 @@
 	owner.visible_message(
 		span_boldwarning("[owner]'s [affected_limb.plaintext_zone] bubbles unnaturally, then bursts into blisters!"),
 		span_boldwarning("Your [affected_limb.plaintext_zone] bubbles unnaturally, then bursts into blisters!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
-	if(owner.is_blind()) // melbert todo replace with visible message flag
-		to_chat(owner, span_boldwarning("Your [affected_limb.plaintext_zone] feels like it's bubbling, then burns like hell!"))
 
 	owner.apply_damage(12, BURN, affected_limb)
 	playsound(owner, pick('sound/effects/wounds/sizzle1.ogg', 'sound/effects/wounds/sizzle2.ogg'), 50, vary = TRUE)

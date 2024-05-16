@@ -510,6 +510,13 @@
 	if(HAS_TRAIT(affected_mob, TRAIT_IRRADIATED))
 		if(affected_mob.adjustToxLoss(-1 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
 			return UPDATE_MOB_HEALTH
+	for(var/obj/item/organ/internal/organ in affected_mob.organs)
+		if(!(organ.organ_flags & ORGAN_IRRADIATED))
+			continue
+		organ.apply_organ_damage(-1 * REM * seconds_per_tick)
+		if(organ.damage > 0)
+			continue
+		organ.RemoveElement(/datum/element/simple_rad)
 
 /datum/reagent/medicine/pen_acid
 	name = "Pentetic Acid"
@@ -534,9 +541,15 @@
 	. = ..()
 	if(affected_mob.adjustToxLoss(-2 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
 		. = UPDATE_MOB_HEALTH
-	for(var/datum/reagent/R in affected_mob.reagents.reagent_list)
-		if(R != src)
-			affected_mob.reagents.remove_reagent(R.type, 2 * REM * seconds_per_tick)
+	for(var/datum/reagent/purged in affected_mob.reagents.reagent_list - src)
+		affected_mob.reagents.remove_reagent(purged.type, 2 * REM * seconds_per_tick)
+	for(var/obj/item/organ/internal/organ in affected_mob.organs)
+		if(!(organ.organ_flags & ORGAN_IRRADIATED))
+			continue
+		organ.apply_organ_damage(-5 * REM * seconds_per_tick)
+		if(organ.damage > 0)
+			continue
+		organ.RemoveElement(/datum/element/simple_rad)
 
 /datum/reagent/medicine/sal_acid
 	name = "Salicylic Acid"
