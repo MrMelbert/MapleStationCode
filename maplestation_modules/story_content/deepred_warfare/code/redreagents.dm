@@ -104,15 +104,15 @@
 	if(isspaceturf(exposed_turf))
 		return
 
-	radiation_pulse(holder, max_range = 6, threshold = 0.1, chance = 80)
+	radiation_pulse(holder, max_range = 4, threshold = 0.1, chance = 80)
 
-/datum/reagent/miracle/expose_obj(var/obj/exposed_obj)
+/datum/reagent/miracle/expose_obj(obj/exposed_obj)
 	. = ..()
-	radiation_pulse(holder, max_range = 6, threshold = 0.1, chance = 80)
+	radiation_pulse(holder, max_range = 4, threshold = 0.1, chance = 80)
 
-/datum/reagent/miracle/expose_mob(var/mob/living/exposed_mob, var/methods=TOUCH)
+/datum/reagent/miracle/expose_mob(mob/living/exposed_mob, methods=TOUCH)
 	. = ..()
-	radiation_pulse(exposed_mob, max_range = 6, threshold = 0.1, chance = 80)
+	radiation_pulse(exposed_mob, max_range = 4, threshold = 0.1, chance = 80)
 
 /datum/chemical_reaction/miracle_creation
 	results = list(/datum/reagent/miracle = 1)
