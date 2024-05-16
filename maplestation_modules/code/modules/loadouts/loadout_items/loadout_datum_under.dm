@@ -366,3 +366,7 @@
 /datum/loadout_item/under/formal/yukata3
 	name = "Blue Yukata"
 	item_path = /obj/item/clothing/under/yukata/blue
+
+/datum/loadout_item/under/formal/grey
+	name = "Designer Outfit"
+	item_path = /obj/item/clothing/under/jumpsuit/greyshirt

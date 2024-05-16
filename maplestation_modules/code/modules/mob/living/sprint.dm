@@ -1,5 +1,17 @@
 /atom/movable/screen/mov_intent
+	name = "run/walk/sneak cycle"
+	desc = "Cycles between move intents. Right click to cycle backwards."
+	maptext_width = 64
+	maptext_x = -15
+	maptext_y = 20
+	/// Style applied to the maptext used on the selector
+	var/maptext_style = "text-align:center; -dm-text-outline: 1px black"
+	/// The sprint bar that appears over the bottom of our move selector
 	var/mutable_appearance/sprint_bar
+
+/atom/movable/screen/mov_intent/Click(location, control, params)
+	var/list/modifiers = params2list(params)
+	cycle_intent(backwards = LAZYACCESS(modifiers, RIGHT_CLICK))
 
 /atom/movable/screen/mov_intent/update_overlays()
 	. = ..()
@@ -7,15 +19,19 @@
 		return
 
 	if(isnull(sprint_bar))
-		sprint_bar = mutable_appearance(
-			icon = 'icons/effects/progressbar.dmi',
-			icon_state = "prog_bar_100",
-		)
+		sprint_bar = mutable_appearance('icons/effects/progressbar.dmi')
 		sprint_bar.pixel_y -= 2
 
 	var/mob/living/carbon/human/runner = hud.mymob
 	sprint_bar.icon_state = "prog_bar_[round(((runner.sprint_length / runner.sprint_length_max) * 100), 5)]"
 	. += sprint_bar
+
+/atom/movable/screen/mov_intent/proc/cycle_intent(backwards = FALSE)
+	var/mob/living/cycler = hud?.mymob
+	if(!istype(cycler))
+		return
+
+	cycler.toggle_move_intent(backwards)
 
 /datum/movespeed_modifier/momentum
 	movetypes = GROUND
@@ -41,12 +57,24 @@
 
 /mob/living/carbon/human/toggle_move_intent()
 	. = ..()
+	play_movespeed_sound()
+
+/mob/living/carbon/human/set_move_intent(new_intent)
+	. = ..()
+	play_movespeed_sound()
+
+/mob/living/carbon/human/proc/play_movespeed_sound()
 	if(!client?.prefs.read_preference(/datum/preference/toggle/sound_combatmode))
 		return
-	if(move_intent == MOVE_INTENT_RUN)
-		playsound_local(get_turf(src), 'maplestation_modules/sound/sprintactivate.ogg', 75, vary = FALSE, pressure_affected = FALSE)
-	else
-		playsound_local(get_turf(src), 'maplestation_modules/sound/sprintdeactivate.ogg', 75, vary = FALSE, pressure_affected = FALSE)
+	switch(move_intent)
+		if(MOVE_INTENT_RUN)
+			playsound_local(get_turf(src), 'maplestation_modules/sound/sprintactivate.ogg', 75, vary = FALSE, pressure_affected = FALSE)
+		if(MOVE_INTENT_WALK)
+			playsound_local(get_turf(src), 'maplestation_modules/sound/sprintdeactivate.ogg', 75, vary = FALSE, pressure_affected = FALSE)
+		if(MOVE_INTENT_SNEAK)
+			var/sound/sound_pitched = sound('maplestation_modules/sound/sprintdeactivate.ogg')
+			sound_pitched.pitch = 0.5
+			playsound_local(get_turf(src), sound_to_use = sound_pitched, vol = 75, vary = FALSE, pressure_affected = FALSE)
 
 /mob/living/carbon/human/Life(seconds_per_tick, times_fired)
 	. = ..()
@@ -76,7 +104,7 @@
 
 	// Okay you're gonna stamcrit yourself, slow your roll
 	if(getStaminaLoss() >= maxHealth * 0.9)
-		toggle_move_intent()
+		set_move_intent(MOVE_INTENT_WALK)
 		return
 
 	adjustStaminaLoss(1)

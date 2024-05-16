@@ -80,15 +80,18 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)))
 
 /obj/item/organ/Destroy()
-	if(bodypart_owner && !owner && !QDELETED(bodypart_owner))
+	if(isnull(owner) && !isnull(bodypart_owner))
 		bodypart_remove(bodypart_owner)
-	else if(owner)
+	else if(!isnull(owner))
 		// The special flag is important, because otherwise mobs can die
 		// while undergoing transformation into different mobs.
 		Remove(owner, special=TRUE)
 	else
 		STOP_PROCESSING(SSobj, src)
 	return ..()
+
+/obj/item/organ/dump_harddel_info()
+	return "Owner: [owner || "null"] | Bodypart Owner: [bodypart_owner || "null"] | Loc: [loc || "nullspace"]"
 
 /// Add a Trait to an organ that it will give its owner.
 /obj/item/organ/proc/add_organ_trait(trait)

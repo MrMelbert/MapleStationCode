@@ -556,17 +556,24 @@
 			dump_inventory_contents()
 
 /obj/machinery/suit_storage_unit/process(seconds_per_tick)
-	var/obj/item/stock_parts/cell/cell
-	if(suit && istype(suit))
-		cell = suit.cell
-	if(mod)
-		cell = mod.get_cell()
-	if(!cell || cell.charge == cell.maxcharge)
+	var/list/cells_to_charge = list()
+	for(var/obj/item/charging in list(mod, suit, helmet, mask, storage))
+		var/obj/item/stock_parts/cell/cell_charging = charging.get_cell()
+		if(!istype(cell_charging) || cell_charging.charge == cell_charging.maxcharge)
+			continue
+
+		cells_to_charge += cell_charging
+
+	var/cell_count = length(cells_to_charge)
+	if(cell_count <= 0)
 		return
 
-	var/cell_charged = cell.give(final_charge_rate * seconds_per_tick)
-	if(cell_charged)
-		use_power((active_power_usage + final_charge_rate) * seconds_per_tick)
+	var/charge_per_item = (final_charge_rate * seconds_per_tick) / cell_count
+	for(var/obj/item/stock_parts/cell/cell as anything in cells_to_charge)
+		var/charge_used = use_power_from_net(charge_per_item, take_any = TRUE)
+		if(charge_used <= 0)
+			break
+		cell.give(charge_used)
 
 /obj/machinery/suit_storage_unit/proc/shock(mob/user, prb)
 	if(!prob(prb))

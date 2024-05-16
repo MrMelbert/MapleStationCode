@@ -13589,7 +13589,7 @@
 /area/station/hallway/primary/central)
 "aVR" = (
 /obj/structure/sign/directions/evac{
-	dir = 1;
+	dir = 8;
 	pixel_x = 32;
 	pixel_y = -8
 	},
@@ -20015,6 +20015,12 @@
 	},
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/effect/turf_decal/tile/neutral/full,
+/obj/item/paper_bin{
+	pixel_y = -11
+	},
+/obj/item/pen{
+	pixel_y = -11
+	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "bwm" = (
@@ -20974,10 +20980,10 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "bzj" = (
-/obj/structure/table,
-/obj/item/paper_bin,
-/obj/item/pen,
 /obj/effect/turf_decal/tile/neutral/full,
+/obj/structure/rack,
+/obj/item/integrated_circuit/loaded/hello_world,
+/obj/item/integrated_circuit/loaded/speech_relay,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "bzk" = (
@@ -43543,6 +43549,12 @@
 /obj/machinery/computer/order_console/bitrunning,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
+"luF" = (
+/mob/living/basic/mouse/gray{
+	name = "Yuri"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/department/engine)
 "lvq" = (
 /turf/closed/wall,
 /area/station/security/prison/toilet)
@@ -46965,7 +46977,7 @@
 /area/station/security/prison)
 "nVz" = (
 /obj/structure/sign/directions/evac{
-	dir = 8;
+	dir = 1;
 	pixel_x = -32;
 	pixel_y = 8
 	},
@@ -52441,7 +52453,7 @@
 /area/station/service/bar/backroom)
 "rQa" = (
 /obj/structure/sign/directions/evac{
-	dir = 8;
+	dir = 1;
 	pixel_x = -32;
 	pixel_y = 8
 	},
@@ -55078,10 +55090,8 @@
 	},
 /area/station/cargo/storage)
 "tAK" = (
-/obj/structure/rack,
-/obj/item/integrated_circuit/loaded/speech_relay,
-/obj/item/integrated_circuit/loaded/hello_world,
 /obj/effect/turf_decal/tile/neutral/full,
+/obj/machinery/module_duplicator,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "tAX" = (
@@ -87447,7 +87457,7 @@ new
 bva
 dye
 nVU
-bDi
+luF
 qBv
 fSx
 dNr
