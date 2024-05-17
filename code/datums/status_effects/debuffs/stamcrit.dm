@@ -30,9 +30,12 @@
 	if(!.)
 		return .
 
-	if(owner.stat == CONSCIOUS)
+	if(owner.stat <= SOFT_CRIT)
 		to_chat(owner, span_notice("You're too exhausted to keep going..."))
 	owner.add_traits(list(TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED), STAMINA)
+	if(iscarbon(owner))
+		var/mob/living/carbon/stunned = owner
+		stunned.adjust_sprint_left(-INFINITY)
 	return .
 
 /datum/status_effect/incapacitating/stamcrit/on_remove()
