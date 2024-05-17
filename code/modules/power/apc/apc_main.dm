@@ -251,6 +251,12 @@
 		disconnect_terminal()
 	return ..()
 
+/obj/machinery/power/apc/proc/on_saboteur(datum/source, disrupt_duration)
+	SIGNAL_HANDLER
+	disrupt_duration *= 0.1 // so, turns out, failure timer is in seconds, not deciseconds; without this, disruptions last 10 times as long as they probably should
+	energy_fail(disrupt_duration)
+	return TRUE
+
 /obj/machinery/power/apc/on_set_is_operational(old_value)
 	update_area_power_usage(!old_value)
 
