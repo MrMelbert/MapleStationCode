@@ -78,6 +78,10 @@
 "aq" = (
 /turf/closed/wall,
 /area/mine/laborcamp)
+"au" = (
+/obj/structure/railing/wooden_fence,
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "aw" = (
 /obj/item/reagent_containers/cup/glass/colocup,
 /turf/open/misc/asteroid/basalt/lava_land_surface,
@@ -184,6 +188,16 @@
 	},
 /turf/open/floor/iron/smooth,
 /area/mine/laborcamp/production)
+"ck" = (
+/obj/structure/railing/wooden_fence{
+	dir = 9
+	},
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
+"cm" = (
+/obj/structure/ore_container/food_trough/raptor_trough,
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "cn" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/smooth_edge{
@@ -208,7 +222,7 @@
 /area/mine/laborcamp/quarters)
 "cz" = (
 /obj/structure/cable,
-/obj/machinery/power/smes/super/full,
+/obj/machinery/power/smes/full,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/mine/maintenance/service)
@@ -1464,6 +1478,12 @@
 	},
 /turf/open/floor/carpet/neon/simple/red/nodots,
 /area/mine/cafeteria)
+"ka" = (
+/obj/structure/railing/wooden_fence{
+	dir = 6
+	},
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "kc" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Labor Camp Shuttle Security Airlock"
@@ -2698,7 +2718,7 @@
 	},
 /area/mine/medical)
 "pe" = (
-/obj/machinery/power/smes/super/full,
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/mine/maintenance/labor)
@@ -3175,6 +3195,11 @@
 	dir = 4
 	},
 /area/mine/hydroponics)
+"sj" = (
+/obj/structure/table/wood,
+/obj/item/flashlight/lantern/on,
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "sk" = (
 /obj/structure/railing{
 	dir = 5
@@ -3555,6 +3580,10 @@
 /obj/structure/cable,
 /turf/open/misc/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
+"uE" = (
+/obj/effect/spawner/random/lavaland_mob/raptor,
+/turf/open/misc/asteroid/basalt/lava_land_surface,
+/area/lavaland/surface/outdoors)
 "uF" = (
 /obj/item/chair/stool{
 	pixel_x = -2;
@@ -3667,6 +3696,17 @@
 	},
 /turf/open/floor/plating,
 /area/mine/laborcamp/production)
+"vm" = (
+/obj/structure/table/wood,
+/obj/item/raptor_dex{
+	pixel_y = 13
+	},
+/obj/item/raptor_dex{
+	pixel_y = 7
+	},
+/obj/item/raptor_dex,
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "vo" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
@@ -3719,6 +3759,12 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/mine/maintenance/service)
+"vM" = (
+/obj/structure/railing/wooden_fence{
+	dir = 1
+	},
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "vQ" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
@@ -4248,6 +4294,9 @@
 /obj/item/cultivator,
 /turf/open/floor/iron/dark,
 /area/mine/laborcamp)
+"zD" = (
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "zF" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
@@ -4331,6 +4380,10 @@
 "Ab" = (
 /turf/closed/wall,
 /area/mine/laborcamp/security/maintenance)
+"Ac" = (
+/obj/effect/spawner/random/lavaland_mob/raptor,
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "Ae" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -5337,6 +5390,17 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/mine/cafeteria)
+"Gh" = (
+/obj/structure/table/wood,
+/obj/item/soap/deluxe{
+	pixel_y = 11
+	},
+/obj/item/soap/deluxe{
+	pixel_y = 6
+	},
+/obj/item/soap/deluxe,
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "Gj" = (
 /obj/machinery/door/airlock/security/glass{
 	name = "Labor Camp Storage"
@@ -5368,6 +5432,10 @@
 	},
 /turf/open/floor/iron/dark,
 /area/mine/eva)
+"Go" = (
+/obj/item/flashlight/lantern/on,
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "Gr" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
@@ -5623,6 +5691,12 @@
 /obj/item/seeds/carrot,
 /turf/open/floor/iron/dark,
 /area/mine/laborcamp)
+"HF" = (
+/obj/structure/railing/wooden_fence{
+	dir = 4
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface,
+/area/lavaland/surface/outdoors)
 "HH" = (
 /obj/structure/table,
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -6012,6 +6086,12 @@
 	},
 /turf/open/floor/iron,
 /area/mine/lounge)
+"Kj" = (
+/obj/structure/railing/wooden_fence{
+	dir = 5
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface,
+/area/lavaland/surface/outdoors)
 "Kq" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
@@ -6225,6 +6305,12 @@
 	},
 /turf/open/floor/iron,
 /area/mine/lounge)
+"LK" = (
+/obj/structure/railing/wooden_fence{
+	dir = 1
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface,
+/area/lavaland/surface/outdoors)
 "LM" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
@@ -6455,6 +6541,12 @@
 	dir = 8
 	},
 /area/mine/production)
+"Nd" = (
+/obj/structure/railing/wooden_fence{
+	dir = 5
+	},
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "Nh" = (
 /obj/machinery/light/small/directional/east,
 /turf/open/misc/asteroid/basalt/lava_land_surface,
@@ -7056,6 +7148,18 @@
 	},
 /turf/open/floor/iron/white/smooth_edge,
 /area/mine/cafeteria)
+"Rm" = (
+/obj/structure/railing/wooden_fence{
+	dir = 8
+	},
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
+"Rn" = (
+/obj/structure/railing/wooden_fence{
+	dir = 9
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface,
+/area/lavaland/surface/outdoors)
 "Ro" = (
 /obj/structure/sink/directional/east,
 /obj/structure/mirror/directional/west,
@@ -7351,6 +7455,12 @@
 	},
 /turf/open/floor/plating,
 /area/mine/production)
+"Tl" = (
+/obj/structure/railing/wooden_fence{
+	dir = 10
+	},
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "To" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/lattice/catwalk/mining,
@@ -7638,15 +7748,6 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/mine/medical)
-"Vj" = (
-/obj/structure/lattice/catwalk/mining,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/item/toy/plush/shark{
-	desc = "A plushie depicting a somewhat cartoonish shark. The tag calls it a 'hákarl', noting that it was made by an obscure furniture manufacturer in old Scandinavia. This one seems to have some cable wiring sticking out of its mouth."
-	},
-/turf/open/lava/smooth/lava_land_surface,
-/area/lavaland/surface/outdoors)
 "Vn" = (
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
@@ -7666,6 +7767,9 @@
 /obj/effect/turf_decal/tile/brown/fourcorners,
 /turf/open/floor/iron/dark,
 /area/mine/production)
+"Vv" = (
+/turf/closed/wall/mineral/wood/nonmetal,
+/area/lavaland/surface)
 "Vz" = (
 /obj/structure/tank_dispenser/oxygen,
 /obj/effect/turf_decal/trimline/brown/filled/line{
@@ -7673,6 +7777,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/mine/eva)
+"VA" = (
+/obj/structure/railing/wooden_fence{
+	dir = 8
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface,
+/area/lavaland/surface/outdoors)
 "VC" = (
 /obj/structure/chair/sofa/bench/left{
 	dir = 8
@@ -7778,6 +7888,12 @@
 /obj/effect/mapping_helpers/airlock/access/any/supply/mining_station,
 /turf/open/floor/iron/dark/textured_large,
 /area/mine/production)
+"Wq" = (
+/obj/structure/railing/wooden_fence{
+	dir = 4
+	},
+/turf/open/misc/hay/lavaland,
+/area/lavaland/surface)
 "WM" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -29680,7 +29796,7 @@ Tf
 aj
 aj
 aj
-Vj
+Ag
 aj
 aj
 aj
@@ -47686,7 +47802,7 @@ aj
 aj
 aj
 ab
-aj
+ab
 aj
 aj
 aj
@@ -48965,15 +49081,15 @@ aj
 aj
 aj
 aj
-aj
-aj
-aj
 ab
 ab
-aj
-aj
-aj
-aj
+ab
+ab
+ab
+ab
+ab
+ab
+ab
 aj
 aj
 "}
@@ -49221,18 +49337,18 @@ aj
 aj
 aj
 aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+Rn
+VA
+VA
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
 "}
 (160,1,1) = {"
 aa
@@ -49477,19 +49593,19 @@ aj
 aj
 aj
 aj
-aj
-aj
-aj
-aj
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+LK
+ab
+ab
+vM
+cm
+zD
+au
+zD
+zD
+cm
+zD
+Vv
 "}
 (161,1,1) = {"
 aa
@@ -49734,19 +49850,19 @@ aj
 aj
 aj
 aj
-aj
-aj
-aj
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+LK
+ab
+ab
+vM
+Go
+zD
+au
+zD
+zD
+Go
+zD
+Vv
 "}
 (162,1,1) = {"
 aa
@@ -49991,19 +50107,19 @@ aj
 aj
 aj
 aj
-aj
-aj
+ab
+LK
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+vM
+zD
+zD
+au
+zD
+zD
+zD
+zD
+Vv
 "}
 (163,1,1) = {"
 aa
@@ -50246,21 +50362,21 @@ aj
 aj
 ab
 aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+ab
+ab
+ab
+LK
+ab
+ab
+Nd
+Wq
+zD
+ka
+zD
+zD
+Wq
+Wq
+Vv
 "}
 (164,1,1) = {"
 aa
@@ -50503,21 +50619,21 @@ aj
 aj
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+ab
+ab
+uE
+ab
+zD
+zD
+zD
+zD
+zD
+Ac
+zD
+zD
+Vv
 "}
 (165,1,1) = {"
 aa
@@ -50762,19 +50878,19 @@ ab
 ab
 ab
 ab
-aj
-aj
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+ab
+ab
+ab
+zD
+vm
+sj
+zD
+zD
+zD
+Gh
+sj
+Vv
 "}
 (166,1,1) = {"
 aa
@@ -51021,17 +51137,17 @@ ab
 ab
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+ab
+ab
+zD
+zD
+Ac
+zD
+zD
+zD
+zD
+zD
+Vv
 "}
 (167,1,1) = {"
 aa
@@ -51277,18 +51393,18 @@ ab
 ab
 ab
 ab
+LK
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+ab
+ck
+Rm
+zD
+Tl
+zD
+zD
+Rm
+Rm
+Vv
 "}
 (168,1,1) = {"
 aa
@@ -51534,18 +51650,18 @@ ab
 ab
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+LK
+ab
+ab
+vM
+zD
+zD
+au
+zD
+zD
+zD
+zD
+Vv
 "}
 (169,1,1) = {"
 aa
@@ -51790,19 +51906,19 @@ ab
 ab
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+ab
+LK
+ab
+ab
+vM
+Go
+zD
+au
+zD
+zD
+Go
+zD
+Vv
 "}
 (170,1,1) = {"
 aa
@@ -52047,19 +52163,19 @@ ab
 ab
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
-aj
+ab
+LK
+ab
+ab
+vM
+cm
+zD
+au
+zD
+zD
+cm
+zD
+Vv
 "}
 (171,1,1) = {"
 aa
@@ -52304,19 +52420,19 @@ ab
 ab
 ab
 ab
-aj
-aj
-aj
-aj
-aj
-aj
 ab
-aj
-aj
-aj
-aj
-aj
-aj
+Kj
+HF
+HF
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
+Vv
 "}
 (172,1,1) = {"
 aa
@@ -52562,10 +52678,10 @@ ab
 ab
 ab
 ab
-aj
-aj
-aj
-aj
+ab
+ab
+ab
+ab
 aj
 aj
 aj
@@ -52819,16 +52935,16 @@ ab
 ab
 ab
 ab
+aj
+aj
+aj
+aj
+aj
+aj
+aj
 ab
-ab
-aj
-aj
-aj
-aj
 aj
 ab
-aj
-aj
 aj
 aj
 "}
