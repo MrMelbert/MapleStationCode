@@ -22,7 +22,7 @@
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT))
 	if(!QDELETED(owner))
 		LAZYREMOVE(owner.max_consciousness_values, type)
-		owner.apply_status_effect(/datum/status_effect/grouped/anesthesia_grog, applied_at)
+		owner.apply_status_effect(/datum/status_effect/anesthesia_grog, applied_at)
 
 /datum/status_effect/grouped/anesthetic/get_examine_text()
 	return span_warning("[owner.p_Theyre()] out cold.")

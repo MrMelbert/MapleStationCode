@@ -96,37 +96,13 @@
 /datum/reagent/healium
 	pain_modifier = 0.75
 
-/datum/reagent/healium/on_mob_metabolize(mob/living/L)
+/datum/reagent/healium/on_mob_metabolize(mob/living/breather)
 	. = ..()
-	L.apply_status_effect(/datum/status_effect/grouped/anesthetic, name)
+	breather.apply_status_effect(/datum/status_effect/grouped/anesthetic, name)
 
-/datum/reagent/healium/on_mob_end_metabolize(mob/living/L)
+/datum/reagent/healium/on_mob_end_metabolize(mob/living/breather)
 	. = ..()
-	L.remove_status_effect(/datum/status_effect/grouped/anesthetic, name)
-
-// Nitrous Oxide can apply some anesthetic, like the gas
-/datum/reagent/nitrous_oxide
-	pain_modifier = 0.75
-
-/datum/reagent/nitrous_oxide/on_mob_metabolize(mob/living/carbon/user)
-	. = ..()
-	RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), PROC_REF(apply_anesthetic))
-	RegisterSignal(user, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(remove_anesthetic))
-	if(HAS_TRAIT(user, TRAIT_KNOCKEDOUT))
-		apply_anesthetic(user)
-
-/datum/reagent/nitrous_oxide/on_mob_end_metabolize(mob/living/carbon/user)
-	. = ..()
-	UnregisterSignal(user, list(SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT)))
-	remove_anesthetic(user)
-
-/datum/reagent/nitrous_oxide/proc/apply_anesthetic(mob/living/carbon/source)
-	SIGNAL_HANDLER
-	source.apply_status_effect(/datum/status_effect/grouped/anesthetic, type)
-
-/datum/reagent/nitrous_oxide/proc/remove_anesthetic(mob/living/carbon/source)
-	SIGNAL_HANDLER
-	source.remove_status_effect(/datum/status_effect/grouped/anesthetic, type)
+	breather.remove_status_effect(/datum/status_effect/grouped/anesthetic, name)
 
 // Cryoxadone slowly heals pain, like wounds.
 // It also helps against shock, sort of.
