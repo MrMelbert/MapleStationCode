@@ -46,7 +46,7 @@
 	var/burst_cooldown = 0.125 SECONDS
 
 	var/flying = TRUE
-	var/list/death_loot
+	// var/list/death_loot
 
 /mob/living/basic/reddrone/Initialize(mapload)
 	. = ..()
@@ -84,4 +84,4 @@
 
 	ai_controller = /datum/ai_controller/basic_controller/rapidlightflying
 
-	death_loot = list(/obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
+	// death_loot = list(/obj/item/stock_parts/capacitor/redtech = 1, /obj/item/stock_parts/servo/redtech = 1)
