@@ -1,4 +1,4 @@
-GLOBAL_VAR_INIT(unbidden_distance, 0) // 0 = empty, 1 = far, 2 = close
+GLOBAL_VAR_INIT(unbidden_distance, 0) // 0 = empty, 1 = very far, 2 = far, 3 = close
 GLOBAL_VAR_INIT(unbidden_ringed, TRUE) // TRUE = ringed, FALSE = not ringed
 GLOBAL_LIST_EMPTY(collective_unbiddens) // A list of all unbidden parallax layers.
 
@@ -34,17 +34,24 @@ GLOBAL_LIST_EMPTY(collective_unbiddens) // A list of all unbidden parallax layer
 			distance = 0
 		if(1)
 			if(ringed)
+				icon_state = "unbidden_very_far_ring"
+			else
+				icon_state = "unbidden_very_far"
+			distance = 1
+			speed = 3
+		if(2)
+			if(ringed)
 				icon_state = "unbidden_far_ring"
 			else
 				icon_state = "unbidden_far"
-			distance = 1
+			distance = 2
 			speed = 4
-		if(2)
+		if(3)
 			if(ringed)
 				icon_state = "unbidden_ring"
 			else
 				icon_state = "unbidden"
-			distance = 2
+			distance = 3
 			speed = 5
 
 /atom/movable/screen/parallax_layer/planet/unbidden/proc/full_update()
@@ -52,7 +59,7 @@ GLOBAL_LIST_EMPTY(collective_unbiddens) // A list of all unbidden parallax layer
 		ringed = TRUE
 	else
 		ringed = FALSE
-	change_distance(distance)
+	change_distance()
 
 /proc/update_unbidden(new_distance, new_ringed)
 	GLOB.unbidden_distance = new_distance

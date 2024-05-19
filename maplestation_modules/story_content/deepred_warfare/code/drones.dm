@@ -46,7 +46,7 @@
 	var/burst_cooldown = 0.125 SECONDS
 
 	var/flying = TRUE
-	var/static/list/death_loot
+	var/list/death_loot
 
 /mob/living/basic/reddrone/Initialize(mapload)
 	. = ..()
