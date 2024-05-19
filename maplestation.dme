@@ -6490,6 +6490,7 @@
 #include "maplestation_modules\story_content\randall_equipment\code\randallclothing.dm"
 #include "maplestation_modules\story_content\reshia_equipment\code\reshiaclothing.dm"
 #include "maplestation_modules\story_content\ritz_equipment\code\ritzclothing.dm"
+#include "maplestation_modules\story_content\shiro_equipment\code\shiroclothing.dm"
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
 // END_INCLUDE
