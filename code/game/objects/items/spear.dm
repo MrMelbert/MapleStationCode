@@ -56,6 +56,7 @@
 	)
 	add_headpike_component()
 	update_appearance()
+	ADD_TRAIT(src, TRAIT_BLIND_TOOL, INNATE_TRAIT)
 
 // I dunno man
 /obj/item/spear/proc/add_headpike_component()

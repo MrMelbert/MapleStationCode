@@ -361,16 +361,25 @@
 		transferred = TRUE
 		target.adjustOxyLoss(-suffocation_damage)
 		chaplain.adjustOxyLoss(suffocation_damage * burden_modifier, forced = TRUE)
-	if(!HAS_TRAIT(chaplain, TRAIT_NOBLOOD))
+
+	// NON-MODULE CHANGE : Blood rework
+	var/datum/blood_type/our_blood = chaplain.get_blood_type()
+	var/datum/blood_type/their_blood = target.get_blood_type()
+	if(our_blood && their_blood)
+		// melbert todo ?? logic
 		if(target.blood_volume < BLOOD_VOLUME_SAFE)
-			var/target_blood_data = target.get_blood_data(target.get_blood_id())
-			var/chaplain_blood_data = chaplain.get_blood_data(chaplain.get_blood_id())
 			var/transferred_blood_amount = min(chaplain.blood_volume, BLOOD_VOLUME_SAFE - target.blood_volume)
-			if(transferred_blood_amount && (chaplain_blood_data["blood_type"] in get_safe_blood(target_blood_data["blood_type"])))
+			if(transferred_blood_amount > 0 && (our_blood.type in their_blood.compatible_types))
 				transferred = TRUE
 				chaplain.transfer_blood_to(target, transferred_blood_amount, forced = TRUE)
-		if(target.blood_volume > BLOOD_VOLUME_EXCESS)
-			target.transfer_blood_to(chaplain, target.blood_volume - BLOOD_VOLUME_EXCESS, forced = TRUE)
+
+		else if(target.blood_volume > BLOOD_VOLUME_EXCESS)
+			var/transferred_blood_amount = min(target.blood_volume, BLOOD_VOLUME_EXCESS - chaplain.blood_volume)
+			if(transferred_blood_amount > 0 && (their_blood.type in our_blood.compatible_types))
+				transferred = TRUE
+				target.transfer_blood_to(chaplain, transferred_blood_amount, forced = TRUE)
+	// NON-MODULE CHANGE END
+
 	target.update_damage_overlays()
 	chaplain.update_damage_overlays()
 	if(transferred)

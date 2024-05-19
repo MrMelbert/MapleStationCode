@@ -89,15 +89,10 @@
 		else
 			autopsy_information += "Unknown causes.</br>"
 	else
-		var/blood_id = scanned.get_blood_id()
-		if(blood_id)
-			var/blood_percent = round((scanned.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
-			var/blood_type = scanned.dna.blood_type
-			if(blood_id != /datum/reagent/blood)
-				var/datum/reagent/reagents = GLOB.chemical_reagents_list[blood_id]
-				blood_type = reagents ? reagents.name : blood_id
-			autopsy_information += "Blood Type: [blood_type]<br>"
-			autopsy_information += "Blood Volume: [scanned.blood_volume] cl ([blood_percent]%) <br>"
+		// NON-MODULE CHANGE
+		if(!HAS_TRAIT(scanned, TRAIT_NOBLOOD))
+			autopsy_information += "Blood Type: [scanned.get_blood_type() || "None"]<br>"
+			autopsy_information += "Blood Volume: [scanned.blood_volume] cl ([round((scanned.blood_volume / BLOOD_VOLUME_NORMAL) * 100)]%) <br>"
 
 	for(var/datum/disease/diseases as anything in scanned.diseases)
 		autopsy_information += "Name: [diseases.name] | Type: [diseases.spread_text]<br>"

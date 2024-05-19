@@ -222,7 +222,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		var/bodypart_color = isnull(real_part) ? COLOR_GRAY : percent_to_color((real_part.brute_dam + real_part.burn_dam) / real_part.max_damage)
 		returned_overlays += construct_overlay("human_[body_zone]", bodypart_color)
 
-	if(!patient.blood_volume || HAS_TRAIT(patient, TRAIT_NOBLOOD))
+	if(HAS_TRAIT(patient, TRAIT_NOBLOOD))
 		returned_overlays += construct_overlay("blood", COLOR_GRAY)
 	else
 		var/blood_color = "#a51919"

@@ -36,7 +36,7 @@
 			)
 			continue
 
-		if(!victim.blood_volume)
+		if(HAS_TRAIT(victim, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 			continue
 
 		victim.visible_message(

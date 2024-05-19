@@ -97,9 +97,7 @@
 	))
 	///blood we can clean
 	var/static/list/cleanable_blood = typecacheof(list(
-		/obj/effect/decal/cleanable/xenoblood,
-		/obj/effect/decal/cleanable/blood,
-		/obj/effect/decal/cleanable/trail_holder,
+		/obj/effect/decal/cleanable/blood, // NON-MODULE CHANGE : Repathing blood
 	))
 	///pests we hunt
 	var/static/list/huntable_pests = typecacheof(list(

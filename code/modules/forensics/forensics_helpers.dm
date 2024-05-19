@@ -1,5 +1,7 @@
 /// Adds a list of fingerprints to the atom
 /atom/proc/add_fingerprint_list(list/fingerprints_to_add) //ASSOC LIST FINGERPRINT = FINGERPRINT
+	if (QDELING(src))
+		return FALSE
 	if (isnull(fingerprints_to_add))
 		return
 	if (forensics)
@@ -19,6 +21,8 @@
 
 /// Add a list of fibers to the atom
 /atom/proc/add_fiber_list(list/fibers_to_add) //ASSOC LIST FIBERTEXT = FIBERTEXT
+	if (QDELING(src))
+		return FALSE
 	if (isnull(fibers_to_add))
 		return
 	if (forensics)
@@ -29,6 +33,8 @@
 
 /// Adds a single fiber to the atom
 /atom/proc/add_fibers(mob/living/carbon/human/suspect)
+	if (QDELING(src))
+		return FALSE
 	var/old = 0
 	if(suspect.gloves && istype(suspect.gloves, /obj/item/clothing))
 		var/obj/item/clothing/gloves/suspect_gloves = suspect.gloves
@@ -47,6 +53,8 @@
 
 /// Adds a list of hiddenprints to the atom
 /atom/proc/add_hiddenprint_list(list/hiddenprints_to_add) //NOTE: THIS IS FOR ADMINISTRATION FINGERPRINTS, YOU MUST CUSTOM SET THIS TO INCLUDE CKEY/REAL NAMES! CHECK FORENSICS.DM
+	if (QDELING(src))
+		return FALSE
 	if (isnull(hiddenprints_to_add))
 		return
 	if (forensics)
@@ -57,23 +65,65 @@
 
 /// Adds a single hiddenprint to the atom
 /atom/proc/add_hiddenprint(mob/suspect)
+	if (QDELING(src))
+		return FALSE
 	if (isnull(forensics))
 		forensics = new(src)
 	forensics.add_hiddenprint(suspect)
 	return TRUE
+
+// NON-MODULE CHANGE for blood
+/atom
+	/// Cached mixed color of all blood DNA on us
+	VAR_PROTECTED/cached_blood_dna_color
+
+/atom/proc/get_blood_dna_color()
+	if(cached_blood_dna_color)
+		return cached_blood_dna_color
+
+	var/list/colors = list()
+	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
+	for(var/dna_sample in all_dna)
+		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+		colors += blood.color
+
+	var/final_color = pop(colors)
+	for(var/color in colors)
+		final_color = BlendRGB(final_color, color, 0.5)
+	cached_blood_dna_color = final_color
+	return final_color
+
+/obj/effect/decal/cleanable/blood/drip/get_blood_dna_color()
+	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
+	return GLOB.blood_types[all_dna[all_dna[1]]]?.color
 
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
 	return FALSE
 
 /obj/add_blood_DNA(list/blood_DNA_to_add)
-	. = ..()
+	if (QDELING(src))
+		return FALSE
 	if (isnull(blood_DNA_to_add))
-		return .
+		return FALSE
 	if (forensics)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 	else
 		forensics = new(src, blood_DNA = blood_DNA_to_add)
+	cached_blood_dna_color = null
+	return TRUE
+
+/obj/effect/decal/cleanable/blood/add_blood_DNA(list/blood_DNA_to_add)
+	var/first_dna = GET_ATOM_BLOOD_DNA_LENGTH(src)
+	if(!..())
+		return FALSE
+
+	color = get_blood_dna_color()
+	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
+	for(var/new_blood in blood_DNA_to_add)
+		var/datum/blood_type/blood = GLOB.blood_types[blood_DNA_to_add[new_blood]]
+		blood.set_up_blood(src, first_dna == 0)
+	update_appearance()
 	return TRUE
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)
@@ -81,9 +131,12 @@
 		return FALSE
 	return ..()
 
+// NON-MODULE CHANGE for blood
 /obj/item/clothing/gloves/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
-	transfer_blood = rand(2, 4)
-	return ..()
+	. = ..()
+	if(.)
+		transfer_blood = rand(2, 4)
+	return .
 
 /turf/add_blood_DNA(list/blood_dna, list/datum/disease/diseases)
 	var/obj/effect/decal/cleanable/blood/splatter/blood_splatter = locate() in src
@@ -98,6 +151,8 @@
 	return FALSE
 
 /mob/living/carbon/human/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
+	if(QDELING(src))
+		return FALSE
 	if(wear_suit)
 		wear_suit.add_blood_DNA(blood_DNA_to_add)
 		update_worn_oversuit()
@@ -112,6 +167,7 @@
 			forensics = new(src)
 		forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 		blood_in_hands = rand(2, 4)
+	cached_blood_dna_color = null
 	update_worn_gloves()
 	return TRUE
 

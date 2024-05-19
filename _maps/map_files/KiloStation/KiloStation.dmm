@@ -28337,6 +28337,7 @@
 	pixel_x = 4
 	},
 /obj/machinery/light/small/red/directional/south,
+/obj/item/storage/photo_album/chapel,
 /obj/item/book/granter/action/spell/smoke/lesser{
 	name = "Book of Cloud Chasing";
 	pixel_y = 3;
@@ -48191,6 +48192,7 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/newscaster/directional/east,
 /obj/effect/turf_decal/bot_white,
+/obj/item/storage/photo_album/library,
 /turf/open/floor/iron/dark,
 /area/station/service/library)
 "kRX" = (
@@ -50000,6 +50002,7 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
+/obj/item/storage/photo_album/bar,
 /turf/open/floor/iron/dark,
 /area/station/service/bar/backroom)
 "lxS" = (
@@ -67904,6 +67907,7 @@
 	},
 /obj/structure/chair/comfy,
 /obj/item/radio/intercom/command/directional/north,
+/obj/effect/landmark/start/noble_ambassador,
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "rFc" = (

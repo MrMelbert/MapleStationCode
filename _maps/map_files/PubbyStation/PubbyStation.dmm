@@ -1641,8 +1641,8 @@
 	},
 /obj/structure/cable,
 /obj/structure/table,
-/obj/item/storage/dice,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden/layer4,
+/obj/item/storage/photo_album/prison,
 /turf/open/floor/iron,
 /area/station/security/prison)
 "afF" = (
@@ -12370,6 +12370,7 @@
 /obj/item/stack/sheet/glass/fifty,
 /obj/item/stack/sheet/iron/fifty,
 /obj/structure/sign/poster/random/directional/north,
+/obj/item/storage/photo_album/bar,
 /turf/open/floor/wood,
 /area/station/service/bar/backroom)
 "aQY" = (
@@ -13588,7 +13589,7 @@
 /area/station/hallway/primary/central)
 "aVR" = (
 /obj/structure/sign/directions/evac{
-	dir = 1;
+	dir = 8;
 	pixel_x = 32;
 	pixel_y = -8
 	},
@@ -20014,6 +20015,12 @@
 	},
 /obj/structure/extinguisher_cabinet/directional/east,
 /obj/effect/turf_decal/tile/neutral/full,
+/obj/item/paper_bin{
+	pixel_y = -11
+	},
+/obj/item/pen{
+	pixel_y = -11
+	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "bwm" = (
@@ -20973,10 +20980,10 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "bzj" = (
-/obj/structure/table,
-/obj/item/paper_bin,
-/obj/item/pen,
 /obj/effect/turf_decal/tile/neutral/full,
+/obj/structure/rack,
+/obj/item/integrated_circuit/loaded/hello_world,
+/obj/item/integrated_circuit/loaded/speech_relay,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "bzk" = (
@@ -30938,6 +30945,7 @@
 /obj/item/clothing/head/chaplain/nun_hood,
 /obj/item/clothing/suit/chaplainsuit/nun,
 /obj/item/clothing/suit/chaplainsuit/holidaypriest,
+/obj/item/storage/photo_album/chapel,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/chapel/office)
 "cso" = (
@@ -31995,6 +32003,7 @@
 /area/station/service/library)
 "czD" = (
 /obj/structure/table/wood,
+/obj/item/storage/photo_album/library,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/library)
 "czH" = (
@@ -33573,6 +33582,9 @@
 	dir = 1
 	},
 /obj/structure/table,
+/obj/item/storage/dice{
+	pixel_y = 3
+	},
 /obj/item/toy/cards/deck,
 /turf/open/floor/iron,
 /area/station/security/prison)
@@ -43537,6 +43549,12 @@
 /obj/machinery/computer/order_console/bitrunning,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
+"luF" = (
+/mob/living/basic/mouse/gray{
+	name = "Yuri"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/department/engine)
 "lvq" = (
 /turf/closed/wall,
 /area/station/security/prison/toilet)
@@ -46959,7 +46977,7 @@
 /area/station/security/prison)
 "nVz" = (
 /obj/structure/sign/directions/evac{
-	dir = 8;
+	dir = 1;
 	pixel_x = -32;
 	pixel_y = 8
 	},
@@ -52435,7 +52453,7 @@
 /area/station/service/bar/backroom)
 "rQa" = (
 /obj/structure/sign/directions/evac{
-	dir = 8;
+	dir = 1;
 	pixel_x = -32;
 	pixel_y = 8
 	},
@@ -55072,10 +55090,8 @@
 	},
 /area/station/cargo/storage)
 "tAK" = (
-/obj/structure/rack,
-/obj/item/integrated_circuit/loaded/speech_relay,
-/obj/item/integrated_circuit/loaded/hello_world,
 /obj/effect/turf_decal/tile/neutral/full,
+/obj/machinery/module_duplicator,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/research)
 "tAX" = (
@@ -60811,6 +60827,14 @@
 	dir = 8
 	},
 /area/station/medical/medbay/lobby)
+"xlN" = (
+/obj/structure/chair/office{
+	dir = 1
+	},
+/obj/structure/cable,
+/obj/effect/landmark/start/noble_ambassador,
+/turf/open/floor/iron/dark,
+/area/station/command/bridge)
 "xmh" = (
 /obj/structure/disposalpipe/segment,
 /obj/structure/cable,
@@ -87433,7 +87457,7 @@ new
 bva
 dye
 nVU
-bDi
+luF
 qBv
 fSx
 dNr
@@ -92991,7 +93015,7 @@ aaa
 aaa
 aqI
 arM
-asR
+xlN
 atU
 auR
 avX

@@ -38,10 +38,17 @@
 		blood_splatter_appearances[index] = pic
 	return TRUE
 
-/datum/element/decal/blood/proc/get_examine_name(datum/source, mob/user, list/override)
+/datum/element/decal/blood/apply_overlay(obj/item/source, list/overlay_list)
+	pic.color = source.get_blood_dna_color() || COLOR_BLOOD // NON-MODULE CHANGE
+	return ..()
+
+/datum/element/decal/blood/proc/get_examine_name(atom/source, mob/user, list/override)
 	SIGNAL_HANDLER
 
-	var/atom/A = source
-	override[EXAMINE_POSITION_ARTICLE] = A.gender == PLURAL? "some" : "a"
-	override[EXAMINE_POSITION_BEFORE] = " blood-stained "
-	return COMPONENT_EXNAME_CHANGED
+	var/list/all_dna = GET_ATOM_BLOOD_DNA(source)
+	var/list/all_blood_names = list()
+	for(var/dna_sample in all_dna)
+		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+		all_blood_names |= lowertext(initial(blood.reagent_type.name))
+
+	override[EXAMINE_POSITION_BEFORE] = "[english_list(all_blood_names, nothing_text = "blood")] stained"

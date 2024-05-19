@@ -508,19 +508,15 @@ DISALLOW_TITLE_MUSIC
 #GIVE_TUTORIALS_WITHOUT_DB
 
 ## Configuration for station traits of each type.
-## The first value (key) is the budget, or the space available to use for station traits of that type. Some take more space than others.
+## The first value (key) is the budget, or how many traits to spawn.
 ## The second value (assoc) is the weight associated with said budget compared to the rest for that type.
-POSITIVE_STATION_TRAITS 0 8
-POSITIVE_STATION_TRAITS 1 4
-POSITIVE_STATION_TRAITS 2 2
-POSITIVE_STATION_TRAITS 3 1
-
-NEUTRAL_STATION_TRAITS 0 10
-NEUTRAL_STATION_TRAITS 1 10
-NEUTRAL_STATION_TRAITS 2 3
-NEUTRAL_STATION_TRAITS 2.5 1
-
-NEGATIVE_STATION_TRAITS 0 8
-NEGATIVE_STATION_TRAITS 1 4
-NEGATIVE_STATION_TRAITS 2 2
-NEGATIVE_STATION_TRAITS 3 1
+## Adds up to 100 for easy math: The weight = the % chance of being picked.
+STATION_TRAITS 0 12
+STATION_TRAITS 1 40
+STATION_TRAITS 2 24
+STATION_TRAITS 3 12
+STATION_TRAITS 4 6
+STATION_TRAITS 5 3
+STATION_TRAITS 6 2
+STATION_TRAITS 7 1
+STATION_TRAITS 8 0
