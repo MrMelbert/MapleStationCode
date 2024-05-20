@@ -520,6 +520,7 @@
 /mob/living/carbon/updatehealth()
 	if(status_flags & GODMODE)
 		return
+	var/oldhp = health
 	var/total_burn = 0
 	var/total_brute = 0
 	for(var/obj/item/bodypart/part as anything in bodyparts) //hardcoded to streamline things a bit
@@ -540,7 +541,8 @@
 	update_stamina()
 	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD * 2) && stat == DEAD)
 		become_husk(BURN)
-	med_hud_set_health()
+	if(health != oldhp)
+		med_hud_set_health()
 	if(consciousness <= 90)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
 		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))

@@ -85,7 +85,19 @@
 		if(OXY)
 			damage_dealt = -1 * adjustOxyLoss(damage_amount, forced = forced)
 		if(STAMINA)
-			damage_dealt = -1 * adjustStaminaLoss(damage_amount, forced = forced)
+			if(pain_controller)
+				var/pre_pain = pain_controller.get_average_pain()
+				if(spread_damage || isnull(def_zone))
+					sharp_pain(BODY_ZONES_ALL, damage_amount / 6, STAMINA, 30 SECONDS)
+				else if(isbodypart(def_zone))
+					var/obj/item/bodypart/actual_hit = def_zone
+					sharp_pain(actual_hit.body_zone, damage_amount, STAMINA, 30 SECONDS)
+				else
+					sharp_pain(check_zone(def_zone), damage_amount, STAMINA, 30 SECONDS)
+
+				damage_dealt = pre_pain - pain_controller.get_average_pain()
+			else
+				damage_dealt = -1 * adjustStaminaLoss(damage_amount, forced = forced)
 		if(BRAIN)
 			damage_dealt = -1 * adjustOrganLoss(ORGAN_SLOT_BRAIN, damage_amount)
 

@@ -282,6 +282,10 @@
 			testing("PAIN DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
 #endif
 
+	parent.updatehealth()
+	if(amount >= 10)
+		parent.flash_pain_overlay(amount >= 20 ? 2 : 1)
+
 	return TRUE
 
 /**
@@ -315,10 +319,10 @@
  * affected_part - the bodypart that gained the pain
  * amount - amount of pain that was gained, post-[pain_modifier] applied
  */
-/datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount, type)
-	affected_part.on_gain_pain_effects(amount)
+/datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount, dam_type)
+	affected_part.on_gain_pain_effects(amount, dam_type)
 	refresh_pain_attributes()
-	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, type)
+	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, dam_type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
 
 	if(amount > 12 && prob(25))
@@ -603,6 +607,7 @@
 				parent.adjust_dizzy_up_to(10 SECONDS * pain_modifier, 30 SECONDS)
 				if(curr_pain >= 70)
 					parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
+/*
 		if(SPT_PROB(standard_effect_prob * 1.2, seconds_per_tick) && parent.getStaminaLoss() <= 80)
 			var/stam_taken = round((0.2 * curr_pain + 8) * pain_modifier) // 10 = 10, 100 = 28, good enough
 			if(just_cant_feel_anything)
@@ -612,7 +617,7 @@
 			// Run a pain emote, if the pain emote succeeds as well ->
 			else if(parent.apply_damage(stam_taken, STAMINA) && stam_taken >= 15 && do_pain_emote(pick("wince", "gasp")))
 				parent.visible_message(span_warning("[parent] doubles over in pain!"))
-
+*/
 	if(rare_effect_prob > 0)
 		if(SPT_PROB(rare_effect_prob * 2, seconds_per_tick))
 			var/list/options = list("wince", "whimper")
@@ -708,11 +713,30 @@
 	if(avg_pain <= 10)
 		LAZYREMOVE(parent.consciousness_modifiers, "pain")
 	else
-		LAZYSET(parent.consciousness_modifiers, "pain", -10 * sqrt(avg_pain) * (parent.can_feel_pain(TRUE) ? 1 : 0.5))
+		LAZYSET(parent.consciousness_modifiers, "pain", -5 * sqrt(avg_pain) * (parent.can_feel_pain(TRUE) ? 1 : 0.5))
 
 	if(!parent.can_feel_pain(FALSE))
 		clear_pain_attributes()
 		return
+
+	if(avg_pain >= 75)
+		if(!HAS_TRAIT_FROM(parent, TRAIT_INCAPACITATED, "pain_crit"))
+			parent.add_traits(list(
+				TRAIT_FLOORED,
+				TRAIT_HANDS_BLOCKED,
+				TRAIT_IMMOBILIZED,
+				TRAIT_INCAPACITATED,
+			), "pain_crit")
+			to_chat(parent, span_danger("You're in too much pain to move!"))
+
+	else
+		if(HAS_TRAIT_FROM(parent, TRAIT_INCAPACITATED, "pain_crit"))
+			parent.remove_traits(list(
+				TRAIT_FLOORED,
+				TRAIT_HANDS_BLOCKED,
+				TRAIT_IMMOBILIZED,
+				TRAIT_INCAPACITATED,
+			), "pain_crit")
 
 	switch(avg_pain)
 		if(-INFINITY to 20)
@@ -746,6 +770,12 @@
 	parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 	parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 	parent.clear_mood_event("pain")
+	parent.remove_traits(list(
+		TRAIT_FLOORED,
+		TRAIT_HANDS_BLOCKED,
+		TRAIT_IMMOBILIZED,
+		TRAIT_INCAPACITATED,
+	), "pain_crit")
 
 /**
  * Run a pain related emote, if a few checks are successful.

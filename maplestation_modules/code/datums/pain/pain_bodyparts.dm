@@ -48,7 +48,7 @@
  *
  * amount - amount of pain gained
  */
-/obj/item/bodypart/proc/on_gain_pain_effects(amount)
+/obj/item/bodypart/proc/on_gain_pain_effects(amount, dam_type)
 	if(!owner)
 		return FALSE
 
@@ -185,9 +185,11 @@
 	pain = PAIN_HEAD_MAX
 	bodypart_pain_modifier = 0.2
 
-/obj/item/bodypart/head/on_gain_pain_effects(amount)
+/obj/item/bodypart/head/on_gain_pain_effects(amount, dam_type)
 	. = ..()
 	if(!.)
+		return FALSE
+	if(dam_type != BRUTE && dam_type != BURN)
 		return FALSE
 
 	if(amount >= 10)
@@ -237,7 +239,7 @@
 	return TRUE
 
 // --- Legs ---
-/obj/item/bodypart/leg/on_gain_pain_effects(amount)
+/obj/item/bodypart/leg/on_gain_pain_effects(amount, dam_type)
 	. = ..()
 	if(!.)
 		return
