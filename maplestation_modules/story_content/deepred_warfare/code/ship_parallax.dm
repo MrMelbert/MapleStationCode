@@ -66,3 +66,7 @@ GLOBAL_LIST_EMPTY(collective_unbiddens) // A list of all unbidden parallax layer
 	GLOB.unbidden_ringed = new_ringed
 	for(var/atom/movable/screen/parallax_layer/planet/unbidden/R as anything in GLOB.collective_unbiddens)
 		R.full_update()
+
+/atom/movable/screen/parallax_layer/planet/unbidden/on_z_change(mob/source)
+	. = ..()
+	full_update()
