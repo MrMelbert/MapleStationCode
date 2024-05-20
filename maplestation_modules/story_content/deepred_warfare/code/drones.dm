@@ -66,7 +66,7 @@
 			burst_intervals = burst_cooldown,\
 		)
 
-	AddElement(/datum/element/death_drops, death_loot)
+	// AddElement(/datum/element/death_drops, death_loot)
 
 /mob/living/basic/reddrone/rapid_flying
 	name = "light airborne drone"
