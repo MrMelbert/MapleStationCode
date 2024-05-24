@@ -3,12 +3,13 @@
         if("Culmination Spark End")
             SSsecurity_level.set_level(SEC_LEVEL_DELTA)
             priority_announce(
-		        text = "A large energy weapon buildup event has been detected in your sector. Event has been flagged as W.M.D.-CLASS. Highly recommend immediate evacuation. TIME BEFORE CRITICAL ENERGY THRESHOLD: [charge_time] MINUTES.",
+		        text = "A large energy weapon buildup event has been detected in your sector. Highly recommend immediate evacuation. TIME BEFORE CRITICAL ENERGY THRESHOLD: [charge_time] MINUTES.",
 		        title = "[command_name()] Crisis & Damage Control Center",
 		        sound = 'sound/misc/airraid.ogg',
 	        )
             addtimer(CALLBACK(src, GLOBAL_PROC_REF(fire_unbidden_spark)), charge_time MINUTES)
             return TRUE
+    return FALSE
 
 // Modded version of the cinematic atom to allow this to stay modular.
 /atom/movable/screen/cinematic/modded

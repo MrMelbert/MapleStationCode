@@ -181,6 +181,17 @@
 	for(var/i in 1 to created_volume)
 		new /obj/item/stack/sheet/mineral/uranium(location)
 
+/datum/chemical_reaction/bs_aggregation
+	required_reagents = list(/datum/reagent/aggregation_agent = 5, /datum/reagent/bluespace = 20)
+	mob_react = FALSE
+	reaction_flags = REACTION_INSTANT
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_OTHER
+
+/datum/chemical_reaction/bs_aggregation/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	var/location = get_turf(holder.my_atom)
+	for(var/i in 1 to created_volume)
+		new /obj/item/stack/sheet/bluespace_crystal(location)
+
 /datum/chemical_reaction/aerialite_aggregation
 	required_reagents = list(/datum/reagent/aggregation_agent = 5, /datum/reagent/gravitum/aerialite = 20)
 	mob_react = FALSE

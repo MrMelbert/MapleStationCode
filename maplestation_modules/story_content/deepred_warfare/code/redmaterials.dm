@@ -25,6 +25,14 @@
 	beauty_modifier = 1.5 // I think aerialite / cosmilite looks nice.
 	armor_modifiers = list(MELEE = 2.5, BULLET = 2.5, LASER = 1.5, ENERGY = 1.5, BOMB = 2.5, BIO = 1, FIRE = 1.5, ACID = 1.5)
 
+/datum/material/aerialite/on_applied_obj(obj/o, amount, material_flags)
+	. = ..()
+	o.AddElement(/datum/element/forced_gravity, 0)
+
+/datum/material/hauntium/on_removed_obj(obj/o, amount, material_flags)
+	. = ..()
+	o.RemoveElement(/datum/element/forced_gravity, 0)
+
 /obj/item/stack/sheet/mineral/resmythril
 	name = "resonant mythril"
 	desc = "A resonant turquoise metal. It shimmers with the power of souls and essences."
