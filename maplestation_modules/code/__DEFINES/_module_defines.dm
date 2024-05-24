@@ -33,10 +33,10 @@
 /// Does not harm patients when undergoing CPR
 #define TRAIT_CPR_CERTIFIED "cpr_certified"
 
-/// Bitflags for speech sounds
-#define SOUND_NORMAL (1<<0)
-#define SOUND_QUESTION (1<<1)
-#define SOUND_EXCLAMATION (1<<2)
+/// Defines for speech sounds
+#define SOUND_NORMAL "normal"
+#define SOUND_QUESTION "question"
+#define SOUND_EXCLAMATION "exclamation"
 
 /// Max loadout presets available
 #define MAX_LOADOUTS 5
