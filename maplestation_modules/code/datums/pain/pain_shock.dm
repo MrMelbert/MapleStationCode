@@ -120,6 +120,9 @@
 		cure()
 		return FALSE
 
+	affected_mob.set_jitter_if_lower(10 SECONDS)
+	affected_mob.set_stutter_if_lower(10 SECONDS)
+	affected_mob.set_eye_blur_if_lower(4 SECONDS)
 	switch(stage)
 		// compensated (or nonprogressive) - still able to sustain themselves
 		// - agitation, anxiety

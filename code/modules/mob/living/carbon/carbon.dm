@@ -527,6 +527,7 @@
 		total_brute += (part.brute_dam * part.body_damage_coeff)
 		total_burn += (part.burn_dam * part.body_damage_coeff)
 	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - total_burn - total_brute, DAMAGE_PRECISION))
+	var/oldcon = consciousness
 	consciousness = calculate_consciousness()
 	if(CONFIG_GET(flag/near_death_experience))
 		if(consciousness >= 10)
@@ -543,6 +544,9 @@
 		become_husk(BURN)
 	if(health != oldhp)
 		med_hud_set_health()
+		update_health_hud()
+	if(consciousness != oldcon || health != oldhp)
+		update_damage_hud()
 	if(consciousness <= 90)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
 		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
@@ -650,100 +654,43 @@
 		cure_blind(EYES_COVERED)
 		clear_fullscreen("tint", 0 SECONDS)
 
-//this handles hud updates
-/mob/living/carbon/update_damage_hud()
-
-	if(!client)
+/mob/living/carbon/proc/apply_crit_screen_overlay()
+	if(HAS_TRAIT(src, TRAIT_NOCRITOVERLAY))
+		clear_fullscreen("crit")
 		return
 
-	if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOCRITOVERLAY))
-		var/severity = 0
-		switch(health)
-			if(-20 to -10)
-				severity = 1
-			if(-30 to -20)
-				severity = 2
-			if(-40 to -30)
-				severity = 3
-			if(-50 to -40)
-				severity = 4
-			if(-50 to -40)
-				severity = 5
-			if(-60 to -50)
-				severity = 6
-			if(-70 to -60)
-				severity = 7
-			if(-90 to -70)
-				severity = 8
-			if(-95 to -90)
-				severity = 9
-			if(-INFINITY to -95)
-				severity = 10
-		if(stat != HARD_CRIT)
-			var/visionseverity = 4
-			switch(health)
-				if(-8 to -4)
-					visionseverity = 5
-				if(-12 to -8)
-					visionseverity = 6
-				if(-16 to -12)
-					visionseverity = 7
-				if(-20 to -16)
-					visionseverity = 8
-				if(-24 to -20)
-					visionseverity = 9
-				if(-INFINITY to -24)
-					visionseverity = 10
-			overlay_fullscreen("critvision", /atom/movable/screen/fullscreen/crit/vision, visionseverity)
-		else
-			clear_fullscreen("critvision")
+	var/severity = clamp(10 - round(consciousness / 10), 0, 10)
+	if(severity > 0)
 		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit, severity)
 	else
 		clear_fullscreen("crit")
-		clear_fullscreen("critvision")
 
-	//Oxygen damage overlay
-	if(oxyloss)
-		var/severity = 0
-		switch(oxyloss)
-			if(10 to 20)
-				severity = 1
-			if(20 to 25)
-				severity = 2
-			if(25 to 30)
-				severity = 3
-			if(30 to 35)
-				severity = 4
-			if(35 to 40)
-				severity = 5
-			if(40 to 45)
-				severity = 6
-			if(45 to INFINITY)
-				severity = 7
-		overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
-	else
+/mob/living/carbon/proc/apply_oxy_screen_overlay()
+	var/current_oxyloss = getOxyLoss()
+	if(current_oxyloss <= 10)
 		clear_fullscreen("oxy")
+		return
 
-	//Fire and Brute damage overlay (BSSR)
+	var/severity = clamp(floor((current_oxyloss - 10) / 5 + 1), 1, 7)
+	overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
+
+/mob/living/carbon/proc/apply_damage_screen_overlay()
 	var/hurtdamage = getBruteLoss() + getFireLoss() + damageoverlaytemp
-	if(hurtdamage)
-		var/severity = 0
-		switch(hurtdamage)
-			if(5 to 15)
-				severity = 1
-			if(15 to 30)
-				severity = 2
-			if(30 to 45)
-				severity = 3
-			if(45 to 70)
-				severity = 4
-			if(70 to 85)
-				severity = 5
-			if(85 to INFINITY)
-				severity = 6
-		overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
-	else
+	if(hurtdamage <= 5)
 		clear_fullscreen("brute")
+		return
+
+	var/severity = clamp(floor(hurtdamage - 5) / 15, 1, 6)
+	overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
+
+//this handles hud updates
+/mob/living/carbon/update_damage_hud()
+	if(!client)
+		return
+
+	apply_crit_screen_overlay()
+	apply_oxy_screen_overlay()
+	apply_damage_screen_overlay()
 
 /mob/living/carbon/update_health_hud(shown_health_amount)
 	if(!client || !hud_used?.healths)

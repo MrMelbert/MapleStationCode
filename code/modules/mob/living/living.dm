@@ -2167,7 +2167,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 		if(SOFT_CRIT)
 			add_traits(list(
-				TRAIT_INCAPACITATED,
 				TRAIT_CRITICAL_CONDITION,
 			), STAT_TRAIT)
 

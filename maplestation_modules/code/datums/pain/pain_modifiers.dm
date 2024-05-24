@@ -61,7 +61,7 @@
 		human_owner.set_pain_mod(id, 0.625)
 	ADD_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
 	ADD_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
-	LAZYSET(owner.consciousness_multipliers, id, 1.5)
+	LAZYSET(owner.consciousness_multipliers, id, 1.2)
 
 /datum/status_effect/determined/on_remove()
 	if(ishuman(owner))
