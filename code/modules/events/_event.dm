@@ -125,6 +125,15 @@
 		message_admins("[key_name_admin(usr)] cancelled event [name].")
 		log_admin_private("[key_name(usr)] cancelled event [name].")
 		SSblackbox.record_feedback("tally", "event_admin_cancelled", 1, typepath)
+	if(href_list["different_event"])
+		if(!triggering)
+			to_chat(usr, span_admin("Too late to change events now!"))
+			return
+		triggering = FALSE
+		message_admins("[key_name_admin(usr)] chose to have event [name] rolled into a different event.")
+		log_admin_private("[key_name(usr)] rerolled event [name].")
+		SSblackbox.record_feedback("tally", "event_admin_rerolled", 1, typepath)
+		SSevents.spawnEvent(excluded_event = src)
 
 /*
 Runs the event
