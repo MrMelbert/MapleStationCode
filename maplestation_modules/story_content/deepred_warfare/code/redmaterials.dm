@@ -2,16 +2,21 @@
 	name = "alloyed aerialite"
 	desc = "An alloyed blue metal. It shimmers with the power of the skies and cosmos."
 	singular_name = "alloyed aerialite bar"
-	icon = "" // ADD SPRITES.
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redmaterials.dmi'
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
-	icon_state = "sheet-runite"
-	inhand_icon_state = "sheet-runite" // ADD SPRITES.
+	icon_state = "sheet-aerialite"
+	inhand_icon_state = "sheet-adamantine" // ADD SPRITES.
 	mats_per_unit = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/gravitum/aerialite = 20)
 	merge_type = /obj/item/stack/sheet/mineral/aerialite
 	material_type = /datum/material/aerialite
+	armor_type = /datum/armor/sheet_aerialite
 	// FUN FACT: This this actually an aerialite --> cosmilite alloy.
+
+/datum/armor/sheet_aerialite
+	fire = 100
+	acid = 80
 
 /datum/material/aerialite
 	name = "alloyed aerialite"
@@ -29,7 +34,7 @@
 	. = ..()
 	o.AddElement(/datum/element/forced_gravity, 0)
 
-/datum/material/hauntium/on_removed_obj(obj/o, amount, material_flags)
+/datum/material/aerialite/on_removed_obj(obj/o, amount, material_flags)
 	. = ..()
 	o.RemoveElement(/datum/element/forced_gravity, 0)
 
@@ -37,16 +42,21 @@
 	name = "resonant mythril"
 	desc = "A resonant turquoise metal. It shimmers with the power of souls and essences."
 	singular_name = "resonant mythril bar"
-	icon = ""// ADD SPRITES.
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redmaterials.dmi'
 	lefthand_file = 'icons/mob/inhands/items/sheets_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/sheets_righthand.dmi'
-	icon_state = "sheet-runite"
-	inhand_icon_state = "sheet-runite"// ADD SPRITES.
+	icon_state = "sheet-resonant"
+	inhand_icon_state = "sheet-adamantine"// ADD SPRITES.
 	mats_per_unit = list(/datum/material/resmythril=SHEET_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/resmythril = 20)
 	merge_type = /obj/item/stack/sheet/mineral/resmythril
 	material_type = /datum/material/resmythril
+	armor_type = /datum/armor/sheet_resmythril
 	// FUN FACT: I chose mythril for the scanner module because it's used in the codebreaker's scanner.
+
+/datum/armor/sheet_resmythril
+	fire = 100
+	acid = 80
 
 /datum/material/resmythril
 	name = "resonant mythril"
