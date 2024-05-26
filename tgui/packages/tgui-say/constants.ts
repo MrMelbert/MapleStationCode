@@ -29,4 +29,5 @@ export const RADIO_PREFIXES = {
   ':u ': 'Supp',
   ':v ': 'Svc',
   ':y ': 'CCom',
+  ':f ': 'Mu', // NON-MODULE CHANGE
 } as const;

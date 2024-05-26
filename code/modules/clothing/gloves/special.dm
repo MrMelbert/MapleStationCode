@@ -123,9 +123,7 @@
 	inhand_icon_state = "greyscale_gloves"
 	greyscale_colors = "#15191a"
 	clothing_traits = list(TRAIT_QUICK_CARRY, TRAIT_FASTMED)
-
-/obj/item/clothing/gloves/latex/coroner/add_blood_DNA(list/blood_DNA_to_add)
-	return FALSE
+	item_flags = parent_type::item_flags | NO_BLOOD_ON_ITEM // NON-MODULE CHANGE
 
 /obj/item/clothing/gloves/tinkerer
 	name = "tinker's gloves"

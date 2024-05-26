@@ -280,9 +280,7 @@
 	)
 	AddComponent(
 		/datum/component/bloody_spreader,\
-		blood_left = INFINITY,\
-		blood_dna = list("MEAT DNA" = "MT+"),\
-		diseases = null,\
+		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
 
 /*

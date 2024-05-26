@@ -47,9 +47,7 @@
 /obj/structure/meateor_fluff/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/bloody_spreader,\
-		blood_left = INFINITY,\
-		blood_dna = list("meaty DNA" = "MT-"),\
-		diseases = null,\
+		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
 
 /obj/structure/meateor_fluff/play_attack_sound(damage_amount, damage_type, damage_flag)

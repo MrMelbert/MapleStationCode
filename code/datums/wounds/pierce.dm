@@ -33,7 +33,7 @@
 	return ..()
 
 /datum/wound/pierce/bleed/receive_damage(wounding_type, wounding_dmg, wound_bonus)
-	if(victim.stat == DEAD || (wounding_dmg < 5) || !limb.can_bleed() || !victim.blood_volume || !prob(internal_bleeding_chance + wounding_dmg))
+	if(victim.stat == DEAD || (wounding_dmg < 5) || !limb.can_bleed() || !prob(internal_bleeding_chance + wounding_dmg)) // NON-MODULE CHANGE
 		return
 	if(limb.current_gauze?.splint_factor)
 		wounding_dmg *= (1 - limb.current_gauze.splint_factor)
@@ -46,12 +46,14 @@
 			victim.bleed(blood_bled, TRUE)
 		if(14 to 19)
 			victim.visible_message("<span class='smalldanger'>A small stream of blood spurts from the hole in [victim]'s [limb.plaintext_zone]!</span>", span_danger("You spit out a string of blood from the blow to your [limb.plaintext_zone]!"), vision_distance=COMBAT_MESSAGE_RANGE)
-			new /obj/effect/temp_visual/dir_setting/bloodsplatter(victim.loc, victim.dir)
+			// NON-MODULE CHANGE
+			victim.do_splatter_effect(victim.dir)
 			victim.bleed(blood_bled)
 		if(20 to INFINITY)
 			victim.visible_message(span_danger("A spray of blood streams from the gash in [victim]'s [limb.plaintext_zone]!"), span_danger("<b>You choke up on a spray of blood from the blow to your [limb.plaintext_zone]!</b>"), vision_distance=COMBAT_MESSAGE_RANGE)
 			victim.bleed(blood_bled)
-			new /obj/effect/temp_visual/dir_setting/bloodsplatter(victim.loc, victim.dir)
+			// NON-MODULE CHANGE
+			victim.do_splatter_effect(victim.dir)
 			victim.add_splatter_floor(get_step(victim.loc, victim.dir))
 
 /datum/wound/pierce/bleed/get_bleed_rate_of_change()

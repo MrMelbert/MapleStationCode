@@ -62,6 +62,10 @@
 	if(!iscarbon(parent) || !isitem(I))
 		return COMPONENT_INCOMPATIBLE
 
+	if(QDELETED(I))
+		stack_trace("QDELETING item [I] trying to embedded!")
+		return COMPONENT_INCOMPATIBLE
+
 	if(part)
 		limb = part
 	src.embed_chance = embed_chance
@@ -234,7 +238,7 @@
 		if(to_hands)
 			INVOKE_ASYNC(to_hands, TYPE_PROC_REF(/mob, put_in_hands), weapon)
 		else
-			weapon.forceMove(get_turf(victim))
+			weapon.forceMove(victim.drop_location())
 
 	qdel(src)
 

@@ -58,8 +58,14 @@
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && !(gloves.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
 	else if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+		var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
+		var/list/all_blood_names = list()
+		for(var/dna_sample in all_dna)
+			var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+			all_blood_names |= lowertext(initial(blood.reagent_type.name))
+
 		if(num_hands)
-			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
+			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed?
 	if(handcuffed)
@@ -139,9 +145,9 @@
 		missing -= body_part.body_zone
 		for(var/obj/item/I in body_part.embedded_objects)
 			if(I.isEmbedHarmless())
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [body_part.name]!</B>\n"
+				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [body_part.plaintext_zone]!</B>\n"
 			else
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
+				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.plaintext_zone]!</B>\n"
 
 		for(var/i in body_part.wounds)
 			var/datum/wound/iter_wound = i
@@ -239,31 +245,20 @@
 			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
 
 	if(is_bleeding())
-		var/list/obj/item/bodypart/bleeding_limbs = list()
+		var/list/bleeding_limbs = list()
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
 		for(var/obj/item/bodypart/body_part as anything in bodyparts)
 			if(body_part.get_modified_bleed_rate())
-				bleeding_limbs += body_part
+				bleeding_limbs += body_part.plaintext_zone
 			if(body_part.grasped_by)
-				grasped_limbs += body_part
-
-		var/num_bleeds = LAZYLEN(bleeding_limbs)
+				grasped_limbs += body_part.plaintext_zone
 
 		var/list/bleed_text
 		if(appears_dead)
 			bleed_text = list("<span class='deadsay'><B>Blood is visible in [t_his] open")
 		else
-			bleed_text = list("<B>[t_He] [t_is] bleeding from [t_his]")
-
-		switch(num_bleeds)
-			if(1 to 2)
-				bleed_text += " [bleeding_limbs[1].name][num_bleeds == 2 ? " and [bleeding_limbs[2].name]" : ""]"
-			if(3 to INFINITY)
-				for(var/i in 1 to (num_bleeds - 1))
-					var/obj/item/bodypart/body_part = bleeding_limbs[i]
-					bleed_text += " [body_part.name],"
-				bleed_text += " and [bleeding_limbs[num_bleeds].name]"
+			bleed_text = list("<B>[t_He] [t_is] bleeding from [t_his] [english_list(bleeding_limbs)]")
 
 		if(appears_dead)
 			bleed_text += ", but it has pooled and is not flowing.</span></B>\n"
@@ -273,9 +268,8 @@
 
 			bleed_text += "!</B>\n"
 
-		for(var/i in grasped_limbs)
-			var/obj/item/bodypart/grasped_part = i
-			bleed_text += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
+		for(var/limb in grasped_limbs)
+			bleed_text += "[t_He] [t_is] holding [t_his] [limb] to slow the bleeding!\n"
 
 		msg += bleed_text.Join()
 

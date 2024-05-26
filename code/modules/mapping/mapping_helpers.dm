@@ -856,6 +856,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	var/list/blacklisted_from_rng_placement = list(
 		SPECIES_ETHEREAL, // they revive on death which is bad juju
 		SPECIES_HUMAN,  // already have a 50% chance of being selected
+		SPECIES_LIZARD_SILVER, // NON-MODULE CHANGE - Nope
 	)
 
 /obj/effect/mapping_helpers/dead_body_placer/Initialize(mapload)

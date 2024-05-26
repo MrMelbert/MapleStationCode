@@ -398,6 +398,9 @@
 	if((HAS_TRAIT(src, TRAIT_NOHUNGER) || HAS_TRAIT(src, TRAIT_TOXINLOVER)) && !force)
 		return TRUE
 
+	if(!force && HAS_TRAIT(src, TRAIT_STRONG_STOMACH))
+		lost_nutrition *= 0.5
+
 	SEND_SIGNAL(src, COMSIG_CARBON_VOMITED, distance, force)
 
 	// cache some stuff that we'll need later (at least multiple times)
@@ -414,7 +417,10 @@
 				span_userdanger("You try to throw up, but there's nothing in your stomach!"),
 			)
 		if(stun)
-			Stun(20 SECONDS)
+			var/stun_time = 20 SECONDS
+			if(HAS_TRAIT(src, TRAIT_STRONG_STOMACH))
+				stun_time *= 0.5
+			Stun(stun_time)
 		if(knockdown)
 			Knockdown(20 SECONDS)
 		return TRUE
@@ -437,11 +443,14 @@
 				add_mood_event("vomit", /datum/mood_event/vomit)
 
 	if(stun)
-		Stun(8 SECONDS)
+		var/stun_time = 8 SECONDS
+		if(!blood && HAS_TRAIT(src, TRAIT_STRONG_STOMACH))
+			stun_time *= 0.5
+		Stun(stun_time)
 	if(knockdown)
 		Knockdown(8 SECONDS)
 
-	playsound(get_turf(src), 'sound/effects/splat.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/splat.ogg', 50, TRUE)
 
 	var/need_mob_update = FALSE
 	var/turf/location = get_turf(src)
@@ -802,8 +811,7 @@
 			hud_used.stamina.icon_state = "stamina_full"
 
 /mob/living/carbon/proc/update_spacesuit_hud_icon(cell_state = "empty")
-	if(hud_used?.spacesuit)
-		hud_used.spacesuit.icon_state = "spacesuit_[cell_state]"
+	hud_used?.spacesuit?.icon_state = "spacesuit_[cell_state]"
 
 /mob/living/carbon/set_health(new_value)
 	. = ..()
@@ -883,7 +891,11 @@
 	if(!HAS_TRAIT(src, TRAIT_LIVERLESS_METABOLISM) && !isnull(dna?.species.mutantliver) && !get_organ_slot(ORGAN_SLOT_LIVER))
 		return FALSE
 
-	return ..()
+	. = ..()
+	if(.) // if revived successfully
+		set_heartattack(FALSE)
+
+	return .
 
 /mob/living/carbon/fully_heal(heal_flags = HEAL_ALL)
 
@@ -1238,12 +1250,18 @@
 
 /// if any of our bodyparts are bleeding
 /mob/living/carbon/proc/is_bleeding()
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return FALSE
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		if(part.get_modified_bleed_rate())
 			return TRUE
+	return FALSE
 
 /// get our total bleedrate
 /mob/living/carbon/proc/get_total_bleed_rate()
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
+		return 0
+
 	var/total_bleed_rate = 0
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		total_bleed_rate += part.get_modified_bleed_rate()

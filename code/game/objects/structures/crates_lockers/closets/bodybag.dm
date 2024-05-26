@@ -24,6 +24,8 @@
 	var/obj/item/bodybag/foldedbag_instance = null
 	/// The tagged name of the bodybag, also used to check if the bodybag IS tagged.
 	var/tag_name
+	/// Whether you can health-analyzer through the walls of the bodybag
+	var/can_scan_through = FALSE
 
 
 /obj/structure/closet/body_bag/Initialize(mapload)
@@ -173,6 +175,32 @@
 		max_weight_of_contents = A_is_item.w_class
 	folding_bodybag.w_class = max_weight_of_contents
 	the_folder.put_in_hands(folding_bodybag)
+
+/obj/structure/closet/body_bag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	ADD_TRAIT(arrived, TRAIT_FLOORED, REF(src))
+
+/obj/structure/closet/body_bag/Exited(atom/movable/gone, direction)
+	. = ..()
+	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
+
+/obj/structure/closet/body_bag/examine(mob/user)
+	. = ..()
+	if(can_scan_through)
+		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
+
+/obj/structure/closet/body_bag/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return .
+
+	if(!can_scan_through || !istype(tool, /obj/item/healthanalyzer))
+		return .
+
+	for(var/mob/living/frozen in src)
+		return tool.interact_with_atom(frozen, user)
+
+	return .
 
 /// Environmental bags. They protect against bad weather.
 
@@ -370,6 +398,7 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	foldedbag_path = null
 	weather_protection = list(TRAIT_VOIDSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE)
+	can_scan_through = TRUE
 
 /obj/structure/closet/body_bag/environmental/hardlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type in list(BRUTE, BURN))
@@ -382,7 +411,196 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	foldedbag_path = null
 	weather_protection = list(TRAIT_VOIDSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE)
+	can_scan_through = TRUE
 
 /obj/structure/closet/body_bag/environmental/prisoner/hardlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type in list(BRUTE, BURN))
 		playsound(src, 'sound/weapons/egloves.ogg', 80, TRUE)
+
+// NON-MODULE CHANGE / addition
+/obj/structure/closet/body_bag/environmental/stasis
+	name = "stasis bodybag"
+	desc = "A disposable bodybag designed to keep its contents in stasis, preventing decay and further injury. \
+		The bag itself cannot maintain stasis for long, and will eventually fall apart."
+	max_integrity = 300
+	icon_state = "holobag_med"
+	breakout_time = 5 SECONDS
+	can_scan_through = TRUE
+	material_drop = /obj/item/stack/sheet/plastic
+	material_drop_amount = 2
+	appearance_flags = parent_type::appearance_flags | KEEP_TOGETHER
+	/// Tracks how many seconds we've been freezing dudes for
+	var/seconds_freezing = -1
+	/// Cooldown for playing the freeze sound effect
+	COOLDOWN_DECLARE(freeze_sound_cd)
+	/// Base color filter applied to the bodybag, adjusted based on integrity
+	var/static/list/base_color_filter = list(
+		1, 0, 0,
+		0, 1, 0,
+		0, 0, 2,
+		0, 0, 0,
+	)
+	/// Cooldown between filter updates to prevent weirdness
+	COOLDOWN_DECLARE(last_filter_update)
+
+/obj/structure/closet/body_bag/environmental/stasis/Initialize(mapload)
+	. = ..()
+	add_filter("stasis_color", 1, color_matrix_filter(base_color_filter))
+
+/obj/structure/closet/body_bag/environmental/stasis/on_update_integrity(old_value, new_value)
+	. = ..()
+	if(!COOLDOWN_FINISHED(src, last_filter_update))
+		return
+
+	var/damage_percent = 1 - get_integrity_percentage()
+	var/list/new_color_filter = base_color_filter.Copy()
+	new_color_filter[1] -= (0.5 * damage_percent)
+	new_color_filter[5] -= (0.5 * damage_percent)
+	new_color_filter[9] -= (1.25 * damage_percent)
+
+	if(last_filter_update == -1)
+		modify_filter("stasis_color", color_matrix_filter(new_color_filter), TRUE)
+	else
+		transition_filter("stasis_color", color_matrix_filter(new_color_filter), 1 SECONDS)
+
+	COOLDOWN_START(src, last_filter_update, 1 SECONDS)
+
+/obj/structure/closet/body_bag/environmental/stasis/refresh_air()
+	var/mol_count = 50
+	var/inner_temp = T0C - 60
+	air_contents = null
+	air_contents = new(mol_count)
+	air_contents.temperature = inner_temp
+
+	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
+	air_contents.gases[/datum/gas/oxygen][MOLES] = (ONE_ATMOSPHERE * mol_count) / (R_IDEAL_GAS_EQUATION * inner_temp) * O2STANDARD
+	air_contents.gases[/datum/gas/nitrogen][MOLES] = (ONE_ATMOSPHERE * mol_count) / (R_IDEAL_GAS_EQUATION * inner_temp) * N2STANDARD
+
+/obj/structure/closet/body_bag/environmental/stasis/examine_status(mob/user)
+	switch(100 * get_integrity_percentage())
+		if(50 to 75)
+			return span_warning("It looks worn.")
+		if(25 to 50)
+			return span_warning("It appears moderately worn.")
+		if(0 to 25)
+			return span_boldwarning("It's falling apart!")
+
+/obj/structure/closet/body_bag/environmental/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+	. = ..()
+	if(!isliving(arrived))
+		return
+	if(seconds_freezing != -1)
+		return
+	START_PROCESSING(SSobj, src)
+
+/obj/structure/closet/body_bag/environmental/stasis/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(!isliving(gone))
+		return
+	seconds_freezing = -1
+	STOP_PROCESSING(SSobj, src)
+	if(HAS_TRAIT(gone, TRAIT_STASIS))
+		remove_stasis(gone)
+
+/obj/structure/closet/body_bag/environmental/stasis/process(seconds_per_tick)
+
+	var/mob/living/freezing = locate() in src
+	if(isnull(freezing))
+		return PROCESS_KILL
+
+	seconds_freezing += seconds_per_tick
+
+	if(seconds_freezing > 3 && freezing.on_fire)
+		freezing.extinguish_mob()
+
+	if(seconds_freezing > 5 && !HAS_TRAIT(freezing, TRAIT_STASIS))
+		apply_stasis(freezing)
+
+	if(SPT_PROB(2 * (seconds_freezing / 60), seconds_per_tick))
+		freezing.Unconscious(1 SECONDS)
+
+	// Bout two minutes of time
+	take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
+
+/obj/structure/closet/body_bag/environmental/stasis/after_open(mob/living/user, force = FALSE)
+	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in loc))
+		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.4)
+	COOLDOWN_START(src, freeze_sound_cd, 2 SECONDS)
+
+/obj/structure/closet/body_bag/environmental/stasis/proc/apply_stasis(mob/living/target)
+	target.apply_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+	if(!target.incapacitated(IGNORE_STASIS))
+		to_chat(target, span_notice("You feel a cold, numbing sensation..."))
+	RegisterSignal(target, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(skip_to_attack_hand))
+
+/obj/structure/closet/body_bag/environmental/stasis/after_close(mob/living/user)
+	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in src))
+		playsound(src, 'sound/effects/spray.ogg', 25, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE, frequency = 0.5)
+	COOLDOWN_START(src, freeze_sound_cd, 2 SECONDS)
+
+/obj/structure/closet/body_bag/environmental/stasis/proc/remove_stasis(mob/living/target)
+	target.remove_status_effect(/datum/status_effect/grouped/stasis, REF(src))
+	if(!target.incapacitated(IGNORE_STASIS))
+		to_chat(target, span_notice("You can feel your fingers and toes again."))
+	UnregisterSignal(target, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
+
+/obj/structure/closet/body_bag/environmental/stasis/perform_fold(mob/living/carbon/human/the_folder)
+	foldedbag_instance ||= new foldedbag_path()
+	foldedbag_instance.update_integrity(get_integrity())
+	return ..()
+
+/obj/structure/closet/body_bag/environmental/stasis/proc/skip_to_attack_hand(mob/living/source, atom/attack_target)
+	SIGNAL_HANDLER
+	if(attack_target == src)
+		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom, container_resist_act), source)
+		return COMPONENT_CANCEL_ATTACK_CHAIN
+	return NONE
+
+/obj/structure/closet/body_bag/environmental/stasis/container_resist_act(mob/living/user)
+	if(opened)
+		return
+	if(ismovable(loc))
+		user.changeNext_move(CLICK_CD_BREAKOUT)
+		user.last_special = world.time + CLICK_CD_BREAKOUT
+		var/atom/movable/resisting_loc = loc
+		resisting_loc.relay_container_resist_act(user, src)
+		return
+	if(!HAS_TRAIT(user, TRAIT_STASIS))
+		open(user)
+		return
+
+	user.changeNext_move(6 SECONDS)
+	user.last_special = world.time + 6 SECONDS
+	user.visible_message(
+		span_warning("Something in [src] begins to wriggle!"),
+		span_notice("You start wriggling, attempting to climb out of [src]... (This will take about [DisplayTimeText(breakout_time)].)"),
+		span_hear("You hear straining cloth from [src]."),
+	)
+	if(do_after(user, breakout_time, src, timed_action_flags = IGNORE_TARGET_LOC_CHANGE, extra_checks = CALLBACK(src, PROC_REF(breakout_checks), user)))
+		user.visible_message(
+			span_danger("[user] climbs out of [src]!"),
+			span_notice("You successfully climb out of [src]!"),
+		)
+		open(user, force = TRUE, special_effects = FALSE)
+
+	else if(!QDELETED(user) && user.loc == src)
+		user.show_message("You fail to break out of [src]!", MSG_VISUAL)
+
+/obj/structure/closet/body_bag/environmental/stasis/proc/breakout_checks(mob/living/user)
+	if(QDELETED(user) || user.stat != CONSCIOUS || user.loc != src || opened)
+		return FALSE
+	return TRUE
+
+/obj/structure/closet/body_bag/environmental/stasis/deconstruct(disassembled = TRUE)
+	if (!(obj_flags & NO_DECONSTRUCTION))
+		new /obj/effect/decal/cleanable/shreds(loc, name)
+		new /obj/item/stack/sheet/cloth(loc, 4)
+		playsound(loc, 'sound/items/duct_tape_rip.ogg', 50, TRUE, frequency = 0.5)
+		for(var/mob/living/left_behind in src)
+			left_behind.Knockdown(3 SECONDS)
+
+	return ..()
+
+/obj/structure/closet/body_bag/environmental/stasis/get_remote_view_fullscreens(mob/user)
+	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
+		user.overlay_fullscreen("remote_view", /atom/movable/screen/fullscreen/impaired, 2)

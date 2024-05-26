@@ -43,7 +43,7 @@
 	cast_on.adjustBruteLoss(20)
 	living_owner.adjustBruteLoss(-20)
 
-	if(!cast_on.blood_volume || !living_owner.blood_volume)
+	if(HAS_TRAIT(cast_on, TRAIT_NOBLOOD) || HAS_TRAIT(owner, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
 		return TRUE
 
 	cast_on.blood_volume -= 20

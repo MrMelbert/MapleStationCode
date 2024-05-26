@@ -20,7 +20,10 @@
 		return FALSE
 
 	RegisterSignals(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST), PROC_REF(update_limp))
-	to_chat(owner, span_danger("Your [next_leg?.plaintext_zone || "leg"] hurts to walk on!"))
+	owner.pain_message(
+		span_danger("Your [next_leg?.plaintext_zone || "leg"] hurts to walk on!"),
+		span_danger("You struggle to walk on your [next_leg?.plaintext_zone || "leg"]!"),
+	)
 
 /datum/status_effect/limp/pain/get_examine_text()
 	return span_warning("[owner.p_Theyre()] limping with every move.")
@@ -29,7 +32,10 @@
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST))
 	if(!QDELING(owner))
-		to_chat(owner, span_green("Your pained limp stops!"))
+		owner.pain_message(
+			span_green("Your pained limp stops!"),
+			span_green("It becomes easier to walk again."),
+		)
 
 /datum/status_effect/limp/pain/update_limp()
 	var/mob/living/carbon/human/limping_human = owner
