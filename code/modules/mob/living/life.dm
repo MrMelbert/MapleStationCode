@@ -226,9 +226,6 @@
 /mob/living/proc/handle_wounds(seconds_per_tick, times_fired)
 	return
 
-/mob/living/proc/handle_random_events(seconds_per_tick, times_fired)
-	return
-
 /**
  * Handle this mob's interactions with the environment
  *

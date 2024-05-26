@@ -71,7 +71,6 @@
 
 	var/list/datum/bioware/biowares
 
-	var/lastpuke = 0
 	var/account_id
 
 	var/hardcore_survival_score = 0
