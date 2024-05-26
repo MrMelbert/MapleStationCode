@@ -34,5 +34,5 @@
     screen.icon_state = "spark_end"
 
 /proc/fire_unbidden_spark()
-    play_cinematic(/datum/cinematic/unbidden/culmination_spark, world, CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, station_explosion_detonation), src))
+    // play_cinematic(/datum/cinematic/unbidden/culmination_spark, world, CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, station_explosion_detonation), src))
     // INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(callback_on_everyone_on_z), SSmapping.levels_by_trait(ZTRAIT_STATION), CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(nuke_gib)), src)
