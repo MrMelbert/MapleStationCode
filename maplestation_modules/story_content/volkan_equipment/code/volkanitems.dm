@@ -77,7 +77,6 @@
 /obj/item/volkan/stored_bot/attack_self(mob/user)
 	playsound(src, startup, 100, ignore_walls = FALSE)// play startup sound
 	addtimer(CALLBACK(src, PROC_REF(spawn_bot)), 0.2 SECONDS) // wait till sound is over
-	spawn_bot()
 
 //spawn the bot
 /obj/item/volkan/stored_bot/proc/spawn_bot()

@@ -63,11 +63,11 @@
 
 	AddElement(/datum/element/simple_flying) //The thing flys.
 	AddComponent(/datum/component/tameable, \
-	food_types = list(/obj/item/circuitboard/volkan/imprint_key,), \
-	tame_chance = 100, \
-	bonus_tame_chance = 15, \
-	after_tame = CALLBACK(src, PROC_REF(tamed)), \
-	unique = FALSE)
+		food_types = list(/obj/item/circuitboard/volkan/imprint_key,), \
+		tame_chance = 100, \
+		bonus_tame_chance = 15, \
+		after_tame = CALLBACK(src, PROC_REF(tamed)), \
+		unique = FALSE)
 	AddComponent(/datum/component/obeys_commands, pet_commands) // follows pet command
 
 ///Proc to run once imprinted
