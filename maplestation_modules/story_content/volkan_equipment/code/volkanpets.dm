@@ -53,7 +53,6 @@
 		/datum/pet_command/free,
 		/datum/pet_command/perch,
 		/datum/pet_command/follow,
-		/datum/pet_command/fix_wires,
 		/datum/pet_command/point_targeting/fetch,
 	)
 
