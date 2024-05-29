@@ -73,7 +73,7 @@
 	blackboard = list(
 		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic/allow_items,
 		BB_PLACEABLE_ITEM = /obj/item/stack/cable_coil,
-		)
+	)
 
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/pet_planning,
