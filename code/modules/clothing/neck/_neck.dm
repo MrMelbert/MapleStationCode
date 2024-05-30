@@ -66,9 +66,8 @@
 
 /obj/item/clothing/neck/tie/Initialize(mapload)
 	. = ..()
-	if(clip_on)
-		return
-	update_appearance(UPDATE_ICON)
+	if(!clip_on)
+		update_appearance(UPDATE_ICON)
 	register_context()
 
 /obj/item/clothing/neck/tie/examine(mob/user)
@@ -138,7 +137,7 @@
 	. = ..()
 	context[SCREENTIP_CONTEXT_ALT_RMB] = "Wear [alternate_worn_layer == initial(alternate_worn_layer) ? "above" : "below"] suit"
 	if(clip_on)
-		return
+		return CONTEXTUAL_SCREENTIP_SET
 	if(is_tied)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Untie"
 	else
