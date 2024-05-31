@@ -51888,6 +51888,10 @@
 /obj/effect/mapping_helpers/airlock/access/all/security/brig,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/security/processing)
+"pwt" = (
+/obj/structure/aquarium/lawyer,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "pwv" = (
 /obj/machinery/atmospherics/pipe/multiz/supply/visible/layer4{
 	color = "#0000ff";
@@ -168928,7 +168932,7 @@ gjq
 gjq
 gjq
 gjq
-gjq
+wUj
 wUj
 dKC
 dKC
@@ -169186,9 +169190,9 @@ gjq
 iDt
 gjq
 wUj
-wUj
 qLB
 jpy
+pwt
 ssY
 wUj
 gjq

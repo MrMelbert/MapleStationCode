@@ -6101,6 +6101,10 @@
 	dir = 4
 	},
 /area/station/maintenance/central/greater)
+"aXh" = (
+/obj/structure/cable,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "aXo" = (
 /obj/structure/punching_bag,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -18643,9 +18647,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
 "fEZ" = (
-/obj/machinery/power/apc/auto_name/directional/west,
 /obj/machinery/disposal/bin,
-/obj/structure/cable,
 /obj/structure/disposalpipe/trunk,
 /obj/structure/noticeboard/directional/north,
 /turf/open/floor/wood,
@@ -22718,6 +22720,13 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/security/armory)
+"hgC" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/iron/grimy,
+/area/station/service/lawoffice)
 "hgG" = (
 /obj/structure/sign/warning/secure_area/directional/north,
 /obj/structure/disposalpipe/segment{
@@ -24519,7 +24528,6 @@
 /obj/structure/chair/office{
 	dir = 1
 	},
-/obj/machinery/newscaster/directional/west,
 /obj/effect/landmark/start/lawyer,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
@@ -31854,6 +31862,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"kse" = (
+/obj/machinery/newscaster/directional/west,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "ksk" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -36397,11 +36409,12 @@
 /turf/open/floor/circuit,
 /area/station/ai_monitored/turret_protected/ai)
 "lSI" = (
-/obj/structure/chair/office{
-	dir = 1
-	},
 /obj/machinery/newscaster/directional/east,
-/obj/effect/landmark/start/lawyer,
+/obj/machinery/conveyor_switch/oneway{
+	name = "Shipment Delivery Chute Activator";
+	pixel_x = 10;
+	id = "lawyerdropoff"
+	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "lSM" = (
@@ -46223,7 +46236,6 @@
 	},
 /area/station/service/chapel)
 "pxs" = (
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "pxC" = (
@@ -62483,6 +62495,12 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"vcR" = (
+/obj/structure/aquarium/lawyer,
+/obj/machinery/power/apc/auto_name/directional/west,
+/obj/structure/cable,
+/turf/open/floor/wood,
+/area/station/service/lawoffice)
 "vcS" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -64192,10 +64210,9 @@
 /area/station/medical/surgery/fore)
 "vGd" = (
 /obj/machinery/firealarm/directional/south,
-/obj/machinery/conveyor_switch/oneway{
-	id = "lawyerdropoff";
-	name = "Shipment Delivery Chute Activator";
-	pixel_x = 10
+/obj/effect/landmark/start/lawyer,
+/obj/structure/chair/office{
+	dir = 1
 	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
@@ -68420,6 +68437,9 @@
 /area/station/service/hydroponics)
 "xmH" = (
 /obj/structure/sign/poster/official/report_crimes/directional/south,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 1
+	},
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "xmJ" = (
@@ -98974,11 +98994,11 @@ hLr
 nCe
 udP
 hFr
-abM
-abM
-abM
-abM
-abM
+hFr
+hFr
+hFr
+hFr
+hFr
 abM
 abM
 abM
@@ -99230,11 +99250,11 @@ nzL
 jkM
 adC
 jmp
-hFr
-hFr
-hFr
-hFr
-hFr
+iTz
+vcR
+aXh
+mrb
+kse
 hFr
 abM
 abM
@@ -99490,7 +99510,7 @@ vrG
 iTz
 fEZ
 qel
-mrb
+aGk
 hPA
 hFr
 abM
@@ -99747,7 +99767,7 @@ dVC
 kKB
 pxs
 jXY
-aGk
+hgC
 xmH
 hFr
 abM

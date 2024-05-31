@@ -16818,16 +16818,12 @@
 /turf/open/floor/plating,
 /area/station/service/chapel/funeral)
 "esm" = (
-/obj/structure/table/wood,
-/obj/item/flashlight/lamp/green{
-	pixel_x = 1;
-	pixel_y = 5
-	},
 /obj/machinery/requests_console/directional/north{
 	department = "Law Office";
 	name = "Lawyer Requests Console"
 	},
 /obj/machinery/newscaster/directional/west,
+/obj/structure/aquarium/lawyer,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "esw" = (
@@ -38514,6 +38510,7 @@
 	pixel_y = 7
 	},
 /obj/item/pen,
+/obj/item/pen/red,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "mLb" = (
@@ -57780,11 +57777,13 @@
 /turf/open/floor/iron/white,
 /area/station/science/cytology)
 "ucW" = (
-/obj/structure/table/wood,
-/obj/item/book/manual/wiki/security_space_law,
-/obj/item/book/manual/wiki/security_space_law,
-/obj/item/pen/red,
 /obj/machinery/computer/security/telescreen/prison/directional/north,
+/obj/structure/table/wood,
+/obj/item/flashlight/lamp/green{
+	pixel_x = 1;
+	pixel_y = 5
+	},
+/obj/item/book/manual/wiki/security_space_law,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "udc" = (

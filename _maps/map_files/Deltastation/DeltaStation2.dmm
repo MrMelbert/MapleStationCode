@@ -93170,8 +93170,8 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "xiY" = (
-/obj/item/kirbyplants/random,
 /obj/structure/sign/poster/official/report_crimes/directional/south,
+/obj/structure/aquarium/lawyer,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "xjd" = (
