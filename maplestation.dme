@@ -6499,6 +6499,7 @@
 #include "maplestation_modules\story_content\deepred_warfare\code\drones.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\kajari_beam.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\redcinematics.dm"
+#include "maplestation_modules\story_content\deepred_warfare\code\reddread.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\redmaterials.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\redparts.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\redprojectiles.dm"
