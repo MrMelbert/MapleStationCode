@@ -137,17 +137,6 @@
 	required_reagents = list(/datum/reagent/toxin/plasma = 1, /datum/reagent/liquid_dark_matter = 1, /datum/reagent/iron = 5)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_EXPLOSIVE | REACTION_TAG_CHEMICAL
 
-/datum/chemical_reaction/plasma_aggregation
-	required_reagents = list(/datum/reagent/aggregation_agent = 5, /datum/reagent/toxin/plasma = 20)
-	mob_react = FALSE
-	reaction_flags = REACTION_INSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_UNIQUE | REACTION_TAG_OTHER
-
-/datum/chemical_reaction/plasma_aggregation/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
-	var/location = get_turf(holder.my_atom)
-	for(var/i in 1 to created_volume)
-		new /obj/item/stack/sheet/mineral/plasma(location)
-
 /datum/chemical_reaction/silver_aggregation
 	required_reagents = list(/datum/reagent/aggregation_agent = 5, /datum/reagent/silver = 20)
 	mob_react = FALSE
