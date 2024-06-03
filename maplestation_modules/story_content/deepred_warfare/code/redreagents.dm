@@ -212,15 +212,26 @@
 
 /obj/item/reagent_containers/cup/beaker/redlightning
 	name = "red lightning container"
-	desc = "A strange electromagnetic stasis container, powered by unknown technology. Can hold up to 300 units."
-	icon = ""
-	icon_state = ""
+	desc = "A strange, heavy-duty electromagnetic stasis container, powered by unknown technology. Can hold up to 300 units."
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redcanister.dmi'
+	icon_state = "redlightning"
 	custom_materials = list(/datum/material/glass = SHEET_MATERIAL_AMOUNT * 2, /datum/material/plasma = SHEET_MATERIAL_AMOUNT, /datum/material/diamond = SHEET_MATERIAL_AMOUNT, /datum/material/bluespace = SHEET_MATERIAL_AMOUNT)
 	volume = 300
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
 	spillable = FALSE
 	reagent_flags = NO_REACT
+	fill_icon = 'maplestation_modules/story_content/deepred_warfare/icons/redfillings.dmi'
+	fill_icon_thresholds = list(30, 60, 90, 120, 150, 180, 210, 240, 270, 300)
+	w_class = WEIGHT_CLASS_BULKY
+
+/obj/item/reagent_containers/cup/beaker/redlightning/update_overlays()
+	. = ..()
+	. += emissive_appearance(icon, "redlightningemissive", src, alpha = src.alpha)
+
+/obj/item/reagent_containers/cup/beaker/redlightning/Initialize(mapload)
+	. = ..()
+	update_appearance()
 
 /obj/item/reagent_containers/cup/beaker/redlightning/filled
 	list_reagents = list(/datum/reagent/consumable/liquidelectricity/auric/redlightning = 300)
