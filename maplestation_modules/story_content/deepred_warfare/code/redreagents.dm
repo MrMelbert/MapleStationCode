@@ -220,9 +220,10 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
 	spillable = FALSE
-	reagent_flags = NO_REACT
+	reagent_flags = OPENCONTAINER | NO_REACT
 	fill_icon = 'maplestation_modules/story_content/deepred_warfare/icons/redfillings.dmi'
-	fill_icon_thresholds = list(30, 60, 90, 120, 150, 180, 210, 240, 270, 300)
+	fill_icon_state = "redlightning"
+	fill_icon_thresholds = list(30, 60, 90, 120, 150, 180, 210, 240, 270, 300) // For some reason the fill icon doesn't work properly.
 	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/reagent_containers/cup/beaker/redlightning/update_overlays()
