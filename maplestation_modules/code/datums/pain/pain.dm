@@ -217,6 +217,14 @@
 	pain_modifier = 1
 	for(var/mod in pain_mods)
 		pain_modifier *= pain_mods[mod]
+	// Throw alert if a drug specifically is numbing us
+	if(pain_modifier < 0.75)
+		for(var/datum/reagent/med as anything in parent.reagents.reagent_list)
+			if(med.pain_modifier <= 0.5)
+				parent.throw_alert("numbed", /atom/movable/screen/alert/numbed)
+				break
+	else
+		parent.clear_alert("numbed")
 	return old_pain_mod != pain_modifier
 
 /**

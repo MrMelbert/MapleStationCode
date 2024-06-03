@@ -8,23 +8,13 @@
 /datum/reagent/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
 	// hi melbert, this should have SHOULD_CALL_PARENT(TRUE)
-	if(isnull(pain_modifier) || !istype(user))
-		return
-
-	if(user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier) && !user.can_feel_pain())
-		// If the painkiller's strong enough give them an alert
-		user.throw_alert("numbed", /atom/movable/screen/alert/numbed)
+	if(isnum(pain_modifier))
+		user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
 
 /datum/reagent/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	if(isnull(pain_modifier) || !istype(user))
-		return
-	user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
-
-/datum/reagent/on_mob_delete(mob/living/L)
-	. = ..()
-	if(!isnull(pain_modifier) && L.can_feel_pain())
-		L.clear_alert("numbed")
+	if(isnum(pain_modifier))
+		user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
 
 // Muscle stimulant is functionally morphine without downsides (it's rare)
 /datum/reagent/medicine/muscle_stimulant

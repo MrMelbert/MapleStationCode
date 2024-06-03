@@ -149,8 +149,9 @@
 
 	if(harmful && prob(pain_chance_current))
 		limb.receive_damage(brute=(1-pain_stam_pct) * damage, wound_bonus = CANT_WOUND)
-		victim.adjustStaminaLoss(pain_stam_pct * damage)
-		to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] hurts!"))
+		if(victim.can_feel_pain())
+			victim.apply_damage(pain_stam_pct * damage, STAMINA, limb)
+			to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] hurts!"))
 
 	var/fall_chance_current = SPT_PROB_RATE(fall_chance / 100, seconds_per_tick) * 100
 	if(victim.body_position == LYING_DOWN)
@@ -176,9 +177,11 @@
 	if(harmful && prob(chance))
 		var/damage = weapon.w_class * jostle_pain_mult
 		limb.receive_damage(brute=(1-pain_stam_pct) * damage, wound_bonus = CANT_WOUND)
-		victim.adjustStaminaLoss(pain_stam_pct * damage)
-		to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] jostles and stings!"))
-
+		if(victim.can_feel_pain())
+			victim.apply_damage(pain_stam_pct * damage, STAMINA, limb)
+			to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] jostles and stings!"))
+		else
+			to_chat(victim, span_danger("[weapon] embedded in your [limb.plaintext_zone] jostles!"))
 
 /// Called when then item randomly falls out of a carbon. This handles the damage and descriptors, then calls safe_remove()
 /datum/component/embedded/proc/fallOut()

@@ -44,11 +44,33 @@ Bonus
 	var/mob/living/M = A.affected_mob
 	switch(A.stage)
 		if(2,3)
-			if(prob(base_message_chance))
-				to_chat(M, span_warning("[pick("You feel a sudden pain across your body.", "Drops of blood appear suddenly on your skin.")]"))
+			if(M.can_feel_pain())
+				if(prob(base_message_chance))
+					to_chat(M, span_warning("[pick("You feel a sudden pain across your body.", "Drops of blood appear suddenly on your skin.")]"))
+
+				M.cause_pain(BODY_ZONES_ALL, 3 * (pain ? 2 : 1))
+				M.flash_pain_overlay(1, 2 SECONDS)
+
 		if(4,5)
-			to_chat(M, span_userdanger("[pick("You cringe as a violent pain takes over your body.", "It feels like your body is eating itself inside out.", "IT HURTS.")]"))
+			if(M.can_feel_pain())
+				to_chat(M, span_userdanger("[pick("You cringe as a violent pain takes over your body.", "It feels like your body is eating itself inside out.", "IT HURTS.")]"))
+				M.cause_pain(BODY_ZONES_ALL, 12 * (pain ? 2 : 1))
+				M.flash_pain_overlay(2, 2 SECONDS)
+
 			Flesheat(M, A)
+
+/datum/symptom/flesh_eating/Activate(datum/disease/advance/A)
+	. = ..()
+	if(!.)
+		return
+	switch(A.stage)
+		if(2, 3)
+			A.affected_mob.cause_pain(BODY_ZONES_ALL, 3 * (pain ? 2 : 1))
+			A.affected_mob.flash_pain_overlay(1, 2 SECONDS)
+		if(4, 5)
+			A.affected_mob.cause_pain(BODY_ZONES_ALL, 12 * (pain ? 2 : 1))
+			A.affected_mob.flash_pain_overlay(2, 2 SECONDS)
+
 
 /datum/symptom/flesh_eating/proc/Flesheat(mob/living/M, datum/disease/advance/A)
 	var/get_damage = rand(15,25) * power
