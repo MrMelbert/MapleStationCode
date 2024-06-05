@@ -78,7 +78,7 @@
 	chassis.log_message("Toggled zoom mode.", LOG_MECHA)
 	to_chat(owner, "[icon2html(chassis, owner)]<font color='[chassis.zoom_mode?"blue":"red"]'>Zoom mode [chassis.zoom_mode?"en":"dis"]abled.</font>")
 	if(chassis.zoom_mode)
-		owner.client.view_size.setTo(4.5)
+		owner.client.view_size.setTo(chassis.mecha_zoom_view_size) //NON-MODULE CHANGE : customizable zoom size
 		SEND_SOUND(owner, sound('sound/mecha/imag_enh.ogg', volume=50))
 	else
 		owner.client.view_size.resetToDefault()

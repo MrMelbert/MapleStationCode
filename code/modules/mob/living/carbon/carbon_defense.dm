@@ -620,7 +620,7 @@
 
 /obj/item/hand_item/self_grasp/Destroy()
 	if(user)
-		to_chat(user, span_warning("You stop holding onto your[grasped_part ? " [grasped_part.name]" : "self"]."))
+		to_chat(user, span_warning("You stop holding onto your[grasped_part ? " [grasped_part.plaintext_zone]" : "self"]."))
 		UnregisterSignal(user, COMSIG_QDELETING)
 	if(grasped_part)
 		UnregisterSignal(grasped_part, list(COMSIG_CARBON_REMOVE_LIMB, COMSIG_QDELETING))
@@ -651,7 +651,7 @@
 
 	var/bleed_rate = grasped_part.get_modified_bleed_rate()
 	var/bleeding_text = (bleed_rate ? ", trying to stop the bleeding" : "")
-	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.name][bleeding_text]."), span_notice("You grab hold of your [grasped_part.name] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
+	user.visible_message(span_danger("[user] grasps at [user.p_their()] [grasped_part.plaintext_zone][bleeding_text]."), span_notice("You grab hold of your [grasped_part.plaintext_zone] tightly."), vision_distance=COMBAT_MESSAGE_RANGE)
 	playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 	return TRUE
 

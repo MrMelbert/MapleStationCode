@@ -26,6 +26,10 @@
 	if(!.)
 		return
 
+	if(SPT_PROB(stage * 2, seconds_per_tick))
+		affected_mob.emote("cough")
+		to_chat(affected_mob, span_danger("Your chest hurts."))
+
 	switch(stage)
 		if(2)
 			if(SPT_PROB(1, seconds_per_tick))

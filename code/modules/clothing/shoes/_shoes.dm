@@ -12,6 +12,7 @@
 	armor_type = /datum/armor/clothing_shoes
 	slowdown = SHOES_SLOWDOWN
 	strip_delay = 1 SECONDS
+	article = "a pair of"
 
 	blood_overlay_type = "shoe" // NON-MODULE CHANGE reworking clothing blood overlays
 
