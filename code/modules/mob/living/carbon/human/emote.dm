@@ -118,6 +118,10 @@
 	hands_use_check = TRUE
 	sound = 'sound/misc/salute.ogg'
 
+/datum/emote/living/carbon/human/salute/should_play_sound(mob/living/carbon/human/user, intentional)
+	// Only play the shoe scuff sound if they're wearing shoes
+	return istype(user.shoes, /obj/item/clothing/shoes) && ..()
+
 /datum/emote/living/carbon/human/shrug
 	key = "shrug"
 	key_third_person = "shrugs"
