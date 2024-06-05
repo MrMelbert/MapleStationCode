@@ -107,7 +107,7 @@
 
 	//Update the body's icon so it doesnt appear debrained anymore
 	brain_owner.update_body_parts()
-	LAZYSET(brain_owner.consciousness_modifiers, "brain_damage", damage / 10)
+	LAZYSET(brain_owner.consciousness_modifiers, "brain_damage", damage / -10)
 
 /obj/item/organ/internal/brain/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.

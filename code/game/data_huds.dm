@@ -203,6 +203,8 @@ Medical HUD! Basic mode needs suit sensors on.
 		holder.icon_state = "hudxeno"
 	else if(!appears_alive())
 		holder.icon_state = can_defib_client() ? "huddefib" : "huddead"
+	else if(undergoing_cardiac_arrest())
+		holder.icon_state = "huddefib"
 	else
 		switch(check_virus())
 			if(DISEASE_SEVERITY_UNCURABLE)

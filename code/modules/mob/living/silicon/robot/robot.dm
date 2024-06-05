@@ -562,7 +562,7 @@
 
 	if(removing.brainmob)
 		if(removing.brainmob.stat == DEAD)
-			removing.brainmob.set_stat(CONSCIOUS)
+			removing.brainmob.revive()
 		mind.transfer_to(removing.brainmob)
 		removing.update_appearance()
 
@@ -703,7 +703,6 @@
 		builtInCamera.toggle_cam(src, FALSE)
 	if(full_heal_flags & HEAL_ADMIN)
 		locked = TRUE
-	update_stat()
 	notify_ai(AI_NOTIFICATION_NEW_BORG)
 	toggle_headlamp(FALSE, TRUE) //This will reenable borg headlamps if doomsday is currently going on still.
 	return TRUE

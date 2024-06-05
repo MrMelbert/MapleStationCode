@@ -40,6 +40,8 @@
 /mob/living/brain/update_stat()
 	if(status_flags & GODMODE)
 		return
+	if(stat == DEAD)
+		return
 
 	var/obj/item/organ/internal/brain/brain_real = container?.brain || loc
 	if(!istype(brain_real))

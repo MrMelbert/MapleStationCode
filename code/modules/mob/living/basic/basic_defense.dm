@@ -161,11 +161,12 @@
 /mob/living/basic/update_stat()
 	if(status_flags & GODMODE)
 		return
-	if(stat != DEAD)
-		if(health <= 0)
-			death()
-		else
-			set_stat(CONSCIOUS)
+	if(stat == DEAD)
+		return
+	if(health <= 0)
+		death()
+	else
+		set_stat(CONSCIOUS)
 
 /mob/living/basic/emp_act(severity)
 	. = ..()

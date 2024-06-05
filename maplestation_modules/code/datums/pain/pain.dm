@@ -1,3 +1,6 @@
+// For debugging pain
+// #define PAIN_DEBUG
+
 /**
  * The pain controller datum.
  *
@@ -27,7 +30,7 @@
 	/// Cooldown to track last time we sent a pain message.
 	COOLDOWN_DECLARE(time_since_last_pain_message)
 
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 	/// For testing. Does this pain datum print testing messages when it happens?
 	var/print_debug_messages = TRUE
 	/// For testing. Does this pain datum include ALL test messages, including very small and constant ones (like pain decay)?
@@ -55,7 +58,7 @@
 
 	addtimer(CALLBACK(src, PROC_REF(start_pain_processing), 1))
 
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 	if(new_parent.z && !is_station_level(new_parent.z))
 		print_debug_messages = FALSE
 #endif
@@ -82,7 +85,7 @@
 	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(remove_bodypart))
 	RegisterSignal(parent, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_analyzed))
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(remove_all_pain))
-	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(add_damage_pain))
+	RegisterSignal(parent, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(add_damage_pain))
 	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(on_parent_statchance))
 	RegisterSignals(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_lying_pain_modifier))
 	RegisterSignals(parent, list(SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS), SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS)), PROC_REF(refresh_pain_attributes))
@@ -272,7 +275,7 @@
 			// Officially recieving pain at this point
 			adjusted_bodypart.last_received_pain_type = dam_type
 
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 		if(print_debug_messages)
 			testing("[amount] was adjusted down to [adjusted_amount]. (Modifiers: [pain_modifier], [adjusted_bodypart.bodypart_pain_modifier])")
 #endif
@@ -285,7 +288,7 @@
 		else if(adjusted_amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			INVOKE_ASYNC(src, PROC_REF(on_pain_loss), adjusted_bodypart, amount, dam_type)
 
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 		if(print_debug_messages && (print_debug_decay || abs(adjusted_amount) > 1))
 			testing("PAIN DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
 #endif
@@ -487,13 +490,13 @@
 			return
 
 	if(!def_zone || !pain)
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 		if(print_debug_messages)
 			testing("PAIN DEBUG: [parent] recieved damage but no pain. ([def_zone ? "Nullified to [pain]" : "No def zone"])")
 #endif
 		return
 
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 	if(print_debug_messages)
 		testing("PAIN DEBUG: [parent] is recieving [pain] of type [damagetype] to the [parse_zone(def_zone)]. (Original amount: [damage])")
 #endif
@@ -510,7 +513,7 @@
 /datum/pain/proc/add_wound_pain(mob/living/carbon/source, datum/wound/applied_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
 
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 	if(print_debug_messages)
 		testing("PAIN DEBUG: [parent] is recieving a wound of level [applied_wound.severity] to the [parse_zone(wounded_limb.body_zone)].")
 #endif
@@ -576,13 +579,13 @@
 
 		if(40 to 70)
 			if(!HAS_TRAIT(parent, TRAIT_NO_SHOCK_BUILDUP))
-				shock_buildup += 1
+				shock_buildup = clamp(shock_buildup + 2, 0, parent.maxHealth * 2)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_bolddanger(pick("Everything hurts.", "Everything feels very sore.", "It hurts.")))
 
 		if(70 to INFINITY)
 			if(!HAS_TRAIT(parent, TRAIT_NO_SHOCK_BUILDUP))
-				shock_buildup += 3
+				shock_buildup = clamp(shock_buildup + 3, 0, parent.maxHealth * 2)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_userdanger(pick("Stop the pain!", "Everything hurts!")))
 
@@ -735,7 +738,7 @@
 				TRAIT_IMMOBILIZED,
 				TRAIT_INCAPACITATED,
 			), "pain_crit")
-			to_chat(parent, span_danger("You're in too much pain to move!"))
+			to_chat(parent, span_userdanger("You're in too much pain to move!"))
 
 	else
 		if(HAS_TRAIT_FROM(parent, TRAIT_INCAPACITATED, "pain_crit"))
@@ -927,7 +930,7 @@
 		render_list += tip
 		render_list += "</span>\n"
 
-#ifdef TESTING
+#ifdef PAIN_DEBUG
 	debug_print_pain()
 #endif
 

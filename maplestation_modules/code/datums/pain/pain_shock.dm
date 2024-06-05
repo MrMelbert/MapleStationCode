@@ -4,7 +4,7 @@
 	name = "Shock"
 	spread_text = "Neurogenic" // Only model pain shock
 	max_stages = 3
-	stage_prob = 1
+	stage_prob = 0
 	cure_text = "Keep the patient still and lying down, maintain a high body temperature, stop blood loss, \
 		and provide pain relievers while monitoring closely. Epinephrine and Saline-Glucose can also help."
 	agent = "Pain"
@@ -20,6 +20,12 @@
 	var/conditions_required_to_cure = 4
 	/// How many conditions do we need to not get a heart attack?
 	var/conditions_required_to_maintain = 3
+	/// How many seconds have we been in shock?
+	var/seconds_in_shock = 0
+
+	var/first_stage_threshold = 60
+
+	var/second_stage_threshold = 120
 
 /**
  * Checks which cure conditions we fulfill.
@@ -85,6 +91,8 @@
 	LAZYSET(affected_mob.max_consciousness_values, "shock", 60)
 	ADD_TRAIT(affected_mob, TRAIT_SOFT_CRIT, "shock")
 	affected_mob.updatehealth()
+	first_stage_threshold += rand(-10, 10)
+	second_stage_threshold += rand(-20, 20)
 
 /datum/disease/shock/remove_disease()
 	affected_mob.remove_status_effect(/datum/status_effect/low_blood_pressure)
@@ -107,12 +115,17 @@
 		cure()
 		return FALSE
 
+	seconds_in_shock += seconds_per_tick
 	var/cure_level = check_cure_conditions()
-	testing("[affected_mob] undergoing shock: [cure_level] cure conditions achieved.")
+	testing("[affected_mob.real_name] undergoing shock: [cure_level] cure conditions achieved.")
 
 	// Having a few cure conditions present ([conditions_required_to_maintain]) will keep us below stage 3
 	if(stage > 2 && cure_level >= conditions_required_to_maintain)
 		update_stage(2)
+	else if(seconds_in_shock > first_stage_threshold)
+		update_stage(2)
+	else if(seconds_in_shock > second_stage_threshold)
+		update_stage(3)
 
 	// If we have enough conditions present to cure us, roll for a cure
 	if(stage <= 2 && has_cure(cure_level) && SPT_PROB(cure_level, seconds_per_tick))

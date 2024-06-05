@@ -553,7 +553,24 @@
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
 		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)
+
+#ifdef TESTING
+	maptext = MAPTEXT_TINY_UNICODE( \
+		"H: [health]\n\
+		C: [consciousness]\n\
+		P: [pain_controller?.get_average_pain() || -1]" \
+	)
+#endif
+
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
+
+#ifdef TESTING
+/mob/living/carbon
+	maptext_height = 100
+	maptext_width = 200
+	maptext_x = -6
+	maptext_y = -36
+#endif
 
 /datum/movespeed_modifier/carbon_consciousness
 	variable = TRUE
@@ -692,7 +709,7 @@
 	apply_oxy_screen_overlay()
 	apply_damage_screen_overlay()
 
-/mob/living/carbon/update_health_hud(shown_health_amount)
+/mob/living/carbon/update_health_hud(shown_health_amount = src.consciousness)
 	if(!client || !hud_used?.healths)
 		return
 
@@ -703,29 +720,23 @@
 	if(SEND_SIGNAL(src, COMSIG_CARBON_UPDATING_HEALTH_HUD, shown_health_amount) & COMPONENT_OVERRIDE_HEALTH_HUD)
 		return
 
-	if(shown_health_amount == null)
-		shown_health_amount = health
-
-	if(shown_health_amount >= maxHealth)
-		hud_used.healths.icon_state = "health0"
-
-	else if(shown_health_amount > maxHealth * 0.8)
-		hud_used.healths.icon_state = "health1"
-
-	else if(shown_health_amount > maxHealth * 0.6)
-		hud_used.healths.icon_state = "health2"
-
-	else if(shown_health_amount > maxHealth * 0.4)
-		hud_used.healths.icon_state = "health3"
-
-	else if(shown_health_amount > maxHealth*0.2)
-		hud_used.healths.icon_state = "health4"
-
-	else if(shown_health_amount > 0)
-		hud_used.healths.icon_state = "health5"
-
-	else
+	if(stat >= SOFT_CRIT || HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, "pain_crit"))
 		hud_used.healths.icon_state = "health6"
+		return
+
+	switch(shown_health_amount)
+		if(95 to INFINITY)
+			hud_used.healths.icon_state = "health0"
+		if(85 to 95)
+			hud_used.healths.icon_state = "health1"
+		if(65 to 85)
+			hud_used.healths.icon_state = "health2"
+		if(50 to 65)
+			hud_used.healths.icon_state = "health3"
+		if(35 to 50)
+			hud_used.healths.icon_state = "health4"
+		else // (30 to 35), effectively
+			hud_used.healths.icon_state = "health5"
 
 /mob/living/carbon/update_stamina_hud(shown_stamina_loss)
 	if(!client || !hud_used?.stamina)
@@ -795,6 +806,9 @@
 	if(status_flags & GODMODE)
 		if(stat != CONSCIOUS)
 			set_stat(CONSCIOUS)
+		return
+
+	if(stat == DEAD) // You must manually set stat back to a non-death stat for revival
 		return
 
 	if(consciousness <= 0 && !HAS_TRAIT(src, TRAIT_NODEATH))

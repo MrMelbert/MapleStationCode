@@ -475,7 +475,7 @@
 	else
 		the_mmi.forceMove(get_turf(src))
 	if(the_mmi.brainmob.stat == DEAD && !has_suicided_trait)
-		the_mmi.brainmob.set_stat(CONSCIOUS)
+		the_mmi.brainmob.revive()
 	if(mind)
 		mind.transfer_to(the_mmi.brainmob)
 	the_mmi.update_appearance()
