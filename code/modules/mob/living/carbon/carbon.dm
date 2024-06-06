@@ -567,7 +567,7 @@
 	maptext = MAPTEXT_TINY_UNICODE( \
 		"H: [health]\n\
 		C: [consciousness]\n\
-		P: [pain_controller?.get_average_pain() || -1]" \
+		P: [pain_controller?.get_average_pain() || 0]" \
 	)
 #endif
 

@@ -89,9 +89,8 @@
 	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(on_parent_statchance))
 	RegisterSignals(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_lying_pain_modifier))
 	RegisterSignals(parent, list(SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS), SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS)), PROC_REF(refresh_pain_attributes))
-
-	if(ishuman(parent))
-		RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
+	RegisterSignal(parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
+	RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
 
 /**
  * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
@@ -111,6 +110,7 @@
 		COMSIG_MOB_STATCHANGE,
 		SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS),
 		SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS),
+		COMSIG_LIVING_TREAT_MESSAGE,
 	))
 
 /**
@@ -852,6 +852,40 @@
  */
 /datum/pain/proc/is_undergoing_shock()
 	return locate(/datum/disease/shock) in parent.diseases
+
+/datum/pain/proc/handle_message(datum/source, list/message_args)
+	SIGNAL_HANDLER
+
+	var/phrase = html_decode(message_args[TREAT_MESSAGE_ARG])
+	if(!length(phrase))
+		return
+
+	var/num_repeats = get_average_pain() * pain_modifier
+	if(HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS) && !is_undergoing_shock())
+		num_repeats *= 0.5
+
+	num_repeats = floor(num_repeats / 20)
+	if(num_repeats <= 1)
+		return
+	var/static/regex/no_stammer = regex(@@[ ""''()[\]{}.!?,:;_`~-]@)
+	var/static/regex/half_stammer = regex(@@[aeiouAEIOU]@)
+	var/final_phrase = ""
+	var/original_char = ""
+	for(var/i = 1, i <= length(phrase), i += length(original_char))
+		original_char = phrase[i]
+		if(no_stammer.Find(original_char))
+			final_phrase += original_char
+			continue
+		if(half_stammer.Find(original_char))
+			if(num_repeats <= 2)
+				final_phrase += original_char
+				continue
+			final_phrase += repeat_string(ceil(num_repeats / 2), original_char)
+			continue
+		final_phrase += repeat_string(num_repeats, original_char)
+
+	message_args[TREAT_TTS_MESSAGE_ARG] = phrase
+	message_args[TREAT_MESSAGE_ARG] = sanitize(final_phrase)
 
 /**
  * Remove all pain, pain paralysis, side effects, etc. from our mob after we're fully healed by something (like an adminheal)
