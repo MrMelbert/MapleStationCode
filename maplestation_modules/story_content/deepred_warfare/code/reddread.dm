@@ -1,5 +1,5 @@
 /mob/living/basic/redtechdread
-	name = "Redtech Dreadnought"
+	name = "Redtech Dreadnought Pattern"
 	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. It would be wise to start running."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/reddreadnought64.dmi'
 	icon_state = "dreadnought_active"
