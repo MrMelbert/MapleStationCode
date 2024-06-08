@@ -15,12 +15,6 @@
 	/// Valid types for `power_use_proxy` to be
 	var/static/list/power_use_override_types = list(/obj/machinery, /obj/vehicle/sealed/mecha, /obj/item/mod/control, /obj/item/pressure_plate, /mob/living/silicon/robot)
 
-	/// A reference to any holder to use power from instead of the circuit's own cell
-	var/atom/movable/power_use_proxy
-
-	/// Valid types for `power_use_proxy` to be
-	var/static/list/power_use_override_types = list(/obj/machinery, /obj/vehicle/sealed/mecha, /obj/item/mod/control, /mob/living/silicon/robot)
-
 /obj/item/assembly/wiremod/Initialize(mapload)
 	. = ..()
 	var/datum/component/shell/shell = AddComponent(/datum/component/shell, list(

@@ -293,9 +293,10 @@
 		child_items += parent_items
 		parent_items.Cut()
 
+		var/obj/item/target_item
 		while(child_items.len)
 			//Pop the 1st item out from the list
-			var/obj/item/target_item = child_items[1]
+			target_item = child_items[1]
 			child_items -= target_item
 		//e.g. projectiles inside bullets are not objects
 		if(!istype(target_item))
