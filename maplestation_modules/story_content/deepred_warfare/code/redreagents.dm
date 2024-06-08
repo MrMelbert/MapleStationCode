@@ -219,7 +219,7 @@
 	volume = 300
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
-	spillable = FALSE
+	// spillable = FALSE
 	reagent_flags = OPENCONTAINER | NO_REACT
 	fill_icon = 'maplestation_modules/story_content/deepred_warfare/icons/redfillings.dmi'
 	fill_icon_state = "redlightning"
