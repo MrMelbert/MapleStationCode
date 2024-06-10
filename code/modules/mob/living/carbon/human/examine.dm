@@ -58,8 +58,14 @@
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && !(gloves.item_flags & EXAMINE_SKIP))
 		. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
 	else if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+		var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
+		var/list/all_blood_names = list()
+		for(var/dna_sample in all_dna)
+			var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+			all_blood_names |= lowertext(initial(blood.reagent_type.name))
+
 		if(num_hands)
-			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
+			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 
 	//handcuffed?
 	if(handcuffed)

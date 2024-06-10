@@ -69,12 +69,25 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.set_pain_mod(id, 0.625)
+	ADD_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
+	ADD_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
 
 /datum/status_effect/determined/on_remove()
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.unset_pain_mod(id)
+	REMOVE_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
+	REMOVE_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
 	return ..()
+
+// Fake healthy is supposed to mimic feeling no pain
+/datum/status_effect/grouped/screwy_hud/fake_healthy/on_apply()
+	. = ..()
+	ADD_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
+
+/datum/status_effect/grouped/screwy_hud/fake_healthy/on_remove()
+	. = ..()
+	REMOVE_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
 
 // Being drunk gives a slight one, note the actual reagent gives one based on its strength
 /datum/status_effect/inebriated/drunk/on_apply()

@@ -46,23 +46,3 @@
 				var/datum/spellbook_manager/tgui = new(user)
 				tgui.ui_interact(user)
 			return TRUE
-		// Playing test sounds from speech frequency pref
-		if ("play_test_speech_sound")
-			var/mob/living/carbon/human/dummy = character_preview_view?.body
-			if(isnull(dummy))
-				return TRUE // ???
-
-			var/list/speech_sounds_to_try = dummy.get_speech_sounds()
-			if(!length(speech_sounds_to_try))
-				return
-
-			var/picked_sound = pick(speech_sounds_to_try)
-			var/speech_vol = speech_sounds_to_try[picked_sound]
-			var/speech_freq_to_try = round((get_rand_frequency() + get_rand_frequency()) / 2) * dummy.speech_sound_frequency_modifier
-			user.playsound_local(
-				turf_source = get_turf(user),
-				soundin = picked_sound,
-				vol = speech_vol,
-				vary = TRUE,
-				frequency = speech_freq_to_try,
-			)

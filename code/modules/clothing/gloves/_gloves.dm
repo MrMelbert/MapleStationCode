@@ -16,6 +16,7 @@
 	attack_verb_simple = list("challenge")
 	strip_delay = 20
 	equip_delay_other = 40
+	article = "a pair of"
 	blood_overlay_type = "glove" // NON-MODULE CHANGE
 	// Path variable. If defined, will produced the type through interaction with wirecutters.
 	var/cut_type = null

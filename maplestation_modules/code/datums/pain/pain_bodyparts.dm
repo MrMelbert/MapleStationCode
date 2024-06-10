@@ -53,7 +53,10 @@
 		return FALSE
 
 	if(get_modified_pain() >= 65 && can_be_disabled && !HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
-		to_chat(owner, span_userdanger("Your [plaintext_zone] goes numb from the pain!"))
+		owner.pain_message(
+			span_userdanger("Your [plaintext_zone] goes numb from the pain!"),
+			span_danger("You can't move your [plaintext_zone]!")
+		)
 		ADD_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 		update_disabled()
 
@@ -69,17 +72,14 @@
 		return FALSE
 
 	if(get_modified_pain() < 65 && HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
-		to_chat(owner, span_green("You can feel your [plaintext_zone] again!"))
+		owner.pain_message(
+			span_green("You can feel your [plaintext_zone] again!"),
+			span_green("You can move your [plaintext_zone] again!")
+		)
 		REMOVE_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 		update_disabled()
 
 	return TRUE
-
-/**
- * Effects on this bodypart when pain is processed (every 2 seconds)
- */
-/obj/item/bodypart/proc/processed_pain_effects(seconds_per_tick)
-	return
 
 /**
  * Feedback messages from this limb when it is sustaining pain.
@@ -119,7 +119,7 @@
 			feedback_phrases += list("is numb from the pain")
 
 	if(feedback_phrases.len)
-		to_chat(owner, span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+		owner.pain_message(span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	return TRUE
 
 // --- Chest ---
@@ -171,9 +171,9 @@
 			side_feedback += list("You feel your ribs jostle in your [plaintext_zone]")
 
 	if(side_feedback.len && last_received_pain_type == BRUTE && SPT_PROB(50, seconds_per_tick))
-		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
-		to_chat(owner, span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+		owner.pain_message(span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 
 	return TRUE
 
@@ -230,9 +230,9 @@
 			side_feedback += list("You feel a splitting migrane", "Pressure floods your [plaintext_zone]", "Your [plaintext_zone] feels as if it's being squeezed", "Your eyes hurt to keep open")
 
 	if(side_feedback.len && last_received_pain_type == BRUTE && SPT_PROB(50, seconds_per_tick))
-		to_chat(owner, span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
-		to_chat(owner, span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
+		owner.pain_message(span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 
 	return TRUE
 
