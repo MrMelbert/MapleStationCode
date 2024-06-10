@@ -63,7 +63,7 @@
 
 	held_bodypart.bodypart_pain_modifier *= pain_modifier
 	pressed_item.AddComponent(/datum/component/make_item_slow)
-	RegisterSignal(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects))
+	RegisterSignals(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED), PROC_REF(stop_effects))
 	if(holder != owner)
 		RegisterSignal(holder, COMSIG_MOVABLE_MOVED, PROC_REF(check_adjacency))
 	return TRUE

@@ -97,7 +97,7 @@
 
 //Throwing stuff
 /mob/living/carbon/proc/toggle_throw_mode()
-	if(stat)
+	if(incapacitated())
 		return
 	if(throw_mode)
 		throw_mode_off(THROW_MODE_TOGGLE)
@@ -114,6 +114,8 @@
 
 
 /mob/living/carbon/proc/throw_mode_on(mode = THROW_MODE_TOGGLE)
+	if(incapacitated())
+		return
 	throw_mode = mode
 	if(hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_on"
@@ -782,8 +784,10 @@
 	var/new_consciousness = 100
 	var/max_consciousness = 150
 
+	new_consciousness -= getBruteLoss() * 0.05
+	new_consciousness -= getFireLoss() * 0.05
 	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
-		new_consciousness -= max(getOxyLoss(), losebreath * 5)
+		new_consciousness -= min(max(getOxyLoss(), losebreath * 5), 75)
 	if(!HAS_TRAIT(src, TRAIT_TOXINLOVER) && !HAS_TRAIT(src, TRAIT_TOXIMMUNE))
 		new_consciousness -= (5 * sqrt(getToxLoss()))
 	if(!HAS_TRAIT(src, TRAIT_NOBLOOD))

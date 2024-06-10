@@ -100,6 +100,7 @@
 	LAZYREMOVE(affected_mob.max_consciousness_values, "shock")
 	REMOVE_TRAIT(affected_mob, TRAIT_SOFT_CRIT, "shock")
 	affected_mob.updatehealth()
+	affected_mob.adjust_pain_shock(-100, down_to = 0)
 	return ..()
 
 /datum/disease/shock/stage_act(seconds_per_tick, times_fired)
@@ -122,10 +123,10 @@
 	// Having a few cure conditions present ([conditions_required_to_maintain]) will keep us below stage 3
 	if(stage > 2 && cure_level >= conditions_required_to_maintain)
 		update_stage(2)
-	else if(seconds_in_shock > first_stage_threshold)
-		update_stage(2)
 	else if(seconds_in_shock > second_stage_threshold)
 		update_stage(3)
+	else if(seconds_in_shock > first_stage_threshold)
+		update_stage(2)
 
 	// If we have enough conditions present to cure us, roll for a cure
 	if(stage <= 2 && has_cure(cure_level) && SPT_PROB(cure_level, seconds_per_tick))
@@ -144,7 +145,7 @@
 		if(1)
 			cure_text = "Subject is in stage one of shock. \
 				Provide immediate pain relief and stop blood loss to prevent worsening condition. \
-				Keep the patient still and lying down, and be sure to moderate their temprature. \
+				Keep the patient still and lying down, and be sure to moderate their temperature. \
 				Supply epinephrine and saline-glucose if condition worsens."
 			if(SPT_PROB(0.5, seconds_per_tick))
 				to_chat(affected_mob, span_danger("Your chest feels uncomfortable."))

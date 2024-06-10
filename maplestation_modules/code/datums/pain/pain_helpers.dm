@@ -101,7 +101,7 @@
 		return
 
 	ASSERT(isnum(amount))
-	pain_controller.shock_buildup = clamp(pain_controller.shock_buildup + amount, down_to, maxHealth * 2)
+	pain_controller.shock_buildup = clamp(pain_controller.shock_buildup + amount, down_to, 200)
 
 /**
  * Cause [amount] of [dam_type] sharp pain to [target_zones].

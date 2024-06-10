@@ -527,9 +527,12 @@
 	// give them one second of grace to wake up and run away a bit!
 	if(!HAS_TRAIT(breather, TRAIT_SLEEPIMMUNE))
 		breather.Unconscious(6 SECONDS)
-	// Enough to make the mob sleep.
-	if(n2o_pp > n2o_sleep_min)
-		breather.Sleeping(min(breather.AmountSleeping() + 100, 200))
+		// Enough to make the mob sleep.
+		if(n2o_pp > n2o_sleep_min)
+			breather.Sleeping(min(breather.AmountSleeping() + 100, 200))
+		// And apply anesthesia if it worked
+		if(HAS_TRAIT(breather, TRAIT_KNOCKEDOUT))
+			breather.apply_status_effect(/datum/status_effect/grouped/anesthetic, /datum/gas/nitrous_oxide)
 
 /// N2O side-effects. "Too much N2O!"
 /obj/item/organ/internal/lungs/proc/safe_n2o(mob/living/carbon/breather, datum/gas_mixture/breath, old_n2o_pp)
@@ -575,6 +578,12 @@
 		var/existing = breather.reagents.get_reagent_amount(/datum/reagent/zauker)
 		breather.reagents.add_reagent(/datum/reagent/zauker, max(0, 1 - existing))
 
+/obj/item/organ/internal/lungs/check_damage_thresholds(mob/organ_owner)
+	// Don't give random feedback messages if you're suffocating
+	if(owner.failed_last_breath)
+		return null
+	return ..()
+
 /**
  * This proc tests if the lungs can breathe, if they can breathe a given gas mixture, and throws/clears gas alerts.
  * It does this by calling subprocs "registered" to pay attention to different gas types
@@ -602,10 +611,10 @@
 		breath = empty_breath
 
 	// Indicates if there are moles of gas in the breath.
-	var/has_moles = breath.total_moles() != 0
+	var/num_moles = breath.total_moles()
 
 	// Check for moles of gas and handle partial pressures / special conditions.
-	if(has_moles)
+	if(num_moles > 0 && (HAS_TRAIT(owner, TRAIT_RESISTLOWPRESSURE) || num_moles > 0.02) && (HAS_TRAIT(owner, TRAIT_RESISTHIGHPRESSURE) && num_moles < 0.1))
 		// Breath has more than 0 moles of gas.
 		// Route gases through mask filter if breather is wearing one.
 		if(istype(breather.wear_mask) && (breather.wear_mask.clothing_flags & GAS_FILTERING) && breather.wear_mask.has_filter)
@@ -617,8 +626,22 @@
 		// Vacuum-adapted lungs regenerate oxyloss even when breathing nothing.
 		if(breather.health >= breather.crit_threshold && breather.oxyloss)
 			breather.adjustOxyLoss(-5)
-	else
+	else if(!IS_ROBOTIC_ORGAN(src))
+		if(!failed)
+			// Lungs are poppin
+			if(damage >= 40 && damage <= 60 && breather.can_feel_pain())
+				to_chat(breather, span_userdanger("You feel a stabbing pain in your chest!"))
+			else if(num_moles < 0.02)
+				to_chat(breather, span_boldwarning("You feel air rapidly exiting your lungs!"))
+			else if(num_moles > 0.1)
+				to_chat(breather, span_boldwarning("You feel air force itself into your lungs!"))
+
+			breather.cause_pain(BODY_ZONE_CHEST, 10, BRUTE)
+			apply_organ_damage(15)
 		// Can't breathe!
+		breather.failed_last_breath = TRUE
+	else
+		// Can't breathe but we're robot so we don't care lol
 		breather.failed_last_breath = TRUE
 
 	// The list of gases in the breath.
@@ -691,7 +714,7 @@
 	else if (old_euphoria && !new_euphoria)
 		breather.clear_mood_event("chemical_euphoria")
 
-	if(has_moles)
+	if(num_moles > 0)
 		handle_breath_temperature(breath, breather)
 		// Merge breath_out into breath. They're kept seprerate before now to ensure stupid like, order of operations shit doesn't happen
 		// But that time has passed
@@ -840,9 +863,18 @@
 	if(damage >= low_threshold)
 		var/do_i_cough = SPT_PROB((damage < high_threshold) ? 2.5 : 5, seconds_per_tick) // between : past high
 		if(do_i_cough)
-			owner.emote("cough")
-	if(organ_flags & ORGAN_FAILING && owner.stat == CONSCIOUS)
-		owner.visible_message(span_danger("[owner] grabs [owner.p_their()] throat, struggling for breath!"), span_userdanger("You suddenly feel like you can't breathe!"))
+			if(damage >= high_threshold)
+				owner.visible_message(span_danger("[owner] coughs up blood!"), span_userdanger("You cough up blood!"))
+				owner.vomit(VOMIT_CATEGORY_BLOOD)
+			else
+				owner.emote(pick("weeze", "cough"))
+			losebreath = min(losebreath + round(damage / 100, 0.1), 4)
+
+	if((organ_flags & ORGAN_FAILING) && owner.stat == CONSCIOUS)
+		owner.visible_message(
+			span_danger("[owner] grabs [owner.p_their()] throat, struggling for breath!"),
+			span_userdanger("You suddenly feel like you can't breathe!"),
+		)
 		failed = TRUE
 
 /obj/item/organ/internal/lungs/get_availability(datum/species/owner_species, mob/living/owner_mob)

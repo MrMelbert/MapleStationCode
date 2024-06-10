@@ -30,7 +30,7 @@
 /datum/status_effect/grouped/anesthetic/proc/try_removal(datum/source)
 	SIGNAL_HANDLER
 
-	if(HAS_TRAIT(owner, TRAIT_KNOCKEDOUT))
+	if(HAS_TRAIT_NOT_FROM(owner, TRAIT_KNOCKEDOUT, STAT_TRAIT))
 		return
 
 	qdel(src)
@@ -58,9 +58,3 @@
 
 /datum/status_effect/anesthesia_grog/on_remove()
 	LAZYREMOVE(owner.max_consciousness_values, type)
-
-// Extend "too much N2O" so we can apply anesthesia if it knocks the guy out
-/obj/item/organ/internal/lungs/too_much_n2o(mob/living/carbon/breather, datum/gas_mixture/breath, n2o_pp, old_n2o_pp)
-	. = ..()
-	if(HAS_TRAIT(breather, TRAIT_KNOCKEDOUT))
-		breather.apply_status_effect(/datum/status_effect/grouped/anesthetic, /datum/gas/nitrous_oxide)

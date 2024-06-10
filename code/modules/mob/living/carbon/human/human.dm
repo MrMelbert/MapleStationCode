@@ -346,7 +346,7 @@
 		if(!target_zone)
 			target_zone = get_bodypart(check_zone(user.zone_selected))
 		var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
-		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.name]."))
+		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.plaintext_zone]."))
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 

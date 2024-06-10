@@ -145,7 +145,7 @@
 		tackle = null
 		return
 
-	user.toggle_throw_mode()
+	user.throw_mode_off(THROW_MODE_TOGGLE)
 	if(!iscarbon(hit))
 		if(hit.density)
 			INVOKE_ASYNC(src, PROC_REF(splat), user, hit)

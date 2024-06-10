@@ -250,6 +250,14 @@
 		return
 	owner.apply_status_effect(/datum/status_effect/limp/pain, src)
 
+/obj/item/bodypart/leg/pain_feedback(seconds_per_tick, healing_pain)
+	. = ..()
+	if(!.)
+		return
+
+	if(prob(10) && pain >= 25 && owner.Knockdown(3 SECONDS))
+		owner.pain_message(span_danger("Your [plaintext_zone] buckles under the pain!"))
+
 // --- Right Leg ---
 /obj/item/bodypart/leg/right/robot
 	pain = PAIN_LIMB_MAX
@@ -267,6 +275,42 @@
 /obj/item/bodypart/leg/left/robot/surplus
 	pain = 40
 	bodypart_pain_modifier = 0.8
+
+// --- Arms ---
+/obj/item/bodypart/arm/pain_feedback(seconds_per_tick, healing_pain)
+	. = ..()
+	if(!.)
+		return
+
+	if(src != owner.get_active_hand())
+		return
+
+	var/obj/item/holding = owner.get_active_held_item()
+	if(!prob(10) || pain < 25)
+		return
+	if(holding && owner.dropItemToGround(holding))
+		if(bodytype & BODYTYPE_ROBOTIC)
+			owner.visible_message(
+				span_warning("[owner]'s [parse_zone(aux_zone)] malfunctions, causing them to drop [holding]!"),
+				span_danger("Your [parse_zone(aux_zone)] malfunctions, causing you to drop [holding]!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+			do_sparks(number = 1, source = owner)
+		else
+			owner.visible_message(
+				span_warning("[owner] fumbles and drops [holding]!"),
+				span_danger("You fumble through the pain in your [parse_zone(aux_zone)] and drop [holding]!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+			owner.pain_emote("gasp")
+
+	else if(bodytype & BODYTYPE_ROBOTIC)
+		owner.visible_message(
+			span_warning("[owner]'s [parse_zone(aux_zone)] malfunctions!"),
+			span_danger("Your [parse_zone(aux_zone)] malfunctions!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+		do_sparks(number = 1, source = owner)
 
 
 // --- Right Arm ---

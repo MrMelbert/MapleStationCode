@@ -25,32 +25,32 @@
 	pain_modifier = 0.9
 
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/M)
-	..()
+	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/M)
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
-	..()
+	. = ..()
 
 /datum/reagent/medicine/epinephrine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_pain_shock(-1)
+	affected_mob.adjust_pain_shock(-1 * REM * seconds_per_tick)
 
 // Atropine fills a simliar niche to epinephrine
 /datum/reagent/medicine/atropine
 	pain_modifier = 0.8
 
 /datum/reagent/medicine/atropine/on_mob_metabolize(mob/living/carbon/M)
-	..()
+	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)
 
 /datum/reagent/medicine/atropine/on_mob_end_metabolize(mob/living/carbon/M)
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
-	..()
+	. = ..()
 
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_pain_shock(-2)
+	affected_mob.adjust_pain_shock(-2 * REM * seconds_per_tick)
 
 // Miner's salve is described as a good painkiller
 /datum/reagent/medicine/mine_salve

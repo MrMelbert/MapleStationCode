@@ -137,7 +137,6 @@
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
 	LAZYREMOVE(user.consciousness_modifiers, type)
-	LAZYREMOVE(user.max_consciousness_values, type)
 
 /obj/item/reagent_containers/pill/luciferium
 	name = "luciferium pill"
@@ -245,7 +244,6 @@
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
 	LAZYREMOVE(user.consciousness_modifiers, type)
-	LAZYREMOVE(user.max_consciousness_values, type)
 
 /datum/chemical_reaction/gojuice
 	results = list(/datum/reagent/drug/gojuice = 3)

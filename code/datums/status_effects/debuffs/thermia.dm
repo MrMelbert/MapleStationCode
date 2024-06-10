@@ -3,15 +3,22 @@
 	id = "thermia"
 	alert_type = null
 	status_type = STATUS_EFFECT_REPLACE
-	tick_interval = -1
+	tick_interval = 3 SECONDS
+	processing_speed = STATUS_EFFECT_NORMAL_PROCESS
+	/// Flat penalty of consciousness applied over time
 	var/consciousness_mod = 0
 	var/max_consciousness_mod = 0
 	var/datum/weakref/alert_ref
+	COOLDOWN_DECLARE(update_cd)
 
 /datum/status_effect/thermia/on_apply()
-	LAZYSET(owner.consciousness_modifiers, id, consciousness_mod)
-	LAZYSET(owner.max_consciousness_values, id, max_consciousness_mod)
+	if(consciousness_mod)
+		LAZYSET(owner.consciousness_modifiers, id, 0)
+	if(max_consciousness_mod)
+		LAZYSET(owner.max_consciousness_values, id, 150)
+
 	alert_ref = WEAKREF(give_alert())
+	COOLDOWN_START(src, update_cd, 6 SECONDS)
 	return TRUE
 
 /datum/status_effect/thermia/on_remove()
@@ -20,6 +27,26 @@
 	qdel(alert_ref?.resolve())
 	owner.clear_mood_event(id)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
+
+/datum/status_effect/thermia/tick(seconds_between_ticks)
+	if(!COOLDOWN_FINISHED(src, update_cd))
+		return
+
+	// Counts up from 0 to [consciousness_mod]
+	if(consciousness_mod)
+		var/current_mod = -1 * LAZYACCESS(owner.consciousness_modifiers, id)
+		if(current_mod >= consciousness_mod)
+			return
+		LAZYSET(owner.consciousness_modifiers, id, (-1 * (min(consciousness_mod, current_mod + 5))))
+
+	// Counts down from 150 to [max_consciousness_mod]
+	if(max_consciousness_mod && COOLDOWN_FINISHED(src, update_cd))
+		var/current_mod = LAZYACCESS(owner.max_consciousness_values, id)
+		if(current_mod <= max_consciousness_mod)
+			return
+		LAZYSET(owner.max_consciousness_values, id, (max(max_consciousness_mod, current_mod - 10)))
+
+	COOLDOWN_START(src, update_cd, 9 SECONDS)
 
 /// Manually applying alerts, rather than using the api for it, becuase we need to apply "severity" argument
 /datum/status_effect/thermia/proc/give_alert()
@@ -52,7 +79,7 @@
 
 /datum/status_effect/thermia/hypo/three
 	consciousness_mod = 20
-	max_consciousness_mod = -30
+	max_consciousness_mod = 30
 
 /datum/status_effect/thermia/hypo/three/give_alert()
 	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)

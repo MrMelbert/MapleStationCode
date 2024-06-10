@@ -269,7 +269,7 @@
 	plane = HUD_PLANE
 
 /atom/movable/screen/drop/Click()
-	if(usr.stat == CONSCIOUS)
+	if(!usr.incapacitated())
 		usr.dropItemToGround(usr.get_active_held_item())
 
 /atom/movable/screen/combattoggle

@@ -105,3 +105,20 @@
 		return FALSE
 
 	return ..()
+
+/datum/status_effect/recent_defib
+	duration = 30 SECONDS
+	id = "recent_defib"
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = null
+
+/datum/status_effect/recent_defib/on_apply()
+	owner.adjust_pain_shock(-12)
+	owner.cause_pain(BODY_ZONES_ALL, -16)
+	LAZYSET(owner.consciousness_modifiers, id, 50)
+	LAZYSET(owner.max_consciousness_values, id, 60)
+	return TRUE
+
+/datum/status_effect/recent_defib/on_remove()
+	LAZYREMOVE(owner.consciousness_modifiers, id)
+	LAZYREMOVE(owner.max_consciousness_values, id)
