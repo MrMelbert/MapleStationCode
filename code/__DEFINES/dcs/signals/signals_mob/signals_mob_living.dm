@@ -264,6 +264,9 @@
 /// From /datum/element/basic_eating/finish_eating()
 #define COMSIG_MOB_ATE "mob_ate"
 
+/// From /obj/item/melee/baton/baton_effect(): (datum/source, mob/living/user, /obj/item/melee/baton)
+#define COMSIG_MOB_BATONED "mob_batoned"
+
 #define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
 
 #define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
