@@ -80,10 +80,13 @@
 
 //synth head covers (aka head design options)
 /datum/preference/choiced/synth_head_cover
+	main_feature_name = "Head Cover"
 	savefile_key = "feature_synth_head_cover"
+
 	savefile_identifier = PREFERENCE_CHARACTER
 	category = PREFERENCE_CATEGORY_FEATURES
-	main_feature_name = "Head Cover"
+	can_randomize = TRUE
+	relevant_external_organ = /obj/item/organ/external/synth_head_cover
 	should_generate_icons = TRUE
 
 /datum/preference/choiced/synth_head_cover/init_possible_values()
@@ -111,3 +114,6 @@
 
 /datum/preference/choiced/synth_head_cover/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["synth_head_cover"] = value
+
+/datum/preference/choiced/synth_head_cover/create_default_value()
+	return /datum/sprite_accessory/synth_head_cover::name
