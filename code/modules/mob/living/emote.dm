@@ -72,12 +72,10 @@
 	key_third_person = "coughs"
 	message = "coughs!"
 	message_mime = "acts out an exaggerated cough!"
-	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
+	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE | EMOTE_RUNECHAT
 
 /datum/emote/living/cough/can_run_emote(mob/user, status_check = TRUE , intentional)
-	. = ..()
-	if(HAS_TRAIT(user, TRAIT_SOOTHED_THROAT))
-		return FALSE
+	return !HAS_TRAIT(user, TRAIT_SOOTHED_THROAT) && ..()
 
 /datum/emote/living/dance
 	key = "dance"
@@ -539,7 +537,7 @@
 /// The base chance for your yawn to propagate to someone else if they're on the same tile as you
 #define YAWN_PROPAGATE_CHANCE_BASE 20
 /// The amount the base chance to propagate yawns falls for each tile of distance
-#define YAWN_PROPAGATE_CHANCE_DECAY 4
+#define YAWN_PROPAGATE_CHANCE_DECAY 8
 
 /datum/emote/living/yawn
 	key = "yawn"
@@ -548,7 +546,7 @@
 	message_mime = "acts out an exaggerated silent yawn."
 	message_robot = "symphathetically yawns."
 	message_AI = "symphathetically yawns."
-	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
+	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE | EMOTE_RUNECHAT
 	cooldown = 5 SECONDS
 
 /datum/emote/living/yawn/run_emote(mob/user, params, type_override, intentional)

@@ -2,9 +2,7 @@
 	blackboard = list(
 		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic,
 		BB_SALUTE_MESSAGES = list(
-			"salutes",
-			"nods in appreciation towards",
-			"fist bumps",
+			"performs an elaborate salute for",
 		)
 	)
 
@@ -213,17 +211,13 @@
 
 /datum/ai_behavior/find_and_set/valid_authority
 	behavior_flags = AI_BEHAVIOR_CAN_PLAN_DURING_EXECUTION
-	action_cooldown = 30 SECONDS
+	action_cooldown = BOT_COMMISSIONED_SALUTE_DELAY
 
 /datum/ai_behavior/find_and_set/valid_authority/search_tactic(datum/ai_controller/controller, locate_path, search_range)
-	for(var/mob/living/robot in oview(search_range, controller.pawn))
-		if(istype(robot, /mob/living/simple_animal/bot/secbot))
+	for(var/mob/living/basic/bot/cleanbot/robot in oview(search_range, controller.pawn))
+		// NON-MODULE CHANGE - reverts basic bots to only salute commissioned cleanbots, not beepsky
+		if(robot.comissioned)
 			return robot
-		if(!istype(robot, /mob/living/basic/bot/cleanbot))
-			continue
-		var/mob/living/basic/bot/cleanbot/potential_bot = robot
-		if(potential_bot.comissioned)
-			return potential_bot
 	return null
 
 /datum/ai_behavior/salute_authority
@@ -243,7 +237,7 @@
 	if(our_hat)
 		salute_list += "tips [our_hat] at "
 
-	bot_pawn.manual_emote(pick(salute_list) + " [controller.blackboard[target_key]]")
+	bot_pawn.manual_emote(pick(salute_list) + " [controller.blackboard[target_key]]!")
 	finish_action(controller, TRUE, target_key)
 	return
 

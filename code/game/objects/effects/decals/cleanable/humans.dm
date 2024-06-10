@@ -76,7 +76,7 @@
 	for(var/dna_sample in all_dna)
 		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
 		all_blood_names |= lowertext(initial(blood.reagent_type.name))
-	return english_list(all_blood_names)
+	return english_list(all_blood_names, nothing_text = "blood")
 
 /obj/effect/decal/cleanable/blood/process(seconds_per_tick)
 	if(dried || !can_dry)

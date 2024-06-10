@@ -80,7 +80,6 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 /datum/species/synth/on_species_gain(mob/living/carbon/human/synth, datum/species/old_species)
 	. = ..()
 	synth.AddComponent(/datum/component/ion_storm_randomization)
-	synth.set_safe_hunger_level()
 
 	if(limb_updates_on_change)
 		RegisterSignal(synth, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(disguise_damage))
@@ -198,7 +197,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	sexes = disguise_species.sexes
 	name = disguise_species.name
 	fixed_mut_color = disguise_species.fixed_mut_color
-	hair_color = disguise_species.hair_color
+	hair_color_mode = disguise_species.hair_color_mode
 
 	if(isnull(synth.client?.prefs) || synth.client.prefs.read_preference(/datum/preference/choiced/synth_blood) == "As Disguise")
 		exotic_bloodtype = disguise_species.exotic_bloodtype
@@ -224,7 +223,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	sexes = initial(sexes)
 	name = initial(name)
 	fixed_mut_color = initial(fixed_mut_color)
-	hair_color = initial(hair_color)
+	hair_color_mode = initial(hair_color_mode)
 
 	exotic_bloodtype = /datum/blood_type/oil
 
