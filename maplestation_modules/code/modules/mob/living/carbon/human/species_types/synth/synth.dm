@@ -42,7 +42,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
-	external_organs = list(/obj/item/organ/external/synth_head_cover = "Helm")
+	external_organs = list(/obj/item/organ/external/synth_head_cover = "None")
 
 	mutantbrain = /obj/item/organ/internal/brain/cybernetic
 	mutanttongue = /obj/item/organ/internal/tongue/robot
@@ -369,8 +369,8 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 
 /obj/item/bodypart/head/synth
 	limb_id = BODYPART_ID_SYNTH
-	icon_static = 'icons/mob/human/bodyparts.dmi'
-	icon = 'icons/mob/human/bodyparts.dmi'
+	icon_static = 'maplestation_modules/icons/mob/synth_heads.dmi'
+	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
 	icon_state = "synth_head"
 	should_draw_greyscale = FALSE
 	obj_flags = CONDUCTS_ELECTRICITY
@@ -491,13 +491,23 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
 
 //head covers
+/datum/sprite_accessory/synth_head_cover/none // for those that don't want a cover.
+	name = "None"
+	icon_state = null
+
 /datum/sprite_accessory/synth_head_cover/helm
 	name = "Helm"
 	icon_state = "helm"
 
+/datum/sprite_accessory/synth_head_cover/helm_white
+	name = "White Helm"
+	icon_state = "helm_white"
+
 /datum/sprite_accessory/synth_head_cover/tv_blank
 	name = "Tv_blank"
 	icon_state = "tv_blank"
+
+
 
 // add more here!!
 

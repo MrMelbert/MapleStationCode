@@ -94,21 +94,22 @@
 
 /datum/preference/choiced/synth_head_cover/icon_for(value)
 	var/datum/sprite_accessory/sprite_accessory = GLOB.synth_head_cover_list[value]
-	var/icon/head = icon('icons/mob/human/bodyparts.dmi', "synth_head", SOUTH) //TODO REPLACE
+	var/icon/head = icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
 
 	var/icon/final_icon = icon(head)
 
-	for(var/side in list("ADJ", "FRONT"))
-		var/icon/accessory_icon = icon(
-			icon = 'maplestation_modules/icons/mob/synth_heads.dmi', //TODO REPLACE
-			icon_state = "m_synth_head_cover_[sprite_accessory.icon_state]_FRONT", //TODO REPLACE
-			dir = NORTH,
-		)
-		final_icon.Blend(accessory_icon, ICON_OVERLAY)
+	if (!isnull(sprite_accessory))
+		for(var/side in list("ADJ", "FRONT"))
+			var/icon/accessory_icon = icon(
+				icon = 'maplestation_modules/icons/mob/synth_heads.dmi',
+				icon_state = "m_synth_head_cover_[sprite_accessory.icon_state]_FRONT",
+				dir = SOUTH,
+			)
+			final_icon.Blend(accessory_icon, ICON_OVERLAY)
 
 	final_icon.Crop(11, 20, 23, 32)
 	final_icon.Scale(32, 32)
-	final_icon.Blend(COLOR_BLUE_GRAY, ICON_MULTIPLY)
+	final_icon.Blend(COLOR_GRAY, ICON_MULTIPLY)
 
 	return final_icon
 
