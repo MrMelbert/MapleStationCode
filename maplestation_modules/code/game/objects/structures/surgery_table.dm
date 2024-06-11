@@ -61,8 +61,7 @@
 
 
 /obj/structure/table/optable/deconstruct(disassembled, wrench_disassembly)
-	if(!isnull(attached_tank))
-		attached_tank.forceMove(drop_location())
+	attached_tank?.forceMove(drop_location())
 	return ..()
 
 /obj/structure/table/optable/Exited(atom/movable/gone, direction)
