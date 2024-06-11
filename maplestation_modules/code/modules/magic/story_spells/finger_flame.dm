@@ -1,7 +1,10 @@
+#define FINGERFLAME_MANA_COST 5 // very cheap, it's just a lighter
+#define FINGERFLAME_ATTUNEMENT_FIRE 0.2 // flame users make this EVEN cheaper
 // This doesn't use the touch spell component because we use mana on activation rather than touch.
+
 /datum/component/uses_mana/story_spell/finger_flame
-	var/flame_cost = 5 // very cheap, it's just a lighter
-	var/flame_attunement = 0.2 // flame users make this EVEN cheaper
+	var/flame_cost = FINGERFLAME_MANA_COST // very cheap, it's just a lighter
+	var/flame_attunement = FINGERFLAME_ATTUNEMENT_FIRE // flame users make this EVEN cheaper
 
 	/// You get some seconds of freecasting to prevent spam.
 	COOLDOWN_DECLARE(free_use_cooldown)
@@ -14,9 +17,9 @@
 	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
 	UnregisterSignal(parent, COMSIG_SPELL_CAST)
 
-/datum/component/uses_mana/story_spell/finger_flame/get_attunement_dispositions()
+/* /datum/component/uses_mana/story_spell/finger_flame/get_attunement_dispositions()
 	. = ..()
-	.[/datum/attunement/fire] = flame_attunement
+	.[/datum/attunement/fire] = flame_attunement */
 
 /datum/component/uses_mana/story_spell/finger_flame/get_mana_required(atom/caster, atom/cast_on, ...)
 	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (..() * flame_cost) : 0
@@ -35,6 +38,8 @@
 	. = ..()
 	COOLDOWN_START(src, free_use_cooldown, 4 SECONDS)
 
+
+
 // All this spell does is give you a lighter on demand.
 /datum/action/cooldown/spell/touch/finger_flame
 	name = "Free Finger Flame"
@@ -51,6 +56,8 @@
 	draw_message = null
 	drop_message = null
 	can_cast_on_self = TRUE // self burn
+	var/fingflame_cost = FINGERFLAME_MANA_COST
+
 
 	// I was considering giving this the same "trigger on snap emote" effect that the arm implant has,
 	// but considering this has a tangible cost (mana) while the arm implant is free, I decided against it.
@@ -103,7 +110,17 @@
 
 /datum/action/cooldown/spell/touch/finger_flame/mana/New(Target, original)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/finger_flame)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_FIRE] += FINGERFLAME_ATTUNEMENT_FIRE
+
+	AddComponent(/datum/component/uses_mana/story_spell/finger_flame, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = fingflame_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+	)
 	desc += " Costs mana to conjure, but is free to maintain."
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard
@@ -248,3 +265,6 @@
 	. = ..()
 	var/datum/action/cooldown/spell/touch/finger_flame/lizard/fire_breath = locate() in C.actions
 	qdel(fire_breath)
+
+#undef FINGERFLAME_MANA_COST
+#undef FINGERFLAME_ATTUNEMENT_FIRE

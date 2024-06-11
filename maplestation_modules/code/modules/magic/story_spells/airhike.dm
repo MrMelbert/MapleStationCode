@@ -1,5 +1,10 @@
 #define AIRHIKE_ATTUNEMENT_WIND 0.5
 #define AIRHIKE_MANA_COST 30
+/datum/component/uses_mana/story_spell/airhike
+	/// Attunement modifier for Earth attunement
+	var/airhike_attunement_amount = AIRHIKE_ATTUNEMENT_WIND
+	/// Base mana cost
+	var/airhike_cost = AIRHIKE_MANA_COST
 
 /datum/component/uses_mana/story_spell/airhike/react_to_successful_use(atom/cast_on)
 	. = ..()
@@ -37,12 +42,12 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_WIND] += AIRHIKE_ATTUNEMENT_WIND
 
-	AddComponent(/datum/component/uses_mana/story_spell/airhike,
-		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST,
-		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST,
-		mana_consumed = airhike_cost,
-		get_user_callback = CALLBACK(src, PROC_REF(get_owner)),
-		attunements = attunements,
+	AddComponent(/datum/component/uses_mana/story_spell/airhike, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = airhike_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
 	)
 
 /datum/action/cooldown/spell/airhike/is_valid_target(atom/cast_on)

@@ -6390,7 +6390,6 @@
 #include "maplestation_modules\code\modules\magic\story_spells\thaumatergic_sense.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\water_control.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\components\pointed_component.dm"
-#include "maplestation_modules\code\modules\magic\story_spells\components\story_spell_component.dm"
 #include "maplestation_modules\code\modules\magic\subsystems\magic_subsystem.dm"
 #include "maplestation_modules\code\modules\mining\mining_redemption.dm"
 #include "maplestation_modules\code\modules\mining\order_consumables.dm"
