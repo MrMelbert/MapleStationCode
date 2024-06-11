@@ -101,7 +101,7 @@
 	for(var/side in list("ADJ", "FRONT"))
 		var/icon/accessory_icon = icon(
 			icon = 'maplestation_modules/icons/mob/synth_heads.dmi', //TODO REPLACE
-			icon_state = "m_head_cover_[sprite_accessory.icon_state]_FRONT", //TODO REPLACE
+			icon_state = "m_synth_head_cover_[sprite_accessory.icon_state]_FRONT", //TODO REPLACE
 			dir = NORTH,
 		)
 		final_icon.Blend(accessory_icon, ICON_OVERLAY)

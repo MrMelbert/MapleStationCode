@@ -464,19 +464,31 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 
 	slot = ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER
 	dna_block = DNA_SYNTH_HEAD_COVER_BLOCK
+	organ_flags = ORGAN_ROBOTIC
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/synth_head_cover
 
 /datum/bodypart_overlay/mutant/synth_head_cover
 	feature_key = "synth_head_cover"
-	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT | EXTERNAL_BEHIND
+	layers = ALL_EXTERNAL_OVERLAYS
 
 /datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
 	return GLOB.synth_head_cover_list
+
+/datum/bodypart_overlay/mutant/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
+	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
+		return FALSE
+	return TRUE
+
+//hmm.
+///obj/item/organ/external/synth_head_cover/helm
+//	name = "Synth Helm"
+//	desc = "A synth head design with a motorbike helmet like appearance. This one has no imagry on it"
+//	sprite_accessory_override = /datum/sprite_accessory/synth_head_cover/helm
+
 //the path to the icon for the head covers
 /datum/sprite_accessory/synth_head_cover
 	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
-
 
 //head covers
 /datum/sprite_accessory/synth_head_cover/helm
@@ -484,7 +496,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	icon_state = "helm"
 
 /datum/sprite_accessory/synth_head_cover/tv_blank
-	name = "Tv_Blank"
+	name = "Tv_blank"
 	icon_state = "tv_blank"
 
 // add more here!!

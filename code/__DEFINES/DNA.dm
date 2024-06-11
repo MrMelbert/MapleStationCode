@@ -105,7 +105,7 @@
 #define ORGAN_SLOT_EXTERNAL_BODYMARKINGS "bodymarkings"
 #define ORGAN_SLOT_EXTERNAL_POD_HAIR "pod_hair"
 #define ORGAN_SLOT_EXTERNAL_HEAD_TENTACLES "head_tentacles" // NON-MODULE CHANGE
-#define ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER "head_cover" //NON-MODULE CHANGE
+#define ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER "synth_head_cover" //NON-MODULE CHANGE
 
 /// Xenomorph organ slots
 #define ORGAN_SLOT_XENO_ACIDGLAND "acid_gland"
