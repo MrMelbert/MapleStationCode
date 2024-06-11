@@ -34,6 +34,7 @@
 	. = ..()
 
 	atom_storage.max_slots = spawn_count
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 
 /obj/item/storage/fancy/PopulateContents()
 	if(!spawn_type)

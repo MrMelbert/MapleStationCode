@@ -20,9 +20,6 @@
 /obj/item/storage/cans/Initialize(mapload)
 	. = ..()
 	update_appearance()
-
-/obj/item/storage/cans/Initialize(mapload)
-	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
 	atom_storage.max_total_storage = 12
 	atom_storage.max_slots = 6
@@ -32,6 +29,7 @@
 		/obj/item/reagent_containers/cup/glass/bottle/ale,
 		/obj/item/reagent_containers/cup/glass/waterbottle
 		))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 /obj/item/storage/cans/sixsoda
 	name = "soda bottle ring"

@@ -27,6 +27,7 @@
 /obj/item/storage/toolbox/Initialize(mapload)
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/toolbox.ogg'
 	if(has_latches)
 		if(prob(10))
 			latches = "double_latch"

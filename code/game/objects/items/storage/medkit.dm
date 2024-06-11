@@ -79,6 +79,7 @@
 /obj/item/storage/medkit/Initialize(mapload)
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
 /obj/item/storage/medkit/regular
 	icon_state = "medkit"
@@ -433,6 +434,7 @@
 		/obj/item/reagent_containers/pill,
 		/obj/item/food/bait/natural,
 	))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/pillbottle.ogg'
 
 /obj/item/storage/pill_bottle/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is trying to get the cap off [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -672,6 +674,7 @@
 		/obj/item/bodypart,
 		/obj/item/food/icecream
 		))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
 	create_reagents(100, TRANSPARENT)
 	START_PROCESSING(SSobj, src)
@@ -769,6 +772,7 @@
 	atom_storage.set_holdable(list(
 		/obj/item/reagent_containers/cup/tube,
 	))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 
 /obj/item/storage/test_tube_rack/attack_self(mob/user)
 	emptyStorage()

@@ -20,6 +20,7 @@
 	atom_storage.max_total_storage = 14
 	atom_storage.max_slots = 4
 	atom_storage.locked = TRUE
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
 	register_context()
 

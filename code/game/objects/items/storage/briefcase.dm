@@ -22,6 +22,7 @@
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
 	atom_storage.max_total_storage = 21
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
 /obj/item/storage/briefcase/PopulateContents()
 	new /obj/item/pen(src)

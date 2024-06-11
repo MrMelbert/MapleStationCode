@@ -697,6 +697,7 @@
 			/obj/item/toy/crayon/mime,
 			/obj/item/toy/crayon/rainbow,
 		))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 
 /obj/item/storage/crayons/PopulateContents()
 	new /obj/item/toy/crayon/red(src)

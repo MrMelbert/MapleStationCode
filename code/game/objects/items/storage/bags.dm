@@ -27,6 +27,7 @@
 	atom_storage.allow_quick_gather = TRUE
 	atom_storage.allow_quick_empty = TRUE
 	atom_storage.numerical_stacking = TRUE
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 // -----------------------------
 //          Trash bag

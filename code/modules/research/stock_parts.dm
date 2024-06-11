@@ -17,6 +17,7 @@ If you create T5+ please take a pass at mech_fabricator.dm. The parts being good
 /obj/item/storage/part_replacer/Initialize(mapload)
 	. = ..()
 	create_storage(storage_type = /datum/storage/rped)
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/toolbox.ogg'
 
 /obj/item/storage/part_replacer/pre_attack(obj/attacked_object, mob/living/user, params)
 	. = ..()

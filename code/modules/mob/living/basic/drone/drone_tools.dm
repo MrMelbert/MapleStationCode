@@ -26,6 +26,7 @@
 	atom_storage.max_slots = 9
 	atom_storage.rustle_sound = FALSE
 	atom_storage.set_holdable(drone_builtins)
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/toolbox.ogg'
 
 
 /obj/item/storage/drone_tools/PopulateContents()

@@ -1,0 +1,13 @@
+- magic_fire.ogg
+- sprintactivate.ogg
+- sprintdeactivate.ogg
+- jackboot1.ogg
+- jackboot2.ogg
+- box.ogg
+- boxfold.ogg
+- briefcase.ogg
+- pillbottle.ogg
+- toolbox.ogg
+- wrapper.ogg
+
+Have been ported from other stations, and given a lack of existing attribution, are assumed to by CC-BA-SA 3.0

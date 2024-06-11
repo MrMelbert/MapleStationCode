@@ -18,6 +18,7 @@
 /obj/item/storage/box/Initialize(mapload)
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 	update_appearance()
 
 /obj/item/storage/box/suicide_act(mob/living/carbon/user)
