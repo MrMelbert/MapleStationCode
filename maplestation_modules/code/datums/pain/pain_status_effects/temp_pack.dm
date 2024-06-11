@@ -74,12 +74,12 @@
 		return
 
 	if(temperature_change)
-		owner.adjust_bodytemperature(temperature_change, human_owner.get_body_temp_cold_damage_limit() + 5, human_owner.get_body_temp_heat_damage_limit() - 5)
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+		owner.adjust_bodytemperature(temperature_change, owner.get_body_temp_cold_damage_limit() + 5, owner.get_body_temp_heat_damage_limit() - 5)
+	var/obj/item/bodypart/held_bodypart = owner.pain_controller.body_zones[targeted_zone]
 	if(held_bodypart && prob(66))
-		human_owner.cause_pain(targeted_zone, -pain_heal_amount)
+		owner.cause_pain(targeted_zone, -pain_heal_amount)
 		if(prob(10) && held_bodypart.get_modified_pain() > 0)
-			to_chat(human_owner, span_italics(span_notice("[pressed_item] dulls the pain in your [held_bodypart.name] a little.")))
+			to_chat(owner, span_italics(span_notice("[pressed_item] dulls the pain in your [held_bodypart.name] a little.")))
 
 /**
  * Check on move whether [holder] is still adjacent to [owner].

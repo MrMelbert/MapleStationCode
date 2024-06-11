@@ -763,7 +763,7 @@
 	suffocator.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2, required_organ_flag = ORGAN_ORGANIC)
 	// If mob is at critical health, check if they can be damaged further.
 	if(suffocator.stat >= SOFT_CRIT && !HAS_TRAIT(suffocator, TRAIT_NOCRITDAMAGE))
-			return
+		return
 	// Low pressure.
 	if(breath_pp)
 		var/ratio = safe_breath_min / breath_pp

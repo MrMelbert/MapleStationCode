@@ -134,6 +134,7 @@
 		cure()
 		return FALSE
 
+	// melbert todo : move jitter/dizzy/etc to low blood pressure effect
 	affected_mob.set_jitter_if_lower(10 SECONDS)
 	affected_mob.set_stutter_if_lower(10 SECONDS)
 	affected_mob.set_eye_blur_if_lower(4 SECONDS)
@@ -144,7 +145,7 @@
 		// - chills
 		if(1)
 			cure_text = "Subject is in stage one of shock. \
-				Provide immediate pain relief and stop blood loss to prevent worsening condition. \
+				Provide pain relief and stop blood loss to prevent worsening condition. \
 				Keep the patient still and lying down, and be sure to moderate their temperature. \
 				Supply epinephrine and saline-glucose if condition worsens."
 			if(SPT_PROB(0.5, seconds_per_tick))
@@ -154,7 +155,7 @@
 			if(SPT_PROB(1, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You feel nauseous."))
 				if(prob(50))
-					affected_mob.vomit(MOB_VOMIT_MESSAGE|MOB_VOMIT_KNOCKDOWN, 35)
+					affected_mob.vomit(MOB_VOMIT_MESSAGE|MOB_VOMIT_KNOCKDOWN)
 			if(SPT_PROB(2, seconds_per_tick))
 				to_chat(affected_mob, span_danger("You feel anxious."))
 				affected_mob.adjust_jitter(rand(12 SECONDS, 16 SECONDS))
@@ -168,11 +169,10 @@
 		// - difficulty breathing / high heart rate
 		// - decrease in body temperature
 		if(2)
-			cure_text = "Subject is in stage one of shock. \
+			cure_text = "Subject is in stage two of shock. \
 				Provide immediate pain relief and stop blood loss to prevent cardiac arrest. \
-				Keep the patient still and lying down, and be sure to moderate their temprature. \
+				Keep the patient still and lying down, and be sure to moderate their temperature. \
 				Supply epinephrine and saline-glucose if condition worsens."
-
 			if(SPT_PROB(10, seconds_per_tick))
 				affected_mob.adjust_stutter_up_to(10 SECONDS, 120 SECONDS)
 			if(SPT_PROB(1, seconds_per_tick))
@@ -199,7 +199,8 @@
 		// irreversible - point of no return, system failure
 		// cardiac arrest
 		if(3)
-			cure_text = "Subject is in stage three of shock. Cardiac arrest is imminent - urgent action is needed. \
+			cure_text = "Subject is in stage three of shock. \
+				Cardiac arrest is imminent - urgent action is needed. \
 				Prepare a defibrillator on standby and moderate their body temperature."
 			if(SPT_PROB(10, seconds_per_tick))
 				affected_mob.adjust_stutter_up_to(10 SECONDS, 120 SECONDS)

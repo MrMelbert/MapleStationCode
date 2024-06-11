@@ -718,7 +718,7 @@
 	if(parent.stat >= UNCONSCIOUS || parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
 		return FALSE
 
-	parent.emote(emote)
+	INVOKE_ASYNC(parent, TYPE_PROC_REF(/mob, emote), emote)
 	COOLDOWN_START(src, time_since_last_pain_message, cooldown)
 	return TRUE
 
