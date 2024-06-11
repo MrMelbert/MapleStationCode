@@ -18,7 +18,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 /datum/species/synth
 	name = "Synth"
 	id = SPECIES_SYNTH
-	sexes = FALSE
+	sexes = TRUE
 	inherent_traits = list(
 		TRAIT_AGEUSIA,
 		TRAIT_NOBREATH,
@@ -42,7 +42,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
-	external_organs = list(/obj/item/organ/external/synth_head_cover = "None")
+	external_organs = list(/obj/item/organ/external/synth_head_cover = "Helm")
 
 	mutantbrain = /obj/item/organ/internal/brain/cybernetic
 	mutanttongue = /obj/item/organ/internal/tongue/robot
@@ -379,7 +379,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
-	head_flags = NONE
+	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
 /obj/item/bodypart/chest/synth
@@ -458,11 +458,12 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 /obj/item/organ/external/synth_head_cover
 	name = "Head Cover"
 	desc = "It is a cover that goes on a synth head."
+
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER
+
 	preference = "feature_synth_head_cover"
 
-	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
-
-	slot = ORGAN_SLOT_EXTERNAL_SYNTH_HEAD_COVER
 	dna_block = DNA_SYNTH_HEAD_COVER_BLOCK
 	organ_flags = ORGAN_ROBOTIC
 
@@ -470,21 +471,15 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 
 /datum/bodypart_overlay/mutant/synth_head_cover
 	feature_key = "synth_head_cover"
-	layers = ALL_EXTERNAL_OVERLAYS
+	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 
 /datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
 	return GLOB.synth_head_cover_list
 
-/datum/bodypart_overlay/mutant/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
+/datum/bodypart_overlay/mutant/synth_head_cover/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if((human.head?.flags_inv & HIDEHAIR) || (human.wear_mask?.flags_inv & HIDEHAIR))
 		return FALSE
 	return TRUE
-
-//hmm.
-///obj/item/organ/external/synth_head_cover/helm
-//	name = "Synth Helm"
-//	desc = "A synth head design with a motorbike helmet like appearance. This one has no imagry on it"
-//	sprite_accessory_override = /datum/sprite_accessory/synth_head_cover/helm
 
 //the path to the icon for the head covers
 /datum/sprite_accessory/synth_head_cover
@@ -499,10 +494,12 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	name = "Helm"
 	icon_state = "helm"
 
+//with white plastic on the sides.
 /datum/sprite_accessory/synth_head_cover/helm_white
 	name = "White Helm"
 	icon_state = "helm_white"
 
+//just the IPC TV that is already in the code base
 /datum/sprite_accessory/synth_head_cover/tv_blank
 	name = "Tv_blank"
 	icon_state = "tv_blank"
