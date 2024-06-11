@@ -65,6 +65,7 @@
 
 #define TRAIT_NO_OXY_PASSOUT "no_oxy_passout"
 #define TRAIT_SOFT_CRIT "soft_crit"
+#define TRAIT_ASSISTED_BREATHING "assisted_breathing"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"

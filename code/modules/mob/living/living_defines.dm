@@ -47,9 +47,9 @@
 	var/fire_stack_decay_rate = -0.05
 
 	/// when the mob goes from "normal" to crit
-	var/crit_threshold = HEALTH_THRESHOLD_CRIT
+	var/crit_threshold = HEALTH_THRESHOLD_CRIT // melbert todo delete
 	///When the mob enters hard critical state and is fully incapacitated.
-	var/hardcrit_threshold = HEALTH_THRESHOLD_FULLCRIT
+	var/hardcrit_threshold = HEALTH_THRESHOLD_FULLCRIT // melbert todo delete
 
 	//Damage dealing vars! These are meaningless outside of specific instances where it's checked and defined.
 	/// Lower bound of damage done by unarmed melee attacks. Mob code is a mess, only works where this is checked for.

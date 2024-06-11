@@ -20,17 +20,6 @@ Slimecrossing Armor
 /datum/armor/mask_nobreath
 	bio = 50
 
-/obj/item/clothing/mask/nobreath/equipped(mob/living/carbon/human/user, slot)
-	. = ..()
-	if(slot & ITEM_SLOT_MASK)
-		user.failed_last_breath = FALSE
-		user.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
-		user.apply_status_effect(/datum/status_effect/rebreathing)
-
-/obj/item/clothing/mask/nobreath/dropped(mob/living/carbon/human/user)
-	..()
-	user.remove_status_effect(/datum/status_effect/rebreathing)
-
 /obj/item/clothing/glasses/prism_glasses
 	name = "prism glasses"
 	desc = "The lenses seem to glow slightly, and reflect light into dazzling colors."

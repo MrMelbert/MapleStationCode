@@ -45,7 +45,7 @@
 	var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
 	data["patient"]["brain"] = isnull(patient_brain) ? 100 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
 	data["patient"]["bloodVolumePercent"] = round((table.patient.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
-	data["patient"]["heartRate"] = table.patient.get_pretend_heart_rate()
+	data["patient"]["heartRate"] = table.patient.get_heart_rate()
 	// We can also show pain and stuff here if we want.
 
 	return data

@@ -54,6 +54,10 @@
 	become_blind(NO_EYES)
 	// Mobs cannot taste anything without a tongue; the tongue organ removes this on Insert
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
+	// No lungs until you get lungs
+	apply_status_effect(/datum/status_effect/lungless)
+	// No heart until you get a heart // Except this is probably unnecessary so we'll skip it
+	// apply_status_effect(/datum/status_effect/heart_attack)
 
 /mob/living/carbon/human/proc/setup_human_dna()
 	randomize_human(src, randomize_mutations = TRUE)

@@ -687,7 +687,7 @@
 		clear_fullscreen("crit")
 		return
 
-	var/severity = clamp(10 - round(consciousness / 10), 0, 10)
+	var/severity = clamp(10 - round(consciousness / 10, 1), 0, 10)
 	if(severity > 0)
 		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit, severity)
 	else
@@ -731,7 +731,7 @@
 	if(SEND_SIGNAL(src, COMSIG_CARBON_UPDATING_HEALTH_HUD, shown_health_amount) & COMPONENT_OVERRIDE_HEALTH_HUD)
 		return
 
-	if(stat >= SOFT_CRIT || HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, "pain_crit"))
+	if(stat >= SOFT_CRIT)
 		hud_used.healths.icon_state = "health6"
 		return
 

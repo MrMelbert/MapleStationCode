@@ -153,3 +153,5 @@
 
 ///Minimum temperature for items on fire
 #define BURNING_ITEM_MINIMUM_TEMPERATURE (150+T0C)
+
+#define SKIP_INTERNALS "skip_internals"

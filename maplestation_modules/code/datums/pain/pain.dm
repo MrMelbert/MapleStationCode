@@ -451,33 +451,9 @@
 				if(66 to INFINITY)
 					pain += 3
 
-		// Oxy pain is dealt to the head and chest
-		// pain is increasd based on lung damage and overall oxyloss
-		//
-		// Note: 99% of sources of oxydamage is done through adjustoxyloss, and as such doesn't go through this
+		// No pain from oxy
 		if(OXY)
-			if(HAS_TRAIT(parent, TRAIT_NOBREATH))
-				return
-			def_zone = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST)
-			var/obj/item/organ/internal/lungs/our_lungs = source.get_organ_slot(ORGAN_SLOT_LUNGS)
-			if(our_lungs)
-				switch(our_lungs.damage)
-					if(20 to 50)
-						pain += 1
-					if(50 to 80)
-						pain += 2
-					if(80 to INFINITY)
-						pain += 3
-			else
-				pain += 5
-
-			switch(parent.getOxyLoss())
-				if(0 to 20)
-					pain = 0
-				if(20 to 50)
-					pain += 1
-				if(50 to INFINITY)
-					pain += 3
+			return
 
 		// No pain from stamina loss
 		// In the future stamina can probably cause very sharp pain and replace stamcrit,
@@ -627,8 +603,8 @@
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 
-	if(shock_buildup >= 160)
-		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS))
+	if(curr_pain >= 75 || shock_buildup > (parent.health + (parent.maxHealth * 2)))
+		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS) && parent.body_position == STANDING_UP)
 			parent.visible_message(
 				span_warning("[parent] collapses!"),
 				span_warning("You collapse, unable to stand!"),
@@ -637,15 +613,14 @@
 
 		else
 			parent.Paralyze(3 SECONDS)
+		parent.adjust_jitter_up_to(1 SECONDS * pain_modifier, 60 SECONDS)
 
-	if(shock_buildup >= 180)
+	if(shock_buildup > (parent.health + (parent.maxHealth * 3)))
 		if(!HAS_TRAIT(parent, TRAIT_NO_SHOCK_BUILDUP) && !is_undergoing_shock() && !parent.undergoing_cardiac_arrest())
 			parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 			to_chat(parent, span_userdanger("You feel your body start to shut down!"))
 			if(parent.stat <= SOFT_CRIT && !parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB) && !HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS))
 				parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
-
-			// shock_buildup = -200 // requires another 200 ticks / 400 seconds / ~6 minutes of pain to go into shock again
 
 	// Finally, handle pain decay over time
 	if(HAS_TRAIT(parent, TRAIT_STASIS) || parent.on_fire || parent.stat == DEAD)
@@ -718,25 +693,6 @@
 		clear_pain_attributes()
 		return
 
-	if(avg_pain >= 75)
-		if(!HAS_TRAIT_FROM(parent, TRAIT_INCAPACITATED, "pain_crit"))
-			parent.add_traits(list(
-				TRAIT_FLOORED,
-				TRAIT_HANDS_BLOCKED,
-				TRAIT_IMMOBILIZED,
-				TRAIT_INCAPACITATED,
-			), "pain_crit")
-			to_chat(parent, span_userdanger("You're in too much pain to move!"))
-
-	else
-		if(HAS_TRAIT_FROM(parent, TRAIT_INCAPACITATED, "pain_crit"))
-			parent.remove_traits(list(
-				TRAIT_FLOORED,
-				TRAIT_HANDS_BLOCKED,
-				TRAIT_IMMOBILIZED,
-				TRAIT_INCAPACITATED,
-			), "pain_crit")
-
 	switch(avg_pain)
 		if(-INFINITY to 20)
 			clear_pain_attributes()
@@ -769,12 +725,6 @@
 	parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 	parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 	parent.clear_mood_event("pain")
-	parent.remove_traits(list(
-		TRAIT_FLOORED,
-		TRAIT_HANDS_BLOCKED,
-		TRAIT_IMMOBILIZED,
-		TRAIT_INCAPACITATED,
-	), "pain_crit")
 
 /**
  * Run a pain related emote, if a few checks are successful.
@@ -911,7 +861,7 @@
 
 /datum/pain/proc/get_heartrate_modifier()
 	var/base_amount = 0
-	switch(owner.pain_controller?.get_average_pain()) // pain raises it a bit
+	switch(get_average_pain()) // pain raises it a bit
 		if(25 to 50)
 			base_amount += 5
 		if(50 to 75)
@@ -919,7 +869,7 @@
 		if(75 to INFINITY)
 			base_amount += 15
 
-	switch(owner.pain_controller?.pain_modifier) // numbness lowers it a bit
+	switch(pain_modifier) // numbness lowers it a bit
 		if(0.25 to 0.5)
 			base_amount -= 15
 		if(0.5 to 0.75)

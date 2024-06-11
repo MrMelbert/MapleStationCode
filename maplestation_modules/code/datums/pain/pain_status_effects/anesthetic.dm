@@ -13,6 +13,7 @@
 
 /datum/status_effect/grouped/anesthetic/on_apply()
 	. = ..()
+	// Melbert todo : you can't breathe while under anesthetic, so we need a pump or vent or something (TRAIT_ASSISTED_BREATHING)
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(try_removal))
 	LAZYSET(owner.max_consciousness_values, type, 10)
 	applied_at = world.time
