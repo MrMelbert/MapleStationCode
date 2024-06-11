@@ -2,9 +2,9 @@
 // #define PAIN_DEBUG
 
 /**
- * The pain controller datum.
+ * # Pain controller
  *
- * Attatched to a /carbon/human, this datum tracks all the pain values on all their bodyparts and handles updating them.
+ * Attatched to a mob, this datum tracks all the pain values on all their bodyparts and handles updating them.
  * This datum processes on alive humans every 2 seconds.
  */
 /datum/pain
@@ -19,7 +19,7 @@
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
 	var/natural_pain_decay = -0.2
 	/// The base amount of pain decay received.
-	var/base_pain_decay = -0.2
+	VAR_FINAL/base_pain_decay = -0.2
 	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
 	var/natural_decay_counter = 0
 	/// Amount of shock building up from higher levels of pain
@@ -75,9 +75,6 @@
 	if(parent.stat != DEAD)
 		START_PROCESSING(SSpain, src)
 
-/**
- * Register all of our signals with our parent.
- */
 /datum/pain/proc/register_pain_signals()
 	RegisterSignal(parent, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(add_bodypart))
 	RegisterSignal(parent, COMSIG_CARBON_GAIN_WOUND, PROC_REF(add_wound_pain))
@@ -92,9 +89,6 @@
 	RegisterSignal(parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
 	RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
 
-/**
- * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
- */
 /datum/pain/proc/unregister_pain_signals()
 	UnregisterSignal(parent, list(
 		COMSIG_CARBON_ATTACH_LIMB,
@@ -113,13 +107,8 @@
 		COMSIG_LIVING_TREAT_MESSAGE,
 	))
 
-/**
- * Add a limb to be tracked.
- *
- * source - source of the signal / the mob who is gaining the limb / parent
- * new_limb - the bodypart being attatched
- * special - whether this limb being attatched should have side effects (if TRUE, likely being attatched on initialization)
- */
+/// Add a bodypart to be tracked.
+/// Also causes pain if the limb was added non-'special'.
 /datum/pain/proc/add_bodypart(mob/living/carbon/source, obj/item/bodypart/new_limb, special)
 	SIGNAL_HANDLER
 
@@ -140,14 +129,8 @@
 
 	RegisterSignal(new_limb, COMSIG_QDELETING, PROC_REF(limb_delete))
 
-/**
- * Remove a limb from being tracked.
- *
- * source - source of the signal / the mob who is losing the limb / parent
- * lost_limb - the bodypart being removed
- * special - whether this limb being removed should have side effects (if TRUE, likely being removed on initialization)
- * dismembered - whether this limb was dismembered
- */
+/// Removes a limb from being tracked.
+/// Also causes pain if the limb was removed non-'special'.
 /datum/pain/proc/remove_bodypart(mob/living/carbon/source, obj/item/bodypart/lost_limb, special, dismembered)
 	SIGNAL_HANDLER
 
@@ -168,6 +151,7 @@
 		lost_limb.pain = initial(lost_limb.pain)
 		REMOVE_TRAIT(lost_limb, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
+/// Clear reference when a limb is deleted.
 /datum/pain/proc/limb_delete(obj/item/bodypart/source)
 	SIGNAL_HANDLER
 
@@ -176,10 +160,10 @@
 /**
  * Add a pain modifier and update our overall modifier.
  *
- * key - key of the added modifier
- * amount - multiplier of the modifier
+ * * key - key of the added modifier
+ * * amount - multiplier of the modifier
  *
- * returns TRUE if our pain mod actually changed
+ * Returns TRUE if our pain mod actually changed
  */
 /datum/pain/proc/set_pain_modifier(key, amount)
 	var/existing_key = LAZYACCESS(pain_mods, key)
@@ -198,9 +182,9 @@
 /**
  * Remove a pain modifier and update our overall modifier.
  *
- * key - key of the removed modifier
+ * * key - key of the removed modifier
  *
- * returns TRUE if our pain mod actually changed
+ * Returns TRUE if our pain mod actually changed
  */
 /datum/pain/proc/unset_pain_modifier(key)
 	if(isnull(LAZYACCESS(pain_mods, key)))
@@ -213,7 +197,7 @@
  * Update our overall pain modifier.
  * The pain modifier is multiplicative based on all the pain modifiers we have.
  *
- * returns TRUE if our pain modifier was changed after update, FALSE if it remained the same
+ * Returns TRUE if our pain modifier was changed after update, FALSE if it remained the same
  */
 /datum/pain/proc/update_pain_modifier()
 	var/old_pain_mod = pain_modifier
@@ -233,8 +217,12 @@
 /**
  * Adjust the amount of pain in all [def_zones] provided by [amount] (multiplied by the [pain_modifier] if positive).
  *
- * def_zones - list of all zones being adjusted. Can be passed a non-list.
- * amount - amount of pain being applied to all items in [def_zones]. If posiitve, multiplied by [pain_modifier].
+ * This is the bread and butter way to apply pain to a mob.
+ *
+ * * def_zones - list of all zones being adjusted. Can be passed a non-list.
+ * * amount - amount of pain being applied to all items in [def_zones]. If posiitve, multiplied by [pain_modifier].
+ *
+ * Returns TRUE if pain was adjusted, FALSE if no pain was adjusted.
  */
 /datum/pain/proc/adjust_bodypart_pain(list/def_zones, amount = 0, dam_type = BRUTE)
 	SHOULD_NOT_SLEEP(TRUE) // This needs to be asyncronously called in a lot of places, it should already check that this doesn't sleep but just in case.
@@ -244,9 +232,9 @@
 
 	// No pain at all
 	if(amount == 0)
-		return
+		return FALSE
 	if(amount > 0 && (parent.status_flags & GODMODE))
-		return
+		return FALSE
 
 	for(var/zone in shuffle(def_zones))
 		var/adjusted_amount = round(amount, 0.01)
@@ -254,21 +242,23 @@
 		if(isnull(adjusted_bodypart)) // it's valid - for if we're passed a zone we don't have
 			continue
 
+		var/current_amount = adjusted_bodypart.pain
 		// Pain is negative (healing)
 		if(adjusted_amount < 0)
 			// Pain is negative and we're at min pain
-			if(adjusted_bodypart.pain <= adjusted_bodypart.min_pain)
+			if(current_amount <= adjusted_bodypart.min_pain)
 				continue
-			// Pain is negative and we're above soft cap, incraese the healing amount greatly
-			if(adjusted_bodypart.pain >= adjusted_bodypart.soft_max_pain)
-				adjusted_amount *= 3
+			// Pain is negative and we're above soft cap, increase the healing amount
+			if(current_amount >= adjusted_bodypart.soft_max_pain)
+				adjusted_amount *= 3 * (current_amount / adjusted_bodypart.soft_max_pain)
 
 		// Pain is positive (dealing)
 		else
-			// Adjust incoming dealt pain by modifiers
+			// Pain is positive and we're at the soft cap, reduce the incoming pain
+			if(current_amount >= adjusted_bodypart.soft_max_pain)
+				adjusted_amount *= 0.5 * (adjusted_bodypart.soft_max_pain / current_amount)
 			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
-			// Pain modifiers results in us taking 0 pain
-			// (If someone adds a negative pain mod and causes "inverse pain" (which you shouldn't) this needs to go)
+			// Pain modifiers results in us taking 0 pain so we skip
 			if(adjusted_amount <= 0)
 				continue
 
@@ -281,7 +271,7 @@
 #endif
 
 		// Actually do the pain addition / subtraction here
-		adjusted_bodypart.pain = max(adjusted_bodypart.pain + adjusted_amount, adjusted_bodypart.min_pain)
+		adjusted_bodypart.pain = max(current_amount + adjusted_amount, adjusted_bodypart.min_pain)
 
 		if(adjusted_amount > 0)
 			INVOKE_ASYNC(src, PROC_REF(on_pain_gain), adjusted_bodypart, amount, dam_type)
@@ -296,14 +286,18 @@
 	parent.updatehealth()
 	if(amount >= 10)
 		parent.flash_pain_overlay(amount >= 20 ? 2 : 1)
+	if(amount >= 12 && prob(25))
+		do_pain_emote("scream", 5 SECONDS)
+	else if(amount >= 6 && prob(10))
+		do_pain_emote()
 
 	return TRUE
 
 /**
  * Set the minimum amount of pain in all [def_zones] by [amount].
  *
- * def_zones - list of all zones being adjusted. Can be passed a non-list.
- * amount - amount of pain being all items in [def_zones] are set to.
+ * * def_zones - list of all zones being adjusted. Can be passed a non-list.
+ * * amount - amount of pain being all items in [def_zones] are set to.
  */
 /datum/pain/proc/adjust_bodypart_min_pain(list/def_zones, amount = 0)
 	if(!amount)
@@ -325,10 +319,9 @@
 /**
  * Called when pain is gained to apply side effects.
  * Calls [affected_part]'s [on_gain_pain_effects] proc with arguments [amount].
- * Sends signal [COMSIG_CARBON_PAIN_GAINED] with arguments [mob/living/carbon/parent, obj/item/bodypart/affected_part, amount].
  *
- * affected_part - the bodypart that gained the pain
- * amount - amount of pain that was gained, post-[pain_modifier] applied
+ * * affected_part - the bodypart that gained the pain
+ * * amount - amount of pain that was gained, post-[pain_modifier] applied
  */
 /datum/pain/proc/on_pain_gain(obj/item/bodypart/affected_part, amount, dam_type)
 	affected_part.on_gain_pain_effects(amount, dam_type)
@@ -336,32 +329,19 @@
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, dam_type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
 
-	if(amount > 12 && prob(25))
-		do_pain_emote("scream", 5 SECONDS)
-	else if(amount > 6 && prob(10))
-		do_pain_emote()
-
 /**
  * Called when pain is lost, if the mob did not lose pain in the last 60 seconds.
  * Calls [affected_part]'s [on_lose_pain_effects] proc with arguments [amount].
- * Sends signal [COMSIG_CARBON_PAIN_LOST] with arguments [mob/living/carbon/parent, obj/item/bodypart/affected_part, amount].
  *
- * affected_part - the bodypart that lost pain
- * amount - amount of pain that was lost
+ * * affected_part - the bodypart that lost pain
+ * * amount - amount of pain that was lost
  */
 /datum/pain/proc/on_pain_loss(obj/item/bodypart/affected_part, amount, type)
 	affected_part.on_lose_pain_effects(amount)
 	refresh_pain_attributes()
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_LOST, affected_part, amount, type)
 
-/**
- * Hook into [/mob/living/proc/apply_damage] proc via signal and apply pain based on how much damage was gained.
- *
- * source - source of the signal / the mob being damaged / parent
- * damage - the amount of damage sustained
- * damagetype - the type of damage sustained
- * def_zone - the limb being targeted with damage (either a bodypart zone or an obj/item/bodypart)
- */
+/// Hooks into [apply_damage] to apply pain to the parent based on incoming damage.
 /datum/pain/proc/add_damage_pain(
 	mob/living/carbon/source,
 	damage,
@@ -479,13 +459,7 @@
 
 	adjust_bodypart_pain(def_zone, pain, damagetype)
 
-/**
- * Add pain in from a received wound based on severity.
- *
- * source - source of the signal / the mob being wounded / parent
- * applied_wound - the wound being applied
- * wounded_limb - the limb being wounded
- */
+/// Gaining a wound applies a flat amount of pain based on severity.
 /datum/pain/proc/add_wound_pain(mob/living/carbon/source, datum/wound/applied_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
 
@@ -497,29 +471,24 @@
 	adjust_bodypart_min_pain(wounded_limb.body_zone, applied_wound.severity * 5)
 	adjust_bodypart_pain(wounded_limb.body_zone, applied_wound.severity * 7.5)
 
-/**
- * Remove pain from a healed wound.
- *
- * source - source of the signal / the mob being wounded / parent
- * removed_wound - the wound being healed
- * wounded_limb - the limb that was wounded
- */
+/// Removes pain when a wound is healed.
 /datum/pain/proc/remove_wound_pain(mob/living/carbon/source, datum/wound/removed_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
 
 	adjust_bodypart_min_pain(wounded_limb.body_zone, -removed_wound.severity * 5)
 	adjust_bodypart_pain(wounded_limb.body_zone, -removed_wound.severity * 5)
 
-/**
- * The process proc for pain.
- *
- * Applies and removes pain modifiers as they come and go.
- * Causes various side effects based on pain.
- *
- * Triggers once every 2 seconds.
- * Handles natural pain decay, which happens once every 5 processes (every 10 seconds)
- */
 /datum/pain/process(seconds_per_tick)
+	if(parent.stat == DEAD)
+		stack_trace("Pain datum tried to process a dead mob, it should have been stopped!")
+		return PROCESS_KILL
+
+	if(HAS_TRAIT(parent, TRAIT_STASIS))
+		// you can just ignore everything if you're in stasis
+		// this means no decay, no shock, and also no sad
+		// future idea: keep building up shock and apply it all at once when you leave stasis
+		// this is a horrible idea to do with pain in general but for shock, maybe fun.
+		return
 
 	var/has_pain = FALSE
 	var/just_cant_feel_anything = !parent.can_feel_pain()
@@ -575,7 +544,7 @@
 				do_pain_message(span_userdanger("[pick("Stop the pain!", "Everything hurts!", "You need painkillers now!")]"))
 
 	if(shock_buildup >= 20 && !just_cant_feel_anything)
-		parent.adjust_jitter_up_to(1 SECONDS * pain_modifier, 60 SECONDS)
+		parent.adjust_jitter_up_to(2 SECONDS * pain_modifier, 60 SECONDS)
 		if(SPT_PROB(10, seconds_per_tick))
 			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 		if(SPT_PROB(shock_buildup * 0.1, seconds_per_tick))
@@ -603,27 +572,38 @@
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 
-	if(curr_pain >= 75 || shock_buildup > (parent.health + (parent.maxHealth * 2)))
-		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS) && parent.body_position == STANDING_UP)
-			parent.visible_message(
-				span_warning("[parent] collapses!"),
-				span_warning("You collapse, unable to stand!"),
-				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-			)
-
-		else
-			parent.Paralyze(3 SECONDS)
-		parent.adjust_jitter_up_to(1 SECONDS * pain_modifier, 60 SECONDS)
-
-	if(shock_buildup > (parent.health + (parent.maxHealth * 3)))
+	// This is where shock can trigger
+	if(shock_buildup > (parent.health + (parent.maxHealth * 2)))
 		if(!HAS_TRAIT(parent, TRAIT_NO_SHOCK_BUILDUP) && !is_undergoing_shock() && !parent.undergoing_cardiac_arrest())
 			parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 			to_chat(parent, span_userdanger("You feel your body start to shut down!"))
-			if(parent.stat <= SOFT_CRIT && !parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB) && !HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS))
-				parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+			if(!HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS))
+				if(parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
+					parent.visible_message(span_danger("[parent] stares into the distance as they go into shock!"), ignored_mobs = parent)
+				else
+					parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+
+	// This is "paincrit", it's where stamcrit has moved and is also applied by extreme shock
+	if(curr_pain >= 75 || shock_buildup > (parent.health + (parent.maxHealth * 2.5)))
+		ADD_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
+		var/is_standing = parent.body_position == STANDING_UP
+		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS))
+			if(is_standing)
+				parent.visible_message(
+					span_warning("[parent] collapses!"),
+					span_warning("You collapse, unable to stand!"),
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
+
+		else
+			parent.Paralyze(3 SECONDS)
+		parent.adjust_jitter_up_to(2 SECONDS * pain_modifier, 60 SECONDS)
+	else
+		REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
 
 	// Finally, handle pain decay over time
-	if(HAS_TRAIT(parent, TRAIT_STASIS) || parent.on_fire || parent.stat == DEAD)
+	if(parent.on_fire)
+		// No decay if you're burning (because you'll be gaining pain constantly anyways)
 		return
 
 	// Decay every 5 ticks / 10 seconds, or 2 ticks / 4 seconds if "sleeping"
@@ -644,9 +624,7 @@
 	var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
 	adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
 
-/**
- * Whenever we buckle to something or lie down, get a pain bodifier.
- */
+/// Whenever we buckle to something or lie down, get a pain bodifier.
 /datum/pain/proc/check_lying_pain_modifier(datum/source, new_buckled)
 	SIGNAL_HANDLER
 
@@ -662,9 +640,7 @@
 	else
 		unset_pain_modifier(PAIN_MOD_LYING)
 
-/**
- * While actively burning, cause pain
- */
+/// While actively burning, cause pain
 /datum/pain/proc/on_burn_tick(datum/source)
 	SIGNAL_HANDLER
 
@@ -676,9 +652,7 @@
 	// We can be liberal with this because when they're extinguished most of it will go away.
 	parent.apply_status_effect(/datum/status_effect/pain_from_fire, clamp(parent.fire_stacks * 0.2, 0, 2))
 
-/**
- * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
- */
+/// Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
 /datum/pain/proc/refresh_pain_attributes(...)
 	SIGNAL_HANDLER
 
@@ -717,9 +691,7 @@
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
 			parent.add_mood_event("pain", /datum/mood_event/crippling_pain)
 
-/**
- * Clears all pain related attributes
- */
+/// Clears all pain related attributes
 /datum/pain/proc/clear_pain_attributes()
 	parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
 	parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
@@ -729,10 +701,13 @@
 /**
  * Run a pain related emote, if a few checks are successful.
  *
- * emote - string, what emote we're running
- * cooldown - what cooldown to set our emote cooldown to
+ * Comes with defaults so you can just call it straight up to do a random emote
  *
- * returns TRUE if successful.
+ * * emote - string, what emote we're running
+ * * cooldown - what cooldown to set our emote cooldown to
+ *
+ * Returns TRUE if successful.
+ * Returns FALSE if we failed to send an emote.
  */
 /datum/pain/proc/do_pain_emote(emote = pick(PAIN_EMOTES), cooldown = 3 SECONDS)
 	ASSERT(istext(emote))
@@ -750,11 +725,11 @@
 /**
  * Run a pain related message, if a few checks are successful.
  *
- * message - string, what message we're sending
- * painless_message - optional string, what message we're sending if the mob doesn't "feel" pain
- * cooldown - what cooldown to set our message cooldown to
+ * * message - string, what message we're sending
+ * * painless_message - optional string, what message we're sending if the mob doesn't "feel" pain
+ * * cooldown - what cooldown to set our message cooldown to
  *
- * returns TRUE if successful.
+ * Returns TRUE if successful.
  * Returns FALSE if we failed to send a message, even if painless_message was provided and sent.
  */
 /datum/pain/proc/do_pain_message(message, painless_message, cooldown = 0 SECONDS)
@@ -772,9 +747,7 @@
 	COOLDOWN_START(src, time_since_last_pain_message, cooldown)
 	return TRUE
 
-/**
- * Get the average pain of all bodyparts as a percent of the total pain.
- */
+/// Get the average pain of all bodyparts as a percent of the total (soft) pain.
 /datum/pain/proc/get_average_pain()
 	var/max_total_pain = 0
 	var/total_pain = 0
@@ -785,12 +758,11 @@
 
 	return round(100 * total_pain / max_total_pain, 0.01)
 
-/**
- * Returns a disease datum (Truthy value) if we are undergoing shock.
- */
+/// Returns a disease datum (Truthy value) if we are undergoing shock.
 /datum/pain/proc/is_undergoing_shock()
 	return locate(/datum/disease/shock) in parent.diseases
 
+/// Adds a custom stammer to people under the effects of pain.
 /datum/pain/proc/handle_message(datum/source, list/message_args)
 	SIGNAL_HANDLER
 
@@ -825,9 +797,7 @@
 	message_args[TREAT_TTS_MESSAGE_ARG] = phrase
 	message_args[TREAT_MESSAGE_ARG] = sanitize(final_phrase)
 
-/**
- * Remove all pain, pain paralysis, side effects, etc. from our mob after we're fully healed by something (like an adminheal)
- */
+/// Remove all pain, pain paralysis, side effects, etc. from our mob after we're fully healed by something (like an adminheal)
 /datum/pain/proc/remove_all_pain(datum/source, heal_flags)
 	SIGNAL_HANDLER
 
@@ -847,9 +817,7 @@
 	shock_buildup = 0
 	natural_pain_decay = base_pain_decay
 
-/**
- * Determines if we should be processing or not.
- */
+/// Determines if we should be processing or not.
 /datum/pain/proc/on_parent_statchance(mob/source)
 	SIGNAL_HANDLER
 
@@ -859,6 +827,7 @@
 	else
 		START_PROCESSING(SSpain, src)
 
+/// Used to get the effect of pain on the parent's heart rate.
 /datum/pain/proc/get_heartrate_modifier()
 	var/base_amount = 0
 	switch(get_average_pain()) // pain raises it a bit
@@ -886,7 +855,8 @@
  * Note, this report is relatively vague intentionally -
  * rather than sending a detailed report of which bodyparts are in pain and how much,
  * the patient is encouraged to elaborate on which bodyparts hurt the most, and how much they hurt.
- * (To encourage a bit more interaction between the doctors.)
+ *
+ * (To encourage a bit more interaction between the doctors and their patients)
  */
 /datum/pain/proc/on_analyzed(datum/source, list/render_list, advanced, mob/user, mode)
 	SIGNAL_HANDLER

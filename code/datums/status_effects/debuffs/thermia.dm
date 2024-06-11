@@ -17,14 +17,14 @@
 	if(max_consciousness_mod)
 		LAZYSET(owner.max_consciousness_values, id, 150)
 
-	alert_ref = WEAKREF(give_alert())
+	give_alert()
 	COOLDOWN_START(src, update_cd, 6 SECONDS)
 	return TRUE
 
 /datum/status_effect/thermia/on_remove()
 	LAZYREMOVE(owner.consciousness_modifiers, id)
 	LAZYREMOVE(owner.max_consciousness_values, id)
-	qdel(alert_ref?.resolve())
+	owner.clear_alert(ALERT_TEMPERATURE)
 	owner.clear_mood_event(id)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 

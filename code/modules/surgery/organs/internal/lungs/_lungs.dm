@@ -101,8 +101,6 @@
 	var/heat_level_3_damage = HEAT_GAS_DAMAGE_LEVEL_3
 	var/heat_damage_type = BURN
 
-	var/crit_stabilizing_reagent = /datum/reagent/medicine/epinephrine
-
 // assign the respiration_type
 /obj/item/organ/internal/lungs/Initialize(mapload)
 	. = ..()
@@ -764,12 +762,7 @@
 	// Suffocating = brain damage
 	suffocator.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2, required_organ_flag = ORGAN_ORGANIC)
 	// If mob is at critical health, check if they can be damaged further.
-	if(suffocator.health < suffocator.crit_threshold)
-		// Mob is immune to damage at critical health.
-		if(HAS_TRAIT(suffocator, TRAIT_NOCRITDAMAGE))
-			return
-		// Reagents like Epinephrine stop suffocation at critical health.
-		if(suffocator.reagents.has_reagent(crit_stabilizing_reagent, needs_metabolizing = TRUE))
+	if(suffocator.stat >= SOFT_CRIT && !HAS_TRAIT(suffocator, TRAIT_NOCRITDAMAGE))
 			return
 	// Low pressure.
 	if(breath_pp)

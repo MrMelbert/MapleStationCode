@@ -59,12 +59,18 @@
 /// If the mob enters shock, they will have +1 cure condition (helps cure it faster)
 #define TRAIT_ABATES_SHOCK "shock_abated"
 /// Pain effects, such as stuttering or feedback messages ("Everything hurts") are disabled.
+/// A way of saying "this mob doesn't feel pain" without actually
+/// removing the pain system (giving them a big pain modifier)
 #define TRAIT_NO_PAIN_EFFECTS "no_pain_effects"
-/// Shock buildup does not increase, only decrease. No effect if already in shock (unlike abates_shock)
+/// Shock buildup does not increase, only decrease. Cannot enter shock if at the threshold.
+/// No effect if already in shock (unlike abates_shock)
 #define TRAIT_NO_SHOCK_BUILDUP "no_shock_buildup"
-
+/// Blocks KO from high oxygen damage
 #define TRAIT_NO_OXY_PASSOUT "no_oxy_passout"
+/// All this trait does is change your stat to soft crit, which itself doesn't do much,
+/// but as your stat is changed many stat checks will block you (such as using the radio)
 #define TRAIT_SOFT_CRIT "soft_crit"
+/// Blocks losebreath from accumulating from things such as heart attacks or choking
 #define TRAIT_ASSISTED_BREATHING "assisted_breathing"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.

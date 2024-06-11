@@ -31,7 +31,7 @@
 /datum/status_effect/limp/pain/on_remove()
 	. = ..()
 	UnregisterSignal(owner, list(COMSIG_CARBON_PAIN_GAINED, COMSIG_CARBON_PAIN_LOST))
-	if(!QDELING(owner))
+	if(!QDELING(owner) && owner.stat <= SOFT_CRIT)
 		owner.pain_message(
 			span_green("Your pained limp stops!"),
 			span_green("It becomes easier to walk again."),

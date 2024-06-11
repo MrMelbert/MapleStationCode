@@ -72,10 +72,11 @@
 		return FALSE
 
 	if(get_modified_pain() < 65 && HAS_TRAIT_FROM(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS))
-		owner.pain_message(
-			span_green("You can feel your [plaintext_zone] again!"),
-			span_green("You can move your [plaintext_zone] again!")
-		)
+		if(owner.stat <= SOFT_CRIT)
+			owner.pain_message(
+				span_green("You can feel your [plaintext_zone] again!"),
+				span_green("You can move your [plaintext_zone] again!"),
+			)
 		REMOVE_TRAIT(src, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 		update_disabled()
 
@@ -170,7 +171,7 @@
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "burns to the touch", "feels terrible", "feels constricted")
 			side_feedback += list("You feel your ribs jostle in your [plaintext_zone]")
 
-	if(side_feedback.len && last_received_pain_type == BRUTE && SPT_PROB(50, seconds_per_tick))
+	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(50, seconds_per_tick))
 		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
 		owner.pain_message(span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
@@ -194,7 +195,7 @@
 
 	if(amount >= 10)
 		// Large amounts of head pain causes minor brain damage
-		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, min(pain / 5, 10), 50)
+		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, min(amount / 5, 10), 50)
 
 	return TRUE
 
@@ -231,7 +232,7 @@
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "feels terrible", "is in agony", "feels tense")
 			side_feedback += list("You feel a splitting migrane", "Pressure floods your [plaintext_zone]", "Your [plaintext_zone] feels as if it's being squeezed", "Your eyes hurt to keep open")
 
-	if(side_feedback.len && last_received_pain_type == BRUTE && SPT_PROB(50, seconds_per_tick))
+	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(50, seconds_per_tick))
 		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
 		owner.pain_message(span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
@@ -255,7 +256,8 @@
 	if(!.)
 		return
 
-	if(prob(10) && pain >= 25 && owner.Knockdown(3 SECONDS))
+	var/is_standing = owner.body_position == STANDING_UP
+	if(prob(10) && get_modified_pain() >= 25 && owner.Knockdown(3 SECONDS) && is_standing)
 		owner.pain_message(span_danger("Your [plaintext_zone] buckles under the pain!"))
 
 // --- Right Leg ---
@@ -286,7 +288,7 @@
 		return
 
 	var/obj/item/holding = owner.get_active_held_item()
-	if(!prob(10) || pain < 25)
+	if(!prob(10) || get_modified_pain() < 25)
 		return
 	if(holding && owner.dropItemToGround(holding))
 		if(bodytype & BODYTYPE_ROBOTIC)

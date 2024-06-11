@@ -27,9 +27,11 @@
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/M)
 	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)
+	ADD_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/M)
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
+	REMOVE_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
 	. = ..()
 
 /datum/reagent/medicine/epinephrine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
@@ -43,9 +45,11 @@
 /datum/reagent/medicine/atropine/on_mob_metabolize(mob/living/carbon/M)
 	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)
+	ADD_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
 
 /datum/reagent/medicine/atropine/on_mob_end_metabolize(mob/living/carbon/M)
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
+	REMOVE_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
 	. = ..()
 
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)

@@ -12,7 +12,7 @@
 		return FALSE
 
 	RegisterSignal(owner, COMSIG_CARBON_ATTEMPT_BREATHE, PROC_REF(block_breath))
-	RegisterSignal(owner, list(COMSIG_SPECIES_GAIN), PROC_REF(check_new_species))
+	RegisterSignal(owner, COMSIG_SPECIES_GAIN, PROC_REF(check_new_species))
 	return TRUE
 
 /datum/status_effect/lungless/on_remove()

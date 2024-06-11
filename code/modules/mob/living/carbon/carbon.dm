@@ -803,7 +803,6 @@
 				max_consciousness = 10
 	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && nutrition <= NUTRITION_LEVEL_HUNGRY)
 		new_consciousness -= 20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY))
-		max_consciousness = min(max_consciousness, 120)
 
 	for(var/mod in consciousness_modifiers)
 		new_consciousness += consciousness_modifiers[mod]
