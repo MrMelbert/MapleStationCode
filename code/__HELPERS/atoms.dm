@@ -326,5 +326,16 @@ rough example of the "cone" made by the 3 dirs checked
 		"y" = icon_height > world.icon_size && pixel_y != 0 ? (icon_height - world.icon_size) * 0.5 : 0,
 	)
 
+/**
+ * Called before an item is put into this atom's storage datum via the item clicking on this atom
+ *
+ * This can be used to add item-atom interactions that you want handled before inserting something into storage
+ * (But it's also fairly snowflakey)
+ *
+ * Returning FALSE will block that item from being put into our storage
+ */
+/atom/proc/storage_insert_on_interacted_with(datum/storage, obj/item/inserted, mob/living/user)
+	return TRUE
+
 /// Helper for easily adding blood from INSIDE a mob to an atom (NOT blood ON the mob)
 #define add_mob_blood(from_who) add_blood_DNA(from_who.get_blood_dna_list())
