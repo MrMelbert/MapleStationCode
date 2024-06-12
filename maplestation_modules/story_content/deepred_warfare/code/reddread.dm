@@ -32,15 +32,23 @@
 	var/heavy_emp_damage = 25
 	var/hands = 4
 
-	var/obj/item/internal_storage
+	var/obj/item/back_storage // Can hold anything.
 
-	var/obj/item/default_storage = /obj/item/storage/drone_tools
+	var/obj/item/default_storage
+
+	var/obj/item/belt_storage // Can also hold anything.
+
+	var/obj/item/default_belt
+
+	var/obj/item/neck
+
+	var/obj/item/default_neckwear
 
 	var/obj/item/head
 
 	var/obj/item/default_headwear
 
-/datum/language_holder/redtech
+/datum/language_holder/redtech // Literally just the TG silicon language list.
 	understood_languages = list(
 		/datum/language/common = list(LANGUAGE_ATOM),
 		/datum/language/uncommon = list(LANGUAGE_ATOM),
@@ -66,28 +74,45 @@
 	. = ..()
 	AddElement(/datum/element/dextrous, hud_type = hud_type)
 	AddComponent(/datum/component/basic_inhands, y_offset = 0)
-	change_number_of_hands(4)
+	change_number_of_hands(hands)
 	AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)))
 	AddComponent(/datum/component/personal_crafting)
 
+	add_traits(list(TRAIT_WEATHER_IMMUNE, TRAIT_NO_PLASMA_TRANSFORM, TRAIT_KNOW_ROBO_WIRES, TRAIT_MADNESS_IMMUNE, TRAIT_NO_SOUL, TRAIT_PLANT_SAFE, TRAIT_QUICKER_CARRY, TRAIT_STRONG_GRABBER, TRAIT_SURGEON, TRAIT_RESEARCH_SCANNER, TRAIT_REAGENT_SCANNER, TRAIT_GOOD_HEARING, TRAIT_FEARLESS, TRAIT_FASTMED, TRAIT_NOFIRE, TRAIT_PUSHIMMUNE, TRAIT_FIST_MINING, TRAIT_NEGATES_GRAVITY, TRAIT_LITERATE, TRAIT_KNOW_ENGI_WIRES, TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP), INNATE_TRAIT)
 
 /datum/hud/dextrous/dreadnought/New(mob/owner)
 	..()
 	var/atom/movable/screen/inventory/inv_box
 
 	inv_box = new /atom/movable/screen/inventory(null, src)
-	inv_box.name = "internal storage"
+	inv_box.name = "internal back storage"
 	inv_box.icon = ui_style
-	inv_box.icon_state = "suit_storage"
-	inv_box.screen_loc = ui_drone_storage
-	inv_box.slot_id = ITEM_SLOT_DEX_STORAGE
+	inv_box.icon_state = "back"
+	inv_box.screen_loc = ui_back
+	inv_box.slot_id = ITEM_SLOT_BACK
+	static_inventory += inv_box
+
+	inv_box = new /atom/movable/screen/inventory(null, src)
+	inv_box.name = "internal belt storage"
+	inv_box.icon = ui_style
+	inv_box.icon_state = "belt"
+	inv_box.screen_loc = ui_belt
+	inv_box.slot_id = ITEM_SLOT_BELT
+	static_inventory += inv_box
+
+	inv_box = new /atom/movable/screen/inventory(null, src)
+	inv_box.name = "neck"
+	inv_box.icon = ui_style
+	inv_box.icon_state = "neck"
+	inv_box.screen_loc = ui_id
+	inv_box.slot_id = ITEM_SLOT_NECK
 	static_inventory += inv_box
 
 	inv_box = new /atom/movable/screen/inventory(null, src)
 	inv_box.name = "head/mask"
 	inv_box.icon = ui_style
 	inv_box.icon_state = "mask"
-	inv_box.screen_loc = ui_drone_head
+	inv_box.screen_loc = ui_sstore1
 	inv_box.slot_id = ITEM_SLOT_HEAD
 	static_inventory += inv_box
 
@@ -97,14 +122,76 @@
 	var/mob/living/basic/redtechdread/drone = mymob
 
 	if(hud_shown)
-		if(!isnull(drone.internal_storage))
-			drone.internal_storage.screen_loc = ui_drone_storage
-			drone.client.screen += drone.internal_storage
+		if(!isnull(drone.back_storage))
+			drone.back_storage.screen_loc = ui_back
+			drone.client.screen += drone.back_storage
+		if(!isnull(drone.belt_storage))
+			drone.belt_storage.screen_loc = ui_belt
+			drone.client.screen += drone.belt_storage
+		if(!isnull(drone.neck))
+			drone.neck.screen_loc = ui_id
+			drone.client.screen += drone.neck
 		if(!isnull(drone.head))
-			drone.head.screen_loc = ui_drone_head
+			drone.head.screen_loc = ui_sstore1
 			drone.client.screen += drone.head
 	else
-		drone.internal_storage?.screen_loc = null
+		drone.back_storage?.screen_loc = null
+		drone.belt_storage?.screen_loc = null
+		drone.neck?.screen_loc = null
 		drone.head?.screen_loc = null
-
 	..()
+
+/mob/living/basic/redtechdread/doUnEquip(obj/item/item, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+	if(..())
+		update_held_items()
+		if(item == head)
+			head = null
+			update_worn_head()
+		if(item == neck)
+			neck = null
+			update_worn_neck()
+		if(item == belt_storage)
+			belt_storage = null
+			update_worn_belt()
+		if(item == back_storage)
+			back_storage = null
+			update_worn_back()
+		return TRUE
+	return FALSE
+
+/mob/living/basic/redtechdread/can_equip(obj/item/item, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
+	switch(slot)
+		if(ITEM_SLOT_HEAD)
+			if(head)
+				return FALSE
+			if(!((item.slot_flags & ITEM_SLOT_HEAD) || (item.slot_flags & ITEM_SLOT_MASK)))
+				return FALSE
+			return TRUE
+		if(ITEM_SLOT_NECK)
+			if(neck)
+				return FALSE
+			if(!(item.slot_flags & ITEM_SLOT_NECK))
+				return FALSE
+			return TRUE
+		if(ITEM_SLOT_BELT)
+			if(belt_storage)
+				return FALSE
+			return TRUE
+		if(ITEM_SLOT_BACK)
+			if(back_storage)
+				return FALSE
+			return TRUE
+	..()
+
+/mob/living/basic/redtechdread/get_item_by_slot(slot_id)
+	switch(slot_id)
+		if(ITEM_SLOT_HEAD)
+			return head
+		if(ITEM_SLOT_NECK)
+			return neck
+		if(ITEM_SLOT_BELT)
+			return belt_storage
+		if(ITEM_SLOT_BACK)
+			return back_storage
+
+	return ..()
