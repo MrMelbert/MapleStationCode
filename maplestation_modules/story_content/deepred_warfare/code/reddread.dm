@@ -195,3 +195,52 @@
 			return back_storage
 
 	return ..()
+
+/mob/living/basic/redtechdread/get_slot_by_item(obj/item/looking_for)
+	if(back_storage == looking_for)
+		return ITEM_SLOT_BACK
+	if(belt_storage == looking_for)
+		return ITEM_SLOT_BELT
+	if(neck == looking_for)
+		return ITEM_SLOT_NECK
+	if(head == looking_for)
+		return ITEM_SLOT_HEAD
+	return ..()
+
+/mob/living/basic/redtechdread/equip_to_slot(obj/item/equipping, slot, initial = FALSE, redraw_mob = FALSE, indirect_action = FALSE)
+	if(!slot)
+		return
+	if(!istype(equipping))
+		return
+
+	var/index = get_held_index_of_item(equipping)
+	if(index)
+		held_items[index] = null
+	update_held_items()
+
+	if(equipping.pulledby)
+		equipping.pulledby.stop_pulling()
+
+	equipping.screen_loc = null // will get moved if inventory is visible
+	equipping.forceMove(src)
+	SET_PLANE_EXPLICIT(equipping, ABOVE_HUD_PLANE, src)
+
+	switch(slot)
+		if(ITEM_SLOT_HEAD)
+			head = equipping
+			update_worn_head()
+		if(ITEM_SLOT_NECK)
+			neck = equipping
+			update_worn_neck()
+		if(ITEM_SLOT_BELT)
+			belt_storage = equipping
+			update_worn_belt()
+		if(ITEM_SLOT_BACK)
+			back_storage = equipping
+			update_worn_back()
+		else
+			to_chat(src, span_danger("You are trying to equip this item to an unsupported inventory slot. Report this to a coder!"))
+			return
+
+	//Call back for item being equipped to drone
+	equipping.on_equipped(src, slot)
