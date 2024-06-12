@@ -51,7 +51,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	mutantheart = /obj/item/organ/internal/heart/cybernetic/tier2
 	mutantliver = /obj/item/organ/internal/liver/cybernetic/tier2
 	mutantlungs = null
-	mutanteyes = /obj/item/organ/internal/eyes/robotic
+	mutanteyes = /obj/item/organ/internal/eyes/robotic/synth
 	mutantears = /obj/item/organ/internal/ears/cybernetic
 	species_pain_mod = 0.2
 	exotic_bloodtype = /datum/blood_type/oil
@@ -379,7 +379,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
-	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR
+	head_flags = HEAD_EYESPRITES | HEAD_EYECOLOR
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
 /obj/item/bodypart/chest/synth
@@ -453,6 +453,14 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 
+/obj/item/organ/internal/eyes/robotic/synth
+	name = "synth eyes"
+
+/obj/item/organ/internal/eyes/robotic/synth/generate_body_overlay(mob/living/carbon/human/parent)
+	return ..()
+
+
+
 // Organ for synth head covers.
 
 /obj/item/organ/external/synth_head_cover
@@ -469,10 +477,24 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 
 	bodypart_overlay = /datum/bodypart_overlay/mutant/synth_head_cover
 
-/datum/bodypart_overlay/mutant/synth_head_cover
-	feature_key = "synth_head_cover"
-	layers = EXTERNAL_FRONT | EXTERNAL_ADJACENT
 
+/obj/item/organ/external/synth_head_cover/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
+	. = ..()
+	var/mob/living/carbon/human/robot_target = organ_owner
+	var/obj/item/bodypart/head/noggin =  robot_target.get_bodypart(BODY_ZONE_HEAD)
+
+	noggin.head_flags &= ~HEAD_EYESPRITES
+
+
+/obj/item/organ/external/synth_head_cover/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
+	. = ..()
+	var/mob/living/carbon/human/robot_target = organ_owner
+	var/obj/item/bodypart/head/noggin =  robot_target.get_bodypart(BODY_ZONE_HEAD)
+
+	noggin.head_flags &= HEAD_EYESPRITES
+
+
+//-- overlay --
 /datum/bodypart_overlay/mutant/synth_head_cover/get_global_feature_list()
 	return GLOB.synth_head_cover_list
 
@@ -481,6 +503,11 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 		return FALSE
 	return TRUE
 
+/datum/bodypart_overlay/mutant/synth_head_cover
+	feature_key = "synth_head_cover"
+	layers = ALL_EXTERNAL_OVERLAYS
+
+//-- accessories --
 //the path to the icon for the head covers
 /datum/sprite_accessory/synth_head_cover
 	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
@@ -490,11 +517,12 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	name = "None"
 	icon_state = null
 
+//A kind of helmet looking thing with a big black screen/face cover thing. I dunno what else to call this.
 /datum/sprite_accessory/synth_head_cover/helm
 	name = "Helm"
 	icon_state = "helm"
 
-//with white plastic on the sides.
+//helm with white plastic on the sides.
 /datum/sprite_accessory/synth_head_cover/helm_white
 	name = "White Helm"
 	icon_state = "helm_white"
@@ -503,8 +531,6 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 /datum/sprite_accessory/synth_head_cover/tv_blank
 	name = "Tv_blank"
 	icon_state = "tv_blank"
-
-
 
 // add more here!!
 
