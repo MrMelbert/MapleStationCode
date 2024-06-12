@@ -808,6 +808,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		"thirteen",
 		"snake"
 		)
+	/// The sounds played when the lighter is turned on.
+	var/list/light_sound_on = list('maplestation_modules/sound/items/lighters/zippo_on.ogg')
+	/// The sounds played when the lighter is turned off.
+	var/list/light_sound_off = list('maplestation_modules/sound/items/lighters/zippo_off.ogg')
 
 /obj/item/lighter/Initialize(mapload)
 	. = ..()
@@ -824,7 +828,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /// Destroy the lighter when it's shot by a bullet
 /obj/item/lighter/proc/on_intercepted_bullet(mob/living/victim, obj/projectile/bullet)
 	victim.visible_message(span_warning("\The [bullet] shatters on [victim]'s lighter!"))
-	playsound(victim, get_sfx(SFX_RICOCHET), 100, TRUE)
+	playsound(victim, SFX_RICOCHET, 100, TRUE)
 	new /obj/effect/decal/cleanable/oil(get_turf(src))
 	do_sparks(1, TRUE, src)
 	victim.dropItemToGround(src, force = TRUE, silent = TRUE)
@@ -890,6 +894,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return ..()
 	if(lit)
 		set_lit(FALSE)
+		if(LAZYLEN(light_sound_off))
+			playsound(src, pick(light_sound_off), 50, TRUE)
 		if(fancy)
 			user.visible_message(
 				span_notice("You hear a quiet click, as [user] shuts off [src] without even looking at what [user.p_theyre()] doing. Wow."),
@@ -903,6 +909,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 
 	set_lit(TRUE)
+	if(LAZYLEN(light_sound_on))
+		playsound(src, pick(light_sound_on), 50, TRUE)
 	if(fancy)
 		user.visible_message(
 			span_notice("Without even breaking stride, [user] flips open and lights [src] in one smooth movement."),
@@ -976,6 +984,15 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		"matte",
 		"zoppo" //u cant stoppo th zoppo
 		)
+
+	light_sound_on = list(
+		'maplestation_modules/sound/items/lighters/cheap_on1.ogg',
+		'maplestation_modules/sound/items/lighters/cheap_on2.ogg',
+		'maplestation_modules/sound/items/lighters/cheap_on3.ogg',
+	)
+	light_sound_off = list(
+		'maplestation_modules/sound/items/lighters/cheap_off.ogg',
+	)
 
 	/// The color of the lighter.
 	var/lighter_color

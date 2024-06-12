@@ -173,3 +173,7 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_ROCK_TAP "rock_tap"
 #define SFX_SEAR "sear"
 #define SFX_REEL "reel"
+#define SFX_PORTAL_ENTER "portal_enter"
+#define SFX_PORTAL_CLOSE "portal_closed"
+#define SFX_PORTAL_CREATED "portal_created"
+#define SFX_SCREECH "screech"

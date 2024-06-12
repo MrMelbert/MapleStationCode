@@ -521,6 +521,8 @@ structure_check() searches for nearby cultist structures required for the invoca
 				movesuccess = TRUE
 	if(movedsomething)
 		..()
+		playsound(src, SFX_PORTAL_ENTER, 50, TRUE)
+		playsound(target, SFX_PORTAL_ENTER, 50, TRUE)
 		if(moveuserlater)
 			if(do_teleport(user, target, channel = TELEPORT_CHANNEL_CULT))
 				movesuccess = TRUE
@@ -543,7 +545,7 @@ structure_check() searches for nearby cultist structures required for the invoca
 /obj/effect/rune/teleport/proc/handle_portal(portal_type, turf/origin)
 	var/turf/T = get_turf(src)
 	close_portal() // To avoid stacking descriptions/animations
-	playsound(T, pick('sound/effects/sparks1.ogg', 'sound/effects/sparks2.ogg', 'sound/effects/sparks3.ogg', 'sound/effects/sparks4.ogg'), 100, TRUE, 14)
+	playsound(T, SFX_PORTAL_CREATED, 100, TRUE, 14)
 	inner_portal = new /obj/effect/temp_visual/cult/portal(T)
 	if(portal_type == "space")
 		set_light_color(color)
@@ -857,12 +859,15 @@ GLOBAL_VAR_INIT(narsie_summon_count, 0)
 									  "<span class='cult italic'><b>Overwhelming vertigo consumes you as you are hurled through the air!</b></span>")
 	..()
 	visible_message(span_warning("A foggy shape materializes atop [src] and solidifies into [cultist_to_summon]!"))
+	var/turf/old_turf = get_turf(cultist_to_summon)
 	if(!do_teleport(cultist_to_summon, get_turf(src)))
 		to_chat(user, span_warning("The summoning has completely failed for [cultist_to_summon]!"))
 		fail_logmsg += "target failed criteria to teleport." //catch-all term, just means they failed do_teleport somehow. The most common reasons why someone should fail to be summoned already have verbose messages.
 		log_game(fail_logmsg)
 		fail_invoke()
 		return
+	playsound(src, SFX_PORTAL_ENTER, 50, TRUE)
+	playsound(old_turf, SFX_PORTAL_ENTER, 50, TRUE)
 	qdel(src)
 
 //Rite of Boiling Blood: Deals extremely high amounts of damage to non-cultists nearby

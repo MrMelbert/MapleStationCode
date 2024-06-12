@@ -9,5 +9,11 @@
 - pillbottle.ogg
 - toolbox.ogg
 - wrapper.ogg
+- cheap_off.ogg
+- cheap_on1.ogg
+- cheap_on2.ogg
+- cheap_on3.ogg
+- zippo_off.ogg
+- zippo_on.ogg
 
 Have been ported from other stations, and given a lack of existing attribution, are assumed to by CC-BA-SA 3.0
