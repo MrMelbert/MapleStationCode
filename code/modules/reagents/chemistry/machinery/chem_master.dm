@@ -123,6 +123,19 @@
 			filling.color = mix_color_from_reagents(reagents.reagent_list)
 			. += filling
 
+/obj/machinery/chem_master/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+		return NONE
+
+		if(!panel_open)
+	if(is_reagent_container(tool) && tool.is_open_container())
+		replace_beaker(user, tool)
+			return ITEM_INTERACT_SUCCESS
+			ui_interact(user)
+		else
+			return ITEM_INTERACT_BLOCKING
+
+	return NONE
+
 /obj/machinery/chem_master/wrench_act(mob/living/user, obj/item/tool)
 	if(default_unfasten_wrench(user, tool) == SUCCESSFUL_UNFASTEN)
 		return ITEM_INTERACT_SUCCESS

@@ -84,12 +84,9 @@
 	else
 		to_chat(user, span_notice("You turn off [src]."))
 
-/obj/item/hand_labeler/attackby(obj/item/I, mob/user, params)
-	..()
-	if(istype(I, /obj/item/hand_labeler_refill))
-		to_chat(user, span_notice("You insert [I] into [src]."))
-		qdel(I)
-		labels_left = initial(labels_left) //Yes, it's capped at its initial value
+/obj/item/hand_labeler/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/hand_labeler_refill))
+		return NONE
 
 /obj/item/hand_labeler/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
 	return !mode

@@ -84,48 +84,57 @@
 		icon_screen = "slots_screen"
 	return ..()
 
-/obj/machinery/computer/slot_machine/attackby(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/coin))
-		var/obj/item/coin/C = I
+
+/obj/machinery/computer/slot_machine/item_interaction(mob/living/user, obj/item/inserted, list/modifiers)
+	if(istype(inserted, /obj/item/coin))
+		var/obj/item/coin/inserted_coin = inserted
 		if(paymode == COIN)
 			if(prob(2))
-				if(!user.transferItemToLoc(C, drop_location(), silent = FALSE))
-					return
-				C.throw_at(user, 3, 10)
+				if(!user.transferItemToLoc(inserted_coin, drop_location(), silent = FALSE))
+					return ITEM_INTERACT_BLOCKING
+				inserted_coin.throw_at(user, 3, 10)
 				if(prob(10))
 					balance = max(balance - SPIN_PRICE, 0)
 				to_chat(user, span_warning("[src] spits your coin back out!"))
+				return ITEM_INTERACT_BLOCKING
+			else
+				if(!user.temporarilyRemoveItemFromInventory(inserted_coin))
+					return ITEM_INTERACT_BLOCKING
+				balloon_alert(user, "coin insterted")
+				balance += inserted_coin.value
+				qdel(inserted_coin)
+				return ITEM_INTERACT_SUCCESS
+		else
+			balloon_alert(user, "holochips only!")
+		return ITEM_INTERACT_BLOCKING
 
-			else
-				if(!user.temporarilyRemoveItemFromInventory(C))
-					return
-				to_chat(user, span_notice("You insert [C] into [src]'s slot!"))
-				balance += C.value
-				qdel(C)
-		else
-			to_chat(user, span_warning("This machine is only accepting holochips!"))
-	else if(istype(I, /obj/item/holochip))
+	if(istype(inserted, /obj/item/holochip))
 		if(paymode == HOLOCHIP)
-			var/obj/item/holochip/H = I
-			if(!user.temporarilyRemoveItemFromInventory(H))
-				return
-			to_chat(user, span_notice("You insert [H.credits] holocredits into [src]'s slot!"))
-			balance += H.credits
-			qdel(H)
+			var/obj/item/holochip/inserted_chip = inserted
+			if(!user.temporarilyRemoveItemFromInventory(inserted_chip))
+				return ITEM_INTERACT_BLOCKING
+			balloon_alert(user, "[inserted_chip.credits] credit[inserted_chip.credits == 1 ? "" : "s"] inserted")
+			balance += inserted_chip.credits
+			qdel(inserted_chip)
+			return ITEM_INTERACT_SUCCESS
 		else
-			to_chat(user, span_warning("This machine is only accepting coins!"))
-	else if(I.tool_behaviour == TOOL_MULTITOOL)
-		if(balance > 0)
-			visible_message("<b>[src]</b> says, 'ERROR! Please empty the machine balance before altering paymode'") //Prevents converting coins into holocredits and vice versa
-		else
-			if(paymode == HOLOCHIP)
-				paymode = COIN
-				visible_message("<b>[src]</b> says, 'This machine now works with COINS!'")
-			else
-				paymode = HOLOCHIP
-				visible_message("<b>[src]</b> says, 'This machine now works with HOLOCHIPS!'")
+			balloon_alert(user, "coins only!")
+		return ITEM_INTERACT_BLOCKING
+
+	return NONE
+
+/obj/machinery/computer/slot_machine/multitool_act(mob/living/user, obj/item/tool)
+	if(balance > 0)
+		visible_message("<b>[src]</b> says, 'ERROR! Please empty the machine balance before altering paymode'") //Prevents converting coins into holocredits and vice versa
+		return ITEM_INTERACT_BLOCKING
+
+	if(paymode == HOLOCHIP)
+		paymode = COIN
+		balloon_alert(user, "now using coins")
 	else
-		return ..()
+		paymode = HOLOCHIP
+		balloon_alert(user, "now using holochips")
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/computer/slot_machine/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)

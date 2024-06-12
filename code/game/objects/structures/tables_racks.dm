@@ -836,14 +836,17 @@
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
 		return TRUE
 
-/obj/structure/rack/MouseDrop_T(obj/O, mob/user)
-	. = ..()
-	if ((!( isitem(O) ) || user.get_active_held_item() != O))
-		return
-	if(!user.dropItemToGround(O))
-		return
-	if(O.loc != src.loc)
-		step(O, get_dir(O, src))
+/obj/structure/rack/wrench_act_secondary(mob/living/user, obj/item/tool)
+	tool.play_tool_sound(src)
+	deconstruct(TRUE)
+	return ITEM_INTERACT_SUCCESS
+
+/obj/structure/rack/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if((tool.item_flags & ABSTRACT) || user.combat_mode)
+		return NONE
+	if(user.transferItemToLoc(tool, drop_location(), silent = FALSE))
+		return ITEM_INTERACT_SUCCESS
+	return ITEM_INTERACT_BLOCKING
 
 /obj/structure/rack/attackby(obj/item/W, mob/living/user, params)
 	var/list/modifiers = params2list(params)

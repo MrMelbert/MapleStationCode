@@ -28,10 +28,9 @@
 	. = ..()
 	. += span_notice("You feel like a <b>multitool</b> could be used on this.")
 
-/obj/item/style_meter/afterattack(atom/movable/attacked_atom, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!istype(attacked_atom, /obj/item/clothing/glasses))
-		return
+/obj/item/style_meter/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!istype(interacting_with, /obj/item/clothing/glasses))
+		return NONE
 
 	forceMove(attacked_atom)
 	attacked_atom.add_overlay(meter_appearance)

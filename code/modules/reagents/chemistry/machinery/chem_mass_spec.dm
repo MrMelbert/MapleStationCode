@@ -77,11 +77,9 @@ This will not clean any inverted reagents. Inverted reagents will still be corre
 	default_unfasten_wrench(user, tool)
 	return ITEM_INTERACT_SUCCESS
 
-/*			beaker swapping/attack code			*/
-/obj/machinery/chem_mass_spec/attackby(obj/item/item, mob/user, params)
-	if(processing_reagents)
-		to_chat(user, "<span class='notice'> The [src] is currently processing a batch!")
-		return ..()
+/obj/machinery/chem_mass_spec/item_interaction(mob/living/user, obj/item/item, list/modifiers)
+	if((item.item_flags & ABSTRACT) || (item.flags_1 & HOLOGRAM_1) || !can_interact(user) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
+		return NONE
 
 	if(default_deconstruction_screwdriver(user, icon_state, icon_state, item))
 		update_appearance()
@@ -91,16 +89,17 @@ This will not clean any inverted reagents. Inverted reagents will still be corre
 		var/obj/item/reagent_containers/beaker = item
 		. = TRUE //no afterattack
 		if(!user.transferItemToLoc(beaker, src))
-			return
-		replace_beaker(user, BEAKER1, beaker)
-		to_chat(user, span_notice("You add [beaker] to [src]."))
+			return ITEM_INTERACT_BLOCKING
+
+		var/is_right_clicking = LAZYACCESS(modifiers, RIGHT_CLICK)
+		replace_beaker(user, !is_right_clicking, beaker)
+		to_chat(user, span_notice("You add [beaker] to [is_right_clicking ? "output" : "input"] slot."))
 		update_appearance()
 		ui_interact(user)
 		return
 	..()
 
-/obj/machinery/chem_mass_spec/attackby_secondary(obj/item/item, mob/user, params)
-	. = ..()
+	return ..()
 
 	if(processing_reagents)
 		to_chat(user, "<span class='notice'> The [src] is currently processing a batch!")

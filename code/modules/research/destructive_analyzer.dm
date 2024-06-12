@@ -102,6 +102,12 @@
 				say("Destructive analysis failed!")
 			return TRUE
 
+/obj/machinery/rnd/destructive_analyzer/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+	// Cringe way to let emags insert on RMB because we still use attackby to insert
+	if(istype(tool, /obj/item/card/emag))
+		return ITEM_INTERACT_SKIP_TO_ATTACK
+	return NONE
+
 //This allows people to put syndicate screwdrivers in the machine. Secondary act still passes.
 /obj/machinery/rnd/destructive_analyzer/screwdriver_act(mob/living/user, obj/item/tool)
 	return FALSE

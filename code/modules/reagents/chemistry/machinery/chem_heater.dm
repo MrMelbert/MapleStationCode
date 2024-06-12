@@ -41,6 +41,23 @@
 		beaker = null
 		update_appearance()
 
+/obj/machinery/chem_heater/item_interaction(mob/living/user, obj/item/held_item, list/modifiers)
+	if((held_item.item_flags & ABSTRACT) || (held_item.flags_1 & HOLOGRAM_1))
+		return NONE
+
+	if(QDELETED(beaker))
+		if(istype(held_item, /obj/item/reagent_containers/dropper) || istype(held_item, /obj/item/reagent_containers/syringe))
+			var/obj/item/reagent_containers/injector = held_item
+			injector.afterattack(beaker, user, proximity_flag = TRUE)
+			return ITEM_INTERACT_SUCCESS
+
+	if(is_reagent_container(held_item)  && held_item.is_open_container())
+		if(replace_beaker(user, held_item))
+			ui_interact(user)
+		balloon_alert(user, "beaker added")
+		return ITEM_INTERACT_SUCCESS
+
+	return NONE
 /obj/machinery/chem_heater/update_icon_state()
 	icon_state = "[base_icon_state][beaker ? 1 : 0]b"
 	return ..()

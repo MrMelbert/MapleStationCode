@@ -117,13 +117,133 @@
 /obj/machinery/grill/attack_ai(mob/user)
 	return
 
-/obj/machinery/grill/attack_hand(mob/user, list/modifiers)
-	if(grilled_item)
-		to_chat(user, span_notice("You take out [grilled_item] from [src]."))
-		grilled_item.forceMove(drop_location())
-		update_appearance()
-		return
-	return ..()
+
+/// Makes grill fuel from a unit of stack
+/obj/machinery/grill/proc/burn_stack()
+	PRIVATE_PROC(TRUE)
+
+	//compute boost from wood or coal
+	var/boost
+	for(var/obj/item/stack in contents)
+		boost = 5 * (GRILL_FUELUSAGE_IDLE + GRILL_FUELUSAGE_ACTIVE)
+		if(istype(stack, /obj/item/stack/sheet/mineral/coal))
+			boost *= 2
+		if(stack.use(1))
+			grill_fuel += boost
+	update_appearance(UPDATE_ICON_STATE)
+
+/obj/machinery/grill/item_interaction(mob/living/user, obj/item/weapon, list/modifiers)
+	if(user.combat_mode || (weapon.item_flags & ABSTRACT) || (weapon.flags_1 & HOLOGRAM_1) || (weapon.resistance_flags & INDESTRUCTIBLE))
+		return NONE
+
+	if(istype(weapon, /obj/item/stack/sheet/mineral/coal) || istype(weapon, /obj/item/stack/sheet/mineral/wood))
+		if(!QDELETED(grilled_item))
+			return NONE
+		if(!anchored)
+			balloon_alert(user, "anchor it first!")
+			return ITEM_INTERACT_BLOCKING
+
+		//required for amount subtypes
+		var/target_type
+		if(istype(weapon, /obj/item/stack/sheet/mineral/coal))
+			target_type = /obj/item/stack/sheet/mineral/coal
+		else
+			target_type = /obj/item/stack/sheet/mineral/wood
+
+		//transfer or merge stacks if we have enough space
+		var/merged = FALSE
+		var/obj/item/stack/target = weapon
+		for(var/obj/item/stack/stored in contents)
+			if(!istype(stored, target_type))
+				continue
+			if(stored.amount == MAX_STACK_SIZE)
+				balloon_alert(user, "no space!")
+				return ITEM_INTERACT_BLOCKING
+			target.merge(stored)
+			merged = TRUE
+			break
+		if(!merged)
+			weapon.forceMove(src)
+
+		to_chat(user, span_notice("You add [src] to the fuel stack."))
+		if(!grill_fuel)
+			burn_stack()
+			begin_processing()
+		return ITEM_INTERACT_SUCCESS
+
+	if(is_reagent_container(weapon) && weapon.is_open_container())
+		var/obj/item/reagent_containers/container = weapon
+		if(!QDELETED(grilled_item))
+			return NONE
+		if(!anchored)
+			balloon_alert(user, "anchor it first!")
+			return ITEM_INTERACT_BLOCKING
+
+		var/transfered_amount = weapon.reagents.trans_to(src, container.amount_per_transfer_from_this)
+		if(transfered_amount)
+			//reagents & their effects on fuel
+			var/static/list/fuel_map = list(
+				/datum/reagent/consumable/monkey_energy = 4,
+				/datum/reagent/fuel/oil = 3,
+				/datum/reagent/fuel = 2,
+				/datum/reagent/consumable/ethanol = 1
+			)
+
+			//compute extra fuel to be obtained from everything transfered
+			var/boost
+			var/additional_fuel = 0
+			for(var/datum/reagent/stored as anything in reagents.reagent_list)
+				boost = fuel_map[stored.type]
+				if(!boost) //anything we don't recognize as fuel has inverse effects
+					boost = -1
+				boost = boost * stored.volume * (GRILL_FUELUSAGE_IDLE + GRILL_FUELUSAGE_ACTIVE)
+				additional_fuel += boost
+
+			//add to fuel source
+			reagents.clear_reagents()
+			grill_fuel += additional_fuel
+			if(grill_fuel <= 0) //can happen if you put water or something
+				grill_fuel = 0
+			else
+				begin_processing()
+			update_appearance(UPDATE_ICON_STATE)
+
+			//feedback
+			to_chat(user, span_notice("You transfer [transfered_amount]u to the fuel source."))
+			return ITEM_INTERACT_SUCCESS
+
+		balloon_alert(user, "no fuel transfered!")
+		return ITEM_INTERACT_BLOCKING
+
+	if(IS_EDIBLE(weapon))
+		//sanity checks
+		if(!anchored)
+			balloon_alert(user, "anchor first!")
+			return ITEM_INTERACT_BLOCKING
+		if(HAS_TRAIT(weapon, TRAIT_NODROP))
+			return ..()
+		if(!QDELETED(grilled_item))
+			balloon_alert(user, "remove item first!")
+			return ITEM_INTERACT_BLOCKING
+		if(grill_fuel <= 0)
+			balloon_alert(user, "no fuel!")
+			return ITEM_INTERACT_BLOCKING
+		if(!user.transferItemToLoc(weapon, src))
+			balloon_alert(user, "[weapon] is stuck in your hand!")
+			return ITEM_INTERACT_BLOCKING
+
+		//add the item on the grill
+		grill_time = 0
+		grilled_item = weapon
+		var/datum/component/sizzle/sizzle = grilled_item.GetComponent(/datum/component/sizzle)
+		if(!isnull(sizzle))
+			grill_time = sizzle.time_elapsed()
+		to_chat(user, span_notice("You put the [grilled_item] on [src]."))
+		update_appearance(UPDATE_ICON_STATE)
+		grill_loop.start()
+		return ITEM_INTERACT_SUCCESS
+
+	return NONE
 
 /obj/machinery/grill/proc/finish_grill()
 	if(!QDELETED(grilled_item))

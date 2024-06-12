@@ -23,8 +23,11 @@
 
 	return TRUE
 
-/obj/structure/frame/computer/attackby(obj/item/P, mob/living/user, params)
-	add_fingerprint(user)
+/obj/structure/frame/computer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return .
+
 	switch(state)
 		if(0)
 			if(P.tool_behaviour == TOOL_WRENCH)

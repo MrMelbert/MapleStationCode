@@ -139,6 +139,111 @@
 	update_appearance()
 	return TRUE
 
+	update_appearance(UPDATE_OVERLAYS)
+
+/**
+ * Transfer this item or items inside if its a bag into the grinder
+ * Arguments
+ *
+ * * mob/user - the player who is inserting these items
+ * * list/obj/item/to_add - list of items to add
+ */
+/obj/machinery/reagentgrinder/proc/load_items(mob/user, list/obj/item/to_add)
+	PRIVATE_PROC(TRUE)
+
+	//surface level checks to filter out items that can be grinded/juice
+	var/list/obj/item/filtered_list = list()
+	for(var/obj/item/ingredient as anything in to_add)
+		//what are we trying to grind exactly?
+		if((ingredient.item_flags & ABSTRACT) || (ingredient.flags_1 & HOLOGRAM_1))
+			continue
+
+		//Nothing would come from grinding or juicing
+		if(!length(ingredient.grind_results) && !ingredient.reagents.total_volume)
+			to_chat(user, span_warning("You cannot grind/juice [ingredient] into reagents!"))
+			continue
+
+		//Error messages should be in the objects' definitions
+		if(!ingredient.blend_requirements(src))
+			continue
+
+		filtered_list += ingredient
+	if(!filtered_list.len)
+		return FALSE
+
+	//find total weight of all items already in grinder
+	var/total_weight
+	for(var/obj/item/to_process in src)
+		if((to_process in component_parts) || to_process == beaker)
+			continue
+		total_weight += to_process.w_class
+
+	//Now transfer the items 1 at a time while ensuring we don't go above the maximum allowed weight
+	var/items_transfered = 0
+	for(var/obj/item/weapon as anything in filtered_list)
+		if(weapon.w_class + total_weight > maximum_weight)
+			to_chat(user, span_warning("[weapon] is too big to fit into [src]."))
+			continue
+		weapon.forceMove(src)
+		total_weight += weapon.w_class
+		items_transfered += 1
+		to_chat(user, span_notice("[weapon] was loaded into [src]."))
+
+	return items_transfered
+
+/obj/machinery/reagentgrinder/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(user.combat_mode || (tool.item_flags & ABSTRACT) || (tool.flags_1 & HOLOGRAM_1) || !can_interact(user) || !user.can_perform_action(src, ALLOW_SILICON_REACH))
+		return NONE
+
+	//add the beaker
+	if (is_reagent_container(tool) && tool.is_open_container())
+		replace_beaker(user, tool)
+		to_chat(user, span_notice("You add [tool] to [src]."))
+		return ITEM_INTERACT_SUCCESS
+
+	//add items from bag
+	else if(istype(tool, /obj/item/storage/bag))
+		var/list/obj/item/to_add = list()
+		//list of acceptable items from the bag
+		var/static/list/accepted_items = list(
+			/obj/item/grown,
+			/obj/item/food/grown,
+			/obj/item/food/honeycomb,
+		)
+
+		//add to list of items to check for
+		for(var/obj/item/ingredient in tool)
+			if(!is_type_in_list(ingredient, accepted_items))
+				continue
+			to_add += ingredient
+
+		//add the items
+		var/items_added = load_items(user, to_add)
+		if(!items_added)
+			to_chat(user, span_warning("No items were added."))
+			return ITEM_INTERACT_BLOCKING
+		to_chat(user, span_notice("[items_added] items were added from [tool] to [src]."))
+		return ITEM_INTERACT_SUCCESS
+
+	//add item directly
+	else if(length(tool.grind_results) || tool.reagents?.total_volume)
+		if(tool.atom_storage) //anything that has internal storage would be too much recursion for us to handle
+			to_chat(user, span_notice("Drag this item onto [src] to dump its contents."))
+			return ITEM_INTERACT_BLOCKING
+
+		//add the items
+		if(!load_items(user, list(tool)))
+			return ITEM_INTERACT_BLOCKING
+		to_chat(user, span_notice("[tool] was added to [src]."))
+		return ITEM_INTERACT_SUCCESS
+
+	//ask player to drag stuff into grinder
+	else if(tool.atom_storage)
+		to_chat(user, span_warning("You must drag & dump contents of [tool] into [src]."))
+		return ITEM_INTERACT_BLOCKING
+
+	return NONE
+
 /obj/machinery/reagentgrinder/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
