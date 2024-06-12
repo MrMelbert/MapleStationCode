@@ -12,12 +12,18 @@ GLOBAL_LIST_INIT(spellbook_cryokinesis_items, generate_spellbook_items(SPELLBOOK
 /datum/spellbook_item/spell/ice_knife
 	name = "Ice Knife"
 	description = "Conjures an ice knife at will in your hands."
-	lore = "A spell not commonly practiced by followers of Cryokinesis for the fact that the knife's durability is much less desirable than a real one, some still sought to learn it for the sake of self defense and so on.\
+	lore = "A spell not commonly practiced by followers of Cryokinesis for the fact that the knife's durability is much less desirable than a real one, some still sought to learn it for the sake of self defense. \
 	Even then, the knife does not hold well on it's own and will eventually dissapear as to preserve mana."
 
 	category = SPELLBOOK_CATEGORY_CRYOKINESIS
+	has_params = TRUE
 
 	our_action_typepath = /datum/action/cooldown/spell/conjure_item/ice_knife
+
+/datum/spellbook_item/spell/ice_knife/generate_customization_params()
+	. = list()
+	.["ice_blade"] = new /datum/spellbook_customization_entry/boolean("ice_blade", "Ice Armblade Variant", "Construct a blade around your arm, in exchange of harming you in the process.")
+
 
 /datum/spellbook_item/spell/freeze_person
 	name = "Freeze Person"
