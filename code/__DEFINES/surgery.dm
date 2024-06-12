@@ -27,6 +27,8 @@
 /// Has the organ already been inserted inside someone
 #define ORGAN_VIRGIN (1<<10)
 
+#define ORGAN_IRRADIATED (1<<11)
+
 /// Helper to figure out if a limb is organic
 #define IS_ORGANIC_LIMB(limb) (limb.bodytype & BODYTYPE_ORGANIC)
 /// Helper to figure out if a limb is robotic

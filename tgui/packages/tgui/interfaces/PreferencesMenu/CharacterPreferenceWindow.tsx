@@ -2,7 +2,7 @@ import { exhaustiveCheck } from 'common/exhaustive';
 import { useState } from 'react';
 
 import { useBackend } from '../../backend';
-import { Button, Stack } from '../../components';
+import { Dropdown, Flex, Stack } from '../../components'; // NON-MODULE CHANGE : Adds in Dropdown and Flex
 import { Window } from '../../layouts';
 import { LanguagePage } from './_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbManagerPage } from './_LimbManager'; // NON-MODULE CHANGE
@@ -31,24 +31,28 @@ const CharacterProfiles = (props: {
   onClick: (index: number) => void;
   profiles: (string | null)[];
 }) => {
-  const { profiles } = props;
+  const { profiles, activeSlot, onClick } = props; // NON-MODULE CHANGE : activeSlot and onClick
 
   return (
-    <Stack justify="center" wrap>
-      {profiles.map((profile, slot) => (
-        <Stack.Item key={slot}>
-          <Button
-            selected={slot === props.activeSlot}
-            onClick={() => {
-              props.onClick(slot);
-            }}
-            fluid
-          >
-            {profile ?? 'New Character'}
-          </Button>
-        </Stack.Item>
-      ))}
-    </Stack>
+    <Flex // NON-MODULE CHANGE START - Ports in the dropdown from Nova instead of using buttons
+      align="center"
+      justify="center"
+    >
+      <Flex.Item width="25%">
+        <Dropdown
+          width="100%"
+          selected={activeSlot as unknown as string}
+          displayText={profiles[activeSlot]}
+          options={profiles.map((profile, slot) => ({
+            value: slot,
+            displayText: profile ?? 'New Character',
+          }))}
+          onSelected={(slot) => {
+            onClick(slot);
+          }}
+        />
+      </Flex.Item>
+    </Flex> // NON-MODULE CHANGE END
   );
 };
 
