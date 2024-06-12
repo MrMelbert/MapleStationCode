@@ -70,6 +70,7 @@
 		return
 	var/obj/item/result = new foldable_result(user.drop_location())
 	balloon_alert(user, "folded")
+	playsound(src, 'maplestation_modules/sound/items/storage/boxfold.ogg', 50, TRUE)
 	// Gotta delete first, so then the cardboard appears in the same hand
 	qdel(src)
 	user.put_in_hands(result)

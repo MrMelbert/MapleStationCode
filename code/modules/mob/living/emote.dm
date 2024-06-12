@@ -293,7 +293,7 @@
 	return ..() && user.can_speak(allow_mimes = TRUE)
 
 /datum/emote/living/laugh/get_sound(mob/living/carbon/human/user)
-	if(!isype(user))
+	if(!istype(user))
 		return
 	return user.dna?.species?.get_laugh_sound(user)
 

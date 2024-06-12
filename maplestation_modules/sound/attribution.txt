@@ -16,4 +16,4 @@
 - zippo_off.ogg
 - zippo_on.ogg
 
-Have been ported from other stations, and given a lack of existing attribution, are assumed to by CC-BA-SA 3.0
+Have been ported from other stations, and given a lack of existing attribution, are assumed to be CC-BA-SA 3.0

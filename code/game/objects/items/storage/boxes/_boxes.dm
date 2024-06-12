@@ -50,6 +50,7 @@
 
 	var/obj/item/result = new foldable_result(user.drop_location())
 	balloon_alert(user, "folded")
+	playsound(src, 'maplestation_modules/sound/items/storage/boxfold.ogg', 50, TRUE)
 	qdel(src)
 	user.put_in_hands(result)
 
