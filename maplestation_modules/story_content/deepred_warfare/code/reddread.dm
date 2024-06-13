@@ -1,3 +1,7 @@
+#define DREAD_TOTAL_LAYERS 2
+#define DREAD_HEAD_LAYER 1
+#define DREAD_NECK_LAYER 2
+
 /mob/living/basic/redtechdread
 	name = "Redtech Dreadnought Pattern"
 	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. It would be wise to start running."
@@ -32,6 +36,8 @@
 	var/heavy_emp_damage = 25
 	var/hands = 4
 
+	var/list/dread_overlays[DREAD_TOTAL_LAYERS]
+
 	var/obj/item/back_storage // Can hold anything.
 
 	var/obj/item/default_storage
@@ -40,11 +46,11 @@
 
 	var/obj/item/default_belt
 
-	var/obj/item/neck
+	var/obj/item/neck // Only used to hold the cloak.
 
 	var/obj/item/default_neckwear
 
-	var/obj/item/head
+	var/obj/item/head // Multipurpose for masks and hats.
 
 	var/obj/item/default_headwear
 
@@ -170,7 +176,7 @@
 		if(ITEM_SLOT_NECK)
 			if(neck)
 				return FALSE
-			if(!(item.slot_flags & ITEM_SLOT_NECK))
+			if(!(istype(item, /obj/item/clothing/neck/cloak/redtech_dread)))
 				return FALSE
 			return TRUE
 		if(ITEM_SLOT_BELT)
@@ -244,3 +250,80 @@
 
 	//Call back for item being equipped to drone
 	equipping.on_equipped(src, slot)
+
+/mob/living/basic/redtechdread/update_clothing(slot_flags)
+	if(slot_flags & ITEM_SLOT_HEAD)
+		update_worn_head()
+	if(slot_flags & ITEM_SLOT_MASK)
+		update_worn_mask()
+	if(slot_flags & ITEM_SLOT_NECK)
+		update_worn_neck()
+	if(slot_flags & ITEM_SLOT_BELT)
+		update_worn_belt()
+	if(slot_flags & ITEM_SLOT_HANDS)
+		update_held_items()
+	if(slot_flags & (ITEM_SLOT_HANDS|ITEM_SLOT_BACKPACK|ITEM_SLOT_BACK))
+		update_worn_back()
+
+/mob/living/basic/redtechdread/proc/apply_overlay(cache_index)
+	if((. = dread_overlays[cache_index]))
+		add_overlay(.)
+
+/mob/living/basic/redtechdread/proc/remove_overlay(cache_index)
+	var/overlay = dread_overlays[cache_index]
+	if(overlay)
+		cut_overlay(overlay)
+		dread_overlays[cache_index] = null
+
+/mob/living/basic/redtechdread/update_worn_head()
+	remove_overlay(DREAD_HEAD_LAYER)
+
+	if(head)
+		if(client && hud_used?.hud_shown)
+			head.screen_loc = ui_sstore1
+			client.screen += head
+		var/used_head_icon = 'icons/mob/clothing/head/utility.dmi'
+		if(istype(head, /obj/item/clothing/mask))
+			used_head_icon = 'icons/mob/clothing/mask.dmi'
+		var/mutable_appearance/head_overlay = head.build_worn_icon(default_layer = DREAD_HEAD_LAYER, default_icon_file = used_head_icon)
+		// head_overlay.pixel_y -= 15
+
+		dread_overlays[DREAD_HEAD_LAYER] = head_overlay
+
+	apply_overlay(DREAD_HEAD_LAYER)
+
+/mob/living/basic/redtechdread/update_worn_mask()
+	update_worn_head()
+
+/mob/living/basic/redtechdread/update_worn_neck()
+	remove_overlay(DREAD_NECK_LAYER)
+
+	if(neck)
+		if(client && hud_used?.hud_shown)
+			neck.screen_loc = ui_id
+			client.screen += neck
+		var/used_neck_icon = 'icons/mob/clothing/neck.dmi'
+		var/mutable_appearance/neck_overlay = neck.build_worn_icon(default_layer = DREAD_NECK_LAYER, default_icon_file = used_neck_icon)
+		// head_overlay.pixel_y -= 15
+
+		dread_overlays[DREAD_NECK_LAYER] = neck_overlay
+
+	apply_overlay(DREAD_NECK_LAYER)
+
+/mob/living/basic/redtechdread/update_worn_back()
+	if(back_storage && client && hud_used?.hud_shown)
+		back_storage.screen_loc = ui_back
+		client.screen += back_storage
+
+/mob/living/basic/redtechdread/update_worn_belt()
+	if(belt_storage && client && hud_used?.hud_shown)
+		belt_storage.screen_loc = ui_belt
+		client.screen += belt_storage
+
+/mob/living/basic/redtechdread/regenerate_icons()
+	// FUCK.
+	update_held_items()
+	update_worn_head()
+	update_worn_neck()
+	update_worn_belt()
+	update_worn_back()
