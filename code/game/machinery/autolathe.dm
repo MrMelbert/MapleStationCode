@@ -9,6 +9,7 @@
 	circuit = /obj/item/circuitboard/machine/autolathe
 	layer = BELOW_OBJ_LAYER
 	processing_flags = NONE
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_MOUSEDROP_IGNORE_CHECKS
 
 	///Is the autolathe hacked via wiring
 	var/hacked = FALSE
@@ -378,18 +379,17 @@
 	busy = FALSE
 	SStgui.update_uis(src)
 
-/obj/machinery/autolathe/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
-	. = ..()
-	if(!can_interact(usr) || (!issilicon(usr) && !isAdminGhostAI(usr)) && !Adjacent(usr)) // Non-modular change
+/obj/machinery/autolathe/mouse_drop_dragged(atom/over, mob/user, src_location, over_location, params)
+	if(!can_interact(user) || (!issilicon(user) && !isAdminGhostAI(user)) && !Adjacent(user)) // Non-modular change
 		return
 	if(busy)
-		balloon_alert(usr, "printing started!")
+		balloon_alert(user, "printing started!")
 		return
 	var/direction = get_dir(src, over_location)
 	if(!direction)
 		return
 	drop_direction = direction
-	balloon_alert(usr, "dropping [dir2text(drop_direction)]")
+	balloon_alert(user, "dropping [dir2text(drop_direction)]")
 
 /obj/machinery/autolathe/click_alt(mob/user)
 	if(!drop_direction)

@@ -23,6 +23,7 @@
 	anchored = FALSE
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 	use_power = NO_POWER_USE
+	interaction_flags_mouse_drop = NEED_HANDS
 
 	/// Information and effects about where the IV drip is attached to
 	var/datum/iv_drip_attachment/attachment
@@ -161,25 +162,22 @@
 		filling.color = mix_color_from_reagents(container_reagents.reagent_list)
 		. += filling
 
-/obj/machinery/iv_drip/MouseDrop(atom/target)
-	. = ..()
-	if(!Adjacent(target) || !usr.can_perform_action(src))
-		return
-	if(!isliving(usr))
-		to_chat(usr, span_warning("You can't do that!"))
+/obj/machinery/iv_drip/mouse_drop_dragged(atom/target, mob/user)
+	if(!isliving(user))
+		to_chat(user, span_warning("You can't do that!"))
 		return
 	if(!get_reagents())
-		to_chat(usr, span_warning("There's nothing attached to the IV drip!"))
+		to_chat(user, span_warning("There's nothing attached to the IV drip!"))
 		return
-	if(!target.is_injectable(usr))
-		to_chat(usr, span_warning("Can't inject into this!"))
+	if(!target.is_injectable(user))
+		to_chat(user, span_warning("Can't inject into this!"))
 		return
 	if(attachment)
 		visible_message(span_warning("[attachment.attached_to] is detached from [src]."))
 		QDEL_NULL(attachment)
 		update_appearance(UPDATE_ICON)
-	usr.visible_message(span_warning("[usr] attaches [src] to [target]."), span_notice("You attach [src] to [target]."))
-	attach_iv(target, usr)
+	user.visible_message(span_warning("[user] attaches [src] to [target]."), span_notice("You attach [src] to [target]."))
+	attach_iv(target, user)
 
 /obj/machinery/iv_drip/attackby(obj/item/W, mob/user, params)
 	if(use_internal_storage)
