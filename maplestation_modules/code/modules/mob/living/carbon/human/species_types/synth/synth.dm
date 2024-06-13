@@ -532,6 +532,11 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	name = "Tv_blank"
 	icon_state = "tv_blank"
 
+//a cool design inspired from cloak pilots in titanfall 2, *sorta*.
+/datum/sprite_accessory/synth_head_cover/cloakp
+	name = "Cloakp"
+	icon_state = "cloakp"
+
 // add more here!!
 
 
