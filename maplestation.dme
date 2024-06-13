@@ -6376,6 +6376,7 @@
 #include "maplestation_modules\code\modules\magic\mana\sources\leylines\leyline_intensities\leyline_attunements.dm"
 #include "maplestation_modules\code\modules\magic\mana\sources\leylines\leyline_intensities\leyline_intensities.dm"
 #include "maplestation_modules\code\modules\magic\mana\sources\leylines\leyline_intensities\leyline_variable.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\acid_touch.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\airhike.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\convect.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\finger_flame.dm"

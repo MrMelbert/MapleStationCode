@@ -43,7 +43,7 @@
 /obj/item/mana_battery/mana_crystal
 	name = MAGIC_MATERIAL_NAME + " crystal"
 	desc = "Crystalized mana." //placeholder desc
-	icon = 'icons/obj/magic/crystals.dmi' //placeholder
+	icon = 'maplestation_modules/icons/obj/magic/crystals.dmi' //placeholder
 
 // Do not use, basetype
 /datum/mana_pool/mana_battery/mana_crystal
@@ -63,6 +63,6 @@
 /datum/mana_pool/mana_battery/mana_crystal/standard // basically, just, bog standard, none of the variables need to be changed
 
 /obj/item/mana_battery/mana_crystal/small
-	icon_state = '' //placeholder
+	icon_state = "small" //placeholder
 
 /obj/item/mana_battery/mana_crystal/small/

@@ -4,19 +4,18 @@
 	#define HEAL_HANDLED (1<<0)
 	#define HEAL_CANCELLED (1<<1)
 
-/datum/component/uses_mana/story_spell/touch/healing_touch
-	var/healing_touch_attunement_amount = 0.5
-	var/healing_touch_cost_per_healed = 1.5
+#define HEALING_TOUCH_ATTUNEMENT_LIFE 0.5
+#define HEALING_TOUCH_COST_PER_HEALED 1.5
 
-/datum/component/uses_mana/story_spell/touch/healing_touch/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/life] += healing_touch_attunement_amount
+/datum/component/uses_mana/story_spell/touch/healing_touch
+	var/healing_touch_attunement_amount = HEALING_TOUCH_ATTUNEMENT_LIFE
+	var/healing_touch_mana_cost = HEALING_TOUCH_COST_PER_HEALED
 
 /datum/component/uses_mana/story_spell/touch/healing_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/touch/healing_touch/touch_spell = parent
 	return ..() \
 		* (touch_spell.brute_heal + touch_spell.burn_heal + touch_spell.tox_heal + touch_spell.oxy_heal + touch_spell.pain_heal * 3) \
-		* healing_touch_cost_per_healed
+		* healing_touch_mana_cost
 
 // Touch based healing spell, very simple. Only works on organic mobs or anything that hooks to the comsig.
 /datum/action/cooldown/spell/touch/healing_touch
@@ -30,6 +29,7 @@
 	cooldown_time = 1 MINUTES
 	invocation_type = INVOCATION_NONE
 	spell_requirements = NONE
+	var/healing_touch_mana_cost = HEALING_TOUCH_COST_PER_HEALED
 
 	invocation = "Sana manu!"
 	invocation_type = INVOCATION_WHISPER
@@ -49,7 +49,17 @@
 
 /datum/action/cooldown/spell/touch/healing_touch/New(Target, original)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/touch/healing_touch)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_LIFE] += HEALING_TOUCH_ATTUNEMENT_LIFE
+
+	AddComponent(/datum/component/uses_mana/story_spell/touch/healing_touch, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = healing_touch_mana_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
 
 /datum/action/cooldown/spell/touch/healing_touch/is_valid_target(atom/cast_on)
 	if(SEND_SIGNAL(cast_on, COMSIG_SPELL_HEALING_TOUCH_IS_VALID, src) & CAN_BE_HEALED)
@@ -182,3 +192,5 @@
 #undef COMSIG_SPELL_HEALING_TOUCH_CAST
 	#undef HEAL_HANDLED
 	#undef HEAL_CANCELLED
+#undef HEALING_TOUCH_ATTUNEMENT_LIFE
+#undef HEALING_TOUCH_COST_PER_HEALED

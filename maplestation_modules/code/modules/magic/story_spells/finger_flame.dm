@@ -9,13 +9,13 @@
 	/// You get some seconds of freecasting to prevent spam.
 	COOLDOWN_DECLARE(free_use_cooldown)
 
-/datum/component/uses_mana/story_spell/finger_flame/RegisterWithParent()
+/* /datum/component/uses_mana/story_spell/finger_flame/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
 	RegisterSignal(parent, COMSIG_SPELL_CAST, PROC_REF(handle_cast))
 
 /datum/component/uses_mana/story_spell/finger_flame/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
-	UnregisterSignal(parent, COMSIG_SPELL_CAST)
+	UnregisterSignal(parent, COMSIG_SPELL_CAST) */
 
 /* /datum/component/uses_mana/story_spell/finger_flame/get_attunement_dispositions()
 	. = ..()
@@ -24,10 +24,10 @@
 /datum/component/uses_mana/story_spell/finger_flame/get_mana_required(atom/caster, atom/cast_on, ...)
 	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (..() * flame_cost) : 0
 
-/datum/component/uses_mana/story_spell/finger_flame/handle_precast(datum/action/cooldown/spell/touch/finger_flame/source, atom/cast_on)
+/* /datum/component/uses_mana/story_spell/finger_flame/handle_precast(datum/action/cooldown/spell/touch/finger_flame/source, atom/cast_on)
 	if(source.attached_hand)
 		return NONE
-	return ..()
+	return ..() */
 
 /datum/component/uses_mana/story_spell/finger_flame/handle_cast(datum/action/cooldown/spell/source, atom/cast_on)
 	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.

@@ -1,10 +1,9 @@
-/datum/component/uses_mana/story_spell/touch/shock_touch
-	var/shock_touch_attunement_amount = 0.5
-	var/shock_touch_cost = 50
+#define SHOCK_TOUCH_ATTUNEMENT_ELEC 0.5
+#define SHOCK_TOUCH_MANA_COST 50
 
-/datum/component/uses_mana/story_spell/touch/shock_touch/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/electric] += shock_touch_attunement_amount
+/datum/component/uses_mana/story_spell/touch/shock_touch
+	var/shock_touch_attunement_amount = SHOCK_TOUCH_ATTUNEMENT_ELEC
+	var/shock_touch_cost = SHOCK_TOUCH_MANA_COST
 
 /datum/component/uses_mana/story_spell/touch/shock_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	return ..() * shock_touch_cost
@@ -19,9 +18,22 @@
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 	antimagic_flags = MAGIC_RESISTANCE
 
+	var/shock_touch_cost = SHOCK_TOUCH_MANA_COST
+
 /datum/action/cooldown/spell/touch/shock/magical/New(Target, original)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/touch/shock_touch)
+
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_ELECTRIC] += SHOCK_TOUCH_ATTUNEMENT_ELEC
+
+	AddComponent(/datum/component/uses_mana/story_spell/touch/shock_touch, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = shock_touch_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
 
 // Shock mutation needs to address people with magic shock touch
 /datum/mutation/human/shock
@@ -51,3 +63,6 @@
 	to_chat(owner, span_warning("Your hands feel numb once more."))
 	var/datum/component/uses_mana/story_spell/touch/shock_touch/touch = magic_shock.GetComponent(/datum/component/uses_mana/story_spell/touch/shock_touch)
 	touch?.shock_touch_cost = initial(touch.shock_touch_cost)
+
+#undef SHOCK_TOUCH_ATTUNEMENT_ELEC
+#undef SHOCK_TOUCH_MANA_COST
