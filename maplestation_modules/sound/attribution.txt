@@ -15,5 +15,13 @@
 - cheap_on3.ogg
 - zippo_off.ogg
 - zippo_on.ogg
+- engineering1.ogg
+- atmospherics1.ogg
+- hanger1.ogg
+- hanger2.ogg
+- hanger3.ogg
+- hanger4.ogg
+- hanger5.ogg
+- hanger6.ogg
 
 Have been ported from other stations, and given a lack of existing attribution, are assumed to be CC-BA-SA 3.0

@@ -54,6 +54,9 @@
 #define AMBIENCE_AWAY "away"
 #define AMBIENCE_REEBE "reebe" //unused
 #define AMBIENCE_CREEPY "creepy" //not to be confused with spooky
+#define AMBIENCE_DEPARTURES "departures"
+#define AMBIENCE_ARRIVALS "arrivals"
+#define AMBIENCE_COMMAND "command"
 
 //default byond sound environments
 #define SOUND_ENVIRONMENT_NONE -1
