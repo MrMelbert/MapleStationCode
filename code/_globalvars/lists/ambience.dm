@@ -93,7 +93,7 @@ GLOBAL_LIST_INIT(icemoon_ambience,list(
 
 GLOBAL_LIST_INIT(medical_ambience,list(
 	'sound/ambience/ambinice.ogg',
-	'sound/ambience/ambinice2.ogg',
+	'sound/ambience/signal.ogg',
 ))
 
 GLOBAL_LIST_INIT(virology_ambience,list(
@@ -220,12 +220,12 @@ GLOBAL_LIST_INIT(cargo_ambience, list(
 	'sound/ambience/ambigen10.ogg',
 	'sound/ambience/ambigen13.ogg',
 	'sound/ambience/signal.ogg',
-	'maplestation_modules/sound/ambience/hanger1.ogg',
-	'maplestation_modules/sound/ambience/hanger2.ogg',
-	'maplestation_modules/sound/ambience/hanger3.ogg',
-	'maplestation_modules/sound/ambience/hanger4.ogg',
-	'maplestation_modules/sound/ambience/hanger5.ogg',
-	'maplestation_modules/sound/ambience/hanger6.ogg',
+	'maplestation_modules/sound/ambience/hangar1.ogg',
+	'maplestation_modules/sound/ambience/hangar2.ogg',
+	'maplestation_modules/sound/ambience/hangar3.ogg',
+	'maplestation_modules/sound/ambience/hangar4.ogg',
+	'maplestation_modules/sound/ambience/hangar5.ogg',
+	'maplestation_modules/sound/ambience/hangar6.ogg',
 ))
 
 GLOBAL_LIST_INIT(ambience_assoc,list(
