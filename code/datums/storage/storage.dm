@@ -735,6 +735,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		var/atom/movable/screen/inventory/hand/hand = over_object
 		user.putItemFromInventoryInHandIfPossible(parent, hand.held_index)
 		parent.add_fingerprint(user)
+		return COMPONENT_CANCEL_MOUSEDROP_ONTO
 
 	if(ismob(over_object))
 		if(over_object != user || !user.can_perform_action(parent, FORBID_TELEKINESIS_REACH | ALLOW_RESTING) || !user.can_perform_action(parent, FORBID_TELEKINESIS_REACH | ALLOW_RESTING))
@@ -742,6 +743,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 		parent.add_fingerprint(user)
 		INVOKE_ASYNC(src, PROC_REF(open_storage), user)
+		return COMPONENT_CANCEL_MOUSEDROP_ONTO
 
 	if(istype(over_object, /atom/movable/screen))
 		return
