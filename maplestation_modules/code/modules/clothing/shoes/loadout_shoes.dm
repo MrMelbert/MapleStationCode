@@ -1,18 +1,4 @@
 /// -- Loadout shoes --
-/obj/item/clothing/shoes/jackboots/Initialize(mapload)
-	. = ..()
-	AddComponent( \
-		/datum/component/shoe_footstep, \
-		sounds = list( \
-			'maplestation_modules/sound/items/jackboot1.ogg', \
-			'maplestation_modules/sound/items/jackboot2.ogg', \
-		), \
-		volume = 25, \
-		extrarange = -2, \
-		falloff_exponent = SOUND_FALLOFF_EXPONENT * 2, \
-		can_tape = TRUE, \
-	)
-
 /obj/item/clothing/shoes/jackboots/loadout
 	desc = /obj/item/clothing/shoes/jackboots::desc + " These ones come from a military surplus store, and have laces."
 	armor_type = /datum/armor/loadout_jackboots

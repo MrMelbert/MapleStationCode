@@ -57,6 +57,17 @@
 	. = ..()
 
 	create_storage(storage_type = /datum/storage/pockets/shoes)
+	AddComponent( \
+		/datum/component/shoe_footstep, \
+		sounds = list( \
+			'maplestation_modules/sound/items/jackboot1.ogg', \
+			'maplestation_modules/sound/items/jackboot2.ogg', \
+		), \
+		volume = 10, \
+		extrarange = -2, \
+		falloff_exponent = SOUND_FALLOFF_EXPONENT * 2, \
+		can_tape = TRUE, \
+	)
 
 /obj/item/clothing/shoes/jackboots/fast
 	slowdown = -1

@@ -49,6 +49,8 @@
 	RegisterSignal(parent, COMSIG_SHOES_STEP_ACTION, PROC_REF(stepped))
 	RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(taped))
 	RegisterSignal(parent, COMSIG_ATOM_EXAMINE, PROC_REF(examine_shoes))
+	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(equipped))
+	RegisterSignal(parent, COMSIG_ITEM_DROPPED, PROC_REF(dropped))
 
 	var/atom/parent_atom = parent
 	parent_atom.flags_1 |= HAS_CONTEXTUAL_SCREENTIPS_1
@@ -61,12 +63,17 @@
 		COMSIG_ATOM_EXAMINE,
 		COMSIG_ATOM_REQUESTING_CONTEXT_FROM_ITEM,
 	))
+	var/atom/parent_atom = parent
+	if(ismob(parent_atom.loc))
+		REMOVE_TRAIT(parent_atom.loc, TRAIT_SILENT_FOOTSTEPS, REF(src))
 
 /datum/component/shoe_footstep/proc/stepped(obj/item/clothing/shoes/source)
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/owner = source.loc
 	if(CHECK_MOVE_LOOP_FLAGS(owner, MOVEMENT_LOOP_OUTSIDE_CONTROL))
+		return
+	if(owner.buckled || owner.throwing || (owner.movement_type & (VENTCRAWLING|FLYING|FLOATING)) || HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
 		return
 	if(steps < steps_per_play)
 		steps++
@@ -125,3 +132,12 @@
 		context[SCREENTIP_CONTEXT_LMB] = "Tape soles"
 		return CONTEXTUAL_SCREENTIP_SET
 	return NONE
+
+/datum/component/shoe_footstep/proc/equipped(obj/item/source, mob/user, slot)
+	SIGNAL_HANDLER
+	if(slot & source.slot_flags)
+		ADD_TRAIT(user, TRAIT_SILENT_FOOTSTEPS, REF(src))
+
+/datum/component/shoe_footstep/proc/dropped(obj/item/source, mob/user, silent)
+	SIGNAL_HANDLER
+	REMOVE_TRAIT(user, TRAIT_SILENT_FOOTSTEPS, REF(src))
