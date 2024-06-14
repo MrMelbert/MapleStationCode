@@ -31,3 +31,6 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESUITSTORAGE
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+
+/obj/item/clothing/neck/cloak/redtech_dread/pattern
+	icon_state = "cloak_pattern"
