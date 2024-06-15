@@ -10292,6 +10292,7 @@
 	},
 /obj/machinery/light/small/directional/south,
 /obj/structure/closet/l3closet/virology,
+/obj/structure/sign/warning/biohazard/directional/east,
 /turf/open/floor/iron/white/smooth_corner{
 	dir = 1
 	},
@@ -10583,7 +10584,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 10
 	},
-/obj/item/radio/intercom/directional/west,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/white/smooth_corner{
 	dir = 4
 	},
@@ -22711,6 +22712,9 @@
 	dir = 4
 	},
 /obj/machinery/duct,
+/obj/effect/landmark/navigate_destination{
+	location = "Virology"
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "hUN" = (
@@ -36941,14 +36945,8 @@
 /obj/machinery/door/airlock/virology{
 	autoclose = 0;
 	frequency = 1449;
-	id_tag = "Virology_Airlock_Exterior";
 	name = "Virology Exterior Airlock"
 	},
-/obj/effect/mapping_helpers/airlock/access/any/medical/virology,
-/obj/effect/mapping_helpers/airlock/cyclelink_helper{
-	dir = 8
-	},
-/obj/effect/mapping_helpers/airlock/locked,
 /obj/effect/turf_decal/siding/green{
 	dir = 4
 	},
@@ -36960,13 +36958,9 @@
 	dir = 4
 	},
 /obj/machinery/duct,
-/obj/machinery/door_buttons/access_button{
-	idDoor = "Virology_Airlock_Exterior";
-	idSelf = "virology_airlock_control";
-	name = "Virology Access Button";
-	pixel_y = 26
+/obj/effect/mapping_helpers/cycling_airlock_old/marker/outer_door{
+	dir = 1
 	},
-/obj/effect/landmark/navigate_destination,
 /turf/open/floor/iron/textured,
 /area/station/medical/virology)
 "mDS" = (
@@ -42530,6 +42524,7 @@
 	dir = 5
 	},
 /obj/structure/sink/directional/south,
+/obj/structure/mirror/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/station/medical/virology)
 "osy" = (
@@ -45870,38 +45865,21 @@
 /obj/machinery/door/airlock/virology{
 	autoclose = 0;
 	frequency = 1449;
-	id_tag = "Virology_Airlock_Interior";
 	name = "Virology Interior Airlock"
 	},
-/obj/effect/mapping_helpers/airlock/access/any/medical/virology,
-/obj/effect/mapping_helpers/airlock/cyclelink_helper{
-	dir = 4
-	},
-/obj/effect/mapping_helpers/airlock/locked,
 /obj/effect/turf_decal/siding/green{
 	dir = 4
 	},
 /obj/effect/turf_decal/siding/green{
 	dir = 8
 	},
-/obj/machinery/door_buttons/airlock_controller{
-	idExterior = "Virology_Airlock_Exterior";
-	idInterior = "Virology_Airlock_Interior";
-	idSelf = "virology_airlock_control";
-	name = "Virology Access Console";
-	pixel_x = 1;
-	pixel_y = 37
-	},
 /obj/structure/cable,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
 /obj/machinery/duct,
-/obj/machinery/door_buttons/access_button{
-	idDoor = "Virology_Airlock_Interior";
-	idSelf = "virology_airlock_control";
-	name = "Virology Access Button";
-	pixel_y = 26
+/obj/effect/mapping_helpers/cycling_airlock_old/marker/inner_door{
+	dir = 1
 	},
 /turf/open/floor/iron/textured,
 /area/station/medical/virology)
@@ -56223,7 +56201,7 @@
 	pixel_y = 32
 	},
 /obj/structure/item_dispenser/latex{
-	pixel_x = 7;
+	pixel_x = 6;
 	pixel_y = 32
 	},
 /obj/machinery/duct,
@@ -61956,6 +61934,9 @@
 	color = "#52B4E9"
 	},
 /obj/machinery/portable_atmospherics/canister/anesthetic_mix,
+/obj/machinery/atmospherics/components/unary/portables_connector/visible{
+	dir = 1
+	},
 /turf/open/floor/iron,
 /area/station/medical/cryo)
 "uHp" = (
@@ -71854,6 +71835,10 @@
 	dir = 4
 	},
 /obj/machinery/duct,
+/obj/effect/mapping_helpers/cycling_airlock_old{
+	access = list("virology");
+	prefix_name = "Virology"
+	},
 /turf/open/floor/iron/white/smooth_edge{
 	dir = 8
 	},
