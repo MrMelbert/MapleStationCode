@@ -8,6 +8,7 @@
 
 /// Forces the airlock to unbolt and open
 /obj/machinery/door/airlock/proc/secure_open()
+	set waitfor = FALSE
 	locked = FALSE
 	update_appearance()
 
@@ -19,6 +20,8 @@
 
 /// Forces the airlock to close and bolt
 /obj/machinery/door/airlock/proc/secure_close()
+	set waitfor = FALSE
+
 	locked = FALSE
 	close(forced = TRUE)
 
@@ -73,7 +76,7 @@
 		return
 
 	var/obj/machinery/airlock_controller/airlock_controller = GLOB.objects_by_id_tag[master_tag]
-	airlock_controller?.cycle()
+	airlock_controller?.try_cycle(user)
 
 	flick("airlock_sensor_cycle", src)
 
