@@ -303,7 +303,7 @@
 			neck.screen_loc = ui_id
 			client.screen += neck
 		var/used_neck_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothing.dmi'
-		var/obj/item/force_cloak = /obj/item/clothing/neck/cloak/redtech_dread/pattern
+		var/obj/item/force_cloak = new /obj/item/clothing/neck/cloak/redtech_dread/pattern
 		var/mutable_appearance/neck_overlay = force_cloak.build_worn_icon(default_layer = DREAD_NECK_LAYER, default_icon_file = used_neck_icon)
 		// head_overlay.pixel_y -= 15
 
