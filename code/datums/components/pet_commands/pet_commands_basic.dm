@@ -256,23 +256,3 @@
 	if(isliving(attacker) && can_see(owner, attacker, protect_range))
 		set_command_active(owner, attacker)
 
-/**
- * # Pet Command: Perch
- * Tells a pet that can perch, to perch on your shoulder.
- */
-/datum/pet_command/perch
-	command_name = "Perch"
-	command_desc = "Command your pet to perch on your shoulder."
-	radial_icon = 'icons/mob/actions/actions_minor_antag.dmi'
-	radial_icon_state = "beam_up"
-	speech_commands = list("perch", "step up")
-	command_feedback = "flies up!"
-	var/perch_behavior = /datum/ai_behavior/perch_on_target/
-
-/datum/pet_command/perch/set_command_active(mob/living/parent, mob/living/commander)
-	. = ..()
-	set_command_target(parent, commander)
-
-/datum/pet_command/perch/execute_action(datum/ai_controller/controller)
-	controller.queue_behavior(perch_behavior, BB_CURRENT_PET_TARGET)
-	return SUBTREE_RETURN_FINISH_PLANNING
