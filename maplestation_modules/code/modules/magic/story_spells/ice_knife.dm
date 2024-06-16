@@ -79,7 +79,7 @@
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/ice_knife_righthand.dmi'
 	item_flags = ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
-	force = 25
+	force = 18
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	wound_bonus = 5
 	bare_wound_bonus = 5
@@ -135,11 +135,3 @@
 		return
 	var/spell_hand = (mymob.get_held_index_of_item(src) % 2) ? BODY_ZONE_L_ARM : BODY_ZONE_R_ARM
 	mymob.apply_damage(damage, BRUTE, spell_hand)
-
-/datum/action/cooldown/spell/conjure_item/ice_blade/before_cast(atom/cast_on)
-	. = ..()
-	if(. & SPELL_CANCEL_CAST)
-		return
-	for(var/obj/item/melee/arm_blade/ice_armblade/existing in owner.held_items)
-		existing.expire()
-		return SPELL_CANCEL_CAST
