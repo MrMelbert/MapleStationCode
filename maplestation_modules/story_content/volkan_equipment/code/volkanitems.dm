@@ -12,8 +12,8 @@
 	starting_programs = list( //this is a messenger after all
 		/datum/computer_file/program/messenger/volkan,
 	)
-	drop_sound = 'sound/items/handling/disk_drop.ogg'
-	pickup_sound = 'sound/items/handling/disk_pickup.ogg'
+	drop_sound = "sound/items/handling/disk_drop.ogg"
+	pickup_sound = "sound/items/handling/disk_pickup.ogg"
 
 /obj/item/computer_disk/volkan/communication_chip/usb //this one has a small USB port instead of the default big chonker connector
 	name = "USB communication chip"
