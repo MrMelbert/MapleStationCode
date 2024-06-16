@@ -508,32 +508,37 @@
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage, wound_bonus = CANT_WOUND)
 
+/obj/item/bodypart/proc/can_manually_attach(mob/living/carbon/attach_to)
+	if(attach_to.get_bodypart(body_zone))
+		return FALSE
+	if(HAS_TRAIT(attach_to, TRAIT_LIMBATTACHMENT))
+		return TRUE
+	if(HAS_TRAIT(src, TRAIT_EASY_ATTACH))
+		return TRUE
+	if(HAS_TRAIT(attach_to, TRAIT_ROBOTIC_LIMBATTACHMENT) && (bodytype & BODYTYPE_ROBOTIC))
+		return TRUE
+	return FALSE
+
 /obj/item/bodypart/attack(mob/living/carbon/victim, mob/user)
 	SHOULD_CALL_PARENT(TRUE)
-
-	if(ishuman(victim))
-		var/mob/living/carbon/human/human_victim = victim
-		// NON-MODULE CHANGE START
-		if (!HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT) && !(bodytype & BODYTYPE_ROBOTIC)) //if we're trying to attach something that's not robotic, and we don't have the generic trait, end out
+	// NON-MODULE CHANGE START
+	if(can_manually_attach(victim))
+		user.temporarilyRemoveItemFromInventory(src, TRUE)
+		if(!try_attach_limb(victim))
+			to_chat(user, span_warning("[victim]'s body rejects [src]!"))
+			forceMove(victim.loc)
 			return
-		if(HAS_TRAIT(victim, TRAIT_LIMBATTACHMENT) || HAS_TRAIT(victim, TRAIT_ROBOTIC_LIMBATTACHMENT))
-		// NON-MODULE CHANGE END
-			if(!human_victim.get_bodypart(body_zone))
-				user.temporarilyRemoveItemFromInventory(src, TRUE)
-				if(!try_attach_limb(victim))
-					to_chat(user, span_warning("[human_victim]'s body rejects [src]!"))
-					forceMove(human_victim.loc)
-					return
-				if(check_for_frankenstein(victim))
-					bodypart_flags |= BODYPART_IMPLANTED
-				if(human_victim == user)
-					human_victim.visible_message(span_warning("[human_victim] jams [src] into [human_victim.p_their()] empty socket!"),\
-					span_notice("You force [src] into your empty socket, and it locks into place!"))
-				else
-					human_victim.visible_message(span_warning("[user] jams [src] into [human_victim]'s empty socket!"),\
-					span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
-				return
-	return ..()
+		if(check_for_frankenstein(victim))
+			bodypart_flags |= BODYPART_IMPLANTED
+		if(victim == user)
+			victim.visible_message(span_warning("[victim] jams [src] into [victim.p_their()] empty socket!"),\
+			span_notice("You force [src] into your empty socket, and it locks into place!"))
+		else
+			victim.visible_message(span_warning("[user] jams [src] into [victim]'s empty socket!"),\
+			span_notice("[user] forces [src] into your empty socket, and it locks into place!"))
+		return
+	// NON-MODULE CHANGE END
+return ..()
 
 /obj/item/bodypart/attackby(obj/item/weapon, mob/user, params)
 	SHOULD_CALL_PARENT(TRUE)
