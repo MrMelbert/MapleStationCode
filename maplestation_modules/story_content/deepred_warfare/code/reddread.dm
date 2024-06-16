@@ -4,7 +4,7 @@
 
 /mob/living/basic/redtechdread
 	name = "Redtech Dreadnought Pattern"
-	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. It would be wise to start running."
+	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/reddreadnought64.dmi'
 	icon_state = "dreadnought_active"
 	icon_living = "dreadnought_active"
@@ -33,26 +33,35 @@
 	faction = list(FACTION_DEEPRED)
 	hud_type = /datum/hud/dextrous/dreadnought
 
-	var/heavy_emp_damage = 25
+	var/heavy_emp_damage = 25 // If the EMP is heavy, the pattern is damaged by this value on top of the light damage.
+	var/light_emp_damage = 25 // The pattern is damaged by this value when hit by an EMP.
+
 	var/hands = 4
 
 	var/list/dread_overlays[DREAD_TOTAL_LAYERS]
 
-	var/obj/item/back_storage // Can hold anything.
+	var/obj/item/back_storage // Only used to hold the red lightning container.
 
-	var/obj/item/default_storage
+	var/obj/item/default_storage = /obj/item/reagent_containers/cup/beaker/redlightning/filled
 
 	var/obj/item/belt_storage // Can also hold anything.
 
-	var/obj/item/default_belt
+	var/obj/item/default_belt = /obj/item/storage/dread_storage
 
 	var/obj/item/neck // Only used to hold the cloak.
 
-	var/obj/item/default_neckwear
+	var/obj/item/default_neckwear = /obj/item/clothing/neck/cloak/redtech_dread
 
 	var/obj/item/head // Multipurpose for masks and hats.
 
 	var/obj/item/default_headwear
+
+	/// Actions to grant on spawn
+	var/static/list/actions_to_add = list(
+		/datum/action/cooldown/spell/emp/eldritch = BB_GENERIC_ACTION,
+		/datum/action/cooldown/spell/jaunt/ethereal_jaunt/ash = null,
+		/datum/action/cooldown/spell/shapeshift/eldritch = BB_SHAPESHIFT_ACTION,
+	)
 
 /datum/language_holder/redtech // Literally just the TG silicon language list.
 	understood_languages = list(
@@ -84,14 +93,53 @@
 	AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)))
 	AddComponent(/datum/component/personal_crafting)
 
-	add_traits(list(TRAIT_WEATHER_IMMUNE, TRAIT_NO_PLASMA_TRANSFORM, TRAIT_KNOW_ROBO_WIRES, TRAIT_MADNESS_IMMUNE, TRAIT_NO_SOUL, TRAIT_PLANT_SAFE, TRAIT_QUICKER_CARRY, TRAIT_STRONG_GRABBER, TRAIT_SURGEON, TRAIT_RESEARCH_SCANNER, TRAIT_REAGENT_SCANNER, TRAIT_GOOD_HEARING, TRAIT_FEARLESS, TRAIT_FASTMED, TRAIT_NOFIRE, TRAIT_PUSHIMMUNE, TRAIT_FIST_MINING, TRAIT_NEGATES_GRAVITY, TRAIT_LITERATE, TRAIT_KNOW_ENGI_WIRES, TRAIT_ADVANCEDTOOLUSER, TRAIT_CAN_STRIP), INNATE_TRAIT)
+	add_traits(list(TRAIT_WEATHER_IMMUNE,
+					TRAIT_NO_PLASMA_TRANSFORM,
+					TRAIT_KNOW_ROBO_WIRES,
+					TRAIT_MADNESS_IMMUNE,
+					TRAIT_NO_SOUL,
+					TRAIT_PLANT_SAFE,
+					TRAIT_QUICKER_CARRY,
+					TRAIT_STRONG_GRABBER,
+					TRAIT_SURGEON,
+					TRAIT_RESEARCH_SCANNER,
+					TRAIT_REAGENT_SCANNER,
+					TRAIT_GOOD_HEARING,
+					TRAIT_FEARLESS,
+					TRAIT_FASTMED,
+					TRAIT_NOFIRE,
+					TRAIT_PUSHIMMUNE,
+					TRAIT_FIST_MINING,
+					TRAIT_NEGATES_GRAVITY,
+					TRAIT_LITERATE,
+					TRAIT_KNOW_ENGI_WIRES,
+					TRAIT_ADVANCEDTOOLUSER,
+					TRAIT_CAN_STRIP), INNATE_TRAIT)
+
+	if(default_storage)
+		var/obj/item/storage = new default_storage(src)
+		equip_to_slot_or_del(storage, ITEM_SLOT_BACK)
+
+	if(default_belt)
+		var/obj/item/storage = new default_belt(src)
+		equip_to_slot_or_del(storage, ITEM_SLOT_BELT)
+
+	if(default_neckwear)
+		var/obj/item/storage = new default_neckwear(src)
+		equip_to_slot_or_del(storage, ITEM_SLOT_NECK)
+
+	if(default_headwear)
+		var/obj/item/storage = new default_headwear(src)
+		equip_to_slot_or_del(storage, ITEM_SLOT_HEAD)
+
+	grant_actions_by_list(actions_to_add)
 
 /datum/hud/dextrous/dreadnought/New(mob/owner)
 	..()
 	var/atom/movable/screen/inventory/inv_box
 
 	inv_box = new /atom/movable/screen/inventory(null, src)
-	inv_box.name = "internal back storage"
+	inv_box.name = "internal red lightning storage"
 	inv_box.icon = ui_style
 	inv_box.icon_state = "back"
 	inv_box.screen_loc = ui_back
@@ -107,7 +155,7 @@
 	static_inventory += inv_box
 
 	inv_box = new /atom/movable/screen/inventory(null, src)
-	inv_box.name = "neck"
+	inv_box.name = "cloak"
 	inv_box.icon = ui_style
 	inv_box.icon_state = "neck"
 	inv_box.screen_loc = ui_id
@@ -185,6 +233,8 @@
 			return TRUE
 		if(ITEM_SLOT_BACK)
 			if(back_storage)
+				return FALSE
+			if(!(istype(item, /obj/item/reagent_containers/cup/beaker/redlightning)))
 				return FALSE
 			return TRUE
 	..()
@@ -310,6 +360,7 @@
 		dread_overlays[DREAD_NECK_LAYER] = neck_overlay
 
 	apply_overlay(DREAD_NECK_LAYER)
+	update_naming_status()
 
 /mob/living/basic/redtechdread/update_worn_back()
 	if(back_storage && client && hud_used?.hud_shown)
@@ -328,3 +379,22 @@
 	update_worn_neck()
 	update_worn_belt()
 	update_worn_back()
+
+/mob/living/basic/redtechdread/proc/update_naming_status()
+	if(neck)
+		name = "The Collector"
+		desc = "An enigmatic and imposing figure. They are quite large."
+		return
+
+	name = "Redtech Dreadnought Pattern"
+	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating."
+
+/mob/living/basic/redtechdread/emp_act(severity)
+	. = ..()
+	if(. & EMP_PROTECT_SELF)
+		return
+	adjustBruteLoss(light_emp_damage)
+	to_chat(src, span_danger("EMP DETECTED: DAMAGE TO HARDWARE"))
+	if(severity == 1)
+		adjustBruteLoss(heavy_emp_damage)
+		to_chat(src, span_userdanger("WARNING: HEAVY DAMAGE TO HARDWARE"))
