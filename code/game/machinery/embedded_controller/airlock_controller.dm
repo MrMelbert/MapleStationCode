@@ -32,15 +32,22 @@
 	VAR_FINAL/list/datum/weakref/pump_refs
 	VAR_FINAL/list/datum/weakref/sensor_refs
 
+	// Set these values to `null` to only check temperature
 	/// Desired pressure for cycling to the interior
 	var/interior_target_pressure = 0 // default: vacuum
 	/// Desired pressure for cycling to the exterior
 	var/exterior_target_pressure = ONE_ATMOSPHERE
 	/// Pressure leeway for cycling, because getting exact is tedious
-	var/leeway = ONE_ATMOSPHERE * 0.02
+	var/pressure_leeway = ONE_ATMOSPHERE * 0.02
 
-	/// Tracks pressure at last time sensor was checked
-	VAR_PRIVATE/last_pressure = null
+	// Set these values to `null` to only check pressure
+	/// Desired temperature for cycling to the interior
+	var/interior_temperature_target = null
+	/// Desired temperature for cycling to the exterior
+	var/exterior_temperature_target = null
+	/// Temperature leeway for cycling
+	var/temperature_leeway = null
+
 	/// Current state of the airlock setup
 	VAR_PRIVATE/state = AIRLOCK_STATE_CLOSED
 	/// Desired state of the airlock setup
@@ -126,25 +133,37 @@
  * Return TRUE to update state
  * Return FALSE to keep waiting on the current state
  */
-/obj/machinery/airlock_controller/proc/cycle_door(datum/weakref/door_ref, target_pressure)
+/obj/machinery/airlock_controller/proc/cycle_door(datum/weakref/door_ref, target_pressure, temperature_target)
 	PRIVATE_PROC(TRUE)
 	var/obj/machinery/door/airlock/to_cycle = door_ref.resolve()
 	if(isnull(to_cycle))
 		state = AIRLOCK_STATE_CLOSED // failsafe
 		return FALSE
-	var/sensor_pressure = sensor_pressure()
-	if(isnull(sensor_pressure))
+	var/list/reading = sensor_reading()
+	if(isnull(reading))
 		state = AIRLOCK_STATE_CLOSED // failsafe
 		return FALSE
-	// pressurizing
-	if(sensor_pressure < target_pressure - leeway)
-		pump_pressurize() // always ensure the pump is pressurizing
-		return FALSE
-	// depressurizing
-	if(sensor_pressure > target_pressure + leeway)
-		pump_depressurize() // always ensure the pump is depressurizing
-		return FALSE
-	return TRUE
+
+	. = TRUE
+	if(!isnull(target_pressure))
+		// pressurizing
+		if(reading["pressure"] < target_pressure - pressure_leeway)
+			pump_pressurize() // always ensure the pump is pressurizing (may noop)
+			. = FALSE
+		// depressurizing
+		else if(reading["pressure"] > target_pressure + pressure_leeway)
+			pump_depressurize() // always ensure the pump is depressurizing (may noop)
+			. = FALSE
+	if(!isnull(temperature_target))
+		// heating
+		if(reading["temperature"] < temperature_target - temperature_leeway)
+			// melbert todo : handle heating
+			. = FALSE
+		// cooling
+		else if(reading["temperature"] > temperature_target + temperature_leeway)
+			// melbert todo : handle cooling
+			. = FALSE
+	return .
 
 /obj/machinery/airlock_controller/proc/handle_state()
 	var/old_state = state
@@ -165,7 +184,7 @@
 			if(target_state == AIRLOCK_STATE_CLOSED)
 				state = AIRLOCK_STATE_CLOSED
 			// Either proceed to int open or do nothing
-			else if(cycle_door(interior_door_ref, interior_target_pressure))
+			else if(cycle_door(interior_door_ref, interior_target_pressure, interior_temperature_target))
 				state = AIRLOCK_STATE_INTERIOR_OPEN
 
 		if(AIRLOCK_STATE_CLOSED)
@@ -200,7 +219,7 @@
 			if(target_state == AIRLOCK_STATE_CLOSED)
 				state = AIRLOCK_STATE_CLOSED
 			// Either proceed to ext open or do nothing
-			else if(cycle_door(exterior_door_ref, exterior_target_pressure))
+			else if(cycle_door(exterior_door_ref, exterior_target_pressure, exterior_temperature_target))
 				state = AIRLOCK_STATE_EXTERIOR_OPEN
 
 	if(state != old_state)
@@ -219,8 +238,8 @@
 
 	data["airlockState"] = state
 
-	var/sensor_pressure = (state != AIRLOCK_STATE_EXTERIOR_OPENING && state != AIRLOCK_STATE_EXTERIOR_OPENING) && last_pressure || sensor_pressure()
-	data["sensorPressure"] = isnull(sensor_pressure) ? "----" : round(sensor_pressure, 0.1)
+	var/list/reading = sensor_reading()
+	data["sensorPressure"] = isnull(reading["pressure"]) ? "----" : round(reading["pressure"], 0.1)
 
 	var/obj/machinery/door/airlock/interior_airlock = interior_door_ref.resolve()
 	data["interiorStatus"] = isnull(interior_airlock) ? "----" : (interior_airlock.density ? "closed" : "open")
@@ -273,10 +292,13 @@
 	else if(state == AIRLOCK_STATE_EXTERIOR_OPEN)
 		target_state = AIRLOCK_STATE_CLOSED
 
-/// Returns the pressure over the pump, or null if it is deleted
-/obj/machinery/airlock_controller/proc/sensor_pressure()
+/// Returns a reading of the sensors, or null if no sensors are available
+/obj/machinery/airlock_controller/proc/sensor_reading()
 	var/total_pressure = 0
+	var/total_temp = 0
+	var/total_vol = 0
 	var/num_sensors = 0
+
 	for(var/datum/weakref/sensor_ref in sensor_refs)
 		var/obj/machinery/airlock_sensor/sensor = sensor_ref.resolve()
 		if(isnull(sensor))
@@ -287,10 +309,16 @@
 			continue
 
 		total_pressure += air.return_pressure()
+		total_temp += air.return_temperature()
+		total_vol += air.return_volume()
 		num_sensors += 1
-
-	last_pressure = num_sensors == 0 ? null : (total_pressure / num_sensors)
-	return last_pressure
+	if(num_sensors == 0)
+		return null
+	return list(
+		"pressure" = total_pressure / num_sensors,
+		"temperature" = total_temp / num_sensors,
+		"volume" = total_vol / num_sensors,
+	)
 
 /obj/machinery/airlock_controller/update_icon_state()
 	icon_state = "[base_icon_state]_[processing ? "process" : "standby"]"

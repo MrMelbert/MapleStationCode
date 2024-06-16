@@ -138,13 +138,23 @@
 		There's also no buttons, just the controller, but you still need to set the door markers. \
 		The controller's put on the outer door.\
 		\
-		You can also set the pressure that the cycle waits for before opening the doors."
+		You can also set the pressure (or temp) that the cycle waits for before opening the doors."
+
+	// Leave these `null` if you only want to check temperature
 	/// Pressure to set the interior airlock to
-	var/inner_pressure = ONE_ATMOSPHERE
+	var/inner_pressure = null
 	/// Pressure to set the exterior airlock to
-	var/outer_pressure = ONE_ATMOSPHERE
-	/// Leeway applied to the controller
-	var/leeway = ONE_ATMOSPHERE * 0.02
+	var/outer_pressure = null
+	/// Leeway applied to the controller recording pressure
+	var/pressure_leeway = null
+
+	// Leave these `null` if you only want to check pressure
+	/// Temperature to set the interior airlock to
+	var/inner_temp = null
+	/// Temperature to set the exterior airlock to
+	var/outer_temp = null
+	/// Leeway applied to the controller recording temperature
+	var/temp_leeway = null
 
 /obj/effect/mapping_helpers/cycling_airlock_old/atmos/airlock_setup(
 	obj/effect/mapping_helpers/cycling_airlock_old/marker/inner_door/inner_mark,
@@ -194,7 +204,10 @@
 	outer_contoller.sensor_tag = sensor_tag
 	outer_contoller.exterior_target_pressure = outer_pressure
 	outer_contoller.interior_target_pressure = inner_pressure
-	outer_contoller.leeway = leeway
+	outer_contoller.pressure_leeway = pressure_leeway
+	outer_contoller.exterior_temperature_target = outer_temp
+	outer_contoller.interior_temperature_target = inner_temp
+	outer_contoller.temperature_leeway = temp_leeway
 	// Setting up cycling (if the airlock is overriden)
 	LAZYOR(inner.close_others, outer)
 	LAZYOR(outer.close_others, inner)
@@ -234,7 +247,9 @@
 /obj/effect/mapping_helpers/cycling_airlock_old/atmos/tcomms
 	prefix_name = "Server Room"
 	one_access = list("ce", "tcomms")
-	inner_pressure = ONE_ATMOSPHERE * 0.25
+	inner_temp = 80
+	outer_temp = 293
+	temp_leeway = 293 * 0.05
 
 // For assisting in placement of certain elements in the airlock
 /obj/effect/mapping_helpers/cycling_airlock_old/marker
