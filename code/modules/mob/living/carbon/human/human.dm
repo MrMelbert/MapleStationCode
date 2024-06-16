@@ -948,7 +948,7 @@
 
 /mob/living/carbon/human/buckle_mob(mob/living/target, force = FALSE, check_loc = TRUE, buckle_mob_flags= NONE)
 
-	if(!is_type_in_typecache(target, can_ride_typecache) && !force) //humans are only meant to be ridden through piggybacking and special cases + NON-MODULE BUG FIX
+	if(!is_type_in_typecache(target, can_ride_typecache) && !force) //humans are only meant to be ridden through piggybacking and special cases + NON MODULE BUG FIX
 		target.visible_message(span_warning("[target] really can't seem to mount [src]..."))
 		return
 
