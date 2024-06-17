@@ -1,13 +1,12 @@
+#define ICE_KNIFE_ATTUNEMENT_ICE 0.5
+#define ICE_KNIFE_MANA_COST 30
+
 /datum/component/uses_mana/story_spell/pointed/ice_knife
-	var/ice_knife_attunement = 0.5
-	var/ice_knife_cost = 25
+	var/ice_knife_attunement = ICE_KNIFE_ATTUNEMENT_ICE
+	var/ice_knife_cost = ICE_KNIFE_MANA_COST
 
-/datum/component/uses_mana/story_spell/pointed/ice_knife/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/ice] = ice_knife_attunement
-
-/datum/component/uses_mana/story_spell/pointed/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * ice_knife_cost
+/* /datum/component/uses_mana/story_spell/pointed/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
+	return ..() * ice_knife_cost */ // holding on to this for now
 
 /datum/action/cooldown/spell/pointed/projectile/ice_knife
 	name = "Ice Knife"
@@ -29,10 +28,21 @@
 	cast_range = 8
 	projectile_type = /obj/projectile/magic/ice_knife
 
+	var/ice_knife_cost = ICE_KNIFE_MANA_COST
+
 /datum/action/cooldown/spell/pointed/projectile/ice_knife/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_ICE] += ICE_KNIFE_ATTUNEMENT_ICE
+
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = ice_knife_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+	)
 
 /// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
 /turf/open/misc/funny_ice
