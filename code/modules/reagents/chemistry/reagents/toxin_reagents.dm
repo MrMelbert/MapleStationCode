@@ -590,7 +590,7 @@
 /datum/reagent/toxin/polonium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if (!HAS_TRAIT(affected_mob, TRAIT_IRRADIATED) && SSradiation.can_irradiate_basic(affected_mob))
-		affected_mob.AddComponent(/datum/component/irradiated)
+		affected_mob.make_irradiated()
 	else
 		if(affected_mob.adjustToxLoss(1 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
 			return UPDATE_MOB_HEALTH

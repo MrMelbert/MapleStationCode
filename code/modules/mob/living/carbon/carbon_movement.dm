@@ -8,27 +8,30 @@
 
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
-	if(. && !(movement_type & FLOATING)) //floating is easy
-		if(HAS_TRAIT(src, TRAIT_NOHUNGER))
-			set_nutrition(NUTRITION_LEVEL_FED - 1) //just less than feeling vigorous
-		else if(nutrition && stat != DEAD)
-			adjust_nutrition(-(HUNGER_FACTOR/10))
-			if(move_intent == MOVE_INTENT_RUN)
-				adjust_nutrition(-(HUNGER_FACTOR/10))
+	if(!. || (movement_type & FLOATING)) //floating is easy
+		return
+	if(stat == DEAD)
+		return
 
-		// NON-MODULE CHANGE START
-		if(move_intent == MOVE_INTENT_RUN && !(movement_type & FLYING) && (mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)) && !pulledby)
-			drain_sprint()
-		if(momentum_dir & direct)
-			momentum_distance++
-			if(!has_momentum && momentum_distance >= 4 && add_movespeed_modifier(/datum/movespeed_modifier/momentum))
-				has_momentum = TRUE
-		else
-			momentum_dir = direct
-			momentum_distance = 0
-			if(has_momentum && remove_movespeed_modifier(/datum/movespeed_modifier/momentum))
-				has_momentum = FALSE
-		// NON-MODULE CHANGE END
+	if(nutrition > 0)
+		var/hunger_loss = HUNGER_FACTOR / 10
+		if(move_intent == MOVE_INTENT_RUN)
+			hunger_loss *= 2
+		adjust_nutrition(-1 * hunger_loss)
+
+	// NON-MODULE CHANGE START
+	if(move_intent == MOVE_INTENT_RUN && !(movement_type & FLYING) && (mobility_flags & (MOBILITY_MOVE|MOBILITY_STAND)) && !pulledby)
+		drain_sprint()
+	if(momentum_dir & direct)
+		momentum_distance++
+		if(!has_momentum && momentum_distance >= 4 && add_movespeed_modifier(/datum/movespeed_modifier/momentum))
+			has_momentum = TRUE
+	else
+		momentum_dir = direct
+		momentum_distance = 0
+		if(has_momentum && remove_movespeed_modifier(/datum/movespeed_modifier/momentum))
+			has_momentum = FALSE
+	// NON-MODULE CHANGE END
 
 /mob/living/carbon/set_usable_legs(new_value)
 	. = ..()

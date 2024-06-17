@@ -80,15 +80,18 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			after_eat = CALLBACK(src, PROC_REF(OnEatFrom)))
 
 /obj/item/organ/Destroy()
-	if(bodypart_owner && !owner && !QDELETED(bodypart_owner))
+	if(isnull(owner) && !isnull(bodypart_owner))
 		bodypart_remove(bodypart_owner)
-	else if(owner)
+	else if(!isnull(owner))
 		// The special flag is important, because otherwise mobs can die
 		// while undergoing transformation into different mobs.
 		Remove(owner, special=TRUE)
 	else
 		STOP_PROCESSING(SSobj, src)
 	return ..()
+
+/obj/item/organ/dump_harddel_info()
+	return "Owner: [owner || "null"] | Bodypart Owner: [bodypart_owner || "null"] | Loc: [loc || "nullspace"]"
 
 /// Add a Trait to an organ that it will give its owner.
 /obj/item/organ/proc/add_organ_trait(trait)
@@ -313,17 +316,16 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
 /obj/item/organ/proc/get_status_text()
-	var/status = ""
-	if(owner.has_reagent(/datum/reagent/inverse/technetium))
-		status = "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% damaged.</font>"
+	if(organ_flags & ORGAN_IRRADIATED)
+		return "<font color='#29b90f'>Irradiated - Replace or use specialty medication</font>"
+	else if(owner.has_reagent(/datum/reagent/inverse/technetium))
+		return "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% damaged</font>"
 	else if(organ_flags & ORGAN_FAILING)
-		status = "<font color='#cc3333'>Non-Functional</font>"
+		return "<font color='#cc3333'>Non-Functional - Replace or operate</font>"
 	else if(damage > high_threshold)
-		status = "<font color='#ff9933'>Severely Damaged</font>"
+		return "<font color='#ff9933'>Severely Damaged[owner.stat == DEAD ? "" : " - Treat with rest or use specialty medication"]</font>"
 	else if (damage > low_threshold)
-		status = "<font color='#ffcc33'>Mildly Damaged</font>"
-
-	return status
+		return "<font color='#ffcc33'>Mildly Damaged[owner.stat == DEAD ? "" : " - Treat with rest"]</font>"
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
 /obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)

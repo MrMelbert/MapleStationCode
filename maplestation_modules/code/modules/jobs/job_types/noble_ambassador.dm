@@ -23,8 +23,8 @@
 	plasmaman_outfit = /datum/outfit/plasmaman // no outfit yet
 
 	paycheck = PAYCHECK_COMMAND
-	paycheck_department = ACCOUNT_SEC
-	bounty_types = CIV_JOB_SEC
+	paycheck_department = ACCOUNT_SRV
+	bounty_types = CIV_JOB_RANDOM
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM) // The most royal of all metabolism!
 

@@ -31,7 +31,9 @@
 	inherent_factions = list(FACTION_SLIME)
 	species_language_holder = /datum/language_holder/jelly
 	ass_image = 'icons/ass/assslime.png'
-
+	hair_color_mode = USE_MUTANT_COLOR
+	hair_alpha = 150
+	facial_hair_alpha = 150
 	bodypart_overrides = list(
 		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly,
 		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly,
@@ -213,9 +215,7 @@
 	name = "\improper Slimeperson"
 	plural_form = "Slimepeople"
 	id = SPECIES_SLIMEPERSON
-	hair_color = "mutcolor"
-	hair_alpha = 150
-	facial_hair_alpha = 150
+	hair_color_mode = USE_MUTANT_COLOR
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	mutanteyes = /obj/item/organ/internal/eyes
 	var/datum/action/innate/split_body/slime_split
@@ -223,12 +223,12 @@
 	var/datum/action/innate/swap_body/swap_body
 
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/slime,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/slime,
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/slime,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/slime,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/slime,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/slime,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly/slime,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly/slime,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/jelly/slime,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly/slime,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly/slime,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly/slime,
 	)
 
 /datum/species/jelly/slime/get_physical_attributes()
@@ -523,12 +523,12 @@
 	id = SPECIES_LUMINESCENT
 	examine_limb_id = SPECIES_LUMINESCENT
 	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/luminescent,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/luminescent,
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/luminescent,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/luminescent,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/luminescent,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/luminescent,
+		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/jelly/luminescent,
+		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/jelly/luminescent,
+		BODY_ZONE_HEAD = /obj/item/bodypart/head/jelly/luminescent,
+		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/jelly/luminescent,
+		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/jelly/luminescent,
+		BODY_ZONE_CHEST = /obj/item/bodypart/chest/jelly/luminescent,
 	)
 	mutanteyes = /obj/item/organ/internal/eyes
 	/// How strong is our glow

@@ -110,3 +110,7 @@
 /datum/loadout_item/shoes/grey
 	name = "Designer Boots"
 	item_path = /obj/item/clothing/shoes/greyboots
+
+/datum/loadout_item/shoes/lini
+	name = "Berbier Boots"
+	item_path = /obj/item/clothing/shoes/liniboots

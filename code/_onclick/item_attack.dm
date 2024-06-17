@@ -52,10 +52,6 @@
 	if (attackby_result)
 		return TRUE
 
-	if(QDELETED(src) || QDELETED(target))
-		attack_qdeleted(target, user, TRUE, params)
-		return TRUE
-
 	if (is_right_clicking)
 		var/after_attack_secondary_result = afterattack_secondary(target, user, TRUE, params)
 
@@ -390,7 +386,7 @@
 					glasses.add_mob_blood(src)
 					update_worn_glasses()
 
-			if(!attacking_item.get_sharpness() && armor_block < 50)
+			if(!attacking_item.get_sharpness() && armor_block < 50 && attacking_item.damtype == BRUTE)
 				if(prob(damage_done))
 					adjustOrganLoss(ORGAN_SLOT_BRAIN, 20)
 					if(stat == CONSCIOUS)
@@ -420,7 +416,7 @@
 					w_uniform.add_mob_blood(src)
 					update_worn_undersuit()
 
-			if(stat == CONSCIOUS && !attacking_item.get_sharpness() && armor_block < 50)
+			if(stat == CONSCIOUS && !attacking_item.get_sharpness() && armor_block < 50 && attacking_item.damtype == BRUTE)
 				if(prob(damage_done))
 					visible_message(
 						span_danger("[src] is knocked down!"),
@@ -470,11 +466,6 @@
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 
 	return SECONDARY_ATTACK_CALL_NORMAL
-
-/// Called if the target gets deleted by our attack
-/obj/item/proc/attack_qdeleted(atom/target, mob/user, proximity_flag, click_parameters)
-	SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_QDELETED, target, user, proximity_flag, click_parameters)
-	SEND_SIGNAL(user, COMSIG_MOB_ITEM_ATTACK_QDELETED, target, user, proximity_flag, click_parameters)
 
 /obj/item/proc/get_clamped_volume()
 	if(w_class)
