@@ -9,10 +9,11 @@
 	icon_state = "dreadnought_active"
 	icon_living = "dreadnought_active"
 	icon_dead = "dreadnought_dead"
+	health_doll_icon = "dreadnought_active"
 	pixel_x = -16
 	base_pixel_x = -16
-	health = 450
-	maxHealth = 450
+	health = 1000 // On par with Lavaland elites.
+	maxHealth = 1000
 	unsuitable_atmos_damage = 0
 	unsuitable_cold_damage = 0
 	unsuitable_heat_damage = 0
@@ -33,8 +34,12 @@
 	faction = list(FACTION_DEEPRED)
 	hud_type = /datum/hud/dextrous/dreadnought
 
-	var/heavy_emp_damage = 25 // If the EMP is heavy, the pattern is damaged by this value on top of the light damage.
-	var/light_emp_damage = 25 // The pattern is damaged by this value when hit by an EMP.
+	move_force = MOVE_FORCE_NORMAL
+	move_resist = MOVE_FORCE_STRONG
+	pull_force = MOVE_FORCE_NORMAL
+
+	var/heavy_emp_damage = 120 // If the EMP is heavy, the pattern is damaged by this value.
+	var/light_emp_damage = 40 // The pattern is damaged by this value when hit by an EMP.
 
 	var/hands = 4
 
@@ -62,6 +67,8 @@
 		/datum/action/cooldown/spell/jaunt/ethereal_jaunt/ash = null,
 		/datum/action/cooldown/spell/shapeshift/eldritch = BB_SHAPESHIFT_ACTION,
 	)
+
+	var/RLEnergy = 100 // Red lightning reserves.
 
 /datum/language_holder/redtech // Literally just the TG silicon language list.
 	understood_languages = list(
@@ -382,19 +389,78 @@
 
 /mob/living/basic/redtechdread/proc/update_naming_status()
 	if(neck)
+		if(head)
+			name = "The Collector"
+			desc = "An enigmatic and imposing masked figure. They are quite large."
+			return
 		name = "The Collector"
-		desc = "An enigmatic and imposing figure. They are quite large."
+		desc = "An enigmatic and imposing mechanical figure. Their face can only be described as half sensor array, half volley gun."
 		return
-
 	name = "Redtech Dreadnought Pattern"
-	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating."
+	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. By looking at their face, you are staring down almost a dozen barrels."
 
-/mob/living/basic/redtechdread/emp_act(severity)
-	. = ..()
-	if(. & EMP_PROTECT_SELF)
+/mob/living/basic/redtechdread/emp_reaction(severity)
+	if(health < 450)
 		return
-	adjustBruteLoss(light_emp_damage)
-	to_chat(src, span_danger("EMP DETECTED: DAMAGE TO HARDWARE"))
-	if(severity == 1)
-		adjustBruteLoss(heavy_emp_damage)
-		to_chat(src, span_userdanger("WARNING: HEAVY DAMAGE TO HARDWARE"))
+
+	visible_message(span_danger("[src] shudders for a moment."))
+	Shake(duration = 1 SECONDS)
+	switch(severity)
+		if(EMP_LIGHT)
+			apply_damage(light_emp_damage)
+			to_chat(src, span_danger("EMP DETECTED: DAMAGE TO HARDWARE"))
+		if(EMP_HEAVY)
+			apply_damage(heavy_emp_damage)
+			to_chat(src, span_userdanger("WARNING: HEAVY DAMAGE TO HARDWARE"))
+
+/mob/living/basic/redtechdread/electrocute_act(shock_damage, source, siemens_coeff, flags = NONE)
+	return FALSE
+
+/mob/living/basic/redtechdread/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
+	if(affect_silicon)
+		return ..()
+
+/mob/living/basic/drone/examine(mob/user)
+	. = list("<span class='info'>This is [icon2html(src, user)] \a <b>[src]</b>!")
+
+	//Hands
+	for(var/obj/item/held_thing in held_items)
+		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
+			continue
+		. += "It has [held_thing.get_examine_string(user)] in its [get_held_index_name(get_held_index_of_item(held_thing))]."
+
+	if(!neck) // If the cloak is not worn, show the internal storage.
+		//Back storage
+		if(back_storage && !(back_storage.item_flags & ABSTRACT))
+			. += "It is holding [back_storage.get_examine_string(user)] in its internal storage."
+
+		//Belt storage
+		if(belt_storage && !(belt_storage.item_flags & ABSTRACT))
+			. += "It is holding [belt_storage.get_examine_string(user)] in its storage compartment."
+
+	//Neckwear
+	if(neck && !(neck.item_flags & ABSTRACT))
+		. += "It is wearing [neck.get_examine_string(user)]."
+
+	//Cosmetic hat - provides no function other than looks
+	if(head && !(head.item_flags & ABSTRACT))
+		. += "It is wearing [head.get_examine_string(user)] on its head."
+
+	//Braindead
+	if(!client && stat != DEAD)
+		. += "Its status LED is blinking at a steady rate."
+
+	//Damaged
+	if(health != maxHealth) // Note to self, change description if it is wearing a cloak.
+		if(health > maxHealth * 0.33)
+			. += span_warning("Its screws are slightly loose.")
+		else //otherwise, below about 33%
+			. += span_boldwarning("Its screws are very loose!")
+
+	//Dead
+	if(stat == DEAD)
+		if(client)
+			. += span_deadsay("A message repeatedly flashes on its display: \"REBOOT -- REQUIRED\".")
+		else
+			. += span_deadsay("A message repeatedly flashes on its display: \"ERROR -- OFFLINE\".")
+	. += "</span>"
