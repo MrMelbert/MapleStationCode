@@ -358,6 +358,9 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	walltype = /turf/closed/wall/mineral/wood
 	stairs_type = /obj/structure/stairs/wood
 
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
+
 /datum/armor/mineral_wood
 	fire = 50
 
@@ -405,6 +408,9 @@ GLOBAL_LIST_INIT(bamboo_recipes, list ( \
 	grind_results = list(/datum/reagent/cellulose = 10)
 	material_type = /datum/material/bamboo
 	walltype = /turf/closed/wall/mineral/bamboo
+
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /datum/armor/mineral_bamboo
 	fire = 50
@@ -630,6 +636,8 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/cardboard
 	grind_results = list(/datum/reagent/cellulose = 10)
 	material_type = /datum/material/cardboard
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 
 /obj/item/stack/sheet/cardboard/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
 	. = ..()

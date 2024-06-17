@@ -76,6 +76,8 @@
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT)
 	wound_bonus = 10
 	bare_wound_bonus = 25
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword2.ogg'
 
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()

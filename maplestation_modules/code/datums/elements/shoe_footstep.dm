@@ -73,7 +73,9 @@
 	var/mob/living/carbon/human/owner = source.loc
 	if(CHECK_MOVE_LOOP_FLAGS(owner, MOVEMENT_LOOP_OUTSIDE_CONTROL))
 		return
-	if(owner.buckled || owner.throwing || (owner.movement_type & (VENTCRAWLING|FLYING|FLOATING)) || HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
+	if(owner.move_intent == MOVE_INTENT_SNEAK || (owner.movement_type & (VENTCRAWLING|FLYING|FLOATING)))
+		return
+	if(owner.buckled || owner.throwing || HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
 		return
 	if(steps < steps_per_play)
 		steps++

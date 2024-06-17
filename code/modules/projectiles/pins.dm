@@ -9,6 +9,9 @@
 	w_class = WEIGHT_CLASS_TINY
 	attack_verb_continuous = list("pokes")
 	attack_verb_simple = list("poke")
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
+
 	var/fail_message = "invalid user!"
 	/// Explode when user check is failed.
 	var/selfdestruct = FALSE

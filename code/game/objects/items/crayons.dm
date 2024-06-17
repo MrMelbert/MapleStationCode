@@ -688,6 +688,8 @@
 	icon_state = "crayonbox"
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/cardboard = SHEET_MATERIAL_AMOUNT)
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 
 /obj/item/storage/crayons/Initialize(mapload)
 	. = ..()
@@ -757,6 +759,8 @@
 
 	pre_noise = TRUE
 	post_noise = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 
 /obj/item/toy/crayon/spraycan/Initialize(mapload)
 	. = ..()

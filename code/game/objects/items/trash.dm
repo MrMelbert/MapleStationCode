@@ -7,6 +7,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
 	item_flags = NOBLUDGEON|SKIP_FANTASY_ON_SPAWN
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/trash/Initialize(mapload)
 	var/turf/T = get_turf(src)

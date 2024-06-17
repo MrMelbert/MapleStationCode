@@ -23,6 +23,8 @@
 	resistance_flags = NONE
 	max_integrity = 300
 	storage_type = /datum/storage/backpack
+	drop_sound = 'maplestation_modules/sound/items/drop/backpack.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/backpack.ogg'
 
 /obj/item/storage/backpack/Initialize(mapload)
 	. = ..()

@@ -16,6 +16,8 @@
 	automatic_charge_overlays = FALSE
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL
 	gun_flags = NOT_A_REAL_GUN
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 
 /obj/item/ammo_casing/energy/wiremod_gun
 	projectile_type = /obj/projectile/energy/wiremod_gun

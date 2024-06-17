@@ -16,6 +16,9 @@
 	attack_verb_simple = list("shove", "bash")
 	armor_type = /datum/armor/item_shield
 	block_sound = 'sound/weapons/block_shield.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
 	/// makes beam projectiles pass through the shield
 	var/transparent = FALSE
 	/// if the shield will break by sustaining damage
@@ -98,6 +101,8 @@
 	block_chance = 30
 	max_integrity = 55
 	w_class = WEIGHT_CLASS_NORMAL
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/shield/roman
 	name = "\improper Roman shield"

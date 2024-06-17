@@ -32,6 +32,8 @@
 	lefthand_file = 'icons/mob/inhands/equipment/idcards_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/idcards_righthand.dmi'
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'maplestation_modules/sound/items/drop/card.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
 
 	/// Cached icon that has been built for this card. Intended to be displayed in chat. Cardboards IDs and actual IDs use it.
 	var/icon/cached_flat_icon

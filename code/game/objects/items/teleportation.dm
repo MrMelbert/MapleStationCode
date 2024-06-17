@@ -24,6 +24,8 @@
 	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 4)
+	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/tracking_range = 35
 
 /obj/item/locator/ui_interact(mob/user, datum/tgui/ui)
@@ -113,6 +115,8 @@
 	custom_materials = list(/datum/material/iron= SHEET_MATERIAL_AMOUNT * 5)
 	armor_type = /datum/armor/item_hand_tele
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/list/active_portal_pairs
 	var/max_portal_pairs = 3
 
@@ -328,6 +332,8 @@
 	inhand_icon_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
+	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	//Uses of the device left
 	var/charges = 4
 	//The maximum number of stored uses

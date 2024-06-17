@@ -25,7 +25,8 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 	icon = 'icons/obj/exploration.dmi'
 	icon_state = "drone"
 	w_class = WEIGHT_CLASS_BULKY
-
+	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// Current drone status, see code\__DEFINES\adventure.dm
 	var/drone_status = EXODRONE_IDLE
 	/// Are we currently controlled by remote terminal, blocks other terminals from interacting with this drone.

@@ -18,6 +18,8 @@
 	equip_delay_other = 40
 	article = "a pair of"
 	blood_overlay_type = "glove" // NON-MODULE CHANGE
+	drop_sound = 'maplestation_modules/sound/items/drop/gloves.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gloves.ogg'
 	// Path variable. If defined, will produced the type through interaction with wirecutters.
 	var/cut_type = null
 	/// Used for handling bloody gloves leaving behind bloodstains on objects. Will be decremented whenever a bloodstain is left behind, and be incremented when the gloves become bloody.

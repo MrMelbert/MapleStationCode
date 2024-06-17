@@ -136,6 +136,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	grind_results = list()
 	heat = 1000
 	throw_verb = "flick"
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 	/// Whether this cigarette has been lit.
 	VAR_FINAL/lit = FALSE
 	/// Whether this cigarette should start lit.
@@ -795,6 +797,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	light_power = 0.6
 	light_color = LIGHT_COLOR_FIRE
 	light_on = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 	/// Whether the lighter is lit.
 	var/lit = FALSE
 	/// Whether the lighter is fancy. Fancy lighters have fancier flavortext and won't burn thumbs.

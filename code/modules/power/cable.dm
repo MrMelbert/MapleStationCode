@@ -449,6 +449,8 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	usesound = 'sound/items/deconstruct.ogg'
 	cost = 1
 	source = /datum/robot_energy_storage/wire
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 	var/cable_color = CABLE_COLOR_YELLOW
 	var/obj/structure/cable/target_type = /obj/structure/cable
 	var/target_layer = CABLE_LAYER_2

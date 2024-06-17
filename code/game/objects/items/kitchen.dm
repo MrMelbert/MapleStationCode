@@ -162,6 +162,8 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	custom_price = PAYCHECK_CREW * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/kitchen/rollingpin/illegal
 	name = "metal rolling pin"
@@ -173,6 +175,9 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/plastic = SHEET_MATERIAL_AMOUNT * 1.5)
 	custom_price = PAYCHECK_CREW * 2
 	bare_wound_bonus = 14
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
 
 /obj/item/kitchen/rollingpin/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins flattening [user.p_their()] head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

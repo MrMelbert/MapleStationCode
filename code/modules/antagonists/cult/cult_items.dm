@@ -26,6 +26,8 @@
 	bare_wound_bonus = 20
 	armour_penetration = 35
 	block_sound = 'sound/weapons/parry.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
 
 /obj/item/melee/cultblade/dagger/Initialize(mapload)
 	. = ..()
@@ -76,6 +78,8 @@ Striking a noncultist, however, will tear their flesh."}
 	block_sound = 'sound/weapons/parry.ogg'
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "rends")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
 
 /obj/item/melee/cultblade/Initialize(mapload)
 	. = ..()

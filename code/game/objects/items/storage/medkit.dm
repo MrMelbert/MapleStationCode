@@ -18,6 +18,8 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	throw_speed = 3
 	throw_range = 7
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/drop/device.ogg'
 	var/empty = FALSE
 	/// Defines damage type of the medkit. General ones stay null. Used for medibot healing bonuses
 	var/damagetype_healed
@@ -426,6 +428,8 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/pillbottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/pillbottle.ogg'
 
 /obj/item/storage/pill_bottle/Initialize(mapload)
 	. = ..()

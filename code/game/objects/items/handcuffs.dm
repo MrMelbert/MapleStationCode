@@ -12,6 +12,8 @@
 	breakouttime = 1 MINUTES
 	dye_color = DYE_PRISONER
 	icon = 'icons/obj/restraints.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 
 /obj/item/restraints/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -368,6 +370,8 @@
 	throw_range = 1
 	icon_state = "beartrap"
 	desc = "A trap used to catch bears and other legged creatures."
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 	///If true, the trap is "open" and can trigger.
 	var/armed = FALSE
 	///How much damage the trap deals when triggered.

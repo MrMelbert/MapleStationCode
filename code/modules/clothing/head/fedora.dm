@@ -35,3 +35,5 @@
 	name = "carpskin fedora"
 	icon_state = "fedora_carpskin"
 	inhand_icon_state = null
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'

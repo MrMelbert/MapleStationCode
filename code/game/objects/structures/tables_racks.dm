@@ -902,6 +902,8 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "rack_parts"
 	inhand_icon_state = "rack_parts"
+	drop_sound = 'maplestation_modules/sound/items/drop/generic1.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic1.ogg'
 	obj_flags = CONDUCTS_ELECTRICITY
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT)
 	var/building = FALSE

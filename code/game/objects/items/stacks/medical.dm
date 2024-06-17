@@ -16,6 +16,7 @@
 	cost = 250
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
 	/// How long it takes to apply it to yourself
 	var/self_delay = 5 SECONDS
 	/// How long it takes to apply it to someone else
@@ -229,6 +230,7 @@
 	splint_factor = 0.7
 	burn_cleanliness_bonus = 0.35
 	merge_type = /obj/item/stack/medical/gauze
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	var/obj/item/bodypart/gauzed_bodypart
 
 /obj/item/stack/medical/gauze/Destroy(force)

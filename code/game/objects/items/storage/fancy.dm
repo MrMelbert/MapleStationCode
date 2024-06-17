@@ -17,6 +17,8 @@
 	icon = 'icons/obj/food/containers.dmi'
 	resistance_flags = FLAMMABLE
 	custom_materials = list(/datum/material/cardboard = SHEET_MATERIAL_AMOUNT)
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 	/// Used by examine to report what this thing is holding.
 	var/contents_tag = "errors"
 	/// What type of thing to fill this storage with.

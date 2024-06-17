@@ -8,6 +8,9 @@
 	righthand_file = 'icons/mob/inhands/equipment/briefcase_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	req_access = list(ACCESS_ARMORY)
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
 	var/broken = FALSE
 	var/open = FALSE
 	var/icon_locked = "lockbox+l"

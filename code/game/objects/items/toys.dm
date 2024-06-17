@@ -32,6 +32,9 @@
 	throw_range = 7
 	force = 0
 	worn_icon_state = "nothing"
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
+
 
 /*
  * Balloons
@@ -327,6 +330,8 @@
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.1, /datum/material/glass= SMALL_MATERIAL_AMOUNT * 0.1)
 	attack_verb_continuous = list("strikes", "pistol whips", "hits", "bashes")
 	attack_verb_simple = list("strike", "pistol whip", "hit", "bash")
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 	var/bullets = 7
 
 /obj/item/toy/gun/examine(mob/user)

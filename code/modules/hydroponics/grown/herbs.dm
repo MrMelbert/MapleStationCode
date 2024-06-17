@@ -25,3 +25,5 @@
 	juice_typepath = /datum/reagent/consumable/nutriment
 	tastes = list("nondescript herbs" = 1)
 	distill_reagent = /datum/reagent/consumable/ethanol/fernet
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
