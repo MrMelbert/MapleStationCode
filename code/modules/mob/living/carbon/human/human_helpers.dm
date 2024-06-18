@@ -270,6 +270,8 @@
 /mob/living/carbon/human/proc/get_mob_height()
 	if(HAS_TRAIT(src, TRAIT_DWARF))
 		return ismonkey(src) ? MONKEY_HEIGHT_DWARF : HUMAN_HEIGHT_DWARF
+	if(HAS_TRAIT(src, TRAIT_TOO_TALL))
+		return ismonkey(src) ? MONKEY_HEIGHT_TALL : HUMAN_HEIGHT_TALLEST
 
 	if(ismonkey(src))
 		return MONKEY_HEIGHT_MEDIUM
