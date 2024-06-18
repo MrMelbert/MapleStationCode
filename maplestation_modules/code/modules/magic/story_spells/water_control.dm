@@ -1,10 +1,9 @@
+#define WET_ATTUNEMENT_WATER 0.5
+#define WET_MANA_COST_PER_UNIT 0.4
+
 /datum/component/uses_mana/story_spell/pointed/soft_and_wet
 	var/wet_attunement_amount = 0.5
 	var/wet_cost_per_unit = 0.4
-
-/datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/water] += wet_attunement_amount
 
 /datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/pointed/soft_and_wet/spell = parent
@@ -26,6 +25,7 @@
 
 	cooldown_time = 10 SECONDS
 	spell_requirements = NONE
+	var/mana_cost = WET_MANA_COST_PER_UNIT
 
 	school = SCHOOL_TRANSMUTATION
 
@@ -45,7 +45,17 @@
 
 /datum/action/cooldown/spell/pointed/soft_and_wet/New(Target)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/soft_and_wet)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[/datum/attunement/water] += WET_ATTUNEMENT_WATER
+
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/soft_and_wet, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = mana_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
 	wetness_pool = new(water_units_applied * ((1 + 2 * aoe_range) ** 2))
 	wetness_pool.add_reagent(water_type, INFINITY)
 
