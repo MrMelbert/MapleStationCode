@@ -420,7 +420,7 @@
 	if(affect_silicon)
 		return ..()
 
-/mob/living/basic/drone/examine(mob/user)
+/mob/living/basic/redtechdread/examine(mob/user)
 	. = list("<span class='info'>This is [icon2html(src, user)] \a <b>[src]</b>!")
 
 	//Hands
