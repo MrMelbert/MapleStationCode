@@ -17,6 +17,7 @@
 
 	cooldown_time = 1 MINUTES
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	var/mana_cost = ICE_KNIFE_MANA_COST
 
 	invocation = "Frig'dus humer'm!" //this one sucks,  ireally wis hi had something better
 	invocation_type = INVOCATION_SHOUT
@@ -28,8 +29,6 @@
 	cast_range = 8
 	projectile_type = /obj/projectile/magic/ice_knife
 
-	var/ice_knife_cost = ICE_KNIFE_MANA_COST
-
 /datum/action/cooldown/spell/pointed/projectile/ice_knife/New(Target, original)
 	. = ..()
 
@@ -39,7 +38,7 @@
 	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = ice_knife_cost, \
+		mana_consumed = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 	)
@@ -95,3 +94,6 @@
 		var/reset_turf = nearby_turf.type
 		nearby_turf.TerraformTurf(ice_turf, flags = CHANGETURF_INHERIT_AIR) // this will also delete decals! consider the comment above. i'm tired.
 		addtimer(CALLBACK(nearby_turf, TYPE_PROC_REF(/turf, TerraformTurf), reset_turf, null, CHANGETURF_INHERIT_AIR), 20 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
+
+#undef ICE_KNIFE_ATTUNEMENT_ICE
+#undef ICE_KNIFE_MANA_COST

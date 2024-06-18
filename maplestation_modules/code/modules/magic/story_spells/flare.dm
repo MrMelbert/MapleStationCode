@@ -15,13 +15,13 @@
 	/// What color the flare created appears to be
 	var/flare_color
 	/// What the mana cost is, affected by Lesser variant.
-	var/flare_cost = 30
+	var/mana_cost = 30
 
 //Variant that conjures a weaker version
 /datum/spellbook_item/spell/conjure_item/flare/apply_params(datum/action/cooldown/spell/conjure_item/flare/our_spell, lesser)
 	if (lesser)
 		our_spell.item_type = /obj/item/flashlight/glowstick/magic/lesser
-		our_spell.flare_cost = 10
+		our_spell.mana_cost = 10
 		our_spell.cooldown_time = 2 MINUTES
 		our_spell.name = "Lesser Flare"
 		our_spell.desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color. This weaker version burns up quicker and has a considerable cooldown between conjures."
@@ -42,7 +42,7 @@
 	AddComponent(/datum/component/uses_mana, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = flare_cost, \
+		mana_consumed = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 	)

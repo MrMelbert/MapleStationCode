@@ -1,13 +1,9 @@
+#define FREEZE_PERSON_ATTUNEMENT_ICE 0.5
+#define FREEZE_PERSON_MANA_COST 50
+
 /datum/component/uses_mana/story_spell/pointed/freeze_person
-	var/freeze_person_attunement = 0.5
-	var/freeze_person_cost = 50
-
-/datum/component/uses_mana/story_spell/pointed/freeze_person/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/ice] = freeze_person_attunement
-
-/datum/component/uses_mana/story_spell/pointed/freeze_person/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * freeze_person_cost
+	var/freeze_person_attunement = FREEZE_PERSON_ATTUNEMENT_ICE
+	var/freeze_person_cost = FREEZE_PERSON_MANA_COST
 
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
@@ -22,16 +18,28 @@
 	invocation = "Als Eisz'it!"
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
+	var/mana_cost = FREEZE_PERSON_MANA_COST
 
 	active_msg = "You prepare to freeze someone."
 	deactive_msg = "You stop preparing to freeze someone."
 	aim_assist = FALSE
 	cast_range = 8
 
+
+
 /datum/action/cooldown/spell/pointed/freeze_person/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/freeze_person)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_ICE] += FREEZE_PERSON_ATTUNEMENT_ICE
+
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/freeze_person, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = mana_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+	)
 
 /datum/action/cooldown/spell/pointed/freeze_person/is_valid_target(atom/cast_on)
 	. = ..()
@@ -98,3 +106,6 @@
 	owner.move_force = initial(owner.move_force)
 	owner.pull_force = initial(owner.pull_force)
 	return ..()
+
+#undef FREEZE_PERSON_ATTUNEMENT_ICE
+#undef FREEZE_PERSON_MANA_COST

@@ -35,7 +35,7 @@
 	var/jumpspeed = 2
 	var/zup = FALSE
 
-	var/airhike_cost = AIRHIKE_MANA_COST
+	var/mana_cost = AIRHIKE_MANA_COST
 
 /datum/action/cooldown/spell/airhike/New(Target, original)
 	. = ..()
@@ -46,7 +46,7 @@
 	AddComponent(/datum/component/uses_mana/story_spell/airhike, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = airhike_cost, \
+		mana_consumed = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 	)

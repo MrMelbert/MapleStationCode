@@ -29,7 +29,7 @@
 	cooldown_time = 1 MINUTES
 	invocation_type = INVOCATION_NONE
 	spell_requirements = NONE
-	var/healing_touch_mana_cost = HEALING_TOUCH_COST_PER_HEALED
+	var/mana_cost = HEALING_TOUCH_COST_PER_HEALED
 
 	invocation = "Sana manu!"
 	invocation_type = INVOCATION_WHISPER
@@ -56,7 +56,7 @@
 	AddComponent(/datum/component/uses_mana/story_spell/touch/healing_touch, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = healing_touch_mana_cost, \
+		mana_consumed = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)

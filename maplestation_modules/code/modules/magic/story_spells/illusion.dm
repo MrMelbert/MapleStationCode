@@ -1,13 +1,13 @@
+#define ILLUSION_ATTUNEMENT_LIGHT 0.5
+#define ILLUSION_MANA_COST 25
+
 /datum/component/uses_mana/story_spell/pointed/illusion
-	var/illusion_attunement = 0.5
-	var/illusion_cost = 25
+	var/illusion_attunement = ILLUSION_ATTUNEMENT_LIGHT
+	var/illusion_cost = ILLUSION_MANA_COST
 
-/datum/component/uses_mana/story_spell/pointed/illusion/get_attunement_dispositions()
+/* /datum/component/uses_mana/story_spell/pointed/illusion/get_attunement_dispositions()
 	. = ..()
-	.[/datum/attunement/light] = illusion_attunement
-
-/datum/component/uses_mana/story_spell/pointed/illusion/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * illusion_cost
+	.[/datum/attunement/light] = illusion_attunement */
 
 /datum/action/cooldown/spell/pointed/illusion
 	name = "Illusion"
@@ -18,6 +18,7 @@
 
 	cooldown_time = 2 MINUTES
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	var/mana_cost = ILLUSION_MANA_COST
 
 	school = SCHOOL_CONJURATION
 
@@ -33,7 +34,17 @@
 
 /datum/action/cooldown/spell/pointed/illusion/New(Target)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/illusion)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_LIGHT] += ILLUSION_ATTUNEMENT_LIGHT
+
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/illusion, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = mana_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
 
 /datum/action/cooldown/spell/pointed/illusion/Remove(mob/living/remove_from)
 	. = ..()
@@ -170,3 +181,6 @@
 	pull_force = INFINITY
 	sentience_type = SENTIENCE_BOSS
 	// I wanted to make these illusion react to emotes (wave to wave, frown to swears, etc) but maybe later
+
+#undef ILLUSION_ATTUNEMENT_LIGHT
+#undef ILLUSION_MANA_COST
