@@ -177,3 +177,6 @@
 	. = ..()
 	if(istype(used))
 		color = mix_color_from_reagents(used.reagent_list)
+
+#undef WET_ATTUNEMENT_WATER
+#undef WET_MANA_COST_PER_UNIT
