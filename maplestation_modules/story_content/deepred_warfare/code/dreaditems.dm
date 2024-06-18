@@ -3,9 +3,9 @@
 	desc = "A heavy duty storage unit, designed to hold a large amount of items. You could carry it around, but it's too big to equip."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreaditems.dmi'
 	icon_state = "storageunit"
-	lefthand_file = 'maplestation_modules/story_content/deepred_warfare/icons/dreadlefthand.dmi' // Change this to a prexisting sprite, I do not want to make a new one.
-	righthand_file = 'maplestation_modules/story_content/deepred_warfare/icons/dreadrighthand.dmi'
-	inhand_icon_state = "storageunit"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi' // Change this to a prexisting sprite, I do not want to make a new one.
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+	inhand_icon_state = "rack_parts"
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	item_flags = NO_MAT_REDEMPTION
 	armor_type = /datum/armor/dread_storage
