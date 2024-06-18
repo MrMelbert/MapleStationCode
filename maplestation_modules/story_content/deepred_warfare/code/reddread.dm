@@ -22,7 +22,7 @@
 	pass_flags = NONE
 	sight = SEEMOBS | SEE_TURFS | SEE_OBJS // Change later, maybe.
 	status_flags = NONE
-	gender = NEUTER
+	gender = PLURAL
 	mob_biotypes = MOB_ROBOTIC | MOB_SPECIAL
 	speak_emote = list("grinds")
 	speech_span = SPAN_ROBOT
@@ -427,40 +427,46 @@
 	for(var/obj/item/held_thing in held_items)
 		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
 			continue
-		. += "It has [held_thing.get_examine_string(user)] in its [get_held_index_name(get_held_index_of_item(held_thing))]."
+		. += "They have [held_thing.get_examine_string(user)] in their [get_held_index_name(get_held_index_of_item(held_thing))]."
 
 	if(!neck) // If the cloak is not worn, show the internal storage.
 		//Back storage
 		if(back_storage && !(back_storage.item_flags & ABSTRACT))
-			. += "It is holding [back_storage.get_examine_string(user)] in its internal storage."
+			. += "They are holding [back_storage.get_examine_string(user)] in their reactor port."
 
 		//Belt storage
 		if(belt_storage && !(belt_storage.item_flags & ABSTRACT))
-			. += "It is holding [belt_storage.get_examine_string(user)] in its storage compartment."
+			. += "They are holding [belt_storage.get_examine_string(user)] in their storage compartment."
 
 	//Neckwear
 	if(neck && !(neck.item_flags & ABSTRACT))
-		. += "It is wearing [neck.get_examine_string(user)]."
+		. += "They are wearing [neck.get_examine_string(user)]."
 
 	//Cosmetic hat - provides no function other than looks
 	if(head && !(head.item_flags & ABSTRACT))
-		. += "It is wearing [head.get_examine_string(user)] on its head."
+		. += "They are wearing [head.get_examine_string(user)] on their head."
 
 	//Braindead
 	if(!client && stat != DEAD)
-		. += "Its status LED is blinking at a steady rate."
+		. += "They appear to be currently disconnected."
 
 	//Damaged
 	if(health != maxHealth) // Note to self, change description if it is wearing a cloak.
 		if(health > maxHealth * 0.33)
-			. += span_warning("Its screws are slightly loose.")
+			if(neck)
+				. += span_warning("They make a metallic grinding noise when they move.")
+			else
+				. += span_warning("Their armour plates are slightly damaged.")
 		else //otherwise, below about 33%
-			. += span_boldwarning("Its screws are very loose!")
+			if(neck)
+				. += span_warning("Occasional sparks fly from out under their cloak.")
+			else
+				. += span_boldwarning("Their armour plates are heavily damaged!")
 
 	//Dead
 	if(stat == DEAD)
 		if(client)
-			. += span_deadsay("A message repeatedly flashes on its display: \"REBOOT -- REQUIRED\".")
+			. += span_deadsay("Their systems have been shut down.")
 		else
-			. += span_deadsay("A message repeatedly flashes on its display: \"ERROR -- OFFLINE\".")
+			. += span_deadsay("They are about as useful as a heap of scrap metal now.")
 	. += "</span>"
