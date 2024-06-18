@@ -100,8 +100,7 @@
 	AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)))
 	AddComponent(/datum/component/personal_crafting)
 
-	add_traits(list(TRAIT_WEATHER_IMMUNE,
-					TRAIT_NO_PLASMA_TRANSFORM,
+	add_traits(list(TRAIT_NO_PLASMA_TRANSFORM,
 					TRAIT_KNOW_ROBO_WIRES,
 					TRAIT_MADNESS_IMMUNE,
 					TRAIT_NO_SOUL,
@@ -109,10 +108,8 @@
 					TRAIT_QUICKER_CARRY,
 					TRAIT_STRONG_GRABBER,
 					TRAIT_SURGEON,
-					TRAIT_RESEARCH_SCANNER,
 					TRAIT_REAGENT_SCANNER,
 					TRAIT_GOOD_HEARING,
-					TRAIT_FEARLESS,
 					TRAIT_FASTMED,
 					TRAIT_NOFIRE,
 					TRAIT_PUSHIMMUNE,
@@ -400,6 +397,9 @@
 	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. By looking at their face, you are staring down almost a dozen barrels."
 
 /mob/living/basic/redtechdread/emp_reaction(severity)
+	if(EMP_PROTECT_SELF)
+		return
+
 	if(health < 450)
 		return
 
@@ -422,6 +422,9 @@
 
 /mob/living/basic/redtechdread/examine(mob/user)
 	. = list("<span class='info'>This is [icon2html(src, user)] \a <b>[src]</b>!")
+
+	//desc
+	. += "[src.desc]"
 
 	//Hands
 	for(var/obj/item/held_thing in held_items)
