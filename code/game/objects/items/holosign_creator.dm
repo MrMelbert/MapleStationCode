@@ -13,7 +13,7 @@
 	throw_speed = 3
 	throw_range = 7
 	item_flags = NOBLUDGEON
-	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/list/signs
 	var/max_signs = 10

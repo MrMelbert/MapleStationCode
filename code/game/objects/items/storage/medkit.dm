@@ -19,7 +19,7 @@
 	throw_speed = 3
 	throw_range = 7
 	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/empty = FALSE
 	/// Defines damage type of the medkit. General ones stay null. Used for medibot healing bonuses
 	var/damagetype_healed

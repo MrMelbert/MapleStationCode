@@ -8,7 +8,7 @@
 	desc = "A remote control that can be linked to a tram. This can only go well."
 	w_class = WEIGHT_CLASS_TINY
 	options = RAPID_MODE
-	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	///desired tram destination
 	var/destination

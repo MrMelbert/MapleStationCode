@@ -22,7 +22,7 @@
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	desc = "Used to select a landing zone for assault pods."
-	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	var/shuttle_id = "steel_rain"
 	var/dwidth = 3

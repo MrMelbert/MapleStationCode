@@ -44,7 +44,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BELT
 	force = 8
-	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	/// How many uses does our light replacer have?

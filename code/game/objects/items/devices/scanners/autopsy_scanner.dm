@@ -12,7 +12,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*2)
 	custom_price = PAYCHECK_COMMAND
-	// drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/autopsy_scanner/interact_with_atom(atom/interacting_with, mob/living/user)

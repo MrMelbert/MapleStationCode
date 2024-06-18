@@ -39,7 +39,7 @@
 			'maplestation_modules/sound/items/jackboot1.ogg', \
 			'maplestation_modules/sound/items/jackboot2.ogg', \
 		), \
-		volume = 10, \
+		volume = 7.5, \
 		extrarange = -2, \
 		falloff_exponent = SOUND_FALLOFF_EXPONENT * 2, \
 		can_tape = TRUE, \
@@ -85,7 +85,7 @@
 			'maplestation_modules/sound/items/jackboot1.ogg', \
 			'maplestation_modules/sound/items/jackboot2.ogg', \
 		), \
-		volume = 10, \
+		volume = 7.5, \
 		extrarange = -2, \
 		falloff_exponent = SOUND_FALLOFF_EXPONENT * 2, \
 		can_tape = TRUE, \

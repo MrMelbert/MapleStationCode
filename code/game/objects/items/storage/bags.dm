@@ -351,7 +351,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT*1.5)
 	custom_price = PAYCHECK_CREW * 0.6
-	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
 
 /obj/item/storage/bag/tray/Initialize(mapload)

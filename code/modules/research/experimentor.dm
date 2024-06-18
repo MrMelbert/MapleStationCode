@@ -570,6 +570,9 @@
 	name = "strange object"
 	desc = "What mysteries could this hold? Maybe Research & Development could find out."
 	icon = 'icons/obj/devices/assemblies.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+
 	var/realName = "defined object"
 	var/revealed = FALSE
 	var/realProc

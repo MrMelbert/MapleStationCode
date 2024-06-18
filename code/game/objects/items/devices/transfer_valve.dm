@@ -10,6 +10,8 @@
 	worn_icon_state = "ttv"
 	desc = "Regulates the transfer of air between two tanks."
 	w_class = WEIGHT_CLASS_BULKY
+	drop_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gascan.ogg'
 
 	var/obj/item/tank/tank_one
 	var/obj/item/tank/tank_two

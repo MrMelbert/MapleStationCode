@@ -87,7 +87,7 @@
 		return
 
 	COOLDOWN_START(src, scan_cooldown, 5 SECONDS)
-	playsound(src, 'maplestation_modules/sound/healthscanner_used.ogg', 33, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+	playsound(src, 'maplestation_modules/sound/healthscanner_used.ogg', 25, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 	set_occupant(arrived)
 	use_power(active_power_usage)
 
@@ -128,7 +128,7 @@
 			else
 				reader.beep_message("lets out a beep.")
 
-		playsound(reader, scansound, 33, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+		playsound(reader, scansound, 25, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 		return
 
 /obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby(mob/leaving = occupant)

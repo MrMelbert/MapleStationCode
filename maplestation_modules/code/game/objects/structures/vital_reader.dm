@@ -467,7 +467,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 				beep_message("lets out a beep.")
 				last_reported_stat = CONSCIOUS
 
-	playsound(src, beepsound, 33, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(src, beepsound, 25, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/machinery/computer/vitals_reader/proc/beep_message(message)
 	for(var/mob/viewer as anything in viewers(src))

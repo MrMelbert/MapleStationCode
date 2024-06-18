@@ -102,6 +102,8 @@
 	name = "tray"
 	icon_state = "tray"
 	resistance_flags = NONE
+	drop_sound = /obj/item/storage/bag/tray::drop_sound
+	pickup_sound = /obj/item/storage/bag/tray::pickup_sound
 
 /obj/item/trash/candle
 	name = "melted candle"
@@ -118,6 +120,8 @@
 	icon_state = "cola"
 	resistance_flags = NONE
 	grind_results = list(/datum/reagent/aluminium = 10)
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
 
 /obj/item/trash/can/food
 	icon = 'icons/obj/food/canned.dmi'

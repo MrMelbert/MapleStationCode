@@ -119,6 +119,8 @@
 	wound_bonus = 20
 	throwforce = 16
 	w_class = WEIGHT_CLASS_BULKY
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic2.ogg'
 
 /obj/item/melee/psych_rock/Initialize(mapload)
 	. = ..()
@@ -130,5 +132,3 @@
 	if(mapload && !paperweight_spawned  && istype(get_area(src), /area/station/medical/psychology))
 		new /obj/item/melee/psych_rock(loc)
 		paperweight_spawned = TRUE
-
-
