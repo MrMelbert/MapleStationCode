@@ -83,6 +83,7 @@
 	)
 
 	var/RLEnergy = 100 // Red lightning reserves.
+	var/RL_energy_regen = 2 // How much red lightning energy is regenerated per second.
 
 	var/energy_level = 0 // Used for the red lightning system.
 
@@ -156,6 +157,7 @@
 
 	AddComponent(/datum/component/seethrough_mob)
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
+	RegisterSignal(src, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
 	update_base_stats()
 
@@ -521,6 +523,8 @@
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 
+			RL_energy_regen = 2
+
 			move_force = MOVE_FORCE_NORMAL
 			move_resist = MOVE_FORCE_STRONG
 			pull_force = MOVE_FORCE_NORMAL
@@ -541,6 +545,8 @@
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 
+			RL_energy_regen = 1
+
 			move_force = MOVE_FORCE_STRONG
 			move_resist = MOVE_FORCE_STRONG
 			pull_force = MOVE_FORCE_STRONG
@@ -560,6 +566,11 @@
 		if(2)
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
+
+			//AddElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			//AddElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+
+			RL_energy_regen = -0.5
 
 			move_force = MOVE_FORCE_VERY_STRONG
 			move_resist = MOVE_FORCE_VERY_STRONG
@@ -586,5 +597,22 @@
 		balloon_alert(source, "busy!")
 		return COMPONENT_HOSTILE_NO_ATTACK
 	return
+
+/mob/living/basic/redtechdread/proc/adjust_RL_energy(amount)
+	RLEnergy += amount
+	if(RLEnergy < -100)
+		RLEnergy = clamp(RLEnergy, -100, 100)
+		kick_out_of_RL()
+		return
+	RLEnergy = clamp(RLEnergy, -100, 100)
+
+/mob/living/basic/redtechdread/proc/on_life(seconds_per_tick, times_fired)
+	adjust_RL_energy(RL_energy_regen)
+
+/mob/living/basic/redtechdread/proc/kick_out_of_RL()
+	if(energy_level == 2)
+		src.balloon_alert(src, "You run out of RL energy!")
+		energy_level = 0
+		update_base_stats()
 
 #undef DOAFTER_SOURCE_DREAD_INTERACTION

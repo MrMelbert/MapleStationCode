@@ -27,6 +27,10 @@
 		owner.balloon_alert(owner, "You cannot enter low energy mode while in RL energy mode.")
 		return FALSE
 
+	if(ownercast.RLEnergy < 0) // Negative RL energy.
+		owner.balloon_alert(owner, "You need to wait for your red lightning energy to recharge.")
+		return FALSE
+
 	if(ownercast.energy_level == 1) // In high energy mode.
 		owner.balloon_alert(owner, "You slow and and enter low energy mode.")
 		ownercast.energy_level = 0
@@ -65,6 +69,12 @@
 		return FALSE
 
 	if(ownercast.energy_level == 2) // In RL energy mode.
+		if(ownercast.RLEnergy < 0) // Negative RL energy.
+			owner.balloon_alert(owner, "You slow and and enter low energy mode due to lack of red lightning energy.")
+			ownercast.energy_level = 0
+			ownercast.update_base_stats()
+			return TRUE
+
 		owner.balloon_alert(owner, "You cool down and enter high energy mode.")
 		ownercast.energy_level = 1
 		ownercast.update_base_stats()
