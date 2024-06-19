@@ -2,6 +2,8 @@
 #define DREAD_HEAD_LAYER 1
 #define DREAD_NECK_LAYER 2
 
+#define DOAFTER_SOURCE_DREAD_INTERACTION "dreadnought interaction"
+
 /mob/living/basic/redtechdread
 	name = "Redtech Dreadnought Pattern"
 	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating."
@@ -17,7 +19,7 @@
 	unsuitable_atmos_damage = 0
 	unsuitable_cold_damage = 0
 	unsuitable_heat_damage = 0
-	speed = 1 // Change later, maybe.
+	speed = 3
 	density = TRUE
 	pass_flags = NONE
 	sight = SEEMOBS | SEE_TURFS | SEE_OBJS // Change later, maybe.
@@ -37,6 +39,19 @@
 	move_force = MOVE_FORCE_NORMAL
 	move_resist = MOVE_FORCE_STRONG
 	pull_force = MOVE_FORCE_NORMAL
+
+	attack_verb_continuous = "crushes"
+	attack_verb_simple = "crush"
+
+	attack_sound = 'sound/effects/tableslam.ogg'
+	attack_vis_effect = ATTACK_EFFECT_PUNCH
+
+	melee_damage_upper = 15
+	melee_damage_lower = 10
+	obj_damage = 20
+	armour_penetration = 0
+
+	melee_attack_cooldown = CLICK_CD_MELEE
 
 	var/heavy_emp_damage = 120 // If the EMP is heavy, the pattern is damaged by this value.
 	var/light_emp_damage = 40 // The pattern is damaged by this value when hit by an EMP.
@@ -63,12 +78,13 @@
 
 	/// Actions to grant on spawn
 	var/static/list/actions_to_add = list(
-		/datum/action/cooldown/spell/emp/eldritch = BB_GENERIC_ACTION,
-		/datum/action/cooldown/spell/jaunt/ethereal_jaunt/ash = null,
-		/datum/action/cooldown/spell/shapeshift/eldritch = BB_SHAPESHIFT_ACTION,
+		/datum/action/cooldown/mob_cooldown/high_energy = null,
+		/datum/action/cooldown/mob_cooldown/lightning_energy = null,
 	)
 
 	var/RLEnergy = 100 // Red lightning reserves.
+
+	var/energy_level = 0 // Used for the red lightning system.
 
 /datum/language_holder/redtech // Literally just the TG silicon language list.
 	understood_languages = list(
@@ -137,6 +153,11 @@
 		equip_to_slot_or_del(storage, ITEM_SLOT_HEAD)
 
 	grant_actions_by_list(actions_to_add)
+
+	AddComponent(/datum/component/seethrough_mob)
+	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
+
+	update_base_stats()
 
 /datum/hud/dextrous/dreadnought/New(mob/owner)
 	..()
@@ -227,6 +248,8 @@
 			return TRUE
 		if(ITEM_SLOT_NECK)
 			if(neck)
+				return FALSE
+			if(energy_level != 0)
 				return FALSE
 			if(!(istype(item, /obj/item/clothing/neck/cloak/redtech_dread)))
 				return FALSE
@@ -473,3 +496,95 @@
 		else
 			. += span_deadsay("They are about as useful as a heap of scrap metal now.")
 	. += "</span>"
+
+/mob/living/basic/redtechdread/get_status_tab_items()
+	. = ..()
+	switch(energy_level)
+		if(0)
+			. += "In low energy mode."
+		if(1)
+			. += "In high energy mode."
+		if(2)
+			. += "In red lightning mode."
+
+	. += "Red lightning reserves: [RLEnergy]"
+
+/datum/movespeed_modifier/high_energy
+	multiplicative_slowdown = -3
+
+/datum/movespeed_modifier/RL_energy
+	multiplicative_slowdown = -3.5
+
+/mob/living/basic/redtechdread/proc/update_base_stats()
+	switch(energy_level)
+		if(0)
+			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
+			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
+
+			move_force = MOVE_FORCE_NORMAL
+			move_resist = MOVE_FORCE_STRONG
+			pull_force = MOVE_FORCE_NORMAL
+
+			attack_verb_continuous = "crushes"
+			attack_verb_simple = "crush"
+
+			attack_sound = 'sound/effects/tableslam.ogg'
+			attack_vis_effect = ATTACK_EFFECT_PUNCH
+
+			melee_damage_upper = 15
+			melee_damage_lower = 10
+			obj_damage = 20
+			armour_penetration = 0
+
+			RemoveElement(/datum/element/shockattack)
+		if(1)
+			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
+			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
+
+			move_force = MOVE_FORCE_STRONG
+			move_resist = MOVE_FORCE_STRONG
+			pull_force = MOVE_FORCE_STRONG
+
+			attack_verb_continuous = "pulverizes"
+			attack_verb_simple = "pulverize"
+
+			attack_sound = 'sound/effects/meteorimpact.ogg'
+			attack_vis_effect = ATTACK_EFFECT_SMASH
+
+			melee_damage_upper = 30
+			melee_damage_lower = 25
+			obj_damage = 40
+			armour_penetration = 20
+
+			RemoveElement(/datum/element/shockattack)
+		if(2)
+			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
+			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
+
+			move_force = MOVE_FORCE_VERY_STRONG
+			move_resist = MOVE_FORCE_VERY_STRONG
+			pull_force = MOVE_FORCE_VERY_STRONG
+
+			attack_verb_continuous = "annihilates"
+			attack_verb_simple = "annihilate"
+
+			attack_sound = 'sound/effects/meteorimpact.ogg'
+			attack_vis_effect = ATTACK_EFFECT_SMASH
+
+			melee_damage_upper = 35 // Plus shock damage.
+			melee_damage_lower = 30 // Plus shock damage.
+			obj_damage = 60
+			armour_penetration = 40
+
+			AddElement(/datum/element/shockattack, stun_on_hit = FALSE, shock_damage = 15)
+
+/mob/living/basic/redtechdread/proc/pre_attack(mob/living/source, atom/target)
+	SIGNAL_HANDLER
+	if (target == src)
+		return COMPONENT_HOSTILE_NO_ATTACK // Easy to misclick yourself, let's not.
+	if (DOING_INTERACTION(source, DOAFTER_SOURCE_DREAD_INTERACTION))
+		balloon_alert(source, "busy!")
+		return COMPONENT_HOSTILE_NO_ATTACK
+	return
+
+#undef DOAFTER_SOURCE_DREAD_INTERACTION
