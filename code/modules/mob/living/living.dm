@@ -1381,6 +1381,10 @@
 	if(!istype(target))
 		CRASH("Missing target arg for can_perform_action")
 
+	if(stat != CONSCIOUS)
+		to_chat(src, span_warning("You are not conscious enough for this action!"))
+		return FALSE
+
 	if(!(interaction_flags_atom & INTERACT_ATOM_IGNORE_INCAPACITATED))
 		var/ignore_flags = NONE
 		if(interaction_flags_atom & INTERACT_ATOM_IGNORE_RESTRAINED)
@@ -1391,10 +1395,6 @@
 		if(incapacitated(ignore_flags))
 			to_chat(src, span_warning("You are incapacitated at the moment!"))
 			return FALSE
-
-	if(stat == DEAD || stat != CONSCIOUS)
-		to_chat(src, span_warning("You are in no physical condition to do this!"))
-		return FALSE
 
 	// If the MOBILITY_UI bitflag is not set it indicates the mob's hands are cutoff, blocked, or handcuffed
 	// Note - AI's and borgs have the MOBILITY_UI bitflag set even though they don't have hands
@@ -1412,7 +1412,7 @@
 			to_chat(src, span_warning("You don't have the physical ability to do this!"))
 			return FALSE
 
-	if(!(action_bitflags & BYPASS_ADJACENCY) && !Adjacent(target) && (target.loc != src) && !recursive_loc_check(src, target))
+	if(!(action_bitflags & BYPASS_ADJACENCY) && !recursive_loc_check(src, target) && !CanReach(target))
 		if(issilicon(src) && !ispAI(src))
 			if(!(action_bitflags & ALLOW_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
 				if(!(action_bitflags & SILENT_ADJACENCY))
