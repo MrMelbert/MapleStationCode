@@ -45107,6 +45107,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden/layer4,
 /turf/open/floor/iron/edge,
 /area/station/security)
+"mGw" = (
+/obj/structure/sign/warning/electric_shock/directional/east,
+/turf/open/floor/plating,
+/area/station/maintenance/department/engine)
 "mGO" = (
 /obj/effect/turf_decal/tile/yellow,
 /obj/effect/turf_decal/tile/yellow{
@@ -52197,6 +52201,7 @@
 /obj/machinery/light/small/directional/east,
 /obj/effect/mapping_helpers/broken_floor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/sign/warning/directional/east,
 /turf/open/floor/plating,
 /area/station/maintenance/department/engine)
 "rJS" = (
@@ -52728,7 +52733,6 @@
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/effect/mapping_helpers/apc/cell_10k,
 /obj/structure/cable,
-/obj/effect/spawner/random/structure,
 /turf/open/floor/iron,
 /area/station/engineering/storage_shared)
 "scK" = (
@@ -88420,7 +88424,7 @@ bDi
 umd
 xbD
 bDi
-bDi
+mGw
 bDi
 sWN
 iOl
@@ -88677,7 +88681,7 @@ bDi
 bDi
 xbD
 bDi
-bDi
+mGw
 bDi
 xbD
 bBX
