@@ -136,10 +136,11 @@
 
 	else if(!ismob(scanned_atom))
 		// Kinda cringe snowflake but map spawned blood decals don't have any DNA
-		// BUT letting players scan blood and read "There is no blood detective on the blood" is very ???
+		// BUT letting players scan blood and read "There is no blood detected on the blood" is very ???
 		// So we'll just throw in a random blood type for filler
-		if(istype(scanned_atom, /obj/effect/decal/cleanable/blood) && !length(blood))
-			LAZYADD(blood, "UNKNOWN DNA", random_human_blood_type())
+		if(!length(blood) && istype(scanned_atom, /obj/effect/decal/cleanable/blood))
+			scanned_atom.add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
+			blood = GET_ATOM_BLOOD_DNA(scanned_atom)
 
 		det_data[DETSCAN_CATEGORY_FINGERS] = GET_ATOM_FINGERPRINTS(scanned_atom)
 
