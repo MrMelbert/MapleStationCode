@@ -1,15 +1,8 @@
-// vvvvv LEVEL 1 AKA LOW ENERGY ACTIONS vvvvv
-
-// vvvvv LEVEL 2 AKA HIGH ENERGY ACTIONS vvvvv
-
-// vvvvv LEVEL 3 AKA RED LIGHTNING ENERGY ACTIONS vvvvv
-
-// vvvvv ALWAYS AVAILABLE ACTIONS vvvvv
 /datum/action/cooldown/mob_cooldown/high_energy
 	name = "Activate High Energy Mode"
 	desc = "Activate High Energy Mode. Your cloak will need to be off to use this."
 	button_icon = 'icons/mob/actions/actions_items.dmi'
-	button_icon_state = "bci_plus"
+	button_icon_state = "bci_power"
 	background_icon_state = "bg_tech"
 	overlay_icon_state = "bg_tech_border"
 	cooldown_time = 2 SECONDS
@@ -60,6 +53,10 @@
 		owner.balloon_alert(owner, "You cannot enter red lightning energy mode while your cloak is on.")
 		return FALSE
 
+	if(!ownercast.back_storage)
+		owner.balloon_alert(owner, "You need to have a red lightning canister to enter red lightning energy mode.")
+		return FALSE
+
 	if(ownercast.energy_level == 0) // In low energy mode.
 		owner.balloon_alert(owner, "You need to be in high energy mode to enter red lightning energy mode.")
 		return FALSE
@@ -84,3 +81,48 @@
 	ownercast.energy_level = 2
 	ownercast.update_base_stats()
 	return TRUE
+
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
+	name = "Rushdown"
+	desc = "Charge at your target."
+	cooldown_time = 6 SECONDS
+	charge_delay = 1.5 SECONDS
+	charge_distance = 4
+	melee_cooldown_time = 0
+	shake_duration = 1 SECONDS
+	shake_pixel_shift = 1
+	recoil_duration = 0 SECONDS
+	knockdown_duration = 0.2 SECONDS
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_skull"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+
+/datum/action/access_printer
+	name = "Access Redtech Printer"
+	desc = "Access the Redtech Printer to print out items."
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_repair"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+
+/datum/action/access_printer/Trigger(trigger_flags)
+	. = ..()
+	if(!.)
+		return
+
+	var/mob/living/basic/redtechdread/ownercast = owner
+
+	if(!ownercast.back_storage)
+		owner.balloon_alert(owner, "You need to have a red lightning canister to print items.")
+		return FALSE
+
+	var/item_to_spawn = input("Item to fabricate?", "Item:", null) as text|null
+
+	if(!item_to_spawn)
+		return FALSE
+
+	if(!ownercast.belt_storage)
+		return FALSE
+
+	// Turn that text into an item and put it in the belt storage.

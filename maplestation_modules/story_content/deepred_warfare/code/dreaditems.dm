@@ -35,3 +35,11 @@
 /obj/item/clothing/neck/cloak/redtech_dread/pattern
 	worn_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothingbig.dmi'
 	icon_state = "cloak_pattern"
+
+/obj/item/clothing/mask/collector
+	name = "The Collector's Mask"
+	desc = "A strange oriental fox mask, made of heavy metal. It's half black and half white, with only one eye hole."
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreaditems.dmi'
+	worn_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothing.dmi'
+	icon_state = "mask"
+	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT

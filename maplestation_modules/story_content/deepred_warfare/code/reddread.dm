@@ -22,7 +22,7 @@
 	speed = 3
 	density = TRUE
 	pass_flags = NONE
-	sight = SEEMOBS | SEE_TURFS | SEE_OBJS // Change later, maybe.
+	sight = SEE_TURFS
 	status_flags = NONE
 	gender = PLURAL
 	mob_biotypes = MOB_ROBOTIC | MOB_SPECIAL
@@ -35,6 +35,8 @@
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
 	faction = list(FACTION_DEEPRED)
 	hud_type = /datum/hud/dextrous/dreadnought
+	layer = LARGE_MOB_LAYER
+	pressure_resistance = 200
 
 	move_force = MOVE_FORCE_NORMAL
 	move_resist = MOVE_FORCE_STRONG
@@ -74,12 +76,14 @@
 
 	var/obj/item/head // Multipurpose for masks and hats.
 
-	var/obj/item/default_headwear
+	var/obj/item/default_headwear = /obj/item/clothing/mask/collector
 
 	/// Actions to grant on spawn
 	var/static/list/actions_to_add = list(
 		/datum/action/cooldown/mob_cooldown/high_energy = null,
 		/datum/action/cooldown/mob_cooldown/lightning_energy = null,
+		/datum/action/access_printer = null,
+		/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread = null,
 	)
 
 	var/RLEnergy = 100 // Red lightning reserves.
@@ -422,10 +426,10 @@
 	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. By looking at their face, you are staring down almost a dozen barrels."
 
 /mob/living/basic/redtechdread/emp_reaction(severity)
-	if(EMP_PROTECT_SELF)
+	if(. & EMP_PROTECT_SELF)
 		return
 
-	if(health < 450)
+	if(health <= 0)
 		return
 
 	visible_message(span_danger("[src] shudders for a moment."))
@@ -434,9 +438,11 @@
 		if(EMP_LIGHT)
 			apply_damage(light_emp_damage)
 			to_chat(src, span_danger("EMP DETECTED: DAMAGE TO HARDWARE"))
+			adjust_RL_energy_or_damage(-(light_emp_damage / 4))
 		if(EMP_HEAVY)
 			apply_damage(heavy_emp_damage)
 			to_chat(src, span_userdanger("WARNING: HEAVY DAMAGE TO HARDWARE"))
+			adjust_RL_energy_or_damage(-(heavy_emp_damage / 6))
 
 /mob/living/basic/redtechdread/electrocute_act(shock_damage, source, siemens_coeff, flags = NONE)
 	return FALSE
@@ -523,6 +529,11 @@
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 
+			RemoveElement(/datum/element/wall_tearer)
+			RemoveElement(/datum/element/door_pryer)
+
+			AddElement(/datum/element/door_pryer, pry_time = 8 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+
 			RL_energy_regen = 2
 
 			move_force = MOVE_FORCE_NORMAL
@@ -544,6 +555,12 @@
 		if(1)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
+
+			RemoveElement(/datum/element/wall_tearer)
+			RemoveElement(/datum/element/door_pryer)
+
+			AddElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 2, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			AddElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
 			RL_energy_regen = 1
 
@@ -567,8 +584,11 @@
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 
-			//AddElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
-			//AddElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/wall_tearer)
+			RemoveElement(/datum/element/door_pryer)
+
+			AddElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 2, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			AddElement(/datum/element/door_pryer, pry_time = 2 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
 			RL_energy_regen = -0.5
 
@@ -605,6 +625,12 @@
 		kick_out_of_RL()
 		return
 	RLEnergy = clamp(RLEnergy, -100, 100)
+
+/mob/living/basic/redtechdread/proc/adjust_RL_energy_or_damage(amount)
+	if(RLEnergy < 0)
+		apply_damage(-amount)
+		return
+	adjust_RL_energy(amount)
 
 /mob/living/basic/redtechdread/proc/on_life(seconds_per_tick, times_fired)
 	adjust_RL_energy(RL_energy_regen)
