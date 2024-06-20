@@ -140,6 +140,8 @@
 		\
 		You can also set the pressure (or temp) that the cycle waits for before opening the doors."
 
+	// Generally don't set both of these at the same time they will fight
+
 	// Leave these `null` if you only want to check temperature
 	/// Pressure to set the interior airlock to
 	var/inner_pressure = null
@@ -190,6 +192,7 @@
 	inner.id_tag = "[final_uid]_interior"
 	outer.id_tag = "[final_uid]_exterior"
 	outer_contoller.id_tag = "[final_uid]_controller"
+	GLOB.objects_by_id_tag[outer_contoller.id_tag] = outer_contoller // gotta do this manually for airlock sensors
 	var/pump_tag = "[final_uid]_pump"
 	var/sensor_tag = "[final_uid]_sensor"
 	for(var/obj/machinery/airlock_sensor/sensor as anything in sensors)

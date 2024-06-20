@@ -32,13 +32,15 @@
 	VAR_FINAL/list/datum/weakref/pump_refs
 	VAR_FINAL/list/datum/weakref/sensor_refs
 
+	// Generally don't set both of these at the same time they will fight
+
 	// Set these values to `null` to only check temperature
 	/// Desired pressure for cycling to the interior
 	var/interior_target_pressure = 0 // default: vacuum
 	/// Desired pressure for cycling to the exterior
 	var/exterior_target_pressure = ONE_ATMOSPHERE
 	/// Pressure leeway for cycling, because getting exact is tedious
-	var/pressure_leeway = ONE_ATMOSPHERE * 0.02
+	var/pressure_leeway = ONE_ATMOSPHERE * 0.03
 
 	// Set these values to `null` to only check pressure
 	/// Desired temperature for cycling to the interior
@@ -127,6 +129,24 @@
 			pump.on = TRUE
 			pump.update_appearance(UPDATE_ICON)
 
+/// Attempts to set the temperature regulators to a target temperature, which turns them on
+/obj/machinery/airlock_controller/proc/temp_regulator_activate(to_what_temp = 0)
+	for(var/datum/weakref/sensor_ref in sensor_refs)
+		var/obj/machinery/airlock_sensor/heater/temp_regulator = sensor_ref.resolve()
+		if(!istype(temp_regulator))
+			continue
+
+		temp_regulator.target_temperature = to_what_temp
+
+/// Attempts to shut off the temperature regulators by setting the target temperature to null
+/obj/machinery/airlock_controller/proc/temp_regulator_shutoff()
+	for(var/datum/weakref/sensor_ref in sensor_refs)
+		var/obj/machinery/airlock_sensor/heater/temp_regulator = sensor_ref.resolve()
+		if(!istype(temp_regulator))
+			continue
+
+		temp_regulator.target_temperature = null
+
 /**
  * Handls a door actively cycling, checking if it's in a valid state to finish / abort / continue
  *
@@ -157,11 +177,11 @@
 	if(!isnull(temperature_target))
 		// heating
 		if(reading["temperature"] < temperature_target - temperature_leeway)
-			// melbert todo : handle heating
+			temp_regulator_activate(temperature_target)
 			. = FALSE
 		// cooling
 		else if(reading["temperature"] > temperature_target + temperature_leeway)
-			// melbert todo : handle cooling
+			temp_regulator_activate(temperature_target)
 			. = FALSE
 	return .
 
@@ -176,6 +196,7 @@
 			else
 				var/obj/machinery/door/airlock/interior_airlock = interior_door_ref.resolve()
 				pump_shutoff()
+				temp_regulator_shutoff()
 				if(interior_airlock?.density)
 					interior_airlock.secure_open()
 
@@ -196,6 +217,7 @@
 			if(exterior_airlock && !exterior_airlock.density)
 				exterior_airlock.secure_close()
 			pump_shutoff()
+			temp_regulator_shutoff()
 			// CLosed -> Int Opening -> Int Open
 			if(target_state == AIRLOCK_STATE_INTERIOR_OPEN)
 				state = AIRLOCK_STATE_INTERIOR_OPENING
@@ -211,6 +233,7 @@
 			else
 				var/obj/machinery/door/airlock/exterior_airlock = exterior_door_ref.resolve()
 				pump_shutoff()
+				temp_regulator_shutoff()
 				if(exterior_airlock?.density)
 					exterior_airlock.secure_open()
 

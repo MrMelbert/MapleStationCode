@@ -5607,9 +5607,6 @@
 /turf/open/floor/iron,
 /area/station/construction/mining/aux_base)
 "bXI" = (
-/obj/machinery/airlock_sensor{
-	pixel_y = 26
-	},
 /obj/item/clothing/suit/hooded/wintercoat/eva,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden,
 /obj/effect/turf_decal/siding/dark_blue{
@@ -5623,6 +5620,9 @@
 	},
 /obj/item/radio/intercom/directional/east,
 /obj/structure/closet/emcloset/anchored,
+/obj/machinery/airlock_sensor/heater{
+	pixel_y = 27
+	},
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/server)
 "bXR" = (
@@ -38853,10 +38853,10 @@
 	},
 /area/station/hallway/secondary/service)
 "njT" = (
-/obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/incinerator_ordmix{
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume{
 	dir = 8
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/checker,
 /area/station/tcommsat/server)
 "njU" = (
@@ -46392,9 +46392,6 @@
 /area/station/science/xenobiology)
 "pFw" = (
 /obj/structure/extinguisher_cabinet/directional/west,
-/obj/machinery/airlock_sensor{
-	pixel_y = 26
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden,
 /obj/effect/turf_decal/siding/dark_blue{
 	dir = 6
@@ -46404,6 +46401,9 @@
 	dir = 1
 	},
 /obj/machinery/power/port_gen/pacman,
+/obj/machinery/airlock_sensor/heater{
+	pixel_y = 27
+	},
 /turf/open/floor/iron/dark,
 /area/station/tcommsat/server)
 "pFM" = (
@@ -67054,7 +67054,7 @@
 /obj/machinery/status_display/ai/directional/north,
 /obj/effect/mapping_helpers/cycling_airlock_old/atmos/tcomms,
 /obj/machinery/light/small/directional/north,
-/obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/incinerator_ordmix{
+/obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume{
 	dir = 8
 	},
 /turf/open/floor/iron/checker,
