@@ -95,7 +95,7 @@
 
 /obj/effect/decal/cleanable/blood/drip/get_blood_dna_color()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
-	return GLOB.blood_types[all_dna[all_dna[1]]]?.color
+	return GLOB.blood_types[all_dna[all_dna[1]]]?.color // what the fuck was i doing?
 
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
@@ -153,6 +153,8 @@
 /mob/living/carbon/human/add_blood_DNA(list/blood_DNA_to_add, list/datum/disease/diseases)
 	if(QDELING(src))
 		return FALSE
+	if(!length(blood_DNA_to_add))
+		return FALSE
 	if(wear_suit)
 		wear_suit.add_blood_DNA(blood_DNA_to_add)
 		update_worn_oversuit()
@@ -169,6 +171,16 @@
 		blood_in_hands = rand(2, 4)
 	cached_blood_dna_color = null
 	update_worn_gloves()
+	return TRUE
+
+/mob/living/add_blood_DNA(list/blood_DNA_to_add)
+	if(QDELING(src))
+		return FALSE
+	if(!length(blood_DNA_to_add))
+		return FALSE
+	if(isnull(forensics))
+		forensics = new(src)
+	forensics.inherit_new(blood_DNA = blood_DNA_to_add)
 	return TRUE
 
 /*

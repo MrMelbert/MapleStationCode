@@ -21,6 +21,9 @@
 	/// How much blood can we hold maximum
 	var/max_bloodiness = BLOOD_ITEM_MAX
 
+	/// Multiplier on how much blood taken from pools
+	var/share_mod = 1
+
 /datum/component/bloodysoles/Initialize()
 	if(!isclothing(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -85,7 +88,7 @@
  */
 /datum/component/bloodysoles/proc/share_blood(obj/effect/decal/cleanable/pool)
 	// Share the blood between our boots and the blood pool
-	var/new_total_bloodiness = min(max_bloodiness, pool.bloodiness + total_bloodiness / 2)
+	var/new_total_bloodiness = min(max_bloodiness, share_mod * (pool.bloodiness + total_bloodiness / 2))
 	if(new_total_bloodiness == total_bloodiness || new_total_bloodiness == 0)
 		return
 
@@ -293,7 +296,8 @@
 	update_icon()
 
 /datum/component/bloodysoles/bot
-	max_bloodiness = 100
+	max_bloodiness = 150
+	share_mod = 0.75
 
 /datum/component/bloodysoles/bot/Initialize()
 	if(!isbot(parent))
@@ -309,3 +313,7 @@
 
 /datum/component/bloodysoles/bot/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
 	LAZYSET(footprint.species_types, "bot", TRUE)
+
+/datum/component/bloodysoles/bot/update_icon()
+	// Future idea: Bot blood overlays
+	return
