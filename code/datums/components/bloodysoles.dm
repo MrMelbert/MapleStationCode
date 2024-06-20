@@ -101,6 +101,9 @@
 	add_parent_to_footprint(footprint)
 	footprint.adjust_bloodiness(bloodiness_to_add)
 	footprint.add_blood_DNA(GET_ATOM_BLOOD_DNA(atom_parent))
+	var/new_alpha = min(BLOODY_FOOTPRINT_BASE_ALPHA + (255 - BLOODY_FOOTPRINT_BASE_ALPHA) * footprint.bloodiness / ((BLOOD_ITEM_MAX * BLOOD_PER_UNIT_MODIFIER) / 2), 255)
+	if(new_alpha > footprint.alpha)
+		footprint.alpha = new_alpha
 	if(exiting)
 		footprint.exited_dirs |= wielder.dir
 	else
@@ -111,7 +114,7 @@
  * Adds the parent type to the footprint's shoe_types var
  */
 /datum/component/bloodysoles/proc/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
-	footprint.shoe_types |= parent.type
+	LAZYOR(footprint.shoe_types, parent.type)
 
 /**
  * Called when the parent item is equipped by someone
@@ -173,9 +176,9 @@
 			// No footprints in the tile we left, but there was some other blood pool there. Add exit footprints on it
 			change_blood_amount(-1 * blood_used)
 			old_loc_prints = new(old_loc_turf)
+			old_loc_prints.alpha = 0
 			if(!QDELETED(old_loc_prints)) // prints merged
 				add_blood_to_footprint(old_loc_prints, blood_used, TRUE)
-
 			blood_used = round(total_bloodiness / 3, 0.01)
 
 	// If we picked up the blood on this tick in on_step_blood, don't make footprints at the same place
@@ -192,6 +195,7 @@
 		else
 			change_blood_amount(-1 * blood_used)
 			new_loc_prints = new(new_loc_turf)
+			new_loc_prints.alpha = 0
 			if(!QDELETED(new_loc_prints)) // prints merged
 				add_blood_to_footprint(new_loc_prints, blood_used, FALSE)
 
@@ -262,13 +266,13 @@
 
 /datum/component/bloodysoles/feet/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
 	if(!ishuman(wielder))
-		footprint.species_types |= "unknown"
+		LAZYSET(footprint.species_types, "unknown", TRUE)
 		return
 
 	// Find any leg of our human and add that to the footprint, instead of the default which is to just add the human type
-	for(var/obj/item/bodypart/affecting as anything in wielder.bodyparts)
-		if(!affecting.bodypart_disabled && (affecting.body_part == LEG_RIGHT || affecting.body_part == LEG_LEFT))
-			footprint.species_types |= affecting.limb_id
+	for(var/obj/item/bodypart/leg/affecting in wielder.bodyparts)
+		if(!affecting.bodypart_disabled)
+			LAZYSET(footprint.species_types, affecting.limb_id, TRUE)
 			break
 
 /datum/component/bloodysoles/feet/is_under_feet_covered()
