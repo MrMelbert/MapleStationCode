@@ -47545,13 +47545,13 @@
 /turf/open/floor/iron/dark,
 /area/station/security/office)
 "pZI" = (
-/obj/machinery/telecomms/server/presets/command,
 /obj/effect/turf_decal/trimline/red/filled/end{
 	dir = 4
 	},
 /obj/structure/sign/nanotrasen{
 	pixel_y = 32
 	},
+/obj/machinery/telecomms/server/presets/security,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/server)
 "pZS" = (
