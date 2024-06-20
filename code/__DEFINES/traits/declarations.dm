@@ -1120,20 +1120,13 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Does this item bypass ranged armor checks?
 #define TRAIT_BYPASS_RANGED_ARMOR "bypass_ranged_armor"
+/// Traits given by settler, each with their own specific effects for cases where someone would have that trait, but not the other settler effects
 
-/// Humans with this trait do not blink
-#define TRAIT_PREVENT_BLINKING "prevent_blinking"
-
-/// Prevents animations for blinking from looping
-#define TRAIT_PREVENT_BLINK_LOOPS "prevent_blink_loops"
-
-/// Mob doesn't get closed eyelids overlay when it gets knocked out cold or dies
-#define TRAIT_NO_EYELIDS "no_eyelids"
-
-/// Apply this trait to mobs which can buckle humans
-#define TRAIT_CAN_MOUNT_HUMANS "can_mount_humans"
-/// Apply this trait to mobs which can buckle cyborgs
-#define TRAIT_CAN_MOUNT_CYBORGS "can_mount_cyborgs"
+#define TRAIT_EXPERT_FISHER "expert_fisher" // fishing is easier
+#define TRAIT_ROUGHRIDER "roughrider" // you can improve speed on mounted animals with a good mood
+#define TRAIT_STUBBY_BODY "stubby_body" // you have a stubby body that lessens your agility
+#define TRAIT_BEAST_EMPATHY "beast_empathy" // you're good with animals, such as with taming them
+#define TRAIT_STURDY_FRAME "sturdy_frame" // you suffer much lesser effects from equipment that slows you down
 
 /**
  *
@@ -1151,13 +1144,27 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 ///Trait given to atoms currently affected by projectile dampeners
 #define TRAIT_GOT_DAMPENED "got_dampened"
 
-/// Prevents items from being speed potion-ed, but allows their speed to be altered in other ways
-#define TRAIT_NO_SPEED_POTION "no_speed_potion"
+/// Humans with this trait do not blink
+#define TRAIT_PREVENT_BLINKING "prevent_blinking"
+
+/// Prevents animations for blinking from looping
+#define TRAIT_PREVENT_BLINK_LOOPS "prevent_blink_loops"
+
+/// Mob doesn't get closed eyelids overlay when it gets knocked out cold or dies
+#define TRAIT_NO_EYELIDS "no_eyelids"
+
+/// Apply this trait to mobs which can buckle humans
+#define TRAIT_CAN_MOUNT_HUMANS "can_mount_humans"
+/// Apply this trait to mobs which can buckle cyborgs
+#define TRAIT_CAN_MOUNT_CYBORGS "can_mount_cyborgs"
 
 ///trait given to mobs that are difficult to tame through mounting
 #define TRAIT_MOB_DIFFICULT_TO_MOUNT "difficult_to_mount"
 
 ///trait given to mobs that are easy to tame through mounting
 #define TRAIT_MOB_EASY_TO_MOUNT "easy_to_mount"
+
+/// Prevents items from being speed potion-ed, but allows their speed to be altered in other ways
+#define TRAIT_NO_SPEED_POTION "no_speed_potion"
 
 // END TRAIT DEFINES

@@ -106,7 +106,7 @@
 		return COMPONENT_DRIVER_BLOCK_MOVE
 	step(parent, direction)
 	var/modified_move_delay = vehicle_move_delay
-	if(HAS_TRAIT(user, TRAIT_SETTLER))
+	if(HAS_TRAIT(user, TRAIT_ROUGHRIDER))
 		switch(HAS_TRAIT(user, TRAIT_PRIMITIVE) ? SANITY_LEVEL_GREAT : user.mob_mood?.sanity_level)
 			if(SANITY_LEVEL_GREAT)
 				modified_move_delay *= 0.5
