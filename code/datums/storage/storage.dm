@@ -486,7 +486,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param override skip feedback, only do animation check
  */
 /datum/storage/proc/item_insertion_feedback(mob/user, obj/item/thing, override = FALSE)
-	var/obj/item/resolve_parent = parent?.resolve()
+	var/atom/resolve_parent = parent?.resolve()
 	if(!resolve_parent)
 		return
 
@@ -500,7 +500,11 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	if(rustle_sound)
-		playsound(resolve_parent, storage_sound, 50, TRUE, -5)
+		var/rustle_vol = 50
+		if(isitem(resolve_parent))
+			var/obj/item/item_parent = resolve_parent
+			rustle_vol = clamp(item_parent.w_class * 15, 10, 50)
+		playsound(resolve_parent, storage_sound, rustle_vol, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 
 	if(!silent_for_user)
 		to_chat(user, span_notice("You put [thing] [insert_preposition]to [resolve_parent]."))
@@ -536,7 +540,11 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		thing.forceMove(newLoc)
 
 		if(rustle_sound && !silent)
-			playsound(resolve_parent, storage_sound, 50, TRUE, -5)
+			var/rustle_vol = 50
+			if(isitem(resolve_parent))
+				var/obj/item/item_parent = resolve_parent
+				rustle_vol = clamp(item_parent.w_class * 15, 10, 50)
+			playsound(resolve_parent, storage_sound, rustle_vol, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 	else
 		thing.moveToNullspace()
 
@@ -791,7 +799,11 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		to_chat(user, span_notice("You dump the contents of [resolve_parent] into [dest_object]."))
 
 		if(rustle_sound)
-			playsound(resolve_parent, storage_sound, 50, TRUE, -5)
+			var/rustle_vol = 50
+			if(isitem(resolve_parent))
+				var/obj/item/item_parent = resolve_parent
+				rustle_vol = clamp(item_parent.w_class * 15, 10, 50)
+			playsound(resolve_parent, storage_sound, rustle_vol, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 
 		for(var/obj/item/to_dump in resolve_location)
 			if(to_dump.loc != resolve_location)
@@ -1040,7 +1052,11 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		animate_parent()
 
 	if(rustle_sound)
-		playsound(resolve_parent, storage_sound, 50, TRUE, -5)
+		var/rustle_vol = 50
+		if(isitem(resolve_parent))
+			var/obj/item/item_parent = resolve_parent
+			rustle_vol = clamp(item_parent.w_class * 15, 10, 50)
+		playsound(resolve_parent, storage_sound, rustle_vol, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 
 	return TRUE
 
