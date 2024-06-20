@@ -370,6 +370,8 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 		icon_state_to_use += "claw"
 	else if(LAZYACCESS(species_types, SPECIES_MONKEY))
 		icon_state_to_use += "paw"
+	else if(LAZYACCESS(species_types, "bot"))
+		icon_state_to_use += "bot"
 
 	for(var/Ddir in GLOB.cardinals)
 		if(entered_dirs & Ddir)

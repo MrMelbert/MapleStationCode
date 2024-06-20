@@ -18,6 +18,9 @@
 	/// The world.time when we last picked up blood
 	VAR_FINAL/last_pickup
 
+	/// How much blood can we hold maximum
+	var/max_bloodiness = BLOOD_ITEM_MAX
+
 /datum/component/bloodysoles/Initialize()
 	if(!isclothing(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -68,7 +71,7 @@
 
 ///called whenever the value of bloody_soles changes
 /datum/component/bloodysoles/proc/change_blood_amount(some_amount)
-	total_bloodiness = clamp(round(total_bloodiness + some_amount, 0.1), 0, BLOOD_ITEM_MAX)
+	total_bloodiness = clamp(round(total_bloodiness + some_amount, 0.1), 0, max_bloodiness)
 	if(!wielder)
 		return
 	if(total_bloodiness <= BLOOD_FOOTPRINTS_MIN * 2)//need twice that amount to make footprints
@@ -82,7 +85,7 @@
  */
 /datum/component/bloodysoles/proc/share_blood(obj/effect/decal/cleanable/pool)
 	// Share the blood between our boots and the blood pool
-	var/new_total_bloodiness = min(BLOOD_ITEM_MAX, pool.bloodiness + total_bloodiness / 2)
+	var/new_total_bloodiness = min(max_bloodiness, pool.bloodiness + total_bloodiness / 2)
 	if(new_total_bloodiness == total_bloodiness || new_total_bloodiness == 0)
 		return
 
@@ -250,8 +253,7 @@
 
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
-	RegisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER, PROC_REF(unequip_shoecover))
-	RegisterSignal(parent, COMSIG_CARBON_EQUIP_SHOECOVER, PROC_REF(equip_shoecover))
+	RegisterSignals(parent, list(COMSIG_CARBON_UNEQUIP_SHOECOVER, COMSIG_CARBON_EQUIP_SHOECOVER), PROC_REF(shoecover))
 
 /datum/component/bloodysoles/feet/update_icon()
 	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOOD_OVERLAY))
@@ -273,7 +275,6 @@
 	for(var/obj/item/bodypart/leg/affecting in wielder.bodyparts)
 		if(!affecting.bodypart_disabled)
 			LAZYSET(footprint.species_types, affecting.limb_id, TRUE)
-			break
 
 /datum/component/bloodysoles/feet/is_under_feet_covered()
 	return !isnull(wielder.shoes)
@@ -286,12 +287,25 @@
 	if(wielder.num_legs >= 2)
 		return ..()
 
-/datum/component/bloodysoles/feet/proc/unequip_shoecover(datum/source)
+/datum/component/bloodysoles/feet/proc/shoecover(datum/source)
 	SIGNAL_HANDLER
 
 	update_icon()
 
-/datum/component/bloodysoles/feet/proc/equip_shoecover(datum/source)
-	SIGNAL_HANDLER
+/datum/component/bloodysoles/bot
+	max_bloodiness = 100
 
-	update_icon()
+/datum/component/bloodysoles/bot/Initialize()
+	if(!isbot(parent))
+		return COMPONENT_INCOMPATIBLE
+	wielder = parent
+	RegisterSignal(wielder, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
+
+/datum/component/bloodysoles/bot/is_obscured()
+	return FALSE
+
+/datum/component/bloodysoles/bot/is_under_feet_covered()
+	return FALSE
+
+/datum/component/bloodysoles/bot/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
+	LAZYSET(footprint.species_types, "bot", TRUE)
