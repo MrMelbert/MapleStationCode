@@ -5,9 +5,10 @@
 	button_icon_state = "bci_power"
 	background_icon_state = "bg_tech"
 	overlay_icon_state = "bg_tech_border"
-	cooldown_time = 2 SECONDS
+	cooldown_time = 10 SECONDS
 	melee_cooldown_time = 0 SECONDS
 	click_to_activate = FALSE
+	shared_cooldown = MOB_SHARED_COOLDOWN_1
 
 /datum/action/cooldown/mob_cooldown/high_energy/Activate(atom/target)
 	var/mob/living/basic/redtechdread/ownercast = owner
@@ -42,9 +43,10 @@
 	button_icon_state = "bci_radioactive"
 	background_icon_state = "bg_tech"
 	overlay_icon_state = "bg_tech_border"
-	cooldown_time = 2 SECONDS
+	cooldown_time = 10 SECONDS
 	melee_cooldown_time = 0 SECONDS
 	click_to_activate = FALSE
+	shared_cooldown = MOB_SHARED_COOLDOWN_1
 
 /datum/action/cooldown/mob_cooldown/lightning_energy/Activate(atom/target)
 	var/mob/living/basic/redtechdread/ownercast = owner
@@ -117,7 +119,7 @@
 		owner.balloon_alert(owner, "You need to have a red lightning canister to print items.")
 		return FALSE
 
-	var/item_to_spawn = input("Item to fabricate?", "Item:", null) as text|null
+	var/item_to_spawn = input("Item to fabricate (+ number to fabricate)?", "Item:", null) as text|null
 
 	if(!item_to_spawn)
 		return FALSE
@@ -125,4 +127,25 @@
 	if(!ownercast.belt_storage)
 		return FALSE
 
-	// Turn that text into an item and put it in the belt storage.
+	var/list/preparsed = splittext(item_to_spawn,":")
+	var/path = preparsed[1]
+	var/amount = 1
+	if(preparsed.len > 1)
+		amount = clamp(text2num(preparsed[2]),1,ADMIN_SPAWN_CAP)
+
+	var/chosen = pick_closest_path(path)
+	if(!chosen)
+		return
+
+	var/turf/T = get_turf(usr)
+
+	if(ispath(chosen, /turf))
+		T.ChangeTurf(chosen)
+	else
+		if(ispath(chosen, /obj))
+			var/storage = ownercast.belt_storage
+			for(var/i in 1 to amount)
+				new chosen(storage)
+		else
+			for(var/i in 1 to amount)
+				new chosen(T)

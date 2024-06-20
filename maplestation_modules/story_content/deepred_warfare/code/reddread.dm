@@ -121,6 +121,8 @@
 	AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)))
 	AddComponent(/datum/component/personal_crafting)
 
+	AddComponent(/datum/component/regenerator, regeneration_delay = 4 MINUTES, brute_per_second = 10, outline_colour = NONE)
+
 	add_traits(list(TRAIT_NO_PLASMA_TRANSFORM,
 					TRAIT_KNOW_ROBO_WIRES,
 					TRAIT_MADNESS_IMMUNE,
@@ -529,8 +531,10 @@
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 
-			RemoveElement(/datum/element/wall_tearer)
-			RemoveElement(/datum/element/door_pryer)
+			RemoveElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/door_pryer, pry_time = 2 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
 			AddElement(/datum/element/door_pryer, pry_time = 8 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
@@ -551,15 +555,17 @@
 			obj_damage = 20
 			armour_penetration = 0
 
-			RemoveElement(/datum/element/shockattack)
+			RemoveElement(/datum/element/shockattack, stun_on_hit = FALSE, shock_damage = 15)
+
+			RemoveElement(/datum/element/effect_trail, /obj/effect/temp_visual/red_lightning_trail)
 		if(1)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 
-			RemoveElement(/datum/element/wall_tearer)
-			RemoveElement(/datum/element/door_pryer)
+			RemoveElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/door_pryer, pry_time = 2 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
-			AddElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 2, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			AddElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			AddElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
 			RL_energy_regen = 1
@@ -579,15 +585,17 @@
 			obj_damage = 40
 			armour_penetration = 20
 
-			RemoveElement(/datum/element/shockattack)
+			RemoveElement(/datum/element/shockattack, stun_on_hit = FALSE, shock_damage = 15)
+
+			RemoveElement(/datum/element/effect_trail, /obj/effect/temp_visual/red_lightning_trail)
 		if(2)
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 
-			RemoveElement(/datum/element/wall_tearer)
-			RemoveElement(/datum/element/door_pryer)
+			RemoveElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
-			AddElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 2, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			AddElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			AddElement(/datum/element/door_pryer, pry_time = 2 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
 			RL_energy_regen = -0.5
@@ -608,6 +616,8 @@
 			armour_penetration = 40
 
 			AddElement(/datum/element/shockattack, stun_on_hit = FALSE, shock_damage = 15)
+
+			AddElement(/datum/element/effect_trail, /obj/effect/temp_visual/red_lightning_trail)
 
 /mob/living/basic/redtechdread/proc/pre_attack(mob/living/source, atom/target)
 	SIGNAL_HANDLER
