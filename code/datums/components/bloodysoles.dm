@@ -295,12 +295,15 @@
 
 	update_icon()
 
+/**
+ * Simplified version of the kind applied to carbons for simple/basic mobs, primarily robots
+ */
 /datum/component/bloodysoles/bot
 	max_bloodiness = 150
 	share_mod = 0.75
 
 /datum/component/bloodysoles/bot/Initialize()
-	if(!isbot(parent))
+	if(!isliving(parent))
 		return COMPONENT_INCOMPATIBLE
 	wielder = parent
 	RegisterSignal(wielder, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
