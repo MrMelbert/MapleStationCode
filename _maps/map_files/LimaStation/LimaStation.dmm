@@ -6175,6 +6175,7 @@
 	dir = 8
 	},
 /obj/machinery/light_switch/directional/east,
+/obj/effect/mapping_helpers/turn_off_lights_with_lightswitch,
 /turf/open/floor/iron,
 /area/station/medical/virology)
 "ckb" = (

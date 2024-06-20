@@ -26575,8 +26575,10 @@
 /obj/machinery/duct,
 /obj/machinery/atmospherics/pipe/bridge_pipe/cyan/visible/layer4,
 /obj/machinery/atmospherics/pipe/bridge_pipe/brown/visible/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+/obj/machinery/atmospherics/pipe/bridge_pipe/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/bridge_pipe/scrubbers/hidden/layer2{
 	dir = 4
 	},
 /turf/open/floor/plating,
@@ -33202,6 +33204,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
+/obj/effect/landmark/atmospheric_sanity/ignore_area,
 /turf/open/floor/iron/white/smooth_half,
 /area/station/medical/virology)
 "doo" = (
@@ -44833,6 +44836,7 @@
 /area/station/tcommsat/computer)
 "mxV" = (
 /obj/machinery/light_switch/directional/east,
+/obj/effect/mapping_helpers/turn_off_lights_with_lightswitch,
 /turf/open/floor/iron/white,
 /area/station/medical/virology)
 "myc" = (
@@ -57247,6 +57251,7 @@
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
 /obj/machinery/light/small/directional/north,
+/obj/effect/mapping_helpers/turn_off_lights_with_lightswitch,
 /turf/open/floor/wood/parquet,
 /area/station/medical/psychology)
 "uYT" = (
