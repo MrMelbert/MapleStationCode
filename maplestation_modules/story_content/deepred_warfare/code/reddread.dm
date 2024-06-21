@@ -661,7 +661,7 @@
 
 /mob/living/basic/redtechdread/proc/kick_out_of_RL()
 	if(energy_level == 2)
-		src.balloon_alert(src, "You run out of RL energy!")
+		src.balloon_alert(src, "you run out of RL energy!")
 		energy_level = 0
 		playsound(src, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 		update_base_stats()

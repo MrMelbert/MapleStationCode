@@ -15,26 +15,26 @@
 	var/mob/living/basic/redtechdread/ownercast = owner
 
 	if(ownercast.neck) // Cloak on.
-		owner.balloon_alert(owner, "You cannot enter high energy mode while your cloak is on.")
+		owner.balloon_alert(owner, "you cannot enter high energy mode while your cloak is on")
 		return FALSE
 
 	if(ownercast.energy_level == 2) // In RL energy mode.
-		owner.balloon_alert(owner, "You cannot enter low energy mode while in RL energy mode.")
+		owner.balloon_alert(owner, "you cannot enter low energy mode while in RL energy mode")
 		return FALSE
 
 	if(ownercast.RLEnergy < 0) // Negative RL energy.
-		owner.balloon_alert(owner, "You need to wait for your red lightning energy to recharge.")
+		owner.balloon_alert(owner, "you need to wait for your red lightning energy to recharge")
 		return FALSE
 
 	if(ownercast.energy_level == 1) // In high energy mode.
-		owner.balloon_alert(owner, "You slow and and enter low energy mode.")
+		owner.balloon_alert(owner, "you slow and and enter low energy mode")
 		ownercast.energy_level = 0
 		ownercast.update_base_stats()
 		StartCooldown()
 		playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 		return TRUE
 
-	owner.balloon_alert(owner, "You speed up and enter high energy mode.")
+	owner.balloon_alert(owner, "you speed up and enter high energy mode")
 	ownercast.energy_level = 1
 	ownercast.update_base_stats()
 	StartCooldown()
@@ -57,38 +57,38 @@
 	var/mob/living/basic/redtechdread/ownercast = owner
 
 	if(ownercast.neck) // Cloak on.
-		owner.balloon_alert(owner, "You cannot enter red lightning energy mode while your cloak is on.")
+		owner.balloon_alert(owner, "you cannot enter red lightning energy mode while your cloak is on")
 		return FALSE
 
 	if(!ownercast.back_storage)
-		owner.balloon_alert(owner, "You need to have a red lightning canister to enter red lightning energy mode.")
+		owner.balloon_alert(owner, "you need to have a red lightning canister to enter red lightning energy mode")
 		return FALSE
 
 	if(ownercast.energy_level == 0) // In low energy mode.
-		owner.balloon_alert(owner, "You need to be in high energy mode to enter red lightning energy mode.")
+		owner.balloon_alert(owner, "you need to be in high energy mode to enter red lightning energy mode")
 		return FALSE
 
 	if(ownercast.RLEnergy < 0) // Negative RL energy.
 		if(ownercast.energy_level == 2) // But already in RL energy mode.
-			owner.balloon_alert(owner, "You slow and and enter low energy mode due to lack of red lightning energy.")
+			owner.balloon_alert(owner, "you slow and and enter low energy mode due to lack of red lightning energy")
 			ownercast.energy_level = 0
 			ownercast.update_base_stats()
 			StartCooldown()
 			playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 			return TRUE
 
-		owner.balloon_alert(owner, "You need to wait for your red lightning energy to recharge.")
+		owner.balloon_alert(owner, "you need to wait for your red lightning energy to recharge")
 		return FALSE
 
 	if(ownercast.energy_level == 2) // In RL energy mode.
-		owner.balloon_alert(owner, "You cool down and enter high energy mode.")
+		owner.balloon_alert(owner, "you cool down and enter high energy mode")
 		ownercast.energy_level = 1
 		ownercast.update_base_stats()
 		StartCooldown()
 		playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
 		return TRUE
 
-	owner.balloon_alert(owner, "You heat up and enter red lightning energy mode!")
+	owner.balloon_alert(owner, "you heat up and enter red lightning energy mode!")
 	ownercast.energy_level = 2
 	ownercast.update_base_stats()
 	StartCooldown()
@@ -111,7 +111,7 @@
 	var/mob/living/basic/redtechdread/ownercast = owner
 
 	if(!ownercast.back_storage)
-		owner.balloon_alert(owner, "You need to have a red lightning canister to print items.")
+		owner.balloon_alert(owner, "you need to have a red lightning canister to print items")
 		return FALSE
 
 	var/item_to_spawn = input("Item to fabricate (+ number to fabricate)?", "Item:", null) as text|null
