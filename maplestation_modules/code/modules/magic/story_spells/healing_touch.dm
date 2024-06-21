@@ -53,7 +53,7 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_LIFE] += HEALING_TOUCH_ATTUNEMENT_LIFE
 
-	AddComponent(/datum/component/uses_mana/story_spell/touch/healing_touch, \
+	AddComponent(/datum/component/uses_mana/touch_spell, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \

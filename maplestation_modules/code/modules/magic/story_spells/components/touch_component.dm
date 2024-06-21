@@ -5,27 +5,29 @@
  *
  * These spells require mana to activate (channel into your hand)
  * but does not expend mana until you actually touch someone with it.
+ * Addendum: as of Magic Rework Part 1, this *should* be the only remaining uses_mana subtype
+ * touch spells are inherently snowflakey, so it gets a snowflakey component.
  */
-/datum/component/uses_mana/story_spell/touch
+/datum/component/uses_mana/touch_spell
 	can_transfer = FALSE
 
-/datum/component/uses_mana/story_spell/touch/Initialize(...)
+/datum/component/uses_mana/touch_spell/Initialize(...)
 	if (!istype(parent, /datum/action/cooldown/spell/touch))
 		return COMPONENT_INCOMPATIBLE
 
 	return ..()
 
-/datum/component/uses_mana/story_spell/touch/RegisterWithParent()
+/datum/component/uses_mana/touch_spell/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
 	RegisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT, PROC_REF(can_touch))
 	RegisterSignal(parent, COMSIG_SPELL_TOUCH_HAND_HIT, PROC_REF(handle_touch))
 
-/datum/component/uses_mana/story_spell/touch/UnregisterFromParent()
+/datum/component/uses_mana/touch_spell/UnregisterFromParent()
 	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
 	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT)
 	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_HAND_HIT)
 
-/datum/component/uses_mana/story_spell/touch/proc/can_touch(
+/datum/component/uses_mana/touch_spell/proc/can_touch(
 	datum/action/cooldown/spell/touch/source,
 	atom/victim,
 	mob/living/carbon/caster,
@@ -37,7 +39,7 @@
 
 	return can_activate_check(TRUE, caster, victim)
 
-/datum/component/uses_mana/story_spell/touch/proc/handle_touch(
+/datum/component/uses_mana/touch_spell/proc/handle_touch(
 	datum/action/cooldown/spell/touch/source,
 	atom/victim,
 	mob/living/carbon/caster,

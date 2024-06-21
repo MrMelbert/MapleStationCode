@@ -5,7 +5,6 @@
 	var/wet_attunement_amount = 0.5
 	var/wet_cost_per_unit = 0.4
 
-/
 /* /datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/pointed/soft_and_wet/spell = parent
 	var/turf/open/cast_turf = get_turf(cast_on)
