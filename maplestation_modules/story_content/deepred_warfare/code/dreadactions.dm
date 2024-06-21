@@ -1,3 +1,4 @@
+// vvvvv ABILITIES THAT CAN BE USED IN ANY MODE vvvvv
 /datum/action/cooldown/mob_cooldown/high_energy
 	name = "Activate High Energy Mode"
 	desc = "Activate High Energy Mode. Your cloak will need to be off to use this."
@@ -29,11 +30,13 @@
 		owner.balloon_alert(owner, "You slow and and enter low energy mode.")
 		ownercast.energy_level = 0
 		ownercast.update_base_stats()
+		StartCooldown()
 		return TRUE
 
 	owner.balloon_alert(owner, "You speed up and enter high energy mode.")
 	ownercast.energy_level = 1
 	ownercast.update_base_stats()
+	StartCooldown()
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/lightning_energy
@@ -72,33 +75,20 @@
 			owner.balloon_alert(owner, "You slow and and enter low energy mode due to lack of red lightning energy.")
 			ownercast.energy_level = 0
 			ownercast.update_base_stats()
+			StartCooldown()
 			return TRUE
 
 		owner.balloon_alert(owner, "You cool down and enter high energy mode.")
 		ownercast.energy_level = 1
 		ownercast.update_base_stats()
+		StartCooldown()
 		return TRUE
 
 	owner.balloon_alert(owner, "You heat up and enter red lightning energy mode!")
 	ownercast.energy_level = 2
 	ownercast.update_base_stats()
+	StartCooldown()
 	return TRUE
-
-/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
-	name = "Rushdown"
-	desc = "Charge at your target."
-	cooldown_time = 6 SECONDS
-	charge_delay = 1.5 SECONDS
-	charge_distance = 4
-	melee_cooldown_time = 0
-	shake_duration = 1 SECONDS
-	shake_pixel_shift = 1
-	recoil_duration = 0 SECONDS
-	knockdown_duration = 0.2 SECONDS
-	button_icon = 'icons/mob/actions/actions_items.dmi'
-	button_icon_state = "bci_skull"
-	background_icon_state = "bg_tech"
-	overlay_icon_state = "bg_tech_border"
 
 /datum/action/access_printer
 	name = "Access Redtech Printer"
@@ -149,3 +139,52 @@
 		else
 			for(var/i in 1 to amount)
 				new chosen(T)
+
+/datum/action/cooldown/mob_cooldown/dreadscan
+	name = "Ranged Scan"
+	desc = "Scan a target from a distance."
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_scan"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	cooldown_time = 10 SECONDS
+	melee_cooldown_time = 0 SECONDS
+	click_to_activate = TRUE
+	shared_cooldown = NONE
+
+/datum/action/cooldown/mob_cooldown/dreadscan/Activate(atom/target_atom)
+	var/mob/living/basic/redtechdread/ownercast = owner
+	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
+
+	var/mutable_appearance/scan_effect = mutable_appearance('icons/mob/nonhuman-player/netguardian.dmi', "scan")
+	ownercast.add_overlay(scan_effect)
+
+	StartCooldown()
+	if(!do_after(ownercast, 5 SECONDS))
+		ownercast.balloon_alert(ownercast, "cancelled")
+		StartCooldown(cooldown_time * 0.2)
+		ownercast.cut_overlay(scan_effect)
+		return TRUE
+
+	if(istype(target_atom, /mob/living))
+		healthscan(ownercast, target_atom, advanced = TRUE)
+	ownercast.cut_overlay(scan_effect)
+	return TRUE
+
+// vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
+	name = "Red Lightning Rushdown"
+	desc = "Charge at your target with the power of red lightning."
+	cooldown_time = 30 SECONDS
+	charge_delay = 2.5 SECONDS
+	charge_distance = 4
+	melee_cooldown_time = 0
+	shake_duration = 2 SECONDS
+	shake_pixel_shift = 1
+	recoil_duration = 0.5 SECONDS
+	knockdown_duration = 1 SECONDS
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_skull"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	shared_cooldown = NONE

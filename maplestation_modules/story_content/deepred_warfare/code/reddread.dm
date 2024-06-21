@@ -83,6 +83,7 @@
 		/datum/action/cooldown/mob_cooldown/high_energy = null,
 		/datum/action/cooldown/mob_cooldown/lightning_energy = null,
 		/datum/action/access_printer = null,
+		/datum/action/cooldown/mob_cooldown/dreadscan = null,
 		/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread = null,
 	)
 
@@ -564,6 +565,7 @@
 
 			RemoveElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			RemoveElement(/datum/element/door_pryer, pry_time = 2 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/door_pryer, pry_time = 8 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
 			AddElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			AddElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
@@ -594,6 +596,7 @@
 
 			RemoveElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			RemoveElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+			RemoveElement(/datum/element/door_pryer, pry_time = 8 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
 			AddElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			AddElement(/datum/element/door_pryer, pry_time = 2 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
