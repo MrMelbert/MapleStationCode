@@ -539,6 +539,9 @@
 
 			AddElement(/datum/element/door_pryer, pry_time = 8 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
+			RemoveElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, sound_vary = TRUE)
+			AddElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW, sound_vary = TRUE)
+
 			RL_energy_regen = 2
 
 			move_force = MOVE_FORCE_NORMAL
@@ -570,6 +573,10 @@
 			AddElement(/datum/element/wall_tearer, tear_time = 4 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			AddElement(/datum/element/door_pryer, pry_time = 4 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 
+			RemoveElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, sound_vary = TRUE)
+			RemoveElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW, sound_vary = TRUE)
+			AddElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, sound_vary = TRUE)
+
 			RL_energy_regen = 1
 
 			move_force = MOVE_FORCE_STRONG
@@ -600,6 +607,10 @@
 
 			AddElement(/datum/element/wall_tearer, tear_time = 2 SECONDS, reinforced_multiplier = 3, do_after_key = DOAFTER_SOURCE_DREAD_INTERACTION)
 			AddElement(/datum/element/door_pryer, pry_time = 2 SECONDS, interaction_key = DOAFTER_SOURCE_DREAD_INTERACTION)
+
+			RemoveElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, sound_vary = TRUE)
+			RemoveElement(/datum/element/footstep, FOOTSTEP_MOB_CLAW, sound_vary = TRUE)
+			AddElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, sound_vary = TRUE)
 
 			RL_energy_regen = -0.5
 
@@ -652,6 +663,7 @@
 	if(energy_level == 2)
 		src.balloon_alert(src, "You run out of RL energy!")
 		energy_level = 0
+		playsound(src, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 		update_base_stats()
 
 #undef DOAFTER_SOURCE_DREAD_INTERACTION

@@ -31,12 +31,14 @@
 		ownercast.energy_level = 0
 		ownercast.update_base_stats()
 		StartCooldown()
+		playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 		return TRUE
 
 	owner.balloon_alert(owner, "You speed up and enter high energy mode.")
 	ownercast.energy_level = 1
 	ownercast.update_base_stats()
 	StartCooldown()
+	playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/lightning_energy
@@ -67,27 +69,30 @@
 		return FALSE
 
 	if(ownercast.RLEnergy < 0) // Negative RL energy.
-		owner.balloon_alert(owner, "You need to wait for your red lightning energy to recharge.")
-		return FALSE
-
-	if(ownercast.energy_level == 2) // In RL energy mode.
-		if(ownercast.RLEnergy < 0) // Negative RL energy.
+		if(ownercast.energy_level == 2) // But already in RL energy mode.
 			owner.balloon_alert(owner, "You slow and and enter low energy mode due to lack of red lightning energy.")
 			ownercast.energy_level = 0
 			ownercast.update_base_stats()
 			StartCooldown()
+			playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 			return TRUE
 
+		owner.balloon_alert(owner, "You need to wait for your red lightning energy to recharge.")
+		return FALSE
+
+	if(ownercast.energy_level == 2) // In RL energy mode.
 		owner.balloon_alert(owner, "You cool down and enter high energy mode.")
 		ownercast.energy_level = 1
 		ownercast.update_base_stats()
 		StartCooldown()
+		playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
 		return TRUE
 
 	owner.balloon_alert(owner, "You heat up and enter red lightning energy mode!")
 	ownercast.energy_level = 2
 	ownercast.update_base_stats()
 	StartCooldown()
+	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
 	return TRUE
 
 /datum/action/access_printer
@@ -164,11 +169,13 @@
 		ownercast.balloon_alert(ownercast, "cancelled")
 		StartCooldown(cooldown_time * 0.2)
 		ownercast.cut_overlay(scan_effect)
+		playsound(ownercast, 'sound/machines/scanbuzz.ogg', 120)
 		return TRUE
 
 	if(istype(target_atom, /mob/living))
 		healthscan(ownercast, target_atom, advanced = TRUE)
 	ownercast.cut_overlay(scan_effect)
+	playsound(ownercast, 'sound/machines/ping.ogg', 120)
 	return TRUE
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
