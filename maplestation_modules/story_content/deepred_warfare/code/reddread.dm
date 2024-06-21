@@ -3,6 +3,7 @@
 #define DREAD_NECK_LAYER 2
 
 #define DOAFTER_SOURCE_DREAD_INTERACTION "dreadnought interaction"
+#define SHIELDING_FILTER "shielding filter"
 
 /mob/living/basic/redtechdread
 	name = "Redtech Dreadnought Pattern"
@@ -55,7 +56,7 @@
 
 	melee_attack_cooldown = CLICK_CD_MELEE
 
-	var/heavy_emp_damage = 120 // If the EMP is heavy, the pattern is damaged by this value.
+	var/heavy_emp_damage = 80 // If the EMP is heavy, the pattern is damaged by this value.
 	var/light_emp_damage = 40 // The pattern is damaged by this value when hit by an EMP.
 
 	var/hands = 4
@@ -84,13 +85,16 @@
 		/datum/action/cooldown/mob_cooldown/lightning_energy = null,
 		/datum/action/access_printer = null,
 		/datum/action/cooldown/mob_cooldown/dreadscan = null,
-		/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread = null,
 	)
 
 	var/RLEnergy = 100 // Red lightning reserves.
 	var/RL_energy_regen = 2 // How much red lightning energy is regenerated per second.
 
 	var/energy_level = 0 // Used for the red lightning system.
+
+	var/shielding_level = 0 // Used for the faraday shielding system.
+
+	var/datum/action/cooldown/mob_cooldown/faraday_shield/internalshield // Used to hold the shielding system.
 
 /datum/language_holder/redtech // Literally just the TG silicon language list.
 	understood_languages = list(
@@ -161,6 +165,9 @@
 		equip_to_slot_or_del(storage, ITEM_SLOT_HEAD)
 
 	grant_actions_by_list(actions_to_add)
+
+	internalshield = new /datum/action/cooldown/mob_cooldown/faraday_shield(src)
+	internalshield.Grant(src)
 
 	AddComponent(/datum/component/seethrough_mob)
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
@@ -429,7 +436,9 @@
 	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. By looking at their face, you are staring down almost a dozen barrels."
 
 /mob/living/basic/redtechdread/emp_reaction(severity)
-	if(. & EMP_PROTECT_SELF)
+	if(EMP_PROTECT_SELF)
+		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
+		src.visible_message(span_warning("[src]'s shield absorbs the EMP!"))
 		return
 
 	if(health <= 0)
@@ -445,7 +454,7 @@
 		if(EMP_HEAVY)
 			apply_damage(heavy_emp_damage)
 			to_chat(src, span_userdanger("WARNING: HEAVY DAMAGE TO HARDWARE"))
-			adjust_RL_energy_or_damage(-(heavy_emp_damage / 6))
+			adjust_RL_energy_or_damage(-(heavy_emp_damage / 4))
 
 /mob/living/basic/redtechdread/electrocute_act(shock_damage, source, siemens_coeff, flags = NONE)
 	return FALSE
@@ -544,6 +553,9 @@
 
 			RL_energy_regen = 2
 
+			pixel_x = -16
+			base_pixel_x = -16
+
 			move_force = MOVE_FORCE_NORMAL
 			move_resist = MOVE_FORCE_STRONG
 			pull_force = MOVE_FORCE_NORMAL
@@ -562,6 +574,11 @@
 			RemoveElement(/datum/element/shockattack, stun_on_hit = FALSE, shock_damage = 15)
 
 			RemoveElement(/datum/element/effect_trail, /obj/effect/temp_visual/red_lightning_trail)
+
+			if(shielding_level > 0)
+				updating_shield(1)
+			else
+				updating_shield(0)
 		if(1)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
@@ -578,6 +595,9 @@
 			AddElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, sound_vary = TRUE)
 
 			RL_energy_regen = 1
+
+			pixel_x = -16
+			base_pixel_x = -16
 
 			move_force = MOVE_FORCE_STRONG
 			move_resist = MOVE_FORCE_STRONG
@@ -597,6 +617,11 @@
 			RemoveElement(/datum/element/shockattack, stun_on_hit = FALSE, shock_damage = 15)
 
 			RemoveElement(/datum/element/effect_trail, /obj/effect/temp_visual/red_lightning_trail)
+
+			if(shielding_level > 0)
+				updating_shield(2)
+			else
+				updating_shield(0)
 		if(2)
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
@@ -613,6 +638,9 @@
 			AddElement(/datum/element/footstep, FOOTSTEP_MOB_HEAVY, 1, sound_vary = TRUE)
 
 			RL_energy_regen = -0.5
+
+			pixel_x = -16
+			base_pixel_x = -16
 
 			move_force = MOVE_FORCE_VERY_STRONG
 			move_resist = MOVE_FORCE_VERY_STRONG
@@ -632,6 +660,11 @@
 			AddElement(/datum/element/shockattack, stun_on_hit = FALSE, shock_damage = 15)
 
 			AddElement(/datum/element/effect_trail, /obj/effect/temp_visual/red_lightning_trail)
+
+			if(shielding_level > 0)
+				updating_shield(3)
+			else
+				updating_shield(0)
 
 /mob/living/basic/redtechdread/proc/pre_attack(mob/living/source, atom/target)
 	SIGNAL_HANDLER
@@ -665,5 +698,52 @@
 		energy_level = 0
 		playsound(src, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 		update_base_stats()
+
+/mob/living/basic/redtechdread/proc/updating_shield(newlevel)
+	shielding_level = newlevel
+
+	switch(shielding_level)
+		if(0)
+			src.remove_filter(SHIELDING_FILTER)
+			damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
+
+			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
+		if(1)
+			src.remove_filter(SHIELDING_FILTER)
+			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 160, "size" = 1))
+			damage_coeff = list(BRUTE = 1, BURN = 0.75, TOX = 0, STAMINA = 0, OXY = 0)
+
+			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
+			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
+		if(2)
+			src.remove_filter(SHIELDING_FILTER)
+			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 255, "size" = 1))
+			damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0)
+
+			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
+			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
+		if(3)
+			src.remove_filter(SHIELDING_FILTER)
+			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 255, "size" = 2))
+			damage_coeff = list(BRUTE = 1, BURN = 0.25, TOX = 0, STAMINA = 0, OXY = 0)
+
+			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
+			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
+
+	internalshield.update_shield_stats()
+
+/mob/living/basic/redtechdread/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	. = ..()
+	if(amount >= 15) // If the brute damage was 15 or more, shield cracks.
+		internalshield.take_hit()
+	else
+		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
+		src.visible_message(span_warning("[src]'s shield struggles to absorb the impact!"))
+
+/mob/living/basic/redtechdread/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	. = ..()
+	if(shielding_level > 0) // Shielding is on.
+		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
+		src.visible_message(span_warning("[src]'s shield deflects some of the thermal energy!"))
 
 #undef DOAFTER_SOURCE_DREAD_INTERACTION

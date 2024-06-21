@@ -32,6 +32,7 @@
 		ownercast.update_base_stats()
 		StartCooldown()
 		playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
+		ownercast.visible_message(span_warning("[ownercast] slows down to a crawl..."))
 		return TRUE
 
 	owner.balloon_alert(owner, "you speed up and enter high energy mode")
@@ -39,6 +40,8 @@
 	ownercast.update_base_stats()
 	StartCooldown()
 	playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
+	ownercast.visible_message(span_boldwarning("[ownercast] unfolds their form and speeds up!"))
+	ownercast.apply_damage(-200) // Second phase moment.
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/lightning_energy
@@ -75,6 +78,7 @@
 			ownercast.update_base_stats()
 			StartCooldown()
 			playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
+			ownercast.visible_message(span_warning("[ownercast] slows down to a crawl..."))
 			return TRUE
 
 		owner.balloon_alert(owner, "you need to wait for your red lightning energy to recharge")
@@ -86,6 +90,7 @@
 		ownercast.update_base_stats()
 		StartCooldown()
 		playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
+		ownercast.visible_message(span_warning("[ownercast] cools down..."))
 		return TRUE
 
 	owner.balloon_alert(owner, "you heat up and enter red lightning energy mode!")
@@ -93,6 +98,8 @@
 	ownercast.update_base_stats()
 	StartCooldown()
 	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
+	ownercast.visible_message(span_boldwarning("[ownercast] heats up and crackles with red lightning!"))
+	ownercast.apply_damage(-200) // Third phase moment.
 	return TRUE
 
 /datum/action/access_printer
@@ -163,6 +170,7 @@
 
 	var/mutable_appearance/scan_effect = mutable_appearance('icons/mob/nonhuman-player/netguardian.dmi', "scan")
 	ownercast.add_overlay(scan_effect)
+	ownercast.visible_message(span_warning("[ownercast] scans [target_atom]..."))
 
 	StartCooldown()
 	if(!do_after(ownercast, 5 SECONDS))
@@ -177,6 +185,77 @@
 	ownercast.cut_overlay(scan_effect)
 	playsound(ownercast, 'sound/machines/ping.ogg', 120)
 	return TRUE
+
+/datum/action/cooldown/mob_cooldown/faraday_shield
+	name = "Activate Faraday Shield"
+	desc = "Activate a Faraday Shield to protect yourself from electromagnetic and thermal damage."
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_shield"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	cooldown_time = 10 SECONDS // Cooldown time jumps if the shield is destroyed.
+	melee_cooldown_time = 0 SECONDS
+	click_to_activate = FALSE
+	shared_cooldown = NONE
+
+	var/maxhits = 1
+	var/hits = 0
+
+/datum/action/cooldown/mob_cooldown/faraday_shield/Activate(atom/target)
+	var/mob/living/basic/redtechdread/ownercast = owner
+
+	if(ownercast.RLEnergy < 0) // Negative RL energy.
+		if(ownercast.shielding_level == 0) // Shield not on.
+			owner.balloon_alert(owner, "you need to wait for your red lightning energy to recharge")
+			return FALSE
+
+	if(ownercast.shielding_level > 0) // Shield on.
+		owner.balloon_alert(owner, "you turn off your Faraday Shield")
+		ownercast.updating_shield(0) // Turn off shield.
+		playsound(ownercast, 'sound/mecha/mech_shield_drop.ogg', 120)
+		ownercast.visible_message(span_warning("[ownercast] turns off their shield."))
+		StartCooldown()
+		return TRUE
+
+	ownercast.updating_shield(ownercast.energy_level + 1) // Turn on shield to correct level based on energy level.
+	playsound(ownercast, 'sound/mecha/mech_shield_raise.ogg', 120)
+	ownercast.visible_message(span_boldwarning("[ownercast] activates their shield!"))
+	StartCooldown()
+	return TRUE
+
+/datum/action/cooldown/mob_cooldown/faraday_shield/proc/update_shield_stats()
+	var/mob/living/basic/redtechdread/ownercast = owner
+	switch(ownercast.shielding_level)
+		if(0)
+			maxhits = 1
+			hits = 0
+		if(1)
+			maxhits = 1
+			hits = 0
+		if(2)
+			maxhits = 2
+			hits = 0
+		if(3)
+			maxhits = 3
+			hits = 0
+
+/datum/action/cooldown/mob_cooldown/faraday_shield/proc/take_hit()
+	var/mob/living/basic/redtechdread/ownercast = owner
+	hits += 1
+
+	if(hits < maxhits)
+		playsound(ownercast, 'sound/effects/glass_step.ogg', 120)
+		ownercast.visible_message(span_warning("[ownercast]'s shielding cracks!"))
+		return
+
+	playsound(ownercast, 'sound/effects/glassbr3.ogg', 120)
+	playsound(ownercast, 'sound/mecha/mech_shield_drop.ogg', 120)
+	StartCooldown((2 * maxhits) MINUTES)
+	ownercast.balloon_alert(ownercast, "your Faraday Shield has been destroyed!")
+	ownercast.visible_message(span_boldwarning("[ownercast]'s shielding shatters like glass!"))
+	hits = 0
+	ownercast.adjust_RL_energy_or_damage(20)
+	ownercast.updating_shield(0)
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
