@@ -11,11 +11,11 @@
 	var/healing_touch_attunement_amount = HEALING_TOUCH_ATTUNEMENT_LIFE
 	var/healing_touch_mana_cost = HEALING_TOUCH_COST_PER_HEALED
 
-/datum/component/uses_mana/story_spell/touch/healing_touch/get_mana_required(atom/caster, atom/cast_on, ...)
+/* /datum/component/uses_mana/story_spell/touch/healing_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/touch/healing_touch/touch_spell = parent
 	return ..() \
 		* (touch_spell.brute_heal + touch_spell.burn_heal + touch_spell.tox_heal + touch_spell.oxy_heal + touch_spell.pain_heal * 3) \
-		* healing_touch_mana_cost
+		* healing_touch_mana_cost */
 
 // Touch based healing spell, very simple. Only works on organic mobs or anything that hooks to the comsig.
 /datum/action/cooldown/spell/touch/healing_touch
@@ -56,10 +56,13 @@
 	AddComponent(/datum/component/uses_mana/story_spell/touch/healing_touch, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = mana_cost, \
+		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)
+/datum/action/cooldown/spell/touch/healing_touch/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+	return (brute_heal + burn_heal + tox_heal + oxy_heal + pain_heal * 3) \
+		* mana_cost
 
 /datum/action/cooldown/spell/touch/healing_touch/is_valid_target(atom/cast_on)
 	if(SEND_SIGNAL(cast_on, COMSIG_SPELL_HEALING_TOUCH_IS_VALID, src) & CAN_BE_HEALED)

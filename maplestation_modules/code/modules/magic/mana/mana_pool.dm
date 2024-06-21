@@ -19,7 +19,7 @@
 	var/maximum_mana_capacity = BASE_MANA_CAPACITY
 	/// The abstract representation of how many "Vols" this mana pool currently contains.
 	/// Capped at [maximum_mana_capacity], begins decaying exponentially when above [softcap].
-	var/amount = maximum_mana_capacity
+	var/amount =  367 // placeholder. This should be replaced during process.
 	/// The threshold at which mana begins decaying exponentially.
 	// TODO: convert to some kind of list for multiple softcaps?
 	var/softcap = BASE_MANA_SOFTCAP
@@ -29,7 +29,7 @@
 	/// The maximum mana we can transfer per second. [donation_budget_per_tick] is set to this, times seconds_per_tick, every process tick.
 	var/max_donation_rate_per_second = BASE_MANA_DONATION_RATE
 	/// The maximum mana we can transfer for this tick. Is used to cap our mana output per tick. Calculated with [max_donation_rate_per_second] * seconds_per_tick.
-	VAR_PROTECTED/donation_budget_this_tick = max_donation_rate_per_second
+	VAR_PROTECTED/donation_budget_this_tick = 149 // same with amount. this gets replaced on process.
 
 	/// List of (mana_pool -> transfer rate)
 	var/list/datum/mana_pool/transfer_rates = list()
@@ -61,7 +61,8 @@
 
 /datum/mana_pool/New(atom/parent = null, amount = maximum_mana_capacity)
 	. = ..()
-
+	amount = maximum_mana_capacity
+	donation_budget_this_tick = max_donation_rate_per_second
 	src.parent = parent
 	src.amount = amount
 
@@ -202,7 +203,7 @@
 
 	target_pool.incoming_transfer_start(src)
 
-	RegisterSignal(target_pool, COMSIG_PARENT_QDELETING, PROC_REF(stop_transfer))
+	RegisterSignal(target_pool, COMSIG_QDELETING, PROC_REF(stop_transfer))
 
 	if (force_process)
 		transferring_to[target_pool] |= MANA_POOL_SKIP_NEXT_TRANSFER
@@ -219,7 +220,7 @@
 	transferring_to -= target_pool
 	target_pool.incoming_transfer_end(src)
 
-	UnregisterSignal(target_pool, COMSIG_PARENT_QDELETING)
+	UnregisterSignal(target_pool, COMSIG_QDELETING)
 
 	return MANA_POOL_TRANSFER_STOP
 

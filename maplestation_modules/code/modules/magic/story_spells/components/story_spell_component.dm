@@ -1,4 +1,4 @@
-// niko originally yeeted this file, i genuinely wonder why
+// As removing component subtypes is part of this refactor, this component and any child components MUST be erradicated. this will remain soley for reference, until the refactor is completed.
 /datum/component/uses_mana/story_spell
 	can_transfer = FALSE
 

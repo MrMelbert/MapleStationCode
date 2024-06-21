@@ -5,14 +5,15 @@
 	var/wet_attunement_amount = 0.5
 	var/wet_cost_per_unit = 0.4
 
-/datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_mana_required(atom/caster, atom/cast_on, ...)
+/
+/* /datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/pointed/soft_and_wet/spell = parent
 	var/turf/open/cast_turf = get_turf(cast_on)
 	if(SEND_SIGNAL(cast_turf, COMSIG_TURF_IS_WET) || spell.wetness_pool.total_volume >= spell.wetness_pool.maximum_volume)
 		return ..() * spell.wetness_pool.maximum_volume * wet_cost_per_unit
 
 	// Supplying water makes it cheaper, technically.
-	return ..() * spell.wetness_pool.total_volume * wet_cost_per_unit
+	return ..() * spell.wetness_pool.total_volume * wet_cost_per_unit */
 
 /datum/action/cooldown/spell/pointed/soft_and_wet
 	name = "Water Control"
@@ -25,7 +26,7 @@
 
 	cooldown_time = 10 SECONDS
 	spell_requirements = NONE
-	var/mana_cost = WET_MANA_COST_PER_UNIT
+	var/wet_cost_per_unit = WET_MANA_COST_PER_UNIT
 
 	school = SCHOOL_TRANSMUTATION
 
@@ -49,15 +50,23 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[/datum/attunement/water] += WET_ATTUNEMENT_WATER
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/soft_and_wet, \
+	AddComponent(/datum/component/uses_mana, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = mana_cost, \
+		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)
 	wetness_pool = new(water_units_applied * ((1 + 2 * aoe_range) ** 2))
 	wetness_pool.add_reagent(water_type, INFINITY)
+
+/datum/action/cooldown/spell/pointed/soft_and_wet/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+	var/turf/open/cast_turf = get_turf(cast_on)
+	if(SEND_SIGNAL(cast_turf, COMSIG_TURF_IS_WET) || wetness_pool.total_volume >= wetness_pool.maximum_volume)
+		return wetness_pool.maximum_volume * wet_cost_per_unit
+
+	// Supplying water makes it cheaper, technically.
+	return wetness_pool.total_volume * wet_cost_per_unit
 
 /datum/action/cooldown/spell/pointed/soft_and_wet/Destroy()
 	QDEL_NULL(wetness_pool)
