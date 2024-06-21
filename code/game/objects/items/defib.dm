@@ -648,6 +648,7 @@
 					H.set_heartattack(FALSE)
 					if(defib_result == DEFIB_POSSIBLE)
 						H.grab_ghost()
+					H.apply_status_effect(/datum/status_effect/recent_defib)
 					H.revive()
 					H.emote("gasp")
 					H.set_jitter_if_lower(200 SECONDS)
@@ -657,7 +658,6 @@
 					else
 						user.add_mood_event("saved_life", /datum/mood_event/saved_life)
 					log_combat(user, H, "revived", defib)
-					H.apply_status_effect(/datum/status_effect/recent_defib)
 				do_success()
 				return
 			else if (!H.get_organ_by_type(/obj/item/organ/internal/heart))

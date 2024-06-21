@@ -49,12 +49,12 @@
 	var/strength = 0
 
 /datum/status_effect/anesthesia_grog/on_creation(mob/living/new_owner, anesthesia_appied_at)
-	strength = (world.time - anesthesia_appied_at > 1 MINUTES) ? -100 : -60
+	strength = (world.time - anesthesia_appied_at > 1 MINUTES) ? 50 : 90
 	return ..()
 
 /datum/status_effect/anesthesia_grog/on_apply()
 	owner.add_max_consciousness_value(type, strength)
-	to_chat(owner, span_warning("You feel[strength <= -100 ? " ":" a bit "]groggy..."))
+	to_chat(owner, span_warning("You feel[strength <= 90 ? " ":" a bit "]groggy..."))
 	return TRUE
 
 /datum/status_effect/anesthesia_grog/on_remove()

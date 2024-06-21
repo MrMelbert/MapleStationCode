@@ -71,13 +71,6 @@
 	if(human_lungs)
 		return human_lungs.check_breath(breath, src, skip_breath)
 
-/*
-	if(health >= crit_threshold)
-		adjustOxyLoss(HUMAN_MAX_OXYLOSS + 1)
-	if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
-		adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
-*/
-
 	failed_last_breath = TRUE
 
 	var/datum/species/human_species = dna.species

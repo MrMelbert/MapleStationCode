@@ -478,7 +478,7 @@
 /datum/mood/proc/set_insanity_effect(newval)
 	if (newval == insanity_effect)
 		return
-	mob_parent.crit_threshold = (mob_parent.crit_threshold - insanity_effect) + newval
+	mob_parent.add_max_consciousness_value("sanity", 150 - newval)
 	insanity_effect = newval
 
 /// Removes all temporary moods

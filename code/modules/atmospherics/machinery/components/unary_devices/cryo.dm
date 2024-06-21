@@ -162,7 +162,11 @@
 	SET_PLANE(occupant_vis, PLANE_TO_TRUE(occupant_vis.plane), new_turf)
 
 /obj/machinery/cryo_cell/set_occupant(atom/movable/new_occupant)
+	if(occupant && isnull(new_occupant))
+		REMOVE_TRAIT(occupant, TRAIT_ASSISTED_BREATHING, REF(src))
 	. = ..()
+	if(occupant && on)
+		ADD_TRAIT(occupant, TRAIT_ASSISTED_BREATHING, REF(src))
 	update_appearance()
 
 /obj/machinery/cryo_cell/RefreshParts()
@@ -270,6 +274,10 @@
 		begin_processing()
 	else //Turned off
 		end_processing()
+	if(occupant)
+		ADD_TRAIT(occupant, TRAIT_ASSISTED_BREATHING, REF(src))
+	else
+		REMOVE_TRAIT(occupant, TRAIT_ASSISTED_BREATHING, REF(src))
 
 /obj/machinery/cryo_cell/begin_processing()
 	. = ..()

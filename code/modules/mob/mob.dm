@@ -1314,12 +1314,6 @@
 /mob/proc/update_damage_hud()
 	return
 
-/**
- * This handles updating the stamina HUD element
- */
-/mob/proc/update_stamina_hud()
-	return
-
 ///Update the lighting plane and sight of this mob (sends COMSIG_MOB_UPDATE_SIGHT)
 /mob/proc/update_sight()
 	SHOULD_CALL_PARENT(TRUE)

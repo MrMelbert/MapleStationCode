@@ -777,7 +777,7 @@
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss())
 	update_stat()
 	update_stamina()
-	SShealth_hud_updates.queue_update(src, UPDATE_SELF_HEALTH|UPDATE_MEDHUD_HEALTH)
+	SShealth_updates.queue_update(src, UPDATE_SELF_HEALTH|UPDATE_MEDHUD_HEALTH)
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /mob/living/update_health_hud()
@@ -1351,7 +1351,7 @@
 	return TRUE
 
 /mob/living/proc/update_stamina()
-	update_stamina_hud()
+	return
 
 /mob/living/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
 	stop_pulling()
@@ -2189,7 +2189,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
-	SShealth_hud_updates.queue_update(src, UPDATE_SELF_DAMAGE|UPDATE_SELF_HEALTH|UPDATE_SELF_STAMINA)
+	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE|UPDATE_SELF_HEALTH)
 	med_hud_set_status()
 
 ///Reports the event of the change in value of the buckled variable.

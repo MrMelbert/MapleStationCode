@@ -32,6 +32,7 @@
 	RegisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(check_swing))
+	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(statchange))
 
 /datum/mutation/human/hulk/proc/on_attack_hand(mob/living/carbon/human/source, atom/target, proximity, modifiers)
 	SIGNAL_HANDLER
@@ -78,8 +79,9 @@
 
 	owner.cause_wound_of_type_and_severity(WOUND_BLUNT, arm, severity, wound_source = "hulk smashing")
 
-/datum/mutation/human/hulk/on_life(seconds_per_tick, times_fired)
-	if(owner.health < owner.crit_threshold)
+/datum/mutation/human/hulk/proc/statchange(mob/living/carbon/human/owner, stat, old_stat)
+	SIGNAL_HANDLER
+	if(stat >= UNCONSCIOUS)
 		on_losing(owner)
 		to_chat(owner, span_danger("You suddenly feel very weak."))
 		qdel(src)
@@ -95,6 +97,7 @@
 	UnregisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)
+	UnregisterSignal(owner, COMSIG_MOB_STATCHANGE)
 
 /datum/mutation/human/hulk/proc/handle_speech(datum/source, list/speech_args)
 	SIGNAL_HANDLER

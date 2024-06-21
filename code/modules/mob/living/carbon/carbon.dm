@@ -563,7 +563,7 @@
 	if(consciousness != oldcon)
 		to_update |= UPDATE_SELF_DAMAGE
 	if(to_update)
-		SShealth_hud_updates.queue_update(src, to_update)
+		SShealth_updates.queue_update(src, to_update)
 
 #ifdef TESTING
 	maptext = MAPTEXT_TINY_UNICODE( \
@@ -593,7 +593,10 @@
 /datum/actionspeed_modifier/carbon_consciousness
 	variable = TRUE
 
-/mob/living/carbon/proc/update_conscisouness()
+/mob/living/proc/update_conscisouness()
+	return
+
+/mob/living/carbon/update_conscisouness()
 
 	consciousness = 100
 	var/max_consciousness = 150
@@ -624,7 +627,7 @@
 	if(consciousness <= 90)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
 		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
-	else if(LAZYACCESS(movespeed_modification, /datum/movespeed_modifier/carbon_consciousness))
+	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/carbon_consciousness]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
 		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)
 
@@ -789,41 +792,12 @@
 		else // (30 to 35), effectively
 			hud_used.healths.icon_state = "health5"
 
-/mob/living/carbon/update_stamina_hud(shown_stamina_loss)
-	if(!client || !hud_used?.stamina)
-		return
-
-	var/stam_crit_threshold = maxHealth - crit_threshold
-
-	if(stat == DEAD)
-		hud_used.stamina.icon_state = "stamina_dead"
-	else
-
-		if(shown_stamina_loss == null)
-			shown_stamina_loss = getStaminaLoss()
-
-		if(shown_stamina_loss >= stam_crit_threshold)
-			hud_used.stamina.icon_state = "stamina_crit"
-		else if(shown_stamina_loss > maxHealth*0.8)
-			hud_used.stamina.icon_state = "stamina_5"
-		else if(shown_stamina_loss > maxHealth*0.6)
-			hud_used.stamina.icon_state = "stamina_4"
-		else if(shown_stamina_loss > maxHealth*0.4)
-			hud_used.stamina.icon_state = "stamina_3"
-		else if(shown_stamina_loss > maxHealth*0.2)
-			hud_used.stamina.icon_state = "stamina_2"
-		else if(shown_stamina_loss > 0)
-			hud_used.stamina.icon_state = "stamina_1"
-		else
-			hud_used.stamina.icon_state = "stamina_full"
-
 /// Upsed specifically to update the spacesuit hud element
 /mob/living/carbon/proc/update_spacesuit_hud_icon(cell_state = "empty")
 	hud_used?.spacesuit?.icon_state = "spacesuit_[cell_state]"
 
 /**
  * Adds a conscious modifier to the mob
- * Note this can (maybe obviously) result in the mob dying from it being added
  *
  * Only on living because I am lazy
  */
@@ -832,7 +806,7 @@
 
 /mob/living/carbon/add_consciousness_modifier(modifier, value)
 	LAZYSET(consciousness_modifiers, modifier, value)
-	update_conscisouness()
+	SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Removes a conscious modifier from the mob
@@ -842,11 +816,10 @@
 
 /mob/living/carbon/remove_consciousness_modifier(modifier)
 	LAZYREMOVE(consciousness_modifiers, modifier)
-	update_conscisouness()
+	SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Adds a conscious multiplier to the mob
- * Note this can (maybe obviously) result in the mob dying from it being added
  *
  * Only on living because I am lazy
  */
@@ -855,7 +828,7 @@
 
 /mob/living/carbon/add_consciousness_multiplier(multiplier, value)
 	LAZYSET(consciousness_multipliers, multiplier, value)
-	update_conscisouness()
+	SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Removes a conscious multiplier from the mob
@@ -865,7 +838,7 @@
 
 /mob/living/carbon/remove_consciousness_multiplier(multiplier)
 	LAZYREMOVE(consciousness_multipliers, multiplier)
-	update_conscisouness()
+	SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Adds a max consciousness value to the mob
@@ -877,7 +850,7 @@
 
 /mob/living/carbon/add_max_consciousness_value(value, max_value)
 	LAZYSET(max_consciousness_values, value, max_value)
-	update_conscisouness()
+	SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Removes a max consciousness value from the mob
@@ -887,7 +860,7 @@
 
 /mob/living/carbon/remove_max_consciousness_value(value)
 	LAZYREMOVE(max_consciousness_values, value)
-	update_conscisouness()
+	SShealth_updates.queue_update(src, UPDATE_CON)
 
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)

@@ -217,7 +217,7 @@
 
 /obj/item/organ/internal/heart/cybernetic/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	if(dose_available && owner.health <= owner.crit_threshold && !owner.reagents.has_reagent(rid))
+	if(dose_available && owner.health <= 0 && !owner.reagents.has_reagent(rid))
 		used_dose()
 
 /obj/item/organ/internal/heart/cybernetic/proc/used_dose()

@@ -9,7 +9,7 @@
 /mob/living/carbon/human/handle_blood(seconds_per_tick, times_fired)
 
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
-		LAZYREMOVE(max_consciousness_values, "blood")
+		remove_max_consciousness_value("blood")
 		return
 
 	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
@@ -61,14 +61,14 @@
 				if(getOxyLoss() < threshold)
 					adjustOxyLoss(1)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-				LAZYSET(max_consciousness_values, "blood", 90)
+				add_max_consciousness_value("blood", 90)
 				if(getOxyLoss() < 100)
 					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding some of this will be recovered
 				if(SPT_PROB(2.5, seconds_per_tick))
 					set_eye_blur_if_lower(12 SECONDS)
 					to_chat(src, span_warning("You feel very [word]."))
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
-				LAZYSET(max_consciousness_values, "blood", 30)
+				add_max_consciousness_value("blood", 60)
 				if(getOxyLoss() < 150)
 					adjustOxyLoss(3)
 				set_eye_blur_if_lower(6 SECONDS)
@@ -77,7 +77,7 @@
 					losebreath += 1
 					to_chat(src, span_warning("You feel extremely [word]."))
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
-				LAZYSET(max_consciousness_values, "blood", 10)
+				add_max_consciousness_value("blood", 20)
 				set_eye_blur_if_lower(20 SECONDS)
 				Unconscious(10 SECONDS)
 				adjustOxyLoss(5)
@@ -86,7 +86,7 @@
 				// 	death()
 
 	if(blood_volume > BLOOD_VOLUME_OKAY)
-		LAZYREMOVE(max_consciousness_values, "blood")
+		remove_max_consciousness_value("blood")
 
 	// NON-MODULE CHANGE END for blood
 

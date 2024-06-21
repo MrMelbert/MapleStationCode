@@ -1,14 +1,3 @@
-
-/mob/living/carbon/human/do_cpr(mob/living/carbon/human/target)
-	if(target == src)
-		return FALSE
-
-	if (DOING_INTERACTION_WITH_TARGET(src, target))
-		return FALSE
-
-	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
-	return TRUE
-
 /// Number of "beats" per CPR cycle
 /// This corresponds to N - 1 compressions and 1 breath
 #define BEATS_PER_CPR_CYCLE 16
