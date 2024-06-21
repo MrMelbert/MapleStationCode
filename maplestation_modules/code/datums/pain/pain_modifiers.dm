@@ -61,7 +61,7 @@
 		human_owner.set_pain_mod(id, 0.625)
 	ADD_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
 	ADD_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
-	LAZYSET(owner.consciousness_multipliers, id, 1.2)
+	owner.add_consciousness_multiplier(id, 1.2)
 
 /datum/status_effect/determined/on_remove()
 	if(ishuman(owner))
@@ -69,7 +69,7 @@
 		human_owner.unset_pain_mod(id)
 	REMOVE_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
 	REMOVE_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
-	LAZYREMOVE(owner.consciousness_multipliers, id)
+	owner.remove_consciousness_multiplier(id)
 	return ..()
 
 // Fake healthy is supposed to mimic feeling no pain

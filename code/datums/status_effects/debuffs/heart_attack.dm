@@ -29,8 +29,8 @@
 
 	if(!QDELING(owner))
 		owner.cause_pain(BODY_ZONE_CHEST, -20)
-		LAZYREMOVE(owner.consciousness_multipliers, id)
-		LAZYREMOVE(owner.max_consciousness_values, id)
+		owner.remove_consciousness_multiplier(id)
+		owner.remove_max_consciousness_value(id)
 
 /datum/status_effect/heart_attack/proc/delayed_ko()
 	ko_timer = null
@@ -48,11 +48,11 @@
 /datum/status_effect/heart_attack/proc/update_nobreath(datum/source)
 	SIGNAL_HANDLER
 	if(HAS_TRAIT(owner, TRAIT_NOBREATH))
-		LAZYREMOVE(owner.consciousness_multipliers, id)
-		LAZYREMOVE(owner.max_consciousness_values, id)
+		owner.remove_consciousness_multiplier(id)
+		owner.remove_max_consciousness_value(id)
 	else
-		LAZYSET(owner.consciousness_multipliers, id, 0.5)
-		LAZYSET(owner.max_consciousness_values, id, 30)
+		owner.add_consciousness_multiplier(id, 0.5)
+		owner.add_max_consciousness_value(id, 30)
 
 /datum/status_effect/heart_attack/tick(seconds_between_ticks)
 	if(ko_timer) // Not yet

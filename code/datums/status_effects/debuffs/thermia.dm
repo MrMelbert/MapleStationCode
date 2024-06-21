@@ -13,17 +13,17 @@
 
 /datum/status_effect/thermia/on_apply()
 	if(consciousness_mod)
-		LAZYSET(owner.consciousness_modifiers, id, 0)
+		owner.remove_consciousness_modifier(id, 0)
 	if(max_consciousness_mod)
-		LAZYSET(owner.max_consciousness_values, id, 150)
+		owner.add_max_consciousness_value(id, 150)
 
 	give_alert()
 	COOLDOWN_START(src, update_cd, 6 SECONDS)
 	return TRUE
 
 /datum/status_effect/thermia/on_remove()
-	LAZYREMOVE(owner.consciousness_modifiers, id)
-	LAZYREMOVE(owner.max_consciousness_values, id)
+	owner.remove_consciousness_modifier(id)
+	owner.remove_max_consciousness_value(id)
 	owner.clear_alert(ALERT_TEMPERATURE)
 	owner.clear_mood_event(id)
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
@@ -34,17 +34,17 @@
 
 	// Counts up from 0 to [consciousness_mod]
 	if(consciousness_mod)
-		var/current_mod = -1 * LAZYACCESS(owner.consciousness_modifiers, id)
+		var/current_mod = -1 * owner.remove_consciousness_modifier(id)
 		if(current_mod >= consciousness_mod)
 			return
-		LAZYSET(owner.consciousness_modifiers, id, (-1 * (min(consciousness_mod, current_mod + 5))))
+		owner.add_consciousness_modifier(id, (-1 * (min(consciousness_mod, current_mod + 5))))
 
 	// Counts down from 150 to [max_consciousness_mod]
 	if(max_consciousness_mod && COOLDOWN_FINISHED(src, update_cd))
-		var/current_mod = LAZYACCESS(owner.max_consciousness_values, id)
+		var/current_mod = owner.remove_max_consciousness_value(id)
 		if(current_mod <= max_consciousness_mod)
 			return
-		LAZYSET(owner.max_consciousness_values, id, (max(max_consciousness_mod, current_mod - 10)))
+		owner.add_max_consciousness_value(id, (max(max_consciousness_mod, current_mod - 10)))
 
 	COOLDOWN_START(src, update_cd, 9 SECONDS)
 

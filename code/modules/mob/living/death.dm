@@ -106,6 +106,7 @@
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "deathgasp")
 
 	set_stat(DEAD)
+	SShealth_hud_updates.queue_update(src, UPDATE_MEDHUD) // This is just for weird case where death is called out of nowhere
 	unset_machine()
 	timeofdeath = world.time
 	station_timestamp_timeofdeath = station_time_timestamp()

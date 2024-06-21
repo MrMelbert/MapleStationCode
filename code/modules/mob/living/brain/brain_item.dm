@@ -107,7 +107,7 @@
 
 	//Update the body's icon so it doesnt appear debrained anymore
 	brain_owner.update_body_parts()
-	LAZYSET(brain_owner.consciousness_modifiers, "brain_damage",  damage / -10)
+	brain_owner.add_consciousness_modifier("brain_damage",  damage / -10)
 
 /obj/item/organ/internal/brain/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
@@ -131,7 +131,7 @@
 	if(!special)
 		organ_owner.update_body_parts()
 		organ_owner.clear_mood_event("brain_damage")
-		LAZYREMOVE(organ_owner.consciousness_modifiers, "brain_damage")
+		organ_owner.remove_consciousness_modifier("brain_damage")
 
 /obj/item/organ/internal/brain/proc/transfer_identity(mob/living/L)
 	name = "[L.name]'s [initial(name)]"
@@ -563,7 +563,7 @@
 		owner.add_mood_event("brain_damage", /datum/mood_event/brain_damage)
 	else
 		owner.clear_mood_event("brain_damage")
-	LAZYSET(owner.consciousness_modifiers, "brain_damage", damage / -10)
+	owner.add_consciousness_modifier("brain_damage", damage / -10)
 
 /// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
 /obj/item/organ/internal/brain/proc/get_attacking_limb(mob/living/carbon/human/target)

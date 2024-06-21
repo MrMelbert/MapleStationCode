@@ -15,14 +15,14 @@
 	. = ..()
 	// Melbert todo : you can't breathe while under anesthetic, so we need a pump or vent or something (TRAIT_ASSISTED_BREATHING)
 	RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(try_removal))
-	LAZYSET(owner.max_consciousness_values, type, 10)
+	owner.add_max_consciousness_value(type, 10)
 	applied_at = world.time
 
 /datum/status_effect/grouped/anesthetic/on_remove()
 	. = ..()
 	UnregisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT))
 	if(!QDELETED(owner))
-		LAZYREMOVE(owner.max_consciousness_values, type)
+		owner.remove_max_consciousness_value(type)
 		owner.apply_status_effect(/datum/status_effect/anesthesia_grog, applied_at)
 
 /datum/status_effect/grouped/anesthetic/get_examine_text()
@@ -53,9 +53,9 @@
 	return ..()
 
 /datum/status_effect/anesthesia_grog/on_apply()
-	LAZYSET(owner.max_consciousness_values, type, strength)
+	owner.add_max_consciousness_value(type, strength)
 	to_chat(owner, span_warning("You feel[strength <= -100 ? " ":" a bit "]groggy..."))
 	return TRUE
 
 /datum/status_effect/anesthesia_grog/on_remove()
-	LAZYREMOVE(owner.max_consciousness_values, type)
+	owner.remove_max_consciousness_value(type)

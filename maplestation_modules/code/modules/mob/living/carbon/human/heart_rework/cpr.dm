@@ -148,11 +148,11 @@
 /datum/status_effect/cpr_applied/on_apply()
 	if(!is_effective(owner))
 		return FALSE
-	LAZYSET(owner.consciousness_modifiers, id, 5)
+	owner.add_consciousness_modifier(id, 5)
 	return TRUE
 
 /datum/status_effect/cpr_applied/on_remove()
-	LAZYREMOVE(owner.consciousness_modifiers, id)
+	owner.remove_consciousness_modifier(id)
 
 /datum/status_effect/cpr_applied/refresh(effect, ...)
 	if(!is_effective(owner))

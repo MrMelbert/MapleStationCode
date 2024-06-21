@@ -776,10 +776,8 @@
 		return
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss())
 	update_stat()
-	med_hud_set_health()
-	med_hud_set_status()
-	update_health_hud()
 	update_stamina()
+	SShealth_hud_updates.queue_update(src, UPDATE_SELF_HEALTH|UPDATE_MEDHUD_HEALTH)
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /mob/living/update_health_hud()
@@ -2191,9 +2189,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
-	update_damage_hud()
-	update_health_hud()
-	update_stamina_hud()
+	SShealth_hud_updates.queue_update(src, UPDATE_SELF_DAMAGE|UPDATE_SELF_HEALTH|UPDATE_SELF_STAMINA)
 	med_hud_set_status()
 
 ///Reports the event of the change in value of the buckled variable.

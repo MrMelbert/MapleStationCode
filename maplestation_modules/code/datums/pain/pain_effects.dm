@@ -115,10 +115,10 @@
 /datum/status_effect/recent_defib/on_apply()
 	owner.adjust_pain_shock(-12)
 	owner.cause_pain(BODY_ZONES_ALL, -16)
-	LAZYSET(owner.consciousness_modifiers, id, 50)
-	LAZYSET(owner.max_consciousness_values, id, 60)
+	owner.add_consciousness_modifier(id, 50)
+	owner.add_max_consciousness_value(id, 60)
 	return TRUE
 
 /datum/status_effect/recent_defib/on_remove()
-	LAZYREMOVE(owner.consciousness_modifiers, id)
-	LAZYREMOVE(owner.max_consciousness_values, id)
+	owner.remove_consciousness_modifier(id)
+	owner.remove_max_consciousness_value(id)

@@ -3,8 +3,8 @@
 		return
 
 	if(damageoverlaytemp)
-		damageoverlaytemp = 0
 		update_damage_hud()
+		damageoverlaytemp = 0
 
 	if(HAS_TRAIT(src, TRAIT_STASIS))
 		. = ..()

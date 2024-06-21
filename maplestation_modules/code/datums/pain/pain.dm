@@ -283,7 +283,6 @@
 			testing("PAIN DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
 #endif
 
-	parent.updatehealth()
 	if(amount >= 10)
 		parent.flash_pain_overlay(amount >= 20 ? 2 : 1)
 	if(amount >= 12 && prob(25))
@@ -498,6 +497,11 @@
 		if(checked_bodypart.pain <= 0)
 			continue
 		has_pain = TRUE
+		// IF we are KO'd we don't feel specific pain
+		if(HAS_TRAIT(parent, TRAIT_KNOCKEDOUT))
+			if(has_pain)
+				break
+			continue
 		if(just_cant_feel_anything || !COOLDOWN_FINISHED(src, time_since_last_pain_message))
 			continue
 		// 1% chance per 8 pain being experienced to get a feedback message every second
@@ -659,9 +663,9 @@
 	var/avg_pain = get_average_pain()
 
 	if(avg_pain <= 10)
-		LAZYREMOVE(parent.consciousness_modifiers, "pain")
+		parent.remove_consciousness_modifier("pain")
 	else
-		LAZYSET(parent.consciousness_modifiers, "pain", -5 * sqrt(avg_pain) * (parent.can_feel_pain(TRUE) ? 1 : 0.5))
+		parent.add_consciousness_modifier("pain", -5 * sqrt(avg_pain) * (parent.can_feel_pain(TRUE) ? 1 : 0.5))
 
 	if(!parent.can_feel_pain(FALSE))
 		clear_pain_attributes()
@@ -697,6 +701,7 @@
 	parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 	parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 	parent.clear_mood_event("pain")
+	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
 
 /**
  * Run a pain related emote, if a few checks are successful.
@@ -813,7 +818,6 @@
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
 	clear_pain_attributes()
-	parent.updatehealth()
 	shock_buildup = 0
 	natural_pain_decay = base_pain_decay
 

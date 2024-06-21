@@ -9,6 +9,7 @@
 /mob/living/carbon/human/handle_blood(seconds_per_tick, times_fired)
 
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
+		LAZYREMOVE(max_consciousness_values, "blood")
 		return
 
 	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
@@ -38,12 +39,6 @@
 			adjust_nutrition(-nutrition_ratio * HUNGER_FACTOR * seconds_per_tick)
 			blood_volume = min(blood_volume + (BLOOD_REGEN_FACTOR * nutrition_ratio * seconds_per_tick), BLOOD_VOLUME_NORMAL)
 
-	// // we call lose_blood() here rather than quirk/process() to make sure that the blood loss happens in sync with life()
-	// if(HAS_TRAIT(src, TRAIT_BLOOD_DEFICIENCY))
-	// 	var/datum/quirk/blooddeficiency/blooddeficiency = get_quirk(/datum/quirk/blooddeficiency)
-	// 	if(!isnull(blooddeficiency))
-	// 		blooddeficiency.lose_blood(seconds_per_tick)
-
 	//Effects of bloodloss
 	if(!(sigreturn & HANDLE_BLOOD_NO_EFFECTS))
 		var/word = pick("dizzy","woozy","faint")
@@ -62,21 +57,36 @@
 			if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 				if(SPT_PROB(2.5, seconds_per_tick))
 					to_chat(src, span_warning("You feel [word]."))
-				adjustOxyLoss(round(0.005 * (BLOOD_VOLUME_NORMAL - blood_volume) * seconds_per_tick, 1))
+				var/threshold = 50 * ((BLOOD_VOLUME_SAFE - blood_volume) / (BLOOD_VOLUME_SAFE - BLOOD_VOLUME_OKAY))
+				if(getOxyLoss() < threshold)
+					adjustOxyLoss(1)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-				adjustOxyLoss(round(0.01 * (BLOOD_VOLUME_NORMAL - blood_volume) * seconds_per_tick, 1))
+				LAZYSET(max_consciousness_values, "blood", 90)
+				if(getOxyLoss() < 100)
+					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding some of this will be recovered
 				if(SPT_PROB(2.5, seconds_per_tick))
 					set_eye_blur_if_lower(12 SECONDS)
 					to_chat(src, span_warning("You feel very [word]."))
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
-				adjustOxyLoss(2.5 * seconds_per_tick)
+				LAZYSET(max_consciousness_values, "blood", 30)
+				if(getOxyLoss() < 150)
+					adjustOxyLoss(3)
+				set_eye_blur_if_lower(6 SECONDS)
 				if(SPT_PROB(7.5, seconds_per_tick))
-					Unconscious(rand(20,60))
+					Unconscious(rand(2, 6) * 1 SECONDS)
+					losebreath += 1
 					to_chat(src, span_warning("You feel extremely [word]."))
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
-				if(!HAS_TRAIT(src, TRAIT_NODEATH))
-					investigate_log("has died of bloodloss.", INVESTIGATE_DEATHS)
-					death()
+				LAZYSET(max_consciousness_values, "blood", 10)
+				set_eye_blur_if_lower(20 SECONDS)
+				Unconscious(10 SECONDS)
+				adjustOxyLoss(5)
+				// if(!HAS_TRAIT(src, TRAIT_NODEATH))
+				// 	investigate_log("has died of bloodloss.", INVESTIGATE_DEATHS)
+				// 	death()
+
+	if(blood_volume > BLOOD_VOLUME_OKAY)
+		LAZYREMOVE(max_consciousness_values, "blood")
 
 	// NON-MODULE CHANGE END for blood
 

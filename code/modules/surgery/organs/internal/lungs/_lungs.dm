@@ -256,9 +256,11 @@
 		breather.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
 	breathe_gas_volume(breath, /datum/gas/oxygen, /datum/gas/carbon_dioxide)
-	// Heal mob if not in crit.
-	if(breather.health >= breather.crit_threshold && breather.oxyloss)
-		breather.adjustOxyLoss(-5)
+	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
+		breather.adjustOxyLoss(-4)
+	else
+		// Less blood so breaths give you less oxygen
+		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
 
 /// Maximum Oxygen effects. "Too much O2!"
 /obj/item/organ/internal/lungs/proc/too_much_oxygen(mob/living/carbon/breather, datum/gas_mixture/breath, o2_pp, old_o2_pp)
@@ -301,9 +303,11 @@
 
 	// Inhale N2, exhale equivalent amount of CO2. Look ma, sideways breathing!
 	breathe_gas_volume(breath, /datum/gas/nitrogen, /datum/gas/carbon_dioxide)
-	// Heal mob if not in crit.
-	if(breather.health >= breather.crit_threshold && breather.oxyloss)
-		breather.adjustOxyLoss(-5)
+	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
+		breather.adjustOxyLoss(-4)
+	else
+		// Less blood so breaths give you less oxygen
+		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
 
 /// Maximum CO2 effects. "Too much CO2!"
 /obj/item/organ/internal/lungs/proc/too_much_co2(mob/living/carbon/breather, datum/gas_mixture/breath, co2_pp, old_co2_pp)
@@ -353,9 +357,11 @@
 		breather.clear_alert(ALERT_NOT_ENOUGH_PLASMA)
 	// Inhale Plasma, exhale equivalent amount of CO2.
 	breathe_gas_volume(breath, /datum/gas/plasma, /datum/gas/carbon_dioxide)
-	// Heal mob if not in crit.
-	if(breather.health >= breather.crit_threshold && breather.oxyloss)
-		breather.adjustOxyLoss(-5)
+	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
+		breather.adjustOxyLoss(-4)
+	else
+		// Less blood so breaths give you less oxygen
+		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
 
 /// Maximum Plasma effects. "Too much Plasma!"
 /obj/item/organ/internal/lungs/proc/too_much_plasma(mob/living/carbon/breather, datum/gas_mixture/breath, plasma_pp, old_plasma_pp)
@@ -631,8 +637,12 @@
 		// The lungs can breathe anyways. What are you? Some bottom-feeding, scum-sucking algae eater?
 		breather.failed_last_breath = FALSE
 		// Vacuum-adapted lungs regenerate oxyloss even when breathing nothing.
-		if(breather.health >= breather.crit_threshold && breather.oxyloss)
-			breather.adjustOxyLoss(-5)
+		if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
+			breather.adjustOxyLoss(-4)
+		else
+			// Less blood so breaths give you less oxygen
+			breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
+
 	// We're in a low / high pressure environment, can't breathe, but trying to, so this hurts the lungs
 	// Unless it's cybernetic then it just doesn't care. Handwave magic whatever
 	else if(!skip_breath && !IS_ROBOTIC_ORGAN(src))
@@ -762,7 +772,7 @@
 	// Suffocating = brain damage
 	suffocator.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2, required_organ_flag = ORGAN_ORGANIC)
 	// If mob is at critical health, check if they can be damaged further.
-	if(suffocator.stat >= SOFT_CRIT && !HAS_TRAIT(suffocator, TRAIT_NOCRITDAMAGE))
+	if(suffocator.stat >= SOFT_CRIT && HAS_TRAIT(suffocator, TRAIT_NOCRITDAMAGE))
 		return
 	// Low pressure.
 	if(breath_pp)
@@ -770,7 +780,7 @@
 		suffocator.adjustOxyLoss(min(5 * ratio, HUMAN_MAX_OXYLOSS))
 		return mole_count * ratio / 6
 	// Zero pressure.
-	if(suffocator.health >= suffocator.crit_threshold)
+	if(suffocator.stat < HARD_CRIT)
 		suffocator.adjustOxyLoss(HUMAN_MAX_OXYLOSS)
 	else
 		suffocator.adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)

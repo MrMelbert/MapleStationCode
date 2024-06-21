@@ -14,12 +14,12 @@
 	bypasses_immunity = TRUE // TB primarily impacts the lungs; it's also bacterial or fungal in nature; viral immunity should do nothing.
 
 /datum/disease/tuberculosis/remove_disease()
-	LAZYREMOVE(affected_mob.consciousness_modifiers, type)
+	affected_mob.remove_consciousness_modifier(type)
 	return ..()
 
 /datum/disease/tuberculosis/update_stage(new_stage)
 	. = ..()
-	LAZYSET(affected_mob.consciousness_modifiers, type, -10 * new_stage)
+	affected_mob.add_consciousness_modifier(type, -10 * new_stage)
 
 /datum/disease/tuberculosis/stage_act(seconds_per_tick, times_fired) //it begins
 	. = ..()

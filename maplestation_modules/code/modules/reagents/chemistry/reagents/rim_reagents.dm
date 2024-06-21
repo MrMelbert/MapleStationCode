@@ -44,7 +44,7 @@
 	ADD_TRAIT(user, TRAIT_VIRUS_RESISTANCE, type)
 	// Slight improved vision
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
-	LAZYSET(user.consciousness_modifiers, type, 20)
+	user.add_consciousness_modifier(type, 20)
 
 /datum/reagent/medicine/luciferium/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
@@ -136,7 +136,7 @@
 	REMOVE_TRAIT(user, TRAIT_NOCRITDAMAGE, type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_COAGULATING, type)
-	LAZYREMOVE(user.consciousness_modifiers, type)
+	user.remove_consciousness_modifier(type)
 
 /obj/item/reagent_containers/pill/luciferium
 	name = "luciferium pill"
@@ -204,7 +204,7 @@
 	user.add_mood_event(type, /datum/mood_event/gojuice)
 	ADD_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	ADD_TRAIT(user, TRAIT_NOSOFTCRIT, type)
-	LAZYSET(user.consciousness_modifiers, type, 25)
+	user.add_consciousness_modifier(type, 25)
 
 /datum/reagent/drug/gojuice/on_mob_end_metabolize(mob/living/user)
 	. = ..()
@@ -243,7 +243,7 @@
 	user.clear_mood_event(type)
 	REMOVE_TRAIT(user, TRAIT_NIGHT_VISION, type)
 	REMOVE_TRAIT(user, TRAIT_NOSOFTCRIT, type)
-	LAZYREMOVE(user.consciousness_modifiers, type)
+	user.remove_consciousness_modifier(type)
 
 /datum/chemical_reaction/gojuice
 	results = list(/datum/reagent/drug/gojuice = 3)

@@ -531,39 +531,39 @@
 /mob/living/carbon/updatehealth()
 	if(status_flags & GODMODE)
 		return
-	var/oldhp = health
+
 	var/total_burn = 0
 	var/total_brute = 0
+	var/total_oxy = getOxyLoss()
+	var/total_tox = getToxLoss()
 	for(var/obj/item/bodypart/part as anything in bodyparts) //hardcoded to streamline things a bit
 		total_brute += (part.brute_dam * part.body_damage_coeff)
 		total_burn += (part.burn_dam * part.body_damage_coeff)
-	set_health(round(maxHealth - getOxyLoss() - getToxLoss() - total_burn - total_brute, DAMAGE_PRECISION))
+
+	var/oldhp = health
+	set_health(round(maxHealth - total_oxy - total_tox - total_burn - total_brute, DAMAGE_PRECISION))
+
+	var/brutecon = -0.05 * total_brute
+	var/firecon = -0.05 * total_burn
+	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(max(total_oxy * 0.75, losebreath * 4), 75))
+	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
+	LAZYSET(consciousness_modifiers, "brute", brutecon)
+	LAZYSET(consciousness_modifiers, "fire", firecon)
+	LAZYSET(consciousness_modifiers, "oxy", oxycon)
+	LAZYSET(consciousness_modifiers, "tox", toxcon)
+
 	var/oldcon = consciousness
-	consciousness = calculate_consciousness()
-	if(CONFIG_GET(flag/near_death_experience))
-		if(consciousness >= 10)
-			REMOVE_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
-			clear_mood_event("near-death")
-			unset_pain_mod(PAIN_MOD_NEAR_DEATH)
-		else if(!HAS_TRAIT(src, TRAIT_NODEATH))
-			ADD_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
-			add_mood_event("near-death", /datum/mood_event/deaths_door)
-			set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
-	update_stat()
-	update_stamina()
-	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD * 2) && stat == DEAD)
-		become_husk(BURN)
+	update_conscisouness()
+	if(QDELETED(src))
+		return
+
+	var/to_update = NONE
 	if(health != oldhp)
-		med_hud_set_health()
-		update_health_hud()
-	if(consciousness != oldcon || health != oldhp)
-		update_damage_hud()
-	if(consciousness <= 90)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
-		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
-	else
-		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
-		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)
+		to_update |= UPDATE_SELF_HEALTH|UPDATE_SELF_DAMAGE|UPDATE_MEDHUD_HEALTH
+	if(consciousness != oldcon)
+		to_update |= UPDATE_SELF_DAMAGE
+	if(to_update)
+		SShealth_hud_updates.queue_update(src, to_update)
 
 #ifdef TESTING
 	maptext = MAPTEXT_TINY_UNICODE( \
@@ -572,6 +572,9 @@
 		P: [pain_controller?.get_average_pain() || 0]" \
 	)
 #endif
+
+	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD * 2) && stat == DEAD)
+		become_husk(BURN)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
@@ -589,6 +592,41 @@
 
 /datum/actionspeed_modifier/carbon_consciousness
 	variable = TRUE
+
+/mob/living/carbon/proc/update_conscisouness()
+
+	consciousness = 100
+	var/max_consciousness = 150
+
+	for(var/mod in consciousness_modifiers)
+		consciousness += consciousness_modifiers[mod]
+	for(var/mult in consciousness_multipliers)
+		consciousness *= consciousness_multipliers[mult]
+	for(var/max_mod in max_consciousness_values)
+		max_consciousness = min(max_consciousness_values[max_mod], max_consciousness)
+
+	consciousness = min(consciousness, max(max_consciousness, 10))
+
+	update_stat() // may result in death
+	if(QDELETED(src))
+		return
+
+	if(CONFIG_GET(flag/near_death_experience))
+		if(consciousness >= 10)
+			REMOVE_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
+			clear_mood_event("near-death")
+			unset_pain_mod(PAIN_MOD_NEAR_DEATH)
+		else if(!HAS_TRAIT(src, TRAIT_NODEATH))
+			ADD_TRAIT(src, TRAIT_SIXTHSENSE, "near-death")
+			add_mood_event("near-death", /datum/mood_event/deaths_door)
+			set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
+
+	if(consciousness <= 90)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
+		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
+	else if(LAZYACCESS(movespeed_modification, /datum/movespeed_modifier/carbon_consciousness))
+		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
+		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)
 
 /mob/living/carbon/update_sight()
 	if(!client)
@@ -682,6 +720,7 @@
 		cure_blind(EYES_COVERED)
 		clear_fullscreen("tint", 0 SECONDS)
 
+/// Applies damage hud according to how conscious the mob is
 /mob/living/carbon/proc/apply_crit_screen_overlay()
 	if(HAS_TRAIT(src, TRAIT_NOCRITOVERLAY))
 		clear_fullscreen("crit")
@@ -693,6 +732,7 @@
 	else
 		clear_fullscreen("crit")
 
+/// Applies damage hud according to how much oxygen damage the mob has taken
 /mob/living/carbon/proc/apply_oxy_screen_overlay()
 	var/current_oxyloss = getOxyLoss()
 	if(current_oxyloss <= 10)
@@ -702,6 +742,7 @@
 	var/severity = clamp(floor((current_oxyloss - 10) / 5 + 1), 1, 7)
 	overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 
+/// Applies damage hud according to how much raw damage the mob has taken
 /mob/living/carbon/proc/apply_damage_screen_overlay()
 	var/hurtdamage = getBruteLoss() + getFireLoss() + damageoverlaytemp
 	if(hurtdamage <= 5)
@@ -711,7 +752,6 @@
 	var/severity = clamp(floor(hurtdamage - 5) / 15, 1, 6)
 	overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
 
-//this handles hud updates
 /mob/living/carbon/update_damage_hud()
 	if(!client)
 		return
@@ -777,41 +817,77 @@
 		else
 			hud_used.stamina.icon_state = "stamina_full"
 
+/// Upsed specifically to update the spacesuit hud element
 /mob/living/carbon/proc/update_spacesuit_hud_icon(cell_state = "empty")
 	hud_used?.spacesuit?.icon_state = "spacesuit_[cell_state]"
 
-/mob/living/carbon/proc/calculate_consciousness()
-	var/new_consciousness = 100
-	var/max_consciousness = 150
+/**
+ * Adds a conscious modifier to the mob
+ * Note this can (maybe obviously) result in the mob dying from it being added
+ *
+ * Only on living because I am lazy
+ */
+/mob/living/proc/add_consciousness_modifier(modifier, value)
+	return
 
-	new_consciousness -= getBruteLoss() * 0.05
-	new_consciousness -= getFireLoss() * 0.05
-	if(!HAS_TRAIT(src, TRAIT_NOBREATH))
-		new_consciousness -= min(max(getOxyLoss(), losebreath * 5), 75)
-	if(!HAS_TRAIT(src, TRAIT_TOXINLOVER) && !HAS_TRAIT(src, TRAIT_TOXIMMUNE))
-		new_consciousness -= (5 * sqrt(getToxLoss()))
-	if(!HAS_TRAIT(src, TRAIT_NOBLOOD))
-		switch(blood_volume)
-			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-				new_consciousness -= 10
-				max_consciousness = 90
-			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
-				new_consciousness -= 20
-				max_consciousness = 30
-			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
-				new_consciousness -= 40
-				max_consciousness = 10
-	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && nutrition <= NUTRITION_LEVEL_HUNGRY)
-		new_consciousness -= 20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY))
+/mob/living/carbon/add_consciousness_modifier(modifier, value)
+	LAZYSET(consciousness_modifiers, modifier, value)
+	update_conscisouness()
 
-	for(var/mod in consciousness_modifiers)
-		new_consciousness += consciousness_modifiers[mod]
-	for(var/mult in consciousness_multipliers)
-		new_consciousness *= consciousness_multipliers[mult]
-	for(var/max_mod in max_consciousness_values)
-		max_consciousness = min(max_consciousness_values[max_mod], max_consciousness)
+/**
+ * Removes a conscious modifier from the mob
+ */
+/mob/living/proc/remove_consciousness_modifier(modifier)
+	return
 
-	return min(new_consciousness, max(max_consciousness, 10))
+/mob/living/carbon/remove_consciousness_modifier(modifier)
+	LAZYREMOVE(consciousness_modifiers, modifier)
+	update_conscisouness()
+
+/**
+ * Adds a conscious multiplier to the mob
+ * Note this can (maybe obviously) result in the mob dying from it being added
+ *
+ * Only on living because I am lazy
+ */
+/mob/living/proc/add_consciousness_multiplier(multiplier, value)
+	return
+
+/mob/living/carbon/add_consciousness_multiplier(multiplier, value)
+	LAZYSET(consciousness_multipliers, multiplier, value)
+	update_conscisouness()
+
+/**
+ * Removes a conscious multiplier from the mob
+ */
+/mob/living/proc/remove_consciousness_multiplier(multiplier)
+	return
+
+/mob/living/carbon/remove_consciousness_multiplier(multiplier)
+	LAZYREMOVE(consciousness_multipliers, multiplier)
+	update_conscisouness()
+
+/**
+ * Adds a max consciousness value to the mob
+ *
+ * Only on living because I am lazy
+ */
+/mob/living/proc/add_max_consciousness_value(value, max_value)
+	return
+
+/mob/living/carbon/add_max_consciousness_value(value, max_value)
+	LAZYSET(max_consciousness_values, value, max_value)
+	update_conscisouness()
+
+/**
+ * Removes a max consciousness value from the mob
+ */
+/mob/living/proc/remove_max_consciousness_value(value)
+	return
+
+/mob/living/carbon/remove_max_consciousness_value(value)
+	LAZYREMOVE(max_consciousness_values, value)
+	update_conscisouness()
 
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)

@@ -114,12 +114,21 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //helper for getting the appropriate health status
 /proc/RoundHealth(mob/living/M)
-	if(M.stat == DEAD || (HAS_TRAIT(M, TRAIT_FAKEDEATH)))
-		return "health-100" //what's our health? it doesn't matter, we're dead, or faking
 	var/maxi_health = M.maxHealth
-	if(iscarbon(M) && M.health < 0)
-		maxi_health = 100 //so crit shows up right for aliens and other high-health carbon mobs; noncarbons don't have crit.
-	var/resulthealth = (M.health / maxi_health) * 100
+	var/resulthealth = 0
+	if(!M.appears_alive())
+		resulthealth = -100
+	else if(iscarbon(M))
+		var/mob/living/carbon/carbon_M = M
+		var/carbon_con = carbon_M.consciousness
+		// This is done so health goes "negatives" when we reach 30 (crit)
+		if(carbon_con <= 30)
+			resulthealth = ((carbon_con - 30) / 30) * 100
+		else
+			resulthealth = (carbon_con - 30) / 70 * 100
+	else
+		resulthealth = (M.health / maxi_health) * 100
+
 	switch(resulthealth)
 		if(100 to INFINITY)
 			return "health100"

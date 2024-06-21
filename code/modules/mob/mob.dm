@@ -1296,13 +1296,27 @@
 					break
 				search_pda = 0
 
+/**
+ * This handles updating the [stat] var to the correct stat given the mob's current overall state
+ */
 /mob/proc/update_stat()
 	return
 
+/**
+ * This handles updating the health doll on the mob's screen
+ */
 /mob/proc/update_health_hud()
 	return
 
-/// Changes the stamina HUD based on new information
+/**
+ * This handles updating the red, black, white HUD on the peripheral of the mob's screen
+ */
+/mob/proc/update_damage_hud()
+	return
+
+/**
+ * This handles updating the stamina HUD element
+ */
 /mob/proc/update_stamina_hud()
 	return
 
@@ -1554,6 +1568,11 @@
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
 
+/mob/living/carbon/adjust_nutrition(change, forced)
+	. = ..()
+	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
+	add_consciousness_modifier("hunger", hungermod)
+
 ///Force set the mob nutrition
 /mob/proc/set_nutrition(set_to, forced = FALSE) //Seriously fuck you oldcoders.
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER) && !forced)
@@ -1565,6 +1584,11 @@
 /mob/living/set_nutrition(set_to, forced)
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
+
+/mob/living/carbon/set_nutrition(set_to, forced)
+	. = ..()
+	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
+	add_consciousness_modifier("hunger", hungermod)
 
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = equipped_speed_mods()

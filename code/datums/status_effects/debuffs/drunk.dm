@@ -123,7 +123,7 @@
 	if(owner.sound_environment_override == SOUND_ENVIRONMENT_PSYCHOTIC)
 		owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
 
-	LAZYREMOVE(owner.max_consciousness_values, id)
+	owner.remove_max_consciousness_value(id)
 
 /datum/status_effect/inebriated/drunk/set_drunk_value(set_to)
 	. = ..()
@@ -134,7 +134,7 @@
 	if(drunk_value < TIPSY_THRESHOLD)
 		owner.apply_status_effect(/datum/status_effect/inebriated/tipsy, drunk_value)
 	if(drunk_value > 90)
-		LAZYSET(owner.max_consciousness_values, id, 30)
+		owner.add_max_consciousness_value(id, 30)
 
 /datum/status_effect/inebriated/drunk/on_tick_effects()
 	// Handle the Ballmer Peak.
