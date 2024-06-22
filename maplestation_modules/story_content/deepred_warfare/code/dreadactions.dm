@@ -257,6 +257,10 @@
 	ownercast.adjust_RL_energy_or_damage(20)
 	ownercast.updating_shield(0)
 
+// vvvvv ABILITIES THAT CAN BE USED IN LOW ENERGY MODE ONLY vvvvv
+
+// vvvvv ABILITIES THAT CAN BE USED IN HIGH ENERGY MODE ONLY vvvvv
+
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
 	name = "Red Lightning Rushdown"
