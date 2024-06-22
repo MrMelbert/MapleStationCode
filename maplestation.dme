@@ -6144,6 +6144,7 @@
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\impact.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\muzzle.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\tracer.dm"
+#include "maplestation_modules\code\game\objects\items\ashtray.dm"
 #include "maplestation_modules\code\game\objects\items\bola.dm"
 #include "maplestation_modules\code\game\objects\items\captain_weapons.dm"
 #include "maplestation_modules\code\game\objects\items\cards_ids.dm"
