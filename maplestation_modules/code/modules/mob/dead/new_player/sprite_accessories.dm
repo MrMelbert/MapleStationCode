@@ -79,6 +79,39 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_fresh"
 
+// https://github.com/NovaSector/NovaSector/pull/697
+/datum/sprite_accessory/hair/gloomy_medium
+	name = "Gloomy (Medium)"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_gloomy_medium"
+
+/datum/sprite_accessory/hair/gloomy_long
+	name = "Gloomy (Long)"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_gloomy_long"
+
+/datum/sprite_accessory/hair/gloomy_longer
+	name = "Gloomy (Longer)"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_gloomy_longer"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/24005
+/datum/sprite_accessory/hair/fluffy
+	name = "Fluffy (Short)"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_fluffy"
+
+/datum/sprite_accessory/hair/fluffy_long
+	name = "Fluffy (Long)"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_fluffy_long"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
+/datum/sprite_accessory/tails/lizard/big
+	name = "Big"
+	icon = 'maplestation_modules/icons/mob/tails.dmi'
+	icon_state = "snaketail"
+
 /// -- Undershirts --
 /datum/sprite_accessory/undershirt/ratvarsoul
 	name = "Ratvar's Soul"
