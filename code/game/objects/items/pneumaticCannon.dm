@@ -282,7 +282,7 @@
 		if(tank)
 			to_chat(user, span_warning("\The [src] already has a tank."))
 			return
-		if(!user.transferItemToLoc(thetank, src))
+		if(!user.transferItemToLoc(thetank, src, silent = FALSE))
 			return
 		to_chat(user, span_notice("You hook \the [thetank] up to \the [src]."))
 		tank = thetank

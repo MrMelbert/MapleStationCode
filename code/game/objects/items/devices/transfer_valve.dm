@@ -51,12 +51,12 @@
 			return
 
 		if(!tank_one)
-			if(!user.transferItemToLoc(item, src))
+			if(!user.transferItemToLoc(item, src, silent = FALSE))
 				return
 			tank_one = item
 			to_chat(user, span_notice("You attach the tank to the transfer valve."))
 		else if(!tank_two)
-			if(!user.transferItemToLoc(item, src))
+			if(!user.transferItemToLoc(item, src, silent = FALSE))
 				return
 			tank_two = item
 			to_chat(user, span_notice("You attach the tank to the transfer valve."))
@@ -71,7 +71,7 @@
 		if(attached_device)
 			to_chat(user, span_warning("There is already a device attached to the valve, remove it first!"))
 			return
-		if(!user.transferItemToLoc(item, src))
+		if(!user.transferItemToLoc(item, src, silent = FALSE))
 			return
 		attached_device = A
 		to_chat(user, span_notice("You attach the [item] to the valve controls and secure it."))

@@ -401,7 +401,7 @@
 
 /obj/machinery/chem_dispenser/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
 	if(is_reagent_container(tool) && !(tool.item_flags & ABSTRACT) && tool.is_open_container())
-		if(!user.transferItemToLoc(tool, src))
+		if(!user.transferItemToLoc(tool, src, silent = FALSE))
 			return ..()
 		replace_beaker(user, tool)
 		ui_interact(user)

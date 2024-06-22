@@ -853,7 +853,7 @@
 		return
 	if(user.combat_mode)
 		return ..()
-	if(user.transferItemToLoc(W, drop_location()))
+	if(user.transferItemToLoc(W, drop_location(), silent = FALSE))
 		return 1
 
 /obj/structure/rack/attack_paw(mob/living/user, list/modifiers)

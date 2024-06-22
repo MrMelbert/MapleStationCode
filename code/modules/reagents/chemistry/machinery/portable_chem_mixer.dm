@@ -149,7 +149,7 @@
 	if(beaker)
 		user.put_in_hands(beaker)
 	if(new_beaker)
-		if(!user.transferItemToLoc(new_beaker, src))
+		if(!user.transferItemToLoc(new_beaker, src, silent = FALSE))
 			return
 		beaker = new_beaker
 
