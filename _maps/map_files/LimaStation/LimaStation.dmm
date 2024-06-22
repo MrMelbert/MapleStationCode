@@ -904,6 +904,17 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/command/teleporter)
+"apY" = (
+/obj/effect/landmark/start/hangover,
+/obj/structure/table,
+/obj/item/ashtray{
+	pixel_y = 4;
+	pixel_x = -7
+	},
+/turf/open/floor/mineral/plastitanium{
+	name = "black plastitanium floor"
+	},
+/area/station/service/bar)
 "aqh" = (
 /obj/effect/spawner/structure/window/reinforced/tinted,
 /obj/effect/spawner/random/structure/barricade,
@@ -2160,13 +2171,18 @@
 /area/station/medical/pharmacy)
 "aNE" = (
 /obj/structure/table/glass,
-/obj/effect/landmark/start/hangover,
 /obj/item/folder/blue{
-	pixel_y = 2
+	pixel_y = 0;
+	pixel_x = -4
 	},
 /obj/item/folder/white{
 	pixel_y = -3
 	},
+/obj/item/ashtray{
+	pixel_y = 9;
+	pixel_x = 7
+	},
+/obj/effect/landmark/start/hangover,
 /turf/open/floor/carpet/royalblue,
 /area/station/command/bridge)
 "aNK" = (
@@ -6416,6 +6432,10 @@
 /obj/structure/table/wood,
 /obj/item/radio/intercom/directional/east,
 /obj/item/book/manual/wiki/security_space_law,
+/obj/item/ashtray{
+	pixel_y = 6;
+	pixel_x = -15
+	},
 /turf/open/floor/carpet/royalblack,
 /area/station/security/detectives_office/bridge_officer_office)
 "cqI" = (
@@ -10787,6 +10807,9 @@
 "dOs" = (
 /obj/structure/table/wood,
 /obj/item/clothing/accessory/lawyers_badge,
+/obj/item/ashtray{
+	pixel_y = 12
+	},
 /turf/open/floor/carpet/orange,
 /area/station/service/lawoffice)
 "dOx" = (
@@ -11018,6 +11041,10 @@
 "dSp" = (
 /obj/structure/table/glass,
 /obj/item/radio/intercom/command,
+/obj/item/ashtray{
+	pixel_y = 11;
+	pixel_x = -6
+	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/bridge)
 "dSX" = (
@@ -17029,6 +17056,10 @@
 /obj/structure/cable,
 /obj/effect/spawner/random/trash/food_packaging,
 /obj/effect/spawner/random/trash/food_packaging,
+/obj/item/ashtray{
+	pixel_y = 7;
+	pixel_x = -7
+	},
 /turf/open/floor/iron,
 /area/station/cargo/break_room)
 "fUd" = (
@@ -19611,6 +19642,10 @@
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/food_or_drink/refreshing_beverage,
 /obj/effect/turf_decal/trimline/brown/filled/line,
+/obj/item/ashtray/random_contents{
+	pixel_y = -4;
+	pixel_x = -14
+	},
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 1
 	},
@@ -20943,6 +20978,15 @@
 /obj/machinery/meter,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"hpn" = (
+/obj/structure/table/wood/poker,
+/obj/effect/spawner/random/entertainment/deck,
+/obj/item/ashtray/random_contents{
+	pixel_y = 5;
+	pixel_x = -7
+	},
+/turf/open/floor/carpet/green,
+/area/station/service/bar/lower)
 "hpw" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/trimline/brown/filled/line{
@@ -28534,6 +28578,10 @@
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 1
 	},
+/obj/item/ashtray{
+	pixel_y = -2;
+	pixel_x = 5
+	},
 /turf/open/floor/iron/dark,
 /area/station/science/breakroom)
 "jTQ" = (
@@ -29115,6 +29163,10 @@
 /obj/structure/table/wood,
 /obj/structure/window/reinforced/spawner/directional/north{
 	pixel_y = 1
+	},
+/obj/item/ashtray/random_contents{
+	pixel_y = -1;
+	pixel_x = -5
 	},
 /turf/open/floor/wood,
 /area/station/service/bar)
@@ -30024,7 +30076,13 @@
 /area/station/maintenance/starboard/lower)
 "krN" = (
 /obj/structure/table/wood,
-/obj/item/stamp/law,
+/obj/item/stamp/law{
+	pixel_x = 3
+	},
+/obj/item/ashtray/random_contents{
+	pixel_y = 4;
+	pixel_x = -7
+	},
 /turf/open/floor/carpet/orange,
 /area/station/service/lawoffice)
 "krV" = (
@@ -30426,6 +30484,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
+	},
+/obj/item/ashtray{
+	pixel_y = 17;
+	pixel_x = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/cmo)
@@ -32103,6 +32165,10 @@
 /obj/structure/table/wood,
 /obj/effect/landmark/start/hangover,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/item/ashtray{
+	pixel_y = 5;
+	pixel_x = 3
+	},
 /turf/open/floor/wood,
 /area/station/service/bar)
 "laL" = (
@@ -32135,6 +32201,10 @@
 "lbN" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/table/wood/poker,
+/obj/item/ashtray{
+	pixel_y = 5;
+	pixel_x = 6
+	},
 /turf/open/floor/iron/grimy,
 /area/station/service/abandoned_gambling_den)
 "lbX" = (
@@ -48187,6 +48257,9 @@
 	pixel_x = -5
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/item/ashtray{
+	pixel_y = 11
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
 "qkB" = (
@@ -48874,6 +48947,10 @@
 	},
 /obj/item/lipstick/random,
 /obj/structure/sign/warning/no_smoking/directional/south,
+/obj/item/ashtray{
+	pixel_y = 6;
+	pixel_x = 10
+	},
 /turf/open/floor/iron/cafeteria,
 /area/station/service/theater)
 "qvr" = (
@@ -50822,6 +50899,10 @@
 /area/station/science/xenobiology)
 "rcc" = (
 /obj/structure/table,
+/obj/item/ashtray/random_contents{
+	pixel_y = -1;
+	pixel_x = -5
+	},
 /turf/open/floor/mineral/plastitanium{
 	name = "black plastitanium floor"
 	},
@@ -51429,6 +51510,10 @@
 	id = "kitchen";
 	name = "Serving Hatch";
 	dir = 1
+	},
+/obj/item/ashtray{
+	pixel_y = -1;
+	pixel_x = -6
 	},
 /turf/open/floor/iron,
 /area/station/service/kitchen)
@@ -52762,6 +52847,10 @@
 /obj/item/melee/chainofcommand{
 	pixel_x = -8
 	},
+/obj/item/ashtray{
+	pixel_y = 10;
+	pixel_x = 4
+	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/heads_quarters/captain)
 "rIj" = (
@@ -53133,6 +53222,10 @@
 /obj/structure/table,
 /obj/effect/spawner/random/trash/food_packaging,
 /obj/machinery/light_switch/directional/east,
+/obj/item/ashtray{
+	pixel_y = 7;
+	pixel_x = -7
+	},
 /turf/open/floor/iron,
 /area/station/engineering/break_room)
 "rNR" = (
@@ -53693,6 +53786,10 @@
 /obj/item/folder,
 /obj/machinery/newscaster/directional/east,
 /obj/machinery/light/small/directional/south,
+/obj/item/ashtray{
+	pixel_y = -2;
+	pixel_x = -15
+	},
 /turf/open/floor/wood,
 /area/station/medical/psychology)
 "rWo" = (
@@ -53737,6 +53834,10 @@
 /obj/item/lipstick/random{
 	pixel_x = -3;
 	pixel_y = -3
+	},
+/obj/item/ashtray/random_contents{
+	pixel_y = 14;
+	pixel_x = -5
 	},
 /turf/open/floor/carpet/black,
 /area/station/commons/dorms)
@@ -61753,6 +61854,10 @@
 /obj/structure/cable,
 /obj/effect/spawner/random/entertainment/cigarette_pack,
 /obj/effect/spawner/random/entertainment/lighter,
+/obj/item/ashtray{
+	pixel_y = -4;
+	pixel_x = 7
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/break_room)
 "uCY" = (
@@ -65267,7 +65372,14 @@
 	},
 /obj/structure/table,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/item/implant/radio,
+/obj/item/ashtray{
+	pixel_y = 5;
+	pixel_x = 5
+	},
+/obj/item/implant/radio{
+	pixel_y = 5;
+	pixel_x = -5
+	},
 /turf/open/floor/iron/white,
 /area/station/medical/break_room)
 "vOW" = (
@@ -67423,6 +67535,9 @@
 /obj/structure/desk_bell{
 	pixel_x = 6
 	},
+/obj/item/ashtray{
+	pixel_y = 6
+	},
 /turf/open/floor/iron,
 /area/station/service/kitchen)
 "wDq" = (
@@ -67578,6 +67693,10 @@
 	},
 /obj/structure/window/reinforced/spawner/directional/south,
 /obj/structure/table/wood,
+/obj/item/ashtray{
+	pixel_y = 6;
+	pixel_x = 4
+	},
 /obj/effect/landmark/start/hangover,
 /turf/open/floor/wood,
 /area/station/service/bar)
@@ -103023,7 +103142,7 @@ hqx
 spu
 uVx
 eZd
-uVx
+hpn
 wEs
 djm
 svG
@@ -168298,7 +168417,7 @@ hDf
 hDf
 hDf
 rdX
-mGT
+apY
 jSB
 iHk
 iHk
