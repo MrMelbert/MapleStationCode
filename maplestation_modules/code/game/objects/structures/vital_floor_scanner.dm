@@ -111,7 +111,7 @@
 		else if(isnull(reader.patient))
 			reader.set_patient(occupant)
 
-		else
+		if(isnull(reader.patient)) // It failed I guess
 			continue
 
 		var/scansound = 'maplestation_modules/sound/healthscanner_stable.ogg'
