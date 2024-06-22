@@ -528,7 +528,7 @@
 				visible_message(span_notice("[src]'s door slides open. The glowing yellow lights dim to a gentle green."))
 			else
 				visible_message(span_warning("[src]'s door slides open, barraging you with the nauseating smell of charred flesh."))
-				qdel(mob_occupant.GetComponent(/datum/component/irradiated))
+				mob_occupant.remove_status_effect(/datum/status_effect/irradiated)
 			playsound(src, 'sound/machines/airlockclose.ogg', 25, TRUE)
 			var/list/things_to_clear = list() //Done this way since using GetAllContents on the SSU itself would include circuitry and such.
 			if(suit)
@@ -549,8 +549,7 @@
 			if(mob_occupant)
 				things_to_clear += mob_occupant
 				things_to_clear += mob_occupant.get_all_contents()
-			for(var/am in things_to_clear) //Scorches away blood and forensic evidence, although the SSU itself is unaffected
-				var/atom/movable/dirty_movable = am
+			for(var/atom/movable/dirty_movable as anything in things_to_clear) //Scorches away blood and forensic evidence, although the SSU itself is unaffected
 				dirty_movable.wash(CLEAN_ALL)
 		open_machine(FALSE)
 		if(mob_occupant)

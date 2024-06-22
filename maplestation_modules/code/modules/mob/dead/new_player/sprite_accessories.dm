@@ -79,6 +79,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_fresh"
 
+/datum/sprite_accessory/hair/pilot
+	name = "Ex-Pilot"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_expilot"
+
 // https://github.com/NovaSector/NovaSector/pull/697
 /datum/sprite_accessory/hair/gloomy_medium
 	name = "Gloomy (Medium)"

@@ -93,10 +93,13 @@
 	if(bonus_overlays)
 		. += bonus_overlays
 
+/*
+// Integrated into the speech sound system
 /mob/living/basic/robot_customer/send_speech(message, message_range, obj/source, bubble_type, list/spans, datum/language/message_language, list/message_mods, forced, tts_message, list/tts_filter)
 	. = ..()
 	var/datum/customer_data/customer_info = ai_controller.blackboard[BB_CUSTOMER_CUSTOMERINFO]
 	playsound(src, customer_info.speech_sound, 30, extrarange = MEDIUM_RANGE_SOUND_EXTRARANGE, falloff_distance = 5)
+*/
 
 /mob/living/basic/robot_customer/examine(mob/user)
 	. = ..()
