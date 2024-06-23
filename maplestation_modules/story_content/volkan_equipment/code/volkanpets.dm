@@ -72,6 +72,6 @@
 
 ///Proc to run once imprinted
 /mob/living/basic/volkan/shoulder_pet/proc/tamed(mob/living/tamer)
-	visible_message(span_notice("[src] beeps and turns it's head toward [tamer] with it's head tilted."))
+	visible_message(span_notice("[src] beeps and turns its head toward [tamer] with its head tilted."))
 
 
