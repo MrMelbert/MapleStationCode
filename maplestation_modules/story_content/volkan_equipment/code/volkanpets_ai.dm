@@ -61,7 +61,7 @@
 		ADD_TRAIT(src, TRAIT_PARROT_PERCHED, TRAIT_GENERIC)
 	update_appearance(UPDATE_ICON_STATE)
 
-//----------------------------------------AI CONTROLLER--------------------------------------------------
+// - AI CONTROLLER -
 #define BB_PLACEABLE_ITEM "BB_placeable_item"
 
 /datum/ai_controller/basic_controller/volkan/shoulder_pet
