@@ -9,8 +9,8 @@
 	desc = "A small, grey chip. It has a connector for a standard NT computer. The chip has a white symbol engraved on the top."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipc"
-	drop_sound = "sound/items/handling/disk_drop.ogg"
-	pickup_sound = "sound/items/handling/disk_pickup.ogg"
+	drop_sound = 'sound/items/handling/disk_drop.ogg'
+	pickup_sound = 'sound/items/handling/disk_pickup.ogg'
 
 	w_class = WEIGHT_CLASS_TINY
 	max_capacity = 1
