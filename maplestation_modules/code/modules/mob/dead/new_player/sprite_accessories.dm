@@ -117,6 +117,115 @@
 	icon = 'maplestation_modules/icons/mob/tails.dmi'
 	icon_state = "snaketail"
 
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
+/datum/sprite_accessory/frills/horns
+	name = "Horns"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+	icon_state = "horns"
+
+/datum/sprite_accessory/frills/horns_double
+	name = "Horns (Double)"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+	icon_state = "hornsdouble"
+
+// ??
+/datum/sprite_accessory/frills/cobra
+	name = "Cobra"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+	icon_state = "cobrahood"
+
+/datum/sprite_accessory/frills/cobra_horns
+	name = "Cobra (Horns)"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+	icon_state = "cobraears"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/16443
+/datum/sprite_accessory/frills/neck
+	name = "Neck"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+	icon_state = "neck"
+
+/datum/sprite_accessory/frills/neck_full
+	name = "Neck (Full)"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+	icon_state = "neckfull"
+
+// https://github.com/NovaSector/NovaSector/pull/1599
+/datum/sprite_accessory/frills/split
+	name = "Split"
+	icon = 'maplestation_modules/icons/mob/frills.dmi'
+	icon_state = "split"
+
+// ??
+/datum/sprite_accessory/horns/simple_bright
+	name = "Simple (Bright)"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "simple"
+
+/datum/sprite_accessory/horns/short_bright
+	name = "Short (Bright)"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "short"
+
+/datum/sprite_accessory/horns/curled_bright
+	name = "Curled (Bright)"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "curled"
+
+/datum/sprite_accessory/horns/ram_bright
+	name = "Ram (Bright)"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "ram"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/969
+/datum/sprite_accessory/horns/drake
+	name = "Drake"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "drake"
+
+/datum/sprite_accessory/horns/knight
+	name = "Knight"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "knight"
+
+// ??
+/datum/sprite_accessory/horns/broken
+	name = "Broken"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "broken"
+
+/datum/sprite_accessory/horns/broken_r
+	name = "Broken (Right)"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "rbroken"
+
+/datum/sprite_accessory/horns/broken_l
+	name = "Broken (Left)"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "lbroken"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/13668
+/datum/sprite_accessory/horns/dragon
+	name = "Dragon"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "dragon"
+
+/datum/sprite_accessory/horns/lifted
+	name = "Lifted"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "lifted"
+
+/datum/sprite_accessory/horns/curled_more
+	name = "Curlier"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "newcurly"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/19972
+/datum/sprite_accessory/horns/sideswept
+	name = "Sideswept"
+	icon = 'maplestation_modules/icons/mob/horn.dmi'
+	icon_state = "sideswept"
+
 /// -- Undershirts --
 /datum/sprite_accessory/undershirt/ratvarsoul
 	name = "Ratvar's Soul"
