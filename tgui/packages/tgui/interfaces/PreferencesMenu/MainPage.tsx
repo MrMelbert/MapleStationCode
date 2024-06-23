@@ -104,7 +104,6 @@ const ChoicedSelection = (props: {
     <Box
       className="ChoicedSelection"
       style={{
-        background: 'white',
         padding: '5px',
 
         height: `${
