@@ -96,6 +96,14 @@
 
 	var/datum/action/cooldown/mob_cooldown/faraday_shield/internalshield // Used to hold the shielding system.
 
+	var/datum/action/dynamicSlot1 // Used to hold various projectile attacks.
+
+	var/datum/action/dynamicSlot2 // Used to hold various AOE melee attacks.
+
+	var/datum/action/dynamicSlot3 // Used to hold various charge or dash attacks.
+
+	var/datum/action/dynamicSlot4 // Used to hold various AOE special attacks.
+
 /datum/language_holder/redtech // Literally just the TG silicon language list.
 	understood_languages = list(
 		/datum/language/common = list(LANGUAGE_ATOM),
@@ -579,6 +587,12 @@
 				updating_shield(1)
 			else
 				updating_shield(0)
+
+			if(dynamicSlot1)
+				dynamicSlot1.Remove(src)
+			dynamicSlot1 = new /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet(src)
+			dynamicSlot1.Grant(src)
+
 		if(1)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
@@ -622,6 +636,12 @@
 				updating_shield(2)
 			else
 				updating_shield(0)
+
+			if(dynamicSlot1)
+				dynamicSlot1.Remove(src)
+			dynamicSlot1 = new /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/high(src)
+			dynamicSlot1.Grant(src)
+
 		if(2)
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
@@ -665,6 +685,11 @@
 				updating_shield(3)
 			else
 				updating_shield(0)
+
+			if(dynamicSlot1)
+				dynamicSlot1.Remove(src)
+			dynamicSlot1 = new /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning(src)
+			dynamicSlot1.Grant(src)
 
 /mob/living/basic/redtechdread/proc/pre_attack(mob/living/source, atom/target)
 	SIGNAL_HANDLER
@@ -711,21 +736,21 @@
 		if(1)
 			src.remove_filter(SHIELDING_FILTER)
 			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 160, "size" = 1))
-			damage_coeff = list(BRUTE = 1, BURN = 0.75, TOX = 0, STAMINA = 0, OXY = 0)
+			damage_coeff = list(BRUTE = 1, BURN = 0.75, TOX = 0, STAMINA = 0, OXY = 0) // 1333 EHP vs BURN
 
 			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 		if(2)
 			src.remove_filter(SHIELDING_FILTER)
 			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 255, "size" = 1))
-			damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0)
+			damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0) // 2000 EHP vs BURN
 
 			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 		if(3)
 			src.remove_filter(SHIELDING_FILTER)
 			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 255, "size" = 2))
-			damage_coeff = list(BRUTE = 1, BURN = 0.25, TOX = 0, STAMINA = 0, OXY = 0)
+			damage_coeff = list(BRUTE = 1, BURN = 0.25, TOX = 0, STAMINA = 0, OXY = 0) // 4000 EHP vs BURN (could theoretically tank the KAJARI if it wasn't for the explosive damage)
 
 			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
@@ -733,12 +758,15 @@
 	internalshield.update_shield_stats()
 
 /mob/living/basic/redtechdread/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
+	if(shielding_level > 0) // If the shielding is even on.
+		if(amount >= 12) // If the brute damage is 12 or more, shield takes damage but deflects the attack.
+			internalshield.take_hit()
+			return 0
+		else // Not enough damage to damage the shield, damage is deflected.
+			playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
+			src.visible_message(span_warning("[src]'s shield struggles to absorb the impact!"))
+			return 0
 	. = ..()
-	if(amount >= 15) // If the brute damage was 15 or more, shield cracks.
-		internalshield.take_hit()
-	else
-		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
-		src.visible_message(span_warning("[src]'s shield struggles to absorb the impact!"))
 
 /mob/living/basic/redtechdread/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
 	. = ..()

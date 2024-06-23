@@ -244,24 +244,89 @@
 	hits += 1
 
 	if(hits < maxhits)
-		playsound(ownercast, 'sound/effects/glass_step.ogg', 120)
+		playsound(ownercast, 'sound/effects/glass_step.ogg', 240)
 		ownercast.visible_message(span_warning("[ownercast]'s shielding cracks!"))
 		return
 
-	playsound(ownercast, 'sound/effects/glassbr3.ogg', 120)
+	playsound(ownercast, 'sound/effects/glassbr3.ogg', 240)
 	playsound(ownercast, 'sound/mecha/mech_shield_drop.ogg', 120)
 	StartCooldown((2 * maxhits) MINUTES)
 	ownercast.balloon_alert(ownercast, "your Faraday Shield has been destroyed!")
 	ownercast.visible_message(span_boldwarning("[ownercast]'s shielding shatters like glass!"))
 	hits = 0
-	ownercast.adjust_RL_energy_or_damage(20)
+	ownercast.adjust_RL_energy_or_damage(-20)
 	ownercast.updating_shield(0)
 
 // vvvvv ABILITIES THAT CAN BE USED IN LOW ENERGY MODE ONLY vvvvv
+/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet
+	name = "Fire Volleycoil - Low Power"
+	desc = "Fire your head mounted coilgun. Your mask needs to be off for this to work."
+	cooldown_time = 10 SECONDS // Prone to change.
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_network" // Looks kinda like a revolver chamber.
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	shared_cooldown = NONE
+
+	projectile_type = /obj/projectile/bullet/coil
+	projectile_sound = 'sound/weapons/gun/revolver/shot.ogg'
+	default_projectile_spread = 0
+	shot_count = 7 // 7 barrels total.
+	shot_delay = 0.1 SECONDS // Prone to change.
+
+	var/chargeup_time = 3 SECONDS
+
+/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/Activate(atom/target_atom)
+	var/mob/living/basic/redtechdread/ownercast = owner
+
+	if(ownercast.head) // Wearing mask, abort.
+		ownercast.balloon_alert(ownercast, "your mask needs to be off to do this!")
+		return FALSE
+
+	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
+	ownercast.visible_message(span_boldwarning("[ownercast] charges up their head mounted coilgun..."))
+
+	if(!do_after(ownercast, chargeup_time))
+		ownercast.balloon_alert(ownercast, "cancelled")
+		StartCooldown(cooldown_time * 0.2)
+		playsound(ownercast, 'sound/machines/scanbuzz.ogg', 120)
+		return TRUE
+
+	. = ..()
+
+/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/attack_sequence(mob/living/firer, atom/target)
+	for(var/i in 1 to shot_count)
+		playsound(get_turf(firer), projectile_sound, 30, TRUE)
+		shoot_projectile(firer, target, null, firer, rand(-default_projectile_spread, default_projectile_spread), null)
+		SLEEP_CHECK_DEATH(shot_delay, src)
 
 // vvvvv ABILITIES THAT CAN BE USED IN HIGH ENERGY MODE ONLY vvvvv
+/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/high
+	name = "Fire Volleycoil - High Power"
+	cooldown_time = 20 SECONDS // Prone to change.
+
+	projectile_type = /obj/projectile/bullet/coil/highvelo
+	projectile_sound = 'sound/weapons/gun/sniper/shot.ogg'
+	default_projectile_spread = 5
+
+	chargeup_time = 4 SECONDS
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
+/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning
+	name = "Fire Volleycoil - Overcharge"
+	cooldown_time = 30 SECONDS // Prone to change.
+
+	projectile_type = /obj/projectile/bullet/coil/red_lightning
+	projectile_sound = 'sound/weapons/gun/hmg/hmg.ogg'
+	default_projectile_spread = 15
+
+	chargeup_time = 5 SECONDS
+
+/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning/attack_sequence(mob/living/firer, atom/target)
+	var/mob/living/basic/redtechdread/ownercast = firer
+	ownercast.adjust_RL_energy_or_damage(-20) // Yummy energy.
+	. = ..()
+
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
 	name = "Red Lightning Rushdown"
 	desc = "Charge at your target with the power of red lightning."
