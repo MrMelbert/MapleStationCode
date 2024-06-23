@@ -83,7 +83,7 @@
 	item_flags = ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
 	force = 18
-	hitsound = 'soaund/weapons/bladeslice.ogg'
+	hitsound = 'sound/weapons/bladeslice.ogg'
 	wound_bonus = 5
 	bare_wound_bonus = 5
 	armour_penetration = 10
