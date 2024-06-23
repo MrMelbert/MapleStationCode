@@ -1,87 +1,138 @@
-/datum/component/uses_mana/story_spell/pointed/ice_knife
+/datum/component/uses_mana/story_spell/conjure_item/ice_knife
 	var/ice_knife_attunement = 0.5
-	var/ice_knife_cost = 25
 
-/datum/component/uses_mana/story_spell/pointed/ice_knife/get_attunement_dispositions()
+/datum/component/uses_mana/story_spell/conjure_item/ice_knife/get_attunement_dispositions()
 	. = ..()
 	.[/datum/attunement/ice] = ice_knife_attunement
 
-/datum/component/uses_mana/story_spell/pointed/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * ice_knife_cost
+/datum/component/uses_mana/story_spell/conjure_item/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
+	var/datum/action/cooldown/spell/conjure_item/ice_knife/ice_knife_spell = parent
+	return ..() * ice_knife_spell.ice_knife_cost
 
-/datum/action/cooldown/spell/pointed/projectile/ice_knife
-	name = "Ice Knife"
-	desc = "Throw an ice knife which'll cover nearby floor with a thin, slippery sheet of ice."
+/datum/action/cooldown/spell/conjure_item/ice_knife
+	name = "Ice knife"
+	desc = "Summon an ice knife made from the moisture in the air."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
 	button_icon_state = "ice_knife"
-	sound = 'sound/effects/parry.ogg'
 
-	cooldown_time = 1 MINUTES
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	item_type = /obj/item/knife/combat/ice
+	delete_old = TRUE
 
-	invocation = "Frig'dus humer'm!" //this one sucks,  ireally wis hi had something better
-	invocation_type = INVOCATION_SHOUT
+	cooldown_time = 2 MINUTES
+	invocation = "Ya shpion."
+	invocation_type = INVOCATION_WHISPER
 	school = SCHOOL_CONJURATION
 
-	active_msg = "You prepare to throw an ice knife."
-	deactive_msg = "You stop preparing to throw an ice knife."
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
-	cast_range = 8
-	projectile_type = /obj/projectile/magic/ice_knife
+	/// What the mana cost is, affected by Armblade variant.
+	var/ice_knife_cost = 30
 
-/datum/action/cooldown/spell/pointed/projectile/ice_knife/New(Target, original)
-	. = ..()
-
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife)
-
-/// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
-/turf/open/misc/funny_ice
-	name = "thin ice sheet"
-	desc = "A thin sheet of solid ice. Looks slippery."
-	icon = 'icons/turf/floors/ice_turf.dmi'
-	icon_state = "ice_turf-0"
-	base_icon_state = "ice_turf-0"
-	slowdown = 1
-	bullet_sizzle = TRUE
-	underfloor_accessibility = UNDERFLOOR_HIDDEN
-	footstep = FOOTSTEP_FLOOR
-	barefootstep = FOOTSTEP_HARD_BAREFOOT
-	clawfootstep = FOOTSTEP_HARD_CLAW
-	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
-
-/turf/open/misc/funny_ice/Initialize(mapload)
-	. = ..()
-	MakeSlippery(TURF_WET_ICE, INFINITY, 0, INFINITY, TRUE)
-
-/obj/projectile/magic/ice_knife
+/obj/item/knife/combat/ice
 	name = "ice knife"
-	icon_state = "ice_2"
-	damage_type = BRUTE
-	damage = 15
-	wound_bonus = 50
-	sharpness = SHARP_EDGED
+	icon = 'maplestation_modules/icons/obj/weapons/stabby.dmi'
+	icon_state = "ice_knife"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/ice_knife_lefthand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/ice_knife_righthand.dmi'
+	inhand_icon_state = "ice_knife"
+	embedding = list("pain_mult" = 4, "embed_chance" = 35, "fall_chance" = 10)
+	desc = "A knife made out of magical ice. Doesn't look like it'll be solid for too long."
+	force = 12
+	throwforce = 12
+	var/expire_time = -1
 
-/obj/projectile/magic/ice_knife/on_hit(atom/target, blocked = FALSE, pierce_hit)
+/obj/item/knife/combat/ice/Initialize(mapload)
 	. = ..()
-	if(. != BULLET_ACT_HIT)
+	expire_time = world.time + 20 SECONDS
+	START_PROCESSING(SSobj, src)
+
+/obj/item/knife/combat/ice/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
+/obj/item/knife/combat/ice/attack()
+	. = ..()
+	expire_time += 3 SECONDS
+
+/obj/item/knife/combat/ice/process()
+	if(world.time >= expire_time)
+		expire()
+
+/obj/item/knife/combat/ice/proc/expire()
+	playsound(src, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
+	qdel(src)
+
+//Variant that conjures an armblade, in exchange for pain
+
+/datum/spellbook_item/spell/ice_knife/apply_params(datum/action/cooldown/spell/conjure_item/ice_knife/our_spell, ice_blade)
+	if (ice_blade)
+		our_spell.item_type = /obj/item/melee/arm_blade/ice_armblade
+		our_spell.ice_knife_cost = 45
+		our_spell.name = "Ice Armblade"
+		our_spell.desc = "Construct a blade around your arm, in exchange of harming it in the process."
+	return
+
+/obj/item/melee/arm_blade/ice_armblade
+	name = "ice-blade"
+	desc = "An armblade made out of ice magic. Sharper than a knife, but it pains you to keep it up."
+	icon = 'maplestation_modules/icons/obj/weapons/stabby.dmi'
+	icon_state = "ice_armblade"
+	inhand_icon_state = "ice_armblade"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/ice_knife_lefthand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/ice_knife_righthand.dmi'
+	item_flags = ABSTRACT
+	w_class = WEIGHT_CLASS_HUGE
+	force = 18
+	hitsound = 'sound/weapons/bladeslice.ogg'
+	wound_bonus = 5
+	bare_wound_bonus = 5
+	armour_penetration = 10
+	block_chance = 15
+	var/expire_time = -1
+
+/obj/item/melee/arm_blade/ice_armblade/equipped()
+	loc.visible_message(
+			span_danger("[loc] conjures an ice-blade!"),
+			span_danger("You conjure an ice-blade!"),
+			span_hear("You hear someone conjuring something!"),
+	)
+	. = ..()
+	self_damage(7)
+
+/obj/item/melee/arm_blade/ice_armblade/Initialize(mapload)
+	. = ..()
+	expire_time = world.time + 10 SECONDS
+	START_PROCESSING(SSobj, src)
+
+/obj/item/melee/arm_blade/ice_armblade/process()
+	if(world.time >= expire_time)
+		expire()
+
+/obj/item/melee/arm_blade/ice_armblade/attack()
+	. = ..()
+	self_damage(1)
+	expire_time += 2 SECONDS
+
+/obj/item/melee/arm_blade/ice_armblade/dropped()
+	. = ..()
+	loc.visible_message(
+			span_danger("[loc]'s ice-blade shatters!"),
+			span_danger("Your ice-blade shatters!"),
+			span_hear("You hear something shatter!"),
+	)
+
+/obj/item/melee/arm_blade/ice_armblade/proc/expire()
+	playsound(src, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
+	self_damage(7)
+	qdel(src)
+
+/obj/item/melee/arm_blade/ice_armblade/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
+/obj/item/melee/arm_blade/ice_armblade/proc/self_damage(damage)
+	var/mob/living/mymob = loc
+	if(!istype(mymob))
 		return
-	playsound(loc, 'sound/weapons/ionrifle.ogg', 70, TRUE, FALSE)
-
-	var/datum/effect_system/steam_spread/steam = new()
-	steam.set_up(10, FALSE, target.loc)
-	steam.start()
-
-	for(var/turf/open/nearby_turf in range(3, target))
-		var/datum/gas_mixture/air = nearby_turf.return_air()
-		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
-		if (air && air != turf_air)
-			air.temperature = max(air.temperature + -15, 0)
-			air.react(nearby_turf)
-
-	for(var/turf/open/nearby_turf in range(1, src)) // this is fuck ugly, could make a new MakeSlippery flag instead.
-		if(isgroundlessturf(nearby_turf))
-			continue
-		var/ice_turf = /turf/open/misc/funny_ice
-		var/reset_turf = nearby_turf.type
-		nearby_turf.TerraformTurf(ice_turf, flags = CHANGETURF_INHERIT_AIR) // this will also delete decals! consider the comment above. i'm tired.
-		addtimer(CALLBACK(nearby_turf, TYPE_PROC_REF(/turf, TerraformTurf), reset_turf, null, CHANGETURF_INHERIT_AIR), 20 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
+	var/spell_hand = (mymob.get_held_index_of_item(src) % 2) ? BODY_ZONE_L_ARM : BODY_ZONE_R_ARM
+	mymob.apply_damage(damage, BRUTE, spell_hand)
