@@ -53,13 +53,13 @@
 		caster.visible_message(
 			span_danger("[caster] freezes [caster.p_them()]self into a cube!"),
 			span_danger("You freeze yourself into a cube!"),
-			span_danger("You hear something being frozen!")
+			span_hear("You hear something being frozen!"),
 		)
 	else
 		caster.visible_message(
 			span_danger("[caster] freezes [target] into a cube!"),
 			span_danger("You freeze [target] into a cube!"),
-			span_danger("You hear something being frozen!")
+			span_hear("You hear something being frozen!"),
 		)
 
 	caster?.Beam(target, icon_state="bsa_beam", time=5)
@@ -104,7 +104,7 @@
 			owner.visible_message(
 				span_danger("[owner] breaks out of the ice cube!"),
 				span_danger("You break out of the ice cube!"),
-				span_danger("You hear someone breaking out of an ice cube!")
+				span_hear("You hear cracking!")
 			)
 			owner.remove_status_effect(/datum/status_effect/freon/magic)
 			owner.Knockdown(3 SECONDS)
@@ -113,7 +113,7 @@
 	playsound(owner, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
 	owner.visible_message(
 		span_danger("The cube around [owner] melts!"),
-		span_danger("The cube around you melts!")
+		span_danger("The cube around you melts!"),
 	)
 	for(var/obj/item/whatever in owner)
 		REMOVE_TRAIT(whatever, TRAIT_NODROP, REF(src))

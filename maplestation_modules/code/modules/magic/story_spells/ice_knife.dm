@@ -94,7 +94,7 @@
 	loc.visible_message(
 			span_danger("[loc] conjures an ice-blade!"),
 			span_danger("You conjure an ice-blade!"),
-			span_hear("You hear someone conjuring something!")
+			span_hear("You hear someone conjuring something!"),
 	)
 	. = ..()
 	self_damage(7)
@@ -118,7 +118,7 @@
 	loc.visible_message(
 			span_danger("[loc]'s ice-blade shatters!"),
 			span_danger("Your ice-blade shatters!"),
-			span_danger("You hear something shatter!")
+			span_hear("You hear something shatter!"),
 	)
 
 /obj/item/melee/arm_blade/ice_armblade/proc/expire()
