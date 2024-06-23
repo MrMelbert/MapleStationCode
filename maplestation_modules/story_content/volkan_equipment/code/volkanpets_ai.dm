@@ -38,7 +38,7 @@
 		return FALSE
 
 	forceMove(get_turf(target))
-	if(!target.buckle_mob(src,TRUE,FALSE))
+	if(!target.buckle_mob(src, TRUE, FALSE))
 		return FALSE
 
 	to_chat(src, span_notice("You sit on [target]'s shoulder."))
