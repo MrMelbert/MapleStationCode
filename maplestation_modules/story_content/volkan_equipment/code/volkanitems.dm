@@ -69,8 +69,10 @@
 	name = "folded up bot"
 	desc = "A folded up, intricate machine. This is probably a long term storage configuration."
 	icon = null
-	var/mobtype = null //the mob that it will turn into, set to null for now.
-	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg' //the sound the mob will make when it turns on.
+	/// the typepath of mob mob that it will turn into
+	var/mobtype
+	/// the sound the mob will make when it turns on (is created).
+	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg' 
 	w_class = WEIGHT_CLASS_NORMAL
 
 //activate bot action
