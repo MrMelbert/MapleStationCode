@@ -48,7 +48,6 @@
 
 /obj/item/knife/combat/ice/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	playsound(src, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
 	return ..()
 
 /obj/item/knife/combat/ice/attack()
@@ -57,7 +56,11 @@
 
 /obj/item/knife/combat/ice/process()
 	if(world.time >= expire_time)
-		qdel(src)
+		expire()
+
+/obj/item/knife/combat/ice/proc/expire()
+	playsound(src, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
+	qdel(src)
 
 //Variant that conjures an armblade, in exchange for pain
 
@@ -80,20 +83,18 @@
 	item_flags = ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
 	force = 18
-	hitsound = 'sound/weapons/bladeslice.ogg'
+	hitsound = 'soaund/weapons/bladeslice.ogg'
 	wound_bonus = 5
 	bare_wound_bonus = 5
 	armour_penetration = 10
 	block_chance = 15
 	var/expire_time = -1
-	var/mob/living/mymob
 
 /obj/item/melee/arm_blade/ice_armblade/equipped()
-	mymob = loc
 	loc.visible_message(
 			span_danger("[loc] conjures an ice-blade!"),
 			span_danger("You conjure an ice-blade!"),
-			span_danger("You hear someone conjuring an ice-blade!")
+			span_hear("You hear someone conjuring something!")
 	)
 	. = ..()
 	self_damage(7)
@@ -117,16 +118,16 @@
 	loc.visible_message(
 			span_danger("[loc]'s ice-blade shatters!"),
 			span_danger("Your ice-blade shatters!"),
-			span_danger("You hear someone's ice-blade shatter!")
+			span_danger("You hear something shatter!")
 	)
 
 /obj/item/melee/arm_blade/ice_armblade/proc/expire()
+	playsound(src, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
 	self_damage(7)
 	qdel(src)
 
 /obj/item/melee/arm_blade/ice_armblade/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	playsound(src, 'sound/effects/glass_step.ogg', 70, TRUE, FALSE)
 	return ..()
 
 /obj/item/melee/arm_blade/ice_armblade/proc/self_damage(damage)

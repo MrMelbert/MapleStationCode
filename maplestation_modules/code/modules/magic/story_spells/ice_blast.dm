@@ -72,7 +72,7 @@
 
 	for(var/turf/open/nearby_turf in range(3, target))
 		var/datum/gas_mixture/air = nearby_turf.return_air()
-		var/datum/gas_mixture/turf_air = nearby_turf?.return_air()
+		var/datum/gas_mixture/turf_air = nearby_turf.return_air()
 		if (air && air != turf_air)
 			air.temperature = max(air.temperature + -15, TCMB)
 			air.react(nearby_turf)

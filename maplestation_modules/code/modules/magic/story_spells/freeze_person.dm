@@ -53,13 +53,13 @@
 		caster.visible_message(
 			span_danger("[caster] freezes [caster.p_them()]self into a cube!"),
 			span_danger("You freeze yourself into a cube!"),
-			span_danger("You hear someone being frozen into a cube!")
+			span_danger("You hear something being frozen!")
 		)
 	else
 		caster.visible_message(
 			span_danger("[caster] freezes [target] into a cube!"),
 			span_danger("You freeze [target] into a cube!"),
-			span_danger("You hear someone being frozen into a cube!")
+			span_danger("You hear something being frozen!")
 		)
 
 	caster?.Beam(target, icon_state="bsa_beam", time=5)
@@ -99,7 +99,7 @@
 
 /datum/status_effect/freon/magic/do_resist()
 	to_chat(owner, span_notice("You start breaking out of the ice cube..."))
-	if(do_after(owner, (duration - world.time) / 2, owner))
+	if(do_after(owner, (duration - world.time) / 2))
 		if(!QDELETED(src))
 			owner.visible_message(
 				span_danger("[owner] breaks out of the ice cube!"),
