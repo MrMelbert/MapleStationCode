@@ -1,8 +1,7 @@
-/datum/component/uses_mana/story_spell/mage_hand
-	var/mage_hand_cost = 20
+#define MAGE_HAND_MANA_COST 20
 
-/datum/component/uses_mana/story_spell/mage_hand/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * mage_hand_cost
+/datum/component/uses_mana/story_spell/mage_hand
+	var/mage_hand_cost = MAGE_HAND_MANA_COST
 
 // Yeah, it's just a spell that gives you telekinesis for a short period, sue me
 /datum/action/cooldown/spell/apply_mutations/mage_hand
@@ -14,6 +13,7 @@
 
 	cooldown_time = 20 SECONDS
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	var/mana_cost = MAGE_HAND_MANA_COST
 
 	school = SCHOOL_CONJURATION // or SCHOOL_TRANSLOCATION, or even SCHOOL_PSYCHIC
 	antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND
@@ -22,7 +22,12 @@
 /datum/action/cooldown/spell/apply_mutations/mage_hand/New(Target)
 	. = ..()
 	mutation_duration = cooldown_time * 0.5
-	AddComponent(/datum/component/uses_mana/story_spell/mage_hand)
+	AddComponent(/datum/component/uses_mana/story_spell/mage_hand, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = mana_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		)
 
 /datum/action/cooldown/spell/apply_mutations/mage_hand/Grant(mob/grant_to)
 	. = ..()
@@ -68,3 +73,5 @@
 
 /datum/mutation/human/telekinesis/mage_hand/get_visual_indicator()
 	return
+
+#undef MAGE_HAND_MANA_COST

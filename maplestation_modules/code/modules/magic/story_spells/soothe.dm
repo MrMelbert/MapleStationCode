@@ -1,10 +1,9 @@
-/datum/component/uses_mana/story_spell/pointed/soothe
-	var/soothe_attunement_amount = 0.5
-	var/soothe_cost = 20
+#define SOOTHE_ATTUNEMENT_LIFE 0.5
+#define SOOTHE_MANA_COST 20
 
-/datum/component/uses_mana/story_spell/pointed/soothe/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/life] += soothe_attunement_amount
+/datum/component/uses_mana/story_spell/pointed/soothe
+	var/soothe_attunement_amount = SOOTHE_ATTUNEMENT_LIFE
+	var/soothe_cost = SOOTHE_MANA_COST
 
 /datum/component/uses_mana/story_spell/pointed/soothe/get_mana_required(atom/caster, mob/living/cast_on, ...)
 	var/final_cost = ..() * soothe_cost
@@ -24,6 +23,7 @@
 
 	cooldown_time = 2 MINUTES
 	spell_requirements = NONE
+	var/mana_cost = SOOTHE_MANA_COST
 
 	school = SCHOOL_PSYCHIC
 	antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND
@@ -37,7 +37,17 @@
 
 /datum/action/cooldown/spell/pointed/soothe_target/New(Target)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/soothe)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_LIFE] += SOOTHE_ATTUNEMENT_LIFE
+
+	AddComponent(/datum/component/uses_mana/story_spell/pointed/soothe, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = mana_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
 
 /datum/action/cooldown/spell/pointed/soothe_target/is_valid_target(atom/cast_on)
 	return isliving(cast_on) && (cast_on != owner)
@@ -224,3 +234,6 @@
 /datum/mood_event/soothed
 	description = "To err is human..."
 	mood_change = 25
+
+#undef SOOTHE_ATTUNEMENT_LIFE
+#undef SOOTHE_MANA_COST
