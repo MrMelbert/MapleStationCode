@@ -106,7 +106,7 @@
 	name = "Access Redtech Printer"
 	desc = "Access the Redtech Printer to print out items."
 	button_icon = 'icons/mob/actions/actions_items.dmi'
-	button_icon_state = "bci_repair"
+	button_icon_state = "bci_info"
 	background_icon_state = "bg_tech"
 	overlay_icon_state = "bg_tech_border"
 
@@ -300,6 +300,31 @@
 		shoot_projectile(firer, target, null, firer, rand(-default_projectile_spread, default_projectile_spread), null)
 		SLEEP_CHECK_DEATH(shot_delay, src)
 
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
+	name = "Charge - Low Power"
+	desc = "Charge at your target. Will not destroy objects."
+	cooldown_time = 30 SECONDS
+	charge_delay = 2.5 SECONDS
+	charge_distance = 4
+	melee_cooldown_time = 0
+	shake_duration = 2 SECONDS
+	shake_pixel_shift = 1
+	recoil_duration = 0.5 SECONDS
+	knockdown_duration = 1 SECONDS
+	charge_damage = 20
+	destroy_objects = FALSE
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_exclamation"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	shared_cooldown = NONE
+
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/Activate(atom/target_atom)
+	var/mob/living/basic/redtechdread/ownercast = owner
+	playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
+	ownercast.visible_message(span_boldwarning("[ownercast] builds up energy, ready to charge..."))
+	. = ..()
+
 // vvvvv ABILITIES THAT CAN BE USED IN HIGH ENERGY MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/high
 	name = "Fire Volleycoil - High Power"
@@ -310,6 +335,23 @@
 	default_projectile_spread = 5
 
 	chargeup_time = 4 SECONDS
+
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/high
+	name = "Charge - High Power"
+	desc = "Charge at your target. Will destroy objects."
+	charge_delay = 3 SECONDS
+	charge_distance = 6
+	shake_duration = 2.5 SECONDS
+	shake_pixel_shift = 1
+	recoil_duration = 1 SECONDS
+	knockdown_duration = 1.5 SECONDS
+	charge_damage = 30
+	destroy_objects = TRUE
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_exclamation"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	shared_cooldown = NONE
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning
@@ -327,19 +369,24 @@
 	ownercast.adjust_RL_energy_or_damage(-20) // Yummy energy.
 	. = ..()
 
-/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread
-	name = "Red Lightning Rushdown"
-	desc = "Charge at your target with the power of red lightning."
-	cooldown_time = 30 SECONDS
-	charge_delay = 2.5 SECONDS
-	charge_distance = 4
-	melee_cooldown_time = 0
-	shake_duration = 2 SECONDS
-	shake_pixel_shift = 1
-	recoil_duration = 0.5 SECONDS
-	knockdown_duration = 1 SECONDS
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/lightning
+	name = "Charge - Overcharge"
+	desc = "Charge at your target with the power of red lightning. Will destroy objects and deal more damage."
+	charge_delay = 4 SECONDS
+	charge_distance = 8
+	shake_duration = 3 SECONDS
+	shake_pixel_shift = 2
+	recoil_duration = 1.5 SECONDS
+	knockdown_duration = 2 SECONDS
+	charge_damage = 40
+	destroy_objects = TRUE
 	button_icon = 'icons/mob/actions/actions_items.dmi'
-	button_icon_state = "bci_skull"
+	button_icon_state = "bci_exclamation"
 	background_icon_state = "bg_tech"
 	overlay_icon_state = "bg_tech_border"
 	shared_cooldown = NONE
+
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/lightning/Activate(atom/target_atom)
+	var/mob/living/basic/redtechdread/ownercast = owner
+	ownercast.adjust_RL_energy_or_damage(-30)
+	. = ..()

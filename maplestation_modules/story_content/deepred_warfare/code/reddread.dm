@@ -39,6 +39,9 @@
 	layer = LARGE_MOB_LAYER
 	pressure_resistance = 200
 
+	death_sound = 'sound/machines/clockcult/ark_deathrattle.ogg'
+	death_message = "comes to a grinding halt, its systems shutting down with crackles of red lightning."
+
 	move_force = MOVE_FORCE_NORMAL
 	move_resist = MOVE_FORCE_STRONG
 	pull_force = MOVE_FORCE_NORMAL
@@ -100,7 +103,7 @@
 
 	var/datum/action/dynamicSlot2 // Used to hold various AOE melee attacks.
 
-	var/datum/action/dynamicSlot3 // Used to hold various charge or dash attacks.
+	var/datum/action/dynamicSlot3 // Used to hold repair abilities.
 
 	var/datum/action/dynamicSlot4 // Used to hold various AOE special attacks.
 
@@ -593,6 +596,11 @@
 			dynamicSlot1 = new /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet(src)
 			dynamicSlot1.Grant(src)
 
+			if(dynamicSlot2)
+				dynamicSlot2.Remove(src)
+			dynamicSlot2 = new /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread(src)
+			dynamicSlot2.Grant(src)
+
 		if(1)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
@@ -642,6 +650,11 @@
 			dynamicSlot1 = new /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/high(src)
 			dynamicSlot1.Grant(src)
 
+			if(dynamicSlot2)
+				dynamicSlot2.Remove(src)
+			dynamicSlot2 = new /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/high(src)
+			dynamicSlot2.Grant(src)
+
 		if(2)
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
@@ -690,6 +703,11 @@
 				dynamicSlot1.Remove(src)
 			dynamicSlot1 = new /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning(src)
 			dynamicSlot1.Grant(src)
+
+			if(dynamicSlot2)
+				dynamicSlot2.Remove(src)
+			dynamicSlot2 = new /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/lightning(src)
+			dynamicSlot2.Grant(src)
 
 /mob/living/basic/redtechdread/proc/pre_attack(mob/living/source, atom/target)
 	SIGNAL_HANDLER
