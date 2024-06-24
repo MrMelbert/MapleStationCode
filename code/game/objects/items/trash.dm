@@ -85,6 +85,8 @@
 /obj/item/trash/waffles
 	name = "waffles tray"
 	icon_state = "waffles"
+	drop_sound = /obj/item/storage/bag/tray::drop_sound
+	pickup_sound = /obj/item/storage/bag/tray::pickup_sound
 
 /obj/item/trash/pistachios
 	name = "pistachios pack"

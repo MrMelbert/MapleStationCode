@@ -44,6 +44,7 @@
 	trigger_guard = TRIGGER_GUARD_NORMAL
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 /datum/armor/item_pneumatic_cannon
 	fire = 60

@@ -538,6 +538,7 @@
 	item_flags = CRUEL_IMPLEMENT //maybe they want to use it in surgery
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 	var/swiping = FALSE
 

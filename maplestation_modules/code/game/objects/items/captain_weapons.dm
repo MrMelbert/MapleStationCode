@@ -20,6 +20,7 @@ GLOBAL_VAR(captain_weapon_picked)
 	belt_sprite = "-golden"
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 
 /obj/item/melee/energy/sword/captain_rapier
 	name = "laser rapier"

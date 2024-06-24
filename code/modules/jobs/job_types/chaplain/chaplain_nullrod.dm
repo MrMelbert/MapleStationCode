@@ -162,6 +162,7 @@
 	menu_description = "A sharp claymore which provides a low chance of blocking incoming melee attacks. Can be worn on the back or belt."
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/claymore/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK)
@@ -276,6 +277,7 @@
 	menu_description = "An odd s(w)ord dealing a laughable amount of damage. Fits in pockets. Can be worn on the belt."
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword3.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/sord/suicide_act(mob/living/user) //a near-exact copy+paste of the actual sord suicide_act()
 	user.visible_message(span_suicide("[user] is trying to impale [user.p_them()]self with [src]! It might be a suicide attempt if it weren't so HOLY."), \
@@ -301,6 +303,7 @@
 	menu_description = "A sharp blade which partially penetrates armor. Very effective at butchering bodies. Can be worn on the back."
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword2.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/vibro/Initialize(mapload)
 	. = ..()
@@ -632,6 +635,7 @@
 	menu_description = "A sharp pitchfork. Can be worn on the back."
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/egyptian
 	name = "egyptian staff"

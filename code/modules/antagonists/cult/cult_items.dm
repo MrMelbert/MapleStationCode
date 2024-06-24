@@ -28,6 +28,7 @@
 	block_sound = 'sound/weapons/parry.ogg'
 	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
 
 /obj/item/melee/cultblade/dagger/Initialize(mapload)
 	. = ..()
@@ -80,6 +81,7 @@ Striking a noncultist, however, will tear their flesh."}
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
 	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/melee/cultblade/Initialize(mapload)
 	. = ..()

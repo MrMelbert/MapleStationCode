@@ -439,7 +439,7 @@
 	amount_per_transfer_from_this = 10
 	volume = 100
 	isGlass = FALSE
-	drop_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 
 /obj/item/reagent_containers/cup/glass/shaker/Initialize(mapload)

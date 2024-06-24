@@ -12,6 +12,8 @@
 	icon = 'icons/obj/service/kitchen.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/kitchen/Initialize(mapload)
 	. = ..()
@@ -74,6 +76,8 @@
 	throwforce = 0
 	custom_materials = list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 0.8)
 	custom_price = PAYCHECK_LOWER * 1
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/kitchen/fork/plastic/Initialize(mapload)
 	. = ..()
@@ -97,6 +101,8 @@
 	attack_verb_simple = list("prod", "whiff", "scratch", "poke")
 	sharpness = SHARP_EDGED
 	custom_price = PAYCHECK_LOWER * 2
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/knife/plastic/Initialize(mapload)
 	. = ..()
@@ -308,6 +314,8 @@
 	custom_materials = list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 1.2)
 	toolspeed = 75 // The plastic spoon takes 5 minutes to dig through a single mineral turf... It's one, continuous, breakable, do_after...
 	custom_price = PAYCHECK_LOWER * 1
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /datum/armor/kitchen_spoon
 	fire = 50

@@ -5,6 +5,7 @@
 	icon = 'icons/obj/weapons/guns/energy.dmi'
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	/// What type of power cell this uses
 	var/obj/item/stock_parts/cell/cell

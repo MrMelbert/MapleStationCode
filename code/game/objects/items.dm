@@ -693,8 +693,8 @@
 
 	item_flags |= IN_INVENTORY
 	if(!initial)
-		if(equip_sound && (slot_flags & slot))
-			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, TRUE, ignore_walls = FALSE)
+		if(equip_sound && ((slot_flags|ITEM_SLOT_POCKETS|ITEM_SLOT_SUITSTORE) & slot))
+			playsound(src, equip_sound, EQUIP_SOUND_VOLUME, ignore_walls = FALSE)
 		else if(slot & ITEM_SLOT_HANDS)
 			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME, ignore_walls = FALSE)
 	user.update_equipment_speed_mods()

@@ -16,6 +16,7 @@
 	usesound = 'sound/effects/spray2.ogg'
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	/// The ink cartridge to pull charges from.
 	var/obj/item/toner/ink = null
@@ -169,6 +170,7 @@
 	initial_ink_type = /obj/item/toner/large
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	/// The current direction of the decal being printed
 	var/stored_dir = 2
