@@ -6376,6 +6376,7 @@
 #include "maplestation_modules\code\modules\magic\story_spells\flare.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\freeze_person.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\healing_touch.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\ice_blast.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\ice_knife.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\illusion.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\mage_hand.dm"
@@ -6532,5 +6533,7 @@
 #include "maplestation_modules\story_content\story_posters\code\contraband.dm"
 #include "maplestation_modules\story_content\stranger_equipment\code\strangerclothing.dm"
 #include "maplestation_modules\story_content\volkan_equipment\code\volkanitems.dm"
+#include "maplestation_modules\story_content\volkan_equipment\code\volkanpets.dm"
+#include "maplestation_modules\story_content\volkan_equipment\code\volkanpets_ai.dm"
 #include "maplestation_modules\story_content\wollys_items\code\wollysitems.dm"
 // END_INCLUDE
