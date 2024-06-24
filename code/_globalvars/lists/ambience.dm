@@ -10,7 +10,6 @@ GLOBAL_LIST_INIT(generic_ambience,list(
 	'sound/ambience/ambigen9.ogg',
 	'sound/ambience/ambigen10.ogg',
 	'sound/ambience/ambigen11.ogg',
-	'sound/ambience/ambigen13.ogg',
 	'sound/ambience/ambigen14.ogg',
 ))
 
@@ -56,6 +55,9 @@ GLOBAL_LIST_INIT(engi_ambience,list(
 	'sound/ambience/ambitech.ogg',
 	'sound/ambience/ambitech2.ogg',
 	'sound/ambience/ambitech3.ogg',
+	'sound/ambience/ambiatm1.ogg',
+	'maplestation_modules/sound/ambience/atmospherics1.ogg',
+	'maplestation_modules/sound/ambience/engineering1.ogg',
 ))
 
 GLOBAL_LIST_INIT(mining_ambience, list(
@@ -91,6 +93,7 @@ GLOBAL_LIST_INIT(icemoon_ambience,list(
 
 GLOBAL_LIST_INIT(medical_ambience,list(
 	'sound/ambience/ambinice.ogg',
+	'sound/ambience/signal.ogg',
 ))
 
 GLOBAL_LIST_INIT(virology_ambience,list(
@@ -133,6 +136,11 @@ GLOBAL_LIST_INIT(maint_ambience,list(
 	'sound/voice/lowHiss3.ogg',
 	'sound/voice/lowHiss4.ogg',
 	'sound/ambience/maintambience.ogg',
+	'sound/ambience/ambiatmos.ogg',
+	'sound/ambience/ambiatmos2.ogg',
+	'sound/ambience/ambiatm1.ogg',
+	'maplestation_modules/sound/ambience/atmospherics1.ogg',
+	'maplestation_modules/sound/ambience/engineering1.ogg',
 ))
 
 GLOBAL_LIST_INIT(away_ambience,list(
@@ -185,6 +193,41 @@ GLOBAL_LIST_INIT(creepy_ambience,list(
 	'sound/hallucinations/wail.ogg',
 ))
 
+GLOBAL_LIST_INIT(departures_ambience, GLOB.generic_ambience + list(
+	'sound/ambience/ambigen12.ogg',
+	'sound/ambience/ambigen13.ogg',
+	'sound/ambience/signal.ogg',
+))
+
+GLOBAL_LIST_INIT(arrivals_ambience, GLOB.generic_ambience + list(
+	'sound/ambience/ambigen13.ogg',
+	'sound/ambience/signal.ogg',
+))
+
+GLOBAL_LIST_INIT(command_ambience, GLOB.generic_ambience + list(
+	'sound/ambience/signal.ogg',
+))
+
+GLOBAL_LIST_INIT(cargo_ambience, list(
+	'sound/ambience/ambigen2.ogg',
+	'sound/ambience/ambigen3.ogg',
+	'sound/ambience/ambigen4.ogg',
+	'sound/ambience/ambigen5.ogg',
+	'sound/ambience/ambigen6.ogg',
+	'sound/ambience/ambigen7.ogg',
+	'sound/ambience/ambigen8.ogg',
+	'sound/ambience/ambigen9.ogg',
+	'sound/ambience/ambigen10.ogg',
+	'sound/ambience/ambigen13.ogg',
+	'sound/ambience/signal.ogg',
+	'maplestation_modules/sound/ambience/hangar1.ogg',
+	'maplestation_modules/sound/ambience/hangar2.ogg',
+	'maplestation_modules/sound/ambience/hangar3.ogg',
+	'maplestation_modules/sound/ambience/hangar4.ogg',
+	'maplestation_modules/sound/ambience/hangar5.ogg',
+	'maplestation_modules/sound/ambience/hangar6.ogg',
+))
+
 GLOBAL_LIST_INIT(ambience_assoc,list(
 	AMBIENCE_AWAY = GLOB.away_ambience,
 	AMBIENCE_CREEPY = GLOB.creepy_ambience,
@@ -201,4 +244,7 @@ GLOBAL_LIST_INIT(ambience_assoc,list(
 	AMBIENCE_RUINS = GLOB.ruins_ambience,
 	AMBIENCE_SPACE = GLOB.space_ambience,
 	AMBIENCE_SPOOKY = GLOB.spooky_ambience,
+	AMBIENCE_DEPARTURES = GLOB.departures_ambience,
+	AMBIENCE_ARRIVALS = GLOB.arrivals_ambience,
+	AMBIENCE_COMMAND = GLOB.command_ambience,
 ))

@@ -1,0 +1,1 @@
+Speech sounds sourced from https://github.com/goonstation/goonstation/tree/master/sound/misc/talk licensed under CC-BY-NC-SA

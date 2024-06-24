@@ -156,6 +156,8 @@
 	base_icon_state = "tea"
 	inhand_icon_state = "coffee"
 	spillable = TRUE
+	drop_sound = 'sound/items/handling/drinkglass_drop.ogg'
+	pickup_sound = 'sound/items/handling/drinkglass_pickup.ogg'
 
 /obj/item/reagent_containers/cup/glass/mug/update_icon_state()
 	icon_state = "[base_icon_state][reagents.total_volume ? null : "_empty"]"
@@ -366,6 +368,8 @@
 	volume = 10
 	spillable = TRUE
 	isGlass = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
 
 /obj/item/reagent_containers/cup/glass/sillycup/update_icon_state()
 	icon_state = reagents.total_volume ? "water_cup" : "water_cup_e"
@@ -435,6 +439,8 @@
 	amount_per_transfer_from_this = 10
 	volume = 100
 	isGlass = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 
 /obj/item/reagent_containers/cup/glass/shaker/Initialize(mapload)
 	. = ..()
@@ -452,6 +458,8 @@
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT*2.5)
 	volume = 60
 	isGlass = FALSE
+	drop_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 
 /obj/item/reagent_containers/cup/glass/flask/gold
 	name = "captain's flask"

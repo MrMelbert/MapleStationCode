@@ -97,7 +97,7 @@
 		if(!energy_gun.can_charge)
 			to_chat(user, span_notice("Your gun has no external power connector."))
 			return TRUE
-	user.transferItemToLoc(attacking_item, src)
+	user.transferItemToLoc(attacking_item, src, silent = FALSE)
 	return TRUE
 
 /obj/machinery/recharger/wrench_act(mob/living/user, obj/item/tool)

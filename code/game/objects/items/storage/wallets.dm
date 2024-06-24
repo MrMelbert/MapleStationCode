@@ -5,6 +5,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
 	slot_flags = ITEM_SLOT_ID
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 
 	var/obj/item/card/id/front_id = null
 	var/list/combined_access
@@ -174,4 +176,3 @@
 /obj/item/storage/wallet/money/PopulateContents()
 	for(var/iteration in 1 to pick(3, 4))
 		new /obj/item/holochip(src, rand(50, 450))
-

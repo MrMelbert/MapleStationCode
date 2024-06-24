@@ -89,6 +89,8 @@
 	clothing_flags = THICKMATERIAL | SNUG_FIT
 	armor_type = /datum/armor/utility_bomb_hood
 	flags_inv = HIDEFACE|HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_TEMP_PROTECT
@@ -168,6 +170,8 @@
 	equip_delay_other = 60
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
 /datum/armor/utility_radiation
 	bio = 60

@@ -62,6 +62,7 @@
 
 /obj/item/storage/box/papersack/Initialize(mapload)
 	. = ..()
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 	papersack_designs = sort_list(list(
 		"None" = image(icon = src.icon, icon_state = "paperbag_None"),
 		"NanotrasenStandard" = image(icon = src.icon, icon_state = "paperbag_NanotrasenStandard"),
@@ -339,6 +340,7 @@
 	. = ..()
 	atom_storage.set_holdable(list(/obj/item/food/bubblegum))
 	atom_storage.max_slots = 4
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 /obj/item/storage/box/gum/PopulateContents()
 	for(var/i in 1 to 4)
@@ -509,6 +511,7 @@
 /obj/item/storage/box/coffeepack/Initialize(mapload)
 	. = ..()
 	atom_storage.set_holdable(list(/obj/item/food/grown/coffee))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 /obj/item/storage/box/coffeepack/PopulateContents()
 	atom_storage.max_slots = 5

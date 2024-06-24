@@ -152,6 +152,8 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 	source = /datum/robot_energy_storage/material/iron
 	stairs_type = /obj/structure/stairs
 	sniffable = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/stack/sheet/iron/Initialize(mapload)
 	. = ..()
@@ -275,6 +277,8 @@ GLOBAL_LIST_INIT(plasteel_recipes, list ( \
 	tableVariant = /obj/structure/table/reinforced
 	material_flags = NONE
 	matter_amount = 12
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /datum/armor/sheet_plasteel
 	fire = 100
@@ -357,6 +361,8 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	grind_results = list(/datum/reagent/cellulose = 20) //no lignocellulose or lignin reagents yet,
 	walltype = /turf/closed/wall/mineral/wood
 	stairs_type = /obj/structure/stairs/wood
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /datum/armor/mineral_wood
 	fire = 50
@@ -405,6 +411,8 @@ GLOBAL_LIST_INIT(bamboo_recipes, list ( \
 	grind_results = list(/datum/reagent/cellulose = 10)
 	material_type = /datum/material/bamboo
 	walltype = /turf/closed/wall/mineral/bamboo
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /datum/armor/mineral_bamboo
 	fire = 50
@@ -528,6 +536,8 @@ GLOBAL_LIST_INIT(durathread_recipes, list ( \
 	throwforce = 0
 	merge_type = /obj/item/stack/sheet/cotton
 	grind_results = list(/datum/reagent/cellulose = 20)
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 	var/loom_result = /obj/item/stack/sheet/cloth
 	var/loom_time = 1 SECONDS
 
@@ -630,6 +640,8 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/cardboard
 	grind_results = list(/datum/reagent/cellulose = 10)
 	material_type = /datum/material/cardboard
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 
 /obj/item/stack/sheet/cardboard/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
 	. = ..()
@@ -799,6 +811,8 @@ GLOBAL_LIST_INIT(plastic_recipes, list(
 	throwforce = 7
 	material_type = /datum/material/plastic
 	merge_type = /obj/item/stack/sheet/plastic
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/stack/sheet/plastic/fifty
 	amount = 50
@@ -825,6 +839,8 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	resistance_flags = FLAMMABLE
 	grind_results = list(/datum/reagent/cellulose = 20)
 	material_type = /datum/material/paper
+	drop_sound = 'sound/items/handling/paper_drop.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 
 /obj/item/stack/sheet/paperframes/get_main_recipes()
 	. = ..()
@@ -846,6 +862,8 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	merge_type = /obj/item/stack/sheet/meat
 	material_type = /datum/material/meat
 	material_modifier = 1 //None of that wussy stuff
+	drop_sound = 'sound/effects/blobattack.ogg'
+	pickup_sound = 'sound/effects/blobattack.ogg'
 
 /obj/item/stack/sheet/meat/fifty
 	amount = 50
@@ -863,6 +881,8 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	merge_type = /obj/item/stack/sheet/pizza
 	material_type = /datum/material/pizza
 	material_modifier = 1
+	drop_sound = 'sound/effects/blobattack.ogg'
+	pickup_sound = 'sound/effects/blobattack.ogg'
 
 /obj/item/stack/sheet/pizza/fifty
 	amount = 50
@@ -880,6 +900,8 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	merge_type = /obj/item/stack/sheet/sandblock
 	material_type = /datum/material/sand
 	material_modifier = 1
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/stack/sheet/sandblock/fifty
 	amount = 50
@@ -900,6 +922,8 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	material_type = /datum/material/hauntium
 	material_modifier = 1 //None of that wussy stuff
 	grind_results = list(/datum/reagent/hauntium = 20)
+	drop_sound = 'sound/items/haunted/ghostitemattack.ogg'
+	pickup_sound = 'sound/items/haunted/ghostitemattack.ogg'
 
 /obj/item/stack/sheet/hauntium/fifty
 	amount = 50

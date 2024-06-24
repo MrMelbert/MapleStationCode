@@ -12,6 +12,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*2)
 	custom_price = PAYCHECK_COMMAND
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/autopsy_scanner/interact_with_atom(atom/interacting_with, mob/living/user)
 	if(!isliving(interacting_with))
@@ -39,6 +41,7 @@
 
 	user.visible_message(span_notice("[user] scans [M]'s cadaver."))
 	to_chat(user, span_deadsay("[icon2html(src, user)] ANALYZING CADAVER."))
+	playsound(user.loc, 'sound/items/healthanalyzer.ogg', 50)
 
 	healthscan(user, M, advanced = TRUE)
 

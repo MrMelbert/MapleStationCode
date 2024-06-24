@@ -69,6 +69,8 @@
 	icon_state = "botanyplasma"
 	greyscale_colors = "#3164ff"
 	clothing_traits = list(TRAIT_PLANT_SAFE)
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
 /obj/item/clothing/gloves/color/plasmaman/prototype
 	name = "prototype envirogloves"

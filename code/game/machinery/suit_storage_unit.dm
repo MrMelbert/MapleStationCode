@@ -742,35 +742,35 @@
 			if(suit)
 				to_chat(user, span_warning("The unit already contains a suit!."))
 				return
-			if(!user.transferItemToLoc(weapon, src))
+			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
 			suit = weapon
 		else if(istype(weapon, /obj/item/clothing/head))
 			if(helmet)
 				to_chat(user, span_warning("The unit already contains a helmet!"))
 				return
-			if(!user.transferItemToLoc(weapon, src))
+			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
 			helmet = weapon
 		else if(istype(weapon, /obj/item/clothing/mask))
 			if(mask)
 				to_chat(user, span_warning("The unit already contains a mask!"))
 				return
-			if(!user.transferItemToLoc(weapon, src))
+			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
 			mask = weapon
 		else if(istype(weapon, /obj/item/mod/control))
 			if(mod)
 				to_chat(user, span_warning("The unit already contains a MOD!"))
 				return
-			if(!user.transferItemToLoc(weapon, src))
+			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
 			mod = weapon
 		else
 			if(storage)
 				to_chat(user, span_warning("The auxiliary storage compartment is full!"))
 				return
-			if(!user.transferItemToLoc(weapon, src))
+			if(!user.transferItemToLoc(weapon, src, silent = FALSE))
 				return
 			storage = weapon
 

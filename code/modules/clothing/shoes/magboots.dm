@@ -14,6 +14,8 @@
 	resistance_flags = FIRE_PROOF
 
 	slowdown = SHOES_SLOWDOWN
+	drop_sound = 'maplestation_modules/sound/items/drop/boots.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/boots.ogg'
 	/// Whether the magpulse system is active
 	var/magpulse = FALSE
 	/// Slowdown applied wwhen magpulse is active. This is added onto existing slowdown
