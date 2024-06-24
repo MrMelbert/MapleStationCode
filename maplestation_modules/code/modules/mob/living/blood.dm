@@ -93,16 +93,17 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 		if(length(drop.random_icon_states))
 			// Handle adding a single drip to the base atom
-			var/image/drop_overlay = image(icon = drop.icon, icon_state = pick_n_take(drop.random_icon_states), layer = drop.layer, loc = drop)
-			SET_PLANE_EXPLICIT(drop_overlay, drop.plane, drop)
-			drop_overlay.appearance_flags |= RESET_COLOR // So each drop has its own color
-			drop_overlay.color = color
-			drop.add_overlay(drop_overlay)
+			// Makes use of viscontents so every drip can dry at an individual rate (with an individual color)
+			var/obj/effect/decal/cleanable/blood/drip/new_drop = new(drop)
+			new_drop.icon_state = pick_n_take(drop.random_icon_states)
+			new_drop.color = color
+			new_drop.vis_flags |= (VIS_INHERIT_LAYER|VIS_INHERIT_PLANE|VIS_INHERIT_ID)
+			new_drop.appearance_flags |= (RESET_COLOR)
+			new_drop.transfer_mob_blood_dna(bleeding)
+			drop.vis_contents += new_drop
 			// Handle adding blood to the base atom
 			drop.adjust_bloodiness(new_blood)
-			drop.drying_progress -= (new_blood * BLOOD_PER_UNIT_MODIFIER)
 			drop.transfer_mob_blood_dna(bleeding)
-			drop.update_blood_drying_effect()
 			return drop
 
 		temp_blood_DNA = GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
@@ -119,7 +120,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		splatter.drying_progress -= (BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
 		splatter.update_blood_drying_effect()
 	splatter.transfer_mob_blood_dna(bleeding) //give blood info to the blood decal.
-	if(temp_blood_DNA)
+	if(LAZYLEN(temp_blood_DNA))
 		splatter.add_blood_DNA(temp_blood_DNA)
 	return splatter
 
