@@ -5,6 +5,7 @@
 	// https://github.com/Baystation12/Baystation12/pull/601 ... I think
 	icon = 'maplestation_modules/icons/obj/ashtray.dmi'
 	icon_state = "ashtray"
+	base_icon_state = "ashtray"
 	force = 4
 	throwforce = 8
 	w_class = WEIGHT_CLASS_SMALL
@@ -84,17 +85,21 @@
 	if(. & ITEM_INTERACT_BLOCKING)
 		return .
 
-	if(!istype(tool, /obj/item/clothing/mask/cigarette) && !istype(tool, /obj/item/cigbutt) && !istype(tool, /obj/item/match))
+	if(!istype(tool, /obj/item/clothing/mask/cigarette) \
+		&& !istype(tool, /obj/item/cigbutt) \
+		&& !istype(tool, /obj/item/food/candy_trash) \
+		&& !istype(tool, /obj/item/match) \
+	)
 		return .
 
 	if(length(contents) > 24)
 		balloon_alert(user, "it's full!")
 		return ITEM_INTERACT_BLOCKING
 
-	if(!user.transferItemToLoc(tool, src))
+	if(!user.transferItemToLoc(tool, src, silent = FALSE))
 		return ITEM_INTERACT_BLOCKING
 
-	if(istype(tool, /obj/item/cigbutt) || istype(tool, /obj/item/match))
+	if(!istype(tool, /obj/item/clothing/mask/cigarette))
 		user.visible_message(
 			span_notice("[user] puts [tool] in [src]."),
 			span_notice("You put [tool] in [src]."),
@@ -107,7 +112,9 @@
 			span_rose("[user] stubs out [user.p_their()] [cig.name] in [src]."),
 			span_rose("You stub out your [cig.name] in [src]."),
 		)
-		new cig.type_butt(src)
+		var/obj/item/butt = new cig.type_butt(src)
+		cig.transfer_fingerprints_to(butt)
+		cig.transfer_fibers_to(butt)
 		qdel(cig)
 
 	else
@@ -135,7 +142,7 @@
 		var/list/scatter_vector = scatter_gen.Rand()
 		shard.pixel_x = scatter_vector[1]
 		shard.pixel_y = scatter_vector[2]
-	playsound(drop_loc, 'sound/items/ceramic_break.ogg', 60, TRUE)
+	playsound(drop_loc, 'sound/items/ceramic_break.ogg', 33, TRUE)
 	return ..()
 
 /obj/item/ashtray/dump_contents()
@@ -204,9 +211,9 @@
 	. = ..()
 	switch(length(contents))
 		if(1 to 12)
-			. += "ashtray_half"
+			. += mutable_appearance(icon, "[base_icon_state]_half", appearance_flags = RESET_COLOR)
 		if(13 to INFINITY)
-			. += "ashtray_full"
+			. += mutable_appearance(icon, "[base_icon_state]_full", appearance_flags = RESET_COLOR)
 
 /obj/item/ashtray/attack_hand_secondary(mob/user, list/modifiers)
 	. = ..()
