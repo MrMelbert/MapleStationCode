@@ -7,6 +7,8 @@
 	freqlock = RADIO_FREQENCY_LOCKED
 	light_power = 1
 	light_range = 1.6
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/radio/weather_monitor/update_overlays()
 	. = ..()

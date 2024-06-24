@@ -16,6 +16,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	obj_flags = UNIQUE_RENAME
 	wound_bonus = -10
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 	/// boolean on whether it's allowed to be picked from the nullrod's transformation ability
 	var/chaplain_spawnable = TRUE
 	/// Short description of what this item is capable of, for radial menu uses.
@@ -124,6 +125,8 @@
 	block_chance = 50
 	block_sound = 'sound/weapons/genhit.ogg'
 	menu_description = "A red staff which provides a medium chance of blocking incoming attacks via a protective red aura around its user, but deals very low amount of damage. Can be worn only on the back."
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 	/// The icon which appears over the mob holding the item
 	var/shield_icon = "shield-red"
 
@@ -157,6 +160,9 @@
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	menu_description = "A sharp claymore which provides a low chance of blocking incoming melee attacks. Can be worn on the back or belt."
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/claymore/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
 	if(attack_type == PROJECTILE_ATTACK || attack_type == LEAP_ATTACK)
@@ -190,6 +196,8 @@
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1.5 //slower than a real saw
 	menu_description = "A sharp chainsaw sword which provides a low chance of blocking incoming melee attacks. Can be used as a slower saw tool. Can be worn on the belt."
+	drop_sound = /obj/item/chainsaw::drop_sound
+	pickup_sound = /obj/item/chainsaw::pickup_sound
 
 /obj/item/nullrod/claymore/glowing
 	name = "force weapon"
@@ -234,6 +242,8 @@
 	hitsound = 'sound/weapons/blade1.ogg'
 	block_sound = 'sound/weapons/block_blade.ogg'
 	menu_description = "A sharp energy sword which provides a low chance of blocking incoming melee attacks. Can be worn on the belt."
+	drop_sound = null
+	pickup_sound = null
 
 /obj/item/nullrod/claymore/saber/red
 	name = "dark energy sword"
@@ -265,6 +275,9 @@
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	menu_description = "An odd s(w)ord dealing a laughable amount of damage. Fits in pockets. Can be worn on the belt."
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword3.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/sord/suicide_act(mob/living/user) //a near-exact copy+paste of the actual sord suicide_act()
 	user.visible_message(span_suicide("[user] is trying to impale [user.p_them()]self with [src]! It might be a suicide attempt if it weren't so HOLY."), \
@@ -288,6 +301,9 @@
 	attack_verb_simple = list("chop", "slice", "cut", "zandatsu")
 	hitsound = 'sound/weapons/rapierhit.ogg'
 	menu_description = "A sharp blade which partially penetrates armor. Very effective at butchering bodies. Can be worn on the back."
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword2.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/vibro/Initialize(mapload)
 	. = ..()
@@ -341,6 +357,8 @@
 	tool_behaviour = TOOL_SAW
 	toolspeed = 0.5 //same speed as an active chainsaw
 	chaplain_spawnable = FALSE //prevents being pickable as a chaplain weapon (it has 30 force)
+	drop_sound = /obj/item/chainsaw::drop_sound
+	pickup_sound = /obj/item/chainsaw::pickup_sound
 
 /obj/item/nullrod/hammer
 	name = "relic war hammer"
@@ -355,6 +373,8 @@
 	attack_verb_continuous = list("smashes", "bashes", "hammers", "crunches")
 	attack_verb_simple = list("smash", "bash", "hammer", "crunch")
 	menu_description = "A war hammer. Capable of tapping knees to measure brain health. Can be worn on the belt."
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/nullrod/hammer/Initialize(mapload)
 	. = ..()
@@ -378,6 +398,8 @@
 	tool_behaviour = TOOL_SAW
 	toolspeed = 2 //slower than a real saw
 	menu_description = "An undroppable sharp chainsaw hand. Can be used as a very slow saw tool. Capable of slowly butchering bodies. Disappears if the arm holding it is cut off."
+	drop_sound = /obj/item/chainsaw::drop_sound
+	pickup_sound = /obj/item/chainsaw::pickup_sound
 
 /obj/item/nullrod/chainsaw/Initialize(mapload)
 	. = ..()
@@ -403,6 +425,8 @@
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	menu_description = "A sharp dagger. Fits in pockets. Can be worn on the belt. Honk."
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife1.ogg'
 
 #define CHEMICAL_TRANSFER_CHANCE 30
 
@@ -423,6 +447,8 @@
 	attack_verb_simple = list("attack", "smash", "crush", "splatter", "crack")
 	hitsound = 'sound/weapons/blade1.ogg'
 	menu_description = "A hammer dealing a little less damage due to its user's pride. Has a low chance of transferring some of the user's reagents to the target. Capable of tapping knees to measure brain health. Can be worn on the back."
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/nullrod/pride_hammer/Initialize(mapload)
 	. = ..()
@@ -450,6 +476,8 @@
 	attack_verb_simple = list("whip", "lash")
 	hitsound = 'sound/weapons/chainhit.ogg'
 	menu_description = "A whip. Deals extra damage to vampires. Fits in pockets. Can be worn on the belt."
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
 /obj/item/nullrod/fedora
 	name = "atheist's fedora"
@@ -469,6 +497,8 @@
 	attack_verb_continuous = list("enlightens", "redpills")
 	attack_verb_simple = list("enlighten", "redpill")
 	menu_description = "A sharp fedora dealing a very high amount of throw damage, but none of melee. Fits in pockets. Can be worn on the head, obviously."
+	drop_sound = /obj/item/clothing/head/fedora::drop_sound
+	pickup_sound = /obj/item/clothing/head/fedora::pickup_sound
 
 /obj/item/nullrod/fedora/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is killing [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to get further from god!"))
@@ -520,6 +550,8 @@
 	attack_verb_simple = list("bite", "eat", "fin slap")
 	hitsound = 'sound/weapons/bite.ogg'
 	menu_description = "A plushie dealing a little less damage due to its cute form. Capable of blessing one person with the Carp-Sie favor, which grants friendship of all wild space carps. Fits in pockets. Can be worn on the belt."
+	drop_sound = /obj/item/toy/plush::drop_sound
+	pickup_sound = /obj/item/toy/plush::pickup_sound
 
 /obj/item/nullrod/carp/Initialize(mapload)
 	. = ..()
@@ -544,6 +576,8 @@
 	lefthand_file = 'icons/mob/inhands/weapons/staves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/staves_righthand.dmi'
 	menu_description = "A staff which provides a medium-low chance of blocking incoming melee attacks and deals a little less damage due to being made of wood. Can be worn on the back."
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/nullrod/tribal_knife
 	name = "arrhythmic knife"
@@ -561,6 +595,8 @@
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	item_flags = SLOWS_WHILE_IN_HAND
 	menu_description = "A sharp knife. Randomly speeds or slows its user at a regular intervals. Capable of butchering bodies. Cannot be worn anywhere."
+	drop_sound = 'maplestation_modules/sound/items/drop/knife3.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
 
 /obj/item/nullrod/tribal_knife/Initialize(mapload)
 	. = ..()
@@ -597,6 +633,9 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	menu_description = "A sharp pitchfork. Can be worn on the back."
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
 
 /obj/item/nullrod/egyptian
 	name = "egyptian staff"
@@ -612,6 +651,8 @@
 	attack_verb_continuous = list("bashes", "smacks", "whacks")
 	attack_verb_simple = list("bash", "smack", "whack")
 	menu_description = "A staff. Can be used as a tool to craft exclusive egyptian items. Easily stored. Can be worn on the back."
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/nullrod/hypertool
 	name = "hypertool"
@@ -629,6 +670,8 @@
 	attack_verb_simple = list("pulse", "mend", "cut")
 	hitsound = 'sound/effects/sparks4.ogg'
 	menu_description = "A tool dealing brain damage which partially penetrates armor. Fits in pockets. Can be worn on the belt."
+	drop_sound = /obj/item/multitool::drop_sound
+	pickup_sound = /obj/item/multitool::pickup_sound
 
 /obj/item/nullrod/spear
 	name = "ancient spear"
@@ -646,3 +689,5 @@
 	attack_verb_simple = list("stab", "poke", "slash", "clock")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	menu_description = "A pointy spear which penetrates armor a little. Can be worn only on the belt."
+	drop_sound = /obj/item/melee/ratvar_spear::drop_sound
+	pickup_sound = /obj/item/melee/ratvar_spear::pickup_sound

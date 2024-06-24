@@ -104,6 +104,8 @@
 	foodtypes = SUGAR //We use SUGAR as a base line to act in as junkfood, other wise we use fruit
 	food_flags = FOOD_FINGER_FOOD
 	crafting_complexity = FOOD_COMPLEXITY_2
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
 
 /obj/item/food/snowcones/lime
 	name = "lime snowcone"
@@ -330,6 +332,8 @@
 	foodtypes = DAIRY | SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	crafting_complexity = FOOD_COMPLEXITY_3
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
 
 	var/overlay_state = "creamsicle_o" //This is the edible part of the popsicle.
 	var/bite_states = 4 //This value value is used for correctly setting the bite_consumption to ensure every bite changes the sprite. Do not set to zero.
@@ -365,6 +369,8 @@
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_TINY
 	force = 0
+	drop_sound = 'maplestation_modules/sound/items/drop/papercup.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/papercup.ogg'
 
 /obj/item/food/popsicle/creamsicle_orange
 	name = "orange creamsicle"

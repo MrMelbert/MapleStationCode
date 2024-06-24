@@ -67,6 +67,8 @@
 	desc = "Fire at your fingertips!"
 	inhand_icon_state = "nothing"
 	item_flags = EXAMINE_SKIP | ABSTRACT
+	light_sound_on = null
+	light_sound_off = null
 
 /obj/item/lighter/finger/ignition_effect(atom/A, mob/user)
 	if(get_temperature())
@@ -89,6 +91,8 @@
 	icon_state = "fire"
 	inhand_icon_state = "nothing"
 	item_flags = EXAMINE_SKIP | ABSTRACT
+	light_sound_on = null
+	light_sound_off = null
 	/// World.time we were last lit.
 	VAR_FINAL/world_time_lit = -1
 	/// Tracks seconds between times we've burned someone holding the flame.

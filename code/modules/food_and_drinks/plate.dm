@@ -4,6 +4,8 @@
 	icon = 'icons/obj/service/kitchen.dmi'
 	icon_state = "plate"
 	w_class = WEIGHT_CLASS_BULKY //No backpack.
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 	///How many things fit on this plate?
 	var/max_items = 8
 	///The offset from side to side the food items can have on the plate
@@ -113,22 +115,28 @@
 	max_x_offset = 4
 	max_height_offset = 5
 	biggest_w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/plate_shard
 	name = "ceramic shard"
 	icon = 'icons/obj/service/kitchen.dmi'
 	icon_state = "plate_shard1"
 	base_icon_state = "plate_shard"
+	hitsound = 'sound/weapons/bladeslice.ogg'
 	w_class = WEIGHT_CLASS_TINY
 	force = 5
 	throwforce = 5
 	sharpness = SHARP_EDGED
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
 	/// How many variants of shard there are
 	var/variants = 5
 
 /obj/item/plate_shard/Initialize(mapload)
 	. = ..()
 
-	AddComponent(/datum/component/caltrop, min_damage = force)
+	AddComponent(/datum/component/caltrop, min_damage = force, paralyze_duration = 2 SECONDS, soundfile = hitsound)
 
-	icon_state = "[base_icon_state][pick(1,variants)]"
+	icon_state = "[base_icon_state][rand(1, variants)]"

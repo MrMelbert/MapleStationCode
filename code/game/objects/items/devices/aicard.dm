@@ -11,6 +11,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_BELT
 	item_flags = NOBLUDGEON
+	drop_sound = 'maplestation_modules/sound/items/drop/card.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
 	var/flush = FALSE
 	var/mob/living/silicon/ai/AI
 

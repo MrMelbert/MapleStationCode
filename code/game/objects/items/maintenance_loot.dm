@@ -20,6 +20,8 @@
 	wound_bonus = 20
 	demolition_mod = 1.25
 	grind_results = list(/datum/reagent/lead = 20)
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 //A good battery early in the shift. Source of lead & sulfuric acid reagents.
 //Add lead material to this once implemented.

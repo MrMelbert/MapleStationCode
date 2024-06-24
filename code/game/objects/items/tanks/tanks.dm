@@ -28,6 +28,10 @@
 	actions_types = list(/datum/action/item_action/set_internals)
 	armor_type = /datum/armor/item_tank
 	integrity_failure = 0.5
+	drop_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gascan.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
+
 	/// If we are in the process of exploding, stops multi explosions
 	var/igniting = FALSE
 	/// The gases this tank contains. Don't modify this directly, use return_air() to get it instead

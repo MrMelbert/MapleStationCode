@@ -10,6 +10,9 @@
 	possible_transfer_amounts = list(5, 10, 15, 25, 50)
 	volume = 50
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
+
 
 /obj/item/reagent_containers/cup/bottle/Initialize(mapload)
 	. = ..()

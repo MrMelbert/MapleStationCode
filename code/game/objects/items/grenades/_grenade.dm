@@ -18,6 +18,9 @@
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
 	max_integrity = 40
+	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
+
 	/// Bitfields which prevent the grenade from detonating if set. Includes ([GRENADE_DUD]|[GRENADE_USED])
 	var/dud_flags = NONE
 	///Is this grenade currently armed?

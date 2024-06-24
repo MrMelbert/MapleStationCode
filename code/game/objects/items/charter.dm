@@ -4,6 +4,8 @@
 	icon_state = "charter"
 	desc = "An official document entrusting the governance of the station \
 		and surrounding space to the Captain."
+	drop_sound = 'sound/items/handling/paper_drop.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	var/used = FALSE
 	var/name_type = "station"
 
@@ -107,6 +109,8 @@
 	desc = "A cunning device used to claim ownership of celestial bodies."
 	w_class = WEIGHT_CLASS_HUGE
 	force = 15
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 
 /obj/item/station_charter/banner/rename_station(designation, uname, ureal_name, ukey)
 	set_station_name(designation)

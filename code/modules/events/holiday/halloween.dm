@@ -63,3 +63,4 @@
 		/obj/item/food/chocolatebar,
 		/obj/item/organ/internal/brain ) // OH GOD THIS ISN'T CANDY!
 		new type(src)
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
