@@ -46,6 +46,8 @@
 #define debug_world_log(msg) if (GLOB.Debug2) log_world("DEBUG: [msg]")
 /// Adds a generic box around whatever message you're sending in chat. Really makes things stand out.
 #define examine_block(str) ("<div class='examine_block'>" + str + "</div>")
+/// Emboldens runechat messages
+#define RUNECHAT_BOLD(str) "+[str]+"
 /// Makes a horizontal line with text in the middle
 #define separator_hr(str) ("<div class='separator'>" + str + "</div>")
 /// Helper which creates a chat message which may have a tooltip in some contexts, but not others.
