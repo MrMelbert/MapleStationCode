@@ -42,7 +42,9 @@
 	var/fire_sound = 'sound/weapons/sonic_jackhammer.ogg'
 	var/spin_item = TRUE //Do the projectiles spin when launched?
 	trigger_guard = TRIGGER_GUARD_NORMAL
-
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 /datum/armor/item_pneumatic_cannon
 	fire = 60
@@ -281,7 +283,7 @@
 		if(tank)
 			to_chat(user, span_warning("\The [src] already has a tank."))
 			return
-		if(!user.transferItemToLoc(thetank, src))
+		if(!user.transferItemToLoc(thetank, src, silent = FALSE))
 			return
 		to_chat(user, span_notice("You hook \the [thetank] up to \the [src]."))
 		tank = thetank

@@ -1,21 +1,6 @@
 /datum/emote/living/carbon/human
 	mob_type_allowed_typecache = list(/mob/living/carbon/human)
 
-/datum/emote/living/carbon/human/cry
-	key = "cry"
-	key_third_person = "cries"
-	message = "cries."
-	message_mime = "sobs silently."
-	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
-	stat_allowed = SOFT_CRIT
-
-/datum/emote/living/carbon/human/cry/run_emote(mob/user, params, type_override, intentional)
-	. = ..()
-	if(!ishuman(user))
-		return
-	var/mob/living/carbon/human/human_user = user
-	QDEL_IN(human_user.give_emote_overlay(/datum/bodypart_overlay/simple/emote/cry), 12.8 SECONDS)
-
 /datum/emote/living/carbon/human/dap
 	key = "dap"
 	key_third_person = "daps"
@@ -117,6 +102,10 @@
 	message_param = "salutes to %t."
 	hands_use_check = TRUE
 	sound = 'sound/misc/salute.ogg'
+
+/datum/emote/living/carbon/human/salute/should_play_sound(mob/living/carbon/human/user, intentional)
+	// Only play the shoe scuff sound if they're wearing shoes
+	return istype(user.shoes, /obj/item/clothing/shoes) && ..()
 
 /datum/emote/living/carbon/human/shrug
 	key = "shrug"

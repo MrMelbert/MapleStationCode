@@ -5,6 +5,8 @@
 	inhand_icon_state = null
 	novariants = TRUE
 	merge_type = /obj/item/stack/sheet/animalhide
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
 /obj/item/stack/sheet/animalhide/human
 	name = "human skin"
@@ -190,6 +192,8 @@ GLOBAL_LIST_INIT(carp_recipes, list ( \
 	icon_state = "sheet-leather"
 	inhand_icon_state = null
 	merge_type = /obj/item/stack/sheet/leather
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
 GLOBAL_LIST_INIT(leather_recipes, list ( \
 	new/datum/stack_recipe("wallet", /obj/item/storage/wallet, 1, check_density = FALSE, category = CAT_CONTAINERS), \

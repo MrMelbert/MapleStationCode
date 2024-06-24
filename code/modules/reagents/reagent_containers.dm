@@ -4,6 +4,8 @@
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = null
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 	/// The maximum amount of reagents per transfer that will be moved out of this reagent container.
 	var/amount_per_transfer_from_this = 5
 	/// Does this container allow changing transfer amounts at all, the container can still have only one possible transfer value in possible_transfer_amounts at some point even if this is true

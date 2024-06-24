@@ -12,6 +12,9 @@
 	force = 12 //9 hit crit
 	w_class = WEIGHT_CLASS_NORMAL
 	wound_bonus = 15
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
 
 	/// Whether this baton is active or not
 	var/active = TRUE
@@ -318,6 +321,9 @@
 	bare_wound_bonus = 5
 	clumsy_knockdown_time = 15 SECONDS
 	active = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 
 	/// The sound effecte played when our baton is extended.
 	var/on_sound = 'sound/weapons/batonextend.ogg'
@@ -427,6 +433,9 @@
 	on_stun_volume = 50
 	active = FALSE
 	context_living_rmb_active = "Harmful Stun"
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 
 	var/throw_stun_chance = 35
 	var/obj/item/stock_parts/cell/cell

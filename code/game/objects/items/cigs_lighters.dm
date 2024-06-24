@@ -136,6 +136,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	grind_results = list()
 	heat = 1000
 	throw_verb = "flick"
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 	/// Whether this cigarette has been lit.
 	VAR_FINAL/lit = FALSE
 	/// Whether this cigarette should start lit.
@@ -204,19 +206,20 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 	if(lit && iscarbon(loc))
 		make_mob_smoke(loc)
+	how_long_have_we_been_smokin = 0 SECONDS
 
 /obj/item/clothing/mask/cigarette/dropped(mob/dropee, silent)
 	. = ..()
 	// Moving the cigarette from mask to hands (or pocket I guess) will emit a larger puff of smoke
-	if(!QDELETED(src) && !QDELETED(dropee) && how_long_have_we_been_smokin >= 4 SECONDS && iscarbon(dropee) && iscarbon(loc))
+	if(!QDELETED(src) && !QDELETED(dropee) && how_long_have_we_been_smokin >= 6 SECONDS && iscarbon(dropee) && iscarbon(loc))
 		var/mob/living/carbon/smoker = dropee
 		// This relies on the fact that dropped is called before slot is nulled
 		if(src == smoker.wear_mask && !smoker.incapacitated())
 			long_exhale(smoker)
+		how_long_have_we_been_smokin = 0 SECONDS
 
 	UnregisterSignal(dropee, list(COMSIG_HUMAN_FORCESAY, COMSIG_ATOM_DIR_CHANGE))
 	QDEL_NULL(mob_smoke)
-	how_long_have_we_been_smokin = 0 SECONDS
 
 /obj/item/clothing/mask/cigarette/proc/on_forcesay(mob/living/source)
 	SIGNAL_HANDLER
@@ -313,6 +316,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		update_appearance(UPDATE_ICON)
 		return
 
+	playsound(src, 'maplestation_modules/sound/items/cig_light.ogg', 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	attack_verb_continuous = string_list(list("burns", "singes"))
 	attack_verb_simple = string_list(list("burn", "singe"))
 	hitsound = 'sound/items/welder.ogg'
@@ -348,6 +352,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	. = ..()
 	if(!lit)
 		return
+	playsound(src, 'maplestation_modules/sound/items/cig_snuff.ogg', 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	attack_verb_continuous = null
 	attack_verb_simple = null
 	hitsound = null
@@ -363,6 +368,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	QDEL_NULL(mob_smoke)
 
 /obj/item/clothing/mask/cigarette/proc/long_exhale(mob/living/carbon/smoker)
+	playsound(smoker, 'maplestation_modules/sound/items/inhale.ogg', 33, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	smoker.visible_message(
 		span_notice("[smoker] exhales a large cloud of smoke from [src]."),
 		span_notice("You exhale a large cloud of smoke from [src]."),
@@ -378,7 +384,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/proc/handle_reagents(seconds_per_tick)
 	if(!reagents.total_volume)
 		return
-	how_long_have_we_been_smokin += seconds_per_tick * (1 SECONDS)
 	reagents.expose_temperature(heat, 0.05)
 	if(!reagents.total_volume) //may have reacted and gone to 0 after expose_temperature
 		return
@@ -403,6 +408,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			reagents.remove_any(to_smoke)
 			return
 
+	how_long_have_we_been_smokin += seconds_per_tick * (1 SECONDS)
 	reagents.expose(smoker, INGEST, min(to_smoke / reagents.total_volume, 1))
 	var/obj/item/organ/internal/lungs/lungs = smoker.get_organ_slot(ORGAN_SLOT_LUNGS)
 	if(lungs && IS_ORGANIC_ORGAN(lungs))
@@ -435,19 +441,40 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	return ..()
 
 /obj/item/clothing/mask/cigarette/proc/put_out(mob/user, done_early = FALSE)
+	if(isnull(user) && ismob(loc))
+		user = loc
 	var/atom/location = drop_location()
 	if(!isnull(user))
 		if(done_early)
 			if(isfloorturf(location) && location.has_gravity())
 				user.visible_message(span_notice("[user] calmly drops and treads on [src], putting it out instantly."))
 				new /obj/effect/decal/cleanable/ash(location)
-				long_exhale(user)
+				if(how_long_have_we_been_smokin >= 2 SECONDS)
+					long_exhale(user)
 			else
 				user.visible_message(span_notice("[user] pinches out [src]."))
 			how_long_have_we_been_smokin = 0 SECONDS
 		else
 			to_chat(user, span_notice("Your [name] goes out."))
-	new type_butt(location)
+
+	var/obj/item/butt = new type_butt(location)
+	transfer_fingerprints_to(butt)
+	transfer_fibers_to(butt)
+
+	if((butt.slot_flags & ITEM_SLOT_MASK) && (src == user?.get_item_by_slot(ITEM_SLOT_MASK)))
+		user.temporarilyRemoveItemFromInventory(src,
+			force = TRUE,
+		)
+		user.equip_to_slot_if_possible(butt,
+			slot = ITEM_SLOT_MASK,
+			qdel_on_fail = FALSE,
+			disable_warning = TRUE,
+			bypass_equip_delay_self = TRUE,
+			initial = TRUE,
+			indirect_action = TRUE,
+		)
+
+	playsound(src, 'maplestation_modules/sound/items/cig_snuff.ogg', 33, TRUE)
 	qdel(src)
 
 /obj/item/clothing/mask/cigarette/attack(mob/living/carbon/M, mob/living/carbon/user)
@@ -684,6 +711,14 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	grind_results = list(/datum/reagent/carbon = 2)
+	slot_flags = ITEM_SLOT_MASK
+	worn_icon_state = "lollipop_stick" // Lazy
+
+/obj/item/cigbutt/equipped(mob/user, slot, initial)
+	// Lazily initing these components because there's no need to do it for every single cigarette butt
+	AddComponent(/datum/component/knockoff, 90, list(BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_HEAD, BODY_ZONE_CHEST), slot_flags)
+	AddComponent(/datum/component/wearertargeting/knockoff_move, 1, list(slot_flags), "falls out of your mouth!")
+	return ..()
 
 /obj/item/cigbutt/cigarbutt
 	name = "cigar butt"
@@ -795,6 +830,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	light_power = 0.6
 	light_color = LIGHT_COLOR_FIRE
 	light_on = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 	/// Whether the lighter is lit.
 	var/lit = FALSE
 	/// Whether the lighter is fancy. Fancy lighters have fancier flavortext and won't burn thumbs.
@@ -808,6 +845,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		"thirteen",
 		"snake"
 		)
+	/// The sounds played when the lighter is turned on.
+	var/list/light_sound_on = list('maplestation_modules/sound/items/lighters/zippo_on.ogg')
+	/// The sounds played when the lighter is turned off.
+	var/list/light_sound_off = list('maplestation_modules/sound/items/lighters/zippo_off.ogg')
 
 /obj/item/lighter/Initialize(mapload)
 	. = ..()
@@ -824,7 +865,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /// Destroy the lighter when it's shot by a bullet
 /obj/item/lighter/proc/on_intercepted_bullet(mob/living/victim, obj/projectile/bullet)
 	victim.visible_message(span_warning("\The [bullet] shatters on [victim]'s lighter!"))
-	playsound(victim, get_sfx(SFX_RICOCHET), 100, TRUE)
+	playsound(victim, SFX_RICOCHET, 100, TRUE)
 	new /obj/effect/decal/cleanable/oil(get_turf(src))
 	do_sparks(1, TRUE, src)
 	victim.dropItemToGround(src, force = TRUE, silent = TRUE)
@@ -890,6 +931,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return ..()
 	if(lit)
 		set_lit(FALSE)
+		if(LAZYLEN(light_sound_off))
+			playsound(src, pick(light_sound_off), 50, TRUE)
 		if(fancy)
 			user.visible_message(
 				span_notice("You hear a quiet click, as [user] shuts off [src] without even looking at what [user.p_theyre()] doing. Wow."),
@@ -903,6 +946,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		return
 
 	set_lit(TRUE)
+	if(LAZYLEN(light_sound_on))
+		playsound(src, pick(light_sound_on), 50, TRUE)
 	if(fancy)
 		user.visible_message(
 			span_notice("Without even breaking stride, [user] flips open and lights [src] in one smooth movement."),
@@ -976,6 +1021,15 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		"matte",
 		"zoppo" //u cant stoppo th zoppo
 		)
+
+	light_sound_on = list(
+		'maplestation_modules/sound/items/lighters/cheap_on1.ogg',
+		'maplestation_modules/sound/items/lighters/cheap_on2.ogg',
+		'maplestation_modules/sound/items/lighters/cheap_on3.ogg',
+	)
+	light_sound_off = list(
+		'maplestation_modules/sound/items/lighters/cheap_off.ogg',
+	)
 
 	/// The color of the lighter.
 	var/lighter_color

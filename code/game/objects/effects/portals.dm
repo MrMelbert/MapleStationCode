@@ -6,6 +6,8 @@
 	var/obj/effect/portal/P2 = new newtype(actual_destination, _lifespan, P1, TRUE, null)
 	if(!istype(P1) || !istype(P2))
 		return
+	playsound(P1, SFX_PORTAL_CREATED, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(P2, SFX_PORTAL_CREATED, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	P1.link_portal(P2)
 	P1.hardlinked = TRUE
 	return list(P1, P2)
@@ -42,7 +44,7 @@
 	/// Does this portal bypass teleport restrictions? like TRAIT_NO_TELEPORT and NOTELEPORT flags.
 	var/force_teleport = FALSE
 	/// Does this portal create spark effect when teleporting?
-	var/sparkless = FALSE
+	var/sparkless = TRUE
 	/// If FALSE, the wibble filter will not be applied to this portal (only a visual effect).
 	var/wibbles = TRUE
 
@@ -98,13 +100,17 @@
 		. = INITIALIZE_HINT_QDEL
 		CRASH("Somebody fucked up.")
 	if(_lifespan > 0)
-		QDEL_IN(src, _lifespan)
+		addtimer(CALLBACK(src, PROC_REF(expire)), _lifespan, TIMER_DELETE_ME)
 	link_portal(_linked)
 	hardlinked = automatic_link
 	if(isturf(hard_target_override))
 		hard_target = hard_target_override
 	if(wibbles)
 		apply_wibbly_filters(src)
+
+/obj/effect/portal/proc/expire()
+	playsound(loc, SFX_PORTAL_CLOSE, 50, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+	qdel(src)
 
 /obj/effect/portal/singularity_pull()
 	return
@@ -146,6 +152,8 @@
 			var/obj/projectile/P = M
 			P.ignore_source_check = TRUE
 		new /obj/effect/temp_visual/portal_animation(start_turf, src, M)
+		playsound(start_turf, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		playsound(real_target, SFX_PORTAL_ENTER, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		return TRUE
 	return FALSE
 

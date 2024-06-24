@@ -135,7 +135,7 @@
 
 	return randname
 
-/datum/species/plasmaman/get_scream_sound(mob/living/carbon/human)
+/datum/species/plasmaman/get_scream_sound(mob/living/carbon/human/plasmaman)
 	return pick(
 		'sound/voice/plasmaman/plasmeme_scream_1.ogg',
 		'sound/voice/plasmaman/plasmeme_scream_2.ogg',

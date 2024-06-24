@@ -90,7 +90,7 @@ This will not clean any inverted reagents. Inverted reagents will still be corre
 	if(is_reagent_container(item) && !(item.item_flags & ABSTRACT) && item.is_open_container())
 		var/obj/item/reagent_containers/beaker = item
 		. = TRUE //no afterattack
-		if(!user.transferItemToLoc(beaker, src))
+		if(!user.transferItemToLoc(beaker, src, silent = FALSE))
 			return
 		replace_beaker(user, BEAKER1, beaker)
 		to_chat(user, span_notice("You add [beaker] to [src]."))
@@ -111,7 +111,7 @@ This will not clean any inverted reagents. Inverted reagents will still be corre
 
 	if(is_reagent_container(item) && !(item.item_flags & ABSTRACT) && item.is_open_container())
 		var/obj/item/reagent_containers/beaker = item
-		if(!user.transferItemToLoc(beaker, src))
+		if(!user.transferItemToLoc(beaker, src, silent = FALSE))
 			return
 		replace_beaker(user, BEAKER2, beaker)
 		to_chat(user, span_notice("You add [beaker] to [src]."))

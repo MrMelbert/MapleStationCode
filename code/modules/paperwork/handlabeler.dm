@@ -4,6 +4,8 @@
 	icon = 'icons/obj/service/bureaucracy.dmi'
 	icon_state = "labeler0"
 	inhand_icon_state = null
+	drop_sound = 'sound/items/handling/tape_drop.ogg'
+	pickup_sound = 'sound/items/handling/tape_pickup.ogg'
 	var/label = null
 	var/labels_left = 30
 	var/mode = 0

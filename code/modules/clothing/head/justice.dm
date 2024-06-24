@@ -6,6 +6,8 @@
 	clothing_flags = SNUG_FIT
 	flags_inv = HIDEHAIR|HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES
+	drop_sound = 'maplestation_modules/sound/items/drop/helm.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/helm.ogg'
 
 /obj/item/clothing/head/costume/justice/blue
 	icon_state = "justiceblue"

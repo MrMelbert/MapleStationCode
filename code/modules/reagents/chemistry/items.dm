@@ -14,6 +14,8 @@
 	item_flags = NOBLUDGEON
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'sound/items/handling/book_drop.ogg'
+	pickup_sound = 'sound/items/handling/book_pickup.ogg'
 	///How many pages the booklet holds
 	var/number_of_pages = 50
 
@@ -75,6 +77,8 @@
 	color = "#f5c352"
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'sound/items/handling/paper_drop.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	///If the paper was used, and therefore cannot change color again
 	var/used = FALSE
 

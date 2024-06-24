@@ -57,6 +57,19 @@
 		apply_organ_damage(decay_factor * maxHealth * seconds_per_tick)
 		return
 
+	if((organ_flags & (ORGAN_ORGANIC|ORGAN_IRRADIATED)) == (ORGAN_ORGANIC|ORGAN_IRRADIATED))
+		if(SPT_PROB(50, seconds_per_tick) && (isnull(owner) || !HAS_TRAIT(owner, TRAIT_HALT_RADIATION_EFFECTS)))
+			apply_organ_damage(2 * decay_factor * maxHealth * seconds_per_tick)
+			// Chance to gain some free tox damage when taking irradiation organ damage, 50% chance on that to actually feel it
+			if(prob(10) && owner?.apply_damage(1 * seconds_per_tick, TOX, zone) > 0 && owner.stat <= SOFT_CRIT && prob(50))
+				if(owner.can_feel_pain())
+					to_chat(owner, span_warning("You feel a slight [pick("pain", "twinge", "throb", "ache")] in your [parse_zone(zone)]."))
+					owner.cause_pain(zone, 2, BURN)
+				else
+					to_chat(owner, span_warning("You feel a bit nauseous."))
+					owner.adjust_disgust(10 * seconds_per_tick)
+		return
+
 	if(!damage) // No sense healing if you're not even hurt bro
 		return
 

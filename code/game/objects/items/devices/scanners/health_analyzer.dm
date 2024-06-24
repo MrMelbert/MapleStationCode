@@ -24,6 +24,9 @@
 	throw_speed = 3
 	throw_range = 7
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT *2)
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+
 	var/mode = SCANNER_VERBOSE
 	var/scanmode = SCANMODE_HEALTH
 	var/advanced = FALSE
@@ -150,12 +153,8 @@
 
 	render_list += "[span_info("Analyzing results for [target]:")]\n<span class='info ml-1'>Overall status: [mob_status]</span>\n"
 
-	if(ishuman(target))
-		var/mob/living/carbon/human/humantarget = target
-		if(humantarget.undergoing_cardiac_arrest() && humantarget.stat != DEAD)
-			render_list += "<span class='alert ml-1'><b>Subject suffering from heart attack: Apply defibrillation or other electric shock immediately!</b></span>\n"
-		if(humantarget.has_reagent(/datum/reagent/inverse/technetium))
-			advanced = TRUE
+	if(target.has_reagent(/datum/reagent/inverse/technetium))
+		advanced = TRUE
 
 	SEND_SIGNAL(target, COMSIG_LIVING_HEALTHSCAN, render_list, advanced, user, mode)
 
@@ -202,9 +201,6 @@
 			render_list += "<span class='info ml-1'>Subject Major Disabilities: [carbontarget.get_quirk_string(FALSE, CAT_QUIRK_MAJOR_DISABILITY, from_scan = TRUE)].</span>\n"
 			if(advanced)
 				render_list += "<span class='info ml-1'>Subject Minor Disabilities: [carbontarget.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY, TRUE)].</span>\n"
-
-	if (HAS_TRAIT(target, TRAIT_IRRADIATED))
-		render_list += "<span class='alert ml-1'>Subject is irradiated. Supply toxin healing.</span>\n"
 
 	//Eyes and ears
 	if(advanced && iscarbon(target))
@@ -267,59 +263,58 @@
 
 	if(ishuman(target))
 		var/mob/living/carbon/human/humantarget = target
-
 		// Organ damage, missing organs
-		if(humantarget.organs && humantarget.organs.len)
-			var/render = FALSE
-			var/toReport = "<span class='info ml-1'>Organs:</span>\
-				<table class='ml-2'><tr>\
-				<td style='width:6em;'><font color='#ff0000'><b>Organ:</b></font></td>\
-				[advanced ? "<td style='width:3em;'><font color='#ff0000'><b>Dmg</b></font></td>" : ""]\
-				<td style='width:12em;'><font color='#ff0000'><b>Status</b></font></td>"
+		var/render = FALSE
+		var/toReport = "<span class='info ml-1'>Organs:</span>\
+			<table class='ml-2'><tr>\
+			<td style='width:8em;'><font color='#ff0000'><b>Organ:</b></font></td>\
+			[advanced ? "<td style='width:4em;'><font color='#ff0000'><b>Dmg</b></font></td>" : ""]\
+			<td style='width:30em;'><font color='#ff0000'><b>Status</b></font></td>"
 
-			for(var/obj/item/organ/organ as anything in humantarget.organs)
-				var/status = organ.get_status_text()
-				if (status != "")
-					render = TRUE
-					toReport += "<tr><td><font color='#cc3333'>[organ.name]:</font></td>\
-						[advanced ? "<td><font color='#ff3333'>[CEILING(organ.damage,1)]</font></td>" : ""]\
-						<td>[status]</td></tr>"
-
-			var/missing_organs = list()
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_BRAIN))
-				missing_organs += "brain"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBLOOD, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantheart) && !humantarget.get_organ_slot(ORGAN_SLOT_HEART)) // NON-MODULE CHANGE
-				missing_organs += "heart"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBREATH, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantlungs) && !humantarget.get_organ_slot(ORGAN_SLOT_LUNGS)) // NON-MODULE CHANGE
-				missing_organs += "lungs"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_LIVERLESS_METABOLISM, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantliver) && !humantarget.get_organ_slot(ORGAN_SLOT_LIVER)) // NON-MODULE CHANGE
-				missing_organs += "liver"
-			if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOHUNGER, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantstomach) && !humantarget.get_organ_slot(ORGAN_SLOT_STOMACH)) // NON-MODULE CHANGE
-				missing_organs += "stomach"
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_TONGUE))
-				missing_organs += "tongue"
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_EARS))
-				missing_organs += "ears"
-			if(!humantarget.get_organ_slot(ORGAN_SLOT_EYES))
-				missing_organs += "eyes"
-
-			if(length(missing_organs))
+		for(var/obj/item/organ/organ as anything in humantarget.organs)
+			var/status = organ.get_status_text()
+			if (status)
 				render = TRUE
-				for(var/organ in missing_organs)
-					toReport += "<tr><td><font color='#cc3333'>[organ]:</font></td>\
-						[advanced ? "<td><font color='#ff3333'>["-"]</font></td>" : ""]\
-						<td><font color='#cc3333'>["Missing"]</font></td></tr>"
+				toReport += "<tr><td><font color='#cc3333'>[organ.name]:</font></td>\
+					[advanced ? "<td><font color='#ff3333'>[CEILING(organ.damage,1)]</font></td>" : ""]\
+					<td>[status]</td></tr>"
 
-			if(render)
-				render_list += toReport + "</table>" // tables do not need extra linebreak
+		var/missing_organs = list()
+		if(!humantarget.get_organ_slot(ORGAN_SLOT_BRAIN))
+			missing_organs += "brain"
+		if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBLOOD, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantheart) && !humantarget.get_organ_slot(ORGAN_SLOT_HEART))
+			missing_organs += "heart"
+		if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBREATH, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantlungs) && !humantarget.get_organ_slot(ORGAN_SLOT_LUNGS))
+			missing_organs += "lungs"
+		if(!HAS_TRAIT_FROM(humantarget, TRAIT_LIVERLESS_METABOLISM, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantliver) && !humantarget.get_organ_slot(ORGAN_SLOT_LIVER))
+			missing_organs += "liver"
+		if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOHUNGER, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantstomach) && !humantarget.get_organ_slot(ORGAN_SLOT_STOMACH))
+			missing_organs += "stomach"
+		if(!humantarget.get_organ_slot(ORGAN_SLOT_TONGUE))
+			missing_organs += "tongue"
+		if(!humantarget.get_organ_slot(ORGAN_SLOT_EARS))
+			missing_organs += "ears"
+		if(!humantarget.get_organ_slot(ORGAN_SLOT_EYES))
+			missing_organs += "eyes"
+
+		if(length(missing_organs))
+			render = TRUE
+			for(var/organ in missing_organs)
+				toReport += "<tr><td><font color='#cc3333'>[organ]:</font></td>\
+					[advanced ? "<td><font color='#ff3333'>["-"]</font></td>" : ""]\
+					<td><font color='#cc3333'>["Missing"]</font></td></tr>"
+
+		if(render)
+			render_list += toReport + "</table>" // tables do not need extra linebreak
 
 		//Genetic stability
+		var/mutant = FALSE
 		if(advanced && humantarget.has_dna())
 			render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability]%.</span>\n"
+			mutant = humantarget.dna.check_mutation(/datum/mutation/human/hulk)
 
 		// Hulk and body temperature
 		var/datum/species/targetspecies = humantarget.dna.species
-		var/mutant = humantarget.dna.check_mutation(/datum/mutation/human/hulk)
 
 		render_list += "<span class='info ml-1'>Species: [targetspecies.name][mutant ? "-derived mutant" : ""]</span>\n"
 		var/core_temperature_message = "Core temperature: [round(humantarget.coretemperature-T0C, 0.1)] &deg;C ([round(humantarget.coretemperature*1.8-459.67,0.1)] &deg;F)"
@@ -339,21 +334,17 @@
 		render_list += "<span class='info ml-1'>[body_temperature_message]</span>\n"
 
 	// Time of death
-	if(target.station_timestamp_timeofdeath && (target.stat == DEAD || ((HAS_TRAIT(target, TRAIT_FAKEDEATH)) && !advanced)))
+	if(target.station_timestamp_timeofdeath && (target.stat == DEAD || (HAS_TRAIT(target, TRAIT_FAKEDEATH) && !advanced)))
 		render_list += "<span class='info ml-1'>Time of Death: [target.station_timestamp_timeofdeath]</span>\n"
-		var/tdelta = round(world.time - target.timeofdeath)
-		render_list += "<span class='alert ml-1'><b>Subject died [DisplayTimeText(tdelta)] ago.</b></span>\n"
+		render_list += "<span class='alert ml-1'><b>Subject died [DisplayTimeText(round(world.time - target.timeofdeath))] ago.</b></span>\n"
 
 	// Wounds
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
-		var/list/wounded_parts = carbontarget.get_wounded_bodyparts()
-		for(var/i in wounded_parts)
-			var/obj/item/bodypart/wounded_part = i
+		for(var/obj/item/bodypart/wounded_part as anything in carbontarget.get_wounded_bodyparts())
 			render_list += "<span class='alert ml-1'><b>Physical trauma[LAZYLEN(wounded_part.wounds) > 1 ? "s" : ""] detected in [wounded_part.name]</b>"
-			for(var/k in wounded_part.wounds)
-				var/datum/wound/W = k
-				render_list += "<div class='ml-2'>[W.name] ([W.severity_text()])\nRecommended treatment: [W.treat_text]</div>" // less lines than in woundscan() so we don't overload people trying to get basic med info
+			for(var/datum/wound/wound as anything in wounded_part.wounds)
+				render_list += "<div class='ml-2'>[wound.name] ([wound.severity_text()])\nRecommended treatment: [wound.treat_text]</div>" // less lines than in woundscan() so we don't overload people trying to get basic med info
 			render_list += "</span>"
 
 	//Diseases

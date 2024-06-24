@@ -28,6 +28,7 @@
 		/obj/item/reagent_containers/cup/glass/waterbottle,
 		/obj/item/reagent_containers/condiment,
 	))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/toolbox.ogg'
 	register_context()
 
 /obj/item/storage/portable_chem_mixer/Destroy()
@@ -148,7 +149,7 @@
 	if(beaker)
 		user.put_in_hands(beaker)
 	if(new_beaker)
-		if(!user.transferItemToLoc(new_beaker, src))
+		if(!user.transferItemToLoc(new_beaker, src, silent = FALSE))
 			return
 		beaker = new_beaker
 
