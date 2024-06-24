@@ -18,6 +18,9 @@
 	attack_verb_simple = list("slam", "whack", "bash", "thunk", "batter", "bludgeon", "thrash")
 	dog_fashion = /datum/dog_fashion/back
 	resistance_flags = FIRE_PROOF
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
+
 	/// The max amount of water this extinguisher can hold.
 	var/max_water = 50
 	/// Does the welder extinguisher start with water.
@@ -70,6 +73,7 @@
 	max_water = 30
 	sprite_name = "miniFE"
 	dog_fashion = null
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 
 /obj/item/extinguisher/mini/empty
 	starting_water = FALSE

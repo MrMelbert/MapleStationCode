@@ -19,6 +19,8 @@
 	var/obj/tape_gag = /obj/item/clothing/mask/muzzle/tape
 	greyscale_config = /datum/greyscale_config/tape
 	greyscale_colors = "#B2B2B2#BD6A62"
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
 
 /obj/item/stack/sticky_tape/attack_hand(mob/user, list/modifiers)
 	if(user.get_inactive_held_item() == src)

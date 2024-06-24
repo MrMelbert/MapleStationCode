@@ -91,7 +91,7 @@
 			if(!target)
 				return FALSE
 
-			playsound(src, "sound/machines/terminal_button0[rand(1, 8)].ogg", 50, TRUE)
+			playsound(src, SFX_TERMINAL_TYPE, 50, TRUE)
 			update_preview(usr, params["assigned_view"], target)
 			return TRUE
 

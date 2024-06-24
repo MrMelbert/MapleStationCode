@@ -1,4 +1,6 @@
 /obj/item/stack/tile/mineral
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 	/// Determines what stack is gotten out of us when welded.
 	var/mineralType = null
 
@@ -230,3 +232,5 @@
 	turf_type = /turf/open/floor/fake_snow
 	mineralType = "snow"
 	merge_type = /obj/item/stack/tile/mineral/snow
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'

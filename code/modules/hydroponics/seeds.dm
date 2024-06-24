@@ -8,6 +8,8 @@
 	worn_icon_state = "seed"
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 	/// Name of plant when planted.
 	var/plantname = "Plants"
 	/// A type path. The thing that is created when the plant is harvested.

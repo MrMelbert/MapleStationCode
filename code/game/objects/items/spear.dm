@@ -23,6 +23,10 @@
 	armor_type = /datum/armor/item_spear
 	wound_bonus = -15
 	bare_wound_bonus = 15
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+
 	/// For explosive spears, what we cry out when we use this to bap someone
 	var/war_cry = "AAAAARGH!!!"
 	/// The icon prefix for this flavor of spear
@@ -251,6 +255,9 @@
 	icon_prefix = "bamboo_spear"
 	name = "bamboo spear"
 	desc = "A haphazardly-constructed bamboo stick with a sharpened tip, ready to poke holes into unsuspecting people."
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
 
 	throwforce = 22	//Better to throw
 	custom_materials = list(/datum/material/bamboo = SHEET_MATERIAL_AMOUNT * 20)

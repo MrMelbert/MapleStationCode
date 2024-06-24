@@ -162,7 +162,7 @@
 	if (is_reagent_container(weapon) && !(weapon.item_flags & ABSTRACT) && weapon.is_open_container())
 		var/obj/item/reagent_containers/container = weapon
 		. = TRUE //no afterattack
-		if(!user.transferItemToLoc(container, src))
+		if(!user.transferItemToLoc(container, src, silent = FALSE))
 			return
 		replace_beaker(user, container)
 		to_chat(user, span_notice("You add [container] to [src]."))
@@ -201,7 +201,7 @@
 			to_chat(user, span_warning("You cannot grind/juice [weapon] into reagents!"))
 			return TRUE
 
-	if(user.transferItemToLoc(weapon, src))
+	if(user.transferItemToLoc(weapon, src, silent = FALSE))
 		to_chat(user, span_notice("You add [weapon] to [src]."))
 		holdingitems[weapon] = TRUE
 		return FALSE

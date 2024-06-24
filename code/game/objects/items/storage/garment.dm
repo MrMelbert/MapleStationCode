@@ -48,6 +48,7 @@
 	atom_storage.set_holdable(list(
 		/obj/item/clothing,
 	))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 /obj/item/storage/bag/garment/captain/PopulateContents()
 	new /obj/item/clothing/under/rank/captain(src)

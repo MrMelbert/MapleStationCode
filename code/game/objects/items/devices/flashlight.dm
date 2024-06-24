@@ -23,6 +23,8 @@
 	light_range = 4
 	light_power = 1
 	light_on = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// If we've been forcibly disabled for a temporary amount of time.
 	COOLDOWN_DECLARE(disabled_time)
 	/// Can we toggle this light on and off (used for contexual screentips only)
@@ -294,6 +296,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	obj_flags = CONDUCTS_ELECTRICITY
 	light_range = 2
+	drop_sound = /obj/item/pen::drop_sound
+	pickup_sound = /obj/item/pen::pickup_sound
 	COOLDOWN_DECLARE(holosign_cooldown)
 
 /obj/item/flashlight/pen/afterattack(atom/target, mob/user, proximity_flag)

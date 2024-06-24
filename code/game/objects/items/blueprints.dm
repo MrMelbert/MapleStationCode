@@ -5,6 +5,8 @@
 	inhand_icon_state = "blueprints"
 	attack_verb_continuous = list("attacks", "baps", "hits")
 	attack_verb_simple = list("attack", "bap", "hit")
+	drop_sound = 'sound/items/handling/paper_drop.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	var/fluffnotice = "Nobody's gonna read this stuff!"
 	var/in_use = FALSE
 	///When using it to create a new area, this will be its type.

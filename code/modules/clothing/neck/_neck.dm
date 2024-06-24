@@ -6,6 +6,8 @@
 	strip_delay = 40
 	equip_delay_other = 40
 	blood_overlay_type = "mask" // NON-MODULE CHANGE reworking clothing blood overlays
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 
 /obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()

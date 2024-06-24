@@ -19,6 +19,8 @@
 	req_access = list(ACCESS_ENGINE_EQUIP)
 	armor_type = /datum/armor/item_construction
 	resistance_flags = FIRE_PROOF
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// the spark system which sparks whever the ui options are dited
 	var/datum/effect_system/spark_spread/spark_system
 	/// current local matter inside the device, not used when silo link is on

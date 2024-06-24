@@ -13,6 +13,8 @@
 	pressure_resistance = 2
 	attack_verb_continuous = list("stamps")
 	attack_verb_simple = list("stamp")
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 
 /obj/item/stamp/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] stamps 'VOID' on [user.p_their()] forehead, then promptly falls over, dead."))

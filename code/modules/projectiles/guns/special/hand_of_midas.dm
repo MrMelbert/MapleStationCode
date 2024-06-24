@@ -19,6 +19,9 @@
 	trigger_guard = TRIGGER_GUARD_NORMAL
 	antimagic_flags = NONE
 	can_hold_up = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	/// The length of the Midas Blight debuff, dependant on the amount of gold reagent we've sucked up.
 	var/gold_timer = 3 SECONDS

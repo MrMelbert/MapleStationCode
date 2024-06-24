@@ -5,6 +5,9 @@
 	icon_state = "chronogun"
 	inhand_icon_state = "chronogun"
 	w_class = WEIGHT_CLASS_NORMAL
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	var/mob/living/current_target
 	var/last_check = 0

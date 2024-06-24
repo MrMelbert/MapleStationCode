@@ -75,7 +75,7 @@
 /obj/structure/table/optable/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/tank/internals))
 		if(isnull(attached_tank))
-			if(user.transferItemToLoc(I, src))
+			if(user.transferItemToLoc(I, src, silent = FALSE))
 				attached_tank = I
 				update_appearance(UPDATE_OVERLAYS)
 				balloon_alert_to_viewers("tank attached")

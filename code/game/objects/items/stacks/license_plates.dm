@@ -5,6 +5,8 @@
 	icon_state = "empty_plate"
 	novariants = FALSE
 	max_amount = 50
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/stack/license_plates/empty
 	name = "empty license plate"

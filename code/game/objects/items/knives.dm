@@ -25,6 +25,8 @@
 	wound_bonus = 5
 	bare_wound_bonus = 15
 	tool_behaviour = TOOL_KNIFE
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
 
 /datum/armor/item_knife
 	fire = 50
@@ -66,6 +68,8 @@
 	throwforce = 15
 	wound_bonus = 20
 	w_class = WEIGHT_CLASS_NORMAL
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
 
 /obj/item/knife/bloodletter
 	name = "bloodletter"
@@ -74,6 +78,8 @@
 	icon_state = "bloodletter"
 	worn_icon_state = "render"
 	w_class = WEIGHT_CLASS_NORMAL
+	drop_sound = 'maplestation_modules/sound/items/drop/knife1.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife1.ogg'
 	/// Bleed stacks applied when an organic mob target is hit
 	var/bleed_stacks_per_hit = 3
 
@@ -104,6 +110,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_price = PAYCHECK_CREW * 5
 	wound_bonus = 15
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
 
 /obj/item/knife/hunting
 	name = "hunting knife"
@@ -112,6 +120,8 @@
 	inhand_icon_state = "huntingknife"
 	icon_state = "huntingknife"
 	wound_bonus = 10
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
 
 /obj/item/knife/hunting/set_butchering()
 	AddComponent(/datum/component/butchering, \
@@ -131,6 +141,8 @@
 	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "cuts")
 	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "cut")
 	bayonet = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
 
 /obj/item/knife/combat/survival
 	name = "survival knife"
@@ -141,6 +153,8 @@
 	force = 15
 	throwforce = 15
 	bayonet = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
 
 /obj/item/knife/combat/bone
 	name = "bone dagger"
@@ -180,6 +194,8 @@
 	attack_verb_simple = list("shank", "shiv")
 	armor_type = /datum/armor/none
 	custom_materials = list(/datum/material/glass = SMALL_MATERIAL_AMOUNT * 4)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/knife/shiv/Initialize(mapload)
 	flags_1 &= ~CONDUCTS_ELECTRICITY
@@ -253,6 +269,8 @@
 	inhand_icon_state = "carrotshiv"
 	desc = "Unlike other carrots, you should probably keep this far away from your eyes."
 	custom_materials = null
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
 
 /obj/item/knife/shiv/carrot/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] forcefully drives \the [src] into [user.p_their()] eye! It looks like [user.p_theyre()] trying to commit suicide!"))

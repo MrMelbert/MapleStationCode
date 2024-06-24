@@ -15,6 +15,8 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// if the scanner is currently busy processing
 	var/scanner_busy = FALSE
 	var/list/log = list()

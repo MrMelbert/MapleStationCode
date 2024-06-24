@@ -60,7 +60,7 @@
 		to_chat(user, span_notice("[src] can't hold any more of [I]."))
 		return
 
-	if(!user.transferItemToLoc(I, src))
+	if(!user.transferItemToLoc(I, src, silent = FALSE))
 		return
 	to_chat(user, span_notice("You put [I] in [src]."))
 	update_appearance()
