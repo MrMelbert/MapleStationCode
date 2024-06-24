@@ -1,3 +1,4 @@
+// -- Toggle that lets people play (dios mio) hair lizards --
 /datum/preference/toggle/hair_lizard
 	savefile_key = "hair_lizard"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -38,6 +39,7 @@
 		"facial_hair_gradient_color",
 	)
 
+// -- Allows modification of hissssss length --
 /datum/preference/numeric/hiss_length
 	savefile_key = "hiss_length"
 	savefile_identifier = PREFERENCE_CHARACTER
@@ -58,3 +60,35 @@
 	if(!istype(tongue))
 		return
 	tongue.draw_length = value
+
+// -- Allows lizard horns to be colorable --
+// (Because some choices are greyscaled)
+/datum/preference/choiced/lizard_horns
+	relevant_external_organ = /obj/item/organ/external/horns
+
+/datum/preference/choiced/lizard_horns/compile_constant_data()
+	var/list/data = ..()
+	data[SUPPLEMENTAL_FEATURE_KEY] = "feature_lizard_horn_color"
+	return data
+
+// Makes the bodypart update correctly
+/datum/bodypart_overlay/mutant/horns
+	color_source = ORGAN_COLOR_OVERRIDE
+
+/datum/bodypart_overlay/mutant/horns/inherit_color(obj/item/bodypart/bodypart_owner, force)
+	draw_color = bodypart_owner?.owner?.dna?.features["lizard_horn_color"] || "#FFFFFF"
+	return TRUE
+
+// The actual preference
+/datum/preference/color/horn_color
+	savefile_key = "feature_lizard_horn_color"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SUPPLEMENTAL_FEATURES
+	relevant_external_organ = /obj/item/organ/external/horns
+	can_randomize = FALSE
+
+/datum/preference/color/horn_color/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["lizard_horn_color"] = value
+
+/datum/preference/color/horn_color/create_default_value()
+	return "#FFFFFF"

@@ -8,6 +8,8 @@
 	worn_icon_state = "wig"
 	flags_inv = HIDEHAIR
 	color = "#000000"
+	drop_sound = null
+	pickup_sound = null
 	var/hairstyle = "Very Long Hair"
 	var/adjustablecolor = TRUE //can color be changed manually?
 

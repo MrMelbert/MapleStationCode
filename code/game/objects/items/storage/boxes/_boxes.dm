@@ -18,6 +18,7 @@
 /obj/item/storage/box/Initialize(mapload)
 	. = ..()
 	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 	update_appearance()
 
 /obj/item/storage/box/suicide_act(mob/living/carbon/user)
@@ -49,6 +50,7 @@
 
 	var/obj/item/result = new foldable_result(user.drop_location())
 	balloon_alert(user, "folded")
+	playsound(src, 'maplestation_modules/sound/items/storage/boxfold.ogg', 50, TRUE)
 	qdel(src)
 	user.put_in_hands(result)
 

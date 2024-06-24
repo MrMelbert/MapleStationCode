@@ -227,6 +227,8 @@
 	worn_icon_state = "beaker"
 	custom_materials = list(/datum/material/glass=SMALL_MATERIAL_AMOUNT*5)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/reagent_containers/cup/beaker/Initialize(mapload)
 	. = ..()
@@ -240,6 +242,8 @@
 	desc = "A jar for honey. It can hold up to 50 units of sweet delight."
 	icon = 'icons/obj/medical/chemical.dmi'
 	icon_state = "vapour"
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/reagent_containers/cup/beaker/large
 	name = "large beaker"
@@ -250,6 +254,8 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100)
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/plastic
 	name = "x-large beaker"
@@ -260,6 +266,8 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,60,120)
 	fill_icon_thresholds = list(0, 1, 10, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/meta
 	name = "metamaterial beaker"
@@ -270,6 +278,8 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,60,120,180)
 	fill_icon_thresholds = list(0, 1, 10, 25, 35, 50, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/noreact
 	name = "cryostasis beaker"
@@ -280,6 +290,8 @@
 	reagent_flags = OPENCONTAINER | NO_REACT
 	volume = 50
 	amount_per_transfer_from_this = 10
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/bluespace
 	name = "bluespace beaker"
@@ -291,6 +303,8 @@
 	volume = 300
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,20,25,30,50,100,300)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/beaker/meta/omnizine
 	list_reagents = list(/datum/reagent/medicine/omnizine = 180)
@@ -361,16 +375,18 @@
 	slot_flags = ITEM_SLOT_HEAD
 	resistance_flags = NONE
 	armor_type = /datum/armor/cup_bucket
-	slot_equipment_priority = list( \
-		ITEM_SLOT_BACK, ITEM_SLOT_ID,\
-		ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,\
-		ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,\
-		ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,\
-		ITEM_SLOT_EARS, ITEM_SLOT_EYES,\
-		ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,\
-		ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,\
+	slot_equipment_priority = list(
+		ITEM_SLOT_BACK, ITEM_SLOT_ID,
+		ITEM_SLOT_ICLOTHING, ITEM_SLOT_OCLOTHING,
+		ITEM_SLOT_MASK, ITEM_SLOT_HEAD, ITEM_SLOT_NECK,
+		ITEM_SLOT_FEET, ITEM_SLOT_GLOVES,
+		ITEM_SLOT_EARS, ITEM_SLOT_EYES,
+		ITEM_SLOT_BELT, ITEM_SLOT_SUITSTORE,
+		ITEM_SLOT_LPOCKET, ITEM_SLOT_RPOCKET,
 		ITEM_SLOT_DEX_STORAGE
 	)
+	drop_sound = 'maplestation_modules/sound/items/drop/generic1.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic3.ogg'
 
 /datum/armor/cup_bucket
 	melee = 10
@@ -384,6 +400,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 2)
 	resistance_flags = FLAMMABLE
 	armor_type = /datum/armor/bucket_wooden
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /datum/armor/bucket_wooden
 	melee = 10
@@ -449,6 +467,8 @@
 	resistance_flags = FLAMMABLE
 	reagent_flags = OPENCONTAINER
 	spillable = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 	var/obj/item/grinded
 
 /obj/item/reagent_containers/cup/mortar/AltClick(mob/user)
@@ -531,6 +551,8 @@
 	icon_state = "coffeepot"
 	fill_icon_state = "coffeepot"
 	fill_icon_thresholds = list(0, 1, 30, 60, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/reagent_containers/cup/coffeepot/bluespace
 	name = "bluespace coffeepot"
@@ -550,3 +572,5 @@
 	possible_transfer_amounts = list(5, 10, 15, 30)
 	volume = 30
 	fill_icon_thresholds = list(0, 1, 20, 40, 60, 80, 100)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'

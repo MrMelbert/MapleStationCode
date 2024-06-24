@@ -26,6 +26,11 @@ export const hiss_length: FeatureNumeric = {
   component: FeatureNumberInput,
 };
 
+export const feature_lizard_horn_color: Feature<string> = {
+  name: 'Horn Color',
+  component: FeatureColorInput,
+};
+
 export const feature_synth_species: FeatureChoiced = {
   name: 'Synth Species',
   description: 'Determines what species you spawn disguised as.',

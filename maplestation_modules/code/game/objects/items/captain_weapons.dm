@@ -18,6 +18,9 @@ GLOBAL_VAR(captain_weapon_picked)
 	wound_bonus = 40 //Bones? Never heard of em.
 	bare_wound_bonus = 45
 	belt_sprite = "-golden"
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 
 /obj/item/melee/energy/sword/captain_rapier
 	name = "laser rapier"

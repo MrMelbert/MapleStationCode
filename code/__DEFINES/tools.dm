@@ -21,10 +21,11 @@
 /// Can be used to scrape rust off an any atom; which will result in the Rust Component being qdel'd
 #define TOOL_RUSTSCRAPER "rustscraper"
 
-// If delay between the start and the end of tool operation is less than MIN_TOOL_SOUND_DELAY,
-// tool sound is only played when op is started. If not, it's played twice.
-#define MIN_TOOL_SOUND_DELAY 20
-
+/// If delay between the start and the end of tool operation is less than MIN_TOOL_SOUND_DELAY,
+/// tool sound is only played when op is started. If not, it's played twice.
+#define MIN_TOOL_SOUND_DELAY 2 SECONDS
+/// Minimum delay for operating sound. Prevent overlaps and overhand sound.
+#define MIN_TOOL_OPERATING_DELAY 4 SECONDS
 /// Return when an item interaction is successful.
 /// This cancels the rest of the chain entirely and indicates success.
 #define ITEM_INTERACT_SUCCESS (1<<0) // Same as TRUE, as most tool (legacy) tool acts return TRUE on success

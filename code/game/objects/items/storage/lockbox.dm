@@ -8,6 +8,9 @@
 	righthand_file = 'icons/mob/inhands/equipment/briefcase_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	req_access = list(ACCESS_ARMORY)
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
 	var/broken = FALSE
 	var/open = FALSE
 	var/icon_locked = "lockbox+l"
@@ -20,6 +23,7 @@
 	atom_storage.max_total_storage = 14
 	atom_storage.max_slots = 4
 	atom_storage.locked = TRUE
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/briefcase.ogg'
 
 	register_context()
 

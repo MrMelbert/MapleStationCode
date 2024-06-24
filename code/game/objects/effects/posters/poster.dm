@@ -18,6 +18,8 @@
 	force = 0
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic3.ogg'
 	var/poster_type
 	var/obj/structure/sign/poster/poster_structure
 

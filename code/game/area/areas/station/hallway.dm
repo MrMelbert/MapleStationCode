@@ -71,6 +71,7 @@
 /area/station/hallway/secondary/exit
 	name = "\improper Escape Shuttle Hallway"
 	icon_state = "escape"
+	ambience_index = AMBIENCE_DEPARTURES
 
 /area/station/hallway/secondary/exit/escape_pod
 	name = "\improper Escape Pod Bay"
@@ -84,6 +85,7 @@
 	name = "\improper Arrival Shuttle Hallway"
 	icon_state = "entry"
 	area_flags = UNIQUE_AREA | EVENT_PROTECTED
+	ambience_index = AMBIENCE_ARRIVALS
 
 /area/station/hallway/secondary/dock
 	name = "\improper Secondary Station Dock Hallway"

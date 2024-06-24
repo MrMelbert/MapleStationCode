@@ -17,11 +17,22 @@
 	var/list/towels = list()
 
 /obj/structure/towel_rack/Destroy()
+	QDEL_LIST(towels)
+	return ..()
+
+/obj/structure/towel_rack/deconstruct(disassembled)
+	var/atom/drop_loc = drop_location()
 	for(var/obj/item/towel/dropped_towel as anything in towels)
-		dropped_towel.forceMove(drop_location())
-		towels -= dropped_towel
+		dropped_towel.forceMove(drop_loc)
+		dropped_towel.pixel_x = rand(-8, 8)
+		dropped_towel.pixel_y = rand(-8, 8)
 
 	return ..()
+
+/obj/structure/towel_rack/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(gone in towels)
+		towels -= gone
 
 /obj/structure/towel_rack/attackby(obj/item/attacked_item, mob/living/user, params)
 	. = ..()
@@ -62,7 +73,7 @@
 		to_chat(user, span_warning("[src] is full!"))
 		return FALSE
 
-	if(!user.transferItemToLoc(added_towel, src))
+	if(!user.transferItemToLoc(added_towel, src, silent = FALSE))
 		to_chat(user, span_warning("You can't seem to place [added_towel] in [src]!"))
 		return FALSE
 
@@ -80,17 +91,11 @@
  */
 /obj/structure/towel_rack/proc/remove_towel(mob/living/user)
 	var/obj/item/removed_towel = towels[towels.len]
-	if(iscarbon(user))
-		var/mob/living/carbon/carbon_user = user
-		if(carbon_user.put_in_hands(removed_towel))
-			to_chat(user, span_notice("You remove [removed_towel] from [src]."))
-		else
-			to_chat(user, span_notice("You remove [removed_towel] from [src], dumping it onto the floor."))
+	if(user.put_in_hands(removed_towel))
+		to_chat(user, span_notice("You remove [removed_towel] from [src]."))
 	else
 		to_chat(user, span_notice("You remove [removed_towel] from [src], dumping it onto the floor."))
-		removed_towel.forceMove(drop_location())
 
-	towels -= removed_towel
 	update_appearance()
 	return removed_towel
 

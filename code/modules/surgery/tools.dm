@@ -12,6 +12,9 @@
 	w_class = WEIGHT_CLASS_TINY
 	tool_behaviour = TOOL_RETRACTOR
 	toolspeed = 1
+	drop_sound = 'maplestation_modules/sound/items/drop/knife3.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
+
 	/// How this looks when placed in a surgical tray
 	var/surgical_tray_overlay = "retractor_normal"
 
@@ -39,6 +42,9 @@
 	attack_verb_simple = list("attack", "pinch")
 	tool_behaviour = TOOL_HEMOSTAT
 	toolspeed = 1
+	drop_sound = 'maplestation_modules/sound/items/drop/knife3.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
+
 	/// How this looks when placed in a surgical tray
 	var/surgical_tray_overlay = "hemostat_normal"
 
@@ -67,6 +73,9 @@
 	tool_behaviour = TOOL_CAUTERY
 	toolspeed = 1
 	heat = 500
+	drop_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
+
 	/// How this looks when placed in a surgical tray
 	var/surgical_tray_overlay = "cautery_normal"
 
@@ -151,6 +160,8 @@
 	sharpness = SHARP_POINTY
 	wound_bonus = 10
 	bare_wound_bonus = 10
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 	/// How this looks when placed in a surgical tray
 	var/surgical_tray_overlay = "drill_normal"
 
@@ -199,6 +210,9 @@
 	toolspeed = 1
 	wound_bonus = 10
 	bare_wound_bonus = 15
+	drop_sound = 'maplestation_modules/sound/items/drop/knife1.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
+
 	/// How this looks when placed in a surgical tray
 	var/surgical_tray_overlay = "scalpel_normal"
 
@@ -247,6 +261,9 @@
 	toolspeed = 1
 	wound_bonus = 15
 	bare_wound_bonus = 10
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
 	/// How this looks when placed in a surgical tray
 	var/surgical_tray_overlay = "saw_normal"
 
@@ -286,6 +303,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	attack_verb_continuous = list("slaps")
 	attack_verb_simple = list("slap")
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic3.ogg'
 
 /obj/item/surgical_drapes/Initialize(mapload)
 	. = ..()
@@ -486,6 +505,8 @@
 	attack_verb_simple = list("shear", "snip")
 	sharpness = SHARP_EDGED
 	custom_premium_price = PAYCHECK_CREW * 14
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/shears/attack(mob/living/amputee, mob/living/user)
 	if(!iscarbon(amputee) || user.combat_mode)
@@ -568,6 +589,8 @@
 	attack_verb_simple = list("correct", "properly set")
 	tool_behaviour = TOOL_BONESET
 	toolspeed = 1
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
 
 /obj/item/bonesetter/get_surgery_tool_overlay(tray_extended)
 	return "bonesetter" + (tray_extended ? "" : "_out")
@@ -586,6 +609,9 @@
 	attack_verb_simple = list("pump", "siphon")
 	tool_behaviour = TOOL_BLOODFILTER
 	toolspeed = 1
+	drop_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
+
 	/// Assoc list of chem ids to names, used for deciding which chems to filter when used for surgery
 	var/list/whitelist = list()
 
