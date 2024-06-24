@@ -441,6 +441,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	return ..()
 
 /obj/item/clothing/mask/cigarette/proc/put_out(mob/user, done_early = FALSE)
+	if(isnull(user) && ismob(loc))
+		user = loc
 	var/atom/location = drop_location()
 	if(!isnull(user))
 		if(done_early)
@@ -454,8 +456,25 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			how_long_have_we_been_smokin = 0 SECONDS
 		else
 			to_chat(user, span_notice("Your [name] goes out."))
+
+	var/obj/item/butt = new type_butt(location)
+	transfer_fingerprints_to(butt)
+	transfer_fibers_to(butt)
+
+	if((butt.slot_flags & ITEM_SLOT_MASK) && (src == user?.get_item_by_slot(ITEM_SLOT_MASK)))
+		user.temporarilyRemoveItemFromInventory(src,
+			force = TRUE,
+		)
+		user.equip_to_slot_if_possible(butt,
+			slot = ITEM_SLOT_MASK,
+			qdel_on_fail = FALSE,
+			disable_warning = TRUE,
+			bypass_equip_delay_self = TRUE,
+			initial = TRUE,
+			indirect_action = TRUE,
+		)
+
 	playsound(src, 'maplestation_modules/sound/items/cig_snuff.ogg', 33, TRUE)
-	new type_butt(location)
 	qdel(src)
 
 /obj/item/clothing/mask/cigarette/attack(mob/living/carbon/M, mob/living/carbon/user)
@@ -692,6 +711,14 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	grind_results = list(/datum/reagent/carbon = 2)
+	slot_flags = ITEM_SLOT_MASK
+	worn_icon_state = "lollipop_stick" // Lazy
+
+/obj/item/cigbutt/equipped(mob/user, slot, initial)
+	// Lazily initing these components because there's no need to do it for every single cigarette butt
+	AddComponent(/datum/component/knockoff, 90, list(BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_HEAD, BODY_ZONE_CHEST), slot_flags)
+	AddComponent(/datum/component/wearertargeting/knockoff_move, 1, list(slot_flags), "falls out of your mouth!")
+	return ..()
 
 /obj/item/cigbutt/cigarbutt
 	name = "cigar butt"
