@@ -84,6 +84,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_expilot"
 
+/datum/sprite_accessory/hair/braidedbun
+	name = "Braided Bun"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_braidbun"
+
 // https://github.com/NovaSector/NovaSector/pull/697
 /datum/sprite_accessory/hair/gloomy_medium
 	name = "Gloomy (Medium)"
