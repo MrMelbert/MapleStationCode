@@ -172,6 +172,10 @@
 	if(!length(blood_DNA_to_add))
 		return FALSE
 
+	// Don't messy up our jumpsuit if we're got a coat
+	if((target_flags & ITEM_SLOT_OCLOTHING) && (wear_suit.body_parts_covered & CHEST))
+		target_flags &= ~ITEM_SLOT_ICLOTHING
+
 	var/dirty_hands = !!(target_flags & (ITEM_SLOT_GLOVES|ITEM_SLOT_HANDS))
 	var/dirty_feet = !!(target_flags & ITEM_SLOT_FEET)
 	var/slots_to_bloody = target_flags & ~check_obscured_slots()

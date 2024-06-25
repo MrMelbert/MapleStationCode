@@ -6,6 +6,9 @@
 	loot = list(/obj/effect/mob_spawn/corpse/human/abductor)
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/abductor
 
+/mob/living/basic/trooper/abductor/get_blood_type()
+	return null // Ayys are noblooded
+
 /mob/living/basic/trooper/abductor/melee
 	melee_damage_lower = 15
 	melee_damage_upper = 15

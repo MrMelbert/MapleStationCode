@@ -26,6 +26,8 @@
 	var/r_hand
 	/// Path of the left hand held item we give to the mob's visuals.
 	var/l_hand
+	/// What's our "blood type"? So fake-humans splash blood on people in combat
+	var/fake_blood_type
 
 /mob/living/basic/trooper/Initialize(mapload)
 	. = ..()
@@ -34,3 +36,8 @@
 		loot = string_list(loot)
 		AddElement(/datum/element/death_drops, loot)
 	AddElement(/datum/element/footstep, footstep_type = FOOTSTEP_MOB_SHOE)
+
+/mob/living/basic/trooper/get_blood_type()
+	if(!fake_blood_type)
+		fake_blood_type = random_human_blood_type()
+	return GLOB.blood_types[fake_blood_type]

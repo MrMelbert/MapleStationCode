@@ -351,10 +351,12 @@
 				var/bloodied_things = ITEM_SLOT_GLOVES
 				if(damage_done >= 20 || (damage_done >= 15 && prob(25)))
 					bloodied_things |= ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING
-					if(prob(33) || damage_done >= 24) // fireaxe damage, because heeeeere's johnny
+					if(prob(33) && damage_done >= 10)
+						bloodied_things |= ITEM_SLOT_FEET
+					if(prob(33) && damage_done >= 24) // fireaxe damage, because heeeeere's johnny
 						bloodied_things |= ITEM_SLOT_MASK
-					if(prob(33))
-						bloodied_things |= ITEM_SLOT_FEET|ITEM_SLOT_HEAD
+					if(prob(33) && damage_done >= 30) // esword damage
+						bloodied_things |= ITEM_SLOT_HEAD
 
 				var/mob/living/carbon/human/human_attacker = attacker
 				human_attacker.add_blood_DNA_to_items(get_blood_dna_list(), bloodied_things)

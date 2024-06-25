@@ -299,15 +299,14 @@
 	if(!istype(who_touched_us) || !messy_slots)
 		return
 
-	if(who_touched_us.gloves?.body_parts_covered & HANDS)
-		if(prob(GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us.gloves) * 25))
-			add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us.gloves), messy_slots)
-		return
-	if(who_touched_us.blood_in_hands)
-		if(prob(blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
-			add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us), messy_slots)
-			who_touched_us.blood_in_hands -= 1
-		return
+	for(var/obj/item/thing as anything in who_touched_us.get_equipped_items())
+		if((thing.body_parts_covered & HANDS) && prob(GET_ATOM_BLOOD_DNA_LENGTH(thing) * 25))
+			add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us.wear_suit), messy_slots)
+			return
+
+	if(prob(blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
+		add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us), messy_slots)
+		who_touched_us.blood_in_hands -= 1
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/helper)
 	if(on_fire)

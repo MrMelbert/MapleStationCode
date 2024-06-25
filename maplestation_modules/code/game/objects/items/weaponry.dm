@@ -65,6 +65,7 @@
 	light_range = 2
 	light_power = 1
 	light_on = FALSE
+	item_flags = NO_BLOOD_ON_ITEM
 	///force when active, passed onto component/transforming
 	var/active_force = 18
 	///throwforce when active, passed onto component/transforming
