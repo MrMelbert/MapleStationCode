@@ -687,6 +687,13 @@
 "amE" = (
 /turf/closed/wall,
 /area/station/service/chapel/funeral)
+"amJ" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/spawner/random/trash/cigbutt,
+/obj/effect/spawner/random/trash/cigbutt,
+/obj/effect/spawner/random/trash/crushed_can,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "amL" = (
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 8
@@ -5369,6 +5376,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
+"bNK" = (
+/obj/effect/spawner/random/trash/caution_sign,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "bNU" = (
 /turf/open/floor/iron/airless,
 /area/station/tcommsat/oldaisat/stationside)
@@ -5615,6 +5626,7 @@
 /area/station/engineering/supermatter)
 "bRK" = (
 /obj/machinery/airalarm/directional/north,
+/obj/effect/spawner/random/trash/hobo_squat,
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "bRU" = (
@@ -12980,6 +12992,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/office)
+"euO" = (
+/obj/effect/decal/cleanable/cobweb,
+/obj/effect/spawner/random/trash/mopbucket,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "euU" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -16197,6 +16214,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"fuI" = (
+/obj/structure/falsewall,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "fuO" = (
 /obj/effect/spawner/random/trash/graffiti,
 /obj/structure/cable,
@@ -16427,6 +16448,10 @@
 /area/station/science/robotics/abandoned)
 "fzj" = (
 /obj/structure/reagent_dispensers/fueltank,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
+"fzz" = (
+/obj/effect/spawner/random/trash/bin,
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "fzC" = (
@@ -19961,6 +19986,11 @@
 	},
 /turf/open/floor/plating,
 /area/station/engineering/main)
+"gGQ" = (
+/obj/structure/grille/broken,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "gHa" = (
 /obj/effect/turf_decal/trimline/white/filled/line{
 	dir = 8
@@ -23174,6 +23204,11 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/station/engineering/atmos/control_center)
+"hJl" = (
+/obj/effect/decal/cleanable/cobweb,
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "hJs" = (
 /obj/machinery/door/airlock/engineering{
 	name = "Utilities Room"
@@ -27770,6 +27805,14 @@
 /area/station/cargo/storage)
 "jhQ" = (
 /obj/structure/rack,
+/obj/item/food/deadmouse,
+/obj/item/toy/plush/lizard_plushie/green{
+	name = "Protects-The-Hoard"
+	},
+/obj/item/clothing/head/soft/red{
+	pixel_y = 7;
+	pixel_x = -3
+	},
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "jhT" = (
@@ -35662,6 +35705,11 @@
 /obj/structure/transit_tube/horizontal,
 /turf/open/floor/plating/airless,
 /area/station/tcommsat/oldaisat/stationside)
+"lED" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/blood/old,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "lET" = (
 /obj/structure/sign/poster/random/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -41112,6 +41160,11 @@
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron,
 /area/station/hallway/secondary/entry)
+"nnM" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/effect/spawner/random/engineering/atmospherics_portable,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "nnQ" = (
 /obj/machinery/airalarm/directional/north,
 /turf/open/floor/plating,
@@ -42489,6 +42542,11 @@
 	},
 /turf/open/space/openspace,
 /area/space/nearstation)
+"nHp" = (
+/obj/effect/mapping_helpers/broken_floor,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "nHt" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -46041,6 +46099,7 @@
 /area/station/science/ordnance)
 "oRv" = (
 /obj/machinery/door/airlock/maintenance,
+/obj/effect/mapping_helpers/airlock/abandoned,
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "oRx" = (
@@ -48797,6 +48856,16 @@
 	},
 /turf/open/floor/iron/kitchen,
 /area/station/security/prison/mess)
+"pIa" = (
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/grille/broken,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "pIe" = (
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/engine,
@@ -57915,6 +57984,11 @@
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/department/cargo)
+"suX" = (
+/obj/effect/spawner/random/structure/crate,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "svc" = (
 /obj/machinery/light/small/directional/north,
 /turf/open/floor/plating,
@@ -61443,6 +61517,13 @@
 "tAD" = (
 /turf/closed/wall/r_wall,
 /area/station/security/eva)
+"tAF" = (
+/obj/effect/mapping_helpers/broken_floor,
+/obj/effect/spawner/random/trash/graffiti{
+	pixel_y = 30
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "tAM" = (
 /obj/structure/chair/wood{
 	dir = 8
@@ -61644,6 +61725,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
+"tDP" = (
+/obj/effect/spawner/random/trash/garbage,
+/turf/open/floor/plating,
+/area/station/maintenance/port)
 "tDS" = (
 /obj/effect/turf_decal/siding/white/corner{
 	dir = 1
@@ -67765,7 +67850,6 @@
 	},
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/airlock/abandoned,
 /obj/effect/mapping_helpers/airlock/access/any/security/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
@@ -160120,7 +160204,7 @@ wJn
 qxk
 nnf
 fXe
-fuP
+nnM
 mTi
 fXe
 sJJ
@@ -160634,7 +160718,7 @@ pXO
 snV
 jgm
 fXe
-cSk
+euO
 uEO
 vIu
 stI
@@ -161148,7 +161232,7 @@ hwi
 jkS
 cnJ
 fXe
-cSk
+tDP
 jBC
 fci
 fci
@@ -161658,9 +161742,9 @@ uPC
 mEt
 lZr
 fXe
-tVK
-cSk
-cSk
+suX
+lED
+amJ
 fci
 iqB
 puU
@@ -161916,9 +162000,9 @@ vvW
 khO
 fXe
 uap
-cSk
-cSk
-cSk
+gxK
+eXY
+eXY
 aqL
 gMO
 caK
@@ -162174,9 +162258,9 @@ hUD
 fXe
 fci
 fci
-cSk
+bNK
 fci
-gxK
+tAF
 sGi
 fjC
 cSk
@@ -162429,9 +162513,9 @@ vTD
 vvW
 hLp
 fXe
-cSk
+hJl
 oRv
-cSk
+gxK
 fci
 bRK
 xqX
@@ -162688,10 +162772,10 @@ qjo
 fXe
 jhQ
 fci
+fuI
 fci
 fci
-fci
-fDL
+pIa
 fci
 uSv
 fXe
@@ -162946,7 +163030,7 @@ fXe
 fXe
 fXe
 cSk
-cSk
+eXY
 fci
 peP
 fci
@@ -163203,10 +163287,10 @@ fXe
 jRR
 fXe
 fXe
-cSk
-ioz
+nHp
+gGQ
 fDL
-cSk
+eXY
 nmu
 fXe
 xzK
@@ -163460,7 +163544,7 @@ fkp
 rTf
 qnu
 fXe
-cSk
+fzz
 pFN
 fDL
 caK
