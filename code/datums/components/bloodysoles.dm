@@ -96,8 +96,13 @@
 	pool.adjust_bloodiness(-1 * delta)
 	change_blood_amount(delta)
 
-	var/atom/parent_atom = parent
-	parent_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
+	if(ishuman(parent))
+		var/mob/living/carbon/human/to_bloody = parent
+		to_bloody.add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(pool), ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING|ITEM_SLOT_FEET)
+		return
+
+	var/atom/to_bloody = parent
+	to_bloody.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
 
 /**
  * Adds blood to an existing (or new) footprint
