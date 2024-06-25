@@ -97,8 +97,12 @@
 	change_blood_amount(delta)
 
 	if(ishuman(parent))
+		var/bloody_slots = ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING|ITEM_SLOT_FEET
 		var/mob/living/carbon/human/to_bloody = parent
-		to_bloody.add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(pool), ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING|ITEM_SLOT_FEET)
+		if(to_bloody.body_position == LYING_DOWN)
+			bloody_slots |= ITEM_SLOT_HEAD|ITEM_SLOT_MASK|ITEM_SLOT_GLOVES
+
+		to_bloody.add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(pool), bloody_slots)
 		return
 
 	var/atom/to_bloody = parent
