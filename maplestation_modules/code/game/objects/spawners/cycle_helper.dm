@@ -140,8 +140,6 @@
 		\
 		You can also set the pressure (or temp) that the cycle waits for before opening the doors."
 
-	// Generally don't set both of these at the same time they will fight
-
 	// Leave these `null` if you only want to check temperature
 	/// Pressure you want the airlock to be when the INTERIOR door is OPEN
 	var/inner_pressure = null
@@ -250,14 +248,16 @@
 /obj/effect/mapping_helpers/cycling_airlock_old/atmos/tcomms
 	prefix_name = "Server Room"
 	one_access = list("ce", "tcomms")
-	inner_temp = 293
-	outer_temp = 80
-	temp_leeway = 293 * 0.05
+	inner_temp = T20C
+	outer_temp = T20C * 0.275
+	temp_leeway = T20C * 0.01
 
 /obj/effect/mapping_helpers/cycling_airlock_old/atmos/vacuum
 	inner_pressure = ONE_ATMOSPHERE
+	inner_temp = T20C
 	outer_pressure = 0
 	pressure_leeway = ONE_ATMOSPHERE * 0.03
+	temp_leeway = T20C * 0.01
 
 // For assisting in placement of certain elements in the airlock
 /obj/effect/mapping_helpers/cycling_airlock_old/marker
