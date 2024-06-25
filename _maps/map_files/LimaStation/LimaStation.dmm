@@ -32000,7 +32000,6 @@
 /obj/structure/table,
 /obj/structure/sign/flag/nanotrasen/directional/west,
 /obj/machinery/light/small/directional/west,
-/obj/machinery/light/small/directional/west,
 /turf/open/floor/wood/parquet,
 /area/station/security/courtroom)
 "kvQ" = (
@@ -48318,7 +48317,6 @@
 	},
 /obj/effect/turf_decal/tile/dark_red/fourcorners,
 /obj/machinery/door/firedoor,
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/textured,
 /area/station/security/execution/transfer)
 "pAY" = (
@@ -51797,7 +51795,6 @@
 /area/station/medical/coldroom)
 "qDH" = (
 /obj/item/radio/intercom/directional/south,
-/obj/machinery/light/small/directional/south,
 /obj/machinery/light/small/directional/south,
 /obj/structure/chair{
 	dir = 1;
@@ -68396,7 +68393,6 @@
 /obj/item/megaphone,
 /obj/item/gavelhammer,
 /obj/structure/sign/flag/ssc/directional/west,
-/obj/machinery/light/small/directional/west,
 /obj/machinery/light/small/directional/west,
 /turf/open/floor/wood/parquet,
 /area/station/security/courtroom)
