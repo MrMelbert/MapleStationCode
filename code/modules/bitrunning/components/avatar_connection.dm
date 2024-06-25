@@ -76,7 +76,8 @@
 
 	avatar.playsound_local(avatar, 'sound/magic/blink.ogg', 25, TRUE)
 	avatar.set_static_vision(2 SECONDS)
-	avatar.set_temp_blindness(1 SECONDS)
+	avatar.set_temp_blindness(1 SECONDS) // I'm in
+
 
 /datum/component/avatar_connection/PostTransfer()
 	var/obj/machinery/netpod/pod = netpod_ref?.resolve()
@@ -87,6 +88,7 @@
 		return COMPONENT_INCOMPATIBLE
 
 	pod.avatar_ref = WEAKREF(parent)
+
 
 /datum/component/avatar_connection/RegisterWithParent()
 	ADD_TRAIT(parent, TRAIT_TEMPORARY_BODY, REF(src))
@@ -100,6 +102,7 @@
 	RegisterSignal(parent, COMSIG_LIVING_PILL_CONSUMED, PROC_REF(disconnect_if_red_pill))
 	RegisterSignal(parent, COMSIG_LIVING_DEATH, PROC_REF(on_sever_connection))
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(on_linked_damage))
+
 
 /datum/component/avatar_connection/UnregisterFromParent()
 	REMOVE_TRAIT(parent, TRAIT_TEMPORARY_BODY, REF(src))
@@ -142,6 +145,7 @@
 
 	qdel(src)
 
+
 /// Triggers whenever the server gets a loot crate pushed to goal area
 /datum/component/avatar_connection/proc/on_domain_completed(datum/source, atom/entered)
 	SIGNAL_HANDLER
@@ -153,6 +157,7 @@
 		/atom/movable/screen/alert/bitrunning/qserver_domain_complete,
 		new_master = entered,
 	)
+
 
 /// Transfers damage from the avatar to the old_body
 /datum/component/avatar_connection/proc/on_linked_damage(datum/source, damage, damage_type, def_zone, blocked, ...)
@@ -186,6 +191,7 @@
 
 	source.current.TakeComponent(src)
 
+
 /// Triggers when someone starts prying open our netpod
 /datum/component/avatar_connection/proc/on_netpod_crowbar(datum/source, mob/living/intruder)
 	SIGNAL_HANDLER
@@ -200,6 +206,7 @@
 	alert.name = "Netpod Breached"
 	alert.desc = "Someone is prying open the netpod. Find an exit."
 
+
 /// Triggers when the netpod is taking damage and is under 50%
 /datum/component/avatar_connection/proc/on_netpod_damaged(datum/source)
 	SIGNAL_HANDLER
@@ -213,11 +220,13 @@
 	alert.name = "Integrity Compromised"
 	alert.desc = "The netpod is damaged. Find an exit."
 
+
 //if your bitrunning avatar somehow manages to acquire and consume a red pill, they will be ejected from the Matrix
 /datum/component/avatar_connection/proc/disconnect_if_red_pill(datum/source, obj/item/reagent_containers/pill/pill, mob/feeder)
 	SIGNAL_HANDLER
 	if(pill.icon_state == "pill4")
 		full_avatar_disconnect()
+
 
 /// Triggers when a safe disconnect is called
 /datum/component/avatar_connection/proc/on_safe_disconnect(datum/source)
@@ -225,11 +234,13 @@
 
 	full_avatar_disconnect()
 
+
 /// Received message to sever connection
 /datum/component/avatar_connection/proc/on_sever_connection(datum/source)
 	SIGNAL_HANDLER
 
 	full_avatar_disconnect(cause_damage = TRUE, source = source)
+
 
 /// Triggers when the server is shutting down
 /datum/component/avatar_connection/proc/on_shutting_down(datum/source, mob/living/hackerman)
@@ -245,6 +256,7 @@
 	alert.name = "Domain Rebooting"
 	alert.desc = "The domain is rebooting. Find an exit."
 
+
 /// Triggers whenever an antag steps onto an exit turf and the server is emagged
 /datum/component/avatar_connection/proc/on_station_spawn(datum/source)
 	SIGNAL_HANDLER
@@ -259,6 +271,7 @@
 	alert.name = "Security Breach"
 	alert.desc = "A hostile entity is breaching the safehouse. Find an exit."
 
+
 /// Server has spawned a ghost role threat
 /datum/component/avatar_connection/proc/on_threat_created(datum/source)
 	SIGNAL_HANDLER
@@ -271,6 +284,7 @@
 	)
 	alert.name = "Threat Detected"
 	alert.desc = "Data stream abnormalities present."
+
 
 /// Returns the mind to the old body
 /datum/component/avatar_connection/proc/return_to_old_body()
