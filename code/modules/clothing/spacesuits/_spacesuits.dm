@@ -55,7 +55,7 @@
 	resistance_flags = NONE
 	actions_types = list(/datum/action/item_action/toggle_spacesuit)
 	var/temperature_setting = BODYTEMP_NORMAL /// The default temperature setting
-	var/obj/item/stock_parts/cell/cell = /obj/item/stock_parts/cell/high /// If this is a path, this gets created as an object in Initialize.
+	var/obj/item/stock_parts/power_store/cell = /obj/item/stock_parts/power_store/cell/high /// If this is a path, this gets created as an object in Initialize. // Non-module change, technically, power rework, conflicts with new alt-click
 	var/cell_cover_open = FALSE /// Status of the cell cover on the suit
 	var/thermal_on = FALSE /// Status of the thermal regulator
 	var/show_hud = TRUE /// If this is FALSE the batery status UI will be disabled. This is used for suits that don't use bateries like the changeling's flesh suit mutation.
@@ -179,7 +179,7 @@
 
 // object handling for accessing features of the suit
 /obj/item/clothing/suit/space/attackby(obj/item/I, mob/user, params)
-	if(!cell_cover_open || !istype(I, /obj/item/stock_parts/cell))
+	if(!cell_cover_open || !istype(I, /obj/item/stock_parts/power_store/cell))
 		return ..()
 	if(cell)
 		to_chat(user, span_warning("[src] already has a cell installed."))

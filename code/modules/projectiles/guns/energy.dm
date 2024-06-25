@@ -8,8 +8,8 @@
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	/// What type of power cell this uses
-	var/obj/item/stock_parts/cell/cell
-	var/cell_type = /obj/item/stock_parts/cell
+	var/obj/item/stock_parts/power_store/cell
+	var/cell_type = /obj/item/stock_parts/power_store/cell
 	///if the weapon has custom icons for individual ammo types it can switch between. ie disabler beams, taser, laser/lethals, ect.
 	var/modifystate = FALSE
 	var/list/ammo_type = list(/obj/item/ammo_casing/energy)
