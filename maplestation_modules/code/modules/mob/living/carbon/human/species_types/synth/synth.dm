@@ -456,11 +456,6 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 /obj/item/organ/internal/eyes/robotic/synth
 	name = "synth eyes"
 
-/obj/item/organ/internal/eyes/robotic/synth/generate_body_overlay(mob/living/carbon/human/parent)
-	return ..()
-
-
-
 // Organ for synth head covers.
 
 /obj/item/organ/external/synth_head_cover
@@ -489,7 +484,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 /obj/item/organ/external/synth_head_cover/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	var/mob/living/carbon/human/robot_target = organ_owner
-	var/obj/item/bodypart/head/noggin =  robot_target.get_bodypart(BODY_ZONE_HEAD)
+	var/obj/item/bodypart/head/noggin = robot_target.get_bodypart(BODY_ZONE_HEAD)
 
 	noggin.head_flags &= HEAD_EYESPRITES
 
