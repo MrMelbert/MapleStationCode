@@ -106,12 +106,13 @@
 
 	qdel(src)
 
-/obj/effect/anomaly/attackby(obj/item/weapon, mob/user, params)
-	if(weapon.tool_behaviour == TOOL_ANALYZER && aSignal)
+/obj/effect/anomaly/analyzer_act(mob/living/user, obj/item/analyzer/tool)
+	if(!isnull(aSignal))
 		to_chat(user, span_notice("Analyzing... [src]'s unstable field is fluctuating along frequency [format_frequency(aSignal.frequency)], code [aSignal.code]."))
-		return TRUE
+		return ITEM_INTERACT_SUCCESS
+	to_chat(user, span_notice("Analyzing... [src]'s unstable field is not fluctuating along a stable frequency."))
+	return ITEM_INTERACT_BLOCKING
 
-	return ..()
 
 ///Stabilize an anomaly, letting it stay around forever or untill destabilizes by a player. An anomaly without a core can't be signalled, but can be destabilized
 /obj/effect/anomaly/proc/stabilize(anchor = FALSE, has_core = TRUE)
