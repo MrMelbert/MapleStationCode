@@ -14,9 +14,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /// Takes the name of a blood type and return the typepath
 /proc/blood_name_to_blood_type(name)
-	for(var/datum/blood_type/blood_type as anything in GLOB.blood_types)
-		if(blood_type.name == name)
-			return blood_type.type
+	for(var/blood_type in GLOB.blood_types)
+		if(GLOB.blood_types[blood_type].name == name)
+			return blood_type
 	return null
 
 /**
@@ -40,6 +40,13 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/New()
 	. = ..()
 	compatible_types |= type
+
+/datum/blood_type/Destroy(force)
+	if(!force)
+		stack_trace("qdel called on blood type singleton! (use FORCE if necessary)")
+		return QDEL_HINT_LETMELIVE
+
+	return ..()
 
 /// Gets data to pass to a reagent
 /datum/blood_type/proc/get_blood_data(mob/living/sampled_from)

@@ -13,7 +13,7 @@
 	. = ..()
 	if(!isnull(blood_type))
 		var/datum/blood_type/blood = GLOB.blood_types[blood_type]
-		reagents.add_reagent(blood.reagent_type, 200, list("viruses" = null,"blood_DNA" = null,"blood_type" = blood_type, "resistances" = null, "trace_chem" = null))
+		reagents.add_reagent(blood.reagent_type, 200, list("blood_type" = blood_type))
 		update_appearance()
 
 /// Handles updating the container when the reagents change.
@@ -26,8 +26,7 @@
 
 	else
 		for(var/blood_type in GLOB.blood_types)
-			var/datum/blood_type/blood = GLOB.blood_types[blood_type]
-			if(blood.reagent_type == master_reagent.type)
+			if(GLOB.blood_types[blood_type].reagent_type == master_reagent.type)
 				blood_type = blood_type
 				break
 
