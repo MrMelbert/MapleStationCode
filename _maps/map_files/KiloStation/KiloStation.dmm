@@ -52933,6 +52933,7 @@
 /obj/machinery/power/apc/auto_name/directional/west,
 /obj/structure/cable,
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
 /area/station/security/mechbay)
 "mFk" = (
@@ -64607,6 +64608,7 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted,
 /obj/effect/decal/cleanable/blood/old,
 /obj/machinery/airalarm/directional/east,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
 /area/station/security/mechbay)
 "qDp" = (
@@ -67315,10 +67317,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/service/chapel)
-"rsr" = (
-/obj/effect/decal/cleanable/dirt,
-/turf/closed/wall/rust,
-/area/station/maintenance/port/aft)
 "rsC" = (
 /obj/structure/chair{
 	dir = 4
@@ -78002,6 +78000,7 @@
 /obj/effect/turf_decal/bot,
 /obj/machinery/status_display/ai/directional/west,
 /obj/structure/extinguisher_cabinet/directional/north,
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
 /area/station/security/mechbay)
 "vce" = (
@@ -103737,7 +103736,7 @@ ajx
 ajx
 ajx
 ajd
-rsr
+aer
 ajd
 xCd
 ajd
