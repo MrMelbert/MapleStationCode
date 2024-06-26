@@ -31,6 +31,12 @@ export const feature_lizard_horn_color: Feature<string> = {
   component: FeatureColorInput,
 };
 
+export const feature_lizard_horn_layer: FeatureChoiced = {
+  name: 'Horn Layer',
+  description: 'Determines what layer your horns are on.',
+  component: FeatureDropdownInput,
+};
+
 export const feature_synth_species: FeatureChoiced = {
   name: 'Synth Species',
   description: 'Determines what species you spawn disguised as.',
