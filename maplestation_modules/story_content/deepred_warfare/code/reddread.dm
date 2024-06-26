@@ -601,6 +601,11 @@
 			dynamicSlot2 = new /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread(src)
 			dynamicSlot2.Grant(src)
 
+			if(dynamicSlot3)
+				dynamicSlot3.Remove(src)
+			dynamicSlot3 = new /datum/action/cooldown/mob_cooldown/dreadrepair(src)
+			dynamicSlot3.Grant(src)
+
 		if(1)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/high_energy)
@@ -655,6 +660,11 @@
 			dynamicSlot2 = new /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/high(src)
 			dynamicSlot2.Grant(src)
 
+			if(dynamicSlot3)
+				dynamicSlot3.Remove(src)
+			dynamicSlot3 = new /datum/action/cooldown/mob_cooldown/dreadrepair/high(src)
+			dynamicSlot3.Grant(src)
+
 		if(2)
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)
 			add_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
@@ -708,6 +718,11 @@
 				dynamicSlot2.Remove(src)
 			dynamicSlot2 = new /datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/lightning(src)
 			dynamicSlot2.Grant(src)
+
+			if(dynamicSlot3)
+				dynamicSlot3.Remove(src)
+			dynamicSlot3 = new /datum/action/cooldown/mob_cooldown/dreadrepair/lightning(src)
+			dynamicSlot3.Grant(src)
 
 /mob/living/basic/redtechdread/proc/pre_attack(mob/living/source, atom/target)
 	SIGNAL_HANDLER

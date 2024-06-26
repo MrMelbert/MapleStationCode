@@ -22,10 +22,6 @@
 		owner.balloon_alert(owner, "you cannot enter low energy mode while in RL energy mode")
 		return FALSE
 
-	if(ownercast.RLEnergy < 0) // Negative RL energy.
-		owner.balloon_alert(owner, "you need to wait for your red lightning energy to recharge")
-		return FALSE
-
 	if(ownercast.energy_level == 1) // In high energy mode.
 		owner.balloon_alert(owner, "you slow and and enter low energy mode")
 		ownercast.energy_level = 0
@@ -34,6 +30,10 @@
 		playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 		ownercast.visible_message(span_warning("[ownercast] slows down to a crawl..."))
 		return TRUE
+
+	if(ownercast.RLEnergy < 0) // Negative RL energy.
+		owner.balloon_alert(owner, "you need to wait for your red lightning energy to recharge")
+		return FALSE
 
 	owner.balloon_alert(owner, "you speed up and enter high energy mode")
 	ownercast.energy_level = 1
@@ -325,6 +325,38 @@
 	ownercast.visible_message(span_boldwarning("[ownercast] builds up energy, ready to charge..."))
 	. = ..()
 
+/datum/action/cooldown/mob_cooldown/dreadrepair
+	name = "Self Repair - Efficient"
+	desc = "Conduct a self repair. More efficient but slower."
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_repair"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	cooldown_time = 2 SECONDS
+	var/doafter_time = 10 SECONDS
+	melee_cooldown_time = 0 SECONDS
+	click_to_activate = FALSE
+	shared_cooldown = NONE
+	var/heal_amount = 100
+	var/energy_cost = 50
+
+/datum/action/cooldown/mob_cooldown/dreadrepair/Activate(atom/target_atom)
+	var/mob/living/basic/redtechdread/ownercast = owner
+	playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
+	ownercast.visible_message(span_warning("[ownercast] conducts a self repair..."))
+
+	if(!do_after(ownercast, doafter_time))
+		ownercast.balloon_alert(ownercast, "cancelled")
+		StartCooldown(cooldown_time * 0.2)
+		playsound(ownercast, 'sound/machines/scanbuzz.ogg', 120)
+		return TRUE
+
+	ownercast.adjustBruteLoss(-heal_amount)
+	ownercast.adjust_RL_energy_or_damage(-energy_cost)
+	playsound(ownercast, 'sound/machines/ping.ogg', 120)
+	StartCooldown(cooldown_time)
+	return TRUE
+
 // vvvvv ABILITIES THAT CAN BE USED IN HIGH ENERGY MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/high
 	name = "Fire Volleycoil - High Power"
@@ -352,6 +384,14 @@
 	background_icon_state = "bg_tech"
 	overlay_icon_state = "bg_tech_border"
 	shared_cooldown = NONE
+
+/datum/action/cooldown/mob_cooldown/dreadrepair/high
+	name = "Self Repair - Normal"
+	desc = "Conduct a self repair. Normal efficiency."
+	cooldown_time = 10 SECONDS
+	doafter_time = 5 SECONDS
+	heal_amount = 100
+	energy_cost = 50
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning
@@ -390,3 +430,11 @@
 	var/mob/living/basic/redtechdread/ownercast = owner
 	ownercast.adjust_RL_energy_or_damage(-30)
 	. = ..()
+
+/datum/action/cooldown/mob_cooldown/dreadrepair/lightning
+	name = "Self Repair - Overcharge"
+	desc = "Conduct a self repair. Less efficient but faster."
+	cooldown_time = 30 SECONDS
+	doafter_time = 2 SECONDS
+	heal_amount = 100
+	energy_cost = 25
