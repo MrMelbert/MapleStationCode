@@ -845,21 +845,22 @@ generate/load female uniform sprites matching all previously decided variables
 
 	return appearance
 
-/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance)
-	var/mob/living/carbon/human/wearer = loc
+/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance, mob/living/carbon/human/wearer = loc)
 	if(!istype(wearer) || !(wearer.bodytype & BODYTYPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
 		return
 
-	var/list/icon/masks_and_shading
+	var/static/list/icon/masks_and_shading
 	if(isnull(masks_and_shading))
 		masks_and_shading = list(
 			"[NORTH]" = list(
 				"mask" = icon('icons/effects/digi_filters.dmi', "digi", NORTH),
 				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", NORTH),
+				"size"  = 1,
 			),
 			"[SOUTH]" = list(
 				"mask" = icon('icons/effects/digi_filters.dmi', "digi", SOUTH),
 				"shading" = icon('icons/effects/digi_filters.dmi', "digi_shading", SOUTH),
+				"size"  = 1,
 			),
 			"[EAST]" = list(
 				"mask" = icon('icons/effects/digi_filters.dmi', "digi", EAST),
@@ -876,10 +877,9 @@ generate/load female uniform sprites matching all previously decided variables
 	var/dir_to_use = ISDIAGONALDIR(wearer.dir) ? (wearer.dir & (EAST|WEST)) : wearer.dir
 	var/icon/icon_to_use = masks_and_shading["[dir_to_use]"]["mask"]
 	var/icon/shading_to_use = masks_and_shading["[dir_to_use]"]["shading"]
-	var/size = masks_and_shading["[dir_to_use]"]["size"] || 1
+	var/size = masks_and_shading["[dir_to_use]"]["size"]
 
 	appearance.add_filter("Digitigrade", 1, displacement_map_filter(icon = icon_to_use, size = size))
-	if(!isnull(shading_to_use))
-		appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, blend_mode = BLEND_MULTIPLY))
+	appearance.add_filter("Digitigrade_shading", 1, layering_filter(icon = shading_to_use, blend_mode = BLEND_MULTIPLY))
 
 #undef RESOLVE_ICON_STATE
