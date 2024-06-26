@@ -44,11 +44,11 @@
 
 	// Set these values to `null` to only check pressure
 	/// Desired temperature for cycling to the interior
-	var/interior_temperature_target = null
+	var/interior_temperature_target = T20C
 	/// Desired temperature for cycling to the exterior
 	var/exterior_temperature_target = null
 	/// Temperature leeway for cycling
-	var/temperature_leeway = null
+	var/temperature_leeway = T20C * 0.01
 
 	/// Current state of the airlock setup
 	VAR_PRIVATE/state = AIRLOCK_STATE_CLOSED
@@ -263,12 +263,15 @@
 
 	var/list/reading = sensor_reading()
 	data["sensorPressure"] = isnull(reading["pressure"]) ? "----" : round(reading["pressure"], 0.1)
+	data["sensorTemperature"] = isnull(reading["temperature"]) ? "----" : round(reading["temperature"], 0.1)
 
 	var/obj/machinery/door/airlock/interior_airlock = interior_door_ref.resolve()
 	data["interiorStatus"] = isnull(interior_airlock) ? "----" : (interior_airlock.density ? "closed" : "open")
+	data["int_door_icon"] = isnull(interior_airlock) ? null : list("icon" = interior_airlock.icon, "icon_state" = (interior_airlock.density ? "closed" : "open"))
 
 	var/obj/machinery/door/airlock/exterior_airlock = exterior_door_ref.resolve()
 	data["exteriorStatus"] = isnull(exterior_airlock) ? "----" : (exterior_airlock.density ? "closed" : "open")
+	data["ext_door_icon"] = isnull(exterior_airlock) ? null : list("icon" = exterior_airlock.icon, "icon_state" = (exterior_airlock.density ? "closed" : "open"))
 
 	data["pumpStatus"] = "----"
 	for(var/datum/weakref/pump_ref in pump_refs)
@@ -277,6 +280,17 @@
 			continue
 
 		data["pumpStatus"] = pump.on ? "[pump.pump_direction == ATMOS_DIRECTION_RELEASING ? "de" : ""]pressurizing" : "off"
+		break
+
+	data["heaterStatus"] = "----"
+	for(var/datum/weakref/sensor_ref in sensor_refs)
+		var/obj/machinery/airlock_sensor/heater/temp_regulator = sensor_ref.resolve()
+		if(!istype(temp_regulator))
+			continue
+		if(isnull(reading?["temperature"]))
+			break
+
+		data["heaterStatus"] = temp_regulator.target_temperature ? (temp_regulator.target_temperature > reading["temperature"] ? "heating" : "cooling") : "off"
 		break
 
 	return data

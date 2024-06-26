@@ -23142,7 +23142,7 @@
 	},
 /obj/machinery/door/airlock/engineering,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/effect/mapping_helpers/cycling_airlock_old/marker/outer_door{
+/obj/effect/mapping_helpers/cycling_airlock_old/marker/inner_door{
 	dir = 8
 	},
 /turf/open/floor/iron/dark/textured,
@@ -53755,7 +53755,7 @@
 	dir = 8
 	},
 /obj/machinery/door/airlock/engineering,
-/obj/effect/mapping_helpers/cycling_airlock_old/marker/inner_door{
+/obj/effect/mapping_helpers/cycling_airlock_old/marker/outer_door{
 	dir = 1
 	},
 /turf/open/floor/iron/dark/textured,
