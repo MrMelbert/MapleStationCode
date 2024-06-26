@@ -96,7 +96,7 @@
 // -- Lizard Horn Layer selection --
 // Makes it actually work
 /datum/bodypart_overlay/mutant/horns/get_image(image_layer, obj/item/bodypart/limb)
-	var/new_layer = limb.owner?.dna?.features["lizard_horn_layer"]
+	var/new_layer = limb.owner?.dna?.features["lizard_horn_layer"] || BODY_ADJ_LAYER
 	if(new_layer == BODY_ADJ_LAYER)
 		return ..()
 
