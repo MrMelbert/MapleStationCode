@@ -2335,7 +2335,6 @@
 /turf/open/floor/carpet/black,
 /area/station/service/bar)
 "aOn" = (
-/obj/structure/cable,
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock/command{
 	name = "Head of Security's Office"
@@ -2346,6 +2345,7 @@
 	},
 /obj/effect/turf_decal/siding/dark,
 /obj/effect/turf_decal/tile/dark_blue/fourcorners,
+/obj/structure/cable,
 /turf/open/floor/iron/dark/textured,
 /area/station/security/warden)
 "aOu" = (
@@ -9018,6 +9018,7 @@
 "cYY" = (
 /obj/machinery/firealarm/directional/south,
 /obj/effect/turf_decal/trimline/red/filled/line,
+/obj/structure/cable,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
 "cZi" = (
@@ -22225,6 +22226,7 @@
 /obj/effect/turf_decal/siding/dark{
 	dir = 8
 	},
+/obj/structure/cable,
 /turf/open/floor/iron/dark/textured,
 /area/station/security/range)
 "hsx" = (
@@ -28264,6 +28266,7 @@
 /area/station/service/hydroponics/garden)
 "jqc" = (
 /obj/effect/turf_decal/trimline/red/filled/line,
+/obj/structure/cable,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
 "jqj" = (
@@ -38503,9 +38506,6 @@
 /obj/item/wrench/medical,
 /obj/effect/turf_decal/delivery/white{
 	color = "#52B4E9"
-	},
-/obj/machinery/atmospherics/components/unary/portables_connector/visible{
-	dir = 1
 	},
 /turf/open/floor/iron,
 /area/station/medical/cryo)
@@ -65420,6 +65420,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
+/obj/structure/cable,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hos)
 "uPL" = (
