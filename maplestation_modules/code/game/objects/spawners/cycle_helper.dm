@@ -143,17 +143,17 @@
 	// Generally don't set both of these at the same time they will fight
 
 	// Leave these `null` if you only want to check temperature
-	/// Pressure you want the airlock to be when the INTERIOR door is OPEN
+	/// Pressure to set the interior airlock to
 	var/inner_pressure = null
-	/// Pressure you want the airlock to be when the EXTERIOR door is OPEN
+	/// Pressure to set the exterior airlock to
 	var/outer_pressure = null
 	/// Leeway applied to the controller recording pressure
 	var/pressure_leeway = null
 
 	// Leave these `null` if you only want to check pressure
-	/// Temperature you want the airlock to be when the interior airlock is open
+	/// Temperature to set the interior airlock to
 	var/inner_temp = null
-	/// Temperature you want the airlock to be when the exterior airlock is openw
+	/// Temperature to set the exterior airlock to
 	var/outer_temp = null
 	/// Leeway applied to the controller recording temperature
 	var/temp_leeway = null
@@ -175,42 +175,42 @@
 	if(!length(pumps) || !length(sensors))
 		CRASH("Couldn't find the pump or sensor for the airlock cycle auto setup at ([x], [y], [z])")
 
-	var/obj/machinery/airlock_controller/inner_controller = new(inner_mark.loc)
-	switch(inner_mark.dir)
+	var/obj/machinery/airlock_controller/outer_contoller = new(outer_mark.loc)
+	switch(outer_mark.dir)
 		if(WEST)
-			inner_controller.pixel_x = -32
+			outer_contoller.pixel_x = -32
 		if(NORTH)
-			inner_controller.pixel_y = 32
+			outer_contoller.pixel_y = 32
 		if(EAST)
-			inner_controller.pixel_x = 32
+			outer_contoller.pixel_x = 32
 		if(SOUTH)
-			inner_controller.pixel_y = -32
+			outer_contoller.pixel_y = -32
 
 	var/final_uid = "__[autogen_uid]_AUTOSETUP_AIRLOCK_ATMOS"
 
 	// Setting up the objects
 	inner.id_tag = "[final_uid]_interior"
 	outer.id_tag = "[final_uid]_exterior"
-	inner_controller.id_tag = "[final_uid]_controller"
-	GLOB.objects_by_id_tag[inner_controller.id_tag] = inner_controller // gotta do this manually for airlock sensors
+	outer_contoller.id_tag = "[final_uid]_controller"
+	GLOB.objects_by_id_tag[outer_contoller.id_tag] = outer_contoller // gotta do this manually for airlock sensors
 	var/pump_tag = "[final_uid]_pump"
 	var/sensor_tag = "[final_uid]_sensor"
 	for(var/obj/machinery/airlock_sensor/sensor as anything in sensors)
 		sensor.id_tag = sensor_tag
-		sensor.master_tag = inner_controller.id_tag
+		sensor.master_tag = outer_contoller.id_tag
 	for(var/obj/pump as anything in pumps)
 		pump.id_tag = pump_tag
 	// Setting up master controller
-	inner_controller.interior_door_tag = inner.id_tag
-	inner_controller.exterior_door_tag = outer.id_tag
-	inner_controller.airpump_tag = pump_tag
-	inner_controller.sensor_tag = sensor_tag
-	inner_controller.exterior_target_pressure = outer_pressure
-	inner_controller.interior_target_pressure = inner_pressure
-	inner_controller.pressure_leeway = pressure_leeway
-	inner_controller.exterior_temperature_target = outer_temp
-	inner_controller.interior_temperature_target = inner_temp
-	inner_controller.temperature_leeway = temp_leeway
+	outer_contoller.interior_door_tag = inner.id_tag
+	outer_contoller.exterior_door_tag = outer.id_tag
+	outer_contoller.airpump_tag = pump_tag
+	outer_contoller.sensor_tag = sensor_tag
+	outer_contoller.exterior_target_pressure = outer_pressure
+	outer_contoller.interior_target_pressure = inner_pressure
+	outer_contoller.pressure_leeway = pressure_leeway
+	outer_contoller.exterior_temperature_target = outer_temp
+	outer_contoller.interior_temperature_target = inner_temp
+	outer_contoller.temperature_leeway = temp_leeway
 	// Setting up cycling (if the airlock is overriden)
 	LAZYOR(inner.close_others, outer)
 	LAZYOR(outer.close_others, inner)
@@ -222,25 +222,25 @@
 	outer.autoclose = FALSE
 	outer.update_appearance()
 	// Syncing
-	inner_controller.interior_door_ref = WEAKREF(inner)
-	inner_controller.exterior_door_ref = WEAKREF(outer)
+	outer_contoller.interior_door_ref = WEAKREF(inner)
+	outer_contoller.exterior_door_ref = WEAKREF(outer)
 	for(var/obj/sensor as anything in sensors)
-		LAZYADD(inner_controller.sensor_refs, WEAKREF(sensor))
+		LAZYADD(outer_contoller.sensor_refs, WEAKREF(sensor))
 	for(var/obj/pump as anything in pumps)
-		LAZYADD(inner_controller.pump_refs, WEAKREF(pump))
+		LAZYADD(outer_contoller.pump_refs, WEAKREF(pump))
 	// And handle access
 	inner.req_access = LAZYLISTDUPLICATE(access)
 	outer.req_access = LAZYLISTDUPLICATE(access)
-	inner_controller.req_access = LAZYLISTDUPLICATE(access)
+	outer_contoller.req_access = LAZYLISTDUPLICATE(access)
 	// One access too
 	inner.req_one_access = LAZYLISTDUPLICATE(one_access)
 	outer.req_one_access = LAZYLISTDUPLICATE(one_access)
-	inner_controller.req_one_access = LAZYLISTDUPLICATE(one_access)
+	outer_contoller.req_one_access = LAZYLISTDUPLICATE(one_access)
 	// Finally, naming
 	if(prefix_name)
 		inner.name = "[prefix_name] Interior Airlock"
 		outer.name = "[prefix_name] Exterior Airlock"
-		inner_controller.name = "[prefix_name] Airlock Controller"
+		outer_contoller.name = "[prefix_name] Airlock Controller"
 		for(var/obj/sensor as anything in sensors)
 			sensor.name = "[prefix_name] Airlock Sensor"
 		for(var/obj/pump as anything in pumps)
@@ -250,16 +250,9 @@
 /obj/effect/mapping_helpers/cycling_airlock_old/atmos/tcomms
 	prefix_name = "Server Room"
 	one_access = list("ce", "tcomms")
-	inner_temp = T20C
-	outer_temp = T20C * 0.275
-	temp_leeway = T20C * 0.01
-
-/obj/effect/mapping_helpers/cycling_airlock_old/atmos/vacuum
-	inner_pressure = ONE_ATMOSPHERE
-	inner_temp = T20C
-	outer_pressure = 0
-	pressure_leeway = ONE_ATMOSPHERE * 0.03
-	temp_leeway = T20C * 0.01
+	inner_temp = 80
+	outer_temp = 293
+	temp_leeway = 293 * 0.05
 
 // For assisting in placement of certain elements in the airlock
 /obj/effect/mapping_helpers/cycling_airlock_old/marker

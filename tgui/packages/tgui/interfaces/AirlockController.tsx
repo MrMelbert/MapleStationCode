@@ -1,15 +1,5 @@
 import { useBackend } from '../backend';
-import {
-  Box,
-  Button,
-  Dimmer,
-  DmIcon,
-  Flex,
-  Icon,
-  NoticeBox,
-  Section,
-  Stack,
-} from '../components';
+import { Box, Button, Icon, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
 enum AirlockState {
@@ -26,307 +16,166 @@ enum PumpStatus {
   Depressurizing = 'depressurizing',
 }
 
-enum HeaterStatus {
-  Off = 'off',
-  Heating = 'heating',
-  Cooling = 'cooling',
-}
-
 type AirlockControllerData = {
   airlockState: AirlockState;
-  sensorPressure: number | string;
-  sensorTemperature: number | string;
+  sensorPressure: number;
   pumpStatus: PumpStatus;
-  heaterStatus: HeaterStatus;
   interiorStatus: string;
   exteriorStatus: string;
-  int_door_icon: {
-    icon: string;
-    icon_state: string;
-  } | null;
-  ext_door_icon: {
-    icon: string;
-    icon_state: string;
-  } | null;
+};
+
+type AirlockStatus = {
+  primary: string;
+  icon: string;
+  color: string;
 };
 
 export const AirlockController = () => {
   const { data } = useBackend<AirlockControllerData>();
-  const { airlockState } = data;
+  const { airlockState, pumpStatus, interiorStatus, exteriorStatus } = data;
 
   const statusToText = (state: AirlockState) => {
     switch (state) {
       case AirlockState.InteriorOpen:
-        return { text: 'Interior Airlock Open', color: 'good' };
+        return 'Interior Airlock Open';
       case AirlockState.InteriorOpening:
-        return { text: 'Cycling to Interior Airlock', color: 'average' };
+        return 'Cycling to Interior Airlock';
       case AirlockState.Closed:
-        return { text: 'Airlock Sealed', color: 'good' };
+        return 'Inactive';
       case AirlockState.ExteriorOpening:
-        return { text: 'Cycling to Exterior Airlock', color: 'average' };
+        return 'Cycling to Exterior Airlock';
       case AirlockState.ExteriorOpen:
-        return { text: 'Exterior Airlock Open', color: 'good' };
+        return 'Exterior Airlock Open';
       default:
-        return { text: 'Unknown', color: 'bad' };
+        return 'Unknown';
     }
   };
 
-  const AirlockStatus = statusToText(airlockState);
-
   return (
-    <Window width={350} height={280}>
+    <Window width={500} height={190}>
       <Window.Content>
         <Section
-          style={{ textTransform: 'capitalize', borderRadius: '4px' }}
-          fill
+          title="Airlock Status"
+          buttons={<AirLockButtons />}
+          style={{ textTransform: 'capitalize' }}
         >
-          <Stack width="100%" vertical>
-            <Stack.Item textAlign="center">
-              <NoticeBox
-                color={AirlockStatus.color}
-                style={{ borderRadius: '4px' }}
-              >
-                {AirlockStatus.text}
-              </NoticeBox>
-            </Stack.Item>
-            <Stack.Item>
-              <Flex>
-                <Flex.Item
-                  width="33%"
-                  backgroundColor={'#111'}
-                  mr={0.5}
-                  style={{ borderRadius: '4px' }}
-                >
-                  <AirlockInfo />
-                </Flex.Item>
-                <Flex.Item
-                  width="67%"
-                  backgroundColor={'#111'}
-                  ml={0.5}
-                  style={{ borderRadius: '4px' }}
-                >
-                  <AirlockDisplay />
-                </Flex.Item>
-              </Flex>
-            </Stack.Item>
-            <Stack.Item>
-              <Flex.Item
-                width="100%"
-                backgroundColor={'#111'}
-                style={{ borderRadius: '4px' }}
-              >
-                <AirlockButtons />
-              </Flex.Item>
-            </Stack.Item>
-          </Stack>
+          <LabeledList>
+            <LabeledList.Item label="Current Status">
+              {statusToText(airlockState)}
+            </LabeledList.Item>
+            <LabeledList.Item label="Chamber Pressure">
+              <PressureIndicator />
+            </LabeledList.Item>
+            <LabeledList.Item label="Control Pump">
+              {pumpStatus}
+            </LabeledList.Item>
+            <LabeledList.Item label="Interior Door">
+              <Box color={interiorStatus === 'open' && 'good'}>
+                {interiorStatus}
+              </Box>
+            </LabeledList.Item>
+            <LabeledList.Item label="Exterior Door">
+              <Box color={exteriorStatus === 'open' && 'good'}>
+                {exteriorStatus}
+              </Box>
+            </LabeledList.Item>
+          </LabeledList>
         </Section>
       </Window.Content>
     </Window>
   );
 };
 
-const AirlockInfo = () => {
-  const { data } = useBackend<AirlockControllerData>();
-
-  const { sensorPressure, sensorTemperature, pumpStatus, heaterStatus } = data;
-  const pressureInfo = PressureInfo(sensorPressure);
-  const tempInfo = TempInfo(sensorTemperature);
-
-  const pumpStatusToText = (status: PumpStatus) => {
-    switch (status) {
-      case PumpStatus.Off:
-        return 'Off';
-      case PumpStatus.Pressurizing:
-        return 'Pressurizing';
-      case PumpStatus.Depressurizing:
-        return 'Depressurizing';
-      default:
-        return 'Unknown';
-    }
-  };
-
-  const heaterStatusToText = (status: HeaterStatus) => {
-    switch (status) {
-      case HeaterStatus.Off:
-        return 'Off';
-      case HeaterStatus.Heating:
-        return 'Heating';
-      case HeaterStatus.Cooling:
-        return 'Cooling';
-      default:
-        return 'Unknown';
-    }
-  };
-
-  return (
-    <Stack vertical ml={1} mr={1} mt={1} mb={1}>
-      <Stack.Item>
-        <Box style={{ textDecoration: 'underline', fontWeight: 'bold' }}>
-          Temperature
-        </Box>
-        <Box color={tempInfo.color}>
-          {sensorTemperature}K{' '}
-          <Icon
-            name={tempInfo.icon}
-            className={tempInfo.flash ? 'alert__flash' : ''}
-          />
-        </Box>
-      </Stack.Item>
-      <Stack.Item>
-        <Box style={{ textDecoration: 'underline', fontWeight: 'bold' }}>
-          Regulators
-        </Box>
-        <Box>{heaterStatusToText(heaterStatus)}</Box>
-      </Stack.Item>
-      <Stack.Item>
-        <Box style={{ textDecoration: 'underline', fontWeight: 'bold' }}>
-          Pressure
-        </Box>
-        <Box color={pressureInfo.color}>
-          {sensorPressure}kPa{' '}
-          <Icon
-            name={pressureInfo.icon}
-            className={pressureInfo.flash ? 'alert__flash' : ''}
-          />
-        </Box>
-      </Stack.Item>
-      <Stack.Item>
-        <Box style={{ textDecoration: 'underline', fontWeight: 'bold' }}>
-          Pumps
-        </Box>
-        <Box>{pumpStatusToText(pumpStatus)}</Box>
-      </Stack.Item>
-    </Stack>
-  );
-};
-
-const AirlockDisplay = () => {
-  const { data } = useBackend<AirlockControllerData>();
-  const { int_door_icon, ext_door_icon, airlockState } = data;
-
-  const showDimmer = (state: AirlockState) => {
-    switch (state) {
-      case AirlockState.InteriorOpening:
-      case AirlockState.ExteriorOpening:
-        return true;
-      default:
-        return false;
-    }
-  };
-
-  return (
-    <Stack vertical ml={1} mr={1} mt={1} mb={1} fill>
-      <Section fill>
-        {showDimmer(airlockState) && (
-          <Dimmer style={{ borderRadius: '4px' }}>
-            <Stack vertical>
-              <Stack.Item align="center">
-                <Icon name="fan" spin size={4} />
-              </Stack.Item>
-              <Stack.Item>
-                <Box style={{ fontFamily: 'monospace', fontSize: '16px' }}>
-                  Cycling...
-                </Box>
-              </Stack.Item>
-            </Stack>
-          </Dimmer>
-        )}
-        <Stack.Item>
-          <Box bold style={{ position: 'absolute' }} ml={4}>
-            Interior
-          </Box>
-          <Box bold style={{ position: 'absolute' }} ml={21}>
-            Exterior
-          </Box>
-          <DmIcon
-            icon={int_door_icon.icon}
-            icon_state={int_door_icon.icon_state}
-            style={{ transform: 'scale(3) translateX(11px) translateY(20px)' }}
-          />
-          <DmIcon
-            icon={ext_door_icon.icon}
-            icon_state={ext_door_icon.icon_state}
-            style={{ transform: 'scale(3) translateX(35px) translateY(20px)' }}
-          />
-        </Stack.Item>
-      </Section>
-    </Stack>
-  );
-};
-
-const AirlockButtons = () => {
+/** Displays the buttons on top of the window to cycle the airlock */
+const AirLockButtons = (props) => {
   const { act, data } = useBackend<AirlockControllerData>();
   const { airlockState } = data;
+  switch (airlockState) {
+    case AirlockState.InteriorOpening:
+    case AirlockState.ExteriorOpening:
+      return (
+        <Button icon="stop-circle" onClick={() => act('abort')}>
+          Abort
+        </Button>
+      );
+    case AirlockState.Closed:
+      return (
+        <>
+          <Button icon="lock-open" onClick={() => act('cycleInterior')}>
+            Open Interior Airlock
+          </Button>
+          <Button icon="lock-open" onClick={() => act('cycleExterior')}>
+            Open Exterior Airlock
+          </Button>
+        </>
+      );
+    case AirlockState.InteriorOpen:
+      return (
+        <>
+          <Button icon="lock" onClick={() => act('cycleClosed')}>
+            Close Interior Airlock
+          </Button>
+          <Button icon="sync" onClick={() => act('cycleExterior')}>
+            Cycle to Exterior Airlock
+          </Button>
+        </>
+      );
+    case AirlockState.ExteriorOpen:
+      return (
+        <>
+          <Button icon="lock" onClick={() => act('cycleClosed')}>
+            Close Exterior Airlock
+          </Button>
+          <Button icon="sync" onClick={() => act('cycleInterior')}>
+            Cycle to Interior Airlock
+          </Button>
+        </>
+      );
+    default:
+      return null;
+  }
+};
 
-  const isCycling =
-    airlockState === AirlockState.InteriorOpening ||
-    airlockState === AirlockState.ExteriorOpening;
-  const intOpen = airlockState === AirlockState.InteriorOpen;
-  const extOpen = airlockState === AirlockState.ExteriorOpen;
-  const isClosed = airlockState === AirlockState.Closed;
+/** Displays the numeric pressure alongside an icon for the user */
+const PressureIndicator = () => {
+  const { data } = useBackend<AirlockControllerData>();
+  const { airlockState, pumpStatus, sensorPressure } = data;
+
+  const StatusFromState = () => {
+    if (
+      airlockState === AirlockState.InteriorOpening ||
+      airlockState === AirlockState.ExteriorOpening
+    ) {
+      if (sensorPressure <= 10) {
+        return { color: 'red', icon: 'fan' };
+      } else if (sensorPressure >= 200) {
+        return { color: 'red', icon: 'fan' };
+      } else {
+        return { color: 'average', icon: 'fan' };
+      }
+    }
+    if (sensorPressure <= 10) {
+      return { color: 'red', icon: 'exclamation-triangle' };
+    } else if (sensorPressure <= 20) {
+      return { color: 'average', icon: 'exclamation-triangle' };
+    } else if (sensorPressure >= 150) {
+      return { color: 'average', icon: 'exclamation-triangle' };
+    } else if (sensorPressure >= 200) {
+      return { color: 'red', icon: 'exclamation-triangle' };
+    } else {
+      return { color: 'white', icon: '' };
+    }
+  };
+
+  const { color, icon } = StatusFromState();
+  let spin =
+    icon === 'fan' &&
+    (pumpStatus === PumpStatus.Pressurizing ||
+      pumpStatus === PumpStatus.Depressurizing);
 
   return (
-    <Stack ml={1} mr={1} mb={1} fill textAlign={'center'}>
-      <Stack.Item mt={1} mb={1} width="35%">
-        <Button
-          fluid
-          onClick={() => act(intOpen ? 'cycleClosed' : 'cycleInterior')}
-        >
-          {intOpen ? 'Close' : extOpen ? 'Cycle' : 'Open'} Interior
-        </Button>
-      </Stack.Item>
-      <Stack.Item mt={1} mb={1} width="30%">
-        <Button
-          color={isCycling ? 'red' : ''}
-          fluid
-          disabled={isClosed}
-          onClick={() => act(isCycling ? 'cycleClosed' : 'abort')}
-        >
-          {isCycling ? 'Abort' : 'Close'}
-        </Button>
-      </Stack.Item>
-      <Stack.Item mt={1} mb={1} width="35%">
-        <Button
-          fluid
-          onClick={() => act(extOpen ? 'cycleClosed' : 'cycleExterior')}
-        >
-          {extOpen ? 'Close' : intOpen ? 'Cycle' : 'Open'} Exterior
-        </Button>
-      </Stack.Item>
-    </Stack>
+    <Box color={color}>
+      {sensorPressure} kPa {icon && <Icon name={icon} spin={spin} />}
+    </Box>
   );
-};
-
-const PressureInfo = (pressure: number | string) => {
-  if (typeof pressure === 'string') {
-    return { color: 'white', icon: '' };
-  }
-  if (pressure <= 10) {
-    return { color: 'red', icon: 'exclamation-triangle', flash: true };
-  } else if (pressure <= 20) {
-    return { color: 'average', icon: 'exclamation-triangle' };
-  } else if (pressure >= 150) {
-    return { color: 'average', icon: 'exclamation-triangle' };
-  } else if (pressure >= 200) {
-    return { color: 'red', icon: 'exclamation-triangle', flash: true };
-  } else {
-    return { color: 'white', icon: '' };
-  }
-};
-
-const TempInfo = (temp: number | string) => {
-  if (typeof temp === 'string') {
-    return { color: 'white', icon: '' };
-  }
-  if (temp <= 10) {
-    return { color: 'blue', icon: 'exclamation-triangle', flash: true };
-  } else if (temp <= 80) {
-    return { color: 'average', icon: 'exclamation-triangle' };
-  } else if (temp >= 300) {
-    return { color: 'average', icon: 'exclamation-triangle' };
-  } else if (temp >= 400) {
-    return { color: 'red', icon: 'exclamation-triangle', flash: true };
-  } else {
-    return { color: 'white', icon: '' };
-  }
 };
