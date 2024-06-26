@@ -42,4 +42,6 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreaditems.dmi'
 	worn_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothing.dmi'
 	icon_state = "mask"
-	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
+	w_class = WEIGHT_CLASS_BULKY
+	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
+	resistance_flags = FIRE_PROOF | ACID_PROOF

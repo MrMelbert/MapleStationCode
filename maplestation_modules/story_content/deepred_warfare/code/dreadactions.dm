@@ -98,7 +98,7 @@
 	ownercast.update_base_stats()
 	StartCooldown()
 	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
-	ownercast.visible_message(span_boldwarning("[ownercast] heats up and crackles with red lightning!"))
+	ownercast.visible_message(span_alertwarning("[ownercast] heats up and crackles with red lightning!"))
 	ownercast.apply_damage(-200) // Third phase moment.
 	return TRUE
 
@@ -245,7 +245,7 @@
 
 	if(hits < maxhits)
 		playsound(ownercast, 'sound/effects/glass_step.ogg', 240)
-		ownercast.visible_message(span_warning("[ownercast]'s shielding cracks!"))
+		ownercast.visible_message(span_boldwarning("[ownercast]'s shielding cracks!"))
 		return
 
 	playsound(ownercast, 'sound/effects/glassbr3.ogg', 240)
@@ -392,6 +392,46 @@
 	doafter_time = 5 SECONDS
 	heal_amount = 100
 	energy_cost = 50
+
+/datum/action/cooldown/mob_cooldown/heatburst
+	name = "Purge Heat"
+	desc = "Purposefully vent heat from your heatsinks to deal damage to nearby enemies."
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_bomb"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	cooldown_time = 3 MINUTES
+	melee_cooldown_time = 0 SECONDS
+	click_to_activate = FALSE
+	shared_cooldown = NONE
+	var/firesize = 4
+	var/doafter_time = 10 SECONDS
+
+/datum/action/cooldown/mob_cooldown/heatburst/Activate(atom/target_atom)
+	var/mob/living/basic/redtechdread/ownercast = owner
+	playsound(ownercast, 'sound/machines/clockcult/stargazer_activate.ogg', 120)
+	ownercast.visible_message(span_alertwarning("[ownercast]'s heatsinks blaze with heat..."))
+
+	if(!do_after(ownercast, doafter_time))
+		ownercast.balloon_alert(ownercast, "cancelled")
+		StartCooldown(cooldown_time * 0.2)
+		playsound(ownercast, 'sound/machines/scanbuzz.ogg', 120)
+		return TRUE
+
+	playsound(ownercast, 'sound/machines/clockcult/ark_damage.ogg', 120)
+	StartCooldown(cooldown_time)
+	ownercast.adjust_RL_energy(50)
+	INVOKE_ASYNC(src, PROC_REF(complete_burnoff), get_turf(owner), firesize)
+
+/datum/action/cooldown/mob_cooldown/heatburst/proc/complete_burnoff(atom/centre, firesize = 1)
+	for(var/i in 0 to firesize)
+		for(var/turf/nearby_turf as anything in spiral_range_turfs(i + 1, centre))
+			new /obj/effect/hotspot(nearby_turf)
+			nearby_turf.hotspot_expose(750, 50, 1)
+			for(var/mob/living/fried_living in nearby_turf.contents - owner)
+				fried_living.apply_damage(5, BURN)
+
+		stoplag(0.3 SECONDS)
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning
