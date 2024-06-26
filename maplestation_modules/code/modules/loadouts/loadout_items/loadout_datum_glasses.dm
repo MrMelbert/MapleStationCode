@@ -1,10 +1,9 @@
-// --- Loadout item datums for glasses ---
-
 /// Glasses Slot Items (Moves overrided items to backpack)
 /datum/loadout_category/glasses
 	category_name = "Glasses"
-	ui_title = "Eye Slot Items"
+	category_ui_icon = FA_ICON_GLASSES
 	type_to_generate = /datum/loadout_item/glasses
+	tab_order = /datum/loadout_category/head::tab_order + 1
 
 /datum/loadout_item/glasses
 	abstract_type = /datum/loadout_item/glasses
@@ -13,13 +12,6 @@
 	if(outfit.glasses)
 		LAZYADD(outfit.backpack_contents, outfit.glasses)
 	outfit.glasses = item_path
-
-/datum/loadout_item/glasses/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
-	var/obj/item/clothing/glasses/equipped_glasses = locate(item_path) in equipper.get_equipped_items()
-	if(equipped_glasses.glass_colour_type)
-		equipper.update_glasses_color(equipped_glasses, TRUE)
-	equipper.update_tint()
-	equipper.update_sight()
 
 /datum/loadout_item/glasses/prescription_glasses
 	name = "Glasses"

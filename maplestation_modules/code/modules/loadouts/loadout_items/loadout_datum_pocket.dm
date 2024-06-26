@@ -1,15 +1,15 @@
-// --- Loadout item datums for backpack / pocket items ---
-
 /// Pocket items (Moved to backpack)
 /datum/loadout_category/pocket
 	category_name = "Other"
+	category_ui_icon = FA_ICON_QUESTION
 	type_to_generate = /datum/loadout_item/pocket_items
+	tab_order = /datum/loadout_category/head::tab_order + 5
 	/// How many pocket items are allowed
-	var/max_allowed = 3
+	VAR_PRIVATE/max_allowed = 3
 
 /datum/loadout_category/pocket/New()
 	. = ..()
-	ui_title = "Backpack Items ([max_allowed] max)"
+	category_info = "([max_allowed] allowed)"
 
 /datum/loadout_category/pocket/handle_duplicate_entires(
 	datum/preference_middleware/loadout/manager,
@@ -30,10 +30,16 @@
 /datum/loadout_item/pocket_items
 	abstract_type = /datum/loadout_item/pocket_items
 
-/datum/loadout_item/pocket_items/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
+/datum/loadout_item/pocket_items/on_equip_item(
+	obj/item/equipped_item,
+	datum/preferences/preference_source,
+	list/preference_list,
+	mob/living/carbon/human/equipper,
+	visuals_only = FALSE,
+)
 	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
 	if(visuals_only)
-		return
+		return NONE
 
 	return ..()
 

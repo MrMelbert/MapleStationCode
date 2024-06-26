@@ -1,70 +1,73 @@
-// --- Loadout item datums for accessories ---
-
 /// Accessory Items (Moves overrided items to backpack)
 /datum/loadout_category/accessories
 	category_name = "Accessory"
-	ui_title = "Uniform Accessory Items"
+	category_ui_icon = FA_ICON_VEST
 	type_to_generate = /datum/loadout_item/accessory
+	tab_order = /datum/loadout_category/head::tab_order + 3
 
 /datum/loadout_item/accessory
 	abstract_type = /datum/loadout_item/accessory
-	// Can we adjust this accessory to be above or below suits?
+	/// Can we adjust this accessory to be above or below suits?
 	VAR_FINAL/can_be_layer_adjusted = FALSE
 
 /datum/loadout_item/accessory/New()
 	. = ..()
-	if(!ispath(item_path, /obj/item/clothing/accessory))
+	if(ispath(item_path, /obj/item/clothing/accessory))
 		can_be_layer_adjusted = TRUE
 
 /datum/loadout_item/accessory/get_ui_buttons()
-	. = ..()
-	if(can_be_layer_adjusted)
-		UNTYPED_LIST_ADD(., list(
-			"icon" = FA_ICON_ARROW_DOWN,
-			"act_key" = "set_layer",
-			"tooltip" = "You can modify this item to be above or below your over suit."
-		))
+	if(!can_be_layer_adjusted)
+		return ..()
 
-/datum/loadout_item/accessory/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action)
-	switch(action)
-		if("set_layer")
-			if(can_be_layer_adjusted)
-				set_accessory_layer(manager, user)
-				. = TRUE // update to show the new layer
+	var/list/buttons = ..()
+
+	UNTYPED_LIST_ADD(buttons, list(
+		"label" = "Layer",
+		"act_key" = "set_layer",
+		"active_key" = INFO_LAYER,
+		"active_text" = "Above Suit",
+		"inactive_text" = "Below Suit",
+	))
+
+	return buttons
+
+/datum/loadout_item/accessory/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action, params)
+	if(action == "set_layer")
+		return set_accessory_layer(manager, user)
 
 	return ..()
 
 /datum/loadout_item/accessory/proc/set_accessory_layer(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = get_active_loadout(manager.preferences)
+	if(!can_be_layer_adjusted)
+		return FALSE
+
+	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
 	if(!loadout?[item_path])
-		manager.select_item(src)
+		return FALSE
 
 	if(isnull(loadout[item_path][INFO_LAYER]))
 		loadout[item_path][INFO_LAYER] = FALSE
 
 	loadout[item_path][INFO_LAYER] = !loadout[item_path][INFO_LAYER]
-	to_chat(user, span_boldnotice("[name] will now appear [loadout[item_path][INFO_LAYER] ? "above" : "below"] suits."))
-	update_loadout(manager.preferences, loadout)
+	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	return TRUE // Update UI
 
 /datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
 
-/datum/loadout_item/accessory/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only = FALSE, list/preference_list)
+/datum/loadout_item/accessory/on_equip_item(
+	obj/item/clothing/accessory/equipped_item,
+	datum/preferences/preference_source,
+	list/preference_list,
+	mob/living/carbon/human/equipper,
+	visuals_only = FALSE,
+)
 	. = ..()
-	var/obj/item/clothing/accessory/equipped_item = .
-	var/obj/item/clothing/under/suit = equipper.w_uniform
-	if(!istype(equipped_item))
-		return
-
-	equipped_item.above_suit = !!preference_list[item_path]?[INFO_LAYER]
-	if(!istype(suit))
-		return
-
-	// Hacky, but accessory will ONLY update when attached or detached.
-	equipped_item.detach(suit)
-	suit.attach_accessory(equipped_item)
+	if(istype(equipped_item))
+		equipped_item.above_suit = !!preference_list[item_path]?[INFO_LAYER]
+		. |= (ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING)
 
 /datum/loadout_item/accessory/maid_apron
 	name = "Maid Apron"

@@ -554,7 +554,7 @@ SUBSYSTEM_DEF(job)
 
 	equipping.mind?.set_assigned_role_with_greeting(job, player_client)
 
-	equipping.on_job_equipping(job, player_client?.prefs) // NON-MODULE CHANGE
+	equipping.on_job_equipping(job, player_client)
 
 	job.announce_job(equipping)
 

@@ -18,13 +18,19 @@
 /// Max amonut of misc / backpack items that are allowed.
 #define MAX_ALLOWED_MISC_ITEMS 3
 
+// Loadout
 /// Used to make something not recolorable even if it's capable
 #define DONT_GREYSCALE -1
-
-/// Defines for extra info blurbs, for loadout items.
-#define TOOLTIP_NO_ARMOR "This item has no armor and is entirely cosmetic."
-#define TOOLTIP_NO_DAMAGE "This item has very low force and is largely cosmetic."
-#define TOOLTIP_RANDOM_COLOR "This item has a random color and will change every round."
+// Loadout item info keys
+// Changing these will break existing loadouts
+/// Tracks GAGS color information
+#define INFO_GREYSCALE "greyscale"
+/// Used to set custom names
+#define INFO_NAMED "name"
+/// Used for specific alt-reskins, like the pride pin
+#define INFO_RESKIN "reskin"
+/// Handles which layer the item will be on, for accessories
+#define INFO_LAYER "layer"
 
 // Modular traits
 /// Essentially a buffed version of TRAIT_VIRUS_RESISTANCE, but not as strong as TRAIT_VIRUS_IMMUNE.

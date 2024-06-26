@@ -351,6 +351,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/mob/living/carbon/human/dummy/body
 	/// The preferences this refers to
 	var/datum/preferences/preferences
+	/// Whether we show current job clothes or nude/loadout only
+	var/show_job_clothes = TRUE
 
 /atom/movable/screen/map_view/char_preview/Initialize(mapload, datum/preferences/preferences)
 	. = ..()
@@ -368,15 +370,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		create_body()
 	else
 		body.wipe_state()
-	appearance = preferences.render_new_preview_appearance(body)
+	appearance = preferences.render_new_preview_appearance(body, show_job_clothes)
 
 /atom/movable/screen/map_view/char_preview/proc/create_body()
 	QDEL_NULL(body)
 
 	body = new
-
-	// Without this, it doesn't show up in the menu
-	// body.appearance_flags &= ~KEEP_TOGETHER // NON-MODULE CHANGE
 
 /datum/preferences/proc/create_character_profiles()
 	var/list/profiles = list()
