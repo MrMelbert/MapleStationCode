@@ -343,13 +343,12 @@
 			damage_overlay.color = iter_part.damage_color
 		if(iter_part.burnstate)
 			damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
-		if(!digi_filter && istype(iter_part, /obj/item/bodypart/leg) && (iter_part.bodytype & BODYTYPE_DIGITIGRADE))
+		if(!digi_filter && damage_overlay && (iter_part.bodytype & BODYTYPE_DIGITIGRADE))
+			iter_part.apply_digitigrade_filters(damage_overlay, src)
 			digi_filter = TRUE
 
 	if(isnull(damage_overlay))
 		return
-	if(digi_filter)
-		iter_part.apply_digitigrade_filters(damage_overlay, src)
 
 	overlays_standing[DAMAGE_LAYER] = damage_overlay
 	apply_overlay(DAMAGE_LAYER)
