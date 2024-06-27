@@ -30,11 +30,17 @@ const LoadoutModifyButton = (props: {
   modifyItemDimmer: LoadoutItem;
 }) => {
   const { act, data } = useBackend<LoadoutManagerData>();
-  const { loadout_list } = data.character_preferences.misc;
+  const { loadout_list, active_loadout } = data.character_preferences.misc;
   const { button, modifyItemDimmer } = props;
 
+  const active_loadout_list = loadout_list
+    ? loadout_list[active_loadout - 1]
+    : null;
+
   const buttonIsActive =
-    button.active_key && loadout_list[modifyItemDimmer.path][button.active_key];
+    button.active_key &&
+    active_loadout_list &&
+    active_loadout_list[modifyItemDimmer.path][button.active_key];
 
   if (button.active_text && button.inactive_text) {
     return (
@@ -74,12 +80,16 @@ const LoadoutModifyButton = (props: {
 
 const LoadoutModifyButtons = (props: { modifyItemDimmer: LoadoutItem }) => {
   const { act, data } = useBackend<LoadoutManagerData>();
-  const { loadout_list } = data.character_preferences.misc;
+  const { loadout_list, active_loadout } = data.character_preferences.misc;
   const { modifyItemDimmer } = props;
 
+  const active_loadout_list = loadout_list
+    ? loadout_list[active_loadout - 1]
+    : null;
+
   const isActive = (item: LoadoutItem, reskin: ReskinOption) => {
-    return loadout_list && loadout_list[item.path]['reskin']
-      ? loadout_list[item.path]['reskin'] === reskin.name
+    return active_loadout_list && active_loadout_list[item.path]['reskin']
+      ? active_loadout_list[item.path]['reskin'] === reskin.name
       : item.icon_state === reskin.skin_icon_state;
   };
 

@@ -10,11 +10,13 @@
  * * outfit - the job outfit we're equipping
  * * preference_source - the preferences to draw loadout items from.
  * * visuals_only - whether we call special equipped procs, or if we just look like we equipped it
+ * * job_equipping_step - whether we're in the job equipping step, which is a special case for some items
  */
 /mob/living/carbon/human/proc/equip_outfit_and_loadout(
 	datum/outfit/outfit = /datum/outfit,
 	datum/preferences/preference_source,
 	visuals_only = FALSE,
+	job_equipping_step = FALSE,
 )
 	if(isnull(preference_source))
 		return equipOutfit(outfit, visuals_only)
@@ -27,11 +29,16 @@
 	else
 		CRASH("Invalid outfit passed to equip_outfit_and_loadout ([outfit])")
 
-	var/list/preference_list = preference_source.read_preference(/datum/preference/loadout)
+	var/list/preference_list = get_active_loadout(preference_source)
 	var/list/loadout_datums = loadout_list_to_datums(preference_list)
 	// Slap our things into the outfit given
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		item.insert_path_into_outfit(equipped_outfit, src, visuals_only)
+		item.insert_path_into_outfit(
+			outfit = equipped_outfit,
+			equipper = src,
+			visuals_only = visuals_only,
+			job_equipping_step = job_equipping_step,
+		)
 	// Equip the outfit loadout items included
 	if(!equipped_outfit.equip(src, visuals_only))
 		return FALSE
@@ -49,7 +56,6 @@
 			equipper = src,
 			visuals_only = visuals_only,
 		)
-
 	if(update)
 		update_clothing(update)
 
@@ -111,11 +117,9 @@
 /proc/get_updated_loadout_list(datum/preferences/preferences, list/loadout_list)
 	RETURN_TYPE(/list)
 	var/slot = preferences.read_preference(/datum/preference/numeric/active_loadout)
-	var/list/new_list = list()
-	for(var/list/loadout in preferences.read_preference(/datum/preference/loadout))
-		UNTYPED_LIST_ADD(new_list, loadout)
-	while(length(new_list) < slot)
-		new_list += null
+	var/list/complete_loadout_list = preferences.read_preference(/datum/preference/loadout)
+	while(length(complete_loadout_list) < slot)
+		complete_loadout_list += null
 
-	new_list[slot] = loadout_list
-	return new_list
+	complete_loadout_list[slot] = loadout_list
+	return complete_loadout_list

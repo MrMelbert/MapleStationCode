@@ -35,6 +35,7 @@ export const LoadoutPage = () => {
         return (
           <LoadoutPageInner
             loadout_tabs={loadoutServerData.loadout.loadout_tabs}
+            max_loadouts={loadoutServerData.loadout.max_loadouts}
           />
         );
       }}
@@ -42,8 +43,11 @@ export const LoadoutPage = () => {
   );
 };
 
-const LoadoutPageInner = (props: { loadout_tabs: LoadoutCategory[] }) => {
-  const { loadout_tabs } = props;
+const LoadoutPageInner = (props: {
+  loadout_tabs: LoadoutCategory[];
+  max_loadouts: number;
+}) => {
+  const { loadout_tabs, max_loadouts } = props;
   const [searchLoadout, setSearchLoadout] = useState('');
   const [selectedTabName, setSelectedTab] = useState(loadout_tabs[0].name);
   const [modifyItemDimmer, setModifyItemDimmer] = useState<LoadoutItem | null>(
@@ -97,6 +101,7 @@ const LoadoutPageInner = (props: { loadout_tabs: LoadoutCategory[] }) => {
       <Stack.Item>
         <LoadoutTabs
           loadout_tabs={loadout_tabs}
+          max_loadouts={max_loadouts}
           currentTab={selectedTabName}
           currentSearch={searchLoadout}
           modifyItemDimmer={modifyItemDimmer}
@@ -109,6 +114,7 @@ const LoadoutPageInner = (props: { loadout_tabs: LoadoutCategory[] }) => {
 
 const LoadoutTabs = (props: {
   loadout_tabs: LoadoutCategory[];
+  max_loadouts: number;
   currentTab: string;
   currentSearch: string;
   modifyItemDimmer: LoadoutItem | null;
@@ -116,6 +122,7 @@ const LoadoutTabs = (props: {
 }) => {
   const {
     loadout_tabs,
+    max_loadouts,
     currentTab,
     currentSearch,
     modifyItemDimmer,
@@ -136,6 +143,7 @@ const LoadoutTabs = (props: {
           <Stack.Item grow>
             <LoadoutSelectedSection
               all_tabs={loadout_tabs}
+              max_loadouts={max_loadouts}
               modifyItemDimmer={modifyItemDimmer}
               setModifyItemDimmer={setModifyItemDimmer}
             />
@@ -244,12 +252,29 @@ const LoadoutSelectedItem = (props: {
 
 const LoadoutSelectedSection = (props: {
   all_tabs: LoadoutCategory[];
+  max_loadouts: number;
   modifyItemDimmer: LoadoutItem | null;
   setModifyItemDimmer: (dimmer: LoadoutItem | null) => void;
 }) => {
   const { act, data } = useBackend<LoadoutManagerData>();
-  const { loadout_list } = data.character_preferences.misc;
-  const { all_tabs, modifyItemDimmer, setModifyItemDimmer } = props;
+  const { loadout_list, active_loadout } = data.character_preferences.misc;
+  const { all_tabs, max_loadouts, modifyItemDimmer, setModifyItemDimmer } =
+    props;
+
+  const active_loadout_list = loadout_list
+    ? loadout_list[active_loadout - 1]
+    : null;
+
+  const loadoutSlots = (maxSlots: number) => {
+    if (!maxSlots) {
+      maxSlots = 5;
+    }
+    const slots: number[] = [];
+    for (let i = 1; i < maxSlots + 1; i++) {
+      slots.push(i);
+    }
+    return slots;
+  };
 
   return (
     <Section
@@ -257,20 +282,47 @@ const LoadoutSelectedSection = (props: {
       scrollable
       fill
       buttons={
-        <Button.Confirm
-          icon="times"
-          color="red"
-          align="center"
-          disabled={!loadout_list || Object.keys(loadout_list).length === 0}
-          tooltip="Clears ALL selected items from all categories."
-          onClick={() => act('clear_all_items')}
-        >
-          Clear All
-        </Button.Confirm>
+        <Stack width="240px">
+          <Stack.Item width="70%">
+            {loadoutSlots(max_loadouts).map((slot) => (
+              <Button
+                key={slot}
+                height="92%"
+                color={
+                  active_loadout === slot
+                    ? 'green'
+                    : !loadout_list ||
+                        !loadout_list[slot - 1] ||
+                        Object.keys(loadout_list[slot - 1]).length === 0
+                      ? 'grey'
+                      : 'default'
+                }
+                onClick={() => act('set_active_loadout', { slot: slot })}
+              >
+                {slot}
+              </Button>
+            ))}
+          </Stack.Item>
+          <Stack.Item>
+            <Button.Confirm
+              icon="times"
+              color="red"
+              align="center"
+              disabled={
+                !active_loadout_list ||
+                Object.keys(active_loadout_list).length === 0
+              }
+              tooltip="Clears ALL selected items from all categories."
+              onClick={() => act('clear_all_items')}
+            >
+              Clear All
+            </Button.Confirm>
+          </Stack.Item>
+        </Stack>
       }
     >
-      {loadout_list &&
-        Object.entries(loadout_list).map(([path, item]) => (
+      {active_loadout_list &&
+        Object.entries(active_loadout_list).map(([path, item]) => (
           <Fragment key={path}>
             <LoadoutSelectedItem
               path={path}

@@ -176,7 +176,7 @@
 	desc = "A Nanotrasen Diversity & Inclusion Center-sponsored holographic pin to show off your pride, reminding the crew of their unwavering commitment to equity, diversity, and inclusion!"
 	icon_state = "pride"
 	obj_flags = UNIQUE_RENAME | INFINITE_RESKIN
-	nique_reskin = list(
+	unique_reskin = list(
 		"Rainbow Pride" = "pride",
 		"Bisexual Pride" = "pride_bi",
 		"Pansexual Pride" = "pride_pan",

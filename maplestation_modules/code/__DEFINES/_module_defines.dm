@@ -10,28 +10,6 @@
 #define COMPANY_FILE "companies.json"
 #define RESOURCE_EVENT_FILE "resource_events.json"
 
-#define INFO_GREYSCALE "greyscale"
-#define INFO_NAMED "name"
-#define INFO_RESKIN "reskin"
-#define INFO_LAYER "layer"
-
-/// Max amonut of misc / backpack items that are allowed.
-#define MAX_ALLOWED_MISC_ITEMS 3
-
-// Loadout
-/// Used to make something not recolorable even if it's capable
-#define DONT_GREYSCALE -1
-// Loadout item info keys
-// Changing these will break existing loadouts
-/// Tracks GAGS color information
-#define INFO_GREYSCALE "greyscale"
-/// Used to set custom names
-#define INFO_NAMED "name"
-/// Used for specific alt-reskins, like the pride pin
-#define INFO_RESKIN "reskin"
-/// Handles which layer the item will be on, for accessories
-#define INFO_LAYER "layer"
-
 // Modular traits
 /// Essentially a buffed version of TRAIT_VIRUS_RESISTANCE, but not as strong as TRAIT_VIRUS_IMMUNE.
 /// Outright prevents contraction of disease, but if you do get sick, you're not immune to it.

@@ -121,7 +121,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	if(manager.menu)
 		return FALSE
 
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	var/list/allowed_configs = list()
 	if(initial(item_path.greyscale_config))
 		allowed_configs += "[initial(item_path.greyscale_config)]"
@@ -151,7 +151,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	if(!istype(open_menu))
 		CRASH("set_slot_greyscale called without a greyscale menu!")
 
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	if(!loadout?[item_path])
 		return FALSE
 
@@ -160,12 +160,12 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 		return FALSE
 
 	loadout[item_path][INFO_GREYSCALE] = colors.Join("")
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 	return TRUE // update UI
 
 /// Sets the name of the item.
 /datum/loadout_item/proc/set_name(datum/preference_middleware/loadout/manager, mob/user)
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	var/input_name = tgui_input_text(
 		user = user,
 		message = "What name do you want to give the [name]? Leave blank to clear.",
@@ -176,7 +176,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	if(QDELETED(src) || QDELETED(user) || QDELETED(manager) || QDELETED(manager.preferences))
 		return FALSE
 
-	loadout = manager.preferences.read_preference(/datum/preference/loadout) // Make sure no shenanigans happened
+	loadout = get_active_loadout(manager.preferences) // Make sure no shenanigans happened
 	if(!loadout?[item_path])
 		return FALSE
 
@@ -185,7 +185,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	else if(input_name == "")
 		loadout[item_path] -= INFO_NAMED
 
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 	return FALSE // no update needed
 
 /// Used for reskinning an item to an alt skin.
@@ -197,12 +197,12 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	if(!cached_reskin_options[reskin_to])
 		return FALSE
 
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	if(!loadout?[item_path])
 		return FALSE
 
 	loadout[item_path][INFO_RESKIN] = reskin_to
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 	return TRUE // always update UI
 
 /**
@@ -215,7 +215,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * * equipper - If we're equipping out outfit onto a mob at the time, this is the mob it is equipped on. Can be null.
  * * visual - If TRUE, then our outfit is only for visual use (for example, a preview).
  */
-/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
 	if(!visuals_only)
 		LAZYADD(outfit.backpack_contents, item_path)
 
@@ -241,8 +241,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 )
 	ASSERT(!isnull(equipped_item))
 
-	if(!visuals_only)
-		ADD_TRAIT(equipped_item, TRAIT_ITEM_OBJECTIVE_BLOCKED, "Loadout")
+	//if(!visuals_only)
+	//	ADD_TRAIT(equipped_item, TRAIT_ITEM_OBJECTIVE_BLOCKED, "Loadout")
 
 	var/list/item_details = preference_list[item_path]
 	var/update_flag = NONE
@@ -272,9 +272,12 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 		else
 			// Not valid, update the preference
 			item_details -= INFO_RESKIN
-			preference_source.write_preference(GLOB.preference_entries[/datum/preference/loadout], preference_list)
+			save_loadout(preference_source, preference_list)
 
 	return update_flag
+
+/datum/loadout_item/proc/late_equip(obj/item/equipped_item, mob/living/carbon/human/equipper, visual_only)
+	return
 
 /**
  * Returns a formatted list of data for this loadout item.

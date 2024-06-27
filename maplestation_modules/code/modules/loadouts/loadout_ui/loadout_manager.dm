@@ -6,6 +6,7 @@
 		"select_item" = PROC_REF(action_select_item),
 		"toggle_job_clothes" = PROC_REF(action_toggle_job_outfit),
 		"close_greyscale_menu" = PROC_REF(force_close_greyscale_menu),
+		"set_active_loadout" = PROC_REF(set_active_loadout),
 	)
 	/// Our currently open greyscaling menu.
 	VAR_FINAL/datum/greyscale_modify_menu/menu
@@ -33,7 +34,7 @@
 
 /datum/preference_middleware/loadout/proc/action_clear_all(list/params, mob/user)
 	PRIVATE_PROC(TRUE)
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], null)
+	update_loadout(preferences, null)
 	return TRUE
 
 /datum/preference_middleware/loadout/proc/action_toggle_job_outfit(list/params, mob/user)
@@ -64,9 +65,16 @@
 
 	return FALSE
 
+/datum/preference_middleware/loadout/proc/set_active_loadout(list/params, mob/user)
+	PRIVATE_PROC(TRUE)
+	var/new_slot = clamp(params["slot"], 1, MAX_LOADOUTS)
+	preferences.update_preference(GLOB.preference_entries[/datum/preference/numeric/active_loadout], new_slot)
+	preferences.update_static_data(user)
+	return TRUE
+
 /// Select [path] item to [category_slot] slot.
 /datum/preference_middleware/loadout/proc/select_item(datum/loadout_item/selected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(preferences)
 	var/list/datum/loadout_item/loadout_datums = loadout_list_to_datums(loadout)
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		if(item.category != selected_item.category)
@@ -75,13 +83,13 @@
 			return
 
 	LAZYSET(loadout, selected_item.item_path, list())
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(preferences, loadout)
 
 /// Deselect [deselected_item].
 /datum/preference_middleware/loadout/proc/deselect_item(datum/loadout_item/deselected_item)
-	var/list/loadout = preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(preferences)
 	LAZYREMOVE(loadout, deselected_item.item_path)
-	preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(preferences, loadout)
 
 /datum/preference_middleware/loadout/proc/register_greyscale_menu(datum/greyscale_modify_menu/open_menu)
 	src.menu = open_menu
@@ -117,4 +125,5 @@
 		UNTYPED_LIST_ADD(loadout_tabs, cat_data)
 
 	data["loadout_tabs"] = loadout_tabs
+	data["max_loadouts"] = MAX_LOADOUTS
 	return data

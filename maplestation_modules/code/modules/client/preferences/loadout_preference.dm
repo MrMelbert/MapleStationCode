@@ -27,10 +27,6 @@
 /datum/preference/loadout/apply_to_human(mob/living/carbon/human/target, value)
 	return
 
-// Sanitize on load to ensure no invalid paths from older saves get in
-/datum/preference/loadout/deserialize(input, datum/preferences/preferences)
-	return sanitize_loadout_list(input, preferences.parent?.mob)
-
 // Default value is null - the loadout list is a lazylist
 /datum/preference/loadout/create_default_value(datum/preferences/preferences)
 	return null
@@ -38,6 +34,7 @@
 /datum/preference/loadout/is_valid(value)
 	return isnull(value) || islist(value)
 
+// Sanitize on load to ensure no invalid paths from older saves get in
 /datum/preference/loadout/deserialize(input, datum/preferences/preferences)
 	// Sanitize on load to ensure no invalid paths from older saves get in
 	var/slot = preferences.read_preference(/datum/preference/numeric/active_loadout)

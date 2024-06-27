@@ -1,14 +1,13 @@
 /// Glasses Slot Items (Moves overrided items to backpack)
 /datum/loadout_category/glasses
 	category_name = "Glasses"
-	category_ui_icon = FA_ICON_GLASSES
 	type_to_generate = /datum/loadout_item/glasses
-	tab_order = /datum/loadout_category/head::tab_order + 1
+	tab_order = 3
 
 /datum/loadout_item/glasses
 	abstract_type = /datum/loadout_item/glasses
 
-/datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/glasses/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
 	if(outfit.glasses)
 		LAZYADD(outfit.backpack_contents, outfit.glasses)
 	outfit.glasses = item_path
@@ -16,7 +15,7 @@
 /datum/loadout_item/glasses/prescription_glasses
 	name = "Glasses"
 	item_path = /obj/item/clothing/glasses/regular
-	additional_tooltip_contents = list("These are prescription glasses, and will help you see while nearsighted.")
+	additional_displayed_text = list("Prescription")
 
 /datum/loadout_item/glasses/prescription_glasses/circle_glasses
 	name = "Circle Glasses"
@@ -37,7 +36,7 @@
 /datum/loadout_item/glasses/colored_blindfold
 	name = "Colored Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold/white/loadout
-	additional_tooltip_contents = list("This item's color matches your character's eye color on spawn.")
+	additional_displayed_text = list("Eye Color")
 
 /datum/loadout_item/glasses/cold_glasses
 	name = "Cold Glasses"

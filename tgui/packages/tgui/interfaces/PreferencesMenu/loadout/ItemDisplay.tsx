@@ -93,14 +93,22 @@ export const ItemDisplay = (props: {
 
 const ItemListDisplay = (props: { items: LoadoutItem[] }) => {
   const { data } = useBackend<LoadoutManagerData>();
-  const { loadout_list } = data.character_preferences.misc;
+  const { loadout_list, active_loadout } = data.character_preferences.misc;
+
+  const active_loadout_list = loadout_list
+    ? loadout_list[active_loadout - 1]
+    : null;
+
   return (
     <Flex wrap>
       {props.items.map((item) => (
         <Flex.Item key={item.name} mr={2} mb={2}>
           <ItemDisplay
             item={item}
-            active={loadout_list && loadout_list[item.path] !== undefined}
+            active={
+              active_loadout_list &&
+              active_loadout_list[item.path] !== undefined
+            }
           />
         </Flex.Item>
       ))}

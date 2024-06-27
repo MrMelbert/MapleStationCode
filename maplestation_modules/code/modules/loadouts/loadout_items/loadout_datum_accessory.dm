@@ -1,9 +1,8 @@
 /// Accessory Items (Moves overrided items to backpack)
 /datum/loadout_category/accessories
 	category_name = "Accessory"
-	category_ui_icon = FA_ICON_VEST
 	type_to_generate = /datum/loadout_item/accessory
-	tab_order = /datum/loadout_category/head::tab_order + 3
+	tab_order = 11
 
 /datum/loadout_item/accessory
 	abstract_type = /datum/loadout_item/accessory
@@ -41,7 +40,7 @@
 	if(!can_be_layer_adjusted)
 		return FALSE
 
-	var/list/loadout = manager.preferences.read_preference(/datum/preference/loadout)
+	var/list/loadout = get_active_loadout(manager.preferences)
 	if(!loadout?[item_path])
 		return FALSE
 
@@ -49,10 +48,10 @@
 		loadout[item_path][INFO_LAYER] = FALSE
 
 	loadout[item_path][INFO_LAYER] = !loadout[item_path][INFO_LAYER]
-	manager.preferences.update_preference(GLOB.preference_entries[/datum/preference/loadout], loadout)
+	update_loadout(manager.preferences, loadout)
 	return TRUE // Update UI
 
-/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/accessory/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
 	if(outfit.accessory)
 		LAZYADD(outfit.backpack_contents, outfit.accessory)
 	outfit.accessory = item_path
@@ -84,58 +83,57 @@
 /datum/loadout_item/accessory/full_pocket_protector
 	name = "Pocket Protector (Filled)"
 	item_path = /obj/item/clothing/accessory/pocketprotector/full
-	additional_tooltip_contents = list("Contains multiple pens.")
+	additional_displayed_text = list("Contains pens")
 
 /datum/loadout_item/accessory/ribbon
 	name = "Ribbon"
 	item_path = /obj/item/clothing/accessory/medal/ribbon
 
 /datum/loadout_item/accessory/blue_green_armband
-	name = "Blue and Green Armband"
+	name = "Armband (Blue and Green)"
 	item_path = /obj/item/clothing/accessory/armband/hydro_cosmetic
 
 /datum/loadout_item/accessory/brown_armband
-	name = "Brown Armband"
+	name = "Armband (Brown)"
 	item_path = /obj/item/clothing/accessory/armband/cargo_cosmetic
 
 /datum/loadout_item/accessory/green_armband
-	name = "Green Armband"
+	name = "Armband (Green)"
 	item_path = /obj/item/clothing/accessory/armband/service_cosmetic
 
 /datum/loadout_item/accessory/purple_armband
-	name = "Purple Armband"
+	name = "Armband (Purple)"
 	item_path = /obj/item/clothing/accessory/armband/science_cosmetic
 
 /datum/loadout_item/accessory/red_armband
-	name = "Red Armband"
+	name = "Armband (Red)"
 	item_path = /obj/item/clothing/accessory/armband/deputy_cosmetic
 
 /datum/loadout_item/accessory/yellow_armband
-	name = "Yellow Reflective Armband"
+	name = "Armband (Yellow, Reflective)"
 	item_path = /obj/item/clothing/accessory/armband/engine_cosmetic
 
 /datum/loadout_item/accessory/white_armband
-	name = "White Armband"
+	name = "Armband (White)"
 	item_path = /obj/item/clothing/accessory/armband/med_cosmetic
 
 /datum/loadout_item/accessory/white_blue_armband
-	name = "White and Blue Armband"
+	name = "Armband (White and Blue)"
 	item_path = /obj/item/clothing/accessory/armband/medblue_cosmetic
 
 /datum/loadout_item/accessory/dogtags
 	name = "Name-Inscribed Dogtags"
 	item_path = /obj/item/clothing/accessory/dogtag/name
-	additional_tooltip_contents = list("The name inscribed on this item matches your character's name on spawn.")
 
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
-	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
+	additional_displayed_text = list("No Armor")
 
 /datum/loadout_item/accessory/bone_codpiece
 	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
-	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
+	additional_displayed_text = list("No Armor")
 
 /datum/loadout_item/accessory/pride
 	name = "Pride Pin"

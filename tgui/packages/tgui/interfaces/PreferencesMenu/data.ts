@@ -149,7 +149,8 @@ export type PreferencesMenuData = {
       gender: Gender;
       joblessrole: JoblessRole;
       species: string;
-      loadout_list: LoadoutList;
+      loadout_list: LoadoutList[];
+      active_loadout: number;
       job_clothes: BooleanLike;
     };
 
@@ -197,6 +198,7 @@ export type ServerData = {
   };
   loadout: {
     loadout_tabs: LoadoutCategory[];
+    max_loadouts: number;
   };
   species: Record<string, Species>;
   // NON-MODULE CHANGE START

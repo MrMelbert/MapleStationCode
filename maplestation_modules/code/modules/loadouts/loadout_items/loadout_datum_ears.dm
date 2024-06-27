@@ -3,13 +3,13 @@
 /// Ear Slot Items (Moves overrided items to backpack)
 /datum/loadout_category/ears
 	category_name = "Ears"
-	ui_title = "Ear Slot Items"
 	type_to_generate = /datum/loadout_item/ears
+	tab_order = 2
 
 /datum/loadout_item/ears
 	abstract_type = /datum/loadout_item/ears
 
-/datum/loadout_item/ears/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/ears/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
 	if(outfit.ears)
 		LAZYADD(outfit.backpack_contents, outfit.ears)
 	outfit.ears = item_path

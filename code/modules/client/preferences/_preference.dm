@@ -14,6 +14,10 @@
 /// The priority at which gender is determined, needed for proper randomization.
 #define PREFERENCE_PRIORITY_GENDER 4
 
+/// The priority at which body type is decided, applied after gender so we can
+/// support the "use gender" option.
+#define PREFERENCE_PRIORITY_BODY_TYPE 5
+
 /// Equpping items based on preferences.
 /// Should happen after species and body type to make sure it looks right.
 /// Mostly redundant, but a safety net for saving/loading.
