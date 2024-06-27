@@ -116,14 +116,16 @@ const LoadoutModifyButtons = (props: { modifyItemDimmer: LoadoutItem }) => {
                       }}
                     >
                       {modifyItemDimmer.icon ? (
-                        <DmIcon
-                          fallback={<Icon name="spinner" spin color="gray" />}
-                          icon={modifyItemDimmer.icon}
-                          icon_state={reskin.skin_icon_state}
-                          style={{
-                            transform: `scale(2) translateY(2px)`,
-                          }}
-                        />
+                        <Box>
+                          <DmIcon
+                            fallback={<Icon name="spinner" spin color="gray" />}
+                            icon={modifyItemDimmer.icon}
+                            icon_state={reskin.skin_icon_state}
+                            style={{
+                              transform: `scale(2) translateY(2px)`,
+                            }}
+                          />
+                        </Box>
                       ) : (
                         // Should never happen, hopefully
                         <Box>{reskin.name}</Box>

@@ -29,16 +29,18 @@ export const ItemIcon = (props: { item: LoadoutItem; scale?: number }) => {
   }
 
   return (
-    <DmIcon
-      fallback={<Icon name="spinner" spin color="gray" />}
-      icon={icon_to_use}
-      icon_state={icon_state_to_use}
-      style={{
-        transform: `scale(${scale}) translateX(${scale * 3}px) translateY(${
-          scale * 3
-        }px)`,
-      }}
-    />
+    <Box>
+      <DmIcon
+        fallback={<Icon name="spinner" spin color="gray" />}
+        icon={icon_to_use}
+        icon_state={icon_state_to_use}
+        style={{
+          transform: `scale(${scale}) translateX(${scale * 3}px) translateY(${
+            scale * 3
+          }px)`,
+        }}
+      />
+    </Box>
   );
 };
 
