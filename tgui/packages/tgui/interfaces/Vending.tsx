@@ -1,21 +1,20 @@
 import { classes } from 'common/react';
 import { capitalizeAll } from 'common/string';
 import { useState } from 'react';
-
-import { createSearch } from '../../common/string';
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
-  DmIcon,
   Icon,
-  Input,
   LabeledList,
   NoticeBox,
   Section,
   Stack,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+
+import { createSearch } from '../../common/string';
+import { useBackend } from '../backend';
+import { DmIcon, Input } from '../components';
 import { Window } from '../layouts';
 
 type VendingData = {
@@ -120,7 +119,7 @@ export const Vending = (props) => {
   }
 
   const filteredCategories = Object.fromEntries(
-    Object.entries(categories).filter(([categoryName]) => {
+    Object.entries(data.categories).filter(([categoryName]) => {
       return inventory.find((product) => {
         if ('category' in product) {
           return product.category === categoryName;
@@ -129,7 +128,7 @@ export const Vending = (props) => {
         }
       });
     }),
-  ) as { [k: string]: Category };
+  );
 
   return (
     <Window width={450} height={600}>
