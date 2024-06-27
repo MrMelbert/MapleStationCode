@@ -103,7 +103,7 @@
 /datum/element/footstep/proc/play_simplestep(mob/living/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
 	SIGNAL_HANDLER
 
-	if (forced || SHOULD_DISABLE_FOOTSTEPS(source))
+	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || source.moving_diagonally == SECOND_DIAG_STEP)
 		return
 
 	var/list/prepared_steps = prepare_step(source)
@@ -122,7 +122,7 @@
 /datum/element/footstep/proc/play_humanstep(mob/living/carbon/human/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
 	SIGNAL_HANDLER
 
-	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || !momentum_change)
+	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || !momentum_change || source.moving_diagonally == SECOND_DIAG_STEP)
 		return
 
 	var/volume_multiplier = 1
@@ -172,7 +172,7 @@
 /datum/element/footstep/proc/play_simplestep_machine(atom/movable/source, atom/oldloc, direction, forced, list/old_locs, momentum_change)
 	SIGNAL_HANDLER
 
-	if (forced || SHOULD_DISABLE_FOOTSTEPS(source))
+	if (forced || SHOULD_DISABLE_FOOTSTEPS(source) || source.moving_diagonally == SECOND_DIAG_STEP)
 		return
 
 	var/turf/open/source_loc = get_turf(source)
