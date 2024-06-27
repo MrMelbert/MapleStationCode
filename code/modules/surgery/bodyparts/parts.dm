@@ -383,7 +383,8 @@
 	unarmed_effectiveness = 15
 	/// Datum describing how to offset things worn on the foot of this leg, note that an x offset won't do anything here
 	var/datum/worn_feature_offset/worn_foot_offset
-
+	/// What does our footsteps (barefoot) sound like?
+	var/footstep_type = FOOTSTEP_MOB_BAREFOOT
 	biological_state = BIO_STANDARD_JOINTED
 
 /obj/item/bodypart/leg/Destroy()
