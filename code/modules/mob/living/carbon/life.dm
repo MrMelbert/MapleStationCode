@@ -106,7 +106,12 @@
 	check_breath(breath, skip_breath)
 
 	if(breath)
-		loc.assume_air(breath)
+		exhale_breath(breath)
+
+/mob/living/carbon/proc/exhale_breath(datum/gas_mixture/breath)
+	if(SEND_SIGNAL(src, COMSIG_CARBON_BREATH_EXHALE, breath) & BREATHE_EXHALE_HANDLED)
+		return
+	loc.assume_air(breath)
 
 /mob/living/carbon/proc/has_smoke_protection()
 	return HAS_TRAIT(src, TRAIT_NOBREATH)
@@ -168,7 +173,6 @@
 
 	else if(isturf(loc)) //Breathe from loc as turf
 		. = loc.remove_air((environment?.total_moles() * BREATH_PERCENTAGE) || 0)
-		SEND_SIGNAL(src, COMSIG_CARBON_TURF_BREATHE, .)
 
 	return .
 

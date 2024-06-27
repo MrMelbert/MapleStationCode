@@ -408,7 +408,7 @@
 	internal_connector.gas_connector.update_parents()
 
 /obj/machinery/cryo_cell/assume_air(datum/gas_mixture/giver)
-	internal_connector.gas_connector.airs[1].merge(giver)
+	return internal_connector.gas_connector.airs[1].merge(giver)
 
 /obj/machinery/cryo_cell/return_temperature()
 	var/datum/gas_mixture/internal_air = internal_connector.gas_connector.airs[1]
