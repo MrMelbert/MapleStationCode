@@ -106,7 +106,7 @@ const ItemListDisplay = (props: { items: LoadoutItem[] }) => {
           <ItemDisplay
             item={item}
             active={
-              active_loadout_list &&
+              !!active_loadout_list &&
               active_loadout_list[item.path] !== undefined
             }
           />
