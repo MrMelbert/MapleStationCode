@@ -3164,10 +3164,7 @@
 /obj/effect/turf_decal/bot{
 	dir = 1
 	},
-/obj/machinery/computer/security/telescreen/engine{
-	dir = 1;
-	pixel_y = -32
-	},
+/obj/machinery/computer/security/telescreen/engine/directional/south,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "arV" = (
@@ -4087,10 +4084,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/machinery/computer/security/telescreen/minisat{
-	dir = 1;
-	pixel_y = -29
-	},
+/obj/machinery/computer/security/telescreen/minisat/directional/south,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "aCa" = (
@@ -4150,7 +4144,6 @@
 /area/station/command/bridge)
 "aCE" = (
 /obj/structure/filingcabinet,
-/obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
 "aCJ" = (
@@ -19378,16 +19371,11 @@
 /area/station/cargo/office)
 "fSY" = (
 /obj/structure/table/reinforced,
-/obj/machinery/computer/security/telescreen{
-	dir = 4;
-	name = "Cargo Camera Monitor";
-	network = list("ss13","cargo")
-	},
-/obj/item/radio/intercom/directional/west,
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 9
 	},
 /obj/machinery/firealarm/directional/north,
+/obj/machinery/computer/security/telescreen/cargo_sec/directional/west,
 /turf/open/floor/iron,
 /area/station/security/checkpoint/supply)
 "fSZ" = (
@@ -23264,18 +23252,12 @@
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 8
 	},
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the ai_upload.";
-	dir = 4;
-	name = "AI Upload Monitor";
-	network = list("aiupload");
-	pixel_x = -28
-	},
 /obj/item/kirbyplants/photosynthetic,
 /obj/machinery/camera/directional/west{
 	c_tag = "Science - AI Access Hallway";
 	network = list("ss13","rd")
 	},
+/obj/machinery/computer/security/telescreen/aiupload/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/science/lower)
 "hqN" = (
@@ -23775,14 +23757,8 @@
 /turf/open/floor/iron,
 /area/station/commons/fitness)
 "hBY" = (
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the turbine vent.";
-	dir = 8;
-	name = "turbine vent monitor";
-	network = list("turbine");
-	pixel_x = 29
-	},
 /obj/effect/decal/cleanable/dirt,
+/obj/machinery/computer/security/telescreen/turbine/directional/east,
 /turf/open/floor/iron,
 /area/station/maintenance/disposal/incinerator)
 "hCp" = (
@@ -27581,6 +27557,7 @@
 	dir = 4
 	},
 /obj/machinery/light/small/directional/south,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron,
 /area/station/security/checkpoint/supply)
 "iYd" = (
@@ -33677,13 +33654,6 @@
 /turf/open/floor/catwalk_floor,
 /area/station/hallway/primary/tram/right)
 "kYl" = (
-/obj/structure/rack,
-/obj/structure/table,
-/obj/machinery/computer/security/telescreen{
-	name = "Test Chamber Monitor";
-	network = list("test");
-	pixel_y = 28
-	},
 /obj/item/storage/box/beakers{
 	pixel_x = 5;
 	pixel_y = 3
@@ -33696,6 +33666,8 @@
 	pixel_x = -7;
 	pixel_y = 1
 	},
+/obj/machinery/computer/security/telescreen/test_chamber/directional/north,
+/obj/structure/table,
 /turf/open/floor/iron/dark,
 /area/station/science/explab)
 "kYL" = (
@@ -40727,10 +40699,7 @@
 /area/station/medical/chemistry)
 "nwE" = (
 /obj/machinery/pdapainter/research,
-/obj/machinery/computer/security/telescreen/rd{
-	dir = 1;
-	pixel_y = -32
-	},
+/obj/machinery/computer/security/telescreen/rd/directional/south,
 /turf/open/floor/iron/cafeteria,
 /area/station/command/heads_quarters/rd)
 "nwI" = (
@@ -41604,10 +41573,6 @@
 /obj/structure/chair/office/light{
 	dir = 4
 	},
-/obj/machinery/computer/security/telescreen/ordnance{
-	dir = 8;
-	pixel_x = 30
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
@@ -42103,6 +42068,12 @@
 /obj/machinery/light_switch/directional/south{
 	pixel_x = 10;
 	pixel_y = -24
+	},
+/obj/machinery/button/door/directional/south{
+	id = "crgdoor";
+	req_access = list("brig_entrance");
+	name = "Cargo Cell Control";
+	normaldoorcontrol = 1
 	},
 /turf/open/floor/iron,
 /area/station/security/checkpoint/supply)
@@ -44474,12 +44445,6 @@
 	},
 /obj/effect/turf_decal/trimline/red/filled/line{
 	dir = 8
-	},
-/obj/machinery/button/door/directional/west{
-	id = "crgdoor";
-	name = "Cargo Cell Control";
-	normaldoorcontrol = 1;
-	req_access = list("brig_entrance")
 	},
 /obj/structure/cable,
 /turf/open/floor/iron,
@@ -47371,6 +47336,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/siding/thinplating/corner,
+/obj/machinery/computer/security/telescreen/test_chamber/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/science/xenobiology)
 "pUi" = (
@@ -47669,10 +47635,7 @@
 	},
 /obj/effect/mapping_helpers/requests_console/announcement,
 /obj/effect/mapping_helpers/requests_console/supplies,
-/obj/machinery/computer/security/telescreen/engine{
-	dir = 4;
-	pixel_x = -24
-	},
+/obj/machinery/computer/security/telescreen/engine/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
 "pYZ" = (
@@ -50395,6 +50358,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
+/obj/machinery/computer/security/telescreen/aiupload,
 /turf/open/floor/iron/white,
 /area/station/science/xenobiology)
 "qXA" = (
@@ -51901,6 +51865,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/machinery/computer/security/telescreen/ordnance/directional/south,
 /turf/open/floor/iron,
 /area/station/science/ordnance/testlab)
 "ryJ" = (
@@ -56487,9 +56452,7 @@
 /turf/open/floor/iron,
 /area/station/commons/dorms)
 "tgw" = (
-/obj/machinery/computer/security/telescreen/cmo{
-	pixel_y = 32
-	},
+/obj/machinery/computer/security/telescreen/cmo/directional/north,
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 4
 	},
@@ -58923,16 +58886,13 @@
 "tYe" = (
 /obj/structure/table/reinforced,
 /obj/item/rcl/pre_loaded,
-/obj/machinery/computer/security/telescreen/ce{
-	dir = 4;
-	pixel_x = -24
-	},
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 1
 	},
 /obj/item/clipboard,
 /obj/item/paper/monitorkey,
 /obj/machinery/keycard_auth/wall_mounted/directional/south,
+/obj/machinery/computer/security/telescreen/ce/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
 "tYp" = (
@@ -61109,11 +61069,6 @@
 "uGJ" = (
 /obj/structure/table/reinforced,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,
-/obj/machinery/computer/security/telescreen{
-	name = "Test Chamber Monitor";
-	network = list("xeno");
-	pixel_y = 2
-	},
 /turf/open/floor/iron/dark,
 /area/station/science/xenobiology)
 "uGL" = (
@@ -64887,6 +64842,7 @@
 /obj/structure/cable,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /obj/machinery/light/warm/directional/north,
+/obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
 "vTF" = (
@@ -64899,9 +64855,7 @@
 /obj/effect/turf_decal/trimline/brown/filled/corner{
 	dir = 1
 	},
-/obj/machinery/computer/security/telescreen/vault{
-	pixel_y = 30
-	},
+/obj/machinery/computer/security/telescreen/vault/directional/north,
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
 	},
