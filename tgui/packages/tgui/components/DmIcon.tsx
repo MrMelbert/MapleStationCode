@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 
 import { resolveAsset } from '../assets';
 import { fetchRetry } from '../http';
-import { BoxProps } from './Box';
+import { Box, BoxProps } from './Box';
 import { Image } from './Image';
 
 enum Direction {
@@ -66,7 +66,9 @@ export function DmIcon(props: Props) {
     }
   }, []);
 
-  if (!iconRef) return <>fallback</>;
+  if (!iconRef) {
+    return <Box {...rest}>{fallback}</Box>;
+  }
 
   return <Image fixErrors src={query} {...rest} />;
 }

@@ -213,3 +213,4 @@
 /datum/loadout_item/head/reshiacap
 	name = "Cap (Delinquent, Black)"
 	item_path = /obj/item/clothing/head/hats/reshiacap
+	additional_displayed_text = list("Character Item")
