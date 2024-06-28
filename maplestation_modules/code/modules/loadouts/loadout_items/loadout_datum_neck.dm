@@ -47,3 +47,15 @@
 	name = "Puligard Holy Necklace"
 	item_path = /obj/item/clothing/neck/cremona
 	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/neck/rainbow_tie
+	name = "Bowtie (Rainbow))"
+	item_path = /obj/item/clothing/neck/bowtie/rainbow
+
+/datum/loadout_item/neck/bowtie
+	name = "Bowtie (Colorable)"
+	item_path = /obj/item/clothing/neck/bowtie
+
+/datum/loadout_item/neck/maid
+	name = "Maid Collar"
+	item_path = /obj/item/clothing/neck/maid

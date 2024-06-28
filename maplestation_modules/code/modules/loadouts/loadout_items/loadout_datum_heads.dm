@@ -214,3 +214,47 @@
 	name = "Cap (Delinquent, Black)"
 	item_path = /obj/item/clothing/head/hats/reshiacap
 	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/cowboy
+	name = "Cowboy Hat (Brown)"
+	item_path = /obj/item/clothing/head/cowboy
+
+/datum/loadout_item/head/cowboy_black
+	name = "Cowboy Hat (Black)"
+	item_path = /obj/item/clothing/head/cowboy/black
+
+/datum/loadout_item/head/cowboy_white
+	name = "Cowboy Hat (White)"
+	item_path = /obj/item/clothing/head/cowboy/white
+
+/datum/loadout_item/head/cowboy_grey
+	name = "Cowboy Hat (Grey)"
+	item_path = /obj/item/clothing/head/cowboy/grey
+
+/datum/loadout_item/head/cowboy_red
+	name = "Cowboy Hat (Red)"
+	item_path = /obj/item/clothing/head/cowboy/red
+
+/datum/loadout_item/head/propeller_hat
+	name = "Propeller Hat"
+	item_path = /obj/item/clothing/head/soft/propeller_hat
+
+/datum/loadout_item/head/garland
+	name = "Garland"
+	item_path = /obj/item/clothing/head/costume/garland
+
+/datum/loadout_item/head/garland/rainbowbunch
+	name = "Rainbow Flower Crown"
+	item_path = /obj/item/clothing/head/costume/garland/rainbowbunch
+
+/datum/loadout_item/head/garland/sunflower
+	name = "Sunflower Crown"
+	item_path = /obj/item/clothing/head/costume/garland/sunflower
+
+/datum/loadout_item/head/garland/poppy
+	name = "Poppy Crown"
+	item_path = /obj/item/clothing/head/costume/garland/poppy
+
+/datum/loadout_item/head/garland/lily
+	name = "Lily Crown"
+	item_path = /obj/item/clothing/head/costume/garland/lily
