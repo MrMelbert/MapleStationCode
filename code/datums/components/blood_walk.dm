@@ -88,8 +88,6 @@
 	// NON-MODULE CHANGE
 	if(transfer_blood_dna)
 		blood.add_blood_DNA(GET_ATOM_BLOOD_DNA(movable_source))
-		// if(isliving(movable_source))
-		// 	blood.transfer_mob_blood_dna(movable_source)
 	if(!isnull(sound_played))
 		playsound(movable_source, sound_played, sound_volume, TRUE, 2, TRUE)
 

@@ -431,12 +431,12 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	if(splatter_strength)
 		src.splatter_strength = splatter_strength
 
-/obj/effect/decal/cleanable/blood/hitsplatter/Destroy()
+/obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
 		if(blood_dna_info)
 			loc.add_blood_DNA(blood_dna_info)
-	return ..()
+	qdel(src)
 
 /// Set the splatter up to fly through the air until it rounds out of steam or hits something
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/fly_towards(turf/target_turf, range)
@@ -452,42 +452,35 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/post_move(datum/move_loop/source)
 	SIGNAL_HANDLER
-	for(var/atom/iter_atom in get_turf(src))
+	for(var/atom/movable/iter_atom in loc)
 		if(hit_endpoint)
 			return
+		if(iter_atom == src || iter_atom.invisibility || iter_atom.alpha <= 0 || (isobj(iter_atom) && !iter_atom.density))
+			continue
 		if(splatter_strength <= 0)
 			break
 
-		if(isitem(iter_atom))
-			iter_atom.add_blood_DNA(blood_dna_info)
-			splatter_strength--
-		else if(ishuman(iter_atom))
-			var/mob/living/carbon/human/splashed_human = iter_atom
-			if(splashed_human.wear_suit)
-				splashed_human.wear_suit.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_oversuit()    //updates mob overlays to show the new blood (no refresh)
-			if(splashed_human.w_uniform)
-				splashed_human.w_uniform.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_undersuit()    //updates mob overlays to show the new blood (no refresh)
-			splatter_strength--
+		iter_atom.add_blood_DNA(blood_dna_info)
+		splatter_strength--
+
 	if(splatter_strength <= 0) // we used all the puff so we delete it.
-		qdel(src)
+		expire()
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
-		qdel(src)
+		expire()
 
 /obj/effect/decal/cleanable/blood/hitsplatter/Bump(atom/bumped_atom)
 	if(!iswallturf(bumped_atom) && !istype(bumped_atom, /obj/structure/window))
-		qdel(src)
+		expire()
 		return
 
 	if(istype(bumped_atom, /obj/structure/window))
 		var/obj/structure/window/bumped_window = bumped_atom
 		if(!bumped_window.fulltile)
 			hit_endpoint = TRUE
-			qdel(src)
+			expire()
 			return
 
 	hit_endpoint = TRUE
@@ -505,7 +498,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			final_splatter.add_blood_DNA(blood_dna_info)
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
 		abstract_move(bumped_atom)
-		qdel(src)
+		expire()
 
 /// A special case for hitsplatters hitting windows, since those can actually be moved around, store it in the window and slap it in the vis_contents
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
@@ -517,4 +510,4 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	final_splatter.forceMove(the_window)
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE
-	qdel(src)
+	expire()

@@ -14,9 +14,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /// Takes the name of a blood type and return the typepath
 /proc/blood_name_to_blood_type(name)
-	for(var/datum/blood_type/blood_type as anything in GLOB.blood_types)
-		if(blood_type.name == name)
-			return blood_type.type
+	for(var/blood_type in GLOB.blood_types)
+		if(GLOB.blood_types[blood_type].name == name)
+			return blood_type
 	return null
 
 /**
@@ -40,6 +40,13 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/New()
 	. = ..()
 	compatible_types |= type
+
+/datum/blood_type/Destroy(force)
+	if(!force)
+		stack_trace("qdel called on blood type singleton! (use FORCE if necessary)")
+		return QDEL_HINT_LETMELIVE
+
+	return ..()
 
 /// Gets data to pass to a reagent
 /datum/blood_type/proc/get_blood_data(mob/living/sampled_from)
@@ -82,12 +89,12 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 				splatter.adjust_bloodiness(new_blood)
 				splatter.drying_progress -= (new_blood * BLOOD_PER_UNIT_MODIFIER)
 				splatter.update_blood_drying_effect()
-				splatter.transfer_mob_blood_dna(bleeding)
+				splatter.add_mob_blood(bleeding)
 				return splatter
 
 			drop = new(blood_turf, bleeding.get_static_viruses())
 			if(!QDELETED(drop))
-				drop.transfer_mob_blood_dna(bleeding)
+				drop.add_mob_blood(bleeding)
 				drop.random_icon_states -= drop.icon_state
 			return drop
 
@@ -99,11 +106,11 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			new_drop.color = color
 			new_drop.vis_flags |= (VIS_INHERIT_LAYER|VIS_INHERIT_PLANE|VIS_INHERIT_ID)
 			new_drop.appearance_flags |= (RESET_COLOR)
-			new_drop.transfer_mob_blood_dna(bleeding)
+			new_drop.add_mob_blood(bleeding)
 			drop.vis_contents += new_drop
 			// Handle adding blood to the base atom
 			drop.adjust_bloodiness(new_blood)
-			drop.transfer_mob_blood_dna(bleeding)
+			drop.add_mob_blood(bleeding)
 			return drop
 
 		temp_blood_DNA = GET_ATOM_BLOOD_DNA(drop) //we transfer the dna from the drip to the splatter
@@ -119,7 +126,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
 		splatter.drying_progress -= (BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
 		splatter.update_blood_drying_effect()
-	splatter.transfer_mob_blood_dna(bleeding) //give blood info to the blood decal.
+	splatter.add_mob_blood(bleeding) //give blood info to the blood decal.
 	if(LAZYLEN(temp_blood_DNA))
 		splatter.add_blood_DNA(temp_blood_DNA)
 	return splatter

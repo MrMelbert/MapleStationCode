@@ -395,6 +395,7 @@
 				M.visible_message(span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"), \
 								span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"), null, null, src)
 				to_chat(src, span_notice("You grab [M] [grabbed_by_hands ? "by their hands":"passively"]!"))
+				grabbed_human.share_blood_on_touch(src, grabbed_by_hands ? ITEM_SLOT_GLOVES : ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 			else
 				M.visible_message(span_warning("[src] grabs [M] passively!"), \
 								span_warning("[src] grabs you passively!"), null, null, src)
@@ -1056,7 +1057,7 @@
 		if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
 			TH.existing_dirs += newdir
 			TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
-			TH.transfer_mob_blood_dna(src)
+			TH.add_mob_blood(src)
 
 // NON-MODULE CHANGE
 /mob/living/carbon/human/makeTrail(turf/target_turf, turf/start, direction)
