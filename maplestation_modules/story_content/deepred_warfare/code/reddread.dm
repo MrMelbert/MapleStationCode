@@ -369,6 +369,16 @@
 	if(slot_flags & (ITEM_SLOT_HANDS|ITEM_SLOT_BACKPACK|ITEM_SLOT_BACK))
 		update_worn_back()
 
+/mob/living/basic/redtechdread/update_held_items()
+	if(isnull(client) || isnull(hud_used) || hud_used.hud_version == HUD_STYLE_NOHUD)
+		return
+	var/turf/our_turf = get_turf(src)
+	for(var/obj/item/held in held_items)
+		var/index = get_held_index_of_item(held)
+		SET_PLANE(held, ABOVE_HUD_PLANE, our_turf)
+		held.screen_loc = ui_hand_position(index)
+		client.screen |= held
+
 /mob/living/basic/redtechdread/proc/apply_overlay(cache_index)
 	if((. = dread_overlays[cache_index]))
 		add_overlay(.)
@@ -816,6 +826,17 @@
 	. = ..()
 	if(shielding_level > 0) // Shielding is on.
 		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
-		src.visible_message(span_warning("[src]'s shield deflects some of the thermal energy!"))
+		src.visible_message(span_warning("[src]'s shield dampens the thermal energy!"))
+
+/mob/living/basic/redtechdread/death(gibbed)
+	..(gibbed)
+	if(back_storage)
+		dropItemToGround(back_storage)
+	if(belt_storage)
+		dropItemToGround(belt_storage)
+	if(neck)
+		dropItemToGround(neck)
+	if(head)
+		dropItemToGround(head)
 
 #undef DOAFTER_SOURCE_DREAD_INTERACTION
