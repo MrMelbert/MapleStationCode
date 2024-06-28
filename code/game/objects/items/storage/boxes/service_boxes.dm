@@ -93,18 +93,16 @@
 	atom_storage.set_holdable(/obj/item/match)
 	AddElement(/datum/element/ignites_matches)
 
-/obj/item/storage/box/matches/storage_insert_on_interacted_with(datum/storage, obj/item/inserted, mob/living/user)
-	return !istype(inserted, /obj/item/match)
+/obj/item/storage/box/matches/tool_act(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/match))
+		var/obj/item/match/match = tool
+		match.matchignite()
+		return ITEM_INTERACT_SUCCESS
+	return ..()
 
 /obj/item/storage/box/matches/PopulateContents()
 	for(var/i in 1 to 10)
 		new /obj/item/match(src)
-
-/obj/item/storage/box/matches/item_interaction(mob/living/user, obj/item/match/match, list/modifiers)
-	if(istype(match))
-		match.matchignite()
-		return ITEM_INTERACT_SUCCESS
-	return NONE
 
 /obj/item/storage/box/matches/update_icon_state()
 	. = ..()
