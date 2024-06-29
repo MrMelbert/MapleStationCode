@@ -26,7 +26,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	///Type of filter that spawns on roundstart
 	var/starting_filter_type = /obj/item/gas_filter
 	///Cigarette in the mask
-	var/obj/item/clothing/mask/cigarette/cig
+	var/obj/item/cigarette/cig
 	///How much does this mask affect fishing difficulty
 	var/fishing_modifier = 2
 	///Applies clothing_dirt component to the pepperproof mask if true
@@ -89,7 +89,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 /obj/item/clothing/mask/gas/attackby(obj/item/tool, mob/user)
 	var/valid_wearer = ismob(loc)
 	var/mob/wearer = loc
-	if(istype(tool, /obj/item/clothing/mask/cigarette))
+	if(istype(tool, /obj/item/cigarette))
 		if(max_filters <= 0 || cig)
 			balloon_alert(user, "can't hold that!")
 			return ..()
