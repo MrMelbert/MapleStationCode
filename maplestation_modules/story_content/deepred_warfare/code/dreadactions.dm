@@ -420,7 +420,7 @@
 
 	playsound(ownercast, 'sound/machines/clockcult/ark_damage.ogg', 120)
 	StartCooldown(cooldown_time)
-	ownercast.adjust_RL_energy(50)
+	ownercast.adjust_RL_energy(50) // Return some energy.
 	INVOKE_ASYNC(src, PROC_REF(complete_burnoff), get_turf(owner), firesize)
 
 /datum/action/cooldown/mob_cooldown/heatburst/proc/complete_burnoff(atom/centre, firesize = 1)

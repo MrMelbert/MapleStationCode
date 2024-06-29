@@ -20,7 +20,7 @@
 	unsuitable_atmos_damage = 0
 	unsuitable_cold_damage = 0
 	unsuitable_heat_damage = 0
-	speed = 3
+	speed = 3 // Slow as balls base speed.
 	density = TRUE
 	pass_flags = NONE
 	sight = SEE_TURFS
@@ -32,7 +32,7 @@
 	bubble_icon = "machine"
 	initial_language_holder = /datum/language_holder/redtech
 	mob_size = MOB_SIZE_LARGE
-	has_unlimited_silicon_privilege = TRUE // Change later, maybe.
+	// has_unlimited_silicon_privilege = TRUE // Change later, maybe. // Nah, The Collector can just carry around an ID.
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
 	faction = list(FACTION_DEEPRED)
 	hud_type = /datum/hud/dextrous/dreadnought
@@ -57,7 +57,7 @@
 	obj_damage = 20
 	armour_penetration = 0
 
-	melee_attack_cooldown = CLICK_CD_MELEE
+	melee_attack_cooldown = (CLICK_CD_MELEE/2) // Many limbs, fast attacking.
 
 	var/heavy_emp_damage = 80 // If the EMP is heavy, the pattern is damaged by this value.
 	var/light_emp_damage = 40 // The pattern is damaged by this value when hit by an EMP.
@@ -70,7 +70,7 @@
 
 	var/obj/item/default_storage = /obj/item/reagent_containers/cup/beaker/redlightning/filled
 
-	var/obj/item/belt_storage // Can also hold anything.
+	var/obj/item/belt_storage // Can hold anything (but typically holds the storage module).
 
 	var/obj/item/default_belt = /obj/item/storage/dread_storage
 
@@ -78,11 +78,11 @@
 
 	var/obj/item/default_neckwear = /obj/item/clothing/neck/cloak/redtech_dread
 
-	var/obj/item/head // Multipurpose for masks and hats.
+	var/obj/item/head // Multipurpose for masks and hats. (but usually the mask)
 
 	var/obj/item/default_headwear = /obj/item/clothing/mask/collector
 
-	/// Actions to grant on spawn
+	/// Actions to grant on spawn (persistent slots)
 	var/static/list/actions_to_add = list(
 		/datum/action/cooldown/mob_cooldown/high_energy = null,
 		/datum/action/cooldown/mob_cooldown/lightning_energy = null,
@@ -90,7 +90,7 @@
 		/datum/action/cooldown/mob_cooldown/dreadscan = null,
 	)
 
-	var/RLEnergy = 100 // Red lightning reserves.
+	var/RLEnergy = 100 // Red lightning reserves (-100 to 100).
 	var/RL_energy_regen = 2 // How much red lightning energy is regenerated per second.
 
 	var/energy_level = 0 // Used for the red lightning system.
@@ -107,7 +107,7 @@
 
 	var/datum/action/dynamicSlot4 // Used to hold various AOE special attacks.
 
-/datum/language_holder/redtech // Literally just the TG silicon language list.
+/datum/language_holder/redtech // Literally just the TG silicon language list (so far).
 	understood_languages = list(
 		/datum/language/common = list(LANGUAGE_ATOM),
 		/datum/language/uncommon = list(LANGUAGE_ATOM),
@@ -133,31 +133,31 @@
 	. = ..()
 	AddElement(/datum/element/dextrous, hud_type = hud_type)
 	AddComponent(/datum/component/basic_inhands, y_offset = 0)
-	change_number_of_hands(hands)
+	change_number_of_hands(hands) // Cring.
 	AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)))
 	AddComponent(/datum/component/personal_crafting)
 
-	AddComponent(/datum/component/regenerator, regeneration_delay = 4 MINUTES, brute_per_second = 10, outline_colour = NONE)
+	AddComponent(/datum/component/regenerator, regeneration_delay = 10 MINUTES, brute_per_second = 10, outline_colour = NONE) // Highly suggested to use the self repair option, but this will kick in after 10 minutes if you are too lazy.
 
-	add_traits(list(TRAIT_NO_PLASMA_TRANSFORM,
-					TRAIT_KNOW_ROBO_WIRES,
-					TRAIT_MADNESS_IMMUNE,
-					TRAIT_NO_SOUL,
-					TRAIT_PLANT_SAFE,
-					TRAIT_QUICKER_CARRY,
-					TRAIT_STRONG_GRABBER,
-					TRAIT_SURGEON,
-					TRAIT_REAGENT_SCANNER,
-					TRAIT_GOOD_HEARING,
-					TRAIT_FASTMED,
-					TRAIT_NOFIRE,
-					TRAIT_PUSHIMMUNE,
-					TRAIT_FIST_MINING,
-					TRAIT_NEGATES_GRAVITY,
-					TRAIT_LITERATE,
-					TRAIT_KNOW_ENGI_WIRES,
-					TRAIT_ADVANCEDTOOLUSER,
-					TRAIT_CAN_STRIP), INNATE_TRAIT)
+	add_traits(list(TRAIT_NO_PLASMA_TRANSFORM, // Just in case of Icebox.
+					TRAIT_KNOW_ROBO_WIRES, // Big brain.
+					TRAIT_MADNESS_IMMUNE, // Doesn't go insanae due to SM.
+					TRAIT_NO_SOUL, // Only useful in case of revenant, but it's a nice thematic thing.
+					TRAIT_PLANT_SAFE, // Metallic hands prevent plant exposure.
+					TRAIT_QUICKER_CARRY, // Can't carry yet (oops).
+					TRAIT_STRONG_GRABBER, // Many limbs provide strong grabbing.
+					TRAIT_SURGEON, // Certified:tm: medical robotics.
+					TRAIT_REAGENT_SCANNER, // Look at reagents to see what it is.
+					TRAIT_GOOD_HEARING, // I HEARD YOU WHISPERING.
+					TRAIT_FASTMED, // Certified:tm: medical robotics.
+					TRAIT_NOFIRE, // Don't want the cloak and stuff to burn.
+					TRAIT_PUSHIMMUNE, // Literal 3m tall tank of a robot.
+					TRAIT_FIST_MINING, // Just in case of Icebox.
+					TRAIT_NEGATES_GRAVITY, // Grabby grabby hands.
+					TRAIT_LITERATE, // Basically needed.
+					TRAIT_KNOW_ENGI_WIRES, // Big brain.
+					TRAIT_ADVANCEDTOOLUSER, // Also basically needed
+					TRAIT_CAN_STRIP), INNATE_TRAIT) // Also also basically needed.
 
 	if(default_storage)
 		var/obj/item/storage = new default_storage(src)
@@ -184,7 +184,7 @@
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 	RegisterSignal(src, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
-	update_base_stats()
+	update_base_stats() // This proc basically makes everything else redundant.
 
 /datum/hud/dextrous/dreadnought/New(mob/owner)
 	..()
@@ -370,6 +370,7 @@
 		update_worn_back()
 
 /mob/living/basic/redtechdread/update_held_items()
+	SHOULD_CALL_PARENT(FALSE) // Get overridden nerd.
 	if(isnull(client) || isnull(hud_used) || hud_used.hud_version == HUD_STYLE_NOHUD)
 		return
 	var/turf/our_turf = get_turf(src)
@@ -826,7 +827,7 @@
 	. = ..()
 	if(shielding_level > 0) // Shielding is on.
 		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
-		src.visible_message(span_warning("[src]'s shield dampens the thermal energy!"))
+		src.visible_message(span_warning("[src]'s shield dampens the thermal energy!")) // This is basically handled by the EHP system but I added this for flavour anyways.
 
 /mob/living/basic/redtechdread/death(gibbed)
 	..(gibbed)
