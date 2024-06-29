@@ -2,7 +2,7 @@
 	var/crack_states_count = 10
 	var/static/list/crack_states
 
-/obj/structure/table/Initialize()
+/obj/structure/table/Initialize(mapload)
 	. = ..()
 	if(!crack_states)
 		crack_states = list()
