@@ -75,3 +75,46 @@
 
 /datum/preference/choiced/synth_blood/is_accessible(datum/preferences/preferences)
 	return ..() && ispath(preferences.read_preference(/datum/preference/choiced/species), /datum/species/synth)
+
+
+
+//synth head covers (aka head design options)
+/datum/preference/choiced/synth_head_cover
+	main_feature_name = "Head Cover"
+	savefile_key = "feature_synth_head_cover"
+
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_FEATURES
+	can_randomize = TRUE
+	relevant_external_organ = /obj/item/organ/external/synth_head_cover
+	should_generate_icons = TRUE
+
+/datum/preference/choiced/synth_head_cover/init_possible_values()
+	return assoc_to_keys(GLOB.synth_head_cover_list)
+
+/datum/preference/choiced/synth_head_cover/icon_for(value)
+	var/datum/sprite_accessory/sprite_accessory = GLOB.synth_head_cover_list[value]
+	var/icon/head = icon('maplestation_modules/icons/mob/synth_heads.dmi', "synth_head", SOUTH)
+
+	var/icon/final_icon = icon(head)
+
+	if (!isnull(sprite_accessory))
+		for(var/side in list("ADJ", "FRONT"))
+			var/icon/accessory_icon = icon(
+				icon = 'maplestation_modules/icons/mob/synth_heads.dmi',
+				icon_state = "m_synth_head_cover_[sprite_accessory.icon_state]_ADJ",
+				dir = SOUTH,
+			)
+			final_icon.Blend(accessory_icon, ICON_OVERLAY)
+
+	final_icon.Crop(11, 20, 23, 32)
+	final_icon.Scale(32, 32)
+	final_icon.Blend(COLOR_GRAY, ICON_MULTIPLY)
+
+	return final_icon
+
+/datum/preference/choiced/synth_head_cover/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["synth_head_cover"] = value
+
+/datum/preference/choiced/synth_head_cover/create_default_value()
+	return /datum/sprite_accessory/synth_head_cover::name

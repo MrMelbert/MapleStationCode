@@ -107,6 +107,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["arm_wings"] = get_consistent_feature_entry(GLOB.arm_wings_list) // NON-MODULE CHANGE
 	target.dna.features["tail_avian"] = get_consistent_feature_entry(GLOB.tails_list_avian) // NON-MODULE CHANGE
 	target.dna.features["ears_avian"] = get_consistent_feature_entry(GLOB.avian_ears_list) // NON-MODULE CHANGE
+	target.dna.features["synth_head_cover"] = get_consistent_feature_entry(GLOB.synth_head_cover_list) // NON-MODULE CHANGE
 	target.dna.features["feathers"] = "#FF3B76" //NON-MODULE CHANGE
 	target.dna.initialize_dna(/datum/blood_type/crew/human/o_plus, create_mutation_blocks = FALSE, randomize_features = FALSE) //NON-MODULE CHANGE
 	// UF and UI are nondeterministic, even though the features are the same some blocks will randomize slightly
