@@ -30,11 +30,11 @@
 	item_path = /obj/item/clothing/mask/bandana
 
 /datum/loadout_item/mask/bandana_striped_greyscale
-	name = "Striped Bandana"
+	name = "Bandana (Striped)"
 	item_path = /obj/item/clothing/mask/bandana/striped
 
 /datum/loadout_item/mask/skull_bandana
-	name = "Skull Bandana"
+	name = "Bandana (Skull)"
 	item_path = /obj/item/clothing/mask/bandana/skull
 
 /datum/loadout_item/mask/surgical_mask

@@ -333,18 +333,22 @@
 /datum/loadout_item/under/formal/nndress
 	name = "Blue Dress"
 	item_path = /obj/item/clothing/under/dress/nndress
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/formal/ritzuniform
 	name = "Malheur Research Association uniform"
 	item_path = /obj/item/clothing/under/rank/rnd/mrauniform
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/formal/reshiacoat
 	name = "Black Uniform Coat"
 	item_path = /obj/item/clothing/under/jumpsuit/reshiacoat
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/formal/arbitersuit
 	name = "Arbiter's Suit"
 	item_path = /obj/item/clothing/under/arbitersuit
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/formal/chesedsuit
 	name = "Blue Waistcoat"
@@ -377,7 +381,9 @@
 /datum/loadout_item/under/formal/grey
 	name = "Designer Outfit"
 	item_path = /obj/item/clothing/under/jumpsuit/greyshirt
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/jumpsuit/pilot
 	name = "Berbier Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/lini
+	additional_displayed_text = list("Character Item")

@@ -218,7 +218,7 @@
 /datum/loadout_item/pocket_items/plush/albertcat
 	name = "Plush (Albus)"
 	item_path = /obj/item/toy/plush/albertcat
-	additional_displayed_text = list("Charcter")
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/pocket_items/card_binder
 	name = "Card Binder"

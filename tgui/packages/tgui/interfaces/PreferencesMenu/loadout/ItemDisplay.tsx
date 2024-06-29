@@ -30,7 +30,7 @@ export const ItemIcon = (props: { item: LoadoutItem; scale?: number }) => {
 
   return (
     <DmIcon
-      fallback={<Icon name="spinner" spin color="gray" />}
+      fallback={<Icon name="spinner" spin color="gray" ml={1} />}
       icon={icon_to_use}
       icon_state={icon_state_to_use}
       style={{

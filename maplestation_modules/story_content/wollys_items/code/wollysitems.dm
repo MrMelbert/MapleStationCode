@@ -139,10 +139,12 @@ since some of them are two per character or singleton, i'm gonna save space and 
 /datum/loadout_item/suit/cyrilcloak
 	name = "Claw-Sewn Cloak"
 	item_path = /obj/item/clothing/suit/toggle/cyrilcloak
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/suit/scoriajacket
 	name = "Embroidered Clan Jacket"
 	item_path = /obj/item/clothing/suit/matthewjacket
+	additional_displayed_text = list("Character Item")
 
 // sheathes
 
