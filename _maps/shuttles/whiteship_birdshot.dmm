@@ -46,9 +46,6 @@
 /obj/effect/spawner/random/maintenance/three,
 /turf/open/floor/iron/dark/textured_large,
 /area/shuttle/abandoned/cargo)
-"bp" = (
-/turf/closed/wall/mineral/titanium/overspace,
-/area/shuttle/abandoned/engine)
 "bq" = (
 /obj/effect/turf_decal/siding/thinplating/dark{
 	dir = 1
@@ -166,7 +163,7 @@
 /obj/machinery/porta_turret/centcom_shuttle/weak{
 	dir = 4
 	},
-/turf/closed/wall/mineral/titanium/overspace,
+/turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/crew)
 "fX" = (
 /obj/structure/chair{
@@ -375,9 +372,6 @@
 	},
 /turf/open/floor/iron/small,
 /area/shuttle/abandoned/cargo)
-"ma" = (
-/turf/closed/wall/mineral/titanium/overspace,
-/area/shuttle/abandoned/cargo)
 "mJ" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
@@ -502,7 +496,7 @@
 /turf/open/floor/iron/dark/small,
 /area/shuttle/abandoned/bridge)
 "ry" = (
-/turf/closed/wall/mineral/titanium/overspace,
+/turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/bar)
 "rF" = (
 /obj/effect/decal/cleanable/dirt,
@@ -569,9 +563,6 @@
 /obj/structure/sign/poster/official/random/directional/north,
 /turf/open/floor/catwalk_floor,
 /area/shuttle/abandoned/engine)
-"uk" = (
-/turf/closed/wall/mineral/titanium/overspace,
-/area/shuttle/abandoned/pod)
 "uo" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/airalarm/directional/south,
@@ -589,7 +580,8 @@
 /area/shuttle/abandoned/crew)
 "vc" = (
 /obj/machinery/computer/camera_advanced/shuttle_docker/whiteship{
-	dir = 1
+	dir = 1;
+	x_offset = 4
 	},
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark/small,
@@ -1076,7 +1068,7 @@
 /obj/machinery/porta_turret/centcom_shuttle/weak{
 	dir = 4
 	},
-/turf/closed/wall/mineral/titanium/overspace,
+/turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/pod)
 "Ll" = (
 /obj/structure/cable,
@@ -1217,7 +1209,7 @@
 /obj/machinery/porta_turret/centcom_shuttle/weak{
 	dir = 4
 	},
-/turf/closed/wall/mineral/titanium/overspace,
+/turf/closed/wall/mineral/titanium,
 /area/shuttle/abandoned/bridge)
 "Qr" = (
 /obj/structure/chair,
@@ -1401,9 +1393,6 @@
 /obj/machinery/space_heater,
 /turf/open/floor/catwalk_floor,
 /area/shuttle/abandoned/engine)
-"WG" = (
-/turf/closed/wall/mineral/titanium/overspace,
-/area/shuttle/abandoned/bridge)
 "WL" = (
 /obj/structure/rack,
 /obj/item/tank/internals/anesthetic{
@@ -1538,9 +1527,9 @@
 (1,1,1) = {"
 lt
 lt
-bp
+Gi
 BH
-bp
+Gi
 lt
 lt
 lt
@@ -1552,15 +1541,15 @@ lt
 lt
 lt
 lt
-bp
+Gi
 BH
-bp
+Gi
 lt
 lt
 "}
 (2,1,1) = {"
 lt
-bp
+Gi
 Om
 oe
 Gi
@@ -1578,7 +1567,7 @@ BH
 Gi
 oe
 Om
-bp
+Gi
 lt
 "}
 (3,1,1) = {"
@@ -1588,7 +1577,7 @@ Wu
 RH
 Gi
 oe
-bp
+Gi
 lt
 lt
 lt
@@ -1596,7 +1585,7 @@ lt
 lt
 lt
 lt
-bp
+Gi
 oe
 Gi
 qn
@@ -1674,7 +1663,7 @@ Gi
 lt
 "}
 (7,1,1) = {"
-ma
+Tg
 kQ
 cq
 ar
@@ -1694,7 +1683,7 @@ sC
 sC
 xn
 kQ
-ma
+Tg
 "}
 (8,1,1) = {"
 kQ
@@ -1928,7 +1917,7 @@ lt
 "}
 (18,1,1) = {"
 lt
-uk
+PN
 pv
 pv
 pv
@@ -1946,7 +1935,7 @@ te
 JP
 JP
 JP
-WG
+XB
 lt
 "}
 (19,1,1) = {"
@@ -2021,7 +2010,7 @@ lt
 (22,1,1) = {"
 lt
 lt
-uk
+PN
 pv
 Ot
 Ft
@@ -2032,12 +2021,12 @@ lt
 lt
 lt
 lt
-WG
+XB
 JP
 aW
 Gy
 JP
-WG
+XB
 lt
 lt
 "}
@@ -2045,7 +2034,7 @@ lt
 lt
 lt
 lt
-uk
+PN
 BZ
 BZ
 Lj
@@ -2059,7 +2048,7 @@ lt
 Qf
 YJ
 YJ
-WG
+XB
 lt
 lt
 lt
