@@ -170,7 +170,7 @@
 			spawned_human.mind.adjust_experience(i, roundstart_experience[i], TRUE)
 
 /// Return the outfit to use
-/datum/job/proc/get_outfit(consistent)
+/datum/job/proc/get_outfit()
 	return outfit
 
 /// Announce that this job as joined the round to all crew members.
@@ -185,37 +185,33 @@
 	return TRUE
 
 
-/mob/living/proc/on_job_equipping(datum/job/equipping, client/player_client)
+/mob/living/proc/on_job_equipping(datum/job/equipping)
 	return
 
 #define VERY_LATE_ARRIVAL_TOAST_PROB 20
 
-/mob/living/carbon/human/on_job_equipping(datum/job/equipping, client/player_client)
-	if(equipping.paycheck_department && (equipping.job_flags & JOB_CREW_MANIFEST)) // NON-MODULE CHANGE: Only crew members get a bank account / memory
+/mob/living/carbon/human/on_job_equipping(datum/job/equipping, datum/preferences/used_pref) // NON-MODULE CHANGE: LOADOUTS
+	if(equipping.job_flags & JOB_CREW_MANIFEST) // NON-MODULE CHANGE: Only crew members get a bank account / memory
 		var/datum/bank_account/bank_account = new(real_name, equipping, dna.species.payday_modifier)
 		bank_account.payday(STARTING_PAYCHECKS, TRUE)
 		account_id = bank_account.account_id
 		bank_account.replaceable = FALSE
 		add_mob_memory(/datum/memory/key/account, remembered_id = account_id)
 
-	dress_up_as_job(
-		equipping = equipping,
-		visual_only = FALSE,
-		player_client = player_client,
-		consistent = FALSE,
-	)
+	dress_up_as_job(equipping, FALSE, used_pref) // NON-MODULE CHANGE: LOADOUTS
 
 	if(EMERGENCY_PAST_POINT_OF_NO_RETURN && prob(VERY_LATE_ARRIVAL_TOAST_PROB))
 		equip_to_slot_or_del(new /obj/item/food/griddle_toast(src), ITEM_SLOT_MASK)
 
 #undef VERY_LATE_ARRIVAL_TOAST_PROB
 
-/mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE, client/player_client, consistent = FALSE)
+/mob/living/proc/dress_up_as_job(datum/job/equipping, visual_only = FALSE)
 	return
 
-/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, client/player_client, consistent = FALSE)
+/mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, datum/preferences/used_pref) // NON-MODULE CHANGE: LOADOUTS
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
-	equip_outfit_and_loadout(equipping.get_outfit(consistent), player_client?.prefs, visual_only, TRUE)
+	// NON-MODULE CHANGE: LOADOUTS
+	equip_outfit_and_loadout(equipping.get_outfit(), used_pref, visual_only)
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
 	if(H && GLOB.announcement_systems.len)

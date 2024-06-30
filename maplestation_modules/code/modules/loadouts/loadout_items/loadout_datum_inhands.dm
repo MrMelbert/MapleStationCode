@@ -1,13 +1,15 @@
+// --- Loadout item datums for inhand items ---
+
 /// Inhand items (Moves overrided items to backpack)
 /datum/loadout_category/inhands
 	category_name = "Inhand"
+	ui_title = "In-hand Items"
 	type_to_generate = /datum/loadout_item/inhand
-	tab_order = 12
 
 /datum/loadout_item/inhand
 	abstract_type = /datum/loadout_item/inhand
 
-/datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/inhand/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.l_hand && !outfit.r_hand)
 		outfit.r_hand = item_path
 	else
@@ -28,7 +30,7 @@
 	item_path = /obj/item/storage/briefcase
 
 /datum/loadout_item/inhand/briefcase_secure
-	name = "Briefcase (Secure)"
+	name = "Secure Briefcase"
 	item_path = /obj/item/storage/briefcase/secure
 
 /datum/loadout_item/inhand/skateboard
@@ -38,21 +40,20 @@
 /datum/loadout_item/inhand/bone_spear
 	name = "Heirloom Bone Spear"
 	item_path = /obj/item/spear/bonespear/ceremonial
-	additional_displayed_text = list("Weak Weapon")
-
+	additional_tooltip_contents = list(TOOLTIP_NO_DAMAGE)
 
 /datum/loadout_item/inhand/bouquet_mixed
-	name = "Bouquet (Mixed)"
+	name = "Mixed Bouquet"
 	item_path = /obj/item/bouquet
 
 /datum/loadout_item/inhand/bouquet_sunflower
-	name = "Bouquet (Sunflower)"
+	name = "Sunflower Bouquet"
 	item_path = /obj/item/bouquet/sunflower
 
 /datum/loadout_item/inhand/bouquet_poppy
-	name = "Bouquet (Poppy)"
+	name = "Poppy Bouquet"
 	item_path = /obj/item/bouquet/poppy
 
 /datum/loadout_item/inhand/bouquet_rose
-	name = "Bouquet (Rose)"
+	name = "Rose Bouquet"
 	item_path = /obj/item/bouquet/rose

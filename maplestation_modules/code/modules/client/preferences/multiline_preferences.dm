@@ -87,17 +87,13 @@
 	UnregisterSignal(SSticker, COMSIG_TICKER_ROUND_STARTING)
 
 /datum/preference/multiline_text/record/apply_to_human(mob/living/carbon/human/target, value)
-	if(isdummy(target) || !length(value))
-		return
-	RegisterSignal(target, COMSIG_HUMAN_CHARACTER_SETUP, PROC_REF(apply_after_setup), override = TRUE)
+	return
 
-/datum/preference/multiline_text/record/proc/apply_after_setup(mob/living/carbon/human/source, client/owner)
-	SIGNAL_HANDLER
-	apply_to_human_records(source, owner.prefs)
+/datum/preference/multiline_text/record/after_apply_to_human(mob/living/carbon/human/target, datum/preferences/prefs, value)
+	apply_to_human_records(target, prefs, value)
 
 /datum/preference/multiline_text/record/proc/apply_to_human_records(mob/living/carbon/human/joined, datum/preferences/prefs, value)
-	UnregisterSignal(joined, COMSIG_HUMAN_CHARACTER_SETUP)
-	if(!ishuman(joined) || isdummy(joined)) // Fairly certain this is redundant but let's just be safe
+	if(!ishuman(joined) || istype(joined, /mob/living/carbon/human/dummy)) // Fairly certain this is redundant but let's just be safe
 		return
 
 	prefs ||= joined.client?.prefs

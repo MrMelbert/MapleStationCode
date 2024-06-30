@@ -6,10 +6,10 @@ import { Dropdown, Flex, Stack } from '../../components'; // NON-MODULE CHANGE :
 import { Window } from '../../layouts';
 import { LanguagePage } from './_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbManagerPage } from './_LimbManager'; // NON-MODULE CHANGE
+import { LoadoutPage } from './_LoadoutManager'; // NON-MODULE CHANGE
 import { AntagsPage } from './AntagsPage';
 import { PreferencesMenuData } from './data';
 import { JobsPage } from './JobsPage';
-import { LoadoutPage } from './loadout/index';
 import { MainPage } from './MainPage';
 import { PageButton } from './PageButton';
 import { QuirksPage } from './QuirksPage';
@@ -21,7 +21,7 @@ enum Page {
   Jobs,
   Species,
   Quirks,
-  Loadout,
+  Loadout, // NON-MODULE CHANGE
   Limbs, // NON-MODULE CHANGE
   Languages, // NON-MODULE CHANGE
 }
@@ -86,11 +86,11 @@ export const CharacterPreferenceWindow = (props) => {
       pageContents = <QuirksPage />;
       break;
 
+    // NON-MODULE CHANGE START
     case Page.Loadout:
       pageContents = <LoadoutPage />;
       break;
 
-    // NON-MODULE CHANGE START
     case Page.Limbs:
       pageContents = <LimbManagerPage />;
       break;

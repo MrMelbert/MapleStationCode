@@ -37,9 +37,7 @@ Assistant
 	rpg_title = "Lout"
 	config_tag = "ASSISTANT"
 
-/datum/job/assistant/get_outfit(consistent)
-	if(consistent)
-		return /datum/outfit/job/assistant/always_grey
+/datum/job/assistant/get_outfit()
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_ASSISTANT_GIMMICKS))
 		return ..()
 
@@ -82,15 +80,6 @@ Assistant
 		uniform = GLOB.colored_assistant.jumpsuits[index]
 	else
 		uniform = GLOB.colored_assistant.jumpskirts[index]
-
-/datum/outfit/job/assistant/always_grey
-	name = "Assistant - Greyshirt"
-
-/datum/outfit/job/assistant/always_grey/give_jumpsuit(mob/living/carbon/human/target)
-	if (target.jumpsuit_style == PREF_SUIT)
-		uniform = /obj/item/clothing/under/color/grey
-	else
-		uniform = /obj/item/clothing/under/color/jumpskirt/grey
 
 /datum/outfit/job/assistant/consistent
 	name = "Assistant - Consistent"
