@@ -168,7 +168,7 @@
 	var/mob/living/basic/redtechdread/ownercast = owner
 	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
 
-	var/mutable_appearance/scan_effect = mutable_appearance('icons/mob/nonhuman-player/netguardian.dmi', "scan")
+	var/mutable_appearance/scan_effect = mutable_appearance('maplestation_modules/story_content/deepred_warfare/icons/dreadscan.dmi', "scan")
 	ownercast.add_overlay(scan_effect)
 	ownercast.visible_message(span_warning("[ownercast] scans [target_atom]..."))
 

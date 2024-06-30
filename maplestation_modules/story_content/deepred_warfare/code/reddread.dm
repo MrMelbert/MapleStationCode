@@ -180,7 +180,7 @@
 	internalshield = new /datum/action/cooldown/mob_cooldown/faraday_shield(src)
 	internalshield.Grant(src)
 
-	AddComponent(/datum/component/seethrough_mob)
+	// AddComponent(/datum/component/seethrough_mob)
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 	RegisterSignal(src, COMSIG_LIVING_LIFE, PROC_REF(on_life))
 
@@ -271,6 +271,8 @@
 			if(head)
 				return FALSE
 			if(!((item.slot_flags & ITEM_SLOT_HEAD) || (item.slot_flags & ITEM_SLOT_MASK)))
+				return FALSE
+			if(!(istype(item, /obj/item/clothing/mask/collector)))
 				return FALSE
 			return TRUE
 		if(ITEM_SLOT_NECK)
@@ -397,10 +399,11 @@
 		if(client && hud_used?.hud_shown)
 			head.screen_loc = ui_sstore1
 			client.screen += head
-		var/used_head_icon = 'icons/mob/clothing/head/utility.dmi'
-		if(istype(head, /obj/item/clothing/mask))
-			used_head_icon = 'icons/mob/clothing/mask.dmi'
-		var/mutable_appearance/head_overlay = head.build_worn_icon(default_layer = DREAD_HEAD_LAYER, default_icon_file = used_head_icon)
+		var/used_head_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothing.dmi'
+		//if(istype(head, /obj/item/clothing/mask))
+			//used_head_icon = 'icons/mob/clothing/mask.dmi'
+		var/obj/item/force_mask = new /obj/item/clothing/mask/collector/pattern
+		var/mutable_appearance/head_overlay = force_mask.build_worn_icon(default_layer = DREAD_HEAD_LAYER, default_icon_file = used_head_icon)
 		// head_overlay.pixel_y -= 15
 
 		dread_overlays[DREAD_HEAD_LAYER] = head_overlay

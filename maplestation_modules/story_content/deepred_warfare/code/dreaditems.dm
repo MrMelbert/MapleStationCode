@@ -45,3 +45,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+
+/obj/item/clothing/mask/collector/pattern
+	worn_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothingbig.dmi'
+	icon_state = "mask_pattern"
