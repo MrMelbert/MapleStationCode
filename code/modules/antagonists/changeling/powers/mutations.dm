@@ -369,7 +369,7 @@
 				C.visible_message(span_danger("[H] impales [C] with [H.p_their()] [I.name]!"), span_userdanger("[H] impales you with [H.p_their()] [I.name]!"))
 				C.apply_damage(I.force, BRUTE, BODY_ZONE_CHEST, attacking_item = I)
 				H.do_item_attack_animation(C, used_item = I)
-				H.add_mob_blood(C)
+				H.add_blood_DNA_to_items(C.get_blood_dna_list(), ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 				playsound(get_turf(H),I.hitsound,75,TRUE)
 				return
 

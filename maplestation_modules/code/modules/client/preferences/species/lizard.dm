@@ -92,3 +92,36 @@
 
 /datum/preference/color/horn_color/create_default_value()
 	return "#FFFFFF"
+
+// -- Lizard Horn Layer selection --
+// Makes it actually work
+/datum/bodypart_overlay/mutant/horns/get_image(image_layer, obj/item/bodypart/limb)
+	var/new_layer = limb.owner?.dna?.features["lizard_horn_layer"] || BODY_ADJ_LAYER
+	if(new_layer == BODY_ADJ_LAYER)
+		return ..()
+
+	var/mutable_appearance/appearance = ..()
+	appearance.layer = -1 * new_layer
+	return appearance
+
+// The preference
+/datum/preference/choiced/lizard_horn_layer
+	savefile_key = "feature_lizard_horn_layer"
+	savefile_identifier = PREFERENCE_CHARACTER
+	category = PREFERENCE_CATEGORY_SECONDARY_FEATURES
+	can_randomize = FALSE
+	/// Map of player-readable-text to layer value
+	var/list/layer_to_layer = list(
+		"Default" = BODY_ADJ_LAYER,
+		"Above Hair" = FACEMASK_LAYER,
+		"Above Helmets" = BODY_FRONT_LAYER,
+	)
+
+/datum/preference/choiced/lizard_horn_layer/apply_to_human(mob/living/carbon/human/target, value)
+	target.dna.features["lizard_horn_layer"] = layer_to_layer[value]
+
+/datum/preference/choiced/lizard_horn_layer/create_default_value()
+	return "Default"
+
+/datum/preference/choiced/lizard_horn_layer/init_possible_values()
+	return layer_to_layer

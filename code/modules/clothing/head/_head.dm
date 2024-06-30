@@ -6,7 +6,7 @@
 	righthand_file = 'icons/mob/inhands/clothing/hats_righthand.dmi'
 	body_parts_covered = HEAD
 	slot_flags = ITEM_SLOT_HEAD
-	blood_overlay_type = "helmetblood" // NON-MODULE CHANGE reworking clothing blood overlays
+	blood_overlay_type = "helmet" // NON-MODULE CHANGE reworking clothing blood overlays
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 

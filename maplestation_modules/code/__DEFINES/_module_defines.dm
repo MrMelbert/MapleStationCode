@@ -10,22 +10,6 @@
 #define COMPANY_FILE "companies.json"
 #define RESOURCE_EVENT_FILE "resource_events.json"
 
-#define INFO_GREYSCALE "greyscale"
-#define INFO_NAMED "name"
-#define INFO_RESKIN "reskin"
-#define INFO_LAYER "layer"
-
-/// Max amonut of misc / backpack items that are allowed.
-#define MAX_ALLOWED_MISC_ITEMS 3
-
-/// Used to make something not recolorable even if it's capable
-#define DONT_GREYSCALE -1
-
-/// Defines for extra info blurbs, for loadout items.
-#define TOOLTIP_NO_ARMOR "This item has no armor and is entirely cosmetic."
-#define TOOLTIP_NO_DAMAGE "This item has very low force and is largely cosmetic."
-#define TOOLTIP_RANDOM_COLOR "This item has a random color and will change every round."
-
 // Modular traits
 /// Essentially a buffed version of TRAIT_VIRUS_RESISTANCE, but not as strong as TRAIT_VIRUS_IMMUNE.
 /// Outright prevents contraction of disease, but if you do get sick, you're not immune to it.

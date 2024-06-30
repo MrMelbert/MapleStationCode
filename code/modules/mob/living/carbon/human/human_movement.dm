@@ -26,7 +26,7 @@
 
 /mob/living/carbon/human/Move(NewLoc, direct)
 	. = ..()
-	if(shoes && body_position == STANDING_UP && loc == NewLoc && has_gravity(loc))
+	if(shoes && !moving_diagonally && body_position == STANDING_UP && loc == NewLoc && has_gravity(loc))
 		SEND_SIGNAL(shoes, COMSIG_SHOES_STEP_ACTION)
 
 /mob/living/carbon/human/Process_Spacemove(movement_dir = 0, continuous_move = FALSE)
