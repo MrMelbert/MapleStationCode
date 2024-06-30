@@ -3,7 +3,7 @@ import { BooleanLike } from 'common/react';
 import { sendAct } from '../../backend';
 import { Language } from './_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbCategory } from './_LimbManager'; // NON-MODULE CHANGE
-import { LoadoutCategory, LoadoutList } from './loadout/base';
+import { LoadoutCategory } from './_LoadoutManager'; // NON-MODULE CHANGE
 import { Gender } from './preferences/gender';
 
 export enum Food {
@@ -149,9 +149,6 @@ export type PreferencesMenuData = {
       gender: Gender;
       joblessrole: JoblessRole;
       species: string;
-      loadout_list: LoadoutList[];
-      active_loadout: number;
-      job_clothes: BooleanLike;
     };
 
     randomization: Record<string, RandomSetting>;
@@ -196,12 +193,13 @@ export type ServerData = {
   random: {
     randomizable: string[];
   };
-  loadout: {
-    loadout_tabs: LoadoutCategory[];
-    max_loadouts: number;
-  };
   species: Record<string, Species>;
-  // NON-MODULE CHANGE START
+  // NON-MODULE CHANGE
+  loadout: {
+    tutorial_text: string;
+    loadout_tabs: LoadoutCategory[];
+    max_loadout_slots: number;
+  };
   limbs: {
     limbs: LimbCategory[];
   };

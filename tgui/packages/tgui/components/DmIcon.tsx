@@ -66,7 +66,7 @@ export function DmIcon(props: Props) {
     }
   }, []);
 
-  if (!iconRef) return <>fallback</>;
+  if (!iconRef) return fallback;
 
   return <Image fixErrors src={query} {...rest} />;
 }

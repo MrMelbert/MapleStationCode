@@ -1,14 +1,15 @@
+// --- Loadout item datums for backpack / pocket items ---
+
 /// Pocket items (Moved to backpack)
 /datum/loadout_category/pocket
 	category_name = "Other"
 	type_to_generate = /datum/loadout_item/pocket_items
-	tab_order = 14
 	/// How many pocket items are allowed
-	VAR_PRIVATE/max_allowed = 3
+	var/max_allowed = 3
 
 /datum/loadout_category/pocket/New()
 	. = ..()
-	category_info = "([max_allowed] allowed)"
+	ui_title = "Backpack Items ([max_allowed] max)"
 
 /datum/loadout_category/pocket/handle_duplicate_entires(
 	datum/preference_middleware/loadout/manager,
@@ -29,16 +30,10 @@
 /datum/loadout_item/pocket_items
 	abstract_type = /datum/loadout_item/pocket_items
 
-/datum/loadout_item/pocket_items/on_equip_item(
-	obj/item/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
+/datum/loadout_item/pocket_items/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
 	// Backpack items aren't created if it's a visual equipping, so don't do any on equip stuff. It doesn't exist.
 	if(visuals_only)
-		return NONE
+		return
 
 	return ..()
 
@@ -46,31 +41,18 @@
 /datum/loadout_item/pocket_items/wallet
 	name = "Wallet"
 	item_path = /obj/item/storage/wallet
+	additional_tooltip_contents = list("Populates itself with your ID card and other small items you may have on spawn.")
 
-/datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
-	if(visuals_only || isdummy(equipper))
-		return
-	if(!job_equipping_step)
-		return ..()
-	// We hook the signal because we equip the wallet at the very end of prefs setup.
-	// We wait for the end of prefs setup so we can check the equipper's bag for any other loadout items / quirk items to put in the wallet.
-	RegisterSignal(equipper, COMSIG_HUMAN_CHARACTER_SETUP, PROC_REF(apply_after_setup), override = TRUE)
+// We add our wallet manually, later, so no need to put it in any outfits.
+/datum/loadout_item/pocket_items/wallet/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only)
+	return
 
-/datum/loadout_item/pocket_items/wallet/on_equip_item(
-	obj/item/equipped_item,
-	datum/preferences/preference_source,
-	list/preference_list,
-	mob/living/carbon/human/equipper,
-	visuals_only = FALSE,
-)
-	return NONE
+// We didn't spawn any item yet, so nothing to call here.
+/datum/loadout_item/pocket_items/wallet/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
+	return
 
-/datum/loadout_item/pocket_items/wallet/proc/apply_after_setup(mob/living/carbon/human/source, ...)
-	SIGNAL_HANDLER
-	equip_wallet(source)
-	UnregisterSignal(source, COMSIG_HUMAN_CHARACTER_SETUP)
-
-/datum/loadout_item/pocket_items/wallet/proc/equip_wallet(mob/living/carbon/human/equipper)
+// We add our wallet at the very end of character initialization (after quirks, etc) to ensure the backpack / their ID is all set by now.
+/datum/loadout_item/pocket_items/wallet/post_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper)
 	var/obj/item/card/id/advanced/id_card = equipper.get_item_by_slot(ITEM_SLOT_ID)
 	if(istype(id_card, /obj/item/storage/wallet)) // Wallets station trait guard
 		return
@@ -117,41 +99,32 @@
 	item_path = /obj/item/storage/box/gum/happiness
 
 /datum/loadout_item/pocket_items/lipstick_black
-	name = "Lipstick (Black)"
+	name = "Black Lipstick"
 	item_path = /obj/item/lipstick/black
-	additional_displayed_text = list("Black")
 
 /datum/loadout_item/pocket_items/lipstick_blue
-	name = "Lipstick (Blue)"
+	name = "Blue Lipstick"
 	item_path = /obj/item/lipstick/blue
-	additional_displayed_text = list("Blue")
-
 
 /datum/loadout_item/pocket_items/lipstick_green
-	name = "Lipstick (Green)"
+	name = "Green Lipstick"
 	item_path = /obj/item/lipstick/green
-	additional_displayed_text = list("Green")
-
 
 /datum/loadout_item/pocket_items/lipstick_jade
-	name = "Lipstick (Jade)"
+	name = "Jade Lipstick"
 	item_path = /obj/item/lipstick/jade
-	additional_displayed_text = list("Jade")
 
 /datum/loadout_item/pocket_items/lipstick_purple
-	name = "Lipstick (Purple)"
+	name = "Purple Lipstick"
 	item_path = /obj/item/lipstick/purple
-	additional_displayed_text = list("Purple")
 
 /datum/loadout_item/pocket_items/lipstick_red
-	name = "Lipstick (Red)"
+	name = "Red Lipstick"
 	item_path = /obj/item/lipstick
-	additional_displayed_text = list("Red")
 
 /datum/loadout_item/pocket_items/lipstick_white
-	name = "Lipstick (White)"
+	name = "White Lipstick"
 	item_path = /obj/item/lipstick/white
-	additional_displayed_text = list("White")
 
 /datum/loadout_item/pocket_items/razor
 	name = "Razor"
@@ -166,59 +139,58 @@
 	can_be_named = TRUE
 
 /datum/loadout_item/pocket_items/plush/bee
-	name = "Plush (Bee)"
+	name = "Bee Plush"
 	item_path = /obj/item/toy/plush/beeplushie
 
 /datum/loadout_item/pocket_items/plush/carp
-	name = "Plush (Carp)"
+	name = "Carp Plush"
 	item_path = /obj/item/toy/plush/carpplushie
 
 /datum/loadout_item/pocket_items/plush/lizard_greyscale
-	name = "Plush (Lizard, Colorable)"
+	name = "Greyscale Lizard Plush"
 	item_path = /obj/item/toy/plush/lizard_plushie/greyscale
 
 /datum/loadout_item/pocket_items/plush/lizard_random
-	name = "Plush (Lizard, Random)"
+	name = "Random Lizard Plush"
 	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/toy/plush/lizard_plushie
-	additional_displayed_text = list("Random color")
+	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
 
 /datum/loadout_item/pocket_items/plush/moth
-	name = "Plush (Moth)"
+	name = "Moth Plush"
 	item_path = /obj/item/toy/plush/moth
 
 /datum/loadout_item/pocket_items/plush/narsie
-	name = "Plush (Nar'sie)"
+	name = "Nar'sie Plush"
 	item_path = /obj/item/toy/plush/narplush
 
 /datum/loadout_item/pocket_items/plush/nukie
-	name = "Plush (Nukie)"
+	name = "Nukie Plush"
 	item_path = /obj/item/toy/plush/nukeplushie
 
 /datum/loadout_item/pocket_items/plush/peacekeeper
-	name = "Plush (Peacekeeper)"
+	name = "Peacekeeper Plush"
 	item_path = /obj/item/toy/plush/pkplush
 
 /datum/loadout_item/pocket_items/plush/plasmaman
-	name = "Plush (Plasmaman)"
+	name = "Plasmaman Plush"
 	item_path = /obj/item/toy/plush/plasmamanplushie
 
 /datum/loadout_item/pocket_items/plush/ratvar
-	name = "Plush (Ratvar)"
+	name = "Ratvar Plush"
 	item_path = /obj/item/toy/plush/ratplush
 
 /datum/loadout_item/pocket_items/plush/rouny
-	name = "Plush (Rouny)"
+	name = "Rouny Plush"
 	item_path = /obj/item/toy/plush/rouny
 
 /datum/loadout_item/pocket_items/plush/snake
-	name = "Plush (Snake)"
+	name = "Snake Plush"
 	item_path = /obj/item/toy/plush/snakeplushie
 
 /datum/loadout_item/pocket_items/plush/albertcat
-	name = "Plush (Albus)"
+	name = "Albus"
 	item_path = /obj/item/toy/plush/albertcat
-	additional_displayed_text = list("Charcter")
 
 /datum/loadout_item/pocket_items/card_binder
 	name = "Card Binder"

@@ -3,13 +3,13 @@
 /// Glove Slot Items (Deletes overrided items)
 /datum/loadout_category/gloves
 	category_name = "Gloves"
+	ui_title = "Glove Slot Items"
 	type_to_generate = /datum/loadout_item/gloves
-	tab_order = 9
 
 /datum/loadout_item/gloves
 	abstract_type = /datum/loadout_item/gloves
 
-/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/gloves/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(isplasmaman(equipper))
 		if(!visuals_only)
 			to_chat(equipper, "Your loadout gloves were not equipped directly due to your envirosuit gloves.")
@@ -64,7 +64,7 @@
 /datum/loadout_item/gloves/yellow
 	name = "Yellow Gloves"
 	item_path = /obj/item/clothing/gloves/color/normal_yellow
-	additional_displayed_text = list("Cosmetic")
+	additional_tooltip_contents = list("This item is purely cosmetic and provide no shock insulation.")
 
 /datum/loadout_item/gloves/white
 	name = "White Gloves"
@@ -73,7 +73,7 @@
 /datum/loadout_item/gloves/bone
 	name = "Heirloom Bone Bracers"
 	item_path = /obj/item/clothing/gloves/armorless_bracer
-	additional_displayed_text = list("No Armor")
+	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
 
 /datum/loadout_item/gloves/mragloves
 	name = "Malheur Research Association gloves"

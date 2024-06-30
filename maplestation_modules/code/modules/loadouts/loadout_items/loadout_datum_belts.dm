@@ -3,59 +3,59 @@
 /// Belt Slot Items (Moves overrided items to backpack)
 /datum/loadout_category/belts
 	category_name = "Belt"
+	ui_title = "Belt Slot Items"
 	type_to_generate = /datum/loadout_item/belts
-	tab_order = 10
 
 /datum/loadout_item/belts
 	abstract_type = /datum/loadout_item/belts
 
-/datum/loadout_item/belts/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/belts/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(outfit.belt)
 		LAZYADD(outfit.backpack_contents, outfit.belt)
 	outfit.belt = item_path
 
 /datum/loadout_item/belts/fanny_pack_black
-	name = "Fannypack (Black)"
+	name = "Black Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/black
 
 /datum/loadout_item/belts/fanny_pack_blue
-	name = "Fannypack (Blue)"
+	name = "Blu Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/blue
 
 /datum/loadout_item/belts/fanny_pack_brown
-	name = "Fannypack (Brown)"
+	name = "Brown Fannypack"
 	item_path = /obj/item/storage/belt/fannypack
 
 /datum/loadout_item/belts/fanny_pack_cyan
-	name = "Fannypack (Cyan)"
+	name = "Cyan Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/cyan
 
 /datum/loadout_item/belts/fanny_pack_green
-	name = "Fannypack (Green)"
+	name = "Green Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/green
 
 /datum/loadout_item/belts/fanny_pack_orange
-	name = "Fannypack (Orange)"
+	name = "Orange Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/orange
 
 /datum/loadout_item/belts/fanny_pack_pink
-	name = "Fannypack (Pink)"
+	name = "Pink Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/pink
 
 /datum/loadout_item/belts/fanny_pack_purple
-	name = "Fannypack (Purple)"
+	name = "Purple Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/purple
 
 /datum/loadout_item/belts/fanny_pack_red
-	name = "Fannypack (Red)"
+	name = "Red Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/red
 
 /datum/loadout_item/belts/fanny_pack_yellow
-	name = "Fannypack (Yellow)"
+	name = "Yellow Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/yellow
 
 /datum/loadout_item/belts/fanny_pack_white
-	name = "Fannypack (White)"
+	name = "White Fannypack"
 	item_path = /obj/item/storage/belt/fannypack/white
 
 /datum/loadout_item/belts/lantern

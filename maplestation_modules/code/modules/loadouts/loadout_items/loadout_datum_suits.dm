@@ -3,13 +3,13 @@
 /// Exosuit / Outersuit Slot Items (Deletes overrided items)
 /datum/loadout_category/outer_suit
 	category_name = "Suit"
+	ui_title = "Outer Suit Slot Items"
 	type_to_generate = /datum/loadout_item/suit
-	tab_order = 6
 
 /datum/loadout_item/suit
 	abstract_type = /datum/loadout_item/suit
 
-/datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
+/datum/loadout_item/suit/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	outfit.suit = item_path
 	if(outfit.suit_store)
 		LAZYADD(outfit.backpack_contents, outfit.suit_store)
@@ -26,7 +26,7 @@
 /datum/loadout_item/suit/parade_jacket_greyscale
 	name = "Greyscale Parade Jacket"
 	item_path = /obj/item/clothing/suit/greyscale_parade
-	additional_displayed_text = list("No Armor")
+	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
 
 /datum/loadout_item/suit/big_jacket
 	name = "Greyscale Jacket Large"
@@ -80,7 +80,7 @@
 /datum/loadout_item/suit/goliath_cloak
 	name = "Heirloom Goliath Cloak"
 	item_path = /obj/item/clothing/suit/hooded/cloak/goliath/heirloom
-	additional_displayed_text = list("No Armor")
+	additional_tooltip_contents = list(TOOLTIP_NO_ARMOR)
 
 /datum/loadout_item/suit/poncho
 	name = "Poncho"

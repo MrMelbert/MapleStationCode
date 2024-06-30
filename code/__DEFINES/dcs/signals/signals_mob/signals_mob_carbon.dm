@@ -148,6 +148,3 @@
 
 ///from /atom/movable/screen/alert/give/proc/handle_transfer(): (taker, item)
 #define COMSIG_CARBON_ITEM_GIVEN "carbon_item_given"
-
-/// Sent at the very end of human character setup
-#define COMSIG_HUMAN_CHARACTER_SETUP "after_human_setup"
