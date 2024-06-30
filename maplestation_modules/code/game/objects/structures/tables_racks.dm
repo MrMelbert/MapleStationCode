@@ -1,5 +1,5 @@
 /obj/structure/table
-	var/crack_states_count = 10
+	var/crack_states_count = 9
 	var/static/list/crack_states
 
 /obj/structure/table/Initialize(mapload)
