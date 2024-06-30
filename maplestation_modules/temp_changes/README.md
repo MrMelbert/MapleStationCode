@@ -9,3 +9,5 @@ If it NEEDS TO, then WRITE DOWN WHERE IT DOES BELOW
 ### LIST OF PLACES WE TOUCH MAIN CODE:
 
 - FILE - PROC/TYPE
+- code\modules\reagents\chemistry\reagents.dm - /datum/reagent/proc/get_taste_description(mob/living/taster)
+- code\__DEFINES\traits\declarations.dm - TRAIT_DETECTIVES_TASTE
