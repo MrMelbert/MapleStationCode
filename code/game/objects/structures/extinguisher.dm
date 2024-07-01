@@ -79,7 +79,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/extinguisher_cabinet, 29)
 		return
 	if(istype(used_item, /obj/item/extinguisher))
 		if(!stored_extinguisher && opened)
-			if(!user.transferItemToLoc(used_item, src))
+			if(!user.transferItemToLoc(used_item, src, silent = FALSE))
 				return
 			stored_extinguisher = used_item
 			user.balloon_alert(user, "extinguisher stored")

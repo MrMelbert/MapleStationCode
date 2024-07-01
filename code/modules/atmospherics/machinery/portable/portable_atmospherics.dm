@@ -204,7 +204,7 @@
 	if(machine_stat & BROKEN)
 		return FALSE
 	var/obj/item/tank/insert_tank = item
-	if(!user.transferItemToLoc(insert_tank, src))
+	if(!user.transferItemToLoc(insert_tank, src, silent = FALSE))
 		return FALSE
 	to_chat(user, span_notice("[holding ? "In one smooth motion you pop [holding] out of [src]'s connector and replace it with [insert_tank]" : "You insert [insert_tank] into [src]"]."))
 	investigate_log("had its internal [holding] swapped with [insert_tank] by [key_name(user)].", INVESTIGATE_ATMOS)

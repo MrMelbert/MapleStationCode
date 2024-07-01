@@ -143,6 +143,12 @@
 	action_intent.screen_loc = ui_combat_toggle
 	static_inventory += action_intent
 
+	using = new /atom/movable/screen/mov_intent(null, src)
+	using.screen_loc = ui_combat_toggle
+	using.icon = 'icons/hud/screen_slimecore.dmi'
+	using.update_appearance()
+	static_inventory += using
+
 //Health
 	healths = new /atom/movable/screen/healths/robot(null, src)
 	infodisplay += healths

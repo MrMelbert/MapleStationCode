@@ -110,7 +110,7 @@
 		return TRUE // no afterattack
 	if(is_reagent_container(item) && !(item.item_flags & ABSTRACT) && item.is_open_container())
 		var/obj/item/reagent_containers/new_beaker = item
-		if(!user.transferItemToLoc(new_beaker, src))
+		if(!user.transferItemToLoc(new_beaker, src, silent = FALSE))
 			return FALSE
 		replace_beaker(user, new_beaker)
 		balloon_alert(user, "added beaker")

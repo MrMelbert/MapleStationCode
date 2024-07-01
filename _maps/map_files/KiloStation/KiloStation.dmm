@@ -3835,6 +3835,10 @@
 	pixel_x = -8;
 	pixel_y = 12
 	},
+/obj/item/ashtray{
+	pixel_y = -2;
+	pixel_x = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/bar/atrium)
 "atf" = (
@@ -15219,6 +15223,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/table/wood,
+/obj/item/ashtray{
+	pixel_y = 5;
+	pixel_x = 6
+	},
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "bKN" = (
@@ -24322,6 +24330,10 @@
 /obj/item/clipboard,
 /obj/item/folder/red,
 /obj/item/clothing/glasses/sunglasses,
+/obj/item/ashtray{
+	pixel_y = 4;
+	pixel_x = 14
+	},
 /turf/open/floor/carpet/green,
 /area/station/security/detectives_office)
 "cNC" = (
@@ -25326,6 +25338,10 @@
 /obj/structure/table/glass,
 /obj/machinery/airalarm/directional/north,
 /obj/machinery/status_display/evac/directional/west,
+/obj/item/clothing/head/soft/paramedic{
+	pixel_x = 2;
+	pixel_y = 6
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/paramedic)
 "ddj" = (
@@ -30814,19 +30830,20 @@
 "eWw" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/firedoor,
-/obj/item/folder/white{
-	pixel_x = 4
-	},
-/obj/item/clothing/head/soft/paramedic{
-	pixel_x = 7;
-	pixel_y = 6
-	},
 /obj/structure/desk_bell{
 	pixel_x = -7
 	},
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "medbaydeskshutters";
 	name = "Medical Desk Shutters"
+	},
+/obj/item/ashtray{
+	pixel_y = -4;
+	pixel_x = 7
+	},
+/obj/item/toy/figure/md{
+	pixel_x = 7;
+	pixel_y = 6
 	},
 /turf/open/floor/iron/dark,
 /area/station/medical/paramedic)
@@ -32253,6 +32270,10 @@
 /obj/item/folder/red,
 /obj/item/restraints/handcuffs,
 /obj/machinery/status_display/evac/directional/north,
+/obj/item/ashtray{
+	pixel_y = 9;
+	pixel_x = 4
+	},
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "fvw" = (
@@ -37933,6 +37954,10 @@
 /obj/effect/turf_decal/tile/purple,
 /obj/structure/table/reinforced,
 /obj/item/reagent_containers/cup/glass/mug/coco,
+/obj/item/ashtray{
+	pixel_y = 8;
+	pixel_x = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "hxb" = (
@@ -41897,6 +41922,10 @@
 	pixel_x = -4;
 	pixel_y = 4
 	},
+/obj/item/ashtray{
+	pixel_y = 15;
+	pixel_x = 6
+	},
 /turf/open/floor/iron,
 /area/station/security/courtroom)
 "iLT" = (
@@ -44392,6 +44421,10 @@
 /obj/structure/table/wood,
 /obj/structure/cable,
 /obj/item/book/manual/wiki/security_space_law,
+/obj/item/ashtray{
+	pixel_y = 13;
+	pixel_x = 4
+	},
 /turf/open/floor/carpet/royalblack,
 /area/station/command/heads_quarters/captain)
 "jFd" = (
@@ -44797,6 +44830,10 @@
 	},
 /obj/item/folder/yellow{
 	pixel_x = 3
+	},
+/obj/item/ashtray{
+	pixel_y = 8;
+	pixel_x = 4
 	},
 /turf/open/floor/plating,
 /area/station/engineering/lobby)
@@ -53899,6 +53936,10 @@
 	pixel_x = -8;
 	pixel_y = 10
 	},
+/obj/item/ashtray{
+	pixel_y = 8;
+	pixel_x = 4
+	},
 /turf/open/floor/plating,
 /area/station/cargo/office)
 "mQh" = (
@@ -58908,6 +58949,10 @@
 /obj/item/stack/cable_coil/five,
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
+	},
+/obj/item/ashtray/random_contents{
+	pixel_y = 10;
+	pixel_x = -8
 	},
 /turf/open/floor/iron/dark,
 /area/station/service/abandoned_gambling_den)
@@ -64152,6 +64197,10 @@
 /area/station/ai_monitored/turret_protected/ai_upload)
 "quC" = (
 /obj/structure/table/wood,
+/obj/item/ashtray{
+	pixel_y = -7;
+	pixel_x = 5
+	},
 /turf/open/floor/wood/tile,
 /area/station/service/library)
 "quF" = (
@@ -64462,6 +64511,10 @@
 	},
 /obj/item/storage/fancy/donut_box,
 /obj/effect/decal/cleanable/dirt,
+/obj/item/ashtray{
+	pixel_y = 15;
+	pixel_x = -4
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/bar/atrium)
 "qAG" = (
@@ -67893,6 +67946,10 @@
 "rET" = (
 /obj/structure/table/wood,
 /obj/machinery/computer/records/medical/laptop,
+/obj/item/ashtray{
+	pixel_y = 4;
+	pixel_x = 16
+	},
 /turf/open/floor/carpet/red,
 /area/station/command/heads_quarters/hos)
 "rFa" = (
@@ -72014,6 +72071,10 @@
 	dir = 1
 	},
 /obj/machinery/light/small/directional/south,
+/obj/item/ashtray{
+	pixel_y = 6;
+	pixel_x = 4
+	},
 /turf/open/floor/wood/parquet,
 /area/station/commons/fitness/recreation/entertainment)
 "sYB" = (
@@ -72455,6 +72516,10 @@
 /obj/structure/mirror/directional/south,
 /obj/item/mod/module/plasma_stabilizer,
 /obj/item/mod/module/thermal_regulator,
+/obj/item/ashtray{
+	pixel_y = 9;
+	pixel_x = 5
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/storage)
 "tfY" = (
@@ -72702,11 +72767,11 @@
 	pixel_y = 4
 	},
 /obj/item/pen,
-/obj/item/toy/figure/md{
-	pixel_x = 8;
-	pixel_y = 6
-	},
 /obj/structure/cable,
+/obj/item/folder/white{
+	pixel_x = 4;
+	pixel_y = 3
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/paramedic)
 "tmn" = (
@@ -73721,6 +73786,10 @@
 	name = "old radio"
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/item/ashtray{
+	pixel_y = 15;
+	pixel_x = 1
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/bar/atrium)
 "tDc" = (
@@ -75822,6 +75891,10 @@
 	pixel_y = 3
 	},
 /obj/item/clothing/glasses/hud/health,
+/obj/item/ashtray{
+	pixel_y = 16;
+	pixel_x = 2
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "uoJ" = (
@@ -76569,6 +76642,10 @@
 /obj/structure/cable,
 /obj/structure/table,
 /obj/effect/decal/cleanable/dirt,
+/obj/item/ashtray{
+	pixel_y = 9;
+	pixel_x = -3
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/bar/atrium)
 "uCw" = (
@@ -77238,6 +77315,10 @@
 /obj/item/reagent_containers/condiment/saltshaker{
 	pixel_x = -3
 	},
+/obj/item/ashtray{
+	pixel_y = 10;
+	pixel_x = -5
+	},
 /turf/open/floor/iron/dark,
 /area/station/service/kitchen)
 "uOs" = (
@@ -77342,6 +77423,10 @@
 /obj/structure/table/reinforced,
 /obj/machinery/syndicatebomb/training,
 /obj/item/wirecutters,
+/obj/item/ashtray{
+	pixel_y = 7;
+	pixel_x = 15
+	},
 /turf/open/floor/iron/dark,
 /area/station/security/office)
 "uQa" = (
@@ -79831,6 +79916,10 @@
 	pixel_y = 1
 	},
 /obj/structure/sign/poster/official/love_ian/directional/west,
+/obj/item/ashtray{
+	pixel_y = -5;
+	pixel_x = -1
+	},
 /turf/open/floor/carpet,
 /area/station/medical/psychology)
 "vHK" = (
@@ -80206,6 +80295,10 @@
 	pixel_y = 4
 	},
 /obj/machinery/door/firedoor,
+/obj/item/ashtray/random_contents{
+	pixel_y = -4;
+	pixel_x = -8
+	},
 /turf/open/floor/wood,
 /area/station/service/bar)
 "vPQ" = (
@@ -81546,6 +81639,10 @@
 	pixel_x = -6;
 	pixel_y = 8
 	},
+/obj/item/ashtray{
+	pixel_y = 12;
+	pixel_x = -4
+	},
 /turf/open/floor/wood,
 /area/station/service/theater)
 "wqg" = (
@@ -81712,11 +81809,24 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/item/clipboard,
-/obj/item/paper/fluff/holodeck/disclaimer,
-/obj/item/pen,
+/obj/item/clipboard{
+	pixel_y = 3;
+	pixel_x = -4
+	},
+/obj/item/paper/fluff/holodeck/disclaimer{
+	pixel_y = 4;
+	pixel_x = -4
+	},
+/obj/item/pen{
+	pixel_y = 3;
+	pixel_x = -4
+	},
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
+	},
+/obj/item/ashtray{
+	pixel_y = -3;
+	pixel_x = 7
 	},
 /turf/open/floor/iron/dark,
 /area/station/commons/fitness/recreation)
@@ -85430,6 +85540,10 @@
 /obj/item/stack/package_wrap,
 /obj/item/stack/package_wrap,
 /obj/item/hand_labeler,
+/obj/item/ashtray{
+	pixel_y = 8;
+	pixel_x = -8
+	},
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/service)
 "xCI" = (

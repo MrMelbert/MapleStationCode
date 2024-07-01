@@ -293,7 +293,7 @@
 			ejectItem()
 		else if(prob(EFFECT_PROB_VERYLOW-malfunction_probability_coeff))
 			visible_message(span_danger("[src] malfunctions, melting [exp_on] and leaking radiation!"))
-			radiation_pulse(src, max_range = 6, threshold = 0.3)
+			radiation_pulse(src, max_range = 6, threshold = 0.3, can_propogate = TRUE)
 			ejectItem(TRUE)
 		else if(prob(EFFECT_PROB_LOW-malfunction_probability_coeff))
 			visible_message(span_warning("[src] malfunctions, spewing toxic waste!"))
@@ -570,6 +570,9 @@
 	name = "strange object"
 	desc = "What mysteries could this hold? Maybe Research & Development could find out."
 	icon = 'icons/obj/devices/assemblies.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+
 	var/realName = "defined object"
 	var/revealed = FALSE
 	var/realProc

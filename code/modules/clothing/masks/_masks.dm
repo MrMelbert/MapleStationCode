@@ -8,6 +8,8 @@
 	strip_delay = 40
 	equip_delay_other = 40
 	blood_overlay_type = "mask" // NON-MODULE CHANGE reworking clothing blood overlays
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	var/modifies_speech = FALSE
 	var/mask_adjusted = FALSE
 	var/adjusted_flags = null

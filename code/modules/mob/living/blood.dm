@@ -276,6 +276,14 @@
 		return null
 	return GLOB.blood_types[/datum/blood_type/animal]
 
+/mob/living/basic/get_blood_type()
+	// All basic mobs are noblood but we should still pretend
+	return GLOB.blood_types[/datum/blood_type/animal]
+
+/mob/living/simple_animal/get_blood_type()
+	// Same here
+	return GLOB.blood_types[/datum/blood_type/animal]
+
 /mob/living/silicon/get_blood_type()
 	return GLOB.blood_types[/datum/blood_type/oil]
 
@@ -283,6 +291,9 @@
 	return GLOB.blood_types[/datum/blood_type/oil]
 
 /mob/living/basic/bot/get_blood_type()
+	return GLOB.blood_types[/datum/blood_type/oil]
+
+/mob/living/basic/drone/get_blood_type()
 	return GLOB.blood_types[/datum/blood_type/oil]
 
 /mob/living/carbon/alien/get_blood_type()

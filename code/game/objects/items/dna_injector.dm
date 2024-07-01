@@ -10,6 +10,8 @@
 	throw_speed = 3
 	throw_range = 5
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 	var/damage_coeff = 1
 	var/list/fields

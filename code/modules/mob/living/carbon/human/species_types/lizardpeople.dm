@@ -87,6 +87,47 @@
 		'sound/voice/lizard/lizard_scream_3.ogg',
 	)
 
+/datum/species/lizard/get_cough_sound(mob/living/carbon/human/lizard)
+	if(lizard.physique == FEMALE)
+		return pick(
+			'sound/voice/human/female_cough1.ogg',
+			'sound/voice/human/female_cough2.ogg',
+			'sound/voice/human/female_cough3.ogg',
+			'sound/voice/human/female_cough4.ogg',
+			'sound/voice/human/female_cough5.ogg',
+			'sound/voice/human/female_cough6.ogg',
+		)
+	return pick(
+		'sound/voice/human/male_cough1.ogg',
+		'sound/voice/human/male_cough2.ogg',
+		'sound/voice/human/male_cough3.ogg',
+		'sound/voice/human/male_cough4.ogg',
+		'sound/voice/human/male_cough5.ogg',
+		'sound/voice/human/male_cough6.ogg',
+	)
+
+
+/datum/species/lizard/get_cry_sound(mob/living/carbon/human/lizard)
+	if(lizard.physique == FEMALE)
+		return pick(
+			'sound/voice/human/female_cry1.ogg',
+			'sound/voice/human/female_cry2.ogg',
+		)
+	return pick(
+		'sound/voice/human/male_cry1.ogg',
+		'sound/voice/human/male_cry2.ogg',
+		'sound/voice/human/male_cry3.ogg',
+	)
+
+
+/datum/species/lizard/get_sneeze_sound(mob/living/carbon/human/lizard)
+	if(lizard.physique == FEMALE)
+		return 'sound/voice/human/female_sneeze1.ogg'
+	return 'sound/voice/human/male_sneeze1.ogg'
+
+/datum/species/lizard/get_laugh_sound(mob/living/carbon/human/lizard)
+	return 'sound/voice/lizard/lizard_laugh1.ogg'
+
 /datum/species/lizard/get_physical_attributes()
 	return "Lizardpeople can withstand slightly higher temperatures than most species, but they are very vulnerable to the cold \
 		and can't regulate their body-temperature internally, making the vacuum of space extremely deadly to them."
@@ -185,6 +226,8 @@ Lizard subspecies: SILVER SCALED
 	examine_limb_id = SPECIES_LIZARD
 	///stored mutcolor for when we turn back off of a silverscale.
 	var/old_mutcolor
+	///stored horn color for when we turn back off of a silverscale.
+	var/old_horncolor
 	///stored eye color for when we turn back off of a silverscale.
 	var/old_eye_color_left
 	///See above
@@ -197,9 +240,11 @@ Lizard subspecies: SILVER SCALED
 
 /datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/human/new_silverscale, datum/species/old_species, pref_load)
 	old_mutcolor = new_silverscale.dna.features["mcolor"]
+	old_horncolor = new_silverscale.dna.features["lizard_horn_color"]
 	old_eye_color_left = new_silverscale.eye_color_left
 	old_eye_color_right = new_silverscale.eye_color_right
 	new_silverscale.dna.features["mcolor"] = "#eeeeee"
+	new_silverscale.dna.features["lizard_horn_color"] = "#eeeeee"
 	new_silverscale.eye_color_left = "#0000a0"
 	new_silverscale.eye_color_right = "#0000a0"
 	. = ..()
@@ -207,6 +252,7 @@ Lizard subspecies: SILVER SCALED
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/was_silverscale, datum/species/new_species, pref_load)
 	was_silverscale.dna.features["mcolor"] = old_mutcolor
+	was_silverscale.dna.features["lizard_horn_color"] = old_horncolor
 	was_silverscale.eye_color_left = old_eye_color_left
 	was_silverscale.eye_color_right = old_eye_color_right
 	was_silverscale.remove_filter("silver_glint")

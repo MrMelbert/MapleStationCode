@@ -87,7 +87,7 @@
 		return
 
 	COOLDOWN_START(src, scan_cooldown, 5 SECONDS)
-	playsound(src, 'sound/machines/chime.ogg', 33, TRUE, frequency = 0.5)
+	playsound(src, 'maplestation_modules/sound/healthscanner_used.ogg', 25, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 	set_occupant(arrived)
 	use_power(active_power_usage)
 
@@ -101,18 +101,35 @@
 	if(!is_operational || QDELETED(occupant))
 		return
 
-	playsound(src, 'sound/machines/ping.ogg', 33, TRUE, frequency = 0.75)
 	for(var/obj/machinery/computer/vitals_reader/reader in range(LINK_RANGE, src))
 		if(!reader.is_operational)
 			continue
 
 		if(!reader.active)
 			reader.toggle_active()
-			return
 
-		if(isnull(reader.patient))
+		else if(isnull(reader.patient))
 			reader.set_patient(occupant)
-			return
+
+		if(isnull(reader.patient)) // It failed I guess
+			continue
+
+		var/scansound = 'maplestation_modules/sound/healthscanner_stable.ogg'
+		switch(reader.patient.stat)
+			if(DEAD)
+				scansound = 'maplestation_modules/sound/healthscanner_dead.ogg'
+				reader.beep_message("lets out a droning beep.")
+			if(HARD_CRIT)
+				scansound = 'maplestation_modules/sound/healthscanner_danger.ogg'
+				reader.beep_message("lets out an alternating beep.")
+			if(SOFT_CRIT)
+				scansound = 'maplestation_modules/sound/healthscanner_critical.ogg'
+				reader.beep_message("lets out a high pitch beep.")
+			else
+				reader.beep_message("lets out a beep.")
+
+		playsound(reader, scansound, 25, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+		return
 
 /obj/machinery/vital_floor_scanner/proc/disable_vitals_nearby(mob/leaving = occupant)
 	for(var/obj/machinery/computer/vitals_reader/reader in range(LINK_RANGE, src))

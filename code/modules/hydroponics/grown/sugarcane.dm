@@ -25,6 +25,8 @@
 	bite_consumption_mod = 2
 	foodtypes = VEGETABLES | SUGAR
 	distill_reagent = /datum/reagent/consumable/ethanol/rum
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 ///and bamboo!
 /obj/item/seeds/bamboo

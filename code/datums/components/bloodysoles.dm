@@ -18,6 +18,12 @@
 	/// The world.time when we last picked up blood
 	VAR_FINAL/last_pickup
 
+	/// How much blood can we hold maximum
+	var/max_bloodiness = BLOOD_ITEM_MAX
+
+	/// Multiplier on how much blood taken from pools
+	var/share_mod = 1
+
 /datum/component/bloodysoles/Initialize()
 	if(!isclothing(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -68,7 +74,7 @@
 
 ///called whenever the value of bloody_soles changes
 /datum/component/bloodysoles/proc/change_blood_amount(some_amount)
-	total_bloodiness = clamp(round(total_bloodiness + some_amount, 0.1), 0, BLOOD_ITEM_MAX)
+	total_bloodiness = clamp(round(total_bloodiness + some_amount, 0.1), 0, max_bloodiness)
 	if(!wielder)
 		return
 	if(total_bloodiness <= BLOOD_FOOTPRINTS_MIN * 2)//need twice that amount to make footprints
@@ -82,7 +88,7 @@
  */
 /datum/component/bloodysoles/proc/share_blood(obj/effect/decal/cleanable/pool)
 	// Share the blood between our boots and the blood pool
-	var/new_total_bloodiness = min(BLOOD_ITEM_MAX, pool.bloodiness + total_bloodiness / 2)
+	var/new_total_bloodiness = min(max_bloodiness, share_mod * (pool.bloodiness + total_bloodiness / 2))
 	if(new_total_bloodiness == total_bloodiness || new_total_bloodiness == 0)
 		return
 
@@ -90,8 +96,17 @@
 	pool.adjust_bloodiness(-1 * delta)
 	change_blood_amount(delta)
 
-	var/atom/parent_atom = parent
-	parent_atom.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
+	if(ishuman(parent))
+		var/bloody_slots = ITEM_SLOT_OCLOTHING|ITEM_SLOT_ICLOTHING|ITEM_SLOT_FEET
+		var/mob/living/carbon/human/to_bloody = parent
+		if(to_bloody.body_position == LYING_DOWN)
+			bloody_slots |= ITEM_SLOT_HEAD|ITEM_SLOT_MASK|ITEM_SLOT_GLOVES
+
+		to_bloody.add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(pool), bloody_slots)
+		return
+
+	var/atom/to_bloody = parent
+	to_bloody.add_blood_DNA(GET_ATOM_BLOOD_DNA(pool))
 
 /**
  * Adds blood to an existing (or new) footprint
@@ -101,6 +116,9 @@
 	add_parent_to_footprint(footprint)
 	footprint.adjust_bloodiness(bloodiness_to_add)
 	footprint.add_blood_DNA(GET_ATOM_BLOOD_DNA(atom_parent))
+	var/new_alpha = min(BLOODY_FOOTPRINT_BASE_ALPHA + (255 - BLOODY_FOOTPRINT_BASE_ALPHA) * footprint.bloodiness / ((BLOOD_ITEM_MAX * BLOOD_PER_UNIT_MODIFIER) / 2), 255)
+	if(new_alpha > footprint.alpha)
+		footprint.alpha = new_alpha
 	if(exiting)
 		footprint.exited_dirs |= wielder.dir
 	else
@@ -111,7 +129,7 @@
  * Adds the parent type to the footprint's shoe_types var
  */
 /datum/component/bloodysoles/proc/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
-	footprint.shoe_types |= parent.type
+	LAZYOR(footprint.shoe_types, parent.type)
 
 /**
  * Called when the parent item is equipped by someone
@@ -173,9 +191,9 @@
 			// No footprints in the tile we left, but there was some other blood pool there. Add exit footprints on it
 			change_blood_amount(-1 * blood_used)
 			old_loc_prints = new(old_loc_turf)
+			old_loc_prints.alpha = 0
 			if(!QDELETED(old_loc_prints)) // prints merged
 				add_blood_to_footprint(old_loc_prints, blood_used, TRUE)
-
 			blood_used = round(total_bloodiness / 3, 0.01)
 
 	// If we picked up the blood on this tick in on_step_blood, don't make footprints at the same place
@@ -192,6 +210,7 @@
 		else
 			change_blood_amount(-1 * blood_used)
 			new_loc_prints = new(new_loc_turf)
+			new_loc_prints.alpha = 0
 			if(!QDELETED(new_loc_prints)) // prints merged
 				add_blood_to_footprint(new_loc_prints, blood_used, FALSE)
 
@@ -246,8 +265,7 @@
 
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, PROC_REF(on_clean))
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
-	RegisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER, PROC_REF(unequip_shoecover))
-	RegisterSignal(parent, COMSIG_CARBON_EQUIP_SHOECOVER, PROC_REF(equip_shoecover))
+	RegisterSignals(parent, list(COMSIG_CARBON_UNEQUIP_SHOECOVER, COMSIG_CARBON_EQUIP_SHOECOVER), PROC_REF(shoecover))
 
 /datum/component/bloodysoles/feet/update_icon()
 	if(!ishuman(wielder) || HAS_TRAIT(wielder, TRAIT_NO_BLOOD_OVERLAY))
@@ -262,14 +280,13 @@
 
 /datum/component/bloodysoles/feet/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
 	if(!ishuman(wielder))
-		footprint.species_types |= "unknown"
+		LAZYSET(footprint.species_types, "unknown", TRUE)
 		return
 
 	// Find any leg of our human and add that to the footprint, instead of the default which is to just add the human type
-	for(var/obj/item/bodypart/affecting as anything in wielder.bodyparts)
-		if(!affecting.bodypart_disabled && (affecting.body_part == LEG_RIGHT || affecting.body_part == LEG_LEFT))
-			footprint.species_types |= affecting.limb_id
-			break
+	for(var/obj/item/bodypart/leg/affecting in wielder.bodyparts)
+		if(!affecting.bodypart_disabled)
+			LAZYSET(footprint.species_types, affecting.limb_id, TRUE)
 
 /datum/component/bloodysoles/feet/is_under_feet_covered()
 	return !isnull(wielder.shoes)
@@ -282,12 +299,33 @@
 	if(wielder.num_legs >= 2)
 		return ..()
 
-/datum/component/bloodysoles/feet/proc/unequip_shoecover(datum/source)
+/datum/component/bloodysoles/feet/proc/shoecover(datum/source)
 	SIGNAL_HANDLER
 
 	update_icon()
 
-/datum/component/bloodysoles/feet/proc/equip_shoecover(datum/source)
-	SIGNAL_HANDLER
+/**
+ * Simplified version of the kind applied to carbons for simple/basic mobs, primarily robots
+ */
+/datum/component/bloodysoles/bot
+	max_bloodiness = 150
+	share_mod = 0.75
 
-	update_icon()
+/datum/component/bloodysoles/bot/Initialize()
+	if(!isliving(parent))
+		return COMPONENT_INCOMPATIBLE
+	wielder = parent
+	RegisterSignal(wielder, COMSIG_STEP_ON_BLOOD, PROC_REF(on_step_blood))
+
+/datum/component/bloodysoles/bot/is_obscured()
+	return FALSE
+
+/datum/component/bloodysoles/bot/is_under_feet_covered()
+	return FALSE
+
+/datum/component/bloodysoles/bot/add_parent_to_footprint(obj/effect/decal/cleanable/blood/footprints/footprint)
+	LAZYSET(footprint.species_types, "bot", TRUE)
+
+/datum/component/bloodysoles/bot/update_icon()
+	// Future idea: Bot blood overlays
+	return

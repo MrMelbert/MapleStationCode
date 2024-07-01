@@ -10,6 +10,8 @@
 	resistance_flags = FLAMMABLE
 	max_integrity = 50
 	grind_results = list(/datum/reagent/iodine = 4)
+	drop_sound = 'sound/items/handling/paper_drop.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	var/datum/picture/picture
 	var/scribble //Scribble on the back.
 

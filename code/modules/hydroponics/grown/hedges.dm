@@ -19,6 +19,8 @@
 	name = "shrub"
 	desc = "A shrubbery, it looks nice and it was only a few credits too. Plant it on the ground to grow a hedge, shrubbing skills not required."
 	icon_state = "shrub"
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/grown/shrub/attack_self(mob/user)
 	var/turf/player_turf = get_turf(user)

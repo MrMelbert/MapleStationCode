@@ -68,6 +68,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 		qdel(delete)
 
 /mob/living/carbon/human/dummy/has_equipped(obj/item/item, slot, initial = FALSE)
+	item.item_flags |= IN_INVENTORY
 	return item.visual_equipped(src, slot, initial)
 
 /mob/living/carbon/human/dummy/proc/wipe_state()
@@ -88,6 +89,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 /proc/create_consistent_human_dna(mob/living/carbon/human/target)
 	target.dna.features["mcolor"] = COLOR_VIBRANT_LIME
+	target.dna.features["lizard_horn_color"] = COLOR_VIBRANT_LIME // NON-MODULE CHANGE
 	target.dna.features["ethcolor"] = COLOR_WHITE
 	target.dna.features["body_markings"] = get_consistent_feature_entry(GLOB.body_markings_list)
 	target.dna.features["ears"] = get_consistent_feature_entry(GLOB.ears_list)

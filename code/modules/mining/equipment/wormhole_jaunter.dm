@@ -13,6 +13,8 @@
 	throw_speed = 3
 	throw_range = 5
 	slot_flags = ITEM_SLOT_BELT
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/wormhole_jaunter/attack_self(mob/user)
 	user.visible_message(span_notice("[user.name] activates the [src.name]!"))

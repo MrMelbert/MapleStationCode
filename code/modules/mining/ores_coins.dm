@@ -15,6 +15,9 @@
 	full_w_class = WEIGHT_CLASS_BULKY
 	singular_name = "ore chunk"
 	material_flags = MATERIAL_EFFECTS
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic2.ogg'
+
 	var/points = 0 //How many points this ore gets you from the ore redemption machine
 	var/refined_type = null //What this ore defaults to being refined into
 	var/mine_experience = 5 //How much experience do you get for mining this ore?
@@ -416,6 +419,9 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = COIN_MATERIAL_AMOUNT)
 	material_flags = MATERIAL_EFFECTS | MATERIAL_ADD_PREFIX | MATERIAL_COLOR | MATERIAL_AFFECT_STATISTICS
+	drop_sound = 'maplestation_modules/sound/items/drop/ring.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/ring.ogg'
+
 	var/string_attached
 	var/list/sideslist = list("heads","tails")
 	var/cooldown = 0

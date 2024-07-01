@@ -24,3 +24,5 @@
 	filling_color = "#37946e"
 	foodtypes = VEGETABLES | TOXIC
 	distill_reagent = /datum/reagent/kronkus_extract
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'

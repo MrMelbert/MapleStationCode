@@ -10,6 +10,8 @@
 	item_flags = NOBLUDGEON
 	merge_type = /obj/item/stack/telecrystal
 	novariants = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/ring.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/ring.ogg'
 
 /obj/item/stack/telecrystal/interact_with_atom(atom/interacting_with, mob/living/user)
 	if(interacting_with != user) //You can't go around smacking people with crystals to find out if they have an uplink or not.

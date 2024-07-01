@@ -13,6 +13,8 @@
 	throw_speed = 3
 	throw_range = 7
 	pressure_resistance = 8
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 	var/papertype = /obj/item/paper
 	var/total_paper = 30
 	var/list/paper_stack = list()

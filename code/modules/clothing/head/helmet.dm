@@ -15,6 +15,8 @@
 	flags_cover = HEADCOVERSEYES|EARS_COVERED
 	flags_inv = HIDEHAIR
 	dog_fashion = /datum/dog_fashion/head/helmet
+	drop_sound = 'maplestation_modules/sound/items/drop/helm.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/helm.ogg'
 
 /datum/armor/head_helmet
 	melee = 35

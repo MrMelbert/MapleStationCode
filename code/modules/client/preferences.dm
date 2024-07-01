@@ -9,7 +9,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	/// Ensures that we always load the last used save, QOL
 	var/default_slot = 1
 	/// The maximum number of slots we're allowed to contain
-	var/max_save_slots = 6 // NON-MODULE CHANGE
+	var/max_save_slots = 15 // NON-MODULE CHANGE
 
 	/// Bitflags for communications that are muted
 	var/muted = NONE
@@ -107,7 +107,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			try_savefile_type_migration()
 		unlock_content = !!parent.IsByondMember()
 		if(unlock_content)
-			max_save_slots = 8
+			max_save_slots = 20 // NON-MODULE CHANGE
 	else
 		CRASH("attempted to create a preferences datum without a client or mock!")
 	load_savefile()
@@ -351,6 +351,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/mob/living/carbon/human/dummy/body
 	/// The preferences this refers to
 	var/datum/preferences/preferences
+	/// Whether we show current job clothes or nude/loadout only
+	var/show_job_clothes = TRUE
 
 /atom/movable/screen/map_view/char_preview/Initialize(mapload, datum/preferences/preferences)
 	. = ..()
@@ -368,15 +370,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		create_body()
 	else
 		body.wipe_state()
-	appearance = preferences.render_new_preview_appearance(body)
+	appearance = preferences.render_new_preview_appearance(body, show_job_clothes)
 
 /atom/movable/screen/map_view/char_preview/proc/create_body()
 	QDEL_NULL(body)
 
 	body = new
-
-	// Without this, it doesn't show up in the menu
-	// body.appearance_flags &= ~KEEP_TOGETHER // NON-MODULE CHANGE
 
 /datum/preferences/proc/create_character_profiles()
 	var/list/profiles = list()

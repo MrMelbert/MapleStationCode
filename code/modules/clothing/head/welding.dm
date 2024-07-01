@@ -16,6 +16,8 @@
 	visor_flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = FIRE_PROOF
 	clothing_flags = SNUG_FIT | STACKABLE_HELMET_EXEMPT
+	drop_sound = 'maplestation_modules/sound/items/drop/helm.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/helm.ogg'
 
 /datum/armor/utility_welding
 	melee = 10
@@ -28,4 +30,3 @@
 /obj/item/clothing/head/utility/welding/visor_toggling()
 	. = ..()
 	inhand_icon_state = "[initial(inhand_icon_state)][up ? "off" : ""]"
-

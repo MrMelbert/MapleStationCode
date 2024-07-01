@@ -23,6 +23,8 @@
 	resistance_flags = NONE
 	max_integrity = 300
 	storage_type = /datum/storage/backpack
+	drop_sound = 'maplestation_modules/sound/items/drop/backpack.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/backpack.ogg'
 
 /obj/item/storage/backpack/Initialize(mapload)
 	. = ..()
@@ -282,6 +284,7 @@
 		/datum/component/bloody_spreader,\
 		blood_dna = list("UNKNOWN DNA" = /datum/blood_type/animal),\
 	)
+	atom_storage.storage_sound = 'sound/effects/blobattack.ogg'
 
 /*
  * Satchel Types

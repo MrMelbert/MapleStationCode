@@ -33,6 +33,8 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 	cost = SHEET_MATERIAL_AMOUNT
 	source = /datum/robot_energy_storage/material/glass
 	sniffable = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /datum/armor/sheet_glass
 	fire = 50
@@ -103,6 +105,8 @@ GLOBAL_LIST_INIT(pglass_recipes, list ( \
 	grind_results = list(/datum/reagent/silicon = 20, /datum/reagent/toxin/plasma = 10)
 	material_flags = NONE
 	tableVariant = /obj/structure/table/glass/plasmaglass
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/stack/sheet/plasmaglass/fifty
 	amount = 50
@@ -162,6 +166,8 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	point_value = 4
 	matter_amount = 6
 	tableVariant = /obj/structure/table/reinforced/rglass
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/stack/sheet/rglass/fifty
 	amount = 50
@@ -230,6 +236,8 @@ GLOBAL_LIST_INIT(titaniumglass_recipes, list(
 	resistance_flags = ACID_PROOF
 	merge_type = /obj/item/stack/sheet/titaniumglass
 	tableVariant = /obj/structure/table/reinforced/titaniumglass
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/stack/sheet/titaniumglass/fifty
 	amount = 50
@@ -260,6 +268,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	resistance_flags = ACID_PROOF
 	merge_type = /obj/item/stack/sheet/plastitaniumglass
 	tableVariant = /obj/structure/table/reinforced/plastitaniumglass
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
 
 /obj/item/stack/sheet/plastitaniumglass/fifty
 	amount = 50
@@ -296,6 +306,8 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	var/craft_time = 3.5 SECONDS
 	var/obj/item/stack/sheet/weld_material = /obj/item/stack/sheet/glass
 	embedding = list("embed_chance" = 65)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /datum/armor/item_shard
 	melee = 100

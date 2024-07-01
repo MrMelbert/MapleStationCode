@@ -1,24 +1,27 @@
-//wowie volkan is in the cool club now
-//I dont know if what I am doing is correct at all.
-//Sci-fi looking things only.
+/*
+ * # Volkan's Equipment
+ * Wowie volkan is in the cool club now!
+ * Sci-fi things only. For now.
+ */
 //---------comunication chips---------
 /obj/item/computer_disk/volkan/communication_chip //the basic default one
 	name = "standard communication chip"
 	desc = "A small, grey chip. It has a connector for a standard NT computer. The chip has a white symbol engraved on the top."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipc"
+	drop_sound = 'sound/items/handling/disk_drop.ogg'
+	pickup_sound = 'sound/items/handling/disk_pickup.ogg'
+
 	w_class = WEIGHT_CLASS_TINY
 	max_capacity = 1
 	starting_programs = list( //this is a messenger after all
 		/datum/computer_file/program/messenger/volkan,
 	)
-	drop_sound = "sound/items/handling/disk_drop.ogg"
-	pickup_sound = "sound/items/handling/disk_pickup.ogg"
+
 
 /obj/item/computer_disk/volkan/communication_chip/usb //this one has a small USB port instead of the default big chonker connector
 	name = "USB communication chip"
 	desc = "A small, grey chip. It has a connector for a USB. The chip has a white symbol engraved on the top."
-	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipa"
 
 /obj/item/computer_disk/volkan/communication_chip/usb/Initialize(mapload) //add the actual USB port because this one has one
@@ -30,13 +33,11 @@
 /obj/item/computer_disk/volkan/communication_chip/bare //missing a connector entirely.
 	name = "communication chip"
 	desc = "A small, grey chip. The chip has a white symbol engraved on the top."
-	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipb"
 
 /obj/item/computer_disk/volkan/communication_chip/drone //A default one but with the symbol of the drone. Unlikely to be used but good to have here.
 	name = "standard communication chip"
 	desc = "A small, grey chip. It has a connector for a standard NT computer. The chip has a white symbol engraved on the top."
-	icon = 'maplestation_modules/story_content/volkan_equipment/icons/communication_chip.dmi'
 	icon_state = "communication_chipd"
 
 //---------communication chip data------------
@@ -59,8 +60,87 @@
 	name = "Private Receiver"
 	desc = "A private Receiver, receives the data via quantum link from a bluespace relay."
 	category = "vnet"
+//---------misc items!---------
 
-//---------cool boxes!---------
+//--bots--
+//Stored Bot
+//I intend to use this base for other ones later, maybe. For if somebody wants to buy a custom one or something. No sprite for this one yet.
+/obj/item/volkan/stored_bot
+	name = "folded up bot"
+	desc = "A folded up, intricate machine. This is probably a long term storage configuration."
+	icon = null
+	/// the typepath of mob mob that it will turn into
+	var/mobtype
+	/// the sound the mob will make when it turns on (is created).
+	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg' 
+	w_class = WEIGHT_CLASS_NORMAL
+
+//activate bot action
+/obj/item/volkan/stored_bot/attack_self(mob/user)
+	playsound(src, startup, 100, ignore_walls = FALSE)// play startup sound
+	addtimer(CALLBACK(src, PROC_REF(spawn_bot)), 0.2 SECONDS) // wait till sound is over
+
+//spawn the bot
+/obj/item/volkan/stored_bot/proc/spawn_bot()
+	if(QDELETED(src)) //don't make bot if it got qdeleted in the timer.
+		return
+	//Make mob
+	new mobtype(get_turf(src))
+
+	//Remove item
+	qdel(src)
+
+//Stored Companion
+//Volkan's shoulder companion for within a shift. In storage mode.
+/obj/item/volkan/stored_bot/shoulder_pet
+	name = "folded up companion"
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/companions.dmi'
+	icon_state = "drone_stored"
+
+	mobtype = /mob/living/basic/volkan/shoulder_pet
+
+//--other misc--
+//Imprint Key
+//A key used to imprint a Volkan bot to whoever has it.
+/obj/item/circuitboard/volkan/imprint_key
+	name = "imprint key"
+	desc = "A very small circuit used for a specific purpose."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/misc_items.dmi'
+	icon_state = "imprint_key"
+	drop_sound = "sound/items/handling/disk_drop.ogg"
+	pickup_sound = "sound/items/handling/disk_pickup.ogg"
+
+	w_class = WEIGHT_CLASS_TINY
+
+
+//---------------------cool boxes!-----------------------
+
+//Unfoldable Box.
+//A box designed to hold both a pet and the communication chips for transit. It is easy to unfold once the items inside has been taken out.
+/obj/item/storage/box/volkan/unfoldable_box
+	name = "unfoldable box"
+	desc = "A large metal box with visible seams."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/metal_box.dmi'
+	icon_state = "unfoldable_box"
+	foldable_result = /obj/item/stack/sheet/iron
+	w_class = WEIGHT_CLASS_NORMAL
+	illustration = null
+
+/obj/item/storage/box/volkan/unfoldable_box/Initialize(mapload)
+	. = ..()
+	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
+	atom_storage.numerical_stacking = FALSE
+	atom_storage.max_total_storage = 10
+	atom_storage.max_slots = 3
+
+/obj/item/storage/box/volkan/unfoldable_box/PopulateContents() //The pet, the pet key, and the chip box.
+	var/static/items_inside = list(
+		/obj/item/storage/box/volkan/chip_box = 1,
+		/obj/item/circuitboard/volkan/imprint_key = 1,
+		/obj/item/volkan/stored_bot/shoulder_pet = 1,
+	)
+	generate_items_inside(items_inside, src)
+
 //Chip box
 //Designed to hold communication chips
 /obj/item/storage/box/volkan/chip_box
@@ -86,6 +166,7 @@
 		/obj/item/computer_disk/volkan/communication_chip/bare = 1,
 	)
 	generate_items_inside(items_inside, src)
+
 
 //Intricate box.
 //Designed for gifts and trades.

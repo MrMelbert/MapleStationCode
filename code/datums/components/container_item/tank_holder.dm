@@ -20,7 +20,7 @@
 			to_chat(user, span_warning("There's already something in [container]."))
 		return TRUE
 	if(user)
-		if(!user.transferItemToLoc(I, container))
+		if(!user.transferItemToLoc(I, container, silent = FALSE))
 			return TRUE
 		to_chat(user, span_notice("You put [I] into [container]."))
 	else

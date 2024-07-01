@@ -64,7 +64,7 @@
 	//allocate a channel if necessary now so its the same for everyone
 	channel = channel || SSsounds.random_available_channel()
 
-	var/sound/S = sound(get_sfx(soundin))
+	var/sound/used_sound = isdatum(soundin) ? soundin : sound(get_sfx(soundin)) // NON-MODULE CHANGE
 	var/maxdistance = SOUND_RANGE + extrarange
 	var/source_z = turf_source.z
 	var/list/listeners = SSmobs.clients_by_zlevel[source_z].Copy()
@@ -98,7 +98,23 @@
 		// NON-MODULE CHANGE END
 
 		if(get_dist(listening_mob, turf_source) <= maxdistance)
-			listening_mob.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, 1, use_reverb)
+			// NON-MODULE CHANGE
+			listening_mob.playsound_local(
+				turf_source = turf_source,
+				soundin = soundin,
+				sound_to_use = used_sound,
+				vol = vol,
+				vary = vary,
+				frequency = frequency,
+				falloff_exponent = falloff_exponent,
+				channel = channel,
+				pressure_affected = pressure_affected,
+				max_distance = maxdistance,
+				falloff_distance = falloff_distance,
+				distance_multiplier = 1,
+				use_reverb = use_reverb,
+			)
+			// NON-MODULE CHANGE END
 			. += listening_mob
 
 /mob/proc/playsound_local(turf/turf_source, soundin, vol as num, vary, frequency, falloff_exponent = SOUND_FALLOFF_EXPONENT, channel = 0, pressure_affected = TRUE, sound/sound_to_use, max_distance, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, distance_multiplier = 1, use_reverb = TRUE)
@@ -442,5 +458,25 @@
 					'sound/items/reel3.ogg',
 					'sound/items/reel4.ogg',
 					'sound/items/reel5.ogg',
+				)
+			if(SFX_PORTAL_CLOSE)
+				soundin = 'sound/effects/portal_close.ogg'
+			if(SFX_PORTAL_ENTER)
+				soundin = 'sound/effects/portal_travel.ogg'
+			if(SFX_PORTAL_CREATED)
+				soundin = pick(
+					'sound/effects/portal_open_1.ogg',
+					'sound/effects/portal_open_2.ogg',
+					'sound/effects/portal_open_3.ogg',
+				)
+			if(SFX_SCREECH)
+				soundin = pick(
+					'sound/creatures/monkey/monkey_screech_1.ogg',
+					'sound/creatures/monkey/monkey_screech_2.ogg',
+					'sound/creatures/monkey/monkey_screech_3.ogg',
+					'sound/creatures/monkey/monkey_screech_4.ogg',
+					'sound/creatures/monkey/monkey_screech_5.ogg',
+					'sound/creatures/monkey/monkey_screech_6.ogg',
+					'sound/creatures/monkey/monkey_screech_7.ogg',
 				)
 	return soundin

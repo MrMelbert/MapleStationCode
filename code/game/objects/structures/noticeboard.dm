@@ -35,7 +35,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 			to_chat(user, span_warning("You are not authorized to add notices!"))
 			return
 		if(notices < MAX_NOTICES)
-			if(!user.transferItemToLoc(O, src))
+			if(!user.transferItemToLoc(O, src, silent = FALSE))
 				return
 			notices++
 			update_appearance(UPDATE_ICON)

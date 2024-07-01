@@ -13,6 +13,8 @@
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_on = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/wiremod_scanner/Initialize(mapload)
 	. = ..()
@@ -54,9 +56,8 @@
 	if(!proximity_flag)
 		return
 	source.balloon_alert(user, "scanned object")
-	playsound(source, get_sfx(SFX_TERMINAL_TYPE), 25, FALSE)
+	playsound(source, SFX_TERMINAL_TYPE, 25, FALSE)
 	attacker.set_output(user)
 	attacking.set_output(target)
 	signal.set_output(COMPONENT_SIGNAL)
 	return COMPONENT_AFTERATTACK_PROCESSED_ITEM
-

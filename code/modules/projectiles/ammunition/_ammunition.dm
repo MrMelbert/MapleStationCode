@@ -10,6 +10,7 @@
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*5)
 	override_notes = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/ring.ogg'
 	///What sound should play when this ammo is fired
 	var/fire_sound = null
 	///Which kind of guns it can be loaded into

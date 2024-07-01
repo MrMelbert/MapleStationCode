@@ -17,6 +17,8 @@
 	throw_range = 7
 	w_class = WEIGHT_CLASS_SMALL
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT * 0.75, /datum/material/glass=SMALL_MATERIAL_AMOUNT * 0.25)
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	///if FALSE, broadcasting and listening dont matter and this radio shouldnt do anything
 	VAR_PRIVATE/on = TRUE
@@ -274,13 +276,13 @@
 
 /obj/item/radio/proc/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
 	if(!on)
-		return // the device has to be on
+		return FALSE // the device has to be on
 	if(!talking_movable || !message)
-		return
+		return FALSE
 	if(wires.is_cut(WIRE_TX))  // Permacell and otherwise tampered-with radios
-		return
+		return FALSE
 	if(!talking_movable.try_speak(message))
-		return
+		return FALSE
 
 	if(use_command)
 		spans |= SPAN_COMMAND
@@ -310,14 +312,14 @@
 			channel = channels[1]
 		freq = secure_radio_connections[channel]
 		if (!channels[channel]) // if the channel is turned off, don't broadcast
-			return
+			return FALSE
 	else
 		freq = frequency
 		channel = null
 
 	// Nearby active jammers prevent the message from transmitting
 	if(is_within_radio_jammer_range(src) && !syndie)
-		return
+		return FALSE
 
 	// Determine the identity information which will be attached to the signal.
 	var/atom/movable/virtualspeaker/speaker = new(null, talking_movable, src)
@@ -332,18 +334,19 @@
 		signal.transmission_method = TRANSMISSION_SUPERSPACE
 		signal.levels = list(0)
 		signal.broadcast()
-		return
+		return TRUE
 
 	// All radios make an attempt to use the subspace system first
 	signal.send_to_receivers()
 
 	// If the radio is subspace-only, that's all it can do
 	if (subspace_transmission)
-		return
+		return TRUE
 
 	// Non-subspace radios will check in a couple of seconds, and if the signal
 	// was never received, send a mundane broadcast (no headsets).
 	addtimer(CALLBACK(src, PROC_REF(backup_transmission), signal), 20)
+	return TRUE
 
 /obj/item/radio/proc/backup_transmission(datum/signal/subspace/vocal/signal)
 	var/turf/T = get_turf(src)

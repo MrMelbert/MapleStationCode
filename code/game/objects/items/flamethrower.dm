@@ -123,7 +123,7 @@
 			return
 		if(igniter)
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.transferItemToLoc(W, src, silent = FALSE))
 			return
 		igniter = I
 		update_appearance()
@@ -131,12 +131,12 @@
 
 	else if(istype(W, /obj/item/tank/internals/plasma))
 		if(ptank)
-			if(user.transferItemToLoc(W,src))
+			if(user.transferItemToLoc(W, src, silent = FALSE))
 				ptank.forceMove(get_turf(src))
 				ptank = W
 				to_chat(user, span_notice("You swap the plasma tank in [src]!"))
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.transferItemToLoc(W, src, silent = FALSE))
 			return
 		ptank = W
 		update_appearance()

@@ -11,6 +11,8 @@
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
 	armor_type = /datum/armor/gloves_bracer
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
 /datum/armor/gloves_bracer
 	melee = 15

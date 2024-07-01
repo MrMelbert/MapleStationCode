@@ -93,7 +93,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/defibrillator_mount, 28)
 		if(!D.get_cell())
 			to_chat(user, span_warning("Only defibrilators containing a cell can be hooked up to [src]!"))
 			return
-		if(HAS_TRAIT(I, TRAIT_NODROP) || !user.transferItemToLoc(I, src))
+		if(HAS_TRAIT(I, TRAIT_NODROP) || !user.transferItemToLoc(I, src, silent = FALSE))
 			to_chat(user, span_warning("[I] is stuck to your hand!"))
 			return
 		user.visible_message(span_notice("[user] hooks up [I] to [src]!"), \

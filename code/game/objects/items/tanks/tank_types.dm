@@ -99,7 +99,7 @@
 		var/obj/item/flamethrower/F = W
 		if ((!F.status) || (F.ptank))
 			return
-		if(!user.transferItemToLoc(src, F))
+		if(!user.transferItemToLoc(src, F, silent = FALSE))
 			return
 		src.master = F
 		F.ptank = src

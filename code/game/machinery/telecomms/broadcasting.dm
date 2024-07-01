@@ -132,25 +132,25 @@
 			if(LAZYLEN(all_radios_of_our_frequency))
 				radios = all_radios_of_our_frequency.Copy()
 
-			for(var/obj/item/radio/subspace_radio in radios)
+			for(var/obj/item/radio/subspace_radio as anything in radios)
 				if(!subspace_radio.can_receive(frequency, signal_reaches_every_z_level))
 					radios -= subspace_radio
 
 			// Syndicate radios can hear all well-known radio channels
-			if (num2text(frequency) in GLOB.reverseradiochannels)
-				for(var/obj/item/radio/syndicate_radios in GLOB.all_radios["[FREQ_SYNDICATE]"])
+			if (GLOB.reverseradiochannels[num2text(frequency)])
+				for(var/obj/item/radio/syndicate_radios  as anything in GLOB.all_radios["[FREQ_SYNDICATE]"])
 					if(syndicate_radios.can_receive(FREQ_SYNDICATE, RADIO_NO_Z_LEVEL_RESTRICTION))
 						radios |= syndicate_radios
 
 		if (TRANSMISSION_RADIO)
 			// Only radios not currently in subspace mode
-			for(var/obj/item/radio/non_subspace_radio in GLOB.all_radios["[frequency]"])
+			for(var/obj/item/radio/non_subspace_radio as anything in GLOB.all_radios["[frequency]"])
 				if(!non_subspace_radio.subspace_transmission && non_subspace_radio.can_receive(frequency, signal_reaches_every_z_level))
 					radios += non_subspace_radio
 
 		if (TRANSMISSION_SUPERSPACE)
 			// Only radios which are independent
-			for(var/obj/item/radio/independent_radio in GLOB.all_radios["[frequency]"])
+			for(var/obj/item/radio/independent_radio as anything in GLOB.all_radios["[frequency]"])
 				if(independent_radio.independent && independent_radio.can_receive(frequency, signal_reaches_every_z_level))
 					radios += independent_radio
 
@@ -161,22 +161,41 @@
 	var/list/receive = get_hearers_in_radio_ranges(radios)
 
 	// Add observers who have ghost radio enabled.
-	for(var/mob/dead/observer/ghost in GLOB.player_list)
+	for(var/mob/dead/observer/ghost in GLOB.dead_mob_list)
 		if(get_chat_toggles(ghost.client) & CHAT_GHOSTRADIO)
 			receive |= ghost
 
 	// Render the message and have everybody hear it.
 	// Always call this on the virtualspeaker to avoid issues.
-	var/spans = data["spans"]
+	var/list/spans = data["spans"]
 	var/list/message_mods = data["mods"]
+	var/list/radio_sound_pool = virt.source.get_radio_sounds()
+	var/sound/picked_sound = length(radio_sound_pool) && sound(pick(radio_sound_pool))
+	var/radio_sound_vol = picked_sound && radio_sound_pool[picked_sound.file]
 	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
 
 	for(var/atom/movable/hearer as anything in receive)
-		if(!hearer)
+		if(isnull(hearer))
 			stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
 			continue
-
-		hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, message_range = INFINITY)
+		if(!hearer.Hear(rendered, virt, language, message, frequency, spans, message_mods, message_range = INFINITY))
+			continue
+		if(!picked_sound || !isliving(hearer))
+			continue
+		var/mob/living/living_hearer = hearer
+		if(!living_hearer.client?.prefs.read_preference(/datum/preference/toggle/toggle_radio))
+			continue
+		// Radio sounds.
+		// Sourced from the mob itself rather than the radio currently,
+		// differentiating which radio you are "hearing" from is hard.
+		living_hearer.playsound_local(
+			turf_source = get_turf(hearer),
+			vol = max(radio_sound_vol + (hearer == virt.source ? 0 : -15), 10),
+			vary = TRUE,
+			max_distance = 4,
+			pressure_affected = TRUE,
+			sound_to_use = picked_sound,
+		)
 
 	// This following recording is intended for research and feedback in the use of department radio channels
 	if(length(receive))

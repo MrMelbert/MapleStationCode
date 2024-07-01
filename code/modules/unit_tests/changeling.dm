@@ -75,6 +75,7 @@
 	// The more DNA features and random things we change, the more likely we are to catch something not updating correctly.
 	// Yeah guess who/what this is, I dare you.
 	ling.dna.features["mcolor"] = "#886600"
+	ling.dna.features["lizard_horn_color"] = "#886600"
 	ling.dna.features["tail_lizard"] = "Smooth"
 	ling.dna.features["snout"] = "Sharp + Light"
 	ling.dna.features["horns"] = "Curled"

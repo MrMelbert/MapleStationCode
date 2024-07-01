@@ -25,6 +25,8 @@
 	var/old_skincolor
 	///stored mutcolor for when we turn back off of a silverscale.
 	var/old_mutcolor
+	///stored horn color for when we turn back off of a silverscale.
+	var/old_horncolor
 	///stored eye color for when we turn back off of a silverscale.
 	var/old_eye_color_left
 	///See above
@@ -55,7 +57,9 @@
 		return
 	var/mob/living/carbon/human/he_who_was_blessed_with_silver = organ_owner
 
+	old_skincolor = he_who_was_blessed_with_silver.skin_tone
 	old_mutcolor = he_who_was_blessed_with_silver.dna.features["mcolor"]
+	old_horncolor = he_who_was_blessed_with_silver.dna.features["lizard_horn_color"]
 	old_eye_color_left = he_who_was_blessed_with_silver.eye_color_left
 	old_eye_color_right = he_who_was_blessed_with_silver.eye_color_right
 
@@ -72,6 +76,7 @@
 
 	he_who_was_blessed_with_silver.skin_tone = "albino"
 	he_who_was_blessed_with_silver.dna.features["mcolor"] = "#eeeeee"
+	he_who_was_blessed_with_silver.dna.features["lizard_horn_color"] = "#eeeeee"
 	he_who_was_blessed_with_silver.eye_color_left = "#0000a0"
 	he_who_was_blessed_with_silver.eye_color_right = "#0000a0"
 	he_who_was_blessed_with_silver.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
@@ -89,6 +94,7 @@
 
 	he_who_has_been_outcast.skin_tone = old_skincolor
 	he_who_has_been_outcast.dna.features["mcolor"] = old_mutcolor
+	he_who_has_been_outcast.dna.features["lizard_horn_color"] = old_horncolor
 	he_who_has_been_outcast.eye_color_left = old_eye_color_left
 	he_who_has_been_outcast.eye_color_right = old_eye_color_right
 
@@ -102,6 +108,7 @@
 
 	old_skincolor = null
 	old_mutcolor = null
+	old_horncolor = null
 	old_eye_color_left = null
 	old_eye_color_right = null
 

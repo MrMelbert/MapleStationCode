@@ -24,6 +24,7 @@
 /datum/techweb_node/biotech
 	id_additions = list(
 		"scanning_pad",
+		"triage_zone_projector",
 		"vitals_monitor",
 	)
 

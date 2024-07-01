@@ -168,6 +168,8 @@
 	foodtypes = JUNKFOOD | SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_TINY
+	slot_flags = ITEM_SLOT_MASK
+	worn_icon_state = "lollipop_stick"
 
 /obj/item/food/candy_trash/nicotine
 	desc = "The leftover from a smoked-out candy cigarette. Smells like nicotine...?"

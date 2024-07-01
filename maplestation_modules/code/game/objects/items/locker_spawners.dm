@@ -7,6 +7,8 @@
 	icon = 'icons/obj/devices/remote.dmi'
 	icon_state = "gangtool-red"
 	w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// Job required to use the beacon; If null, anyone can
 	var/requires_job_path
 	/// Path of the locker and its contents
@@ -66,4 +68,3 @@
 		for use when upholding the laws of joint Mu-Nanotrasen research stations."
 	requires_job_path = /datum/job/noble_ambassador
 	spawned_locker_path = /obj/structure/closet/secure_closet/noble_ambassador
-

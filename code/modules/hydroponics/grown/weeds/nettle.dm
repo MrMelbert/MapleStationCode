@@ -50,6 +50,8 @@
 	throw_range = 3
 	attack_verb_continuous = list("stings")
 	attack_verb_simple = list("sting")
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/food/grown/nettle/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is eating some of [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

@@ -106,7 +106,7 @@ at the cost of risking a vicious bite.**/
 	if(hidden_item)
 		to_chat(user, span_warning("There is already something inside [src]."))
 		return
-	if(!user.transferItemToLoc(I, src))
+	if(!user.transferItemToLoc(I, src, silent = FALSE))
 		to_chat(user, span_warning("\The [I] is stuck to your hand, you cannot put it in [src]!"))
 		return
 	hidden_item = I

@@ -15,6 +15,8 @@
 	throw_speed = 3
 	throw_range = 7
 	override_notes = TRUE
+	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
 	///list containing the actual ammo within the magazine
 	var/list/stored_ammo = list()
 	///type that the magazine will be searching for, rejects if not a subtype of

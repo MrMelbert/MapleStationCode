@@ -7,6 +7,8 @@
 	strip_delay = 40
 	resistance_flags = NONE
 	lace_time = 12 SECONDS
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /datum/armor/shoes_combat
 	melee = 25
@@ -29,6 +31,20 @@
 	clothing_traits = list(TRAIT_NO_SLIP_WATER)
 	armor_type = /datum/armor/combat_swat
 
+/obj/item/clothing/shoes/combat/swat/Initialize(mapload)
+	. = ..()
+	AddComponent( \
+		/datum/component/shoe_footstep, \
+		sounds = list( \
+			'maplestation_modules/sound/items/jackboot1.ogg', \
+			'maplestation_modules/sound/items/jackboot2.ogg', \
+		), \
+		volume = 15, \
+		extrarange = -2, \
+		falloff_exponent = SOUND_FALLOFF_EXPONENT * 2, \
+		can_tape = TRUE, \
+	)
+
 /datum/armor/combat_swat
 	melee = 40
 	bullet = 30
@@ -49,20 +65,31 @@
 	resistance_flags = NONE
 	armor_type = /datum/armor/shoes_jackboots
 	can_be_tied = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /datum/armor/shoes_jackboots
 	bio = 90
-
-/obj/item/clothing/shoes/jackboots/Initialize(mapload)
-	. = ..()
-
-	create_storage(storage_type = /datum/storage/pockets/shoes)
 
 /obj/item/clothing/shoes/jackboots/fast
 	slowdown = -1
 
 /obj/item/clothing/shoes/jackboots/sec
 	icon_state = "jackboots_sec"
+
+/obj/item/clothing/shoes/jackboots/sec/Initialize(mapload)
+	. = ..()
+	AddComponent( \
+		/datum/component/shoe_footstep, \
+		sounds = list( \
+			'maplestation_modules/sound/items/jackboot1.ogg', \
+			'maplestation_modules/sound/items/jackboot2.ogg', \
+		), \
+		volume = 15, \
+		extrarange = -2, \
+		falloff_exponent = SOUND_FALLOFF_EXPONENT * 2, \
+		can_tape = TRUE, \
+	)
 
 /obj/item/clothing/shoes/winterboots
 	name = "winter boots"
@@ -75,6 +102,8 @@
 	heat_protection = FEET|LEGS
 	max_heat_protection_temperature = SHOES_MAX_TEMP_PROTECT
 	lace_time = 8 SECONDS
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /datum/armor/shoes_winterboots
 	bio = 80
@@ -121,6 +150,8 @@
 	strip_delay = 20
 	equip_delay_other = 40
 	lace_time = 8 SECONDS
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /datum/armor/shoes_workboots
 	bio = 80
@@ -142,6 +173,8 @@
 	icon_state = "rus_shoes"
 	inhand_icon_state = null
 	lace_time = 8 SECONDS
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /obj/item/clothing/shoes/russian/Initialize(mapload)
 	. = ..()
@@ -153,18 +186,24 @@
 	desc = "They may have lost some of their lustre over the years, but these green lizardskin shoes fit you perfectly."
 	icon_state = "lizardskin_shoes"
 	inhand_icon_state = null
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /obj/item/clothing/shoes/kim
 	name = "aerostatic boots"
 	desc = "A crisp, clean set of boots for working long hours on the beat."
 	icon_state = "aerostatic_boots"
 	inhand_icon_state = null
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /obj/item/clothing/shoes/pirate
 	name = "pirate boots"
 	desc = "Yarr."
 	icon_state = "pirateboots"
 	inhand_icon_state = null
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 /obj/item/clothing/shoes/pirate/armored
 	armor_type = /datum/armor/shoes_pirate

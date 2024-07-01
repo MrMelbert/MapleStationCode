@@ -1,10 +1,9 @@
 /obj/item/clothing/glasses/hud
 	name = "HUD"
 	desc = "A heads-up display that provides important info in (almost) real time."
-	flags_1 = null //doesn't protect eyes because it's a monocle, duh
 	var/hud_type = null
 
-	// NOTE: Just because you have a HUD display doesn't mean you should be able to interact with stuff on examine, that's where the associated trait (TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD, etc) is necessary. 
+	// NOTE: Just because you have a HUD display doesn't mean you should be able to interact with stuff on examine, that's where the associated trait (TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD, etc) is necessary.
 
 /obj/item/clothing/glasses/hud/equipped(mob/living/carbon/human/user, slot)
 	..()

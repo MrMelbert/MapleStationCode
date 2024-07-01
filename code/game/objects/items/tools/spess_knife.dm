@@ -18,6 +18,8 @@
 	toolspeed = 1.25 // 25% worse than default tools
 	custom_materials = list(/datum/material/iron=SMALL_MATERIAL_AMOUNT)
 	hitsound = SFX_SWING_HIT
+	drop_sound = 'maplestation_modules/sound/items/drop/knife2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife2.ogg'
 	///Radial menu tool options
 	var/list/options = list()
 	///Chance to select wrong tool
