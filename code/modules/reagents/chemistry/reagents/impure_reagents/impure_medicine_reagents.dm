@@ -529,7 +529,6 @@ Basically, we fill the time between now and 2s from now with hands based off the
 		TRAIT_NODEATH,
 		TRAIT_NOHARDCRIT,
 		TRAIT_NOSOFTCRIT,
-		TRAIT_NO_OXY_PASSOUT,
 		TRAIT_STABLEHEART,
 	)
 

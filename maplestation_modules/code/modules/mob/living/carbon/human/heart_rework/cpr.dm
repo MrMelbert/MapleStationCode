@@ -7,18 +7,18 @@
 /mob/living/carbon/human/proc/cpr_process(mob/living/carbon/human/target, beat = 0, panicking = FALSE)
 	set waitfor = FALSE
 
-	if (!target.appears_alive())
-		to_chat(src, span_warning("[target.name] is dead!"))
+	if(get_active_held_item() || get_inactive_held_item() || usable_hands <= 0)
+		to_chat(src, span_warning("Your hands are full, you can't perform CPR!"))
 		return
 
 	var/cpr_certified = HAS_TRAIT(src, TRAIT_CPR_CERTIFIED)
 	if(!panicking && target.stat != CONSCIOUS && beat >= BEATS_PER_CPR_CYCLE + 1)
-		to_chat(src, span_warning("[target] still isn't up[cpr_certified ? " - you pick up the pace." : "! You try harder!"]"))
+		to_chat(src, span_warning("[target] still has no pulse[cpr_certified ? " - you pick up the pace." : "! You try harder!"]"))
 		panicking = TRUE
 
 	var/doafter_mod = panicking ? 0.5 : 1
 	var/doing_a_breath = FALSE
-	if(beat % BEATS_PER_CPR_CYCLE == 0)
+	if(beat % BEATS_PER_CPR_CYCLE == 0 || beat == 1)
 		if (is_mouth_covered())
 			to_chat(src, span_warning("Your mouth is covered, so you can only perform compressions!"))
 
@@ -32,6 +32,10 @@
 			to_chat(src, span_warning("You do not breathe, so you can only perform compressions!"))
 
 		else
+			if(target.stat == DEAD)
+				to_chat(src, span_warning("[target.p_their()] mouth feels cold..."))
+			else if(!target.undergoing_cardiac_arrest())
+				to_chat(src, span_notice("You feel a pulse!"))
 			doing_a_breath = TRUE
 
 	if(doing_a_breath)
@@ -118,9 +122,7 @@
 
 		log_combat(src, target, "CPRed", addition = "(compression)")
 
-	if(target.body_position != LYING_DOWN)
-		return
-	if(target.stat == CONSCIOUS)
+	if(target.body_position != LYING_DOWN || target.appears_alive() || !target.undergoing_cardiac_arrest())
 		return
 
 	cpr_process(target, beat + 1, panicking)

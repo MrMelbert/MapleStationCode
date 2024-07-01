@@ -92,8 +92,10 @@
 		span_notice("[user] send a powerful shock to [target]'s brain with [tool]..."),
 	)
 	target.grab_ghost()
-	target.adjustOxyLoss(-50, 0)
 	target.updatehealth()
+	if(iscarbon(target))
+		var/mob/living/carbon/carbon_target = target
+		carbon_target.set_heartattack(FALSE)
 	if(target.revive())
 		on_revived(user, target)
 		return TRUE

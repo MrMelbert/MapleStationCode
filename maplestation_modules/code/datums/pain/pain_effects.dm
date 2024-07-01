@@ -116,7 +116,7 @@
 	owner.adjust_pain_shock(-12)
 	owner.cause_pain(BODY_ZONES_ALL, -16)
 	owner.add_consciousness_modifier(id, 100)
-	owner.add_max_consciousness_value(id, 60)
+	owner.add_max_consciousness_value(id, 45)
 	return TRUE
 
 /datum/status_effect/recent_defib/on_remove()

@@ -902,7 +902,7 @@
 		owner.visible_message(span_danger("[owner] coughs up blood!"), span_userdanger("You cough up blood!"))
 		var/obj/item/covering = owner.is_mouth_covered()
 		if(covering)
-			covering.transfer_mob_blood_dna(owner)
+			covering.add_mob_blood(owner)
 		else if(isturf(owner.loc))
 			owner.add_splatter_floor()
 		owner.apply_damage(3, BRUTE, BODY_ZONE_CHEST, wound_bonus = CANT_WOUND)

@@ -42,6 +42,7 @@ SUBSYSTEM_DEF(health_updates)
 
 /datum/controller/subsystem/health_updates/proc/queue_del(datum/source)
 	SIGNAL_HANDLER
+	UnregisterSignal(source, COMSIG_QDELETING)
 	queued -= source
 
 /datum/controller/subsystem/health_updates/fire()
@@ -50,6 +51,7 @@ SUBSYSTEM_DEF(health_updates)
 		var/to_update_flag = queued[to_update]
 		queued.Cut(1, 2)
 
+		UnregisterSignal(to_update, COMSIG_QDELETING)
 		if(to_update_flag & UPDATE_CON)
 			to_update.update_conscisouness()
 		if(!QDELETED(to_update))
@@ -61,7 +63,6 @@ SUBSYSTEM_DEF(health_updates)
 				to_update.med_hud_set_health()
 			if(to_update_flag & UPDATE_MEDHUD_STATUS)
 				to_update.med_hud_set_status()
-		UnregisterSignal(to_update, COMSIG_QDELETING)
 
 		if(MC_TICK_CHECK)
 			return

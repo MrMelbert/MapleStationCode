@@ -1,23 +1,3 @@
-/obj/item/organ/internal/heart/Stop()
-	if(!beating)
-		return
-
-	. = ..()
-	if(!. || !owner)
-		return
-
-	owner.apply_status_effect(/datum/status_effect/heart_attack)
-
-/obj/item/organ/internal/heart/Restart()
-	if(beating)
-		return
-
-	. = ..()
-	if(!. || !owner)
-		return
-
-	owner.remove_status_effect(/datum/status_effect/heart_attack)
-
 /obj/item/organ/internal/heart/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	if(beating)

@@ -65,8 +65,6 @@
 /// Shock buildup does not increase, only decrease. Cannot enter shock if at the threshold.
 /// No effect if already in shock (unlike abates_shock)
 #define TRAIT_NO_SHOCK_BUILDUP "no_shock_buildup"
-/// Blocks KO from high oxygen damage
-#define TRAIT_NO_OXY_PASSOUT "no_oxy_passout"
 /// All this trait does is change your stat to soft crit, which itself doesn't do much,
 /// but as your stat is changed many stat checks will block you (such as using the radio)
 #define TRAIT_SOFT_CRIT "soft_crit"

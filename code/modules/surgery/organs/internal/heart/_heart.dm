@@ -70,6 +70,7 @@
 	update_appearance()
 	beat = BEAT_NONE
 	owner?.stop_sound_channel(CHANNEL_HEARTBEAT)
+	owner?.apply_status_effect(/datum/status_effect/heart_attack)
 	return TRUE
 
 /obj/item/organ/internal/heart/proc/Restart()
@@ -78,6 +79,7 @@
 
 	beating = TRUE
 	update_appearance()
+	owner?.remove_status_effect(/datum/status_effect/heart_attack)
 	return TRUE
 
 /obj/item/organ/internal/heart/OnEatFrom(eater, feeder)
