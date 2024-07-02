@@ -646,6 +646,15 @@
 	inverse_chem = /datum/reagent/impurity/methanol
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
+/datum/reagent/toxin/formaldehyde/on_mob_add(mob/living/affected_mob, amount)
+	. = ..()
+	if(amount > 1)
+		ADD_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
+
+/datum/reagent/toxin/formaldehyde/on_mob_delete(mob/living/affected_mob, amount)
+	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
+
 /datum/reagent/toxin/formaldehyde/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	var/obj/item/organ/internal/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
 	if(liver && HAS_TRAIT(liver, TRAIT_CORONER_METABOLISM)) //mmmm, the forbidden pickle juice

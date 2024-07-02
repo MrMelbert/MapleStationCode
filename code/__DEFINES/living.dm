@@ -70,6 +70,8 @@
 #define TRAIT_SOFT_CRIT "soft_crit"
 /// Blocks losebreath from accumulating from things such as heart attacks or choking
 #define TRAIT_ASSISTED_BREATHING "assisted_breathing"
+/// Stops organs from decaying while dead
+#define TRAIT_NO_ORGAN_DECAY "no_organ_decay"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"

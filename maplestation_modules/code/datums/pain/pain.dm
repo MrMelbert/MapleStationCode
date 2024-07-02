@@ -514,6 +514,7 @@
 		// no-op if none of our bodyparts are in pain
 		return
 
+	var/shocked = !is_undergoing_shock()
 	var/curr_pain = get_average_pain()
 	switch(curr_pain)
 		if(-INFINITY to 10)
@@ -547,7 +548,7 @@
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_userdanger("[pick("Stop the pain!", "Everything hurts!", "You need painkillers now!")]"))
 
-	if(shock_buildup >= 20 && !just_cant_feel_anything)
+	if((shock_buildup >= 20 || shocked) && !just_cant_feel_anything)
 		parent.adjust_jitter_up_to(2 SECONDS * pain_modifier, 60 SECONDS)
 		if(SPT_PROB(10, seconds_per_tick))
 			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
@@ -556,7 +557,7 @@
 		if(SPT_PROB(shock_buildup * 0.1, seconds_per_tick))
 			parent.adjust_eye_blur_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
-	if(shock_buildup >= 60)
+	if(shock_buildup >= 60 || shocked)
 		if(SPT_PROB(5, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(2 SECONDS))
 			parent.visible_message(
 				span_warning("[parent]'s body falls limp!"),
@@ -568,7 +569,7 @@
 		if(SPT_PROB(10, seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
-	if(shock_buildup >= 120)
+	if(shock_buildup >= 120 || shocked)
 		if(SPT_PROB(4, seconds_per_tick) && !parent.IsUnconscious() && parent.Unconscious(4 SECONDS))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
@@ -578,7 +579,7 @@
 
 	// This is where shock can trigger
 	if(shock_buildup > (parent.health + (parent.maxHealth * 2)))
-		if(!HAS_TRAIT(parent, TRAIT_NO_SHOCK_BUILDUP) && !is_undergoing_shock() && !parent.undergoing_cardiac_arrest())
+		if(!HAS_TRAIT(parent, TRAIT_NO_SHOCK_BUILDUP) && !shocked && !parent.undergoing_cardiac_arrest())
 			parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
 			to_chat(parent, span_userdanger("You feel your body start to shut down!"))
 			if(!HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS))

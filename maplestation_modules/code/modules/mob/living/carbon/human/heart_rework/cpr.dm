@@ -33,7 +33,7 @@
 
 		else
 			if(target.stat == DEAD)
-				to_chat(src, span_warning("[target.p_their()] mouth feels cold..."))
+				to_chat(src, span_warning("[target.p_Their()] mouth feels cold..."))
 			else if(!target.undergoing_cardiac_arrest())
 				to_chat(src, span_notice("You feel a pulse!"))
 			doing_a_breath = TRUE
@@ -49,8 +49,8 @@
 
 		add_mood_event("saved_life", /datum/mood_event/saved_life)
 		visible_message(
-			span_notice("[src] delivers a rescue breath on [target.name]!"),
-			span_notice("You deliver  a rescue breath on [target.name]."),
+			span_notice("[src] delivers a rescue breath to [target.name]!"),
+			span_notice("You deliver a rescue breath to [target.name]."),
 		)
 
 	else
@@ -140,10 +140,12 @@
 	if(!is_effective(owner))
 		return FALSE
 	owner.add_consciousness_modifier(id, 5)
+	ADD_TRAIT(owner, TRAIT_NO_ORGAN_DECAY, id) // cycling the heart, so if they're dead, organs aren't decaying
 	return TRUE
 
 /datum/status_effect/cpr_applied/on_remove()
 	owner.remove_consciousness_modifier(id)
+	REMOVE_TRAIT(owner, TRAIT_NO_ORGAN_DECAY, id)
 
 /datum/status_effect/cpr_applied/refresh(effect, ...)
 	if(!is_effective(owner))

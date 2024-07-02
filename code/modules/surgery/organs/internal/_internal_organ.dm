@@ -30,7 +30,8 @@
 /obj/item/organ/internal/on_death(seconds_per_tick, times_fired) //runs decay when outside of a person
 	if(organ_flags & (ORGAN_ROBOTIC | ORGAN_FROZEN))
 		return
-
+	if(HAS_TRAIT(src, TRAIT_NO_ORGAN_DECAY) || (owner && HAS_TRAIT(owner, TRAIT_NO_ORGAN_DECAY)))
+		return
 	if(owner)
 		if(owner.bodytemperature > T0C)
 			var/air_temperature_factor = min((owner.bodytemperature - T0C) / 20, 1)
