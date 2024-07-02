@@ -165,7 +165,7 @@
 
 /// Insert new beaker and/or eject the inserted one
 /obj/machinery/chem_master/proc/replace_beaker(mob/living/user, obj/item/reagent_containers/new_beaker)
-	if(new_beaker && user && !user.transferItemToLoc(new_beaker, src))
+	if(new_beaker && user && !user.transferItemToLoc(new_beaker, src, silent = FALSE))
 		return FALSE
 	if(beaker)
 		try_put_in_hand(beaker, user)

@@ -5,6 +5,8 @@
 	righthand_file = 'icons/mob/inhands/clothing/shoes_righthand.dmi'
 	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
+	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
 
 	body_parts_covered = FEET
 	slot_flags = ITEM_SLOT_FEET

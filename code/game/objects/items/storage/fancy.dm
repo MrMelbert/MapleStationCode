@@ -17,6 +17,8 @@
 	icon = 'icons/obj/food/containers.dmi'
 	resistance_flags = FLAMMABLE
 	custom_materials = list(/datum/material/cardboard = SHEET_MATERIAL_AMOUNT)
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 	/// Used by examine to report what this thing is holding.
 	var/contents_tag = "errors"
 	/// What type of thing to fill this storage with.
@@ -34,6 +36,7 @@
 	. = ..()
 
 	atom_storage.max_slots = spawn_count
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 
 /obj/item/storage/fancy/PopulateContents()
 	if(!spawn_type)
@@ -69,6 +72,7 @@
 		return
 	var/obj/item/result = new foldable_result(user.drop_location())
 	balloon_alert(user, "folded")
+	playsound(src, 'maplestation_modules/sound/items/storage/boxfold.ogg', 50, TRUE)
 	// Gotta delete first, so then the cardboard appears in the same hand
 	qdel(src)
 	user.put_in_hands(result)

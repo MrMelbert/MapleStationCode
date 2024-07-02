@@ -260,6 +260,8 @@
 	desc = "A small machine that interfaces with a trapdoor controller for easy use."
 	icon = 'icons/obj/devices/remote.dmi'
 	icon_state = "trapdoor_remote"
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	COOLDOWN_DECLARE(trapdoor_cooldown)
 	var/trapdoor_cooldown_time = 2 SECONDS
 	var/obj/item/assembly/trapdoor/internals

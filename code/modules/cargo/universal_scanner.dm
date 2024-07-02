@@ -11,6 +11,8 @@
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	item_flags = NOBLUDGEON
 	w_class = WEIGHT_CLASS_SMALL
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 	/// Which mode is the scanner currently on?
 	var/scanning_mode = SCAN_EXPORTS
 	/// A list of all available export scanner modes.

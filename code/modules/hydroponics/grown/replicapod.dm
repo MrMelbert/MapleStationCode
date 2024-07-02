@@ -28,6 +28,8 @@
 	icon_state = "cabbage"
 	foodtypes = VEGETABLES
 	wine_power = 20
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 ///The actual replica pods themselves!
 /obj/item/seeds/replicapod

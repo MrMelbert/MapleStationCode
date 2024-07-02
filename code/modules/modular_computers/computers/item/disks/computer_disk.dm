@@ -4,6 +4,8 @@
 	icon = 'icons/obj/devices/circuitry_n_data.dmi'
 	icon_state = "datadisk6"
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'sound/items/handling/disk_drop.ogg'
+	pickup_sound = 'sound/items/handling/disk_pickup.ogg'
 	///The amount of storage space is on the disk
 	var/max_capacity = 16
 	///The amount of storage space we've got filled

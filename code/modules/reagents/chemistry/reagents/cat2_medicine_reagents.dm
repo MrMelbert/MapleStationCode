@@ -355,6 +355,14 @@
 			need_mob_update += affected_mob.adjustToxLoss(-radcalc * 0.75, updating_health = FALSE, required_biotype = affected_biotype)
 		healypoints += (radcalc / 5)
 
+	for(var/obj/item/organ/internal/organ in affected_mob.organs)
+		if(!(organ.organ_flags & ORGAN_IRRADIATED))
+			continue
+		organ.apply_organ_damage(-radcalc * 0.8)
+		if(organ.damage > 0)
+			continue
+		organ.RemoveElement(/datum/element/simple_rad)
+
 	//you're yes and... oh no!
 	healypoints = round(healypoints, 0.1)
 	affected_mob.adjustOrganLoss(ORGAN_SLOT_HEART, healypoints / 5, required_organ_flag = affected_organ_flags)

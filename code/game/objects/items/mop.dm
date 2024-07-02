@@ -14,6 +14,9 @@
 	attack_verb_continuous = list("mops", "bashes", "bludgeons", "whacks")
 	attack_verb_simple = list("mop", "bash", "bludgeon", "whack")
 	resistance_flags = FLAMMABLE
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
 	var/mopcount = 0
 	///Maximum volume of reagents it can hold.
 	var/max_reagent_volume = 15

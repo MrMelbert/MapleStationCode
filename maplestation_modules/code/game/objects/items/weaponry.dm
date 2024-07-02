@@ -65,6 +65,7 @@
 	light_range = 2
 	light_power = 1
 	light_on = FALSE
+	item_flags = NO_BLOOD_ON_ITEM
 	///force when active, passed onto component/transforming
 	var/active_force = 18
 	///throwforce when active, passed onto component/transforming
@@ -119,6 +120,8 @@
 	wound_bonus = 20
 	throwforce = 16
 	w_class = WEIGHT_CLASS_BULKY
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic2.ogg'
 
 /obj/item/melee/psych_rock/Initialize(mapload)
 	. = ..()
@@ -130,5 +133,3 @@
 	if(mapload && !paperweight_spawned  && istype(get_area(src), /area/station/medical/psychology))
 		new /obj/item/melee/psych_rock(loc)
 		paperweight_spawned = TRUE
-
-

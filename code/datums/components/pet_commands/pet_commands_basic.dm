@@ -255,3 +255,4 @@
 		return
 	if(isliving(attacker) && can_see(owner, attacker, protect_range))
 		set_command_active(owner, attacker)
+

@@ -189,5 +189,24 @@
 		/obj/item/chair/atrox = 1,
 		/obj/item/chair/plastic = 1, //coping
 		/obj/item/cane/atrox = 1,
+		/obj/item/clothing/head/costume/hat/blanche = 1,
+		/obj/item/clothing/glasses/blanche = 1,
+		/obj/item/clothing/under/jumpsuit/blanche = 1,
+		/obj/item/clothing/shoes/blanche = 1,
+		/obj/item/cane/blanche = 1,
 	)
 	generate_items_inside(items_inside, src)
+
+// --- bnuuy items ---
+
+/obj/item/cane/blanche
+	name = "red umbrella"
+	desc = "A plain red umbrella to keep you dry, or alternatively, swat people away."
+	icon = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_item.dmi'
+	icon_state = "blbrella"
+	inhand_icon_state = "blbrella"
+	lefthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_lefthand.dmi'
+	righthand_file = 'maplestation_modules/story_content/noname_equipment/icons/nnitem_righthand.dmi'
+	force = 5
+	throwforce = 5
+	w_class = WEIGHT_CLASS_SMALL

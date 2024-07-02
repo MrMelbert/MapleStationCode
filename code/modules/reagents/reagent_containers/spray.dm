@@ -25,6 +25,9 @@
 	volume = 250
 	possible_transfer_amounts = list(5,10)
 	var/spray_sound = 'sound/effects/spray2.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
+
 
 /obj/item/reagent_containers/spray/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()

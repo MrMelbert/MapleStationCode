@@ -18,6 +18,8 @@
 	slot_flags = NONE
 	w_class = WEIGHT_CLASS_SMALL
 	item_flags = NOBLUDGEON
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 	/// Whether or not the accessory displays through suits and the like.
 	var/above_suit = TRUE
 	/// TRUE if shown as a small icon in corner, FALSE if overlayed
@@ -59,7 +61,7 @@
 	. = ..()
 
 	var/obj/item/clothing/under/attached_to = loc
-	
+
 	if(!istype(attached_to))
 		return
 

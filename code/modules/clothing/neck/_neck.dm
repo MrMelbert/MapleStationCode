@@ -6,6 +6,8 @@
 	strip_delay = 40
 	equip_delay_other = 40
 	blood_overlay_type = "mask" // NON-MODULE CHANGE reworking clothing blood overlays
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 
 /obj/item/clothing/neck/worn_overlays(mutable_appearance/standing, isinhands = FALSE)
 	. = ..()
@@ -111,7 +113,7 @@
 /obj/item/clothing/neck/tie/alt_click_secondary(mob/user)
 	. = ..()
 	if(!user.can_perform_action(src, NEED_DEXTERITY))
-		return	
+		return
 	alternate_worn_layer = alternate_worn_layer == initial(alternate_worn_layer) ? NONE : initial(alternate_worn_layer)
 	user.update_clothing(ITEM_SLOT_NECK)
 	balloon_alert(user, "wearing [alternate_worn_layer == initial(alternate_worn_layer) ? "below" : "above"] suits")
@@ -405,6 +407,8 @@
 /obj/item/clothing/neck/large_scarf
 	name = "large scarf"
 	icon_state = "large_scarf"
+	icon_preview = 'icons/obj/fluff/previews.dmi'
+	icon_state_preview = "scarf_large"
 	w_class = WEIGHT_CLASS_TINY
 	custom_price = PAYCHECK_CREW
 	greyscale_colors = "#C6C6C6#EEEEEE"

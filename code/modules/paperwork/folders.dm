@@ -6,6 +6,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	pressure_resistance = 2
 	resistance_flags = FLAMMABLE
+	drop_sound = 'sound/items/handling/paper_drop.ogg'
+	pickup_sound = 'sound/items/handling/paper_pickup.ogg'
 	/// The background color for tgui in hex (with a `#`)
 	var/bg_color = "#7f7f7f"
 	/// A typecache of the objects that can be inserted into a folder

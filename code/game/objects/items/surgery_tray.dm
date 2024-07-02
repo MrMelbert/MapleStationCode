@@ -37,6 +37,8 @@
 	slowdown = 1
 	item_flags = SLOWS_WHILE_IN_HAND
 	pass_flags = NONE
+	drop_sound = 'maplestation_modules/sound/items/drop/axe.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/axe.ogg'
 
 	/// If true we're currently portable
 	var/is_portable = TRUE

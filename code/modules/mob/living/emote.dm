@@ -72,10 +72,17 @@
 	key_third_person = "coughs"
 	message = "coughs!"
 	message_mime = "acts out an exaggerated cough!"
+	vary = TRUE
+	audio_cooldown = 5 SECONDS
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE | EMOTE_RUNECHAT
 
 /datum/emote/living/cough/can_run_emote(mob/user, status_check = TRUE , intentional)
 	return !HAS_TRAIT(user, TRAIT_SOOTHED_THROAT) && ..()
+
+/datum/emote/living/sneeze/get_sound(mob/living/carbon/human/user)
+	if(!istype(user))
+		return
+	return user.dna.species.get_cough_sound(user)
 
 /datum/emote/living/dance
 	key = "dance"
@@ -186,24 +193,25 @@
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = HARD_CRIT
 
-/datum/emote/living/gasp_shock
+/datum/emote/living/gasp/get_sound(mob/living/carbon/human/user)
+	if(!istype(user))
+		return
+	if(user.physique == FEMALE)
+		return pick('sound/voice/human/gasp_female1.ogg', 'sound/voice/human/gasp_female2.ogg', 'sound/voice/human/gasp_female3.ogg')
+	return pick('sound/voice/human/gasp_male1.ogg', 'sound/voice/human/gasp_male2.ogg')
+
+/datum/emote/living/gasp/shock
 	key = "gaspshock"
 	key_third_person = "gaspsshock"
 	name = "gasp (Shock)"
 	message = "gasps in shock!"
 	message_mime = "gasps in silent shock!"
-	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = SOFT_CRIT
 
-/datum/emote/living/gasp_shock/get_sound(mob/living/user)
-	if(!ishuman(user))
+/datum/emote/living/gasp/shock/get_sound(mob/living/carbon/human/user)
+	if(HAS_MIND_TRAIT(user, TRAIT_MIMING))
 		return
-	var/mob/living/carbon/human/human_user = user
-	if(ishumanbasic(human_user) || isfelinid(human_user) && !HAS_MIND_TRAIT(human_user, TRAIT_MIMING))
-		if(human_user.physique == FEMALE)
-			return pick('sound/voice/human/gasp_female1.ogg', 'sound/voice/human/gasp_female2.ogg', 'sound/voice/human/gasp_female3.ogg')
-		else
-			return pick('sound/voice/human/gasp_male1.ogg', 'sound/voice/human/gasp_male2.ogg')
+	return ..()
 
 /datum/emote/living/giggle
 	key = "giggle"
@@ -284,15 +292,10 @@
 /datum/emote/living/laugh/can_run_emote(mob/living/user, status_check = TRUE , intentional)
 	return ..() && user.can_speak(allow_mimes = TRUE)
 
-/datum/emote/living/laugh/get_sound(mob/living/user)
-	if(!ishuman(user))
+/datum/emote/living/laugh/get_sound(mob/living/carbon/human/user)
+	if(!istype(user))
 		return
-	var/mob/living/carbon/human/human_user = user
-	if((ishumanbasic(human_user) || isfelinid(human_user)) && !HAS_MIND_TRAIT(human_user, TRAIT_MIMING))
-		if(human_user.gender == FEMALE)
-			return 'sound/voice/human/womanlaugh.ogg'
-		else
-			return pick('sound/voice/human/manlaugh1.ogg', 'sound/voice/human/manlaugh2.ogg')
+	return user.dna?.species?.get_laugh_sound(user)
 
 /datum/emote/living/look
 	key = "look"
@@ -402,6 +405,13 @@
 	message = "sneezes."
 	message_mime = "acts out an exaggerated silent sneeze."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
+	audio_cooldown = 5 SECONDS
+	vary = TRUE
+
+/datum/emote/living/sneeze/get_sound(mob/living/carbon/human/user)
+	if(!istype(user))
+		return
+	return user.dna.species.get_sneeze_sound(user)
 
 /datum/emote/living/smug
 	key = "smug"

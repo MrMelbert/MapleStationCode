@@ -11,6 +11,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*0.3, /datum/material/glass =SMALL_MATERIAL_AMOUNT*0.2)
+	drop_sound = 'maplestation_modules/sound/items/drop/device2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/plant_analyzer/Initialize(mapload)
 	. = ..()
@@ -429,6 +431,8 @@
 	attack_verb_continuous = list("slashes", "slices", "cuts", "claws")
 	attack_verb_simple = list("slash", "slice", "cut", "claw")
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
 
 /obj/item/cultivator/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is scratching [user.p_their()] back as hard as [user.p_they()] can with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -444,6 +448,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 1.5)
 	resistance_flags = FLAMMABLE
 	flags_1 = NONE
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/cultivator/rake/Initialize(mapload)
 	. = ..()
@@ -484,6 +490,8 @@
 	attack_verb_simple = list("chop", "tear", "lacerate", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
+	drop_sound = 'maplestation_modules/sound/items/drop/axe.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/hatchet/Initialize(mapload)
 	. = ..()
@@ -503,6 +511,8 @@
 	custom_materials = list(/datum/material/wood = SHEET_MATERIAL_AMOUNT * 1)
 	resistance_flags = FLAMMABLE
 	flags_1 = NONE
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/scythe
 	name = "scythe"
@@ -526,6 +536,10 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	item_flags = CRUEL_IMPLEMENT //maybe they want to use it in surgery
+	drop_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/sword1.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/sword.ogg'
+
 	var/swiping = FALSE
 
 /obj/item/scythe/Initialize(mapload)
@@ -585,6 +599,8 @@
 	attack_verb_continuous = list("slashes", "slices", "cuts", "claws")
 	attack_verb_simple = list("slash", "slice", "cut", "claw")
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
 
 ///Catch right clicks so we can stylize!
 /obj/item/secateurs/pre_attack_secondary(atom/target, mob/living/user, params)
@@ -615,6 +631,8 @@
 	attack_verb_continuous = list("slashes", "slices", "cuts")
 	attack_verb_simple = list("slash", "slice", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
 
 // *************************************
 // Nutrient defines for hydroponics

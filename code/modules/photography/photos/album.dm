@@ -13,6 +13,8 @@
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
+	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
+	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
 	var/persistence_id
 
 /obj/item/storage/photo_album/Initialize(mapload)

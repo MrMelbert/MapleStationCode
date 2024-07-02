@@ -182,6 +182,9 @@ GLOBAL_LIST_INIT(transit_tube_recipes, list(
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT*37.5, /datum/material/glass=SHEET_MATERIAL_AMOUNT*18.75)
 	armor_type = /datum/armor/item_pipe_dispenser
 	resistance_flags = FIRE_PROOF
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
+
 	///Sparks system used when changing device in the UI
 	var/datum/effect_system/spark_spread/spark_system
 	///Direction of the device we are going to spawn, set up in the UI

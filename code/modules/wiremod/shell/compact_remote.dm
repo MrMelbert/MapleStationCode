@@ -13,6 +13,8 @@
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_on = FALSE
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/compact_remote/Initialize(mapload)
 	. = ..()
@@ -45,6 +47,6 @@
 /obj/item/circuit_component/compact_remote/proc/send_trigger(atom/source, mob/user)
 	SIGNAL_HANDLER
 	source.balloon_alert(user, "clicked primary button")
-	playsound(source, get_sfx(SFX_TERMINAL_TYPE), 25, FALSE)
+	playsound(source, SFX_TERMINAL_TYPE, 25, FALSE)
 	entity.set_output(user)
 	signal.set_output(COMPONENT_SIGNAL)

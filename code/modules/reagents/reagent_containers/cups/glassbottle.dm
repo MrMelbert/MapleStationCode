@@ -39,6 +39,8 @@
 	var/bottle_knockdown_duration = BOTTLE_KNOCKDOWN_DEFAULT_DURATION
 	tool_behaviour = TOOL_ROLLINGPIN // Used to knock out the Chef.
 	toolspeed = 1.3 //it's a little awkward to use, but it's a cylinder alright.
+	drop_sound = 'maplestation_modules/sound/items/drop/bottle.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/bottle.ogg'
 
 /obj/item/reagent_containers/cup/glass/bottle/Initialize(mapload, vol)
 	. = ..()
@@ -182,6 +184,9 @@
 	attack_verb_simple = list("stab", "slash", "attack")
 	sharpness = SHARP_EDGED
 	custom_materials = list(/datum/material/glass=SMALL_MATERIAL_AMOUNT)
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
 	///The mask image for mimicking a broken-off bottom of the bottle
 	var/static/icon/broken_outline = icon('icons/obj/drinks/drink_effects.dmi', "broken")
 	///The mask image for mimicking a broken-off neck of the bottle

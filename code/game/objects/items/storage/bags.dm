@@ -21,12 +21,15 @@
 /obj/item/storage/bag
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_BULKY
+	drop_sound = 'maplestation_modules/sound/items/drop/backpack.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/backpack.ogg'
 
 /obj/item/storage/bag/Initialize(mapload)
 	. = ..()
 	atom_storage.allow_quick_gather = TRUE
 	atom_storage.allow_quick_empty = TRUE
 	atom_storage.numerical_stacking = TRUE
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 // -----------------------------
 //          Trash bag
@@ -348,6 +351,8 @@
 	slot_flags = ITEM_SLOT_BELT
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT*1.5)
 	custom_price = PAYCHECK_CREW * 0.6
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metal_pot.ogg'
 
 /obj/item/storage/bag/tray/Initialize(mapload)
 	. = ..()

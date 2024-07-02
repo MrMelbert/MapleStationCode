@@ -7,6 +7,9 @@
 	icon = 'icons/obj/art/musician.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/instruments_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/instruments_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
+
 	/// Our song datum.
 	var/datum/song/handheld/song
 	/// Our allowed list of instrument ids. This is nulled on initialize.

@@ -36,6 +36,8 @@
 	greyscale_colors = "#000000" //only here for unit testing. overriden in initialize()
 	greyscale_config = /datum/greyscale_config/flower_simple
 	greyscale_config_worn = /datum/greyscale_config/flower_simple_worn
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/food/grown/rainbow_flower/Initialize(mapload)
 	. = ..()

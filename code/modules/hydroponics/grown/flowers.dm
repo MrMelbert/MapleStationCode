@@ -29,6 +29,8 @@
 	bite_consumption_mod = 2
 	foodtypes = VEGETABLES | GROSS
 	distill_reagent = /datum/reagent/consumable/ethanol/vermouth
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 // Lily
 /obj/item/seeds/poppy/lily
@@ -83,6 +85,8 @@
 	icon_state = "spacemanstrumpet"
 	bite_consumption_mod = 2
 	foodtypes = VEGETABLES
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 // Geranium
 /obj/item/seeds/poppy/geranium
@@ -159,6 +163,8 @@
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	bite_consumption_mod = 2
 	distill_reagent = /datum/reagent/consumable/ethanol/vermouth
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 // Sunflower
 /obj/item/seeds/sunflower
@@ -197,6 +203,8 @@
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 1
 	throw_range = 3
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/food/grown/sunflower/make_dryable()
 	AddElement(/datum/element/dryable, /obj/item/food/semki/healthy) //yum
@@ -228,6 +236,8 @@
 	slot_flags = ITEM_SLOT_HEAD
 	alternate_worn_layer = ABOVE_BODY_FRONT_HEAD_LAYER
 	distill_reagent = /datum/reagent/consumable/ethanol/absinthe //It's made from flowers.
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 // Novaflower
 /obj/item/seeds/sunflower/novaflower
@@ -263,6 +273,8 @@
 	attack_verb_continuous = list("roasts", "scorches", "burns")
 	attack_verb_simple = list("roast", "scorch", "burn")
 	grind_results = list(/datum/reagent/consumable/capsaicin = 0, /datum/reagent/consumable/condensedcapsaicin = 0)
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 // Rose
 /obj/item/seeds/rose
@@ -329,6 +341,8 @@
 	reagents_add = list(/datum/reagent/plastic_polymers = 0.05)
 	rarity = 10
 	graft_gene = /datum/plant_gene/reagent/preset/carbon
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/grown/carbon_rose
 	seed = /obj/item/seeds/carbon_rose

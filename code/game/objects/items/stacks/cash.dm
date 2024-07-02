@@ -14,6 +14,8 @@
 	resistance_flags = FLAMMABLE
 	var/value = 0
 	grind_results = list(/datum/reagent/cellulose = 10)
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 
 /obj/item/stack/spacecash/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()

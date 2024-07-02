@@ -73,7 +73,7 @@
 		try_put_in_hand(beaker, user)
 
 	if(!QDELETED(new_beaker))
-		if(!user.transferItemToLoc(new_beaker, src))
+		if(!user.transferItemToLoc(new_beaker, src, silent = FALSE))
 			update_appearance()
 			return FALSE
 		beaker = new_beaker

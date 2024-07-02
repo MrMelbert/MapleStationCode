@@ -11,6 +11,9 @@
 	var/list/grenades = new/list()
 	var/max_grenades = 3
 	custom_materials = list(/datum/material/iron=SHEET_MATERIAL_AMOUNT)
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 /obj/item/gun/grenadelauncher/examine(mob/user)
 	. = ..()

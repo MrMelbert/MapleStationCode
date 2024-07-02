@@ -1,6 +1,6 @@
 /// -- Loadout shoes --
 /obj/item/clothing/shoes/jackboots/loadout
-	desc = "Tall Nanotrasen-issue combat boots for combat scenarios or combat situations. All combat, all the time. These ones come from a military surplus store and have laces."
+	desc = /obj/item/clothing/shoes/jackboots::desc + " These ones come from a military surplus store, and have laces."
 	armor_type = /datum/armor/loadout_jackboots
 	can_be_tied = TRUE
 
@@ -23,14 +23,19 @@
 	greyscale_colors = "#eeeeee"
 	greyscale_config = /datum/greyscale_config/heels
 	greyscale_config_worn = /datum/greyscale_config/heels_worn
-	var/list/walking_sounds = list(
-		'maplestation_modules/sound/items/highheel1.ogg' = 1,
-		'maplestation_modules/sound/items/highheel2.ogg' = 1,
-	)
 
 /obj/item/clothing/shoes/heels/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/squeak, custom_sounds = walking_sounds, volume_override = 55, chance_override = 50)
+	AddComponent( \
+		/datum/component/shoe_footstep, \
+		sounds = list( \
+			'maplestation_modules/sound/items/highheel1.ogg', \
+			'maplestation_modules/sound/items/highheel2.ogg', \
+		), \
+		volume = 55, \
+		chance_per_play = 50, \
+		can_tape = TRUE, \
+	)
 
 /obj/item/clothing/shoes/heels/fancy //the cooler heels
 	name = "fancy high heels"

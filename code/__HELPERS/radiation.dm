@@ -25,6 +25,7 @@
 	threshold,
 	chance = DEFAULT_RADIATION_CHANCE,
 	minimum_exposure_time = 0,
+	can_propogate = FALSE,
 )
 	if(!SSradiation.can_fire)
 		return
@@ -36,6 +37,7 @@
 	pulse_information.chance = chance
 	pulse_information.minimum_exposure_time = minimum_exposure_time
 	pulse_information.turfs_to_process = RANGE_TURFS(max_range, source)
+	pulse_information.can_propogate = can_propogate
 
 	SSradiation.processing += pulse_information
 
@@ -48,6 +50,7 @@
 	var/chance
 	var/minimum_exposure_time
 	var/list/turfs_to_process
+	var/can_propogate
 
 #define MEDIUM_RADIATION_THRESHOLD_RANGE 0.5
 #define EXTREME_RADIATION_CHANCE 30
@@ -68,11 +71,37 @@
 		else
 			return PERCEIVED_RADIATION_DANGER_LOW
 
+#undef MEDIUM_RADIATION_THRESHOLD_RANGE
+#undef EXTREME_RADIATION_CHANCE
+
 /// A common proc used to send COMSIG_ATOM_PROPAGATE_RAD_PULSE to adjacent atoms
 /// Only used for uranium (false/tram)walls to spread their radiation pulses
 /atom/proc/propagate_radiation_pulse()
 	for(var/atom/atom in orange(1,src))
 		SEND_SIGNAL(atom, COMSIG_ATOM_PROPAGATE_RAD_PULSE, src)
 
-#undef MEDIUM_RADIATION_THRESHOLD_RANGE
-#undef EXTREME_RADIATION_CHANCE
+/// Applies relevant radiation effects to the target
+/atom/proc/make_irradiated(can_propogate)
+	return
+
+/obj/item/make_irradiated(can_propogate)
+	AddElement(/datum/element/simple_rad)
+
+/mob/living/carbon/human/make_irradiated(can_propogate)
+	apply_status_effect(/datum/status_effect/irradiated, can_propogate)
+
+/// Makes a target glow as if they are irradiated (only visual, last until stopped manually)
+/atom/proc/rad_glow()
+	add_filter("rad_glow", 2, list("type" = "outline", "color" = "#39ff1430", "size" = 2))
+	addtimer(CALLBACK(src, PROC_REF(rad_grow_loop)), rand(0.1 SECONDS, 1.9 SECONDS), TIMER_DELETE_ME) // Things should look uneven
+
+/// Used to animate the glow effect
+/atom/proc/rad_grow_loop()
+	PRIVATE_PROC(TRUE)
+
+	var/filter = get_filter("rad_glow")
+	if (!filter)
+		return
+
+	animate(filter, alpha = 110, time = 1.5 SECONDS, loop = -1)
+	animate(alpha = 40, time = 2.5 SECONDS)

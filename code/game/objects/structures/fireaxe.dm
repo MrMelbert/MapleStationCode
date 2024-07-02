@@ -73,7 +73,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 			if(HAS_TRAIT(attacking_item, TRAIT_WIELDED))
 				balloon_alert(user, "unwield it!")
 				return
-			if(!user.transferItemToLoc(attacking_item, src))
+			if(!user.transferItemToLoc(attacking_item, src, silent = FALSE))
 				return
 			held_item = attacking_item
 			update_appearance()

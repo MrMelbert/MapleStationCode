@@ -18,6 +18,8 @@
 	usesound = list('sound/effects/picaxe1.ogg', 'sound/effects/picaxe2.ogg', 'sound/effects/picaxe3.ogg')
 	attack_verb_continuous = list("hits", "pierces", "slices", "attacks")
 	attack_verb_simple = list("hit", "pierce", "slice", "attack")
+	drop_sound = 'maplestation_modules/sound/items/drop/shovel.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shovel.ogg'
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -135,6 +137,8 @@
 	attack_verb_continuous = list("bashes", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "bludgeon", "thrash", "whack")
 	sharpness = SHARP_EDGED
+	drop_sound = 'maplestation_modules/sound/items/drop/shovel.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/shovel.ogg'
 
 /obj/item/shovel/Initialize(mapload)
 	. = ..()

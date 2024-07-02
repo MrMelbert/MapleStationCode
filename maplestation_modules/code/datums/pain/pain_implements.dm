@@ -45,6 +45,8 @@
 	throw_range = 5
 	attack_verb_continuous = list("pads")
 	attack_verb_simple = list("pads")
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 	/// Whether our pack has been used.
 	var/used = FALSE
 	/// Whether our pack is active.

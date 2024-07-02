@@ -332,15 +332,20 @@
 	remove_overlay(DAMAGE_LAYER)
 
 	var/mutable_appearance/damage_overlay
+	var/digi_filter = FALSE
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
 		if(!iter_part.dmg_overlay_type)
 			continue
-		if(isnull(damage_overlay) && (iter_part.brutestate || iter_part.burnstate))
-			damage_overlay = mutable_appearance('icons/mob/effects/dam_mob.dmi', "blank", -DAMAGE_LAYER, appearance_flags = KEEP_TOGETHER)
+		if(iter_part.brutestate || iter_part.burnstate)
+			damage_overlay ||= mutable_appearance('icons/mob/effects/dam_mob.dmi', "blank", -DAMAGE_LAYER, appearance_flags = KEEP_TOGETHER)
 		if(iter_part.brutestate)
 			damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0") //we're adding icon_states of the base image as overlays
+			damage_overlay.color = iter_part.damage_color
 		if(iter_part.burnstate)
 			damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
+		if(!digi_filter && damage_overlay && (iter_part.bodytype & BODYTYPE_DIGITIGRADE))
+			iter_part.apply_digitigrade_filters(damage_overlay, src)
+			digi_filter = TRUE
 
 	if(isnull(damage_overlay))
 		return

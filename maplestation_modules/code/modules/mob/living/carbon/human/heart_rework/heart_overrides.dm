@@ -39,3 +39,8 @@
 	// You don't spawn with a heart, so, technically... You spawn with a heart attack
 	apply_status_effect(/datum/status_effect/heart_attack)
 */
+
+/obj/item/organ/internal/heart/get_status_text()
+	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
+		return "<font color='#cc3333'>Cardiac Arrest - Apply defibrillation!</font>"
+	return ..()

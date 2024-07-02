@@ -18,6 +18,8 @@
 	throw_speed = 2
 	throw_range = 3
 	custom_materials = list(/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT * 7.5, /datum/material/glass = SMALL_MATERIAL_AMOUNT)
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
 	var/open = TRUE
 	var/locked = FALSE
 	var/list/occupants = list()

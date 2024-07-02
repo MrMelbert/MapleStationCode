@@ -15,6 +15,8 @@
 	reagent_flags = TRANSPARENT
 	custom_price = PAYCHECK_CREW * 0.5
 	sharpness = SHARP_POINTY
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 	/// Flags used by the injection
 	var/inject_flags = NONE
 

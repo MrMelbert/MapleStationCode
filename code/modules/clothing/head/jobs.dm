@@ -13,6 +13,9 @@
 	strip_delay = 10
 	equip_delay_other = 10
 	dog_fashion = /datum/dog_fashion/head/chef
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+
 	/// The chance that the movements of a mouse inside of this hat get relayed to the human wearing the hat
 	var/mouse_control_probability = 20
 	/// Allowed time between movements
@@ -328,6 +331,8 @@
 	name = "beret"
 	desc = "A beret, a mime's favorite headwear."
 	icon_state = "beret"
+	icon_preview = 'icons/obj/clothing/head/beret.dmi'
+	icon_state_preview = "beret"
 	dog_fashion = /datum/dog_fashion/head/beret
 	greyscale_config = /datum/greyscale_config/beret
 	greyscale_config_worn = /datum/greyscale_config/beret/worn
@@ -563,6 +568,8 @@
 	icon_state = "surgicalcap"
 	desc = "A blue medical surgery cap to prevent the surgeon's hair from entering the insides of the patient!"
 	flags_inv = HIDEHAIR //Cover your head doctor!
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
 /obj/item/clothing/head/utility/surgerycap/attack_self(mob/user)
 	. = ..()
@@ -605,6 +612,8 @@
 		A little useless now, given the technology available, but it certainly completes the look."
 	icon_state = "headmirror"
 	body_parts_covered = NONE
+	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
 /obj/item/clothing/head/utility/head_mirror/examine(mob/user)
 	. = ..()

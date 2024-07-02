@@ -11,6 +11,8 @@
 	resistance_flags = NONE
 	clothing_traits = list(TRAIT_PLANT_SAFE)
 	armor_type = /datum/armor/gloves_botanic_leather
+	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
 /datum/armor/gloves_botanic_leather
 	bio = 50

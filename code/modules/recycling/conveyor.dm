@@ -311,7 +311,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		new /obj/machinery/conveyor(target_turf, forwards, id)
 
 	else if(!user.combat_mode)
-		user.transferItemToLoc(attacking_item, drop_location())
+		user.transferItemToLoc(attacking_item, drop_location(), silent = FALSE)
 	else
 		return ..()
 
@@ -323,7 +323,7 @@ GLOBAL_LIST_EMPTY(conveyors_by_id)
 		to_chat(user, span_notice("You flip [src]'s belt [flipped ? "around" : "back to normal"]."))
 
 	else if(!user.combat_mode)
-		user.transferItemToLoc(attacking_item, drop_location())
+		user.transferItemToLoc(attacking_item, drop_location(), silent = FALSE)
 
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 

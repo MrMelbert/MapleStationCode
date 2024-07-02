@@ -36,7 +36,7 @@
 #define EQUIP_SOUND_VOLUME 30
 #define PICKUP_SOUND_VOLUME 15
 #define DROP_SOUND_VOLUME 20
-#define YEET_SOUND_VOLUME 90
+#define YEET_SOUND_VOLUME 75
 #define BLOCK_SOUND_VOLUME 70
 
 #define AMBIENCE_GENERIC "generic"
@@ -54,6 +54,9 @@
 #define AMBIENCE_AWAY "away"
 #define AMBIENCE_REEBE "reebe" //unused
 #define AMBIENCE_CREEPY "creepy" //not to be confused with spooky
+#define AMBIENCE_DEPARTURES "departures"
+#define AMBIENCE_ARRIVALS "arrivals"
+#define AMBIENCE_COMMAND "command"
 
 //default byond sound environments
 #define SOUND_ENVIRONMENT_NONE -1
@@ -173,3 +176,7 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_ROCK_TAP "rock_tap"
 #define SFX_SEAR "sear"
 #define SFX_REEL "reel"
+#define SFX_PORTAL_ENTER "portal_enter"
+#define SFX_PORTAL_CLOSE "portal_closed"
+#define SFX_PORTAL_CREATED "portal_created"
+#define SFX_SCREECH "screech"

@@ -490,6 +490,7 @@
 	. = ..()
 	atom_storage.max_slots = 4
 	atom_storage.set_holdable(list(/obj/item/coffee_cartridge))
+	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 
 /*
  * impressa coffee maker

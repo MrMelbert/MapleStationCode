@@ -9,6 +9,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	w_class = WEIGHT_CLASS_NORMAL
 	req_access = list(ACCESS_ROBOTICS)
 	braintype = "Android"
+	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 	///Message sent to the user when polling ghosts
 	var/begin_activation_message = "<span class='notice'>You carefully locate the manual activation switch and start the positronic brain's boot process.</span>"

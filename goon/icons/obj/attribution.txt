@@ -1,0 +1,1 @@
+itemdispenser.dmi sourced from https://github.com/goonstation/goonstation/blob/master/icons/obj/stationobjs.dmi licensed under CC-BY-NC-SA

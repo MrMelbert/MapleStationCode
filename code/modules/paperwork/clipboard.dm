@@ -13,6 +13,9 @@
 	throw_range = 7
 	slot_flags = ITEM_SLOT_BELT
 	resistance_flags = FLAMMABLE
+	drop_sound = 'maplestation_modules/sound/items/drop/accessory.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/accessory.ogg'
+
 	/// The stored pen
 	var/obj/item/pen/pen
 	/// Is the pen integrated?

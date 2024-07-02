@@ -131,7 +131,7 @@
 //This is on /cleanable because fuck this ancient mess
 /obj/effect/decal/cleanable/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-	if(iscarbon(AM) && bloodiness >= 40)
+	if(isliving(AM) && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 

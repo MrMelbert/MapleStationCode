@@ -3,18 +3,19 @@
 /// Underslot - Jumpsuit Items (Deletes overrided items)
 /datum/loadout_category/undersuit
 	category_name = "Jumpsuit"
-	ui_title = "Under Suit Slot Items"
 	type_to_generate = /datum/loadout_item/under/jumpsuit
+	tab_order = 7
 
 /// Underslot - Formal Suit Items (Deletes overrided items)
 /datum/loadout_category/undersuit/formal
 	category_name = "Formal"
 	type_to_generate = /datum/loadout_item/under/formal
+	tab_order = 8
 
 /datum/loadout_item/under
 	abstract_type = /datum/loadout_item/under
 
-/datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
+/datum/loadout_item/under/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE, job_equipping_step = FALSE)
 	if(isplasmaman(equipper))
 		if(!visuals_only)
 			to_chat(equipper, "Your loadout uniform was not equipped directly due to your envirosuit.")
@@ -38,10 +39,16 @@
 	name = "Random Jumpsuit"
 	can_be_greyscale = DONT_GREYSCALE
 	item_path = /obj/item/clothing/under/color/random
-	additional_tooltip_contents = list(TOOLTIP_RANDOM_COLOR)
+	additional_displayed_text = list("Random Color")
 
-/datum/loadout_item/under/jumpsuit/random/on_equip_item(datum/preferences/preference_source, mob/living/carbon/human/equipper, visuals_only, list/preference_list)
-	return
+/datum/loadout_item/under/jumpsuit/random/on_equip_item(
+	obj/item/equipped_item,
+	datum/preferences/preference_source,
+	list/preference_list,
+	mob/living/carbon/human/equipper,
+	visuals_only = FALSE,
+)
+	return NONE
 
 /datum/loadout_item/under/jumpsuit/random/skirt
 	name = "Random Jumpskirt"

@@ -28,6 +28,8 @@
 	var/stacktype = /obj/item/stack/tile/grass
 	var/tile_coefficient = 0.02 // 1/50
 	wine_power = 15
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'
 
 /obj/item/food/grown/grass/attack_self(mob/user)
 	to_chat(user, span_notice("You prepare the astroturf."))

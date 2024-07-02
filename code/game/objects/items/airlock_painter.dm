@@ -14,6 +14,9 @@
 	item_flags = NOBLUDGEON
 	slot_flags = ITEM_SLOT_BELT
 	usesound = 'sound/effects/spray2.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
 	/// The ink cartridge to pull charges from.
 	var/obj/item/toner/ink = null
@@ -165,6 +168,10 @@
 	inhand_icon_state = "decal_sprayer"
 	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 0.5, /datum/material/glass= SMALL_MATERIAL_AMOUNT * 0.5)
 	initial_ink_type = /obj/item/toner/large
+	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
+	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+
 	/// The current direction of the decal being printed
 	var/stored_dir = 2
 	/// The current color of the decal being printed.

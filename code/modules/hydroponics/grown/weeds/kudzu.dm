@@ -106,3 +106,5 @@
 	foodtypes = VEGETABLES | GROSS
 	tastes = list("kudzu" = 1)
 	wine_power = 20
+	drop_sound = 'maplestation_modules/sound/items/drop/herb.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/herb.ogg'

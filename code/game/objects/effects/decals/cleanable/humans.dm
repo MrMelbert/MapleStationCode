@@ -11,7 +11,6 @@
 	decal_reagent = /datum/reagent/blood
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	color = COLOR_BLOOD
-	appearance_flags = parent_type::appearance_flags | KEEP_TOGETHER
 	/// Can this blood dry out?
 	var/can_dry = TRUE
 	/// Is this blood dried out?
@@ -34,7 +33,7 @@
 		0, 1, 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1,
-		-0.75, -0.75, -0.75, 0,
+		-0.5, -0.75, -0.75, 0,
 	)
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
@@ -45,6 +44,11 @@
 
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSblood_drying, src)
+	return ..()
+
+/obj/effect/decal/cleanable/blood/on_entered(datum/source, atom/movable/AM)
+	if(dried)
+		return
 	return ..()
 
 #define DRY_FILTER_KEY "dry_effect"
@@ -314,21 +318,21 @@
 	bloodiness = 0 // set based on the bloodiness of the foot
 	base_name = ""
 	dry_desc = "HMM... SOMEONE WAS HERE!"
+	appearance_flags = parent_type::appearance_flags | KEEP_TOGETHER
 	var/entered_dirs = 0
 	var/exited_dirs = 0
 
 	/// List of shoe or other clothing that covers feet types that have made footprints here.
-	var/list/shoe_types = list()
+	var/list/shoe_types
 
 	/// List of species that have made footprints here.
-	var/list/species_types = list()
+	var/list/species_types
 
 /obj/effect/decal/cleanable/blood/footprints/Initialize(mapload)
 	. = ..()
 	icon_state = "" //All of the footprint visuals come from overlays
 	if(mapload)
 		entered_dirs |= dir //Keep the same appearance as in the map editor
-		update_appearance()
 
 /obj/effect/decal/cleanable/blood/footprints/get_blood_string()
 	return ""
@@ -353,10 +357,6 @@
 	update_appearance()
 	return ..()
 
-/obj/effect/decal/cleanable/blood/footprints/update_icon()
-	. = ..()
-	alpha = min(BLOODY_FOOTPRINT_BASE_ALPHA + (255 - BLOODY_FOOTPRINT_BASE_ALPHA) * bloodiness / ((BLOOD_ITEM_MAX * BLOOD_PER_UNIT_MODIFIER) / 2), 255)
-
 //Cache of bloody footprint images
 //Key:
 //"entered-[blood_state]-[dir_of_image]"
@@ -366,10 +366,12 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 /obj/effect/decal/cleanable/blood/footprints/update_overlays()
 	. = ..()
 	var/icon_state_to_use = "blood"
-	if(SPECIES_MONKEY in species_types)
-		icon_state_to_use += "paw"
-	else if(BODYPART_ID_DIGITIGRADE in species_types)
+	if(LAZYACCESS(species_types, BODYPART_ID_DIGITIGRADE))
 		icon_state_to_use += "claw"
+	else if(LAZYACCESS(species_types, SPECIES_MONKEY))
+		icon_state_to_use += "paw"
+	else if(LAZYACCESS(species_types, "bot"))
+		icon_state_to_use += "bot"
 
 	for(var/Ddir in GLOB.cardinals)
 		if(entered_dirs & Ddir)
@@ -387,22 +389,21 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 /obj/effect/decal/cleanable/blood/footprints/examine(mob/user)
 	. = ..()
-	if((shoe_types.len + species_types.len) > 0)
+	if(LAZYLEN(species_types) + LAZYLEN(shoe_types) > 0)
 		. += "You recognise the footprints as belonging to:"
-		for(var/sole in shoe_types)
-			var/obj/item/clothing/item = sole
-			var/article = initial(item.gender) == PLURAL ? "Some" : "A"
-			. += "[icon2html(initial(item.icon), user, initial(item.icon_state))] [article] <B>[initial(item.name)]</B>."
+		for(var/obj/item/clothing/shoes/sole as anything in shoe_types)
+			var/article = initial(sole.article) || (initial(sole.gender) == PLURAL ? "Some" : "A")
+			. += "[icon2html(initial(sole.icon), user, initial(sole.icon_state))] [article] <B>[initial(sole.name)]</B>."
 		for(var/species in species_types)
-			// god help me
-			if(species == "unknown")
-				. += "Some <B>feet</B>."
-			else if(species == SPECIES_MONKEY)
-				. += "[icon2html('icons/mob/human/human.dmi', user, "monkey")] Some <B>monkey feet</B>."
-			else if(species == SPECIES_HUMAN)
-				. += "[icon2html('icons/mob/human/bodyparts.dmi', user, "default_human_l_leg")] Some <B>human feet</B>."
-			else
-				. += "[icon2html('icons/mob/human/bodyparts.dmi', user, "[species]_l_leg")] Some <B>[species] feet</B>."
+			switch(species)
+				if("unknown")
+					. += "&bull; Some <B>creature's feet</B>."
+				if(SPECIES_MONKEY)
+					. += "&bull; Some <B>monkey feet</B>."
+				if(SPECIES_HUMAN)
+					. += "&bull; Some <B>human feet</B>."
+				else
+					. += "&bull; Some <B>[species] feet</B>."
 
 /obj/effect/decal/cleanable/blood/hitsplatter
 	name = "blood splatter"
@@ -430,12 +431,12 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	if(splatter_strength)
 		src.splatter_strength = splatter_strength
 
-/obj/effect/decal/cleanable/blood/hitsplatter/Destroy()
+/obj/effect/decal/cleanable/blood/hitsplatter/proc/expire()
 	if(isturf(loc) && !skip)
 		playsound(src, 'sound/effects/wounds/splatter.ogg', 60, TRUE, -1)
 		if(blood_dna_info)
 			loc.add_blood_DNA(blood_dna_info)
-	return ..()
+	qdel(src)
 
 /// Set the splatter up to fly through the air until it rounds out of steam or hits something
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/fly_towards(turf/target_turf, range)
@@ -451,42 +452,35 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/post_move(datum/move_loop/source)
 	SIGNAL_HANDLER
-	for(var/atom/iter_atom in get_turf(src))
+	for(var/atom/movable/iter_atom in loc)
 		if(hit_endpoint)
 			return
+		if(iter_atom == src || iter_atom.invisibility || iter_atom.alpha <= 0 || (isobj(iter_atom) && !iter_atom.density))
+			continue
 		if(splatter_strength <= 0)
 			break
 
-		if(isitem(iter_atom))
-			iter_atom.add_blood_DNA(blood_dna_info)
-			splatter_strength--
-		else if(ishuman(iter_atom))
-			var/mob/living/carbon/human/splashed_human = iter_atom
-			if(splashed_human.wear_suit)
-				splashed_human.wear_suit.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_oversuit()    //updates mob overlays to show the new blood (no refresh)
-			if(splashed_human.w_uniform)
-				splashed_human.w_uniform.add_blood_DNA(blood_dna_info)
-				splashed_human.update_worn_undersuit()    //updates mob overlays to show the new blood (no refresh)
-			splatter_strength--
+		iter_atom.add_blood_DNA(blood_dna_info)
+		splatter_strength--
+
 	if(splatter_strength <= 0) // we used all the puff so we delete it.
-		qdel(src)
+		expire()
 
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/loop_done(datum/source)
 	SIGNAL_HANDLER
 	if(!QDELETED(src))
-		qdel(src)
+		expire()
 
 /obj/effect/decal/cleanable/blood/hitsplatter/Bump(atom/bumped_atom)
 	if(!iswallturf(bumped_atom) && !istype(bumped_atom, /obj/structure/window))
-		qdel(src)
+		expire()
 		return
 
 	if(istype(bumped_atom, /obj/structure/window))
 		var/obj/structure/window/bumped_window = bumped_atom
 		if(!bumped_window.fulltile)
 			hit_endpoint = TRUE
-			qdel(src)
+			expire()
 			return
 
 	hit_endpoint = TRUE
@@ -504,7 +498,7 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 			final_splatter.add_blood_DNA(blood_dna_info)
 	else // This will only happen if prev_loc is not even a turf, which is highly unlikely.
 		abstract_move(bumped_atom)
-		qdel(src)
+		expire()
 
 /// A special case for hitsplatters hitting windows, since those can actually be moved around, store it in the window and slap it in the vis_contents
 /obj/effect/decal/cleanable/blood/hitsplatter/proc/land_on_window(obj/structure/window/the_window)
@@ -516,4 +510,4 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 	final_splatter.forceMove(the_window)
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE
-	qdel(src)
+	expire()

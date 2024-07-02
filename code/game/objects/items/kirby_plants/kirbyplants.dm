@@ -12,7 +12,8 @@
 	throw_speed = 2
 	throw_range = 4
 	item_flags = NO_PIXEL_RANDOM_DROP
-
+	drop_sound = 'maplestation_modules/sound/items/drop/generic2.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic3.ogg'
 	/// Can this plant be trimmed by someone with TRAIT_BONSAI
 	var/trimmable = TRUE
 	/// Whether this plant is dead and requires a seed to revive

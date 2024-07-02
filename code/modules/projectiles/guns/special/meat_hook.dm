@@ -17,6 +17,8 @@
 	sharpness = SHARP_POINTY
 	force = 18
 	antimagic_flags = NONE
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/gun/magic/hook/shoot_with_empty_chamber(mob/living/user)
 	balloon_alert(user, "not ready yet!")

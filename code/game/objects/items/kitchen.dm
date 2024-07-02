@@ -12,6 +12,8 @@
 	icon = 'icons/obj/service/kitchen.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 
 /obj/item/kitchen/Initialize(mapload)
 	. = ..()
@@ -74,6 +76,8 @@
 	throwforce = 0
 	custom_materials = list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 0.8)
 	custom_price = PAYCHECK_LOWER * 1
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/kitchen/fork/plastic/Initialize(mapload)
 	. = ..()
@@ -97,6 +101,8 @@
 	attack_verb_simple = list("prod", "whiff", "scratch", "poke")
 	sharpness = SHARP_EDGED
 	custom_price = PAYCHECK_LOWER * 2
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /obj/item/knife/plastic/Initialize(mapload)
 	. = ..()
@@ -162,6 +168,8 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	custom_price = PAYCHECK_CREW * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
+	drop_sound = 'maplestation_modules/sound/items/drop/wooden.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/wooden.ogg'
 
 /obj/item/kitchen/rollingpin/illegal
 	name = "metal rolling pin"
@@ -173,6 +181,9 @@
 	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 1.5, /datum/material/plastic = SHEET_MATERIAL_AMOUNT * 1.5)
 	custom_price = PAYCHECK_CREW * 2
 	bare_wound_bonus = 14
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+
 
 /obj/item/kitchen/rollingpin/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins flattening [user.p_their()] head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -303,6 +314,8 @@
 	custom_materials = list(/datum/material/plastic = SMALL_MATERIAL_AMOUNT * 1.2)
 	toolspeed = 75 // The plastic spoon takes 5 minutes to dig through a single mineral turf... It's one, continuous, breakable, do_after...
 	custom_price = PAYCHECK_LOWER * 1
+	drop_sound = 'maplestation_modules/sound/items/drop/food.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/food.ogg'
 
 /datum/armor/kitchen_spoon
 	fire = 50

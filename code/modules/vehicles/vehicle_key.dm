@@ -4,6 +4,8 @@
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "key"
 	w_class = WEIGHT_CLASS_TINY
+	drop_sound = 'maplestation_modules/sound/items/drop/ring.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/ring.ogg'
 
 /obj/item/key/atv
 	name = "ATV key"

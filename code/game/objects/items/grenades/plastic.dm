@@ -12,6 +12,9 @@
 	display_timer = FALSE
 	w_class = WEIGHT_CLASS_SMALL
 	gender = PLURAL
+	drop_sound = 'maplestation_modules/sound/items/drop/generic1.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/generic1.ogg'
+
 	var/atom/target = null
 	var/mutable_appearance/plastic_overlay
 	var/directional = FALSE
