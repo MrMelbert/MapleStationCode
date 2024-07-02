@@ -76,7 +76,7 @@
 /datum/spellbook_item/spell/ice_knife/apply_params(datum/action/cooldown/spell/conjure_item/ice_knife/our_spell, ice_blade)
 	if (ice_blade)
 		our_spell.item_type = /obj/item/melee/arm_blade/ice_armblade
-		our_spell.ice_knife_cost = 45
+		our_spell.mana_cost = 45
 		our_spell.name = "Ice Armblade"
 		our_spell.desc = "Construct a blade around your arm, in exchange of harming it in the process."
 	return
