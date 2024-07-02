@@ -50,7 +50,7 @@
 	result = /datum/mutation/human/martyrdom
 
 /datum/generecipe/heckacious
-	required = "/datum/mutation/human/wacky; /datum/mutation/human/trichromatic"
+	required = "/datum/mutation/human/wacky; /datum/mutation/human/stoner"
 	result = /datum/mutation/human/heckacious
 
 /datum/generecipe/rock_absorber
