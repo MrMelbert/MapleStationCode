@@ -1,10 +1,6 @@
 #define FREEZE_PERSON_ATTUNEMENT_ICE 0.5
 #define FREEZE_PERSON_MANA_COST 50
 
-/datum/component/uses_mana/story_spell/pointed/freeze_person
-	var/freeze_person_attunement = FREEZE_PERSON_ATTUNEMENT_ICE
-	var/freeze_person_cost = FREEZE_PERSON_MANA_COST
-
 /datum/action/cooldown/spell/pointed/freeze_person
 	name = "Freeze Person"
 	desc = "Encase your target in a block of enchanted ice, rendering them immobile and immune to damage."
@@ -25,15 +21,13 @@
 	aim_assist = FALSE
 	cast_range = 8
 
-
-
 /datum/action/cooldown/spell/pointed/freeze_person/New(Target, original)
 	. = ..()
 
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_ICE] += FREEZE_PERSON_ATTUNEMENT_ICE
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/freeze_person, \
+	AddComponent(/datum/component/uses_mana/, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = mana_cost, \
