@@ -1,10 +1,6 @@
 #define ILLUSION_ATTUNEMENT_LIGHT 0.5
 #define ILLUSION_MANA_COST 25
 
-/datum/component/uses_mana/story_spell/pointed/illusion
-	var/illusion_attunement = ILLUSION_ATTUNEMENT_LIGHT
-	var/illusion_cost = ILLUSION_MANA_COST
-
 /* /datum/component/uses_mana/story_spell/pointed/illusion/get_attunement_dispositions()
 	. = ..()
 	.[/datum/attunement/light] = illusion_attunement */
@@ -38,7 +34,7 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_LIGHT] += ILLUSION_ATTUNEMENT_LIGHT
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/illusion, \
+	AddComponent(/datum/component/uses_mana/, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = mana_cost, \
