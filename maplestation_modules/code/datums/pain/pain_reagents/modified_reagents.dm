@@ -60,10 +60,6 @@
 /datum/reagent/medicine/mine_salve
 	pain_modifier = 0.66
 
-// Determined = fight or flight mode = should have less pain
-/datum/reagent/determination
-	pain_modifier = 0.8
-
 // Drugs reduce pain
 /datum/reagent/drug/space_drugs
 	pain_modifier = 0.8

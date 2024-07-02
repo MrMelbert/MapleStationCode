@@ -32,10 +32,6 @@
 			to_chat(src, span_warning("You do not breathe, so you can only perform compressions!"))
 
 		else
-			if(target.stat == DEAD)
-				to_chat(src, span_warning("[target.p_Their()] mouth feels cold..."))
-			else if(!target.undergoing_cardiac_arrest())
-				to_chat(src, span_notice("You feel a pulse!"))
 			doing_a_breath = TRUE
 
 	if(doing_a_breath)
@@ -43,6 +39,10 @@
 			span_notice("[src] attempts to give [target.name] a rescue breath!"),
 			span_notice("You attempt to give [target.name] a rescue breath as a part of CPR... Hold still!"),
 		)
+		if(target.stat == DEAD)
+			to_chat(src, span_warning("[target.p_Their()] mouth feels cold to the touch..."))
+		else if(!target.undergoing_cardiac_arrest())
+			to_chat(src, span_notice("You feel a pulse!"))
 
 		if(!do_after(user = src, delay = doafter_mod * 6 SECONDS, target = target))
 			return
@@ -122,7 +122,7 @@
 
 		log_combat(src, target, "CPRed", addition = "(compression)")
 
-	if(target.body_position != LYING_DOWN || target.appears_alive() || !target.undergoing_cardiac_arrest())
+	if(target.body_position != LYING_DOWN || !target.undergoing_cardiac_arrest())
 		return
 
 	cpr_process(target, beat + 1, panicking)
@@ -141,11 +141,13 @@
 		return FALSE
 	owner.add_consciousness_modifier(id, 5)
 	ADD_TRAIT(owner, TRAIT_NO_ORGAN_DECAY, id) // cycling the heart, so if they're dead, organs aren't decaying
+	ADD_TRAIT(owner, TRAIT_ASSISTED_BREATHING, id)
 	return TRUE
 
 /datum/status_effect/cpr_applied/on_remove()
 	owner.remove_consciousness_modifier(id)
 	REMOVE_TRAIT(owner, TRAIT_NO_ORGAN_DECAY, id)
+	REMOVE_TRAIT(owner, TRAIT_ASSISTED_BREATHING, id)
 
 /datum/status_effect/cpr_applied/refresh(effect, ...)
 	if(!is_effective(owner))

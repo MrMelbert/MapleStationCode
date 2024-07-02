@@ -74,7 +74,7 @@
 	if(!HAS_TRAIT(src, TRAIT_ASSISTED_BREATHING))
 		if(stat == HARD_CRIT || (pulledby?.grab_state >= GRAB_KILL))
 			losebreath += 1
-		else if(undergoing_cardiac_arrest())
+		else if(stat == SOFT_CRIT)
 			losebreath += (1 / next_breath)
 
 	// Suffocate

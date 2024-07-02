@@ -545,7 +545,7 @@
 
 	var/brutecon = -0.05 * total_brute
 	var/firecon = -0.05 * total_burn
-	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(max(total_oxy * 0.75, losebreath * 4), 75))
+	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(total_oxy * 0.66, 66))
 	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
 	LAZYSET(consciousness_modifiers, "brute", brutecon)
 	LAZYSET(consciousness_modifiers, "fire", firecon)

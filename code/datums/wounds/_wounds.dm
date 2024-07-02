@@ -447,13 +447,13 @@
 /datum/wound/proc/second_wind()
 	switch(severity)
 		if(WOUND_SEVERITY_MODERATE)
-			victim.reagents.add_reagent(/datum/reagent/determination, WOUND_DETERMINATION_MODERATE)
+			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_MODERATE)
 		if(WOUND_SEVERITY_SEVERE)
-			victim.reagents.add_reagent(/datum/reagent/determination, WOUND_DETERMINATION_SEVERE)
+			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_SEVERE)
 		if(WOUND_SEVERITY_CRITICAL)
-			victim.reagents.add_reagent(/datum/reagent/determination, WOUND_DETERMINATION_CRITICAL)
+			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_CRITICAL)
 		if(WOUND_SEVERITY_LOSS)
-			victim.reagents.add_reagent(/datum/reagent/determination, WOUND_DETERMINATION_LOSS)
+			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_LOSS)
 
 /**
  * try_treating() is an intercept run from [/mob/living/carbon/proc/attackby] right after surgeries but before anything else. Return TRUE here if the item is something that is relevant to treatment to take over the interaction.

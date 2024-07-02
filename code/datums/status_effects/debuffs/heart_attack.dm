@@ -31,6 +31,7 @@
 		owner.cause_pain(BODY_ZONE_CHEST, -20)
 		owner.remove_consciousness_multiplier(id)
 		owner.remove_max_consciousness_value(id)
+		REMOVE_TRAIT(owner, TRAIT_SOFT_CRIT, id)
 
 /datum/status_effect/heart_attack/proc/delayed_ko()
 	ko_timer = null
@@ -50,9 +51,11 @@
 	if(HAS_TRAIT(owner, TRAIT_NOBREATH))
 		owner.remove_consciousness_multiplier(id)
 		owner.remove_max_consciousness_value(id)
+		REMOVE_TRAIT(owner, TRAIT_SOFT_CRIT, id)
 	else
-		owner.add_consciousness_multiplier(id, 0.5)
+		owner.add_consciousness_multiplier(id, 0.75)
 		owner.add_max_consciousness_value(id, 30)
+		ADD_TRAIT(owner, TRAIT_SOFT_CRIT, id)
 
 /datum/status_effect/heart_attack/tick(seconds_between_ticks)
 	if(ko_timer) // Not yet
@@ -62,8 +65,7 @@
 	if(owner.has_status_effect(/datum/status_effect/cpr_applied))
 		return
 
-	if(!HAS_TRAIT(owner, TRAIT_NOBREATH))
-		owner.adjustOxyLoss(4 * seconds_between_ticks)
-
+	// More oxy damage is caused via losebreath (in breath())
+	owner.apply_damage(0.5 * seconds_between_ticks, OXY)
 	// Tissues die without blood circulation
-	owner.adjustBruteLoss(1 * seconds_between_ticks)
+	owner.apply_damage(1 * seconds_between_ticks, BRUTE, BODY_ZONE_CHEST, forced = TRUE, wound_bonus = CANT_WOUND)

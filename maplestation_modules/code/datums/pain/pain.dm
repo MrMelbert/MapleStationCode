@@ -25,6 +25,8 @@
 	/// Amount of shock building up from higher levels of pain
 	/// When greater than current health, we go into shock
 	var/shock_buildup = 0
+
+	var/heart_attack_counter = 0
 	/// Cooldown to track the last time we lost pain.
 	COOLDOWN_DECLARE(time_since_last_pain_loss)
 	/// Cooldown to track last time we sent a pain message.
@@ -514,7 +516,11 @@
 		// no-op if none of our bodyparts are in pain
 		return
 
-	var/shocked = !is_undergoing_shock()
+	var/shock_mod = 1
+	if(HAS_TRAIT(parent, TRAIT_ABATES_SHOCK))
+		shock_mod *= 0.5
+	if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
+		shock_mod *= 1.2
 	var/curr_pain = get_average_pain()
 	switch(curr_pain)
 		if(-INFINITY to 10)
@@ -524,41 +530,48 @@
 			parent.adjust_pain_shock(-1 * seconds_per_tick)
 
 		if(20 to 40)
+			if(shock_buildup <= 30)
+				parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_danger(pick("Everything aches.", "Everything feels sore.")))
 
 		if(40 to 70)
-			parent.adjust_pain_shock(1 * seconds_per_tick)
+			parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_bolddanger(pick("Everything hurts.", "Everything feels very sore.", "It hurts.")))
 
 		if(70 to INFINITY)
-			parent.adjust_pain_shock(3 * seconds_per_tick)
+			parent.adjust_pain_shock(3 * shock_mod * seconds_per_tick)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_userdanger(pick("Stop the pain!", "Everything hurts!")))
 
 	switch(shock_buildup)
 		if(10 to 60)
 			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_danger("[pick("Everything aches.", "Everything feels sore.", "You could use some painkillers.")]"))
+				do_pain_message(span_danger(pick("Everything aches.", "Everything feels sore.", "You could use some painkillers.")))
+			parent.adjust_bodytemperature(-5 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() + 5)
 		if(60 to 120)
 			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_bolddanger("[pick("Everything hurts.", "Everything feels very sore.", "It hurts.", "You really need some painkillers.")]"))
+				do_pain_message(span_bolddanger(pick("Everything hurts.", "Everything feels very sore.", "It hurts.", "You really need some painkillers.")))
+			if(SPT_PROB(4, seconds_per_tick))
+				to_chat(parent, span_warning("You feel cold!"))
+				parent.pain_emote("shiver", 3 SECONDS)
+			parent.adjust_bodytemperature(-10 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 5)
 		if(120 to 180)
 			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_userdanger("[pick("Stop the pain!", "Everything hurts!", "You need painkillers now!")]"))
+				do_pain_message(span_userdanger(pick("Stop the pain!", "Everything hurts!", "You need painkillers now!")))
+			if(SPT_PROB(4, seconds_per_tick))
+				to_chat(parent, span_warning("You feel freezing!"))
+				parent.pain_emote("shiver", 3 SECONDS)
+			parent.adjust_bodytemperature(-20 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 20)
 
-	if((shock_buildup >= 20 || shocked) && !just_cant_feel_anything)
-		parent.adjust_jitter_up_to(2 SECONDS * pain_modifier, 60 SECONDS)
-		if(SPT_PROB(10, seconds_per_tick))
-			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(shock_buildup * 0.1, seconds_per_tick))
-			parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(shock_buildup * 0.1, seconds_per_tick))
-			parent.adjust_eye_blur_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+	if(shock_buildup >= 20 && !just_cant_feel_anything && SPT_PROB(shock_buildup * 0.1, seconds_per_tick))
+		parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+		parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
-	if(shock_buildup >= 60 || shocked)
-		if(SPT_PROB(5, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(2 SECONDS))
+	if(shock_buildup >= 60)
+		if(SPT_PROB(5, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent]'s body falls limp!"),
 				span_warning("Your body [just_cant_feel_anything ? "goes" : "falls"] limp!"),
@@ -569,27 +582,60 @@
 		if(SPT_PROB(10, seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
-	if(shock_buildup >= 120 || shocked)
-		if(SPT_PROB(4, seconds_per_tick) && !parent.IsUnconscious() && parent.Unconscious(4 SECONDS))
+	if(shock_buildup >= 120 && SPT_PROB(4, seconds_per_tick) && parent.stat != HARD_CRIT)
+		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
-				span_warning("[pick("You black out!", "You feel like you're about to die!", "You lose consciousness!")]"),
+				span_warning(pick("You black out!", "You feel like you're about to die!", "You lose consciousness!")),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 
-	// This is where shock can trigger
-	if(shock_buildup > (parent.health + (parent.maxHealth * 2)))
-		if(!HAS_TRAIT(parent, TRAIT_NO_SHOCK_BUILDUP) && !shocked && !parent.undergoing_cardiac_arrest())
-			parent.ForceContractDisease(new /datum/disease/shock(), FALSE, TRUE)
-			to_chat(parent, span_userdanger("You feel your body start to shut down!"))
-			if(!HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS))
-				if(parent.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
-					parent.visible_message(span_danger("[parent] stares into the distance as they go into shock!"), ignored_mobs = parent)
-				else
-					parent.visible_message(span_danger("[parent] grabs at their chest and stares into the distance as they go into shock!"), ignored_mobs = parent)
+	// This is death
+	if(shock_buildup >= 120 && !parent.undergoing_cardiac_arrest())
+		var/heart_attack_prob = 0
+		if(parent.health <= parent.maxHealth * -1)
+			heart_attack_prob += abs(parent.health + parent.maxHealth) * 0.1
+		if(shock_buildup >= 180)
+			heart_attack_prob += (shock_buildup * 0.1)
+
+		if(SPT_PROB(heart_attack_prob, seconds_per_tick))
+			if(!parent.can_heartattack())
+				parent.losebreath += 4
+			else if(heart_attack_counter > 2)
+				to_chat(parent, span_userdanger("Your heart stops!"))
+				if(!parent.incapacitated())
+					parent.visible_message(span_danger("[parent] grabs at [parent.p_their()] chest!"), ignored_mobs = parent)
+				parent.set_heartattack(TRUE)
+				heart_attack_counter = -2
+			else
+				parent.losebreath += 1
+				heart_attack_counter += 1
+				switch(heart_attack_counter)
+					if(1)
+						to_chat(parent, span_userdanger("You feel your heart beat irregularly."))
+					if(2)
+						to_chat(parent, span_userdanger("You feel your heart skip a beat."))
+					else
+						to_chat(parent, span_userdanger("You feel your body shutting down!"))
+	else
+		heart_attack_counter = 0
+
+	// This is where "soft crit" is now
+	if(shock_buildup >= 90)
+		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
+			ADD_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
+			set_pain_modifier("shock", 1.2)
+			parent.add_max_consciousness_value("shock", 60)
+			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
+	else
+		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
+			REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
+			unset_pain_modifier("shock")
+			parent.remove_max_consciousness_value("shock")
+			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
 	// This is "paincrit", it's where stamcrit has moved and is also applied by extreme shock
-	if(curr_pain >= 75 || shock_buildup > (parent.health + (parent.maxHealth * 2.5)))
+	if(curr_pain >= 75 || shock_buildup >= 150)
 		ADD_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
 		var/is_standing = parent.body_position == STANDING_UP
 		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS))
@@ -703,6 +749,10 @@
 	parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 	parent.clear_mood_event("pain")
 	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
+	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
+	unset_pain_modifier("shock")
+	parent.remove_max_consciousness_value("shock")
+	parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
 /**
  * Run a pain related emote, if a few checks are successful.
@@ -764,10 +814,6 @@
 
 	return round(100 * total_pain / max_total_pain, 0.01)
 
-/// Returns a disease datum (Truthy value) if we are undergoing shock.
-/datum/pain/proc/is_undergoing_shock()
-	return locate(/datum/disease/shock) in parent.diseases
-
 /// Adds a custom stammer to people under the effects of pain.
 /datum/pain/proc/handle_message(datum/source, list/message_args)
 	SIGNAL_HANDLER
@@ -777,7 +823,7 @@
 		return
 
 	var/num_repeats = get_average_pain() * pain_modifier
-	if(HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS) && !is_undergoing_shock())
+	if(HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS) && shock_buildup < 90)
 		num_repeats *= 0.5
 
 	num_repeats = floor(num_repeats / 20)
@@ -868,7 +914,7 @@
 
 	var/amount = ""
 	var/tip = ""
-	var/in_shock = !!is_undergoing_shock()
+	var/in_shock = HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock")
 	if(in_shock)
 		tip += span_bold("Neurogenic shock has begun and should be treated urgently. ")
 

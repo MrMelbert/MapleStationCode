@@ -53,25 +53,6 @@
 		human_owner.unset_pain_mod(id)
 	return ..()
 
-// Determination gives a hefty pain modifier
-/datum/status_effect/determined/on_apply()
-	. = ..()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		human_owner.set_pain_mod(id, 0.625)
-	ADD_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
-	ADD_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
-	owner.add_consciousness_multiplier(id, 1.2)
-
-/datum/status_effect/determined/on_remove()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		human_owner.unset_pain_mod(id)
-	REMOVE_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
-	REMOVE_TRAIT(owner, TRAIT_NO_SHOCK_BUILDUP, TRAIT_STATUS_EFFECT(id))
-	owner.remove_consciousness_multiplier(id)
-	return ..()
-
 // Fake healthy is supposed to mimic feeling no pain
 /datum/status_effect/grouped/screwy_hud/fake_healthy/on_apply()
 	. = ..()

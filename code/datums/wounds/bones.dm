@@ -413,18 +413,7 @@
 		user.visible_message(span_notice("[user] finishes applying [I] to [victim]'s [limb.plaintext_zone], emitting a fizzing noise!"), span_notice("You finish applying [I] to [victim]'s [limb.plaintext_zone]!"), ignored_mobs=victim)
 		to_chat(victim, span_userdanger("[user] finishes applying [I] to your [limb.plaintext_zone], and you can feel the bones exploding with pain as they begin melting and reforming!"))
 	else
-		var/painkiller_bonus = 0
-		if(victim.get_drunk_amount() > 10)
-			painkiller_bonus += 10
-		if(victim.reagents.has_reagent(/datum/reagent/medicine/painkiller/morphine)) // NON-MODULE CHANGE
-			painkiller_bonus += 20
-		if(victim.reagents.has_reagent(/datum/reagent/determination))
-			painkiller_bonus += 10
-		if(victim.reagents.has_reagent(/datum/reagent/consumable/ethanol/painkiller))
-			painkiller_bonus += 15
-		if(victim.reagents.has_reagent(/datum/reagent/medicine/mine_salve))
-			painkiller_bonus += 20
-
+		var/painkiller_bonus = 50 * (1 - (victim.pain_controller?.pain_modifier || 1))
 		if(prob(25 + (20 * (severity - 2)) - painkiller_bonus)) // 25%/45% chance to fail self-applying with severe and critical wounds, modded by painkillers
 			victim.visible_message(span_danger("[victim] fails to finish applying [I] to [victim.p_their()] [limb.plaintext_zone], passing out from the pain!"), span_notice("You pass out from the pain of applying [I] to your [limb.plaintext_zone] before you can finish!"))
 			victim.AdjustUnconscious(5 SECONDS)
