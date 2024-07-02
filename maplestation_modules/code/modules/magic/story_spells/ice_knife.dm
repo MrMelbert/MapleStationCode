@@ -1,5 +1,6 @@
 #define ICE_KNIFE_ATTUNEMENT_ICE 0.5
 #define ICE_KNIFE_MANA_COST 30
+#define ICE_ARMBLADE_MANA_COST 45
 
 /* /datum/component/uses_mana/story_spell/conjure_item/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/conjure_item/ice_knife/ice_knife_spell = parent
@@ -29,7 +30,7 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_ICE] += ICE_KNIFE_ATTUNEMENT_ICE
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_knife, \
+	AddComponent(/datum/component/uses_mana/, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = mana_cost, \
@@ -76,7 +77,7 @@
 /datum/spellbook_item/spell/ice_knife/apply_params(datum/action/cooldown/spell/conjure_item/ice_knife/our_spell, ice_blade)
 	if (ice_blade)
 		our_spell.item_type = /obj/item/melee/arm_blade/ice_armblade
-		our_spell.mana_cost = 45
+		our_spell.mana_cost = ICE_ARMBLADE_MANA_COST
 		our_spell.name = "Ice Armblade"
 		our_spell.desc = "Construct a blade around your arm, in exchange of harming it in the process."
 	return
@@ -148,4 +149,4 @@
 
 #undef ICE_KNIFE_ATTUNEMENT_ICE
 #undef ICE_KNIFE_MANA_COST
-
+#undef ICE_ARMBLADE_MANA_COST
