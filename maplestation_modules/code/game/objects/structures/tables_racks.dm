@@ -19,6 +19,5 @@
 	if(!disassembled)
 		playsound(src, 'sound/effects/bang.ogg', 90, TRUE)
 		visible_message(span_danger("[src] breaks down!"),
-			span_danger("You break down!"),
-			span_danger("You hear something breaking."))
+			blind_message = span_danger("You hear something breaking."))
 	. = ..()
