@@ -9,24 +9,24 @@
  */
 /datum/pain
 	/// The parent mob we're tracking.
-	var/mob/living/carbon/parent
-	/// Modifier applied to all [adjust_pain] amounts
-	var/pain_modifier = 1
+	VAR_PRIVATE/mob/living/carbon/parent
+	/// Modifier applied to all negative incoming pain ammounts
+	/// Below 0.5, a mob is treated as "numb", IE, feels no pain effects (though it still accumulates)
+	VAR_FINAL/pain_modifier = 1
 	/// Lazy Assoc list [id] to [modifier], all our pain modifiers affecting our final mod
-	var/list/pain_mods
+	VAR_PRIVATE/list/pain_mods
 	/// Lazy Assoc list [zones] to [references to bodyparts], all the body parts we're tracking
-	var/list/body_zones
+	VAR_PRIVATE/list/body_zones
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
-	var/natural_pain_decay = -0.2
+	VAR_FINAL/natural_pain_decay = -0.2
 	/// The base amount of pain decay received.
-	VAR_FINAL/base_pain_decay = -0.2
+	var/base_pain_decay = -0.2
 	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
-	var/natural_decay_counter = 0
+	VAR_FINAL/natural_decay_counter = 0
 	/// Amount of shock building up from higher levels of pain
-	/// When greater than current health, we go into shock
-	var/shock_buildup = 0
-
-	var/heart_attack_counter = 0
+	VAR_FINAL/shock_buildup = 0
+	/// Tracks how many successful heart attack rolls in a row
+	VAR_FINAL/heart_attack_counter = 0
 	/// Cooldown to track the last time we lost pain.
 	COOLDOWN_DECLARE(time_since_last_pain_loss)
 	/// Cooldown to track last time we sent a pain message.
@@ -89,6 +89,7 @@
 	RegisterSignals(parent, list(SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS), SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS)), PROC_REF(refresh_pain_attributes))
 	RegisterSignal(parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
 	RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
+	RegisterSignal(parent, COMSIG_MOB_FIRED_GUN, PROC_REF(on_mob_fired_gun))
 
 /datum/pain/proc/unregister_pain_signals()
 	UnregisterSignal(parent, list(
@@ -104,6 +105,7 @@
 		SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS),
 		SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS),
 		COMSIG_LIVING_TREAT_MESSAGE,
+		COMSIG_MOB_FIRED_GUN,
 	))
 
 /// Add a bodypart to be tracked.
@@ -686,24 +688,50 @@
 	// We can be liberal with this because when they're extinguished most of it will go away.
 	parent.apply_status_effect(/datum/status_effect/pain_from_fire, clamp(parent.fire_stacks * 0.2, 0, 2))
 
+/// Affect accuracy of fired guns while in pain.
+/datum/pain/proc/on_mob_fired_gun(mob/living/carbon/human/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
+	SIGNAL_HANDLER
+	var/obj/item/bodypart/shooting_with = user.get_active_hand()
+	var/obj/item/bodypart/chest = user.get_bodypart(BODY_ZONE_CHEST)
+	var/obj/item/bodypart/head = user.get_bodypart(BODY_ZONE_HEAD)
+
+	var/penalty = 0
+	// Basically averaging the pain of the shooting hand, chest, and head, with the hand being weighted more
+	penalty += shooting_with?.get_modified_pain()
+	penalty += chest?.get_modified_pain() * 0.5
+	penalty += head?.get_modified_pain() * 0.5
+	penalty /= 3
+	// Then actually making it into the final value
+	penalty = floor(penalty / 5)
+	// Applying min and max
+	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += penalty
+	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += penalty * 3
+
 /// Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
 /datum/pain/proc/refresh_pain_attributes(...)
 	SIGNAL_HANDLER
 
 	var/avg_pain = get_average_pain()
+	// Pain is halved if you can't feel pain (but ignore pain modifier for now)
+	if(!parent.can_feel_pain(TRUE))
+		avg_pain *= 0.5
 
+	// Even if you can't feel pain it still contributes to consciousness loss
 	if(avg_pain <= 10)
 		parent.remove_consciousness_modifier("pain")
 	else
-		parent.add_consciousness_modifier("pain", -5 * sqrt(avg_pain) * (parent.can_feel_pain(TRUE) ? 1 : 0.5))
+		parent.add_consciousness_modifier("pain", -5 * sqrt(avg_pain))
 
+	// Pain is set to 0 fully if you can't feel pain OR pain modifier <= 0.5 (numbness threshold)
 	if(!parent.can_feel_pain(FALSE))
-		clear_pain_attributes()
-		return
+		avg_pain = 0
 
 	switch(avg_pain)
 		if(-INFINITY to 20)
-			clear_pain_attributes()
+			parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
+			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
+			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
+			parent.clear_mood_event("pain")
 		if(20 to 40)
 			parent.mob_surgery_speed_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
@@ -724,16 +752,6 @@
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
 			parent.add_mood_event("pain", /datum/mood_event/crippling_pain)
-
-/// Clears all pain related attributes
-/datum/pain/proc/clear_pain_attributes()
-	parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
-	parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
-	parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
-	parent.clear_mood_event("pain")
-	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
-	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
-	REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
 
 /**
  * Run a pain related emote, if a few checks are successful.
@@ -845,12 +863,14 @@
 		// Shouldn't be necessary but you never know!
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
-	clear_pain_attributes()
 	shock_buildup = 0
 	natural_pain_decay = base_pain_decay
 	unset_pain_modifier("shock")
 	parent.remove_max_consciousness_value("shock")
 	parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
+	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
+	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
+	REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
 
 /// Determines if we should be processing or not.
 /datum/pain/proc/on_parent_statchance(mob/source)

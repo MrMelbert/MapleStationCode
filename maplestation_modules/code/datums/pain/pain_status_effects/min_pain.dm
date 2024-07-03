@@ -34,7 +34,7 @@
 	if(!targeted_zone || min_amount == 0)
 		return FALSE
 
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/afflicted_bodypart = owner.get_bodypart(targeted_zone)
 	if(!afflicted_bodypart)
 		return FALSE
 
@@ -42,8 +42,7 @@
 	return TRUE
 
 /datum/status_effect/minimum_bodypart_pain/on_remove()
-	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
+	var/obj/item/bodypart/afflicted_bodypart = owner.get_bodypart(targeted_zone)
 	if(!afflicted_bodypart)
 		return
 

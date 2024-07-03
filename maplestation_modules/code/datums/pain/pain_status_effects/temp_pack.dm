@@ -57,7 +57,7 @@
 		if(pre_existing_effect.targeted_zone == targeted_zone)
 			return FALSE
 
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(!held_bodypart)
 		return FALSE
 
@@ -75,7 +75,7 @@
 
 	if(temperature_change)
 		owner.adjust_bodytemperature(temperature_change, owner.get_body_temp_cold_damage_limit() + 5, owner.get_body_temp_heat_damage_limit() - 5)
-	var/obj/item/bodypart/held_bodypart = owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(held_bodypart && prob(66))
 		owner.cause_pain(targeted_zone, -pain_heal_amount)
 		if(prob(10) && held_bodypart.get_modified_pain() > 0)
@@ -101,8 +101,7 @@
 	qdel(src)
 
 /datum/status_effect/temperature_pack/on_remove()
-	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	held_bodypart?.bodypart_pain_modifier /= pain_modifier
 	qdel(pressed_item.GetComponent(/datum/component/make_item_slow))
 	UnregisterSignal(pressed_item, list(COMSIG_QDELETING, COMSIG_ITEM_DROPPED, COMSIG_TEMPERATURE_PACK_EXPIRED))
@@ -121,15 +120,13 @@
 	if(!.)
 		return
 
-	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(held_bodypart.get_modified_pain() > 0)
 		to_chat(human_owner, span_green("You wince as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.plaintext_zone], but eventually the chill starts to dull the pain."))
 		human_owner.pain_emote("wince", 3 SECONDS)
 
 /datum/status_effect/temperature_pack/cold/get_examine_text()
-	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	return span_danger("[holder == owner ? "[owner.p_Theyre()]" : "[holder] is"] pressing a cold [pressed_item.name] against [owner.p_their()] [held_bodypart.plaintext_zone].")
 
 /datum/status_effect/temperature_pack/cold/tick()
@@ -149,15 +146,13 @@
 	if(!.)
 		return
 
-	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(held_bodypart.get_modified_pain() > 0)
 		to_chat(human_owner, span_green("You gasp as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.plaintext_zone], but eventually the warmth starts to dull the pain."))
 		human_owner.pain_emote("gasp", 3 SECONDS)
 
 /datum/status_effect/temperature_pack/head/get_examine_text()
-	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/held_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
+	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	return span_danger("[holder == owner ? "[owner.p_Theyre()]" : "[holder] is"] pressing a warm [pressed_item.name] against [owner.p_their()] [held_bodypart.plaintext_zone].")
 
 /datum/status_effect/temperature_pack/heat/tick()

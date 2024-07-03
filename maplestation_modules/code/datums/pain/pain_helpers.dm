@@ -144,7 +144,7 @@
 /mob/living/proc/get_bodypart_pain(target_zone, get_modified = FALSE)
 	ASSERT(!isnull(target_zone))
 
-	var/obj/item/bodypart/checked_bodypart = pain_controller?.body_zones[target_zone]
+	var/obj/item/bodypart/checked_bodypart = get_bodypart(target_zone)
 	if(isnull(checked_bodypart))
 		return 0
 

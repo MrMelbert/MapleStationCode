@@ -40,8 +40,8 @@
 /datum/status_effect/limp/pain/update_limp()
 	var/mob/living/carbon/human/limping_human = owner
 
-	left = limping_human.pain_controller.body_zones[BODY_ZONE_L_LEG]
-	right = limping_human.pain_controller.body_zones[BODY_ZONE_R_LEG]
+	left = limping_human.get_bodypart(BODY_ZONE_L_LEG)
+	right = limping_human.get_bodypart(BODY_ZONE_R_LEG)
 
 	if(!left && !right)
 		qdel(src)
