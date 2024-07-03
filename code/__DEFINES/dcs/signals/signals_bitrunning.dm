@@ -45,6 +45,7 @@
 #define COMSIG_BITRUNNER_STOCKING_GEAR "bitrunner_stocking_gear"
 
 // Ladder
+
 /// from /obj/structure/hololadder/disconnect()
 #define COMSIG_BITRUNNER_LADDER_SEVER "bitrunner_ladder_sever"
 
