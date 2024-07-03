@@ -154,7 +154,7 @@
 		return
 	if(affected_mob.bodytemperature <= 80)
 		ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type)
-		affected_mob.set_pain_mod(type, 0.5) // Heal pain faster
+		affected_mob.set_pain_mod(type, 0.5)
 		REMOVE_TRAIT(affected_mob, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
 
 	var/power = -0.00003 * (affected_mob.bodytemperature ** 2) + 3

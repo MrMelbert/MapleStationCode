@@ -73,14 +73,17 @@
 
 	if(!HAS_TRAIT(src, TRAIT_ASSISTED_BREATHING))
 		if(stat == HARD_CRIT || (pulledby?.grab_state >= GRAB_KILL))
-			losebreath += 1
-		else if(stat == SOFT_CRIT)
+			losebreath = max(losebreath, 1)
+		else if(HAS_TRAIT(src, TRAIT_LABOURED_BREATHING))
 			losebreath += (1 / next_breath)
+
+	if(pre_sig_return & BREATHE_SKIP_BREATH)
+		losebreath = max(losebreath, 1)
 
 	// Suffocate
 	var/skip_breath = FALSE
-	if(losebreath >= 1 || (pre_sig_return & BREATHE_SKIP_BREATH))
-		losebreath = max(losebreath - 1, 0)
+	if(losebreath >= 1)
+		losebreath -= 1
 		if(prob(10))
 			emote("gasp")
 		if(isobj(loc))

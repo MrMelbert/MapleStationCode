@@ -319,6 +319,7 @@
 	item_flags = NONE
 	force = 0
 	bare_wound_bonus = 5
+	knockdown_time = 5 SECONDS
 	clumsy_knockdown_time = 15 SECONDS
 	active = FALSE
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'

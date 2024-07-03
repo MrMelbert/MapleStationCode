@@ -630,6 +630,7 @@
 	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/carbon_consciousness]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
 		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)
+	SShealth_updates.queue_update(src, UPDATE_SELF|UPDATE_MEDHUD_HEALTH)
 
 /mob/living/carbon/update_sight()
 	if(!client)

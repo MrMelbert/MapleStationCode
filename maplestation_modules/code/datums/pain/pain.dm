@@ -86,7 +86,6 @@
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(remove_all_pain))
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(add_damage_pain))
 	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(on_parent_statchance))
-	RegisterSignals(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_lying_pain_modifier))
 	RegisterSignals(parent, list(SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS), SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS)), PROC_REF(refresh_pain_attributes))
 	RegisterSignal(parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
 	RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
@@ -100,8 +99,6 @@
 		COMSIG_HUMAN_BURNING,
 		COMSIG_LIVING_HEALTHSCAN,
 		COMSIG_LIVING_POST_FULLY_HEAL,
-		COMSIG_LIVING_SET_BODY_POSITION,
-		COMSIG_LIVING_SET_BUCKLED,
 		COMSIG_MOB_APPLY_DAMAGE,
 		COMSIG_MOB_STATCHANGE,
 		SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS),
@@ -531,7 +528,7 @@
 
 		if(20 to 40)
 			if(shock_buildup <= 30)
-				parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
+				parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_danger(pick("Everything aches.", "Everything feels sore.")))
 
@@ -541,7 +538,7 @@
 				do_pain_message(span_bolddanger(pick("Everything hurts.", "Everything feels very sore.", "It hurts.")))
 
 		if(70 to INFINITY)
-			parent.adjust_pain_shock(3 * shock_mod * seconds_per_tick)
+			parent.adjust_pain_shock(2 * shock_mod * seconds_per_tick)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_userdanger(pick("Stop the pain!", "Everything hurts!")))
 
@@ -571,15 +568,15 @@
 		parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
 	if(shock_buildup >= 60)
-		if(SPT_PROB(2, seconds_per_tick))
+		if(SPT_PROB(shock_buildup / 60, seconds_per_tick))
 			parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
-		if(SPT_PROB(5, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
+		if(SPT_PROB(shock_buildup / 20, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent]'s body falls limp!"),
 				span_warning("Your body [just_cant_feel_anything ? "goes" : "falls"] limp!"),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-		if(SPT_PROB(5, seconds_per_tick))
+		if(SPT_PROB(shock_buildup / 20, seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
 	if(shock_buildup >= 120 && SPT_PROB(4, seconds_per_tick) && parent.stat != HARD_CRIT)
@@ -624,12 +621,14 @@
 	if(shock_buildup >= 90)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
 			ADD_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
+			ADD_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
 			set_pain_modifier("shock", 1.2)
 			parent.add_max_consciousness_value("shock", 60)
 			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
 	else
 		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
 			REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
+			REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
 			unset_pain_modifier("shock")
 			parent.remove_max_consciousness_value("shock")
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
@@ -674,22 +673,6 @@
 	// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
 	var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
 	adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
-
-/// Whenever we buckle to something or lie down, get a pain bodifier.
-/datum/pain/proc/check_lying_pain_modifier(datum/source, new_buckled)
-	SIGNAL_HANDLER
-
-	var/buckled_lying_modifier = 1
-	if(parent.body_position == LYING_DOWN)
-		buckled_lying_modifier -= 0.1
-
-	if(new_buckled)
-		buckled_lying_modifier -= 0.1
-
-	if(buckled_lying_modifier < 1)
-		set_pain_modifier(PAIN_MOD_LYING, buckled_lying_modifier)
-	else
-		unset_pain_modifier(PAIN_MOD_LYING)
 
 /// While actively burning, cause pain
 /datum/pain/proc/on_burn_tick(datum/source)
@@ -750,6 +733,7 @@
 	parent.clear_mood_event("pain")
 	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
 	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
+	REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
 
 /**
  * Run a pain related emote, if a few checks are successful.

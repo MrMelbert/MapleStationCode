@@ -88,12 +88,12 @@
 			if(pain_controller)
 				var/pre_pain = pain_controller.get_average_pain()
 				if(spread_damage || isnull(def_zone))
-					sharp_pain(BODY_ZONES_ALL, damage_amount / 6, STAMINA, 30 SECONDS)
+					sharp_pain(BODY_ZONES_ALL, damage_amount / 6, STAMINA, 20 SECONDS, 0.8)
 				else if(isbodypart(def_zone))
 					var/obj/item/bodypart/actual_hit = def_zone
-					sharp_pain(actual_hit.body_zone, damage_amount, STAMINA, 30 SECONDS)
+					sharp_pain(actual_hit.body_zone, damage_amount, STAMINA, 20 SECONDS, 0.8)
 				else
-					sharp_pain(check_zone(def_zone), damage_amount, STAMINA, 30 SECONDS)
+					sharp_pain(check_zone(def_zone), damage_amount, STAMINA, 20 SECONDS, 0.8)
 
 				damage_dealt = pre_pain - pain_controller.get_average_pain()
 			else
@@ -449,9 +449,6 @@
 	. = staminaloss
 	staminaloss = clamp((staminaloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, max_stamina)
 	. -= staminaloss
-	if(amount > 0)
-		// need to check for stamcrit AFTER canadjust but BEFORE early return here
-		stamcrit_check(staminaloss)
 	if(!.) // no change, no need to update
 		return 0
 	if(updating_stamina)
@@ -466,19 +463,12 @@
 	. = staminaloss
 	staminaloss = amount
 	. -= staminaloss
-	if(amount > 0)
-		stamcrit_check(staminaloss)
 	if(!.) // no change, no need to update
 		return 0
 	if(updating_stamina)
 		updatehealth()
 	return .
 
-/// Stub proc for entering / refreshing stamcrit upon taking stamina damage (even at max stamina).
-/mob/living/proc/stamcrit_check(stamina_level)
-	// In a perfect world this would not be necessary but this is not a perfect world
-	// If (in the future) adjustXLoss procs differentate failure to apply from no change, this can be removed
-	return
 
 /**
  * heal ONE external organ, organ gets randomly selected from damaged ones.

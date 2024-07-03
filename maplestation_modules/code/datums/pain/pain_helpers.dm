@@ -111,17 +111,14 @@
  * * amount - how much sharp pain to inflict
  * * dam_type - the type of sharp pain to inflict. Only [BRUTE] and [BURN] really matters.
  * * duration - how long the sharp pain lasts for
+ * * return_mod - how much of the sharp pain is healed when the effect ends
  */
-/mob/living/proc/sharp_pain(target_zones, amount, dam_type = BRUTE, duration = 1 MINUTES)
+/mob/living/proc/sharp_pain(target_zones, amount, dam_type = BRUTE, duration = 1 MINUTES, return_mod = 0.33)
 	if(isnull(pain_controller))
 		return
 	ASSERT(!isnull(target_zones))
 	ASSERT(isnum(amount))
-
-	if(!islist(target_zones))
-		target_zones = list(target_zones)
-	for(var/zone in target_zones)
-		apply_status_effect(/datum/status_effect/sharp_pain, zone, amount, dam_type, duration)
+	apply_status_effect(/datum/status_effect/sharp_pain, target_zones, amount, dam_type, duration, return_mod)
 
 /**
  * Set [id] pain modifier to [amount], and

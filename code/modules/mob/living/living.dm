@@ -2191,8 +2191,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
-	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE|UPDATE_SELF_HEALTH)
-	med_hud_set_status()
+	SShealth_updates.queue_update(src, UPDATE_SELF)
+	med_hud_set_status() // skip the queue, we want this to happen immediately and this proc isn't hot anyways
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)

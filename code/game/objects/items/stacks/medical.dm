@@ -67,6 +67,8 @@
 /// Used to begin the recursive healing loop.
 /// Returns TRUE if we entered the loop, FALSE if we didn't
 /obj/item/stack/medical/proc/begin_heal_loop(mob/living/patient, mob/user)
+	if(DOING_INTERACTION_WITH_TARGET(user, patient))
+		return FALSE
 	if(!can_heal(patient, user))
 		return FALSE
 

@@ -43,7 +43,6 @@
 
 // Keys for pain modifiers
 #define PAIN_MOD_CHEMS "chems"
-#define PAIN_MOD_LYING "lying"
 #define PAIN_MOD_NEAR_DEATH "near-death"
 #define PAIN_MOD_KOD "ko-d"
 #define PAIN_MOD_RECENT_SHOCK "recently-shocked"
@@ -68,6 +67,8 @@
 /// All this trait does is change your stat to soft crit, which itself doesn't do much,
 /// but as your stat is changed many stat checks will block you (such as using the radio)
 #define TRAIT_SOFT_CRIT "soft_crit"
+/// Skip a breath once in every x breaths (where x is ticks between breaths)
+#define TRAIT_LABOURED_BREATHING "laboured_breathing"
 /// Blocks losebreath from accumulating from things such as heart attacks or choking
 #define TRAIT_ASSISTED_BREATHING "assisted_breathing"
 /// Stops organs from decaying while dead

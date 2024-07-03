@@ -10,52 +10,37 @@
 	var/pain_amount = 0
 	/// Type of pain being given
 	var/pain_type
-	/// The amount of pain we had before recieving the sharp pain
-	var/initial_pain_amount = 0
-	/// The zone we're afflicting
-	var/targeted_zone
+	/// The zone or zones we're afflicting
+	var/targeted_zone_or_zones
+	/// Percentage of pain healed when the effect ends
+	var/return_mod = 0.33
 
 /datum/status_effect/sharp_pain/on_creation(
 	mob/living/carbon/human/new_owner,
-	targeted_zone,
+	targeted_zone_or_zones,
 	pain_amount = 0,
 	pain_type = BRUTE,
-	duration = 0,
+	duration = 1 MINUTES,
+	return_mod = 0.33,
 )
 
 	src.duration = duration
-	src.targeted_zone = targeted_zone
+	src.targeted_zone_or_zones = targeted_zone_or_zones
 	src.pain_amount = pain_amount
 	src.pain_type = pain_type
+	src.return_mod = return_mod
 	return ..()
 
 /datum/status_effect/sharp_pain/on_apply()
-	if(!ishuman(owner))
+	if(pain_amount <= 0)
 		return FALSE
 
-	var/mob/living/carbon/human/human_owner = owner
-	if(!human_owner.pain_controller)
-		return FALSE
-
-	if(!targeted_zone || pain_amount == 0)
-		return FALSE
-
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller.body_zones[targeted_zone]
-	if(!afflicted_bodypart)
-		return FALSE
-
-	initial_pain_amount = afflicted_bodypart.pain
-	human_owner.pain_controller.adjust_bodypart_pain(targeted_zone, pain_amount, pain_type)
+	owner.cause_pain(targeted_zone_or_zones, pain_amount, pain_type)
 	return TRUE
 
 /datum/status_effect/sharp_pain/on_remove()
-	var/mob/living/carbon/human/human_owner = owner
-	var/obj/item/bodypart/afflicted_bodypart = human_owner.pain_controller?.body_zones[targeted_zone]
-	if(!afflicted_bodypart)
+	if(QDELING(owner))
 		return
 
-	var/healed_amount = pain_amount * -0.33
-	if((afflicted_bodypart.pain + healed_amount) < initial_pain_amount)
-		healed_amount = initial_pain_amount - afflicted_bodypart.pain
-
-	human_owner.pain_controller.adjust_bodypart_pain(targeted_zone, healed_amount, pain_type)
+	owner.cause_pain(targeted_zone_or_zones, pain_amount * return_mod * -1, pain_type)
+	owner.adjust_pain_shock(-1 * pain_amount * 0.125, 0)
