@@ -122,8 +122,8 @@
 
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(held_bodypart.get_modified_pain() > 0)
-		to_chat(human_owner, span_green("You wince as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.plaintext_zone], but eventually the chill starts to dull the pain."))
-		human_owner.pain_emote("wince", 3 SECONDS)
+		to_chat(owner, span_green("You wince as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.plaintext_zone], but eventually the chill starts to dull the pain."))
+		owner.pain_emote("wince", 3 SECONDS)
 
 /datum/status_effect/temperature_pack/cold/get_examine_text()
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
@@ -148,8 +148,8 @@
 
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(held_bodypart.get_modified_pain() > 0)
-		to_chat(human_owner, span_green("You gasp as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.plaintext_zone], but eventually the warmth starts to dull the pain."))
-		human_owner.pain_emote("gasp", 3 SECONDS)
+		to_chat(owner, span_green("You gasp as [owner == holder ? "you press" : "[holder] presses"] [pressed_item] against your [held_bodypart.plaintext_zone], but eventually the warmth starts to dull the pain."))
+		owner.pain_emote("gasp", 3 SECONDS)
 
 /datum/status_effect/temperature_pack/head/get_examine_text()
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)

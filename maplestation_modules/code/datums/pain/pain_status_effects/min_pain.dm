@@ -24,26 +24,13 @@
 	return ..()
 
 /datum/status_effect/minimum_bodypart_pain/on_apply()
-	if(!ishuman(owner))
+	if(!owner.pain_controller)
+		return FALSE
+	if(min_amount <= 0)
 		return FALSE
 
-	var/mob/living/carbon/human/human_owner = owner
-	if(!human_owner.pain_controller)
-		return FALSE
-
-	if(!targeted_zone || min_amount == 0)
-		return FALSE
-
-	var/obj/item/bodypart/afflicted_bodypart = owner.get_bodypart(targeted_zone)
-	if(!afflicted_bodypart)
-		return FALSE
-
-	human_owner.pain_controller.adjust_bodypart_min_pain(targeted_zone, min_amount)
+	owner.pain_controller.adjust_bodypart_min_pain(targeted_zone, min_amount)
 	return TRUE
 
 /datum/status_effect/minimum_bodypart_pain/on_remove()
-	var/obj/item/bodypart/afflicted_bodypart = owner.get_bodypart(targeted_zone)
-	if(!afflicted_bodypart)
-		return
-
-	human_owner.pain_controller.adjust_bodypart_min_pain(targeted_zone, -min_amount)
+	owner.pain_controller.adjust_bodypart_min_pain(targeted_zone, -min_amount)
