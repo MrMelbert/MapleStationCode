@@ -85,6 +85,8 @@
 	duration = 10 SECONDS
 
 /datum/status_effect/determination_crash/on_apply()
+	if(owner.stat == DEAD)
+		return FALSE
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/determination_crash)
 	owner.add_actionspeed_modifier(/datum/actionspeed_modifier/determination_crash)
 	return TRUE

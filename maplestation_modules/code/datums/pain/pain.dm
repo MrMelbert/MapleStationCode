@@ -84,7 +84,7 @@
 	RegisterSignal(parent, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(remove_bodypart))
 	RegisterSignal(parent, COMSIG_LIVING_HEALTHSCAN, PROC_REF(on_analyzed))
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(remove_all_pain))
-	RegisterSignal(parent, COMSIG_MOB_AFTER_APPLY_DAMAGE, PROC_REF(add_damage_pain))
+	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(add_damage_pain))
 	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(on_parent_statchance))
 	RegisterSignals(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_lying_pain_modifier))
 	RegisterSignals(parent, list(SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS), SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS)), PROC_REF(refresh_pain_attributes))
@@ -358,7 +358,7 @@
 
 	SIGNAL_HANDLER
 
-	if(damage <= 0 || (parent.status_flags & GODMODE))
+	if(damage < 2.5 || (parent.status_flags & GODMODE))
 		return
 	if(isbodypart(def_zone))
 		var/obj/item/bodypart/targeted_part = def_zone
@@ -571,6 +571,8 @@
 		parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
 	if(shock_buildup >= 60)
+		if(SPT_PROB(2, seconds_per_tick))
+			parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
 		if(SPT_PROB(5, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent]'s body falls limp!"),
@@ -578,8 +580,6 @@
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 		if(SPT_PROB(5, seconds_per_tick))
-			parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
-		if(SPT_PROB(10, seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
 	if(shock_buildup >= 120 && SPT_PROB(4, seconds_per_tick) && parent.stat != HARD_CRIT)
@@ -750,9 +750,6 @@
 	parent.clear_mood_event("pain")
 	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
 	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
-	unset_pain_modifier("shock")
-	parent.remove_max_consciousness_value("shock")
-	parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
 /**
  * Run a pain related emote, if a few checks are successful.
@@ -867,6 +864,9 @@
 	clear_pain_attributes()
 	shock_buildup = 0
 	natural_pain_decay = base_pain_decay
+	unset_pain_modifier("shock")
+	parent.remove_max_consciousness_value("shock")
+	parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
 /// Determines if we should be processing or not.
 /datum/pain/proc/on_parent_statchance(mob/source)

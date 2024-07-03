@@ -466,7 +466,7 @@
 	return ..()
 
 /mob/living/acid_act(acidpwr, acid_volume)
-	take_bodypart_damage(acidpwr * min(1, acid_volume * 0.1))
+	damage_random_bodypart(acidpwr * min(1, acid_volume * 0.1))
 	return TRUE
 
 ///As the name suggests, this should be called to apply electric shocks.

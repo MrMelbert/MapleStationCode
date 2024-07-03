@@ -105,13 +105,11 @@
 				if(critical_success)
 					target.set_heartattack(FALSE)
 					to_chat(target, span_warning("You feel immense pressure on your chest, and a sudden wave of pain... and then relief."))
-					chest.receive_damage(brute = 6, wound_bonus = CANT_WOUND, damage_source = "chest compressions")
-					target.cause_pain(BODY_ZONE_CHEST, 12)
+					target.apply_damage(6, BRUTE, chest, wound_bonus = CANT_WOUND, attacking_item = "chest compressions")
 
 				else
 					to_chat(target, span_warning("You feel pressure on your chest!"))
-					chest.receive_damage(brute = 3, wound_bonus = CANT_WOUND, damage_source = "chest compressions")
-					target.cause_pain(BODY_ZONE_CHEST, 2)
+					target.apply_damage(3, BRUTE, chest, wound_bonus = CANT_WOUND, attacking_item = "chest compressions")
 
 				to_chat(src, span_warning("You bruise [target.name]'s chest with the pressure!"))
 

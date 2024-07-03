@@ -152,18 +152,29 @@
 	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (affected_mob.bodytemperature ** 2) + 0.5)
 	if(affected_mob.bodytemperature >= T0C || !HAS_TRAIT(affected_mob, TRAIT_KNOCKEDOUT))
 		return
+	if(affected_mob.bodytemperature <= 80)
+		ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type)
+		affected_mob.set_pain_mod(type, 0.5) // Heal pain faster
+		REMOVE_TRAIT(affected_mob, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
+
 	var/power = -0.00003 * (affected_mob.bodytemperature ** 2) + 3
 	var/need_mob_update
 	need_mob_update = affected_mob.adjustOxyLoss(-3 * power * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype, required_respiration_type = affected_respiration_type)
 	need_mob_update += affected_mob.adjustBruteLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 	need_mob_update += affected_mob.adjustFireLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 	need_mob_update += affected_mob.adjustToxLoss(-power * REM * seconds_per_tick, updating_health = FALSE, forced = TRUE, required_biotype = affected_biotype) //heals TOXINLOVERs
-	for(var/i in affected_mob.all_wounds)
-		var/datum/wound/iter_wound = i
+	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.on_xadone(power * REM * seconds_per_tick)
-	REMOVE_TRAIT(affected_mob, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
+	affected_mob.cause_pain(BODY_ZONES_ALL, -0.3 * power * REM * seconds_per_tick)
+	affected_mob.adjust_pain_shock(-0.12 * power * REM * seconds_per_tick)
+
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH
+
+/datum/reagent/medicine/cryoxadone/on_mob_end_metabolize(mob/living/carbon/user)
+	. = ..()
+	user.unset_pain_mod(type)
+	REMOVE_TRAIT(user, TRAIT_ABATES_SHOCK, type)
 
 // Healing
 /datum/reagent/medicine/cryoxadone/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)

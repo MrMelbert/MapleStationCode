@@ -931,9 +931,7 @@
 	if(!katana.drew_blood)
 		to_chat(owner, span_userdanger("[katana] lashes out at you in hunger!"))
 		playsound(owner, 'sound/magic/demon_attack1.ogg', 50, TRUE)
-		var/obj/item/bodypart/part = owner.get_holding_bodypart_of_item(katana)
-		if(part)
-			part.receive_damage(brute = 25, wound_bonus = 10, sharpness = SHARP_EDGED)
+		owner.apply_damage(25, BRUTE, owner.get_holding_bodypart_of_item(katana), wound_bonus = 10, sharpness = SHARP_EDGED, attacking_item = katana)
 	katana.drew_blood = FALSE
 	katana.wash(CLEAN_TYPE_BLOOD)
 	return ..()

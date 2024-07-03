@@ -82,25 +82,23 @@
 //These procs fetch a cumulative total damage from all bodyparts
 /mob/living/carbon/getBruteLoss()
 	var/amount = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
-		amount += BP.brute_dam
+	for(var/obj/item/bodypart/part as anything in bodyparts)
+		amount += part.brute_dam
 	return amount
 
 /mob/living/carbon/getFireLoss()
 	var/amount = 0
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
-		amount += BP.burn_dam
+	for(var/obj/item/bodypart/part as anything in bodyparts)
+		amount += part.burn_dam
 	return amount
 
 /mob/living/carbon/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
 	if(!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
-		. = take_overall_damage(brute = amount, updating_health = updating_health, forced = forced, required_bodytype = required_bodytype)
+		. = take_overall_damage(brute = amount, forced = forced, required_bodytype = required_bodytype)
 	else
-		. = heal_overall_damage(brute = abs(amount), required_bodytype = required_bodytype, updating_health = updating_health, forced = forced)
+		. = heal_overall_damage(brute = abs(amount), required_bodytype = required_bodytype, forced = forced)
 
 /mob/living/carbon/setBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
 	if(!forced && (status_flags & GODMODE))
@@ -115,9 +113,9 @@
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
-		. = take_overall_damage(burn = amount, updating_health = updating_health, forced = forced, required_bodytype = required_bodytype)
+		. = take_overall_damage(burn = amount, forced = forced, required_bodytype = required_bodytype)
 	else
-		. = heal_overall_damage(burn = abs(amount), required_bodytype = required_bodytype, updating_health = updating_health, forced = forced)
+		. = heal_overall_damage(burn = abs(amount), required_bodytype = required_bodytype, forced = forced)
 
 /mob/living/carbon/setFireLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
 	if(!forced && (status_flags & GODMODE))
@@ -199,14 +197,13 @@
 ///Returns a list of damaged bodyparts
 /mob/living/carbon/proc/get_damaged_bodyparts(brute = FALSE, burn = FALSE, required_bodytype = NONE, target_zone = null)
 	var/list/obj/item/bodypart/parts = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/BP = X
-		if(required_bodytype && !(BP.bodytype & required_bodytype))
+	for(var/obj/item/bodypart/part as anything in bodyparts)
+		if(required_bodytype && !(part.bodytype & required_bodytype))
 			continue
-		if(!isnull(target_zone) && BP.body_zone != target_zone)
+		if(!isnull(target_zone) && part.body_zone != target_zone)
 			continue
-		if((brute && BP.brute_dam) || (burn && BP.burn_dam))
-			parts += BP
+		if((brute && part.brute_dam) || (burn && part.burn_dam))
+			parts += part
 	return parts
 
 ///Returns a list of damageable bodyparts
@@ -252,26 +249,33 @@
 	return (damage_calculator - picked.get_damage())
 
 
-/**
- * Damages ONE bodypart randomly selected from damagable ones.
- *
- * It automatically updates damage overlays if necessary
- *
- * It automatically updates health status
- */
-/mob/living/carbon/take_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_bodytype, check_armor = FALSE, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE)
-	. = FALSE
-	if(status_flags & GODMODE)
-		return
+/mob/living/carbon/damage_random_bodypart(
+	damage = 0,
+	damagetype = BRUTE,
+	damageflag = MELEE,
+	required_bodytype,
+	check_armor = FALSE,
+	wound_bonus = 0,
+	bare_wound_bonus = 0,
+	sharpness = NONE,
+
+)
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts(required_bodytype)
-	if(!parts.len)
-		return
+	if(!length(parts))
+		return 0
 
 	var/obj/item/bodypart/picked = pick(parts)
-	var/damage_calculator = picked.get_damage()
-	if(picked.receive_damage(abs(brute), abs(burn), check_armor ? run_armor_check(picked, (brute ? MELEE : burn ? FIRE : null)) : FALSE, wound_bonus = wound_bonus, bare_wound_bonus = bare_wound_bonus, sharpness = sharpness))
-		update_damage_overlays()
-	return (damage_calculator - picked.get_damage())
+	var/armor = check_armor ? run_armor_check(picked, damageflag, silent = TRUE) : 0
+
+	return apply_damage(
+		damage = abs(damage),
+		damagetype = damagetype,
+		def_zone = picked,
+		blocked = armor,
+		wound_bonus = wound_bonus,
+		bare_wound_bonus = bare_wound_bonus,
+		sharpness = sharpness,
+	)
 
 /mob/living/carbon/heal_overall_damage(brute = 0, burn = 0, stamina = 0, required_bodytype, updating_health = TRUE, forced = FALSE)
 	. = FALSE
@@ -284,12 +288,14 @@
 	var/update = NONE
 	while(parts.len && (brute > 0 || burn > 0))
 		var/obj/item/bodypart/picked = pick(parts)
+		var/brute_per_part = round(brute/parts.len, DAMAGE_PRECISION)
+		var/burn_per_part = round(burn/parts.len, DAMAGE_PRECISION)
 
 		var/brute_was = picked.brute_dam
 		var/burn_was = picked.burn_dam
 		. += picked.get_damage()
 
-		update |= picked.heal_damage(brute, burn, updating_health = FALSE, forced = forced, required_bodytype = required_bodytype)
+		update |= picked.heal_damage(brute_per_part, burn_per_part, updating_health = FALSE, forced = forced, required_bodytype = required_bodytype)
 
 		. -= picked.get_damage() // return the net amount of damage healed
 
@@ -306,7 +312,7 @@
 	if(update)
 		update_damage_overlays()
 
-/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, forced = FALSE, required_bodytype)
+/mob/living/carbon/take_overall_damage(brute = 0, burn = 0, forced = FALSE, required_bodytype)
 	. = FALSE
 	if(!forced && (status_flags & GODMODE))
 		return
@@ -315,7 +321,6 @@
 	burn = abs(burn)
 
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts(required_bodytype)
-	var/update = NONE
 	while(parts.len && (brute > 0 || burn > 0))
 		var/obj/item/bodypart/picked = pick(parts)
 		var/brute_per_part = round(brute/parts.len, DAMAGE_PRECISION)
@@ -325,20 +330,12 @@
 		var/burn_was = picked.burn_dam
 		. += picked.get_damage()
 
-		// disabling wounds from these for now cuz your entire body snapping cause your heart stopped would suck
-		update |= picked.receive_damage(brute_per_part, burn_per_part, blocked = FALSE, updating_health = FALSE, forced = forced, required_bodytype = required_bodytype, wound_bonus = CANT_WOUND)
+		apply_damage(brute_per_part, BRUTE, picked, forced, wound_bonus = CANT_WOUND)
+		apply_damage(burn_per_part, BURN, picked, forced, wound_bonus = CANT_WOUND)
 
-		. -= picked.get_damage() // return the net amount of damage healed
+		. -= picked.get_damage()
 
 		brute = round(brute - (picked.brute_dam - brute_was), DAMAGE_PRECISION)
 		burn = round(burn - (picked.burn_dam - burn_was), DAMAGE_PRECISION)
 
 		parts -= picked
-
-	if(!.) // no change? no need to update anything
-		return
-
-	if(updating_health)
-		updatehealth()
-	if(update)
-		update_damage_overlays()

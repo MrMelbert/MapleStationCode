@@ -523,12 +523,8 @@
 		if(99 to INFINITY)
 			// can you imagine standing around minding your own business when all of the sudden some guy fucking launches himself into a wall at full speed and irreparably paralyzes himself?
 			user.visible_message(span_danger("[user] slams face-first into [hit] at an awkward angle, severing [user.p_their()] spinal column with a sickening crack! Fucking shit!"), span_userdanger("You slam face-first into [hit] at an awkward angle, severing your spinal column with a sickening crack! Fucking shit!"))
-			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
-			if(hed)
-				hed.receive_damage(brute=40, updating_health=FALSE, wound_bonus = 40)
-			else
-				user.adjustBruteLoss(40, updating_health=FALSE)
-			user.adjustStaminaLoss(30)
+			user.apply_damage(40, BRUTE, BODY_ZONE_HEAD, wound_bonus = 40)
+			user.apply_damage(30, STAMINA)
 			playsound(user, 'sound/effects/blobattack.ogg', 60, TRUE)
 			playsound(user, 'sound/effects/splat.ogg', 70, TRUE)
 			playsound(user, 'sound/effects/wounds/crack2.ogg', 70, TRUE)
@@ -539,12 +535,8 @@
 
 		if(97 to 98)
 			user.visible_message(span_danger("[user] slams skull-first into [hit] with a sound like crumpled paper, revealing a horrifying breakage in [user.p_their()] cranium! Holy shit!"), span_userdanger("You slam skull-first into [hit] and your senses are filled with warm goo flooding across your face! Your skull is open!"))
-			var/obj/item/bodypart/head/hed = user.get_bodypart(BODY_ZONE_HEAD)
-			if(hed)
-				hed.receive_damage(brute = 30, updating_health = FALSE, wound_bonus = 25)
-			else
-				user.adjustBruteLoss(40, updating_health = FALSE)
-			user.adjustStaminaLoss(30)
+			user.apply_damage(30, BRUTE, BODY_ZONE_HEAD, wound_bonus = 25)
+			user.apply_damage(30, STAMINA)
 			user.gain_trauma_type(BRAIN_TRAUMA_MILD)
 			playsound(user, 'sound/effects/blobattack.ogg', 60, TRUE)
 			playsound(user, 'sound/effects/splat.ogg', 70, TRUE)

@@ -1080,7 +1080,7 @@
 
 /datum/reagent/chlorine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.take_bodypart_damage(0.5*REM*seconds_per_tick, 0))
+	if(affected_mob.damage_random_bodypart(0.5 * REM * seconds_per_tick))
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/fluorine
@@ -1372,8 +1372,8 @@
 	burn_wound.sanitization += 0.3
 	if(prob(5))
 		to_chat(burn_wound.victim, span_notice("Your [burn_wound] stings and burns from the [src] covering it! It does look pretty clean though."))
-		burn_wound.victim.adjustToxLoss(0.5)
-		burn_wound.limb.receive_damage(burn = 0.5, wound_bonus = CANT_WOUND)
+		burn_wound.victim.apply_damage(0.5, TOX, burn_wound.limb, wound_bonus = CANT_WOUND)
+		burn_wound.victim.apply_damage(0.5, BURN, burn_wound.limb, wound_bonus = CANT_WOUND)
 
 /datum/reagent/space_cleaner/ez_clean
 	name = "EZ Clean"

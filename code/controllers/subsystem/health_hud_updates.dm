@@ -37,8 +37,22 @@ SUBSYSTEM_DEF(health_updates)
 		queued[to_queue] |= to_update
 		return
 
+#ifdef UNIT_TESTS
+	if(to_update & UPDATE_CON)
+		to_queue.update_conscisouness()
+	if(!QDELETED(to_queue))
+		if(to_update & UPDATE_SELF_DAMAGE)
+			to_queue.update_damage_hud()
+		if(to_update & UPDATE_SELF_HEALTH)
+			to_queue.update_health_hud()
+		if(to_update & UPDATE_MEDHUD_HEALTH)
+			to_queue.med_hud_set_health()
+		if(to_update & UPDATE_MEDHUD_STATUS)
+			to_queue.med_hud_set_status()
+#else
 	RegisterSignal(to_queue, COMSIG_QDELETING, PROC_REF(queue_del))
 	queued[to_queue] = to_update
+#endif
 
 /datum/controller/subsystem/health_updates/proc/queue_del(datum/source)
 	SIGNAL_HANDLER

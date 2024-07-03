@@ -379,13 +379,15 @@
 
 /datum/status_effect/regenerative_core/on_apply()
 	ADD_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, STATUS_EFFECT_TRAIT)
-	owner.adjustBruteLoss(-25)
-	owner.adjustFireLoss(-25)
+	owner.heal_overall_damage(25, 25)
 	owner.fully_heal(HEAL_CC_STATUS)
 	owner.bodytemperature = owner.get_body_temp_normal()
 	if(ishuman(owner))
 		var/mob/living/carbon/human/humi = owner
 		humi.set_coretemperature(humi.get_body_temp_normal())
+		humi.cause_pain(BODY_ZONES_LIMBS, -15)
+		humi.cause_pain(BODY_ZONE_CHEST, -20)
+		humi.cause_pain(BODY_ZONE_HEAD, -10) // heals 90 pain total
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()

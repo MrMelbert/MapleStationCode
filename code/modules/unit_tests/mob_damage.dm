@@ -222,7 +222,7 @@
 
 	var/damage_returned
 	// take 5 brute, 2 burn
-	damage_returned = round(dummy.take_bodypart_damage(5, 2, updating_health = FALSE), 1)
+	damage_returned = round(dummy.damage_random_bodypart(5, BRUTE) + dummy.damage_random_bodypart(5, BURN), 1)
 	TEST_ASSERT_EQUAL(damage_returned, -7, \
 		"take_bodypart_damage() should have returned -7, but returned [damage_returned] instead!")
 
@@ -232,7 +232,7 @@
 		"Dummy should have 2 burn damage, instead they have [dummy.getFireLoss()]!")
 
 	// heal 4 brute, 1 burn
-	damage_returned = round(dummy.heal_bodypart_damage(4, 1, updating_health = FALSE), 1)
+	damage_returned = round(dummy.heal_bodypart_damage(4, 1), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 5, \
 		"heal_bodypart_damage() should have returned 5, but returned [damage_returned] instead!")
 
@@ -248,7 +248,7 @@
 		TEST_FAIL("heal_overall_damage did not apply its healing correctly on the mob!")
 
 	// take 50 brute, 50 burn
-	damage_returned = round(dummy.take_overall_damage(50, 50, updating_health = FALSE), 1)
+	damage_returned = round(dummy.take_overall_damage(50, 50), 1)
 	TEST_ASSERT_EQUAL(damage_returned, -100, \
 		"take_overall_damage() should have returned -100, but returned [damage_returned] instead!")
 
@@ -257,19 +257,19 @@
 
 	// testing negative damage amount args with the overall damage procs - the sign should be ignored for these procs
 
-	damage_returned = round(dummy.take_bodypart_damage(-5, -5, updating_health = FALSE), 1)
+	damage_returned = round(dummy.damage_random_bodypart(-5, BRUTE) + dummy.damage_random_bodypart(-5, BURN), 1)
 	TEST_ASSERT_EQUAL(damage_returned, -10, \
 		"take_bodypart_damage() should have returned -10, but returned [damage_returned] instead!")
 
-	damage_returned = round(dummy.heal_bodypart_damage(-5, -5, updating_health = FALSE), 1)
+	damage_returned = round(dummy.heal_bodypart_damage(-5, -5), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 10, \
 		"heal_bodypart_damage() should have returned 10, but returned [damage_returned] instead!")
 
-	damage_returned = round(dummy.take_overall_damage(-5, -5, updating_health = FALSE), 1)
+	damage_returned = round(dummy.take_overall_damage(-5, -5), 1)
 	TEST_ASSERT_EQUAL(damage_returned, -10, \
 		"take_overall_damage() should have returned -10, but returned [damage_returned] instead!")
 
-	damage_returned = round(dummy.heal_overall_damage(-5, -5, updating_health = FALSE), 1)
+	damage_returned = round(dummy.heal_overall_damage(-5, -5), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 10, \
 		"heal_overall_damage() should have returned 10, but returned [damage_returned] instead!")
 
@@ -514,7 +514,7 @@
 	// overall damage procs
 
 	// take 5 brute, 2 burn
-	damage_returned = gusgus.take_bodypart_damage(5, 2, updating_health = FALSE)
+	damage_returned = gusgus.damage_random_bodypart(5, BRUTE) + gusgus.damage_random_bodypart(5, BURN)
 	TEST_ASSERT_EQUAL(damage_returned, -7, \
 		"take_bodypart_damage() should have returned -7, but returned [damage_returned] instead!")
 
@@ -544,7 +544,7 @@
 		"Mouse should have 0 burn damage, instead they have [gusgus.fireloss]!")
 
 	// take 50 brute, 50 burn
-	damage_returned = gusgus.take_overall_damage(3, 3, updating_health = FALSE)
+	damage_returned = gusgus.take_overall_damage(3, 3)
 	TEST_ASSERT_EQUAL(damage_returned, -6, \
 		"take_overall_damage() should have returned -6, but returned [damage_returned] instead!")
 
@@ -553,7 +553,7 @@
 
 	// testing negative args with the overall damage procs
 
-	damage_returned = gusgus.take_bodypart_damage(-1, -1, updating_health = FALSE)
+	damage_returned = gusgus.damage_random_bodypart(-1, BRUTE) + gusgus.damage_random_bodypart(-1, BURN)
 	TEST_ASSERT_EQUAL(damage_returned, -2, \
 		"take_bodypart_damage() should have returned -2, but returned [damage_returned] instead!")
 
@@ -561,7 +561,7 @@
 	TEST_ASSERT_EQUAL(damage_returned, 2, \
 		"heal_bodypart_damage() should have returned 2, but returned [damage_returned] instead!")
 
-	damage_returned = gusgus.take_overall_damage(-1, -1, updating_health = FALSE)
+	damage_returned = gusgus.take_overall_damage(-1, -1)
 	TEST_ASSERT_EQUAL(damage_returned, -2, \
 		"take_overall_damage() should have returned -2, but returned [damage_returned] instead!")
 

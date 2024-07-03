@@ -492,13 +492,26 @@
 	if(updating_health)
 		updatehealth()
 
-/// damage ONE external organ, organ gets randomly selected from damaged ones.
-/mob/living/proc/take_bodypart_damage(brute = 0, burn = 0, updating_health = TRUE, required_bodytype, check_armor = FALSE, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE)
-	. = (adjustBruteLoss(abs(brute), updating_health = FALSE) + adjustFireLoss(abs(burn), updating_health = FALSE))
-	if(!.) // no change, no need to update
-		return FALSE
-	if(updating_health)
-		updatehealth()
+/**
+ * Damages a random bodypart
+ */
+/mob/living/proc/damage_random_bodypart(
+	damage = 0,
+	damagetype = BRUTE,
+	damageflag = MELEE,
+	required_bodytype,
+	check_armor = FALSE,
+	wound_bonus = 0,
+	bare_wound_bonus = 0,
+	sharpness = NONE,
+)
+	return apply_damage(
+		damage = abs(damage),
+		damagetype = damagetype,
+		wound_bonus = wound_bonus,
+		bare_wound_bonus = bare_wound_bonus,
+		sharpness = sharpness,
+	)
 
 /// heal MANY bodyparts, in random order. note: stamina arg nonfunctional for carbon mobs
 /mob/living/proc/heal_overall_damage(brute = 0, burn = 0, stamina = 0, required_bodytype, updating_health = TRUE, forced = FALSE)
@@ -510,15 +523,13 @@
 	if(updating_health)
 		updatehealth()
 
-/// damage MANY bodyparts, in random order. note: stamina arg nonfunctional for carbon mobs
-/mob/living/proc/take_overall_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, forced = FALSE, required_bodytype)
-	. = (adjustBruteLoss(abs(brute), updating_health = FALSE, forced = forced) + \
-			adjustFireLoss(abs(burn), updating_health = FALSE, forced = forced) + \
-			adjustStaminaLoss(abs(stamina), updating_stamina = FALSE, forced = forced))
-	if(!.) // no change, no need to update
-		return FALSE
-	if(updating_health)
-		updatehealth()
+/**
+ * Attempts to damage all of the damageable bodyparts of the mob, spreading damage accordingly
+ */
+/mob/living/proc/take_overall_damage(brute = 0, burn = 0, forced = FALSE, required_bodytype)
+	. = 0
+	. += apply_damage(abs(brute), BRUTE, null, 0, forced)
+	. += apply_damage(abs(burn), BURN, null, 0, forced)
 
 ///heal up to amount damage, in a given order
 /mob/living/proc/heal_ordered_damage(amount, list/damage_types)

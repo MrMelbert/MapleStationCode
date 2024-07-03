@@ -82,7 +82,7 @@
 	beating = TRUE
 	update_appearance()
 	if(!isnull(owner))
-		owner.apply_status_effect(/datum/status_effect/heart_attack)
+		owner.remove_status_effect(/datum/status_effect/heart_attack)
 		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
 	return TRUE
 

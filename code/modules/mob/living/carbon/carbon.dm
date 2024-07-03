@@ -54,12 +54,12 @@
 	if(hurt && hit_atom.density)
 		if(isturf(hit_atom))
 			Paralyze(2 SECONDS)
-			take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			damage_random_bodypart(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		else if(isstructure(hit_atom) && extra_speed)
 			Paralyze(1 SECONDS)
-			take_bodypart_damage(5 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			damage_random_bodypart(5 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		else if(!iscarbon(hit_atom) && extra_speed)
-			take_bodypart_damage(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			damage_random_bodypart(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		visible_message(span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]"),\
 			span_userdanger("You violently crash into [hit_atom][extra_speed ? " extra hard" : ""]!"))
 		log_combat(hit_atom, src, "crashes ")
@@ -76,7 +76,7 @@
 		if(victim.check_block(src, 0, "[name]", LEAP_ATTACK))
 			blocked = TRUE
 
-		take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+		damage_random_bodypart(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		Paralyze(2 SECONDS)
 		oof_noise = TRUE
 
@@ -87,7 +87,7 @@
 			return
 		else
 			victim.Paralyze(2 SECONDS)
-			victim.take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
+			victim.damage_random_bodypart(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 			visible_message(span_danger("[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!"),\
 				span_userdanger("You violently crash into [victim][extra_speed ? " extra hard" : ""]!"))
 			log_combat(src, victim, "crashed into")

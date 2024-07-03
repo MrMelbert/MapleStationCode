@@ -20,15 +20,6 @@
 		var/mob/living/carbon/carbon_owner = owner
 		carbon_owner.cause_pain(BODY_ZONES_ALL, -1.5)
 
-// Regen cores.
-/datum/status_effect/regenerative_core/on_apply()
-	. = ..()
-	var/mob/living/carbon/human/human_owner = owner
-	if(istype(human_owner) && human_owner.pain_controller)
-		human_owner.cause_pain(BODY_ZONES_LIMBS, -15)
-		human_owner.cause_pain(BODY_ZONE_CHEST, -20)
-		human_owner.cause_pain(BODY_ZONE_HEAD, -10) // heals 90 pain total
-
 // Flight potion's flavor says "it hurts a shit ton bro", so it should cause decent pain
 /datum/reagent/flightpotion/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
 	var/has_wings_before = exposed_mob.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)

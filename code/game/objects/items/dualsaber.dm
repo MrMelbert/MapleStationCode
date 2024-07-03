@@ -145,7 +145,8 @@
 /obj/item/dualsaber/proc/impale(mob/living/user)
 	to_chat(user, span_warning("You twirl around a bit before losing your balance and impaling yourself on [src]."))
 	if(HAS_TRAIT(src, TRAIT_WIELDED))
-		user.take_bodypart_damage(20,25,check_armor = TRUE)
+		user.damage_random_bodypart(20, BRUTE, check_armor = TRUE)
+		user.damage_random_bodypart(20, BURN, check_armor = TRUE)
 	else
 		user.adjustStaminaLoss(25)
 
