@@ -3,7 +3,7 @@
 		return
 
 	losebreath = 0
-
+	breathing_loop.stop() //This would've happened eventually but it's nice to make it stop immediatelly in this case
 	if(!gibbed)
 		if(!death_sound && !death_message)
 			INVOKE_ASYNC(src, PROC_REF(emote), "deathgasp")
