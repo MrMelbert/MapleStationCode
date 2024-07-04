@@ -4,6 +4,7 @@
 	display_name = "Basic Arms"
 	description = "Ballistics can be unpredictable in space."
 	design_ids = list(
+		"toy_armblade",
 		"toygun",
 		"c38_rubber",
 		"sec_38",
@@ -34,7 +35,6 @@
 		"pepperspray",
 		"inspector",
 		"evidencebag",
-		"handcuffs_s",
 		"zipties",
 		"seclite",
 		"electropack",
@@ -47,10 +47,12 @@
 	description = "When you are on the opposing side of a revolutionary movement."
 	prereq_ids = list(TECHWEB_NODE_SEC_EQUIP)
 	design_ids = list(
+		"clown_firing_pin",
 		"pin_testing",
 		"pin_loyalty",
 		"tele_shield",
 		"ballistic_shield",
+		"handcuffs_s",
 		"bola_energy",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)
@@ -67,7 +69,6 @@
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 	required_experiments = list(/datum/experiment/ordnance/explosive/lowyieldbomb)
-	discount_experiments = list(/datum/experiment/ordnance/explosive/highyieldbomb = TECHWEB_TIER_3_POINTS)
 
 /datum/techweb_node/exotic_ammo
 	id = TECHWEB_NODE_EXOTIC_AMMO
@@ -80,6 +81,7 @@
 		"techshotshell",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_4_POINTS)
+	discount_experiments = list(/datum/experiment/ordnance/explosive/highyieldbomb = TECHWEB_TIER_4_POINTS)
 
 /datum/techweb_node/electric_weapons
 	id = TECHWEB_NODE_ELECTRIC_WEAPONS
