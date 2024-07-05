@@ -43,7 +43,7 @@
 	limb_id = SPECIES_LIZARD
 
 /// Checks if this mob is wearing anything that does not have a valid sprite set for digitigrade legs
-/mob/living/carbon/human/proc/is_digitigrade_squished()
+/mob/living/carbon/proc/is_digitigrade_squished()
 	var/obj/item/clothing/shoes/worn_shoes = get_item_by_slot(ITEM_SLOT_FEET)
 	var/obj/item/clothing/under/worn_suit = get_item_by_slot(ITEM_SLOT_OCLOTHING)
 	var/obj/item/clothing/under/worn_uniform = get_item_by_slot(ITEM_SLOT_ICLOTHING)
@@ -70,9 +70,7 @@
 
 /obj/item/bodypart/leg/left/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		limb_id = human_owner.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
+	limb_id = owner.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/digitigrade
 	icon_greyscale = 'icons/mob/human/species/lizard/bodyparts.dmi'
@@ -82,6 +80,4 @@
 
 /obj/item/bodypart/leg/right/digitigrade/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	. = ..()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		limb_id = human_owner.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE
+	limb_id = owner.is_digitigrade_squished() ? SPECIES_LIZARD : BODYPART_ID_DIGITIGRADE

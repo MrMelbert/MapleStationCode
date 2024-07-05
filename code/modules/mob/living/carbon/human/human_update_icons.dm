@@ -845,7 +845,7 @@ generate/load female uniform sprites matching all previously decided variables
 
 	return appearance
 
-/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance, mob/living/carbon/human/wearer = loc)
+/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance, mob/living/carbon/wearer = loc)
 	if(!istype(wearer) || !(wearer.bodytype & BODYTYPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
 		return
 

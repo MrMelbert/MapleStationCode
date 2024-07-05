@@ -940,8 +940,8 @@
 		LAZYADD(overlays, gauze_overlay)
 	return overlays
 
-/obj/item/bodypart/bodypart/leg/get_bodypart_damage_state()
-	if(!(bodytype & BODYTYPE_DIGITIGRADE))
+/obj/item/bodypart/leg/get_bodypart_damage_state()
+	if(!(bodytype & BODYTYPE_DIGITIGRADE) || (owner.is_digitigrade_squished()))
 		return ..()
 
 	. = ..()

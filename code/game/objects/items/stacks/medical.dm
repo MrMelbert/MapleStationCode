@@ -304,18 +304,18 @@
 
 	var/whose = user == patient ? "your" : "[patient]'s"
 	var/theirs = user == patient ? patient.p_their() : "[patient]'s"
-	var/wrap_or_replace = limb.current_gauze ? "replacing [limb.current_gauze]" : "wrapping the wounds"
+	var/wrap_or_replace = limb.current_gauze ? "replacing [limb.current_gauze] on" : "wrapping"
 	var/with_what = limb.current_gauze?.type == type ? "more of [src]" : src
 	if(boosted)
 		treatment_delay *= 0.5
 		user.visible_message(
-			span_notice("[user] begins expertly [wrap_or_replace] on [theirs] [limb.plaintext_zone] with [with_what]."),
-			span_notice("You begin quickly [wrap_or_replace] on [whose] [limb.plaintext_zone] with [with_what], keeping the holo-image indications in mind..."),
+			span_notice("[user] begins expertly [wrap_or_replace] [theirs] [limb.plaintext_zone] with [with_what]."),
+			span_notice("You begin quickly [wrap_or_replace] [whose] [limb.plaintext_zone] with [with_what], keeping the holo-image indications in mind..."),
 		)
 	else
 		user.visible_message(
-			span_notice("[user] begins [wrap_or_replace] on [theirs] [limb.plaintext_zone] with [with_what]."),
-			span_notice("You begin [wrap_or_replace] on [whose] [limb.plaintext_zone] with [with_what]..."),
+			span_notice("[user] begins [wrap_or_replace] [theirs] [limb.plaintext_zone] with [with_what]."),
+			span_notice("You begin [wrap_or_replace] [whose] [limb.plaintext_zone] with [with_what]..."),
 		)
 	user.balloon_alert(user, "applying gauze...")
 	if(user != patient)
