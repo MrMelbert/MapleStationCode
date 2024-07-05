@@ -1,13 +1,6 @@
 #define ICE_BLAST_ATTUNEMENT_ICE 0.5
 #define ICE_BLAST_MANA_COST 25
 
-/datum/component/uses_mana/story_spell/pointed/ice_blast/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/ice] = ice_blast_attunement
-
-/datum/component/uses_mana/story_spell/pointed/ice_blast/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * ice_blast_cost
-
 /datum/action/cooldown/spell/pointed/projectile/ice_blast
 	name = "Ice blast"
 	desc = "Throw an ice blast which'll cover nearby floor with a thin, slippery sheet of ice."

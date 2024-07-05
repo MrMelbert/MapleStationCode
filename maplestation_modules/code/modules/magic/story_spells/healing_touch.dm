@@ -7,15 +7,6 @@
 #define HEALING_TOUCH_ATTUNEMENT_LIFE 0.5
 #define HEALING_TOUCH_COST_PER_HEALED 1.5
 
-/datum/component/uses_mana/story_spell/touch/healing_touch
-	var/healing_touch_attunement_amount = HEALING_TOUCH_ATTUNEMENT_LIFE
-	var/healing_touch_mana_cost = HEALING_TOUCH_COST_PER_HEALED
-
-/* /datum/component/uses_mana/story_spell/touch/healing_touch/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/touch/healing_touch/touch_spell = parent
-	return ..() \
-		* (touch_spell.brute_heal + touch_spell.burn_heal + touch_spell.tox_heal + touch_spell.oxy_heal + touch_spell.pain_heal * 3) \
-		* healing_touch_mana_cost */
 
 // Touch based healing spell, very simple. Only works on organic mobs or anything that hooks to the comsig.
 /datum/action/cooldown/spell/touch/healing_touch

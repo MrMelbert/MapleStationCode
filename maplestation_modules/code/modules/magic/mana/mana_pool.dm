@@ -19,7 +19,7 @@
 	var/maximum_mana_capacity = BASE_MANA_CAPACITY
 	/// The abstract representation of how many "Vols" this mana pool currently contains.
 	/// Capped at [maximum_mana_capacity], begins decaying exponentially when above [softcap].
-	var/amount =  367 // placeholder. This should be replaced during process.
+	var/amount = 367 // placeholder. This should be replaced during process.
 	/// The threshold at which mana begins decaying exponentially.
 	// TODO: convert to some kind of list for multiple softcaps?
 	var/softcap = BASE_MANA_SOFTCAP
@@ -245,9 +245,9 @@
 	if (amount == 0)
 		return amount
 
-	if (!isnull(incoming_attunements))
-
-		/*var/ratio
+	/* if (!isnull(incoming_attunements))
+		TODO: figure out what this does.
+		var/ratio
 		if (src.amount == 0)
 			ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS
 		else
@@ -316,14 +316,15 @@
 	return GLOB.default_attunements.Copy()
 
 /datum/mana_pool/proc/set_max_mana(new_max, change_amount = FALSE, change_softcap = TRUE)
-	var/percent = get_percent_to_max()
+	var/percent = get_percent_to_max() //originally this was a duplicate redefinition- see change_amount
+	var/softcap_percent = get_percent_of_softcap_to_max()
 
 	if (change_softcap)
-		var/softcap_percent = get_percent_of_softcap_to_max()
+		softcap_percent = get_percent_of_softcap_to_max() // originally softcap_percent was defined here
 		softcap = new_max * (softcap_percent / 100)
 
 	if (change_amount)
-		var/percent = get_percent_to_max()
+		percent = get_percent_to_max() // this used to be var/percent. why?
 		amount = new_max * (percent / 100)
 
 	maximum_mana_capacity = new_max

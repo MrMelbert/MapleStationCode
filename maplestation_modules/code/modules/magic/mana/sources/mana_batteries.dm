@@ -34,11 +34,11 @@
 		return FALSE
 
 	var/already_transferring = (user in mana_pool.transferring_to)
-	var/results
+	var/transfer_results = 0
 	if (already_transferring)
-		results = mana_pool.stop_transfer(user.mana_pool)
+		transfer_results = mana_pool.stop_transfer(user.mana_pool)
 	else
-		results = mana_pool.start_transfer(user.mana_pool, force_process = TRUE)
+		transfer_results = mana_pool.start_transfer(user.mana_pool, force_process = TRUE)
 
 /obj/item/mana_battery/mana_crystal
 	name = MAGIC_MATERIAL_NAME + " crystal"
@@ -49,11 +49,15 @@
 /datum/mana_pool/mana_battery/mana_crystal
 
 	maximum_mana_capacity = MANA_CRYSTAL_BASE_MANA_CAPACITY
-	softcap = maximum_mana_capacity
+	softcap = MANA_CRYSTAL_BASE_MANA_CAPACITY
 
 	exponential_decay_divisor = MANA_CRYSTAL_BASE_DECAY_DIVISOR
 
 	max_donation_rate_per_second = BASE_MANA_CRYSTAL_DONATION_RATE
+
+/datum/mana_pool/mana_battery/mana_crystal/New(atom/parent, amount)
+	. = ..()
+	softcap = maximum_mana_capacity
 
 /obj/item/mana_battery/mana_crystal/standard
 

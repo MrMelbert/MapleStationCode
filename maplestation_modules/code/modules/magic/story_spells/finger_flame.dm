@@ -6,8 +6,7 @@
 	var/flame_cost = FINGERFLAME_MANA_COST // very cheap, it's just a lighter
 	var/flame_attunement = FINGERFLAME_ATTUNEMENT_FIRE // flame users make this EVEN cheaper
 
-	/// You get some seconds of freecasting to prevent spam.
-	COOLDOWN_DECLARE(free_use_cooldown)
+	/// You get some seconds of freecasting to prevent spam.\
 
 /* /datum/component/uses_mana/story_spell/finger_flame/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
@@ -21,22 +20,20 @@
 	. = ..()
 	.[/datum/attunement/fire] = flame_attunement */
 
-/datum/component/uses_mana/story_spell/finger_flame/get_mana_required(atom/caster, atom/cast_on, ...)
-	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (..() * flame_cost) : 0
 
 /* /datum/component/uses_mana/story_spell/finger_flame/handle_precast(datum/action/cooldown/spell/touch/finger_flame/source, atom/cast_on)
 	if(source.attached_hand)
 		return NONE
 	return ..() */
 
-/datum/component/uses_mana/story_spell/finger_flame/handle_cast(datum/action/cooldown/spell/source, atom/cast_on)
+/* /datum/component/uses_mana/story_spell/finger_flame/handle_cast(datum/action/cooldown/spell/source, atom/cast_on)
 	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.
 	// whichs means it uses mana when the flame / hand is CREATED instead of used
 	react_to_successful_use(source, cast_on)
 
 /datum/component/uses_mana/story_spell/finger_flame/react_to_successful_use(datum/action/cooldown/spell/source, atom/cast_on)
 	. = ..()
-	COOLDOWN_START(src, free_use_cooldown, 4 SECONDS)
+	COOLDOWN_START(src, free_use_cooldown, 4 SECONDS) */
 
 
 
@@ -56,7 +53,9 @@
 	draw_message = null
 	drop_message = null
 	can_cast_on_self = TRUE // self burn
-	var/fingflame_cost = FINGERFLAME_MANA_COST
+	var/mana_cost = FINGERFLAME_MANA_COST
+
+	COOLDOWN_DECLARE(free_use_cooldown)
 
 
 	// I was considering giving this the same "trigger on snap emote" effect that the arm implant has,
@@ -117,11 +116,14 @@
 	AddComponent(/datum/component/uses_mana/story_spell/finger_flame, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = fingflame_cost, \
+		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 	)
 	desc += " Costs mana to conjure, but is free to maintain."
+
+/datum/action/cooldown/spell/touch/finger_flame/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (mana_cost) : 0
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard
 	name = "Muster Flame"

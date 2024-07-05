@@ -31,19 +31,20 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_LIFE] += SOOTHE_ATTUNEMENT_LIFE
 
-	AddComponent(/datum/component/uses_mana/, \
+	AddComponent(/datum/component/uses_mana, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		mana_consumed = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)
+ // replace with  "CALLBACK(src, PROC_REF(get_mana_consumed))," when error is resolved
 
-/datum/action/cooldown/spell/pointed/soothe_target/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
-	var/final_cost = ..() * mana_cost
-	if(!isnull(cast_on.mind))
+/* /datum/action/cooldown/spell/pointed/soothe_target/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+	var/final_cost = mana_cost
+	if(!isnull(cast_on.mind)) // ERR: claims "cast_on.mind" is invalid, commenting out until i figure out how to fix
 		final_cost *= 2 // costs more on other players because pacifism is kind of annoying...
-	return final_cost
+	return final_cost */
 
 /datum/action/cooldown/spell/pointed/soothe_target/is_valid_target(atom/cast_on)
 	return isliving(cast_on) && (cast_on != owner)

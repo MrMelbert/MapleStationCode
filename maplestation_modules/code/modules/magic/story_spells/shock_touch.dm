@@ -1,13 +1,6 @@
 #define SHOCK_TOUCH_ATTUNEMENT_ELEC 0.5
 #define SHOCK_TOUCH_MANA_COST 50
 
-/datum/component/uses_mana/story_spell/touch/shock_touch
-	var/shock_touch_attunement_amount = SHOCK_TOUCH_ATTUNEMENT_ELEC
-	var/shock_touch_cost = SHOCK_TOUCH_MANA_COST
-
-/datum/component/uses_mana/story_spell/touch/shock_touch/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * shock_touch_cost
-
 // Magical shock touch can just subtype normal shock touch relatievly painlessly
 /datum/action/cooldown/spell/touch/shock/magical
 	name = "Shocking Grasp"
@@ -47,8 +40,8 @@
 		return ..()
 
 	to_chat(owner, span_notice("Your hands feel like they're buzzing with electricity."))
-	var/datum/component/uses_mana/story_spell/touch/shock_touch/touch = magic_shock.GetComponent(/datum/component/uses_mana/story_spell/touch/shock_touch)
-	touch?.shock_touch_cost = 0
+// 	var/datum/component/uses_mana/story_spell/touch/shock_touch/touch = magic_shock.GetComponent(/datum/component/uses_mana/story_spell/touch/shock_touch)
+	magic_shock?.shock_touch_cost = 0
 	power_path = null
 
 /datum/mutation/human/shock/on_losing(mob/living/carbon/human/owner)
@@ -61,8 +54,8 @@
 		return
 
 	to_chat(owner, span_warning("Your hands feel numb once more."))
-	var/datum/component/uses_mana/story_spell/touch/shock_touch/touch = magic_shock.GetComponent(/datum/component/uses_mana/story_spell/touch/shock_touch)
-	touch?.shock_touch_cost = initial(touch.shock_touch_cost)
+//	var/datum/component/uses_mana/story_spell/touch/shock_touch/touch = magic_shock.GetComponent(/datum/component/uses_mana/story_spell/touch/shock_touch)
+	magic_shock?.shock_touch_cost = initial(magic_shock.shock_touch_cost)
 
 #undef SHOCK_TOUCH_ATTUNEMENT_ELEC
 #undef SHOCK_TOUCH_MANA_COST
