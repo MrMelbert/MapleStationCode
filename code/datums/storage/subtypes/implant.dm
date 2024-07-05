@@ -12,4 +12,4 @@
 	max_total_storage,
 )
 	. = ..()
-	set_holdable(cant_hold_list = /obj/item/disk/nuclear
+	set_holdable(cant_hold_list = /obj/item/disk/nuclear)

@@ -443,7 +443,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	SEND_SIGNAL(parent, COMSIG_STORAGE_STORED_ITEM, to_insert, user, force)
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
-	parent.update_appearance()
 	return TRUE
 
 /**
@@ -534,7 +533,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		animate_parent()
 
 	refresh_views()
-	parent.update_appearance()
 	return TRUE
 
 /**
@@ -742,7 +740,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 		for(var/obj/item/to_dump in real_location)
 			dest_object.atom_storage.attempt_insert(to_dump, user)
-		parent.update_appearance()
 		SEND_SIGNAL(src, COMSIG_STORAGE_DUMP_POST_TRANSFER, dest_object, user)
 		return
 
@@ -1107,5 +1104,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	var/rustle_vol = 50
 	if(isitem(parent))
-		rustle_vol = clamp(parent.w_class * 15, 10, 50)
+		var/obj/item/item_parent = parent
+		rustle_vol = clamp(item_parent.w_class * 15, 10, 50)
 	playsound(parent, storage_sound, rustle_vol, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
