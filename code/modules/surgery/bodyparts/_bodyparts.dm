@@ -894,8 +894,8 @@
 
 	set_can_be_disabled(initial(can_be_disabled))
 
-//Updates an organ's brute/burn states for use by update_damage_overlays()
-//Returns 1 if we need to update overlays. 0 otherwise.
+/// Updates an organ's brute/burn states for use by update_damage_overlays().
+/// Returns TRUE if state changed (IE, an update is needed)
 /obj/item/bodypart/proc/update_bodypart_damage_state()
 	SHOULD_CALL_PARENT(TRUE)
 
@@ -906,6 +906,45 @@
 		burnstate = tburn
 		return TRUE
 	return FALSE
+
+/// Gets overlays to apply to the mob when damaged.
+/obj/item/bodypart/proc/get_bodypart_damage_state()
+	if(!dmg_overlay_type)
+		return
+
+	var/list/overlays
+	if(brutestate)
+		var/mutable_appearance/brute_overlay = mutable_appearance(
+			icon = 'icons/mob/effects/dam_mob.dmi',
+			icon_state = "[dmg_overlay_type]_[body_zone]_[brutestate]0",
+			layer = -DAMAGE_LAYER,
+		)
+		brute_overlay.color = damage_color
+		LAZYADD(overlays, brute_overlay)
+	if(burnstate)
+		var/mutable_appearance/burn_overlay = mutable_appearance(
+			icon = 'icons/mob/effects/dam_mob.dmi',
+			icon_state = "[dmg_overlay_type]_[body_zone]_0[burnstate]",
+			layer = -DAMAGE_LAYER,
+		)
+		LAZYADD(overlays, burn_overlay)
+	if(current_gauze)
+		var/mutable_appearance/gauze_overlay = current_gauze.build_worn_icon(
+			default_layer = DAMAGE_LAYER - 0.1, // proc inverts it for us
+			override_file = 'maplestation_modules/icons/mob/bandage.dmi',
+			override_state = current_gauze.worn_icon_state,
+		)
+		LAZYADD(overlays, gauze_overlay)
+	return overlays
+
+/obj/item/bodypart/bodypart/leg/get_bodypart_damage_state()
+	if(!(bodytype & BODYTYPE_DIGITIGRADE))
+		return ..()
+
+	. = ..()
+	for(var/mutable_appearance/appearance in .)
+		apply_digitigrade_filters(appearance, owner)
+	return .
 
 //we inform the bodypart of the changes that happened to the owner, or give it the informations from a source mob.
 //set is_creating to true if you want to change the appearance of the limb outside of mutation changes or forced changes.
@@ -1248,15 +1287,17 @@
 /obj/item/bodypart/proc/apply_gauze(obj/item/stack/medical/gauze/new_gauze)
 	if(!istype(new_gauze) || !new_gauze.absorption_capacity)
 		return
-	var/newly_gauzed = FALSE
-	if(!current_gauze)
-		newly_gauzed = TRUE
-	QDEL_NULL(current_gauze)
+	var/newly_gauzed = TRUE
+	if(!isnull(current_gauze))
+		SEND_SIGNAL(src, COMSIG_BODYPART_UNGAUZED, current_gauze)
+		QDEL_NULL(current_gauze)
+		newly_gauzed = FALSE
 	current_gauze = new new_gauze.type(src, 1)
+	current_gauze.worn_icon_state = "[body_zone][rand(1, 3)]"
 	new_gauze.use(1)
-	current_gauze.gauzed_bodypart = src
 	if(newly_gauzed)
 		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZED, current_gauze, new_gauze)
+	owner.update_damage_overlays()
 
 /**
  * seep_gauze() is for when a gauze wrapping absorbs blood or pus from wounds, lowering its absorption capacity.
@@ -1270,9 +1311,21 @@
 	if(!current_gauze)
 		return
 	current_gauze.absorption_capacity -= seep_amt
-	if(current_gauze.absorption_capacity <= 0)
-		owner.visible_message(span_danger("\The [current_gauze.name] on [owner]'s [name] falls away in rags."), span_warning("\The [current_gauze.name] on your [name] falls away in rags."), vision_distance=COMBAT_MESSAGE_RANGE)
-		QDEL_NULL(current_gauze)
+	if(current_gauze.absorption_capacity > 0)
+		return
+	owner.visible_message(
+		span_danger("[current_gauze] on [owner]'s [name] falls away in rags."),
+		span_warning("[current_gauze] on your [name] falls away in rags."),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)
+	SEND_SIGNAL(src, COMSIG_BODYPART_UNGAUZED, current_gauze)
+	QDEL_NULL(current_gauze)
+	owner.update_damage_overlays()
+	// clean up your trash!
+	var/obj/effect/decal/cleanable/shreds/to_shreds = new(owner.drop_location())
+	to_shreds.name = "worn gauze"
+	to_shreds.desc = "Some worn up, bloodied gauze."
+	to_shreds.add_mob_blood(owner)
 
 ///Loops through all of the bodypart's external organs and update's their color.
 /obj/item/bodypart/proc/recolor_external_organs()

@@ -317,8 +317,13 @@
 		dam_mul *= iter_wound.damage_multiplier_penalty
 
 	if(!LAZYLEN(wounds) && current_gauze && !replaced) // no more wounds = no need for the gauze anymore
-		owner.visible_message(span_notice("\The [current_gauze.name] on [owner]'s [name] falls away."), span_notice("The [current_gauze.name] on your [parse_zone(body_zone)] falls away."))
-		QDEL_NULL(current_gauze)
+		owner.visible_message(
+			span_notice("[current_gauze] on [owner]'s [name] falls away."),
+			span_notice("[current_gauze] on your [parse_zone(body_zone)] falls away."),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+		)
+		SEND_SIGNAL(src, COMSIG_BODYPART_UNGAUZED, current_gauze)
+		QDEL_NULL(current_gauze) // melbert todo : let gauze stay on your arm when the wound expires, so you have to take it off yourself
 
 	wound_damage_multiplier = dam_mul
 	refresh_bleed_rate()

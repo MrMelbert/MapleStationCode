@@ -17,6 +17,8 @@
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
+	/// Sound played when heal doafter begins
+	var/heal_sound
 	/// How long it takes to apply it to yourself
 	var/self_delay = 5 SECONDS
 	/// How long it takes to apply it to someone else
@@ -86,6 +88,8 @@
 	if(iscarbon(patient))
 		new_self_delay = looping ? clamp((self_delay - assessing_injury_delay), 0, self_delay) : self_delay
 		new_other_delay = looping ? clamp((other_delay - assessing_injury_delay), 0, other_delay) : other_delay
+	if(heal_sound)
+		playsound(patient, heal_sound, 33, FALSE)
 	if(patient == user)
 		if(!silent)
 			user.visible_message(
@@ -231,15 +235,6 @@
 	burn_cleanliness_bonus = 0.35
 	merge_type = /obj/item/stack/medical/gauze
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
-	var/obj/item/bodypart/gauzed_bodypart
-
-/obj/item/stack/medical/gauze/Destroy(force)
-	. = ..()
-
-	if (gauzed_bodypart)
-		gauzed_bodypart.current_gauze = null
-		SEND_SIGNAL(gauzed_bodypart, COMSIG_BODYPART_UNGAUZED, src)
-	gauzed_bodypart = null
 
 // gauze is only relevant for wounds, which are handled in the wounds themselves
 /obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/user, silent, looping)
@@ -278,11 +273,19 @@
 	else
 		user.visible_message(span_warning("[user] begins wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."), span_warning("You begin wrapping the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."))
 
+	playsound(patient, pick(
+		'maplestation_modules/sound/items/rip1.ogg',
+		'maplestation_modules/sound/items/rip2.ogg',
+		'maplestation_modules/sound/items/rip3.ogg',
+		'maplestation_modules/sound/items/rip4.ogg',
+	), 33)
+
 	if(!do_after(user, treatment_delay, target = patient))
 		return
 
 	user.visible_message("<span class='infoplain'><span class='green'>[user] applies [src] to [patient]'s [limb.plaintext_zone].</span></span>", "<span class='infoplain'><span class='green'>You bandage the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone].</span></span>")
 	limb.apply_gauze(src)
+	add_mob_blood(patient)
 
 /obj/item/stack/medical/gauze/twelve
 	amount = 12
@@ -343,6 +346,7 @@
 	stop_bleeding = 0.6
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
+	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
 /obj/item/stack/medical/suture/emergency
 	name = "emergency suture"
