@@ -255,8 +255,8 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 		/datum/crafting_recipe/goliathcloak, /datum/crafting_recipe/skilt, /datum/crafting_recipe/drakecloak,\
 		)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
@@ -315,8 +315,8 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 
 	var/static/list/slapcraft_recipe_list = list(/datum/crafting_recipe/drakecloak)
 
-	AddComponent(
-		/datum/component/slapcrafting,\
+	AddElement(
+		/datum/element/slapcrafting,\
 		slapcraft_recipes = slapcraft_recipe_list,\
 	)
 
