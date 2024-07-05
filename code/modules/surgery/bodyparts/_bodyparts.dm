@@ -361,6 +361,9 @@
 		var/stuck_word = embedded_thing.isEmbedHarmless() ? "stuck" : "embedded"
 		check_list += "\t <a href='?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]' class='warning'>There is \a [embedded_thing] [stuck_word] in your [name]!</a>"
 
+	if(current_gauze)
+		check_list += span_notice("\t There is some <a href='?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around your [name].")
+
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage, wound_bonus = CANT_WOUND)
 
@@ -932,7 +935,7 @@
 		var/mutable_appearance/gauze_overlay = current_gauze.build_worn_icon(
 			default_layer = DAMAGE_LAYER - 0.1, // proc inverts it for us
 			override_file = 'maplestation_modules/icons/mob/bandage.dmi',
-			override_state = current_gauze.worn_icon_state,
+			override_state = current_gauze.worn_icon_state, // future todo : icon states for dirty bandages as well
 		)
 		LAZYADD(overlays, gauze_overlay)
 	return overlays
@@ -1272,60 +1275,6 @@
 	SHOULD_BE_PURE(TRUE)
 
 	return ((biological_state & BIO_BLOODED) && (!owner || !HAS_TRAIT(owner, TRAIT_NOBLOOD)))
-
-/**
- * apply_gauze() is used to- well, apply gauze to a bodypart
- *
- * As of the Wounds 2 PR, all bleeding is now bodypart based rather than the old bleedstacks system, and 90% of standard bleeding comes from flesh wounds (the exception is embedded weapons).
- * The same way bleeding is totaled up by bodyparts, gauze now applies to all wounds on the same part. Thus, having a slash wound, a pierce wound, and a broken bone wound would have the gauze
- * applying blood staunching to the first two wounds, while also acting as a sling for the third one. Once enough blood has been absorbed or all wounds with the ACCEPTS_GAUZE flag have been cleared,
- * the gauze falls off.
- *
- * Arguments:
- * * gauze- Just the gauze stack we're taking a sheet from to apply here
- */
-/obj/item/bodypart/proc/apply_gauze(obj/item/stack/medical/gauze/new_gauze)
-	if(!istype(new_gauze) || !new_gauze.absorption_capacity)
-		return
-	var/newly_gauzed = TRUE
-	if(!isnull(current_gauze))
-		SEND_SIGNAL(src, COMSIG_BODYPART_UNGAUZED, current_gauze)
-		QDEL_NULL(current_gauze)
-		newly_gauzed = FALSE
-	current_gauze = new new_gauze.type(src, 1)
-	current_gauze.worn_icon_state = "[body_zone][rand(1, 3)]"
-	new_gauze.use(1)
-	if(newly_gauzed)
-		SEND_SIGNAL(src, COMSIG_BODYPART_GAUZED, current_gauze, new_gauze)
-	owner.update_damage_overlays()
-
-/**
- * seep_gauze() is for when a gauze wrapping absorbs blood or pus from wounds, lowering its absorption capacity.
- *
- * The passed amount of seepage is deducted from the bandage's absorption capacity, and if we reach a negative absorption capacity, the bandages falls off and we're left with nothing.
- *
- * Arguments:
- * * seep_amt - How much absorption capacity we're removing from our current bandages (think, how much blood or pus are we soaking up this tick?)
- */
-/obj/item/bodypart/proc/seep_gauze(seep_amt = 0)
-	if(!current_gauze)
-		return
-	current_gauze.absorption_capacity -= seep_amt
-	if(current_gauze.absorption_capacity > 0)
-		return
-	owner.visible_message(
-		span_danger("[current_gauze] on [owner]'s [name] falls away in rags."),
-		span_warning("[current_gauze] on your [name] falls away in rags."),
-		vision_distance = COMBAT_MESSAGE_RANGE,
-	)
-	SEND_SIGNAL(src, COMSIG_BODYPART_UNGAUZED, current_gauze)
-	QDEL_NULL(current_gauze)
-	owner.update_damage_overlays()
-	// clean up your trash!
-	var/obj/effect/decal/cleanable/shreds/to_shreds = new(owner.drop_location())
-	to_shreds.name = "worn gauze"
-	to_shreds.desc = "Some worn up, bloodied gauze."
-	to_shreds.add_mob_blood(owner)
 
 ///Loops through all of the bodypart's external organs and update's their color.
 /obj/item/bodypart/proc/recolor_external_organs()
