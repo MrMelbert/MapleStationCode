@@ -75,3 +75,90 @@
 	visible_message(span_notice("[src] beeps and turns its head toward [tamer] with its head tilted."))
 
 
+
+/*
+ * # The Vroomba!
+ * A roomba, that has combat functionality! It will have two modes, cleaner mode, which is similar to a cleanbot, and combat mode, where it will float and have various attacks, and have telekinesis!
+ * TODO: It will also be able to explode, either on purpose or on death.
+ * TODO: When it dies, all the stuff it picks up falls out
+ */
+
+/mob/living/basic/bot/cleanbot/vroomba
+	name = "\improper Strange Roomba"
+	desc = "A little cleaning robot, So circular! It looks like it is out of plasteel."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/companions.dmi'
+	base_icon_state = "vroomba_drive"
+	icon_state = "vroomba_drive"
+	icon_living = "vroomba_drive"
+	base_icon = "vroomba_drive"
+	pass_flags = PASSMOB | PASSFLAPS | PASSTABLE
+	density = FALSE
+	anchored = FALSE
+	layer = ABOVE_NORMAL_TURF_LAYER
+
+	health = 100
+	maxHealth = 100
+	damage_coeff = list(BRUTE = 0.7, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0) //It's secretly a combat drone. This thing is tanky.
+
+	maints_access_required = list(ACCESS_ROBOTICS, ACCESS_JANITOR, ACCESS_ENGINEERING)
+	radio_key = /obj/item/encryptionkey/ai
+	radio_channel = RADIO_CHANNEL_SERVICE
+	bot_type = CLEAN_BOT
+	hackables = " software"
+	additional_access = /datum/id_trim/job/janitor
+	possessed_message = "You are a roomba! Clean the station to the best of your ability! Protect your master! Don't let anybody boss YOU around!"
+	ai_controller = /datum/ai_controller/basic_controller/bot/cleanbot
+	path_image_color = "#ddda2a"
+
+	///the icon state for when it is flying
+	var/flying_icon = "vroomba_float"
+	//speed it goes in combat mode. lower is faster.
+	var/combat_speed = 0.5
+
+/mob/living/basic/bot/cleanbot/vroomba/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/basic_inhands)
+
+//it will not get job titles like cleanbots.
+/mob/living/basic/bot/cleanbot/vroomba/update_title(new_job_title)
+	return
+
+//boom boom
+/mob/living/basic/bot/cleanbot/vroomba/explode()
+	visible_message(span_boldnotice("[src] blows apart!"))
+	do_sparks(3, TRUE, src)
+	explosion(src, heavy_impact_range = 1, light_impact_range = 4)
+
+//the sprite doesn't show up unless I do this
+/mob/living/basic/bot/cleanbot/vroomba/update_icon_state()
+	SHOULD_CALL_PARENT(FALSE)
+	return SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_ICON_STATE)
+
+/mob/living/basic/bot/cleanbot/vroomba/set_combat_mode(new_mode, silent)
+	. = ..()
+	if(combat_mode)
+		go_angry()
+
+	if(!combat_mode)
+		calm_down()
+
+	update_basic_mob_varspeed()
+
+///The robot activating its hidden combat capabilities!
+/mob/living/basic/bot/cleanbot/vroomba/proc/go_angry()
+	icon_state = flying_icon
+	speed = combat_speed
+	layer = MOB_LAYER
+
+	AddElement(/datum/element/simple_flying)
+
+///the robot hiding its combat capabilities!
+/mob/living/basic/bot/cleanbot/vroomba/proc/calm_down()
+	icon_state = base_icon_state
+	speed = 3
+	layer = ABOVE_NORMAL_TURF_LAYER
+
+	RemoveElement(/datum/element/simple_flying)
+
+
+
