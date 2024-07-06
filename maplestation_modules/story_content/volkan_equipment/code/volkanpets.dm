@@ -110,6 +110,8 @@
 	ai_controller = /datum/ai_controller/basic_controller/bot/cleanbot
 	path_image_color = "#ddda2a"
 
+	hud_type = /datum/hud/vroomba
+
 	///the icon state for when it is flying
 	var/flying_icon = "vroomba_float"
 	//speed it goes in combat mode. lower is faster.
@@ -118,6 +120,8 @@
 /mob/living/basic/bot/cleanbot/vroomba/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/basic_inhands)
+	prepare_huds()
+
 
 //it will not get job titles like cleanbots.
 /mob/living/basic/bot/cleanbot/vroomba/update_title(new_job_title)
@@ -143,6 +147,7 @@
 		calm_down()
 
 	update_basic_mob_varspeed()
+	prepare_huds()
 
 ///The robot activating its hidden combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/go_angry()
@@ -150,7 +155,13 @@
 	speed = combat_speed
 	layer = MOB_LAYER
 
-	AddElement(/datum/element/simple_flying)
+	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
+	AddComponent(/datum/component/cleaner, \
+		base_cleaning_duration = 2 SECONDS, \
+		pre_clean_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_CLEANING), \
+		on_cleaned_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_IDLE), \
+	)
+	change_number_of_hands(2)
 
 ///the robot hiding its combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/calm_down()
@@ -158,7 +169,50 @@
 	speed = 3
 	layer = ABOVE_NORMAL_TURF_LAYER
 
-	RemoveElement(/datum/element/simple_flying)
+	REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
+	RemoveComponentSource(/datum/component/cleaner)
+	change_number_of_hands(0)
+
+///The drone is not killed by EMPs but it does stun it for a short moment.
+/mob/living/basic/bot/cleanbot/vroomba/emp_act(severity)
+	if(. & EMP_PROTECT_SELF)
+		return
+	Stun(10)
+	to_chat(src, span_danger("WARN: EMP DETECTED."))
+
+///The vroomba's hud!
+/datum/hud/vroomba/New(mob/owner)
+	. = ..()
+	var/atom/movable/screen/using
+
+	using = new /atom/movable/screen/drop(null, src)
+	using.icon = ui_style
+	using.screen_loc = ui_drone_drop
+	static_inventory += using
+
+	pull_icon = new /atom/movable/screen/pull(null, src)
+	pull_icon.icon = ui_style
+	pull_icon.update_appearance()
+	pull_icon.screen_loc = ui_drone_pull
+	static_inventory += pull_icon
+
+	build_hand_slots()
+
+	action_intent = new /atom/movable/screen/combattoggle/flashy(null, src)
+	action_intent.icon = ui_style
+	action_intent.screen_loc = ui_combat_toggle
+	static_inventory += action_intent
+
+	zone_select = new /atom/movable/screen/zone_sel(null, src)
+	zone_select.icon = ui_style
+	zone_select.update_appearance()
+	static_inventory += zone_select
+
+	using = new /atom/movable/screen/area_creator(null, src)
+	using.icon = ui_style
+	static_inventory += using
+
+	mymob.canon_client?.clear_screen()
 
 
 
