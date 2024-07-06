@@ -269,22 +269,22 @@
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
 	if(can_adjust)
-		. += "Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
+		. += "&bull; Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
 	if(has_sensor == BROKEN_SENSORS)
-		. += "Its sensors appear to be shorted out. You could repair it with some cabling."
+		. += "&bull; Its sensors appear to be shorted out. You could repair it with some cabling."
 	else if(has_sensor > NO_SENSORS)
 		switch(sensor_mode)
 			if(SENSOR_OFF)
-				. += "Its sensors appear to be disabled."
+				. += "&bull; Its sensors appear to be disabled."
 			if(SENSOR_LIVING)
-				. += "Its binary life sensors appear to be enabled."
+				. += "&bull; Its binary life sensors appear to be enabled."
 			if(SENSOR_VITALS)
-				. += "Its vital tracker appears to be enabled."
+				. += "&bull; Its vital tracker appears to be enabled."
 			if(SENSOR_COORDS)
-				. += "Its vital tracker and tracking beacon appear to be enabled."
+				. += "&bull; Its vital tracker and tracking beacon appear to be enabled."
 	if(LAZYLEN(attached_accessories))
 		var/list/accessories = list_accessories_with_icon(user)
-		. += "It has [english_list(accessories)] attached."
+		. += "&bull; It has [english_list(accessories)] attached."
 		. += "Alt-Right-Click to remove [attached_accessories[1]]."
 
 /// Helper to list out all accessories with an icon besides it, for use in examine
@@ -438,3 +438,127 @@
 
 /obj/item/clothing/under/rank
 	dying_key = DYE_REGISTRY_UNDER
+
+/obj/item/clothing/under
+	/// The "pockets" attached to this uniform
+	var/obj/effect/abstract/abstract_storage/uniform_pockets/pockets
+
+/obj/item/clothing/under/Destroy()
+	QDEL_NULL(pockets)
+	return ..()
+
+/obj/item/clothing/under/examine(mob/user)
+	. = ..()
+	if(!pockets)
+		return
+	if(pockets.id)
+		. += span_notice("&bull; It's got [pockets.id] attached to [p_they()].")
+	if(pockets.l_pocket && pockets.r_pocket)
+		. += span_notice("&bull; You can see something in both of [p_their()] pockets.")
+	else if(pockets.l_pocket)
+		. += span_notice("&bull; You can see something in [p_their()] left pocket.")
+	else if(pockets.r_pocket)
+		. += span_notice("&bull; You can see something in [p_their()] right pocket.")
+
+/obj/item/clothing/under/equipped(mob/living/user, slot)
+	. = ..()
+	if(!pockets)
+		return
+	if(!(slot & slot_flags))
+		return
+
+	user.equip_to_slot_if_possible(pockets.l_pocket, ITEM_SLOT_LPOCKET, disable_warning = TRUE)
+	user.equip_to_slot_if_possible(pockets.r_pocket, ITEM_SLOT_RPOCKET, disable_warning = TRUE)
+	user.equip_to_slot_if_possible(pockets.id, ITEM_SLOT_ID, disable_warning = TRUE)
+	dump_pockets(user.drop_location())
+
+/obj/item/clothing/under/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	. = ..()
+	if(.)
+		return
+	dump_pockets()
+
+/obj/item/clothing/under/atom_destruction(damage_flag)
+	dump_pockets()
+	return ..()
+
+/obj/item/clothing/under/proc/dump_pockets(atom/drop_loc = drop_location())
+	pockets?.atom_storage.remove_all(drop_loc)
+
+/obj/item/clothing/under/proc/take_pockets(mob/living/carbon/human/from_who)
+	if(pockets)
+		stack_trace("uniform take_pockets called with pockets already present!")
+		dump_pockets(from_who.drop_location())
+
+	pockets = new(src)
+	RegisterSignal(pockets, COMSIG_QDELETING, PROC_REF(pockets_del))
+
+	var/obj/item/who_id = from_who.wear_id
+	if(who_id && pockets.atom_storage.can_insert(who_id) && from_who.temporarilyRemoveItemFromInventory(who_id))
+		pockets.id = who_id
+		who_id.forceMove(pockets)
+
+	var/obj/item/who_l_pocket = from_who.l_store
+	if(who_l_pocket && pockets.atom_storage.can_insert(who_l_pocket) && from_who.temporarilyRemoveItemFromInventory(who_l_pocket))
+		pockets.l_pocket = who_l_pocket
+		who_l_pocket.forceMove(pockets)
+
+	var/obj/item/who_r_pocket = from_who.r_store
+	if(who_r_pocket && pockets.atom_storage.can_insert(who_r_pocket) && from_who.temporarilyRemoveItemFromInventory(who_r_pocket))
+		pockets.r_pocket = who_r_pocket
+		who_r_pocket.forceMove(pockets)
+
+	if(!length(pockets.contents))
+		QDEL_NULL(pockets)
+
+/obj/item/clothing/under/proc/pockets_del(...)
+	SIGNAL_HANDLER
+	pockets = null
+
+/// Abstract object intended for holding storage datums for an atom which might get
+/// another storage datum from another source, or might have have contents of its own
+/obj/effect/abstract/abstract_storage
+	density = FALSE
+	invisibility = INVISIBILITY_ABSTRACT
+	anchored = TRUE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	// hack to get around the fact that we fail canreach if our loc doesn't have a storage of itself
+	// probably fine if we just rename this flag to be more accurate (CAN_ALWAYS_REACH_1 or something)
+	flags_1 = IS_ONTOP_1
+
+/obj/effect/abstract/abstract_storage/Initialize(mapload)
+	. = ..()
+	create_storage()
+
+// Used for uniforms (to circumvent accessories)
+/obj/effect/abstract/abstract_storage/uniform_pockets
+	name = "pockets"
+	/// What was in our left pocket?
+	var/obj/item/l_pocket
+	/// What was in our right pocket?
+	var/obj/item/r_pocket
+	/// What was in our ID slot?
+	var/obj/item/id
+
+/obj/effect/abstract/abstract_storage/uniform_pockets/Initialize(mapload)
+	. = ..()
+	atom_storage.max_specific_storage = POCKET_WEIGHT_CLASS
+	atom_storage.max_slots = 3
+	atom_storage.max_total_storage = atom_storage.max_specific_storage * atom_storage.max_slots
+	if(!loc)
+		return
+
+	name = "[loc.name]'s pockets"
+	atom_storage.RegisterSignal(loc, COMSIG_MOUSEDROP_ONTO, TYPE_PROC_REF(/datum/storage, on_mousedrop_onto))
+	atom_storage.RegisterSignals(loc, list(COMSIG_CLICK_ALT, COMSIG_ATOM_ATTACK_GHOST, COMSIG_ATOM_ATTACK_HAND_SECONDARY), TYPE_PROC_REF(/datum/storage, open_storage_on_signal))
+
+/obj/effect/abstract/abstract_storage/uniform_pockets/Exited(atom/movable/gone, direction)
+	. = ..()
+	if(gone == id)
+		id = null
+	if(gone == l_pocket)
+		l_pocket = null
+	if(gone == r_pocket)
+		r_pocket = null
+	if(!length(contents))
+		qdel(src)
