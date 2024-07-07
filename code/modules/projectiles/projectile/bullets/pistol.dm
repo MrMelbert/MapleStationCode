@@ -3,22 +3,21 @@
 /obj/projectile/bullet/c9mm
 	name = "9mm bullet"
 	damage = 30
-	embedding = list(
-		"embed_chance" = 15,
-		"fall_chance" = 0.0030,
-		"jostle_chance" = 4,
-		"ignore_throwspeed_threshold" = TRUE,
-		"pain_stam_pct" = 0.4,
-		"pain_mult" = 5,
-		"jostle_pain_mult" = 6,
-		"rip_time" = 5 SECONDS,
-	)
+	embed_type = /datum/embed_data/bullet/c9mm
+
+/datum/embed_data/bullet/c9mm
+	embed_chance = 15
+	fall_chance = 0.0030
+	jostle_chance = 4
+	pain_stam_pct = 0.4
+	pain_mult = 5
+	jostle_pain_mult = 6
 
 /obj/projectile/bullet/c9mm/ap
 	name = "9mm armor-piercing bullet"
 	damage = 27
 	armour_penetration = 40
-	embedding = null
+	embed_type = null
 	shrapnel_type = null
 
 /obj/projectile/bullet/c9mm/hp

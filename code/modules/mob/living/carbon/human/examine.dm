@@ -145,7 +145,7 @@
 		missing -= body_part.body_zone
 		for(var/obj/item/leftover in body_part.embedded_objects)
 			var/stuck_or_embedded = "embedded in"
-			if(leftover.isEmbedHarmless())
+			if(leftover.is_embed_harmless())
 				stuck_or_embedded = "stuck to"
 			msg += "<b>[t_He] [t_has] [icon2html(leftover, user)] \a [leftover] [stuck_or_embedded] [t_his] [body_part.plaintext_zone]!</b>\n"
 
