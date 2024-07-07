@@ -1,6 +1,3 @@
-import { toFixed } from 'common/math';
-import { BooleanLike } from 'common/react';
-import { toTitleCase } from 'common/string';
 import { useState } from 'react';
 import {
   Box,
@@ -10,6 +7,9 @@ import {
   ProgressBar,
   Section,
 } from 'tgui-core/components';
+import { toFixed } from 'tgui-core/math';
+import { BooleanLike } from 'tgui-core/react';
+import { toTitleCase } from 'tgui-core/string';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
