@@ -217,7 +217,7 @@
 
 /datum/loadout_item/head/cowboy
 	name = "Cowboy Hat (Brown)"
-	item_path = /obj/item/clothing/head/cowboy
+	item_path = /obj/item/clothing/head/cowboy/brown
 
 /datum/loadout_item/head/cowboy_black
 	name = "Cowboy Hat (Black)"

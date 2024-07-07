@@ -254,10 +254,6 @@
 	name = "Purple Suitskirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/purpsuit/skirt
 
-/datum/loadout_item/under/formal/red_suit
-	name = "Red Suit"
-	item_path = /obj/item/clothing/under/suit/red
-
 /datum/loadout_item/under/formal/red_lawyer_skirt
 	name = "Red Lawyer Suit"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/red
