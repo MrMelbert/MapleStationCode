@@ -176,7 +176,7 @@ try
 		new InstanceCreateRequest
 		{
 			ConfigurationType = ConfigurationType.HostWrite,
-			Name = "tgstation",
+			Name = "maplestation",
 			Path = instancePath
 		},
 		default);
