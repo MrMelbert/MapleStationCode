@@ -122,10 +122,12 @@
 	if(!.)
 		return
 	var/obj/item/organ/external/tail/oranges_accessory = user.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	//I am so sorry my son
+	//We bypass helpers here cause we already have the tail
 	if(oranges_accessory.wag_flags & WAG_WAGGING) //We verified the tail exists in can_run_emote()
-		SEND_SIGNAL(user, COMSIG_ORGAN_WAG_TAIL, FALSE)
+		oranges_accessory.stop_wag(user)
 	else
-		SEND_SIGNAL(user, COMSIG_ORGAN_WAG_TAIL, TRUE)
+		oranges_accessory.start_wag(user)
 
 /datum/emote/living/carbon/human/wag/select_message_type(mob/user, intentional)
 	. = ..()
@@ -136,6 +138,25 @@
 		. = "wags " + message
 
 /datum/emote/living/carbon/human/wag/can_run_emote(mob/user, status_check, intentional)
+	var/obj/item/organ/external/tail/tail = user.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	if(tail?.wag_flags & WAG_ABLE)
+		return ..()
+	return FALSE
+
+/datum/emote/living/carbon/human/wag_swish
+	key = "swish"
+	key_third_person = "swishes"
+	message = "their tail."
+
+/datum/emote/living/carbon/human/wag_swish/run_emote(mob/user, params, type_override, intentional)
+	. = ..()
+	if(!.)
+		return
+	var/obj/item/organ/external/tail/tail = user.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	if(tail?.wag_flags & WAG_ABLE)
+		tail.start_wag(user, 1 SECONDS)
+
+/datum/emote/living/carbon/human/wag_swish/can_run_emote(mob/user, status_check, intentional)
 	var/obj/item/organ/external/tail/tail = user.get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
 	if(tail?.wag_flags & WAG_ABLE)
 		return ..()
@@ -172,6 +193,18 @@
 	key = "clear"
 	key_third_person = "clears throat"
 	message = "clears their throat."
+
+/datum/emote/living/carbon/human/hiss
+	key = "hiss"
+	key_third_person = "hisses"
+	message = "hisses."
+	message_mime = "hisses silently."
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/carbon/human/hiss/get_sound(mob/user)
+	if(islizard(user))
+		return pick(user.get_speech_sounds())
+	return null
 
 ///Snowflake emotes only for le epic chimp
 /datum/emote/living/carbon/human/monkey
