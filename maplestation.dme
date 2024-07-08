@@ -6172,6 +6172,7 @@
 #include "maplestation_modules\code\game\objects\structures\stasis.dm"
 #include "maplestation_modules\code\game\objects\structures\static_plaques.dm"
 #include "maplestation_modules\code\game\objects\structures\surgery_table.dm"
+#include "maplestation_modules\code\game\objects\structures\tables_racks.dm"
 #include "maplestation_modules\code\game\objects\structures\vital_floor_scanner.dm"
 #include "maplestation_modules\code\game\objects\structures\vital_reader.dm"
 #include "maplestation_modules\code\game\objects\structures\crate_lockers\crates.dm"
