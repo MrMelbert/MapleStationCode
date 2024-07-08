@@ -489,6 +489,7 @@
 /obj/item/reagent_containers/spray/cleaner,
 /obj/machinery/firealarm/directional/west,
 /obj/machinery/airalarm/directional/south,
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/iron/dark/textured,
 /area/station/science/robotics/lab)
 "ajr" = (
@@ -26371,7 +26372,9 @@
 /turf/closed/wall/r_wall,
 /area/station/science/research)
 "iIU" = (
-/obj/machinery/door/airlock/research/glass,
+/obj/machinery/door/airlock/research/glass{
+	name = "Robotics Surgery"
+	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
@@ -48966,6 +48969,7 @@
 "pJU" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/sink/kitchen/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/science/robotics/lab)
 "pJZ" = (
