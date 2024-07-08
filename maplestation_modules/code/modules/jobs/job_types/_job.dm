@@ -9,7 +9,13 @@
 // Update crew monitor with new jobs
 /datum/crewmonitor/New()
 	. = ..()
-	for(var/datum/job/jobtype as anything in SSjob.joinable_occupations)
+	for(var/datum/job/jobtype as anything in subtypesof(/datum/job))
+		if(!(initial(jobtype.job_flags) & JOB_NEW_PLAYER_JOINABLE))
+			continue
 		if(jobtype.crewmonitor_priority < 0)
 			continue
-		jobs[jobtype.title] = jobtype.crewmonitor_priority
+		var/prio_to_use = jobtype.crewmonitor_priority
+		while(jobs[jobtype.title])
+			stack_trace("Crew monitor job priorty conflict with [jobtype] at [prio_to_use]")
+			prio_to_use++
+		jobs[jobtype.title] = prio_to_use

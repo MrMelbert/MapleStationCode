@@ -57,9 +57,9 @@
 		/obj/item/storage/fancy/cigarettes = 1,
 	)
 
-	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS
+	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Guildperson"
-	crewmonitor_priority = 59
+	crewmonitor_priority = 60.1 // after HOP, before rest of service
 
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"
