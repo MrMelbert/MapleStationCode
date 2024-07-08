@@ -12,12 +12,12 @@ import {
 import { Window } from '../layouts';
 
 type Data = {
+  active: BooleanLike;
+  maxSetting: number;
+  setting: number;
   tankContents: Reagent[];
   tankCurrentVolume: number;
   tankMaxVolume: number;
-  active: BooleanLike;
-  setting: number;
-  maxSetting: number;
 };
 
 type Reagent = {
@@ -33,7 +33,7 @@ export const SmokeMachine = (props) => {
     tankMaxVolume,
     active,
     setting,
-    maxSetting = [],
+    maxSetting,
   } = data;
   return (
     <Window width={350} height={350}>
