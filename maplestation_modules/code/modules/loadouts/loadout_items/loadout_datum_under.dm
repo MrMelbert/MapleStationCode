@@ -54,6 +54,14 @@
 	name = "Random Jumpskirt"
 	item_path = /obj/item/clothing/under/color/jumpskirt/random
 
+/datum/loadout_item/under/jumpsuit/rainbow
+	name = "Rainbow Jumpsuit"
+	item_path = /obj/item/clothing/under/color/rainbow
+
+/datum/loadout_item/under/jumpsuit/rainbow_skirt
+	name = "Rainbow Jumpskirt"
+	item_path = /obj/item/clothing/under/color/jumpskirt/rainbow
+
 /datum/loadout_item/under/jumpsuit/jeans
 	name = "Jeans"
 	item_path = /obj/item/clothing/under/pants/jeans

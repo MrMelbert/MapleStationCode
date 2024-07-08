@@ -49,7 +49,7 @@
 	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/neck/rainbow_tie
-	name = "Bowtie (Rainbow))"
+	name = "Bowtie (Rainbow)"
 	item_path = /obj/item/clothing/neck/bowtie/rainbow
 
 /datum/loadout_item/neck/bowtie
