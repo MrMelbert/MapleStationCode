@@ -146,7 +146,7 @@
 /datum/emote/living/carbon/human/wag_swish
 	key = "swish"
 	key_third_person = "swishes"
-	message = "their tail."
+	message = "swishes their tail."
 
 /datum/emote/living/carbon/human/wag_swish/run_emote(mob/user, params, type_override, intentional)
 	. = ..()
