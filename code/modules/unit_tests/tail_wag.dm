@@ -5,6 +5,7 @@
 
 /datum/unit_test/tail_wag/Run()
 	var/mob/living/carbon/human/dummy = allocate(/mob/living/carbon/human/consistent)
+	dummy.dna.species.external_organs[/obj/item/organ/external/tail/cat] = "Cat" // so we can actually wag
 	var/obj/item/organ/external/tail/cat/dummy_tail = allocate(/obj/item/organ/external/tail/cat)
 	dummy_tail.Insert(dummy, special = TRUE, movement_flags = DELETE_IF_REPLACED)
 
