@@ -14,8 +14,4 @@
 			continue
 		if(jobtype.crewmonitor_priority < 0)
 			continue
-		var/prio_to_use = jobtype.crewmonitor_priority
-		while(jobs[jobtype.title])
-			stack_trace("Crew monitor job priorty conflict with [jobtype] at [prio_to_use]")
-			prio_to_use++
-		jobs[jobtype.title] = prio_to_use
+		jobs[jobtype.title] = jobtype.crewmonitor_priority
