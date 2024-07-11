@@ -6032,7 +6032,7 @@
 /obj/machinery/holopad,
 /obj/structure/cable,
 /turf/open/floor/wood,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "bvG" = (
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -23228,7 +23228,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/checker,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "gaB" = (
 /obj/machinery/newscaster/directional/east,
 /obj/structure/table/wood,
@@ -43885,10 +43885,6 @@
 "lof" = (
 /turf/open/floor/wood/parquet,
 /area/station/commons/dorms/room2)
-"lok" = (
-/obj/machinery/duct,
-/turf/open/floor/wood,
-/area/station/service/bar)
 "loA" = (
 /obj/machinery/atmospherics/components/binary/pump/on{
 	dir = 1;
@@ -49998,7 +49994,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable,
 /turf/open/floor/wood,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "mPY" = (
 /obj/effect/turf_decal/trimline/yellow/line{
 	dir = 4
@@ -53692,13 +53688,6 @@
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/pod/light,
 /area/station/maintenance/floor1/starboard)
-"nLp" = (
-/obj/structure/cable,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/duct,
-/turf/open/floor/wood,
-/area/station/service/bar)
 "nLs" = (
 /obj/machinery/conveyor{
 	dir = 4;
@@ -65140,7 +65129,7 @@
 /obj/structure/table/wood,
 /obj/effect/spawner/random/entertainment/cigar,
 /turf/open/floor/iron/checker,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "qJe" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/item/storage/box/donkpockets,
@@ -66021,7 +66010,7 @@
 /obj/machinery/duct,
 /obj/machinery/light/directional/east,
 /turf/open/floor/wood,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "qWR" = (
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
@@ -66914,7 +66903,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/airlock/access/any/service/general,
 /turf/open/floor/iron/dark,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "rgM" = (
 /obj/structure/closet/boxinggloves,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -68978,9 +68967,6 @@
 /obj/structure/cable,
 /turf/open/floor/catwalk_floor,
 /area/station/maintenance/floor3/port/fore)
-"rMo" = (
-/turf/open/floor/wood,
-/area/station/service/bar)
 "rMq" = (
 /obj/machinery/camera/autoname/directional/south,
 /turf/open/floor/iron/smooth,
@@ -73945,7 +73931,7 @@
 	},
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron/checker,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "tbu" = (
 /obj/effect/spawner/random/trash/hobo_squat,
 /obj/effect/decal/cleanable/dirt,
@@ -76064,7 +76050,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/checker,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "tDE" = (
 /obj/machinery/power/port_gen/pacman,
 /turf/open/floor/iron/textured_large,
@@ -81209,7 +81195,7 @@
 	dir = 1
 	},
 /turf/open/floor/iron/checker,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "uVK" = (
 /obj/machinery/door/airlock/external,
 /obj/effect/mapping_helpers/airlock/access/any/engineering/external,
@@ -86796,7 +86782,7 @@
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron/checker,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "woK" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/red/half,
@@ -93404,7 +93390,7 @@
 /obj/effect/turf_decal/siding/wood,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron/checker,
-/area/station/service/bar)
+/area/station/service/bar/atrium)
 "xXq" = (
 /obj/structure/railing/corner{
 	dir = 1
@@ -249759,10 +249745,10 @@ mfE
 uDb
 czP
 xXp
-rMo
-lok
+ygT
+bmO
 gaA
-whR
+tQd
 fjo
 qcd
 dFd
@@ -250016,10 +250002,10 @@ dzq
 uDb
 oLt
 woH
-rMo
-lok
+ygT
+bmO
 tDB
-whR
+tQd
 fjo
 qcd
 dFd
@@ -250274,9 +250260,9 @@ jrr
 kwc
 mPW
 bvF
-lok
+bmO
 uVI
-whR
+tQd
 fjo
 qcd
 dFd
@@ -250530,10 +250516,10 @@ lFe
 gYh
 qHR
 tbt
-nLp
+luD
 qWQ
 qIY
-whR
+tQd
 jwo
 qcd
 dFd
@@ -250786,11 +250772,11 @@ whR
 jse
 whR
 whR
-whR
+tQd
 rgL
-whR
-whR
-whR
+tQd
+tQd
+tQd
 dff
 qcd
 dFd
