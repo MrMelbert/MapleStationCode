@@ -130,6 +130,7 @@
 	desc = "A bell that messages all members of a department when rung."
 	ring_cooldown_length = 1 SECONDS
 	ring_sound = 'sound/machines/ding_short.ogg'
+	verb_say = "beeps"
 	/// Prefix for the name of the ringer
 	var/dept_name = "some"
 	/// What department we are pinging
@@ -145,7 +146,7 @@
 
 /obj/structure/desk_bell/ringer/Initialize(mapload)
 	. = ..()
-	name = "[dept_name] [name]"
+	name = "\proper [dept_name] [name]"
 	if(isnull(target_department))
 		return
 	for(var/datum/job/job_type as anything in SSjob.joinable_occupations)
@@ -178,19 +179,22 @@
 
 	var/list/department_pdas = get_department_messengers()
 	if(!length(department_pdas))
-		say("No employees to ring.")
+		say("No employees available.")
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 33, FALSE)
 		return
 
 	var/notify_href = "(<a href='byond://?src=[REF(src)];notify=1;request_time=[world.time]'>Notify</a>)"
 
 	var/datum/signal/subspace/messaging/tablet_message/signal = new(src, list(
 		"fakename" = "Pager Alert",
+		"fakejob" = "Desk",
 		"automated" = TRUE,
 		"message" = "Someone's pressence is requested at the front desk. [notify_href]",
 		"targets" = department_pdas,
 	))
 	signal.send_to_receivers()
 	say("Paging [dept_name]...")
+	playsound(src, 'sound/machines/ping.ogg', 33, FALSE)
 
 /obj/structure/desk_bell/ringer/proc/reset_page()
 	if(!last_notified)
@@ -217,7 +221,7 @@
 			return
 		var/notifier_ref = REF(notifier)
 		if(last_notified)
-			to_chat(notifier, span_warning("[notifier_ref == last_notified ? "You" : "Someone else"] already responded to the page."))
+			to_chat(notifier, span_warning("[notifier_ref == last_notified ? "You" : "Someone else"] already responded to that page."))
 			return
 		last_notified = notifier_ref
 
@@ -233,8 +237,10 @@
 			))
 			signal.send_to_receivers()
 
-		say("[first_responder]'s on their way!")
-		to_chat(notifier, span_notice("You respond to the page, letting whomever sent it and your coworkers know you're on your way."))
+		say("[first_responder]'s on their way!") // no p_their i guess
+		to_chat(notifier, span_notice("You respond to the page, relaying to whomever sent it and your coworkers that you're on your way."))
+		playsound(their_pda, 'sound/machines/terminal_success.ogg', 33, TRUE)
+		playsound(src, 'sound/machines/terminal_success.ogg', 33, TRUE)
 
 /obj/structure/desk_bell/ringer/botany
 	dept_name = "hydroponics department"
