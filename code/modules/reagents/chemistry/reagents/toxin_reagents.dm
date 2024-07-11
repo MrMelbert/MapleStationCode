@@ -1319,14 +1319,14 @@
 
 /datum/reagent/toxin/tetrodotoxin
 	name = "Tetrodotoxin"
-	description = "A colorless, oderless, tasteless neurotoxin usually carried by livers of animals of the Tetraodontiformes order."
+	description = "A colorless, odorless, tasteless neurotoxin usually carried by livers of animals of the Tetraodontiformes order."
 	silent_toxin = TRUE
 	reagent_state = SOLID
 	color = "#EEEEEE"
 	metabolization_rate = 0.1 * REAGENTS_METABOLISM
 	toxpwr = 0
 	taste_mult = 0
-	chemical_flags = REAGENT_NO_RANDOM_RECIPE
+	chemical_flags = REAGENT_NO_RANDOM_RECIPE|REAGENT_CAN_BE_SYNTHESIZED
 	var/list/traits_not_applied = list(
 		TRAIT_PARALYSIS_L_ARM = BODY_ZONE_L_ARM,
 		TRAIT_PARALYSIS_R_ARM = BODY_ZONE_R_ARM,
@@ -1404,9 +1404,8 @@
 /datum/reagent/toxin/tetrodotoxin/proc/paralyze_limb(mob/living/affected_mob)
 	if(!length(traits_not_applied))
 		return
-	var/added_trait = pick(traits_not_applied)
+	var/added_trait = pick_n_take(traits_not_applied)
 	ADD_TRAIT(affected_mob, added_trait, REF(src))
-	traits_not_applied -= added_trait
 
 /datum/reagent/toxin/tetrodotoxin/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
