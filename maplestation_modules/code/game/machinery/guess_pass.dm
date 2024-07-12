@@ -3,7 +3,6 @@
 	desc = "A small hard-light slip which you can attach to your ID card to gain temporary access to a department."
 	icon = 'icons/obj/service/bureaucracy.dmi'
 	icon_state = "corppaperslip_words"
-	base_icon_state = "corppaperslip_words"
 	inhand_icon_state = "silver_id"
 	lefthand_file = 'icons/mob/inhands/equipment/idcards_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/idcards_righthand.dmi'
@@ -96,29 +95,59 @@
 /obj/machinery/guest_pass
 	name = "guest pass kiosk"
 	desc = "A kiosk allowing members of a department to grant access to their department temporarily."
-	icon = 'icons/obj/service/bureaucracy.dmi'
-	icon_state = "ticketmachine"
-	base_icon_state = "ticketmachine"
+	icon = 'maplestation_modules/icons/obj/machines/bureaucracy.dmi'
+	icon_state = "guest_pass_machine_off"
+	base_icon_state = "guest_pass_machine"
 	anchored = TRUE
 	density = FALSE
 	layer = HIGH_OBJ_LAYER
 	verb_say = "beeps"
 
+	/// Duration of any printed guest passes
 	var/set_time = 10 // minutes
+	/// Longest duration a guest pass can be set to
 	var/max_time = 30 // minutes
+	/// Shortest duration a guest pass can be set to
 	var/min_time = 2.5 // minutes
-	var/dept_name
+	/// Used in init to format the name
+	var/dept_name = "some"
+
+	/// Maximum amount of accesses that can be given on one pass
 	var/max_given_accesses = 6
-	var/list/given_access = list()
+	/// List of accesses the user has selected to give
+	VAR_PRIVATE/list/given_access = list()
+	/// List of all possible accesses that can be given
 	var/list/all_possible_given_access = list()
-	var/swiped_id_name
-	var/swiped_id_job
-	var/list/swiped_id_access
-	var/list/pass_history
+
+	/// Name of the person who swiped their ID last
+	VAR_PRIVATE/swiped_id_name
+	/// Job of the person who swiped their ID last
+	VAR_PRIVATE/swiped_id_job
+	/// Accesses of the person who swiped their ID last
+	VAR_PRIVATE/list/swiped_id_access
+
+	/// History of all passes printed
+	VAR_PRIVATE/list/pass_history
 
 /obj/machinery/guest_pass/Initialize(mapload)
 	. = ..()
-	name = "\proper [dept_name] [name]"
+	name = "[dept_name] [name]"
+	update_appearance()
+
+/obj/machinery/guest_pass/update_icon_state()
+	. = ..()
+	icon_state = base_icon_state
+	if(!is_operational)
+		icon_state += "_off"
+
+/obj/machinery/guest_pass/update_overlays()
+	. = ..()
+	if(is_operational)
+		. += emissive_appearance(icon, "[base_icon_state]_emissive", src, alpha = src.alpha)
+
+/obj/machinery/guest_pass/on_set_is_operational()
+	. = ..()
+	update_icon_state()
 
 /obj/machinery/guest_pass/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
 	. = ..()

@@ -19,6 +19,10 @@
 	var/ring_cooldown_length = 0.3 SECONDS // This is here to protect against tinnitus.
 	/// The sound the bell makes
 	var/ring_sound = 'sound/machines/microwave/microwave-end.ogg'
+	/// Whether we can be deconstructed
+	var/can_deconstruct = TRUE
+	/// Whether we can be tied to a chair
+	var/can_tie_to_chair = TRUE
 
 /obj/structure/desk_bell/Initialize(mapload)
 	. = ..()
@@ -27,7 +31,7 @@
 /obj/structure/desk_bell/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 
-	if(held_item?.tool_behaviour == TOOL_WRENCH)
+	if(can_deconstruct && held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_RMB] = "Disassemble"
 		return CONTEXTUAL_SCREENTIP_SET
 
@@ -73,17 +77,23 @@
 		return FALSE
 	return ..()
 
+/obj/structure/desk_bell/deconstruct(disassembled)
+	if(disassembled)
+		if(!broken_ringer) // Drop 2 if it's not broken.
+			new/obj/item/stack/sheet/iron(drop_location())
+		new/obj/item/stack/sheet/iron(drop_location())
+	return ..()
+
 // Deconstruct
 /obj/structure/desk_bell/wrench_act_secondary(mob/living/user, obj/item/tool)
+	if(!can_deconstruct)
+		return ..()
 	balloon_alert(user, "taking apart...")
 	tool.play_tool_sound(src)
 	if(tool.use_tool(src, user, 5 SECONDS))
 		balloon_alert(user, "disassembled")
 		playsound(user, 'sound/items/deconstruct.ogg', 50, vary = TRUE)
-		if(!broken_ringer) // Drop 2 if it's not broken.
-			new/obj/item/stack/sheet/iron(drop_location())
-		new/obj/item/stack/sheet/iron(drop_location())
-		qdel(src)
+		deconstruct(TRUE)
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
@@ -111,6 +121,9 @@
 	ring_cooldown_length = 0
 
 /obj/structure/desk_bell/MouseDrop(obj/over_object, src_location, over_location)
+	. = ..()
+	if(!can_tie_to_chair || !isliving(usr) || usr.incapacitated())
+		return
 	if(!istype(over_object, /obj/vehicle/ridden/wheelchair))
 		return
 	if(!Adjacent(over_object) || !Adjacent(usr))
@@ -123,14 +136,18 @@
 	if(!do_after(usr, 0.5 SECONDS))
 		return
 	target.attach_bell(src)
-	return ..()
 
 /obj/structure/desk_bell/ringer
 	name = "pager"
 	desc = "A bell that messages all members of a department when rung."
+	icon = 'maplestation_modules/icons/obj/machines/bureaucracy.dmi'
+	icon_state = "pager_bell"
 	ring_cooldown_length = 1 SECONDS
 	ring_sound = 'sound/machines/ding_short.ogg'
 	verb_say = "beeps"
+	anchored = TRUE
+	can_deconstruct = FALSE
+	can_tie_to_chair = FALSE
 	/// Prefix for the name of the ringer
 	var/dept_name = "some"
 	/// What department we are pinging
@@ -143,15 +160,62 @@
 	VAR_FINAL/last_notified
 	/// How long is the paging window
 	var/page_length = 30 SECONDS
+	/// Tracks what area we were spawned in
+	var/area/spawn_area
 
 /obj/structure/desk_bell/ringer/Initialize(mapload)
 	. = ..()
-	name = "\proper [dept_name] [name]"
+	name = "[dept_name] [name]"
 	if(isnull(target_department))
 		return
 	for(var/datum/job/job_type as anything in SSjob.joinable_occupations)
 		if(job_type.departments_list?[1] == target_department)
 			target_job_names += job_type.title
+
+	if(mapload)
+		var/area/my_area = get_area(src)
+		spawn_area = my_area?.type
+
+/obj/structure/desk_bell/ringer/wrench_act(mob/living/user, obj/item/tool)
+	if(user.combat_mode)
+		return NONE
+	switch(default_unfasten_wrench(user, tool, 0.5 SECONDS))
+		if(SUCCESSFUL_UNFASTEN)
+			pixel_x = 0
+			pixel_y = 0
+			return ITEM_INTERACT_SUCCESS
+		if(CANT_UNFASTEN, FAILED_UNFASTEN)
+			return ITEM_INTERACT_BLOCKING
+	return NONE
+
+/obj/structure/desk_bell/ringer/MouseDrop(obj/over_object, src_location, over_location)
+	. = ..()
+	if(!isliving(usr) || usr.incapacitated())
+		return
+	if(!Adjacent(usr) || !over_object.Adjacent(usr) || anchored)
+		return
+	if(iswallturf(over_object))
+		var/new_x = 0
+		var/new_y = 0
+		var/dir_to_drag = get_dir(src, over_object)
+		if(dir_to_drag & NORTH)
+			new_y = 32
+		if(dir_to_drag & SOUTH)
+			new_y = -32
+		if(dir_to_drag & EAST)
+			new_x = 32
+		if(dir_to_drag & WEST)
+			new_x = -32
+		pixel_x = new_x
+		pixel_y = new_y
+		playsound(src, 'sound/items/deconstruct.ogg', 50, vary = TRUE)
+		loc.balloon_alert(usr, "attached to wall")
+		set_anchored(TRUE)
+		return
+
+	if(istype(over_object, /obj/structure/table))
+		forceMove(get_turf(over_object))
+		return
 
 /obj/structure/desk_bell/ringer/proc/get_department_messengers()
 	var/list/department_pdas = list()
@@ -166,13 +230,26 @@
 /obj/structure/desk_bell/ringer/check_clapper(mob/living/user)
 	return
 
+/obj/structure/desk_bell/ringer/attack_ai(mob/user)
+	page(user)
+
 /obj/structure/desk_bell/ringer/ring_bell(mob/living/user)
 	. = ..()
 	if(!.)
 		return
 
-	if(actively_paging)
+	page(user)
+
+/obj/structure/desk_bell/ringer/proc/page(mob/living/user)
+	if(actively_paging || !anchored)
 		return
+
+	if(spawn_area)
+		var/area/my_area = get_area(src)
+		if(my_area?.type != spawn_area)
+			say("Out of range.")
+			playsound(src, 'sound/machines/buzz-sigh.ogg', 33, FALSE)
+			return
 
 	actively_paging = TRUE
 	addtimer(CALLBACK(src, PROC_REF(reset_page)), page_length, TIMER_DELETE_ME)

@@ -3284,6 +3284,7 @@
 /obj/structure/table,
 /obj/item/paper_bin,
 /obj/item/pen,
+/obj/structure/extinguisher_cabinet/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/security/detectives_office)
 "art" = (
@@ -3943,7 +3944,7 @@
 	dir = 4
 	},
 /obj/structure/curtain,
-/obj/structure/extinguisher_cabinet/directional/north,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/medical/exam_room)
 "auB" = (
@@ -4938,6 +4939,11 @@
 	name = "Chemistry Desk";
 	req_access = list("pharmacy")
 	},
+/obj/structure/desk_bell/ringer/botany{
+	dir = 1;
+	pixel_x = 4;
+	pixel_y = 7
+	},
 /turf/open/floor/plating,
 /area/station/medical/pharmacy)
 "aAf" = (
@@ -5774,6 +5780,11 @@
 "aFr" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
+	},
+/obj/structure/chair{
+	desc = "A gray chair. Nothing more relaxing while waiting for therapy than watching the dying.";
+	dir = 2;
+	name = "therapy waiting chair"
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/exam_room)
@@ -7056,13 +7067,9 @@
 	},
 /obj/effect/turf_decal/tile/blue,
 /obj/effect/turf_decal/tile/blue,
-/obj/structure/chair{
-	desc = "A gray chair. Nothing more relaxing while waiting for therapy than watching the dying.";
-	dir = 8;
-	name = "therapy waiting chair"
-	},
 /obj/machinery/power/apc/auto_name/directional/east,
 /obj/structure/cable,
+/obj/structure/tank_holder/extinguisher,
 /turf/open/floor/iron/white,
 /area/station/medical/exam_room)
 "aNX" = (
@@ -9628,8 +9635,8 @@
 	req_access = list("robotics")
 	},
 /obj/structure/desk_bell/ringer/robotics{
-	pixel_y = 1;
-	pixel_x = -6
+	pixel_y = 3;
+	pixel_x = -5
 	},
 /turf/open/floor/plating,
 /area/station/science/robotics/lab)
@@ -9707,8 +9714,9 @@
 	req_access = list("science")
 	},
 /obj/structure/desk_bell/ringer/science{
-	pixel_y = 1;
-	pixel_x = -6
+	pixel_y = 2;
+	pixel_x = -5;
+	dir = 8
 	},
 /turf/open/floor/plating,
 /area/station/science/lab)
@@ -15424,7 +15432,8 @@
 	},
 /obj/structure/desk_bell/ringer/warden{
 	pixel_y = 17;
-	pixel_x = 6
+	pixel_x = 6;
+	dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/warden)
@@ -17256,7 +17265,10 @@
 /obj/structure/table/reinforced,
 /obj/effect/turf_decal/delivery,
 /obj/machinery/door/firedoor,
-/obj/item/folder/red,
+/obj/item/folder/red{
+	pixel_y = 3;
+	pixel_x = 4
+	},
 /obj/item/pen{
 	pixel_x = 3;
 	pixel_y = 4
@@ -17266,8 +17278,9 @@
 	req_access = list("security")
 	},
 /obj/structure/desk_bell/ringer/security{
-	pixel_y = 0;
-	pixel_x = -7
+	pixel_y = 3;
+	pixel_x = -4;
+	dir = 1
 	},
 /turf/open/floor/plating,
 /area/station/hallway/primary/aft)
@@ -22979,7 +22992,8 @@
 	},
 /obj/structure/desk_bell/ringer/xenobio{
 	pixel_y = 9;
-	pixel_x = -7
+	pixel_x = -6;
+	dir = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/xenobiology)
@@ -30803,7 +30817,8 @@
 	},
 /obj/structure/desk_bell/ringer/coroner{
 	pixel_x = -29;
-	pixel_y = 6
+	pixel_y = 7;
+	dir = 4
 	},
 /turf/open/floor/iron/dark,
 /area/station/hallway/primary/fore)
@@ -45734,7 +45749,7 @@
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "emmd";
 	name = "Emergency Medical Lockdown Shutters";
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/plating,
 /area/station/medical/paramedic)
@@ -46842,7 +46857,7 @@
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "emmd";
 	name = "Emergency Medical Lockdown Shutters";
-	dir = 4
+	dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/station/medical/paramedic)
@@ -57427,12 +57442,11 @@
 	dir = 4
 	},
 /obj/machinery/disposal/bin,
-/obj/machinery/firealarm/directional/south,
-/obj/structure/extinguisher_cabinet/directional/west,
 /obj/effect/turf_decal/bot,
 /obj/structure/disposalpipe/trunk{
 	dir = 4
 	},
+/obj/machinery/firealarm/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/security/detectives_office)
 "okq" = (
@@ -58138,7 +58152,8 @@
 /obj/machinery/status_display/evac/directional/north,
 /obj/structure/desk_bell/ringer/hop{
 	pixel_y = 9;
-	pixel_x = 6
+	pixel_x = 6;
+	dir = 8
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/hop)
@@ -62793,6 +62808,23 @@
 /obj/structure/sign/clock/directional/north,
 /turf/open/floor/carpet/green,
 /area/station/service/electronic_marketing_den)
+"pVU" = (
+/obj/effect/turf_decal/tile/red{
+	dir = 1
+	},
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/desk_bell/ringer/detective{
+	pixel_y = 31
+	},
+/turf/open/floor/iron,
+/area/station/hallway/primary/aft)
 "pVY" = (
 /obj/effect/decal/cleanable/blood/old,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -63262,12 +63294,13 @@
 "qeN" = (
 /obj/structure/table/wood,
 /obj/structure/desk_bell/ringer/chapel{
-	pixel_y = 9;
-	pixel_x = -5
+	pixel_y = 8;
+	pixel_x = -5;
+	dir = 4
 	},
 /obj/item/storage/box/matches{
 	pixel_x = 1;
-	pixel_y = 0
+	pixel_y = -2
 	},
 /turf/open/floor/wood,
 /area/station/service/chapel)
@@ -64578,7 +64611,9 @@
 /obj/machinery/iv_drip,
 /obj/structure/bed,
 /obj/structure/curtain,
-/obj/machinery/airalarm/directional/north,
+/obj/structure/desk_bell/ringer/psych{
+	pixel_y = 31
+	},
 /turf/open/floor/iron/dark,
 /area/station/medical/exam_room)
 "qCr" = (
@@ -69715,7 +69750,8 @@
 /obj/item/radio/intercom/directional/south,
 /obj/structure/desk_bell/ringer/genetics{
 	pixel_y = 8;
-	pixel_x = -16
+	pixel_x = -16;
+	dir = 1
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/genetics)
@@ -78961,8 +78997,9 @@
 /obj/machinery/button/door/directional/east{
 	id = "detective_shutters";
 	name = "Detective's Privacy Toggle";
-	pixel_y = 6;
-	req_access = list("detective")
+	pixel_y = 4;
+	req_access = list("detective");
+	pixel_x = 28
 	},
 /turf/open/floor/wood,
 /area/station/security/detectives_office)
@@ -112507,7 +112544,7 @@ abU
 aci
 okm
 aaY
-ubr
+pVU
 chd
 cnG
 bXV

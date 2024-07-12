@@ -1179,16 +1179,21 @@
 	req_one_access = list("science","research")
 	},
 /obj/item/paper_bin{
-	pixel_y = 4
+	pixel_y = 4;
+	pixel_x = 2
 	},
-/obj/item/pen,
+/obj/item/pen{
+	pixel_x = 2
+	},
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "rnd";
 	name = "Research Lab Shutters";
 	dir = 8
 	},
 /obj/structure/desk_bell/ringer/science{
-	pixel_x = -5
+	pixel_x = -4;
+	pixel_y = 2;
+	dir = 8
 	},
 /turf/open/floor/plating,
 /area/station/science/lab)
@@ -4260,8 +4265,8 @@
 	id = "pharmacy_doors"
 	},
 /obj/structure/desk_bell/ringer/chemistry{
-	pixel_x = -5;
-	pixel_y = 2
+	pixel_x = -4;
+	pixel_y = 3
 	},
 /turf/open/floor/plating,
 /area/station/medical/pharmacy)
@@ -4649,6 +4654,7 @@
 "bBi" = (
 /obj/machinery/light/directional/north,
 /obj/effect/landmark/start/chaplain,
+/obj/machinery/newscaster/directional/north,
 /turf/open/floor/carpet/red,
 /area/station/service/chapel)
 "bBn" = (
@@ -6734,6 +6740,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "coE" = (
+/obj/machinery/firealarm/directional/south,
 /turf/open/floor/carpet/red,
 /area/station/service/chapel/office)
 "coF" = (
@@ -7214,9 +7221,14 @@
 	req_access = list("cargo")
 	},
 /obj/machinery/door/firedoor,
-/obj/item/folder/yellow,
+/obj/item/folder/yellow{
+	pixel_y = 3;
+	pixel_x = -3
+	},
 /obj/structure/desk_bell/ringer/cargo{
-	pixel_x = 4
+	pixel_x = 4;
+	pixel_y = 3;
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/station/cargo/office)
@@ -11671,10 +11683,6 @@
 	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/heads_quarters/captain)
-"dVg" = (
-/obj/machinery/newscaster/directional/north,
-/turf/open/floor/carpet/red,
-/area/station/service/chapel)
 "dVp" = (
 /obj/structure/cable,
 /obj/effect/turf_decal/trimline/blue/filled/line{
@@ -12961,8 +12969,9 @@
 	dir = 8
 	},
 /obj/structure/desk_bell/ringer/coroner{
-	pixel_x = 28;
-	pixel_y = 6
+	pixel_x = 30;
+	pixel_y = 6;
+	dir = 8
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/upper)
@@ -15946,11 +15955,15 @@
 	name = "Hydroponics Desk";
 	req_access = list("hydroponics")
 	},
-/obj/item/reagent_containers/cup/bucket,
+/obj/item/reagent_containers/cup/bucket{
+	pixel_y = 17;
+	pixel_x = 2
+	},
 /obj/structure/table/reinforced,
 /obj/structure/desk_bell/ringer/botany{
-	pixel_x = 5;
-	pixel_y = 2
+	pixel_x = 4;
+	pixel_y = 3;
+	dir = 4
 	},
 /turf/open/floor/iron,
 /area/station/service/hydroponics)
@@ -17676,6 +17689,11 @@
 /obj/machinery/door/firedoor/heavy,
 /obj/structure/sign/warning/biohazard{
 	pixel_y = -30
+	},
+/obj/structure/desk_bell/ringer/xenobio{
+	pixel_y = 3;
+	dir = 4;
+	pixel_x = -29
 	},
 /turf/open/floor/iron/dark,
 /area/station/science/research)
@@ -23777,6 +23795,7 @@
 /obj/structure/bodycontainer/morgue{
 	dir = 8
 	},
+/obj/structure/sign/poster/official/safety_eye_protection/directional/north,
 /turf/open/floor/iron/dark/smooth_half,
 /area/station/science/robotics/lab)
 "hRE" = (
@@ -27559,7 +27578,7 @@
 	dir = 4;
 	network = list("ss13","rd")
 	},
-/obj/structure/sign/poster/official/random/directional/east,
+/obj/structure/sign/poster/random/directional/east,
 /turf/open/floor/iron/recharge_floor,
 /area/station/science/robotics/mechbay)
 "jbc" = (
@@ -33093,11 +33112,16 @@
 	name = "Engineering and Atmospherics Desk";
 	req_access = list("engineering")
 	},
-/obj/item/paper_bin,
+/obj/item/paper_bin{
+	pixel_y = 3;
+	pixel_x = -2
+	},
 /obj/item/pen,
 /obj/machinery/door/firedoor,
 /obj/structure/desk_bell/ringer/engineering{
-	pixel_x = 5
+	pixel_x = 4;
+	pixel_y = 2;
+	dir = 4
 	},
 /turf/open/floor/plating,
 /area/station/engineering/lobby)
@@ -34759,7 +34783,10 @@
 	name = "Brig Control Desk";
 	req_access = list("armory")
 	},
-/obj/item/paper,
+/obj/item/paper{
+	pixel_y = 3;
+	pixel_x = -2
+	},
 /obj/machinery/door/firedoor,
 /obj/machinery/door/poddoor/shutters/preopen{
 	id = "briglockdown";
@@ -34767,7 +34794,9 @@
 	dir = 4
 	},
 /obj/structure/desk_bell/ringer/security{
-	pixel_x = 4
+	pixel_x = 4;
+	pixel_y = 3;
+	dir = 4
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
@@ -36259,6 +36288,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/lockers)
+"lNp" = (
+/obj/structure/desk_bell/ringer/chapel{
+	pixel_y = 31
+	},
+/turf/open/floor/iron/sepia,
+/area/station/service/chapel)
 "lNt" = (
 /obj/structure/flora/bush/sparsegrass/style_random,
 /obj/structure/flora/bush/pointy/style_random,
@@ -39442,7 +39477,8 @@
 	req_access = list("robotics")
 	},
 /obj/item/paper_bin{
-	pixel_y = 4
+	pixel_y = 4;
+	pixel_x = 2
 	},
 /obj/structure/disposalpipe/segment{
 	dir = 4
@@ -39455,7 +39491,9 @@
 	dir = 8
 	},
 /obj/structure/desk_bell/ringer/robotics{
-	pixel_x = -6
+	pixel_x = -4;
+	pixel_y = 3;
+	dir = 8
 	},
 /turf/open/floor/plating,
 /area/station/science/robotics/lab)
@@ -44997,6 +45035,9 @@
 	dir = 1
 	},
 /obj/item/radio/intercom/directional/north,
+/obj/structure/desk_bell/ringer/detective{
+	pixel_y = 42
+	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/fore)
 "owM" = (
@@ -46373,7 +46414,8 @@
 	},
 /obj/structure/desk_bell/ringer/psych{
 	pixel_y = -26;
-	pixel_x = -4
+	pixel_x = -2;
+	dir = 1
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/fore)
@@ -57181,8 +57223,7 @@
 	name = "Robotics Operating Computer"
 	},
 /obj/machinery/light/small/directional/south,
-/obj/item/radio/intercom/directional/east,
-/obj/structure/sign/poster/official/random/directional/south,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron/dark/textured,
 /area/station/science/robotics/lab)
 "sfR" = (
@@ -61460,7 +61501,6 @@
 	c_tag = "Service - Chapel Office";
 	dir = 5
 	},
-/obj/machinery/firealarm/directional/south,
 /turf/open/floor/carpet/red,
 /area/station/service/chapel/office)
 "txC" = (
@@ -64918,7 +64958,8 @@
 	},
 /obj/structure/desk_bell/ringer/medical{
 	pixel_x = -6;
-	pixel_y = 1
+	pixel_y = 2;
+	dir = 8
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
@@ -66395,8 +66436,9 @@
 	},
 /obj/effect/landmark/start/hangover,
 /obj/structure/desk_bell/ringer/hop{
-	pixel_x = 5;
-	pixel_y = 2
+	pixel_x = 4;
+	pixel_y = 7;
+	dir = 1
 	},
 /turf/open/floor/plating,
 /area/station/command/heads_quarters/hop)
@@ -68407,13 +68449,13 @@
 	},
 /area/station/service/hydroponics/park)
 "vPQ" = (
-/obj/structure/sign/poster/official/random/directional/west,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 8
 	},
+/obj/structure/sign/poster/official/science/directional/west,
 /turf/open/floor/iron/white,
 /area/station/science/research)
 "vPX" = (
@@ -167961,7 +168003,7 @@ jKs
 rlo
 eee
 jKs
-dVg
+mJY
 hlh
 mJY
 mJY
@@ -168475,7 +168517,7 @@ vsg
 mYQ
 txz
 jKs
-hQO
+lNp
 mJY
 mJY
 mJY
