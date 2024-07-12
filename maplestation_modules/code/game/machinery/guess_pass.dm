@@ -106,7 +106,7 @@
 	/// Duration of any printed guest passes
 	var/set_time = 10 // minutes
 	/// Longest duration a guest pass can be set to
-	var/max_time = 30 // minutes
+	var/max_time = 20 // minutes
 	/// Shortest duration a guest pass can be set to
 	var/min_time = 2.5 // minutes
 	/// Used in init to format the name
