@@ -1392,6 +1392,7 @@
 	dir = 9
 	},
 /obj/item/kirbyplants/random,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "afe" = (
@@ -5126,7 +5127,7 @@
 	name = "Station";
 	roundstart_template = /datum/map_template/shuttle/escape_pod/large;
 	width = 5;
-	shuttle_id = "pod_home"
+	shuttle_id = "monastery_shuttle_station"
 	},
 /turf/open/space/basic,
 /area/space)
@@ -9618,6 +9619,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/carpet,
 /area/station/security/detectives_office)
 "aFo" = (
@@ -19412,6 +19414,7 @@
 	dir = 8
 	},
 /obj/effect/mapping_helpers/airlock/access/all/science/rd,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark/smooth_half{
 	dir = 1
 	},
@@ -22604,9 +22607,9 @@
 /obj/docking_port/stationary{
 	dwidth = 2;
 	height = 6;
-	name = "monastery";
+	name = "Monastery";
 	width = 5;
-	shuttle_id = "pod_home"
+	shuttle_id = "monastery_shuttle_asteroid"
 	},
 /turf/open/space,
 /area/space/nearstation)
@@ -30906,7 +30909,7 @@
 	dir = 8;
 	network = list("ss13","monastery")
 	},
-/obj/machinery/light/small/directional/west,
+/obj/machinery/light/directional/west,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/monastery)
 "crN" = (
@@ -30916,7 +30919,7 @@
 	network = list("ss13","monastery")
 	},
 /obj/machinery/firealarm/directional/east,
-/obj/machinery/light/small/directional/east,
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/service/chapel/monastery)
 "crO" = (
@@ -30929,7 +30932,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/station/service/kitchen)
 "crT" = (
-/obj/machinery/light/small/directional/north,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark/smooth_half,
 /area/station/service/chapel/office)
 "crU" = (
@@ -31829,7 +31832,6 @@
 	name = "Supply Dock Airlock";
 	space_dir = null
 	},
-/obj/machinery/door/firedoor,
 /obj/effect/mapping_helpers/airlock/access/all/supply/general,
 /turf/open/floor/iron/half,
 /area/station/cargo/storage)
@@ -32698,6 +32700,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/carpet,
 /area/station/security/detectives_office)
 "cPO" = (
@@ -34198,6 +34201,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/drone_bay)
 "edl" = (
@@ -35343,7 +35347,6 @@
 	name = "Server Room"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
-/obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible,
 /obj/effect/turf_decal/tile/neutral/half{
 	dir = 4
@@ -37408,12 +37411,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
-/obj/machinery/airalarm/directional/east,
 /obj/machinery/byteforge,
 /obj/machinery/camera{
 	c_tag = "Bitrunning Den";
 	dir = 4
 	},
+/obj/machinery/airalarm/directional/east,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
 "gtW" = (
@@ -38929,6 +38932,12 @@
 	dir = 4
 	},
 /area/station/hallway/primary/aft)
+"hFn" = (
+/obj/machinery/light/floor,
+/turf/open/floor/iron/dark/smooth_half{
+	dir = 1
+	},
+/area/station/service/library)
 "hFp" = (
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /obj/structure/chair,
@@ -41531,12 +41540,12 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/science)
 "jRR" = (
-/obj/machinery/firealarm/directional/west,
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 10
 	},
 /obj/effect/turf_decal/stripes/line,
 /obj/effect/turf_decal/siding/thinplating/dark,
+/obj/machinery/light/directional/west,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
 "jRZ" = (
@@ -41820,7 +41829,7 @@
 /obj/item/book/bible,
 /obj/item/book/bible,
 /obj/item/book/bible,
-/obj/machinery/light/small/directional/south,
+/obj/machinery/light/directional/south,
 /turf/open/floor/carpet,
 /area/station/service/chapel/office)
 "kfS" = (
@@ -41857,6 +41866,13 @@
 	dir = 8
 	},
 /area/station/service/chapel/dock)
+"kii" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 1
+	},
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/station/engineering/main)
 "kiw" = (
 /obj/machinery/door/airlock{
 	name = "Prison Restrooms"
@@ -46978,6 +46994,7 @@
 	dir = 10
 	},
 /obj/item/kirbyplants/random,
+/obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "nTx" = (
@@ -47973,6 +47990,7 @@
 	dir = 1;
 	pixel_y = -28
 	},
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/carpet,
 /area/station/service/lawoffice)
 "oCX" = (
@@ -48767,7 +48785,7 @@
 /area/station/cargo/sorting)
 "phu" = (
 /obj/structure/cable,
-/obj/structure/sign/poster/contraband/hacking_guide/directional/north,
+/obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron,
 /area/station/cargo/bitrunning/den)
 "phx" = (
@@ -56707,7 +56725,7 @@
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 1
 	},
-/obj/machinery/light/directional/south,
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "uAg" = (
@@ -77618,11 +77636,11 @@ cjp
 avT
 lTQ
 lTQ
+hFn
 lTQ
 lTQ
 lTQ
-lTQ
-lTQ
+hFn
 jcr
 sJD
 pGZ
@@ -78389,11 +78407,11 @@ cjp
 qgl
 lTQ
 lTQ
+hFn
 lTQ
 lTQ
 lTQ
-lTQ
-lTQ
+hFn
 hIy
 jcr
 cAt
@@ -95817,7 +95835,7 @@ bUZ
 bVS
 lGu
 qoK
-bYm
+kii
 bYZ
 bZG
 cax
