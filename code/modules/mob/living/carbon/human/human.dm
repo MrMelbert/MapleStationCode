@@ -950,6 +950,10 @@
 	var/skills_space
 	var/carrydelay = max(1 SECONDS, 8 SECONDS - (get_grab_strength() * 1 SECONDS))
 
+	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = get_organ_slot(ORGAN_SLOT_SPINE)
+	if(istype(potential_spine))
+		carrydelay *= potential_spine.athletics_boost_multiplier
+
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"
 	else if(carrydelay <= 4 SECONDS)

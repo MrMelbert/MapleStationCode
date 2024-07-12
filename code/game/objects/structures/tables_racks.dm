@@ -300,11 +300,11 @@
 	else if(HAS_TRAIT(user, TRAIT_QUICK_CARRY))
 		tableplace_delay = 2.75 SECONDS
 		skills_space = " quickly"
-/* Non-module change : we don't have this, leaving it like this because this merge conflict was annoying to figure out and if someone tries pulling it in later, it might be equally as annoying
+
 	var/obj/item/organ/internal/cyberimp/chest/spine/potential_spine = user.get_organ_slot(ORGAN_SLOT_SPINE)
 	if(istype(potential_spine))
 		tableplace_delay *= potential_spine.athletics_boost_multiplier
-*/
+
 	carried_mob.visible_message(span_notice("[user] begins to[skills_space] place [carried_mob] onto [src]..."),
 		span_userdanger("[user] begins to[skills_space] place [carried_mob] onto [src]..."))
 	if(!do_after(user, tableplace_delay, target = carried_mob))
