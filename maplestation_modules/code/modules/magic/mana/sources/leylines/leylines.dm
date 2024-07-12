@@ -57,7 +57,8 @@ GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
 	return attunements_to_generate.Copy()
 
 /datum/mana_pool/leyline/proc/generate_initial_intensity()
-	return new pick_weight(GLOB.leyline_intensities) // ERROR
+	var/picked_intensity = pick_weight(GLOB.leyline_intensities)
+	return new picked_intensity
 
 /datum/mana_pool/leyline/proc/generate_initial_themes()
 	var/list/datum/leyline_variable/attunement_theme/themes = get_random_attunement_themes()

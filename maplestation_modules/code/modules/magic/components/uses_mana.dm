@@ -111,7 +111,7 @@
 	return consumed
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
-/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana = list(get_mana_to_use), atom/caster) // ERROR get mana to use undefined, i THINK this is meant to get the list of available pools.
+/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana, atom/caster) // ERROR get mana to use undefined, i THINK that is meant to get the list of available pools. cut code: provided_mana = list(get_mana_to_use),
 	var/total_effective_mana = 0
 
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
