@@ -22,10 +22,10 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	inherent_traits = list(
 		TRAIT_AGEUSIA,
 		TRAIT_NOBREATH,
-		TRAIT_NODISMEMBER,
 		TRAIT_NOHUNGER,
 		TRAIT_NOLIMBDISABLE,
 		TRAIT_NO_DNA_COPY,
+		TRAIT_RADIMMUNE,
 		TRAIT_VIRUSIMMUNE,
 	)
 	inherent_biotypes = MOB_ROBOTIC|MOB_HUMANOID
@@ -204,16 +204,15 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 
 	synth.add_traits(disguise_species.inherent_traits, "synth_disguise_[SPECIES_TRAIT]")
 
-	synth.update_body(TRUE)
 	regenerate_organs(synth, replace_current = FALSE)
 
 	if(limb_updates_on_change)
 		for(var/obj/item/bodypart/part as anything in synth.bodyparts)
 			limb_gained(synth, part, update = FALSE)
-
-		synth.update_body_parts(TRUE)
 		RegisterSignal(synth, COMSIG_CARBON_REMOVE_LIMB, PROC_REF(limb_lost_sig))
 		RegisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB, PROC_REF(limb_gained_sig))
+
+	synth.update_body(TRUE)
 
 /datum/species/synth/proc/drop_disguise(mob/living/carbon/human/synth, skip_bodyparts = FALSE)
 	if(isnull(disguise_species))
@@ -233,14 +232,12 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 		if(!skip_bodyparts)
 			for(var/obj/item/bodypart/part as anything in synth.bodyparts)
 				limb_lost(synth, part, update = FALSE)
-
-		synth.update_body_parts(TRUE)
 		UnregisterSignal(synth, COMSIG_CARBON_REMOVE_LIMB)
 		UnregisterSignal(synth, COMSIG_CARBON_ATTACH_LIMB)
 
 	QDEL_NULL(disguise_species)
-	synth.update_body(TRUE)
 	regenerate_organs(synth)
+	synth.update_body(TRUE)
 
 /datum/species/synth/proc/limb_lost_sig(mob/living/carbon/human/source, obj/item/bodypart/limb, ...)
 	SIGNAL_HANDLER
@@ -317,6 +314,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	limb_id = initial(other_part.limb_id)
 	should_draw_greyscale = initial(other_part.should_draw_greyscale)
 	is_dimorphic = initial(other_part.is_dimorphic)
+	bodytype = initial(other_part.bodytype)
 
 	if(!update)
 		return
@@ -367,6 +365,8 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	head_flags = initial(other_part.head_flags)
 	return ..()
 
+#define SYNTH_PART_BODYTYPES (BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC)
+
 /obj/item/bodypart/head/synth
 	limb_id = BODYPART_ID_SYNTH
 	icon_static = 'maplestation_modules/icons/mob/synth_heads.dmi'
@@ -375,7 +375,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	should_draw_greyscale = FALSE
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
-	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
+	bodytype = SYNTH_PART_BODYTYPES
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -390,7 +390,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
+	bodytype = SYNTH_PART_BODYTYPES
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -405,7 +405,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
+	bodytype = SYNTH_PART_BODYTYPES
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -419,7 +419,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
+	bodytype = SYNTH_PART_BODYTYPES
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -433,7 +433,7 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
+	bodytype = SYNTH_PART_BODYTYPES
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
@@ -447,11 +447,13 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	obj_flags = CONDUCTS_ELECTRICITY
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID|BODYTYPE_ROBOTIC
+	bodytype = SYNTH_PART_BODYTYPES
 	brute_modifier = 0.8
 	burn_modifier = 0.8
 	biological_state = BIO_ROBOTIC|BIO_BLOODED
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
+
+#undef SYNTH_PART_BODYTYPES
 
 /obj/item/organ/internal/eyes/robotic/synth
 	name = "synth eyes"
