@@ -48,7 +48,7 @@
 	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT | JOB_CANNOT_OPEN_SLOTS
 	voice_of_god_power = 1.2 // Not quite command staff.
 	rpg_title = "Royal Guard"
-	crewmonitor_priority = 9
+	crewmonitor_priority = 9 // after cap, right before sec
 
 /datum/outfit/job/asset_protection
 	name = "Asset Protection"

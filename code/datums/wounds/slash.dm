@@ -7,6 +7,12 @@
 	name = "Slashing (Cut) Wound"
 	sound_effect = 'sound/weapons/slice.ogg'
 
+/datum/wound/slash/wound_injury(datum/wound/old_wound, attack_direction)
+	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
+		// oops your existing gauze got cut through! need a new one now
+		limb.seep_gauze(initial(limb.current_gauze.absorption_capacity) * 0.8)
+	return ..()
+
 /datum/wound_pregen_data/flesh_slash
 	abstract = TRUE
 
