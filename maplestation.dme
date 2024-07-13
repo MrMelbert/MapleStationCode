@@ -6137,6 +6137,7 @@
 #include "maplestation_modules\code\game\area\space_station_13_areas.dm"
 #include "maplestation_modules\code\game\machinery\fax_machine.dm"
 #include "maplestation_modules\code\game\machinery\guess_pass.dm"
+#include "maplestation_modules\code\game\machinery\pager.dm"
 #include "maplestation_modules\code\game\machinery\towel_rack.dm"
 #include "maplestation_modules\code\game\objects\unique_examine_items.dm"
 #include "maplestation_modules\code\game\objects\effects\landmarks.dm"

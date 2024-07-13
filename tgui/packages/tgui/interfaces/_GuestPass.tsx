@@ -218,8 +218,8 @@ export const _GuestPass = () => {
 
   return (
     <Window width={330} height={440} title="Guest Pass Kiosk">
-      <Window.Content scrollable>
-        <Section grow>
+      <Window.Content>
+        <Section fill scrollable>
           <Tabs fluid>
             <Tabs.Tab
               icon="list"

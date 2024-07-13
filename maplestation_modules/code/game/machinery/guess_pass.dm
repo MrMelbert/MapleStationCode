@@ -391,6 +391,7 @@
 // One with all access for the HoP / debugging / events
 /obj/machinery/guest_pass/universal
 	dept_name = "station"
+	desc = "A special kiosk allowing anyone to give anyone else access to anywhere they want... temporarily."
 
 /obj/machinery/guest_pass/universal/Initialize(mapload)
 	. = ..()
