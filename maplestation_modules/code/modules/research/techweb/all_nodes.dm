@@ -13,6 +13,7 @@
 
 /datum/techweb_node/base
 	id_additions = list(
+		"ashtray",
 		"fax_machine_deluxe",
 	)
 

@@ -2,12 +2,12 @@
 	signals = list(COMSIG_MOVABLE_MOVED)
 	proctype = PROC_REF(check_fall)
 	var/fall_chance = 100
-	var/how_fall
+	var/datum/callback/fall_callback
 
-/datum/component/wearertargeting/knockoff_move/Initialize(chance = 10, list/slots, how_fall = "falls!")
+/datum/component/wearertargeting/knockoff_move/Initialize(chance = 10, list/slots, datum/callback/fall_callback)
 	src.valid_slots = slots
 	src.fall_chance = chance
-	src.how_fall = how_fall
+	src.fall_callback = fall_callback
 	return ..()
 
 /datum/component/wearertargeting/knockoff_move/proc/check_fall(mob/living/source, atom/old_loc, dir, forced)
@@ -32,7 +32,4 @@
 	if(!source.dropItemToGround(item_parent))
 		return
 
-	source.visible_message(
-		span_warning("[source]'s [item_parent.name] [how_fall]"),
-		span_warning("[item_parent] [how_fall]"),
-	)
+	fall_callback?.Invoke(source)
