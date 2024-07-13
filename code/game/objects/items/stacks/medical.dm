@@ -17,6 +17,8 @@
 	source = /datum/robot_energy_storage/medical
 	merge_type = /obj/item/stack/medical
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_cloth.ogg'
+	/// Sound played when heal doafter begins
+	var/heal_sound
 	/// How long it takes to apply it to yourself
 	var/self_delay = 5 SECONDS
 	/// How long it takes to apply it to someone else
@@ -83,6 +85,8 @@
 /obj/item/stack/medical/proc/try_heal(mob/living/patient, mob/user, silent = FALSE)
 	if(!try_heal_checks(patient, user, heal_brute, heal_burn))
 		return
+	if(heal_sound)
+		playsound(patient, heal_sound, 33, FALSE)
 	if(patient == user)
 		if(!silent)
 			user.visible_message(
@@ -225,32 +229,55 @@
 	burn_cleanliness_bonus = 0.35
 	merge_type = /obj/item/stack/medical/gauze
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
-	var/obj/item/bodypart/gauzed_bodypart
+	/// tracks how many times we've been scrubbed thoroughly
+	var/times_cleaned = 0
 
-/obj/item/stack/medical/gauze/Destroy(force)
+/obj/item/stack/medical/gauze/update_name(updates)
 	. = ..()
+	var/base_cap = initial(absorption_capacity)
+	if(!base_cap)
+		return
 
-	if (gauzed_bodypart)
-		gauzed_bodypart.current_gauze = null
-		SEND_SIGNAL(gauzed_bodypart, COMSIG_BODYPART_UNGAUZED, src)
-	gauzed_bodypart = null
+	if(absorption_capacity <= 0)
+		name = "used [initial(name)]"
+	else if(absorption_capacity <= base_cap * 0.2)
+		name = "dirty [initial(name)]"
+	else if(absorption_capacity <= base_cap * 0.8)
+		name = "worn [initial(name)]"
+	else
+		name = initial(name)
+
+/obj/item/stack/medical/gauze/can_merge(obj/item/stack/medical/gauze/check, inhand)
+	. = ..()
+	if(!.)
+		return .
+	// need to be in +- 0.5 dirtiness of each other
+	// otherwise you can merge a completely used bandage with a brand new one, which would magically unuse it
+	if(check.absorption_capacity < absorption_capacity - 0.25 || check.absorption_capacity > absorption_capacity + 0.25)
+		return FALSE
+	return .
+
+/obj/item/stack/medical/gauze/wash(clean_types)
+	. = ..()
+	if(.)
+		return .
+	if(!(clean_types & CLEAN_TYPE_HARD_DECAL)) // gotta scrub realllly hard to clean gauze
+		return .
+	times_cleaned += 1
+	var/clean_to = initial(absorption_capacity) * (3 / (times_cleaned + 3))
+	if(absorption_capacity < clean_to)
+		absorption_capacity = clean_to
+		update_appearance(UPDATE_NAME)
+		. = TRUE
+
+	return .
 
 /obj/item/stack/medical/gauze/try_heal_checks(mob/living/patient, mob/user, brute, burn)
 	var/obj/item/bodypart/limb = patient.get_bodypart(check_zone(user.zone_selected))
 	if(!limb)
-		patient.balloon_alert(user, "missing limb!")
-		return FALSE
-	if(!LAZYLEN(limb.wounds))
-		patient.balloon_alert(user, "no wounds!") // good problem to have imo
-		return FALSE
-	var/gauzeable_wound = FALSE
-	for(var/datum/wound/woundies as anything in limb.wounds)
-		if(woundies.wound_flags & ACCEPTS_GAUZE)
-			gauzeable_wound = TRUE
-			break
-	if(!gauzeable_wound)
-		patient.balloon_alert(user, "can't heal that!")
-		return FALSE
+		patient.balloon_alert(user, "no limb!")
+		return
+
 	if(limb.current_gauze && (limb.current_gauze.absorption_capacity * 1.2 > absorption_capacity)) // ignore if our new wrap is < 20% better than the current one, so someone doesn't bandage it 5 times in a row
 		patient.balloon_alert(user, pick("already bandaged!", "bandage is clean!")) // good enough
 		return FALSE
@@ -261,34 +288,54 @@
 	if(!try_heal_checks(patient, user, 0, 0))
 		return
 
-	var/treatment_delay = (user == patient ? self_delay : other_delay)
+	var/boosted = FALSE
+	if(LAZYLEN(limb.wounds))
+		for(var/datum/wound/wound as anything in limb.wounds)
+			if(HAS_TRAIT(wound, TRAIT_WOUND_SCANNED))
+				boosted = TRUE
+				break
+	else
+		// gives you extra time so you realize you're not treating a wound
+		treatment_delay *= 2
 
-	var/obj/item/bodypart/limb = patient.get_bodypart(check_zone(user.zone_selected))
-	var/delay_mod = 1
-	for(var/datum/wound/wound as anything in limb.wounds)
-		if(HAS_TRAIT(wound, TRAIT_WOUND_SCANNED))
-			delay_mod *= 0.5
-			break
-
-	if(delay_mod < 1)
+	var/whose = user == patient ? "your" : "[patient]'s"
+	var/theirs = user == patient ? patient.p_their() : "[patient]'s"
+	var/wrap_or_replace = limb.current_gauze ? "replacing [limb.current_gauze] on" : "wrapping"
+	var/with_what = limb.current_gauze?.type == type ? "more of [src]" : src
+	if(boosted)
+		treatment_delay *= 0.5
 		user.visible_message(
-			span_notice("[user] begins expertly wrapping the wounds on [user == patient ? "[patient.p_their()]" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
-			span_notice("You begin quickly wrapping the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
+			span_notice("[user] begins expertly [wrap_or_replace] [theirs] [limb.plaintext_zone] with [with_what]."),
+			span_notice("You begin quickly [wrap_or_replace] [whose] [limb.plaintext_zone] with [with_what], keeping the holo-image indications in mind..."),
 		)
 	else
 		user.visible_message(
-			span_notice("[user] begins wrapping the wounds on [user == patient ? "[patient.p_their()]" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
-			span_notice("You begin wrapping the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
+			span_notice("[user] begins [wrap_or_replace] [theirs] [limb.plaintext_zone] with [with_what]."),
+			span_notice("You begin [wrap_or_replace] [whose] [limb.plaintext_zone] with [with_what]..."),
 		)
+	user.balloon_alert(user, "applying gauze...")
+	if(user != patient)
+		user.balloon_alert(patient, "applying gauze...")
 
-	if(!do_after(user, treatment_delay * delay_mod, target = patient))
+	playsound(patient, pick(
+		'maplestation_modules/sound/items/rip1.ogg',
+		'maplestation_modules/sound/items/rip2.ogg',
+		'maplestation_modules/sound/items/rip3.ogg',
+		'maplestation_modules/sound/items/rip4.ogg',
+	), 33)
+
+	if(!do_after(user, treatment_delay, target = patient))
+		user.balloon_alert(user, "interrupted!")
 		return
 	if(!try_heal_checks(patient, user, 0, 0))
 		return
+	user.balloon_alert(user, "gauze applied")
+	if(user != patient)
+		user.balloon_alert(patient, "gauze applied")
 
 	user.visible_message(
-		span_infoplain(span_green("[user] applies [src] to [user == patient ? "[patient.p_their()]" : "[patient]'s"] [limb.plaintext_zone].")),
-		span_infoplain(span_green("You bandage the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone].")),
+		span_infoplain(span_green("[user] applies [src] to [theirs] [limb.plaintext_zone].")),
+		span_infoplain(span_green("You [limb.current_gauze?.type == type ? "replace" : "bandage"] the wounds on [whose] [limb.plaintext_zone].")),
 	)
 	limb.apply_gauze(src)
 
@@ -351,6 +398,7 @@
 	stop_bleeding = 0.6
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
+	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
 
 /obj/item/stack/medical/suture/emergency
 	name = "emergency suture"

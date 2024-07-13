@@ -256,6 +256,7 @@
 	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
 	gender = NEUTER
 
+/// -- Frills --
 /datum/sprite_accessory/frills/big
 	name = "Big"
 	icon_state = "big"
@@ -265,6 +266,19 @@
 	name = "Divinity"
 	icon_state = "divinity"
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
+
+// -- Synth head coverings --
+/datum/sprite_accessory/synth_head_cover
+	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
+
+/datum/sprite_accessory/synth_head_cover/helm
+	name = "Helm"
+	icon_state = "helm"
+
+/datum/sprite_accessory/synth_head_cover/tv_blank
+	name = "Tv_blank"
+	icon_state = "tv_blank"
+
 
 /// --- Socks ---
 
