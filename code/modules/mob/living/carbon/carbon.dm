@@ -814,8 +814,9 @@
 	return
 
 /mob/living/carbon/add_consciousness_modifier(modifier, value)
-	LAZYSET(consciousness_modifiers, modifier, value)
-	SShealth_updates.queue_update(src, UPDATE_CON)
+	if(LAZYACCESS(consciousness_modifiers, modifier) != value)
+		LAZYSET(consciousness_modifiers, modifier, value)
+		SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Removes a conscious modifier from the mob
@@ -824,8 +825,9 @@
 	return
 
 /mob/living/carbon/remove_consciousness_modifier(modifier)
-	LAZYREMOVE(consciousness_modifiers, modifier)
-	SShealth_updates.queue_update(src, UPDATE_CON)
+	if(LAZYACCESS(consciousness_modifiers, modifier))
+		LAZYREMOVE(consciousness_modifiers, modifier)
+		SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Adds a conscious multiplier to the mob
@@ -836,8 +838,9 @@
 	return
 
 /mob/living/carbon/add_consciousness_multiplier(multiplier, value)
-	LAZYSET(consciousness_multipliers, multiplier, value)
-	SShealth_updates.queue_update(src, UPDATE_CON)
+	if(LAZYACCESS(consciousness_multipliers, multiplier) != value)
+		LAZYSET(consciousness_multipliers, multiplier, value)
+		SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Removes a conscious multiplier from the mob
@@ -846,8 +849,9 @@
 	return
 
 /mob/living/carbon/remove_consciousness_multiplier(multiplier)
-	LAZYREMOVE(consciousness_multipliers, multiplier)
-	SShealth_updates.queue_update(src, UPDATE_CON)
+	if(LAZYACCESS(max_consciousness_values, value))
+		LAZYREMOVE(consciousness_multipliers, multiplier)
+		SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Adds a max consciousness value to the mob
@@ -858,8 +862,9 @@
 	return
 
 /mob/living/carbon/add_max_consciousness_value(value, max_value)
-	LAZYSET(max_consciousness_values, value, max_value)
-	SShealth_updates.queue_update(src, UPDATE_CON)
+	if(LAZYACCESS(max_consciousness_values, value) != max_value)
+		LAZYSET(max_consciousness_values, value, max_value)
+		SShealth_updates.queue_update(src, UPDATE_CON)
 
 /**
  * Removes a max consciousness value from the mob
@@ -868,8 +873,9 @@
 	return
 
 /mob/living/carbon/remove_max_consciousness_value(value)
-	LAZYREMOVE(max_consciousness_values, value)
-	SShealth_updates.queue_update(src, UPDATE_CON)
+	if(LAZYACCESS(max_consciousness_values, value))
+		LAZYREMOVE(max_consciousness_values, value)
+		SShealth_updates.queue_update(src, UPDATE_CON)
 
 /mob/living/carbon/update_stat()
 	if(status_flags & GODMODE)

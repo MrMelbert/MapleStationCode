@@ -276,8 +276,7 @@
 	var/obj/item/bodypart/limb = patient.get_bodypart(check_zone(user.zone_selected))
 	if(!limb)
 		patient.balloon_alert(user, "no limb!")
-		return
-
+		return FALSE
 	if(limb.current_gauze && (limb.current_gauze.absorption_capacity * 1.2 > absorption_capacity)) // ignore if our new wrap is < 20% better than the current one, so someone doesn't bandage it 5 times in a row
 		patient.balloon_alert(user, pick("already bandaged!", "bandage is clean!")) // good enough
 		return FALSE
@@ -287,6 +286,9 @@
 /obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/user, silent)
 	if(!try_heal_checks(patient, user, 0, 0))
 		return
+
+	var/treatment_delay = (user == patient ? self_delay : other_delay)
+	var/obj/item/bodypart/limb = patient.get_bodypart(check_zone(user.zone_selected))
 
 	var/boosted = FALSE
 	if(LAZYLEN(limb.wounds))
@@ -347,8 +349,9 @@
 		if(get_amount() < 2)
 			balloon_alert(user, "not enough gauze!")
 			return
-		new /obj/item/stack/sheet/cloth(I.drop_location())
+		var/obj/item/stack/sheet/cloth/cloth = new(I.drop_location())
 		if(user.CanReach(src))
+			user.put_in_hands(cloth)
 			user.visible_message(span_notice("[user] cuts [src] into pieces of cloth with [I]."), \
 				span_notice("You cut [src] into pieces of cloth with [I]."), \
 				span_hear("You hear cutting."))

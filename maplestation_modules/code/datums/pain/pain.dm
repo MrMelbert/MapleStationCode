@@ -520,6 +520,10 @@
 		shock_mod *= 0.5
 	if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
 		shock_mod *= 1.2
+	if(parent.health <= parent.maxHealth * -2)
+		shock_mod *= 1.5
+	if(parent.health <= parent.maxHealth * -4)
+		shock_mod *= 2
 	var/curr_pain = get_average_pain()
 	switch(curr_pain)
 		if(-INFINITY to 10)

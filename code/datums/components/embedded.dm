@@ -140,24 +140,21 @@
 		return
 
 	var/damage = weapon.w_class * pain_mult
-	var/pain_chance_current = SPT_PROB_RATE(pain_chance / 100, seconds_per_tick) * 100
-	if(pain_stam_pct && HAS_TRAIT_FROM(victim, TRAIT_INCAPACITATED, STAMINA)) //if it's a less-lethal embed, give them a break if they're already stamcritted
-		pain_chance_current *= 0.2
-		damage *= 0.5
-	else if(victim.body_position == LYING_DOWN)
+	var/pain_chance_current = harmful ? pain_chance : 0
+	if(victim.body_position == LYING_DOWN)
 		pain_chance_current *= 0.2
 
-	if(harmful && prob(pain_chance_current))
-		limb.receive_damage(brute=(1-pain_stam_pct) * damage, wound_bonus = CANT_WOUND)
+	if(SPT_PROB(pain_chance_current, seconds_per_tick))
+		limb.receive_damage(brute = (1 - pain_stam_pct) * damage, wound_bonus = CANT_WOUND)
 		if(victim.can_feel_pain())
 			victim.apply_damage(pain_stam_pct * damage, STAMINA, limb)
 			to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] hurts!"))
 
-	var/fall_chance_current = SPT_PROB_RATE(fall_chance / 100, seconds_per_tick) * 100
+	var/fall_chance_current = fall_chance
 	if(victim.body_position == LYING_DOWN)
 		fall_chance_current *= 0.2
 
-	if(prob(fall_chance_current))
+	if(SPT_PROB(fall_chance, seconds_per_tick))
 		fallOut()
 
 ////////////////////////////////////////

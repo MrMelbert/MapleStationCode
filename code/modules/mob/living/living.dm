@@ -937,8 +937,6 @@
 	if(heal_flags & (HEAL_STATUS|HEAL_OXY)) // NON-MODULE CHANGE
 		losebreath = 0
 
-	cure_husk()
-
 	if(heal_flags & HEAL_TEMP)
 		bodytemperature = get_body_temp_normal(apply_change = FALSE)
 	if(heal_flags & HEAL_BLOOD)

@@ -454,6 +454,7 @@
 			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_CRITICAL)
 		if(WOUND_SEVERITY_LOSS)
 			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_LOSS)
+	// victim.add_reagent(/datum/reagent/medicine/epinephrine, severity * 2)
 
 /**
  * try_treating() is an intercept run from [/mob/living/carbon/proc/attackby] right after surgeries but before anything else. Return TRUE here if the item is something that is relevant to treatment to take over the interaction.

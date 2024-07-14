@@ -102,16 +102,20 @@
 	if(sprint_length > 0)
 		return
 
-	// Okay you're gonna stamcrit yourself, slow your roll
-	if(getStaminaLoss() >= maxHealth * 0.9)
+	// Okay bud slow your roll
+	if(getOxyLoss() >= 33)
+		to_chat(src, span_warning("You need to catch your breath..."))
 		set_move_intent(MOVE_INTENT_WALK)
 		return
 
-	adjustStaminaLoss(1)
+	adjustOxyLoss(0.5)
+	// Every 10 steps you will miss a breath
+	// Future TODO : make this scale on athletic skill or something
+	losebreath = min(losebreath + 0.1, 2)
 
 /mob/living/carbon/human/fully_heal(heal_flags)
 	. = ..()
-	if(heal_flags & (HEAL_ADMIN|HEAL_STAM|HEAL_CC_STATUS))
+	if(heal_flags & (HEAL_ADMIN|HEAL_STAM|HEAL_OXY|HEAL_CC_STATUS))
 		adjust_sprint_left(INFINITY)
 
 // Minor stamina regeneration effects, such as stimulants, will replenish sprint capacity

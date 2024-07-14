@@ -211,17 +211,17 @@
 
 /obj/projectile/bullet/lollipop/harmful
 	embedding = list(
-		embed_chance = 35,
-		fall_chance = 2,
-		jostle_chance = 0,
-		ignore_throwspeed_threshold = TRUE,
-		pain_stam_pct = 0.5,
-		pain_mult = 3,
-		rip_time = 10,
+		"embed_chance" = 35,
+		"fall_chance" = 1,
+		"jostle_chance" = 0,
+		"ignore_throwspeed_threshold" = TRUE,
+		"pain_stam_pct" = 0.5,
+		"pain_mult" = 3,
+		"rip_time" = 2 SECONDS,
 	)
 	damage = 10
 	shrapnel_type = /obj/item/food/lollipop/cyborg
-	embed_falloff_tile = 0
+	embed_falloff_tile = -5
 
 /obj/projectile/bullet/lollipop/Initialize(mapload)
 	. = ..()

@@ -58,8 +58,17 @@
 	armour_penetration = 10
 	wound_bonus = -20
 	bare_wound_bonus = 20
-	embedding = list(embed_chance=60, fall_chance=2, jostle_chance=2, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=3, jostle_pain_mult=2, rip_time=10)
-	embed_falloff_tile = -5
+	embedding = list(
+		"embed_chance" = 60,
+		"fall_chance" = 0.01,
+		"jostle_chance" = 2,
+		"ignore_throwspeed_threshold" = TRUE,
+		"pain_stam_pct" = 0.4,
+		"pain_mult" = 3,
+		"jostle_pain_mult" = 2,
+		"rip_time" = 5 SECONDS,
+	)
+	embed_falloff_tile = 5
 	wound_falloff_tile = -2
 	shrapnel_type = /obj/item/stack/rods
 
@@ -72,6 +81,15 @@
 	armour_penetration = 20 //A bit better versus armor. Gets past anti laser armor or a vest, but doesnt wound proc on sec armor.
 	wound_bonus = 10
 	bare_wound_bonus = 10
-	embedding = list(embed_chance=80, fall_chance=1, jostle_chance=3, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=3, jostle_pain_mult=2, rip_time=14)
-	embed_falloff_tile = -3
+	embedding = list(
+		"embed_chance" = 80,
+		"fall_chance" = 0.005,
+		"jostle_chance" = 3,
+		"ignore_throwspeed_threshold" = TRUE,
+		"pain_stam_pct" = 0.4,
+		"pain_mult" = 3,
+		"jostle_pain_mult" = 2,
+		"rip_time" = 6 SECONDS,
+	)
+	embed_falloff_tile = 3
 	shrapnel_type = /obj/item/stack/rods

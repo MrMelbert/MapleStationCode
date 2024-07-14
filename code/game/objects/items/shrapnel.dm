@@ -55,9 +55,18 @@
 	ricochet_auto_aim_angle = 10
 	ricochet_auto_aim_range = 2
 	ricochet_incidence_leeway = 0
-	embed_falloff_tile = -2
+	embed_falloff_tile = -2.5
 	shrapnel_type = /obj/item/shrapnel/stingball
-	embedding = list(embed_chance=55, fall_chance=2, jostle_chance=7, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.7, pain_mult=3, jostle_pain_mult=3, rip_time=15)
+	embedding = list(
+		"embed_chance" = 55,
+		"fall_chance" = 0.01,
+		"jostle_chance" = 7,
+		"ignore_throwspeed_threshold" = TRUE,
+		"pain_stam_pct" = 0.7,
+		"pain_mult" = 3,
+		"jostle_pain_mult" = 3,
+		"rip_time" = 6 SECONDS,
+	)
 
 /obj/projectile/bullet/pellet/stingball/on_ricochet(atom/A)
 	hit_prone_targets = TRUE // ducking will save you from the first wave, but not the rebounds
@@ -78,7 +87,16 @@
 	ricochets_max = 2
 	ricochet_chance = 140
 	shrapnel_type = /obj/item/shrapnel/capmine
-	embedding = list(embed_chance=90, fall_chance=3, jostle_chance=7, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.7, pain_mult=5, jostle_pain_mult=6, rip_time=15)
+	embedding = list(
+		"embed_chance" = 90,
+		"fall_chance" = 0.03,
+		"jostle_chance" = 7,
+		"ignore_throwspeed_threshold" = TRUE,
+		"pain_stam_pct" = 0.7,
+		"pain_mult" = 5,
+		"jostle_pain_mult" = 6,
+		"rip_time" = 6 SECONDS,
+	)
 	wound_falloff_tile = 0
 	embed_falloff_tile = 0
 
@@ -86,4 +104,3 @@
 	name = "\improper AP shrapnel shard"
 	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 0.5)
 	weak_against_armour = TRUE
-
