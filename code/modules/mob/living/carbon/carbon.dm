@@ -553,8 +553,9 @@
 
 	var/brutecon = -0.05 * total_brute
 	var/firecon = -0.05 * total_burn
-	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(total_oxy * 0.66, 66))
+	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(total_oxy * 0.50, 75))
 	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
+	// Ignores the helpers because we can handle them in bulk
 	LAZYSET(consciousness_modifiers, "brute", brutecon)
 	LAZYSET(consciousness_modifiers, "fire", firecon)
 	LAZYSET(consciousness_modifiers, "oxy", oxycon)
@@ -849,7 +850,7 @@
 	return
 
 /mob/living/carbon/remove_consciousness_multiplier(multiplier)
-	if(LAZYACCESS(max_consciousness_values, value))
+	if(LAZYACCESS(max_consciousness_values, multiplier))
 		LAZYREMOVE(consciousness_multipliers, multiplier)
 		SShealth_updates.queue_update(src, UPDATE_CON)
 

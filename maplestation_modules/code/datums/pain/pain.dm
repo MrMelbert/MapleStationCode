@@ -366,10 +366,10 @@
 		def_zone = check_zone(def_zone)
 
 	// By default pain is calculated based on damage and wounding
-	// Attacks with a wound bonus add additional pain (usually, like 2-5)
+	// Attacks with a wound bonus add additional pain (usually, like 4-10)
 	// (Note that if they also succeed in applying a wound, more pain comes from that)
 	// Also, sharp attacks apply a smidge extra pain
-	var/pain = (2 * damage) + (0.1 * max(wound_bonus + bare_wound_bonus, 1)) * (sharpness ? 1.2 : 1)
+	var/pain = ((2.5 * damage) + (0.2 * max(wound_bonus + bare_wound_bonus, 0))) * (sharpness ? 1.2 : 1)
 	switch(damagetype)
 		// Brute pain is dealt to the target zone
 		// pain is just divided by a random number, for variance
@@ -509,7 +509,7 @@
 		if(!SPT_PROB(checked_bodypart.get_modified_pain() / 8, seconds_per_tick))
 			continue
 		if(checked_bodypart.pain_feedback(seconds_per_tick, no_recent_pain))
-			COOLDOWN_START(src, time_since_last_pain_message, 4 SECONDS)
+			COOLDOWN_START(src, time_since_last_pain_message, rand(8 SECONDS, 12 SECONDS))
 
 	if(!has_pain)
 		// no-op if none of our bodyparts are in pain

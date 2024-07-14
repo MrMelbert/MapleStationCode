@@ -23,7 +23,7 @@
 	bare_wound_bonus = 10
 	embedding = list(
 		"embed_chance" = 25,
-		"fall_chance" = 0.01,
+		"fall_chance" = 0.0020,
 		"jostle_chance" = 2,
 		"ignore_throwspeed_threshold" = TRUE,
 		"pain_stam_pct" = 0.4,
@@ -67,7 +67,7 @@
 	bare_wound_bonus = 20
 	embedding = list(
 		"embed_chance" = 75,
-		"fall_chance" = 0.03,
+		"fall_chance" = 0.0030,
 		"ignore_throwspeed_threshold" = TRUE,
 		"jostle_chance" = 4,
 		"jostle_pain_mult" = 6,

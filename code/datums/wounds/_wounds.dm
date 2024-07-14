@@ -445,6 +445,8 @@
 
 /// Additional beneficial effects when the wound is gained, in case you want to give a temporary boost to allow the victim to try an escape or last stand
 /datum/wound/proc/second_wind()
+	if(victim.stat > SOFT_CRIT)
+		return
 	switch(severity)
 		if(WOUND_SEVERITY_MODERATE)
 			victim.apply_status_effect(/datum/status_effect/determined, WOUND_DETERMINATION_MODERATE)

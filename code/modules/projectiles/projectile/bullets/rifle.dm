@@ -44,7 +44,16 @@
 	armour_penetration = 50
 	wound_bonus = -20
 	bare_wound_bonus = 80
-	embedding = list(embed_chance=100, fall_chance=3, jostle_chance=4, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=5, jostle_pain_mult=6, rip_time=10)
+	embedding = list(
+		"embed_chance" = 100,
+		"fall_chance" = 0.0006,
+		"jostle_chance" = 4,
+		"ignore_throwspeed_threshold" = TRUE,
+		"pain_stam_pct" = 0.4,
+		"pain_mult" = 5,
+		"jostle_pain_mult" = 6,
+		"rip_time" = 10 SECONDS,
+	)
 	wound_falloff_tile = -5
 	shrapnel_type = null
 
@@ -60,7 +69,7 @@
 	bare_wound_bonus = 20
 	embedding = list(
 		"embed_chance" = 60,
-		"fall_chance" = 0.01,
+		"fall_chance" = 0.0008,
 		"jostle_chance" = 2,
 		"ignore_throwspeed_threshold" = TRUE,
 		"pain_stam_pct" = 0.4,
@@ -83,7 +92,7 @@
 	bare_wound_bonus = 10
 	embedding = list(
 		"embed_chance" = 80,
-		"fall_chance" = 0.005,
+		"fall_chance" = 0.0006,
 		"jostle_chance" = 3,
 		"ignore_throwspeed_threshold" = TRUE,
 		"pain_stam_pct" = 0.4,

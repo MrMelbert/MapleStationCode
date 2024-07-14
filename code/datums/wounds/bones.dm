@@ -36,6 +36,8 @@
 	var/trauma_cycle_cooldown
 	/// If this is a chest wound and this is set, we have this chance to cough up blood when hit in the chest
 	var/internal_bleeding_chance = 0
+	/// Counts which tick we're on for footsteps
+	var/footstep_counter = 0
 
 /*
 	Overwriting of base procs
@@ -53,7 +55,12 @@
 			I = victim.get_inactive_held_item()
 
 		if(I && victim.dropItemToGround(I))
-			victim.visible_message(span_danger("[victim] drops [I] in shock!"), span_warning("<b>The force on your [limb.plaintext_zone] causes you to drop [I]!</b>"), vision_distance=COMBAT_MESSAGE_RANGE)
+			victim.visible_message(
+				span_danger("[victim] drops [I] in shock!"),
+				span_boldwarning("The force on your [limb.plaintext_zone] causes you to drop [I]!"),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
 
 	update_inefficiencies()
 	return ..()
@@ -62,8 +69,12 @@
 
 	if (victim)
 		UnregisterSignal(victim, COMSIG_LIVING_UNARMED_ATTACK)
+		UnregisterSignal(victim, COMSIG_MOB_ITEM_ATTACK)
+		UnregisterSignal(victim, COMSIG_CARBON_STEP)
 	if (new_victim)
 		RegisterSignal(new_victim, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(attack_with_hurt_hand))
+		RegisterSignal(new_victim, COMSIG_MOB_ITEM_ATTACK, PROC_REF(weapon_attack_with_hurt_hand))
+		RegisterSignal(new_victim, COMSIG_CARBON_STEP, PROC_REF(carbon_step))
 
 	return ..()
 
@@ -111,10 +122,15 @@
 		remove_wound()
 
 /// If we're a human who's punching something with a broken arm, we might hurt ourselves doing so
-/datum/wound/blunt/bone/proc/attack_with_hurt_hand(mob/M, atom/target, proximity)
+/datum/wound/blunt/bone/proc/attack_with_hurt_hand(datum/source, atom/target, proximity)
 	SIGNAL_HANDLER
 
 	if(victim.get_active_hand() != limb || !proximity || !victim.combat_mode || !ismob(target) || severity <= WOUND_SEVERITY_MODERATE)
+		return NONE
+
+	if(!victim.can_feel_pain())
+		return NONE
+	if(victim.has_status_effect(/datum/status_effect/determined))
 		return NONE
 
 	// With a severe or critical wound, you have a 15% or 30% chance to proc pain on hit
@@ -122,16 +138,46 @@
 		// And you have a 70% or 50% chance to actually land the blow, respectively
 		if(prob(70 - 20 * (severity - 1)))
 			to_chat(victim, span_userdanger("The fracture in your [limb.plaintext_zone] shoots with pain as you strike [target]!"))
-			victim.apply_damage(rand(1, 5), BRUTE, limb)
+			victim.sharp_pain(limb.body_zone, 8, BRUTE, 20 SECONDS, 0.5)
 		else
-			victim.visible_message(span_danger("[victim] weakly strikes [target] with [victim.p_their()] broken [limb.plaintext_zone], recoiling from pain!"), \
-			span_userdanger("You fail to strike [target] as the fracture in your [limb.plaintext_zone] lights up in unbearable pain!"), vision_distance=COMBAT_MESSAGE_RANGE)
-			INVOKE_ASYNC(victim, TYPE_PROC_REF(/mob, emote), "scream")
+			victim.visible_message(
+				span_danger("[victim] weakly strikes [target] with [victim.p_their()] broken [limb.plaintext_zone], recoiling from pain!"),
+				span_userdanger("You [victim.get_active_held_item() ? "weakly" : "fail"] to strike [target] as the fracture in your [limb.plaintext_zone] lights up in unbearable pain!"),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
 			victim.Stun(0.5 SECONDS)
-			victim.apply_damage(rand(3, 7), BRUTE, limb)
+			victim.sharp_pain(limb.body_zone, 10, BRUTE, 20 SECONDS, 0.5)
 			return COMPONENT_CANCEL_ATTACK_CHAIN
 
 	return NONE
+
+/datum/wound/blunt/bone/proc/weapon_attack_with_hurt_hand(datum/source, mob/target, mob/user, params)
+	SIGNAL_HANDLER
+
+	attack_with_hurt_hand(source, target, TRUE)
+
+/datum/wound/blunt/bone/proc/carbon_step(datum/source)
+	SIGNAL_HANDLER
+
+	if(limb.body_zone != BODY_ZONE_L_LEG && limb.body_zone != BODY_ZONE_R_LEG)
+		return
+	if(victim.has_status_effect(/datum/status_effect/determined))
+		return
+
+	footstep_counter += 1
+	if(footstep_counter >= 8)
+		footstep_counter = 1
+
+	if((limb.current_gauze ? limb.current_gauze.splint_factor : 1) <= 0.75 || !victim.can_feel_pain())
+		return
+	if(limb.body_zone == (footstep_counter % 2 ? BODY_ZONE_R_LEG : BODY_ZONE_L_LEG))
+		return
+	if(!prob(severity * 25))
+		return
+
+	to_chat(victim, span_danger("Your [limb.plaintext_zone] aches as you take a step!"))
+	victim.sharp_pain(limb.body_zone, severity * 6, BRUTE, 10 SECONDS)
 
 /datum/wound/blunt/bone/receive_damage(wounding_type, wounding_dmg, wound_bonus)
 	if(!victim || wounding_dmg < WOUND_MINIMUM_DAMAGE)
@@ -145,15 +191,30 @@
 			if(1 to 6)
 				victim.bleed(blood_bled, TRUE)
 			if(7 to 13)
-				victim.visible_message("<span class='smalldanger'>A thin stream of blood drips from [victim]'s mouth from the blow to [victim.p_their()] chest.</span>", span_danger("You cough up a bit of blood from the blow to your chest."), vision_distance=COMBAT_MESSAGE_RANGE)
+				victim.visible_message(
+					span_smalldanger("A thin stream of blood drips from [victim]'s mouth from the blow to [victim.p_their()] chest."),
+					span_danger("You cough up a bit of blood from the blow to your chest."),
+					vision_distance = COMBAT_MESSAGE_RANGE,
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
 				victim.bleed(blood_bled, TRUE)
 			if(14 to 19)
-				victim.visible_message("<span class='smalldanger'>Blood spews out of [victim]'s mouth from the blow to [victim.p_their()] chest!</span>", span_danger("You spit out a string of blood from the blow to your chest!"), vision_distance=COMBAT_MESSAGE_RANGE)
+				victim.visible_message(
+					span_smalldanger("Blood spews out of [victim]'s mouth from the blow to [victim.p_their()] chest!"),
+					span_danger("You spit out a string of blood from the blow to your chest!"),
+					vision_distance = COMBAT_MESSAGE_RANGE,
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
 				// NON-MODULE CHANGE
 				victim.do_splatter_effect(victim.dir)
 				victim.bleed(blood_bled)
 			if(20 to INFINITY)
-				victim.visible_message(span_danger("Blood spurts out of [victim]'s mouth from the blow to [victim.p_their()] chest!"), span_danger("<b>You choke up on a spray of blood from the blow to your chest!</b>"), vision_distance=COMBAT_MESSAGE_RANGE)
+				victim.visible_message(
+					span_danger("Blood spurts out of [victim]'s mouth from the blow to [victim.p_their()] chest!"),
+					span_bolddanger("You choke up on a spray of blood from the blow to your chest!"),
+					vision_distance = COMBAT_MESSAGE_RANGE,
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
 				victim.bleed(blood_bled)
 				// NON-MODULE CHANGE
 				victim.do_splatter_effect(victim.dir)

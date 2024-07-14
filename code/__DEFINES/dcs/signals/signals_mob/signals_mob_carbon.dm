@@ -155,3 +155,6 @@
 
 /// Sent at the very end of human character setup
 #define COMSIG_HUMAN_CHARACTER_SETUP "after_human_setup"
+
+/// Carbon is steppin
+#define COMSIG_CARBON_STEP "carbon_step"

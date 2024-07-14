@@ -33,7 +33,11 @@
 	hit_prone_targets = TRUE
 	sharpness = SHARP_EDGED
 	wound_bonus = 30
-	embedding = list(embed_chance=70, ignore_throwspeed_threshold=TRUE, fall_chance=1)
+	embedding = list(
+		"embed_chance" = 70,
+		"ignore_throwspeed_threshold" = TRUE,
+		"fall_chance"= 0.0020,
+	)
 
 /obj/projectile/bullet/shrapnel/mega
 	name = "flying shrapnel hunk"
@@ -59,7 +63,7 @@
 	shrapnel_type = /obj/item/shrapnel/stingball
 	embedding = list(
 		"embed_chance" = 55,
-		"fall_chance" = 0.01,
+		"fall_chance" = 0.0020,
 		"jostle_chance" = 7,
 		"ignore_throwspeed_threshold" = TRUE,
 		"pain_stam_pct" = 0.7,
@@ -89,7 +93,7 @@
 	shrapnel_type = /obj/item/shrapnel/capmine
 	embedding = list(
 		"embed_chance" = 90,
-		"fall_chance" = 0.03,
+		"fall_chance" = 0.0010,
 		"jostle_chance" = 7,
 		"ignore_throwspeed_threshold" = TRUE,
 		"pain_stam_pct" = 0.7,

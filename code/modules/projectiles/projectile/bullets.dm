@@ -10,7 +10,7 @@
 	shrapnel_type = /obj/item/shrapnel/bullet
 	embedding = list(
 		"embed_chance" = 20,
-		"fall_chance" = 0.01,
+		"fall_chance" = 0.0020,
 		"jostle_chance" = 0,
 		"ignore_throwspeed_threshold" = TRUE,
 		"pain_stam_pct"=  0.5,
