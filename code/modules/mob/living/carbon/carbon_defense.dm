@@ -141,6 +141,18 @@
 		to_chat(user, span_danger("[attack_message_attacker]"))
 	return TRUE
 
+/mob/living/carbon/attack_animal(mob/living/simple_animal/user, list/modifiers)
+	. = ..()
+	if(. <= 0)
+		return
+	if(user.wound_bonus != CANT_WOUND)
+		return
+	// Snowflake mcsnowflake but mobs which can't wound should still capable of causing IB
+	var/obj/item/bodypart/affecting = get_bodypart(user.zone_selected) || get_bodypart(BODY_ZONE_CHEST)
+	var/ib_prob = . + rand(-10, 40) - getarmor(affecting, WOUND)
+	if(ib_prob < 45)
+		return
+	affecting.force_wound_upwards(/datum/wound/bleed_internal, wound_source = user)
 
 /mob/living/carbon/attack_drone(mob/living/basic/drone/user)
 	return //so we don't call the carbon's attack_hand().

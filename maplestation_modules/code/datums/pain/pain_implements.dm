@@ -1,7 +1,7 @@
 // -- Implements and equipment to help reduce pain. --
 // Temperature pack stuff - things you can press to people to help reduce pain.
 /// Heal rate and modifier for generic items that are frozen.
-#define FROZEN_ITEM_PAIN_RATE 1
+#define FROZEN_ITEM_PAIN_RATE 2
 #define FROZEN_ITEM_PAIN_MODIFIER 0.5
 #define FROZEN_ITEM_TEMPERATURE_CHANGE -5
 
@@ -123,7 +123,7 @@
 	name = "heat pack"
 	desc = "A heat pack. Crack it to turn it on and apply it to an aching limb to reduce joint stress and moderate pain."
 	temperature_change = 5
-	pain_heal_amount = 1.2
+	pain_heal_amount = 2
 	pain_limb_modifier = 0.5
 
 // Cold packs heal more, but have a weaker modifier.
@@ -131,7 +131,7 @@
 	name = "cold pack"
 	desc = "A cold pack. Crack it on and apply it to a hurt limb to abate sharp pain."
 	temperature_change = -5
-	pain_heal_amount = 2
+	pain_heal_amount = 3
 	pain_limb_modifier = 0.75
 
 /obj/item/reagent_containers/pill/aspirin

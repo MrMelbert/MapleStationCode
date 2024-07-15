@@ -92,7 +92,7 @@
 		if(IS_ORGANIC_LIMB(chest))
 			to_chat(target, span_notice("You feel the pressure on your chest ease!"))
 			chest.heal_damage(brute = 3)
-			target.cause_pain(BODY_ZONE_CHEST, -2)
+			target.cause_pain(BODY_ZONE_CHEST, -3)
 
 		log_combat(src, target, "CPRed", addition = "(breath)")
 

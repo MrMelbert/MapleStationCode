@@ -38,7 +38,7 @@
 		return
 	if(!COOLDOWN_FINISHED(src, worsen_cd))
 		return
-	if(wounding_dmg + wound_bonus + rand(-10, 30) <= 45)
+	if(wounding_dmg + wound_bonus + rand(-10, 30) - victim.getarmor(limb, WOUND) < 45)
 		return
 	severity = min(severity + 1, WOUND_SEVERITY_CRITICAL)
 	COOLDOWN_START(src, worsen_cd, 6 SECONDS)

@@ -51,15 +51,15 @@
 	multiplicative_slowdown = 0.5
 
 /datum/mood_event/light_pain
-	description = "Everything aches."
+	description = "It aches."
 	mood_change = -3
 
 /datum/mood_event/med_pain
-	description = "Everything feels sore."
+	description = "I feel very sore."
 	mood_change = -6
 
 /datum/mood_event/heavy_pain
-	description = "Everything hurts!"
+	description = "It hurts!"
 	mood_change = -10
 
 /datum/mood_event/crippling_pain

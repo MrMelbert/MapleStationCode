@@ -34,6 +34,18 @@
 /datum/status_effect/sharp_pain/on_apply()
 	if(pain_amount <= 0)
 		return FALSE
+	// To avoid having 10 sharp pains when someone is hit by a shotgun, we'll just add the pain to an existing sharp pain effect
+	for(var/datum/status_effect/sharp_pain/other_pain in owner.status_effects)
+		if(other_pain.pain_type != pain_type)
+			continue
+		if(other_pain.return_mod != return_mod)
+			continue
+		if(other_pain.targeted_zone_or_zones ~! targeted_zone_or_zones) // equivalence because it may be a list
+			continue
+		other_pain.duration += duration
+		other_pain.pain_amount += pain_amount
+		owner.cause_pain(targeted_zone_or_zones, pain_amount, pain_type)
+		return FALSE
 
 	owner.cause_pain(targeted_zone_or_zones, pain_amount, pain_type)
 	return TRUE

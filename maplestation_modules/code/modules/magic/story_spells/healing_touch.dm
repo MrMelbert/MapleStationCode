@@ -45,7 +45,7 @@
 	/// How much oxygen damage to heal.
 	var/oxy_heal = 0
 	/// How much pain to heal, applies to all bodyparts
-	var/pain_heal = 4
+	var/pain_heal = 8
 
 /datum/action/cooldown/spell/touch/healing_touch/New(Target, original)
 	. = ..()

@@ -468,15 +468,15 @@
 		testing("PAIN DEBUG: [parent] is recieving a wound of level [applied_wound.severity] to the [parse_zone(wounded_limb.body_zone)].")
 #endif
 
-	adjust_bodypart_min_pain(wounded_limb.body_zone, applied_wound.severity * 5)
-	adjust_bodypart_pain(wounded_limb.body_zone, applied_wound.severity * 7.5)
+	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(applied_wound.severity) * 5)
+	adjust_bodypart_pain(wounded_limb.body_zone, (applied_wound.severity) * 7.5)
 
 /// Removes pain when a wound is healed.
 /datum/pain/proc/remove_wound_pain(mob/living/carbon/source, datum/wound/removed_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
 
-	adjust_bodypart_min_pain(wounded_limb.body_zone, -removed_wound.severity * 5)
-	adjust_bodypart_pain(wounded_limb.body_zone, -removed_wound.severity * 5)
+	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(removed_wound.severity) * - 5)
+	adjust_bodypart_pain(wounded_limb.body_zone, initial(removed_wound.severity) * - 5)
 
 /datum/pain/process(seconds_per_tick)
 	if(parent.stat == DEAD)
@@ -535,36 +535,32 @@
 		if(20 to 40)
 			if(shock_buildup <= 30)
 				parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
-			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_danger(pick("Everything aches.", "Everything feels sore.")))
 
 		if(40 to 70)
 			parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
 			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_bolddanger(pick("Everything hurts.", "Everything feels very sore.", "It hurts.")))
+				do_pain_message(span_userdanger(pick("It hurts.")))
 
 		if(70 to INFINITY)
 			parent.adjust_pain_shock(2 * shock_mod * seconds_per_tick)
 			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_userdanger(pick("Stop the pain!", "Everything hurts!")))
+				do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!")))
 
 	switch(shock_buildup)
 		if(10 to 60)
-			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_danger(pick("Everything aches.", "Everything feels sore.", "You could use some painkillers.")))
 			parent.adjust_bodytemperature(-5 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() + 5)
 		if(60 to 120)
 			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_bolddanger(pick("Everything hurts.", "Everything feels very sore.", "It hurts.", "You really need some painkillers.")))
+				do_pain_message(span_bolddanger(pick("It hurts.", "You really need some painkillers.")))
 			if(SPT_PROB(4, seconds_per_tick))
-				to_chat(parent, span_warning("You feel cold!"))
+				do_pain_message(span_warning("You feel cold!"))
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_bodytemperature(-10 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 5)
 		if(120 to 180)
 			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_userdanger(pick("Stop the pain!", "Everything hurts!", "You need painkillers now!")))
+				do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!", "You need painkillers now!")))
 			if(SPT_PROB(4, seconds_per_tick))
-				to_chat(parent, span_warning("You feel freezing!"))
+				do_pain_message(span_warning("You feel freezing!"))
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_bodytemperature(-20 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 20)
 

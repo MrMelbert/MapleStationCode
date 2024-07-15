@@ -55,7 +55,7 @@
 	M.adjustBruteLoss(-0.2 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	// Morphine heals pain, dur
-	M.cause_pain(BODY_ZONES_ALL, -0.3 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
 	// Morphine causes a bit of disgust
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(50 * max(1 - creation_purity, 0.5), seconds_per_tick))
 		M.adjust_disgust(2 * REM * seconds_per_tick)
@@ -110,9 +110,9 @@
 	M.adjustBruteLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	// Numbers seem low, but our metabolism is very slow
-	M.cause_pain(BODY_ZONE_HEAD, -0.02 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.04 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONE_CHEST, -0.08 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONE_HEAD, -0.04 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.08 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONE_CHEST, -0.16 * REM * seconds_per_tick)
 	// Okay at fevers.
 	M.adjust_bodytemperature(-15 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, M.get_body_temp_normal())
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(66 * max(1 - creation_purity, 0.5), seconds_per_tick))
@@ -162,7 +162,7 @@
 	M.adjustBruteLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustToxLoss(-0.05 * REM * seconds_per_tick, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -0.05 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONES_ALL, -0.1 * REM * seconds_per_tick)
 	// Not very good at treating fevers.
 	M.adjust_bodytemperature(-10 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, M.get_body_temp_normal())
 	// Causes liver damage - higher dosages causes more liver damage.
@@ -202,9 +202,9 @@
 	M.adjustBruteLoss(-0.05 * REM * seconds_per_tick, FALSE)
 	M.adjustToxLoss(-0.1 * REM * seconds_per_tick, FALSE)
 	// Heals pain, numbers seem low but our metabolism is very slow
-	M.cause_pain(BODY_ZONE_HEAD, -0.08 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONE_CHEST, -0.04 * REM * seconds_per_tick)
-	M.cause_pain(BODY_ZONES_LIMBS, -0.02 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONE_HEAD, -0.16 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONE_CHEST, -0.08 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONES_LIMBS, -0.04 * REM * seconds_per_tick)
 	// Causes flat liver damage.
 	M.adjustOrganLoss(ORGAN_SLOT_LIVER, 0.25 * REM * seconds_per_tick)
 	// Really good at treating fevers.
@@ -254,7 +254,7 @@
 	if(volume <= 10)
 		// Number looks high, compared to other painkillers,
 		// but we have a comparatively much higher metabolism than them.
-		M.cause_pain(BODY_ZONES_ALL, -0.8 * REM * seconds_per_tick)
+		M.cause_pain(BODY_ZONES_ALL, -1.5 * REM * seconds_per_tick)
 	// Mildly toxic in higher dosages.
 	else if(SPT_PROB(volume * 3, seconds_per_tick))
 		M.apply_damage(3 * REM * seconds_per_tick, TOX)
@@ -278,7 +278,7 @@
 /datum/reagent/medicine/painkiller/oxycodone/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	M.adjustBruteLoss(-0.3 * REM * seconds_per_tick, FALSE)
 	M.adjustFireLoss(-0.2 * REM * seconds_per_tick, FALSE)
-	M.cause_pain(BODY_ZONES_ALL, -0.6 * REM * seconds_per_tick)
+	M.cause_pain(BODY_ZONES_ALL, -1.25 * REM * seconds_per_tick)
 	M.set_drugginess(20 SECONDS * REM * seconds_per_tick)
 	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(40, seconds_per_tick))
 		M.adjust_disgust(2 * REM * seconds_per_tick)
@@ -338,7 +338,7 @@
 	addiction_types = list(/datum/addiction/opioids = 15) //5u = 50 progress, 60u = addiction
 
 	/// How much pain we restore on life ticks, modified by modifiers (yeah?)
-	var/pain_heal_amount = 0.8
+	var/pain_heal_amount = 1.5
 	/// What type of pain are we looking for? If we aren't experiencing this type, it will be 10x less effective
 	var/pain_type_to_look_for
 	/// What type of wound are we looking for? If our bodypart has this wound, it will be 1.5x more effective

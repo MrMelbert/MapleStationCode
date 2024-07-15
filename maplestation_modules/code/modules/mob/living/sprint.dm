@@ -123,9 +123,3 @@
 	. = ..()
 	if(amount < 0 && amount >= -20)
 		adjust_sprint_left(amount * 0.25)
-
-// Entering stamina critical will drain your sprint capacity entirely
-/mob/living/carbon/human/enter_stamcrit()
-	. = ..()
-	if(HAS_TRAIT_FROM(src, TRAIT_FLOORED, STAMINA))
-		adjust_sprint_left(-INFINITY)

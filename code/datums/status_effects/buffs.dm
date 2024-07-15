@@ -385,9 +385,9 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/humi = owner
 		humi.set_coretemperature(humi.get_body_temp_normal())
-		humi.cause_pain(BODY_ZONES_LIMBS, -15)
-		humi.cause_pain(BODY_ZONE_CHEST, -20)
-		humi.cause_pain(BODY_ZONE_HEAD, -10) // heals 90 pain total
+		humi.cause_pain(BODY_ZONES_LIMBS, -30)
+		humi.cause_pain(BODY_ZONE_CHEST, -40)
+		humi.cause_pain(BODY_ZONE_HEAD, -20) // heals 90 pain total
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()

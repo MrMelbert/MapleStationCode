@@ -174,7 +174,7 @@
 			if(LAZYLEN(wounds))
 				side_feedback += list("You feel your ribs jostle in your [plaintext_zone]")
 
-	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(50, seconds_per_tick))
+	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(33, seconds_per_tick))
 		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
 		owner.pain_message(span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
@@ -235,7 +235,7 @@
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "feels terrible", "is in agony", "feels tense")
 			side_feedback += list("You feel a splitting migraine", "Pressure floods your [plaintext_zone]", "Your [plaintext_zone] feels as if it's being squeezed", "Your eyes hurt to keep open")
 
-	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(50, seconds_per_tick))
+	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(33, seconds_per_tick))
 		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
 	else if(feedback_phrases.len)
 		owner.pain_message(span_danger("Your [plaintext_zone] [pick(feedback_phrases)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
