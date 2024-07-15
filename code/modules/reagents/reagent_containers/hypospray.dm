@@ -191,7 +191,7 @@
 	volume = 24
 	amount_per_transfer_from_this = 24
 	desc = "Contains a relatively safe quantity of methamphetamine, along with mannitol to ensure that brain damage is kept at a minimum."
-	list_reagents = list(/datum/reagent/drug/methamphetamine = 10, /datum/reagent/medicine/mannitol = 14)
+	list_reagents = list(/datum/reagent/drug/methamphetamine = 10, /datum/reagent/medicine/mannitol = 15)
 
 // NON-MODULE CHANGE replacing this
 /*

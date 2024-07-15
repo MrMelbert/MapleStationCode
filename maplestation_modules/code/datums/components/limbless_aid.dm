@@ -37,15 +37,24 @@
 		return
 
 	RegisterSignal(user, COMSIG_LIVING_LIMBLESS_MOVESPEED_UPDATE, PROC_REF(modify_movespeed), override = TRUE)
+	RegisterSignal(user, COMSIG_CARBON_PAINED_STEP, PROC_REF(pain_step))
 	user.update_limbless_movespeed_mod()
 
 /datum/component/limbless_aid/proc/on_drop(obj/item/source, mob/living/user)
 	SIGNAL_HANDLER
 
 	UnregisterSignal(user, COMSIG_LIVING_LIMBLESS_MOVESPEED_UPDATE)
+	UnregisterSignal(user, COMSIG_CARBON_PAINED_STEP)
 	user.update_limbless_movespeed_mod()
 
 /datum/component/limbless_aid/proc/modify_movespeed(mob/living/source, list/modifiers)
 	SIGNAL_HANDLER
 
 	modifiers += movespeed_mod
+
+/datum/component/limbless_aid/proc/pain_step(mob/living/source, footstep_count)
+	SIGNAL_HANDLER
+
+	if(parent in source.get_held_items_for_side(SELECT_LEFT_OR_RIGHT(footstep_count, LEFT_HANDS, RIGHT_HANDS), all = TRUE))
+		return STOP_PAIN
+	return NONE

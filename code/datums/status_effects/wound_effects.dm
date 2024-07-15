@@ -262,6 +262,8 @@
 /datum/status_effect/wound/blunt/bone
 
 // blunt
+/datum/status_effect/wound/blunt/bone/rib_break
+	id = "rib_break"
 /datum/status_effect/wound/blunt/bone/moderate
 	id = "disjoint"
 /datum/status_effect/wound/blunt/bone/severe

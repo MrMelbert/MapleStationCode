@@ -158,3 +158,7 @@
 
 /// Carbon is steppin
 #define COMSIG_CARBON_STEP "carbon_step"
+/// Carbon is steppin on a painful limb
+#define COMSIG_CARBON_PAINED_STEP "carbon_pain_step"
+	/// Stop the pain from happening
+	#define STOP_PAIN (1<<0)

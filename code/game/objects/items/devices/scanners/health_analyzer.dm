@@ -197,7 +197,7 @@
 				trauma_desc += trauma.scan_desc
 				trauma_text += trauma_desc
 			render_list += "<span class='alert ml-1'>Cerebral traumas detected: subject appears to be suffering from [english_list(trauma_text)].</span>\n"
-		if(carbontarget.quirks.len)
+		if(LAZYLEN(carbontarget.quirks))
 			render_list += "<span class='info ml-1'>Subject Major Disabilities: [carbontarget.get_quirk_string(FALSE, CAT_QUIRK_MAJOR_DISABILITY, from_scan = TRUE)].</span>\n"
 			if(advanced)
 				render_list += "<span class='info ml-1'>Subject Minor Disabilities: [carbontarget.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY, TRUE)].</span>\n"
@@ -342,10 +342,12 @@
 	if(iscarbon(target))
 		var/mob/living/carbon/carbontarget = target
 		for(var/obj/item/bodypart/wounded_part as anything in carbontarget.get_wounded_bodyparts())
-			render_list += "<span class='alert ml-1'><b>Physical trauma[LAZYLEN(wounded_part.wounds) > 1 ? "s" : ""] detected in [wounded_part.name]</b>"
+			render_list += "<span class='alert ml-1'><b>Physical trauma[LAZYLEN(wounded_part.wounds) > 1 ? "s" : ""] detected in [wounded_part.plaintext_zone]</b>"
 			for(var/datum/wound/wound as anything in wounded_part.wounds)
-				render_list += "<div class='ml-2'>[wound.name] ([wound.severity_text()])\nRecommended treatment: [wound.treat_text]</div>" // less lines than in woundscan() so we don't overload people trying to get basic med info
+				render_list += "<div class='ml-2'>&bull; [wound.name] ([wound.severity_text()])\n</div>"
 			render_list += "</span>"
+		if(length(carbontarget.all_wounds) && mode == SCANNER_VERBOSE)
+			render_list += "<div class='info ml-1'>Use <b>wound scanning mode</b> to see details and treatment options.</div>"
 
 	//Diseases
 	for(var/datum/disease/disease as anything in target.diseases)
@@ -490,11 +492,9 @@
 
 	var/render_list = ""
 	var/advised = FALSE
-	for(var/limb in patient.get_wounded_bodyparts())
-		var/obj/item/bodypart/wounded_part = limb
-		render_list += "<span class='alert ml-1'><b>Warning: Physical trauma[LAZYLEN(wounded_part.wounds) > 1? "s" : ""] detected in [wounded_part.name]</b>"
-		for(var/limb_wound in wounded_part.wounds)
-			var/datum/wound/current_wound = limb_wound
+	for(var/obj/item/bodypart/wounded_part as anything in patient.get_wounded_bodyparts())
+		render_list += "<span class='alert ml-1'><b>Warning: Physical trauma[LAZYLEN(wounded_part.wounds) > 1? "s" : ""] detected in [wounded_part.plaintext_zone]</b>"
+		for(var/datum/wound/current_wound as anything in wounded_part.wounds)
 			render_list += "<div class='ml-2'>[simple_scan ? current_wound.get_simple_scanner_description() : current_wound.get_scanner_description()]</div>\n"
 			if (scanner.give_wound_treatment_bonus)
 				ADD_TRAIT(current_wound, TRAIT_WOUND_SCANNED, ANALYZER_TRAIT)

@@ -156,7 +156,9 @@
 			msg += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].\n")
 
 		for(var/datum/wound/iter_wound as anything in body_part.wounds)
-			msg += "[iter_wound.get_examine_description(user)]\n"
+			var/wound_msg = iter_wound.get_examine_description(user)
+			if(wound_msg)
+				msg += "[wound_msg]\n"
 
 	for(var/obj/item/bodypart/body_part as anything in disabled)
 		var/damage_text

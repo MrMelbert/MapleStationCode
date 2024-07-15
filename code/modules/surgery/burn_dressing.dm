@@ -19,13 +19,8 @@
 		/datum/surgery_step/dress,
 	)
 
-/datum/surgery/debride/can_start(mob/living/user, mob/living/carbon/target)
-	if(!istype(target))
-		return FALSE
-	if(..())
-		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
-		var/datum/wound/burn/flesh/burn_wound = targeted_bodypart.get_wound_type(targetable_wound)
-		return(burn_wound && burn_wound.infestation > 0)
+/datum/surgery/debride/is_valid_wound(datum/wound/burn/flesh/wound)
+	return ..() && wound.infestation > 0
 
 //SURGERY STEPS
 

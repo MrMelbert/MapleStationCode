@@ -109,17 +109,16 @@
 		iter_part.update_part_wound_overlay()
 
 //Makes a blood drop, leaking amt units of blood from the mob
-/mob/living/carbon/proc/bleed(amt)
+/mob/living/carbon/proc/bleed(amt, drip = TRUE)
 	// NON-MODULE CHANGE for blood
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
 
-	//Blood loss still happens in locker, floor stays clean
-	if(isturf(loc) && prob(sqrt(amt)*BLOOD_DRIP_RATE_MOD))
+	if(drip && isturf(loc) && prob(sqrt(amt) * BLOOD_DRIP_RATE_MOD))
 		add_splatter_floor(loc, (amt <= 10))
 
-/mob/living/carbon/human/bleed(amt)
+/mob/living/carbon/human/bleed(amt, drip = TRUE)
 	amt *= physiology.bleed_mod
 	// NON-MODULE CHANGE for blood
 	return ..()
@@ -143,15 +142,12 @@
  * * bleed_amt- When we run this from [/mob/living/carbon/human/proc/handle_blood] we already know how much blood we're losing this tick, so we can skip tallying it again with this
  * * forced-
  */
-/mob/living/carbon/proc/bleed_warn(bleed_amt = 0, forced = FALSE)
+/mob/living/carbon/proc/bleed_warn(bleed_amt = get_bleed_rate(), forced = FALSE)
 	// NON-MODULE CHANGE for blood
 	if(!client || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	if(!COOLDOWN_FINISHED(src, bleeding_message_cd) && !forced)
 		return
-
-	if(!bleed_amt) // if we weren't provided the amount of blood we lost this tick in the args
-		bleed_amt = get_bleed_rate()
 
 	var/bleeding_severity = ""
 	var/next_cooldown = BLEEDING_MESSAGE_BASE_CD

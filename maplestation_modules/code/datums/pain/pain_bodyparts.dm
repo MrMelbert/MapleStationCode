@@ -21,15 +21,15 @@
 
 	switch((get_modified_pain() / soft_max_pain) * 100)
 		if(10 to 40)
-			check_list += "\t [span_danger("Your [name] is experiencing mild pain \
+			check_list += "\t\t[span_danger("It's experiencing mild pain \
 				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch.")]"
 
 		if(40 to 70)
-			check_list += "\t [span_warning("Your [name] is experiencing moderate pain \
+			check_list += "\t\t[span_warning("It's experiencing moderate pain \
 				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
 
 		if(70 to INFINITY)
-			check_list += "\t [span_boldwarning("Your [name] is experiencing severe pain \
+			check_list += "\t\t[span_boldwarning("It's experiencing severe pain \
 				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
 
 /**
@@ -156,20 +156,23 @@
 		if(40 to 75)
 			owner.flash_pain_overlay(1, 2 SECONDS)
 			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs", "cramps", "feels tight")
-			side_feedback += list("Your side hurts", "Your side pangs", "Your ribs hurt", "Your ribs pang", "Your neck stiffs")
+			if(LAZYLEN(wounds))
+				side_feedback += list("Your side hurts", "Your side pangs", "Your ribs hurt", "Your ribs pang", "Your neck stiffs")
 		if(75 to 110)
 			if(SPT_PROB(8, seconds_per_tick))
 				owner.pain_emote()
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback_phrases += list("really hurts", "is losing feeling", "throbs painfully", "stings to the touch", "is in agony", "anguishes", "feels broken", "feels tight")
-			side_feedback += list("You feel a sharp pain in your side", "Your ribs feel broken")
+			if(LAZYLEN(wounds))
+				side_feedback += list("You feel a sharp pain in your side", "Your ribs feel broken")
 		if(110 to INFINITY)
 			if(SPT_PROB(12, seconds_per_tick))
 				var/bonus_emote = pick(PAIN_EMOTES)
 				owner.pain_emote(pick("groan", "scream", bonus_emote))
 			owner.flash_pain_overlay(2, 3 SECONDS)
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "burns to the touch", "feels terrible", "feels constricted")
-			side_feedback += list("You feel your ribs jostle in your [plaintext_zone]")
+			if(LAZYLEN(wounds))
+				side_feedback += list("You feel your ribs jostle in your [plaintext_zone]")
 
 	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(50, seconds_per_tick))
 		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))
@@ -220,17 +223,17 @@
 		if(30 to 60)
 			owner.flash_pain_overlay(1)
 			feedback_phrases += list("hurts", "feels sore", "stings", "throbs", "pangs")
-			side_feedback += list("Your neck aches badly", "Your eyes hurt", "You feel a migrane coming on", "You feel a splitting headache")
+			side_feedback += list("Your neck aches badly", "Your eyes hurt", "You feel a migraine coming on", "You feel a splitting headache")
 		if(60 to 90)
 			owner.flash_pain_overlay(2)
 			feedback_phrases += list("really hurts", "is losing feeling", "throbs painfully", "is in agony", "anguishes", "feels broken", "feels terrible")
-			side_feedback += list("Your neck stiffs", "You feel pressure in your [plaintext_zone]", "The back of your eyes begin hurt", "You feel a terrible migrane")
+			side_feedback += list("Your neck stiffs", "You feel pressure in your [plaintext_zone]", "The back of your eyes begin hurt", "You feel a terrible migraine")
 		if(90 to INFINITY)
 			var/bonus_emote = pick(PAIN_EMOTES)
 			owner.pain_emote(pick("groan", bonus_emote))
 			owner.flash_pain_overlay(2, 2 SECONDS)
 			feedback_phrases += list("hurts madly", "is in agony", "is anguishing", "feels terrible", "is in agony", "feels tense")
-			side_feedback += list("You feel a splitting migrane", "Pressure floods your [plaintext_zone]", "Your [plaintext_zone] feels as if it's being squeezed", "Your eyes hurt to keep open")
+			side_feedback += list("You feel a splitting migraine", "Pressure floods your [plaintext_zone]", "Your [plaintext_zone] feels as if it's being squeezed", "Your eyes hurt to keep open")
 
 	if(side_feedback.len && last_received_pain_type != BURN && SPT_PROB(50, seconds_per_tick))
 		owner.pain_message(span_danger("[pick(side_feedback)][healing_pain ? ", [pick(healing_phrases)]." : "!"]"))

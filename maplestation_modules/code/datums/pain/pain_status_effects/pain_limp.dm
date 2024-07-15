@@ -2,7 +2,7 @@
 /datum/status_effect/limp/pain
 	id = "limp_pain"
 	status_type = STATUS_EFFECT_UNIQUE
-	alert_type = /atom/movable/screen/alert/status_effect/limp/pain
+	alert_type = null
 	remove_on_fullheal = TRUE
 	heal_flag_necessary = HEAL_ADMIN|HEAL_WOUNDS|HEAL_STATUS
 
@@ -60,7 +60,3 @@
 	if(slowdown_left < 3 && slowdown_right < 3)
 		qdel(src)
 		return
-
-/atom/movable/screen/alert/status_effect/limp/pain
-	name = "Pained Limping"
-	desc = "The pain in your legs is unbearable, forcing you to limp!"
