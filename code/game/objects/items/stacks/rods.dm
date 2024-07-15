@@ -38,8 +38,8 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	cost = HALF_SHEET_MATERIAL_AMOUNT
 	source = /datum/robot_energy_storage/material/iron
 	merge_type = /obj/item/stack/rods
-	drop_sound = 'maplestation_modules/sound/items/drop/metal_pot.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
+	pickup_sound = 'sound/items/iron_rod_pick_up.ogg'
+	drop_sound = 'sound/items/metal_drop.ogg'
 
 /datum/embed_data/rods
 	embed_chance = 50

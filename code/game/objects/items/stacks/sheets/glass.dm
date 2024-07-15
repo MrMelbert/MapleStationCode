@@ -206,6 +206,8 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 	point_value = 23
 	matter_amount = 8
 	table_type = /obj/structure/table/reinforced/plasmarglass
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/glass.ogg'
 
 /datum/armor/sheet_plasmarglass
 	melee = 20
