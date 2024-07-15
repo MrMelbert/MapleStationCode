@@ -6135,6 +6135,7 @@
 #include "maplestation_modules\code\datums\ruins\space.dm"
 #include "maplestation_modules\code\datums\votes\transfer_vote.dm"
 #include "maplestation_modules\code\game\area\space_station_13_areas.dm"
+#include "maplestation_modules\code\game\machinery\cloning_pod.dm"
 #include "maplestation_modules\code\game\machinery\fax_machine.dm"
 #include "maplestation_modules\code\game\machinery\towel_rack.dm"
 #include "maplestation_modules\code\game\objects\unique_examine_items.dm"
