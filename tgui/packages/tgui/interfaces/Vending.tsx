@@ -14,10 +14,8 @@ import {
 } from 'tgui/components';
 
 import { createSearch } from '../../common/string';
-import { useBackend } from '../backend';
 import { Input } from '../components';
 import { Window } from '../layouts';
-import { Category } from './PreferencesMenu/antagonists/base';
 
 type VendingData = {
   onstation: boolean;
