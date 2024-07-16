@@ -33,30 +33,30 @@ export const SyndicateContractor = (props) => {
 };
 
 type Data = {
+  contracts_completed: number;
+  contracts: ContractData[];
+  dropoff_direction: string;
+  earned_tc: number;
   error: string;
-  logged_in: BooleanLike;
+  extraction_enroute: BooleanLike;
   first_load: BooleanLike;
   info_screen: BooleanLike;
-  redeemable_tc: Number;
-  earned_tc: Number;
-  contracts_completed: Number;
-  contracts: ContractData[];
+  logged_in: BooleanLike;
   ongoing_contract: BooleanLike;
-  extraction_enroute: BooleanLike;
-  dropoff_direction: string;
+  redeemable_tc: number;
 };
 
 type ContractData = {
-  id: Number;
-  status: Number;
+  id: number;
+  status: number;
   target: string;
   target_rank: string;
   extraction_enroute: BooleanLike;
   message: string;
   contract: string;
   dropoff: string;
-  payout: Number;
-  payout_bonus: Number;
+  payout: number;
+  payout_bonus: number;
 };
 
 export const SyndicateContractorContent = (props) => {
