@@ -65,7 +65,8 @@
 		handle_gravity(seconds_per_tick, times_fired)
 
 	handle_wounds(seconds_per_tick, times_fired)
-
+	if(staminaloss) // melbert todo : stopgap
+		adjustStaminaLoss(-2.5 * seconds_per_tick)
 	if(machine)
 		machine.check_eye(src)
 

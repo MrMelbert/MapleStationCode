@@ -926,6 +926,7 @@
 		setBruteLoss(0, updating_health = FALSE, forced = TRUE)
 	if(heal_flags & HEAL_BURN)
 		setFireLoss(0, updating_health = FALSE, forced = TRUE)
+		cure_husk()
 	if(heal_flags & HEAL_STAM)
 		setStaminaLoss(0, updating_stamina = FALSE, forced = TRUE)
 
