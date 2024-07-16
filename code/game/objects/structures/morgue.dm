@@ -53,6 +53,7 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	if(connected)
 		connected = new connected(src)
 		connected.connected = src
+		connected.RegisterSignal(src, COMSIG_CLICK, TYPE_PROC_REF(/obj/structure/tray, redirect_click))
 	GLOB.bodycontainers += src
 	register_context()
 
@@ -559,6 +560,20 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		to_chat(user, span_warning("That's not connected to anything!"))
 	add_fingerprint(user)
 
+// Registered on our connected bodycontainer, so if we click it we redirect to click this
+/obj/structure/tray/proc/redirect_click(datum/source, location, control, params, mob/clicker)
+	SIGNAL_HANDLER
+	ASSERT(source == connected)
+	if(!isliving(clicker) \
+		|| loc == connected \
+		|| clicker.get_active_held_item() \
+		|| !clicker.CanReach(src) \
+		|| clicker.CanReach(connected) \
+	)
+		return
+
+	INVOKE_ASYNC(clicker, TYPE_PROC_REF(/mob, ClickOn), src, params)
+
 /obj/structure/tray/attackby(obj/P, mob/user, params)
 	if(!istype(P, /obj/item/riding_offhand))
 		return ..()
@@ -617,6 +632,16 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		return
 	if(locate(/obj/structure/table) in get_turf(mover))
 		return TRUE
+
+/obj/structure/tray/m_tray/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return
+	if(user.combat_mode)
+		return
+	if(tool.item_flags & (ABSTRACT|HAND_ITEM))
+		return
+	return user.transferItemToLoc(tool, loc, silent = FALSE) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
 #undef BREAKOUT_COOLDOWN
 #undef BREAKDOWN_TIME

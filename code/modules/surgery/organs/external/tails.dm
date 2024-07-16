@@ -15,24 +15,28 @@
 
 	///Does this tail have a wagging sprite, and is it currently wagging?
 	var/wag_flags = NONE
-	///The original owner of this tail
-	var/original_owner //Yay, snowflake code!
 	///The overlay for tail spines, if any
 	var/datum/bodypart_overlay/mutant/tail_spines/tail_spines_overlay
 
-/obj/item/organ/external/tail/Insert(mob/living/carbon/receiver, special, movement_flags)
+/obj/item/organ/external/tail/proc/is_tailed_species(mob/living/carbon/who)
+	for(var/tail_type in who.dna.species.external_organs)
+		if(ispath(tail_type, /obj/item/organ/external/tail))
+			return TRUE
+	return FALSE
+
+/obj/item/organ/external/tail/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
-	if(.)
-		RegisterSignal(receiver, COMSIG_ORGAN_WAG_TAIL, PROC_REF(wag))
-		original_owner ||= WEAKREF(receiver)
+	organ_owner.clear_mood_event("tail_lost")
+	organ_owner.clear_mood_event("tail_balance_lost")
 
-		receiver.clear_mood_event("tail_lost")
-		receiver.clear_mood_event("tail_balance_lost")
+	if(!is_tailed_species(organ_owner))
+		wag_flags &= ~WAG_ABLE
+		return
+	if(special)
+		return
 
-		if(IS_WEAKREF_OF(receiver, original_owner))
-			receiver.clear_mood_event("wrong_tail_regained")
-		else if(type in receiver.dna.species.external_organs)
-			receiver.add_mood_event("wrong_tail_regained", /datum/mood_event/tail_regained_wrong)
+	var/moodlet_type = is_type_in_list(src, organ_owner.dna.species.external_organs) ? /datum/mood_event/tail_regained_right : /datum/mood_event/tail_regained_wrong
+	organ_owner.add_mood_event("tail_regained", moodlet_type)
 
 /obj/item/organ/external/tail/on_bodypart_insert(obj/item/bodypart/bodypart)
 	var/obj/item/organ/external/spines/our_spines = bodypart.owner.get_organ_slot(ORGAN_SLOT_EXTERNAL_SPINES)
@@ -72,32 +76,29 @@
 
 /obj/item/organ/external/tail/on_mob_remove(mob/living/carbon/organ_owner, special)
 	. = ..()
+	organ_owner.clear_mood_event("tail_regained")
+
+	if(initial(wag_flags) & WAG_ABLE)
+		wag_flags |= WAG_ABLE
 
 	if(wag_flags & WAG_WAGGING)
-		wag(organ_owner, start = FALSE)
+		stop_wag(organ_owner)
 
-	UnregisterSignal(organ_owner, COMSIG_ORGAN_WAG_TAIL)
-
-	if(type in organ_owner.dna.species.external_organs)
+	if(is_type_in_list(src, organ_owner.dna.species.external_organs))
 		organ_owner.add_mood_event("tail_lost", /datum/mood_event/tail_lost)
 		organ_owner.add_mood_event("tail_balance_lost", /datum/mood_event/tail_balance_lost)
 
-/obj/item/organ/external/tail/proc/wag(mob/living/carbon/organ_owner, start = TRUE, stop_after = 0)
-	if(!(wag_flags & WAG_ABLE))
-		return
-
-	if(start)
-		if(start_wag(organ_owner) && stop_after)
-			addtimer(CALLBACK(src, PROC_REF(wag), organ_owner, FALSE), stop_after, TIMER_STOPPABLE|TIMER_DELETE_ME)
-	else
-		stop_wag(organ_owner)
-
 ///We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
-/obj/item/organ/external/tail/proc/start_wag(mob/living/carbon/organ_owner)
-	if(wag_flags & WAG_WAGGING) // we are already wagging
+///Accepts an optional timeout after which we remove the tail wagging
+///Returns false if the wag worked, true otherwise
+/obj/item/organ/external/tail/proc/start_wag(mob/living/carbon/organ_owner, stop_after = INFINITY)
+	if(wag_flags & WAG_WAGGING || !(wag_flags & WAG_ABLE)) // we are already wagging
 		return FALSE
 	if(organ_owner.stat == DEAD || organ_owner != owner) // no wagging when owner is dead or tail has been disembodied
 		return FALSE
+
+	if(stop_after != INFINITY)
+		addtimer(CALLBACK(src, PROC_REF(stop_wag), organ_owner), stop_after, TIMER_STOPPABLE|TIMER_DELETE_ME)
 
 	var/datum/bodypart_overlay/mutant/tail/accessory = bodypart_overlay
 	wag_flags |= WAG_WAGGING
@@ -105,23 +106,34 @@
 	if(tail_spines_overlay) //if there are spines, they should wag with the tail
 		tail_spines_overlay.wagging = TRUE
 	organ_owner.update_body_parts()
-	RegisterSignal(organ_owner, COMSIG_LIVING_DEATH, PROC_REF(stop_wag))
+	RegisterSignal(organ_owner, COMSIG_LIVING_DEATH, PROC_REF(owner_died))
 	return TRUE
 
-///We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
-/obj/item/organ/external/tail/proc/stop_wag(mob/living/carbon/organ_owner)
+/obj/item/organ/external/tail/proc/owner_died(mob/living/carbon/organ_owner) // Resisting the urge to replace owner with daddy
 	SIGNAL_HANDLER
+	stop_wag(organ_owner)
 
-	var/datum/bodypart_overlay/mutant/tail/accessory = bodypart_overlay
-	wag_flags &= ~WAG_WAGGING
-	accessory.wagging = FALSE
+///We need some special behaviour for accessories, wrapped here so we can easily add more interactions later
+///Returns false if the wag stopping worked, true otherwise
+/obj/item/organ/external/tail/proc/stop_wag(mob/living/carbon/organ_owner)
+	if(!(wag_flags & WAG_ABLE))
+		return FALSE
+
+	var/succeeded = FALSE
+	if(wag_flags & WAG_WAGGING)
+		wag_flags &= ~WAG_WAGGING
+		succeeded = TRUE
+
+	var/datum/bodypart_overlay/mutant/tail/tail_overlay = bodypart_overlay
+	tail_overlay.wagging = FALSE
 	if(tail_spines_overlay) //if there are spines, they should stop wagging with the tail
 		tail_spines_overlay.wagging = FALSE
 	if(isnull(organ_owner))
-		return
+		return succeeded
 
 	organ_owner.update_body_parts()
 	UnregisterSignal(organ_owner, COMSIG_LIVING_DEATH)
+	return succeeded
 
 ///Tail parent type, with wagging functionality
 /datum/bodypart_overlay/mutant/tail
