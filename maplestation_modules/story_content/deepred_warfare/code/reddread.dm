@@ -825,7 +825,7 @@
 			return 0
 		else // Not enough damage to damage the shield, damage is deflected.
 			playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
-			src.visible_message(span_warning("[src]'s shield struggles to absorb the impact!"))
+			src.visible_message(span_warning("[src]'s shield struggles to deflect the impact!"))
 			return 0
 	. = ..()
 
