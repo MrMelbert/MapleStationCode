@@ -226,6 +226,8 @@
 		if(istype(M.wear_suit))
 			if(M.wear_suit.type in suit_types)
 				M.adjustStaminaLoss(34)
+				if(M.getStaminaLoss() > 100)
+					M.Paralyze(5 SECONDS)
 
 /obj/projectile/beam/lasertag/redtag
 	icon_state = "laser"

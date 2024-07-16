@@ -161,6 +161,9 @@
 
 	if(!iscarbon(user) || isnull(user.mind))
 		return TRUE
+	if(user.getStaminaLoss() > 100)
+		end_workout()
+		return TRUE
 	// the amount of workouts you can do before you hit stamcrit
 	var/workout_reps = total_workout_reps[user.mind.get_skill_level(/datum/skill/fitness)]
 	// total stamina drain of 1 workout calculated based on the workout length

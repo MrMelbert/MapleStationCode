@@ -104,10 +104,11 @@
 
 	// Okay we're tired now
 	if(getStaminaLoss() >= maxHealth * 0.66)
+		to_chat(src, span_warning("You're too tired to keep sprinting!"))
 		set_move_intent(MOVE_INTENT_WALK)
 		return
 
-	adjustStaminaLoss(1) // 1 fatigue per tile
+	adjustStaminaLoss(1)
 
 /mob/living/carbon/human/fully_heal(heal_flags)
 	. = ..()
@@ -118,4 +119,4 @@
 /mob/living/carbon/human/adjustStaminaLoss(amount, updating_stamina, forced, required_biotype)
 	. = ..()
 	if(amount < 0 && amount >= -20)
-		adjust_sprint_left(amount * 0.25)
+		adjust_sprint_left(amount * 0.25) // melbert todo : passive stamina regen is triggering this

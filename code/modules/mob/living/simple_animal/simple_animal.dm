@@ -53,8 +53,6 @@
 	var/harm_intent_damage = 3
 	///Maximum amount of stamina damage the mob can be inflicted with total
 	var/max_staminaloss = 200
-	///How much stamina the mob recovers per second
-	var/stamina_recovery = 5
 
 	///Minimal body temperature without receiving damage
 	var/minbodytemp = NPC_DEFAULT_MIN_TEMP
@@ -196,11 +194,6 @@
 	if(isnull(unsuitable_heat_damage))
 		unsuitable_heat_damage = unsuitable_atmos_damage
 
-/mob/living/simple_animal/Life(seconds_per_tick = SSMOBS_DT, times_fired)
-	. = ..()
-	if(staminaloss > 0)
-		adjustStaminaLoss(-stamina_recovery * seconds_per_tick, FALSE, TRUE)
-
 /mob/living/simple_animal/Destroy()
 	QDEL_NULL(access_card)
 	GLOB.simple_animals[AIStatus] -= src
@@ -241,8 +234,7 @@
 /mob/living/simple_animal/update_stamina()
 	if(damage_coeff[STAMINA] <= 0) //we shouldn't reset our speed to its initial value if we don't need to, as that can mess with things like mulebot motor wires
 		return
-	set_varspeed(initial(speed) + (staminaloss * 0.06))
-	return ..()
+	set_varspeed(initial(speed) + (getStaminaLoss() * 0.06))
 
 /mob/living/simple_animal/proc/handle_automated_action()
 	set waitfor = FALSE

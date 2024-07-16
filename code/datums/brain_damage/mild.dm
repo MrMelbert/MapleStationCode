@@ -118,7 +118,7 @@
 	return ..()
 
 /datum/brain_trauma/mild/healthy/on_life(seconds_per_tick, times_fired)
-	owner.adjustStaminaLoss(-2.5 * seconds_per_tick) //no pain, no fatigue
+	owner.adjustStaminaLoss(-7.5 * seconds_per_tick) //no pain, no fatigue
 
 /datum/brain_trauma/mild/healthy/on_lose()
 	owner.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
@@ -148,7 +148,8 @@
 
 	else if(SPT_PROB(1.5, seconds_per_tick))
 		to_chat(owner, span_warning("You feel a sudden weakness in your muscles!"))
-		owner.adjustStaminaLoss(50)
+		owner.apply_damage(25, STAMINA, BODY_ZONE_L_LEG)
+		owner.apply_damage(25, STAMINA, BODY_ZONE_R_LEG)
 	..()
 
 /datum/brain_trauma/mild/muscle_spasms

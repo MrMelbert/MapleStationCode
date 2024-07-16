@@ -850,7 +850,7 @@
 	return
 
 /mob/living/carbon/remove_consciousness_multiplier(multiplier)
-	if(LAZYACCESS(max_consciousness_values, multiplier))
+	if(LAZYACCESS(consciousness_multipliers, multiplier))
 		LAZYREMOVE(consciousness_multipliers, multiplier)
 		SShealth_updates.queue_update(src, UPDATE_CON)
 

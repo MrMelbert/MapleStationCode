@@ -57,11 +57,5 @@
 		. = adjustHealth(amount * damage_coeff[TOX] * CONFIG_GET(number/damage_multiplier), updating_health, forced)
 
 /mob/living/simple_animal/adjustStaminaLoss(amount, updating_stamina = TRUE, forced = FALSE, required_biotype)
-	if(!can_adjust_stamina_loss(amount, forced, required_biotype))
-		return 0
-	if(forced)
-		staminaloss = max(0, min(max_staminaloss, staminaloss + amount))
-	else
-		staminaloss = max(0, min(max_staminaloss, staminaloss + (amount * damage_coeff[STAMINA])))
-	if(updating_stamina)
-		update_stamina()
+	amount *= damage_coeff[STAMINA]
+	return ..()

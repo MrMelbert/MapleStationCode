@@ -16,9 +16,11 @@
 	/// The mob's current health.
 	var/health = MAX_LIVING_HEALTH
 
-	/// The max amount of stamina damage we can have at once (Does NOT effect stamcrit thresholds. See crit_threshold)
+	/// The max amount of stamina damage we can have at once
 	var/max_stamina = 120
-	///Stamina damage, or exhaustion. You recover it slowly naturally, and are knocked down if it gets too high. Holodeck and hallucinations deal this.
+	/// Basically, amount of fatigue
+	/// Having a lot of it slows down your movement speed
+	/// Also often used for "fake damage"
 	var/staminaloss = 0
 
 	var/consciousness = 100

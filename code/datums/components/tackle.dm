@@ -92,6 +92,10 @@
 		to_chat(user, span_warning("You must be standing to tackle!"))
 		return
 
+	if(user.getStaminaLoss() > 100)
+		to_chat(user, span_warning("You're too tired to tackle!"))
+		return
+
 	if(tackling)
 		to_chat(user, span_warning("You're not ready to tackle!"))
 		return
@@ -546,8 +550,8 @@
 
 		if(93 to 96)
 			user.visible_message(span_danger("[user] slams face-first into [hit] with a concerning squish, immediately going limp!"), span_userdanger("You slam face-first into [hit], and immediately lose consciousness!"))
-			user.adjustStaminaLoss(30)
-			user.adjustBruteLoss(30)
+			user.apply_damage(30, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(30, BRUTE, BODY_ZONE_HEAD)
 			user.Unconscious(10 SECONDS)
 			user.gain_trauma_type(BRAIN_TRAUMA_MILD)
 			user.playsound_local(get_turf(user), 'sound/weapons/flashbang.ogg', 100, TRUE, 8)
@@ -556,8 +560,8 @@
 
 		if(86 to 92)
 			user.visible_message(span_danger("[user] slams head-first into [hit], suffering major cranial trauma!"), span_userdanger("You slam head-first into [hit], and the world explodes around you!"))
-			user.adjustStaminaLoss(30, updating_stamina = FALSE)
-			user.adjustBruteLoss(30)
+			user.apply_damage(30, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(30, BRUTE, BODY_ZONE_HEAD)
 			user.adjust_confusion(15 SECONDS)
 			if(prob(80))
 				user.gain_trauma(/datum/brain_trauma/mild/concussion)
@@ -568,16 +572,16 @@
 
 		if(68 to 85)
 			user.visible_message(span_danger("[user] slams hard into [hit], knocking [user.p_them()] senseless!"), span_userdanger("You slam hard into [hit], knocking yourself senseless!"))
-			user.adjustStaminaLoss(30, updating_stamina = FALSE)
-			user.adjustBruteLoss(10)
+			user.apply_damage(30, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 			user.adjust_confusion(10 SECONDS)
 			user.Knockdown(3 SECONDS)
 			shake_camera(user, 3, 4)
 
 		if(1 to 67)
 			user.visible_message(span_danger("[user] slams into [hit]!"), span_userdanger("You slam into [hit]!"))
-			user.adjustStaminaLoss(20, updating_stamina = FALSE)
-			user.adjustBruteLoss(10)
+			user.apply_damage(20, STAMINA, BODY_ZONE_HEAD)
+			user.apply_damage(10, BRUTE, BODY_ZONE_HEAD)
 			user.Knockdown(2 SECONDS)
 			shake_camera(user, 2, 2)
 
@@ -602,7 +606,7 @@
 			shard.embedding = null
 			shard.updateEmbedding()
 		W.atom_destruction()
-		user.adjustStaminaLoss(10 * speed)
+		user.apply_damage(10 * speed, STAMINA)
 		user.Paralyze(3 SECONDS)
 		user.visible_message(span_danger("[user] smacks into [W] and shatters it, shredding [user.p_them()]self with glass!"), span_userdanger("You smacks into [W] and shatter it, shredding yourself with glass!"))
 
@@ -611,7 +615,7 @@
 		user.Paralyze(1 SECONDS)
 		user.Knockdown(3 SECONDS)
 		W.take_damage(30 * speed)
-		user.adjustStaminaLoss(10 * speed, updating_stamina=FALSE)
+		user.apply_damage(10 * speed, STAMINA)
 		user.adjustBruteLoss(5 * speed)
 
 /datum/component/tackler/proc/delayedSmash(obj/structure/window/W)
@@ -656,8 +660,8 @@
 			HOW_big_of_a_miss_did_we_just_make = ", making a ginormous mess!" // an extra exclamation point!! for emphasis!!!
 
 	owner.visible_message(span_danger("[owner] trips over [kevved] and slams into it face-first[HOW_big_of_a_miss_did_we_just_make]!"), span_userdanger("You trip over [kevved] and slam into it face-first[HOW_big_of_a_miss_did_we_just_make]!"))
-	owner.adjustStaminaLoss(15 + messes.len * 2, updating_stamina = FALSE)
-	owner.adjustBruteLoss(8 + messes.len, updating_health = FALSE)
+	owner.apply_damage(15 + messes.len * 2, STAMINA, BODY_ZONE_HEAD)
+	owner.apply_damage(8 + messes.len, BRUTE, BODY_ZONE_HEAD)
 	owner.Paralyze(0.4 SECONDS * messes.len) // .4 seconds of paralyze for each thing you knock around
 	owner.Knockdown(2 SECONDS + 0.4 SECONDS * messes.len) // 2 seconds of knockdown after the paralyze
 	owner.updatehealth()

@@ -85,6 +85,10 @@
 		if(OXY)
 			damage_dealt = -1 * adjustOxyLoss(damage_amount, forced = forced)
 		if(STAMINA)
+			// By default applying stamina damage will convert it to sharp pain if applicable
+			// If you don't want that just call adjustStaminaLoss directly
+			//
+			// Melbert todo : Rename "STAMINA" to "PAIN", or delete this, idk
 			if(pain_controller)
 				var/pre_pain = pain_controller.get_average_pain()
 				if(spread_damage || isnull(def_zone))
@@ -452,7 +456,7 @@
 	if(!.) // no change, no need to update
 		return 0
 	if(updating_stamina)
-		updatehealth()
+		update_stamina()
 	return .
 
 /mob/living/proc/setStaminaLoss(amount, updating_stamina = TRUE, forced = FALSE, required_biotype = ALL)
