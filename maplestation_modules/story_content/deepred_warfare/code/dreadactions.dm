@@ -166,7 +166,7 @@
 
 /datum/action/cooldown/mob_cooldown/dreadscan/Activate(atom/target_atom)
 	var/mob/living/basic/redtechdread/ownercast = owner
-	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
+	playsound(ownercast, 'sound/machines/clockcult/stargazer_activate.ogg', 120)
 
 	var/mutable_appearance/scan_effect = mutable_appearance('maplestation_modules/story_content/deepred_warfare/icons/dreadscan.dmi', "scan")
 	ownercast.add_overlay(scan_effect)
@@ -177,13 +177,13 @@
 		ownercast.balloon_alert(ownercast, "cancelled")
 		StartCooldown(cooldown_time * 0.2)
 		ownercast.cut_overlay(scan_effect)
-		playsound(ownercast, 'sound/machines/scanbuzz.ogg', 120)
+		playsound(ownercast, 'sound/machines/scanbuzz.ogg', 40)
 		return TRUE
 
 	if(istype(target_atom, /mob/living))
 		healthscan(ownercast, target_atom, advanced = TRUE)
 	ownercast.cut_overlay(scan_effect)
-	playsound(ownercast, 'sound/machines/ping.ogg', 120)
+	playsound(ownercast, 'sound/machines/ping.ogg', 40)
 	return TRUE
 
 /datum/action/cooldown/mob_cooldown/faraday_shield
