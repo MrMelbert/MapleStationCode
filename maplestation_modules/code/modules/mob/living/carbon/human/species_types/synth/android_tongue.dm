@@ -3,9 +3,11 @@
 	liked_foodtypes = NONE
 	disliked_foodtypes = NONE
 	toxic_foodtypes = NONE
+	organ_traits = list(TRAIT_SILICON_EMOTES_ALLOWED)
 
 /obj/item/organ/tongue/robot/synth
 	name = "synth tongue"
+	organ_traits = list(TRAIT_SILICON_EMOTES_ALLOWED)
 	/// Internal tongue that we use to modify speech instead
 	var/obj/item/organ/tongue/fake_tongue
 

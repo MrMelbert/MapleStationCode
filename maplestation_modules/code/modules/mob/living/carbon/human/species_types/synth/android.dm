@@ -270,8 +270,12 @@
 	breath.temperature = breather.body_temperature
 	return HANDLE_BREATH_TEMPERATURE_HANDLED
 
+/// Has trait but not from lungs if present
+#define HAS_TRAIT_NOT_FROM_LUNGS(mob, trait, lungs) (isnull(lungs) ? HAS_TRAIT(mob, trait) : HAS_TRAIT_NOT_FROM(mob, trait, REF(lungs)))
+
 /datum/species/android/proc/update_heat_modifiers(mob/living/carbon/human/source)
-	if(!HAS_TRAIT_FROM_ONLY(source, TRAIT_RESISTHEAT, REF(src)))
+	var/obj/item/organ/lungs = source.get_organ_slot(ORGAN_SLOT_LUNGS)
+	if(HAS_TRAIT_NOT_FROM_LUNGS(source, TRAIT_RESISTHEAT, lungs))
 		remove_heat_modifiers()
 		return
 
@@ -300,7 +304,8 @@
 			is_overheating = 1
 
 /datum/species/android/proc/update_cold_modifiers(mob/living/carbon/human/source)
-	if(HAS_TRAIT_NOT_FROM(source, TRAIT_RESISTCOLD, REF(src)))
+	var/obj/item/organ/lungs = source.get_organ_slot(ORGAN_SLOT_LUNGS)
+	if(HAS_TRAIT_NOT_FROM_LUNGS(source, TRAIT_RESISTCOLD, lungs))
 		remove_cold_modifiers()
 		return
 
@@ -327,6 +332,8 @@
 			source.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
 			source.add_mood_event(ALERT_TEMPERATURE, /datum/mood_event/android_minor_overcool)
 			is_overcooled = 1
+
+#undef HAS_TRAIT_NOT_FROM_LUNGS
 
 // Add features from all android species for prefs
 /datum/species/android/get_features(only_innate = FALSE)

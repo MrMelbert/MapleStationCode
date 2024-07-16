@@ -203,6 +203,7 @@
 
 	pa_system = new(src, automated_announcements = automated_announcements)
 	pa_system.Grant(src)
+	ADD_TRAIT(src, TRAIT_SILICON_EMOTES_ALLOWED, INNATE_TRAIT)
 
 /mob/living/simple_animal/bot/Destroy()
 	GLOB.bots_list -= src
