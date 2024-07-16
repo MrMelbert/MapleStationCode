@@ -33,7 +33,7 @@
 	initial_language_holder = /datum/language_holder/redtech
 	mob_size = MOB_SIZE_LARGE
 	// has_unlimited_silicon_privilege = TRUE // Change later, maybe. // Nah, The Collector can just carry around an ID.
-	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
+	damage_coeff = list(BRUTE = 1.2, BURN = 0.8, TOX = 0, STAMINA = 0, OXY = 0)
 	faction = list(FACTION_DEEPRED)
 	hud_type = /datum/hud/dextrous/dreadnought
 	layer = LARGE_MOB_LAYER
@@ -134,7 +134,7 @@
 	AddElement(/datum/element/dextrous, hud_type = hud_type)
 	AddComponent(/datum/component/basic_inhands, y_offset = 0)
 	change_number_of_hands(hands) // Cring.
-	AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL)))
+	// AddComponent(/datum/component/simple_access, SSid_access.get_region_access_list(list(REGION_ALL_GLOBAL))) // I'm a dumbass.
 	AddComponent(/datum/component/personal_crafting)
 
 	AddComponent(/datum/component/regenerator, regeneration_delay = 10 MINUTES, brute_per_second = 10, outline_colour = NONE) // Highly suggested to use the self repair option, but this will kick in after 10 minutes if you are too lazy.
@@ -183,6 +183,9 @@
 	// AddComponent(/datum/component/seethrough_mob)
 	RegisterSignal(src, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(pre_attack))
 	RegisterSignal(src, COMSIG_LIVING_LIFE, PROC_REF(on_life))
+
+	var/obj/item/implant/radio/redtech/comms = new(src)
+	comms.implant(src)
 
 	update_base_stats() // This proc basically makes everything else redundant.
 
@@ -788,27 +791,27 @@
 	switch(shielding_level)
 		if(0)
 			src.remove_filter(SHIELDING_FILTER)
-			damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
+			damage_coeff = list(BRUTE = 1.2, BURN = 0.8, TOX = 0, STAMINA = 0, OXY = 0) // 1250 EHP vs BURN (800 EHP vs BRUTE)
 
 			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 		if(1)
 			src.remove_filter(SHIELDING_FILTER)
 			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 160, "size" = 1))
-			damage_coeff = list(BRUTE = 1, BURN = 0.75, TOX = 0, STAMINA = 0, OXY = 0) // 1333 EHP vs BURN
+			damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0) // 2000 EHP vs BURN
 
 			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 		if(2)
 			src.remove_filter(SHIELDING_FILTER)
 			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 255, "size" = 1))
-			damage_coeff = list(BRUTE = 1, BURN = 0.5, TOX = 0, STAMINA = 0, OXY = 0) // 2000 EHP vs BURN
+			damage_coeff = list(BRUTE = 1, BURN = 0.25, TOX = 0, STAMINA = 0, OXY = 0) // 4000 EHP vs BURN
 
 			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 		if(3)
 			src.remove_filter(SHIELDING_FILTER)
 			src.add_filter(SHIELDING_FILTER, 2, list("type" = "outline", "color" = COLOR_RED, "alpha" = 255, "size" = 2))
-			damage_coeff = list(BRUTE = 1, BURN = 0.25, TOX = 0, STAMINA = 0, OXY = 0) // 4000 EHP vs BURN (could theoretically tank the KAJARI if it wasn't for the explosive damage)
+			damage_coeff = list(BRUTE = 1, BURN = 0.1, TOX = 0, STAMINA = 0, OXY = 0) // 10000 EHP vs BURN (could theoretically tank the KAJARI if it wasn't for the explosive damage)
 
 			RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)
 			AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_WIRES|EMP_PROTECT_CONTENTS)

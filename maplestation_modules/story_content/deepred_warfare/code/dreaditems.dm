@@ -49,3 +49,8 @@
 /obj/item/clothing/mask/collector/pattern
 	worn_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothingbig.dmi'
 	icon_state = "mask_pattern"
+
+/obj/item/implant/radio/redtech
+	desc = "Redtech."
+	radio_key = /obj/item/encryptionkey/ai/evil
+	subspace_transmission = TRUE
