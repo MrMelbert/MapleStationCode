@@ -7,7 +7,7 @@
 	var/icon/final_icon = new(head_icon)
 	if (!isnull(sprite_accessory))
 		ASSERT(istype(sprite_accessory))
-		
+
 		var/icon/head_accessory_icon = icon(sprite_accessory.icon, sprite_accessory.icon_state)
 		if(y_offset)
 			head_accessory_icon.Shift(NORTH, y_offset)
@@ -80,7 +80,7 @@
 		return ..()
 
 	var/picked_beard = random_facial_hairstyle(gender)
-	var/datum/sprite_accessory/beard_style = SSaccessories.facial_hairstyles_list[picked_beard]
+	var/datum/sprite_accessory/beard_style = GLOB.facial_hairstyles_list[picked_beard]
 	if(!beard_style || !beard_style.natural_spawn || beard_style.locked) // Invalid, go with god(bald)
 		return ..()
 
@@ -181,7 +181,7 @@
 		return ..()
 
 	var/picked_hair = random_hairstyle(gender)
-	var/datum/sprite_accessory/hair_style = SSaccessories.hairstyles_list[picked_hair]
+	var/datum/sprite_accessory/hair_style = GLOB.hairstyles_list[picked_hair]
 	if(!hair_style || !hair_style.natural_spawn || hair_style.locked) // Invalid, go with god(bald)
 		return ..()
 
