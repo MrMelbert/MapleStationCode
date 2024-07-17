@@ -17,7 +17,7 @@
 
 	//Make mob invisible and spawn animation
 	ADD_TRAIT(src, TRAIT_NO_TRANSFORM, TEMPORARY_TRANSFORMATION_TRAIT)
-	Paralyze(TRANSFORMATION_DURATION, ignore_canstun = TRUE)
+	Stun(TRANSFORMATION_DURATION, ignore_canstun = TRUE)
 	icon = null
 	cut_overlays()
 
