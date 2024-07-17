@@ -67,3 +67,11 @@
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
 
 #define COLOR_BLOOD "#c90000"
+
+// Used in ready menu anominity
+/// Hide ckey
+#define CKEY_ANON (1<<0)
+/// Hide character name
+#define NAME_ANON (1<<1)
+/// Hide top job preference
+#define JOB_ANON (1<<2)
