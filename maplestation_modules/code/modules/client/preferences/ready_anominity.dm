@@ -8,10 +8,10 @@
 		"Show Nothing" = ALL,
 		"Just Show Ckey" = ~CKEY_ANON,
 		"Just Show Character" = ~NAME_ANON,
-		"Just Show Job Title" = ~JOB_ANON,
+		"Just Show Top Job" = ~JOB_ANON,
 		"Don't Show Ckey" = CKEY_ANON,
 		"Don't Show Character" = NAME_ANON,
-		"Don't Show Job Title" = JOB_ANON,
+		"Don't Show Top Job" = JOB_ANON,
 	)
 
 /datum/preference/choiced/ready_anominity/apply_to_client_updated(client/client, value)
@@ -24,9 +24,3 @@
 
 /datum/preference/choiced/ready_anominity/init_possible_values()
 	return value_list
-
-// This also needs to update anominity
-/datum/preference/name/apply_to_client_updated(client/client, value)
-	if(isnewplayer(client?.mob))
-		var/mob/dead/new_player/cycle = client?.mob
-		cycle.update_ready_report()
