@@ -4,10 +4,6 @@
 /datum/language/impdraconic
 	name = "Tiziran Draconic"
 	desc = "A distinct dialect of Draconic common to lizards born and raised on Tizira."
-	//speech_verb = "hisses"
-	//ask_verb = "hisses"
-	//exclaim_verb = "roars"
-	//sing_verb = "sings"
 	key = "l"
 	flags = TONGUELESS_SPEECH
 	space_chance = 25
@@ -33,6 +29,8 @@
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
 	)
 
+#endif
+
 // Edit to the silverscale language holder - silverscales can speak high draconic.
 /datum/language_holder/lizard/silver
 	understood_languages = list(
@@ -48,4 +46,11 @@
 	)
 	selected_language = /datum/language/uncommon
 
-#endif
+/datum/language_holder/lizard/ash/primative
+	selected_language = /datum/language/impdraconic
+	understood_languages = list(
+		/datum/language/impdraconic = list(LANGUAGE_ATOM),
+	)
+	spoken_languages = list(
+		/datum/language/impdraconic = list(LANGUAGE_ATOM),
+	)

@@ -8,7 +8,7 @@
 	if (transformation_timer || HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
 
-	if(ismonkey(src))
+	if(!dna?.species?.monkey_type)
 		return
 
 	if(instant)
@@ -29,12 +29,15 @@
 
 /mob/living/carbon/proc/finish_monkeyize()
 	transformation_timer = null
-	to_chat(src, span_boldnotice("You are now a monkey."))
+	var/datum/species/monkey_type = dna?.species?.monkey_type
+	ASSERT(monkey_type)
+	var/monkey_name = lowertext(initial(monkey_type.name))
+	to_chat(src, span_boldnotice("You are now a [monkey_name]."))
 	REMOVE_TRAIT(src, TRAIT_NO_TRANSFORM, TEMPORARY_TRANSFORMATION_TRAIT)
 	icon = initial(icon)
 	RemoveInvisibility(type)
-	set_species(/datum/species/monkey)
-	name = "monkey"
+	set_species(monkey_type)
+	name = monkey_name
 	regenerate_icons()
 	set_name()
 	SEND_SIGNAL(src, COMSIG_HUMAN_MONKEYIZE)

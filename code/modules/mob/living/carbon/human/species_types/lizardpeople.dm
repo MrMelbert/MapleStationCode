@@ -45,19 +45,7 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/lizard,
 	)
 
-// NON-MODULE CHANGE
-// /datum/species/lizard/on_species_gain(mob/living/carbon/new_lizard, datum/species/old_species, pref_load)
-// 	. = ..()
-// 	if(ishuman(new_lizard))
-// 		update_mail_goodies(new_lizard)
-
-// /datum/species/lizard/update_quirk_mail_goodies(mob/living/carbon/human/recipient, datum/quirk/quirk, list/mail_goodies = list())
-// 	if(istype(quirk, /datum/quirk/blooddeficiency))
-// 		mail_goodies += list(
-// 			/obj/item/reagent_containers/blood/lizard
-// 		)
-// 	return ..()
-// NON-MODULE CHANGE end
+	monkey_type = /datum/species/monkey/lizard
 
 /// Lizards are cold blooded and do not stabilize body temperature naturally
 /datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)
@@ -170,9 +158,10 @@ Lizard subspecies: ASHWALKERS
 	mutantlungs = /obj/item/organ/internal/lungs/lavaland
 	mutantbrain = /obj/item/organ/internal/brain/primitive
 	inherent_traits = list(
-		TRAIT_MUTANT_COLORS,
-		TRAIT_VIRUSIMMUNE,
 		TRAIT_FORBID_MINING_SHUTTLE_CONSOLE_OUTSIDE_STATION,
+		TRAIT_MUTANT_COLORS,
+		TRAIT_TACKLING_TAILED_DEFENDER,
+		TRAIT_VIRUSIMMUNE,
 	)
 	species_language_holder = /datum/language_holder/lizard/ash
 	digitigrade_customization = DIGITIGRADE_FORCED
@@ -203,6 +192,7 @@ Lizard subspecies: SILVER SCALED
 		TRAIT_PIERCEIMMUNE,
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
+		TRAIT_TACKLING_TAILED_DEFENDER,
 		TRAIT_VIRUSIMMUNE,
 		TRAIT_WINE_TASTER,
 	)
