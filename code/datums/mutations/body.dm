@@ -191,8 +191,8 @@
 /datum/mutation/human/race
 	name = "Monkified"
 	desc = "A strange genome, believing to be what differentiates monkeys from humans."
-	text_gain_indication = "You feel unusually monkey-like."
-	text_lose_indication = "You feel like your old self."
+	text_gain_indication = span_green("You feel unusually primitive.")
+	text_lose_indication = span_notice("You feel like your old self.")
 	quality = NEGATIVE
 	remove_on_aheal = FALSE
 	locked = TRUE //Species specific, keep out of actual gene pool
