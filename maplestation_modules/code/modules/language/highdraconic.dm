@@ -29,8 +29,6 @@
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
 	)
 
-#endif
-
 // Edit to the silverscale language holder - silverscales can speak high draconic.
 /datum/language_holder/lizard/silver
 	understood_languages = list(
@@ -45,6 +43,8 @@
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
 	)
 	selected_language = /datum/language/uncommon
+
+#endif
 
 /datum/language_holder/lizard/ash/primative
 	selected_language = /datum/language/impdraconic
