@@ -27,7 +27,7 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_ICE] += FREEZE_PERSON_ATTUNEMENT_ICE
 
-	AddComponent(/datum/component/uses_mana/, \
+	AddComponent(/datum/component/uses_mana/spell, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = mana_cost, \

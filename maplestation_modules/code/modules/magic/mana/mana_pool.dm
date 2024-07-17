@@ -8,7 +8,7 @@
 
 /// An abstract representation of collections of mana, as it's impossible to represent each individual mana unit
 /datum/mana_pool
-	var/atom/parent = null
+	var/atom/movable/parent = null
 
 	// As attunements on mana is actually a tangible thing, and not just a preference, mana attunements should never go below zero.
 	/// A abstract representation of the attunements of [amount]. This is just an abstraction of the overall bias of all stored mana - in reality, every Vol has its own attunement.
@@ -19,7 +19,7 @@
 	var/maximum_mana_capacity = BASE_MANA_CAPACITY
 	/// The abstract representation of how many "Vols" this mana pool currently contains.
 	/// Capped at [maximum_mana_capacity], begins decaying exponentially when above [softcap].
-	var/amount = 367 // placeholder. This should be replaced during process.
+	var/amount = 100 // placeholder. This should be replaced during process.
 	/// The threshold at which mana begins decaying exponentially.
 	// TODO: convert to some kind of list for multiple softcaps?
 	var/softcap = BASE_MANA_SOFTCAP
@@ -59,12 +59,11 @@
 	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
 	var/intrinsic_recharge_sources = MANA_ALL_LEYLINES
 
-/datum/mana_pool/New(atom/parent = null, amount = maximum_mana_capacity)
+/datum/mana_pool/New(atom/parent = null, new_amount = maximum_mana_capacity/10)
 	. = ..()
-	amount = maximum_mana_capacity
 	donation_budget_this_tick = max_donation_rate_per_second
 	src.parent = parent
-	src.amount = amount
+	src.amount = new_amount
 
 	update_intrinsic_recharge()
 
@@ -117,7 +116,8 @@
 				transfer_mana_to(iterated_pool, seconds_per_tick)
 
 		if (MANA_DISPERSE_EVENLY)
-			var/mana_to_disperse = (donation_budget_this_tick / length(transferring_to))
+			if(!length(transferring_to)) return
+			var/mana_to_disperse = (donation_budget_this_tick / length(transferring_to)) // LETS FUCKING GO DIVISION BY ZERO SPAM HERE
 
 			for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
 				if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
@@ -128,13 +128,13 @@
 			// ...
 
 	if (parent)
-		if (amount < parent.mana_overload_threshold)
+		if (amount > parent.mana_overload_threshold)
 			var/effect_mult = (((amount / parent.mana_overload_threshold) - 1) * parent.mana_overload_coefficient)
 			parent.process_mana_overload(effect_mult, seconds_per_tick)
 		else if (parent.mana_overloaded)
 			parent.stop_mana_overload()
 
-	if (amount < softcap)
+	if (amount > softcap) // why was this amount < softcap
 	// exponential decay
 	// exponentially decays amount when amount surpasses softcap, with [exponential_decay_divisor] being the (inverse) decay factor
 	// can only decay however much amount we are over softcap

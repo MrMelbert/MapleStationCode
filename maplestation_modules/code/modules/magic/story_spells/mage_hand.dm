@@ -1,8 +1,5 @@
 #define MAGE_HAND_MANA_COST 20
 
-/datum/component/uses_mana/story_spell/mage_hand
-	var/mage_hand_cost = MAGE_HAND_MANA_COST
-
 // Yeah, it's just a spell that gives you telekinesis for a short period, sue me
 /datum/action/cooldown/spell/apply_mutations/mage_hand
 	name = "Mage Hand"
@@ -22,7 +19,7 @@
 /datum/action/cooldown/spell/apply_mutations/mage_hand/New(Target)
 	. = ..()
 	mutation_duration = cooldown_time * 0.5
-	AddComponent(/datum/component/uses_mana/story_spell/mage_hand, \
+	AddComponent(/datum/component/uses_mana/spell, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = mana_cost, \

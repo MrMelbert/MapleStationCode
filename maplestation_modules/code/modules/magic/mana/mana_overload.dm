@@ -5,7 +5,7 @@
 
 	return ..()
 
-/atom/proc/process_mana_overload(effect_mult, seconds_per_tick)
+/atom/movable/proc/process_mana_overload(effect_mult, seconds_per_tick)
 	mana_overloaded = TRUE
 
 /mob/process_mana_overload(effect_mult, seconds_per_tick)
@@ -25,7 +25,7 @@
 	if (effect_mult > MANA_OVERLOAD_DAMAGE_THRESHOLD)
 		apply_damage(MANA_OVERLOAD_BASE_DAMAGE * adjusted_mult, damagetype = BRUTE, forced = TRUE, spread_damage = TRUE)
 
-/atom/proc/stop_mana_overload()
+/atom/movable/proc/stop_mana_overload()
 	mana_overloaded = FALSE
 
 /mob/stop_mana_overload()

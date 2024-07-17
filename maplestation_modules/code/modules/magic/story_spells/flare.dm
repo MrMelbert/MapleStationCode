@@ -39,7 +39,7 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_LIGHT] += FLARE_LIGHT_ATTUNEMENT
 
-	AddComponent(/datum/component/uses_mana, \
+	AddComponent(/datum/component/uses_mana/spell, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = mana_cost, \

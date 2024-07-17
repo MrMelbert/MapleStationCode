@@ -1,10 +1,6 @@
 #define WET_ATTUNEMENT_WATER 0.5
 #define WET_MANA_COST_PER_UNIT 0.4
 
-/datum/component/uses_mana/story_spell/pointed/soft_and_wet
-	var/wet_attunement_amount = 0.5
-	var/wet_cost_per_unit = 0.4
-
 /* /datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/pointed/soft_and_wet/spell = parent
 	var/turf/open/cast_turf = get_turf(cast_on)
@@ -49,7 +45,7 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[/datum/attunement/water] += WET_ATTUNEMENT_WATER
 
-	AddComponent(/datum/component/uses_mana, \
+	AddComponent(/datum/component/uses_mana/spell, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
