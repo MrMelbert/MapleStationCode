@@ -1,5 +1,5 @@
 /// List of huds we give to people wearing Wraith Specs.
-#define SPEC_HUDS list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC_ADVANCED)
+#define SPEC_HUDS list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_DIAGNOSTIC, DATA_HUD_BOT_PATH)
 
 // The Wraith Specs.
 // Glasses that give you HUDs, night vision, x-ray, and nearsighted correction.

@@ -1,26 +1,6 @@
 /obj/item/clothing/glasses/hud
 	name = "HUD"
 	desc = "A heads-up display that provides important info in (almost) real time."
-	///A list of atom hud types added to the mob when the glasses are worn on the appropriate slot.
-	var/list/hud_types
-
-	// NOTE: Just because you have a HUD display doesn't mean you should be able to interact with stuff on examine, that's where the associated trait (TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD, etc) is necessary.
-
-/obj/item/clothing/glasses/hud/equipped(mob/living/carbon/human/user, slot)
-	..()
-	if(!(slot & ITEM_SLOT_EYES))
-		return
-	for(var/hud_type in hud_types)
-		var/datum/atom_hud/our_hud = GLOB.huds[hud_type]
-		our_hud.show_to(user)
-
-/obj/item/clothing/glasses/hud/dropped(mob/living/carbon/human/user)
-	..()
-	if(!istype(user) || user.glasses != src)
-		return
-	for(var/hud_type in hud_types)
-		var/datum/atom_hud/our_hud = GLOB.huds[hud_type]
-		our_hud.hide_from(user)
 
 /obj/item/clothing/glasses/hud/emp_act(severity)
 	. = ..()
@@ -55,7 +35,6 @@
 	name = "health scanner HUD"
 	desc = "A heads-up display that scans the humanoids in view and provides accurate data about their health status."
 	icon_state = "healthhud"
-	hud_types = list(DATA_HUD_MEDICAL_ADVANCED)
 	clothing_traits = list(TRAIT_MEDICAL_HUD)
 	glass_colour_type = /datum/client_colour/glass_colour/lightblue
 
@@ -63,7 +42,6 @@
 	name = "health scanner security HUD"
 	desc = "A heads-up display that scans the humanoids in view and provides accurate data about their health status, ID status and security records."
 	icon_state = "medsechud"
-	hud_types = list(DATA_HUD_MEDICAL_ADVANCED, DATA_HUD_SECURITY_ADVANCED)
 	clothing_traits = list(TRAIT_MEDICAL_HUD, TRAIT_SECURITY_HUD)
 
 /obj/item/clothing/glasses/hud/health/night
@@ -110,7 +88,6 @@
 	name = "diagnostic HUD"
 	desc = "A heads-up display capable of analyzing the integrity and status of robotics and exosuits."
 	icon_state = "diagnostichud"
-	hud_types = list(DATA_HUD_DIAGNOSTIC_BASIC)
 	clothing_traits = list(TRAIT_DIAGNOSTIC_HUD)
 	glass_colour_type = /datum/client_colour/glass_colour/lightorange
 
@@ -147,7 +124,6 @@
 	name = "security HUD"
 	desc = "A heads-up display that scans the humanoids in view and provides accurate data about their ID status and security records."
 	icon_state = "securityhud"
-	hud_types = list(DATA_HUD_SECURITY_ADVANCED)
 	clothing_traits = list(TRAIT_SECURITY_HUD)
 	glass_colour_type = /datum/client_colour/glass_colour/red
 
@@ -231,20 +207,18 @@
 	if (wearer.glasses != src)
 		return
 
-	for(var/hud_type in hud_types)
-		var/datum/atom_hud/our_hud = GLOB.huds[hud_type]
-		our_hud.hide_from(user)
+	for(var/trait in clothing_traits)
+		REMOVE_CLOTHING_TRAIT(user, trait)
 
-	if (DATA_HUD_MEDICAL_ADVANCED in hud_types)
-		hud_types = null
-	else if (DATA_HUD_SECURITY_ADVANCED in hud_types)
-		hud_types = list(DATA_HUD_MEDICAL_ADVANCED)
+	if (TRAIT_MEDICAL_HUD in clothing_traits)
+		clothing_traits = null
+	else if (TRAIT_SECURITY_HUD in clothing_traits)
+		clothing_traits = list(TRAIT_MEDICAL_HUD)
 	else
-		hud_types = list(DATA_HUD_SECURITY_ADVANCED)
+		clothing_traits = list(TRAIT_SECURITY_HUD)
 
-	for(var/hud_type in hud_types)
-		var/datum/atom_hud/our_hud = GLOB.huds[hud_type]
-		our_hud.show_to(user)
+	for(var/trait in clothing_traits)
+		ADD_CLOTHING_TRAIT(user, trait)
 
 /datum/action/item_action/switch_hud
 	name = "Switch HUD"
@@ -253,20 +227,22 @@
 	name = "thermal HUD scanner"
 	desc = "Thermal imaging HUD in the shape of glasses."
 	icon_state = "thermal"
-	hud_types = list(DATA_HUD_SECURITY_ADVANCED)
 	vision_flags = SEE_MOBS
 	color_cutoffs = list(25, 8, 5)
 	glass_colour_type = /datum/client_colour/glass_colour/red
+	clothing_traits = list(TRAIT_SECURITY_HUD)
 
 /obj/item/clothing/glasses/hud/toggle/thermal/attack_self(mob/user)
 	..()
-	var/hud_type = hud_types[1]
+	var/hud_type
+	if (!isnull(clothing_traits) && clothing_traits.len)
+		hud_type = clothing_traits[1]
 	switch (hud_type)
-		if (DATA_HUD_MEDICAL_ADVANCED)
+		if (TRAIT_MEDICAL_HUD)
 			icon_state = "meson"
 			color_cutoffs = list(5, 15, 5)
 			change_glass_color(user, /datum/client_colour/glass_colour/green)
-		if (DATA_HUD_SECURITY_ADVANCED)
+		if (TRAIT_SECURITY_HUD)
 			icon_state = "thermal"
 			color_cutoffs = list(25, 8, 5)
 			change_glass_color(user, /datum/client_colour/glass_colour/red)
