@@ -19,8 +19,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	name = "match"
 	desc = "A simple match stick, used for lighting fine smokables."
 	icon = 'icons/obj/cigarettes.dmi'
-	lefthand_file = 'icons/mob/inhands/clothing/masks_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/clothing/masks_righthand.dmi'
 	icon_state = "match_unlit"
 	inhand_icon_state = "cigoff"
 	base_icon_state = "match"
