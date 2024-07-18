@@ -116,8 +116,8 @@
 				transfer_mana_to(iterated_pool, seconds_per_tick)
 
 		if (MANA_DISPERSE_EVENLY)
-			if(!length(transferring_to)) return
-			var/mana_to_disperse = (donation_budget_this_tick / length(transferring_to)) // LETS FUCKING GO DIVISION BY ZERO SPAM HERE
+			if(!length(transferring_to)) return // so the lower part never divides by zero
+			var/mana_to_disperse = (donation_budget_this_tick / length(transferring_to)) // this should never divide by zero but it does. A lot. Why?
 
 			for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
 				if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)

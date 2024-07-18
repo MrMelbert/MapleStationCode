@@ -15,8 +15,8 @@
 
 /atom/movable/Destroy(force, ...)
 
+	QDEL_NULL(mana_pool) // why was this before set_mana_pool. it should never ever be
 	set_mana_pool(null)
-	QDEL_NULL(mana_pool)
 
 	return ..()
 
