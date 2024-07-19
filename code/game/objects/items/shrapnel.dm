@@ -1,11 +1,13 @@
 /obj/item/shrapnel // frag grenades
 	name = "shrapnel shard"
+	desc = "A piece of metal. Very sharp."
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5)
 	weak_against_armour = TRUE
 	icon = 'icons/obj/weapons/guns/ammo.dmi'
 	icon_state = "s-casing" // melbert todo : unique sprite
 	w_class = WEIGHT_CLASS_TINY
 	sharpness = SHARP_EDGED
+	color = COLOR_WEBSAFE_DARK_GRAY
 
 /obj/item/shrapnel/Initialize(mapload)
 	. = ..()
@@ -13,12 +15,15 @@
 
 /obj/item/shrapnel/stingball // stingbang grenades
 	name = "stingball"
+	desc = "A small, but deceptively painful, metal pellet."
 	icon_state = "tiny"
 	sharpness = NONE
 
 /obj/item/shrapnel/bullet // bullets
-	name = "bullet"
+	name = "bullet shrapnel"
+	desc = "The remains of a bullet."
 	embed_type = null // embedding vars are taken from the projectile itself
+	color = null
 
 /obj/projectile/bullet/shrapnel
 	name = "flying shrapnel shard"

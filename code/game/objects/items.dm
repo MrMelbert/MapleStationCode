@@ -1197,10 +1197,7 @@
 
 ///Does the current embedding var meet the criteria for being harmless? Namely, does it have a pain multiplier and jostle pain mult of 0? If so, return true.
 /obj/item/proc/is_embed_harmless()
-	if (!get_embed())
-		return FALSE
-
-	return !isnull(embed_data.pain_mult) && !isnull(embed_data.jostle_pain_mult) && embed_data.pain_mult == 0 && embed_data.jostle_pain_mult == 0
+	return get_embed() ? (embed_data.pain_mult == 0 && embed_data.jostle_pain_mult == 0) : FALSE
 
 ///In case we want to do something special (like self delete) upon failing to embed in something.
 /obj/item/proc/failedEmbed()
@@ -1230,14 +1227,14 @@
  * * target- Either a body part or a carbon. What are we hitting?
  * * forced- Do we want this to go through 100%?
  */
-/obj/item/proc/tryEmbed(atom/target, forced=FALSE)
+/obj/item/proc/tryEmbed(atom/target, zone, forced = FALSE)
 	if(!isbodypart(target) && !iscarbon(target))
 		return NONE
 
 	if(!forced && !get_embed())
 		return NONE
 
-	if(SEND_SIGNAL(src, COMSIG_EMBED_TRY_FORCE, target = target, forced = forced))
+	if(SEND_SIGNAL(src, COMSIG_EMBED_TRY_FORCE, target, zone, forced))
 		return COMPONENT_EMBED_SUCCESS
 
 	failedEmbed()
@@ -1659,7 +1656,7 @@
 /// Fetches embedding data
 /obj/item/proc/get_embed()
 	RETURN_TYPE(/datum/embed_data)
-	return embed_type ? (embed_data ||= get_embed_by_type(embed_type)) : null
+	return embed_type ? (embed_data ||= get_embed_by_type(embed_type)) : embed_data
 
 /obj/item/proc/set_embed(datum/embed_data/embed)
 	if(embed_data == embed)

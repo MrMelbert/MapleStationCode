@@ -56,7 +56,7 @@
 	for(var/obj/machinery/computer/puter in range(2, target))
 		if(istype(puter, /obj/machinery/computer/operating))
 			var/obj/machinery/computer/operating/op_comp = puter
-			if(op_comp.patient == target)
+			if(op_comp.table?.patient == target)
 				return TRUE
 		if(istype(puter, /obj/machinery/computer/vitals_reader))
 			var/obj/machinery/computer/vitals_reader/vr_comp = puter

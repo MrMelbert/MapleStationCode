@@ -134,12 +134,18 @@
 	singular_name = "surgical tape"
 	desc = "Made for patching broken bones back together alongside bone gel, not for playing pranks."
 	prefix = "surgical"
-	conferred_embed = list("embed_chance" = 30, "pain_mult" = 0, "jostle_pain_mult" = 0, "ignore_throwspeed_threshold" = TRUE)
+	conferred_embed = /datum/embed_data/surgical_tape
 	splint_factor = 0.5
 	custom_price = PAYCHECK_CREW
 	merge_type = /obj/item/stack/sticky_tape/surgical
 	greyscale_colors = "#70BAE7#BD6A62"
 	tape_gag = /obj/item/clothing/mask/muzzle/tape/surgical
+
+/datum/embed_data/surgical_tape
+	embed_chance = 30
+	ignore_throwspeed_threshold = TRUE
+	pain_mult = 0
+	jostle_pain_mult = 0
 
 /obj/item/stack/sticky_tape/surgical/get_surgery_tool_overlay(tray_extended)
 	return "tape" + (tray_extended ? "" : "_out")

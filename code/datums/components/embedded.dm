@@ -29,6 +29,8 @@
 	var/obj/item/weapon
 	///if both our pain multiplier and jostle pain multiplier are 0, we're harmless and can omit most of the damage related stuff
 	var/harmful
+	/// MELBERT TODO refactor this later
+	var/fall_chance_mod = 0
 
 /datum/component/embedded/Initialize(
 	obj/item/weapon,
@@ -40,12 +42,8 @@
 		return COMPONENT_INCOMPATIBLE
 
 	src.weapon = weapon
-
-	if(part)
-		limb = part
-
-	if(!weapon.is_embed_harmless())
-		harmful = TRUE
+	src.limb = part
+	src.harmful = !weapon.is_embed_harmless()
 
 	weapon.embedded(parent, part)
 	START_PROCESSING(SSdcs, src)
@@ -54,12 +52,11 @@
 	limb._embed_object(weapon) // on the inside... on the inside...
 	weapon.forceMove(victim)
 	RegisterSignals(weapon, list(COMSIG_MOVABLE_MOVED, COMSIG_QDELETING), PROC_REF(weaponDeleted))
-	victim.visible_message(span_danger("[weapon] [harmful ? "embeds" : "sticks"] itself [harmful ? "in" : "to"] [victim]'s [limb.plaintext_zone]!"), span_userdanger("[weapon] [harmful ? "embeds" : "sticks"] itself [harmful ? "in" : "to"] your [limb.plaintext_zone]!"))
+	embed_data.on_embed(victim, part, weapon, harmful)
 
 	var/damage = weapon.throwforce
 	if(harmful)
 		victim.throw_alert(ALERT_EMBEDDED_OBJECT, /atom/movable/screen/alert/embeddedobject)
-		playsound(victim,'sound/weapons/bladeslice.ogg', 40)
 		if (limb.can_bleed())
 			weapon.add_mob_blood(victim)//it embedded itself in you, of course it's bloody!
 		damage += weapon.w_class * embed_data.impact_pain_mult
@@ -94,7 +91,7 @@
 /datum/component/embedded/process(seconds_per_tick)
 	var/mob/living/carbon/victim = parent
 
-	if(!victim || !limb) // in case the victim and/or their limbs exploded (say, due to a sticky bomb)
+	if(QDELETED(victim) || QDELETED(limb)) // in case the victim and/or their limbs exploded (say, due to a sticky bomb)
 		weapon.forceMove(get_turf(weapon))
 		qdel(src)
 		return
@@ -114,11 +111,11 @@
 			victim.apply_damage(embed_data.pain_stam_pct * damage, STAMINA, limb)
 			to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] hurts!"))
 
-	var/fall_chance_current = fall_chance
+	var/fall_chance_current = embed_data.fall_chance + fall_chance_mod
 	if(victim.body_position == LYING_DOWN)
 		fall_chance_current *= 0.2
 
-	if(SPT_PROB(fall_chance, seconds_per_tick))
+	if(SPT_PROB(fall_chance_current, seconds_per_tick))
 		fallOut()
 
 ////////////////////////////////////////
@@ -133,8 +130,10 @@
 	var/mob/living/carbon/victim = parent
 	var/datum/embed_data/embed_data = weapon.get_embed()
 	var/chance = harmful ? embed_data.jostle_chance : 0
-	if(victim.move_intent == MOVE_INTENT_WALK || victim.body_position == LYING_DOWN)
+	if(victim.move_intent == MOVE_INTENT_SNEAK || victim.body_position == LYING_DOWN)
 		chance *= 0.5
+	else if(victim.move_intent == MOVE_INTENT_RUN)
+		chance *= 1.5
 
 	if(prob(chance))
 		var/damage = weapon.w_class * embed_data.jostle_pain_mult

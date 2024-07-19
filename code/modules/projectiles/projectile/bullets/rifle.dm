@@ -94,15 +94,12 @@
 	bare_wound_bonus = 10
 	bare_wound_bonus = 20
 	embed_falloff_tile = -3
-	embed_type = /datum/embed_data/rebar_syndie
+	embed_type = /datum/embed_data/rebar/syndie
 	shrapnel_type = /obj/item/ammo_casing/rebar/syndie
 
-/datum/embed_data/rebar_syndie
+/datum/embed_data/rebar/syndie
 	embed_chance = 80
 	fall_chance = 0.0006
 	jostle_chance = 3
-	ignore_throwspeed_threshold = TRUE
-	pain_stam_pct = 0.4
 	pain_mult = 3
-	jostle_pain_mult = 2
 	rip_time = 6 SECONDS

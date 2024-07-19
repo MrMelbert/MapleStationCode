@@ -65,7 +65,7 @@
 	sharpness = SHARP_EDGED
 	wound_bonus = 20
 	bare_wound_bonus = 20
-	embed_type = /datum/embed_data/bullet_c38_dumdum
+	embed_type = /datum/embed_data/bullet/c38/dumdum
 	wound_falloff_tile = -5
 	embed_falloff_tile = -15
 
@@ -73,11 +73,8 @@
 	embed_chance = 75
 	fall_chance = 0.0030
 	jostle_chance = 4
-	ignore_throwspeed_threshold = TRUE
-	pain_stam_pct = 0.4
 	pain_mult = 5
 	jostle_pain_mult = 6
-	rip_time = 3 SECONDS
 
 /obj/projectile/bullet/c38/trac
 	name = ".38 TRAC bullet"

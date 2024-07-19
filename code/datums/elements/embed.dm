@@ -106,14 +106,12 @@
 		return // we don't care
 	var/payload_type = source.shrapnel_type
 	var/obj/item/payload = new payload_type(get_turf(hit))
+	payload.set_embed(source.get_embed())
 	if(istype(payload, /obj/item/shrapnel/bullet))
-		payload.name = source.name
+		payload.name = "[source.name] shrapnel"
 	SEND_SIGNAL(source, COMSIG_PROJECTILE_ON_SPAWN_EMBEDDED, payload)
-	var/mob/living/carbon/C = hit
-	var/obj/item/bodypart/limb = C.get_bodypart(hit_zone)
-	if(!limb)
-		limb = C.get_bodypart()
-
+	var/mob/living/carbon/sticking = hit
+	var/obj/item/bodypart/limb = sticking.get_bodypart(hit_zone) || sticking.get_bodypart()
 	if(!try_force_embed(payload, limb))
 		payload.failedEmbed()
 	Detach(source)
