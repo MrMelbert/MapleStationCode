@@ -17,6 +17,7 @@
 	homemade_treat_text = "Taking a <b>blood clotting pill</b> may help slow the bleeding, \
 		or an <b>iron supplement</b> to help your body recover."
 	processes = TRUE
+	wound_flags = NONE
 	/// How much blood lost per life tick, gets modified by severity.
 	var/bleed_amount = 0.25
 	/// Cooldown between when the wound can be allowed to worsen
