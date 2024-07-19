@@ -1,12 +1,15 @@
 /obj/item/shrapnel // frag grenades
 	name = "shrapnel shard"
-	custom_materials = list(/datum/material/iron= SMALL_MATERIAL_AMOUNT * 0.5)
+	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5)
 	weak_against_armour = TRUE
-	icon = 'icons/obj/debris.dmi'
-	icon_state = "large"
+	icon = 'icons/obj/weapons/guns/ammo.dmi'
+	icon_state = "s-casing" // melbert todo : unique sprite
 	w_class = WEIGHT_CLASS_TINY
-	item_flags = DROPDEL
 	sharpness = SHARP_EDGED
+
+/obj/item/shrapnel/Initialize(mapload)
+	. = ..()
+	setDir(pick(GLOB.alldirs))
 
 /obj/item/shrapnel/stingball // stingbang grenades
 	name = "stingball"
@@ -15,10 +18,7 @@
 
 /obj/item/shrapnel/bullet // bullets
 	name = "bullet"
-	icon = 'icons/obj/weapons/guns/ammo.dmi'
-	icon_state = "s-casing"
 	embedding = null // embedding vars are taken from the projectile itself
-
 
 /obj/projectile/bullet/shrapnel
 	name = "flying shrapnel shard"

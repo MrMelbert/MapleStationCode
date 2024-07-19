@@ -283,24 +283,24 @@
 	var/tweezer_safe = (possible_tweezers.tool_behaviour == TOOL_HEMOSTAT)
 	var/pluck_time = rip_time * (weapon.w_class * 0.3) * (self_pluck ? 1.5 : 1) * tweezer_speed * (tweezer_safe ? 1 : 1.5)
 
-	if(self_pluck)
-		user.visible_message(span_danger("[user] begins plucking [weapon] from [user.p_their()] [limb.plaintext_zone] with [possible_tweezers]..."), span_notice("You start plucking [weapon] from your [limb.plaintext_zone] with [possible_tweezers]... (It will take [DisplayTimeText(pluck_time)].)"),\
-			vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=victim)
-	else
-		user.visible_message(span_danger("[user] begins plucking [weapon] from [victim]'s [limb.plaintext_zone] with [possible_tweezers]..."),span_notice("You start plucking [weapon] from [victim]'s [limb.plaintext_zone] with [possible_tweezers]... (It will take [DisplayTimeText(pluck_time)]."), \
-			vision_distance=COMBAT_MESSAGE_RANGE, ignored_mobs=victim)
-		to_chat(victim, span_userdanger("[user] begins plucking [weapon] from your [limb.plaintext_zone] with [possible_tweezers]... (It will take [DisplayTimeText(pluck_time)]."))
+	user.visible_message(
+		span_danger("[user] begins plucking [weapon] from [user == victim ? user.p_their() : "[victim]'s"] [limb.plaintext_zone] with [possible_tweezers]..."),
+		span_notice("You start plucking [weapon] from [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone] with [possible_tweezers]... (It will take [DisplayTimeText(pluck_time)].)"),
+		vision_distance = COMBAT_MESSAGE_RANGE
+	)
 
+	playsound(user, 'sound/surgery/hemostat1.ogg', 50, TRUE, falloff_exponent = 12, falloff_distance = 1)
 	if(!do_after(user, pluck_time, victim))
-		if(self_pluck)
-			to_chat(user, span_danger("You fail to pluck [weapon] from your [limb.plaintext_zone]."))
-		else
-			to_chat(user, span_danger("You fail to pluck [weapon] from [victim]'s [limb.plaintext_zone]."))
-			to_chat(victim, span_danger("[user] fails to pluck [weapon] from your [limb.plaintext_zone]."))
+		return
+	if(QDELETED(src))
 		return
 
-	to_chat(user, span_notice("You successfully pluck [weapon] from [victim]'s [limb.plaintext_zone][tweezer_safe ? "." : ", but hurt [victim.p_them()] in the process."]"))
-	to_chat(victim, span_notice("[user] plucks [weapon] from your [limb.plaintext_zone][tweezer_safe ? "." : ", but it's not perfect."]"))
+	user.visible_message(
+		span_danger("[user] plucks [weapon] from [victim]'s [limb.plaintext_zone][tweezer_safe ? "." : ", but hurt [victim.p_them()] in the process."]"),
+		span_notice("You pluck [weapon] from [victim]'s [limb.plaintext_zone][tweezer_safe ? "." : ", but it's not perfect."]"),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)
+
 	if(!tweezer_safe)
 		// sure it still hurts but it sucks less
 		damaging_removal(victim, weapon, limb, (0.4 * possible_tweezers.w_class))
@@ -323,7 +323,7 @@
 	victim.apply_damage((1 - pain_stam_pct) * damage * 1.5, BRUTE, limb, sharpness = SHARP_EDGED) // Performs exit wounds and flings the user to the caster if nearby
 	victim.apply_damage(pain_stam_pct * damage, STAMINA, limb)
 
-	playsound(get_turf(victim), 'sound/effects/wounds/blood2.ogg', 50, TRUE)
+	playsound(victim, 'sound/effects/wounds/blood2.ogg', 50, TRUE)
 
 	var/dist = get_dist(caster, victim) //Check if the caster is close enough to yank them in
 	if(dist < 7)
