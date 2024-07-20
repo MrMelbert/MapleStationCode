@@ -332,7 +332,7 @@
 
 /obj/item/circuitboard/machine/scanner_gate
 	name = "Scanner Gate"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+	greyscale_colors = CIRCUIT_COLOR_SECURITY
 	build_path = /obj/machinery/scanner_gate
 	req_components = list(
 		/datum/stock_part/scanning_module = 3)
@@ -353,7 +353,7 @@
 	build_path = /obj/machinery/rnd/production/techfab/department/engineering
 
 /obj/item/circuitboard/machine/smes/super
-	def_components = list(/obj/item/stock_parts/power_store/battery = /obj/item/stock_parts/power_store/battery/super/empty)
+	def_components = list(/obj/item/stock_parts/cell = /obj/item/stock_parts/cell/super/empty)
 
 /obj/item/circuitboard/machine/thermomachine
 	name = "Thermomachine"

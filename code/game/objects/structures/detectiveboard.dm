@@ -259,7 +259,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 /obj/item/wallframe/detectiveboard
 	name = "detective notice board"
 	desc = "A board for linking evidence to crimes."
-	icon = 'icons/obj/structures/wallmounts.dmi'
+	icon = 'icons/obj/wallmounts.dmi'
 	icon_state = "noticeboard"
 	custom_materials = list(
 		/datum/material/wood = SHEET_MATERIAL_AMOUNT,
