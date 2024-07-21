@@ -138,6 +138,10 @@
 	icon_state = "wood_large"
 	},
 /area/virtual_domain/fullbright)
+"gA" = (
+/obj/effect/baseturf_helper/virtual_domain,
+/turf/closed/indestructible/binary,
+/area/virtual_domain/protected_space/fullbright)
 "gB" = (
 /obj/effect/turf_decal/weather/sand{
 	dir = 9
@@ -584,6 +588,13 @@
 /obj/structure/flora/rock/pile/style_3,
 /turf/open/misc/dirt/jungle,
 /area/virtual_domain/protected_space)
+"Gx" = (
+/obj/effect/light_emitter{
+	set_cap = 3;
+	set_luminosity = 5
+	},
+/turf/open/misc/beach/coast,
+/area/virtual_domain/fullbright)
 "Gy" = (
 /obj/structure/flora/rock/style_2,
 /turf/open/water/beach,
@@ -599,6 +610,9 @@
 	},
 /turf/open/floor/carpet/blue,
 /area/virtual_domain)
+"HU" = (
+/turf/closed/mineral/random/jungle,
+/area/virtual_domain/protected_space)
 "Iv" = (
 /obj/structure/flora/rock/style_3,
 /turf/open/water/beach,
@@ -736,6 +750,7 @@
 /area/virtual_domain)
 "Oz" = (
 /obj/structure/flora/rock/pile/jungle/style_2,
+/obj/effect/baseturf_helper/virtual_domain,
 /turf/open/misc/dirt/jungle,
 /area/virtual_domain/protected_space)
 "OD" = (
@@ -755,6 +770,10 @@
 /turf/open/floor/wood{
 	icon_state = "wood_large"
 	},
+/area/virtual_domain/fullbright)
+"Qt" = (
+/obj/item/flashlight/flare/torch,
+/turf/open/misc/beach/sand,
 /area/virtual_domain/fullbright)
 "QF" = (
 /obj/effect/turf_decal/weather/dirt,
@@ -885,6 +904,13 @@
 	},
 /turf/open/floor/wood,
 /area/virtual_domain/protected_space/fullbright)
+"Uy" = (
+/obj/effect/light_emitter{
+	set_cap = 3;
+	set_luminosity = 5
+	},
+/turf/open/water/beach,
+/area/virtual_domain/fullbright)
 "Vx" = (
 /obj/structure/flora/rock/style_4,
 /turf/open/water/beach,
@@ -925,9 +951,6 @@
 /obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
 /area/virtual_domain/protected_space/fullbright)
-"WW" = (
-/turf/template_noop,
-/area/virtual_domain/fullbright)
 "Xn" = (
 /obj/modular_map_root/safehouse{
 	key = "wood"
@@ -1248,7 +1271,7 @@ DM
 DM
 hb
 hb
-hb
+fR
 py
 py
 py
@@ -1478,13 +1501,13 @@ nQ
 bI
 VE
 py
-hb
-hb
-hb
-hb
-hb
-hb
-fR
+py
+py
+py
+py
+py
+py
+gA
 "}
 (12,1,1) = {"
 xg
@@ -1528,7 +1551,7 @@ ub
 ub
 ub
 Xn
-hb
+py
 "}
 (13,1,1) = {"
 hb
@@ -1572,7 +1595,7 @@ ub
 ub
 ub
 ub
-hb
+py
 "}
 (14,1,1) = {"
 hb
@@ -1616,7 +1639,7 @@ ub
 ub
 ub
 ub
-hb
+py
 "}
 (15,1,1) = {"
 hb
@@ -1660,7 +1683,7 @@ ub
 ub
 ub
 ub
-hb
+py
 "}
 (16,1,1) = {"
 hb
@@ -1704,7 +1727,7 @@ ub
 ub
 ub
 ub
-hb
+py
 "}
 (17,1,1) = {"
 hb
@@ -1748,7 +1771,7 @@ ub
 ub
 ub
 ub
-hb
+py
 "}
 (18,1,1) = {"
 hb
@@ -1792,7 +1815,7 @@ ub
 ub
 ub
 zR
-hb
+py
 "}
 (19,1,1) = {"
 hb
@@ -1830,13 +1853,13 @@ au
 nQ
 fw
 au
-xp
-xp
-xp
-xp
-xp
-hb
-hb
+au
+au
+au
+au
+au
+py
+py
 "}
 (20,1,1) = {"
 hb
@@ -1874,12 +1897,12 @@ au
 Uw
 cr
 vR
-xp
-xp
-xp
-xp
-xp
-hb
+au
+au
+au
+au
+au
+py
 xg
 "}
 (21,1,1) = {"
@@ -1918,12 +1941,12 @@ af
 nQ
 LK
 fw
-xp
-xp
-xp
-xp
-xp
-hb
+au
+au
+au
+au
+au
+py
 xg
 "}
 (22,1,1) = {"
@@ -1962,12 +1985,12 @@ au
 oM
 VE
 eO
-xp
-xp
-xp
-xp
-xp
-hb
+au
+au
+au
+au
+au
+py
 xg
 "}
 (23,1,1) = {"
@@ -2006,12 +2029,12 @@ au
 au
 au
 au
-xp
-xp
-xp
-DM
-DM
-hb
+au
+au
+au
+Li
+Li
+py
 xg
 "}
 (24,1,1) = {"
@@ -2050,12 +2073,12 @@ au
 au
 au
 au
-xp
-xp
-xp
-DM
-DM
-hb
+au
+au
+au
+Li
+Li
+py
 xg
 "}
 (25,1,1) = {"
@@ -2075,9 +2098,9 @@ eS
 eS
 nr
 eS
-eS
-SK
-xp
+Qt
+Gx
+Uy
 xp
 xp
 xp
@@ -2094,12 +2117,12 @@ au
 au
 au
 au
-xp
-xp
-DM
-DM
-DM
-hb
+au
+au
+Li
+Li
+Li
+py
 xg
 "}
 (26,1,1) = {"
@@ -2118,12 +2141,12 @@ DM
 DM
 DM
 DM
-DM
-DM
+HU
+HU
 eP
 sb
-DM
-DM
+HU
+HU
 hb
 hb
 xp
@@ -2138,12 +2161,12 @@ au
 au
 au
 au
-hb
-DM
-DM
-DM
-DM
-hb
+py
+Li
+Li
+Li
+Li
+py
 xg
 "}
 (27,1,1) = {"
@@ -2151,7 +2174,7 @@ xg
 xg
 xg
 xg
-WW
+xg
 hb
 DM
 DM
@@ -2163,10 +2186,10 @@ DM
 DM
 DM
 DM
-DM
+HU
 fd
 OW
-DM
+HU
 DM
 DM
 hb
@@ -2182,12 +2205,12 @@ au
 au
 au
 py
-hb
-DM
-DM
-DM
-hb
-hb
+py
+Li
+Li
+Li
+py
+py
 xg
 "}
 (28,1,1) = {"
@@ -2207,11 +2230,11 @@ DM
 DM
 DM
 DM
-DM
+HU
 KV
 OW
-DM
-DM
+HU
+HU
 DM
 DM
 hb
@@ -2226,11 +2249,11 @@ au
 au
 py
 py
-hb
-hb
-hb
-hb
-hb
+py
+py
+py
+py
+py
 xg
 xg
 "}
@@ -2251,13 +2274,13 @@ DM
 DM
 DM
 DM
-DM
+HU
 qk
 IW
 sb
-DM
-DM
-DM
+HU
+HU
+HU
 DM
 DM
 DM
@@ -2295,16 +2318,16 @@ DM
 DM
 DM
 DM
-DM
+HU
 Gl
 qk
 IW
 hn
 sb
-DM
-DM
-DM
-DM
+HU
+HU
+HU
+HU
 DM
 hb
 hb
@@ -2339,8 +2362,8 @@ hb
 DM
 DM
 DM
-DM
-DM
+HU
+HU
 qk
 qk
 Oi
@@ -2348,8 +2371,8 @@ OW
 sb
 be
 Oz
-DM
-DM
+HU
+HU
 DM
 hb
 hb
@@ -2384,8 +2407,8 @@ hb
 DM
 DM
 DM
-DM
-DM
+HU
+HU
 qk
 CL
 IW
@@ -2393,8 +2416,8 @@ sb
 QG
 qk
 rm
-DM
-DM
+HU
+HU
 DM
 hb
 xg
@@ -2429,7 +2452,7 @@ hb
 DM
 DM
 DM
-DM
+HU
 oB
 qk
 wu
@@ -2438,7 +2461,7 @@ QF
 BX
 qk
 rm
-DM
+HU
 DM
 hb
 xg
@@ -2473,8 +2496,8 @@ hb
 hb
 DM
 DM
-DM
-DM
+HU
+HU
 qk
 qk
 NU
@@ -2482,7 +2505,7 @@ db
 hq
 zc
 ID
-DM
+HU
 DM
 hb
 xg
@@ -2518,15 +2541,15 @@ hb
 hb
 hb
 DM
-DM
-DM
-DM
-DM
-DM
-DM
-DM
-DM
-DM
+HU
+HU
+HU
+HU
+HU
+HU
+HU
+HU
+HU
 DM
 hb
 xg
