@@ -25,7 +25,7 @@
 	embed_falloff_tile = 4
 
 /datum/embed_data/bullet/c38
-	embed_chance = 25
+	embed_chance = 40
 	fall_chance = 0.0020
 	jostle_chance = 2
 	pain_stam_pct = 0.4
@@ -70,7 +70,7 @@
 	embed_falloff_tile = -15
 
 /datum/embed_data/bullet/c38/dumdum
-	embed_chance = 75
+	embed_chance = 80
 	fall_chance = 0.0030
 	jostle_chance = 4
 	pain_mult = 5

@@ -6,7 +6,7 @@
 	embed_type = /datum/embed_data/bullet/c9mm
 
 /datum/embed_data/bullet/c9mm
-	embed_chance = 15
+	embed_chance = 25
 	fall_chance = 0.0030
 	jostle_chance = 4
 	pain_stam_pct = 0.4

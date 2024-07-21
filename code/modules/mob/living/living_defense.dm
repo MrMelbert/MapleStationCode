@@ -92,19 +92,6 @@
 	return null
 
 /mob/living/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
-	// Randomize the zone that it actually hits based on how far we are
-	// Future todo : make certain people better or worse at hitting what they're aiming for
-	if(def_zone)
-		var/hit_prob = max(5, 100 * (hitting_projectile.range / (hitting_projectile.decayedRange || 1)))
-		if(!prob(hit_prob))
-			// Force reroll into a random zone, and make it so we can't embed as good
-			def_zone = get_random_valid_zone(def_zone, 0)
-			hitting_projectile.def_zone = def_zone
-			var/datum/embed_data/data = hitting_projectile.get_embed()
-			if(data?.embed_chance >= 10)
-				hitting_projectile.set_embed(data.generate_with_values(embed_chance = data.embed_chance * 0.5))
-		// Future todo : add grazing hits onto this
-
 	. = ..()
 	if(. != BULLET_ACT_HIT)
 		return .
@@ -152,13 +139,16 @@
 	return BULLET_ACT_HIT
 
 /mob/living/check_projectile_armor(def_zone, obj/projectile/impacting_projectile, is_silent)
-	return run_armor_check(
+	. = run_armor_check(
 		def_zone = def_zone,
 		attack_flag = impacting_projectile.armor_flag,
 		armour_penetration = impacting_projectile.armour_penetration,
 		silent = is_silent,
 		weak_against_armour = impacting_projectile.weak_against_armour,
 	)
+	if(impacting_projectile.grazing)
+		. += 50
+	return .
 
 /mob/living/proc/check_projectile_dismemberment(obj/projectile/P, def_zone)
 	return 0
