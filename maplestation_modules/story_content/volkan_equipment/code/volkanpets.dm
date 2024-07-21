@@ -1,37 +1,44 @@
-/**
+/*
  * # Volkan's companion.
  * A cool pet for volkan! Basically a better poly. Quiet, efficient, and will sit on his shoulder all the time.
  */
+//HOLY MOLY WHAT DID I GET MYSELF INTO??
 /mob/living/basic/volkan/shoulder_pet
 	name = "Companion"
 	desc = "An intricate, flying robot. It looks at you inquisitively."
 
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/companions.dmi'
+	held_rh = 'maplestation_modules/story_content/volkan_equipment/icons/companions_inhand_rh.dmi'
+	held_lh = 'maplestation_modules/story_content/volkan_equipment/icons/companions_inhand_lh.dmi'
 	icon_state = "drone_fly"
 	icon_living = "drone_fly"
 	icon_dead = "drone_dead"
+	held_state = "shoulder_pet"
 	bubble_icon = "machine"
 
-	minimum_survivable_temperature = 0
-	melee_damage_upper = 10
-	melee_damage_lower = 5
-
+	has_unlimited_silicon_privilege = TRUE
+	sentience_type = SENTIENCE_ARTIFICIAL
+	mob_biotypes = MOB_ROBOTIC
+	speech_span = SPAN_ROBOT
+	gender = NEUTER
+	density = FALSE
 	health = 80
 	maxHealth = 80
+	pass_flags = PASSTABLE | PASSMOB
+	mob_size = MOB_SIZE_SMALL
+	can_be_held = TRUE
+	held_w_class = WEIGHT_CLASS_SMALL
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
 
-	density = FALSE
-	pass_flags = PASSTABLE | PASSMOB | PASSFLAPS
-	mob_size = MOB_SIZE_SMALL
-	mob_biotypes = MOB_ROBOTIC
-	gender = NEUTER
-	has_unlimited_silicon_privilege = TRUE
-	sentience_type = SENTIENCE_ARTIFICIAL
-	speech_span = SPAN_ROBOT
+	melee_damage_upper = 5
+	melee_damage_lower = 1
 
 	response_help_continuous = "pets"
 	response_help_simple = "pet"
+	attack_verb_continuous = "slams into"
+	attack_verb_simple = "slam into"
+	attack_sound = 'sound/weapons/etherealhit.ogg'
 
 	ai_controller = /datum/ai_controller/basic_controller/volkan/shoulder_pet
 
@@ -52,7 +59,7 @@
 		/datum/pet_command/idle,
 		/datum/pet_command/free,
 		/datum/pet_command/perch,
-		/datum/pet_command/follow/volkan/shoulder_pet,
+		/datum/pet_command/follow,
 		/datum/pet_command/point_targeting/fetch,
 	)
 
