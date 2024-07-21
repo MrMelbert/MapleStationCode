@@ -34,6 +34,7 @@
 	implements = list(
 		TOOL_HEMOSTAT = 100,
 		TOOL_SCREWDRIVER = 65,
+		TOOL_WIRECUTTER = 65, // melbert todo : more pain from bad tools, but reduce the speed penalty
 		/obj/item/pen = 55)
 	repeatable = TRUE
 	time = 25

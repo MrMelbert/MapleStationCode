@@ -52,7 +52,7 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	pain_stam_pct,
 	force_new = FALSE,
 )
-	var/datum/embed_data/data = isnull(GLOB.embed_by_type[type]) && force_new ? new() : src
+	var/datum/embed_data/data = isnull(GLOB.embed_by_type[type]) && !force_new ? new() : src
 
 	data.embed_chance = !isnull(embed_chance) ? embed_chance : src.embed_chance
 	data.fall_chance = !isnull(fall_chance) ? fall_chance : src.fall_chance
