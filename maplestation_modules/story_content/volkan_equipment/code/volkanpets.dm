@@ -83,6 +83,12 @@
  * TODO: When it dies, all the stuff it picks up falls out
  */
 
+//lines it can say
+#define VROOMBA_LAUGH "Ahhahah hehe!"
+#define VROOMBA_ACCEPT "AFFIRM ATIVE"
+#define VROOMBA_DECLINE "NEG ATIVE"
+#define VROOMBA_STOP "Stooop!"
+
 /mob/living/basic/bot/cleanbot/vroomba
 	name = "\improper Strange Roomba"
 	desc = "A little cleaning robot, So circular! It looks like it is out of plasteel."
@@ -116,6 +122,14 @@
 	var/flying_icon = "vroomba_float"
 	//speed it goes in combat mode. lower is faster.
 	var/combat_speed = 0.5
+
+	//chosens ounds the Vroomba can make
+	var/static/list/announcements = list(
+		VROOMBA_LAUGH = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_laugh.wav',
+		VROOMBA_ACCEPT = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_accept.wav',
+		VROOMBA_DECLINE = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_decline.wav',
+		VROOMBA_STOP = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_stop.wav'
+	)
 
 /mob/living/basic/bot/cleanbot/vroomba/Initialize(mapload)
 	. = ..()
@@ -179,6 +193,11 @@
 		return
 	Stun(10)
 	to_chat(src, span_danger("WARN: EMP DETECTED."))
+
+/mob/living/basic/bot/cleanbot/vroomba/generate_speak_list()
+	var/static/list/finalized_speak_list = (announcements)
+	return finalized_speak_list
+
 
 ///The vroomba's hud!
 /datum/hud/vroomba/New(mob/owner)
