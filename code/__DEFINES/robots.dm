@@ -172,17 +172,17 @@ DEFINE_BITFIELD(bot_access_flags, list(
 /// Medibots - Healing people
 #define BOT_HEALING "Healing"
 /// MULEbot - Moving to deliver
-#define BOT_DELIVER "Navigating to Delivery Location"
+#define BOT_DELIVER "Delivering"
 /// MULEbot - Returning to home
-#define BOT_GO_HOME "Proceeding to work site"
+#define BOT_GO_HOME "Returning"
 /// MULEbot - Blocked
-#define BOT_BLOCKED "No Route"
+#define BOT_BLOCKED "Blocked"
 /// MULEbot - Computing navigation
-#define BOT_NAV "Unable to reach destination"
+#define BOT_NAV "Unreachable"
 /// MULEbot - Waiting for nav computation
-#define BOT_WAIT_FOR_NAV "Calculating navigation path"
+#define BOT_WAIT_FOR_NAV "Calculating"
 /// MULEbot - No destination beacon found (or no route)
-#define BOT_NO_ROUTE "Navigating to Home"
+#define BOT_NO_ROUTE "Returning Home"
 
 //Secbot and ED209 judgement criteria bitflag values
 #define JUDGE_EMAGGED (1<<0)
@@ -233,6 +233,19 @@ DEFINE_BITFIELD(medical_mode_flags, list(
 	"MEDBOT_STATIONARY_MODE" = MEDBOT_STATIONARY_MODE,
 	"MEDBOT_SPEAK_MODE" = MEDBOT_SPEAK_MODE,
 	"MEDBOT_TIPPED_MODE" = MEDBOT_TIPPED_MODE,
+))
+
+///auto return to home after delivery
+#define MULEBOT_RETURN_MODE (1<<0)
+///autopickups at beacons
+#define MULEBOT_AUTO_PICKUP_MODE (1<<1)
+///announce every delivery we make
+#define MULEBOT_REPORT_DELIVERY_MODE (1<<2)
+
+DEFINE_BITFIELD(mulebot_delivery_flags, list(
+	"MULEBOT_RETURN_MODE" = MULEBOT_RETURN_MODE,
+	"MULEBOT_AUTO_PICKUP_MODE" = MULEBOT_AUTO_PICKUP_MODE,
+	"MULEBOT_REPORT_DELIVERY_MODE" = MULEBOT_REPORT_DELIVERY_MODE,
 ))
 
 //cleanBOT defines on what to clean
