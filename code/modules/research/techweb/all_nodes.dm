@@ -484,6 +484,7 @@
 	prereq_ids = list("biotech")
 	design_ids = list(
 		"deepfryer",
+		"dehydrator",
 		"dish_drive",
 		"fat_sucker",
 		"gibber",

@@ -50967,7 +50967,7 @@
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/qm)
 "rxg" = (
-/obj/machinery/deepfryer,
+/obj/machinery/smartfridge/drying,
 /turf/open/floor/iron/white/side{
 	dir = 8
 	},

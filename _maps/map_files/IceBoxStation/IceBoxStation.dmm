@@ -6260,11 +6260,10 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/medical/virology)
 "bPL" = (
-/obj/structure/window/reinforced/spawner/directional/east,
 /obj/effect/turf_decal/siding/white{
 	dir = 1
 	},
-/obj/item/kirbyplants/organic/applebush,
+/obj/machinery/smartfridge/drying,
 /turf/open/floor/iron/white/smooth_large,
 /area/station/service/kitchen)
 "bPP" = (
@@ -19501,7 +19500,6 @@
 /turf/open/floor/engine,
 /area/station/engineering/atmos/hfr_room)
 "fFu" = (
-/obj/structure/window/reinforced/spawner/directional/west,
 /obj/effect/turf_decal/siding/white{
 	dir = 1
 	},
