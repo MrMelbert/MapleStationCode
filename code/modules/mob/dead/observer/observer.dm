@@ -143,6 +143,7 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	. = ..()
 
 	grant_all_languages()
+	setup_hud_traits()
 	show_data_huds()
 
 	SSpoints_of_interest.make_point_of_interest(src)
