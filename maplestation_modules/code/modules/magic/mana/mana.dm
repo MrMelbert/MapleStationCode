@@ -15,7 +15,7 @@
 
 /atom/movable/Destroy(force, ...)
 
-	QDEL_NULL(mana_pool) // why was this before set_mana_pool. it should never ever be
+	QDEL_NULL(mana_pool) // why was this after set_mana_pool. it should never ever be
 	set_mana_pool(null)
 
 	return ..()
@@ -86,10 +86,13 @@
 		. *= NO_CATALYST_COST_MULT
 
 /datum/proc/get_mana()
+	stack_trace("something tried to get mana on the datum base!")
 	return null
 
 /atom/movable/get_mana()
 	return mana_pool
 
 /datum/action/get_mana()
-	return owner?.mana_pool
+	if(!owner)
+		stack_trace("A Datum Action tried to get mana without an owner!")
+	return owner?.get_mana()

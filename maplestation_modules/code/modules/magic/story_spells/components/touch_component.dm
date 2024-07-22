@@ -11,7 +11,15 @@
 /datum/component/uses_mana/touch_spell
 	can_transfer = FALSE
 
-/datum/component/uses_mana/touch_spell/Initialize(...)
+/datum/component/uses_mana/touch_spell/Initialize(
+	datum/callback/activate_check_failure_callback,
+	pre_use_check_with_feedback_comsig,
+	pre_use_check_comsig,
+	post_use_comsig,
+	datum/callback/mana_required,
+	datum/callback/mana_consumed,
+	datum/callback/get_user_callback,
+	list/datum/attunement/attunements)
 	if (!istype(parent, /datum/action/cooldown/spell/touch))
 		return COMPONENT_INCOMPATIBLE
 

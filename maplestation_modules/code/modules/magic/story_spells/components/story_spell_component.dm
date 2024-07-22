@@ -4,7 +4,15 @@
 /datum/component/uses_mana/spell
 	can_transfer = FALSE
 
-/datum/component/uses_mana/spell/Initialize(...)
+/datum/component/uses_mana/spell/Initialize(
+	datum/callback/activate_check_failure_callback = CALLBACK(src, PROC_REF(cannot_activate)),
+	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
+	pre_use_check_comsig,
+	post_use_comsig = COMSIG_SPELL_AFTER_CAST,
+	datum/callback/mana_required = CALLBACK(src, PROC_REF(get_mana_required_spell)),
+	datum/callback/mana_consumed,
+	datum/callback/get_user_callback,
+	list/datum/attunement/attunements)
 	. = ..()
 
 	if (!istype(parent, /datum/action/cooldown/spell))
@@ -49,8 +57,7 @@
 	var/datum/action/cooldown/spell/parent_spell = parent
 	return can_activate_with_feedback(TRUE, parent_spell.owner, cast_on) // todo get this up to date
 
-/datum/component/uses_mana/spell/can_activate_check_failure(give_feedback, ...)
-	. = ..()
+/datum/component/uses_mana/spell/proc/cannot_activate()
 	return . | SPELL_CANCEL_CAST
 
 /**
@@ -62,3 +69,9 @@
 /datum/component/uses_mana/spell/proc/handle_cast(atom/cast_on)
 	SIGNAL_HANDLER
 	return
+
+/datum/component/uses_mana/spell/proc/get_mana_required_spell(atom/caster, atom/cast_on, ...)
+	if(ismob(caster))
+		var/mob/caster_mob = caster
+		return caster_mob.get_casting_cost_mult()
+	return 1

@@ -39,14 +39,19 @@
 )
 	. = ..()
 
-	if (isnull(pre_use_check_with_feedback_comsig) || isnull(post_use_comsig))
+	if (isnull(pre_use_check_with_feedback_comsig)) // merge this with below before final pr, split it for easy debugging
+		stack_trace("pre_use with feed back null")
 		return COMPONENT_INCOMPATIBLE
+	if (isnull(post_use_comsig)) // merge with above in an OR statement, split for ease of debugging
+		stack_trace("post_use comsig null")
+		return COMPONENT_INCOMPATIBLE
+	/* if (isnull(get_mana_required_callback) && isnull(get_mana_consumed_callback))
+		stack_trace("Both the get mana required and get mana consumed callbacks are null!") // why is this here?
+		return COMPONENT_INCOMPATIBLE */
 
-	if (isnull(get_mana_required_callback) && isnull(get_mana_consumed_callback))
-		return COMPONENT_INCOMPATIBLE
-
-	if (isnull(parent.get_mana()))
-		return COMPONENT_INCOMPATIBLE
+	/* if (isnull(parent.get_mana()))
+		stack_trace("parent returns null when getting mana!")
+		return COMPONENT_INCOMPATIBLE */ //temporary disable because this somehow can't pull owner properly
 
 	src.activate_check_failure_callback = activate_check_failure_callback
 	src.attunements = attunements
@@ -99,10 +104,11 @@
 
 /datum/component/uses_mana/proc/get_mana_consumed()
 	var/consumed = 0
+
 	if (!isnull(mana_consumed))
 		consumed = mana_consumed
 	else
-		consumed = get_mana_consumed_callback.Invoke()
+		consumed = get_mana_consumed_callback?.Invoke()
 
 	var/datum/user = get_parent_user()
 	if (!isnull(user))
@@ -122,10 +128,11 @@
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
 /datum/component/uses_mana/proc/drain_mana()
 
-	var/mob/user = get_user_callback.Invoke()
+	var/mob/user = get_user_callback?.Invoke()
 
 	var/mana_consumed = -get_mana_consumed()
 	if (!mana_consumed)
+		stack_trace("mana_consumed after get_mana_consumed is null!")
 		return
 
 	var/datum/mana_pool/pool = parent.get_mana()
@@ -173,4 +180,4 @@
 	return
 
 /datum/component/uses_mana/proc/get_parent_user()
-	return get_user_callback.Invoke()
+	return get_user_callback?.Invoke()
