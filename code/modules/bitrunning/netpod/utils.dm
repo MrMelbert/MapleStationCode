@@ -145,9 +145,6 @@
 
 /// Checks for cases to eject/fail connecting an avatar
 /obj/machinery/netpod/proc/validate_entry(mob/living/neo, mob/living/avatar)
-	if(!do_after(neo, 2 SECONDS, src))
-		return FALSE
-
 	// Very invalid
 	if(QDELETED(neo) || QDELETED(avatar) || QDELETED(src) || !is_operational)
 		return FALSE
