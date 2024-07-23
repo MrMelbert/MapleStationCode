@@ -625,3 +625,30 @@
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
 		owner.blood_volume += modifier * seconds_between_ticks
 	owner.cause_pain(BODY_ZONES_ALL, -0.5 * modifier * seconds_between_ticks)
+
+/// Heal in darkness and potentially trigger other effects, persists for a short duration after leaving
+/datum/status_effect/shadow_regeneration
+	id = "shadow_regeneration"
+	duration = 2 SECONDS
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = /atom/movable/screen/alert/status_effect/shadow_regeneration
+
+/datum/status_effect/shadow_regeneration/on_apply()
+	. = ..()
+	if (!.)
+		return FALSE
+	heal_owner()
+	return TRUE
+
+/datum/status_effect/shadow_regeneration/refresh(effect)
+	. = ..()
+	heal_owner()
+
+/// Regenerate health whenever this status effect is applied or reapplied
+/datum/status_effect/shadow_regeneration/proc/heal_owner()
+	owner.heal_overall_damage(brute = 1, burn = 1, required_bodytype = BODYTYPE_ORGANIC)
+
+/atom/movable/screen/alert/status_effect/shadow_regeneration
+	name = "Shadow Regeneration"
+	desc = "Bathed in soothing darkness, you will slowly heal yourself."
+	icon_state = "lightless"
