@@ -8616,7 +8616,7 @@
 /area/station/engineering/gravity_generator)
 "bWb" = (
 /obj/machinery/suit_storage_unit/hos,
-/obj/machinery/keycard_auth/directional/east,
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hos)
 "bWi" = (
@@ -8758,7 +8758,6 @@
 /obj/effect/turf_decal/trimline/brown/filled/line{
 	dir = 4
 	},
-/obj/machinery/keycard_auth/directional/east,
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/button/door/directional/east{
@@ -8766,6 +8765,7 @@
 	name = "Privacy Shutters Toggle";
 	pixel_y = -11
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/qm)
 "bXG" = (
@@ -12835,7 +12835,6 @@
 /obj/machinery/modular_computer/preset/id{
 	dir = 8
 	},
-/obj/machinery/keycard_auth/directional/north,
 /obj/machinery/button/door/directional/north{
 	id = "cmoshutter";
 	name = "CMO Privacy Shutters";
@@ -12843,6 +12842,7 @@
 	req_access = list("cmo")
 	},
 /obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/keycard_auth/wall_mounted/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/cmo)
 "dsF" = (
@@ -42672,7 +42672,6 @@
 /turf/open/floor/iron/dark,
 /area/station/maintenance/radshelter/civil)
 "ofA" = (
-/obj/structure/chair/office,
 /obj/machinery/button/door/directional/south{
 	id = "hop";
 	name = "Privacy Shutters Control";
@@ -42698,9 +42697,6 @@
 	pixel_y = 8;
 	req_access = list("kitchen")
 	},
-/obj/machinery/keycard_auth/directional/south{
-	pixel_x = 26
-	},
 /obj/machinery/button/door/directional/south{
 	id = "hopqueueend";
 	name = "Queue Shutters Upper Exit Control";
@@ -42716,6 +42712,10 @@
 	req_access = list("kitchen")
 	},
 /obj/effect/landmark/start/head_of_personnel,
+/obj/structure/chair/office,
+/obj/machinery/keycard_auth/wall_mounted/directional/south{
+	pixel_x = 26
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "ofT" = (
@@ -55944,7 +55944,7 @@
 /obj/machinery/computer/communications{
 	dir = 8
 	},
-/obj/machinery/keycard_auth/directional/north{
+/obj/machinery/keycard_auth/wall_mounted/directional/north{
 	pixel_x = 26
 	},
 /obj/machinery/status_display/ai/directional/north,
@@ -58922,7 +58922,6 @@
 /area/station/maintenance/tram/right)
 "tYe" = (
 /obj/structure/table/reinforced,
-/obj/machinery/keycard_auth/directional/south,
 /obj/item/rcl/pre_loaded,
 /obj/machinery/computer/security/telescreen/ce{
 	dir = 4;
@@ -58933,6 +58932,7 @@
 	},
 /obj/item/clipboard,
 /obj/item/paper/monitorkey,
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
 "tYp" = (

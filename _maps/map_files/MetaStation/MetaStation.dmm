@@ -16871,7 +16871,7 @@
 	dir = 8
 	},
 /obj/machinery/status_display/ai/directional/north,
-/obj/machinery/keycard_auth/directional/east,
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain/private)
 "ete" = (
@@ -23629,7 +23629,7 @@
 /obj/item/aicard,
 /obj/item/pai_card,
 /obj/item/circuitboard/aicore,
-/obj/machinery/keycard_auth/directional/north{
+/obj/machinery/keycard_auth/wall_mounted/directional/north{
 	pixel_x = -5
 	},
 /obj/machinery/button/door/directional/north{
@@ -31759,7 +31759,7 @@
 /area/station/commons/dorms)
 "kdb" = (
 /obj/machinery/computer/security/mining,
-/obj/machinery/keycard_auth/directional/north,
+/obj/machinery/keycard_auth/wall_mounted/directional/north,
 /obj/item/radio/intercom/directional/north{
 	pixel_y = 34
 	},
@@ -33547,9 +33547,6 @@
 	dir = 4;
 	pixel_x = -30
 	},
-/obj/machinery/keycard_auth/directional/south{
-	pixel_x = 6
-	},
 /obj/machinery/button/door/directional/south{
 	id = "cmoprivacy";
 	name = "CMO Privacy Shutters";
@@ -33558,6 +33555,9 @@
 	},
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 8
+	},
+/obj/machinery/keycard_auth/wall_mounted/directional/south{
+	pixel_x = 6
 	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
@@ -36038,6 +36038,9 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/keycard_auth/wall_mounted/directional/west{
+	pixel_y = -6
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "lLl" = (
@@ -42978,7 +42981,7 @@
 /turf/open/floor/iron/dark,
 /area/station/science/ordnance/storage)
 "ooR" = (
-/obj/machinery/keycard_auth/directional/west,
+/obj/machinery/keycard_auth/wall_mounted/directional/west,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
@@ -51003,7 +51006,7 @@
 /obj/machinery/computer/records/security{
 	dir = 4
 	},
-/obj/machinery/keycard_auth/directional/west,
+/obj/machinery/keycard_auth/wall_mounted/directional/west,
 /obj/machinery/requests_console/directional/north{
 	department = "Head of Security's Desk";
 	name = "Head of Security Requests Console"
@@ -51642,6 +51645,14 @@
 	},
 /turf/open/floor/engine,
 /area/station/science/explab)
+"rHs" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/disposalpipe/segment{
+	dir = 4
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/station/cargo/warehouse)
 "rHw" = (
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -58801,9 +58812,6 @@
 /area/station/science/xenobiology)
 "uvB" = (
 /obj/structure/table/wood,
-/obj/machinery/keycard_auth/directional/south{
-	pixel_x = -6
-	},
 /obj/machinery/button/door/directional/south{
 	id = "qmprivacy";
 	name = "Privacy Shutters Control";
@@ -60765,7 +60773,7 @@
 /turf/open/floor/plating,
 /area/station/science/lab)
 "vjo" = (
-/obj/machinery/keycard_auth/directional/east,
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/hop)
 "vjp" = (
@@ -88695,7 +88703,7 @@ htc
 idZ
 eBk
 sqo
-juK
+rHs
 fYp
 lTb
 wcm

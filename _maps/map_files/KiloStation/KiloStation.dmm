@@ -24428,9 +24428,6 @@
 /obj/machinery/computer/prisoner/management{
 	dir = 4
 	},
-/obj/machinery/keycard_auth/directional/south{
-	pixel_x = -6
-	},
 /obj/machinery/button/door/directional/south{
 	id = "hosspace";
 	name = "Space Blast Door Toggle";
@@ -35506,6 +35503,7 @@
 	fax_name = "Captain's Office";
 	name = "Captain's Fax Machine"
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/captain)
 "gRl" = (
@@ -42352,9 +42350,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/keycard_auth/directional/west{
-	pixel_y = -5
-	},
 /obj/effect/turf_decal/bot,
 /obj/machinery/requests_console/directional/south{
 	department = "Captain's Desk";
@@ -42448,9 +42443,6 @@
 	},
 /obj/machinery/modular_computer/preset/id{
 	dir = 1
-	},
-/obj/machinery/keycard_auth/directional/east{
-	pixel_y = 26
 	},
 /turf/open/floor/carpet/orange,
 /area/station/command/heads_quarters/qm)
@@ -49619,6 +49611,12 @@
 	},
 /area/station/hallway/primary/central/fore)
 "lBn" = (
+/obj/machinery/keycard_auth/wall_mounted/directional/east{
+	pixel_y = 5
+	},
+/obj/machinery/light_switch/directional/east{
+	pixel_y = -6
+	},
 /turf/open/floor/carpet/orange,
 /area/station/command/heads_quarters/qm)
 "lBw" = (
@@ -53072,9 +53070,6 @@
 /obj/machinery/computer/security/telescreen/rd{
 	dir = 8;
 	pixel_x = 28
-	},
-/obj/machinery/keycard_auth/directional/east{
-	pixel_y = 26
 	},
 /obj/machinery/button/door/directional/north{
 	id = "rdprivacy";
@@ -58544,9 +58539,6 @@
 /obj/structure/disposalpipe/trunk,
 /obj/structure/cable,
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/machinery/light_switch/directional/north{
-	pixel_x = 14
-	},
 /obj/machinery/camera/directional/north{
 	c_tag = "Quartermaster's Office";
 	name = "cargo camera";
@@ -60818,7 +60810,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
 "puG" = (
-/obj/machinery/keycard_auth/directional/north,
 /obj/item/toy/figure/ian{
 	pixel_x = 8
 	},
@@ -60827,6 +60818,7 @@
 	},
 /obj/machinery/recharger,
 /obj/structure/table/wood,
+/obj/machinery/keycard_auth/wall_mounted/directional/north,
 /turf/open/floor/carpet/blue,
 /area/station/command/heads_quarters/hop)
 "puH" = (
@@ -69682,10 +69674,10 @@
 /obj/machinery/light_switch/directional/south{
 	pixel_x = -8
 	},
-/obj/machinery/keycard_auth/directional/south{
-	pixel_x = 8
-	},
 /obj/structure/table/reinforced/rglass,
+/obj/machinery/keycard_auth/wall_mounted/directional/south{
+	pixel_x = 4
+	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
 "sjS" = (
@@ -74183,6 +74175,9 @@
 /obj/machinery/status_display/ai/directional/south,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
+	},
+/obj/machinery/keycard_auth/wall_mounted/directional/west{
+	pixel_y = -5
 	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hos)
@@ -81237,11 +81232,14 @@
 	},
 /obj/effect/turf_decal/tile/purple,
 /obj/structure/table/reinforced,
-/obj/item/reagent_containers/cup/glass/mug/coco,
+/obj/item/reagent_containers/cup/glass/mug/coco{
+	pixel_x = 6
+	},
 /obj/item/ashtray{
 	pixel_y = 8;
 	pixel_x = 4
 	},
+/obj/machinery/keycard_auth,
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/rd)
 "wmz" = (
@@ -82472,9 +82470,6 @@
 /area/station/maintenance/starboard)
 "wJR" = (
 /obj/structure/filingcabinet/chestdrawer,
-/obj/machinery/keycard_auth/directional/north{
-	pixel_x = -6
-	},
 /obj/machinery/light_switch/directional/north{
 	pixel_x = 6;
 	pixel_y = 25
@@ -82494,6 +82489,9 @@
 	pixel_x = 6;
 	req_access = list("engine_equip");
 	pixel_y = 36
+	},
+/obj/machinery/keycard_auth/wall_mounted/directional/north{
+	pixel_x = -5
 	},
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)

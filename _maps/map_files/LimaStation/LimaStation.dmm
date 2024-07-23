@@ -8586,9 +8586,6 @@
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
 	},
-/obj/machinery/keycard_auth{
-	pixel_y = -24
-	},
 /obj/machinery/button/door{
 	id = "camdola_containment";
 	name = "camdola containment";
@@ -8602,6 +8599,7 @@
 /obj/machinery/modular_computer/preset/id{
 	dir = 8
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/cmo)
 "cTc" = (
@@ -13366,7 +13364,6 @@
 /turf/open/floor/catwalk_floor,
 /area/station/service/hydroponics/park)
 "eBz" = (
-/obj/machinery/keycard_auth/directional/south,
 /obj/machinery/button/door/directional/south{
 	pixel_y = -38;
 	id = "rabbitcontainment";
@@ -13375,6 +13372,7 @@
 /obj/machinery/computer/security/hos{
 	dir = 8
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /turf/open/floor/carpet/red,
 /area/station/command/heads_quarters/hos)
 "eBW" = (
@@ -16646,11 +16644,10 @@
 	pixel_x = 25;
 	pixel_y = 8
 	},
-/obj/machinery/keycard_auth/directional/east{
-	pixel_x = 39;
-	pixel_y = 8
-	},
 /obj/effect/turf_decal/siding/wood,
+/obj/machinery/keycard_auth/wall_mounted/directional/east{
+	pixel_y = -4
+	},
 /turf/open/floor/wood,
 /area/station/security/detectives_office/bridge_officer_office)
 "fDE" = (
@@ -29810,9 +29807,6 @@
 /obj/machinery/modular_computer/preset/id{
 	dir = 8
 	},
-/obj/machinery/keycard_auth/directional/east{
-	pixel_y = 6
-	},
 /obj/machinery/button/door{
 	id = "rnd2";
 	name = "Research Lab Shutter Control";
@@ -29827,6 +29821,10 @@
 	},
 /obj/machinery/light_switch/directional/east{
 	pixel_y = -6
+	},
+/obj/machinery/keycard_auth/wall_mounted/directional/east{
+	pixel_y = 5;
+	pixel_x = 27
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/command/heads_quarters/rd)
@@ -42931,13 +42929,13 @@
 "nPe" = (
 /obj/machinery/pdapainter,
 /obj/structure/cable,
-/obj/machinery/keycard_auth/directional/east,
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
 /obj/machinery/light_switch/directional/east{
 	pixel_x = 38
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "nPj" = (
@@ -47631,9 +47629,7 @@
 /obj/structure/table/wood,
 /obj/item/pinpointer/nuke,
 /obj/item/disk/nuclear,
-/obj/machinery/keycard_auth/directional/south{
-	pixel_y = -24
-	},
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /turf/open/floor/carpet/royalblue,
 /area/station/command/heads_quarters/captain)
 "ppU" = (
@@ -56684,13 +56680,13 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/upper)
 "rZE" = (
-/obj/machinery/keycard_auth/directional/north,
 /obj/machinery/computer/security/qm{
 	dir = 4
 	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/qm)
 "rZK" = (
@@ -64594,13 +64590,11 @@
 /turf/open/floor/grass,
 /area/station/service/chapel)
 "uBx" = (
-/obj/machinery/keycard_auth{
-	pixel_x = 24
-	},
 /obj/structure/closet/secure_closet/engineering_chief,
 /obj/item/gun/energy/e_gun/mini,
 /obj/effect/turf_decal/bot_red,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/command/heads_quarters/ce)
 "uBH" = (

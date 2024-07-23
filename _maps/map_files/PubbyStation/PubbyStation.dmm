@@ -5675,10 +5675,6 @@
 /obj/structure/chair/office{
 	dir = 1
 	},
-/obj/machinery/keycard_auth{
-	pixel_x = -24;
-	pixel_y = 10
-	},
 /obj/machinery/button/door/directional/west{
 	id = "bridgespace";
 	name = "Bridge Space Lockdown"
@@ -6033,6 +6029,9 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/yellow/full,
+/obj/machinery/firealarm/directional/north{
+	pixel_x = 4
+	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/command/bridge)
 "atY" = (
@@ -6842,7 +6841,6 @@
 /obj/machinery/computer/security/mining{
 	dir = 8
 	},
-/obj/machinery/firealarm/directional/east,
 /obj/effect/turf_decal/tile/yellow/full,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/command/bridge)
@@ -7783,7 +7781,6 @@
 	},
 /area/station/command/bridge)
 "azp" = (
-/obj/machinery/newscaster/directional/south,
 /obj/effect/landmark/start/bridge_officer,
 /turf/open/floor/wood/parquet,
 /area/station/security/detectives_office/bridge_officer_office)
@@ -8073,14 +8070,11 @@
 /obj/structure/table/wood,
 /obj/item/folder/blue,
 /obj/item/stamp/head/captain,
-/obj/machinery/keycard_auth{
-	pixel_x = 28;
-	pixel_y = 8
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
 /obj/machinery/light/directional/east,
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "aAz" = (
@@ -8745,11 +8739,8 @@
 	},
 /area/station/ai_monitored/turret_protected/ai_upload)
 "aCP" = (
-/obj/machinery/keycard_auth{
-	pixel_x = -26;
-	pixel_y = 6
-	},
 /obj/item/kirbyplants/random,
+/obj/machinery/keycard_auth/wall_mounted/directional/west,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "aCQ" = (
@@ -13118,9 +13109,9 @@
 	},
 /area/station/hallway/primary/central)
 "aUm" = (
-/obj/machinery/keycard_auth/directional/west,
 /obj/structure/filingcabinet,
 /obj/machinery/status_display/ai/directional/north,
+/obj/machinery/keycard_auth/wall_mounted/directional/west,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "aUs" = (
@@ -21522,10 +21513,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 10
 	},
-/obj/machinery/keycard_auth{
-	pixel_x = 28;
-	pixel_y = 6
-	},
 /obj/machinery/button/door/directional/east{
 	id = "rndshutters";
 	name = "Research Lockdown";
@@ -21548,6 +21535,9 @@
 	},
 /obj/machinery/fax,
 /obj/structure/table/glass,
+/obj/machinery/keycard_auth/wall_mounted/directional/east{
+	pixel_y = 7
+	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/command/heads_quarters/rd)
 "bBw" = (
@@ -26627,10 +26617,6 @@
 /obj/item/lighter,
 /obj/item/stamp/head/ce,
 /obj/item/stock_parts/cell/high,
-/obj/machinery/keycard_auth{
-	pixel_x = 26;
-	pixel_y = 26
-	},
 /obj/item/clothing/glasses/meson/engine,
 /obj/effect/turf_decal/sub_tile/dark/half{
 	dir = 4
@@ -26638,6 +26624,7 @@
 /obj/effect/turf_decal/tile/yellow/half{
 	dir = 4
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/east,
 /turf/open/floor/iron/half{
 	dir = 8
 	},
@@ -33742,6 +33729,9 @@
 "dIJ" = (
 /obj/structure/filingcabinet,
 /obj/machinery/light/directional/south,
+/obj/item/radio/intercom/directional/south{
+	pixel_y = -38
+	},
 /turf/open/floor/wood/parquet,
 /area/station/security/detectives_office/bridge_officer_office)
 "dJm" = (
@@ -35123,7 +35113,7 @@
 "ePT" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/machinery/door/poddoor/shutters/preopen{
-	id = "aps";
+	id = "bos";
 	name = "Space Blinds";
 	dir = 4
 	},
@@ -35785,6 +35775,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
+/obj/machinery/newscaster/directional/east,
 /turf/open/floor/wood/parquet,
 /area/station/security/detectives_office/bridge_officer_office)
 "fjj" = (
@@ -40327,7 +40318,7 @@
 /obj/effect/spawner/structure/window/reinforced,
 /obj/structure/cable,
 /obj/machinery/door/poddoor/shutters/preopen{
-	id = "aps";
+	id = "bos";
 	name = "Space Blinds";
 	dir = 4
 	},
@@ -43496,12 +43487,11 @@
 /obj/machinery/button/door/directional/east{
 	id = "cmoprivacy";
 	name = "CMO Shutter Control";
-	pixel_y = -4;
-	pixel_x = 27
+	pixel_y = -7;
+	pixel_x = 25
 	},
-/obj/machinery/keycard_auth/directional/east{
-	pixel_y = 7;
-	pixel_x = 29
+/obj/machinery/keycard_auth/wall_mounted/directional/east{
+	pixel_y = 5
 	},
 /turf/open/floor/iron/white,
 /area/station/command/heads_quarters/cmo)
@@ -50912,16 +50902,8 @@
 /turf/open/floor/iron/large,
 /area/station/hallway/primary/fore)
 "qNS" = (
-/obj/machinery/button/door/directional/south{
-	id = "aps";
-	name = "Asset Protection's Blinds";
-	pixel_x = 9
-	},
 /obj/structure/table/wood,
 /obj/item/storage/fancy/donut_box,
-/obj/item/radio/intercom/directional/south{
-	pixel_y = -38
-	},
 /turf/open/floor/wood/parquet,
 /area/station/security/detectives_office/bridge_officer_office)
 "qOx" = (
@@ -52154,7 +52136,6 @@
 /turf/open/floor/iron/smooth_half,
 /area/station/cargo/storage)
 "rCQ" = (
-/obj/machinery/keycard_auth/directional/east,
 /obj/machinery/button/door/directional/east{
 	id = "bos";
 	name = "BO Space Blinds";
@@ -52166,6 +52147,9 @@
 	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
+	},
+/obj/machinery/keycard_auth/wall_mounted/directional/east{
+	pixel_y = -4
 	},
 /turf/open/floor/wood/parquet,
 /area/station/security/detectives_office/bridge_officer_office)
@@ -52182,6 +52166,9 @@
 /obj/machinery/modular_computer/preset/command,
 /obj/effect/turf_decal/tile/green/anticorner{
 	dir = 1
+	},
+/obj/machinery/keycard_auth/wall_mounted/directional/west{
+	pixel_y = 0
 	},
 /turf/open/floor/iron/dark/smooth_corner,
 /area/station/command/bridge)
@@ -60274,13 +60261,11 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/security/brig)
 "wUG" = (
-/obj/machinery/keycard_auth{
-	pixel_y = -24
-	},
 /mob/living/basic/spider/giant/sgt_araneus,
 /obj/effect/turf_decal/tile/red/half{
 	dir = 1
 	},
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /turf/open/floor/iron/dark/smooth_half,
 /area/station/command/heads_quarters/hos)
 "wUN" = (

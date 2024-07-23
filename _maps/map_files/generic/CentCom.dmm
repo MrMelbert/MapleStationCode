@@ -2607,7 +2607,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/supply)
 "nE" = (
-/obj/machinery/keycard_auth/directional/south,
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /obj/structure/table/reinforced,
 /obj/item/stack/package_wrap{
 	pixel_y = 11;
@@ -4227,7 +4227,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/ferry)
 "uk" = (
-/obj/machinery/keycard_auth/directional/south,
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /obj/structure/table/reinforced,
 /obj/machinery/recharger,
 /obj/machinery/button/door/indestructible{
