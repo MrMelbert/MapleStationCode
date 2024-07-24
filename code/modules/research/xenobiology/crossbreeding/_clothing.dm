@@ -12,7 +12,7 @@ Slimecrossing Armor
 	inhand_icon_state = "b_mask"
 	body_parts_covered = NONE
 	w_class = WEIGHT_CLASS_SMALL
-	clothing_traits = list(TRAIT_NOBREATH)
+	clothing_traits = list(TRAIT_ASSISTED_BREATHING)
 	armor_type = /datum/armor/mask_nobreath
 	flags_cover = MASKCOVERSMOUTH
 	resistance_flags = NONE
