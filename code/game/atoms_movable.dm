@@ -507,7 +507,7 @@
 	if(pulled_atom.pulledby)
 		log_combat(pulled_atom, pulled_atom.pulledby, "pulled from", src)
 		pulled_atom.pulledby.stop_pulling() //an object can't be pulled by two mobs at once.
-	pulling = pulled_atom
+	set_pulling(pulled_atom)
 	pulled_atom.set_pulledby(src)
 	SEND_SIGNAL(src, COMSIG_ATOM_START_PULL, pulled_atom, state, force)
 	setGrabState(state)
@@ -536,6 +536,11 @@
 	. = pulledby
 	pulledby = new_pulledby
 
+/atom/movable/proc/set_pulling(new_pulling)
+	if(new_pulling == pulling)
+		return FALSE
+	. = pulling
+	pulling = new_pulling
 
 /atom/movable/proc/Move_Pulled(atom/moving_atom)
 	if(!pulling)
@@ -1585,19 +1590,6 @@
 	SEND_SIGNAL(src, COMSIG_MOVABLE_SET_GRAB_STATE, newstate)
 	. = grab_state
 	grab_state = newstate
-	switch(grab_state) // Current state.
-		if(GRAB_PASSIVE)
-			pulling.remove_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), CHOKEHOLD_TRAIT)
-			if(. >= GRAB_NECK) // Previous state was a a neck-grab or higher.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-		if(GRAB_AGGRESSIVE)
-			if(. >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
-			else // Grab got upgraded from a passive one.
-				pulling.add_traits(list(TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), CHOKEHOLD_TRAIT)
-		if(GRAB_NECK, GRAB_KILL)
-			if(. <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(pulling, TRAIT_FLOORED, CHOKEHOLD_TRAIT)
 
 /**
  * Adds the deadchat_plays component to this atom with simple movement commands.

@@ -62,6 +62,8 @@
 #define TRAIT_NO_PAIN_EFFECTS "no_pain_effects"
 /// Shock buildup does not increase, only decrease. No effect if already in shock (unlike abates_shock)
 #define TRAIT_NO_SHOCK_BUILDUP "no_shock_buildup"
+/// Don't get slowed down by aggro grabbing (or above)
+#define TRAIT_NO_GRAB_SPEED_PENALTY "no_grab_speed_penalty"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
