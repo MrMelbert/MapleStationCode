@@ -54,6 +54,8 @@
 
 	var/mob/living/throw_mob = held_mob
 	release()
+	user.set_pulling(throw_mob)
+	user.setGrabState(GRAB_AGGRESSIVE)
 	return throw_mob
 
 /obj/item/clothing/head/mob_holder/dropped()

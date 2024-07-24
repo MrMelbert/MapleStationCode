@@ -1,70 +1,119 @@
+/// Abstract item to represent grabbing someone
 /obj/item/grabbing_hand
 	name = "grab"
-	icon = 'icons/obj/weapons/hand.dmi'
-	icon_state = "offhand"
+	icon = 'maplestation_modules/icons/obj/hand.dmi'
+	icon_state = "grab"
 	w_class = WEIGHT_CLASS_HUGE
-	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON
+	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON | EXAMINE_SKIP
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
+/obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
+	return user.pulling
+
+/// Status effect applied to someone grabbing something
 /datum/status_effect/grabbing
 	id = "grabbing"
 	tick_interval = -1
 	alert_type = null
 	/// Linked grab status effect
-	var/datum/status_effect/grabbed/paried_effect
-
+	var/datum/status_effect/grabbed/paired_effect
+	/// Abstract grabbing item to be put in the owner's hands
 	var/obj/item/grabbing_hand/hand
 
 /datum/status_effect/grabbing/on_creation(mob/living/new_owner, datum/status_effect/grabbed/grabbed_effect)
-	paried_effect = grabbed_effect
+	paired_effect = grabbed_effect
 	return ..()
 
 /datum/status_effect/grabbing/on_apply()
+	if(!owner.has_limbs)
+		return TRUE
 	hand = new()
 	if(!owner.put_in_hands(hand))
 		return FALSE
 
+	RegisterSignal(hand, COMSIG_QDELETING, PROC_REF(hand_gone))
+	RegisterSignals(hand, list(
+		COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
+		COMSIG_ITEM_INTERACTING_WITH_ATOM,
+	), PROC_REF(hand_use))
+	RegisterSignals(hand, list(
+		COMSIG_ITEM_AFTERATTACK,
+		COMSIG_ITEM_AFTERATTACK_SECONDARY,
+	), PROC_REF(hand_use_deprecated))
 	return TRUE
 
 /datum/status_effect/grabbing/Destroy()
-	paried_effect = null
-	QDEL_NULL(hand)
+	paired_effect = null
+	UnregisterSignal(hand, list(
+		COMSIG_QDELETING,
+		COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY,
+		COMSIG_ITEM_INTERACTING_WITH_ATOM,
+		COMSIG_ITEM_AFTERATTACK,
+		COMSIG_ITEM_AFTERATTACK_SECONDARY,
+	))
+	if(!QDELING(hand))
+		qdel(hand)
+	hand = null
 	return ..()
 
+/datum/status_effect/grabbing/proc/hand_gone(...)
+	SIGNAL_HANDLER
+	if(!QDELING(owner))
+		owner.stop_pulling()
+	if(!QDELING(src))
+		stack_trace("[type] should be qdelled when the hand is deleted via stop_pulling.")
+		qdel(src)
+
+/datum/status_effect/grabbing/proc/hand_use(datum/source, mob/living/user, atom/interacting_with, modifiers)
+	SIGNAL_HANDLER
+	user.UnarmedAttack(interacting_with, TRUE, modifiers)
+	return ITEM_INTERACT_SUCCESS
+
+/datum/status_effect/grabbing/proc/hand_use_deprecated(datum/source, atom/interacting_with, mob/living/user, prox, modifiers)
+	SIGNAL_HANDLER
+	if(prox)
+		return NONE
+	user.RangedAttack(interacting_with, modifiers)
+	return ITEM_INTERACT_SUCCESS
+
 /datum/status_effect/grabbing/get_examine_text()
-	if(paried_effect.pin)
+	if(paired_effect.pin)
 		switch(owner.grab_state)
 			if(GRAB_AGGRESSIVE)
-				return span_notice("[owner.p_Theyre()] pinning [paried_effect.owner]!")
+				return span_notice("[owner.p_Theyre()] pinning [paired_effect.owner]!")
 			if(GRAB_NECK)
-				return span_warning("[owner.p_Theyre()] pinning [paried_effect.owner] by the neck!")
+				return span_warning("[owner.p_Theyre()] pinning [paired_effect.owner] by the neck!")
 			if(GRAB_KILL)
-				return span_boldwarning("[owner.p_Theyre()] pinning [paried_effect.owner] by the neck, strangling [paried_effect.owner.p_them()]!")
+				return span_boldwarning("[owner.p_Theyre()] pinning [paired_effect.owner] by the neck, strangling [paired_effect.owner.p_them()]!")
 
 	switch(owner.grab_state)
 		if(GRAB_PASSIVE)
-			if((owner.zone_selected == BODY_ZONE_L_ARM || owner.zone_selected == BODY_ZONE_R_ARM) && paried_effect.owner.usable_hands > 0)
-				return span_notice("[owner.p_Theyre()] holding hands with [paried_effect.owner]!")
+			if((owner.zone_selected == BODY_ZONE_L_ARM || owner.zone_selected == BODY_ZONE_R_ARM) && paired_effect.owner.usable_hands > 0)
+				return span_notice("[owner.p_Theyre()] holding hands with [paired_effect.owner]!")
 
-			return span_notice("[owner.p_Theyre()] holding [paried_effect.owner] passively.")
+			return span_notice("[owner.p_Theyre()] holding [paired_effect.owner] passively.")
 		if(GRAB_AGGRESSIVE)
-			return span_warning("[owner.p_Theyre()] holding [paried_effect.owner] aggressively!")
+			return span_warning("[owner.p_Theyre()] holding [paired_effect.owner] aggressively!")
 		if(GRAB_NECK)
-			return span_warning("[owner.p_Theyre()] holding [paried_effect.owner] by the neck!")
+			return span_warning("[owner.p_Theyre()] holding [paired_effect.owner] by the neck!")
 		if(GRAB_KILL)
-			return span_boldwarning("[owner.p_Theyre()] strangling [paried_effect.owner]!")
+			return span_boldwarning("[owner.p_Theyre()] strangling [paired_effect.owner]!")
 
 // melbert todo : add slowdown / stamina cost / sprint cost to fireman carry, scaled on strength / size / etc
+
+/// Status effect applied to someone being grabbed
 /datum/status_effect/grabbed
 	id = "grabbed"
 	tick_interval = -1
 	alert_type = null
 
-	var/datum/status_effect/grabbing/paried_effect
+	var/datum/status_effect/grabbing/paired_effect
 	/// Who is grabbing us
 	var/atom/movable/grabbing_us
 	/// Whether the grab has been side-graded into a pin
 	var/pin = FALSE
+	/// Whether the grabbe is linked to the grabber
+	var/linked = FALSE
 
 /datum/status_effect/grabbed/on_creation(mob/living/new_owner, mob/living/grabber)
 	grabbing_us = grabber
@@ -88,29 +137,35 @@
 		ADD_TRAIT(owner, TRAIT_IMMOBILIZED, "[id]_softcrit")
 	if(isliving(grabbing_us))
 		var/mob/living/mob_grabber = grabbing_us
-		paried_effect = mob_grabber.apply_status_effect(/datum/status_effect/grabbing, src)
+		paired_effect = mob_grabber.apply_status_effect(/datum/status_effect/grabbing, src)
+		if(QDELETED(paired_effect))
+			return FALSE
+
 	return TRUE
 
 /datum/status_effect/grabbed/on_remove()
-	QDEL_NULL(paried_effect)
+	QDEL_NULL(paired_effect)
 	if(grabbing_us)
 		UnregisterSignal(grabbing_us, list(
+			COMSIG_MOVABLE_PRE_MOVE,
 			COMSIG_MOVABLE_SET_GRAB_STATE,
 			COMSIG_QDELETING,
 		))
 		grabbing_us.setGrabState(GRAB_PASSIVE)
 		grabbing_us = null
 
-	unlink_mobs()
 	UnregisterSignal(owner, list(
 		COMSIG_MOB_STATCHANGE,
 		COMSIG_ATOM_ATTACK_HAND_SECONDARY,
 		COMSIG_LIVING_TRYING_TO_PULL,
 		COMSIG_ATOM_NO_LONGER_PULLED,
 	))
-	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, id)
-	REMOVE_TRAIT(owner, TRAIT_HANDS_BLOCKED, id)
-	REMOVE_TRAIT(owner, TRAIT_FLOORED, id)
+	unlink_mobs()
+	unpin()
+	// grab stuff
+	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, "[id]_grab")
+	REMOVE_TRAIT(owner, TRAIT_HANDS_BLOCKED, "[id]_grab")
+	// softcrit stuff
 	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, "[id]_softcrit")
 
 /datum/status_effect/grabbed/get_examine_text()
@@ -171,6 +226,7 @@
 	playsound(owner, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 	grabbing_us.do_attack_animation(owner, "grab")
 	if(istype(mob_grabber))
+		mob_grabber.face_atom(owner)
 		mob_grabber.changeNext_move(CLICK_CD_GRABBING)
 	owner.add_fingerprint(grabbing_us)
 	if(grabbing_us.grab_state >= GRAB_AGGRESSIVE)
@@ -183,7 +239,7 @@
 		)
 		to_chat(grabbing_us, span_danger("You start to tighten your grip on [owner]!"))
 		if(owner.is_blind())
-			to_chat(owner, span_danger("Someone starts to tighten their grip on you!"))
+			to_chat(owner, span_userdanger("Someone starts to tighten their grip on you!"))
 		switch(grabbing_us.grab_state)
 			if(GRAB_AGGRESSIVE)
 				log_combat(grabbing_us, owner, "attempted to neck grab", addition = "neck grab")
@@ -218,7 +274,7 @@
 				)
 				to_chat(grabbing_us, span_danger("You grab [owner] aggressively!"))
 				if(owner.is_blind())
-					to_chat(owner, span_danger("Someone grabs you aggressively!"))
+					to_chat(owner, span_userdanger("Someone grabs you aggressively!"))
 			owner.stop_pulling()
 			log_combat(grabbing_us, owner, "grabbed", addition = "aggressive grab[add_log]")
 		if(GRAB_NECK)
@@ -246,12 +302,13 @@
 			if(owner.is_blind())
 				to_chat(owner, span_userdanger("Someone is strangling you!"))
 
-	if(grabbing_us.grab_state >= GRAB_NECK && !owner.buckled)
+	if(grabbing_us.grab_state >= GRAB_NECK && !owner.buckled && !pin)
 		link_mobs()
-
 	if(QDELETED(src))
+		stack_trace("Grab self-terminated at some time during the upgrade process.")
 		return
 	if(istype(mob_grabber))
+		owner.setDir(mob_grabber.dir)
 		mob_grabber.set_pull_offsets(owner, grabbing_us.grab_state)
 
 /datum/status_effect/grabbed/proc/upgrade_check(initial_state)
@@ -267,7 +324,7 @@
 
 /datum/status_effect/grabbed/proc/pin_attempt()
 	if(pin)
-		unpin()
+		manual_unpin()
 		return
 	if(grabbing_us.grab_state < GRAB_AGGRESSIVE)
 		return
@@ -281,12 +338,13 @@
 		to_chat(grabbing_us, span_warning("You can't pin someone who's not standing on the ground!"))
 		return
 	if(owner.buckled)
-		to_chat(grabbing_us, span_warning("You can't pin someone buckled to something"))
+		to_chat(grabbing_us, span_warning("You can't pin someone who's buckled to something!"))
 		return
 
 	playsound(owner, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 	grabbing_us.do_attack_animation(owner, "grab")
 	if(istype(mob_grabber))
+		mob_grabber.face_atom(owner)
 		mob_grabber.changeNext_move(CLICK_CD_GRABBING)
 	// owner.add_fingerprint(grabbing_us)
 	owner.visible_message(
@@ -303,7 +361,7 @@
 	// future todo : scale pin time based on size vs size, strength vs strength, martial arts, etc
 	if(!do_after(grabbing_us, 4 SECONDS, owner, extra_checks = CALLBACK(src, PROC_REF(pin_check)),))
 		return
-	if(owner.buckled || HAS_TRAIT(owner, TRAIT_FORCED_STANDING))
+	if(owner.buckled || HAS_TRAIT_NOT_FROM(owner, TRAIT_FORCED_STANDING, "[id]_link"))
 		to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
 		return
 
@@ -321,15 +379,35 @@
 	log_combat(grabbing_us, owner, "pinned")
 	pin = TRUE
 	unlink_mobs()
-	ADD_TRAIT(owner, TRAIT_FLOORED, id)
+	ADD_TRAIT(owner, TRAIT_NO_MOVE_PULL, "[id]_pin")
+	ADD_TRAIT(owner, TRAIT_FLOORED, "[id]_pin")
 	owner.Paralyze(2 SECONDS)
 	owner.setDir(SOUTH)
-	owner.setDir(UNLINT(owner.lying_angle) == 270 ? EAST : WEST) // melbert todo
+	grabbing_us.Move(owner.loc)
+	grabbing_us.setDir(UNLINT(owner.lying_angle) == 270 ? WEST : EAST) // melbert todo
+	RegisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(start_dragging))
 
 /datum/status_effect/grabbed/proc/pin_check()
 	return !QDELETED(src) && !QDELETED(grabbing_us) && !pin && grabbing_us.grab_state >= GRAB_AGGRESSIVE
 
-/datum/status_effect/grabbed/proc/unpin()
+/datum/status_effect/grabbed/proc/start_dragging(datum/source, atom/new_loc)
+	SIGNAL_HANDLER
+	if(!isturf(new_loc) || new_loc == owner.loc)
+		return
+	owner.visible_message(
+		span_danger("[grabbing_us] starts dragging [owner]!"),
+		span_danger("[grabbing_us] starts dragging you!"),
+		span_hear("You hear the sound of dragging!"),
+		null,
+		grabbing_us,
+	)
+	to_chat(grabbing_us, span_danger("You start dragging [owner] along!"))
+	UnregisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE)
+	owner.set_resting(TRUE)
+	owner.Knockdown(5 SECONDS)
+	unpin()
+
+/datum/status_effect/grabbed/proc/manual_unpin()
 	owner.visible_message(
 		span_danger("[grabbing_us] releases [owner] from the pin!"),
 		span_danger("[grabbing_us] releases you from the pin!"),
@@ -340,18 +418,26 @@
 	to_chat(grabbing_us, span_danger("You release [owner] from the pin!"))
 	if(owner.is_blind())
 		to_chat(owner, span_danger("Someone releases you from a pin!"))
-	owner.Paralyze(1 SECONDS)
-	grabbing_us.stop_pulling()
+	unpin()
+	grabbing_us.setGrabState(GRAB_AGGRESSIVE)
+	owner.Paralyze(0.75 SECONDS)
+	// grabbing_us.stop_pulling()
+
+/datum/status_effect/grabbed/proc/unpin()
+	if(!pin)
+		return
+
+	pin = FALSE
+	REMOVE_TRAIT(owner, TRAIT_FLOORED, "[id]_pin")
+	REMOVE_TRAIT(owner, TRAIT_NO_MOVE_PULL, "[id]_pin")
 
 /datum/status_effect/grabbed/proc/update_state(datum/source, new_state)
 	SIGNAL_HANDLER
-	if(new_state == GRAB_PASSIVE)
-		qdel(src)
-		return
-
 	if(new_state >= GRAB_AGGRESSIVE)
-		ADD_TRAIT(owner, TRAIT_IMMOBILIZED, id)
-		ADD_TRAIT(owner, TRAIT_HANDS_BLOCKED, id)
+		ADD_TRAIT(owner, TRAIT_IMMOBILIZED, "[id]_grab")
+		ADD_TRAIT(owner, TRAIT_HANDS_BLOCKED, "[id]_grab")
+	if(linked && new_state <= GRAB_AGGRESSIVE)
+		unlink_mobs()
 
 /datum/status_effect/grabbed/proc/ungrabbed(datum/source, mob/living/gone)
 	SIGNAL_HANDLER
@@ -362,22 +448,46 @@
 	qdel(src)
 
 /datum/status_effect/grabbed/proc/link_mobs()
-	if(HAS_TRAIT_FROM(owner, TRAIT_UNDENSE, id))
+	if(linked)
 		return
 
-	ADD_TRAIT(owner, TRAIT_UNDENSE, id)
+	linked = TRUE
+	ADD_TRAIT(owner, TRAIT_UNDENSE, "[id]_link")
+	ADD_TRAIT(owner, TRAIT_FORCED_STANDING, "[id]_link")
+	ADD_TRAIT(owner, TRAIT_NO_MOVE_PULL, "[id]_link")
+	owner.setDir(grabbing_us.dir)
 	owner.Move(grabbing_us.loc)
 	RegisterSignal(grabbing_us, COMSIG_MOVABLE_MOVED, PROC_REF(bring_along))
+	RegisterSignal(grabbing_us, COMSIG_ATOM_PRE_BULLET_ACT, PROC_REF(bullet_shield))
 
 /datum/status_effect/grabbed/proc/unlink_mobs()
-	REMOVE_TRAIT(owner, TRAIT_UNDENSE, id)
-	if(!QDELING(src))
-		owner.Move(get_step(owner.loc, owner.dir), owner.dir)
-	if(grabbing_us)
-		UnregisterSignal(grabbing_us, COMSIG_MOVABLE_MOVED, PROC_REF(bring_along))
+	if(!linked)
+		return
+
+	linked = FALSE
+	REMOVE_TRAIT(owner, TRAIT_UNDENSE, "[id]_link")
+	REMOVE_TRAIT(owner, TRAIT_FORCED_STANDING, "[id]_link")
+	REMOVE_TRAIT(owner, TRAIT_NO_MOVE_PULL, "[id]_link")
+	if(!QDELING(owner) && !QDELING(grabbing_us))
+		owner.Move(get_step(grabbing_us.loc, grabbing_us.dir))
+	UnregisterSignal(grabbing_us, list(
+		COMSIG_MOVABLE_MOVED,
+		COMSIG_ATOM_PRE_BULLET_ACT,
+	))
 
 /datum/status_effect/grabbed/proc/bring_along(datum/source, atom/old_loc, movement_dir)
 	SIGNAL_HANDLER
 
 	owner.Move(grabbing_us.loc, movement_dir, grabbing_us.glide_size)
 	owner.setDir(grabbing_us.dir)
+
+/datum/status_effect/grabbed/proc/bullet_shield(datum/source, obj/projectile/hitting_projectile, def_zone, piercing_hit)
+	SIGNAL_HANDLER
+	if(piercing_hit)
+		return NONE
+	var/forwards_dir = REVERSE_DIR(grabbing_us.dir)
+	if(!(hitting_projectile.dir & forwards_dir))
+		return NONE
+
+	owner.bullet_act(hitting_projectile, def_zone, piercing_hit)
+	return COMPONENT_BULLET_BLOCKED

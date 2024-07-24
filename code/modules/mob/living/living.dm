@@ -470,7 +470,7 @@
 		if(GRAB_NECK)
 			offset = GRAB_PIXEL_SHIFT_NECK
 		if(GRAB_KILL)
-			offset = GRAB_PIXEL_SHIFT_NECK
+			offset = M.loc == loc ? GRAB_PIXEL_SHIFT_NECK : GRAB_PIXEL_SHIFT_STRANGLE
 	M.setDir(get_dir(M, src))
 	var/target_pixel_x = M.base_pixel_x + M.body_position_pixel_x_offset
 	var/target_pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset

@@ -218,6 +218,9 @@
 /mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = FALSE)
 	if(user == src || anchored || !isturf(user.loc) || (src in user.buckled_mobs))
 		return FALSE
+	if(user.has_limbs && !user.get_empty_held_indexes())
+		to_chat(user, span_warning("Your hands are full!"))
+		return FALSE
 
 	user.start_pulling(src, supress_message = supress_message)
 	return TRUE
