@@ -486,7 +486,7 @@
 	if(grabbing_us.loc != old_loc && isturf(grabbing_us.loc))
 		owner.Move(grabbing_us.loc, movement_dir, grabbing_us.glide_size)
 
-/datum/status_effect/grabbed/proc/dir_change(datum/source, old_dir, new_dir)
+/datum/status_effect/grabbed/proc/dir_changed(datum/source, old_dir, new_dir)
 	SIGNAL_HANDLER
 
 	if(old_dir != new_dir)
