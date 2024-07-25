@@ -901,16 +901,8 @@
 		to_chat(src, span_warning("You can't fireman carry [target] while [target.p_they()] [target.p_are()] standing!"))
 		return
 
-	var/carrydelay = 5 SECONDS //if you have latex you are faster at grabbing
 	var/skills_space
-	var/fitness_level = mind.get_skill_level(/datum/skill/fitness) - 1
-	if(HAS_TRAIT(src, TRAIT_QUICKER_CARRY))
-		carrydelay -= 2 SECONDS
-	else if(HAS_TRAIT(src, TRAIT_QUICK_CARRY))
-		carrydelay -= 1 SECONDS
-
-	// can remove up to 2 seconds at legendary
-	carrydelay -= fitness_level * (1/3) SECONDS
+	var/carrydelay = max(1 SECONDS, 8 SECONDS - (get_grab_strength() * 1 SECONDS))
 
 	if(carrydelay <= 3 SECONDS)
 		skills_space = " very quickly"
@@ -953,6 +945,19 @@
 		return
 
 	return ..()
+
+/mob/living/carbon/human/post_buckle_mob(mob/living/M)
+	. = ..()
+	add_movespeed_modifier(/datum/movespeed_modifier/carrying)
+
+/mob/living/carbon/human/post_unbuckle_mob(mob/living/M)
+	. = ..()
+	if(!length(buckled_mobs))
+		remove_movespeed_modifier(/datum/movespeed_modifier/carrying)
+
+/datum/movespeed_modifier/carrying
+	movetypes = GROUND|UPSIDE_DOWN
+	multiplicative_slowdown = 0.33
 
 /mob/living/carbon/human/reagent_check(datum/reagent/chem, seconds_per_tick, times_fired)
 	. = ..()

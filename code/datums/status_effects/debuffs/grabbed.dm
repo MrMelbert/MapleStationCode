@@ -154,7 +154,7 @@
 			COMSIG_MOVABLE_SET_GRAB_STATE,
 			COMSIG_QDELETING,
 		))
-		grabbing_us.setGrabState(GRAB_PASSIVE)
+		// grabbing_us.setGrabState(GRAB_PASSIVE)
 		grabbing_us = null
 
 	UnregisterSignal(owner, list(
@@ -432,6 +432,7 @@
 	pin = FALSE
 	REMOVE_TRAIT(owner, TRAIT_FLOORED, "[id]_pin")
 	REMOVE_TRAIT(owner, TRAIT_NO_MOVE_PULL, "[id]_pin")
+	UnregisterSignal(grabbing_us, COMSIG_MOVABLE_PRE_MOVE)
 
 /datum/status_effect/grabbed/proc/update_state(datum/source, new_state)
 	SIGNAL_HANDLER
@@ -461,6 +462,7 @@
 	owner.Move(grabbing_us.loc)
 	RegisterSignal(grabbing_us, COMSIG_MOVABLE_MOVED, PROC_REF(bring_along))
 	RegisterSignal(grabbing_us, COMSIG_ATOM_PRE_BULLET_ACT, PROC_REF(bullet_shield))
+	RegisterSignal(grabbing_us, COMSIG_ATOM_POST_DIR_CHANGE, PROC_REF(dir_changed))
 
 /datum/status_effect/grabbed/proc/unlink_mobs()
 	if(!linked)
@@ -475,13 +477,20 @@
 	UnregisterSignal(grabbing_us, list(
 		COMSIG_MOVABLE_MOVED,
 		COMSIG_ATOM_PRE_BULLET_ACT,
+		COMSIG_ATOM_POST_DIR_CHANGE,
 	))
 
 /datum/status_effect/grabbed/proc/bring_along(datum/source, atom/old_loc, movement_dir)
 	SIGNAL_HANDLER
 
-	owner.Move(grabbing_us.loc, movement_dir, grabbing_us.glide_size)
-	owner.setDir(grabbing_us.dir)
+	if(grabbing_us.loc != old_loc && isturf(grabbing_us.loc))
+		owner.Move(grabbing_us.loc, movement_dir, grabbing_us.glide_size)
+
+/datum/status_effect/grabbed/proc/dir_change(datum/source, old_dir, new_dir)
+	SIGNAL_HANDLER
+
+	if(old_dir != new_dir)
+		owner.setDir(new_dir)
 
 /datum/status_effect/grabbed/proc/bullet_shield(datum/source, obj/projectile/hitting_projectile, def_zone, piercing_hit)
 	SIGNAL_HANDLER
