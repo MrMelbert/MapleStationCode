@@ -1187,31 +1187,56 @@
 	return 1 //returning 0 means we successfully broke free
 
 /mob/living/resist_grab(moving_resist)
-	. = TRUE
-	//If we're in an aggressive grab or higher, we're lying down, we're vulnerable to grabs, or we're staggered and we have some amount of stamina loss, we must resist
-	if(pulledby.grab_state || body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS) || get_timed_status_effect_duration(/datum/status_effect/staggered) && getStaminaLoss() >= 30)
-		var/altered_grab_state = pulledby.grab_state
-		if((body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS) || get_timed_status_effect_duration(/datum/status_effect/staggered)) && pulledby.grab_state < GRAB_KILL) //If prone, resisting out of a grab is equivalent to 1 grab state higher. won't make the grab state exceed the normal max, however
-			altered_grab_state++
-		var/resist_chance = BASE_GRAB_RESIST_CHANCE /// see defines/combat.dm, this should be baseline 60%
-		resist_chance = (resist_chance/altered_grab_state) ///Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
-		if(prob(resist_chance))
-			visible_message(span_danger("[src] breaks free of [pulledby]'s grip!"), \
-							span_danger("You break free of [pulledby]'s grip!"), null, null, pulledby)
-			to_chat(pulledby, span_warning("[src] breaks free of your grip!"))
-			log_combat(pulledby, src, "broke grab")
-			pulledby.stop_pulling()
-			return FALSE
-		else
-			adjustStaminaLoss(rand(15,20))//failure to escape still imparts a pretty serious penalty
-			visible_message(span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"), \
-							span_warning("You struggle as you fail to break free of [pulledby]'s grip!"), null, null, pulledby)
-			to_chat(pulledby, span_danger("[src] struggles as they fail to break free of your grip!"))
-		if(moving_resist && client) //we resisted by trying to move
-			client.move_delay = world.time + 4 SECONDS
-	else
+	if(pulledby.grab_state == GRAB_PASSIVE && body_position != LYING_DOWN && !HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
 		pulledby.stop_pulling()
 		return FALSE
+
+	var/vulnerability_delta = 0
+	if(isliving(pulledby))
+		var/mob/living/grabber = pulledby
+		// Just compare resist strength vs resist strength
+		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_resist_strength()
+	else
+		// Just assume 4 (roughly the same as a human with no buffs)
+		vulnerability_delta = get_grab_resist_strength() - 4
+
+	var/altered_grab_state = pulledby.grab_state
+	if(vulnerability_delta <= 2)
+		altered_grab_state = min(altered_grab_state + 1, GRAB_NECK)
+
+	var/resist_chance = BASE_GRAB_RESIST_CHANCE
+	resist_chance /= altered_grab_state // Resist chance divided by the value imparted by your grab state.
+	resist_chance += (vulnerability_delta * 5) // More vulnerable = more resist, less vulnerable = less resist
+	if(prob(resist_chance))
+		visible_message(
+			span_danger("[src] breaks free of [pulledby]'s grip!"),
+			span_danger("You break free of [pulledby]'s grip!"),
+			null,
+			null,
+			pulledby,
+		)
+		to_chat(pulledby, span_warning("[src] breaks free of your grip!"))
+		if(is_blind())
+			to_chat(src, span_danger("You break free of the grip!"))
+		log_combat(pulledby, src, "broke grab")
+		pulledby.stop_pulling()
+		return FALSE
+
+	adjustStaminaLoss(rand(15, 20))//failure to escape still imparts a pretty serious penalty
+	visible_message(
+		span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"),
+		span_warning("You struggle as you fail to break free of [pulledby]'s grip!"),
+		null,
+		null,
+		pulledby,
+	)
+	to_chat(pulledby, span_danger("[src] struggles as they fail to break free of your grip!"))
+	if(is_blind())
+		to_chat(src, span_danger("You struggle as you fail to break free of the grip!"))
+
+	if(moving_resist) //we resisted by trying to move
+		client?.move_delay = world.time + 4 SECONDS
+	return TRUE
 
 /mob/living/proc/resist_buckle()
 	buckled.user_unbuckle_mob(src,src)

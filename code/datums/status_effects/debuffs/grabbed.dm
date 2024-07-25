@@ -10,6 +10,9 @@
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
 	return user.pulling
 
+/obj/item/grabbing_hand/attack_self(mob/user, modifiers)
+	return user.start_pulling(user.pulling)
+
 /// Status effect applied to someone grabbing something
 /datum/status_effect/grabbing
 	id = "grabbing"
@@ -245,7 +248,7 @@
 				log_combat(grabbing_us, owner, "attempted to neck grab", addition = "neck grab")
 			if(GRAB_NECK)
 				log_combat(grabbing_us, owner, "attempted to strangle", addition = "kill grab")
-		if(!do_after(grabbing_us, 4 SECONDS, owner, extra_checks = CALLBACK(src, PROC_REF(upgrade_check), grabbing_us.grab_state),))
+		if(!do_after(grabbing_us, get_grab_time(8 SECONDS), owner, extra_checks = CALLBACK(src, PROC_REF(upgrade_check), grabbing_us.grab_state),))
 			return
 
 	grabbing_us.setGrabState(grabbing_us.grab_state + 1)
@@ -358,8 +361,7 @@
 	if(owner.is_blind())
 		to_chat(owner, span_userdanger("Someone is trying to pin you to the ground!"))
 
-	// future todo : scale pin time based on size vs size, strength vs strength, martial arts, etc
-	if(!do_after(grabbing_us, 4 SECONDS, owner, extra_checks = CALLBACK(src, PROC_REF(pin_check)),))
+	if(!do_after(grabbing_us, get_grab_time(6 SECONDS), owner, extra_checks = CALLBACK(src, PROC_REF(pin_check)),))
 		return
 	if(owner.buckled || HAS_TRAIT_NOT_FROM(owner, TRAIT_FORCED_STANDING, "[id]_link"))
 		to_chat(grabbing_us, span_warning("You fail to pin [owner] to the ground!"))
@@ -488,6 +490,49 @@
 	var/forwards_dir = REVERSE_DIR(grabbing_us.dir)
 	if(!(hitting_projectile.dir & forwards_dir))
 		return NONE
+	if(prob(33 * (owner.mob_size + 1)))
+		return NONE
 
 	owner.bullet_act(hitting_projectile, def_zone, piercing_hit)
 	return COMPONENT_BULLET_BLOCKED
+
+/datum/status_effect/grabbed/proc/get_grab_time(base_time = 5 SECONDS)
+	var/vulnerability_delta = 0
+	if(isliving(grabbing_us))
+		var/mob/living/grabber = grabbing_us
+		// Compare grab strength vs resist strength
+		vulnerability_delta = owner.get_grab_resist_strength() - grabber.get_grab_strength()
+	else
+		// Just assume 5 (roughly the same as a human with gloves)
+		vulnerability_delta = owner.get_grab_resist_strength() - 5
+
+	return clamp(base_time + (vulnerability_delta * 1 SECONDS), 2 SECONDS, 20 SECONDS)
+
+/// Checks how strong our grabs are.
+/mob/living/proc/get_grab_strength()
+	. += get_grab_resist_strength()
+	if(HAS_TRAIT(src, TRAIT_QUICKER_CARRY))
+		. += 1
+	else if(HAS_TRAIT(src, TRAIT_QUICK_CARRY))
+		. += 0.5
+
+/// Checks how strong we are at resisting being grabbed.
+/mob/living/proc/get_grab_resist_strength()
+	. += mob_size * 2
+	. += clamp(0.5 * ((mind?.get_skill_level(/datum/skill/fitness) || 1) - 1), 0, 3)
+	if(ismonkey(src))
+		. -= 1
+	if(stat == DEAD)
+		. -= 4
+	else if(incapacitated(IGNORE_GRAB|IGNORE_STASIS) \
+		|| body_position == LYING_DOWN \
+		|| (has_status_effect(/datum/status_effect/staggered) && getStaminaLoss() >= 30) \
+	)
+		. -= 2
+	if(HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
+		. -= 2
+	// these two are not
+	if(HAS_TRAIT(src, TRAIT_DWARF))
+		. -= 2
+	if(HAS_TRAIT(src, TRAIT_HULK))
+		. += 2

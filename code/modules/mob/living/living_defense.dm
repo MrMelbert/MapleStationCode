@@ -218,7 +218,7 @@
 /mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = FALSE)
 	if(user == src || anchored || !isturf(user.loc) || (src in user.buckled_mobs))
 		return FALSE
-	if(user.has_limbs && !user.get_empty_held_indexes())
+	if(user.has_limbs && !user.get_empty_held_indexes() && !user.is_holding_item_of_type(/obj/item/grabbing_hand))
 		to_chat(user, span_warning("Your hands are full!"))
 		return FALSE
 

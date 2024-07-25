@@ -15,7 +15,7 @@
 	initial_language_holder = /datum/language_holder/empty // We get stuff from our species
 	flags_1 = PREVENT_CONTENTS_EXPLOSION_1
 	max_grab = GRAB_KILL
-	throw_range = 3
+	throw_range = 4
 
 	//Hair colour and style
 	var/hair_color = "#000000"
