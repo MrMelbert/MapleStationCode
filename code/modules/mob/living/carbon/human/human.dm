@@ -946,19 +946,6 @@
 
 	return ..()
 
-/mob/living/carbon/human/post_buckle_mob(mob/living/M)
-	. = ..()
-	add_movespeed_modifier(/datum/movespeed_modifier/carrying)
-
-/mob/living/carbon/human/post_unbuckle_mob(mob/living/M)
-	. = ..()
-	if(!length(buckled_mobs))
-		remove_movespeed_modifier(/datum/movespeed_modifier/carrying)
-
-/datum/movespeed_modifier/carrying
-	movetypes = GROUND|UPSIDE_DOWN
-	multiplicative_slowdown = 0.33
-
 /mob/living/carbon/human/reagent_check(datum/reagent/chem, seconds_per_tick, times_fired)
 	. = ..()
 	if(. & COMSIG_MOB_STOP_REAGENT_CHECK)

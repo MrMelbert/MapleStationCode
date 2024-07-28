@@ -52,8 +52,8 @@
 	leaner.start_leaning(src)
 
 /mob/living/proc/start_leaning(turf/closed/wall/wall)
-	var/new_y = base_pixel_y + pixel_y
-	var/new_x = base_pixel_x + pixel_x
+	var/new_y = base_pixel_y + pixel_y + body_position_pixel_y_offset
+	var/new_x = base_pixel_x + pixel_x + body_position_pixel_x_offset
 	switch(dir)
 		if(SOUTH)
 			new_y += LEANING_OFFSET
@@ -88,7 +88,7 @@
 		COMSIG_MOVABLE_TELEPORTING,
 		COMSIG_ATOM_DIR_CHANGE,
 	))
-	animate(src, 0.2 SECONDS, pixel_x = base_pixel_x, pixel_y = base_pixel_y)
+	animate(src, 0.2 SECONDS, pixel_x = base_pixel_x + body_position_pixel_x_offset, pixel_y = base_pixel_y + body_position_pixel_y_offset)
 	remove_traits(list(TRAIT_UNDENSE, TRAIT_EXPANDED_FOV), LEANING_TRAIT)
 	update_fov()
 
