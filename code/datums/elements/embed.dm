@@ -113,6 +113,7 @@
 	var/mob/living/carbon/sticking = hit
 	var/obj/item/bodypart/limb = sticking.get_bodypart(hit_zone) || sticking.get_bodypart()
 	if(!try_force_embed(payload, limb))
+		payload.item_flags |= DROPDEL
 		payload.failedEmbed()
 	Detach(source)
 

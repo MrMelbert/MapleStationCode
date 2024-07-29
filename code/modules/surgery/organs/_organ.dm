@@ -319,12 +319,12 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(organ_flags & ORGAN_IRRADIATED)
 		. = "<font color='#29b90f'>Irradiated</font>"
 		if(add_tooltips)
-			. = span_tooltip("Replace surgically or use specialty medication, such as Pentetic Acid or Potassium Iodide.", .)
+			. = span_tooltip("Replace surgically or use specialty medication, such as [/datum/reagent/medicine/pen_acid::name] or [/datum/reagent/medicine/potass_iodide::name].", .)
 		return .
 	if(organ_flags & ORGAN_FAILING)
 		. = "<font color='#cc3333'>Non-Functional</font>"
 		if(add_tooltips)
-			. = span_tooltip("Replace surgically or perform an organ repair operation.", .)
+			. = span_tooltip("Repair or replace surgically.", .)
 		return .
 
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
@@ -332,7 +332,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	if(damage > high_threshold)
 		. = "<font color='#ff9933'>Severely Damaged</font>"
 		if(add_tooltips && owner.stat != DEAD)
-			. = span_tooltip("[healing_factor ? "Treat with rest or use specialty medication." : "Use specialty medication."]", .)
+			. = span_tooltip("[healing_factor ? "Treat with rest or use specialty medication." : "Repair surgically or use specialty medication."]", .)
 		return .
 	if(damage > low_threshold)
 		. = "<font color='#ffcc33'>Mildly Damaged</font>"
