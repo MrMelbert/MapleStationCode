@@ -2,6 +2,7 @@
 
 /obj/projectile/bullet/c9mm
 	name = "9mm bullet"
+	generic_name = "bullet"
 	damage = 30
 	embed_type = /datum/embed_data/bullet/c9mm
 
@@ -27,6 +28,7 @@
 
 /obj/projectile/bullet/incendiary/c9mm
 	name = "9mm incendiary bullet"
+	generic_name = "bullet"
 	damage = 15
 	fire_stacks = 2
 
@@ -34,6 +36,7 @@
 
 /obj/projectile/bullet/c10mm
 	name = "10mm bullet"
+	generic_name = "bullet"
 	damage = 40
 
 /obj/projectile/bullet/c10mm/ap
@@ -48,6 +51,7 @@
 
 /obj/projectile/bullet/incendiary/c10mm
 	name = "10mm incendiary bullet"
+	generic_name = "bullet"
 	damage = 20
 	fire_stacks = 3
 

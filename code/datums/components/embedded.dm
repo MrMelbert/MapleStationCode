@@ -56,11 +56,12 @@
 
 	var/damage = weapon.throwforce
 	if(harmful)
-		victim.throw_alert(ALERT_EMBEDDED_OBJECT, /atom/movable/screen/alert/embeddedobject)
-		if (limb.can_bleed())
+		if(!embed_data.hidden_embed)
+			victim.throw_alert(ALERT_EMBEDDED_OBJECT, /atom/movable/screen/alert/embeddedobject)
+			victim.add_mood_event("embedded", /datum/mood_event/embedded)
+		if(limb.can_bleed())
 			weapon.add_mob_blood(victim)//it embedded itself in you, of course it's bloody!
 		damage += weapon.w_class * embed_data.impact_pain_mult
-		victim.add_mood_event("embedded", /datum/mood_event/embedded)
 
 	if(damage > 0)
 		var/armor = victim.run_armor_check(limb.body_zone, MELEE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].", weapon.armour_penetration, weak_against_armour = weapon.weak_against_armour)
@@ -109,7 +110,10 @@
 		victim.apply_damage((1 - embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
 		if(victim.can_feel_pain())
 			victim.apply_damage(embed_data.pain_stam_pct * damage, STAMINA, limb)
-			to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] hurts!"))
+			if(embed_data.hidden_embed)
+				to_chat(victim, span_danger("Something in your [limb.plaintext_zone] hurts!"))
+			else
+				to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] hurts!"))
 
 	var/fall_chance_current = embed_data.fall_chance + fall_chance_mod
 	if(victim.body_position == LYING_DOWN)
@@ -135,12 +139,20 @@
 	else if(victim.move_intent == MOVE_INTENT_RUN)
 		chance *= 1.5
 
-	if(prob(chance))
-		var/damage = weapon.w_class * embed_data.jostle_pain_mult
-		victim.apply_damage((1 -  embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
-		if(victim.can_feel_pain())
-			victim.apply_damage( embed_data.pain_stam_pct * damage, STAMINA, limb)
+	if(!prob(chance))
+		return
+
+	var/damage = weapon.w_class * embed_data.jostle_pain_mult
+	victim.apply_damage((1 -  embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
+	if(victim.can_feel_pain())
+		victim.apply_damage( embed_data.pain_stam_pct * damage, STAMINA, limb)
+		if(embed_data.hidden_embed)
+			to_chat(victim, span_danger("Something in your [limb.plaintext_zone] jostles and stings!"))
+		else
 			to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] jostles and stings!"))
+	else
+		if(embed_data.hidden_embed)
+			to_chat(victim, span_danger("Something in your [limb.plaintext_zone] jostles!"))
 		else
 			to_chat(victim, span_danger("[weapon] embedded in your [limb.plaintext_zone] jostles!"))
 
@@ -166,7 +178,7 @@
 		return
 	var/mob/living/carbon/victim = parent
 	var/datum/embed_data/embed_data = weapon.get_embed()
-	var/time_taken = embed_data.rip_time * weapon.w_class
+	var/time_taken = embed_data.rip_time * weapon.w_class * 2 // melbert todo : remove this *2 when other people can rip out things from you
 	INVOKE_ASYNC(src, PROC_REF(complete_rip_out), victim, I, limb, time_taken)
 
 /// everything async that ripOut used to do
@@ -218,7 +230,7 @@
 	limb._unembed_object(weapon)
 
 	if(victim)
-		to_chat(victim, span_userdanger("\The [weapon] that was embedded in your [limb.plaintext_zone] disappears!"))
+		to_chat(victim, span_danger("[weapon] that was embedded in your [limb.plaintext_zone] disappears!"))
 
 	qdel(src)
 

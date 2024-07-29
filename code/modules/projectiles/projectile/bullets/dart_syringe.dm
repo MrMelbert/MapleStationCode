@@ -56,6 +56,7 @@
 /obj/projectile/bullet/dart/syringe
 	name = "syringe"
 	icon_state = "syringeproj"
+	generic_name = "syringe"
 
 // Code to handle what happens when a syringe is embedded in a mob
 /obj/item/reagent_containers/syringe

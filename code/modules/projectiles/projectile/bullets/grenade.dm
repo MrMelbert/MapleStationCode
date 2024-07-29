@@ -3,6 +3,7 @@
 /obj/projectile/bullet/a40mm
 	name ="40mm grenade"
 	desc = "USE A WEEL GUN"
+	generic_name = "grenade"
 	icon_state= "bolter"
 	damage = 60
 	embed_type = null

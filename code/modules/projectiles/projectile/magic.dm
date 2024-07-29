@@ -1,6 +1,7 @@
 /obj/projectile/magic
 	name = "bolt"
 	icon_state = "energy"
+	generic_name = "magical bolt"
 	damage = 0 // MOST magic projectiles pass the "not a hostile projectile" test, despite many having negative effects
 	damage_type = OXY
 	armour_penetration = 100

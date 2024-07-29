@@ -2,18 +2,21 @@
 
 /obj/projectile/bullet/n762
 	name = "7.62x38mmR bullet"
+	generic_name = "bullet"
 	damage = 60
 
 // .50AE (Desert Eagle)
 
 /obj/projectile/bullet/a50ae
 	name = ".50AE bullet"
+	generic_name = "bullet"
 	damage = 60
 
 // .38 (Detective's Gun)
 
 /obj/projectile/bullet/c38
 	name = ".38 bullet"
+	generic_name = "bullet"
 	damage = 25
 	ricochets_max = 2
 	ricochet_chance = 50
@@ -25,13 +28,13 @@
 	embed_falloff_tile = 4
 
 /datum/embed_data/bullet/c38
-	embed_chance = 40
+	embed_chance = 33
 	fall_chance = 0.0020
 	jostle_chance = 2
 	pain_stam_pct = 0.4
 	pain_mult = 3
 	jostle_pain_mult = 5
-	rip_time = 3 SECONDS
+	rip_time = 8 SECONDS
 
 /obj/projectile/bullet/c38/match
 	name = ".38 Match bullet"
@@ -70,11 +73,12 @@
 	embed_falloff_tile = -15
 
 /datum/embed_data/bullet/c38/dumdum
-	embed_chance = 80
+	embed_chance = 75
 	fall_chance = 0.0030
 	jostle_chance = 4
 	pain_mult = 5
 	jostle_pain_mult = 6
+	rip_time = 5 SECONDS
 
 /obj/projectile/bullet/c38/trac
 	name = ".38 TRAC bullet"
@@ -122,6 +126,7 @@
 
 /obj/projectile/bullet/a357
 	name = ".357 bullet"
+	generic_name = "bullet"
 	damage = 60
 	wound_bonus = -30
 

@@ -2,6 +2,7 @@
 
 /obj/projectile/bullet/a223
 	name = ".223 bullet"
+	generic_name = "bullet"
 	damage = 35
 	armour_penetration = 30
 	wound_bonus = -40
@@ -20,6 +21,7 @@
 
 /obj/projectile/bullet/strilka310
 	name = ".310 Strilka bullet"
+	generic_name = "bullet"
 	damage = 60
 	armour_penetration = 10
 	wound_bonus = -45

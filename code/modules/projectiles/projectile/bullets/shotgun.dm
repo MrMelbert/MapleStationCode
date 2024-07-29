@@ -1,6 +1,7 @@
 /obj/projectile/bullet/shotgun_slug
 	name = "12g shotgun slug"
 	icon_state = "pellet"
+	generic_name = "slug"
 	damage = 50
 	sharpness = SHARP_POINTY
 	wound_bonus = 0
@@ -18,6 +19,7 @@
 /obj/projectile/bullet/shotgun_beanbag
 	name = "beanbag slug"
 	icon_state = "pellet"
+	generic_name = "slug"
 	damage = 10
 	stamina = 55
 	wound_bonus = 20
@@ -35,6 +37,7 @@
 /obj/projectile/bullet/incendiary/shotgun
 	name = "incendiary slug"
 	icon_state = "pellet"
+	generic_name = "pellet"
 	damage = 20
 
 /obj/projectile/bullet/incendiary/shotgun/no_trail
@@ -48,6 +51,7 @@
 
 /obj/projectile/bullet/shotgun_stunslug
 	name = "stunslug"
+	generic_name = "slug"
 	damage = 5
 	paralyze = 100
 	stutter = 10 SECONDS
@@ -59,6 +63,7 @@
 
 /obj/projectile/bullet/shotgun_frag12
 	name ="frag12 slug"
+	generic_name = "slug"
 	icon_state = "pellet"
 	damage = 15
 	paralyze = 10
@@ -70,6 +75,7 @@
 
 /obj/projectile/bullet/pellet
 	icon_state = "pellet"
+	generic_name = "pellet"
 	damage_falloff_tile = -0.45
 
 /obj/projectile/bullet/pellet/shotgun_buckshot
@@ -125,6 +131,7 @@
 
 /obj/projectile/bullet/scattershot
 	icon_state = "pellet"
+	generic_name = "pellet"
 	damage = 24
 
 //Breaching Ammo
@@ -132,6 +139,7 @@
 /obj/projectile/bullet/shotgun_breaching
 	name = "12g breaching round"
 	desc = "A breaching round designed to destroy airlocks and windows with only a few shots. Ineffective against other targets."
+	generic_name = "slug"
 	hitsound = 'sound/weapons/sonic_jackhammer.ogg'
 	damage = 5 //does shit damage to everything except doors and windows
 	demolition_mod = 200 //one shot to break a window or grille, or two shots to breach an airlock door

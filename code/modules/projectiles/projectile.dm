@@ -14,6 +14,8 @@
 	generic_canpass = FALSE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	layer = MOB_LAYER
+
+	var/generic_name
 	//The sound this plays on impact.
 	var/hitsound = 'sound/weapons/pierce.ogg'
 	var/hitsound_wall = ""
@@ -329,13 +331,13 @@
 			playsound(loc, hitsound, 5, TRUE, -1)
 		else if(suppressed)
 			playsound(loc, hitsound, 5, TRUE, -1)
-			to_chat(living_target, span_userdanger("You're [grazing ? "grazed" : "hit"] by \a [src][organ_hit_text]!"))
+			to_chat(living_target, span_userdanger("You're [grazing ? "grazed" : "hit"] by \a [generic_name || src][organ_hit_text]!"))
 		else
 			if(hitsound)
 				playsound(src, hitsound, vol_by_damage(), TRUE, -1)
 			living_target.visible_message(
-				span_danger("[living_target] is [grazing ? "grazed" : "hit"] by [src][organ_hit_text]!"),
-				span_userdanger("You're [grazing ? "grazed" : "hit"] by [src][organ_hit_text]!"),
+				span_danger("[living_target] is [grazing ? "grazed" : "hit"] by \a [generic_name || src][organ_hit_text]!"),
+				span_userdanger("You're [grazing ? "grazed" : "hit"] by \a [generic_name || src][organ_hit_text]!"),
 				span_hear("You hear a woosh."),
 				// vision_distance = COMBAT_MESSAGE_RANGE,
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE

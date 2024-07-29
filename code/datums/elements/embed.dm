@@ -104,11 +104,11 @@
 	if(!source.can_embed_into(hit) || blocked)
 		Detach(source)
 		return // we don't care
-	var/payload_type = source.shrapnel_type
-	var/obj/item/payload = new payload_type(get_turf(hit))
+	var/obj/item/payload = new source.shrapnel_type(get_turf(hit))
 	payload.set_embed(source.get_embed())
 	if(istype(payload, /obj/item/shrapnel/bullet))
-		payload.name = "[source.name] shrapnel"
+		var/obj/item/shrapnel/bullet/bullet = payload
+		bullet.real_name = "[source.name] shrapnel"
 	SEND_SIGNAL(source, COMSIG_PROJECTILE_ON_SPAWN_EMBEDDED, payload)
 	var/mob/living/carbon/sticking = hit
 	var/obj/item/bodypart/limb = sticking.get_bodypart(hit_zone) || sticking.get_bodypart()

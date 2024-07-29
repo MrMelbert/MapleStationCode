@@ -16,7 +16,6 @@
 /obj/item/shrapnel/stingball // stingbang grenades
 	name = "stingball"
 	desc = "A small, but deceptively painful, metal pellet."
-	icon_state = "tiny"
 	sharpness = NONE
 
 /obj/item/shrapnel/bullet // bullets
@@ -24,6 +23,16 @@
 	desc = "The remains of a bullet."
 	embed_type = null // embedding vars are taken from the projectile itself
 	color = null
+	/// Tracks what the bullet actually is
+	/// So in your body it just appears to be "bullet shrapnel"
+	/// But when you remove it and examine it, you see what caliber it was
+	var/real_name
+
+/obj/item/shrapnel/bullet/unembedded()
+	if(real_name)
+		name = real_name
+		real_name = null
+	return ..()
 
 /obj/projectile/bullet/shrapnel
 	name = "flying shrapnel shard"

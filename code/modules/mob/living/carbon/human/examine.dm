@@ -143,7 +143,9 @@
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
-		for(var/obj/item/leftover in body_part.embedded_objects)
+		for(var/obj/item/leftover as anything in body_part.embedded_objects)
+			if(leftover.get_embed().hidden_embed)
+				continue
 			var/stuck_or_embedded = "embedded in"
 			if(leftover.is_embed_harmless())
 				stuck_or_embedded = "stuck to"

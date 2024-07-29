@@ -20,17 +20,21 @@
 /datum/embed_data/bullet
 	embed_chance = 20
 	fall_chance = 0.0020
+	pain_chance = 2
 	jostle_chance = 1
 	ignore_throwspeed_threshold = TRUE
 	pain_stam_pct = 0.5
 	pain_mult = 3
-	rip_time = 5 SECONDS
+	rip_time = 10 SECONDS
+	hidden_embed = TRUE
 
-/datum/embed_data/bullet/on_embed(mob/living/carbon/victim, obj/item/bodypart/limb, obj/item/weapon, harmful = TRUE)
-	victim.visible_message(
-		span_danger("[weapon] [harmful ? "embeds" : "sticks"] itself [harmful ? "in" : "to"] [victim]'s [limb.plaintext_zone]!"),
-		span_userdanger("[weapon] [harmful ? "embeds" : "sticks"] itself [harmful ? "in" : "to"] your [limb.plaintext_zone]!"),
-	)
+/datum/embed_data/bullet/on_embed(
+	mob/living/carbon/victim,
+	obj/item/bodypart/limb,
+	obj/item/weapon,
+	harmful = weapon?.is_embed_harmless(),
+)
+	addtimer(CALLBACK(src, PROC_REF(embed_msg), victim, limb, weapon, harmful), 0.2 SECONDS)
 	if(harmful)
 		playsound(victim, pick(
 			'maplestation_modules/sound/items/bullets/bullet_meat1.ogg',
@@ -38,6 +42,11 @@
 			'maplestation_modules/sound/items/bullets/bullet_meat3.ogg',
 			'maplestation_modules/sound/items/bullets/bullet_meat4.ogg',
 		), 40)
+
+/datum/embed_data/bullet/proc/embed_msg(mob/living/carbon/victim, obj/item/bodypart/limb, obj/item/weapon, harmful = TRUE)
+	if(QDELETED(victim) || QDELETED(limb) || QDELETED(weapon) || limb.owner != victim || victim.stat == DEAD)
+		return
+	to_chat(victim, span_userdanger("You feel a [(victim.can_feel_pain() && harmful) ? "sharp pain" : "dull force"] as [victim.is_blind() ? "something" : weapon] [harmful ? "embeds" : "sticks"] itself in your [limb.plaintext_zone]!"))
 
 /turf/closed/wall/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit)
 	. = ..()
