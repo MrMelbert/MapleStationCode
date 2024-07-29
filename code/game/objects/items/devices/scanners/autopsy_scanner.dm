@@ -92,7 +92,6 @@
 		else
 			autopsy_information += "Unknown causes.</br>"
 	else
-		// NON-MODULE CHANGE
 		if(!HAS_TRAIT(scanned, TRAIT_NOBLOOD))
 			autopsy_information += "Blood Type: [scanned.get_blood_type() || "None"]<br>"
 			autopsy_information += "Blood Volume: [scanned.blood_volume] cl ([round((scanned.blood_volume / BLOOD_VOLUME_NORMAL) * 100)]%) <br>"
@@ -106,10 +105,13 @@
 		for(var/datum/symptom/symptom as anything in advanced_disease.symptoms)
 			autopsy_information += "[symptom.name] - [symptom.desc]<br>"
 
-	var/obj/item/paper/autopsy_report = new(user.loc)
-	autopsy_report.name = "Autopsy Report ([scanned.name])"
+	var/obj/item/paper/autopsy_report = new(user.drop_location())
+	var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/simple/paper)
+	autopsy_report.name = "autopsy report of [scanned] - [station_time_timestamp()])"
 	autopsy_report.add_raw_text(autopsy_information.Join("\n"))
-	autopsy_report.update_appearance(UPDATE_ICON)
+	autopsy_report.add_stamp(sheet.icon_class_name("stamp-cmo"), 260, 5, 0, "stamp-cmo") // melbert todo : placeholder until i get a cross img
+	autopsy_report.color = "#99ccff"
+	autopsy_report.update_appearance()
 	user.put_in_hands(autopsy_report)
 	user.balloon_alert(user, "report printed")
 	return TRUE

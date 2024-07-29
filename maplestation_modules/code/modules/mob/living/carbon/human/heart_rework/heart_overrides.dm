@@ -19,3 +19,7 @@
 			. = span_tooltip("Apply defibrillation immediately. Similar electric shocks may work in emergencies.", .)
 		return .
 	return ..()
+
+/obj/item/organ/internal/heart/show_on_condensed_scans()
+	// Always show if the guy needs a heart (so its status can be monitored)
+	return ..() || owner.needs_heart()

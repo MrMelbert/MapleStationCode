@@ -939,12 +939,12 @@
 		if(50 to 80)
 			amount = span_bold("severe")
 			if(!in_shock)
-				shock_text = span_bold("Alert: Potential of neurogenic shock. ")
+				shock_text = span_bold("Alert: Potential of neurogenic shock")
 			tip += "Treat wounds and abate pain with long rest, cryogenics, and moderate painkilling medication."
 		if(80 to INFINITY)
 			amount = span_bold("extreme")
 			if(!in_shock)
-				shock_text = span_bold("Alert: High potential of neurogenic shock. ")
+				shock_text = span_bold("Alert: High potential of neurogenic shock")
 			tip += "Treat wounds and abate pain with long rest, cryogenics, and heavy painkilling medication."
 
 	if(!amount)
@@ -962,7 +962,7 @@
 
 	render_list += "<span class='alert ml-1'>"
 	if(shock_text)
-		render_list += "[shock_text] - "
+		render_list += "[shock_text] / "
 	render_list += amount_text
 	render_list += "</span>\n"
 
