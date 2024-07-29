@@ -9,7 +9,8 @@
 /datum/wound/bleed_internal
 	name = "Internal Bleeding"
 	desc = "The patient is bleeding internally, causing severe pain and difficulty breathing."
-	treat_text = "Surgery."
+	treat_text = "Surgical repair of the affected vein is necessary."
+	treat_text_short = "Surgical repair required."
 	examine_desc = ""
 	scar_keyword = ""
 	severity = WOUND_SEVERITY_MODERATE

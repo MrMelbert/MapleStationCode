@@ -315,17 +315,33 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		replacement.set_organ_damage(damage)
 
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
-/obj/item/organ/proc/get_status_text()
+/obj/item/organ/proc/get_status_text(advanced, add_tooltips)
 	if(organ_flags & ORGAN_IRRADIATED)
-		return "<font color='#29b90f'>Irradiated - Replace or use specialty medication</font>"
+		. = "<font color='#29b90f'>Irradiated</font>"
+		if(add_tooltips)
+			. = span_tooltip("Replace surgically or use specialty medication, such as Pentetic Acid or Potassium Iodide.", .)
+		return .
 	else if(owner.has_reagent(/datum/reagent/inverse/technetium))
 		return "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% damaged</font>"
 	else if(organ_flags & ORGAN_FAILING)
-		return "<font color='#cc3333'>Non-Functional - Replace or operate</font>"
+		. = "<font color='#cc3333'>Non-Functional</font>"
+		if(add_tooltips)
+			. = span_tooltip("Replace surgically or perform an organ repair operation.", .)
+		return .
 	else if(damage > high_threshold)
-		return "<font color='#ff9933'>Severely Damaged[owner.stat == DEAD ? "" : " - Treat with rest or use specialty medication"]</font>"
+		. = "<font color='#ff9933'>Severely Damaged</font>"
+		if(add_tooltips && owner.stat != DEAD)
+			. = span_tooltip("[healing_factor ? "Treat with rest or use specialty medication." : "Use specialty medication."]", .)
+		return .
 	else if (damage > low_threshold)
-		return "<font color='#ffcc33'>Mildly Damaged[owner.stat == DEAD ? "" : " - Treat with rest"]</font>"
+		. = "<font color='#ffcc33'>Mildly Damaged</font>"
+		if(add_tooltips && owner.stat != DEAD)
+			. = span_tooltip("[healing_factor ? "Treat with rest." : "Use specialty medication."]", .)
+		return .
+
+/// Similar to get_status_text, but appends the text after the damage report, for additional status info
+/obj/item/organ/proc/get_status_appendix(advanced, add_tooltips)
+	return
 
 /// Tries to replace the existing organ on the passed mob with this one, with special handling for replacing a brain without ghosting target
 /obj/item/organ/proc/replace_into(mob/living/carbon/new_owner)

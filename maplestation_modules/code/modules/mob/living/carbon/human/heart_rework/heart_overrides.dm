@@ -12,7 +12,10 @@
 /obj/item/organ/internal/heart/gland/Stop()
 	return FALSE
 
-/obj/item/organ/internal/heart/get_status_text()
+/obj/item/organ/internal/heart/get_status_text(advanced, add_tooltips)
 	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
-		return "<font color='#cc3333'>Cardiac Arrest - Apply defibrillation!</font>"
+		. = "<font color='#cc3333'>Cardiac Arrest</font>"
+		if(add_tooltips)
+			. = span_tooltip("Apply defibrillation immediately. Similar electric shocks may work in emergencies.", .)
+		return .
 	return ..()

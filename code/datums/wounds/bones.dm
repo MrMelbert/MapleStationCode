@@ -203,7 +203,7 @@
 	var/pain_prob = min(75, 20 * severity * (victim.body_position == LYING_DOWN ? 1.5 : 1))
 	if(!prob(pain_prob))
 		return NONE
-	victim.visible_message(span_danger("You wince as you take a deep breath, feeling the pain in your ribs!"))
+	to_chat(victim, span_danger("You wince as you take a deep breath, feeling the pain in your ribs!"))
 	var/breath_prob = min(50, 15 * severity * (victim.body_position == LYING_DOWN ? 1.2 : 1))
 	if(prob(breath_prob))
 		victim.pain_emote("gasp")
@@ -293,7 +293,9 @@
 	// Flavor wise imagine it as one rib being broken rather than multiple
 	name = "Fractured Rib"
 	desc = "One of the patient's ribs has been fractured, causing sharp pain and difficulty breathing."
-	treat_text = "Surgery, or in the event of an emergency, application of bone gel and surgical tape to the affected area."
+	treat_text = "Repair surgically. In the event of an emergency, \
+		one can also apply bone gel and surgical tape to the affected area to fix over time."
+	treat_text_short = "Repair surgically, or apply bone gel and surgical tape."
 	occur_text = "cracks and bruises"
 	examine_desc = ""
 
@@ -322,9 +324,9 @@
 	name = "Joint Dislocation"
 	undiagnosed_name = "Dislocation"
 	desc = "Patient's limb has been unset from socket, causing pain and reduced motor function."
-	treat_text = "Recommended application of bonesetter to affected limb, \
-		though manual relocation by applying an aggressive grab to the patient \
-		and helpfully interacting with afflicted limb may suffice."
+	treat_text = "Apply Bonesetter to the affected limb. \
+		Manual relocation by via an aggressive grab and a tight hug to the affected limb may also suffice."
+	treat_text_short = "Apply Bonesetter, or manually relocate the limb."
 	examine_desc = "is awkwardly janked out of place"
 	occur_text = "janks violently and becomes unseated"
 	severity = WOUND_SEVERITY_MODERATE
@@ -463,8 +465,9 @@
 /datum/wound/blunt/bone/severe
 	name = "Hairline Fracture"
 	desc = "Patient's bone has suffered a crack in the foundation, causing serious pain and reduced limb functionality."
-	treat_text = "Surgery, or in the event of an emergency, light surgical application of bone gel - \
-		though a sling of medical gauze will prevent worsening situation."
+	treat_text = "Repair surgically. In the event of an emergency, an application of bone gel over the affected area will fix over time. \
+		A splint or sling of medical gauze can also be used to prevent the fracture from worsening."
+	treat_text_short = "Repair surgically, or apply bone gel. A splint or gauze sling can also be used."
 	examine_desc = "appears grotesquely swollen, jagged bumps hinting at chips in the bone"
 	occur_text = "sprays chips of bone and develops a nasty looking bruise"
 
@@ -502,8 +505,9 @@
 	undiagnosed_name = "Compound Fracture" // you can tell it's a compound fracture at a glance because of a skin breakage
 	desc = "Patient's bones have suffered multiple fractures, \
 		couped with a break in the skin, causing significant pain and near uselessness of limb."
-	treat_text = "Immediate binding of affected limb, followed by immediate surgery or, in the event of an emergency, \
-		application of bone gel and surgical tape to the affected area."
+	treat_text = "Immediately bind the affected limb with gauze or a splint. Repair surgically. \
+		In the event of an emergency, bone gel and surgical tape can be applied to the affected area to fix over a long period of time."
+	treat_text_short = "Repair surgically, or apply bone gel and surgical tape. A splint or gauze sling should also be used."
 	examine_desc = "is thoroughly pulped and cracked, exposing shards of bone to open air"
 	occur_text = "cracks apart, exposing broken bones to open air"
 

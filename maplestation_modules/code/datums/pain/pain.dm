@@ -913,14 +913,18 @@
  *
  * (To encourage a bit more interaction between the doctors and their patients)
  */
-/datum/pain/proc/on_analyzed(datum/source, list/render_list, advanced, mob/user, mode)
+/datum/pain/proc/on_analyzed(datum/source, list/render_list, advanced, mob/user, mode, tochat)
 	SIGNAL_HANDLER
+
+	if(parent.stat == DEAD)
+		return
+
+	var/in_shock = HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock")
 
 	var/amount = ""
 	var/tip = ""
-	var/in_shock = HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock")
-	if(in_shock)
-		tip += span_bold("Neurogenic shock has begun and should be treated urgently. ")
+	var/amount_text = ""
+	var/shock_text = ""
 
 	switch(get_average_pain())
 		if(5 to 15)
@@ -933,21 +937,34 @@
 			amount = "major"
 			tip += "Treat wounds and abate pain with rest, cryogenics, and painkilling medication."
 		if(50 to 80)
-			amount = "severe"
+			amount = span_bold("severe")
 			if(!in_shock)
-				tip += span_bold("Alert: Potential of neurogenic shock. ")
+				shock_text = span_bold("Alert: Potential of neurogenic shock. ")
 			tip += "Treat wounds and abate pain with long rest, cryogenics, and moderate painkilling medication."
 		if(80 to INFINITY)
-			amount = "extreme"
+			amount = span_bold("extreme")
 			if(!in_shock)
-				tip += span_bold("Alert: High potential of neurogenic shock. ")
+				shock_text = span_bold("Alert: High potential of neurogenic shock. ")
 			tip += "Treat wounds and abate pain with long rest, cryogenics, and heavy painkilling medication."
 
-	if(amount && tip)
-		render_list += "<span class='alert ml-1'>"
-		render_list += span_bold("Subject is experiencing [amount] pain. ")
-		render_list += tip
-		render_list += "</span>\n"
+	if(!amount)
+		return
+
+	amount_text = span_danger("Subject is experiencing [amount] pain.")
+	if(tochat && tip)
+		amount_text = span_tooltip(tip, amount_text)
+
+	if(in_shock)
+		shock_text = span_bold("Neurogenic shock has begun and should be treated urgently.")
+	if(shock_text && tochat)
+		shock_text = span_tooltip("Provide immediate pain relief, epinephrine, and moderate body temperature. \
+			[in_shock ? "Monitor closely for worsening condition or cardiac arrest. " : ""]Cryogenics may also aid in recovery.", shock_text)
+
+	render_list += "<span class='alert ml-1'>"
+	if(shock_text)
+		render_list += "[shock_text] - "
+	render_list += amount_text
+	render_list += "</span>\n"
 
 #ifdef PAIN_DEBUG
 	debug_print_pain()

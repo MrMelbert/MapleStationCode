@@ -151,10 +151,14 @@
 
 	return COMSIG_GEIGER_COUNTER_SCAN_SUCCESSFUL
 
-/datum/status_effect/irradiated/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode)
+/datum/status_effect/irradiated/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
 	SIGNAL_HANDLER
 
-	render_list += "<span class='alert ml-1'>Subject is irradiated. Supply toxin healing.</span>\n"
+	var/message = "Subject is irradiated."
+	if(tochat)
+		message = span_tooltip("Supply antitoxin medication.", message)
+
+	render_list += "<span class='alert ml-1'>[message]</span>\n"
 
 /datum/status_effect/irradiated/proc/radimmune_gained(...)
 	SIGNAL_HANDLER
