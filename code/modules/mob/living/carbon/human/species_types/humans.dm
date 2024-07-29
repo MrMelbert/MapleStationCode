@@ -84,6 +84,11 @@
 		return SFX_SNORE_FEMALE
 	return SFX_SNORE_MALE
 
+/datum/species/human/get_sigh_sound(mob/living/carbon/human/human)
+	if(human.physique == FEMALE)
+		return 'sound/voice/human/female_sigh.ogg'
+	return 'sound/voice/human/male_sigh.ogg'
+
 /datum/species/human/get_species_description()
 	return "Humans are the dominant species in the known galaxy. \
 		Their kind extend from old Earth to the edges of known space."

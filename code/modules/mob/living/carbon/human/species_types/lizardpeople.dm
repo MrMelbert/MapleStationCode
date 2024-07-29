@@ -117,6 +117,11 @@
 		return SFX_SNORE_FEMALE
 	return SFX_SNORE_MALE
 
+/datum/species/lizard/get_sigh_sound(mob/living/carbon/human/lizard)
+	if(lizard.physique == FEMALE)
+		return 'sound/voice/human/female_sigh.ogg'
+	return 'sound/voice/human/male_sigh.ogg'
+
 /datum/species/lizard/get_physical_attributes()
 	return "Lizardpeople can withstand slightly higher temperatures than most species, but they are very vulnerable to the cold \
 		and can't regulate their body-temperature internally, making the vacuum of space extremely deadly to them."
