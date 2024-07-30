@@ -246,6 +246,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			if (istype(requested_preference, /datum/preference/name))
 				tainted_character_profiles = TRUE
+				if(isnewplayer(usr))
+					var/mob/dead/new_player/cycle = usr
+					cycle.update_ready_report()
 
 			return TRUE
 		if ("set_color_preference")

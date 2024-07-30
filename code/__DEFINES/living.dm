@@ -88,3 +88,11 @@
 /// Helper for picking between left or right when given a value
 /// Used primarily for hand or foot indexes
 #define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT(value) ? left : right)
+
+// Used in ready menu anominity
+/// Hide ckey
+#define CKEY_ANON (1<<0)
+/// Hide character name
+#define NAME_ANON (1<<1)
+/// Hide top job preference
+#define JOB_ANON (1<<2)

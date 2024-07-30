@@ -116,6 +116,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_fluffy_long"
 
+/datum/sprite_accessory/hair/improper_director
+	name = "Improper Director"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_impdirector"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
