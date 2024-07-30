@@ -117,6 +117,23 @@ GLOBAL_LIST_INIT(language_types_by_name, init_language_types_by_name())
 		lang_list[initial(lang_type.name)] = lang_type
 	return lang_list
 
+/// An assoc list of species IDs to type paths
+GLOBAL_LIST_INIT(species_list, init_species_list())
+/// List of all species prototypes to reference, assoc [type] = prototype
+GLOBAL_LIST_INIT_TYPED(species_prototypes, /datum/species, init_species_prototypes())
+
+/proc/init_species_list()
+	var/list/species_list = list()
+	for(var/datum/species/species_path as anything in subtypesof(/datum/species))
+		species_list[initial(species_path.id)] = species_path
+	return species_list
+
+/proc/init_species_prototypes()
+	var/list/species_list = list()
+	for(var/species_type in subtypesof(/datum/species))
+		species_list[species_type] = new species_type()
+	return species_list
+
 GLOBAL_LIST_EMPTY(sentient_disease_instances)
 
 GLOBAL_LIST_EMPTY(latejoin_ai_cores)

@@ -16,7 +16,6 @@
 	spawn_positions = 1
 	supervisors = "the heads of staff and the captain"
 	// selection_color = "#ddddff"
-	req_admin_notify = 1
 	minimal_player_age = 10
 	exp_requirements = 180
 	exp_required_type = EXP_TYPE_CREW
@@ -57,9 +56,9 @@
 		/obj/item/storage/fancy/cigarettes = 1,
 	)
 
-	job_flags = STATION_JOB_FLAGS | JOB_CANNOT_OPEN_SLOTS
+	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Guildperson"
-	crewmonitor_priority = 59
+	crewmonitor_priority = 60.1 // after HOP, before rest of service
 
 /datum/outfit/job/bridge_officer
 	name = "Bridge Officer"

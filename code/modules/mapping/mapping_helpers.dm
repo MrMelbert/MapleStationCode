@@ -577,6 +577,9 @@
 	if(!light_switch)
 		stack_trace("Trying to turn off lights with lightswitch in area without lightswitches. In [(needed_area.type)] to be precise.")
 	needed_area.lightswitch = FALSE
+	if(!light_switch.area)
+		light_switch.area = needed_area
+	light_switch?.update_appearance()
 
 //needs to do its thing before spawn_rivers() is called
 INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
@@ -918,8 +921,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 					var/datum/species/new_human_species = GLOB.species_list[species_to_pick]
 					if(new_human_species)
 						new_human.set_species(new_human_species)
-						new_human_species = new_human.dna.species
-						new_human.fully_replace_character_name(new_human.real_name, new_human_species.random_name(new_human.gender, TRUE, TRUE))
+						new_human.fully_replace_character_name(new_human.real_name, new_human.generate_random_mob_name())
 					else
 						stack_trace("failed to spawn cadaver with species ID [species_to_pick]") //if it's invalid they'll just be a human, so no need to worry too much aside from yelling at the server owner lol.
 		else

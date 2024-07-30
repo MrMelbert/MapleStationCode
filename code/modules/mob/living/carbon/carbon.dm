@@ -211,6 +211,14 @@
 		SEND_SIGNAL(src, COMSIG_CARBON_EMBED_RIP, I, L)
 		return
 
+	if(href_list["gauze_limb"])
+		var/obj/item/bodypart/gauzed = locate(href_list["gauze_limb"]) in bodyparts
+		if(isnull(gauzed?.current_gauze))
+			return
+		// rest of the sanity is handled in the proc itself
+		gauzed.help_remove_gauze(usr)
+		return
+
 	if(href_list["show_paper_note"])
 		var/obj/item/paper/paper_note = locate(href_list["show_paper_note"])
 		if(!paper_note)
@@ -1362,7 +1370,6 @@
 	else
 		set_lying_angle(new_lying_angle)
 
-
 /mob/living/carbon/vv_edit_var(var_name, var_value)
 	switch(var_name)
 		if(NAMEOF(src, disgust))
@@ -1378,17 +1385,18 @@
 
 	return ..()
 
-
 /mob/living/carbon/get_attack_type()
 	if(has_active_hand())
 		var/obj/item/bodypart/arm/active_arm = get_active_hand()
 		return active_arm.attack_type
 	return ..()
 
-
 /mob/living/carbon/proc/attach_rot()
-	if(mob_biotypes & (MOB_ORGANIC|MOB_UNDEAD))
-		AddComponent(/datum/component/rot, 6 MINUTES, 10 MINUTES, 1)
+	if(flags_1 & HOLOGRAM_1)
+		return
+	if(!(mob_biotypes & (MOB_ORGANIC|MOB_UNDEAD)))
+		return
+	AddComponent(/datum/component/rot, 6 MINUTES, 10 MINUTES, 1)
 
 /**
  * This proc is used to determine whether or not the mob can handle touching an acid affected object.
@@ -1438,3 +1446,20 @@
 	if(item && ((item in organs) || (item in bodyparts))) //let's not do this, aight?
 		return FALSE
 	return ..()
+
+/// Helper to cleanly trigger tail wagging
+/// Accepts an optional timeout after which we remove the tail wagging
+/// Returns true if successful, false otherwise
+/mob/living/carbon/proc/wag_tail(timeout = INFINITY)
+	var/obj/item/organ/external/tail/wagged = get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	if(!wagged)
+		return FALSE
+	return wagged.start_wag(src, timeout)
+
+/// Helper to cleanly stop all tail wagging
+/// Returns true if successful, false otherwise
+/mob/living/carbon/proc/unwag_tail() // can't unwag a tail
+	var/obj/item/organ/external/tail/unwagged = get_organ_slot(ORGAN_SLOT_EXTERNAL_TAIL)
+	if(!unwagged)
+		return FALSE
+	return unwagged.stop_wag(src)

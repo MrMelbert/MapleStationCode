@@ -116,6 +116,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_fluffy_long"
 
+/datum/sprite_accessory/hair/improper_director
+	name = "Improper Director"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_impdirector"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
@@ -256,6 +261,7 @@
 	icon ='maplestation_modules/icons/mob/clothing/underwear.dmi'
 	gender = NEUTER
 
+/// -- Frills --
 /datum/sprite_accessory/frills/big
 	name = "Big"
 	icon_state = "big"
@@ -265,6 +271,19 @@
 	name = "Divinity"
 	icon_state = "divinity"
 	icon = 'maplestation_modules/icons/mob/frills.dmi'
+
+// -- Synth head coverings --
+/datum/sprite_accessory/synth_head_cover
+	icon = 'maplestation_modules/icons/mob/synth_heads.dmi'
+
+/datum/sprite_accessory/synth_head_cover/helm
+	name = "Helm"
+	icon_state = "helm"
+
+/datum/sprite_accessory/synth_head_cover/tv_blank
+	name = "Tv_blank"
+	icon_state = "tv_blank"
+
 
 /// --- Socks ---
 

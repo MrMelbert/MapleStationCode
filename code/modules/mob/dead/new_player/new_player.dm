@@ -67,7 +67,7 @@
 //When you cop out of the round (NB: this HAS A SLEEP FOR PLAYER INPUT IN IT)
 /mob/dead/new_player/proc/make_me_an_observer()
 	if(QDELETED(src) || !src.client)
-		ready = PLAYER_NOT_READY
+		unready()
 		return FALSE
 
 	var/less_input_message
@@ -76,7 +76,6 @@
 	// Don't convert this to tgui please, it's way too important
 	var/this_is_like_playing_right = alert(usr, "Are you sure you wish to observe? You will not be able to play this round![less_input_message]", "Observe", "Yes", "No")
 	if(QDELETED(src) || !src.client || this_is_like_playing_right != "Yes")
-		ready = PLAYER_NOT_READY
 		return FALSE
 
 	var/mob/dead/observer/observer = new()
@@ -320,7 +319,7 @@
 		if(!ineligible_for_roles)
 			to_chat(src, span_danger("You have no jobs enabled, along with return to lobby if job is unavailable. This makes you ineligible for any round start role, please update your job preferences."))
 		ineligible_for_roles = TRUE
-		ready = PLAYER_NOT_READY
+		unready()
 		if(has_antags)
 			log_admin("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. The player has been forcefully returned to the lobby.")
 			message_admins("[src.ckey] has no jobs enabled, return to lobby if job is unavailable enabled and [client.prefs.be_special.len] antag preferences enabled. This is an old antag rolling technique. The player has been asked to update their job preferences and has been forcefully returned to the lobby.")
@@ -368,5 +367,54 @@
 	create_mob_hud()
 	to_chat(new_player, span_info("Lobby Menu HUD reset. You may reset the HUD again in <b>[DisplayTimeText(RESET_HUD_INTERVAL)]</b>."))
 	hud_used.show_hud(hud_used.hud_version)
+
+/mob/dead/new_player/proc/ready()
+	if(ready == PLAYER_READY_TO_PLAY)
+		return
+	ready = PLAYER_READY_TO_PLAY
+	update_ready_report()
+
+/mob/dead/new_player/proc/update_ready_report()
+	if(ready != PLAYER_READY_TO_PLAY)
+		return
+	if(SSticker.HasRoundStarted())
+		return
+	var/datum/job/my_job = client?.prefs?.get_highest_priority_job()
+	var/my_name
+	var/name_pref = /datum/preference/name/real_name
+	var/datum/preference/choiced/ready_anominity/the_pref = GLOB.preference_entries[/datum/preference/choiced/ready_anominity]
+	var/anominity = the_pref.value_list[client?.prefs?.read_preference(/datum/preference/choiced/ready_anominity)] || NONE
+	// Always show high priority jobs
+	if(initial(my_job?.req_admin_notify))
+		anominity &= ~JOB_ANON
+	// This sucks and should be moved to the job datums
+	switch(my_job?.type)
+		if(/datum/job/clown)
+			name_pref = /datum/preference/name/clown
+		if(/datum/job/mime)
+			name_pref = /datum/preference/name/mime
+		if(/datum/job/ai)
+			name_pref = /datum/preference/name/ai
+		if(/datum/job/cyborg)
+			name_pref = /datum/preference/name/cyborg
+		if(/datum/job/stowaway)
+			my_job = null
+	// Now actually build the name
+	my_name += (anominity & CKEY_ANON) ? "Anonymous" : "[ckey]"
+	my_name += " / "
+	my_name += (anominity & NAME_ANON) ? "Anonymous" : "[client?.prefs?.read_preference(name_pref) || "Unknown"]"
+	my_name += " / "
+	my_name += (anominity & JOB_ANON) ? "Anonymous" : "[my_job?.title || "Unknown"]"
+	SSticker.ready_report[src] = my_name
+
+/mob/dead/new_player/proc/unready()
+	if(ready == PLAYER_NOT_READY)
+		return
+	ready = PLAYER_NOT_READY
+	SSticker.ready_report -= src
+
+/mob/dead/new_player/Destroy()
+	SSticker.ready_report -= src // should be redundant but just in case.
+	return ..()
 
 #undef RESET_HUD_INTERVAL
