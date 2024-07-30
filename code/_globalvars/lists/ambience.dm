@@ -56,6 +56,7 @@ GLOBAL_LIST_INIT(engi_ambience,list(
 	'sound/ambience/ambitech2.ogg',
 	'sound/ambience/ambitech3.ogg',
 	'sound/ambience/ambiatm1.ogg',
+	// NON-MODULE CHANGE
 	'maplestation_modules/sound/ambience/atmospherics1.ogg',
 	'maplestation_modules/sound/ambience/engineering1.ogg',
 ))
@@ -144,6 +145,7 @@ GLOBAL_LIST_INIT(maint_ambience,list(
 	'sound/ambience/ambiatmos.ogg',
 	'sound/ambience/ambiatmos2.ogg',
 	'sound/ambience/ambiatm1.ogg',
+	// NON-MODULE CHANGE
 	'maplestation_modules/sound/ambience/atmospherics1.ogg',
 	'maplestation_modules/sound/ambience/engineering1.ogg',
 ))
@@ -225,6 +227,7 @@ GLOBAL_LIST_INIT(cargo_ambience, list(
 	'sound/ambience/ambigen10.ogg',
 	'sound/ambience/ambigen13.ogg',
 	'sound/ambience/signal.ogg',
+	// NON-MODULE CHANGE
 	'maplestation_modules/sound/ambience/hangar1.ogg',
 	'maplestation_modules/sound/ambience/hangar2.ogg',
 	'maplestation_modules/sound/ambience/hangar3.ogg',
