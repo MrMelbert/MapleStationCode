@@ -228,15 +228,15 @@
 
 //default one doesn't work as intended.
 /mob/living/basic/bot/cleanbot/vroomba/change_number_of_hands(amt)
-	var/old_limbs = held_items.len
 	if(amt < held_items.len)
 		if(amt == 0) 
-			for(var/i in held_items.len to amt step)
+			for(var/i in held_items.len to amt+1 step -1)
 				dropItemToGround(held_items[i])
 		else
 			for(var/i in held_items.len to amt step -1)
 				dropItemToGround(held_items[i])
 
+	held_items.len = amt
 	if(hud_used)
 		hud_used.build_hand_slots()
 
