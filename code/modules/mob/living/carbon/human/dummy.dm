@@ -76,7 +76,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	cut_overlays(TRUE)
 
 /mob/living/carbon/human/dummy/setup_human_dna()
-	randomize_human(src, randomize_mutations = FALSE)
+	randomize_human_normie(src, randomize_mutations = FALSE)
 
 /mob/living/carbon/human/dummy/log_mob_tag(text)
 	return
@@ -102,6 +102,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	target.dna.features["spines"] = get_consistent_feature_entry(GLOB.spines_list)
 	target.dna.features["tail_cat"] = get_consistent_feature_entry(GLOB.tails_list_human) // it's a lie
 	target.dna.features["tail_lizard"] = get_consistent_feature_entry(GLOB.tails_list_lizard)
+	target.dna.features["tail_monkey"] = get_consistent_feature_entry(GLOB.tails_list_monkey)
 	target.dna.features["pod_hair"] = get_consistent_feature_entry(GLOB.pod_hair_list)
 	target.dna.features["head_tentacles"] = get_consistent_feature_entry(GLOB.head_tentacles_list) // NON-MODULE CHANGE
 	target.dna.features["arm_wings"] = get_consistent_feature_entry(GLOB.arm_wings_list) // NON-MODULE CHANGE
