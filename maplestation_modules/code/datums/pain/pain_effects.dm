@@ -106,19 +106,89 @@
 
 	return ..()
 
+/**
+ * Obviousnly not all ailments of a mob are treatable while dead,
+ * so we need to apply a "buffer" status effect post-revival
+ * to offset some the consciousness penalties of these ailments while they are treated
+ *
+ * This is only applied via defibbing, not via other methods of revival.
+ */
 /datum/status_effect/recent_defib
 	duration = 60 SECONDS
 	id = "recent_defib"
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
+	/// Base amount of consciousness / max consciousness to give the patient
+	var/base_con = 15
 
 /datum/status_effect/recent_defib/on_apply()
 	owner.adjust_pain_shock(-12)
 	owner.cause_pain(BODY_ZONES_ALL, -16)
-	owner.add_consciousness_modifier(id, 25)
-	owner.add_max_consciousness_value(id, 45)
+	owner.add_consciousness_modifier(id, base_con)
+	owner.add_max_consciousness_value(id, base_con)
 	return TRUE
 
 /datum/status_effect/recent_defib/on_remove()
+	if(QDELING(owner))
+		return
 	owner.remove_consciousness_modifier(id)
 	owner.remove_max_consciousness_value(id)
+	owner.apply_status_effect(/datum/status_effect/revival_sickess)
+
+/datum/status_effect/recent_defib/tick(seconds_between_ticks)
+	var/deciseconds_remaining = duration - world.time
+	if(deciseconds_remaining <= 0)
+		return
+	var/seconds_elapsed = round((initial(duration) - deciseconds_remaining) / 1 SECONDS, 1)
+
+	// Bonus for being defibbed decays over time
+	owner.add_consciousness_modifier(id, base_con - (seconds_elapsed * 0.25))
+	// Consciousness returns over time
+	owner.add_max_consciousness_value(id, base_con + (seconds_elapsed))
+
+/datum/mood_event/revival_sickess
+	description = "Back from the beyond the brink..."
+	mood_change = -3
+
+/datum/mood_event/revival_sickess/add_effects(mob/living/adder)
+	if(adder.has_quirk(/datum/quirk/apathetic))
+		mood_change = 0
+
+/**
+ * For a period after revival, you suffer from res sickness, gotta get back on your feet.
+ */
+/datum/status_effect/revival_sickess
+	duration = 5 MINUTES
+	id = "revival_sickess"
+	status_type = STATUS_EFFECT_REFRESH
+	alert_type = null
+	tick_interval = -1
+	/// Tracks how much max consciousness penalty to give the patient
+	var/max_con = 75
+
+/datum/status_effect/revival_sickess/on_apply()
+	if(owner.stat == DEAD)
+		return FALSE
+
+	owner.add_mood_event(id, /datum/mood_event/revival_sickess, owner)
+	owner.add_max_consciousness_value(id, 100 - max_con)
+	addtimer(CALLBACK(src, PROC_REF(improve)), 1 MINUTES, TIMER_DELETE_ME)
+	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(died_again))
+	return TRUE
+
+/datum/status_effect/revival_sickess/on_remove()
+	if(QDELING(owner))
+		return
+	owner.clear_mood_event(id)
+	owner.remove_max_consciousness_value(id)
+	UnregisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(died_again))
+
+/datum/status_effect/revival_sickess/proc/improve()
+	max_con += 5
+	owner.add_max_consciousness_value(id, max_con)
+	if(max_con <= 95)
+		addtimer(CALLBACK(src, PROC_REF(improve)), 1 MINUTES, TIMER_DELETE_ME)
+
+/datum/status_effect/revival_sickess/proc/died_again(...)
+	SIGNAL_HANDLER
+	qdel(src)
