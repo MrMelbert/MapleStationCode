@@ -531,12 +531,8 @@
 //any cost it has isn't a worry
 /mob/proc/change_number_of_hands(amt)
 	if(amt < held_items.len)
-		if(amt == 0) //NON MODULE CHANGE. FIXING A BUG CAUSING IT TO ERROR FOR WHEN amt = 0
-			for(var/i in held_items.len to amt) //NON MODULE CHANGE
-				dropItemToGround(held_items[i]) //NON MODULE CHANGE
-		else //NON MODULE CHANGE
-			for(var/i in held_items.len to amt step -1)
-				dropItemToGround(held_items[i])
+		for(var/i in held_items.len to amt step -1)
+			dropItemToGround(held_items[i])
 
 	held_items.len = amt
 

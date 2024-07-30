@@ -226,6 +226,20 @@
 	var/static/list/finalized_speak_list = (announcements)
 	return finalized_speak_list
 
+//default one doesn't work as intended.
+/mob/living/basic/bot/cleanbot/vroomba/change_number_of_hands(amt)
+	var/old_limbs = held_items.len
+	if(amt < held_items.len)
+		if(amt == 0) 
+			for(var/i in held_items.len to amt step)
+				dropItemToGround(held_items[i])
+		else
+			for(var/i in held_items.len to amt step -1)
+				dropItemToGround(held_items[i])
+
+	if(hud_used)
+		hud_used.build_hand_slots()
+
 ///The vroomba's hud!
 /datum/hud/vroomba/New(mob/owner)
 	. = ..()
