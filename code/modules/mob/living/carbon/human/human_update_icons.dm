@@ -524,12 +524,74 @@ There are several things that need to be remembered:
 		hands += hand_overlay
 	return hands
 
-/proc/wear_female_version(t_color, icon, layer, type, greyscale_colors)
-	var/index = "[t_color]-[greyscale_colors]"
-	var/icon/female_clothing_icon = GLOB.female_clothing_icons[index]
-	if(!female_clothing_icon) 	//Create standing/laying icons if they don't exist
-		generate_female_clothing(index, t_color, icon, type)
-	return mutable_appearance(GLOB.female_clothing_icons[index], layer = -layer)
+/proc/wear_female_version(icon_state, icon, type, greyscale_colors)
+	var/index = "[icon_state]-[greyscale_colors]"
+	var/static/list/female_clothing_icons = list()
+	var/icon/female_clothing_icon = female_clothing_icons[index]
+	if(!female_clothing_icon) //Create standing/laying icons if they don't exist
+		var/female_icon_state = "female[type == FEMALE_UNIFORM_FULL ? "_full" : ((!type || type & FEMALE_UNIFORM_TOP_ONLY) ? "_top" : "")][type & FEMALE_UNIFORM_NO_BREASTS ? "_no_breasts" : ""]"
+		var/icon/female_cropping_mask = icon('icons/mob/clothing/under/masking_helpers.dmi', female_icon_state)
+		female_clothing_icon = icon(icon, icon_state)
+		female_clothing_icon.Blend(female_cropping_mask, ICON_MULTIPLY)
+		female_clothing_icon = fcopy_rsc(female_clothing_icon)
+		female_clothing_icons[index] = female_clothing_icon
+
+	return icon(female_clothing_icon)
+
+/proc/wear_digi_version(icon/base_icon, key, greyscale_config = /datum/greyscale_config/jumpsuit_worn_digi, greyscale_colors)
+	if(isnull(key))
+		key = text_ref(base_icon)
+
+	// In case we're passed a more complex string than expected
+	if(isnull(greyscale_colors) || length(SSgreyscale.ParseColorString(greyscale_colors)) > 1)
+		greyscale_colors = get_leg_color(base_icon)
+
+	var/index = "[key]-[greyscale_config]-[greyscale_colors]"
+	var/static/list/digitigrade_clothing_icons = list()
+	var/icon/digitigrade_clothing_icon = digitigrade_clothing_icons[index]
+	if(!digitigrade_clothing_icon)
+		var/static/icon/torso_mask
+		if(!torso_mask)
+			torso_mask = icon('maplestation_modules/icons/mob/clothing/under/digi_mask.dmi', "torso_mask")
+		var/static/icon/leg_mask
+		if(!leg_mask)
+			leg_mask = icon('maplestation_modules/icons/mob/clothing/under/digi_mask.dmi', "leg_mask")
+
+		base_icon.Blend(leg_mask, ICON_SUBTRACT) // cuts the legs off
+
+		var/icon/leg_icon = SSgreyscale.GetColoredIconByType(greyscale_config, greyscale_colors)
+		leg_icon.Blend(torso_mask, ICON_SUBTRACT) // cuts the torso off
+
+		base_icon.Blend(leg_icon, ICON_OVERLAY) // puts the new legs on
+
+		digitigrade_clothing_icon = fcopy_rsc(base_icon)
+		digitigrade_clothing_icons[index] = digitigrade_clothing_icon
+
+	return icon(digitigrade_clothing_icon)
+
+#define LEG_SAMPLE_X_LOWER 13
+#define LEG_SAMPLE_X_UPPER 14
+
+#define LEG_SAMPLE_Y_LOWER 8
+#define LEG_SAMPLE_Y_UPPER 9
+
+/proc/get_leg_color(icon/sample)
+	if(isatom(sample) || isimage(sample) || istype(sample, /mutable_appearance))
+		sample = getFlatIcon(sample)
+
+	var/final_color
+	for(var/x in LEG_SAMPLE_X_LOWER to LEG_SAMPLE_X_UPPER)
+		for(var/y in LEG_SAMPLE_Y_LOWER to LEG_SAMPLE_Y_UPPER)
+			var/color = sample.GetPixel(x, y)
+			final_color = final_color ? BlendRGB(final_color, color) : color
+
+	return final_color || "#FFFFFF"
+
+#undef LEG_SAMPLE_X_LOWER
+#undef LEG_SAMPLE_X_UPPER
+
+#undef LEG_SAMPLE_Y_LOWER
+#undef LEG_SAMPLE_Y_UPPER
 
 /mob/living/carbon/human/proc/get_overlays_copy(list/unwantedLayers)
 	var/list/out = new
@@ -658,20 +720,37 @@ generate/load female uniform sprites matching all previously decided variables
 	override_file = null,
 )
 
-	// NON-MODULE CHANGE // UPSTREAM ME
 	//Find a valid icon_state from variables+arguments
 	var/t_state = override_state || (isinhands ? inhand_icon_state : worn_icon_state) || icon_state
 	//Find a valid icon file from variables+arguments
 	var/file2use = override_file || (isinhands ? null : worn_icon) || default_icon_file
 	//Find a valid layer from variables+arguments
 	var/layer2use = alternate_worn_layer || default_layer
-	// NON-MODULE CHANGE END
 
-	var/mutable_appearance/standing
+	var/mob/living/carbon/wearer = loc
+	var/is_digi = istype(wearer) && (wearer.bodytype & BODYTYPE_DIGITIGRADE) && !wearer.is_digitigrade_squished()
+
+	var/mutable_appearance/standing // this is the actual resulting MA
+	var/icon/building_icon // used to construct an icon across multiple procs before converting it to MA
 	if(female_uniform)
-		standing = wear_female_version(t_state, file2use, layer2use, female_uniform, greyscale_colors) //should layer2use be in sync with the adjusted value below? needs testing - shiz
-	if(!standing)
-		standing = mutable_appearance(file2use, t_state, -layer2use)
+		building_icon = wear_female_version(
+			icon_state = t_state,
+			icon = file2use,
+			type = female_uniform,
+			greyscale_colors = greyscale_colors,
+		)
+	if(!isinhands && is_digi && (supports_variations_flags & CLOTHING_DIGITIGRADE_MASK))
+		building_icon = wear_digi_version(
+			base_icon = building_icon || icon(file2use, t_state),
+			key = "[t_state]-[file2use]-[female_uniform]",
+			greyscale_config = digitigrade_greyscale_config_worn || greyscale_config_worn,
+			greyscale_colors = digitigrade_greyscale_colors || greyscale_colors || color,
+		)
+	if(building_icon)
+		standing = mutable_appearance(building_icon, layer = -layer2use)
+
+	// no special handling done, default it
+	standing ||= mutable_appearance(file2use, t_state, layer = -layer2use)
 
 	//Get the overlays for this item when it's being worn
 	//eg: ammo counters, primed grenade flashes, etc.
@@ -681,7 +760,7 @@ generate/load female uniform sprites matching all previously decided variables
 
 	standing = center_image(standing, isinhands ? inhand_x_dimension : worn_x_dimension, isinhands ? inhand_y_dimension : worn_y_dimension)
 
-	if(!isinhands && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER))
+	if(!isinhands && is_digi && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER))
 		apply_digitigrade_filters(standing)
 
 	//Worn offsets

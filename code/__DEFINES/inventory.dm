@@ -151,9 +151,11 @@ DEFINE_BITFIELD(no_equip_flags, list(
 #define CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON (1<<2)
 /// When worn by a mob with digitigrade, apply a filter
 #define CLOTHING_DIGITIGRADE_FILTER (1<<3)
+/// Auto-generates the leg portion of the sprite with GAGS
+#define CLOTHING_DIGITIGRADE_MASK (1<<4)
 
-/// Any flag which has a variation for digi
-#define DIGITIGRADE_VARIATIONS (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON|CLOTHING_DIGITIGRADE_FILTER)
+/// All variation flags which render correctly on a digitigrade leg setup
+#define DIGITIGRADE_VARIATIONS (CLOTHING_DIGITIGRADE_VARIATION|CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON|CLOTHING_DIGITIGRADE_FILTER|CLOTHING_DIGITIGRADE_MASK)
 
 //flags for covering body parts
 #define GLASSESCOVERSEYES (1<<0)
