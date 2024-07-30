@@ -1,8 +1,8 @@
+//HOLY MOLY WHAT DID I GET MYSELF INTO??
 /*
  * # Volkan's companion.
  * A cool pet for volkan! Basically a better poly. Quiet, efficient, and will sit on his shoulder all the time.
  */
-//HOLY MOLY WHAT DID I GET MYSELF INTO??
 /mob/living/basic/volkan/shoulder_pet
 	name = "Companion"
 	desc = "An intricate, flying robot. It looks at you inquisitively."
@@ -84,10 +84,14 @@
  */
 
 //lines it can say
-#define VROOMBA_LAUGH "Ahhahah hehe!"
-#define VROOMBA_ACCEPT "AFFIRM ATIVE"
-#define VROOMBA_DECLINE "NEG ATIVE"
-#define VROOMBA_STOP "Stooop!"
+#define VROOMBA_LAUGH "makes a robotic laughing sound!*"
+#define VROOMBA_ACCEPT "Accepted."
+#define VROOMBA_DECLINE "Declined."
+#define VROOMBA_STOP "makes an annoyed sounding whine.*"
+#define VROOMBA_CHATTER "makes a happy chattering noise!*"
+
+//signal for the vroomba's tools to know if it is in combat mode
+#define COMSIG_COMBAT_MODE "combat_mode_active"
 
 /mob/living/basic/bot/cleanbot/vroomba
 	name = "\improper Strange Roomba"
@@ -120,22 +124,35 @@
 
 	///the icon state for when it is flying
 	var/flying_icon = "vroomba_float"
-	//speed it goes in combat mode. lower is faster.
+
+	///speed it goes in combat mode. lower is faster.
 	var/combat_speed = 0.5
 
-	//chosens ounds the Vroomba can make
+	///the sound the vroomba makes when entering combat mode.
+	var/combat_sound = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_combat_mode.wav'
+
+	///player chosen sounds the Vroomba can make.
 	var/static/list/announcements = list(
 		VROOMBA_LAUGH = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_laugh.wav',
 		VROOMBA_ACCEPT = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_accept.wav',
 		VROOMBA_DECLINE = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_decline.wav',
-		VROOMBA_STOP = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_stop.wav'
+		VROOMBA_STOP = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_stop.wav',
+		VROOMBA_CHATTER = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_chatter.wav',
 	)
 
 /mob/living/basic/bot/cleanbot/vroomba/Initialize(mapload)
 	. = ..()
+	qdel(GetComponent(/datum/component/cleaner)) //we don't want the default cleaner because it doesn't have the stuff we want (doesnt remove itself when in combat mode)
+	AddElement(/datum/element/dextrous)
 	AddComponent(/datum/component/basic_inhands)
-	prepare_huds()
+	change_number_of_hands(0) //it only has hands when it is in combat mode, so start with no usable hands while still having the components
 
+	AddComponent(/datum/component/cleaner/vroomba, \
+		base_cleaning_duration = 2 SECONDS, \
+		pre_clean_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_CLEANING), \
+		on_cleaned_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_IDLE), \
+		)
+	prepare_huds()
 
 //it will not get job titles like cleanbots.
 /mob/living/basic/bot/cleanbot/vroomba/update_title(new_job_title)
@@ -155,6 +172,7 @@
 /mob/living/basic/bot/cleanbot/vroomba/set_combat_mode(new_mode, silent)
 	. = ..()
 	if(combat_mode)
+		SEND_SIGNAL(src, COMSIG_COMBAT_MODE)
 		go_angry()
 
 	if(!combat_mode)
@@ -163,31 +181,34 @@
 	update_basic_mob_varspeed()
 	prepare_huds()
 
-///The robot activating its hidden combat capabilities!
+///The vroomba activating its hidden combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/go_angry()
 	icon_state = flying_icon
 	speed = combat_speed
 	layer = MOB_LAYER
 
 	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
-	AddComponent(/datum/component/cleaner, \
-		base_cleaning_duration = 2 SECONDS, \
-		pre_clean_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_CLEANING), \
-		on_cleaned_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_IDLE), \
-	)
+
 	change_number_of_hands(2)
 
-///the robot hiding its combat capabilities!
+	playsound(src, combat_sound, 70, ignore_walls = FALSE)
+
+///the vroomba hiding its combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/calm_down()
 	icon_state = base_icon_state
 	speed = 3
 	layer = ABOVE_NORMAL_TURF_LAYER
 
+	AddComponent(/datum/component/cleaner/vroomba, \
+		base_cleaning_duration = 2 SECONDS, \
+		pre_clean_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_CLEANING), \
+		on_cleaned_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_IDLE), \
+	)
 	REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
-	RemoveComponentSource(/datum/component/cleaner)
+
 	change_number_of_hands(0)
 
-///The drone is not killed by EMPs but it does stun it for a short moment.
+///The vroomba is not killed by EMPs but it does stun it for a short moment.
 /mob/living/basic/bot/cleanbot/vroomba/emp_act(severity)
 	if(. & EMP_PROTECT_SELF)
 		return
@@ -197,7 +218,6 @@
 /mob/living/basic/bot/cleanbot/vroomba/generate_speak_list()
 	var/static/list/finalized_speak_list = (announcements)
 	return finalized_speak_list
-
 
 ///The vroomba's hud!
 /datum/hud/vroomba/New(mob/owner)
@@ -233,5 +253,12 @@
 
 	mymob.canon_client?.clear_screen()
 
+///The vroombas cleaner for when it is not in combat.
+/datum/component/cleaner/vroomba/RegisterWithParent()
+	. = ..()
+	RegisterSignal(parent, COMSIG_COMBAT_MODE, PROC_REF(remove_self))
 
+/datum/component/cleaner/vroomba/proc/remove_self()
+	SIGNAL_HANDLER
 
+	qdel(src)
