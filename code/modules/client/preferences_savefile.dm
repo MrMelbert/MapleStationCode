@@ -326,6 +326,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
 	validate_quirks()
 
+	if(isnewplayer(parent?.mob))
+		// Update the report that appears in ready menu if applicable
+		// (Yeah I could signalize this but whatever)
+		var/mob/dead/new_player/cycle = parent?.mob
+		cycle.update_ready_report()
+
 	return TRUE
 
 /datum/preferences/proc/save_character()
