@@ -34,8 +34,6 @@
 	var/datum/action/request_switch/twin_action
 	var/mob/living/split_personality/non_controller
 
-	var/switch_msg = span_boldnotice("You switch with your other personality.")
-
 /datum/action/request_switch/owner
 
 /datum/action/request_switch/stranger
