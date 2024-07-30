@@ -51,12 +51,6 @@
 	if(QDELING(owner))
 		return
 
-	if(owner.stat != DEAD)
-		owner.visible_message(
-			span_danger("[owner]'s body slackens noticeably!"),
-			span_boldwarning("Your adrenaline rush dies off, and the pain from your wounds come aching back in..."),
-			vision_distance = COMBAT_MESSAGE_RANGE,
-		)
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.physiology.bleed_mod /= WOUND_DETERMINATION_BLEED_MOD
@@ -87,6 +81,12 @@
 /datum/status_effect/determination_crash/on_apply()
 	if(owner.stat == DEAD)
 		return FALSE
+
+	owner.visible_message(
+		span_danger("[owner]'s body slackens noticeably!"),
+		span_boldwarning("Your adrenaline rush dies off, and the pain from your wounds come aching back in..."),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/determination_crash)
 	owner.add_actionspeed_modifier(/datum/actionspeed_modifier/determination_crash)
 	return TRUE

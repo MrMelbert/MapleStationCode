@@ -64,13 +64,15 @@
 					adjustOxyLoss(1)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 				add_max_consciousness_value("blood", 90)
+				add_consciousness_modifier("blood", -10)
 				if(getOxyLoss() < 100)
-					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding some of this will be recovered
+					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding - some of this will be recovered
 				if(SPT_PROB(2.5, seconds_per_tick))
 					set_eye_blur_if_lower(12 SECONDS)
 					to_chat(src, span_warning("You feel very [word]."))
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 				add_max_consciousness_value("blood", 60)
+				add_consciousness_modifier("blood", -20)
 				if(getOxyLoss() < 150)
 					adjustOxyLoss(3)
 				set_eye_blur_if_lower(6 SECONDS)
@@ -80,15 +82,18 @@
 					to_chat(src, span_warning("You feel extremely [word]."))
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
 				add_max_consciousness_value("blood", 20)
+				add_consciousness_modifier("blood", -50)
 				set_eye_blur_if_lower(20 SECONDS)
-				Unconscious(10 SECONDS)
-				adjustOxyLoss(5)
+				// Unconscious(10 SECONDS)
+				var/how_screwed_are_we = 1 - ((BLOOD_VOLUME_SURVIVE - blood_volume) / BLOOD_VOLUME_SURVIVE)
+				adjustOxyLoss(max(5, 50 * how_screwed_are_we))
 				// if(!HAS_TRAIT(src, TRAIT_NODEATH))
 				// 	investigate_log("has died of bloodloss.", INVESTIGATE_DEATHS)
 				// 	death()
 
 	if(blood_volume > BLOOD_VOLUME_OKAY)
 		remove_max_consciousness_value("blood")
+		remove_consciousness_modifier("blood")
 
 	// NON-MODULE CHANGE END for blood
 

@@ -96,3 +96,6 @@
 #define NAME_ANON (1<<1)
 /// Hide top job preference
 #define JOB_ANON (1<<2)
+
+/// Calculates oxyloss cap
+#define MAX_OXYLOSS(maxHealth) (maxHealth * 2)

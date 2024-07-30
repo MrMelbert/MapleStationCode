@@ -770,8 +770,10 @@
 	// Give them a chance to notice something is wrong.
 	if(prob(20))
 		suffocator.emote("gasp")
-	// Suffocating = brain damage
-	suffocator.adjustOrganLoss(ORGAN_SLOT_BRAIN, 2, required_organ_flag = ORGAN_ORGANIC)
+	var/oxyloss = suffocator.getOxyLoss()
+	if(oxyloss >= 50)
+		// Suffocating = brain damage
+		suffocator.adjustOrganLoss(ORGAN_SLOT_BRAIN, (oxyloss / MAX_OXYLOSS(suffocator.maxHealth)) * 4, required_organ_flag = ORGAN_ORGANIC)
 	// If mob is at critical health, check if they can be damaged further.
 	if(suffocator.stat >= SOFT_CRIT && HAS_TRAIT(suffocator, TRAIT_NOCRITDAMAGE))
 		return
