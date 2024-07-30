@@ -26,3 +26,12 @@
 	horns?.bodypart_overlay.set_appearance_from_name("Simple")
 
 	human.update_body(is_creating = TRUE)
+
+// Same for the small ones
+/datum/species/monkey/lizard/get_species_speech_sounds(sound_type)
+	// These sounds have been ported from Goonstation.
+	return string_assoc_list(list(
+		'maplestation_modules/sound/voice/lizard_1.ogg' = 80,
+		'maplestation_modules/sound/voice/lizard_2.ogg' = 80,
+		'maplestation_modules/sound/voice/lizard_3.ogg' = 80,
+	))
