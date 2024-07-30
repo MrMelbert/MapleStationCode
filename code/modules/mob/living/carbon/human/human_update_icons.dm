@@ -524,6 +524,7 @@ There are several things that need to be remembered:
 		hands += hand_overlay
 	return hands
 
+/// Modifies a sprite slightly to conform to female body shapes
 /proc/wear_female_version(icon_state, icon, type, greyscale_colors)
 	var/index = "[icon_state]-[greyscale_colors]"
 	var/static/list/female_clothing_icons = list()
@@ -538,13 +539,28 @@ There are several things that need to be remembered:
 
 	return icon(female_clothing_icon)
 
-/proc/wear_digi_version(icon/base_icon, key, greyscale_config = /datum/greyscale_config/jumpsuit_worn_digi, greyscale_colors)
-	if(isnull(key))
-		key = text_ref(base_icon)
+// These coordonates point to roughly somewhere in the middle of the left leg
+// Used in approximating what color the pants of clothing should be
+#define LEG_SAMPLE_X_LOWER 13
+#define LEG_SAMPLE_X_UPPER 14
 
-	// In case we're passed a more complex string than expected
+#define LEG_SAMPLE_Y_LOWER 8
+#define LEG_SAMPLE_Y_UPPER 9
+
+/// Modifies a sprite to conform to digitigrade body shapes
+/proc/wear_digi_version(icon/base_icon, key, greyscale_config = /datum/greyscale_config/jumpsuit/worn_digi, greyscale_colors)
+	ASSERT(key, "wear_digi_version: no key passed")
+	ASSERT(ispath(greyscale_config, /datum/greyscale_config), "wear_digi_version: greyscale_config is not a valid path (got: [greyscale_config])")
+	// items with greyscale colors containing multiple colors are invalid
 	if(isnull(greyscale_colors) || length(SSgreyscale.ParseColorString(greyscale_colors)) > 1)
-		greyscale_colors = get_leg_color(base_icon)
+		var/pant_color
+		// approximates the color of the pants by sampling a few pixels in the middle of the left leg
+		for(var/x in LEG_SAMPLE_X_LOWER to LEG_SAMPLE_X_UPPER)
+			for(var/y in LEG_SAMPLE_Y_LOWER to LEG_SAMPLE_Y_UPPER)
+				var/xy_color = base_icon.GetPixel(x, y)
+				pant_color = pant_color ? BlendRGB(pant_color, xy_color, 0.5) : xy_color
+
+		greyscale_colors = pant_color || "#1d1d1d" // black pants always look good
 
 	var/index = "[key]-[greyscale_config]-[greyscale_colors]"
 	var/static/list/digitigrade_clothing_icons = list()
@@ -568,24 +584,6 @@ There are several things that need to be remembered:
 		digitigrade_clothing_icons[index] = digitigrade_clothing_icon
 
 	return icon(digitigrade_clothing_icon)
-
-#define LEG_SAMPLE_X_LOWER 13
-#define LEG_SAMPLE_X_UPPER 14
-
-#define LEG_SAMPLE_Y_LOWER 8
-#define LEG_SAMPLE_Y_UPPER 9
-
-/proc/get_leg_color(icon/sample)
-	if(isatom(sample) || isimage(sample) || istype(sample, /mutable_appearance))
-		sample = getFlatIcon(sample)
-
-	var/final_color
-	for(var/x in LEG_SAMPLE_X_LOWER to LEG_SAMPLE_X_UPPER)
-		for(var/y in LEG_SAMPLE_Y_LOWER to LEG_SAMPLE_Y_UPPER)
-			var/color = sample.GetPixel(x, y)
-			final_color = final_color ? BlendRGB(final_color, color) : color
-
-	return final_color || "#FFFFFF"
 
 #undef LEG_SAMPLE_X_LOWER
 #undef LEG_SAMPLE_X_UPPER
