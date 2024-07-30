@@ -533,7 +533,6 @@
 	if(amt < held_items.len)
 		for(var/i in held_items.len to amt step -1)
 			dropItemToGround(held_items[i])
-
 	held_items.len = amt
 
 	if(hud_used)
