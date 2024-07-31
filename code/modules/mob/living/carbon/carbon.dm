@@ -141,7 +141,7 @@
 		thrown_thing = held_item.on_thrown(src, target)
 	else if(isliving(pulling))
 		thrown_thing = pulling
-	else if(length(buckled_mobs) == 1 && isliving(buckled_mobs[1]) && buckle_lying) // melbert todo : test
+	else if(length(buckled_mobs) == 1 && isliving(buckled_mobs[1]) && buckle_lying != 0) // melbert todo : test
 		thrown_thing = buckled_mobs[1]
 
 	if(isliving(thrown_thing))
