@@ -113,7 +113,7 @@
 	/// If TRUE, shows the contents of the storage in open_storage
 	var/display_contents = TRUE
 
-	/// SFX played when inserting/removing items.
+	/// NON-MODULE CHANGE : SFX played when inserting/removing items.
 	var/storage_sound = SFX_RUSTLE
 
 /datum/storage/New(
@@ -494,7 +494,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	if(rustle_sound)
-		play_storage_sound()
+		play_storage_sound() // NON-MODULE CHANGE
 
 	if(!silent_for_user)
 		to_chat(user, span_notice("You put [thing] [insert_preposition]to [parent]."))
@@ -525,7 +525,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		thing.forceMove(remove_to_loc)
 
 		if(rustle_sound && !silent)
-			play_storage_sound()
+			play_storage_sound() // NON-MODULE CHANGE
 	else
 		thing.moveToNullspace()
 
@@ -736,7 +736,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		to_chat(user, span_notice("You dump the contents of [parent] into [dest_object]."))
 
 		if(rustle_sound)
-			play_storage_sound()
+			play_storage_sound() // NON-MODULE CHANGE
 
 		for(var/obj/item/to_dump in real_location)
 			dest_object.atom_storage.attempt_insert(to_dump, user)
@@ -951,7 +951,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		animate_parent()
 
 	if(rustle_sound)
-		play_storage_sound()
+		play_storage_sound() // NON-MODULE CHANGE
 
 	return TRUE
 
@@ -1097,7 +1097,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	changed.visible_message(span_warning("[changed] falls out of [parent]!"), vision_distance = COMBAT_MESSAGE_RANGE)
 
-/// Plays SFX when the storage is used
+/// NON-MODULE CHANGE : Plays SFX when the storage is used
 /datum/storage/proc/play_storage_sound()
 	if(!storage_sound)
 		return
