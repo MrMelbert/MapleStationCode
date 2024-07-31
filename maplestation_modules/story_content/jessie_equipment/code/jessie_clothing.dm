@@ -83,3 +83,11 @@
 	worn_icon = 'maplestation_modules/story_content/jessie_equipment/icons/jessieuniform_worn.dmi'
 	icon_state = "cloak"
 	base_icon_state = "cloak"
+	slot_flags = ITEM_SLOT_NECK | ITEM_SLOT_OCLOTHING
+
+/obj/item/clothing/suit/toggle/labcoat/research_director/jessie_cape/equipped(mob/living/user, slot)
+	. = ..()
+	if (slot == ITEM_SLOT_NECK)
+		set_armor(/datum/armor/none)
+	else
+		set_armor(initial(armor_type))
