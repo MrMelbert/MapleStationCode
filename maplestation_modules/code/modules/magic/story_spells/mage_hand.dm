@@ -20,10 +20,7 @@
 	. = ..()
 	mutation_duration = cooldown_time * 0.5
 	AddComponent(/datum/component/uses_mana/spell, \
-		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
-		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = mana_cost, \
-		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		)
 
 /datum/action/cooldown/spell/apply_mutations/mage_hand/Grant(mob/grant_to)

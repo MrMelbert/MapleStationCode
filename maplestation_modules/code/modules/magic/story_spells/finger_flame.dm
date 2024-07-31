@@ -113,11 +113,8 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_FIRE] += FINGERFLAME_ATTUNEMENT_FIRE
 
-	AddComponent(/datum/component/uses_mana/story_spell/finger_flame, \
-		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
-		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
+	AddComponent(/datum/component/uses_mana/spell/, \
 		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
-		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 	)
 	desc += " Costs mana to conjure, but is free to maintain."

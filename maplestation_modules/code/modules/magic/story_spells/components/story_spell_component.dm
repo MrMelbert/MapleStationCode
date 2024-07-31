@@ -7,11 +7,11 @@
 /datum/component/uses_mana/spell/Initialize(
 	datum/callback/activate_check_failure_callback = CALLBACK(src, PROC_REF(cannot_activate)),
 	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
-	pre_use_check_comsig,
+	pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST,
 	post_use_comsig = COMSIG_SPELL_AFTER_CAST,
 	datum/callback/mana_required = CALLBACK(src, PROC_REF(get_mana_required_spell)),
 	datum/callback/mana_consumed,
-	datum/callback/get_user_callback,
+	get_user_callback = CALLBACK(src, PROC_REF(get_owner)),
 	list/datum/attunement/attunements)
 	. = ..()
 

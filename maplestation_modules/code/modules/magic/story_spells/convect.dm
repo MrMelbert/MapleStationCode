@@ -31,10 +31,7 @@
 	update_attunement_dispositions()
 
 	AddComponent(/datum/component/uses_mana/spell, \
-		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
-		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
-		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = src.attunements, \
 	)
 

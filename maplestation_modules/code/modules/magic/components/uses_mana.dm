@@ -115,6 +115,9 @@
 		consumed *= user.get_casting_cost_mult()
 
 	return consumed
+/datum/component/uses_mana/proc/get_mana_to_use()
+	// iterate through get_all_contents()?
+	var/atom/caster = get_parent_user()
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
 /datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana, atom/caster) // ERROR get mana to use undefined, i THINK that is meant to get the list of available pools. cut code: provided_mana = list(get_mana_to_use),
@@ -124,6 +127,8 @@
 		total_effective_mana += iterated_pool.get_attuned_amount(attunements, caster)
 	if (total_effective_mana > get_mana_required())
 		return TRUE
+	else
+		return FALSE
 
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
 /datum/component/uses_mana/proc/drain_mana()
