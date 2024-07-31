@@ -45,6 +45,8 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayersReady = 0
 	/// Num of ready admins, used for pregame stats on statpanel (only viewable by admins)
 	var/total_admins_ready = 0
+	/// List of what everyone is ready up as, assoc new player - string
+	var/list/ready_report = list()
 
 	var/queue_delay = 0
 	var/list/queued_players = list() //used for join queues when the server exceeds the hard population cap
