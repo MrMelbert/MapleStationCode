@@ -211,7 +211,7 @@
 		var/mob/living/carbon/human/human_orderer = orderer
 		name = human_orderer.get_authentification_name()
 		rank = human_orderer.get_assignment(hand_first = TRUE)
-	else if(HAS_SILICON_ACCESS(orderer))
+	else if(issilicon(orderer))
 		name = orderer.real_name
 		rank = "Silicon"
 	var/already_signalled = !!department_order

@@ -75,7 +75,7 @@
 /obj/item/paperplane/attackby(obj/item/P, mob/living/carbon/human/user, params)
 	if(burn_paper_product_attackby_check(P, user))
 		return
-	if(IS_WRITING_UTENSIL(attacking_item))
+	if(IS_WRITING_UTENSIL(P))
 		to_chat(user, span_warning("You should unfold [src] before changing it!"))
 		return
 

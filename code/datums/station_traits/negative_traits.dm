@@ -187,7 +187,6 @@
 	name = "Machine Language Matrix Malfunction"
 	trait_type = STATION_TRAIT_NEGATIVE
 	weight = 2
-	cost = STATION_TRAIT_COST_FULL
 	show_in_report = TRUE
 	report_message = "Your station's machines have had their language matrix fried due to an event, \
 		resulting in some strange and unfamiliar speech patterns."

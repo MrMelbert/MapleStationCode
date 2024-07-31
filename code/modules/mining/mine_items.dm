@@ -441,24 +441,24 @@
 		var/obj/structure/minecart_rail/railbreak/stop_break = locate() in loc
 		var/obj/structure/cable/cable = locate() in loc
 		// There is a break and it is powered, so STOP
-		if(stop_break && cable?.avail(10 KILO JOULES))
+		if(stop_break && cable?.avail(/*10 KILO JOULES*/10))
 			if(momentum >= 8)
 				visible_message(span_notice("[src] comes to a sudden stop."))
 			else
 				visible_message(span_notice("[src] comes to a stop."))
 			momentum = 0
 			SSmove_manager.stop_looping(src, SSconveyors)
-			cable.add_delayedload(10 KILO JOULES)
+			cable.add_delayedload(/*10 KILO JOULES*/10)
 			return
 		// This is a powered rail, so maintain speed
-		if(cable?.avail(1 KILO JOULES))
+		if(cable?.avail(/*1 KILO JOULES*/1))
 			// Speeds up the cart to 5 or 10, then stops decay
 			if(momentum <= 5)
 				momentum = 5
-				cable.add_delayedload(0.5 KILO JOULES)
+				cable.add_delayedload(/*0.5 KILO JOULES*/0.5)
 			else if(momentum <= 10)
 				momentum = 10
-				cable.add_delayedload(1 KILO JOULES)
+				cable.add_delayedload(/*1 KILO JOULES*/1)
 			return
 		// Here is where actual slowdown happens
 		momentum -= 1

@@ -23,7 +23,7 @@
 	bodycam.name = camera_name
 	bodycam.c_tag = c_tag
 	if(emp_proof)
-		bodycam.AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
+		bodycam.AddElement(/datum/element/empprotection, ALL)
 
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(update_cam))
 	RegisterSignal(parent, COMSIG_ATOM_DIR_CHANGE, PROC_REF(rotate_cam))
