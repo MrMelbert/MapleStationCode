@@ -29,6 +29,10 @@
 	name = "Jamjar Glasses"
 	item_path = /obj/item/clothing/glasses/regular/jamjar
 
+/datum/loadout_item/glasses/prescription_glasses/binoclard
+	name = "Binoclard Glasses"
+	item_path = /obj/item/clothing/glasses/regular/kim
+
 /datum/loadout_item/glasses/black_blindfold
 	name = "Black Blindfold"
 	item_path = /obj/item/clothing/glasses/blindfold
@@ -73,3 +77,11 @@
 /datum/loadout_item/glasses/casualsunglasses
 	name = "Casual Sunglasses"
 	item_path = /obj/item/clothing/glasses/sunglasses/casual
+
+/datum/loadout_item/glasses/osi
+	name = "OSI Sunglasses"
+	item_path = /obj/item/clothing/glasses/osi
+
+/datum/loadout_item/glasses/monocle
+	name = "Monocle"
+	item_path = /obj/item/clothing/glasses/monocle

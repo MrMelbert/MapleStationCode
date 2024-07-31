@@ -85,6 +85,8 @@
 	return
 
 /obj/item/make_irradiated(can_propogate)
+	if(anchored)
+		return
 	AddElement(/datum/element/simple_rad)
 
 /mob/living/carbon/human/make_irradiated(can_propogate)

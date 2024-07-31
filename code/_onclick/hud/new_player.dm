@@ -211,10 +211,10 @@
 	var/mob/dead/new_player/new_player = hud.mymob
 	ready = !ready
 	if(ready)
-		new_player.ready = PLAYER_READY_TO_PLAY
+		new_player.ready()
 		base_icon_state = "ready"
 	else
-		new_player.ready = PLAYER_NOT_READY
+		new_player.unready()
 		base_icon_state = "not_ready"
 	update_appearance(UPDATE_ICON)
 	SEND_SIGNAL(hud, COMSIG_HUD_PLAYER_READY_TOGGLE)

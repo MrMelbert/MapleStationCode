@@ -19,7 +19,9 @@
 /datum/loadout_item/under/formal/shirodress
 	name = "Doll's Formal Uniform"
 	item_path = /obj/item/clothing/under/shirodress
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/neck/shirocloak
 	name = "Side Cape"
 	item_path = /obj/item/clothing/neck/cloak/shirocloak
+	additional_displayed_text = list("Character Item")

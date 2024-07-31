@@ -54,6 +54,14 @@
 	name = "Random Jumpskirt"
 	item_path = /obj/item/clothing/under/color/jumpskirt/random
 
+/datum/loadout_item/under/jumpsuit/rainbow
+	name = "Rainbow Jumpsuit"
+	item_path = /obj/item/clothing/under/color/rainbow
+
+/datum/loadout_item/under/jumpsuit/rainbow_skirt
+	name = "Rainbow Jumpskirt"
+	item_path = /obj/item/clothing/under/color/jumpskirt/rainbow
+
 /datum/loadout_item/under/jumpsuit/jeans
 	name = "Jeans"
 	item_path = /obj/item/clothing/under/pants/jeans
@@ -254,10 +262,6 @@
 	name = "Purple Suitskirt"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/purpsuit/skirt
 
-/datum/loadout_item/under/formal/red_suit
-	name = "Red Suit"
-	item_path = /obj/item/clothing/under/suit/red
-
 /datum/loadout_item/under/formal/red_lawyer_skirt
 	name = "Red Lawyer Suit"
 	item_path = /obj/item/clothing/under/rank/civilian/lawyer/red
@@ -333,14 +337,17 @@
 /datum/loadout_item/under/formal/nndress
 	name = "Blue Dress"
 	item_path = /obj/item/clothing/under/dress/nndress
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/formal/ritzuniform
 	name = "Malheur Research Association uniform"
 	item_path = /obj/item/clothing/under/rank/rnd/mrauniform
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/formal/reshiacoat
 	name = "Black Uniform Coat"
 	item_path = /obj/item/clothing/under/jumpsuit/reshiacoat
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/formal/arbitersuit
 	name = "Arbiter's Suit"
@@ -377,7 +384,9 @@
 /datum/loadout_item/under/formal/grey
 	name = "Designer Outfit"
 	item_path = /obj/item/clothing/under/jumpsuit/greyshirt
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/under/jumpsuit/pilot
 	name = "Berbier Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/lini
+	additional_displayed_text = list("Character Item")

@@ -332,20 +332,13 @@
 	remove_overlay(DAMAGE_LAYER)
 
 	var/mutable_appearance/damage_overlay
-	var/digi_filter = FALSE
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		if(!iter_part.dmg_overlay_type)
+		var/list/part_overlays = iter_part.get_bodypart_damage_state()
+		if(!LAZYLEN(part_overlays))
 			continue
-		if(iter_part.brutestate || iter_part.burnstate)
-			damage_overlay ||= mutable_appearance('icons/mob/effects/dam_mob.dmi', "blank", -DAMAGE_LAYER, appearance_flags = KEEP_TOGETHER)
-		if(iter_part.brutestate)
-			damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0") //we're adding icon_states of the base image as overlays
-			damage_overlay.color = iter_part.damage_color
-		if(iter_part.burnstate)
-			damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")
-		if(!digi_filter && damage_overlay && (iter_part.bodytype & BODYTYPE_DIGITIGRADE))
-			iter_part.apply_digitigrade_filters(damage_overlay, src)
-			digi_filter = TRUE
+
+		damage_overlay ||= mutable_appearance(layer = -DAMAGE_LAYER)
+		damage_overlay.overlays += part_overlays
 
 	if(isnull(damage_overlay))
 		return
@@ -490,7 +483,7 @@
 		var/old_key = icon_render_keys?[limb.body_zone] //Checks the mob's icon render key list for the bodypart
 		icon_render_keys[limb.body_zone] = (limb.is_husked) ? limb.generate_husk_key().Join() : limb.generate_icon_key().Join() //Generates a key for the current bodypart
 
-		if(icon_render_keys[limb.body_zone] != old_key || get_top_offset() != last_top_offset) //If the keys match, that means the limb doesn't need to be redrawn
+		if(icon_render_keys[limb.body_zone] != old_key) //If the keys match, that means the limb doesn't need to be redrawn
 			needs_update += limb
 
 	var/list/missing_bodyparts = get_missing_limbs()
@@ -507,15 +500,10 @@
 	for(var/obj/item/bodypart/limb as anything in bodyparts)
 		if(limb in needs_update)
 			var/bodypart_icon = limb.get_limb_icon()
-			if(!istype(limb, /obj/item/bodypart/leg))
-				var/top_offset = get_top_offset()
-				for(var/image/image as anything in bodypart_icon)
-					image.pixel_y += top_offset
 			new_limbs += bodypart_icon
 			limb_icon_cache[icon_render_keys[limb.body_zone]] = bodypart_icon //Caches the icon with the bodypart key, as it is new
 		else
 			new_limbs += limb_icon_cache[icon_render_keys[limb.body_zone]] //Pulls existing sprites from the cache
-		last_top_offset = get_top_offset()
 
 
 	remove_overlay(BODYPARTS_LAYER)
@@ -524,19 +512,6 @@
 		overlays_standing[BODYPARTS_LAYER] = new_limbs
 
 	apply_overlay(BODYPARTS_LAYER)
-
-/// This looks at the chest and legs of the mob and decides how much our chest, arms, and head should be adjusted. This is useful for limbs that are larger or smaller than the scope of normal human height while keeping the feet anchored to the bottom of the tile
-/mob/living/carbon/proc/get_top_offset()
-	var/from_chest
-	var/from_leg
-	for(var/obj/item/bodypart/leg/leg_checked in bodyparts)
-		if(leg_checked.top_offset > from_leg || isnull(from_leg)) // We find the tallest leg available
-			from_leg = leg_checked.top_offset
-	if(isnull(from_leg))
-		from_leg = 0 // If we have no legs, we set this to zero to avoid any math issues that might stem from it being NULL
-	for(var/obj/item/bodypart/chest/chest_checked in bodyparts) // Take the height from the chest
-		from_chest = chest_checked.top_offset
-	return (from_chest + from_leg) // The total hight of the chest and legs together
 
 /////////////////////////
 // Limb Icon Cache 2.0 //
@@ -575,6 +550,7 @@
 /obj/item/bodypart/proc/generate_husk_key()
 	RETURN_TYPE(/list)
 	. = list()
+	. += "[limb_id]-"
 	. += "[husk_type]"
 	. += "-husk"
 	. += "-[body_zone]"
