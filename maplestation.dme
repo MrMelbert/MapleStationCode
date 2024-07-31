@@ -6503,6 +6503,7 @@
 #include "maplestation_modules\story_content\casual_clothing\code\casualclothing.dm"
 #include "maplestation_modules\story_content\chaplain_equipment\code\chaplainclothing.dm"
 #include "maplestation_modules\story_content\grey_equipment\code\greyclothing.dm"
+#include "maplestation_modules\story_content\jessie_equipment\code\jessie_clothing.dm"
 #include "maplestation_modules\story_content\kimono\code\kimonoclothing.dm"
 #include "maplestation_modules\story_content\laurence_equipment\code\laurence_clothing.dm"
 #include "maplestation_modules\story_content\lini_equipment\code\liniclothing.dm"
