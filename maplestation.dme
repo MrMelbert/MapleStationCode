@@ -6306,6 +6306,7 @@
 #include "maplestation_modules\code\modules\clothing\suits\towels_greyscale.dm"
 #include "maplestation_modules\code\modules\clothing\under\digi_under.dm"
 #include "maplestation_modules\code\modules\clothing\under\loadout_under.dm"
+#include "maplestation_modules\code\modules\clothing\under\pockets.dm"
 #include "maplestation_modules\code\modules\clothing\under\jobs\rnd.dm"
 #include "maplestation_modules\code\modules\clothing\under\jobs\security.dm"
 #include "maplestation_modules\code\modules\events\resource_drift.dm"

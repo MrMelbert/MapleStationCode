@@ -251,10 +251,6 @@
 				update_worn_undersuit()
 			update_worn_oversuit()
 	else if(I == w_uniform)
-		if(!QDELING(w_uniform) && istype(w_uniform, /obj/item/clothing/under) && invdrop)
-			var/obj/item/clothing/under/uniform = w_uniform
-			uniform.take_pockets(src)
-
 		w_uniform = null
 		update_suit_sensors()
 		if(!QDELETED(src))
