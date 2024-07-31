@@ -45949,7 +45949,7 @@
 	name = "Kitchen"
 	},
 /obj/effect/mapping_helpers/airlock/access/all/service/kitchen,
-/turf/open/floor/catwalk_floor/flat_white,
+/turf/open/floor/catwalk_floor/iron_white,
 /area/station/service/kitchen)
 "qqd" = (
 /obj/structure/cable,
@@ -53977,7 +53977,7 @@
 	},
 /obj/machinery/door/firedoor,
 /obj/effect/mapping_helpers/airlock/access/all/service/kitchen,
-/turf/open/floor/catwalk_floor/flat_white,
+/turf/open/floor/catwalk_floor/iron_white,
 /area/station/service/kitchen)
 "sSt" = (
 /obj/effect/spawner/structure/window,
@@ -56433,7 +56433,7 @@
 	},
 /obj/effect/mapping_helpers/airlock/access/all/service/kitchen,
 /obj/machinery/duct,
-/turf/open/floor/catwalk_floor/flat_white,
+/turf/open/floor/catwalk_floor/iron_white,
 /area/station/service/kitchen/coldroom)
 "tHK" = (
 /turf/closed/wall,
