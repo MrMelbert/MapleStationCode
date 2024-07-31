@@ -14338,6 +14338,12 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/white,
 /area/station/science/ordnance/office)
+"dwD" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/water_source/puddle,
+/obj/item/reagent_containers/cup/watering_can,
+/turf/open/floor/grass,
+/area/station/security/prison/garden)
 "dwK" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/siding/wood{
@@ -22776,6 +22782,7 @@
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 8
 	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/security/prison/garden)
 "gCf" = (
@@ -23083,6 +23090,10 @@
 /obj/structure/table,
 /obj/structure/extinguisher_cabinet/directional/west,
 /obj/effect/turf_decal/stripes/line,
+/obj/effect/spawner/random/food_or_drink/seed{
+	spawn_all_loot = 1;
+	spawn_random_offset = 1
+	},
 /turf/open/floor/iron,
 /area/station/service/hydroponics/garden)
 "gGP" = (
@@ -25247,6 +25258,10 @@
 /obj/effect/turf_decal/tile/neutral,
 /turf/open/floor/iron,
 /area/station/hallway/primary/aft)
+"hBc" = (
+/obj/structure/flora/rock/pile,
+/turf/open/floor/grass,
+/area/station/service/hydroponics/garden)
 "hBk" = (
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
 	dir = 4
@@ -43068,6 +43083,7 @@
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 9
 	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/security/prison/garden)
 "orT" = (
@@ -54138,13 +54154,10 @@
 /turf/open/floor/iron/white,
 /area/station/science/ordnance/office)
 "sFo" = (
-/obj/structure/table,
-/obj/effect/turf_decal/stripes/line,
-/obj/effect/spawner/random/food_or_drink/seed{
-	spawn_all_loot = 1;
-	spawn_random_offset = 1
-	},
-/turf/open/floor/iron,
+/obj/structure/window/spawner/directional/south,
+/obj/structure/window/spawner/directional/west,
+/obj/structure/water_source/puddle,
+/turf/open/floor/grass,
 /area/station/service/hydroponics/garden)
 "sFx" = (
 /obj/structure/extinguisher_cabinet/directional/west,
@@ -57104,8 +57117,6 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "tOw" = (
-/obj/structure/sink/directional/west,
-/obj/item/reagent_containers/cup/watering_can,
 /obj/effect/turf_decal/trimline/green/filled/line{
 	dir = 4
 	},
@@ -65308,7 +65319,6 @@
 /obj/machinery/hydroponics/soil,
 /obj/item/cultivator,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
 /turf/open/floor/grass,
 /area/station/security/prison/garden)
 "xca" = (
@@ -67849,7 +67859,6 @@
 "ybE" = (
 /obj/machinery/hydroponics/soil,
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/cable,
 /obj/item/plant_analyzer,
 /turf/open/floor/grass,
 /area/station/security/prison/garden)
@@ -86750,7 +86759,7 @@ aaa
 lMJ
 aaa
 aaa
-aaa
+qMV
 qMV
 qMV
 qMV
@@ -87008,7 +87017,7 @@ lMJ
 aaa
 aaa
 qMV
-qMV
+dwD
 xbP
 ybE
 nsG
@@ -105806,7 +105815,7 @@ dqy
 fgV
 pqe
 pyb
-ekD
+hBc
 iOC
 jXx
 geq

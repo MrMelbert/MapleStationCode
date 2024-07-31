@@ -305,3 +305,9 @@
 		SET_PLANE(held, ABOVE_HUD_PLANE, our_turf)
 		held.screen_loc = ui_hand_position(index)
 		client.screen |= held
+
+/mob/living/basic/proc/hop_on_nearby_turf()
+	var/dir = pick(GLOB.cardinals)
+	Move(get_step(src, dir), dir)
+	animate(src, pixel_y = 18, time = 0.4 SECONDS, flags = ANIMATION_RELATIVE, easing = CUBIC_EASING|EASE_OUT)
+	animate(pixel_y = -18, time = 0.4 SECONDS, flags = ANIMATION_RELATIVE, easing = CUBIC_EASING|EASE_IN)

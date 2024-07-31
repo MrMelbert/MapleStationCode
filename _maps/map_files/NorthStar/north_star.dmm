@@ -20387,6 +20387,10 @@
 /obj/machinery/hydroponics/constructable,
 /turf/open/floor/iron/dark,
 /area/station/service/hydroponics/garden)
+"fnE" = (
+/obj/effect/turf_decal/weather/sand/light,
+/turf/closed/wall/r_wall,
+/area/station/security/execution/education)
 "fnF" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -47561,6 +47565,18 @@
 /obj/machinery/status_display/ai/directional/south,
 /turf/open/floor/iron/dark/side,
 /area/station/hallway/floor1/aft)
+"mkU" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/dark_blue,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/station/security/prison/garden)
 "mkZ" = (
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
@@ -54155,7 +54171,9 @@
 /area/station/maintenance/floor1/starboard)
 "nSz" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/structure/sink/kitchen/directional/south,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
 /turf/open/floor/iron/dark/side{
 	dir = 5
 	},
@@ -64308,15 +64326,9 @@
 /turf/open/floor/iron/dark,
 /area/station/command/teleporter)
 "qzQ" = (
-/obj/effect/turf_decal/weather/dirt{
-	dir = 8
-	},
-/obj/item/reagent_containers/cup/watering_can,
-/obj/effect/turf_decal/tile/dark_blue,
 /obj/machinery/newscaster/directional/north,
-/turf/open/floor/iron/dark/side{
-	dir = 9
-	},
+/obj/structure/water_source/puddle,
+/turf/open/misc/dirt/jungle,
 /area/station/security/prison/garden)
 "qzX" = (
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
@@ -68303,6 +68315,7 @@
 /obj/effect/mapping_helpers/broken_floor,
 /obj/effect/turf_decal/tile/dark_blue/opposingcorners,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
+/obj/item/reagent_containers/cup/watering_can,
 /turf/open/floor/iron/dark/corner{
 	dir = 4
 	},
@@ -329861,7 +329874,7 @@ oyh
 oyh
 oyh
 fkA
-fkA
+fnE
 wmD
 fkA
 kUZ
@@ -331405,7 +331418,7 @@ oyh
 wMF
 wMF
 qzQ
-pfL
+mkU
 pfL
 pfL
 yfr
