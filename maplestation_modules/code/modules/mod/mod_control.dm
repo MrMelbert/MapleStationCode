@@ -24,5 +24,7 @@
 	for (var/obj/item/mod/module/module in modules)
 		if (part.slot_flags in module.mount_part)
 			module.on_suit_deactivation()
+			if (module.active)
+				module.on_deactivation()
 			if (user && (module.overlay_state_inactive || module.overlay_state_active))
 				user.update_worn_back()
