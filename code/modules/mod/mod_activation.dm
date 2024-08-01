@@ -245,10 +245,10 @@
 	active = on
 	if(active)
 		for(var/obj/item/mod/module/module as anything in modules)
-			 // NON-MODULE CHANGE START
+			// NON-MODULE CHANGE START
 			if (module.module_deployed())
 				module.on_suit_activation()
-			 // NON-MODULE CHANGE END
+			// NON-MODULE CHANGE END
 	else
 		for(var/obj/item/mod/module/module as anything in modules)
 			module.on_suit_deactivation()
