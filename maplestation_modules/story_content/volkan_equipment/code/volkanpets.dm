@@ -246,5 +246,3 @@
 	held_items.len = amt
 	if(hud_used)
 		hud_used.build_hand_slots()
-
-
