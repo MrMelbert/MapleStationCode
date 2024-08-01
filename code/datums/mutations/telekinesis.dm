@@ -26,7 +26,7 @@
 	if(.)
 		return
 	UnregisterSignal(H, COMSIG_MOB_ATTACK_RANGED)
-	
+
 /datum/mutation/human/telekinesis/get_visual_indicator()
 	return visual_indicators[type][1]
 
