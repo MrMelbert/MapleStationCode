@@ -98,7 +98,7 @@
 #define VROOMBA_CHATTER "makes a happy chattering noise!*"
 
 //signal for the vroomba's tools to know if it is in combat mode
-#define COMSIG_COMBAT_MODE "combat_mode_active"
+
 
 /mob/living/basic/bot/cleanbot/vroomba
 	name = "\improper Strange Roomba"
@@ -183,6 +183,7 @@
 		go_angry()
 
 	if(!combat_mode)
+		SEND_SIGNAL(src, COMSIG_COMBAT_MODE)
 		calm_down()
 
 	update_basic_mob_varspeed()
@@ -196,6 +197,8 @@
 
 	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
+	AddComponent(/datum/component/tractorfield/vroomba)
+	
 	change_number_of_hands(2)
 
 	playsound(src, combat_sound, 70, ignore_walls = FALSE)
@@ -240,46 +243,4 @@
 	if(hud_used)
 		hud_used.build_hand_slots()
 
-///The vroomba's hud!
-/datum/hud/vroomba/New(mob/owner)
-	. = ..()
-	var/atom/movable/screen/using
 
-	using = new /atom/movable/screen/drop(null, src)
-	using.icon = ui_style
-	using.screen_loc = ui_drone_drop
-	static_inventory += using
-
-	pull_icon = new /atom/movable/screen/pull(null, src)
-	pull_icon.icon = ui_style
-	pull_icon.update_appearance()
-	pull_icon.screen_loc = ui_drone_pull
-	static_inventory += pull_icon
-
-	build_hand_slots()
-
-	action_intent = new /atom/movable/screen/combattoggle/flashy(null, src)
-	action_intent.icon = ui_style
-	action_intent.screen_loc = ui_combat_toggle
-	static_inventory += action_intent
-
-	zone_select = new /atom/movable/screen/zone_sel(null, src)
-	zone_select.icon = ui_style
-	zone_select.update_appearance()
-	static_inventory += zone_select
-
-	using = new /atom/movable/screen/area_creator(null, src)
-	using.icon = ui_style
-	static_inventory += using
-
-	mymob.canon_client?.clear_screen()
-
-///The vroombas cleaner for when it is not in combat.
-/datum/component/cleaner/vroomba/RegisterWithParent()
-	. = ..()
-	RegisterSignal(parent, COMSIG_COMBAT_MODE, PROC_REF(remove_self))
-
-/datum/component/cleaner/vroomba/proc/remove_self()
-	SIGNAL_HANDLER
-
-	qdel(src)
