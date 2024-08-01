@@ -117,6 +117,9 @@
 	maxHealth = 100
 	damage_coeff = list(BRUTE = 0.7, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0) //It's secretly a combat drone. This thing is tanky.
 
+	melee_damage_upper = 5
+	melee_damage_lower = 1
+
 	maints_access_required = list(ACCESS_ROBOTICS, ACCESS_JANITOR, ACCESS_ENGINEERING)
 	radio_key = /obj/item/encryptionkey/ai
 	radio_channel = RADIO_CHANNEL_SERVICE
@@ -201,6 +204,7 @@
 	
 	change_number_of_hands(2)
 
+	balloon_alert_to_viewers("Gravity shifts!", vision_distance = 4) //When it turns on, it will make gravity feel funny.
 	playsound(src, combat_sound, 70, ignore_walls = FALSE)
 
 ///the vroomba hiding its combat capabilities!
@@ -222,7 +226,7 @@
 /mob/living/basic/bot/cleanbot/vroomba/emp_act(severity)
 	if(. & EMP_PROTECT_SELF)
 		return
-	Stun(10)
+	Stun(4)
 	to_chat(src, span_danger("WARN: EMP DETECTED."))
 
 /mob/living/basic/bot/cleanbot/vroomba/generate_speak_list()
