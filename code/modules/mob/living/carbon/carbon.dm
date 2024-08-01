@@ -141,21 +141,27 @@
 		thrown_thing = held_item.on_thrown(src, target)
 	else if(isliving(pulling))
 		thrown_thing = pulling
-	else if(length(buckled_mobs) == 1 && isliving(buckled_mobs[1]) && buckle_lying != 0) // melbert todo : test
+	else if(length(buckled_mobs) == 1 && isliving(buckled_mobs[1]) && buckle_lying != 0)
 		thrown_thing = buckled_mobs[1]
 
 	if(isliving(thrown_thing))
-		if(grab_state < GRAB_AGGRESSIVE)
-			return FALSE
 		var/mob/living/throwable_mob = thrown_thing
-		if(throwable_mob.buckled)
-			return FALSE
+		if(throwable_mob.buckled == src)
+			pass() // we're yeeting a fireman carry guy
+		else
+			if(grab_state < GRAB_AGGRESSIVE)
+				return FALSE
+			if(throwable_mob.buckled)
+				return FALSE
 		if(HAS_TRAIT(src, TRAIT_PACIFISM))
 			to_chat(src, span_warning("You don't want to risk hurting [throwable_mob]!"))
 			return FALSE
 		if(grab_state >= GRAB_NECK)
 			neckgrab_throw = TRUE
-		stop_pulling()
+		if(throwable_mob.buckled == src)
+			unbuckle_mob(thrown_thing)
+		if(throwable_mob == pulling)
+			stop_pulling()
 
 	if(!thrown_thing)
 		return FALSE

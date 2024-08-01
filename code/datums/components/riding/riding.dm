@@ -253,6 +253,7 @@
 		return
 	buckled_mob.pixel_x = buckled_mob.base_pixel_x + buckled_mob.body_position_pixel_x_offset
 	buckled_mob.pixel_y = buckled_mob.base_pixel_y + buckled_mob.body_position_pixel_y_offset
+	buckled_mob.layer = initial(buckled_mob.layer)
 	var/atom/source = parent
 	SET_PLANE_EXPLICIT(buckled_mob, initial(buckled_mob.plane), source)
 	if(buckled_mob.client)

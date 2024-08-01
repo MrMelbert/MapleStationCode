@@ -102,8 +102,6 @@
 		if(GRAB_KILL)
 			return span_boldwarning("[owner.p_Theyre()] strangling [paired_effect.owner]!")
 
-// melbert todo : add slowdown / stamina cost / sprint cost to fireman carry, scaled on strength / size / etc
-
 /// Status effect applied to someone being grabbed
 /datum/status_effect/grabbed
 	id = "grabbed"

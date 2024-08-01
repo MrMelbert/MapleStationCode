@@ -306,7 +306,7 @@
 			add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us.wear_suit), messy_slots)
 			return
 
-	if(prob(blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
+	if(prob(who_touched_us.blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
 		add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us), messy_slots)
 		who_touched_us.blood_in_hands -= 1
 

@@ -211,12 +211,12 @@
 		// the riding mob is made nondense so they don't bump into any dense atoms the carrier is pulling,
 		// since pulled movables are moved before buckled movables
 		ADD_TRAIT(riding_mob, TRAIT_UNDENSE, VEHICLE_TRAIT)
-		riding_mob.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, HUMAN_CARRY_SLOWDOWN)
+		human_parent.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, HUMAN_CARRY_SLOWDOWN)
 
 	else if(ride_check_flags & CARRIER_NEEDS_ARM) // fireman
 		human_parent.buckle_lying = 90
 		// melbert todo : tweak this value
-		riding_mob.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, round(HUMAN_CARRY_SLOWDOWN * 1.33, 0.1))
+		human_parent.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, round(HUMAN_CARRY_SLOWDOWN * 1.33, 0.1))
 
 /datum/component/riding/creature/human/RegisterWithParent()
 	. = ..()
@@ -273,10 +273,10 @@
 		M.layer = MOB_LAYER
 
 	if(!AM.buckle_lying) // rider is vertical, must be piggybacking
-		if(dir == SOUTH)
-			AM.layer = MOB_ABOVE_PIGGYBACK_LAYER
-		else
+		if(dir == NORTH)
 			AM.layer = MOB_BELOW_PIGGYBACK_LAYER
+		else
+			AM.layer = MOB_ABOVE_PIGGYBACK_LAYER
 	else  // laying flat, we must be firemanning the rider
 		if(dir == NORTH)
 			AM.layer = MOB_BELOW_PIGGYBACK_LAYER
@@ -285,13 +285,12 @@
 
 /datum/component/riding/creature/human/get_offsets(pass_index, mob/offsetter)
 	var/mob/living/carbon/human/seat = parent
-	// melbert todo: piggybacking (layering especially)
 	var/height = offsetter.get_mob_buckling_height(seat) + seat.body_position_pixel_y_offset + seat.base_pixel_y + 6
 	return list(
-		TEXT_NORTH = list(0, height),
-		TEXT_SOUTH = list(0, height),
-		TEXT_EAST = ( seat.buckle_lying ? list(0, height) : list(-6, round(height * 0.66)) ),
-		TEXT_WEST = ( seat.buckle_lying ? list(0, height) : list(6, round(height * 0.66)) ),
+		TEXT_NORTH = ( seat.buckle_lying ? list(0, height) : list( 0, round(height * 0.33, 1) ) ),
+		TEXT_SOUTH = ( seat.buckle_lying ? list(0, height) : list( 0, round(height * 0.33, 1) ) ),
+		TEXT_EAST =  ( seat.buckle_lying ? list(0, height) : list(-6, round(height * 0.33, 1) ) ),
+		TEXT_WEST =  ( seat.buckle_lying ? list(0, height) : list( 6, round(height * 0.33, 1) ) ),
 	)
 
 /datum/component/riding/creature/human/force_dismount(mob/living/dismounted_rider)
