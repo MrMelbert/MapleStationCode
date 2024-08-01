@@ -3,7 +3,7 @@
 
 /obj/item/mod/module/pepper_shoulders
 	mount_part = list(ITEM_SLOT_OCLOTHING)
-    
+	
 /obj/item/mod/module/megaphone
 	mount_part = list(ITEM_SLOT_HEAD)
 

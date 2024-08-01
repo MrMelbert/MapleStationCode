@@ -3,7 +3,7 @@
 
 /obj/item/mod/module/t_ray
 	mount_part = list(ITEM_SLOT_HEAD)
-    
+	
 /obj/item/mod/module/magboot
 	mount_part = list(ITEM_SLOT_FEET)
 

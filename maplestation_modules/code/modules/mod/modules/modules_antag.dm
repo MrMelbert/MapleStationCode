@@ -18,6 +18,6 @@
 
 /obj/item/mod/module/medbeam
 	mount_part = list(ITEM_SLOT_GLOVES)
-    
+	
 /obj/item/mod/module/tem
 	mount_part = list(ITEM_SLOT_GLOVES)
