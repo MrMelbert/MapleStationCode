@@ -21,4 +21,3 @@
     
 /obj/item/mod/module/tem
 	mount_part = list(ITEM_SLOT_GLOVES)
-	

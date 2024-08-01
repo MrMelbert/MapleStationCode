@@ -15,4 +15,3 @@
 
 /obj/item/mod/module/sphere_transform
 	mount_part = list(ITEM_SLOT_GLOVES, ITEM_SLOT_FEET, ITEM_SLOT_OCLOTHING, ITEM_SLOT_HEAD)
-    
