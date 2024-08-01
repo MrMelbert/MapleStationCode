@@ -97,9 +97,6 @@
 #define VROOMBA_STOP "makes an annoyed sounding whine.*"
 #define VROOMBA_CHATTER "makes a happy chattering noise!*"
 
-//signal for the vroomba's tools to know if it is in combat mode
-
-
 /mob/living/basic/bot/cleanbot/vroomba
 	name = "\improper Strange Roomba"
 	desc = "A little cleaning robot, So circular! It looks like it is out of plasteel."

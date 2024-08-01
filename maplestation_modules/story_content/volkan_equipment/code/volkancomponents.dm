@@ -3,6 +3,8 @@
  * This file has a bunch of components as well as various things like HUDs and things like that.
  * Ones not named for a specific mob is made to be used in more than one mob. Maybe.
  */
+
+///signal for the vroomba's tools to know if it is in combat mode
 #define COMSIG_COMBAT_MODE "combat_mode_active"
 
 /*
