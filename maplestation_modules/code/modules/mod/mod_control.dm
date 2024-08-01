@@ -13,6 +13,8 @@
 
 /obj/item/mod/control/deploy(mob/user, obj/item/part)
 	. = ..()
+	if (!active)
+		return
 	for (var/obj/item/mod/module/module in modules)
 		if ((part.slot_flags in module.mount_part) && module.module_deployed())
 			module.on_suit_activation()
@@ -21,6 +23,8 @@
 
 /obj/item/mod/control/retract(mob/user, obj/item/part)
 	. = ..()
+	if (!active)
+		return
 	for (var/obj/item/mod/module/module in modules)
 		if (part.slot_flags in module.mount_part)
 			module.on_suit_deactivation()
