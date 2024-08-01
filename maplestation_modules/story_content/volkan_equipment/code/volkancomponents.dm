@@ -21,26 +21,36 @@
 	var/damage = 5
 	///The pushing force does the tractor field has.
 	var/force = 2
-	///The multiplier for how much damage the pushing force creates
-	var/force_multiplier = 3
 
 	///Stuff tractor field cannot interact with
 	var/static/list/blacklisted_atoms = typecacheof(list(/atom/movable/screen))
 	///Things that a tractor field can attack with a force attack.
 	var/static/list/attackables = typecacheof(list(/mob))
+	///Stuff a tractor field can pick up
+	var/static/list/can_pick_up = typecacheof(list(/obj/item))
 
 /datum/component/tractorfield/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_MOB_ATTACK_RANGED, PROC_REF(on_ranged_attack))
-	// RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
+	RegisterSignal(parent, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(on_unarmed_attack))
+
 
 /datum/component/tractorfield/UnregisterFromParent()
-	UnregisterSignal(parent, COMSIG_MOB_ATTACK_RANGED)
+	UnregisterSignal(parent, list(COMSIG_MOB_ATTACK_RANGED,COMSIG_LIVING_UNARMED_ATTACK))
 
-///Checks if item is in tractor field's influence.
+
+///Checks if clicked on item is in tractor field's influence.
 /datum/component/tractorfield/proc/tractorRangeCheck(mob/user, atom/target)
 	var/d = get_dist(user, target)
 	if(d > max_range)
 		user.balloon_alert(user, "can't lift, too far!")
+		return
+	return TRUE
+
+///Same as /datum/component/tractorfield/proc/tractorRangeCheck() but for the telekinetic grab object instead.
+/obj/item/tk_grab/tractor/proc/tractorRangeCheck(mob/user, atom/target) //Melbert if you know how to combine this with above one plz tell me. It works though.
+	var/d = get_dist(user, target)
+	if(d > max_range)
+		user.balloon_alert(user, "can't move, too far!")
 		return
 	return TRUE
 
@@ -53,24 +63,29 @@
 		return
 	if(is_type_in_typecache(target, attackables)) //atacking mobs
 		return target.attack_tractor(source, target, damage, force) 
-	return tractor_grab(source, target)
+	if(is_type_in_typecache(target, can_pick_up)) 
+		return tractor_grab(source, target)
+	return on_unarmed_attack(source, target, TRUE)
 
 //Grabs the item with the tractor field at a distance
 /datum/component/tractorfield/proc/tractor_grab(mob/user, target)
 	var/obj/item/tk_grab/tractor/O = new(target)
 	O.tk_user = user
+	O.max_range = max_range + force //it can throw things just a little bit further than it can pick up
 	if(!O.focus_object(target))
 		return
 	INVOKE_ASYNC(O, TYPE_PROC_REF(/atom, attack_hand), user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
-///Tractor Field's "Telekinetic" grab
+///Tractor Field's "Telekinetic" grab object
 /obj/item/tk_grab/tractor
 	name = "Tractor Field Grab"
 	desc = "Lifting things with complex gravity technology"
 
 	///The speed the tractor field moves things at.
 	var/speed = 6
+	///The maximum range a tractor field can move an object
+	var/max_range = 7
 
 /obj/item/tk_grab/tractor/focus_object(obj/target)
 	if(!check_if_focusable(target))
@@ -85,7 +100,7 @@
 	if(!tk_user || QDELETED(target) || !istype(target))
 		qdel(src)
 		return
-	if(!tkMaxRangeCheck(tk_user, target) || target.anchored || !isturf(target.loc))
+	if(!tractorRangeCheck(tk_user, target) || target.anchored || !isturf(target.loc))
 		qdel(src)
 		return
 	return TRUE
@@ -98,6 +113,8 @@
 /obj/item/tk_grab/tractor/proc/move_object(mob/user, atom/target)
 	if(!focus)
 		return
+	if(!tractorRangeCheck(user, target))
+		return
 	apply_focus_overlay()
 	focus.throw_at(get_turf(target), 10, speed, thrower = user)
 	var/turf/start_turf = get_turf(focus)
@@ -106,21 +123,24 @@
 	update_appearance()
 
 /// Interact with items at range. replaces on_unarmed_attack.
-// /datum/component/tractorfield/proc/on_unarmed_attack(mob/living/hand_haver, atom/target, modifiers)
-// 	SIGNAL_HANDLER
-// 	if (LAZYACCESS(modifiers, RIGHT_CLICK))
-// 		INVOKE_ASYNC(target, TYPE_PROC_REF(/atom, attack_hand_secondary), hand_haver, modifiers)
-// 	else
-// 		INVOKE_ASYNC(target, TYPE_PROC_REF(/atom, attack_hand), hand_haver, modifiers)
-// 	INVOKE_ASYNC(hand_haver, TYPE_PROC_REF(/mob, update_held_items))
-// 	return COMPONENT_CANCEL_ATTACK_CHAIN
+/datum/component/tractorfield/proc/on_unarmed_attack(mob/living/hand_haver, atom/target, proximity, modifiers)
+	SIGNAL_HANDLER
+	if (!proximity && target.loc != hand_haver)
+		var/obj/item/obj_item = target
+		if (istype(obj_item) && !obj_item.atom_storage && !(obj_item.item_flags & IN_STORAGE))
+			return NONE
+	if (LAZYACCESS(modifiers, RIGHT_CLICK))
+		INVOKE_ASYNC(target, TYPE_PROC_REF(/atom, attack_hand_secondary), hand_haver, modifiers)
+	else
+		INVOKE_ASYNC(target, TYPE_PROC_REF(/atom, attack_hand), hand_haver, modifiers)
+	INVOKE_ASYNC(hand_haver, TYPE_PROC_REF(/mob, update_held_items))
+	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 ///Ranged attacking with the tractor field.
 /atom/proc/attack_tractor(mob/user, mob/target, damage, force)
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
 	user.changeNext_move(CLICK_CD_MELEE)
-
-//push them back!!
+	//push them back!!
 	target.throw_at(get_edge_target_turf(target, dir), force, 6, thrower = user)
 	balloon_alert(target, "gravity shifts!") // It essentially rotates gravity to the side for its target.
 	visible_message(span_danger("[user] pushes [target] back with an unknown force!")) 
