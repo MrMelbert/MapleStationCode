@@ -61,7 +61,7 @@
 	O.tk_user = user
 	if(!O.focus_object(target))
 		return
-	INVOKE_ASYNC(O, TYPE_PROC_REF(/atom, attack_hand), user)
+	//INVOKE_ASYNC(O, TYPE_PROC_REF(/atom, attack_hand), user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 ///Tractor Field's "Telekinetic" grab
@@ -120,7 +120,7 @@
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
 	user.changeNext_move(CLICK_CD_MELEE)
 
-	//push them back!!
+//push them back!!
 	target.throw_at(get_edge_target_turf(target, dir), force, 6, thrower = user)
 	balloon_alert(target, "Gravity shifts!") // It essentially rotates gravity to the side for its target.
 	visible_message(span_danger("[user] pushes [target] back with an unknown force!")) 
@@ -133,7 +133,7 @@
  * # Vroomba only stuff
  * Components just for the vroomba.
  */
- ///The vroomba's hud!
+///The vroomba's hud!
 /datum/hud/vroomba/New(mob/owner)
 	. = ..()
 	var/atom/movable/screen/using
