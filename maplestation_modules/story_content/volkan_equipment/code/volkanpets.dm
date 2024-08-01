@@ -204,7 +204,7 @@
 	
 	change_number_of_hands(2)
 
-	balloon_alert_to_viewers("Gravity shifts!", vision_distance = 4) //When it turns on, it will make gravity feel funny.
+	balloon_alert_to_viewers("gravity shifts!", vision_distance = 4) //When it turns on, it will make gravity feel funny.
 	playsound(src, combat_sound, 70, ignore_walls = FALSE)
 
 ///the vroomba hiding its combat capabilities!

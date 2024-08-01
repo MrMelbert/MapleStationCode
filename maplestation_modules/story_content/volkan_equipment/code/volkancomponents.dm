@@ -61,7 +61,7 @@
 	O.tk_user = user
 	if(!O.focus_object(target))
 		return
-	//INVOKE_ASYNC(O, TYPE_PROC_REF(/atom, attack_hand), user)
+	INVOKE_ASYNC(O, TYPE_PROC_REF(/atom, attack_hand), user)
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 ///Tractor Field's "Telekinetic" grab
@@ -92,7 +92,7 @@
 
 /obj/item/tk_grab/tractor/afterattack(atom/target, mob/user, proximity, params)
 	. = ..()
-	move_object(target)
+	move_object(user, target)
 
 ///Moving an object around
 /obj/item/tk_grab/tractor/proc/move_object(mob/user, atom/target)
@@ -122,7 +122,7 @@
 
 //push them back!!
 	target.throw_at(get_edge_target_turf(target, dir), force, 6, thrower = user)
-	balloon_alert(target, "Gravity shifts!") // It essentially rotates gravity to the side for its target.
+	balloon_alert(target, "gravity shifts!") // It essentially rotates gravity to the side for its target.
 	visible_message(span_danger("[user] pushes [target] back with an unknown force!")) 
 	user.log_message("has attacked [target] using a tractor field!", LOG_ATTACK) //for the admins
 
