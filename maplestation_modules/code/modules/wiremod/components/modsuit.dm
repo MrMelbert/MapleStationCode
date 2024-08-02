@@ -43,26 +43,26 @@
 	east = add_input_port("East", PORT_TYPE_SIGNAL)
 	south = add_input_port("South", PORT_TYPE_SIGNAL)
 	west = add_input_port("West", PORT_TYPE_SIGNAL)
-	moved = add_option_port("Successful Move", PORT_TYPE_SIGNAL)
-	move_fail = add_option_port("Failed Move", PORT_TYPE_SIGNAL)
+	moved = add_output_port("Successful Move", PORT_TYPE_SIGNAL)
+	move_fail = add_output_port("Failed Move", PORT_TYPE_SIGNAL)
 
 	left_click = add_input_port("Left Click", PORT_TYPE_SIGNAL)
 	right_click = add_input_port("Right Click", PORT_TYPE_SIGNAL)
 	middle_click = add_input_port("Middle Click", PORT_TYPE_SIGNAL)
-	clicked = add_option_port("After Click", PORT_TYPE_SIGNAL)
+	clicked = add_output_port("After Click", PORT_TYPE_SIGNAL)
 
 	target = add_input_port("Target", PORT_TYPE_ATOM)
 	swap_hands = add_input_port("Swap Hands", PORT_TYPE_SIGNAL)
-	swapped_hands = add_option_port("Swapped Hands", PORT_TYPE_SIGNAL)
+	swapped_hands = add_output_port("Swapped Hands", PORT_TYPE_SIGNAL)
 
 	alt_click = add_input_port("Alt Click", PORT_TYPE_NUMBER)
 	shift_click = add_input_port("Shift Click", PORT_TYPE_NUMBER)
 	ctrl_click = add_input_port("Ctrl Click", PORT_TYPE_NUMBER)
 
 	get_hands = add_input_port("Get Currently Held Items", PORT_TYPE_SIGNAL)
-	active_hand = add_option_port("Active Hand", PORT_TYPE_ATOM)
-	inactive_hand = add_option_port("Inactive Hand", PORT_TYPE_ATOM)
-	fetched_hands = add_option_port("Fetched Held Items", PORT_TYPE_SIGNAL)
+	active_hand = add_output_port("Active Hand", PORT_TYPE_ATOM)
+	inactive_hand = add_output_port("Inactive Hand", PORT_TYPE_ATOM)
+	fetched_hands = add_output_port("Fetched Held Items", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/mod_adapter_core/input_received(datum/port/input/port)
 	. = ..()
