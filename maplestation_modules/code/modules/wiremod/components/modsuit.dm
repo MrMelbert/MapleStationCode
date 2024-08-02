@@ -83,30 +83,22 @@
 		return
 
 	if (COOLDOWN_FINISHED(src, move_cooldown) && attached_module.mod.boots?.loc == wearer)
+		var/move_dir = null
+
 		if (COMPONENT_TRIGGERED_BY(north, port))
-			COOLDOWN_START(src, move_cooldown, wearer.cached_multiplicative_slowdown)
-			if (wearer.Move(get_step(get_turf(wearer), NORTH)))
-				moved.set_output(COMPONENT_SIGNAL)
-			else
-				move_fail.set_output(COMPONENT_SIGNAL)
-			return
+			move_dir = NORTH
 		if (COMPONENT_TRIGGERED_BY(east, port))
-			COOLDOWN_START(src, move_cooldown, wearer.cached_multiplicative_slowdown)
-			if (wearer.Move(get_step(get_turf(wearer), EAST)))
-				moved.set_output(COMPONENT_SIGNAL)
-			else
-				move_fail.set_output(COMPONENT_SIGNAL)
-			return
+			move_dir = EAST
 		if (COMPONENT_TRIGGERED_BY(south, port))
-			COOLDOWN_START(src, move_cooldown, wearer.cached_multiplicative_slowdown)
-			if (wearer.Move(get_step(get_turf(wearer), SOUTH)))
-				moved.set_output(COMPONENT_SIGNAL)
-			else
-				move_fail.set_output(COMPONENT_SIGNAL)
-			return
+			move_dir = SOUTH
 		if (COMPONENT_TRIGGERED_BY(west, port))
+			move_dir = WEST
+
+		if (!isnull(move_dir))
 			COOLDOWN_START(src, move_cooldown, wearer.cached_multiplicative_slowdown)
-			if (wearer.Move(get_step(get_turf(wearer), WEST)))
+			if (!isnull(wearer.client))
+				COOLDOWN_START(wearer.client, move_delay, wearer.cached_multiplicative_slowdown)
+			if (wearer.Move(get_step(get_turf(wearer), NORTH)))
 				moved.set_output(COMPONENT_SIGNAL)
 			else
 				move_fail.set_output(COMPONENT_SIGNAL)
