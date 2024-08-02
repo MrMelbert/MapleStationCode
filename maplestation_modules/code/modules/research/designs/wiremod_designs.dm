@@ -46,4 +46,3 @@
 	name = "Tile Scanner Component"
 	id = "comp_tile_scanner"
 	build_path = /obj/item/circuit_component/tile_scanner
-	
