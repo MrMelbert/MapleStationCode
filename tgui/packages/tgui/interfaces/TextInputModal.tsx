@@ -15,6 +15,7 @@ type TextInputData = {
   placeholder: string;
   timeout: number;
   title: string;
+  default_value: string;
 };
 
 export const sanitizeMultiline = (toSanitize: string) => {
@@ -99,7 +100,7 @@ const InputArea = (props: {
   onType: (value: string) => void;
 }) => {
   const { act, data } = useBackend<TextInputData>();
-  const { max_length, multiline } = data;
+  const { max_length, multiline, default_value } = data;
   const { input, onType } = props;
 
   const visualMultiline = multiline || input.length >= 30;
@@ -122,6 +123,8 @@ const InputArea = (props: {
       onInput={(_, value) => onType(value)}
       placeholder="Type something..."
       value={input}
-    />
+    >
+      {default_value}
+    </TextArea>
   );
 };
