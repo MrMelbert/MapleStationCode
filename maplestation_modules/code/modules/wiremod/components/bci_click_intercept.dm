@@ -52,7 +52,7 @@
 	ctrl_click = add_output_port("Ctrl Click", PORT_TYPE_NUMBER)
 
 	click_toggle = add_output_port("Intercept Next Click", PORT_TYPE_SIGNAL)
-	move_toggle = add_output_port("Intercept Move Click", PORT_TYPE_SIGNAL)
+	move_toggle = add_output_port("Intercept Next Move", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/click_interceptor/register_shell(atom/movable/shell)
 	if(!istype(shell, /obj/item/organ/internal/cyberimp/bci))
