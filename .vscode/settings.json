@@ -45,5 +45,5 @@
 		"*.dmi": "dmiEditor.dmiEditor"
 	},
 	"Lua.diagnostics.enable": false,
-	"editor.insertSpaces": false,
+	"editor.insertSpaces": false
 }
