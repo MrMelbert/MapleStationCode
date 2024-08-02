@@ -71,18 +71,18 @@
 	if (!istype(wearer))
 		return
 
-	if (COMPONENT_TRIGGERED_BY(get_hands, port))
+	if (COMPONENT_TRIGGERED_BY(get_hands, port) && attached_module.mod.gauntlets?.loc == wearer)
 		active_hand.set_output(wearer.get_active_held_item())
 		active_hand.set_output(wearer.get_inactive_held_item())
 		fetched_hands.set_output(COMPONENT_SIGNAL)
 		return
 
-	if (COMPONENT_TRIGGERED_BY(swap_hands, port))
+	if (COMPONENT_TRIGGERED_BY(swap_hands, port) && attached_module.mod.gauntlets?.loc == wearer)
 		wearer.swap_hand()
 		swapped_hands.set_output(COMPONENT_SIGNAL)
 		return
 
-	if (COOLDOWN_FINISHED(src, move_cooldown))
+	if (COOLDOWN_FINISHED(src, move_cooldown) && attached_module.mod.boots?.loc == wearer)
 		if (COMPONENT_TRIGGERED_BY(north, port))
 			COOLDOWN_START(src, move_cooldown, wearer.cached_multiplicative_slowdown)
 			if (wearer.Move(get_step(get_turf(wearer), NORTH)))
@@ -112,7 +112,7 @@
 				move_fail.set_output(COMPONENT_SIGNAL)
 			return
 	
-	if (!COOLDOWN_FINISHED(src, click_cooldown))
+	if (!COOLDOWN_FINISHED(src, click_cooldown) || attached_module.mod.gauntlets?.loc != wearer)
 		return
 
 	if (!COMPONENT_TRIGGERED_BY(left_click, port) && !COMPONENT_TRIGGERED_BY(middle_click, port) && !COMPONENT_TRIGGERED_BY(right_click, port))
