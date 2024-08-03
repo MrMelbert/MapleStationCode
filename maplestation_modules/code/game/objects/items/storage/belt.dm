@@ -12,7 +12,7 @@
 	worn_icon_state = "baseball_pack"
 	w_class = WEIGHT_CLASS_BULKY
 	content_overlays = TRUE
-	var/storable_items = list()
+	var/list/storable_items = list()
 	var/max_weight_class = WEIGHT_CLASS_HUGE
 
 /obj/item/storage/belt/sheathe/Initialize(mapload)
@@ -58,7 +58,8 @@
 	worn_icon_state = "baseball_pack"
 	w_class = WEIGHT_CLASS_BULKY
 	content_overlays = TRUE
-	storable_items = list(/obj/item/melee/baseball_bat,
+	storable_items = list(
+		/obj/item/melee/baseball_bat,
 		/obj/item/melee/baseball_bat/homerun,
 		/obj/item/melee/baseball_bat/barbed,
 		/obj/item/melee/baseball_bat/ablative,
