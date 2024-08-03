@@ -96,7 +96,7 @@
 	return ..()
 
 /obj/item/storage/box/papersack/attackby(obj/item/attacking_item, mob/user, params)
-	if(istype(attacking_item, /obj/item/pen))
+	if(IS_WRITING_UTENSIL(attacking_item))
 		var/choice = show_radial_menu(user, src , papersack_designs, custom_check = CALLBACK(src, PROC_REF(check_menu), user, attacking_item), radius = 36, require_near = TRUE)
 		if(!choice || choice == design_choice)
 			return FALSE

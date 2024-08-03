@@ -54,6 +54,7 @@
 		return FALSE
 
 	zipped = !zipped
+	playsound(src, 'sound/items/zip_up.ogg', 30, TRUE, -3)
 	worn_icon_state = "[initial(icon_state)][zipped ? "_t" : ""]"
 	balloon_alert(user, "[zipped ? "" : "un"]zipped")
 

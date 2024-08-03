@@ -1169,6 +1169,15 @@
 			ref = REF(record),
 		)
 
+		var/atom/printed = record.product_path
+		// If it's not GAGS and has no innate colors we have to care about, we use DMIcon
+		if(ispath(printed, /atom) \
+			&& (!initial(printed.greyscale_config) || !initial(printed.greyscale_colors)) \
+			&& !initial(printed.color) \
+		)
+			static_record["icon"] = initial(printed.icon)
+			static_record["icon_state"] = initial(printed.icon_state)
+
 		var/list/category = record.category || default_category
 		if (!isnull(category))
 			if (!(category["name"] in categories))
@@ -1644,7 +1653,7 @@
 			speak("\The [src] has been linked to [card_used].")
 
 	if(compartmentLoadAccessCheck(user))
-		if(istype(attack_item, /obj/item/pen))
+		if(IS_WRITING_UTENSIL(attack_item))
 			name = tgui_input_text(user, "Set name", "Name", name, 20)
 			desc = tgui_input_text(user, "Set description", "Description", desc, 60)
 			slogan_list += tgui_input_text(user, "Set slogan", "Slogan", "Epic", 60)

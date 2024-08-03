@@ -8,7 +8,8 @@
 	allow_temp_override = FALSE
 	help_verb = /mob/living/proc/sleeping_carp_help
 	display_combos = TRUE
-	var/list/scarp_traits = list(TRAIT_NOGUNS, TRAIT_HARDLY_WOUNDED, TRAIT_NODISMEMBER, TRAIT_HEAVY_SLEEPER)
+	/// List of traits applied to users of this martial art.
+	var/list/scarp_traits = list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD, TRAIT_HARDLY_WOUNDED, TRAIT_NODISMEMBER, TRAIT_HEAVY_SLEEPER)
 
 /datum/martial_art/the_sleeping_carp/teach(mob/living/target, make_temporary = FALSE)
 	. = ..()
