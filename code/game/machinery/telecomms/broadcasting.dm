@@ -88,7 +88,8 @@
 		"compression" = rand(COMPRESSION_VOCAL_SIGNAL_MIN, COMPRESSION_VOCAL_SIGNAL_MAX),
 		"language" = lang_instance.name,
 		"spans" = spans,
-		"mods" = message_mods
+		"mods" = message_mods,
+		"frequency" = frequency, // NON-MODULAR CHANGE
 	)
 	levels = SSmapping.get_connected_levels(get_turf(source))
 

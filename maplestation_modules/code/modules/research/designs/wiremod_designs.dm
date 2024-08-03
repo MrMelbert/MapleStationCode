@@ -16,3 +16,14 @@
 // The module duplicate is also 1/4th the cost.
 /obj/machinery/module_duplicator
 	cost_per_component = SHEET_MATERIAL_AMOUNT * 0.025
+
+/datum/design/headset_shell
+	name = "Headset Shell"
+	desc = "A portable shell integrated with a radio headset."
+	id = "headset_shell"
+	build_path = /obj/item/radio/headset/shell
+	materials = list(/datum/material/glass =SHEET_MATERIAL_AMOUNT, /datum/material/iron = SHEET_MATERIAL_AMOUNT * 2.5)
+	build_type = COMPONENT_PRINTER
+	category = list(
+		RND_CATEGORY_CIRCUITRY + RND_SUBCATEGORY_CIRCUITRY_SHELLS
+	)

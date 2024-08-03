@@ -6490,6 +6490,7 @@
 #include "maplestation_modules\code\modules\vending\_vending.dm"
 #include "maplestation_modules\code\modules\vending\clothesmate.dm"
 #include "maplestation_modules\code\modules\vending\wardrobes.dm"
+#include "maplestation_modules\code\modules\wiremod\shells.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertclothing.dm"
 #include "maplestation_modules\story_content\albert_equipment\code\albertitem.dm"
 #include "maplestation_modules\story_content\armored_corps\code\clothing\aylie_cloak.dm"
