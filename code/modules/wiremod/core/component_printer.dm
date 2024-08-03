@@ -504,7 +504,7 @@
 		balloon_alert(user, "it needs a name!")
 		return ..()
 
- 	// NON-MODULAR CHANGE START
+	// NON-MODULAR CHANGE START
 
 	data["author_ckey"] = user.client?.ckey
 
@@ -521,7 +521,7 @@
 			balloon_alert(user, "name already exists!")
 			return ..()
 
- 	// NON-MODULAR CHANGE END
+	// NON-MODULAR CHANGE END
 
 	flick("module-fab-scan", src)
 	addtimer(CALLBACK(src, PROC_REF(finish_module_scan), user, data), 1.4 SECONDS)
@@ -529,12 +529,12 @@
 /obj/machinery/module_duplicator/proc/finish_module_scan(mob/user, data)
 	scanned_designs += list(data)
 
- 	// NON-MODULAR CHANGE START
+	// NON-MODULAR CHANGE START
 	if (!isnull(user.client?.ckey))
 		if (isnull(SSpersistence.circuit_designs[user.client?.ckey]))
 			SSpersistence.load_circuits_by_ckey(user.client?.ckey)
 		SSpersistence.circuit_designs[user.client?.ckey] += list(data)
- 	// NON-MODULAR CHANGE END
+	// NON-MODULAR CHANGE END
 
 	balloon_alert(user, "module has been saved.")
 	playsound(src, 'sound/machines/ping.ogg', 50)
@@ -551,7 +551,7 @@
 
 	var/list/designs = list()
 
- 	// NON-MODULAR CHANGE START
+	// NON-MODULAR CHANGE START
 
 	var/list/all_designs = scanned_designs
 	if (!isnull(user.client?.ckey))
@@ -604,7 +604,7 @@
 
 	data["designs"] = designs
 
- 	// NON-MODULAR CHANGE END
+	// NON-MODULAR CHANGE END
 
 	return data
 
