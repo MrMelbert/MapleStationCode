@@ -307,3 +307,7 @@
 /datum/loadout_item/pocket_items/counter
 	name = "Counter"
 	item_path = /obj/item/toy/counter
+
+/datum/loadout_item/pocket_items/cybernetics_paintkit
+	name = "Cybernetics Paint Kit"
+	item_path = /obj/item/cybernetics_paintkit

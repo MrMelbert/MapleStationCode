@@ -77,6 +77,22 @@ GLOBAL_LIST_INIT(limb_loadout_options, init_loadout_limb_options())
 	name = "Prosthetic Left Arm"
 	limb_path = /obj/item/bodypart/arm/left/robot/surplus
 
+/datum/limb_option_datum/bodypart/cybernetic_r_leg
+	name = "Cybernetic Right Leg"
+	limb_path = /obj/item/bodypart/leg/right/robot
+
+/datum/limb_option_datum/bodypart/cybernetic_l_leg
+	name = "Cybernetic Left Leg"
+	limb_path = /obj/item/bodypart/leg/left/robot
+
+/datum/limb_option_datum/bodypart/cybernetic_r_arm
+	name = "Cybernetic Right Arm"
+	limb_path = /obj/item/bodypart/arm/right/robot
+
+/datum/limb_option_datum/bodypart/cybernetic_l_arm
+	name = "Cybernetic Left Arm"
+	limb_path = /obj/item/bodypart/arm/left/robot
+
 /datum/limb_option_datum/organ
 
 /datum/limb_option_datum/organ/New()
