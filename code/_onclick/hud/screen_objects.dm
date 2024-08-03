@@ -424,7 +424,7 @@
 
 /atom/movable/screen/storage/cell
 
-/atom/movable/screen/storage/cell/mouse_drop_receive(atom/target, mob/living/user, params)
+/atom/movable/screen/storage/cell/MouseDrop_T(atom/target, mob/living/user, params)
 	var/datum/storage/storage = master_ref?.resolve()
 
 	if (isnull(storage) || !istype(user) || storage != user.active_storage)
