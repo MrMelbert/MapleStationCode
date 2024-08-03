@@ -30,10 +30,6 @@
 
 	var/requested = FALSE
 
-	var/datum/brain_trauma/severe/split_personality/trauma
-	var/datum/action/request_switch/twin_action
-	var/mob/living/split_personality/non_controller
-
 /datum/action/request_switch/owner
 
 /datum/action/request_switch/stranger
@@ -50,11 +46,9 @@
 	if(!.)
 		return FALSE
 
-	trauma = target
-
 	requested = !requested
 
-/datum/action/request_switch/proc/handle_switch()
+/datum/action/request_switch/proc/handle_switch(datum/brain_trauma/severe/split_personality/trauma, datum/action/request_switch/twin_action)
 	trauma.switch_personalities()
 	requested = FALSE
 	twin_action.requested = FALSE
@@ -62,7 +56,11 @@
 
 /datum/action/request_switch/owner/Trigger(trigger_flags)
 	. = ..()
-	var/non_controller
+	if(!.)
+		return
+	var/datum/brain_trauma/severe/split_personality/trauma = target
+	var/datum/action/request_switch/twin_action
+	var/mob/living/split_personality/non_controller
 
 	if(trauma.current_controller == /*OWNER*/0)
 		twin_action = locate(/datum/action/request_switch) in trauma.stranger_backseat.actions
@@ -72,12 +70,18 @@
 		non_controller = trauma.owner_backseat
 
 	if(twin_action.requested)
-		handle_switch()
+		handle_switch(trauma, twin_action)
 	else
 		request(trauma.owner, non_controller)
 
 /datum/action/request_switch/stranger/Trigger(trigger_flags)
 	. = ..()
+	if(!.)
+		return
+
+	var/datum/brain_trauma/severe/split_personality/trauma = target
+	var/datum/action/request_switch/twin_action
+	var/mob/living/split_personality/non_controller
 
 	twin_action = locate(/datum/action/request_switch)  in trauma.owner.actions
 	if(trauma.current_controller == /*OWNER*/0)
@@ -86,7 +90,7 @@
 		non_controller = trauma.owner_backseat
 
 	if(twin_action.requested)
-		handle_switch()
+		handle_switch(trauma, twin_action)
 	else
 		request(trauma.owner, non_controller)
 
