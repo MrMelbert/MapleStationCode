@@ -1,3 +1,5 @@
+#define CIRCUITS_DATA_FILEPATH "data/circuit_designs/"
+
 /obj/machinery/module_duplicator/attackby_secondary(obj/item/weapon, mob/user, params)
 	if (!istype(weapon, /obj/item/integrated_circuit))
 		return ..()
@@ -65,3 +67,95 @@
 		balloon_alert(user, "successfully linked to the integrated circuit")
 		return
 	return ..()
+
+/obj/machinery/module_duplicator
+	/// The current unlocked circuit component designs. Used by integrated circuits to print off circuit components remotely.
+	var/list/current_unlocked_designs = list()
+	/// The techweb the duplicastor will get researched designs from
+	var/datum/techweb/techweb
+
+/obj/machinery/module_duplicator/LateInitialize()
+	. = ..()
+	if(!CONFIG_GET(flag/no_default_techweb_link) && !techweb)
+		CONNECT_TO_RND_SERVER_ROUNDSTART(techweb, src)
+	if(techweb)
+		on_connected_techweb()
+
+/obj/machinery/module_duplicator/proc/connect_techweb(datum/techweb/new_techweb)
+	if(techweb)
+		UnregisterSignal(techweb, list(COMSIG_TECHWEB_ADD_DESIGN, COMSIG_TECHWEB_REMOVE_DESIGN))
+	techweb = new_techweb
+	if(!isnull(techweb))
+		on_connected_techweb()
+
+/obj/machinery/module_duplicator/proc/on_connected_techweb()
+	for (var/researched_design_id in techweb.researched_designs)
+		var/datum/design/design = SSresearch.techweb_design_by_id(researched_design_id)
+		if (!(design.build_type & COMPONENT_PRINTER) || !ispath(design.build_path, /obj/item/circuit_component))
+			continue
+
+		current_unlocked_designs[design.build_path] = design.id
+
+	RegisterSignal(techweb, COMSIG_TECHWEB_ADD_DESIGN, PROC_REF(on_research))
+	RegisterSignal(techweb, COMSIG_TECHWEB_REMOVE_DESIGN, PROC_REF(on_removed))
+
+/obj/machinery/module_duplicator/multitool_act(mob/living/user, obj/item/multitool/tool)
+	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
+		connect_techweb(tool.buffer)
+	return TRUE
+
+/obj/machinery/module_duplicator/proc/on_research(datum/source, datum/design/added_design, custom)
+	SIGNAL_HANDLER
+	if (!(added_design.build_type & COMPONENT_PRINTER) || !ispath(added_design.build_path, /obj/item/circuit_component))
+		return
+	current_unlocked_designs[added_design.build_path] = added_design.id
+
+/obj/machinery/module_duplicator/proc/on_removed(datum/source, datum/design/added_design, custom)
+	SIGNAL_HANDLER
+	if (!(added_design.build_type & COMPONENT_PRINTER) || !ispath(added_design.build_path, /obj/item/circuit_component))
+		return
+	current_unlocked_designs -= added_design.build_path
+
+/datum/controller/subsystem/persistence
+	///Associated list of all saved circuits, ckey -> list of designs
+	var/list/circuit_designs = list()
+
+/datum/controller/subsystem/persistence/collect_data()
+	. = ..()
+	save_circuits()
+
+/datum/controller/subsystem/persistence/proc/load_circuits_by_ckey(user)
+	var/json_file = file("[CIRCUITS_DATA_FILEPATH][user].json")
+	if(!fexists(json_file))
+		circuit_designs[user] = list()
+		return
+	var/list/json = json_decode(file2text(json_file))
+	if(!json)
+		circuit_designs[user] = list()
+		return
+	var/list/new_circuit_designs = json["data"]
+	for (var/list/design in new_circuit_designs)
+		var/list/new_materials = list()
+		for (var/material in design["materials"])
+			new_materials[GET_MATERIAL_REF(text2path(material))] = design["materials"][material]
+		design["materials"] = new_materials
+	circuit_designs[user] = new_circuit_designs
+
+/datum/controller/subsystem/persistence/proc/save_circuits()
+	for (var/user in circuit_designs)
+		var/json_file = file("[CIRCUITS_DATA_FILEPATH][user].json")
+		var/file_data = list()
+		var/list/user_designs = circuit_designs[user]
+		var/list/designs_to_store = user_designs.Copy()
+
+		for (var/list/design in designs_to_store)
+			var/list/new_materials = list()
+			for (var/datum/material/material in design["materials"])
+				new_materials["[material.type]"] = design["materials"][material]
+			design["materials"] = new_materials
+
+		file_data["data"] = designs_to_store
+		fdel(json_file)
+		WRITE_FILE(json_file, json_encode(file_data))
+
+#undef CIRCUITS_DATA_FILEPATH

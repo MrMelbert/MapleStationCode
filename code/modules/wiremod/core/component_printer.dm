@@ -356,7 +356,7 @@
 
 	update_static_data_for_all_viewers()
 
-/obj/machinery/module_duplicator/ui_act(action, list/params)
+/obj/machinery/module_duplicator/ui_act(action, list/params, datum/tgui/ui) // NON-MODULAR CHANGE
 	. = ..()
 	if (.)
 		return
@@ -365,10 +365,38 @@
 		if ("print")
 			var/design_id = text2num(params["designId"])
 
-			if (design_id < 1 || design_id > length(scanned_designs))
+			/// NON-MODULAR CHANGE START
+
+			var/list/all_designs = scanned_designs
+			if (!isnull(SSpersistence.circuit_designs[ui.user.client?.ckey]))
+				all_designs = scanned_designs | SSpersistence.circuit_designs[ui.user.client?.ckey]
+
+			if (design_id < 1 || design_id > length(all_designs))
 				return TRUE
 
-			var/list/design = scanned_designs[design_id]
+			var/list/design = all_designs[design_id]
+
+			if (design["author_ckey"] != ui.user.client?.ckey && !(design in scanned_designs)) // Get away from here, cheater
+				return TRUE
+
+			var/list/design_data = json_decode(design["dupe_data"])
+			if(!design_data)
+				say("Invalid design data.")
+				return FALSE
+
+			var/list/circuit_data = design_data["components"]
+			for(var/identifier in circuit_data)
+				var/list/component_data = circuit_data[identifier]
+				var/comp_type = text2path(component_data["type"])
+				if (!ispath(comp_type, /obj/item/circuit_component))
+					say("[component_data["name"]] component in this circuit has been recalled, unable to proceed.")
+					return TRUE
+
+				if (isnull(current_unlocked_designs[comp_type]))
+					say("[component_data["name"]] component has not been researched yet.")
+					return TRUE
+
+			/// NON-MODULAR CHANGE END
 
 			if (materials.on_hold())
 				say("Mineral access is on hold, please contact the quartermaster.")
@@ -386,6 +414,33 @@
 			var/amount = text2num(params["amount"])
 			// SAFETY: eject_sheets checks for valid mats
 			materials.eject_sheets(material, amount)
+
+		// NON-MODULAR CHANGE START
+
+		if ("delete")
+			var/design_id = text2num(params["designId"])
+
+			var/list/all_designs = scanned_designs
+			if (!isnull(SSpersistence.circuit_designs[ui.user.client?.ckey]))
+				all_designs = scanned_designs | SSpersistence.circuit_designs[ui.user.client?.ckey]
+
+			if (design_id < 1 || design_id > length(all_designs))
+				return TRUE
+
+			var/list/design = all_designs[design_id]
+
+			if (design["author_ckey"] != ui.user.client?.ckey)
+				return TRUE
+
+			if(tgui_alert(ui.user, "Are you sure you want to delete [design["name"]]?", "Module Duplicator", list("Yes","No")) != "Yes")
+				return TRUE
+
+			if (!isnull(SSpersistence.circuit_designs[design["author_ckey"]]))
+				SSpersistence.circuit_designs[design["author_ckey"]] -= list(design)
+			scanned_designs -= list(design)
+			update_static_data_for_all_viewers()
+		
+		// NON-MODULAR CHANGE END
 
 	return TRUE
 
@@ -449,16 +504,37 @@
 		balloon_alert(user, "it needs a name!")
 		return ..()
 
-	for(var/list/component_data as anything in scanned_designs)
+ 	// NON-MODULAR CHANGE START
+
+	data["author_ckey"] = user.client?.ckey
+
+	var/list/all_designs = scanned_designs
+	if (!isnull(user.client?.ckey))
+		if (isnull(SSpersistence.circuit_designs[user.client?.ckey]))
+			SSpersistence.load_circuits_by_ckey(user.client?.ckey)
+		all_designs = scanned_designs | SSpersistence.circuit_designs[user.client?.ckey]
+
+	for(var/list/component_data as anything in all_designs)
+		if (component_data["author_ckey"] != user.client?.ckey && !(component_data in scanned_designs))
+			continue
 		if(component_data["name"] == data["name"])
 			balloon_alert(user, "name already exists!")
 			return ..()
+
+ 	// NON-MODULAR CHANGE END
 
 	flick("module-fab-scan", src)
 	addtimer(CALLBACK(src, PROC_REF(finish_module_scan), user, data), 1.4 SECONDS)
 
 /obj/machinery/module_duplicator/proc/finish_module_scan(mob/user, data)
 	scanned_designs += list(data)
+
+ 	// NON-MODULAR CHANGE START
+	if (!isnull(user.client?.ckey))
+		if (isnull(SSpersistence.circuit_designs[user.client?.ckey]))
+			SSpersistence.load_circuits_by_ckey(user.client?.ckey)
+		SSpersistence.circuit_designs[user.client?.ckey] += list(data)
+ 	// NON-MODULAR CHANGE END
 
 	balloon_alert(user, "module has been saved.")
 	playsound(src, 'sound/machines/ping.ogg', 50)
@@ -475,8 +551,16 @@
 
 	var/list/designs = list()
 
+ 	// NON-MODULAR CHANGE START
+
+	var/list/all_designs = scanned_designs
+	if (!isnull(user.client?.ckey))
+		if (isnull(SSpersistence.circuit_designs[user.client?.ckey]))
+			SSpersistence.load_circuits_by_ckey(user.client?.ckey)
+		all_designs = scanned_designs | SSpersistence.circuit_designs[user.client?.ckey]
+
 	var/index = 1
-	for (var/list/design as anything in scanned_designs)
+	for (var/list/design as anything in all_designs)
 
 		var/list/cost = list()
 		var/list/materials = design["materials"]
@@ -490,10 +574,37 @@
 			"id" = "[index]",
 			"icon" = "integrated_circuit",
 			"categories" = list("/Saved Circuits"),
+			"can_delete" = (design["author_ckey"] == user.client?.ckey),
+			"print_error" = null,
 		)
+
+		var/list/invalid_list = list()
+		var/list/unresearched_list = list()
+		var/list/design_data = json_decode(design["dupe_data"])
+
+		if(!design_data)
+			index++
+			continue
+
+		var/list/circuit_data = design_data["components"]
+		for(var/identifier in circuit_data)
+			var/list/component_data = circuit_data[identifier]
+			var/comp_type = text2path(component_data["type"])
+			if (!ispath(comp_type, /obj/item/circuit_component))
+				invalid_list |= component_data["name"]
+			else if (isnull(current_unlocked_designs[comp_type]))
+				unresearched_list |= component_data["name"]
+
+		if (invalid_list.len)
+			designs["[index]"]["print_error"] = "Following components have been recalled: [invalid_list.Join(", ")]"
+		if (unresearched_list.len)
+			designs["[index]"]["print_error"] = (designs["[index]"]["print_error"] || "") + "[designs["[index]"]["print_error"] ? "; " : ""]Following components are yet to be researched: [unresearched_list.Join(", ")]"
+
 		index++
 
 	data["designs"] = designs
+
+ 	// NON-MODULAR CHANGE END
 
 	return data
 
