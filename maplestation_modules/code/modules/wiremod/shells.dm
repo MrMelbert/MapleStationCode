@@ -3,6 +3,7 @@
 	desc = "A portable shell integrated with a radio headset."
 	icon = 'maplestation_modules/icons/obj/clothing/headsets.dmi'
 	icon_state = "shell"
+	worn_icon_state = "cent_headset"
 
 /obj/item/radio/headset/shell/Initialize(mapload)
 	. = ..()
