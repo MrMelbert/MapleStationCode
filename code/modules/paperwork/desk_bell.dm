@@ -19,6 +19,10 @@
 	var/ring_cooldown_length = 0.3 SECONDS // This is here to protect against tinnitus.
 	/// The sound the bell makes
 	var/ring_sound = 'sound/machines/microwave/microwave-end.ogg'
+	/// Whether we can be deconstructed
+	var/can_deconstruct = TRUE
+	/// Whether we can be tied to a chair
+	var/can_tie_to_chair = TRUE
 
 /obj/structure/desk_bell/Initialize(mapload)
 	. = ..()
@@ -27,7 +31,7 @@
 /obj/structure/desk_bell/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 
-	if(held_item?.tool_behaviour == TOOL_WRENCH)
+	if(can_deconstruct && held_item?.tool_behaviour == TOOL_WRENCH)
 		context[SCREENTIP_CONTEXT_RMB] = "Disassemble"
 		return CONTEXTUAL_SCREENTIP_SET
 
@@ -73,17 +77,23 @@
 		return FALSE
 	return ..()
 
+/obj/structure/desk_bell/deconstruct(disassembled)
+	if(disassembled)
+		if(!broken_ringer) // Drop 2 if it's not broken.
+			new/obj/item/stack/sheet/iron(drop_location())
+		new/obj/item/stack/sheet/iron(drop_location())
+	return ..()
+
 // Deconstruct
 /obj/structure/desk_bell/wrench_act_secondary(mob/living/user, obj/item/tool)
+	if(!can_deconstruct)
+		return ..()
 	balloon_alert(user, "taking apart...")
 	tool.play_tool_sound(src)
 	if(tool.use_tool(src, user, 5 SECONDS))
 		balloon_alert(user, "disassembled")
 		playsound(user, 'sound/items/deconstruct.ogg', 50, vary = TRUE)
-		if(!broken_ringer) // Drop 2 if it's not broken.
-			new/obj/item/stack/sheet/iron(drop_location())
-		new/obj/item/stack/sheet/iron(drop_location())
-		qdel(src)
+		deconstruct(TRUE)
 		return ITEM_INTERACT_SUCCESS
 	return ..()
 
@@ -111,6 +121,9 @@
 	ring_cooldown_length = 0
 
 /obj/structure/desk_bell/MouseDrop(obj/over_object, src_location, over_location)
+	. = ..()
+	if(!can_tie_to_chair || !isliving(usr) || usr.incapacitated())
+		return
 	if(!istype(over_object, /obj/vehicle/ridden/wheelchair))
 		return
 	if(!Adjacent(over_object) || !Adjacent(usr))
@@ -123,4 +136,3 @@
 	if(!do_after(usr, 0.5 SECONDS))
 		return
 	target.attach_bell(src)
-	return ..()
