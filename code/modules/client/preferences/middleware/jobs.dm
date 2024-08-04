@@ -23,6 +23,10 @@
 
 	preferences.character_preview_view?.update_body()
 
+	if(isnewplayer(user))
+		var/mob/dead/new_player/cycle = user
+		cycle.update_ready_report()
+
 	return TRUE
 
 /datum/preference_middleware/jobs/get_constant_data()

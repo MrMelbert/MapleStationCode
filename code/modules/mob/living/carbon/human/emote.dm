@@ -202,7 +202,7 @@
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/carbon/human/hiss/get_sound(mob/user)
-	if(islizard(user))
+	if(islizard(user) || ismonkey(user))
 		return pick(user.get_speech_sounds())
 	return null
 
