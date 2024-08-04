@@ -64,6 +64,8 @@
 
 	/// Callback to determine valid parries
 	var/datum/callback/parry_callback
+	/// Callback that is called upon a successful parry
+	var/datum/callback/success_callback
 
 	// Internal variables
 	/// Last time the user pressed the parry keybind
@@ -86,7 +88,7 @@
 		parry_miss_effects = list(ACTIVE_COMBAT_STAGGER = 3 SECONDS, ACTIVE_COMBAT_STAMINA = 5), \
 		stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.33, damage_blocked = 1, damage_block_imperfect_loss = 0.5, maximum_damage_blocked = 25, \
 		block_barrier = 1, block_barrier_overrides = list(), parry_miss_cooldown = 0.4 SECONDS, icon_state = "block", effect_color = "#5EB4FF", \
-		projectile_window_multiplier = 0, parry_callback)
+		projectile_window_multiplier = 0, parry_callback, success_callback)
 
 	if(!iscarbon(parent) && !isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -111,6 +113,7 @@
 	src.effect_color = effect_color
 	src.projectile_window_multiplier = projectile_window_multiplier
 	src.parry_callback = parry_callback
+	src.success_callback = success_callback
 
 /datum/component/active_combat/RegisterWithParent()
 	if (ismob(parent))
@@ -242,6 +245,7 @@
 	var/damage_negation = is_perfect ? damage_blocked : (damage_blocked - parry_loss * damage_block_imperfect_loss)
 	var/effect_mult = clamp(damage_negation, 0, 1)
 	var/barrier = (attack_type in block_barrier_overrides) ? block_barrier_overrides[attack_type] : block_barrier
+	var/turf/user_turf = get_turf(user)
 
 	damage_negation_mult = (damage <= maximum_damage_blocked) ? clamp(1 - damage_negation, 0, 1) : (1 - (maximum_damage_blocked * clamp(damage_negation, 0, 1)) / damage)
 
@@ -272,6 +276,10 @@
 				if (isprojectile(hitby))
 					damage_negation_mult = barrier
 				user.visible_message(span_warning("[user] weaves out of [hitby]'s way!"), span_notice("You weave out of [hitby]'s way!"))
+				if (LAZYACCESS(effects, ACTIVE_COMBAT_EVADE) > 1)
+					for (var/evade_count in 1 to (LAZYACCESS(effects, ACTIVE_COMBAT_EVADE) - 1))
+						if (!user.Move(get_step(user, turn(user.dir, dir_attempt))))
+							break
 				break
 
 	if (LAZYACCESS(effects, ACTIVE_COMBAT_EMOTE))
@@ -306,6 +314,8 @@
 	user.apply_damage(damage * (is_perfect ? perfect_stamina_multiplier : stamina_multiplier), STAMINA) // ngl itd be funny if you got stamcritted from parrying a meteor
 	if (damage_negation >= barrier && !LAZYACCESS(effects, ACTIVE_COMBAT_FORCED_DAMAGE))
 		parry_flags |= PARRY_FULL_BLOCK
+	if (!isnull(success_callback))
+		success_callback.Invoke(user, source, hitby, hitter, is_perfect, parry_loss, effect_mult, user_turf, parry_flags)
 	return parry_flags
 
 /datum/component/active_combat/proc/failed_parry(harmless = FALSE)

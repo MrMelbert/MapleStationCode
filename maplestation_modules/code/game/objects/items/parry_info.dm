@@ -119,7 +119,7 @@
 /obj/item/shield/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/active_combat, inventory_flags = ITEM_SLOT_HANDS, block_directions = ACTIVE_COMBAT_FACING, windup_timer = 0.15 SECONDS, \
-	parry_window = 1.5 SECONDS, perfect_parry_window = 0.3 SECONDS, stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.33, damage_blocked = 2, \
+	parry_window = 1.5 SECONDS, perfect_parry_window = 0.3 SECONDS, stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.2, damage_blocked = 2, \
 	damage_block_imperfect_loss = 1.5, maximum_damage_blocked = 35, block_barrier = 0.6, parry_miss_cooldown = 0.4 SECONDS, icon_state = "block", \
 	effect_color = COLOR_RED_LIGHT, projectile_window_multiplier = 1, \
 	block_barrier_overrides = list(), \
@@ -127,6 +127,22 @@
 	perfect_parry_effects = list(ACTIVE_COMBAT_SHOVE = TRUE, ACTIVE_COMBAT_KNOCKDOWN = 2 SECONDS), \
 	parry_miss_effects = list(ACTIVE_COMBAT_STAGGER = 3 SECONDS, ACTIVE_COMBAT_STAMINA = 5), \
 	)
+
+/obj/item/shield/energy/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/active_combat, inventory_flags = ITEM_SLOT_HANDS, block_directions = ACTIVE_COMBAT_FACING, windup_timer = 0.15 SECONDS, \
+	parry_window = 1.5 SECONDS, perfect_parry_window = 0.3 SECONDS, stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.2, damage_blocked = 2, \
+	damage_block_imperfect_loss = 1.5, maximum_damage_blocked = 35, block_barrier = 0.6, parry_miss_cooldown = 0.4 SECONDS, icon_state = "block", \
+	effect_color = COLOR_BLUE_LIGHT, projectile_window_multiplier = 1, \
+	block_barrier_overrides = list(), \
+	parry_effects = list(ACTIVE_COMBAT_SHOVE = TRUE), \
+	perfect_parry_effects = list(ACTIVE_COMBAT_SHOVE = TRUE, ACTIVE_COMBAT_KNOCKDOWN = 2 SECONDS), \
+	parry_miss_effects = list(ACTIVE_COMBAT_STAGGER = 3 SECONDS, ACTIVE_COMBAT_STAMINA = 5), \
+	parry_callback = CALLBACK(src, PROC_REF(can_parry)), \
+	)
+
+/obj/item/shield/energy/proc/can_parry(atom/target)
+	return HAS_TRAIT(src, TRAIT_TRANSFORM_ACTIVE)
 
 /* TODOS
  *
@@ -141,6 +157,7 @@
  * Kinetic Crusher
  * Knives
  * Pickass
+ * Toolboxes
  *
  * Baseball bats
  * Batons

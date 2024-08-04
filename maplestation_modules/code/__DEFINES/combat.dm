@@ -13,7 +13,7 @@
 #define ACTIVE_COMBAT_PARRY "active_combat_parry"
 /// Shoves the attacker, list assoc should be TRUE
 #define ACTIVE_COMBAT_SHOVE "active_combat_shove"
-/// Evades to the side, if sides are occupied evades back, list assoc should be TRUE
+/// Evades to the side, if sides are occupied evades back, list assoc should be TRUE or maximum distance for the evade
 #define ACTIVE_COMBAT_EVADE "active_combat_evade"
 /// Knocks the attacker down, list assoc is duration. Can be used in failed parries
 #define ACTIVE_COMBAT_KNOCKDOWN "active_combat_knockdown"
