@@ -116,7 +116,7 @@
 
 	return consumed
 /datum/component/uses_mana/proc/get_mana_to_use()
-	var/list/atom/movable/caster = get_parent_user()
+	var/atom/movable/caster = get_parent_user()
 	var/list/datum/mana_pool/usable_pools = list()
 
 	if (!isnull(caster.mana_pool))
@@ -145,7 +145,7 @@
 
 	var/mob/user = get_user_callback?.Invoke()
 
-	var/mana_consumed = -get_mana_consumed()
+	var/mana_consumed = get_mana_consumed()
 	if (!mana_consumed)
 		stack_trace("mana_consumed after get_mana_consumed is null!")
 		return

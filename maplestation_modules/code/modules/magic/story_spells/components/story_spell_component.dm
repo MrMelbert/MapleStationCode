@@ -7,7 +7,7 @@
 /datum/component/uses_mana/spell/Initialize(
 	datum/callback/activate_check_failure_callback = CALLBACK(src, PROC_REF(cannot_activate)),
 	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
-	pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST,
+	pre_use_check_comsig,
 	post_use_comsig = COMSIG_SPELL_AFTER_CAST,
 	datum/callback/mana_required = CALLBACK(src, PROC_REF(get_mana_required_spell)),
 	datum/callback/mana_consumed,
@@ -53,9 +53,9 @@
  */
 /datum/component/uses_mana/spell/proc/handle_precast(atom/cast_on)
 	SIGNAL_HANDLER
-
-	var/datum/action/cooldown/spell/parent_spell = parent
-	return can_activate_with_feedback(TRUE, parent_spell.owner, cast_on) // todo get this up to date
+	return can_activate_with_feedback()  // todo get this up to date
+	//can_activate_with_feedback(TRUE, parent_spell.owner, cast_on)
+	//var/datum/action/cooldown/spell/parent_spell = parent
 
 /datum/component/uses_mana/spell/proc/cannot_activate()
 	return . | SPELL_CANCEL_CAST
