@@ -130,22 +130,24 @@
 
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
-/datum/component/uses_mana/proc/is_mana_sufficient(atom/caster, list/datum/mana_pool/provided_mana = get_mana_to_use())
+/datum/component/uses_mana/proc/is_mana_sufficient(...)
 	var/total_effective_mana = 0
+	var/list/datum/mana_pool/provided_mana = get_mana_to_use()
+	var/required_mana = get_mana_required()
+	var/atom/caster = args[1]
 
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
 		total_effective_mana += iterated_pool.get_attuned_amount(attunements, caster)
-	if (total_effective_mana > get_mana_required())
+	if (total_effective_mana > required_mana)
 		return TRUE
-	else
-		return FALSE
+	return FALSE
 
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
 /datum/component/uses_mana/proc/drain_mana()
 
 	var/mob/user = get_user_callback?.Invoke()
 
-	var/mana_consumed = get_mana_consumed()
+	var/mana_consumed = -get_mana_consumed()
 	if (!mana_consumed)
 		stack_trace("mana_consumed after get_mana_consumed is null!")
 		return
@@ -154,7 +156,7 @@
 
 	var/mult = pool.get_overall_attunement_mults(attunements, user)
 	var/attuned_cost = (mana_consumed * mult)
-	mana_consumed -= SAFE_DIVIDE(pool.adjust_mana((attuned_cost)), mult)
+	mana_consumed += SAFE_DIVIDE(pool.adjust_mana((attuned_cost)), mult)
 
 	if (mana_consumed != 0)
 		stack_trace("cost: [mana_consumed] was not 0 after drain_mana on [src]!")
@@ -163,15 +165,19 @@
 /// activate the behavior that "uses mana".
 /datum/component/uses_mana/proc/can_activate(...)
 	SIGNAL_HANDLER
-
+	if (args)
+		return is_mana_sufficient(args[1])
 	return is_mana_sufficient(get_parent_user())
 
 /// Wrapper for can_activate(). Should return a bitflag that will be passed down to the signal sender on failure.
 /datum/component/uses_mana/proc/can_activate_with_feedback(...)
 	SIGNAL_HANDLER
-
-	var/list/argss = args.Copy(2)
-	var/can_activate = can_activate(arglist(argss)) //doesnt return this + can_activate_check_... because returning TRUE/FALSE can gave bitflag implications
+	var/can_activate
+	if (args)
+		var/list/argss = args.Copy(1)
+		can_activate = can_activate(arglist(argss)) //doesnt return this + can_activate_check_... because returning TRUE/FALSE can gave bitflag implications
+	else
+		can_activate = can_activate()
 	if (!can_activate)
 		var/datum/user = get_parent_user()
 		if (user)

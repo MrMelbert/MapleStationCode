@@ -27,6 +27,11 @@
 		our_spell.desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color. This weaker version burns up quicker and has a considerable cooldown between conjures."
 	return
 
+/datum/action/cooldown/spell/conjure_item/flare/before_cast(atom/cast_on)
+	. = ..()
+	if(. & SPELL_CANCEL_CAST)
+		return
+
 /datum/action/cooldown/spell/conjure_item/flare/make_item()
 	var/obj/item/created = ..()
 	created.color = flare_color
