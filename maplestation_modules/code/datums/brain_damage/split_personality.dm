@@ -102,7 +102,7 @@
 	var/str_cancelled_msg = span_boldnotice("You feel your other side giving up on taking direct control over your body.")
 
 	controller.balloon_alert(controller, "your brain tickles")
-	non_controller.balloon_alert(controller, "your brain tickles")
+	controller.balloon_alert(non_controller, "your brain tickles")
 	if(requested)
 		to_chat(non_controller, "[str_request_msg]")
 		to_chat(controller, "[str_requested_msg]")
@@ -119,7 +119,7 @@
 	var/own_cancelled_msg = span_boldnotice("You feel your other side giving up on giving you control.")
 
 	controller.balloon_alert(controller, "your brain tickles")
-	non_controller.balloon_alert(controller, "your brain tickles")
+	controller.balloon_alert(non_controller, "your brain tickles")
 	if(requested)
 		to_chat(non_controller, "[own_requested_msg]")
 		to_chat(controller, "[own_request_msg]")
