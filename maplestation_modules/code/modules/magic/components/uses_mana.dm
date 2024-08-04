@@ -116,11 +116,21 @@
 
 	return consumed
 /datum/component/uses_mana/proc/get_mana_to_use()
-	// iterate through get_all_contents()?
-	var/atom/caster = get_parent_user()
+	var/list/atom/movable/caster = get_parent_user()
+	var/list/datum/mana_pool/usable_pools = list()
+
+	if (!isnull(caster.mana_pool))
+		usable_pools += caster.mana_pool
+
+	for (var/atom/movable/thing as anything in caster.get_all_contents())
+		if (!isnull(thing.mana_pool))
+			usable_pools += thing.mana_pool
+
+	return usable_pools
+
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
-/datum/component/uses_mana/proc/is_mana_sufficient(list/datum/mana_pool/provided_mana, atom/caster) // ERROR get mana to use undefined, i THINK that is meant to get the list of available pools. cut code: provided_mana = list(get_mana_to_use),
+/datum/component/uses_mana/proc/is_mana_sufficient(atom/caster, list/datum/mana_pool/provided_mana = get_mana_to_use())
 	var/total_effective_mana = 0
 
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
@@ -154,7 +164,7 @@
 /datum/component/uses_mana/proc/can_activate(...)
 	SIGNAL_HANDLER
 
-	return is_mana_sufficient(parent.get_mana(), get_parent_user())
+	return is_mana_sufficient(get_parent_user())
 
 /// Wrapper for can_activate(). Should return a bitflag that will be passed down to the signal sender on failure.
 /datum/component/uses_mana/proc/can_activate_with_feedback(...)

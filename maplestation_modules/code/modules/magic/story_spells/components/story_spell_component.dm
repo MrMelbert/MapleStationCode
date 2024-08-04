@@ -11,7 +11,7 @@
 	post_use_comsig = COMSIG_SPELL_AFTER_CAST,
 	datum/callback/mana_required = CALLBACK(src, PROC_REF(get_mana_required_spell)),
 	datum/callback/mana_consumed,
-	get_user_callback = CALLBACK(src, PROC_REF(get_owner)),
+	get_user_callback,
 	list/datum/attunement/attunements)
 	. = ..()
 

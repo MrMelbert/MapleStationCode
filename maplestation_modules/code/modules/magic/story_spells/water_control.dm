@@ -47,6 +47,7 @@
 
 	AddComponent(/datum/component/uses_mana/spell, \
 		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)
 	wetness_pool = new(water_units_applied * ((1 + 2 * aoe_range) ** 2))
