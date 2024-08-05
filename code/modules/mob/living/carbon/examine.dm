@@ -90,9 +90,6 @@
 	if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks))
 		msg += "[t_He] look[p_s()] a little soaked.\n"
 
-	if(pulledby?.grab_state)
-		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
-
 	var/scar_severity = 0
 	for(var/i in all_scars)
 		var/datum/scar/S = i

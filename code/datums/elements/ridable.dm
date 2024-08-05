@@ -196,4 +196,7 @@
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_notice("You gently let go of [rider]."))
 		return
-	return rider
+	var/mob/throwing = rider
+	user.set_pulling(throwing)
+	user.setGrabState(GRAB_AGGRESSIVE)
+	return throwing

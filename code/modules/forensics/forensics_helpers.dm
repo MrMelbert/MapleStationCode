@@ -203,6 +203,20 @@
 	update_clothing(slots_to_bloody)
 	return TRUE
 
+/mob/living/carbon/human/proc/add_fingerprints_to_items(mob/living/from_mob, target_flags = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+	if(QDELING(src))
+		return FALSE
+
+	var/slots_to_fingerprint = target_flags & ~check_obscured_slots()
+	for(var/obj/item/thing as anything in get_equipped_items())
+		if(thing.slot_flags & slots_to_fingerprint)
+			. ||= thing.add_fingerprint(from_mob)
+
+	if(!.)
+		. = add_fingerprint(from_mob)
+
+	return .
+
 /mob/living/add_blood_DNA(list/blood_DNA_to_add)
 	if(QDELING(src))
 		return FALSE

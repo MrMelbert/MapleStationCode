@@ -85,7 +85,7 @@
 /atom/proc/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	var/sigreturn = SEND_SIGNAL(src, COMSIG_ATOM_PRE_BULLET_ACT, hitting_projectile, def_zone)
+	var/sigreturn = SEND_SIGNAL(src, COMSIG_ATOM_PRE_BULLET_ACT, hitting_projectile, def_zone, piercing_hit)
 	if(sigreturn & COMPONENT_BULLET_PIERCED)
 		return BULLET_ACT_FORCE_PIERCE
 	if(sigreturn & COMPONENT_BULLET_BLOCKED)
@@ -93,7 +93,7 @@
 	if(sigreturn & COMPONENT_BULLET_ACTED)
 		return BULLET_ACT_HIT
 
-	SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, hitting_projectile, def_zone)
+	SEND_SIGNAL(src, COMSIG_ATOM_BULLET_ACT, hitting_projectile, def_zone, piercing_hit)
 	if(QDELETED(hitting_projectile)) // Signal deleted it?
 		return BULLET_ACT_BLOCK
 

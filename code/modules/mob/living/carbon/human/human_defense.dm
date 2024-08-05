@@ -109,11 +109,6 @@
 
 	return FALSE
 
-/mob/living/carbon/human/grippedby(mob/living/user, instant = FALSE)
-	if(w_uniform)
-		w_uniform.add_fingerprint(user)
-	..()
-
 /mob/living/carbon/human/attack_hulk(mob/living/carbon/human/user)
 	. = ..()
 	if(!.)
