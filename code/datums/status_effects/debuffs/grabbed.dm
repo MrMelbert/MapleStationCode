@@ -18,6 +18,7 @@
 	id = "grabbing"
 	tick_interval = -1
 	alert_type = null
+	on_remove_on_mob_delete = TRUE
 	/// Linked grab status effect
 	var/datum/status_effect/grabbed/paired_effect
 	/// Abstract grabbing item to be put in the owner's hands
@@ -107,6 +108,7 @@
 	id = "grabbed"
 	tick_interval = -1
 	alert_type = null
+	on_remove_on_mob_delete = TRUE
 
 	var/datum/status_effect/grabbing/paired_effect
 	/// Who is grabbing us
