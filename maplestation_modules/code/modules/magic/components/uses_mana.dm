@@ -156,8 +156,8 @@
 
 	var/mult = pool.get_overall_attunement_mults(attunements, user)
 	var/attuned_cost = (mana_consumed * mult)
-	mana_consumed += SAFE_DIVIDE(pool.adjust_mana((attuned_cost)), mult)
-
+	mana_consumed -= SAFE_DIVIDE(pool.adjust_mana((attuned_cost)), mult)
+	mana_consumed = round(mana_consumed, 0.01)
 	if (mana_consumed != 0)
 		stack_trace("cost: [mana_consumed] was not 0 after drain_mana on [src]!")
 
@@ -165,32 +165,27 @@
 /// activate the behavior that "uses mana".
 /datum/component/uses_mana/proc/can_activate(...)
 	SIGNAL_HANDLER
-	if (args)
-		return is_mana_sufficient(args[1])
 	return is_mana_sufficient(get_parent_user())
 
 /// Wrapper for can_activate(). Should return a bitflag that will be passed down to the signal sender on failure.
 /datum/component/uses_mana/proc/can_activate_with_feedback(...)
 	SIGNAL_HANDLER
 	var/can_activate
-	if (args)
-		var/list/argss = args.Copy(1)
-		can_activate = can_activate(arglist(argss)) //doesnt return this + can_activate_check_... because returning TRUE/FALSE can gave bitflag implications
-	else
-		can_activate = can_activate()
+	var/list/argss = args.Copy(1)
+	can_activate = can_activate(arglist(argss)) //doesnt return this + can_activate_check_... because returning TRUE/FALSE can gave bitflag implications
+
 	if (!can_activate)
 		var/datum/user = get_parent_user()
 		if (user)
 			if (ismob(user))
 				var/mob/mob_user = user
 				mob_user.balloon_alert(mob_user, "insufficient mana!") //issue: either this always fires or never fires. and never properly cancels spell casts possible suspect: get_mana_required
-		can_activate_check_failure(arglist(args.Copy()))
-		return FALSE
-	return can_activate
+		return can_activate_check_failure(arglist(args.Copy()))
+	return NONE
 
 /// What can_activate_check returns apon failing to activate.
 /datum/component/uses_mana/proc/can_activate_check_failure(...)
-	activate_check_failure_callback?.Invoke(arglist(args))
+	return activate_check_failure_callback?.Invoke(arglist(args))
 
 /// Should react to a post-use signal given by the parent, and ideally subtract mana, or something.
 /datum/component/uses_mana/proc/react_to_successful_use(...)

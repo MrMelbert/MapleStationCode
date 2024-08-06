@@ -5,13 +5,13 @@
 	can_transfer = FALSE
 
 /datum/component/uses_mana/spell/Initialize(
-	datum/callback/activate_check_failure_callback = CALLBACK(src, PROC_REF(cannot_activate)),
+	datum/callback/activate_check_failure_callback,
 	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
 	pre_use_check_comsig,
 	post_use_comsig = COMSIG_SPELL_AFTER_CAST,
 	datum/callback/mana_required,	/* = CALLBACK(src, PROC_REF(get_mana_required_spell)),*/
 	datum/callback/mana_consumed,
-	get_user_callback,
+	datum/callback/get_user_callback,
 	list/datum/attunement/attunements)
 	. = ..()
 

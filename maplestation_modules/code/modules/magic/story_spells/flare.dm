@@ -45,6 +45,7 @@
 	attunements[MAGIC_ELEMENT_LIGHT] += FLARE_LIGHT_ATTUNEMENT
 
 	AddComponent(/datum/component/uses_mana/spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		mana_consumed = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
