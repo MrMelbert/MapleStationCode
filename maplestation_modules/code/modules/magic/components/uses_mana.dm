@@ -136,11 +136,13 @@
 	var/required_mana = get_mana_required()
 	var/atom/caster = args[1]
 
+
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
 		total_effective_mana += iterated_pool.get_attuned_amount(attunements, caster)
 	if (total_effective_mana > required_mana)
 		return TRUE
-	return FALSE
+	else
+		return FALSE
 
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
 /datum/component/uses_mana/proc/drain_mana()
