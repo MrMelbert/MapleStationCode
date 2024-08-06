@@ -1,16 +1,19 @@
+#define ACID_TOUCH_ATTUNEMENT_EARTH 0.5
+#define ACID_TOUCH_MANA_BASECOST 50
+
 /datum/component/uses_mana/story_spell/touch/acid_touch
 	/// Attunement modifier for Earth attunement
-	var/acid_touch_attunement_amount = 0.5
+	var/acid_touch_attunement_amount = ACID_TOUCH_ATTUNEMENT_EARTH
 	/// Base mana cost
-	var/acid_touch_cost = 50
+	var/acid_touch_cost = ACID_TOUCH_MANA_BASECOST
 	/// Multiplier applied to cost when casting on turfs
 	var/turf_cost_multiplier = 0.25
 	/// Multiplier applied to cost when casting on objects
 	var/obj_cost_multiplier = 0.5
 
-/datum/component/uses_mana/story_spell/touch/acid_touch/get_attunement_dispositions()
+/* /datum/component/uses_mana/story_spell/touch/acid_touch/get_attunement_dispositions()
 	. = ..()
-	.[/datum/attunement/earth] += acid_touch_attunement_amount
+	.[/datum/attunement/earth] += acid_touch_attunement_amount */
 
 /datum/component/uses_mana/story_spell/touch/acid_touch/get_mana_required(atom/caster, atom/cast_on, ...)
 	var/datum/action/cooldown/spell/touch/acid_touch/spell = parent
@@ -34,6 +37,7 @@
 	invocation = "Ac rid!"
 	invocation_type = INVOCATION_SHOUT
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
+	var/acid_touch_cost = ACID_TOUCH_MANA_BASECOST
 
 	hand_path = /obj/item/melee/touch_attack/acid_touch
 	can_cast_on_self = TRUE
@@ -50,7 +54,18 @@
 
 /datum/action/cooldown/spell/touch/acid_touch/New(Target, original)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/touch/acid_touch)
+
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_EARTH] += ACID_TOUCH_ATTUNEMENT_EARTH
+
+	AddComponent(/datum/component/uses_mana/story_spell/touch/acid_touch, \
+		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		mana_consumed = acid_touch_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
 
 /datum/action/cooldown/spell/touch/acid_touch/is_valid_target(atom/cast_on)
 	return TRUE
@@ -80,3 +95,6 @@
 	icon_state = "duffelcurse"
 	inhand_icon_state = "duffelcurse"
 	color = COLOR_PALE_GREEN_GRAY
+
+#undef ACID_TOUCH_ATTUNEMENT_EARTH
+#undef ACID_TOUCH_MANA_BASECOST

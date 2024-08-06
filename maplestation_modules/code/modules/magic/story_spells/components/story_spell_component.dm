@@ -1,29 +1,48 @@
-/// The base component to be applied to all spells that interact with the mana system.
-/datum/component/uses_mana/story_spell
+// its been decided to genericize this for further use. free MaplePoints :tm: if you can perfectly genercize uses_mana without needing boiler plate
+// this is used for action/cooldown spells that don't need any special functionality
+// if you want to say, make a sword that uses mana, just use the basetype
+/datum/component/uses_mana/spell
 	can_transfer = FALSE
 
-/datum/component/uses_mana/story_spell/Initialize(...)
+/datum/component/uses_mana/spell/Initialize(
+	datum/callback/activate_check_failure_callback,
+	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
+	pre_use_check_comsig,
+	post_use_comsig = COMSIG_SPELL_AFTER_CAST,
+	datum/callback/mana_required,	/* = CALLBACK(src, PROC_REF(get_mana_required_spell)),*/
+	datum/callback/mana_consumed,
+	datum/callback/get_user_callback,
+	list/datum/attunement/attunements)
 	. = ..()
 
 	if (!istype(parent, /datum/action/cooldown/spell))
 		return . | COMPONENT_INCOMPATIBLE
 
-/datum/component/uses_mana/story_spell/RegisterWithParent()
+// callback that cancels the spell cast.
+/datum/component/uses_mana/spell/proc/cannot_activate(...)
+	return . | SPELL_CANCEL_CAST
+
+// this should be the only thing left lmfao, the rest is going to be held till the end
+
+/* /datum/component/uses_mana/spell/RegisterWithParent()
 	. = ..()
 
 	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
 	RegisterSignal(parent, COMSIG_SPELL_CAST, PROC_REF(handle_cast))
-	RegisterSignal(parent, COMSIG_SPELL_AFTER_CAST, PROC_REF(react_to_successful_use))
+	RegisterSignal(parent, COMSIG_SPELL_AFTER_CAST, PROC_REF(react_to_successful_use)) */
 
-/datum/component/uses_mana/story_spell/UnregisterFromParent()
+/* /datum/component/uses_mana/spell/UnregisterFromParent()
 	. = ..()
 
 	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
 	UnregisterSignal(parent, COMSIG_SPELL_CAST)
-	UnregisterSignal(parent, COMSIG_SPELL_AFTER_CAST)
+	UnregisterSignal(parent, COMSIG_SPELL_AFTER_CAST) */
 
-/datum/component/uses_mana/story_spell/give_unable_to_activate_feedback(atom/caster, atom/cast_on, ...)
-	caster.balloon_alert(caster, "insufficient mana!")
+/* /datum/component/uses_mana/spell/give_unable_to_activate_feedback(atom/cast_on)
+	. = ..()
+	var/datum/action/cooldown/spell/spell_parent = parent
+
+	spell_parent.owner.balloon_alert(spell_parent.owner, "insufficient mana!") */ // should be redundant, holding onto till pr completion
 
 // SIGNAL HANDLERS
 
@@ -38,14 +57,13 @@
  * - SPELL_NO_FEEDBACK will prevent the spell from calling [proc/spell_feedback] on cast. (invocation), sounds)
  * - SPELL_NO_IMMEDIATE_COOLDOWN will prevent the spell from starting its cooldown between cast and before after_cast.
  */
-/datum/component/uses_mana/story_spell/proc/handle_precast(datum/action/cooldown/spell/source, atom/cast_on)
+/* /datum/component/uses_mana/spell/proc/handle_precast(atom/cast_on)
 	SIGNAL_HANDLER
+	return can_activate_with_feedback() */ // todo get this up to date
+	//can_activate_with_feedback(TRUE, parent_spell.owner, cast_on)
+	//var/datum/action/cooldown/spell/parent_spell = parent
 
-	return can_activate_check(TRUE, source.owner, cast_on)
 
-/datum/component/uses_mana/story_spell/can_activate_check_failure(give_feedback, atom/caster, atom/cast_on, ...)
-	. = ..()
-	return . | SPELL_CANCEL_CAST
 
 /**
  * Actions done as the main effect of the spell.
@@ -53,15 +71,12 @@
  * For spells without a click intercept, [cast_on] will be the owner.
  * For click spells, [cast_on] is whatever the owner clicked on in casting the spell.
  */
-/datum/component/uses_mana/story_spell/proc/handle_cast(datum/action/cooldown/spell/source, atom/cast_on)
+/* /datum/component/uses_mana/spell/proc/handle_cast(atom/cast_on)
 	SIGNAL_HANDLER
 	return
 
-/datum/component/uses_mana/story_spell/react_to_successful_use(datum/action/cooldown/spell/source, atom/cast_on)
-	drain_mana(null, null, source.owner, cast_on)
-
-/datum/component/uses_mana/story_spell/get_mana_required(atom/caster, atom/cast_on, ...)
+/datum/component/uses_mana/spell/proc/get_mana_required_spell(atom/caster, atom/cast_on, ...)
 	if(ismob(caster))
 		var/mob/caster_mob = caster
 		return caster_mob.get_casting_cost_mult()
-	return 1
+	return 1 */

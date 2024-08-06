@@ -1,4 +1,5 @@
-/*// doesnt use or catalyse magic, just senses
+// keep this unticked until it works
+// doesnt use or catalyse magic, just senses
 /datum/action/cooldown/spell/thaumatergic_sense
 	/// How much we can discern mana pools from one another, and their contents.
 	/// 0: Default. We return the average mana and attunements of all pools.
@@ -75,5 +76,3 @@
 	.["should_differentiate_pools_at_all"] = should_differentiate_pools_at_all
 
 
-
-*/

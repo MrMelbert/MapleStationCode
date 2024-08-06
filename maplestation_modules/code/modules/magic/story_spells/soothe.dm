@@ -1,16 +1,5 @@
-/datum/component/uses_mana/story_spell/pointed/soothe
-	var/soothe_attunement_amount = 0.5
-	var/soothe_cost = 20
-
-/datum/component/uses_mana/story_spell/pointed/soothe/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/life] += soothe_attunement_amount
-
-/datum/component/uses_mana/story_spell/pointed/soothe/get_mana_required(atom/caster, mob/living/cast_on, ...)
-	var/final_cost = ..() * soothe_cost
-	if(!isnull(cast_on.mind))
-		final_cost *= 2 // costs more on other players because pacifism is kind of annoying...
-	return final_cost
+#define SOOTHE_ATTUNEMENT_LIFE 0.5
+#define SOOTHE_MANA_COST 20
 
 // Calm Emotions / Soothe, basically just applied pacifism after a short do_after. Can be resisted.
 /datum/action/cooldown/spell/pointed/soothe_target
@@ -24,6 +13,7 @@
 
 	cooldown_time = 2 MINUTES
 	spell_requirements = NONE
+	var/mana_cost = SOOTHE_MANA_COST
 
 	school = SCHOOL_PSYCHIC
 	antimagic_flags = MAGIC_RESISTANCE|MAGIC_RESISTANCE_MIND
@@ -37,7 +27,22 @@
 
 /datum/action/cooldown/spell/pointed/soothe_target/New(Target)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/soothe)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_LIFE] += SOOTHE_ATTUNEMENT_LIFE
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		mana_consumed = mana_cost, \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		attunements = attunements, \
+		)
+ // replace with  "CALLBACK(src, PROC_REF(get_mana_consumed))," when error is resolved
+
+/* /datum/action/cooldown/spell/pointed/soothe_target/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+	var/final_cost = mana_cost
+	if(!isnull(cast_on.mind)) // ERR: claims "cast_on.mind" is invalid, commenting out until i figure out how to fix
+		final_cost *= 2 // costs more on other players because pacifism is kind of annoying...
+	return final_cost */
 
 /datum/action/cooldown/spell/pointed/soothe_target/is_valid_target(atom/cast_on)
 	return isliving(cast_on) && (cast_on != owner)
@@ -224,3 +229,6 @@
 /datum/mood_event/soothed
 	description = "To err is human..."
 	mood_change = 25
+
+#undef SOOTHE_ATTUNEMENT_LIFE
+#undef SOOTHE_MANA_COST
