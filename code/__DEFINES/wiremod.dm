@@ -99,10 +99,12 @@
 #define SHELL_FLAG_CIRCUIT_UNMODIFIABLE (1<<5)
 
 // Shell capacities. These can be converted to configs very easily later
-#define SHELL_CAPACITY_TINY 12
-#define SHELL_CAPACITY_SMALL 25
-#define SHELL_CAPACITY_MEDIUM 50
-#define SHELL_CAPACITY_LARGE 100
+// NON-MODULE CHANGE START
+#define SHELL_CAPACITY_TINY 25
+#define SHELL_CAPACITY_SMALL 50
+#define SHELL_CAPACITY_MEDIUM 100
+#define SHELL_CAPACITY_LARGE 250
+// NON-MODULE CHANGE END
 #define SHELL_CAPACITY_VERY_LARGE 500
 
 /// The maximum range a USB cable can be apart from a source
