@@ -379,7 +379,12 @@
 			if (design["author_ckey"] != ui.user.client?.ckey && !(design in scanned_designs)) // Get away from here, cheater
 				return TRUE
 
-			var/list/design_data = json_decode(design["dupe_data"])
+			var/list/design_data = null
+			if (islist(design["dupe_data"]))
+				design_data = json_decode(design["dupe_data"]["integrated_circuit"])
+			else
+				design_data = json_decode(design["dupe_data"])
+
 			if(!design_data)
 				say("Invalid design data.")
 				return FALSE
@@ -392,7 +397,7 @@
 					say("[component_data["name"]] component in this circuit has been recalled, unable to proceed.")
 					return TRUE
 
-				if (isnull(current_unlocked_designs[comp_type]))
+				if (isnull(current_unlocked_designs[comp_type]) && !isnull(all_circuit_designs[comp_type]))
 					say("[component_data["name"]] component has not been researched yet.")
 					return TRUE
 
@@ -476,7 +481,7 @@
 		data["dupe_data"] = list()
 		module.save_data_to_list(data["dupe_data"])
 
-		data["name"] = module.display_name
+		data["name"] = "[module.display_name]" // NON-MODULAR CHANGE
 		data["desc"] = "A module that has been loaded in by [user]."
 		data["materials"] = list(GET_MATERIAL_REF(/datum/material/glass) = module.circuit_size * cost_per_component)
 	else if(istype(weapon, /obj/item/integrated_circuit))
@@ -486,7 +491,7 @@
 			return ..()
 		data["dupe_data"] = integrated_circuit.convert_to_json()
 
-		data["name"] = integrated_circuit.display_name
+		data["name"] = "[integrated_circuit.display_name]" // NON-MODULAR CHANGE
 		data["desc"] = "An integrated circuit that has been loaded in by [user]."
 
 		var/datum/design/integrated_circuit/circuit_design = SSresearch.techweb_design_by_id("integrated_circuit")
@@ -580,7 +585,11 @@
 
 		var/list/invalid_list = list()
 		var/list/unresearched_list = list()
-		var/list/design_data = json_decode(design["dupe_data"])
+		var/list/design_data = null
+		if (islist(design["dupe_data"]))
+			design_data = json_decode(design["dupe_data"]["integrated_circuit"])
+		else
+			design_data = json_decode(design["dupe_data"])
 
 		if(!design_data)
 			index++
@@ -592,7 +601,7 @@
 			var/comp_type = text2path(component_data["type"])
 			if (!ispath(comp_type, /obj/item/circuit_component))
 				invalid_list |= component_data["name"]
-			else if (isnull(current_unlocked_designs[comp_type]))
+			else if (isnull(current_unlocked_designs[comp_type]) && !isnull(all_circuit_designs[comp_type]))
 				unresearched_list |= component_data["name"]
 
 		if (invalid_list.len)

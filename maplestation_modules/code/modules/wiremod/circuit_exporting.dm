@@ -73,6 +73,18 @@
 	var/list/current_unlocked_designs = list()
 	/// The techweb the duplicastor will get researched designs from
 	var/datum/techweb/techweb
+	/// List of all circuit designs
+	var/static/list/all_circuit_designs = null
+
+/obj/machinery/module_duplicator/Initialize(mapload)
+	. = ..()
+	
+	if (all_circuit_designs)
+		return
+	
+	all_circuit_designs = list()
+	for (var/datum/design/component/design as anything in subtypesof(/datum/design/component))
+		all_circuit_designs[design::build_path] = design::id
 
 /obj/machinery/module_duplicator/LateInitialize()
 	. = ..()
