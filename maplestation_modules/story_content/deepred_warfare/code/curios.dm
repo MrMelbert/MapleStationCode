@@ -23,11 +23,13 @@
 	icon_state = "scrap"
 
 	// vvv Change Later vvv
-	inhand_icon_state = "beaker"
+	inhand_icon_state = "reverse_bear_trap"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
-	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
-	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
 /obj/item/suspicious_scrap/alt
 	icon_state = "scrap_alt"
+	drop_sound = 'maplestation_modules/sound/items/drop/card.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
