@@ -344,6 +344,7 @@
 		else
 			is_disabled += " and"
 
+	// melbert todo : if you have clothes covering, it's harder to diagnose
 	check_list += "\t<span class='[no_damage ? "notice" : "warning"]'>Your [name][is_disabled][self_aware ? " has " : " is "][status].</span>"
 
 	for(var/datum/wound/wound as anything in wounds)

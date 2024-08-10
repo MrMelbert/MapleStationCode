@@ -84,7 +84,7 @@
 	var/skip_breath = FALSE
 	if(losebreath >= 1)
 		losebreath -= 1
-		if(prob(10))
+		if(prob(10) && consciousness > 10)
 			emote("gasp")
 		if(isobj(loc))
 			var/obj/loc_as_obj = loc

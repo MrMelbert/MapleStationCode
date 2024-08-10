@@ -63,6 +63,7 @@
 			var/obj/machinery/computer/vitals_reader/vr_comp = puter
 			if(vr_comp.patient == target)
 				return TRUE
+	// melbert todo : add modsuit health analyzer to this
 	return FALSE
 
 /datum/surgery_step/heal/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

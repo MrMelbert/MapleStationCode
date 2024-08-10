@@ -38,15 +38,17 @@
 		victim.spray_blood(attack_direction, severity)
 	return ..()
 
-/datum/wound/pierce/bleed/receive_damage(wounding_type, wounding_dmg, wound_bonus)
-	if(victim.stat == DEAD || (wounding_dmg < 5) || !limb.can_bleed() || !prob(internal_bleeding_chance + wounding_dmg)) // NON-MODULE CHANGE
+/datum/wound/pierce/bleed/receive_damage(wounding_type, wounding_dmg, wound_bonus, attack_direction, damage_source)
+	if(victim.stat == DEAD || (wounding_dmg < WOUND_MINIMUM_DAMAGE) || wounding_type == WOUND_BURN)
 		return
+	if(!limb.can_bleed() || !prob(internal_bleeding_chance))
+		return
+	if(limb.body_zone != BODY_ZONE_CHEST)
+		wounding_dmg *= 0.5
 	if(limb.current_gauze?.splint_factor)
 		wounding_dmg *= (1 - limb.current_gauze.splint_factor)
-	var/blood_bled = rand(1, wounding_dmg * internal_bleeding_coefficient) // 12 brute toolbox can cause up to 15/18/21 bloodloss on mod/sev/crit
+	var/blood_bled = sqrt(wounding_dmg) * internal_bleeding_coefficient * pick(0.75, 1, 1.25, 1.5) // melbert todo : push upstream
 	switch(blood_bled)
-		if(1 to 6)
-			victim.bleed(blood_bled, TRUE)
 		if(7 to 13)
 			victim.visible_message(
 				span_smalldanger("Blood droplets fly from the hole in [victim]'s [limb.plaintext_zone]."),
@@ -54,7 +56,6 @@
 				vision_distance = COMBAT_MESSAGE_RANGE,
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-			victim.bleed(blood_bled, TRUE)
 		if(14 to 19)
 			victim.visible_message(
 				span_smalldanger("A small stream of blood spurts from the hole in [victim]'s [limb.plaintext_zone]!"),
@@ -62,9 +63,6 @@
 				vision_distance = COMBAT_MESSAGE_RANGE,
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-			// NON-MODULE CHANGE
-			victim.do_splatter_effect(victim.dir)
-			victim.bleed(blood_bled)
 		if(20 to INFINITY)
 			victim.visible_message(
 				span_danger("A spray of blood streams from the gash in [victim]'s [limb.plaintext_zone]!"),
@@ -72,10 +70,9 @@
 				vision_distance = COMBAT_MESSAGE_RANGE,
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-			victim.bleed(blood_bled)
-			// NON-MODULE CHANGE
-			victim.do_splatter_effect(victim.dir)
-			victim.add_splatter_floor(get_step(victim.loc, victim.dir))
+	victim.bleed(blood_bled, TRUE)
+	if(blood_bled >= 14)
+		victim.do_splatter_effect(attack_direction)
 
 /datum/wound/pierce/bleed/get_bleed_rate_of_change()
 	//basically if a species doesn't bleed, the wound is stagnant and will not heal on it's own (nor get worse)

@@ -39,7 +39,66 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 				<b>Brain damage</b>: [src.get_organ_loss(ORGAN_SLOT_BRAIN) || "0"]<br>\
 				<b>Blood volume</b>: [src.blood_volume]cl ([round((src.blood_volume / BLOOD_VOLUME_NORMAL) * 100, 0.1)]%)<br>\
 				<b>Reagents</b>:<br>[reagents_readout()]", INVESTIGATE_DEATHS)
-	to_chat(src, span_warning("You have died. Barring complete bodyloss, you can in most cases be revived by other players. If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab."))
+
+	var/death_block = ""
+	death_block += span_danger("<center><span style='font-size: 32px'>You have died of [get_cause_of_death()].</font></center>")
+	death_block += "<hr>"
+	death_block += span_danger("Barring complete bodyloss, you can (in most cases) be revived by other players. \
+		If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab.")
+	to_chat(src, examine_block(death_block))
+
+/mob/living/carbon/human/proc/get_cause_of_death(probable_cause)
+	if(!probable_cause)
+		var/most_negative_val
+		for(var/key in consciousness_modifiers)
+			var/contribution = consciousness_modifiers[key]
+			if(contribution > -5)
+				continue
+			if(!probable_cause || contribution < most_negative_val)
+				probable_cause = key
+				most_negative_val = contribution
+		for(var/key in max_consciousness_values)
+			var/contribution = max_consciousness_values[key] - 100
+			if(contribution > -40)
+				continue
+			if(!probable_cause || contribution < most_negative_val)
+				probable_cause = key
+				most_negative_val = contribution
+
+	switch(probable_cause)
+		if("oxy")
+			return "suffocation"
+		if("brain_damage")
+			return "brain damage"
+		if("blood")
+			return "blood loss"
+		if("tox")
+			return "toxic poisoning"
+		if("brute")
+			return "blunt trauma"
+		if("burn")
+			return "severe burns"
+		if("pain")
+			return "pain"
+		if("shock")
+			return "neurological shock"
+		if("heart_attack")
+			return "a heart attack"
+		if("drunk")
+			return "alcohol poisoning"
+		if("hunger")
+			return "starvation"
+		if("thermia")
+			if(bodytemperature < get_body_temp_normal())
+				return "hypothermia"
+			return "hyperthermia"
+
+	if(findtext(probable_cause, "disease"))
+		return "disease"
+	if(findtext(probable_cause, "addiction"))
+		return "addiction"
+
+	return "unknown causes"
 
 /mob/living/carbon/human/proc/reagents_readout()
 	var/readout = "Blood:"

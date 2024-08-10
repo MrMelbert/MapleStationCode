@@ -2149,46 +2149,53 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(isnull(.) || . == stat)
 		return
 
+	// All the traits associated with any of a mob's stat
+	// Adding anny traits below should also be done in here
+	var/list/removed_traits = list(
+		TRAIT_CRITICAL_CONDITION,
+		TRAIT_FLOORED,
+		TRAIT_HANDS_BLOCKED,
+		TRAIT_IMMOBILIZED,
+		TRAIT_INCAPACITATED,
+		TRAIT_KNOCKEDOUT,
+		TRAIT_NO_PAIN_EFFECTS,
+	)
+	// All the traits associated with the mob's current stat
+	var/list/added_traits = list()
+
 	switch(stat) //Current stat.
 		if(CONSCIOUS)
-			remove_traits(list(
-				TRAIT_CRITICAL_CONDITION,
-				TRAIT_FLOORED,
-				TRAIT_HANDS_BLOCKED,
-				TRAIT_IMMOBILIZED,
-				TRAIT_INCAPACITATED,
-				TRAIT_KNOCKEDOUT,
-			), STAT_TRAIT)
+			pass()
 
 		if(SOFT_CRIT)
-			add_traits(list(
+			added_traits.Add(
 				TRAIT_CRITICAL_CONDITION,
-			), STAT_TRAIT)
+			)
 
 		if(HARD_CRIT)
-			add_traits(list(
+			added_traits.Add(
 				TRAIT_CRITICAL_CONDITION,
 				TRAIT_FLOORED,
 				TRAIT_HANDS_BLOCKED,
 				TRAIT_IMMOBILIZED,
 				TRAIT_INCAPACITATED,
 				TRAIT_KNOCKEDOUT,
-			), STAT_TRAIT)
+			)
 
 		if(DEAD)
-			remove_traits(list(
-				TRAIT_CRITICAL_CONDITION,
-				TRAIT_KNOCKEDOUT,
-			), STAT_TRAIT)
-			add_traits(list(
+			added_traits.Add(
 				TRAIT_FLOORED,
 				TRAIT_HANDS_BLOCKED,
 				TRAIT_IMMOBILIZED,
 				TRAIT_INCAPACITATED,
-			), STAT_TRAIT)
-
+				TRAIT_KNOCKEDOUT,
+				TRAIT_NO_PAIN_EFFECTS,
+			)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
+
+	add_traits(added_traits)
+	remove_traits(removed_traits - added_traits)
 
 	SShealth_updates.queue_update(src, UPDATE_SELF)
 	med_hud_set_status() // skip the queue, we want this to happen immediately and this proc isn't hot anyways

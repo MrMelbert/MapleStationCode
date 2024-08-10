@@ -251,13 +251,13 @@
 				continue
 			// Pain is negative and we're above soft cap, increase the healing amount
 			if(current_amount >= adjusted_bodypart.soft_max_pain)
-				adjusted_amount *= 3 * (current_amount / adjusted_bodypart.soft_max_pain)
+				adjusted_amount *= 2 * (current_amount / adjusted_bodypart.soft_max_pain)
 
 		// Pain is positive (dealing)
 		else
 			// Pain is positive and we're at the soft cap, reduce the incoming pain
 			if(current_amount >= adjusted_bodypart.soft_max_pain)
-				adjusted_amount *= 0.5 * (adjusted_bodypart.soft_max_pain / current_amount)
+				adjusted_amount *= 0.75 * (adjusted_bodypart.soft_max_pain / current_amount)
 			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
 			// Pain modifiers results in us taking 0 pain so we skip
 			if(adjusted_amount <= 0)
@@ -524,27 +524,22 @@
 		shock_mod *= 1.5
 	if(parent.health <= parent.maxHealth * -4)
 		shock_mod *= 2
-	var/curr_pain = get_average_pain()
-	switch(curr_pain)
-		if(-INFINITY to 10)
-			parent.adjust_pain_shock(-3 * seconds_per_tick) // staying out of pain for a while gives you a small resiliency to shock (~1 minute)
-
-		if(10 to 20)
-			parent.adjust_pain_shock(-1 * seconds_per_tick)
-
-		if(20 to 40)
-			if(shock_buildup <= 30)
-				parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
-
-		if(40 to 70)
-			parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
-			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_userdanger(pick("It hurts.")))
-
-		if(70 to INFINITY)
-			parent.adjust_pain_shock(2 * shock_mod * seconds_per_tick)
-			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!")))
+	var/curr_pain = get_total_pain()
+	if(curr_pain < PAIN_LIMB_MAX * 0.5)
+		parent.adjust_pain_shock(-3 * seconds_per_tick) // staying out of pain for a while gives you a small resiliency to shock (~1 minute)
+	else if(curr_pain < PAIN_LIMB_MAX)
+		parent.adjust_pain_shock(-1 * seconds_per_tick)
+	else if(curr_pain < PAIN_LIMB_MAX * 1.5)
+		if(shock_buildup <= 30 || parent.consciousness <= 60)
+			parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
+	else if(curr_pain < PAIN_LIMB_MAX * 2.5)
+		parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
+		if(SPT_PROB(2, seconds_per_tick))
+			do_pain_message(span_userdanger(pick("It hurts.")))
+	else
+		parent.adjust_pain_shock((curr_pain / PAIN_LIMB_MAX) * shock_mod * seconds_per_tick)
+		if(SPT_PROB(2, seconds_per_tick))
+			do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!")))
 
 	switch(shock_buildup)
 		if(10 to 60)
@@ -564,7 +559,7 @@
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_bodytemperature(-20 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 20)
 
-	if(shock_buildup >= 20 && !just_cant_feel_anything && SPT_PROB(shock_buildup * 0.1, seconds_per_tick))
+	if(shock_buildup >= 20 && !just_cant_feel_anything && SPT_PROB(shock_buildup / 10, seconds_per_tick))
 		parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 		parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
@@ -636,7 +631,7 @@
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
 	// This is "paincrit", it's where stamcrit has moved and is also applied by extreme shock
-	if(curr_pain >= 75 || shock_buildup >= 150)
+	if(curr_pain >= PAIN_LIMB_MAX * 6 || shock_buildup >= 150)
 		ADD_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
 		var/is_standing = parent.body_position == STANDING_UP
 		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS))
@@ -712,18 +707,19 @@
 	SIGNAL_HANDLER
 
 	var/avg_pain = get_average_pain()
+
 	// Pain is halved if you can't feel pain (but ignore pain modifier for now)
-	if(!parent.can_feel_pain(TRUE))
+	if(avg_pain && parent.stat != DEAD && !parent.can_feel_pain(TRUE))
 		avg_pain *= 0.5
 
 	// Even if you can't feel pain it still contributes to consciousness loss
 	if(avg_pain <= 10)
 		parent.remove_consciousness_modifier("pain")
 	else
-		parent.add_consciousness_modifier("pain", -5 * sqrt(avg_pain))
+		parent.add_consciousness_modifier("pain", -5 * (avg_pain ** 0.5))
 
 	// Pain is set to 0 fully if you can't feel pain OR pain modifier <= 0.5 (numbness threshold)
-	if(!parent.can_feel_pain(FALSE))
+	if(avg_pain && (parent.stat == DEAD || !parent.can_feel_pain(FALSE)))
 		avg_pain = 0
 
 	switch(avg_pain)
@@ -812,6 +808,15 @@
 		max_total_pain += adjusted_bodypart.soft_max_pain
 
 	return round(100 * total_pain / max_total_pain, 0.01)
+
+/// Get the total pain of all bodyparts.
+/datum/pain/proc/get_total_pain()
+	var/total_pain = 0
+	for(var/zone in body_zones)
+		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
+		total_pain += adjusted_bodypart.pain
+
+	return total_pain
 
 /// Adds a custom stammer to people under the effects of pain.
 /datum/pain/proc/handle_message(datum/source, list/message_args)

@@ -214,46 +214,39 @@
 	victim.sharp_pain(BODY_ZONE_CHEST, rand(5, 10), BRUTE, 10 SECONDS)
 	return .
 
-/datum/wound/blunt/bone/receive_damage(wounding_type, wounding_dmg, wound_bonus)
-	if(!victim || wounding_dmg < WOUND_MINIMUM_DAMAGE)
+/datum/wound/blunt/bone/receive_damage(wounding_type, wounding_dmg, wound_bonus, attack_direction, damage_source)
+	if(victim.stat == DEAD || wounding_dmg < WOUND_MINIMUM_DAMAGE || wounding_type == WOUND_BURN)
 		return
-	if(HAS_TRAIT(victim, TRAIT_NOBLOOD)) // NON-MODULE CHANGE
+	if(limb.body_zone != BODY_ZONE_CHEST || !limb.can_bleed() || !prob(internal_bleeding_chance))
 		return
-
-	if(limb.body_zone == BODY_ZONE_CHEST && prob(internal_bleeding_chance + wounding_dmg))
-		var/blood_bled = rand(1, wounding_dmg * (severity == WOUND_SEVERITY_CRITICAL ? 2 : 1.5)) // 12 brute toolbox can cause up to 18/24 bleeding with a severe/critical chest wound
-		switch(blood_bled)
-			if(1 to 6)
-				victim.bleed(blood_bled, TRUE)
-			if(7 to 13)
-				victim.visible_message(
-					span_smalldanger("A thin stream of blood drips from [victim]'s mouth from the blow to [victim.p_their()] chest."),
-					span_danger("You cough up a bit of blood from the blow to your chest."),
-					vision_distance = COMBAT_MESSAGE_RANGE,
-					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-				)
-				victim.bleed(blood_bled, TRUE)
-			if(14 to 19)
-				victim.visible_message(
-					span_smalldanger("Blood spews out of [victim]'s mouth from the blow to [victim.p_their()] chest!"),
-					span_danger("You spit out a string of blood from the blow to your chest!"),
-					vision_distance = COMBAT_MESSAGE_RANGE,
-					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-				)
-				// NON-MODULE CHANGE
-				victim.do_splatter_effect(victim.dir)
-				victim.bleed(blood_bled)
-			if(20 to INFINITY)
-				victim.visible_message(
-					span_danger("Blood spurts out of [victim]'s mouth from the blow to [victim.p_their()] chest!"),
-					span_bolddanger("You choke up on a spray of blood from the blow to your chest!"),
-					vision_distance = COMBAT_MESSAGE_RANGE,
-					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-				)
-				victim.bleed(blood_bled)
-				// NON-MODULE CHANGE
-				victim.do_splatter_effect(victim.dir)
-				victim.add_splatter_floor(get_step(victim.loc, victim.dir))
+	if(limb.current_gauze?.splint_factor)
+		wounding_dmg *= (1 - limb.current_gauze.splint_factor)
+	var/blood_bled = sqrt(wounding_dmg) * (severity * 0.75) * pick(0.75, 1, 1.25) // melbert todo : push upstream
+	switch(blood_bled)
+		if(7 to 13)
+			victim.visible_message(
+				span_smalldanger("A thin stream of blood drips from [victim]'s mouth from the blow to [victim.p_their()] chest."),
+				span_danger("You cough up a bit of blood from the blow to your chest."),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+		if(14 to 19)
+			victim.visible_message(
+				span_smalldanger("Blood spews out of [victim]'s mouth from the blow to [victim.p_their()] chest!"),
+				span_danger("You spit out a string of blood from the blow to your chest!"),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+		if(20 to INFINITY)
+			victim.visible_message(
+				span_danger("Blood spurts out of [victim]'s mouth from the blow to [victim.p_their()] chest!"),
+				span_bolddanger("You choke up on a spray of blood from the blow to your chest!"),
+				vision_distance = COMBAT_MESSAGE_RANGE,
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+	victim.bleed(blood_bled, TRUE)
+	if(blood_bled >= 14)
+		victim.do_splatter_effect(attack_direction)
 
 /datum/wound/blunt/bone/modify_desc_before_span(desc)
 	. = ..()
