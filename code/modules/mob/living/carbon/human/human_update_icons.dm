@@ -548,7 +548,7 @@ There are several things that need to be remembered:
 #define LEG_SAMPLE_Y_UPPER 9
 
 /// Modifies a sprite to conform to digitigrade body shapes
-/proc/wear_digi_version(icon/base_icon, key, greyscale_config = /datum/greyscale_config/jumpsuit/worn_digi, greyscale_colors)
+/proc/wear_digi_version(icon/base_icon, key, greyscale_config = /datum/greyscale_config/jumpsuit_worn_digi, greyscale_colors)
 	ASSERT(key, "wear_digi_version: no key passed")
 	ASSERT(ispath(greyscale_config, /datum/greyscale_config), "wear_digi_version: greyscale_config is not a valid path (got: [greyscale_config])")
 	// items with greyscale colors containing multiple colors are invalid
