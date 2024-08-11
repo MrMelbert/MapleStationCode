@@ -66,6 +66,11 @@
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
 
+/// Mob can walk despite having two disabled/missing legs so long as they have two of this trait.
+/// Kind of jank, refactor at a later day when I can think of a better solution.
+/// Just be sure to call update_limbless_locomotion() after applying / removal
+#define TRAIT_NO_LEG_AID "no_leg_aid"
+
 #define COLOR_BLOOD "#c90000"
 
 // Used in ready menu anominity
