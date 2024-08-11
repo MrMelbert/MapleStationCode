@@ -51,6 +51,7 @@
 		return
 	leaner.start_leaning(src)
 
+// NON-MODULE CHANGE START
 /mob/living/proc/start_leaning(turf/closed/wall/wall)
 	var/new_y = base_pixel_y + pixel_y
 	var/new_x = base_pixel_x + pixel_x
@@ -65,7 +66,7 @@
 			new_x -= LEANING_OFFSET
 
 	animate(src, 0.2 SECONDS, pixel_x = new_x, pixel_y = new_y)
-	add_traits(list(TRAIT_UNDENSE, TRAIT_EXPANDED_FOV), LEANING_TRAIT)
+	add_traits(list(TRAIT_UNDENSE, TRAIT_EXPANDED_FOV, TRAIT_NO_LEG_AID), LEANING_TRAIT)
 	visible_message(
 		span_notice("[src] leans against [wall]."),
 		span_notice("You lean against [wall]."),
@@ -75,9 +76,16 @@
 		COMSIG_LIVING_DISARM_HIT,
 		COMSIG_LIVING_GET_PULLED,
 		COMSIG_MOVABLE_TELEPORTING,
-		COMSIG_ATOM_DIR_CHANGE,
+		COMSIG_LIVING_RESIST,
 	), PROC_REF(stop_leaning))
+	RegisterSignal(src, COMSIG_ATOM_POST_DIR_CHANGE, PROC_REF(stop_leaning_dir))
 	update_fov()
+	update_limbless_locomotion()
+
+/mob/living/proc/stop_leaning_dir(datum/source, old_dir, new_dir)
+	SIGNAL_HANDLER
+	if(new_dir != old_dir)
+		stop_leaning()
 
 /mob/living/proc/stop_leaning()
 	SIGNAL_HANDLER
@@ -86,11 +94,14 @@
 		COMSIG_LIVING_DISARM_HIT,
 		COMSIG_LIVING_GET_PULLED,
 		COMSIG_MOVABLE_TELEPORTING,
-		COMSIG_ATOM_DIR_CHANGE,
+		COMSIG_ATOM_POST_DIR_CHANGE,
+		COMSIG_LIVING_RESIST,
 	))
 	animate(src, 0.2 SECONDS, pixel_x = base_pixel_x, pixel_y = base_pixel_y)
-	remove_traits(list(TRAIT_UNDENSE, TRAIT_EXPANDED_FOV), LEANING_TRAIT)
+	remove_traits(list(TRAIT_UNDENSE, TRAIT_EXPANDED_FOV, TRAIT_NO_LEG_AID), LEANING_TRAIT)
 	update_fov()
+	update_limbless_locomotion()
+// NON-MODULE CHANGE END
 
 /turf/closed/wall/Initialize(mapload)
 	. = ..()

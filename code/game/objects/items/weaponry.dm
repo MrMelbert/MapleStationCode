@@ -519,6 +519,28 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	playsound(src, 'sound/weapons/batonextend.ogg', 50, TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
+/obj/item/cane/crutch
+	name = "medical crutch"
+	desc = "A medical crutch used by people missing a leg. Not all that useful if you're missing both of them, though."
+	icon = 'icons/obj/weapons/staff.dmi'
+	icon_state = "crutch_med"
+	inhand_icon_state = "crutch_med"
+	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
+	force = 12
+	throwforce = 8
+	w_class = WEIGHT_CLASS_BULKY
+	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT * 0.5)
+	attack_verb_continuous = list("bludgeons", "whacks", "thrashes")
+	attack_verb_simple = list("bludgeon", "whack", "thrash")
+
+/obj/item/cane/crutch/wood
+	name = "wooden crutch"
+	desc = "A handmade crutch. Also makes a decent bludgeon if you need it."
+	icon_state = "crutch_wood"
+	inhand_icon_state = "crutch_wood"
+	custom_materials = list(/datum/material/wood = SMALL_MATERIAL_AMOUNT * 0.5)
+
 /obj/item/staff
 	name = "wizard staff"
 	desc = "Apparently a staff used by the wizard."

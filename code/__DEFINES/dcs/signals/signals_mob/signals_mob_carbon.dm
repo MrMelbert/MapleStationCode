@@ -151,3 +151,7 @@
 
 /// Sent at the very end of human character setup
 #define COMSIG_HUMAN_CHARACTER_SETUP "after_human_setup"
+
+/// from /datum/status_effect/limp/proc/check_step()
+#define COMSIG_CARBON_LIMPING "mob_limp_check"
+	#define COMPONENT_CANCEL_LIMP (1<<0)
