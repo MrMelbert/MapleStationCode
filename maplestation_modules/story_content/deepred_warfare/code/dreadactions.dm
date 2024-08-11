@@ -248,6 +248,9 @@
 		ownercast.visible_message(span_boldwarning("[ownercast]'s shielding cracks!"))
 		return
 
+	break_shield()
+
+/datum/action/cooldown/mob_cooldown/faraday_shield/proc/break_shield()
 	playsound(ownercast, 'sound/effects/glassbr3.ogg', 240)
 	playsound(ownercast, 'sound/mecha/mech_shield_drop.ogg', 120)
 	StartCooldown((2 * maxhits) MINUTES)

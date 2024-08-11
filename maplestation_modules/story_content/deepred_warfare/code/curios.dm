@@ -36,7 +36,7 @@
 
 /obj/item/redtech_nan_sample
 	name = "crimson nanite sample"
-	desc = "A small, hard cube that glows a deep red. It seems to move and shift geometrically in place."
+	desc = "A small, hard cube that glows a deep red at its seams. It seems to move and shift geometrically in place."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
@@ -50,9 +50,47 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
 
+/obj/item/throwing_star/needle
+	name = "persuasion needle"
+	desc = "A large, sharp needle designed for throwing. It has a small, intricate yin-yang design etched into the side."
+	w_class = WEIGHT_CLASS_NORMAL
+
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon_state = "needle"
+
+	inhand_icon_state = "rods"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
+
+/obj/item/yin_yang_orb
+	name = "intricate orb"
+	desc = "A small, smooth orb that seems all but inert now. It seems to almost be crystaline in nature and has the design of a yin-yang. Throwing this at someone would hurt quite a bit."
+
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+
+	force = 8
+	throwforce = 16
+
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon_state = "yin_yang_orb"
+
+	inhand_icon_state = "nothing"
+	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
+
+	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
+	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
+/obj/item/yin_yang_orb/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/knockback, 1, FALSE, FALSE)
+
 /obj/item/snowglobe
 	name = "snowglobe"
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of The Collector?"
+	w_class = WEIGHT_CLASS_SMALL
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
@@ -67,10 +105,10 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/snowglobe/reimu
-	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a red and white shrine maiden at a shrine."
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a red and white shrine maiden at an oriental shrine."
 
 /obj/item/snowglobe/yukari
-	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a ribboned lady with a parasol standing on an old, abandoned train platform."
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a tall, ribboned lady with a parasol standing on an old, abandoned train platform."
 
 /obj/item/snowglobe/sdm
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a misty, lakeside mansion."

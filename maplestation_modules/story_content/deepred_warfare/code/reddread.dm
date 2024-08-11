@@ -455,7 +455,7 @@
 	if(neck)
 		if(head)
 			name = "The Collector"
-			desc = "An enigmatic and imposing masked figure. They are quite large."
+			desc = "An enigmatic and imposing mechanical figure. They are wearing an oriental fox mask, with only one eye hole on the light side of their face."
 			return
 		name = "The Collector"
 		desc = "An enigmatic and imposing mechanical figure. Their face can only be described as half sensor array, half volley gun."
@@ -526,12 +526,12 @@
 
 	//Damaged
 	if(health != maxHealth) // Note to self, change description if it is wearing a cloak.
-		if(health > maxHealth * 0.33)
+		if(health > maxHealth * 0.5)
 			if(neck)
 				. += span_warning("They make a metallic grinding noise when they move.")
 			else
 				. += span_warning("Their armour plates are slightly damaged.")
-		else //otherwise, below about 33%
+		else //otherwise, below about 50%
 			if(neck)
 				. += span_warning("Occasional sparks fly from out under their cloak.")
 			else
@@ -845,5 +845,25 @@
 		dropItemToGround(neck)
 	if(head)
 		dropItemToGround(head)
+
+/mob/living/basic/redtechdread/ex_act(severity, target)
+	if(shielding_level > 0)
+		switch(severity)
+			if(EXPLODE_DEVASTATE)
+				playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
+				src.visible_message(span_warning("[src]'s shield shatters as it tries deflect the explosion!"))
+				internalshield.break_shield()
+				severity = EXPLODE_HEAVY
+			if(EXPLODE_HEAVY)
+				playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
+				src.visible_message(span_warning("[src]'s shield shatters as it tries deflect the explosion!"))
+				internalshield.break_shield()
+				severity = EXPLODE_LIGHT
+			if(EXPLODE_LIGHT)
+				playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
+				src.visible_message(span_warning("[src]'s shield struggles to deflect the explosion!"))
+				internalshield.take_hit()
+				severity = EXPLODE_NONE
+	return ..()
 
 #undef DOAFTER_SOURCE_DREAD_INTERACTION
