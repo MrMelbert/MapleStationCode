@@ -69,10 +69,10 @@
 /obj/item/snowglobe/reimu
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a red and white shrine maiden at a shrine."
 
-/object/item/snowglobe/yukari
+/obj/item/snowglobe/yukari
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a ribboned lady with a parasol standing on an old, abandoned train platform."
 
-/object/item/snowglobe/sdm
+/obj/item/snowglobe/sdm
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a misty, lakeside mansion."
 
 /obj/item/snowglobe/draedon
