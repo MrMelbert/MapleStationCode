@@ -2269,6 +2269,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	num_legs = new_value
 
 
+// NON-MODULE CHANGE START
 ///Proc to modify the value of usable_legs and hook behavior associated to this event.
 /mob/living/proc/set_usable_legs(new_value)
 	if(usable_legs == new_value)
@@ -2277,19 +2278,23 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		stack_trace("[src] had set_usable_legs() called on them with a negative value!")
 		new_value = 0
 
-	. = usable_legs
+	var/old_value = usable_legs
 	usable_legs = new_value
 
-	if(new_value > .) // Gained leg usage.
+	update_limbless_locomotion()
+	update_limbless_movespeed_mod()
+
+	return old_value
+
+/// Updates whether the mob is floored or immobilized based on how many limbs they have or are missing.
+/mob/living/proc/update_limbless_locomotion()
+	if(usable_legs > 0 || (movement_type & (FLYING|FLOATING)) || COUNT_TRAIT_SOURCES(src, TRAIT_NO_LEG_AID) >= 2)
 		REMOVE_TRAIT(src, TRAIT_FLOORED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
-	else if(!(movement_type & (FLYING | FLOATING))) //Lost leg usage, not flying.
-		if(!usable_legs)
-			ADD_TRAIT(src, TRAIT_FLOORED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
-			if(!usable_hands)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
-
-	update_limbless_movespeed_mod()
+		return
+	ADD_TRAIT(src, TRAIT_FLOORED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
+	if(usable_hands == 0)
+		ADD_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
 
 /// Updates the mob's movespeed based on how many limbs they have or are missing.
 /mob/living/proc/update_limbless_movespeed_mod()
@@ -2305,6 +2310,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, multiplicative_slowdown = limbless_slowdown)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
+// NON-MODULE CHANGE END
 
 ///Proc to modify the value of num_hands and hook behavior associated to this event.
 /mob/living/proc/set_num_hands(new_value)
@@ -2314,18 +2320,24 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	num_hands = new_value
 
 
+// NON-MODULE CHANGE START
 ///Proc to modify the value of usable_hands and hook behavior associated to this event.
 /mob/living/proc/set_usable_hands(new_value)
 	if(usable_hands == new_value)
 		return
-	. = usable_hands
+	if(new_value < 0) // Sanity check
+		stack_trace("[src] had set_usable_hands() called on them with a negative value!")
+		new_value = 0
+
+	var/old_value = usable_hands
 	usable_hands = new_value
 
-	if(new_value > .) // Gained hand usage.
-		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
-	else if(!(movement_type & (FLYING | FLOATING)) && !usable_hands && !usable_legs) //Lost a hand, not flying, no hands left, no legs.
-		ADD_TRAIT(src, TRAIT_IMMOBILIZED, LACKING_LOCOMOTION_APPENDAGES_TRAIT)
+	if(usable_legs < default_num_legs)
+		update_limbless_locomotion()
+		update_limbless_movespeed_mod()
 
+	return old_value
+// NON-MODULE CHANGE END
 
 /// Whether or not this mob will escape from storages while being picked up/held.
 /mob/living/proc/will_escape_storage()

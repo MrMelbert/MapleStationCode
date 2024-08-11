@@ -6259,6 +6259,7 @@
 #include "maplestation_modules\code\modules\client\preferences\loadout_preference.dm"
 #include "maplestation_modules\code\modules\client\preferences\multiline_preferences.dm"
 #include "maplestation_modules\code\modules\client\preferences\name_preferences.dm"
+#include "maplestation_modules\code\modules\client\preferences\paraplegic_aid.dm"
 #include "maplestation_modules\code\modules\client\preferences\ready_anominity.dm"
 #include "maplestation_modules\code\modules\client\preferences\runechat_color.dm"
 #include "maplestation_modules\code\modules\client\preferences\sound_frequency.dm"
