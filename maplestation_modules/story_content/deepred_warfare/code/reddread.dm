@@ -129,6 +129,9 @@
 		/datum/language/nekomimetic = list(LANGUAGE_ATOM),
 	)
 
+/mob/living/basic/redtechdread/get_speech_sounds(sound_type) // Hopefully works.
+	return string_assoc_list(list('goon/sound/voice/radio_ai.ogg' = 100))
+
 /mob/living/basic/redtechdread/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/dextrous, hud_type = hud_type)
@@ -412,6 +415,7 @@
 		dread_overlays[DREAD_HEAD_LAYER] = head_overlay
 
 	apply_overlay(DREAD_HEAD_LAYER)
+	update_naming_status()
 
 /mob/living/basic/redtechdread/update_worn_mask()
 	update_worn_head()
@@ -751,6 +755,8 @@
 
 			if(dynamicSlot4)
 				dynamicSlot4.Remove(src)
+
+	update_naming_status()
 
 /mob/living/basic/redtechdread/proc/pre_attack(mob/living/source, atom/target)
 	SIGNAL_HANDLER
