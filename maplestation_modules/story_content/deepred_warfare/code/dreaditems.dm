@@ -6,7 +6,7 @@
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi' // Change this to a prexisting sprite, I do not want to make a new one.
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	inhand_icon_state = "rack_parts"
-	resistance_flags = FIRE_PROOF | ACID_PROOF
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 	item_flags = NO_MAT_REDEMPTION
 	armor_type = /datum/armor/dread_storage
 	storage_type = /datum/storage/dread_storage
@@ -30,7 +30,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	flags_inv = HIDESUITSTORAGE
-	resistance_flags = FIRE_PROOF | ACID_PROOF
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/neck/cloak/redtech_dread/pattern
 	worn_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothingbig.dmi'
@@ -44,7 +44,7 @@
 	icon_state = "mask"
 	w_class = WEIGHT_CLASS_BULKY
 	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
-	resistance_flags = FIRE_PROOF | ACID_PROOF
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/mask/collector/pattern
 	worn_icon = 'maplestation_modules/story_content/deepred_warfare/icons/dreadclothingbig.dmi'
