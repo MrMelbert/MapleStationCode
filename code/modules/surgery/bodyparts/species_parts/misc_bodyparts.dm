@@ -285,6 +285,7 @@
 	burn_modifier = 0.75
 	brute_modifier = 0.25 
 	dmg_overlay_type = null
+	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 /obj/item/bodypart/arm/right/werewolf
@@ -300,6 +301,7 @@
 	burn_modifier = 0.75
 	brute_modifier = 0.25 
 	dmg_overlay_type = null
+	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 /obj/item/bodypart/leg/left/werewolf
