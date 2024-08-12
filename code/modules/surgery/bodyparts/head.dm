@@ -230,7 +230,7 @@
 	px_x = 0
 	px_y = -8
 	wound_resistance = 15
-unarmed_attack_verb = "bite"
+	unarmed_attack_verb = "bite"
 	unarmed_attack_effect = ATTACK_EFFECT_BITE
 	unarmed_attack_sound = 'sound/weapons/bite.ogg'
 	unarmed_miss_sound = 'sound/weapons/bite.ogg'
