@@ -362,44 +362,77 @@
 
 	if(AM.pulledby)
 		if(!supress_message)
-			AM.visible_message(span_danger("[src] pulls [AM] from [AM.pulledby]'s grip."), \
-							span_danger("[src] pulls you from [AM.pulledby]'s grip."), null, null, src)
+			AM.visible_message(
+				span_danger("[src] pulls [AM] from [AM.pulledby]'s grip."),
+				span_danger("[src] pulls you from [AM.pulledby]'s grip."),
+				null,
+				null,
+				src,
+			)
 			to_chat(src, span_notice("You pull [AM] from [AM.pulledby]'s grip!"))
 		log_combat(AM, AM.pulledby, "pulled from", src)
 		AM.pulledby.stop_pulling() //an object can't be pulled by two mobs at once.
 
-	pulling = AM
+	set_pulling(AM)
 	AM.set_pulledby(src)
+	face_atom(AM)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_START_PULL, AM, state, force)
 
 	if(!supress_message)
-		var/sound_to_play = 'sound/weapons/thudswoosh.ogg'
-		if(ishuman(src))
-			var/mob/living/carbon/human/H = src
-			if(H.dna.species.grab_sound)
-				sound_to_play = H.dna.species.grab_sound
-			if(HAS_TRAIT(H, TRAIT_STRONG_GRABBER))
-				sound_to_play = null
-		playsound(src.loc, sound_to_play, 50, TRUE, -1)
+		playsound(src, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
 	update_pull_hud_icon()
 
-	if(ismob(AM))
-		var/mob/M = AM
+	if(isliving(AM))
+		var/mob/living/M = AM
 
-		log_combat(src, M, "grabbed", addition="passive grab")
-		if(!supress_message && !(iscarbon(AM) && HAS_TRAIT(src, TRAIT_STRONG_GRABBER)))
-			if(ishuman(M))
+		log_combat(src, M, "grabbed", addition = HAS_TRAIT(src, TRAIT_STRONG_GRABBER) ? "instant aggro grab" : "passive grab")
+		if(!supress_message)
+			if(HAS_TRAIT(src, TRAIT_STRONG_GRABBER))
+				M.visible_message(
+					span_danger("[src] grabs [M] with a strong grip!"),
+					span_danger("[src] grabs you with a strong grip!"),
+					null,
+					null,
+					src,
+				)
+				to_chat(src, span_notice("You grab [M] with a strong grip!"))
+				if(M.is_blind())
+					to_chat(M, span_warning("Someone grabs you with a strong grip!"))
+				M.share_blood_on_touch(src, ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+
+			else if(ishuman(M))
 				var/mob/living/carbon/human/grabbed_human = M
-				var/grabbed_by_hands = (zone_selected == "l_arm" || zone_selected == "r_arm") && grabbed_human.usable_hands > 0
-				M.visible_message(span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"), \
-								span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"), null, null, src)
+				var/grabbed_by_hands = (zone_selected == BODY_ZONE_L_ARM || zone_selected == BODY_ZONE_R_ARM) && grabbed_human.usable_hands > 0
+				M.visible_message(
+					span_warning("[src] grabs [M] [grabbed_by_hands ? "by their hands":"passively"]!"),
+					span_warning("[src] grabs you [grabbed_by_hands ? "by your hands":"passively"]!"),
+					null,
+					null,
+					src,
+				)
 				to_chat(src, span_notice("You grab [M] [grabbed_by_hands ? "by their hands":"passively"]!"))
-				grabbed_human.share_blood_on_touch(src, grabbed_by_hands ? ITEM_SLOT_GLOVES : ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+				if(M.is_blind())
+					to_chat(M, span_warning("Someone grabs you [grabbed_by_hands ? "by your hands":"passively"]!"))
+
+				if(grabbed_by_hands)
+					M.share_blood_on_touch(src, ITEM_SLOT_GLOVES)
+					share_blood_on_touch(M, ITEM_SLOT_GLOVES)
+				else
+					M.share_blood_on_touch(src, ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
+
 			else
-				M.visible_message(span_warning("[src] grabs [M] passively!"), \
-								span_warning("[src] grabs you passively!"), null, null, src)
+				M.visible_message(
+					span_warning("[src] grabs [M] passively!"),
+					span_warning("[src] grabs you passively!"),
+					null,
+					null,
+					src,
+				)
 				to_chat(src, span_notice("You grab [M] passively!"))
+				if(M.is_blind())
+					to_chat(M, span_warning("Someone grabs you passively!"))
+				M.share_blood_on_touch(src, ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 
 		if(!iscarbon(src))
 			M.LAssailant = null
@@ -410,20 +443,16 @@
 
 			SEND_SIGNAL(M, COMSIG_LIVING_GET_PULLED, src)
 			//Share diseases that are spread by touch
-			for(var/thing in diseases)
-				var/datum/disease/D = thing
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					L.ContactContractDisease(D)
+			for(var/datum/disease/thing as anything in diseases)
+				if(thing.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					L.ContactContractDisease(thing)
 
-			for(var/thing in L.diseases)
-				var/datum/disease/D = thing
-				if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-					ContactContractDisease(D)
+			for(var/datum/disease/thing as anything in L.diseases)
+				if(thing.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
+					ContactContractDisease(thing)
 
-			if(iscarbon(L))
-				var/mob/living/carbon/C = L
-				if(HAS_TRAIT(src, TRAIT_STRONG_GRABBER))
-					C.grabbedby(src)
+			if(HAS_TRAIT(src, TRAIT_STRONG_GRABBER))
+				setGrabState(GRAB_AGGRESSIVE)
 
 			update_pull_movespeed()
 
@@ -441,7 +470,7 @@
 		if(GRAB_NECK)
 			offset = GRAB_PIXEL_SHIFT_NECK
 		if(GRAB_KILL)
-			offset = GRAB_PIXEL_SHIFT_NECK
+			offset = M.loc == loc ? GRAB_PIXEL_SHIFT_NECK : GRAB_PIXEL_SHIFT_STRANGLE
 	M.setDir(get_dir(M, src))
 	var/target_pixel_x = M.base_pixel_x + M.body_position_pixel_x_offset
 	var/target_pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset
@@ -462,7 +491,7 @@
 /mob/living/proc/reset_pull_offsets(mob/living/M, override)
 	if(!override && M.buckled)
 		return
-	animate(M, pixel_x = M.base_pixel_x + M.body_position_pixel_x_offset , pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset, 1)
+	animate(M, pixel_x = M.base_pixel_x + M.body_position_pixel_x_offset , pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset, time = 0.1 SECONDS)
 
 //mob verbs are a lot faster than object verbs
 //for more info on why this is not atom/pull, see examinate() in mob.dm
@@ -478,7 +507,7 @@
 /mob/living/stop_pulling()
 	if(ismob(pulling))
 		reset_pull_offsets(pulling)
-	..()
+	. = ..()
 	update_pull_movespeed()
 	update_pull_hud_icon()
 
@@ -1161,31 +1190,56 @@
 	return 1 //returning 0 means we successfully broke free
 
 /mob/living/resist_grab(moving_resist)
-	. = TRUE
-	//If we're in an aggressive grab or higher, we're lying down, we're vulnerable to grabs, or we're staggered and we have some amount of stamina loss, we must resist
-	if(pulledby.grab_state || body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS) || get_timed_status_effect_duration(/datum/status_effect/staggered) && getStaminaLoss() >= 30)
-		var/altered_grab_state = pulledby.grab_state
-		if((body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_GRABWEAKNESS) || get_timed_status_effect_duration(/datum/status_effect/staggered)) && pulledby.grab_state < GRAB_KILL) //If prone, resisting out of a grab is equivalent to 1 grab state higher. won't make the grab state exceed the normal max, however
-			altered_grab_state++
-		var/resist_chance = BASE_GRAB_RESIST_CHANCE /// see defines/combat.dm, this should be baseline 60%
-		resist_chance = (resist_chance/altered_grab_state) ///Resist chance divided by the value imparted by your grab state. It isn't until you reach neckgrab that you gain a penalty to escaping a grab.
-		if(prob(resist_chance))
-			visible_message(span_danger("[src] breaks free of [pulledby]'s grip!"), \
-							span_danger("You break free of [pulledby]'s grip!"), null, null, pulledby)
-			to_chat(pulledby, span_warning("[src] breaks free of your grip!"))
-			log_combat(pulledby, src, "broke grab")
-			pulledby.stop_pulling()
-			return FALSE
-		else
-			adjustStaminaLoss(rand(15,20))//failure to escape still imparts a pretty serious penalty
-			visible_message(span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"), \
-							span_warning("You struggle as you fail to break free of [pulledby]'s grip!"), null, null, pulledby)
-			to_chat(pulledby, span_danger("[src] struggles as they fail to break free of your grip!"))
-		if(moving_resist && client) //we resisted by trying to move
-			client.move_delay = world.time + 4 SECONDS
-	else
+	if(pulledby.grab_state == GRAB_PASSIVE && body_position != LYING_DOWN && !HAS_TRAIT(src, TRAIT_GRABWEAKNESS))
 		pulledby.stop_pulling()
 		return FALSE
+
+	var/vulnerability_delta = 0
+	if(isliving(pulledby))
+		var/mob/living/grabber = pulledby
+		// Just compare resist strength vs resist strength
+		vulnerability_delta = get_grab_resist_strength() - grabber.get_grab_resist_strength()
+	else
+		// Just assume 4 (roughly the same as a human with no buffs)
+		vulnerability_delta = get_grab_resist_strength() - 4
+
+	var/altered_grab_state = pulledby.grab_state
+	if(vulnerability_delta <= 2)
+		altered_grab_state = min(altered_grab_state + 1, GRAB_NECK)
+
+	var/resist_chance = BASE_GRAB_RESIST_CHANCE
+	resist_chance /= altered_grab_state // Resist chance divided by the value imparted by your grab state.
+	resist_chance += (vulnerability_delta * 5) // More vulnerable = more resist, less vulnerable = less resist
+	if(prob(resist_chance))
+		visible_message(
+			span_danger("[src] breaks free of [pulledby]'s grip!"),
+			span_danger("You break free of [pulledby]'s grip!"),
+			null,
+			null,
+			pulledby,
+		)
+		to_chat(pulledby, span_warning("[src] breaks free of your grip!"))
+		if(is_blind())
+			to_chat(src, span_danger("You break free of the grip!"))
+		log_combat(pulledby, src, "broke grab")
+		pulledby.stop_pulling()
+		return FALSE
+
+	adjustStaminaLoss(rand(15, 20))//failure to escape still imparts a pretty serious penalty
+	visible_message(
+		span_danger("[src] struggles as they fail to break free of [pulledby]'s grip!"),
+		span_warning("You struggle as you fail to break free of [pulledby]'s grip!"),
+		null,
+		null,
+		pulledby,
+	)
+	to_chat(pulledby, span_danger("[src] struggles as they fail to break free of your grip!"))
+	if(is_blind())
+		to_chat(src, span_danger("You struggle as you fail to break free of the grip!"))
+
+	if(moving_resist) //we resisted by trying to move
+		client?.move_delay = world.time + 4 SECONDS
+	return TRUE
 
 /mob/living/proc/resist_buckle()
 	buckled.user_unbuckle_mob(src,src)
@@ -2164,8 +2218,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(SOFT_CRIT)
 			if(stat >= UNCONSCIOUS)
 				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT) //adding trait sources should come before removing to avoid unnecessary updates
-			if(pulledby)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
 		if(UNCONSCIOUS)
 			if(stat != HARD_CRIT)
 				cure_blind(UNCONSCIOUS_TRAIT)
@@ -2181,8 +2233,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
 			remove_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_INCAPACITATED, TRAIT_FLOORED, TRAIT_CRITICAL_CONDITION), STAT_TRAIT)
 		if(SOFT_CRIT)
-			if(pulledby)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT) //adding trait sources should come before removing to avoid unnecessary updates
 			if(. >= UNCONSCIOUS)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
 			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
@@ -2235,16 +2285,15 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	. = ..()
 	if(. == FALSE) //null is a valid value here, we only want to return if FALSE is explicitly passed.
 		return
-	if(pulledby)
-		if(!. && stat == SOFT_CRIT)
-			ADD_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-	else if(. && stat == SOFT_CRIT)
-		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, PULLED_WHILE_SOFTCRIT_TRAIT)
-
+	if(!pulledby)
+		return
+	apply_status_effect(/datum/status_effect/grabbed, pulledby)
 
 /// Updates the grab state of the mob and updates movespeed
 /mob/living/setGrabState(newstate)
 	. = ..()
+	if(HAS_TRAIT(src, TRAIT_NO_GRAB_SPEED_PENALTY))
+		return
 	switch(grab_state)
 		if(GRAB_PASSIVE)
 			remove_movespeed_modifier(MOVESPEED_ID_MOB_GRAB_STATE)
