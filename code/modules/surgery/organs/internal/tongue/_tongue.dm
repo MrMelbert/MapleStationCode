@@ -605,7 +605,7 @@ GLOBAL_LIST_INIT(english_to_zombie, list())
 	modifies_speech = TRUE
 	taste_sensitivity = 5
 	liked_foodtypes = GROSS | MEAT | RAW | GORE
-	disliked_foodtypes = NONE
+	disliked_foodtypes = SWEETS
 
 /obj/item/organ/internal/tongue/werewolf/modify_speech(datum/source, list/speech_args)
 	var/message = speech_args[SPEECH_MESSAGE]
