@@ -81,18 +81,6 @@
 	acceptable_bodytype = BODYTYPE_MONKEY
 	dmg_overlay_type = SPECIES_MONKEY
 
-/obj/item/bodypart/chest/werewolf
-	icon = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_static = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_state = "werewolf_chest"
-	limb_id = SPECIES_WEREWOLF
-	should_draw_greyscale = FALSE
-	is_dimorphic = FALSE
-	wound_resistance = 15
-	bodytype = BODYTYPE_WEREWOLF | BODYTYPE_ORGANIC
-	acceptable_bodytype = BODYTYPE_WEREWOLF
-	dmg_overlay_type = SPECIES_WEREWOLF
-
 /obj/item/bodypart/chest/alien
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'
 	icon_static = 'icons/mob/human/species/alien/bodyparts.dmi'
@@ -266,22 +254,6 @@
 	unarmed_effectiveness = 0
 	appendage_noun = "paw"
 
-/obj/item/bodypart/arm/left/werewolf
-	icon = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_static = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_state = "werewolf_l_arm"
-	limb_id = SPECIES_WEREWOLF
-	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_WEREWOLF | BODYTYPE_ORGANIC
-	wound_resistance = 15
-	dmg_overlay_type = SPECIES_WEREWOLF
-	unarmed_damage_low = 20 
-	unarmed_damage_high = 30
-	unarmed_effectiveness = 10
-	px_x = -6
-	px_y = 0
-	appendage_noun = "clawed hand"
-
 /obj/item/bodypart/arm/left/alien
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'
 	icon_static = 'icons/mob/human/species/alien/bodyparts.dmi'
@@ -378,23 +350,6 @@
 	unarmed_damage_high = 2
 	unarmed_effectiveness = 0
 	appendage_noun = "paw"
-
-/obj/item/bodypart/arm/right/werewolf
-	icon = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_static = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_state = "werewolf_r_arm"
-	limb_id = SPECIES_WEREWOLF
-	bodytype = BODYTYPE_WEREWOLF | BODYTYPE_ORGANIC
-	should_draw_greyscale = FALSE
-	wound_resistance = 15
-	px_x = 6
-	px_y = 0
-	dmg_overlay_type = SPECIES_WEREWOLF
-	unarmed_damage_low = 20
-	unarmed_damage_high = 30
-	unarmed_effectiveness = 10
-	appendage_noun = "clawed hand"
-
 
 /obj/item/bodypart/arm/right/alien
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'
@@ -508,22 +463,6 @@
 	unarmed_damage_high = 3
 	unarmed_effectiveness = 0
 
-/obj/item/bodypart/leg/left/werewolf
-	icon = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_static = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_state = "werewolf_l_leg"
-	limb_id = SPECIES_WEREWOLF
-	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_WEREWOLF | BODYTYPE_ORGANIC
-	wound_resistance = 15
-	px_x = -2
-	px_y = 12
-	dmg_overlay_type = SPECIES_WEREWOLF
-	unarmed_damage_low = 25
-	unarmed_damage_high = 35
-	unarmed_effectiveness = 10
-
-
 /obj/item/bodypart/leg/left/alien
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'
 	icon_static = 'icons/mob/human/species/alien/bodyparts.dmi'
@@ -611,22 +550,6 @@
 	unarmed_damage_low = 2
 	unarmed_damage_high = 3
 	unarmed_effectiveness = 0
-
-/obj/item/bodypart/leg/right/werewolf
-	icon = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_static = 'icons/mob/human/species/werewolf/bodyparts.dmi'
-	icon_state = "werewolf_r_leg"
-	limb_id = SPECIES_WEREWOLF
-	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_WEREWOLF | BODYTYPE_ORGANIC
-	wound_resistance = 15
-	px_x = 2
-	px_y = 12
-	dmg_overlay_type = SPECIES_WEREWOLF
-	unarmed_damage_low = 25
-	unarmed_damage_high = 35
-	unarmed_effectiveness = 10
-
 
 /obj/item/bodypart/leg/right/alien
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'
