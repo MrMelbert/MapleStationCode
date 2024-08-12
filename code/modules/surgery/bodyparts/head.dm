@@ -218,6 +218,27 @@
 	is_dimorphic = FALSE
 	head_flags = HEAD_LIPS|HEAD_DEBRAIN
 
+/obj/item/bodypart/head/werewolf
+	icon = 'icons/mob/human/species/werewolf/bodyparts.dmi'
+	icon_static = 'icons/mob/human/species/werewolf/bodyparts.dmi'
+	icon_state = "werewolf_head"
+	limb_id = SPECIES_WEREWOLF
+	bodytype = BODYTYPE_WEREWOLF | BODYTYPE_ORGANIC
+	should_draw_greyscale = FALSE
+	dmg_overlay_type = SPECIES_WEREWOLF
+	is_dimorphic = FALSE
+	px_x = 0
+	px_y = -8
+	wound_resistance = 15
+unarmed_attack_verb = "bite"
+	unarmed_attack_effect = ATTACK_EFFECT_BITE
+	unarmed_attack_sound = 'sound/weapons/bite.ogg'
+	unarmed_miss_sound = 'sound/weapons/bite.ogg'
+	unarmed_damage_low = 50
+	unarmed_damage_high = 60
+	unarmed_effectiveness = 25
+	head_flags = HEAD_LIPS|HEAD_DEBRAIN
+
 /obj/item/bodypart/head/alien
 	icon = 'icons/mob/human/species/alien/bodyparts.dmi'
 	icon_static = 'icons/mob/human/species/alien/bodyparts.dmi'
