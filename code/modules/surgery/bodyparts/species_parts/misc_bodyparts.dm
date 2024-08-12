@@ -249,8 +249,8 @@
 /obj/item/bodypart/head/werewolf
 	limb_id = SPECIES_WEREWOLF
 	is_dimorphic = FALSE
-	burn_modifier = 1.25
-	brute_modifier = 0.5 
+	burn_modifier = 0.75
+	brute_modifier = 0.25  
 	unarmed_attack_verb = "bite"
 	unarmed_attack_effect = ATTACK_EFFECT_BITE
 	unarmed_attack_sound = 'sound/weapons/bite.ogg'
@@ -265,8 +265,8 @@
 /obj/item/bodypart/chest/werewolf
 	limb_id = SPECIES_WEREWOLF
 	is_dimorphic = TRUE
-	burn_modifier = 1.25
-	brute_modifier = 0.5 
+	burn_modifier = 0.75
+	brute_modifier = 0.25 
 	dmg_overlay_type = null
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 	bodypart_traits = list(TRAIT_NO_JUMPSUIT)
@@ -282,8 +282,8 @@
 	unarmed_damage_low = 20
 	unarmed_damage_high = 25
 	unarmed_effectiveness = 20
-	burn_modifier = 1.25
-	brute_modifier = 0.5 
+	burn_modifier = 0.75
+	brute_modifier = 0.25 
 	dmg_overlay_type = null
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
@@ -297,25 +297,29 @@
 	unarmed_damage_low = 20
 	unarmed_damage_high = 25
 	unarmed_effectiveness = 20
-	burn_modifier = 1.25
-	brute_modifier = 0.5 
+	burn_modifier = 0.75
+	brute_modifier = 0.25 
 	dmg_overlay_type = null
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 /obj/item/bodypart/leg/left/werewolf
 	limb_id = SPECIES_WEREWOLF
-	burn_modifier = 1.25
-	brute_modifier = 0.5 
+	burn_modifier = 0.75
+	brute_modifier = 0.25 
 	speed_modifier = 0.5
 	dmg_overlay_type = null
+	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	footstep_type = FOOTSTEP_MOB_CLAW
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 /obj/item/bodypart/leg/right/werewolf
 	limb_id = SPECIES_WEREWOLF
-	burn_modifier = 1.5
-	brute_modifier = 0.5 
+	burn_modifier = 0.75
+	brute_modifier = 0.25 
 	speed_modifier = 0.5
 	dmg_overlay_type = null
+	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
+	footstep_type = FOOTSTEP_MOB_CLAW
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
 ///FLY
