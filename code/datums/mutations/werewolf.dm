@@ -11,6 +11,9 @@
         new /obj/item/bodypart/werewolf_r_arm,
         new /obj/item/bodypart/werewolf_chest,
         new /obj/item/bodypart/werewolf_head,
+        new /obj/item/organ/internal/ears/werewolf,
+        new /obj/item/organ/internal/eyes/werewolf,
+        new /obj/item/organ/internal/tongue/werewolf,
     )
     
     for(var/obj/item/new_part as anything in new_parts)
