@@ -137,11 +137,9 @@ GLOBAL_ALIST_INIT(food_buffs, alist(
 	),
 	FOOD_COMPLEXITY_4 = list(
 		/datum/status_effect/food/haste = 1,
-		/datum/status_effect/food/trait/shockimmune = 1,
 	),
 	FOOD_COMPLEXITY_5 = list(
 		/datum/status_effect/food/haste = 1,
-		/datum/status_effect/food/trait/shockimmune = 2,
 	),
 ))
 

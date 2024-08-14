@@ -516,6 +516,7 @@
 	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	slice_type = /obj/item/food/cakeslice/clown_slice
 	crafting_complexity = FOOD_COMPLEXITY_5
+	crafted_food_buff = /datum/status_effect/food/trait/waddle
 
 /obj/item/food/cakeslice/clown_slice
 	name = "clown cake slice"
@@ -529,6 +530,7 @@
 	tastes = list("cake" = 1, "sugar" = 1, "joy" = 10)
 	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_5
+	crafted_food_buff = /datum/status_effect/food/trait/waddle
 
 /obj/item/food/cake/trumpet
 	name = "spaceman's cake"
