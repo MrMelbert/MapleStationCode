@@ -473,6 +473,8 @@
 				'sound/creatures/monkey/monkey_screech_6.ogg',
 				'sound/creatures/monkey/monkey_screech_7.ogg',
 			)
+		if(SFX_TOOL_SWITCH)
+			soundin = 'sound/items/handling/tool_switch.ogg'
 		if(SFX_MUFFLED_SPEECH)
 			soundin = pick(
 				'sound/effects/muffspeech/muffspeech1.ogg',
