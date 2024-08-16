@@ -208,6 +208,11 @@
 /obj/item/reagent_containers/cup/bucket/wooden,
 /obj/item/reagent_containers/cup/bucket/wooden,
 /obj/structure/fermenting_barrel,
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "cj" = (
@@ -407,6 +412,12 @@
 /obj/effect/turf_decal/siding/blue,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"dW" = (
+/obj/effect/decal/remains/human,
+/turf/open/misc/beach/coast/corner{
+	dir = 8
+	},
+/area/awaymission/beach)
 "ea" = (
 /obj/structure/table/bronze,
 /obj/structure/desk_bell{
@@ -419,7 +430,13 @@
 /obj/effect/turf_decal/siding/wood/end{
 	dir = 4
 	},
+/obj/effect/decal/remains/human,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"eA" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/plating,
 /area/awaymission/beach)
 "eB" = (
 /obj/structure/table/wood,
@@ -489,6 +506,7 @@
 	pixel_y = 8;
 	pixel_x = 4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "fd" = (
@@ -866,8 +884,8 @@
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
 "iq" = (
-/obj/machinery/washing_machine,
 /obj/machinery/light/directional/north,
+/obj/structure/closet/gmcloset,
 /turf/open/floor/plastic,
 /area/awaymission/beach)
 "iw" = (
@@ -912,7 +930,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/rack,
 /obj/effect/spawner/random/maintenance/three,
-/obj/effect/decal/cleanable/cobweb,
 /obj/item/wheelchair,
 /turf/open/floor/plating,
 /area/awaymission/beach)
@@ -989,6 +1006,7 @@
 	pixel_x = -3
 	},
 /obj/machinery/light/directional/north,
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "jy" = (
@@ -1467,6 +1485,7 @@
 /area/awaymission/beach)
 "nK" = (
 /obj/machinery/medical_kiosk,
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "nO" = (
@@ -1714,6 +1733,13 @@
 	dir = 1
 	},
 /obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"pS" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "pT" = (
@@ -2432,6 +2458,10 @@
 /obj/item/reagent_containers/cup/bucket/wooden,
 /obj/item/reagent_containers/cup/bucket/wooden,
 /obj/structure/fermenting_barrel,
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	name = "wooden railing"
+	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "wA" = (
@@ -2750,6 +2780,7 @@
 	pixel_y = 21;
 	pixel_x = -4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "zK" = (
@@ -3613,6 +3644,7 @@
 	pixel_x = 3
 	},
 /obj/effect/spawner/random/trash/food_packaging,
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Gm" = (
@@ -3787,6 +3819,7 @@
 /obj/item/defibrillator/loaded{
 	pixel_y = 7
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Ih" = (
@@ -3807,11 +3840,17 @@
 	pixel_y = -4;
 	pixel_x = 3
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Il" = (
 /obj/machinery/vending/autodrobe/all_access,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Iq" = (
+/obj/effect/decal/cleanable/cobweb,
+/obj/structure/towel_rack/full_beach,
+/turf/open/floor/plating,
 /area/awaymission/beach)
 "It" = (
 /obj/item/clothing/head/soft/green,
@@ -3993,6 +4032,7 @@
 	pixel_y = 21;
 	pixel_x = -4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Kh" = (
@@ -4043,6 +4083,7 @@
 	pixel_x = -9;
 	pixel_y = 9
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "KA" = (
@@ -4294,6 +4335,7 @@
 /obj/effect/turf_decal/siding/blue{
 	dir = 4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "MX" = (
@@ -4310,7 +4352,7 @@
 "Nb" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/maintenance,
-/obj/machinery/light/small/directional/west,
+/obj/effect/landmark/awaystart,
 /turf/open/floor/plating,
 /area/awaymission/beach)
 "Nd" = (
@@ -4402,6 +4444,7 @@
 /obj/machinery/vending/medical{
 	req_access = "201"
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "NW" = (
@@ -4648,17 +4691,9 @@
 	},
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
-"Qu" = (
-/obj/effect/decal/remains/human,
-/turf/open/water/beach,
-/area/awaymission/beach)
 "QD" = (
 /obj/structure/cable,
 /turf/closed/wall/mineral/wood/nonmetal,
-/area/awaymission/beach)
-"QF" = (
-/obj/structure/sink/kitchen/directional/east,
-/turf/open/floor/plastic,
 /area/awaymission/beach)
 "QG" = (
 /obj/structure/chair/plastic{
@@ -4793,6 +4828,7 @@
 /obj/effect/turf_decal/siding/blue{
 	dir = 8
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "RM" = (
@@ -4813,6 +4849,10 @@
 /obj/item/toy/plush/carpplushie,
 /obj/item/toy/plush/shark,
 /turf/open/floor/eighties,
+/area/awaymission/beach)
+"Sa" = (
+/obj/effect/turf_decal/tile/blue/full,
+/turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Sg" = (
 /obj/structure/table/bronze,
@@ -4995,6 +5035,7 @@
 	pixel_y = 17;
 	pixel_x = 8
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "TY" = (
@@ -5334,7 +5375,7 @@
 /obj/structure/mineral_door/wood{
 	color = "#6b6536"
 	},
-/turf/open/floor/wood/airless,
+/turf/open/floor/iron/sepia,
 /area/awaymission/beach)
 "Xh" = (
 /obj/vehicle/ridden/atv{
@@ -5469,6 +5510,11 @@
 	},
 /obj/structure/flora/bush/jungle/c/style_random,
 /turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"YA" = (
+/obj/structure/sink/kitchen/directional/north,
+/obj/structure/mirror/directional/south,
+/turf/open/floor/plastic,
 /area/awaymission/beach)
 "YB" = (
 /obj/machinery/vending/coffee,
@@ -16056,7 +16102,7 @@ bi
 bi
 bi
 bi
-bi
+Sa
 ob
 sS
 sS
@@ -16315,8 +16361,8 @@ bi
 bi
 Gi
 xv
-Bm
-sS
+Vc
+YA
 xv
 GC
 GC
@@ -16569,11 +16615,11 @@ Ka
 bi
 kz
 Fe
-bi
+Sa
 Ih
 xv
-Bm
-sS
+Vc
+YA
 xv
 iw
 GC
@@ -16823,14 +16869,14 @@ xv
 xv
 Iw
 xv
-bi
-bi
-bi
+Sa
+Sa
+Sa
 xv
 xv
 xv
 iq
-sS
+YA
 xv
 wL
 Zp
@@ -17085,7 +17131,7 @@ xv
 Ic
 xv
 Bm
-QF
+sS
 sS
 sS
 xv
@@ -17599,9 +17645,9 @@ Cf
 XB
 xv
 xv
-Vc
-Vc
-Vc
+Bm
+Bm
+xv
 xv
 xv
 xv
@@ -17859,7 +17905,7 @@ xv
 xv
 xv
 xv
-xv
+Iq
 iJ
 xv
 jU
@@ -18117,8 +18163,8 @@ fi
 uT
 uT
 Nb
-SB
-SB
+uT
+uT
 uT
 xv
 wt
@@ -18370,7 +18416,7 @@ XB
 XB
 XB
 xv
-uT
+eA
 FF
 Ge
 SB
@@ -47066,7 +47112,7 @@ XB
 XB
 XB
 Pe
-tJ
+dW
 BK
 XB
 XB
@@ -49892,7 +49938,7 @@ oc
 PM
 Gn
 Gn
-zo
+pS
 dv
 rB
 Zl
@@ -51681,7 +51727,7 @@ XB
 XB
 XB
 XB
-Qu
+XB
 XB
 XB
 XB
