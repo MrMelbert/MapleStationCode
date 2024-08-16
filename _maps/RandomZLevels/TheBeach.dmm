@@ -432,6 +432,15 @@
 /obj/structure/flora/tree/jungle/style_random,
 /turf/open/misc/grass/jungle,
 /area/awaymission/beach)
+"eD" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/misc/beach/coast{
+	dir = 6
+	},
+/area/awaymission/beach)
 "eE" = (
 /obj/structure/table/glass,
 /obj/machinery/microwave{
@@ -1121,6 +1130,12 @@
 /obj/effect/baseturf_helper/beach/sand,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"kH" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/turf/open/water/beach,
+/area/awaymission/beach)
 "kI" = (
 /obj/machinery/light/directional/west,
 /turf/open/floor/carpet,
@@ -1593,6 +1608,13 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"pe" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/misc/beach/coast/corner,
+/area/awaymission/beach)
 "pg" = (
 /obj/effect/turf_decal/weather/dirt{
 	dir = 10
@@ -1764,14 +1786,6 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
-"qI" = (
-/obj/vehicle/ridden/lavaboat{
-	dir = 4;
-	name = "boat"
-	},
-/obj/item/oar,
-/turf/open/water/beach,
-/area/awaymission/beach)
 "qX" = (
 /obj/structure/chair/stool/bar/directional/east,
 /obj/machinery/light/directional/west,
@@ -1904,6 +1918,10 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
 	},
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
 /turf/open/water/beach,
 /area/awaymission/beach)
 "sp" = (
@@ -2081,6 +2099,20 @@
 	pixel_x = -10;
 	pixel_y = -8
 	},
+/turf/open/floor/wood/parquet,
+/area/awaymission/beach)
+"tM" = (
+/obj/item/oar,
+/obj/item/oar{
+	pixel_y = 5;
+	pixel_x = 5
+	},
+/obj/structure/table,
+/obj/item/oar{
+	pixel_y = 5;
+	pixel_x = 5
+	},
+/obj/item/oar,
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
 "tP" = (
@@ -3348,6 +3380,9 @@
 /area/awaymission/beach)
 "EK" = (
 /obj/item/toy/plush/shark,
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
 /turf/open/water/beach,
 /area/awaymission/beach)
 "EO" = (
@@ -3643,6 +3678,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 9
 	},
+/obj/item/oar,
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "GN" = (
@@ -3739,6 +3775,7 @@
 "HW" = (
 /obj/effect/turf_decal/siding/wood/corner,
 /obj/structure/table/wood,
+/obj/item/oar,
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "Ia" = (
@@ -4411,11 +4448,10 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
-/obj/vehicle/ridden/lavaboat{
-	dir = 4;
-	name = "boat"
-	},
 /obj/item/oar,
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
 /turf/open/water/beach,
 /area/awaymission/beach)
 "OD" = (
@@ -4647,6 +4683,15 @@
 	dir = 1
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"QL" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/misc/beach/coast{
+	dir = 8
+	},
 /area/awaymission/beach)
 "QM" = (
 /obj/structure/table/wood,
@@ -4978,6 +5023,13 @@
 	pixel_y = 3
 	},
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"Uo" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/water/beach,
 /area/awaymission/beach)
 "Uq" = (
 /obj/item/kirbyplants/organic/plant8{
@@ -5322,6 +5374,13 @@
 	},
 /obj/structure/flora/bush/jungle/b/style_random,
 /turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"XI" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/obj/item/oar,
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "XT" = (
 /obj/effect/turf_decal/siding/dark_red/corner{
@@ -29105,7 +29164,7 @@ pG
 lg
 ls
 BK
-XB
+Uo
 XB
 XB
 XB
@@ -29656,7 +29715,7 @@ VY
 VY
 VY
 VY
-Kh
+pe
 Rj
 XB
 XB
@@ -29903,7 +29962,7 @@ CJ
 xv
 xv
 tK
-Qg
+tM
 TO
 zK
 uN
@@ -30168,7 +30227,7 @@ wv
 xv
 xv
 Fb
-Rj
+eD
 XB
 XB
 XB
@@ -31441,7 +31500,7 @@ Kh
 Fb
 Fb
 Rj
-XB
+Uo
 XB
 xv
 xv
@@ -31696,9 +31755,9 @@ Fb
 Fb
 Rj
 XB
+Uo
 XB
 XB
-qI
 XB
 XB
 XB
@@ -31953,7 +32012,7 @@ XB
 XB
 XB
 XB
-qI
+XB
 XB
 XB
 XB
@@ -48286,7 +48345,7 @@ XB
 XB
 XB
 XB
-XB
+kH
 XB
 XB
 XB
@@ -48538,7 +48597,7 @@ XB
 XB
 KA
 XB
-XB
+kH
 XB
 XB
 XB
@@ -50591,7 +50650,7 @@ XB
 XB
 XB
 JU
-Xw
+XI
 UG
 sI
 UG
@@ -54793,7 +54852,7 @@ VY
 IQ
 ls
 BK
-XB
+Uo
 Vf
 vl
 pG
@@ -59774,7 +59833,7 @@ XB
 XB
 MZ
 Le
-Le
+QL
 MF
 hL
 ni
