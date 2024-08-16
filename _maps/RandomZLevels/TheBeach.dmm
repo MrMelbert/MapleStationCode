@@ -3221,6 +3221,11 @@
 	},
 /turf/open/floor/eighties,
 /area/awaymission/beach)
+"Dz" = (
+/obj/effect/mob_spawn/corpse/human/old_pirate_captain,
+/obj/structure/bed/maint,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "DD" = (
 /obj/structure/closet{
 	name = "Holding Cell Storage"
@@ -4251,6 +4256,10 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"Mz" = (
+/obj/effect/spawner/random/trash/cigbutt,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "MC" = (
 /obj/structure/flora/tree/jungle/style_random,
 /obj/structure/flora/rock/pile/jungle/large/style_random,
@@ -4260,6 +4269,17 @@
 /obj/structure/table/wood,
 /obj/effect/spawner/random/entertainment/lighter,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"ME" = (
+/obj/item/paper/fluff/old_pirate_note{
+	pixel_x = -5;
+	pixel_y = -7
+	},
+/obj/item/pen/fountain{
+	pixel_y = -11;
+	pixel_x = -8
+	},
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "MF" = (
 /turf/open/misc/beach/coast/corner{
@@ -4452,6 +4472,10 @@
 	dir = 4
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"NX" = (
+/obj/item/broken_bottle,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Oe" = (
 /obj/structure/flora/rock,
@@ -5381,6 +5405,12 @@
 /obj/vehicle/ridden/atv{
 	dir = 4
 	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Xi" = (
+/obj/item/fishing_rod,
+/obj/structure/closet/crate/trashcart,
+/obj/item/reagent_containers/cup/glass/bottle/rum/aged,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Xr" = (
@@ -9028,8 +9058,8 @@ XB
 XB
 Vf
 YV
-VY
-VY
+Xi
+NX
 hL
 ni
 XB
@@ -9285,8 +9315,8 @@ XB
 XB
 Vf
 VY
-VY
-VY
+Mz
+Dz
 Er
 BK
 XB
@@ -9542,7 +9572,7 @@ XB
 XB
 Vf
 VY
-VY
+ME
 VY
 VY
 BK
@@ -9800,7 +9830,7 @@ XB
 Vf
 IZ
 VY
-VY
+Mz
 VY
 BK
 XB
