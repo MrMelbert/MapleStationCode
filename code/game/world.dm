@@ -1,5 +1,6 @@
 #define RESTART_COUNTER_PATH "data/round_counter.txt"
-
+/// Load byond-tracy. If USE_BYOND_TRACY is defined, then this is ignored and byond-tracy is always loaded.
+#define USE_TRACY_PARAMETER "tracy"
 /// Force the log directory to be something specific in the data/logs folder
 #define OVERRIDE_LOG_DIRECTORY_PARAMETER "log-directory"
 /// Prevent the master controller from starting automatically
@@ -493,4 +494,5 @@ GLOBAL_VAR(restart_counter)
 
 #undef NO_INIT_PARAMETER
 #undef OVERRIDE_LOG_DIRECTORY_PARAMETER
+#undef USE_TRACY_PARAMETER
 #undef RESTART_COUNTER_PATH
