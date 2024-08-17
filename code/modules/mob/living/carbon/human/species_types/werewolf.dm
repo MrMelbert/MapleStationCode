@@ -8,7 +8,7 @@
 	mutantears = /obj/item/organ/internal/ears/werewolf
  	mutanteyes = /obj/item/organ/internal/eyes/werewolf
 	external_organs = list(
-		/obj/item/organ/external/tail/cat = "Fox",
+		/obj/item/organ/external/tail/cat = "Cat",
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
