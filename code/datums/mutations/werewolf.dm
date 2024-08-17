@@ -16,7 +16,7 @@
         new /obj/item/organ/internal/tongue/werewolf,
     )
     
-    for(var/obj/item/new_part as anything in new_parts)
+    for(var/obj/item/bodypart/new_part as anything in new_parts)
         new_part.replace_limb(dude, TRUE)
 
 /datum/mutation/werewolf/proc/detransform(mob/living/carbon/dude)
