@@ -6,7 +6,7 @@
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/werewolf
 	mutantears = /obj/item/organ/internal/ears/werewolf
- 	mutanteyes = /obj/item/organ/internal/eyes/werewolf
+	mutanteyes = /obj/item/organ/internal/eyes/werewolf
 	external_organs = list(
 		/obj/item/organ/external/tail/cat = "Cat",
 	)
