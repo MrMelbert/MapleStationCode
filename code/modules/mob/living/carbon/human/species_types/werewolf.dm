@@ -29,15 +29,15 @@
 /datum/species/werewolf/create_pref_unique_perks()
 	var/list/to_add = list()
 
-		to_add += list(list(
+	to_add += list(
+		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "paw",
 			SPECIES_PERK_NAME = "Primal Primate",
 			SPECIES_PERK_DESC = "Werewolves are monstrous humans, and can't do most things a human can do. Computers are impossible, \
-				complex machines are right out, and most clothes don't fit your smaller form.",
-		))
-
-		to_add += list(list(
+				complex machines are right out, and most clothes don't fit your larger form.",
+		),
+		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "assistive-listening-systems",
 			SPECIES_PERK_NAME = "Sensitive Hearing",
