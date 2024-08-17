@@ -47,7 +47,7 @@
 	AddComponent(/datum/component/uses_mana/touch_spell, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)

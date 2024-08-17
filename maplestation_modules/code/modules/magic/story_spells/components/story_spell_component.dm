@@ -9,8 +9,8 @@
 	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
 	pre_use_check_comsig,
 	post_use_comsig = COMSIG_SPELL_AFTER_CAST,
-	datum/callback/mana_required,	/* = CALLBACK(src, PROC_REF(get_mana_required_spell)),*/
-	datum/callback/mana_consumed,
+	datum/callback/mana_required, 	/* = CALLBACK(src, PROC_REF(get_mana_required_spell)),*/
+	datum/callback/get_mana_consumed_callback,
 	datum/callback/get_user_callback,
 	list/datum/attunement/attunements)
 	. = ..()

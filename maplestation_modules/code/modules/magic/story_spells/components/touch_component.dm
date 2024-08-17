@@ -17,7 +17,7 @@
 	pre_use_check_comsig,
 	post_use_comsig,
 	datum/callback/mana_required,
-	datum/callback/mana_consumed,
+	datum/callback/get_mana_consumed_callback,
 	datum/callback/get_user_callback,
 	list/datum/attunement/attunements)
 	if (!istype(parent, /datum/action/cooldown/spell/touch))

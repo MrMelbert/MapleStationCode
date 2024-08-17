@@ -1,7 +1,7 @@
 /// Magic
 
 #define BASE_STORY_MAGIC_CAST_COST_MULT 1
-#define NO_CATALYST_COST_MULT 1 // DEBUG! BASE VALUE SHOULD BE 4!
+#define NO_CATALYST_COST_MULT 2 // DEBUG! BASE VALUE SHOULD BE 4!
 
 // Assumes we are at average leyline intensity
 #define LEYLINE_BASE_RECHARGE 0.1 // Per second, we recharge this much man

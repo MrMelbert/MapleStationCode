@@ -62,7 +62,7 @@
 	AddComponent(/datum/component/uses_mana/story_spell/touch/acid_touch, \
 		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
 		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_consumed = acid_touch_cost, \
+		mana_required = acid_touch_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)

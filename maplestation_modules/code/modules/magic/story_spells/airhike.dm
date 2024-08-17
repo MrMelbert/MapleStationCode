@@ -44,7 +44,7 @@
 	attunements[MAGIC_ELEMENT_WIND] += AIRHIKE_ATTUNEMENT_WIND
 
 	AddComponent(/datum/component/uses_mana/spell, \
-		mana_consumed = mana_cost, \
+		mana_required = mana_cost, \
 		attunements = attunements, \
 	)
 

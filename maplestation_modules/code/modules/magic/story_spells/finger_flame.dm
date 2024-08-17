@@ -114,7 +114,7 @@
 	attunements[MAGIC_ELEMENT_FIRE] += FINGERFLAME_ATTUNEMENT_FIRE
 
 	AddComponent(/datum/component/uses_mana/spell/, \
-		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 	)

@@ -31,7 +31,7 @@
 	update_attunement_dispositions()
 
 	AddComponent(/datum/component/uses_mana/spell, \
-		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		attunements = src.attunements, \
 	)
 

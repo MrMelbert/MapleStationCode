@@ -25,7 +25,6 @@
 	var/post_use_comsig
 
 	var/mana_required
-	var/mana_consumed
 
 /datum/component/uses_mana/Initialize(
 	datum/callback/activate_check_failure_callback,
@@ -33,7 +32,6 @@
 	pre_use_check_comsig,
 	post_use_comsig,
 	datum/callback/mana_required,
-	datum/callback/mana_consumed,
 	datum/callback/get_user_callback,
 	list/datum/attunement/attunements,
 )
@@ -45,10 +43,6 @@
 	if (isnull(post_use_comsig)) // merge with above in an OR statement, split for ease of debugging
 		stack_trace("post_use comsig null")
 		return COMPONENT_INCOMPATIBLE
-	/* if (isnull(get_mana_required_callback) && isnull(get_mana_consumed_callback))
-		stack_trace("Both the get mana required and get mana consumed callbacks are null!") // why is this here?
-		return COMPONENT_INCOMPATIBLE */
-
 	/* if (isnull(parent.get_mana()))
 		stack_trace("parent returns null when getting mana!")
 		return COMPONENT_INCOMPATIBLE */ //temporary disable because this somehow can't pull owner properly
@@ -61,10 +55,7 @@
 	else if (isnum(mana_required))
 		src.mana_required = mana_required
 
-	if (istype(mana_consumed))
-		src.get_mana_consumed_callback = mana_consumed
-	else if (isnum(mana_consumed))
-		src.mana_consumed = mana_consumed
+	src.get_mana_consumed_callback = get_mana_required_callback
 
 	src.get_user_callback = get_user_callback
 
@@ -85,36 +76,29 @@
 
 // TODO: Do I need the vararg?
 /// Should return the numerical value of mana needed to use whatever it is we're using. Unaffected by attunements.
-/datum/component/uses_mana/proc/get_mana_required()
+/datum/component/uses_mana/proc/get_mana_required() // Get the mana required to cast the spell.
 	if (!isnull(get_mana_required_callback))
-		return get_mana_required_callback.Invoke()
+		return get_mana_required_callback?.Invoke()
 
 	var/required = 0
 
 	if (!isnull(mana_required))
 		required = mana_required
 	else
-		required = get_mana_consumed()
-
-	var/datum/user = get_parent_user()
-	if (!isnull(user))
-		required *= user.get_casting_cost_mult()
-
+		return stack_trace("Both the Callback and value for mana required is null!")
 	return required
 
-/datum/component/uses_mana/proc/get_mana_consumed()
-	var/consumed = 0
-
-	if (!isnull(mana_consumed))
-		consumed = mana_consumed
-	else
-		consumed = get_mana_consumed_callback?.Invoke()
+/datum/component/uses_mana/proc/get_mana_consumed() // Get the actual value subtracted/drained
+	if (!isnull(get_mana_consumed_callback))
+		return get_mana_consumed_callback?.Invoke()
+	var/consumed = get_mana_required()
 
 	var/datum/user = get_parent_user()
 	if (!isnull(user))
 		consumed *= user.get_casting_cost_mult()
 
 	return consumed
+
 /datum/component/uses_mana/proc/get_mana_to_use()
 	var/atom/movable/caster = get_parent_user()
 	var/list/datum/mana_pool/usable_pools = list()

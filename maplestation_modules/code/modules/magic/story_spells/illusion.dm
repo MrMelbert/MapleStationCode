@@ -35,7 +35,7 @@
 	attunements[MAGIC_ELEMENT_LIGHT] += ILLUSION_ATTUNEMENT_LIGHT
 
 	AddComponent(/datum/component/uses_mana/spell, \
-		mana_consumed = mana_cost, \
+		mana_required = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)

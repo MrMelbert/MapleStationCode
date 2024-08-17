@@ -31,7 +31,7 @@
 	attunements[MAGIC_ELEMENT_ICE] += ICE_KNIFE_ATTUNEMENT_ICE
 
 	AddComponent(/datum/component/uses_mana/spell, \
-		mana_consumed = mana_cost, \
+		mana_required = mana_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 	)
