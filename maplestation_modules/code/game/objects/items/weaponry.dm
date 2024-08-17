@@ -142,7 +142,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 	inhand_icon_state = "knife"
 	worn_icon_state = "knife"
-	desc = "An experimental anti-magic knife. While TerraGov declined to field it beyond the testing phase, paramilitaries foreign to the Mu sector uncommonly procure and issue their own to deal with the increased usage of magic in the area."
+	desc = "An experimental anti-magic knife."
 	force = 17
 	throwforce = 10
 	embedding = list("pain_mult" = 4, "embed_chance" = 35, "fall_chance" = 10)
@@ -152,3 +152,7 @@
 	AddComponent(/datum/component/anti_magic, MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY)
 	AddElement(/datum/element/bane, target_type = /mob/living/basic/revenant, damage_multiplier = 0, added_damage = 25, requires_combat_mode = FALSE)
 	return ..()
+
+/obj/item/knife/combat/nullknife/examine_more(mob/user)
+	. = ..()
+	. += span_notice("<i>While the weapon passed the field-testing phase with the TGMC, TerraGov declined to continue mass-production due to a lack of practical applications at the time. However, paramilitaries foreign to the Mu sector (especially those that don't use magic) will sometimes procure and issue their own knives to deal with the increased usage of magic in the area.</i>")
