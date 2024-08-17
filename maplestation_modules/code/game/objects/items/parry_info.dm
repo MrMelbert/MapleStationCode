@@ -61,6 +61,7 @@
 	block_chance = 0
 
 /obj/item/highfrequencyblade/Initialize(mapload)
+	. = ..()
 	AddComponent(/datum/component/active_combat, inventory_flags = ITEM_SLOT_HANDS, block_directions = ACTIVE_COMBAT_OMNIDIRECTIONAL, windup_timer = 0 SECONDS, \
 	parry_window = 1.2 SECONDS, perfect_parry_window = 0.2 SECONDS, stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.33, damage_blocked = 2, \
 	damage_block_imperfect_loss = 1.5, maximum_damage_blocked = 25, block_barrier = 0.8, parry_miss_cooldown = 0.4 SECONDS, icon_state = "counter", \
