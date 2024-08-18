@@ -4,7 +4,7 @@
 	inherent_traits = list(
 		TRAIT_USES_SKINTONES,
 		TRAIT_NO_UNDERWEAR,
-		TRAIT_NO_AUGMENTS,
+		TRAIT_NO_AUGMENTS
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/werewolf
 	mutantears = /obj/item/organ/internal/ears/werewolf
@@ -16,7 +16,6 @@
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	no_equip_flags = ITEM_SLOT_MASK | ITEM_SLOT_OCLOTHING | ITEM_SLOT_GLOVES | ITEM_SLOT_FEET | ITEM_SLOT_ICLOTHING | ITEM_SLOT_SUITSTORE
-	payday_modifier = 1.1
 
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/werewolf,
@@ -26,9 +25,12 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/werewolf,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/werewolf,
 	)
+/obj/item/organ/internal/brain/werewolf
+	name = "werewolf brain"
+	desc = "a strange mixture of a human and wolf brain"
+	organ_traits = list(TRAIT_PRIMITIVE, TRAIT_CAN_STRIP)
 
 /obj/item/organ/internal/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
-	organ_traits = list(TRAIT_PRIMITIVE)
 	if(target.body_position == LYING_DOWN)
 		return owner.get_bodypart(BODY_ZONE_HEAD)
 	return ..()

@@ -262,12 +262,6 @@
 	sight_flags = SEE_MOBS
 	color_cutoffs = list(25, 5, 42)
 
-/obj/item/organ/internal/eyes/werewolf
-	name = "wolf eyes"
-	desc = "Large and powerful eyes."
-	sight_flags = SEE_MOBS
-	color_cutoffs = list(25, 5, 42)
-
 /obj/item/organ/internal/eyes/golem
 	name = "resonating crystal"
 	icon_state = "adamantine_cords"

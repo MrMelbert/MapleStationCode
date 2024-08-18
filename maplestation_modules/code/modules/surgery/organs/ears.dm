@@ -31,3 +31,13 @@
 	icon_state = "catcyber"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	locked = TRUE
+
+/obj/item/organ/internal/ears/werewolf
+	name = "wolf ears"
+	icon_state = "kitty"
+	desc = "Allows the user to more easily hear whispers. The user becomes extra vulnerable to loud noises, however"
+	// Same sensitivity as felinid ears
+	damage_multiplier = 2
+/obj/item/organ/internal/ears/werewolf/on_mob_insert(mob/living/carbon/ear_owner)
+	. = ..()
+	organ_traits = list(TRAIT_GOOD_HEARING)

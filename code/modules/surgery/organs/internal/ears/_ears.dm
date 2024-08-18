@@ -152,24 +152,6 @@
 		ear_owner.dna.species.mutant_bodyparts -= "ears"
 		ear_owner.update_body()
 
-/obj/item/organ/internal/ears/werewolf
-	name = "wolf ears"
-	icon_state = "kitty"
-	desc = "Allows the user to more easily hear whispers. The user becomes extra vulnerable to loud noises, however"
-	// Same sensitivity as felinid ears
-	damage_multiplier = 2
-
-// The original idea was to use signals to do this not traits. Unfortunately, the star effect used for whispers applies before any relevant signals
-// This seems like the least invasive solution
-/obj/item/organ/internal/ears/werewolf/on_mob_insert(mob/living/carbon/ear_owner)
-	. = ..()
-	ADD_TRAIT(ear_owner, TRAIT_GOOD_HEARING, ORGAN_TRAIT)
-
-/obj/item/organ/internal/ears/werewolf/on_mob_remove(mob/living/carbon/ear_owner)
-	. = ..()
-	REMOVE_TRAIT(ear_owner, TRAIT_GOOD_HEARING, ORGAN_TRAIT)
-
-
 /obj/item/organ/internal/ears/penguin
 	name = "penguin ears"
 	desc = "The source of a penguin's happy feet."
