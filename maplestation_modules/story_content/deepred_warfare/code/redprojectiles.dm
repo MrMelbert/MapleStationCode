@@ -94,17 +94,17 @@
 
 /obj/projectile/bullet/godslayer/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
-	if(. == BULLET_ACT_HIT)
+	if(. == BULLET_ACT_HIT && !pierce_hit)
 		warp()
 		return
 	if(marked_target)
 		return
-	if(isliving(target) || ismecha(target))
+	if(isliving(target) || isvehicle(target))
 		marked_target = target
 
 /obj/projectile/bullet/godslayer/proc/warp()
 	if(marked_target)
-		var/obj/projectile/A = new /obj/projectile/beam/laser(get_turf(firer))
+		var/obj/projectile/A = new /obj/projectile/bullet/coil/red_lightning(get_turf(firer))
 		A.preparePixelProjectile(marked_target, get_turf(firer))
 		A.firer = firer
 		A.fired_from = firer

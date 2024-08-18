@@ -44,23 +44,28 @@
 	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/godslayer.ogg'
 	// delay = 0.1 * SECONDS
 
+	var/obj/item/gun/fired_record
+
 /obj/item/ammo_casing/shotgun/godslayer/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/caseless)
+	// AddElement(/datum/element/caseless)
 
 /obj/item/ammo_casing/shotgun/godslayer/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
 	if(isgun(fired_from))
-		var/obj/item/gun/shot_from = fired_from
-		shot_from.fire_sound_volume = 0
-		shot_from.recoil = inital(shot_from.recoil) + 2
+		fired_record = fired_from
+		fired_record.fire_sound_volume = 0
+		fired_record.recoil = initial(fired_record.recoil) + 2
 
 	. = ..()
 	playsound(src, fire_sound, 50)
 
-	if(isgun(fired_from))
-		var/obj/item/gun/shot_from = fired_from
-		shot_from.fire_sound_volume = initial(shot_from.fire_sound_volume)
-		shot_from.recoil = inital(shot_from.recoil)
+	if(fired_record)
+		addtimer(CALLBACK(src, PROC_REF(reset_gunstats)), 1)
+
+/obj/item/ammo_casing/shotgun/godslayer/proc/reset_gunstats()
+	if(fired_record)
+		fired_record.fire_sound_volume = initial(fired_record.fire_sound_volume)
+		fired_record.recoil = initial(fired_record.recoil)
 
 /obj/item/redtech_nan_sample
 	name = "crimson nanite sample"
