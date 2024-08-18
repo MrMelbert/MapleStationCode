@@ -34,6 +34,34 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/card.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
 
+/obj/item/ammo_casing/shotgun/godslayer
+	name = "godslayer round"
+	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy. You feel that shooting this would be a really bad idea."
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
+	icon_state = "godslayer"
+	projectile_type = /obj/projectile/bullet/godslayer
+	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
+	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/godslayer.ogg'
+	// delay = 0.1 * SECONDS
+
+/obj/item/ammo_casing/shotgun/godslayer/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/caseless)
+
+/obj/item/ammo_casing/shotgun/godslayer/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
+	if(isgun(fired_from))
+		var/obj/item/gun/shot_from = fired_from
+		shot_from.fire_sound_volume = 0
+		shot_from.recoil = inital(shot_from.recoil) + 2
+
+	. = ..()
+	playsound(src, fire_sound, 50)
+
+	if(isgun(fired_from))
+		var/obj/item/gun/shot_from = fired_from
+		shot_from.fire_sound_volume = initial(shot_from.fire_sound_volume)
+		shot_from.recoil = inital(shot_from.recoil)
+
 /obj/item/redtech_nan_sample
 	name = "crimson nanite sample"
 	desc = "A small, hard cube that glows a deep red at its seams. It seems to move and shift geometrically in place."
@@ -54,6 +82,7 @@
 	name = "persuasion needle"
 	desc = "A large, sharp needle designed for throwing. It has a small, intricate yin-yang design etched into the side."
 	w_class = WEIGHT_CLASS_NORMAL
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
 	icon_state = "needle"

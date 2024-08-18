@@ -19,9 +19,10 @@
 	projectile_piercing = ALL
 	hit_prone_targets = TRUE
 	can_hit_turfs = TRUE
+	parried = TRUE
 
 	var/explosion_tile_cooldown = 6
-	var/forcedust_on_hit = FALSE
+	var/forcedust_on_hit = TRUE // Collector moment.
 
 /obj/projectile/kajari_lance/prehit_pierce()
 	return PROJECTILE_PIERCE_HIT
