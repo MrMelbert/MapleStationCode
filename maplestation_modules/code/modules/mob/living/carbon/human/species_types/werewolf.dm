@@ -4,7 +4,13 @@
 	inherent_traits = list(
 		TRAIT_USES_SKINTONES,
 		TRAIT_NO_UNDERWEAR,
-		TRAIT_NO_AUGMENTS
+		TRAIT_NO_AUGMENTS,
+		TRAIT_IGNOREDAMAGESLOWDOWN,
+		TRAIT_PUSHIMMUNE,
+		TRAIT_STUNIMMUNE,
+		TRAIT_PRIMITIVE,
+		TRAIT_CAN_STRIP,
+		TRAIT_CHUNKYFINGERS
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/werewolf
 	mutantears = /obj/item/organ/internal/ears/werewolf
@@ -25,12 +31,12 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/werewolf,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/werewolf,
 	)
-/obj/item/organ/internal/brain/werewolf
+
+/obj/item/organ/internal/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
 	name = "werewolf brain"
 	desc = "a strange mixture of a human and wolf brain"
 	organ_traits = list(TRAIT_PRIMITIVE, TRAIT_CAN_STRIP)
 
-/obj/item/organ/internal/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
 	if(target.body_position == LYING_DOWN)
 		return owner.get_bodypart(BODY_ZONE_HEAD)
 	return ..()

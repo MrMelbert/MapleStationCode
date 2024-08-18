@@ -1,7 +1,7 @@
 ///WEREWOLF
 /obj/item/bodypart/head/werewolf
 	limb_id = SPECIES_WEREWOLF
-	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
+	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	is_dimorphic = FALSE
 	should_draw_greyscale = TRUE
 
@@ -26,7 +26,7 @@
 
 /obj/item/bodypart/chest/werewolf
 	limb_id = SPECIES_WEREWOLF
-	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
+	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	is_dimorphic = TRUE
 	should_draw_greyscale = TRUE
 
@@ -44,7 +44,7 @@
 
 /obj/item/bodypart/arm/left/werewolf
 	limb_id = SPECIES_WEREWOLF
-	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
+	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/arm/left/werewolf/update_limb(dropping_limb, is_creating)
@@ -68,7 +68,7 @@
 
 /obj/item/bodypart/arm/right/werewolf
 	limb_id = SPECIES_WEREWOLF
-	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
+	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/arm/right/werewolf/update_limb(dropping_limb, is_creating)
@@ -92,7 +92,7 @@
 
 /obj/item/bodypart/leg/left/werewolf
 	limb_id = SPECIES_WEREWOLF
-	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
+	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/leg/left/werewolf/update_limb(dropping_limb, is_creating)
@@ -110,7 +110,7 @@
 
 /obj/item/bodypart/leg/right/werewolf
 	limb_id = SPECIES_WEREWOLF
-	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
+	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/leg/right/werewolf/update_limb(dropping_limb, is_creating)
