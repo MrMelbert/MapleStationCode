@@ -162,3 +162,6 @@
 #define COMSIG_CARBON_PAINED_STEP "carbon_pain_step"
 	/// Stop the pain from happening
 	#define STOP_PAIN (1<<0)
+/// from /datum/status_effect/limp/proc/check_step()
+#define COMSIG_CARBON_LIMPING "mob_limp_check"
+	#define COMPONENT_CANCEL_LIMP (1<<0)

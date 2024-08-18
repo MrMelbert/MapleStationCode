@@ -110,7 +110,7 @@
 
 /obj/item/storage/fancy/donut_box/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/donut))
+	atom_storage.set_holdable(/obj/item/food/donut)
 
 /obj/item/storage/fancy/donut_box/PopulateContents()
 	. = ..()
@@ -157,7 +157,7 @@
 
 /obj/item/storage/fancy/egg_box/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/egg))
+	atom_storage.set_holdable(/obj/item/food/egg)
 
 /*
  * Fertile Egg Box
@@ -190,7 +190,7 @@
 
 /obj/item/storage/fancy/candle_box/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/flashlight/flare/candle))
+	atom_storage.set_holdable(/obj/item/flashlight/flare/candle)
 
 ////////////
 //CIG PACK//
@@ -409,7 +409,7 @@
 
 /obj/item/storage/fancy/rollingpapers/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/rollingpaper))
+	atom_storage.set_holdable(/obj/item/rollingpaper)
 
 /obj/item/storage/fancy/rollingpapers/update_overlays()
 	. = ..()
@@ -435,7 +435,7 @@
 
 /obj/item/storage/fancy/cigarettes/cigars/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/clothing/mask/cigarette/cigar))
+	atom_storage.set_holdable(/obj/item/clothing/mask/cigarette/cigar)
 
 /obj/item/storage/fancy/cigarettes/cigars/update_icon_state()
 	. = ..()
@@ -490,7 +490,7 @@
 
 /obj/item/storage/fancy/heart_box/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/bonbon))
+	atom_storage.set_holdable(/obj/item/food/bonbon)
 
 
 /obj/item/storage/fancy/nugget_box
@@ -505,7 +505,7 @@
 
 /obj/item/storage/fancy/nugget_box/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/nugget))
+	atom_storage.set_holdable(/obj/item/food/nugget)
 
 /*
  * Jar of pickles
@@ -527,7 +527,7 @@
 
 /obj/item/storage/fancy/pickles_jar/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/pickle))
+	atom_storage.set_holdable(/obj/item/food/pickle)
 
 /obj/item/storage/fancy/pickles_jar/update_icon_state()
 	. = ..()

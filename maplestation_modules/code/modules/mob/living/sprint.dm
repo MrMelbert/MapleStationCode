@@ -97,7 +97,8 @@
 	return
 
 /mob/living/carbon/human/drain_sprint()
-	adjust_sprint_left(-1)
+	var/sprint_amt = 1 + floor(length(buckled_mobs) * 0.66)
+	adjust_sprint_left(-1 * sprint_amt)
 	// Sprinting when out of sprint will cost stamina
 	if(sprint_length > 0)
 		return
@@ -108,7 +109,7 @@
 		set_move_intent(MOVE_INTENT_WALK)
 		return
 
-	adjustStaminaLoss(1)
+	adjustStaminaLoss(sprint_amt)
 
 /mob/living/carbon/human/fully_heal(heal_flags)
 	. = ..()

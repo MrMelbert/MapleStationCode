@@ -304,19 +304,21 @@
 		Knockdown(stun_duration)
 
 /// When another mob touches us, they may messy us up.
-/mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
+/mob/living/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return
 
 /mob/living/carbon/human/share_blood_on_touch(mob/living/carbon/human/who_touched_us, messy_slots = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 	if(!istype(who_touched_us) || !messy_slots)
 		return
 
+	who_touched_us.add_fingerprints_to_items(src, messy_slots) // technically this should handle passing blood but i think it's broken
+
 	for(var/obj/item/thing as anything in who_touched_us.get_equipped_items())
 		if((thing.body_parts_covered & HANDS) && prob(GET_ATOM_BLOOD_DNA_LENGTH(thing) * 25))
 			add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us.wear_suit), messy_slots)
 			return
 
-	if(prob(blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
+	if(prob(who_touched_us.blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
 		add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us), messy_slots)
 		who_touched_us.blood_in_hands -= 1
 

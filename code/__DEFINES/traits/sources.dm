@@ -59,8 +59,6 @@
 #define TURF_TRAIT "turf"
 /// trait associated to being buckled
 #define BUCKLED_TRAIT "buckled"
-/// trait associated to being held in a chokehold
-#define CHOKEHOLD_TRAIT "chokehold"
 /// trait associated to resting
 #define RESTING_TRAIT "resting"
 /// trait associated to a stat value or range of

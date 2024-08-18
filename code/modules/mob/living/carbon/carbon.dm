@@ -139,19 +139,32 @@
 		verb_text = "yeet"
 	var/neckgrab_throw = FALSE // we can't check for if it's a neckgrab throw when totaling up power_throw since we've already stopped pulling them by then, so get it early
 	var/frequency_number = 1 //We assign a default frequency number for the sound of the throw.
-	if(!held_item)
-		if(pulling && isliving(pulling) && grab_state >= GRAB_AGGRESSIVE)
-			var/mob/living/throwable_mob = pulling
-			if(!throwable_mob.buckled)
-				thrown_thing = throwable_mob
-				if(grab_state >= GRAB_NECK)
-					neckgrab_throw = TRUE
-				stop_pulling()
-				if(HAS_TRAIT(src, TRAIT_PACIFISM))
-					to_chat(src, span_notice("You gently let go of [throwable_mob]."))
-					return FALSE
-	else
+	if(held_item)
 		thrown_thing = held_item.on_thrown(src, target)
+	else if(isliving(pulling))
+		thrown_thing = pulling
+	else if(length(buckled_mobs) == 1 && isliving(buckled_mobs[1]) && buckle_lying != 0)
+		thrown_thing = buckled_mobs[1]
+
+	if(isliving(thrown_thing))
+		var/mob/living/throwable_mob = thrown_thing
+		if(throwable_mob.buckled == src)
+			pass() // we're yeeting a fireman carry guy
+		else
+			if(grab_state < GRAB_AGGRESSIVE)
+				return FALSE
+			if(throwable_mob.buckled)
+				return FALSE
+		if(HAS_TRAIT(src, TRAIT_PACIFISM))
+			to_chat(src, span_warning("You don't want to risk hurting [throwable_mob]!"))
+			return FALSE
+		if(grab_state >= GRAB_NECK)
+			neckgrab_throw = TRUE
+		if(throwable_mob.buckled == src)
+			unbuckle_mob(thrown_thing)
+		if(throwable_mob == pulling)
+			stop_pulling()
+
 	if(!thrown_thing)
 		return FALSE
 	if(isliving(thrown_thing))
@@ -167,6 +180,8 @@
 	if(HAS_TRAIT(thrown_thing, TRAIT_DWARF))
 		power_throw++
 	if(neckgrab_throw)
+		power_throw++
+	if(HAS_TRAIT(src, TRAIT_TOSS_GUN_HARD) && isgun(thrown_thing))
 		power_throw++
 	if(isitem(thrown_thing))
 		var/obj/item/thrown_item = thrown_thing

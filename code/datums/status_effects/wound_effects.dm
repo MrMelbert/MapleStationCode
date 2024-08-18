@@ -146,6 +146,9 @@
 	if(!owner.client || owner.body_position == LYING_DOWN || !owner.has_gravity() || (owner.movement_type & (FLYING|FLOATING)) || forced || owner.buckled)
 		return
 
+	if(SEND_SIGNAL(owner, COMSIG_CARBON_LIMPING, (next_leg || right || left)) & COMPONENT_CANCEL_LIMP)
+		return
+
 	// less limping while we have determination still
 	var/determined_mod = owner.can_feel_pain(TRUE) ? 1 : 0.5
 

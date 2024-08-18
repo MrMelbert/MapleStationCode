@@ -85,8 +85,9 @@
 	multiplicative_slowdown = STAGGERED_SLOWDOWN_STRENGTH
 
 /datum/movespeed_modifier/human_carry
+	variable = TRUE
 	multiplicative_slowdown = HUMAN_CARRY_SLOWDOWN
-	blacklisted_movetypes = FLOATING
+	blacklisted_movetypes = FLOATING|PHASING
 
 /datum/movespeed_modifier/limbless
 	variable = TRUE

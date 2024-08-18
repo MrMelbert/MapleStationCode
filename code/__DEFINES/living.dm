@@ -73,9 +73,18 @@
 #define TRAIT_ASSISTED_BREATHING "assisted_breathing"
 /// Stops organs from decaying while dead
 #define TRAIT_NO_ORGAN_DECAY "no_organ_decay"
+/// Don't get slowed down by aggro grabbing (or above)
+#define TRAIT_NO_GRAB_SPEED_PENALTY "no_grab_speed_penalty"
+/// Doesn't let a mob shift this atom around with move_pulled
+#define TRAIT_NO_MOVE_PULL "no_move_pull"
 
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
+
+/// Mob can walk despite having two disabled/missing legs so long as they have two of this trait.
+/// Kind of jank, refactor at a later day when I can think of a better solution.
+/// Just be sure to call update_limbless_locomotion() after applying / removal
+#define TRAIT_NO_LEG_AID "no_leg_aid"
 
 #define COLOR_BLOOD "#c90000"
 

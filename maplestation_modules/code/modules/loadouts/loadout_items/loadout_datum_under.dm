@@ -390,3 +390,8 @@
 	name = "Berbier Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/lini
 	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/jessie_turtleneck
+	name = "Holointegrated Turtleneck"
+	item_path = /obj/item/clothing/under/rank/rnd/research_director/jessie_turtleneck
+	additional_displayed_text = list("Character Item")

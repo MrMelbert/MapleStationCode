@@ -187,7 +187,7 @@
 			mod = 0.5
 	if(!prob(severity * mod * 20))
 		return
-	if(SEND_SIGNAL(victim, COMSIG_CARBON_PAINED_STEP, footstep_counter) & STOP_PAIN)
+	if(SEND_SIGNAL(victim, COMSIG_CARBON_PAINED_STEP, limb, footstep_count) & STOP_PAIN)
 		return
 
 	to_chat(victim, span_danger("Your [limb.plaintext_zone] [pick("aches", "pangs", "stings")] as you take a step!"))

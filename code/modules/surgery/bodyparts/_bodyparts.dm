@@ -1104,6 +1104,18 @@
 				. += aux_em_block
 		//EMISSIVE CODE END
 
+	// NON-MODULE CHANGE START
+	if (limb.icon in GLOB.emissive_augmentations)
+		var/mutable_appearance/limb_emissive = emissive_appearance(limb.icon, "[limb.icon_state]_e", loc || owner || src, layer = limb.layer + 0.01, alpha = limb.alpha * 0.8) // Waaagh need layer BS to work
+		limb_emissive.dir = image_dir
+		. += limb_emissive
+
+	if (aux_zone && (aux.icon in GLOB.emissive_augmentations))
+		var/mutable_appearance/aux_emissive = emissive_appearance(aux.icon, "[aux.icon_state]_e", loc || owner || src, layer = aux.layer + 0.01, alpha = aux.alpha * 0.8)
+		aux_emissive.dir = image_dir
+		. += aux_emissive
+	// NON-MODULE CHANGE END
+	
 	//No need to handle leg layering if dropped, we only face south anyways
 	if(!dropped && ((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG)))
 		//Legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
