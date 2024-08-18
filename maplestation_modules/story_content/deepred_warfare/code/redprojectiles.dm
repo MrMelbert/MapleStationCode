@@ -107,11 +107,11 @@
 
 /obj/projectile/bullet/godslayer/proc/warp()
 	if(marked_target)
-		playsound(src, warp_sound, 100, extrarange = 5)
-		addtimer(CALLBACK(src, PROC_REF(fire_warp)), 2)
+		playsound(firer, warp_sound, 100, extrarange = 5)
+		fire_warp()
 
 /obj/projectile/bullet/godslayer/proc/fire_warp()
-	playsound(src, supercharge_sound, 100, extrarange = 5)
+	playsound(firer, supercharge_sound, 100, extrarange = 5)
 
 	var/obj/projectile/A = new /obj/projectile/bullet/coil/red_lightning(get_turf(firer))
 	A.preparePixelProjectile(marked_target, get_turf(firer))
@@ -134,6 +134,48 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_impact"
 
-/obj/projectile/bullet/godslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 0.2 SECONDS, impacting = TRUE)
-	duration = 0.2 SECONDS
+/obj/projectile/bullet/godslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 5 SECONDS, impacting = TRUE)
+	duration = 5 SECONDS
 	. = ..()
+
+/obj/projectile/bullet/supergodslayer
+	name = "supercharged godslayer round"
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon_state = "godslayer_tracer"
+	range = 120
+	damage = 120
+	armour_penetration = 100
+
+	dismemberment = 10
+	catastropic_dismemberment = TRUE
+	parried = TRUE
+
+	muzzle_type = /obj/effect/projectile/muzzle/supergodslayer
+	tracer_type = /obj/effect/projectile/tracer/supergodslayer
+	impact_type = /obj/effect/projectile/impact/supergodslayer
+	hitscan = TRUE
+	impact_effect_type = null
+	hitscan_light_intensity = 3
+	hitscan_light_range = 0.75
+	hitscan_light_color_override = COLOR_BLUE_LIGHT
+	muzzle_flash_intensity = 5
+	muzzle_flash_range = 1
+	muzzle_flash_color_override = COLOR_BLUE_LIGHT
+	impact_light_intensity = 5
+	impact_light_range = 1
+	impact_light_color_override = COLOR_BLUE_LIGHT
+
+/obj/effect/projectile/muzzle/supergodslayer
+	name = "supercharged godslayer warp site"
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon_state = "supergodslayer_muzzle"
+
+/obj/effect/projectile/tracer/supergodslayer
+	name = "supercharged godslayer tracer"
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon_state = "supergodslayer_tracer"
+
+/obj/effect/projectile/impact/supergodslayer
+	name = "supercharged godslayer impact"
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
+	icon_state = "supergodslayer_impact"
