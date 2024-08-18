@@ -16256,7 +16256,6 @@
 /area/station/hallway/primary/central)
 "bgo" = (
 /obj/structure/table,
-/obj/item/trash/waffles,
 /obj/item/storage/fancy/rollingpapers,
 /obj/machinery/status_display/ai/directional/north,
 /turf/open/floor/iron,
@@ -28268,7 +28267,6 @@
 /area/station/service/chapel/monastery)
 "cdD" = (
 /obj/structure/table,
-/obj/item/trash/waffles,
 /obj/item/kitchen/fork,
 /turf/open/misc/asteroid,
 /area/station/service/chapel/asteroid/monastery)
@@ -31179,7 +31177,6 @@
 /area/station/service/chapel/storage)
 "cuw" = (
 /obj/structure/table/wood,
-/obj/item/trash/waffles,
 /obj/item/kitchen/fork,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/chapel/storage)

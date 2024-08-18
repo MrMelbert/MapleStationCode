@@ -8704,11 +8704,6 @@
 /obj/machinery/light/small/directional/south,
 /turf/open/floor/plating,
 /area/station/maintenance/department/cargo)
-"cUn" = (
-/obj/item/trash/waffles,
-/obj/structure/cable,
-/turf/open/floor/plating,
-/area/station/maintenance/port/lower)
 "cUw" = (
 /obj/effect/spawner/random/structure/crate,
 /obj/effect/mapping_helpers/broken_floor,
@@ -97492,7 +97487,7 @@ aDd
 qfc
 sag
 nkM
-cUn
+owa
 hzu
 bep
 daQ
