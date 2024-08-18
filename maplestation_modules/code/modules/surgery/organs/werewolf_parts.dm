@@ -22,7 +22,7 @@
 	unarmed_effectiveness = 50
 	dmg_overlay_type = null
 	biological_state = (BIO_FLESH|BIO_BLOODED)
-	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN
+	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN|HEAD_HAIR
 
 /obj/item/bodypart/chest/werewolf
 	limb_id = SPECIES_WEREWOLF
