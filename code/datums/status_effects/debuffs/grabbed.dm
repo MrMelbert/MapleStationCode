@@ -4,7 +4,7 @@
 	icon = 'maplestation_modules/icons/obj/hand.dmi'
 	icon_state = "grab"
 	w_class = WEIGHT_CLASS_HUGE
-	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON | EXAMINE_SKIP
+	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON | EXAMINE_SKIP // not currently a hand item, but we could implement it for stuff like handing grabs off to people
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
@@ -68,11 +68,16 @@
 		stack_trace("[type] should be qdelled when the hand is deleted via stop_pulling.")
 		qdel(src)
 
+// Allows the grab hand to function like a normal hand for tabling and punching and the like
 /datum/status_effect/grabbing/proc/hand_use(datum/source, mob/living/user, atom/interacting_with, modifiers)
 	SIGNAL_HANDLER
+	// Mirrored from Click, not ideal (why doesn't punching apply the cd itself??). refactor later I guess
+	if(ismob(interacting_with))
+		user.changeNext_move(CLICK_CD_MELEE)
 	user.UnarmedAttack(interacting_with, TRUE, modifiers)
 	return ITEM_INTERACT_SUCCESS
 
+// Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
 /datum/status_effect/grabbing/proc/hand_use_deprecated(datum/source, atom/interacting_with, mob/living/user, prox, modifiers)
 	SIGNAL_HANDLER
 	if(prox)
