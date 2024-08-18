@@ -1,6 +1,7 @@
 ///WEREWOLF
 /obj/item/bodypart/head/werewolf
 	limb_id = SPECIES_WEREWOLF
+	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
 	is_dimorphic = FALSE
 	should_draw_greyscale = TRUE
 
@@ -25,6 +26,7 @@
 
 /obj/item/bodypart/chest/werewolf
 	limb_id = SPECIES_WEREWOLF
+	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
 	is_dimorphic = TRUE
 	should_draw_greyscale = TRUE
 
@@ -42,6 +44,7 @@
 
 /obj/item/bodypart/arm/left/werewolf
 	limb_id = SPECIES_WEREWOLF
+	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/arm/left/werewolf/update_limb(dropping_limb, is_creating)
@@ -65,6 +68,7 @@
 
 /obj/item/bodypart/arm/right/werewolf
 	limb_id = SPECIES_WEREWOLF
+	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/arm/right/werewolf/update_limb(dropping_limb, is_creating)
@@ -88,6 +92,7 @@
 
 /obj/item/bodypart/leg/left/werewolf
 	limb_id = SPECIES_WEREWOLF
+	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/leg/left/werewolf/update_limb(dropping_limb, is_creating)
@@ -97,7 +102,7 @@
 	draw_color = species_color
 	burn_modifier = 0.75
 	brute_modifier = 0.25
-	speed_modifier = 2.5
+	speed_modifier = 3
 	dmg_overlay_type = null
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
@@ -105,6 +110,7 @@
 
 /obj/item/bodypart/leg/right/werewolf
 	limb_id = SPECIES_WEREWOLF
+	icon_greyscale = "maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi"
 	should_draw_greyscale = TRUE
 
 /obj/item/bodypart/leg/right/werewolf/update_limb(dropping_limb, is_creating)
@@ -114,7 +120,7 @@
 	draw_color = species_color
 	burn_modifier = 0.75
 	brute_modifier = 0.25
-	speed_modifier = 2.5
+	speed_modifier = 3
 	dmg_overlay_type = null
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
