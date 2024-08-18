@@ -54,10 +54,10 @@
 	if(isgun(fired_from))
 		fired_record = fired_from
 		fired_record.fire_sound_volume = 0
-		fired_record.recoil = initial(fired_record.recoil) + 2
+		fired_record.recoil = initial(fired_record.recoil) + 3
 
 	. = ..()
-	playsound(src, fire_sound, 50)
+	playsound(src, fire_sound, 100, extrarange = 5)
 
 	if(fired_record)
 		addtimer(CALLBACK(src, PROC_REF(reset_gunstats)), 1)

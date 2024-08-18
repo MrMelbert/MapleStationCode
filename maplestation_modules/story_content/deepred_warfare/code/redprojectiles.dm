@@ -64,7 +64,7 @@
 /obj/projectile/bullet/godslayer
 	name = "godslayer round"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
-	icon_state = "godslayer"
+	icon_state = "godslayer_tracer"
 	range = 120
 	damage = 120
 	armour_penetration = 100
@@ -90,6 +90,9 @@
 	impact_light_range = 1
 	impact_light_color_override = COLOR_BLUE_LIGHT
 
+	var/warp_sound = 'maplestation_modules/story_content/deepred_warfare/sound/warp.ogg'
+	var/supercharge_sound = 'maplestation_modules/story_content/deepred_warfare/sound/supercharge.ogg'
+
 	var/marked_target
 
 /obj/projectile/bullet/godslayer/on_hit(atom/target, blocked = 0, pierce_hit)
@@ -104,11 +107,17 @@
 
 /obj/projectile/bullet/godslayer/proc/warp()
 	if(marked_target)
-		var/obj/projectile/A = new /obj/projectile/bullet/coil/red_lightning(get_turf(firer))
-		A.preparePixelProjectile(marked_target, get_turf(firer))
-		A.firer = firer
-		A.fired_from = firer
-		A.fire(null, marked_target)
+		playsound(src, warp_sound, 100, extrarange = 5)
+		addtimer(CALLBACK(src, PROC_REF(fire_warp)), 2)
+
+/obj/projectile/bullet/godslayer/proc/fire_warp()
+	playsound(src, supercharge_sound, 100, extrarange = 5)
+
+	var/obj/projectile/A = new /obj/projectile/bullet/coil/red_lightning(get_turf(firer))
+	A.preparePixelProjectile(marked_target, get_turf(firer))
+	A.firer = firer
+	A.fired_from = firer
+	A.fire(null, marked_target)
 
 /obj/effect/projectile/muzzle/godslayer
 	name = "godslayer muzzle flash"
@@ -125,6 +134,6 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_impact"
 
-/obj/projectile/bullet/godslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 3 SECONDS, impacting = TRUE)
-	duration = 3 SECONDS
+/obj/projectile/bullet/godslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 0.2 SECONDS, impacting = TRUE)
+	duration = 0.2 SECONDS
 	. = ..()
