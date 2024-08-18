@@ -246,33 +246,34 @@
 	burn_modifier = 1.25
 
 ///WEREWOLF
-/obj/item/bodypart/werewolf_head
+/obj/item/bodypart/head/werewolf
 	limb_id = SPECIES_WEREWOLF
 	is_dimorphic = FALSE
 	burn_modifier = 0.75
-	brute_modifier = 0.25  
+	brute_modifier = 0.25
 	unarmed_attack_verb = "bite"
+	grappled_attack_verb = "mauls"
 	unarmed_attack_effect = ATTACK_EFFECT_BITE
 	unarmed_attack_sound = 'sound/weapons/bite.ogg'
 	unarmed_miss_sound = 'sound/weapons/bite.ogg'
-	unarmed_damage_low = 50
-	unarmed_damage_high = 60
-	unarmed_effectiveness = 25
+	unarmed_damage_low = 60
+	unarmed_damage_high = 75
+	unarmed_effectiveness = 50
 	dmg_overlay_type = null
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 	head_flags = HEAD_EYESPRITES|HEAD_EYECOLOR|HEAD_EYEHOLES|HEAD_DEBRAIN
 
-/obj/item/bodypart/werewolf_chest
+/obj/item/bodypart/chest/werewolf
 	limb_id = SPECIES_WEREWOLF
 	is_dimorphic = TRUE
 	burn_modifier = 0.75
-	brute_modifier = 0.25 
+	brute_modifier = 0.25
 	dmg_overlay_type = null
 	biological_state = (BIO_FLESH|BIO_BLOODED)
-	bodypart_traits = list(TRAIT_NO_JUMPSUIT)
+	bodypart_traits = list(TRAIT_NO_JUMPSUIT, TRAIT_IGNOREDAMAGESLOWDOWN, TRAIT_PUSHIMMUNE, TRAIT_STUNIMMUNE)
 	wing_types = NONE
 
-/obj/item/bodypart/werewolf_l_arm
+/obj/item/bodypart/arm/left/werewolf
 	limb_id = SPECIES_WEREWOLF
 	unarmed_attack_verb = "slash"
 	grappled_attack_verb = "lacerate"
@@ -283,12 +284,12 @@
 	unarmed_damage_high = 25
 	unarmed_effectiveness = 20
 	burn_modifier = 0.75
-	brute_modifier = 0.25 
+	brute_modifier = 0.25
 	dmg_overlay_type = null
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
-/obj/item/bodypart/werewolf_r_arm
+/obj/item/bodypart/arm/right/werewolf
 	limb_id = SPECIES_WEREWOLF
 	unarmed_attack_verb = "slash"
 	grappled_attack_verb = "lacerate"
@@ -299,25 +300,25 @@
 	unarmed_damage_high = 25
 	unarmed_effectiveness = 20
 	burn_modifier = 0.75
-	brute_modifier = 0.25 
+	brute_modifier = 0.25
 	dmg_overlay_type = null
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
-/obj/item/bodypart/werewolf_l_leg
+/obj/item/bodypart/leg/left/werewolf
 	limb_id = SPECIES_WEREWOLF
 	burn_modifier = 0.75
-	brute_modifier = 0.25 
+	brute_modifier = 0.25
 	speed_modifier = 0.5
 	dmg_overlay_type = null
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
 	footstep_type = FOOTSTEP_MOB_CLAW
 	biological_state = (BIO_FLESH|BIO_BLOODED)
 
-/obj/item/bodypart/werewolf_r_leg
+/obj/item/bodypart/leg/right/werewolf
 	limb_id = SPECIES_WEREWOLF
 	burn_modifier = 0.75
-	brute_modifier = 0.25 
+	brute_modifier = 0.25
 	speed_modifier = 0.5
 	dmg_overlay_type = null
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
