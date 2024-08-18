@@ -34,7 +34,7 @@
 
 /obj/item/organ/internal/ears/werewolf
 	name = "wolf ears"
-	icon_state = "ears_werewolf"
+	icon_state = "werewolf"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	desc = "Allows the user to more easily hear whispers. The user becomes extra vulnerable to loud noises, however"
 	// Same sensitivity as felinid ears
