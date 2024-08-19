@@ -89,14 +89,18 @@
 		if(PAIN)
 			if(pain_controller)
 				var/pre_pain = pain_controller.get_average_pain()
+				var/pain_amount = damage_amount
+				var/chosen_zone
 				if(spread_damage || isnull(def_zone))
-					sharp_pain(BODY_ZONES_ALL, damage_amount / 6, STAMINA, 20 SECONDS, 0.8)
+					chosen_zone = BODY_ZONES_ALL
+					pain_amount /= 6
 				else if(isbodypart(def_zone))
 					var/obj/item/bodypart/actual_hit = def_zone
-					sharp_pain(actual_hit.body_zone, damage_amount, STAMINA, 20 SECONDS, 0.8)
+					chosen_zone = actual_hit.body_zone
 				else
-					sharp_pain(check_zone(def_zone), damage_amount, STAMINA, 20 SECONDS, 0.8)
+					chosen_zone = check_zone(def_zone)
 
+				sharp_pain(chosen_zone, pain_amount, STAMINA, 12.5 SECONDS, 0.8)
 				damage_dealt += pre_pain - pain_controller.get_average_pain()
 				damage_dealt += adjustStaminaLoss(damage_amount * 0.25, forced = forced)
 			else

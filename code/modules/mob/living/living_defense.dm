@@ -130,15 +130,15 @@
 		)
 
 	var/extra_paralyze = 0 SECONDS
-	var/extra_immobilize = 0 SECONDS
+	var/extra_knockdown = 0 SECONDS
 	if(hitting_projectile.damage_type == BRUTE && !hitting_projectile.grazing)
-		// melbert to do scale on pain of bodypart?
+		// melbert todo scale on pain of bodypart?
 		if(damage_done >= 60)
 			if(!IsParalyzed() && prob(damage_done))
 				extra_paralyze += 0.8 SECONDS
 		else if(damage_done >= 20)
-			if(!IsImmobilized() && prob(damage_done * 2))
-				extra_immobilize += 0.8 SECONDS
+			if(!IsKnockdown() && prob(damage_done * 2))
+				extra_knockdown += 0.8 SECONDS
 
 	apply_effects(
 		stun = hitting_projectile.stun,

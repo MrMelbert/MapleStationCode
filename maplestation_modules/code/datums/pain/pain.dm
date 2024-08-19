@@ -433,19 +433,21 @@
 				if(66 to INFINITY)
 					pain += 3
 
-		// No pain from oxy
+		// Oxyloss is painless
 		if(OXY)
 			return
 
-		// No pain from stamina loss
-		// In the future stamina can probably cause very sharp pain and replace stamcrit,
-		// but the system will require much finer tuning before then
-		if(STAMINA)
+		// Pain should be obvious
+		// Stamina is kind of pain but just sleepy pain
+		if(STAMINA, PAIN)
 			return
 
 		// Head pain causes brain damage, so brain damage causes no pain (to prevent death spirals)
 		if(BRAIN)
 			return
+
+		else
+			stack_trace("Pain datum recieved damage of unknown type [damagetype]")
 
 	if(!def_zone || !pain)
 #ifdef PAIN_DEBUG
@@ -517,29 +519,27 @@
 		// no-op if none of our bodyparts are in pain
 		return
 
-	var/shock_mod = 1
+	var/shock_mod = max(pain_modifier, 0.33)
 	if(HAS_TRAIT(parent, TRAIT_ABATES_SHOCK))
 		shock_mod *= 0.5
-	if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
-		shock_mod *= 1.2
 	if(parent.health <= parent.maxHealth * -2)
 		shock_mod *= 1.5
 	if(parent.health <= parent.maxHealth * -4)
-		shock_mod *= 2
+		shock_mod *= 2 // stacks with above
 	var/curr_pain = get_total_pain()
 	if(curr_pain < PAIN_LIMB_MAX * 0.5)
 		parent.adjust_pain_shock(-3 * seconds_per_tick) // staying out of pain for a while gives you a small resiliency to shock (~1 minute)
 	else if(curr_pain < PAIN_LIMB_MAX)
 		parent.adjust_pain_shock(-1 * seconds_per_tick)
-	else if(curr_pain < PAIN_LIMB_MAX * 1.5)
+	else if(curr_pain < PAIN_LIMB_MAX * 2)
 		if(shock_buildup <= 30 || parent.consciousness <= 60)
 			parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
-	else if(curr_pain < PAIN_LIMB_MAX * 2.5)
+	else if(curr_pain < PAIN_LIMB_MAX * 4)
 		parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
 			do_pain_message(span_userdanger(pick("It hurts.")))
 	else
-		parent.adjust_pain_shock((curr_pain / PAIN_LIMB_MAX) * shock_mod * seconds_per_tick)
+		parent.adjust_pain_shock(clamp(round(0.5 * (curr_pain / PAIN_LIMB_MAX), 0.1), 1.5, 8) * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
 			do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!")))
 
@@ -561,13 +561,16 @@
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_bodytemperature(-20 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 20)
 
-	if(shock_buildup >= 20 && !just_cant_feel_anything && SPT_PROB(shock_buildup / 10, seconds_per_tick))
-		parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+	if((shock_buildup >= 20 || curr_pain >= PAIN_LIMB_MAX * 2) && !just_cant_feel_anything)
+		if(SPT_PROB(shock_buildup / 5, seconds_per_tick))
+			parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+		if(SPT_PROB(shock_buildup / 10, seconds_per_tick))
+			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+		if(SPT_PROB(shock_buildup / 20, seconds_per_tick)) // pain applies its own stutter
+			parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
 	if(shock_buildup >= 60)
-		if(SPT_PROB(shock_buildup / 60, seconds_per_tick))
+		if(SPT_PROB(shock_buildup / 60, seconds_per_tick) && parent.consciousness > 30)
 			parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
 		if(SPT_PROB(shock_buildup / 20, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
 			parent.visible_message(
@@ -633,22 +636,21 @@
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
 	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock
-	if(curr_pain >= PAIN_LIMB_MAX * 6 || shock_buildup >= 150)
-		ADD_TRAIT(parent, TRAIT_SOFT_CRIT, PAINCRIT)
-		var/is_standing = parent.body_position == STANDING_UP
-		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS))
-			if(is_standing)
+	if(curr_pain >= PAIN_LIMB_MAX * 3 || shock_buildup >= 150)
+		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 60 SECONDS)
+		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
+			var/is_standing = parent.body_position == STANDING_UP
+			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+			if(is_standing && parent.body_position != STANDING_UP)
 				parent.visible_message(
 					span_warning("[parent] collapses!"),
 					span_warning("You collapse, unable to stand!"),
 					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 				)
 
-		else
-			parent.Paralyze(3 SECONDS)
-		parent.adjust_jitter_up_to(2 SECONDS * pain_modifier, 60 SECONDS)
-	else
-		REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINCRIT)
+	else if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
+		parent.Paralyze(2 SECONDS)
+		parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
 
 	// Finally, handle pain decay over time
 	if(parent.on_fire)
@@ -1003,7 +1005,7 @@
 
 	var/list/final_print = list()
 	final_print += "<div class='examine_block'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
-	final_print += "[parent] has an average pain of [get_average_pain()]."
+	final_print += "[parent] has an average pain of [get_average_pain()] and a total pain of [get_total_pain()]."
 	final_print += "[parent] has a pain modifier of [pain_modifier]."
 	final_print += " - - - - "
 	final_print += "[parent] bodypart printout: (min / current / soft max)"

@@ -172,7 +172,7 @@
 
 	owner.set_stutter_if_lower(10 SECONDS)
 	owner.set_jitter_if_lower(20 SECONDS)
-	owner.cause_pain(BODY_ZONES_ALL, 2 * seconds_between_ticks, BURN)
+	owner.sharp_pain(BODY_ZONES_ALL, 6 * seconds_between_ticks, BURN, 12.5 SECONDS, 0.66)
 	owner.apply_damage(120 * seconds_between_ticks * (owner.pain_controller?.pain_modifier || 1), STAMINA)
 	if(owner.stat <= SOFT_CRIT)
 		owner.do_jitter_animation(INFINITY) // maximum POWER

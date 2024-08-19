@@ -64,6 +64,8 @@
 
 	RegisterSignal(src, COMSIG_MOVABLE_EDIT_UNIQUE_IMMERSE_OVERLAY, PROC_REF(edit_immerse_overlay))
 
+	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_SOFT_CRIT), SIGNAL_REMOVETRAIT(TRAIT_SOFT_CRIT)), PROC_REF(sig_update_stat))
+
 /// Called when [TRAIT_KNOCKEDOUT] is added or removed from the mob.
 /mob/living/proc/on_knockedout_trait(datum/source)
 	SIGNAL_HANDLER
@@ -273,3 +275,8 @@
 /mob/living/proc/undense_changed(datum/source)
 	SIGNAL_HANDLER
 	update_density()
+
+/// Called when [TRAIT_SOFT_CRIT] is gained or lost
+/mob/living/proc/sig_update_stat(datum/source)
+	SIGNAL_HANDLER
+	update_stat()
