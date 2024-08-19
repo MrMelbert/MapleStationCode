@@ -18,7 +18,7 @@
 	name = "Beastly liver"
 	desc = "A large monstrous liver."
 	icon_state = "liver"
-	organ_traits = list(TRAIT_STABLELIVER)
+	organ_traits = list(TRAIT_STABLELIVER|ORGAN_UNREMOVABLE)
 	///Var for brute healing via blood
 	var/blood_brute_healing = 2.5
 	///Var for burn healing via blood
