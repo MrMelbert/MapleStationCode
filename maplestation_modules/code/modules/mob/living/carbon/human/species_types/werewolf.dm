@@ -16,6 +16,8 @@
 	mutantears = /obj/item/organ/internal/ears/werewolf
 	mutanteyes = /obj/item/organ/internal/eyes/werewolf
 	mutantbrain = /obj/item/organ/internal/brain/werewolf
+	mutantliver = obj/item/organ/internal/liver/werewolf
+	mutantheart = obj/item/organ/internal/heart/werewolf
 	external_organs = list(
 		/obj/item/organ/external/tail/cat = "Cat",
 	)
