@@ -213,7 +213,7 @@
 		else if(!HAS_TRAIT(src, TRAIT_INCAPACITATED))
 			playsound(loc, 'sound/weapons/pierce.ogg', 25, TRUE, -1)
 			var/shovetarget = get_edge_target_turf(user, get_dir(user, get_step_away(src, user)))
-			apply_damage(35, STAMINA)
+			apply_damage(35, PAIN)
 			throw_at(shovetarget, 4, 2, user, force = MOVE_FORCE_OVERPOWERING)
 			log_combat(user, src, "shoved")
 			visible_message("<span class='danger'>[user] tackles [src] down!</span>", \
@@ -581,7 +581,6 @@
 		combined_msg += span_boldannounce("Your [parse_zone(t)] is missing!")
 
 	if(HAS_TRAIT(src, TRAIT_SELF_AWARE))
-		// melbert todo : make this account for nausea / disgust and blood level
 		var/tox = getToxLoss() + (disgust / 5)
 		switch(tox)
 			if(10 to 20)

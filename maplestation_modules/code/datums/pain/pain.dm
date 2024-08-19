@@ -90,6 +90,7 @@
 	RegisterSignal(parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
 	RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
 	RegisterSignal(parent, COMSIG_MOB_FIRED_GUN, PROC_REF(on_mob_fired_gun))
+	RegisterSignal(parent, COMSIG_LIVING_REVIVE, PROC_REF(revived))
 
 /datum/pain/proc/unregister_pain_signals()
 	UnregisterSignal(parent, list(
@@ -100,12 +101,13 @@
 		COMSIG_HUMAN_BURNING,
 		COMSIG_LIVING_HEALTHSCAN,
 		COMSIG_LIVING_POST_FULLY_HEAL,
+		COMSIG_LIVING_REVIVE,
+		COMSIG_LIVING_TREAT_MESSAGE,
 		COMSIG_MOB_APPLY_DAMAGE,
+		COMSIG_MOB_FIRED_GUN,
 		COMSIG_MOB_STATCHANGE,
 		SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS),
 		SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS),
-		COMSIG_LIVING_TREAT_MESSAGE,
-		COMSIG_MOB_FIRED_GUN,
 	))
 
 /// Add a bodypart to be tracked.
@@ -518,7 +520,7 @@
 	var/shock_mod = 1
 	if(HAS_TRAIT(parent, TRAIT_ABATES_SHOCK))
 		shock_mod *= 0.5
-	if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
+	if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
 		shock_mod *= 1.2
 	if(parent.health <= parent.maxHealth * -2)
 		shock_mod *= 1.5
@@ -616,23 +618,23 @@
 
 	// This is where "soft crit" is now
 	if(shock_buildup >= 90)
-		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
-			ADD_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
-			ADD_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
-			set_pain_modifier("shock", 1.2)
-			parent.add_max_consciousness_value("shock", 60)
+		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
+			ADD_TRAIT(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
+			ADD_TRAIT(parent, TRAIT_LABOURED_BREATHING, PAINSHOCK)
+			set_pain_modifier(PAINSHOCK, 1.2)
+			parent.add_max_consciousness_value(PAINSHOCK, 60)
 			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
 	else
-		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock"))
-			REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
-			REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
-			unset_pain_modifier("shock")
-			parent.remove_max_consciousness_value("shock")
+		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
+			REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
+			REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, PAINSHOCK)
+			unset_pain_modifier(PAINSHOCK)
+			parent.remove_max_consciousness_value(PAINSHOCK)
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 
-	// This is "paincrit", it's where stamcrit has moved and is also applied by extreme shock
+	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock
 	if(curr_pain >= PAIN_LIMB_MAX * 6 || shock_buildup >= 150)
-		ADD_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
+		ADD_TRAIT(parent, TRAIT_SOFT_CRIT, PAINCRIT)
 		var/is_standing = parent.body_position == STANDING_UP
 		if(!parent.IsParalyzed() && parent.Paralyze(6 SECONDS))
 			if(is_standing)
@@ -646,7 +648,7 @@
 			parent.Paralyze(3 SECONDS)
 		parent.adjust_jitter_up_to(2 SECONDS * pain_modifier, 60 SECONDS)
 	else
-		REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
+		REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINCRIT)
 
 	// Finally, handle pain decay over time
 	if(parent.on_fire)
@@ -714,9 +716,9 @@
 
 	// Even if you can't feel pain it still contributes to consciousness loss
 	if(avg_pain <= 10)
-		parent.remove_consciousness_modifier("pain")
+		parent.remove_consciousness_modifier(PAIN)
 	else
-		parent.add_consciousness_modifier("pain", -5 * (avg_pain ** 0.5))
+		parent.add_consciousness_modifier(PAIN, -5 * (avg_pain ** 0.5))
 
 	// Pain is set to 0 fully if you can't feel pain OR pain modifier <= 0.5 (numbness threshold)
 	if(avg_pain && (parent.stat == DEAD || !parent.can_feel_pain(FALSE)))
@@ -727,27 +729,27 @@
 			parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
 			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
-			parent.clear_mood_event("pain")
+			parent.clear_mood_event(PAIN)
 		if(20 to 40)
 			parent.mob_surgery_speed_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
-			parent.add_mood_event("pain", /datum/mood_event/light_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/light_pain)
 		if(40 to 60)
 			parent.mob_surgery_speed_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
-			parent.add_mood_event("pain", /datum/mood_event/med_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/med_pain)
 		if(60 to 80)
 			parent.mob_surgery_speed_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
-			parent.add_mood_event("pain", /datum/mood_event/heavy_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/heavy_pain)
 		if(80 to INFINITY)
 			parent.mob_surgery_speed_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
-			parent.add_mood_event("pain", /datum/mood_event/crippling_pain)
+			parent.add_mood_event(PAIN, /datum/mood_event/crippling_pain)
 
 /**
  * Run a pain related emote, if a few checks are successful.
@@ -870,22 +872,28 @@
 
 	shock_buildup = 0
 	natural_pain_decay = base_pain_decay
-	unset_pain_modifier("shock")
-	parent.remove_max_consciousness_value("shock")
+	unset_pain_modifier(PAINSHOCK)
+	parent.remove_max_consciousness_value(PAINSHOCK)
 	parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
-	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "paincrit")
-	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, "shock")
-	REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, "shock")
+	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINCRIT)
+	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
+	REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, PAINSHOCK)
 
 /// Determines if we should be processing or not.
-/datum/pain/proc/on_parent_statchance(mob/source)
+/datum/pain/proc/on_parent_statchance(...)
 	SIGNAL_HANDLER
 
-	if(source.stat == DEAD)
+	if(parent.stat == DEAD)
 		if(datum_flags & DF_ISPROCESSING)
 			STOP_PROCESSING(SSpain, src)
 	else
 		START_PROCESSING(SSpain, src)
+
+/// When we are revived, reduced shock
+/datum/pain/proc/revived(...)
+	SIGNAL_HANDLER
+
+	shock_buildup /= 3
 
 /// Used to get the effect of pain on the parent's heart rate.
 /datum/pain/proc/get_heartrate_modifier()
@@ -924,7 +932,7 @@
 	if(parent.stat == DEAD)
 		return
 
-	var/in_shock = HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, "shock")
+	var/in_shock = HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
 
 	var/amount = ""
 	var/tip = ""

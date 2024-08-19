@@ -139,7 +139,7 @@
 	var/deciseconds_remaining = duration - world.time
 	if(deciseconds_remaining <= 0)
 		return
-	var/seconds_elapsed = round((initial(duration) - deciseconds_remaining) / 1 SECONDS, 1)
+	var/seconds_elapsed = round((initial(duration) - deciseconds_remaining) / (1 SECONDS), 1)
 
 	// Bonus for being defibbed decays over time
 	owner.add_consciousness_modifier(id, base_con - (seconds_elapsed * 0.25))

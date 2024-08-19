@@ -212,7 +212,7 @@
 			var/mob/living/carbon/human/human_target = target
 			if(prob(force_say_chance))
 				human_target.force_say()
-		target.apply_damage(stamina_damage, STAMINA, spread_damage = TRUE)
+		target.apply_damage(stamina_damage, PAIN, spread_damage = TRUE)
 		if(!trait_check)
 			target.Knockdown((isnull(stun_override) ? knockdown_time : stun_override))
 		additional_effects_non_cyborg(target, user)
@@ -284,7 +284,7 @@
 			var/mob/living/carbon/human/human_user = user
 			human_user.force_say()
 		user.Knockdown(clumsy_knockdown_time)
-		user.apply_damage(stamina_damage, STAMINA, spread_damage = TRUE)
+		user.apply_damage(stamina_damage, PAIN, spread_damage = TRUE)
 		additional_effects_non_cyborg(user, user) // user is the target here
 		if(on_stun_sound)
 			playsound(get_turf(src), on_stun_sound, on_stun_volume, TRUE, -1)

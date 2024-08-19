@@ -85,10 +85,8 @@
 		if(OXY)
 			damage_dealt = -1 * adjustOxyLoss(damage_amount, forced = forced)
 		if(STAMINA)
-			// By default applying stamina damage will convert it to sharp pain if applicable
-			// If you don't want that just call adjustStaminaLoss directly
-			//
-			// Melbert todo : Rename "STAMINA" to "PAIN", or delete this, idk
+			damage_dealt = -1 * adjustStaminaLoss(damage_amount, forced = forced)
+		if(PAIN)
 			if(pain_controller)
 				var/pre_pain = pain_controller.get_average_pain()
 				if(spread_damage || isnull(def_zone))
@@ -99,7 +97,8 @@
 				else
 					sharp_pain(check_zone(def_zone), damage_amount, STAMINA, 20 SECONDS, 0.8)
 
-				damage_dealt = pre_pain - pain_controller.get_average_pain()
+				damage_dealt += pre_pain - pain_controller.get_average_pain()
+				damage_dealt += adjustStaminaLoss(damage_amount * 0.25, forced = forced)
 			else
 				damage_dealt = -1 * adjustStaminaLoss(damage_amount, forced = forced)
 		if(BRAIN)

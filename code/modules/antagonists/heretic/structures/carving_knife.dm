@@ -239,7 +239,7 @@
 	if(!iscarbon(victim))
 		return
 	var/mob/living/carbon/carbon_victim = victim
-	carbon_victim.apply_damage(80, STAMINA)
+	carbon_victim.apply_damage(80, PAIN)
 	carbon_victim.adjust_silence(20 SECONDS)
 	carbon_victim.adjust_stutter(1 MINUTES)
 	carbon_victim.adjust_confusion(5 SECONDS)

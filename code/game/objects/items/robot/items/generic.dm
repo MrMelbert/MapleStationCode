@@ -37,7 +37,7 @@
 			return
 
 	user.do_attack_animation(attacked_mob)
-	attacked_mob.apply_damage(stamina_damage, STAMINA)
+	attacked_mob.apply_damage(stamina_damage, PAIN)
 	attacked_mob.set_confusion_if_lower(5 SECONDS)
 	attacked_mob.adjust_stutter(20 SECONDS)
 	attacked_mob.set_jitter_if_lower(5 SECONDS)

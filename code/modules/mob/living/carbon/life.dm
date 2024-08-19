@@ -72,7 +72,7 @@
 	var/datum/gas_mixture/breath
 
 	if(!HAS_TRAIT(src, TRAIT_ASSISTED_BREATHING))
-		if(stat == HARD_CRIT || (pulledby?.grab_state >= GRAB_KILL))
+		if(stat == HARD_CRIT)
 			losebreath = max(losebreath, 1)
 		else if(HAS_TRAIT(src, TRAIT_LABOURED_BREATHING))
 			losebreath += (1 / next_breath)

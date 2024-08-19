@@ -202,7 +202,7 @@
 			if(istype(L))
 				var/damage_what = L.get_active_hand()
 				L.apply_damage(10, BRUTE, damage_what)
-				L.apply_damage(40, STAMINA, damage_what)
+				L.apply_damage(40, PAIN, damage_what)
 				L.Paralyze(10)
 
 ///checking to make sure we're still on the person we're supposed to be, for lacing do_after's

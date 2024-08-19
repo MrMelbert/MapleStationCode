@@ -21,7 +21,7 @@
 	icon_state = "pellet"
 	generic_name = "slug"
 	damage = 10
-	stamina = 55
+	pain = 55
 	wound_bonus = 20
 	sharpness = NONE
 	embed_type = null
@@ -30,7 +30,7 @@
 	name = "rubber slug"
 	icon_state = "cannonball"
 	damage = 20
-	stamina = 160 //BONK
+	pain = 160 //BONK
 	wound_bonus = 30
 	weak_against_armour = TRUE
 
@@ -88,7 +88,7 @@
 /obj/projectile/bullet/pellet/shotgun_rubbershot
 	name = "rubber shot pellet"
 	damage = 3
-	stamina = 11
+	pain = 11
 	sharpness = NONE
 	embed_type = null
 	speed = 1.2

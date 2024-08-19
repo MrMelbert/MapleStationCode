@@ -177,6 +177,8 @@
 	var/jitter = 0 SECONDS
 	/// Extra stamina damage applied on projectile hit (in addition to the main damage)
 	var/stamina = 0
+	/// Bonus pain, like stamina damage
+	var/pain = 0
 	/// Stuttering applied on projectile hit
 	var/stutter = 0 SECONDS
 	/// Slurring applied on projectile hit

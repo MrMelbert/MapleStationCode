@@ -153,7 +153,7 @@
 	// NON-MODULE CHANGE for blood
 	if(!client || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
-	if(!COOLDOWN_FINISHED(src, bleeding_message_cd) && !forced)
+	if((!COOLDOWN_FINISHED(src, bleeding_message_cd) || HAS_TRAIT(src, TRAIT_KNOCKEDOUT)) && !forced)
 		return
 
 	var/bleeding_severity = ""
@@ -182,8 +182,7 @@
 		rate_of_change = ", but it's clotting up quickly!"
 	else
 		// flick through our wounds to see if there are any bleeding ones getting worse or holding flow (maybe move this to handle_blood and cache it so we don't need to cycle through the wounds so much)
-		for(var/i in all_wounds)
-			var/datum/wound/iter_wound = i
+		for(var/datum/wound/iter_wound as anything in all_wounds)
 			if(!iter_wound.blood_flow)
 				continue
 			var/iter_wound_roc = iter_wound.get_bleed_rate_of_change()

@@ -128,7 +128,7 @@
 	name = "disabler beam"
 	icon_state = "omnilaser"
 	damage = 30
-	damage_type = STAMINA
+	damage_type = PAIN
 	armor_flag = ENERGY
 	hitsound = 'sound/weapons/sear_disabler.ogg'
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser

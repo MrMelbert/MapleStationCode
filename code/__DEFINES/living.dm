@@ -108,3 +108,8 @@
 
 /// Calculates oxyloss cap
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
+
+// Some source defines for pain
+#define PAINSHOCK "shock"
+#define PAINCRIT "paincrit"
+#define PAIN "pain"

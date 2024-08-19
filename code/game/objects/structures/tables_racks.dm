@@ -180,7 +180,7 @@
 		return
 	pushed_mob.Knockdown(30)
 	pushed_mob.apply_damage(10, BRUTE)
-	pushed_mob.apply_damage(40, STAMINA)
+	pushed_mob.apply_damage(40, PAIN)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
 		deconstruct(FALSE)
 	playsound(pushed_mob, 'sound/effects/tableslam.ogg', 90, TRUE)
@@ -196,7 +196,7 @@
 	if(HAS_TRAIT(user, TRAIT_HULK))
 		extra_wound = 20
 	pushed_mob.apply_damage(30, BRUTE, banged_limb, wound_bonus = extra_wound)
-	pushed_mob.apply_damage(60, STAMINA)
+	pushed_mob.apply_damage(60, PAIN)
 	take_damage(50)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
 		deconstruct(FALSE)

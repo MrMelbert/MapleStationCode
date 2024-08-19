@@ -33,4 +33,4 @@
 	name = "riot foam dart"
 	icon_state = "foamdart_riot_proj"
 	base_icon_state = "foamdart_riot"
-	stamina = 25
+	pain = 25

@@ -566,8 +566,8 @@
 	var/oldhp = health
 	set_health(round(maxHealth - total_oxy - total_tox - total_burn - total_brute, DAMAGE_PRECISION))
 
-	var/brutecon = -0.05 * total_brute
-	var/firecon = -0.05 * total_burn
+	var/brutecon = ((HAS_TRAIT(src, TRAIT_NOBREATH) || HAS_TRAIT(src, TRAIT_NOBLOOD)) ? -0.2 : -0.05) * total_brute
+	var/firecon =  ((HAS_TRAIT(src, TRAIT_NOBREATH) || HAS_TRAIT(src, TRAIT_NOBLOOD)) ? -0.2 : -0.05) * total_burn
 	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(total_oxy * (total_oxy >= 100 ? 0.5 : 0.33), 100))
 	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
 	// Ignores the helpers because we can handle them in bulk

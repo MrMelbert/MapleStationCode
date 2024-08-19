@@ -66,7 +66,7 @@
 	if(damage > 0)
 		var/armor = victim.run_armor_check(limb.body_zone, MELEE, "Your armor has protected your [limb.plaintext_zone].", "Your armor has softened a hit to your [limb.plaintext_zone].", weapon.armour_penetration, weak_against_armour = weapon.weak_against_armour)
 		victim.apply_damage((1 - embed_data.pain_stam_pct) * damage, BRUTE, limb, blocked = armor, wound_bonus = weapon.wound_bonus, bare_wound_bonus = weapon.bare_wound_bonus, sharpness = weapon.get_sharpness(), attacking_item = weapon)
-		victim.apply_damage(embed_data.pain_stam_pct * damage, STAMINA, limb)
+		victim.apply_damage(embed_data.pain_stam_pct * damage, PAIN, limb)
 
 /datum/component/embedded/Destroy()
 	var/mob/living/carbon/victim = parent
@@ -109,7 +109,7 @@
 	if(SPT_PROB(pain_chance_current, seconds_per_tick))
 		victim.apply_damage((1 - embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
 		if(victim.can_feel_pain())
-			victim.apply_damage(embed_data.pain_stam_pct * damage, STAMINA, limb)
+			victim.apply_damage(embed_data.pain_stam_pct * damage, PAIN, limb)
 			if(embed_data.hidden_embed)
 				to_chat(victim, span_danger("Something in your [limb.plaintext_zone] hurts!"))
 			else
@@ -145,7 +145,7 @@
 	var/damage = weapon.w_class * embed_data.jostle_pain_mult
 	victim.apply_damage((1 -  embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
 	if(victim.can_feel_pain())
-		victim.apply_damage( embed_data.pain_stam_pct * damage, STAMINA, limb)
+		victim.apply_damage( embed_data.pain_stam_pct * damage, PAIN, limb)
 		if(embed_data.hidden_embed)
 			to_chat(victim, span_danger("Something in your [limb.plaintext_zone] jostles and stings!"))
 		else
@@ -164,7 +164,7 @@
 	if(harmful)
 		var/damage = weapon.w_class *  embed_data.remove_pain_mult
 		victim.apply_damage((1 -  embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
-		victim.apply_damage( embed_data.pain_stam_pct * damage, STAMINA, limb)
+		victim.apply_damage( embed_data.pain_stam_pct * damage, PAIN, limb)
 
 	victim.visible_message(span_danger("[weapon] falls [harmful ? "out" : "off"] of [victim.name]'s [limb.plaintext_zone]!"), span_userdanger("[weapon] falls [harmful ? "out" : "off"] of your [limb.plaintext_zone]!"))
 	safeRemove()
@@ -200,7 +200,7 @@
 	var/datum/embed_data/embed_data = weapon.get_embed()
 	var/damage = weapon.w_class * embed_data.remove_pain_mult * ouch_multiplier
 	victim.apply_damage((1 - embed_data.pain_stam_pct) * damage, BRUTE, limb, sharpness = SHARP_EDGED) //It hurts to rip it out, get surgery you dingus. unlike the others, this CAN wound + increase slash bloodflow
-	victim.apply_damage(embed_data.pain_stam_pct * damage, STAMINA, limb)
+	victim.apply_damage(embed_data.pain_stam_pct * damage, PAIN, limb)
 	victim.emote("scream")
 
 /// This proc handles the final step and actual removal of an embedded/stuck item from a carbon, whether or not it was actually removed safely.
@@ -302,7 +302,7 @@
 	var/damage = weapon.w_class * embed_data.remove_pain_mult
 	victim.cause_wound_of_type_and_severity(WOUND_PIERCE, limb, WOUND_SEVERITY_MODERATE)
 	victim.apply_damage((1 - embed_data.pain_stam_pct) * damage * 1.5, BRUTE, limb, sharpness = SHARP_EDGED) // Performs exit wounds and flings the user to the caster if nearby
-	victim.apply_damage(embed_data.pain_stam_pct * damage, STAMINA, limb)
+	victim.apply_damage(embed_data.pain_stam_pct * damage, PAIN, limb)
 
 	playsound(victim, 'sound/effects/wounds/blood2.ogg', 50, TRUE)
 

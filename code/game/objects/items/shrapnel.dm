@@ -66,7 +66,7 @@
 /obj/projectile/bullet/pellet/stingball
 	name = "stingball pellet"
 	damage = 3
-	stamina = 8
+	pain = 8
 	ricochets_max = 4
 	ricochet_chance = 66
 	ricochet_decay_chance = 1
@@ -100,7 +100,7 @@
 	name = "\improper AP shrapnel shard"
 	range = 7
 	damage = 8
-	stamina = 8
+	pain = 8
 	sharpness = SHARP_EDGED
 	wound_bonus = 5
 	bare_wound_bonus = 5

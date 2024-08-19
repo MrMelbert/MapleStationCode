@@ -289,7 +289,7 @@
 			if(HAS_TRAIT(user, TRAIT_EMPATH))
 				if (combat_mode)
 					msg += "[t_He] seem[p_s()] to be on guard.\n"
-				if (getOxyLoss() >= 10)
+				if (getOxyLoss() >= 10 || getStaminaLoss() >= 25)
 					msg += "[t_He] seem[p_s()] winded.\n"
 				if (getToxLoss() >= 10)
 					msg += "[t_He] seem[p_s()] sickly.\n"

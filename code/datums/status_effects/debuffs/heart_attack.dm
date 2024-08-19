@@ -66,6 +66,7 @@
 		return
 
 	// More oxy damage is caused via losebreath (in breath())
-	owner.apply_damage(0.5 * seconds_between_ticks, OXY)
+	owner.apply_damage(2 * seconds_between_ticks, OXY)
+	owner.apply_damage(2 * seconds_between_ticks, PAIN, BODY_ZONE_CHEST)
 	// Tissues die without blood circulation
 	owner.apply_damage(1 * seconds_between_ticks, BRUTE, BODY_ZONE_CHEST, forced = TRUE, wound_bonus = CANT_WOUND)

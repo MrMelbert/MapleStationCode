@@ -187,7 +187,7 @@
 			mod = 0.5
 	if(!prob(severity * mod * 20))
 		return
-	if(SEND_SIGNAL(victim, COMSIG_CARBON_PAINED_STEP, limb, footstep_count) & STOP_PAIN)
+	if(SEND_SIGNAL(victim, COMSIG_CARBON_PAINED_STEP, limb, footstep_counter) & STOP_PAIN)
 		return
 
 	to_chat(victim, span_danger("Your [limb.plaintext_zone] [pick("aches", "pangs", "stings")] as you take a step!"))
@@ -570,7 +570,7 @@
 		victim.visible_message(span_notice("[victim] finishes applying [I] to [victim.p_their()] [limb.plaintext_zone], grimacing from the pain!"), span_notice("You finish applying [I] to your [limb.plaintext_zone], and your bones explode in pain!"))
 
 	victim.apply_damage(20, BRUTE, limb, wound_bonus = CANT_WOUND)
-	victim.apply_damage(100, STAMINA)
+	victim.apply_damage(100, PAIN)
 	gelled = TRUE
 	return TRUE
 

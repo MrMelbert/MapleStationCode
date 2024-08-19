@@ -102,7 +102,7 @@
 	// on [/atom/proc/bullet_act] where it's just to pass it to the projectile's on_hit().
 	var/armor_check = min(ARMOR_MAX_BLOCK, check_projectile_armor(def_zone, hitting_projectile, is_silent = TRUE))
 
-	apply_damage(
+	var/damage_done = apply_damage(
 		damage = hitting_projectile.damage,
 		damagetype = hitting_projectile.damage_type,
 		def_zone = def_zone,
@@ -117,9 +117,28 @@
 			damage = hitting_projectile.stamina,
 			damagetype = STAMINA,
 			def_zone = def_zone,
+			blocked = armor_check,
+			attack_direction = hitting_projectile.dir,
+		)
+	if(hitting_projectile.pain)
+		apply_damage(
+			damage = hitting_projectile.pain,
+			damagetype = PAIN,
+			def_zone = def_zone,
 			// blocked = armor_check, // Batons don't factor in armor, soooo we shouldn't?
 			attack_direction = hitting_projectile.dir,
 		)
+
+	var/extra_paralyze = 0 SECONDS
+	var/extra_immobilize = 0 SECONDS
+	if(hitting_projectile.damage_type == BRUTE && !hitting_projectile.grazing)
+		// melbert to do scale on pain of bodypart?
+		if(damage_done >= 60)
+			if(!IsParalyzed() && prob(damage_done))
+				extra_paralyze += 0.8 SECONDS
+		else if(damage_done >= 20)
+			if(!IsImmobilized() && prob(damage_done * 2))
+				extra_immobilize += 0.8 SECONDS
 
 	apply_effects(
 		stun = hitting_projectile.stun,
@@ -131,8 +150,8 @@
 		drowsy = hitting_projectile.drowsy,
 		blocked = armor_check,
 		jitter = (mob_biotypes & MOB_ROBOTIC) ? 0 SECONDS : hitting_projectile.jitter, // Cyborgs can jitter but not from being shot
-		paralyze = hitting_projectile.paralyze,
-		immobilize = hitting_projectile.immobilize,
+		paralyze = hitting_projectile.paralyze + extra_paralyze,
+		immobilize = hitting_projectile.immobilize + extra_immobilize,
 	)
 	if(hitting_projectile.dismemberment)
 		check_projectile_dismemberment(hitting_projectile, def_zone)
