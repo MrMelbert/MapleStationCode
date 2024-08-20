@@ -13,9 +13,9 @@
 
 /datum/component/uses_mana/touch_spell/Initialize(
 	datum/callback/activate_check_failure_callback,
-	pre_use_check_with_feedback_comsig,
+	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
 	pre_use_check_comsig,
-	post_use_comsig,
+	post_use_comsig = COMSIG_SPELL_TOUCH_HAND_HIT,
 	datum/callback/mana_required,
 	datum/callback/get_mana_consumed_callback,
 	datum/callback/get_user_callback,

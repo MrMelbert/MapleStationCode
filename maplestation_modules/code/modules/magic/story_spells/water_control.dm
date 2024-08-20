@@ -46,10 +46,11 @@
 	attunements[/datum/attunement/water] += WET_ATTUNEMENT_WATER
 
 	AddComponent(/datum/component/uses_mana/spell, \
-		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		attunements = attunements, \
-		)
+	)
 	wetness_pool = new(water_units_applied * ((1 + 2 * aoe_range) ** 2))
 	wetness_pool.add_reagent(water_type, INFINITY)
 

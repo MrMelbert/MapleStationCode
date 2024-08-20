@@ -21,8 +21,7 @@
 	attunements[MAGIC_ELEMENT_ELECTRIC] += SHOCK_TOUCH_ATTUNEMENT_ELEC
 
 	AddComponent(/datum/component/uses_mana/touch_spell, \
-		pre_use_check_comsig = COMSIG_SPELL_BEFORE_CAST, \
-		pre_use_check_with_feedback_comsig = COMSIG_SPELL_AFTER_CAST, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		mana_required = shock_touch_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
