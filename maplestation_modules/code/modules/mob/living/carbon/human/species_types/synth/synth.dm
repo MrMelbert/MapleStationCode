@@ -45,7 +45,7 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/synth,
 	)
 
-	external_organs = list(/obj/item/organ/external/synth_head_cover = "Helm")
+	mutant_organs = list(/obj/item/organ/external/synth_head_cover = "Helm")
 
 	mutantbrain = /obj/item/organ/internal/brain/cybernetic
 	mutanttongue = /obj/item/organ/internal/tongue/robot
@@ -147,11 +147,6 @@
 /datum/species/synth/handle_body(mob/living/carbon/human/species_human)
 	if(disguise_species)
 		return disguise_species.handle_body(species_human)
-	return ..()
-
-/datum/species/synth/handle_mutant_bodyparts(mob/living/carbon/human/source, forced_colour)
-	if(disguise_species)
-		return disguise_species.handle_mutant_bodyparts(source, forced_colour)
 	return ..()
 
 /datum/species/synth/regenerate_organs(mob/living/carbon/organ_holder, datum/species/old_species, replace_current = TRUE, list/excluded_zones, visual_only = FALSE)

@@ -40,7 +40,6 @@ SUBSYSTEM_DEF(accessories) // just 'accessories' for brevity
 	var/list/horns_list
 	var/list/frills_list
 	var/list/spines_list
-	var/list/legs_list
 	var/list/tail_spines_list
 
 	//Mutant Human bits

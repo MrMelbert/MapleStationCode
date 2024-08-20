@@ -11,7 +11,7 @@
 		TRAIT_USES_SKINTONES,
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/ornithid
-	external_organs = list(
+	mutant_organs = list(
 		/obj/item/organ/external/wings/functional/arm_wings = "Monochrome",
 		/obj/item/organ/external/plumage = "Hermes",
 		/obj/item/organ/external/tail/avian = "Eagle",

@@ -707,8 +707,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["feathers"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_FEATHER_COLOR_BLOCK))
 	if(dna.features["synth_head_cover"]) // NON-MODULE CHANGE
 		dna.features["synth_head_cover"] = SSaccessories.synth_head_cover_list[deconstruct_block(get_uni_feature_block(features, DNA_SYNTH_HEAD_COVER_BLOCK), length(SSaccessories.synth_head_cover_list))]
-	for(var/obj/item/organ/external/external_organ in organs)
-		external_organ.mutate_feature(features, src)
+	for(var/obj/item/organ/organ in organs)
+		organ.mutate_feature(features, src)
 
 	if(icon_update)
 		update_body(is_creating = mutcolor_update)

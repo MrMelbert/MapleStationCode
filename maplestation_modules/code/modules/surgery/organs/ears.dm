@@ -5,20 +5,8 @@
 	icon_state = "cyber_kitty"
 	damage_multiplier = 1.5 //slightly better than regular cat ears
 
-/obj/item/organ/internal/ears/cat/cybernetic/on_mob_insert(mob/living/carbon/human/ear_owner)
-	. = ..()
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.features["ears"] = ear_owner.dna.species.mutant_bodyparts["ears"] = "Cybernetic Cat"
-		ear_owner.update_body()
-
-/obj/item/organ/internal/ears/cat/cybernetic/on_mob_remove(mob/living/carbon/human/ear_owner)
-	. = ..()
-	if(istype(ear_owner))
-		color = ear_owner.hair_color
-		ear_owner.dna.features["ears"] = "None"
-		ear_owner.dna.species.mutant_bodyparts -= "ears"
-		ear_owner.update_body()
+/datum/bodypart_overlay/mutant/cat_ears/cybernetic // snowflaked because these are for seperate organs
+	feature_key = "catcyber"
 
 /obj/item/organ/internal/ears/cat/cybernetic/emp_act(severity)
 	. = ..()

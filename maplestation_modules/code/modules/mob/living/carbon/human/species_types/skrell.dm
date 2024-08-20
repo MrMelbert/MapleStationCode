@@ -6,7 +6,7 @@
 	plural_form = "Skrellian"
 	id = SPECIES_SKRELL
 	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER)
-	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
+	mutant_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/skrell

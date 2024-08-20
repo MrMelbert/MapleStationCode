@@ -968,7 +968,7 @@
 	if(should_draw_greyscale) //Should the limb be colored?
 		draw_color ||= species_color || (skin_tone ? skintone2hex(skin_tone) : null)
 
-	recolor_external_organs()
+	recolor_bodypart_overlays()
 	return TRUE
 
 //to update the bodypart's icon when not attached to a mob
@@ -1272,7 +1272,7 @@
 	return ((biological_state & BIO_BLOODED) && (!owner || !HAS_TRAIT(owner, TRAIT_NOBLOOD)))
 
 ///Loops through all of the bodypart's external organs and update's their color.
-/obj/item/bodypart/proc/recolor_external_organs()
+/obj/item/bodypart/proc/recolor_bodypart_overlays()
 	for(var/datum/bodypart_overlay/mutant/overlay in bodypart_overlays)
 		overlay.inherit_color(src, force = TRUE)
 
