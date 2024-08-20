@@ -260,6 +260,7 @@ GLOBAL_LIST_EMPTY(sfx_datum_by_key)
 #define SFX_BANDAGE_BEGIN "bandage_begin"
 #define SFX_BANDAGE_END "bandage_end"
 #define SFX_POLAROID "polaroid"
+#define SFX_KEYBOARD_CLICKS "keyboard_clicks"
 // #define SFX_SUTURE_BEGIN "suture_begin"
 // #define SFX_SUTURE_CONTINUOUS "suture_continuous"
 // #define SFX_SUTURE_END "suture_end"
