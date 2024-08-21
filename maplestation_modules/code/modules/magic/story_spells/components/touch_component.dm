@@ -59,21 +59,3 @@
 	return TRUE
 
 #undef COMSIG_SPELL_TOUCH_CAN_HIT
-
-/* /datum/component/uses_mana/touch_spell/proc/handle_touch(
-	datum/action/cooldown/spell/touch/source,
-	atom/victim,
-	mob/living/carbon/caster,
-	obj/item/melee/touch_attack/hand,
-)
-	SIGNAL_HANDLER
-
-	react_to_successful_use(source, victim)
-
-/datum/component/uses_mana/touch_spell/proc/handle_precast(atom/cast_on)
-	SIGNAL_HANDLER
-
-	var/datum/action/cooldown/spell/parent_spell = parent
-	return can_activate_with_feedback(TRUE, parent_spell.owner, cast_on) // The stuff commented out here should be irrelevant in the current system, holding on to for reference. will be axed at merge time. */
-
-
