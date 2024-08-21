@@ -165,7 +165,7 @@
 		if (user)
 			if (ismob(user))
 				var/mob/mob_user = user
-				mob_user.balloon_alert(mob_user, "insufficient mana!") //issue: either this always fires or never fires. and never properly cancels spell casts possible suspect: get_mana_required
+				mob_user.balloon_alert(mob_user, "insufficient mana!")
 		return can_activate_check_failure(arglist(args.Copy()))
 	return NONE
 

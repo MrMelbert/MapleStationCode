@@ -25,9 +25,15 @@
 
 	/// You get some seconds of freecasting to prevent spam.\
 
-/* /datum/action/cooldown/spell/touch/finger_flame/can_cast_spell(...)
+/datum/action/cooldown/spell/touch/finger_flame/can_cast_spell(...)
 	if(!source.attached_hand)
-		return NONE */ // todo: find some way to translate this to being on the spell
+		return NONE
+
+/datum/action/cooldown/spell/touch/finger_flame/RegisterWithParent()
+	RegisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT, PROC_REF(can_cast_spell))
+
+/datum/action/cooldown/spell/touch/finger_flame/UnregisterFromParent()
+	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT)
 
 /datum/action/cooldown/spell/touch/finger_flame/cast(...)
 	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.

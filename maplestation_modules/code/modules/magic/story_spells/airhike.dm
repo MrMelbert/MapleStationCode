@@ -1,23 +1,6 @@
 #define AIRHIKE_ATTUNEMENT_WIND 0.5
 #define AIRHIKE_MANA_COST 30
 
-/datum/component/uses_mana/story_spell/airhike
-	/// Attunement modifier for Wind attunement
-	var/airhike_attunement_amount = AIRHIKE_ATTUNEMENT_WIND
-	/// Base mana cost
-	var/airhike_cost = AIRHIKE_MANA_COST
-
-/* /datum/component/uses_mana/story_spell/airhike/react_to_successful_use(atom/cast_on)
-	. = ..()
-
-	drain_mana() */ // since this is near identical to the base proc, this might be superfluous.
-
-//If there isn't enough mana and the Rclick check passes so it won't mess up any future Normal casts
-/datum/component/uses_mana/story_spell/airhike/can_activate_check_failure(give_feedback, ...)
-	var/datum/action/cooldown/spell/airhike/airhike_spell = parent
-	airhike_spell.zup = FALSE
-	return ..()
-
 /datum/action/cooldown/spell/airhike
 	name = "Air Hike"
 	desc = "Force wind beneath one's feet for a boost of movement where you're facing. Right-click the spell icon to attempt to jump up a level and go forward a tile instead."
@@ -49,6 +32,9 @@
 		mana_required = mana_cost, \
 		attunements = attunements, \
 	)
+/datum/action/cooldown/spell/airhike/spell_cannot_activate()
+	zup = FALSE
+	return ..()
 
 /datum/action/cooldown/spell/airhike/is_valid_target(atom/cast_on)
 	return iscarbon(cast_on)
