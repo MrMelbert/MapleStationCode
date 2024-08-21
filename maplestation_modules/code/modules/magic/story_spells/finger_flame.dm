@@ -27,13 +27,7 @@
 
 /* /datum/action/cooldown/spell/touch/finger_flame/can_cast_spell(...)
 	if(!source.attached_hand)
-		return NONE
-
-/datum/action/cooldown/spell/touch/finger_flame/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT, PROC_REF(can_cast_spell))
-
-/datum/action/cooldown/spell/touch/finger_flame/UnregisterFromParent()
-	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT) */
+		return NONE */
 
 /datum/action/cooldown/spell/touch/finger_flame/cast(...)
 	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.
@@ -93,7 +87,8 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_FIRE] += FINGERFLAME_ATTUNEMENT_FIRE
 
-	AddComponent(/datum/component/uses_mana/spell/, \
+	AddComponent(/datum/component/uses_mana/touch_spell/, \
+		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \ // snowflake override on this, want mana to be used *on cast* not on touch
 		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
