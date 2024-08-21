@@ -101,7 +101,7 @@
 		if(marked_target && !warped)
 			fire_warp()
 			warped = TRUE
-		return
+		return BULLET_ACT_HIT
 	if(marked_target)
 		return
 	if(isliving(target) || isvehicle(target))
@@ -117,11 +117,12 @@
 	playsound(firer, warp_sound, 100, extrarange = 5)
 	sleep(25)
 
-	var/obj/projectile/A = new /obj/projectile/bullet/supergodslayer(get_turf(firer))
-	A.preparePixelProjectile(marked_target, get_turf(firer))
-	A.firer = firer
-	A.fired_from = firer
-	A.fire(null, marked_target)
+	if(marked_target)
+		var/obj/projectile/A = new /obj/projectile/bullet/supergodslayer(get_turf(firer))
+		A.preparePixelProjectile(marked_target, get_turf(firer))
+		A.firer = firer
+		A.fired_from = firer
+		A.fire(null, marked_target)
 
 /obj/effect/projectile/muzzle/godslayer
 	name = "godslayer muzzle flash"
