@@ -295,8 +295,8 @@
 	contains = list(/obj/item/encryptionkey/language/all_crew)
 
 /datum/supply_pack/goody/fishing_toolbox
-	name = "Fishing toolbox"
-	desc = "Complete toolbox set for your fishing adventure. Advanced hooks and lines sold separetely."
+	name = "Fishing Toolbox"
+	desc = "Complete toolbox set for your fishing adventure. Contains a valuable tip. Advanced hooks and lines sold separetely."
 	cost = PAYCHECK_CREW * 2
 	contains = list(/obj/item/storage/toolbox/fishing)
 
