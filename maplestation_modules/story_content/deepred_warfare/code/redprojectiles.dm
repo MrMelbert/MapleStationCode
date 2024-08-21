@@ -93,6 +93,8 @@
 	var/marked_target
 	var/warped = FALSE
 
+	var/warp_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techpowerup.ogg'
+
 /obj/projectile/bullet/godslayer/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
 	if(. == BULLET_ACT_HIT && !pierce_hit)
@@ -111,6 +113,10 @@
 //		fire_warp()
 
 /obj/projectile/bullet/godslayer/proc/fire_warp()
+	sleep(35)
+	playsound(firer, warp_sound, 100, extrarange = 5)
+	sleep(25)
+
 	var/obj/projectile/A = new /obj/projectile/bullet/supergodslayer(get_turf(firer))
 	A.preparePixelProjectile(marked_target, get_turf(firer))
 	A.firer = firer
@@ -132,8 +138,8 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_impact"
 
-/obj/projectile/bullet/godslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 1.5 SECONDS, impacting = TRUE)
-	duration = 1.5 SECONDS
+/obj/projectile/bullet/godslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 4 SECONDS, impacting = TRUE)
+	duration = 4 SECONDS
 	. = ..()
 
 /obj/projectile/bullet/supergodslayer
@@ -163,8 +169,7 @@
 	impact_light_range = 1
 	impact_light_color_override = COLOR_BLUE_LIGHT
 
-	var/warp_sound = 'maplestation_modules/story_content/deepred_warfare/sound/warp.ogg'
-	var/supercharge_sound = 'maplestation_modules/story_content/deepred_warfare/sound/supercharge.ogg'
+	var/supercharge_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techexplosion.ogg'
 
 /obj/effect/projectile/muzzle/supergodslayer
 	name = "supercharged godslayer warp site"
@@ -181,14 +186,11 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "supergodslayer_impact"
 
-/obj/projectile/bullet/supergodslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 3 SECONDS, impacting = TRUE)
-	duration = 3 SECONDS
+/obj/projectile/bullet/supergodslayer/generate_hitscan_tracers(cleanup = TRUE, duration = 5 SECONDS, impacting = TRUE)
+	duration = 5 SECONDS
 	. = ..()
 
 /obj/projectile/bullet/supergodslayer/fire(angle, atom/direct_target)
-	sleep(10)
-	playsound(firer, warp_sound, 100, extrarange = 5)
-	sleep(10)
 	playsound(firer, supercharge_sound, 100, extrarange = 5)
 	. = ..()
 

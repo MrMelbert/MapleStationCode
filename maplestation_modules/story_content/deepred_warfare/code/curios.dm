@@ -41,7 +41,7 @@
 	icon_state = "godslayer"
 	projectile_type = /obj/projectile/bullet/godslayer
 	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
-	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/godslayer.ogg'
+	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg'
 	// delay = 0.1 * SECONDS
 
 	var/obj/item/gun/fired_record
