@@ -1,4 +1,5 @@
 #define FLARE_LIGHT_ATTUNEMENT 0.5
+#define FLARE_BASE_MANA_COST 30
 
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"
@@ -15,7 +16,7 @@
 	/// What color the flare created appears to be
 	var/flare_color
 	/// What the mana cost is, affected by Lesser variant.
-	var/mana_cost = 30
+	var/mana_cost = FLARE_BASE_MANA_COST
 
 //Variant that conjures a weaker version
 /datum/spellbook_item/spell/conjure_item/flare/apply_params(datum/action/cooldown/spell/conjure_item/flare/our_spell, lesser)
@@ -115,3 +116,4 @@
 	return new_color
 
 #undef FLARE_LIGHT_ATTUNEMENT
+#undef FLARE_BASE_MANA_COST

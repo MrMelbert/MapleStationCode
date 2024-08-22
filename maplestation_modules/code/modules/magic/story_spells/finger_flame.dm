@@ -88,7 +88,7 @@
 	attunements[MAGIC_ELEMENT_FIRE] += FINGERFLAME_ATTUNEMENT_FIRE
 
 	AddComponent(/datum/component/uses_mana/touch_spell/, \
-		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \ // snowflake override on this, want mana to be used *on cast* not on touch
+		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
 		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
