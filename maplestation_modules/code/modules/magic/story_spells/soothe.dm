@@ -34,16 +34,16 @@
 	AddComponent(/datum/component/uses_mana/spell, \
 		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
-		mana_required = mana_cost, \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		attunements = attunements, \
 	)
- // replace with  "CALLBACK(src, PROC_REF(get_mana_consumed))," when error is resolved
 
-/* /datum/action/cooldown/spell/pointed/soothe_target/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+/datum/action/cooldown/spell/pointed/soothe_target/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
 	var/final_cost = mana_cost
-	if(!isnull(cast_on.mind)) // ERR: claims "cast_on.mind" is invalid, commenting out until i figure out how to fix
+	var/mob/living/living_cast_on = cast_on
+	if(!isnull(living_cast_on.mind))
 		final_cost *= 2 // costs more on other players because pacifism is kind of annoying...
-	return final_cost */
+	return final_cost
 
 /datum/action/cooldown/spell/pointed/soothe_target/is_valid_target(atom/cast_on)
 	return isliving(cast_on) && (cast_on != owner)
