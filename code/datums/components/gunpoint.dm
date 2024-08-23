@@ -39,17 +39,17 @@
 	RegisterSignals(targ, list(
 		COMSIG_MOB_ATTACK_HAND,
 		COMSIG_MOB_ITEM_ATTACK,
-		COMSIG_MOVABLE_MOVED,
 		COMSIG_MOB_FIRED_GUN,
 		COMSIG_MOVABLE_SET_GRAB_STATE,
 		COMSIG_LIVING_START_PULL), PROC_REF(trigger_reaction))
+	RegisterSignal(targ, COMSIG_MOVABLE_MOVED, PROC_REF(move_trigger_reaction)) // NON-MODULE CHANGE
 	RegisterSignal(targ, COMSIG_MOVABLE_USING_RADIO, PROC_REF(radio_trigger_reaction)) // NON-MODULE CHANGE
 	RegisterSignal(targ, COMSIG_ATOM_EXAMINE, PROC_REF(examine_target))
 	RegisterSignal(targ, COMSIG_LIVING_PRE_MOB_BUMP, PROC_REF(block_bumps_target))
 	RegisterSignals(targ, list(COMSIG_LIVING_DISARM_HIT, COMSIG_LIVING_GET_PULLED), PROC_REF(cancel))
 	RegisterSignals(weapon, list(COMSIG_ITEM_DROPPED, COMSIG_ITEM_EQUIPPED), PROC_REF(cancel))
 
-	var/distance = min(get_dist(shooter, target), 1) // treat 0 distance as adjacent
+	var/distance = max(get_dist(shooter, target), 1) // treat 0 distance as adjacent // NON-MODULE CHANGE / melbert todo : min -> max, upstream fix
 	var/distance_description = (distance <= 1 ? "point blank " : "")
 
 	shooter.visible_message(span_danger("[shooter] aims [weapon] [distance_description]at [target]!"),
@@ -160,6 +160,13 @@
 	INVOKE_ASYNC(src, PROC_REF(async_trigger_reaction))
 	to_chat(source, span_warning("You fail to reach [radio]!"))
 	return COMPONENT_CANNOT_USE_RADIO
+
+/datum/component/gunpoint/proc/move_trigger_reaction(datum/source, atom/new_loc)
+	SIGNAL_HANDLER
+	if(target.pulledby == parent)
+		return
+	INVOKE_ASYNC(src, PROC_REF(async_trigger_reaction))
+
 // NON-MODULE CHANGE END
 
 /datum/component/gunpoint/proc/async_trigger_reaction()

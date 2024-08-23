@@ -11,7 +11,6 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
 	limb_integrity = 30
-	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER
 	blood_overlay_type = "uniform" // NON-MODULE CHANGE reworking clothing blood overlays
 
 	/// Has this undersuit been freshly laundered and, as such, imparts a mood bonus for wearing
@@ -268,23 +267,24 @@
 
 /obj/item/clothing/under/examine(mob/user)
 	. = ..()
+	// NON-MODULE CHANGEs
 	if(can_adjust)
-		. += "Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
+		. += "&bull; Alt-click on [src] to wear it [adjusted == ALT_STYLE ? "normally" : "casually"]."
 	if(has_sensor == BROKEN_SENSORS)
-		. += "Its sensors appear to be shorted out. You could repair it with some cabling."
+		. += "&bull; Its sensors appear to be shorted out. You could repair it with some cabling."
 	else if(has_sensor > NO_SENSORS)
 		switch(sensor_mode)
 			if(SENSOR_OFF)
-				. += "Its sensors appear to be disabled."
+				. += "&bull; Its sensors appear to be disabled."
 			if(SENSOR_LIVING)
-				. += "Its binary life sensors appear to be enabled."
+				. += "&bull; Its binary life sensors appear to be enabled."
 			if(SENSOR_VITALS)
-				. += "Its vital tracker appears to be enabled."
+				. += "&bull; Its vital tracker appears to be enabled."
 			if(SENSOR_COORDS)
-				. += "Its vital tracker and tracking beacon appear to be enabled."
+				. += "&bull; Its vital tracker and tracking beacon appear to be enabled."
 	if(LAZYLEN(attached_accessories))
 		var/list/accessories = list_accessories_with_icon(user)
-		. += "It has [english_list(accessories)] attached."
+		. += "&bull; It has [english_list(accessories)] attached."
 		. += "Alt-Right-Click to remove [attached_accessories[1]]."
 
 /// Helper to list out all accessories with an icon besides it, for use in examine

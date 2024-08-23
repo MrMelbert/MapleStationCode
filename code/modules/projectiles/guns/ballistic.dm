@@ -448,7 +448,7 @@
 ///Installs a new suppressor, assumes that the suppressor is already in the contents of src
 /obj/item/gun/ballistic/proc/install_suppressor(obj/item/suppressor/S)
 	suppressed = S
-	w_class += S.w_class //so pistols do not fit in pockets when suppressed
+	update_weight_class(w_class + S.w_class) //so pistols do not fit in pockets when suppressed
 	update_appearance()
 
 /obj/item/gun/ballistic/clear_suppressor()
@@ -456,7 +456,7 @@
 		return
 	if(isitem(suppressed))
 		var/obj/item/I = suppressed
-		w_class -= I.w_class
+		update_weight_class(w_class - I.w_class)
 	return ..()
 
 /obj/item/gun/ballistic/AltClick(mob/user)
@@ -628,7 +628,7 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 		if(handle_modifications)
 			name = "sawn-off [src.name]"
 			desc = sawn_desc
-			w_class = WEIGHT_CLASS_NORMAL
+			update_weight_class(WEIGHT_CLASS_NORMAL)
 			//The file might not have a "gun" icon, let's prepare for this
 			lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
 			righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
@@ -711,6 +711,24 @@ GLOBAL_LIST_INIT(gun_saw_types, typecacheof(list(
 		magazine = new spawn_magazine_type(src)
 	chamber_round()
 	update_appearance()
+
+/obj/item/gun/ballistic/toss_gun_hard(mob/living/carbon/thrower, mob/living/target)
+	. = ..()
+	if(!.)
+		return
+	switch(bolt_type)
+		if(BOLT_TYPE_NO_BOLT) //emptying the revolver cylinder
+			attack_self()
+			return
+		if(BOLT_TYPE_OPEN) //emptying the chamber of an automatic weapon, because rack() doesn't do this to it
+			handle_chamber(chamber_next_round = FALSE)
+	if(!internal_magazine && magazine) //if a magazine is attached to the weapon, we remove it and throw it aside
+		magazine.forceMove(drop_location())
+		magazine.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), 1, 1)
+		magazine = null
+		update_icon() //updating the sprite of weapons without a magazine
+	if(!isnull(chambered)) //if there is a cartridge in the chamber, we remove it
+		rack()
 
 /obj/item/suppressor
 	name = "suppressor"

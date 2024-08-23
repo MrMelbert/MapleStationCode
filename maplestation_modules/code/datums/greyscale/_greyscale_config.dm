@@ -25,15 +25,10 @@
 /datum/greyscale_config/tablet/stripe_two_color
 	json_config = 'code/datums/greyscale/json_configs/_pda_stripe_two_color.json'
 
-// /datum/greyscale_config/jumpsuit_worn_digi
-// 	name = "Digitigrate Jumpsuit Worn"
-// 	icon_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
-// 	json_config = 'code/datums/greyscale/json_configs/jumpsuit_worn.json'
-
-// /datum/greyscale_config/jumpsuit_prison_worn_digi
-// 	name = "Digitigrade Prison Jumpsuit Worn"
-// 	icon_file = 'maplestation_modules/icons/mob/clothing/under/digi_under.dmi'
-// 	json_config = 'code/datums/greyscale/json_configs/jumpsuit_prison_worn.json'
+/datum/greyscale_config/jumpsuit_worn_digi
+	name = "Digitigrate Jumpsuit Worn"
+	icon_file = 'maplestation_modules/icons/mob/clothing/under/digi_gags.dmi'
+	json_config = 'code/datums/greyscale/json_configs/_jumpsuit_worn_digi.json'
 
 /datum/greyscale_config/heels
 	name = "Heels"
@@ -47,7 +42,7 @@
 
 /datum/greyscale_config/spacer_turtleneck
 	name = "Spacer's Turtleneck"
-	icon_file = 'maplestation_modules/icons/mob/clothing/under/spacer_turtleneck.dmi'
+	icon_file = 'maplestation_modules/icons/obj/clothing/under/spacer_turtleneck.dmi'
 	json_config = 'code/datums/greyscale/json_configs/spacer_turtleneck.json'
 
 /datum/greyscale_config/spacer_turtleneck_worn

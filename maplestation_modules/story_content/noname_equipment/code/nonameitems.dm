@@ -27,9 +27,7 @@
 
 /obj/item/storage/book/nonamebook/Initialize(mapload) //book doubles as a casino set briefcase
 	. = ..()
-	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL //unsure how to calculate storage
-	atom_storage.max_slots = 12
-	atom_storage.max_total_storage = 24
+	create_storage(max_slots = 12, max_total_storage = 24, max_specific_storage = WEIGHT_CLASS_NORMAL)
 
 /obj/item/storage/book/nonamebook/PopulateContents() //essentially a loadout thing for nono
 	if(empty)
