@@ -2631,6 +2631,17 @@
 	category = list(
 		RND_CATEGORY_MODSUIT_MODULES + RND_SUBCATEGORY_MODSUIT_MODULES_ENGINEERING
 	)
+/datum/design/module/fishing_glove
+	name = "MOD Fishing Glove Module"
+	id = "mod_fishing"
+	materials = list(
+		/datum/material/titanium = HALF_SHEET_MATERIAL_AMOUNT,
+		/datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT,
+		/datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT,
+		/datum/material/plastic = HALF_SHEET_MATERIAL_AMOUNT,
+	)
+	build_path = /obj/item/mod/module/fishing_glove
+
 /datum/design/module/mister_janitor
 	name = "Cleaning Mister Module"
 	id = "mod_mister_janitor"
