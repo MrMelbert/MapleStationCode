@@ -14,7 +14,7 @@
 
 /obj/item/storage/box/donkpockets/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/donkpocket))
+	atom_storage.set_holdable(/obj/item/food/donkpocket)
 
 /obj/item/storage/box/donkpockets/donkpocketspicy
 	name = "box of spicy-flavoured donk-pockets"
@@ -96,7 +96,7 @@
 	return ..()
 
 /obj/item/storage/box/papersack/attackby(obj/item/attacking_item, mob/user, params)
-	if(istype(attacking_item, /obj/item/pen))
+	if(IS_WRITING_UTENSIL(attacking_item))
 		var/choice = show_radial_menu(user, src , papersack_designs, custom_check = CALLBACK(src, PROC_REF(check_menu), user, attacking_item), radius = 36, require_near = TRUE)
 		if(!choice || choice == design_choice)
 			return FALSE
@@ -338,7 +338,7 @@
 
 /obj/item/storage/box/gum/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/bubblegum))
+	atom_storage.set_holdable(/obj/item/food/bubblegum)
 	atom_storage.max_slots = 4
 	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
@@ -510,7 +510,7 @@
 
 /obj/item/storage/box/coffeepack/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/food/grown/coffee))
+	atom_storage.set_holdable(/obj/item/food/grown/coffee)
 	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 /obj/item/storage/box/coffeepack/PopulateContents()

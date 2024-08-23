@@ -99,3 +99,9 @@
 	id_additions = list(
 		"comp_bci_click",
 	)
+
+/datum/techweb_node/adv_shells
+	id_additions = list(
+		"headset_shell",
+	)
+	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1500)

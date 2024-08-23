@@ -20,7 +20,7 @@
 		righthand_file = rh_icon
 	if(worn_slot_flags)
 		slot_flags = worn_slot_flags
-	w_class = M.held_w_class
+	update_weight_class(M.held_w_class)
 	deposit(M)
 	. = ..()
 
@@ -53,7 +53,9 @@
 		return
 
 	var/mob/living/throw_mob = held_mob
-	release()
+	release(display_messages = FALSE)
+	user.set_pulling(throw_mob)
+	user.setGrabState(GRAB_AGGRESSIVE)
 	return throw_mob
 
 /obj/item/clothing/head/mob_holder/dropped()
