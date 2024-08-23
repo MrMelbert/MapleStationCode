@@ -693,12 +693,14 @@
 
 /obj/item/storage/crayons/Initialize(mapload)
 	. = ..()
-	atom_storage.set_holdable(list(/obj/item/toy/crayon),
-		list(
+	atom_storage.set_holdable(
+		can_hold_list = /obj/item/toy/crayon,
+		cant_hold_list = list(
 			/obj/item/toy/crayon/spraycan,
 			/obj/item/toy/crayon/mime,
 			/obj/item/toy/crayon/rainbow,
-		))
+		),
+	)
 	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/box.ogg'
 
 /obj/item/storage/crayons/PopulateContents()
