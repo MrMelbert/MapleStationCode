@@ -34,11 +34,10 @@
 		return FALSE
 
 	var/already_transferring = (user in mana_pool.transferring_to)
-	var/transfer_results = 0 // unused? its used below
 	if (already_transferring)
-		transfer_results = mana_pool.stop_transfer(user.mana_pool)
+		mana_pool.stop_transfer(user.mana_pool)
 	else
-		transfer_results = mana_pool.start_transfer(user.mana_pool, force_process = TRUE)
+		mana_pool.start_transfer(user.mana_pool, force_process = TRUE)
 
 /obj/item/mana_battery/mana_crystal
 	name = MAGIC_MATERIAL_NAME + " crystal"
