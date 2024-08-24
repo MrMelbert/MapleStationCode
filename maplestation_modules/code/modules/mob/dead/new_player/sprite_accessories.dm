@@ -106,143 +106,143 @@
 	icon_state = "hair_gloomy_longer"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/24005
-/datum/sprite_accessory/hair/skyrat/bobcut_over_eye_1
+/datum/sprite_accessory/hair/bobcut_over_eye_1
 	name = "Bobcut over eye 1"
 	icon_state = "hair_bobcut_over_eye_1"
 
-/datum/sprite_accessory/hair/skyrat/bobcut_over_eye_2
+/datum/sprite_accessory/hair/bobcut_over_eye_2
 	name = "Bobcut over eye 2"
 	icon_state = "hair_bobcut_over_eye_2"
 
-/datum/sprite_accessory/hair/skyrat/bobcut_over_eye_3
+/datum/sprite_accessory/hair/bobcut_over_eye_3
 	name = "Bobcut over eye 3"
 	icon_state = "hair_bobcut_over_eye_3"
 
-/datum/sprite_accessory/hair/skyrat/bonnie
+/datum/sprite_accessory/hair/bonnie
 	name = "Bonnie"
 	icon_state = "hair_bonnie"
 
-/datum/sprite_accessory/hair/skyrat/bonnie_short
+/datum/sprite_accessory/hair/bonnie_short
 	name = "Bonnie short"
 	icon_state = "hair_bonnie_short"
 
-/datum/sprite_accessory/hair/skyrat/bonnie_long
+/datum/sprite_accessory/hair/bonnie_long
 	name = "Bonnie long"
 	icon_state = "hair_bonnie_long"
 
-/datum/sprite_accessory/hair/skyrat/bonnie_2
+/datum/sprite_accessory/hair/bonnie_2
 	name = "Bonnie 2"
 	icon_state = "hair_bonnie_2"
 
-/datum/sprite_accessory/hair/skyrat/bonnie_2_long
+/datum/sprite_accessory/hair/bonnie_2_long
 	name = "Bonnie long 2"
 	icon_state = "hair_bonnie_2_long"
 
-/datum/sprite_accessory/hair/skyrat/bonie_2_short
+/datum/sprite_accessory/hair/bonie_2_short
 	name = "Bonnie short 2"
 	icon_state = "hair_bonnie_2_short"
 
-/datum/sprite_accessory/hair/skyrat/dawn
+/datum/sprite_accessory/hair/dawn
 	name = "Dawn"
 	icon_state = "hair_dawn"
 
-/datum/sprite_accessory/hair/skyrat/fluffy
+/datum/sprite_accessory/hair/fluffy
 	name = "Fluffy"
 	icon_state = "hair_fluffy"
 
-/datum/sprite_accessory/hair/skyrat/fluffy_long
+/datum/sprite_accessory/hair/fluffy_long
 	name = "Fluffy long"
 	icon_state = "hair_fluffy_long"
 
-/datum/sprite_accessory/hair/skyrat/khmuro
+/datum/sprite_accessory/hair/khmuro
 	name = "Khmuro"
 	icon_state = "hair_khmuro"
 
-/datum/sprite_accessory/hair/skyrat/kobeni_1
+/datum/sprite_accessory/hair/kobeni_1
 	name = "Kobeni 1"
 	icon_state = "hair_kobeni_1"
 
-/datum/sprite_accessory/hair/skyrat/kobeni_2
+/datum/sprite_accessory/hair/kobeni_2
 	name = "Kobeni 2"
 	icon_state = "hair_kobeni_2"
 
-/datum/sprite_accessory/hair/skyrat/low_bun
+/datum/sprite_accessory/hair/low_bun
 	name = "Low bun"
 	icon_state = "hair_low_bun"
 
-/datum/sprite_accessory/hair/skyrat/low_ponytail
+/datum/sprite_accessory/hair/low_ponytail
 	name = "Low ponytail"
 	icon_state = "hair_low_ponytail"
 
-/datum/sprite_accessory/hair/skyrat/morning
+/datum/sprite_accessory/hair/morning
 	name = "Morning"
 	icon_state = "hair_morning"
 
-/datum/sprite_accessory/hair/skyrat/over_ear_1
+/datum/sprite_accessory/hair/over_ear_1
 	name = "Over ear 1"
 	icon_state = "hair_over_ear_1"
 
-/datum/sprite_accessory/hair/skyrat/over_ear_2
+/datum/sprite_accessory/hair/over_ear_2
 	name = "Over ear 2"
 	icon_state = "hair_over_ear_2"
 
-/datum/sprite_accessory/hair/skyrat/over_eye
+/datum/sprite_accessory/hair/over_eye
 	name = "Over eye"
 	icon_state = "hair_over_eye"
 
-/datum/sprite_accessory/hair/skyrat/ponytail
+/datum/sprite_accessory/hair/ponytail
 	name = "Fluffy ponytail"
 	icon_state = "hair_ponytail"
 
-/datum/sprite_accessory/hair/skyrat/ponytail_short
+/datum/sprite_accessory/hair/ponytail_short
 	name = "Short fluffy ponytail"
 	icon_state = "hair_ponytail_short"
 
-/datum/sprite_accessory/hair/skyrat/simple
+/datum/sprite_accessory/hair/simple
 	name = "Simple"
 	icon_state = "hair_simple"
 
-/datum/sprite_accessory/hair/skyrat/simple_long
+/datum/sprite_accessory/hair/simple_long
 	name = "Simple long"
 	icon_state = "hair_simple_long"
 
-/datum/sprite_accessory/hair/skyrat/simple_short
+/datum/sprite_accessory/hair/simple_short
 	name = "Simple short"
 	icon_state = "hair_simple_short"
 
-/datum/sprite_accessory/hair/skyrat/strict
+/datum/sprite_accessory/hair/strict
 	name = "Strict"
 	icon_state = "hair_strict"
 
-/datum/sprite_accessory/hair/skyrat/strict_long
+/datum/sprite_accessory/hair/strict_long
 	name = "Strict long"
 	icon_state = "hair_strict_long"
 
-/datum/sprite_accessory/hair/skyrat/strict_short
+/datum/sprite_accessory/hair/strict_short
 	name = "Strict short"
 	icon_state = "hair_strict_short"
 
-/datum/sprite_accessory/hair/skyrat/thin_ponytail
+/datum/sprite_accessory/hair/thin_ponytail
 	name = "Thin ponytail"
 	icon_state = "hair_thin_ponytail"
 
-/datum/sprite_accessory/hair/skyrat/thin_ponytail_long
+/datum/sprite_accessory/hair/thin_ponytail_long
 	name = "Long thin ponytail"
 	icon_state = "hair_thin_ponytail_long"
 
-/datum/sprite_accessory/hair/skyrat/twintails_2
+/datum/sprite_accessory/hair/twintails_2
 	name = "Twintails 2"
 	icon_state = "hair_twintails_2"
 
-/datum/sprite_accessory/hair/skyrat/twintails_2_long
+/datum/sprite_accessory/hair/twintails_2_long
 	name = "Long twintails"
 	icon_state = "hair_twintails_2_long"
 
-/datum/sprite_accessory/hair/skyrat/twintails_2_short
+/datum/sprite_accessory/hair/twintails_2_short
 	name = "Short twintails"
 	icon_state = "hair_twintails_2_short"
 
-/datum/sprite_accessory/hair/skyrat/upwards
+/datum/sprite_accessory/hair/upwards
 	name = "Upwards"
 	icon_state = "hair_upwards"
 
