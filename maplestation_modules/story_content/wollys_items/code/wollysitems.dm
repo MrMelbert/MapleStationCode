@@ -25,14 +25,10 @@ since some of them are two per character or singleton, i'm gonna save space and 
 	hitsound = 'sound/weapons/rapierhit.ogg'
 
 /obj/item/melee/maugrim/on_exit_storage(datum/storage/container)
-	var/obj/item/storage/belt/sheathe/maugrim/sword = container.real_location?.resolve()
-	if(istype(sword))
-		playsound(sword, 'sound/items/unsheath.ogg', 25, TRUE)
+	playsound(container.parent, 'sound/items/unsheath.ogg', 25, TRUE)
 
 /obj/item/melee/maugrim/on_enter_storage(datum/storage/container)
-	var/obj/item/storage/belt/sheathe/maugrim/sword = container.real_location?.resolve()
-	if(istype(sword))
-		playsound(sword, 'sound/items/sheath.ogg', 25, TRUE)
+	playsound(container.parent, 'sound/items/sheath.ogg', 25, TRUE)
 
 /obj/item/melee/maugrim/Initialize(mapload)
 	. = ..()
@@ -52,14 +48,10 @@ since some of them are two per character or singleton, i'm gonna save space and 
 	attack_verb_simple = list("cut", "slash", "slice")
 
 /obj/item/melee/maugrim/razorwing/on_exit_storage(datum/storage/container)
-	var/obj/item/storage/belt/sheathe/maugrim/razorwing/sword = container.real_location?.resolve()
-	if(istype(sword))
-		playsound(sword, 'sound/items/unsheath.ogg', 25, TRUE)
+	playsound(container.parent, 'sound/items/unsheath.ogg', 25, TRUE)
 
 /obj/item/melee/maugrim/razorwing/on_enter_storage(datum/storage/container)
-	var/obj/item/storage/belt/sheathe/maugrim/razorwing/sword = container.real_location?.resolve()
-	if(istype(sword))
-		playsound(sword, 'sound/items/sheath.ogg', 25, TRUE)
+	playsound(container.parent, 'sound/items/sheath.ogg', 25, TRUE)
 
 /obj/item/melee/maugrim/razorwing/Initialize(mapload) // you don't need to ask me to add world building only a few people will ever see.
 	. = ..()
@@ -139,10 +131,12 @@ since some of them are two per character or singleton, i'm gonna save space and 
 /datum/loadout_item/suit/cyrilcloak
 	name = "Claw-Sewn Cloak"
 	item_path = /obj/item/clothing/suit/toggle/cyrilcloak
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/suit/scoriajacket
 	name = "Embroidered Clan Jacket"
 	item_path = /obj/item/clothing/suit/matthewjacket
+	additional_displayed_text = list("Character Item")
 
 // sheathes
 

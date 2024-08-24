@@ -26,7 +26,7 @@
 /datum/loadout_item/suit/parade_jacket_greyscale
 	name = "Greyscale Parade Jacket"
 	item_path = /obj/item/clothing/suit/greyscale_parade
-	additional_displayed_text = list("No Armor")
+	additional_displayed_text = list("Cosmetic")
 
 /datum/loadout_item/suit/big_jacket
 	name = "Greyscale Jacket Large"
@@ -80,7 +80,7 @@
 /datum/loadout_item/suit/goliath_cloak
 	name = "Heirloom Goliath Cloak"
 	item_path = /obj/item/clothing/suit/hooded/cloak/goliath/heirloom
-	additional_displayed_text = list("No Armor")
+	additional_displayed_text = list("Cosmetic")
 
 /datum/loadout_item/suit/poncho
 	name = "Poncho"
@@ -165,3 +165,8 @@
 /datum/loadout_item/suit/chesed_jacket
 	name = "Well-Kept Jacket"
 	item_path = /obj/item/clothing/suit/toggle/chesedjacket
+
+/datum/loadout_item/suit/jessie_cape
+	name = "Researcher's Shoulder Cape"
+	item_path = /obj/item/clothing/suit/toggle/labcoat/research_director/jessie_cape
+	additional_displayed_text = list("Character Item")

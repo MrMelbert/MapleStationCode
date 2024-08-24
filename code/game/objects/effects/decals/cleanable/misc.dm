@@ -241,7 +241,7 @@
 	pixel_x = rand(-10, 10)
 	pixel_y = rand(-10, 10)
 	if(!isnull(oldname))
-		desc = "The sad remains of what used to be [oldname]"
+		desc = "The sad remains of what used to be [oldname]."
 	. = ..()
 
 /obj/effect/decal/cleanable/glitter

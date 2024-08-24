@@ -9,6 +9,15 @@
 	a_or_from = "from"
 	sound_effect = 'sound/effects/wounds/sizzle1.ogg'
 
+/datum/wound/burn/wound_injury(datum/wound/old_wound, attack_direction)
+	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
+		qdel(limb.remove_gauze())
+		// oops your existing gauze got burned, need a new one now
+		var/obj/effect/decal/cleanable/ash/ash = new(limb.drop_location())
+		ash.desc += " It looks like it used to be some kind of bandage."
+
+	return ..()
+
 /datum/wound/burn/flesh
 	name = "Burn (Flesh) Wound"
 	a_or_from = "from"
@@ -149,7 +158,7 @@
 			if(4 to INFINITY)
 				bandage_condition = "clean"
 
-		condition += " underneath a dressing of [bandage_condition] [limb.current_gauze.name]"
+		condition += " underneath a dressing of [bandage_condition] [limb.current_gauze.name]."
 	else
 		switch(infestation)
 			if(WOUND_INFECTION_MODERATE to WOUND_INFECTION_SEVERE)

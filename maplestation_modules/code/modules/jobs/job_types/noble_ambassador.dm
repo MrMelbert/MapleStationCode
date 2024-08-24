@@ -50,6 +50,8 @@
 	voice_of_god_power = 1.4 // Captain-level VoG.
 	rpg_title = "Noble" //you already sound like an RPG character
 
+	crewmonitor_priority = 8 // after captain, before sec - though NT rep (if added) would be higher (7)
+
 /datum/outfit/job/noble_ambassador
 	name = "Noble Ambassador"
 	jobtype = /datum/job/noble_ambassador

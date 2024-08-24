@@ -147,6 +147,7 @@
 	effectiveness = 40, \
 	)
 	//it's sharp, so it works, but barely.
+	AddElement(/datum/element/gravedigger)
 
 /obj/item/shovel/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging their own grave! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -227,6 +228,7 @@
 /obj/item/trench_tool/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
+	AddElement(/datum/element/gravedigger)
 
 /obj/item/trench_tool/examine(mob/user)
 	. = ..()
@@ -261,7 +263,7 @@
 			tool_behaviour = TOOL_WRENCH
 			sharpness = NONE
 			toolspeed = 0.75
-			w_class = WEIGHT_CLASS_SMALL
+			update_weight_class(WEIGHT_CLASS_SMALL)
 			usesound = 'sound/items/ratchet.ogg'
 			attack_verb_continuous = list("bashes", "bludgeons", "thrashes", "whacks")
 			attack_verb_simple = list("bash", "bludgeon", "thrash", "whack")
@@ -269,7 +271,7 @@
 			tool_behaviour = TOOL_SHOVEL
 			sharpness = SHARP_EDGED
 			toolspeed = 0.25
-			w_class = WEIGHT_CLASS_NORMAL
+			update_weight_class(WEIGHT_CLASS_NORMAL)
 			usesound = 'sound/effects/shovel_dig.ogg'
 			attack_verb_continuous = list("slashes", "impales", "stabs", "slices")
 			attack_verb_simple = list("slash", "impale", "stab", "slice")
@@ -277,7 +279,7 @@
 			tool_behaviour = TOOL_MINING
 			sharpness = SHARP_POINTY
 			toolspeed = 0.5
-			w_class = WEIGHT_CLASS_NORMAL
+			update_weight_class(WEIGHT_CLASS_NORMAL)
 			usesound = 'sound/effects/picaxe1.ogg'
 			attack_verb_continuous = list("hits", "pierces", "slices", "attacks")
 			attack_verb_simple = list("hit", "pierce", "slice", "attack")

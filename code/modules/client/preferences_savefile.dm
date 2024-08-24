@@ -291,13 +291,13 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		return FALSE
 
 	// Read everything into cache
-	for (var/preference_type in GLOB.preference_entries)
-		var/datum/preference/preference = GLOB.preference_entries[preference_type]
+	// Uses priority order as some values may rely on others for creating default values
+	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if (preference.savefile_identifier != PREFERENCE_CHARACTER)
 			continue
 
-		value_cache -= preference_type
-		read_preference(preference_type)
+		value_cache -= preference.type
+		read_preference(preference.type)
 
 	//Character
 	randomise = save_data?["randomise"]
@@ -325,6 +325,12 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 	all_quirks = SSquirks.filter_invalid_quirks(SANITIZE_LIST(all_quirks))
 	validate_quirks()
+
+	if(isnewplayer(parent?.mob))
+		// Update the report that appears in ready menu if applicable
+		// (Yeah I could signalize this but whatever)
+		var/mob/dead/new_player/cycle = parent?.mob
+		cycle.update_ready_report()
 
 	return TRUE
 

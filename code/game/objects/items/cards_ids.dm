@@ -1023,21 +1023,21 @@
 	if(registered_name && registered_name != "Captain")
 		. += mutable_appearance(icon, assigned_icon_state)
 
-	var/trim_icon_file = trim_icon_override ? trim_icon_override : trim?.trim_icon
-	var/trim_icon_state = trim_state_override ? trim_state_override : trim?.trim_state
-	var/trim_department_color = department_color_override ? department_color_override : trim?.department_color
-	var/trim_department_state = department_state_override ? department_state_override : trim?.department_state
-	var/trim_subdepartment_color = subdepartment_color_override ? subdepartment_color_override : trim?.subdepartment_color
+	var/trim_icon_file = trim_icon_override || trim?.trim_icon
+	var/trim_icon_state = trim_state_override || trim?.trim_state
+	var/trim_department_color = department_color_override || trim?.department_color
+	var/trim_department_state = department_state_override || trim?.department_state
+	var/trim_subdepartment_color = subdepartment_color_override || trim?.subdepartment_color
 
 	if(!trim_icon_file || !trim_icon_state || !trim_department_color || !trim_subdepartment_color || !trim_department_state)
 		return
 
 	/// We handle department and subdepartment overlays first, so the job icon is always on top.
-	var/mutable_appearance/department_overlay = mutable_appearance(trim_icon_file, trim_department_state)
+	var/mutable_appearance/department_overlay = mutable_appearance('icons/obj/card.dmi', trim_department_state)
 	department_overlay.color = trim_department_color
 	. += department_overlay
 
-	var/mutable_appearance/subdepartment_overlay = mutable_appearance(trim_icon_file, "subdepartment")
+	var/mutable_appearance/subdepartment_overlay = mutable_appearance('icons/obj/card.dmi', "subdepartment")
 	subdepartment_overlay.color = trim_subdepartment_color
 	. += subdepartment_overlay
 

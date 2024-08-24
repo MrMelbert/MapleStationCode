@@ -48,8 +48,8 @@
 		QDEL_NULL(foldedbag_instance)
 	return ..()
 
-/obj/structure/closet/body_bag/attackby(obj/item/interact_tool, mob/user, params)
-	if (istype(interact_tool, /obj/item/pen) || istype(interact_tool, /obj/item/toy/crayon))
+/obj/structure/closet/body_bag/attackby(obj/item/interact_tool, mob/living/user, params)
+	if (IS_WRITING_UTENSIL(interact_tool))
 		if(!user.can_write(interact_tool))
 			return
 		var/t = tgui_input_text(user, "What would you like the label to be?", name, max_length = 53)
@@ -59,11 +59,14 @@
 			return
 		handle_tag("[t ? t : initial(name)]")
 		return
+	else if(!user.combat_mode && !(interact_tool.item_flags & (ABSTRACT|HAND_ITEM)) && user.transferItemToLoc(interact_tool, loc, silent = FALSE))
+		return
 	if(!tag_name)
 		return
 	if(interact_tool.tool_behaviour == TOOL_WIRECUTTER || interact_tool.get_sharpness())
 		to_chat(user, span_notice("You cut the tag off [src]."))
 		handle_tag()
+		return
 
 ///Handles renaming of the bodybag's examine tag.
 /obj/structure/closet/body_bag/proc/handle_tag(new_name)
@@ -173,7 +176,7 @@
 		if(A_is_item.w_class < max_weight_of_contents)
 			continue
 		max_weight_of_contents = A_is_item.w_class
-	folding_bodybag.w_class = max_weight_of_contents
+	folding_bodybag.update_weight_class(max_weight_of_contents)
 	the_folder.put_in_hands(folding_bodybag)
 
 /obj/structure/closet/body_bag/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
@@ -487,6 +490,14 @@
 
 /obj/structure/closet/body_bag/environmental/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
+	if(isinternalorgan(arrived))
+		var/obj/item/organ/organ_arrived = arrived
+		organ_arrived.organ_flags |= ORGAN_FROZEN
+		return
+	if(isbodypart(arrived))
+		for(var/obj/item/organ/internal/organ in arrived)
+			organ.organ_flags |= ORGAN_FROZEN
+		return
 	if(!isliving(arrived))
 		return
 	if(seconds_freezing != -1)
@@ -495,6 +506,14 @@
 
 /obj/structure/closet/body_bag/environmental/stasis/Exited(atom/movable/gone, direction)
 	. = ..()
+	if(isinternalorgan(gone))
+		var/obj/item/organ/organ_gone = gone
+		organ_gone.organ_flags &= ~ORGAN_FROZEN
+		return
+	if(isbodypart(gone))
+		for(var/obj/item/organ/internal/organ in gone)
+			organ.organ_flags &= ~ORGAN_FROZEN
+		return
 	if(!isliving(gone))
 		return
 	seconds_freezing = -1
