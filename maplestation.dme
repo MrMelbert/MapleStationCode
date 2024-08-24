@@ -6369,6 +6369,7 @@
 #include "maplestation_modules\code\modules\magic\components\uses_mana.dm"
 #include "maplestation_modules\code\modules\magic\mana\living_mana.dm"
 #include "maplestation_modules\code\modules\magic\mana\mana.dm"
+#include "maplestation_modules\code\modules\magic\mana\mana_chemicals.dm"
 #include "maplestation_modules\code\modules\magic\mana\mana_overload.dm"
 #include "maplestation_modules\code\modules\magic\mana\mana_pool.dm"
 #include "maplestation_modules\code\modules\magic\mana\attunements\attunement.dm"

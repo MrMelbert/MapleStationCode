@@ -42,6 +42,8 @@
 
 	if (mana_pool)
 		// do stuff like replacement
+		QDEL_NULL(mana_pool)
+		set_mana_pool(null)
 	mana_pool = new_pool
 
 	if (isnull(mana_pool))
@@ -94,5 +96,5 @@
 
 /datum/action/get_mana()
 	if(!owner)
-		stack_trace("A Datum Action tried to get mana without an owner!")
+		return stack_trace("A Datum Action tried to get mana without an owner!")
 	return owner?.get_mana()

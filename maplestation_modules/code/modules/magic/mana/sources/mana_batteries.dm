@@ -34,7 +34,7 @@
 		return FALSE
 
 	var/already_transferring = (user in mana_pool.transferring_to)
-	var/transfer_results = 0
+	var/transfer_results = 0 // unused? its used below
 	if (already_transferring)
 		transfer_results = mana_pool.stop_transfer(user.mana_pool)
 	else

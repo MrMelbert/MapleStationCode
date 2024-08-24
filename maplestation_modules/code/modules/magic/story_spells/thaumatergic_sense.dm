@@ -37,7 +37,7 @@
 
 	var/list/datum/mana_pool/mana_pools = owner.get_available_mana()
 	if (mana_pools.len == 0)
-		if (feedback)
+		if (feedback) // error: "feedback" undefined
 			to_chat(owner, span_warning("You sense no accessable magic in range..."))
 			return FALSE
 	var/mana = get_raw_mana_of_pools(mana_pools)
@@ -47,7 +47,7 @@
 		var/list/datum/attunement/average_attunements = list()
 		for (var/datum/mana_pool/pool as anything in mana_pools)
 			for (var/datum/attunement/iterated_attunement as anything in pool.attunements)
-				average_attunements[iterated_attunement] += rand(pool.attunements[iterated_attunement]*attunement_precision, pool.attunements[iterated_attunement]*SAVE_DIVIDE(1, attunement_precision))
+				average_attunements[iterated_attunement] += rand(pool.attunements[iterated_attunement]*attunement_precision, pool.attunements[iterated_attunement]*SAFE_DIVIDE(1, attunement_precision))
 		var/average_attunements_string = ""
 		for (var/datum/attunement/iterated_attunement as anything in average_attunements)
 			average_attunements[iterated_attunement] /= mana_pools.len
@@ -72,7 +72,7 @@
 
 	. = list()
 
-	var/should_differentiate_pools_at_all = (pool_discernment != THAUMATERGIC_SENSE_POOL_DISCERNMENT_LEVEL_ZERO)
+	var/should_differentiate_pools_at_all = (pool_discernment != THAUMATERGIC_SENSE_POOL_DISCERNMENT_LEVEL_ZERO) // pool discernment undefined on datum
 	.["should_differentiate_pools_at_all"] = should_differentiate_pools_at_all
 
 

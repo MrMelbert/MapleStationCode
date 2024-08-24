@@ -45,7 +45,7 @@
 	/// If true, if no cap is specified, we only go up to the softcap of the target when transferring
 	var/transfer_default_softcap = TRUE
 
-	/// The natural regen rate, detached from transferrals. Mana generated via this comes from nothing.
+	/// The natural regen rate, detached from transferrals. Mana generated via this comes from nothing. Has nothing to do with the ethereal species.
 	var/ethereal_recharge_rate = 0
 	/// If we have an ethereal recharge rate,i ths is the attunement set that will be given to the generated mana.
 	var/list/datum/attunement/attunements_to_generate = list()
@@ -103,28 +103,27 @@
 
 	if (ethereal_recharge_rate != 0)
 		adjust_mana(ethereal_recharge_rate * seconds_per_tick, attunements_to_generate)
+	if (length(transferring_to) > 0)
+		switch (transfer_method)
+			if (MANA_SEQUENTIAL)
+				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+					if (amount <= 0 || donation_budget_this_tick <= 0)
+						break
+					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
+						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
+						continue
 
-	switch (transfer_method)
-		if (MANA_SEQUENTIAL)
-			for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
-				if (amount <= 0 || donation_budget_this_tick <= 0)
-					break
-				if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
-					transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
-					continue
+					transfer_mana_to(iterated_pool, seconds_per_tick)
 
-				transfer_mana_to(iterated_pool, seconds_per_tick)
+			if (MANA_DISPERSE_EVENLY)
+				var/mana_to_disperse = (SAFE_DIVIDE(donation_budget_this_tick, length(transferring_to)))
 
-		if (MANA_DISPERSE_EVENLY)
-			if(!length(transferring_to)) return // so the lower part never divides by zero
-			var/mana_to_disperse = (donation_budget_this_tick / length(transferring_to)) // this should never divide by zero but it does. A lot. Why?
+				for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
+					if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
+						transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
+						continue
 
-			for (var/datum/mana_pool/iterated_pool as anything in transferring_to)
-				if (transferring_to[iterated_pool] & MANA_POOL_SKIP_NEXT_TRANSFER)
-					transferring_to[iterated_pool] &= ~MANA_POOL_SKIP_NEXT_TRANSFER
-					continue
-
-				transfer_specific_mana(iterated_pool, mana_to_disperse)
+					transfer_specific_mana(iterated_pool, mana_to_disperse)
 			// ...
 
 	if (parent)

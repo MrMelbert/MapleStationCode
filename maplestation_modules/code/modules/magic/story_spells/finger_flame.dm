@@ -19,11 +19,11 @@
 	can_cast_on_self = TRUE // self burn
 	var/mana_cost = FINGERFLAME_MANA_COST
 
+	// You get some seconds of freecasting to prevent spam.
 	COOLDOWN_DECLARE(free_use_cooldown)
 	// I was considering giving this the same "trigger on snap emote" effect that the arm implant has,
 	// but considering this has a tangible cost (mana) while the arm implant is free, I decided against it.
 
-	/// You get some seconds of freecasting to prevent spam.\
 
 /* /datum/action/cooldown/spell/touch/finger_flame/can_cast_spell(...)
 	if(!source.attached_hand)
