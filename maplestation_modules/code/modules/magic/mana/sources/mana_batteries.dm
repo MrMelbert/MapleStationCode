@@ -16,12 +16,12 @@
 
 /obj/item/mana_battery
 	name = "generic mana battery"
-
+	mana_pool = /datum/mana_pool/mana_battery/mana_crystal
 	has_initial_mana_pool = TRUE
 	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
 
 /obj/item/mana_battery/get_initial_mana_pool_type()
-	return /datum/mana_pool/mana_battery
+	return mana_pool
 
 /obj/item/mana_battery/attack_self(mob/user, modifiers)
 	. = ..()
@@ -59,13 +59,16 @@
 	softcap = maximum_mana_capacity
 
 /obj/item/mana_battery/mana_crystal/standard
-
-/obj/item/mana_battery/mana_crystal/standard/get_initial_mana_pool_type()
-	return /datum/mana_pool/mana_battery/mana_crystal/standard
+	icon_state = "standard"
+	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/standard
 
 /datum/mana_pool/mana_battery/mana_crystal/standard // basically, just, bog standard, none of the variables need to be changed
 
 /obj/item/mana_battery/mana_crystal/small
 	icon_state = "small" //placeholder
+	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/small/
 
-/obj/item/mana_battery/mana_crystal/small/
+/datum/mana_pool/mana_battery/mana_crystal/small/
+	// half the size of the normal crystal
+	maximum_mana_capacity = (MANA_CRYSTAL_BASE_MANA_CAPACITY / 2)
+	softcap = (MANA_CRYSTAL_BASE_MANA_CAPACITY / 2)

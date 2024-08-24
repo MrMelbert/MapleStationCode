@@ -12,11 +12,9 @@
 /datum/component/uses_mana
 	var/datum/callback/get_mana_callback
 	var/datum/callback/activate_check_failure_callback
-
+	var/datum/callback/get_user_callback
 	var/datum/callback/get_mana_required_callback
 	var/datum/callback/get_mana_consumed_callback
-
-	var/datum/callback/get_user_callback
 
 	var/list/datum/attunement/attunements
 
@@ -28,11 +26,11 @@
 
 /datum/component/uses_mana/Initialize(
 	datum/callback/activate_check_failure_callback,
+	datum/callback/get_user_callback,
 	pre_use_check_with_feedback_comsig,
 	pre_use_check_comsig,
 	post_use_comsig,
 	datum/callback/mana_required,
-	datum/callback/get_user_callback,
 	list/datum/attunement/attunements,
 )
 	. = ..()
@@ -48,19 +46,18 @@
 		return COMPONENT_INCOMPATIBLE */ //temporary disable because this somehow can't pull owner properly
 
 	src.activate_check_failure_callback = activate_check_failure_callback
-	src.attunements = attunements
+	src.get_user_callback = get_user_callback
 
 	if (istype(mana_required))
 		src.get_mana_required_callback = mana_required
 	else if (isnum(mana_required))
 		src.mana_required = mana_required
 
+	src.attunements = attunements
 	src.get_mana_consumed_callback = get_mana_required_callback
-
-	src.get_user_callback = get_user_callback
-
 	src.pre_use_check_with_feedback_comsig = pre_use_check_with_feedback_comsig
 	src.post_use_comsig = post_use_comsig
+
 
 /datum/component/uses_mana/RegisterWithParent()
 	. = ..()
