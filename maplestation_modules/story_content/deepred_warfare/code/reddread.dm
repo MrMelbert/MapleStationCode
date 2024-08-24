@@ -629,6 +629,8 @@
 
 			if(dynamicSlot4)
 				dynamicSlot4.Remove(src)
+			dynamicSlot4 = new /datum/action/cooldown/mob_cooldown/heatburst(src)
+			dynamicSlot4.Grant(src)
 
 		if(1)
 			remove_movespeed_modifier(/datum/movespeed_modifier/RL_energy)
@@ -691,8 +693,6 @@
 
 			if(dynamicSlot4)
 				dynamicSlot4.Remove(src)
-			dynamicSlot4 = new /datum/action/cooldown/mob_cooldown/heatburst(src)
-			dynamicSlot4.Grant(src)
 
 		if(2)
 			remove_movespeed_modifier(/datum/movespeed_modifier/high_energy)

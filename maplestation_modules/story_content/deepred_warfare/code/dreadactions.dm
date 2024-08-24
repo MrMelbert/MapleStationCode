@@ -365,42 +365,6 @@
 	StartCooldown(cooldown_time)
 	return TRUE
 
-// vvvvv ABILITIES THAT CAN BE USED IN HIGH ENERGY MODE ONLY vvvvv
-/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/high
-	name = "Fire Volleycoil - High Power"
-	cooldown_time = 20 SECONDS // Prone to change.
-
-	projectile_type = /obj/projectile/bullet/coil/highvelo
-	projectile_sound = 'sound/weapons/gun/sniper/shot.ogg'
-	default_projectile_spread = 5
-
-	chargeup_time = 4 SECONDS
-
-/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/high
-	name = "Charge - High Power"
-	desc = "Charge at your target. Will destroy objects."
-	charge_delay = 3 SECONDS
-	charge_distance = 6
-	shake_duration = 2.5 SECONDS
-	shake_pixel_shift = 1
-	recoil_duration = 1 SECONDS
-	knockdown_duration = 1.5 SECONDS
-	charge_damage = 30
-	destroy_objects = TRUE
-	button_icon = 'icons/mob/actions/actions_items.dmi'
-	button_icon_state = "bci_exclamation"
-	background_icon_state = "bg_tech"
-	overlay_icon_state = "bg_tech_border"
-	shared_cooldown = NONE
-
-/datum/action/cooldown/mob_cooldown/dreadrepair/high
-	name = "Self Repair - Normal"
-	desc = "Conduct a self repair. Normal efficiency."
-	cooldown_time = 10 SECONDS
-	doafter_time = 5 SECONDS
-	heal_amount = 100
-	energy_cost = 50
-
 /datum/action/cooldown/mob_cooldown/heatburst
 	name = "Purge Heat"
 	desc = "Purposefully vent heat from your heatsinks to deal damage to nearby enemies."
@@ -440,6 +404,42 @@
 				fried_living.apply_damage(5, BURN)
 
 		stoplag(0.3 SECONDS)
+
+// vvvvv ABILITIES THAT CAN BE USED IN HIGH ENERGY MODE ONLY vvvvv
+/datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/high
+	name = "Fire Volleycoil - High Power"
+	cooldown_time = 20 SECONDS // Prone to change.
+
+	projectile_type = /obj/projectile/bullet/coil/highvelo
+	projectile_sound = 'sound/weapons/gun/sniper/shot.ogg'
+	default_projectile_spread = 5
+
+	chargeup_time = 4 SECONDS
+
+/datum/action/cooldown/mob_cooldown/charge/basic_charge/dread/high
+	name = "Charge - High Power"
+	desc = "Charge at your target. Will destroy objects."
+	charge_delay = 3 SECONDS
+	charge_distance = 6
+	shake_duration = 2.5 SECONDS
+	shake_pixel_shift = 1
+	recoil_duration = 1 SECONDS
+	knockdown_duration = 1.5 SECONDS
+	charge_damage = 30
+	destroy_objects = TRUE
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_exclamation"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	shared_cooldown = NONE
+
+/datum/action/cooldown/mob_cooldown/dreadrepair/high
+	name = "Self Repair - Normal"
+	desc = "Conduct a self repair. Normal efficiency."
+	cooldown_time = 10 SECONDS
+	doafter_time = 5 SECONDS
+	heal_amount = 100
+	energy_cost = 50
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning
@@ -486,3 +486,5 @@
 	doafter_time = 2 SECONDS
 	heal_amount = 100
 	energy_cost = 25
+
+// Godslayer fabrication and fire replacement here.
