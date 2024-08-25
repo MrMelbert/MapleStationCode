@@ -41,7 +41,8 @@
 	icon_state = "sunscreen_volkan"
 
 	spf = 50
-	application_time = 2
+	application_time = 1
+	reaplication_time = 15 //spray based doesn't last as long, plus its funny to have volkan be applying sunscreen all the time.
 
 /obj/item/sunscreen/attack_self(mob/user)
 	apply(user, user)
