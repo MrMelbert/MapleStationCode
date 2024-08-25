@@ -227,3 +227,8 @@
 	database_id = MEDAL_DEBT_EXTINGUISHED
 	icon_state = "outdebted"
 
+/datum/award/achievement/misc/cigarettes
+	name = "Unhealthy snacks"
+	desc = "You were curious to taste it. And then another. You must have more!"
+	database_id = MEDAL_CIGARETTES
+	icon_state = "cigarettes"
