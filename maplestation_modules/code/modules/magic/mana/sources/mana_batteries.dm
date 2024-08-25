@@ -59,12 +59,16 @@
 	softcap = maximum_mana_capacity
 
 /obj/item/mana_battery/mana_crystal/standard
+	name = "Stabilized Volite Crystal"
+	desc = "A stabilized Volite Crystal, one of the few objects capable of stably storing mana without binding."
 	icon_state = "standard"
 	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/standard
 
 /datum/mana_pool/mana_battery/mana_crystal/standard // basically, just, bog standard, none of the variables need to be changed
 
 /obj/item/mana_battery/mana_crystal/small
+	name = "Small Volite Crystal"
+	desc = "A miniaturized Volite crystal, formed using the run-off of cutting larger ones. Able to hold mana still, although not as much as a proper formation."
 	icon_state = "small" //placeholder
 	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/small/
 
