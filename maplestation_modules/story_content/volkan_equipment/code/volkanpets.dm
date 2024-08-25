@@ -187,13 +187,12 @@
 	else
 		calm_down()
 
-	update_basic_mob_varspeed()
 	prepare_huds()
 
 ///The vroomba activating its hidden combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/go_angry()
 	icon_state = flying_icon
-	speed = combat_speed
+	set_varspeed(combat_speed)
 	layer = MOB_LAYER
 
 	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
@@ -208,7 +207,7 @@
 ///the vroomba hiding its combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/calm_down()
 	icon_state = base_icon_state
-	speed = 3
+	set_varspeed(3)
 	layer = ABOVE_NORMAL_TURF_LAYER
 
 	AddComponent(/datum/component/cleaner/vroomba, \
@@ -222,9 +221,16 @@
 
 ///The vroomba is not killed by EMPs but it does stun it for a short moment.
 /mob/living/basic/bot/cleanbot/vroomba/emp_act(severity)
-	if(. & EMP_PROTECT_SELF)
-		return
-	Stun(4)
+	. = ..()
+	switch(severity)
+		if(EMP_LIGHT)
+			visible_message(span_danger("[src] jitters, but is unharmed!"))
+			Stun(0.5 SECONDS)
+			Shake(duration = 0.5 SECONDS)
+		if(EMP_HEAVY)
+			visible_message(span_danger("[src] readjusts some servos!"))
+			Stun(3 SECONDS)
+			Shake(duration = 3 SECONDS)
 	to_chat(src, span_danger("WARN: EMP DETECTED."))
 
 /mob/living/basic/bot/cleanbot/vroomba/generate_speak_list()

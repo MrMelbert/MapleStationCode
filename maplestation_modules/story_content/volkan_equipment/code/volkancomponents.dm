@@ -9,13 +9,13 @@
 
 /*
  * # Tractor field component
- * A very important and complicated piece of Vtech (Volkan and Co technology). 
+ * A very important and complicated piece of Vtech (Volkan and Co technology).
  * Invented by CaLE, based on gravity generators.
- * In game it will basically act like telekinesis. 
+ * In game it will basically act like telekinesis.
  * Add it to a mob if the mob has tractor field Vtech inside.
  */
 
-///A piece of Vtech. Like a tractor beam, but its a whole field around the object instead. 
+///A piece of Vtech. Like a tractor beam, but its a whole field around the object instead.
 /datum/component/tractorfield
 	///the maximum range the tractorfield has influence over
 	var/max_range = 6
@@ -26,10 +26,6 @@
 
 	///Stuff tractor field cannot interact with
 	var/static/list/blacklisted_atoms = typecacheof(list(/atom/movable/screen))
-	///Things that a tractor field can attack with a force attack.
-	var/static/list/attackables = typecacheof(list(/mob))
-	///Stuff a tractor field can pick up
-	var/static/list/can_pick_up = typecacheof(list(/obj/item))
 
 /datum/component/tractorfield/RegisterWithParent()
 	RegisterSignal(parent, COMSIG_MOB_ATTACK_RANGED, PROC_REF(on_ranged_attack))
@@ -63,9 +59,9 @@
 		return
 	if(!tractorRangeCheck(source, target) || source.z != target.z)
 		return
-	if(is_type_in_typecache(target, attackables)) //atacking mobs
-		return target.attack_tractor(source, target, damage, force) 
-	if(is_type_in_typecache(target, can_pick_up)) 
+	if(ismob(target)) //atacking mobs
+		return target.attack_tractor(source, target, damage, force)
+	if(isitem(target))
 		return tractor_grab(source, target)
 	return on_unarmed_attack(source, target, TRUE)
 
@@ -145,7 +141,7 @@
 	//push them back!!
 	target.throw_at(get_edge_target_turf(target, dir), force, 6, thrower = user)
 	balloon_alert(target, "gravity shifts!") // It essentially rotates gravity to the side for its target.
-	visible_message(span_danger("[user] pushes [target] back with an unknown force!")) 
+	visible_message(span_danger("[user] pushes [target] back with an unknown force!"))
 	user.log_message("has attacked [target] using a tractor field!", LOG_ATTACK) //for the admins
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -207,7 +203,7 @@
 /datum/component/tractorfield/vroomba/RegisterWithParent()
 	. = ..()
 	RegisterSignal(parent, COMSIG_COMBAT_MODE, PROC_REF(remove_self))
-	
+
 /datum/component/tractorfield/vroomba/proc/remove_self()
 	SIGNAL_HANDLER
 
