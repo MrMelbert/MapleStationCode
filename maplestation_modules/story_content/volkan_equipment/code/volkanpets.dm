@@ -139,15 +139,15 @@
 	var/combat_speed = 0.5
 
 	///the sound the vroomba makes when entering combat mode.
-	var/combat_sound = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_combat_mode.wav'
+	var/combat_sound = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_combat_mode.ogg'
 
 	///player chosen sounds the Vroomba can make.
 	var/static/list/announcements = list(
-		VROOMBA_LAUGH = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_laugh.wav',
-		VROOMBA_ACCEPT = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_accept.wav',
-		VROOMBA_DECLINE = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_decline.wav',
-		VROOMBA_STOP = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_stop.wav',
-		VROOMBA_CHATTER = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_chatter.wav',
+		VROOMBA_LAUGH = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_laugh.ogg',
+		VROOMBA_ACCEPT = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_accept.ogg',
+		VROOMBA_DECLINE = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_decline.ogg',
+		VROOMBA_STOP = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_stop.ogg',
+		VROOMBA_CHATTER = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_chatter.ogg',
 	)
 
 /mob/living/basic/bot/cleanbot/vroomba/Initialize(mapload)
@@ -201,7 +201,7 @@
 	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
 	AddComponent(/datum/component/tractorfield/vroomba)
-	
+
 	change_number_of_hands(2)
 
 	balloon_alert_to_viewers("gravity shifts!", vision_distance = 4) //When it turns on, it will make gravity feel funny.
@@ -236,7 +236,7 @@
 //default one doesn't work as intended.
 /mob/living/basic/bot/cleanbot/vroomba/change_number_of_hands(amt)
 	if(amt < held_items.len)
-		if(amt == 0) 
+		if(amt == 0)
 			for(var/i in held_items.len to amt+1 step -1)
 				dropItemToGround(held_items[i])
 		else
