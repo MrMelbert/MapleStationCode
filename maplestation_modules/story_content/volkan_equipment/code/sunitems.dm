@@ -40,9 +40,9 @@
 	desc = "A sunscreen product in a metal container. It seems to have a high SPF rating. It seems to be a spray based application. Smells like industrial chemicals when sprayed."
 	icon_state = "sunscreen_volkan"
 
-	spf = 50
+	spf = 60
 	application_time = 1
-	reaplication_time = 15 //spray based doesn't last as long, plus its funny to have volkan be applying sunscreen all the time.
+	reaplication_time = 15 //spray based doesn't last as long, plus it's funny to have volkan be applying sunscreen all the time.
 
 /obj/item/sunscreen/attack_self(mob/user)
 	apply(user, user)
