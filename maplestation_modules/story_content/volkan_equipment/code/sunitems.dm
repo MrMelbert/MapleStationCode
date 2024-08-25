@@ -10,8 +10,8 @@
 	name = "generic sunscreen"
 	desc = "A generic sunscreen product. Cream based application. It is labeled SPF 30"
 	w_class = WEIGHT_CLASS_TINY
-	icon = 'icons/obj/cosmetic.dmi' //TODO: replace
-	icon_state = "dyespray" //TODO: replace
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/sun_items.dmi'
+	icon_state = "sunscreen_generic"
 	///How long it takes before sunscreen runs out in minutes
 	var/reaplication_time = 30
 	///The sunscreen's SPF rating.
@@ -29,8 +29,7 @@
 /obj/item/sunscreen/nanotrasen
 	name = "Nanotrasen sunscreen"
 	desc = "A Nanotrasen sunscreen product. Cream based application. It is labeled SPF 50"
-	icon = 'icons/obj/cosmetic.dmi' //TODO: replace
-	icon_state = "dyespray" //TODO: replace
+	icon_state = "sunscreen_nanotrasen"
 
 	spf = 50
 	application_time = 5
@@ -39,8 +38,7 @@
 /obj/item/sunscreen/volkan
 	name = "strange sunscreen"
 	desc = "A sunscreen product in a metal container. It seems to have a high SPF rating. It seems to be a spray based application. Smells like industrial chemicals when sprayed."
-	icon = 'icons/obj/cosmetic.dmi' //TODO: replace
-	icon_state = "dyespray" //TODO: replace
+	icon_state = "sunscreen_volkan"
 
 	spf = 55
 	application_time = 2
@@ -83,7 +81,6 @@
 			span_notice("[user] has applied [src] onto [target]."),
 			to_chat(target, span_notice("You have applied [src]!"))
 		)
-
 
 ///Stuff that happens when the sunscreen runs out.
 /obj/item/sunscreen/proc/loseEffectiveness(mob/living/carbon/target, var/obj/item/bodypart/affecting)
