@@ -77,14 +77,15 @@
 	affecting.burn_modifier -= spf/1000
 
 	if(do_after(user, application_time SECONDS, user))
-		addtimer(CALLBACK(src, PROC_REF(loseEffectiveness), target, affecting), reaplication_time MINUTES)
+		addtimer(CALLBACK(src, PROC_REF(loseEffectiveness), target, user), reaplication_time MINUTES)
 		user.visible_message(
 			span_notice("[user] has applied [src] onto [target]."),
 			to_chat(target, span_notice("You have applied [src]!"))
 		)
 
 ///Stuff that happens when the sunscreen runs out.
-/obj/item/sunscreen/proc/loseEffectiveness(mob/living/carbon/target, /obj/item/bodypart/affecting)
+/obj/item/sunscreen/proc/loseEffectiveness(mob/living/carbon/target, mob/user)
+	var/obj/item/bodypart/affecting = target.get_bodypart(check_zone(user.zone_selected))
 	affecting.burn_modifier += spf/1000
 	to_chat(target, span_notice("You don't feel the sunscreen anymore."))
 
