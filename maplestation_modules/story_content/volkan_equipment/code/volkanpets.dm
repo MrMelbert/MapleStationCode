@@ -181,12 +181,10 @@
 
 /mob/living/basic/bot/cleanbot/vroomba/set_combat_mode(new_mode, silent)
 	. = ..()
+	SEND_SIGNAL(src, COMSIG_COMBAT_MODE)
 	if(combat_mode)
-		SEND_SIGNAL(src, COMSIG_COMBAT_MODE)
 		go_angry()
-
-	if(!combat_mode)
-		SEND_SIGNAL(src, COMSIG_COMBAT_MODE)
+	else
 		calm_down()
 
 	update_basic_mob_varspeed()
