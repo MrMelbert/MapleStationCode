@@ -84,7 +84,7 @@
 		)
 
 ///Stuff that happens when the sunscreen runs out.
-/obj/item/sunscreen/proc/loseEffectiveness(mob/living/carbon/target, var/obj/item/bodypart/affecting)
+/obj/item/sunscreen/proc/loseEffectiveness(mob/living/carbon/target, /obj/item/bodypart/affecting)
 	affecting.burn_modifier += spf/1000
 	to_chat(target, span_notice("You don't feel the sunscreen anymore."))
 
