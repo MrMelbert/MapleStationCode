@@ -7,7 +7,7 @@
 
 /datum/species/abductor/get_species_lore()
 	return list(
-		"A species of scholars and intellects, \"Abductors\" are a humanoid race known for their titular abudctions. \
+		"A species of scholars and intellects, \"Abductors\" are a humanoid race known for their titular abductions. \
 		Their scientific prowess can be attributed to their biological collective consciousness, which replaces contemporary forms of communication. \
 		Rather than speech, Abductors are capable of transmitting thoughts and ideas between one another through the use of a communal thoughtspace, \
 		accessed via a \"Speech Matrix\" which covers their trachea. For this same reason, the true name which Abductors refer to themselves as is \
@@ -15,7 +15,7 @@
 
 		"Little is known about the Abductors' home, as few humanoid beings have gone there and fewer still have returned. \
 		The Abductors' governmental heirarchy appears to center upon the creation and constant additions to museums, with surviving \
-		Abductees frantically babbling stories of glass enclosures filled with monsters and plantlife never before seen. \
+		abductees frantically babbling stories of glass enclosures filled with monsters and plantlife never before seen. \
 		No matter thier true intentions, it is accepted among the general population that 99% of Abductors likely suffer a form of \
 		Obsessive-Compulsive Disorder leading them to hoard as much \"scientific knowledge\" as they can possibly get. \
 		Realistically, this knowledge tends to come in the form of what most other species would believe to be garbage.",
