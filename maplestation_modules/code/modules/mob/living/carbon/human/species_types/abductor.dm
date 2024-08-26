@@ -7,9 +7,22 @@
 
 /datum/species/abductor/get_species_lore()
 	return list(
-		"Little are known about Abductors. \
-		While they (as a species) have been known to abduct other species of 'lesser intellect' for experimentation, \
-		some have been known to - on rare occasions - work with the very species they abduct, for reasons unknown.",
+		"A species of scholars and intellects, \"Abductors\" are a humanoid race known for their titular abudctions. \
+		Their scientific prowess can be attributed to their biological collective consciousness, which replaces contemporary forms of communication. \
+		Rather than speech, Abductors are capable of transmitting thoughts and ideas between one another through the use of a communal thoughtspace, \
+		accessed via a \"Speech Matrix\" which covers their trachea. For this same reason, the true name which Abductors refer to themselves as is \
+		impossible to speak verbally, as it is simply a mental image of their collective peoples.",
+
+		"Little is known about the Abductors' home, as few humanoid beings have gone there and fewer still have returned. \
+		The Abductors' governmental heirarchy appears to center upon the creation and constant additions to museums, with surviving \
+		Abductees frantically babbling stories of glass enclosures filled with monsters and plantlife never before seen. \
+		No matter thier true intentions, it is accepted among the general population that 99% of Abductors likely suffer a form of \
+		Obsessive-Compulsive Disorder leading them to hoard as much \"scientific knowledge\" as they can possibly get. \
+		Realistically, this knowledge tends to come in the form of what most other species would believe to be garbage.",
+
+		"Few Abductors have been employed with Nanotrasen, though it is not uncommon among them to avoid all subject matter regarding \
+		their origins or home. It is likely that most of this knowledge was lost to them upon their exile from their communal thoughtspace, \
+		and as such the topic should be avoided in order to not cause further distress."
 	)
 
 /datum/species/abductor/create_pref_unique_perks()
