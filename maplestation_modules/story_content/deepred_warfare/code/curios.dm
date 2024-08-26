@@ -42,13 +42,8 @@
 	projectile_type = /obj/projectile/bullet/godslayer
 	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
 	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg'
-	// delay = 0.1 * SECONDS
 
 	var/obj/item/gun/fired_record
-
-/obj/item/ammo_casing/shotgun/godslayer/Initialize(mapload)
-	. = ..()
-	// AddElement(/datum/element/caseless)
 
 /obj/item/ammo_casing/shotgun/godslayer/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
 	if(isgun(fired_from))
@@ -57,7 +52,7 @@
 		fired_record.recoil = initial(fired_record.recoil) + 3
 
 	. = ..()
-	playsound(src, fire_sound, 100, extrarange = 5)
+	playsound(src, fire_sound, 100, extrarange = 10)
 
 	if(fired_record)
 		addtimer(CALLBACK(src, PROC_REF(reset_gunstats)), 1)

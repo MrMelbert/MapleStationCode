@@ -66,7 +66,7 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 	range = 120
-	damage = 120
+	damage = 80
 	armour_penetration = 100
 
 	dismemberment = 10
@@ -90,34 +90,36 @@
 	impact_light_range = 1
 	impact_light_color_override = COLOR_BLUE_LIGHT
 
-	var/marked_target
-	var/warped = FALSE
+	var/extra_damage = 500 // Extra damage dealt to non-mob, non-vehicle objects (secondary shot will not trigger).
+
+	var/datum/marked_target
 
 	var/warp_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techpowerup.ogg'
+	var/fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg'
+
+/obj/projectile/bullet/godslayer/fire(angle, atom/direct_target, make_sound)
+	if(make_sound != null)
+		playsound(firer, fire_sound, 100, extrarange = 10)
+	. = ..()
+	INVOKE_ASYNC(src, PROC_REF(fire_warp))
 
 /obj/projectile/bullet/godslayer/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
-	if(. == BULLET_ACT_HIT && !pierce_hit)
-		if(marked_target && !warped)
-			fire_warp()
-			warped = TRUE
-		return BULLET_ACT_HIT
-	if(marked_target)
+	if(marked_target != null)
 		return
 	if(isliving(target) || isvehicle(target))
 		marked_target = target
-
-// /obj/projectile/bullet/godslayer/proc/warp()
-// 	if(marked_target)
-//		playsound(firer, warp_sound, 100, extrarange = 5)
-//		fire_warp()
+	else
+		target.take_damage(extra_damage)
 
 /obj/projectile/bullet/godslayer/proc/fire_warp()
 	sleep(35)
-	playsound(firer, warp_sound, 100, extrarange = 5)
+	if(marked_target == null || QDELETED(marked_target))
+		return
+	playsound(firer, warp_sound, 100, extrarange = 10)
 	sleep(25)
 
-	if(marked_target)
+	if(marked_target != null && !QDELETED(marked_target))
 		var/obj/projectile/A = new /obj/projectile/bullet/supergodslayer(get_turf(firer))
 		A.preparePixelProjectile(marked_target, get_turf(firer))
 		A.firer = firer
@@ -148,7 +150,7 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "godslayer_tracer"
 	range = 120
-	damage = 120
+	damage = 800
 	armour_penetration = 100
 
 	dismemberment = 10
@@ -192,7 +194,7 @@
 	. = ..()
 
 /obj/projectile/bullet/supergodslayer/fire(angle, atom/direct_target)
-	playsound(firer, supercharge_sound, 100, extrarange = 5)
+	playsound(firer, supercharge_sound, 100, extrarange = 10)
 	. = ..()
 
 /obj/projectile/bullet/supergodslayer/on_hit(atom/target, blocked = 0, pierce_hit)
@@ -202,3 +204,4 @@
 		duster.dust(just_ash = TRUE, drop_items = FALSE, force = TRUE)
 	if(. == BULLET_ACT_HIT && !pierce_hit)
 		explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 2, flame_range = 2, flash_range = 3, adminlog = FALSE)
+		new /obj/effect/temp_visual/cosmic_explosion(get_turf(src))
