@@ -98,6 +98,8 @@
 		TOOL_WELDER = 70,
 		/obj/item = 30)
 	time = 4 SECONDS
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
 
 /datum/surgery_step/seal_veins/tool_check(mob/user, obj/item/tool)
 	if(implement_type == TOOL_WELDER || implement_type == /obj/item)

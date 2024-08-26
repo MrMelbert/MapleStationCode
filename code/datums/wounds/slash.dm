@@ -273,8 +273,13 @@
 	else
 		user.visible_message(span_danger("[user] begins cauterizing [victim]'s [limb.plaintext_zone] with [I]..."), span_warning("You begin cauterizing [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone] with [I]..."))
 
+	playsound(user, 'sound/surgery/cautery1.ogg', 75, TRUE)
+
 	if(!do_after(user, treatment_delay, target = victim, extra_checks = CALLBACK(src, PROC_REF(still_exists))))
 		return
+
+	playsound(user, 'sound/surgery/cautery2.ogg', 75, TRUE)
+
 	var/bleeding_wording = (!limb.can_bleed() ? "cuts" : "bleeding")
 	user.visible_message(span_green("[user] cauterizes some of the [bleeding_wording] on [victim]."), span_green("You cauterize some of the [bleeding_wording] on [victim]."))
 	victim.apply_damage(2 + severity, BURN, limb, wound_bonus = CANT_WOUND)
@@ -299,6 +304,7 @@
 	else
 		user.visible_message(span_notice("[user] begins stitching [victim]'s [limb.plaintext_zone] with [I]..."), span_notice("You begin stitching [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone] with [I]..."))
 
+	playsound(user, 'maplestation_modules/sound/items/snip.ogg', 33, FALSE)
 	if(!do_after(user, treatment_delay, target = victim, extra_checks = CALLBACK(src, PROC_REF(still_exists))))
 		return TRUE
 	var/bleeding_wording = (!limb.can_bleed() ? "cuts" : "bleeding")
