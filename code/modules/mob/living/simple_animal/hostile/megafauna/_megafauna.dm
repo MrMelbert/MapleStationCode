@@ -140,7 +140,7 @@
 		qdel(L.get_organ_slot(ORGAN_SLOT_HEART))
 		qdel(L.get_organ_slot(ORGAN_SLOT_LIVER))
 	L.adjustBruteLoss(500)
-	L.death() //make sure they die
+	L.death(null, "being gutted by [src]") //make sure they die
 	L.apply_status_effect(/datum/status_effect/gutted)
 	LoseTarget()
 	return TRUE

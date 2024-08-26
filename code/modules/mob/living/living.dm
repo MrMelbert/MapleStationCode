@@ -2253,8 +2253,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
-	add_traits(added_traits)
-	remove_traits(removed_traits - added_traits)
+	add_traits(added_traits, STAT_TRAIT)
+	remove_traits(removed_traits - added_traits, STAT_TRAIT)
 
 	SShealth_updates.queue_update(src, UPDATE_SELF)
 	med_hud_set_status() // skip the queue, we want this to happen immediately and this proc isn't hot anyways

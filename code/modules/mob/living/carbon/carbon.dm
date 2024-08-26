@@ -571,10 +571,10 @@
 	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(total_oxy * (total_oxy >= 100 ? 0.5 : 0.33), 100))
 	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
 	// Ignores the helpers because we can handle them in bulk
-	LAZYSET(consciousness_modifiers, "brute", brutecon)
-	LAZYSET(consciousness_modifiers, "fire", firecon)
-	LAZYSET(consciousness_modifiers, "oxy", oxycon)
-	LAZYSET(consciousness_modifiers, "tox", toxcon)
+	LAZYSET(consciousness_modifiers, BLUNT_DAMAGE, brutecon)
+	LAZYSET(consciousness_modifiers, BURN_DAMAGE, firecon)
+	LAZYSET(consciousness_modifiers, OXY_DAMAGE, oxycon)
+	LAZYSET(consciousness_modifiers, TOX_DAMAGE, toxcon)
 
 	var/oldcon = consciousness
 	update_conscisouness()
@@ -754,7 +754,10 @@
 		clear_fullscreen("crit")
 		return
 
-	var/severity = clamp(10 - round(consciousness / 10, 1), 0, 10)
+	var/con_severity = clamp(10 - round(consciousness / 10, 1), 0, 10)
+	var/shock_severity = clamp(round((pain_controller?.shock_buildup || 0) / 40, 1), 0, 10)
+	var/crit_severity = (stat == SOFT_CRIT) ? 5 : 0
+	var/severity = max(con_severity, shock_severity, crit_severity)
 	if(severity > 0)
 		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit, severity)
 	else
@@ -767,17 +770,17 @@
 		clear_fullscreen("oxy")
 		return
 
-	var/severity = clamp(floor((current_oxyloss - 10) / 5 + 1), 1, 7)
+	var/severity = clamp(round((current_oxyloss - 10) / 5 + 1), 1, 7)
 	overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 
 /// Applies damage hud according to how much raw damage the mob has taken
 /mob/living/carbon/proc/apply_damage_screen_overlay()
-	var/hurtdamage = getBruteLoss() + getFireLoss() + damageoverlaytemp
+	var/hurtdamage = (pain_controller ? pain_controller.get_average_pain() : (getBruteLoss() + getFireLoss())) + damageoverlaytemp
 	if(hurtdamage <= 5)
 		clear_fullscreen("brute")
 		return
 
-	var/severity = clamp(floor(hurtdamage - 5) / 15, 1, 6)
+	var/severity = clamp(round((hurtdamage - 5) / 15, 1), 1, 6)
 	overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, severity)
 
 /mob/living/carbon/update_damage_hud()
@@ -1008,9 +1011,11 @@
 	return ..()
 
 /mob/living/carbon/can_be_revived()
-	if(!get_organ_by_type(/obj/item/organ/internal/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)) || HAS_TRAIT(src, TRAIT_HUSK))
+	if(HAS_TRAIT(src, TRAIT_HUSK))
 		return FALSE
-	return ..()
+	if(!get_organ_by_type(/obj/item/organ/internal/brain) && !mind?.has_antag_datum(/datum/antagonist/changeling))
+		return FALSE
+	return TRUE
 
 /mob/living/carbon/proc/can_defib()
 	if (HAS_TRAIT(src, TRAIT_SUICIDED))
@@ -1022,8 +1027,8 @@
 	if (HAS_TRAIT(src, TRAIT_DEFIB_BLACKLISTED))
 		return DEFIB_FAIL_BLACKLISTED
 
-	if ((getBruteLoss() >= MAX_REVIVE_BRUTE_DAMAGE) || (getFireLoss() >= MAX_REVIVE_FIRE_DAMAGE))
-		return DEFIB_FAIL_TISSUE_DAMAGE
+	//if ((getBruteLoss() >= MAX_REVIVE_BRUTE_DAMAGE) || (getFireLoss() >= MAX_REVIVE_FIRE_DAMAGE))
+	//	return DEFIB_FAIL_TISSUE_DAMAGE
 
 	// Only check for a heart if they actually need a heart. Who would've thunk
 	if (needs_heart())

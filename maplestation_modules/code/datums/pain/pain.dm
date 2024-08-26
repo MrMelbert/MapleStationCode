@@ -31,6 +31,8 @@
 	COOLDOWN_DECLARE(time_since_last_pain_loss)
 	/// Cooldown to track last time we sent a pain message.
 	COOLDOWN_DECLARE(time_since_last_pain_message)
+	/// Cooldown to track last time heart attack counter went up.
+	COOLDOWN_DECLARE(time_since_last_heart_attack_counter)
 
 #ifdef PAIN_DEBUG
 	/// For testing. Does this pain datum print testing messages when it happens?
@@ -280,6 +282,7 @@
 			INVOKE_ASYNC(src, PROC_REF(on_pain_gain), adjusted_bodypart, amount, dam_type)
 		else if(adjusted_amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			INVOKE_ASYNC(src, PROC_REF(on_pain_loss), adjusted_bodypart, amount, dam_type)
+		SShealth_updates.queue_update(parent, UPDATE_SELF_DAMAGE|UPDATE_CON)
 
 #ifdef PAIN_DEBUG
 		if(print_debug_messages && (print_debug_decay || abs(adjusted_amount) > 1))
@@ -596,20 +599,24 @@
 			heart_attack_prob += abs(parent.health + parent.maxHealth) * 0.1
 		if(shock_buildup >= 180)
 			heart_attack_prob += (shock_buildup * 0.1)
-
-		if(SPT_PROB(heart_attack_prob, seconds_per_tick))
-			if(!parent.can_heartattack())
+		if(SPT_PROB(min(20, heart_attack_prob), seconds_per_tick))
+			if(!COOLDOWN_FINISHED(src, time_since_last_heart_attack_counter))
+				parent.losebreath += 1
+			else if(!parent.can_heartattack())
 				parent.losebreath += 4
-			else if(heart_attack_counter > 2)
+			else if(heart_attack_counter >= 3)
 				to_chat(parent, span_userdanger("Your heart stops!"))
 				if(!parent.incapacitated())
 					parent.visible_message(span_danger("[parent] grabs at [parent.p_their()] chest!"), ignored_mobs = parent)
 				parent.set_heartattack(TRUE)
 				heart_attack_counter = -2
 			else
+				COOLDOWN_START(src, time_since_last_heart_attack_counter, 6 SECONDS)
 				parent.losebreath += 1
 				heart_attack_counter += 1
 				switch(heart_attack_counter)
+					if(-INFINITY to 0)
+						pass()
 					if(1)
 						to_chat(parent, span_userdanger("You feel your heart beat irregularly."))
 					if(2)
@@ -644,7 +651,7 @@
 			if(is_standing && parent.body_position != STANDING_UP)
 				parent.visible_message(
 					span_warning("[parent] collapses!"),
-					span_warning("You collapse, unable to stand!"),
+					span_userdanger("You collapse, unable to stand!"),
 					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 				)
 
@@ -729,26 +736,31 @@
 	switch(avg_pain)
 		if(-INFINITY to 20)
 			parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
+			parent.outgoing_damage_mod = initial(parent.outgoing_damage_mod)
 			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 			parent.clear_mood_event(PAIN)
 		if(20 to 40)
 			parent.mob_surgery_speed_mod = 0.9
+			parent.outgoing_damage_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
 			parent.add_mood_event(PAIN, /datum/mood_event/light_pain)
 		if(40 to 60)
 			parent.mob_surgery_speed_mod = 0.75
+			parent.outgoing_damage_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
 			parent.add_mood_event(PAIN, /datum/mood_event/med_pain)
 		if(60 to 80)
 			parent.mob_surgery_speed_mod = 0.6
+			parent.outgoing_damage_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
 			parent.add_mood_event(PAIN, /datum/mood_event/heavy_pain)
 		if(80 to INFINITY)
 			parent.mob_surgery_speed_mod = 0.5
+			parent.outgoing_damage_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
 			parent.add_mood_event(PAIN, /datum/mood_event/crippling_pain)

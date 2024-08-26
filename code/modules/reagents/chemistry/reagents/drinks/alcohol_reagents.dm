@@ -158,6 +158,7 @@
 		drinker.add_atom_colour(color, TEMPORARY_COLOUR_PRIORITY)
 
 /datum/reagent/consumable/ethanol/beer/green/on_mob_end_metabolize(mob/living/drinker)
+	. = ..()
 	drinker.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, color)
 
 /datum/reagent/consumable/ethanol/beer/green/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)

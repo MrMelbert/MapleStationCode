@@ -19,7 +19,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	else
 		new /obj/effect/decal/remains/human(loc)
 
-/mob/living/carbon/human/death(gibbed)
+/mob/living/carbon/human/death(gibbed, cause_of_death = get_cause_of_death())
 	if(stat == DEAD)
 		return
 	var/obj/item/organ/internal/heart/human_heart = get_organ_slot(ORGAN_SLOT_HEART)
@@ -41,7 +41,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 				<b>Reagents</b>:<br>[reagents_readout()]", INVESTIGATE_DEATHS)
 
 	var/death_block = ""
-	death_block += span_danger("<center><span style='font-size: 32px'>You have died of [get_cause_of_death()].</font></center>")
+	death_block += span_danger("<center><span style='font-size: 32px'>You have succumbed to [cause_of_death].</font></center>")
 	death_block += "<hr>"
 	death_block += span_danger("Barring complete bodyloss, you can (in most cases) be revived by other players. \
 		If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab.")
@@ -66,39 +66,54 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 				most_negative_val = contribution
 
 	switch(probable_cause)
-		if("oxy")
-			return "suffocation"
-		if("brain_damage")
-			return "brain damage"
-		if("blood")
-			return "blood loss"
-		if("tox")
-			return "toxic poisoning"
-		if("brute")
-			return "blunt trauma"
-		if("burn")
-			return "severe burns"
-		if("pain")
-			return "pain"
-		if("shock")
-			return "neurological shock"
+		// This should all be refactored later it's a bit of a mess ngl
+		if(null, "revival_sickess", "anesthetics")
+			return "unknown causes"
+
+		if(OXY_DAMAGE)
+			var/obj/item/organ/internal/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
+			if(!isnull(lungs) || (lungs.organ_flags & ORGAN_FAILING))
+				return "lung failure"
+
+		if(TOX_DAMAGE)
+			var/obj/item/organ/internal/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
+			if(!isnull(liver) || (liver.organ_flags & ORGAN_FAILING))
+				return "liver failure"
+
+			var/datum/reagent/toxin/most_toxic
+			for(var/datum/reagent/toxin/poison in reagents?.reagent_list)
+				if(!most_toxic || most_toxic.toxpwr < poison.toxpwr)
+					most_toxic = poison
+
+			if(most_toxic)
+				return "[lowertext(most_toxic.name)] poisoning"
+
 		if("heart_attack")
-			return "a heart attack"
+			return "cardiac arrest"
+
 		if("drunk")
+			var/datum/reagent/consumable/ethanol/most_alcohol
+			for(var/datum/reagent/consumable/ethanol/alcohol in reagents?.reagent_list)
+				if(!most_alcohol || most_alcohol.boozepwr < alcohol.boozepwr)
+					most_alcohol = alcohol
+
+			if(most_alcohol)
+				return "alcohol poisoning ([lowertext(most_alcohol.name)])"
+
 			return "alcohol poisoning"
-		if("hunger")
-			return "starvation"
+
 		if("thermia")
 			if(bodytemperature < get_body_temp_normal())
 				return "hypothermia"
 			return "hyperthermia"
 
-	if(findtext(probable_cause, "disease"))
-		return "disease"
-	if(findtext(probable_cause, "addiction"))
-		return "addiction"
+		else
+			if(findtext(probable_cause, "disease"))
+				return "disease"
+			if(findtext(probable_cause, "addiction"))
+				return "addiction"
 
-	return "unknown causes"
+	return probable_cause
 
 /mob/living/carbon/human/proc/reagents_readout()
 	var/readout = "Blood:"

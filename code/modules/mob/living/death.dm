@@ -16,7 +16,7 @@
 		gib_animation()
 
 	if(stat != DEAD)
-		death(TRUE)
+		death(TRUE, "being torn apart")
 
 	ghostize()
 	spill_organs(drop_bitflags)
@@ -75,7 +75,7 @@
 	if(body_position == STANDING_UP)
 		// keep us upright so the animation fits.
 		ADD_TRAIT(src, TRAIT_FORCED_STANDING, TRAIT_GENERIC)
-	death(TRUE)
+	death(TRUE, "being vaporized")
 
 	if(drop_items)
 		unequip_everything()
@@ -124,6 +124,7 @@
 			to_chat(src, span_deadsay(span_big("Observer freelook is disabled.\nPlease use Orbit, Teleport, and Jump to look around.")))
 			ghostize(TRUE)
 	set_disgust(0)
+	stop_sound_channel(CHANNEL_HEARTBEAT) // backup in case someone's dehearted before death
 	reset_perspective(null)
 	reload_fullscreen()
 	update_mob_action_buttons()

@@ -1118,7 +1118,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(target.pulledby && target.pulledby.grab_state >= GRAB_AGGRESSIVE)
 			grappled = TRUE
 
-		var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
+		var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high) * user.outgoing_damage_mod
 		var/limb_accuracy = attacking_bodypart.unarmed_effectiveness
 
 		var/obj/item/bodypart/affecting = target.get_bodypart(target.get_random_valid_zone(user.zone_selected))
@@ -1128,7 +1128,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || staggered) //kicks and attacks against staggered targets never miss (provided your species deals more than 0 damage)
 				miss_chance = 0
 			else
-				miss_chance = clamp(UNARMED_MISS_CHANCE_BASE - limb_accuracy + user.getStaminaLoss() + (user.getBruteLoss()*0.5), 0, UNARMED_MISS_CHANCE_MAX) //Limb miss chance + various damage. capped at 80 so there is at least a chance to land a hit.
+				miss_chance = clamp(UNARMED_MISS_CHANCE_BASE - limb_accuracy + user.getStaminaLoss() + ((100 - user.consciousness) * 0.5), 0, UNARMED_MISS_CHANCE_MAX) //Limb miss chance + various damage. capped at 80 so there is at least a chance to land a hit.
 
 		if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
 			playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
@@ -1156,14 +1156,21 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		var/attack_direction = get_dir(user, target)
 		var/attack_type = attacking_bodypart.attack_type
+		var/attack_sharp = NONE
+		if(atk_effect == ATTACK_EFFECT_CLAW || atk_effect == ATTACK_EFFECT_BITE)
+			attack_sharp = SHARP_EDGED
+		else if(atk_effect == ATTACK_EFFECT_BITE)
+			attack_type = SHARP_POINTY
+
 		if(atk_effect == ATTACK_EFFECT_KICK || grappled) //kicks and punches when grappling bypass armor slightly.
 			if(damage >= 9)
 				target.force_say()
 			log_combat(user, target, grappled ? "grapple punched" : "kicked")
-			target.apply_damage(damage, attack_type, affecting, armor_block - limb_accuracy, attack_direction = attack_direction)
+			target.apply_damage(damage, attack_type, affecting, armor_block - limb_accuracy, sharpness = attack_sharp, attack_direction = attack_direction)
 			// target.apply_damage(damage*1.5, STAMINA, affecting, armor_block - limb_accuracy)
+
 		else // Normal attacks do not gain the benefit of armor penetration.
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
+			target.apply_damage(damage, attack_type, affecting, armor_block, sharpness = attack_sharp, attack_direction = attack_direction)
 			// target.apply_damage(damage*1.5, STAMINA, affecting, armor_block)
 			if(damage >= 9)
 				target.force_say()

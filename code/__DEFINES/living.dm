@@ -109,7 +109,15 @@
 /// Calculates oxyloss cap
 #define MAX_OXYLOSS(maxHealth) (maxHealth * 2)
 
-// Some source defines for pain
-#define PAINSHOCK "shock"
+// Some source defines for pain and consciousness
+// Consciousness ones are human readable because of laziness (they are shown in cause of death)
+#define PAINSHOCK "neurological shock"
 #define PAINCRIT "paincrit"
 #define PAIN "pain"
+#define HUNGER "starvation"
+#define BRAIN_DAMAGE "brain damage"
+#define BLOOD_LOSS "blood loss"
+#define BLUNT_DAMAGE "blunt force trauma"
+#define BURN_DAMAGE "severe burns"
+#define OXY_DAMAGE "suffocation"
+#define TOX_DAMAGE "toxic poisoning"

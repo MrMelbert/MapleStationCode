@@ -7,7 +7,6 @@
 
 /datum/reagent/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	// hi melbert, this should have SHOULD_CALL_PARENT(TRUE)
 	if(isnum(pain_modifier))
 		user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
 

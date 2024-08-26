@@ -1378,7 +1378,7 @@
 				affected_mob.adjust_confusion(rand(6 SECONDS, 8 SECONDS))
 		if(29 to INFINITY)
 			toxpwr = 1.5
-			need_mob_update = affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, BRAIN_DAMAGE_DEATH)
+			need_mob_update = affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1)
 			affected_mob.set_silence_if_lower(3 SECONDS * REM * seconds_per_tick)
 			need_mob_update += affected_mob.adjustStaminaLoss(5 * REM * seconds_per_tick, updating_stamina = FALSE)
 			affected_mob.adjust_disgust(2 * REM * seconds_per_tick)

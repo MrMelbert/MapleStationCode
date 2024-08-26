@@ -16,8 +16,8 @@
 	decay_factor = STANDARD_ORGAN_DECAY * 0.5 //30 minutes of decaying to result in a fully damaged brain, since a fast decay rate would be unfun gameplay-wise
 
 	maxHealth = BRAIN_DAMAGE_DEATH
-	low_threshold = 45
-	high_threshold = 120
+	low_threshold = BRAIN_DAMAGE_MILD * 1.5
+	high_threshold = BRAIN_DAMAGE_SEVERE * 1.5
 
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_CAN_STRIP)
 
@@ -107,7 +107,7 @@
 
 	//Update the body's icon so it doesnt appear debrained anymore
 	brain_owner.update_body_parts()
-	brain_owner.add_consciousness_modifier("brain_damage",  damage / -10)
+	brain_owner.add_consciousness_modifier(BRAIN_DAMAGE,  damage / -4)
 
 /obj/item/organ/internal/brain/mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	// Delete skillchips first as parent proc sets owner to null, and skillchips need to know the brain's owner.
@@ -130,8 +130,8 @@
 		transfer_identity(organ_owner)
 	if(!special)
 		organ_owner.update_body_parts()
-		organ_owner.clear_mood_event("brain_damage")
-		organ_owner.remove_consciousness_modifier("brain_damage")
+		organ_owner.clear_mood_event(BRAIN_DAMAGE)
+		organ_owner.remove_consciousness_modifier(BRAIN_DAMAGE)
 
 /obj/item/organ/internal/brain/proc/transfer_identity(mob/living/L)
 	name = "[L.name]'s [initial(name)]"
@@ -330,7 +330,7 @@
 	if(damage >= BRAIN_DAMAGE_DEATH) //rip
 		to_chat(owner, span_userdanger("The last spark of life in your brain fizzles out..."))
 		owner.investigate_log("has been killed by brain damage.", INVESTIGATE_DEATHS)
-		owner.death()
+		owner.death(null, "total [BRAIN_DAMAGE]")
 
 /obj/item/organ/internal/brain/check_damage_thresholds(mob/M)
 	. = ..()
@@ -357,7 +357,7 @@
 				brain_message = span_warning("You feel lightheaded.")
 			else if(prev_damage < BRAIN_DAMAGE_SEVERE && damage >= BRAIN_DAMAGE_SEVERE)
 				brain_message = span_warning("You feel less in control of your thoughts.")
-			else if(prev_damage < (BRAIN_DAMAGE_DEATH - 20) && damage >= (BRAIN_DAMAGE_DEATH - 20))
+			else if(prev_damage < (BRAIN_DAMAGE_DEATH - (BRAIN_DAMAGE_DEATH * 0.1)) && damage >= (BRAIN_DAMAGE_DEATH - (BRAIN_DAMAGE_DEATH * 0.1)))
 				brain_message = span_warning("You can feel your mind flickering on and off...")
 
 			if(.)
@@ -591,10 +591,10 @@
 	if(!owner)
 		return FALSE
 	if(damage >= 60)
-		owner.add_mood_event("brain_damage", /datum/mood_event/brain_damage)
+		owner.add_mood_event(BRAIN_DAMAGE, /datum/mood_event/brain_damage)
 	else
-		owner.clear_mood_event("brain_damage")
-	owner.add_consciousness_modifier("brain_damage", damage / -10)
+		owner.clear_mood_event(BRAIN_DAMAGE)
+	owner.add_consciousness_modifier(BRAIN_DAMAGE, damage / -10)
 
 /// This proc lets the mob's brain decide what bodypart to attack with in an unarmed strike.
 /obj/item/organ/internal/brain/proc/get_attacking_limb(mob/living/carbon/human/target)

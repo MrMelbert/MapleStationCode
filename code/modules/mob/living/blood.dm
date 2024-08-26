@@ -11,7 +11,7 @@
 /mob/living/carbon/human/handle_blood(seconds_per_tick, times_fired)
 
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
-		remove_max_consciousness_value("blood")
+		remove_max_consciousness_value(BLOOD_LOSS)
 		return
 
 	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
@@ -63,16 +63,16 @@
 				if(getOxyLoss() < threshold)
 					adjustOxyLoss(1)
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-				add_max_consciousness_value("blood", 90)
-				add_consciousness_modifier("blood", -10)
+				add_max_consciousness_value(BLOOD_LOSS, 90)
+				add_consciousness_modifier(BLOOD_LOSS, -10)
 				if(getOxyLoss() < 100)
 					adjustOxyLoss(2) // Keep in mind if they're still breathing while bleeding - some of this will be recovered
 				if(SPT_PROB(2.5, seconds_per_tick))
 					set_eye_blur_if_lower(12 SECONDS)
 					to_chat(src, span_warning("You feel very [word]."))
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
-				add_max_consciousness_value("blood", 60)
-				add_consciousness_modifier("blood", -20)
+				add_max_consciousness_value(BLOOD_LOSS, 60)
+				add_consciousness_modifier(BLOOD_LOSS, -20)
 				if(getOxyLoss() < 150)
 					adjustOxyLoss(3)
 				set_eye_blur_if_lower(6 SECONDS)
@@ -81,8 +81,8 @@
 					losebreath += 1
 					to_chat(src, span_warning("You feel extremely [word]."))
 			if(-INFINITY to BLOOD_VOLUME_SURVIVE)
-				add_max_consciousness_value("blood", 20)
-				add_consciousness_modifier("blood", -50)
+				add_max_consciousness_value(BLOOD_LOSS, 20)
+				add_consciousness_modifier(BLOOD_LOSS, -50)
 				set_eye_blur_if_lower(20 SECONDS)
 				// Unconscious(10 SECONDS)
 				var/how_screwed_are_we = 1 - ((BLOOD_VOLUME_SURVIVE - blood_volume) / BLOOD_VOLUME_SURVIVE)
@@ -92,8 +92,8 @@
 				// 	death()
 
 	if(blood_volume > BLOOD_VOLUME_OKAY)
-		remove_max_consciousness_value("blood")
-		remove_consciousness_modifier("blood")
+		remove_max_consciousness_value(BLOOD_LOSS)
+		remove_consciousness_modifier(BLOOD_LOSS)
 
 	// NON-MODULE CHANGE END for blood
 

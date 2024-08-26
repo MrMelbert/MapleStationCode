@@ -5,6 +5,7 @@
 	var/trippy = TRUE //Does this drug make you trip?
 
 /datum/reagent/drug/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
 	if(trippy)
 		affected_mob.clear_mood_event("[type]_high")
 

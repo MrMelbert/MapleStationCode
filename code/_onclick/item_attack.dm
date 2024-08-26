@@ -299,7 +299,7 @@
 			weak_against_armour = attacking_item.weak_against_armour,
 		), ARMOR_MAX_BLOCK)
 
-	var/damage = attacking_item.force
+	var/damage = attacking_item.force * user.outgoing_damage_mod
 	if(mob_biotypes & MOB_ROBOTIC)
 		damage *= attacking_item.demolition_mod
 

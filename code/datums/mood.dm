@@ -412,7 +412,7 @@
 				if(MOOD_HAPPY2 to INFINITY)
 					msg += span_boldnicegreen(event.description + "\n")
 	else
-		msg += "[span_grey("I don't have much of a reaction to anything right now.")]\n"
+		msg += "&bull; [span_grey("I don't have much of a reaction to anything right now.")]\n"
 
 	if(LAZYLEN(mob_parent.quirks))
 		msg += span_notice("You have these quirks: [mob_parent.get_quirk_string(FALSE, CAT_QUIRK_ALL)].")

@@ -136,13 +136,14 @@
 		if(damage_done >= 60)
 			if(!IsParalyzed() && prob(damage_done))
 				extra_paralyze += 0.8 SECONDS
+				extra_knockdown += 1.2 SECONDS
 		else if(damage_done >= 20)
 			if(!IsKnockdown() && prob(damage_done * 2))
 				extra_knockdown += 0.8 SECONDS
 
 	apply_effects(
 		stun = hitting_projectile.stun,
-		knockdown = hitting_projectile.knockdown,
+		knockdown = hitting_projectile.knockdown + extra_knockdown,
 		unconscious = hitting_projectile.unconscious,
 		slur = (mob_biotypes & MOB_ROBOTIC) ? 0 SECONDS : hitting_projectile.slur, // Don't want your cyborgs to slur from being ebow'd
 		stutter = (mob_biotypes & MOB_ROBOTIC) ? 0 SECONDS : hitting_projectile.stutter, // Don't want your cyborgs to stutter from being tazed
@@ -151,7 +152,7 @@
 		blocked = armor_check,
 		jitter = (mob_biotypes & MOB_ROBOTIC) ? 0 SECONDS : hitting_projectile.jitter, // Cyborgs can jitter but not from being shot
 		paralyze = hitting_projectile.paralyze + extra_paralyze,
-		immobilize = hitting_projectile.immobilize + extra_immobilize,
+		immobilize = hitting_projectile.immobilize,
 	)
 	if(hitting_projectile.dismemberment)
 		check_projectile_dismemberment(hitting_projectile, def_zone)

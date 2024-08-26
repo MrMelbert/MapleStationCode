@@ -64,10 +64,6 @@
 
 // Second link in a breath chain, calls [carbon/proc/check_breath()]
 /mob/living/carbon/proc/breathe(seconds_per_tick, times_fired, next_breath = 4)
-	var/pre_sig_return = SEND_SIGNAL(src, COMSIG_CARBON_ATTEMPT_BREATHE, seconds_per_tick, times_fired)
-	if(pre_sig_return & BREATHE_BLOCK_BREATH)
-		return
-
 	var/datum/gas_mixture/environment = loc?.return_air()
 	var/datum/gas_mixture/breath
 
@@ -77,8 +73,13 @@
 		else if(HAS_TRAIT(src, TRAIT_LABOURED_BREATHING))
 			losebreath += (1 / next_breath)
 
-	if(pre_sig_return & BREATHE_SKIP_BREATH)
-		losebreath = max(losebreath, 1)
+	if(losebreath < 1)
+		var/pre_sig_return = SEND_SIGNAL(src, COMSIG_CARBON_ATTEMPT_BREATHE, seconds_per_tick, times_fired)
+		if(pre_sig_return & BREATHE_BLOCK_BREATH)
+			return
+
+		if(pre_sig_return & BREATHE_SKIP_BREATH)
+			losebreath = max(losebreath, 1)
 
 	// Suffocate
 	var/skip_breath = FALSE

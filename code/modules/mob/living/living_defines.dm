@@ -23,6 +23,14 @@
 	/// Also often used for "fake damage"
 	var/staminaloss = 0
 
+	/**
+	 * How conscious is the mob?
+	 *
+	 * This is, effectively, the mob's REAL health.
+	 * It is a cumulative value of many factors, including health, wounds, diseases, and so on.
+	 *
+	 * 0 is death. 100 is default. 150 is the maximum.
+	 */
 	var/consciousness = 100
 	/// Assoc Lazylist of flat modifiers to consciousness.
 	var/list/consciousness_modifiers
@@ -31,6 +39,9 @@
 	/// Assoc Lazylist of max consciousness values. Smallest one is used, but not beyond 10.
 	/// Don't increase max consciousness (over 150), that makes no sense.
 	var/list/max_consciousness_values
+
+	/// Modified applied to attacks with items or fists
+	var/outgoing_damage_mod = 1
 
 	//Damage related vars, NOTE: THESE SHOULD ONLY BE MODIFIED BY PROCS
 	///Brutal damage caused by brute force (punching, being clubbed by a toolbox ect... this also accounts for pressure damage)

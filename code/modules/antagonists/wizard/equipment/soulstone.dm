@@ -242,7 +242,7 @@
 	occupant.client?.give_award(/datum/award/achievement/misc/toolbox_soul, occupant)
 	occupant.death_message = "shrieks out in unholy pain as [occupant.p_their()] soul is absorbed into [target_toolbox]!"
 	release_shades(user, TRUE)
-	occupant.death()
+	occupant.death(null, "magic")
 
 	target_toolbox.name = "soulful toolbox"
 	target_toolbox.icon = 'icons/obj/storage/toolbox.dmi'
