@@ -1,6 +1,8 @@
 
 /obj/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	. = ..()
+	if(QDELETED(src))
+		return
 	hit_by_damage(AM, throwingdatum)
 
 /obj/proc/hit_by_damage(atom/movable/hitting_us, datum/thrownthing/throwingdatum)
@@ -52,8 +54,8 @@
 		if(has_grille && prob(66))
 			continue
 
-		defenestrated.apply_damage(10, BRUTE, part, blocked = min(90, defenestrated.getarmor(part, MELEE)), sharpness = SHARP_POINTY, bare_wound_bonus = 12, attacking_item = (length(shards) ? shards[1] : "glass"))
-		if(prob(25 * length(shards)) && shards[1].tryEmbed(part, zone))
+		defenestrated.apply_damage(10, BRUTE, part, blocked = min(90, defenestrated.getarmor(part, MELEE)), sharpness = SHARP_POINTY, wound_bonus = 4, bare_wound_bonus = 8, attacking_item = (length(shards) ? shards[1] : "glass"))
+		if(prob(25 * length(shards)) && shards[1].tryEmbed(part, TRUE))
 			shards -= shards[1]
 
 	if(has_grille)
@@ -79,7 +81,7 @@
 		return ..()
 
 	// take a lot of damage from being hit with a mob - so we can defenestrate
-	take_damage(min(max_integrity * 0.75, max_integrity * 0.5 * (100 / get_armor_rating(MELEE))), BRUTE, MELEE, TRUE, get_dir(src, hitting_us), 0)
+	take_damage(max_integrity * min(0.75, (get_armor_rating(MELEE) / 100)), BRUTE, MELEE, TRUE, get_dir(src, hitting_us), 0)
 
 /obj/ex_act(severity, target)
 	if(resistance_flags & INDESTRUCTIBLE)

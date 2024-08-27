@@ -62,7 +62,7 @@
 			take_bodypart_damage(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		visible_message(
 			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!"),
-			span_userdanger("You [extra_speed ? "violently" : ""] crash into [hit_atom][extra_speed ? " extra hard" : ""]!"),
+			span_userdanger("You[extra_speed ? " violently" : ""] crash into [hit_atom][extra_speed ? " extra hard" : ""]!"),
 		)
 		log_combat(hit_atom, src, "crashes ")
 		oof_noise = TRUE
