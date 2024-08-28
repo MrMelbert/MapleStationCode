@@ -17,6 +17,11 @@
 	max_grab = GRAB_KILL
 	throw_range = 4
 
+	bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT
+	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT
+	temperature_normalization_speed = 0.1
+	temperature_homeostasis_speed = 0.5
+
 	//Hair colour and style
 	var/hair_color = "#000000"
 	var/hairstyle = "Bald"
@@ -82,9 +87,6 @@
 
 	/// How many "units of blood" we have on our hands
 	var/blood_in_hands = 0
-
-	/// The core temperature of the human compaired to the skin temp of the body
-	var/coretemperature = BODYTEMP_NORMAL
 
 	///Exposure to damaging heat levels increases stacks, stacks clean over time when temperatures are lower. Stack is consumed to add a wound.
 	var/heat_exposure_stacks = 0

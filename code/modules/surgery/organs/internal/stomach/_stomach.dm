@@ -27,7 +27,8 @@
 	///The rate that disgust decays
 	var/disgust_metabolism = 1
 
-	///The rate that the stomach will transfer reagents to the body
+	/// The rate that the stomach will transfer reagents to the body
+	/// Has 0 relation to the mob level metabolism efficiency
 	var/metabolism_efficiency = 0.05 // the lowest we should go is 0.025
 
 	/// Multiplier for hunger rate

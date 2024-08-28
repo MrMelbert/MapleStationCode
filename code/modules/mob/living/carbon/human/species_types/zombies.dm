@@ -54,10 +54,6 @@
 		'sound/hallucinations/wail.ogg',
 	)
 
-/// Zombies do not stabilize body temperature they are the walking dead and are cold blooded
-/datum/species/zombie/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)
-	return
-
 /datum/species/zombie/check_roundstart_eligible()
 	if(check_holidays(HALLOWEEN))
 		return TRUE

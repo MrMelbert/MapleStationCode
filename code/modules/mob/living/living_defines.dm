@@ -181,9 +181,6 @@
 	///Whether the mob is slowed down when dragging another prone mob
 	var/slowed_by_drag = TRUE
 
-	/// List of changes to body temperature, used by desease symtoms like fever
-	var/list/body_temp_changes = list()
-
 	//this stuff is here to make it simple for admins to mess with custom held sprites
 	///left hand icon for holding mobs
 	var/icon/held_lh = 'icons/mob/inhands/pets_held_lh.dmi'
@@ -223,3 +220,28 @@
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null
+
+	/// Body temp we homeostasize to
+	var/standard_body_temperature = BODYTEMP_NORMAL
+	/// Temperature of our insides
+	var/body_temperature = BODYTEMP_NORMAL
+	/// Our body temperature last life tick
+	var/old_recorded_temperature = -1
+
+	/// How cold to start sustaining cold damage
+	var/bodytemp_cold_damage_limit = -1 // -1 = no cold damage ever
+	/// How hot to start sustaining heat damage
+	var/bodytemp_heat_damage_limit = INFINITY // INFINITY = no heat damage ever
+
+	/// How fast the mob's temperature normalizes to their environment
+	var/temperature_normalization_speed = 0.1
+	/// How fast the mob's temperature normalizes to their homeostasis
+	/// Also gets multiplied by metabolism_efficiency.
+	/// Note that more of this = more nutrition is consumed every life tick.
+	var/temperature_homeostasis_speed = 0.5
+
+	// These function as "in built" insulation
+	/// Protection (insulation) from the heat, Value 0-1 corresponding to the percentage of protection
+	var/heat_protection = 0 // No heat protection
+	/// Protection (insulation) from the cold, Value 0-1 corresponding to the percentage of protection
+	var/cold_protection = 0 // No cold protection

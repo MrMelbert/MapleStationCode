@@ -40,7 +40,7 @@
 /mob/living/basic/trooper/pirate/melee/space
 	name = "Space Pirate Swashbuckler"
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = 0
 	loot = list(/obj/effect/mob_spawn/corpse/human/pirate/melee/space)
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/pirate/melee/space
 
@@ -76,7 +76,7 @@
 /mob/living/basic/trooper/pirate/ranged/space
 	name = "Space Pirate Gunner"
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 0
+	bodytemp_cold_damage_limit = 0
 	loot = list(/obj/effect/mob_spawn/corpse/human/pirate/ranged/space)
 	mob_spawner = /obj/effect/mob_spawn/corpse/human/pirate/ranged/space
 	r_hand = /obj/item/gun/energy/e_gun/lethal

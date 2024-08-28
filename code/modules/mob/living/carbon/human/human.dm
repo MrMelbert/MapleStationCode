@@ -695,7 +695,6 @@
 				dna.remove_mutation(existing_mutation)
 
 	if(heal_flags & HEAL_TEMP)
-		set_coretemperature(get_body_temp_normal(apply_change = FALSE))
 		heat_exposure_stacks = 0
 
 	return ..()

@@ -85,18 +85,18 @@
 	var/tritium_irradiation_probability_max = 60
 
 	var/cold_message = "your face freezing and an icicle forming"
-	var/cold_level_1_threshold = 260
-	var/cold_level_2_threshold = 200
-	var/cold_level_3_threshold = 120
+	var/cold_level_1_threshold = CELCIUS_TO_KELVIN(-13.15 CELCIUS)
+	var/cold_level_2_threshold = CELCIUS_TO_KELVIN(-73.15 CELCIUS)
+	var/cold_level_3_threshold = CELCIUS_TO_KELVIN(-153.15 CELCIUS)
 	var/cold_level_1_damage = COLD_GAS_DAMAGE_LEVEL_1 //Keep in mind with gas damage levels, you can set these to be negative, if you want someone to heal, instead.
 	var/cold_level_2_damage = COLD_GAS_DAMAGE_LEVEL_2
 	var/cold_level_3_damage = COLD_GAS_DAMAGE_LEVEL_3
 	var/cold_damage_type = BURN
 
 	var/hot_message = "your face burning and a searing heat"
-	var/heat_level_1_threshold = 360
-	var/heat_level_2_threshold = 400
-	var/heat_level_3_threshold = 1000
+	var/heat_level_1_threshold = CELCIUS_TO_KELVIN(86.85 CELCIUS)
+	var/heat_level_2_threshold = CELCIUS_TO_KELVIN(126.85 CELCIUS)
+	var/heat_level_3_threshold = CELCIUS_TO_KELVIN(726.85 CELCIUS)
 	var/heat_level_1_damage = HEAT_GAS_DAMAGE_LEVEL_1
 	var/heat_level_2_damage = HEAT_GAS_DAMAGE_LEVEL_2
 	var/heat_level_3_damage = HEAT_GAS_DAMAGE_LEVEL_3
@@ -753,7 +753,7 @@
 	var/breath_temperature = breath.temperature
 
 	if(!HAS_TRAIT(breather, TRAIT_RESISTCOLD)) // COLD DAMAGE
-		var/cold_modifier = breather.dna.species.coldmod
+		var/cold_modifier = breather.physiology.cold_mod
 		var/breath_effect_prob = 0
 		if(breath_temperature < cold_level_3_threshold)
 			breather.apply_damage(cold_level_3_damage * cold_modifier, cold_damage_type, spread_damage = TRUE)
@@ -795,7 +795,7 @@
 				to_chat(breather, span_warning("You feel [hot_message] in your [name]!"))
 
 	// The air you breathe out should match your body temperature
-	breath.temperature = breather.bodytemperature
+	breath.temperature = breather.body_temperature
 
 /// Creates a particle effect off the mouth of the passed mob.
 /obj/item/organ/internal/lungs/proc/emit_breath_particle(mob/living/carbon/human/breather, particle_type)

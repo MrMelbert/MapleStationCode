@@ -799,9 +799,24 @@
 		burning.fire_act((stacks * 25 * seconds_per_tick)) //damage taken is reduced to 2% of this value by fire_act()
 
 /mob/living/carbon/human/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
-	SEND_SIGNAL(src, COMSIG_HUMAN_BURNING)
+	var/sigreturn = SEND_SIGNAL(src, COMSIG_HUMAN_BURNING)
+	if(sigreturn & BURNING_HANDLED)
+		return
+
 	burn_clothing(seconds_per_tick, fire_handler.stacks)
-	var/no_protection = FALSE
-	if(dna && dna.species)
-		no_protection = dna.species.handle_fire(src, seconds_per_tick, no_protection)
-	fire_handler.harm_human(seconds_per_tick, no_protection)
+	if(!(sigreturn & BURNING_SKIP_PROTECTION))
+		var/thermal_protection = get_thermal_protection()
+		if(thermal_protection >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
+			return
+		if(thermal_protection >= FIRE_SUIT_MAX_TEMP_PROTECT)
+			adjust_body_temperature(MINOR_AMOUNT_KELVIN * seconds_per_tick)
+			return
+
+	var/amount_to_heat = (BODYTEMP_HEATING_MAX + (fire_handler.stacks * 12)) * 0.5 * seconds_per_tick
+	if(body_temperature > BODYTEMP_FIRE_TEMP_SOFTCAP)
+		// Apply dimishing returns upon temp beyond the soft cap
+		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / body_temperature)
+
+	adjust_body_temperature(amount_to_heat)
+	add_mood_event("on_fire", /datum/mood_event/on_fire)
+	add_mob_memory(/datum/memory/was_burning)

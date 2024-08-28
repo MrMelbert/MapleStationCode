@@ -322,16 +322,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 	qdel(src)
 
 /obj/machinery/shower/proc/check_heat(mob/living/L)
-	var/mob/living/carbon/C = L
-
 	if(current_temperature == SHOWER_FREEZING)
-		if(iscarbon(L))
-			C.adjust_bodytemperature(-80, 80)
+		L.adjust_body_temperature(-1 * MODERATE_AMOUNT_KELVIN, min_temp = CELCIUS_TO_KELVIN(30))
 		to_chat(L, span_warning("[src] is freezing!"))
 	else if(current_temperature == SHOWER_BOILING)
-		if(iscarbon(L))
-			C.adjust_bodytemperature(35, 0, 500)
-		L.adjustFireLoss(5)
+		L.adjust_body_temperature(1 * MODERATE_AMOUNT_KELVIN, max_temp = CELCIUS_TO_KELVIN(40))
+		L.apply_damage(6, BURN, spread_damage = TRUE)
 		to_chat(L, span_danger("[src] is searing!"))
 
 

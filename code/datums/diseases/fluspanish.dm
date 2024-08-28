@@ -19,7 +19,7 @@
 
 	switch(stage)
 		if(2)
-			affected_mob.adjust_bodytemperature(5 * seconds_per_tick)
+			affected_mob.adjust_body_temperature(MINOR_AMOUNT_KELVIN * seconds_per_tick)
 			if(SPT_PROB(2.5, seconds_per_tick))
 				affected_mob.emote("sneeze")
 			if(SPT_PROB(2.5, seconds_per_tick))
@@ -29,7 +29,7 @@
 				affected_mob.take_bodypart_damage(0, 5, updating_health = FALSE)
 
 		if(3)
-			affected_mob.adjust_bodytemperature(10 * seconds_per_tick)
+			affected_mob.adjust_body_temperature(MODERATE_AMOUNT_KELVIN * seconds_per_tick)
 			if(SPT_PROB(2.5, seconds_per_tick))
 				affected_mob.emote("sneeze")
 			if(SPT_PROB(2.5, seconds_per_tick))

@@ -508,7 +508,7 @@
 		"Transmission 6" = "Increases temperature adjustment rate.",
 		"Stage Speed 7" = "Increases healing speed.",
 	)
-	var/temp_rate = 1
+	var/temp_rate = 5 KELVIN
 
 /datum/symptom/heal/plasma/Start(datum/disease/advance/A)
 	. = ..()
@@ -517,7 +517,7 @@
 	if(A.totalStageSpeed() >= 7)
 		power = 2
 	if(A.totalTransmittable() >= 6)
-		temp_rate = 4
+		temp_rate = 20 KELVIN
 
 // We do this to prevent liver damage from injecting plasma when plasma fixation virus reaches stage 4 and beyond
 /datum/symptom/heal/plasma/on_stage_change(datum/disease/advance/advanced_disease)
@@ -575,16 +575,7 @@
 	if(prob(5))
 		to_chat(M, span_notice("You feel yourself absorbing plasma inside and around you..."))
 
-	var/target_temp = M.get_body_temp_normal()
-	if(M.bodytemperature > target_temp)
-		M.adjust_bodytemperature(-20 * temp_rate * TEMPERATURE_DAMAGE_COEFFICIENT, target_temp)
-		if(prob(5))
-			to_chat(M, span_notice("You feel less hot."))
-	else if(M.bodytemperature < (M.get_body_temp_normal() + 1))
-		M.adjust_bodytemperature(20 * temp_rate * TEMPERATURE_DAMAGE_COEFFICIENT, 0, target_temp)
-		if(prob(5))
-			to_chat(M, span_notice("You feel warmer."))
-
+	M.update_temperature_level(type, M.standard_body_temperature, temp_rate)
 	M.adjustToxLoss(-heal_amt)
 
 	var/list/parts = M.get_damaged_bodyparts(1,1, BODYTYPE_ORGANIC)
@@ -596,6 +587,10 @@
 		if(bodypart.heal_damage(heal_amt/parts.len, heal_amt/parts.len, required_bodytype = BODYTYPE_ORGANIC))
 			M.update_damage_overlays()
 	return 1
+
+/datum/symptom/heal/plasma/End(datum/disease/advance/advanced_disease)
+	. = ..()
+	advanced_disease.affected_mob?.remove_temperature_level(type)
 
 ///Plasma End
 #undef HEALING_PER_MOL

@@ -159,7 +159,7 @@
 
 	if(can_move < world.time)
 		var/amount
-		switch(user.bodytemperature)
+		switch(user.body_temperature) // melbert todo : temp
 			if(300 to INFINITY)
 				amount = 10
 			if(295 to 300)

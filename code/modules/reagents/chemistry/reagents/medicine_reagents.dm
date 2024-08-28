@@ -21,19 +21,13 @@
 	color = "#DB90C6"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/medicine/leporazine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+/datum/reagent/medicine/leporazine/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	var/target_temp = affected_mob.get_body_temp_normal(apply_change = FALSE)
-	if(affected_mob.bodytemperature > target_temp)
-		affected_mob.adjust_bodytemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, target_temp)
-	else if(affected_mob.bodytemperature < (target_temp + 1))
-		affected_mob.adjust_bodytemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 0, target_temp)
-	if(ishuman(affected_mob))
-		var/mob/living/carbon/human/affected_human = affected_mob
-		if(affected_human.coretemperature > target_temp)
-			affected_human.adjust_coretemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, target_temp)
-		else if(affected_human.coretemperature < (target_temp + 1))
-			affected_human.adjust_coretemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 0, target_temp)
+	user.add_temperature_level(type, user.standard_body_temperature, DANGEROUS_AMOUNT_KELVIN * 2)
+
+/datum/reagent/medicine/leporazine/on_mob_end_metabolize(mob/living/carbon/user)
+	. = ..()
+	user.remove_temperature_level(type)
 
 /datum/reagent/medicine/adminordrazine //An OP chemical for admins
 	name = "Adminordrazine"
@@ -149,10 +143,10 @@
 
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (affected_mob.bodytemperature ** 2) + 0.5)
-	if(affected_mob.bodytemperature >= T0C || !HAS_TRAIT(affected_mob, TRAIT_KNOCKEDOUT))
+	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (affected_mob.body_temperature ** 2) + 0.5)
+	if(affected_mob.body_temperature >= T0C || !HAS_TRAIT(affected_mob, TRAIT_KNOCKEDOUT))
 		return
-	var/power = -0.00003 * (affected_mob.bodytemperature ** 2) + 3
+	var/power = -0.00003 * (affected_mob.body_temperature ** 2) + 3
 	var/need_mob_update
 	need_mob_update = affected_mob.adjustOxyLoss(-3 * power * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype, required_respiration_type = affected_respiration_type)
 	need_mob_update += affected_mob.adjustBruteLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
@@ -180,10 +174,10 @@
 
 /datum/reagent/medicine/pyroxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
+	if(affected_mob.body_temperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
 		var/power = 0
-		switch(affected_mob.bodytemperature)
-			if(BODYTEMP_HEAT_DAMAGE_LIMIT to 400)
+		switch(affected_mob.body_temperature)
+			if(BODYTEMP_HEAT_DAMAGE_LIMIT to 400) // melbert todo : temp
 				power = 2
 			if(400 to 460)
 				power = 3

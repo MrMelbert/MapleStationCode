@@ -251,7 +251,7 @@
 		.["loss_fire"] = mod.wearer?.getFireLoss() || 0
 		.["loss_tox"] = mod.wearer?.getToxLoss() || 0
 		.["loss_oxy"] = mod.wearer?.getOxyLoss() || 0
-		.["body_temperature"] = mod.wearer?.bodytemperature || 0
+		.["body_temperature"] = mod.wearer?.body_temperature || 0
 		.["nutrition"] = mod.wearer?.nutrition || 0
 	if(display_dna)
 		.["dna_unique_identity"] = mod.wearer ? md5(mod.wearer.dna.unique_identity) : null
@@ -503,7 +503,7 @@
 	/// Minimum temperature we can set.
 	var/min_temp = T20C
 	/// Maximum temperature we can set.
-	var/max_temp = 318.15
+	var/max_temp = T20C * 2.25
 
 /obj/item/mod/module/thermal_regulator/get_configuration()
 	. = ..()
@@ -514,8 +514,13 @@
 		if("temperature_setting")
 			temperature_setting = clamp(value + T0C, min_temp, max_temp)
 
-/obj/item/mod/module/thermal_regulator/on_active_process(seconds_per_tick)
-	mod.wearer.adjust_bodytemperature(get_temp_change_amount((temperature_setting - mod.wearer.bodytemperature), 0.08 * seconds_per_tick))
+/obj/item/mod/module/thermal_regulator/on_activation()
+	. = ..()
+	mod.wearer.add_temperature_level(type, temperature_setting)
+
+/obj/item/mod/module/thermal_regulator/on_deactivation(display_message = TRUE, deleting = FALSE)
+	. = ..()
+	mod.wearer.remove_temperature_level(type)
 
 ///DNA Lock - Prevents people without the set DNA from activating the suit.
 /obj/item/mod/module/dna_lock

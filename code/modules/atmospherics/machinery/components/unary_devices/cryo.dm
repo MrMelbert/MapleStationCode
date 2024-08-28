@@ -366,7 +366,7 @@
 	if(!QDELETED(occupant))
 		var/mob/living/mob_occupant = occupant
 		var/cold_protection = 0
-		var/temperature_delta = air1.temperature - mob_occupant.bodytemperature // The only semi-realistic thing here: share temperature between the cell and the occupant.
+		var/temperature_delta = air1.temperature - mob_occupant.body_temperature // The only semi-realistic thing here: share temperature between the cell and the occupant.
 
 		if(ishuman(mob_occupant))
 			var/mob/living/carbon/human/H = mob_occupant
@@ -376,13 +376,8 @@
 			var/air_heat_capacity = air1.heat_capacity()
 			var/heat = ((1 - cold_protection) * 0.1 + conduction_coefficient) * CALCULATE_CONDUCTION_ENERGY(temperature_delta, heat_capacity, air_heat_capacity)
 
-			mob_occupant.adjust_bodytemperature(heat / heat_capacity, TCMB)
+			mob_occupant.adjust_body_temperature(heat / heat_capacity, TCMB)
 			air1.temperature = clamp(air1.temperature - heat / air_heat_capacity, TCMB, MAX_TEMPERATURE)
-
-			//lets have the core temp match the body temp in humans
-			if(ishuman(mob_occupant))
-				var/mob/living/carbon/human/humi = mob_occupant
-				humi.adjust_coretemperature(humi.bodytemperature - humi.coretemperature)
 
 	//spread temperature changes throughout the pipenet
 	internal_connector.gas_connector.update_parents()
@@ -572,7 +567,7 @@
 		else
 			occupant_data["stat"] = "Conscious"
 
-		occupant_data["bodyTemperature"] = round(mob_occupant.bodytemperature, 1)
+		occupant_data["bodyTemperature"] = round(mob_occupant.body_temperature, 1)
 
 		occupant_data["health"] = mob_occupant.health
 		occupant_data["maxHealth"] = mob_occupant.maxHealth

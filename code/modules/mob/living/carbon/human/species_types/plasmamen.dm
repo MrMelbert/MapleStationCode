@@ -44,7 +44,7 @@
 	// Body temperature for Plasmen is much lower human as they can handle colder environments
 	bodytemp_normal = (BODYTEMP_NORMAL - 40)
 	// The minimum amount they stabilize per tick is reduced making hot areas harder to deal with
-	bodytemp_autorecovery_min = 2
+	temperature_normalization_speed = 0.033
 	// They are hurt at hot temps faster as it is harder to hold their form
 	bodytemp_heat_damage_limit = (BODYTEMP_HEAT_DAMAGE_LIMIT - 20) // about 40C
 	// This effects how fast body temp stabilizes, also if cold resit is lost on the mob
@@ -113,10 +113,18 @@
 
 	H.update_appearance(UPDATE_OVERLAYS)
 
-/datum/species/plasmaman/handle_fire(mob/living/carbon/human/H, seconds_per_tick, no_protection = FALSE)
-	if(internal_fire)
-		no_protection = TRUE
+/datum/species/plasmaman/proc/handle_fire(mob/living/carbon/human/H, seconds_per_tick)
+	SIGNAL_HANDLER
+
+	return internal_fire ? BURNING_SKIP_PROTECTION : NONE
+
+/datum/species/plasmaman/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
+	RegisterSignal(C, COMSIG_HUMAN_BURNING, PROC_REF(handle_fire))
+
+/datum/species/plasmaman/on_species_loss(mob/living/carbon/C, datum/species/new_species, pref_save)
+	. = ..()
+	UnregisterSignal(C, COMSIG_HUMAN_BURNING)
 
 /datum/species/plasmaman/pre_equip_species_outfit(datum/job/job, mob/living/carbon/human/equipping, visuals_only = FALSE)
 	if(job?.plasmaman_outfit)

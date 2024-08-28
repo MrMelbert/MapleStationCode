@@ -93,14 +93,15 @@
 /obj/projectile/bullet/c38/iceblox //see /obj/projectile/temp for the original code
 	name = ".38 Iceblox bullet"
 	damage = 20
-	var/temperature = 100
 	ricochets_max = 0
+	/// How cold to chill the target down to
+	var/temperature = HYPOTHERMIA - CELCIUS_TO_KELVIN(2 CELCIUS)
 
 /obj/projectile/bullet/c38/iceblox/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
 	if(isliving(target))
 		var/mob/living/M = target
-		M.adjust_bodytemperature(((100-blocked)/100)*(temperature - M.bodytemperature))
+		M.adjust_body_temperature(0.34 * ((100-blocked) / 100) * (temperature - M.body_temperature), use_insulation = TRUE)
 
 // .357 (Syndie Revolver)
 

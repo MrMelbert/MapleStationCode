@@ -24,12 +24,12 @@
 	barometer_predictable = TRUE
 
 	///Lowest we can cool someone randomly per weather act. Positive values only
-	var/cooling_lower = 5
+	var/cooling_lower = MINOR_AMOUNT_KELVIN
 	///Highest we can cool someone randomly per weather act. Positive values only
-	var/cooling_upper = 15
+	var/cooling_upper = MODERATE_AMOUNT_KELVIN
 
 /datum/weather/snow_storm/weather_act(mob/living/living)
-	living.adjust_bodytemperature(-rand(cooling_lower, cooling_upper))
+	living.adjust_body_temperature(-rand(cooling_lower, cooling_upper))
 
 // since snowstorm is on a station z level, add extra checks to not annoy everyone
 /datum/weather/snow_storm/can_get_alert(mob/player)

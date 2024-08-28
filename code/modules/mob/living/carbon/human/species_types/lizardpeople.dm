@@ -47,10 +47,6 @@
 
 	monkey_type = /datum/species/monkey/lizard
 
-/// Lizards are cold blooded and do not stabilize body temperature naturally
-/datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)
-	return
-
 /datum/species/lizard/randomize_features()
 	var/list/features = ..()
 	features["body_markings"] = pick(GLOB.body_markings_list)

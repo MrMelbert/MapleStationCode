@@ -249,3 +249,5 @@
 #define COMSIG_MOB_REMOVING_CUFFS "living_removing_cuffs"
 /// Sent as a reply to above from any atom that wishs to stop self-cuff removal
 #define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
+
+#define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"

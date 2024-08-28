@@ -223,9 +223,6 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
 	)
 
-/datum/species/monkey/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)
-	return
-
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
 	return pick(
 		'sound/voice/lizard/lizard_scream_1.ogg',

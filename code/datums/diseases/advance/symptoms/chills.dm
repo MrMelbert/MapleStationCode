@@ -1,4 +1,3 @@
-#define CHILLS_CHANGE "chills"
 /** Chills
  * No change to stealth.
  * Increases resistance.
@@ -45,34 +44,21 @@
 		to_chat(M, span_warning("[pick("You feel cold.", "You shiver.")]"))
 	else
 		to_chat(M, span_userdanger("[pick("You feel your blood run cold.", "You feel ice in your veins.", "You feel like you can't heat up.", "You shiver violently.")]"))
-	set_body_temp(A.affected_mob, A)
+	set_body_temp(A.affected_mob, A.stage)
 
-/**
- * set_body_temp Sets the body temp change
- *
- * Sets the body temp change to the mob based on the stage and resistance of the disease
- * arguments:
- * * mob/living/M The mob to apply changes to
- * * datum/disease/advance/A The disease applying the symptom
- */
-/datum/symptom/chills/proc/set_body_temp(mob/living/M, datum/disease/advance/A)
-	if(unsafe) // when unsafe the shivers can cause cold damage
-		M.add_body_temperature_change(CHILLS_CHANGE, -6 * power * A.stage)
-	else
-		// Get the max amount of change allowed before going under cold damage limit, then cap the maximum allowed temperature change from safe chills to 5 over the cold damage limit
-		var/change_limit = min(M.get_body_temp_cold_damage_limit() + 5 - M.get_body_temp_normal(apply_change=FALSE), 0)
-		M.add_body_temperature_change(CHILLS_CHANGE, max(-6 * power * A.stage, change_limit))
+/datum/symptom/chills/proc/set_body_temp(mob/living/affected, stage)
+	var/new_level = affected.standard_body_temperature - (MODERATE_AMOUNT_KELVIN * power * stage)
+	if(!unsafe)
+		new_level = min(affected.bodytemp_cold_damage_limit + MODERATE_AMOUNT_KELVIN, new_level)
+
+	affected.add_temperature_level(type, new_level, MINOR_AMOUNT_KELVIN * power)
 
 /// Update the body temp change based on the new stage
 /datum/symptom/chills/on_stage_change(datum/disease/advance/A)
 	. = ..()
 	if(.)
-		set_body_temp(A.affected_mob, A)
+		set_body_temp(A.affected_mob, A.stage)
 
 /// remove the body temp change when removing symptom
 /datum/symptom/chills/End(datum/disease/advance/A)
-	var/mob/living/carbon/M = A.affected_mob
-	if(M)
-		M.remove_body_temperature_change(CHILLS_CHANGE)
-
-#undef CHILLS_CHANGE
+	A.affected_mob?.remove_temperature_level(type)

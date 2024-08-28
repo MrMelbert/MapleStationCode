@@ -179,6 +179,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
 	wing_types = NONE
+	bodypart_traits = list(TRAIT_COLD_BLOODED)
 
 /obj/item/bodypart/arm/left/zombie
 	limb_id = SPECIES_ZOMBIE

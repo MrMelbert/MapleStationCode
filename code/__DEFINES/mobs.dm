@@ -28,7 +28,7 @@
 #define BLOOD_DEFICIENCY_MODIFIER 0.025
 
 /// Temperature at which blood loss and regen stops. [/mob/living/carbon/human/proc/handle_blood]
-#define BLOOD_STOP_TEMP 225
+#define BLOOD_STOP_TEMP CELCIUS_TO_KELVIN(-48.15 CELCIUS)
 
 //Sizes of mobs, used by mob/living/var/mob_size
 #define MOB_SIZE_TINY 0
@@ -965,11 +965,6 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 #define HEALING_TOUCH_ANYONE "healing_touch_anyone"
 #define HEALING_TOUCH_NOT_SELF "healing_touch_not_self"
 #define HEALING_TOUCH_SELF_ONLY "healing_touch_self_only"
-
-/// Default minimum body temperature mobs can exist in before taking damage
-#define NPC_DEFAULT_MIN_TEMP 250
-/// Default maximum body temperature mobs can exist in before taking damage
-#define NPC_DEFAULT_MAX_TEMP 350
 
 // Flags for mobs which can't do certain things while someone is looking at them
 /// Flag which stops you from moving while observed

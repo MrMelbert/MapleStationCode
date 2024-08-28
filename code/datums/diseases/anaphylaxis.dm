@@ -26,7 +26,7 @@
 		return
 
 	// Cool them enough to feel cold to the touch, and then some, because temperature mechanics are dumb
-	affected_mob.adjust_bodytemperature(-10 * seconds_per_tick * stage, min_temp = BODYTEMP_COLD_DAMAGE_LIMIT - 70)
+	affected_mob.adjust_body_temperature(-1 * DANGEROUS_AMOUNT_KELVIN * seconds_per_tick * stage, min_temp = affected_mob.bodytemp_cold_damage_limit - 2 KELVIN)
 
 	switch(stage)
 		// early symptoms: mild shakes and dizziness

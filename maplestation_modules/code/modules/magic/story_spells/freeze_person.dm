@@ -92,7 +92,7 @@
 		ADD_TRAIT(whatever, TRAIT_NODROP, REF(src))
 	owner.add_traits(trait_list, TRAIT_STATUS_EFFECT(id))
 	owner.status_flags |= GODMODE
-	owner.adjust_bodytemperature(-70)
+	owner.adjust_body_temperature(CELCIUS_TO_KELVIN(-10 CELCIUS), use_insulation = TRUE)
 	owner.move_resist = INFINITY
 	owner.move_force = INFINITY
 	owner.pull_force = INFINITY

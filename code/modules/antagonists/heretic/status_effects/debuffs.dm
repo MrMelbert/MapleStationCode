@@ -5,8 +5,8 @@
 	duration = 8 SECONDS
 	status_type = STATUS_EFFECT_REPLACE
 	tick_interval = 0.5 SECONDS
-	/// The amount the victim's body temperature changes each tick() in kelvin. Multiplied by TEMPERATURE_DAMAGE_COEFFICIENT.
-	var/cooling_per_tick = -14
+	/// The amount the victim's body temperature changes each tick() in kelvin.
+	var/cooling_per_tick = DANGEROUS_AMOUNT_KELVIN * 2
 
 /atom/movable/screen/alert/status_effect/void_chill
 	name = "Void Chill"
@@ -23,7 +23,7 @@
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/void_chill, update = TRUE)
 
 /datum/status_effect/void_chill/tick(seconds_between_ticks)
-	owner.adjust_bodytemperature(cooling_per_tick * TEMPERATURE_DAMAGE_COEFFICIENT)
+	owner.adjust_body_temperature(cooling_per_tick)
 
 /datum/status_effect/void_chill/major
 	duration = 10 SECONDS

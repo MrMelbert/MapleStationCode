@@ -342,19 +342,20 @@
 
 /datum/reagent/consumable/capsaicin/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
+	holder.remove_reagent(/datum/reagent/cryostylane, 5 * REM * seconds_per_tick)
+
 	var/heating = 0
 	switch(current_cycle)
 		if(1 to 15)
-			heating = 5
-			if(holder.has_reagent(/datum/reagent/cryostylane))
-				holder.remove_reagent(/datum/reagent/cryostylane, 5 * REM * seconds_per_tick)
+			heating = 0.1 KELVIN
 		if(15 to 25)
-			heating = 10
+			heating = 0.33 KELVIN
 		if(25 to 35)
-			heating = 15
+			heating = 0.66 KELVIN
 		if(35 to INFINITY)
-			heating = 20
-	affected_mob.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick)
+			heating = 1.2 KELVIN
+
+	affected_mob.adjust_body_temperature(heating * REM * seconds_per_tick, max_temp = CELCIUS_TO_KELVIN(39 CELCIUS))
 
 /datum/reagent/consumable/frostoil
 	name = "Frost Oil"
@@ -369,23 +370,24 @@
 
 /datum/reagent/consumable/frostoil/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
+	holder.remove_reagent(/datum/reagent/consumable/capsaicin, 5 * REM * seconds_per_tick)
+
 	var/cooling = 0
 	switch(current_cycle)
 		if(1 to 15)
-			cooling = -10
-			if(holder.has_reagent(/datum/reagent/consumable/capsaicin))
-				holder.remove_reagent(/datum/reagent/consumable/capsaicin, 5 * REM * seconds_per_tick)
+			cooling = -0.1 KELVIN
 		if(15 to 25)
-			cooling = -20
+			cooling = -0.5 KELVIN
 		if(25 to 35)
-			cooling = -30
+			cooling = -1 KELVIN
 			if(prob(1))
 				affected_mob.emote("shiver")
 		if(35 to INFINITY)
-			cooling = -40
+			cooling = -2 KELVIN
 			if(prob(5))
 				affected_mob.emote("shiver")
-	affected_mob.adjust_bodytemperature(cooling * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 50)
+
+	affected_mob.adjust_body_temperature(cooling * REM * seconds_per_tick, min_temp = CELCIUS_TO_KELVIN(36 CELCIUS))
 
 /datum/reagent/consumable/frostoil/expose_turf(turf/exposed_turf, reac_volume)
 	. = ..()
@@ -618,7 +620,7 @@
 
 /datum/reagent/consumable/hot_ramen/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 0, affected_mob.get_body_temp_normal())
+	affected_mob.adjust_body_temperature(0.2 KELVIN * REM * seconds_per_tick, 0, affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/hell_ramen
 	name = "Hell Ramen"
@@ -630,7 +632,7 @@
 
 /datum/reagent/consumable/hell_ramen/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_bodytemperature(10 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick)
+	affected_mob.adjust_body_temperature(0.5 KELVIN * REM * seconds_per_tick, max_temp = CELCIUS_TO_KELVIN(45 CELCIUS))
 
 /datum/reagent/consumable/flour
 	name = "Flour"

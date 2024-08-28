@@ -234,7 +234,7 @@
 	. = ..()
 	drinker.adjust_drowsiness(-14 SECONDS * REM * seconds_per_tick)
 	drinker.AdjustSleeping(-40 * REM * seconds_per_tick)
-	drinker.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, drinker.get_body_temp_normal())
+	drinker.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, drinker.standard_body_temperature)
 	if(!HAS_TRAIT(drinker, TRAIT_ALCOHOL_TOLERANCE))
 		drinker.set_jitter_if_lower(10 SECONDS)
 
@@ -738,7 +738,7 @@
 
 /datum/reagent/consumable/ethanol/toxins_special/on_mob_life(mob/living/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.adjust_bodytemperature(15 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, drinker.get_body_temp_normal() + 20) //310.15 is the normal bodytemp.
+	drinker.adjust_body_temperature(15 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, drinker.standard_body_temperature + 20) //310.15 is the normal bodytemp.
 
 /datum/reagent/consumable/ethanol/beepsky_smash
 	name = "Beepsky Smash"
@@ -927,7 +927,7 @@
 
 /datum/reagent/consumable/ethanol/antifreeze/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, drinker.get_body_temp_normal() + 20) //310.15 is the normal bodytemp.
+	drinker.adjust_body_temperature(20 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, drinker.standard_body_temperature + 20) //310.15 is the normal bodytemp.
 
 /datum/reagent/consumable/ethanol/barefoot
 	name = "Barefoot"
@@ -1110,7 +1110,7 @@
 
 /datum/reagent/consumable/ethanol/sbiten/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.adjust_bodytemperature(50 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, BODYTEMP_HEAT_DAMAGE_LIMIT) //310.15 is the normal bodytemp.
+	drinker.adjust_body_temperature(50 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, BODYTEMP_HEAT_DAMAGE_LIMIT) //310.15 is the normal bodytemp.
 
 /datum/reagent/consumable/ethanol/red_mead
 	name = "Red Mead"
@@ -1141,7 +1141,7 @@
 
 /datum/reagent/consumable/ethanol/iced_beer/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.adjust_bodytemperature(-20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, T0C) //310.15 is the normal bodytemp.
+	drinker.adjust_body_temperature(-20 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, T0C) //310.15 is the normal bodytemp.
 
 /datum/reagent/consumable/ethanol/grog
 	name = "Grog"
@@ -1741,7 +1741,7 @@
 /datum/reagent/consumable/ethanol/peppermint_patty/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
 	drinker.apply_status_effect(/datum/status_effect/throat_soothed)
-	drinker.adjust_bodytemperature(5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, drinker.get_body_temp_normal())
+	drinker.adjust_body_temperature(5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, drinker.standard_body_temperature)
 
 /datum/reagent/consumable/ethanol/alexander
 	name = "Alexander"
@@ -1921,7 +1921,7 @@
 
 /datum/reagent/consumable/ethanol/branca_menta/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.adjust_bodytemperature(-20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, T0C)
+	drinker.adjust_body_temperature(-20 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, T0C)
 
 /datum/reagent/consumable/ethanol/branca_menta/on_mob_metabolize(mob/living/drinker)
 	. = ..()
@@ -2244,7 +2244,7 @@
 /datum/reagent/consumable/ethanol/mauna_loa/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
 	// Heats the user up while the reagent is in the body. Occasionally makes you burst into flames.
-	drinker.adjust_bodytemperature(25 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick)
+	drinker.adjust_body_temperature(2 KELVIN * REM * seconds_per_tick)
 	if (SPT_PROB(2.5, seconds_per_tick))
 		drinker.adjust_fire_stacks(1 * REM * seconds_per_tick)
 		drinker.ignite_mob()
@@ -2617,7 +2617,7 @@
 
 /datum/reagent/consumable/ethanol/gin_garden/on_mob_life(mob/living/carbon/doll, seconds_per_tick, times_fired)
 	. = ..()
-	doll.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, doll.get_body_temp_normal())
+	doll.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, doll.standard_body_temperature)
 
 /datum/reagent/consumable/ethanol/wine_voltaic
 	name = "Voltaic Yellow Wine"
