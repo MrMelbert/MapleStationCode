@@ -23259,6 +23259,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
+"gMi" = (
+/obj/structure/window/reinforced/spawner/directional/north,
+/obj/structure/secure_safe/directional/west,
+/turf/open/floor/iron/grimy,
+/area/station/security/detectives_office)
 "gMj" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/wood,
@@ -44095,7 +44100,6 @@
 /area/station/medical/break_room)
 "oNc" = (
 /obj/structure/table/wood,
-/obj/structure/secure_safe/directional/east,
 /obj/machinery/computer/security/wooden_tv{
 	pixel_x = 3;
 	pixel_y = 2
@@ -44105,6 +44109,7 @@
 	name = "detective's office shutters control";
 	req_access = list("detective")
 	},
+/obj/structure/detectiveboard/directional/east,
 /turf/open/floor/carpet,
 /area/station/security/detectives_office)
 "oNq" = (
@@ -98863,7 +98868,7 @@ ayF
 ayF
 ayF
 dER
-aFa
+gMi
 kKH
 aHD
 aHD
