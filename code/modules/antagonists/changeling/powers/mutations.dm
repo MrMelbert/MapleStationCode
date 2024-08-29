@@ -362,8 +362,8 @@
 			H.swap_hand()
 		if(H.get_active_held_item())
 			return
-		C.grabbedby(H)
-		C.grippedby(H, instant = TRUE) //instant aggro grab
+		H.start_pulling(C, supress_message = TRUE)
+		H.setGrabState(GRAB_AGGRESSIVE)
 		for(var/obj/item/I in H.held_items)
 			if(I.get_sharpness())
 				C.visible_message(span_danger("[H] impales [C] with [H.p_their()] [I.name]!"), span_userdanger("[H] impales you with [H.p_their()] [I.name]!"))

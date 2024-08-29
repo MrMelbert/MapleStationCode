@@ -47,11 +47,12 @@
 	if(check_holidays(GARBAGEDAY))
 		backpack_contents += list(/obj/item/gun/ballistic/revolver)
 		r_pocket = /obj/item/ammo_box/a357
-
+/*
 	var/static/access_key_given = FALSE
 	if(!access_key_given && !visuals_only)
 		access_key_given = TRUE
 		backpack_contents += list(/obj/item/access_key)
+*/
 
 /datum/outfit/job/janitor/get_types_to_preload()
 	. = ..()

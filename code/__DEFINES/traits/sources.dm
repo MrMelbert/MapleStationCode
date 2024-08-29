@@ -60,8 +60,6 @@
 #define TURF_TRAIT "turf"
 /// trait associated to being buckled
 #define BUCKLED_TRAIT "buckled"
-/// trait associated to being held in a chokehold
-#define CHOKEHOLD_TRAIT "chokehold"
 /// trait associated to resting
 #define RESTING_TRAIT "resting"
 /// trait associated to a stat value or range of
@@ -154,7 +152,6 @@
 #define SKILLCHIP_TRAIT "skillchip"
 #define SKILL_TRAIT "skill"
 #define BUSY_FLOORBOT_TRAIT "busy-floorbot"
-#define PULLED_WHILE_SOFTCRIT_TRAIT "pulled-while-softcrit"
 #define LOCKED_BORG_TRAIT "locked-borg"
 /// trait associated to not having locomotion appendages nor the ability to fly or float
 #define LACKING_LOCOMOTION_APPENDAGES_TRAIT "lacking-locomotion-appengades"
