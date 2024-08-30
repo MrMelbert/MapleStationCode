@@ -22,7 +22,6 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
 	icon_state = "scrap"
 
-	// vvv Change Later vvv
 	inhand_icon_state = "reverse_bear_trap"
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
@@ -35,20 +34,15 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
 
 /obj/item/ammo_casing/shotgun/godslayer
-	name = "godslayer round"
+	name = "annihilator round"
 	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy. You feel that shooting this would be a really bad idea."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
 	icon_state = "godslayer"
 	projectile_type = /obj/projectile/bullet/godslayer
 	custom_materials = list(/datum/material/aerialite=SHEET_MATERIAL_AMOUNT*2)
 	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg'
-	// delay = 0.1 * SECONDS
 
 	var/obj/item/gun/fired_record
-
-/obj/item/ammo_casing/shotgun/godslayer/Initialize(mapload)
-	. = ..()
-	// AddElement(/datum/element/caseless)
 
 /obj/item/ammo_casing/shotgun/godslayer/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
 	if(isgun(fired_from))
@@ -84,8 +78,8 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
 
 /obj/item/throwing_star/needle
-	name = "persuasion needle"
-	desc = "A large, sharp needle designed for throwing. It has a small, intricate yin-yang design etched into the side."
+	name = "throwing needle"
+	desc = "A large, sharp needle designed for persuasion. It has a small, intricate yin-yang design etched into the side."
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
