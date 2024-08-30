@@ -8,7 +8,7 @@
 ///Sunscreen!
 /obj/item/sunscreen
 	name = "generic sunscreen"
-	desc = "A generic sunscreen product. Cream based application. It is labeled SPF 30"
+	desc = "A generic sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]."
 	w_class = WEIGHT_CLASS_TINY
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/sun_items.dmi'
 	icon_state = "sunscreen_generic"
@@ -22,14 +22,14 @@
 
 /obj/item/sunscreen/shitty
 	name = "cheap generic sunscreen"
-	desc = "A budget generic sunscreen product. Cream based application. It is labeled SPF 20. It feels like it won't last long."
+	desc = "A budget generic sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]. It feels like it won't last long. Reapply in [reaplication_time / 60] minutes."
 
 	reaplication_time = 60 SECONDS
 	burn_modifier = 0.02
 
 /obj/item/sunscreen/nanotrasen
 	name = "Nanotrasen sunscreen"
-	desc = "A Nanotrasen sunscreen product. Cream based application. It is labeled SPF 50"
+	desc = "A Nanotrasen sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 60] minutes."
 	icon_state = "sunscreen_nanotrasen"
 
 	application_time = 5 SECONDS
@@ -38,7 +38,7 @@
 ///HaSE has developed a pretty good sunscreen. It doesn't smell too great though.
 /obj/item/sunscreen/volkan
 	name = "strange sunscreen"
-	desc = "A sunscreen product in a metal container. It seems to have a high SPF rating. It seems to be a spray based application. Smells like industrial chemicals when sprayed."
+	desc = "A sunscreen product in a metal container. It seems to have a [burn_modifier * 1000] SPF rating. It seems to be a spray based application. Smells like industrial chemicals when sprayed. Reapply in [reaplication_time / 60] minutes."
 	icon_state = "sunscreen_volkan"
 
 	application_time = 1 SECONDS
@@ -50,7 +50,7 @@
 
 /obj/item/sunscreen/interact_with_atom(atom/target, mob/living/user)
 	apply(target, user)
-	return ..()
+	return ITEM_INTERACT_SUCCESS
 
 /**
  * Applies sunscreen to a mob.
