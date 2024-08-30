@@ -8,7 +8,7 @@
 ///Sunscreen!
 /obj/item/sunscreen
 	name = "generic sunscreen"
-	desc = "A generic sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]."
+	desc = "A generic sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 60] minutes."
 	w_class = WEIGHT_CLASS_TINY
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/sun_items.dmi'
 	icon_state = "sunscreen_generic"
@@ -111,6 +111,3 @@
 		H.physiology.burn_mod += burn_modifier
 	owner.visible_message(span_warning("[owner]'s sunscreen dissolves away."),
 		span_notice("Your sunscreen is gone!"))
-
-
-///Umbrella!
