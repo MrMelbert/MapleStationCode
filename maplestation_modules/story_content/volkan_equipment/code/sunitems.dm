@@ -81,7 +81,6 @@
 	if(do_after(user, application_time, user))
 		target.apply_status_effect(/datum/status_effect/sunscreen, reaplication_time, burn_modifier)
 
-
 //sunscreen status effect
 /atom/movable/screen/alert/status_effect/sunscreen
 	name = "Sunscreen"
