@@ -8,28 +8,28 @@
 ///Sunscreen!
 /obj/item/sunscreen
 	name = "generic sunscreen"
-	desc = "A generic sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 60] minutes."
+	desc = "A generic sunscreen product. Cream based application."
 	w_class = WEIGHT_CLASS_TINY
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/sun_items.dmi'
 	icon_state = "sunscreen_generic"
 
 	///how long it takes to apply in seconds
 	var/application_time = 10 SECONDS
-	///How long it takes before sunscreen runs out in minutes
+	///How long it takes before sunscreen runs out in seconds
 	var/reaplication_time = 1800 SECONDS
 	///The sunscreen's burn modifier.
 	var/burn_modifier = 0.03
 
 /obj/item/sunscreen/shitty
 	name = "cheap generic sunscreen"
-	desc = "A budget generic sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]. It feels like it won't last long. Reapply in [reaplication_time / 60] minutes."
+	desc = "A budget generic sunscreen product. Cream based application."
 
 	reaplication_time = 60 SECONDS
 	burn_modifier = 0.02
 
 /obj/item/sunscreen/nanotrasen
 	name = "Nanotrasen sunscreen"
-	desc = "A Nanotrasen sunscreen product. Cream based application. It is labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 60] minutes."
+	desc = "A Nanotrasen sunscreen product. Cream based application."
 	icon_state = "sunscreen_nanotrasen"
 
 	application_time = 5 SECONDS
@@ -38,7 +38,7 @@
 ///HaSE has developed a pretty good sunscreen. It doesn't smell too great though.
 /obj/item/sunscreen/volkan
 	name = "strange sunscreen"
-	desc = "A sunscreen product in a metal container. It seems to have a [burn_modifier * 1000] SPF rating. It seems to be a spray based application. Smells like industrial chemicals when sprayed. Reapply in [reaplication_time / 60] minutes."
+	desc = "A sunscreen product in a metal container. It seems to be a spray based application. Smells like industrial chemicals when sprayed."
 	icon_state = "sunscreen_volkan"
 
 	application_time = 1 SECONDS
@@ -47,6 +47,9 @@
 
 /obj/item/sunscreen/attack_self(mob/user)
 	apply(user, user)
+/obj/item/sunscreen/examine()
+   . = ..()
+   . += span_info("It's labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 60] minutes.")
 
 /obj/item/sunscreen/interact_with_atom(atom/target, mob/living/user)
 	apply(target, user)
