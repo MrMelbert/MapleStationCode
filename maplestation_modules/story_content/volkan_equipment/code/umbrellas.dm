@@ -24,7 +24,7 @@
 
 	/// The sound effect played when our umbrella is opened
 	var/on_sound = 'sound/weapons/batonextend.ogg'
-	/// The inhand iconstate used when our umbrella is opened.
+	/// The inhand icon state used when our umbrella is opened.
 	var/on_inhand_icon_state = "umbrella_volkan_open"
 
 /obj/item/umbrella/Initialize(mapload)
@@ -42,7 +42,7 @@
 
 /obj/item/umbrella/proc/on_transform(obj/item/source, mob/user, active)
 	SIGNAL_HANDLER
-
+	inhand_icon_state = active ? on_inhand_icon_state : inhand_icon_state
 	if(user)
 		balloon_alert(user, active ? "opened" : "closed")
 	playsound(src, on_sound, 50, TRUE)
