@@ -51,7 +51,7 @@
 		fired_record.recoil = initial(fired_record.recoil) + 3
 
 	. = ..()
-	playsound(src, fire_sound, 100, extrarange = 5)
+	playsound(src, fire_sound, 100, extrarange = 10)
 
 	if(fired_record)
 		addtimer(CALLBACK(src, PROC_REF(reset_gunstats)), 1)

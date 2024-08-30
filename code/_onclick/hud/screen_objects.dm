@@ -249,7 +249,8 @@
 /atom/movable/screen/close
 	name = "close"
 	plane = ABOVE_HUD_PLANE
-	icon_state = "backpack_close"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "storage_close"
 
 /atom/movable/screen/close/Initialize(mapload, datum/hud/hud_owner, new_master)
 	. = ..()
@@ -395,8 +396,8 @@
 
 /atom/movable/screen/storage
 	name = "storage"
-	icon_state = "block"
-	screen_loc = "7,7 to 10,8"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "storage_cell"
 	plane = HUD_PLANE
 
 /atom/movable/screen/storage/Initialize(mapload, datum/hud/hud_owner, new_master)
@@ -420,6 +421,45 @@
 		storage_master.attempt_insert(inserted, usr)
 
 	return TRUE
+
+/atom/movable/screen/storage/cell
+
+/atom/movable/screen/storage/cell/MouseDrop_T(atom/target, mob/living/user, params) // NON-MODULAR CHANGE should be mouse_drop_receive with ACR
+	var/datum/storage/storage = master_ref?.resolve()
+
+	if (isnull(storage) || !istype(user) || storage != user.active_storage)
+		return
+
+	if (!user.can_perform_action(storage.parent, FORBID_TELEKINESIS_REACH))
+		return
+
+	if (target.loc != storage.real_location)
+		return
+
+	/// Due to items in storage ignoring transparency for click hitboxes, this only can happen if we drag onto a free cell - aka after all current contents
+	storage.real_location.contents -= target
+	storage.real_location.contents += target
+	storage.refresh_views()
+
+/atom/movable/screen/storage/corner
+	icon_state = "storage_corner_topleft"
+
+/atom/movable/screen/storage/corner/top_right
+	icon_state = "storage_corner_topright"
+
+/atom/movable/screen/storage/corner/bottom_left
+	icon_state = "storage_corner_bottomleft"
+
+/atom/movable/screen/storage/corner/bottom_right
+	icon_state = "storage_corner_bottomright"
+
+/atom/movable/screen/storage/rowjoin
+	name = "storage"
+	icon_state = "storage_rowjoin_left"
+	alpha = 0
+
+/atom/movable/screen/storage/rowjoin/right
+	icon_state = "storage_rowjoin_right"
 
 /atom/movable/screen/throw_catch
 	name = "throw/catch"
