@@ -9,3 +9,24 @@
 	light_power = 2
 	light_color = COLOR_RED
 	light_system = STATIC_LIGHT
+
+/obj/effect/temp_visual/faraday
+	name = "faraday block"
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redeffects64.dmi'
+	icon_state = "block"
+	anchored = TRUE
+	duration = 1
+	pixel_x = -16
+	pixel_y = -16
+
+/obj/effect/temp_visual/faraday/energy
+	name = "faraday absorb"
+	icon_state = "absorb"
+
+/obj/effect/temp_visual/faraday/emp
+	name = "faraday emp"
+	icon_state = "emp"
+
+/obj/effect/temp_visual/faraday/shatter
+	name = "faraday shatter"
+	icon_state = "shatter"
