@@ -5,34 +5,35 @@
  * As a result, have items that help with dealing with the sun!
  */
 
-///sunscreen, does nothing for now but is cool for flavor.
+///Sunscreen!
 /obj/item/sunscreen
 	name = "generic sunscreen"
 	desc = "A generic sunscreen product. Cream based application. It is labeled SPF 30"
 	w_class = WEIGHT_CLASS_TINY
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/sun_items.dmi'
 	icon_state = "sunscreen_generic"
-	///How long it takes before sunscreen runs out in minutes
-	var/reaplication_time = 30
-	///The sunscreen's SPF rating.
-	var/spf = 30
+
 	///how long it takes to apply in seconds
-	var/application_time = 10
+	var/application_time = 10 SECONDS
+	///How long it takes before sunscreen runs out in minutes
+	var/reaplication_time = 1800 SECONDS
+	///The sunscreen's burn modifier.
+	var/burn_modifier = 0.03
 
 /obj/item/sunscreen/shitty
 	name = "cheap generic sunscreen"
 	desc = "A budget generic sunscreen product. Cream based application. It is labeled SPF 20. It feels like it won't last long."
-	reaplication_time = 1
 
-	spf = 20
+	reaplication_time = 60 SECONDS
+	burn_modifier = 0.02
 
 /obj/item/sunscreen/nanotrasen
 	name = "Nanotrasen sunscreen"
 	desc = "A Nanotrasen sunscreen product. Cream based application. It is labeled SPF 50"
 	icon_state = "sunscreen_nanotrasen"
 
-	spf = 50
-	application_time = 5
+	application_time = 5 SECONDS
+	burn_modifier = 0.05
 
 ///HaSE has developed a pretty good sunscreen. It doesn't smell too great though.
 /obj/item/sunscreen/volkan
@@ -40,9 +41,9 @@
 	desc = "A sunscreen product in a metal container. It seems to have a high SPF rating. It seems to be a spray based application. Smells like industrial chemicals when sprayed."
 	icon_state = "sunscreen_volkan"
 
-	spf = 100
-	application_time = 1
-	reaplication_time = 15 //spray based doesn't last as long, plus it's funny to have volkan be applying sunscreen all the time.
+	application_time = 1 SECONDS
+	reaplication_time = 900 SECONDS//spray based doesn't last as long, plus it's funny to have volkan be applying sunscreen all the time.
+	burn_modifier = 0.1
 
 /obj/item/sunscreen/attack_self(mob/user)
 	apply(user, user)
@@ -72,20 +73,44 @@
 			span_notice("[user] starts to apply [src] on [target]."),
 			span_notice("You begin applying [src] on [target]...")
 		)
-	var/obj/item/bodypart/affecting = target.get_bodypart(check_zone(user.zone_selected))
 
-	affecting.burn_modifier -= spf/1000
+	if(do_after(user, application_time, user))
+		target.apply_status_effect(/datum/status_effect/sunscreen, reaplication_time, burn_modifier)
 
-	if(do_after(user, application_time SECONDS, user))
-		addtimer(CALLBACK(src, PROC_REF(loseEffectiveness), target, user), reaplication_time MINUTES)
-		user.visible_message(
-			span_notice("[user] has applied [src] onto [target]."),
-			to_chat(target, span_notice("You have applied [src]!"))
-		)
+
+//sunscreen status effect
+/atom/movable/screen/alert/status_effect/sunscreen
+	name = "Sunscreen"
+	desc = "You are covered in sunscreen!"
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/sun_items.dmi'
+	icon_state = "sunscreen_generic"
+
+/datum/status_effect/sunscreen
+	id = "sunscreen"
+	duration = 1800 SECONDS
+	var/burn_modifier = 0.03
+	alert_type = /atom/movable/screen/alert/status_effect/sunscreen
+
+/datum/status_effect/sunscreen/on_creation(mob/living/new_owner, _duration, _burn_modifier)
+	duration = _duration
+	burn_modifier = _burn_modifier
+	return ..()
+
+/datum/status_effect/sunscreen/on_apply()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/H = owner
+		H.physiology.burn_mod -= burn_modifier
+	owner.visible_message(span_warning("[owner] has applied sunscreen!"),
+		span_notice("You are covered in sunscreen!"))
+	return ..()
 
 ///Stuff that happens when the sunscreen runs out.
-/obj/item/sunscreen/proc/loseEffectiveness(mob/living/carbon/target, mob/user)
-	var/obj/item/bodypart/affecting = target.get_bodypart(check_zone(user.zone_selected))
-	affecting.burn_modifier += spf/1000
-	to_chat(target, span_notice("You don't feel the sunscreen anymore."))
+/datum/status_effect/sunscreen/on_remove()
+	if(ishuman(owner))
+		var/mob/living/carbon/human/H = owner
+		H.physiology.burn_mod += burn_modifier
+	owner.visible_message(span_warning("[owner]'s sunscreen dissolves away."),
+		span_notice("Your sunscreen is gone!"))
 
+
+///Umbrella!
