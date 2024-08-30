@@ -49,8 +49,8 @@
 	apply(user, user)
 
 /obj/item/sunscreen/examine()
-   . = ..()
-   . += span_info("It's labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 600] minutes.")
+	. = ..()
+	. += span_info("It's labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 600] minutes.")
 
 /obj/item/sunscreen/interact_with_atom(atom/target, mob/living/user)
 	apply(target, user)
