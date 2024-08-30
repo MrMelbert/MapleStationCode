@@ -1,5 +1,5 @@
 /obj/projectile/bullet/coil
-	name ="10mm coilslug"
+	name ="low velocity 10mm coilslug"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "coilslug"
 	range = 40
@@ -7,7 +7,7 @@
 	armour_penetration = 0
 
 /obj/projectile/bullet/coil/highvelo
-	name ="high velocity 10mm coilslug"
+	name ="10mm coilslug"
 	icon_state = "high_velo"
 	speed = 0.4
 	range = 80
@@ -18,10 +18,11 @@
 	name = "charged 10mm coilslug"
 	icon_state = "red_lightning"
 	range = 80
-	damage = 10
+	damage = 20
 	armour_penetration = 60
 
-	var/extra_damage = 20 // Damage done by shock aftereffect (or straight damage to mechs).
+	var/extra_damage = 20 // Damage done by shock aftereffect.
+	var/emp_radius = 0 // Radius of EMP effect.
 
 	muzzle_type = /obj/effect/projectile/muzzle/RLcoil
 	tracer_type = /obj/effect/projectile/tracer/RLcoil
@@ -43,8 +44,9 @@
 	if(iscarbon(target))
 		var/mob/living/carbon/shocked_fellow = target
 		shocked_fellow.electrocute_act(extra_damage, src, 1, SHOCK_NOSTUN | SHOCK_NOGLOVES)
-	if(ismecha(target))
-		target.take_damage(extra_damage * 2, BURN, BULLET, FALSE)
+	else
+		empulse(target, emp_radius, emp_radius)
+		new /obj/effect/temp_visual/impact_effect/ion(get_turf(target))
 
 /obj/effect/projectile/muzzle/RLcoil
 	name = "charged coilslug muzzle flash"
