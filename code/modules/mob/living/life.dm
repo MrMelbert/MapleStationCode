@@ -142,9 +142,9 @@
 	var/feels_like = get_skin_temperature()
 
 	var/hot_diff = bodytemp_heat_damage_limit - standard_body_temperature
-	var/hot_threshold_low = standard_body_temperature + hot_diff * 0.1
-	var/hot_threshold_medium = standard_body_temperature + hot_diff * 0.45
-	var/hot_threshold_high = standard_body_temperature + hot_diff * 0.8
+	var/hot_threshold_low = standard_body_temperature + hot_diff * 0.2
+	var/hot_threshold_medium = standard_body_temperature + hot_diff * 0.66
+	var/hot_threshold_high = standard_body_temperature + hot_diff * 1.0 // should be the same as bodytemp_heat_damage_limit
 	// Body temperature is too hot, and we do not have resist traits
 	if(feels_like > hot_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 		clear_mood_event("cold")
@@ -161,8 +161,8 @@
 
 	var/cold_diff = bodytemp_cold_damage_limit - standard_body_temperature
 	var/cold_threshold_low = standard_body_temperature + cold_diff * 0.2
-	var/cold_threshold_medium = standard_body_temperature + cold_diff * 0.45
-	var/cold_threshold_high = standard_body_temperature + cold_diff * 0.75
+	var/cold_threshold_medium = standard_body_temperature + cold_diff * 0.66
+	var/cold_threshold_high = standard_body_temperature + cold_diff * 1.0 // should be the same as bodytemp_cold_damage_limit
 	// Body temperature is too cold, and we do not have resist traits
 	if(feels_like < cold_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 		clear_mood_event("hot")
