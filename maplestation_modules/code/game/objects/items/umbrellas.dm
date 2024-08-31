@@ -7,10 +7,10 @@
  */
 /obj/item/umbrella/
 	name = "umbrella"
-	desc = "An umbrella."
+	desc = "A plain white umbrella."
 	icon = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
-	icon_state = "umbrella_volkan"
-	inhand_icon_state = "umbrella_volkan_closed"
+	icon_state = "umbrella"
+	inhand_icon_state = "umbrella_closed"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_lh.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_rh.dmi'
 	force = 5
@@ -33,7 +33,7 @@
 	/// The sound effect played when our umbrella is opened
 	var/on_sound = 'sound/weapons/batonextend.ogg'
 	/// The inhand icon state used when our umbrella is opened.
-	var/on_inhand_icon_state = "umbrella_volkan_open"
+	var/on_inhand_icon_state = "umbrella_open"
 
 /obj/item/umbrella/Initialize(mapload)
 	. = ..()
