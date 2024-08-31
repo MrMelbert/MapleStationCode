@@ -251,3 +251,11 @@
 #define COMSIG_MOB_BLOCK_CUFF_REMOVAL (1<<0)
 
 #define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
+
+#define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
+	/// Return to do no homeostasis at all
+	#define HOMEOSTASIS_HANDLED (1<<0)
+	/// Return to not apply multiplier from hunger
+	#define HOMEOSTASIS_NO_MODIFIERS (1<<1)
+	/// Return to not reduce hunger at all
+	#define HOMEOSTASIS_NO_HUNGER (1<<2)

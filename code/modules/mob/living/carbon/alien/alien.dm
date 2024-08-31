@@ -13,7 +13,7 @@
 
 	status_flags = CANUNCONSCIOUS|CANPUSH
 
-	heat_protection = 0.5 // minor heat insulation
+	temperature_insulation = 0.5 // minor heat insulation
 	bodytemp_heat_damage_limit = CELCIUS_TO_KELVIN(85 CELCIUS)
 
 	///Whether or not the alien is leaping. Only used by hunters.

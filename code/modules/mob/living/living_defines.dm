@@ -237,6 +237,8 @@
 	/// Also gets multiplied by metabolism_efficiency.
 	/// Note that more of this = more nutrition is consumed every life tick.
 	var/temperature_homeostasis_speed = 0.5
-
 	/// Protection (insulation) from temperature changes, max 1
 	var/temperature_insulation = 0
+
+	/// Whether we currently have temp alerts, minor optimization
+	VAR_PRIVATE/temp_alerts = FALSE

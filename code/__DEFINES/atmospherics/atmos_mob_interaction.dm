@@ -70,9 +70,9 @@
 #define KELVIN * 1
 
 /// Max change in temperature during natural body temperature stabilization
-#define BODYTEMP_COOLING_MAX -30 KELVIN
+#define BODYTEMP_COOLING_MAX -20 KELVIN
 /// Max change in temperature during natural body temperature stabilization
-#define BODYTEMP_HEATING_MAX 30 KELVIN
+#define BODYTEMP_HEATING_MAX 20 KELVIN
 
 // These defines are DEFAULTS for most mobs
 // Mobs can override these to have whatever they want

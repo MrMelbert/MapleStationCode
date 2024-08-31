@@ -157,6 +157,7 @@
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
+		temp_alerts = TRUE
 
 	var/cold_diff = bodytemp_cold_damage_limit - standard_body_temperature
 	var/cold_threshold_low = standard_body_temperature + cold_diff * 0.2
@@ -166,7 +167,7 @@
 	if(feels_like < cold_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 		clear_mood_event("hot")
 		add_mood_event("cold", /datum/mood_event/cold)
-		// only apply slowdown if the body is cold rather than the skin
+		// Only apply slowdown if the body is cold rather than the skin
 		if(body_temperature < cold_threshold_medium)
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((BODYTEMP_COLD_WARNING_2 - body_temperature) / COLD_SLOWDOWN_FACTOR))
 		if(feels_like < cold_threshold_high)
@@ -175,16 +176,16 @@
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
+		temp_alerts = TRUE
 
 	// We are not to hot or cold, remove status and moods
-	// Optimization here, we check these things based off the old temperature to avoid unneeded work
-	// We're not perfect about this, because it'd just add more work to the base case, and resistances are rare
-	if(feels_like < hot_threshold_low && feels_like > cold_threshold_low)
+	if(temp_alerts && (feels_like < hot_threshold_low || HAS_TRAIT(src, TRAIT_RESISTHEAT)) && (feels_like > cold_threshold_low || HAS_TRAIT(src, TRAIT_RESISTCOLD)))
 		clear_alert(ALERT_TEMPERATURE)
 		if(body_temperature > cold_threshold_medium)
 			remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 		clear_mood_event("cold")
 		clear_mood_event("hot")
+		temp_alerts = FALSE
 
 /mob/living/proc/handle_mutations(seconds_per_tick, times_fired)
 	return
@@ -239,10 +240,19 @@
 /mob/living/proc/temperature_homeostasis(seconds_per_tick, times_fired)
 	if(HAS_TRAIT(src, TRAIT_COLD_BLOODED))
 		return
+	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && nutrition < (NUTRITION_LEVEL_STARVING / 3))
+		return
 
 	var/natural_change = (standard_body_temperature - body_temperature) * metabolism_efficiency * temperature_homeostasis_speed
+	// Cap increase and decrease (decreasing is harder)
+	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX / 8) : min(natural_change, BODYTEMP_HEATING_MAX / 6)
+
+	var/sigreturn = SEND_SIGNAL(src, COMSIG_LIVING_HOMEOSTASIS, natural_change, seconds_per_tick)
+	if(sigreturn & HOMEOSTASIS_HANDLED)
+		return
+
 	// Scale based on how hungry we are, hungrier means we have less energy to regulate our temperature
-	if(!HAS_TRAIT(src, TRAIT_NOHUNGER))
+	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && !(sigreturn & HOMEOSTASIS_NO_MODIFIERS))
 		switch(nutrition)
 			if(NUTRITION_LEVEL_WELL_FED to INFINITY)
 				natural_change *= 1.25
@@ -252,12 +262,13 @@
 				natural_change *= 0.5
 			if(-INFINITY to NUTRITION_LEVEL_STARVING)
 				natural_change *= 0.25
-	// Cap increase and decrease, decreasing is harder
-	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX / 8) : min(natural_change, BODYTEMP_HEATING_MAX / 6)
+
 	var/min = natural_change < 0 ? standard_body_temperature : 0
 	var/max = natural_change > 0  ? standard_body_temperature : INFINITY
+
 	adjust_body_temperature(natural_change * seconds_per_tick, min_temp = min, max_temp = max) // no use_insulation beacuse this is internal
-	adjust_nutrition(-1 * HUNGER_FACTOR * natural_change * seconds_per_tick)
+	if(!(sigreturn & HOMEOSTASIS_NO_HUNGER))
+		adjust_nutrition(-1 * HUNGER_FACTOR * abs(natural_change) * seconds_per_tick)
 
 /**
  * Get the fullness of the mob

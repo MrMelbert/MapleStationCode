@@ -17,11 +17,13 @@
 	. = ..()
 	RegisterSignal(stomach_owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT, PROC_REF(charge))
 	RegisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT, PROC_REF(on_electrocute))
+	RegisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS, PROC_REF(handle_temp))
 
 /obj/item/organ/internal/stomach/ethereal/on_mob_remove(mob/living/carbon/stomach_owner)
 	. = ..()
 	UnregisterSignal(stomach_owner, COMSIG_PROCESS_BORGCHARGER_OCCUPANT)
 	UnregisterSignal(stomach_owner, COMSIG_LIVING_ELECTROCUTE_ACT)
+	UnregisterSignal(stomach_owner, COMSIG_LIVING_HOMEOSTASIS)
 	stomach_owner.clear_mood_event("charge")
 	stomach_owner.clear_alert(ALERT_ETHEREAL_CHARGE)
 	stomach_owner.clear_alert(ALERT_ETHEREAL_OVERCHARGE)
@@ -39,6 +41,15 @@
 		return
 	adjust_charge(shock_damage * siemens_coeff * 2)
 	to_chat(owner, span_notice("You absorb some of the shock into your body!"))
+
+/obj/item/organ/internal/stomach/ethereal/proc/handle_temp(mob/living/carbon/human/human, natural_change, seconds_per_tick)
+	SIGNAL_HANDLER
+
+	if(crystal_charge < (ETHEREAL_CHARGE_LOWPOWER / 2))
+		return HOMEOSTASIS_HANDLED
+
+	adjust_charge(-1 * ETHEREAL_CHARGE_FACTOR * abs(natural_change) * seconds_per_tick)
+	return HOMEOSTASIS_NO_MODIFIERS|HOMEOSTASIS_NO_HUNGER
 
 /obj/item/organ/internal/stomach/ethereal/proc/adjust_charge(amount)
 	crystal_charge = clamp(crystal_charge + amount, ETHEREAL_CHARGE_NONE, ETHEREAL_CHARGE_DANGEROUS)

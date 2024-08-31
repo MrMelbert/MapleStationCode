@@ -250,9 +250,9 @@
 	. = ..()
 	switch(severity)
 		if(1)
-			desc = "It's pretty chilly around here. You might not want to stick around for long, but it won't hurt you unless it gets colder."
+			desc = "You feel pretty chilly. You might not want to stick around for long, but it won't hurt you unless it gets colder."
 		if(2)
-			desc = "You're getting pretty cold. You might want to find somewhere warmer soon, or put on some insulating clothing like a space suit."
+			desc = "You're getting pretty cold. You might want to find somewhere warmer soon, or put on some insulating clothing like a space suit or winter coat."
 		if(3)
 			desc = "You're freezing cold! Get somewhere warmer and put on some insulating clothing like a space suit or winter coat."
 
