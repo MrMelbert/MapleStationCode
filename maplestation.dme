@@ -6187,6 +6187,7 @@
 #include "maplestation_modules\code\game\objects\structures\crate_lockers\closets\secure\medical.dm"
 #include "maplestation_modules\code\game\objects\structures\crate_lockers\closets\secure\noble_ambassador.dm"
 #include "maplestation_modules\code\game\objects\structures\crate_lockers\closets\secure\quartermaster.dm"
+#include "maplestation_modules\code\game\objects\structures\crate_lockers\closets\secure\security.dm"
 #include "maplestation_modules\code\modules\admin\admin_vv.dm"
 #include "maplestation_modules\code\modules\admin\smites\pain_smite.dm"
 #include "maplestation_modules\code\modules\admin\smites\tabletide.dm"
