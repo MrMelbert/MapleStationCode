@@ -46,13 +46,16 @@
 	burn_modifier = 0.1
 
 /obj/item/sunscreen/attack_self(mob/user)
-	apply(user, user)
+	if(ishuman(user) && user.is_holding(src))
+		apply(user, user)
 
 /obj/item/sunscreen/examine()
 	. = ..()
 	. += span_info("It's labeled SPF [burn_modifier * 1000]. Reapply in [reaplication_time / 600] minutes.")
 
 /obj/item/sunscreen/interact_with_atom(atom/target, mob/living/user)
+	if(!ishuman(target))
+		return NONE
 	apply(target, user)
 	return ITEM_INTERACT_SUCCESS
 
@@ -78,8 +81,11 @@
 			span_notice("You begin applying [src] on [target]...")
 		)
 
-	if(do_after(user, application_time, user))
+	if(do_after(user, application_time, target))
 		target.apply_status_effect(/datum/status_effect/sunscreen, reaplication_time, burn_modifier)
+
+	target.visible_message(span_warning("[target] has applied sunscreen!"),
+		span_notice("You are covered in sunscreen!"))
 
 //sunscreen status effect
 /atom/movable/screen/alert/status_effect/sunscreen
@@ -101,10 +107,8 @@
 
 /datum/status_effect/sunscreen/on_apply()
 	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.burn_mod -= burn_modifier
-	owner.visible_message(span_warning("[owner] has applied sunscreen!"),
-		span_notice("You are covered in sunscreen!"))
+		var/mob/living/carbon/human/applying_to = owner
+		applying_to.physiology.burn_mod -= burn_modifier
 	return ..()
 
 ///Stuff that happens when the sunscreen runs out.
