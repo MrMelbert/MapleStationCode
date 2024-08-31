@@ -95,7 +95,7 @@
 	damage = 20
 	ricochets_max = 0
 	/// How cold to chill the target down to
-	var/temperature = HYPOTHERMIA - CELCIUS_TO_KELVIN(2 CELCIUS)
+	var/temperature = HYPOTHERMIA - 2 CELCIUS
 
 /obj/projectile/bullet/c38/iceblox/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()

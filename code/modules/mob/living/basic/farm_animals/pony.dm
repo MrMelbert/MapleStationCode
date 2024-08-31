@@ -130,7 +130,7 @@
 	ponycolors = list("#5d566f", COLOR_RED)
 	pressure_resistance = 200
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = 1500
 	unique_tamer = TRUE
 

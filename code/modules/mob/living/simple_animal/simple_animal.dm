@@ -58,12 +58,6 @@
 
 	bodytemp_cold_damage_limit = NPC_DEFAULT_MIN_TEMP
 	bodytemp_heat_damage_limit = NPC_DEFAULT_MAX_TEMP
-/*
-	///Minimal body temperature without receiving damage
-	var/minbodytemp = NPC_DEFAULT_MIN_TEMP
-	///Maximal body temperature without receiving damage
-	var/maxbodytemp = NPC_DEFAULT_MAX_TEMP
-*/
 	///This damage is taken when the body temp is too cold.
 	var/unsuitable_cold_damage
 	///This damage is taken when the body temp is too hot.

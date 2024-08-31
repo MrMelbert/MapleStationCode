@@ -356,11 +356,11 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	ph = 3.82
 	tox_damage = 0
 	addiction_types = list(/datum/addiction/medicine = 2.3)
-	//The heat damage levels of lungs when added (i.e. heat_level_1_threshold on lungs)
+	//The heat damage levels of lungs when added (i.e. heat_level_warning_threshold on lungs)
 	var/cached_heat_level_1
 	var/cached_heat_level_2
 	var/cached_heat_level_3
-	//The cold damage levels of lungs when added (i.e. cold_level_1_threshold on lungs)
+	//The cold damage levels of lungs when added (i.e. cold_level_warning_threshold on lungs)
 	var/cached_cold_level_1
 	var/cached_cold_level_2
 	var/cached_cold_level_3
@@ -382,20 +382,20 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	apply_lung_levels(lungs)
 
 /datum/reagent/inverse/healing/convermol/proc/apply_lung_levels(obj/item/organ/internal/lungs/lungs)
-	cached_heat_level_1 = lungs.heat_level_1_threshold
-	cached_heat_level_2 = lungs.heat_level_2_threshold
-	cached_heat_level_3 = lungs.heat_level_3_threshold
-	cached_cold_level_1 = lungs.cold_level_1_threshold
-	cached_cold_level_2 = lungs.cold_level_2_threshold
-	cached_cold_level_3 = lungs.cold_level_3_threshold
+	cached_heat_level_1 = lungs.heat_level_warning_threshold
+	cached_heat_level_2 = lungs.heat_level_hazard_threshold
+	cached_heat_level_3 = lungs.heat_level_danger_threshold
+	cached_cold_level_1 = lungs.cold_level_warning_threshold
+	cached_cold_level_2 = lungs.cold_level_hazard_threshold
+	cached_cold_level_3 = lungs.cold_level_danger_threshold
 	//Heat threshold is increased
-	lungs.heat_level_1_threshold *= creation_purity * 1.5
-	lungs.heat_level_2_threshold *= creation_purity * 1.5
-	lungs.heat_level_3_threshold *= creation_purity * 1.5
+	lungs.heat_level_warning_threshold *= creation_purity * 1.5
+	lungs.heat_level_hazard_threshold *= creation_purity * 1.5
+	lungs.heat_level_danger_threshold *= creation_purity * 1.5
 	//Cold threshold is decreased
-	lungs.cold_level_1_threshold *= creation_purity * 0.5
-	lungs.cold_level_2_threshold *= creation_purity * 0.5
-	lungs.cold_level_3_threshold *= creation_purity * 0.5
+	lungs.cold_level_warning_threshold *= creation_purity * 0.5
+	lungs.cold_level_hazard_threshold *= creation_purity * 0.5
+	lungs.cold_level_danger_threshold *= creation_purity * 0.5
 
 /datum/reagent/inverse/healing/convermol/proc/on_removed_organ(mob/prev_owner, obj/item/organ/organ)
 	SIGNAL_HANDLER
@@ -405,12 +405,12 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	restore_lung_levels(lungs)
 
 /datum/reagent/inverse/healing/convermol/proc/restore_lung_levels(obj/item/organ/internal/lungs/lungs)
-	lungs.heat_level_1_threshold = cached_heat_level_1
-	lungs.heat_level_2_threshold = cached_heat_level_2
-	lungs.heat_level_3_threshold = cached_heat_level_3
-	lungs.cold_level_1_threshold = cached_cold_level_1
-	lungs.cold_level_2_threshold = cached_cold_level_2
-	lungs.cold_level_3_threshold = cached_cold_level_3
+	lungs.heat_level_warning_threshold = cached_heat_level_1
+	lungs.heat_level_hazard_threshold = cached_heat_level_2
+	lungs.heat_level_danger_threshold = cached_heat_level_3
+	lungs.cold_level_warning_threshold = cached_cold_level_1
+	lungs.cold_level_hazard_threshold = cached_cold_level_2
+	lungs.cold_level_danger_threshold = cached_cold_level_3
 
 /datum/reagent/inverse/healing/convermol/on_mob_delete(mob/living/affected_mob)
 	. = ..()

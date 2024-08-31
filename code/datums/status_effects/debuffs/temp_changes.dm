@@ -77,7 +77,7 @@
 	if(!while_dead && owner.stat == DEAD)
 		return
 
-	if(to_value < initial(owner.body_temperature))
+	if(to_value < owner.standard_body_temperature)
 		if(owner.body_temperature > to_value)
 			owner.adjust_body_temperature(-delta_change * seconds_between_ticks)
 

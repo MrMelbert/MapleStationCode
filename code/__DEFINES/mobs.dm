@@ -168,22 +168,13 @@
 
 #define STAMINA_REGEN_BLOCK_TIME (10 SECONDS)
 
-#define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
-#define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
-#define HEAT_DAMAGE_LEVEL_3 4 //Amount of damage applied when your body temperature passes the 460K point and you are on fire
+/// Damage recieved when past heat damage threshold.
+/// Gets multiplied by 2x, 4x, 8x depending on how far past the threshold you are.
+#define HEAT_DAMAGE 1
 
-#define COLD_DAMAGE_LEVEL_1 0.25 //Amount of damage applied when your body temperature just passes the 260.15k safety point
-#define COLD_DAMAGE_LEVEL_2 0.75 //Amount of damage applied when your body temperature passes the 200K point
-#define COLD_DAMAGE_LEVEL_3 1.5 //Amount of damage applied when your body temperature passes the 120K point
-
-//Note that gas heat damage is only applied once every FOUR ticks.
-#define HEAT_GAS_DAMAGE_LEVEL_1 2 //Amount of damage applied when the current breath's temperature just passes the 360.15k safety point
-#define HEAT_GAS_DAMAGE_LEVEL_2 4 //Amount of damage applied when the current breath's temperature passes the 400K point
-#define HEAT_GAS_DAMAGE_LEVEL_3 8 //Amount of damage applied when the current breath's temperature passes the 1000K point
-
-#define COLD_GAS_DAMAGE_LEVEL_1 0.5 //Amount of damage applied when the current breath's temperature just passes the 260.15k safety point
-#define COLD_GAS_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when the current breath's temperature passes the 200K point
-#define COLD_GAS_DAMAGE_LEVEL_3 3 //Amount of damage applied when the current breath's temperature passes the 120K point
+/// Damage recieved when past cold damage threshold.
+/// Gets multiplied by 2x, 4x, 8x depending on how far past the threshold you are.
+#define COLD_DAMAGE 0.25
 
 //Brain Damage defines
 #define BRAIN_DAMAGE_MILD 20

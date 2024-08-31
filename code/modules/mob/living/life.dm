@@ -79,87 +79,61 @@
 	return
 
 /mob/living/proc/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	// Body temperature is too hot, and we do not have resist traits
-	// Apply some burn damage to the body
 	if(body_temperature > bodytemp_heat_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
-		var/firemodifier = fire_stacks / 50
-		if (!on_fire) // We are not on fire, reduce the modifier
-			firemodifier = min(firemodifier, 0)
+		var/heat_diff = bodytemp_heat_damage_limit - standard_body_temperature
+		var/heat_threshold_low = bodytemp_heat_damage_limit + heat_diff * 0.7
+		var/heat_threshold_medium = bodytemp_heat_damage_limit + heat_diff * 1.25
+		var/heat_threshold_high = bodytemp_heat_damage_limit + heat_diff * 2
 
-		var/burn_damage = 0.5 * max(log(2 - firemodifier, (body_temperature - standard_body_temperature)) - 5, 0)
-		if(ishuman(src))
-			// melbert todo : temp
-			var/mob/living/carbon/human/husrc = src
-			burn_damage *= husrc.physiology.heat_mod
-		apply_damage(burn_damage * seconds_per_tick, BURN, spread_damage = TRUE)
+		var/firemodifier = round(fire_stacks, 1) * 0.05
+		if (!on_fire) // We are not on fire, reduce the modifier
+			firemodifier = min(firemodifier, 0) // Note that wetstacks make us take less burn damage
+
+		var/effective_temp = body_temperature * (1 + firemodifier)
+		var/burn_damage = HEAT_DAMAGE
+		if(body_temperature > heat_threshold_high)
+			burn_damage *= 8
+		else if(body_temperature > heat_threshold_medium)
+			burn_damage *= 4
+		else if(body_temperature > heat_threshold_low)
+			burn_damage *= 2
+
+		temperature_burns(burn_damage * seconds_per_tick, effective_temp, seconds_per_tick)
+		if(body_temperature > heat_threshold_medium)
+			apply_status_effect(/datum/status_effect/stacking/heat_exposure, 1, heat_threshold_medium)
 
 	// For cold damage, we cap at the threshold if you're dead
-	if(getFireLoss() >= maxHealth && stat == DEAD)
-		return
+	if(body_temperature < bodytemp_cold_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTCOLD) && (getFireLoss() < maxHealth || stat != DEAD))
+		var/cold_diff = bodytemp_cold_damage_limit - standard_body_temperature
+		var/cold_threshold_low = bodytemp_cold_damage_limit + cold_diff * 1.2
+		var/cold_threshold_medium = bodytemp_cold_damage_limit + cold_diff * 1.75
+		var/cold_threshold_high = bodytemp_cold_damage_limit + cold_diff * 2
 
-	if(body_temperature < bodytemp_cold_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
-		var/cold_damage = 0
-		// Can't be a switch due to http://www.byond.com/forum/post/2750423
-		if(body_temperature > 201)
-			cold_damage = COLD_DAMAGE_LEVEL_1
-		else if(body_temperature > 120 && body_temperature <= 200)
-			cold_damage = COLD_DAMAGE_LEVEL_2
-		else
-			cold_damage = COLD_DAMAGE_LEVEL_3
+		var/cold_damage = COLD_DAMAGE
+		if(body_temperature > cold_threshold_low)
+			cold_damage *= 2
+		else if(body_temperature > cold_threshold_medium)
+			cold_damage *= 4
+		else if(body_temperature > cold_threshold_high)
+			cold_damage *= 8
 
-		if(ishuman(src))
-			// melbert todo : temp
-			var/mob/living/carbon/human/husrc = src
-			cold_damage *= husrc.physiology.cold_mod
-		apply_damage(cold_damage * seconds_per_tick, BURN, spread_damage = TRUE)
+		temperature_cold_damage(cold_damage * seconds_per_tick, seconds_per_tick)
 
-/mob/living/carbon/human/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	if(body_temperature > BODYTEMP_HEAT_WOUND_LIMIT)
-		heat_exposure_stacks = min(heat_exposure_stacks + (0.5 * seconds_per_tick), 40)
-	else
-		heat_exposure_stacks = max(heat_exposure_stacks - (2 * seconds_per_tick), 0)
+/// Applies damage to the mob due to being too cold
+/mob/living/proc/temperature_cold_damage(damage)
+	return apply_damage(damage, HAS_TRAIT(src, TRAIT_HULK) ? BRUTE : BURN, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 
-	if(heat_exposure_stacks > (10 + rand(0, 20)))
-		apply_burn_wounds_from_heat(seconds_per_tick, times_fired)
-		heat_exposure_stacks = 0
+/mob/living/carbon/human/temperature_cold_damage(damage)
+	damage *= physiology.cold_mod
 	return ..()
 
-/mob/living/carbon/human/proc/apply_burn_wounds_from_heat(seconds_per_tick, times_fired)
-	// If we are resistant to heat exit
-	if(HAS_TRAIT(src, TRAIT_RESISTHEAT) || body_temperature < BODYTEMP_HEAT_WOUND_LIMIT)
-		return
+/// Applies damage to the mob due to being too hot
+/mob/living/proc/temperature_burns(damage, effective_temp)
+	return apply_damage(damage, BURN, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 
-	// Lets pick a random body part and check for an existing burn
-	var/obj/item/bodypart/bodypart = pick(bodyparts)
-	var/datum/wound/existing_burn
-	for (var/datum/wound/iterated_wound as anything in bodypart.wounds)
-		var/datum/wound_pregen_data/pregen_data = iterated_wound.get_pregen_data()
-		if (pregen_data.wound_series in GLOB.wounding_types_to_series[WOUND_BURN])
-			existing_burn = iterated_wound
-			break
-	// If we have an existing burn try to upgrade it
-	var/severity
-	if(existing_burn)
-		switch(existing_burn.severity)
-			if(WOUND_SEVERITY_MODERATE)
-				if(body_temperature > BODYTEMP_HEAT_WOUND_LIMIT + 400) // 800k
-					severity = WOUND_SEVERITY_SEVERE
-			if(WOUND_SEVERITY_SEVERE)
-				if(body_temperature > BODYTEMP_HEAT_WOUND_LIMIT + 2800) // 3200k
-					severity = WOUND_SEVERITY_CRITICAL
-	else // If we have no burn apply the lowest level burn
-		severity = WOUND_SEVERITY_MODERATE
-
-	cause_wound_of_type_and_severity(WOUND_BURN, bodypart, severity, wound_source = "hot temperatures")
-
-	// always take some burn damage
-	var/burn_damage = HEAT_DAMAGE_LEVEL_1
-	if(body_temperature > BODYTEMP_HEAT_WOUND_LIMIT + 400)
-		burn_damage = HEAT_DAMAGE_LEVEL_2
-	if(body_temperature > BODYTEMP_HEAT_WOUND_LIMIT + 2800)
-		burn_damage = HEAT_DAMAGE_LEVEL_3
-
-	apply_damage(burn_damage * seconds_per_tick, BURN, bodypart)
+/mob/living/carbon/human/temperature_burns(damage, effective_temp)
+	damage *= physiology.heat_mod
+	return ..()
 
 /mob/living/proc/body_temperature_alerts()
 	// give out alerts based on how the skin feels, not how the body is
@@ -167,47 +141,50 @@
 	// how we're going to be feeling soon if we don't change our environment
 	var/feels_like = get_skin_temperature()
 
+	var/hot_diff = bodytemp_heat_damage_limit - standard_body_temperature
+	var/hot_threshold_low = standard_body_temperature + hot_diff * 0.1
+	var/hot_threshold_medium = standard_body_temperature + hot_diff * 0.45
+	var/hot_threshold_high = standard_body_temperature + hot_diff * 0.8
 	// Body temperature is too hot, and we do not have resist traits
-	if(feels_like >= BODYTEMP_HEAT_WARNING_1 && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
-		// Clear cold mood and apply hot mood
+	if(feels_like > hot_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 		clear_mood_event("cold")
 		add_mood_event("hot", /datum/mood_event/hot)
+		// Clear cold once we return to warm
 		remove_movespeed_modifier(/datum/movespeed_modifier/cold)
-		// display alerts based on how hot it is
-		// melbert todo : these should not be defined, but variable
-		if(feels_like > BODYTEMP_HEAT_WARNING_3)
-			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
-		else if(feels_like > BODYTEMP_HEAT_WARNING_2)
+		if(feels_like > hot_threshold_high)
+			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
+		else if(feels_like > hot_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
 
+	var/cold_diff = bodytemp_cold_damage_limit - standard_body_temperature
+	var/cold_threshold_low = standard_body_temperature + cold_diff * 0.2
+	var/cold_threshold_medium = standard_body_temperature + cold_diff * 0.45
+	var/cold_threshold_high = standard_body_temperature + cold_diff * 0.75
 	// Body temperature is too cold, and we do not have resist traits
-	else if(feels_like <= BODYTEMP_COLD_WARNING_1 && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
+	if(feels_like < cold_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 		clear_mood_event("hot")
 		add_mood_event("cold", /datum/mood_event/cold)
-		// melbert todo : these should not be defined, but variable
-		if(body_temperature < BODYTEMP_COLD_WARNING_2) // only apply slowdown if the body is cold rather than the skin
+		// only apply slowdown if the body is cold rather than the skin
+		if(body_temperature < cold_threshold_medium)
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((BODYTEMP_COLD_WARNING_2 - body_temperature) / COLD_SLOWDOWN_FACTOR))
-		if(feels_like > BODYTEMP_COLD_WARNING_2)
-			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
-		else if(feels_like > BODYTEMP_COLD_WARNING_3)
+		if(feels_like < cold_threshold_high)
+			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
+		else if(feels_like < cold_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
 		else
-			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
+			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
 
 	// We are not to hot or cold, remove status and moods
 	// Optimization here, we check these things based off the old temperature to avoid unneeded work
 	// We're not perfect about this, because it'd just add more work to the base case, and resistances are rare
-	else if(old_recorded_temperature > BODYTEMP_HEAT_WARNING_1 || old_recorded_temperature < BODYTEMP_COLD_WARNING_1)
+	if(feels_like < hot_threshold_low && feels_like > cold_threshold_low)
 		clear_alert(ALERT_TEMPERATURE)
-		if(body_temperature > bodytemp_cold_damage_limit)
+		if(body_temperature > cold_threshold_medium)
 			remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 		clear_mood_event("cold")
 		clear_mood_event("hot")
-
-	// Store the old bodytemp for future checking
-	old_recorded_temperature = feels_like
 
 /mob/living/proc/handle_mutations(seconds_per_tick, times_fired)
 	return
@@ -243,7 +220,7 @@
 	// Get the insulation value based on the area's temp
 	var/thermal_protection = get_insulation_protection(loc_temp)
 	var/protection_modifier = 1
-	if(standard_body_temperature + 2 KELVIN < body_temperature)
+	if(body_temperature > standard_body_temperature + 2 KELVIN)
 		// we are overheating and sweaty - insulation is not as good reducing thermal protection
 		protection_modifier = 0.7
 
@@ -276,7 +253,7 @@
 			if(-INFINITY to NUTRITION_LEVEL_STARVING)
 				natural_change *= 0.25
 	// Cap increase and decrease
-	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX) : min(natural_change, BODYTEMP_HEATING_MAX)
+	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX / 6) : min(natural_change, BODYTEMP_HEATING_MAX / 6)
 	var/min = natural_change < 0 ? standard_body_temperature : 0
 	var/max = natural_change > 0  ? standard_body_temperature : INFINITY
 	adjust_body_temperature(natural_change * seconds_per_tick, min_temp = min, max_temp = max) // no use_insulation beacuse this is internal

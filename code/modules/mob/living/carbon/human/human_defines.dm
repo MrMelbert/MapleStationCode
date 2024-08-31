@@ -19,8 +19,6 @@
 
 	bodytemp_cold_damage_limit = BODYTEMP_COLD_DAMAGE_LIMIT
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT
-	temperature_normalization_speed = 0.1
-	temperature_homeostasis_speed = 0.5
 
 	//Hair colour and style
 	var/hair_color = "#000000"
@@ -87,9 +85,6 @@
 
 	/// How many "units of blood" we have on our hands
 	var/blood_in_hands = 0
-
-	///Exposure to damaging heat levels increases stacks, stacks clean over time when temperatures are lower. Stack is consumed to add a wound.
-	var/heat_exposure_stacks = 0
 
 	/// When an braindead player has their equipment fiddled with, we log that info here for when they come back so they know who took their ID while they were DC'd for 30 seconds
 	var/list/afk_thefts

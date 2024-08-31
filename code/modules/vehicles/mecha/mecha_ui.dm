@@ -36,10 +36,10 @@
 	data["cabin_pressure_hazard_min"]  = HAZARD_LOW_PRESSURE
 	data["cabin_pressure_warning_max"]  = WARNING_HIGH_PRESSURE
 	data["cabin_pressure_hazard_max"]  = HAZARD_HIGH_PRESSURE
-	data["cabin_temp_warning_min"]  = BODYTEMP_COLD_WARNING_1 + 10 - T0C
-	data["cabin_temp_hazard_min"]  = BODYTEMP_COLD_WARNING_1 - T0C
-	data["cabin_temp_warning_max"]  = BODYTEMP_HEAT_WARNING_1 - 27 - T0C
-	data["cabin_temp_hazard_max"]  = BODYTEMP_HEAT_WARNING_1 - T0C
+	data["cabin_temp_warning_min"]  = BODYTEMP_COLD_DAMAGE_LIMIT + 10 CELCIUS
+	data["cabin_temp_hazard_min"]  = BODYTEMP_COLD_DAMAGE_LIMIT
+	data["cabin_temp_warning_max"]  = BODYTEMP_HEAT_DAMAGE_LIMIT - 10 CELCIUS
+	data["cabin_temp_hazard_max"]  = BODYTEMP_HEAT_DAMAGE_LIMIT
 	data["one_atmosphere"]  = ONE_ATMOSPHERE
 
 	data["sheet_material_amount"] = SHEET_MATERIAL_AMOUNT
@@ -221,4 +221,3 @@
 			var/obj/item/mecha_parts/mecha_equipment/gear = locate(params["ref"]) in flat_equipment
 			return gear?.ui_act(params["gear_action"], params, ui, state)
 	return TRUE
-

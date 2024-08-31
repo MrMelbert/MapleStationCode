@@ -29,7 +29,7 @@
 	status_flags = GODMODE //nothing but crowbars may kill us
 	death_message = ""
 	unsuitable_atmos_damage = 0
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = INFINITY
 	basic_mob_flags = DEL_ON_DEATH
 	move_resist = INFINITY

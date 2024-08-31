@@ -62,7 +62,7 @@
 	if(!. || !ishuman(mob_to_check))
 		return
 	var/mob/living/carbon/human/human_to_check = mob_to_check
-	if(human_to_check.get_thermal_protection() >= FIRE_IMMUNITY_MAX_TEMP_PROTECT)
+	if(human_to_check.get_heat_protection(FIRE_IMMUNITY_MAX_TEMP_PROTECT) >= 0.9)
 		return FALSE
 
 /datum/weather/ash_storm/weather_act(mob/living/victim)

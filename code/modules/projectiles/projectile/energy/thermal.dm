@@ -17,7 +17,7 @@
 
 	var/mob/living/cold_target = target
 	var/how_cold_is_target = cold_target.body_temperature
-	var/danger_zone = cold_target.bodytemp_cold_damage_limit - CELCIUS_TO_KELVIN(10 CELCIUS)
+	var/danger_zone = cold_target.bodytemp_cold_damage_limit - 10 CELCIUS
 	if(how_cold_is_target < danger_zone)
 		explosion(cold_target, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 2, flame_range = 3) //maybe stand back a bit
 		cold_target.adjust_body_temperature(CELCIUS_TO_KELVIN(10 CELCIUS), max_temp = cold_target.standard_body_temperature) //avoid repeat explosions
@@ -42,7 +42,7 @@
 
 	var/mob/living/hot_target = target
 	var/how_hot_is_target = hot_target.body_temperature
-	var/danger_zone = hot_target.bodytemp_heat_damage_limit + CELCIUS_TO_KELVIN(10 CELCIUS)
+	var/danger_zone = hot_target.bodytemp_heat_damage_limit + 10 CELCIUS
 	if(how_hot_is_target > danger_zone)
 		hot_target.Knockdown(10 SECONDS)
 		hot_target.apply_damage(20, BURN, spread_damage = TRUE)

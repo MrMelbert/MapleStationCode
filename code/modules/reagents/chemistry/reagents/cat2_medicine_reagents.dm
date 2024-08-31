@@ -224,7 +224,8 @@
 	if(affected_mob.adjustFireLoss(fireheal * REM * seconds_per_tick * normalise_creation_purity(), updating_health = FALSE, required_bodytype = affected_bodytype))
 		. = UPDATE_MOB_HEALTH
 
-	affected_mob.adjust_body_temperature(rand(-1 KELVIN, -0.2 KELVIN) * REM * seconds_per_tick, min_temp = HYPOTHERMIA - CELCIUS_TO_KELVIN(7 CELCIUS))
+	var/cooling = -1 KELVIN / rand(1, 5)
+	affected_mob.adjust_body_temperature(cooling * REM * seconds_per_tick, min_temp = HYPOTHERMIA - 7 CELCIUS)
 	affected_mob.reagents?.expose_temperature(affected_mob.reagents.chem_temp - (10 * REM * seconds_per_tick))
 	affected_mob.adjust_fire_stacks(-1 * REM * seconds_per_tick)
 
@@ -233,14 +234,14 @@
 	if(!(methods & VAPOR))
 		return
 
-	exposed_mob.adjust_body_temperature(reac_volume * -0.33 KELVIN, min_temp = HYPOTHERMIA - CELCIUS_TO_KELVIN(7 CELCIUS), use_insulation = TRUE)
+	exposed_mob.adjust_body_temperature(reac_volume * -0.33 KELVIN, min_temp = HYPOTHERMIA - 7 CELCIUS, use_insulation = TRUE)
 	exposed_mob.adjust_fire_stacks(reac_volume / -2)
 	if(reac_volume >= metabolization_rate)
 		exposed_mob.extinguish_mob()
 
 /datum/reagent/medicine/c2/hercuri/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(0.5 KELVIN * REM * seconds_per_tick, min_temp = HYPOTHERMIA - CELCIUS_TO_KELVIN(7 CELCIUS)) //chilly chilly
+	affected_mob.adjust_body_temperature(0.5 KELVIN * REM * seconds_per_tick, min_temp = HYPOTHERMIA - 7 CELCIUS) //chilly chilly
 
 /******OXY******/
 /*Suffix: -mol*/

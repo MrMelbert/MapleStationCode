@@ -308,7 +308,7 @@
 	melee_damage_lower = 5
 	melee_damage_upper = 10
 	unsuitable_atmos_damage = 0
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = 700
 	unsuitable_cold_damage = 0
 	wound_bonus = 25
@@ -466,7 +466,7 @@
 /mob/living/basic/spider/giant/ice
 	name = "giant ice spider"
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = 1500
 	color = rgb(114,228,250)
 	gold_core_spawnable = NO_SPAWN
@@ -480,7 +480,7 @@
 /mob/living/basic/spider/giant/nurse/ice
 	name = "giant ice spider"
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = 1500
 	poison_type = /datum/reagent/consumable/frostoil
 	color = rgb(114,228,250)
@@ -494,7 +494,7 @@
 /mob/living/basic/spider/giant/hunter/ice
 	name = "giant ice spider"
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = 1500
 	poison_type = /datum/reagent/consumable/frostoil
 	color = rgb(114,228,250)

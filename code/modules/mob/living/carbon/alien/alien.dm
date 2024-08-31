@@ -14,7 +14,7 @@
 	status_flags = CANUNCONSCIOUS|CANPUSH
 
 	heat_protection = 0.5 // minor heat insulation
-	bodytemp_heat_damage_limit = BODYTEMP_HEAT_DAMAGE_LIMIT
+	bodytemp_heat_damage_limit = CELCIUS_TO_KELVIN(85 CELCIUS)
 
 	///Whether or not the alien is leaping. Only used by hunters.
 	var/leaping = FALSE
@@ -50,18 +50,6 @@
 
 /mob/living/carbon/alien/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) // beepsky won't hunt aliums
 	return -10
-
-/mob/living/carbon/alien/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	switch(body_temperature) // melbert todo : temp
-		if(360 to 400)
-			apply_damage(HEAT_DAMAGE_LEVEL_1 * seconds_per_tick, BURN)
-		if(400 to 460)
-			apply_damage(HEAT_DAMAGE_LEVEL_2 * seconds_per_tick, BURN)
-		if(460 to INFINITY)
-			if(on_fire)
-				apply_damage(HEAT_DAMAGE_LEVEL_3 * seconds_per_tick, BURN)
-			else
-				apply_damage(HEAT_DAMAGE_LEVEL_2 * seconds_per_tick, BURN)
 
 /mob/living/carbon/alien/body_temperature_alerts()
 	if(body_temperature > bodytemp_heat_damage_limit)

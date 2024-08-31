@@ -69,52 +69,57 @@
 #define FAHRENHEIT * 1
 #define KELVIN * 1
 
-/// The natural temperature for a body
-#define BODYTEMP_NORMAL CELCIUS_TO_KELVIN(37 CELCIUS)
-/// Beyond this point a mob is considered hyperthermic
-#define HYPERTHERMIA (BODYTEMP_NORMAL + CELCIUS_TO_KELVIN(10 CELCIUS))
-/// Beyond this point a mob is considered hypothermic
-#define HYPOTHERMIA (BODYTEMP_NORMAL - CELCIUS_TO_KELVIN(10 CELCIUS))
-
 /// Max change in temperature during natural body temperature stabilization
 #define BODYTEMP_COOLING_MAX -30 KELVIN
 /// Max change in temperature during natural body temperature stabilization
 #define BODYTEMP_HEATING_MAX 30 KELVIN
+
+// These defines are DEFAULTS for most mobs
+// Mobs can override these to have whatever they want
+// That means in a lot of situations (namely mob code) you should not directly use these,
+// and instead use the relevant mob vars UNLESS you intentionally are using defaults over reality
+
+/// The natural temperature for a body
+#define BODYTEMP_NORMAL CELCIUS_TO_KELVIN(37 CELCIUS)
+/// Beyond this point a mob is considered hyperthermic
+#define HYPERTHERMIA (BODYTEMP_NORMAL + 10 CELCIUS)
+/// Beyond this point a mob is considered hypothermic
+#define HYPOTHERMIA (BODYTEMP_NORMAL - 10 CELCIUS)
+
 /// The body temperature limit the human body can take before it starts taking damage from heat.
 /// This also affects how fast the body normalises it's temperature when hot.
-/// 340k is about 66c, and rather high for a human.
-#define BODYTEMP_HEAT_DAMAGE_LIMIT CELCIUS_TO_KELVIN(86.85 CELCIUS)
-/// A temperature limit which is above the maximum lavaland temperature
-#define BODYTEMP_HEAT_LAVALAND_SAFE (LAVALAND_MAX_TEMPERATURE + 5 KELVIN)
+#define BODYTEMP_HEAT_DAMAGE_LIMIT CELCIUS_TO_KELVIN(65 CELCIUS)
 /// The body temperature limit the human body can take before it starts taking damage from cold.
 /// This also affects how fast the body normalises it's temperature when cold.
-/// 270k is about -3c, that is below freezing and would hurt over time.
-#define BODYTEMP_COLD_DAMAGE_LIMIT CELCIUS_TO_KELVIN(-13.15 CELCIUS)
+#define BODYTEMP_COLD_DAMAGE_LIMIT CELCIUS_TO_KELVIN(-0.5 CELCIUS)
+
+/// A temperature limit which is above the maximum lavaland temperature
+#define BODYTEMP_HEAT_LAVALAND_SAFE (LAVALAND_MAX_TEMPERATURE + 5 KELVIN)
 /// A temperature limit which is above the minimum icebox temperature
 #define BODYTEMP_COLD_ICEBOX_SAFE (ICEBOX_MIN_TEMPERATURE - 5 KELVIN)
-/// The body temperature limit the human body can take before it will take wound damage.
-#define BODYTEMP_HEAT_WOUND_LIMIT (BODYTEMP_NORMAL + 90 KELVIN) // 400.5 k
+
+/// The temperature the red icon is displayed.
+#define BODYTEMP_HEAT_WARNING_3 (BODYTEMP_NORMAL + 23 CELCIUS) // CELCIUS_TO_KELVIN(60 CELCIUS)
+/// The temperature the orange icon is displayed.
+#define BODYTEMP_HEAT_WARNING_2 (BODYTEMP_NORMAL + 13 CELCIUS) // CELCIUS_TO_KELVIN(50 CELCIUS)
+/// The temperature the yellow icon is displayed.
+#define BODYTEMP_HEAT_WARNING_1 (BODYTEMP_NORMAL + 3 CELCIUS) // CELCIUS_TO_KELVIN(40 CELCIUS)
+/// The temperature the light green icon is displayed.
+#define BODYTEMP_COLD_WARNING_1 (BODYTEMP_NORMAL - 7 CELCIUS) // CELCIUS_TO_KELVIN(30 CELCIUS)
+/// The temperature the cyan icon is displayed.
+#define BODYTEMP_COLD_WARNING_2 (BODYTEMP_NORMAL - 17 CELCIUS) // CELCIUS_TO_KELVIN(20 CELCIUS)
+/// The temperature the blue icon is displayed.
+#define BODYTEMP_COLD_WARNING_3 (BODYTEMP_NORMAL - 27 CELCIUS) // CELCIUS_TO_KELVIN(10 CELCIUS)
+
+// Ok defaults over
+
+/// Beyond this body temperature, being on fire will increase body temperature by less and less
+#define BODYTEMP_FIRE_TEMP_SOFTCAP 600 KELVIN
+
 /// The modifier on cold damage limit hulks get ontop of their regular limit
 #define BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER 25 KELVIN
 /// The modifier on cold damage hulks get.
 #define HULK_COLD_DAMAGE_MOD 2
-
-// Body temperature warning icons
-/// The temperature the red icon is displayed.
-#define BODYTEMP_HEAT_WARNING_3 CELCIUS_TO_KELVIN(60 CELCIUS)
-/// The temperature the orange icon is displayed.
-#define BODYTEMP_HEAT_WARNING_2 CELCIUS_TO_KELVIN(50 CELCIUS)
-/// The temperature the yellow icon is displayed.
-#define BODYTEMP_HEAT_WARNING_1 CELCIUS_TO_KELVIN(40 CELCIUS)
-/// The temperature the light green icon is displayed.
-#define BODYTEMP_COLD_WARNING_1 CELCIUS_TO_KELVIN(25 CELCIUS)
-/// The temperature the cyan icon is displayed.
-#define BODYTEMP_COLD_WARNING_2 CELCIUS_TO_KELVIN(20 CELCIUS)
-/// The temperature the blue icon is displayed.
-#define BODYTEMP_COLD_WARNING_3 CELCIUS_TO_KELVIN(10 CELCIUS)
-
-/// Beyond this temperature, being on fire will increase body temperature by less and less
-#define BODYTEMP_FIRE_TEMP_SOFTCAP 1200 KELVIN
 
 /// The amount of pressure damage someone takes is equal to (pressure / HAZARD_HIGH_PRESSURE)*PRESSURE_DAMAGE_COEFFICIENT, with the maximum of MAX_PRESSURE_DAMAGE
 #define PRESSURE_DAMAGE_COEFFICIENT 2

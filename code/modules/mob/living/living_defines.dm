@@ -225,8 +225,6 @@
 	var/standard_body_temperature = BODYTEMP_NORMAL
 	/// Temperature of our insides
 	var/body_temperature = BODYTEMP_NORMAL
-	/// Our body temperature last life tick
-	var/old_recorded_temperature = -1
 
 	/// How cold to start sustaining cold damage
 	var/bodytemp_cold_damage_limit = -1 // -1 = no cold damage ever

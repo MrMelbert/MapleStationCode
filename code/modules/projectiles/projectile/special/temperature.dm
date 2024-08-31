@@ -5,7 +5,7 @@
 	damage_type = BURN
 	armor_flag = ENERGY
 	/// What temp to trend the target towards
-	var/temperature = HYPOTHERMIA - CELCIUS_TO_KELVIN(2 CELCIUS)
+	var/temperature = HYPOTHERMIA - 2 CELCIUS
 	/// How much temp per shot to apply
 	var/temperature_mod_per_shot = 0.25
 

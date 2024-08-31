@@ -29,7 +29,7 @@
 /mob/living/proc/get_cold_protection(temperature)
 	return cold_protection
 
-/mob/living/proc/adjust_body_temperature(amount = 0, min_temp, max_temp, use_insulation = FALSE)
+/mob/living/proc/adjust_body_temperature(amount = 0, min_temp = 0, max_temp = INFINITY, use_insulation = FALSE)
 	// apply insulation to the amount of change
 	if(use_insulation)
 		amount *= (1 - get_insulation_protection(body_temperature + amount))
@@ -37,16 +37,11 @@
 		return FALSE
 	amount = round(amount, 0.01)
 
-	// defauults mins and maxes to reasonable ranges
-	if(isnull(min_temp))
-		min_temp = amount < 0 ? CELCIUS_TO_KELVIN(20 CELCIUS) : 1 KELVIN
-	if(isnull(max_temp))
-		max_temp = amount > 0 ? CELCIUS_TO_KELVIN(50 CELCIUS) : INFINITY
-
 	if(body_temperature >= min_temp && body_temperature <= max_temp)
 		var/old_temp = body_temperature
 		body_temperature = clamp(body_temperature + amount, min_temp, max_temp)
 		SEND_SIGNAL(src, COMSIG_LIVING_BODY_TEMPERATURE_CHANGE, old_temp, body_temperature)
+		// body_temperature_alerts()
 
 #ifdef TESTING
 		if(mind)
@@ -71,15 +66,16 @@
  */
 /mob/living/proc/get_skin_temperature()
 	var/area_temp = get_temperature(loc?.return_air())
-	area_temp *= (1 - get_insulation_protection(area_temp))
+	var/protection = get_insulation_protection(area_temp)
+	area_temp *= (1 - protection)
 	if(!(mob_biotypes & MOB_ORGANIC))
 		return area_temp // non-organic mobs likely don't feel or regulate temperature so we can just report the area temp
 
-	. = ((body_temperature * 2) + area_temp) / 3
+	. = ((body_temperature * 2) + area_temp) / (3 - protection)
 	if(body_temperature >= standard_body_temperature + 2 KELVIN)
-		. *= 1.2 // sweating
-	if(body_temperature <= HYPOTHERMIA)
-		. *= 0.8 // extremities are colder
+		. *= 1.1 // sweating
+//	if(body_temperature <= HYPOTHERMIA)
+//		. *= 0.8 // extremities are colder
 	if(on_fire)
 		. += fire_stacks ** 2 KELVIN
 	return round(., 0.01)

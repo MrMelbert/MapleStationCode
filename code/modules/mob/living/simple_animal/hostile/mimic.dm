@@ -33,7 +33,7 @@ GLOBAL_LIST_INIT(animatable_blacklist, typecacheof(list(
 	taunt_chance = 30
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 
 	faction = list(FACTION_MIMIC)
 	move_to_delay = 9

@@ -973,6 +973,7 @@
 
 	if(heal_flags & HEAL_TEMP)
 		body_temperature = standard_body_temperature
+		body_temperature_alerts()
 	if(heal_flags & HEAL_BLOOD)
 		restore_blood()
 	if(reagents && (heal_flags & HEAL_ALL_REAGENTS))
@@ -1782,7 +1783,12 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * * fire_handler: The fire handler status effect that is managing the fire stacks
  */
 /mob/living/proc/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
-	adjust_body_temperature((BODYTEMP_HEATING_MAX + (fire_handler.stacks * 12)) * 0.5 * seconds_per_tick)
+	var/amount_to_heat = 0.25 KELVIN * fire_handler.stacks * seconds_per_tick
+	if(body_temperature > BODYTEMP_FIRE_TEMP_SOFTCAP)
+		// Apply dimishing returns upon temp beyond the soft cap
+		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / body_temperature)
+
+	return adjust_body_temperature(amount_to_heat)
 
 //Mobs on Fire end
 

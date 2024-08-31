@@ -11,7 +11,7 @@
 	bubble_icon = "blob"
 	speak_emote = null
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = INFINITY
 	lighting_cutoff_red = 20
 	lighting_cutoff_green = 40

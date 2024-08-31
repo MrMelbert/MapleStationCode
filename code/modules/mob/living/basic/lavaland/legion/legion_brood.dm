@@ -13,7 +13,7 @@
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	faction = list(FACTION_MINING)
 	unsuitable_atmos_damage = 0
-	bodytemp_cold_damage_limit = 0
+	bodytemp_cold_damage_limit = -1
 	bodytemp_heat_damage_limit = INFINITY
 	friendly_verb_continuous = "chatters near"
 	friendly_verb_simple = "chatter near"
