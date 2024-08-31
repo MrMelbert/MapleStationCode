@@ -95,7 +95,7 @@
 	var/burn_modifier = 0.03
 
 /datum/status_effect/sunscreen/on_creation(mob/living/new_owner, duration, burn_modifier)
-	src.duration = _duration
+	src.duration = duration
 	src.burn_modifier = burn_modifier
 	return ..()
 
