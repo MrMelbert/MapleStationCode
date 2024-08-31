@@ -106,7 +106,8 @@
 	var/mob_biotypes = MOB_ORGANIC
 	/// The type of respiration the mob is capable of doing. Used by adjustOxyLoss.
 	var/mob_respiration_type = RESPIRATION_OXYGEN
-	///more or less efficiency to metabolize helpful/harmful reagents and regulate body temperature..
+	/// How efficient are we at metabolizing reagents and regulating body temperature?
+	/// Note: Do not set this for mobs with stomach organs, as the stomach overrides this value entirely.
 	var/metabolism_efficiency = 1
 	///does the mob have distinct limbs?(arms,legs, chest,head)
 	var/has_limbs = FALSE

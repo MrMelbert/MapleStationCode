@@ -49,7 +49,7 @@
 		return HOMEOSTASIS_HANDLED
 
 	adjust_charge(-1 * ETHEREAL_CHARGE_FACTOR * abs(natural_change) * seconds_per_tick)
-	return HOMEOSTASIS_NO_MODIFIERS|HOMEOSTASIS_NO_HUNGER
+	return HOMEOSTASIS_NO_HUNGER
 
 /obj/item/organ/internal/stomach/ethereal/proc/adjust_charge(amount)
 	crystal_charge = clamp(crystal_charge + amount, ETHEREAL_CHARGE_NONE, ETHEREAL_CHARGE_DANGEROUS)

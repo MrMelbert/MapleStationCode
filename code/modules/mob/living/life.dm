@@ -225,7 +225,9 @@
 		// we are overheating and sweaty - insulation is not as good reducing thermal protection
 		protection_modifier = 0.7
 
-	var/temp_change = (1 - (thermal_protection * protection_modifier)) * temp_delta * temperature_normalization_speed
+	// melbert todo : temp / this needs to scale exponentially or logarithmically - slow for small changes, fast for large changes
+	var/temp_sign = SIGN(temp_delta)
+	var/temp_change =  temp_sign * (1 - (thermal_protection * protection_modifier)) * ((0.1 * max(1, abs(temp_delta))) ** 1.8) * temperature_normalization_speed
 	// Cap increase and decrease
 	temp_change = temp_change < 0 ? max(temp_change, BODYTEMP_COOLING_MAX) : min(temp_change, BODYTEMP_HEATING_MAX)
 	adjust_body_temperature(temp_change * seconds_per_tick) // no use_insulation beacuse we account for it manually
@@ -243,7 +245,11 @@
 	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && nutrition < (NUTRITION_LEVEL_STARVING / 3))
 		return
 
-	var/natural_change = (standard_body_temperature - body_temperature) * metabolism_efficiency * temperature_homeostasis_speed
+	// Fun note: Because this scales by metabolism efficiency, being well fed boosts your homeostasis, and being poorly fed reduces it
+	var/natural_change = round((standard_body_temperature - body_temperature) * metabolism_efficiency * temperature_homeostasis_speed, 0.01)
+	if(natural_change == 0)
+		return
+
 	// Cap increase and decrease (decreasing is harder)
 	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX / 8) : min(natural_change, BODYTEMP_HEATING_MAX / 6)
 
@@ -251,24 +257,17 @@
 	if(sigreturn & HOMEOSTASIS_HANDLED)
 		return
 
-	// Scale based on how hungry we are, hungrier means we have less energy to regulate our temperature
-	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && !(sigreturn & HOMEOSTASIS_NO_MODIFIERS))
-		switch(nutrition)
-			if(NUTRITION_LEVEL_WELL_FED to INFINITY)
-				natural_change *= 1.25
-			if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_WELL_FED)
-				pass()
-			if(NUTRITION_LEVEL_STARVING to NUTRITION_LEVEL_HUNGRY)
-				natural_change *= 0.5
-			if(-INFINITY to NUTRITION_LEVEL_STARVING)
-				natural_change *= 0.25
-
 	var/min = natural_change < 0 ? standard_body_temperature : 0
-	var/max = natural_change > 0  ? standard_body_temperature : INFINITY
+	var/max = natural_change > 0 ? standard_body_temperature : INFINITY
+	// calculates how much nutrition decay per kelvin of temperature change
+	// while having this scale may be confusing, it's to make sure that stepping into an extremely cold environment (space)
+	// doesn't immediately drain nutrition to zero in under a minute
+	// at 0.25 kelvin, nutrition_per_kelvin is 2.5. at 1, it's ~1.5, and at 4, it's 1.
+	var/nutrition_per_kelvin = round(2.5 / ((abs(natural_change) / 0.25) ** 0.33), 0.01)
 
 	adjust_body_temperature(natural_change * seconds_per_tick, min_temp = min, max_temp = max) // no use_insulation beacuse this is internal
 	if(!(sigreturn & HOMEOSTASIS_NO_HUNGER))
-		adjust_nutrition(-1 * HUNGER_FACTOR * abs(natural_change) * seconds_per_tick)
+		adjust_nutrition(-1 * HOMEOSTASIS_HUNGER_MULTIPLIER * HUNGER_FACTOR * nutrition_per_kelvin * abs(natural_change) * seconds_per_tick)
 
 /**
  * Get the fullness of the mob
@@ -281,10 +280,8 @@
 /mob/living/proc/get_fullness()
 	var/fullness = nutrition
 	// we add the nutrition value of what we're currently digesting
-	for(var/bile in reagents.reagent_list)
-		var/datum/reagent/consumable/bits = bile
-		if(bits)
-			fullness += bits.get_nutriment_factor(src) * bits.volume / bits.metabolization_rate
+	for(var/datum/reagent/consumable/bits in reagents.reagent_list)
+		fullness += bits.get_nutriment_factor(src) * bits.volume / bits.metabolization_rate
 	return fullness
 
 /**

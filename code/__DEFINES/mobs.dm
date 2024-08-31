@@ -280,8 +280,8 @@
 #define NUTRITION_LEVEL_HUNGRY 250
 #define NUTRITION_LEVEL_STARVING 150
 
-#define NUTRITION_LEVEL_START_MIN 250
-#define NUTRITION_LEVEL_START_MAX 400
+#define NUTRITION_LEVEL_START_MIN 275
+#define NUTRITION_LEVEL_START_MAX 375
 
 //Disgust levels for humans
 #define DISGUST_LEVEL_MAXEDOUT 150
@@ -449,8 +449,19 @@
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
-#define HUNGER_FACTOR 0.05 //factor at which mob nutrition decreases
-#define ETHEREAL_CHARGE_FACTOR 0.8 //factor at which ethereal's charge decreases per second
+/// Factor at which mob nutrition decreases
+#define HUNGER_FACTOR 0.1
+
+// These add up to 1 to roughly (VERY roughly) represent the proportion of hunger used by each system
+/// What % of hunger is used by homeostasis
+#define HOMEOSTASIS_HUNGER_MULTIPLIER 0.7
+/// What % of hunger is used by passive hunger
+#define PASSIVE_HUNGER_MULTIPLIER 0.2
+/// What % of hunger is used by movement
+#define MOVEMENT_HUNGER_MULTIPLIER 0.1
+
+/// Factor at which ethereal's charge decreases per second
+#define ETHEREAL_CHARGE_FACTOR 0.8
 /// How much nutrition eating clothes as moth gives and drains
 #define CLOTHING_NUTRITION_GAIN 15
 #define REAGENTS_METABOLISM 0.2 //How many units of reagent are consumed per second, by default.

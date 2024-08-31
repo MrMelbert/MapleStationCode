@@ -1539,6 +1539,9 @@
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
 
+/mob/proc/adjust_satiety(change)
+	satiety = clamp(satiety + change, -MAX_SATIETY, MAX_SATIETY)
+
 ///Force set the mob nutrition
 /mob/proc/set_nutrition(set_to, forced = FALSE) //Seriously fuck you oldcoders.
 	if(HAS_TRAIT(src, TRAIT_NOHUNGER) && !forced)

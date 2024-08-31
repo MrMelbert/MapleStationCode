@@ -1682,7 +1682,7 @@
 
 /datum/reagent/consumable/ethanol/squirt_cider/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.satiety += 5 * REM * seconds_per_tick //for context, vitamins give 15 satiety per second
+	drinker.adjust_satiety(5 * REM * seconds_per_tick) //for context, vitamins give 15 satiety per second
 
 /datum/reagent/consumable/ethanol/fringe_weaver
 	name = "Fringe Weaver"
@@ -1705,7 +1705,7 @@
 
 /datum/reagent/consumable/ethanol/sugar_rush/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
 	. = ..()
-	drinker.satiety -= 10 * REM * seconds_per_tick //junky as hell! a whole glass will keep you from being able to eat junk food
+	drinker.adjust_satiety(-10 * REM * seconds_per_tick) //junky as hell! a whole glass will keep you from being able to eat junk food
 
 /datum/reagent/consumable/ethanol/crevice_spike
 	name = "Crevice Spike"

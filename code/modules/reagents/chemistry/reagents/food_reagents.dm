@@ -130,8 +130,7 @@
 
 /datum/reagent/consumable/nutriment/vitamin/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.satiety < MAX_SATIETY)
-		affected_mob.satiety += 30 * REM * seconds_per_tick
+	affected_mob.adjust_satiety(30 * REM * seconds_per_tick)
 
 /// The basic resource of vat growing.
 /datum/reagent/consumable/nutriment/protein

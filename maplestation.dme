@@ -6481,7 +6481,6 @@
 #include "maplestation_modules\code\modules\surgery\organs\autosurgeon.dm"
 #include "maplestation_modules\code\modules\surgery\organs\ears.dm"
 #include "maplestation_modules\code\modules\surgery\organs\eyes.dm"
-#include "maplestation_modules\code\modules\surgery\organs\liver.dm"
 #include "maplestation_modules\code\modules\surgery\organs\tails.dm"
 #include "maplestation_modules\code\modules\surgery\organs\tongue.dm"
 #include "maplestation_modules\code\modules\uplink\uplink_devices.dm"

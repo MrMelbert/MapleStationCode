@@ -90,8 +90,9 @@
 
 	/// Hunger level of the mob
 	var/nutrition = NUTRITION_LEVEL_START_MIN // randomised in Initialize
-	/// Satiation level of the mob
-	var/satiety = 0//Carbon
+	/// How satiated the mob is - How well fed the mob is.
+	/// Goes up when eating good food, and goes down when eating bad food.
+	var/satiety = 0
 
 	/// How many ticks this mob has been over reating
 	var/overeatduration = 0 // How long this guy is overeating //Carbon
