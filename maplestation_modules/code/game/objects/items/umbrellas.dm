@@ -40,6 +40,7 @@
 	desc = "A black laced parsol, how intricate."
 	icon_state = "parasol"
 	inhand_icon_state = "parasol_closed"
+	on_inhand_icon_state = "parasol_open"
 
 
 /obj/item/umbrella/Initialize(mapload)
