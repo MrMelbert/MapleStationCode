@@ -124,6 +124,14 @@
 
 	on_inhand_icon_state = "umbrella_volkan_open"
 
+/obj/item/umbrella/volkan/on_transform(obj/item/source, mob/user, active)
+	. = ..()
+	if(active)
+		ADD_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
+	else
+		REMOVE_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
+
+
 //---------------------cool boxes!-----------------------
 
 //Unfoldable Box.
