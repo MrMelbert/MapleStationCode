@@ -24,7 +24,7 @@
 	hitsound = 'sound/weapons/genhit1.ogg'
 
 	//open umbrella offsets for the inhands
-	var/open_x_offset = 2
+	var/open_x_offset = 1
 	var/open_y_offset = 3
 
 	//Whether it's open or not
