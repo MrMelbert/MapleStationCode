@@ -52,8 +52,13 @@
 	. = ..()
 	if(!isinhands)
 		return
-	//if(isinhands & open)
-	//	. += mutable_appearance(lefthand_file, inhand_icon_state + "_BACK", -BODY_BEHIND_LAYER) //not sure why the layer has to be - to work, but it does
+	var/mob/holder = loc
+	if(open)
+		if(ISODD(holder.get_held_index_of_item(src))) //left hand or right hand?
+			. += mutable_appearance(lefthand_file, inhand_icon_state + "_BACK", BELOW_MOB_LAYER)
+		else
+			. += mutable_appearance(righthand_file, inhand_icon_state + "_BACK", BELOW_MOB_LAYER)
+
 
 /obj/item/umbrella/proc/on_transform(obj/item/source, mob/user, active)
 	SIGNAL_HANDLER
