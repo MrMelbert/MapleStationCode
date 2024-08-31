@@ -35,12 +35,18 @@
 	/// The inhand icon state used when our umbrella is opened.
 	var/on_inhand_icon_state = "umbrella_open"
 
+/obj/item/umbrella/parasol
+	name = "parasol"
+	desc = "A black laced parsol, how intricate."
+	icon_state = "parasol"
+	inhand_icon_state = "parasol_closed"
+
 /obj/item/umbrella/Initialize(mapload)
 	. = ..()
 	AddComponent( \
 		/datum/component/transforming, \
 		force_on = 7, \
-		hitsound_on = "sound/weapons/fwoosh.ogg", \
+		hitsound_on = "sound/weapons/genhit1.ogg", \
 		w_class_on = WEIGHT_CLASS_BULKY, \
 		clumsy_check = FALSE, \
 		attack_verb_continuous_on = list("swooshes", "whacks", "fwumps"), \
