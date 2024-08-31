@@ -41,6 +41,7 @@
 	icon_state = "parasol"
 	inhand_icon_state = "parasol_closed"
 
+
 /obj/item/umbrella/Initialize(mapload)
 	. = ..()
 	AddComponent( \
