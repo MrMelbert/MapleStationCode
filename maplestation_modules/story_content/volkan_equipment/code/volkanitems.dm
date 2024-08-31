@@ -72,7 +72,7 @@
 	/// the typepath of mob mob that it will turn into
 	var/mobtype
 	/// the sound the mob will make when it turns on (is created).
-	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg' 
+	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
 
 //activate bot action
@@ -112,6 +112,17 @@
 
 	w_class = WEIGHT_CLASS_TINY
 
+///Volkan's umbrella. Stops radiation.
+/obj/item/umbrella/volkan
+	name = "Volkan's umbrella"
+	desc = "A very thick, almost metallic umbrella. It has a dark black plasticky rim on the edge."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas.dmi'
+	icon_state = "umbrella_volkan"
+	inhand_icon_state = "umbrella_volkan_closed"
+	lefthand_file = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas_inhand_lh.dmi'
+	righthand_file = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas_inhand_rh.dmi'
+
+	on_inhand_icon_state = "umbrella_volkan_open"
 
 //---------------------cool boxes!-----------------------
 
