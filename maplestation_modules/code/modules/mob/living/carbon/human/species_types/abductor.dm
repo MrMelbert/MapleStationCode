@@ -14,9 +14,9 @@
 		impossible to speak verbally, as it is simply a mental image of their collective peoples.",
 
 		"Little is known about the Abductors' home, as few humanoid beings have gone there and fewer still have returned. \
-		The Abductors' governmental heirarchy appears to center upon the creation and constant additions to museums, with surviving \
-		abductees frantically babbling stories of glass enclosures filled with monsters and plantlife never before seen. \
-		No matter thier true intentions, it is accepted among the general population that 99% of Abductors likely suffer a form of \
+		The Abductors' governmental hierarchy appears to center upon the creation and constant additions to museums, with surviving \
+		abductees frantically babbling stories of glass enclosures filled with fauna and flora never before seen. \
+		No matter their true intentions, it is accepted among the general population that 99% of Abductors likely suffer a form of \
 		Obsessive-Compulsive Disorder leading them to hoard as much \"scientific knowledge\" as they can possibly get. \
 		Realistically, this knowledge tends to come in the form of what most other species would believe to be garbage.",
 
