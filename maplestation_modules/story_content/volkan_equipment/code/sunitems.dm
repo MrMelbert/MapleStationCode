@@ -94,9 +94,9 @@
 	var/burn_modifier = 0.03
 	alert_type = /atom/movable/screen/alert/status_effect/sunscreen
 
-/datum/status_effect/sunscreen/on_creation(mob/living/new_owner, _duration, _burn_modifier)
-	duration = _duration
-	burn_modifier = _burn_modifier
+/datum/status_effect/sunscreen/on_creation(mob/living/new_owner, duration, burn_modifier)
+	src.duration = _duration
+	src.burn_modifier = burn_modifier
 	return ..()
 
 /datum/status_effect/sunscreen/on_apply()
