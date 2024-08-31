@@ -91,8 +91,8 @@
 /datum/status_effect/sunscreen
 	id = "sunscreen"
 	duration = 1800 SECONDS
-	var/burn_modifier = 0.03
 	alert_type = /atom/movable/screen/alert/status_effect/sunscreen
+	var/burn_modifier = 0.03
 
 /datum/status_effect/sunscreen/on_creation(mob/living/new_owner, duration, burn_modifier)
 	src.duration = _duration
