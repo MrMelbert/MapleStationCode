@@ -112,5 +112,4 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		H.physiology.burn_mod += burn_modifier
-	owner.visible_message(span_warning("[owner]'s sunscreen dissolves away."),
-		span_notice("Your sunscreen is gone!"))
+	to_chat(owner, span_notice("You no longer feel protected by your sunscreen.")
