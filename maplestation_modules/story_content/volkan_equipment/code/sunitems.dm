@@ -112,4 +112,4 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		H.physiology.burn_mod += burn_modifier
-	to_chat(owner, span_notice("You no longer feel protected by your sunscreen.")
+	to_chat(owner, span_notice("You no longer feel protected by your sunscreen."))
