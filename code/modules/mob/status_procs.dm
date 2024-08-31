@@ -8,31 +8,67 @@
 /mob/proc/set_disgust(amount)
 	return
 
+#define THERMAL_PROTECTION_HEAD 0.3
+#define THERMAL_PROTECTION_CHEST 0.2
+#define THERMAL_PROTECTION_GROIN 0.10
+#define THERMAL_PROTECTION_LEG (0.075 * 2)
+#define THERMAL_PROTECTION_FOOT (0.025 * 2)
+#define THERMAL_PROTECTION_ARM (0.075 * 2)
+#define THERMAL_PROTECTION_HAND (0.025 * 2)
+
 /**
  * Get the insulation that is appropriate to the temperature you're being exposed to.
  * All clothing, natural insulation, and traits are combined returning a single value.
  *
- * required temperature The Temperature that you're being exposed to
+ * Args
+ * * temperature - what temperature is being exposed to this mob?
+ * some articles of clothing are only effective within a certain temperature range
  *
- * return the percentage of protection as a value from 0 - 1
+ * returns the percentage of protection as a value from 0 - 1
 **/
-/mob/living/proc/get_insulation_protection(temperature)
-	return (temperature > body_temperature) ? get_heat_protection(temperature) : get_cold_protection(temperature)
+/mob/living/proc/get_insulation(temperature = T20C)
+	// There is an occasional bug where the temperature is miscalculated in areas with small amounts of gas.
+	// This is necessary to ensure that does not affect this calculation.
+	// Space's temperature is 2.7K and most suits that are intended to protect against any cold, protect down to 2.0K.
+	temperature = max(temperature, T0C)
 
-/// This returns the percentage of protection from heat as a value from 0 - 1
-/// temperature is the temperature you're being exposed to
-/mob/living/proc/get_heat_protection(temperature)
-	return heat_protection
+	var/thermal_protection_flags = NONE
+	for(var/obj/item/worn in get_equipped_items())
+		if((isnum(worn.max_heat_protection_temperature) && worn.max_heat_protection_temperature >= temperature) \
+			|| (isnum(worn.min_cold_protection_temperature) && worn.min_cold_protection_temperature <= temperature))
+			thermal_protection_flags |= worn.body_parts_covered
 
-/// This returns the percentage of protection from cold as a value from 0 - 1
-/// temperature is the temperature you're being exposed to
-/mob/living/proc/get_cold_protection(temperature)
-	return cold_protection
+	var/thermal_protection = temperature_insulation
+	if(thermal_protection_flags)
+		if(thermal_protection_flags & HEAD)
+			thermal_protection += THERMAL_PROTECTION_HEAD
+		if(thermal_protection_flags & CHEST)
+			thermal_protection += THERMAL_PROTECTION_CHEST
+		if(thermal_protection_flags & GROIN)
+			thermal_protection += THERMAL_PROTECTION_GROIN
+		if(thermal_protection_flags & LEGS)
+			thermal_protection += THERMAL_PROTECTION_LEG
+		if(thermal_protection_flags & FEET)
+			thermal_protection += THERMAL_PROTECTION_FOOT
+		if(thermal_protection_flags & ARMS)
+			thermal_protection += THERMAL_PROTECTION_ARM
+		if(thermal_protection_flags & HANDS)
+			thermal_protection += THERMAL_PROTECTION_HAND
+
+	return min(1, thermal_protection)
+
+#undef THERMAL_PROTECTION_HEAD
+#undef THERMAL_PROTECTION_CHEST
+#undef THERMAL_PROTECTION_GROIN
+#undef THERMAL_PROTECTION_LEG
+#undef THERMAL_PROTECTION_FOOT
+#undef THERMAL_PROTECTION_ARM
+#undef THERMAL_PROTECTION_HAND
 
 /mob/living/proc/adjust_body_temperature(amount = 0, min_temp = 0, max_temp = INFINITY, use_insulation = FALSE)
 	// apply insulation to the amount of change
 	if(use_insulation)
-		amount *= (1 - get_insulation_protection(body_temperature + amount))
+		amount *= (1 - get_insulation(body_temperature + amount))
 	if(amount == 0)
 		return FALSE
 	amount = round(amount, 0.01)
@@ -65,20 +101,38 @@
  * plus some other modifiers
  */
 /mob/living/proc/get_skin_temperature()
-	var/area_temp = get_temperature(loc?.return_air())
-	var/protection = get_insulation_protection(area_temp)
-	area_temp *= (1 - protection)
+	var/area_temperature = get_temperature(loc?.return_air())
 	if(!(mob_biotypes & MOB_ORGANIC))
-		return area_temp // non-organic mobs likely don't feel or regulate temperature so we can just report the area temp
+		// non-organic mobs likely don't feel or regulate temperature
+		// so we can just report the area temp... probably
+		// there's an argument to be made for putting the cold blooded check here
+		return round(area_temperature, 0.01)
 
-	. = ((body_temperature * 2) + area_temp) / (3 - protection)
-	if(body_temperature >= standard_body_temperature + 2 KELVIN)
-		. *= 1.1 // sweating
-//	if(body_temperature <= HYPOTHERMIA)
-//		. *= 0.8 // extremities are colder
+	// calculate skin temp based on a weighted average of body temp and area temp
+	// (where area temp is modified by insulation)
+	var/body_weight = 2
+	var/area_weight = 1 + get_insulation(area_temperature)
+	// total weight of / dividing by 3: two for bodytemp, one for areatemp (assuming 0 insulation)
+	//
+	// this gives 31.33 C for a standard human (37 C) in a 20 C room with no insulation
+	// and 34.33 C for a human with ~50% insulation (a winter coat) in the same room
+	//
+	// why do we convert to celcius?
+	// because i designed this equation around celcius and forgot i had to ultimately work in kelvin
+	// smaller numbers are easier to work with anyways.
+	var/skin_temp = (KELVIN_TO_CELCIUS(body_temperature) * body_weight + KELVIN_TO_CELCIUS(area_temperature) * area_weight) / 3
+
+	if(!HAS_TRAIT(src, TRAIT_COLD_BLOODED))
+		if(body_temperature >= standard_body_temperature + 2 KELVIN)
+			skin_temp *= 1.1 // sweating
+		if(body_temperature <= standard_body_temperature - 10 KELVIN)
+			skin_temp *= 0.8 // extremities are colder
+
+	// and if we're on fire just add a flat amount of heat
 	if(on_fire)
-		. += fire_stacks ** 2 KELVIN
-	return round(., 0.01)
+		skin_temp += KELVIN_TO_CELCIUS(fire_stacks ** 2 KELVIN)
+
+	return round(CELCIUS_TO_KELVIN(skin_temp), 0.01)
 
 /// Sight here is the mob.sight var, which tells byond what to actually show to our client
 /// See [code\__DEFINES\sight.dm] for more details

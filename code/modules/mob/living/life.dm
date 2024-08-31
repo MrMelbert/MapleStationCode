@@ -218,7 +218,7 @@
 		return
 
 	// Get the insulation value based on the area's temp
-	var/thermal_protection = get_insulation_protection(loc_temp)
+	var/thermal_protection = get_insulation(loc_temp)
 	var/protection_modifier = 1
 	if(body_temperature > standard_body_temperature + 2 KELVIN)
 		// we are overheating and sweaty - insulation is not as good reducing thermal protection
@@ -230,7 +230,7 @@
 	adjust_body_temperature(temp_change * seconds_per_tick) // no use_insulation beacuse we account for it manually
 
 /**
- * Handles this mob internally managing its body temperature.
+ * Handles this mob internally managing its body temperature (sweating or generating heat)
  *
  * Arguments:
  * * seconds_per_tick: The amount of time that has elapsed since this last fired.
@@ -252,8 +252,8 @@
 				natural_change *= 0.5
 			if(-INFINITY to NUTRITION_LEVEL_STARVING)
 				natural_change *= 0.25
-	// Cap increase and decrease
-	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX / 6) : min(natural_change, BODYTEMP_HEATING_MAX / 6)
+	// Cap increase and decrease, decreasing is harder
+	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX / 8) : min(natural_change, BODYTEMP_HEATING_MAX / 6)
 	var/min = natural_change < 0 ? standard_body_temperature : 0
 	var/max = natural_change > 0  ? standard_body_temperature : INFINITY
 	adjust_body_temperature(natural_change * seconds_per_tick, min_temp = min, max_temp = max) // no use_insulation beacuse this is internal

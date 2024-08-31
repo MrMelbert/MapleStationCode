@@ -690,7 +690,7 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/carbon/human/human_parent = parent
-	if(human_parent.get_heat_protection(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)
+	if(human_parent.get_insulation(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)
 		return
 
 	// The more firestacks, the more pain we apply per burn tick, up to 2 per tick per bodypart.

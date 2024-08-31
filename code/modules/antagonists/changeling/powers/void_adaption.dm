@@ -38,7 +38,7 @@
 		var/affected_temperature = environment.return_temperature()
 		if (ishuman(void_adapted))
 			var/mob/living/carbon/human/special_boy = void_adapted
-			var/cold_protection = special_boy.get_cold_protection(affected_temperature)
+			var/cold_protection = special_boy.get_insulation(affected_temperature)
 			vulnerable_temperature *= (1 - cold_protection)
 
 			var/affected_pressure = special_boy.calculate_affecting_pressure(environment.return_pressure())

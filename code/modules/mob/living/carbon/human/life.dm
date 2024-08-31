@@ -1,19 +1,6 @@
-
-
-//NOTE: Breathing happens once per FOUR TICKS, unless the last breath fails. In which case it happens once per ONE TICK! So oxyloss healing is done once per 4 ticks while oxyloss damage is applied once per tick!
-
-// bitflags for the percentual amount of protection a piece of clothing which covers the body part offers.
-// Used with human/proc/get_heat_protection() and human/proc/get_cold_protection()
-// The values here should add up to 1.
-// Hands and feet have 2.5%, arms and legs 7.5%, each of the torso parts has 15% and the head has 30%
-#define THERMAL_PROTECTION_HEAD 0.3
-#define THERMAL_PROTECTION_CHEST 0.2
-#define THERMAL_PROTECTION_GROIN 0.10
-#define THERMAL_PROTECTION_LEG (0.075 * 2)
-#define THERMAL_PROTECTION_FOOT (0.025 * 2)
-#define THERMAL_PROTECTION_ARM (0.075 * 2)
-#define THERMAL_PROTECTION_HAND (0.025 * 2)
-
+// NOTE: Breathing happens once per FOUR TICKS, unless the last breath fails.
+// In which case it happens once per ONE TICK!
+// So oxyloss healing is done once per 4 ticks while oxyloss damage is applied once per tick!
 /mob/living/carbon/human/Life(seconds_per_tick = SSMOBS_DT, times_fired)
 	if(HAS_TRAIT(src, TRAIT_NO_TRANSFORM))
 		return
@@ -91,65 +78,6 @@
 			throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
 	return FALSE
 
-/mob/living/carbon/human/get_heat_protection(temperature)
-	var/thermal_protection_flags = NONE
-	for(var/obj/item/worn in get_equipped_items())
-		if(worn.max_heat_protection_temperature && worn.max_heat_protection_temperature >= temperature)
-			thermal_protection_flags |= worn.heat_protection
-
-	var/thermal_protection = heat_protection
-
-	// Apply clothing items protection
-	if(thermal_protection_flags)
-		if(thermal_protection_flags & HEAD)
-			thermal_protection += THERMAL_PROTECTION_HEAD
-		if(thermal_protection_flags & CHEST)
-			thermal_protection += THERMAL_PROTECTION_CHEST
-		if(thermal_protection_flags & GROIN)
-			thermal_protection += THERMAL_PROTECTION_GROIN
-		if(thermal_protection_flags & (LEG_LEFT|LEG_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_LEG
-		if(thermal_protection_flags & (FOOT_LEFT|FOOT_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_FOOT
-		if(thermal_protection_flags & (ARM_LEFT|ARM_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_ARM
-		if(thermal_protection_flags & (HAND_LEFT|HAND_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_HAND
-
-	return min(1, thermal_protection)
-
-/mob/living/carbon/human/get_cold_protection(temperature)
-	// There is an occasional bug where the temperature is miscalculated in areas with small amounts of gas.
-	// This is necessary to ensure that does not affect this calculation.
-	// Space's temperature is 2.7K and most suits that are intended to protect against any cold, protect down to 2.0K.
-	temperature = max(temperature, 2.7)
-
-	var/thermal_protection_flags = NONE
-	for(var/obj/item/worn in get_equipped_items())
-		if(worn.min_cold_protection_temperature && worn.min_cold_protection_temperature <= temperature)
-			thermal_protection_flags |= worn.cold_protection
-
-	var/thermal_protection = cold_protection
-
-	// Apply clothing items protection
-	if(thermal_protection_flags)
-		if(thermal_protection_flags & HEAD)
-			thermal_protection += THERMAL_PROTECTION_HEAD
-		if(thermal_protection_flags & CHEST)
-			thermal_protection += THERMAL_PROTECTION_CHEST
-		if(thermal_protection_flags & GROIN)
-			thermal_protection += THERMAL_PROTECTION_GROIN
-		if(thermal_protection_flags & (LEG_LEFT|LEG_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_LEG
-		if(thermal_protection_flags & (FOOT_LEFT|FOOT_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_FOOT
-		if(thermal_protection_flags & (ARM_LEFT|ARM_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_ARM
-		if(thermal_protection_flags & (HAND_LEFT|HAND_RIGHT))
-			thermal_protection += THERMAL_PROTECTION_HAND
-
-	return min(1, thermal_protection)
-
 /mob/living/carbon/human/handle_random_events(seconds_per_tick, times_fired)
 	//Puke if toxloss is too high
 	if(stat)
@@ -187,11 +115,3 @@
 		Unconscious(80)
 	// Tissues die without blood circulation
 	adjustBruteLoss(1 * seconds_per_tick)
-
-#undef THERMAL_PROTECTION_HEAD
-#undef THERMAL_PROTECTION_CHEST
-#undef THERMAL_PROTECTION_GROIN
-#undef THERMAL_PROTECTION_LEG
-#undef THERMAL_PROTECTION_FOOT
-#undef THERMAL_PROTECTION_ARM
-#undef THERMAL_PROTECTION_HAND

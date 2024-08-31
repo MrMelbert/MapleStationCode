@@ -805,9 +805,9 @@
 
 	burn_clothing(seconds_per_tick, fire_handler.stacks)
 	if(!(sigreturn & BURNING_SKIP_PROTECTION))
-		if(get_heat_protection(FIRE_IMMUNITY_MAX_TEMP_PROTECT) >= 0.9)
+		if(get_insulation(FIRE_IMMUNITY_MAX_TEMP_PROTECT) >= 0.9)
 			return FALSE
-		if(get_heat_protection(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)
+		if(get_insulation(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)
 			return adjust_body_temperature(MINOR_AMOUNT_KELVIN * seconds_per_tick)
 
 	. = ..()

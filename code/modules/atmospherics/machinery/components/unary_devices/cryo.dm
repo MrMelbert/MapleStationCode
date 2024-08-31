@@ -370,7 +370,7 @@
 
 		if(ishuman(mob_occupant))
 			var/mob/living/carbon/human/H = mob_occupant
-			cold_protection = H.get_cold_protection(air1.temperature)
+			cold_protection = H.get_insulation(air1.temperature)
 
 		if(abs(temperature_delta) > 1)
 			var/air_heat_capacity = air1.heat_capacity()

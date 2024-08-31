@@ -31,7 +31,7 @@
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
 	// Lizards are coldblooded and can stand a greater temperature range than humans
-	bodytemp_normal = (BODYTEMP_NORMAL - 10)
+	bodytemp_normal = (BODYTEMP_NORMAL - 7.5)
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
 	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 10)
 

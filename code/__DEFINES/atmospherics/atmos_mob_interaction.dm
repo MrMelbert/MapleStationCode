@@ -57,12 +57,12 @@
 #define DANGEROUS_AMOUNT_KELVIN 10 KELVIN
 
 // Helpers for temperature conversion
-#define FAHRENHEIT_TO_KELVIN(x) ((x + 459.67) * 5 / 9)
-#define KELVIN_TO_FAHRENHEIT(x) ((x * 9 / 5) - 459.67)
-#define CELCIUS_TO_KELVIN(x) (x + 273.15)
-#define KELVIN_TO_CELCIUS(x) (x - 273.15)
-#define CELCIUS_TO_FAHRENHEIT(x) ((x * 9 / 5) + 32)
-#define FAHRENHEIT_TO_CELSIUS(x) ((x - 32) * 5 / 9)
+#define FAHRENHEIT_TO_KELVIN(x) (((x) + 459.67) * 5 / 9)
+#define KELVIN_TO_FAHRENHEIT(x) (((x) * 9 / 5) - 459.67)
+#define CELCIUS_TO_KELVIN(x) ((x) + 273.15)
+#define KELVIN_TO_CELCIUS(x) ((x) - 273.15)
+#define CELCIUS_TO_FAHRENHEIT(x) (((x) * 9 / 5) + 32)
+#define FAHRENHEIT_TO_CELSIUS(x) (((x) - 32) * 5 / 9)
 
 // These defines do nothing but can be used to make the code more readable by indicating temperature units
 #define CELCIUS * 1
@@ -134,44 +134,44 @@
 //CLOTHES
 
 /// what min_cold_protection_temperature is set to for space-helmet quality headwear. MUST NOT BE 0.
-#define SPACE_HELM_MIN_TEMP_PROTECT 2.0
+#define SPACE_HELM_MIN_TEMP_PROTECT 2.0 KELVIN
 /// Thermal insulation works both ways /Malkevin
-#define SPACE_HELM_MAX_TEMP_PROTECT 1500
+#define SPACE_HELM_MAX_TEMP_PROTECT 1500 KELVIN
 /// what min_cold_protection_temperature is set to for space-suit quality jumpsuits or suits. MUST NOT BE 0.
-#define SPACE_SUIT_MIN_TEMP_PROTECT 2.0
+#define SPACE_SUIT_MIN_TEMP_PROTECT 2.0 KELVIN
 /// The min cold protection of a space suit without the heater active
-#define SPACE_SUIT_MIN_TEMP_PROTECT_OFF 72
-#define SPACE_SUIT_MAX_TEMP_PROTECT 1500
+#define SPACE_SUIT_MIN_TEMP_PROTECT_OFF 72 KELVIN
+#define SPACE_SUIT_MAX_TEMP_PROTECT 1500 KELVIN
 
 /// Cold protection for firesuits
-#define FIRE_SUIT_MIN_TEMP_PROTECT 60
+#define FIRE_SUIT_MIN_TEMP_PROTECT 60 KELVIN
 /// what max_heat_protection_temperature is set to for firesuit quality suits. MUST NOT BE 0.
-#define FIRE_SUIT_MAX_TEMP_PROTECT 30000
+#define FIRE_SUIT_MAX_TEMP_PROTECT 30000 KELVIN
 /// Cold protection for fire helmets
-#define FIRE_HELM_MIN_TEMP_PROTECT 60
+#define FIRE_HELM_MIN_TEMP_PROTECT 60 KELVIN
 /// for fire helmet quality items (red and white hardhats)
-#define FIRE_HELM_MAX_TEMP_PROTECT 30000
+#define FIRE_HELM_MAX_TEMP_PROTECT 30000 KELVIN
 
 /// what max_heat_protection_temperature is set to for firesuit quality suits and helmets. MUST NOT BE 0.
-#define FIRE_IMMUNITY_MAX_TEMP_PROTECT 35000
+#define FIRE_IMMUNITY_MAX_TEMP_PROTECT 35000 KELVIN
 
 /// For normal helmets
-#define HELMET_MIN_TEMP_PROTECT 160
+#define HELMET_MIN_TEMP_PROTECT 160 KELVIN
 /// For normal helmets
-#define HELMET_MAX_TEMP_PROTECT 600
+#define HELMET_MAX_TEMP_PROTECT 600 KELVIN
 /// For armor
-#define ARMOR_MIN_TEMP_PROTECT 160
+#define ARMOR_MIN_TEMP_PROTECT 160 KELVIN
 /// For armor
-#define ARMOR_MAX_TEMP_PROTECT 600
+#define ARMOR_MAX_TEMP_PROTECT 600 KELVIN
 
 /// For some gloves (black and)
-#define GLOVES_MIN_TEMP_PROTECT 2.0
+#define GLOVES_MIN_TEMP_PROTECT 2.0 KELVIN
 /// For some gloves
-#define GLOVES_MAX_TEMP_PROTECT 1500
+#define GLOVES_MAX_TEMP_PROTECT 1500 KELVIN
 /// For gloves
-#define SHOES_MIN_TEMP_PROTECT 2.0
+#define SHOES_MIN_TEMP_PROTECT 2.0 KELVIN
 /// For gloves
-#define SHOES_MAX_TEMP_PROTECT 1500
+#define SHOES_MAX_TEMP_PROTECT 1500 KELVIN
 
 ///Minimum temperature for items on fire
 #define BURNING_ITEM_MINIMUM_TEMPERATURE (150+T0C)

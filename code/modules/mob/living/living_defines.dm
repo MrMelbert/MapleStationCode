@@ -238,8 +238,5 @@
 	/// Note that more of this = more nutrition is consumed every life tick.
 	var/temperature_homeostasis_speed = 0.5
 
-	// These function as "in built" insulation
-	/// Protection (insulation) from the heat, Value 0-1 corresponding to the percentage of protection
-	var/heat_protection = 0 // No heat protection
-	/// Protection (insulation) from the cold, Value 0-1 corresponding to the percentage of protection
-	var/cold_protection = 0 // No cold protection
+	/// Protection (insulation) from temperature changes, max 1
+	var/temperature_insulation = 0
