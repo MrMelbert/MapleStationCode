@@ -48,6 +48,12 @@
 	)
 	RegisterSignal(src, COMSIG_TRANSFORMING_ON_TRANSFORM, PROC_REF(on_transform))
 
+/obj/item/umbrella/worn_overlays(mutable_appearance/standing, isinhands)
+	. = ..()
+	if(!isinhands)
+		return
+	//if(isinhands & open)
+	//	. += mutable_appearance(lefthand_file, inhand_icon_state + "_BACK", -BODY_BEHIND_LAYER) //not sure why the layer has to be - to work, but it does
 
 /obj/item/umbrella/proc/on_transform(obj/item/source, mob/user, active)
 	SIGNAL_HANDLER
@@ -69,24 +75,24 @@
 /obj/item/umbrella/proc/on_dir_change(mob/living/carbon/owner, olddir, newdir)
 	SIGNAL_HANDLER
 	SHOULD_CALL_PARENT(TRUE)
-	owner.regenerate_icons()
+	build_worn_icon(isinhands = TRUE)
+	src.update_icon()
+	owner.update_held_items()
+	owner.update_appearance()
 
 /obj/item/umbrella/get_worn_offsets(isinhands)
 	. = ..()
 	if(!isinhands)
 		return
+	var/mob/holder = loc
 	if(open)
 		.[2] += open_y_offset
 		switch(loc.dir)
 			if(NORTH)
-				.[1] += 0
+				.[1] += ISODD(holder.get_held_index_of_item(src)) ? -open_x_offset : open_x_offset
 			if(SOUTH)
-				.[1] += 0
+				.[1] += ISODD(holder.get_held_index_of_item(src)) ? open_x_offset : -open_x_offset
 			if(EAST)
 				.[1] -= open_x_offset
 			if(WEST)
 				.[1] += open_x_offset
-
-
-
-
