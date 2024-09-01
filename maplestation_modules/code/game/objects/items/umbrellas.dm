@@ -87,11 +87,7 @@
 
 /obj/item/umbrella/proc/on_dir_change(mob/living/carbon/owner, olddir, newdir)
 	SIGNAL_HANDLER
-	SHOULD_CALL_PARENT(TRUE)
-	build_worn_icon(isinhands = TRUE)
-	src.update_icon()
 	owner.update_held_items()
-	owner.update_appearance()
 
 /obj/item/umbrella/get_worn_offsets(isinhands)
 	. = ..()
