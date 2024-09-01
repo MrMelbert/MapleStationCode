@@ -5,7 +5,7 @@
  * Currently not coding for protecting against rain as ???I dont think??? rain exists.
  * The rest don't and it just for looks.
  */
-/obj/item/umbrella/
+/obj/item/umbrella
 	name = "umbrella"
 	desc = "A plain white umbrella."
 	icon = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
