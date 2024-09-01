@@ -22,12 +22,12 @@
 
 /datum/status_effect/unholy_determination/on_apply()
 	owner.add_traits(list(TRAIT_COAGULATING, TRAIT_NOCRITDAMAGE, TRAIT_NOSOFTCRIT), type)
-	owner.add_temperature_level(id, owner.standard_body_temperature, 50 KELVIN)
+	owner.add_homeostasis_level(id, owner.standard_body_temperature, 10 KELVIN)
 	return TRUE
 
 /datum/status_effect/unholy_determination/on_remove()
 	owner.remove_traits(list(TRAIT_COAGULATING, TRAIT_NOCRITDAMAGE, TRAIT_NOSOFTCRIT), type)
-	owner.remove_temperature_level(id)
+	owner.remove_homeostasis_level(id)
 
 /datum/status_effect/unholy_determination/tick(seconds_between_ticks)
 	// The amount we heal of each damage type per tick. If we're missing legs we heal better because we can't dodge.

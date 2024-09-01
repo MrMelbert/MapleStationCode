@@ -23,11 +23,11 @@
 
 /datum/reagent/medicine/leporazine/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	user.add_temperature_level(type, user.standard_body_temperature, DANGEROUS_AMOUNT_KELVIN * 2)
+	user.add_homeostasis_level(type, user.standard_body_temperature, 1 KELVIN)
 
 /datum/reagent/medicine/leporazine/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	user.remove_temperature_level(type)
+	user.remove_homeostasis_level(type)
 
 /datum/reagent/medicine/adminordrazine //An OP chemical for admins
 	name = "Adminordrazine"

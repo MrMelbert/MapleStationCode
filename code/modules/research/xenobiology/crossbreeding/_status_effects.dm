@@ -484,13 +484,13 @@
 	id = "stabilizedorange"
 	colour = SLIME_TYPE_ORANGE
 
-/datum/status_effect/stabilized/orange/on_apply()
+/datum/status_effect/stabilized/orange/tick(seconds_between_ticks)
 	. = ..()
-	owner.add_temperature_level(id, owner.standard_body_temperature)
+	owner.update_homeostasis_level(id, owner.standard_body_temperature, 0.5 KELVIN)
 
 /datum/status_effect/stabilized/orange/on_remove()
 	. = ..()
-	owner.remove_temperature_level(id)
+	owner.remove_homeostasis_level(id)
 
 /datum/status_effect/stabilized/purple
 	id = "stabilizedpurple"

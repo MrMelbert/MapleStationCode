@@ -245,8 +245,17 @@
 	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && nutrition < (NUTRITION_LEVEL_STARVING / 3))
 		return
 
+	// find exactly what temperature we're aiming for
+	var/homeostasis_target
+	if(LAZYLEN(homeostasis_targets))
+		for(var/source in homeostasis_targets)
+			homeostasis_target += homeostasis_targets[source]
+		homeostasis_target /= LAZYLEN(homeostasis_targets)
+	else
+		homeostasis_target = standard_body_temperature
+
 	// Fun note: Because this scales by metabolism efficiency, being well fed boosts your homeostasis, and being poorly fed reduces it
-	var/natural_change = round((standard_body_temperature - body_temperature) * metabolism_efficiency * temperature_homeostasis_speed, 0.01)
+	var/natural_change = round((homeostasis_target - body_temperature) * metabolism_efficiency * temperature_homeostasis_speed, 0.01)
 	if(natural_change == 0)
 		return
 
@@ -257,8 +266,8 @@
 	if(sigreturn & HOMEOSTASIS_HANDLED)
 		return
 
-	var/min = natural_change < 0 ? standard_body_temperature : 0
-	var/max = natural_change > 0 ? standard_body_temperature : INFINITY
+	var/min = natural_change < 0 ? homeostasis_target : 0
+	var/max = natural_change > 0 ? homeostasis_target : INFINITY
 	// calculates how much nutrition decay per kelvin of temperature change
 	// while having this scale may be confusing, it's to make sure that stepping into an extremely cold environment (space)
 	// doesn't immediately drain nutrition to zero in under a minute

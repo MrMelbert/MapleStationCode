@@ -13,7 +13,7 @@
 	/// Ability we use to select gases
 	var/datum/action/cooldown/mob_cooldown/expel_gas/gas
 	/// Rate of temperature stabilization per second.
-	var/temp_stabilization_rate = 0.1
+	var/temp_stabilization_rate = 1 KELVIN
 
 /mob/living/basic/guardian/gaseous/Initialize(mapload, theme)
 	. = ..()
@@ -34,12 +34,12 @@
 	if (QDELETED(src))
 		return
 	RegisterSignal(summoner, COMSIG_LIVING_IGNITED, PROC_REF(on_summoner_ignited))
-	summoner.add_temperature_level(REF(src), summoner.standard_body_temperature, temp_stabilization_rate)
+	summoner.add_homeostasis_level(REF(src), summoner.standard_body_temperature, temp_stabilization_rate)
 
 /mob/living/basic/guardian/gaseous/cut_summoner(different_person)
 	if (!isnull(summoner))
 		UnregisterSignal(summoner, COMSIG_LIVING_IGNITED)
-		summoner.remove_temperature_level(REF(src))
+		summoner.remove_homeostasis_level(REF(src))
 	return ..()
 
 /// Prevent our summoner from being on fire

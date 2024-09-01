@@ -52,7 +52,7 @@
 	if(!unsafe)
 		new_level = min(affected.bodytemp_heat_damage_limit - MODERATE_AMOUNT_KELVIN, new_level)
 
-	affected.add_temperature_level(type, new_level, MINOR_AMOUNT_KELVIN * power)
+	affected.add_homeostasis_level(type, new_level, MINOR_AMOUNT_KELVIN * power)
 
 /// Update the body temp change based on the new stage
 /datum/symptom/fever/on_stage_change(datum/disease/advance/A)
@@ -62,4 +62,4 @@
 
 /// remove the body temp change when removing symptom
 /datum/symptom/fever/End(datum/disease/advance/A)
-	A.affected_mob?.remove_temperature_level(type)
+	A.affected_mob?.remove_homeostasis_level(type)

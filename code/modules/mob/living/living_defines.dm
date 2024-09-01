@@ -226,6 +226,11 @@
 	var/standard_body_temperature = BODYTEMP_NORMAL
 	/// Temperature of our insides
 	var/body_temperature = BODYTEMP_NORMAL
+	/// Lazylist of targets we homeostasize to
+	/// This allows multiple effects to add a different target to the list, which is averaged
+	/// (So you can have both a fever and a cold at the same time)
+	/// If empty just defaults to standard_body_temperature
+	var/list/homeostasis_targets
 
 	/// How cold to start sustaining cold damage
 	var/bodytemp_cold_damage_limit = -1 // -1 = no cold damage ever
