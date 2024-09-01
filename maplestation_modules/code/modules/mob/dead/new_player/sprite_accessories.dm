@@ -69,6 +69,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_oldstriped"
 
+/datum/sprite_accessory/hair/oldmanyaoithesequel
+	name = "Crawling Chaos"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_nyarl"
+
 /datum/sprite_accessory/hair/fruity
 	name = "Fruity"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
