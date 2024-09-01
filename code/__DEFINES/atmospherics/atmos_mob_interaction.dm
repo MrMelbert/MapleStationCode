@@ -51,11 +51,6 @@
 /// Default minimum body temperature mobs can exist in before taking damage
 #define NPC_DEFAULT_MIN_TEMP CELCIUS_TO_KELVIN(-23.15 CELCIUS)// 250 KELVIN
 
-// To remove later when everything is sane
-#define MINOR_AMOUNT_KELVIN 1 KELVIN
-#define MODERATE_AMOUNT_KELVIN 5 KELVIN
-#define DANGEROUS_AMOUNT_KELVIN 10 KELVIN
-
 // Helpers for temperature conversion
 #define FAHRENHEIT_TO_KELVIN(x) (((x) + 459.67) * 5 / 9)
 #define KELVIN_TO_FAHRENHEIT(x) (((x) * 9 / 5) - 459.67)
@@ -115,6 +110,11 @@
 
 /// Beyond this body temperature, being on fire will increase body temperature by less and less
 #define BODYTEMP_FIRE_TEMP_SOFTCAP 600 KELVIN
+
+/// A warm drink will increase body temperature by this much
+#define WARM_DRINK 0.5 KELVIN
+/// A cold drink will decrease body temperature by this much
+#define COLD_DRINK -0.5 KELVIN
 
 /// The modifier on cold damage limit hulks get ontop of their regular limit
 #define BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER 25 KELVIN

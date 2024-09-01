@@ -60,11 +60,13 @@
 	id = "temp_change"
 	status_type = STATUS_EFFECT_MULTIPLE
 	tick_interval = 2 SECONDS
+	alert_type = null
 	var/source
 	var/to_value
 	var/delta_change
 	var/while_stasis
 	var/while_dead
+	var/update_species
 
 /datum/status_effect/homeostasis_level/on_creation(
 	mob/living/new_owner,
@@ -77,7 +79,7 @@
 )
 	src.source = source
 	src.to_value = to_value
-	src.delta_change = delta_change
+	src.delta_change = abs(delta_change)
 	src.while_stasis = while_stasis
 	src.while_dead = while_dead
 	src.update_species = update_species
@@ -119,12 +121,10 @@
 		return
 
 	if(to_value < owner.standard_body_temperature)
-		if(owner.body_temperature > to_value)
-			owner.adjust_body_temperature(-delta_change * seconds_between_ticks)
+		owner.adjust_body_temperature(-delta_change * seconds_between_ticks, min_temp = to_value)
 
 	else
-		if(owner.body_temperature < to_value)
-			owner.adjust_body_temperature(delta_change * seconds_between_ticks)
+		owner.adjust_body_temperature(delta_change * seconds_between_ticks, max_temp = to_value)
 
 /datum/status_effect/homeostasis_level/proc/species_update(datum/source, datum/species/new_species, datum/species/old_species)
 	SIGNAL_HANDLER
@@ -132,4 +132,4 @@
 	if(!update_species || isnull(new_species) || isnull(old_species) || new_species.type == old_species.type)
 		return
 
-	to_value += (new_species.standard_body_temperature - old_species.standard_body_temperature)
+	to_value += UNLINT(new_species.bodytemp_normal - old_species.bodytemp_normal)

@@ -20,7 +20,7 @@
 	var/danger_zone = cold_target.bodytemp_cold_damage_limit - 10 CELCIUS
 	if(how_cold_is_target < danger_zone)
 		explosion(cold_target, devastation_range = -1, heavy_impact_range = -1, light_impact_range = 2, flame_range = 3) //maybe stand back a bit
-		cold_target.adjust_body_temperature(CELCIUS_TO_KELVIN(10 CELCIUS), max_temp = cold_target.standard_body_temperature) //avoid repeat explosions
+		cold_target.adjust_body_temperature(50 KELVIN, max_temp = cold_target.standard_body_temperature) //avoid repeat explosions
 		playsound(cold_target, 'sound/weapons/sear.ogg', 30, TRUE, -1)
 
 /obj/projectile/energy/cryo
@@ -46,5 +46,5 @@
 	if(how_hot_is_target > danger_zone)
 		hot_target.Knockdown(10 SECONDS)
 		hot_target.apply_damage(20, BURN, spread_damage = TRUE)
-		hot_target.adjust_body_temperature(-CELCIUS_TO_KELVIN(10 CELCIUS), min_temp = hot_target.standard_body_temperature) //avoid repeat knockdowns
+		hot_target.adjust_body_temperature(-50 KELVIN, min_temp = hot_target.standard_body_temperature) //avoid repeat knockdowns
 		playsound(hot_target, 'sound/weapons/sonic_jackhammer.ogg', 30, TRUE, -1)

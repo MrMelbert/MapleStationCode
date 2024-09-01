@@ -306,7 +306,7 @@
 		stop_backfire_effect()
 		return
 
-	our_mob.adjust_body_temperature(MODERATE_AMOUNT_KELVIN * seconds_per_tick)
+	our_mob.adjust_body_temperature(0.5 KELVIN * seconds_per_tick)
 	if(!HAS_TRAIT(our_mob, TRAIT_RESISTHEAT) && SPT_PROB(5, seconds_per_tick))
 		to_chat(our_mob, span_warning("Your hand holding [our_plant] burns!"))
 

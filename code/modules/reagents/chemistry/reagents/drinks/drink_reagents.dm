@@ -275,7 +275,7 @@
 	affected_mob.adjust_dizzy(-10 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
 	affected_mob.AdjustSleeping(-40 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(25 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(1.5 * WARM_DRINK * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
 	if(holder.has_reagent(/datum/reagent/consumable/frostoil))
 		holder.remove_reagent(/datum/reagent/consumable/frostoil, 5 * REM * seconds_per_tick)
 
@@ -298,7 +298,7 @@
 	if(affected_mob.getToxLoss() && SPT_PROB(10, seconds_per_tick))
 		if(affected_mob.adjustToxLoss(-1 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
 			. = UPDATE_MOB_HEALTH
-	affected_mob.adjust_body_temperature(20 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
 
 	var/to_chatted = FALSE
 	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
@@ -366,7 +366,7 @@
 	affected_mob.adjust_dizzy(-10 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
 	affected_mob.AdjustSleeping(-40 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 	affected_mob.set_jitter_if_lower(10 SECONDS * REM * seconds_per_tick)
 
 /datum/reagent/consumable/hot_ice_coffee
@@ -382,7 +382,7 @@
 	affected_mob.adjust_dizzy(-10 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
 	affected_mob.AdjustSleeping(-60 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-7 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(1.5 * COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 	affected_mob.set_jitter_if_lower(10 SECONDS * REM * seconds_per_tick)
 	if(affected_mob.adjustToxLoss(1 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
 		return UPDATE_MOB_HEALTH
@@ -403,7 +403,7 @@
 	if(affected_mob.getToxLoss() && SPT_PROB(10, seconds_per_tick))
 		if(affected_mob.adjustToxLoss(-1 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype))
 			. = UPDATE_MOB_HEALTH
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/space_cola
 	name = "Cola"
@@ -415,7 +415,7 @@
 /datum/reagent/consumable/space_cola/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	affected_mob.adjust_drowsiness(-10 SECONDS * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/roy_rogers
 	name = "Roy Rogers"
@@ -428,7 +428,7 @@
 /datum/reagent/consumable/roy_rogers/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	affected_mob.set_jitter_if_lower(12 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_drowsiness(-10 SECONDS * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 	return ..()
 
 /datum/reagent/consumable/nuka_cola
@@ -454,7 +454,7 @@
 	affected_mob.adjust_dizzy(3 SECONDS * REM * seconds_per_tick)
 	affected_mob.remove_status_effect(/datum/status_effect/drowsiness)
 	affected_mob.AdjustSleeping(-40 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/rootbeer
 	name = "root beer"
@@ -515,7 +515,7 @@
 	affected_mob.adjust_dizzy(2 SECONDS * REM * seconds_per_tick)
 	affected_mob.remove_status_effect(/datum/status_effect/drowsiness)
 	affected_mob.AdjustSleeping(-40 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/spacemountainwind
 	name = "SM Wind"
@@ -528,7 +528,7 @@
 	. = ..()
 	affected_mob.adjust_drowsiness(-14 SECONDS * REM * seconds_per_tick)
 	affected_mob.AdjustSleeping(-20 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 	affected_mob.set_jitter_if_lower(10 SECONDS * REM * seconds_per_tick)
 
 /datum/reagent/consumable/dr_gibb
@@ -541,7 +541,7 @@
 /datum/reagent/consumable/dr_gibb/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	affected_mob.adjust_drowsiness(-12 SECONDS * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/space_up
 	name = "Space-Up"
@@ -552,7 +552,7 @@
 
 /datum/reagent/consumable/space_up/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(-8 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(1.5 * COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/lemon_lime
 	name = "Lemon Lime"
@@ -563,7 +563,7 @@
 
 /datum/reagent/consumable/lemon_lime/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(-8 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(1.5 * COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/pwr_game
 	name = "Pwr Game"
@@ -581,7 +581,7 @@
 
 /datum/reagent/consumable/pwr_game/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(-8 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(1.5 * COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 	if(SPT_PROB(5, seconds_per_tick))
 		affected_mob.mind?.adjust_experience(/datum/skill/gaming, 5)
 
@@ -594,7 +594,7 @@
 
 /datum/reagent/consumable/shamblers/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(-8 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(1.5 * COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/sodawater
 	name = "Soda Water"
@@ -613,7 +613,7 @@
 	. = ..()
 	affected_mob.adjust_dizzy(-10 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/tonic
 	name = "Tonic Water"
@@ -627,7 +627,7 @@
 	affected_mob.adjust_dizzy(-10 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
 	affected_mob.AdjustSleeping(-40 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/wellcheers
 	name = "Wellcheers"
@@ -664,7 +664,7 @@
 	affected_mob.adjust_dizzy(2 SECONDS * REM * seconds_per_tick)
 	affected_mob.remove_status_effect(/datum/status_effect/drowsiness)
 	affected_mob.AdjustSleeping(-40 * REM * seconds_per_tick)
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/monkey_energy/on_mob_metabolize(mob/living/affected_mob)
 	. = ..()
@@ -691,7 +691,7 @@
 
 /datum/reagent/consumable/ice/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature))
+	if(affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature))
 		return UPDATE_MOB_HEALTH
 
 /datum/reagent/consumable/soy_latte
@@ -709,7 +709,7 @@
 	affected_mob.adjust_drowsiness(-6 SECONDS * REM * seconds_per_tick)
 	var/need_mob_update
 	need_mob_update = affected_mob.SetSleeping(0)
-	affected_mob.adjust_body_temperature(5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
 	affected_mob.set_jitter_if_lower(10 SECONDS * REM * seconds_per_tick)
 	if(affected_mob.getBruteLoss() && SPT_PROB(10, seconds_per_tick))
 		need_mob_update += affected_mob.heal_bodypart_damage(brute = 1 * REM * seconds_per_tick, burn = 0, updating_health = FALSE)
@@ -731,7 +731,7 @@
 	affected_mob.adjust_drowsiness(-12 SECONDS * REM * seconds_per_tick)
 	var/need_mob_update
 	need_mob_update = affected_mob.SetSleeping(0)
-	affected_mob.adjust_body_temperature(5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
 	affected_mob.set_jitter_if_lower(10 SECONDS * REM * seconds_per_tick)
 	if(affected_mob.getBruteLoss() && SPT_PROB(10, seconds_per_tick))
 		need_mob_update += affected_mob.heal_bodypart_damage(brute = 1 * REM * seconds_per_tick, burn = 0, updating_health = FALSE)
@@ -891,7 +891,7 @@
 
 /datum/reagent/consumable/grape_soda/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/milk/chocolate_milk
 	name = "Chocolate Milk"
@@ -910,7 +910,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
 /datum/reagent/consumable/hot_coco/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	affected_mob.adjust_body_temperature(5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
 	if(affected_mob.getBruteLoss() && SPT_PROB(10, seconds_per_tick))
 		if(affected_mob.heal_bodypart_damage(brute = 1 * REM * seconds_per_tick, burn = 0, updating_health = FALSE))
 			. = UPDATE_MOB_HEALTH
@@ -929,7 +929,7 @@
 
 /datum/reagent/consumable/italian_coco/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/menthol
 	name = "Menthol"
@@ -982,7 +982,7 @@
 
 /datum/reagent/consumable/cream_soda/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 
 /datum/reagent/consumable/sol_dry
 	name = "Sol Dry"
@@ -1071,7 +1071,7 @@
 
 /datum/reagent/consumable/agua_fresca/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_body_temperature(-8 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, affected_mob.standard_body_temperature)
+	affected_mob.adjust_body_temperature(1.5 * COLD_DRINK * REM * seconds_per_tick, min_temp = affected_mob.standard_body_temperature)
 	if(affected_mob.getToxLoss() && SPT_PROB(10, seconds_per_tick))
 		if(affected_mob.adjustToxLoss(-0.5, updating_health = FALSE, required_biotype = affected_biotype))
 			return UPDATE_MOB_HEALTH
@@ -1172,7 +1172,7 @@
 
 /datum/reagent/consumable/cucumberlemonade/on_mob_life(mob/living/carbon/doll, seconds_per_tick, times_fired)
 	. = ..()
-	doll.adjust_body_temperature(-8 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, doll.standard_body_temperature)
+	doll.adjust_body_temperature(1.5 * COLD_DRINK * REM * seconds_per_tick, min_temp = doll.standard_body_temperature)
 	if(doll.getToxLoss() && SPT_PROB(10, seconds_per_tick))
 		if(doll.adjustToxLoss(-0.5, updating_health = FALSE, required_biotype = affected_biotype))
 			return UPDATE_MOB_HEALTH

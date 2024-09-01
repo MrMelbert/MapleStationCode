@@ -808,7 +808,7 @@
 		if(get_insulation(FIRE_IMMUNITY_MAX_TEMP_PROTECT) >= 0.9)
 			return FALSE
 		if(get_insulation(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)
-			return adjust_body_temperature(MINOR_AMOUNT_KELVIN * seconds_per_tick)
+			return adjust_body_temperature(0.5 KELVIN * seconds_per_tick)
 
 	. = ..()
 	if(.)

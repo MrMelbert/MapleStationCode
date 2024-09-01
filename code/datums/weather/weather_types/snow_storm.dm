@@ -24,9 +24,9 @@
 	barometer_predictable = TRUE
 
 	///Lowest we can cool someone randomly per weather act. Positive values only
-	var/cooling_lower = MINOR_AMOUNT_KELVIN
+	var/cooling_lower = 0.25 KELVIN
 	///Highest we can cool someone randomly per weather act. Positive values only
-	var/cooling_upper = MODERATE_AMOUNT_KELVIN
+	var/cooling_upper = 0.75 KELVIN
 
 /datum/weather/snow_storm/weather_act(mob/living/living)
 	living.adjust_body_temperature(-rand(cooling_lower, cooling_upper))
@@ -62,5 +62,5 @@
 
 	probability = 0
 
-	cooling_lower = 5
-	cooling_upper = 18
+	cooling_lower = 0.5 KELVIN
+	cooling_upper = 1.5 KELVIN

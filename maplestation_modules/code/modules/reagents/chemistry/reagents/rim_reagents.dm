@@ -337,7 +337,7 @@
 	user.adjust_dizzy(-4 SECONDS * REM * seconds_per_tick)
 	user.adjust_jitter(-4 SECONDS * REM * seconds_per_tick)
 	user.AdjustSleeping(-20 * REM * seconds_per_tick)
-	user.adjust_body_temperature(20 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, user.standard_body_temperature)
+	user.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = user.standard_body_temperature)
 	. = ..()
 	return TRUE
 

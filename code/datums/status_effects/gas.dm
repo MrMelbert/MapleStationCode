@@ -41,7 +41,7 @@
 	if(!owner.stat)
 		to_chat(owner, span_notice("The cube melts!"))
 	owner.cut_overlay(cube)
-	owner.adjust_body_temperature(DANGEROUS_AMOUNT_KELVIN * 10, max_temp = owner.standard_body_temperature)
+	owner.adjust_body_temperature(50 KELVIN, max_temp = owner.standard_body_temperature - 5 KELVIN)
 	UnregisterSignal(owner, COMSIG_LIVING_RESIST)
 	REMOVE_TRAIT(owner, TRAIT_IMMOBILIZED, TRAIT_STATUS_EFFECT(id))
 	return ..()

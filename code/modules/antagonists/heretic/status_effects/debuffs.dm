@@ -6,7 +6,7 @@
 	status_type = STATUS_EFFECT_REPLACE
 	tick_interval = 0.5 SECONDS
 	/// The amount the victim's body temperature changes each tick() in kelvin.
-	var/cooling_per_tick = DANGEROUS_AMOUNT_KELVIN * 2
+	var/cooling_per_tick = -1 KELVIN
 
 /atom/movable/screen/alert/status_effect/void_chill
 	name = "Void Chill"
@@ -27,7 +27,7 @@
 
 /datum/status_effect/void_chill/major
 	duration = 10 SECONDS
-	cooling_per_tick = -20
+	cooling_per_tick = -4 KELVIN
 
 /datum/status_effect/void_chill/lasting
 	id = "lasting_void_chill"

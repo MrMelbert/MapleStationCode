@@ -21,7 +21,7 @@
 	M.adjust_drowsiness(-2 SECONDS * REM * seconds_per_tick)
 	M.AdjustSleeping(-20 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE) //the major difference between base tea and green tea, this one's a great anti-tox.
-	M.adjust_body_temperature(20 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, M.standard_body_temperature)
+	M.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = M.standard_body_temperature)
 	return ..() || TRUE
 
 /datum/reagent/consumable/ice_greentea
@@ -46,7 +46,7 @@
 	M.adjust_drowsiness(-2 SECONDS * REM * seconds_per_tick)
 	M.AdjustSleeping(-40 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE)
-	M.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, M.standard_body_temperature)
+	M.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = M.standard_body_temperature)
 	return ..() || TRUE
 
 /datum/reagent/consumable/green_hill_tea
@@ -77,7 +77,7 @@
 
 /datum/reagent/consumable/green_hill_tea/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	M.AdjustSleeping(-40 * REM * seconds_per_tick)
-	M.adjust_body_temperature(-5 * 0.2 * MINOR_AMOUNT_KELVIN * REM * seconds_per_tick, M.standard_body_temperature)
+	M.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = M.standard_body_temperature)
 	return ..()
 
 /datum/reagent/consumable/green_hill_tea/overdose_process(mob/living/M, seconds_per_tick, times_fired)
