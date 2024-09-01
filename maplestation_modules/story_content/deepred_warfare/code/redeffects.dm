@@ -14,8 +14,9 @@
 	name = "faraday block"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redeffects64.dmi'
 	icon_state = "block"
+	layer = LARGE_MOB_LAYER
 	anchored = TRUE
-	duration = 1
+	duration = 2
 	pixel_x = -16
 	pixel_y = -16
 

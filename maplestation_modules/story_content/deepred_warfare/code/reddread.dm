@@ -471,6 +471,7 @@
 	if(EMP_PROTECT_SELF)
 		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
 		src.visible_message(span_warning("[src]'s shield absorbs the EMP!"))
+		new /obj/effect/temp_visual/faraday/emp(get_turf(src))
 		return
 
 	if(health <= 0)
@@ -828,10 +829,12 @@
 	if(shielding_level > 0) // If the shielding is even on.
 		if(amount >= 12) // If the brute damage is 12 or more, shield takes damage but deflects the attack.
 			internalshield.take_hit()
+			new /obj/effect/temp_visual/faraday/shatter(get_turf(src))
 			return 0
 		else // Not enough damage to damage the shield, damage is deflected.
 			playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
 			src.visible_message(span_warning("[src]'s shield struggles to deflect the impact!"))
+			new /obj/effect/temp_visual/faraday(get_turf(src))
 			return 0
 	. = ..()
 
@@ -840,6 +843,7 @@
 	if(shielding_level > 0) // Shielding is on.
 		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
 		src.visible_message(span_warning("[src]'s shield dampens the thermal energy!")) // This is basically handled by the EHP system but I added this for flavour anyways.
+		new /obj/effect/temp_visual/faraday/energy(get_turf(src))
 
 /mob/living/basic/redtechdread/death(gibbed)
 	..(gibbed)
@@ -870,6 +874,7 @@
 				src.visible_message(span_warning("[src]'s shield struggles to deflect the explosion!"))
 				internalshield.take_hit()
 				severity = EXPLODE_NONE
+		new /obj/effect/temp_visual/faraday/shatter(get_turf(src))
 	return ..()
 
 #undef DOAFTER_SOURCE_DREAD_INTERACTION
