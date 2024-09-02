@@ -34,8 +34,17 @@
 
 	var/thermal_protection_flags = NONE
 	for(var/obj/item/worn in get_equipped_items())
-		if((isnum(worn.max_heat_protection_temperature) && worn.max_heat_protection_temperature >= temperature) \
-			|| (isnum(worn.min_cold_protection_temperature) && worn.min_cold_protection_temperature <= temperature))
+		var/valid = FALSE
+		if(isnum(worn.max_heat_protection_temperature) && isnum(worn.min_cold_protection_temperature))
+			valid = worn.max_heat_protection_temperature >= temperature && worn.min_cold_protection_temperature <= temperature
+
+		else if (isnum(worn.max_heat_protection_temperature))
+			valid = worn.max_heat_protection_temperature >= temperature
+
+		else if (isnum(worn.min_cold_protection_temperature))
+			valid = worn.min_cold_protection_temperature <= temperature
+
+		if(valid)
 			thermal_protection_flags |= worn.body_parts_covered
 
 	var/thermal_protection = temperature_insulation
