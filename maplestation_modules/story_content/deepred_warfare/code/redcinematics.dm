@@ -36,3 +36,13 @@
 /proc/fire_unbidden_spark()
 	// play_cinematic(/datum/cinematic/unbidden/culmination_spark, world, CALLBACK(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, station_explosion_detonation), src))
 	// INVOKE_ASYNC(GLOBAL_PROC, GLOBAL_PROC_REF(callback_on_everyone_on_z), SSmapping.levels_by_trait(ZTRAIT_STATION), CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(nuke_gib)), src)
+
+/proc/remove_air_stationz()
+	for(var/area/station/station_area in GLOB.areas)
+		if(!is_station_level(station_area.z))
+			continue
+		for(var/turf/area_turf as anything in station_area.get_turfs_from_all_zlevels())
+			if(isopenturf(area_turf))
+				var/turf/open/deleting_turf = area_turf
+				if(deleting_turf.air)
+					deleting_turf.remove_air(INFINITY)
