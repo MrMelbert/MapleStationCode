@@ -222,8 +222,8 @@
 
 	var/damage_returned
 	// take 5 brute, 2 burn
-	damage_returned = round(dummy.damage_random_bodypart(5, BRUTE) + dummy.damage_random_bodypart(5, BURN), 1)
-	TEST_ASSERT_EQUAL(damage_returned, -7, \
+	damage_returned = round(dummy.damage_random_bodypart(5, BRUTE) + dummy.damage_random_bodypart(2, BURN), 1)
+	TEST_ASSERT_EQUAL(damage_returned, 7, \
 		"take_bodypart_damage() should have returned -7, but returned [damage_returned] instead!")
 
 	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 5, \
@@ -415,11 +415,11 @@
 
 	// Should have 10 burn damage and 20 toxins damage remaining, let's check
 	TEST_ASSERT_EQUAL(dummy.getBruteLoss(), 0, \
-		"[src] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!")
+		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!")
 	TEST_ASSERT_EQUAL(dummy.getFireLoss(), 10, \
-		"[src] should have 10 burn damage, but has [dummy.getFireLoss()] instead!")
+		"[dummy] should have 10 burn damage, but has [dummy.getFireLoss()] instead!")
 	TEST_ASSERT_EQUAL(dummy.getToxLoss(), 20, \
-		"[src] should have 20 toxin damage, but has [dummy.getToxLoss()] instead!")
+		"[dummy] should have 20 toxin damage, but has [dummy.getToxLoss()] instead!")
 
 	// Now heal the remaining 30, overhealing by 5.
 	damage_returned = round(dummy.heal_ordered_damage(35, list(BRUTE, BURN, TOX)), 1)
@@ -428,11 +428,11 @@
 
 	// Should have no damage remaining
 	TEST_ASSERT_EQUAL(dummy.getBruteLoss(), 0, \
-		"[src] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!")
+		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!")
 	TEST_ASSERT_EQUAL(dummy.getFireLoss(), 0, \
-		"[src] should have 0 burn damage, but has [dummy.getFireLoss()] instead!")
+		"[dummy] should have 0 burn damage, but has [dummy.getFireLoss()] instead!")
 	TEST_ASSERT_EQUAL(dummy.getToxLoss(), 0, \
-		"[src] should have 0 toxin damage, but has [dummy.getToxLoss()] instead!")
+		"[dummy] should have 0 toxin damage, but has [dummy.getToxLoss()] instead!")
 
 /// Tests that mob damage procs are working as intended for basic mobs
 /datum/unit_test/mob_damage/basic

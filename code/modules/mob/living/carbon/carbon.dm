@@ -589,26 +589,10 @@
 	if(to_update)
 		SShealth_updates.queue_update(src, to_update)
 
-#ifdef TESTING
-	maptext = MAPTEXT_TINY_UNICODE( \
-		"H: [health]\n\
-		C: [consciousness]\n\
-		P: [pain_controller?.get_average_pain() || 0]" \
-	)
-#endif
-
 	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD * 2) && stat == DEAD)
 		become_husk(BURN)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
-
-#ifdef TESTING
-/mob/living/carbon
-	maptext_height = 100
-	maptext_width = 200
-	maptext_x = -6
-	maptext_y = -36
-#endif
 
 /datum/movespeed_modifier/carbon_consciousness
 	variable = TRUE

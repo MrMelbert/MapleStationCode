@@ -625,8 +625,8 @@
 
 	// Indicates if there are moles of gas in the breath.
 	var/num_moles = breath.total_moles()
-	var/not_low_pressure = num_moles > 0.01 || HAS_TRAIT(owner, TRAIT_RESISTLOWPRESSURE)
-	var/not_high_pressure = num_moles < 0.1 || HAS_TRAIT(owner, TRAIT_RESISTHIGHPRESSURE)
+	var/not_low_pressure = num_moles > 0.01 || HAS_TRAIT(breather, TRAIT_RESISTLOWPRESSURE)
+	var/not_high_pressure = num_moles < 0.1 || HAS_TRAIT(breather, TRAIT_RESISTHIGHPRESSURE)
 	// Check for moles of gas and handle partial pressures / special conditions.
 	if(num_moles > 0 && not_low_pressure && not_high_pressure)
 		// Breath has more than 0 moles of gas.
