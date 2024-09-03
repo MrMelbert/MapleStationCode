@@ -2208,10 +2208,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(isnull(.) || . == stat)
 		return
 
-	// NON-MODULE CHANGE for eyelids
-	if(. <= UNCONSCIOUS || new_stat >= UNCONSCIOUS)
-		update_body()
-
 	// All the traits associated with any of a mob's stat
 	// Adding anny traits below should also be done in here
 	var/list/removed_traits = list(
