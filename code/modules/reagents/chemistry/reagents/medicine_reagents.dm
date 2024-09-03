@@ -174,15 +174,15 @@
 
 /datum/reagent/medicine/pyroxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.body_temperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
+	if(affected_mob.body_temperature > affected_mob.bodytemp_heat_damage_limit)
 		var/power = 0
-		switch(affected_mob.body_temperature)
-			if(BODYTEMP_HEAT_DAMAGE_LIMIT to 400) // melbert todo : temp
-				power = 2
-			if(400 to 460)
-				power = 3
-			else
-				power = 5
+		// melbert todo : temp / doesn't scale with the limit (ie magic numbers)
+		if(affected_mob.body_temperature < 400 KELVIN)
+			power = 2
+		else if (affected_mob.body_temperature < 450 KELVIN)
+			power = 3
+		else
+			power = 5
 		if(affected_mob.on_fire)
 			power *= 2
 

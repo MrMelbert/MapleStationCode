@@ -148,15 +148,17 @@
 	// Body temperature is too hot, and we do not have resist traits
 	if(feels_like > hot_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 		clear_mood_event("cold")
-		add_mood_event("hot", /datum/mood_event/hot)
 		// Clear cold once we return to warm
 		remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 		if(feels_like > hot_threshold_high)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
+			add_mood_event("hot", /datum/mood_event/overhot)
 		else if(feels_like > hot_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
+			add_mood_event("hot", /datum/mood_event/hot)
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
+			add_mood_event("hot", /datum/mood_event/warm)
 		temp_alerts = TRUE
 
 	var/cold_diff = bodytemp_cold_damage_limit - standard_body_temperature
@@ -166,16 +168,18 @@
 	// Body temperature is too cold, and we do not have resist traits
 	if(feels_like < cold_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 		clear_mood_event("hot")
-		add_mood_event("cold", /datum/mood_event/cold)
 		// Only apply slowdown if the body is cold rather than the skin
 		if(body_temperature < cold_threshold_medium)
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((BODYTEMP_COLD_WARNING_2 - body_temperature) / COLD_SLOWDOWN_FACTOR))
 		if(feels_like < cold_threshold_high)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
+			add_mood_event("cold", /datum/mood_event/freezing)
 		else if(feels_like < cold_threshold_medium)
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
+			add_mood_event("cold", /datum/mood_event/cold)
 		else
 			throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
+			add_mood_event("cold", /datum/mood_event/chilly)
 		temp_alerts = TRUE
 
 	// We are not to hot or cold, remove status and moods
@@ -225,12 +229,14 @@
 		// we are overheating and sweaty - insulation is not as good reducing thermal protection
 		protection_modifier = 0.7
 
-	// melbert todo : temp / this needs to scale exponentially or logarithmically - slow for small changes, fast for large changes
 	var/temp_sign = SIGN(temp_delta)
 	var/temp_change =  temp_sign * (1 - (thermal_protection * protection_modifier)) * ((0.1 * max(1, abs(temp_delta))) ** 1.8) * temperature_normalization_speed
 	// Cap increase and decrease
 	temp_change = temp_change < 0 ? max(temp_change, BODYTEMP_COOLING_MAX) : min(temp_change, BODYTEMP_HEATING_MAX)
 	adjust_body_temperature(temp_change * seconds_per_tick) // no use_insulation beacuse we account for it manually
+
+/mob/living/silicon/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
+	return // Not yet
 
 /**
  * Handles this mob internally managing its body temperature (sweating or generating heat)
@@ -277,6 +283,9 @@
 	adjust_body_temperature(natural_change * seconds_per_tick, min_temp = min, max_temp = max) // no use_insulation beacuse this is internal
 	if(!(sigreturn & HOMEOSTASIS_NO_HUNGER))
 		adjust_nutrition(-1 * HOMEOSTASIS_HUNGER_MULTIPLIER * HUNGER_FACTOR * nutrition_per_kelvin * abs(natural_change) * seconds_per_tick)
+
+/mob/living/silicon/temperature_homeostasis(seconds_per_tick, times_fired)
+	return // Not yet
 
 /**
  * Get the fullness of the mob

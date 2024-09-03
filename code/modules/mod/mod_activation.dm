@@ -201,14 +201,16 @@
 		part.clothing_flags |= part.visor_flags
 		part.flags_inv |= part.visor_flags_inv
 		part.flags_cover |= part.visor_flags_cover
-		// melbert todo : temp / needs to give heat/cold prot
+		part.min_cold_protection_temperature = theme.min_cold_protection_temperature
+		part.max_heat_protection_temperature = theme.max_heat_protection_temperature
 		part.alternate_worn_layer = null
 	else
 		part.icon_state = "[skin]-[part.base_icon_state]"
 		part.flags_cover &= ~part.visor_flags_cover
 		part.flags_inv &= ~part.visor_flags_inv
 		part.clothing_flags &= ~part.visor_flags
-		// melbert todo : temp / needs to clear heat/cold prot
+		part.min_cold_protection_temperature = null
+		part.max_heat_protection_temperature = null
 		part.alternate_worn_layer = mod_parts[part]
 	if(part == boots)
 		wearer.update_worn_shoes()
