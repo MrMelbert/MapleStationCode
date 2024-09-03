@@ -281,10 +281,15 @@
 		vision_distance = COMBAT_MESSAGE_RANGE,
 	)
 
+	var/obj/item/bodypart/our_limb = limb // because we null after removing
+
 	if(!tweezer_safe)
 		// sure it still hurts but it sucks less
 		damaging_removal(victim, weapon, limb, (0.4 * possible_tweezers.w_class))
 	safeRemove(user)
+
+	if(length(our_limb.embedded_objects))
+		victim.attackby(possible_tweezers, user) // loop if we can
 
 /// Called when an object is ripped out of someone's body by magic or other abnormal means
 /datum/component/embedded/proc/magic_pull(datum/source, mob/living/caster, obj/marked_item)

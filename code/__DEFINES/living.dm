@@ -121,3 +121,20 @@
 #define BURN_DAMAGE "severe burns"
 #define OXY_DAMAGE "suffocation"
 #define TOX_DAMAGE "toxic poisoning"
+
+// For SShealth_updates
+/// Call update_damage_hud()
+#define UPDATE_SELF_DAMAGE (1 << 0)
+/// Call update_health_hud()
+#define UPDATE_SELF_HEALTH (1 << 1)
+/// Call med_hud_set_health()
+#define UPDATE_MEDHUD_HEALTH (1 << 2)
+/// Call med_hud_set_status()
+#define UPDATE_MEDHUD_STATUS (1 << 3)
+/// Call update_conscisouness()
+#define UPDATE_CON (1 << 4)
+
+/// Updates the entire medhud
+#define UPDATE_MEDHUD (UPDATE_MEDHUD_HEALTH | UPDATE_MEDHUD_STATUS)
+/// Updates associated self-huds on the mob
+#define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
