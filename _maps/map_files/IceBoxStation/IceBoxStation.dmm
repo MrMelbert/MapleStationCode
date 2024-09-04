@@ -30615,6 +30615,22 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/storage)
+"jnU" = (
+/obj/structure/rack,
+/obj/item/clothing/suit/hooded/wintercoat/science{
+	pixel_x = -1
+	},
+/obj/item/clothing/suit/hooded/wintercoat/science{
+	pixel_x = -4;
+	pixel_y = 4
+	},
+/obj/item/clothing/shoes/winterboots{
+	pixel_x = 4;
+	pixel_y = -2
+	},
+/obj/item/clothing/shoes/winterboots,
+/turf/open/floor/glass/reinforced,
+/area/station/science/xenobiology)
 "jnV" = (
 /obj/structure/closet/firecloset,
 /turf/open/floor/plating,
@@ -51124,20 +51140,8 @@
 /area/station/commons/storage/mining)
 "pnA" = (
 /obj/machinery/airalarm/directional/north,
-/obj/structure/rack,
-/obj/item/clothing/suit/hooded/wintercoat/science{
-	pixel_x = -4;
-	pixel_y = 4
-	},
-/obj/item/clothing/suit/hooded/wintercoat/science{
-	pixel_x = -1
-	},
-/obj/item/clothing/shoes/winterboots{
-	pixel_x = 4;
-	pixel_y = -2
-	},
-/obj/item/clothing/shoes/winterboots,
 /obj/structure/extinguisher_cabinet/directional/west,
+/obj/machinery/vending/cytopro,
 /turf/open/floor/glass/reinforced,
 /area/station/science/xenobiology)
 "pnG" = (
@@ -193720,7 +193724,7 @@ thA
 thA
 thA
 xMq
-xMq
+iDt
 iDt
 xMq
 iDt
@@ -254646,7 +254650,7 @@ ily
 qLY
 pnA
 qFp
-fvk
+jnU
 bfN
 ily
 qeQ
