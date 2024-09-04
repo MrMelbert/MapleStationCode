@@ -72,12 +72,12 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 		if(OXY_DAMAGE)
 			var/obj/item/organ/internal/lungs/lungs = get_organ_slot(ORGAN_SLOT_LUNGS)
-			if(!isnull(lungs) || (lungs.organ_flags & ORGAN_FAILING))
+			if(isnull(lungs) || (lungs.organ_flags & ORGAN_FAILING))
 				return "lung failure"
 
 		if(TOX_DAMAGE)
 			var/obj/item/organ/internal/liver/liver = get_organ_slot(ORGAN_SLOT_LIVER)
-			if(!isnull(liver) || (liver.organ_flags & ORGAN_FAILING))
+			if(isnull(liver) || (liver.organ_flags & ORGAN_FAILING))
 				return "liver failure"
 
 			var/datum/reagent/toxin/most_toxic

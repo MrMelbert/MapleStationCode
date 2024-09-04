@@ -224,7 +224,7 @@
 	// take 5 brute, 2 burn
 	damage_returned = round(dummy.damage_random_bodypart(5, BRUTE) + dummy.damage_random_bodypart(2, BURN), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 7, \
-		"take_bodypart_damage() should have returned -7, but returned [damage_returned] instead!")
+		"take_bodypart_damage() should have returned 7, but returned [damage_returned] instead!")
 
 	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 5, \
 		"Dummy should have 5 brute damage, instead they have [dummy.getBruteLoss()]!")
@@ -514,9 +514,9 @@
 	// overall damage procs
 
 	// take 5 brute, 2 burn
-	damage_returned = gusgus.damage_random_bodypart(5, BRUTE) + gusgus.damage_random_bodypart(5, BURN)
-	TEST_ASSERT_EQUAL(damage_returned, -7, \
-		"take_bodypart_damage() should have returned -7, but returned [damage_returned] instead!")
+	damage_returned = gusgus.damage_random_bodypart(5, BRUTE) + gusgus.damage_random_bodypart(2, BURN)
+	TEST_ASSERT_EQUAL(damage_returned, 7, \
+		"take_bodypart_damage() should have returned 7, but returned [damage_returned] instead!")
 
 	TEST_ASSERT_EQUAL(gusgus.bruteloss, 7, \
 		"Mouse should have 7 brute damage, instead they have [gusgus.bruteloss]!")

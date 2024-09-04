@@ -124,6 +124,7 @@
 		owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
 
 	owner.remove_max_consciousness_value(id)
+	owner.remove_consciousness_modifier(id)
 
 /datum/status_effect/inebriated/drunk/set_drunk_value(set_to)
 	. = ..()
@@ -133,8 +134,14 @@
 	// Return to "tipsyness" when we're below 6.
 	if(drunk_value < TIPSY_THRESHOLD)
 		owner.apply_status_effect(/datum/status_effect/inebriated/tipsy, drunk_value)
+	if(drunk_value > 50)
+		owner.add_consciousness_modifier(id, -0.5 * (drunk_value - 50))
+	else
+		owner.remove_consciousness_modifier(id)
 	if(drunk_value > 90)
 		owner.add_max_consciousness_value(id, 30)
+	else
+		owner.remove_max_consciousness_value(id)
 
 /datum/status_effect/inebriated/drunk/on_tick_effects()
 	// Handle the Ballmer Peak.
