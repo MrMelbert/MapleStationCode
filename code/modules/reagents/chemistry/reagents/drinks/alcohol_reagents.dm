@@ -2633,7 +2633,7 @@
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
-		stomach.adjust_charge(reac_volume * 0.003 * STANDARD_CELL_CHARGE)
+		stomach.adjust_charge(reac_volume * 0.003 * ETHEREAL_CHARGE_NORMAL)
 
 /datum/reagent/consumable/ethanol/telepole
 	name = "Telepole"
@@ -2660,7 +2660,7 @@
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
-		stomach.adjust_charge(reac_volume * 0.002 * STANDARD_CELL_CHARGE)
+		stomach.adjust_charge(reac_volume * 0.002 * ETHEREAL_CHARGE_NORMAL)
 
 /datum/reagent/consumable/ethanol/pod_tesla
 	name = "Pod Tesla"
@@ -2687,7 +2687,7 @@
 	var/mob/living/carbon/exposed_carbon = exposed_mob
 	var/obj/item/organ/internal/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
-		stomach.adjust_charge(reac_volume * 0.005 * STANDARD_CELL_CHARGE)
+		stomach.adjust_charge(reac_volume * 0.005 * ETHEREAL_CHARGE_NORMAL)
 
 // Welcome to the Blue Room Bar and Grill, home to Mars' finest cocktails
 /datum/reagent/consumable/ethanol/rice_beer
