@@ -119,6 +119,9 @@
 /// From base of area/Exited(): (area/left, direction)
 #define COMSIG_MOVABLE_EXITED_AREA "movable_exited_area"
 
+///from base of /datum/component/splat/splat: (hit_atom)
+#define COMSIG_MOVABLE_SPLAT "movable_splat"
+
 /// Called when something is pushed by a living mob bumping it: (mob/living/pusher, push force)
 #define COMSIG_MOVABLE_BUMP_PUSHED "movable_bump_pushed"
 	/// Stop it from moving
