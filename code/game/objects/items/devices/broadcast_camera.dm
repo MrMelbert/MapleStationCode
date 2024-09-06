@@ -20,6 +20,8 @@
 	light_range = 1
 	light_power = 0.3
 	light_on = FALSE
+	/// Is camera streaming
+	var/active = FALSE
 	/// Is the microphone turned on
 	var/active_microphone = TRUE
 	/// The name of the broadcast
@@ -31,17 +33,6 @@
 	/// The "virtual" radio inside of the the physical camera, a la microphone
 	var/obj/item/radio/entertainment/microphone/internal_radio
 
-/obj/item/broadcast_camera/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/empprotection, ALL)
-	AddComponent(/datum/component/two_handed, \
-		force_unwielded = 8, \
-		force_wielded = 12, \
-		icon_wielded = "[base_icon_state]1", \
-		wield_callback = CALLBACK(src, PROC_REF(on_wield)), \
-		unwield_callback = CALLBACK(src, PROC_REF(on_unwield)), \
-	)
-
 /obj/item/broadcast_camera/Destroy(force)
 	QDEL_NULL(internal_radio)
 	QDEL_NULL(internal_camera)
@@ -52,6 +43,14 @@
 	icon_state = "[base_icon_state]0"
 	return ..()
 
+/obj/item/broadcast_camera/attack_self(mob/user, modifiers)
+	. = ..()
+	active = !active
+	if(active)
+		on_activating()
+	else
+		on_deactivating()
+
 /obj/item/broadcast_camera/attack_self_secondary(mob/user, modifiers)
 	. = ..()
 	broadcast_name = tgui_input_text(user = user, title = "Broadcast Name", message = "What will be the name of your broadcast?", default = "[broadcast_name]", max_length = MAX_CHARTER_LEN)
@@ -61,10 +60,22 @@
 	. += span_notice("The broadcast name is <b>[broadcast_name]</b>.")
 	. += span_notice("The microphone is <b>[active_microphone ? "on" : "off"]</b>.")
 
-/// When wielding the camera
-/obj/item/broadcast_camera/proc/on_wield()
+/obj/item/broadcast_camera/on_enter_storage(datum/storage/master_storage)
+	. = ..()
+	if(active)
+		on_deactivating()
+
+/obj/item/broadcast_camera/dropped(mob/user, silent)
+	. = ..()
+	if(active)
+		on_deactivating()
+
+/// When activating the camera
+/obj/item/broadcast_camera/proc/on_activating()
 	if(!iscarbon(loc))
 		return
+	active = TRUE
+	icon_state = "[base_icon_state][active]"
 	/// The carbon who wielded the camera, allegedly
 	var/mob/living/carbon/wielding_carbon = loc
 
@@ -84,8 +95,10 @@
 	playsound(source = src, soundin = 'sound/machines/terminal_processing.ogg', vol = 20, vary = FALSE, ignore_walls = FALSE)
 	balloon_alert_to_viewers("live!")
 
-/// When unwielding the camera
-/obj/item/broadcast_camera/proc/on_unwield()
+/// When deactivating the camera
+/obj/item/broadcast_camera/proc/on_deactivating()
+	active = FALSE
+	icon_state = "[base_icon_state][active]"
 	QDEL_NULL(internal_camera)
 	QDEL_NULL(internal_radio)
 
