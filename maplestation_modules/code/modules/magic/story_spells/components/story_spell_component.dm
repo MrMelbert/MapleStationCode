@@ -1,6 +1,6 @@
 // this is basically only used to cut down on boilerplate.
 // all that remains is stuff that has to be on the spell itself to work (checking for mana cost, attunements, some of the callbacks)
-// i'll provide a sample block so this file can be a "tutorial IG"
+// i'll provide a sample block so this file can be a "tutorial" IG
 /datum/component/uses_mana/spell
 	can_transfer = FALSE
 

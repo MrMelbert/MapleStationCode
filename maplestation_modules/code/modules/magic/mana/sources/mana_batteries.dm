@@ -2,17 +2,15 @@
 
 /datum/mana_pool/mana_battery/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
-		return TRUE
-
+		return FALSE
 	var/obj/item/mana_battery/battery = parent
 
 	if (battery.loc == target_pool.parent.loc)
 		return TRUE
 
 	if (get_dist(battery, target_pool.parent) > battery.max_allowed_transfer_distance)
-		return TRUE
-
-	return FALSE
+		return FALSE
+	return ..()
 
 /obj/item/mana_battery
 	name = "generic mana battery"
@@ -23,6 +21,7 @@
 /obj/item/mana_battery/get_initial_mana_pool_type()
 	return mana_pool
 
+// when we hit ourself with left click, we draw mana FROM the battery.
 /obj/item/mana_battery/attack_self(mob/user, modifiers)
 	. = ..()
 
@@ -35,10 +34,29 @@
 
 	var/already_transferring = (user in mana_pool.transferring_to)
 	if (already_transferring)
+		balloon_alert(user, "Canceled Draw.")
 		mana_pool.stop_transfer(user.mana_pool)
 	else
-		mana_pool.start_transfer(user.mana_pool, force_process = TRUE)
+		var/mana_to_draw = tgui_input_number(user, "How much mana do you want to draw from the battery? Soft Cap (You will lose mana when above this!): [user.mana_pool.softcap]", "Draw Mana", max_value = mana_pool.maximum_mana_capacity)
+		balloon_alert(user, "Drawing Mana....")
+		mana_pool.transfer_specific_mana(user.mana_pool, mana_to_draw, decrement_budget = TRUE)
+// when we hit ourself with right click, however, we send mana TO the battery.
+/obj/item/mana_battery/attack_self_secondary(mob/user, modifiers)
+	. = ..()
+	if (.)
+		return TRUE
 
+	if (!user.mana_pool)
+		balloon_alert(user, "you have no mana pool!")
+		return FALSE
+	var/already_transferring = (user in mana_pool.transferring_to)
+	if (already_transferring)
+		balloon_alert(user, "Canceled Send.")
+		user.mana_pool.stop_transfer(mana_pool)
+	else
+		var/mana_to_send = tgui_input_number(user, "How much mana do you want to send to the battery? Max Capacity: [mana_pool.maximum_mana_capacity]", "Send Mana", max_value = mana_pool.maximum_mana_capacity)
+		balloon_alert(user, "Sending Mana....")
+		user.mana_pool.transfer_specific_mana(mana_pool, mana_to_send, decrement_budget = TRUE)
 /obj/item/mana_battery/mana_crystal
 	name = MAGIC_MATERIAL_NAME + " crystal"
 	desc = "Crystalized mana." //placeholder desc
