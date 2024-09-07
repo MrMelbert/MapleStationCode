@@ -311,7 +311,7 @@
 	icon_dead = "shadowshroom-dead"
 	plantname = "Shadowshrooms"
 	product = /obj/item/food/grown/mushroom/glowshroom/shadowshroom
-	genes = list(/datum/plant_gene/trait/glow/shadow, /datum/plant_gene/trait/plant_type/fungal_metabolism)
+	genes = list(/datum/plant_gene/trait/glow/shadow, /datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/reagent/fading_agnosticine) // NON-MODULE CHANGE
 	mutatelist = null
 	reagents_add = list(/datum/reagent/uranium/radium = 0.2, /datum/reagent/consumable/nutriment = 0.04)
 	rarity = 30
@@ -347,7 +347,7 @@
 	instability = 65
 	growthstages = 3
 	product = /obj/item/food/grown/mushroom/odious_puffball
-	genes = list(/datum/plant_gene/trait/smoke, /datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/trait/squash)
+	genes = list(/datum/plant_gene/trait/smoke, /datum/plant_gene/trait/plant_type/fungal_metabolism, /datum/plant_gene/trait/squash, /datum/plant_gene/reagent/agnosticine) // NON-MODULE CHANGE
 	reagents_add = list(/datum/reagent/toxin/spore = 0.2, /datum/reagent/consumable/nutriment = 0.04)
 	rarity = 35
 	graft_gene = /datum/plant_gene/trait/smoke

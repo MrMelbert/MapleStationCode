@@ -32,6 +32,7 @@
 	species = "teaastra"
 	plantname = "Tea Astra Plant"
 	product = /obj/item/food/grown/tea/astra
+	genes = list(/datum/plant_gene/reagent/quintessence) // NON-MODULE CHANGE
 	mutatelist = null
 	reagents_add = list(/datum/reagent/medicine/synaptizine = 0.1, /datum/reagent/consumable/nutriment/vitamin = 0.04, /datum/reagent/toxin/teapowder = 0.1)
 	rarity = PLANT_MODERATELY_RARE

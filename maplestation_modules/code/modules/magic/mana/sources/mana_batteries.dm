@@ -1,4 +1,7 @@
 /datum/mana_pool/mana_battery
+/datum/mana_pool/mana_battery/New(...)
+	. = ..()
+	src.amount = 0 // all mana batteries start empty
 
 /datum/mana_pool/mana_battery/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
@@ -34,11 +37,11 @@
 
 	var/already_transferring = (user in mana_pool.transferring_to)
 	if (already_transferring)
-		balloon_alert(user, "Canceled Draw.")
+		balloon_alert(user, "canceled draw.")
 		mana_pool.stop_transfer(user.mana_pool)
 	else
 		var/mana_to_draw = tgui_input_number(user, "How much mana do you want to draw from the battery? Soft Cap (You will lose mana when above this!): [user.mana_pool.softcap]", "Draw Mana", max_value = mana_pool.maximum_mana_capacity)
-		balloon_alert(user, "Drawing Mana....")
+		balloon_alert(user, "drawing mana....")
 		mana_pool.transfer_specific_mana(user.mana_pool, mana_to_draw, decrement_budget = TRUE)
 // when we hit ourself with right click, however, we send mana TO the battery.
 /obj/item/mana_battery/attack_self_secondary(mob/user, modifiers)
@@ -51,11 +54,11 @@
 		return FALSE
 	var/already_transferring = (user in mana_pool.transferring_to)
 	if (already_transferring)
-		balloon_alert(user, "Canceled Send.")
+		balloon_alert(user, "canceled send.")
 		user.mana_pool.stop_transfer(mana_pool)
 	else
 		var/mana_to_send = tgui_input_number(user, "How much mana do you want to send to the battery? Max Capacity: [mana_pool.maximum_mana_capacity]", "Send Mana", max_value = mana_pool.maximum_mana_capacity)
-		balloon_alert(user, "Sending Mana....")
+		balloon_alert(user, "sending mana....")
 		user.mana_pool.transfer_specific_mana(mana_pool, mana_to_send, decrement_budget = TRUE)
 /obj/item/mana_battery/mana_crystal
 	name = MAGIC_MATERIAL_NAME + " crystal"
@@ -87,7 +90,14 @@
 /obj/item/mana_battery/mana_crystal/small
 	name = "Small Volite Crystal"
 	desc = "A miniaturized Volite crystal, formed using the run-off of cutting larger ones. Able to hold mana still, although not as much as a proper formation."
-	icon_state = "small" //placeholder
+	icon_state = "small"
+	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/small/
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/mana_battery/mana_crystal/small
+	name = "Cut Volite Crystal"
+	desc = "A cut and shaped Volite Crystal, using a standardized square cut. It lacks power until it is slotted into a proper amulet."
+	icon_state = "cut"
 	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/small/
 
 /datum/mana_pool/mana_battery/mana_crystal/small/
