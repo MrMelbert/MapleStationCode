@@ -108,20 +108,22 @@
 	maximum_mana_capacity = (MANA_CRYSTAL_BASE_MANA_CAPACITY * 2) // 400 by default
 	softcap = (MANA_CRYSTAL_BASE_MANA_CAPACITY * 2)
 	amount = 0
+	var/regen_amount = 2 // regen by this amount per process
 
 /datum/mana_pool/mana_star/process(seconds_per_tick)
 	. = ..()
 	if(amount < softcap) // only adjust when below the softcap, this will allow adjustment of when the pool stops regenning, if someone wants to do something more fancy
-		adjust_mana(2) // regen mana by 1.5 per tick/process
+		adjust_mana(regen_amount)
 
-/obj/item/mana_star
+/obj/item/clothing/neck/mana_star
 	name = "Volite Amulet"
 	desc = "A cut volite crystal placed within a gilded amulet. It naturally draws and fixes mana for your use."
 	mana_pool = /datum/mana_pool/mana_star
 	has_initial_mana_pool = TRUE
+	worn_icon = 'maplestation_modules/icons/mob/clothing/neck.dmi'
+	worn_icon_state = "volite_amulet"
 	icon = 'maplestation_modules/icons/obj/magic/crystals.dmi'
 	icon_state = "amulet"
-	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
 
 /obj/item/mana_star/get_initial_mana_pool_type()
 	return mana_pool
