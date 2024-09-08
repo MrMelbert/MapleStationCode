@@ -6168,6 +6168,7 @@
 #include "maplestation_modules\code\game\objects\items\devices\radio\encryptionkey.dm"
 #include "maplestation_modules\code\game\objects\items\devices\radio\headset.dm"
 #include "maplestation_modules\code\game\objects\items\devices\scanners\autopsy_scanner.dm"
+#include "maplestation_modules\code\game\objects\items\devices\scanners\mana_lens.dm"
 #include "maplestation_modules\code\game\objects\items\other_loadout_items\loadout_inhand_items.dm"
 #include "maplestation_modules\code\game\objects\items\other_loadout_items\loadout_pocket_items.dm"
 #include "maplestation_modules\code\game\objects\items\storage\belt.dm"
