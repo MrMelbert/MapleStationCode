@@ -386,6 +386,10 @@
 	item_path = /obj/item/clothing/under/jumpsuit/greyshirt
 	additional_displayed_text = list("Character Item")
 
+/datum/loadout_item/under/formal/countess
+	name = "Countess Dress"
+	item_path = /obj/item/clothing/under/dress/countess
+
 /datum/loadout_item/under/jumpsuit/pilot
 	name = "Berbier Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/lini

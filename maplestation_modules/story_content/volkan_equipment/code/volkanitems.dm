@@ -72,7 +72,7 @@
 	/// the typepath of mob mob that it will turn into
 	var/mobtype
 	/// the sound the mob will make when it turns on (is created).
-	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg' 
+	var/startup = 'maplestation_modules/story_content/volkan_equipment/audio/bot_startup.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
 
 //activate bot action
