@@ -59,11 +59,10 @@
 	/// The intrinsic sources of mana we will constantly try to draw from. Uses defines from magic_charge_bitflags.dm.
 	var/intrinsic_recharge_sources = MANA_ALL_LEYLINES
 
-/datum/mana_pool/New(atom/parent = null, new_amount = softcap/2)
+/datum/mana_pool/New(atom/parent = null)
 	. = ..()
 	donation_budget_this_tick = max_donation_rate_per_second
 	src.parent = parent
-	src.amount = new_amount
 
 	update_intrinsic_recharge()
 

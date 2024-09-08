@@ -1,7 +1,5 @@
 /datum/mana_pool/mana_battery
-/datum/mana_pool/mana_battery/New(...)
-	. = ..()
-	src.amount = 0 // all mana batteries start empty
+	amount = 0
 
 /datum/mana_pool/mana_battery/can_transfer(datum/mana_pool/target_pool)
 	if (QDELETED(target_pool.parent))
@@ -94,7 +92,7 @@
 	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/small/
 	w_class = WEIGHT_CLASS_SMALL
 
-/obj/item/mana_battery/mana_crystal/small
+/obj/item/mana_battery/mana_crystal/cut
 	name = "Cut Volite Crystal"
 	desc = "A cut and shaped Volite Crystal, using a standardized square cut. It lacks power until it is slotted into a proper amulet."
 	icon_state = "cut"
@@ -104,3 +102,46 @@
 	// half the size of the normal crystal
 	maximum_mana_capacity = (MANA_CRYSTAL_BASE_MANA_CAPACITY / 2)
 	softcap = (MANA_CRYSTAL_BASE_MANA_CAPACITY / 2)
+
+/datum/mana_pool/mana_star
+	// a special type of mana battery that regenerates passively- but cannot be given mana
+	maximum_mana_capacity = (MANA_CRYSTAL_BASE_MANA_CAPACITY * 2) // 400 by default
+	softcap = (MANA_CRYSTAL_BASE_MANA_CAPACITY * 2)
+	amount = 0
+
+/datum/mana_pool/mana_star/process(seconds_per_tick)
+	. = ..()
+	if(amount < softcap) // only adjust when below the softcap, this will allow adjustment of when the pool stops regenning, if someone wants to do something more fancy
+		adjust_mana(2) // regen mana by 1.5 per tick/process
+
+/obj/item/mana_star
+	name = "Volite Amulet"
+	desc = "A cut volite crystal placed within a gilded amulet. It naturally draws and fixes mana for your use."
+	mana_pool = /datum/mana_pool/mana_star
+	has_initial_mana_pool = TRUE
+	icon = 'maplestation_modules/icons/obj/magic/crystals.dmi'
+	icon_state = "amulet"
+	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
+
+/obj/item/mana_star/get_initial_mana_pool_type()
+	return mana_pool
+
+/obj/item/mana_star/attack_self(mob/user, modifiers) // you can only draw by default.
+	. = ..()
+
+	if (.)
+		return TRUE
+
+	if (!user.mana_pool)
+		balloon_alert(user, "you have no mana pool!")
+		return FALSE
+
+	var/already_transferring = (user in mana_pool.transferring_to)
+	if (already_transferring)
+		balloon_alert(user, "canceled draw.")
+		mana_pool.stop_transfer(user.mana_pool)
+	else
+		var/mana_to_draw = tgui_input_number(user, "How much mana do you want to draw from the star? Soft Cap (You will lose mana when above this!): [user.mana_pool.softcap]", "Draw Mana", max_value = mana_pool.maximum_mana_capacity)
+		balloon_alert(user, "drawing mana....")
+		mana_pool.transfer_specific_mana(user.mana_pool, mana_to_draw, decrement_budget = TRUE)
+
