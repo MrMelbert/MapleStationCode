@@ -534,6 +534,11 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	name = "Cloakp"
 	icon_state = "cloakp"
 
+//GUMTEETH's head
+/datum/sprite_accessory/synth_head_cover/gumhead
+	name = "GUMHEAD"
+	icon_state = "gumhead"
+
 // add more here!!
 
 
