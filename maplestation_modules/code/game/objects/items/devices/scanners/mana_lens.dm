@@ -5,7 +5,6 @@
 	icon_state = "mana_lens"
 	desc = "A prototypical device used to read out the current amount of mana within a subject. The ergonomics are terrible."
 	item_flags = NOBLUDGEON
-	slot_flags = ITEM_SLOT_BELT
 	throwforce = 3
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 3
