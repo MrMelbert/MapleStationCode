@@ -105,30 +105,25 @@
 
 /datum/mana_pool/mana_star
 	// a special type of mana battery that regenerates passively- but cannot be given mana
-	maximum_mana_capacity = (MANA_CRYSTAL_BASE_MANA_CAPACITY * 2) // 400 by default
-	softcap = (MANA_CRYSTAL_BASE_MANA_CAPACITY * 2)
+	maximum_mana_capacity = 400 // 400 by default
+	softcap = 400
 	amount = 0
-	var/regen_amount = 2 // regen by this amount per process
-
-/datum/mana_pool/mana_star/process(seconds_per_tick)
-	. = ..()
-	if(amount < softcap) // only adjust when below the softcap, this will allow adjustment of when the pool stops regenning, if someone wants to do something more fancy
-		adjust_mana(regen_amount)
+	ethereal_recharge_rate = 2 // forgot this was a thing LMFAO
 
 /obj/item/clothing/neck/mana_star
 	name = "Volite Amulet"
 	desc = "A cut volite crystal placed within a gilded amulet. It naturally draws and fixes mana for your use."
-	mana_pool = /datum/mana_pool/mana_star
 	has_initial_mana_pool = TRUE
+	mana_pool = /datum/mana_pool/mana_star
 	worn_icon = 'maplestation_modules/icons/mob/clothing/neck.dmi'
 	worn_icon_state = "volite_amulet"
 	icon = 'maplestation_modules/icons/obj/magic/crystals.dmi'
 	icon_state = "amulet"
 
-/obj/item/mana_star/get_initial_mana_pool_type()
+/obj/item/clothing/neck/mana_star/get_initial_mana_pool_type()
 	return mana_pool
 
-/obj/item/mana_star/attack_self(mob/user, modifiers) // you can only draw by default.
+/obj/item/clothing/neck/mana_star/attack_self(mob/user, modifiers) // you can only draw by default.
 	. = ..()
 
 	if (.)

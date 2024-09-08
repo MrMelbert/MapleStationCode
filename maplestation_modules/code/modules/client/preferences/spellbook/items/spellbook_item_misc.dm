@@ -13,3 +13,25 @@ GLOBAL_LIST_INIT(spellbook_misc_items, generate_spellbook_items(SPELLBOOK_CATEGO
 	category = SPELLBOOK_CATEGORY_MISC
 
 	our_action_typepath = /datum/action/cooldown/spell/apply_mutations/mage_hand
+
+/* /datum/spellbook_item/spell/leyline_charge
+	name = "Leyline Charge"
+	description = "Draw mana straight from the leylines themselves."
+	lore = "The most basic method of regenerating mana on your own. \
+	Casting this invocation- while focusing- will allow you to regain mana from the leylines themselves. \
+	Do not that this is a finnicky way of regaining mana, and you risk overloading if done improperly."
+
+	category = SPELLBOOK_CATEGORY_MISC
+
+	our_action_typepath = /datum/action/cooldown/spell/leyline_charge */ // disabled because leylines are weird
+
+/datum/spellbook_item/spell/meditate
+	name = "Magic Meditation"
+	description = "Use mental focus to draw mana within yourself"
+	lore = "The most basic method of regenerating mana on your own. \
+	Casting this invocation- while focusing- will allow you to draw mana from the ambient environment. \
+	Do note that this will take a while between casts, and you should still find other methods of regeneration."
+
+	category = SPELLBOOK_CATEGORY_MISC
+
+	our_action_typepath = /datum/action/cooldown/spell/meditate
