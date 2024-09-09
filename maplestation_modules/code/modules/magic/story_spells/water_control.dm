@@ -48,13 +48,13 @@
 	AddComponent(/datum/component/uses_mana/spell, \
 		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
-		mana_consumed = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		attunements = attunements, \
 	)
 	wetness_pool = new(water_units_applied * ((1 + 2 * aoe_range) ** 2))
 	wetness_pool.add_reagent(water_type, INFINITY)
 
-/datum/action/cooldown/spell/pointed/soft_and_wet/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+/datum/action/cooldown/spell/pointed/soft_and_wet/proc/get_mana_consumed(atom/caster, datum/spell, atom/cast_on)
 	var/turf/open/cast_turf = get_turf(cast_on)
 	if(SEND_SIGNAL(cast_turf, COMSIG_TURF_IS_WET) || wetness_pool.total_volume >= wetness_pool.maximum_volume)
 		return wetness_pool.maximum_volume * wet_cost_per_unit

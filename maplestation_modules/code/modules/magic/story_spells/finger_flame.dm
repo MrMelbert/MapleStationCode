@@ -87,16 +87,17 @@
 	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
 	attunements[MAGIC_ELEMENT_FIRE] += FINGERFLAME_ATTUNEMENT_FIRE
 
-	AddComponent(/datum/component/uses_mana/touch_spell/, \
-		post_use_comsig = COMSIG_SPELL_AFTER_CAST, \
-		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+	AddComponent(/datum/component/uses_mana/, \
 		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		post_use_comsig = COMSIG_SPELL_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
 		attunements = attunements, \
 	)
 	desc += " Costs mana to conjure, but is free to maintain."
 
-/datum/action/cooldown/spell/touch/finger_flame/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+/datum/action/cooldown/spell/touch/finger_flame/proc/get_mana_consumed(atom/caster, datum/spell, atom/cast_on, ...)
 	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (mana_cost) : 0
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard

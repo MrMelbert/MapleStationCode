@@ -73,9 +73,9 @@
 
 // TODO: Do I need the vararg?
 /// Should return the numerical value of mana needed to use whatever it is we're using. Unaffected by attunements.
-/datum/component/uses_mana/proc/get_mana_required() // Get the mana required to cast the spell.
+/datum/component/uses_mana/proc/get_mana_required(atom/caster, ...) // Get the mana required to cast the spell.
 	if (!isnull(get_mana_required_callback))
-		return get_mana_required_callback?.Invoke()
+		return get_mana_required_callback?.Invoke(arglist(args))
 
 	var/required = 0
 
@@ -85,10 +85,10 @@
 		return stack_trace("Both the Callback and value for mana required is null!")
 	return required
 
-/datum/component/uses_mana/proc/get_mana_consumed() // Get the actual value subtracted/drained
+/datum/component/uses_mana/proc/get_mana_consumed(...) // this should be phased out by now
 	if (!isnull(get_mana_consumed_callback))
 		return get_mana_consumed_callback?.Invoke()
-	var/consumed = get_mana_required()
+	var/consumed = get_mana_required(args)
 
 	var/datum/user = get_parent_user()
 	if (!isnull(user))
@@ -111,11 +111,11 @@
 
 
 /// Should return TRUE if the total adjusted mana of all mana pools surpasses get_mana_required(). FALSE otherwise.
-/datum/component/uses_mana/proc/is_mana_sufficient(...)
+/datum/component/uses_mana/proc/is_mana_sufficient(atom/movable/user, ...)
 	var/total_effective_mana = 0
 	var/list/datum/mana_pool/provided_mana = get_mana_to_use()
-	var/required_mana = get_mana_required()
-	var/atom/caster = args[1]
+	var/required_mana = get_mana_required(arglist(args))
+	var/atom/caster = user
 
 
 	for (var/datum/mana_pool/iterated_pool as anything in provided_mana)
@@ -126,13 +126,13 @@
 		return FALSE
 
 /// The primary proc we will use for draining mana to simulate it being consumed to power our actions.
-/datum/component/uses_mana/proc/drain_mana()
+/datum/component/uses_mana/proc/drain_mana(...)
 
 	var/mob/user = get_user_callback?.Invoke()
 
-	var/mana_consumed = -get_mana_consumed()
-	if (!mana_consumed)
-		stack_trace("mana_consumed after get_mana_consumed is null!")
+	var/mana_consumed = -get_mana_required(arglist(args))
+	if (isnull(mana_consumed))
+		stack_trace("mana_consumed after get_mana_required is null!")
 		return
 
 	var/datum/mana_pool/pool = parent.get_mana()
@@ -148,7 +148,7 @@
 /// activate the behavior that "uses mana".
 /datum/component/uses_mana/proc/can_activate(...)
 	SIGNAL_HANDLER
-	return is_mana_sufficient(get_parent_user())
+	return is_mana_sufficient(arglist(list(get_parent_user()) + args))
 
 /// Wrapper for can_activate(). Should return a bitflag that will be passed down to the signal sender on failure.
 /datum/component/uses_mana/proc/can_activate_with_feedback(...)
@@ -174,7 +174,7 @@
 /datum/component/uses_mana/proc/react_to_successful_use(...)
 	SIGNAL_HANDLER
 
-	drain_mana()
+	drain_mana(arglist(list(get_parent_user()) + args))
 
 	return
 

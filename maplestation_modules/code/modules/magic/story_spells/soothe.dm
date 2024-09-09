@@ -38,7 +38,7 @@
 		attunements = attunements, \
 	)
 
-/datum/action/cooldown/spell/pointed/soothe_target/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+/datum/action/cooldown/spell/pointed/soothe_target/proc/get_mana_consumed(atom/caster, datum/spell, atom/cast_on)
 	var/final_cost = mana_cost
 	var/mob/living/living_cast_on = cast_on
 	if(!isnull(living_cast_on.mind))

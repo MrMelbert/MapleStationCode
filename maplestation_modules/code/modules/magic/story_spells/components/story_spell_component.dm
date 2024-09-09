@@ -13,6 +13,7 @@
 	datum/callback/mana_required,
 	list/datum/attunement/attunements
 	)
+
 	. = ..()
 
 	if (!istype(parent, /datum/action/cooldown/spell))

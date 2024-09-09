@@ -13,24 +13,29 @@
 
 /datum/component/uses_mana/touch_spell/Initialize(
 	datum/callback/activate_check_failure_callback,
+	datum/callback/get_user_callback,
 	pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST,
 	pre_use_check_comsig,
 	post_use_comsig = COMSIG_SPELL_TOUCH_HAND_HIT,
 	datum/callback/mana_required,
-	datum/callback/get_mana_consumed_callback,
-	datum/callback/get_user_callback,
-	list/datum/attunement/attunements)
+	list/datum/attunement/attunements
+	)
+
+	..()
+
 	if (!istype(parent, /datum/action/cooldown/spell/touch))
 		return COMPONENT_INCOMPATIBLE
 
-	return ..()
+
 
 /datum/component/uses_mana/touch_spell/RegisterWithParent()
+	..()
 //	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
 	RegisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT, PROC_REF(can_touch))
 //	RegisterSignal(parent, COMSIG_SPELL_TOUCH_HAND_HIT, PROC_REF(handle_touch))
 
 /datum/component/uses_mana/touch_spell/UnregisterFromParent()
+	..()
 //	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
 	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT)
 //	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_HAND_HIT)

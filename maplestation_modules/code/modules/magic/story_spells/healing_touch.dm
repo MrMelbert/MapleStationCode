@@ -50,7 +50,7 @@
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
 		)
-/datum/action/cooldown/spell/touch/healing_touch/proc/get_mana_consumed(atom/caster, atom/cast_on, ...)
+/datum/action/cooldown/spell/touch/healing_touch/proc/get_mana_consumed(atom/caster, datum/spell, atom/cast_on)
 	return (brute_heal + burn_heal + tox_heal + oxy_heal + pain_heal * 3) \
 		* mana_cost
 
