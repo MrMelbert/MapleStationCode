@@ -138,6 +138,7 @@
 	if(isnull(owner.client))
 		return
 
+/*
 	if(owner.stat == SOFT_CRIT)
 		if(beat != BEAT_SLOW)
 			beat = BEAT_SLOW
@@ -151,6 +152,7 @@
 	else if(beat != BEAT_NONE)
 		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
 		beat = BEAT_NONE
+*/
 
 /obj/item/organ/internal/heart/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantheart

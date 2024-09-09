@@ -374,7 +374,7 @@
 	// Attacks with a wound bonus add additional pain (usually, like 4-10)
 	// (Note that if they also succeed in applying a wound, more pain comes from that)
 	// Also, sharp attacks apply a smidge extra pain
-	var/pain = ((2.5 * damage) + (0.2 * max(wound_bonus + bare_wound_bonus, 0))) * (sharpness ? 1.2 : 1)
+	var/pain = ((1.5 * damage) + (0.2 * max(wound_bonus + bare_wound_bonus - parent.getarmor(def_zone, WOUND), 0))) * (sharpness ? 1.2 : 1)
 	switch(damagetype)
 		// Brute pain is dealt to the target zone
 		// pain is just divided by a random number, for variance
@@ -525,9 +525,11 @@
 	var/shock_mod = max(pain_modifier, 0.33)
 	if(HAS_TRAIT(parent, TRAIT_ABATES_SHOCK))
 		shock_mod *= 0.5
-	if(parent.health <= parent.maxHealth * -2)
+	if(parent.health > 0)
+		shock_mod *= 0.25
+	if(parent.health <= parent.maxHealth * -2 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_BAD))
 		shock_mod *= 1.5
-	if(parent.health <= parent.maxHealth * -4)
+	if(parent.health <= parent.maxHealth * -4 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_SURVIVE))
 		shock_mod *= 2 // stacks with above
 	var/curr_pain = get_total_pain()
 	if(curr_pain < PAIN_LIMB_MAX * 0.5)
@@ -535,7 +537,7 @@
 	else if(curr_pain < PAIN_LIMB_MAX)
 		parent.adjust_pain_shock(-1 * seconds_per_tick)
 	else if(curr_pain < PAIN_LIMB_MAX * 2)
-		if(shock_buildup <= 30 || parent.consciousness <= 60)
+		if(shock_buildup <= 30 || parent.consciousness <= 50)
 			parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
 	else if(curr_pain < PAIN_LIMB_MAX * 4)
 		parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
@@ -553,7 +555,7 @@
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_bolddanger(pick("It hurts.", "You really need some painkillers.")))
 			if(SPT_PROB(4, seconds_per_tick))
-				do_pain_message(span_warning("You feel cold!"))
+				do_pain_message(span_warning(pick("You feel cold!", "You feel sweaty!")))
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_bodytemperature(-10 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 5)
 		if(120 to 180)
@@ -564,17 +566,19 @@
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_bodytemperature(-20 * seconds_per_tick, parent.get_body_temp_cold_damage_limit() - 20)
 
-	if((shock_buildup >= 20 || curr_pain >= PAIN_LIMB_MAX * 2) && !just_cant_feel_anything)
-		if(SPT_PROB(shock_buildup / 5, seconds_per_tick))
+	if((shock_buildup >= 20 || curr_pain >= PAIN_LIMB_MAX) && !just_cant_feel_anything)
+		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
 			parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(shock_buildup / 10, seconds_per_tick))
+		if(SPT_PROB(min(curr_pain / 10, 12), seconds_per_tick))
 			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
-		if(SPT_PROB(shock_buildup / 20, seconds_per_tick)) // pain applies its own stutter
+		if(SPT_PROB(min(curr_pain / 20, 6), seconds_per_tick)) // pain applies its own stutter
 			parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
-	if(shock_buildup >= 60)
-		if(SPT_PROB(shock_buildup / 60, seconds_per_tick) && parent.consciousness > 30)
+	if(shock_buildup >= 40 && parent.stat != HARD_CRIT)
+		if(SPT_PROB(shock_buildup / 60, seconds_per_tick))
 			parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
+
+	if(shock_buildup >= 60 || curr_pain >= PAIN_CHEST_MAX)
 		if(SPT_PROB(shock_buildup / 20, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent]'s body falls limp!"),
@@ -584,7 +588,7 @@
 		if(SPT_PROB(shock_buildup / 20, seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
-	if(shock_buildup >= 120 && SPT_PROB(4, seconds_per_tick) && parent.stat != HARD_CRIT)
+	if((shock_buildup >= 120 || curr_pain >= PAIN_CHEST_MAX * 2) && SPT_PROB(shock_buildup / 40, seconds_per_tick) && parent.stat != HARD_CRIT)
 		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
@@ -634,13 +638,14 @@
 			set_pain_modifier(PAINSHOCK, 1.2)
 			parent.add_max_consciousness_value(PAINSHOCK, 60)
 			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
+			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+
 	else
 		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
-			REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
-			REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, PAINSHOCK)
 			unset_pain_modifier(PAINSHOCK)
 			parent.remove_max_consciousness_value(PAINSHOCK)
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
+			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock
 	if(curr_pain >= PAIN_LIMB_MAX * 3 || shock_buildup >= 150)
@@ -652,6 +657,12 @@
 				parent.visible_message(
 					span_warning("[parent] collapses!"),
 					span_userdanger("You collapse, unable to stand!"),
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
+			else
+				parent.visible_message(
+					span_warning("[parent] slumps against the ground!"),
+					span_userdanger("You go limp, unable to get up!"),
 					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 				)
 
@@ -889,9 +900,9 @@
 	unset_pain_modifier(PAINSHOCK)
 	parent.remove_max_consciousness_value(PAINSHOCK)
 	parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
-	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINCRIT)
-	REMOVE_TRAIT(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
-	REMOVE_TRAIT(parent, TRAIT_LABOURED_BREATHING, PAINSHOCK)
+	parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+	parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+
 
 /// Determines if we should be processing or not.
 /datum/pain/proc/on_parent_statchance(...)

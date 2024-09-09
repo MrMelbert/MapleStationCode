@@ -94,6 +94,10 @@
 	breather.remove_status_effect(/datum/status_effect/grouped/anesthetic, name)
 
 // Saline glucose helps shock
+/datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	affected_mob.adjust_pain_shock(-0.2 * REM * seconds_per_tick)
+
 /datum/reagent/medicine/salglu_solution/on_mob_metabolize(mob/living/carbon/M)
 	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)
