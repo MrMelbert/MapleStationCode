@@ -116,12 +116,12 @@
 
 /obj/projectile/bullet/godslayer/proc/fire_warp()
 	sleep(35)
-	if(marked_target == null || QDELETED(marked_target))
+	if(marked_target == null || QDELETED(marked_target) || QDELETED(firer))
 		return
 	playsound(firer, warp_sound, 100, extrarange = 10)
 	sleep(25)
 
-	if(marked_target != null && !QDELETED(marked_target))
+	if(marked_target != null && !QDELETED(marked_target) && !QDELETED(firer))
 		var/obj/projectile/A = new /obj/projectile/bullet/supergodslayer(get_turf(firer))
 		A.preparePixelProjectile(marked_target, get_turf(firer))
 		A.firer = firer
