@@ -596,29 +596,29 @@
 		return
 
 	face_atom(examinify)
-	var/list/result
+	var/result_combined
 	if(client)
 		LAZYINITLIST(client.recent_examines)
-		var/ref_to_atom = ref(examinify)
+		var/ref_to_atom = REF(examinify)
 		var/examine_time = client.recent_examines[ref_to_atom]
 		if(examine_time && (world.time - examine_time < EXAMINE_MORE_WINDOW))
-			result = examinify.examine_more(src)
+			var/list/result = examinify.examine_more(src)
 			if(!length(result))
 				result += span_notice("<i>You examine [examinify] closer, but find nothing of interest...</i>")
+			result_combined = jointext(result, "<br>")
+
 		else
-			result = examinify.examine(src)
-			SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
 			client.recent_examines[ref_to_atom] = world.time // set to when we last normal examine'd them
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), ref_to_atom), RECENT_EXAMINE_MAX_WINDOW)
 			handle_eye_contact(examinify)
-	else
-		result = examinify.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
 
-	if(result.len)
-		for(var/i in 1 to (length(result) - 1))
-			result[i] += "\n"
+	if(!result_combined)
+		var/list/result = examinify.examine(src)
+		var/atom_title = examinify.examine_title(src, thats = TRUE)
+		SEND_SIGNAL(src, COMSIG_MOB_EXAMINING, examinify, result)
+		result_combined = (atom_title ? "[span_slightly_larger(separator_hr("[atom_title]."))]" : "") + jointext(result, "<br>")
 
-	to_chat(src, examine_block("<span class='infoplain'>[result.Join()]</span>"))
+	to_chat(src, examine_block(span_infoplain(result_combined)))
 	SEND_SIGNAL(src, COMSIG_MOB_EXAMINATE, examinify)
 
 /mob/proc/blind_examine_check(atom/examined_thing)
