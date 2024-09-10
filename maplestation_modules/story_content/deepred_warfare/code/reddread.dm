@@ -192,6 +192,10 @@
 
 	update_base_stats() // This proc basically makes everything else redundant.
 
+	shielding_level = 0
+	updating_shield(0)
+	// Maybe fixes the EMP thing.
+
 /datum/hud/dextrous/dreadnought/New(mob/owner)
 	..()
 	var/atom/movable/screen/inventory/inv_box
@@ -468,7 +472,7 @@
 	desc = "A terrifying robotic multi-limbed monstrosity, covered in armour plating. By looking at their face, you are staring down almost a dozen barrels."
 
 /mob/living/basic/redtechdread/emp_reaction(severity)
-	if(EMP_PROTECT_SELF)
+	if(EMP_PROTECT_SELF && shielding_level > 0)
 		playsound(src, 'sound/mecha/mech_shield_deflect.ogg', 120)
 		src.visible_message(span_warning("[src]'s shield absorbs the EMP!"))
 		new /obj/effect/temp_visual/faraday/emp(get_turf(src))
