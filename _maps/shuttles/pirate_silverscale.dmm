@@ -509,7 +509,7 @@
 /turf/open/floor/pod/dark,
 /area/shuttle/pirate)
 "CW" = (
-/obj/machinery/vending/boozeomat/all_access{
+/obj/machinery/vending/boozeomat{
 	onstation = 0
 	},
 /turf/open/floor/iron/dark/textured,
@@ -924,7 +924,7 @@
 /turf/open/floor/carpet/royalblack,
 /area/shuttle/pirate)
 "XB" = (
-/obj/machinery/vending/boozeomat/all_access{
+/obj/machinery/vending/boozeomat{
 	onstation = 0
 	},
 /obj/machinery/light/small/directional/south,

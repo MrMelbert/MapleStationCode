@@ -15983,7 +15983,7 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/fore)
 "eGX" = (
-/obj/machinery/vending/boozeomat/all_access,
+/obj/machinery/vending/boozeomat,
 /turf/closed/wall,
 /area/station/maintenance/port/aft)
 "eHe" = (
@@ -24745,7 +24745,7 @@
 "hul" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /obj/machinery/status_display/evac/directional/north,
-/obj/machinery/vending/autodrobe/all_access,
+/obj/machinery/vending/autodrobe,
 /turf/open/floor/iron,
 /area/station/commons/locker)
 "huB" = (
@@ -34516,8 +34516,8 @@
 /turf/open/floor/iron/dark/telecomms,
 /area/station/tcommsat/server)
 "krV" = (
-/obj/machinery/vending/autodrobe/all_access,
 /obj/structure/window/reinforced/spawner/directional/west,
+/obj/machinery/vending/autodrobe,
 /turf/open/floor/iron/dark/textured,
 /area/station/security/prison)
 "krW" = (
