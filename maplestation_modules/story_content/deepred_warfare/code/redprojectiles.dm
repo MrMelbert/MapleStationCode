@@ -75,7 +75,7 @@
 	catastropic_dismemberment = TRUE
 	parried = TRUE
 
-	projectile_piercing = PASSMOB|PASSVEHICLE
+	projectile_piercing = PASSTABLE|PASSGLASS|PASSGRILLE|PASSBLOB|PASSMOB|PASSMACHINE|PASSSTRUCTURE|PASSFLAPS|PASSDOORS|PASSVEHICLE
 
 	muzzle_type = /obj/effect/projectile/muzzle/godslayer
 	tracer_type = /obj/effect/projectile/tracer/godslayer

@@ -1,5 +1,5 @@
 /obj/item/starblight_soot
-	name = "sealed soot jar"
+	name = "starblight soot jar"
 	desc = "A small jar filled with a fine, sparkling purple powder. It's sealed tight, and the label reads Starblight. The jar's glass just the faintest tinted blue and feels heavy in your hand."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
@@ -12,6 +12,9 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
+/obj/item/starblight_soot/alias
+	name = "sealed soot jar"
 
 /obj/item/suspicious_scrap
 	name = "suspicious scrap"
@@ -34,7 +37,7 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/card.ogg'
 
 /obj/item/ammo_casing/shotgun/godslayer
-	name = "annihilator round"
+	name = "godslayer round"
 	desc = "A strange 12 gauge slug made of an unknown alloy. It's heavy and seems to be humming with energy. You feel that shooting this would be a really bad idea."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/curios.dmi'
 	icon_state = "godslayer"
@@ -43,6 +46,9 @@
 	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg'
 
 	var/obj/item/gun/fired_record
+
+/obj/item/ammo_casing/shotgun/godslayer/alias
+	name = "annhilator round"
 
 /obj/item/ammo_casing/shotgun/godslayer/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
 	if(isgun(fired_from))
@@ -77,8 +83,11 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/ammobox.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
 
+/obj/item/redtech_nan_sample/alias
+	name = "redtech nanite sample"
+
 /obj/item/throwing_star/needle
-	name = "throwing needle"
+	name = "persuasion needle"
 	desc = "A large, sharp needle designed for persuasion. It has a small, intricate yin-yang design etched into the side."
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
@@ -91,6 +100,9 @@
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	drop_sound = 'maplestation_modules/sound/items/drop/knife_big.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/knife_big.ogg'
+
+/obj/item/throwing_star/needle/alias
+	name = "throwing needle"
 
 /obj/item/yin_yang_orb
 	name = "intricate orb"
@@ -110,6 +122,9 @@
 
 	drop_sound = 'maplestation_modules/sound/items/drop/glass_small.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
+
+/obj/item/yin_yang_orb/alias
+	name = "yin-yang orb"
 
 /obj/item/yin_yang_orb/Initialize(mapload)
 	. = ..()
