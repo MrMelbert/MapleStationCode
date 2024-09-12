@@ -132,10 +132,8 @@
 
 /obj/item/inducer/interact_with_atom(atom/movable/interacting_with, mob/living/user, list/modifiers)
 	. = NONE
-	#define TRAIT_COMBAT_MODE_SKIP_INTERACTION "combat_mode_skip_interaction" // Non-module change start : don't have this yet
 	if(HAS_TRAIT(interacting_with, TRAIT_COMBAT_MODE_SKIP_INTERACTION))
 		return
-	#undef TRAIT_COMBAT_MODE_SKIP_INTERACTION
 	if(user.combat_mode || !istype(interacting_with) || interacting_with.flags_1 & HOLOGRAM_1)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
