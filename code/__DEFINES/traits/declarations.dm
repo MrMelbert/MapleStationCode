@@ -234,6 +234,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PROFOUND_FISHER "profound_fisher"
 /// If an atom has this trait, then you can toss a bottle with a message in it.
 #define TRAIT_MESSAGE_IN_A_BOTTLE_LOCATION "message_in_a_bottle_location"
+/// Stops other objects of the same type from being inserted inside the same aquarium it's in.
+#define TRAIT_UNIQUE_AQUARIUM_CONTENT "unique_aquarium_content"
 
 /// Trait that says you're shaded by something (ie partially in the dark)
 #define TRAIT_SHADED "shaded"
