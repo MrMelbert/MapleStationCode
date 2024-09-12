@@ -128,36 +128,40 @@
 /datum/wound/blunt/bone/proc/attack_with_hurt_hand(datum/source, atom/target, proximity)
 	SIGNAL_HANDLER
 
-	if(victim.get_active_hand() != limb || !proximity || !victim.combat_mode || !ismob(target) || severity <= WOUND_SEVERITY_MODERATE)
+	if(!proximity || severity <= WOUND_SEVERITY_MODERATE)
 		return NONE
-	if(!victim.can_feel_pain())
+	if(limb.body_zone != BODY_ZONE_CHEST && victim.get_active_hand() != limb)
 		return NONE
-	if(victim.has_status_effect(/datum/status_effect/determined))
+	var/weapon = victim.get_active_held_item()
+	if(!weapon && (victim.combat_mode || !ismob(target)))
 		return NONE
 
 	// With a severe or critical wound, you have a 15% or 30% chance to proc pain on hit
-	if(prob((severity - 1) * 15))
-		// And you have a 70% or 50% chance to actually land the blow, respectively
-		if(prob(70 - 20 * (severity - 1)))
-			to_chat(victim, span_userdanger("The fracture in your [limb.plaintext_zone] shoots with pain as you strike [target]!"))
-			victim.sharp_pain(limb.body_zone, 8, BRUTE, 20 SECONDS, 0.5)
-		else
-			victim.visible_message(
-				span_danger("[victim] weakly strikes [target] with [victim.p_their()] broken [limb.plaintext_zone], recoiling from pain!"),
-				span_userdanger("You [victim.get_active_held_item() ? "weakly" : "fail"] to strike [target] as the fracture in your [limb.plaintext_zone] lights up in unbearable pain!"),
-				vision_distance = COMBAT_MESSAGE_RANGE,
-				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-			)
-			victim.Stun(0.5 SECONDS)
-			victim.sharp_pain(limb.body_zone, 10, BRUTE, 20 SECONDS, 0.5)
-			return COMPONENT_CANCEL_ATTACK_CHAIN
+	if(!prob((severity - 1) * 15))
+		return NONE
 
-	return NONE
+	var/painless = !victim.can_feel_pain() || victim.has_status_effect(/datum/status_effect/determined)
+	// And you have a 70% or 50% chance to actually land the blow, respectively
+	if(prob(70 - 20 * (severity - 1)))
+		to_chat(victim, span_userdanger("The fracture in your [limb.plaintext_zone] [painless ? "jostles uncomfortably" : "shoots with pain"] as you strike [target]!"))
+		victim.apply_damage(8, BRUTE, limb)
+		return NONE
+
+	victim.visible_message(
+		span_danger("[victim] weakly strikes [target] with [victim.p_their()] broken [limb.plaintext_zone], recoiling from pain!"),
+		span_userdanger("You [weapon ? "weakly" : "fail"] to strike [target] as the fracture in your [limb.plaintext_zone] [painless ? "jostles uncomfortably" : "lights up in unbearable pain"]!"),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
+	victim.Stun(0.5 SECONDS)
+	victim.apply_damage(10, BRUTE, limb)
+	victim.pain_emote(pick("wince", "grimace", "flinch"))
+	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/wound/blunt/bone/proc/weapon_attack_with_hurt_hand(datum/source, mob/target, mob/user, params)
 	SIGNAL_HANDLER
 
-	attack_with_hurt_hand(source, target, TRUE)
+	return attack_with_hurt_hand(source, target, TRUE)
 
 /datum/wound/blunt/bone/proc/carbon_step(datum/source)
 	SIGNAL_HANDLER
@@ -398,7 +402,7 @@
 	if(prob(65))
 		user.visible_message(span_danger("[user] snaps [victim]'s dislocated [limb.plaintext_zone] back into place!"), span_notice("You snap [victim]'s dislocated [limb.plaintext_zone] back into place!"), ignored_mobs=victim)
 		to_chat(victim, span_userdanger("[user] snaps your dislocated [limb.plaintext_zone] back into place!"))
-		victim.emote("scream")
+		victim.pain_emote("scream")
 		victim.apply_damage(20, BRUTE, limb, wound_bonus = CANT_WOUND)
 		qdel(src)
 	else
@@ -417,7 +421,7 @@
 	if(prob(65))
 		user.visible_message(span_danger("[user] snaps [victim]'s dislocated [limb.plaintext_zone] with a sickening crack!"), span_danger("You snap [victim]'s dislocated [limb.plaintext_zone] with a sickening crack!"), ignored_mobs=victim)
 		to_chat(victim, span_userdanger("[user] snaps your dislocated [limb.plaintext_zone] with a sickening crack!"))
-		victim.emote("scream")
+		victim.pain_emote("scream")
 		victim.apply_damage(25, BRUTE, limb, wound_bonus = 30)
 	else
 		user.visible_message(span_danger("[user] wrenches [victim]'s dislocated [limb.plaintext_zone] around painfully!"), span_danger("You wrench [victim]'s dislocated [limb.plaintext_zone] around painfully!"), ignored_mobs=victim)
@@ -448,7 +452,7 @@
 		user.visible_message(span_danger("[user] finishes resetting [victim]'s [limb.plaintext_zone]!"), span_nicegreen("You finish resetting [victim]'s [limb.plaintext_zone]!"), ignored_mobs=victim)
 		to_chat(victim, span_userdanger("[user] resets your [limb.plaintext_zone]!"))
 
-	victim.emote("scream")
+	victim.pain_emote("scream")
 	qdel(src)
 
 /*
@@ -557,7 +561,7 @@
 		return TRUE
 
 	I.use(1)
-	victim.emote("scream")
+	victim.pain_emote("scream")
 	if(user != victim)
 		user.visible_message(span_notice("[user] finishes applying [I] to [victim]'s [limb.plaintext_zone], emitting a fizzing noise!"), span_notice("You finish applying [I] to [victim]'s [limb.plaintext_zone]!"), ignored_mobs=victim)
 		to_chat(victim, span_userdanger("[user] finishes applying [I] to your [limb.plaintext_zone], and you can feel the bones exploding with pain as they begin melting and reforming!"))

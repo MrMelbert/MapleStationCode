@@ -289,13 +289,6 @@
 			testing("PAIN DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
 #endif
 
-	if(amount >= 10)
-		parent.flash_pain_overlay(amount >= 20 ? 2 : 1)
-	if(amount >= 12 && prob(25))
-		do_pain_emote("scream", 5 SECONDS)
-	else if(amount >= 6 && prob(10))
-		do_pain_emote()
-
 	return TRUE
 
 /**
@@ -333,6 +326,14 @@
 	refresh_pain_attributes()
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, dam_type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
+	if(amount > PAIN_LIMB_MAX * 0.25)
+		parent.pain_emote("scream", 5 SECONDS)
+		parent.flash_pain_overlay(2)
+
+	else if(amount > PAIN_LIMB_MAX * 0.1)
+		parent.pain_emote(pick("wince", "gasp", "grimace", "inhale_s", "exhale_s", "flinch"), 3 SECONDS)
+		parent.flash_pain_overlay(1)
+
 
 /**
  * Called when pain is lost, if the mob did not lose pain in the last 60 seconds.
@@ -374,20 +375,20 @@
 	// Attacks with a wound bonus add additional pain (usually, like 4-10)
 	// (Note that if they also succeed in applying a wound, more pain comes from that)
 	// Also, sharp attacks apply a smidge extra pain
-	var/pain = ((1.5 * damage) + (0.2 * max(wound_bonus + bare_wound_bonus - parent.getarmor(def_zone, WOUND), 0))) * (sharpness ? 1.2 : 1)
+	var/pain = ((100 - blocked) / 100) * ((10 * damage) ** 0.66 + (0.2 * max(wound_bonus + bare_wound_bonus - parent.getarmor(def_zone, WOUND), 0))) * (sharpness ? 1.2 : 1)
 	switch(damagetype)
 		// Brute pain is dealt to the target zone
 		// pain is just divided by a random number, for variance
 		if(BRUTE)
-			pain *= (rand(60, 80) / 100)
+			pain *= pick(0.6, 0.7, 0.8)
 
 		// Burn pain is dealt to the target zone
 		// pain is lower for weaker burns, but scales up for more damaging burns
 		if(BURN)
 			switch(damage)
-				if(1 to 10)
+				if(1 to 9)
 					pain *= 0.25
-				if(10 to 20)
+				if(10 to 19)
 					pain *= 0.5
 				if(20 to INFINITY)
 					pain *= 0.75
@@ -436,7 +437,7 @@
 				if(66 to INFINITY)
 					pain += 3
 
-		// Oxyloss is painless
+		// Oxyloss is painless. Drift into the void
 		if(OXY)
 			return
 
@@ -576,7 +577,8 @@
 
 	if(shock_buildup >= 40 && parent.stat != HARD_CRIT)
 		if(SPT_PROB(shock_buildup / 60, seconds_per_tick))
-			parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
+			//parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
+			parent.Knockdown(rand(3 SECONDS, 6 SECONDS))
 
 	if(shock_buildup >= 60 || curr_pain >= PAIN_CHEST_MAX)
 		if(SPT_PROB(shock_buildup / 20, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))

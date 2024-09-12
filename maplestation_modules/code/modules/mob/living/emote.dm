@@ -24,3 +24,8 @@
 	key_third_person = "weezes"
 	message = "weezes."
 	stat_allowed = SOFT_CRIT
+
+/datum/emote/living/flinch
+	key = "flinch"
+	key_third_person = "flinches"
+	message = "flinches."

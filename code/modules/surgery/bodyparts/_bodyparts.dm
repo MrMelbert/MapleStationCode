@@ -1115,7 +1115,7 @@
 		aux_emissive.dir = image_dir
 		. += aux_emissive
 	// NON-MODULE CHANGE END
-	
+
 	//No need to handle leg layering if dropped, we only face south anyways
 	if(!dropped && ((body_zone == BODY_ZONE_R_LEG) || (body_zone == BODY_ZONE_L_LEG)))
 		//Legs are a bit goofy in regards to layering, and we will need two images instead of one to fix that
@@ -1393,3 +1393,13 @@
 		return "metal"
 
 	return "error"
+
+/// Returns what message is displayed when the bodypart is on the cusp of being dismembered.
+/obj/item/bodypart/proc/get_soon_dismember_message()
+	return ", threatening to sever it entirely"
+
+/obj/item/bodypart/chest/get_soon_dismember_message()
+	return ", threatening to split it open" // we don't sever, we dump organs when "dismembered"
+
+/obj/item/bodypart/head/get_soon_dismember_message()
+	return ", threatening to split it open" // we don't sever, we cranial fissure when "dismembered" // we also don't dismember i think

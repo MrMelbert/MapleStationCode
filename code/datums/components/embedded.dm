@@ -201,7 +201,7 @@
 	var/damage = weapon.w_class * embed_data.remove_pain_mult * ouch_multiplier
 	victim.apply_damage((1 - embed_data.pain_stam_pct) * damage, BRUTE, limb, sharpness = SHARP_EDGED) //It hurts to rip it out, get surgery you dingus. unlike the others, this CAN wound + increase slash bloodflow
 	victim.apply_damage(embed_data.pain_stam_pct * damage, PAIN, limb)
-	victim.emote("scream")
+	victim.pain_emote("scream")
 
 /// This proc handles the final step and actual removal of an embedded/stuck item from a carbon, whether or not it was actually removed safely.
 /// If you want the thing to go into someone's hands rather than the floor, pass them in to_hands
