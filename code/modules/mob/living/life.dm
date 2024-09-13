@@ -81,25 +81,26 @@
 /mob/living/proc/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
 	if(body_temperature > bodytemp_heat_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 		var/heat_diff = bodytemp_heat_damage_limit - standard_body_temperature
-		var/heat_threshold_low = bodytemp_heat_damage_limit + heat_diff * 0.7
+		var/heat_threshold_low = bodytemp_heat_damage_limit + heat_diff * 0.75
 		var/heat_threshold_medium = bodytemp_heat_damage_limit + heat_diff * 1.25
 		var/heat_threshold_high = bodytemp_heat_damage_limit + heat_diff * 2
 
-		var/firemodifier = round(fire_stacks, 1) * 0.05
+		var/firemodifier = round(fire_stacks, 1) * 0.01
 		if (!on_fire) // We are not on fire, reduce the modifier
 			firemodifier = min(firemodifier, 0) // Note that wetstacks make us take less burn damage
 
-		var/effective_temp = body_temperature * (1 + firemodifier)
+		// convering back and forth so we can apply a multiplier from firestacks without sending temp to the moon
+		var/effective_temp = CELCIUS_TO_KELVIN(KELVIN_TO_CELCIUS(body_temperature) * (1 + firemodifier))
 		var/burn_damage = HEAT_DAMAGE
-		if(body_temperature > heat_threshold_high)
+		if(effective_temp > heat_threshold_high)
 			burn_damage *= 8
-		else if(body_temperature > heat_threshold_medium)
+		else if(effective_temp > heat_threshold_medium)
 			burn_damage *= 4
-		else if(body_temperature > heat_threshold_low)
+		else if(effective_temp > heat_threshold_low)
 			burn_damage *= 2
 
-		temperature_burns(burn_damage * seconds_per_tick, effective_temp, seconds_per_tick)
-		if(body_temperature > heat_threshold_medium)
+		temperature_burns(burn_damage * seconds_per_tick)
+		if(effective_temp > heat_threshold_medium)
 			apply_status_effect(/datum/status_effect/stacking/heat_exposure, 1, heat_threshold_medium)
 
 	// For cold damage, we cap at the threshold if you're dead
@@ -110,14 +111,14 @@
 		var/cold_threshold_high = bodytemp_cold_damage_limit + cold_diff * 2
 
 		var/cold_damage = COLD_DAMAGE
-		if(body_temperature > cold_threshold_low)
-			cold_damage *= 2
-		else if(body_temperature > cold_threshold_medium)
-			cold_damage *= 4
-		else if(body_temperature > cold_threshold_high)
+		if(body_temperature < cold_threshold_high)
 			cold_damage *= 8
+		else if(body_temperature < cold_threshold_medium)
+			cold_damage *= 4
+		else if(body_temperature < cold_threshold_low)
+			cold_damage *= 2
 
-		temperature_cold_damage(cold_damage * seconds_per_tick, seconds_per_tick)
+		temperature_cold_damage(cold_damage * seconds_per_tick)
 
 /// Applies damage to the mob due to being too cold
 /mob/living/proc/temperature_cold_damage(damage)
@@ -128,10 +129,10 @@
 	return ..()
 
 /// Applies damage to the mob due to being too hot
-/mob/living/proc/temperature_burns(damage, effective_temp)
+/mob/living/proc/temperature_burns(damage)
 	return apply_damage(damage, BURN, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 
-/mob/living/carbon/human/temperature_burns(damage, effective_temp)
+/mob/living/carbon/human/temperature_burns(damage)
 	damage *= physiology.heat_mod
 	return ..()
 
@@ -142,9 +143,9 @@
 	var/feels_like = get_skin_temperature()
 
 	var/hot_diff = bodytemp_heat_damage_limit - standard_body_temperature
-	var/hot_threshold_low = standard_body_temperature + hot_diff * 0.2
-	var/hot_threshold_medium = standard_body_temperature + hot_diff * 0.66
-	var/hot_threshold_high = standard_body_temperature + hot_diff * 1.0 // should be the same as bodytemp_heat_damage_limit
+	var/hot_threshold_low = bodytemp_heat_damage_limit - hot_diff * 0.5
+	var/hot_threshold_medium = bodytemp_heat_damage_limit
+	var/hot_threshold_high = bodytemp_heat_damage_limit + hot_diff
 	// Body temperature is too hot, and we do not have resist traits
 	if(feels_like > hot_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 		clear_mood_event("cold")
@@ -162,9 +163,9 @@
 		temp_alerts = TRUE
 
 	var/cold_diff = bodytemp_cold_damage_limit - standard_body_temperature
-	var/cold_threshold_low = standard_body_temperature + cold_diff * 0.2
-	var/cold_threshold_medium = standard_body_temperature + cold_diff * 0.66
-	var/cold_threshold_high = standard_body_temperature + cold_diff * 1.0 // should be the same as bodytemp_cold_damage_limit
+	var/cold_threshold_low = bodytemp_cold_damage_limit - cold_diff * 0.5
+	var/cold_threshold_medium = bodytemp_cold_damage_limit
+	var/cold_threshold_high = bodytemp_cold_damage_limit + cold_diff
 	// Body temperature is too cold, and we do not have resist traits
 	if(feels_like < cold_threshold_low && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 		clear_mood_event("hot")
@@ -190,6 +191,9 @@
 		clear_mood_event("cold")
 		clear_mood_event("hot")
 		temp_alerts = FALSE
+
+/mob/living/silicon/body_temperature_alerts()
+	return // Not yet
 
 /mob/living/proc/handle_mutations(seconds_per_tick, times_fired)
 	return
@@ -232,7 +236,7 @@
 	var/temp_sign = SIGN(temp_delta)
 	var/temp_change =  temp_sign * (1 - (thermal_protection * protection_modifier)) * ((0.1 * max(1, abs(temp_delta))) ** 1.8) * temperature_normalization_speed
 	// Cap increase and decrease
-	temp_change = temp_change < 0 ? max(temp_change, BODYTEMP_COOLING_MAX) : min(temp_change, BODYTEMP_HEATING_MAX)
+	temp_change = temp_change < 0 ? max(temp_change, BODYTEMP_ENVIRONMENT_COOLING_MAX) : min(temp_change, BODYTEMP_ENVIRONMENT_HEATING_MAX)
 	adjust_body_temperature(temp_change * seconds_per_tick) // no use_insulation beacuse we account for it manually
 
 /mob/living/silicon/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
@@ -246,27 +250,26 @@
  * * times_fired: The number of times SSmobs has fired
  */
 /mob/living/proc/temperature_homeostasis(seconds_per_tick, times_fired)
-	if(HAS_TRAIT(src, TRAIT_COLD_BLOODED))
+	if(temperature_homeostasis_speed == 0) // cold blooded creature
 		return
 	if(!HAS_TRAIT(src, TRAIT_NOHUNGER) && nutrition < (NUTRITION_LEVEL_STARVING / 3))
 		return
 
 	// find exactly what temperature we're aiming for
-	var/homeostasis_target
+	var/homeostasis_target = standard_body_temperature
 	if(LAZYLEN(homeostasis_targets))
+		homeostasis_target = 0
 		for(var/source in homeostasis_targets)
 			homeostasis_target += homeostasis_targets[source]
 		homeostasis_target /= LAZYLEN(homeostasis_targets)
-	else
-		homeostasis_target = standard_body_temperature
 
-	// Fun note: Because this scales by metabolism efficiency, being well fed boosts your homeostasis, and being poorly fed reduces it
-	var/natural_change = round((homeostasis_target - body_temperature) * metabolism_efficiency * temperature_homeostasis_speed, 0.01)
+	// temperature delta is capped, so you can't attempt to homeostaize from vacuum to standard temp in a second
+	var/temp_delta = (homeostasis_target - body_temperature)
+	temp_delta = temp_delta < 0 ? max(temp_delta, BODYTEMP_HOMEOSTASIS_COOLING_MAX) : min(temp_delta, BODYTEMP_HOMEOSTASIS_HEATING_MAX)
+	// note: Because this scales by metabolism efficiency, being well fed boosts your homeostasis, and being poorly fed reduces it
+	var/natural_change = temp_delta * metabolism_efficiency * temperature_homeostasis_speed
 	if(natural_change == 0)
 		return
-
-	// Cap increase and decrease (decreasing is harder)
-	natural_change = natural_change < 0 ? max(natural_change, BODYTEMP_COOLING_MAX / 8) : min(natural_change, BODYTEMP_HEATING_MAX / 6)
 
 	var/sigreturn = SEND_SIGNAL(src, COMSIG_LIVING_HOMEOSTASIS, natural_change, seconds_per_tick)
 	if(sigreturn & HOMEOSTASIS_HANDLED)

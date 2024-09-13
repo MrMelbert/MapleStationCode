@@ -90,6 +90,7 @@
 	flags_inv = HIDEJUMPSUIT
 	clothing_flags = THICKMATERIAL
 	resistance_flags = NONE
+	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/eva
 
 /datum/armor/wintercoat_eva

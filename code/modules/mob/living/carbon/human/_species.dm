@@ -130,6 +130,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	/// Modifier to how fast/slow the body normalizes its temperature to the environment.
 	VAR_PROTECTED/temperature_normalization_speed = /mob/living/carbon/human::temperature_normalization_speed
 	/// Modifier to how fast/slow the body normalizes its temperature to standard temp
+	/// Note this affects how much nutrition is consumed to maintain body temperature (more homeostais = more nutrition) so be careful
 	VAR_PROTECTED/temperature_homeostasis_speed = /mob/living/carbon/human::temperature_homeostasis_speed
 	/// The body temperature limit the body can take before it starts taking damage from heat.
 	VAR_PROTECTED/bodytemp_heat_damage_limit = /mob/living/carbon/human::bodytemp_heat_damage_limit

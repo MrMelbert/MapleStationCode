@@ -31,10 +31,13 @@
 	species_language_holder = /datum/language_holder/lizard
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
+	// Standard body temp doesn't really matter as much since we're cold blooded
+	bodytemp_normal = (BODYTEMP_NORMAL - 5 KELVIN)
 	// Lizards are coldblooded and can stand a greater temperature range than humans
-	bodytemp_normal = (BODYTEMP_NORMAL - 7.5)
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
-	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 10)
+	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 5 KELVIN)
+	// Cold blooded duh
+	temperature_homeostasis_speed = 0
 
 	ass_image = 'icons/ass/asslizard.png'
 
@@ -51,10 +54,9 @@
 
 /datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()
-	// melbert todo : temp / integrate this into the coldblooded trait
 	// if you spawn on station is is expected you have already acclimated to the room temp (20c) (but give a little bit of leeway)
 	if(is_station_level(C.z))
-		C.body_temperature = CELCIUS_TO_KELVIN(22.5 CELCIUS)
+		C.body_temperature = CELCIUS_TO_KELVIN(22 CELCIUS)
 
 /datum/species/lizard/randomize_features()
 	var/list/features = ..()

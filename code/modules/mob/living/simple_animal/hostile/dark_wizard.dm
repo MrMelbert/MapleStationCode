@@ -43,4 +43,4 @@
 	damage = 4
 	damage_type = BURN
 	armor_flag = ENERGY
-	temperature = -100 // closer to the old temp loss
+	temperature = -25 CELCIUS

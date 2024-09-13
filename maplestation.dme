@@ -6125,7 +6125,6 @@
 #include "maplestation_modules\code\datums\pain\pain_reagents\painkiller_related_chems.dm"
 #include "maplestation_modules\code\datums\pain\pain_reagents\painkillers.dm"
 #include "maplestation_modules\code\datums\pain\pain_status_effects\anesthetic.dm"
-#include "maplestation_modules\code\datums\pain\pain_status_effects\fire_pain.dm"
 #include "maplestation_modules\code\datums\pain\pain_status_effects\low_blood_pressure.dm"
 #include "maplestation_modules\code\datums\pain\pain_status_effects\min_pain.dm"
 #include "maplestation_modules\code\datums\pain\pain_status_effects\pain_limp.dm"

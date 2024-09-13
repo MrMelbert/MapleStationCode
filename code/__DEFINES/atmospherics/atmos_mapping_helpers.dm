@@ -10,13 +10,13 @@
 /// breathable air that causes disease
 #define OPENTURF_DIRTY_ATMOS GAS_MIASMA + "=15;" + GAS_O2 + "=88;TEMP=293.15" // T20C
 /// -193,15°C telecommunications. also used for xenobiology slime killrooms
-#define TCOMMS_ATMOS GAS_N2 + "=100;TEMP=80" // CELCIUS_TO_KELVIN(-193.15)
+#define TCOMMS_ATMOS GAS_N2 + "=100;TEMP=231.15" // CELCIUS_TO_KELVIN(-42), but originally CELCIUS_TO_KELVIN(-193.15)
 /// space
 #define AIRLESS_ATMOS "TEMP=2.7" // TCMB
 /// -93.15°C snow and ice turfs
 #define FROZEN_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=180" // CELCIUS_TO_KELVIN(-93.15 CELCIUS)
 /// -14°C snow and ice turfs, a more breatheable coldroom atmos.
-#define COLD_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=259.15" // COLD_ROOM_TEMP
+#define COLD_ATMOS GAS_O2 + "=22;" + GAS_N2 + "=82;TEMP=259.15" // CELCIUS_TO_KELVIN(-14 CELCIUS) or COLD_ROOM_TEMP
 /// -14°C kitchen coldroom, just might loss your tail; higher amount of mol to reach about 101.3 kpA
 #define KITCHEN_COLDROOM_ATMOS GAS_O2 + "=26;" + GAS_N2 + "=97;TEMP=259.15" // COLD_ROOM_TEMP
 /// used in the holodeck burn test program

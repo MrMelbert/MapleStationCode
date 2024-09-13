@@ -87,9 +87,6 @@
 	RegisterSignals(parent, list(COMSIG_LIVING_SET_BODY_POSITION, COMSIG_LIVING_SET_BUCKLED), PROC_REF(check_lying_pain_modifier))
 	RegisterSignals(parent, list(SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS), SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS)), PROC_REF(refresh_pain_attributes))
 
-	if(ishuman(parent))
-		RegisterSignal(parent, COMSIG_HUMAN_BURNING, PROC_REF(on_burn_tick))
-
 /**
  * Unregister all of our signals from our parent when we're done, if we have signals to unregister.
  */
@@ -99,7 +96,6 @@
 		COMSIG_CARBON_GAIN_WOUND,
 		COMSIG_CARBON_LOSE_WOUND,
 		COMSIG_CARBON_REMOVE_LIMB,
-		COMSIG_HUMAN_BURNING,
 		COMSIG_LIVING_HEALTHSCAN,
 		COMSIG_LIVING_POST_FULLY_HEAL,
 		COMSIG_LIVING_SET_BODY_POSITION,
@@ -682,20 +678,6 @@
 		set_pain_modifier(PAIN_MOD_LYING, buckled_lying_modifier)
 	else
 		unset_pain_modifier(PAIN_MOD_LYING)
-
-/**
- * While actively burning, cause pain
- */
-/datum/pain/proc/on_burn_tick(datum/source)
-	SIGNAL_HANDLER
-
-	var/mob/living/carbon/human/human_parent = parent
-	if(human_parent.get_insulation(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)
-		return
-
-	// The more firestacks, the more pain we apply per burn tick, up to 2 per tick per bodypart.
-	// We can be liberal with this because when they're extinguished most of it will go away.
-	parent.apply_status_effect(/datum/status_effect/pain_from_fire, clamp(parent.fire_stacks * 0.2, 0, 2))
 
 /**
  * Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].

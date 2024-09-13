@@ -156,24 +156,10 @@
 /obj/effect/dummy/chameleon/relaymove(mob/living/user, direction)
 	if(!isturf(loc) || isspaceturf(loc) || !direction)
 		return //No magical movement! Trust me, this bad boy can do things like leap out of pipes if you're not careful
-
-	if(can_move < world.time)
-		var/amount
-		switch(user.body_temperature) // melbert todo : temp
-			if(300 to INFINITY)
-				amount = 10
-			if(295 to 300)
-				amount = 13
-			if(280 to 295)
-				amount = 16
-			if(260 to 280)
-				amount = 20
-			else
-				amount = 25
-
-		can_move = world.time + amount
-		try_step_multiz(direction)
-	return
+	if(can_move >= world.time)
+		return
+	can_move = world.time + 2 + (user.cached_multiplicative_slowdown * 4) // Fake movement speed calculating based on the mob's move speed
+	try_step_multiz(direction)
 
 /obj/effect/dummy/chameleon/Destroy()
 	if(master)

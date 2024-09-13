@@ -64,10 +64,19 @@
 #define FAHRENHEIT * 1
 #define KELVIN * 1
 
+// Defines the cap on fast your body normalizes to the environment
+/// Max negative change in temperature during natural body temperature stabilization
+#define BODYTEMP_ENVIRONMENT_COOLING_MAX -30 KELVIN // needs to be relatively high, as otherwise you will make space not deadly
+/// Max positive change in temperature during natural body temperature stabilization
+#define BODYTEMP_ENVIRONMENT_HEATING_MAX 20 KELVIN // should not be too high, as otherwise atmos meme fires will be extremely deadly
+
+// Defines the cap on how fast your body normalizes back to it's normal temperature
+// based on the above defines - you should always normalize at a fraction of the potential of the environment.
+// otherwise, extreme temperatures become jokes
 /// Max change in temperature during natural body temperature stabilization
-#define BODYTEMP_COOLING_MAX -30 KELVIN
+#define BODYTEMP_HOMEOSTASIS_COOLING_MAX (BODYTEMP_ENVIRONMENT_COOLING_MAX / 20)
 /// Max change in temperature during natural body temperature stabilization
-#define BODYTEMP_HEATING_MAX 30 KELVIN
+#define BODYTEMP_HOMEOSTASIS_HEATING_MAX (BODYTEMP_ENVIRONMENT_HEATING_MAX / 16)
 
 // These defines are DEFAULTS for most mobs
 // Mobs can override these to have whatever they want
@@ -77,22 +86,24 @@
 /// The natural temperature for a body
 #define BODYTEMP_NORMAL CELCIUS_TO_KELVIN(37 CELCIUS)
 /// Beyond this point a mob is considered hyperthermic
-#define HYPERTHERMIA (BODYTEMP_NORMAL + 10 CELCIUS)
+#define HYPERTHERMIA (BODYTEMP_NORMAL + 5 CELCIUS)
 /// Beyond this point a mob is considered hypothermic
-#define HYPOTHERMIA (BODYTEMP_NORMAL - 10 CELCIUS)
+#define HYPOTHERMIA (BODYTEMP_NORMAL - 5 CELCIUS)
 
 /// The body temperature limit the human body can take before it starts taking damage from heat.
 /// This also affects how fast the body normalises it's temperature when hot.
-#define BODYTEMP_HEAT_DAMAGE_LIMIT CELCIUS_TO_KELVIN(65 CELCIUS)
+#define BODYTEMP_HEAT_DAMAGE_LIMIT CELCIUS_TO_KELVIN(45 CELCIUS)
 /// The body temperature limit the human body can take before it starts taking damage from cold.
 /// This also affects how fast the body normalises it's temperature when cold.
-#define BODYTEMP_COLD_DAMAGE_LIMIT CELCIUS_TO_KELVIN(-0.5 CELCIUS)
+#define BODYTEMP_COLD_DAMAGE_LIMIT CELCIUS_TO_KELVIN(20 CELCIUS)
 
 /// A temperature limit which is above the maximum lavaland temperature
 #define BODYTEMP_HEAT_LAVALAND_SAFE (LAVALAND_MAX_TEMPERATURE + 5 KELVIN)
 /// A temperature limit which is above the minimum icebox temperature
 #define BODYTEMP_COLD_ICEBOX_SAFE (ICEBOX_MIN_TEMPERATURE - 5 KELVIN)
 
+// These are not actually used by mobs (mobs do math on the above defines)
+// but are used by atmos components to determine what may be a dangerous range
 /// The temperature the red icon is displayed.
 #define BODYTEMP_HEAT_WARNING_3 (BODYTEMP_NORMAL + 23 CELCIUS) // CELCIUS_TO_KELVIN(60 CELCIUS)
 /// The temperature the orange icon is displayed.
@@ -109,12 +120,17 @@
 // Ok defaults over
 
 /// Beyond this body temperature, being on fire will increase body temperature by less and less
-#define BODYTEMP_FIRE_TEMP_SOFTCAP 600 KELVIN
+#define BODYTEMP_FIRE_TEMP_SOFTCAP 500 KELVIN
+
+/// Amount of heating applied per fire stack per tick while on fire
+#define HEAT_PER_FIRE_STACK 0.075 KELVIN
+/// Amount of direct damage applied per fire stack per tick while on fire
+#define BURN_DAMAGE_PER_FIRE_STACK 0.1
 
 /// A warm drink will increase body temperature by this much
-#define WARM_DRINK 0.5 KELVIN
+#define WARM_DRINK 0.25 KELVIN
 /// A cold drink will decrease body temperature by this much
-#define COLD_DRINK -0.5 KELVIN
+#define COLD_DRINK -0.25 KELVIN
 
 /// The modifier on cold damage limit hulks get ontop of their regular limit
 #define BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER 25 KELVIN

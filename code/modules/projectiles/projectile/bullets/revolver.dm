@@ -95,13 +95,13 @@
 	damage = 20
 	ricochets_max = 0
 	/// How cold to chill the target down to
-	var/temperature = HYPOTHERMIA - 2 CELCIUS
+	var/temperature = -8 CELCIUS
 
 /obj/projectile/bullet/c38/iceblox/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
 	if(isliving(target))
 		var/mob/living/M = target
-		M.adjust_body_temperature(0.34 * ((100-blocked) / 100) * (temperature - M.body_temperature), use_insulation = TRUE)
+		M.adjust_body_temperature(temperature * ((100 - blocked) / 100), use_insulation = TRUE)
 
 // .357 (Syndie Revolver)
 

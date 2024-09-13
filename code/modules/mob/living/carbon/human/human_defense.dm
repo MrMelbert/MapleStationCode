@@ -801,17 +801,17 @@
 /mob/living/carbon/human/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
 	var/sigreturn = SEND_SIGNAL(src, COMSIG_HUMAN_BURNING)
 	if(sigreturn & BURNING_HANDLED)
-		return FALSE
+		return 0
 
 	burn_clothing(seconds_per_tick, fire_handler.stacks)
 	if(!(sigreturn & BURNING_SKIP_PROTECTION))
 		if(get_insulation(FIRE_IMMUNITY_MAX_TEMP_PROTECT) >= 0.9)
-			return FALSE
+			return 0
 		if(get_insulation(FIRE_SUIT_MAX_TEMP_PROTECT) >= 0.9)
-			return adjust_body_temperature(0.5 KELVIN * seconds_per_tick)
+			return adjust_body_temperature(HEAT_PER_FIRE_STACK * 0.2 * fire_handler.stacks * seconds_per_tick)
 
 	. = ..()
-	if(.)
+	if(. && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 		add_mood_event("on_fire", /datum/mood_event/on_fire)
 		add_mob_memory(/datum/memory/was_burning)
 	return .

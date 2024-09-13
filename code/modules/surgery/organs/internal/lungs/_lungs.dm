@@ -789,7 +789,7 @@
 			emit_breath_particle(breather, /particles/fog/breath)
 
 	if(breath_temperature > heat_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTHEAT)) // HEAT DAMAGE
-		var/heat_modifier = breather.dna.species.heatmod
+		var/heat_modifier = breather.physiology.heat_mod
 		var/heat_message_prob = 0
 		if(breath_temperature > heat_level_danger_threshold)
 			breather.apply_damage(heat_level_damage * heat_modifier, heat_damage_type, spread_damage = TRUE)

@@ -1783,12 +1783,15 @@ GLOBAL_LIST_EMPTY(fire_appearances)
  * * fire_handler: The fire handler status effect that is managing the fire stacks
  */
 /mob/living/proc/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
-	var/amount_to_heat = 0.25 KELVIN * fire_handler.stacks * seconds_per_tick
+	var/amount_to_heat = HEAT_PER_FIRE_STACK * fire_handler.stacks * seconds_per_tick
+	var/amount_to_burn = BURN_DAMAGE_PER_FIRE_STACK * fire_handler.stacks * seconds_per_tick
 	if(body_temperature > BODYTEMP_FIRE_TEMP_SOFTCAP)
 		// Apply dimishing returns upon temp beyond the soft cap
 		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / body_temperature)
 
-	return adjust_body_temperature(amount_to_heat)
+	var/direct_damage = (HAS_TRAIT(src, TRAIT_RESISTHEAT) || bodytemp_heat_damage_limit == INFINITY) ? 0 : temperature_burns(amount_to_burn)
+	var/temp_change = adjust_body_temperature(amount_to_heat)
+	return temp_change + direct_damage
 
 //Mobs on Fire end
 
