@@ -266,7 +266,7 @@
 			iced.AddElement(/datum/element/frozen)
 
 	for(var/mob/living/freezer in src)
-		if(freezer.body_temperature <= CELCIUS_TO_KELVIN(25 CELCIUS))
+		if(freezer.get_skin_temperature() <= freezer.bodytemp_cold_damage_limit)
 			freezer.apply_status_effect(/datum/status_effect/freon)
 	MakeSlippery(TURF_WET_PERMAFROST, 50)
 	return TRUE

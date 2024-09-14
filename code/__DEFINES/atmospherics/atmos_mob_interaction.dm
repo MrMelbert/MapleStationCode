@@ -133,7 +133,7 @@
 #define COLD_DRINK -0.25 KELVIN
 
 /// The modifier on cold damage limit hulks get ontop of their regular limit
-#define BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER 25 KELVIN
+#define BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER 5 KELVIN
 /// The modifier on cold damage hulks get.
 #define HULK_COLD_DAMAGE_MOD 2
 

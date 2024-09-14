@@ -326,12 +326,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/shower, (-16))
 		if(L.body_temperature >= L.standard_body_temperature - 1 KELVIN)
 			to_chat(L, span_warning("[src] is freezing!"))
 
-		L.adjust_body_temperature(-0.5 KELVIN, min_temp = CELCIUS_TO_KELVIN(30))
+		L.adjust_body_temperature(-0.5 KELVIN, min_temp = CELCIUS_TO_KELVIN(10))
 
 	else if(current_temperature == SHOWER_BOILING)
 		if(L.body_temperature <= L.standard_body_temperature + 1 KELVIN)
 			to_chat(L, span_warning("[src] is [pick("scalding", "searing")]!"))
-		L.adjust_body_temperature(0.5 KELVIN, max_temp = CELCIUS_TO_KELVIN(40))
+		L.adjust_body_temperature(0.5 KELVIN, max_temp = CELCIUS_TO_KELVIN(50))
 		L.apply_damage(6, BURN, spread_damage = TRUE)
 
 
