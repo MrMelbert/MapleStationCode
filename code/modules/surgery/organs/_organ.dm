@@ -317,45 +317,34 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
 /obj/item/organ/proc/get_status_text(advanced, add_tooltips)
 	if(organ_flags & ORGAN_IRRADIATED)
-		. = "<font color='#29b90f'>Irradiated</font>"
-		if(add_tooltips)
-			. = span_tooltip("Replace surgically or use specialty medication, such as [/datum/reagent/medicine/pen_acid::name] or [/datum/reagent/medicine/potass_iodide::name].", .)
-		return .
+		return conditional_tooltip("<font color='#29b90f'>Irradiated</font>", "Replace surgically or use specialty medication, such as [/datum/reagent/medicine/pen_acid::name] or [/datum/reagent/medicine/potass_iodide::name].", add_tooltips)
+
+	if(advanced && (organ_flags & ORGAN_HAZARDOUS))
+		return conditional_tooltip("<font color='#cc3333'>Harmful Foreign Body</font>", "Remove surgically.", add_tooltips)
 
 	if(organ_flags & ORGAN_EMP)
-		. = "<font color='#cc3333'>EMP-Derived Failure</font>"
-		if(add_tooltips)
-			. = span_tooltip("Repair or replace surgically.", .)
-		return .
+		return conditional_tooltip("<font color='#cc3333'>EMP-Derived Failure</font>", "Repair or replace surgically.", add_tooltips)
 
 	var/tech_text = ""
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
 		tech_text = "[round((damage / maxHealth) * 100, 1)]% damaged"
 
 	if(organ_flags & ORGAN_FAILING)
-		. = "<font color='#cc3333'>Non-Functional</font>"
-		if(add_tooltips)
-			. = span_tooltip("Repair or replace surgically.", .)
-		return .
+		return conditional_tooltip("<font color='#cc3333'>[tech_text || "Non-Functional"]</font>", "Repair or replace surgically.", add_tooltips)
 
 	if(owner.has_reagent(/datum/reagent/inverse/technetium))
 		return "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% damaged</font>"
 
 	if(damage > high_threshold)
-		. = "<font color='#ff9933'>Severely Damaged</font>"
-		if(add_tooltips && owner.stat != DEAD)
-			. = span_tooltip("[healing_factor ? "Treat with rest or use specialty medication." : "Repair surgically or use specialty medication."]", .)
-		return .
+		return conditional_tooltip("<font color='#ff9933'>[tech_text || "Severely Damaged"]</font>", "[healing_factor ? "Treat with rest or use specialty medication." : "Repair surgically or use specialty medication."]", add_tooltips && owner.stat != DEAD)
+
 	if(damage > low_threshold)
-		. = "<font color='#ffcc33'>Mildly Damaged</font>"
-		if(add_tooltips && owner.stat != DEAD)
-			. = span_tooltip("[healing_factor ? "Treat with rest." : "Use specialty medication."]", .)
-		return .
+		return conditional_tooltip("<font color='#ffcc33'>[tech_text || "Mildly Damaged"] </font>", "[healing_factor ? "Treat with rest." : "Use specialty medication."]", add_tooltips && owner.stat != DEAD)
 
 	if(tech_text)
-		. = "<font color='#33cc33'>[tech_text]</font>"
+		return "<font color='#33cc33'>[tech_text]</font>"
 
-	return .
+	return ""
 
 /// Determines if this organ is shown when a user has condensed scans enabled
 /obj/item/organ/proc/show_on_condensed_scans()

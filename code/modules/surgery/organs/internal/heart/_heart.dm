@@ -113,6 +113,11 @@
 	if(owner.has_status_effect(/datum/status_effect/determined)) // adrenaline
 		base_amount += 10
 
+/obj/item/organ/internal/heart/get_status_text(advanced, add_tooltips)
+	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
+		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Apply defibrillation immediately. Similar electric shocks may work in emergencies.", add_tooltips)
+	return ..()
+
 	if(owner.has_reagent(/datum/reagent/consumable/coffee)) // funny
 		base_amount += 10
 
