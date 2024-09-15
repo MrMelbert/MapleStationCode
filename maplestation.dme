@@ -6509,6 +6509,7 @@
 #include "maplestation_modules\story_content\armored_corps\code\melee\void_blade.dm"
 #include "maplestation_modules\story_content\armored_corps\code\techweb\all_nodes.dm"
 #include "maplestation_modules\story_content\bartender_equipment\code\barmanvintage.dm"
+#include "maplestation_modules\story_content\bell_equipment\code\bellclothing.dm"
 #include "maplestation_modules\story_content\captain_equipment\code\captainclothing.dm"
 #include "maplestation_modules\story_content\casual_clothing\code\casualclothing.dm"
 #include "maplestation_modules\story_content\chaplain_equipment\code\chaplainclothing.dm"
