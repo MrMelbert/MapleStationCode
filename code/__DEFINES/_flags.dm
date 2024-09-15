@@ -129,6 +129,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define EVENT_PROTECTED (1<<14)
 /// This area does not allow virtual entities to enter.
 #define VIRTUAL_SAFE_AREA (1<<16)
+/// This area prevents fishing from removing unique/limited loot from sources that're also used outside of it.
+#define UNLIMITED_FISHING (1<<19)
 
 /*
 	These defines are used specifically with the atom/pass_flags bitmask
