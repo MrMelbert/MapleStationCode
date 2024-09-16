@@ -146,9 +146,9 @@
 
 	var/obj/item/given = new cane_type()
 	if(side == SIDE_LEFT)
-		. = quirk_holder.put_in_l_hand(given)
+		. = quirk_holder.put_in_r_hand(given) // reversed
 	if(side == SIDE_RIGHT)
-		. = quirk_holder.put_in_r_hand(given)
+		. = quirk_holder.put_in_l_hand(given) // reversed
 	if(!.)
 		. = quirk_holder.put_in_hands(given)
 
