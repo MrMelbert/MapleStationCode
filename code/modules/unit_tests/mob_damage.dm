@@ -249,7 +249,7 @@
 
 	// take 50 brute, 50 burn
 	damage_returned = round(dummy.take_overall_damage(50, 50), 1)
-	TEST_ASSERT_EQUAL(damage_returned, -100, \
+	TEST_ASSERT_EQUAL(damage_returned, 100, \
 		"take_overall_damage() should have returned -100, but returned [damage_returned] instead!")
 
 	if(!verify_damage(dummy, 50, included_types = BRUTELOSS|FIRELOSS))
@@ -258,16 +258,16 @@
 	// testing negative damage amount args with the overall damage procs - the sign should be ignored for these procs
 
 	damage_returned = round(dummy.damage_random_bodypart(-5, BRUTE) + dummy.damage_random_bodypart(-5, BURN), 1)
-	TEST_ASSERT_EQUAL(damage_returned, -10, \
-		"take_bodypart_damage() should have returned -10, but returned [damage_returned] instead!")
+	TEST_ASSERT_EQUAL(damage_returned, 10, \
+		"take_bodypart_damage() should have returned 10, but returned [damage_returned] instead!")
 
 	damage_returned = round(dummy.heal_bodypart_damage(-5, -5), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 10, \
 		"heal_bodypart_damage() should have returned 10, but returned [damage_returned] instead!")
 
 	damage_returned = round(dummy.take_overall_damage(-5, -5), 1)
-	TEST_ASSERT_EQUAL(damage_returned, -10, \
-		"take_overall_damage() should have returned -10, but returned [damage_returned] instead!")
+	TEST_ASSERT_EQUAL(damage_returned, 10, \
+		"take_overall_damage() should have returned 10, but returned [damage_returned] instead!")
 
 	damage_returned = round(dummy.heal_overall_damage(-5, -5), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 10, \
@@ -545,8 +545,8 @@
 
 	// take 50 brute, 50 burn
 	damage_returned = gusgus.take_overall_damage(3, 3)
-	TEST_ASSERT_EQUAL(damage_returned, -6, \
-		"take_overall_damage() should have returned -6, but returned [damage_returned] instead!")
+	TEST_ASSERT_EQUAL(damage_returned, 6, \
+		"take_overall_damage() should have returned 6, but returned [damage_returned] instead!")
 
 	if(!verify_damage(gusgus, 1, expected = 6, included_types = BRUTELOSS))
 		TEST_FAIL("take_overall_damage did not apply its damage correctly on the mouse!")
@@ -554,16 +554,16 @@
 	// testing negative args with the overall damage procs
 
 	damage_returned = gusgus.damage_random_bodypart(-1, BRUTE) + gusgus.damage_random_bodypart(-1, BURN)
-	TEST_ASSERT_EQUAL(damage_returned, -2, \
-		"take_bodypart_damage() should have returned -2, but returned [damage_returned] instead!")
+	TEST_ASSERT_EQUAL(damage_returned, 2, \
+		"take_bodypart_damage() should have returned 2, but returned [damage_returned] instead!")
 
 	damage_returned = gusgus.heal_bodypart_damage(-1, -1, updating_health = FALSE)
 	TEST_ASSERT_EQUAL(damage_returned, 2, \
 		"heal_bodypart_damage() should have returned 2, but returned [damage_returned] instead!")
 
 	damage_returned = gusgus.take_overall_damage(-1, -1)
-	TEST_ASSERT_EQUAL(damage_returned, -2, \
-		"take_overall_damage() should have returned -2, but returned [damage_returned] instead!")
+	TEST_ASSERT_EQUAL(damage_returned, 2, \
+		"take_overall_damage() should have returned 2, but returned [damage_returned] instead!")
 
 	damage_returned = gusgus.heal_overall_damage(-1, -1, updating_health = FALSE)
 	TEST_ASSERT_EQUAL(damage_returned, 2, \

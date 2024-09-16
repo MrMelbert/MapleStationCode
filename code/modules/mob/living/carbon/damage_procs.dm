@@ -96,7 +96,7 @@
 	if(!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
-		. = take_overall_damage(brute = amount, forced = forced, required_bodytype = required_bodytype)
+		. = -1 * take_overall_damage(brute = amount, forced = forced, required_bodytype = required_bodytype)
 	else
 		. = heal_overall_damage(brute = abs(amount), required_bodytype = required_bodytype, forced = forced)
 
@@ -113,7 +113,7 @@
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
-		. = take_overall_damage(burn = amount, forced = forced, required_bodytype = required_bodytype)
+		. = -1 * take_overall_damage(burn = amount, forced = forced, required_bodytype = required_bodytype)
 	else
 		. = heal_overall_damage(burn = abs(amount), required_bodytype = required_bodytype, forced = forced)
 
