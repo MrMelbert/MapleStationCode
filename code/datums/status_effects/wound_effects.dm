@@ -52,8 +52,8 @@
 	update_limp()
 	if(QDELETED(src)) // update limp might have removed us
 		return FALSE
-	RegisterSignal(C, COMSIG_MOVABLE_MOVED, PROC_REF(check_step))
-	RegisterSignals(C, list(COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_POST_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB), PROC_REF(update_limp))
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_step))
+	RegisterSignals(owner, list(COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_POST_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB), PROC_REF(update_limp))
 	return TRUE
 
 /datum/status_effect/limp/on_remove()
