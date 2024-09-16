@@ -87,9 +87,7 @@
 /// Checks what side the item is equipped on
 /datum/component/limbless_aid/proc/get_braced_leg(mob/living/who)
 	if(required_slot & ITEM_SLOT_HANDS)
-		// note this is backwards intentionally:
-		// right arm braces the left leg, and left arm braces right leg
-		var/side = IS_RIGHT_ARM(who.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
+		var/side = IS_RIGHT_ARM(who.get_held_index_of_item(parent)) ? BODY_ZONE_R_LEG : BODY_ZONE_L_LEG
 		return who.get_bodypart(side)
 
 	return null // unimplemented
