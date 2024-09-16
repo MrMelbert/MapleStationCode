@@ -111,26 +111,18 @@
 
 	// calculate skin temp based on a weight average between body temp and area temp plus a multiplier
 	// this weighting gives us about 34.4c for a 37c body temp in a 20c room which is about average
-	var/skin_temp = ((body_temperature * 2 + area_temperature * 1) / 3)
-	// convert to kelvin before multiplying, otherwise we go to the moon
-	var/result = KELVIN_TO_CELCIUS(skin_temp)
-	var/multiplier = 1.1
-	// factor in insulation, but to a far lesser degree
-	// wearing a winter coat in a room temp area will increase skin temp to about 38.3c
-	multiplier *= (1 + (get_insulation(area_temperature) * 0.25))
+	var/insulation = get_insulation(area_temperature)
+	// converting to celcius as it's easier to work with / multiply on
+	var/skin_temp = 1.1 * ((KELVIN_TO_CELCIUS(body_temperature) * 2 + KELVIN_TO_CELCIUS(area_temperature) * (1 - insulation)) / (3 - insulation))
 
-	if(temperature_homeostasis_speed != 0)
+	if(temperature_homeostasis_speed != 0) // not cold blooded
 		if(body_temperature >= standard_body_temperature + 2 CELCIUS)
-			multiplier *= 1.1 // vasodilation / sweating
+			skin_temp *= 1.1 // vasodilation / sweating
 		if(body_temperature <= standard_body_temperature + ((bodytemp_cold_damage_limit - standard_body_temperature) * 0.5))
-			multiplier *= 0.9 // vasoconstriction
+			skin_temp *= 0.9 // vasoconstriction
 
-	// reverse the effect of insulation if we're subzero
-	// (otherwise, wearing a coat makes you colder)
-	if(result < 0)
-		multiplier = 1 / multiplier
-
-	. = CELCIUS_TO_KELVIN(result * multiplier)
+	// back to kelvin
+	. = CELCIUS_TO_KELVIN(skin_temp)
 	// and if we're on fire just add a flat amount of heat
 	if(on_fire)
 		. += fire_stacks ** 2 KELVIN
