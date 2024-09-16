@@ -146,11 +146,13 @@
 
 	var/obj/item/given = new cane_type()
 	if(side == SIDE_LEFT)
-		. = quirk_holder.put_in_r_hand(given) // reversed
+		. = quirk_holder.put_in_r_hand(given) // reversed (it makes sense just think about it)
 	if(side == SIDE_RIGHT)
-		. = quirk_holder.put_in_l_hand(given) // reversed
+		. = quirk_holder.put_in_l_hand(given) // reversed (same)
 	if(!.)
-		. = quirk_holder.put_in_hands(given)
+		. = quirk_holder.put_in_hands(given) // if it fails now, it will dump the ground. acceptable
+
+	return .
 
 /datum/quirk/limp/remove()
 	quirk_holder.remove_status_effect(/datum/status_effect/limp/permanent)
