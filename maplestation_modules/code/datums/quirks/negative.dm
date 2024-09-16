@@ -136,8 +136,11 @@
 		if(NO_CANE)
 			mail_goodies |= /obj/item/reagent_containers/pill/morphine/diluted
 
-	if(intensity == INTENSITY_HIGH)
-		mail_goodies |= /obj/item/reagent_containers/pill/morphine/diluted
+	switch(intensity)
+		if(INTENSITY_MEDIUM)
+			mail_goodies |= /obj/item/reagent_containers/pill/paracetamol
+		if(INTENSITY_HIGH)
+			mail_goodies |= /obj/item/reagent_containers/pill/morphine/diluted
 
 	quirk_holder.apply_status_effect(/datum/status_effect/limp/permanent, side, intensity)
 
