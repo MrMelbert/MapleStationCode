@@ -41,6 +41,7 @@
 	SIGNAL_HANDLER
 
 	if(!(slot & required_slot))
+		lose_support(user)
 		return
 
 	add_support(user)

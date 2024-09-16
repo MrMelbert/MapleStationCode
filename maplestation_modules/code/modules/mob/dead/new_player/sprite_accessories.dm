@@ -69,6 +69,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_oldstriped"
 
+/datum/sprite_accessory/hair/oldmanyaoithesequel
+	name = "Crawling Chaos"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_nyarl"
+
 /datum/sprite_accessory/hair/fruity
 	name = "Fruity"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
@@ -296,6 +301,11 @@
 	name = "Improper Director"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_impdirector"
+
+/datum/sprite_accessory/hair/graced_drills
+	name = "Graced Drills"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_graceddrill"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
