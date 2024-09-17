@@ -288,6 +288,7 @@
 
 /obj/item/clothing/suit/armor/riot/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 5)
 	init_rustle_component()
 
 /obj/item/clothing/suit/armor/riot/proc/init_rustle_component()
@@ -410,6 +411,7 @@
 
 /obj/item/clothing/suit/armor/swat/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 5)
 	init_rustle_component()
 
 /obj/item/clothing/suit/armor/swat/proc/init_rustle_component()

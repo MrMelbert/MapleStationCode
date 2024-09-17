@@ -266,6 +266,10 @@
 	allowed = list(/obj/item/tank/internals/emergency_oxygen, /obj/item/tank/internals/plasmaman, /obj/item/gun/ballistic/rifle/boltaction/harpoon)
 	hoodtype = /obj/item/clothing/head/hooded/carp_hood
 
+/obj/item/clothing/suit/hooded/carp_costume/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
+
 /obj/item/clothing/head/hooded/carp_hood
 	name = "carp hood"
 	desc = "A hood attached to a carp costume."
@@ -275,6 +279,10 @@
 	body_parts_covered = HEAD
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	flags_inv = HIDEHAIR|HIDEEARS
+
+/obj/item/clothing/head/hooded/carp_hood/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -3)
 
 /obj/item/clothing/head/hooded/carp_hood/equipped(mob/living/carbon/human/user, slot)
 	..()
@@ -393,6 +401,10 @@
 	clothing_flags = THICKMATERIAL
 	hoodtype = /obj/item/clothing/head/hooded/shark_hood
 
+/obj/item/clothing/suit/hooded/shark_costume/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
+
 /obj/item/clothing/head/hooded/shark_hood
 	name = "shark hood"
 	desc = "A hood attached to a shark costume."
@@ -402,6 +414,10 @@
 	body_parts_covered = HEAD
 	clothing_flags = THICKMATERIAL
 	flags_inv = HIDEHAIR|HIDEEARS
+
+/obj/item/clothing/head/hooded/shark_hood/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -3)
 
 /obj/item/clothing/suit/hooded/shork_costume // Oh God Why
 	name = "shork costume"
@@ -414,6 +430,10 @@
 	clothing_flags = THICKMATERIAL
 	hoodtype = /obj/item/clothing/head/hooded/shork_hood
 
+/obj/item/clothing/suit/hooded/shork_costume/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 2)
+
 /obj/item/clothing/head/hooded/shork_hood
 	name = "shork hood"
 	desc = "A hood attached to a shork costume."
@@ -423,6 +443,10 @@
 	body_parts_covered = HEAD
 	clothing_flags = THICKMATERIAL
 	flags_inv = HIDEHAIR|HIDEEARS
+
+/obj/item/clothing/head/hooded/shork_hood/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 3)
 
 /obj/item/clothing/suit/hooded/bloated_human //OH MY GOD WHAT HAVE YOU DONE!?!?!?
 	name = "bloated human suit"
@@ -580,6 +604,10 @@
 	greyscale_colors = "#313B82#CCCFF0"
 	flags_1 = IS_PLAYER_COLORABLE_1
 	species_exception = list(/datum/species/golem)
+
+/obj/item/clothing/suit/costume/hawaiian/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -3)
 
 /obj/item/clothing/suit/costume/football_armor
 	name = "football protective gear"

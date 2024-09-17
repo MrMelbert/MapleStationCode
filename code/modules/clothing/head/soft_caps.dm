@@ -174,6 +174,7 @@
 /obj/item/clothing/head/soft/fishing_hat/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/skill_reward, /datum/skill/fishing)
+	AddComponent(/datum/component/adjust_fishing_difficulty, -4)
 
 #define PROPHAT_MOOD "prophat"
 

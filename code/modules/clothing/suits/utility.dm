@@ -37,6 +37,10 @@
 	equip_delay_other = 60
 	resistance_flags = FIRE_PROOF
 
+/obj/item/clothing/suit/utility/fire/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)
+
 /datum/armor/utility_fire
 	melee = 15
 	bullet = 5
@@ -97,6 +101,7 @@
 /obj/item/clothing/head/utility/bomb_hood/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/clothing_dirt, "bomb_dirt")
+	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
 
 /datum/armor/utility_bomb_hood
@@ -124,6 +129,10 @@
 	strip_delay = 70
 	equip_delay_other = 70
 	resistance_flags = NONE
+
+/obj/item/clothing/suit/utility/bomb_suit/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 8)
 
 /datum/armor/utility_bomb_suit
 	melee = 20
@@ -171,6 +180,7 @@
 
 /obj/item/clothing/head/utility/radiation/Initialize(mapload)
 	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)
 	AddComponent(/datum/component/hat_stabilizer, loose_hat = TRUE)
 	AddElement(/datum/element/radiation_protected_clothing)
 	AddComponent(/datum/component/clothing_dirt, "rad_dirt")
@@ -203,3 +213,4 @@
 /obj/item/clothing/suit/utility/radiation/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/radiation_protected_clothing)
+	AddComponent(/datum/component/adjust_fishing_difficulty, 7)

@@ -490,6 +490,7 @@
 	atom_storage.set_holdable(list(
 		/obj/item/clothing/mask/luchador,
 	))
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2)
 
 /obj/item/storage/belt/military
 	name = "chest rig"

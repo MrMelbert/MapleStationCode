@@ -14,6 +14,10 @@
 	custom_premium_price = PAYCHECK_COMMAND * 6
 	cut_type = /obj/item/clothing/gloves/cut
 
+/obj/item/clothing/gloves/color/yellow/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 10)
+
 /datum/armor/color_yellow
 	bio = 50
 
@@ -114,6 +118,10 @@
 	greyscale_colors = null
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 
+/obj/item/clothing/gloves/cut/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -3)
+
 /obj/item/clothing/gloves/cut/heirloom
 	desc = "The old gloves your great grandfather stole from Engineering, many moons ago. They've seen some tough times recently."
 
@@ -127,3 +135,7 @@
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
+
+/obj/item/clothing/gloves/chief_engineer/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -4)

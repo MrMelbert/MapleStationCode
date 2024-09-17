@@ -243,6 +243,10 @@
 	visor_toggle_up_sound = SFX_VISOR_UP
 	visor_toggle_down_sound = SFX_VISOR_DOWN
 
+/obj/item/clothing/head/helmet/toggleable/riot/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 2)
+
 /datum/armor/toggleable_riot
 	melee = 50
 	bullet = 10
@@ -329,6 +333,10 @@
 	equip_sound = 'sound/items/handling/helmet/helmet_equip1.ogg'
 	pickup_sound = 'sound/items/handling/helmet/helmet_pickup1.ogg'
 	drop_sound = 'sound/items/handling/helmet/helmet_drop1.ogg'
+
+/obj/item/clothing/head/helmet/swat/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 3)
 
 /datum/armor/helmet_swat
 	melee = 40
@@ -468,6 +476,10 @@
 	strip_delay = 80
 	dog_fashion = null
 	clothing_traits = list(TRAIT_HEAD_INJURY_BLOCKED)
+
+/obj/item/clothing/head/helmet/knight/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, 3)
 
 /datum/armor/helmet_knight
 	melee = 50

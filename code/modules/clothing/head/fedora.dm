@@ -38,6 +38,10 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/leather.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/leather.ogg'
 
+/obj/item/clothing/head/fedora/carpskin/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -4)
+
 /obj/item/clothing/head/fedora/beige/press
 	name = "press fedora"
 	desc = "An beige fedora with a piece of paper saying \"PRESS\" stuck in its rim."

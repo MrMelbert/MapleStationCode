@@ -596,6 +596,10 @@
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 
+/obj/item/clothing/head/utility/surgerycap/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //FISH DOCTOR?!
+
 /obj/item/clothing/head/utility/surgerycap/attack_self(mob/user)
 	. = ..()
 	if(.)
@@ -639,6 +643,10 @@
 	body_parts_covered = NONE
 	drop_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
+
+/obj/item/clothing/head/utility/head_mirror/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, -2) //FISH DOCTOR?!
 
 /obj/item/clothing/head/utility/head_mirror/examine(mob/user)
 	. = ..()

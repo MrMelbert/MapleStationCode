@@ -11,6 +11,12 @@
 	clothing_flags = SNUG_FIT | CASTING_CLOTHES
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
+	///How much this hat affects fishing difficulty
+	var/fishing_modifier = -4
+
+/obj/item/clothing/head/wizard/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier) //A wizard always practices his casting (ba dum tsh)
 
 /datum/armor/head_wizard
 	melee = 30
@@ -48,6 +54,7 @@
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
 	dog_fashion = /datum/dog_fashion/head/blue_wizard
+	fishing_modifier = -1
 
 /obj/item/clothing/head/wizard/marisa
 	name = "witch hat"
@@ -103,6 +110,12 @@
 	equip_delay_other = 50
 	clothing_flags = CASTING_CLOTHES
 	resistance_flags = FIRE_PROOF | ACID_PROOF
+	///How much this robe affects fishing difficulty
+	var/fishing_modifier = -6
+
+/obj/item/clothing/suit/wizrobe/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/adjust_fishing_difficulty, fishing_modifier) //A wizard always practices his casting (ba dum tsh)
 
 /datum/armor/suit_wizrobe
 	melee = 30
@@ -170,17 +183,20 @@
 	inhand_icon_state = "wizrobe"
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
+	fishing_modifier = -2
 
 /obj/item/clothing/head/wizard/marisa/fake
 	name = "witch hat"
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
+	fishing_modifier = -1
 
 /obj/item/clothing/head/wizard/tape/fake
 	name = "tape hat"
 	desc = "A hat designed exclusively from duct tape. You can barely see."
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
+	fishing_modifier = -1
 
 /obj/item/clothing/suit/wizrobe/marisa/fake
 	name = "witch robe"
@@ -189,12 +205,14 @@
 	inhand_icon_state = null
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
+	fishing_modifier = -2
 
 /obj/item/clothing/suit/wizrobe/tape/fake
 	name = "tape robe"
 	desc = "An outfit designed exclusively from duct tape. It was hard to put on."
 	armor_type = /datum/armor/none
 	resistance_flags = FLAMMABLE
+	fishing_modifier = -2
 
 /obj/item/clothing/suit/wizrobe/paper
 	name = "papier-mache robe" // no non-latin characters!
