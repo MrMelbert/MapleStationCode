@@ -11,11 +11,11 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 	can_buckle = TRUE
 	key_type = /obj/item/oar
-	var/allowed_turf = /turf/open/lava
+	var/component_type = /datum/component/riding/vehicle/lavaboat
 
 /obj/vehicle/ridden/lavaboat/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/lavaboat)
+	AddElement(/datum/element/ridable, component_type)
 
 /obj/item/oar
 	name = "oar"
@@ -76,7 +76,10 @@
 	desc = "This boat moves where you will it, without the need for an oar."
 	icon_state = "dragon_boat"
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | FREEZE_PROOF
+	component_type = /datum/component/riding/vehicle/lavaboat/dragonboat
 
-/obj/vehicle/ridden/lavaboat/dragon/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/lavaboat/dragonboat)
+// Cursed typepath but not refactoring this for now
+/obj/vehicle/ridden/lavaboat/not_lava
+	name = "boat"
+	desc = "A boat used for traversing water."
+	component_type = /datum/component/riding/vehicle/lavaboat/not_lava

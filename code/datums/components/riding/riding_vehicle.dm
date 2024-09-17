@@ -137,17 +137,16 @@
 	. = ..()
 	allowed_turf_typecache = typecacheof(allowed_turf)
 
-/datum/component/riding/vehicle/lavaboat/dragonboat
-	vehicle_move_delay = 1
-
-/datum/component/riding/vehicle/lavaboat/dragonboat/handle_specials()
-	. = ..()
-	set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(1, 2), TEXT_SOUTH = list(1, 2), TEXT_EAST = list(1, 2), TEXT_WEST = list( 1, 2)))
+/datum/component/riding/vehicle/lavaboat/not_lava
+	allowed_turf = /turf/open/water
 
 /datum/component/riding/vehicle/lavaboat/dragonboat
 	vehicle_move_delay = 1
 	keytype = null
 
+/datum/component/riding/vehicle/lavaboat/dragonboat/handle_specials()
+	. = ..()
+	set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(1, 2), TEXT_SOUTH = list(1, 2), TEXT_EAST = list(1, 2), TEXT_WEST = list( 1, 2)))
 
 /datum/component/riding/vehicle/janicart
 	keytype = /obj/item/key/janitor
