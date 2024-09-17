@@ -212,7 +212,8 @@
 	bodytemp_heat_damage_limit = /datum/species/lizard::bodytemp_heat_damage_limit
 	bodytemp_cold_damage_limit = /datum/species/lizard::bodytemp_cold_damage_limit
 	// Cold blooded
-	temperature_homeostasis_speed = 0
+	temperature_normalization_speed = /datum/species/lizard::temperature_homeostasis_speed
+	temperature_normalization_speed = /datum/species/lizard::temperature_normalization_speed
 
 	ass_image = /datum/species/lizard::ass_image
 

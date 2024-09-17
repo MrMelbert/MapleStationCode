@@ -133,7 +133,8 @@
 
 /datum/reagent/medicine/cryoxadone
 	name = "Cryoxadone"
-	description = "A chemical mixture with almost magical healing powers. Its main limitation is that the patient's body temperature must be under 270K for it to metabolise correctly."
+	description = "A chemical mixture with almost magical healing powers. \
+		Its main limitation is that the patient's body temperature must be under 270K / -3.15C for it to metabolise correctly."
 	color = "#0000C8"
 	taste_description = "blue"
 	ph = 11
@@ -143,17 +144,18 @@
 
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (affected_mob.body_temperature ** 2) + 0.5)
-	if(affected_mob.body_temperature >= T0C || !HAS_TRAIT(affected_mob, TRAIT_KNOCKEDOUT))
+	metabolization_rate = round(REAGENTS_METABOLISM + (0.0002 * (affected_mob.body_temperature ** 1.5)), CHEMICAL_VOLUME_ROUNDING)
+	if(!HAS_TRAIT(affected_mob, TRAIT_KNOCKEDOUT))
 		return
-	var/power = -0.00003 * (affected_mob.body_temperature ** 2) + 3
-	var/need_mob_update
-	need_mob_update = affected_mob.adjustOxyLoss(-3 * power * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype, required_respiration_type = affected_respiration_type)
+	var/power = round(3 + (-0.00066 * (affected_mob.body_temperature ** 1.5)), DAMAGE_PRECISION)
+	if(power <= 0)
+		return
+	var/need_mob_update = FALSE
+	need_mob_update += affected_mob.adjustOxyLoss(3 * -power * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype, required_respiration_type = affected_respiration_type)
 	need_mob_update += affected_mob.adjustBruteLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 	need_mob_update += affected_mob.adjustFireLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 	need_mob_update += affected_mob.adjustToxLoss(-power * REM * seconds_per_tick, updating_health = FALSE, forced = TRUE, required_biotype = affected_biotype) //heals TOXINLOVERs
-	for(var/i in affected_mob.all_wounds)
-		var/datum/wound/iter_wound = i
+	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.on_xadone(power * REM * seconds_per_tick)
 	REMOVE_TRAIT(affected_mob, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
 	if(need_mob_update)

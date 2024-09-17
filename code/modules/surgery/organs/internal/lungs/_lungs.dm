@@ -760,7 +760,7 @@
 /obj/item/organ/internal/lungs/proc/handle_breath_temperature(datum/gas_mixture/breath, mob/living/carbon/human/breather) // called by human/life, handles temperatures
 	var/breath_temperature = breath.temperature
 
-	if(breath_temperature < cold_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTCOLD)) // COLD DAMAGE
+	if(breath_temperature < cold_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTCOLD) && !has_reagent(/datum/reagent/medicine/cryoxadone, needs_metabolizing = TRUE)) // COLD DAMAGE
 		var/cold_modifier = breather.physiology.cold_mod
 		var/breath_effect_prob = 0
 		var/cold_message_prob = 0
@@ -788,7 +788,7 @@
 				return
 			emit_breath_particle(breather, /particles/fog/breath)
 
-	if(breath_temperature > heat_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTHEAT)) // HEAT DAMAGE
+	if(breath_temperature > heat_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTHEAT) && !has_reagent(/datum/reagent/medicine/pyroxadone, needs_metabolizing = TRUE)) // HEAT DAMAGE
 		var/heat_modifier = breather.physiology.heat_mod
 		var/heat_message_prob = 0
 		if(breath_temperature > heat_level_danger_threshold)

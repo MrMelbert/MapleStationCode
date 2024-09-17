@@ -79,7 +79,9 @@
 	return
 
 /mob/living/proc/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	if(body_temperature > bodytemp_heat_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
+	if(body_temperature > bodytemp_heat_damage_limit \
+		&& !HAS_TRAIT(src, TRAIT_RESISTHEAT) \
+		&& !has_reagent(/datum/reagent/medicine/pyroxadone, needs_metabolizing = TRUE))
 		var/heat_diff = bodytemp_heat_damage_limit - standard_body_temperature
 		var/heat_threshold_low = bodytemp_heat_damage_limit + heat_diff * 0.75
 		var/heat_threshold_medium = bodytemp_heat_damage_limit + heat_diff * 1.25
@@ -104,7 +106,10 @@
 			apply_status_effect(/datum/status_effect/stacking/heat_exposure, 1, heat_threshold_medium)
 
 	// For cold damage, we cap at the threshold if you're dead
-	if(body_temperature < bodytemp_cold_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTCOLD) && (getFireLoss() < maxHealth || stat != DEAD))
+	if(body_temperature < bodytemp_cold_damage_limit \
+		&& !HAS_TRAIT(src, TRAIT_RESISTCOLD) \
+		&& !has_reagent(/datum/reagent/medicine/cryoxadone, needs_metabolizing = TRUE) \
+		&& (getFireLoss() < maxHealth || stat != DEAD))
 		var/cold_diff = bodytemp_cold_damage_limit - standard_body_temperature
 		var/cold_threshold_low = bodytemp_cold_damage_limit + cold_diff * 1.2
 		var/cold_threshold_medium = bodytemp_cold_damage_limit + cold_diff * 1.75

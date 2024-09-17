@@ -38,6 +38,7 @@
 	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 5 KELVIN)
 	// Cold blooded duh
 	temperature_homeostasis_speed = 0
+	temperature_normalization_speed = parent_type::temperature_normalization_speed * 3
 
 	ass_image = 'icons/ass/asslizard.png'
 
