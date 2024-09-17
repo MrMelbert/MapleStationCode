@@ -84,19 +84,19 @@
 	var/amount = 0
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		amount += part.brute_dam
-	return amount
+	return round(amount, DAMAGE_PRECISION) // melbert todo : floating point memes? i don't know why
 
 /mob/living/carbon/getFireLoss()
 	var/amount = 0
 	for(var/obj/item/bodypart/part as anything in bodyparts)
 		amount += part.burn_dam
-	return amount
+	return round(amount, DAMAGE_PRECISION) // melbert todo : floating point memes? i don't know why
 
 /mob/living/carbon/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE, required_bodytype)
 	if(!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
-		. = -1 * take_overall_damage(brute = amount, forced = forced, required_bodytype = required_bodytype)
+		. = take_overall_damage(brute = amount, forced = forced, required_bodytype = required_bodytype)
 	else
 		. = heal_overall_damage(brute = abs(amount), required_bodytype = required_bodytype, forced = forced)
 
@@ -113,7 +113,7 @@
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	if(amount > 0)
-		. = -1 * take_overall_damage(burn = amount, forced = forced, required_bodytype = required_bodytype)
+		. = take_overall_damage(burn = amount, forced = forced, required_bodytype = required_bodytype)
 	else
 		. = heal_overall_damage(burn = abs(amount), required_bodytype = required_bodytype, forced = forced)
 
@@ -304,6 +304,7 @@
 
 		parts -= picked
 
+	. = round(., DAMAGE_PRECISION) // melbert todo : floating point memes? i don't know why
 	if(!.) // no change? no need to update anything
 		return
 
@@ -330,8 +331,8 @@
 		var/burn_was = picked.burn_dam
 		. += picked.get_damage()
 
-		apply_damage(brute_per_part, BRUTE, picked, forced, wound_bonus = CANT_WOUND)
-		apply_damage(burn_per_part, BURN, picked, forced, wound_bonus = CANT_WOUND)
+		apply_damage(brute_per_part, BRUTE, picked, 0, forced, wound_bonus = CANT_WOUND)
+		apply_damage(burn_per_part, BURN, picked, 0, forced, wound_bonus = CANT_WOUND)
 
 		. -= picked.get_damage()
 
@@ -339,3 +340,5 @@
 		burn = round(burn - (picked.burn_dam - burn_was), DAMAGE_PRECISION)
 
 		parts -= picked
+
+	. = round(., DAMAGE_PRECISION) // melbert todo : floating point memes? i don't know why

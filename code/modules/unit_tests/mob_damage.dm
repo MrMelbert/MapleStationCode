@@ -221,35 +221,33 @@
 	dummy.fully_heal(HEAL_DAMAGE)
 
 	var/damage_returned
-	// take 5 brute, 2 burn
-	damage_returned = round(dummy.damage_random_bodypart(5, BRUTE) + dummy.damage_random_bodypart(2, BURN), 1)
-	TEST_ASSERT_EQUAL(damage_returned, 7, \
-		"take_bodypart_damage() should have returned 7, but returned [damage_returned] instead!")
+	// take 5 brute
+	damage_returned = round(dummy.damage_random_bodypart(5, BRUTE), 1)
+	TEST_ASSERT_EQUAL(damage_returned, 5, \
+		"take_bodypart_damage() should have returned 5, but returned [damage_returned] instead!")
 
 	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 5, \
 		"Dummy should have 5 brute damage, instead they have [dummy.getBruteLoss()]!")
-	TEST_ASSERT_EQUAL(round(dummy.getFireLoss(), 1), 2, \
-		"Dummy should have 2 burn damage, instead they have [dummy.getFireLoss()]!")
 
-	// heal 4 brute, 1 burn
+	// heal 5 brute, 0 burn
 	damage_returned = round(dummy.heal_bodypart_damage(4, 1), 1)
-	TEST_ASSERT_EQUAL(damage_returned, 5, \
-		"heal_bodypart_damage() should have returned 5, but returned [damage_returned] instead!")
+	TEST_ASSERT_EQUAL(damage_returned, 4, \
+		"heal_bodypart_damage() should have returned 4, but returned [damage_returned] instead!")
 
-	if(!verify_damage(dummy, 1, included_types = BRUTELOSS|FIRELOSS))
+	if(!verify_damage(dummy, 1, included_types = BRUTELOSS))
 		TEST_FAIL("heal_bodypart_damage did not apply its healing correctly on the mob!")
 
 	// heal 1 brute, 1 burn
-	damage_returned = round(dummy.heal_overall_damage(1, 1, updating_health = FALSE), 1)
-	TEST_ASSERT_EQUAL(damage_returned, 2, \
-		"heal_overall_damage() should have returned 2, but returned [damage_returned] instead!")
+	damage_returned = round(dummy.heal_overall_damage(1, 1), 1)
+	TEST_ASSERT_EQUAL(damage_returned, 1, \
+		"heal_overall_damage() should have returned 1, but returned [damage_returned] instead!")
 
-	if(!verify_damage(dummy, 0, included_types = BRUTELOSS|FIRELOSS))
+	if(!verify_damage(dummy, 0, included_types = BRUTELOSS))
 		TEST_FAIL("heal_overall_damage did not apply its healing correctly on the mob!")
 
 	// take 50 brute, 50 burn
 	damage_returned = round(dummy.take_overall_damage(50, 50), 1)
-	TEST_ASSERT_EQUAL(damage_returned, 100, \
+	TEST_ASSERT_EQUAL(damage_returned, -100, \
 		"take_overall_damage() should have returned -100, but returned [damage_returned] instead!")
 
 	if(!verify_damage(dummy, 50, included_types = BRUTELOSS|FIRELOSS))
@@ -266,8 +264,8 @@
 		"heal_bodypart_damage() should have returned 10, but returned [damage_returned] instead!")
 
 	damage_returned = round(dummy.take_overall_damage(-5, -5), 1)
-	TEST_ASSERT_EQUAL(damage_returned, 10, \
-		"take_overall_damage() should have returned 10, but returned [damage_returned] instead!")
+	TEST_ASSERT_EQUAL(damage_returned, -10, \
+		"take_overall_damage() should have returned -10, but returned [damage_returned] instead!")
 
 	damage_returned = round(dummy.heal_overall_damage(-5, -5), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 10, \

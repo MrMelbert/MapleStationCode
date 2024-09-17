@@ -532,7 +532,7 @@
 /mob/living/proc/heal_ordered_damage(amount, list/damage_types)
 	. = 0 //we'll return the amount of damage healed
 	for(var/damagetype in damage_types)
-		var/amount_to_heal = min(abs(amount), get_current_damage_of_type(damagetype)) //heal only up to the amount of damage we have
+		var/amount_to_heal = min(abs(amount), round(get_current_damage_of_type(damagetype), DAMAGE_PRECISION)) //heal only up to the amount of damage we have
 		if(amount_to_heal)
 			. += heal_damage_type(amount_to_heal, damagetype)
 			amount -= amount_to_heal //remove what we healed from our current amount
