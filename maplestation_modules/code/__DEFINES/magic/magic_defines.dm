@@ -57,3 +57,7 @@
 #define THAUMATERGIC_SENSE_POOL_DISCERNMENT_LEVEL_TWO 2
 
 #define SPECIES_BASE_MANA_CAPACITY_MULT 1
+
+// MAGIC TRAITS GO HERE
+// give this to an object to declare that its pool can be used during cast.
+#define TRAIT_POOL_AVAILABLE_FOR_CAST 1
