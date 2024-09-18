@@ -258,3 +258,8 @@
 /datum/loadout_item/head/garland/lily
 	name = "Lily Crown"
 	item_path = /obj/item/clothing/head/costume/garland/lily
+
+/datum/loadout_item/head/belli
+	name = "Modified Nun Veil"
+	item_path = /obj/item/clothing/head/costume/hat/belli
+	additional_displayed_text = list("Character Item")
