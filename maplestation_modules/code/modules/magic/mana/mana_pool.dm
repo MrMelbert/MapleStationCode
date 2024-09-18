@@ -244,7 +244,6 @@
 		return amount
 
 	/* if (!isnull(incoming_attunements))
-		TODO: figure out what this does.
 		var/ratio
 		if (src.amount == 0)
 			ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS

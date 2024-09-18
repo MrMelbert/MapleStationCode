@@ -142,3 +142,12 @@
 		balloon_alert(user, "drawing mana....")
 		mana_pool.transfer_specific_mana(user.mana_pool, mana_to_draw, decrement_budget = TRUE)
 
+/obj/item/mana_battery/mana_crystal/small/focus //really only exists for debug.
+	name = "Focused Small Volite Crystal"
+	desc = "A focused variant of the standard small volite crystal. You can draw mana from this while casting."
+	icon_state = "small"
+
+/obj/item/mana_battery/mana_crystal/small/focus/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_POOL_AVAILABLE_FOR_CAST, REF(src))
+

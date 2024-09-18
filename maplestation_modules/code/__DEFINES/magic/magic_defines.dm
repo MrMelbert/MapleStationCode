@@ -60,4 +60,4 @@
 
 // MAGIC TRAITS GO HERE
 // give this to an object to declare that its pool can be used during cast.
-#define TRAIT_POOL_AVAILABLE_FOR_CAST 1
+#define TRAIT_POOL_AVAILABLE_FOR_CAST "pool_available_for_cast"

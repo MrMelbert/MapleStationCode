@@ -135,14 +135,21 @@
 		stack_trace("mana_consumed after get_mana_required is null!")
 		return
 
-	var/datum/mana_pool/pool = parent.get_mana()
+	var/list/datum/mana_pool/available_pools = get_mana_to_use()
 
-	var/mult = pool.get_overall_attunement_mults(attunements, user)
-	var/attuned_cost = (mana_consumed * mult)
-	mana_consumed -= SAFE_DIVIDE(pool.adjust_mana((attuned_cost)), mult)
+	while (mana_consumed <= -0.05)
+		var/mult
+		var/attuned_cost
+		for (var/datum/mana_pool/pool as anything in available_pools)
+			mult = pool.get_overall_attunement_mults(attunements, user)
+			attuned_cost = (mana_consumed * mult)
+			if (pool.amount < attuned_cost)
+				attuned_cost = (pool.amount)
+			mana_consumed -= SAFE_DIVIDE(pool.adjust_mana((attuned_cost)), mult)
+			if (available_pools.Find(pool) == available_pools.len && mana_consumed <= -0.05) // if we're at the end of the list and mana_consumed is not 0 or near 0 (floating points grrr)
+				stack_trace("cost: [mana_consumed] was not 0 after drain_mana on [src]! This could've been an infinite loop!")
+				mana_consumed = 0 // lets terminate the loop to be safe
 	mana_consumed = round(mana_consumed, 0.01)
-	if (mana_consumed != 0)
-		stack_trace("cost: [mana_consumed] was not 0 after drain_mana on [src]!")
 
 /// Should be the raw conditional we use for determining if the thing that "uses mana" can actually
 /// activate the behavior that "uses mana".
