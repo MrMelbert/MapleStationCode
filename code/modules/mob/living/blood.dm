@@ -117,7 +117,6 @@
 
 //Makes a blood drop, leaking amt units of blood from the mob
 /mob/living/carbon/proc/bleed(amt, drip = TRUE)
-	// NON-MODULE CHANGE for blood
 	if((status_flags & GODMODE) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return
 	blood_volume = max(blood_volume - amt, 0)
@@ -127,7 +126,6 @@
 
 /mob/living/carbon/human/bleed(amt, drip = TRUE)
 	amt *= physiology.bleed_mod
-	// NON-MODULE CHANGE for blood
 	return ..()
 
 /// A helper to see how much blood we're losing per tick

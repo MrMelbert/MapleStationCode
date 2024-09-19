@@ -9,14 +9,15 @@
 /datum/wound/bleed_internal
 	name = "Internal Bleeding"
 	desc = "The patient is bleeding internally, causing severe pain and difficulty breathing."
-	treat_text = "Surgical repair of the affected vein is necessary."
+	treat_text = "Surgical repair of the affected vein is necessary. \
+		Blood clotting medical will slow the bleeding, but only very rare and advanced medication can repair it on its own."
 	treat_text_short = "Surgical repair required."
 	examine_desc = ""
 	scar_keyword = ""
 	severity = WOUND_SEVERITY_MODERATE
 	simple_treat_text = "Surgery."
-	homemade_treat_text = "Taking a <b>blood clotting pill</b> may help slow the bleeding, \
-		or an <b>iron supplement</b> to help your body recover."
+	homemade_treat_text = "Taking a <b>blood clotting</b> pill or shot may help slow the bleeding. \
+		Alternatively, an <b>iron supplement</b> may help your body replenish lost blood faster."
 	processes = TRUE
 	wound_flags = NONE
 	/// How much blood lost per life tick, gets modified by severity.
@@ -31,6 +32,19 @@
 	if(!victim || victim.stat == DEAD || HAS_TRAIT(victim, TRAIT_STASIS) || !victim.needs_heart())
 		return
 	victim.bleed(bleed_amount * severity * seconds_per_tick, drip = FALSE)
+	if(SPT_PROB(1, seconds_per_tick))
+		victim.emote("cough")
+		victim.visible_message(
+			span_warning("[victim] coughs up blood."),
+			span_warning("You cough up blood."),
+			vision_distance = COMBAT_MESSAGE_RANGE,
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	if(SPT_PROB(0.1, seconds_per_tick))
+		victim.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 0)
+
+/datum/wound/bleed_internal/on_xadone(power)
+	heal_percent(power / 10)
 
 /datum/wound/bleed_internal/wound_injury(datum/wound/old_wound, attack_direction)
 	COOLDOWN_START(src, worsen_cd, 5 SECONDS)
@@ -44,3 +58,16 @@
 		return
 	severity = min(severity + 1, WOUND_SEVERITY_CRITICAL)
 	COOLDOWN_START(src, worsen_cd, 6 SECONDS)
+
+/datum/wound/bleed_internal/proc/heal_amount(amount)
+	bleed_amount -= amount
+	if(bleed_amount > 0)
+		return
+	if(severity > 0)
+		severity--
+		bleed_amount = initial(bleed_amount)
+		return
+	qdel(src)
+
+/datum/wound/bleed_internal/proc/heal_percent(percent)
+	heal_amount(initial(bleed_amount) * percent)

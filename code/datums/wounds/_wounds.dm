@@ -395,7 +395,7 @@
 /// Returns a "adjusted" interaction_efficiency_penalty that will be used for the actionspeed mod.
 /datum/wound/proc/get_effective_actionspeed_modifier()
 	. = interaction_efficiency_penalty - 1
-	if(flags & ACCEPTS_GAUZE)
+	if(wound_flags & ACCEPTS_GAUZE)
 		. *= get_splint_power()
 	return .
 

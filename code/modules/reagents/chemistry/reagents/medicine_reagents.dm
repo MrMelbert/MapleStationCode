@@ -1221,6 +1221,8 @@
 			. = UPDATE_MOB_HEALTH
 	affected_mob.AdjustAllImmobility(-60  * REM * seconds_per_tick)
 	affected_mob.adjustStaminaLoss(-5 * REM * seconds_per_tick, updating_stamina = FALSE, required_biotype = affected_biotype)
+	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
+		ib.heal_percent(0.1 * REM * seconds_per_tick)
 
 /datum/reagent/medicine/stimulants/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -1306,6 +1308,8 @@
 	need_mob_update += affected_mob.adjustOxyLoss(-15 * REM * seconds_per_tick, updating_health = FALSE)
 	need_mob_update += affected_mob.adjustToxLoss(-5 * REM * seconds_per_tick, updating_health = FALSE)
 	need_mob_update += affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, -15 * REM * seconds_per_tick)
+	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
+		ib.heal_percent(0.2 * REM * seconds_per_tick)
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH
 
@@ -1746,11 +1750,13 @@
 
 	var/datum/wound/bloodiest_wound
 
-	for(var/i in affected_mob.all_wounds)
-		var/datum/wound/iter_wound = i
-		if(iter_wound.blood_flow)
-			if(iter_wound.blood_flow > bloodiest_wound?.blood_flow)
-				bloodiest_wound = iter_wound
+	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
+		if(iter_wound.blood_flow && iter_wound.blood_flow > bloodiest_wound?.blood_flow)
+			bloodiest_wound = iter_wound
+
+	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
+		if(ib.severity > SEVERITY_TRIVIAL)
+			ib.heal_amount(clot_rate * 0.05)
 
 	if(bloodiest_wound)
 		if(!was_working)

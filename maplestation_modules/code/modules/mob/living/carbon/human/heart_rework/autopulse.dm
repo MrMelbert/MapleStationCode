@@ -148,6 +148,7 @@
 		wearer.apply_damage(final_damage, BRUTE, chest, wound_bonus = CANT_WOUND, attacking_item = "automatic chest compressions")
 
 	wearer.apply_status_effect(/datum/status_effect/cpr_applied)
+	wearer.adjustOxyLoss(-0.5)
 
 	if(cell.charge < charge_per_pulse)
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, vary = TRUE, frequency = 0.75)
