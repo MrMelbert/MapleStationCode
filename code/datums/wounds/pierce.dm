@@ -105,12 +105,10 @@
 		adjust_blood_flow(-1 * amt_blocking * gauzed_clot_rate)
 		limb.seep_gauze(amt_blocking)
 
-	if(blood_flow <= 0)
-		qdel(src)
-
-/datum/wound/pierce/bleed/on_stasis(seconds_per_tick, times_fired)
+/datum/wound/pierce/bleed/adjust_blood_flow(adjust_by, minimum)
 	. = ..()
-	if(blood_flow <= 0)
+	if(blood_flow <= 0 && !QDELETED(src))
+		to_chat(victim, span_green("The holes on your [limb.plaintext_zone] have [!limb.can_bleed() ? "healed up" : "stopped bleeding"]!"))
 		qdel(src)
 
 /datum/wound/pierce/bleed/check_grab_treatments(obj/item/I, mob/user)
@@ -118,9 +116,7 @@
 		return TRUE
 
 /datum/wound/pierce/bleed/treat(obj/item/I, mob/user)
-	if(istype(I, /obj/item/stack/medical/suture))
-		return suture(I, user)
-	else if(I.tool_behaviour == TOOL_CAUTERY || I.get_temperature())
+	if(I.tool_behaviour == TOOL_CAUTERY || I.get_temperature())
 		return tool_cauterize(I, user)
 
 /datum/wound/pierce/bleed/on_xadone(power)
@@ -132,33 +128,6 @@
 /datum/wound/pierce/bleed/on_synthflesh(reac_volume)
 	. = ..()
 	adjust_blood_flow(-0.025 * reac_volume) // 20u * 0.05 = -1 blood flow, less than with slashes but still good considering smaller bleed rates
-
-/// If someone is using a suture to close this puncture
-/datum/wound/pierce/bleed/proc/suture(obj/item/stack/medical/suture/I, mob/user)
-	var/self_penalty_mult = (user == victim ? 1.4 : 1)
-	var/treatment_delay = base_treat_time * self_penalty_mult
-
-	if(HAS_TRAIT(src, TRAIT_WOUND_SCANNED))
-		treatment_delay *= 0.5
-		user.visible_message(span_notice("[user] begins expertly stitching [victim]'s [limb.plaintext_zone] with [I]..."), span_notice("You begin stitching [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone] with [I], keeping the holo-image information in mind..."))
-	else
-		user.visible_message(span_notice("[user] begins stitching [victim]'s [limb.plaintext_zone] with [I]..."), span_notice("You begin stitching [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone] with [I]..."))
-
-	playsound(user, 'maplestation_modules/sound/items/snip.ogg', 33, FALSE)
-	if(!do_after(user, treatment_delay, target = victim, extra_checks = CALLBACK(src, PROC_REF(still_exists))))
-		return TRUE
-	var/bleeding_wording = (!limb.can_bleed() ? "holes" : "bleeding")
-	user.visible_message(span_green("[user] stitches up some of the [bleeding_wording] on [victim]."), span_green("You stitch up some of the [bleeding_wording] on [user == victim ? "yourself" : "[victim]"]."))
-	var/blood_sutured = I.stop_bleeding / self_penalty_mult
-	adjust_blood_flow(-blood_sutured)
-	limb.heal_damage(I.heal_brute, I.heal_burn)
-	I.use(1)
-
-	if(blood_flow > 0)
-		return try_treating(I, user)
-	else
-		to_chat(user, span_green("You successfully close the hole in [user == victim ? "your" : "[victim]'s"] [limb.plaintext_zone]."))
-		return TRUE
 
 /// If someone is using either a cautery tool or something with heat to cauterize this pierce
 /datum/wound/pierce/bleed/proc/tool_cauterize(obj/item/I, mob/user)

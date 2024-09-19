@@ -134,10 +134,10 @@
 	try_heal(patient, user, silent = TRUE)
 
 /obj/item/stack/medical/proc/try_heal_checks(mob/living/patient, mob/user, brute, burn)
+	if(patient.stat == DEAD)
+		patient.balloon_alert(user, "they're dead!")
+		return FALSE
 	if(iscarbon(patient))
-		if(patient.stat == DEAD)
-			patient.balloon_alert(user, "[patient.p_theyre()] dead!")
-			return FALSE
 		var/mob/living/carbon/carbon_patient = patient
 		var/obj/item/bodypart/affecting = carbon_patient.get_bodypart(check_zone(user.zone_selected))
 		if(!affecting) //Missing limb?
@@ -146,17 +146,26 @@
 		if(!IS_ORGANIC_LIMB(affecting)) //Limb must be organic to be healed - RR
 			carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not organic!")
 			return FALSE
-		if(!(affecting.brute_dam && brute) && !(affecting.burn_dam && burn))
-			if(!affecting.brute_dam && !affecting.burn_dam)
+
+		var/datum/wound/burn/flesh/any_burn_wound = locate() in affecting.wounds
+		var/can_heal_burn_wounds = (flesh_regeneration || sanitization) && any_burn_wound?.can_be_ointmented_or_meshed()
+		var/can_suture_bleeding = stop_bleeding && affecting.get_modified_bleed_rate() > 0
+		var/brute_to_heal = brute && affecting.brute_dam > 0
+		var/burn_to_heal = burn && affecting.burn_dam > 0
+
+		if(!brute_to_heal && !burn_to_heal && !can_heal_burn_wounds && !can_suture_bleeding)
+			if(!brute_to_heal && stop_bleeding) // no brute, no bleeding
+				carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not bleeding!")
+			else if(!burn_to_heal && (flesh_regeneration || sanitization) && any_burn_wound) // no burns, existing burn wounds are treated
+				carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] has been fully treated!")
+			else if(!affecting.brute_dam && !affecting.burn_dam) // not hurt at all
 				carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not hurt!")
-			else
+			else // probably hurt in some way but we are not the right item for this
 				carbon_patient.balloon_alert(user, "can't heal [affecting.plaintext_zone] with [name]!")
 			return FALSE
 		return TRUE
+
 	if(isanimal_or_basicmob(patient))
-		if(patient.stat == DEAD)
-			patient.balloon_alert(user, "they're dead!")
-			return FALSE
 		if(!heal_brute) // only brute can heal
 			patient.balloon_alert(user, "can't heal with [name]!")
 			return FALSE
@@ -179,6 +188,19 @@
 	var/previous_damage = affecting.get_damage()
 	if(affecting.heal_damage(brute, burn))
 		patient.update_damage_overlays()
+	if(stop_bleeding)
+		for(var/datum/wound/wound as anything in affecting.wounds)
+			if(wound.blood_flow)
+				wound.adjust_blood_flow(-1 * stop_bleeding * (user == patient ? 0.7 : 1))
+				break // one at a time
+		affecting.adjustBleedStacks(-1 * stop_bleeding, 0)
+	if(flesh_regeneration || sanitization)
+		for(var/datum/wound/burn/flesh/wound as anything in affecting.wounds)
+			if(wound.can_be_ointmented_or_meshed())
+				wound.flesh_healing += flesh_regeneration
+				wound.sanitization += sanitization
+				break // one at a time (though i don't think you can get more than one burn wound on a limb)
+
 	post_heal_effects(max(previous_damage - affecting.get_damage(), 0), patient, user)
 	return TRUE
 
@@ -275,7 +297,7 @@
 /obj/item/stack/medical/gauze/try_heal_checks(mob/living/patient, mob/user, brute, burn)
 	var/obj/item/bodypart/limb = patient.get_bodypart(check_zone(user.zone_selected))
 	if(!limb)
-		patient.balloon_alert(user, "no limb!")
+		patient.balloon_alert(user, "no [parse_zone(user.zone_selected)]!")
 		return FALSE
 	if(limb.current_gauze && (limb.current_gauze.absorption_capacity * 1.2 > absorption_capacity)) // ignore if our new wrap is < 20% better than the current one, so someone doesn't bandage it 5 times in a row
 		patient.balloon_alert(user, pick("already bandaged!", "bandage is clean!")) // good enough
@@ -398,7 +420,7 @@
 	max_amount = 10
 	repeating = TRUE
 	heal_brute = 10
-	stop_bleeding = 0.6
+	stop_bleeding = 0.8
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/suture
 	heal_sound = 'maplestation_modules/sound/items/snip.ogg'
@@ -416,7 +438,7 @@
 	icon_state = "suture_purp"
 	desc = "A suture infused with drugs that speed up wound healing of the treated laceration."
 	heal_brute = 15
-	stop_bleeding = 0.75
+	stop_bleeding = 1
 	grind_results = list(/datum/reagent/medicine/polypyr = 1)
 	merge_type = /obj/item/stack/medical/suture/medicated
 
@@ -434,8 +456,8 @@
 	other_delay = 2 SECONDS
 
 	heal_burn = 5
-	flesh_regeneration = 2.5
-	sanitization = 0.25
+	flesh_regeneration = 5
+	sanitization = 1
 	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
 	merge_type = /obj/item/stack/medical/ointment
 
@@ -455,8 +477,8 @@
 	heal_burn = 10
 	max_amount = 15
 	repeating = TRUE
-	sanitization = 0.75
-	flesh_regeneration = 3
+	sanitization = 0.5
+	flesh_regeneration = 2.5
 
 	var/is_open = TRUE ///This var determines if the sterile packaging of the mesh has been opened.
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)

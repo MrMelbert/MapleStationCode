@@ -330,7 +330,7 @@
  * Arguments:
  * * gauze- Just the gauze stack we're taking a sheet from to apply here
  */
-/obj/item/bodypart/proc/apply_gauze(obj/item/stack/medical/gauze/new_gauze)
+/obj/item/bodypart/proc/apply_gauze(obj/item/stack/medical/gauze/new_gauze) // melbert todo : tape gauze may be broken
 	if(!istype(new_gauze) || !new_gauze.absorption_capacity || !new_gauze.use(1))
 		return
 	if(!isnull(current_gauze))
