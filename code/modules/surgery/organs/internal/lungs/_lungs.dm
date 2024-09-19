@@ -61,10 +61,6 @@
 	var/helium_speech_min = 5
 	///Whether these lungs react negatively to miasma
 	var/suffers_miasma = TRUE
-	// Vars for N2O/healium induced euphoria, stun, and sleep.
-	var/n2o_euphoria = EUPHORIA_LAST_FLAG
-	var/healium_euphoria = EUPHORIA_LAST_FLAG
-
 
 	var/oxy_breath_dam_min = MIN_TOXIC_GAS_DAMAGE
 	var/oxy_breath_dam_max = MAX_TOXIC_GAS_DAMAGE
@@ -420,13 +416,10 @@
 /obj/item/organ/internal/lungs/proc/consume_healium(mob/living/carbon/breather, datum/gas_mixture/breath, healium_pp, old_healium_pp)
 	breathe_gas_volume(breath, /datum/gas/healium)
 	// Euphoria side-effect.
-	if(healium_pp > gas_stimulation_min)
-		if(prob(15))
-			to_chat(breather, span_alert("Your head starts spinning and your lungs burn!"))
-			healium_euphoria = EUPHORIA_ACTIVE
-			breather.emote("gasp")
-	else
-		healium_euphoria = EUPHORIA_INACTIVE
+	if(healium_pp > gas_stimulation_min && prob(15))
+		to_chat(breather, span_alert("Your head starts spinning and your lungs burn!"))
+		breather.apply_status_effect(/datum/status_effect/drugginess/euphoria)
+		breather.emote("gasp")
 	// Stun/Sleep side-effects.
 	if(healium_pp > healium_para_min && !breather.IsSleeping() && prob(30))
 		breather.Sleeping(rand(3 SECONDS, 5 SECONDS))
@@ -436,7 +429,7 @@
 
 /// Lose healium side effects
 /obj/item/organ/internal/lungs/proc/lose_healium(mob/living/carbon/breather, datum/gas_mixture/breath, old_healium_pp)
-	healium_euphoria = EUPHORIA_INACTIVE
+	return
 
 /// Activates helium speech when partial pressure gets high enough
 /obj/item/organ/internal/lungs/proc/consume_helium(mob/living/carbon/breather, datum/gas_mixture/breath, helium_pp, old_helium_pp)
@@ -524,31 +517,25 @@
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 
 		if(prob(20))
-			n2o_euphoria = EUPHORIA_ACTIVE
-			breather.emote(pick("giggle", "laugh"))
-			breather.set_drugginess(30 SECONDS)
-		else
-			n2o_euphoria = EUPHORIA_INACTIVE
+			breather.apply_status_effect(/datum/status_effect/drugginess/euphoria)
 		return
 
 	// More N2O, more severe side-effects. Causes stun/sleep.
 	if(old_n2o_pp < n2o_para_min)
 		breather.throw_alert(ALERT_TOO_MUCH_N2O, /atom/movable/screen/alert/too_much_n2o)
-	n2o_euphoria = EUPHORIA_ACTIVE
 
 	// give them one second of grace to wake up and run away a bit!
 	if(!HAS_TRAIT(breather, TRAIT_SLEEPIMMUNE))
 		breather.Unconscious(6 SECONDS)
 		// Enough to make the mob sleep.
 		if(n2o_pp > n2o_sleep_min)
-			breather.Sleeping(min(breather.AmountSleeping() + 100, 200))
+			breather.Sleeping(min(breather.AmountSleeping() + 10 SECONDS, 20 SECONDS))
 		// And apply anesthesia if it worked
 		if(HAS_TRAIT(breather, TRAIT_KNOCKEDOUT))
-			breather.apply_status_effect(/datum/status_effect/grouped/anesthetic, /datum/gas/nitrous_oxide)
+			breather.apply_status_effect(/datum/status_effect/anesthetic, 12 SECONDS)
 
 /// N2O side-effects. "Too much N2O!"
 /obj/item/organ/internal/lungs/proc/safe_n2o(mob/living/carbon/breather, datum/gas_mixture/breath, old_n2o_pp)
-	n2o_euphoria = EUPHORIA_INACTIVE
 	breather.clear_alert(ALERT_TOO_MUCH_N2O)
 
 // Breath in nitrium. It's helpful, but has nasty side effects
@@ -668,8 +655,6 @@
 	// Copy the breath's temperature into breath_out to avoid cooling the output breath down unfairly
 	breath_out.temperature = breath.temperature
 
-	var/old_euphoria = (n2o_euphoria == EUPHORIA_ACTIVE || healium_euphoria == EUPHORIA_ACTIVE)
-
 	// Cache for sonic speed
 	var/list/last_partial_pressures = src.last_partial_pressures
 	var/list/breathe_always = src.breathe_always
@@ -725,13 +710,6 @@
 		call(src, on_loss)(breather, breath, last_partial_pressures[gas_lost])
 
 	src.last_partial_pressures = partial_pressures
-
-	// Handle chemical euphoria mood event, caused by gases such as N2O or healium.
-	var/new_euphoria = (n2o_euphoria == EUPHORIA_ACTIVE || healium_euphoria == EUPHORIA_ACTIVE)
-	if (!old_euphoria && new_euphoria)
-		breather.add_mood_event("chemical_euphoria", /datum/mood_event/chemical_euphoria)
-	else if (old_euphoria && !new_euphoria)
-		breather.clear_mood_event("chemical_euphoria")
 
 	if(num_moles > 0)
 		handle_breath_temperature(breath, breather)

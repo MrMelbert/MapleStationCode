@@ -163,6 +163,7 @@
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
 	tick_interval = -1
+	remove_on_fullheal = TRUE
 	/// Tracks how much max consciousness penalty to give the patient
 	var/max_con = 75
 

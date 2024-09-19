@@ -13,6 +13,8 @@
 /datum/surgery_step/display_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone)
 	// Only feels pain if we feels pain
 	if(pain_amount <= 0 || isnull(target_zone) || !target.can_feel_pain())
+		if(target.has_status_effect(/datum/status_effect/anesthetic))
+			target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		return FALSE
 
 	// No pain from mechanics but still show the message (usually)
@@ -24,8 +26,6 @@
 	target.cause_pain(target_zone, pain_amount, pain_type)
 
 	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)
-		if(target.has_status_effect(/datum/status_effect/grouped/anesthetic))
-			target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		return FALSE
 	if(ispath(surgery_moodlet))
 		target.add_mood_event("surgery", surgery_moodlet)

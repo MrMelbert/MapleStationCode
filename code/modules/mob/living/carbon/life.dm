@@ -68,7 +68,7 @@
 	var/datum/gas_mixture/breath
 
 	if(!HAS_TRAIT(src, TRAIT_ASSISTED_BREATHING))
-		if(stat == HARD_CRIT)
+		if(stat == HARD_CRIT && !internal && !external) // being on internals function as a ventilator + also makes anesthetic function (revisit later)
 			losebreath = max(losebreath, 1)
 		else if(HAS_TRAIT(src, TRAIT_LABOURED_BREATHING))
 			losebreath += (1 / next_breath)

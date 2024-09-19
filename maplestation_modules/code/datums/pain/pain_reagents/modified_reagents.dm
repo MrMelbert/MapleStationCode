@@ -83,15 +83,11 @@
 
 // Healium functions as an anesthetic
 /datum/reagent/healium
-	pain_modifier = 0.75
 
-/datum/reagent/healium/on_mob_metabolize(mob/living/breather)
+/datum/reagent/healium/on_mob_life(mob/living/breather, seconds_per_tick, times_fired)
 	. = ..()
-	breather.apply_status_effect(/datum/status_effect/grouped/anesthetic, name)
-
-/datum/reagent/healium/on_mob_end_metabolize(mob/living/breather)
-	. = ..()
-	breather.remove_status_effect(/datum/status_effect/grouped/anesthetic, name)
+	breather.apply_status_effect(/datum/status_effect/anesthetic, 3 SECONDS)
+	breather.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
 
 // Saline glucose helps shock
 /datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)

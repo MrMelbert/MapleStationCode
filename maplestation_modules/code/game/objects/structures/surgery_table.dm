@@ -153,7 +153,6 @@
 		return
 
 	new_patient.open_internals(attached_tank, TRUE)
-	ADD_TRAIT(new_patient, TRAIT_ASSISTED_BREATHING, REF(src))
 	patient_set_at = world.time
 	update_appearance(UPDATE_OVERLAYS)
 
@@ -164,7 +163,6 @@
 		return
 
 	old_patient.close_externals()
-	REMOVE_TRAIT(old_patient, TRAIT_ASSISTED_BREATHING, REF(src))
 	patient_set_at = -1
 	update_appearance(UPDATE_OVERLAYS)
 
