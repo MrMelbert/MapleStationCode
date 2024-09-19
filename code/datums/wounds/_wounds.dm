@@ -392,18 +392,12 @@
 	if(limb?.can_be_disabled)
 		limb.update_disabled()
 
-/// Setter for [interaction_efficiency_penalty]. Updates the actionspeed of our actionspeed mod.
-/datum/wound/proc/set_interaction_efficiency_penalty(new_value)
-	var/should_update = (new_value != interaction_efficiency_penalty)
-
-	interaction_efficiency_penalty = new_value
-
-	if (should_update)
-		update_actionspeed_modifier()
-
 /// Returns a "adjusted" interaction_efficiency_penalty that will be used for the actionspeed mod.
 /datum/wound/proc/get_effective_actionspeed_modifier()
-	return interaction_efficiency_penalty - 1
+	. = interaction_efficiency_penalty - 1
+	if(flags & ACCEPTS_GAUZE)
+		. *= get_splint_power()
+	return .
 
 /// Returns the decisecond multiplier of any click interactions, assuming our limb is being used.
 /datum/wound/proc/get_action_delay_mult()
@@ -424,21 +418,20 @@
 	if (wound_flags & ACCEPTS_GAUZE)
 		update_inefficiencies()
 
+/// Gets modifier from splints. Returns a decimal value 0-1, not including 0.
+/datum/wound/proc/get_splint_power()
+	return limb?.current_gauze?.splint_factor || 1
+
 /// Updates our limping and interaction penalties in accordance with our gauze.
 /datum/wound/proc/update_inefficiencies(replaced_or_replacing = FALSE)
-	if (wound_flags & ACCEPTS_GAUZE)
-		if(limb.body_zone in list(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
-			if(limb.current_gauze?.splint_factor)
-				limp_slowdown = initial(limp_slowdown) * limb.current_gauze.splint_factor
-				limp_chance = initial(limp_chance) * limb.current_gauze.splint_factor
-			else
-				limp_slowdown = initial(limp_slowdown)
-				limp_chance = initial(limp_chance)
-		else if(limb.body_zone in GLOB.arm_zones)
-			if(limb.current_gauze?.splint_factor)
-				set_interaction_efficiency_penalty(1 + ((get_effective_actionspeed_modifier()) * limb.current_gauze.splint_factor))
-			else
-				set_interaction_efficiency_penalty(initial(interaction_efficiency_penalty))
+	if(wound_flags & ACCEPTS_GAUZE)
+		var/splint_power = get_splint_power()
+		if(limb.body_zone == BODY_ZONE_L_LEG || limb.body_zone == BODY_ZONE_R_LEG)
+			limp_slowdown = initial(limp_slowdown) * splint_power
+			limp_chance = initial(limp_chance) * splint_power
+
+		if(limb.body_zone == BODY_ZONE_L_ARM || limb.body_zone == BODY_ZONE_R_ARM)
+			update_actionspeed_modifier()
 
 		if(initial(disabling))
 			set_disabling(isnull(limb.current_gauze))

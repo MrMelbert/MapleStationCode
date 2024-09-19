@@ -45,8 +45,9 @@
 		return
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		wounding_dmg *= 0.5
-	if(limb.current_gauze?.splint_factor)
-		wounding_dmg *= (1 - limb.current_gauze.splint_factor)
+	var/splint_mod = get_splint_power()
+	if(splint_mod < 1)
+		wounding_dmg *= (1 - splint_mod)
 	var/blood_bled = sqrt(wounding_dmg) * internal_bleeding_coefficient * pick(0.75, 1, 1.25, 1.5) // melbert todo : push upstream
 	switch(blood_bled)
 		if(7 to 13)
