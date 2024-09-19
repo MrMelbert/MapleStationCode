@@ -418,7 +418,7 @@
 	// Euphoria side-effect.
 	if(healium_pp > gas_stimulation_min && prob(15))
 		to_chat(breather, span_alert("Your head starts spinning and your lungs burn!"))
-		breather.apply_status_effect(/datum/status_effect/drugginess/euphoria)
+		breather.apply_status_effect(/datum/status_effect/drugginess/euphoria, 12 SECONDS)
 		breather.emote("gasp")
 	// Stun/Sleep side-effects.
 	if(healium_pp > healium_para_min && !breather.IsSleeping() && prob(30))
@@ -517,7 +517,7 @@
 			breather.clear_alert(ALERT_TOO_MUCH_N2O)
 
 		if(prob(20))
-			breather.apply_status_effect(/datum/status_effect/drugginess/euphoria)
+			breather.apply_status_effect(/datum/status_effect/drugginess/euphoria, 12 SECONDS)
 		return
 
 	// More N2O, more severe side-effects. Causes stun/sleep.
