@@ -1756,7 +1756,7 @@
 
 	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
 		if(ib.severity > SEVERITY_TRIVIAL)
-			ib.heal_amount(clot_rate * 0.05)
+			ib.heal_amount(clot_rate * 0.05 * REM * seconds_per_tick)
 
 	if(bloodiest_wound)
 		if(!was_working)
