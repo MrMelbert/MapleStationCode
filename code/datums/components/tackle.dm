@@ -488,25 +488,13 @@
 		var/obj/machinery/vending/darth_vendor = hit
 		darth_vendor.tilt(user, 100)
 		return
-	else if(istype(hit, /obj/structure/window))
-		var/obj/structure/window/W = hit
-		splatWindow(user, W)
-		if(QDELETED(W))
-			return COMPONENT_MOVABLE_IMPACT_NEVERMIND
-		return
 
 	var/oopsie_mod = 0
 	var/danger_zone = (speed - 1) * 13 // for every extra speed we have over 1, take away 13 of the safest chance
 	danger_zone = max(min(danger_zone, 100), 1)
 
-	if(ishuman(user))
-		var/mob/living/carbon/human/S = user
-		var/head_slot = S.get_item_by_slot(ITEM_SLOT_HEAD)
-		var/suit_slot = S.get_item_by_slot(ITEM_SLOT_OCLOTHING)
-		if(head_slot && (istype(head_slot,/obj/item/clothing/head/helmet) || istype(head_slot,/obj/item/clothing/head/utility/hardhat)))
-			oopsie_mod -= 6
-		if(suit_slot && (istype(suit_slot,/obj/item/clothing/suit/armor/riot)))
-			oopsie_mod -= 6
+	oopsie_mod -= floor(user.getarmor(BODY_ZONE_HEAD, MELEE) * 0.18)
+	oopsie_mod -= floor(user.getarmor(BODY_ZONE_CHEST, MELEE) * 0.12)
 
 	if(HAS_TRAIT(user, TRAIT_CLUMSY))
 		oopsie_mod += 6 //honk!
@@ -596,31 +584,6 @@
 	tackling = FALSE
 	QDEL_NULL(tackle_ref)
 	UnregisterSignal(parent, COMSIG_MOVABLE_MOVED)
-
-///A special case for splatting for handling windows
-/datum/component/tackler/proc/splatWindow(mob/living/carbon/user, obj/structure/window/W)
-	playsound(user, 'sound/effects/Glasshit.ogg', 140, TRUE)
-
-	if(W.type in list(/obj/structure/window, /obj/structure/window/fulltile, /obj/structure/window/unanchored, /obj/structure/window/fulltile/unanchored)) // boring unreinforced windows
-		for(var/i in 1 to speed)
-			var/obj/item/shard/shard = new /obj/item/shard(get_turf(user))
-			shard.embedding = list(embed_chance = 100, ignore_throwspeed_threshold = TRUE, impact_pain_mult=3, pain_chance=5)
-			shard.updateEmbedding()
-			user.hitby(shard, skipcatch = TRUE, hitpush = FALSE)
-			shard.embedding = null
-			shard.updateEmbedding()
-		W.atom_destruction()
-		user.adjustStaminaLoss(10 * speed)
-		user.Paralyze(3 SECONDS)
-		user.visible_message(span_danger("[user] smacks into [W] and shatters it, shredding [user.p_them()]self with glass!"), span_userdanger("You smacks into [W] and shatter it, shredding yourself with glass!"))
-
-	else
-		user.visible_message(span_danger("[user] smacks into [W] like a bug!"), span_userdanger("You smacks into [W] like a bug!"))
-		user.Paralyze(1 SECONDS)
-		user.Knockdown(3 SECONDS)
-		W.take_damage(30 * speed)
-		user.adjustStaminaLoss(10 * speed, updating_stamina=FALSE)
-		user.adjustBruteLoss(5 * speed)
 
 /datum/component/tackler/proc/delayedSmash(obj/structure/window/W)
 	if(W)
