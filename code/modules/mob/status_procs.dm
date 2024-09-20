@@ -30,7 +30,7 @@
 	// There is an occasional bug where the temperature is miscalculated in areas with small amounts of gas.
 	// This is necessary to ensure that does not affect this calculation.
 	// Space's temperature is 2.7K and most suits that are intended to protect against any cold, protect down to 2.0K.
-	temperature = max(temperature, T0C)
+	temperature = max(temperature, TCMB)
 
 	var/thermal_protection_flags = NONE
 	for(var/obj/item/worn in get_equipped_items())
