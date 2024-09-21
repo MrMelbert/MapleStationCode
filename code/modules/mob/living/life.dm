@@ -225,19 +225,18 @@
  */
 /mob/living/proc/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
 	var/loc_temp = get_temperature(environment)
-	var/temp_delta = loc_temp - body_temperature
+	var/thermal_protection = get_insulation(loc_temp)
+	// calculate a target temperature based on environment vs insulation
+	var/equilibrium_temp = loc_temp + (standard_body_temperature - loc_temp) * (thermal_protection * 0.5)
+	var/temp_delta = equilibrium_temp - body_temperature
 	if(temp_delta == 0)
 		return
 	if(temp_delta < 0 && on_fire) // do not reduce body temp when on fire
 		return
 
-	// Get the insulation value based on the area's temp
-	var/thermal_protection = get_insulation(loc_temp)
-	var/protection_modifier = 1
-	if(body_temperature > standard_body_temperature + 2 KELVIN)
-		// we are overheating and sweaty - insulation is not as good reducing thermal protection
-		protection_modifier = 0.7
-
+	// Adds a modifier onto how strong insulation is
+	// If we are above SBT, we are overheating and sweating, which reduces insulation
+	var/protection_modifier = body_temperature > standard_body_temperature + 2 KELVIN ? 0.7 : 1
 	var/temp_sign = SIGN(temp_delta)
 	var/temp_change =  temp_sign * (1 - (thermal_protection * protection_modifier)) * ((0.1 * max(1, abs(temp_delta))) ** 1.8) * temperature_normalization_speed
 	// Cap increase and decrease

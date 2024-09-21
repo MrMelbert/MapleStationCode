@@ -38,10 +38,10 @@
 		if(isnum(worn.max_heat_protection_temperature) && isnum(worn.min_cold_protection_temperature))
 			valid = worn.max_heat_protection_temperature >= temperature && worn.min_cold_protection_temperature <= temperature
 
-		else if (isnum(worn.max_heat_protection_temperature))
+		else if(isnum(worn.max_heat_protection_temperature))
 			valid = worn.max_heat_protection_temperature >= temperature
 
-		else if (isnum(worn.min_cold_protection_temperature))
+		else if(isnum(worn.min_cold_protection_temperature))
 			valid = worn.min_cold_protection_temperature <= temperature
 
 		if(valid)
