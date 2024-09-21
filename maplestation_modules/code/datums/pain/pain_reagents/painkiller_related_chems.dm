@@ -43,6 +43,7 @@
 
 	affected_mob.mind?.remove_addiction_points(/datum/addiction/opioids, 5 * normalise_creation_purity() * REM * seconds_per_tick)
 	affected_mob.adjust_disgust(1 * REM * seconds_per_tick)
+	affected_mob.adjust_drugginess(-2.5 SECONDS * REM * seconds_per_tick)
 
 // Buproprion helps with stimulant and nicotine addiction
 /datum/reagent/medicine/buproprion
