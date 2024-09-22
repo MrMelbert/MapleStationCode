@@ -96,12 +96,12 @@
 /datum/chemical_reaction/medicine/mine_salve
 	results = list(/datum/reagent/medicine/mine_salve = 3)
 	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/water = 1, /datum/reagent/iron = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_PAIN
 
 /datum/chemical_reaction/medicine/mine_salve2
 	results = list(/datum/reagent/medicine/mine_salve = 15)
 	required_reagents = list(/datum/reagent/toxin/plasma = 5, /datum/reagent/iron = 5, /datum/reagent/consumable/sugar = 1) // A sheet of plasma, a twinkie and a sheet of metal makes four of these
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_PAIN
 
 /datum/chemical_reaction/medicine/synthflesh
 	results = list(/datum/reagent/medicine/c2/synthflesh = 3)
@@ -119,7 +119,7 @@
 	rate_up_lim = 20 //affected by pH too
 	purity_min = 0.3
 	reaction_flags = REACTION_PH_VOL_CONSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_BRUTE | REACTION_TAG_BURN | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/calomel
 	results = list(/datum/reagent/medicine/calomel = 2)
@@ -130,17 +130,17 @@
 /datum/chemical_reaction/medicine/ammoniated_mercury
 	results = list(/datum/reagent/medicine/ammoniated_mercury = 3)
 	required_reagents = list(/datum/reagent/medicine/calomel = 1, /datum/reagent/ammonia = 2)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_TOXIN | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/potass_iodide
 	results = list(/datum/reagent/medicine/potass_iodide = 2)
 	required_reagents = list(/datum/reagent/potassium = 1, /datum/reagent/iodine = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_TOXIN | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/pen_acid
 	results = list(/datum/reagent/medicine/pen_acid = 5)
 	required_reagents = list(/datum/reagent/fuel = 1, /datum/reagent/ammonia = 1, /datum/reagent/toxin/formaldehyde = 1, /datum/reagent/consumable/salt = 1, /datum/reagent/toxin/cyanide = 1)
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_TOXIN | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/medicine/sal_acid
 	results = list(/datum/reagent/medicine/sal_acid = 5)
@@ -318,15 +318,6 @@
 	required_reagents = list(/datum/reagent/phenol = 2, /datum/reagent/lithium = 1)
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_ORGAN
 
-/*
-// Non-module change
-/datum/chemical_reaction/medicine/morphine
-	results = list(/datum/reagent/medicine/morphine = 2)
-	required_reagents = list(/datum/reagent/carbon = 2, /datum/reagent/hydrogen = 2, /datum/reagent/consumable/ethanol = 1, /datum/reagent/oxygen = 1)
-	required_temp = 480
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG
-*/
-
 /datum/chemical_reaction/medicine/modafinil
 	results = list(/datum/reagent/medicine/modafinil = 5)
 	required_reagents = list(/datum/reagent/diethylamine = 1, /datum/reagent/ammonia = 1, /datum/reagent/phenol = 1, /datum/reagent/acetone = 1, /datum/reagent/toxin/acid = 1)
@@ -383,4 +374,4 @@
 	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/nitrogen = 1, /datum/reagent/oxygen = 1)
 	required_catalysts = list(/datum/reagent/consumable/ethanol = 3)
 	optimal_ph_max = 11
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER | REACTION_TAG_DRUG
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_HEALING | REACTION_TAG_OTHER

@@ -165,6 +165,18 @@
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 10) // Lasts ~4 minutes, heals ~15 pain per bodypart
 	rename_with_volume = TRUE
 
+/obj/item/reagent_containers/pill/naloxone
+	name = "naloxone pill"
+	desc = "Used to treat opioid overdoses and addiction."
+	icon_state = "pill13"
+	list_reagents = list(/datum/reagent/medicine/naloxone = 10)
+
+/obj/item/reagent_containers/pill/buproprion
+	name = "buproprion pill"
+	desc = "Used to treat stimulant and nicotine addiction."
+	icon_state = "pill14"
+	list_reagents = list(/datum/reagent/medicine/naloxone = 10)
+
 /obj/item/reagent_containers/syringe/paracetamol
 	name = "syringe (paracetamol)"
 	desc = "Contains fiteen units of Paracetamol. Used to treat general pain. Metabolizes slowly."
