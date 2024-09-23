@@ -97,6 +97,15 @@
 /// This also affects how fast the body normalises it's temperature when cold.
 #define BODYTEMP_COLD_DAMAGE_LIMIT CELCIUS_TO_KELVIN(20 CELCIUS)
 
+/// Temp at which the environment might be cold to be concerned about
+#define ENVIRONMENT_WARN_COLD (BODYTEMP_COLD_DAMAGE_LIMIT - 10 CELCIUS)
+/// Temp at which the environment might be hot to be concerned about
+#define ENVIRONMENT_WARN_HEAT (BODYTEMP_HEAT_DAMAGE_LIMIT + 5 CELCIUS)
+/// Temp at which the environment is cold enough to be dangerous
+#define ENVIRONMENT_HAZARD_COLD (BODYTEMP_COLD_DAMAGE_LIMIT - 40 CELCIUS)
+/// Temp at which the environment is hot enough to be dangerous
+#define ENVIRONMENT_HAZARD_HEAT (BODYTEMP_HEAT_DAMAGE_LIMIT + 20 CELCIUS)
+
 /// A temperature limit which is above the maximum lavaland temperature
 #define BODYTEMP_HEAT_LAVALAND_SAFE (LAVALAND_MAX_TEMPERATURE + 5 KELVIN)
 /// A temperature limit which is above the minimum icebox temperature
