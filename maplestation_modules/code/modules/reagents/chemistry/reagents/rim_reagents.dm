@@ -19,7 +19,7 @@
 	name = "Luciferium"
 	description = "An incredibly powerful, addictive, and dangerous concoction of mechanites from the outer planets of the Spinward. \
 		Drastically improves the user's bodily functions but will cause eventual death if mechanite cohesion is not sustained with continuous dosage. \
-		Once used, the pressence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
+		Once used, the presence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
 	taste_description = "dread"
 	reagent_state = SOLID
 	color = "#a80008"
