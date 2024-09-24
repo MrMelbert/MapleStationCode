@@ -101,7 +101,9 @@
 	. = ..()
 	if(isliving(target))
 		var/mob/living/M = target
-		M.adjust_body_temperature(temperature * ((100 - blocked) / 100), use_insulation = TRUE)
+		// if we made 100% insulation make you immune, we would be useless
+		var/final_change = temperature * (1 - (0.5 * M.get_insulation(M.body_temperature + temperature))) * ((100 - blocked) / 100)
+		M.adjust_body_temperature(final_change)
 
 // .357 (Syndie Revolver)
 

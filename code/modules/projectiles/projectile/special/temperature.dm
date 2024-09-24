@@ -14,7 +14,10 @@
 	. = ..()
 	if(isliving(target))
 		var/mob/living/M = target
-		M.adjust_body_temperature(temperature * ((100 - blocked) / 100), use_insulation = TRUE)
+		// we have to manually account for insulation, ensuring 100% insulatio =/= 100% resistance,
+		// otherwise some mobs (like watchers) become completely non-threatening
+		var/final_change = temperature * (1 - (0.5 * M.get_insulation(M.body_temperature + temperature))) * ((100 - blocked) / 100)
+		M.adjust_body_temperature(final_change)
 
 /obj/projectile/temp/hot
 	name = "heat beam"
