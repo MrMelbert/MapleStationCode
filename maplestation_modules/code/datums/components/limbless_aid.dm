@@ -73,33 +73,41 @@
 /datum/component/limbless_aid/proc/modify_movespeed(mob/living/source, list/modifiers)
 	SIGNAL_HANDLER
 
-	var/obj/item/bodypart/leg = get_braced_leg(source)
+	var/obj/item/bodypart/leg
+	if(required_slot & ITEM_SLOT_HANDS)
+		// this is not backwards intentionally:
+		// if you're missing the left leg, you need the left leg braced
+		var/side = IS_RIGHT(source.get_held_index_of_item(parent)) ? BODY_ZONE_R_LEG : BODY_ZONE_L_LEG
+		leg = source.get_bodypart(side)
+
 	if(isnull(leg) || leg.bodypart_disabled)
 		modifiers += movespeed_mod
 
 /datum/component/limbless_aid/proc/pain_step(mob/living/source, obj/item/affected_leg, footstep_count)
 	SIGNAL_HANDLER
 
-	var/obj/item/bodypart/leg = get_braced_leg(source)
+	var/obj/item/bodypart/leg
+	if(required_slot & ITEM_SLOT_HANDS)
+		// note this is backwards intentionally:
+		// see below
+		var/side = IS_RIGHT(source.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
+		leg = source.get_bodypart(side)
+
 	if(isnull(leg) || leg == affected_leg)
 		return STOP_PAIN
 
 /datum/component/limbless_aid/proc/limp_check(mob/living/source, obj/item/bodypart/next_leg)
 	SIGNAL_HANDLER
 
-	var/obj/item/bodypart/leg = get_braced_leg(source)
-	if(isnull(leg) || leg == next_leg)
-		return COMPONENT_CANCEL_LIMP
-
-/// Checks what side the item is equipped on
-/datum/component/limbless_aid/proc/get_braced_leg(mob/living/who)
+	var/obj/item/bodypart/leg
 	if(required_slot & ITEM_SLOT_HANDS)
 		// note this is backwards intentionally:
-		// right arm braces the left leg, and left arm braces right leg
-		var/side = IS_RIGHT(who.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
-		return who.get_bodypart(side)
+		// you use your right arm to brace your left leg, and vice versa
+		var/side = IS_RIGHT(source.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
+		leg = source.get_bodypart(side)
 
-	return null // unimplemented
+	if(isnull(leg) || leg == next_leg)
+		return COMPONENT_CANCEL_LIMP
 
 /datum/component/limbless_aid/proc/self_brace(mob/living/source)
 	SIGNAL_HANDLER

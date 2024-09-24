@@ -49,6 +49,7 @@ export const Reagents = (props) => {
     { flag: bitflags.CHEMICAL, icon: 'flask' },
     { flag: bitflags.PLANT, icon: 'seedling' },
     { flag: bitflags.COMPETITIVE, icon: 'recycle' },
+    { flag: bitflags.PAIN, icon: 'syringe' },
   ];
 
   const [page, setPage] = useLocalState('page', 1);
@@ -200,6 +201,16 @@ const TagBox = (props) => {
           }}
         >
           Organ
+        </Button>
+        <Button
+          icon="syringe"
+          color={selectedBitflags & bitflags.PAIN ? 'green' : 'red'}
+          onClick={() => {
+            act('toggle_tag_pain');
+            setPage(1);
+          }}
+        >
+          Pain
         </Button>
         <Button
           icon="flask"
