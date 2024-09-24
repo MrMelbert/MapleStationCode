@@ -34,6 +34,8 @@
 	/// If this analyzer will give a bonus to wound treatments apon woundscan.
 	var/give_wound_treatment_bonus = FALSE
 
+	var/print = FALSE
+
 /obj/item/healthanalyzer/Initialize(mapload)
 	. = ..()
 	register_item_context()
@@ -82,7 +84,6 @@
 
 		if(user.can_read(src) && !user.is_blind())
 			to_chat(user, examine_block(floor_text))
-		last_scan_text = floor_text
 		return
 
 	if(ispodperson(M) && !advanced)
@@ -226,7 +227,7 @@
 
 			if(mode == SCANNER_VERBOSE)
 				// Follow same body zone list every time so it's consistent across all humans
-				for(var/zone in GLOB.all_body_zones)
+				for(var/zone in BODY_ZONES_ALL)
 					var/obj/item/bodypart/limb = carbontarget.get_bodypart(zone)
 					if(isnull(limb))
 						dmgreport += "<tr>"
@@ -330,7 +331,7 @@
 		var/list/cyberimps
 		for(var/obj/item/organ/internal/cyberimp/cyberimp in humantarget.organs)
 			if(IS_ROBOTIC_ORGAN(cyberimp) && !(cyberimp.organ_flags & ORGAN_HIDDEN))
-				var/cyberimp_name = tochat ? capitalize(cyberimp.examine_title(user)) : capitalize(cyberimp.name)
+				var/cyberimp_name = tochat ? capitalize(cyberimp.get_examine_string(user, FALSE)) : capitalize(cyberimp.name)
 				LAZYADD(cyberimps, cyberimp_name)
 		if(LAZYLEN(cyberimps))
 			if(!render)
