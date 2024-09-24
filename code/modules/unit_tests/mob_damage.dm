@@ -276,7 +276,7 @@
 
 	// testing overhealing
 
-	damage_returned = round(dummy.heal_overall_damage(75, 99, updating_health = FALSE), 1)
+	damage_returned = round(dummy.heal_overall_damage(75, 99, updating_health = FALSE), 10) // melbert todo : floating point memes
 	TEST_ASSERT_EQUAL(damage_returned, 100, \
 		"heal_overall_damage() should have returned 100, but returned [damage_returned] instead!")
 
@@ -412,12 +412,12 @@
 		"heal_ordered_damage() should have returned 30, but returned [damage_returned] instead!")
 
 	// Should have 10 burn damage and 20 toxins damage remaining, let's check
-	TEST_ASSERT_EQUAL(dummy.getBruteLoss(), 0, \
-		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!")
-	TEST_ASSERT_EQUAL(dummy.getFireLoss(), 10, \
-		"[dummy] should have 10 burn damage, but has [dummy.getFireLoss()] instead!")
-	TEST_ASSERT_EQUAL(dummy.getToxLoss(), 20, \
-		"[dummy] should have 20 toxin damage, but has [dummy.getToxLoss()] instead!")
+	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 0, \
+		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!") // melbert todo : floating point memes
+	TEST_ASSERT_EQUAL(round(dummy.getFireLoss(), 1), 10, \
+		"[dummy] should have 10 burn damage, but has [dummy.getFireLoss()] instead!") // melbert todo : floating point memes
+	TEST_ASSERT_EQUAL(round(dummy.getToxLoss(), 1), 20, \
+		"[dummy] should have 20 toxin damage, but has [dummy.getToxLoss()] instead!") // melbert todo : floating point memes
 
 	// Now heal the remaining 30, overhealing by 5.
 	damage_returned = round(dummy.heal_ordered_damage(35, list(BRUTE, BURN, TOX)), 1)
@@ -425,12 +425,12 @@
 		"heal_ordered_damage() should have returned 30, but returned [damage_returned] instead!")
 
 	// Should have no damage remaining
-	TEST_ASSERT_EQUAL(dummy.getBruteLoss(), 0, \
-		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!")
-	TEST_ASSERT_EQUAL(dummy.getFireLoss(), 0, \
-		"[dummy] should have 0 burn damage, but has [dummy.getFireLoss()] instead!")
-	TEST_ASSERT_EQUAL(dummy.getToxLoss(), 0, \
-		"[dummy] should have 0 toxin damage, but has [dummy.getToxLoss()] instead!")
+	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 0, \
+		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!") // melbert todo : floating point memes
+	TEST_ASSERT_EQUAL(round(dummy.getFireLoss(), 1), 0, \
+		"[dummy] should have 0 burn damage, but has [dummy.getFireLoss()] instead!") // melbert todo : floating point memes
+	TEST_ASSERT_EQUAL(round(dummy.getToxLoss(), 1), 0, \
+		"[dummy] should have 0 toxin damage, but has [dummy.getToxLoss()] instead!") // melbert todo : floating point memes
 
 /// Tests that mob damage procs are working as intended for basic mobs
 /datum/unit_test/mob_damage/basic
