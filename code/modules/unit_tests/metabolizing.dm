@@ -16,7 +16,7 @@
 	C.reagents.metabolize(C, SSMOBS_DT, 0, can_overdose = TRUE)
 	C.reagents.clear_reagents()
 	if(C.stat == DEAD)
-		TEST_NOTICE("[reagent_type] killed [C] somehow!")
+		TEST_NOTICE(src, "[reagent_type] killed [C] somehow!")
 		C.revive(ADMIN_HEAL_ALL)
 
 /datum/unit_test/metabolization/Destroy()
