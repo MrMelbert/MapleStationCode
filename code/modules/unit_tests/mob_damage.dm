@@ -98,10 +98,10 @@
 		TEST_ASSERT_EQUAL(testing_mob.getToxLoss(), amount, \
 			"[testing_mob] should have [amount] toxin damage, instead they have [testing_mob.getToxLoss()]!")
 	if(included_types & BRUTELOSS)
-		TEST_ASSERT_EQUAL(round(testing_mob.getBruteLoss(), 1), amount, \
+		TEST_ASSERT_EQUAL(floor(testing_mob.getBruteLoss(), 1), amount, \
 			"[testing_mob] should have [amount] brute damage, instead they have [testing_mob.getBruteLoss()]!")
 	if(included_types & FIRELOSS)
-		TEST_ASSERT_EQUAL(round(testing_mob.getFireLoss(), 1), amount, \
+		TEST_ASSERT_EQUAL(floor(testing_mob.getFireLoss(), 1), amount, \
 			"[testing_mob] should have [amount] burn damage, instead they have [testing_mob.getFireLoss()]!")
 	if(included_types & OXYLOSS)
 		TEST_ASSERT_EQUAL(testing_mob.getOxyLoss(), amount, \
@@ -226,10 +226,10 @@
 	TEST_ASSERT_EQUAL(damage_returned, 5, \
 		"take_bodypart_damage() should have returned 5, but returned [damage_returned] instead!")
 
-	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 5, \
+	TEST_ASSERT_EQUAL(floor(dummy.getBruteLoss(), 1), 5, \
 		"Dummy should have 5 brute damage, instead they have [dummy.getBruteLoss()]!")
 
-	// heal 5 brute, 0 burn
+	// heal 4 brute, 1 burn
 	damage_returned = round(dummy.heal_bodypart_damage(4, 1), 1)
 	TEST_ASSERT_EQUAL(damage_returned, 4, \
 		"heal_bodypart_damage() should have returned 4, but returned [damage_returned] instead!")
@@ -412,11 +412,11 @@
 		"heal_ordered_damage() should have returned 30, but returned [damage_returned] instead!")
 
 	// Should have 10 burn damage and 20 toxins damage remaining, let's check
-	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 0, \
+	TEST_ASSERT_EQUAL(floor(dummy.getBruteLoss(), 1), 0, \
 		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!") // melbert todo : floating point memes
-	TEST_ASSERT_EQUAL(round(dummy.getFireLoss(), 1), 10, \
+	TEST_ASSERT_EQUAL(floor(dummy.getFireLoss(), 1), 10, \
 		"[dummy] should have 10 burn damage, but has [dummy.getFireLoss()] instead!") // melbert todo : floating point memes
-	TEST_ASSERT_EQUAL(round(dummy.getToxLoss(), 1), 20, \
+	TEST_ASSERT_EQUAL(floor(dummy.getToxLoss(), 1), 20, \
 		"[dummy] should have 20 toxin damage, but has [dummy.getToxLoss()] instead!") // melbert todo : floating point memes
 
 	// Now heal the remaining 30, overhealing by 5.
@@ -425,11 +425,11 @@
 		"heal_ordered_damage() should have returned 30, but returned [damage_returned] instead!")
 
 	// Should have no damage remaining
-	TEST_ASSERT_EQUAL(round(dummy.getBruteLoss(), 1), 0, \
+	TEST_ASSERT_EQUAL(floor(dummy.getBruteLoss(), 1), 0, \
 		"[dummy] should have 0 brute damage, but has [dummy.getBruteLoss()] instead!") // melbert todo : floating point memes
-	TEST_ASSERT_EQUAL(round(dummy.getFireLoss(), 1), 0, \
+	TEST_ASSERT_EQUAL(floor(dummy.getFireLoss(), 1), 0, \
 		"[dummy] should have 0 burn damage, but has [dummy.getFireLoss()] instead!") // melbert todo : floating point memes
-	TEST_ASSERT_EQUAL(round(dummy.getToxLoss(), 1), 0, \
+	TEST_ASSERT_EQUAL(floor(dummy.getToxLoss(), 1), 0, \
 		"[dummy] should have 0 toxin damage, but has [dummy.getToxLoss()] instead!") // melbert todo : floating point memes
 
 /// Tests that mob damage procs are working as intended for basic mobs
@@ -461,10 +461,10 @@
 		TEST_ASSERT_EQUAL(testing_mob.getToxLoss(), 0, \
 			"[testing_mob] should have [0] toxin damage, instead they have [testing_mob.getToxLoss()]!")
 	if(included_types & BRUTELOSS)
-		TEST_ASSERT_EQUAL(round(testing_mob.getBruteLoss(), 1), expected || amount * 4, \
+		TEST_ASSERT_EQUAL(floor(testing_mob.getBruteLoss(), 1), expected || amount * 4, \
 			"[testing_mob] should have [expected || amount * 4] brute damage, instead they have [testing_mob.getBruteLoss()]!")
 	if(included_types & FIRELOSS)
-		TEST_ASSERT_EQUAL(round(testing_mob.getFireLoss(), 1), 0, \
+		TEST_ASSERT_EQUAL(floor(testing_mob.getFireLoss(), 1), 0, \
 			"[testing_mob] should have [0] burn damage, instead they have [testing_mob.getFireLoss()]!")
 	if(included_types & OXYLOSS)
 		TEST_ASSERT_EQUAL(testing_mob.getOxyLoss(), 0, \
