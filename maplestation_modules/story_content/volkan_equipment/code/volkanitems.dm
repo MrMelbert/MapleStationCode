@@ -186,3 +186,25 @@
 	atom_storage.numerical_stacking = TRUE
 	atom_storage.max_total_storage = 6
 	atom_storage.max_slots = 2 // I expect trades to only have two items max right now.
+
+
+/*
+ * # Tractor field item
+ * A very important and complicated piece of Vtech (Volkan and Co technology).
+ * Invented by CaLE, based on gravity generators.
+ * In game it will basically act like telekinesis.
+ * Gives the tractor field component
+ */
+
+/obj/item/organ/internal/cyberimp/chest/tractorfield
+	name = "intricate metal toroid"
+	desc = "A strange toroid shaped mechanism with intricate machined metal shapes interlocked together. Two cables are sticking out from the inside."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/misc_items.dmi'
+	icon_state = "tractor_field_component"
+	w_class = WEIGHT_CLASS_NORMAL
+
+/obj/item/organ/internal/cyberimp/chest/tractorfield/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/tractorfield)
+
+

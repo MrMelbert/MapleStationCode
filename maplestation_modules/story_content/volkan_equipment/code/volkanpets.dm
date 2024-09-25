@@ -138,6 +138,9 @@
 	///speed it goes in combat mode. lower is faster.
 	var/combat_speed = 0.5
 
+	///50 percent chance to drop a special item...
+	var/tractor_field = /obj/item/organ/internal/cyberimp/chest/tractorfield
+
 	///the sound the vroomba makes when entering combat mode.
 	var/combat_sound = 'maplestation_modules/story_content/volkan_equipment/audio/vroomba_combat_mode.ogg'
 
@@ -153,8 +156,10 @@
 /mob/living/basic/bot/cleanbot/vroomba/Initialize(mapload)
 	. = ..()
 	qdel(GetComponent(/datum/component/cleaner)) //we don't want the default cleaner because it doesn't have the stuff we want (doesnt remove itself when in combat mode)
+
 	AddElement(/datum/element/dextrous)
 	AddComponent(/datum/component/basic_inhands)
+
 	change_number_of_hands(0) //it only has hands when it is in combat mode, so start with no usable hands while still having the components
 
 	AddComponent(/datum/component/cleaner/vroomba, \
@@ -172,7 +177,11 @@
 /mob/living/basic/bot/cleanbot/vroomba/explode()
 	visible_message(span_boldnotice("[src] blows apart!"))
 	do_sparks(3, TRUE, src)
-	explosion(src, heavy_impact_range = 1, light_impact_range = 4)
+	explosion(src, heavy_impact_range = 0, light_impact_range = 4)
+
+	var/atom/location_destroyed = drop_location()
+	if(prob(50))
+		drop_part(tractor_field, location_destroyed)
 
 //the sprite doesn't show up unless I do this
 /mob/living/basic/bot/cleanbot/vroomba/update_icon_state()
@@ -197,7 +206,7 @@
 
 	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
-	AddComponent(/datum/component/tractorfield/vroomba)
+	AddComponent(/datum/component/tractorfield/vroomba) //this one removes itself when it is not in combat mode to avoid bugs. :)
 
 	change_number_of_hands(2)
 
