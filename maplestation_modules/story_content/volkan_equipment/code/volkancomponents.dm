@@ -138,8 +138,8 @@
 /atom/proc/attack_tractor(mob/user, mob/target, damage, force)
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
 	user.changeNext_move(CLICK_CD_MELEE)
-	//push them back!!
-	target.throw_at(get_edge_target_turf(target, dir), force, 6, thrower = user)
+	//push them to where you are facing!!
+	target.throw_at(get_edge_target_turf(user, dir), force, 5, thrower = user)
 	balloon_alert(target, "gravity shifts!") // It essentially rotates gravity to the side for its target.
 	visible_message(span_danger("[user] pushes [target] back with an unknown force!"))
 	user.log_message("has attacked [target] using a tractor field!", LOG_ATTACK) //for the admins
@@ -195,7 +195,7 @@
 
 	qdel(src)
 
-///this one removes itself when combat mode is deactivated.
+///this tractor field removes itself when combat mode is deactivated.
 /datum/component/tractorfield/vroomba
 	max_range = 3
 	force = 1
