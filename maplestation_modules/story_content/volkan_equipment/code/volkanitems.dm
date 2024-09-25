@@ -206,5 +206,16 @@
 	slot = ORGAN_SLOT_TRACTOR_FIELD
 
 /obj/item/organ/internal/cyberimp/chest/tractorfield/on_mob_insert(mob/living/owner)
-	owner.AddComponent(/datum/component/tractorfield)
+
+	if (iscyborg(owner) || (owner.mob_biotypes & MOB_ROBOTIC))
+		owner.AddComponent(/datum/component/tractorfield)
+	else
+		owner.AddComponent(/datum/component/tractorfield/broken) //fleshy beings cannot control it...
+	. = ..()
+
+/obj/item/organ/internal/cyberimp/chest/tractorfield/on_mob_remove(mob/living/carbon/organ_owner, special)
+	if (iscyborg(owner) || (owner.mob_biotypes & MOB_ROBOTIC))
+		qdel(owner.GetComponent(/datum/component/tractorfield))
+	else
+		qdel(owner.GetComponent(/datum/component/tractorfield/broken))
 	. = ..()

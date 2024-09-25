@@ -139,13 +139,63 @@
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
 	user.changeNext_move(CLICK_CD_MELEE)
 	//push them to where you are facing!!
-	target.throw_at(get_edge_target_turf(user, dir), force, 5, thrower = user)
+	target.throw_at(get_edge_target_turf(target, user.dir), force, damage, thrower = user)
 	balloon_alert(target, "gravity shifts!") // It essentially rotates gravity to the side for its target.
 	visible_message(span_danger("[user] pushes [target] back with an unknown force!"))
 	user.log_message("has attacked [target] using a tractor field!", LOG_ATTACK) //for the admins
 
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
+/*
+ * # Broken trator field
+ * This one is just fucked. Should feel chaotic to use.
+ */
+/datum/component/tractorfield/broken
+	max_range = 4
+	//less damage, throws things less far
+	damage = 2
+	force = 2
+
+///throw yourself around if you try to touch something far away
+/datum/component/tractorfield/broken/tractorRangeCheck(mob/user, atom/target)
+	var/d = get_dist(user, target)
+	if(d > max_range)
+		user.balloon_alert(user, "You feel something in your chest pull against you!")
+		new /obj/effect/temp_visual/telekinesis(get_turf(src))
+		user.throw_at(get_edge_target_turf(user, rand(0,8)), force, damage, thrower = user)
+		return
+	return TRUE
+
+/datum/component/tractorfield/broken/on_ranged_attack(mob/source, atom/target, src)
+	if(is_type_in_typecache(target, blacklisted_atoms))
+		return
+	if(!tractorRangeCheck(source, target) || source.z != target.z)
+		return
+	if(ismob(target)) //atacking mobs
+		return target.attack_tractor_broken(source, target, damage, force)
+	if(isitem(target))
+		return target.throw_tractor_broken(source, target, damage, force) //ittl just throw it
+	return on_unarmed_attack(source, target, TRUE)
+
+///A not quite working properly tractor field attack
+/atom/proc/attack_tractor_broken(mob/user, mob/target, damage, force, random = FALSE)
+	new /obj/effect/temp_visual/telekinesis(get_turf(src))
+	user.changeNext_move(CLICK_CD_MELEE)
+	//push them to a direction!!
+	if (random)
+		target.throw_at(get_edge_target_turf(user, rand(0,8)), force, damage, thrower = user)
+	else
+		target.throw_at(get_edge_target_turf(user, dir), force, damage, thrower = user)
+	balloon_alert(target, "gravity shifts uncomfortably!") // It essentially rotates gravity to the side for its target.
+	visible_message(span_danger("[user] pushes [target] with an unknown force!"))
+	user.log_message("has attacked [target] using a broken tractor field!", LOG_ATTACK) //for the admins
+	return COMPONENT_CANCEL_ATTACK_CHAIN
+
+///A broken grab. Instead, it just throws the object around.
+/atom/proc/throw_tractor_broken(mob/user, obj/item/target, damage, force, random = FALSE)
+	target.throw_at(get_edge_target_turf(user, rand(0,8)), force + rand(force), damage, thrower = user)// randomly throws it, stronger than it would with a person.
+	visible_message(span_danger("[user] throws the [target] with an unknown force chaotically!"))
+	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /*
  * # Vroomba only stuff
