@@ -238,7 +238,7 @@
 /datum/chemical_reaction/gojuice
 	results = list(/datum/reagent/drug/gojuice = 3)
 	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/fuel/oil = 1, /datum/reagent/consumable/sugar = 1)
-	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
+	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING | REACTION_TAG_PAIN
 
 /obj/item/reagent_containers/cup/glass/bottle/gojuice
 	name = "go-juice bottle"
