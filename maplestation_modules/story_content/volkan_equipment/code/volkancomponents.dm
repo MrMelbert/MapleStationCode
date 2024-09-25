@@ -147,7 +147,7 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /*
- * # Broken trator field
+ * # Broken tractor field
  * This one is just fucked IC. Should feel chaotic to use.
  */
 /datum/component/tractorfield/broken
