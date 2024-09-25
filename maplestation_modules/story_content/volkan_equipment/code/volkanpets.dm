@@ -135,7 +135,7 @@
 	hud_type = /datum/hud/vroomba
 
 	///basic hat offset
-	var/static/list/hat_offsets = list(0,-11)
+	var/static/list/hat_offsets = list(0,-9)
 
 	///the icon state for when it is flying
 	var/flying_icon = "vroomba_float"
@@ -227,8 +227,6 @@
 	balloon_alert_to_viewers("gravity shifts!", vision_distance = 4) //When it turns on, it will make gravity feel funny.
 	playsound(src, combat_sound, 70, ignore_walls = FALSE)
 
-	hat_offsets = list(0,-7) //lower hat offset
-	update_appearance(UPDATE_OVERLAYS)
 
 ///the vroomba hiding its combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/calm_down()
@@ -244,9 +242,6 @@
 	REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
 	change_number_of_hands(0)
-
-	hat_offsets = list(0,-11) //raise hat offset
-	update_appearance(UPDATE_OVERLAYS)
 
 ///The vroomba is not killed by EMPs but it does stun it for a short moment.
 /mob/living/basic/bot/cleanbot/vroomba/emp_act(severity)
