@@ -155,7 +155,7 @@
 	return ..()
 
 /obj/machinery/icecream_vat/AltClick(mob/user)
-	if(!user.can_interact_with(src))
+	if(!user.in_range_to_interact_with(src))
 		return FALSE
 	if(custom_ice_cream_beaker)
 		balloon_alert(user, "removed beaker")

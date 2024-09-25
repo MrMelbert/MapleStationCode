@@ -1139,7 +1139,7 @@
 	return seat.mob_size * 3
 
 ///Can the mob interact() with an atom?
-/mob/proc/can_interact_with(atom/A, treat_mob_as_adjacent)
+/mob/proc/in_range_to_interact_with(atom/A, treat_mob_as_adjacent)
 	if(isAdminGhostAI(src))
 		return TRUE
 	//Return early. we do not need to check that we are on adjacent turfs (i.e we are inside a closet)
