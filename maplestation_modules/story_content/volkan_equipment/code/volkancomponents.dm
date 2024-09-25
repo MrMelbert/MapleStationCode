@@ -193,6 +193,8 @@
 
 ///A broken grab. Instead, it just throws the object around.
 /atom/proc/throw_tractor_broken(mob/user, obj/item/target, damage, force, random = FALSE)
+	new /obj/effect/temp_visual/telekinesis(get_turf(src))
+	user.changeNext_move(CLICK_CD_MELEE)
 	target.throw_at(get_edge_target_turf(user, rand(0,8)), force + rand(force), damage, thrower = user)// randomly throws it, stronger than it would with a person.
 	visible_message(span_danger("[user] throws the [target] with an unknown force chaotically!"))
 	return COMPONENT_CANCEL_ATTACK_CHAIN
