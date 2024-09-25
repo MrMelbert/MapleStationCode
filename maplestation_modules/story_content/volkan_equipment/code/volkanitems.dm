@@ -99,6 +99,7 @@
 
 	mobtype = /mob/living/basic/volkan/shoulder_pet
 
+
 //--other misc--
 //Imprint Key
 //A key used to imprint a Volkan bot to whoever has it.
@@ -114,7 +115,6 @@
 
 
 //---------------------cool boxes!-----------------------
-
 //Unfoldable Box.
 //A box designed to hold both a pet and the communication chips for transit. It is easy to unfold once the items inside has been taken out.
 /obj/item/storage/box/volkan/unfoldable_box
@@ -140,6 +140,7 @@
 		/obj/item/volkan/stored_bot/shoulder_pet = 1,
 	)
 	generate_items_inside(items_inside, src)
+
 
 //Chip box
 //Designed to hold communication chips
@@ -202,9 +203,8 @@
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/misc_items.dmi'
 	icon_state = "tractor_field_component"
 	w_class = WEIGHT_CLASS_NORMAL
+	slot = ORGAN_SLOT_TRACTOR_FIELD
 
-/obj/item/organ/internal/cyberimp/chest/tractorfield/Initialize(mapload)
+/obj/item/organ/internal/cyberimp/chest/tractorfield/on_mob_insert(mob/living/owner)
+	owner.AddComponent(/datum/component/tractorfield)
 	. = ..()
-	AddComponent(/datum/component/tractorfield)
-
-

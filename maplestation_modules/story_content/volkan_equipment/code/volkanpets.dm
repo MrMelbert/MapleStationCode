@@ -132,6 +132,8 @@
 
 	hud_type = /datum/hud/vroomba
 
+	var/hat_offset = -5
+
 	///the icon state for when it is flying
 	var/flying_icon = "vroomba_float"
 
@@ -187,6 +189,16 @@
 /mob/living/basic/bot/cleanbot/vroomba/update_icon_state()
 	SHOULD_CALL_PARENT(FALSE)
 	return SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_ICON_STATE)
+
+/mob/living/silicon/robot/regenerate_icons()
+	return update_icons()
+
+/mob/living/silicon/robot/update_icons() //for the hat
+	if(hat)
+		var/mutable_appearance/head_overlay = hat.build_worn_icon(default_layer = 20, default_icon_file = 'icons/mob/clothing/head/default.dmi')
+		head_overlay.pixel_z += hat_offset
+		add_overlay(head_overlay)
+	update_appearance(UPDATE_OVERLAYS)
 
 /mob/living/basic/bot/cleanbot/vroomba/set_combat_mode(new_mode, silent)
 	. = ..()
