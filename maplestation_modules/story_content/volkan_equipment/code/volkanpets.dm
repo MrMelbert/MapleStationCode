@@ -169,11 +169,9 @@
 
 
 	var/static/list/remove_hat = list(SIGNAL_ADDTRAIT(TRAIT_MOB_TIPPED))
-	var/static/list/prevent_checks = list(TRAIT_MOB_TIPPED)
 	AddElement(/datum/element/hat_wearer,\
 		offsets = hat_offsets,\
-		remove_hat_signals = remove_hat,\
-		traits_prevent_checks = prevent_checks,\
+		remove_hat_signals = remove_hat
 	)
 
 	AddComponent(/datum/component/cleaner/vroomba, \
