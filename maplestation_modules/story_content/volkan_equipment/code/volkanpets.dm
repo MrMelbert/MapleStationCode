@@ -80,6 +80,8 @@
 		unique = FALSE)
 	AddComponent(/datum/component/obeys_commands, pet_commands) // follows pet command
 
+
+
 ///Proc to run once imprinted
 /mob/living/basic/volkan/shoulder_pet/proc/tamed(mob/living/tamer)
 	visible_message(span_notice("[src] beeps and turns its head toward [tamer] with its head tilted."))
@@ -132,7 +134,8 @@
 
 	hud_type = /datum/hud/vroomba
 
-	var/hat_offset = -5
+	///basic hat offset
+	var/static/list/hat_offsets = list(0,-11)
 
 	///the icon state for when it is flying
 	var/flying_icon = "vroomba_float"
@@ -164,6 +167,15 @@
 
 	change_number_of_hands(0) //it only has hands when it is in combat mode, so start with no usable hands while still having the components
 
+
+	var/static/list/remove_hat = list(SIGNAL_ADDTRAIT(TRAIT_MOB_TIPPED))
+	var/static/list/prevent_checks = list(TRAIT_MOB_TIPPED)
+	AddElement(/datum/element/hat_wearer,\
+		offsets = hat_offsets,\
+		remove_hat_signals = remove_hat,\
+		traits_prevent_checks = prevent_checks,\
+	)
+
 	AddComponent(/datum/component/cleaner/vroomba, \
 		base_cleaning_duration = 2 SECONDS, \
 		pre_clean_callback = CALLBACK(src, PROC_REF(update_bot_mode), BOT_CLEANING), \
@@ -190,16 +202,6 @@
 	SHOULD_CALL_PARENT(FALSE)
 	return SEND_SIGNAL(src, COMSIG_ATOM_UPDATE_ICON_STATE)
 
-/mob/living/silicon/robot/regenerate_icons()
-	return update_icons()
-
-/mob/living/silicon/robot/update_icons() //for the hat
-	if(hat)
-		var/mutable_appearance/head_overlay = hat.build_worn_icon(default_layer = 20, default_icon_file = 'icons/mob/clothing/head/default.dmi')
-		head_overlay.pixel_z += hat_offset
-		add_overlay(head_overlay)
-	update_appearance(UPDATE_OVERLAYS)
-
 /mob/living/basic/bot/cleanbot/vroomba/set_combat_mode(new_mode, silent)
 	. = ..()
 	SEND_SIGNAL(src, COMSIG_COMBAT_MODE)
@@ -225,6 +227,9 @@
 	balloon_alert_to_viewers("gravity shifts!", vision_distance = 4) //When it turns on, it will make gravity feel funny.
 	playsound(src, combat_sound, 70, ignore_walls = FALSE)
 
+	hat_offsets = list(0,-7) //lower hat offset
+	update_appearance(UPDATE_OVERLAYS)
+
 ///the vroomba hiding its combat capabilities!
 /mob/living/basic/bot/cleanbot/vroomba/proc/calm_down()
 	icon_state = base_icon_state
@@ -239,6 +244,9 @@
 	REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT(type))
 
 	change_number_of_hands(0)
+
+	hat_offsets = list(0,-11) //raise hat offset
+	update_appearance(UPDATE_OVERLAYS)
 
 ///The vroomba is not killed by EMPs but it does stun it for a short moment.
 /mob/living/basic/bot/cleanbot/vroomba/emp_act(severity)
@@ -267,7 +275,7 @@
 		else
 			for(var/i in held_items.len to amt step -1)
 				dropItemToGround(held_items[i])
-
 	held_items.len = amt
 	if(hud_used)
 		hud_used.build_hand_slots()
+

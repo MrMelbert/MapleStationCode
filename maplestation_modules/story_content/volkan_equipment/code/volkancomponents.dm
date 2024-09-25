@@ -178,14 +178,15 @@
 	return on_unarmed_attack(source, target, TRUE)
 
 ///A not quite working properly tractor field attack
-/atom/proc/attack_tractor_broken(mob/user, mob/target, damage, force, random = FALSE)
+/atom/proc/attack_tractor_broken(mob/user, mob/target, damage, force)
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
 	user.changeNext_move(CLICK_CD_MELEE)
-	//push them to a direction!!
-	if (random)
-		target.throw_at(get_edge_target_turf(user, rand(0,8)), force, damage, thrower = user)
-	else
-		target.throw_at(get_edge_target_turf(user, dir), force, damage, thrower = user)
+
+	//throw people against eachother!
+	user.throw_at(get_edge_target_turf(target, user.dir), force, damage, thrower = user)
+	target.throw_at(get_edge_target_turf(user, target.dir), force, damage, thrower = user)
+
+	user.balloon_alert(target, "gravity shifts!")
 	balloon_alert(target, "gravity shifts uncomfortably!") // It essentially rotates gravity to the side for its target.
 	visible_message(span_danger("[user] pushes [target] with an unknown force!"))
 	user.log_message("has attacked [target] using a broken tractor field!", LOG_ATTACK) //for the admins
