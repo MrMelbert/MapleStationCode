@@ -48,3 +48,5 @@
 #define examine_block(str) ("<div class='examine_block'>" + str + "</div>")
 /// Makes a horizontal line with text in the middle
 #define separator_hr(str) ("<div class='separator'>" + str + "</div>")
+/// Helper which creates a chat message which may have a tooltip in some contexts, but not others.
+#define conditional_tooltip(normal_text, tooltip_text, condition) ((condition) ? (span_tooltip(tooltip_text, normal_text)) : (normal_text))
