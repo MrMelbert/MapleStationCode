@@ -39,7 +39,7 @@
 	return ..()
 
 /datum/wound/pierce/bleed/receive_damage(wounding_type, wounding_dmg, wound_bonus, attack_direction, damage_source)
-	if(victim.stat == DEAD || (wounding_dmg < WOUND_MINIMUM_DAMAGE) || wounding_type == WOUND_BURN)
+	if(isnull(victim) || victim.stat == DEAD || (wounding_dmg < WOUND_MINIMUM_DAMAGE) || wounding_type == WOUND_BURN)
 		return
 	if(!limb.can_bleed() || !prob(internal_bleeding_chance))
 		return
@@ -94,11 +94,15 @@
 	if(limb.can_bleed())
 		if(victim.bodytemperature < (BODYTEMP_NORMAL - 10))
 			adjust_blood_flow(-0.1 * seconds_per_tick)
+			if(QDELETED(src))
+				return
 			if(SPT_PROB(2.5, seconds_per_tick))
 				to_chat(victim, span_notice("You feel the [lowertext(undiagnosed_name || name)] in your [limb.plaintext_zone] firming up from the cold!"))
 
 		if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 			adjust_blood_flow(0.25 * seconds_per_tick) // old heparin used to just add +2 bleed stacks per tick, this adds 0.5 bleed flow to all open cuts which is probably even stronger as long as you can cut them first
+			if(QDELETED(src))
+				return
 
 	if(limb.current_gauze)
 		var/amt_blocking = limb.current_gauze.absorption_rate * seconds_per_tick

@@ -50,7 +50,7 @@
 	COOLDOWN_START(src, worsen_cd, 5 SECONDS)
 
 /datum/wound/bleed_internal/receive_damage(wounding_type, wounding_dmg, wound_bonus, attack_direction, damage_source)
-	if(wounding_type == WOUND_BURN || wound_bonus == CANT_WOUND)
+	if(isnull(victim) || wounding_type == WOUND_BURN || wound_bonus == CANT_WOUND)
 		return
 	if(!COOLDOWN_FINISHED(src, worsen_cd))
 		return

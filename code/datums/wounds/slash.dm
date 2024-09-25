@@ -109,7 +109,7 @@
 	return "<B>[msg.Join()]</B>"
 
 /datum/wound/slash/flesh/receive_damage(wounding_type, wounding_dmg, wound_bonus)
-	if (!victim) // if we are dismembered, we can still take damage, its fine to check here
+	if(isnull(victim)) // if we are dismembered, we can still take damage, its fine to check here
 		return
 
 	if(victim.stat != DEAD && wound_bonus != CANT_WOUND && wounding_type == WOUND_SLASH) // can't stab dead bodies to make it bleed faster this way

@@ -128,7 +128,7 @@
 		if(!(locate(/obj/item/organ/internal/tongue) in src))
 			. += span_info("[real_name]'s tongue has been removed.")
 
-/obj/item/bodypart/head/can_dismember(obj/item/item)
+/obj/item/bodypart/head/can_dismember()
 	if (!can_dismember)
 		return FALSE
 
@@ -243,3 +243,4 @@
 	bodypart_flags = BODYPART_UNREMOVABLE
 	max_damage = LIMB_MAX_HP_ALIEN_LARVA
 	bodytype = BODYTYPE_LARVA_PLACEHOLDER | BODYTYPE_ORGANIC
+	burn_modifier = 2

@@ -320,7 +320,7 @@
 							armor_factor *= ARMOR_WEAKENED_MULTIPLIER
 						damage_dealt *= max(0, 1 - armor_factor*0.01)
 
-					hit_part.painless_wound_roll(wounding_type, damage_dealt, w_bonus, bw_bonus, initial(P.sharpness))
+					hit_part.check_wounding(wounding_type, damage_dealt, w_bonus, bw_bonus, null, initial(P.name), initial(P.sharpness))
 
 		var/limb_hit_text = ""
 		if(hit_part)

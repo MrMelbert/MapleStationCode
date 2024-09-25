@@ -557,21 +557,23 @@
 	if(status_flags & GODMODE)
 		return
 
-	var/total_burn = 0
-	var/total_brute = 0
+	var/total_burn = getBruteLoss()
+	var/total_brute = getFireLoss()
 	var/total_oxy = getOxyLoss()
 	var/total_tox = getToxLoss()
-	for(var/obj/item/bodypart/part as anything in bodyparts) //hardcoded to streamline things a bit
-		total_brute += (part.brute_dam * part.body_damage_coeff)
-		total_burn += (part.burn_dam * part.body_damage_coeff)
 
 	var/oldhp = health
 	set_health(round(maxHealth - total_oxy - total_tox - total_burn - total_brute, DAMAGE_PRECISION))
 
-	var/brutecon = ((HAS_TRAIT(src, TRAIT_NOBREATH) || HAS_TRAIT(src, TRAIT_NOBLOOD)) ? -0.2 : -0.05) * total_brute
-	var/firecon =  ((HAS_TRAIT(src, TRAIT_NOBREATH) || HAS_TRAIT(src, TRAIT_NOBLOOD)) ? -0.2 : -0.05) * total_burn
+	var/brutecon = -0.005 * (total_brute ** 1.5)
+	var/firecon =  -0.005 * (total_burn ** 1.5)
 	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(total_oxy * (total_oxy >= 100 ? 0.5 : 0.33), 100))
 	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
+	// To prevent nobreath/noblood species from being incredibly tanky, due to ignoring major sources of con damage,
+	// we up their damage taken from brute and fire by 2x to compensate.
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_NOBREATH))
+		brutecon *= 2
+		firecon *= 2
 	// Ignores the helpers because we can handle them in bulk
 	LAZYSET(consciousness_modifiers, BLUNT_DAMAGE, brutecon)
 	LAZYSET(consciousness_modifiers, BURN_DAMAGE, firecon)
@@ -591,8 +593,15 @@
 	if(to_update)
 		SShealth_updates.queue_update(src, to_update)
 
-	if(((maxHealth - total_burn) < HEALTH_THRESHOLD_DEAD * 2) && stat == DEAD)
-		become_husk(BURN)
+	if(total_burn > maxHealth * 4 && stat == DEAD && !HAS_TRAIT(src, TRAIT_UNHUSKABLE) && !HAS_TRAIT(src, TRAIT_HUSK))
+		var/num_seared_parts = 0
+		for(var/obj/item/bodypart/part as anything in bodyparts)
+			if(IS_ROBOTIC_LIMB(part) || part.burn_dam <= (LIMB_MAX_HP_DEFAULT / 3))
+				continue
+			num_seared_parts++
+
+		if(num_seared_parts >= 3)
+			become_husk(BURN)
 
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 

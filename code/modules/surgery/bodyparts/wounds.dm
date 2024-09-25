@@ -1,41 +1,3 @@
-/// Allows us to roll for and apply a wound without actually dealing damage. Used for aggregate wounding power with pellet clouds
-/obj/item/bodypart/proc/painless_wound_roll(wounding_type, wounding_dmg, wound_bonus, bare_wound_bonus, sharpness=NONE)
-	SHOULD_CALL_PARENT(TRUE)
-
-	if(!owner || wounding_dmg <= WOUND_MINIMUM_DAMAGE || wound_bonus == CANT_WOUND || (owner.status_flags & GODMODE))
-		return
-
-	var/mangled_state = get_mangled_state()
-	var/easy_dismember = HAS_TRAIT(owner, TRAIT_EASYDISMEMBER) // if we have easydismember, we don't reduce damage when redirecting damage to different types (slashing weapons on mangled/skinless limbs attack at 100% instead of 50%)
-
-	var/bio_status = get_bio_state_status()
-
-	var/has_exterior = ((bio_status & ANATOMY_EXTERIOR))
-	var/has_interior = ((bio_status & ANATOMY_INTERIOR))
-
-	var/exterior_ready_to_dismember = (!has_exterior || ((mangled_state & BODYPART_MANGLED_EXTERIOR)))
-
-	// if we're bone only, all cutting attacks go straight to the bone
-	if(!has_exterior && has_interior)
-		if(wounding_type == WOUND_SLASH)
-			wounding_type = WOUND_BLUNT
-			wounding_dmg *= (easy_dismember ? 1 : 0.6)
-		else if(wounding_type == WOUND_PIERCE)
-			wounding_type = WOUND_BLUNT
-			wounding_dmg *= (easy_dismember ? 1 : 0.75)
-	else
-		// if we've already mangled the skin (critical slash or piercing wound), then the bone is exposed, and we can damage it with sharp weapons at a reduced rate
-		// So a big sharp weapon is still all you need to destroy a limb
-		if(has_interior && exterior_ready_to_dismember && !(mangled_state & BODYPART_MANGLED_INTERIOR) && sharpness)
-			if(wounding_type == WOUND_SLASH && !easy_dismember)
-				wounding_dmg *= 0.6 // edged weapons pass along 60% of their wounding damage to the bone since the power is spread out over a larger area
-			if(wounding_type == WOUND_PIERCE && !easy_dismember)
-				wounding_dmg *= 0.75 // piercing weapons pass along 75% of their wounding damage to the bone since it's more concentrated
-			wounding_type = WOUND_BLUNT
-		if ((dismemberable_by_wound() || dismemberable_by_total_damage()) && try_dismember(wounding_type, wounding_dmg, wound_bonus, bare_wound_bonus))
-			return
-	return check_wounding(wounding_type, wounding_dmg, wound_bonus, bare_wound_bonus)
-
 /**
  * check_wounding() is where we handle rolling for, selecting, and applying a wound if we meet the criteria
  *
@@ -48,36 +10,80 @@
  * * wound_bonus- The wound_bonus of an attack
  * * bare_wound_bonus- The bare_wound_bonus of an attack
  */
-/obj/item/bodypart/proc/check_wounding(woundtype, damage, wound_bonus, bare_wound_bonus, attack_direction, damage_source)
+/obj/item/bodypart/proc/check_wounding(woundtype, damage, wound_bonus, bare_wound_bonus, attack_direction, damage_source, sharpness)
 	SHOULD_CALL_PARENT(TRUE)
 	RETURN_TYPE(/datum/wound)
 
-	if(HAS_TRAIT(owner, TRAIT_NEVER_WOUNDED) || (owner.status_flags & GODMODE))
+	if(isnull(owner) || HAS_TRAIT(owner, TRAIT_NEVER_WOUNDED) || (owner.status_flags & GODMODE) || wound_bonus == CANT_WOUND)
 		return
+
+	damage *= wound_modifier
+
+	if(woundtype == WOUND_BLUNT && sharpness)
+		if(sharpness & SHARP_EDGED)
+			woundtype = WOUND_SLASH
+		else if (sharpness & SHARP_POINTY)
+			woundtype = WOUND_PIERCE
+
+	var/mangled_state = get_mangled_state()
+	var/easy_dismember = HAS_TRAIT(owner, TRAIT_EASYDISMEMBER) // if we have easydismember, we don't reduce damage when redirecting damage to different types (slashing weapons on mangled/skinless limbs attack at 100% instead of 50%)
+
+	var/bio_status = get_bio_state_status()
+
+	var/has_exterior = ((bio_status & ANATOMY_EXTERIOR))
+	var/has_interior = ((bio_status & ANATOMY_INTERIOR))
+
+	var/exterior_ready_to_dismember = (!has_exterior || (mangled_state & BODYPART_MANGLED_EXTERIOR))
+
+	// if we're bone only, all cutting attacks go straight to the bone
+	if(!has_exterior && has_interior)
+		if(woundtype == WOUND_SLASH)
+			woundtype = WOUND_BLUNT
+			damage *= (easy_dismember ? 1 : 0.6)
+		else if(woundtype == WOUND_PIERCE)
+			woundtype = WOUND_BLUNT
+			damage *= (easy_dismember ? 1 : 0.75)
+	else
+		// if we've already mangled the skin (critical slash or piercing wound), then the bone is exposed, and we can damage it with sharp weapons at a reduced rate
+		// So a big sharp weapon is still all you need to destroy a limb
+		if(has_interior && exterior_ready_to_dismember && !(mangled_state & BODYPART_MANGLED_INTERIOR) && sharpness)
+			if(woundtype == WOUND_SLASH && !easy_dismember)
+				damage *= 0.6 // edged weapons pass along 60% of their wounding damage to the bone since the power is spread out over a larger area
+			if(woundtype == WOUND_PIERCE && !easy_dismember)
+				damage *= 0.75 // piercing weapons pass along 75% of their wounding damage to the bone since it's more concentrated
+			woundtype = WOUND_BLUNT
+
+	if(HAS_TRAIT(owner, TRAIT_HARDLY_WOUNDED))
+		damage *= 0.85
+
+	if(easy_dismember)
+		damage *= 1.1
+
+	if(HAS_TRAIT(owner, TRAIT_EASYBLEED) && (woundtype == WOUND_PIERCE || woundtype == WOUND_SLASH))
+		damage *= 1.5
 
 	// note that these are fed into an exponent, so these are magnified
 	if(HAS_TRAIT(owner, TRAIT_EASILY_WOUNDED))
 		damage *= 1.5
+	// this needs to happen last!
 	else
 		damage = min(damage, WOUND_MAX_CONSIDERED_DAMAGE)
 
-	if(HAS_TRAIT(owner,TRAIT_HARDLY_WOUNDED))
-		damage *= 0.85
-
-	if(HAS_TRAIT(owner, TRAIT_EASYDISMEMBER))
-		damage *= 1.1
-
-	if(HAS_TRAIT(owner, TRAIT_EASYBLEED) && ((woundtype == WOUND_PIERCE) || (woundtype == WOUND_SLASH)))
-		damage *= 1.5
+	if(damage <= WOUND_MINIMUM_DAMAGE)
+		return
+	// checks cumulative dismemberment
+	if(in_dismemberable_state() && try_dismember(woundtype, damage, wound_bonus, bare_wound_bonus))
+		return
 
 	var/base_roll = rand(1, round(damage ** WOUND_DAMAGE_EXPONENT))
 	var/injury_roll = base_roll
 	injury_roll += check_woundings_mods(woundtype, damage, wound_bonus, bare_wound_bonus)
 	var/list/series_wounding_mods = check_series_wounding_mods()
 
+	// checks outright dismemberment
 	if(injury_roll > WOUND_DISMEMBER_OUTRIGHT_THRESH && prob(get_damage() / max_damage * 100) && can_dismember())
 		var/datum/wound/loss/dismembering = new
-		dismembering.apply_dismember(src, woundtype, outright = TRUE, attack_direction = attack_direction)
+		dismembering.apply_dismember(src, woundtype, TRUE, attack_direction)
 		return
 
 	var/list/datum/wound/possible_wounds = list()

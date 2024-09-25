@@ -288,14 +288,12 @@
 	var/update = NONE
 	while(parts.len && (brute > 0 || burn > 0))
 		var/obj/item/bodypart/picked = pick(parts)
-		var/brute_per_part = round(brute/parts.len, DAMAGE_PRECISION)
-		var/burn_per_part = round(burn/parts.len, DAMAGE_PRECISION)
 
 		var/brute_was = picked.brute_dam
 		var/burn_was = picked.burn_dam
 		. += picked.get_damage()
 
-		update |= picked.heal_damage(brute_per_part, burn_per_part, updating_health = FALSE, forced = forced, required_bodytype = required_bodytype)
+		update |= picked.heal_damage(brute, burn, updating_health = FALSE, forced = forced, required_bodytype = required_bodytype)
 
 		. -= picked.get_damage() // return the net amount of damage healed
 

@@ -103,24 +103,16 @@
 	var/extra_wound_details = ""
 
 	if(I.damtype == BRUTE && hit_bodypart.can_dismember())
-
-		var/mangled_state = hit_bodypart.get_mangled_state()
-
-		var/bio_status = hit_bodypart.get_bio_state_status()
-
-		var/has_exterior = bio_status & ANATOMY_EXTERIOR
-		var/has_interior = bio_status & ANATOMY_INTERIOR
-
-		var/exterior_ready_to_dismember = !has_exterior || ((mangled_state & BODYPART_MANGLED_EXTERIOR))
-		var/interior_ready_to_dismember = !has_interior || ((mangled_state & BODYPART_MANGLED_INTERIOR))
-
-		var/dismemberable = hit_bodypart.dismemberable_by_wound() || hit_bodypart.dismemberable_by_total_damage()
-		if (dismemberable)
+		var/item_sharp = I.get_sharpness()
+		if(hit_bodypart.in_dismemberable_state())
 			extra_wound_details = hit_bodypart.get_soon_dismember_message()
-		else if(has_interior && (has_exterior && exterior_ready_to_dismember) && I.get_sharpness())
-			extra_wound_details = ", [I.get_sharpness() == SHARP_EDGED ? "slicing" : "piercing"] through to the [hit_bodypart.get_internal_description()]"
-		else if(has_exterior && (has_interior && interior_ready_to_dismember) && I.get_sharpness())
-			extra_wound_details = ", [I.get_sharpness() == SHARP_EDGED ? "slicing" : "piercing"] at the remaining [hit_bodypart.get_external_description()]"
+
+		else if(item_sharp)
+			extra_wound_details = ", [item_sharp == SHARP_EDGED ? "slicing" : "piercing"]"
+			if(hit_bodypart.get_mangled_state() & BODYPART_MANGLED_INTERIOR)
+				extra_wound_details += " through to the [hit_bodypart.get_internal_description()]"
+			else
+				extra_wound_details += " at the remaining [hit_bodypart.get_external_description()]"
 
 	var/message_hit_area = ""
 	if(hit_area)
@@ -578,7 +570,7 @@
 	for (var/_limb in bodyparts)
 		var/obj/item/bodypart/limb = _limb
 		if (!IS_ORGANIC_LIMB(limb))
-			. += (limb.brute_dam * limb.body_damage_coeff) + (limb.burn_dam * limb.body_damage_coeff)
+			. += limb.brute_dam + limb.burn_dam
 
 /mob/living/carbon/grabbedby(mob/living/carbon/user, supress_message = FALSE)
 	if(user != src)
