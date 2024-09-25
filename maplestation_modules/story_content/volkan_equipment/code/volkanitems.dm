@@ -131,6 +131,15 @@
 	else
 		REMOVE_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
 
+/obj/item/umbrella/volkan/pickup(mob/user)
+	. = ..()
+	if (open)
+		ADD_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
+
+/obj/item/umbrella/volkan/dropped(mob/user, silent)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
+
 
 //---------------------cool boxes!-----------------------
 
