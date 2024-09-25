@@ -22,7 +22,7 @@
 	///the damage the tractor field does when doing a force attack. Shouldn't be not much damage.
 	var/damage = 5
 	///The pushing force does the tractor field has.
-	var/force = 2
+	var/force = 4
 
 	///Stuff tractor field cannot interact with
 	var/static/list/blacklisted_atoms = typecacheof(list(/atom/movable/screen))
