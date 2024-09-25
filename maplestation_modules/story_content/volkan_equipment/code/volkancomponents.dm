@@ -148,7 +148,7 @@
 
 /*
  * # Broken trator field
- * This one is just fucked. Should feel chaotic to use.
+ * This one is just fucked IC. Should feel chaotic to use.
  */
 /datum/component/tractorfield/broken
 	max_range = 4
@@ -177,16 +177,17 @@
 		return target.throw_tractor_broken(source, target, damage, force) //ittl just throw it
 	return on_unarmed_attack(source, target, TRUE)
 
-///A not quite working properly tractor field attack
+///A tractor field attack fro the broken tractor field
 /atom/proc/attack_tractor_broken(mob/user, mob/target, damage, force)
 	new /obj/effect/temp_visual/telekinesis(get_turf(src))
 	user.changeNext_move(CLICK_CD_MELEE)
 
 	//throw people against eachother!
-	user.throw_at(get_edge_target_turf(target, user.dir), force, damage, thrower = user)
-	target.throw_at(get_edge_target_turf(user, target.dir), force, damage, thrower = user)
+	user.throw_at(get_turf(target), force, damage, thrower = user)
+	target.throw_at(get_turf(user), force, damage, thrower = user)
 
 	user.balloon_alert(target, "gravity shifts!")
+	user.balloon_alert(user, "you feel something in your chest pull you forward!")
 	balloon_alert(target, "gravity shifts uncomfortably!") // It essentially rotates gravity to the side for its target.
 	visible_message(span_danger("[user] pushes [target] with an unknown force!"))
 	user.log_message("has attacked [target] using a broken tractor field!", LOG_ATTACK) //for the admins
