@@ -160,7 +160,7 @@
 /datum/component/tractorfield/broken/tractorRangeCheck(mob/user, atom/target)
 	var/d = get_dist(user, target)
 	if(d > max_range)
-		user.balloon_alert(user, "You feel something in your chest pull against you!")
+		user.balloon_alert(user, "you feel something in your chest pull against you!")
 		new /obj/effect/temp_visual/telekinesis(get_turf(src))
 		user.throw_at(get_edge_target_turf(user, rand(0,8)), force, damage, thrower = user)
 		return
