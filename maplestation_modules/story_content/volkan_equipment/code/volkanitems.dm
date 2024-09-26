@@ -124,6 +124,11 @@
 
 	on_inhand_icon_state = "umbrella_volkan_open"
 
+	random_color = FALSE
+	greyscale_config = null
+	greyscale_config_inhand_left = null
+	greyscale_config_inhand_right = null
+
 /obj/item/umbrella/volkan/on_transform(obj/item/source, mob/user, active)
 	. = ..()
 	if(user)

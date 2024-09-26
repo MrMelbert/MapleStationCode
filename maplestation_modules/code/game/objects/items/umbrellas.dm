@@ -9,7 +9,7 @@
 	name = "umbrella"
 	desc = "A plain white umbrella."
 	icon = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
-	icon_state = "umbrella_closed"
+	icon_state = "umbrella"
 	inhand_icon_state = "umbrella_closed"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_lh.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_rh.dmi'
@@ -126,7 +126,7 @@
 /obj/item/umbrella/parasol
 	name = "parasol"
 	desc = "A black laced parsol, how intricate."
-	icon_state = "parasol_closed"
+	icon_state = "parasol"
 	inhand_icon_state = "parasol_closed"
 	on_inhand_icon_state = "parasol_on"
 	random_color = FALSE
