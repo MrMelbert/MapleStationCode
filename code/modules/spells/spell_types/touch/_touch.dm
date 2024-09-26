@@ -173,10 +173,9 @@
 	SHOULD_NOT_OVERRIDE(TRUE) // DEFINITELY don't put effects here, put them in cast_on_hand_hit
 
 	if(!can_hit_with_hand(target, caster))
-		return
+		return NONE
 
-	INVOKE_ASYNC(src, PROC_REF(do_hand_hit), source, target, caster)
-	return ITEM_INTERACT_SUCCESS
+	return do_hand_hit(source, target, caster)
 
 /**
  * Signal proc for [COMSIG_ITEM_INTERACTING_WITH_ATOM_SECONDARY] from our attached hand.
@@ -188,10 +187,9 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if(!can_hit_with_hand(target, caster))
-		return
+		return NONE
 
-	INVOKE_ASYNC(src, PROC_REF(do_secondary_hand_hit), source, target, caster)
-	return ITEM_INTERACT_SUCCESS
+	return do_secondary_hand_hit(source, target, caster)
 
 /// Checks if the passed victim can be cast on by the caster.
 /datum/action/cooldown/spell/touch/proc/can_hit_with_hand(atom/victim, mob/living/caster)
@@ -223,14 +221,15 @@
 		on_antimagic_triggered(hand, victim, caster)
 
 	else if(!cast_on_hand_hit(hand, victim, caster))
-		return
+		return NONE
 
 	log_combat(caster, victim, "cast the touch spell [name] on", hand)
-	spell_feedback(caster)
+	INVOKE_ASYNC(src, PROC_REF(spell_feedback), caster)
 	caster.do_attack_animation(victim)
 	caster.changeNext_move(CLICK_CD_MELEE)
 	victim.add_fingerprint(caster)
 	remove_hand(caster)
+	return ITEM_INTERACT_SUCCESS
 
 /**
  * Calls do_secondary_hand_hit() from the caster onto the victim.
@@ -247,11 +246,12 @@
 		if(SECONDARY_ATTACK_CONTINUE_CHAIN)
 			SEND_SIGNAL(src, COMSIG_SPELL_TOUCH_HAND_HIT, victim, caster, hand) // NON-MODULE CHANGE / UPSTREAM THIS
 			log_combat(caster, victim, "cast the touch spell [name] on", hand, "(secondary / alt cast)")
-			spell_feedback(caster)
+			INVOKE_ASYNC(src, PROC_REF(spell_feedback), caster)
 			caster.do_attack_animation(victim)
 			caster.changeNext_move(CLICK_CD_MELEE)
 			victim.add_fingerprint(caster)
 			remove_hand(caster)
+			return ITEM_INTERACT_SUCCESS
 
 		// Call normal will call the normal cast proc
 		if(SECONDARY_ATTACK_CALL_NORMAL)
@@ -259,7 +259,7 @@
 
 		// Cancel chain will do nothing,
 		if(SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
-			return
+			return NONE
 
 /**
  * The actual process of casting the spell on the victim from the caster.
