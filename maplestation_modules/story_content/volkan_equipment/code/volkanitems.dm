@@ -131,8 +131,6 @@
 
 /obj/item/umbrella/volkan/on_transform(obj/item/source, mob/user, active)
 	. = ..()
-	if(!isinhands)
-		return
 	if(user)
 		if(active)
 			ADD_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
