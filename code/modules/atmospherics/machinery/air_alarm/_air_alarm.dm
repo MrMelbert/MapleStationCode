@@ -123,8 +123,8 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	))
 
 	GLOB.air_alarms += src
-	update_appearance()
 	find_and_hang_on_wall()
+	check_enviroment()
 
 /obj/machinery/airalarm/process()
 	if(!COOLDOWN_FINISHED(src, warning_cooldown))
@@ -144,7 +144,9 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 /obj/machinery/airalarm/proc/check_enviroment()
 	var/turf/our_turf = connected_sensor ? get_turf(connected_sensor) : get_turf(src)
 	var/datum/gas_mixture/environment = our_turf.return_air()
-	check_danger(our_turf, environment, environment.temperature)
+	if(isnull(environment))
+		return
+	check_danger(our_turf, environment)
 
 /obj/machinery/airalarm/proc/get_enviroment()
 	var/turf/our_turf = connected_sensor ? get_turf(connected_sensor) : get_turf(src)
@@ -542,7 +544,7 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 
 /// Check the current air and update our danger level.
 /// [/obj/machinery/airalarm/var/danger_level]
-/obj/machinery/airalarm/proc/check_danger(turf/location, datum/gas_mixture/environment, exposed_temperature)
+/obj/machinery/airalarm/proc/check_danger(turf/location, datum/gas_mixture/environment, ...)
 	SIGNAL_HANDLER
 	if((machine_stat & (NOPOWER|BROKEN)) || shorted)
 		return
@@ -554,37 +556,40 @@ GLOBAL_LIST_EMPTY_TYPED(air_alarms, /obj/machinery/airalarm)
 	var/pressure = environment.return_pressure()
 	var/temp = environment.return_temperature()
 
-	danger_level = max(danger_level, tlv_collection["pressure"].check_value(pressure))
-	danger_level = max(danger_level, tlv_collection["temperature"].check_value(temp))
+	danger_level = max(danger_level, tlv_collection["pressure"].check_value(pressure), tlv_collection["temperature"].check_value(temp))
 	if(total_moles)
-		for(var/gas_path in environment.gases)
-			var/moles = environment.gases[gas_path][MOLES]
+		for(var/gas_path in GLOB.meta_gas_info)
+			var/moles = environment.gases[gas_path]?[MOLES] || 0
 			danger_level = max(danger_level, tlv_collection[gas_path].check_value(pressure * moles / total_moles))
 
 	if(danger_level)
 		alarm_manager.send_alarm(ALARM_ATMOS)
-		if(pressure <= WARNING_LOW_PRESSURE && temp <= ENVIRONMENT_WARN_COLD)
+		var/low_temp = temp < tlv_collection["temperature"].hazard_min
+		var/high_temp = temp > tlv_collection["temperature"].hazard_max
+		var/low_pressure = pressure < tlv_collection["pressure"].hazard_min
+		var/high_pressure = pressure > tlv_collection["pressure"].hazard_max
+		if(low_pressure && low_temp)
 			warning_message = "Danger! Low pressure and temperature detected."
 			return
-		if(pressure <= WARNING_LOW_PRESSURE && temp >= ENVIRONMENT_WARN_HEAT)
+		if(low_pressure && high_temp)
 			warning_message = "Danger! Low pressure and high temperature detected."
 			return
-		if(pressure >= WARNING_HIGH_PRESSURE && temp >= ENVIRONMENT_WARN_HEAT)
+		if(high_pressure && low_temp)
 			warning_message = "Danger! High pressure and temperature detected."
 			return
-		if(pressure >= WARNING_HIGH_PRESSURE && temp <= ENVIRONMENT_WARN_COLD)
+		if(high_pressure && high_temp)
 			warning_message = "Danger! High pressure and low temperature detected."
 			return
-		if(pressure <= WARNING_LOW_PRESSURE)
+		if(low_pressure)
 			warning_message = "Danger! Low pressure detected."
 			return
-		if(pressure >= WARNING_HIGH_PRESSURE)
+		if(high_pressure)
 			warning_message = "Danger! High pressure detected."
 			return
-		if(temp <= ENVIRONMENT_WARN_COLD)
+		if(low_temp)
 			warning_message = "Danger! Low temperature detected."
 			return
-		if(temp >= ENVIRONMENT_WARN_HEAT)
+		if(high_temp)
 			warning_message = "Danger! High temperature detected."
 			return
 		else
@@ -665,6 +670,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 27)
 /obj/machinery/airalarm/proc/set_tlv_no_checks()
 	tlv_collection["temperature"] = new /datum/tlv/no_checks
 	tlv_collection["pressure"] = new /datum/tlv/no_checks
+
+	for(var/gas_path in GLOB.meta_gas_info)
+		tlv_collection[gas_path] = new /datum/tlv/no_checks
 
 ///Used for air alarm link helper, which connects air alarm to a sensor with corresponding chamber_id
 /obj/machinery/airalarm/proc/setup_chamber_link()
