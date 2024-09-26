@@ -105,8 +105,6 @@
 
 /obj/item/umbrella/get_worn_offsets(isinhands)
 	. = ..()
-	if(!isinhands)
-		return
 	var/mob/holder = loc
 	if(open)
 		.[2] += open_y_offset
