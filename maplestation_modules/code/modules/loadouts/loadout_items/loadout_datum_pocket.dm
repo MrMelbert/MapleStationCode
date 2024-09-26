@@ -317,10 +317,10 @@
 	item_path = /obj/item/umbrella
 
 /datum/loadout_item/pocket_items/black_parasol
-	name = "Black Parasol"
+	name = "Umbrella (Black Parasol)"
 	item_path = /obj/item/umbrella/parasol
 
 /datum/loadout_item/pocket_items/rad_umbrella
-	name = "Radiation Shielded Umbrella"
+	name = "Umbrella (Radiation Shielded)"
 	item_path = /obj/item/umbrella/volkan
 	additional_displayed_text = list("Character Item")
