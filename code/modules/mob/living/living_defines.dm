@@ -31,7 +31,7 @@
 	 *
 	 * 0 is death. 100 is default. 150 is the maximum.
 	 */
-	var/consciousness = 100
+	var/consciousness = CONSCIOUSNESS_MAX
 	/// Assoc Lazylist of flat modifiers to consciousness.
 	var/list/consciousness_modifiers
 	/// Assoc Lazylist of multipliers to consciousness. Applied after modifiers.

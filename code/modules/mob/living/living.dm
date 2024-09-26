@@ -542,7 +542,7 @@
 			to_chat(src, text="You are unable to succumb to death! This life continues.", type=MESSAGE_TYPE_INFO)
 			return
 	log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", LOG_ATTACK)
-	adjustOxyLoss(health - HEALTH_THRESHOLD_DEAD)
+	setOxyLoss(MAX_OXYLOSS(maxHealth))
 	updatehealth()
 	if(!whispered)
 		to_chat(src, span_notice("You have given up life and succumbed to death."))
@@ -1006,9 +1006,7 @@
 /// Checks if we are actually able to ressuscitate this mob.
 /// (We don't want to revive then to have them instantly die again)
 /mob/living/proc/can_be_revived()
-	if(health <= HEALTH_THRESHOLD_DEAD)
-		return FALSE
-	return TRUE
+	return health > -maxHealth
 
 /mob/living/proc/update_damage_overlays()
 	return

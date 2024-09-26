@@ -571,10 +571,22 @@
 
 #define SILENCE_RANGED_MESSAGE (1<<0)
 
+/// Threshold at which a mob is considered to be in a hard crit
+#define HARD_CRIT_THRESHOLD 30
+/// Upper max for consciousness
+#define UPPER_CONSCIOUSNESS_MAX 150
+/// Default max for consciousness
+#define CONSCIOUSNESS_MAX 100
+
+/// At this threshold you are usually in crit from con loss
+#define HEALTH_THRESHOLD_LIKELY_CRIT -100
+/// At this threshold you are usually dead from con loss
+#define HEALTH_THRESHOLD_LIKELY_DEAD -600
+
 /// Returns whether or not the given mob can succumb
 #define CAN_SUCCUMB(target) (HAS_TRAIT(target, TRAIT_CRITICAL_CONDITION) \
 	&& !HAS_TRAIT(target, TRAIT_NODEATH) \
-	&& target.consciousness <= 30 \
+	&& target.consciousness <= HARD_CRIT_THRESHOLD \
 	&& (target.health <= 0 || target.pain_controller?.shock_buildup >= 90))
 
 // Body position defines.

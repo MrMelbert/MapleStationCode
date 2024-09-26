@@ -186,12 +186,12 @@
 	var/list/guardians = source.get_all_linked_holoparasites()
 	if(!length(guardians))
 		return
-	if(source.health <= HEALTH_THRESHOLD_DEAD)
+	if(source.health <= -source.maxHealth * 2)
 		for(var/mob/guardian in guardians)
 			if(guardian.loc == src)
 				continue
 			consume_guardian(guardian)
-	else if(source.health > HEALTH_THRESHOLD_CRIT)
+	else if(source.health > 0)
 		for(var/mob/guardian in guardians)
 			if(guardian.loc != src)
 				continue

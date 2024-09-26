@@ -15,7 +15,7 @@
 	if(consciousness_mod)
 		owner.remove_consciousness_modifier(id, 0)
 	if(max_consciousness_mod)
-		owner.add_max_consciousness_value(id, 150)
+		owner.add_max_consciousness_value(id, UPPER_CONSCIOUSNESS_MAX)
 
 	give_alert()
 	COOLDOWN_START(src, update_cd, 6 SECONDS)
@@ -79,7 +79,7 @@
 
 /datum/status_effect/thermia/hypo/three
 	consciousness_mod = 20
-	max_consciousness_mod = 30
+	max_consciousness_mod = HARD_CRIT_THRESHOLD
 
 /datum/status_effect/thermia/hypo/three/give_alert()
 	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
@@ -106,7 +106,7 @@
 
 /datum/status_effect/thermia/hyper/three
 	consciousness_mod = 20
-	max_consciousness_mod = 30
+	max_consciousness_mod = HARD_CRIT_THRESHOLD
 
 /datum/status_effect/thermia/hyper/three/give_alert()
 	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)

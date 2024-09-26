@@ -25,6 +25,9 @@
 	/// Cooldown between when the wound can be allowed to worsen
 	COOLDOWN_DECLARE(worsen_cd)
 
+/datum/wound/bleed_internal/second_wind()
+	return
+
 /datum/wound/bleed_internal/get_self_check_description(mob/user)
 	return span_warning("It feels tense to the touch.") // same as rib fracture!
 

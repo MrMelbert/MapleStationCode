@@ -557,8 +557,8 @@
 	if(status_flags & GODMODE)
 		return
 
-	var/total_burn = getBruteLoss()
-	var/total_brute = getFireLoss()
+	var/total_brute = getBruteLoss()
+	var/total_burn = getFireLoss()
 	var/total_oxy = getOxyLoss()
 	var/total_tox = getToxLoss()
 
@@ -617,8 +617,8 @@
 
 /mob/living/carbon/update_conscisouness()
 
-	consciousness = 100
-	var/max_consciousness = 150
+	consciousness = CONSCIOUSNESS_MAX
+	var/max_consciousness = UPPER_CONSCIOUSNESS_MAX
 
 	for(var/mod in consciousness_modifiers)
 		consciousness += consciousness_modifiers[mod]
@@ -644,8 +644,8 @@
 			set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
 
 	if(consciousness <= 90)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
-		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (30 / consciousness))
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (HARD_CRIT_THRESHOLD / consciousness))
+		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (HARD_CRIT_THRESHOLD / consciousness))
 	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/carbon_consciousness]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
 		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)

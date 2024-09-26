@@ -200,7 +200,7 @@
 /obj/item/implant/explosive/deniability/proc/check_health(mob/living/source)
 	SIGNAL_HANDLER
 
-	if(source.consciousness <= 30)
+	if(source.consciousness <= HARD_CRIT_THRESHOLD)
 		INVOKE_ASYNC(src, PROC_REF(activate), "deniability")
 
 /obj/item/implanter/explosive

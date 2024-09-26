@@ -92,6 +92,7 @@
 		span_notice("[user] send a powerful shock to [target]'s brain with [tool]..."),
 	)
 	target.grab_ghost()
+	target.apply_status_effect(/datum/status_effect/recent_defib)
 	target.updatehealth()
 	if(iscarbon(target))
 		var/mob/living/carbon/carbon_target = target

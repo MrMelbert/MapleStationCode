@@ -139,7 +139,7 @@
 	else
 		owner.remove_consciousness_modifier(id)
 	if(drunk_value > 90)
-		owner.add_max_consciousness_value(id, 30)
+		owner.add_max_consciousness_value(id, HARD_CRIT_THRESHOLD)
 	else
 		owner.remove_max_consciousness_value(id)
 

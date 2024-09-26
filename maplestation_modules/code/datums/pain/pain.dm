@@ -650,7 +650,7 @@
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock
-	if(curr_pain >= PAIN_LIMB_MAX * 3 || shock_buildup >= 150)
+	if(curr_pain >= PAIN_LIMB_MAX * 3 || shock_buildup >= 150 || parent.consciousness <= HARD_CRIT_THRESHOLD + 10)
 		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 60 SECONDS)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
 			var/is_standing = parent.body_position == STANDING_UP

@@ -68,7 +68,7 @@
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
-		if(health <= HEALTH_THRESHOLD_DEAD)
+		if(health <= -maxHealth)
 			death()
 			return
 		else if(stat >= UNCONSCIOUS)

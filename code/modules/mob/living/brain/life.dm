@@ -47,7 +47,7 @@
 	if(!istype(brain_real))
 		return
 
-	if(health <= HEALTH_THRESHOLD_DEAD || (brain_real.organ_flags & ORGAN_FAILING))
+	if(health <= -maxHealth || (brain_real.organ_flags & ORGAN_FAILING))
 		if(stat != DEAD)
 			death()
 		return

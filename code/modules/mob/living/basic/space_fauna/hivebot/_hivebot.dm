@@ -135,8 +135,8 @@
 
 /obj/item/ammo_casing/hivebot
 	name = "hivebot bullet casing"
-	projectile_type = /obj/projectile/hivebotbullet
+	projectile_type = /obj/projectile/bullet/hivebotbullet
 
-/obj/projectile/hivebotbullet
+/obj/projectile/bullet/hivebotbullet
 	damage = 10
 	damage_type = BRUTE

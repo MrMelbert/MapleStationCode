@@ -286,7 +286,7 @@
 			H.Paralyze(8 SECONDS)
 		if(H.getStaminaLoss() && !H.IsSleeping())
 			var/total_health = (H.health - H.getStaminaLoss())
-			if(total_health <= HEALTH_THRESHOLD_CRIT && !H.stat)
+			if(total_health <= 0 && !H.stat)
 				H.visible_message(span_warning("[user] delivers a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"), \
 								span_userdanger("You're knocked unconscious by [user]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 				to_chat(user, span_danger("You deliver a heavy hit to [H]'s head, knocking [H.p_them()] out cold!"))

@@ -172,7 +172,7 @@
 		return FALSE
 
 	owner.add_mood_event(id, /datum/mood_event/revival_sickess, owner)
-	owner.add_max_consciousness_value(id, 100 - max_con)
+	owner.add_max_consciousness_value(id, CONSCIOUSNESS_MAX - max_con)
 	addtimer(CALLBACK(src, PROC_REF(improve)), 1 MINUTES, TIMER_DELETE_ME)
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(died_again))
 	return TRUE

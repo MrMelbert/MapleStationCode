@@ -54,7 +54,7 @@
 		REMOVE_TRAIT(owner, TRAIT_SOFT_CRIT, id)
 	else
 		owner.add_consciousness_multiplier(id, 0.75)
-		owner.add_max_consciousness_value(id, 30)
+		owner.add_max_consciousness_value(id, HARD_CRIT_THRESHOLD)
 		ADD_TRAIT(owner, TRAIT_SOFT_CRIT, id)
 
 /datum/status_effect/heart_attack/tick(seconds_between_ticks)
