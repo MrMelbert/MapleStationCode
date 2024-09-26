@@ -14,7 +14,6 @@
 
 /datum/wound/blunt/bone
 	name = "Blunt (Bone) Wound"
-	wound_flags = (ACCEPTS_GAUZE)
 
 	default_scar_file = BONE_SCAR_FILE
 
@@ -305,7 +304,7 @@
 	status_effect_type = /datum/status_effect/wound/blunt/bone/rib_break
 	scar_keyword = "dislocate"
 	internal_bleeding_chance = 25
-	wound_flags = (ACCEPTS_GAUZE | MANGLES_INTERIOR)
+	wound_flags = parent_type::wound_flags | MANGLES_INTERIOR
 	regen_ticks_needed = 180 // ticks every 2 seconds, 360 seconds, so roughly 6 minutes default
 
 	simple_treat_text = "<b>Bandaging</b> the wound will reduce its impact until treated \
@@ -482,7 +481,7 @@
 	brain_trauma_group = BRAIN_TRAUMA_MILD
 	trauma_cycle_cooldown = 1.5 MINUTES
 	internal_bleeding_chance = 40
-	wound_flags = (ACCEPTS_GAUZE | MANGLES_INTERIOR)
+	wound_flags = parent_type::wound_flags | MANGLES_INTERIOR
 	regen_ticks_needed = 120 // ticks every 2 seconds, 240 seconds, so roughly 4 minutes default
 
 	simple_treat_text = "<b>Bandaging</b> the wound will reduce its impact until treated \
@@ -524,7 +523,7 @@
 	brain_trauma_group = BRAIN_TRAUMA_SEVERE
 	trauma_cycle_cooldown = 2.5 MINUTES
 	internal_bleeding_chance = 60
-	wound_flags = (ACCEPTS_GAUZE | MANGLES_INTERIOR)
+	wound_flags = parent_type::wound_flags | MANGLES_INTERIOR
 	regen_ticks_needed = 240 // ticks every 2 seconds, 480 seconds, so roughly 8 minutes default
 
 	simple_treat_text = "<b>Bandaging</b> the wound will slightly reduce its impact until treated \

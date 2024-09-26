@@ -1092,11 +1092,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	else
 
 		var/obj/item/organ/internal/brain/brain = user.get_organ_slot(ORGAN_SLOT_BRAIN)
-		var/obj/item/bodypart/attacking_bodypart
-		if(brain)
-			attacking_bodypart = brain.get_attacking_limb(target)
-		if(!attacking_bodypart)
-			attacking_bodypart = user.get_active_hand()
+		var/obj/item/bodypart/attacking_bodypart = brain?.get_attacking_limb(target) || user.get_active_hand()
 		var/atk_verb = attacking_bodypart.unarmed_attack_verb
 		var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
@@ -1125,7 +1121,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		var/miss_chance = 100//calculate the odds that a punch misses entirely. considers stamina and brute damage of the puncher. punches miss by default to prevent weird cases
 		if(attacking_bodypart.unarmed_damage_low)
-			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || staggered) //kicks and attacks against staggered targets never miss (provided your species deals more than 0 damage)
+			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || staggered || user == target) //kicks and attacks against staggered targets never miss (provided your species deals more than 0 damage)
 				miss_chance = 0
 			else
 				miss_chance = clamp(UNARMED_MISS_CHANCE_BASE - limb_accuracy + user.getStaminaLoss() + ((100 - user.consciousness) * 0.5), 0, UNARMED_MISS_CHANCE_MAX) //Limb miss chance + various damage. capped at 80 so there is at least a chance to land a hit.

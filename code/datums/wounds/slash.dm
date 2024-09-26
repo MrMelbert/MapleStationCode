@@ -29,7 +29,7 @@
 	treatable_by_grabbed = list(/obj/item/gun/energy/laser)
 	treatable_tools = list(TOOL_CAUTERY)
 	base_treat_time = 3 SECONDS
-	wound_flags = (ACCEPTS_GAUZE|CAN_BE_GRASPED)
+	wound_flags = parent_type::wound_flags | CAN_BE_GRASPED
 
 	default_scar_file = FLESH_SCAR_FILE
 
@@ -371,7 +371,7 @@
 	demotes_to = /datum/wound/slash/flesh/severe
 	status_effect_type = /datum/status_effect/wound/slash/flesh/critical
 	scar_keyword = "slashcritical"
-	wound_flags = (ACCEPTS_GAUZE | MANGLES_EXTERIOR | CAN_BE_GRASPED)
+	wound_flags = parent_type::wound_flags | MANGLES_EXTERIOR
 	simple_treat_text = "<b>Bandaging</b> the wound is of utmost importance, as is seeking direct medical attention - <b>Death</b> will ensue if treatment is delayed whatsoever, with lack of <b>oxygen</b> killing the patient, thus <b>Food, Iron, and saline solution</b> is always recommended after treatment. This wound will not naturally seal itself."
 	homemade_treat_text = "Bed sheets can be ripped up to make <b>makeshift gauze</b>. <b>Flour, salt, and saltwater</b> topically applied will help. Dropping to the ground and grabbing your wound will reduce blood flow."
 

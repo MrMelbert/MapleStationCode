@@ -26,7 +26,12 @@
 	)
 
 /datum/status_effect/limp/pain/get_examine_text()
-	return span_warning("[owner.p_Theyre()] limping with every move.")
+	if(limp_chance_left > 0 && limp_chance_right > 0)
+		return span_warning("[owner.p_Theyre()] occasionally limping on both legs.")
+	else if(limp_chance_left > 0)
+		return span_warning("[owner.p_Theyre()] occasionally limping on [other.p_their()] [left.plaintext_zone].")
+	else if(limp_chance_right > 0)
+		return span_warning("[owner.p_Theyre()] occasionally limping on [other.p_their()] [right.plaintext_zone].")
 
 /datum/status_effect/limp/pain/on_remove()
 	. = ..()
