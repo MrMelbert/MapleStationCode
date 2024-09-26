@@ -9,7 +9,7 @@
 	name = "umbrella"
 	desc = "A plain white umbrella."
 	icon = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
-	icon_state = "umbrella"
+	icon_state = "umbrella_closed"
 	inhand_icon_state = "umbrella_closed"
 	lefthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_lh.dmi'
 	righthand_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_rh.dmi'
@@ -33,18 +33,31 @@
 	/// The sound effect played when our umbrella is opened
 	var/on_sound = 'sound/weapons/batonextend.ogg'
 	/// The inhand icon state used when our umbrella is opened.
-	var/on_inhand_icon_state = "umbrella_open"
+	var/on_inhand_icon_state = "umbrella_on"
 
-/obj/item/umbrella/parasol
-	name = "parasol"
-	desc = "A black laced parsol, how intricate."
-	icon_state = "parasol"
-	inhand_icon_state = "parasol_closed"
-	on_inhand_icon_state = "parasol_open"
-
+	//greyscale stuff
+	greyscale_config = /datum/greyscale_config/umbrella
+	greyscale_config_inhand_left = /datum/greyscale_config/umbrella_inhand_left
+	greyscale_config_inhand_right = /datum/greyscale_config/umbrella_inhand_right
+	greyscale_colors = "#dddddd"
+	/// If the item should be assigned a random color
+	var/random_color = TRUE
+	/// List of possible random colors
+	var/static/list/umbrella_colors = list(
+		COLOR_BLUE,
+		COLOR_RED,
+		COLOR_PINK,
+		COLOR_BROWN,
+		COLOR_GREEN,
+		COLOR_CYAN,
+		COLOR_YELLOW,
+	)
+	flags_1 = IS_PLAYER_COLORABLE_1
 
 /obj/item/umbrella/Initialize(mapload)
 	. = ..()
+	if(random_color)
+		set_greyscale(colors = list(pick(umbrella_colors)))
 	AddComponent( \
 		/datum/component/transforming, \
 		force_on = 7, \
@@ -105,3 +118,18 @@
 				.[1] -= open_x_offset
 			if(WEST)
 				.[1] += open_x_offset
+
+
+
+//other umbrellas
+
+/obj/item/umbrella/parasol
+	name = "parasol"
+	desc = "A black laced parsol, how intricate."
+	icon_state = "parasol_closed"
+	inhand_icon_state = "parasol_closed"
+	on_inhand_icon_state = "parasol_on"
+	random_color = FALSE
+	greyscale_config = null
+	greyscale_config_inhand_left = null
+	greyscale_config_inhand_right = null
