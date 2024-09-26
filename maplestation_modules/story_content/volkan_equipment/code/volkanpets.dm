@@ -168,8 +168,7 @@
 	change_number_of_hands(0) //it only has hands when it is in combat mode, so start with no usable hands while still having the components
 
 	AddElement(/datum/element/hat_wearer,\
-		offsets = hat_offsets,\
-		remove_hat_signals = string_list(list(SIGNAL_ADDTRAIT(TRAIT_MOB_TIPPED))))
+		offsets = hat_offsets,)
 
 	AddComponent(/datum/component/cleaner/vroomba, \
 		base_cleaning_duration = 2 SECONDS, \
