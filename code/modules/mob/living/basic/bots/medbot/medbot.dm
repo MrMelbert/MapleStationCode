@@ -138,7 +138,7 @@
 		post_untipped_callback = CALLBACK(src, PROC_REF(after_righted)))
 
 	var/static/list/hat_offsets = list(4,-9)
-	var/static/list/remove_hat = list(SIGNAL_ADDTRAIT(TRAIT_MOB_TIPPED))
+	var/static/list/remove_hat = string_list(list(SIGNAL_ADDTRAIT(TRAIT_MOB_TIPPED))) // NON-MODULE CHANGE
 	var/static/list/prevent_checks = list(TRAIT_MOB_TIPPED)
 	AddElement(/datum/element/hat_wearer,\
 		offsets = hat_offsets,\
