@@ -126,19 +126,20 @@
 
 /obj/item/umbrella/volkan/on_transform(obj/item/source, mob/user, active)
 	. = ..()
-	if(active)
-		ADD_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
-	else
-		REMOVE_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
+	if(user)
+		if(active)
+			ADD_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
+		else
+			REMOVE_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
 
 /obj/item/umbrella/volkan/pickup(mob/user)
 	. = ..()
 	if (open)
-		ADD_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
+		ADD_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
 
 /obj/item/umbrella/volkan/dropped(mob/user, silent)
 	. = ..()
-	REMOVE_TRAIT(user, TRAIT_RADIMMUNE, INNATE_TRAIT)
+	REMOVE_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
 
 
 //---------------------cool boxes!-----------------------
