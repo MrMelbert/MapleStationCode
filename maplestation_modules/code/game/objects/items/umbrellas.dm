@@ -7,7 +7,7 @@
  */
 /obj/item/umbrella
 	name = "umbrella"
-	desc = "A plain white umbrella."
+	desc = "A plain umbrella."
 	icon = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
 	icon_state = "umbrella"
 	inhand_icon_state = "umbrella_closed"
