@@ -35,3 +35,14 @@ GLOBAL_LIST_INIT(spellbook_misc_items, generate_spellbook_items(SPELLBOOK_CATEGO
 	category = SPELLBOOK_CATEGORY_MISC
 
 	our_action_typepath = /datum/action/cooldown/spell/meditate
+
+/datum/spellbook_item/spell/mana_sense
+	name = "Mana Sense"
+	description = "Sense other mana pools present"
+	lore = "Using your magical attunement (or other aptitudes) \
+	you can sense if a creature or object has a mana pool present; and what amount of mana the pool has. \
+	Do note that this will require a reprieve between casts, and it will take a second to discern the amount of mana a pool has."
+
+	category = SPELLBOOK_CATEGORY_MISC
+
+	our_action_typepath = /datum/action/cooldown/spell/pointed/mana_sense
