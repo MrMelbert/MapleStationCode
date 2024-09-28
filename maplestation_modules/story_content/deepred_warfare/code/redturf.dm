@@ -1,7 +1,7 @@
 /turf/open/indestructible/redtech
 	name = "redtech plating"
 	desc = "Fairly smooth, redtech floor plating. Its strange construction seems to be currently inactive."
-	icon = 'maplestation_modules/story_content/deepred_warfare/icons/turf.dmi'
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/turfs.dmi'
 	icon_state = "offplating"
 	footstep = FOOTSTEP_PLATING
 
