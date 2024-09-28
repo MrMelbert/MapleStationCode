@@ -1,3 +1,6 @@
+// ALIAS = FAKE NAME
+// NOT ALIAS = REAL NAME
+
 /obj/item/starblight_soot
 	name = "starblight soot jar"
 	desc = "A small jar filled with a fine, sparkling purple powder. It's sealed tight, and the label reads Starblight. The jar's glass just the faintest tinted blue and feels heavy in your hand."
@@ -68,7 +71,7 @@
 		fired_record.recoil = initial(fired_record.recoil)
 
 /obj/item/redtech_nan_sample
-	name = "crimson nanite sample"
+	name = "redtech nanite sample"
 	desc = "A small, hard cube that glows a deep red at its seams. It seems to move and shift geometrically in place."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
@@ -84,7 +87,7 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/ammobox.ogg'
 
 /obj/item/redtech_nan_sample/alias
-	name = "redtech nanite sample"
+	name = "crimson nanite sample"
 
 /obj/item/throwing_star/needle
 	name = "persuasion needle"
@@ -105,7 +108,7 @@
 	name = "throwing needle"
 
 /obj/item/yin_yang_orb
-	name = "intricate orb"
+	name = "yin-yang orb"
 	desc = "A small, smooth orb that seems all but inert now. It seems to almost be crystaline in nature and has the design of a yin-yang. Throwing this at someone would hurt quite a bit."
 
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
@@ -124,7 +127,7 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/glass_small.ogg'
 
 /obj/item/yin_yang_orb/alias
-	name = "yin-yang orb"
+	name = "intricate orb"
 
 /obj/item/yin_yang_orb/Initialize(mapload)
 	. = ..()
