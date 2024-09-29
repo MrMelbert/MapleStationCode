@@ -322,6 +322,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_asympoint"
 
+/datum/sprite_accessory/hair/long_braid
+	name = "Long Braid"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_longbraid"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
