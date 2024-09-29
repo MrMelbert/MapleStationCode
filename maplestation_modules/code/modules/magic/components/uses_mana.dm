@@ -149,7 +149,7 @@
 			if (available_pools.Find(pool) == available_pools.len && mana_consumed <= -0.05) // if we're at the end of the list and mana_consumed is not 0 or near 0 (floating points grrr)
 				stack_trace("cost: [mana_consumed] was not 0 after drain_mana on [src]! This could've been an infinite loop!")
 				mana_consumed = 0 // lets terminate the loop to be safe
-	mana_consumed = round(mana_consumed, 0.01)
+	// mana_consumed = round(mana_consumed, 0.01)
 
 /// Should be the raw conditional we use for determining if the thing that "uses mana" can actually
 /// activate the behavior that "uses mana".
