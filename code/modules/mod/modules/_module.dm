@@ -75,6 +75,11 @@
 		if(mod.wearer)
 			balloon_alert(mod.wearer, "not active!")
 		return
+	// NON-MODULE CHANGE START
+	if (!module_deployed())
+		balloon_alert(mod.wearer, "mount not deployed!")
+		return FALSE
+	// NON-MODULE CHANGE END
 	if(module_type != MODULE_USABLE)
 		if(active)
 			on_deactivation()
@@ -99,6 +104,11 @@
 	if(!mod.active || mod.activating || !mod.get_charge())
 		balloon_alert(mod.wearer, "unpowered!")
 		return FALSE
+	// NON-MODULE CHANGE START
+	if (!module_deployed())
+		balloon_alert(mod.wearer, "mount not deployed!")
+		return FALSE
+	// NON-MODULE CHANGE END
 	if(!(allow_flags & MODULE_ALLOW_PHASEOUT) && istype(mod.wearer.loc, /obj/effect/dummy/phased_mob))
 		//specifically a to_chat because the user is phased out.
 		to_chat(mod.wearer, span_warning("You cannot activate this right now."))

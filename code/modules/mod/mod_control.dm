@@ -574,7 +574,7 @@
 	new_module.on_install()
 	if(wearer)
 		new_module.on_equip()
-	if(active)
+	if(active && new_module.module_deployed()) // NON-MODULE CHANGE
 		new_module.on_suit_activation()
 	if(user)
 		balloon_alert(user, "[new_module] added")

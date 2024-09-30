@@ -19,10 +19,12 @@
 	var/obj/item/part = locate(part_reference) in mod_parts
 	if(!istype(part) || user.incapacitated())
 		return
-	if((active || activating) && !(part == helmet && helmet_desync)) // NON-MODULE CHANGE: Allows the helmet desynchronizer to work by adding in a check for a new var.
+	/* NON-MODULE CHANGE - Suits can be retracted or deployed when active
+	if((active || activating))
 		balloon_alert(user, "deactivate the suit first!")
 		playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return
+	*/
 	var/parts_to_check = mod_parts - part
 	if(part.loc == src)
 		deploy(user, part)
@@ -43,8 +45,10 @@
 
 /// Quickly deploys all parts (or retracts if all are on the wearer)
 /obj/item/mod/control/proc/quick_deploy(mob/user)
-	if(active || activating)
-		balloon_alert(user, "deactivate the suit first!")
+	// NON-MODULE CHANGE START  - Suits can be deployed/retracted when active
+	if(activating)
+		balloon_alert(user, "suit still activating!")
+		//NON-MODULE CHANGE END
 		playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return FALSE
 	var/deploy = TRUE
@@ -132,11 +136,15 @@
 	if(!force_deactivate && (SEND_SIGNAL(src, COMSIG_MOD_ACTIVATE, user) & MOD_CANCEL_ACTIVATE))
 		playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 		return FALSE
+	// NON-MODULE CHANGE START - Suits can be deployed/retracted while active
+	/*
 	for(var/obj/item/part as anything in mod_parts)
-		if(!force_deactivate && part.loc == src)
+		if(!force_deactivate && part.loc == src) 
 			balloon_alert(user, "deploy all parts first!")
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 			return FALSE
+	*/
+	// NON-MODULE CHANGE END
 	if(locked && !active && !allowed(user) && !force_deactivate)
 		balloon_alert(user, "access insufficient!")
 		playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
@@ -164,19 +172,23 @@
 	if (ai_assistant)
 		to_chat(ai_assistant, span_notice("MODsuit [active ? "shutting down" : "starting up"]."))
 	if(do_after(wearer, activation_step_time, wearer, MOD_ACTIVATION_STEP_FLAGS, extra_checks = CALLBACK(src, PROC_REF(has_wearer))))
-		to_chat(wearer, span_notice("[boots] [active ? "relax their grip on your legs" : "seal around your feet"]."))
+		if (boots.loc == wearer) // NON-MODULE CHANGE
+			to_chat(wearer, span_notice("[boots] [active ? "relax their grip on your legs" : "seal around your feet"]."))
 		playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		seal_part(boots, seal = !active)
 	if(do_after(wearer, activation_step_time, wearer, MOD_ACTIVATION_STEP_FLAGS, extra_checks = CALLBACK(src, PROC_REF(has_wearer))))
-		to_chat(wearer, span_notice("[gauntlets] [active ? "become loose around your fingers" : "tighten around your fingers and wrists"]."))
+		if (gauntlets.loc == wearer) // NON-MODULE CHANGE
+			to_chat(wearer, span_notice("[gauntlets] [active ? "become loose around your fingers" : "tighten around your fingers and wrists"]."))
 		playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		seal_part(gauntlets, seal = !active)
 	if(do_after(wearer, activation_step_time, wearer, MOD_ACTIVATION_STEP_FLAGS, extra_checks = CALLBACK(src, PROC_REF(has_wearer))))
-		to_chat(wearer, span_notice("[chestplate] [active ? "releases your chest" : "cinches tightly against your chest"]."))
+		if (chestplate.loc == wearer) // NON-MODULE CHANGE
+			to_chat(wearer, span_notice("[chestplate] [active ? "releases your chest" : "cinches tightly against your chest"]."))
 		playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		seal_part(chestplate, seal = !active)
 	if(do_after(wearer, activation_step_time, wearer, MOD_ACTIVATION_STEP_FLAGS, extra_checks = CALLBACK(src, PROC_REF(has_wearer))))
-		to_chat(wearer, span_notice("[helmet] hisses [active ? "open" : "closed"]."))
+		if (helmet.loc == wearer) // NON-MODULE CHANGE
+			to_chat(wearer, span_notice("[helmet] hisses [active ? "open" : "closed"]."))
 		playsound(src, 'sound/mecha/mechmove03.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		seal_part(helmet, seal = !active)
 	if(do_after(wearer, activation_step_time, wearer, MOD_ACTIVATION_STEP_FLAGS, extra_checks = CALLBACK(src, PROC_REF(has_wearer))))
@@ -233,7 +245,10 @@
 	active = on
 	if(active)
 		for(var/obj/item/mod/module/module as anything in modules)
-			module.on_suit_activation()
+			// NON-MODULE CHANGE START
+			if (module.module_deployed())
+				module.on_suit_activation()
+			// NON-MODULE CHANGE END
 	else
 		for(var/obj/item/mod/module/module as anything in modules)
 			module.on_suit_deactivation()
