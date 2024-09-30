@@ -14,7 +14,7 @@
 		return
 
 	if(nutrition > 0)
-		var/hunger_loss = HUNGER_FACTOR / 10
+		var/hunger_loss = HUNGER_FACTOR * MOVEMENT_HUNGER_MULTIPLIER
 		if(move_intent == MOVE_INTENT_RUN)
 			hunger_loss *= 2
 		adjust_nutrition(-1 * hunger_loss)

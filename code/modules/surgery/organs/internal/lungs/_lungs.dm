@@ -80,22 +80,30 @@
 	var/tritium_irradiation_probability_min = 10
 	var/tritium_irradiation_probability_max = 60
 
+	/// Message displayed when breathing cold air
 	var/cold_message = "your face freezing and an icicle forming"
-	var/cold_level_1_threshold = 260
-	var/cold_level_2_threshold = 200
-	var/cold_level_3_threshold = 120
-	var/cold_level_1_damage = COLD_GAS_DAMAGE_LEVEL_1 //Keep in mind with gas damage levels, you can set these to be negative, if you want someone to heal, instead.
-	var/cold_level_2_damage = COLD_GAS_DAMAGE_LEVEL_2
-	var/cold_level_3_damage = COLD_GAS_DAMAGE_LEVEL_3
+	/// At this threshold, a cold breath displays a warning message
+	var/cold_level_warning_threshold = CELCIUS_TO_KELVIN(-13.15 CELCIUS)
+	/// At this threshold, a cold breath deals a minor amount of damage
+	var/cold_level_hazard_threshold = CELCIUS_TO_KELVIN(-73.15 CELCIUS)
+	/// At this threshold, a cold breath deals a moderate amount of damage
+	var/cold_level_danger_threshold = CELCIUS_TO_KELVIN(-153.15 CELCIUS)
+	/// Amount of damage dealt by a cold breath. Halved if at the hazard threshold
+	var/cold_level_damage = 3
+	/// Type of damage dealt by a cold breath
 	var/cold_damage_type = BURN
 
+	/// Message displayed when breathing hot air
 	var/hot_message = "your face burning and a searing heat"
-	var/heat_level_1_threshold = 360
-	var/heat_level_2_threshold = 400
-	var/heat_level_3_threshold = 1000
-	var/heat_level_1_damage = HEAT_GAS_DAMAGE_LEVEL_1
-	var/heat_level_2_damage = HEAT_GAS_DAMAGE_LEVEL_2
-	var/heat_level_3_damage = HEAT_GAS_DAMAGE_LEVEL_3
+	/// At this threshold, a hot breath displays a warning message
+	var/heat_level_warning_threshold = CELCIUS_TO_KELVIN(86.85 CELCIUS)
+	/// At this threshold, a hot breath deals a minor amount of damage
+	var/heat_level_hazard_threshold = CELCIUS_TO_KELVIN(126.85 CELCIUS)
+	/// At this threshold, a hot breath deals a moderate amount of damage
+	var/heat_level_danger_threshold = CELCIUS_TO_KELVIN(726.85 CELCIUS)
+	/// Amount of damage dealt by a hot breath. Halved if at the hazard threshold
+	var/heat_level_damage = 8
+	/// Type of damage dealt by a hot breath
 	var/heat_damage_type = BURN
 
 // assign the respiration_type
@@ -770,50 +778,50 @@
 /obj/item/organ/internal/lungs/proc/handle_breath_temperature(datum/gas_mixture/breath, mob/living/carbon/human/breather) // called by human/life, handles temperatures
 	var/breath_temperature = breath.temperature
 
-	if(!HAS_TRAIT(breather, TRAIT_RESISTCOLD)) // COLD DAMAGE
-		var/cold_modifier = breather.dna.species.coldmod
+	if(breath_temperature < cold_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTCOLD) && !breather.has_reagent(/datum/reagent/medicine/cryoxadone, needs_metabolizing = TRUE)) // COLD DAMAGE
+		var/cold_modifier = breather.physiology.cold_mod
 		var/breath_effect_prob = 0
-		if(breath_temperature < cold_level_3_threshold)
-			breather.apply_damage(cold_level_3_damage * cold_modifier, cold_damage_type, spread_damage = TRUE)
+		var/cold_message_prob = 0
+		if(breath_temperature < cold_level_danger_threshold)
+			breather.apply_damage(cold_level_damage * cold_modifier, cold_damage_type, spread_damage = TRUE)
 			breath_effect_prob = 100
-		if(breath_temperature > cold_level_3_threshold && breath_temperature < cold_level_2_threshold)
-			breather.apply_damage(cold_level_2_damage * cold_modifier, cold_damage_type, spread_damage = TRUE)
+			cold_message_prob = 100
+		else if(breath_temperature < cold_level_hazard_threshold)
+			breather.apply_damage(0.5 * cold_level_damage * cold_modifier, cold_damage_type, spread_damage = TRUE)
+			breath_effect_prob = 75
+			cold_message_prob = 50
+		else
 			breath_effect_prob = 50
-		if(breath_temperature > cold_level_2_threshold && breath_temperature < cold_level_1_threshold)
-			breather.apply_damage(cold_level_1_damage * cold_modifier, cold_damage_type, spread_damage = TRUE)
-			breath_effect_prob = 25
-		if(breath_temperature < cold_level_1_threshold)
-			if(prob(sqrt(breath_effect_prob) * 4))
-				to_chat(breather, span_warning("You feel [cold_message] in your [name]!"))
-				if(prob(50))
-					breather.emote("shiver")
-			if(prob(breath_effect_prob))
-				// Breathing into your mask, no particle. We can add fogged up glasses later
-				if(breather.is_mouth_covered())
-					return
-				// Even though breathing via internals TECHNICALLY exhales into the environment, we'll still block it
-				if(breather.internal || breather.external)
-					return
-				emit_breath_particle(breather, /particles/fog/breath)
+			cold_message_prob = 20
+		if(prob(cold_message_prob))
+			to_chat(breather, span_warning("You feel [cold_message] in your [name]!"))
+			if(prob(50))
+				breather.emote("shiver")
+		if(prob(breath_effect_prob))
+			// Breathing into your mask, no particle. We can add fogged up glasses later
+			if(breather.is_mouth_covered())
+				return
+			// Even though breathing via internals TECHNICALLY exhales into the environment, we'll still block it
+			if(breather.internal || breather.external)
+				return
+			emit_breath_particle(breather, /particles/fog/breath)
 
-	if(!HAS_TRAIT(breather, TRAIT_RESISTHEAT)) // HEAT DAMAGE
-		var/heat_modifier = breather.dna.species.heatmod
+	if(breath_temperature > heat_level_warning_threshold && !HAS_TRAIT(breather, TRAIT_RESISTHEAT) && !breather.has_reagent(/datum/reagent/medicine/pyroxadone, needs_metabolizing = TRUE)) // HEAT DAMAGE
+		var/heat_modifier = breather.physiology.heat_mod
 		var/heat_message_prob = 0
-		if(breath_temperature > heat_level_1_threshold && breath_temperature < heat_level_2_threshold)
-			breather.apply_damage(heat_level_1_damage * heat_modifier, heat_damage_type, spread_damage = TRUE)
+		if(breath_temperature > heat_level_danger_threshold)
+			breather.apply_damage(heat_level_damage * heat_modifier, heat_damage_type, spread_damage = TRUE)
 			heat_message_prob = 100
-		if(breath_temperature > heat_level_2_threshold && breath_temperature < heat_level_3_threshold)
-			breather.apply_damage(heat_level_2_damage * heat_modifier, heat_damage_type, spread_damage = TRUE)
+		else if(breath_temperature > heat_level_hazard_threshold)
+			breather.apply_damage(0.5 * heat_level_damage * heat_modifier, heat_damage_type, spread_damage = TRUE)
 			heat_message_prob = 50
-		if(breath_temperature > heat_level_3_threshold)
-			breather.apply_damage(heat_level_3_damage * heat_modifier, heat_damage_type, spread_damage = TRUE)
-			heat_message_prob = 25
-		if(breath_temperature > heat_level_1_threshold)
-			if(prob(sqrt(heat_message_prob) * 4))
-				to_chat(breather, span_warning("You feel [hot_message] in your [name]!"))
+		else
+			heat_message_prob = 20
+		if(prob(heat_message_prob))
+			to_chat(breather, span_warning("You feel [hot_message] in your [name]!"))
 
 	// The air you breathe out should match your body temperature
-	breath.temperature = breather.bodytemperature
+	breath.temperature = breather.body_temperature
 
 /// Creates a particle effect off the mouth of the passed mob.
 /obj/item/organ/internal/lungs/proc/emit_breath_particle(mob/living/carbon/human/breather, particle_type)
@@ -974,9 +982,9 @@
 	safe_oxygen_min = 13
 	emp_vulnerability = 20
 
-	cold_level_1_threshold = 200
-	cold_level_2_threshold = 140
-	cold_level_3_threshold = 100
+	cold_level_warning_threshold = CELCIUS_TO_KELVIN(-73.15 CELCIUS)
+	cold_level_hazard_threshold = CELCIUS_TO_KELVIN(-133.15 CELCIUS)
+	cold_level_danger_threshold = CELCIUS_TO_KELVIN(-173.15 CELCIUS)
 
 /obj/item/organ/internal/lungs/cybernetic/surplus
 	name = "surplus prosthetic lungs"
@@ -1055,9 +1063,9 @@
 	name = "aeration reticulum"
 	desc = "These exotic lungs seem crunchier than most."
 	icon_state = "lungs_ethereal"
-	heat_level_1_threshold = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD // 150C or 433k, in line with ethereal max safe body temperature
-	heat_level_2_threshold = 473
-	heat_level_3_threshold = 1073
+	heat_level_warning_threshold = FIRE_MINIMUM_TEMPERATURE_TO_SPREAD // 150C or 433k, in line with ethereal max safe body temperature
+	heat_level_hazard_threshold = CELCIUS_TO_KELVIN(200 CELCIUS)
+	heat_level_danger_threshold = CELCIUS_TO_KELVIN(800 CELCIUS)
 
 /obj/item/organ/internal/lungs/ethereal/ethereal_smoker
 	name = "smoker aeration reticulum"

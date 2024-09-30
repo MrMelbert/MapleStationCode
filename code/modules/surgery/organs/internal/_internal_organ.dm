@@ -33,8 +33,8 @@
 	if(HAS_TRAIT(src, TRAIT_NO_ORGAN_DECAY) || (owner && HAS_TRAIT(owner, TRAIT_NO_ORGAN_DECAY)))
 		return
 	if(owner)
-		if(owner.bodytemperature > T0C)
-			var/air_temperature_factor = min((owner.bodytemperature - T0C) / 20, 1)
+		if(owner.body_temperature > T0C)
+			var/air_temperature_factor = min((owner.body_temperature - T0C) / 20, 1)
 			apply_organ_damage(decay_factor * maxHealth * seconds_per_tick * air_temperature_factor)
 	else
 		var/datum/gas_mixture/exposed_air = return_air()

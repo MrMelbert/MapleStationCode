@@ -74,7 +74,7 @@
 		return
 
 	if(temperature_change)
-		owner.adjust_bodytemperature(temperature_change, owner.get_body_temp_cold_damage_limit() + 5, owner.get_body_temp_heat_damage_limit() - 5)
+		owner.adjust_body_temperature(temperature_change, human_owner.bodytemp_cold_damage_limit + 5 KELVIN, human_owner.bodytemp_heat_damage_limit - 5 KELVIN)
 	var/obj/item/bodypart/held_bodypart = owner.get_bodypart(targeted_zone)
 	if(held_bodypart && prob(66))
 		owner.cause_pain(targeted_zone, -pain_heal_amount)

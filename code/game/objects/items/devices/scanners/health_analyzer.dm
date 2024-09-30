@@ -349,19 +349,21 @@
 		var/datum/species/targetspecies = humantarget.dna.species
 
 		// melbert todo : move species too, to the top
-		render_list += "<span class='info ml-1'>Species: [targetspecies.name][HAS_TRAIT(target, TRAIT_HULK) ? "-derived mutant" : ""]</span><br>"
-		var/core_temperature_message = "Core temperature: [round(humantarget.coretemperature-T0C, 0.1)] &deg;C ([round(humantarget.coretemperature*1.8-459.67,0.1)] &deg;F)"
-		if(humantarget.coretemperature >= humantarget.get_body_temp_heat_damage_limit())
-			render_list += "<span class='alert ml-1'>☼ [core_temperature_message] ☼</span><br>"
-		else if(humantarget.coretemperature <= humantarget.get_body_temp_cold_damage_limit())
-			render_list += "<span class='alert ml-1'>❄ [core_temperature_message] ❄</span><br>"
-		else
-			render_list += "<span class='info ml-1'>[core_temperature_message]</span><br>"
+		render_list += "<span class='info ml-1'>Species: [targetspecies.name][mutant ? "-derived mutant" : ""]</span><br>"
 
-	var/body_temperature_message = "Body temperature: [round(target.bodytemperature-T0C, 0.1)] &deg;C ([round(target.bodytemperature*1.8-459.67,0.1)] &deg;F)"
-	if(target.bodytemperature >= target.get_body_temp_heat_damage_limit())
+	var/skin_temp = target.get_skin_temperature()
+	var/skin_temperature_message = "Skin temperature: [round(KELVIN_TO_CELCIUS(skin_temp), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(skin_temp), 0.1)] &deg;F)"
+	if(skin_temp >= target.bodytemp_heat_damage_limit)
+		render_list += "<span class='alert ml-1'>☼ [skin_temperature_message] ☼</span><br>"
+	else if(skin_temp <= target.bodytemp_cold_damage_limit)
+		render_list += "<span class='alert ml-1'>❄ [skin_temperature_message] ❄</span><br>"
+	else
+		render_list += "<span class='info ml-1'>[skin_temperature_message]</span><br>"
+
+	var/body_temperature_message = "Body temperature: [round(KELVIN_TO_CELCIUS(target.body_temperature), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(target.body_temperature), 0.1)] &deg;F)"
+	if(target.body_temperature >= target.bodytemp_heat_damage_limit)
 		render_list += "<span class='alert ml-1'>☼ [body_temperature_message] ☼</span><br>"
-	else if(target.bodytemperature <= target.get_body_temp_cold_damage_limit())
+	else if(target.body_temperature <= target.bodytemp_cold_damage_limit)
 		render_list += "<span class='alert ml-1'>❄ [body_temperature_message] ❄</span><br>"
 	else
 		render_list += "<span class='info ml-1'>[body_temperature_message]</span><br>"
@@ -382,9 +384,9 @@
 	var/blood_alcohol_content = target.get_blood_alcohol_content()
 	if(blood_alcohol_content > 0)
 		if(blood_alcohol_content >= 0.24)
-			render_list += "<span class='alert ml-1'>Blood alcohol content: <b>CRITICAL [blood_alcohol_content]%</b></span>\n"
+			render_list += "<span class='alert ml-1'>Blood alcohol content: <b>CRITICAL [blood_alcohol_content]%</b></span><br>"
 		else
-			render_list += "<span class='info ml-1'>Blood alcohol content: [blood_alcohol_content]%</span>\n"
+			render_list += "<span class='info ml-1'>Blood alcohol content: [blood_alcohol_content]%</span><br>"
 
 	//Diseases
 	var/disease_hr = FALSE

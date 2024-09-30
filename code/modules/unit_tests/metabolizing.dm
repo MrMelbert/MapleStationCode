@@ -85,7 +85,7 @@
 
 	// Set the metabolism efficiency to 1.0 so it transfers all reagents to the body in one go.
 	var/obj/item/organ/internal/stomach/pill_belly = pill_user.get_organ_slot(ORGAN_SLOT_STOMACH)
-	pill_belly.metabolism_efficiency = 1
+	pill_belly.stomach_blood_transfer_rate = 1
 
 	pill_user.Life()
 
@@ -114,7 +114,7 @@
 
 	// Set the metabolism efficiency to 1.0 so it transfers all reagents to the body in one go.
 	pill_belly = pill_syringe_user.get_organ_slot(ORGAN_SLOT_STOMACH)
-	pill_belly.metabolism_efficiency = 1
+	pill_belly.stomach_blood_transfer_rate = 1
 
 	pill_syringe_user.Life()
 

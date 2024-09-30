@@ -138,7 +138,7 @@
 /// Fourth and final link in a breath chain
 /mob/living/carbon/proc/handle_breath_temperature(datum/gas_mixture/breath)
 	// The air you breathe out should match your body temperature
-	breath.temperature = bodytemperature
+	breath.temperature = body_temperature
 
 /**
  * Attempts to take a breath from the external or internal air tank.
@@ -272,95 +272,47 @@
 		return
 	reagents?.metabolize(src, seconds_per_tick, times_fired, can_overdose = TRUE, liverless = TRUE, dead = TRUE) // Your liver doesn't work while you're dead.
 
-/// Base carbon environment handler, adds natural stabilization
-/mob/living/carbon/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	var/areatemp = get_temperature(environment)
+/mob/living/carbon/human/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
+	. = ..()
+	var/pressure = environment.return_pressure()
+	var/adjusted_pressure = calculate_affecting_pressure(pressure)
 
-	if(stat != DEAD) // If you are dead your body does not stabilize naturally
-		natural_bodytemperature_stabilization(environment, seconds_per_tick, times_fired)
-
-	else if(!on_fire && areatemp < bodytemperature) // lowers your dead body temperature to room temperature over time
-		adjust_bodytemperature((areatemp - bodytemperature), use_insulation=FALSE, use_steps=TRUE)
-
-	if(!on_fire || areatemp > bodytemperature) // If we are not on fire or the area is hotter
-		adjust_bodytemperature((areatemp - bodytemperature), use_insulation=TRUE, use_steps=TRUE)
-
-/**
- * Used to stabilize the body temperature back to normal on living mobs
- *
- * Arguments:
- * - [environemnt][/datum/gas_mixture]: The environment gas mix
- * - seconds_per_tick: The amount of time that has elapsed since the last tick
- * - times_fired: The number of times SSmobs has ticked
- */
-/mob/living/carbon/proc/natural_bodytemperature_stabilization(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	var/areatemp = get_temperature(environment)
-	var/body_temperature_difference = get_body_temp_normal() - bodytemperature
-	var/natural_change = 0
-
-	// We are very cold, increase body temperature
-	if(bodytemperature <= BODYTEMP_COLD_DAMAGE_LIMIT)
-		natural_change = max((body_temperature_difference * metabolism_efficiency / BODYTEMP_AUTORECOVERY_DIVISOR), \
-			BODYTEMP_AUTORECOVERY_MINIMUM)
-
-	// we are cold, reduce the minimum increment and do not jump over the difference
-	else if(bodytemperature > BODYTEMP_COLD_DAMAGE_LIMIT && bodytemperature < get_body_temp_normal())
-		natural_change = max(body_temperature_difference * metabolism_efficiency / BODYTEMP_AUTORECOVERY_DIVISOR, \
-			min(body_temperature_difference, BODYTEMP_AUTORECOVERY_MINIMUM / 4))
-
-	// We are hot, reduce the minimum increment and do not jump below the difference
-	else if(bodytemperature > get_body_temp_normal() && bodytemperature <= BODYTEMP_HEAT_DAMAGE_LIMIT)
-		natural_change = min(body_temperature_difference * metabolism_efficiency / BODYTEMP_AUTORECOVERY_DIVISOR, \
-			max(body_temperature_difference, -(BODYTEMP_AUTORECOVERY_MINIMUM / 4)))
-
-	// We are very hot, reduce the body temperature
-	else if(bodytemperature >= BODYTEMP_HEAT_DAMAGE_LIMIT)
-		natural_change = min((body_temperature_difference / BODYTEMP_AUTORECOVERY_DIVISOR), -BODYTEMP_AUTORECOVERY_MINIMUM)
-
-	var/thermal_protection = 1 - get_insulation_protection(areatemp) // invert the protection
-	if(areatemp > bodytemperature) // It is hot here
-		if(bodytemperature < get_body_temp_normal())
-			// Our bodytemp is below normal we are cold, insulation helps us retain body heat
-			// and will reduce the heat we lose to the environment
-			natural_change = (thermal_protection + 1) * natural_change
-		else
-			// Our bodytemp is above normal and sweating, insulation hinders out ability to reduce heat
-			// but will reduce the amount of heat we get from the environment
-			natural_change = (1 / (thermal_protection + 1)) * natural_change
-	else // It is cold here
-		if(!on_fire) // If on fire ignore ignore local temperature in cold areas
-			if(bodytemperature < get_body_temp_normal())
-				// Our bodytemp is below normal, insulation helps us retain body heat
-				// and will reduce the heat we lose to the environment
-				natural_change = (thermal_protection + 1) * natural_change
+	// Set alerts and apply damage based on the amount of pressure
+	switch(adjusted_pressure)
+		// Very high pressure, show an alert and take damage
+		if(HAZARD_HIGH_PRESSURE to INFINITY)
+			if(HAS_TRAIT(src, TRAIT_RESISTHIGHPRESSURE))
+				clear_alert(ALERT_PRESSURE)
 			else
-				// Our bodytemp is above normal and sweating, insulation hinders out ability to reduce heat
-				// but will reduce the amount of heat we get from the environment
-				natural_change = (1 / (thermal_protection + 1)) * natural_change
+				var/pressure_damage = min(((adjusted_pressure / HAZARD_HIGH_PRESSURE) - 1) * PRESSURE_DAMAGE_COEFFICIENT, MAX_HIGH_PRESSURE_DAMAGE) * physiology.pressure_mod * physiology.brute_mod * seconds_per_tick
+				adjustBruteLoss(pressure_damage, required_bodytype = BODYTYPE_ORGANIC)
+				throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/highpressure, 2)
 
-	// Apply the natural stabilization changes
-	adjust_bodytemperature(natural_change * seconds_per_tick)
+		// High pressure, show an alert
+		if(WARNING_HIGH_PRESSURE to HAZARD_HIGH_PRESSURE)
+			throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/highpressure, 1)
 
-/**
- * Get the insulation that is appropriate to the temperature you're being exposed to.
- * All clothing, natural insulation, and traits are combined returning a single value.
- *
- * required temperature The Temperature that you're being exposed to
- *
- * return the percentage of protection as a value from 0 - 1
-**/
-/mob/living/carbon/proc/get_insulation_protection(temperature)
-	return (temperature > bodytemperature) ? get_heat_protection(temperature) : get_cold_protection(temperature)
+		// No pressure issues here clear pressure alerts
+		if(WARNING_LOW_PRESSURE to WARNING_HIGH_PRESSURE)
+			clear_alert(ALERT_PRESSURE)
 
-/// This returns the percentage of protection from heat as a value from 0 - 1
-/// temperature is the temperature you're being exposed to
-/mob/living/carbon/proc/get_heat_protection(temperature)
-	return heat_protection
+		// Low pressure here, show an alert
+		if(HAZARD_LOW_PRESSURE to WARNING_LOW_PRESSURE)
+			// We have low pressure resit trait, clear alerts
+			if(HAS_TRAIT(src, TRAIT_RESISTLOWPRESSURE))
+				clear_alert(ALERT_PRESSURE)
+			else
+				throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/lowpressure, 1)
 
-/// This returns the percentage of protection from cold as a value from 0 - 1
-/// temperature is the temperature you're being exposed to
-/mob/living/carbon/proc/get_cold_protection(temperature)
-	return cold_protection
+		// Very low pressure, show an alert and take damage
+		else
+			// We have low pressure resit trait, clear alerts
+			if(HAS_TRAIT(src, TRAIT_RESISTLOWPRESSURE))
+				clear_alert(ALERT_PRESSURE)
+			else
+				var/pressure_damage = LOW_PRESSURE_DAMAGE * physiology.pressure_mod * physiology.brute_mod * seconds_per_tick
+				adjustBruteLoss(pressure_damage, required_bodytype = BODYTYPE_ORGANIC)
+				throw_alert(ALERT_PRESSURE, /atom/movable/screen/alert/lowpressure, 2)
 
 /**
  * Have two mobs share body heat between each other.
@@ -370,42 +322,14 @@
  * * M The mob/living/carbon that is sharing body heat
  */
 /mob/living/carbon/proc/share_bodytemperature(mob/living/carbon/M)
-	var/temp_diff = bodytemperature - M.bodytemperature
+	var/temp_diff = body_temperature - M.body_temperature
 	if(temp_diff > 0) // you are warm share the heat of life
-		M.adjust_bodytemperature((temp_diff * 0.5), use_insulation=TRUE, use_steps=TRUE) // warm up the giver
-		adjust_bodytemperature((temp_diff * -0.5), use_insulation=TRUE, use_steps=TRUE) // cool down the reciver
+		M.adjust_body_temperature((temp_diff * 0.5) * 0.075 KELVIN, use_insulation = TRUE) // warm up the giver
+		adjust_body_temperature((temp_diff * -0.5) * 0.075 KELVIN, use_insulation = TRUE) // cool down the reciver
 
 	else // they are warmer leech from them
-		adjust_bodytemperature((temp_diff * -0.5) , use_insulation=TRUE, use_steps=TRUE) // warm up the reciver
-		M.adjust_bodytemperature((temp_diff * 0.5), use_insulation=TRUE, use_steps=TRUE) // cool down the giver
-
-/**
- * Adjust the body temperature of a mob
- * expanded for carbon mobs allowing the use of insulation and change steps
- *
- * vars:
- * * amount The amount of degrees to change body temperature by
- * * min_temp (optional) The minimum body temperature after adjustment
- * * max_temp (optional) The maximum body temperature after adjustment
- * * use_insulation (optional) modifies the amount based on the amount of insulation the mob has
- * * use_steps (optional) Use the body temp divisors and max change rates
- * * capped (optional) default True used to cap step mode
- */
-/mob/living/carbon/adjust_bodytemperature(amount, min_temp=0, max_temp=INFINITY, use_insulation=FALSE, use_steps=FALSE, capped=TRUE)
-	// apply insulation to the amount of change
-	if(use_insulation)
-		amount *= (1 - get_insulation_protection(bodytemperature + amount))
-
-	// Use the bodytemp divisors to get the change step, with max step size
-	if(use_steps)
-		amount = (amount > 0) ? (amount / BODYTEMP_HEAT_DIVISOR) : (amount / BODYTEMP_COLD_DIVISOR)
-		// Clamp the results to the min and max step size
-		if(capped)
-			amount = (amount > 0) ? min(amount, BODYTEMP_HEATING_MAX) : max(amount, BODYTEMP_COOLING_MAX)
-
-	if(bodytemperature >= min_temp && bodytemperature <= max_temp)
-		bodytemperature = clamp(bodytemperature + amount, min_temp, max_temp)
-
+		adjust_body_temperature((temp_diff * -0.5) * 0.075 KELVIN, use_insulation = TRUE) // warm up the reciver
+		M.adjust_body_temperature((temp_diff * 0.5) * 0.075 KELVIN, use_insulation = TRUE) // cool down the giver
 
 ///////////
 //Stomach//

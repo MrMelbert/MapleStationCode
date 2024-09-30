@@ -54,10 +54,8 @@
 	///Maximum amount of stamina damage the mob can be inflicted with total
 	var/max_staminaloss = 200
 
-	///Minimal body temperature without receiving damage
-	var/minbodytemp = NPC_DEFAULT_MIN_TEMP
-	///Maximal body temperature without receiving damage
-	var/maxbodytemp = NPC_DEFAULT_MAX_TEMP
+	bodytemp_cold_damage_limit = NPC_DEFAULT_MIN_TEMP
+	bodytemp_heat_damage_limit = NPC_DEFAULT_MAX_TEMP
 	///This damage is taken when the body temp is too cold.
 	var/unsuitable_cold_damage
 	///This damage is taken when the body temp is too hot.
@@ -71,9 +69,6 @@
 	var/list/atmos_requirements = list("min_oxy" = 5, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 1, "min_co2" = 0, "max_co2" = 5, "min_n2" = 0, "max_n2" = 0)
 	///This damage is taken when atmos doesn't fit all the requirements above.
 	var/unsuitable_atmos_damage = 1
-
-	///How fast the mob's temperature normalizes. The greater the value, the slower their temperature normalizes. Should always be greater than 0.
-	var/temperature_normalization_speed = 5
 
 	//Defaults to zero so Ian can still be cuddly. Moved up the tree to living! This allows us to bypass some hardcoded stuff.
 	melee_damage_lower = 0
@@ -337,21 +332,11 @@
 /mob/living/simple_animal/proc/environment_temperature_is_safe(datum/gas_mixture/environment)
 	. = TRUE
 	var/areatemp = get_temperature(environment)
-	if((areatemp < minbodytemp) || (areatemp > maxbodytemp))
+	if((areatemp < bodytemp_cold_damage_limit) || (areatemp > bodytemp_heat_damage_limit))
 		. = FALSE
 
 /mob/living/simple_animal/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	var/atom/A = loc
-	if(isturf(A))
-		var/areatemp = get_temperature(environment)
-		var/temp_delta = areatemp - bodytemperature
-		if(abs(temp_delta) > 5)
-			if(temp_delta < 0)
-				if(!on_fire)
-					adjust_bodytemperature(clamp(temp_delta * seconds_per_tick / temperature_normalization_speed, temp_delta, 0))
-			else
-				adjust_bodytemperature(clamp(temp_delta * seconds_per_tick / temperature_normalization_speed, 0, temp_delta))
-
+	. = ..()
 	if(!environment_air_is_safe() && unsuitable_atmos_damage)
 		adjustHealth(unsuitable_atmos_damage * seconds_per_tick)
 		if(unsuitable_atmos_damage > 0)
@@ -359,12 +344,15 @@
 	else
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
-	handle_temperature_damage(seconds_per_tick, times_fired)
-
-/mob/living/simple_animal/proc/handle_temperature_damage(seconds_per_tick, times_fired)
-	. = FALSE
-	if((bodytemperature < minbodytemp) && unsuitable_cold_damage)
+/mob/living/simple_animal/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
+	if((body_temperature < bodytemp_cold_damage_limit) && unsuitable_cold_damage)
 		adjustHealth(unsuitable_cold_damage * seconds_per_tick)
+
+	if((body_temperature > bodytemp_heat_damage_limit) && unsuitable_heat_damage)
+		adjustHealth(unsuitable_heat_damage * seconds_per_tick)
+
+/mob/living/simple_animal/body_temperature_alerts()
+	if((body_temperature < bodytemp_cold_damage_limit) && unsuitable_cold_damage)
 		switch(unsuitable_cold_damage)
 			if(1 to 5)
 				throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
@@ -374,8 +362,7 @@
 				throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
 		. = TRUE
 
-	if((bodytemperature > maxbodytemp) && unsuitable_heat_damage)
-		adjustHealth(unsuitable_heat_damage * seconds_per_tick)
+	if((body_temperature > bodytemp_heat_damage_limit) && unsuitable_heat_damage)
 		switch(unsuitable_heat_damage)
 			if(1 to 5)
 				throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)

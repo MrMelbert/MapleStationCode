@@ -124,10 +124,12 @@
 #define COMSIG_HUMAN_PREFS_APPLIED "human_prefs_applied"
 ///Whenever EquipRanked is called, called after job is set
 #define COMSIG_JOB_RECEIVED "job_received"
-///from /mob/living/carbon/human/proc/set_coretemperature(): (oldvalue, newvalue)
-#define COMSIG_HUMAN_CORETEMP_CHANGE "human_coretemp_change"
 ///from /datum/species/handle_fire. Called when the human is set on fire and burning clothes and stuff
 #define COMSIG_HUMAN_BURNING "human_burning"
+	/// Return to do no burn damage
+	#define BURNING_HANDLED (1<<0)
+	/// Return to skip protection check (ie, cause damage even if wearing fireproof clothing)
+	#define BURNING_SKIP_PROTECTION (1<<1)
 ///from /mob/living/carbon/human/proc/force_say(): ()
 #define COMSIG_HUMAN_FORCESAY "human_forcesay"
 

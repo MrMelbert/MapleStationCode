@@ -274,7 +274,8 @@ Basically, we fill the time between now and 2s from now with hands based off the
 //inverse
 /datum/reagent/inverse/hercuri
 	name = "Herignis"
-	description = "This reagent causes a dramatic raise in the patient's body temperature. Overdosing makes the effect even stronger and causes severe liver damage."
+	description = "This reagent causes a dramatic raise in the patient's body temperature. \
+		Overdosing makes the effect even stronger and causes severe liver damage."
 	ph = 0.8
 	tox_damage = 0
 	color = "#ff1818"
@@ -286,30 +287,21 @@ Basically, we fill the time between now and 2s from now with hands based off the
 /datum/reagent/inverse/hercuri/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	var/heating = rand(5, 25) * creation_purity * REM * seconds_per_tick
-	affected_mob.reagents?.chem_temp += heating
-	affected_mob.adjust_bodytemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT)
-	if(!ishuman(affected_mob))
-		return
-	var/mob/living/carbon/human/human = affected_mob
-	human.adjust_coretemperature(heating * TEMPERATURE_DAMAGE_COEFFICIENT)
+	affected_mob.reagents?.expose_temperature(affected_mob.reagents.chem_temp + heating, 1)
+	affected_mob.adjust_body_temperature(heating * 0.2 KELVIN)
 
 /datum/reagent/inverse/hercuri/expose_mob(mob/living/carbon/exposed_mob, methods=VAPOR, reac_volume)
 	. = ..()
 	if(!(methods & VAPOR))
 		return
 
-	exposed_mob.adjust_bodytemperature(reac_volume * TEMPERATURE_DAMAGE_COEFFICIENT)
+	exposed_mob.adjust_body_temperature(reac_volume * 0.33 KELVIN, use_insulation = TRUE)
 	exposed_mob.adjust_fire_stacks(reac_volume / 2)
 
 /datum/reagent/inverse/hercuri/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.adjustOrganLoss(ORGAN_SLOT_LIVER, 2 * REM * seconds_per_tick, required_organ_flag = affected_organ_flags)) //Makes it so you can't abuse it with pyroxadone very easily (liver dies from 25u unless it's fully upgraded)
-		. = UPDATE_MOB_HEALTH
-	var/heating = 10 * creation_purity * REM * seconds_per_tick * TEMPERATURE_DAMAGE_COEFFICIENT
-	affected_mob.adjust_bodytemperature(heating) //hot hot
-	if(ishuman(affected_mob))
-		var/mob/living/carbon/human/human = affected_mob
-		human.adjust_coretemperature(heating)
+	affected_mob.adjustOrganLoss(ORGAN_SLOT_LIVER, 2 * REM * seconds_per_tick, required_organ_flag = affected_organ_flags) //Makes it so you can't abuse it with pyroxadone very easily (liver dies from 25u unless it's fully upgraded)
+	affected_mob.adjust_body_temperature(0.5 KELVIN * creation_purity * REM * seconds_per_tick) //hot hot
 
 /datum/reagent/inverse/healing/tirimol
 	name = "Super Melatonin"//It's melatonin, but super!
@@ -364,11 +356,11 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	ph = 3.82
 	tox_damage = 0
 	addiction_types = list(/datum/addiction/medicine = 2.3)
-	//The heat damage levels of lungs when added (i.e. heat_level_1_threshold on lungs)
+	//The heat damage levels of lungs when added (i.e. heat_level_warning_threshold on lungs)
 	var/cached_heat_level_1
 	var/cached_heat_level_2
 	var/cached_heat_level_3
-	//The cold damage levels of lungs when added (i.e. cold_level_1_threshold on lungs)
+	//The cold damage levels of lungs when added (i.e. cold_level_warning_threshold on lungs)
 	var/cached_cold_level_1
 	var/cached_cold_level_2
 	var/cached_cold_level_3
@@ -390,20 +382,20 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	apply_lung_levels(lungs)
 
 /datum/reagent/inverse/healing/convermol/proc/apply_lung_levels(obj/item/organ/internal/lungs/lungs)
-	cached_heat_level_1 = lungs.heat_level_1_threshold
-	cached_heat_level_2 = lungs.heat_level_2_threshold
-	cached_heat_level_3 = lungs.heat_level_3_threshold
-	cached_cold_level_1 = lungs.cold_level_1_threshold
-	cached_cold_level_2 = lungs.cold_level_2_threshold
-	cached_cold_level_3 = lungs.cold_level_3_threshold
+	cached_heat_level_1 = lungs.heat_level_warning_threshold
+	cached_heat_level_2 = lungs.heat_level_hazard_threshold
+	cached_heat_level_3 = lungs.heat_level_danger_threshold
+	cached_cold_level_1 = lungs.cold_level_warning_threshold
+	cached_cold_level_2 = lungs.cold_level_hazard_threshold
+	cached_cold_level_3 = lungs.cold_level_danger_threshold
 	//Heat threshold is increased
-	lungs.heat_level_1_threshold *= creation_purity * 1.5
-	lungs.heat_level_2_threshold *= creation_purity * 1.5
-	lungs.heat_level_3_threshold *= creation_purity * 1.5
+	lungs.heat_level_warning_threshold *= creation_purity * 1.5
+	lungs.heat_level_hazard_threshold *= creation_purity * 1.5
+	lungs.heat_level_danger_threshold *= creation_purity * 1.5
 	//Cold threshold is decreased
-	lungs.cold_level_1_threshold *= creation_purity * 0.5
-	lungs.cold_level_2_threshold *= creation_purity * 0.5
-	lungs.cold_level_3_threshold *= creation_purity * 0.5
+	lungs.cold_level_warning_threshold *= creation_purity * 0.5
+	lungs.cold_level_hazard_threshold *= creation_purity * 0.5
+	lungs.cold_level_danger_threshold *= creation_purity * 0.5
 
 /datum/reagent/inverse/healing/convermol/proc/on_removed_organ(mob/prev_owner, obj/item/organ/organ)
 	SIGNAL_HANDLER
@@ -413,12 +405,12 @@ Basically, we fill the time between now and 2s from now with hands based off the
 	restore_lung_levels(lungs)
 
 /datum/reagent/inverse/healing/convermol/proc/restore_lung_levels(obj/item/organ/internal/lungs/lungs)
-	lungs.heat_level_1_threshold = cached_heat_level_1
-	lungs.heat_level_2_threshold = cached_heat_level_2
-	lungs.heat_level_3_threshold = cached_heat_level_3
-	lungs.cold_level_1_threshold = cached_cold_level_1
-	lungs.cold_level_2_threshold = cached_cold_level_2
-	lungs.cold_level_3_threshold = cached_cold_level_3
+	lungs.heat_level_warning_threshold = cached_heat_level_1
+	lungs.heat_level_hazard_threshold = cached_heat_level_2
+	lungs.heat_level_danger_threshold = cached_heat_level_3
+	lungs.cold_level_warning_threshold = cached_cold_level_1
+	lungs.cold_level_hazard_threshold = cached_cold_level_2
+	lungs.cold_level_danger_threshold = cached_cold_level_3
 
 /datum/reagent/inverse/healing/convermol/on_mob_delete(mob/living/affected_mob)
 	. = ..()
@@ -825,7 +817,7 @@ Basically, we fill the time between now and 2s from now with hands based off the
 /datum/reagent/inverse/oxandrolone/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(SPT_PROB(25, seconds_per_tick))
-		affected_mob.adjust_bodytemperature(30 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick)
+		affected_mob.adjust_body_temperature(1 KELVIN * REM * seconds_per_tick)
 		affected_mob.set_jitter_if_lower(3 SECONDS)
 		affected_mob.adjustStaminaLoss(5 * REM * seconds_per_tick)
 	else if(SPT_PROB(5, seconds_per_tick))

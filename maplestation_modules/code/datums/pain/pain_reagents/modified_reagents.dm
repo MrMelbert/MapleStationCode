@@ -83,11 +83,22 @@
 
 // Healium functions as an anesthetic
 /datum/reagent/healium
+	pain_modifier = 0.75
 
 /datum/reagent/healium/on_mob_life(mob/living/breather, seconds_per_tick, times_fired)
 	. = ..()
-	breather.apply_status_effect(/datum/status_effect/anesthetic, 3 SECONDS)
-	breather.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
+	if(HAS_TRAIT(user, TRAIT_KNOCKEDOUT))
+		breather.apply_status_effect(/datum/status_effect/anesthetic, 3 SECONDS)
+		breather.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
+
+// Nitrous Oxide can apply some anesthetic, like the gas
+/datum/reagent/nitrous_oxide
+	pain_modifier = 0.75
+
+/datum/reagent/nitrous_oxide/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	if(HAS_TRAIT(user, TRAIT_KNOCKEDOUT))
+		user.apply_status_effect(/datum/status_effect/grouped/anesthetic, 3 SECONDS)
 
 // Saline glucose helps shock
 /datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)

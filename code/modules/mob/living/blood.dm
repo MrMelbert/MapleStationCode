@@ -14,7 +14,7 @@
 		remove_max_consciousness_value(BLOOD_LOSS)
 		return
 
-	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
+	if(body_temperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
 		return
 
 	var/sigreturn = SEND_SIGNAL(src, COMSIG_HUMAN_ON_HANDLE_BLOOD, seconds_per_tick, times_fired)
@@ -223,7 +223,7 @@
 		amount = blood_volume
 
 	blood_volume -= amount
-	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), bodytemperature)
+	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), body_temperature)
 	return TRUE
 
 // /mob/living/proc/get_blood_data()

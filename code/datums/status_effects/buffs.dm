@@ -382,14 +382,10 @@
 /datum/status_effect/regenerative_core/on_apply()
 	owner.add_movespeed_mod_immunities(id, /datum/movespeed_modifier/damage_slowdown)
 	owner.heal_overall_damage(25, 25)
-	owner.fully_heal(HEAL_CC_STATUS)
-	owner.bodytemperature = owner.get_body_temp_normal()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/humi = owner
-		humi.set_coretemperature(humi.get_body_temp_normal())
-		humi.cause_pain(BODY_ZONES_LIMBS, -30)
-		humi.cause_pain(BODY_ZONE_CHEST, -40)
-		humi.cause_pain(BODY_ZONE_HEAD, -20) // heals 90 pain total
+	owner.fully_heal(HEAL_CC_STATUS|HEAL_TEMP)
+	owner.cause_pain(BODY_ZONES_LIMBS, -30)
+	owner.cause_pain(BODY_ZONE_CHEST, -40)
+	owner.cause_pain(BODY_ZONE_HEAD, -20) // heals 90 pain total
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()
@@ -533,7 +529,7 @@
 	need_mob_update += owner.adjustStaminaLoss(-4 * seconds_between_ticks, updating_stamina = FALSE)
 	if(need_mob_update)
 		owner.updatehealth()
-	owner.adjust_bodytemperature(BODYTEMP_NORMAL, 0, BODYTEMP_NORMAL) //Won't save you from the void of space, but it will stop you from freezing or suffocating in low pressure
+	owner.adjust_body_temperature(INFINITY, max_temp = owner.standard_body_temperature) //Won't save you from the void of space, but it will stop you from freezing or suffocating in low pressure
 
 
 /atom/movable/screen/alert/status_effect/nest_sustenance

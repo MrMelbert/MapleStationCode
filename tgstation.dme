@@ -1780,6 +1780,8 @@
 #include "code\datums\status_effects\debuffs\grabbed.dm"
 #include "code\datums\status_effects\debuffs\hallucination.dm"
 #include "code\datums\status_effects\debuffs\heart_attack.dm"
+#include "code\datums\status_effects\debuffs\heat_exposure.dm"
+#include "code\datums\status_effects\debuffs\homeostasis_level.dm"
 #include "code\datums\status_effects\debuffs\hooked.dm"
 #include "code\datums\status_effects\debuffs\jitteriness.dm"
 #include "code\datums\status_effects\debuffs\lungless.dm"

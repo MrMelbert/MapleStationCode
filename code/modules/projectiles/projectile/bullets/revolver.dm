@@ -113,14 +113,17 @@
 /obj/projectile/bullet/c38/iceblox //see /obj/projectile/temp for the original code
 	name = ".38 Iceblox bullet"
 	damage = 20
-	var/temperature = 100
 	ricochets_max = 0
+	/// How cold to chill the target down to
+	var/temperature = -8 CELCIUS
 
 /obj/projectile/bullet/c38/iceblox/on_hit(atom/target, blocked = 0, pierce_hit)
 	. = ..()
 	if(isliving(target))
 		var/mob/living/M = target
-		M.adjust_bodytemperature(((100-blocked)/100)*(temperature - M.bodytemperature))
+		// if we made 100% insulation make you immune, we would be useless
+		var/final_change = temperature * (1 - (0.5 * M.get_insulation(M.body_temperature + temperature))) * ((100 - blocked) / 100)
+		M.adjust_body_temperature(final_change)
 
 // .357 (Syndie Revolver)
 
