@@ -44,6 +44,13 @@
 
 	return null
 
+/mob/living/carbon/is_eyes_visible()
+	if(istype(glasses) && (glasses.flags_cover & GLASSESCOVERSEYES) && glasses.tint)
+		return FALSE
+	if(check_obscured_slots() & ITEM_SLOT_EYES)
+		return FALSE
+	return TRUE
+
 /mob/living/carbon/is_pepper_proof(check_flags = ALL)
 	var/obj/item/organ/internal/eyes/eyes = get_organ_by_type(/obj/item/organ/internal/eyes)
 	if(eyes && eyes.pepperspray_protect)
