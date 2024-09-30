@@ -17,6 +17,7 @@
 		/obj/item/organ/external/tail/lizard = "Smooth",
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/lizard
+	mutantstomach = /obj/item/organ/internal/stomach/lizard
 	coldmod = 1.5
 	heatmod = 0.67
 	payday_modifier = 1.0
@@ -30,9 +31,14 @@
 	species_language_holder = /datum/language_holder/lizard
 	digitigrade_customization = DIGITIGRADE_OPTIONAL
 
+	// Standard body temp doesn't really matter as much since we're cold blooded
+	bodytemp_normal = (BODYTEMP_NORMAL - 5 KELVIN)
 	// Lizards are coldblooded and can stand a greater temperature range than humans
 	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
-	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 10)
+	bodytemp_cold_damage_limit = (BODYTEMP_COLD_DAMAGE_LIMIT - 5 KELVIN)
+	// Cold blooded duh
+	temperature_homeostasis_speed = 0
+	temperature_normalization_speed = parent_type::temperature_normalization_speed * 3
 
 	ass_image = 'icons/ass/asslizard.png'
 
@@ -47,9 +53,11 @@
 
 	monkey_type = /datum/species/monkey/lizard
 
-/// Lizards are cold blooded and do not stabilize body temperature naturally
-/datum/species/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)
-	return
+/datum/species/lizard/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
+	. = ..()
+	// if you spawn on station is is expected you have already acclimated to the room temp (20c) (but give a little bit of leeway)
+	if(is_station_level(C.z))
+		C.body_temperature = CELCIUS_TO_KELVIN(22 CELCIUS)
 
 /datum/species/lizard/randomize_features()
 	var/list/features = ..()

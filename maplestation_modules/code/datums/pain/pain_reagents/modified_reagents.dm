@@ -134,7 +134,7 @@
 	. = ..()
 	if(!.)
 		return
-	var/power = -0.00003 * (affected_mob.bodytemperature ** 2) + 3
+	var/power = -0.00003 * (affected_mob.body_temperature ** 2) + 3
 
 	ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type) // To negate the fact that being cold is bad for shock
 	affected_mob.set_pain_mod(type, 0.5) // Heal pain faster

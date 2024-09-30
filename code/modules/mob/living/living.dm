@@ -972,7 +972,8 @@
 	cure_husk()
 
 	if(heal_flags & HEAL_TEMP)
-		bodytemperature = get_body_temp_normal(apply_change = FALSE)
+		body_temperature = standard_body_temperature
+		body_temperature_alerts()
 	if(heal_flags & HEAL_BLOOD)
 		restore_blood()
 	if(reagents && (heal_flags & HEAL_ALL_REAGENTS))
@@ -1307,19 +1308,27 @@
 	else if(!src.mob_negates_gravity())
 		step_towards(src,S)
 
+/**
+ * Unsed in calculating what temperature our environment probably is.
+ *
+ * By default just returns the temperature of the turf we're on,
+ * but is slightly more complex if we're inside another movable (in which we average the temps of our body and the movable)
+ */
 /mob/living/proc/get_temperature(datum/gas_mixture/environment)
-	var/loc_temp = environment ? environment.temperature : T0C
+	var/loc_temp = environment ? environment.return_temperature() : T0C
 	if(isobj(loc))
-		var/obj/oloc = loc
-		var/obj_temp = oloc.return_temperature()
-		if(obj_temp != null)
+		var/obj_temp = loc.return_temperature()
+		if(!isnull(obj_temp))
 			loc_temp = obj_temp
+
 	else if(isspaceturf(get_turf(src)))
 		var/turf/heat_turf = get_turf(src)
 		loc_temp = heat_turf.temperature
+
 	if(ismovable(loc))
 		var/atom/movable/occupied_space = loc
-		loc_temp = ((1 - occupied_space.contents_thermal_insulation) * loc_temp) + (occupied_space.contents_thermal_insulation * bodytemperature)
+		loc_temp = ((1 - occupied_space.contents_thermal_insulation) * loc_temp) + (occupied_space.contents_thermal_insulation * body_temperature)
+
 	return loc_temp
 
 /// Checks if this mob can be actively tracked by cameras / AI.
@@ -1767,16 +1776,22 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	return null
 
 /**
- * Handles effects happening when mob is on normal fire
+ * Called every life tick that a mob is on fire.
  *
- * Vars:
- * * seconds_per_tick
- * * times_fired
- * * fire_handler: Current fire status effect that called the proc
+ * Args:
+ * * seconds_per_tick: Seconds between each life tick
+ * * fire_handler: The fire handler status effect that is managing the fire stacks
  */
-
 /mob/living/proc/on_fire_stack(seconds_per_tick, datum/status_effect/fire_handler/fire_stacks/fire_handler)
-	return
+	var/amount_to_heat = HEAT_PER_FIRE_STACK * fire_handler.stacks * seconds_per_tick
+	var/amount_to_burn = BURN_DAMAGE_PER_FIRE_STACK * fire_handler.stacks * seconds_per_tick
+	if(body_temperature > BODYTEMP_FIRE_TEMP_SOFTCAP)
+		// Apply dimishing returns upon temp beyond the soft cap
+		amount_to_heat = amount_to_heat ** (BODYTEMP_FIRE_TEMP_SOFTCAP / body_temperature)
+
+	var/direct_damage = (HAS_TRAIT(src, TRAIT_RESISTHEAT) || bodytemp_heat_damage_limit == INFINITY) ? 0 : temperature_burns(amount_to_burn)
+	var/temp_change = adjust_body_temperature(amount_to_heat)
+	return temp_change + direct_damage
 
 //Mobs on Fire end
 
@@ -2044,64 +2059,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	if(lying_angle != lying_prev)
 		update_transform()
 		lying_prev = lying_angle
-
-
-/**
- * add_body_temperature_change Adds modifications to the body temperature
- *
- * This collects all body temperature changes that the mob is experiencing to the list body_temp_changes
- * the aggrogate result is used to derive the new body temperature for the mob
- *
- * arguments:
- * * key_name (str) The unique key for this change, if it already exist it will be overridden
- * * amount (int) The amount of change from the base body temperature
- */
-/mob/living/proc/add_body_temperature_change(key_name, amount)
-	body_temp_changes["[key_name]"] = amount
-
-/**
- * remove_body_temperature_change Removes the modifications to the body temperature
- *
- * This removes the recorded change to body temperature from the body_temp_changes list
- *
- * arguments:
- * * key_name (str) The unique key for this change that will be removed
- */
-/mob/living/proc/remove_body_temperature_change(key_name)
-	body_temp_changes -= key_name
-
-/**
- * get_body_temp_normal_change Returns the aggregate change to body temperature
- *
- * This aggregates all the changes in the body_temp_changes list and returns the result
- */
-/mob/living/proc/get_body_temp_normal_change()
-	var/total_change = 0
-	if(body_temp_changes.len)
-		for(var/change in body_temp_changes)
-			total_change += body_temp_changes["[change]"]
-	return total_change
-
-/**
- * get_body_temp_normal Returns the mobs normal body temperature with any modifications applied
- *
- * This applies the result from proc/get_body_temp_normal_change() against the BODYTEMP_NORMAL and returns the result
- *
- * arguments:
- * * apply_change (optional) Default True This applies the changes to body temperature normal
- */
-/mob/living/proc/get_body_temp_normal(apply_change=TRUE)
-	if(!apply_change)
-		return BODYTEMP_NORMAL
-	return BODYTEMP_NORMAL + get_body_temp_normal_change()
-
-///Returns the body temperature at which this mob will start taking heat damage.
-/mob/living/proc/get_body_temp_heat_damage_limit()
-	return BODYTEMP_HEAT_DAMAGE_LIMIT
-
-///Returns the body temperature at which this mob will start taking cold damage.
-/mob/living/proc/get_body_temp_cold_damage_limit()
-	return BODYTEMP_COLD_DAMAGE_LIMIT
 
 ///Checks if the user is incapacitated or on cooldown.
 /mob/living/proc/can_look_up()

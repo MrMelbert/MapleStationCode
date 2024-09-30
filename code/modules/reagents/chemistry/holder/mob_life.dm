@@ -11,7 +11,7 @@
 /datum/reagents/proc/metabolize(mob/living/carbon/owner, seconds_per_tick, times_fired, can_overdose = FALSE, liverless = FALSE, dead = FALSE)
 	var/list/cached_reagents = reagent_list
 	if(owner)
-		expose_temperature(owner.bodytemperature, 0.25)
+		expose_temperature(owner.body_temperature, 0.25)
 
 	var/need_mob_update = FALSE
 	var/obj/item/organ/internal/stomach/belly = owner.get_organ_slot(ORGAN_SLOT_STOMACH)

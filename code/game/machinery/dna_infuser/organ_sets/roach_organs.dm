@@ -164,7 +164,7 @@
 	desc = "Roach DNA infused into what was once a normal stomach."
 	maxHealth = 2 * STANDARD_ORGAN_THRESHOLD
 	disgust_metabolism = 32 // Demolishes any disgust we have
-	metabolism_efficiency = 0.033 // Slightly worse at transferring reagents
+	stomach_blood_transfer_rate = 0.033 // Slightly worse at transferring reagents
 	hunger_modifier = 3
 
 	icon = 'icons/obj/medical/organs/infuser_organs.dmi'

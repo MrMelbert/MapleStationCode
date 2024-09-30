@@ -938,7 +938,6 @@
 	clothing.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 	clothing.add_atom_colour("#000080", FIXED_COLOUR_PRIORITY)
 	clothing.max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
-	clothing.heat_protection = clothing.body_parts_covered
 	clothing.resistance_flags |= FIRE_PROOF
 	uses --
 	if(!uses)

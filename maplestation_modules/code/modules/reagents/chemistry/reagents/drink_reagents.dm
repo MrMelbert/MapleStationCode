@@ -21,7 +21,7 @@
 	M.adjust_drowsiness(-2 SECONDS * REM * seconds_per_tick)
 	M.AdjustSleeping(-20 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE) //the major difference between base tea and green tea, this one's a great anti-tox.
-	M.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, M.get_body_temp_normal())
+	M.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = M.standard_body_temperature)
 	return ..() || TRUE
 
 /datum/reagent/consumable/ice_greentea
@@ -46,7 +46,7 @@
 	M.adjust_drowsiness(-2 SECONDS * REM * seconds_per_tick)
 	M.AdjustSleeping(-40 * REM * seconds_per_tick)
 	M.adjustToxLoss(-0.5, FALSE)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, M.get_body_temp_normal())
+	M.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = M.standard_body_temperature)
 	return ..() || TRUE
 
 /datum/reagent/consumable/green_hill_tea
@@ -77,7 +77,7 @@
 
 /datum/reagent/consumable/green_hill_tea/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	M.AdjustSleeping(-40 * REM * seconds_per_tick)
-	M.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, M.get_body_temp_normal())
+	M.adjust_body_temperature(COLD_DRINK * REM * seconds_per_tick, min_temp = M.standard_body_temperature)
 	return ..()
 
 /datum/reagent/consumable/green_hill_tea/overdose_process(mob/living/M, seconds_per_tick, times_fired)
@@ -211,7 +211,7 @@
 	icon_state = "piledriver"
 	name = "Pile Driver"
 	desc = "A drink said to be bitter and somewhat spicy. You better not have a sore throat when drinking it." //Va-11 Hall-A reference moment flushed
-	
+
 /datum/reagent/consumable/ethanol/blood_wine
 	name = "Tiziran Blood Wine"
 	description = "A Tiziran wine made from fermented blood."
@@ -343,4 +343,3 @@
 	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_ENERGY * seconds_per_tick)
 	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
 		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/energy_lover)
-
