@@ -132,6 +132,8 @@
 
 	hud_type = /datum/hud/vroomba
 
+	melee_damage_lower = 10
+	melee_damage_upper = 20
 	///basic hat offset
 	var/static/list/hat_offsets = list(0,-9)
 
@@ -266,4 +268,21 @@
 	if(hud_used)
 		hud_used.build_hand_slots()
 
+//default one sprays acid on people I do not want this
+/mob/living/basic/bot/cleanbot/pre_attack(mob/living/source, atom/target, proximity, modifiers)
+	if(!proximity || !can_unarmed_attack())
+		return NONE
+
+	if(is_type_in_typecache(target, huntable_pests) && !isnull(our_mop))
+		INVOKE_ASYNC(our_mop, TYPE_PROC_REF(/obj/item, melee_attack_chain), src, target)
+		target.acid_act(75, 10)
+		return COMPONENT_CANCEL_ATTACK_CHAIN
+
+	if(!iscarbon(target) && !is_type_in_typecache(target, huntable_trash))
+		return NONE
+
+	if(combat_mode)
+		visible_message(span_danger("[src] flies into [target]!"))
+
+	return NONE
 
