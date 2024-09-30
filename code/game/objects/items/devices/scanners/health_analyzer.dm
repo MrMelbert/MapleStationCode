@@ -345,11 +345,8 @@
 		if(advanced && humantarget.has_dna() && humantarget.dna.stability != initial(humantarget.dna.stability))
 			render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability]%.</span><br>"
 
-		// Hulk and body temperature
-		var/datum/species/targetspecies = humantarget.dna.species
-
 		// melbert todo : move species too, to the top
-		render_list += "<span class='info ml-1'>Species: [targetspecies.name][mutant ? "-derived mutant" : ""]</span><br>"
+		render_list += "<span class='info ml-1'>Species: [humantarget.dna.species.name][HAS_TRAIT(target, TRAIT_HULK) ? "-derived mutant" : ""]</span><br>"
 
 	var/skin_temp = target.get_skin_temperature()
 	var/skin_temperature_message = "Skin temperature: [round(KELVIN_TO_CELCIUS(skin_temp), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(skin_temp), 0.1)] &deg;F)"

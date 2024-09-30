@@ -24,13 +24,13 @@
 /datum/status_effect/thermia/on_remove()
 	owner.remove_consciousness_modifier(id)
 	owner.remove_max_consciousness_value(id)
-	owner.clear_alert(ALERT_TEMPERATURE)
-	owner.clear_mood_event(id)
-	owner.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 
 /datum/status_effect/thermia/tick(seconds_between_ticks)
 	if(!COOLDOWN_FINISHED(src, update_cd))
 		return
+
+	if(owner.body_temperature > owner.bodytemp_cold_damage_limit || owner.body_temperature < owner.bodytemp_heat_damage_limit)
+		qdel(src)
 
 	// Counts up from 0 to [consciousness_mod]
 	if(consciousness_mod)
@@ -48,65 +48,26 @@
 
 	COOLDOWN_START(src, update_cd, 9 SECONDS)
 
-/// Manually applying alerts, rather than using the api for it, becuase we need to apply "severity" argument
-/datum/status_effect/thermia/proc/give_alert()
-	return
-
 /datum/status_effect/thermia/hypo
-	var/slowdown_mod
-
-/datum/status_effect/thermia/hypo/on_creation(mob/living/new_owner, slowdown_mod = 1)
-	src.slowdown_mod = slowdown_mod
-	return ..()
-
-/datum/status_effect/thermia/hypo/on_apply()
-	. = ..()
-	owner.add_mood_event(id, /datum/mood_event/cold)
-	// Apply cold slow down
-	owner.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = slowdown_mod)
 
 /datum/status_effect/thermia/hypo/one
 	consciousness_mod = 5
 
-/datum/status_effect/thermia/hypo/one/give_alert()
-	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 1)
-
 /datum/status_effect/thermia/hypo/two
 	consciousness_mod = 10
-
-/datum/status_effect/thermia/hypo/two/give_alert()
-	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 2)
 
 /datum/status_effect/thermia/hypo/three
 	consciousness_mod = 20
 	max_consciousness_mod = HARD_CRIT_THRESHOLD
 
-/datum/status_effect/thermia/hypo/three/give_alert()
-	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/cold, 3)
-
 /datum/status_effect/thermia/hyper
-
-/datum/status_effect/thermia/hyper/on_apply()
-	. = ..()
-	owner.add_mood_event(id, /datum/mood_event/hot)
-	//Remove any slowdown from the cold.
-	owner.remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 
 /datum/status_effect/thermia/hyper/one
 	consciousness_mod = 5
 
-/datum/status_effect/thermia/hyper/one/give_alert()
-	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 1)
-
 /datum/status_effect/thermia/hyper/two
 	consciousness_mod = 10
-
-/datum/status_effect/thermia/hyper/two/give_alert()
-	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 2)
 
 /datum/status_effect/thermia/hyper/three
 	consciousness_mod = 20
 	max_consciousness_mod = HARD_CRIT_THRESHOLD
-
-/datum/status_effect/thermia/hyper/three/give_alert()
-	return owner.throw_alert(ALERT_TEMPERATURE, /atom/movable/screen/alert/hot, 3)
