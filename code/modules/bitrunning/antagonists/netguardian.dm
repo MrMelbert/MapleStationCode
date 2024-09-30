@@ -46,7 +46,7 @@
 	death_message = "malfunctions!"
 
 	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	minimum_survivable_temperature = TCMB
+	bodytemp_cold_damage_limit = TCMB
 	ai_controller = /datum/ai_controller/basic_controller/netguardian
 
 /mob/living/basic/netguardian/Initialize(mapload)

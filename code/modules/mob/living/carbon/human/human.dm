@@ -694,10 +694,6 @@
 			if(existing_mutation.quality != POSITIVE && existing_mutation.remove_on_aheal)
 				dna.remove_mutation(existing_mutation)
 
-	if(heal_flags & HEAL_TEMP)
-		set_coretemperature(get_body_temp_normal(apply_change = FALSE))
-		heat_exposure_stacks = 0
-
 	return ..()
 
 /mob/living/carbon/human/vomit(vomit_flags = VOMIT_CATEGORY_DEFAULT, vomit_type = /obj/effect/decal/cleanable/vomit/toxic, lost_nutrition = 10, distance = 1, purge_ratio = 0.1)

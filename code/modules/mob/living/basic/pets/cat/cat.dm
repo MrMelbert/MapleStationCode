@@ -129,8 +129,8 @@
 	icon_state = "spacecat"
 	icon_living = "spacecat"
 	icon_dead = "spacecat_dead"
-	minimum_survivable_temperature = TCMB
-	maximum_survivable_temperature = T0C + 40
+	bodytemp_cold_damage_limit = TCMB
+	bodytemp_heat_damage_limit = T0C + 40
 	held_state = "spacecat"
 
 /mob/living/basic/pet/cat/breadcat

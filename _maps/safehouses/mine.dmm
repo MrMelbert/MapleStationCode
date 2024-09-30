@@ -34,15 +34,15 @@
 	},
 /obj/structure/table,
 /obj/item/flashlight/lantern{
-	pixel_x = 8;
-	pixel_y = null
+	pixel_x = -8;
+	pixel_y = 8
 	},
 /obj/item/flashlight/lantern{
 	pixel_y = 4
 	},
 /obj/item/flashlight/lantern{
-	pixel_x = -8;
-	pixel_y = 8
+	pixel_x = 8;
+	pixel_y = null
 	},
 /turf/open/floor/iron/dark,
 /area/virtual_domain/safehouse)
@@ -88,6 +88,10 @@
 	dir = 8
 	},
 /obj/machinery/suit_storage_unit/mining,
+/obj/item/clothing/gloves/color/black,
+/obj/item/clothing/shoes/workboots/mining{
+	pixel_y = -3
+	},
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 4
 	},
@@ -98,6 +102,10 @@
 	},
 /obj/machinery/suit_storage_unit/mining,
 /obj/machinery/light/directional/west,
+/obj/item/clothing/gloves/color/black,
+/obj/item/clothing/shoes/workboots/mining{
+	pixel_y = -3
+	},
 /turf/open/floor/iron/dark/smooth_edge{
 	dir = 4
 	},
@@ -107,6 +115,10 @@
 	dir = 9
 	},
 /obj/machinery/suit_storage_unit/mining,
+/obj/item/clothing/gloves/color/black,
+/obj/item/clothing/shoes/workboots/mining{
+	pixel_y = -3
+	},
 /turf/open/floor/iron/dark,
 /area/virtual_domain/safehouse)
 
