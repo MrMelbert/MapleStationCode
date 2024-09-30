@@ -112,6 +112,40 @@
 
 	w_class = WEIGHT_CLASS_TINY
 
+///Volkan's umbrella. Stops radiation.
+/obj/item/umbrella/volkan
+	name = "Volkan's umbrella"
+	desc = "A very thick, almost metallic umbrella. It has a dark black plasticky rim on the edge."
+	icon = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas.dmi'
+	icon_state = "umbrella_volkan"
+	inhand_icon_state = "umbrella_volkan_closed"
+	lefthand_file = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas_inhand_lh.dmi'
+	righthand_file = 'maplestation_modules/story_content/volkan_equipment/icons/umbrellas_inhand_rh.dmi'
+
+	on_inhand_icon_state = "umbrella_volkan_open"
+
+	random_color = FALSE
+	greyscale_config = null
+	greyscale_config_inhand_left = null
+	greyscale_config_inhand_right = null
+
+/obj/item/umbrella/volkan/on_transform(obj/item/source, mob/user, active)
+	. = ..()
+	if(user)
+		if(active)
+			ADD_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
+		else
+			REMOVE_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
+
+/obj/item/umbrella/volkan/pickup(mob/user)
+	. = ..()
+	if (open)
+		ADD_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
+
+/obj/item/umbrella/volkan/dropped(mob/user, silent)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_RADIMMUNE, TRAIT_GENERIC)
+
 
 //---------------------cool boxes!-----------------------
 
