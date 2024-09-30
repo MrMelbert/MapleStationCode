@@ -12,19 +12,18 @@
 	lefthand_file = 'maplestation_modules/story_content/localnode_equipment/sprites/localnode_inhand_lh.dmi'
 	righthand_file = 'maplestation_modules/story_content/localnode_equipment/sprites/localnode_inhand_rh.dmi'
 	inhand_icon_state = "localnode"
-	chat_color = "#0e5807"
+	var/item_chat_color = "#0e5807"
 	var/voice_name = "LocalNode#4248"
 
 /obj/item/localnode/attack_self(mob/user)
-	say("HEY, STOP THAT!")
-	playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, TRUE)
-	return
+	playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, TRUE)
 
 /obj/item/localnode/talk_into(atom/movable/A, message, channel, list/spans, datum/language/language, list/message_mods)
 	var/mob/M = A
 	if (istype(M))
 		M.log_talk(message, LOG_SAY, tag="LocalNode")
 
+	chat_color = item_chat_color// this feels cursed to call this very time but i cant get it to work
 	say(message, language, sanitize = FALSE)
 	return NOPASS
 
