@@ -12,14 +12,15 @@
 	lefthand_file = 'maplestation_modules/story_content/localnode_equipment/sprites/localnode_inhand_lh.dmi'
 	righthand_file = 'maplestation_modules/story_content/localnode_equipment/sprites/localnode_inhand_rh.dmi'
 	inhand_icon_state = "localnode"
+	chat_color = "#0e5807"
 	var/voice_name = "LocalNode#4248"
 
-/obj/item/toy/dummy/localnode/attack_self(mob/user)
-	say("HEY, STOP THAT!", language, sanitize = FALSE)
+/obj/item/localnode/attack_self(mob/user)
+	say("HEY, STOP THAT!")
 	playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, TRUE)
 	return
 
-/obj/item/toy/dummy/localnode/talk_into(atom/movable/A, message, channel, list/spans, datum/language/language, list/message_mods)
+/obj/item/localnode/talk_into(atom/movable/A, message, channel, list/spans, datum/language/language, list/message_mods)
 	var/mob/M = A
 	if (istype(M))
 		M.log_talk(message, LOG_SAY, tag="LocalNode")
@@ -27,5 +28,5 @@
 	say(message, language, sanitize = FALSE)
 	return NOPASS
 
-/obj/item/toy/dummy/localnode/GetVoice()
+/obj/item/localnode/GetVoice()
 	return voice_name
