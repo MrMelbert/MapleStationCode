@@ -16,7 +16,7 @@
 	var/voice_name = "LocalNode#4248"
 
 /obj/item/localnode/attack_self(mob/user)
-	playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, TRUE)
+	playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 35, TRUE)
 
 /obj/item/localnode/talk_into(atom/movable/A, message, channel, list/spans, datum/language/language, list/message_mods)
 	var/mob/M = A
