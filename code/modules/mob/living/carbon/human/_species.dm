@@ -44,9 +44,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 	///Never, Optional, or Forced digi legs?
 	var/digitigrade_customization = DIGITIGRADE_NEVER
-	/// NON-MODULE CHANGE :
-	/// If your race uses a non standard bloodtype (typepath)
-	var/datum/blood_type/exotic_bloodtype
+	/// If your race uses a non standard bloodtype (/datum/blood_type typepath OR /datum/reagent typepath)
+	var/exotic_bloodtype
 	///The rate at which blood is passively drained by having the blood deficiency quirk. Some races such as slimepeople can regen their blood at different rates so this is to account for that
 	var/blood_deficiency_drain_rate = BLOOD_REGEN_FACTOR + BLOOD_DEFICIENCY_MODIFIER // slightly above the regen rate so it slowly drains instead of regenerates.
 	///What the species drops when gibbed by a gibber machine.
@@ -1601,11 +1600,18 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// NON-MODULE CHANGE for blood
 	// Otherwise, check for exotic blood types
 	else if(exotic_bloodtype)
+		var/blood_name = ""
+		if(ispath(exotic_bloodtype, /datum/blood_type))
+			var/datum/blood_type/exotic_typed = exotic_bloodtype
+			blood_name = initial(exotic_typed.name)
+		if(ispath(exotic_bloodtype, /datum/reagent))
+			var/datum/reagent/exotic_typed = exotic_bloodtype
+			blood_name = initial(exotic_typed.name)
 		to_add += list(list(
 			SPECIES_PERK_TYPE = SPECIES_NEUTRAL_PERK,
 			SPECIES_PERK_ICON = "tint",
-			SPECIES_PERK_NAME = initial(exotic_bloodtype.name),
-			SPECIES_PERK_DESC = "[name] blood is [initial(exotic_bloodtype.name)], which can make recieving medical treatment harder.",
+			SPECIES_PERK_NAME = blood_name,
+			SPECIES_PERK_DESC = "[name] blood is [blood_name], which can make recieving medical treatment harder.",
 		))
 
 	return to_add

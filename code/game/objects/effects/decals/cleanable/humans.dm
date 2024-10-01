@@ -16,6 +16,9 @@
 	/// Is this blood dried out?
 	var/dried = FALSE
 
+	/// How much our blood glows, up to 255 (it's the alpha of the EM overlay). 0 = no glow
+	var/emissive_alpha = 0
+
 	/// The "base name" of the blood, IE the "pool of" in "pool of blood"
 	var/base_name = "pool of"
 	/// When dried, this is prefixed to the name
@@ -104,6 +107,14 @@
 	desc = initial(desc)
 	if(dried && dry_desc)
 		desc = dry_desc
+
+/obj/effect/decal/cleanable/blood/update_overlays()
+	. = ..()
+	if(icon_state && emissive_alpha < alpha && !dried)
+		. += blood_emissive(icon, icon_state)
+
+/obj/effect/decal/cleanable/blood/proc/blood_emissive(icon_to_use, icon_state_to_use)
+	return emissive_appearance(icon_to_use, icon_state_to_use, src, layer, alpha - emissive_alpha)
 
 ///This is what actually "dries" the blood. Returns true if it's all out of blood to dry, and false otherwise
 /obj/effect/decal/cleanable/blood/proc/dry()
@@ -345,8 +356,8 @@
 	var/ang_change = dir2angle(newdir) - dir2angle(dir)
 	var/old_entered_dirs = entered_dirs
 	var/old_exited_dirs = exited_dirs
-	entered_dirs = 0
-	exited_dirs = 0
+	entered_dirs = NONE
+	exited_dirs = NONE
 
 	for(var/Ddir in GLOB.cardinals)
 		if(old_entered_dirs & Ddir)
@@ -357,14 +368,9 @@
 	update_appearance()
 	return ..()
 
-//Cache of bloody footprint images
-//Key:
-//"entered-[blood_state]-[dir_of_image]"
-//or: "exited-[blood_state]-[dir_of_image]"
-GLOBAL_LIST_EMPTY(bloody_footprints_cache)
-
 /obj/effect/decal/cleanable/blood/footprints/update_overlays()
 	. = ..()
+	var/static/list/bloody_footprints_cache = list()
 	var/icon_state_to_use = "blood"
 	if(LAZYACCESS(species_types, BODYPART_ID_DIGITIGRADE))
 		icon_state_to_use += "claw"
@@ -375,17 +381,38 @@ GLOBAL_LIST_EMPTY(bloody_footprints_cache)
 
 	for(var/Ddir in GLOB.cardinals)
 		if(entered_dirs & Ddir)
-			var/image/bloodstep_overlay = GLOB.bloody_footprints_cache["entered-[icon_state_to_use]-[Ddir]"]
+			var/enter_state = "entered-[icon_state_to_use]-[Ddir]"
+			var/image/bloodstep_overlay = bloody_footprints_cache[enter_state]
 			if(!bloodstep_overlay)
-				GLOB.bloody_footprints_cache["entered-[icon_state_to_use]-[Ddir]"] = bloodstep_overlay = image(icon, "[icon_state_to_use]1", dir = Ddir)
+				bloodstep_overlay = image(icon, "[icon_state_to_use]1", dir = Ddir)
+				bloody_footprints_cache[enter_state] = bloodstep_overlay
 			. += bloodstep_overlay
+
+			if(emissive_alpha < alpha && !dried)
+				var/enter_emissive_state = "[enter_state]_emissive-[emissive_alpha]"
+				var/mutable_appearance/emissive_overlay = bloody_footprints_cache[enter_emissive_state]
+				if(!emissive_overlay)
+					emissive_overlay = blood_emissive(icon, "[icon_state_to_use]1")
+					emissive_overlay.dir = Ddir
+					bloody_footprints_cache[enter_emissive_state] = emissive_overlay
+				. += emissive_overlay
 
 		if(exited_dirs & Ddir)
-			var/image/bloodstep_overlay = GLOB.bloody_footprints_cache["exited-[icon_state_to_use]-[Ddir]"]
+			var/exit_state = "exited-[icon_state_to_use]-[Ddir]"
+			var/image/bloodstep_overlay = bloody_footprints_cache[exit_state]
 			if(!bloodstep_overlay)
-				GLOB.bloody_footprints_cache["exited-[icon_state_to_use]-[Ddir]"] = bloodstep_overlay = image(icon, "[icon_state_to_use]2", dir = Ddir)
+				bloodstep_overlay = image(icon, "[icon_state_to_use]2", dir = Ddir)
+				bloody_footprints_cache[exit_state] = bloodstep_overlay
 			. += bloodstep_overlay
 
+			if(emissive_alpha < alpha && !dried)
+				var/exit_emissive_state = "[exit_state]_emissive-[emissive_alpha]"
+				var/mutable_appearance/emissive_overlay = bloody_footprints_cache[exit_emissive_state]
+				if(!emissive_overlay)
+					emissive_overlay = blood_emissive(icon, "[icon_state_to_use]2")
+					emissive_overlay.dir = Ddir
+					bloody_footprints_cache[exit_emissive_state] = emissive_overlay
+				. += emissive_overlay
 
 /obj/effect/decal/cleanable/blood/footprints/examine(mob/user)
 	. = ..()
