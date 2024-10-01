@@ -137,6 +137,8 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_SLASH
+	sharpness = SHARP_EDGED
+	wound_bonus = -50
 	faction = list(FACTION_HOSTILE, FACTION_MAINT_CREATURES)
 	sharpness = SHARP_POINTY
 	ai_controller = /datum/ai_controller/basic_controller/cockroach/hauberoach

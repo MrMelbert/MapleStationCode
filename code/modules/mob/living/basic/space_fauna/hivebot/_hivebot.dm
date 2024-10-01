@@ -18,6 +18,8 @@
 	attack_verb_simple = "claw"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
 	attack_vis_effect = ATTACK_EFFECT_CLAW
+	sharpness = SHARP_EDGED
+	wound_bonus = -10
 	verb_say = "states"
 	verb_ask = "queries"
 	verb_exclaim = "declares"

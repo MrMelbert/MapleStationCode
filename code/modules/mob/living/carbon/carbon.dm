@@ -571,7 +571,7 @@
 	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
 	// To prevent nobreath/noblood species from being incredibly tanky, due to ignoring major sources of con damage,
 	// we up their damage taken from brute and fire by 2x to compensate.
-	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_NOBREATH))
+	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_NOBREATH) || isnull(pain_controller))
 		brutecon *= 2
 		firecon *= 2
 	// Ignores the helpers because we can handle them in bulk
