@@ -644,8 +644,8 @@
 			set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
 
 	if(consciousness <= 90)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (HARD_CRIT_THRESHOLD / consciousness))
-		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (HARD_CRIT_THRESHOLD / consciousness))
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (HARD_CRIT_THRESHOLD / max(consciousness, 1)))
+		add_or_update_variable_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness, multiplicative_slowdown = (HARD_CRIT_THRESHOLD / max(consciousness, 1)))
 	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/carbon_consciousness]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness)
 		remove_actionspeed_modifier(/datum/actionspeed_modifier/carbon_consciousness)
