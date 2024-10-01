@@ -636,8 +636,6 @@
 	// This is where "soft crit" is now
 	if(shock_buildup >= 90)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
-			ADD_TRAIT(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
-			ADD_TRAIT(parent, TRAIT_LABOURED_BREATHING, PAINSHOCK)
 			set_pain_modifier(PAINSHOCK, 1.2)
 			parent.add_max_consciousness_value(PAINSHOCK, 60)
 			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)

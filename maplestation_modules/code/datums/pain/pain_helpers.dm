@@ -102,6 +102,7 @@
 
 	ASSERT(isnum(amount))
 	pain_controller.shock_buildup = clamp(pain_controller.shock_buildup + amount, down_to, 200)
+	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE)
 
 /**
  * Cause [amount] of [dam_type] sharp pain to [target_zones].

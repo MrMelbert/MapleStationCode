@@ -136,7 +136,6 @@
 			if(owner.stat <= SOFT_CRIT && !owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
 				owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"))
 			to_chat(owner, span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
-		owner.adjust_pain_shock(1 * seconds_per_tick)
 		return
 
 	// Beyond deals with sound effects, so nothing needs to be done if no client

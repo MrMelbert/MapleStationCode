@@ -585,10 +585,7 @@
 #define HEALTH_THRESHOLD_LIKELY_DEAD -600
 
 /// Returns whether or not the given mob can succumb
-#define CAN_SUCCUMB(target) (HAS_TRAIT(target, TRAIT_CRITICAL_CONDITION) \
-	&& !HAS_TRAIT(target, TRAIT_NODEATH) \
-	&& target.consciousness <= HARD_CRIT_THRESHOLD \
-	&& (target.health <= 0 || target.pain_controller?.shock_buildup >= 90))
+#define CAN_SUCCUMB(target) ((target.health <= HEALTH_THRESHOLD_LIKELY_CRIT || target.pain_controller?.shock_buildup > 90) && target.stat == HARD_CRIT && !HAS_TRAIT(target, TRAIT_NODEATH))
 
 // Body position defines.
 /// Mob is standing up, usually associated with lying_angle value of 0.

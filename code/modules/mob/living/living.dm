@@ -2166,7 +2166,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	// All the traits associated with any of a mob's stat
 	// Adding anny traits below should also be done in here
 	var/list/removed_traits = list(
-		TRAIT_CRITICAL_CONDITION,
 		TRAIT_FLOORED,
 		TRAIT_HANDS_BLOCKED,
 		TRAIT_IMMOBILIZED,
@@ -2182,13 +2181,10 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			pass()
 
 		if(SOFT_CRIT)
-			added_traits.Add(
-				TRAIT_CRITICAL_CONDITION,
-			)
+			pass()
 
 		if(HARD_CRIT)
 			added_traits.Add(
-				TRAIT_CRITICAL_CONDITION,
 				TRAIT_FLOORED,
 				TRAIT_HANDS_BLOCKED,
 				TRAIT_IMMOBILIZED,
@@ -2210,7 +2206,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 	add_traits(added_traits, STAT_TRAIT)
 	remove_traits(removed_traits - added_traits, STAT_TRAIT)
-
 	SShealth_updates.queue_update(src, UPDATE_SELF)
 	med_hud_set_status() // skip the queue, we want this to happen immediately and this proc isn't hot anyways
 
