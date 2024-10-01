@@ -299,7 +299,20 @@
 	if(check_holidays(APRIL_FOOLS) && is_clown_job(mind?.assigned_role))
 		return GLOB.blood_types[/datum/blood_type/clown]
 	if(dna.species.exotic_bloodtype)
-		return GLOB.blood_types[dna.species.exotic_bloodtype]
+		if(ispath(dna.species.exotic_bloodtype, /datum/blood_type))
+			return GLOB.blood_types[dna.species.exotic_bloodtype]
+		if(ispath(dna.species.exotic_bloodtype, /datum/reagent))
+			. = GLOB.blood_types[dna.species.exotic_bloodtype]
+			if(!.)
+				for(var/existing_type in GLOB.blood_types)
+					if(GLOB.blood_types[existing_type].reagent_type == dna.species.exotic_bloodtype)
+						. = GLOB.blood_types[existing_type]
+			if(!.)
+				. = new /datum/blood_type/random_chemical(dna.species.exotic_bloodtype)
+				GLOB.blood_types[dna.species.exotic_bloodtype] = .
+			return .
+		// pass through and return human blood
+		stack_trace("Species has invalid exotic bloodtype: [dna.species.exotic_bloodtype]")
 	return GLOB.blood_types[dna.human_blood_type]
 
 //to add a splatter of blood or other mob liquid.

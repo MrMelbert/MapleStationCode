@@ -7,6 +7,7 @@
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
 // NON-MODULE CHANGE
+/// Gets random human blood type, weighted to real human blood type distribution.
 /proc/random_human_blood_type()
 	var/static/list/human_blood_type_weights = list(
 		/datum/blood_type/crew/human/o_minus = 4,
@@ -20,6 +21,17 @@
 	)
 
 	return pick_weight(human_blood_type_weights)
+
+/// Gets random blood type from our blood type list, excluding random reagent ones
+/proc/random_usable_blood_type()
+	var/list/pool = list()
+	for(var/blood_type in GLOB.blood_types)
+		if(!ispath(blood_type, /datum/reagent)) // filters random reagent types
+			continue
+		pool += blood_type
+
+	ASSERT(length(pool) > 0)
+	return pick(pool)
 
 /proc/random_eye_color()
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))

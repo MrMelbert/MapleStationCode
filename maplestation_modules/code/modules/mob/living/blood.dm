@@ -1,5 +1,14 @@
 /// Global list of all blood type singletons (Assoc [type] - [/datum/blood_type singleton])
-GLOBAL_LIST_INIT_TYPED(blood_types, /datum/blood_type, init_subtypes_w_path_keys(/datum/blood_type))
+/// Types can be /datum/blood_type (for base blood types) or /datum/reagent (for random reagent blood types)
+GLOBAL_LIST_INIT_TYPED(blood_types, /datum/blood_type, init_blood_types())
+
+/// Inits all blood types with a name set
+/proc/init_blood_types()
+	. = list()
+	// Initialize all blood types
+	for(var/datum/blood_type/blood_type_type as anything in subtypesof(/datum/blood_type))
+		if(initial(blood_type_type.name))
+			.[blood_type_type] = new blood_type_type()
 
 /**
  * Blood Drying SS
@@ -26,7 +35,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  */
 /datum/blood_type
 	/// The short-hand name of the blood type
-	var/name = "?"
+	var/name
 	/// What color is blood decals spawned of this type
 	var/color = COLOR_BLOOD
 	/// What blood types can this type receive from
@@ -234,11 +243,13 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	compatible_types = list(/datum/blood_type/crew/lizard/silver)
 
 /datum/blood_type/crew/lizard/silver
-	color = "#ffffff63"
+	color = "#ffffff9c"
 	compatible_types = list(/datum/blood_type/crew/lizard)
 
 /datum/blood_type/crew/lizard/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
-	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c963", "size" = 1.5))
+	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c99c", "size" = 1.5))
+	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
+	blood.update_appearance(UPDATE_OVERLAYS)
 
 /datum/blood_type/crew/skrell
 	name = "S"
@@ -251,6 +262,8 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	reagent_type = /datum/reagent/consumable/liquidelectricity
 
 /datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
+	blood.update_appearance(UPDATE_OVERLAYS)
 	if(!new_splat)
 		return
 	blood.can_dry = FALSE
@@ -307,19 +320,24 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /// Slimeperson's jelly blood, is also known as "toxic" or "toxin" blood
 /datum/blood_type/slime
 	name = "TOX"
-	color = "#801E28"
+	color = /datum/reagent/toxin/slimejelly::color
 	reagent_type = /datum/reagent/toxin/slimejelly
 
 /// Water based blood for Podpeople primairly
 /datum/blood_type/water
 	name = "H2O"
-	color = "#AAAAAA77"
+	color = /datum/reagent/water::color
 	reagent_type = /datum/reagent/water
 
 /// Snails have Lube for blood, for some reason?
 /datum/blood_type/snail
 	name = "Lube"
 	reagent_type = /datum/reagent/lube
+
+/datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	var/slip_amt = new_splat ? 4 SECONDS : 1 SECONDS
+	var/slip_flags = new_splat ? (NO_SLIP_WHEN_WALKING | SLIDE) : (NO_SLIP_WHEN_WALKING)
+	blood.AddComponent(/datum/component/slippery, slip_amt, slip_flags)
 
 /// For Xeno blood, though they don't actually USE blood
 /datum/blood_type/xenomorph
@@ -330,3 +348,14 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /// For simplemob blood, which also largely don't actually use blood
 /datum/blood_type/animal
 	name = "Y-"
+
+/// An abstract-ish blood type used particularly for species with blood set to random reagents, such as podpeople
+/datum/blood_type/random_chemical
+
+/datum/blood_type/random_chemical/New(datum/reagent/reagent_type)
+	. = ..()
+	name = initial(reagent_type.name)
+	color = initial(reagent_type.color)
+	reagent_type = reagent_type
+	restoration_chem = reagent_type
+	compatible_types.Cut()
