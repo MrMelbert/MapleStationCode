@@ -69,16 +69,3 @@
 	SHOULD_BE_PURE(TRUE)
 
 	return TRUE
-
-/// Should return a list of all mana pools that this datum can access at the given moment. Defaults to returning nothing.
-
-/atom/movable/get_available_mana()
-	return mana_pool
-
-/atom/movable/get_mana()
-	return mana_pool
-
-/datum/action/proc/get_mana()
-	if(!owner)
-		return stack_trace("A Datum Action tried to get mana without an owner!")
-	return owner?.get_mana()
