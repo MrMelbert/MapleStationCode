@@ -20,7 +20,7 @@
 		return FALSE
 	var/mob/living/silicon/ai/ai_caller = caller
 
-	if(caller.incapacitated)
+	if(caller.incapacitated()) // Non-module change
 		unset_ranged_ability(caller)
 		return FALSE
 
