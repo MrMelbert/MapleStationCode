@@ -15,12 +15,11 @@
 
 /obj/item/mana_battery
 	name = "generic mana battery"
-	mana_pool = /datum/mana_pool/mana_battery/mana_crystal
 	has_initial_mana_pool = TRUE
 	var/max_allowed_transfer_distance = MANA_BATTERY_MAX_TRANSFER_DISTANCE
 
 /obj/item/mana_battery/get_initial_mana_pool_type()
-	return mana_pool
+	return /datum/mana_pool/mana_battery/mana_crystal
 
 // when we hit ourself with left click, we draw mana FROM the battery.
 /obj/item/mana_battery/attack_self(mob/user, modifiers)
@@ -81,7 +80,9 @@
 	name = "Stabilized Volite Crystal"
 	desc = "A stabilized Volite Crystal, one of the few objects capable of stably storing mana without binding."
 	icon_state = "standard"
-	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/standard
+
+/obj/item/mana_battery/mana_crystal/standard/get_initial_mana_pool_type()
+	return /datum/mana_pool/mana_battery/mana_crystal/standard
 
 /datum/mana_pool/mana_battery/mana_crystal/standard // basically, just, bog standard, none of the variables need to be changed
 
@@ -89,14 +90,18 @@
 	name = "Small Volite Crystal"
 	desc = "A miniaturized Volite crystal, formed using the run-off of cutting larger ones. Able to hold mana still, although not as much as a proper formation."
 	icon_state = "small"
-	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/small/
 	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/mana_battery/mana_crystal/small/get_initial_mana_pool_type()
+	return /datum/mana_pool/mana_battery/mana_crystal/small
 
 /obj/item/mana_battery/mana_crystal/cut
 	name = "Cut Volite Crystal"
 	desc = "A cut and shaped Volite Crystal, using a standardized square cut. It lacks power until it is slotted into a proper amulet."
 	icon_state = "cut"
-	mana_pool = /datum/mana_pool/mana_battery/mana_crystal/small/
+
+/obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
+	return /datum/mana_pool/mana_battery/mana_crystal/small
 
 /datum/mana_pool/mana_battery/mana_crystal/small/
 	// half the size of the normal crystal
@@ -114,14 +119,13 @@
 	name = "Volite Amulet"
 	desc = "A cut volite crystal placed within a gilded amulet. It naturally draws and fixes mana for your use."
 	has_initial_mana_pool = TRUE
-	mana_pool = /datum/mana_pool/mana_star
 	worn_icon = 'maplestation_modules/icons/mob/clothing/neck.dmi'
 	worn_icon_state = "volite_amulet"
 	icon = 'maplestation_modules/icons/obj/magic/crystals.dmi'
 	icon_state = "amulet"
 
 /obj/item/clothing/neck/mana_star/get_initial_mana_pool_type()
-	return mana_pool
+	return /datum/mana_pool/mana_star
 
 /obj/item/clothing/neck/mana_star/attack_self(mob/user, modifiers) // you can only draw by default.
 	. = ..()
