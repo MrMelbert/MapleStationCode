@@ -172,7 +172,7 @@
 
 /datum/mana_pool/proc/get_maximum_transfer_for(datum/mana_pool/target_pool)
 	var/cached_cap = transfer_caps[target_pool]
-	return (cached_cap ? cached_cap : (transfer_default_softcap ? target_pool.softcap : target_pool.maximum_mana_capacity))
+	return (cached_cap || (transfer_default_softcap ? target_pool.softcap : target_pool.maximum_mana_capacity))
 
 /datum/mana_pool/proc/transfer_specific_mana(datum/mana_pool/other_pool, amount_to_transfer, decrement_budget = TRUE)
 	// ensure we dont give more than we hold and dont give more than they CAN hold
@@ -236,30 +236,11 @@
 /// so this is not permanent.
 /// Returns how much of "amount" was used.
 /datum/mana_pool/proc/adjust_mana(amount, list/incoming_attunements)
-
-	/*if (src.amount == 0)
-		CRASH("src.amount was ZERO in [src]'s adjust_quanity") //why would this happen
-		*/
 	if (amount == 0)
 		return amount
 
-	/* if (!isnull(incoming_attunements))
-		var/ratio
-		if (src.amount == 0)
-			ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS
-		else
-			ratio = amount/src.amount*/
-
-		/*for (var/iterated_attunement as anything in incoming_attunements)
-		// equation formed in desmos, dosent work
-			attunements[iterated_attunement] += (((incoming_attunements[iterated_attunement]) - attunements[iterated_attunement]) * (ratio/2)) */
-
 	var/result = clamp(src.amount + amount, 0, maximum_mana_capacity)
 	. = result - src.amount // Return the amount that was used
-	//if (abs(.) > abs(amount))
-		// Currently, due to floating point imprecision, leyline recharges always cause this to fire, but honestly its nothing horrible
-		// Ill fix it later(?)
-		//stack_trace("[.], amount used, has its absolute value more than [amount]'s during [src]'s adjust_mana")
 	src.amount = result
 
 /// Returns an adjusted amount of "effective" mana, affected by the attunements.

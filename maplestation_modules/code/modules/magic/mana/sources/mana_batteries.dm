@@ -149,5 +149,5 @@
 
 /obj/item/mana_battery/mana_crystal/small/focus/Initialize(mapload)
 	. = ..()
-	ADD_TRAIT(src, TRAIT_POOL_AVAILABLE_FOR_CAST, REF(src))
+	ADD_TRAIT(src, TRAIT_POOL_AVAILABLE_FOR_CAST, INNATE_TRAIT)
 

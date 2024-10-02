@@ -14,7 +14,6 @@
 	var/datum/callback/activate_check_failure_callback
 	var/datum/callback/get_user_callback
 	var/datum/callback/get_mana_required_callback
-	var/datum/callback/get_mana_consumed_callback
 
 	var/list/datum/attunement/attunements
 
@@ -35,15 +34,12 @@
 )
 	. = ..()
 
-	if (isnull(pre_use_check_with_feedback_comsig)) // merge this with below before final pr, split it for easy debugging
+	if (isnull(pre_use_check_with_feedback_comsig))
 		stack_trace("pre_use with feed back null")
 		return COMPONENT_INCOMPATIBLE
-	if (isnull(post_use_comsig)) // merge with above in an OR statement, split for ease of debugging
+	if (isnull(post_use_comsig))
 		stack_trace("post_use comsig null")
 		return COMPONENT_INCOMPATIBLE
-	/* if (isnull(parent.get_mana()))
-		stack_trace("parent returns null when getting mana!")
-		return COMPONENT_INCOMPATIBLE */ //temporary disable because this somehow can't pull owner properly
 
 	src.activate_check_failure_callback = activate_check_failure_callback
 	src.get_user_callback = get_user_callback
@@ -54,7 +50,6 @@
 		src.mana_required = mana_required
 
 	src.attunements = attunements
-	src.get_mana_consumed_callback = get_mana_required_callback
 	src.pre_use_check_with_feedback_comsig = pre_use_check_with_feedback_comsig
 	src.post_use_comsig = post_use_comsig
 
@@ -84,17 +79,6 @@
 	else
 		return stack_trace("Both the Callback and value for mana required is null!")
 	return required
-
-/datum/component/uses_mana/proc/get_mana_consumed(...) // this should be phased out by now
-	if (!isnull(get_mana_consumed_callback))
-		return get_mana_consumed_callback?.Invoke()
-	var/consumed = get_mana_required(args)
-
-	var/datum/user = get_parent_user()
-	if (!isnull(user))
-		consumed *= user.get_casting_cost_mult()
-
-	return consumed
 
 /datum/component/uses_mana/proc/get_mana_to_use()
 	var/atom/movable/caster = get_parent_user()
@@ -149,7 +133,6 @@
 			if (available_pools.Find(pool) == available_pools.len && mana_consumed <= -0.05) // if we're at the end of the list and mana_consumed is not 0 or near 0 (floating points grrr)
 				stack_trace("cost: [mana_consumed] was not 0 after drain_mana on [src]! This could've been an infinite loop!")
 				mana_consumed = 0 // lets terminate the loop to be safe
-	// mana_consumed = round(mana_consumed, 0.01)
 
 /// Should be the raw conditional we use for determining if the thing that "uses mana" can actually
 /// activate the behavior that "uses mana".

@@ -71,30 +71,14 @@
 	return TRUE
 
 /// Should return a list of all mana pools that this datum can access at the given moment. Defaults to returning nothing.
-/datum/proc/get_available_mana()
-	return null
 
 /atom/movable/get_available_mana()
 	return mana_pool
 
-/// If this mob is casting/using something that costs mana, it should always multiply the cost against this.
-/datum/proc/get_casting_cost_mult()
-	return BASE_STORY_MAGIC_CAST_COST_MULT
-
-/mob/living/carbon/get_casting_cost_mult()
-	. = ..()
-	var/obj/held_item = src.get_active_held_item()
-	if (!held_item)
-		. *= NO_CATALYST_COST_MULT
-
-/datum/proc/get_mana()
-	stack_trace("something tried to get mana on the datum base!")
-	return null
-
 /atom/movable/get_mana()
 	return mana_pool
 
-/datum/action/get_mana()
+/datum/action/proc/get_mana()
 	if(!owner)
 		return stack_trace("A Datum Action tried to get mana without an owner!")
 	return owner?.get_mana()
