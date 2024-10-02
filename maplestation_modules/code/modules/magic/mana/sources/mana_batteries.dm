@@ -30,12 +30,12 @@
 		return TRUE
 
 	if (!user.mana_pool)
-		balloon_alert(user, "you have no mana pool!")
+		balloon_alert(user, "no mana pool!")
 		return FALSE
 
 	var/already_transferring = (user in mana_pool.transferring_to)
 	if (already_transferring)
-		balloon_alert(user, "canceled draw.")
+		balloon_alert(user, "canceled draw")
 		mana_pool.stop_transfer(user.mana_pool)
 	else
 		var/mana_to_draw = tgui_input_number(user, "How much mana do you want to draw from the battery? Soft Cap (You will lose mana when above this!): [user.mana_pool.softcap]", "Draw Mana", max_value = mana_pool.maximum_mana_capacity)
@@ -48,11 +48,11 @@
 		return TRUE
 
 	if (!user.mana_pool)
-		balloon_alert(user, "you have no mana pool!")
+		balloon_alert(user, "no mana pool!")
 		return FALSE
 	var/already_transferring = (user in mana_pool.transferring_to)
 	if (already_transferring)
-		balloon_alert(user, "canceled send.")
+		balloon_alert(user, "canceled send")
 		user.mana_pool.stop_transfer(mana_pool)
 	else
 		var/mana_to_send = tgui_input_number(user, "How much mana do you want to send to the battery? Max Capacity: [mana_pool.maximum_mana_capacity]", "Send Mana", max_value = mana_pool.maximum_mana_capacity)
@@ -130,12 +130,12 @@
 		return TRUE
 
 	if (!user.mana_pool)
-		balloon_alert(user, "you have no mana pool!")
+		balloon_alert(user, "no mana pool!")
 		return FALSE
 
 	var/already_transferring = (user in mana_pool.transferring_to)
 	if (already_transferring)
-		balloon_alert(user, "canceled draw.")
+		balloon_alert(user, "canceled draw")
 		mana_pool.stop_transfer(user.mana_pool)
 	else
 		var/mana_to_draw = tgui_input_number(user, "How much mana do you want to draw from the star? Soft Cap (You will lose mana when above this!): [user.mana_pool.softcap]", "Draw Mana", max_value = mana_pool.maximum_mana_capacity)
