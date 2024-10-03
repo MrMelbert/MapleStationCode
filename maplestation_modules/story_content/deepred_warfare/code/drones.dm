@@ -32,10 +32,10 @@
 	death_sound = 'sound/voice/borg_deathsound.ogg'
 	death_message = "shudders, then falls to the ground, inoperable."
 
-	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
+	unsuitable_atmos_damage = 0
 
-	minimum_survivable_temperature = 0
-	maximum_survivable_temperature = 800
+	unsuitable_cold_damage = 0
+	bodytemp_heat_damage_limit = 800
 
 	var/ranged = TRUE
 
