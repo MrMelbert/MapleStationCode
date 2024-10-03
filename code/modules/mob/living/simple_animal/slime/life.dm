@@ -32,31 +32,18 @@
 				return
 	return ..()
 
-/mob/living/simple_animal/slime/handle_environment(datum/gas_mixture/environment, seconds_per_tick, times_fired)
-	var/loc_temp = get_temperature(environment)
-	var/divisor = 10 /// The divisor controls how fast body temperature changes, lower causes faster changes
-
-	var/temp_delta = loc_temp - bodytemperature
-	if(abs(temp_delta) > 50) // If the difference is great, reduce the divisor for faster stabilization
-		divisor = 5
-
-	if(temp_delta < 0) // It is cold here
-		if(!on_fire) // Do not reduce body temp when on fire
-			adjust_bodytemperature(clamp((temp_delta / divisor) * seconds_per_tick, temp_delta, 0))
-	else // This is a hot place
-		adjust_bodytemperature(clamp((temp_delta / divisor) * seconds_per_tick, 0, temp_delta))
-
-	if(bodytemperature < (T0C + 5)) // start calculating temperature damage etc
-		if(bodytemperature <= (T0C - 40)) // stun temperature
+/mob/living/simple_animal/slime/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
+	if(body_temperature < (T0C + 5)) // start calculating temperature damage etc
+		if(body_temperature <= (T0C - 40)) // stun temperature
 			ADD_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
 		else
 			REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
 
-		if(bodytemperature <= (T0C - 50)) // hurt temperature
-			if(bodytemperature <= 50) // sqrting negative numbers is bad
+		if(body_temperature <= (T0C - 50)) // hurt temperature
+			if(body_temperature <= 50) // sqrting negative numbers is bad
 				adjustBruteLoss(100 * seconds_per_tick)
 			else
-				adjustBruteLoss(round(sqrt(bodytemperature)) * seconds_per_tick)
+				adjustBruteLoss(round(sqrt(body_temperature)) * seconds_per_tick)
 	else
 		REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, SLIME_COLD)
 
@@ -64,7 +51,7 @@
 		var/bz_percentage =0
 		if(environment.gases[/datum/gas/bz])
 			bz_percentage = environment.gases[/datum/gas/bz][MOLES] / environment.total_moles()
-		var/stasis = (bz_percentage >= 0.05 && bodytemperature < (T0C + 100)) || force_stasis
+		var/stasis = (bz_percentage >= 0.05 && body_temperature < (T0C + 100)) || force_stasis
 
 		switch(stat)
 			if(CONSCIOUS)

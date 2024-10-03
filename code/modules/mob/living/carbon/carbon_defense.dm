@@ -383,7 +383,7 @@
 			if (helper.grab_state >= GRAB_AGGRESSIVE)
 				add_mood_event("hug", /datum/mood_event/bear_hug)
 			else
-				if(bodytemperature > helper.bodytemperature)
+				if(body_temperature > helper.body_temperature)
 					if(!HAS_TRAIT(helper, TRAIT_BADTOUCH))
 						helper.add_mood_event("hug", /datum/mood_event/warmhug, src) // Hugger got a warm hug (Unless they hate hugs)
 					add_mood_event("hug", /datum/mood_event/hug) // Receiver always gets a mood for being hugged
@@ -394,14 +394,14 @@
 				add_mood_event("hug", /datum/mood_event/bad_touch_bear_hug)
 
 		// Let people know if they hugged someone really warm or really cold
-		if(helper.bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
+		if(helper.body_temperature > bodytemp_heat_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 			to_chat(src, span_warning("It feels like [helper] is over heating as [helper.p_they()] hug[helper.p_s()] you."))
-		else if(helper.bodytemperature < BODYTEMP_COLD_DAMAGE_LIMIT)
+		if(helper.body_temperature < bodytemp_cold_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 			to_chat(src, span_warning("It feels like [helper] is freezing as [helper.p_they()] hug[helper.p_s()] you."))
 
-		if(bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
+		if(body_temperature > helper.bodytemp_heat_damage_limit && !HAS_TRAIT(helper, TRAIT_RESISTHEAT))
 			to_chat(helper, span_warning("It feels like [src] is over heating as you hug [p_them()]."))
-		else if(bodytemperature < BODYTEMP_COLD_DAMAGE_LIMIT)
+		if(body_temperature < helper.bodytemp_cold_damage_limit && !HAS_TRAIT(helper, TRAIT_RESISTCOLD))
 			to_chat(helper, span_warning("It feels like [src] is freezing as you hug [p_them()]."))
 
 		if(HAS_TRAIT(helper, TRAIT_FRIENDLY))

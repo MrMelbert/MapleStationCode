@@ -6,7 +6,7 @@
 	armor_flag = ENERGY
 	speed = 1
 	pixel_speed_multiplier = 0.25
-	temperature = -75
+	temperature = -30 CELCIUS
 
 /datum/action/cooldown/mob_cooldown/ice_demon_teleport
 	name = "Bluespace Teleport"

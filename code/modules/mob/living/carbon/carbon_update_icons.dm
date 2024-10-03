@@ -316,13 +316,13 @@
 	return hands
 
 /mob/living/carbon/get_fire_overlay(stacks, on_fire)
-	var/fire_icon = "[dna?.species.fire_overlay || "human"]_[stacks > MOB_BIG_FIRE_STACK_THRESHOLD ? "big_fire" : "small_fire"]"
+	var/fire_icon = "[dna?.species?.fire_overlay || "human"]_[stacks > MOB_BIG_FIRE_STACK_THRESHOLD ? "big_fire" : "small_fire"]"
 
 	if(!GLOB.fire_appearances[fire_icon])
 		GLOB.fire_appearances[fire_icon] = mutable_appearance(
-			'icons/mob/effects/onfire.dmi',
-			fire_icon,
-			-HIGHEST_LAYER,
+			icon = dna?.species?.fire_dmi || 'icons/mob/effects/onfire.dmi',
+			icon_state = fire_icon,
+			layer = -HIGHEST_LAYER,
 			appearance_flags = RESET_COLOR,
 		)
 

@@ -16,6 +16,15 @@
 	bypasses_immunity = TRUE
 	stage_prob = 5
 
+/datum/disease/anaphylaxis/remove_disease()
+	affected_mob.remove_homeostasis_level(name)
+	return ..()
+
+/datum/disease/anaphylaxis/after_add()
+	// Cool them enough to feel cold to the touch, and then some
+	var/about_chilly = round(affected_mob.standard_body_temperature + (affected_mob.bodytemp_cold_damage_limit - affected_mob.standard_body_temperature) * 0.33, 0.01)
+	affected_mob.add_homeostasis_level(name, about_chilly, 0.25 KELVIN)
+
 /datum/disease/anaphylaxis/stage_act(seconds_per_tick, times_fired)
 	. = ..()
 	if(!.)
@@ -24,9 +33,6 @@
 	if(HAS_TRAIT(affected_mob, TRAIT_TOXINLOVER)) // You are no fun
 		cure()
 		return
-
-	// Cool them enough to feel cold to the touch, and then some, because temperature mechanics are dumb
-	affected_mob.adjust_bodytemperature(-10 * seconds_per_tick * stage, min_temp = BODYTEMP_COLD_DAMAGE_LIMIT - 70)
 
 	switch(stage)
 		// early symptoms: mild shakes and dizziness

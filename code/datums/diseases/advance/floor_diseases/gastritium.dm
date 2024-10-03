@@ -54,7 +54,7 @@
 	var/datum/gas_mixture/burp = new
 	ADD_GAS(/datum/gas/tritium, burp.gases)
 	burp.gases[/datum/gas/tritium][MOLES] = MOLES_GAS_VISIBLE
-	burp.temperature = affected_mob.bodytemperature
+	burp.temperature = affected_mob.body_temperature
 	if(hot_chance && prob(tritium_burp_hot_chance))
 		burp.temperature = TRITIUM_MINIMUM_BURN_TEMPERATURE
 		if(affected_mob.stat == CONSCIOUS)
