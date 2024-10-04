@@ -3,9 +3,13 @@
 	. = ..()
 	//Its a magic drink. it regens mana, if mildly
 	if(drinker?.mana_pool)
-		var/datum/mana_pool/drinker_pool = drinker?.mana_pool
-		if(drinker_pool.amount < drinker_pool.softcap) // only adjust when below the softcap
-			drinker_pool.adjust_mana(1.5) // regen mana by 1.5 per tick, no attunement
+		drinker.safe_adjust_personal_mana(1.5)
+
+/datum/reagent/consumable/ethanol/pod_tesla/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
+	. = ..()
+	//electrical drink, very mild regen, will do better if electrically attuened (when implemented)
+	if(drinker?.mana_pool)
+		drinker.safe_adjust_personal_mana(1)
 /* TODOS:
 * Telepole & Pod Tesla regen mana if electrically attuned/or it has an electric attunement (me when the charge build)
 * Sea Breeze (lizard drink) & Tropical Storm (mothic drink) mildly regens mana if water attuned
@@ -22,9 +26,7 @@
 	. = ..()
 	//magic chem. regens mana, shouldn't be obtained by reaction, instead from sources like botany.
 	if(drinker?.mana_pool)
-		var/datum/mana_pool/drinker_pool = drinker?.mana_pool
-		if(drinker_pool.amount < drinker_pool.softcap)
-			drinker_pool.adjust_mana(mana_adjust)
+		drinker.safe_adjust_personal_mana(mana_adjust)
 
 /datum/reagent/medicine/quintessence/crystalized
 	name = "Crystallized Quintessence"
@@ -54,9 +56,7 @@
 	. = ..()
 	// also a magic chem. drains mana, shouldn't be obtained by reaction, instead from sources like botany.
 	if(drinker?.mana_pool)
-		var/datum/mana_pool/drinker_pool = drinker?.mana_pool
-		if(drinker_pool.amount > -mana_adjust) // not risking negatives/an underflow
-			drinker_pool.adjust_mana(mana_adjust) // it Drains mana.
+		drinker.safe_adjust_personal_mana(mana_adjust)
 
 /datum/reagent/toxin/agnosticine/fading
 	name = "Fading Agnosticine"
