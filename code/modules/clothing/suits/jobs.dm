@@ -116,6 +116,7 @@
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|GROIN|ARMS
 	armor_type = /datum/armor/jacket_det_suit
+	flags_inv = HIDEBELT
 
 /datum/armor/jacket_det_suit
 	melee = 25

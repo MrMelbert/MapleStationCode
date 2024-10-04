@@ -456,7 +456,7 @@
 
 		clothes[CLOTHING_SLOT(GLOVES)] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 	//belt
-	if(belt && !(belt.item_flags & EXAMINE_SKIP))
+	if(belt && !(obscured & ITEM_SLOT_BELT) && !(belt.item_flags & EXAMINE_SKIP))
 		clothes[CLOTHING_SLOT(BELT)] = "[t_He] [t_has] [belt.examine_title(user, href = TRUE)] about [t_his] waist."
 
 	return clothes

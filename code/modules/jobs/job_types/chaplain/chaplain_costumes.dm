@@ -38,7 +38,7 @@
 	icon_state = "holidaypriest"
 	inhand_icon_state = "w_suit"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
 
 /obj/item/clothing/suit/chaplainsuit/nun
 	name = "nun robe"
@@ -46,7 +46,7 @@
 	icon_state = "nun"
 	inhand_icon_state = "nun"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS|HANDS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
 
 /obj/item/clothing/suit/chaplainsuit/habit
 	name = "religious tunic"
@@ -54,7 +54,7 @@
 	icon_state = "habit"
 	alternate_worn_layer = GLOVES_LAYER // since the sleeves cover a part of the hands, this way it looks better while retaining glove overlay correctly.
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS|HANDS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
 
 /obj/item/clothing/suit/chaplainsuit/bishoprobe
 	name = "bishop's robes"
@@ -62,7 +62,7 @@
 	icon_state = "bishoprobe"
 	inhand_icon_state = "bishoprobe"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
 
 /obj/item/clothing/suit/chaplainsuit/armor/studentuni
 	name = "student robe"
@@ -104,7 +104,7 @@
 	icon_state = "monkrobeeast"
 	inhand_icon_state = null
 	body_parts_covered = GROIN|LEGS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
 
 /obj/item/clothing/suit/chaplainsuit/whiterobe
 	name = "white robe"
@@ -112,7 +112,7 @@
 	icon_state = "whiterobe"
 	inhand_icon_state = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
 
 /obj/item/clothing/suit/chaplainsuit/clownpriest
 	name = "Robes of the Honkmother"
@@ -120,7 +120,7 @@
 	icon_state = "clownpriest"
 	inhand_icon_state = "clownpriest"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
 	allowed = list(/obj/item/megaphone/clown, /obj/item/soap, /obj/item/food/pie/cream, /obj/item/bikehorn, /obj/item/bikehorn/golden, /obj/item/bikehorn/airhorn, /obj/item/instrument/bikehorn, /obj/item/reagent_containers/cup/soda_cans/canned_laughter, /obj/item/toy/crayon, /obj/item/toy/crayon/spraycan, /obj/item/toy/crayon/spraycan/lubecan, /obj/item/grown/bananapeel, /obj/item/food/grown/banana)
 
 /obj/item/clothing/head/helmet/chaplain/clock
@@ -285,4 +285,4 @@
 	icon_state = "shrinehand"
 	inhand_icon_state = "shrinehand"
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	flags_inv = HIDEJUMPSUIT
+	flags_inv = HIDEJUMPSUIT|HIDEBELT
