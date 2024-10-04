@@ -39,7 +39,7 @@
 // proc for adjusting mana without going over the softcap
 	if(mana_pool) // playing it safe, does nothing if you have no mana pool
 		if(amount_to_adjust < 0) // if the amount is negative
-			if(mana_pool.amount > -mana_adjust) // not risking negatives
+			if(mana_pool.amount > -amount_to_adjust) // not risking negatives
 				mana_pool.adjust_mana(amount_to_adjust)
 		else
 			if(mana_pool.amount < mana_pool.softcap)
@@ -49,10 +49,10 @@
 // proc for adjusting mana that CAN go over the softcap
 	if(mana_pool) // playing it safe, does nothing if you have no mana pool
 		if(amount_to_adjust < 0) // if the amount is negative - you *should* use the above if you know its gonna go into the negatives, though.
-			if(mana_pool.amount > -mana_adjust) // not risking negatives
+			if(mana_pool.amount > -amount_to_adjust) // not risking negatives
 				mana_pool.adjust_mana(amount_to_adjust)
 		else
-				mana_pool.adjust_mana(amount_to_adjust)
+			mana_pool.adjust_mana(amount_to_adjust)
 
 
 // i am NOT good with this section of the code so this is likely screwy
