@@ -37,9 +37,15 @@
 		balloon_alert(user, "canceled draw")
 		mana_pool.stop_transfer(user.mana_pool)
 	else
+		if(!user.is_holding(src))
+			balloon_alert(user, "too far!")
+			return
 		var/mana_to_draw = tgui_input_number(user, "How much mana do you want to draw from the battery? Soft Cap (You will lose mana when above this!): [user.mana_pool.softcap]", "Draw Mana", max_value = mana_pool.maximum_mana_capacity)
+		if(!mana_to_draw || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
+			return
+		var/drawn_mana = mana_to_draw
 		balloon_alert(user, "drawing mana....")
-		mana_pool.transfer_specific_mana(user.mana_pool, mana_to_draw, decrement_budget = TRUE)
+		mana_pool.transfer_specific_mana(user.mana_pool, drawn_mana, decrement_budget = TRUE)
 // when we hit ourself with right click, however, we send mana TO the battery.
 /obj/item/mana_battery/attack_self_secondary(mob/user, modifiers)
 	. = ..()
@@ -54,9 +60,15 @@
 		balloon_alert(user, "canceled send")
 		user.mana_pool.stop_transfer(mana_pool)
 	else
+		if(!user.is_holding(src))
+			balloon_alert(user, "too far!")
+			return
 		var/mana_to_send = tgui_input_number(user, "How much mana do you want to send to the battery? Max Capacity: [mana_pool.maximum_mana_capacity]", "Send Mana", max_value = mana_pool.maximum_mana_capacity)
+		if(!mana_to_send || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
+			return
+		var/sent_mana = mana_to_send
 		balloon_alert(user, "sending mana....")
-		user.mana_pool.transfer_specific_mana(mana_pool, mana_to_send, decrement_budget = TRUE)
+		user.mana_pool.transfer_specific_mana(mana_pool, sent_mana, decrement_budget = TRUE)
 /obj/item/mana_battery/mana_crystal
 	name = MAGIC_MATERIAL_NAME + " crystal"
 	desc = "Crystalized mana." //placeholder desc
@@ -142,9 +154,15 @@
 		balloon_alert(user, "canceled draw")
 		mana_pool.stop_transfer(user.mana_pool)
 	else
+		if(!user.is_holding(src))
+			balloon_alert(user, "too far!")
+			return
 		var/mana_to_draw = tgui_input_number(user, "How much mana do you want to draw from the star? Soft Cap (You will lose mana when above this!): [user.mana_pool.softcap]", "Draw Mana", max_value = mana_pool.maximum_mana_capacity)
+		if(!mana_to_draw || QDELETED(user) || QDELETED(src) || !user.is_holding(src))
+			return
+		var/drawn_mana = mana_to_draw
 		balloon_alert(user, "drawing mana....")
-		mana_pool.transfer_specific_mana(user.mana_pool, mana_to_draw, decrement_budget = TRUE)
+		mana_pool.transfer_specific_mana(user.mana_pool, drawn_mana, decrement_budget = TRUE)
 
 /obj/item/mana_battery/mana_crystal/small/focus //really only exists for debug.
 	name = "Focused Small Volite Crystal"
