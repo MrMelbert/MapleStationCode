@@ -62,7 +62,7 @@
 /datum/mana_pool/New(atom/parent = null)
 	. = ..()
 	donation_budget_this_tick = max_donation_rate_per_second
-	src.parent = parent
+	set_parent(parent)
 
 	update_intrinsic_recharge()
 
@@ -86,6 +86,39 @@
 	parent = null
 
 	return ..()
+
+/datum/mana_pool/proc/set_parent(atom/parent)
+	src.parent = parent
+	if(ismob(parent))
+		RegisterSignal(parent, COMSIG_MOB_GET_STATUS_TAB_ITEMS, PROC_REF(mana_status_report))
+
+/datum/mana_pool/proc/mana_status_report(datum/source, list/status_tab)
+	SIGNAL_HANDLER
+
+	var/general_amount_estimate
+	var/sc_very_low = (softcap * 0.1)
+	var/sc_low = (softcap * 0.3)
+	var/sc_medium = (softcap * 0.6)
+	var/sc_high = (softcap * 0.8)
+
+	//determines what the status displays, it'll be a generic/non-obvious value as a design choice
+	if(amount)
+		if (amount < sc_very_low)
+			general_amount_estimate = "VERY LOW"
+		else if (amount > sc_very_low && amount < sc_low)
+			general_amount_estimate = "LOW"
+		else if (amount > sc_low && amount < sc_medium)
+			general_amount_estimate = "MEDIUM"
+		else if (amount > sc_medium && amount < sc_high)
+			general_amount_estimate = "HIGH"
+		else if (amount > sc_high && amount <= softcap)
+			general_amount_estimate = "VERY HIGH"
+		else if (amount > softcap)
+			general_amount_estimate = "OVERLOADED"
+	else
+		general_amount_estimate = "ERROR"
+
+	status_tab += "Mana Count: [general_amount_estimate]"
 
 /datum/mana_pool/proc/generate_initial_attunements()
 	RETURN_TYPE(/list/datum/attunement)
