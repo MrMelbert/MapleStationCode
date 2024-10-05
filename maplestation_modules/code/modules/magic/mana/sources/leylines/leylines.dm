@@ -1,5 +1,5 @@
 GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
-
+// uses pickweight
 /proc/generate_initial_leylines()
 	RETURN_TYPE(/list/datum/mana_pool/leyline)
 
@@ -12,8 +12,14 @@ GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
 	return leylines
 
 /proc/get_initial_leyline_amount()
-	var/datum/leyline_amount/leyline_amount = pick_weight(GLOB.leyline_amounts)
-	return initial(leyline_amount.amount)
+	var/list/leyline_amount_list = list(
+	"1" = 5000,
+	"2" = 500,
+	"3" = 200,
+	"4" = 10
+	)
+	var/leyline_amount = text2num(pick_weight(leyline_amount_list))
+	return initial(leyline_amount)
 
 /proc/generate_leyline()
 	RETURN_TYPE(/datum/mana_pool/leyline)
