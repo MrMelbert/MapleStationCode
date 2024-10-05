@@ -26,47 +26,29 @@
 	var/tag_name
 	/// Whether you can health-analyzer through the walls of the bodybag
 	var/can_scan_through = FALSE
+	/// Paper pinned to this bag
+	var/obj/item/paper/pinned
 
-
-/obj/structure/closet/body_bag/Initialize(mapload)
+/obj/structure/closet/body_bag/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
-	var/static/list/tool_behaviors = list(
-		TOOL_WIRECUTTER = list(
-			SCREENTIP_CONTEXT_RMB = "Remove Tag",
-		),
-	)
-	AddElement(/datum/element/contextual_screentip_tools, tool_behaviors)
-	AddElement( \
-		/datum/element/contextual_screentip_bare_hands, \
-		rmb_text = "Fold up", \
-	)
-	AddElement(/datum/element/contextual_screentip_sharpness, lmb_text = "Remove Tag")
+	if(isnull(held_item))
+		context[SCREENTIP_CONTEXT_RMB] = "Fold up"
+		. = CONTEXTUAL_SCREENTIP_SET
+	else if(held_item.tool_behaviour == TOOL_WIRECUTTER || held_item.get_sharpness())
+		context[SCREENTIP_CONTEXT_LMB] = "Remove [pinned ? "Paper" : "Tag"]"
+		. = CONTEXTUAL_SCREENTIP_SET
+	else if(!pinned && istype(held_item, /obj/item/paper) && !opened)
+		context[SCREENTIP_CONTEXT_LMB] = "Pin Paper"
+		. = CONTEXTUAL_SCREENTIP_SET
+	else if(can_scan_through && istype(held_item, /obj/item/healthanalyzer) && !opened)
+		context[SCREENTIP_CONTEXT_LMB] = "Scan Contents"
+		. = CONTEXTUAL_SCREENTIP_SET
 
 /obj/structure/closet/body_bag/Destroy()
 	// If we have a stored bag, and it's in nullspace (not in someone's hand), delete it.
 	if (foldedbag_instance && !foldedbag_instance.loc)
 		QDEL_NULL(foldedbag_instance)
 	return ..()
-
-/obj/structure/closet/body_bag/attackby(obj/item/interact_tool, mob/living/user, params)
-	if (IS_WRITING_UTENSIL(interact_tool))
-		if(!user.can_write(interact_tool))
-			return
-		var/t = tgui_input_text(user, "What would you like the label to be?", name, max_length = 53)
-		if(user.get_active_held_item() != interact_tool)
-			return
-		if(!user.can_perform_action(src))
-			return
-		handle_tag("[t ? t : initial(name)]")
-		return
-	else if(!user.combat_mode && !(interact_tool.item_flags & (ABSTRACT|HAND_ITEM)) && user.transferItemToLoc(interact_tool, loc, silent = FALSE))
-		return
-	if(!tag_name)
-		return
-	if(interact_tool.tool_behaviour == TOOL_WIRECUTTER || interact_tool.get_sharpness())
-		to_chat(user, span_notice("You cut the tag off [src]."))
-		handle_tag()
-		return
 
 ///Handles renaming of the bodybag's examine tag.
 /obj/structure/closet/body_bag/proc/handle_tag(new_name)
@@ -78,6 +60,25 @@
 	. = ..()
 	if(tag_name)
 		. += "bodybag_label"
+	if(pinned)
+		var/image/paper_image = image(
+			icon = 'maplestation_modules/icons/obj/bodybag.dmi',
+			icon_state = "paper[(pinned.is_empty() || !pinned.show_written_words) ? "" : "_written"]",
+		)
+		paper_image.color = pinned.color
+		. += paper_image
+
+/obj/structure/closet/body_bag/examine(mob/user)
+	. = ..()
+	if(tag_name)
+		. += span_info("The tag reads: [tag_name]")
+	if(can_scan_through)
+		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
+	if(pinned)
+		if(get_dist(user, src) <= 2 && user.client)
+			pinned.ui_interact(user)
+		else
+			. += span_smallnoticeital("There's a paper pinned to the bag, but you can't make out what it says.")
 
 /obj/structure/closet/body_bag/after_close(mob/living/user)
 	. = ..()
@@ -128,6 +129,7 @@
 	var/obj/item/bodybag/folding_bodybag = foldedbag_instance || new foldedbag_path()
 	if(fold_loc)
 		folding_bodybag.forceMove(fold_loc)
+	pinned?.forceMove(fold_loc || drop_location())
 	return folding_bodybag
 
 /obj/structure/closet/body_bag/container_resist_act(mob/living/user, loc_required = TRUE)
@@ -200,24 +202,70 @@
 /obj/structure/closet/body_bag/Exited(atom/movable/gone, direction)
 	. = ..()
 	REMOVE_TRAIT(gone, TRAIT_FLOORED, REF(src))
-
-/obj/structure/closet/body_bag/examine(mob/user)
-	. = ..()
-	if(can_scan_through)
-		. += span_notice("The walls of the bag are thin enough to scan through via a <b>health analyzer</b>.")
+	if(gone == pinned)
+		pinned.flags_1 &= ~IS_ONTOP_1
+		pinned = null
+		update_appearance()
 
 /obj/structure/closet/body_bag/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
 	. = ..()
 	if(. & ITEM_INTERACT_ANY_BLOCKER)
 		return .
 
-	if(!can_scan_through || !istype(tool, /obj/item/healthanalyzer))
+	if(IS_WRITING_UTENSIL(tool))
+		if(!user.can_write(tool))
+			return . | ITEM_INTERACT_BLOCKING
+		var/t = tgui_input_text(user, "What would you like the label to be?", name, max_length = 53)
+		if(user.get_active_held_item() != tool)
+			return . | ITEM_INTERACT_BLOCKING
+		if(!user.can_perform_action(src))
+			return . | ITEM_INTERACT_BLOCKING
+		balloon_alert(user, "tag set")
+		handle_tag("[t || initial(name)]")
+		return . | ITEM_INTERACT_SUCCESS
+
+	if(tool.tool_behaviour == TOOL_WIRECUTTER || tool.get_sharpness())
+		if(pinned)
+			balloon_alert(user, "paper removed")
+			pinned.forceMove(drop_location())
+			return . | ITEM_INTERACT_SUCCESS
+		else if(tag_name)
+			balloon_alert(user, "tag removed")
+			handle_tag()
+			return . | ITEM_INTERACT_SUCCESS
+
+	if(opened)
+		if(!user.combat_mode && !(tool.item_flags & (ABSTRACT|HAND_ITEM)) && user.transferItemToLoc(tool, loc, silent = FALSE))
+			return . | ITEM_INTERACT_SUCCESS
 		return .
 
-	for(var/mob/living/frozen in src)
-		return tool.interact_with_atom(frozen, user)
+	if(can_scan_through && istype(tool, /obj/item/healthanalyzer))
+		for(var/mob/living/frozen in src)
+			return tool.interact_with_atom(frozen, user)
+
+	if(!pinned && istype(tool, /obj/item/paper) && user.transferItemToLoc(tool, src, silent = FALSE))
+		pinned = tool
+		pinned.flags_1 |= IS_ONTOP_1
+		pinned.forceMove(src)
+		update_appearance()
+		return . | ITEM_INTERACT_SUCCESS
 
 	return .
+
+/obj/structure/closet/body_bag/before_open(mob/living/user, force)
+	if(pinned)
+		if(force)
+			pinned.forceMove(drop_location())
+			return TRUE // force open
+		balloon_alert(user, "paper removed")
+		if(!user.put_in_inactive_hand(pinned) || pinned.loc == src)
+			pinned.forceMove(drop_location())
+		return FALSE // blocked the open action
+	return TRUE
+
+/obj/structure/closet/body_bag/deconstruct(disassembled)
+	. = ..()
+	pinned?.forceMove(drop_location())
 
 /// Environmental bags. They protect against bad weather.
 
@@ -570,10 +618,10 @@
 		to_chat(target, span_notice("You can feel your fingers and toes again."))
 	UnregisterSignal(target, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 
-/obj/structure/closet/body_bag/environmental/stasis/perform_fold(mob/living/carbon/human/the_folder)
-	foldedbag_instance ||= new foldedbag_path()
-	foldedbag_instance.update_integrity(get_integrity())
-	return ..()
+/obj/structure/closet/body_bag/environmental/stasis/undeploy_bodybag(atom/fold_loc)
+	. = ..()
+	var/obj/item/bodybag/folded = .
+	folded.update_integrity(get_integrity())
 
 /obj/structure/closet/body_bag/environmental/stasis/proc/skip_to_attack_hand(mob/living/source, atom/attack_target)
 	SIGNAL_HANDLER

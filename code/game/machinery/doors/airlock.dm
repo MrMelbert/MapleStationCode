@@ -305,6 +305,7 @@
 /obj/machinery/door/airlock/Exited(atom/movable/gone, direction)
 	. = ..()
 	if(gone == note)
+		note.flags_1 &= ~IS_ONTOP_1
 		note = null
 		update_appearance()
 	if(gone == seal)
@@ -565,13 +566,16 @@
 				. += get_airlock_overlay("sparks_open", overlays_file, src, em_block = FALSE)
 
 	if(note)
-		. += get_airlock_overlay(get_note_state(frame_state), note_overlay_file, src, em_block = TRUE)
+		var/list/mutable_appearance/note_overlays = get_airlock_overlay(get_note_state(frame_state), note_overlay_file, src, em_block = TRUE)
+		if(islist(note_overlays))
+			note_overlays[1].color = note.color
+		. += note_overlays
 
 	if(frame_state == AIRLOCK_FRAME_CLOSED && seal)
 		. += get_airlock_overlay("sealed", overlays_file, src, em_block = TRUE)
 
 	if(hasPower() && unres_sides)
-		for(var/heading in list(NORTH,SOUTH,EAST,WEST))
+		for(var/heading in GLOB.cardinals)
 			if(!(unres_sides & heading))
 				continue
 			var/mutable_appearance/floorlight = mutable_appearance('icons/obj/doors/airlocks/station/overlays.dmi', "unres_[heading]", FLOAT_LAYER, src, ABOVE_LIGHTING_PLANE)
@@ -857,7 +861,6 @@
 			visible_message(span_notice("[tool] cuts down [note] from [src]."))
 		tool.play_tool_sound(src)
 		note.forceMove(tool.drop_location())
-		note = null
 		update_appearance()
 		return ITEM_INTERACT_SUCCESS
 
@@ -1042,11 +1045,12 @@
 		if(note)
 			to_chat(user, span_warning("There's already something pinned to this airlock! Use wirecutters to remove it."))
 			return
-		if(!user.transferItemToLoc(C, src))
+		if(!user.transferItemToLoc(C, src, silent = FALSE))
 			to_chat(user, span_warning("For some reason, you can't attach [C]!"))
 			return
 		user.visible_message(span_notice("[user] pins [C] to [src]."), span_notice("You pin [C] to [src]."))
 		note = C
+		note.flags_1 |= IS_ONTOP_1
 		update_appearance()
 	else
 		return ..()

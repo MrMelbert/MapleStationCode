@@ -15,9 +15,9 @@
 	pressure_resistance = 8
 	drop_sound = 'sound/items/handling/cardboardbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/cardboardbox_pickup.ogg'
-	var/papertype = /obj/item/paper
+	var/obj/item/paper/papertype = /obj/item/paper
 	var/total_paper = 30
-	var/list/paper_stack = list()
+	var/list/obj/item/paper/paper_stack = list()
 	var/obj/item/pen/bin_pen
 	///Overlay of the pen on top of the bin.
 	var/mutable_appearance/pen_overlay
@@ -191,7 +191,12 @@
 				: reference_paper
 
 			var/mutable_appearance/paper_overlay = mutable_appearance(current_paper.icon, current_paper.icon_state)
-			paper_overlay.color = current_paper.color
+			if(current_paper == reference_paper)
+				paper_overlay.color = initial(papertype.color)
+				if(initial(papertype.show_written_words) && initial(papertype.default_raw_text))
+					paper_overlay.icon_state += "_words"
+			else
+				paper_overlay.color = current_paper.color
 			paper_overlay.pixel_z = paper_number/PAPERS_PER_OVERLAY - PAPER_OVERLAY_PIXEL_SHIFT //gives the illusion of stacking
 			. += paper_overlay
 			if(paper_number == total_paper) //this is our top paper
