@@ -21,7 +21,7 @@ GLOBAL_LIST_INIT(default_attunements, create_default_attunement_list())
 /// vice versa.
 /datum/attunement
 	var/name = "Base attunement"
-	var/desc = "Some fucking dumbass forgot to set desc"
+	var/desc = "Some coder forgot to set desc"
 
 	var/list/alignments = list() // no alignments by default
 

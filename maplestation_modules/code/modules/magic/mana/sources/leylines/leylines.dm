@@ -19,7 +19,7 @@ GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
 	"4" = 10
 	)
 	var/leyline_amount = text2num(pick_weight(leyline_amount_list))
-	return initial(leyline_amount)
+	return leyline_amount
 
 /proc/generate_leyline()
 	RETURN_TYPE(/datum/mana_pool/leyline)
