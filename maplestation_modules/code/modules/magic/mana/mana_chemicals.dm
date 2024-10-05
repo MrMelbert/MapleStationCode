@@ -49,6 +49,7 @@
 	description = "Agnosticine is Quintessence's natural opposite. It saps mana from those who consume it."
 	taste_description = "dreams deferred"
 	ph = 9
+	toxpwr = 0
 	color = "#5e0323" // the inverse of quintessence
 	var/mana_adjust = -1.5
 
