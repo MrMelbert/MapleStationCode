@@ -1,19 +1,5 @@
-/datum/component/uses_mana/story_spell/airhike
-	var/attunement_amount = 0.5
-	var/airhike_cost = 30
-
-/datum/component/uses_mana/story_spell/airhike/get_attunement_dispositions()
-	. = ..()
-	.[MAGIC_ELEMENT_WIND] += attunement_amount
-
-/datum/component/uses_mana/story_spell/airhike/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * airhike_cost
-
-//If there isn't enough mana and the Rclick check passes so it won't mess up any future Normal casts
-/datum/component/uses_mana/story_spell/airhike/can_activate_check_failure(give_feedback, ...)
-	var/datum/action/cooldown/spell/airhike/airhike_spell = parent
-	airhike_spell.zup = FALSE
-	return ..()
+#define AIRHIKE_ATTUNEMENT_WIND 0.5
+#define AIRHIKE_MANA_COST 30
 
 /datum/action/cooldown/spell/airhike
 	name = "Air Hike"
@@ -32,10 +18,23 @@
 	var/jumpspeed = 2
 	var/zup = FALSE
 
+	var/mana_cost = AIRHIKE_MANA_COST
+
 /datum/action/cooldown/spell/airhike/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/airhike)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_WIND] += AIRHIKE_ATTUNEMENT_WIND
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		mana_required = mana_cost, \
+		attunements = attunements, \
+	)
+/datum/action/cooldown/spell/airhike/spell_cannot_activate()
+	zup = FALSE
+	return ..()
 
 /datum/action/cooldown/spell/airhike/is_valid_target(atom/cast_on)
 	return iscarbon(cast_on)
@@ -80,3 +79,6 @@
 		to_chat(usr, span_warning("Something prevents you from dashing upwards!"))
 		return FALSE
 	return ..()
+
+#undef AIRHIKE_ATTUNEMENT_WIND
+#undef AIRHIKE_MANA_COST

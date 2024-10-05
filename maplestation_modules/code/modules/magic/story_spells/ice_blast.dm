@@ -1,13 +1,5 @@
-/datum/component/uses_mana/story_spell/pointed/ice_blast
-	var/ice_blast_attunement = 0.5
-	var/ice_blast_cost = 25
-
-/datum/component/uses_mana/story_spell/pointed/ice_blast/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/ice] = ice_blast_attunement
-
-/datum/component/uses_mana/story_spell/pointed/ice_blast/get_mana_required(atom/caster, atom/cast_on, ...)
-	return ..() * ice_blast_cost
+#define ICE_BLAST_ATTUNEMENT_ICE 0.5
+#define ICE_BLAST_MANA_COST 25
 
 /datum/action/cooldown/spell/pointed/projectile/ice_blast
 	name = "Ice blast"
@@ -22,6 +14,7 @@
 	invocation = "Frig'dus humer'm!" //this one sucks,  ireally wis hi had something better
 	invocation_type = INVOCATION_SHOUT
 	school = SCHOOL_CONJURATION
+	var/mana_cost = ICE_BLAST_MANA_COST
 
 	active_msg = "You prepare to throw an ice blast."
 	deactive_msg = "You stop preparing to throw an ice blast."
@@ -32,7 +25,15 @@
 /datum/action/cooldown/spell/pointed/projectile/ice_blast/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/ice_blast)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_ICE] += ICE_BLAST_ATTUNEMENT_ICE
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		mana_required = mana_cost, \
+		attunements = attunements, \
+	)
 
 /// Special ice made so that I can replace it's Initialize's MakeSlippery call to have a different property.
 /turf/open/misc/funny_ice

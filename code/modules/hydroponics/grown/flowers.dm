@@ -221,7 +221,7 @@
 	icon_grow = "moonflower-grow"
 	icon_dead = "sunflower-dead"
 	product = /obj/item/food/grown/moonflower
-	genes = list(/datum/plant_gene/trait/glow/purple, /datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/trait/glow/purple, /datum/plant_gene/trait/preserved, /datum/plant_gene/reagent/misty_quintessence) // NON-MODULE CHANGE
 	mutatelist = null
 	reagents_add = list(/datum/reagent/consumable/ethanol/moonshine = 0.2, /datum/reagent/consumable/nutriment/vitamin = 0.02, /datum/reagent/consumable/nutriment = 0.02)
 	rarity = 15
@@ -334,7 +334,7 @@
 	potency = 15
 	instability = 3
 	growthstages = 3
-	genes = list(/datum/plant_gene/reagent/preset/carbon, /datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/reagent/preset/carbon, /datum/plant_gene/trait/preserved, /datum/plant_gene/reagent/agnosticine) // NON-MODULE CHANGE
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
 	icon_grow = "carbonrose-grow"
 	icon_dead = "carbonrose-dead"
