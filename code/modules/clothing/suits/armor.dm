@@ -282,6 +282,13 @@
 	equip_delay_other = 60
 	clothing_traits = list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)
 
+/obj/item/clothing/suit/armor/riot/Initialize(mapload)
+	. = ..()
+	init_rustle_component()
+
+/obj/item/clothing/suit/armor/riot/proc/init_rustle_component()
+	AddComponent(/datum/component/item_equipped_movement_rustle)
+
 /datum/armor/armor_riot
 	melee = 50
 	bullet = 10
@@ -397,6 +404,13 @@
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	clothing_traits = list(TRAIT_BRAWLING_KNOCKDOWN_BLOCKED)
 
+/obj/item/clothing/suit/armor/swat/Initialize(mapload)
+	. = ..()
+	init_rustle_component()
+
+/obj/item/clothing/suit/armor/swat/proc/init_rustle_component()
+	AddComponent(/datum/component/item_equipped_movement_rustle)
+
 
 //All of the armor below is mostly unused
 
@@ -493,6 +507,8 @@
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/tank/internals/plasmaman,
 		)
+/obj/item/clothing/suit/armor/riot/knight/init_rustle_component()
+	return
 
 /obj/item/clothing/suit/armor/riot/knight/yellow
 	icon_state = "knight_yellow"
