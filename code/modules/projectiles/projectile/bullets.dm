@@ -27,6 +27,7 @@
 	pain_mult = 3
 	rip_time = 10 SECONDS
 	hidden_embed = TRUE
+	blood_loss = 0.05
 
 /datum/embed_data/bullet/on_embed(
 	mob/living/carbon/victim,
@@ -47,6 +48,9 @@
 	if(QDELETED(victim) || QDELETED(limb) || QDELETED(weapon) || limb.owner != victim || victim.stat == DEAD)
 		return
 	to_chat(victim, span_userdanger("You feel a [(victim.can_feel_pain() && harmful) ? "sharp pain" : "dull force"] as [victim.is_blind() ? "something" : weapon] [harmful ? "embeds" : "sticks"] itself in your [limb.plaintext_zone]!"))
+
+/datum/embed_data/bullet/pellet
+	blood_loss = 0.01
 
 /turf/closed/wall/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit)
 	. = ..()

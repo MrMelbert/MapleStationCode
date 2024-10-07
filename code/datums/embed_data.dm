@@ -40,6 +40,8 @@ GLOBAL_LIST_INIT(embed_by_type, generate_embed_type_cache())
 	/// The embed doesn't show up on examine, only on health analyze
 	/// (Note: This means you can't rip it out)
 	var/hidden_embed = FALSE
+	/// How much blood is lost per life tick while embedded
+	var/blood_loss = 0.25
 
 /datum/embed_data/proc/generate_with_values(
 	embed_chance = src.embed_chance,

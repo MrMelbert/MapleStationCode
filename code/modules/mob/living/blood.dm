@@ -104,7 +104,7 @@
 		temp_bleed += iter_bleed_rate * seconds_per_tick
 
 		if(iter_part.generic_bleedstacks) // If you don't have any bleedstacks, don't try and heal them
-			iter_part.adjustBleedStacks(-1, 0)
+			iter_part.adjustBleedStacks(-1)
 
 	if(temp_bleed)
 		bleed(temp_bleed)

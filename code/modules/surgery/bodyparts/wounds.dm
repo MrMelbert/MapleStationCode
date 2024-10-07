@@ -344,7 +344,7 @@
 
 	current_gauze = new new_gauze.type(src, 1)
 	current_gauze.worn_icon_state = "[body_zone][rand(1, 3)]"
-	if(can_bleed() && (generic_bleedstacks || cached_bleed_rate))
+	if(can_bleed() && get_modified_bleed_rate())
 		current_gauze.add_mob_blood(owner)
 		if(!QDELETED(new_gauze))
 			new_gauze.add_mob_blood(owner)
@@ -357,7 +357,7 @@
 		current_gauze.forceMove(remove_to)
 	else
 		current_gauze.moveToNullspace()
-	if(can_bleed() && (generic_bleedstacks || cached_bleed_rate))
+	if(can_bleed() && get_modified_bleed_rate())
 		current_gauze.add_mob_blood(owner)
 	current_gauze.worn_icon_state = initial(current_gauze.worn_icon_state)
 	current_gauze.update_appearance()

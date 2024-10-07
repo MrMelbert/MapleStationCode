@@ -524,7 +524,7 @@
 	busy = TRUE
 	M.visible_message(span_danger("[user] touches [M] with [src]!"), \
 			span_userdanger("[user] touches [M] with [src]!"))
-	M.apply_damage(60, STAMINA, BODY_ZONE_CHEST)
+	M.apply_damage(80, PAIN, BODY_ZONE_CHEST)
 	M.Knockdown(75)
 	M.set_jitter_if_lower(100 SECONDS)
 	M.apply_status_effect(/datum/status_effect/convulsing)

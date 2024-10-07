@@ -152,9 +152,9 @@
 	/// So we know if we need to scream if this limb hits max damage
 	var/last_maxed
 	/// Our current bleed rate. Cached, update with refresh_bleed_rate()
-	var/cached_bleed_rate = 0
+	VAR_PRIVATE/cached_bleed_rate = 0
 	/// How much generic bleedstacks we have on this bodypart
-	var/generic_bleedstacks
+	var/generic_bleedstacks = 0
 	/// If we have a gauze wrapping currently applied (not including splints)
 	var/obj/item/stack/medical/gauze/current_gauze
 	/// If something is currently grasping this bodypart and trying to staunch bleeding (see [/obj/item/hand_item/self_grasp])
@@ -1135,7 +1135,7 @@
 
 /// Modifies our generic bleedstacks. You must use this to change the variable
 /// Takes the amount to adjust by, and the lowest amount we're allowed to have post adjust
-/obj/item/bodypart/proc/adjustBleedStacks(adjust_by, minimum = -INFINITY)
+/obj/item/bodypart/proc/adjustBleedStacks(adjust_by, minimum = 0)
 	if(!adjust_by)
 		return
 	var/old_bleedstacks = generic_bleedstacks
@@ -1170,11 +1170,12 @@
 		return
 
 	if(generic_bleedstacks > 0)
-		cached_bleed_rate += 0.5
+		cached_bleed_rate += 1
 
 	for(var/obj/item/embeddies in embedded_objects)
-		if(!embeddies.is_embed_harmless())
-			cached_bleed_rate += 0.25
+		if(embeddies.is_embed_harmless())
+			continue
+		cached_bleed_rate += embeddies.embed_data.blood_loss
 
 	for(var/datum/wound/iter_wound as anything in wounds)
 		cached_bleed_rate += iter_wound.blood_flow
@@ -1185,14 +1186,22 @@
 
 	return cached_bleed_rate
 
+/// Flat multiplier applied to bleed rate
+/// I did this rather than tweak existing bleed rates because
+/// 1. laziness
+/// 2. so blood wounds could take longer to decay without killing you faster
+#define TOTAL_BLEED_RATE_MOD 0.5
+
 /// Returns our bleed rate, taking into account laying down and grabbing the limb
 /obj/item/bodypart/proc/get_modified_bleed_rate()
-	var/bleed_rate = cached_bleed_rate
+	var/bleed_rate = cached_bleed_rate * TOTAL_BLEED_RATE_MOD
 	if(owner.body_position == LYING_DOWN)
 		bleed_rate *= 0.75
 	if(grasped_by)
 		bleed_rate *= 0.7
 	return bleed_rate
+
+#undef TOTAL_BLEED_RATE_MOD
 
 // how much blood the limb needs to be losing per tick (not counting laying down/self grasping modifiers) to get the different bleed icons
 #define BLEED_OVERLAY_LOW 0.5
@@ -1208,7 +1217,7 @@
 			owner.update_wound_overlays()
 		return FALSE
 
-	var/bleed_rate = cached_bleed_rate
+	var/bleed_rate = get_modified_bleed_rate()
 	var/new_bleed_icon = null
 
 	switch(bleed_rate)

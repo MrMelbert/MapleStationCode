@@ -193,7 +193,7 @@
 			if(wound.blood_flow)
 				wound.adjust_blood_flow(-1 * stop_bleeding * (user == patient ? 0.7 : 1))
 				break // one at a time
-		affecting.adjustBleedStacks(-1 * stop_bleeding, 0)
+		affecting.adjustBleedStacks(-1 * stop_bleeding)
 	if(flesh_regeneration || sanitization)
 		for(var/datum/wound/burn/flesh/wound as anything in affecting.wounds)
 			if(wound.can_be_ointmented_or_meshed())

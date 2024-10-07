@@ -151,7 +151,7 @@
 
 	victim.visible_message(
 		span_danger("[victim] weakly strikes [target] with [victim.p_their()] broken [limb.plaintext_zone], recoiling from pain!"),
-		span_userdanger("You [weapon ? "weakly" : "fail"] to strike [target] as the fracture in your [limb.plaintext_zone] [painless ? "jostles uncomfortably" : "lights up in unbearable pain"]!"),
+		span_userdanger("You [weapon ? "weakly" : "fail to"] strike [target] as the fracture in your [limb.plaintext_zone] [painless ? "jostles uncomfortably" : "lights up in unbearable pain"]!"),
 		vision_distance = COMBAT_MESSAGE_RANGE,
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)

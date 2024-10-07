@@ -34,6 +34,9 @@
 		real_name = null
 	return ..()
 
+/obj/item/shrapnel/bullet/pellet
+	name = "pellet shrapnel"
+
 /obj/projectile/bullet/shrapnel
 	name = "flying shrapnel shard"
 	damage = 14

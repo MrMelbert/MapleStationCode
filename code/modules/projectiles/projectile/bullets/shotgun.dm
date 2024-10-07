@@ -84,6 +84,8 @@
 	wound_bonus = 5
 	bare_wound_bonus = 5
 	wound_falloff_tile = -2.5 // low damage + additional dropoff will already curb wounding potential anything past point blank
+	embed_type = /datum/embed_data/bullet/pellet
+	shrapnel_type = /obj/item/shrapnel/bullet/pellet
 
 /obj/projectile/bullet/pellet/shotgun_rubbershot
 	name = "rubber shot pellet"
