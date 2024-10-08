@@ -31,6 +31,8 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	mutantlungs = /obj/item/organ/internal/lungs/skrell
 	mutantheart = /obj/item/organ/internal/heart/skrell
 	mutantliver = /obj/item/organ/internal/liver/skrell
+	mutantstomach = /obj/item/organ/internal/stomach/skrell
+	mutantears = obj/item/organ/internal/ears/skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -114,7 +116,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	return GLOB.head_tentacles_list
 
 /obj/item/bodypart/arm/left/skrell
-	limb_id = SPECIES_SKRELL
+	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	unarmed_attack_verb = "slash"
@@ -125,7 +127,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
 /obj/item/bodypart/arm/right/skrell
-	limb_id = SPECIES_SKRELL
+	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	unarmed_attack_verb = "slash"
@@ -143,13 +145,13 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 
 /obj/item/bodypart/leg/left/skrell
-	limb_id = SPECIES_SKRELL
+	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
 /obj/item/bodypart/leg/right/skrell
-	limb_id = SPECIES_SKRELL
+	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
@@ -227,6 +229,15 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_LIVER
 
+/obj/item/organ/internal/stomach/skrell
+	name = "Skrellian stomach"
+	desc = "A blue stomach, gross!"
+	icon_state = "stomach"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = FALSE
+	zone = BODY_ZONE_CHEST
+	slot = ORGAN_SLOT_STOMACH
+
 /obj/item/organ/internal/brain/skrell
 	name = "Skrellian brain"
 	desc = "The psionic brain of a Skrell."
@@ -235,6 +246,15 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	visual = FALSE
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_BRAIN
+
+/obj/item/organ/internal/ears/skrell
+	name = "Skrellian ears"
+	desc = "Fish ears!"
+	icon_state = "ears"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = FALSE
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_EARS
 
 /obj/item/organ/internal/eyes/high_skrell
 	name = "High Skrellian eyes"

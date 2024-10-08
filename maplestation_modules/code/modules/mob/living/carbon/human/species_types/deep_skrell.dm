@@ -31,6 +31,8 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	mutantlungs = /obj/item/organ/internal/lungs/skrell
 	mutantheart = /obj/item/organ/internal/heart/skrell
 	mutantliver = /obj/item/organ/internal/liver/skrell
+	mutantstomach = /obj/item/organ/internal/stomach/skrell
+	mutantears = obj/item/organ/internal/ears/skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
