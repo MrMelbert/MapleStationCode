@@ -7,24 +7,13 @@
 
 /datum/reagent/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	// hi melbert, this should have SHOULD_CALL_PARENT(TRUE)
-	if(isnull(pain_modifier) || !istype(user))
-		return
-
-	if(user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier) && !user.can_feel_pain())
-		// If the painkiller's strong enough give them an alert
-		user.throw_alert("numbed", /atom/movable/screen/alert/numbed)
+	if(isnum(pain_modifier))
+		user.set_pain_mod("[PAIN_MOD_CHEMS]-[name]", pain_modifier)
 
 /datum/reagent/on_mob_end_metabolize(mob/living/carbon/user)
 	. = ..()
-	if(isnull(pain_modifier) || !istype(user))
-		return
-	user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
-
-/datum/reagent/on_mob_delete(mob/living/L)
-	. = ..()
-	if(!isnull(pain_modifier) && L.can_feel_pain())
-		L.clear_alert("numbed")
+	if(isnum(pain_modifier))
+		user.unset_pain_mod("[PAIN_MOD_CHEMS]-[name]")
 
 // Muscle stimulant is functionally morphine without downsides (it's rare)
 /datum/reagent/medicine/muscle_stimulant
@@ -35,40 +24,40 @@
 	pain_modifier = 0.9
 
 /datum/reagent/medicine/epinephrine/on_mob_metabolize(mob/living/carbon/M)
-	..()
+	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)
+	ADD_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
 
 /datum/reagent/medicine/epinephrine/on_mob_end_metabolize(mob/living/carbon/M)
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
-	..()
+	REMOVE_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
+	. = ..()
 
 /datum/reagent/medicine/epinephrine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_pain_shock(-1)
+	affected_mob.adjust_pain_shock(-0.25 * REM * seconds_per_tick)
 
 // Atropine fills a simliar niche to epinephrine
 /datum/reagent/medicine/atropine
 	pain_modifier = 0.8
 
 /datum/reagent/medicine/atropine/on_mob_metabolize(mob/living/carbon/M)
-	..()
+	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)
+	ADD_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
 
 /datum/reagent/medicine/atropine/on_mob_end_metabolize(mob/living/carbon/M)
 	REMOVE_TRAIT(M, TRAIT_ABATES_SHOCK, type)
-	..()
+	REMOVE_TRAIT(M, TRAIT_NOCRITDAMAGE, type)
+	. = ..()
 
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_pain_shock(-2)
+	affected_mob.adjust_pain_shock(-0.5 * REM * seconds_per_tick)
 
 // Miner's salve is described as a good painkiller
 /datum/reagent/medicine/mine_salve
 	pain_modifier = 0.66
-
-// Determined = fight or flight mode = should have less pain
-/datum/reagent/determination
-	pain_modifier = 0.8
 
 // Drugs reduce pain
 /datum/reagent/drug/space_drugs
@@ -96,13 +85,11 @@
 /datum/reagent/healium
 	pain_modifier = 0.75
 
-/datum/reagent/healium/on_mob_metabolize(mob/living/L)
+/datum/reagent/healium/on_mob_life(mob/living/breather, seconds_per_tick, times_fired)
 	. = ..()
-	L.apply_status_effect(/datum/status_effect/grouped/anesthetic, name)
-
-/datum/reagent/healium/on_mob_end_metabolize(mob/living/L)
-	. = ..()
-	L.remove_status_effect(/datum/status_effect/grouped/anesthetic, name)
+	if(HAS_TRAIT(breather, TRAIT_KNOCKEDOUT))
+		breather.apply_status_effect(/datum/status_effect/anesthetic, 3 SECONDS)
+		breather.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
 
 // Nitrous Oxide can apply some anesthetic, like the gas
 /datum/reagent/nitrous_oxide
@@ -110,43 +97,14 @@
 
 /datum/reagent/nitrous_oxide/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	RegisterSignal(user, SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), PROC_REF(apply_anesthetic))
-	RegisterSignal(user, SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT), PROC_REF(remove_anesthetic))
 	if(HAS_TRAIT(user, TRAIT_KNOCKEDOUT))
-		apply_anesthetic(user)
-
-/datum/reagent/nitrous_oxide/on_mob_end_metabolize(mob/living/carbon/user)
-	. = ..()
-	UnregisterSignal(user, list(SIGNAL_ADDTRAIT(TRAIT_KNOCKEDOUT), SIGNAL_REMOVETRAIT(TRAIT_KNOCKEDOUT)))
-	remove_anesthetic(user)
-
-/datum/reagent/nitrous_oxide/proc/apply_anesthetic(mob/living/carbon/source)
-	SIGNAL_HANDLER
-	source.apply_status_effect(/datum/status_effect/grouped/anesthetic, type)
-
-/datum/reagent/nitrous_oxide/proc/remove_anesthetic(mob/living/carbon/source)
-	SIGNAL_HANDLER
-	source.remove_status_effect(/datum/status_effect/grouped/anesthetic, type)
-
-// Cryoxadone slowly heals pain, like wounds.
-// It also helps against shock, sort of.
-/datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
-	. = ..()
-	if(!.)
-		return
-	var/power = -0.00003 * (affected_mob.body_temperature ** 2) + 3
-
-	ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type) // To negate the fact that being cold is bad for shock
-	affected_mob.set_pain_mod(type, 0.5) // Heal pain faster
-	affected_mob.cause_pain(BODY_ZONES_ALL, -0.25 * power * REM * seconds_per_tick)
-	affected_mob.adjust_pain_shock(-power * REM * seconds_per_tick)
-
-/datum/reagent/medicine/cryoxadone/on_mob_end_metabolize(mob/living/carbon/user)
-	. = ..()
-	user.unset_pain_mod(type)
-	REMOVE_TRAIT(user, TRAIT_ABATES_SHOCK, type)
+		user.apply_status_effect(/datum/status_effect/anesthetic, 3 SECONDS)
 
 // Saline glucose helps shock
+/datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	affected_mob.adjust_pain_shock(-0.2 * REM * seconds_per_tick)
+
 /datum/reagent/medicine/salglu_solution/on_mob_metabolize(mob/living/carbon/M)
 	. = ..()
 	ADD_TRAIT(M, TRAIT_ABATES_SHOCK, type)

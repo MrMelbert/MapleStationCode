@@ -21,7 +21,10 @@
 	blood_type = null
 
 	var/datum/reagent/master_reagent = holder.get_master_reagent()
-	if(istype(master_reagent, /datum/reagent/blood))
+	if(isnull(master_reagent))
+		pass()
+
+	else if(istype(master_reagent, /datum/reagent/blood))
 		blood_type = master_reagent.data?["blood_type"]
 
 	else
