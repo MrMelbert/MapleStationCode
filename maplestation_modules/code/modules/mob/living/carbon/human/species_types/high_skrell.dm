@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	name = "High Skrell"
 	plural_form = "High Skrellian"
 	id = SPECIES_HIGH_SKRELL
-	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_SNOB, TRAIT_AGENDER)
+	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_SNOB)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
@@ -27,6 +27,10 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 
 	mutanteyes = /obj/item/organ/internal/eyes/high_skrell
 	mutanttongue = /obj/item/organ/internal/tongue/high_skrell
+	mutantbrain = /obj/item/organ/internal/brain/skrell
+	mutantlungs = /obj/item/organ/internal/lungs/skrell
+	mutantheart = /obj/item/organ/internal/heart/skrell
+	mutantliver = /obj/item/organ/internal/liver/skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -110,7 +114,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	return GLOB.head_tentacles_list
 
 /obj/item/bodypart/arm/left/skrell
-	limb_id = SPECIES_HIGH_SKRELL
+	limb_id = SPECIES_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	unarmed_attack_verb = "slash"
@@ -121,7 +125,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
 /obj/item/bodypart/arm/right/skrell
-	limb_id = SPECIES_HIGH_SKRELL
+	limb_id = SPECIES_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	unarmed_attack_verb = "slash"
@@ -139,13 +143,13 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 
 /obj/item/bodypart/leg/left/skrell
-	limb_id = SPECIES_HIGH_SKRELL
+	limb_id = SPECIES_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
 /obj/item/bodypart/leg/right/skrell
-	limb_id = SPECIES_HIGH_SKRELL
+	limb_id = SPECIES_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
@@ -154,15 +158,27 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
+	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
-/obj/item/organ/internal/eyes/high_skrell
-	desc = "Gooey."
-	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
+/obj/item/organ/internal/brain/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
+	.=..()
+	if(ishuman(organ_owner))
+		return
 
-/obj/item/organ/internal/brain/skrell
-	if (organ_owner/mob_mood)
-		organ_owner/mob_mood.mood_modifier += 0.5
+
+	var/mob/living/carbon/human/human_owner = owner
+	if (organ_owner.mob_mood)
+		organ_owner.mob_mood.mood_modifier += 0.75
+
+/obj/item/organ/internal/brain/Skrell/on_mob_remove(mob/living/carbon/organ_owner, special)
+	.=..()
+	if(ishuman(organ_owner) || QDELETED (organ_owner))
+		return
+
+
+	if (organ_owner.mob_mood)
+		organ_owner.mob_mood.mood_modifier -= 0.75
 
 /obj/item/organ/internal/liver/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
 	.=..()
@@ -181,3 +197,52 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.physiology.tox_mod *= 0.75
+
+/obj/item/organ/internal/heart/skrell
+	name = "Skrellian heart"
+	desc = "A blue heart able to filter the copper based blood of the Skrell."
+	icon_state = "heart-on"
+	base_icon_state = "heart"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = FALSE
+	zone = BODY_ZONE_CHEST
+	slot = ORGAN_SLOT_HEART
+
+/obj/item/organ/internal/lungs/skrell
+
+	name = "Skrellian lungs"
+	desc = "The lungs of a Skrell, they still have the gills attached."
+	icon_state = "lungs"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = FALSE
+	zone = BODY_ZONE_CHEST
+	slot = ORGAN_SLOT_LUNGS
+
+/obj/item/organ/internal/liver/skrell
+	name = "Skrellian liver"
+	desc = "The source for the Skrell's weakness to alcohol."
+	icon_state = "liver"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = FALSE
+	zone = BODY_ZONE_CHEST
+	slot = ORGAN_SLOT_LIVER
+
+/obj/item/organ/internal/brain/skrell
+	name = "Skrellian brain"
+	desc = "The psionic brain of a Skrell."
+	icon_state = "brain2"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = FALSE
+	zone = BODY_ZONE_HEAD
+	slot = ORGAN_SLOT_BRAIN
+
+/obj/item/organ/internal/eyes/high_skrell
+	name = "High Skrellian eyes"
+	desc = "The large eyes of a High Skrell."
+	icon_state = "eyes_high"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = TRUE
+	zone = BODY_ZONE_PRECISE_EYES
+	slot = ORGAN_SLOT_EYES
+	flash_protect = FLASH_PROTECTION_SENSITIVE
+	tint = 1

@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	name = "Deep Skrell"
 	plural_form = "Deep Skrellian"
 	id = SPECIES_DEEP_SKRELL
-	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_AGENDER)
+	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
@@ -27,6 +27,10 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 
 	mutanteyes = /obj/item/organ/internal/eyes/deep_skrell
 	mutanttongue = /obj/item/organ/internal/tongue/deep_skrell
+	mutantbrain = /obj/item/organ/internal/brain/skrell
+	mutantlungs = /obj/item/organ/internal/lungs/skrell
+	mutantheart = /obj/item/organ/internal/heart/skrell
+	mutantliver = /obj/item/organ/internal/liver/skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -153,16 +157,32 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 /obj/item/bodypart/chest/deep_skrell
 	limb_id = SPECIES_DEEP_SKRELL
 	brute_modifier = 0.8
-	burn_modifier = 1.5
+	burn_modifier = 1.
+	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
 /obj/item/organ/internal/eyes/deep_skrell
 	desc = "Gooey."
 	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
 
-/obj/item/organ/brain/skrell
-	if (organ_owner/mob_mood)
-		organ_owner/mob_mood.mood_modifier += 0.5
+/obj/item/organ/internal/brain/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
+	.=..()
+	if(ishuman(organ_owner))
+		return
+
+
+	var/mob/living/carbon/human/human_owner = owner
+	if (organ_owner.mob_mood)
+		organ_owner.mob_mood.mood_modifier += 0.75
+
+/obj/item/organ/internal/brain/Skrell/on_mob_remove(mob/living/carbon/organ_owner, special)
+	.=..()
+	if(ishuman(organ_owner) || QDELETED (organ_owner))
+		return
+
+
+	if (organ_owner.mob_mood)
+		organ_owner.mob_mood.mood_modifier -= 0.75
 
 /obj/item/organ/internal/liver/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
 	.=..()
@@ -181,3 +201,14 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 
 	var/mob/living/carbon/human/human_owner = owner
 	human_owner.physiology.tox_mod *= 0.75
+
+/obj/item/organ/internal/eyes/deep_skrell
+	name = "Deep Skrellian eyes"
+	desc = "The four large eyes of a Deep Skrell."
+	icon_state = "eyes_deep"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = TRUE
+	zone = BODY_ZONE_PRECISE_EYES
+	slot = ORGAN_SLOT_EYES
+	flash_protect = FLASH_PROTECTION_SENSITIVE
+	tint = 1
