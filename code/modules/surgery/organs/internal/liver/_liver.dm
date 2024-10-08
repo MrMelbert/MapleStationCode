@@ -167,7 +167,7 @@
 	return ..()
 
 /obj/item/organ/internal/liver/organ_failure(seconds_per_tick)
-	if(!owner.can_feel_pain())
+	if(!CAN_FEEL_PAIN(owner))
 		switch(failure_time/LIVER_FAILURE_STAGE_SECONDS)
 			if(1)
 				to_chat(owner, span_userdanger("You feel stabbing pain in your abdomen!"))

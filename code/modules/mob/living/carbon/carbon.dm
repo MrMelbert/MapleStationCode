@@ -565,10 +565,10 @@
 	var/oldhp = health
 	set_health(round(maxHealth - total_oxy - total_tox - total_burn - total_brute, DAMAGE_PRECISION))
 
-	var/brutecon = -0.005 * (total_brute ** 1.5)
-	var/firecon =  -0.005 * (total_burn ** 1.5)
-	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : (-1 * min(total_oxy * (total_oxy >= 100 ? 0.5 : 0.33), 100))
-	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : (-5 * sqrt(total_tox))
+	var/brutecon = round(-0.005 * (total_brute ** 1.5), 0.01)
+	var/firecon =  round(-0.005 * (total_burn ** 1.5), 0.01)
+	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : round(-1 * min(total_oxy * (total_oxy >= 100 ? 0.5 : 0.33), 100), 0.01)
+	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : round(-5 * sqrt(total_tox), 0.01)
 	// To prevent nobreath/noblood species from being incredibly tanky, due to ignoring major sources of con damage,
 	// we up their damage taken from brute and fire by 2x to compensate.
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_NOBREATH) || isnull(pain_controller))
@@ -627,7 +627,7 @@
 	for(var/max_mod in max_consciousness_values)
 		max_consciousness = min(max_consciousness_values[max_mod], max_consciousness)
 
-	consciousness = min(consciousness, max(max_consciousness, 10))
+	consciousness = min(round(consciousness, 0.01), max(max_consciousness, 10))
 
 	update_stat() // may result in death
 	if(QDELETED(src))
@@ -770,7 +770,7 @@
 
 /// Applies damage hud according to how much raw damage the mob has taken
 /mob/living/carbon/proc/apply_damage_screen_overlay()
-	var/hurtdamage = (pain_controller ? pain_controller.get_average_pain() : (getBruteLoss() + getFireLoss())) + damageoverlaytemp
+	var/hurtdamage = (pain_controller ? (pain_controller.get_total_pain() / 3) : (getBruteLoss() + getFireLoss())) + damageoverlaytemp
 	if(hurtdamage <= 5)
 		clear_fullscreen("brute")
 		return

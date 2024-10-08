@@ -5,9 +5,6 @@
 	var/pain = 15
 	/// The min amount of pain this limb can experience
 	var/min_pain = 0
-	/// The soft cap of pain that this limb can experience
-	/// This is not a hard cap, pain can go above this, but beyond this effects will not worsen
-	var/soft_max_pain = PAIN_LIMB_MAX
 	/// Modifier applied to pain that this part receives
 	var/bodypart_pain_modifier = 1
 	/// The last type of pain we received. Determines what type of pain we're recieving.
@@ -16,19 +13,19 @@
 // Adds pain to check-self.
 /obj/item/bodypart/check_for_injuries(mob/living/carbon/human/examiner, list/check_list)
 	. = ..()
-	if(owner != examiner || !owner.can_feel_pain()) // haha you thought
+	if(owner != examiner || !CAN_FEEL_PAIN(owner)) // haha you thought
 		return
 
-	switch((get_modified_pain() / soft_max_pain) * 100)
+	switch(get_modified_pain())
 		if(10 to 40)
 			check_list += "\t\t[span_danger("It's experiencing mild pain \
 				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch.")]"
 
-		if(40 to 70)
+		if(40 to 100)
 			check_list += "\t\t[span_warning("It's experiencing moderate pain \
 				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
 
-		if(70 to INFINITY)
+		if(100 to INFINITY)
 			check_list += "\t\t[span_boldwarning("It's experiencing severe pain \
 				and [last_received_pain_type == BURN ? "burns" : "hurts"] to the touch!")]"
 
@@ -125,13 +122,12 @@
 
 // --- Chest ---
 /obj/item/bodypart/chest
-	soft_max_pain = PAIN_CHEST_MAX
 
 /obj/item/bodypart/chest/robot
-	// Augmented limbs start with maximum pain as a trade-off for becoming almost immune to it
+	// Augmented limbs start with high pain as a trade-off for becoming almost immune to it
 	// The idea being that the roboticist installing augments should take care of their patient
 	// following the period after they're augmented - anesthetic, rest, painkillers (from medbay)
-	pain = PAIN_CHEST_MAX
+	pain = 120
 	// As a trade off for starting with maximum pain,
 	// augmented limbs lose pain very rapidly and take very little in the way of pain.
 	// Why not a 0 modifier? I feel like it'll be unfun if they can just completely ignore the system.
@@ -183,10 +179,9 @@
 
 // --- Head ---
 /obj/item/bodypart/head
-	soft_max_pain = PAIN_HEAD_MAX
 
 /obj/item/bodypart/head/robot
-	pain = PAIN_HEAD_MAX
+	pain = 100
 	bodypart_pain_modifier = 0.2
 
 /obj/item/bodypart/head/on_gain_pain_effects(amount, dam_type)
@@ -265,7 +260,7 @@
 
 // --- Right Leg ---
 /obj/item/bodypart/leg/right/robot
-	pain = PAIN_LIMB_MAX
+	pain = 80
 	bodypart_pain_modifier = 0.2
 
 /obj/item/bodypart/leg/right/robot/surplus
@@ -274,7 +269,7 @@
 
 // --- Left Leg ---
 /obj/item/bodypart/leg/left/robot
-	pain = PAIN_LIMB_MAX
+	pain = 80
 	bodypart_pain_modifier = 0.2
 
 /obj/item/bodypart/leg/left/robot/surplus
@@ -320,7 +315,7 @@
 
 // --- Right Arm ---
 /obj/item/bodypart/arm/right/robot
-	pain = PAIN_LIMB_MAX
+	pain = 80
 	bodypart_pain_modifier = 0.2
 
 /obj/item/bodypart/arm/right/robot/surplus
@@ -329,7 +324,7 @@
 
 // --- Left Arm ---
 /obj/item/bodypart/arm/right/robot
-	pain = PAIN_LIMB_MAX
+	pain = 80
 	bodypart_pain_modifier = 0.2
 
 /obj/item/bodypart/arm/left/robot/surplus

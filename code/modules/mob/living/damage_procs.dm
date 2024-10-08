@@ -88,7 +88,7 @@
 			damage_dealt = -1 * adjustStaminaLoss(damage_amount, forced = forced)
 		if(PAIN)
 			if(pain_controller)
-				var/pre_pain = pain_controller.get_average_pain()
+				var/pre_pain = pain_controller.get_total_pain()
 				var/pain_amount = damage_amount
 				var/chosen_zone
 				if(spread_damage || isnull(def_zone))
@@ -101,7 +101,7 @@
 					chosen_zone = check_zone(def_zone)
 
 				sharp_pain(chosen_zone, pain_amount, STAMINA, 12.5 SECONDS, 0.8)
-				damage_dealt += pre_pain - pain_controller.get_average_pain()
+				damage_dealt += pre_pain - pain_controller.get_total_pain()
 				damage_dealt += adjustStaminaLoss(damage_amount * 0.25, forced = forced)
 			else
 				damage_dealt = -1 * adjustStaminaLoss(damage_amount, forced = forced)

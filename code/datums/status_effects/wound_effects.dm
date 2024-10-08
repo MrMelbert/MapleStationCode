@@ -151,7 +151,7 @@
 		return
 
 	// less limping while we have determination still
-	var/determined_mod = owner.can_feel_pain(TRUE) ? 1 : 0.5
+	var/determined_mod = CAN_FEEL_PAIN(owner) ? 1 : 0.5
 
 	if(next_leg == left)
 		if(prob(limp_chance_left * determined_mod))

@@ -12,7 +12,7 @@
 // display_pain\((.+)\) -> display_pain($1, target_zone = target_zone) // NON-MODULE CHANGE
 /datum/surgery_step/display_pain(mob/living/carbon/target, pain_message, mechanical_surgery = FALSE, target_zone)
 	// Only feels pain if we feels pain
-	if(pain_amount <= 0 || isnull(target_zone) || !target.can_feel_pain())
+	if(pain_amount <= 0 || isnull(target_zone) || !CAN_FEEL_PAIN(target))
 		if(target.has_status_effect(/datum/status_effect/anesthetic))
 			target.add_mood_event("surgery", /datum/mood_event/anesthetic)
 		return FALSE

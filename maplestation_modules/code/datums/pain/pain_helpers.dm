@@ -81,14 +81,6 @@
 	return pain_controller?.unset_pain_modifier(id)
 
 /**
- * Checks if this mob can feel pain.
- *
- * By default mobs cannot feel pain if they have a pain modifier of 0.5 or less.
- */
-/mob/living/proc/can_feel_pain(skip_pain_mod = FALSE)
-	return (skip_pain_mod || pain_controller?.pain_modifier > 0.5) && !HAS_TRAIT(src, TRAIT_NO_PAIN_EFFECTS)
-
-/**
  * Adjusts the progress of pain shock on the current mob.
  *
  * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
@@ -101,7 +93,7 @@
 		return
 
 	ASSERT(isnum(amount))
-	pain_controller.shock_buildup = clamp(pain_controller.shock_buildup + amount, down_to, 200)
+	pain_controller.shock_buildup = clamp(pain_controller.shock_buildup + amount, down_to, MAX_SHOCK)
 	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE)
 
 /**

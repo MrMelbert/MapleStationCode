@@ -63,7 +63,7 @@
 			apply_organ_damage(2 * decay_factor * maxHealth * seconds_per_tick)
 			// Chance to gain some free tox damage when taking irradiation organ damage, 50% chance on that to actually feel it
 			if(prob(10) && owner?.apply_damage(1 * seconds_per_tick, TOX, zone) > 0 && owner.stat <= SOFT_CRIT && prob(50))
-				if(owner.can_feel_pain())
+				if(CAN_FEEL_PAIN(owner))
 					to_chat(owner, span_warning("You feel a slight [pick("pain", "twinge", "throb", "ache")] in your [parse_zone(zone)]."))
 					owner.cause_pain(zone, 2, BURN)
 				else

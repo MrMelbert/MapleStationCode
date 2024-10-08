@@ -84,11 +84,6 @@
 	mood_change = -10
 	timeout = 6 MINUTES
 
-/atom/movable/screen/alert/numbed
-	name = "Numbed"
-	desc = "Your body is numb, painless. You're under the effect of some kind of painkiller."
-	icon_state = "drugged"
-
 /datum/mood_event/narcotic_light
 	description = "I feel numb."
 	mood_change = 4
@@ -101,7 +96,7 @@
 		return ..()
 
 	// Cut unintentional screems if they can't feel pain at the moment
-	if(!user.can_feel_pain())
+	if(!CAN_FEEL_PAIN(user))
 		return FALSE
 
 	return ..()

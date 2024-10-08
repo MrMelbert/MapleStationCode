@@ -108,7 +108,7 @@
 
 	if(SPT_PROB(pain_chance_current, seconds_per_tick))
 		victim.apply_damage((1 - embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
-		if(victim.can_feel_pain())
+		if(CAN_FEEL_PAIN(victim))
 			victim.apply_damage(embed_data.pain_stam_pct * damage, PAIN, limb)
 			if(embed_data.hidden_embed)
 				to_chat(victim, span_danger("Something in your [limb.plaintext_zone] hurts!"))
@@ -144,7 +144,7 @@
 
 	var/damage = weapon.w_class * embed_data.jostle_pain_mult
 	victim.apply_damage((1 -  embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
-	if(victim.can_feel_pain())
+	if(CAN_FEEL_PAIN(victim))
 		victim.apply_damage( embed_data.pain_stam_pct * damage, PAIN, limb)
 		if(embed_data.hidden_embed)
 			to_chat(victim, span_danger("Something in your [limb.plaintext_zone] jostles and stings!"))

@@ -18,9 +18,9 @@
 	/// Lazy Assoc list [zones] to [references to bodyparts], all the body parts we're tracking
 	VAR_PRIVATE/list/body_zones
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
-	VAR_FINAL/natural_pain_decay = -0.2
+	VAR_FINAL/natural_pain_decay = -0.3
 	/// The base amount of pain decay received.
-	var/base_pain_decay = -0.2
+	VAR_FINAL/base_pain_decay
 	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
 	VAR_FINAL/natural_decay_counter = 0
 	/// Amount of shock building up from higher levels of pain
@@ -44,7 +44,7 @@
 /datum/pain/New(mob/living/carbon/human/new_parent)
 	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy))
 		qdel(src) // If we're not a carbon, or a dummy, delete us
-		return null
+		return
 
 	parent = new_parent
 
@@ -210,15 +210,13 @@
 	pain_modifier = 1
 	for(var/mod in pain_mods)
 		pain_modifier *= pain_mods[mod]
-	// Throw alert if a drug specifically is numbing us
-	if(pain_modifier < 0.75)
-		for(var/datum/reagent/med as anything in parent.reagents.reagent_list)
-			if(med.pain_modifier <= 0.5)
-				parent.throw_alert("numbed", /atom/movable/screen/alert/numbed)
-				break
+	if(old_pain_mod == pain_modifier)
+		return FALSE
+	if(pain_modifier <= 0.5)
+		ADD_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS, "pain_mod")
 	else
-		parent.clear_alert("numbed")
-	return old_pain_mod != pain_modifier
+		REMOVE_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS, "pain_mod")
+	return TRUE
 
 /**
  * Adjust the amount of pain in all [def_zones] provided by [amount] (multiplied by the [pain_modifier] if positive).
@@ -254,15 +252,9 @@
 			// Pain is negative and we're at min pain
 			if(current_amount <= adjusted_bodypart.min_pain)
 				continue
-			// Pain is negative and we're above soft cap, increase the healing amount
-			if(current_amount >= adjusted_bodypart.soft_max_pain)
-				adjusted_amount *= 2 * (current_amount / adjusted_bodypart.soft_max_pain)
 
 		// Pain is positive (dealing)
 		else
-			// Pain is positive and we're at the soft cap, reduce the incoming pain
-			if(current_amount >= adjusted_bodypart.soft_max_pain)
-				adjusted_amount *= 0.75 * (adjusted_bodypart.soft_max_pain / current_amount)
 			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
 			// Pain modifiers results in us taking 0 pain so we skip
 			if(adjusted_amount <= 0)
@@ -327,12 +319,14 @@
 	refresh_pain_attributes()
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, dam_type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
-	if(amount > PAIN_LIMB_MAX * 0.25)
-		parent.pain_emote("scream", 5 SECONDS)
+	if(amount > 30)
+		if(prob(33))
+			parent.pain_emote("scream", 5 SECONDS)
 		parent.flash_pain_overlay(2)
 
-	else if(amount > PAIN_LIMB_MAX * 0.1)
-		parent.pain_emote(pick("wince", "gasp", "grimace", "inhale_s", "exhale_s", "flinch"), 3 SECONDS)
+	else if(amount > 20)
+		if(prob(33))
+			parent.pain_emote(pick("wince", "gasp", "grimace", "inhale_s", "exhale_s", "flinch"), 3 SECONDS)
 		parent.flash_pain_overlay(1)
 
 
@@ -373,77 +367,38 @@
 		def_zone = check_zone(def_zone)
 
 	// By default pain is calculated based on damage and wounding
-	// Attacks with a wound bonus add additional pain (usually, like 4-10)
 	// (Note that if they also succeed in applying a wound, more pain comes from that)
 	// Also, sharp attacks apply a smidge extra pain
-	var/pain = ((100 - blocked) / 100) * ((10 * damage) ** 0.66 + (0.2 * max(wound_bonus + bare_wound_bonus - parent.getarmor(def_zone, WOUND), 0))) * (sharpness ? 1.2 : 1)
+	var/pain = damage * (sharpness ? 1.15 : 1)
 	switch(damagetype)
 		// Brute pain is dealt to the target zone
 		// pain is just divided by a random number, for variance
 		if(BRUTE)
-			pain *= pick(0.6, 0.7, 0.8)
+			pain *= pick(0.75, 0.8, 0.85, 0.9)
 
 		// Burn pain is dealt to the target zone
 		// pain is lower for weaker burns, but scales up for more damaging burns
 		if(BURN)
 			switch(damage)
 				if(1 to 9)
-					pain *= 0.25
+					pain *= 0.4
 				if(10 to 19)
-					pain *= 0.5
-				if(20 to INFINITY)
-					pain *= 0.75
+					pain *= 0.6
+				// if(20 to INFINITY)
+				// 	pass()
 
 		// Toxins pain is dealt to the chest (stomach and liver)
-		// Pain is determined by the liver's tox tolerance, liver damage, and stomach damage
-		// having a high amount of toxloss also adds additional pain
-		//
 		// Note: 99% of sources of toxdamage is done through adjusttoxloss, and as such doesn't go through this
 		if(TOX)
 			if(HAS_TRAIT(parent, TRAIT_TOXINLOVER) || HAS_TRAIT(parent, TRAIT_TOXIMMUNE))
 				return
 			def_zone = BODY_ZONE_CHEST
-			var/obj/item/organ/internal/liver/our_liver = source.get_organ_slot(ORGAN_SLOT_LIVER)
-			var/obj/item/organ/internal/stomach/our_stomach = source.get_organ_slot(ORGAN_SLOT_STOMACH)
-			if(our_liver)
-				pain = damage / our_liver.toxTolerance
-				switch(our_liver.damage)
-					if(20 to 50)
-						pain += 1
-					if(50 to 80)
-						pain += 2
-					if(80 to INFINITY)
-						pain += 3
-			else if(HAS_TRAIT(parent, TRAIT_LIVERLESS_METABOLISM))
-				pain = 1
-			else
-				pain = damage * 2
-
-			if(our_stomach)
-				switch(our_stomach.damage)
-					if(20 to 50)
-						pain += 1
-					if(50 to 80)
-						pain += 2
-					if(80 to INFINITY)
-						pain += 3
-			else if(HAS_TRAIT(parent, TRAIT_NOHUNGER))
-				pain = 1
-			else
-				pain += 3
-
-			switch(source.getToxLoss())
-				if(33 to 66)
-					pain += 1
-				if(66 to INFINITY)
-					pain += 3
 
 		// Oxyloss is painless. Drift into the void
 		if(OXY)
 			return
 
-		// Pain should be obvious
-		// Stamina is kind of pain but just sleepy pain
+		// Should be obvious
 		if(STAMINA, PAIN)
 			return
 
@@ -500,7 +455,7 @@
 		return
 
 	var/has_pain = FALSE
-	var/just_cant_feel_anything = !parent.can_feel_pain()
+	var/just_cant_feel_anything = !CAN_FEEL_PAIN(parent)
 	var/no_recent_pain = COOLDOWN_FINISHED(src, time_since_last_pain_loss)
 	for(var/part in shuffle(body_zones))
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
@@ -534,19 +489,19 @@
 	if(parent.health <= parent.maxHealth * -4 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_SURVIVE))
 		shock_mod *= 2 // stacks with above
 	var/curr_pain = get_total_pain()
-	if(curr_pain < PAIN_LIMB_MAX * 0.5)
+	if(curr_pain < 25)
 		parent.adjust_pain_shock(-3 * seconds_per_tick) // staying out of pain for a while gives you a small resiliency to shock (~1 minute)
-	else if(curr_pain < PAIN_LIMB_MAX)
+	else if(curr_pain < 50)
 		parent.adjust_pain_shock(-1 * seconds_per_tick)
-	else if(curr_pain < PAIN_LIMB_MAX * 2)
+	else if(curr_pain < 100)
 		if(shock_buildup <= 30 || parent.consciousness <= 50)
 			parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
-	else if(curr_pain < PAIN_LIMB_MAX * 4)
+	else if(curr_pain < 200)
 		parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
 			do_pain_message(span_userdanger(pick("It hurts.")))
 	else
-		parent.adjust_pain_shock(clamp(round(0.5 * (curr_pain / PAIN_LIMB_MAX), 0.1), 1.5, 8) * shock_mod * seconds_per_tick)
+		parent.adjust_pain_shock(clamp(round(0.5 * (curr_pain / 100), 0.1), 1.5, 8) * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
 			do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!")))
 
@@ -560,7 +515,7 @@
 				do_pain_message(span_warning(pick("You feel cold!", "You feel sweaty!")))
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_body_temperature(-0.75 KELVIN * seconds_per_tick, min_temp = parent.bodytemp_cold_damage_limit - 5 KELVIN)
-		if(120 to 180)
+		if(120 to MAX_SHOCK)
 			if(SPT_PROB(2, seconds_per_tick))
 				do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!", "You need painkillers now!")))
 			if(SPT_PROB(4, seconds_per_tick))
@@ -568,7 +523,7 @@
 				parent.pain_emote("shiver", 3 SECONDS)
 			parent.adjust_body_temperature(-1 KELVIN * seconds_per_tick, min_temp = parent.bodytemp_cold_damage_limit - 10 KELVIN)
 
-	if((shock_buildup >= 20 || curr_pain >= PAIN_LIMB_MAX) && !just_cant_feel_anything)
+	if((shock_buildup >= 20 || curr_pain >= 50) && !just_cant_feel_anything)
 		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
 			parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 		if(SPT_PROB(min(curr_pain / 10, 12), seconds_per_tick))
@@ -581,17 +536,17 @@
 			//parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
 			parent.Knockdown(rand(3 SECONDS, 6 SECONDS))
 
-	if(shock_buildup >= 60 || curr_pain >= PAIN_CHEST_MAX)
-		if(SPT_PROB(shock_buildup / 20, seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
+	if(shock_buildup >= 60 || curr_pain >= 100)
+		if(SPT_PROB(max(shock_buildup / 20, 2), seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent]'s body falls limp!"),
 				span_warning("Your body [just_cant_feel_anything ? "goes" : "falls"] limp!"),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-		if(SPT_PROB(shock_buildup / 20, seconds_per_tick))
+		if(SPT_PROB(max(shock_buildup / 20, 3), seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
-	if((shock_buildup >= 120 || curr_pain >= PAIN_CHEST_MAX * 2) && SPT_PROB(shock_buildup / 40, seconds_per_tick) && parent.stat != HARD_CRIT)
+	if((shock_buildup >= 120 || curr_pain >= 200) && SPT_PROB(max(shock_buildup / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
 		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
@@ -648,8 +603,8 @@
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
-	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock
-	if(curr_pain >= PAIN_LIMB_MAX * 3 || shock_buildup >= 150 || parent.consciousness <= HARD_CRIT_THRESHOLD + 10)
+	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock or near death
+	if(curr_pain >= 200 || shock_buildup >= 150 || parent.consciousness <= HARD_CRIT_THRESHOLD + 5)
 		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 60 SECONDS)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
 			var/is_standing = parent.body_position == STANDING_UP
@@ -660,12 +615,14 @@
 					span_userdanger("You collapse, unable to stand!"),
 					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 				)
-			else
+			else if(parent.body_position == LYING_DOWN)
 				parent.visible_message(
 					span_warning("[parent] slumps against the ground!"),
 					span_userdanger("You go limp, unable to get up!"),
 					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 				)
+			else
+				to_chat(parent, span_userdanger("You can't will yourself to move!"))
 
 	else if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
 		parent.Paralyze(2 SECONDS)
@@ -676,8 +633,8 @@
 		// No decay if you're burning (because you'll be gaining pain constantly anyways)
 		return
 
-	// Decay every 5 ticks / 10 seconds, or 2 ticks / 4 seconds if "sleeping"
-	var/every_x_ticks = HAS_TRAIT(parent, TRAIT_KNOCKEDOUT) ? 2 : 5
+	// Decay every 5 ticks / 10 seconds, or 2 ticks / 4 seconds if "sleeping" / in crit
+	var/every_x_ticks = (HAS_TRAIT(parent, TRAIT_KNOCKEDOUT) || HAS_TRAIT(parent, TRAIT_SOFT_CRIT)) ? 2 : 5
 
 	natural_decay_counter++
 	if(natural_decay_counter % every_x_ticks != 0)
@@ -707,58 +664,49 @@
 	penalty += chest?.get_modified_pain() * 0.5
 	penalty += head?.get_modified_pain() * 0.5
 	penalty /= 3
-	// Then actually making it into the final value
-	penalty = floor(penalty / 5)
 	// Applying min and max
-	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += penalty
-	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += penalty * 3
+	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += floor(penalty / 3)
+	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += floor(penalty)
 
 /// Apply or remove pain various modifiers from pain (mood, action speed, movement speed) based on the [average_pain].
 /datum/pain/proc/refresh_pain_attributes(...)
 	SIGNAL_HANDLER
 
-	var/avg_pain = get_average_pain()
-
-	// Pain is halved if you can't feel pain (but ignore pain modifier for now)
-	if(avg_pain && parent.stat != DEAD && !parent.can_feel_pain(TRUE))
-		avg_pain *= 0.5
-
+	var/pain = get_total_pain()
 	// Even if you can't feel pain it still contributes to consciousness loss
-	if(avg_pain <= 10)
+	if(pain <= 25)
 		parent.remove_consciousness_modifier(PAIN)
 	else
-		parent.add_consciousness_modifier(PAIN, -5 * (avg_pain ** 0.5))
+		parent.add_consciousness_modifier(PAIN, round(-0.5 * ((pain + shock_buildup) ** 0.8)), 0.01)
+	// Modify pain by modifier or traits before messing with the modifiers
+	pain *= CAN_FEEL_PAIN(parent) ? pain_modifier : 0
 
-	// Pain is set to 0 fully if you can't feel pain OR pain modifier <= 0.5 (numbness threshold)
-	if(avg_pain && (parent.stat == DEAD || !parent.can_feel_pain(FALSE)))
-		avg_pain = 0
-
-	switch(avg_pain)
-		if(-INFINITY to 20)
+	switch(pain)
+		if(0 to 25)
 			parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
 			parent.outgoing_damage_mod = initial(parent.outgoing_damage_mod)
 			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 			parent.clear_mood_event(PAIN)
-		if(20 to 40)
+		if(25 to 75)
 			parent.mob_surgery_speed_mod = 0.9
 			parent.outgoing_damage_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
 			parent.add_mood_event(PAIN, /datum/mood_event/light_pain)
-		if(40 to 60)
+		if(75 to 125)
 			parent.mob_surgery_speed_mod = 0.75
 			parent.outgoing_damage_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
 			parent.add_mood_event(PAIN, /datum/mood_event/med_pain)
-		if(60 to 80)
+		if(125 to 175)
 			parent.mob_surgery_speed_mod = 0.6
 			parent.outgoing_damage_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
 			parent.add_mood_event(PAIN, /datum/mood_event/heavy_pain)
-		if(80 to INFINITY)
+		if(225 to INFINITY)
 			parent.mob_surgery_speed_mod = 0.5
 			parent.outgoing_damage_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
@@ -778,7 +726,7 @@
  */
 /datum/pain/proc/do_pain_emote(emote = pick(PAIN_EMOTES), cooldown = 3 SECONDS)
 	ASSERT(istext(emote))
-	if(!parent.can_feel_pain())
+	if(!CAN_FEEL_PAIN(parent))
 		return FALSE
 	if(cooldown && !COOLDOWN_FINISHED(src, time_since_last_pain_message))
 		return FALSE
@@ -801,7 +749,7 @@
  */
 /datum/pain/proc/do_pain_message(message, painless_message, cooldown = 0 SECONDS)
 	ASSERT(istext(message))
-	if(!parent.can_feel_pain())
+	if(!CAN_FEEL_PAIN(parent))
 		if(painless_message)
 			to_chat(parent, painless_message)
 		return FALSE
@@ -813,17 +761,6 @@
 	to_chat(parent, message)
 	COOLDOWN_START(src, time_since_last_pain_message, cooldown)
 	return TRUE
-
-/// Get the average pain of all bodyparts as a percent of the total (soft) pain.
-/datum/pain/proc/get_average_pain()
-	var/max_total_pain = 0
-	var/total_pain = 0
-	for(var/zone in body_zones)
-		var/obj/item/bodypart/adjusted_bodypart = body_zones[zone]
-		total_pain += adjusted_bodypart.pain
-		max_total_pain += adjusted_bodypart.soft_max_pain
-
-	return round(100 * total_pain / max_total_pain, 0.01)
 
 /// Get the total pain of all bodyparts.
 /datum/pain/proc/get_total_pain()
@@ -842,11 +779,10 @@
 	if(!length(phrase))
 		return
 
-	var/num_repeats = get_average_pain() * pain_modifier
-	if(HAS_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS) && shock_buildup < 90)
+	var/num_repeats = floor(((get_total_pain() / 75) + (shock_buildup / 75)) * pain_modifier)
+	if(!CAN_FEEL_PAIN(parent) && shock_buildup < 90)
 		num_repeats *= 0.5
 
-	num_repeats = floor(num_repeats / 20)
 	if(num_repeats <= 1)
 		return
 	var/static/regex/no_stammer = regex(@@[ ""''()[\]{}.!?,:;_`~-]@)
@@ -912,12 +848,12 @@
 /// Used to get the effect of pain on the parent's heart rate.
 /datum/pain/proc/get_heartrate_modifier()
 	var/base_amount = 0
-	switch(get_average_pain()) // pain raises it a bit
-		if(25 to 50)
+	switch(get_total_pain()) // pain raises it a bit
+		if(25 to 100)
 			base_amount += 5
-		if(50 to 75)
+		if(100 to 175)
 			base_amount += 10
-		if(75 to INFINITY)
+		if(175 to INFINITY)
 			base_amount += 15
 
 	switch(pain_modifier) // numbness lowers it a bit
@@ -953,24 +889,24 @@
 	var/amount_text = ""
 	var/shock_text = ""
 
-	switch(get_average_pain())
-		if(5 to 15)
+	switch(get_total_pain())
+		if(10 to 50)
 			amount = "minor"
 			tip += "Pain should subside in time."
-		if(15 to 30)
+		if(50 to 100)
 			amount = "moderate"
 			tip += "Pain should subside in time and can be quickened with rest or painkilling medication."
-		if(30 to 50)
+		if(100 to 150)
 			amount = "major"
 			tip += "Treat wounds and abate pain with rest, cryogenics, and painkilling medication."
-		if(50 to 80)
+		if(150 to 200)
 			amount = span_bold("severe")
-			if(!in_shock)
+			if(!in_shock && shock_buildup > 20)
 				shock_text = span_bold("Alert: Potential of neurogenic shock")
 			tip += "Treat wounds and abate pain with long rest, cryogenics, and moderate painkilling medication."
-		if(80 to INFINITY)
+		if(200 to INFINITY)
 			amount = span_bold("extreme")
-			if(!in_shock)
+			if(!in_shock && shock_buildup > 20)
 				shock_text = span_bold("Alert: High potential of neurogenic shock")
 			tip += "Treat wounds and abate pain with long rest, cryogenics, and heavy painkilling medication."
 
@@ -1017,13 +953,13 @@
 
 	var/list/final_print = list()
 	final_print += "<div class='examine_block'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
-	final_print += "[parent] has an average pain of [get_average_pain()] and a total pain of [get_total_pain()]."
+	final_print += "[parent] has a total pain of [get_total_pain()]."
 	final_print += "[parent] has a pain modifier of [pain_modifier]."
 	final_print += " - - - - "
-	final_print += "[parent] bodypart printout: (min / current / soft max)"
+	final_print += "[parent] bodypart printout: (min / current)"
 	for(var/part in body_zones)
 		var/obj/item/bodypart/checked_bodypart = body_zones[part]
-		final_print += "[checked_bodypart.name]: [checked_bodypart.min_pain] / [checked_bodypart.pain] / [checked_bodypart.soft_max_pain]"
+		final_print += "[checked_bodypart.name]: [checked_bodypart.min_pain] / [checked_bodypart.pain]"
 
 	final_print += " - - - - "
 	final_print += "[parent] pain modifier printout:"

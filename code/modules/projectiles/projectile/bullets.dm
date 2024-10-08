@@ -47,7 +47,7 @@
 /datum/embed_data/bullet/proc/embed_msg(mob/living/carbon/victim, obj/item/bodypart/limb, obj/item/weapon, harmful = TRUE)
 	if(QDELETED(victim) || QDELETED(limb) || QDELETED(weapon) || limb.owner != victim || victim.stat == DEAD)
 		return
-	to_chat(victim, span_userdanger("You feel a [(victim.can_feel_pain() && harmful) ? "sharp pain" : "dull force"] as [victim.is_blind() ? "something" : weapon] [harmful ? "embeds" : "sticks"] itself in your [limb.plaintext_zone]!"))
+	to_chat(victim, span_userdanger("You feel a [(CAN_FEEL_PAIN(victim) && harmful) ? "sharp pain" : "dull force"] as [victim.is_blind() ? "something" : weapon] [harmful ? "embeds" : "sticks"] itself in your [limb.plaintext_zone]!"))
 
 /datum/embed_data/bullet/pellet
 	blood_loss = 0.01

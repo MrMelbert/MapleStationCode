@@ -644,7 +644,7 @@
 	else if(!skip_breath && !IS_ROBOTIC_ORGAN(src))
 		if(!failed)
 			// Lungs are poppin
-			if(damage >= 40 && damage <= 50 && breather.can_feel_pain())
+			if(damage >= 40 && damage <= 50 && CAN_FEEL_PAIN(breather))
 				to_chat(breather, span_userdanger("You feel a stabbing pain in your chest!"))
 			else if(num_moles < 0.02)
 				to_chat(breather, span_boldwarning("You feel air rapidly exiting your lungs!"))

@@ -93,7 +93,7 @@
 		final_brute_heal += (burn_heal - target_burn)
 
 	var/starting_health = victim.health
-	var/starting_pain = victim.pain_controller?.get_average_pain()
+	var/starting_pain = victim.pain_controller?.get_total_pain()
 
 	victim.adjustBruteLoss(-1 * final_brute_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
 	victim.adjustFireLoss(-1 * final_burn_heal, updating_health = FALSE, forced = TRUE, required_bodytype = BODYTYPE_ORGANIC)
@@ -102,7 +102,7 @@
 	victim.cause_pain(BODY_ZONES_ALL, -1 * pain_heal)
 	victim.updatehealth()
 
-	if(victim.health == starting_health && victim.pain_controller?.get_average_pain() == starting_pain)
+	if(victim.health == starting_health && victim.pain_controller?.get_total_pain() == starting_pain)
 		return FALSE
 
 	new /obj/effect/temp_visual/heal(victim.loc, LIGHT_COLOR_HOLY_MAGIC)

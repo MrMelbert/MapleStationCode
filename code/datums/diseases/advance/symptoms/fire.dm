@@ -60,7 +60,7 @@
 			if(living_mob.on_fire) //check to make sure they actually caught on fire, or if it was prevented cause they were wet.
 				living_mob.visible_message(span_warning("[living_mob] catches fire!"), ignored_mobs = living_mob)
 				to_chat(living_mob, span_userdanger((advanced_stage ? "Your skin erupts into an inferno!" : "Your skin bursts into flames!")))
-				if(living_mob.can_feel_pain())
+				if(CAN_FEEL_PAIN(living_mob))
 					living_mob.emote("scream")
 				else
 					living_mob.pain_emote("scream", 5 SECONDS)

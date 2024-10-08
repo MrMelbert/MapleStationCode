@@ -44,7 +44,7 @@
 		return
 
 	var/mob/living/M = A.affected_mob
-	if(!M.can_feel_pain())
+	if(!CAN_FEEL_PAIN(M))
 		return
 
 	if(power < 2)

@@ -142,7 +142,7 @@
 	if(prob(180 * (1 - get_splint_power())))
 		return NONE
 
-	var/painless = !victim.can_feel_pain() || victim.has_status_effect(/datum/status_effect/determined)
+	var/painless = !CAN_FEEL_PAIN(victim)
 	// And you have a 70% or 50% chance to actually land the blow, respectively
 	if(prob(70 - 20 * (severity - 1)))
 		to_chat(victim, span_userdanger("The fracture in your [limb.plaintext_zone] [painless ? "jostles uncomfortably" : "shoots with pain"] as you strike [target]!"))
@@ -178,7 +178,7 @@
 	if(footstep_counter >= 8)
 		footstep_counter = 1
 
-	if(get_splint_power() <= 0.75 || !victim.can_feel_pain())
+	if(get_splint_power() <= 0.75 || !CAN_FEEL_PAIN(victim))
 		return
 	if(limb.body_zone == SELECT_LEFT_OR_RIGHT(footstep_counter, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 		return
@@ -203,7 +203,7 @@
 
 	if(limb.body_zone != BODY_ZONE_CHEST)
 		return NONE
-	if(!victim.can_feel_pain() || get_splint_power() <= 0.75)
+	if(!CAN_FEEL_PAIN(victim) || get_splint_power() <= 0.75)
 		return NONE
 	var/pain_prob = min(75, 20 * severity * (victim.body_position == LYING_DOWN ? 1.5 : 1))
 	if(!prob(pain_prob))

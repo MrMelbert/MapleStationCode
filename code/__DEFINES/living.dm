@@ -36,10 +36,11 @@
 /// Amount of pain gained (to chest) from surgically removed limb
 #define PAIN_LIMB_REMOVED 30
 
-/// Soft max pains for bodyparts, adds up to 500
-#define PAIN_LIMB_MAX 70
-#define PAIN_CHEST_MAX 120
-#define PAIN_HEAD_MAX 100
+/// Cap on shock level
+#define MAX_SHOCK 200
+
+/// Checks if a mob can feel pain.
+#define CAN_FEEL_PAIN(mob) (mob && !HAS_TRAIT(mob, TRAIT_NO_PAIN_EFFECTS))
 
 // Keys for pain modifiers
 #define PAIN_MOD_CHEMS "chems"
