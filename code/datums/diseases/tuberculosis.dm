@@ -66,6 +66,6 @@
 				affected_mob.adjust_nutrition(-100)
 			if(SPT_PROB(7.5, seconds_per_tick))
 				to_chat(affected_mob, span_danger("[pick("You feel uncomfortably hot...", "You feel like unzipping your jumpsuit...", "You feel like taking off some clothes...")]"))
-				affected_mob.adjust_bodytemperature(40)
+				affected_mob.adjust_body_temperature(3 KELVIN * seconds_per_tick, max_temp = affected_mob.bodytemp_heat_damage_limit + 10 KELVIN)
 			if(need_mob_update)
 				affected_mob.updatehealth()

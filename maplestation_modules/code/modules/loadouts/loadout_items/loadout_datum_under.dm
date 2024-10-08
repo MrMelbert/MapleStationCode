@@ -386,6 +386,10 @@
 	item_path = /obj/item/clothing/under/jumpsuit/greyshirt
 	additional_displayed_text = list("Character Item")
 
+/datum/loadout_item/under/formal/countess
+	name = "Countess Dress"
+	item_path = /obj/item/clothing/under/dress/countess
+
 /datum/loadout_item/under/jumpsuit/pilot
 	name = "Berbier Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/lini
@@ -394,4 +398,9 @@
 /datum/loadout_item/under/jumpsuit/jessie_turtleneck
 	name = "Holointegrated Turtleneck"
 	item_path = /obj/item/clothing/under/rank/rnd/research_director/jessie_turtleneck
+	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/belli
+	name = "Modified Nun Uniform"
+	item_path = /obj/item/clothing/under/jumpsuit/belli
 	additional_displayed_text = list("Character Item")

@@ -44,9 +44,9 @@
 		var/hc = pipe_air.heat_capacity()
 		var/mob/living/heat_source = buckled_mobs[1]
 		//Best guess-estimate of the total bodytemperature of all the mobs, since they share the same environment it's ~ok~ to guess like this
-		var/avg_temp = (pipe_air.temperature * hc + (heat_source.bodytemperature * buckled_mobs.len) * 3500) / (hc + (buckled_mobs ? buckled_mobs.len * 3500 : 0))
+		var/avg_temp = (pipe_air.temperature * hc + (heat_source.body_temperature * buckled_mobs.len) * 3500) / (hc + (buckled_mobs ? buckled_mobs.len * 3500 : 0))
 		for(var/mob/living/buckled_mob as anything in buckled_mobs)
-			buckled_mob.bodytemperature = avg_temp
+			buckled_mob.adjust_body_temperature(avg_temp - heat_source.body_temperature)
 		pipe_air.temperature = avg_temp
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/process(seconds_per_tick)

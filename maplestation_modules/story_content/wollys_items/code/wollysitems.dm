@@ -92,7 +92,6 @@ since some of them are two per character or singleton, i'm gonna save space and 
 	worn_icon = 'maplestation_modules/story_content/wollys_items/icons/mob/clothing/suit.dmi'
 	blood_overlay_type = "armor"
 	body_parts_covered = CHEST|GROIN|ARMS
-	cold_protection = CHEST|GROIN|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	alternate_worn_layer = (BACK_LAYER - 0.1) // renders above back items, but below hair.
 

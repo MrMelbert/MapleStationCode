@@ -69,6 +69,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_oldstriped"
 
+/datum/sprite_accessory/hair/oldmanyaoithesequel
+	name = "Crawling Chaos"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_nyarl"
+
 /datum/sprite_accessory/hair/fruity
 	name = "Fruity"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
@@ -106,20 +111,221 @@
 	icon_state = "hair_gloomy_longer"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/24005
+/datum/sprite_accessory/hair/bobcut_over_eye_1
+	name = "Bobcut over eye 1"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bobcut_over_eye_1"
+
+/datum/sprite_accessory/hair/bobcut_over_eye_2
+	name = "Bobcut over eye 2"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bobcut_over_eye_2"
+
+/datum/sprite_accessory/hair/bobcut_over_eye_3
+	name = "Bobcut over eye 3"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bobcut_over_eye_3"
+
+/datum/sprite_accessory/hair/bonnie
+	name = "Bonnie"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bonnie"
+
+/datum/sprite_accessory/hair/bonnie_short
+	name = "Bonnie short"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bonnie_short"
+
+/datum/sprite_accessory/hair/bonnie_long
+	name = "Bonnie long"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bonnie_long"
+
+/datum/sprite_accessory/hair/bonnie_2
+	name = "Bonnie 2"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bonnie_2"
+
+/datum/sprite_accessory/hair/bonnie_2_long
+	name = "Bonnie long 2"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bonnie_2_long"
+
+/datum/sprite_accessory/hair/bonie_2_short
+	name = "Bonnie short 2"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_bonnie_2_short"
+
+/datum/sprite_accessory/hair/dawn
+	name = "Dawn"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_dawn"
+
 /datum/sprite_accessory/hair/fluffy
-	name = "Fluffy (Short)"
+	name = "Fluffy"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_fluffy"
 
 /datum/sprite_accessory/hair/fluffy_long
-	name = "Fluffy (Long)"
+	name = "Fluffy long"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_fluffy_long"
+
+/datum/sprite_accessory/hair/khmuro
+	name = "Khmuro"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_khmuro"
+
+/datum/sprite_accessory/hair/kobeni_1
+	name = "Kobeni 1"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_kobeni_1"
+
+/datum/sprite_accessory/hair/kobeni_2
+	name = "Kobeni 2"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_kobeni_2"
+
+/datum/sprite_accessory/hair/low_bun
+	name = "Low bun"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_low_bun"
+
+/datum/sprite_accessory/hair/low_ponytail
+	name = "Low ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_low_ponytail"
+
+/datum/sprite_accessory/hair/morning
+	name = "Morning"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_morning"
+
+/datum/sprite_accessory/hair/over_ear_1
+	name = "Over ear 1"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_over_ear_1"
+
+/datum/sprite_accessory/hair/over_ear_2
+	name = "Over ear 2"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_over_ear_2"
+
+/datum/sprite_accessory/hair/over_eye
+	name = "Over eye"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_over_eye"
+
+/datum/sprite_accessory/hair/ponytail
+	name = "Fluffy ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_ponytail"
+
+/datum/sprite_accessory/hair/ponytail_short
+	name = "Short fluffy ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_ponytail_short"
+
+/datum/sprite_accessory/hair/simple
+	name = "Simple"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_simple"
+
+/datum/sprite_accessory/hair/simple_long
+	name = "Simple long"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_simple_long"
+
+/datum/sprite_accessory/hair/simple_short
+	name = "Simple short"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_simple_short"
+
+/datum/sprite_accessory/hair/strict
+	name = "Strict"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_strict"
+
+/datum/sprite_accessory/hair/strict_long
+	name = "Strict long"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_strict_long"
+
+/datum/sprite_accessory/hair/strict_short
+	name = "Strict short"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_strict_short"
+
+/datum/sprite_accessory/hair/thin_ponytail
+	name = "Thin ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_thin_ponytail"
+
+/datum/sprite_accessory/hair/thin_ponytail_long
+	name = "Long thin ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_thin_ponytail_long"
+
+/datum/sprite_accessory/hair/twintails_2
+	name = "Twintails 2"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_twintails_2"
+
+/datum/sprite_accessory/hair/twintails_2_long
+	name = "Long twintails"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_twintails_2_long"
+
+/datum/sprite_accessory/hair/twintails_2_short
+	name = "Short twintails"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_twintails_2_short"
+
+/datum/sprite_accessory/hair/upwards
+	name = "Upwards"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_upwards"
+
+// https://github.com/Skyrat-SS13/Skyrat-tg/pull/2037
+/datum/sprite_accessory/hair/loose_slicked
+	name = "Loose Slicked"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_loose_slicked"
+
+/datum/sprite_accessory/hair/diagonal_bangs
+	name = "Diagonal Bangs"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_diagonal_bangs"
 
 /datum/sprite_accessory/hair/improper_director
 	name = "Improper Director"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_impdirector"
+
+/datum/sprite_accessory/hair/graced_drills
+	name = "Graced Drills"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_graceddrill"
+
+/datum/sprite_accessory/hair/himepaper3
+	name = "Princely Hime Cut (Long)"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_princely_2"
+
+/datum/sprite_accessory/hair/thick_ponytail
+	name = "Thick Ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_thicktail"
+
+/datum/sprite_accessory/hair/aysm_point
+	name = "Asymmetrical Points"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_asympoint"
+
+/datum/sprite_accessory/hair/long_braid
+	name = "Long Braid"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_longbraid"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big

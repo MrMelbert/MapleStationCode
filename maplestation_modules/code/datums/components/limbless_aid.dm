@@ -41,6 +41,7 @@
 	SIGNAL_HANDLER
 
 	if(!(slot & required_slot))
+		lose_support(user)
 		return
 
 	add_support(user)
@@ -67,31 +68,33 @@
 	user.update_limbless_locomotion()
 	user.update_limbless_movespeed_mod()
 
+#define IS_RIGHT_ARM(index) (index % 2 == 0)
+
 /datum/component/limbless_aid/proc/modify_movespeed(mob/living/source, list/modifiers)
 	SIGNAL_HANDLER
 
-	var/obj/item/bodypart/leg = get_braced_leg(source)
+	var/obj/item/bodypart/leg
+	if(required_slot & ITEM_SLOT_HANDS)
+		// this is not backwards intentionally:
+		// if you're missing the left leg, you need the left leg braced
+		var/side = IS_RIGHT_ARM(source.get_held_index_of_item(parent)) ? BODY_ZONE_R_LEG : BODY_ZONE_L_LEG
+		leg = source.get_bodypart(side)
+
 	if(isnull(leg) || leg.bodypart_disabled)
 		modifiers += movespeed_mod
 
 /datum/component/limbless_aid/proc/limp_check(mob/living/source, obj/item/bodypart/next_leg)
 	SIGNAL_HANDLER
 
-	var/obj/item/bodypart/leg = get_braced_leg(source)
-	if(isnull(leg) || leg == next_leg)
-		return COMPONENT_CANCEL_LIMP
-
-#define IS_RIGHT_ARM(index) (index % 2 == 0)
-
-/// Checks what side the item is equipped on
-/datum/component/limbless_aid/proc/get_braced_leg(mob/living/who)
+	var/obj/item/bodypart/leg
 	if(required_slot & ITEM_SLOT_HANDS)
 		// note this is backwards intentionally:
-		// right arm braces the left leg, and left arm braces right leg
-		var/side = IS_RIGHT_ARM(who.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
-		return who.get_bodypart(side)
+		// you use your right arm to brace your left leg, and vice versa
+		var/side = IS_RIGHT_ARM(source.get_held_index_of_item(parent)) ? BODY_ZONE_L_LEG : BODY_ZONE_R_LEG
+		leg = source.get_bodypart(side)
 
-	return null // unimplemented
+	if(isnull(leg) || leg == next_leg)
+		return COMPONENT_CANCEL_LIMP
 
 #undef IS_RIGHT_ARM
 
