@@ -78,7 +78,7 @@
 	if((flags & CALTROP_IGNORE_WALKERS) && digitigrade_fan.move_intent == MOVE_INTENT_WALK)
 		return
 
-	if(digitigrade_fan.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) //check if they are able to pass over us
+	if((digitigrade_fan.movement_type & MOVETYPES_NOT_TOUCHING_GROUND) || !QDELETED(digitigrade_fan.throwing)) //check if they are able to pass over us
 		//gravity checking only our parent would prevent us from triggering they're using magboots / other gravity assisting items that would cause them to still touch us.
 		return
 

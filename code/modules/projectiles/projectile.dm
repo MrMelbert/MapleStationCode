@@ -293,23 +293,20 @@
 		hitx = target.pixel_x + rand(-8, 8)
 		hity = target.pixel_y + rand(-8, 8)
 
-	if(damage > 0 && (damage_type == BRUTE || damage_type == BURN) && iswallturf(target_turf) && prob(75))
-		var/turf/closed/wall/target_wall = target_turf
-		if(impact_effect_type && !hitscan)
-			new impact_effect_type(target_wall, hitx, hity)
-
-		target_wall.add_dent(WALL_DENT_SHOT, hitx, hity)
-
-		return BULLET_ACT_HIT
+	if((isturf(target) || (isobj(target) && target.density)) && hitsound_wall)
+		var/volume = clamp(vol_by_damage() + 20, 0, 100)
+		if(suppressed)
+			volume = 5
+		playsound(loc, hitsound_wall, volume, TRUE, -1)
 
 	if(!isliving(target))
 		if(impact_effect_type && !hitscan)
 			new impact_effect_type(target_turf, hitx, hity)
-		if(isturf(target) && hitsound_wall)
-			var/volume = clamp(vol_by_damage() + 20, 0, 100)
-			if(suppressed)
-				volume = 5
-			playsound(loc, hitsound_wall, volume, TRUE, -1)
+
+		if(damage > 0 && (damage_type == BRUTE || damage_type == BURN) && iswallturf(target_turf) && prob(75))
+			var/turf/closed/wall/target_wall = target_turf
+			target_wall.add_dent(WALL_DENT_SHOT, hitx, hity)
+
 		return BULLET_ACT_HIT
 
 	var/mob/living/living_target = target
@@ -344,9 +341,7 @@
 			playsound(loc, hitsound, 5, TRUE, -1)
 			to_chat(living_target, span_userdanger("You're shot by \a [src][organ_hit_text]!"))
 		else
-			if(hitsound)
-				var/volume = vol_by_damage()
-				playsound(src, hitsound, volume, TRUE, -1)
+			playsound(loc, hitsound, vol_by_damage(), TRUE, -1)
 			living_target.visible_message(span_danger("[living_target] is hit by \a [src][organ_hit_text]!"), \
 					span_userdanger("You're hit by \a [src][organ_hit_text]!"), null, COMBAT_MESSAGE_RANGE)
 			if(living_target.is_blind())
@@ -596,7 +591,8 @@
 		var/mob/target_mob = target
 		if(faction_check(target_mob.faction, ignored_factions))
 			return FALSE
-	if(target.density || cross_failed) //This thing blocks projectiles, hit it regardless of layer/mob stuns/etc.
+	// melbert todo upstream this. stops grilles from being hit under windows
+	if((target.density && !target.IsObscured()) || cross_failed) //This thing blocks projectiles, hit it regardless of layer/mob stuns/etc.
 		return TRUE
 	if(!isliving(target))
 		if(isturf(target)) // non dense turfs
