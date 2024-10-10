@@ -241,3 +241,4 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_SEATBELT_UNBUCKLE "unbuckle"
 #define SFX_VISOR_UP "visor_up"
 #define SFX_VISOR_DOWN "visor_down"
+#define SFX_PLATE_ARMOR_RUSTLE "plate_armor_rustle"
