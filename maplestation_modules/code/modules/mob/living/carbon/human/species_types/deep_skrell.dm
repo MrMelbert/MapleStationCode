@@ -33,9 +33,6 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	mutantliver = /obj/item/organ/internal/liver/skrell
 	mutantstomach = /obj/item/organ/internal/stomach/skrell
 	mutantears = /obj/item/organ/internal/ears/skrell
-	external_organs = /obj/item/organ/external/back/deep_skrell
-	mutant_bodyparts = /obj/item/organ/external/back/deep_skrell
-	mutant_organs = /obj/item/organ/external/back/deep_skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -85,9 +82,14 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 
 	return perks
 
-/datum/species/deep_skrell/prepare_human_for_preview(mob/living/carbon/human/human)
-	human.dna.features["mcolor"] = COLOR_GRAY
-	human.update_body(is_creating = TRUE)
+/datum/species/deep_skrell/prepare_human_for_preview(mob/living/carbon/human/human_for_preview)
+	human_for_preview.dna.features["mcolor"] = COLOR_GRAY
+	human_for_preview.update_body(is_creating = TRUE)
+
+/datum/species/human/prepare_human_for_preview(mob/living/carbon/human/human_for_preview)
+	human_for_preview.set_haircolor("#242424ff", update = FALSE) // grey
+	human_for_preview.set_hairstyle("Business Hair", update = TRUE)
+
 
 // Preset deep_skrell species
 /mob/living/carbon/human/species/deep_skrell
@@ -106,9 +108,9 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	feature_key = "head_tentacles"
 
 /datum/bodypart_overlay/mutant/head_tentacles/can_draw_on_bodypart(mob/living/carbon/human/human)
-	if(istype(human.head) && (human.head.flags_inv & HIDEHAIR))
+	if(istype(human.head) && (human.head.flags_inv))
 		return FALSE
-	if(istype(human.wear_mask) && (human.wear_mask.flags_inv & HIDEHAIR))
+	if(istype(human.wear_mask) && (human.wear_mask.flags_inv))
 		return FALSE
 	var/obj/item/bodypart/head/our_head = human.get_bodypart(BODY_ZONE_HEAD)
 	if(!IS_ORGANIC_LIMB(our_head))
@@ -230,20 +232,6 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	slot = ORGAN_SLOT_EYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 
-#define WINGS_SPECIAL_TENTACLES 2
-
-
-/obj/item/organ/external/back/deep_skrell
-
-	name = "Deep Skrellian back tentacles"
-	desc = "The back tentacles of a Deep Skrell. They're able to hold items like a backpack!"
-	icon_state = "back_tentacles"
-	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
-	visual = TRUE
-	zone = BODY_ZONE_CHEST
-	slot = ORGAN_SLOT_EXTERNAL_SPINES
-	var/obj/item/back_tentacles
-
 /datum/species/deep_skrell/on_species_gain(mob/living/carbon/new_deep_skrell, datum/species/old_species, pref_load)
 	. = ..()
 	var/obj/item/storage/backpack/bag = new_deep_skrell.get_item_by_slot(ITEM_SLOT_BACK)
@@ -260,12 +248,12 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 		former_deep_skrell.temporarilyRemoveItemFromInventory(bag, TRUE)
 		qdel(bag)
 
-
 /obj/item/storage/back_tentacles
 	name = "Back tentacles"
 	desc = "Your back tentacles! You're able to hold items with them!"
 	icon_state = "back_tentacles"
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	///worn_icon = 'maplestation_modules/icons/mob/deep_skrell.dmi'
 	resistance_flags = INDESTRUCTIBLE | ACID_PROOF | FIRE_PROOF | LAVA_PROOF | UNACIDABLE
 	item_flags = ABSTRACT | DROPDEL
 	w_class = WEIGHT_CLASS_BULKY
