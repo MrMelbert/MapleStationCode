@@ -76,9 +76,7 @@
 		return
 
 	var/base_roll = rand(1, round(damage ** WOUND_DAMAGE_EXPONENT))
-	var/injury_roll = base_roll
-	injury_roll += check_woundings_mods(woundtype, damage, wound_bonus, bare_wound_bonus)
-	var/list/series_wounding_mods = check_series_wounding_mods()
+	var/injury_roll = base_roll + check_woundings_mods(woundtype, damage, wound_bonus, bare_wound_bonus)
 
 	// checks outright dismemberment
 	if(injury_roll > WOUND_DISMEMBER_OUTRIGHT_THRESH && prob(get_damage() / max_damage * 100) && can_dismember())
@@ -86,20 +84,47 @@
 		dismembering.apply_dismember(src, woundtype, TRUE, attack_direction)
 		return
 
-	var/list/datum/wound/possible_wounds = list()
+	var/list/datum/wound/possible_wounds = get_possible_wounds(injury_roll, woundtype, damage, attack_direction, damage_source)
+
+	while (TRUE)
+		var/datum/wound/possible_wound = pick_weight(possible_wounds)
+		if (isnull(possible_wound))
+			break
+
+		possible_wounds -= possible_wound
+		var/datum/wound_pregen_data/possible_pregen_data = GLOB.all_wound_pregen_data[possible_wound]
+
+		var/datum/wound/replaced_wound
+		for(var/datum/wound/existing_wound as anything in wounds)
+			var/datum/wound_pregen_data/existing_pregen_data = GLOB.all_wound_pregen_data[existing_wound.type]
+			if(existing_pregen_data.wound_series != possible_pregen_data.wound_series)
+				continue
+			if(existing_wound.severity >= initial(possible_wound.severity))
+				continue
+			replaced_wound = existing_wound
+			// if we get through this whole loop without continuing, we found our winner
+
+		var/datum/wound/new_wound = new possible_wound
+		if(replaced_wound)
+			new_wound = replaced_wound.replace_wound(new_wound, attack_direction = attack_direction)
+		else
+			new_wound.apply_wound(src, attack_direction = attack_direction, wound_source = damage_source)
+		log_wound(owner, new_wound, damage, wound_bonus, bare_wound_bonus, base_roll) // dismembering wounds are logged in the apply_wound() for loss wounds since they delete themselves immediately, these will be immediately returned
+		return new_wound
+
+/obj/item/bodypart/proc/get_possible_wounds(injury_roll, woundtype, damage, attack_direction, damage_source)
+	RETURN_TYPE(/list)
+
+	var/list/series_wounding_mods = list()
+	for (var/datum/wound/iterated_wound as anything in wounds)
+		var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[iterated_wound.type]
+		series_wounding_mods[pregen_data.wound_series] += iterated_wound.series_threshold_penalty
+
+	var/list/possible_wounds = list()
 	for (var/datum/wound/type as anything in GLOB.all_wound_pregen_data)
 		var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[type]
 		if (pregen_data.can_be_applied_to(src, list(woundtype), random_roll = TRUE))
 			possible_wounds[type] = pregen_data.get_weight(src, woundtype, damage, attack_direction, damage_source)
-	// quick re-check to see if bare_wound_bonus applies, for the benefit of log_wound(), see about getting the check from check_woundings_mods() somehow
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_wearer = owner
-		var/list/clothing = human_wearer.get_clothing_on_part(src)
-		for(var/obj/item/clothing/clothes_check as anything in clothing)
-			// unlike normal armor checks, we tabluate these piece-by-piece manually so we can also pass on appropriate damage the clothing's limbs if necessary
-			if(clothes_check.get_armor_rating(WOUND))
-				bare_wound_bonus = 0
-				break
 
 	for (var/datum/wound/iterated_path as anything in possible_wounds)
 		for (var/datum/wound/existing_wound as anything in wounds)
@@ -128,32 +153,7 @@
 					if (initial(iterated_path.severity) < initial(other_path.severity))
 						possible_wounds -= other_path
 						continue
-
-	while (TRUE)
-		var/datum/wound/possible_wound = pick_weight(possible_wounds)
-		if (isnull(possible_wound))
-			break
-
-		possible_wounds -= possible_wound
-		var/datum/wound_pregen_data/possible_pregen_data = GLOB.all_wound_pregen_data[possible_wound]
-
-		var/datum/wound/replaced_wound
-		for(var/datum/wound/existing_wound as anything in wounds)
-			var/datum/wound_pregen_data/existing_pregen_data = GLOB.all_wound_pregen_data[existing_wound.type]
-			if(existing_pregen_data.wound_series == possible_pregen_data.wound_series)
-				if(existing_wound.severity >= initial(possible_wound.severity))
-					continue
-				else
-					replaced_wound = existing_wound
-			// if we get through this whole loop without continuing, we found our winner
-
-		var/datum/wound/new_wound = new possible_wound
-		if(replaced_wound)
-			new_wound = replaced_wound.replace_wound(new_wound, attack_direction = attack_direction)
-		else
-			new_wound.apply_wound(src, attack_direction = attack_direction, wound_source = damage_source)
-		log_wound(owner, new_wound, damage, wound_bonus, bare_wound_bonus, base_roll) // dismembering wounds are logged in the apply_wound() for loss wounds since they delete themselves immediately, these will be immediately returned
-		return new_wound
+	return possible_wounds
 
 // try forcing a specific wound, but only if there isn't already a wound of that severity or greater for that type on this bodypart
 /obj/item/bodypart/proc/force_wound_upwards(datum/wound/potential_wound, smited = FALSE, wound_source)
@@ -252,10 +252,9 @@
 	var/armor_ablation = 0
 	var/injury_mod = 0
 
-	if(owner && ishuman(owner))
+	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
-		var/list/clothing = human_owner.get_clothing_on_part(src)
-		for(var/obj/item/clothing/clothes as anything in clothing)
+		for(var/obj/item/clothing/clothes as anything in human_owner.get_clothing_on_part(src))
 			// unlike normal armor checks, we tabluate these piece-by-piece manually so we can also pass on appropriate damage the clothing's limbs if necessary
 			armor_ablation += clothes.get_armor_rating(WOUND)
 			if(wounding_type == WOUND_SLASH)
@@ -279,19 +278,6 @@
 	injury_mod += part_mod
 
 	return injury_mod
-
-/// Should return an assoc list of (wound_series -> penalty). Will be used in determining series-specific penalties for wounding.
-/obj/item/bodypart/proc/check_series_wounding_mods()
-	RETURN_TYPE(/list)
-
-	var/list/series_mods = list()
-
-	for (var/datum/wound/iterated_wound as anything in wounds)
-		var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[iterated_wound.type]
-
-		series_mods[pregen_data.wound_series] += iterated_wound.series_threshold_penalty
-
-	return series_mods
 
 /// Get whatever wound of the given type is currently attached to this limb, if any
 /obj/item/bodypart/proc/get_wound_type(checking_type)
