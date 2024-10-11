@@ -1,6 +1,6 @@
 // -- Modular deep skrell species --
 /// GLOB list of head tentacle sprites / options
-GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
+GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 
 // The datum for deep_skrell.
 /datum/species/deep_skrell
@@ -33,9 +33,9 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	mutantliver = /obj/item/organ/internal/liver/skrell
 	mutantstomach = /obj/item/organ/internal/stomach/skrell
 	mutantears = /obj/item/organ/internal/ears/skrell
-	external_organs = list(
-		/obj/item/organ/external/back/deep_skrell = "Tentacles"
-	)
+	external_organs = /obj/item/organ/external/back/deep_skrell
+	mutant_bodyparts = /obj/item/organ/external/back/deep_skrell
+	mutant_organs = /obj/item/organ/external/back/deep_skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -244,15 +244,22 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	slot = ORGAN_SLOT_EXTERNAL_SPINES
 	var/obj/item/back_tentacles
 
-obj/item/organ/external/back/deep_skrell/Initialize(...)
+/datum/species/deep_skrell/on_species_gain(mob/living/carbon/new_deep_skrell, datum/species/old_species, pref_load)
 	. = ..()
-	back_tentacles = new /obj/item/storage/back_tentacles
+	var/obj/item/storage/backpack/bag = new_deep_skrell.get_item_by_slot(ITEM_SLOT_BACK)
+	if(!istype(bag, /obj/item/storage/back_tentacles))
+		if(new_deep_skrell.dropItemToGround(bag)) //returns TRUE even if its null
+			new_deep_skrell.equip_to_slot_or_del(new /obj/item/storage/back_tentacles(new_deep_skrell), ITEM_SLOT_BACK)
+/// i stole snail code
 
-/obj/item/organ/external/back/deep_skrell/on_mob_insert(mob/living/carbon/human_owner, special)
+/datum/species/deep_skrell/on_species_loss(mob/living/carbon/former_deep_skrell, datum/species/new_species, pref_load)
 	. = ..()
-	if(special != WINGS_SPECIAL_TENTACLES)
-		var/back = new /obj/item/storage/back_tentacles
-		human_owner.equip_to_appropriate_slot(back)
+	var/obj/item/storage/backpack/bag = former_deep_skrell.get_item_by_slot(ITEM_SLOT_BACK)
+	if(istype(bag, /obj/item/storage/back_tentacles))
+		bag.emptyStorage()
+		former_deep_skrell.temporarilyRemoveItemFromInventory(bag, TRUE)
+		qdel(bag)
+
 
 /obj/item/storage/back_tentacles
 	name = "Back tentacles"
