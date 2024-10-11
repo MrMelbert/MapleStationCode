@@ -32,7 +32,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	mutantheart = /obj/item/organ/internal/heart/skrell
 	mutantliver = /obj/item/organ/internal/liver/skrell
 	mutantstomach = /obj/item/organ/internal/stomach/skrell
-	mutantears = obj/item/organ/internal/ears/skrell
+	mutantears = /obj/item/organ/internal/ears/skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -141,6 +141,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	limb_id = SPECIES_HIGH_SKRELL
 	brute_modifier = 1.5
 	burn_modifier = 0.8
+	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 

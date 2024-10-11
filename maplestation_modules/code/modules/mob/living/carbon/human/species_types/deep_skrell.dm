@@ -32,7 +32,8 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	mutantheart = /obj/item/organ/internal/heart/skrell
 	mutantliver = /obj/item/organ/internal/liver/skrell
 	mutantstomach = /obj/item/organ/internal/stomach/skrell
-	mutantears = obj/item/organ/internal/ears/skrell
+	mutantears = /obj/item/organ/internal/ears/skrell
+	external_organs = /obj/item/organ/external/wings/deep_skrell
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -115,6 +116,15 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 /datum/bodypart_overlay/mutant/head_tentacles/get_global_feature_list()
 	return GLOB.head_tentacles_list
 
+/datum/species/human/deep_skrell/handle_chemical(datum/reagent/chem, mob/living/carbon/human/affected, seconds_per_tick, times_fired)
+	. = ..()
+	if(. & COMSIG_MOB_STOP_REAGENT_CHECK)
+		return
+	if(istype(chem, /datum/reagent/toxin/carpotoxin))
+		var/datum/reagent/toxin/carpotoxin/fish = chem
+		fish.toxpwr = 0
+
+
 /obj/item/bodypart/arm/left/skrell
 	limb_id = SPECIES_DEEP_SKRELL
 	brute_modifier = 0.8
@@ -141,6 +151,7 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	limb_id = SPECIES_DEEP_SKRELL
 	brute_modifier = 0.8
 	burn_modifier = 1.5
+	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 
@@ -214,3 +225,38 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	slot = ORGAN_SLOT_EYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
 	tint = 1
+
+#define WINGS_SPECIAL_TENTACLES 2
+
+
+/obj/item/organ/external/wings/deep_skrell
+
+	name = "Deep Skrellian back tentacles"
+	desc = "The back tentacles of a Deep Skrell. They're able to hold items like a backpack!"
+	icon_state = "back_tentacles"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	visual = TRUE
+	zone = BODY_ZONE_CHEST
+	slot = ORGAN_SLOT_EXTERNAL_WINGS
+	var/obj/item/back_tentacles
+
+/obj/item/organ/external/back/deep_skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
+	. = ..()
+	if(special != WINGS_SPECIAL_TENTACLES)
+		var/back = new /obj/item/storage/back_tentacles
+		organ_owner.put_in_hands(back)
+
+/obj/item/storage/back_tentacles
+	name = "Back tentacles"
+	desc = "Your back tentacles! You're able to hold items with them!"
+	icon_state = "back_tentacles"
+	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	resistance_flags = INDESTRUCTIBLE | ACID_PROOF | FIRE_PROOF | LAVA_PROOF | UNACIDABLE
+	item_flags = ABSTRACT | DROPDEL
+	w_class = WEIGHT_CLASS_BULKY
+	slot_flags = ITEM_SLOT_BACK
+	storage_type = /datum/storage/backpack
+
+/obj/item/storage/back_tentacles/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_NODROP, TRAIT_BACKPACK_REPLACEMENT)
