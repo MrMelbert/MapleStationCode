@@ -33,7 +33,9 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	mutantliver = /obj/item/organ/internal/liver/skrell
 	mutantstomach = /obj/item/organ/internal/stomach/skrell
 	mutantears = /obj/item/organ/internal/ears/skrell
-	external_organs = /obj/item/organ/external/wings/deep_skrell
+	external_organs = list(
+		/obj/item/organ/external/back/deep_skrell = "Tentacles"
+	)
 
 /datum/species/skrell/get_species_speech_sounds(sound_type)
 	switch(sound_type)
@@ -177,6 +179,9 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 /obj/item/organ/internal/eyes/deep_skrell
 	desc = "Gooey."
 	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
+	zone = BODY_ZONE_PRECISE_EYES
+	slot = ORGAN_SLOT_EYES
+	flash_protect = FLASH_PROTECTION_SENSITIVE
 
 /obj/item/organ/internal/brain/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
 	.=..()
@@ -224,12 +229,11 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	zone = BODY_ZONE_PRECISE_EYES
 	slot = ORGAN_SLOT_EYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
-	tint = 1
 
 #define WINGS_SPECIAL_TENTACLES 2
 
 
-/obj/item/organ/external/wings/deep_skrell
+/obj/item/organ/external/back/deep_skrell
 
 	name = "Deep Skrellian back tentacles"
 	desc = "The back tentacles of a Deep Skrell. They're able to hold items like a backpack!"
@@ -237,14 +241,18 @@ GLOBAL_LIST_EMPTY(deep_skrell_head_tentacles_list)
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
 	visual = TRUE
 	zone = BODY_ZONE_CHEST
-	slot = ORGAN_SLOT_EXTERNAL_WINGS
+	slot = ORGAN_SLOT_EXTERNAL_SPINES
 	var/obj/item/back_tentacles
 
-/obj/item/organ/external/back/deep_skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
+obj/item/organ/external/back/deep_skrell/Initialize(...)
+	. = ..()
+	back_tentacles = new /obj/item/storage/back_tentacles
+
+/obj/item/organ/external/back/deep_skrell/on_mob_insert(mob/living/carbon/human_owner, special)
 	. = ..()
 	if(special != WINGS_SPECIAL_TENTACLES)
 		var/back = new /obj/item/storage/back_tentacles
-		organ_owner.put_in_hands(back)
+		human_owner.equip_to_appropriate_slot(back)
 
 /obj/item/storage/back_tentacles
 	name = "Back tentacles"
