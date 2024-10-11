@@ -5,7 +5,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 // The datum for high_skrell.
 /datum/species/high_skrell
 	name = "High Skrell"
-	plural_form = "High Skrellian"
+	plural_form = "High Skrells"
 	id = SPECIES_HIGH_SKRELL
 	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_SNOB)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
