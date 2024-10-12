@@ -1038,6 +1038,26 @@
 	if(use_random_name)
 		fully_replace_character_name(real_name, generate_random_mob_name())
 
+/mob/living/carbon/human/proc/is_atmos_sealed(additional_flags = null, check_hands = FALSE, ignore_chest_pressureprot = FALSE)
+	var/chest_covered = FALSE
+	var/head_covered = FALSE
+	var/hands_covered = FALSE
+	for (var/obj/item/clothing/equipped in get_equipped_items())
+		// We don't really have space-proof gloves, so even if we're checking them we ignore the flags
+		if ((equipped.body_parts_covered & HANDS) && num_hands >= default_num_hands)
+			hands_covered = TRUE
+		if (!isnull(additional_flags) && !(equipped.clothing_flags & additional_flags))
+			continue
+		if ((ignore_chest_pressureprot || (equipped.clothing_flags & STOPSPRESSUREDAMAGE)) && (equipped.body_parts_covered & CHEST))
+			chest_covered = TRUE
+		if ((equipped.clothing_flags & STOPSPRESSUREDAMAGE) && (equipped.body_parts_covered & HEAD))
+			head_covered = TRUE
+	if (!chest_covered)
+		return FALSE
+	if (!hands_covered && check_hands)
+		return FALSE
+	return head_covered || HAS_TRAIT(src, TRAIT_HEAD_ATMOS_SEALED)
+
 /mob/living/carbon/human/species/abductor
 	race = /datum/species/abductor
 
