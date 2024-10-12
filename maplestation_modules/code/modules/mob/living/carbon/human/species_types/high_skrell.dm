@@ -244,7 +244,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	desc = "The psionic brain of a Skrell."
 	icon_state = "brain2"
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
-	visual = FALSE
+	visual = TRUE
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_BRAIN
 

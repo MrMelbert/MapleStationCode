@@ -227,10 +227,12 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	desc = "The four large eyes of a Deep Skrell."
 	icon_state = "eyes_deep"
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	eye_icon_state = "deep_eyes"
 	visual = TRUE
 	zone = BODY_ZONE_PRECISE_EYES
 	slot = ORGAN_SLOT_EYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
+	tint = 1
 
 /datum/species/deep_skrell/on_species_gain(mob/living/carbon/new_deep_skrell, datum/species/old_species, pref_load)
 	. = ..()
