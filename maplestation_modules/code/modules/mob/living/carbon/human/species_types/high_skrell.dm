@@ -262,6 +262,8 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	desc = "The large eyes of a High Skrell."
 	icon_state = "eyes_high"
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
+	eye_icon_state = "high_eyes"
 	zone = BODY_ZONE_PRECISE_EYES
 	slot = ORGAN_SLOT_EYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE

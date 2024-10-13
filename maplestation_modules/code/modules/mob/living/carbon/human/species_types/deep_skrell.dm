@@ -178,12 +178,6 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 
-/obj/item/organ/internal/eyes/deep_skrell
-	desc = "Gooey."
-	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
-	zone = BODY_ZONE_PRECISE_EYES
-	slot = ORGAN_SLOT_EYES
-	flash_protect = FLASH_PROTECTION_SENSITIVE
 
 /obj/item/organ/internal/brain/Skrell/on_mob_insert(mob/living/carbon/organ_owner, special)
 	.=..()
@@ -227,6 +221,7 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	desc = "The four large eyes of a Deep Skrell."
 	icon_state = "eyes_deep"
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
+	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
 	eye_icon_state = "deep_eyes"
 	visual = TRUE
 	zone = BODY_ZONE_PRECISE_EYES
