@@ -236,3 +236,5 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_CLOTH_RIP "cloth_rip"
 #define SFX_SEATBELT_BUCKLE "buckle"
 #define SFX_SEATBELT_UNBUCKLE "unbuckle"
+#define SFX_VISOR_UP "visor_up"
+#define SFX_VISOR_DOWN "visor_down"

@@ -548,4 +548,15 @@
 				'sound/machines/buckle/unbuckle2.ogg',
 				'sound/machines/buckle/unbuckle3.ogg',
 			)
+		if(SFX_VISOR_DOWN)
+			soundin = pick(
+				'sound/items/handling/helmet/visor_down1.ogg',
+				'sound/items/handling/helmet/visor_down2.ogg',
+				'sound/items/handling/helmet/visor_down3.ogg',
+			)
+		if(SFX_VISOR_UP)
+			soundin = pick(
+				'sound/items/handling/helmet/visor_up1.ogg',
+				'sound/items/handling/helmet/visor_up2.ogg',
+			)
 	return soundin
