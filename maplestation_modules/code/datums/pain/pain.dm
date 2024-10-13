@@ -677,7 +677,7 @@
 	if(pain <= 25)
 		parent.remove_consciousness_modifier(PAIN)
 	else
-		parent.add_consciousness_modifier(PAIN, round(-0.5 * ((pain + shock_buildup) ** 0.8)), 0.01)
+		parent.add_consciousness_modifier(PAIN, round(-0.5 * (max(pain + shock_buildup, 0) ** 0.8)), 0.01)
 	// Modify pain by modifier or traits before messing with the modifiers
 	pain *= CAN_FEEL_PAIN(parent) ? pain_modifier : 0
 
