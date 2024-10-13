@@ -199,7 +199,7 @@
 
 /datum/reagent/toxin/lexorin/proc/block_breath(mob/living/source)
 	SIGNAL_HANDLER
-	return COMSIG_CARBON_BLOCK_BREATH
+	return BREATHE_BLOCK_BREATH
 
 /datum/reagent/toxin/slimejelly
 	name = "Slime Jelly"
@@ -642,6 +642,15 @@
 	ph = 2.0
 	inverse_chem = /datum/reagent/impurity/methanol
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/toxin/formaldehyde/on_mob_add(mob/living/affected_mob, amount)
+	. = ..()
+	if(amount > 1)
+		ADD_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
+
+/datum/reagent/toxin/formaldehyde/on_mob_delete(mob/living/affected_mob, amount)
+	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
 
 /datum/reagent/toxin/formaldehyde/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	var/obj/item/organ/internal/liver/liver = affected_mob.get_organ_slot(ORGAN_SLOT_LIVER)
@@ -1328,7 +1337,7 @@
 			if(SPT_PROB(5, seconds_per_tick))
 				var/obj/item/organ/internal/tongue/tongue = affected_mob.get_organ_slot(ORGAN_SLOT_TONGUE)
 				if(tongue)
-					to_chat(affected_mob, span_warning("your [tongue.name] feels numb..."))
+					to_chat(affected_mob, span_warning("Your tongue feels numb..."))
 				affected_mob.set_slurring_if_lower(5 SECONDS * REM * seconds_per_tick)
 			affected_mob.adjust_disgust(3.5 * REM * seconds_per_tick)
 		if(13 to 21)
@@ -1357,7 +1366,7 @@
 			affected_mob.adjust_disgust(3 * REM * seconds_per_tick)
 			affected_mob.set_slurring_if_lower(3 SECONDS * REM * seconds_per_tick)
 			if(SPT_PROB(5, seconds_per_tick))
-				to_chat(affected_mob, span_danger("you feel horribly weak."))
+				to_chat(affected_mob, span_danger("You feel horribly weak!"))
 			need_mob_update += affected_mob.adjustStaminaLoss(5 * REM * seconds_per_tick, updating_stamina = FALSE)
 			if(SPT_PROB(8, seconds_per_tick))
 				paralyze_limb(affected_mob)
@@ -1366,7 +1375,7 @@
 				affected_mob.adjust_confusion(rand(6 SECONDS, 8 SECONDS))
 		if(29 to INFINITY)
 			toxpwr = 1.5
-			need_mob_update = affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1, BRAIN_DAMAGE_DEATH)
+			need_mob_update = affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1)
 			affected_mob.set_silence_if_lower(3 SECONDS * REM * seconds_per_tick)
 			need_mob_update += affected_mob.adjustStaminaLoss(5 * REM * seconds_per_tick, updating_stamina = FALSE)
 			affected_mob.adjust_disgust(2 * REM * seconds_per_tick)
@@ -1410,4 +1419,4 @@
 /datum/reagent/toxin/tetrodotoxin/proc/block_breath(mob/living/source)
 	SIGNAL_HANDLER
 	if(current_cycle > 28)
-		return COMSIG_CARBON_BLOCK_BREATH
+		return BREATHE_SKIP_BREATH

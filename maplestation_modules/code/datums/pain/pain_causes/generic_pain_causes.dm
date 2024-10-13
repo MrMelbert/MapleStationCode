@@ -18,16 +18,7 @@
 	. = ..()
 	if(iscarbon(owner) && !owner.on_fire)
 		var/mob/living/carbon/carbon_owner = owner
-		carbon_owner.cause_pain(BODY_ZONES_ALL, -1.5)
-
-// Regen cores.
-/datum/status_effect/regenerative_core/on_apply()
-	. = ..()
-	var/mob/living/carbon/human/human_owner = owner
-	if(istype(human_owner) && human_owner.pain_controller)
-		human_owner.cause_pain(BODY_ZONES_LIMBS, -15)
-		human_owner.cause_pain(BODY_ZONE_CHEST, -20)
-		human_owner.cause_pain(BODY_ZONE_HEAD, -10) // heals 90 pain total
+		carbon_owner.cause_pain(BODY_ZONES_ALL, -3)
 
 // Flight potion's flavor says "it hurts a shit ton bro", so it should cause decent pain
 /datum/reagent/flightpotion/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message = TRUE)
@@ -45,11 +36,3 @@
 			exposed_carbon.cause_pain(BODY_ZONE_HEAD, 16)
 			exposed_carbon.cause_pain(BODY_ZONE_CHEST, 75)
 			exposed_carbon.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 30)
-
-/datum/wound/blunt/bone/moderate/chiropractice(mob/living/carbon/human/user)
-	. = ..()
-	user.cause_pain(limb.body_zone, 25)
-
-/datum/wound/blunt/bone/moderate/malpractice(mob/living/carbon/human/user)
-	. = ..()
-	user.cause_pain(limb.body_zone, 40)

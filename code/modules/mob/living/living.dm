@@ -542,7 +542,7 @@
 			to_chat(src, text="You are unable to succumb to death! This life continues.", type=MESSAGE_TYPE_INFO)
 			return
 	log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", LOG_ATTACK)
-	adjustOxyLoss(health - HEALTH_THRESHOLD_DEAD)
+	setOxyLoss(MAX_OXYLOSS(maxHealth))
 	updatehealth()
 	if(!whispered)
 		to_chat(src, span_notice("You have given up life and succumbed to death."))
@@ -808,10 +808,8 @@
 		return
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss())
 	update_stat()
-	med_hud_set_health()
-	med_hud_set_status()
-	update_health_hud()
 	update_stamina()
+	SShealth_updates.queue_update(src, UPDATE_SELF_HEALTH|UPDATE_MEDHUD_HEALTH)
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /mob/living/update_health_hud()
@@ -868,13 +866,14 @@
 		adjustToxLoss(-excess_healing, updating_health = FALSE, forced = TRUE) //slime friendly
 		updatehealth()
 
+	REMOVE_TRAIT(src, TRAIT_DISSECTED, AUTOPSY_TRAIT)
 	grab_ghost(force_grab_ghost)
 	if(full_heal_flags)
 		fully_heal(full_heal_flags)
 
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
 		set_suicide(FALSE)
-		set_stat(UNCONSCIOUS) //the mob starts unconscious,
+		set_stat(HARD_CRIT) //the mob starts unconscious,
 		updatehealth() //then we check if the mob should wake up.
 		if(full_heal_flags & HEAL_ADMIN)
 			get_up(TRUE)
@@ -958,6 +957,7 @@
 		setBruteLoss(0, updating_health = FALSE, forced = TRUE)
 	if(heal_flags & HEAL_BURN)
 		setFireLoss(0, updating_health = FALSE, forced = TRUE)
+		cure_husk()
 	if(heal_flags & HEAL_STAM)
 		setStaminaLoss(0, updating_stamina = FALSE, forced = TRUE)
 
@@ -968,8 +968,6 @@
 		set_disgust(0)
 	if(heal_flags & (HEAL_STATUS|HEAL_OXY)) // NON-MODULE CHANGE
 		losebreath = 0
-
-	cure_husk()
 
 	if(heal_flags & HEAL_TEMP)
 		body_temperature = standard_body_temperature
@@ -983,6 +981,7 @@
 		REMOVE_TRAIT(src, TRAIT_SUICIDED, REF(src))
 
 	updatehealth()
+	SShealth_updates.queue_update(src, ALL)
 	stop_sound_channel(CHANNEL_HEARTBEAT)
 	SEND_SIGNAL(src, COMSIG_LIVING_POST_FULLY_HEAL, heal_flags)
 
@@ -1008,9 +1007,7 @@
 /// Checks if we are actually able to ressuscitate this mob.
 /// (We don't want to revive then to have them instantly die again)
 /mob/living/proc/can_be_revived()
-	if(health <= HEALTH_THRESHOLD_DEAD)
-		return FALSE
-	return TRUE
+	return health > -maxHealth
 
 /mob/living/proc/update_damage_overlays()
 	return
@@ -1421,9 +1418,6 @@
 	return TRUE
 
 /mob/living/proc/update_stamina()
-	return
-
-/mob/living/carbon/alien/update_stamina()
 	return
 
 /mob/living/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, force, gentle = FALSE, quickstart = TRUE)
@@ -2166,55 +2160,54 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 /mob/living/set_stat(new_stat)
 	. = ..()
-	if(isnull(.))
+	if(isnull(.) || . == stat)
 		return
 
-	// NON-MODULE CHANGE for eyelids
-	if(. <= UNCONSCIOUS || new_stat >= UNCONSCIOUS)
-		update_body()
+	// All the traits associated with any of a mob's stat
+	// Adding anny traits below should also be done in here
+	var/list/removed_traits = list(
+		TRAIT_FLOORED,
+		TRAIT_HANDS_BLOCKED,
+		TRAIT_IMMOBILIZED,
+		TRAIT_INCAPACITATED,
+		TRAIT_KNOCKEDOUT,
+		TRAIT_NO_PAIN_EFFECTS,
+	)
+	// All the traits associated with the mob's current stat
+	var/list/added_traits = list()
 
-	switch(.) //Previous stat.
-		if(CONSCIOUS)
-			if(stat >= UNCONSCIOUS)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			add_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_INCAPACITATED, TRAIT_FLOORED), STAT_TRAIT)
-		if(SOFT_CRIT)
-			if(stat >= UNCONSCIOUS)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT) //adding trait sources should come before removing to avoid unnecessary updates
-		if(UNCONSCIOUS)
-			if(stat != HARD_CRIT)
-				cure_blind(UNCONSCIOUS_TRAIT)
-		if(HARD_CRIT)
-			if(stat != UNCONSCIOUS)
-				cure_blind(UNCONSCIOUS_TRAIT)
-		if(DEAD)
-			remove_from_dead_mob_list()
-			add_to_alive_mob_list()
 	switch(stat) //Current stat.
 		if(CONSCIOUS)
-			if(. >= UNCONSCIOUS)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			remove_traits(list(TRAIT_HANDS_BLOCKED, TRAIT_INCAPACITATED, TRAIT_FLOORED, TRAIT_CRITICAL_CONDITION), STAT_TRAIT)
+			pass()
+
 		if(SOFT_CRIT)
-			if(. >= UNCONSCIOUS)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
-			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-		if(UNCONSCIOUS)
-			if(. != HARD_CRIT)
-				become_blind(UNCONSCIOUS_TRAIT)
-			if(health <= crit_threshold && !HAS_TRAIT(src, TRAIT_NOSOFTCRIT))
-				ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
-			else
-				REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			pass()
+
 		if(HARD_CRIT)
-			if(. != UNCONSCIOUS)
-				become_blind(UNCONSCIOUS_TRAIT)
-			ADD_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			added_traits.Add(
+				TRAIT_FLOORED,
+				TRAIT_HANDS_BLOCKED,
+				TRAIT_IMMOBILIZED,
+				TRAIT_INCAPACITATED,
+				TRAIT_KNOCKEDOUT,
+			)
+
 		if(DEAD)
-			REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
+			added_traits.Add(
+				TRAIT_FLOORED,
+				TRAIT_HANDS_BLOCKED,
+				TRAIT_IMMOBILIZED,
+				TRAIT_INCAPACITATED,
+				TRAIT_KNOCKEDOUT,
+				TRAIT_NO_PAIN_EFFECTS,
+			)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
 
+	add_traits(added_traits, STAT_TRAIT)
+	remove_traits(removed_traits - added_traits, STAT_TRAIT)
+	SShealth_updates.queue_update(src, UPDATE_SELF)
+	med_hud_set_status() // skip the queue, we want this to happen immediately and this proc isn't hot anyways
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
