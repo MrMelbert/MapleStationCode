@@ -11,7 +11,6 @@
 	righthand_file = 'icons/mob/inhands/weapons/chainsaw_righthand.dmi'
 	obj_flags = CONDUCTS_ELECTRICITY
 	force = 13
-	var/force_on = 24
 	w_class = WEIGHT_CLASS_HUGE
 	throwforce = 13
 	throw_speed = 2
@@ -25,23 +24,15 @@
 	actions_types = list(/datum/action/item_action/startchainsaw)
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1.5 //Turn it on first you dork
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 5, /datum/material/alloy/plasteel =  SHEET_MATERIAL_AMOUNT * 5, /datum/material/glass =  SHEET_MATERIAL_AMOUNT * 3)
 	drop_sound = 'maplestation_modules/sound/items/drop/metal_drop.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
-	var/on = FALSE
-	///The looping sound for our chainsaw when running
+
+	var/force_on = 24
+	/// The looping sound for our chainsaw when running
 	var/datum/looping_sound/chainsaw/chainsaw_loop
-
-/obj/item/chainsaw/apply_fantasy_bonuses(bonus)
-	. = ..()
-	force_on = modify_fantasy_variable("force_on", force_on, bonus)
-	if(on)
-		force = force_on
-
-/obj/item/chainsaw/remove_fantasy_bonuses(bonus)
-	force_on = reset_fantasy_variable("force_on", force_on)
-	if(on)
-		force = force_on
-	return ..()
+	/// How long it takes to behead someone with this chainsaw.
+	var/behead_time = 15 SECONDS
 
 /obj/item/chainsaw/Initialize(mapload)
 	. = ..()
@@ -104,33 +95,58 @@
 		return BRUTELOSS
 
 	user.visible_message(span_suicide("[user] begins to tear [user.p_their()] head off with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	playsound(src, 'sound/weapons/chainsawhit.ogg', 100, TRUE)
 	var/obj/item/bodypart/head/myhead = user.get_bodypart(BODY_ZONE_HEAD)
-	if(myhead)
-		myhead.dismember()
+	if(!myhead)
+		visible_message(span_suicide("[user] realises that [user.p_they()] cannot cut off [user.p_their()] head because [user.p_they()] don't have one!"))
+		return SHAME
+
+	playsound(src, 'sound/weapons/chainsawhit.ogg', 100, TRUE)
+	if(myhead.dismember())
+		return BRUTELOSS
+
+	var/datum/wound/slash/crit_wound = new ()
+	crit_wound.apply_wound(myhead)
+	visible_message(span_suicide("[user] tries in vain to cut off [user.p_their()] head but perishes in the attempt!"))
 	return BRUTELOSS
 
-// /obj/item/chainsaw/doomslayer/attack(mob/living/target_mob, mob/living/user, params)
-// 	if (target_mob.stat != DEAD)
-// 		return ..()
+/obj/item/chainsaw/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
+	if (target_mob.stat != DEAD)
+		return ..()
 
-// 	if (user.zone_selected != BODY_ZONE_HEAD)
-// 		return ..()
+	if (user.zone_selected != BODY_ZONE_HEAD)
+		return ..()
 
-// 	var/obj/item/bodypart/head = target_mob.get_bodypart(BODY_ZONE_HEAD)
-// 	if (isnull(head))
-// 		return ..()
+	var/obj/item/bodypart/head = target_mob.get_bodypart(BODY_ZONE_HEAD)
+	if (!head?.can_dismember())
+		return ..()
 
-// 	playsound(user, 'sound/weapons/slice.ogg', vol = 80, vary = TRUE)
+	playsound(user, 'sound/weapons/slice.ogg', vol = 80, vary = TRUE)
 
-// 	target_mob.balloon_alert(user, "cutting off head...")
-// 	if (!do_after(user, 2 SECONDS, target_mob, extra_checks = CALLBACK(src, PROC_REF(has_same_head), target_mob, head)))
-// 		return TRUE
+	target_mob.balloon_alert(user, "cutting off head...")
+	if (!do_after(user, behead_time, target_mob, extra_checks = CALLBACK(src, PROC_REF(has_same_head), target_mob, head)))
+		return TRUE
 
-// 	head.dismember(silent = FALSE)
-// 	user.put_in_hands(head)
+	if (head.dismember(silent = FALSE))
+		user.put_in_hands(head)
 
-// 	return TRUE
+	return TRUE
+
+/obj/item/chainsaw/proc/has_same_head(mob/living/target_mob, obj/item/bodypart/head)
+	return target_mob.get_bodypart(BODY_ZONE_HEAD) == head
+
+/**
+ * Handles adding components to the chainsaw. Added in Initialize()
+ *
+ * Applies components to the chainsaw. Added as a separate proc to allow for
+ * variance between subtypes
+ */
+
+/obj/item/chainsaw/doomslayer
+	name = "THE GREAT COMMUNICATOR"
+	desc = span_warning("VRRRRRRR!!!")
+	armour_penetration = 100
+	force_on = 30
+	behead_time = 2 SECONDS
 
 /obj/item/chainsaw/doomslayer/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK, damage_type = BRUTE)
 	if(attack_type == PROJECTILE_ATTACK)
