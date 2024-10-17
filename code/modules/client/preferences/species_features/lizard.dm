@@ -98,7 +98,7 @@
 	relevant_mutant_bodypart = "legs"
 
 /datum/preference/choiced/lizard_legs/init_possible_values()
-	return assoc_to_keys_features(GLOB.legs_list)
+	return list("Normal Legs", DIGITIGRADE_LEGS)
 
 /datum/preference/choiced/lizard_legs/apply_to_human(mob/living/carbon/human/target, value)
 	target.dna.features["legs"] = value
