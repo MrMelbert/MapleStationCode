@@ -6,8 +6,8 @@
 	name = "Beastly liver"
 	desc = "A large monstrous liver."
 	icon_state = "liver"
-	organ_traits = list(TRAIT_STABLELIVER) // TODO, since i've removed organ_unremovable: add trait checks to add some malus/autoconvert livers when inside a werewolf, and a malus/remove the buffs when this liver is in a non-werewolf
-	///Var for brute healing via blood
+	organ_flags = ORGAN_UNREMOVABLE
+	organ_traits = list(TRAIT_STABLELIVER)
 	var/blood_brute_healing = 2.5
 	///Var for burn healing via blood
 	var/blood_burn_healing = 2.5
