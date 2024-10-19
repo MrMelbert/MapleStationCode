@@ -118,8 +118,6 @@
 	blood_overlay_type = "coat"
 	body_parts_covered = CHEST|GROIN|ARMS
 	armor_type = /datum/armor/jacket_det_suit
-	cold_protection = CHEST|GROIN|ARMS
-	heat_protection = CHEST|GROIN|ARMS
 
 /datum/armor/jacket_det_suit
 	melee = 25
@@ -348,8 +346,6 @@
 		/obj/item/tank/internals,
 	)
 	armor_type = /datum/armor/jacket_curator
-	cold_protection = CHEST|ARMS
-	heat_protection = CHEST|ARMS
 
 /datum/armor/jacket_curator
 	melee = 25

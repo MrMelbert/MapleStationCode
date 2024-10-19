@@ -21,19 +21,13 @@
 	color = "#DB90C6"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
-/datum/reagent/medicine/leporazine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+/datum/reagent/medicine/leporazine/on_mob_metabolize(mob/living/carbon/user)
 	. = ..()
-	var/target_temp = affected_mob.get_body_temp_normal(apply_change = FALSE)
-	if(affected_mob.bodytemperature > target_temp)
-		affected_mob.adjust_bodytemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, target_temp)
-	else if(affected_mob.bodytemperature < (target_temp + 1))
-		affected_mob.adjust_bodytemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 0, target_temp)
-	if(ishuman(affected_mob))
-		var/mob/living/carbon/human/affected_human = affected_mob
-		if(affected_human.coretemperature > target_temp)
-			affected_human.adjust_coretemperature(-40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, target_temp)
-		else if(affected_human.coretemperature < (target_temp + 1))
-			affected_human.adjust_coretemperature(40 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 0, target_temp)
+	user.add_homeostasis_level(type, user.standard_body_temperature, 1 KELVIN)
+
+/datum/reagent/medicine/leporazine/on_mob_end_metabolize(mob/living/carbon/user)
+	. = ..()
+	user.remove_homeostasis_level(type)
 
 /datum/reagent/medicine/adminordrazine //An OP chemical for admins
 	name = "Adminordrazine"
@@ -139,7 +133,8 @@
 
 /datum/reagent/medicine/cryoxadone
 	name = "Cryoxadone"
-	description = "A chemical mixture with almost magical healing powers. Its main limitation is that the patient's body temperature must be under 270K for it to metabolise correctly."
+	description = "A chemical mixture with almost magical healing powers. \
+		Its main limitation is that the patient's body temperature must be under 270K / -3.15C for it to metabolise correctly."
 	color = "#0000C8"
 	taste_description = "blue"
 	ph = 11
@@ -149,17 +144,18 @@
 
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	metabolization_rate = REAGENTS_METABOLISM * (0.00001 * (affected_mob.bodytemperature ** 2) + 0.5)
-	if(affected_mob.bodytemperature >= T0C || !HAS_TRAIT(affected_mob, TRAIT_KNOCKEDOUT))
+	metabolization_rate = round(REAGENTS_METABOLISM + (0.0002 * (affected_mob.body_temperature ** 1.5)), CHEMICAL_VOLUME_ROUNDING)
+	if(!HAS_TRAIT(affected_mob, TRAIT_KNOCKEDOUT))
 		return
-	var/power = -0.00003 * (affected_mob.bodytemperature ** 2) + 3
-	var/need_mob_update
-	need_mob_update = affected_mob.adjustOxyLoss(-3 * power * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype, required_respiration_type = affected_respiration_type)
+	var/power = round(3 + (-0.00066 * (affected_mob.body_temperature ** 1.5)), DAMAGE_PRECISION)
+	if(power <= 0)
+		return
+	var/need_mob_update = FALSE
+	need_mob_update += affected_mob.adjustOxyLoss(3 * -power * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype, required_respiration_type = affected_respiration_type)
 	need_mob_update += affected_mob.adjustBruteLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 	need_mob_update += affected_mob.adjustFireLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 	need_mob_update += affected_mob.adjustToxLoss(-power * REM * seconds_per_tick, updating_health = FALSE, forced = TRUE, required_biotype = affected_biotype) //heals TOXINLOVERs
-	for(var/i in affected_mob.all_wounds)
-		var/datum/wound/iter_wound = i
+	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.on_xadone(power * REM * seconds_per_tick)
 	REMOVE_TRAIT(affected_mob, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
 	if(need_mob_update)
@@ -180,15 +176,15 @@
 
 /datum/reagent/medicine/pyroxadone/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
-		var/power = 0
-		switch(affected_mob.bodytemperature)
-			if(BODYTEMP_HEAT_DAMAGE_LIMIT to 400)
-				power = 2
-			if(400 to 460)
-				power = 3
-			else
-				power = 5
+	if(affected_mob.body_temperature > affected_mob.bodytemp_heat_damage_limit || affected_mob.on_fire)
+		var/power = 1
+		var/delta = affected_mob.bodytemp_heat_damage_limit - affected_mob.standard_body_temperature
+		if(affected_mob.body_temperature < affected_mob.bodytemp_heat_damage_limit + delta * 0.5)
+			power = 2
+		else if (affected_mob.body_temperature < affected_mob.bodytemp_heat_damage_limit + delta * 1.5)
+			power = 3
+		else
+			power = 4
 		if(affected_mob.on_fire)
 			power *= 2
 

@@ -461,7 +461,7 @@ Behavior that's still missing from this component that original food items had t
 		stack_trace("[eater] failed to bite [owner], because [owner] had no reagents.")
 		return FALSE
 	if(eater.satiety > -200)
-		eater.satiety -= junkiness
+		eater.adjust_satiety(-junkiness)
 	playsound(eater.loc,'sound/items/eatfood.ogg', rand(10,50), TRUE)
 	if(!owner.reagents.total_volume)
 		return

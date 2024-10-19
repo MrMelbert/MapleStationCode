@@ -108,6 +108,7 @@
 /datum/loadout_item/shoes/mrashoes
 	name = "Malheur Research Association boots"
 	item_path = /obj/item/clothing/shoes/mrashoes
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/shoes/reshiaboot
 	name = "Short Brown Boots"
@@ -120,3 +121,4 @@
 /datum/loadout_item/shoes/lini
 	name = "Berbier Boots"
 	item_path = /obj/item/clothing/shoes/liniboots
+	additional_displayed_text = list("Character Item")

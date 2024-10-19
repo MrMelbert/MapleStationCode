@@ -890,18 +890,6 @@
 	set hidden = TRUE
 	set category = null
 	return
-/**
- * Topic call back for any mob
- *
- * * Unset machines if "mach_close" sent
- * * refresh the inventory of machines in range if "refresh" sent
- * * handles the strip panel equip and unequip as well if "item" sent
- */
-/mob/Topic(href, href_list)
-	if(href_list["mach_close"])
-		var/t1 = "window=[href_list["mach_close"]]"
-		unset_machine()
-		src << browse(null, t1)
 
 /**
  * Controls if a mouse drop succeeds (return null if it doesnt)
@@ -1126,22 +1114,19 @@
 
 ///Call back post buckle to a mob to offset your visual height
 /mob/post_buckle_mob(mob/living/M)
-	var/height = M.get_mob_buckling_height(src)
-	M.pixel_y = initial(M.pixel_y) + height
 	if(M.layer <= layer) //make sure they stay above our current layer
 		M.layer = layer + 0.1
+
 ///Call back post unbuckle from a mob, (reset your visual height here)
 /mob/post_unbuckle_mob(mob/living/M)
 	M.layer = initial(M.layer)
-	M.pixel_y = initial(M.pixel_y)
+	M.update_transform()
 
 ///returns the height in pixel the mob should have when buckled to another mob.
-/mob/proc/get_mob_buckling_height(mob/seat)
-	if(isliving(seat))
-		var/mob/living/L = seat
-		if(L.mob_size <= MOB_SIZE_SMALL) //being on top of a small mob doesn't put you very high.
-			return 0
-	return 9
+/mob/proc/get_mob_buckling_height(mob/living/seat)
+	if(!isliving(seat))
+		return 6
+	return seat.mob_size * 3
 
 ///Can the mob interact() with an atom?
 /mob/proc/can_interact_with(atom/A, treat_mob_as_adjacent)
@@ -1553,6 +1538,9 @@
 /mob/living/adjust_nutrition(change, forced)
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
+
+/mob/proc/adjust_satiety(change)
+	satiety = clamp(satiety + change, -MAX_SATIETY, MAX_SATIETY)
 
 ///Force set the mob nutrition
 /mob/proc/set_nutrition(set_to, forced = FALSE) //Seriously fuck you oldcoders.

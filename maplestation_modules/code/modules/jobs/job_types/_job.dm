@@ -9,7 +9,9 @@
 // Update crew monitor with new jobs
 /datum/crewmonitor/New()
 	. = ..()
-	for(var/datum/job/jobtype as anything in SSjob.joinable_occupations)
+	for(var/datum/job/jobtype as anything in subtypesof(/datum/job))
+		if(!(initial(jobtype.job_flags) & JOB_NEW_PLAYER_JOINABLE))
+			continue
 		if(jobtype.crewmonitor_priority < 0)
 			continue
 		jobs[jobtype.title] = jobtype.crewmonitor_priority

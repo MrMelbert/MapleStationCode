@@ -278,6 +278,7 @@
 	data["bitflags"]["CHEMICAL"] = REACTION_TAG_CHEMICAL
 	data["bitflags"]["PLANT"] = REACTION_TAG_PLANT
 	data["bitflags"]["COMPETITIVE"] = REACTION_TAG_COMPETITIVE
+	data["bitflags"]["PAIN"] = REACTION_TAG_PAIN
 
 	return data
 
@@ -406,6 +407,9 @@
 			return TRUE
 		if("toggle_tag_competitive")
 			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_COMPETITIVE
+			return TRUE
+		if("toggle_tag_pain")
+			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_PAIN
 			return TRUE
 		if("update_ui")
 			return TRUE

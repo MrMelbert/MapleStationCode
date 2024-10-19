@@ -2,7 +2,7 @@
 /datum/loadout_category/accessories
 	category_name = "Accessory"
 	type_to_generate = /datum/loadout_item/accessory
-	tab_order = 11
+	tab_order = 9
 
 /datum/loadout_item/accessory
 	abstract_type = /datum/loadout_item/accessory
@@ -128,12 +128,12 @@
 /datum/loadout_item/accessory/bone_charm
 	name = "Heirloom Bone Talismin"
 	item_path = /obj/item/clothing/accessory/armorless_talisman
-	additional_displayed_text = list("No Armor")
+	additional_displayed_text = list("Cosmetic")
 
 /datum/loadout_item/accessory/bone_codpiece
 	name = "Heirloom Skull Codpiece"
 	item_path = /obj/item/clothing/accessory/armorless_skullcodpiece
-	additional_displayed_text = list("No Armor")
+	additional_displayed_text = list("Cosmetic")
 
 /datum/loadout_item/accessory/pride
 	name = "Pride Pin"

@@ -117,7 +117,7 @@
 /proc/get_updated_loadout_list(datum/preferences/preferences, list/loadout_list)
 	RETURN_TYPE(/list)
 	var/slot = preferences.read_preference(/datum/preference/numeric/active_loadout)
-	var/list/complete_loadout_list = preferences.read_preference(/datum/preference/loadout)
+	var/list/complete_loadout_list = preferences.read_preference(/datum/preference/loadout) || list()
 	while(length(complete_loadout_list) < slot)
 		complete_loadout_list += null
 

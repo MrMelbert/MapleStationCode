@@ -114,6 +114,7 @@
 	id = "fleshmend"
 	duration = 10 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/fleshmend
+	show_duration = TRUE
 
 /datum/status_effect/fleshmend/on_apply()
 	. = ..()
@@ -376,16 +377,13 @@
 	duration = 1 MINUTES
 	status_type = STATUS_EFFECT_REPLACE
 	alert_type = /atom/movable/screen/alert/status_effect/regenerative_core
+	show_duration = TRUE
 
 /datum/status_effect/regenerative_core/on_apply()
 	ADD_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, STATUS_EFFECT_TRAIT)
 	owner.adjustBruteLoss(-25)
 	owner.adjustFireLoss(-25)
-	owner.fully_heal(HEAL_CC_STATUS)
-	owner.bodytemperature = owner.get_body_temp_normal()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/humi = owner
-		humi.set_coretemperature(humi.get_body_temp_normal())
+	owner.fully_heal(HEAL_CC_STATUS|HEAL_TEMP)
 	return TRUE
 
 /datum/status_effect/regenerative_core/on_remove()
@@ -395,6 +393,7 @@
 	id = "Lightning Orb"
 	duration = 30 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/lightningorb
+	show_duration = TRUE
 
 /datum/status_effect/lightningorb/on_apply()
 	. = ..()
@@ -457,6 +456,7 @@
 	id = "speed_boost"
 	duration = 2 SECONDS
 	status_type = STATUS_EFFECT_REPLACE
+	show_duration = TRUE
 
 /datum/status_effect/speed_boost/on_creation(mob/living/new_owner, set_duration)
 	if(isnum(set_duration))
@@ -527,7 +527,7 @@
 	need_mob_update += owner.adjustStaminaLoss(-4 * seconds_between_ticks, updating_stamina = FALSE)
 	if(need_mob_update)
 		owner.updatehealth()
-	owner.adjust_bodytemperature(BODYTEMP_NORMAL, 0, BODYTEMP_NORMAL) //Won't save you from the void of space, but it will stop you from freezing or suffocating in low pressure
+	owner.adjust_body_temperature(INFINITY, max_temp = owner.standard_body_temperature) //Won't save you from the void of space, but it will stop you from freezing or suffocating in low pressure
 
 
 /atom/movable/screen/alert/status_effect/nest_sustenance

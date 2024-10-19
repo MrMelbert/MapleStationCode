@@ -717,8 +717,15 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/cigbutt/equipped(mob/user, slot, initial)
 	// Lazily initing these components because there's no need to do it for every single cigarette butt
 	AddComponent(/datum/component/knockoff, 90, list(BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_HEAD, BODY_ZONE_CHEST), slot_flags)
-	AddComponent(/datum/component/wearertargeting/knockoff_move, 1, list(slot_flags), "falls out of your mouth!")
+	AddComponent(/datum/component/wearertargeting/knockoff_move, 1, list(slot_flags), CALLBACK(src, PROC_REF(on_fall)))
 	return ..()
+
+/obj/item/cigbutt/proc/on_fall(mob/living/guy)
+	guy.visible_message(
+		span_warning("[src] falls out [guy]'s mouth."),
+		span_warning("[src] falls out of your mouth."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
 
 /obj/item/cigbutt/cigarbutt
 	name = "cigar butt"
@@ -959,12 +966,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/mob/living/carbon/human/human_user = user
 	if(!istype(human_user) || HAS_TRAIT(human_user, TRAIT_RESISTHEAT) || HAS_TRAIT(human_user, TRAIT_RESISTHEATHANDS))
 		hand_protected = TRUE
-	else if(!istype(human_user.gloves, /obj/item/clothing/gloves))
-		hand_protected = FALSE
 	else
-		var/obj/item/clothing/gloves/gloves = human_user.gloves
-		if(gloves.max_heat_protection_temperature)
-			hand_protected = (gloves.max_heat_protection_temperature > 360)
+		hand_protected = human_user.gloves?.max_heat_protection_temperature > 360
 
 	if(hand_protected || prob(75))
 		user.visible_message(

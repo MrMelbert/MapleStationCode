@@ -102,9 +102,7 @@ There are several things that need to be remembered:
 		var/icon_file
 		var/woman
 		//BEGIN SPECIES HANDLING
-		if((bodytype & BODYTYPE_MONKEY) && (uniform.supports_variations_flags & CLOTHING_MONKEY_VARIATION))
-			icon_file = MONKEY_UNIFORM_FILE
-		else if((bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
+		if((bodytype & BODYTYPE_DIGITIGRADE) && (uniform.supports_variations_flags & CLOTHING_DIGITIGRADE_VARIATION))
 			// NON-MODULE CHANGE kapu why
 			if(uniform.greyscale_config_worn && uniform.digitigrade_greyscale_config_worn && uniform.greyscale_colors)
 				icon_file = SSgreyscale.GetColoredIconByType(uniform.digitigrade_greyscale_config_worn, uniform.greyscale_colors)
@@ -526,12 +524,72 @@ There are several things that need to be remembered:
 		hands += hand_overlay
 	return hands
 
-/proc/wear_female_version(t_color, icon, layer, type, greyscale_colors)
-	var/index = "[t_color]-[greyscale_colors]"
-	var/icon/female_clothing_icon = GLOB.female_clothing_icons[index]
-	if(!female_clothing_icon) 	//Create standing/laying icons if they don't exist
-		generate_female_clothing(index, t_color, icon, type)
-	return mutable_appearance(GLOB.female_clothing_icons[index], layer = -layer)
+/// Modifies a sprite slightly to conform to female body shapes
+/proc/wear_female_version(icon_state, icon, type, greyscale_colors)
+	var/index = "[icon_state]-[greyscale_colors]"
+	var/static/list/female_clothing_icons = list()
+	var/icon/female_clothing_icon = female_clothing_icons[index]
+	if(!female_clothing_icon) //Create standing/laying icons if they don't exist
+		var/female_icon_state = "female[type == FEMALE_UNIFORM_FULL ? "_full" : ((!type || type & FEMALE_UNIFORM_TOP_ONLY) ? "_top" : "")][type & FEMALE_UNIFORM_NO_BREASTS ? "_no_breasts" : ""]"
+		var/icon/female_cropping_mask = icon('icons/mob/clothing/under/masking_helpers.dmi', female_icon_state)
+		female_clothing_icon = icon(icon, icon_state)
+		female_clothing_icon.Blend(female_cropping_mask, ICON_MULTIPLY)
+		female_clothing_icon = fcopy_rsc(female_clothing_icon)
+		female_clothing_icons[index] = female_clothing_icon
+
+	return icon(female_clothing_icon)
+
+// These coordonates point to roughly somewhere in the middle of the left leg
+// Used in approximating what color the pants of clothing should be
+#define LEG_SAMPLE_X_LOWER 13
+#define LEG_SAMPLE_X_UPPER 14
+
+#define LEG_SAMPLE_Y_LOWER 8
+#define LEG_SAMPLE_Y_UPPER 9
+
+/// Modifies a sprite to conform to digitigrade body shapes
+/proc/wear_digi_version(icon/base_icon, key, greyscale_config = /datum/greyscale_config/jumpsuit_worn_digi, greyscale_colors)
+	ASSERT(key, "wear_digi_version: no key passed")
+	ASSERT(ispath(greyscale_config, /datum/greyscale_config), "wear_digi_version: greyscale_config is not a valid path (got: [greyscale_config])")
+	// items with greyscale colors containing multiple colors are invalid
+	if(isnull(greyscale_colors) || length(SSgreyscale.ParseColorString(greyscale_colors)) > 1)
+		var/pant_color
+		// approximates the color of the pants by sampling a few pixels in the middle of the left leg
+		for(var/x in LEG_SAMPLE_X_LOWER to LEG_SAMPLE_X_UPPER)
+			for(var/y in LEG_SAMPLE_Y_LOWER to LEG_SAMPLE_Y_UPPER)
+				var/xy_color = base_icon.GetPixel(x, y)
+				pant_color = pant_color ? BlendRGB(pant_color, xy_color, 0.5) : xy_color
+
+		greyscale_colors = pant_color || "#1d1d1d" // black pants always look good
+
+	var/index = "[key]-[greyscale_config]-[greyscale_colors]"
+	var/static/list/digitigrade_clothing_icons = list()
+	var/icon/digitigrade_clothing_icon = digitigrade_clothing_icons[index]
+	if(!digitigrade_clothing_icon)
+		var/static/icon/torso_mask
+		if(!torso_mask)
+			torso_mask = icon('maplestation_modules/icons/mob/clothing/under/digi_mask.dmi', "torso_mask")
+		var/static/icon/leg_mask
+		if(!leg_mask)
+			leg_mask = icon('maplestation_modules/icons/mob/clothing/under/digi_mask.dmi', "leg_mask")
+
+		base_icon.Blend(leg_mask, ICON_SUBTRACT) // cuts the legs off
+
+		var/icon/leg_icon = SSgreyscale.GetColoredIconByType(greyscale_config, greyscale_colors)
+		leg_icon.Blend(torso_mask, ICON_SUBTRACT) // cuts the torso off
+
+		base_icon.Blend(leg_icon, ICON_OVERLAY) // puts the new legs on
+
+		digitigrade_clothing_icon = fcopy_rsc(base_icon)
+		digitigrade_clothing_icons[index] = digitigrade_clothing_icon
+
+	return icon(digitigrade_clothing_icon)
+
+#undef LEG_SAMPLE_X_LOWER
+#undef LEG_SAMPLE_X_UPPER
+
+#undef LEG_SAMPLE_Y_LOWER
+#undef LEG_SAMPLE_Y_UPPER
 
 /mob/living/carbon/human/proc/get_overlays_copy(list/unwantedLayers)
 	var/list/out = new
@@ -660,20 +718,37 @@ generate/load female uniform sprites matching all previously decided variables
 	override_file = null,
 )
 
-	// NON-MODULE CHANGE // UPSTREAM ME
 	//Find a valid icon_state from variables+arguments
 	var/t_state = override_state || (isinhands ? inhand_icon_state : worn_icon_state) || icon_state
 	//Find a valid icon file from variables+arguments
 	var/file2use = override_file || (isinhands ? null : worn_icon) || default_icon_file
 	//Find a valid layer from variables+arguments
 	var/layer2use = alternate_worn_layer || default_layer
-	// NON-MODULE CHANGE END
 
-	var/mutable_appearance/standing
+	var/mob/living/carbon/wearer = loc
+	var/is_digi = istype(wearer) && (wearer.bodytype & BODYTYPE_DIGITIGRADE) && !wearer.is_digitigrade_squished()
+
+	var/mutable_appearance/standing // this is the actual resulting MA
+	var/icon/building_icon // used to construct an icon across multiple procs before converting it to MA
 	if(female_uniform)
-		standing = wear_female_version(t_state, file2use, layer2use, female_uniform, greyscale_colors) //should layer2use be in sync with the adjusted value below? needs testing - shiz
-	if(!standing)
-		standing = mutable_appearance(file2use, t_state, -layer2use)
+		building_icon = wear_female_version(
+			icon_state = t_state,
+			icon = file2use,
+			type = female_uniform,
+			greyscale_colors = greyscale_colors,
+		)
+	if(!isinhands && is_digi && (supports_variations_flags & CLOTHING_DIGITIGRADE_MASK))
+		building_icon = wear_digi_version(
+			base_icon = building_icon || icon(file2use, t_state),
+			key = "[t_state]-[file2use]-[female_uniform]",
+			greyscale_config = digitigrade_greyscale_config_worn || greyscale_config_worn,
+			greyscale_colors = digitigrade_greyscale_colors || greyscale_colors || color,
+		)
+	if(building_icon)
+		standing = mutable_appearance(building_icon, layer = -layer2use)
+
+	// no special handling done, default it
+	standing ||= mutable_appearance(file2use, t_state, layer = -layer2use)
 
 	//Get the overlays for this item when it's being worn
 	//eg: ammo counters, primed grenade flashes, etc.
@@ -683,7 +758,7 @@ generate/load female uniform sprites matching all previously decided variables
 
 	standing = center_image(standing, isinhands ? inhand_x_dimension : worn_x_dimension, isinhands ? inhand_y_dimension : worn_y_dimension)
 
-	if(!isinhands && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER))
+	if(!isinhands && is_digi && (supports_variations_flags & CLOTHING_DIGITIGRADE_FILTER))
 		apply_digitigrade_filters(standing)
 
 	//Worn offsets
@@ -709,9 +784,6 @@ generate/load female uniform sprites matching all previously decided variables
 				.[2] = offsets["y"]
 	else
 		.[2] = worn_y_offset
-	if(ishuman(loc) && slot_flags != ITEM_SLOT_FEET) /// we adjust the human body for high given by body parts, execpt shoes, because they are always on the bottom
-		var/mob/living/carbon/human/human_holder = loc
-		.[2] += human_holder.get_top_offset()
 
 //Can't think of a better way to do this, sadly
 /mob/proc/get_item_offsets_for_index(i)
@@ -816,26 +888,97 @@ generate/load female uniform sprites matching all previously decided variables
 		"Lenghten_Torso",
 		"Gnome_Cut_Torso",
 		"Gnome_Cut_Legs",
+		"Monkey_Torso",
+		"Monkey_Legs",
+		"Monkey_Gnome_Cut_Torso",
+		"Monkey_Gnome_Cut_Legs",
 	))
 
 	switch(get_mob_height())
 		// Don't set this one directly, use TRAIT_DWARF
+		if(MONKEY_HEIGHT_DWARF)
+			appearance.add_filters(list(
+				list(
+					"name" = "Monkey_Gnome_Cut_Torso",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 3),
+				),
+				list(
+					"name" = "Monkey_Gnome_Cut_Legs",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 4),
+				),
+			))
+		if(MONKEY_HEIGHT_MEDIUM)
+			appearance.add_filters(list(
+				list(
+					"name" = "Monkey_Torso",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 2),
+				),
+				list(
+					"name" = "Monkey_Legs",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 4),
+				),
+			))
+		// Don't set this one directly, use TRAIT_DWARF
 		if(HUMAN_HEIGHT_DWARF)
-			appearance.add_filter("Gnome_Cut_Torso", 1, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 2))
-			appearance.add_filter("Gnome_Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 3))
+			appearance.add_filters(list(
+				list(
+					"name" = "Gnome_Cut_Torso",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 2),
+				),
+				list(
+					"name" = "Gnome_Cut_Legs",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 3),
+				),
+			))
 		if(HUMAN_HEIGHT_SHORTEST)
-			appearance.add_filter("Cut_Torso", 1, displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 1))
-			appearance.add_filter("Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1))
+			appearance.add_filters(list(
+				list(
+					"name" = "Cut_Torso",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_torso_mask, x = 0, y = 0, size = 1),
+				),
+				list(
+					"name" = "Cut_Legs",
+					"priority" = 1,
+					"params" = displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1),
+				),
+			))
 		if(HUMAN_HEIGHT_SHORT)
 			appearance.add_filter("Cut_Legs", 1, displacement_map_filter(cut_legs_mask, x = 0, y = 0, size = 1))
 		if(HUMAN_HEIGHT_TALL)
 			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1))
 		if(HUMAN_HEIGHT_TALLER)
-			appearance.add_filter("Lenghten_Torso", 1, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
-			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1))
+			appearance.add_filters(list(
+				list(
+					"name" = "Lenghten_Torso",
+					"priority" = 1,
+					"params" = displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1),
+				),
+				list(
+					"name" = "Lenghten_Legs",
+					"priority" = 1,
+					"params" = displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 1),
+				),
+			))
 		if(HUMAN_HEIGHT_TALLEST)
-			appearance.add_filter("Lenghten_Torso", 1, displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1))
-			appearance.add_filter("Lenghten_Legs", 1, displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2))
+			appearance.add_filters(list(
+				list(
+					"name" = "Lenghten_Torso",
+					"priority" = 1,
+					"params" = displacement_map_filter(lenghten_torso_mask, x = 0, y = 0, size = 1),
+				),
+				list(
+					"name" = "Lenghten_Legs",
+					"priority" = 1,
+					"params" = displacement_map_filter(lenghten_legs_mask, x = 0, y = 0, size = 2),
+				),
+			))
 
 	// Kinda gross but because many humans overlays do not use KEEP_TOGETHER we need to manually propogate the filter
 	// Otherwise overlays, such as worn overlays on icons, won't have the filter "applied", and the effect kinda breaks
@@ -845,7 +988,7 @@ generate/load female uniform sprites matching all previously decided variables
 
 	return appearance
 
-/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance, mob/living/carbon/human/wearer = loc)
+/obj/item/proc/apply_digitigrade_filters(mutable_appearance/appearance, mob/living/carbon/wearer = loc)
 	if(!istype(wearer) || !(wearer.bodytype & BODYTYPE_DIGITIGRADE) || wearer.is_digitigrade_squished())
 		return
 

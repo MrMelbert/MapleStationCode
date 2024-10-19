@@ -557,7 +557,7 @@
 
 		if(user.gloves)
 			var/obj/item/clothing/gloves/electrician_gloves = user.gloves
-			if(electrician_gloves.max_heat_protection_temperature && electrician_gloves.max_heat_protection_temperature > 360)
+			if(electrician_gloves.max_heat_protection_temperature > 360)
 				protected = TRUE
 	else
 		protected = TRUE
@@ -695,7 +695,10 @@
  * All the effects that occur when a light falls off a wall that it was hung onto.
  */
 /obj/machinery/light/proc/knock_down()
-	new /obj/item/wallframe/light_fixture(drop_location())
+	if (fitting == "bulb")
+		new /obj/item/wallframe/light_fixture/small(drop_location())
+	else
+		new /obj/item/wallframe/light_fixture(drop_location())
 	new /obj/item/stack/cable_coil(drop_location(), 1, "red")
 	if(status != LIGHT_BROKEN)
 		break_light_tube(FALSE)

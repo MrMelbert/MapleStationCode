@@ -20,13 +20,29 @@
 	mood_change = -1
 	timeout = 2 MINUTES
 
+/datum/mood_event/chilly
+	description = "I'm feeling a bit chilly."
+	mood_change = -2
+
 /datum/mood_event/cold
-	description = "It's way too cold in here."
-	mood_change = -5
+	description = "It's way too cold."
+	mood_change = -3
+
+/datum/mood_event/freezing
+	description = "It's freezing cold!"
+	mood_change = -6
+
+/datum/mood_event/warm
+	description = "I'm feeling a bit warm."
+	mood_change = -2
 
 /datum/mood_event/hot
-	description = "It's getting hot in here."
-	mood_change = -5
+	description = "It's way too hot."
+	mood_change = -3
+
+/datum/mood_event/overhot
+	description = "It's scorching hot!"
+	mood_change = -6
 
 /datum/mood_event/creampie
 	description = "I've been creamed. Tastes like pie flavor."
@@ -112,8 +128,8 @@
 
 /datum/mood_event/table/add_effects()
 	if(isfelinid(owner)) //Holy snowflake batman!
-		var/mob/living/carbon/human/H = owner
-		SEND_SIGNAL(H, COMSIG_ORGAN_WAG_TAIL, TRUE, 3 SECONDS)
+		var/mob/living/carbon/human/feline = owner
+		feline.wag_tail(3 SECONDS)
 		description = "They want to play on the table!"
 		mood_change = 2
 

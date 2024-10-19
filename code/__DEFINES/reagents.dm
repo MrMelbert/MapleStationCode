@@ -183,8 +183,10 @@
 #define REACTION_TAG_CHEMICAL (1<<18)
 /// This reaction is produces a product that affects plants
 #define REACTION_TAG_PLANT (1<<19)
-/// This reaction is produces a product that affects plants
+/// This reaction competes with another reaction in specific circumstances, like hot vs cold
 #define REACTION_TAG_COMPETITIVE (1<<20)
+/// This reaction is produces a product which assuages (or causes) pain
+#define REACTION_TAG_PAIN (1<<21)
 
 //flags used by holder.dm to locate an reagent
 ///Direct type

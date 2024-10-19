@@ -29,6 +29,8 @@
 		part.variable_color = "#00aa00"
 	owner.update_body_parts()
 	owner.add_mood_event("hulk", /datum/mood_event/hulk)
+	owner.physiology?.cold_mod *= HULK_COLD_DAMAGE_MOD
+	owner.bodytemp_cold_damage_limit += BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER
 	RegisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK, PROC_REF(on_attack_hand))
 	RegisterSignal(owner, COMSIG_MOB_SAY, PROC_REF(handle_speech))
 	RegisterSignal(owner, COMSIG_MOB_CLICKON, PROC_REF(check_swing))
@@ -52,7 +54,7 @@
 	return COMPONENT_CANCEL_ATTACK_CHAIN
 
 /datum/mutation/human/hulk/proc/scream_attack(mob/living/carbon/human/source)
-	source.say("WAAAAAAAAAAAAAAGH!", forced="hulk")
+	source.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ), forced = "hulk")
 
 /**
  *Checks damage of a hulk's arm and applies bone wounds as necessary.
@@ -92,6 +94,8 @@
 		part.variable_color = null
 	owner.update_body_parts()
 	owner.clear_mood_event("hulk")
+	owner.physiology?.cold_mod /= HULK_COLD_DAMAGE_MOD
+	owner.bodytemp_cold_damage_limit -= BODYTEMP_HULK_COLD_DAMAGE_LIMIT_MODIFIER
 	UnregisterSignal(owner, COMSIG_LIVING_EARLY_UNARMED_ATTACK)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
 	UnregisterSignal(owner, COMSIG_MOB_CLICKON)

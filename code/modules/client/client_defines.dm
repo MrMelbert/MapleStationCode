@@ -263,3 +263,6 @@
 
 	/// Does this client have typing indicators enabled?
 	var/typing_indicators = FALSE
+
+	///Which ambient sound this client is currently being provided.
+	var/current_ambient_sound

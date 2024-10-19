@@ -138,23 +138,27 @@
 
 	var/list/missing = list(BODY_ZONE_HEAD, BODY_ZONE_CHEST, BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/list/disabled = list()
-	for(var/X in bodyparts)
-		var/obj/item/bodypart/body_part = X
+	var/adjacent = user.Adjacent(src)
+	for(var/obj/item/bodypart/body_part as anything in bodyparts)
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
-		for(var/obj/item/I in body_part.embedded_objects)
-			if(I.isEmbedHarmless())
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [body_part.plaintext_zone]!</B>\n"
-			else
-				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.plaintext_zone]!</B>\n"
+		for(var/obj/item/leftover in body_part.embedded_objects)
+			var/stuck_or_embedded = "embedded in"
+			if(leftover.isEmbedHarmless())
+				stuck_or_embedded = "stuck to"
+			msg += "<b>[t_He] [t_has] [icon2html(leftover, user)] \a [leftover] [stuck_or_embedded] [t_his] [body_part.plaintext_zone]!</b>\n"
 
-		for(var/i in body_part.wounds)
-			var/datum/wound/iter_wound = i
+		if(body_part.current_gauze)
+			var/gauze_href = body_part.current_gauze.name
+			if(adjacent && isliving(user)) // only shows the href if we're adjacent
+				gauze_href = "<a href='?src=[REF(src)];gauze_limb=[REF(body_part)]'>[gauze_href]</a>"
+			msg += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].\n")
+
+		for(var/datum/wound/iter_wound as anything in body_part.wounds)
 			msg += "[iter_wound.get_examine_description(user)]\n"
 
-	for(var/X in disabled)
-		var/obj/item/bodypart/body_part = X
+	for(var/obj/item/bodypart/body_part as anything in disabled)
 		var/damage_text
 		if(HAS_TRAIT(body_part, TRAIT_DISABLED_BY_WOUND))
 			continue // skip if it's disabled by a wound (cuz we'll be able to see the bone sticking out!)
@@ -162,7 +166,7 @@
 			damage_text = "limp and lifeless"
 		else
 			damage_text = (body_part.brute_dam >= body_part.burn_dam) ? body_part.heavy_brute_msg : body_part.heavy_burn_msg
-		msg += "<B>[capitalize(t_his)] [body_part.name] is [damage_text]!</B>\n"
+		msg += "<B>[capitalize(t_his)] [body_part.plaintext_zone] is [damage_text]!</B>\n"
 
 	//stores missing limbs
 	var/l_limbs_missing = 0
@@ -213,10 +217,6 @@
 		msg += "[t_He] [t_is] covered in something flammable.\n"
 	if(has_status_effect(/datum/status_effect/fire_handler/wet_stacks))
 		msg += "[t_He] look[p_s()] a little soaked.\n"
-
-
-	if(pulledby?.grab_state)
-		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
 
 	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
 		msg += "[t_He] [t_is] severely malnourished.\n"
@@ -296,9 +296,9 @@
 					msg += "[t_He] appear[p_s()] to be staring off into space.\n"
 				if (HAS_TRAIT(src, TRAIT_DEAF))
 					msg += "[t_He] appear[p_s()] to not be responding to noises.\n"
-				if (bodytemperature > dna.species.bodytemp_heat_damage_limit)
-					msg += "[t_He] [t_is] flushed and wheezing.\n"
-				if (bodytemperature < dna.species.bodytemp_cold_damage_limit)
+				if (body_temperature > bodytemp_heat_damage_limit)
+					msg += "[t_He] [t_is] flushed and sweating.\n"
+				if (body_temperature < bodytemp_cold_damage_limit)
 					msg += "[t_He] [t_is] shivering.\n"
 
 			msg += "</span>"

@@ -276,9 +276,9 @@
 		stack_trace("We tried to check a gas_mixture that doesn't exist for its firetype, what are you DOING")
 		return
 
-	if(environment.temperature >= FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
+	if(environment.temperature >= ENVIRONMENT_HAZARD_HEAT)
 		return FIRELOCK_ALARM_TYPE_HOT
-	if(environment.temperature <= BODYTEMP_COLD_DAMAGE_LIMIT)
+	if(environment.temperature <= ENVIRONMENT_HAZARD_COLD)
 		return FIRELOCK_ALARM_TYPE_COLD
 	return
 

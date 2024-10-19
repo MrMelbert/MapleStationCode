@@ -41,9 +41,11 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 		. += "Time To Start: SOON"
 
 	. += "Players: [LAZYLEN(GLOB.clients)]"
-	if(client.holder)
-		. += "Players Ready: [SSticker.totalPlayersReady]"
-		. += "Admins Ready: [SSticker.total_admins_ready] / [length(GLOB.admins)]"
+	if(length(SSticker.ready_report))
+		. += ""
+		. += "[SSticker.totalPlayersReady] Readied players:"
+		for(var/readied in SSticker.ready_report)
+			. += "- [SSticker.ready_report[readied]]"
 
 #define SERVER_HOPPER_TRAIT "server_hopper"
 
