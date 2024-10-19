@@ -67,7 +67,7 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 
 	switch(probable_cause)
 		// This should all be refactored later it's a bit of a mess ngl
-		if(null, "revival_sickess", "anesthetics")
+		if(null, "revival_sickess", "anesthetics", "recent_defib")
 			return "unknown causes"
 
 		if(OXY_DAMAGE)

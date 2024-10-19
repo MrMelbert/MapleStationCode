@@ -604,29 +604,12 @@
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock or near death
-	if(curr_pain >= 200 || shock_buildup >= 150 || parent.consciousness <= HARD_CRIT_THRESHOLD + 5)
+	if(curr_pain >= 200 || shock_buildup >= 150) // melbert todo : this doesn't trigger if you're not feeling pain
 		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 60 SECONDS)
-		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
-			var/is_standing = parent.body_position == STANDING_UP
-			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
-			if(is_standing && parent.body_position != STANDING_UP)
-				parent.visible_message(
-					span_warning("[parent] collapses!"),
-					span_userdanger("You collapse, unable to stand!"),
-					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-				)
-			else if(parent.body_position == LYING_DOWN)
-				parent.visible_message(
-					span_warning("[parent] slumps against the ground!"),
-					span_userdanger("You go limp, unable to get up!"),
-					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-				)
-			else
-				to_chat(parent, span_userdanger("You can't will yourself to move!"))
+		parent.enter_paincrit()
 
 	else if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
-		parent.Paralyze(2 SECONDS)
-		parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+		parent.exit_paincrit()
 
 	// Finally, handle pain decay over time
 	if(parent.on_fire)
