@@ -1,6 +1,5 @@
 // -- Lizardperson species additions --
 /datum/species/lizard
-	mutantliver = /obj/item/organ/internal/liver/lizard
 
 /datum/species/lizard/get_species_speech_sounds(sound_type)
 	// These sounds have been ported from Goonstation.

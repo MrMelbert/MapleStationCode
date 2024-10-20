@@ -106,7 +106,8 @@
 	var/mob_biotypes = MOB_ORGANIC
 	/// The type of respiration the mob is capable of doing. Used by adjustOxyLoss.
 	var/mob_respiration_type = RESPIRATION_OXYGEN
-	///more or less efficiency to metabolize helpful/harmful reagents and regulate body temperature..
+	/// How efficient are we at metabolizing reagents and regulating body temperature?
+	/// Note: Do not set this for mobs with stomach organs, as the stomach overrides this value entirely.
 	var/metabolism_efficiency = 1
 	///does the mob have distinct limbs?(arms,legs, chest,head)
 	var/has_limbs = FALSE
@@ -181,9 +182,6 @@
 	///Whether the mob is slowed down when dragging another prone mob
 	var/slowed_by_drag = TRUE
 
-	/// List of changes to body temperature, used by desease symtoms like fever
-	var/list/body_temp_changes = list()
-
 	//this stuff is here to make it simple for admins to mess with custom held sprites
 	///left hand icon for holding mobs
 	var/icon/held_lh = 'icons/mob/inhands/pets_held_lh.dmi'
@@ -223,3 +221,30 @@
 
 	/// What our current gravity state is. Used to avoid duplicate animates and such
 	var/gravity_state = null
+
+	/// Body temp we homeostasize to
+	var/standard_body_temperature = BODYTEMP_NORMAL
+	/// Temperature of our insides
+	var/body_temperature = BODYTEMP_NORMAL
+	/// Lazylist of targets we homeostasize to
+	/// This allows multiple effects to add a different target to the list, which is averaged
+	/// (So you can have both a fever and a cold at the same time)
+	/// If empty just defaults to standard_body_temperature
+	var/list/homeostasis_targets
+
+	/// How cold to start sustaining cold damage
+	var/bodytemp_cold_damage_limit = -1 // -1 = no cold damage ever
+	/// How hot to start sustaining heat damage
+	var/bodytemp_heat_damage_limit = INFINITY // INFINITY = no heat damage ever
+
+	/// How fast the mob's temperature normalizes to their environment
+	var/temperature_normalization_speed = 0.1
+	/// How fast the mob's temperature normalizes to their homeostasis
+	/// Also gets multiplied by metabolism_efficiency.
+	/// Note that more of this = more nutrition is consumed every life tick.
+	var/temperature_homeostasis_speed = 0.5
+	/// Protection (insulation) from temperature changes, max 1
+	var/temperature_insulation = 0
+
+	/// Whether we currently have temp alerts, minor optimization
+	VAR_PRIVATE/temp_alerts = FALSE

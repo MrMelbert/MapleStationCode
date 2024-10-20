@@ -183,7 +183,7 @@
 		to_chat(user, span_danger("You pat out some of the flames on [target_mob] with [src]!"))
 		visible_message(span_danger("[user] pats out some of the flames on [target_mob] with [src]!"), ignored_mobs = list(user))
 	else
-		fire_act(target_mob.bodytemperature)
+		fire_act(target_mob.body_temperature)
 		to_chat(user, span_warning("[src] bursts into flames!"))
 		visible_message(span_warning("[src] bursts into flames!"), ignored_mobs = list(user))
 

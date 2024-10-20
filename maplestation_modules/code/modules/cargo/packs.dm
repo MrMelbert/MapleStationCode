@@ -182,6 +182,32 @@
 		/obj/item/storage/pill_bottle/sansufentanyl,
 	)
 
+/obj/item/storage/pill_bottle/prescription/naloxone
+	pill_type = /obj/item/reagent_containers/pill/naloxone
+	num_pills = 3
+
+/datum/supply_pack/goody/naloxone
+	name = "Naloxone Prescription"
+	desc = "Contains a pill bottle of Naloxone, which helps with opioid overdoses and addiction."
+	group = GROUP_DRUGS
+	cost = PAYCHECK_CREW * 5
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/naloxone,
+	)
+
+/obj/item/storage/pill_bottle/prescription/buproprion
+	pill_type = /obj/item/reagent_containers/pill/buproprion
+	num_pills = 3
+
+/datum/supply_pack/goody/buproprion
+	name = "Buproprion Prescription"
+	desc = "Contains a pill bottle of Buproprion, which helps with stimulant and nicotine addiction."
+	group = GROUP_DRUGS
+	cost = PAYCHECK_CREW * 5
+	contains = list(
+		/obj/item/storage/pill_bottle/prescription/buproprion,
+	)
+
 /datum/supply_pack/medical/painkiller_syringes
 	name = "Painkiller Syringe Shipment"
 	desc = "Contains six syringes of general medicinal painkillers - Ibuprofen, Paracetamol, and Aspirin."

@@ -96,7 +96,7 @@
 		heat_or_cool = "cool"
 	if (iscarbon(cast_on))
 		var/mob/living/carbon/carbon_target = cast_on
-		carbon_target.adjust_bodytemperature(temperature_for_cast, use_insulation = TRUE)
+		carbon_target.adjust_body_temperature(temperature_for_cast, use_insulation = TRUE)
 		var/just_got_convected_text = span_warning("You feel a wave of [hot_or_cold] eminate from [owner]...")
 		carbon_target.balloon_alert(carbon_target, just_got_convected_text)
 		to_chat(carbon_target, just_got_convected_text)

@@ -11,9 +11,7 @@
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | SNUG_FIT | STACKABLE_HELMET_EXEMPT
 	flags_inv = HIDEMASK | HIDEEARS | HIDEEYES | HIDEFACE | HIDEHAIR | HIDEFACIALHAIR | HIDESNOUT
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
-	cold_protection = HEAD
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
-	heat_protection = HEAD
 	flash_protect = FLASH_PROTECTION_WELDER
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
@@ -36,9 +34,7 @@
 	body_parts_covered = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	flags_inv = HIDEGLOVES | HIDESHOES | HIDEJUMPSUIT
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
-	cold_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
-	heat_protection = CHEST | GROIN | LEGS | FEET | ARMS | HANDS
 	resistance_flags = NONE
 	strip_delay = 8 SECONDS
 	equip_delay_other = 8 SECONDS
