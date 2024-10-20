@@ -75,7 +75,7 @@
 	growthstages = 3
 	icon_grow = "worldpeas-grow"
 	icon_dead = "worldpeas-dead"
-	genes = list (/datum/plant_gene/trait/glow/blue)
+	genes = list (/datum/plant_gene/trait/glow/blue, /datum/plant_gene/reagent/crystalized_quintessence) // NON-MODULE CHANGE
 	reagents_add = list (/datum/reagent/pax = 0.1, /datum/reagent/drug/happiness = 0.1, /datum/reagent/consumable/nutriment = 0.15)
 	rarity = 50 // This absolutely will make even the most hardened Syndicate Operators relax.
 	graft_gene = /datum/plant_gene/trait/glow/blue
