@@ -8,7 +8,7 @@ since some of them are two per character or singleton, i'm gonna save space and 
 	name = "Maugrim"
 	desc = "Hilda Brandt's longsword. It was christened after slaying a space-werewolf of the same name." // todo
 	force = 18 // identical the the chappie claymore rod, but without anti-magic
-	block_chance = 30
+	block_chance = 0
 	icon_state = "maugrim"
 	icon = 'maplestation_modules/story_content/wollys_items/icons/obj/weapons.dmi'
 	inhand_icon_state = "maugrim"
@@ -61,6 +61,17 @@ since some of them are two per character or singleton, i'm gonna save space and 
 		Given the importance of these feathers to the flight, its quite common to hold on to such feathers. ", \
 		EXAMINE_CHECK_SPECIES, /datum/species/ornithid)
 	AddElement(/datum/element/bane, target_type = /mob/living/basic/heretic_summon, damage_multiplier = 0, added_damage = 2, requires_combat_mode = FALSE) // rare exhange if it ever even happens, nod to the character's specialization in anti-heresy
+
+	// Bamboo-hatted kim reference, perfect parries let the damage through but multiply force to dangerous levels
+	AddComponent(/datum/component/active_combat, inventory_flags = ITEM_SLOT_HANDS, block_directions = ACTIVE_COMBAT_FACING, windup_timer = 0.2 SECONDS, \
+	parry_window = 0.6 SECONDS, perfect_parry_window = 0.2 SECONDS, stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.75, damage_blocked = 1.2, \
+	damage_block_imperfect_loss = 0.5, maximum_damage_blocked = 25, block_barrier = 0.8, parry_miss_cooldown = 0.4 SECONDS, icon_state = "counter", \
+	effect_color = COLOR_WHITE, projectile_window_multiplier = 0, \
+	block_barrier_overrides = list(), \
+	parry_effects = list(ACTIVE_COMBAT_PARRY = TRUE), \
+	perfect_parry_effects = list(ACTIVE_COMBAT_PARRY = 1.3, ACTIVE_COMBAT_STAGGER = 2 SECONDS, ACTIVE_COMBAT_FORCED_DAMAGE = TRUE), \
+	parry_miss_effects = list(ACTIVE_COMBAT_STAGGER = 3 SECONDS, ACTIVE_COMBAT_STAMINA = 12), \
+	)
 
 /obj/item/melee/gehenna // matthew's sword when he's asset protection
 	name = "Gehenna"
