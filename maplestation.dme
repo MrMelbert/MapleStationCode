@@ -6091,6 +6091,7 @@
 #include "maplestation_modules\code\controllers\subsystem\economy.dm"
 #include "maplestation_modules\code\controllers\subsystem\pain_subsystem.dm"
 #include "maplestation_modules\code\datums\shuttles.dm"
+#include "maplestation_modules\code\datums\brain_damage\split_personality.dm"
 #include "maplestation_modules\code\datums\components\easy_ignite.dm"
 #include "maplestation_modules\code\datums\components\knockoff_move.dm"
 #include "maplestation_modules\code\datums\components\limbless_aid.dm"
