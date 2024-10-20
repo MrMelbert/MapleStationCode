@@ -26,14 +26,8 @@
 		/datum/surgery_step/close,
 	)
 
-/datum/surgery/repair_puncture/can_start(mob/living/user, mob/living/carbon/target)
-	if(!istype(target))
-		return FALSE
-	. = ..()
-	if(.)
-		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
-		var/datum/wound/burn/flesh/pierce_wound = targeted_bodypart.get_wound_type(targetable_wound)
-		return(pierce_wound && pierce_wound.blood_flow > 0)
+/datum/surgery/repair_puncture/is_valid_wound(datum/wound/wound)
+	return ..() && wound.blood_flow > 0
 
 //SURGERY STEPS
 
@@ -80,7 +74,7 @@
 		span_notice("[user] successfully realigns some of the blood vessels in  [target]'s [parse_zone(target_zone)]!"),
 	)
 	log_combat(user, target, "excised infected flesh in", addition="COMBAT MODE: [uppertext(user.combat_mode)]")
-	surgery.operated_bodypart.receive_damage(brute=3, wound_bonus=CANT_WOUND)
+	target.apply_damage(3, BRUTE, surgery.operated_bodypart, wound_bonus = CANT_WOUND, attacking_item = tool)
 	pierce_wound.adjust_blood_flow(-0.25)
 	return ..()
 
@@ -93,7 +87,7 @@
 		span_notice("[user] jerks apart some of the blood vessels in [target]'s [parse_zone(target_zone)] with [tool]!"),
 		span_notice("[user] jerk apart some of the blood vessels in [target]'s [parse_zone(target_zone)]!"),
 	)
-	surgery.operated_bodypart.receive_damage(brute=rand(4,8), sharpness=SHARP_EDGED, wound_bonus = 10)
+	target.apply_damage(rand(4, 8), BRUTE, surgery.operated_bodypart, wound_bonus = 10, sharpness = SHARP_EDGED, attacking_item = tool)
 
 ///// Sealing the vessels back together
 /datum/surgery_step/seal_veins
@@ -104,6 +98,8 @@
 		TOOL_WELDER = 70,
 		/obj/item = 30)
 	time = 4 SECONDS
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
 
 /datum/surgery_step/seal_veins/tool_check(mob/user, obj/item/tool)
 	if(implement_type == TOOL_WELDER || implement_type == /obj/item)
@@ -140,7 +136,7 @@
 	)
 	log_combat(user, target, "dressed burns in", addition="COMBAT MODE: [uppertext(user.combat_mode)]")
 	pierce_wound.adjust_blood_flow(-0.5)
-	if(pierce_wound.blood_flow > 0)
+	if(!QDELETED(pierce_wound) && pierce_wound.blood_flow > 0)
 		surgery.status = REALIGN_INNARDS
 		to_chat(user, span_notice("<i>There still seems to be misaligned blood vessels to finish...</i>"))
 	else

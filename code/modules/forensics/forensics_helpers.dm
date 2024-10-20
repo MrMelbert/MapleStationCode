@@ -118,7 +118,7 @@
 	if(!..())
 		return FALSE
 
-	color = get_blood_dna_color()
+	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
 	for(var/new_blood in blood_DNA_to_add)
 		var/datum/blood_type/blood = GLOB.blood_types[blood_DNA_to_add[new_blood]]

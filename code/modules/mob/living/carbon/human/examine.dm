@@ -143,9 +143,11 @@
 		if(body_part.bodypart_disabled)
 			disabled += body_part
 		missing -= body_part.body_zone
-		for(var/obj/item/leftover in body_part.embedded_objects)
+		for(var/obj/item/leftover as anything in body_part.embedded_objects)
+			if(leftover.get_embed().hidden_embed)
+				continue
 			var/stuck_or_embedded = "embedded in"
-			if(leftover.isEmbedHarmless())
+			if(leftover.is_embed_harmless())
 				stuck_or_embedded = "stuck to"
 			msg += "<b>[t_He] [t_has] [icon2html(leftover, user)] \a [leftover] [stuck_or_embedded] [t_his] [body_part.plaintext_zone]!</b>\n"
 
@@ -156,7 +158,9 @@
 			msg += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].\n")
 
 		for(var/datum/wound/iter_wound as anything in body_part.wounds)
-			msg += "[iter_wound.get_examine_description(user)]\n"
+			var/wound_msg = iter_wound.get_examine_description(user)
+			if(wound_msg)
+				msg += "[wound_msg]\n"
 
 	for(var/obj/item/bodypart/body_part as anything in disabled)
 		var/damage_text
@@ -249,7 +253,7 @@
 		var/list/obj/item/bodypart/grasped_limbs = list()
 
 		for(var/obj/item/bodypart/body_part as anything in bodyparts)
-			if(body_part.get_modified_bleed_rate())
+			if(!body_part.current_gauze && body_part.get_modified_bleed_rate())
 				bleeding_limbs += body_part.plaintext_zone
 			if(body_part.grasped_by)
 				grasped_limbs += body_part.plaintext_zone
@@ -285,7 +289,7 @@
 			if(HAS_TRAIT(user, TRAIT_EMPATH))
 				if (combat_mode)
 					msg += "[t_He] seem[p_s()] to be on guard.\n"
-				if (getOxyLoss() >= 10)
+				if (getOxyLoss() >= 10 || getStaminaLoss() >= 25)
 					msg += "[t_He] seem[p_s()] winded.\n"
 				if (getToxLoss() >= 10)
 					msg += "[t_He] seem[p_s()] sickly.\n"
