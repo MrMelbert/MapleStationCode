@@ -96,8 +96,8 @@
 /obj/item/paper_bin/triage
 	name = "triage card stack"
 	desc = "A stack of triage cards for quickly assessing the severity of a patient's condition."
-	icon_state = "nobasesprite"
-	bin_overlay_string = "nobinsprite"
+	icon_state = ""
+	bin_overlay_string = ""
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	inhand_icon_state = "paper"
