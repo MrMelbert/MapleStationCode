@@ -252,7 +252,7 @@
 ///this tractor field removes itself when combat mode is deactivated.
 /datum/component/tractorfield/vroomba
 	max_range = 3
-	force = 1
+	force = 2
 
 /datum/component/tractorfield/vroomba/RegisterWithParent()
 	. = ..()
