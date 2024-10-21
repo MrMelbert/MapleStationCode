@@ -13,6 +13,5 @@
 	if(!ishuman(owner) || !owner.dna.species)
 		return
 	var/mob/living/carbon/human/H = owner
-	var/datum/species/species = H.dna.species
 	to_chat(H, span_warning("You feel your blood heat up for a moment."))
-	species.exotic_bloodtype = pick(subtypesof(/datum/blood_type)) // NON-MODULE CHANGE: ANYthing, including xeno blood
+	H.dna.species.exotic_bloodtype = prob(50) ? random_usable_blood_type() : get_random_reagent_id()

@@ -206,14 +206,15 @@
 	podman.hardset_dna(null, null, null, podman.real_name, blood_type, new /datum/species/pod, features) // Discard SE's and UI's, podman cloning is inaccurate, and always make them a podman
 	podman.set_cloned_appearance()
 
-	//Get the most plentiful reagent, if there's none: get water
-	var/list/most_plentiful_reagent = list(/datum/reagent/water = 0)
+	//Get the most plentiful reagent,
+	var/datum/reagent/most_plentiful_reagent
 	for(var/reagent in reagents_add)
-		if(reagents_add[reagent] > most_plentiful_reagent[most_plentiful_reagent[1]])
-			most_plentiful_reagent.Cut()
-			most_plentiful_reagent[reagent] = reagents_add[reagent]
+		if(!most_plentiful_reagent || reagents_add[reagent] > reagents_add[most_plentiful_reagent])
+			most_plentiful_reagent = reagent
 
-	// podman.dna.species.exotic_blood = most_plentiful_reagent[1] // NON-MODULE CHANGE : MELBERT TODO
+	//if there's none: get water
+	most_plentiful_reagent ||= /datum/reagent/water
+	podman.dna.species.exotic_bloodtype = most_plentiful_reagent
 	investigate_log("[key_name(mind)] cloned as a podman via [src] in [parent]", INVESTIGATE_BOTANY)
 	parent.update_tray(user, 1)
 	return result

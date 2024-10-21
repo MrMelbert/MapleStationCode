@@ -25,9 +25,9 @@
 		blood_type = master_reagent.data?["blood_type"]
 
 	else
-		for(var/blood_type in GLOB.blood_types)
-			if(GLOB.blood_types[blood_type].reagent_type == master_reagent.type)
-				blood_type = blood_type
+		for(var/existing_blood_type in GLOB.blood_types)
+			if(GLOB.blood_types[existing_blood_type].reagent_type == master_reagent.type)
+				blood_type = existing_blood_type
 				break
 
 	return ..()
