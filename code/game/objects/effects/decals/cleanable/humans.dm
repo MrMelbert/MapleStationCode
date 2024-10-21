@@ -110,7 +110,7 @@
 
 /obj/effect/decal/cleanable/blood/update_overlays()
 	. = ..()
-	if(icon_state && emissive_alpha < alpha && !dried)
+	if(icon_state && emissive_alpha && emissive_alpha < alpha && !dried)
 		. += blood_emissive(icon, icon_state)
 
 /obj/effect/decal/cleanable/blood/proc/blood_emissive(icon_to_use, icon_state_to_use)
@@ -388,7 +388,7 @@
 				bloody_footprints_cache[enter_state] = bloodstep_overlay
 			. += bloodstep_overlay
 
-			if(emissive_alpha < alpha && !dried)
+			if(emissive_alpha && emissive_alpha < alpha && !dried)
 				var/enter_emissive_state = "[enter_state]_emissive-[emissive_alpha]"
 				var/mutable_appearance/emissive_overlay = bloody_footprints_cache[enter_emissive_state]
 				if(!emissive_overlay)
@@ -405,7 +405,7 @@
 				bloody_footprints_cache[exit_state] = bloodstep_overlay
 			. += bloodstep_overlay
 
-			if(emissive_alpha < alpha && !dried)
+			if(emissive_alpha && emissive_alpha < alpha && !dried)
 				var/exit_emissive_state = "[exit_state]_emissive-[emissive_alpha]"
 				var/mutable_appearance/emissive_overlay = bloody_footprints_cache[exit_emissive_state]
 				if(!emissive_overlay)
