@@ -282,7 +282,12 @@
 		return NONE
 
 	if(combat_mode)
+		if(isliving(target))
+			var/mob/living/living_target = target
+			living_target.apply_damage(10)
+
 		visible_message(span_danger("[src] flies into [target]!"))
+
 
 	return NONE
 
