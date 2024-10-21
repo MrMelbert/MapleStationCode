@@ -49,3 +49,18 @@
 	name = "Spacer's Turtleneck Worn"
 	icon_file = 'maplestation_modules/icons/mob/clothing/under/spacer_turtleneck.dmi'
 	json_config = 'code/datums/greyscale/json_configs/spacer_turtleneck_worn.json'
+
+/datum/greyscale_config/umbrella
+	name = "Umbrella"
+	icon_file = 'maplestation_modules/icons/obj/weapons/umbrellas.dmi'
+	json_config = 'code/datums/greyscale/json_configs/_umbrella.json'
+
+/datum/greyscale_config/umbrella_inhand_left
+	name = "Held Umbrella, Left, Closed"
+	icon_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_lh.dmi'
+	json_config = 'code/datums/greyscale/json_configs/_umbrella_inhand.json'
+
+/datum/greyscale_config/umbrella_inhand_right
+	name = "Held Umbrella, Right, Closed"
+	icon_file = 'maplestation_modules/icons/mob/inhands/weapons/umbrellas_inhand_rh.dmi'
+	json_config = 'code/datums/greyscale/json_configs/_umbrella_inhand.json'
