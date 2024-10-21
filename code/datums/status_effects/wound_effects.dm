@@ -30,7 +30,7 @@
 	status_type = STATUS_EFFECT_REPLACE
 	tick_interval = -1
 	alert_type = /atom/movable/screen/alert/status_effect/limp
-	var/msg_stage = 0//so you dont get the most intense messages immediately
+	on_remove_on_mob_delete = TRUE
 	/// The left leg of the limping person
 	var/obj/item/bodypart/leg/left/left
 	/// The right leg of the limping person
@@ -49,16 +49,18 @@
 /datum/status_effect/limp/on_apply()
 	if(!iscarbon(owner))
 		return FALSE
-	var/mob/living/carbon/C = owner
-	left = C.get_bodypart(BODY_ZONE_L_LEG)
-	right = C.get_bodypart(BODY_ZONE_R_LEG)
 	update_limp()
-	RegisterSignal(C, COMSIG_MOVABLE_MOVED, PROC_REF(check_step))
-	RegisterSignals(C, list(COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_POST_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB), PROC_REF(update_limp))
+	if(QDELETED(src)) // update limp might have removed us
+		return FALSE
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_step))
+	RegisterSignals(owner, list(COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_POST_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB), PROC_REF(update_limp))
 	return TRUE
 
 /datum/status_effect/limp/on_remove()
 	UnregisterSignal(owner, list(COMSIG_MOVABLE_MOVED, COMSIG_CARBON_GAIN_WOUND, COMSIG_CARBON_POST_LOSE_WOUND, COMSIG_CARBON_ATTACH_LIMB, COMSIG_CARBON_REMOVE_LIMB))
+	next_leg = null
+	left = null
+	right = null
 
 /atom/movable/screen/alert/status_effect/limp
 	name = "Limping"
@@ -71,6 +73,7 @@
 		return
 
 	if(SEND_SIGNAL(owner, COMSIG_CARBON_LIMPING, (next_leg || right || left)) & COMPONENT_CANCEL_LIMP)
+		next_leg = (next_leg == left ? right : left)
 		return
 
 	// less limping while we have determination still
@@ -88,12 +91,12 @@
 /datum/status_effect/limp/proc/update_limp()
 	SIGNAL_HANDLER
 
-	var/mob/living/carbon/C = owner
-	left = C.get_bodypart(BODY_ZONE_L_LEG)
-	right = C.get_bodypart(BODY_ZONE_R_LEG)
+	left = owner.get_bodypart(BODY_ZONE_L_LEG)
+	right = owner.get_bodypart(BODY_ZONE_R_LEG)
+	next_leg = null
 
 	if(!left && !right)
-		C.remove_status_effect(src)
+		qdel(src)
 		return
 
 	slowdown_left = 0
@@ -103,20 +106,18 @@
 
 	// technically you can have multiple wounds causing limps on the same limb, even if practically only bone wounds cause it in normal gameplay
 	if(left)
-		for(var/thing in left.wounds)
-			var/datum/wound/W = thing
+		for(var/datum/wound/W as anything in left.wounds)
 			slowdown_left += W.limp_slowdown
 			limp_chance_left = max(limp_chance_left, W.limp_chance)
 
 	if(right)
-		for(var/thing in right.wounds)
-			var/datum/wound/W = thing
+		for(var/datum/wound/W as anything in right.wounds)
 			slowdown_right += W.limp_slowdown
 			limp_chance_right = max(limp_chance_right, W.limp_chance)
 
 	// this handles losing your leg with the limp and the other one being in good shape as well
 	if(!slowdown_left && !slowdown_right)
-		C.remove_status_effect(src)
+		qdel(src)
 		return
 
 

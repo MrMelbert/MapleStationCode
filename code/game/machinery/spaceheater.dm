@@ -33,10 +33,10 @@
 	var/efficiency = 20000
 	///The amount of degrees above and below the target temperature for us to change mode to heater or cooler
 	var/temperature_tolerance = 1
-	///What's the middle point of our settable temperature (30 °C)
-	var/settable_temperature_median = 30 + T0C
+	///What's the middle point of our settable temperature
+	var/settable_temperature_median = CELCIUS_TO_KELVIN(25 CELCIUS)
 	///Range of temperatures above and below the median that we can set our target temperature (increase by upgrading the capacitors)
-	var/settable_temperature_range = 30
+	var/settable_temperature_range = 10 CELCIUS
 	///Should we add an overlay for open spaceheaters
 	var/display_panel = TRUE
 
@@ -170,7 +170,7 @@
 
 	heating_power = laser * 40000
 
-	settable_temperature_range = cap * 30
+	settable_temperature_range = cap * 10 CELCIUS
 	efficiency = (cap + 1) * 10000
 
 	target_temperature = clamp(target_temperature,

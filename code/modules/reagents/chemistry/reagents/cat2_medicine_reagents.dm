@@ -204,7 +204,9 @@
 
 /datum/reagent/medicine/c2/hercuri
 	name = "Hercuri"
-	description = "Not to be confused with element Mercury, this medicine excels in reverting effects of dangerous high-temperature environments. Prolonged exposure can cause hypothermia."
+	description = "Not to be confused with element Mercury, this medicine excels in \
+		reverting effects of dangerous high-temperature environments. \
+		Prolonged exposure may cause hypothermia."
 	reagent_state = LIQUID
 	color = "#F7FFA5"
 	overdose_threshold = 25
@@ -216,37 +218,30 @@
 
 /datum/reagent/medicine/c2/hercuri/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	var/need_mob_update
+	var/fireheal = -1.25
 	if(affected_mob.getFireLoss() > 50)
-		need_mob_update = affected_mob.adjustFireLoss(-2 * REM * seconds_per_tick * normalise_creation_purity(), updating_health = FALSE, required_bodytype = affected_bodytype)
-	else
-		need_mob_update = affected_mob.adjustFireLoss(-1.25 * REM * seconds_per_tick * normalise_creation_purity(), updating_health = FALSE, required_bodytype = affected_bodytype)
-	affected_mob.adjust_bodytemperature(rand(-25,-5) * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 50)
-	if(ishuman(affected_mob))
-		var/mob/living/carbon/human/humi = affected_mob
-		humi.adjust_coretemperature(rand(-25,-5) * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 50)
-	affected_mob.reagents?.chem_temp += (-10 * REM * seconds_per_tick)
+		fireheal = -2
+	if(affected_mob.adjustFireLoss(fireheal * REM * seconds_per_tick * normalise_creation_purity(), updating_health = FALSE, required_bodytype = affected_bodytype))
+		. = UPDATE_MOB_HEALTH
+
+	var/cooling = -1 KELVIN / rand(1, 5)
+	affected_mob.adjust_body_temperature(cooling * REM * seconds_per_tick, min_temp = HYPOTHERMIA - 7 CELCIUS)
+	affected_mob.reagents?.expose_temperature(affected_mob.reagents.chem_temp - (10 * REM * seconds_per_tick))
 	affected_mob.adjust_fire_stacks(-1 * REM * seconds_per_tick)
-	if(need_mob_update)
-		return UPDATE_MOB_HEALTH
 
 /datum/reagent/medicine/c2/hercuri/expose_mob(mob/living/carbon/exposed_mob, methods=VAPOR, reac_volume)
 	. = ..()
 	if(!(methods & VAPOR))
 		return
 
-	exposed_mob.adjust_bodytemperature(-reac_volume * TEMPERATURE_DAMAGE_COEFFICIENT, 50)
+	exposed_mob.adjust_body_temperature(reac_volume * -0.33 KELVIN, min_temp = HYPOTHERMIA - 7 CELCIUS, use_insulation = TRUE)
 	exposed_mob.adjust_fire_stacks(reac_volume / -2)
 	if(reac_volume >= metabolization_rate)
 		exposed_mob.extinguish_mob()
 
 /datum/reagent/medicine/c2/hercuri/overdose_process(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_bodytemperature(-10 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 50) //chilly chilly
-	if(ishuman(affected_mob))
-		var/mob/living/carbon/human/humi = affected_mob
-		humi.adjust_coretemperature(-10 * TEMPERATURE_DAMAGE_COEFFICIENT * REM * seconds_per_tick, 50)
-
+	affected_mob.adjust_body_temperature(0.5 KELVIN * REM * seconds_per_tick, min_temp = HYPOTHERMIA - 7 CELCIUS) //chilly chilly
 
 /******OXY******/
 /*Suffix: -mol*/

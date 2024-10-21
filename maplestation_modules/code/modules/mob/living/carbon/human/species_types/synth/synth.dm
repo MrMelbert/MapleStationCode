@@ -33,6 +33,9 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 	changesource_flags = MIRROR_BADMIN|MIRROR_PRIDE|MIRROR_MAGIC
 	species_language_holder = /datum/language_holder/synthetic
 
+	bodytemp_heat_damage_limit = BODYTEMP_HEAT_LAVALAND_SAFE
+	bodytemp_cold_damage_limit = BODYTEMP_COLD_ICEBOX_SAFE
+
 	bodypart_overrides = list(
 		BODY_ZONE_HEAD = /obj/item/bodypart/head/synth,
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/synth,
@@ -533,6 +536,11 @@ GLOBAL_LIST_EMPTY(synth_head_cover_list)
 /datum/sprite_accessory/synth_head_cover/cloakp
 	name = "Cloakp"
 	icon_state = "cloakp"
+
+//GUMTEETH's head
+/datum/sprite_accessory/synth_head_cover/gumhead
+	name = "GUMHEAD"
+	icon_state = "gumhead"
 
 // add more here!!
 

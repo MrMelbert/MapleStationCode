@@ -6,6 +6,7 @@
 	armor_type = /datum/armor/shoes_combat
 	strip_delay = 40
 	resistance_flags = NONE
+	min_cold_protection_temperature = ICEBOX_MIN_TEMPERATURE
 	lace_time = 12 SECONDS
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
@@ -64,6 +65,7 @@
 	equip_delay_other = 50
 	resistance_flags = NONE
 	armor_type = /datum/armor/shoes_jackboots
+	min_cold_protection_temperature = ICEBOX_MIN_TEMPERATURE
 	can_be_tied = FALSE
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'
@@ -97,9 +99,7 @@
 	icon_state = "winterboots"
 	inhand_icon_state = null
 	armor_type = /datum/armor/shoes_winterboots
-	cold_protection = FEET|LEGS
 	min_cold_protection_temperature = SHOES_MIN_TEMP_PROTECT
-	heat_protection = FEET|LEGS
 	max_heat_protection_temperature = SHOES_MAX_TEMP_PROTECT
 	lace_time = 8 SECONDS
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
@@ -149,6 +149,7 @@
 	armor_type = /datum/armor/shoes_workboots
 	strip_delay = 20
 	equip_delay_other = 40
+	min_cold_protection_temperature = ICEBOX_MIN_TEMPERATURE
 	lace_time = 8 SECONDS
 	drop_sound = 'maplestation_modules/sound/items/drop/shoes.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/shoes.ogg'

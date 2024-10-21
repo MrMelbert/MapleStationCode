@@ -60,8 +60,10 @@
 			take_bodypart_damage(5 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 		else if(!iscarbon(hit_atom) && extra_speed)
 			take_bodypart_damage(5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
-		visible_message(span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]"),\
-			span_userdanger("You violently crash into [hit_atom][extra_speed ? " extra hard" : ""]!"))
+		visible_message(
+			span_danger("[src] crashes into [hit_atom][extra_speed ? " really hard" : ""]!"),
+			span_userdanger("You[extra_speed ? " violently" : ""] crash into [hit_atom][extra_speed ? " extra hard" : ""]!"),
+		)
 		log_combat(hit_atom, src, "crashes ")
 		oof_noise = TRUE
 
@@ -624,7 +626,6 @@
 			lighting_cutoff = max(lighting_cutoff, glasses.lighting_cutoff)
 		if(length(glasses.color_cutoffs))
 			lighting_color_cutoffs = blend_cutoff_colors(lighting_color_cutoffs, glasses.color_cutoffs)
-
 
 	if(HAS_TRAIT(src, TRAIT_TRUE_NIGHT_VISION))
 		lighting_cutoff = max(lighting_cutoff, LIGHTING_CUTOFF_HIGH)

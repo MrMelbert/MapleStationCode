@@ -91,7 +91,9 @@
 	if(grilled_item)
 		SEND_SIGNAL(grilled_item, COMSIG_ITEM_GRILL_PROCESS, src, seconds_per_tick)
 		grill_time += seconds_per_tick
-		grilled_item.reagents.add_reagent(/datum/reagent/consumable/char, 0.5 * seconds_per_tick)
+		var/char_amount = clamp(grilled_item.reagents.get_reagent_amount(/datum/reagent/consumable/nutriment), 1, (/datum/reagent/consumable/char::overdose_threshold / 3))
+		if(!grilled_item.reagents.has_reagent(/datum/reagent/consumable/char, char_amount))
+			grilled_item.reagents.add_reagent(/datum/reagent/consumable/char, 0.15 * seconds_per_tick)
 		grill_fuel -= GRILL_FUELUSAGE_ACTIVE * seconds_per_tick
 		grilled_item.AddComponent(/datum/component/sizzle)
 
