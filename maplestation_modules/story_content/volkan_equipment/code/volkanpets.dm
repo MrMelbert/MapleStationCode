@@ -268,8 +268,8 @@
 	if(hud_used)
 		hud_used.build_hand_slots()
 
-//default one sprays acid on people I do not want this
-/mob/living/basic/bot/cleanbot/pre_attack(mob/living/source, atom/target, proximity, modifiers)
+//default one sprays acid on people, this removes it.
+/mob/living/basic/bot/cleanbot/vroomba/pre_attack(mob/living/source, atom/target, proximity, modifiers)
 	if(!proximity || !can_unarmed_attack())
 		return NONE
 
@@ -282,12 +282,10 @@
 		return NONE
 
 	if(combat_mode)
-		if(isliving(target))
-			var/mob/living/living_target = target
-			living_target.apply_damage(10)
-
-		visible_message(span_danger("[src] flies into [target]!"))
-
+		melee_attack(target)
 
 	return NONE
 
+/mob/living/basic/bot/cleanbot/vroomba/melee_attack(atom/target, list/modifiers, ignore_cooldown = FALSE)
+		. = ..()
+		visible_message(span_danger("[src] flies into [target]!"))
