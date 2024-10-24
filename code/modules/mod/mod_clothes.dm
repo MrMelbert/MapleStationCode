@@ -25,6 +25,7 @@
 	armor_type = /datum/armor/none
 	body_parts_covered = CHEST|GROIN|LEGS // NON-MODULE CHANGE
 	item_flags = IMMUTABLE_SLOW
+	drop_sound = null
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
 
 /obj/item/clothing/gloves/mod
@@ -37,6 +38,8 @@
 	armor_type = /datum/armor/none
 	body_parts_covered = HANDS|ARMS
 	item_flags = IMMUTABLE_SLOW
+	equip_sound = null
+	drop_sound = null
 
 /obj/item/clothing/shoes/mod
 	name = "MOD boots"
