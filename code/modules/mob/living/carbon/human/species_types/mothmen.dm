@@ -98,8 +98,8 @@
 
 /datum/species/moth/get_sigh_sound(mob/living/carbon/human/moth)
 	if(moth.physique == FEMALE)
-		return 'sound/voice/human/female_sigh.ogg'
-	return 'sound/voice/human/male_sigh.ogg'
+		return SFX_FEMALE_SIGH
+	return SFX_MALE_SIGH
 
 /datum/species/moth/get_physical_attributes()
 	return "Moths have large and fluffy wings, which help them navigate the station if gravity is offline by pushing the air around them. \

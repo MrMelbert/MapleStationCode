@@ -119,8 +119,8 @@
 
 /datum/species/lizard/get_sigh_sound(mob/living/carbon/human/lizard)
 	if(lizard.physique == FEMALE)
-		return 'sound/voice/human/female_sigh.ogg'
-	return 'sound/voice/human/male_sigh.ogg'
+		return SFX_FEMALE_SIGH
+	return SFX_MALE_SIGH
 
 /datum/species/lizard/get_physical_attributes()
 	return "Lizardpeople can withstand slightly higher temperatures than most species, but they are very vulnerable to the cold \

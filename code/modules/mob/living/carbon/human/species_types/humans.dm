@@ -86,8 +86,8 @@
 
 /datum/species/human/get_sigh_sound(mob/living/carbon/human/human)
 	if(human.physique == FEMALE)
-		return 'sound/voice/human/female_sigh.ogg'
-	return 'sound/voice/human/male_sigh.ogg'
+		return SFX_FEMALE_SIGH
+	return SFX_MALE_SIGH
 
 /datum/species/human/get_species_description()
 	return "Humans are the dominant species in the known galaxy. \
