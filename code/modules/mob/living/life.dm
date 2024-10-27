@@ -101,7 +101,12 @@
 		else if(effective_temp > heat_threshold_low)
 			burn_damage *= 2
 
-		temperature_burns(burn_damage * seconds_per_tick)
+		if(temperature_burns(burn_damage * seconds_per_tick) > 0 && SPT_PROB(10, seconds_per_tick) && !temperature_insulation && !on_fire)
+			var/expected_temp = get_temperature(loc?.return_air())
+			var/insulation = get_insulation(expected_temp)
+			if(insulation > 0.5 && expected_temp < body_temperature)
+				to_chat(src, span_danger("Your clothing is insulating you, keeping you warmer!"))
+
 		if(effective_temp > heat_threshold_medium)
 			apply_status_effect(/datum/status_effect/stacking/heat_exposure, 1, heat_threshold_medium)
 
@@ -123,7 +128,11 @@
 		else if(body_temperature < cold_threshold_low)
 			cold_damage *= 2
 
-		temperature_cold_damage(cold_damage * seconds_per_tick)
+		if(temperature_cold_damage(cold_damage * seconds_per_tick) > 0 && SPT_PROB(10, seconds_per_tick) && !temperature_insulation)
+			var/expected_temp = get_temperature(loc?.return_air())
+			var/insulation = get_insulation(expected_temp)
+			if(insulation > 0.5 && expected_temp > body_temperature)
+				to_chat(src, span_danger("Your clothing is insulating you, keeping you colder!"))
 
 /// Applies damage to the mob due to being too cold
 /mob/living/proc/temperature_cold_damage(damage)
@@ -187,7 +196,7 @@
 	// Only apply slowdown if the body is cold rather than the skin
 	if(body_temperature < cold_threshold_medium && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/cold, multiplicative_slowdown = ((cold_threshold_medium - body_temperature) / COLD_SLOWDOWN_FACTOR))
-	else if(LAZYACCESS(movespeed_modification, /datum/movespeed_modifier/cold))
+	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/cold]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/cold)
 
 	// We are not to hot or cold, remove status and moods
