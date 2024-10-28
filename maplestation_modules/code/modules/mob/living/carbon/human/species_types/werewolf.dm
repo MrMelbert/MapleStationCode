@@ -13,13 +13,13 @@
 		TRAIT_CHUNKYFINGERS
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/werewolf
-	mutantears = /obj/item/organ/internal/ears/werewolf
+	mutantears = /obj/item/organ/internal/ears/cat/werewolf
 	mutanteyes = /obj/item/organ/internal/eyes/werewolf
 	mutantbrain = /obj/item/organ/internal/brain/werewolf
 	mutantliver = /obj/item/organ/internal/liver/werewolf
 	mutantheart = /obj/item/organ/internal/heart/werewolf
 	external_organs = list(
-		/obj/item/organ/external/tail/cat = "Cat",
+		/obj/item/organ/external/tail/cat = "Cat", // todo: add custom wolf tail
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
@@ -34,19 +34,23 @@
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/werewolf,
 	)
 
-/obj/item/organ/internal/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
+/obj/item/organ/internal/brain/werewolf
 	name = "werewolf brain"
 	desc = "a strange mixture of a human and wolf brain"
-	organ_traits = list(TRAIT_PRIMITIVE, TRAIT_CAN_STRIP)
+	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_PRIMITIVE, TRAIT_CAN_STRIP) // you may be a raging monster, but you still retain traits of your normal self
+	// also you can just inject clever mutation and get the first two traits anyways *shrug
 
+/obj/item/organ/internal/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
 	if(target.body_position == LYING_DOWN)
-		return owner.get_bodypart(BODY_ZONE_HEAD)
+		return owner.get_bodypart(BODY_ZONE_HEAD) // performs a "maul" attack which does increased melee damage
 	return ..()
 
 /datum/species/werewolf/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.set_haircolor("#bb9966", update = FALSE) // brown
 	human.set_hairstyle("Business Hair", update = TRUE)
 
+/* this shouldn't be a roundstart/base species players can choose, and is instead obtainable mid round
+feel free to update this section if any of the three below can be accessed out of character set up. */
 /datum/species/werewolf/get_species_description()
 	return "N/A"
 
