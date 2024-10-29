@@ -123,6 +123,7 @@
 #define span_smalldanger(str) ("<span class='smalldanger'>" + str + "</span>")
 #define span_smallnotice(str) ("<span class='smallnotice'>" + str + "</span>")
 #define span_smallnoticeital(str) ("<span class='smallnoticeital'>" + str + "</span>")
+#define span_spiderbreacher(str) ("<span class='spiderbreacher'>" + str + "</span>")
 #define span_spiderbroodmother(str) ("<span class='spiderbroodmother'>" + str + "</span>")
 #define span_spiderscout(str) ("<span class='spiderscout'>" + str + "</span>")
 #define span_subheader_announcement_text(str) ("<span class='subheader_announcement_text'>" + str + "</span>")

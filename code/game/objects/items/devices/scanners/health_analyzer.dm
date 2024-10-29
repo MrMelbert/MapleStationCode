@@ -226,7 +226,7 @@
 
 			if(mode == SCANNER_VERBOSE)
 				// Follow same body zone list every time so it's consistent across all humans
-				for(var/zone in GLOB.all_body_zones)
+				for(var/zone in BODY_ZONES_ALL)
 					var/obj/item/bodypart/limb = carbontarget.get_bodypart(zone)
 					if(isnull(limb))
 						dmgreport += "<tr>"
@@ -343,28 +343,27 @@
 		if(advanced && humantarget.has_dna() && humantarget.dna.stability != initial(humantarget.dna.stability))
 			render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability]%.</span><br>"
 
-		// Hulk and body temperature
-		var/datum/species/targetspecies = humantarget.dna.species
+		render_list += "<span class='info ml-1'>Species: [humantarget.dna.species.name][HAS_TRAIT(target, TRAIT_HULK) ? "-derived mutant" : ""]</span><br>"
 
-		render_list += "<span class='info ml-1'>Species: [targetspecies.name][mutant ? "-derived mutant" : ""]</span><br>"
-		var/core_temperature_message = "Core temperature: [round(humantarget.coretemperature-T0C, 0.1)] &deg;C ([round(humantarget.coretemperature*1.8-459.67,0.1)] &deg;F)"
-		if(humantarget.coretemperature >= humantarget.get_body_temp_heat_damage_limit())
-			render_list += "<span class='alert ml-1'>☼ [core_temperature_message] ☼</span><br>"
-		else if(humantarget.coretemperature <= humantarget.get_body_temp_cold_damage_limit())
-			render_list += "<span class='alert ml-1'>❄ [core_temperature_message] ❄</span><br>"
-		else
-			render_list += "<span class='info ml-1'>[core_temperature_message]</span><br>"
+	// NON-MODULE CHANGE
+	var/skin_temp = target.get_skin_temperature()
+	var/skin_temperature_message = "Skin temperature: [round(KELVIN_TO_CELCIUS(skin_temp), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(skin_temp), 0.1)] &deg;F)"
+	if(skin_temp >= target.bodytemp_heat_damage_limit)
+		render_list += "<span class='alert ml-1'>☼ [skin_temperature_message] ☼</span><br>"
+	else if(skin_temp <= target.bodytemp_cold_damage_limit)
+		render_list += "<span class='alert ml-1'>❄ [skin_temperature_message] ❄</span><br>"
+	else
+		render_list += "<span class='info ml-1'>[skin_temperature_message]</span><br>"
 
-	var/body_temperature_message = "Body temperature: [round(target.bodytemperature-T0C, 0.1)] &deg;C ([round(target.bodytemperature*1.8-459.67,0.1)] &deg;F)"
-	if(target.bodytemperature >= target.get_body_temp_heat_damage_limit())
+	var/body_temperature_message = "Body temperature: [round(KELVIN_TO_CELCIUS(target.body_temperature), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(target.body_temperature), 0.1)] &deg;F)"
+	if(target.body_temperature >= target.bodytemp_heat_damage_limit)
 		render_list += "<span class='alert ml-1'>☼ [body_temperature_message] ☼</span><br>"
-	else if(target.bodytemperature <= target.get_body_temp_cold_damage_limit())
+	else if(target.body_temperature <= target.bodytemp_cold_damage_limit)
 		render_list += "<span class='alert ml-1'>❄ [body_temperature_message] ❄</span><br>"
 	else
 		render_list += "<span class='info ml-1'>[body_temperature_message]</span><br>"
 
 	// Blood Level
-	// NON-MODULE CHANGE
 	if(target.get_blood_type())
 		var/blood_percent = round((target.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
 		var/blood_type = "[target.get_blood_type() || "None"]"
@@ -374,7 +373,7 @@
 			render_list += "<span class='alert ml-1'>Blood level: <b>CRITICAL [blood_percent] %</b>, [target.blood_volume] cl,</span> [span_info("type: [blood_type]")]<br>"
 		else
 			render_list += "<span class='info ml-1'>Blood level: [blood_percent] %, [target.blood_volume] cl, type: [blood_type]</span><br>"
-	// NON-MODULE CHANGE
+	// NON-MODULE CHANGE END
 
 	var/blood_alcohol_content = target.get_blood_alcohol_content()
 	if(blood_alcohol_content > 0)
@@ -411,9 +410,11 @@
 		to_chat(user, examine_block(.), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 	return .
 
-/obj/item/healthanalyzer/click_ctrl_shift(mob/user)
+/obj/item/healthanalyzer/CtrlShiftClick(mob/user)
 	. = ..()
-	if(!LAZYLEN(last_scan_text))
+	if(. == FALSE)
+		return
+	if(!length(last_scan_text))
 		balloon_alert(user, "no scans!")
 		return
 	if(scanner_busy)

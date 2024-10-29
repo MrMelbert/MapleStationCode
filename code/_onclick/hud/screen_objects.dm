@@ -673,7 +673,7 @@
 /atom/movable/screen/healthdoll/human/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
 	limbs = list()
-	for(var/i in GLOB.all_body_zones)
+	for(var/i in BODY_ZONES_ALL)
 		var/atom/movable/screen/healthdoll_limb/limb = new(src, null)
 		// layer chest above other limbs, it's the center after all
 		limb.layer = i == BODY_ZONE_CHEST ? layer + 0.05 : layer

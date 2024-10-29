@@ -62,14 +62,14 @@
 			disabled += body_part
 		missing -= body_part.body_zone
 		for(var/obj/item/embedded as anything in body_part.embedded_objects)
-			var/stuck_wordage = embedded.is_embed_harmless() ? "stuck to" : "embedded in"
+			var/stuck_wordage = embedded.isEmbedHarmless() ? "stuck to" : "embedded in"
 			. += span_boldwarning("[t_He] [t_has] [icon2html(embedded, user)] \a [embedded] [stuck_wordage] [t_his] [body_part.plaintext_zone]!")
 
 		if(body_part.current_gauze)
 			var/gauze_href = body_part.current_gauze.name
 			if(adjacent && isliving(user)) // only shows the href if we're adjacent
 				gauze_href = "<a href='?src=[REF(src)];gauze_limb=[REF(body_part)]'>[gauze_href]</a>"
-			msg += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].\n")
+			. += span_notice("There is some [icon2html(body_part.current_gauze, user)] [gauze_href] wrapped around [t_his] [body_part.plaintext_zone].\n")
 
 		for(var/datum/wound/iter_wound as anything in body_part.wounds)
 			. += span_danger(iter_wound.get_examine_description(user))
@@ -215,9 +215,9 @@
 				if (HAS_TRAIT(src, TRAIT_DEAF))
 					. += "[t_He] appear[p_s()] to not be responding to noises."
 				if (body_temperature > bodytemp_heat_damage_limit)
-					msg += "[t_He] [t_is] flushed and sweating.\n"
+					. += "[t_He] [t_is] flushed and sweating.\n"
 				if (body_temperature < bodytemp_cold_damage_limit)
-					msg += "[t_He] [t_is] shivering.\n"
+					. += "[t_He] [t_is] shivering.\n"
 
 			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
 				. += "[t_He] [t_has] a holy aura about [t_him]."

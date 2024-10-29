@@ -129,7 +129,7 @@
 		if(istype(id, /obj/item/card/id/advanced/chameleon))
 			id_gender ||= gender
 			id_species ||= dna.species.name
-			id_blood_type ||= dna.blood_type
+			id_blood_type ||= GLOB.blood_types[dna.species.exotic_bloodtype || dna.human_blood_type].name
 
 		var/id_examine = span_slightly_larger(separator_hr("This is <em>[src]'s ID card</em>."))
 		id_examine += "<div class='img_by_text_container'>"
