@@ -6158,6 +6158,7 @@
 #include "maplestation_modules\code\game\objects\items\locker_spawners.dm"
 #include "maplestation_modules\code\game\objects\items\plushes.dm"
 #include "maplestation_modules\code\game\objects\items\toys.dm"
+#include "maplestation_modules\code\game\objects\items\triage_card.dm"
 #include "maplestation_modules\code\game\objects\items\weaponry.dm"
 #include "maplestation_modules\code\game\objects\items\devices\triage_projector.dm"
 #include "maplestation_modules\code\game\objects\items\devices\PDA\PDA_types.dm"

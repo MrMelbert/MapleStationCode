@@ -77,3 +77,26 @@
 	suit = /obj/item/clothing/suit/randallcoat/nyarl
 	shoes = /obj/item/clothing/shoes/randallboots/nyarl
 	gloves = /obj/item/clothing/gloves/randallgloves/nyarl
+
+//for acolytes
+
+/obj/item/clothing/suit/hooded/acolyte
+	name = "acolyte robes"
+	desc = "The official outfit of worshipping your Lord, Blessed be It!"
+	icon = 'maplestation_modules/story_content/randall_equipment/icons/randall_icon.dmi'
+	worn_icon = 'maplestation_modules/story_content/randall_equipment/icons/randall_worn.dmi'
+	icon_state = "acolyterobe"
+	inhand_icon_state = "xenos_suit" //picking something that looks like it if anyone ever has it inhands i dont have time for the sprite rn
+	body_parts_covered = CHEST|GROIN|LEGS|ARMS|FEET
+	flags_inv = HIDEJUMPSUIT
+	hoodtype = /obj/item/clothing/head/hooded/acolytehood
+
+/obj/item/clothing/head/hooded/acolytehood
+	name = "acolyte hood"
+	desc = "The official hood of worshipping your Lord, Blessed be It!"
+	icon = 'maplestation_modules/story_content/randall_equipment/icons/randall_icon.dmi'
+	worn_icon = 'maplestation_modules/story_content/randall_equipment/icons/randall_worn.dmi'
+	icon_state = "acolytehood"
+	inhand_icon_state = null
+	body_parts_covered = HEAD
+	flags_inv = HIDEHAIR|HIDEEARS|HIDEFACE|HIDEMASK
