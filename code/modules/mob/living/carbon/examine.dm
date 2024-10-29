@@ -454,6 +454,8 @@
 
 	return clothes
 
+#undef CLOTHING_SLOT
+
 /// Collects info displayed about any HUDs the user has when examining src
 /mob/living/carbon/proc/get_hud_examine_info(mob/living/user)
 	return
