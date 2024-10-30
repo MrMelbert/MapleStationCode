@@ -382,7 +382,7 @@
 	if(exposed_mob.stat == DEAD)
 		return
 
-	if(methods & (INGEST|VAPOR|INJECT))
+	if(methods & (INGEST|VAPOR|INJECT|INHALE))
 		exposed_mob.adjust_nutrition(-2.5 * reac_volume)
 		if(show_message)
 			to_chat(exposed_mob, span_warning("Your stomach feels empty and cramps!"))
@@ -1026,7 +1026,7 @@
 		exposed_mob.visible_message(span_warning("[exposed_mob]'s body does not react..."))
 		return
 
-	if(iscarbon(exposed_mob) && !(methods & INGEST)) //simplemobs can still be splashed
+	if(iscarbon(exposed_mob) && !(methods & (INGEST|INHALE))) //simplemobs can still be splashed
 		return ..()
 
 	if(HAS_TRAIT(exposed_mob, TRAIT_HUSK))
