@@ -285,10 +285,10 @@
 		if("display_dna")
 			display_dna = text2num(value)
 
-/obj/item/mod/module/status_readout/on_suit_activation()
+/obj/item/mod/module/status_readout/on_part_activation()
 	RegisterSignal(mod.wearer, COMSIG_LIVING_DEATH, PROC_REF(death_sound))
 
-/obj/item/mod/module/status_readout/on_suit_deactivation(deleting)
+/obj/item/mod/module/status_readout/on_part_deactivation(deleting)
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_DEATH)
 
 /obj/item/mod/module/status_readout/proc/death_sound(mob/living/carbon/human/wearer)
@@ -375,10 +375,10 @@
 		including augmentations. However, it will take from the suit's power to do so."
 	complexity = 2
 
-/obj/item/mod/module/emp_shield/advanced/on_suit_activation()
+/obj/item/mod/module/emp_shield/advanced/on_part_activation()
 	mod.wearer.AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS)
 
-/obj/item/mod/module/emp_shield/advanced/on_suit_deactivation(deleting = FALSE)
+/obj/item/mod/module/emp_shield/advanced/on_part_deactivation(deleting = FALSE)
 	mod.wearer.RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS)
 
 ///Flashlight - Gives the suit a customizable flashlight.
@@ -497,10 +497,10 @@
 	incompatible_modules = list(/obj/item/mod/module/longfall)
 	required_slots = list(ITEM_SLOT_FEET)
 
-/obj/item/mod/module/longfall/on_suit_activation()
+/obj/item/mod/module/longfall/on_part_activation()
 	RegisterSignal(mod.wearer, COMSIG_LIVING_Z_IMPACT, PROC_REF(z_impact_react))
 
-/obj/item/mod/module/longfall/on_suit_deactivation(deleting = FALSE)
+/obj/item/mod/module/longfall/on_part_deactivation(deleting = FALSE)
 	UnregisterSignal(mod.wearer, COMSIG_LIVING_Z_IMPACT)
 
 /obj/item/mod/module/longfall/proc/z_impact_react(datum/source, levels, turf/fell_on)
@@ -677,7 +677,7 @@
 	var/former_flags
 	var/former_visor_flags
 
-/obj/item/mod/module/hat_stabilizer/on_suit_activation()
+/obj/item/mod/module/hat_stabilizer/on_part_activation()
 	var/obj/item/clothing/helmet = mod.get_part_from_slot(ITEM_SLOT_HEAD)
 	if(!istype(helmet))
 		return
@@ -685,7 +685,7 @@
 	RegisterSignal(helmet, COMSIG_ATOM_ATTACKBY, PROC_REF(place_hat))
 	RegisterSignal(helmet, COMSIG_ATOM_ATTACK_HAND_SECONDARY, PROC_REF(remove_hat))
 
-/obj/item/mod/module/hat_stabilizer/on_suit_deactivation(deleting = FALSE)
+/obj/item/mod/module/hat_stabilizer/on_part_deactivation(deleting = FALSE)
 	if(deleting)
 		return
 	if(attached_hat)	//knock off the helmet if its on their head. Or, technically, auto-rightclick it for them; that way it saves us code, AND gives them the bubble
@@ -772,10 +772,10 @@
 	incompatible_modules = list(/obj/item/mod/module/signlang_radio)
 	required_slots = list(ITEM_SLOT_GLOVES)
 
-/obj/item/mod/module/signlang_radio/on_suit_activation()
+/obj/item/mod/module/signlang_radio/on_part_activation()
 	ADD_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, MOD_TRAIT)
 
-/obj/item/mod/module/signlang_radio/on_suit_deactivation(deleting = FALSE)
+/obj/item/mod/module/signlang_radio/on_part_deactivation(deleting = FALSE)
 	REMOVE_TRAIT(mod.wearer, TRAIT_CAN_SIGN_ON_COMMS, MOD_TRAIT)
 
 ///A module that recharges the suit by an itsy tiny bit whenever the user takes a step. Originally called "magneto module" but the videogame reference sounds cooler.
@@ -788,14 +788,14 @@
 	required_slots = list(ITEM_SLOT_FEET)
 	var/power_per_step = DEFAULT_CHARGE_DRAIN * 0.3
 
-/obj/item/mod/module/joint_torsion/on_suit_activation()
+/obj/item/mod/module/joint_torsion/on_part_activation()
 	if(!(mod.wearer.movement_type & (FLOATING|FLYING)))
 		RegisterSignal(mod.wearer, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	/// This way we don't even bother to call on_moved() while flying/floating
 	RegisterSignal(mod.wearer, COMSIG_MOVETYPE_FLAG_ENABLED, PROC_REF(on_movetype_flag_enabled))
 	RegisterSignal(mod.wearer, COMSIG_MOVETYPE_FLAG_DISABLED, PROC_REF(on_movetype_flag_disabled))
 
-/obj/item/mod/module/joint_torsion/on_suit_deactivation(deleting = FALSE)
+/obj/item/mod/module/joint_torsion/on_part_deactivation(deleting = FALSE)
 	UnregisterSignal(mod.wearer, list(COMSIG_MOVABLE_MOVED, COMSIG_MOVETYPE_FLAG_ENABLED, COMSIG_MOVETYPE_FLAG_DISABLED))
 
 /obj/item/mod/module/joint_torsion/proc/on_movetype_flag_enabled(datum/source, flag, old_state)
@@ -978,12 +978,12 @@
 	incompatible_modules = list(/obj/item/mod/module/shock_absorber)
 	required_slots = list(ITEM_SLOT_BACK|ITEM_SLOT_BELT)
 
-/obj/item/mod/module/shock_absorber/on_suit_activation()
+/obj/item/mod/module/shock_absorber/on_part_activation()
 	. = ..()
 	ADD_TRAIT(mod.wearer, TRAIT_BATON_RESISTANCE, REF(src))
 	RegisterSignal(mod.wearer, COMSIG_MOB_BATONED, PROC_REF(mob_batoned))
 
-/obj/item/mod/module/shock_absorber/on_suit_deactivation(deleting)
+/obj/item/mod/module/shock_absorber/on_part_deactivation(deleting)
 	. = ..()
 	REMOVE_TRAIT(mod.wearer, TRAIT_BATON_RESISTANCE, REF(src))
 	UnregisterSignal(mod.wearer, COMSIG_MOB_BATONED)
