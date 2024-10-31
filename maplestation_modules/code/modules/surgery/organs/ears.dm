@@ -51,7 +51,6 @@
 /obj/item/organ/internal/ears/cat/werewolf/on_mob_remove(mob/living/carbon/human/ear_owner)
 	. = ..()
 	if(istype(ear_owner))
-		color = ear_owner.hair_color
 		ear_owner.dna.features["ears"] = "None"
 		ear_owner.dna.species.mutant_bodyparts -= "ears"
 		ear_owner.update_body()
