@@ -57,6 +57,7 @@
 		"borg_upgrade_service_apparatus",
 		"borg_upgrade_drink_apparatus",
 		"borg_upgrade_service_cookbook",
+		"borg_upgrade_botany",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)
 
