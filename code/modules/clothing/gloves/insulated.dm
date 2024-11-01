@@ -13,16 +13,6 @@
 	custom_price = PAYCHECK_CREW * 10
 	custom_premium_price = PAYCHECK_COMMAND * 6
 	cut_type = /obj/item/clothing/gloves/cut
-	clothing_traits = list(TRAIT_CHUNKYFINGERS)
-
-/obj/item/clothing/gloves/color/yellow/apply_fantasy_bonuses(bonus)
-	. = ..()
-	if(bonus >= 10)
-		detach_clothing_traits(TRAIT_CHUNKYFINGERS)
-
-/obj/item/clothing/gloves/color/yellow/remove_fantasy_bonuses(bonus)
-	attach_clothing_traits(TRAIT_CHUNKYFINGERS)
-	return ..()
 
 /datum/armor/color_yellow
 	bio = 50
@@ -124,8 +114,6 @@
 	inhand_icon_state = null
 	greyscale_colors = null
 	siemens_coefficient = 0
-	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
-	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE

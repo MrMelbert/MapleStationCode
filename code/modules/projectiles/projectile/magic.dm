@@ -569,7 +569,7 @@
 	icon_state = "ice_2"
 	damage_type = BURN
 	armour_penetration = 100
-	temperature = -200 // Cools you down greatly per hit
+	temperature = -50 CELCIUS
 
 /obj/projectile/magic/nothing
 	name = "bolt of nothing"

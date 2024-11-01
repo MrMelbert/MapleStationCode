@@ -17,7 +17,7 @@
 	rate_up_lim = 15
 	purity_min = 0.5
 	reaction_flags = REACTION_PH_VOL_CONSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_CHEMICAL | REACTION_TAG_BRUTE | REACTION_TAG_TOXIN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_CHEMICAL | REACTION_TAG_BRUTE | REACTION_TAG_TOXIN | REACTION_TAG_ORGAN | REACTION_TAG_OTHER
 
 /datum/chemical_reaction/fentanyl
 	results = list(/datum/reagent/toxin/fentanyl = 1)
@@ -37,7 +37,7 @@
 	rate_up_lim = 5
 	purity_min = 0.5
 	reaction_flags = REACTION_PH_VOL_CONSTANT
-	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_ORGAN | REACTION_TAG_TOXIN
+	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_DAMAGING | REACTION_TAG_ORGAN | REACTION_TAG_TOXIN | REACTION_TAG_PAIN
 
 /datum/chemical_reaction/cyanide
 	results = list(/datum/reagent/toxin/cyanide = 3)

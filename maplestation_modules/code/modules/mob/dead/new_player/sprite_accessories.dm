@@ -89,6 +89,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_expilot"
 
+/datum/sprite_accessory/hair/TrueBedhead
+	name = "True Bedhead"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_truebedhead"
+
 /datum/sprite_accessory/hair/braidedbun
 	name = "Braided Bun"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
@@ -306,6 +311,26 @@
 	name = "Graced Drills"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_graceddrill"
+
+/datum/sprite_accessory/hair/himepaper3
+	name = "Princely Hime Cut (Long)"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_princely_2"
+
+/datum/sprite_accessory/hair/thick_ponytail
+	name = "Thick Ponytail"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_thicktail"
+
+/datum/sprite_accessory/hair/aysm_point
+	name = "Asymmetrical Points"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_asympoint"
+
+/datum/sprite_accessory/hair/long_braid
+	name = "Long Braid"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_longbraid"
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big

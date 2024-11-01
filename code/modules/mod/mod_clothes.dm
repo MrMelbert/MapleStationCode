@@ -7,8 +7,6 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = HEAD
-	heat_protection = HEAD
-	cold_protection = HEAD
 	obj_flags = IMMUTABLE_SLOW
 
 /obj/item/clothing/suit/mod
@@ -26,8 +24,6 @@
 	)
 	armor_type = /datum/armor/none
 	body_parts_covered = CHEST|GROIN|LEGS // NON-MODULE CHANGE
-	heat_protection = CHEST|GROIN
-	cold_protection = CHEST|GROIN
 	obj_flags = IMMUTABLE_SLOW
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
 
@@ -40,8 +36,6 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = HANDS|ARMS
-	heat_protection = HANDS|ARMS
-	cold_protection = HANDS|ARMS
 	obj_flags = IMMUTABLE_SLOW
 
 /obj/item/clothing/shoes/mod
@@ -53,8 +47,6 @@
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 	armor_type = /datum/armor/none
 	body_parts_covered = FEET|LEGS
-	heat_protection = FEET|LEGS
-	cold_protection = FEET|LEGS
 	obj_flags = IMMUTABLE_SLOW
 	supports_variations_flags = CLOTHING_DIGITIGRADE_FILTER // NON-MODULE CHANGE
 	can_be_tied = FALSE
