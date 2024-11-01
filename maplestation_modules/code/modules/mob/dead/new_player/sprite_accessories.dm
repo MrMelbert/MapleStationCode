@@ -89,6 +89,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_expilot"
 
+/datum/sprite_accessory/hair/TrueBedhead
+	name = "True Bedhead"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_truebedhead"
+
 /datum/sprite_accessory/hair/braidedbun
 	name = "Braided Bun"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
