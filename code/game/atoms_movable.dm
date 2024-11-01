@@ -185,6 +185,11 @@
 		if(MOVABLE_LIGHT_BEAM)
 			AddComponent(/datum/component/overlay_lighting, is_directional = TRUE, is_beam = TRUE)
 
+	// HUGE NON-MODULE CHANGE
+	if (has_initial_mana_pool && can_have_mana_pool())
+		mana_pool = initialize_mana_pool()
+	// END NON-MODULE CHANGE
+
 /atom/movable/Destroy(force)
 	QDEL_NULL(language_holder)
 	QDEL_NULL(em_block)

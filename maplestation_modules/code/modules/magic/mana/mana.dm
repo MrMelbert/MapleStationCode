@@ -7,12 +7,6 @@
 
 	var/mana_overloaded = FALSE
 
-/atom/movable/Initialize(mapload, ...)
-	. = ..()
-
-	if (has_initial_mana_pool && can_have_mana_pool())
-		mana_pool = initialize_mana_pool()
-
 /atom/movable/Destroy(force, ...)
 
 	QDEL_NULL(mana_pool) // why was this after set_mana_pool. it should never ever be
