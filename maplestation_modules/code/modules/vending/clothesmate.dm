@@ -34,6 +34,12 @@
 				/obj/item/clothing/shoes/heels = 3,
 			),
 		),
+		list(
+			"name" = "Special",
+			"products" = list(
+				/obj/item/clothing/suit/hooded/acolyte = 20,
+			),
+		),
 	)
 	added_premium = list(
 		/obj/item/clothing/shoes/heels/fancy = 2,
