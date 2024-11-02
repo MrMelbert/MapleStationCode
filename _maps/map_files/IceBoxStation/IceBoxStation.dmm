@@ -66393,11 +66393,6 @@
 "tOO" = (
 /obj/structure/sign/warning/no_smoking/circle/directional/west,
 /obj/machinery/light/directional/west,
-/obj/machinery/camera{
-	c_tag = "Medbay Mid-South";
-	dir = 5;
-	network = list("ss13","medbay")
-	},
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 10
 	},
@@ -66406,6 +66401,10 @@
 /obj/machinery/fax{
 	fax_name = "Medical";
 	name = "Medical Fax Machine"
+	},
+/obj/machinery/camera/directional/west{
+	c_tag = "Medbay Mid-South";
+	network = list("ss13","medbay")
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/aft)
