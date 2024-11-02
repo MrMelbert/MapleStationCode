@@ -19,7 +19,7 @@
 	name = "Luciferium"
 	description = "An incredibly powerful, addictive, and dangerous concoction of mechanites from the outer planets of the Spinward. \
 		Drastically improves the user's bodily functions but will cause eventual death if mechanite cohesion is not sustained with continuous dosage. \
-		Once used, the pressence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
+		Once used, the presence and effects of the mechanites are irreversible, leading to the nickname \'Devil's Bargain\' by many."
 	taste_description = "dread"
 	reagent_state = SOLID
 	color = "#a80008"
@@ -238,7 +238,7 @@
 /datum/chemical_reaction/gojuice
 	results = list(/datum/reagent/drug/gojuice = 3)
 	required_reagents = list(/datum/reagent/neutroamine = 1, /datum/reagent/medicine/synaptizine = 1, /datum/reagent/drug/methamphetamine, /datum/reagent/fuel/oil = 1, /datum/reagent/consumable/sugar = 1)
-	reaction_tags = REACTION_TAG_MODERATE | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING
+	reaction_tags = REACTION_TAG_HARD | REACTION_TAG_DRUG | REACTION_TAG_ORGAN | REACTION_TAG_DAMAGING | REACTION_TAG_PAIN
 
 /obj/item/reagent_containers/cup/glass/bottle/gojuice
 	name = "go-juice bottle"
@@ -337,7 +337,7 @@
 	user.adjust_dizzy(-4 SECONDS * REM * seconds_per_tick)
 	user.adjust_jitter(-4 SECONDS * REM * seconds_per_tick)
 	user.AdjustSleeping(-20 * REM * seconds_per_tick)
-	user.adjust_bodytemperature(20 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, user.get_body_temp_normal())
+	user.adjust_body_temperature(WARM_DRINK * REM * seconds_per_tick, max_temp = user.standard_body_temperature)
 	. = ..()
 	return TRUE
 
