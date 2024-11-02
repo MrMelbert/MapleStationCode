@@ -82,15 +82,6 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 
 	return perks
 
-/datum/species/deep_skrell/prepare_human_for_preview(mob/living/carbon/human/human_for_preview)
-	human_for_preview.dna.features["mcolor"] = COLOR_GRAY
-	human_for_preview.update_body(is_creating = TRUE)
-
-/datum/species/human/prepare_human_for_preview(mob/living/carbon/human/human_for_preview)
-	human_for_preview.set_haircolor("#242424ff", update = FALSE) // grey
-	human_for_preview.set_hairstyle("Business Hair", update = TRUE)
-
-
 // Preset deep_skrell species
 /mob/living/carbon/human/species/deep_skrell
 	race = /datum/species/deep_skrell
@@ -157,7 +148,7 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	burn_modifier = 1.5
 	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
-	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
+	head_flags = HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 
 /obj/item/bodypart/leg/left/skrell
 	limb_id = SPECIES_DEEP_SKRELL
@@ -223,8 +214,6 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
 	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
 	eye_icon_state = "deep_eyes"
-	eye_color_left = ""
-	eye_color_right = ""
 	visual = TRUE
 	zone = BODY_ZONE_PRECISE_EYES
 	slot = ORGAN_SLOT_EYES

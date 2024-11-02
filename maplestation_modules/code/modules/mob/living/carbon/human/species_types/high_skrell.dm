@@ -143,7 +143,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	burn_modifier = 0.8
 	is_dimorphic = 0
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
-	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
+	head_flags = HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
 
 /obj/item/bodypart/leg/left/skrell
 	limb_id = SPECIES_HIGH_SKRELL
