@@ -4,7 +4,7 @@
 	icon = 'maplestation_modules/icons/obj/hand.dmi'
 	icon_state = "grab"
 	w_class = WEIGHT_CLASS_HUGE
-	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON | EXAMINE_SKIP
+	item_flags = ABSTRACT | DROPDEL | NOBLUDGEON | EXAMINE_SKIP // not currently a hand item, but we could implement it for stuff like handing grabs off to people
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/item/grabbing_hand/on_thrown(mob/living/carbon/user, atom/target)
@@ -68,11 +68,16 @@
 		stack_trace("[type] should be qdelled when the hand is deleted via stop_pulling.")
 		qdel(src)
 
+// Allows the grab hand to function like a normal hand for tabling and punching and the like
 /datum/status_effect/grabbing/proc/hand_use(datum/source, mob/living/user, atom/interacting_with, modifiers)
 	SIGNAL_HANDLER
+	// Mirrored from Click, not ideal (why doesn't punching apply the cd itself??). refactor later I guess
+	if(ismob(interacting_with))
+		user.changeNext_move(CLICK_CD_MELEE)
 	user.UnarmedAttack(interacting_with, TRUE, modifiers)
 	return ITEM_INTERACT_SUCCESS
 
+// Similar to above but we can kill this when we get ranged item interaction because afterattack is cringe
 /datum/status_effect/grabbing/proc/hand_use_deprecated(datum/source, atom/interacting_with, mob/living/user, prox, modifiers)
 	SIGNAL_HANDLER
 	if(prox)
@@ -129,6 +134,7 @@
 
 	RegisterSignal(grabbing_us, COMSIG_MOVABLE_SET_GRAB_STATE, PROC_REF(update_state))
 	RegisterSignal(grabbing_us, COMSIG_QDELETING, PROC_REF(grabber_gone))
+	RegisterSignal(grabbing_us, COMSIG_MOB_EMOTED("flip"), PROC_REF(grabber_flip))
 
 	RegisterSignal(owner, COMSIG_MOB_STATCHANGE, PROC_REF(owner_stat))
 	RegisterSignal(owner, COMSIG_LIVING_TRYING_TO_PULL, PROC_REF(try_upgrade))
@@ -150,6 +156,7 @@
 	QDEL_NULL(paired_effect)
 	if(grabbing_us)
 		UnregisterSignal(grabbing_us, list(
+			COMSIG_MOB_EMOTED("flip"),
 			COMSIG_MOVABLE_PRE_MOVE,
 			COMSIG_MOVABLE_SET_GRAB_STATE,
 			COMSIG_QDELETING,
@@ -450,6 +457,42 @@
 	SIGNAL_HANDLER
 	qdel(src)
 
+/datum/status_effect/grabbed/proc/grabber_flip(datum/source)
+	SIGNAL_HANDLER
+	if(grabbing_us.grab_state <= GRAB_AGGRESSIVE || pin)
+		return
+	if(!grabbing_us.has_gravity())
+		to_chat(grabbing_us, span_warning("You can't suplex someone without gravity!"))
+		return
+
+	var/mob/living/grabber = grabbing_us
+
+	owner.SpinAnimation(7, 1, parallel = TRUE)
+	owner.Immobilize(2.5 SECONDS)
+	grabber.Immobilize(0.5 SECONDS)
+	grabber.apply_damage(30, STAMINA)
+
+	addtimer(CALLBACK(src, PROC_REF(finish_flip)), 0.5 SECONDS, TIMER_DELETE_ME)
+
+/datum/status_effect/grabbed/proc/finish_flip()
+	var/mob/living/grabber = grabbing_us
+
+	owner.visible_message(
+		span_danger("[grabbing_us] suplexes [owner]!"),
+		span_danger("[grabbing_us] suplexes you!"),
+		span_hear("You hear a loud thud!"),
+		null,
+		grabber,
+	)
+	to_chat(grabber, span_danger("You suplex [owner]!"))
+
+	owner.Knockdown(5 SECONDS)
+	owner.apply_damage(10, BRUTE, BODY_ZONE_CHEST, owner.run_armor_check(BODY_ZONE_CHEST, MELEE))
+
+	unlink_mobs(get_step(grabber.loc, REVERSE_DIR(grabber.dir)))
+	grabber.Knockdown(2 SECONDS)
+	//grabber.stop_pulling()
+
 /datum/status_effect/grabbed/proc/link_mobs()
 	if(linked)
 		return
@@ -464,7 +507,7 @@
 	RegisterSignal(grabbing_us, COMSIG_ATOM_PRE_BULLET_ACT, PROC_REF(bullet_shield))
 	RegisterSignal(grabbing_us, COMSIG_ATOM_POST_DIR_CHANGE, PROC_REF(dir_changed))
 
-/datum/status_effect/grabbed/proc/unlink_mobs()
+/datum/status_effect/grabbed/proc/unlink_mobs(atom/unlink_loc)
 	if(!linked)
 		return
 
@@ -473,7 +516,7 @@
 	REMOVE_TRAIT(owner, TRAIT_FORCED_STANDING, "[id]_link")
 	REMOVE_TRAIT(owner, TRAIT_NO_MOVE_PULL, "[id]_link")
 	if(!QDELING(owner) && !QDELING(grabbing_us))
-		owner.Move(get_step(grabbing_us.loc, grabbing_us.dir))
+		owner.Move(unlink_loc || get_step(grabbing_us.loc, grabbing_us.dir))
 	UnregisterSignal(grabbing_us, list(
 		COMSIG_MOVABLE_MOVED,
 		COMSIG_ATOM_PRE_BULLET_ACT,

@@ -86,7 +86,10 @@
 	. = ..()
 	var/obj/item/paper/toppaper = toppaper_ref?.resolve()
 	if(toppaper)
-		. += toppaper.icon_state
+		var/image/top_paper = image(icon = src.icon, icon_state = toppaper.icon_state)
+		top_paper.color = toppaper.color
+		. += top_paper
+		// copies stamps and stuff
 		. += toppaper.overlays
 	if(pen)
 		. += "clipboard_pen"

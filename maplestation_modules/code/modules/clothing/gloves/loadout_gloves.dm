@@ -4,8 +4,6 @@
 	desc = "These bone bracers are made of real goliath bone, but have been degraded from years in combat and offer no protection."
 	icon_state = "bracers"
 	inhand_icon_state = null
-	heat_protection = HANDS
-	cold_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	resistance_flags = NONE

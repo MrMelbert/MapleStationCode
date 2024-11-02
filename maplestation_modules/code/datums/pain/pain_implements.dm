@@ -165,6 +165,18 @@
 	list_reagents = list(/datum/reagent/medicine/painkiller/paracetamol = 10) // Lasts ~4 minutes, heals ~15 pain per bodypart
 	rename_with_volume = TRUE
 
+/obj/item/reagent_containers/pill/naloxone
+	name = "naloxone pill"
+	desc = "Used to treat opioid overdoses and addiction."
+	icon_state = "pill13"
+	list_reagents = list(/datum/reagent/medicine/naloxone = 10)
+
+/obj/item/reagent_containers/pill/buproprion
+	name = "buproprion pill"
+	desc = "Used to treat stimulant and nicotine addiction."
+	icon_state = "pill14"
+	list_reagents = list(/datum/reagent/medicine/naloxone = 10)
+
 /obj/item/reagent_containers/syringe/paracetamol
 	name = "syringe (paracetamol)"
 	desc = "Contains fiteen units of Paracetamol. Used to treat general pain. Metabolizes slowly."
@@ -331,8 +343,6 @@
 	slot_flags = ITEM_SLOT_OCLOTHING
 	body_parts_covered = CHEST
 	resistance_flags = FIRE_PROOF
-	heat_protection = CHEST|GROIN|LEGS|ARMS
-	cold_protection = CHEST|GROIN|LEGS|ARMS
 	max_heat_protection_temperature = FIRE_SUIT_MAX_TEMP_PROTECT
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	armor_type = /datum/armor/shock_blanket
@@ -417,7 +427,7 @@
 /obj/item/shock_blanket/proc/enable_protection(mob/living/source)
 	if(istype(source) && !(datum_flags & DF_ISPROCESSING))
 		var/temp_change = "warmer"
-		if(source.bodytemperature > source.get_body_temp_normal(apply_change = FALSE))
+		if(source.body_temperature > source.standard_body_temperature)
 			temp_change = "colder"
 
 		to_chat(source, span_notice("You feel [temp_change] as [src] begins regulating your body temperature."))
@@ -431,7 +441,7 @@
 
 	if(istype(source) && (datum_flags & DF_ISPROCESSING))
 		var/temp_change = "freezing"
-		if(source.bodytemperature > source.get_body_temp_normal(apply_change = FALSE))
+		if(source.body_temperature > source.standard_body_temperature)
 			temp_change = "hotter"
 
 		to_chat(source, span_notice("You feel [temp_change] again as [src] stops regulating your body temperature."))
@@ -444,17 +454,10 @@
 		disable_protection()
 		return
 
-	var/target_temp = wearer.get_body_temp_normal(apply_change = FALSE)
-	if(wearer.bodytemperature > target_temp)
-		wearer.adjust_bodytemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, target_temp)
-	else if(wearer.bodytemperature < (target_temp + 1))
-		wearer.adjust_bodytemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, target_temp)
-	if(ishuman(wearer))
-		var/mob/living/carbon/human/human_wearer = wearer
-		if(human_wearer.coretemperature > target_temp)
-			human_wearer.adjust_coretemperature(-8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, target_temp)
-		else if(human_wearer.coretemperature < (target_temp + 1))
-			human_wearer.adjust_coretemperature(8 * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, 0, target_temp)
+	if(wearer.body_temperature < wearer.standard_body_temperature)
+		wearer.adjust_body_temperature(0.25 KELVIN * seconds_per_tick, max_temp = wearer.standard_body_temperature)
+	else if(wearer.body_temperature > wearer.standard_body_temperature)
+		wearer.adjust_body_temperature(-0.25 KELVIN * seconds_per_tick, min_temp = wearer.standard_body_temperature)
 
 /obj/item/shock_blanket/emergency
 	desc = "An emergency variant shock blanket intended to be placed in medkits for field treatment. Faster to apply to patients, but more restrictive to movement."

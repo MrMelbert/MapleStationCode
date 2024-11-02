@@ -17,6 +17,7 @@
 		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_UNDERWEAR,
+		TRAIT_SHIFTY_EYES, // NON-MODULE CHANGE: monkey are shifty
 		TRAIT_VENTCRAWLER_NUDE,
 		TRAIT_WEAK_SOUL,
 	)
@@ -186,6 +187,7 @@
 		TRAIT_NO_BLOOD_OVERLAY,
 		TRAIT_NO_DNA_COPY,
 		TRAIT_NO_UNDERWEAR,
+		TRAIT_SHIFTY_EYES, // NON-MODULE CHANGE: monkey are shifty
 		TRAIT_VENTCRAWLER_NUDE,
 		TRAIT_WEAK_SOUL,
 		// unique
@@ -211,6 +213,9 @@
 
 	bodytemp_heat_damage_limit = /datum/species/lizard::bodytemp_heat_damage_limit
 	bodytemp_cold_damage_limit = /datum/species/lizard::bodytemp_cold_damage_limit
+	// Cold blooded
+	temperature_normalization_speed = /datum/species/lizard::temperature_homeostasis_speed
+	temperature_normalization_speed = /datum/species/lizard::temperature_normalization_speed
 
 	ass_image = /datum/species/lizard::ass_image
 
@@ -222,9 +227,6 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/digitigrade,
 		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/digitigrade,
 	)
-
-/datum/species/monkey/lizard/body_temperature_core(mob/living/carbon/human/humi, seconds_per_tick, times_fired)
-	return
 
 /datum/species/monkey/lizard/get_scream_sound(mob/living/carbon/human/lizard)
 	return pick(

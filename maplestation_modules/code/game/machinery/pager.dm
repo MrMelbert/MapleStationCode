@@ -128,7 +128,7 @@
 		"fakename" = "Pager Alert",
 		"fakejob" = "Desk",
 		"automated" = TRUE,
-		"message" = "Someone's pressence is requested at the front desk. [notify_href]",
+		"message" = "Someone's presence is requested at the front desk. [notify_href]",
 		"targets" = department_pdas,
 	))
 	signal.send_to_receivers()
