@@ -223,11 +223,12 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	icon = 'maplestation_modules/icons/mob/skrell_organs.dmi'
 	eye_overlay_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
 	eye_icon_state = "deep_eyes"
+	eye_color_left = ""
+	eye_color_right = ""
 	visual = TRUE
 	zone = BODY_ZONE_PRECISE_EYES
 	slot = ORGAN_SLOT_EYES
 	flash_protect = FLASH_PROTECTION_SENSITIVE
-	tint = 1
 
 /datum/species/deep_skrell/on_species_gain(mob/living/carbon/new_deep_skrell, datum/species/old_species, pref_load)
 	. = ..()
