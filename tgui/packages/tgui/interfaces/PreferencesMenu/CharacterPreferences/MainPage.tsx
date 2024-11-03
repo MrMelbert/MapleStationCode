@@ -511,6 +511,8 @@ export function MainPage(props: MainPageProps) {
   const [currentClothingMenu, setCurrentClothingMenu] = useState<string | null>(
     null,
   );
+  const [deleteCharacterPopupOpen, setDeleteCharacterPopupOpen] =
+    useState(false);
   const [multiNameInputOpen, setMultiNameInputOpen] = useState(false);
   const [randomToggleEnabled] = useRandomToggleState();
 
