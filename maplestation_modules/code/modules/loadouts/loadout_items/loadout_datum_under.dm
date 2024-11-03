@@ -404,3 +404,8 @@
 	name = "Modified Nun Uniform"
 	item_path = /obj/item/clothing/under/jumpsuit/belli
 	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/vince
+	name = "Violet Nurse Uniform"
+	item_path = /obj/item/clothing/under/dress/vince
+	additional_displayed_text = list("Character Item")
