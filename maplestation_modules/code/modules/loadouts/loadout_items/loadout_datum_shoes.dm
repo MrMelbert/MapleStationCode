@@ -57,9 +57,17 @@
 	name = "Mining Boots"
 	item_path = /obj/item/clothing/shoes/workboots/mining
 
-/datum/loadout_item/shoes/laceup
-	name = "Laceup Shoes"
+/datum/loadout_item/shoes/black_laceup
+	name = "Black Laceup Shoes"
 	item_path = /obj/item/clothing/shoes/laceup
+
+/datum/loadout_item/shoes/burgundy_laceup
+	name = "Burgundy Laceup Shoes"
+	item_path = /obj/item/clothing/shoes/laceup/burgundy
+
+/datum/loadout_item/shoes/brown_laceup
+	name = "Brown Laceup Shoes"
+	item_path = /obj/item/clothing/shoes/laceup/brown
 
 /datum/loadout_item/shoes/russian_boots
 	name = "Russian Boots"
