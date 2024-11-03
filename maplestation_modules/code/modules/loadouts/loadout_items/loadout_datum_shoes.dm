@@ -122,3 +122,8 @@
 	name = "Berbier Boots"
 	item_path = /obj/item/clothing/shoes/liniboots
 	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/shoes/vince
+	name = "Slick Syringe Heels"
+	item_path = /obj/item/clothing/shoes/vince
+	additional_displayed_text = list("Character Item")
