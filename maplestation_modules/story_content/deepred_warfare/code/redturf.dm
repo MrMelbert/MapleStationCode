@@ -41,3 +41,17 @@
 
 /turf/open/indestructible/redtech/active/alias/altalt
 	icon_state = "onplating_altalt"
+
+/turf/closed/indestructible/redtech
+	name = "redtech hull"
+	desc = "A huge, impervious construction of redtech plating. It seems to be currently inactive."
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/offwalls.dmi'
+	icon_state = "redwalloff-0"
+	base_icon_state = "redwalloff"
+	smoothing_flags = SMOOTH_BITMASK
+	smoothing_groups = SMOOTH_GROUP_WALLS + SMOOTH_GROUP_CLOSED_TURFS
+	canSmoothWith = SMOOTH_GROUP_WALLS
+
+/turf/closed/indestructible/redtech/alias
+	name = "crimson hull"
+	desc = "A huge, impervious construction of metallic plating. It seems to be currently inactive."
