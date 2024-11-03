@@ -36,10 +36,6 @@
 	. = ..()
 	. += late_examine(user)
 
-/mob/living/carbon/human/examine(mob/user)
-	. = ..()
-	. += late_examine(user)
-
 /// Mob level examining that happens after the main beef of examine is done
 /mob/living/proc/late_examine(mob/user)
 	. = list()

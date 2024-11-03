@@ -338,27 +338,28 @@
 				final_descriptions[damage_type] = damage_desc
 	return final_descriptions
 
+/// Turns a item slot flag into a string key
 #define CLOTHING_SLOT(slot) "[ITEM_SLOT_##slot]"
 
 /// Coolects examine information about the mob's clothing and equipment
 /mob/living/carbon/proc/get_clothing_examine_info(mob/living/user, obscured)
 	// Clothes are reported in the same order every time
 	var/list/clothes = list(
-		CLOTHING_SLOT_ICLOTHING = "",
-		CLOTHING_SLOT_HEAD = "",
-		CLOTHING_SLOT_MASK = "",
-		CLOTHING_SLOT_NECK = "",
-		CLOTHING_SLOT_EYES = "",
-		CLOTHING_SLOT_EARS = "",
-		CLOTHING_SLOT_OCLOTHING = "",
-		CLOTHING_SLOT_SUITSTORE = "",
-		CLOTHING_SLOT_BACK = "",
-		CLOTHING_SLOT_ID = "",
-		CLOTHING_SLOT_HANDS = "",
-		CLOTHING_SLOT_GLOVES = "",
-		CLOTHING_SLOT_HANDCUFFED = "",
-		CLOTHING_SLOT_BELT = "",
-		CLOTHING_SLOT_FEET = "",
+		CLOTHING_SLOT(ICLOTHING) = "",
+		CLOTHING_SLOT(HEAD) = "",
+		CLOTHING_SLOT(MASK) = "",
+		CLOTHING_SLOT(NECK) = "",
+		CLOTHING_SLOT(EYES) = "",
+		CLOTHING_SLOT(EARS) = "",
+		CLOTHING_SLOT(OCLOTHING) = "",
+		CLOTHING_SLOT(SUITSTORE) = "",
+		CLOTHING_SLOT(BACK) = "",
+		CLOTHING_SLOT(ID) = "",
+		CLOTHING_SLOT(HANDS) = "",
+		CLOTHING_SLOT(GLOVES) = "",
+		CLOTHING_SLOT(HANDCUFFED) = "",
+		CLOTHING_SLOT(BELT) = "",
+		CLOTHING_SLOT(FEET) = "",
 	)
 	var/t_He = p_They()
 	var/t_His = p_Their()
@@ -367,50 +368,49 @@
 	var/t_is = p_are()
 	//head
 	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_HEAD] = "[t_He] [t_is] wearing [head.examine_title(user)] on [t_his] head."
+		clothes[CLOTHING_SLOT(HEAD)] = "[t_He] [t_is] wearing [head.examine_title(user, href = TRUE)] on [t_his] head."
 	//back
 	if(back && !(back.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_BACK] = "[t_He] [t_has] [back.examine_title(user)] on [t_his] back."
+		clothes[CLOTHING_SLOT(BACK)] = "[t_He] [t_has] [back.examine_title(user, href = TRUE)] on [t_his] back."
 	//Hands
 	for(var/obj/item/held_thing in held_items)
 		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
 			continue
-		if(clothes[CLOTHING_SLOT_HANDS])
-			clothes[CLOTHING_SLOT_HANDS] += "<br>"
-		clothes[CLOTHING_SLOT_HANDS] += "[t_He] [t_is] holding [held_thing.examine_title(user)] in [t_his] [get_held_index_name(get_held_index_of_item(held_thing))]."
+		if(clothes[CLOTHING_SLOT(HANDS)])
+			clothes[CLOTHING_SLOT(HANDS)] += "<br>"
+		clothes[CLOTHING_SLOT(HANDS)] += "[t_He] [t_is] holding [held_thing.examine_title(user, href = TRUE)] in [t_his] [get_held_index_name(get_held_index_of_item(held_thing))]."
 	//gloves
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && !(gloves.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_GLOVES] = "[t_He] [t_has] [gloves.examine_title(user)] on [t_his] hands."
+		clothes[CLOTHING_SLOT(GLOVES)] = "[t_He] [t_has] [gloves.examine_title(user, href = TRUE)] on [t_his] hands."
 	//handcuffed?
 	if(handcuffed)
 		var/cables_or_cuffs = istype(handcuffed, /obj/item/restraints/handcuffs/cable) ? "restrained with cable" : "handcuffed"
-		clothes[CLOTHING_SLOT_HANDCUFFED] span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] [cables_or_cuffs]!")
+		clothes[CLOTHING_SLOT(HANDCUFFED)] = span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] [cables_or_cuffs]!")
 	//shoes
 	if(shoes && !(obscured & ITEM_SLOT_FEET)  && !(shoes.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_FEET] = "[t_He] [t_is] wearing [shoes.examine_title(user)] on [t_his] feet."
+		clothes[CLOTHING_SLOT(FEET)] = "[t_He] [t_is] wearing [shoes.examine_title(user, href = TRUE)] on [t_his] feet."
 	//mask
 	if(wear_mask && !(obscured & ITEM_SLOT_MASK)  && !(wear_mask.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_MASK] = "[t_He] [t_has] [wear_mask.examine_title(user)] on [t_his] face."
+		clothes[CLOTHING_SLOT(MASK)] = "[t_He] [t_has] [wear_mask.examine_title(user, href = TRUE)] on [t_his] face."
 	if(wear_neck && !(obscured & ITEM_SLOT_NECK)  && !(wear_neck.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_NECK] = "[t_He] [t_is] wearing [wear_neck.examine_title(user)] around [t_his] neck."
+		clothes[CLOTHING_SLOT(NECK)] = "[t_He] [t_is] wearing [wear_neck.examine_title(user, href = TRUE)] around [t_his] neck."
 	//eyes
 	if(!(obscured & ITEM_SLOT_EYES))
 		if(glasses && !(glasses.item_flags & EXAMINE_SKIP))
-			clothes[CLOTHING_SLOT_EYES] = "[t_He] [t_has] [glasses.examine_title(user)] covering [t_his] eyes."
+			clothes[CLOTHING_SLOT(EYES)] = "[t_He] [t_has] [glasses.examine_title(user, href = TRUE)] covering [t_his] eyes."
 		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-			clothes[CLOTHING_SLOT_EYES] = span_warning("<B>[t_His] eyes are glowing with an unnatural red aura!</B>")
+			clothes[CLOTHING_SLOT(EYES)] = span_boldwarning("[t_His] eyes are glowing with an unnatural red aura!")
 		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
-			clothes[CLOTHING_SLOT_EYES] = span_warning("<B>[t_His] eyes are bloodshot!</B>")
+			clothes[CLOTHING_SLOT(EYES)] = span_boldwarning("[t_His] eyes are bloodshot!")
 	//ears
 	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_EARS] = "[t_He] [t_has] [ears.examine_title(user)] on [t_his] ears."
+		clothes[CLOTHING_SLOT(EARS)] = "[t_He] [t_has] [ears.examine_title(user, href = TRUE)] on [t_his] ears."
 
 	return clothes
 
 /mob/living/carbon/human/get_clothing_examine_info(mob/living/user, obscured)
 	var/list/clothes = ..()
 	var/t_He = p_They()
-	var/t_His = p_Their()
 	var/t_his = p_their()
 	var/t_has = p_have()
 	var/t_is = p_are()
@@ -424,33 +424,33 @@
 			if(length(accessories))
 				accessory_message = " with [english_list(accessories)] attached"
 
-		clothes[CLOTHING_SLOT_ICLOTHING] = "[t_He] [t_is] wearing [w_uniform.examine_title(user)][accessory_message]."
+		clothes[CLOTHING_SLOT(ICLOTHING)] = "[t_He] [t_is] wearing [w_uniform.examine_title(user, href = TRUE)][accessory_message]."
 	//suit/armor
 	if(wear_suit && !(wear_suit.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_OCLOTHING] = "[t_He] [t_is] wearing [wear_suit.examine_title(user)]."
+		clothes[CLOTHING_SLOT(OCLOTHING)] = "[t_He] [t_is] wearing [wear_suit.examine_title(user, href = TRUE)]."
 		//suit/armor storage
 		if(s_store && !(obscured & ITEM_SLOT_SUITSTORE) && !(s_store.item_flags & EXAMINE_SKIP))
-			clothes[CLOTHING_SLOT_SUITSTORE] = "[t_He] [t_is] carrying [s_store.examine_title(user)] on [t_his] [wear_suit.name]."
+			clothes[CLOTHING_SLOT(SUITSTORE)] = "[t_He] [t_is] carrying [s_store.examine_title(user, href = TRUE)] on [t_his] [wear_suit.name]."
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
 		var/obj/item/card/id/id = wear_id.GetID()
 		if(id && get_dist(user, src) <= ID_EXAMINE_DISTANCE)
-			var/id_href = "<a href='?src=[REF(src)];see_id=1;id_ref=[REF(id)];id_name=[id.registered_name];examine_time=[world.time]'>[wear_id.examine_title(user)]</a>"
-			clothes[CLOTHING_SLOT_ID] = "[t_He] [t_is] wearing [id_href]."
+			var/id_href = "<a href='?src=[REF(src)];see_id=1;id_ref=[REF(id)];id_name=[id.registered_name];examine_time=[world.time]'>[wear_id.examine_title(user, href = TRUE)]</a>"
+			clothes[CLOTHING_SLOT(ID)] = "[t_He] [t_is] wearing [id_href]."
 		else
-			clothes[CLOTHING_SLOT_ID] = "[t_He] [t_is] wearing [wear_id.examine_title(user)]."
+			clothes[CLOTHING_SLOT(ID)] = "[t_He] [t_is] wearing [wear_id.examine_title(user, href = TRUE)]."
 	//gloves
-	if(!clothes[CLOTHING_SLOT_GLOVES] && !(obscured & ITEM_SLOT_HANDS) && (GET_ATOM_BLOOD_DNA_LENGTH(src) || blood_in_hands) && num_hands)
+	if(!clothes[CLOTHING_SLOT(GLOVES)] && !(obscured & ITEM_SLOT_HANDS) && (GET_ATOM_BLOOD_DNA_LENGTH(src) || blood_in_hands) && num_hands)
 		var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 		var/list/all_blood_names = list()
 		for(var/dna_sample in all_dna)
 			var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
 			all_blood_names |= lowertext(initial(blood.reagent_type.name))
 
-		clothes[CLOTHING_SLOT_GLOVES] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
+		clothes[CLOTHING_SLOT(GLOVES)] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
 	//belt
 	if(belt && !(belt.item_flags & EXAMINE_SKIP))
-		clothes[CLOTHING_SLOT_BELT] = "[t_He] [t_has] [belt.examine_title(user)] about [t_his] waist."
+		clothes[CLOTHING_SLOT(BELT)] = "[t_He] [t_has] [belt.examine_title(user, href = TRUE)] about [t_his] waist."
 
 	return clothes
 
@@ -495,7 +495,7 @@
 	var/list/cybers = list()
 	for(var/obj/item/organ/internal/cyberimp/cyberimp in organs)
 		if(IS_ROBOTIC_ORGAN(cyberimp) && !(cyberimp.organ_flags & ORGAN_HIDDEN))
-			cybers += cyberimp.examine_title(user)
+			cybers += cyberimp.examine_title(user, href = TRUE)
 	if(length(cybers))
 		. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"
 		. += "<span class='notice ml-2'>[english_list(cybers, and_text = ", and")]</span>"
