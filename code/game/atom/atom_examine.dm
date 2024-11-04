@@ -154,7 +154,6 @@
 		if(href_list["point_at"])
 			if(ismob(loc))
 				viewer.point_at(src)
-				var/whose_is_it = loc == viewer ? "[p_their()] " : "[loc]'s "
 				viewer.visible_message(
 					span_infoplain("[span_name("[viewer]")] points at [loc == viewer ? "[p_their()] " : "[loc]'s "][src]."),
 					span_notice("You point at [loc == viewer ? "your " : "[loc]'s "][src]."),
