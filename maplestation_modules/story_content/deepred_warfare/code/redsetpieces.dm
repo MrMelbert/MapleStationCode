@@ -22,3 +22,11 @@
 
 /obj/structure/redtech_indestructable/heatsink_off/alias
 	name = "crimson heatsink"
+
+/obj/structure/redtech_indestructable/inert_AV
+	name = "inert Anti Void"
+	desc = "Something has gone terribly wrong."
+	icon_state = "inert_AV"
+
+/obj/structure/redtech_indestructable/inert_AV/worse
+	icon_state = "inert_AV_worse"
