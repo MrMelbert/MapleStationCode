@@ -269,7 +269,7 @@
 
 	if(elevator_mode && elevator_status == LIFT_PLATFORM_UNLOCKED)
 		open()
-	else if(requiresID() && allowed(user))
+	else if(requiresID() && (!user || user.mind || user.mob_size >= MOB_SIZE_HUMAN) && allowed(user))
 		open()
 	else
 		do_animate("deny")

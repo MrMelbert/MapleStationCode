@@ -154,7 +154,7 @@
 	if(elevator_mode && elevator_status == LIFT_PLATFORM_UNLOCKED)
 		open()
 
-	else if(allowed(user))
+	else if((!user || user.mind || user.mob_size >= MOB_SIZE_HUMAN) && allowed(user))
 		open_and_close()
 
 	else
