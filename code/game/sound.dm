@@ -188,12 +188,13 @@
 	S.status = SOUND_UPDATE
 	SEND_SOUND(src, S)
 
-/client/proc/playtitlemusic(vol = 85)
+/client/proc/playtitlemusic(volume_multiplier = 1)
 	set waitfor = FALSE
 	UNTIL(SSticker.login_music) //wait for SSticker init to set the login music
 
-	if(prefs && (prefs.read_preference(/datum/preference/toggle/sound_lobby)) && !CONFIG_GET(flag/disallow_title_music))
-		SEND_SOUND(src, sound(SSticker.login_music, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
+	var/volume = prefs.read_preference(/datum/preference/numeric/sound_lobby_volume) * volume_multiplier
+	if(volume > 0 && !CONFIG_GET(flag/disallow_title_music))
+		SEND_SOUND(src, sound(SSticker.login_music, repeat = 0, wait = 0, volume = volume, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
 		for(var/atom/movable/screen/lobby_music/text in mob.hud_used?.static_inventory)
 			text.start_tracking()
 
