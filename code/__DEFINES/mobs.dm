@@ -978,3 +978,7 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 
 /// Types of bullets that mining mobs take full damage from
 #define MINING_MOB_PROJECTILE_VULNERABILITY list(BRUTE)
+
+/// Distance which you can see someone's ID card
+/// Short enough that you can inspect over tables (bartender checking age)
+#define ID_EXAMINE_DISTANCE 3
