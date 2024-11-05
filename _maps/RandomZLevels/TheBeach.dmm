@@ -25,6 +25,17 @@
 /obj/item/extinguisher,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"ao" = (
+/obj/structure/beach_towel,
+/turf/open/floor/carpet/green,
+/area/awaymission/beach)
+"aq" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/closet/crate/coffin,
+/mob/living/basic/skeleton,
+/obj/item/ectoplasm,
+/turf/open/floor/vault/sandstone,
+/area/awaymission/beach)
 "at" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -34,6 +45,15 @@
 	id_tag = "beach_room_7"
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"au" = (
+/obj/structure/flora/coconuts{
+	pixel_y = 26;
+	pixel_x = 23
+	},
+/turf/open/misc/beach/coast{
+	dir = 10
+	},
 /area/awaymission/beach)
 "aw" = (
 /obj/structure/table/glass,
@@ -74,6 +94,22 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"aK" = (
+/obj/structure/punji_sticks,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"aN" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/closet/cabinet,
+/obj/item/coin/silver/doubloon,
+/obj/item/coin/silver/doubloon{
+	pixel_y = -3;
+	pixel_x = -2
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "aT" = (
 /obj/machinery/shower/directional/west,
 /obj/effect/turf_decal/siding/wood{
@@ -91,6 +127,15 @@
 /obj/machinery/space_heater,
 /obj/structure/sign/clock/directional/north,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"bf" = (
+/obj/structure/flora/tree/palm/style_random{
+	pixel_y = 22;
+	pixel_x = 11
+	},
+/turf/open/misc/beach/coast/corner{
+	dir = 1
+	},
 /area/awaymission/beach)
 "bg" = (
 /obj/structure/no_effect_signpost{
@@ -131,6 +176,12 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
+"bB" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 9
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "bC" = (
 /obj/vehicle/ridden/atv{
 	dir = 4
@@ -149,6 +200,20 @@
 "bY" = (
 /obj/structure/fluff/beach_umbrella/cap,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"cc" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/obj/item/reagent_containers/cup/bucket/wooden,
+/obj/item/reagent_containers/cup/bucket/wooden,
+/obj/structure/fermenting_barrel,
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "cj" = (
 /obj/effect/turf_decal/siding/dark_red{
@@ -173,6 +238,10 @@
 "cq" = (
 /obj/machinery/light/directional/west,
 /turf/open/floor/carpet/cyan,
+/area/awaymission/beach)
+"ct" = (
+/obj/structure/fake_stairs/wood/directional/north,
+/turf/open/floor/iron/sepia,
 /area/awaymission/beach)
 "cv" = (
 /obj/structure/table/wood,
@@ -209,6 +278,10 @@
 /area/awaymission/beach)
 "cR" = (
 /turf/open/floor/iron/freezer,
+/area/awaymission/beach)
+"cU" = (
+/obj/structure/flora/bush/jungle/c/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "cX" = (
 /obj/structure/closet/crate/hydroponics,
@@ -278,6 +351,13 @@
 /obj/structure/musician/piano,
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"dv" = (
+/obj/machinery/door/airlock/wood{
+	name = "Captain's Quarters"
+	},
+/obj/structure/barricade/wooden/crude,
+/turf/open/floor/iron/sepia,
+/area/awaymission/beach)
 "dx" = (
 /obj/structure/sign/directions/dorms/directional/north{
 	pixel_y = 35
@@ -287,6 +367,19 @@
 	},
 /obj/machinery/computer/slot_machine,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"dI" = (
+/obj/effect/turf_decal/weather/dirt,
+/obj/structure/flora/bush/jungle/c/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"dJ" = (
+/obj/effect/turf_decal/weather/dirt,
+/obj/item/flashlight/flare/torch{
+	pixel_x = 5;
+	pixel_y = 8
+	},
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "dL" = (
 /obj/machinery/door/airlock/public/glass{
@@ -319,6 +412,12 @@
 /obj/effect/turf_decal/siding/blue,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"dW" = (
+/obj/effect/decal/remains/human,
+/turf/open/misc/beach/coast/corner{
+	dir = 8
+	},
+/area/awaymission/beach)
 "ea" = (
 /obj/structure/table/bronze,
 /obj/structure/desk_bell{
@@ -326,6 +425,38 @@
 	pixel_y = 8
 	},
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"ex" = (
+/obj/effect/turf_decal/siding/wood/end{
+	dir = 4
+	},
+/obj/effect/decal/remains/human,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"eA" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/plating,
+/area/awaymission/beach)
+"eB" = (
+/obj/structure/table/wood,
+/turf/open/floor/carpet/royalblack,
+/area/awaymission/beach)
+"eC" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/obj/structure/flora/tree/jungle/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"eD" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/misc/beach/coast{
+	dir = 6
+	},
 /area/awaymission/beach)
 "eE" = (
 /obj/structure/table/glass,
@@ -338,11 +469,23 @@
 	},
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
+"eF" = (
+/obj/item/toy/seashell{
+	pixel_y = -15
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "eH" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 5
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"eI" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "eT" = (
 /obj/structure/table/wood,
@@ -363,6 +506,7 @@
 	pixel_y = 8;
 	pixel_x = 4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "fd" = (
@@ -399,6 +543,17 @@
 	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"fl" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
@@ -447,6 +602,24 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"fA" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/obj/structure/table/wood,
+/turf/open/floor/wood/large,
+/area/awaymission/beach)
+"fB" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "fI" = (
 /obj/structure/table/bronze,
 /obj/item/clothing/suit/costume/hawaiian{
@@ -477,9 +650,29 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"fW" = (
+/obj/structure/flora/tree/jungle/style_random,
+/turf/open/misc/dirt/dark/jungle,
+/area/awaymission/beach)
 "fX" = (
 /obj/structure/chair,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"fZ" = (
+/obj/structure/flora/bush/jungle/c/style_random,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"ga" = (
+/obj/structure/bed/double{
+	dir = 1
+	},
+/obj/item/bedsheet/black/double{
+	dir = 1
+	},
+/turf/open/floor/carpet/royalblack,
 /area/awaymission/beach)
 "gd" = (
 /obj/effect/spawner/random/entertainment/arcade{
@@ -522,12 +715,22 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"gx" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "gG" = (
 /obj/effect/turf_decal/siding/wood,
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
 /turf/open/water/beach,
+/area/awaymission/beach)
+"gH" = (
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "gI" = (
 /obj/structure/flora/tree/palm/style_2{
@@ -545,16 +748,22 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"ha" = (
+/obj/structure/dresser,
+/turf/open/floor/carpet/royalblack,
+/area/awaymission/beach)
+"he" = (
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "hf" = (
 /obj/effect/turf_decal/siding/wood/corner,
 /turf/open/water/beach,
 /area/awaymission/beach)
 "ho" = (
-/obj/effect/turf_decal/siding/wood{
-	dir = 1
-	},
 /obj/machinery/door/poddoor/shutters{
-	id = "BeachBoats"
+	id = "BeachBoats";
+	dir = 4;
+	name = "Dock Shutters"
 	},
 /turf/open/water/beach,
 /area/awaymission/beach)
@@ -571,9 +780,19 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"hx" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/closet/cabinet,
+/obj/item/coin/gold/doubloon,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "hC" = (
 /obj/structure/railing{
-	dir = 8
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
@@ -593,6 +812,23 @@
 /obj/structure/table/glass,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"hF" = (
+/obj/structure/statue/snow/snowman,
+/obj/item/clothing/head/costume/garland{
+	pixel_y = 7
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"hK" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "hL" = (
 /turf/open/misc/beach/coast/corner{
 	dir = 1
@@ -604,6 +840,34 @@
 	dir = 4
 	},
 /turf/open/water/beach,
+/area/awaymission/beach)
+"hV" = (
+/turf/open/floor/carpet/orange,
+/area/awaymission/beach)
+"ig" = (
+/obj/structure/flora/coconuts{
+	pixel_y = 26;
+	pixel_x = 23
+	},
+/obj/structure/flora/tree/palm,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"ih" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 5;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"ij" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "im" = (
 /obj/structure/table/bronze,
@@ -620,8 +884,8 @@
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
 "iq" = (
-/obj/machinery/washing_machine,
 /obj/machinery/light/directional/north,
+/obj/structure/closet/gmcloset,
 /turf/open/floor/plastic,
 /area/awaymission/beach)
 "iw" = (
@@ -635,6 +899,15 @@
 "iA" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
+	},
+/turf/open/water/beach,
+/area/awaymission/beach)
+"iB" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
 	},
 /turf/open/water/beach,
 /area/awaymission/beach)
@@ -657,7 +930,6 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/rack,
 /obj/effect/spawner/random/maintenance/three,
-/obj/effect/decal/cleanable/cobweb,
 /obj/item/wheelchair,
 /turf/open/floor/plating,
 /area/awaymission/beach)
@@ -711,6 +983,10 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"jc" = (
+/obj/structure/flora/bush/jungle/b/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "jm" = (
 /obj/structure/table/reinforced,
 /obj/machinery/cell_charger{
@@ -730,7 +1006,16 @@
 	pixel_x = -3
 	},
 /obj/machinery/light/directional/north,
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
+/area/awaymission/beach)
+"jy" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood/large,
 /area/awaymission/beach)
 "jF" = (
 /obj/machinery/vending/boozeomat/all_access{
@@ -748,22 +1033,19 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
-"jI" = (
-/obj/structure/railing{
-	dir = 10
-	},
-/obj/item/kirbyplants/organic/plant8{
-	pixel_y = 9;
-	pixel_x = 6
-	},
-/turf/open/floor/wood,
-/area/awaymission/beach)
 "jM" = (
 /obj/item/clothing/head/soft/black{
 	pixel_x = -1;
 	pixel_y = -3
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"jP" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 5
+	},
+/obj/structure/flora/bush/jungle/b/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "jU" = (
 /obj/machinery/door/airlock/maintenance,
@@ -807,6 +1089,10 @@
 /obj/structure/fluff/beach_umbrella/cap,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"kn" = (
+/obj/structure/flora/bush/jungle/a/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "ko" = (
 /obj/structure/closet/secure_closet/freezer/empty,
 /obj/item/food/popsicle/creamsicle_berry,
@@ -826,7 +1112,8 @@
 "kp" = (
 /obj/effect/decal/cleanable/oil,
 /obj/machinery/button/door/directional/south{
-	id = "BeachGarage"
+	id = "BeachGarage";
+	name = "Garage Door"
 	},
 /turf/open/floor/iron/dark/herringbone,
 /area/awaymission/beach)
@@ -861,9 +1148,36 @@
 /obj/effect/baseturf_helper/beach/sand,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"kH" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/turf/open/water/beach,
+/area/awaymission/beach)
 "kI" = (
 /obj/machinery/light/directional/west,
 /turf/open/floor/carpet,
+/area/awaymission/beach)
+"kM" = (
+/obj/item/reagent_containers/cup/glass/bottle/rum{
+	desc = "Rum with ghostly properties that can help the drinker enter the spirit realm. It has fermented under the sea of space for ages.";
+	name = "Ghost Pirate Rum";
+	pixel_x = -4;
+	pixel_y = 12
+	},
+/obj/item/lighter{
+	pixel_x = 8;
+	pixel_y = 11
+	},
+/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass{
+	pixel_x = -7;
+	pixel_y = 5
+	},
+/obj/item/clothing/mask/cigarette/cigar{
+	pixel_x = 4
+	},
+/obj/structure/table/wood,
+/turf/open/floor/carpet/royalblack,
 /area/awaymission/beach)
 "kR" = (
 /obj/machinery/button/door/directional/north{
@@ -886,6 +1200,12 @@
 /obj/structure/chair/stool/directional/south,
 /obj/machinery/light/directional/north,
 /turf/open/floor/iron/freezer,
+/area/awaymission/beach)
+"lg" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "li" = (
 /obj/machinery/chem_dispenser/drinks/beer/fullupgrade{
@@ -911,6 +1231,7 @@
 	id_tag = "beach_room_11"
 	},
 /obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "ls" = (
@@ -923,13 +1244,11 @@
 	id_tag = "beach_room_10"
 	},
 /obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
 /area/awaymission/beach)
-"lB" = (
-/obj/machinery/door/poddoor/shutters{
-	id = "BeachBoats"
-	},
-/turf/open/water/beach,
+"lD" = (
+/turf/open/floor/carpet/purple,
 /area/awaymission/beach)
 "lP" = (
 /obj/structure/flora/tree/palm{
@@ -946,6 +1265,13 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/cobweb/cobweb2,
 /turf/open/floor/plating,
+/area/awaymission/beach)
+"lZ" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/obj/structure/flora/rock/pile/jungle/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "mb" = (
 /obj/structure/chair/stool/bar/directional/west,
@@ -968,6 +1294,10 @@
 	},
 /turf/open/water/beach,
 /area/awaymission/beach)
+"mj" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "mk" = (
 /obj/machinery/door/airlock/wood{
 	name = "Trash Disposal"
@@ -989,6 +1319,24 @@
 /obj/structure/table/glass,
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
+"mr" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 5;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/obj/structure/table/wood,
+/obj/item/stack/cannonball/fourteen,
+/obj/item/reagent_containers/cup/glass/bottle/beer/almost_empty{
+	pixel_y = 6;
+	pixel_x = -6
+	},
+/obj/item/reagent_containers/cup/bucket/wooden,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "mG" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -1000,11 +1348,39 @@
 	},
 /turf/open/water/beach,
 /area/awaymission/beach)
+"mH" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/open/water/beach,
+/area/awaymission/beach)
+"mI" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/obj/structure/table/wood,
+/obj/item/flashlight/flare/torch,
+/turf/open/floor/wood/large,
+/area/awaymission/beach)
 "mJ" = (
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 4
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"mM" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "mN" = (
 /obj/structure/chair{
@@ -1043,6 +1419,22 @@
 /obj/structure/closet/secure_closet/personal/cabinet,
 /obj/item/clothing/under/costume/sailor,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"mZ" = (
+/obj/structure/flora/tree/palm/style_2{
+	pixel_y = -2;
+	pixel_x = -12
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"na" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/open/floor/bamboo,
 /area/awaymission/beach)
 "ni" = (
 /turf/open/misc/beach/coast{
@@ -1093,6 +1485,7 @@
 /area/awaymission/beach)
 "nK" = (
 /obj/machinery/medical_kiosk,
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "nO" = (
@@ -1100,12 +1493,6 @@
 	pixel_y = 5
 	},
 /turf/open/floor/wood/large,
-/area/awaymission/beach)
-"nV" = (
-/obj/structure/flora/tree/palm/style_2{
-	pixel_y = 25
-	},
-/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "nW" = (
 /obj/machinery/door/airlock/wood/glass{
@@ -1124,6 +1511,18 @@
 	name = "Employees' Only"
 	},
 /turf/open/floor/plastic,
+/area/awaymission/beach)
+"oc" = (
+/obj/structure/festivus{
+	anchored = 1;
+	color = "#825427";
+	desc = "A sturdy pole designed to hold the vessel's solar sails in place.";
+	name = "mast";
+	pixel_x = -16;
+	pixel_y = 2
+	},
+/obj/machinery/light/floor,
+/turf/closed/wall/mineral/wood/nonmetal,
 /area/awaymission/beach)
 "oi" = (
 /obj/effect/turf_decal/siding/wood,
@@ -1175,6 +1574,22 @@
 /obj/item/trash/candy,
 /turf/open/floor/eighties,
 /area/awaymission/beach)
+"oL" = (
+/obj/structure/flora/tree/jungle/style_random,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 9
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"oQ" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/turf/open/floor/wood/parquet,
+/area/awaymission/beach)
 "oX" = (
 /obj/structure/closet/secure_closet/personal/cabinet,
 /obj/machinery/button/door/directional/west{
@@ -1185,11 +1600,46 @@
 /obj/item/clothing/suit/apron/overalls,
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"pa" = (
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"pc" = (
+/obj/structure/flora/rock/style_3,
+/turf/open/water/beach,
+/area/awaymission/beach)
 "pd" = (
 /obj/effect/turf_decal/siding/dark_red{
 	dir = 8
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"pe" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/misc/beach/coast/corner,
+/area/awaymission/beach)
+"pg" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/obj/structure/flora/bush/jungle/c/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "pr" = (
 /obj/item/reagent_containers/cup/soda_cans/space_mountain_wind{
@@ -1213,7 +1663,9 @@
 /area/awaymission/beach)
 "pw" = (
 /obj/structure/railing{
-	dir = 1
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
@@ -1222,7 +1674,8 @@
 	dir = 1
 	},
 /obj/machinery/button/door/directional/south{
-	id = "BeachBoats"
+	id = "BeachBoats";
+	name = "Dock Shutters"
 	},
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
@@ -1251,6 +1704,16 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"pG" = (
+/turf/open/misc/dirt/dark/jungle,
+/area/awaymission/beach)
+"pI" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood,
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
 "pM" = (
 /obj/structure/marker_beacon/teal,
 /turf/open/water/beach,
@@ -1265,6 +1728,20 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
+"pR" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"pS" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "pT" = (
 /obj/item/flashlight/flare/torch{
 	pixel_x = -11;
@@ -1276,6 +1753,12 @@
 /obj/structure/sink/kitchen/directional/south,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"qe" = (
+/obj/item/toy/seashell,
+/turf/open/misc/beach/coast/corner{
+	dir = 1
+	},
+/area/awaymission/beach)
 "qf" = (
 /obj/structure/table/bronze,
 /obj/item/pai_card{
@@ -1286,11 +1769,11 @@
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
 "qk" = (
-/obj/machinery/telecomms/allinone,
 /obj/item/wirecutters{
 	pixel_y = 9
 	},
 /obj/machinery/light/directional/south,
+/obj/machinery/telecomms/relay/preset/station,
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
 "ql" = (
@@ -1317,6 +1800,10 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"qA" = (
+/obj/structure/flora/bush/large/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "qC" = (
 /obj/machinery/button/door/directional/west{
 	id = "beach_room_1";
@@ -1339,6 +1826,12 @@
 /obj/item/clothing/suit/jacket/letterman_red,
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"rj" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/turf/open/floor/wood/parquet,
+/area/awaymission/beach)
 "rq" = (
 /obj/structure/flora/tree/palm{
 	pixel_y = 19;
@@ -1348,6 +1841,18 @@
 /area/awaymission/beach)
 "ru" = (
 /obj/machinery/light/directional/south,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"ry" = (
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/obj/structure/headpike/bone,
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "rA" = (
@@ -1361,6 +1866,16 @@
 /obj/structure/fluff/beach_umbrella/science,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"rB" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/open/floor/wood/parquet,
+/area/awaymission/beach)
+"rD" = (
+/obj/structure/fake_stairs/wood/directional/south,
+/turf/open/floor/iron/sepia,
+/area/awaymission/beach)
 "rE" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/open/misc/beach/sand,
@@ -1368,6 +1883,19 @@
 "rF" = (
 /obj/machinery/grill,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"rG" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
+"rJ" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "rQ" = (
 /obj/structure/table/bronze,
@@ -1381,6 +1909,21 @@
 	dir = 1
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"rX" = (
+/obj/effect/turf_decal/sand/plating,
+/turf/open/floor/vault/sandstone,
+/area/awaymission/beach)
+"sb" = (
+/obj/item/clothing/head/helmet/skull{
+	pixel_y = 12
+	},
+/obj/structure/spirit_board,
+/obj/effect/turf_decal/weather/dirt,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/turf/open/misc/sandy_dirt,
 /area/awaymission/beach)
 "sc" = (
 /obj/structure/fluff/beach_umbrella/syndi,
@@ -1401,11 +1944,41 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 6
 	},
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
 /turf/open/water/beach,
 /area/awaymission/beach)
 "sp" = (
 /obj/item/reagent_containers/cup/soda_cans/space_mountain_wind,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"sA" = (
+/obj/structure/closet/cabinet{
+	anchored = 1;
+	desc = "What kind of scary things could be here?";
+	name = "Davy Jones' Locker"
+	},
+/obj/item/restraints/legcuffs/bola,
+/obj/item/melee/chainofcommand/tailwhip/kitty,
+/turf/open/floor/carpet/royalblack,
+/area/awaymission/beach)
+"sI" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "sL" = (
 /obj/effect/turf_decal/sand,
@@ -1420,6 +1993,10 @@
 	dir = 8
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"sN" = (
+/obj/structure/flora/rock,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "sP" = (
 /obj/structure/table/wood,
@@ -1444,7 +2021,18 @@
 /obj/item/toy/plush/moth{
 	pixel_y = 5
 	},
+/obj/structure/beach_towel,
 /turf/open/floor/carpet/red,
+/area/awaymission/beach)
+"td" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 6
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"tk" = (
+/obj/structure/towel_rack/warmer,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "to" = (
 /obj/effect/turf_decal/siding/wood{
@@ -1459,6 +2047,14 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"tt" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "tx" = (
 /obj/machinery/button/door/directional/north{
 	id = "beach_room_3";
@@ -1470,6 +2066,13 @@
 "tz" = (
 /obj/structure/tank_holder/extinguisher{
 	pixel_y = 11
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"tA" = (
+/obj/structure/flora/coconuts{
+	pixel_y = 26;
+	pixel_x = 23
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
@@ -1499,6 +2102,10 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"tG" = (
+/obj/structure/flora/rock/pile/jungle/style_random,
+/turf/open/misc/dirt/dark/jungle,
+/area/awaymission/beach)
 "tJ" = (
 /turf/open/misc/beach/coast/corner{
 	dir = 8
@@ -1520,6 +2127,20 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
+"tM" = (
+/obj/item/oar,
+/obj/item/oar{
+	pixel_y = 5;
+	pixel_x = 5
+	},
+/obj/structure/table,
+/obj/item/oar{
+	pixel_y = 5;
+	pixel_x = 5
+	},
+/obj/item/oar,
+/turf/open/floor/wood/parquet,
+/area/awaymission/beach)
 "tP" = (
 /obj/structure/chair/plastic{
 	dir = 8
@@ -1533,6 +2154,13 @@
 	pixel_y = 2
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"tQ" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/obj/structure/flora/bush/jungle/a/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "tU" = (
 /obj/structure/table/bronze,
@@ -1607,6 +2235,12 @@
 "uz" = (
 /turf/open/floor/carpet/red,
 /area/awaymission/beach)
+"uB" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "uG" = (
 /turf/open/floor/carpet/green,
 /area/awaymission/beach)
@@ -1647,6 +2281,13 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"uR" = (
+/obj/effect/turf_decal/weather/dirt,
+/obj/item/flashlight/flare/torch{
+	pixel_x = 5
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "uT" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
@@ -1654,6 +2295,17 @@
 "uV" = (
 /obj/structure/closet/crate/trashcart/filled,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"uW" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "uY" = (
 /obj/item/toy/seashell{
@@ -1685,11 +2337,20 @@
 /obj/effect/decal/cleanable/oil,
 /turf/open/floor/iron/dark/herringbone,
 /area/awaymission/beach)
+"vl" = (
+/obj/effect/turf_decal/weather/dirt,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "vq" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/mapping_helpers/broken_floor,
 /obj/effect/landmark/awaystart,
 /turf/open/floor/plating,
+/area/awaymission/beach)
+"vv" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/mineral_door/sandstone,
+/turf/open/floor/vault/sandstone,
 /area/awaymission/beach)
 "vx" = (
 /obj/effect/turf_decal/siding/wood{
@@ -1715,6 +2376,15 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"vL" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "vM" = (
 /obj/structure/bed/double,
 /obj/item/bedsheet/hos/double{
@@ -1726,6 +2396,11 @@
 "vR" = (
 /obj/machinery/light/directional/north,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"vU" = (
+/obj/structure/flora/bush/jungle/c/style_random,
+/obj/structure/flora/bush/jungle/a/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "vX" = (
 /obj/structure/chair/stool/bamboo{
@@ -1741,6 +2416,18 @@
 	dir = 10
 	},
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"wp" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"wq" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 9
+	},
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "wt" = (
 /obj/machinery/vending/cigarette/beach,
@@ -1763,6 +2450,20 @@
 	},
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
+"ww" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/obj/machinery/light/small/directional/south,
+/obj/item/reagent_containers/cup/bucket/wooden,
+/obj/item/reagent_containers/cup/bucket/wooden,
+/obj/structure/fermenting_barrel,
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "wA" = (
 /obj/structure/flora/tree/palm,
 /turf/open/misc/beach/sand,
@@ -1781,6 +2482,14 @@
 	offset_at_init = 0
 	},
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"wW" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/obj/effect/turf_decal/weather/dirt,
+/obj/structure/flora/rock/pile/jungle/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "wX" = (
 /obj/machinery/door/airlock/wood{
@@ -1835,6 +2544,12 @@
 "xv" = (
 /turf/closed/wall/mineral/wood,
 /area/awaymission/beach)
+"xy" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/turf/open/floor/wood/parquet,
+/area/awaymission/beach)
 "xE" = (
 /obj/structure/table/wood,
 /obj/item/storage/box/drinkingglasses{
@@ -1851,6 +2566,13 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"xG" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "xI" = (
 /obj/effect/turf_decal/sand,
 /obj/effect/turf_decal/siding/wood{
@@ -1858,11 +2580,48 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"xL" = (
+/obj/structure/flora/tree/jungle/style_random,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"xX" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 9;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/obj/structure/table/wood,
+/obj/item/binoculars{
+	pixel_x = 6;
+	pixel_y = 1
+	},
+/obj/item/flashlight/flare/torch,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "yc" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
 /turf/open/floor/eighties,
+/area/awaymission/beach)
+"yd" = (
+/obj/effect/turf_decal/siding/wood/end{
+	dir = 1
+	},
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
+"yk" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "yn" = (
 /obj/effect/turf_decal/siding/wood,
@@ -1896,6 +2655,7 @@
 	name = "Room 8";
 	id_tag = "beach_room_8"
 	},
+/obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "yF" = (
@@ -1948,6 +2708,17 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"zn" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/obj/structure/flora/bush/jungle/a/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"zo" = (
+/obj/effect/turf_decal/siding/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "zp" = (
 /obj/structure/table/wood,
 /obj/item/clothing/suit/apron/chef{
@@ -1970,6 +2741,15 @@
 	dir = 4
 	},
 /turf/open/floor/eighties,
+/area/awaymission/beach)
+"zx" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/turf/open/floor/bamboo,
 /area/awaymission/beach)
 "zA" = (
 /obj/structure/chair/office{
@@ -2000,6 +2780,7 @@
 	pixel_y = 21;
 	pixel_x = -4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "zK" = (
@@ -2013,6 +2794,23 @@
 	pixel_x = -5
 	},
 /turf/open/floor/wood/parquet,
+/area/awaymission/beach)
+"zL" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/fermenting_barrel,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"zS" = (
+/obj/effect/turf_decal/siding/wood,
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
+"zW" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "zX" = (
 /obj/item/storage/toolbox/fishing{
@@ -2037,6 +2835,22 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"An" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"Ao" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
 "Ar" = (
 /turf/open/floor/carpet/blue,
 /area/awaymission/beach)
@@ -2056,6 +2870,17 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"AE" = (
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "AG" = (
 /obj/structure/closet/secure_closet/personal/cabinet,
 /obj/item/clothing/suit/jacket/letterman_nanotrasen,
@@ -2068,6 +2893,18 @@
 	pixel_x = -11
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"AL" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"AO" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 5
+	},
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "AP" = (
 /obj/machinery/door/airlock/wood{
@@ -2114,11 +2951,25 @@
 /obj/machinery/washing_machine,
 /turf/open/floor/plastic,
 /area/awaymission/beach)
+"Bn" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/structure/punji_sticks/spikes,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "Bq" = (
 /obj/machinery/computer/operating{
 	dir = 8
 	},
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"Bu" = (
+/obj/item/toy/plush/lizard_plushie{
+	name = "Soaks-Some-Sun"
+	},
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Bv" = (
 /obj/machinery/door/poddoor/shutters{
@@ -2157,6 +3008,11 @@
 	dir = 1
 	},
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"BY" = (
+/obj/effect/turf_decal/sand,
+/obj/structure/towel_rack/warmer/full_beach,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Cb" = (
 /obj/structure/table/wood,
@@ -2223,6 +3079,22 @@
 /obj/item/trash/candy,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"Cz" = (
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "CF" = (
 /obj/structure/flora/tree/palm/style_2{
 	pixel_y = 25
@@ -2248,12 +3120,14 @@
 /turf/open/water/beach,
 /area/awaymission/beach)
 "CH" = (
-/obj/structure/railing{
-	dir = 5
-	},
 /obj/item/kirbyplants/organic/plant8{
 	pixel_y = 3;
 	pixel_x = -2
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 5;
+	name = "wooden railing"
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
@@ -2293,6 +3167,43 @@
 	},
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
+"Dl" = (
+/obj/effect/turf_decal/siding/wood/end{
+	dir = 4
+	},
+/obj/structure/cannon{
+	dir = 8
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/turf/open/floor/plating,
+/area/awaymission/beach)
+"Do" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"Ds" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/headpike/bone,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"Dt" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 9
+	},
+/obj/structure/flora/bush/large/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "Dv" = (
 /obj/item/storage/bag/tray,
 /obj/item/food/grown/watermelon{
@@ -2316,6 +3227,18 @@
 	},
 /obj/item/taperecorder,
 /turf/open/floor/iron/dark/diagonal,
+/area/awaymission/beach)
+"DE" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 6
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/obj/item/flashlight/flare/torch{
+	pixel_x = 5
+	},
+/turf/open/misc/sandy_dirt,
 /area/awaymission/beach)
 "DF" = (
 /obj/item/toy/seashell{
@@ -2392,8 +3315,42 @@
 /obj/structure/table/bronze,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"Ek" = (
+/obj/structure/flora/rock/pile/jungle/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "Em" = (
 /turf/open/floor/carpet/cyan,
+/area/awaymission/beach)
+"Ep" = (
+/obj/effect/turf_decal/siding/wood/end,
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/turf/open/floor/plating,
+/area/awaymission/beach)
+"Eq" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "Er" = (
 /obj/item/toy/seashell{
@@ -2412,6 +3369,11 @@
 	},
 /obj/structure/sign/poster/random/directional/east,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"EA" = (
+/obj/structure/flora/tree/jungle/style_random,
+/obj/structure/flora/rock/pile/jungle/large/style_random,
+/turf/open/misc/dirt/dark/jungle,
 /area/awaymission/beach)
 "EB" = (
 /obj/structure/flora/tree/palm{
@@ -2447,6 +3409,13 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"EK" = (
+/obj/item/toy/plush/shark,
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/turf/open/water/beach,
+/area/awaymission/beach)
 "EO" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/item/storage/box/lights/mixed{
@@ -2479,6 +3448,7 @@
 	pixel_x = -8;
 	pixel_y = 13
 	},
+/obj/structure/beach_towel,
 /turf/open/floor/carpet/blue,
 /area/awaymission/beach)
 "Fb" = (
@@ -2503,6 +3473,15 @@
 /obj/structure/closet/secure_closet/personal/cabinet,
 /obj/item/clothing/suit/jacket/letterman_syndie,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"Fj" = (
+/obj/item/claymore/cutlass{
+	force = 15;
+	block_chance = 0;
+	name = "rusty cutlass"
+	},
+/obj/structure/safe,
+/turf/open/floor/carpet/royalblack,
 /area/awaymission/beach)
 "Fk" = (
 /obj/item/toy/seashell,
@@ -2530,6 +3509,16 @@
 "Fu" = (
 /obj/structure/flora/tree/palm{
 	pixel_y = 31
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Fw" = (
+/obj/structure/flora/coconuts{
+	pixel_x = -7;
+	pixel_y = 7
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
@@ -2598,7 +3587,9 @@
 /area/awaymission/beach)
 "FM" = (
 /obj/structure/railing{
-	dir = 9
+	color = "#4C3117";
+	dir = 9;
+	name = "wooden railing"
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
@@ -2653,6 +3644,7 @@
 	pixel_x = 3
 	},
 /obj/effect/spawner/random/trash/food_packaging,
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Gm" = (
@@ -2676,6 +3668,28 @@
 /obj/machinery/light/directional/north,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"Gv" = (
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"Gz" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"GB" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "GC" = (
 /turf/open/floor/carpet,
 /area/awaymission/beach)
@@ -2687,9 +3701,37 @@
 /obj/structure/bonfire,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"GJ" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 9;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/obj/item/oar,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "GN" = (
 /obj/machinery/icecream_vat,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"GX" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
+/obj/structure/flora/bush/large/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"GZ" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/turf/open/floor/bamboo,
 /area/awaymission/beach)
 "Ha" = (
 /obj/effect/turf_decal/siding/wood{
@@ -2697,6 +3739,11 @@
 	},
 /obj/structure/reagent_dispensers/fueltank/large,
 /turf/open/floor/wood/parquet,
+/area/awaymission/beach)
+"Hd" = (
+/obj/effect/turf_decal/stripes/white/full,
+/obj/structure/fence,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Hg" = (
 /obj/item/stack/sheet/mineral/sandstone{
@@ -2715,10 +3762,21 @@
 /obj/structure/closet/secure_closet/personal,
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
+"Hr" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 5
+	},
+/obj/structure/flora/bush/jungle/a/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "Hv" = (
 /obj/structure/dresser,
 /obj/machinery/light/directional/north,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"HE" = (
+/obj/machinery/recharge_station,
+/turf/open/floor/carpet/cyan,
 /area/awaymission/beach)
 "HF" = (
 /obj/machinery/light/small/directional/north,
@@ -2746,6 +3804,12 @@
 	},
 /turf/open/water/beach,
 /area/awaymission/beach)
+"HW" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/structure/table/wood,
+/obj/item/oar,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "Ia" = (
 /obj/effect/turf_decal/siding/wood,
 /turf/closed/wall/mineral/wood,
@@ -2755,6 +3819,7 @@
 /obj/item/defibrillator/loaded{
 	pixel_y = 7
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Ih" = (
@@ -2775,11 +3840,17 @@
 	pixel_y = -4;
 	pixel_x = 3
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Il" = (
 /obj/machinery/vending/autodrobe/all_access,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Iq" = (
+/obj/effect/decal/cleanable/cobweb,
+/obj/structure/towel_rack/full_beach,
+/turf/open/floor/plating,
 /area/awaymission/beach)
 "It" = (
 /obj/item/clothing/head/soft/green,
@@ -2815,6 +3886,13 @@
 /obj/machinery/computer/order_console/cook,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"IQ" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "IW" = (
 /obj/structure/closet/athletic_mixed,
 /turf/open/floor/iron/freezer,
@@ -2834,8 +3912,27 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"Jd" = (
+/obj/structure/flora/bush/jungle/a/style_random,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"Jg" = (
+/obj/effect/turf_decal/siding/wood/end{
+	dir = 4
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/turf/open/floor/plating,
+/area/awaymission/beach)
 "Ji" = (
 /obj/effect/turf_decal/stripes/white/full,
+/obj/structure/fence/end,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Jj" = (
@@ -2848,6 +3945,15 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"Jm" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
 "Jo" = (
 /obj/item/reagent_containers/cup/glass/bottle/beer/light{
 	pixel_x = -14;
@@ -2859,6 +3965,13 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"JD" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/obj/structure/flora/bush/jungle/c/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "JF" = (
 /obj/structure/marker_beacon/burgundy,
 /turf/open/water/beach,
@@ -2869,6 +3982,13 @@
 	id_tag = "beach_room_4"
 	},
 /obj/effect/turf_decal/siding/wood,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"JI" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner,
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "JO" = (
@@ -2885,6 +4005,22 @@
 /obj/effect/turf_decal/siding/wood/corner,
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"JU" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"JY" = (
+/obj/effect/turf_decal/weather/dirt,
+/obj/structure/flora/tree/palm/style_random,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "Ka" = (
 /obj/structure/bed/pod{
 	desc = "An old medical bed, just waiting for replacement with something up to date.";
@@ -2896,6 +4032,7 @@
 	pixel_y = 21;
 	pixel_x = -4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Kh" = (
@@ -2946,7 +4083,14 @@
 	pixel_x = -9;
 	pixel_y = 9
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
+/area/awaymission/beach)
+"KA" = (
+/mob/living/basic/carp{
+	name = "shark"
+	},
+/turf/open/water/beach,
 /area/awaymission/beach)
 "KB" = (
 /obj/structure/dresser,
@@ -2972,6 +4116,15 @@
 "KW" = (
 /obj/structure/fluff/beach_umbrella/syndi,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"KX" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/turf/open/floor/plating,
 /area/awaymission/beach)
 "La" = (
 /obj/effect/decal/cleanable/dirt,
@@ -3003,6 +4156,12 @@
 	},
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
+"Lj" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "Ll" = (
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 1
@@ -3028,21 +4187,20 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"Ly" = (
+/obj/item/toy/seashell{
+	pixel_x = 12;
+	pixel_y = -9
+	},
+/turf/open/misc/beach/coast{
+	dir = 1
+	},
+/area/awaymission/beach)
 "LC" = (
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 1
 	},
 /turf/open/water/beach,
-/area/awaymission/beach)
-"LJ" = (
-/obj/structure/railing/corner/end/flip{
-	dir = 1
-	},
-/obj/machinery/door/airlock/wood{
-	name = "Balcony";
-	id_tag = "beach_room_x"
-	},
-/turf/open/floor/wood,
 /area/awaymission/beach)
 "LQ" = (
 /obj/effect/turf_decal/tile/dark_red/full,
@@ -3053,6 +4211,18 @@
 /obj/machinery/space_heater,
 /obj/machinery/light/directional/north,
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"LT" = (
+/turf/open/floor/carpet/royalblack,
+/area/awaymission/beach)
+"Md" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/towel_rack/warmer/full_beach,
+/turf/open/floor/wood/large,
+/area/awaymission/beach)
+"Mj" = (
+/obj/structure/flora/tree/jungle/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "Mm" = (
 /obj/structure/table/bronze,
@@ -3080,6 +4250,11 @@
 	dir = 4
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"MC" = (
+/obj/structure/flora/tree/jungle/style_random,
+/obj/structure/flora/rock/pile/jungle/large/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "MD" = (
 /obj/structure/table/wood,
@@ -3160,6 +4335,7 @@
 /obj/effect/turf_decal/siding/blue{
 	dir = 4
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "MX" = (
@@ -3176,7 +4352,7 @@
 "Nb" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/spawner/random/maintenance,
-/obj/machinery/light/small/directional/west,
+/obj/effect/landmark/awaystart,
 /turf/open/floor/plating,
 /area/awaymission/beach)
 "Nd" = (
@@ -3212,16 +4388,6 @@
 /obj/structure/table,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
-"Nk" = (
-/obj/machinery/door/airlock/wood{
-	name = "Balcony";
-	id_tag = "beach_room_x"
-	},
-/obj/structure/railing/corner/end/flip{
-	dir = 1
-	},
-/turf/open/floor/wood,
-/area/awaymission/beach)
 "Nl" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -3234,6 +4400,19 @@
 	pixel_y = 4
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Np" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
+"NA" = (
+/obj/structure/beach_towel,
+/turf/open/floor/carpet/blue,
 /area/awaymission/beach)
 "NF" = (
 /obj/item/toy/seashell{
@@ -3249,6 +4428,13 @@
 	},
 /turf/open/floor/carpet,
 /area/awaymission/beach)
+"NQ" = (
+/obj/item/toy/seashell{
+	pixel_x = -10;
+	pixel_y = -4
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "NS" = (
 /obj/structure/table/bronze,
 /obj/item/storage/bag/tray,
@@ -3258,17 +4444,42 @@
 /obj/machinery/vending/medical{
 	req_access = "201"
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
+/area/awaymission/beach)
+"NW" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"Oe" = (
+/obj/structure/flora/rock,
+/turf/open/water/beach,
 /area/awaymission/beach)
 "Og" = (
 /obj/effect/turf_decal/siding/wood/corner,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"Ol" = (
+/obj/structure/ore_box{
+	name = "shipment";
+	desc = "A heavy wooden box with some kind of manifest on the side. Seems empty though."
+	},
+/turf/open/water/beach,
 /area/awaymission/beach)
 "On" = (
 /obj/structure/chair{
 	dir = 1
 	},
 /turf/open/floor/iron/dark/textured_large,
+/area/awaymission/beach)
+"Os" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
+/obj/structure/flora/bush/jungle/b/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "Ow" = (
 /obj/effect/turf_decal/siding/wood{
@@ -3279,6 +4490,10 @@
 	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
+	},
+/obj/item/oar,
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
 	},
 /turf/open/water/beach,
 /area/awaymission/beach)
@@ -3311,6 +4526,20 @@
 	},
 /turf/open/water/beach,
 /area/awaymission/beach)
+"OL" = (
+/obj/structure/flora/bush/jungle/a/style_random,
+/obj/structure/punji_sticks,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"ON" = (
+/obj/structure/flora/tree/palm/style_random{
+	pixel_y = 29;
+	pixel_x = 15
+	},
+/turf/open/misc/beach/coast{
+	dir = 10
+	},
+/area/awaymission/beach)
 "OT" = (
 /obj/item/reagent_containers/cup/soda_cans/lemon_lime{
 	pixel_x = -12;
@@ -3338,6 +4567,13 @@
 	dir = 5
 	},
 /area/awaymission/beach)
+"Pj" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "Pk" = (
 /obj/structure/table/glass,
 /obj/machinery/fax{
@@ -3348,11 +4584,21 @@
 	},
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
+"Pl" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/turf/open/floor/wood/parquet,
+/area/awaymission/beach)
 "Pn" = (
 /obj/structure/chair/office{
 	dir = 8
 	},
 /turf/open/floor/iron/dark/diagonal,
+/area/awaymission/beach)
+"Pp" = (
+/obj/structure/towel_rack/warmer/full_beach,
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Pt" = (
 /obj/machinery/door/airlock/command/glass{
@@ -3370,9 +4616,22 @@
 /obj/structure/tank_holder/extinguisher,
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
+"PC" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "PH" = (
 /obj/effect/turf_decal/siding/blue/corner,
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"PM" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/structure/table/wood,
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "PN" = (
 /obj/effect/turf_decal/sand,
@@ -3380,6 +4639,16 @@
 	dir = 5
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"PT" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 6
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 5
+	},
+/obj/structure/flora/rock/pile/jungle/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "Qe" = (
 /obj/effect/turf_decal/sand,
@@ -3402,6 +4671,10 @@
 /obj/item/clothing/suit/jacket/miljacket,
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"Qm" = (
+/obj/structure/beach_towel,
+/turf/open/floor/carpet/purple,
+/area/awaymission/beach)
 "Qr" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/food_cart,
@@ -3418,9 +4691,9 @@
 	},
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
-"QF" = (
-/obj/structure/sink/kitchen/directional/east,
-/turf/open/floor/plastic,
+"QD" = (
+/obj/structure/cable,
+/turf/closed/wall/mineral/wood/nonmetal,
 /area/awaymission/beach)
 "QG" = (
 /obj/structure/chair/plastic{
@@ -3445,6 +4718,15 @@
 	dir = 1
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"QL" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/misc/beach/coast{
+	dir = 8
+	},
 /area/awaymission/beach)
 "QM" = (
 /obj/structure/table/wood,
@@ -3479,6 +4761,10 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"QT" = (
+/obj/structure/beach_towel,
+/turf/open/floor/carpet/orange,
+/area/awaymission/beach)
 "Rc" = (
 /obj/effect/turf_decal/siding/wood/corner{
 	dir = 1
@@ -3489,6 +4775,12 @@
 /turf/open/misc/beach/coast{
 	dir = 6
 	},
+/area/awaymission/beach)
+"Rm" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 6
+	},
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "Rn" = (
 /obj/effect/turf_decal/stripes/red/box,
@@ -3510,6 +4802,12 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"Ru" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "RA" = (
 /obj/item/kirbyplants/organic/plant8{
 	pixel_y = 18;
@@ -3530,7 +4828,19 @@
 /obj/effect/turf_decal/siding/blue{
 	dir = 8
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
+/area/awaymission/beach)
+"RM" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/obj/effect/turf_decal/weather/dirt,
+/obj/structure/flora/bush/jungle/a/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"RO" = (
+/turf/open/floor/iron/sepia,
 /area/awaymission/beach)
 "RQ" = (
 /obj/structure/closet/crate,
@@ -3539,6 +4849,10 @@
 /obj/item/toy/plush/carpplushie,
 /obj/item/toy/plush/shark,
 /turf/open/floor/eighties,
+/area/awaymission/beach)
+"Sa" = (
+/obj/effect/turf_decal/tile/blue/full,
+/turf/open/floor/iron/white/textured_large,
 /area/awaymission/beach)
 "Sg" = (
 /obj/structure/table/bronze,
@@ -3578,6 +4892,13 @@
 	},
 /turf/open/floor/iron/smooth_large,
 /area/awaymission/beach)
+"Ss" = (
+/obj/structure/flora/bush/jungle/c/style_random,
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "St" = (
 /turf/open/floor/iron/stairs/old,
 /area/awaymission/beach)
@@ -3586,6 +4907,12 @@
 	dir = 8
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"SA" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/turf/open/floor/bamboo,
 /area/awaymission/beach)
 "SB" = (
 /obj/effect/decal/cleanable/dirt,
@@ -3596,12 +4923,35 @@
 /mob/living/basic/crab/kreb,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"SO" = (
+/obj/effect/turf_decal/weather/dirt,
+/obj/structure/flora/bush/jungle/b/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"ST" = (
+/obj/structure/flora/bush/large/style_random,
+/turf/closed/wall/mineral/sandstone,
+/area/awaymission/beach)
 "Th" = (
 /obj/structure/table/wood,
 /obj/item/reagent_containers/cup/beaker/large{
 	pixel_y = 7
 	},
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"Tm" = (
+/obj/effect/turf_decal/siding/wood/end{
+	dir = 8
+	},
+/obj/structure/cannon{
+	dir = 4
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "Tn" = (
 /obj/effect/turf_decal/siding/wood{
@@ -3616,6 +4966,13 @@
 /obj/structure/closet/secure_closet/personal/cabinet,
 /obj/item/clothing/neck/necklace/dope,
 /obj/item/clothing/suit/jacket/letterman,
+/turf/open/floor/wood,
+/area/awaymission/beach)
+"TA" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
 "TC" = (
@@ -3652,6 +5009,18 @@
 /obj/machinery/light/directional/west,
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
+"TQ" = (
+/obj/structure/fluff/divine/defensepylon{
+	pixel_y = 8
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 9
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 10
+	},
+/turf/open/misc/sandy_dirt,
+/area/awaymission/beach)
 "TX" = (
 /obj/structure/table/reinforced,
 /obj/item/stack/medical/mesh{
@@ -3666,7 +5035,14 @@
 	pixel_y = 17;
 	pixel_x = 8
 	},
+/obj/effect/turf_decal/tile/blue/full,
 /turf/open/floor/iron/white/textured_large,
+/area/awaymission/beach)
+"TY" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 5
+	},
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Ug" = (
 /obj/effect/decal/cleanable/dirt,
@@ -3689,15 +5065,31 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"Uo" = (
+/obj/vehicle/ridden/lavaboat/not_lava{
+	dir = 4
+	},
+/obj/item/oar,
+/turf/open/water/beach,
+/area/awaymission/beach)
 "Uq" = (
 /obj/item/kirbyplants/organic/plant8{
 	pixel_y = 9;
 	pixel_x = 6
 	},
 /obj/structure/railing{
-	dir = 10
+	color = "#4C3117";
+	dir = 10;
+	name = "wooden railing"
 	},
 /turf/open/floor/wood,
+/area/awaymission/beach)
+"Ur" = (
+/obj/structure/flora/coconuts{
+	pixel_y = 21;
+	pixel_x = 23
+	},
+/turf/open/misc/beach/sand,
 /area/awaymission/beach)
 "Ut" = (
 /obj/structure/table/wood,
@@ -3713,6 +5105,9 @@
 /obj/structure/bed,
 /turf/open/floor/iron/dark/textured_large,
 /area/awaymission/beach)
+"UG" = (
+/turf/closed/wall/mineral/wood/nonmetal,
+/area/awaymission/beach)
 "UI" = (
 /obj/effect/turf_decal/siding/dark_red/corner{
 	dir = 8
@@ -3722,6 +5117,19 @@
 "UK" = (
 /obj/machinery/light/directional/east,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"UT" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/obj/structure/rack{
+	icon = 'icons/obj/fluff/general.dmi';
+	icon_state = "minibar";
+	name = "skeletal minibar"
+	},
+/obj/item/reagent_containers/cup/bucket/wooden,
+/obj/item/food/grown/sugarcane,
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "UX" = (
 /obj/structure/flora/tree/palm/style_2{
@@ -3745,6 +5153,14 @@
 	dir = 1
 	},
 /area/awaymission/beach)
+"Vh" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/item/stack/sheet/mineral/sandstone/thirty,
+/obj/item/flashlight/flare/torch{
+	pixel_x = 5
+	},
+/turf/open/floor/vault/sandstone,
+/area/awaymission/beach)
 "Vo" = (
 /obj/effect/turf_decal/sand,
 /obj/machinery/door/airlock/wood{
@@ -3753,6 +5169,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/awaymission/beach)
+"Vu" = (
+/obj/structure/fluff/fokoff_sign,
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "Vy" = (
 /obj/item/toy/seashell{
 	pixel_x = 5;
@@ -3760,9 +5180,26 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"VC" = (
+/obj/structure/chair/comfy/brown{
+	dir = 4
+	},
+/turf/open/floor/carpet/royalblack,
+/area/awaymission/beach)
 "VG" = (
 /obj/structure/tank_holder/extinguisher,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"VH" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/item/antique{
+	pixel_y = 6
+	},
+/obj/structure/fluff/divine/convertaltar,
+/obj/item/trash/candle{
+	pixel_x = -7
+	},
+/turf/open/floor/vault/sandstone,
 /area/awaymission/beach)
 "VI" = (
 /obj/item/toy/seashell{
@@ -3808,6 +5245,17 @@
 	pixel_y = 14
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Wc" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "Wd" = (
 /obj/machinery/door/airlock/wood{
@@ -3870,6 +5318,12 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"WE" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/turf/open/floor/bamboo,
+/area/awaymission/beach)
 "WM" = (
 /obj/item/reagent_containers/cup/soda_cans/starkist{
 	pixel_x = -6
@@ -3884,15 +5338,54 @@
 /obj/item/clothing/head/soft/black,
 /turf/open/floor/wood/parquet,
 /area/awaymission/beach)
+"WP" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 6
+	},
+/obj/structure/flora/bush/jungle/a/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"WY" = (
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 1;
+	name = "wooden railing"
+	},
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/obj/structure/chair/wood{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "Xd" = (
 /obj/structure/table/optable,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"Xg" = (
+/obj/structure/mineral_door/wood{
+	color = "#6b6536"
+	},
+/turf/open/floor/iron/sepia,
 /area/awaymission/beach)
 "Xh" = (
 /obj/vehicle/ridden/atv{
 	dir = 4
 	},
 /turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Xr" = (
+/obj/structure/window/reinforced/shuttle/survival_pod,
+/turf/open/floor/plating,
 /area/awaymission/beach)
 "Xt" = (
 /obj/structure/table/wood/fancy,
@@ -3907,8 +5400,28 @@
 	},
 /turf/open/floor/iron/smooth_large,
 /area/awaymission/beach)
+"Xw" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "XB" = (
 /turf/open/water/beach,
+/area/awaymission/beach)
+"XH" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 1
+	},
+/obj/structure/flora/bush/jungle/b/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"XI" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/obj/item/oar,
+/turf/open/floor/wood,
 /area/awaymission/beach)
 "XT" = (
 /obj/effect/turf_decal/siding/dark_red/corner{
@@ -3931,6 +5444,10 @@
 	},
 /turf/open/floor/wood,
 /area/awaymission/beach)
+"XW" = (
+/obj/effect/turf_decal/weather/dirt,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
 "XX" = (
 /obj/structure/table/wood,
 /obj/machinery/recharger,
@@ -3944,6 +5461,22 @@
 	},
 /turf/open/floor/iron/dark/diagonal,
 /area/awaymission/beach)
+"Ya" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"Ye" = (
+/obj/machinery/light/directional/north,
+/turf/open/floor/carpet/orange,
+/area/awaymission/beach)
+"Yf" = (
+/obj/item/toy/seashell{
+	pixel_x = 13
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "Yl" = (
 /obj/effect/turf_decal/sand/plating,
 /obj/item/shovel{
@@ -3952,6 +5485,18 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"Yn" = (
+/obj/structure/fluff/divine/defensepylon{
+	pixel_y = 8
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 6
+	},
+/obj/effect/turf_decal/weather/dirt{
+	dir = 5
+	},
+/turf/open/misc/sandy_dirt,
+/area/awaymission/beach)
 "Yq" = (
 /obj/item/reagent_containers/cup/watering_can{
 	pixel_y = 19;
@@ -3959,9 +5504,28 @@
 	},
 /turf/open/floor/wood/large,
 /area/awaymission/beach)
+"Yw" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
+/obj/structure/flora/bush/jungle/c/style_random,
+/turf/open/misc/grass/jungle,
+/area/awaymission/beach)
+"YA" = (
+/obj/structure/sink/kitchen/directional/north,
+/obj/structure/mirror/directional/south,
+/turf/open/floor/plastic,
+/area/awaymission/beach)
 "YB" = (
 /obj/machinery/vending/coffee,
 /turf/open/floor/wood/large,
+/area/awaymission/beach)
+"YG" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 4
+	},
+/obj/structure/flora/tree/jungle/style_random,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "YL" = (
 /obj/structure/reagent_dispensers/watertank,
@@ -3975,6 +5539,14 @@
 	},
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"YS" = (
+/obj/structure/railing{
+	color = "#4C3117";
+	dir = 8;
+	name = "wooden railing"
+	},
+/turf/open/floor/wood/large,
+/area/awaymission/beach)
 "YV" = (
 /obj/structure/flora/tree/palm{
 	pixel_y = 24;
@@ -3983,10 +5555,37 @@
 /obj/structure/flora/coconuts,
 /turf/open/misc/beach/sand,
 /area/awaymission/beach)
+"Zc" = (
+/obj/effect/turf_decal/stripes/white/full,
+/obj/structure/fence/end{
+	dir = 1
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
+"Zg" = (
+/obj/structure/railing/corner{
+	color = "#4C3117";
+	dir = 4;
+	name = "wooden railing"
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/open/floor/wood,
+/area/awaymission/beach)
 "Zj" = (
-/obj/machinery/recharge_station,
 /obj/machinery/light/directional/east,
+/obj/structure/bed/double,
+/obj/item/bedsheet/hop/double{
+	desc = "A blue bedsheet. Likely from the beach hotel.";
+	name = "blue bedsheet"
+	},
 /turf/open/floor/carpet/cyan,
+/area/awaymission/beach)
+"Zl" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/decal/remains/human,
+/turf/open/floor/wood/parquet,
 /area/awaymission/beach)
 "Zm" = (
 /obj/item/toy/beach_ball,
@@ -4031,6 +5630,12 @@
 	},
 /turf/open/floor/carpet,
 /area/awaymission/beach)
+"ZN" = (
+/obj/effect/turf_decal/weather/dirt{
+	dir = 8
+	},
+/turf/open/misc/beach/sand,
+/area/awaymission/beach)
 "ZR" = (
 /obj/structure/chair/plastic,
 /obj/item/clothing/head/collectable/paper{
@@ -4045,6 +5650,11 @@
 	pixel_x = -7
 	},
 /turf/open/misc/beach/coast,
+/area/awaymission/beach)
+"ZW" = (
+/obj/structure/flora/bush/jungle/c/style_random,
+/obj/effect/turf_decal/weather/dirt,
+/turf/open/misc/grass/jungle,
 /area/awaymission/beach)
 "ZX" = (
 /obj/effect/turf_decal/sand,
@@ -5093,7 +6703,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 "}
@@ -5101,7 +6711,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -5370,7 +6980,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -7686,7 +9296,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -8826,17 +10436,17 @@ XB
 di
 FM
 hC
-jI
+Uq
 Cf
 XB
 di
 FM
 hC
-jI
+Uq
 gG
 FM
 hC
-jI
+Uq
 Cf
 XB
 di
@@ -9481,7 +11091,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -9599,7 +11209,7 @@ mg
 GC
 Gn
 ll
-Zp
+hV
 QI
 Gn
 Em
@@ -9609,7 +11219,7 @@ aX
 GC
 Gn
 JG
-Zp
+hV
 fj
 Gn
 Em
@@ -9856,7 +11466,7 @@ Qf
 vM
 um
 xv
-Zp
+hV
 xv
 Qf
 Zj
@@ -9866,7 +11476,7 @@ Hv
 vM
 DV
 xv
-Zp
+hV
 xv
 Es
 jZ
@@ -10106,14 +11716,14 @@ XB
 XB
 XB
 XB
-XB
-XB
+hf
+CG
 xv
 xv
 xv
 xv
 xv
-Gu
+Ye
 xv
 xv
 xv
@@ -10123,7 +11733,7 @@ xv
 xv
 xv
 xv
-Zp
+hV
 xv
 xv
 xv
@@ -10363,24 +11973,24 @@ XB
 XB
 XB
 XB
-XB
+di
 FM
-Nk
+dR
 Gn
 cq
 CQ
 xv
-Zp
-Zp
-UK
-Zp
-Zp
-Zp
+hV
 Zp
 UK
 Zp
 Zp
 Zp
+Zp
+UK
+Zp
+Zp
+hV
 Zp
 UK
 VG
@@ -10466,7 +12076,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -10620,14 +12230,14 @@ XB
 XB
 XB
 XB
-XB
+di
 pw
 Iw
 AG
 Em
 Gn
 lz
-Zp
+hV
 xv
 xv
 xv
@@ -10637,7 +12247,7 @@ xv
 xv
 xv
 xv
-Zp
+hV
 xv
 xv
 xv
@@ -10877,14 +12487,14 @@ XB
 XB
 XB
 XB
-XB
+di
 CH
 Iw
 vc
 jZ
 hp
 xv
-Zp
+hV
 xv
 XV
 GC
@@ -10894,7 +12504,7 @@ Qk
 Em
 Nd
 xv
-Gu
+Ye
 xv
 yZ
 GC
@@ -11016,6 +12626,7 @@ XB
 XB
 XB
 XB
+KA
 XB
 XB
 XB
@@ -11133,15 +12744,14 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
+mH
+iB
 xv
 xv
 gk
 xv
 xv
-Zp
+hV
 wX
 Gn
 GC
@@ -11151,7 +12761,7 @@ LS
 Em
 Gn
 Wd
-Zp
+hV
 AW
 Gn
 GC
@@ -11391,14 +13001,14 @@ XB
 XB
 XB
 XB
-XB
+di
 FM
-LJ
+dR
 Gn
 kI
 cp
 xv
-Zp
+hV
 xv
 VP
 vM
@@ -11408,7 +13018,7 @@ Qf
 jZ
 im
 xv
-Zp
+hV
 xv
 VP
 vM
@@ -11648,14 +13258,14 @@ XB
 XB
 XB
 XB
-XB
+di
 pw
 Iw
 cn
 GC
 Gn
 yE
-Zp
+hV
 xv
 xv
 xv
@@ -11665,7 +13275,7 @@ xv
 xv
 xv
 xv
-Zp
+hV
 xv
 xv
 xv
@@ -11856,6 +13466,7 @@ XB
 XB
 XB
 XB
+KA
 XB
 XB
 XB
@@ -11904,25 +13515,24 @@ XB
 XB
 XB
 XB
-XB
-XB
+di
 CH
 Iw
 KB
 vM
 vF
 xv
-Zp
+hV
 Zp
 UK
 Zp
 xv
-VY
+Bu
 xv
 Zp
 Zp
 Zp
-Zp
+hV
 UK
 Zp
 Zp
@@ -12162,14 +13772,14 @@ XB
 XB
 XB
 XB
-XB
-XB
+HV
+iA
 xv
 xv
 xv
 xv
 xv
-Zp
+hV
 xv
 xv
 at
@@ -12179,7 +13789,7 @@ xv
 Jj
 xv
 xv
-Zp
+hV
 xv
 xv
 xv
@@ -12426,7 +14036,7 @@ Ug
 Yq
 an
 xv
-Zp
+hV
 xv
 oX
 Em
@@ -12436,14 +14046,14 @@ OE
 GC
 Gn
 xv
-Zp
+hV
 cZ
 qC
 Em
 re
 xv
 VY
-VY
+tk
 xv
 nD
 xv
@@ -12683,7 +14293,7 @@ EO
 Zp
 EH
 xv
-Gu
+Ye
 xv
 Gn
 Em
@@ -12693,7 +14303,7 @@ CQ
 GC
 ru
 xv
-Zp
+hV
 xv
 us
 Em
@@ -12943,7 +14553,7 @@ xv
 oa
 xv
 VP
-jZ
+HE
 AB
 xv
 Qf
@@ -13498,9 +15108,9 @@ XB
 XB
 Vf
 GG
+lD
 wA
-VY
-VY
+hV
 VY
 hL
 ni
@@ -13726,7 +15336,7 @@ Zp
 Zp
 Zp
 uq
-Zp
+VY
 Zp
 Wa
 Bl
@@ -13755,9 +15365,9 @@ Le
 Le
 MF
 VY
+Qm
 VY
-VY
-VY
+QT
 VY
 GG
 hL
@@ -14492,7 +16102,7 @@ bi
 bi
 bi
 bi
-bi
+Sa
 ob
 sS
 sS
@@ -14529,7 +16139,7 @@ xv
 xv
 ls
 VY
-Ar
+NA
 Ar
 VY
 VY
@@ -14751,8 +16361,8 @@ bi
 bi
 Gi
 xv
-Bm
-sS
+Vc
+YA
 xv
 GC
 GC
@@ -15005,11 +16615,11 @@ Ka
 bi
 kz
 Fe
-bi
+Sa
 Ih
 xv
-Bm
-sS
+Vc
+YA
 xv
 iw
 GC
@@ -15259,14 +16869,14 @@ xv
 xv
 Iw
 xv
-bi
-bi
-bi
+Sa
+Sa
+Sa
 xv
 xv
 xv
 iq
-sS
+YA
 xv
 wL
 Zp
@@ -15521,7 +17131,7 @@ xv
 Ic
 xv
 Bm
-QF
+sS
 sS
 sS
 xv
@@ -16035,9 +17645,9 @@ Cf
 XB
 xv
 xv
-Vc
-Vc
-Vc
+Bm
+Bm
+xv
 xv
 xv
 xv
@@ -16295,7 +17905,7 @@ xv
 xv
 xv
 xv
-xv
+Iq
 iJ
 xv
 jU
@@ -16553,15 +18163,15 @@ fi
 uT
 uT
 Nb
-SB
-SB
+uT
+uT
 uT
 xv
 wt
 YB
 xv
 xv
-Wl
+BY
 VY
 VY
 VY
@@ -16806,7 +18416,7 @@ XB
 XB
 XB
 xv
-uT
+eA
 FF
 Ge
 SB
@@ -16817,9 +18427,9 @@ xv
 xv
 xv
 xv
+mZ
+Pp
 VY
-VY
-nV
 VY
 GG
 VY
@@ -18821,7 +20431,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -19151,7 +20761,7 @@ Zp
 Zp
 NS
 Mm
-Wa
+Md
 VY
 VY
 VY
@@ -19176,7 +20786,7 @@ XB
 XB
 XB
 XB
-XB
+EK
 XB
 XB
 XB
@@ -20163,7 +21773,7 @@ kG
 VY
 VY
 Hn
-VY
+xv
 lS
 Wl
 Wl
@@ -21704,7 +23314,7 @@ Cp
 VY
 db
 Ar
-Ar
+NA
 VY
 VY
 VY
@@ -22093,7 +23703,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -22476,7 +24086,7 @@ XB
 Vf
 VY
 uG
-uG
+ao
 VY
 Wl
 Wl
@@ -22498,7 +24108,7 @@ VY
 VY
 EC
 VY
-gP
+yF
 VY
 BK
 XB
@@ -23776,10 +25386,10 @@ VY
 VY
 AU
 dV
-Ji
-Ji
-Ji
-Ji
+Zc
+Hd
+Hd
+Hd
 Ji
 EC
 VY
@@ -25005,8 +26615,8 @@ XB
 XB
 XB
 XB
-XB
-XB
+MZ
+ni
 XB
 XB
 XB
@@ -25261,13 +26871,13 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+hL
+Le
+Le
+Le
+ni
 XB
 XB
 XB
@@ -25518,18 +27128,18 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+wA
+VY
+VY
+VY
+hL
+Le
+Le
+Le
+Le
+ni
 XB
 XB
 XB
@@ -25776,31 +27386,31 @@ XB
 XB
 XB
 XB
+Vf
+VY
+VY
+Ur
+VY
+VY
+gx
+gx
+VY
+wA
+hL
+Le
+Le
+Le
+ni
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+Le
+Le
+Le
+Le
+Le
+ni
 XB
 XB
 XB
@@ -26033,33 +27643,33 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+Yf
+VY
+gx
+td
+pG
+pG
+TY
+gx
+gx
+gx
+VY
+VY
+hL
+Le
+Le
+MF
+wA
+VY
+gx
+gx
+VY
+GG
+hL
+Le
+ni
 XB
 XB
 XB
@@ -26290,33 +27900,33 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+VY
+vl
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+TY
+Yf
+wA
+VY
+gx
+gx
+gx
+td
+pG
+pG
+TY
+gx
+VY
+wA
+BK
 XB
 XB
 XB
@@ -26547,38 +28157,38 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
 Vf
+VY
+VY
+vl
+pG
+bB
+Ya
+Yw
+Yw
+ij
+pG
+pG
+pG
+TY
+Fw
+td
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+lg
+VY
+YS
+YS
+YS
+YS
+YS
+YS
 VY
 VY
 xv
@@ -26803,40 +28413,40 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-Vf
+MZ
+MF
 wA
+VY
+vl
+pG
+zW
+Ek
+Mj
+Ek
+qA
+Ya
+ij
+pG
+pG
+pG
+pG
+pG
+bB
+Ya
+Ya
+ij
+pG
+pG
+pG
+lg
+VY
+jy
+jy
+jy
+jy
+jy
+jy
+VY
 VY
 xv
 HF
@@ -27058,42 +28668,42 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+MF
+VY
+VY
+VY
+td
+pG
+zW
+kn
+jc
+kn
+he
+Mj
+jc
+Yw
+Ya
+Os
+Ya
+Ya
+he
+he
+MC
+uR
+pG
+wq
+ZN
+VY
+VY
+BK
 XB
 XB
 XB
 XB
 Vf
-VY
+wA
 VY
 xv
 MH
@@ -27315,36 +28925,36 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+VY
+VY
+Ur
+vl
+pG
+pG
+zW
+he
+he
+he
+kn
+AL
+jc
+Ek
+kn
+he
+cU
+he
+he
+he
+jc
+Rm
+pG
+lg
+wA
+Kh
+Fb
+Rj
 XB
 XB
 XB
@@ -27572,35 +29182,35 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+VY
+Ur
+VY
+vl
+pG
+bB
+he
+he
+he
+Mj
+dJ
+TQ
+zW
+he
+he
+Mj
+qA
+jc
+cU
+qA
+Rm
+pG
+pG
+lg
+ls
+BK
+Uo
 XB
 XB
 XB
@@ -27829,34 +29439,34 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+VY
+VY
+VY
+vl
+pG
+tQ
+Ek
+he
+qA
+jc
+ZW
+sb
+zW
+jc
+he
+he
+he
+Ek
+jc
+Rm
+pG
+pG
+wq
+VY
+VY
+BK
 XB
 XB
 XB
@@ -28087,33 +29697,33 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+VY
+VY
+vl
+pG
+AO
+he
+he
+he
+jc
+ZW
+Yn
+zW
+kn
+he
+jc
+he
+xL
+Rm
+pG
+pG
+pG
+lg
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -28151,7 +29761,7 @@ VY
 VY
 VY
 VY
-Kh
+pe
 Rj
 XB
 XB
@@ -28344,32 +29954,32 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+Fb
+tJ
+eF
+vl
+pG
+pG
+AO
+he
+kn
+Mj
+he
+Ya
+he
+Mj
+kn
+kn
+XW
+pG
+pG
+pG
+pG
+wq
+VY
+VY
+BK
 XB
 XB
 XB
@@ -28398,7 +30008,7 @@ CJ
 xv
 xv
 tK
-Qg
+tM
 TO
 zK
 uN
@@ -28573,6 +30183,7 @@ XB
 XB
 XB
 XB
+KA
 XB
 XB
 XB
@@ -28602,31 +30213,30 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+wA
+VY
+ZN
+PC
+pG
+AO
+he
+Ek
+AL
+AL
+AL
+JD
+AL
+JD
+Rm
+pG
+pG
+wq
+ZN
+VY
+Kh
+Fb
+Rj
 XB
 XB
 XB
@@ -28663,7 +30273,7 @@ wv
 xv
 xv
 Fb
-Rj
+eD
 XB
 XB
 XB
@@ -28860,28 +30470,28 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+VY
+VY
+VY
+PC
+pG
+Hr
+WP
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+wq
+wA
+NQ
+VY
+BK
 XB
 XB
 XB
@@ -29117,28 +30727,28 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+Fb
+tJ
+VY
+VY
+td
+pG
+pG
+pG
+pG
+pG
+wq
+ZN
+ZN
+ZN
+ZN
+ZN
+VY
+VY
+Kh
+Fb
+Rj
 XB
 XB
 XB
@@ -29374,26 +30984,26 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+MF
+VY
+vl
+pG
+pG
+pG
+pG
+wq
+ZN
+ig
+VY
+VY
+VY
+VY
+VY
+Kh
+Fb
+Rj
 XB
 XB
 XB
@@ -29631,24 +31241,24 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+VY
+VY
+vl
+pG
+oL
+pG
+wq
+VY
+VY
+VY
+VY
+Kh
+Fb
+Fb
+Fb
+Rj
 XB
 XB
 XB
@@ -29887,21 +31497,21 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+wA
+VY
+VY
+vl
+pG
+PT
+pG
+lg
+VY
+Kh
+Fb
+Fb
+Rj
 XB
 XB
 XB
@@ -29936,14 +31546,14 @@ Kh
 Fb
 Fb
 Rj
-XB
+Uo
 XB
 xv
 xv
-lB
 ho
 ho
 ho
+ho
 xv
 xv
 XB
@@ -30004,7 +31614,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -30143,19 +31753,19 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+VY
+Vy
+VY
+VY
+vl
+pG
+pG
+pG
+lg
+VY
+BK
 XB
 XB
 XB
@@ -30191,7 +31801,7 @@ Fb
 Fb
 Rj
 XB
-XB
+Uo
 XB
 XB
 XB
@@ -30400,19 +32010,19 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+VY
+VY
+VY
+VY
+VY
+ZN
+ZN
+ZN
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -30657,18 +32267,18 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+VY
+VY
+ig
+IZ
+VY
+VY
+VY
+VY
+VY
+BK
 XB
 XB
 XB
@@ -30914,18 +32524,18 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+VY
+VY
+VY
+VY
+VY
+VY
+wA
+Vy
+VY
+BK
 XB
 XB
 XB
@@ -31172,17 +32782,17 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+VY
+VY
+VY
+VY
+tA
+VY
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -31430,15 +33040,15 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+Fb
+Fb
+tJ
+VY
+VY
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -31690,11 +33300,11 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
+Pe
+Fb
+Fb
+Fb
+Rj
 XB
 XB
 XB
@@ -34455,7 +36065,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -37605,6 +39215,7 @@ XB
 XB
 XB
 XB
+KA
 XB
 XB
 XB
@@ -37642,8 +39253,7 @@ XB
 XB
 XB
 XB
-XB
-XB
+KA
 XB
 XB
 XB
@@ -41536,7 +43146,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -43273,7 +44883,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -44984,11 +46594,11 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+Le
+Le
+au
 XB
 XB
 XB
@@ -45241,12 +46851,12 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+Fb
+Fb
+tJ
+bf
+ni
 XB
 XB
 XB
@@ -45501,9 +47111,9 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
+Pe
+dW
+BK
 XB
 XB
 XB
@@ -45733,6 +47343,7 @@ XB
 XB
 XB
 XB
+KA
 XB
 XB
 XB
@@ -45758,9 +47369,8 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
+Pe
+Rj
 XB
 XB
 XB
@@ -46013,7 +47623,7 @@ XB
 XB
 XB
 XB
-XB
+Oe
 XB
 XB
 XB
@@ -46303,7 +47913,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -46781,7 +48391,7 @@ XB
 XB
 XB
 XB
-XB
+kH
 XB
 XB
 XB
@@ -47031,19 +48641,19 @@ XB
 XB
 XB
 XB
+KA
+XB
+kH
 XB
 XB
 XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+UG
+vL
+Dl
+UG
 XB
 XB
 XB
@@ -47294,20 +48904,20 @@ XB
 XB
 XB
 XB
+QD
+mI
+Jg
+UG
+eI
+yk
+UG
+UG
+QD
+UG
+UG
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Ol
 XB
 XB
 XB
@@ -47543,26 +49153,26 @@ XB
 XB
 XB
 XB
+Wc
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+UG
+UG
+UG
+UG
+UG
+UG
+eI
+fB
+rJ
+JI
+Xw
+UG
+Fj
+ga
+ha
+UG
+UG
 XB
 XB
 XB
@@ -47798,28 +49408,28 @@ XB
 XB
 XB
 XB
+GJ
+Eq
+mM
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Ru
+rJ
+Ds
+zL
+UT
+Xr
+eI
+Lj
+Gn
+Gn
+zo
+rD
+UG
+UG
+LT
+LT
+LT
+UG
 XB
 XB
 XB
@@ -48054,28 +49664,28 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+xX
+AE
+Gn
+WE
+rG
+Np
+zx
+Gn
+Gn
+tt
+UG
+wp
+HW
+hx
+An
+Ru
+rJ
+ww
+UG
+rj
+oQ
+LT
 XB
 XB
 XB
@@ -48309,29 +49919,29 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+KX
+Ep
+WY
+Gn
+yd
+na
+zS
+oc
+pI
+Gn
+Gn
+Pj
+Xg
+wp
+GB
+oc
+PM
+Gn
+Gn
+pS
+dv
+rB
+Zl
 XB
 XB
 XB
@@ -48568,29 +50178,29 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+mr
+Zg
+Gn
+SA
+Jm
+Ao
+GZ
+mj
+NW
+Gv
+UG
+wp
+xG
+aN
+pR
+mj
+NW
+cc
+UG
+Pl
+xy
+LT
+UG
 XB
 XB
 XB
@@ -48826,28 +50436,28 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+ih
+uW
+fl
+mj
+hK
+Cz
+ry
+RO
+ct
+Xr
+uB
+Gz
+Gn
+Gn
+zo
+rD
+UG
+UG
+VC
+LT
+sA
+UG
 XB
 XB
 XB
@@ -49079,32 +50689,32 @@ XB
 XB
 XB
 XB
+pc
 XB
 XB
 XB
 XB
 XB
+JU
+XI
+UG
+sI
+UG
+UG
+UG
+UG
+UG
+uB
+TA
+NW
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Do
+UG
+eB
+kM
+eB
+UG
+UG
 XB
 XB
 XB
@@ -49345,22 +50955,22 @@ XB
 XB
 XB
 XB
+pa
 XB
 XB
 XB
 XB
+QD
+fA
+Tm
+UG
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+UG
+UG
+QD
+UG
+UG
 XB
 XB
 XB
@@ -49602,6 +51212,7 @@ XB
 XB
 XB
 XB
+Bn
 XB
 XB
 XB
@@ -49609,11 +51220,10 @@ XB
 XB
 XB
 XB
+UG
 XB
 XB
-XB
-XB
-XB
+UG
 XB
 XB
 XB
@@ -49859,7 +51469,7 @@ XB
 XB
 XB
 XB
-XB
+ex
 XB
 XB
 XB
@@ -50375,7 +51985,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -52519,9 +54129,9 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
+MZ
+Le
+ni
 XB
 XB
 XB
@@ -52770,16 +54380,16 @@ XB
 XB
 XB
 XB
+MZ
+Le
+Le
+ni
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+gH
+hL
+ni
 XB
 XB
 XB
@@ -53026,18 +54636,18 @@ XB
 XB
 XB
 XB
+MZ
+MF
+Yf
+VY
+BK
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+gx
+VY
+qe
+ni
 XB
 XB
 XB
@@ -53281,21 +54891,21 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+MF
+VY
+IQ
+ls
+BK
+Uo
+Vf
+vl
+pG
+TY
+VY
+hL
+ni
 XB
 XB
 XB
@@ -53530,29 +55140,29 @@ XB
 XB
 XB
 XB
+MZ
+ON
 XB
 XB
 XB
+MZ
+Le
+Le
+MF
+VY
+VY
+td
+pG
+lg
+BK
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+vl
+pG
+pG
+lg
+VY
+BK
 XB
 XB
 XB
@@ -53787,30 +55397,30 @@ XB
 XB
 XB
 XB
+Pe
+Rj
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+VY
+gH
+VY
+gx
+td
+pG
+pG
+lg
+BK
+MZ
+MF
+vl
+tG
+fW
+TY
+VY
+hL
+ni
 XB
 XB
 XB
@@ -54046,28 +55656,28 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+MF
+gH
+gx
+gx
+td
+pG
+pG
+pG
+pG
+lg
+BK
+Vf
+VY
+vl
+pG
+pG
+pG
+lg
+VY
+BK
 XB
 XB
 XB
@@ -54303,28 +55913,28 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+gx
+td
+pG
+pG
+pG
+pG
+pG
+EA
+pG
+lg
+hL
+MF
+gH
+vl
+pG
+Dt
+pG
+lg
+gH
+BK
 XB
 XB
 XB
@@ -54560,29 +56170,29 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+vl
+pG
+pG
+pG
+fW
+pG
+pG
+pG
+pG
+pG
+TY
+VY
+IZ
+ls
+td
+pG
+wW
+pG
+TY
+VY
+hL
+ni
 XB
 XB
 XB
@@ -54817,29 +56427,29 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+vl
+pG
+fW
+pG
+pG
+bB
+Yw
+ij
+pG
+pG
+pG
+TY
+gx
+td
+pG
+pG
+RM
+pG
+pG
+TY
+VY
+BK
 XB
 XB
 XB
@@ -55072,32 +56682,32 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+MF
+JY
+pG
+tG
+pG
+bB
+he
+Mj
+jc
+GX
+ij
+pG
+pG
+pG
+pG
+pG
+bB
+Mj
+pg
+pG
+pG
+lg
+hL
+ni
 XB
 XB
 XB
@@ -55328,33 +56938,33 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+VY
+gx
+td
+pG
+pG
+bB
+he
+he
+cU
+kn
+jc
+he
+Ya
+Ya
+Ya
+Ya
+Ya
+he
+he
+jc
+eC
+pG
+lg
+VY
+BK
 XB
 XB
 XB
@@ -55585,33 +57195,33 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+Yf
+vl
+pG
+pG
+pG
+pG
+zW
+jc
+qA
+he
+kn
+Mj
+jc
+kn
+kn
+cU
+he
+Mj
+he
+he
+he
+dI
+pG
+TY
+VY
+BK
 XB
 XB
 XB
@@ -55842,6 +57452,34 @@ XB
 XB
 XB
 XB
+Vf
+ls
+JY
+pG
+fW
+pG
+bB
+kn
+Mj
+jW
+jW
+jW
+jW
+aK
+he
+Mj
+cU
+he
+cU
+he
+qA
+he
+XW
+pG
+pG
+lg
+hL
+ni
 XB
 XB
 XB
@@ -55864,35 +57502,7 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+KA
 XB
 XB
 XB
@@ -56099,34 +57709,34 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+vl
+pG
+tG
+pG
+zW
+Ek
+jW
+jW
+aq
+rX
+jW
+fZ
+cU
+jc
+jc
+he
+he
+qA
+cU
+he
+he
+eC
+pG
+lg
+gH
+BK
 XB
 XB
 XB
@@ -56356,34 +57966,34 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+VY
+PC
+pG
+pG
+zW
+qA
+jW
+VH
+rX
+rX
+vv
+DE
+Ss
+he
+he
+Mj
+he
+cU
+Mj
+he
+jc
+SO
+pG
+TY
+VY
+BK
 XB
 XB
 XB
@@ -56614,34 +58224,34 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+JY
+pG
+fW
+XH
+jc
+jW
+Vh
+aq
+rX
+jW
+Jd
+kn
+cU
+he
+he
+he
+cU
+cU
+he
+jc
+XW
+pG
+pG
+lg
+qe
+ni
 XB
 XB
 XB
@@ -56861,6 +58471,7 @@ XB
 XB
 XB
 XB
+KA
 XB
 XB
 XB
@@ -56870,35 +58481,34 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+vl
+pG
+pG
+zW
+Mj
+jW
+ST
+jW
+jW
+jW
+OL
+Mj
+vU
+he
+he
+Mj
+he
+he
+he
+he
+XW
+fW
+pG
+lg
+VY
+BK
 XB
 XB
 XB
@@ -57128,6 +58738,34 @@ XB
 XB
 XB
 XB
+Vf
+VY
+td
+pG
+pG
+zW
+cU
+cU
+he
+he
+Mj
+cU
+he
+lZ
+AL
+AL
+zn
+AL
+AL
+AL
+Mj
+he
+Rm
+tG
+pG
+lg
+gH
+BK
 XB
 XB
 XB
@@ -57210,35 +58848,7 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+KA
 XB
 XB
 XB
@@ -57385,6 +58995,34 @@ XB
 XB
 XB
 XB
+Vf
+vl
+pG
+fW
+pG
+zW
+kn
+he
+jc
+cU
+he
+he
+Rm
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+jP
+Rm
+pG
+pG
+pG
+lg
+Kh
+Rj
 XB
 XB
 XB
@@ -57471,36 +59109,8 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+ni
 XB
 XB
 XB
@@ -57642,6 +59252,33 @@ XB
 XB
 XB
 XB
+Vf
+vl
+pG
+pG
+pG
+zW
+he
+Mj
+jc
+he
+qA
+Rm
+fW
+tG
+pG
+wq
+ZN
+ZN
+PC
+pG
+pG
+pG
+tG
+pG
+wq
+FK
+BK
 XB
 XB
 XB
@@ -57729,35 +59366,8 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+BK
 XB
 XB
 XB
@@ -57899,6 +59509,33 @@ XB
 XB
 XB
 XB
+Vf
+gH
+PC
+pG
+pG
+AO
+he
+he
+kn
+jc
+Rm
+pG
+pG
+pG
+wq
+VY
+gH
+VY
+VY
+PC
+pG
+fW
+pG
+pG
+lg
+Kh
+Rj
 XB
 XB
 XB
@@ -57986,35 +59623,8 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+BK
 XB
 XB
 XB
@@ -58156,6 +59766,32 @@ XB
 XB
 XB
 XB
+Pe
+tJ
+VY
+PC
+fW
+pG
+AO
+AL
+YG
+Rm
+pG
+tG
+pG
+pG
+lg
+FK
+ls
+IZ
+gH
+vl
+pG
+pG
+pG
+wq
+VY
+BK
 XB
 XB
 XB
@@ -58241,38 +59877,12 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+Le
+QL
+MF
+hL
+ni
 XB
 XB
 XB
@@ -58414,6 +60024,31 @@ XB
 XB
 XB
 XB
+Vf
+VY
+vl
+pG
+pG
+pG
+pG
+pG
+pG
+pG
+fW
+pG
+wq
+VY
+gH
+VY
+VY
+VY
+VY
+ZN
+ZN
+ZN
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -58498,39 +60133,14 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+MZ
+MF
+Vu
+VY
+ls
+gH
+hL
+ni
 XB
 XB
 XB
@@ -58671,6 +60281,30 @@ XB
 XB
 XB
 XB
+Pe
+tJ
+VY
+PC
+pG
+fW
+pG
+pG
+pG
+pG
+pG
+pG
+lg
+VY
+VY
+Kh
+Fb
+Fb
+tJ
+VY
+VY
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -58756,38 +60390,14 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Ly
+VY
+ls
+hF
+sN
+VY
+NQ
+BK
 XB
 XB
 XB
@@ -58929,8 +60539,28 @@ XB
 XB
 XB
 XB
+Vf
+gH
+VY
+ZN
+ZN
+ZN
+ZN
+PC
+pG
+pG
+wq
+VY
+Kh
+Fb
+Rj
 XB
 XB
+Pe
+Fb
+Fb
+Fb
+Rj
 XB
 XB
 XB
@@ -59017,34 +60647,14 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Vf
+VY
+gH
+VY
+VY
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -59186,6 +60796,19 @@ XB
 XB
 XB
 XB
+Pe
+tJ
+Wb
+Kh
+Fb
+Fb
+Fb
+tJ
+ZN
+ZN
+VY
+Kh
+Rj
 XB
 XB
 XB
@@ -59281,26 +60904,13 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+tJ
+VY
+VY
+Kh
+Fb
+Rj
 XB
 XB
 XB
@@ -59444,9 +61054,17 @@ XB
 XB
 XB
 XB
+Pe
+Fb
+Rj
 XB
 XB
 XB
+Pe
+Fb
+Fb
+Fb
+Rj
 XB
 XB
 XB
@@ -59544,18 +61162,10 @@ XB
 XB
 XB
 XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
-XB
+Pe
+Fb
+Fb
+Rj
 XB
 XB
 XB
@@ -59873,7 +61483,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -62130,7 +63740,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -65051,7 +66661,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -66136,7 +67746,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -68570,7 +70180,7 @@ XB
 XB
 XB
 XB
-XB
+KA
 XB
 XB
 XB
@@ -68836,7 +70446,7 @@ XB
 (253,1,1) = {"
 XB
 XB
-XB
+KA
 XB
 XB
 XB

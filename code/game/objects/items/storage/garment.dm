@@ -45,9 +45,7 @@
 	atom_storage.max_total_storage = 200
 	atom_storage.max_slots = 15
 	atom_storage.insert_preposition = "in"
-	atom_storage.set_holdable(list(
-		/obj/item/clothing,
-	))
+	atom_storage.set_holdable(/obj/item/clothing)
 	atom_storage.storage_sound = 'maplestation_modules/sound/items/storage/wrapper.ogg'
 
 /obj/item/storage/bag/garment/captain/PopulateContents()

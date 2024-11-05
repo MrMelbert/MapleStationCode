@@ -186,12 +186,12 @@
 				phrases += "Purr..."
 			if (attacked_stacks)
 				phrases += "Grrr..."
-			if (bodytemperature < T0C)
+			if (body_temperature < T0C)
 				phrases += "Cold..."
-			if (bodytemperature < T0C - 30)
+			if (body_temperature < T0C - 30)
 				phrases += "So... cold..."
 				phrases += "Very... cold..."
-			if (bodytemperature < T0C - 50)
+			if (body_temperature < T0C - 50)
 				phrases += "..."
 				phrases += "C... c..."
 			if (buckled)

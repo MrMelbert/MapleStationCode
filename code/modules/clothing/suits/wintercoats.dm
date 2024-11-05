@@ -7,7 +7,6 @@
 	worn_icon = 'icons/mob/clothing/suits/wintercoat.dmi'
 	inhand_icon_state = "coatwinter"
 	body_parts_covered = CHEST|GROIN|ARMS
-	cold_protection = CHEST|GROIN|ARMS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	allowed = list()
 	armor_type = /datum/armor/hooded_wintercoat
@@ -54,6 +53,7 @@
 		return FALSE
 
 	zipped = !zipped
+	playsound(src, 'sound/items/zip_up.ogg', 30, TRUE, -3)
 	worn_icon_state = "[initial(icon_state)][zipped ? "_t" : ""]"
 	balloon_alert(user, "[zipped ? "" : "un"]zipped")
 
@@ -68,7 +68,6 @@
 	icon_state = "hood_winter"
 	worn_icon = 'icons/mob/clothing/head/winterhood.dmi'
 	body_parts_covered = HEAD
-	cold_protection = HEAD
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
 	flags_inv = HIDEHAIR|HIDEEARS
 	armor_type = /datum/armor/hooded_winterhood
@@ -88,9 +87,10 @@
 	equip_delay_other = 6 SECONDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT // Protects very cold.
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT // Protects a little hot.
-	flags_inv = HIDEJUMPSUIT
+	transparent_protection = HIDEJUMPSUIT
 	clothing_flags = THICKMATERIAL
 	resistance_flags = NONE
+	body_parts_covered = CHEST|GROIN|ARMS|LEGS
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/eva
 
 /datum/armor/wintercoat_eva
@@ -388,6 +388,9 @@
 	allowed += list(
 		/obj/item/autopsy_scanner,
 		/obj/item/scythe,
+		/obj/item/shovel,
+		/obj/item/shovel/serrated,
+		/obj/item/trench_tool,
 	)
 
 /obj/item/clothing/head/hooded/winterhood/medical/coroner
@@ -502,6 +505,10 @@
 	icon_state = "coatgenetics"
 	inhand_icon_state = null
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science/genetics
+
+/obj/item/clothing/suit/hooded/wintercoat/science/genetics/Initialize(mapload)
+	. = ..()
+	allowed += /obj/item/sequence_scanner
 
 /obj/item/clothing/head/hooded/winterhood/science/genetics
 	desc = "A white winter coat hood. It's warm."
@@ -630,6 +637,8 @@
 		/obj/item/storage/bag/ore,
 		/obj/item/t_scanner/adv_mining_scanner,
 		/obj/item/tank/internals,
+		/obj/item/shovel,
+		/obj/item/trench_tool,
 	)
 	armor_type = /datum/armor/wintercoat_miner
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/miner

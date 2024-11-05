@@ -44,6 +44,13 @@
 
 	return null
 
+/mob/living/carbon/is_eyes_visible()
+	if(istype(glasses) && (glasses.flags_cover & GLASSESCOVERSEYES) && glasses.tint)
+		return FALSE
+	if(check_obscured_slots() & ITEM_SLOT_EYES)
+		return FALSE
+	return TRUE
+
 /mob/living/carbon/is_pepper_proof(check_flags = ALL)
 	var/obj/item/organ/internal/eyes/eyes = get_organ_by_type(/obj/item/organ/internal/eyes)
 	if(eyes && eyes.pepperspray_protect)
@@ -292,19 +299,21 @@
 		Knockdown(stun_duration)
 
 /// When another mob touches us, they may messy us up.
-/mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
+/mob/living/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return
 
 /mob/living/carbon/human/share_blood_on_touch(mob/living/carbon/human/who_touched_us, messy_slots = ITEM_SLOT_ICLOTHING|ITEM_SLOT_OCLOTHING)
 	if(!istype(who_touched_us) || !messy_slots)
 		return
 
+	who_touched_us.add_fingerprints_to_items(src, messy_slots) // technically this should handle passing blood but i think it's broken
+
 	for(var/obj/item/thing as anything in who_touched_us.get_equipped_items())
 		if((thing.body_parts_covered & HANDS) && prob(GET_ATOM_BLOOD_DNA_LENGTH(thing) * 25))
 			add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us.wear_suit), messy_slots)
 			return
 
-	if(prob(blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
+	if(prob(who_touched_us.blood_in_hands * GET_ATOM_BLOOD_DNA_LENGTH(who_touched_us) * 10))
 		add_blood_DNA_to_items(GET_ATOM_BLOOD_DNA(who_touched_us), messy_slots)
 		who_touched_us.blood_in_hands -= 1
 
@@ -381,7 +390,7 @@
 			if (helper.grab_state >= GRAB_AGGRESSIVE)
 				add_mood_event("hug", /datum/mood_event/bear_hug)
 			else
-				if(bodytemperature > helper.bodytemperature)
+				if(body_temperature > helper.body_temperature)
 					if(!HAS_TRAIT(helper, TRAIT_BADTOUCH))
 						helper.add_mood_event("hug", /datum/mood_event/warmhug, src) // Hugger got a warm hug (Unless they hate hugs)
 					add_mood_event("hug", /datum/mood_event/hug) // Receiver always gets a mood for being hugged
@@ -392,14 +401,14 @@
 				add_mood_event("hug", /datum/mood_event/bad_touch_bear_hug)
 
 		// Let people know if they hugged someone really warm or really cold
-		if(helper.bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
+		if(helper.body_temperature > bodytemp_heat_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
 			to_chat(src, span_warning("It feels like [helper] is over heating as [helper.p_they()] hug[helper.p_s()] you."))
-		else if(helper.bodytemperature < BODYTEMP_COLD_DAMAGE_LIMIT)
+		if(helper.body_temperature < bodytemp_cold_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
 			to_chat(src, span_warning("It feels like [helper] is freezing as [helper.p_they()] hug[helper.p_s()] you."))
 
-		if(bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
+		if(body_temperature > helper.bodytemp_heat_damage_limit && !HAS_TRAIT(helper, TRAIT_RESISTHEAT))
 			to_chat(helper, span_warning("It feels like [src] is over heating as you hug [p_them()]."))
-		else if(bodytemperature < BODYTEMP_COLD_DAMAGE_LIMIT)
+		if(body_temperature < helper.bodytemp_cold_damage_limit && !HAS_TRAIT(helper, TRAIT_RESISTCOLD))
 			to_chat(helper, span_warning("It feels like [src] is freezing as you hug [p_them()]."))
 
 		if(HAS_TRAIT(helper, TRAIT_FRIENDLY))

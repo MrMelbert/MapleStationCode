@@ -243,6 +243,9 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		L[DNA_AVIAN_EARS_BLOCK] = construct_block(GLOB.avian_ears_list.Find(features["ears_avian"]), GLOB.avian_ears_list.len)
 	if(features["feathers"]) // NON-MODULE CHANGE
 		L[DNA_FEATHER_COLOR_BLOCK] = sanitize_hexcolor(features["feathers"], include_crunch = FALSE)
+	if(features["synth_head_cover"]) // NON-MODULE CHANGE
+		L[DNA_SYNTH_HEAD_COVER_BLOCK] = construct_block(GLOB.synth_head_cover_list.Find(features["synth_head_cover"]), GLOB.synth_head_cover_list.len)
+
 
 	for(var/blocknum in 1 to DNA_FEATURE_BLOCKS)
 		. += L[blocknum] || random_string(GET_UI_BLOCK_LEN(blocknum), GLOB.hex_characters)
@@ -389,6 +392,9 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 			set_uni_feature_block(blocknumber, construct_block(GLOB.avian_ears_list.Find(features["ears_avian"]), GLOB.avian_ears_list.len))
 		if(DNA_FEATHER_COLOR_BLOCK) // NON-MODULE CHANGE
 			set_uni_feature_block(blocknumber, sanitize_hexcolor(features["feathers"], include_crunch = FALSE))
+		if(DNA_SYNTH_HEAD_COVER_BLOCK) // NON-MODULE CHANGE
+			set_uni_feature_block(blocknumber, construct_block(GLOB.synth_head_cover_list.Find(features["head_tentacles"]), GLOB.synth_head_cover_list.len))
+
 
 //Please use add_mutation or activate_mutation instead
 /datum/dna/proc/force_give(datum/mutation/human/human_mutation)
@@ -405,8 +411,9 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(holder && (human_mutation in mutations))
 		set_se(0, human_mutation)
 		. = human_mutation.on_losing(holder)
-		qdel(human_mutation) // qdel mutations on removal
-		update_instability(FALSE)
+		if(!(human_mutation in mutations))
+			qdel(human_mutation) // qdel mutations on removal
+			update_instability(FALSE)
 		return
 
 /**
@@ -473,14 +480,10 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 	if(create_mutation_blocks) //I hate this
 		generate_dna_blocks()
 	if(randomize_features)
-		var/static/list/all_species_protoypes
-		if(isnull(all_species_protoypes))
-			all_species_protoypes = list()
-			for(var/species_path in subtypesof(/datum/species))
-				all_species_protoypes += new species_path()
-
-		for(var/datum/species/random_species as anything in all_species_protoypes)
-			features |= random_species.randomize_features()
+		for(var/species_type in GLOB.species_prototypes)
+			var/list/new_features = GLOB.species_prototypes[species_type].randomize_features()
+			for(var/feature in new_features)
+				features[feature] = new_features[feature]
 
 		features["mcolor"] = "#[random_color()]"
 
@@ -697,6 +700,8 @@ GLOBAL_LIST_INIT(total_uf_len_by_block, populate_total_uf_len_by_block())
 		dna.features["ears_avian"] = GLOB.avian_ears_list[deconstruct_block(get_uni_feature_block(features, DNA_AVIAN_EARS_BLOCK), GLOB.avian_ears_list.len)]
 	if(dna.features["feathers"]) // NON-MODULE CHANGE
 		dna.features["feathers"] = sanitize_hexcolor(get_uni_feature_block(features, DNA_FEATHER_COLOR_BLOCK))
+	if(dna.features["synth_head_cover"]) // NON-MODULE CHANGE
+		dna.features["synth_head_cover"] = GLOB.synth_head_cover_list[deconstruct_block(get_uni_feature_block(features, DNA_SYNTH_HEAD_COVER_BLOCK), GLOB.synth_head_cover_list.len)]
 
 	for(var/obj/item/organ/external/external_organ in organs)
 		external_organ.mutate_feature(features, src)

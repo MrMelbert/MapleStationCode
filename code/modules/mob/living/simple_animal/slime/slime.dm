@@ -187,15 +187,15 @@
 			mod += 2
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_healthmod, multiplicative_slowdown = mod)
 
-/mob/living/simple_animal/slime/adjust_bodytemperature()
+/mob/living/simple_animal/slime/adjust_body_temperature(amount, min_temp, max_temp, use_insulation)
 	. = ..()
 	var/mod = 0
-	if(bodytemperature >= 330.23) // 135 F or 57.08 C
+	if(body_temperature >= CELCIUS_TO_KELVIN(55 CELCIUS))
 		mod = -1 // slimes become supercharged at high temperatures
-	else if(bodytemperature < 283.222)
-		mod = ((283.222 - bodytemperature) / 10) * 1.75
-	if(mod)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, multiplicative_slowdown = mod)
+	else if(body_temperature < CELCIUS_TO_KELVIN(10 CELCIUS))
+		mod = ((CELCIUS_TO_KELVIN(10 CELCIUS) - body_temperature) / 10) * 1.75
+
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_tempmod, multiplicative_slowdown = mod)
 
 /mob/living/simple_animal/slime/ObjBump(obj/bumped_object)
 	if(client || powerlevel <= SLIME_MIN_POWER) // slimes with people in control can't accidentally attack
@@ -265,8 +265,7 @@
 	return
 
 /mob/living/simple_animal/slime/get_mob_buckling_height(mob/seat)
-	if(..())
-		return 3
+	return min(..(), 3)
 
 /mob/living/simple_animal/slime/examine(mob/user)
 	. = list("<span class='info'>This is [icon2html(src, user)] \a <EM>[src]</EM>!")

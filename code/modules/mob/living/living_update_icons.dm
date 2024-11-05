@@ -57,6 +57,9 @@
 
 	if(!changed) //Nothing has been changed, nothing has to be done.
 		return
+	// melbert todo : This is hack to get around buckle handing setting its own pixel y
+	if(buckled)
+		final_pixel_y = pixel_y
 
 	SEND_SIGNAL(src, COMSIG_PAUSE_FLOATING_ANIM, 0.3 SECONDS)
 	//if true, we want to avoid any animation time, it'll tween and not rotate at all otherwise.

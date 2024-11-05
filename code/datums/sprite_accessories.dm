@@ -55,7 +55,7 @@
 	/// Determines if the accessory will be skipped or included in random hair generations.
 	var/gender = NEUTER
 	/// Something that can be worn by either gender, but looks different on each.
-	var/gender_specific
+	var/gender_specific = FALSE
 	/// Determines if the accessory will be skipped by color preferences.
 	var/use_static
 	/**
@@ -75,6 +75,9 @@
 	var/dimension_y = 32
 	/// Should this sprite block emissives?
 	var/em_block = FALSE
+	/// Determines if this is considered "sane" for the purpose of [/proc/randomize_human_normie]
+	/// Basically this is to blacklist the extremely wacky stuff from being picked in random human generation.
+	var/natural_spawn = TRUE
 
 /datum/sprite_accessory/blank
 	name = "None"
@@ -103,11 +106,13 @@
 /datum/sprite_accessory/hair/afro_large
 	name = "Afro (Large)"
 	icon_state = "hair_bigafro"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/afro_huge
 	name = "Afro (Huge)"
 	icon_state = "hair_hugeafro"
 	y_offset = 6
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/allthefuzz
 	name = "All The Fuzz"
@@ -148,6 +153,7 @@
 /datum/sprite_accessory/hair/bedheadfloorlength
 	name = "Floorlength Bedhead"
 	icon_state = "hair_floorlength_bedhead"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/badlycut
 	name = "Shorter Long Bedhead"
@@ -388,6 +394,7 @@
 /datum/sprite_accessory/hair/bigflattop
 	name = "Flat Top (Big)"
 	icon_state = "hair_bigflattop"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/flow_hair
 	name = "Flow Hair"
@@ -448,6 +455,7 @@
 /datum/sprite_accessory/hair/joestar
 	name = "Joestar"
 	icon_state = "hair_joestar"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/keanu
 	name = "Keanu Hair"
@@ -504,22 +512,27 @@
 /datum/sprite_accessory/hair/mohawk
 	name = "Mohawk"
 	icon_state = "hair_d"
+	natural_spawn = FALSE // sorry little one
 
 /datum/sprite_accessory/hair/nitori
 	name = "Nitori"
 	icon_state = "hair_nitori"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/reversemohawk
 	name = "Mohawk (Reverse)"
 	icon_state = "hair_reversemohawk"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/shavedmohawk
 	name = "Mohawk (Shaved)"
 	icon_state = "hair_shavedmohawk"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/unshavenmohawk
 	name = "Mohawk (Unshaven)"
 	icon_state = "hair_unshaven_mohawk"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/mulder
 	name = "Mulder"
@@ -528,6 +541,7 @@
 /datum/sprite_accessory/hair/odango
 	name = "Odango"
 	icon_state = "hair_odango"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/ombre
 	name = "Ombre"
@@ -560,14 +574,17 @@
 /datum/sprite_accessory/hair/kagami
 	name = "Pigtails"
 	icon_state = "hair_kagami"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/pigtail
 	name = "Pigtails 2"
 	icon_state = "hair_pigtails"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/pigtail2
 	name = "Pigtails 3"
 	icon_state = "hair_pigtails2"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/hair/pixie
 	name = "Pixie Cut"
@@ -946,6 +963,7 @@
 /datum/sprite_accessory/facial_hair/brokenman
 	name = "Beard (Broken Man)"
 	icon_state = "facial_brokenman"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/facial_hair/chinstrap
 	name = "Beard (Chinstrap)"
@@ -990,6 +1008,7 @@
 /datum/sprite_accessory/facial_hair/martialartist
 	name = "Beard (Martial Artist)"
 	icon_state = "facial_martialartist"
+	natural_spawn = FALSE
 
 /datum/sprite_accessory/facial_hair/chinlessbeard
 	name = "Beard (Chinless Beard)"
@@ -1739,17 +1758,17 @@
 /datum/sprite_accessory/body_markings/dtiger
 	name = "Dark Tiger Body"
 	icon_state = "dtiger"
-	gender_specific = 1
+	gender_specific = TRUE
 
 /datum/sprite_accessory/body_markings/ltiger
 	name = "Light Tiger Body"
 	icon_state = "ltiger"
-	gender_specific = 1
+	gender_specific = TRUE
 
 /datum/sprite_accessory/body_markings/lbelly
 	name = "Light Belly"
 	icon_state = "lbelly"
-	gender_specific = 1
+	gender_specific = TRUE
 
 /datum/sprite_accessory/tails
 	em_block = TRUE
@@ -1787,13 +1806,11 @@
 	icon_state = "default"
 	color_src = HAIR_COLOR
 
-/datum/sprite_accessory/tails/monkey
-	icon = 'icons/mob/human/species/monkey/monkey_tail.dmi'
-	color_src = FALSE
-
-/datum/sprite_accessory/tails/monkey/standard
+/datum/sprite_accessory/tails/monkey/default
 	name = "Monkey"
-	icon_state = "monkey"
+	icon = 'icons/mob/human/species/monkey/monkey_tail.dmi'
+	icon_state = "default"
+	color_src = FALSE
 
 /datum/sprite_accessory/pod_hair
 	icon = 'icons/mob/human/species/podperson_hair.dmi'

@@ -44,11 +44,11 @@
 
 	// Set these values to `null` to only check pressure
 	/// Desired temperature for cycling to the interior
-	var/interior_temperature_target = null
+	var/interior_temperature_target = T20C
 	/// Desired temperature for cycling to the exterior
 	var/exterior_temperature_target = null
 	/// Temperature leeway for cycling
-	var/temperature_leeway = null
+	var/temperature_leeway = T20C * 0.01
 
 	/// Current state of the airlock setup
 	VAR_PRIVATE/state = AIRLOCK_STATE_CLOSED

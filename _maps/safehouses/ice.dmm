@@ -190,6 +190,12 @@
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/suit/hooded/wintercoat,
 /obj/item/clothing/suit/hooded/wintercoat,
+/obj/item/clothing/shoes/winterboots,
+/obj/item/clothing/shoes/winterboots,
+/obj/item/clothing/shoes/winterboots,
+/obj/item/clothing/gloves/color/brown,
+/obj/item/clothing/gloves/color/brown,
+/obj/item/clothing/gloves/color/brown,
 /turf/open/floor/iron,
 /area/virtual_domain/safehouse)
 "Z" = (

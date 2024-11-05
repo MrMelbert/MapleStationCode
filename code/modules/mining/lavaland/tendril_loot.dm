@@ -467,8 +467,6 @@
 	resistance_flags = INDESTRUCTIBLE
 
 /obj/item/shared_storage/red
-	name = "paradox bag"
-	desc = "Somehow, it's in two places at once."
 
 /obj/item/shared_storage/red/Initialize(mapload)
 	. = ..()
@@ -614,9 +612,7 @@
 	toolspeed = 0.1
 	strip_delay = 40
 	equip_delay_other = 20
-	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
-	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = LAVA_PROOF | FIRE_PROOF //they are from lavaland after all
 	armor_type = /datum/armor/gloves_gauntlets
@@ -665,9 +661,7 @@
 	worn_icon = 'icons/mob/clothing/suits/armor.dmi'
 	hoodtype = /obj/item/clothing/head/hooded/berserker
 	armor_type = /datum/armor/hooded_berserker
-	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	resistance_flags = FIRE_PROOF
@@ -712,9 +706,7 @@
 	worn_icon = 'icons/mob/clothing/head/helmet.dmi'
 	armor_type = /datum/armor/hooded_berserker
 	actions_types = list(/datum/action/item_action/berserk_mode)
-	cold_protection = HEAD
 	min_cold_protection_temperature = FIRE_SUIT_MIN_TEMP_PROTECT
-	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	resistance_flags = FIRE_PROOF
 	clothing_flags = SNUG_FIT|THICKMATERIAL
@@ -765,7 +757,7 @@
 	user.physiology.armor = user.physiology.armor.generate_new_with_modifiers(list(MELEE = BERSERK_MELEE_ARMOR_ADDED))
 	user.next_move_modifier *= BERSERK_ATTACK_SPEED_MODIFIER
 	user.add_atom_colour(COLOR_BUBBLEGUM_RED, TEMPORARY_COLOUR_PRIORITY)
-	ADD_TRAIT(user, TRAIT_NOGUNS, BERSERK_TRAIT)
+	user.add_traits(list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD), BERSERK_TRAIT)
 	ADD_TRAIT(src, TRAIT_NODROP, BERSERK_TRAIT)
 	berserk_active = TRUE
 	START_PROCESSING(SSobj, src)
@@ -783,7 +775,7 @@
 	user.physiology.armor = user.physiology.armor.generate_new_with_modifiers(list(MELEE = -BERSERK_MELEE_ARMOR_ADDED))
 	user.next_move_modifier /= BERSERK_ATTACK_SPEED_MODIFIER
 	user.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_BUBBLEGUM_RED)
-	REMOVE_TRAIT(user, TRAIT_NOGUNS, BERSERK_TRAIT)
+	user.remove_traits(list(TRAIT_NOGUNS, TRAIT_TOSS_GUN_HARD), BERSERK_TRAIT)
 	REMOVE_TRAIT(src, TRAIT_NODROP, BERSERK_TRAIT)
 	STOP_PROCESSING(SSobj, src)
 

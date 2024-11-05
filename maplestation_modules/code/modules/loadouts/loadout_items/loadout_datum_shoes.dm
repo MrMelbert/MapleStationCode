@@ -57,9 +57,17 @@
 	name = "Mining Boots"
 	item_path = /obj/item/clothing/shoes/workboots/mining
 
-/datum/loadout_item/shoes/laceup
-	name = "Laceup Shoes"
+/datum/loadout_item/shoes/black_laceup
+	name = "Black Laceup Shoes"
 	item_path = /obj/item/clothing/shoes/laceup
+
+/datum/loadout_item/shoes/burgundy_laceup
+	name = "Burgundy Laceup Shoes"
+	item_path = /obj/item/clothing/shoes/laceup/burgundy
+
+/datum/loadout_item/shoes/brown_laceup
+	name = "Brown Laceup Shoes"
+	item_path = /obj/item/clothing/shoes/laceup/brown
 
 /datum/loadout_item/shoes/russian_boots
 	name = "Russian Boots"
@@ -108,6 +116,7 @@
 /datum/loadout_item/shoes/mrashoes
 	name = "Malheur Research Association boots"
 	item_path = /obj/item/clothing/shoes/mrashoes
+	additional_displayed_text = list("Character Item")
 
 /datum/loadout_item/shoes/reshiaboot
 	name = "Short Brown Boots"
@@ -120,3 +129,9 @@
 /datum/loadout_item/shoes/lini
 	name = "Berbier Boots"
 	item_path = /obj/item/clothing/shoes/liniboots
+	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/shoes/vince
+	name = "Slick Syringe Heels"
+	item_path = /obj/item/clothing/shoes/vince
+	additional_displayed_text = list("Character Item")

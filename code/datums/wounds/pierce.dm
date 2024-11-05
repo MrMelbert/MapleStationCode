@@ -4,6 +4,12 @@
 */
 /datum/wound/pierce
 
+/datum/wound/pierce/wound_injury(datum/wound/old_wound, attack_direction)
+	if(!old_wound && limb.current_gauze && (wound_flags & ACCEPTS_GAUZE))
+		// oops your existing gauze got penetrated through! need a new one now
+		limb.seep_gauze(initial(limb.current_gauze.absorption_capacity) * 0.8)
+	return ..()
+
 /datum/wound/pierce/bleed
 	name = "Piercing Wound"
 	sound_effect = 'sound/weapons/slice.ogg'
@@ -29,7 +35,6 @@
 	set_blood_flow(initial_flow)
 	if(limb.can_bleed() && attack_direction && victim.blood_volume > BLOOD_VOLUME_OKAY)
 		victim.spray_blood(attack_direction, severity)
-
 	return ..()
 
 /datum/wound/pierce/bleed/receive_damage(wounding_type, wounding_dmg, wound_bonus)
@@ -73,7 +78,7 @@
 	set_blood_flow(min(blood_flow, WOUND_SLASH_MAX_BLOODFLOW))
 
 	if(limb.can_bleed())
-		if(victim.bodytemperature < (BODYTEMP_NORMAL - 10))
+		if(!HAS_TRAIT(victim, TRAIT_RESISTCOLD) && victim.get_skin_temperature() < victim.bodytemp_cold_damage_limit)
 			adjust_blood_flow(-0.1 * seconds_per_tick)
 			if(SPT_PROB(2.5, seconds_per_tick))
 				to_chat(victim, span_notice("You feel the [lowertext(name)] in your [limb.plaintext_zone] firming up from the cold!"))
@@ -82,8 +87,9 @@
 			adjust_blood_flow(0.25 * seconds_per_tick) // old heparin used to just add +2 bleed stacks per tick, this adds 0.5 bleed flow to all open cuts which is probably even stronger as long as you can cut them first
 
 	if(limb.current_gauze)
-		adjust_blood_flow(-limb.current_gauze.absorption_rate * gauzed_clot_rate * seconds_per_tick)
-		limb.current_gauze.absorption_capacity -= limb.current_gauze.absorption_rate * seconds_per_tick
+		var/amt_blocking = limb.current_gauze.absorption_rate * seconds_per_tick
+		adjust_blood_flow(-1 * amt_blocking * gauzed_clot_rate)
+		limb.seep_gauze(amt_blocking)
 
 	if(blood_flow <= 0)
 		qdel(src)

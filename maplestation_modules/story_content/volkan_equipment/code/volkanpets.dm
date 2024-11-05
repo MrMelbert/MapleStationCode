@@ -14,7 +14,12 @@
 	icon_living = "drone_fly"
 	icon_dead = "drone_dead"
 	held_state = "shoulder_pet"
+	bubble_icon = "machine"
 
+	has_unlimited_silicon_privilege = TRUE
+	sentience_type = SENTIENCE_ARTIFICIAL
+	mob_biotypes = MOB_ROBOTIC
+	speech_span = SPAN_ROBOT
 	gender = NEUTER
 	density = FALSE
 	health = 80
@@ -24,7 +29,12 @@
 	can_be_held = TRUE
 	held_w_class = WEIGHT_CLASS_SMALL
 
-	melee_damage_upper = 5
+	habitable_atmos = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
+	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
+	bodytemp_cold_damage_limit = -1
+	unsuitable_atmos_damage = 0 //temperature robust
+
+	melee_damage_upper = 5 //It is weak sauce.
 	melee_damage_lower = 1
 
 	response_help_continuous = "pets"
@@ -73,5 +83,3 @@
 ///Proc to run once imprinted
 /mob/living/basic/volkan/shoulder_pet/proc/tamed(mob/living/tamer)
 	visible_message(span_notice("[src] beeps and turns its head toward [tamer] with its head tilted."))
-
-

@@ -101,13 +101,11 @@
 	///Whether spessmen with an ID with an age below AGE_MINOR (20 by default) can buy this item
 	var/age_restricted = FALSE
 
-	///flags which determine which body parts are protected from heat. [See here][HEAD]
-	var/heat_protection = 0
-	///flags which determine which body parts are protected from cold. [See here][HEAD]
-	var/cold_protection = 0
-	///Set this variable to determine up to which temperature (IN KELVIN) the item protects against heat damage. Keep at null to disable protection. Only protects areas set by heat_protection flags
+	/// Set this variable to determine up to which temperature (IN KELVIN) the item protects against heat damage.
+	/// Keep at null to disable protection.
 	var/max_heat_protection_temperature
-	///Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by cold_protection flags
+	/// Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage.
+	/// Keep at null to disable protection.
 	var/min_cold_protection_temperature
 
 	///list of /datum/action's that this item has.
@@ -774,8 +772,7 @@
 
 /obj/item/on_exit_storage(datum/storage/master_storage)
 	. = ..()
-	var/atom/location = master_storage.real_location?.resolve()
-	do_drop_animation(location)
+	do_drop_animation(master_storage.parent)
 
 /obj/item/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(QDELETED(hit_atom))
@@ -1664,6 +1661,29 @@
 /obj/item/animate_atom_living(mob/living/owner)
 	new /mob/living/simple_animal/hostile/mimic/copy(drop_location(), src, owner)
 
+/**
+ * Used to update the weight class of the item in a way that other atoms can react to the change.
+ *
+ * Arguments:
+ * * new_w_class - The new weight class of the item.
+ *
+ * Returns:
+ * * TRUE if weight class was successfully updated
+ * * FALSE otherwise
+ */
+/obj/item/proc/update_weight_class(new_w_class)
+	if(w_class == new_w_class)
+		return FALSE
+
+	var/old_w_class = w_class
+	w_class = new_w_class
+	SEND_SIGNAL(src, COMSIG_ITEM_WEIGHT_CLASS_CHANGED, old_w_class, new_w_class)
+	if(!isnull(loc))
+		SEND_SIGNAL(loc, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, src, old_w_class, new_w_class)
+	return TRUE
+
+/// Used for digi equipment to update the filter on dir change because filters don't support dirs
+/// TODO: make this its own thing (/datum/advanced_filter)
 /obj/item/proc/update_dir(mob/living/carbon/human/source, dir, newdir)
 	SIGNAL_HANDLER
 

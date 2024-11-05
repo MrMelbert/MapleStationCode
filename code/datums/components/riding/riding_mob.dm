@@ -206,15 +206,17 @@
 /datum/component/riding/creature/human/Initialize(mob/living/riding_mob, force = FALSE, ride_check_flags = NONE, potion_boost = FALSE)
 	. = ..()
 	var/mob/living/carbon/human/human_parent = parent
-	human_parent.add_movespeed_modifier(/datum/movespeed_modifier/human_carry)
-
 	if(ride_check_flags & RIDER_NEEDS_ARMS) // piggyback
 		human_parent.buckle_lying = 0
 		// the riding mob is made nondense so they don't bump into any dense atoms the carrier is pulling,
 		// since pulled movables are moved before buckled movables
 		ADD_TRAIT(riding_mob, TRAIT_UNDENSE, VEHICLE_TRAIT)
+		human_parent.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, HUMAN_CARRY_SLOWDOWN)
+
 	else if(ride_check_flags & CARRIER_NEEDS_ARM) // fireman
 		human_parent.buckle_lying = 90
+		// melbert todo : tweak this value
+		human_parent.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/human_carry, TRUE, round(HUMAN_CARRY_SLOWDOWN * 1.33, 0.1))
 
 /datum/component/riding/creature/human/RegisterWithParent()
 	. = ..()
@@ -271,22 +273,25 @@
 		M.layer = MOB_LAYER
 
 	if(!AM.buckle_lying) // rider is vertical, must be piggybacking
-		if(dir == SOUTH)
-			AM.layer = MOB_ABOVE_PIGGYBACK_LAYER
-		else
+		if(dir == NORTH)
 			AM.layer = MOB_BELOW_PIGGYBACK_LAYER
+		else
+			AM.layer = MOB_ABOVE_PIGGYBACK_LAYER
 	else  // laying flat, we must be firemanning the rider
 		if(dir == NORTH)
 			AM.layer = MOB_BELOW_PIGGYBACK_LAYER
 		else
 			AM.layer = MOB_ABOVE_PIGGYBACK_LAYER
 
-/datum/component/riding/creature/human/get_offsets(pass_index)
-	var/mob/living/carbon/human/H = parent
-	if(H.buckle_lying)
-		return list(TEXT_NORTH = list(0, 6), TEXT_SOUTH = list(0, 6), TEXT_EAST = list(0, 6), TEXT_WEST = list(0, 6))
-	else
-		return list(TEXT_NORTH = list(0, 6), TEXT_SOUTH = list(0, 6), TEXT_EAST = list(-6, 4), TEXT_WEST = list( 6, 4))
+/datum/component/riding/creature/human/get_offsets(pass_index, mob/offsetter)
+	var/mob/living/carbon/human/seat = parent
+	var/height = offsetter.get_mob_buckling_height(seat) + seat.body_position_pixel_y_offset + seat.base_pixel_y + 6
+	return list(
+		TEXT_NORTH = ( seat.buckle_lying ? list(0, height) : list( 0, round(height * 0.33, 1) ) ),
+		TEXT_SOUTH = ( seat.buckle_lying ? list(0, height) : list( 0, round(height * 0.33, 1) ) ),
+		TEXT_EAST =  ( seat.buckle_lying ? list(0, height) : list(-6, round(height * 0.33, 1) ) ),
+		TEXT_WEST =  ( seat.buckle_lying ? list(0, height) : list( 6, round(height * 0.33, 1) ) ),
+	)
 
 /datum/component/riding/creature/human/force_dismount(mob/living/dismounted_rider)
 	var/atom/movable/AM = parent
@@ -317,8 +322,13 @@
 	else
 		robot_parent.layer = MOB_BELOW_PIGGYBACK_LAYER
 
-/datum/component/riding/creature/cyborg/get_offsets(pass_index) // list(dir = x, y, layer)
-	return list(TEXT_NORTH = list(0, 4), TEXT_SOUTH = list(0, 4), TEXT_EAST = list(-6, 3), TEXT_WEST = list( 6, 3))
+/datum/component/riding/creature/cyborg/get_offsets(pass_index, mob/offsetter) // list(dir = x, y, layer)
+	return list(
+		TEXT_NORTH = list(0, 4),
+		TEXT_SOUTH = list(0, 4),
+		TEXT_EAST = list(-6, 3),
+		TEXT_WEST = list(6, 3),
+	)
 
 /datum/component/riding/creature/cyborg/handle_vehicle_offsets(dir)
 	var/mob/living/silicon/robot/robot_parent = parent

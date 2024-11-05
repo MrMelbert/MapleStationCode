@@ -1,4 +1,6 @@
 #define BLOOD_DRIP_RATE_MOD 90 //Greater number means creating blood drips more often while bleeding
+// Conversion between internal drunk power and common blood alcohol content
+#define DRUNK_POWER_TO_BLOOD_ALCOHOL 0.003
 
 /****************************************************
 				BLOOD SYSTEM
@@ -11,7 +13,7 @@
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_FAKEDEATH))
 		return
 
-	if(bodytemperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
+	if(body_temperature < BLOOD_STOP_TEMP || HAS_TRAIT(src, TRAIT_HUSK)) //cold or husked people do not pump the blood.
 		return
 
 	var/sigreturn = SEND_SIGNAL(src, COMSIG_HUMAN_ON_HANDLE_BLOOD, seconds_per_tick, times_fired)
@@ -213,7 +215,7 @@
 		amount = blood_volume
 
 	blood_volume -= amount
-	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), bodytemperature)
+	AM.reagents.add_reagent(blood.reagent_type, amount, blood.get_blood_data(src), body_temperature)
 	return TRUE
 
 // /mob/living/proc/get_blood_data()
@@ -310,4 +312,13 @@
 
 // NON-MODULE CHANGE END
 
+/mob/living/proc/get_blood_alcohol_content()
+	var/blood_alcohol_content = 0
+	var/datum/status_effect/inebriated/inebriation = has_status_effect(/datum/status_effect/inebriated)
+	if(!isnull(inebriation))
+		blood_alcohol_content = round(inebriation.drunk_value * DRUNK_POWER_TO_BLOOD_ALCOHOL, 0.01)
+
+	return blood_alcohol_content
+
 #undef BLOOD_DRIP_RATE_MOD
+#undef DRUNK_POWER_TO_BLOOD_ALCOHOL

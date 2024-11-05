@@ -28,8 +28,8 @@
 	faction = list(FACTION_HOSTILE, FACTION_MAINT_CREATURES)
 
 	unsuitable_atmos_damage = 0
-	minimum_survivable_temperature = 270
-	maximum_survivable_temperature = INFINITY
+	bodytemp_cold_damage_limit = CELCIUS_TO_KELVIN(-3.15 CELCIUS)
+	bodytemp_heat_damage_limit = INFINITY
 
 	ai_controller = /datum/ai_controller/basic_controller/cockroach
 
@@ -40,7 +40,6 @@
 	var/static/list/roach_drops = list(/obj/effect/decal/cleanable/insectguts)
 	AddElement(/datum/element/death_drops, roach_drops)
 	AddElement(/datum/element/swabable, cockroach_cell_line, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 7)
-	AddElement(/datum/element/basic_body_temp_sensitive, 270, INFINITY)
 	AddComponent( \
 		/datum/component/squashable, \
 		squash_chance = 50, \

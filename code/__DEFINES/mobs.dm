@@ -28,7 +28,7 @@
 #define BLOOD_DEFICIENCY_MODIFIER 0.025
 
 /// Temperature at which blood loss and regen stops. [/mob/living/carbon/human/proc/handle_blood]
-#define BLOOD_STOP_TEMP 225
+#define BLOOD_STOP_TEMP CELCIUS_TO_KELVIN(-48.15 CELCIUS)
 
 //Sizes of mobs, used by mob/living/var/mob_size
 #define MOB_SIZE_TINY 0
@@ -120,9 +120,7 @@
 #define SPECIES_LIZARD_SILVER "silverscale"
 #define SPECIES_NIGHTMARE "nightmare"
 #define SPECIES_MONKEY "monkey"
-#define SPECIES_MONKEY_FREAK "monkey_freak"
-#define SPECIES_MONKEY_HOLODECK "monkey_holodeck"
-#define SPECIES_MONKEY_HUMAN_LEGGED "monkey_human_legged"
+#define SPECIES_MONKEY_LIZARD "kobold"
 #define SPECIES_MOTH "moth"
 #define SPECIES_MUSHROOM "mush"
 #define SPECIES_PLASMAMAN "plasmaman"
@@ -130,7 +128,6 @@
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
 #define SPECIES_SNAIL "snail"
-#define SPECIES_TALLBOY "tallboy"
 #define SPECIES_VAMPIRE "vampire"
 #define SPECIES_ZOMBIE "zombie"
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
@@ -171,22 +168,13 @@
 
 #define STAMINA_REGEN_BLOCK_TIME (10 SECONDS)
 
-#define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
-#define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
-#define HEAT_DAMAGE_LEVEL_3 4 //Amount of damage applied when your body temperature passes the 460K point and you are on fire
+/// Damage recieved when past heat damage threshold.
+/// Gets multiplied by 2x, 4x, 8x depending on how far past the threshold you are.
+#define HEAT_DAMAGE 1
 
-#define COLD_DAMAGE_LEVEL_1 0.25 //Amount of damage applied when your body temperature just passes the 260.15k safety point
-#define COLD_DAMAGE_LEVEL_2 0.75 //Amount of damage applied when your body temperature passes the 200K point
-#define COLD_DAMAGE_LEVEL_3 1.5 //Amount of damage applied when your body temperature passes the 120K point
-
-//Note that gas heat damage is only applied once every FOUR ticks.
-#define HEAT_GAS_DAMAGE_LEVEL_1 2 //Amount of damage applied when the current breath's temperature just passes the 360.15k safety point
-#define HEAT_GAS_DAMAGE_LEVEL_2 4 //Amount of damage applied when the current breath's temperature passes the 400K point
-#define HEAT_GAS_DAMAGE_LEVEL_3 8 //Amount of damage applied when the current breath's temperature passes the 1000K point
-
-#define COLD_GAS_DAMAGE_LEVEL_1 0.5 //Amount of damage applied when the current breath's temperature just passes the 260.15k safety point
-#define COLD_GAS_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when the current breath's temperature passes the 200K point
-#define COLD_GAS_DAMAGE_LEVEL_3 3 //Amount of damage applied when the current breath's temperature passes the 120K point
+/// Damage recieved when past cold damage threshold.
+/// Gets multiplied by 2x, 4x, 8x depending on how far past the threshold you are.
+#define COLD_DAMAGE 0.25
 
 //Brain Damage defines
 #define BRAIN_DAMAGE_MILD 20
@@ -292,8 +280,8 @@
 #define NUTRITION_LEVEL_HUNGRY 250
 #define NUTRITION_LEVEL_STARVING 150
 
-#define NUTRITION_LEVEL_START_MIN 250
-#define NUTRITION_LEVEL_START_MAX 400
+#define NUTRITION_LEVEL_START_MIN 275
+#define NUTRITION_LEVEL_START_MAX 375
 
 //Disgust levels for humans
 #define DISGUST_LEVEL_MAXEDOUT 150
@@ -461,8 +449,19 @@
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
-#define HUNGER_FACTOR 0.05 //factor at which mob nutrition decreases
-#define ETHEREAL_CHARGE_FACTOR 0.8 //factor at which ethereal's charge decreases per second
+/// Factor at which mob nutrition decreases
+#define HUNGER_FACTOR 0.1
+
+// These add up to 1 to roughly (VERY roughly) represent the proportion of hunger used by each system
+/// What % of hunger is used by homeostasis
+#define HOMEOSTASIS_HUNGER_MULTIPLIER 0.7
+/// What % of hunger is used by passive hunger
+#define PASSIVE_HUNGER_MULTIPLIER 0.2
+/// What % of hunger is used by movement
+#define MOVEMENT_HUNGER_MULTIPLIER 0.1
+
+/// Factor at which ethereal's charge decreases per second
+#define ETHEREAL_CHARGE_FACTOR 0.8
 /// How much nutrition eating clothes as moth gives and drains
 #define CLOTHING_NUTRITION_GAIN 15
 #define REAGENTS_METABOLISM 0.2 //How many units of reagent are consumed per second, by default.
@@ -496,6 +495,7 @@
 #define GRAB_PIXEL_SHIFT_PASSIVE 6
 #define GRAB_PIXEL_SHIFT_AGGRESSIVE 12
 #define GRAB_PIXEL_SHIFT_NECK 16
+#define GRAB_PIXEL_SHIFT_STRANGLE 12
 
 #define PULL_PRONE_SLOWDOWN 1.5
 #define HUMAN_CARRY_SLOWDOWN 0.35
@@ -668,18 +668,22 @@
 // - They do not start at 0 for futureproofing
 // - They skip numbers for futureproofing as well
 // Otherwise they are completely arbitrary
-#define HUMAN_HEIGHT_DWARF 2
-#define HUMAN_HEIGHT_SHORTEST 4
-#define HUMAN_HEIGHT_SHORT 6
-#define HUMAN_HEIGHT_MEDIUM 8
-#define HUMAN_HEIGHT_TALL 10
-#define HUMAN_HEIGHT_TALLER 12
-#define HUMAN_HEIGHT_TALLEST 14
+#define MONKEY_HEIGHT_DWARF 2
+#define MONKEY_HEIGHT_MEDIUM 4
+#define HUMAN_HEIGHT_DWARF 6
+#define HUMAN_HEIGHT_SHORTEST 8
+#define HUMAN_HEIGHT_SHORT 10
+#define HUMAN_HEIGHT_MEDIUM 12
+#define HUMAN_HEIGHT_TALL 14
+#define HUMAN_HEIGHT_TALLER 16
+#define HUMAN_HEIGHT_TALLEST 18
 
 /// Assoc list of all heights, cast to strings, to """"tuples"""""
 /// The first """tuple""" index is the upper body offset
 /// The second """tuple""" index is the lower body offset
 GLOBAL_LIST_INIT(human_heights_to_offsets, list(
+	"[MONKEY_HEIGHT_DWARF]" = list(-9, -3),
+	"[MONKEY_HEIGHT_MEDIUM]" = list(-7, -4),
 	"[HUMAN_HEIGHT_DWARF]" = list(-5, -4),
 	"[HUMAN_HEIGHT_SHORTEST]" = list(-2, -1),
 	"[HUMAN_HEIGHT_SHORT]" = list(-1, -1),
@@ -963,11 +967,6 @@ GLOBAL_LIST_INIT(layers_to_offset, list(
 #define HEALING_TOUCH_ANYONE "healing_touch_anyone"
 #define HEALING_TOUCH_NOT_SELF "healing_touch_not_self"
 #define HEALING_TOUCH_SELF_ONLY "healing_touch_self_only"
-
-/// Default minimum body temperature mobs can exist in before taking damage
-#define NPC_DEFAULT_MIN_TEMP 250
-/// Default maximum body temperature mobs can exist in before taking damage
-#define NPC_DEFAULT_MAX_TEMP 350
 
 // Flags for mobs which can't do certain things while someone is looking at them
 /// Flag which stops you from moving while observed
