@@ -125,6 +125,9 @@
  * The key is the id of the href, and the value is the href.
  */
 /atom/proc/examine_hrefs(mob/examiner, examine_directly = FALSE)
+	return null
+
+/atom/movable/examine_hrefs(mob/examiner, examine_directly = FALSE)
 	if(examine_directly)
 		return ismob(loc) ? list("point_at" = TRUE) : null
 
@@ -133,34 +136,23 @@
 /obj/item/card/id/examine_hrefs(mob/examiner, examine_directly = FALSE)
 	return list("see_id" = TRUE)
 
-/atom/Topic(href, list/href_list)
+/atom/movable/Topic(href, list/href_list)
 	. = ..()
 	if(href_list["point_at"] || href_list["examine_item"])
 		if(!loc || !href_list["loc_at_examine"] || REF(loc) != href_list["loc_at_examine"])
 			return
-		if(text2num(href_list["examine_time"]) + 5 MINUTES < world.time)
+		if(text2num(href_list["examine_time"]) + 3 MINUTES < world.time)
 			return
 
 		var/mob/viewer = usr
 		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
 			return
-		var/can_see_still = (viewer in viewers(get_turf(src)))
-		if(!can_see_still)
-			return
-		if(HAS_TRAIT(loc, TRAIT_UNKNOWN))
+		if(HAS_TRAIT(loc, TRAIT_UNKNOWN) || !(viewer in viewers(loc)))
 			to_chat(viewer, span_notice("You can't make out that item anymore."))
 			return
 
 		if(href_list["point_at"])
-			if(ismob(loc))
-				viewer.point_at(src)
-				viewer.visible_message(
-					span_infoplain("[span_name("[viewer]")] points at [loc == viewer ? "[p_their()] " : "[loc]'s "][src]."),
-					span_notice("You point at [loc == viewer ? "your " : "[loc]'s "][src]."),
-				)
-			else
-				viewer._pointed(src)
-
+			viewer._pointed(src, skip_view = TRUE)
 		else
 			viewer.examinate(src)
 

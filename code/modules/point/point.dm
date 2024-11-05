@@ -105,8 +105,8 @@
 
 /// possibly delayed verb that finishes the pointing process starting in [/mob/verb/pointed()].
 /// either called immediately or in the tick after pointed() was called, as per the [DEFAULT_QUEUE_OR_CALL_VERB()] macro
-/mob/proc/_pointed(atom/pointing_at)
-	if(client && !(pointing_at in view(client.view, src)))
+/mob/proc/_pointed(atom/pointing_at, skip_view = FALSE)
+	if(client && !skip_view && !(pointing_at in view(client.view, src)))
 		return FALSE
 
 	point_at(pointing_at)
