@@ -24,3 +24,6 @@
 
 /// A carbon drank some caffeine. (signal, caffeine_content)
 #define COMSIG_CARBON_DRINK_CAFFEINE "carbon_drink_caffeine"
+
+/// A living mob pressed the active block button
+#define COMSIG_LIVING_ACTIVE_BLOCK_KEYBIND "living_active_block_keybind"

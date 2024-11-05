@@ -1,9 +1,24 @@
 GLOBAL_VAR(captain_weapon_picked)
 //Weapons for the captain to use in melee.
+
+/obj/item/melee/sabre
+	block_chance = 0
+
 /obj/item/melee/sabre/Initialize(mapload)
 	. = ..()
 	if(!GLOB.captain_weapon_picked)
 		AddComponent(/datum/component/subtype_picker, GLOB.captain_weapons, CALLBACK(src, PROC_REF(on_captain_weapon_picked)))
+
+	// Larger window, smaller perfect parries, no windup and has a bit of a leeway for full blocks for imperfect parries
+	AddComponent(/datum/component/active_combat, inventory_flags = ITEM_SLOT_HANDS, block_directions = ACTIVE_COMBAT_FACING, windup_timer = 0 SECONDS, \
+		parry_window = 1.0 SECONDS, perfect_parry_window = 0.25 SECONDS, stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.33, damage_blocked = 1.3, \
+		damage_block_imperfect_loss = 0.6, maximum_damage_blocked = 25, block_barrier = 1, parry_miss_cooldown = 0.4 SECONDS, icon_state = "counter", \
+		effect_color = COLOR_LIGHT_ORANGE, projectile_window_multiplier = 0.5, \
+		block_barrier_overrides = list(), \
+		parry_effects = list(ACTIVE_COMBAT_PARRY = TRUE), \
+		perfect_parry_effects = list(ACTIVE_COMBAT_PARRY = 1.2, ACTIVE_COMBAT_STAGGER = 3 SECONDS), \
+		parry_miss_effects = list(ACTIVE_COMBAT_STAGGER = 3 SECONDS, ACTIVE_COMBAT_STAMINA = 5), \
+		)
 
 ///Probably doesn't need to be a proc, but this is used when the captain's weapon is chosen to make sure you can keep picking the sabre over and over. Has to be a global list so that its on the next weapon.
 /obj/item/melee/sabre/proc/on_captain_weapon_picked(obj/item/melee/sabre/captain_weapon_picked)
@@ -35,7 +50,18 @@ GLOBAL_VAR(captain_weapon_picked)
 	active_force = 25
 	active_throwforce = 35 //Its a fucking spear of a sword
 	armour_penetration = 50
-	block_chance = 10 //Compared to the sabre's 50, yikes.
+
+/obj/item/melee/energy/sword/captain_rapier/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/active_combat, inventory_flags = ITEM_SLOT_HANDS, block_directions = ACTIVE_COMBAT_FACING, windup_timer = 0.1 SECONDS, \
+	parry_window = 0.5 SECONDS, perfect_parry_window = 0.2 SECONDS, stamina_multiplier = 0.5, perfect_stamina_multiplier = 0.33, damage_blocked = 1, \
+	damage_block_imperfect_loss = 0.5, maximum_damage_blocked = 25, block_barrier = 1, parry_miss_cooldown = 0.4 SECONDS, icon_state = "counter", \
+	effect_color = COLOR_LIGHT_ORANGE, projectile_window_multiplier = 1, \
+	block_barrier_overrides = list(), \
+	parry_effects = list(ACTIVE_COMBAT_PARRY = TRUE, ACTIVE_COMBAT_REFLECT_PROJECTILE = TRUE), \
+	perfect_parry_effects = list(ACTIVE_COMBAT_PARRY = 1.2, ACTIVE_COMBAT_REFLECT_PROJECTILE = TRUE, ACTIVE_COMBAT_STAGGER = 2 SECONDS), \
+	parry_miss_effects = list(ACTIVE_COMBAT_STAGGER = 4 SECONDS, ACTIVE_COMBAT_STAMINA = 5), \
+	)
 
 /obj/item/melee/energy/sword/captain_rapier/afterattack(atom/target, mob/user, proximity)
 	. = ..()
