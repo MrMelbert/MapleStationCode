@@ -267,9 +267,14 @@
 	if(!density || (obj_flags & EMAGGED))
 		return
 
+	if(isliving(user) && isnull(user.mind))
+		var/mob/living/living_user = user
+		if(living_user.mob_size < MOB_SIZE_HUMAN)
+			return
+
 	if(elevator_mode && elevator_status == LIFT_PLATFORM_UNLOCKED)
 		open()
-	else if(requiresID() && (!user || user.mind || user.mob_size >= MOB_SIZE_HUMAN) && allowed(user))
+	else if(requiresID() && allowed(user))
 		open()
 	else
 		do_animate("deny")
