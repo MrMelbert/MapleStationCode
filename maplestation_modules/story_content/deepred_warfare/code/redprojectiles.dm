@@ -6,6 +6,20 @@
 	damage = 10
 	armour_penetration = 0
 
+/obj/item/ammo_casing/coil
+	name = "internal low velocity 10mm coilslug"
+	desc = "You should not be seeing this."
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/coilguns.dmi'
+	icon_state = "debug"
+	projectile_type = /obj/projectile/bullet/coil
+
+	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg' // REPLACE LATER.
+	delay = 0 // How long it takes to fire the ammo?
+
+	var/select_name = "low velocity"
+	var/ammo_energy_usage = 1000 // How much power it takes to fire the ammo (note, redtech cells have 50000 energy).
+	var/ammo_heat_generation = 10 // How much heat it generates.
+
 /obj/projectile/bullet/coil/highvelo
 	name ="10mm coilslug"
 	icon_state = "high_velo"
@@ -13,6 +27,14 @@
 	range = 80
 	damage = 20
 	armour_penetration = 20
+
+/obj/item/ammo_casing/coil/highvelo
+	name = "internal 10mm coilslug"
+	projectile_type = /obj/projectile/bullet/coil/highvelo
+
+	select_name = "high velocity"
+	ammo_energy_usage = 2000
+	ammo_heat_generation = 20
 
 /obj/projectile/bullet/coil/red_lightning
 	name = "charged 10mm coilslug"

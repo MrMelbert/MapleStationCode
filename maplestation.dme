@@ -6516,6 +6516,7 @@
 #include "maplestation_modules\story_content\casual_clothing\code\casualclothing.dm"
 #include "maplestation_modules\story_content\chaplain_equipment\code\chaplainclothing.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\artillery_shells.dm"
+#include "maplestation_modules\story_content\deepred_warfare\code\coilguns.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\curios.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\dreadactions.dm"
 #include "maplestation_modules\story_content\deepred_warfare\code\dreaditems.dm"
