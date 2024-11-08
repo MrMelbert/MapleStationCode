@@ -17,8 +17,8 @@
 	var/max_matter = 200 // How much matter it can hold.
 	var/matter = 200 // Current matter.
 	var/matter_usage = 5 // How much matter it uses to make a shot.
-	var/fabricator_speed = 40 // How many ticks (10 deciseconds = 1 second) it takes to make a shot and put it into the stored shots.
-	var/fabricator_progress = 0 // How far along the fabricator is.
+	var/fabricator_speed = 4 // How many seconds it takes to make a shot and put it into the stored shots.
+	var/fabricator_progress = 0 // How far along the fabricator is (in seconds).
 
 	var/obj/item/stock_parts/cell/internalcell // Current cell of the gun.
 	var/obj/item/stock_parts/cell/defaultcell = /obj/item/stock_parts/cell/redtech // Remind me to make a None version of this.
@@ -26,7 +26,9 @@
 	var/maximum_heat = 200 // How hot the gun can get.
 	var/dangerous_heat = 100 // When the gun starts to get dangerous.
 	var/current_heat = 0 // Current heat.
-	var/heat_dissipation = 5 // How much heat is dissipated per process.
+	var/heat_dissipation = 5 // How much heat is dissipated per second (multiplied by 2x when in overcooling).
+	var/overcooling_speed = 6 // How many seconds it takes to overcool the gun.
+	var/overcooling_progress = 0 // How long the gun has been not firing (in seconds) for overcooling.
 
 	var/recoil_multiplier = 0.01 // How much recoil is multiplied by heat (IE: mult of 0.01 x 100 heat = 1 recoil added to gun).
 	var/heat_damage_multiplier = 0.5 // How much self damage is multiplied by heat (IE: mult of 0.5 x (200 heat - 100 dangerous heat) = 50 self damage) (always 0 self damage at exactly dangerous heat or below).
@@ -37,6 +39,10 @@
 	var/eject_sound_volume = 40 // Volume of the sound.
 	var/regen_sound = 'sound/weapons/gun/general/magazine_insert_empty.ogg' // Regenerating sound.
 	var/regen_sound_volume = 40 // Volume of the sound.
+	var/overcooling_sound = 'sound/machines/clockcult/steam_whoosh.ogg' // Overcooling sound.
+	var/overcooling_sound_volume = 40 // Volume of the sound.
+
+	dry_fire_sound = 'sound/machines/terminal_error.ogg' // Sound when trying to shoot with no ammo.
 
 /obj/item/gun/coilgun/Initialize(mapload)
 	. = ..()
@@ -57,6 +63,46 @@
 
 	return ..()
 
+/obj/item/gun/coilgun/examine(mob/user)
+	. = ..()
+
+	. += "It has [shots_stored] slugs stored in its internal cylinder out of a maximum of [max_capacity] slugs."
+
+	if(internalcell)
+		. += "It has [internalcell] loaded in its cell port."
+		. += "It has [internalcell.charge] charge remaining."
+	else
+		. += "It does not have a cell loaded in its cell port."
+
+	. += "It has [matter] matter stored in its matter storage out of a maximum of [max_matter] matter."
+
+/obj/item/gun/coilgun/add_weapon_description()
+	AddElement(/datum/element/weapon_description, attached_proc = PROC_REF(add_notes_coil))
+
+/obj/item/gun/coilgun/proc/add_notes_coil()
+	var/list/readout = list()
+	// Make sure there is something to actually retrieve
+	if(!ammo_type.len)
+		return
+	var/obj/projectile/exam_proj
+	readout += "\nStandard models of this projectile weapon have [span_warning("[ammo_type.len] mode\s")]."
+	readout += "Master Of None testing has shown that the average target can theoretically stay standing after..."
+	if(projectile_damage_multiplier <= 0)
+		readout += "a theoretically infinite number of shots on [span_warning("every")] mode due to esoteric or nonexistent offensive potential."
+		return readout.Join("\n") // Sending over the singular string, rather than the whole list
+	for(var/obj/item/ammo_casing/coil/for_ammo as anything in ammo_type)
+		exam_proj = for_ammo.projectile_type
+		if(!ispath(exam_proj))
+			continue
+		if(initial(exam_proj.damage) > 0) // Don't divide by 0!!!!!
+			readout += "[span_warning("[HITS_TO_CRIT((initial(exam_proj.damage) * projectile_damage_multiplier) * for_ammo.pellets)] shot\s")] on [span_warning("[for_ammo.select_name]")] mode before collapsing from [initial(exam_proj.damage_type) == STAMINA ? "immense pain" : "their wounds"]."
+			if(initial(exam_proj.stamina) > 0) // In case a projectile does damage AND stamina damage (Energy Crossbow)
+				readout += "[span_warning("[HITS_TO_CRIT((initial(exam_proj.stamina) * projectile_damage_multiplier) * for_ammo.pellets)] shot\s")] on [span_warning("[for_ammo.select_name]")] mode before collapsing from immense pain."
+		else
+			readout += "a theoretically infinite number of shots on [span_warning("[for_ammo.select_name]")] mode."
+
+	return readout.Join("\n") // Sending over the singular string, rather than the whole list
+
 /obj/item/gun/coilgun/process(seconds_per_tick)
 	if(matter >= matter_usage && shots_stored < max_capacity) // Processing bullet regen.
 		fabricator_progress += seconds_per_tick
@@ -66,13 +112,38 @@
 			shots_stored++
 			playsound(src, regen_sound, regen_sound_volume)
 	if(current_heat > 0) // Processing heat cooling.
-		current_heat -= heat_dissipation * seconds_per_tick
+		if(overcooling_progress <= 0)
+			current_heat -= heat_dissipation * seconds_per_tick * 2
+		else
+			current_heat -= heat_dissipation * seconds_per_tick
 		if(current_heat < 0)
 			current_heat = 0
+	if(overcooling_progress > 0) // Processing overcooling.
+		var/previous_overcooling_progress = overcooling_progress
+		overcooling_progress -= seconds_per_tick
+		if(previous_overcooling_progress > 0 && overcooling_progress <= 0)
+			playsound(src, overcooling_sound, overcooling_sound_volume)
+		if(overcooling_progress < -1)
+			overcooling_progress = -1
 
 /obj/item/gun/coilgun/can_shoot()
 	var/obj/item/ammo_casing/coil/shot = ammo_type[select]
 	return !QDELETED(internalcell) ? ((internalcell.charge >= shot.ammo_energy_usage) && shots_stored >= 1) : FALSE
+
+/obj/item/gun/coilgun/shoot_with_empty_chamber(mob/living/user as mob|obj)
+	var/obj/item/ammo_casing/coil/shot = ammo_type[select]
+	if(internalcell.charge < shot.ammo_energy_usage)
+		balloon_alert(user, "Not enough charge!")
+		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
+		return
+	if(matter < matter_usage)
+		balloon_alert(user, "Not enough matter in storage!")
+		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
+		return
+	if(shots_stored < 1)
+		balloon_alert(user, "Ammunition not fabricated!")
+		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
+		return
 
 /obj/item/gun/coilgun/attackby(obj/item/A, mob/user, params)
 	. = ..()
@@ -140,6 +211,7 @@
 		user.adjustFireLoss(damage)
 		balloon_alert(user, "Gun overheating!")
 	update_heatrecoil()
+	overcooling_progress = overcooling_speed
 
 /obj/item/gun/coilgun/proc/update_heatrecoil()
 	recoil = recoil_multiplier * current_heat
