@@ -1,6 +1,7 @@
 /obj/item/gun/coilgun
 	name = "abstract coilgun"
 	desc = "You should not be seeing this."
+	desc_controls = "Accepts cells to refill energy, RCD compressed matter or sheets to refill matter, and coilcores to swap ammunition selections. Matter is automatically converted to ammunition and stored. Empty hand on gun to eject cell. Alt click to eject coilcore. Use in hand to switch fire modes."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/coilguns.dmi'
 	icon_state = "debug"
 	w_class = WEIGHT_CLASS_NORMAL
@@ -8,7 +9,10 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 
-	var/list/ammo_type = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo) // Different ammo selections (add meltdown later).
+	// var/list/ammo_type = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo) // Different ammo selections (add meltdown later).
+	var/obj/item/coilcore/internalcore // Current core of the gun.
+	var/obj/item/coilcore/coretype = /obj/item/coilcore/revolver // Type of core accepted by the gun.
+	var/obj/item/coilcore/defaultcore = /obj/item/coilcore/revolver // Default core of the gun.
 	var/select = 1 // Current ammo selection.
 
 	var/max_capacity = 10 // How many shots can be stored.
@@ -48,7 +52,9 @@
 	. = ..()
 	if(defaultcell)
 		internalcell = new defaultcell(src)
-	var/obj/item/ammo_casing/coil/shot = ammo_type[1]
+	if(defaultcore)
+		internalcore = new defaultcore(src)
+	var/obj/item/ammo_casing/coil/shot = internalcore.ammunition_types[1]
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
 	START_PROCESSING(SSobj, src)
@@ -56,9 +62,8 @@
 /obj/item/gun/coilgun/Destroy()
 	if (internalcell)
 		QDEL_NULL(internalcell)
-	for (var/atom/item in ammo_type)
-		qdel(item)
-	ammo_type = null
+	if (internalcore)
+		QDEL_NULL(internalcore)
 	STOP_PROCESSING(SSobj, src)
 
 	return ..()
@@ -66,10 +71,14 @@
 /obj/item/gun/coilgun/examine(mob/user)
 	. = ..()
 
-	. += "It has [shots_stored] slugs stored in its internal cylinder out of a maximum of [max_capacity] slugs."
+	if(internalcore)
+		. += "It has \a [internalcore] loaded in its core slot."
+		. += "It has [shots_stored] slugs stored in its internal cylinder out of a maximum of [max_capacity] slugs."
+	else
+		. += "It does not have a core loaded in its core slot."
 
 	if(internalcell)
-		. += "It has [internalcell] loaded in its cell port."
+		. += "It has \a [internalcell] loaded in its cell port."
 		. += "It has [internalcell.charge] charge remaining."
 	else
 		. += "It does not have a cell loaded in its cell port."
@@ -81,16 +90,19 @@
 
 /obj/item/gun/coilgun/proc/add_notes_coil()
 	var/list/readout = list()
-	// Make sure there is something to actually retrieve
-	if(!ammo_type.len)
+	// No core installed.
+	if(!internalcore)
+		return
+	// Make sure there is something to actually retrieve.
+	if(!internalcore.ammunition_types.len)
 		return
 	var/obj/projectile/exam_proj
-	readout += "\nStandard models of this projectile weapon have [span_warning("[ammo_type.len] mode\s")]."
+	readout += "\nStandard models of this projectile weapon have [span_warning("[internalcore.ammunition_types.len] mode\s")]."
 	readout += "Master Of None testing has shown that the average target can theoretically stay standing after..."
 	if(projectile_damage_multiplier <= 0)
 		readout += "a theoretically infinite number of shots on [span_warning("every")] mode due to esoteric or nonexistent offensive potential."
 		return readout.Join("\n") // Sending over the singular string, rather than the whole list
-	for(var/obj/item/ammo_casing/coil/for_ammo as anything in ammo_type)
+	for(var/obj/item/ammo_casing/coil/for_ammo as anything in internalcore.ammunition_types)
 		exam_proj = for_ammo.projectile_type
 		if(!ispath(exam_proj))
 			continue
@@ -104,7 +116,7 @@
 	return readout.Join("\n") // Sending over the singular string, rather than the whole list
 
 /obj/item/gun/coilgun/process(seconds_per_tick)
-	if(matter >= matter_usage && shots_stored < max_capacity) // Processing bullet regen.
+	if(matter >= matter_usage && shots_stored < max_capacity && internalcore) // Processing bullet regen.
 		fabricator_progress += seconds_per_tick
 		if(fabricator_progress >= fabricator_speed)
 			fabricator_progress = 0
@@ -127,11 +139,17 @@
 			overcooling_progress = -1
 
 /obj/item/gun/coilgun/can_shoot()
-	var/obj/item/ammo_casing/coil/shot = ammo_type[select]
+	if(!internalcore)
+		return FALSE
+	var/obj/item/ammo_casing/coil/shot = internalcore.ammunition_types[select]
 	return !QDELETED(internalcell) ? ((internalcell.charge >= shot.ammo_energy_usage) && shots_stored >= 1) : FALSE
 
 /obj/item/gun/coilgun/shoot_with_empty_chamber(mob/living/user as mob|obj)
-	var/obj/item/ammo_casing/coil/shot = ammo_type[select]
+	if(!internalcore)
+		balloon_alert(user, "No ammunition core installed!")
+		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
+		return
+	var/obj/item/ammo_casing/coil/shot = internalcore.ammunition_types[select]
 	if(internalcell.charge < shot.ammo_energy_usage)
 		balloon_alert(user, "Not enough charge!")
 		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
@@ -156,6 +174,16 @@
 		else
 			balloon_alert(user, "Cell already loaded!")
 		return
+	if(istype(A, /obj/item/coilcore))
+		if (!internalcore)
+			if(istype(A, coretype))
+				var/obj/item/coilcore/input = A
+				insert_core(user, input)
+			else
+				balloon_alert(user, "Invalid core!")
+		else
+			balloon_alert(user, "Core already installed!")
+		return
 	insert_matter(A, user)
 
 /obj/item/gun/coilgun/attack_hand(mob/user, list/modifiers)
@@ -165,16 +193,26 @@
 	return ..()
 
 /obj/item/gun/coilgun/attack_self(mob/living/user as mob)
-	if(ammo_type.len > 1)
+	if(!internalcore)
+		balloon_alert(user, "No ammunition core installed!")
+		return ..()
+	if(internalcore.ammunition_types.len > 1)
 		select_fire(user)
 	return ..()
 
+/obj/item/gun/coilgun/AltClick(mob/user)
+	if(loc == user && user.is_holding(src) && internalcore)
+		eject_core(user)
+		return
+	return ..()
 
 /obj/item/gun/coilgun/recharge_newshot()
-	if (!ammo_type || !internalcell)
+	if(!internalcore)
+		return
+	if (!internalcore.ammunition_types || !internalcell)
 		return
 	if(!chambered)
-		var/obj/item/ammo_casing/coil/shot = ammo_type[select]
+		var/obj/item/ammo_casing/coil/shot = internalcore.ammunition_types[select]
 		if(internalcell.charge >= shot.ammo_energy_usage)
 			chambered = new shot(src)
 			if(!chambered.loaded_projectile)
@@ -202,7 +240,9 @@
 
 
 /obj/item/gun/coilgun/proc/handle_heat(mob/living/user)
-	var/obj/item/ammo_casing/coil/shot = ammo_type[select]
+	if(!internalcore)
+		return // How the hell did you fire a shot without a core?
+	var/obj/item/ammo_casing/coil/shot = internalcore.ammunition_types[select]
 	current_heat += shot.ammo_heat_generation
 	if(current_heat > maximum_heat)
 		current_heat = maximum_heat
@@ -218,9 +258,9 @@
 
 /obj/item/gun/coilgun/proc/select_fire(mob/living/user)
 	select++
-	if (select > ammo_type.len)
+	if (select > internalcore.ammunition_types.len) // It should be literally impossible to reach this proc without a core.
 		select = 1
-	var/obj/item/ammo_casing/coil/shot = ammo_type[select]
+	var/obj/item/ammo_casing/coil/shot = internalcore.ammunition_types[select]
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
 	if (shot.select_name && user)
@@ -245,6 +285,24 @@
 	user.put_in_hands(old_cell)
 	old_cell.update_appearance()
 	balloon_alert(user, "Cell unloaded!")
+
+/obj/item/gun/coilgun/proc/insert_core(mob/user, obj/item/coilcore/input)
+	if(user.transferItemToLoc(input, src))
+		internalcore = input
+		balloon_alert(user, "Core inserted!")
+		playsound(src, load_sound, load_sound_volume)
+	else
+		to_chat(user, span_warning("You cannot seem to get [input] out of your hands!"))
+
+/obj/item/gun/coilgun/proc/eject_core(mob/user)
+	playsound(src, eject_sound, eject_sound_volume)
+	internalcore.forceMove(drop_location())
+	var/obj/item/coilcore/old_core = internalcore
+	internalcore = null
+	user.put_in_hands(old_core)
+	old_core.update_appearance()
+	balloon_alert(user, "Core ejected!")
+	shots_stored = 0
 
 /obj/item/gun/coilgun/proc/insert_matter(obj/item, mob/user)
 	if(istype(item, /obj/item/rcd_ammo))
@@ -272,3 +330,24 @@
 		matter += the_stack.matter_amount * amount_to_use
 		playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 	balloon_alert(user, "Matter storage full!")
+
+/obj/item/coilcore
+	name = "generic coilcore"
+	desc = "You should not be seeing this."
+	icon = 'maplestation_modules/story_content/deepred_warfare/icons/coilguns.dmi'
+	icon_state = "debugcore"
+
+	var/list/ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo) // "Test" ammunition selections.
+
+/obj/item/coilcore/Destroy()
+	for (var/atom/item in ammunition_types)
+		qdel(item)
+	ammunition_types = null
+
+	return ..()
+
+/obj/item/coilcore/revolver
+	name = "10mm standard coilcore"
+	desc = "A coil core that allows for a revolver-style firing mechanism."
+	// icon_state = "revolver"
+	// ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo)
