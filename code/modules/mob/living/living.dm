@@ -525,11 +525,20 @@
 
 	return ..()
 
-/mob/living/_pointed(atom/pointing_at)
+/mob/living/_pointed(atom/pointing_at, skip_view = FALSE)
 	if(!..())
 		return FALSE
 	log_message("points at [pointing_at]", LOG_EMOTE)
-	visible_message("<span class='infoplain'>[span_name("[src]")] points at [pointing_at].</span>", span_notice("You point at [pointing_at]."))
+	if(ismob(pointing_at.loc))
+		visible_message(
+			span_infoplain("[span_name("[src]")] points at [pointing_at.loc == src ? "[p_their()] " : "[pointing_at.loc]'s "][pointing_at.name]."),
+			span_notice("You point at [pointing_at.loc == src ? "your " : "[pointing_at.loc]'s "][pointing_at.name]."),
+		)
+	else
+		visible_message(
+			span_infoplain("[span_name("[src]")] points at [pointing_at]."),
+			span_notice("You point at [pointing_at]."),
+		)
 
 /mob/living/verb/succumb(whispered as null)
 	set hidden = TRUE

@@ -29,7 +29,7 @@
 	lighting_cutoff_red = 5
 	lighting_cutoff_green = 20
 	lighting_cutoff_blue = 25
-	mob_size = MOB_SIZE_LARGE
+	mob_size = MOB_SIZE_HUGE
 	ai_controller = /datum/ai_controller/basic_controller/leaper
 	move_resist = MOVE_FORCE_VERY_STRONG
 	pull_force = MOVE_FORCE_VERY_STRONG
