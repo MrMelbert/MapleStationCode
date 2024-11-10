@@ -186,3 +186,4 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_SNORE_MALE "snore_male"
 #define SFX_MALE_SIGH "male_sigh"
 #define SFX_FEMALE_SIGH "female_sigh"
+#define SFX_WRITING_PEN "writing_pen"
