@@ -510,24 +510,24 @@
 	for(var/obj/item/held_thing in held_items)
 		if(held_thing.item_flags & (ABSTRACT|EXAMINE_SKIP|HAND_ITEM))
 			continue
-		. += "They have [held_thing.get_examine_string(user)] in their [get_held_index_name(get_held_index_of_item(held_thing))]."
+		. += "They have [held_thing.examine_title(user)] in their [get_held_index_name(get_held_index_of_item(held_thing))]."
 
 	if(!neck) // If the cloak is not worn, show the internal storage.
 		//Back storage
 		if(back_storage && !(back_storage.item_flags & ABSTRACT))
-			. += "They are holding [back_storage.get_examine_string(user)] in their reactor port."
+			. += "They are holding [back_storage.examine_title(user)] in their reactor port."
 
 		//Belt storage
 		if(belt_storage && !(belt_storage.item_flags & ABSTRACT))
-			. += "They are holding [belt_storage.get_examine_string(user)] in their storage compartment."
+			. += "They are holding [belt_storage.examine_title(user)] in their storage compartment."
 
 	//Neckwear
 	if(neck && !(neck.item_flags & ABSTRACT))
-		. += "They are wearing [neck.get_examine_string(user)]."
+		. += "They are wearing [neck.examine_title(user)]."
 
 	//Cosmetic hat - provides no function other than looks
 	if(head && !(head.item_flags & ABSTRACT))
-		. += "They are wearing [head.get_examine_string(user)] on their head."
+		. += "They are wearing [head.examine_title(user)] on their head."
 
 	//Braindead
 	if(!client && stat != DEAD)

@@ -25,7 +25,7 @@
 	var/fabricator_progress = 0 // How far along the fabricator is (in seconds).
 
 	var/obj/item/stock_parts/cell/internalcell // Current cell of the gun.
-	var/obj/item/stock_parts/cell/defaultcell = /obj/item/stock_parts/cell/redtech // Remind me to make a None version of this.
+	var/obj/item/stock_parts/cell/defaultcell = /obj/item/stock_parts/cell/redtech // Default cell of the gun.
 
 	var/maximum_heat = 200 // How hot the gun can get.
 	var/dangerous_heat = 100 // When the gun starts to get dangerous.
@@ -331,6 +331,40 @@
 		playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
 	balloon_alert(user, "Matter storage full!")
 
+/obj/item/gun/coilgun/revolver
+	name = "Redtech 10mm coilpistol"
+	desc = "A Redtech 10mm coilpistol that looks like a revolver."
+	icon_state = "revolver"
+
+	coretype = /obj/item/coilcore/revolver
+	defaultcore = /obj/item/coilcore/revolver
+
+	max_capacity = 6 // Sixshooter.
+	shots_stored = 6
+
+	max_matter = 180
+	matter = 180
+	matter_usage = 10
+	fabricator_speed = 5
+
+	defaultcell = /obj/item/stock_parts/cell/redtech
+
+	maximum_heat = 200
+	dangerous_heat = 100
+	heat_dissipation = 5
+	overcooling_speed = 8
+
+	recoil_multiplier = 0.01
+	heat_damage_multiplier = 0.2
+
+/obj/item/gun/coilgun/revolver/none // Remind me to un-prototype this later.
+	name = "prototype Nonetech 10mm coilpistol"
+	desc = "A Nonetech 10mm coilpistol that looks like a revolver. This one seems to be lacking a few features."
+	icon_state = "none_revolver"
+
+	defaultcore = /obj/item/coilcore/revolver/none
+	defaultcell = /obj/item/stock_parts/cell/redtech/nonetech
+
 /obj/item/coilcore
 	name = "generic coilcore"
 	desc = "You should not be seeing this."
@@ -348,6 +382,13 @@
 
 /obj/item/coilcore/revolver
 	name = "10mm standard coilcore"
-	desc = "A coil core that allows for a revolver-style firing mechanism."
-	// icon_state = "revolver"
-	// ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo)
+	desc = "A coilcore designed for 10mm revolver coilguns. Produces standard coilslugs."
+	icon_state = "revolvercore"
+	ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo)
+
+/obj/item/coilcore/revolver/update_overlays()
+	. = ..()
+	. += emissive_appearance(icon, "revolvercore_emissives", src, alpha = src.alpha)
+
+/obj/item/coilcore/revolver/none
+	icon_state = "none_revolvercore"

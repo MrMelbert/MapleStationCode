@@ -41,6 +41,11 @@
 	. = ..()
 	. += emissive_appearance(icon, "redcellemissive", src, alpha = src.alpha)
 
+/obj/item/stock_parts/cell/redtech/nonetech
+	name = "Nonetech power cell"
+	desc = "A Nonetech power cell. Its design is oddly familiar. It seems to be EMP resistant."
+	icon_state = "nonecell"
+
 /datum/stock_part/matter_bin/tier5
 	tier = 5
 	physical_object_type = /obj/item/stock_parts/cell/redtech
