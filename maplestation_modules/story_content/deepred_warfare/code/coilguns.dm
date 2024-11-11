@@ -141,7 +141,7 @@
 			playsound(src, overcooling_sound, overcooling_sound_volume)
 		if(overcooling_progress < -1)
 			overcooling_progress = -1
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/can_shoot()
 	if(!internalcore)
@@ -178,7 +178,7 @@
 			insert_cell(user, input)
 		else
 			balloon_alert(user, "cell already loaded!")
-		update_overlays()
+		update_appearance()
 		return
 	if(istype(A, /obj/item/coilcore))
 		if (!internalcore)
@@ -189,15 +189,15 @@
 				balloon_alert(user, "invalid core!")
 		else
 			balloon_alert(user, "core already installed!")
-		update_overlays()
+		update_appearance()
 		return
 	insert_matter(A, user)
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/attack_hand(mob/user, list/modifiers)
 	if(loc == user && user.is_holding(src) && internalcell)
 		eject_cell(user)
-		update_overlays()
+		update_appearance()
 		return
 	return ..()
 
@@ -212,7 +212,7 @@
 /obj/item/gun/coilgun/AltClick(mob/user)
 	if(loc == user && user.is_holding(src) && internalcore)
 		eject_core(user)
-		update_overlays()
+		update_appearance()
 		return
 	return ..()
 
@@ -262,7 +262,7 @@
 		balloon_alert(user, "gun overheating!")
 	update_heatrecoil()
 	overcooling_progress = overcooling_speed
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/proc/update_heatrecoil()
 	recoil = recoil_multiplier * current_heat
@@ -278,7 +278,7 @@
 		balloon_alert(user, "set to [shot.select_name]!")
 	chambered = null
 	recharge_newshot(TRUE)
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/proc/insert_cell(mob/user, obj/item/stock_parts/cell/input)
 	if(user.transferItemToLoc(input, src))
@@ -287,7 +287,7 @@
 		playsound(src, load_sound, load_sound_volume)
 	else
 		to_chat(user, span_warning("You cannot seem to get [input] out of your hands!"))
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/proc/eject_cell(mob/user)
 	playsound(src, eject_sound, eject_sound_volume)
@@ -297,7 +297,7 @@
 	user.put_in_hands(old_cell)
 	old_cell.update_appearance()
 	balloon_alert(user, "cell unloaded!")
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/proc/insert_core(mob/user, obj/item/coilcore/input)
 	if(user.transferItemToLoc(input, src))
@@ -306,7 +306,7 @@
 		playsound(src, load_sound, load_sound_volume)
 	else
 		to_chat(user, span_warning("you cannot seem to get [input] out of your hands!"))
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/proc/eject_core(mob/user)
 	playsound(src, eject_sound, eject_sound_volume)
@@ -317,7 +317,7 @@
 	old_core.update_appearance()
 	balloon_alert(user, "core ejected!")
 	shots_stored = 0
-	update_overlays()
+	update_appearance()
 
 /obj/item/gun/coilgun/proc/insert_matter(obj/item, mob/user)
 	if(istype(item, /obj/item/rcd_ammo))
