@@ -4,7 +4,7 @@
 	icon_state = "coilslug"
 	range = 40
 	damage = 10
-	armour_penetration = 0
+	armour_penetration = 50
 
 /obj/item/ammo_casing/coil
 	name = "internal low velocity 10mm coilslug"
@@ -23,10 +23,10 @@
 /obj/projectile/bullet/coil/highvelo
 	name ="10mm coilslug"
 	icon_state = "high_velo"
-	speed = 0.4
+	speed = 0.4 // Twice as fast as normal.
 	range = 80
 	damage = 20
-	armour_penetration = 20
+	armour_penetration = 75
 
 /obj/item/ammo_casing/coil/highvelo
 	name = "internal 10mm coilslug"

@@ -26,6 +26,8 @@
 
 	var/obj/item/stock_parts/cell/internalcell // Current cell of the gun.
 	var/obj/item/stock_parts/cell/defaultcell = /obj/item/stock_parts/cell/redtech // Default cell of the gun.
+	var/charge_sections = 10 // How many sections the charge overlay has.
+	var/charge_state // What sprite to use for the charge overlay.
 
 	var/maximum_heat = 200 // How hot the gun can get.
 	var/dangerous_heat = 100 // When the gun starts to get dangerous.
@@ -33,6 +35,8 @@
 	var/heat_dissipation = 5 // How much heat is dissipated per second (multiplied by 2x when in overcooling).
 	var/overcooling_speed = 6 // How many seconds it takes to overcool the gun.
 	var/overcooling_progress = 0 // How long the gun has been not firing (in seconds) for overcooling.
+	var/heat_sections = 10 // How many sections the heat overlay has.
+	var/heat_state // What sprite to use for the heat overlay.
 
 	var/recoil_multiplier = 0.01 // How much recoil is multiplied by heat (IE: mult of 0.01 x 100 heat = 1 recoil added to gun).
 	var/heat_damage_multiplier = 0.5 // How much self damage is multiplied by heat (IE: mult of 0.5 x (200 heat - 100 dangerous heat) = 50 self damage) (always 0 self damage at exactly dangerous heat or below).
@@ -137,6 +141,7 @@
 			playsound(src, overcooling_sound, overcooling_sound_volume)
 		if(overcooling_progress < -1)
 			overcooling_progress = -1
+	update_overlays()
 
 /obj/item/gun/coilgun/can_shoot()
 	if(!internalcore)
@@ -146,20 +151,20 @@
 
 /obj/item/gun/coilgun/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	if(!internalcore)
-		balloon_alert(user, "No ammunition core installed!")
+		balloon_alert(user, "no ammunition core installed!")
 		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
 		return
 	var/obj/item/ammo_casing/coil/shot = internalcore.ammunition_types[select]
 	if(internalcell.charge < shot.ammo_energy_usage)
-		balloon_alert(user, "Not enough charge!")
+		balloon_alert(user, "not enough charge!")
 		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
 		return
 	if(matter < matter_usage)
-		balloon_alert(user, "Not enough matter in storage!")
+		balloon_alert(user, "not enough matter in storage!")
 		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
 		return
 	if(shots_stored < 1)
-		balloon_alert(user, "Ammunition not fabricated!")
+		balloon_alert(user, "ammunition not fabricated!")
 		playsound(src, dry_fire_sound, dry_fire_sound_volume, TRUE)
 		return
 
@@ -172,7 +177,8 @@
 			var/obj/item/stock_parts/cell/input = A
 			insert_cell(user, input)
 		else
-			balloon_alert(user, "Cell already loaded!")
+			balloon_alert(user, "cell already loaded!")
+		update_overlays()
 		return
 	if(istype(A, /obj/item/coilcore))
 		if (!internalcore)
@@ -180,21 +186,24 @@
 				var/obj/item/coilcore/input = A
 				insert_core(user, input)
 			else
-				balloon_alert(user, "Invalid core!")
+				balloon_alert(user, "invalid core!")
 		else
-			balloon_alert(user, "Core already installed!")
+			balloon_alert(user, "core already installed!")
+		update_overlays()
 		return
 	insert_matter(A, user)
+	update_overlays()
 
 /obj/item/gun/coilgun/attack_hand(mob/user, list/modifiers)
 	if(loc == user && user.is_holding(src) && internalcell)
 		eject_cell(user)
+		update_overlays()
 		return
 	return ..()
 
 /obj/item/gun/coilgun/attack_self(mob/living/user as mob)
 	if(!internalcore)
-		balloon_alert(user, "No ammunition core installed!")
+		balloon_alert(user, "no ammunition core installed!")
 		return ..()
 	if(internalcore.ammunition_types.len > 1)
 		select_fire(user)
@@ -203,6 +212,7 @@
 /obj/item/gun/coilgun/AltClick(mob/user)
 	if(loc == user && user.is_holding(src) && internalcore)
 		eject_core(user)
+		update_overlays()
 		return
 	return ..()
 
@@ -249,9 +259,10 @@
 	if(current_heat > dangerous_heat)
 		var/damage = heat_damage_multiplier * (current_heat - dangerous_heat)
 		user.adjustFireLoss(damage)
-		balloon_alert(user, "Gun overheating!")
+		balloon_alert(user, "gun overheating!")
 	update_heatrecoil()
 	overcooling_progress = overcooling_speed
+	update_overlays()
 
 /obj/item/gun/coilgun/proc/update_heatrecoil()
 	recoil = recoil_multiplier * current_heat
@@ -264,18 +275,19 @@
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
 	if (shot.select_name && user)
-		balloon_alert(user, "Set to [shot.select_name]!")
+		balloon_alert(user, "set to [shot.select_name]!")
 	chambered = null
 	recharge_newshot(TRUE)
-	update_appearance()
+	update_overlays()
 
 /obj/item/gun/coilgun/proc/insert_cell(mob/user, obj/item/stock_parts/cell/input)
 	if(user.transferItemToLoc(input, src))
 		internalcell = input
-		balloon_alert(user, "Cell reloaded!")
+		balloon_alert(user, "cell reloaded!")
 		playsound(src, load_sound, load_sound_volume)
 	else
 		to_chat(user, span_warning("You cannot seem to get [input] out of your hands!"))
+	update_overlays()
 
 /obj/item/gun/coilgun/proc/eject_cell(mob/user)
 	playsound(src, eject_sound, eject_sound_volume)
@@ -284,15 +296,17 @@
 	internalcell = null
 	user.put_in_hands(old_cell)
 	old_cell.update_appearance()
-	balloon_alert(user, "Cell unloaded!")
+	balloon_alert(user, "cell unloaded!")
+	update_overlays()
 
 /obj/item/gun/coilgun/proc/insert_core(mob/user, obj/item/coilcore/input)
 	if(user.transferItemToLoc(input, src))
 		internalcore = input
-		balloon_alert(user, "Core inserted!")
+		balloon_alert(user, "core inserted!")
 		playsound(src, load_sound, load_sound_volume)
 	else
-		to_chat(user, span_warning("You cannot seem to get [input] out of your hands!"))
+		to_chat(user, span_warning("you cannot seem to get [input] out of your hands!"))
+	update_overlays()
 
 /obj/item/gun/coilgun/proc/eject_core(mob/user)
 	playsound(src, eject_sound, eject_sound_volume)
@@ -301,15 +315,16 @@
 	internalcore = null
 	user.put_in_hands(old_core)
 	old_core.update_appearance()
-	balloon_alert(user, "Core ejected!")
+	balloon_alert(user, "core ejected!")
 	shots_stored = 0
+	update_overlays()
 
 /obj/item/gun/coilgun/proc/insert_matter(obj/item, mob/user)
 	if(istype(item, /obj/item/rcd_ammo))
 		var/obj/item/rcd_ammo/ammo = item
 		var/load = min(ammo.ammoamt, max_matter - matter)
 		if(load <= 0)
-			balloon_alert(user, "Matter storage full!")
+			balloon_alert(user, "matter storage full!")
 			return FALSE
 		ammo.ammoamt -= load
 		if(ammo.ammoamt <= 0)
@@ -321,7 +336,7 @@
 
 /obj/item/gun/coilgun/proc/loadwithsheets(obj/item/stack/the_stack, mob/user)
 	if(the_stack.matter_amount <= 0)
-		balloon_alert(user, "Invalid sheets!")
+		balloon_alert(user, "invalid sheets!")
 		return FALSE
 	var/maxsheets = round((max_matter-matter) / the_stack.matter_amount)
 	if(maxsheets > 0)
@@ -329,7 +344,13 @@
 		the_stack.use(amount_to_use)
 		matter += the_stack.matter_amount * amount_to_use
 		playsound(loc, 'sound/machines/click.ogg', 50, TRUE)
-	balloon_alert(user, "Matter storage full!")
+	balloon_alert(user, "matter storage full!")
+
+/obj/item/gun/coilgun/proc/get_charge_ratio()
+	return can_shoot() ? CEILING(clamp(internalcell.charge / internalcell.maxcharge, 0, 1) * charge_sections, 1) : 0
+
+/obj/item/gun/coilgun/proc/get_heat_ratio()
+	return CEILING(clamp(current_heat / maximum_heat, 0, 1) * heat_sections, 1)
 
 /obj/item/gun/coilgun/revolver
 	name = "Redtech 10mm coilpistol"
@@ -348,14 +369,41 @@
 	fabricator_speed = 5
 
 	defaultcell = /obj/item/stock_parts/cell/redtech
+	charge_sections = 8
+	charge_state = "revolver"
 
 	maximum_heat = 200
 	dangerous_heat = 100
 	heat_dissipation = 5
 	overcooling_speed = 8
+	heat_sections = 10
+	heat_state = "revolver"
 
 	recoil_multiplier = 0.01
 	heat_damage_multiplier = 0.2
+
+/obj/item/gun/coilgun/revolver/update_overlays()
+	. = ..()
+
+	if(internalcell) // Has an internal cell loaded.
+		var/mutable_appearance/INCELL = mutable_appearance(icon, "[icon_state]_cell")
+		. += INCELL
+
+	if(internalcore) // Has an internal core loaded.
+		var/mutable_appearance/INCORE = mutable_appearance(icon, "[icon_state]_core")
+		. += INCORE
+
+	if(get_charge_ratio() != 0) // Has charge.
+		var/charge_overlay_state = "[charge_state]_charge"
+		charge_overlay_state += "_[get_charge_ratio()]"
+		var/mutable_appearance/CHARGE = mutable_appearance(icon, charge_overlay_state)
+		. += CHARGE
+
+	if(get_heat_ratio() != 0) // Has heat.
+		var/heat_overlay_state = "[heat_state]_heat"
+		heat_overlay_state += "_[get_heat_ratio()]"
+		var/mutable_appearance/HEAT = mutable_appearance(icon, heat_overlay_state)
+		. += HEAT
 
 /obj/item/gun/coilgun/revolver/none // Remind me to un-prototype this later.
 	name = "prototype Nonetech 10mm coilpistol"
@@ -384,7 +432,7 @@
 	name = "10mm standard coilcore"
 	desc = "A coilcore designed for 10mm revolver coilguns. Produces standard coilslugs."
 	icon_state = "revolvercore"
-	ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo)
+	ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo) // Need to fully implement this later.
 
 /obj/item/coilcore/revolver/update_overlays()
 	. = ..()
