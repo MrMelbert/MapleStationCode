@@ -6145,6 +6145,7 @@
 #include "maplestation_modules\code\game\objects\effects\landmarks.dm"
 #include "maplestation_modules\code\game\objects\effects\decals\turfdecal\textured.dm"
 #include "maplestation_modules\code\game\objects\effects\decals\turfdecal\tile.dm"
+#include "maplestation_modules\code\game\objects\effects\decals\turfdecal\tilecoloring.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\impact.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\muzzle.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\tracer.dm"
