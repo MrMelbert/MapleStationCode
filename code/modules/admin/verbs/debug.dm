@@ -867,8 +867,7 @@ ADMIN_VERB(check_missing_sprites, R_DEBUG, "Debug Worn Item Sprites", "We're can
 				if(!(sprite.icon_state in icon_states(actual_file_name)))
 					to_chat(user, span_warning("ERROR sprites for [sprite.type]. Suit Storage slot."), confidential = TRUE)
 
-
-/*
+#ifndef OPENDREAM_REAL
 ADMIN_VERB(start_tracy, R_DEBUG, "Run Tracy Now", "Start running the byond-tracy profiler immediately", ADMIN_CATEGORY_DEBUG)
 	if(Tracy.enabled)
 		to_chat(user, span_warning("byond-tracy is already running!"), avoid_highlighting = TRUE, type = MESSAGE_TYPE_DEBUG, confidential = TRUE)
@@ -900,7 +899,10 @@ ADMIN_VERB(queue_tracy, R_DEBUG, "Toggle Tracy Next Round", "Toggle running the 
 		rustg_file_write("[user.ckey]", TRACY_ENABLE_PATH)
 	message_admins(span_adminnotice("[key_name_admin(user)] [fexists(TRACY_ENABLE_PATH) ? "enabled" : "disabled"] the byond-tracy profiler for next round."))
 	log_admin("[key_name(user)] [fexists(TRACY_ENABLE_PATH) ? "enabled" : "disabled"] the byond-tracy profiler for next round.")
-*/
+
+ADMIN_VERB_CUSTOM_EXIST_CHECK(queue_tracy)
+	return CONFIG_GET(flag/allow_tracy_queue) && fexists(TRACY_DLL_PATH)
+#endif
 
 /datum/mc_dependency_ui
 
