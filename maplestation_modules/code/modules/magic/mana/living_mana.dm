@@ -4,6 +4,9 @@
 /mob/living/carbon/get_initial_mana_pool_type()
 	return /datum/mana_pool/mob/living/carbon
 
+/mob/living/carbon/human/dummy
+	has_initial_mana_pool = FALSE
+
 /datum/mana_pool/mob/living/carbon
 	maximum_mana_capacity = CARBON_BASE_MANA_CAPACITY
 
