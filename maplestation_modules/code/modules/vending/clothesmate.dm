@@ -31,6 +31,8 @@
 		list(
 			"name" = "Shoes",
 			"products" = list(
+				/obj/item/clothing/shoes/laceup/burgundy = 2,
+				/obj/item/clothing/shoes/laceup/brown = 2,
 				/obj/item/clothing/shoes/heels = 3,
 			),
 		),
