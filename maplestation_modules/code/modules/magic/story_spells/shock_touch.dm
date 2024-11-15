@@ -25,7 +25,7 @@
 		mana_required = shock_touch_cost, \
 		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
 		attunements = attunements, \
-		)
+	)
 
 // Shock mutation needs to address people with magic shock touch
 /datum/mutation/human/shock

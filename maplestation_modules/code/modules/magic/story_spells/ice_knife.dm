@@ -11,7 +11,7 @@
 	desc = "Summon an ice knife made from the moisture in the air."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
 	button_icon_state = "ice_knife"
-		/// What the mana cost is, affected by Armblade variant.
+	/// What the mana cost is, affected by Armblade variant.
 	var/mana_cost = ICE_KNIFE_MANA_COST
 	item_type = /obj/item/knife/combat/ice
 	delete_old = TRUE

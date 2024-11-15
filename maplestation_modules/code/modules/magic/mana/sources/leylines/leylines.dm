@@ -13,10 +13,10 @@ GLOBAL_LIST_EMPTY_TYPED(all_leylines, /datum/mana_pool/leyline)
 
 /proc/get_initial_leyline_amount()
 	var/list/leyline_amount_list = list(
-	"1" = 5000,
-	"2" = 500,
-	"3" = 200,
-	"4" = 10
+		"1" = 5000,
+		"2" = 500,
+		"3" = 200,
+		"4" = 10
 	)
 	var/leyline_amount = text2num(pick_weight(leyline_amount_list))
 	return leyline_amount

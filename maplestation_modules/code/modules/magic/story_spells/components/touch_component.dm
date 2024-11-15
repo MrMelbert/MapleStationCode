@@ -18,8 +18,8 @@
 	pre_use_check_comsig,
 	post_use_comsig = COMSIG_SPELL_TOUCH_HAND_HIT,
 	datum/callback/mana_required,
-	list/datum/attunement/attunements
-	)
+	list/datum/attunement/attunements,
+)
 
 	..()
 
