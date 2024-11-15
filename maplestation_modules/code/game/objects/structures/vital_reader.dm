@@ -174,7 +174,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	else if(HAS_TRAIT(user, TRAIT_DUMB) || !user.can_read(src, reading_check_flags = READING_CHECK_LITERACY, silent = TRUE))
 		. += span_warning("You try to comprehend the display, but it's too complex for you to understand.")
 	else
-		. += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/FALSE, advanced = advanced, tochat = FALSE)
+		. += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/0, advanced = advanced, tochat = FALSE)
 		. += chemscan(user, patient, tochat = FALSE)
 
 /obj/machinery/computer/vitals_reader/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -193,7 +193,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	// Lets AIs perform healthscans on people indirectly (they can't examine)
 	if(is_operational && !isnull(patient))
 		var/entire_printout = ""
-		entire_printout += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/FALSE, advanced = advanced, tochat = FALSE)
+		entire_printout += healthscan(user, patient, mode = /*SCANNER_CONDENSED*/0, advanced = advanced, tochat = FALSE)
 		entire_printout += chemscan(user, patient, tochat = FALSE)
 		to_chat(user, examine_block(entire_printout), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 

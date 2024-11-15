@@ -139,7 +139,7 @@
 	health = 400
 	butcher_results = list(/obj/item/food/meat/slab/xeno = 10,
 							/obj/item/stack/sheet/animalhide/xeno = 2)
-	mob_size = MOB_SIZE_LARGE
+	mob_size = MOB_SIZE_HUGE
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/hostile/alien/maid
