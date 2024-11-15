@@ -1,9 +1,0 @@
-TODO
-
-LOW PRIORITY {
-
-1. Make mana pools hold a recharge_source variable that takes numeric defines for things like NOTHING (take from nothing), LEYLINE (take from all leylines it can access), etc
-
-
-
-}

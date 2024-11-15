@@ -24,11 +24,6 @@
 	// I was considering giving this the same "trigger on snap emote" effect that the arm implant has,
 	// but considering this has a tangible cost (mana) while the arm implant is free, I decided against it.
 
-
-/* /datum/action/cooldown/spell/touch/finger_flame/can_cast_spell(...)
-	if(!source.attached_hand)
-		return NONE */
-
 /datum/action/cooldown/spell/touch/finger_flame/cast(...)
 	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.
 	// whichs means it uses mana when the flame / hand is CREATED instead of used

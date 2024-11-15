@@ -1,10 +1,6 @@
 #define ILLUSION_ATTUNEMENT_LIGHT 0.5
 #define ILLUSION_MANA_COST 25
 
-/* /datum/component/uses_mana/story_spell/pointed/illusion/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/light] = illusion_attunement */
-
 /datum/action/cooldown/spell/pointed/illusion
 	name = "Illusion"
 	desc = "Summon an illusion at the target location. Less effective in dark areas."

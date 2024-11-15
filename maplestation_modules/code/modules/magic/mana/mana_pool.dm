@@ -219,8 +219,6 @@
 	return other_pool.adjust_mana(adjusted_amount, attunements)
 
 /datum/mana_pool/proc/start_transfer(datum/mana_pool/target_pool, force_process = FALSE)
-	/*if (target_pool.maximum_mana_capacity <= target_pool.amount)
-		return MANA_POOL_FULL*/
 
 	if (target_pool == src)
 		stack_trace("start_transfer called where target_pool was src!")

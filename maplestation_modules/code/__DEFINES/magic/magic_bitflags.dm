@@ -1,4 +1,3 @@
-#define ATOM_HAS_INITIAL_MANA_POOL ()
 
 #define NO_MANA_POOL (1<<0)
 #define MANA_POOL_FULL (1<<1)

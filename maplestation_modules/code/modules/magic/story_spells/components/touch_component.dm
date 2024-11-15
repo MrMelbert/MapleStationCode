@@ -30,15 +30,11 @@
 
 /datum/component/uses_mana/touch_spell/RegisterWithParent()
 	..()
-//	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
 	RegisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT, PROC_REF(can_touch))
-//	RegisterSignal(parent, COMSIG_SPELL_TOUCH_HAND_HIT, PROC_REF(handle_touch))
 
 /datum/component/uses_mana/touch_spell/UnregisterFromParent()
 	..()
-//	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
 	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT)
-//	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_HAND_HIT)
 
 /datum/component/uses_mana/touch_spell/proc/can_touch(
 	datum/action/cooldown/spell/touch/source,

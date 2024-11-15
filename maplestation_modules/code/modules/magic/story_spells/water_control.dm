@@ -1,15 +1,6 @@
 #define WET_ATTUNEMENT_WATER 0.5
 #define WET_MANA_COST_PER_UNIT 0.4
 
-/* /datum/component/uses_mana/story_spell/pointed/soft_and_wet/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/pointed/soft_and_wet/spell = parent
-	var/turf/open/cast_turf = get_turf(cast_on)
-	if(SEND_SIGNAL(cast_turf, COMSIG_TURF_IS_WET) || spell.wetness_pool.total_volume >= spell.wetness_pool.maximum_volume)
-		return ..() * spell.wetness_pool.maximum_volume * wet_cost_per_unit
-
-	// Supplying water makes it cheaper, technically.
-	return ..() * spell.wetness_pool.total_volume * wet_cost_per_unit */
-
 /datum/action/cooldown/spell/pointed/soft_and_wet
 	name = "Water Control"
 	desc = "Wet a dry spot, or dry a wet spot. \n\

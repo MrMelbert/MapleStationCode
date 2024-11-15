@@ -2,10 +2,6 @@
 #define ICE_KNIFE_MANA_COST 30
 #define ICE_ARMBLADE_MANA_COST 45
 
-/* /datum/component/uses_mana/story_spell/conjure_item/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/conjure_item/ice_knife/ice_knife_spell = parent
-	return ..() * ice_knife_spell.ice_knife_cost */ // this is being held on to now, will be killed before PR time
-
 /datum/action/cooldown/spell/conjure_item/ice_knife
 	name = "Ice knife"
 	desc = "Summon an ice knife made from the moisture in the air."
