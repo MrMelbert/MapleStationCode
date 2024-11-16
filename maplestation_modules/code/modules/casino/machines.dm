@@ -22,12 +22,16 @@
 	/// Added descriptor of what the machine looks like.
 	var/this_slot_type = "It's a standard slot machine housing some mechanical reels with symbols on each one."
 	// I went way overboard with these to be honest
+	/// Because it threw errors if we don't put it to its own var
+	var/list/slot_type_list
 
 /obj/machinery/computer/slot_machine/green/Initialize(mapload)
 	. = ..()
 	name = pick(possible_names)
 	money = rand(500,1000000)
-	this_slot_type = pick(world.file2list("maplestation_modules/strings/slots.txt"))
+	slot_type_list = world.file2list("maplestation_modules/strings/slots.txt")
+	if(length(slot_type_list))
+		this_slot_type = pick(slot_type_list)
 
 /obj/machinery/computer/slot_machine/green/examine(mob/user)
 	. = ..()
