@@ -7,6 +7,7 @@ import {
   Section,
 } from 'tgui-core/components';
 import { BooleanLike } from 'tgui-core/react';
+import { capitalizeFirst } from 'tgui-core/string';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
