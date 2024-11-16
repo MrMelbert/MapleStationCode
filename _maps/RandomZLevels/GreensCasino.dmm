@@ -2827,7 +2827,8 @@
 	},
 /obj/machinery/camera/motion/directional/south{
 	network = list("casino","man_trap");
-	name = "Man-Trap Camera"
+	name = "Man-Trap Camera";
+	c_tag = "Man-Trap Camera"
 	},
 /turf/open/floor/engine,
 /area/awaymission/casino/mantrap)
