@@ -25,7 +25,7 @@
 	response_harm_continuous = "squashes"
 	response_harm_simple = "squash"
 
-	mob_size = MOB_SIZE_LARGE
+	mob_size = MOB_SIZE_SMALL
 	pixel_x = -16
 	base_pixel_x = -16
 
