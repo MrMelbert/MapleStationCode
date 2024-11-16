@@ -14318,9 +14318,7 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/blood/old,
-/mob/living/basic/goat/pete{
-	name = "Pete"
-	},
+/mob/living/basic/goat/pete,
 /turf/open/floor/iron/freezer,
 /area/station/service/kitchen/coldroom)
 "bHI" = (
@@ -45291,8 +45289,7 @@
 /obj/effect/turf_decal/tile/neutral,
 /obj/machinery/computer/security/telescreen/prison{
 	dir = 4;
-	pixel_x = -30;
-	pixel_y = 0
+	pixel_x = -30
 	},
 /obj/machinery/light/small/directional/south,
 /obj/structure/rack,
@@ -51336,7 +51333,6 @@
 	},
 /obj/structure/chair{
 	desc = "A gray chair. Nothing more relaxing while waiting for therapy than watching the dying.";
-	dir = 2;
 	name = "therapy waiting chair"
 	},
 /turf/open/floor/iron/white,

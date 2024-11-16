@@ -15409,6 +15409,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /mob/living/carbon/human/species/monkey/punpun,
+/obj/machinery/door/airlock{
+	name = "Kitchen Cold Room"
+	},
 /turf/open/floor/iron,
 /area/station/service/bar)
 "dQS" = (
