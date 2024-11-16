@@ -802,7 +802,6 @@
 	},
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /obj/structure/table/reinforced,
-/obj/structure/table/reinforced,
 /turf/open/floor/iron,
 /area/awaymission/casino/checkin)
 "hc" = (
@@ -2379,10 +2378,6 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
 /area/awaymission/casino/friendmaker)
-"wz" = (
-/turf/closed/wall/r_wall,
-/turf/open/floor/carpet/red,
-/area/awaymission/casino/cage)
 "wC" = (
 /obj/effect/decal/cleanable/confetti,
 /turf/open/floor/plating,
@@ -4953,11 +4948,6 @@
 	},
 /turf/open/floor/iron/kitchen_coldroom/freezerfloor,
 /area/awaymission/casino/kitchen/coldroom)
-"VB" = (
-/obj/machinery/computer/slot_machine/green,
-/obj/machinery/computer/slot_machine/green,
-/turf/open/floor/carpet/green,
-/area/awaymission/casino/floor/maze)
 "VD" = (
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -12534,7 +12524,7 @@ bd
 To
 kD
 kD
-VB
+kD
 BP
 gk
 BP
@@ -12746,7 +12736,7 @@ lS
 lS
 lS
 lS
-wz
+lS
 lS
 YD
 xD
