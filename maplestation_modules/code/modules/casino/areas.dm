@@ -20,15 +20,11 @@
 	name = "Casino Floor"
 	icon_state = "awaycontent3"
 	ambientsounds = list(
-		'sound/machines/coindrop.ogg',
-		'sound/machines/coindrop2.ogg',
-		'sound/machines/roulettejackpot.ogg',
-		'sound/machines/roulettewheel.ogg',
 		'maplestation_modules/sound/ambience/casino/CasinoAmbience1.ogg',
 		'maplestation_modules/sound/ambience/casino/CasinoAmbience2.ogg'
 	)
 
-/// Lowered volume
+/// Lowered volume, not actually sure if this works?
 /area/awaymission/casino/floor/play_ambience(M, override_sound, volume = 10)
 	return ..()
 
@@ -132,15 +128,16 @@
 	for(var/mob/living/enterer as anything in arrived.get_all_contents_type(/mob/living))
 		to_chat(enterer, span_userdanger("This was a bad idea..."))
 		enterer.become_blind(CASINO_MAZE)
-		enterer.apply_status_effect(/datum/status_effect/jitter)
-		enterer.apply_status_effect(/datum/status_effect/hallucination)
 		// It's a timed effect but we're going to remove it when they leave, so we make it really long.
-		curse_of_babel(enterer, 60 MINUTES)
+		enterer.apply_status_effect(/datum/status_effect/jitter, 60 MINUTES)
+		enterer.apply_status_effect(/datum/status_effect/hallucination, 60 MINUTES)
+		// Want to make them not able to get help through the maze but don't want them to become deaf
+		curse_of_babel(enterer)
 
 /area/awaymission/casino/floor/maze/Exited(atom/movable/gone, direction)
 	. = ..()
 	for(var/mob/living/exiter as anything in gone.get_all_contents_type(/mob/living))
-		to_chat(exiter, span_boldnicegreen("I feel so much better..."))
+		to_chat(exiter, span_boldnicegreen("I feel so much better!"))
 		exiter.cure_blind(CASINO_MAZE)
 		exiter.remove_status_effect(/datum/status_effect/jitter)
 		exiter.remove_status_effect(/datum/status_effect/hallucination)
