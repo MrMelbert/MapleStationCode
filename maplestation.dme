@@ -6086,7 +6086,6 @@
 #include "maplestation_modules\code\__DEFINES\subsystems\_module_subsystem_priorities.dm"
 #include "maplestation_modules\code\__HELPERS\magic_helpers.dm"
 #include "maplestation_modules\code\__HELPERS\text_helpers.dm"
-#include "maplestation_modules\code\__HELPERS\_globalvars\lists.dm"
 #include "maplestation_modules\code\controllers\configuration\entries\autotransfer.dm"
 #include "maplestation_modules\code\controllers\subsystem\autotransfer.dm"
 #include "maplestation_modules\code\controllers\subsystem\economy.dm"

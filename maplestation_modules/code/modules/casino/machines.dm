@@ -30,7 +30,10 @@
 	. = ..()
 	name = pick(possible_names)
 	money = rand(500,1000000)
-	this_slot_type = pick(GLOB.slot_type_descriptions)
+	var/static/list/slot_type_descriptions
+	if(!length(slot_type_descriptions))
+		slot_type_descriptions = world.file2list("maplestation_modules/strings/slots.txt")
+	this_slot_type = pick(slot_type_descriptions)
 
 /obj/machinery/computer/slot_machine/green/examine(mob/user)
 	. = ..()
