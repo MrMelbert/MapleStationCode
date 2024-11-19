@@ -435,6 +435,15 @@
 	charge = INFINITY
 	..()
 
+/obj/machinery/power/smes/super
+	name = "super capacity power storage unit"
+	desc = "A super-capacity superconducting magnetic energy storage (SMES) unit. Relatively rare, and typically installed in long-range outposts where minimal maintenance is expected."
+	circuit = /obj/item/circuitboard/machine/smes/super
+	capacity = 10e6
+
+/obj/machinery/power/smes/super/full
+	charge = 10e6
+
 /obj/machinery/power/smes/full
 	charge = 5e6
 
