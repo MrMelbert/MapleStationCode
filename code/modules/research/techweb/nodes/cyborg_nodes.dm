@@ -84,7 +84,7 @@
 		"borg_upgrade_expandedsynthesiser",
 		"borg_upgrade_piercinghypospray",
 		"borg_upgrade_surgicalprocessor",
-		"borg_upgrade_surgicalomnitool",
+//		"borg_upgrade_surgicalomnitool",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 
@@ -116,7 +116,7 @@
 	prereq_ids = list(TECHWEB_NODE_BORG_MINING, TECHWEB_NODE_PARTS_UPG)
 	design_ids = list(
 		"borg_upgrade_rped",
-		"borg_upgrade_engineeringomnitool",
+//		"borg_upgrade_engineeringomnitool",
 		"borg_upgrade_circuitapp",
 		"borg_upgrade_inducer",
 	)
@@ -133,9 +133,9 @@
 		"implant_trombone",
 		"implant_chem",
 		"implant_tracking",
-		"implant_exile",
-		"implant_beacon",
-		"implant_bluespace",
+//		"implant_exile",
+//		"implant_beacon",
+//		"implant_bluespace",
 		"implantcase",
 		"implanter",
 		"locator",

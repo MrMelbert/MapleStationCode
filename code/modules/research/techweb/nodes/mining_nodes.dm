@@ -29,9 +29,9 @@
 	prereq_ids = list(TECHWEB_NODE_MATERIAL_PROC)
 	design_ids = list(
 		"cargoexpress",
-		"brm",
-		"b_smelter",
-		"b_refinery",
+//		"brm",
+//		"b_smelter",
+//		"b_refinery",
 		"ore_redemption",
 		"mining_equipment_vendor",
 		"mining_scanner",

@@ -96,7 +96,7 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_1_POINTS)
 	hidden = TRUE
 	experimental = TRUE
-
+/*
 /datum/techweb_node/posisphere
 	id = TECHWEB_NODE_POSITRONIC_SPHERE
 	display_name = "Experimental Spherical Positronic Brain"
@@ -107,3 +107,4 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_1_POINTS)
 	hidden = TRUE
 	experimental = TRUE
+*/

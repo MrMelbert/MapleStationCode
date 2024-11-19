@@ -88,7 +88,7 @@
 	description = "Enhances the functionality and versatility of station tools."
 	prereq_ids = list(TECHWEB_NODE_FUSION)
 	design_ids = list(
-		"flatpacker",
+//		"flatpacker",
 		"handdrill",
 		"exwelder",
 		"jawsoflife",

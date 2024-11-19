@@ -69,7 +69,7 @@
 		"idcard",
 		"c-reader",
 		"libraryconsole",
-		"barcode_scanner",
+//		"barcode_scanner",
 		"vendor",
 		"custom_vendor_refill",
 		"bounty_pad_control",
@@ -129,7 +129,7 @@
 		"oven",
 		"stove",
 		"range",
-		"souppot",
+//		"souppot",
 		"processor",
 		"gibber",
 		"monkey_recycler",
@@ -163,12 +163,12 @@
 	design_ids = list(
 		"fishing_rod_tech",
 		"stabilized_hook",
-		"auto_reel",
+//		"auto_reel",
 		"fish_analyzer",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_2_POINTS)
 	required_experiments = list(/datum/experiment/scanning/fish)
-
+/*
 /datum/techweb_node/marine_util
 	id = TECHWEB_NODE_MARINE_UTIL
 	display_name = "Marine Utility"
@@ -180,3 +180,4 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 	// only available if you've done the first fishing experiment (thus unlocking fishing tech), but not a strict requirement to get the tech
 	discount_experiments = list(/datum/experiment/scanning/fish/second = TECHWEB_TIER_3_POINTS)
+*/

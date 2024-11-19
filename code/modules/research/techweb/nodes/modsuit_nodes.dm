@@ -28,7 +28,7 @@
 		"mod_clamp",
 		"mod_tether",
 		"mod_welding",
-		"mod_safety",
+//		"mod_safety",
 		"mod_mouthhole",
 		"mod_longfall",
 		"mod_thermal_regulator",

@@ -72,7 +72,7 @@
 		"maintain_module",
 		"liveandletlive_module",
 		"reporter_module",
-		"yesman_module",
+//		"yesman_module",
 		"hulkamania_module",
 		"peacekeeper_module",
 		"overlord_module",
