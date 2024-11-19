@@ -220,7 +220,7 @@
 		RADIO_CHANNEL_AI_PRIVATE = 1,
 		RADIO_CHANNEL_ENTERTAINMENT = 1,
 	)
-	special_channels = RADIO_SPECIAL_BINARY
+	translate_binary = TRUE
 	translated_language = /datum/language/machine
 
 /obj/item/encryptionkey/ai/evil //ported from NT, this goes 'inside' the AI.

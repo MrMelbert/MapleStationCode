@@ -13,9 +13,9 @@
 	force = 8
 	throwforce = 12
 	w_class = WEIGHT_CLASS_NORMAL
-	obj_flags = INDESTRUCTIBLE | EMP_PROTECT_ALL // No fun police
+	resistance_flags = INDESTRUCTIBLE
 	slot_flags = NONE
-	light_system = OVERLAY_LIGHT
+	light_system = MOVABLE_LIGHT
 	light_color = COLOR_SOFT_RED
 	light_range = 1
 	light_power = 0.3
@@ -33,6 +33,7 @@
 
 /obj/item/broadcast_camera/Initialize(mapload)
 	. = ..()
+	AddElement(/datum/element/empprotection, ALL)
 	AddComponent(/datum/component/two_handed, \
 		force_unwielded = 8, \
 		force_wielded = 12, \
