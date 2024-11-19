@@ -104,11 +104,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 		var/mob/living/carbon/carbon_user = user
 		if(carbon_user.dna?.check_mutation(/datum/mutation/human/telekinesis) && tkMaxRangeCheck(user, src))
 			can_range = TRUE
-	if(HAS_SILICON_ACCESS(user) || (user.interaction_range && user.interaction_range >= get_dist(user, src)))
+	if(isAdminGhostAI(user) || (user.interaction_range && user.interaction_range >= get_dist(user, src)))
 		can_range = TRUE
 
 	if((can_range || user.CanReach(src)) && ISADVANCEDTOOLUSER(user))
-		if(user.incapacitated)
+		if(user.incapacitated())
 			return UI_UPDATE
 		if(!can_range && user.can_hold_items() && (user.usable_hands <= 0 || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED)))
 			return UI_UPDATE
@@ -130,8 +130,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 /obj/machinery/computer/security/telescreen/entertainment/proc/can_watch_tv(mob/living/watcher)
 	if(!is_operational)
 		return FALSE
-	if((watcher.sight & SEE_OBJS) || HAS_SILICON_ACCESS(watcher))
-		if(get_dist(watcher, src) > 7)
+	if((watcher.sight & SEE_OBJS) || watcher.interaction_range)
+		if(get_dist(watcher, src) > max(watcher.interaction_range, 7))
 			return FALSE
 	else
 		if(!can_see(watcher, src, 7))
