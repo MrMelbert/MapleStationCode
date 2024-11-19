@@ -68,7 +68,7 @@
 		"pyro_grenade",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
-	required_experiments = list(/datum/experiment/ordnance/explosive/lowyieldbomb)
+	discount_experiments = list(/datum/experiment/ordnance/explosive/lowyieldbomb = TECHWEB_TIER_3_POINTS)
 
 /datum/techweb_node/exotic_ammo
 	id = TECHWEB_NODE_EXOTIC_AMMO

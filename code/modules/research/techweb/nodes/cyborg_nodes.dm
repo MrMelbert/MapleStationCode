@@ -217,7 +217,7 @@
 		"cybernetic_heart_tier3",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
-	required_experiments = list(/datum/experiment/scanning/people/augmented_organs)
+	discount_experiments = list(/datum/experiment/scanning/people/augmented_organs = TECHWEB_TIER_3_POINTS)
 
 /datum/techweb_node/cyber/cyber_organs_adv
 	id = TECHWEB_NODE_CYBER_ORGANS_ADV
