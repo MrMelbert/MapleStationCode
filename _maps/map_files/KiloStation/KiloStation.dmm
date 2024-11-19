@@ -56067,11 +56067,11 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
-/obj/structure/noticeboard/directional/east,
 /obj/machinery/camera/directional/east{
 	c_tag = "Detective's Office";
 	name = "detective camera"
 	},
+/obj/item/radio/intercom/directional/east,
 /turf/open/floor/wood,
 /area/station/security/detectives_office)
 "nPb" = (
@@ -61539,7 +61539,7 @@
 	},
 /obj/item/toy/figure/detective,
 /obj/machinery/light/directional/east,
-/obj/item/radio/intercom/directional/east,
+/obj/structure/detectiveboard/directional/east,
 /turf/open/floor/carpet/green,
 /area/station/security/detectives_office)
 "pFq" = (

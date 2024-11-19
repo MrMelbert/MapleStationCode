@@ -9,7 +9,7 @@
 /obj/structure/detectiveboard
 	name = "detective notice board"
 	desc = "A board for linking evidence to crimes."
-	icon = 'icons/obj/structures/wallmounts.dmi'
+	icon = 'icons/obj/wallmounts.dmi'
 	icon_state = "noticeboard"
 	density = FALSE
 	anchored = TRUE

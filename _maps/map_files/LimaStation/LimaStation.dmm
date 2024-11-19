@@ -4613,8 +4613,8 @@
 	},
 /area/station/security/brig)
 "bAV" = (
-/obj/machinery/firealarm/directional/west,
 /obj/machinery/vending/wardrobe/det_wardrobe,
+/obj/structure/detectiveboard/directional/west,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
 "bBc" = (
@@ -8405,6 +8405,11 @@
 	dir = 4
 	},
 /area/station/hallway/secondary/service)
+"cQV" = (
+/obj/effect/turf_decal/trimline/neutral/filled/line,
+/obj/structure/sign/poster/official/nanotrasen_logo/directional/south,
+/turf/open/floor/iron,
+/area/station/hallway/primary/fore)
 "cQW" = (
 /obj/effect/turf_decal/trimline/neutral/filled/corner{
 	dir = 8
@@ -9263,15 +9268,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w,
 /turf/open/floor/plating,
 /area/station/science/xenobiology)
-"ded" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/turf_decal/trimline/neutral/filled/line{
-	dir = 1
-	},
-/obj/structure/sign/poster/official/nanotrasen_logo/directional/north,
-/turf/open/floor/iron,
-/area/station/hallway/primary/fore)
 "deg" = (
 /obj/effect/turf_decal/trimline/red/filled/corner{
 	dir = 1
@@ -29278,6 +29274,7 @@
 "jEc" = (
 /obj/machinery/photocopier,
 /obj/machinery/status_display/evac/directional/west,
+/obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
 "jEi" = (
@@ -35126,6 +35123,10 @@
 /obj/structure/closet/crate/cardboard,
 /turf/open/floor/plating,
 /area/station/commons/vacant_room/commissary)
+"lwz" = (
+/obj/structure/detectiveboard/directional/north,
+/turf/open/floor/iron/dark,
+/area/station/security/lockers)
 "lwC" = (
 /obj/machinery/duct,
 /obj/effect/decal/cleanable/dirt,
@@ -48897,12 +48898,12 @@
 /area/station/engineering/atmos/experiment_room)
 "pJn" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/noticeboard/directional/north,
 /obj/structure/chair{
 	dir = 1
 	},
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/dim/directional/south,
+/obj/structure/detectiveboard/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/security/detectives_office)
 "pJs" = (
@@ -98761,7 +98762,7 @@ aCX
 vOR
 jEc
 bxS
-ded
+ocv
 mAc
 ljV
 cKV
@@ -102103,7 +102104,7 @@ lNo
 fFq
 nCR
 rUq
-mAc
+cQV
 sag
 wNa
 aDd
@@ -102352,7 +102353,7 @@ gso
 gEg
 ejk
 tAZ
-ovq
+lwz
 iBI
 nTg
 cyI
