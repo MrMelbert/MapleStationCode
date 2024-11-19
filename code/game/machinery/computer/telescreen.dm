@@ -47,11 +47,14 @@
 	var/icon_state_off = "entertainment_blank"
 	var/icon_state_on = "entertainment"
 
-/obj/machinery/vending/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+/obj/machinery/computer/security/telescreen/entertainment/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	context[SCREENTIP_CONTEXT_CTRL_LMB] = "Toggle mute button"
+	return CONTEXTUAL_SCREENTIP_SET
 
-/obj/machinery/computer/security/telescreen/entertainment/click_ctrl(mob/user)
+/obj/machinery/computer/security/telescreen/entertainment/CtrlClick(mob/user)
 	. = ..()
+	if(. == FALSE || !is_operational || !user.can_perform_action(src, NEED_DEXTERITY|ALLOW_SILICON_REACH))
+		return
 	balloon_alert(user, speakers.should_be_listening ? "muted" : "unmuted")
 	speakers.toggle_mute()
 
@@ -67,6 +70,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertai
 	. = ..()
 	find_and_hang_on_wall()
 	update_appearance()
+	register_context()
 	speakers = new(src)
 
 /obj/machinery/computer/security/telescreen/entertainment/Destroy()
