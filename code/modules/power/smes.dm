@@ -435,6 +435,8 @@
 	charge = INFINITY
 	..()
 
+/obj/machinery/power/smes/full
+	charge = 5e6
 
 #undef SMESRATE
 
