@@ -207,6 +207,7 @@
 	var/beep = FALSE
 	var/color = null
 	var/detected_thing = null
+	var/bypassed = FALSE
 	switch(scangate_mode)
 		if(SCANGATE_NONE)
 			return
@@ -280,7 +281,7 @@
 						if((!HAS_TRAIT(scanned_human, TRAIT_MINDSHIELD)) && (isnull(idcard) || !(ACCESS_WEAPONS in idcard.access))) // mindshield or ID card with weapons access, like bartender
 							beep = TRUE
 							break
-						say("[detected_thing] detection bypassed.")
+						bypassed = TRUE
 						break
 			else
 				for(var/obj/item/content in thing.get_all_contents_skipping_traits(TRAIT_CONTRABAND_BLOCKER))
@@ -312,6 +313,8 @@
 			assembly?.activate()
 	else
 		SEND_SIGNAL(src, COMSIG_SCANGATE_PASS_NO_TRIGGER, thing)
+		if(bypassed)
+			say("[detected_thing] detection bypassed.")
 		if(!ignore_signals)
 			color = wires.get_color_of_wire(WIRE_DENY)
 			var/obj/item/assembly/assembly = wires.get_attached(color)
