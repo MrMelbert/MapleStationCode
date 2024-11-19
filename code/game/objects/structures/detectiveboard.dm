@@ -39,11 +39,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 
 /obj/structure/detectiveboard/attackby(obj/item/item, mob/user, params)
 	if(!cases.len)
-		to_chat(user, "There are no cases!")
+		to_chat(user, span_warning("There are no cases!"))
 		return
 	if(istype(item, /obj/item/paper) || istype(item, /obj/item/photo))
 		if(attaching_evidence)
-			to_chat(user, "You already attaching evidence!")
+			to_chat(user, span_warning("You already attaching evidence!"))
 			return
 		attaching_evidence = TRUE
 		var/name = tgui_input_text(user, "Please enter the evidence name", "Detective's Board")
@@ -55,13 +55,13 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 			attaching_evidence = FALSE
 			return
 
-		if(!user.transferItemToLoc(item, src))
+		if(!user.is_holding(item) || !user.transferItemToLoc(item, src))
 			attaching_evidence = FALSE
 			return
 		cases[current_case].notices++
 		var/datum/evidence/evidence = new (name, desc, item)
 		cases[current_case].evidences += evidence
-		to_chat(user, span_notice("You pin the [item] to the detective board."))
+		to_chat(user, span_notice("You pin [item] to [src]."))
 		attaching_evidence = FALSE
 		update_appearance(UPDATE_ICON)
 		return
