@@ -36,6 +36,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 			item.forceMove(src)
 			cases[current_case].notices++
 
+	find_and_hang_on_wall()
+
 /// Attaching evidences: photo and papers
 
 /obj/structure/detectiveboard/attackby(obj/item/item, mob/user, params)
@@ -245,13 +247,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/detectiveboard, 32)
 	cases[current_case].notices--
 	update_appearance(UPDATE_ICON)
 
-/obj/structure/detectiveboard/atom_deconstruct(disassembled = TRUE)
+/obj/structure/detectiveboard/deconstruct(disassembled)
 	if(!disassembled)
 		new /obj/item/stack/sheet/mineral/wood(loc)
 	else
 		new /obj/item/wallframe/detectiveboard(loc)
 	for(var/obj/item/content in contents)
 		remove_item(content)
+	return ..()
 
 /obj/item/wallframe/detectiveboard
 	name = "detective notice board"
