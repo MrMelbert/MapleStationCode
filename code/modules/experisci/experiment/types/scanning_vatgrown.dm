@@ -12,6 +12,6 @@
 	name = "Vat-Grown Slime Scan"
 	description = "Seen the slimes in the xenobiology pens? They spawned when our researchers donked a moldy bread slice into the vat. Cultivate another one and report the results."
 	performance_hint = "Swab the slime cell lines from a moldy bread or take a biopsy sample of existing slime. And grow it in the vat."
-	required_atoms = list(/mob/living/basic/slime = 1)
+	required_atoms = list(/mob/living/simple_animal/slime = 1)
 
 

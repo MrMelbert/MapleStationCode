@@ -54,16 +54,7 @@
 
 /datum/techweb_node/ai/New()
 	. = ..()
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_HUMAN_AI))
-		design_ids -= list(
-			"aicore",
-			"borg_ai_control",
-			"intellicard",
-			"mecha_tracking_ai_control",
-			"aifixer",
-			"aiupload",
-		)
-	else if(HAS_TRAIT(SSstation, STATION_TRAIT_UNIQUE_AI))
+	if(HAS_TRAIT(SSstation, STATION_TRAIT_UNIQUE_AI))
 		research_costs[TECHWEB_POINT_TYPE_GENERIC] *= 3
 
 /datum/techweb_node/ai_laws
