@@ -208,7 +208,7 @@
 	icon_state = "facescarf"
 	inhand_icon_state = "greyscale_facescarf"
 	alternate_worn_layer = BACK_LAYER
-	clothing_flags = BLOCK_GAS_SMOKE_EFFECT|MASKINTERNALS
+	clothing_flags = BLOCK_GAS_SMOKE_EFFECT
 	flags_inv = HIDEFACIALHAIR | HIDEFACE | HIDESNOUT
 	w_class = WEIGHT_CLASS_SMALL
 	visor_flags = BLOCK_GAS_SMOKE_EFFECT | MASKINTERNALS
