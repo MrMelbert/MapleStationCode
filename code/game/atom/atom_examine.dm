@@ -145,9 +145,10 @@
 			return
 
 		var/mob/viewer = usr
+		var/mob/wearer = get(src, /mob/living) || loc
 		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
 			return
-		if(HAS_TRAIT(loc, TRAIT_UNKNOWN) || !(viewer in viewers(loc)))
+		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN) || !can_examine_when_worn(viewer))
 			to_chat(viewer, span_notice("You can't make out that item anymore."))
 			return
 
@@ -155,6 +156,26 @@
 			viewer._pointed(src, skip_view = TRUE)
 		else
 			viewer.examinate(src)
+
+/// Checks if this item, when examined / pointed at while being worn, can actually be examined by the given mob
+/atom/movable/proc/can_examine_when_worn(mob/examiner)
+	return (examiner in viewers(loc))
+
+/obj/item/can_examine_when_worn(mob/examiner)
+	if(!slot_flags)
+		return ..()
+	var/mob/living/carbon/wearer = loc
+	if(!istype(wearer))
+		return ..()
+	if(wearer.check_obscured_slots() & slot_flags)
+		return FALSE
+	return ..()
+
+/obj/item/clothing/accessory/can_examine_when_worn(mob/examiner)
+	if(isclothing(loc))
+		var/obj/item/clothing/shirt = loc
+		return shirt.can_examine_when_worn(examiner)
+	return ..()
 
 /obj/item/card/id/Topic(href, list/href_list)
 	. = ..()
