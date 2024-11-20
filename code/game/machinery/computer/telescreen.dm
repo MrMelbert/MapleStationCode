@@ -500,6 +500,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/forgotte
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/deep_storage/bunker, 32)
 
+/obj/machinery/computer/security/telescreen/monastary
+	name = "Monastary monitor"
+	network = list("monastery")
+
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/monastary, 32)
+
 /// A button that adds a camera network to the entertainment monitors
 /obj/machinery/button/showtime
 	name = "thunderdome showtime button"

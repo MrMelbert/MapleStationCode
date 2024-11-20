@@ -88,6 +88,7 @@
 	icon_state = "fan_tiny"
 	plane = FLOOR_PLANE
 	layer = LOW_OBJ_LAYER
+	deconstructible = FALSE
 
 /**
  * A variety of statue in disrepair; parts are broken off and a gemstone is missing

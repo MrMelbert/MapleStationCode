@@ -24074,9 +24074,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/machinery/computer/security/telescreen/vault{
-	pixel_y = 30
-	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "hfe" = (
@@ -33498,10 +33495,6 @@
 /obj/machinery/computer/crew{
 	dir = 4
 	},
-/obj/machinery/computer/security/telescreen/cmo{
-	dir = 4;
-	pixel_x = -30
-	},
 /obj/machinery/button/door/directional/south{
 	id = "cmoprivacy";
 	name = "CMO Privacy Shutters";
@@ -35997,6 +35990,7 @@
 /obj/machinery/keycard_auth/wall_mounted/directional/west{
 	pixel_y = -6
 	},
+/obj/machinery/computer/security/telescreen/vault/directional/south,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "lLl" = (

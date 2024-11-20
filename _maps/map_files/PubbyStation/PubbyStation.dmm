@@ -347,8 +347,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/broken_floor,
-/turf/open/floor/wood,
+/turf/open/floor/carpet/black,
 /area/station/command/heads_quarters/qm)
 "abf" = (
 /obj/structure/bed,
@@ -360,12 +359,15 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
-/turf/open/floor/wood,
+/turf/open/floor/carpet/black,
 /area/station/command/heads_quarters/qm)
 "abh" = (
 /obj/machinery/airalarm/directional/north,
 /obj/machinery/light/directional/north,
 /obj/machinery/modular_computer/preset/id,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "abi" = (
@@ -977,7 +979,6 @@
 	},
 /area/station/security/prison)
 "adK" = (
-/obj/machinery/airalarm/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
 	},
@@ -2412,12 +2413,14 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/ai_monitored/security/armory)
 "ain" = (
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = -22
-	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
+	},
+/obj/machinery/firealarm/directional/west{
+	pixel_y = 6
+	},
+/obj/machinery/light_switch/directional/west{
+	pixel_y = -5
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/security)
@@ -2439,12 +2442,14 @@
 /obj/vehicle/ridden/secway,
 /obj/item/key/security,
 /obj/effect/turf_decal/bot,
+/obj/structure/sign/poster/official/nanotrasen_logo/directional/south,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security)
 "ais" = (
 /obj/structure/tank_dispenser/oxygen,
 /obj/effect/turf_decal/bot,
 /obj/item/radio/intercom/directional/east,
+/obj/machinery/airalarm/directional/south,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security)
 "ait" = (
@@ -2745,6 +2750,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/red/full,
+/obj/machinery/airalarm/directional/west,
 /turf/open/floor/iron/large,
 /area/station/security)
 "ajl" = (
@@ -2775,9 +2781,7 @@
 /area/station/security)
 "ajp" = (
 /obj/machinery/photocopier,
-/obj/machinery/computer/security/telescreen/entertainment{
-	pixel_y = 32
-	},
+/obj/machinery/computer/security/telescreen/entertainment/directional/north,
 /turf/open/floor/iron/large,
 /area/station/security)
 "ajq" = (
@@ -3982,6 +3986,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden/layer4,
 /obj/effect/turf_decal/tile/red/half,
+/obj/structure/sign/departments/medbay/alt/directional/south,
 /turf/open/floor/iron/white/smooth_half,
 /area/station/security/brig)
 "amO" = (
@@ -4019,28 +4024,31 @@
 	c_tag = "Brig Control Room";
 	dir = 1
 	},
-/obj/machinery/airalarm/directional/north,
 /obj/machinery/light/directional/north,
+/obj/machinery/computer/security/telescreen/prison/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
 "amV" = (
 /obj/machinery/computer/records/security,
+/obj/item/radio/intercom/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
 "amZ" = (
 /obj/structure/table,
 /obj/machinery/recharger,
 /obj/machinery/light/small/directional/east,
-/obj/machinery/firealarm/directional/east,
+/obj/machinery/firealarm/directional/east{
+	pixel_y = -5
+	},
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
 "anb" = (
-/obj/machinery/light_switch{
-	dir = 9;
-	pixel_x = -22
-	},
 /obj/effect/turf_decal/tile/red/half{
 	dir = 8
+	},
+/obj/machinery/light_switch/directional/west{
+	pixel_y = 5
 	},
 /turf/open/floor/iron/edge{
 	dir = 8
@@ -4588,8 +4596,8 @@
 /area/station/security/warden)
 "aoY" = (
 /obj/structure/filingcabinet/chestdrawer,
-/obj/machinery/light_switch{
-	pixel_y = -22
+/obj/machinery/light_switch/directional/south{
+	pixel_x = 5
 	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
@@ -6502,13 +6510,7 @@
 	dir = 1
 	},
 /obj/machinery/light/directional/north,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the monastery.";
-	name = "Monastery Monitor";
-	network = list("monastery");
-	pixel_y = 32;
-	dir = 1
-	},
+/obj/machinery/computer/security/telescreen/monastary/directional/north,
 /turf/open/floor/iron/edge{
 	dir = 1
 	},
@@ -7008,13 +7010,11 @@
 	c_tag = "Fitness Room";
 	dir = 1
 	},
-/obj/machinery/computer/security/telescreen/entertainment{
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},
 /obj/machinery/light/directional/north,
+/obj/machinery/computer/security/telescreen/entertainment/directional/north,
 /turf/open/floor/iron/white/corner{
 	dir = 1
 	},
@@ -8384,23 +8384,16 @@
 /area/station/command/bridge)
 "aBA" = (
 /obj/machinery/computer/security/mining,
-/obj/machinery/computer/security/telescreen/vault/directional/north,
+/obj/machinery/status_display/ai/directional/north,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "aBB" = (
 /obj/machinery/computer/cargo/request,
-/obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "aBC" = (
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the monastery.";
-	name = "Monastery Monitor";
-	network = list("monastery");
-	pixel_y = 32;
-	dir = 1
-	},
 /obj/machinery/photocopier,
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "aBD" = (
@@ -10167,12 +10160,8 @@
 /obj/machinery/door/airlock{
 	name = "Unit 1"
 	},
-/obj/structure/fluff{
-	desc = "Ew, I think I see a hairball.";
-	icon = 'icons/obj/mining_zones/survival_pod.dmi';
-	icon_state = "fan_tiny";
-	name = "drain";
-	plane = -6
+/obj/structure/fluff/shower_drain{
+	name = "drain"
 	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)
@@ -10180,12 +10169,8 @@
 /obj/machinery/door/airlock{
 	name = "Unit 2"
 	},
-/obj/structure/fluff{
-	desc = "Ew, I think I see a hairball.";
-	icon = 'icons/obj/mining_zones/survival_pod.dmi';
-	icon_state = "fan_tiny";
-	name = "drain";
-	plane = -6
+/obj/structure/fluff/shower_drain{
+	name = "drain"
 	},
 /turf/open/floor/iron/freezer,
 /area/station/commons/toilet/restrooms)
@@ -11863,11 +11848,15 @@
 /turf/open/floor/plating,
 /area/station/maintenance/department/cargo)
 "aPa" = (
-/obj/structure/sign/poster/random/directional/north,
 /obj/structure/disposalpipe/segment{
 	dir = 6
 	},
 /obj/structure/cable,
+/obj/machinery/computer/security/telescreen/vault/directional/north,
+/obj/effect/mapping_helpers/broken_floor,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "aPb" = (
@@ -12429,7 +12418,7 @@
 /area/station/cargo/office)
 "aRp" = (
 /obj/structure/disposalpipe/segment,
-/turf/open/floor/wood,
+/turf/open/floor/carpet/black,
 /area/station/command/heads_quarters/qm)
 "aRq" = (
 /obj/structure/rack,
@@ -12640,9 +12629,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/broken_floor,
 /obj/machinery/holopad,
-/turf/open/floor/wood,
+/turf/open/floor/carpet/black,
 /area/station/command/heads_quarters/qm)
 "aSr" = (
 /obj/machinery/door/airlock/virology/glass{
@@ -12828,6 +12816,7 @@
 /obj/effect/mapping_helpers/broken_floor,
 /obj/structure/closet/secure_closet/quartermaster,
 /obj/item/storage/belt/fannypack/yellow,
+/obj/effect/turf_decal/siding/wood/corner,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "aTm" = (
@@ -13115,6 +13104,9 @@
 /obj/structure/filingcabinet,
 /obj/machinery/status_display/ai/directional/north,
 /obj/machinery/keycard_auth/wall_mounted/directional/west,
+/obj/machinery/light_switch/directional/west{
+	pixel_x = -39
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "aUs" = (
@@ -13396,9 +13388,7 @@
 /area/station/service/theater)
 "aVm" = (
 /obj/machinery/vending/autodrobe,
-/obj/machinery/computer/security/telescreen/entertainment{
-	pixel_y = 32
-	},
+/obj/machinery/computer/security/telescreen/entertainment/directional/north,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/theater)
 "aVn" = (
@@ -21073,16 +21063,10 @@
 /area/station/hallway/secondary/entry)
 "bzB" = (
 /obj/effect/turf_decal/stripes/line,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the monastery.";
-	dir = 4;
-	name = "Monastery Monitor";
-	network = list("monastery");
-	pixel_x = 32
-	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 1
 	},
+/obj/machinery/computer/security/telescreen/monastary/directional/east,
 /turf/open/floor/iron/dark/smooth_half{
 	dir = 1
 	},
@@ -26303,6 +26287,7 @@
 	dir = 1
 	},
 /obj/machinery/fax,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron/corner,
 /area/station/command/heads_quarters/ce)
 "bUJ" = (
@@ -26340,13 +26325,13 @@
 /area/station/command/heads_quarters/ce)
 "bUL" = (
 /obj/machinery/computer/station_alert,
-/obj/item/radio/intercom/directional/north,
 /obj/effect/turf_decal/sub_tile/dark/half{
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/yellow/half{
 	dir = 1
 	},
+/obj/machinery/computer/security/telescreen/entertainment/directional/north,
 /turf/open/floor/iron/half,
 /area/station/command/heads_quarters/ce)
 "bUN" = (
@@ -28496,9 +28481,6 @@
 /area/station/service/chapel/monastery)
 "ceN" = (
 /obj/effect/turf_decal/tile/red/opposingcorners,
-/obj/machinery/computer/security/telescreen/prison/directional/south{
-	pixel_x = -12
-	},
 /turf/open/floor/iron/showroomfloor,
 /area/station/security/warden)
 "ceT" = (
@@ -30095,12 +30077,14 @@
 	c_tag = "Brig Equipment Room";
 	dir = 1
 	},
+/obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security)
 "cnN" = (
 /obj/structure/closet/secure_closet/security/sec,
 /obj/effect/turf_decal/delivery,
 /obj/machinery/light/directional/north,
+/obj/machinery/newscaster/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security)
 "cnP" = (
@@ -32154,16 +32138,12 @@
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/library)
 "cAU" = (
-/obj/structure/rack{
-	icon = 'icons/obj/stationobjs.dmi';
-	icon_state = "minibar";
-	name = "skeletal minibar"
-	},
 /obj/item/book/codex_gigas,
 /obj/machinery/camera{
 	c_tag = "Monastery Archives Aft";
 	network = list("ss13","monastery")
 	},
+/obj/structure/rack/skeletal,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/service/library)
 "cAV" = (
@@ -40739,6 +40719,9 @@
 "jdj" = (
 /obj/structure/disposalpipe/segment,
 /obj/machinery/photocopier,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "jdr" = (
@@ -41511,6 +41494,17 @@
 	},
 /turf/open/floor/carpet,
 /area/station/service/lawoffice)
+"jTy" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/structure/sign/poster/random/directional/north,
+/turf/open/floor/plating,
+/area/station/maintenance/department/cargo)
 "jTE" = (
 /obj/structure/cable,
 /obj/effect/landmark/start/hangover,
@@ -44782,7 +44776,7 @@
 /turf/open/floor/iron/dark,
 /area/station/security/prison)
 "mse" = (
-/turf/open/floor/wood,
+/turf/open/floor/carpet/black,
 /area/station/command/heads_quarters/qm)
 "msm" = (
 /obj/effect/turf_decal/tile/neutral/half,
@@ -47216,6 +47210,8 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
+/obj/effect/mapping_helpers/broken_floor,
+/obj/effect/turf_decal/siding/wood,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/qm)
 "ofE" = (
@@ -47423,12 +47419,9 @@
 /turf/open/floor/iron,
 /area/station/commons/vacant_room/commissary)
 "omv" = (
-/obj/structure/secure_safe{
-	pixel_x = -22;
-	pixel_y = 4
-	},
 /obj/structure/table/wood,
 /obj/machinery/fax/deluxe,
+/obj/structure/secure_safe/directional/west,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/hop)
 "omS" = (
@@ -51013,6 +51006,19 @@
 	},
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/science/xenobiology)
+"qVX" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/qm)
 "qWG" = (
 /obj/structure/closet/emcloset/anchored,
 /turf/open/floor/plating,
@@ -52941,6 +52947,16 @@
 	dir = 8
 	},
 /area/station/hallway/primary/central)
+"sjJ" = (
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/turf/open/floor/carpet/black,
+/area/station/command/heads_quarters/qm)
 "sjQ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
 	dir = 8
@@ -53462,7 +53478,9 @@
 /obj/effect/turf_decal/tile/red{
 	dir = 4
 	},
-/obj/machinery/firealarm/directional/north,
+/obj/machinery/firealarm/directional/north{
+	pixel_x = -6
+	},
 /turf/open/floor/iron/edge,
 /area/station/security/brig)
 "sBV" = (
@@ -59234,7 +59252,7 @@
 "wtp" = (
 /obj/machinery/suit_storage_unit/security,
 /obj/effect/turf_decal/bot,
-/obj/machinery/newscaster/directional/north,
+/obj/machinery/status_display/ai/directional/north,
 /turf/open/floor/iron/showroomfloor,
 /area/station/security)
 "wtF" = (
@@ -61245,13 +61263,6 @@
 	dir = 8
 	},
 /area/station/security/checkpoint/medical)
-"xxK" = (
-/obj/machinery/firealarm/directional/west,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
-	dir = 8
-	},
-/turf/open/floor/iron/showroomfloor,
-/area/station/security)
 "xxO" = (
 /obj/machinery/door/poddoor/preopen{
 	id = "xenobio2";
@@ -61798,9 +61809,6 @@
 /area/station/medical/medbay/central)
 "xRc" = (
 /obj/machinery/modular_computer/preset/id,
-/obj/machinery/computer/security/telescreen/entertainment{
-	pixel_y = 32
-	},
 /obj/effect/turf_decal/sub_tile/dark/anticorner{
 	dir = 8
 	},
@@ -84813,7 +84821,7 @@ ajg
 ajP
 akL
 afH
-amh
+amg
 amV
 hGu
 oPV
@@ -85841,7 +85849,7 @@ ajj
 ajT
 afH
 afH
-amh
+amg
 amZ
 anJ
 tla
@@ -86347,7 +86355,7 @@ aaa
 adU
 cnJ
 dJP
-xxK
+dJP
 ahM
 ain
 xwX
@@ -102059,7 +102067,7 @@ aEd
 nSz
 aEd
 aEj
-uXX
+jTy
 aEj
 abh
 mse
@@ -102318,8 +102326,8 @@ aKh
 aEj
 uXX
 aNO
-ofj
-ofj
+qVX
+sjJ
 aSj
 ofj
 vgR
