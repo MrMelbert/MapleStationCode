@@ -245,6 +245,8 @@
 	if (length(vis_contents))
 		vis_contents.Cut()
 
+	QDEL_NULL(mana_pool) // MAJOR NON-MODULE CHANGE
+
 /atom/movable/proc/update_emissive_block()
 	// This one is incredible.
 	// `if (x) else { /* code */ }` is surprisingly fast, and it's faster than a switch, which is seemingly not a jump table.

@@ -7,12 +7,12 @@
 
 	var/mana_overloaded = FALSE
 
-/atom/movable/Destroy(force, ...)
+/* /atom/movable/Destroy(force, ...)
 
 	QDEL_NULL(mana_pool) // why was this after set_mana_pool. it should never ever be
 	set_mana_pool(null)
 
-	return ..()
+	return ..() */
 
 // creates the mana pool for use.
 // mostly called on atom_init.
