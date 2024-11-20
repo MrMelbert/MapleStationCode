@@ -52,6 +52,7 @@
 /datum/crafting_recipe/food/eggplant_fry
 	name = "Starfruit Eggplant Stir Fry"
 	reqs = list(
+		/obj/item/food/grown/eggplant = 1,
 		/obj/item/food/grown/bell_pepper = 1,
 		/obj/item/food/grown/cabbage = 1,
 		/obj/item/food/grown/starfruit = 1,
@@ -61,12 +62,13 @@
 	category = CAT_MISCFOOD
 
 /datum/crafting_recipe/food/starfruit_tofu_beef
-	name = "Starfruit Tofu Beef Ramen"
+	name = "Starfruit Tofu Beef Teriyaki"
 	reqs = list(
 		/obj/item/food/tofu = 1,
 		/obj/item/food/meat/cutlet = 2,
-		/obj/item/food/grown/starfruit = 1,
 		/obj/item/food/spaghetti/boiledspaghetti = 1,
+		/datum/reagent/consumable/starfruit_juice = 4,
+		/datum/reagent/consumable/nutriment/soup/teriyaki = 5,
 	)
 	result = /obj/item/food/starfruit_tofu_beef
 	category = CAT_MISCFOOD

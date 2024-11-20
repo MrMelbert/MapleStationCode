@@ -48,7 +48,7 @@
 /datum/chemical_reaction/drink/starfruit_lubricant
 	results = list(/datum/reagent/consumable/ethanol/starfruit_lubricant = 2)
 	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/fuel/oil = 1)
-	mix_message = "The ingredients combine into a fizzy soda."
+	mix_message = "The ingredients combine into an oily soda."
 
 /datum/chemical_reaction/drink/starfruit_latte
 	results = list(/datum/reagent/consumable/starfruit_latte = 2)
@@ -66,7 +66,7 @@
 /datum/chemical_reaction/drink/astral_flame
 	results = list(/datum/reagent/consumable/ethanol/astral_flame = 6)
 	required_reagents = list(/datum/reagent/consumable/starfruit_juice = 1, /datum/reagent/consumable/ethanol/navy_rum = 1, /datum/reagent/consumable/menthol = 1, /datum/reagent/consumable/limejuice = 1, /datum/reagent/consumable/sodawater = 1)
-	mix_message = "The ingredients morph into a an enticing smell"
+	mix_message = "The ingredients morph with an enticing smell."
 
 /datum/chemical_reaction/drink/space_muse
 	results = list(/datum/reagent/consumable/ethanol/space_muse = 3)

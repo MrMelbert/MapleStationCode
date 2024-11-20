@@ -102,13 +102,13 @@
 		/datum/reagent/consumable/nutriment/vitamin = 5,
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
-	tastes = list("eggplant" = 2, "simmered starfruit" = 1, "sautaed vegetables" = 1)
+	tastes = list("eggplant" = 2, "simmered starfruit" = 1, "sauteed vegetables" = 1)
 	foodtypes = VEGETABLES
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/starfruit_tofu_beef
-	name = "starfruit eggplant stir fry"
-	desc = "Eggplant stir fry with a reduced starfruit sauce, carrot, peppers, and cabbage. The starfruit has absolutely covered the dish."
+	name = "starfruit tofu beef teriyaki noodles"
+	desc = "A tofu and beef teriyaki noodles with starfruit juice added to the sauce. A deliciously savory mix of fruits, vegetables, meat and tofu."
 	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
 	icon_state = "tofubeef"
 	w_class = WEIGHT_CLASS_NORMAL
@@ -117,12 +117,12 @@
 		/datum/reagent/consumable/nutriment/vitamin = 5,
 		/datum/reagent/consumable/starfruit_juice = 10,
 	)
-	tastes = list("eggplant" = 2, "simmered starfruit" = 1, "sautaed vegetables" = 1)
+	tastes = list("teriyaki noodles" = 2, "sauteed tofu" = 1, "sweet meat" = 1)
 	foodtypes = VEGETABLES | MEAT | GRAIN
-	crafting_complexity = FOOD_COMPLEXITY_3
+	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/starfruit_noodles
-	name = "starfruit noddles"
+	name = "starfruit noodles"
 	desc = "Savory boiled pasta with a rich and creamy reduced starfruit meat sauce."
 	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
 	icon_state = "starfruitplate"
