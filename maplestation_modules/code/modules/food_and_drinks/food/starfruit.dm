@@ -108,7 +108,7 @@
 
 /obj/item/food/starfruit_tofu_beef
 	name = "starfruit tofu beef teriyaki noodles"
-	desc = "A tofu and beef teriyaki noodles with starfruit juice added to the sauce. A deliciously savory mix of fruits, vegetables, meat and tofu."
+	desc = "A tofu and beef teriyaki noodle dish with starfruit juice added to the sauce. A deliciously savory mix of fruits, vegetables, meat and tofu."
 	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
 	icon_state = "tofubeef"
 	w_class = WEIGHT_CLASS_NORMAL
