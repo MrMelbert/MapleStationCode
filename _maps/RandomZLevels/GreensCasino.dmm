@@ -1904,6 +1904,14 @@
 /obj/effect/spawner/random/armory/rubbershot,
 /turf/open/floor/iron/dark,
 /area/awaymission/casino/security/armory)
+"rY" = (
+/obj/structure/table/wood,
+/obj/item/reagent_containers/condiment/saltshaker,
+/obj/item/reagent_containers/condiment/peppermill{
+	pixel_x = 6
+	},
+/turf/open/floor/wood/tile,
+/area/awaymission/casino/restaurant)
 "rZ" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -2139,6 +2147,10 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
+/obj/item/ashtray/random_contents{
+	pixel_y = -4;
+	pixel_x = -8
+	},
 /turf/open/floor/carpet/red,
 /area/awaymission/casino/floor/tables)
 "ur" = (
@@ -2280,7 +2292,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/casino/kitchen)
 "vA" = (
-/turf/open/misc/dirt/dark,
+/turf/open/misc/dirt/dark/station,
 /area/awaymission/casino/parking)
 "vD" = (
 /turf/open/floor/wood/tile,
@@ -2324,6 +2336,10 @@
 	name = "Security Podium Shutters";
 	dir = 4;
 	id = "SecurityPodium"
+	},
+/obj/item/ashtray/random_contents{
+	pixel_y = -4;
+	pixel_x = -8
 	},
 /turf/open/floor/iron/dark,
 /area/awaymission/casino/security)
@@ -2601,6 +2617,14 @@
 "yT" = (
 /turf/closed/wall/r_wall,
 /area/awaymission/casino/clinic)
+"yW" = (
+/obj/structure/table/wood/fancy/green,
+/obj/item/reagent_containers/condiment/saltshaker,
+/obj/item/reagent_containers/condiment/peppermill{
+	pixel_x = 6
+	},
+/turf/open/floor/wood,
+/area/awaymission/casino/restaurant)
 "zd" = (
 /obj/machinery/airalarm/directional/north,
 /obj/effect/mapping_helpers/airalarm/away_general_access,
@@ -2668,6 +2692,13 @@
 /obj/structure/fluff/bus/passable/seat,
 /turf/open/floor/iron/dark/textured_large,
 /area/awaymission/casino/parking)
+"zI" = (
+/obj/structure/sign/painting/library{
+	pixel_y = 32
+	},
+/obj/effect/spawner/random/entertainment/arcade,
+/turf/open/floor/mineral/gold,
+/area/awaymission/casino/vault)
 "zK" = (
 /obj/structure/fake_stairs/wood/directional/south,
 /turf/open/floor/carpet/green,
@@ -3397,7 +3428,7 @@
 /area/awaymission/casino/security)
 "Gd" = (
 /obj/effect/turf_decal/trimline/yellow/line,
-/turf/open/misc/dirt/dark,
+/turf/open/misc/dirt/dark/station,
 /area/awaymission/casino/parking)
 "Gf" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -3598,6 +3629,14 @@
 /obj/machinery/light/red/dim/directional/east,
 /turf/open/floor/carpet/red,
 /area/awaymission/casino/floor/maze)
+"Jl" = (
+/obj/structure/table/wood/poker,
+/obj/item/ashtray/random_contents{
+	pixel_y = -4;
+	pixel_x = -8
+	},
+/turf/open/floor/carpet/red,
+/area/awaymission/casino/floor/tables)
 "Jo" = (
 /obj/structure/table,
 /obj/item/key/janitor,
@@ -3715,7 +3754,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
 	},
-/obj/effect/spawner/random/entertainment/cigar,
+/obj/item/storage/fancy/cigarettes/cigars/havana,
 /turf/open/floor/wood/large,
 /area/awaymission/casino/bar)
 "Ku" = (
@@ -3804,7 +3843,8 @@
 	name = "Casino Shutters";
 	dir = 1
 	},
-/turf/open/misc/dirt/dark,
+/obj/structure/fans/tiny/invisible,
+/turf/open/misc/dirt/dark/station,
 /area/awaymission/casino/parking)
 "Lh" = (
 /obj/structure/statue/silver/janitor,
@@ -3903,6 +3943,7 @@
 	heal_rate_per_second = 40000000
 	},
 /obj/effect/turf_decal/sand/plating/volcanic,
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/plating,
 /area/awaymission/casino/parking)
 "Mk" = (
@@ -4542,6 +4583,7 @@
 	heal_rate_per_second = 40000000
 	},
 /obj/effect/turf_decal/sand/plating,
+/obj/structure/fans/tiny/invisible,
 /turf/open/floor/plating,
 /area/awaymission/casino/parking)
 "Se" = (
@@ -4953,6 +4995,10 @@
 "VD" = (
 /obj/structure/table/wood,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/reagent_containers/condiment/saltshaker,
+/obj/item/reagent_containers/condiment/peppermill{
+	pixel_x = 6
+	},
 /turf/open/floor/wood/tile,
 /area/awaymission/casino/restaurant)
 "VG" = (
@@ -8375,7 +8421,7 @@ fs
 de
 Ra
 RC
-RC
+Jl
 fs
 UF
 RC
@@ -9055,7 +9101,7 @@ Ei
 Ei
 Ei
 Ya
-RC
+Jl
 NC
 BP
 gk
@@ -13174,7 +13220,7 @@ sb
 AQ
 ug
 nq
-xC
+zI
 OM
 OM
 OM
@@ -13861,7 +13907,7 @@ hB
 Ab
 Em
 Vn
-ty
+rY
 vD
 vD
 qx
@@ -13976,7 +14022,7 @@ UB
 Bn
 vD
 vD
-ty
+rY
 DF
 CP
 fU
@@ -14533,7 +14579,7 @@ ui
 vD
 KN
 vt
-Nt
+yW
 Rl
 vD
 MI
@@ -14981,7 +15027,7 @@ hB
 vD
 vD
 ta
-ty
+rY
 vD
 vD
 na

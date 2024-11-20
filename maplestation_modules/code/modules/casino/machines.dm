@@ -1,12 +1,6 @@
+/// Sprite update, also moved the random names & descriptions from the green slots to normal slots. Now all slot machines on NT stations are gifts from U.M.E.F.!
 /obj/machinery/computer/slot_machine
 	icon = 'maplestation_modules/icons/obj/machines/computer.dmi'
-
-
-// Random slot names, 1 free spin per machine, random extra description of what it looks like, and a random amount of max money from 500 to 1 million credits.
-/obj/machinery/computer/slot_machine/green
-	name = "AGENT GREEN'S MEAN MACHINE"
-	desc = "A sign on the side says \"ALL MACHINES START WITH 1 FREE SPIN!\""
-	balance = 5
 	/// Possible names that this machine can have.
 	var/static/list/possible_names = list(
 		"AGENT GREEN'S MEAN MACHINE",
@@ -26,36 +20,37 @@
 	/// Added descriptor of what the machine looks like.
 	var/this_slot_type = "It's a standard slot machine housing some mechanical reels with symbols on each one."
 
-/obj/machinery/computer/slot_machine/green/Initialize(mapload)
+/obj/machinery/computer/slot_machine/Initialize(mapload)
 	. = ..()
 	name = pick(possible_names)
-	money = rand(500,1000000)
 	var/static/list/slot_type_descriptions
 	if(!length(slot_type_descriptions))
 		slot_type_descriptions = world.file2list("maplestation_modules/strings/slots.txt")
 	if(length(slot_type_descriptions))
 		this_slot_type = pick(slot_type_descriptions)
 
-/obj/machinery/computer/slot_machine/green/examine(mob/user)
+/obj/machinery/computer/slot_machine/examine(mob/user)
 	. = ..()
 	. += this_slot_type
 	. += span_notice("All proceeds go to continued U.M.E.F. research into advanced gambling techniques!")
 
-/// Always Jackpots
+// 1 free spin per machine, and a random amount of max money from 500 to 1 million credits.
+/obj/machinery/computer/slot_machine/green
+	name = "AGENT GREEN'S MEAN MACHINE"
+	desc = "A sign on the side says \"ALL MACHINES START WITH 1 FREE SPIN!\""
+	balance = 5
+
+
+/obj/machinery/computer/slot_machine/green/Initialize(mapload)
+	. = ..()
+	money = rand(500,1000000)
+
+/// Always jackpots* and has 1 mil
+/// *This part doesn't seem to work so it really only always has 1 mil, which is still a little funny.
 /obj/machinery/computer/slot_machine/boss
 	name = "THE BOSS' PRIVATE SLOTS"
 	desc = "Now THOSE are odds I like to see!"
 	money = 1000000
-
-// It DOES always jackpot though the visuals aren't always matching that fact
-/obj/machinery/computer/slot_machine/boss/ui_static_data(mob/user)
-	var/list/data = ..()
-	data["icons"] = list(list(
-		"icon" = FA_ICON_7,
-		"value" = 1,
-		"colour" = "red"
-		))
-	return data
 
 /obj/machinery/roulette/green
 	name = "AGENT GREEN'S BIG SPIN"
