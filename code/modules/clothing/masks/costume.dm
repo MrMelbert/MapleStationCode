@@ -62,7 +62,7 @@
 		. += "Use in-hand to wear as a hat!"
 
 /obj/item/clothing/mask/kitsune/attack_self(mob/user)
-	adjust_visor(user)
+	adjustmask(user)
 	alternate_worn_layer = up ? ABOVE_BODY_FRONT_HEAD_LAYER : null
 
 /obj/item/clothing/mask/rebellion
