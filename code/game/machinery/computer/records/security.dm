@@ -176,7 +176,7 @@
 
 		if("set_note")
 			var/note = trim(params["note"], MAX_MESSAGE_LEN)
-			investigate_log("[user] has changed the security note of record: \"[target]\" from \"[target.security_note]\" to \"[note]\".")
+			investigate_log("[user] has changed the security note of record: \"[target]\" from \"[target.security_note]\" to \"[note]\".", INVESTIGATE_RECORDS)
 			target.security_note = note
 			return TRUE
 
@@ -240,14 +240,19 @@
 		return FALSE
 
 	if(user != editing_crime.author && !has_armory_access(user)) // only warden/hos/command can edit crimes they didn't author
+		investigate_log("[user] attempted to edit crime: \"[editing_crime.name]\" for target: \"[target.name]\" but failed due to lacking armoury access and not being the author of the crime.", INVESTIGATE_RECORDS)
 		return FALSE
 
 	if(params["name"] && length(params["name"]) > 2 && params["name"] != editing_crime.name)
-		editing_crime.name = trim(params["name"], MAX_CRIME_NAME_LEN)
+		var/new_name = strip_html_full(params["name"], MAX_CRIME_NAME_LEN)
+		investigate_log("[user] edited crime: \"[editing_crime.name]\" for target: \"[target.name]\", changing the name to: \"[new_name]\".", INVESTIGATE_RECORDS)
+		editing_crime.name = new_name
 		return TRUE
 
 	if(params["details"] && length(params["description"]) > 2 && params["name"] != editing_crime.name)
-		editing_crime.details = trim(params["details"], MAX_MESSAGE_LEN)
+		var/new_details = strip_html_full(params["description"], MAX_MESSAGE_LEN)
+		investigate_log("[user] edited crime \"[editing_crime.name]\" for target: \"[target.name]\", changing the details to: \"[new_details]\" from: \"[editing_crime.details]\".", INVESTIGATE_RECORDS)
+		editing_crime.details = new_details
 		return TRUE
 
 	return FALSE
