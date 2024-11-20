@@ -39,6 +39,7 @@
 	body_parts_covered = HANDS|ARMS
 	item_flags = IMMUTABLE_SLOW
 	equip_sound = null
+	pickup_sound = null
 	drop_sound = null
 
 /obj/item/clothing/shoes/mod
