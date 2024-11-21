@@ -13,7 +13,7 @@
 	force = 8
 	throwforce = 12
 	w_class = WEIGHT_CLASS_NORMAL
-	resistance_flags = INDESTRUCTIBLE
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	slot_flags = NONE
 	light_system = MOVABLE_LIGHT
 	light_color = COLOR_SOFT_RED
@@ -32,6 +32,11 @@
 	var/obj/machinery/camera/internal_camera
 	/// The "virtual" radio inside of the the physical camera, a la microphone
 	var/obj/item/radio/entertainment/microphone/internal_radio
+
+/obj/item/broadcast_camera/Initialize(mapload)
+	. = ..()
+
+	AddElement(/datum/element/empprotection, EMP_PROTECT_ALL)
 
 /obj/item/broadcast_camera/Destroy(force)
 	QDEL_NULL(internal_radio)
