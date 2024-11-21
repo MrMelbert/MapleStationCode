@@ -25,6 +25,7 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/leyline_charge/cast(mob/living/cast_on)
+	. = ..()
 	var/randy_value = rand(0,25) // generate a random number, which will be-
 	var/mana_to_gain = randy_value + 20 // added to the base amount, to get a semi-inconsistent regen amount
 	var/list/datum/mana_pool/leyline/accessable_leylines = list(get_accessable_leylines())
@@ -61,6 +62,7 @@
 		return . | SPELL_CANCEL_CAST
 
 /datum/action/cooldown/spell/meditate/cast(mob/living/cast_on)
+	. = ..()
 	var/randy_value = rand(0,25)
 	var/mana_to_gain = randy_value + 40
 	cast_on.mana_pool.adjust_mana(mana_to_gain)
