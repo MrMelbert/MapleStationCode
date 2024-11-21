@@ -13,13 +13,18 @@
 
 	invocation = "AS'P'RE"
 	invocation_type = INVOCATION_WHISPER
+	var/channel_time = 7 SECONDS
 
-/datum/action/cooldown/spell/leyline_charge/cast(mob/living/cast_on)
+
+/datum/action/cooldown/spell/leyline_charge/before_cast(atom/cast_on)
+	. = ..()
 	if (!cast_on.mana_pool)
 		cast_on.balloon_alert(cast_on, "no mana pool!")
 		return
-	do_after(cast_on, 7 SECONDS) // don't want this mid combat.
-	..()
+	if(!do_after(cast_on, channel_time)) // don't want this casted mid combat
+		return . | SPELL_CANCEL_CAST
+
+/datum/action/cooldown/spell/leyline_charge/cast(mob/living/cast_on)
 	var/randy_value = rand(0,25) // generate a random number, which will be-
 	var/mana_to_gain = randy_value + 20 // added to the base amount, to get a semi-inconsistent regen amount
 	var/list/datum/mana_pool/leyline/accessable_leylines = list(get_accessable_leylines())
@@ -44,14 +49,18 @@
 
 	invocation = "Focus...."
 	invocation_type = INVOCATION_WHISPER
+	var/channel_time = 12 SECONDS
 
-/datum/action/cooldown/spell/meditate/cast(mob/living/cast_on)
+/datum/action/cooldown/spell/meditate/before_cast(atom/cast_on)
+	. = ..()
 	if (!cast_on.mana_pool)
 		cast_on.balloon_alert(cast_on, "no mana pool!")
 		return
 	to_chat(cast_on, span_alert("You begin focusing your mind on manipulating ambient mana."))
-	do_after(cast_on, 20 SECONDS) // don't want this mid combat.
-	..()
+	if(!do_after(cast_on, channel_time)) // don't want this casted mid combat
+		return . | SPELL_CANCEL_CAST
+
+/datum/action/cooldown/spell/meditate/cast(mob/living/cast_on)
 	var/randy_value = rand(0,25)
 	var/mana_to_gain = randy_value + 40
 	cast_on.mana_pool.adjust_mana(mana_to_gain)

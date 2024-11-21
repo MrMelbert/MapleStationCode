@@ -1,4 +1,3 @@
-#define COMSIG_SPELL_TOUCH_CAN_HIT "spell_touch_can_hit"
 
 /**
  * A preset component for touch spells that use mana
@@ -25,28 +24,6 @@
 
 	if (!istype(parent, /datum/action/cooldown/spell/touch))
 		return COMPONENT_INCOMPATIBLE
-
-
-
-/datum/component/uses_mana/touch_spell/RegisterWithParent()
-	..()
-	RegisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT, PROC_REF(can_touch))
-
-/datum/component/uses_mana/touch_spell/UnregisterFromParent()
-	..()
-	UnregisterSignal(parent, COMSIG_SPELL_TOUCH_CAN_HIT)
-
-/datum/component/uses_mana/touch_spell/proc/can_touch(
-	datum/action/cooldown/spell/touch/source,
-	atom/victim,
-	mob/living/carbon/caster,
-)
-	SIGNAL_HANDLER
-
-	if(source.attached_hand)
-		return NONE // de-activating, so don't block it
-
-	return
 
 // Override to send a signal we can react to
 /datum/action/cooldown/spell/touch/can_hit_with_hand(atom/victim, mob/caster)
