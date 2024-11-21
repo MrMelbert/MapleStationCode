@@ -16,7 +16,7 @@
 	var/channel_time = 7 SECONDS
 
 
-/datum/action/cooldown/spell/leyline_charge/before_cast(atom/cast_on)
+/datum/action/cooldown/spell/leyline_charge/before_cast(mob/living/cast_on)
 	. = ..()
 	if (!cast_on.mana_pool)
 		cast_on.balloon_alert(cast_on, "no mana pool!")
@@ -51,7 +51,7 @@
 	invocation_type = INVOCATION_WHISPER
 	var/channel_time = 12 SECONDS
 
-/datum/action/cooldown/spell/meditate/before_cast(atom/cast_on)
+/datum/action/cooldown/spell/meditate/before_cast(mob/living/cast_on)
 	. = ..()
 	if (!cast_on.mana_pool)
 		cast_on.balloon_alert(cast_on, "no mana pool!")

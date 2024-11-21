@@ -1,4 +1,4 @@
-
+#define COMSIG_SPELL_TOUCH_CAN_HIT "spell_touch_can_hit"
 /**
  * A preset component for touch spells that use mana
  *
