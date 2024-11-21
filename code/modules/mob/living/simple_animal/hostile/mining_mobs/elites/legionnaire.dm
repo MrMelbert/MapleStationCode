@@ -39,7 +39,7 @@
 	speed = 1
 	move_to_delay = 3
 	mouse_opacity = MOUSE_OPACITY_ICON
-	death_sound = 'sound/magic/curse.ogg'
+	death_sound = 'sound/effects/magic/curse.ogg'
 	death_message = "'s arms reach out before it falls apart onto the floor, lifeless."
 	loot_drop = /obj/item/crusher_trophy/legionnaire_spine
 	initial_blood_type = null
