@@ -308,7 +308,7 @@
 	name = "Murian Starfruit Seeds"
 	desc = "A seed of juicy Murian Starfruit, imported from the agricultural world of Cremona's Bounty. \
 	Has major significance to the peoples of Mu and is used in a wide variety of drinks and dishes."
-	cost = CARGO_CRATE_VALUE * 5
+	cost = PAYCHECK_COMMAND * 5
 	contains = list(
 		/obj/item/seeds/starfruit = 2,
 		/obj/item/book/manual/starfruit = 1,
