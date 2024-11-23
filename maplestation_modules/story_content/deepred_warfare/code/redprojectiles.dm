@@ -2,9 +2,14 @@
 	name ="low velocity 10mm coilslug"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "coilslug"
-	range = 40
-	damage = 10
-	armour_penetration = 50
+	range = 60
+	damage = 30
+	armour_penetration = 20
+	dismemberment = 0
+	damage_falloff_tile = 0
+	wound_bonus = 10
+	wound_falloff_tile = -1
+	embed_falloff_tile = -1
 
 /obj/item/ammo_casing/coil
 	name = "internal low velocity 10mm coilslug"
@@ -18,15 +23,17 @@
 
 	var/select_name = "low velocity"
 	var/ammo_energy_usage = 1000 // How much power it takes to fire the ammo (note, redtech cells have 50000 energy).
-	var/ammo_heat_generation = 10 // How much heat it generates.
+	var/ammo_heat_generation = 20 // How much heat it generates.
 
 /obj/projectile/bullet/coil/highvelo
 	name ="10mm coilslug"
 	icon_state = "high_velo"
 	speed = 0.4 // Twice as fast as normal.
 	range = 80
-	damage = 20
-	armour_penetration = 75
+	damage = 40
+	armour_penetration = 50
+	dismemberment = 10
+	wound_bonus = 20
 
 /obj/item/ammo_casing/coil/highvelo
 	name = "internal 10mm coilslug"
@@ -34,17 +41,92 @@
 
 	select_name = "high velocity"
 	ammo_energy_usage = 2000
-	ammo_heat_generation = 20
+	ammo_heat_generation = 30
+
+/obj/projectile/bullet/coil/overcharge
+	name = "overcharged slag"
+	icon_state = "overcharge"
+	damage_type = BURN
+	reflectable = NONE
+	parried = TRUE
+	damage = 5
+	range = 10
+	armour_penetration = 0
+	dismemberment = 5
+	wound_bonus = 5
+	bare_wound_bonus = 5
+	wound_falloff_tile = -1
+	embed_falloff_tile = -1
+	damage_falloff_tile = -1
+
+/obj/item/ammo_casing/coil/overcharge
+	name = "internal overcharge slag"
+	projectile_type = /obj/projectile/bullet/coil/overcharge
+
+	select_name = "overcharge"
+	ammo_energy_usage = 5000
+	ammo_heat_generation = 60
+	pellets = 12
+	variance = 30
+
+/obj/projectile/bullet/coil/piercing
+	name ="low velocity 10mm armour piercing coilslug"
+	damage = 20
+	armour_penetration = 50
+
+	var/object_damage = 30
+	var/mecha_damage = 20
+
+/obj/projectile/bullet/coil/piercing/on_hit(atom/target, blocked = 0, pierce_hit)
+	if(isobj(target) && (blocked != 100))
+		var/obj/thing_to_break = target
+		var/damage_to_deal = object_damage
+		if(ismecha(thing_to_break) && mecha_damage)
+			damage_to_deal += mecha_damage
+		if(damage_to_deal)
+			thing_to_break.take_damage(damage_to_deal, BRUTE, BULLET, FALSE)
+	return ..()
+
+/obj/item/ammo_casing/coil/piercing
+	name = "internal low velocity 10mm armour piercing coilslug"
+	projectile_type = /obj/projectile/bullet/coil/piercing
+	select_name = "low velocity AP"
+
+/obj/projectile/bullet/coil/highvelo/piercing
+	name ="10mm armour piercing coilslug"
+	damage = 30
+	armour_penetration = 80
+	projectile_piercing = PASSGLASS|PASSGRILLE|PASSMOB|PASSMACHINE|PASSSTRUCTURE|PASSFLAPS|PASSDOORS|PASSVEHICLE
+
+	var/object_damage = 40
+	var/mecha_damage = 30
+
+/obj/projectile/bullet/coil/highvelo/piercing/on_hit(atom/target, blocked = 0, pierce_hit)
+	if(isobj(target) && (blocked != 100))
+		var/obj/thing_to_break = target
+		var/damage_to_deal = object_damage
+		if(ismecha(thing_to_break) && mecha_damage)
+			damage_to_deal += mecha_damage
+		if(damage_to_deal)
+			thing_to_break.take_damage(damage_to_deal, BRUTE, BULLET, FALSE)
+	return ..()
+
+/obj/item/ammo_casing/coil/highvelo/piercing
+	name = "internal 10mm armour piercing coilslug"
+	projectile_type = /obj/projectile/bullet/coil/highvelo/piercing
+
+	select_name = "high velocity AP"
+	ammo_heat_generation = 40
 
 /obj/projectile/bullet/coil/red_lightning
 	name = "charged 10mm coilslug"
 	icon_state = "red_lightning"
 	range = 80
-	damage = 20
+	damage = 30
 	armour_penetration = 60
 
-	var/extra_damage = 20 // Damage done by shock aftereffect.
-	var/emp_radius = 0 // Radius of EMP effect.
+	var/extra_damage = 30 // Damage done by shock aftereffect.
+	var/emp_radius = 1 // Radius of EMP effect.
 
 	muzzle_type = /obj/effect/projectile/muzzle/RLcoil
 	tracer_type = /obj/effect/projectile/tracer/RLcoil

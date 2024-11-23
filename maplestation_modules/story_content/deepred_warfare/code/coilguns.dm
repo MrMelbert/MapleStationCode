@@ -405,8 +405,8 @@
 		var/mutable_appearance/HEAT = mutable_appearance(icon, heat_overlay_state)
 		. += HEAT
 
-/obj/item/gun/coilgun/revolver/none // Remind me to un-prototype this later.
-	name = "prototype Nonetech 10mm coilpistol"
+/obj/item/gun/coilgun/revolver/none
+	name = "Nonetech 10mm coilpistol"
 	desc = "A Nonetech 10mm coilpistol that looks like a revolver. This one seems to be lacking a few features."
 	icon_state = "none_revolver"
 
@@ -432,11 +432,22 @@
 	name = "10mm standard coilcore"
 	desc = "A coilcore designed for 10mm revolver coilguns. Produces standard coilslugs."
 	icon_state = "revolvercore"
-	ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo) // Need to fully implement this later.
+	ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo, /obj/item/ammo_casing/coil/overcharge)
+	var/emissivetype = "revolvercore_emissives"
 
 /obj/item/coilcore/revolver/update_overlays()
 	. = ..()
-	. += emissive_appearance(icon, "revolvercore_emissives", src, alpha = src.alpha)
+	. += emissive_appearance(icon, emissivetype, src, alpha = src.alpha)
 
 /obj/item/coilcore/revolver/none
 	icon_state = "none_revolvercore"
+
+/obj/item/coilcore/revolver/piercing
+	name = "10mm armour piercing coilcore"
+	desc = "A coilcore designed for 10mm revolver coilguns. Produces armour piercing coilslugs."
+	icon_state = "revolvercore_piercing"
+	ammunition_types = list(/obj/item/ammo_casing/coil/piercing, /obj/item/ammo_casing/coil/highvelo/piercing, /obj/item/ammo_casing/coil/overcharge)
+	emissivetype = "revolvercore_emissives_piercing"
+
+/obj/item/coilcore/revolver/piercing/none
+	icon_state = "none_revolvercore_piercing"
