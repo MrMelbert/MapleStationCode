@@ -86,6 +86,20 @@
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2500)
 
+/datum/techweb_node/basic_circuitry
+	id_additions = list(
+		"comp_circuit_camera",
+		"comp_cell_charge",
+		"comp_mining",
+		"comp_screen",
+		"comp_tile_scanner",
+	)
+
+/datum/techweb_node/bci_shells
+	id_additions = list(
+		"comp_bci_click",
+	)
+
 /datum/techweb_node/adv_shells
 	id_additions = list(
 		"headset_shell",

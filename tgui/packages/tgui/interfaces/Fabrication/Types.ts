@@ -56,6 +56,20 @@ export type Design = {
    */
   id: string;
 
+  // NON-MODULAR START
+
+  /**
+   * Whenever this design can be deleted
+   */
+  can_delete: boolean;
+
+  /**
+   * Error displayed next to this design
+   */
+  print_error: string;
+
+  // NON-MODULAR END
+
   /**
    * The categories the design should be present in. Subcategories are
    * slash-delimited, and categories always start with a slash.
