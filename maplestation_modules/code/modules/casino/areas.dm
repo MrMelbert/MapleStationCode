@@ -1,3 +1,5 @@
+#define CASINO_MAZE "casino_maze"
+
 /area/awaymission/casino
 	name = "Casino"
 	icon_state = "away"
@@ -154,3 +156,5 @@
 /area/awaymission/casino/clinic
 	name = "Medical Clinic"
 	icon_state = "awaycontent22"
+
+#undef CASINO_MAZE

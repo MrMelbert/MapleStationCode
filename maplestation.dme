@@ -6073,7 +6073,6 @@
 #include "maplestation_modules\code\__DEFINES\mecha.dm"
 #include "maplestation_modules\code\__DEFINES\paperwork_defines.dm"
 #include "maplestation_modules\code\__DEFINES\signals.dm"
-#include "maplestation_modules\code\__DEFINES\sources.dm"
 #include "maplestation_modules\code\__DEFINES\spans.dm"
 #include "maplestation_modules\code\__DEFINES\traits.dm"
 #include "maplestation_modules\code\__DEFINES\vv.dm"
