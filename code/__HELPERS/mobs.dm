@@ -7,6 +7,7 @@
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
 // NON-MODULE CHANGE
+/// Gets random human blood type, weighted to real human blood type distribution.
 /proc/random_human_blood_type()
 	var/static/list/human_blood_type_weights = list(
 		/datum/blood_type/crew/human/o_minus = 4,
