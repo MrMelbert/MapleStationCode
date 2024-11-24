@@ -57,7 +57,7 @@
 	// Morphine heals pain, dur
 	M.cause_pain(BODY_ZONES_ALL, -0.5 * REM * seconds_per_tick)
 	// Morphine causes a bit of disgust
-	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(50 * max(1 - creation_purity, 0.5), seconds_per_tick))
+	if(M.disgust < DISGUST_LEVEL_VERYGROSS && SPT_PROB(50 * (2 - creation_purity), seconds_per_tick))
 		M.adjust_disgust(2 * REM * seconds_per_tick)
 
 	// The longer we're metabolzing it, the more we get sleepy
@@ -67,20 +67,21 @@
 		if(16) //~3u
 			to_chat(M, span_warning("You start to feel tired..."))
 			M.adjust_eye_blur(2 SECONDS * REM * seconds_per_tick) // just a hint teehee
-			if(prob(50))
+			if(SPT_PROB(66, seconds_per_tick))
 				M.emote("yawn")
 
 		if(24 to 36) // 5u to 7.5u
-			if(SPT_PROB(33, seconds_per_tick))
-				M.adjust_drowsiness_up_to(1 * REM * seconds_per_tick, 6 SECONDS)
+			if(SPT_PROB(66 * (2 - creation_purity), seconds_per_tick))
+				M.adjust_drowsiness_up_to(1 SECONDS * REM * seconds_per_tick, 12 SECONDS)
 
 		if(36 to 48) // 7.5u to 10u
-			if(SPT_PROB(66, seconds_per_tick))
-				M.adjust_drowsiness_up_to(1 * REM * seconds_per_tick, 12 SECONDS)
+			M.adjust_drowsiness_up_to(1 SECONDS * REM * seconds_per_tick, 12 SECONDS)
 
 		if(48 to INFINITY) //10u onward
-			M.adjust_drowsiness_up_to(1 * REM * seconds_per_tick, 20 SECONDS)
-			M.Sleeping(4 SECONDS * REM * seconds_per_tick)
+			M.adjust_drowsiness_up_to(2 SECONDS * REM * seconds_per_tick, 20 SECONDS)
+			// doesn't scale from purity - at this point it tries to guarantee sleep
+			if(SPT_PROB(30 * (48 - current_cycle), seconds_per_tick))
+				M.Sleeping(4 SECONDS * REM * seconds_per_tick)
 
 	..()
 	return TRUE
