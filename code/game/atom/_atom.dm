@@ -488,7 +488,7 @@
 /mob/living/proc/get_blood_dna_list()
 	var/datum/blood_type/blood = get_blood_type()
 	if(!isnull(blood))
-		return list("UNKNOWN DNA" = blood.type)
+		return list("UNKNOWN DNA" = blood.type_key())
 	return null
 
 ///Get the mobs dna list
@@ -498,7 +498,7 @@
 	var/datum/blood_type/blood = get_blood_type()
 	if(isnull(blood)) // Skeletons?
 		return null
-	return list("[dna.unique_enzymes]" = blood.type)
+	return list("[dna.unique_enzymes]" = blood.type_key())
 
 // NON-MODULE CHANGE END
 

@@ -87,7 +87,7 @@
 	. = ..()
 	if(istype(data))
 		SetViruses(src, data)
-		color = GLOB.blood_types[data["blood_type"]]?.color || COLOR_BLOOD
+		color = find_blood_type(data["blood_type"])?.color || COLOR_BLOOD
 
 /datum/reagent/blood/on_merge(list/mix_data)
 	if(data && mix_data)

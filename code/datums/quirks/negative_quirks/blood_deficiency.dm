@@ -47,7 +47,7 @@
 		return
 
 	for(var/obj/item/reagent_containers/blood/blood_bag as anything in typesof(/obj/item/reagent_containers/blood))
-		if(initial(blood_bag.blood_type) == new_type.type)
+		if(initial(blood_bag.blood_type) == new_type.type_key())
 			mail_goodies += blood_bag
 			break
 

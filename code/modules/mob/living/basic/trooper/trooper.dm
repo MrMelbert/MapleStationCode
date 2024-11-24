@@ -40,4 +40,4 @@
 /mob/living/basic/trooper/get_blood_type()
 	if(!fake_blood_type)
 		fake_blood_type = random_human_blood_type()
-	return GLOB.blood_types[fake_blood_type]
+	return find_blood_type(fake_blood_type)

@@ -22,17 +22,6 @@
 
 	return pick_weight(human_blood_type_weights)
 
-/// Gets random blood type from our blood type list, excluding random reagent ones
-/proc/random_usable_blood_type()
-	var/list/pool = list()
-	for(var/blood_type in GLOB.blood_types)
-		if(!ispath(blood_type, /datum/reagent)) // filters random reagent types
-			continue
-		pool += blood_type
-
-	ASSERT(length(pool) > 0)
-	return pick(pool)
-
 /proc/random_eye_color()
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
 		if("brown")

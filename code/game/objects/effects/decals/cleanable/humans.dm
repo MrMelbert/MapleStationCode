@@ -81,7 +81,7 @@
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 	var/list/all_blood_names = list()
 	for(var/dna_sample in all_dna)
-		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+		var/datum/blood_type/blood = find_blood_type(all_dna[dna_sample])
 		all_blood_names |= lowertext(initial(blood.reagent_type.name))
 	return english_list(all_blood_names, nothing_text = "blood")
 
@@ -129,7 +129,7 @@
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 	var/list/reagents_to_add = list()
 	for(var/dna_sample in all_dna)
-		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+		var/datum/blood_type/blood = find_blood_type(all_dna[dna_sample])
 		reagents_to_add += blood.reagent_type
 
 	var/num_reagents = length(reagents_to_add)
