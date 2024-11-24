@@ -80,6 +80,7 @@
 	var/atom/parent_atom = parent
 
 	sticker_overlay = mutable_appearance(icon = our_sticker.icon, icon_state = our_sticker.icon_state, layer = parent_atom.layer + 0.01, appearance_flags = RESET_COLOR)
+	sticker_overlay.color = our_sticker.color
 	sticker_overlay.pixel_w = px - world.icon_size / 2
 	sticker_overlay.pixel_z = py - world.icon_size / 2
 

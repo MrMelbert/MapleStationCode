@@ -263,3 +263,8 @@
 	name = "Modified Nun Veil"
 	item_path = /obj/item/clothing/head/costume/hat/belli
 	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/head/vince
+	name = "Violet Nurse Cap"
+	item_path = /obj/item/clothing/head/costume/vince
+	additional_displayed_text = list("Character Item")

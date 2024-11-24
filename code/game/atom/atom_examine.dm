@@ -1,6 +1,14 @@
 /atom
-	///If non-null, overrides a/an/some in all cases
+	/// If non-null, overrides a/an/some in all cases
 	var/article
+	/// Text that appears preceding the name in examine()
+	var/examine_thats = "That's"
+
+/mob/living/carbon/human
+	examine_thats = "This is"
+
+/mob/living/silicon/robot
+	examine_thats = "This is"
 
 /**
  * Called when a mob examines (shift click or verb) this atom
@@ -11,15 +19,10 @@
  * Produces a signal [COMSIG_ATOM_EXAMINE]
  */
 /atom/proc/examine(mob/user)
-	var/examine_string = get_examine_string(user, thats = TRUE)
-	if(examine_string)
-		. = list("[examine_string].")
-	else
-		. = list()
-
+	. = list()
 	. += get_name_chaser(user)
 	if(desc)
-		. += desc
+		. += "<i>[desc]</i>"
 
 	if(custom_materials)
 		var/list/materials_list = list()
@@ -75,7 +78,7 @@
  * [COMSIG_ATOM_GET_EXAMINE_NAME] signal
  */
 /atom/proc/get_examine_name(mob/user)
-	var/list/override = list(article, null, "<b>[name]</b>")
+	var/list/override = list(article, null, "<em>[get_visible_name()]</em>")
 	SEND_SIGNAL(src, COMSIG_ATOM_GET_EXAMINE_NAME, user, override)
 
 	if(!isnull(override[EXAMINE_POSITION_ARTICLE]))
@@ -84,11 +87,152 @@
 	if(!isnull(override[EXAMINE_POSITION_BEFORE]))
 		override -= null // There is no article, don't try to join it
 		return "\a [jointext(override, " ")]"
-	return "\a <b>[src]</b>"
+	return "\a [src]"
 
-///Generate the full examine string of this atom (including icon for goonchat)
-/atom/proc/get_examine_string(mob/user, thats = FALSE)
-	return "[icon2html(src, user)] [thats? "That's ":""][get_examine_name(user)]"
+/mob/living/get_examine_name(mob/user)
+	return get_visible_name()
+
+/// Icon displayed in examine
+/atom/proc/get_examine_icon(mob/user)
+	return icon2html(src, user)
+
+/**
+ * Formats the atom's name into a string for use in examine (as the "title" of the atom)
+ *
+ * * user - the mob examining the atom
+ * * thats - whether to include "That's", or similar (mobs use "This is") before the name
+ */
+/atom/proc/examine_title(mob/user, thats = FALSE, href = FALSE)
+	var/examine_icon = get_examine_icon(user)
+	var/href_text = ""
+	if(href)
+		var/list/hrefs = examine_hrefs(user, thats)
+		if(length(hrefs))
+			href_text += "<a href='?"
+			href_text += "src=[REF(src)];"
+			for(var/key in hrefs)
+				href_text += "[key]=[hrefs[key]];"
+			href_text += "loc_at_examine=[loc && REF(loc)];"
+			href_text += "examine_time=[world.time]"
+			href_text += "'>"
+
+	return "[examine_icon ? "[examine_icon] " : ""][thats ? "[examine_thats] ":""]<em>[href_text][get_examine_name(user)][href_text ? "</a>" : ""]</em>"
+
+/**
+ * Used to compose hrefs attached to the name of the item itself in examine
+ *
+ * Return a list, where each entry is a key-value pair.
+ * The key is the id of the href, and the value is the href.
+ */
+/atom/proc/examine_hrefs(mob/examiner, examine_directly = FALSE)
+	return null
+
+/atom/movable/examine_hrefs(mob/examiner, examine_directly = FALSE)
+	if(examine_directly)
+		return ismob(loc) ? list("point_at" = TRUE) : null
+
+	return list("examine_item" = TRUE)
+
+/obj/item/card/id/examine_hrefs(mob/examiner, examine_directly = FALSE)
+	return list("see_id" = TRUE)
+
+/atom/movable/Topic(href, list/href_list)
+	. = ..()
+	if(href_list["point_at"] || href_list["examine_item"])
+		if(!loc || !href_list["loc_at_examine"] || REF(loc) != href_list["loc_at_examine"])
+			return
+		if(text2num(href_list["examine_time"]) + 3 MINUTES < world.time)
+			return
+
+		var/mob/viewer = usr
+		var/mob/wearer = get(src, /mob/living) || loc
+		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
+			return
+		if(HAS_TRAIT(wearer, TRAIT_UNKNOWN) || !can_examine_when_worn(viewer))
+			to_chat(viewer, span_notice("You can't make out that item anymore."))
+			return
+
+		if(href_list["point_at"])
+			viewer._pointed(src, skip_view = TRUE)
+		else
+			viewer.examinate(src)
+
+/// Checks if this item, when examined / pointed at while being worn, can actually be examined by the given mob
+/atom/movable/proc/can_examine_when_worn(mob/examiner)
+	return (examiner in viewers(loc))
+
+/obj/item/can_examine_when_worn(mob/examiner)
+	if(!slot_flags)
+		return ..()
+	var/mob/living/carbon/wearer = loc
+	if(!istype(wearer))
+		return ..()
+	if(wearer.check_obscured_slots() & slot_flags)
+		return FALSE
+	return ..()
+
+/obj/item/clothing/accessory/can_examine_when_worn(mob/examiner)
+	if(isclothing(loc))
+		var/obj/item/clothing/shirt = loc
+		return shirt.can_examine_when_worn(examiner)
+	return ..()
+
+/obj/item/card/id/Topic(href, list/href_list)
+	. = ..()
+	if(href_list["see_id"])
+		var/mob/viewer = usr
+		if(viewer.incapacitated(IGNORE_STASIS|IGNORE_RESTRAINTS|IGNORE_GRAB))
+			return
+		var/mob/old_wearer = locate(href_list["loc_at_examine"]) in GLOB.mob_living_list
+		if(old_wearer != loc)
+			to_chat(viewer, span_notice("[old_wearer?.p_They() || "They"] [old_wearer?.p_are() || "are"] no longer wearing that ID card."))
+			return
+
+		var/can_see_still = (viewer in viewers(old_wearer))
+		var/viable_time = can_see_still ? 3 MINUTES : 1 MINUTES // assuming 3min is the length of a hop line visit - give some leeway if they're still in sight
+		if((text2num(href_list["examine_time"]) + viable_time) < world.time)
+			to_chat(viewer, span_notice("You don't have that good of a memory. Examine [p_them()] again."))
+			return
+		if(HAS_TRAIT(old_wearer, TRAIT_UNKNOWN))
+			to_chat(viewer, span_notice("You can't make out that ID anymore."))
+			return
+		if(!isobserver(viewer) && get_dist(viewer, old_wearer) > ID_EXAMINE_DISTANCE + 1) // leeway, ignored if the viewer is a ghost
+			to_chat(viewer, span_notice("You can't make out that ID from here."))
+			return
+
+		var/id_name = registered_name
+		var/id_age = registered_age
+		var/id_job = assignment
+		// Should probably be recorded on the ID, but this is easier (albiet more restrictive) on chameleon ID users
+		var/datum/record/crew/record = find_record(id_name)
+		var/id_blood_type = record?.blood_type
+		var/id_gender = record?.gender
+		var/id_species = record?.species
+		var/id_icon = jointext(get_id_examine_strings(viewer), "")
+		// Fill in some blanks for chameleon IDs to maintain the illusion of a real ID
+		if(istype(src, /obj/item/card/id/advanced/chameleon))
+			id_gender ||= old_wearer.gender
+			if(iscarbon(old_wearer))
+				var/mob/living/carbon/carbon_wearer = old_wearer
+				id_species ||= carbon_wearer.dna.species.name
+				id_blood_type ||= find_blood_type(carbon_wearer.dna?.species?.exotic_bloodtype || carbon_wearer.dna?.human_blood_type)?.name
+
+		var/id_examine = span_slightly_larger(separator_hr("This is <em>[old_wearer]'s ID card</em>."))
+		id_examine += "<div class='img_by_text_container'>"
+		id_examine += "[id_icon]"
+		id_examine += "<div class='img_text'>"
+		id_examine += jointext(list(
+			"&bull; Name: [id_name || "Unknown"]",
+			"&bull; Job: [id_job || "Unassigned"]",
+			"&bull; Age: [id_age || "Unknown"]",
+			"&bull; Gender: [id_gender || "Unknown"]",
+			"&bull; Blood Type: [id_blood_type || "?"]",
+			"&bull; Species: [id_species || "Unknown"]",
+		), "<br>")
+		id_examine += "</div>" // container
+		id_examine += "</div>" // text
+
+		to_chat(viewer, examine_block(span_info(id_examine)))
 
 /**
  * Returns an extended list of examine strings for any contained ID cards.
@@ -98,7 +242,6 @@
  */
 /atom/proc/get_id_examine_strings(mob/user)
 	. = list()
-	return
 
 ///Used to insert text after the name but before the description in examine()
 /atom/proc/get_name_chaser(mob/user, list/name_chaser = list())
