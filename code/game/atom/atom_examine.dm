@@ -215,7 +215,7 @@
 			if(iscarbon(old_wearer))
 				var/mob/living/carbon/carbon_wearer = old_wearer
 				id_species ||= carbon_wearer.dna.species.name
-				id_blood_type ||= GLOB.blood_types[carbon_wearer.dna.species.exotic_bloodtype || carbon_wearer.dna.human_blood_type].name
+				id_blood_type ||= find_blood_type(carbon_wearer.dna?.species?.exotic_bloodtype || carbon_wearer.dna?.human_blood_type)?.name
 
 		var/id_examine = span_slightly_larger(separator_hr("This is <em>[old_wearer]'s ID card</em>."))
 		id_examine += "<div class='img_by_text_container'>"

@@ -369,13 +369,13 @@
 		// melbert todo ?? logic
 		if(target.blood_volume < BLOOD_VOLUME_SAFE)
 			var/transferred_blood_amount = min(chaplain.blood_volume, BLOOD_VOLUME_SAFE - target.blood_volume)
-			if(transferred_blood_amount > 0 && (our_blood.type in their_blood.compatible_types))
+			if(transferred_blood_amount > 0 && (our_blood.type_key() in their_blood.compatible_types))
 				transferred = TRUE
 				chaplain.transfer_blood_to(target, transferred_blood_amount, forced = TRUE)
 
 		else if(target.blood_volume > BLOOD_VOLUME_EXCESS)
 			var/transferred_blood_amount = min(target.blood_volume, BLOOD_VOLUME_EXCESS - chaplain.blood_volume)
-			if(transferred_blood_amount > 0 && (their_blood.type in our_blood.compatible_types))
+			if(transferred_blood_amount > 0 && (their_blood.type_key() in our_blood.compatible_types))
 				transferred = TRUE
 				target.transfer_blood_to(chaplain, transferred_blood_amount, forced = TRUE)
 	// NON-MODULE CHANGE END

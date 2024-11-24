@@ -1,5 +1,49 @@
-/// Global list of all blood type singletons (Assoc [type] - [/datum/blood_type singleton])
-GLOBAL_LIST_INIT_TYPED(blood_types, /datum/blood_type, init_subtypes_w_path_keys(/datum/blood_type))
+/**
+ * When given a name, reagent, or typepath, returns the blood type singleton associated with it
+ *
+ * For example, you could pass it "A+" and it would return the /datum/blood_type/crew/human/a_plus singleton
+ *
+ * Arguments
+ * * name_reagent_or_typepath - The name of a blood type, the reagent type of a blood type, or the typepath of a blood type
+ * Can be null, in which case it will return null. Mostly just for ease of use.
+ */
+/proc/find_blood_type(name_reagent_or_typepath) as /datum/blood_type
+	RETURN_TYPE(/datum/blood_type)
+
+	var/static/list/datum/blood_type/blood_type_singletons
+	if(!blood_type_singletons)
+		blood_type_singletons = list()
+		for(var/datum/blood_type/blood_type_type as anything in subtypesof(/datum/blood_type))
+			if(initial(blood_type_type.name))
+				blood_type_singletons[blood_type_type] = new blood_type_type()
+
+	// either a blood type, or a reagent that has been instantiated as a blood type
+	if(blood_type_singletons[name_reagent_or_typepath])
+		return blood_type_singletons[name_reagent_or_typepath]
+	// reagents as blood types, (possibly) uninitialized
+	if(ispath(name_reagent_or_typepath, /datum/reagent))
+		// snowflake to always return universal donor for generic blood
+		if(ispath(name_reagent_or_typepath, /datum/reagent/blood))
+			return blood_type_singletons[/datum/blood_type/crew/human/o_minus]
+		// otherwise we need to find a blood type that uses this reagent
+		// this catches stuff like liquid electricity and oil
+		for(var/blood_type in blood_type_singletons)
+			if(blood_type_singletons[blood_type].reagent_type == name_reagent_or_typepath)
+				return blood_type_singletons[blood_type]
+		// otherwise otherwise, we make a new one
+		. = new /datum/blood_type/random_chemical(name_reagent_or_typepath)
+		blood_type_singletons[name_reagent_or_typepath] = .
+		return .
+	// stuff like "AB+" or "O-" or "L"
+	if(istext(name_reagent_or_typepath))
+		for(var/blood_type in blood_type_singletons)
+			if(blood_type_singletons[blood_type].name == name_reagent_or_typepath)
+				return blood_type_singletons[blood_type]
+		return null
+	// who knows?
+	if(name_reagent_or_typepath)
+		stack_trace("find_blood_type called with invalid argument ([name_reagent_or_typepath])")
+	return null
 
 /**
  * Blood Drying SS
@@ -12,13 +56,6 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	priority = 10
 	wait = 10 SECONDS
 
-/// Takes the name of a blood type and return the typepath
-/proc/blood_name_to_blood_type(name)
-	for(var/blood_type in GLOB.blood_types)
-		if(GLOB.blood_types[blood_type].name == name)
-			return blood_type
-	return null
-
 /**
  * Blood Types
  *
@@ -26,10 +63,11 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  */
 /datum/blood_type
 	/// The short-hand name of the blood type
-	var/name = "?"
+	/// (No name = abstract, won't be instantiated)
+	var/name
 	/// What color is blood decals spawned of this type
 	var/color = COLOR_BLOOD
-	/// What blood types can this type receive from
+	/// What blood types can this type receive from?
 	/// Itself is always included in this list
 	var/list/compatible_types = list()
 	/// What reagent is represented by this blood type?
@@ -39,7 +77,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /datum/blood_type/New()
 	. = ..()
-	compatible_types |= type
+	compatible_types |= type_key()
 
 /datum/blood_type/Destroy(force)
 	if(!force)
@@ -47,6 +85,14 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		return QDEL_HINT_LETMELIVE
 
 	return ..()
+
+/**
+ * Key used to identify this blood type in the global blood_types list
+ *
+ * Allows for more complex or dynamically generated blood types
+ */
+/datum/blood_type/proc/type_key()
+	return type
 
 /// Gets data to pass to a reagent
 /datum/blood_type/proc/get_blood_data(mob/living/sampled_from)
@@ -234,11 +280,13 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	compatible_types = list(/datum/blood_type/crew/lizard/silver)
 
 /datum/blood_type/crew/lizard/silver
-	color = "#ffffff63"
+	color = "#ffffff9c"
 	compatible_types = list(/datum/blood_type/crew/lizard)
 
 /datum/blood_type/crew/lizard/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
-	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c963", "size" = 1.5))
+	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c99c", "size" = 1.5))
+	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
+	blood.update_appearance(UPDATE_OVERLAYS)
 
 /datum/blood_type/crew/skrell
 	name = "S"
@@ -251,6 +299,8 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	reagent_type = /datum/reagent/consumable/liquidelectricity
 
 /datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
+	blood.update_appearance(UPDATE_OVERLAYS)
 	if(!new_splat)
 		return
 	blood.can_dry = FALSE
@@ -307,19 +357,26 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /// Slimeperson's jelly blood, is also known as "toxic" or "toxin" blood
 /datum/blood_type/slime
 	name = "TOX"
-	color = "#801E28"
+	color = /datum/reagent/toxin/slimejelly::color
 	reagent_type = /datum/reagent/toxin/slimejelly
 
 /// Water based blood for Podpeople primairly
 /datum/blood_type/water
 	name = "H2O"
-	color = "#AAAAAA77"
+	color = /datum/reagent/water::color
 	reagent_type = /datum/reagent/water
 
 /// Snails have Lube for blood, for some reason?
 /datum/blood_type/snail
 	name = "Lube"
 	reagent_type = /datum/reagent/lube
+
+/datum/blood_type/snail/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	if(blood.bloodiness < BLOOD_AMOUNT_PER_DECAL)
+		return
+	var/slip_amt = new_splat ? 4 SECONDS : 1 SECONDS
+	var/slip_flags = new_splat ? (NO_SLIP_WHEN_WALKING | SLIDE) : (NO_SLIP_WHEN_WALKING)
+	blood.AddComponent(/datum/component/slippery, slip_amt, slip_flags)
 
 /// For Xeno blood, though they don't actually USE blood
 /datum/blood_type/xenomorph
@@ -330,3 +387,16 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /// For simplemob blood, which also largely don't actually use blood
 /datum/blood_type/animal
 	name = "Y-"
+
+/// An abstract-ish blood type used particularly for species with blood set to random reagents, such as podpeople
+/datum/blood_type/random_chemical
+
+/datum/blood_type/random_chemical/New(datum/reagent/reagent_type)
+	. = ..()
+	src.name = initial(reagent_type.name)
+	src.color = initial(reagent_type.color)
+	src.reagent_type = reagent_type
+	src.restoration_chem = reagent_type
+
+/datum/blood_type/random_chemical/type_key()
+	return reagent_type
