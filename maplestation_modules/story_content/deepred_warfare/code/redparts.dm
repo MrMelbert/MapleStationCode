@@ -19,7 +19,7 @@
 	desc = "A processed power cell. Its design is unlike anything you've seen before. It seems to be EMP resistant."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/redparts.dmi'
 	icon_state = "redcell"
-	connector_type = "redcellconnector"
+	// connector_type = "redcellconnector"
 	charge_light_type = null
 	rating = 4
 
