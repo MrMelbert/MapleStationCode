@@ -97,7 +97,7 @@
 	name ="10mm armour piercing coilslug"
 	damage = 30
 	armour_penetration = 80
-	projectile_piercing = PASSGLASS|PASSGRILLE|PASSMOB|PASSMACHINE|PASSSTRUCTURE|PASSFLAPS|PASSDOORS|PASSVEHICLE
+	projectile_piercing = PASSMOB
 
 	var/object_damage = 40
 	var/mecha_damage = 30

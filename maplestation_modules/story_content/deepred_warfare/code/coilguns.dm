@@ -361,6 +361,7 @@
 	name = "Redtech 10mm coilpistol"
 	desc = "A Redtech 10mm coilpistol that looks like a revolver."
 	icon_state = "revolver"
+	w_class = WEIGHT_CLASS_NORMAL
 
 	coretype = /obj/item/coilcore/revolver
 	defaultcore = /obj/item/coilcore/revolver
@@ -423,6 +424,7 @@
 	desc = "You should not be seeing this."
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/coilguns.dmi'
 	icon_state = "debugcore"
+	w_class = WEIGHT_CLASS_SMALL
 
 	var/list/ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo) // "Test" ammunition selections.
 
