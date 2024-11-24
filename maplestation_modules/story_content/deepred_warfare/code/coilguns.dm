@@ -141,6 +141,7 @@
 		overcooling_progress -= seconds_per_tick
 		if(previous_overcooling_progress > 0 && overcooling_progress <= 0)
 			playsound(src, overcooling_sound, overcooling_sound_volume)
+			balloon_alert(user, "gun cooling down!")
 		if(overcooling_progress < -1)
 			overcooling_progress = -1
 	update_appearance()
@@ -262,6 +263,8 @@
 		var/damage = heat_damage_multiplier * (current_heat - dangerous_heat)
 		user.adjustFireLoss(damage)
 		balloon_alert(user, "gun overheating!")
+	else if(current_heat > dangerous_heat / 2)
+		balloon_alert(user, "gun getting hot!")
 	update_heatrecoil()
 	overcooling_progress = overcooling_speed
 	update_appearance()
@@ -410,7 +413,7 @@
 
 /obj/item/gun/coilgun/revolver/none
 	name = "Nonetech 10mm coilpistol"
-	desc = "A Nonetech 10mm coilpistol that looks like a revolver. This one seems to be lacking a few features."
+	desc = "A Nonetech 10mm coilpistol that looks like a revolver."
 	icon_state = "none_revolver"
 
 	defaultcore = /obj/item/coilcore/revolver/none
