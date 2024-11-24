@@ -520,7 +520,7 @@
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_RESEARCH
 	)
-	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE | DEPARTMENT_BITFLAG_ENGINEERING
 
 /datum/design/board/microwave
 	name = "Microwave Board"
@@ -727,7 +727,6 @@
 	name = "NTNet Relay Board"
 	desc = "The circuit board for a wireless network relay."
 	id = "ntnet_relay"
-	build_type = IMPRINTER
 	build_path = /obj/item/circuitboard/machine/ntnet_relay
 	category = list(
 		RND_CATEGORY_MACHINE + RND_SUBCATEGORY_MACHINE_TELECOMMS
