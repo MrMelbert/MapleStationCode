@@ -141,7 +141,6 @@
 		overcooling_progress -= seconds_per_tick
 		if(previous_overcooling_progress > 0 && overcooling_progress <= 0)
 			playsound(src, overcooling_sound, overcooling_sound_volume)
-			balloon_alert(user, "gun cooling down!")
 		if(overcooling_progress < -1)
 			overcooling_progress = -1
 	update_appearance()
