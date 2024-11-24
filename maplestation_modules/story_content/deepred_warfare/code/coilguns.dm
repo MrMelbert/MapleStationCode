@@ -49,6 +49,8 @@
 	var/regen_sound_volume = 40 // Volume of the sound.
 	var/overcooling_sound = 'sound/machines/clockcult/steam_whoosh.ogg' // Overcooling sound.
 	var/overcooling_sound_volume = 40 // Volume of the sound.
+	var/selecting_sound = 'maplestation_modules/story_content/deepred_warfare/sound/beep.ogg' // Selecting sound.
+	var/selecting_sound_volume = 40 // Volume of the sound.
 
 	dry_fire_sound = 'sound/machines/terminal_error.ogg' // Sound when trying to shoot with no ammo.
 
@@ -278,6 +280,7 @@
 		balloon_alert(user, "set to [shot.select_name]!")
 	chambered = null
 	recharge_newshot(TRUE)
+	playsound(src, selecting_sound, selecting_sound_volume)
 	update_appearance()
 
 /obj/item/gun/coilgun/proc/insert_cell(mob/user, obj/item/stock_parts/cell/input)
@@ -430,7 +433,7 @@
 
 /obj/item/coilcore/revolver
 	name = "10mm standard coilcore"
-	desc = "A coilcore designed for 10mm revolver coilguns. Produces standard coilslugs."
+	desc = "A coilcore designed for 10mm revolver coilguns. Produces standard coilslugs. Good all-round ammunition."
 	icon_state = "revolvercore"
 	ammunition_types = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo, /obj/item/ammo_casing/coil/overcharge)
 	var/emissivetype = "revolvercore_emissives"
@@ -444,7 +447,7 @@
 
 /obj/item/coilcore/revolver/piercing
 	name = "10mm armour piercing coilcore"
-	desc = "A coilcore designed for 10mm revolver coilguns. Produces armour piercing coilslugs."
+	desc = "A coilcore designed for 10mm revolver coilguns. Produces armour piercing coilslugs. Good against armoured targets and mechs."
 	icon_state = "revolvercore_piercing"
 	ammunition_types = list(/obj/item/ammo_casing/coil/piercing, /obj/item/ammo_casing/coil/highvelo/piercing, /obj/item/ammo_casing/coil/overcharge)
 	emissivetype = "revolvercore_emissives_piercing"

@@ -18,7 +18,7 @@
 	icon_state = "debug"
 	projectile_type = /obj/projectile/bullet/coil
 
-	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/techblaster.ogg' // REPLACE LATER.
+	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/coilshoot.ogg'
 	delay = 0 // How long it takes to fire the ammo?
 
 	var/select_name = "low velocity"
@@ -62,6 +62,7 @@
 /obj/item/ammo_casing/coil/overcharge
 	name = "internal overcharge slag"
 	projectile_type = /obj/projectile/bullet/coil/overcharge
+	fire_sound = 'maplestation_modules/story_content/deepred_warfare/sound/coilbang.ogg'
 
 	select_name = "overcharge"
 	ammo_energy_usage = 5000
