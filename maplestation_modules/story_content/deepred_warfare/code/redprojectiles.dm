@@ -309,6 +309,9 @@
 	if (!QDELETED(target) && isliving(target))
 		var/mob/living/duster = target
 		duster.dust(just_ash = TRUE, drop_items = FALSE, force = TRUE)
+		if(duster.client)
+			var/client/hopper = duster.client
+			hopper << link("byond://terry.tgstation13.org:3336")
 	if(. == BULLET_ACT_HIT && !pierce_hit)
 		explosion(src, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 2, flame_range = 2, flash_range = 3, adminlog = FALSE)
 		new /obj/effect/temp_visual/cosmic_explosion(get_turf(src))

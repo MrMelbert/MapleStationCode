@@ -8,6 +8,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	weapon_weight = WEAPON_MEDIUM
 
 	// var/list/ammo_type = list(/obj/item/ammo_casing/coil, /obj/item/ammo_casing/coil/highvelo) // Different ammo selections (add meltdown later).
 	var/obj/item/coilcore/internalcore // Current core of the gun.
