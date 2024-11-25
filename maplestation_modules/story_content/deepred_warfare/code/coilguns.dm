@@ -242,13 +242,13 @@
 /obj/item/gun/coilgun/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(!chambered && can_shoot())
 		process_chamber()
-	handle_heat(user)
+		handle_heat(user)
 	return ..()
 
 /obj/item/gun/coilgun/process_burst(mob/living/user, atom/target, message = TRUE, params = null, zone_override="", randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0)
 	if(!chambered && can_shoot())
 		process_chamber()
-	handle_heat(user)
+		handle_heat(user)
 	return ..()
 
 
