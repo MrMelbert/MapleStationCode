@@ -3,7 +3,7 @@
 
 /mob/living/carbon/human/get_examine_name(mob/user)
 	if(!HAS_TRAIT(user, TRAIT_PROSOPAGNOSIA))
-		return ..()
+		return "[..()] ([p_they()]/[p_them()])"
 
 	return "Unknown"
 
@@ -444,7 +444,7 @@
 		var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 		var/list/all_blood_names = list()
 		for(var/dna_sample in all_dna)
-			var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
+			var/datum/blood_type/blood = find_blood_type(all_dna[dna_sample])
 			all_blood_names |= lowertext(initial(blood.reagent_type.name))
 
 		clothes[CLOTHING_SLOT(GLOVES)] = span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a "][english_list(all_blood_names, nothing_text = "blood")] stained hand[num_hands > 1 ? "s" : ""]!")
@@ -495,7 +495,7 @@
 	var/list/cybers = list()
 	for(var/obj/item/organ/internal/cyberimp/cyberimp in organs)
 		if(IS_ROBOTIC_ORGAN(cyberimp) && !(cyberimp.organ_flags & ORGAN_HIDDEN))
-			cybers += cyberimp.examine_title(user, href = TRUE)
+			cybers += cyberimp.examine_title(user, href = FALSE)
 	if(length(cybers))
 		. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"
 		. += "<span class='notice ml-2'>[english_list(cybers, and_text = ", and")]</span>"

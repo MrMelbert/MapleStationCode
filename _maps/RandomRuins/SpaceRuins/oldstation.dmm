@@ -3369,7 +3369,7 @@
 "mz" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/cleanable/dirt,
-/obj/item/storage/backpack/old,
+/obj/item/storage/backpack,
 /obj/structure/closet,
 /obj/effect/spawner/random/clothing/backpack,
 /turf/open/floor/iron,
