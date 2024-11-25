@@ -36,9 +36,12 @@
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
 	. = ..()
-	if(can_dry)
-		if(!dried)
-			START_PROCESSING(SSblood_drying, src)
+	if(mapload)
+		add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
+	if(dried)
+		dry()
+	else if(can_dry)
+		START_PROCESSING(SSblood_drying, src)
 		update_blood_drying_effect()
 
 /obj/effect/decal/cleanable/blood/Destroy()
@@ -60,8 +63,13 @@
 
 /// Speeds up the drying time by a given amount,
 /// then updates the effect, meaning the animation will speed up
+/// Also forces drying if it progresses past the drying time
 /obj/effect/decal/cleanable/blood/proc/speed_dry(by_amount)
 	drying_progress += by_amount
+	if(drying_progress >= drying_time)
+		dry()
+		return
+
 	update_blood_drying_effect()
 
 /// Slows down the drying time by a given amount,
@@ -77,30 +85,23 @@
 /// Updates the effect of blood drying
 /obj/effect/decal/cleanable/blood/proc/update_blood_drying_effect()
 	animate(src)
-	color = GET_ATOM_BLOOD_DNA_LENGTH(src) ? get_blood_dna_color() : COLOR_BLOOD
-	if(!can_dry || !color)
+	if(!can_dry)
 		return
 
-	var/curr_color = ReadHSV(RGBtoHSV(color))
+	var/starting_color = GET_ATOM_BLOOD_DNA_LENGTH(src) ? get_blood_dna_color() : COLOR_BLOOD
+	var/starting_color_hsv = ReadHSV(RGBtoHSV(starting_color))
 	var/dried_color = HSVtoRGB(hsv(
-		curr_color[1],
-		curr_color[2] - BLOOD_SATURATION_MODIFIER,
-		curr_color[3] - BLOOD_VALUE_MODIFIER,
+		starting_color_hsv[1],
+		starting_color_hsv[2] - BLOOD_SATURATION_MODIFIER,
+		starting_color_hsv[3] - BLOOD_VALUE_MODIFIER,
 	))
 
-	if(dried)
+	if(dried || drying_progress >= drying_time)
 		color = dried_color
 		return
 
-	var/starting_progress = drying_progress + step_period
-	if(starting_progress >= drying_time)
-		color = dried_color
-		return
-
-	color = hsv_gradient(round(drying_progress / drying_time, 0.01), 0, color, 1, dried_color)
-	for(var/next_progress in starting_progress to drying_time step step_period)
-		var/next_color = hsv_gradient(round(next_progress / drying_time, 0.01), 0, color, 1, dried_color)
-		animate(src, time = step_period, color = next_color, flags = ANIMATION_CONTINUE)
+	color = hsv_gradient(round(drying_progress / drying_time, 0.01), 0, starting_color, 1, dried_color)
+	animate(src, time = drying_time - drying_progress, color = dried_color)
 
 #undef BLOOD_SATURATION_MODIFIER
 #undef BLOOD_VALUE_MODIFIER
@@ -182,11 +183,6 @@
 	bloodiness = 0
 	dried = TRUE
 	icon_state = "floor1-old" // just for mappers. overrided in init
-
-/obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
-	add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
-	. = ..()
-	dry()
 
 /obj/effect/decal/cleanable/blood/splatter
 	icon_state = "gibbl1"
@@ -335,11 +331,9 @@
 	dry_desc = ""
 
 /obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases)
-	add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
-	dry()
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drips of blood"
