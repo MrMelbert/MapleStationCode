@@ -29,7 +29,10 @@
 	/// How long it takes to dry out
 	var/drying_time = 5 MINUTES
 	/// The process to drying out, recorded in deciseconds
-	var/drying_progress = 0
+	VAR_FINAL/drying_progress = 0
+	/// For the actual animation, how long between steps?
+	/// This will determine how much it jumps when changing color or speed mid drying
+	var/step_period = 20 SECONDS
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
 	. = ..()
@@ -74,20 +77,11 @@
 /// Updates the effect of blood drying
 /obj/effect/decal/cleanable/blood/proc/update_blood_drying_effect()
 	animate(src)
-	color = get_blood_dna_color()
+	color = GET_ATOM_BLOOD_DNA_LENGTH(src) ? get_blood_dna_color() : COLOR_BLOOD
 	if(!can_dry || !color)
 		return
 
 	var/curr_color = ReadHSV(RGBtoHSV(color))
-	if(drying_progress > 0 && !dried)
-		// updates the color to wherever we left off, probably
-		var/progress = drying_progress / drying_time
-		color = HSVtoRGB(hsv(
-			curr_color[1],
-			curr_color[2] - (BLOOD_SATURATION_MODIFIER * progress),
-			curr_color[3] - (BLOOD_VALUE_MODIFIER * progress),
-		))
-
 	var/dried_color = HSVtoRGB(hsv(
 		curr_color[1],
 		curr_color[2] - BLOOD_SATURATION_MODIFIER,
@@ -98,7 +92,15 @@
 		color = dried_color
 		return
 
-	animate(src, time = drying_time - drying_progress, color = dried_color)
+	var/starting_progress = drying_progress + step_period
+	if(starting_progress >= drying_time)
+		color = dried_color
+		return
+
+	color = hsv_gradient(round(drying_progress / drying_time, 0.01), 0, color, 1, dried_color)
+	for(var/next_progress in starting_progress to drying_time step step_period)
+		var/next_color = hsv_gradient(round(next_progress / drying_time, 0.01), 0, color, 1, dried_color)
+		animate(src, time = step_period, color = next_color, flags = ANIMATION_CONTINUE)
 
 #undef BLOOD_SATURATION_MODIFIER
 #undef BLOOD_VALUE_MODIFIER
