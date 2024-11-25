@@ -30,14 +30,6 @@
 	var/drying_time = 5 MINUTES
 	/// The process to drying out, recorded in deciseconds
 	var/drying_progress = 0
-	/// Color matrix applied to dried blood via filter to make it look dried
-	var/static/list/blood_dry_filter_matrix = list(
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1,
-		-0.5, -0.75, -0.75, 0,
-	)
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
 	. = ..()
@@ -75,26 +67,41 @@
 	drying_progress -= by_amount
 	update_blood_drying_effect()
 
+// Modifiers to saturation and values of dried blood
+#define BLOOD_SATURATION_MODIFIER (0.1 * 255)
+#define BLOOD_VALUE_MODIFIER (0.4 * 255)
+
 /// Updates the effect of blood drying
 /obj/effect/decal/cleanable/blood/proc/update_blood_drying_effect()
+	animate(src)
+	color = get_blood_dna_color()
 	if(!can_dry || !color)
-		// stop any ongoing drying, assuming we became undryable. return to full brightness(?)
-		animate(src)
 		return
 
-	var/curr_color = ReadHSV(RGBtoHSV(cached_blood_dna_color || color))
+	var/curr_color = ReadHSV(RGBtoHSV(color))
+	if(drying_progress > 0 && !dried)
+		// updates the color to wherever we left off, probably
+		var/progress = drying_progress / drying_time
+		color = HSVtoRGB(hsv(
+			curr_color[1],
+			curr_color[2] - (BLOOD_SATURATION_MODIFIER * progress),
+			curr_color[3] - (BLOOD_VALUE_MODIFIER * progress),
+		))
+
 	var/dried_color = HSVtoRGB(hsv(
 		curr_color[1],
-		curr_color[2] - (255 * 0.2),
-		curr_color[3] - (255 * 0.5),
+		curr_color[2] - BLOOD_SATURATION_MODIFIER,
+		curr_color[3] - BLOOD_VALUE_MODIFIER,
 	))
 
 	if(dried)
-		animate(src)
 		color = dried_color
 		return
 
 	animate(src, time = drying_time - drying_progress, color = dried_color)
+
+#undef BLOOD_SATURATION_MODIFIER
+#undef BLOOD_VALUE_MODIFIER
 
 /// Returns a string of all the blood reagents in the blood
 /obj/effect/decal/cleanable/blood/proc/get_blood_string()
