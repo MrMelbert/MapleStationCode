@@ -132,9 +132,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		if(isnull(drop))
 			var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 			if(!QDELETED(splatter))
+				splatter.add_mob_blood(bleeding)
 				splatter.adjust_bloodiness(new_blood)
 				splatter.speed_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
-				splatter.add_mob_blood(bleeding)
 				return splatter
 
 			drop = new(blood_turf, bleeding.get_static_viruses())
