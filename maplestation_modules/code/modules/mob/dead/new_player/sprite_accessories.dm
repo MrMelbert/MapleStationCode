@@ -342,6 +342,7 @@
 	name = "Big"
 	icon = 'maplestation_modules/icons/mob/tails.dmi'
 	icon_state = "snaketail"
+	spine_key = NONE
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
 /datum/sprite_accessory/frills/horns

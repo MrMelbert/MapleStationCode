@@ -78,8 +78,24 @@
 		return
 
 	if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))) //Clumsy people have a 50% chance to handcuff themselves instead of their target.
-		to_chat(user, span_warning("Uh... how do those things work?!"))
-		apply_cuffs(user,user)
+		to_chat(user, span_smallnoticeital("Uh... how do these things work?!"))
+		if(iscarbon(user))
+			var/mob/living/carbon/carbuser = user
+			if(!carbuser.handcuffed && carbuser.canBeHandcuffed())
+				user.visible_message(
+					span_danger("You fumble with [src] and accidentally put them on yourself!"),
+					span_userdanger("[user] fumbles with [src] and accidentally puts them on [user.p_them()]self!")
+				)
+				playsound(src, cuffsound, 30, TRUE, -2)
+				log_combat(user, C, "failed to handcuff", src, "(handcuffed self, clumsy)")
+				apply_cuffs(user, user)
+				return
+
+		user.do_attack_animation(user)
+		user.visible_message(
+			span_danger("You fumble with [src]."),
+			span_danger("[user] fumbles with [src].")
+		)
 		return
 
 	if(!C.handcuffed)
@@ -88,8 +104,8 @@
 								span_userdanger("[user] is trying to put [src] on you!"))
 			if(C.is_blind())
 				to_chat(C, span_userdanger("As you feel someone grab your wrists, [src] start digging into your skin!"))
-			playsound(loc, cuffsound, 30, TRUE, -2)
-			log_combat(user, C, "attempted to handcuff")
+			playsound(src, cuffsound, 30, TRUE, -2)
+			log_combat(user, C, "attempted to handcuff", src)
 			if(do_after(user, handcuff_time, C, timed_action_flags = IGNORE_SLOWDOWNS) && C.canBeHandcuffed())
 				if(iscyborg(user))
 					apply_cuffs(C, user, TRUE)
@@ -99,10 +115,10 @@
 									span_userdanger("[user] handcuffs you."))
 				SSblackbox.record_feedback("tally", "handcuffs", 1, type)
 
-				log_combat(user, C, "handcuffed")
+				log_combat(user, C, "handcuffed", src)
 			else
 				to_chat(user, span_warning("You fail to handcuff [C]!"))
-				log_combat(user, C, "failed to handcuff")
+				log_combat(user, C, "failed to handcuff", src)
 		else
 			to_chat(user, span_warning("[C] doesn't have two hands..."))
 
