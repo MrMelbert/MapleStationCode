@@ -133,8 +133,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 			if(!QDELETED(splatter))
 				splatter.adjust_bloodiness(new_blood)
-				splatter.drying_progress -= (new_blood * BLOOD_PER_UNIT_MODIFIER)
-				splatter.update_blood_drying_effect()
+				splatter.speed_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
 				splatter.add_mob_blood(bleeding)
 				return splatter
 
@@ -170,8 +169,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			return null
 	else
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
-		splatter.drying_progress -= (BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
-		splatter.update_blood_drying_effect()
+		splatter.speed_dry(1 SECONDS * BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
 	splatter.add_mob_blood(bleeding) //give blood info to the blood decal.
 	if(LAZYLEN(temp_blood_DNA))
 		splatter.add_blood_DNA(temp_blood_DNA)
@@ -303,8 +301,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	blood.update_appearance(UPDATE_OVERLAYS)
 	if(!new_splat)
 		return
-	blood.can_dry = FALSE
-	blood.update_blood_drying_effect()
+	blood.make_undryable()
 	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned))
 
 /datum/blood_type/crew/ethereal/proc/on_cleaned(obj/effect/decal/cleanable/source, mob/living/user, obj/item/tool, ...)
@@ -336,8 +333,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	if(!new_splat)
 		return
 	// Oil blood will never dry and can be ignited with fire
-	blood.can_dry = FALSE
-	blood.update_blood_drying_effect()
+	blood.make_undryable()
 	blood.AddElement(/datum/element/easy_ignite)
 
 /// A universal blood type which accepts everything

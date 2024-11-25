@@ -41,8 +41,9 @@
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
 	. = ..()
-	START_PROCESSING(SSblood_drying, src)
-	if(color && can_dry && !dried)
+	if(can_dry)
+		if(!dried)
+			START_PROCESSING(SSblood_drying, src)
 		update_blood_drying_effect()
 
 /obj/effect/decal/cleanable/blood/Destroy()
@@ -54,29 +55,48 @@
 		return
 	return ..()
 
-#define DRY_FILTER_KEY "dry_effect"
+/// Makes this decal undryable, then stops any ongoing drying
+/// Does nothing if it's already undryable or dried
+/obj/effect/decal/cleanable/blood/proc/make_undryable()
+	if(!can_dry || dried)
+		return
+	can_dry = FALSE
+	update_blood_drying_effect()
 
+/// Speeds up the drying time by a given amount,
+/// then updates the effect, meaning the animation will speed up
+/obj/effect/decal/cleanable/blood/proc/speed_dry(by_amount)
+	drying_progress += by_amount
+	update_blood_drying_effect()
+
+/// Slows down the drying time by a given amount,
+/// then updates the effect, meaning the animation will slow down
+/obj/effect/decal/cleanable/blood/proc/slow_dry(by_amount)
+	drying_progress -= by_amount
+	update_blood_drying_effect()
+
+/// Updates the effect of blood drying
 /obj/effect/decal/cleanable/blood/proc/update_blood_drying_effect()
-	if(!can_dry)
-		remove_filter(DRY_FILTER_KEY) // I GUESS
+	if(!can_dry || !color)
+		// stop any ongoing drying, assuming we became undryable. return to full brightness(?)
+		animate(src)
 		return
 
-	var/existing_filter = get_filter(DRY_FILTER_KEY)
+	var/curr_color = ReadHSV(RGBtoHSV(cached_blood_dna_color || color))
+	var/dried_color = HSVtoRGB(hsv(
+		curr_color[1],
+		curr_color[2] - (255 * 0.2),
+		curr_color[3] - (255 * 0.5),
+	))
+
 	if(dried)
-		if(existing_filter)
-			animate(existing_filter) // just stop existing animations and force it to the end state
-			return
-		add_filter(DRY_FILTER_KEY, 2, color_matrix_filter(blood_dry_filter_matrix))
+		animate(src)
+		color = dried_color
 		return
 
-	if(existing_filter)
-		remove_filter(DRY_FILTER_KEY)
+	animate(src, time = drying_time - drying_progress, color = dried_color)
 
-	add_filter(DRY_FILTER_KEY, 2, color_matrix_filter())
-	transition_filter(DRY_FILTER_KEY, color_matrix_filter(blood_dry_filter_matrix), drying_time - drying_progress)
-
-#undef DRY_FILTER_KEY
-
+/// Returns a string of all the blood reagents in the blood
 /obj/effect/decal/cleanable/blood/proc/get_blood_string()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 	var/list/all_blood_names = list()
@@ -90,8 +110,11 @@
 		return PROCESS_KILL
 
 	adjust_bloodiness(-0.4 * BLOOD_PER_UNIT_MODIFIER * seconds_per_tick)
+	// does not use speed_dry because we're not actually speeding up, just keeping a running tally
+	// (we don't want to mess with the animation, it's already in sync - theoretically)
 	drying_progress += (seconds_per_tick * 1 SECONDS)
-	if(drying_progress >= drying_time + SSblood_drying.wait) // Do it next tick when we're done
+	// Do it next tick when we're done
+	if(drying_progress >= drying_time + SSblood_drying.wait)
 		dry()
 
 /obj/effect/decal/cleanable/blood/update_name(updates)
@@ -121,7 +144,6 @@
 	dried = TRUE
 	reagents?.clear_reagents()
 	update_appearance()
-	update_blood_drying_effect()
 	STOP_PROCESSING(SSblood_drying, src)
 	return TRUE
 
@@ -145,12 +167,12 @@
 	. = ..()
 	merger.add_blood_DNA(GET_ATOM_BLOOD_DNA(src))
 	merger.adjust_bloodiness(bloodiness)
-	merger.drying_progress -= (bloodiness * BLOOD_PER_UNIT_MODIFIER) // goes negative = takes longer to dry
-	merger.update_blood_drying_effect()
+	merger.slow_dry(1 SECONDS * bloodiness * BLOOD_PER_UNIT_MODIFIER)
 
 /obj/effect/decal/cleanable/blood/old
 	bloodiness = 0
-	icon_state = "floor1-old"
+	dried = TRUE
+	icon_state = "floor1-old" // just for mappers. overrided in init
 
 /obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
 	add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
@@ -297,8 +319,9 @@
 /obj/effect/decal/cleanable/blood/gibs/old
 	name = "old rotting gibs"
 	desc = "Space Jesus, why didn't anyone clean this up? They smell terrible."
-	icon_state = "gib1-old"
+	icon_state = "gib1-old" // just for mappers. overrided in init
 	bloodiness = 0
+	dried = TRUE
 	dry_prefix = ""
 	dry_desc = ""
 
