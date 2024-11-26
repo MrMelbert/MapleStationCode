@@ -126,6 +126,7 @@
 	prereq_ids = list(TECHWEB_NODE_CAFETERIA_EQUIP)
 	design_ids = list(
 		"deepfryer",
+		"dehydrator",
 		"oven",
 		"stove",
 		"range",

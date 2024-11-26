@@ -23,21 +23,21 @@
 	prereq_ids = list(TECHWEB_NODE_BASIC_ARMS)
 	design_ids = list(
 		"camera_assembly",
-		"secdata",
+		"electropack",
+		"evidencebag",
+		"inspector",
 		"mining",
+		"pepperspray",
+		"photobooth",
 		"prisonmanage",
 		"rdcamera",
-		"seccamera",
-//		"security_photobooth",
-//		"photobooth",
 		"scanner_gate",
-		"turret_control",
-		"pepperspray",
-		"inspector",
-		"evidencebag",
-		"zipties",
+		"seccamera",
+		"secdata",
 		"seclite",
-		"electropack",
+		"security_photobooth",
+		"turret_control",
+		"zipties",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_1_POINTS)
 

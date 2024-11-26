@@ -237,6 +237,7 @@
 	dir = 4
 	},
 /obj/structure/cable,
+/obj/machinery/computer/security/telescreen/moon_outpost/xenobio/directional/east,
 /turf/open/floor/iron/white,
 /area/awaymission/moonoutpost19/research)
 "eB" = (
@@ -2193,12 +2194,6 @@
 "qD" = (
 /obj/structure/table/reinforced,
 /obj/structure/alien/weeds,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the contents of the xenobiology containment pen.";
-	dir = 8;
-	name = "xenobiology monitor";
-	network = list("mo19x")
-	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 8
 	},
@@ -2602,11 +2597,6 @@
 "tw" = (
 /obj/structure/table/reinforced,
 /obj/structure/window/reinforced/spawner/directional/north,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for monitoring the research division and the labs within.";
-	name = "research monitor";
-	network = list("mo19x","mo19r")
-	},
 /obj/effect/turf_decal/siding/purple/corner{
 	dir = 4
 	},
@@ -3748,6 +3738,7 @@
 /obj/effect/turf_decal/tile/dark/opposingcorners{
 	dir = 1
 	},
+/obj/machinery/computer/security/telescreen/moon_outpost/xenobio/directional/south,
 /turf/open/floor/iron/cafeteria{
 	dir = 5
 	},
