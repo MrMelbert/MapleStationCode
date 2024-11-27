@@ -124,7 +124,7 @@
 		/obj/item/stack/medical/suture/emergency = 1,
 		/obj/item/stack/medical/ointment = 1,
 		/obj/item/reagent_containers/hypospray/medipen/ekit = 2,
-		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 2,
+		/obj/item/reagent_containers/hypospray/medipen/emergency_painkiller = 1,
 		/obj/item/storage/pill_bottle/iron = 1,
 		/obj/item/shock_blanket/emergency = 1,
 	)

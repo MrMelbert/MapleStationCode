@@ -81,7 +81,7 @@
 		for(var/datum/wound/iter_wound as anything in body_part.wounds)
 			var/wound_msg = iter_wound.get_examine_description(user)
 			if(wound_msg)
-				. += "[wound_msg]"
+				. += span_danger("[wound_msg]")
 
 	for(var/obj/item/bodypart/body_part as anything in disabled)
 		var/damage_text
