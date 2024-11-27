@@ -140,7 +140,7 @@
 		return FALSE
 
 	target.age = 18
-	target.blood_type = "[GLOB.blood_types[random_human_blood_type()]]" // NON-MODULE CHANGE
+	target.blood_type = "[find_blood_type(random_human_blood_type())]" // NON-MODULE CHANGE
 	target.dna_string = "Unknown"
 	target.gender = "Unknown"
 	target.major_disabilities = ""

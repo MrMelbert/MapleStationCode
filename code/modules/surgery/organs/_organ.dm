@@ -316,11 +316,11 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// Called by medical scanners to get a simple summary of how healthy the organ is. Returns an empty string if things are fine.
 /obj/item/organ/proc/get_status_text(advanced, add_tooltips)
-	if(organ_flags & ORGAN_IRRADIATED)
-		return conditional_tooltip("<font color='#29b90f'>Irradiated</font>", "Replace surgically or use specialty medication, such as [/datum/reagent/medicine/pen_acid::name] or [/datum/reagent/medicine/potass_iodide::name].", add_tooltips)
+	if(advanced && (organ_flags & ORGAN_HAZARDOUS))
+		return conditional_tooltip("<font color='#cc3333'>Harmful Foreign Body</font>", "Remove surgically.", add_tooltips)
 
-//	if(advanced && (organ_flags & ORGAN_HAZARDOUS))
-//		return conditional_tooltip("<font color='#cc3333'>Harmful Foreign Body</font>", "Remove surgically.", add_tooltips)
+	if(organ_flags & ORGAN_IRRADIATED)
+		return conditional_tooltip("<font color='#29b90f'>Irradiated</font>", "Replace or use specialty medication, such as [/datum/reagent/medicine/potass_iodide::name] or [/datum/reagent/medicine/pen_acid::name].", add_tooltips)
 
 	if(organ_flags & ORGAN_EMP)
 		return conditional_tooltip("<font color='#cc3333'>EMP-Derived Failure</font>", "Repair or replace surgically.", add_tooltips)
@@ -331,9 +331,6 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 	if(organ_flags & ORGAN_FAILING)
 		return conditional_tooltip("<font color='#cc3333'>[tech_text || "Non-Functional"]</font>", "Repair or replace surgically.", add_tooltips)
-
-	if(owner.has_reagent(/datum/reagent/inverse/technetium))
-		return "<font color='#E42426'>[round((damage/maxHealth)*100, 1)]% damaged</font>"
 
 	if(damage > high_threshold)
 		return conditional_tooltip("<font color='#ff9933'>[tech_text || "Severely Damaged"]</font>", "[healing_factor ? "Treat with rest or use specialty medication." : "Repair surgically or use specialty medication."]", add_tooltips && owner.stat != DEAD)
@@ -349,7 +346,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /// Determines if this organ is shown when a user has condensed scans enabled
 /obj/item/organ/proc/show_on_condensed_scans()
 	// We don't need to show *most* damaged organs as they have no effects associated
-	return (organ_flags & (ORGAN_FAILING|ORGAN_VITAL|ORGAN_IRRADIATED))
+	return (organ_flags & (ORGAN_PROMINENT|ORGAN_HAZARDOUS|ORGAN_FAILING|ORGAN_VITAL|ORGAN_IRRADIATED))
 
 /// Similar to get_status_text, but appends the text after the damage report, for additional status info
 /obj/item/organ/proc/get_status_appendix(advanced, add_tooltips)

@@ -89,6 +89,11 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_expilot"
 
+/datum/sprite_accessory/hair/TrueBedhead
+	name = "True Bedhead"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_truebedhead"
+
 /datum/sprite_accessory/hair/braidedbun
 	name = "Braided Bun"
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
@@ -327,11 +332,17 @@
 	icon = 'maplestation_modules/icons/mob/human_face.dmi'
 	icon_state = "hair_longbraid"
 
+/datum/sprite_accessory/hair/obsessive_doctor
+	name = "Obsessive Doctor"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'
+	icon_state = "hair_obsess"
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17656
 /datum/sprite_accessory/tails/lizard/big
 	name = "Big"
 	icon = 'maplestation_modules/icons/mob/tails.dmi'
 	icon_state = "snaketail"
+	spine_key = NONE
 
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/969 (same for Divinity/Big below. TODO group)
 /datum/sprite_accessory/frills/horns
@@ -496,4 +507,9 @@
 /datum/sprite_accessory/socks/pokersocks
 	name = "Mismatched Checkered Socks"
 	icon_state = "mismatchpoker"
+	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+
+/datum/sprite_accessory/socks/pokersocks
+	name = "High Black Stockings"
+	icon_state = "highblackstocking"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'

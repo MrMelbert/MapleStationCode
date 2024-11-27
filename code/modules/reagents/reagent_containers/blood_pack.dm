@@ -12,7 +12,7 @@
 /obj/item/reagent_containers/blood/Initialize(mapload, vol)
 	. = ..()
 	if(!isnull(blood_type))
-		var/datum/blood_type/blood = GLOB.blood_types[blood_type]
+		var/datum/blood_type/blood = find_blood_type(blood_type)
 		reagents.add_reagent(blood.reagent_type, 200, list("blood_type" = blood_type))
 		update_appearance()
 
@@ -22,16 +22,13 @@
 
 	var/datum/reagent/master_reagent = holder.get_master_reagent()
 	if(isnull(master_reagent))
-		pass()
+		return ..()
 
-	else if(istype(master_reagent, /datum/reagent/blood))
+	if(istype(master_reagent, /datum/reagent/blood))
 		blood_type = master_reagent.data?["blood_type"]
 
-	else
-		for(var/blood_type in GLOB.blood_types)
-			if(GLOB.blood_types[blood_type].reagent_type == master_reagent.type)
-				blood_type = blood_type
-				break
+	if(isnull(blood_type))
+		blood_type = find_blood_type(master_reagent.type).type_key()
 
 	return ..()
 
@@ -39,7 +36,7 @@
 	. = ..()
 	if(labelled)
 		return
-	var/datum/blood_type/blood = GLOB.blood_types[blood_type]
+	var/datum/blood_type/blood = find_blood_type(blood_type)
 	name = "blood pack[blood ? " - [blood.name]" : null]"
 
 /obj/item/reagent_containers/blood/random

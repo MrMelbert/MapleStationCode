@@ -123,6 +123,10 @@
 		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Apply defibrillation immediately. Similar electric shocks may work in emergencies.", add_tooltips)
 	return ..()
 
+/obj/item/organ/internal/heart/show_on_condensed_scans()
+	// Always show if the guy needs a heart (so its status can be monitored)
+	return ..() || owner.needs_heart()
+
 /obj/item/organ/internal/heart/on_life(seconds_per_tick, times_fired)
 	. = ..()
 

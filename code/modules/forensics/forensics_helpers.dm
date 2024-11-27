@@ -84,8 +84,7 @@
 	var/list/colors = list()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
 	for(var/dna_sample in all_dna)
-		var/datum/blood_type/blood = GLOB.blood_types[all_dna[dna_sample]]
-		colors += blood.color
+		colors += find_blood_type(all_dna[dna_sample]).color
 
 	var/final_color = pop(colors)
 	for(var/color in colors)
@@ -95,7 +94,8 @@
 
 /obj/effect/decal/cleanable/blood/drip/get_blood_dna_color()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
-	return GLOB.blood_types[all_dna[all_dna[1]]]?.color // what the fuck was i doing?
+	var/blood_type_to_use = all_dna[all_dna[1]]
+	return find_blood_type(blood_type_to_use).color
 
 /// Adds blood dna to the atom
 /atom/proc/add_blood_DNA(list/blood_DNA_to_add) //ASSOC LIST DNA = BLOODTYPE
@@ -121,7 +121,7 @@
 	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
 	for(var/new_blood in blood_DNA_to_add)
-		var/datum/blood_type/blood = GLOB.blood_types[blood_DNA_to_add[new_blood]]
+		var/datum/blood_type/blood = find_blood_type(blood_DNA_to_add[new_blood])
 		blood.set_up_blood(src, first_dna == 0)
 	update_appearance()
 	return TRUE

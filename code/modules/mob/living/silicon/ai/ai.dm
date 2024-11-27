@@ -373,7 +373,7 @@
 		for(var/obj/machinery/computer/communications/C in GLOB.shuttle_caller_list)
 			C.post_status("shuttle")
 
-/mob/living/silicon/ai/can_interact_with(atom/A, treat_mob_as_adjacent)
+/mob/living/silicon/ai/in_range_to_interact_with(atom/A, treat_mob_as_adjacent)
 	. = ..()
 	if (.)
 		return

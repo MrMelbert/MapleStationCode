@@ -33,6 +33,8 @@
 	custom_price = PAYCHECK_COMMAND
 	/// If this analyzer will give a bonus to wound treatments apon woundscan.
 	var/give_wound_treatment_bonus = FALSE
+	var/last_scan_text
+	var/scanner_busy = FALSE
 
 	var/print = FALSE
 
@@ -42,7 +44,8 @@
 
 /obj/item/healthanalyzer/examine(mob/user)
 	. = ..()
-	. += span_notice("Alt-click [src] to toggle the limb damage readout.")
+	if(src.mode != SCANNER_NO_MODE)
+		. += span_notice("Alt-click [src] to toggle the limb damage readout. Ctrl-shift-click to print readout report.")
 
 /obj/item/healthanalyzer/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to analyze [user.p_them()]self with [src]! The display shows that [user.p_theyre()] dead!"))
@@ -84,6 +87,7 @@
 
 		if(user.can_read(src) && !user.is_blind())
 			to_chat(user, examine_block(floor_text))
+		last_scan_text = floor_text
 		return
 
 	if(ispodperson(M) && !advanced)
@@ -97,17 +101,7 @@
 	var/readability_check = user.can_read(src) && !user.is_blind()
 	switch (scanmode)
 		if (SCANMODE_HEALTH)
-			if(print)
-				var/obj/item/paper/new_paper = new(user.drop_location())
-				var/datum/asset/spritesheet/sheet = get_asset_datum(/datum/asset/spritesheet/simple/paper)
-				new_paper.add_raw_text(healthscan(user, M, mode, advanced, tochat = FALSE), advanced_html = TRUE)
-				new_paper.add_stamp(sheet.icon_class_name("stamp-cmo"), 260, 5, 0, "stamp-cmo") // melbert todo : placeholder until i get a cross img
-				new_paper.name = "analysis of [M] - [station_time_timestamp()]"
-				new_paper.color = "#99ccff"
-				new_paper.update_appearance()
-				user.put_in_hands(new_paper)
-			else
-				healthscan(user, M, mode, advanced)
+			last_scan_text = healthscan(user, M, mode, advanced, tochat = readability_check)
 		if (SCANMODE_WOUND)
 			if(readability_check)
 				woundscan(user, M, src)
@@ -162,11 +156,13 @@
 	var/tox_loss = target.getToxLoss()
 	var/fire_loss = target.getFireLoss()
 	var/brute_loss = target.getBruteLoss()
-	var/mob_status = (target.stat == DEAD ? span_alert("<b>Deceased</b>") : "<b>[round(target.health / target.maxHealth, 0.01) * 100]% healthy</b>")
+	var/mob_status = (!target.appears_alive() ? span_alert("<b>Deceased</b>") : "<b>[round(target.health / target.maxHealth, 0.01) * 100]% healthy</b>")
 
-	if(HAS_TRAIT(target, TRAIT_FAKEDEATH) && !advanced)
-		mob_status = span_alert("<b>Deceased</b>")
-		oxy_loss = max(rand(1, 40), oxy_loss, (300 - (tox_loss + fire_loss + brute_loss))) // Random oxygen loss
+	if(HAS_TRAIT(target, TRAIT_FAKEDEATH) && target.stat != DEAD)
+		// if we don't appear to actually be in a "dead state", add fake oxyloss
+		if(oxy_loss + tox_loss + fire_loss + brute_loss < 200)
+			oxy_loss += 200 - (oxy_loss + tox_loss + fire_loss + brute_loss)
+			oxy_loss = clamp(oxy_loss, 0, 200)
 
 	render_list += "[span_info("Analyzing results for <b>[target]</b> ([station_time_timestamp()]):")]<br><span class='info ml-1'>Overall status: [mob_status]</span><br>"
 
@@ -283,7 +279,7 @@
 		var/list/missing_organs = list()
 		if(!humantarget.get_organ_slot(ORGAN_SLOT_BRAIN))
 			missing_organs[ORGAN_SLOT_BRAIN] = "Brain"
-		if(!humantarget.needs_heart() && !humantarget.get_organ_slot(ORGAN_SLOT_HEART))
+		if(humantarget.needs_heart() && !humantarget.get_organ_slot(ORGAN_SLOT_HEART))
 			missing_organs[ORGAN_SLOT_HEART] = "Heart"
 		if(!HAS_TRAIT_FROM(humantarget, TRAIT_NOBREATH, SPECIES_TRAIT) && !isnull(humantarget.dna.species.mutantlungs) && !humantarget.get_organ_slot(ORGAN_SLOT_LUNGS))
 			missing_organs[ORGAN_SLOT_LUNGS] = "Lungs"
@@ -331,8 +327,7 @@
 		var/list/cyberimps
 		for(var/obj/item/organ/internal/cyberimp/cyberimp in humantarget.organs)
 			if(IS_ROBOTIC_ORGAN(cyberimp) && !(cyberimp.organ_flags & ORGAN_HIDDEN))
-				var/cyberimp_name = tochat ? capitalize(cyberimp.get_examine_string(user, FALSE)) : capitalize(cyberimp.name)
-				LAZYADD(cyberimps, cyberimp_name)
+				LAZYADD(cyberimps, cyberimp.examine_title(user))
 		if(LAZYLEN(cyberimps))
 			if(!render)
 				render_list += "<hr>"
@@ -345,9 +340,9 @@
 		if(advanced && humantarget.has_dna() && humantarget.dna.stability != initial(humantarget.dna.stability))
 			render_list += "<span class='info ml-1'>Genetic Stability: [humantarget.dna.stability]%.</span><br>"
 
-		// melbert todo : move species too, to the top
 		render_list += "<span class='info ml-1'>Species: [humantarget.dna.species.name][HAS_TRAIT(target, TRAIT_HULK) ? "-derived mutant" : ""]</span><br>"
 
+	// NON-MODULE CHANGE
 	var/skin_temp = target.get_skin_temperature()
 	var/skin_temperature_message = "Skin temperature: [round(KELVIN_TO_CELCIUS(skin_temp), 0.1)] &deg;C ([round(KELVIN_TO_FAHRENHEIT(skin_temp), 0.1)] &deg;F)"
 	if(skin_temp >= target.bodytemp_heat_damage_limit)
@@ -366,8 +361,7 @@
 		render_list += "<span class='info ml-1'>[body_temperature_message]</span><br>"
 
 	// Blood Level
-	// Melbert todo : put this in the heart printout ? or the chest printout ? unsure
-	if(target.has_dna() && target.get_blood_type())
+	if(target.get_blood_type())
 		var/blood_percent = round((target.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
 		var/blood_type = "[target.get_blood_type() || "None"]"
 		if(target.blood_volume <= BLOOD_VOLUME_SAFE && target.blood_volume > BLOOD_VOLUME_OKAY)
@@ -376,8 +370,8 @@
 			render_list += "<span class='alert ml-1'>Blood level: <b>CRITICAL [blood_percent] %</b>, [target.blood_volume] cl,</span> [span_info("type: [blood_type]")]<br>"
 		else
 			render_list += "<span class='info ml-1'>Blood level: [blood_percent] %, [target.blood_volume] cl, type: [blood_type]</span><br>"
+	// NON-MODULE CHANGE END
 
-	// Blood Alcohol Content
 	var/blood_alcohol_content = target.get_blood_alcohol_content()
 	if(blood_alcohol_content > 0)
 		if(blood_alcohol_content >= 0.24)
@@ -394,24 +388,57 @@
 			render_list += "<hr>"
 			disease_hr = TRUE
 		render_list += "<span class='alert ml-1'>\
-		<b>Warning: [disease.form] detected</b><br>\
-		<div class='ml-2'>\
-		Name: [disease.name].<br>\
-		Type: [disease.spread_text].<br>\
-		Stage: [disease.stage]/[disease.max_stages].<br>\
-		Possible Cure: [disease.cure_text]</div>\
-		</span>" // divs do not need extra linebreak
+			<b>Warning: [disease.form] detected</b><br>\
+			<div class='ml-2'>\
+			Name: [disease.name].<br>\
+			Type: [disease.spread_text].<br>\
+			Stage: [disease.stage]/[disease.max_stages].<br>\
+			Possible Cure: [disease.cure_text]</div>\
+			</span>"
 
 	// Time of death
-	if(target.station_timestamp_timeofdeath && (target.stat == DEAD || (HAS_TRAIT(target, TRAIT_FAKEDEATH) && !advanced)))
+	if(target.station_timestamp_timeofdeath && !target.appears_alive())
 		render_list += "<hr>"
 		render_list += "<span class='info ml-1'>Time of Death: [target.station_timestamp_timeofdeath]</span><br>"
 		render_list += "<span class='alert ml-1'><b>Subject died [DisplayTimeText(round(world.time - target.timeofdeath))] ago.</b></span><br>"
 
+	. = jointext(render_list, "")
 	if(tochat)
-		to_chat(user, examine_block(jointext(render_list, "")), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
-	else
-		return(jointext(render_list, ""))
+		to_chat(user, examine_block(.), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
+	return .
+
+/obj/item/healthanalyzer/CtrlShiftClick(mob/user)
+	. = ..()
+	if(. == FALSE)
+		return
+	if(!length(last_scan_text))
+		balloon_alert(user, "no scans!")
+		return
+	if(scanner_busy)
+		balloon_alert(user, "analyzer busy!")
+		return
+	scanner_busy = TRUE
+	balloon_alert(user, "printing report...")
+	addtimer(CALLBACK(src, PROC_REF(print_report)), 2 SECONDS)
+
+/obj/item/healthanalyzer/proc/print_report(mob/user)
+	var/obj/item/paper/report_paper = new(get_turf(src))
+
+	report_paper.color = "#99ccff"
+	report_paper.name = "health scan report - [station_time_timestamp()]"
+	var/report_text = "<center><B>Health scan report. Time of retrieval: [station_time_timestamp()]</B></center><HR>"
+	report_text += last_scan_text
+
+	report_paper.add_raw_text(report_text)
+	report_paper.update_appearance()
+
+	if(ismob(loc))
+		var/mob/printer = loc
+		printer.put_in_hands(report_paper)
+		balloon_alert(printer, "logs cleared")
+
+	report_text = list()
+	scanner_busy = FALSE
 
 /proc/chemscan(mob/living/user, mob/living/target, tochat = TRUE) // NON-MODULE CHANGE
 	if(user.incapacitated())
@@ -427,12 +454,12 @@
 				var/datum/reagent/reagent = r
 				if(reagent.chemical_flags & REAGENT_INVISIBLE) //Don't show hidden chems on scanners
 					continue
-				render_block += "<span class='notice ml-2'>[round(reagent.volume, 0.001)] units of [reagent.name][reagent.overdosed ? "</span> - [span_boldannounce("OVERDOSING")]" : ".</span>"]\n"
+				render_block += "<span class='notice ml-2'>[round(reagent.volume, 0.001)] units of [reagent.name][reagent.overdosed ? "</span> - [span_boldannounce("OVERDOSING")]" : ".</span>"]<br>"
 
 		if(!length(render_block)) //If no VISIBLY DISPLAYED reagents are present, we report as if there is nothing.
-			render_list += "<span class='notice ml-1'>Subject contains no reagents in their blood.</span>\n"
+			render_list += "<span class='notice ml-1'>Subject contains no reagents in their blood.</span><br>"
 		else
-			render_list += "<span class='notice ml-1'>Subject contains the following reagents in their blood:</span>\n"
+			render_list += "<span class='notice ml-1'>Subject contains the following reagents in their blood:</span><br>"
 			render_list += render_block //Otherwise, we add the header, reagent readouts, and clear the readout block for use on the stomach.
 			render_block.Cut()
 
@@ -445,35 +472,35 @@
 					if(bit.chemical_flags & REAGENT_INVISIBLE)
 						continue
 					if(!belly.food_reagents[bit.type])
-						render_block += "<span class='notice ml-2'>[round(bit.volume, 0.001)] units of [bit.name][bit.overdosed ? "</span> - [span_boldannounce("OVERDOSING")]" : ".</span>"]\n"
+						render_block += "<span class='notice ml-2'>[round(bit.volume, 0.001)] units of [bit.name][bit.overdosed ? "</span> - [span_boldannounce("OVERDOSING")]" : ".</span>"]<br>"
 					else
 						var/bit_vol = bit.volume - belly.food_reagents[bit.type]
 						if(bit_vol > 0)
-							render_block += "<span class='notice ml-2'>[round(bit_vol, 0.001)] units of [bit.name][bit.overdosed ? "</span> - [span_boldannounce("OVERDOSING")]" : ".</span>"]\n"
+							render_block += "<span class='notice ml-2'>[round(bit_vol, 0.001)] units of [bit.name][bit.overdosed ? "</span> - [span_boldannounce("OVERDOSING")]" : ".</span>"]<br>"
 
 			if(!length(render_block))
-				render_list += "<span class='notice ml-1'>Subject contains no reagents in their stomach.</span>\n"
+				render_list += "<span class='notice ml-1'>Subject contains no reagents in their stomach.</span><br>"
 			else
-				render_list += "<span class='notice ml-1'>Subject contains the following reagents in their stomach:</span>\n"
+				render_list += "<span class='notice ml-1'>Subject contains the following reagents in their stomach:</span><br>"
 				render_list += render_block
 
 		// Addictions
 		if(LAZYLEN(target.mind?.active_addictions))
-			render_list += "<span class='boldannounce ml-1'>Subject is addicted to the following types of drug:</span>\n"
+			render_list += "<span class='boldannounce ml-1'>Subject is addicted to the following types of drug:</span><br>"
 			for(var/datum/addiction/addiction_type as anything in target.mind.active_addictions)
-				render_list += "<span class='alert ml-2'>[initial(addiction_type.name)]</span>\n"
+				render_list += "<span class='alert ml-2'>[initial(addiction_type.name)]</span><br>"
 
 		// Special eigenstasium addiction
 		if(target.has_status_effect(/datum/status_effect/eigenstasium))
-			render_list += "<span class='notice ml-1'>Subject is temporally unstable. Stabilising agent is recommended to reduce disturbances.</span>\n"
+			render_list += "<span class='notice ml-1'>Subject is temporally unstable. Stabilising agent is recommended to reduce disturbances.</span><br>"
 
 		// Allergies
 		for(var/datum/quirk/quirky as anything in target.quirks)
 			if(istype(quirky, /datum/quirk/item_quirk/allergic))
 				var/datum/quirk/item_quirk/allergic/allergies_quirk = quirky
 				var/allergies = allergies_quirk.allergy_string
-				render_list += "<span class='alert ml-1'>Subject is extremely allergic to the following chemicals:</span>\n"
-				render_list += "<span class='alert ml-2'>[allergies]</span>\n"
+				render_list += "<span class='alert ml-1'>Subject is extremely allergic to the following chemicals:</span><br>"
+				render_list += "<span class='alert ml-2'>[allergies]</span><br>"
 
 		// NON-MODULE CHANGE
 		if(tochat)
@@ -515,9 +542,9 @@
 	var/render_list = ""
 	var/advised = FALSE
 	for(var/obj/item/bodypart/wounded_part as anything in patient.get_wounded_bodyparts())
-		render_list += "<span class='alert ml-1'><b>Warning: Physical trauma[LAZYLEN(wounded_part.wounds) > 1? "s" : ""] detected in [wounded_part.plaintext_zone]</b>"
+		render_list += "<span class='alert ml-1'><b>Warning: Physical trauma[LAZYLEN(wounded_part.wounds) > 1 ? "s" : ""] detected in [wounded_part.plaintext_zone]</b>"
 		for(var/datum/wound/current_wound as anything in wounded_part.wounds)
-			render_list += "<div class='ml-2'>[simple_scan ? current_wound.get_simple_scanner_description() : current_wound.get_scanner_description()]</div>\n"
+			render_list += "<div class='ml-2'>[simple_scan ? current_wound.get_simple_scanner_description() : current_wound.get_scanner_description()]</div><br>"
 			if (scanner.give_wound_treatment_bonus)
 				ADD_TRAIT(current_wound, TRAIT_WOUND_SCANNED, ANALYZER_TRAIT)
 				if(!advised)
@@ -682,8 +709,8 @@
 	var/list/render = list()
 	for(var/datum/disease/disease as anything in patient.diseases)
 		if(!(disease.visibility_flags & HIDDEN_SCANNER))
-			render += "<span class='alert ml-1'><b>Warning: [disease.form] detected</b>\n\
-			<div class='ml-2'>Name: [disease.name].\nType: [disease.spread_text].\nStage: [disease.stage]/[disease.max_stages].\nPossible Cure: [disease.cure_text]</div>\
+			render += "<span class='alert ml-1'><b>Warning: [disease.form] detected</b><br>\
+			<div class='ml-2'>Name: [disease.name].<br>Type: [disease.spread_text].<br>Stage: [disease.stage]/[disease.max_stages].<br>Possible Cure: [disease.cure_text]</div>\
 			</span>"
 
 	if(!length(render))
