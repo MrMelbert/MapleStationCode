@@ -172,30 +172,6 @@
 /datum/wound/proc/generate_unique_id()
 	return REF(src) // unique, cannot change, a perfect id
 
-/// Makes the target's health doll flash red if wounded with a wound that has the [ALERTS_VICTIM] flag
-/datum/wound/proc/update_victim_heath_doll()
-	var/atom/doll = victim?.hud_used?.healthdoll
-	if(!doll)
-		return
-
-	var/should_alert = FALSE
-	for(var/datum/wound/wound as anything in victim.all_wounds)
-		if(wound.wound_flags & ALERTS_VICTIM)
-			should_alert = TRUE
-			break
-
-	// future todo : split the health doll into parts so we can JUST outline the affected limb
-	var/existing = doll.get_filter("wound_outline")
-	if(should_alert)
-		if(!existing)
-			doll.add_filter("wound_outline", 1, list("type" = "outline", "color" = "#FF0033", "alpha" = 0, "size" = 2))
-			animate(doll.get_filter("wound_outline"), alpha = 200, time = 1.5 SECONDS, loop = -1)
-			animate(alpha = 0, time = 1.5 SECONDS)
-
-	else
-		if(existing)
-			doll.remove_filter("wound_outline")
-
 /**
  * apply_wound() is used once a wound type is instantiated to assign it to a bodypart, and actually come into play.
  *
@@ -229,8 +205,7 @@
 	if(status_effect_type)
 		victim.apply_status_effect(status_effect_type, src)
 	SEND_SIGNAL(victim, COMSIG_CARBON_GAIN_WOUND, src, limb)
-	if(wound_flags & ALERTS_VICTIM)
-		update_victim_heath_doll()
+	victim.update_health_hud()
 
 	var/demoted
 	if(old_wound)
@@ -381,8 +356,6 @@
 	if(!victim)
 		return
 	LAZYREMOVE(victim.all_wounds, src)
-	if(wound_flags & ALERTS_VICTIM)
-		update_victim_heath_doll()
 	SEND_SIGNAL(victim, COMSIG_CARBON_LOSE_WOUND, src, limb)
 
 /**
