@@ -77,7 +77,7 @@
 			Knockdown(levels * 4 SECONDS)
 			return . | ZIMPACT_NO_MESSAGE
 
-	var/incoming_damage = (levels * 5) ** 1.5
+	var/incoming_damage = (levels * 10) ** 1.5
 	// Smaller mobs with catlike grace can ignore damage (EG: cats)
 	var/small_surface_area = mob_size <= MOB_SIZE_SMALL
 	var/skip_knockdown = FALSE
@@ -92,7 +92,7 @@
 			new /obj/effect/temp_visual/mook_dust/small(impacted_turf)
 			return .
 
-		incoming_damage *= 1.66
+		incoming_damage *= 1.2
 		add_movespeed_modifier(/datum/movespeed_modifier/landed_on_feet)
 		addtimer(CALLBACK(src, TYPE_PROC_REF(/mob, remove_movespeed_modifier), /datum/movespeed_modifier/landed_on_feet), levels * 2 SECONDS)
 		visible_message(

@@ -643,10 +643,7 @@
 			add_mood_event("near-death", /datum/mood_event/deaths_door)
 			set_pain_mod(PAIN_MOD_NEAR_DEATH, 0.1)
 
-	if(consciousness <= HARD_CRIT_THRESHOLD + 5)
-		enter_paincrit()
-	else if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
-		exit_paincrit()
+	paincrit_check()
 
 	if(consciousness <= 90)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/carbon_consciousness, multiplicative_slowdown = (HARD_CRIT_THRESHOLD / max(consciousness, 1)))
@@ -657,31 +654,31 @@
 
 	SShealth_updates.queue_update(src, UPDATE_SELF|UPDATE_MEDHUD_HEALTH)
 
-/mob/living/carbon/proc/enter_paincrit()
-	if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
+/mob/living/carbon/proc/paincrit_check()
+	if(consciousness <= CONSCIOUSNESS_CRIT_THRESHOLD || pain_controller?.get_total_pain() >= PAIN_CRIT_THRESOLD || pain_controller?.shock_buildup >= SHOCK_CRIT_THRESHOLD)
+		if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
+			return
+		var/is_standing = body_position == STANDING_UP
+		add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+		if(is_standing && body_position != STANDING_UP)
+			visible_message(
+				span_warning("[src] collapses!"),
+				span_userdanger("You collapse, unable to stand!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+		else if(body_position == LYING_DOWN)
+			visible_message(
+				span_warning("[src] slumps against the ground!"),
+				span_userdanger("You go limp, unable to get up!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+		else
+			to_chat(src, span_userdanger("You can't will yourself to move!"))
 		return
-	var/is_standing = body_position == STANDING_UP
-	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
-	if(is_standing && body_position != STANDING_UP)
-		visible_message(
-			span_warning("[src] collapses!"),
-			span_userdanger("You collapse, unable to stand!"),
-			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-		)
-	else if(body_position == LYING_DOWN)
-		visible_message(
-			span_warning("[src] slumps against the ground!"),
-			span_userdanger("You go limp, unable to get up!"),
-			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-		)
-	else
-		to_chat(src, span_userdanger("You can't will yourself to move!"))
 
-/mob/living/carbon/proc/exit_paincrit()
-	if(!HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
-		return
-	Paralyze(2 SECONDS)
-	remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+	if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
+		Paralyze(2 SECONDS)
+		remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
 
 /mob/living/carbon/update_sight()
 	if(!client)

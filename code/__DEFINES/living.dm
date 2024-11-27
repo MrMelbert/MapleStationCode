@@ -40,7 +40,7 @@
 #define MAX_SHOCK 200
 
 /// Checks if a mob can feel pain.
-#define CAN_FEEL_PAIN(mob) (mob && !HAS_TRAIT(mob, TRAIT_NO_PAIN_EFFECTS))
+#define CAN_FEEL_PAIN(mob) (mob?.pain_controller && !HAS_TRAIT(mob, TRAIT_NO_PAIN_EFFECTS) && mob.pain_controller.pain_modifier > 0.5)
 
 // Keys for pain modifiers
 #define PAIN_MOD_CHEMS "chems"
@@ -58,9 +58,8 @@
 
 /// If the mob enters shock, they will have +1 cure condition (helps cure it faster)
 #define TRAIT_ABATES_SHOCK "shock_abated"
-/// Pain effects, such as stuttering or feedback messages ("Everything hurts") are disabled.
-/// A way of saying "this mob doesn't feel pain" without actually
-/// removing the pain system (giving them a big pain modifier)
+/// Disables pain effects, but without the traditional bonuses numbness gives you
+/// such as leaving your consciousness unaffected
 #define TRAIT_NO_PAIN_EFFECTS "no_pain_effects"
 /// Shock buildup does not increase, only decrease. Cannot enter shock if at the threshold.
 /// No effect if already in shock (unlike abates_shock)

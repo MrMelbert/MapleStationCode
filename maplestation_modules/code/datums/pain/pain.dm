@@ -240,26 +240,21 @@
 	if(amount > 0 && (parent.status_flags & GODMODE))
 		return FALSE
 
+	amount = round(amount, 0.01)
+
 	for(var/zone in shuffle(def_zones))
-		var/adjusted_amount = round(amount, 0.01)
 		var/obj/item/bodypart/adjusted_bodypart = body_zones[check_zone(zone)]
 		if(isnull(adjusted_bodypart)) // it's valid - for if we're passed a zone we don't have
 			continue
 
 		var/current_amount = adjusted_bodypart.pain
 		// Pain is negative (healing)
-		if(adjusted_amount < 0)
-			// Pain is negative and we're at min pain
+		if(amount < 0)
 			if(current_amount <= adjusted_bodypart.min_pain)
 				continue
 
 		// Pain is positive (dealing)
 		else
-			adjusted_amount = round(adjusted_amount * pain_modifier * adjusted_bodypart.bodypart_pain_modifier, 0.01)
-			// Pain modifiers results in us taking 0 pain so we skip
-			if(adjusted_amount <= 0)
-				continue
-
 			// Officially recieving pain at this point
 			adjusted_bodypart.last_received_pain_type = dam_type
 
@@ -269,11 +264,11 @@
 #endif
 
 		// Actually do the pain addition / subtraction here
-		adjusted_bodypart.pain = max(current_amount + adjusted_amount, adjusted_bodypart.min_pain)
+		adjusted_bodypart.pain = max(current_amount + amount, adjusted_bodypart.min_pain)
 
-		if(adjusted_amount > 0)
+		if(amount > 0)
 			INVOKE_ASYNC(src, PROC_REF(on_pain_gain), adjusted_bodypart, amount, dam_type)
-		else if(adjusted_amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
+		else if(amount <= -1.5 || COOLDOWN_FINISHED(src, time_since_last_pain_loss))
 			INVOKE_ASYNC(src, PROC_REF(on_pain_loss), adjusted_bodypart, amount, dam_type)
 		SShealth_updates.queue_update(parent, UPDATE_SELF_DAMAGE|UPDATE_CON)
 
@@ -603,13 +598,9 @@
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
-	// This is "pain crit", it's where stamcrit has moved and is also applied by extreme shock or near death
-	if(curr_pain >= 200 || shock_buildup >= 150) // melbert todo : this doesn't trigger if you're not feeling pain
-		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 60 SECONDS)
-		parent.enter_paincrit()
-
-	else if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINCRIT))
-		parent.exit_paincrit()
+	if(curr_pain >= PAIN_CRIT_THRESOLD || shock_buildup >= SHOCK_CRIT_THRESHOLD)
+		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 120 SECONDS)
+	parent.paincrit_check()
 
 	// Finally, handle pain decay over time
 	if(parent.on_fire)

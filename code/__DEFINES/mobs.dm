@@ -578,6 +578,12 @@
 #define UPPER_CONSCIOUSNESS_MAX 150
 /// Default max for consciousness
 #define CONSCIOUSNESS_MAX 100
+/// Beyond this threshold you are in crit
+#define CONSCIOUSNESS_CRIT_THRESHOLD (HARD_CRIT_THRESHOLD + 5)
+/// Beyond this pain you are in paincrit
+#define PAIN_CRIT_THRESOLD 200
+/// Beyond this amount of shock you are in paincrit
+#define SHOCK_CRIT_THRESHOLD 150
 
 /// At this threshold you are usually in crit from con loss
 #define HEALTH_THRESHOLD_LIKELY_CRIT -100
