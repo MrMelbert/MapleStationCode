@@ -22,6 +22,12 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
 	resistance_flags = NONE
 	dog_fashion = null
+/obj/item/clothing/head/helmet/space/Initialize(mapload)
+	. = ..()
+	add_stabilizer()
+
+/obj/item/clothing/head/helmet/space/proc/add_stabilizer(loose_hat = TRUE)
+	AddComponent(/datum/component/hat_stabilizer, loose_hat = loose_hat)
 
 /datum/armor/helmet_space
 	bio = 100
