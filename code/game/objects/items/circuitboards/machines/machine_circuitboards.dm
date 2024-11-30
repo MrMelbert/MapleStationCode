@@ -79,7 +79,6 @@
 	req_components = list(/datum/stock_part/capacitor = 1)
 	needs_anchored = FALSE
 
-
 /obj/item/circuitboard/machine/telecomms/broadcaster
 	name = "Subspace Broadcaster"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
@@ -333,7 +332,7 @@
 
 /obj/item/circuitboard/machine/scanner_gate
 	name = "Scanner Gate"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
+	greyscale_colors = CIRCUIT_COLOR_SECURITY
 	build_path = /obj/machinery/scanner_gate
 	req_components = list(
 		/datum/stock_part/scanning_module = 3)
@@ -352,6 +351,9 @@
 	name = "\improper Departmental Techfab - Engineering"
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/rnd/production/techfab/department/engineering
+
+/obj/item/circuitboard/machine/smes/super
+	def_components = list(/obj/item/stock_parts/cell = /obj/item/stock_parts/cell/super/empty)
 
 /obj/item/circuitboard/machine/thermomachine
 	name = "Thermomachine"
@@ -571,6 +573,11 @@
 		return
 	. += span_info("[src] is set to [fridges_name_paths[build_path]]. You can use a screwdriver to reconfigure it.")
 
+/obj/item/circuitboard/machine/dehydrator
+	name = "Dehydrator"
+	build_path = /obj/machinery/smartfridge/drying
+	req_components = list(/datum/stock_part/matter_bin = 1)
+	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/space_heater
 	name = "Space Heater"
@@ -616,50 +623,52 @@
 	req_components = list(/obj/item/vending_refill/custom = 1)
 
 	var/static/list/vending_names_paths = list(
-		/obj/machinery/vending/boozeomat = "Booze-O-Mat",
-		/obj/machinery/vending/coffee = "Solar's Best Hot Drinks",
-		/obj/machinery/vending/snack = "Getmore Chocolate Corp",
-		/obj/machinery/vending/cola = "Robust Softdrinks",
-		/obj/machinery/vending/cigarette = "ShadyCigs Deluxe",
-		/obj/machinery/vending/games = "\improper Good Clean Fun",
-		/obj/machinery/vending/autodrobe = "AutoDrobe",
-		/obj/machinery/vending/wardrobe/sec_wardrobe = "SecDrobe",
-		/obj/machinery/vending/wardrobe/det_wardrobe = "DetDrobe",
-		/obj/machinery/vending/wardrobe/medi_wardrobe = "MediDrobe",
-		/obj/machinery/vending/wardrobe/engi_wardrobe = "EngiDrobe",
-		/obj/machinery/vending/wardrobe/atmos_wardrobe = "AtmosDrobe",
-		/obj/machinery/vending/wardrobe/cargo_wardrobe = "CargoDrobe",
-		/obj/machinery/vending/wardrobe/robo_wardrobe = "RoboDrobe",
-		/obj/machinery/vending/wardrobe/science_wardrobe = "SciDrobe",
-		/obj/machinery/vending/wardrobe/hydro_wardrobe = "HyDrobe",
-		/obj/machinery/vending/wardrobe/curator_wardrobe = "CuraDrobe",
-		/obj/machinery/vending/wardrobe/coroner_wardrobe = "MortiDrobe",
-		/obj/machinery/vending/wardrobe/bar_wardrobe = "BarDrobe",
-		/obj/machinery/vending/wardrobe/chef_wardrobe = "ChefDrobe",
-		/obj/machinery/vending/wardrobe/jani_wardrobe = "JaniDrobe",
-		/obj/machinery/vending/wardrobe/law_wardrobe = "LawDrobe",
-		/obj/machinery/vending/wardrobe/chap_wardrobe = "ChapDrobe",
-		/obj/machinery/vending/wardrobe/chem_wardrobe = "ChemDrobe",
-		/obj/machinery/vending/wardrobe/gene_wardrobe = "GeneDrobe",
-		/obj/machinery/vending/wardrobe/viro_wardrobe = "ViroDrobe",
-		/obj/machinery/vending/clothing = "ClothesMate",
-		/obj/machinery/vending/medical = "NanoMed Plus",
-		/obj/machinery/vending/drugs = "NanoDrug Plus",
-		/obj/machinery/vending/wallmed = "NanoMed",
 		/obj/machinery/vending/assist = "Part-Mart",
+		/obj/machinery/vending/autodrobe = "AutoDrobe",
+		/obj/machinery/vending/boozeomat = "Booze-O-Mat",
+		/obj/machinery/vending/cart = "PTech",
+		/obj/machinery/vending/cigarette = "ShadyCigs Deluxe",
+		/obj/machinery/vending/clothing = "ClothesMate",
+		/obj/machinery/vending/coffee = "Solar's Best Hot Drinks",
+		/obj/machinery/vending/cola = "Robust Softdrinks",
+		/obj/machinery/vending/custom = "Custom Vendor",
+		/obj/machinery/vending/cytopro = "CytoPro",
+		/obj/machinery/vending/dinnerware = "Plasteel Chef's Dinnerware Vendor",
+		/obj/machinery/vending/drugs = "NanoDrug Plus",
+		/obj/machinery/vending/engineering = "Robco Tool Maker",
 		/obj/machinery/vending/engivend = "Engi-Vend",
+		/obj/machinery/vending/games = "\improper Good Clean Fun",
 		/obj/machinery/vending/hydronutrients = "NutriMax",
 		/obj/machinery/vending/hydroseeds = "MegaSeed Servitor",
-		/obj/machinery/vending/sustenance = "Sustenance Vendor",
-		/obj/machinery/vending/dinnerware = "Plasteel Chef's Dinnerware Vendor",
-		/obj/machinery/vending/cart = "PTech",
-		/obj/machinery/vending/robotics = "Robotech Deluxe",
-		/obj/machinery/vending/engineering = "Robco Tool Maker",
-		/obj/machinery/vending/sovietsoda = "BODA",
-		/obj/machinery/vending/security = "SecTech",
+		/obj/machinery/vending/medical = "NanoMed Plus",
 		/obj/machinery/vending/modularpc = "Deluxe Silicate Selections",
+		/obj/machinery/vending/robotics = "Robotech Deluxe",
+		/obj/machinery/vending/security = "SecTech",
+		/obj/machinery/vending/snack = "Getmore Chocolate Corp",
+		/obj/machinery/vending/sovietsoda = "BODA",
+		/obj/machinery/vending/sustenance = "Sustenance Vendor",
 		/obj/machinery/vending/tool = "YouTool",
-		/obj/machinery/vending/custom = "Custom Vendor")
+		/obj/machinery/vending/wallmed = "NanoMed",
+		/obj/machinery/vending/wardrobe/atmos_wardrobe = "AtmosDrobe",
+		/obj/machinery/vending/wardrobe/bar_wardrobe = "BarDrobe",
+		/obj/machinery/vending/wardrobe/cargo_wardrobe = "CargoDrobe",
+		/obj/machinery/vending/wardrobe/chap_wardrobe = "ChapDrobe",
+		/obj/machinery/vending/wardrobe/chef_wardrobe = "ChefDrobe",
+		/obj/machinery/vending/wardrobe/chem_wardrobe = "ChemDrobe",
+		/obj/machinery/vending/wardrobe/coroner_wardrobe = "MortiDrobe",
+		/obj/machinery/vending/wardrobe/curator_wardrobe = "CuraDrobe",
+		/obj/machinery/vending/wardrobe/det_wardrobe = "DetDrobe",
+		/obj/machinery/vending/wardrobe/engi_wardrobe = "EngiDrobe",
+		/obj/machinery/vending/wardrobe/gene_wardrobe = "GeneDrobe",
+		/obj/machinery/vending/wardrobe/hydro_wardrobe = "HyDrobe",
+		/obj/machinery/vending/wardrobe/jani_wardrobe = "JaniDrobe",
+		/obj/machinery/vending/wardrobe/law_wardrobe = "LawDrobe",
+		/obj/machinery/vending/wardrobe/medi_wardrobe = "MediDrobe",
+		/obj/machinery/vending/wardrobe/robo_wardrobe = "RoboDrobe",
+		/obj/machinery/vending/wardrobe/science_wardrobe = "SciDrobe",
+		/obj/machinery/vending/wardrobe/sec_wardrobe = "SecDrobe",
+		/obj/machinery/vending/wardrobe/viro_wardrobe = "ViroDrobe",
+	)
 
 /obj/item/circuitboard/machine/vendor/screwdriver_act(mob/living/user, obj/item/tool)
 	var/static/list/display_vending_names_paths
@@ -1113,6 +1122,19 @@
 	build_path = /obj/machinery/rnd/production/techfab/department/security
 
 //Service
+/obj/item/circuitboard/machine/photobooth
+	name = "Photobooth"
+	greyscale_colors = CIRCUIT_COLOR_SERVICE
+	build_path = /obj/machinery/photobooth
+	req_components = list(
+		/datum/stock_part/matter_bin = 1,
+		/datum/stock_part/servo = 1,
+	)
+
+/obj/item/circuitboard/machine/photobooth/security
+	name = "Security Photobooth"
+	greyscale_colors = CIRCUIT_COLOR_SECURITY
+	build_path = /obj/machinery/photobooth/security
 
 /obj/item/circuitboard/machine/biogenerator
 	name = "Biogenerator"

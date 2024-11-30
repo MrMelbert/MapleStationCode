@@ -291,7 +291,7 @@
 /obj/item/clothing/under/proc/list_accessories_with_icon(mob/user)
 	var/list/all_accessories = list()
 	for(var/obj/item/clothing/accessory/attached as anything in attached_accessories)
-		all_accessories += attached.get_examine_string(user)
+		all_accessories += attached.examine_title(user, href = TRUE)
 
 	return all_accessories
 

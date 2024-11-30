@@ -516,7 +516,7 @@
 					dna.unique_enzymes = dna.previous["UE"]
 					dna.previous.Remove("UE")
 				if(dna.previous["blood_type"])
-					dna.human_blood_type = blood_name_to_blood_type(dna.previous["blood_type"])
+					dna.human_blood_type = find_blood_type(dna.previous["blood_type"])
 					dna.previous.Remove("blood_type")
 				dna.temporary_mutations.Remove(mut)
 				continue

@@ -107,7 +107,6 @@
 	end_processing()
 
 /obj/machinery/syndicatebomb/Destroy()
-	QDEL_NULL(wires)
 	QDEL_NULL(countdown)
 	end_processing()
 	return ..()
@@ -231,7 +230,7 @@
 	update_appearance()
 
 /obj/machinery/syndicatebomb/proc/settings(mob/user)
-	if(!user.can_perform_action(src, ALLOW_SILICON_REACH) || !user.can_interact_with(src))
+	if(!user.can_perform_action(src, ALLOW_SILICON_REACH) || !user.in_range_to_interact_with(src))
 		return
 	var/new_timer = tgui_input_number(user, "Set the timer", "Countdown", timer_set, maximum_timer, minimum_timer)
 	if(!new_timer || QDELETED(user) || QDELETED(src) || !user.can_perform_action(src, FORBID_TELEKINESIS_REACH))

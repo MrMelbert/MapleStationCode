@@ -219,7 +219,7 @@
 /obj/item/modular_computer/get_id_examine_strings(mob/user)
 	. = ..()
 	if(computer_id_slot)
-		. += "\The [src] is displaying [computer_id_slot]."
+		. += "[src] is displaying [computer_id_slot]:"
 		. += computer_id_slot.get_id_examine_strings(user)
 
 /obj/item/modular_computer/proc/print_text(text_to_print, paper_title = "")
@@ -905,6 +905,12 @@
 	inserted_pai = null
 	update_appearance(UPDATE_ICON)
 	return TRUE
+
+/// Get all stored files, including external disk files optionaly
+/obj/item/modular_computer/proc/get_files(include_disk_files = FALSE)
+	if(!include_disk_files || !inserted_disk)
+		return stored_files
+	return stored_files + inserted_disk.stored_files
 
 /**
  * Debug ModPC

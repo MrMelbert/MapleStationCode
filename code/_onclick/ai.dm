@@ -25,7 +25,7 @@
 	if(SEND_SIGNAL(src, COMSIG_MOB_CLICKON, A, modifiers) & COMSIG_MOB_CANCEL_CLICKON)
 		return
 
-	if(!can_interact_with(A))
+	if(!in_range_to_interact_with(A))
 		return
 
 	if(multicam_on)

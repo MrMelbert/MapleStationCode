@@ -36,7 +36,7 @@
 /mob/living/simple_animal/hostile/zombie/get_blood_type()
 	if(!fake_blood_type)
 		fake_blood_type = random_human_blood_type()
-	return GLOB.blood_types[fake_blood_type]
+	return find_blood_type(fake_blood_type)
 
 /mob/living/simple_animal/hostile/zombie/AttackingTarget(atom/attacked_target)
 	. = ..()
