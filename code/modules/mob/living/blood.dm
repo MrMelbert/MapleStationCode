@@ -266,41 +266,39 @@
 	RETURN_TYPE(/datum/blood_type)
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return null
-	return GLOB.blood_types[/datum/blood_type/animal]
+	return find_blood_type(/datum/blood_type/animal)
 
 /mob/living/basic/get_blood_type()
 	// All basic mobs are noblood but we should still pretend
-	return GLOB.blood_types[/datum/blood_type/animal]
+	return find_blood_type(/datum/blood_type/animal)
 
 /mob/living/simple_animal/get_blood_type()
 	// Same here
-	return GLOB.blood_types[/datum/blood_type/animal]
+	return find_blood_type(/datum/blood_type/animal)
 
 /mob/living/silicon/get_blood_type()
-	return GLOB.blood_types[/datum/blood_type/oil]
+	return find_blood_type(/datum/blood_type/oil)
 
 /mob/living/simple_animal/bot/get_blood_type()
-	return GLOB.blood_types[/datum/blood_type/oil]
+	return find_blood_type(/datum/blood_type/oil)
 
 /mob/living/basic/bot/get_blood_type()
-	return GLOB.blood_types[/datum/blood_type/oil]
+	return find_blood_type(/datum/blood_type/oil)
 
 /mob/living/basic/drone/get_blood_type()
-	return GLOB.blood_types[/datum/blood_type/oil]
+	return find_blood_type(/datum/blood_type/oil)
 
 /mob/living/carbon/alien/get_blood_type()
 	if(HAS_TRAIT(src, TRAIT_HUSK) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return null
-	return GLOB.blood_types[/datum/blood_type/xenomorph]
+	return find_blood_type(/datum/blood_type/xenomorph)
 
 /mob/living/carbon/human/get_blood_type()
 	if(HAS_TRAIT(src, TRAIT_HUSK) || isnull(dna) || HAS_TRAIT(src, TRAIT_NOBLOOD))
 		return null
 	if(check_holidays(APRIL_FOOLS) && is_clown_job(mind?.assigned_role))
-		return GLOB.blood_types[/datum/blood_type/clown]
-	if(dna.species.exotic_bloodtype)
-		return GLOB.blood_types[dna.species.exotic_bloodtype]
-	return GLOB.blood_types[dna.human_blood_type]
+		return find_blood_type(/datum/blood_type/clown)
+	return find_blood_type(dna.species.exotic_bloodtype || dna.human_blood_type)
 
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/blood_turf = get_turf(src), small_drip)
