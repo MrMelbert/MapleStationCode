@@ -20,7 +20,6 @@
 	spell_requirements = SPELL_REQUIRES_HUMAN
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_advspells.dmi'
 	button_icon_state = "moon"
-	var/mob/living/carbon/human/lycanthrope
 	var/datum/species/owner_base_species // what species we are other than a werewolf
 	// yes this might cause other implications, such as mass species change, or with synths (synthcode moment) but i'll look into it later down the line
 
@@ -29,14 +28,14 @@
 	if (!ishuman(grant_to))
 		return stack_trace("A non human was given werewolf form!") // only human mobs should be given this
 	else
-		lycanthrope = grant_to
+		var/mob/living/carbon/human/lycanthrope = grant_to
 		owner_base_species = lycanthrope.dna.species
 
 /datum/action/cooldown/spell/werewolf_form/cast(mob/living/carbon/human/cast_on)
 	. = ..()
-	if(istype(lycanthrope.dna.species, /datum/species/werewolf))
-		lycanthrope.balloon_alert(lycanthrope, "changing back")
-		lycanthrope.set_species(owner_base_species)
+	if(istype(cast_on.dna.species, /datum/species/werewolf))
+		cast_on.balloon_alert(cast_on, "changing back")
+		cast_on.set_species(owner_base_species)
 	else
-		lycanthrope.balloon_alert(lycanthrope, "turning")
-		lycanthrope.set_species(/datum/species/werewolf)
+		cast_on.balloon_alert(cast_on, "turning")
+		cast_on.set_species(/datum/species/werewolf)
