@@ -52,6 +52,7 @@
 	damage = 5
 	range = 10
 	armour_penetration = 0
+	weak_against_armour = TRUE
 	dismemberment = 5
 	wound_bonus = 5
 	bare_wound_bonus = 5
