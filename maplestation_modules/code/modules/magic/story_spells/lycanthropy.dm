@@ -1,7 +1,7 @@
 // the many spells that are used to turn into versions of a werewolf
 
 /datum/action/cooldown/spell/shapeshift/lycanthrope // use this for the simplemob forms, like standard wolves
-	name = "Lycanthropic Shift"
+	name = "Wolf Form"
 	desc = "Channel the wolf within yourself and turn into one of your possible forms. \
 		Be careful, for you can still die within this form."
 	invocation = "RAAAAAAAAWR!"
@@ -18,11 +18,13 @@
 	invocation = "ARRRROOOOO!" // i don't know man
 	invocation_type = INVOCATION_SHOUT
 	spell_requirements = SPELL_REQUIRES_HUMAN
+	button_icon = 'maplestation_modules/icons/mob/actions/actions_advspells.dmi'
+	button_icon_state = "moon"
 	var/mob/living/carbon/human/lycanthrope
 	var/datum/species/owner_base_species // what species we are other than a werewolf
 	// yes this might cause other implications, such as mass species change, or with synths (synthcode moment) but i'll look into it later down the line
 
-/datum/action/cooldown/spell/werewolf_form/Grant(mob/grant_to)
+/datum/action/cooldown/spell/werewolf_form/Grant(mob/living/grant_to)
 	. = ..()
 	if (!ishuman(grant_to))
 		return stack_trace("A non human was given werewolf form!") // only human mobs should be given this
@@ -30,7 +32,7 @@
 		lycanthrope = grant_to
 		owner_base_species = lycanthrope.dna.species
 
-/datum/action/cooldown/spell/werewolf_form/cast(atom/cast_on)
+/datum/action/cooldown/spell/werewolf_form/cast(mob/living/carbon/human/cast_on)
 	. = ..()
 	if(istype(lycanthrope.dna.species, /datum/species/werewolf))
 		lycanthrope.balloon_alert(lycanthrope, "changing back")
