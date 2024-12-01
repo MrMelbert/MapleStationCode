@@ -89,8 +89,6 @@
 /*
  * # The Vroomba!
  * A roomba, that has combat functionality! It will have two modes, cleaner mode, which is similar to a cleanbot, and combat mode, where it will float and have various attacks, and have telekinesis!
- * TODO: It will also be able to explode, either on purpose or on death.
- * TODO: When it dies, all the stuff it picks up falls out
  */
 
 //lines it can say
