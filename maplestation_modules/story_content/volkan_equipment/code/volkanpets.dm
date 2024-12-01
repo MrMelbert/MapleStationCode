@@ -104,10 +104,10 @@
 	name = "\improper Strange Roomba"
 	desc = "A little cleaning robot, So circular! It looks like it is out of plasteel."
 	icon = 'maplestation_modules/story_content/volkan_equipment/icons/companions.dmi'
-	base_icon_state = "vroomba_drive"
-	icon_state = "vroomba_drive"
-	icon_living = "vroomba_drive"
-	base_icon = "vroomba_drive"
+	base_icon_state = "vroomba2_drive"
+	icon_state = "vroomba2_drive"
+	icon_living = "vroomba2_drive"
+	base_icon = "vroomba2_drive"
 	pass_flags = PASSMOB | PASSFLAPS | PASSTABLE
 	density = FALSE
 	anchored = FALSE
@@ -138,7 +138,7 @@
 	var/static/list/hat_offsets = list(0,-9)
 
 	///the icon state for when it is flying
-	var/flying_icon = "vroomba_float"
+	var/flying_icon = "vroomba2_float"
 
 	///speed it goes in combat mode. lower is faster.
 	var/combat_speed = 0.5
