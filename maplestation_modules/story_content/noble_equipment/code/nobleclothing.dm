@@ -532,7 +532,6 @@
 	icon_state = "aervsuit"
 	inhand_icon_state = "penrosecoat"
 	resistance_flags = FIRE_PROOF|ACID_PROOF
-	can_adjust = FALSE
 
 /obj/item/clothing/gloves/penrose/aerv
 	name = "ringmasters clawed gloves"
