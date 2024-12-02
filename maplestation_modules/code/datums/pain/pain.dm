@@ -88,7 +88,6 @@
 	RegisterSignal(parent, COMSIG_LIVING_POST_FULLY_HEAL, PROC_REF(remove_all_pain))
 	RegisterSignal(parent, COMSIG_MOB_APPLY_DAMAGE, PROC_REF(add_damage_pain))
 	RegisterSignal(parent, COMSIG_MOB_STATCHANGE, PROC_REF(on_parent_statchance))
-	RegisterSignals(parent, list(SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS), SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS)), PROC_REF(refresh_pain_attributes))
 	RegisterSignal(parent, COMSIG_LIVING_TREAT_MESSAGE, PROC_REF(handle_message))
 	RegisterSignal(parent, COMSIG_MOB_FIRED_GUN, PROC_REF(on_mob_fired_gun))
 	RegisterSignal(parent, COMSIG_LIVING_REVIVE, PROC_REF(revived))
@@ -109,8 +108,6 @@
 		COMSIG_MOB_APPLY_DAMAGE,
 		COMSIG_MOB_FIRED_GUN,
 		COMSIG_MOB_STATCHANGE,
-		SIGNAL_ADDTRAIT(TRAIT_NO_PAIN_EFFECTS),
-		SIGNAL_REMOVETRAIT(TRAIT_NO_PAIN_EFFECTS),
 	))
 
 /// Add a bodypart to be tracked.
@@ -212,10 +209,6 @@
 		pain_modifier *= pain_mods[mod]
 	if(old_pain_mod == pain_modifier)
 		return FALSE
-	if(pain_modifier <= 0.5)
-		ADD_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS, "pain_mod")
-	else
-		REMOVE_TRAIT(parent, TRAIT_NO_PAIN_EFFECTS, "pain_mod")
 	return TRUE
 
 /**
@@ -470,8 +463,8 @@
 		if(checked_bodypart.pain_feedback(seconds_per_tick, no_recent_pain))
 			COOLDOWN_START(src, time_since_last_pain_message, rand(8 SECONDS, 12 SECONDS))
 
-	if(!has_pain)
-		// no-op if none of our bodyparts are in pain
+	if(!has_pain && shock_buildup <= 0)
+		// no-op if none of our bodyparts are in pain and we're not building up shock
 		return
 
 	var/shock_mod = max(pain_modifier, 0.33)
@@ -647,13 +640,13 @@
 	SIGNAL_HANDLER
 
 	var/pain = get_total_pain()
-	// Even if you can't feel pain it still contributes to consciousness loss
+	// Consciousness penalty from pain is unnaffected by pain modifier
 	if(pain <= 25)
 		parent.remove_consciousness_modifier(PAIN)
 	else
 		parent.add_consciousness_modifier(PAIN, round(-0.5 * (max(pain + shock_buildup, 0) ** 0.8)), 0.01)
-	// Modify pain by modifier or traits before messing with the modifiers
-	pain *= CAN_FEEL_PAIN(parent) ? pain_modifier : 0
+	// Buuut the other modifiers aren't
+	pain *= pain_modifier
 
 	switch(pain)
 		if(0 to 25)
@@ -754,7 +747,7 @@
 		return
 
 	var/num_repeats = floor(((get_total_pain() / 75) + (shock_buildup / 75)) * pain_modifier)
-	if(!CAN_FEEL_PAIN(parent) && shock_buildup < 90)
+	if(shock_buildup < 90)
 		num_repeats *= 0.5
 
 	if(num_repeats <= 1)

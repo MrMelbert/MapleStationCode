@@ -93,7 +93,7 @@
 		"but feels faint",
 	)
 
-	switch(pain)
+	switch(get_modified_pain())
 		if(10 to 25)
 			owner.flash_pain_overlay(1)
 			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")
@@ -145,7 +145,7 @@
 		"but it subsides",
 	)
 
-	switch(pain)
+	switch(get_modified_pain())
 		if(10 to 40)
 			owner.flash_pain_overlay(1)
 			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")
@@ -210,7 +210,7 @@
 		"but the pressure fades",
 	)
 
-	switch(pain)
+	switch(get_modified_pain())
 		if(10 to 30)
 			owner.flash_pain_overlay(1)
 			feedback_phrases += list("aches", "feels sore", "stings slightly", "tingles", "twinges")

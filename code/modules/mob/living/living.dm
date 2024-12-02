@@ -2180,7 +2180,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		TRAIT_IMMOBILIZED,
 		TRAIT_INCAPACITATED,
 		TRAIT_KNOCKEDOUT,
-		TRAIT_NO_PAIN_EFFECTS,
 	)
 	// All the traits associated with the mob's current stat
 	var/list/added_traits = list()
@@ -2208,7 +2207,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				TRAIT_IMMOBILIZED,
 				TRAIT_INCAPACITATED,
 				TRAIT_KNOCKEDOUT,
-				TRAIT_NO_PAIN_EFFECTS,
 			)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()

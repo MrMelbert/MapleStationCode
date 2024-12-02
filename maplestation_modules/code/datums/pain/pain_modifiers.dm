@@ -56,11 +56,11 @@
 // Fake healthy is supposed to mimic feeling no pain
 /datum/status_effect/grouped/screwy_hud/fake_healthy/on_apply()
 	. = ..()
-	ADD_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
+	owner.set_pain_mod(TRAIT_STATUS_EFFECT(id), 0.33)
 
 /datum/status_effect/grouped/screwy_hud/fake_healthy/on_remove()
 	. = ..()
-	REMOVE_TRAIT(owner, TRAIT_NO_PAIN_EFFECTS, TRAIT_STATUS_EFFECT(id))
+	owner.unset_pain_mod(TRAIT_STATUS_EFFECT(id))
 
 // Being drunk gives a slight one, note the actual reagent gives one based on its strength
 /datum/status_effect/inebriated/drunk/on_apply()
