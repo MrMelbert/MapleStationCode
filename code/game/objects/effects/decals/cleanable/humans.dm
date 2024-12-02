@@ -55,7 +55,7 @@
 /obj/effect/decal/cleanable/blood/update_atom_colour()
 	. = ..()
 	// get a default color based on DNA if it ends up unset somehow
-	color ||= get_blood_dna_color()
+	color ||= (GET_ATOM_BLOOD_DNA_LENGTH(src) ? get_blood_dna_color() : COLOR_BLOOD)
 	// stop existing drying animations
 	animate(src)
 	// ok let's make the dry color now
@@ -114,10 +114,8 @@
 		return PROCESS_KILL
 
 	adjust_bloodiness(-0.4 * BLOOD_PER_UNIT_MODIFIER * seconds_per_tick)
-	// does not use speed_dry because we're not actually speeding up, just keeping a running tally
-	// (we don't want to mess with the animation, it's already in sync - theoretically)
 	drying_progress += (seconds_per_tick * 1 SECONDS)
-	// Do it next tick when we're done
+	// Finish it next tick when we're all done
 	if(drying_progress >= drying_time + SSblood_drying.wait)
 		dry()
 
