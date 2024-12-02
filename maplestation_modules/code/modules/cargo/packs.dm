@@ -267,3 +267,39 @@
 		/obj/item/clothing/mask/breath/ornithid/toucan,
 		/obj/item/clothing/mask/breath/ornithid/bluejay,
 	)
+
+/datum/supply_pack/science/volite_shipment
+	name = "Volite Shipment"
+	desc = "A bundle containing 5 volite formations."
+	cost = PAYCHECK_COMMAND * 8 // 800, 4x the cost of a single volite crystal
+	contains = list(
+		/obj/item/mana_battery/mana_crystal/standard,
+		/obj/item/mana_battery/mana_crystal/standard,
+		/obj/item/mana_battery/mana_crystal/standard,
+		/obj/item/mana_battery/mana_crystal/standard,
+		/obj/item/mana_battery/mana_crystal/standard,
+	)
+
+/datum/supply_pack/science/volite_shipment
+	name = "Small Volite Crystal Shipment"
+	desc = "A bundle containing 6 miniature volite crystals."
+	cost = PAYCHECK_COMMAND * 5
+	contains = list(
+		/obj/item/mana_battery/mana_crystal/small,
+		/obj/item/mana_battery/mana_crystal/small,
+		/obj/item/mana_battery/mana_crystal/small,
+		/obj/item/mana_battery/mana_crystal/small,
+		/obj/item/mana_battery/mana_crystal/small,
+		/obj/item/mana_battery/mana_crystal/small,
+	)
+
+/datum/supply_pack/science/cut_volite_crystals
+	name = "Cut Volite Gemstone Pack"
+	desc = "A bundle containing 4 expertly cut volite crystals, to be slotted in an amulet."
+	cost = PAYCHECK_COMMAND * 9
+	contains = list(
+		/obj/item/mana_battery/mana_crystal/cut,
+		/obj/item/mana_battery/mana_crystal/cut,
+		/obj/item/mana_battery/mana_crystal/cut,
+		/obj/item/mana_battery/mana_crystal/cut,
+	)

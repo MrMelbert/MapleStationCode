@@ -297,7 +297,7 @@
 	production = 6
 	yield = 3
 	growthstages = 4
-	genes = list(/datum/plant_gene/trait/sticky, /datum/plant_gene/trait/stinging)
+	genes = list(/datum/plant_gene/trait/sticky, /datum/plant_gene/trait/stinging, /datum/plant_gene/reagent/quintessence) // NON-MODULE CHANGE
 	graft_gene = /datum/plant_gene/trait/sticky
 	growing_icon = 'icons/obj/service/hydroponics/growing_vegetables.dmi'
 	reagents_add = list(/datum/reagent/water = 0.08, /datum/reagent/consumable/nutriment = 0.05, /datum/reagent/medicine/c2/helbital = 0.05)
@@ -375,7 +375,7 @@
 	species = "fireblossom"
 	growthstages = 3
 	product = /obj/item/food/grown/ash_flora/fireblossom
-	genes = list(/datum/plant_gene/trait/fire_resistance, /datum/plant_gene/trait/glow/yellow)
+	genes = list(/datum/plant_gene/trait/fire_resistance, /datum/plant_gene/trait/glow/yellow, /datum/plant_gene/reagent/misty_quintessence) // NON-MODULE CHANGE
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
 	reagents_add = list(/datum/reagent/consumable/tinlux = 0.04, /datum/reagent/consumable/nutriment = 0.03, /datum/reagent/carbon = 0.05)
 

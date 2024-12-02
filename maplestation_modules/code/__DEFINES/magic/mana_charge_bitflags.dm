@@ -1,0 +1,5 @@
+
+#define MANA_ALL_LEYLINES (1<<1)
+
+#define MANA_DISPERSE_EVENLY 1
+#define MANA_SEQUENTIAL 2

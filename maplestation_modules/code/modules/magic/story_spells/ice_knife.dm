@@ -1,20 +1,14 @@
-/datum/component/uses_mana/story_spell/conjure_item/ice_knife
-	var/ice_knife_attunement = 0.5
-
-/datum/component/uses_mana/story_spell/conjure_item/ice_knife/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/ice] = ice_knife_attunement
-
-/datum/component/uses_mana/story_spell/conjure_item/ice_knife/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/conjure_item/ice_knife/ice_knife_spell = parent
-	return ..() * ice_knife_spell.ice_knife_cost
+#define ICE_KNIFE_ATTUNEMENT_ICE 0.5
+#define ICE_KNIFE_MANA_COST 30
+#define ICE_ARMBLADE_MANA_COST 45
 
 /datum/action/cooldown/spell/conjure_item/ice_knife
 	name = "Ice knife"
 	desc = "Summon an ice knife made from the moisture in the air."
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_cantrips.dmi'
 	button_icon_state = "ice_knife"
-
+	/// What the mana cost is, affected by Armblade variant.
+	var/mana_cost = ICE_KNIFE_MANA_COST
 	item_type = /obj/item/knife/combat/ice
 	delete_old = TRUE
 
@@ -25,8 +19,19 @@
 
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
-	/// What the mana cost is, affected by Armblade variant.
-	var/ice_knife_cost = 30
+
+/datum/action/cooldown/spell/conjure_item/ice_knife/New(Target, original)
+	. = ..()
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_ICE] += ICE_KNIFE_ATTUNEMENT_ICE
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		mana_required = mana_cost, \
+		attunements = attunements, \
+	)
 
 /obj/item/knife/combat/ice
 	name = "ice knife"
@@ -67,7 +72,7 @@
 /datum/spellbook_item/spell/ice_knife/apply_params(datum/action/cooldown/spell/conjure_item/ice_knife/our_spell, ice_blade)
 	if (ice_blade)
 		our_spell.item_type = /obj/item/melee/arm_blade/ice_armblade
-		our_spell.ice_knife_cost = 45
+		our_spell.mana_cost = ICE_ARMBLADE_MANA_COST
 		our_spell.name = "Ice Armblade"
 		our_spell.desc = "Construct a blade around your arm, in exchange of harming it in the process."
 	return
@@ -136,3 +141,7 @@
 		return
 	var/spell_hand = (mymob.get_held_index_of_item(src) % 2) ? BODY_ZONE_L_ARM : BODY_ZONE_R_ARM
 	mymob.apply_damage(damage, BRUTE, spell_hand)
+
+#undef ICE_KNIFE_ATTUNEMENT_ICE
+#undef ICE_KNIFE_MANA_COST
+#undef ICE_ARMBLADE_MANA_COST
