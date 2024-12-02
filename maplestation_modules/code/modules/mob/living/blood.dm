@@ -49,12 +49,13 @@
  * Blood Drying SS
  *
  * Used as a low priority backround system to handling the drying of blood on the ground
+ * (basically just handles reducing their bloodiness value over time)
  */
 PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "Blood Drying"
 	flags = SS_NO_INIT | SS_BACKGROUND
 	priority = 10
-	wait = 10 SECONDS
+	wait = 4 SECONDS
 
 /**
  * Blood Types
@@ -100,6 +101,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /**
  * Used to handle any unique facets of blood spawned of this blood type
+ *
+ * You don't need to worry about updating the icon of the decal,
+ * it will be handled automatically after setup is finished
  *
  * Arguments
  * * blood - the blood being set up
@@ -284,7 +288,6 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/crew/lizard/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c99c", "size" = 1.5))
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
-	blood.update_appearance(UPDATE_OVERLAYS)
 
 /datum/blood_type/crew/skrell
 	name = "S"
@@ -298,10 +301,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
-	blood.update_appearance(UPDATE_OVERLAYS)
 	if(!new_splat)
 		return
-	blood.make_undryable()
+	blood.can_dry = FALSE
 	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned))
 
 /datum/blood_type/crew/ethereal/proc/on_cleaned(obj/effect/decal/cleanable/source, mob/living/user, obj/item/tool, ...)
@@ -333,7 +335,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	if(!new_splat)
 		return
 	// Oil blood will never dry and can be ignited with fire
-	blood.make_undryable()
+	blood.can_dry = FALSE
 	blood.AddElement(/datum/element/easy_ignite)
 
 /// A universal blood type which accepts everything

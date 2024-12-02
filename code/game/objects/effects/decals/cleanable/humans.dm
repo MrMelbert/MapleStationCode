@@ -11,6 +11,7 @@
 	decal_reagent = /datum/reagent/blood
 	bloodiness = BLOOD_AMOUNT_PER_DECAL
 	color = COLOR_BLOOD
+	flags_1 = UNPAINTABLE_1
 	/// Can this blood dry out?
 	var/can_dry = TRUE
 	/// Is this blood dried out?
@@ -30,9 +31,6 @@
 	var/drying_time = 5 MINUTES
 	/// The process to drying out, recorded in deciseconds
 	VAR_FINAL/drying_progress = 0
-	/// For the actual animation, how long between steps?
-	/// This will determine how much it jumps when changing color or speed mid drying
-	var/step_period = 20 SECONDS
 
 /obj/effect/decal/cleanable/blood/Initialize(mapload)
 	. = ..()
@@ -42,7 +40,7 @@
 		dry()
 	else if(can_dry)
 		START_PROCESSING(SSblood_drying, src)
-		update_blood_drying_effect()
+		// update_atom_colour() // this is already called by parent via add_atom_colour
 
 /obj/effect/decal/cleanable/blood/Destroy()
 	STOP_PROCESSING(SSblood_drying, src)
@@ -53,13 +51,37 @@
 		return
 	return ..()
 
-/// Makes this decal undryable, then stops any ongoing drying
-/// Does nothing if it's already undryable or dried
-/obj/effect/decal/cleanable/blood/proc/make_undryable()
-	if(!can_dry || dried)
+// Modifiers to saturation and values of dried blood
+#define BLOOD_SATURATION_MODIFIER (0.1 * 255)
+#define BLOOD_VALUE_MODIFIER (0.4 * 255)
+
+// When color changes we need to update the drying animation
+/obj/effect/decal/cleanable/blood/update_atom_colour()
+	. = ..()
+	// get a default color based on DNA if it ends up unset somehow
+	color ||= get_blood_dna_color()
+	// stop existing drying animations
+	animate(src)
+	// converts to hsv so we can sap the saturation and brightness, making it look dried
+	var/starting_color_hsv = ReadHSV(RGBtoHSV(color))
+	var/dried_color = HSVtoRGB(hsv(
+		starting_color_hsv[1],
+		starting_color_hsv[2] - BLOOD_SATURATION_MODIFIER,
+		starting_color_hsv[3] - BLOOD_VALUE_MODIFIER,
+	))
+	// if it's dried (or about to dry) we can just set color directly
+	if(dried || drying_progress >= drying_time)
+		color = dried_color
 		return
-	can_dry = FALSE
-	update_blood_drying_effect()
+
+	// otherwise set the color to what it should be at the current drying progress, then animate down to the dried color
+	// this offers a seamless way to speed up or slow down the animation without causing it to suddenly appear more or less dried
+	color = hsv_gradient(round(drying_progress / drying_time, 0.01), 0, color, 1, dried_color)
+	if(can_dry)
+		animate(src, time = drying_time - drying_progress, color = dried_color)
+
+#undef BLOOD_SATURATION_MODIFIER
+#undef BLOOD_VALUE_MODIFIER
 
 /// Speeds up the drying time by a given amount,
 /// then updates the effect, meaning the animation will speed up
@@ -70,41 +92,13 @@
 		dry()
 		return
 
-	update_blood_drying_effect()
+	update_atom_colour()
 
 /// Slows down the drying time by a given amount,
 /// then updates the effect, meaning the animation will slow down
 /obj/effect/decal/cleanable/blood/proc/slow_dry(by_amount)
 	drying_progress -= by_amount
-	update_blood_drying_effect()
-
-// Modifiers to saturation and values of dried blood
-#define BLOOD_SATURATION_MODIFIER (0.1 * 255)
-#define BLOOD_VALUE_MODIFIER (0.4 * 255)
-
-/// Updates the effect of blood drying
-/obj/effect/decal/cleanable/blood/proc/update_blood_drying_effect()
-	animate(src)
-	if(!can_dry)
-		return
-
-	var/starting_color = GET_ATOM_BLOOD_DNA_LENGTH(src) ? get_blood_dna_color() : COLOR_BLOOD
-	var/starting_color_hsv = ReadHSV(RGBtoHSV(starting_color))
-	var/dried_color = HSVtoRGB(hsv(
-		starting_color_hsv[1],
-		starting_color_hsv[2] - BLOOD_SATURATION_MODIFIER,
-		starting_color_hsv[3] - BLOOD_VALUE_MODIFIER,
-	))
-
-	if(dried || drying_progress >= drying_time)
-		color = dried_color
-		return
-
-	color = hsv_gradient(round(drying_progress / drying_time, 0.01), 0, starting_color, 1, dried_color)
-	animate(src, time = drying_time - drying_progress, color = dried_color)
-
-#undef BLOOD_SATURATION_MODIFIER
-#undef BLOOD_VALUE_MODIFIER
+	update_atom_colour()
 
 /// Returns a string of all the blood reagents in the blood
 /obj/effect/decal/cleanable/blood/proc/get_blood_string()
@@ -154,6 +148,7 @@
 	dried = TRUE
 	reagents?.clear_reagents()
 	update_appearance()
+	update_atom_colour()
 	STOP_PROCESSING(SSblood_drying, src)
 	return TRUE
 
@@ -564,3 +559,10 @@
 	the_window.vis_contents += final_splatter
 	the_window.bloodied = TRUE
 	expire()
+
+/// Subtype which has random DNA baked in OUTSIDE of mapload
+/obj/effect/decal/cleanable/blood/pre_dna
+
+/obj/effect/decal/cleanable/blood/pre_dna/Initialize(mapload)
+	. = ..()
+	add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
