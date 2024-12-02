@@ -138,7 +138,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			if(!QDELETED(splatter))
 				splatter.add_mob_blood(bleeding)
 				splatter.adjust_bloodiness(new_blood)
-				splatter.speed_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
+				splatter.slow_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
 				return splatter
 
 			drop = new(blood_turf, bleeding.get_static_viruses())
@@ -173,7 +173,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			return null
 	else
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
-		splatter.speed_dry(1 SECONDS * BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
+		splatter.slow_dry(1 SECONDS * BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
 	splatter.add_mob_blood(bleeding) //give blood info to the blood decal.
 	if(LAZYLEN(temp_blood_DNA))
 		splatter.add_blood_DNA(temp_blood_DNA)

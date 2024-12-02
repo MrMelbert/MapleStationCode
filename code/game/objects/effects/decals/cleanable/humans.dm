@@ -51,10 +51,6 @@
 		return
 	return ..()
 
-// Modifiers to saturation and values of dried blood
-#define BLOOD_SATURATION_MODIFIER (0.1 * 255)
-#define BLOOD_VALUE_MODIFIER (0.4 * 255)
-
 // When color changes we need to update the drying animation
 /obj/effect/decal/cleanable/blood/update_atom_colour()
 	. = ..()
@@ -62,37 +58,41 @@
 	color ||= get_blood_dna_color()
 	// stop existing drying animations
 	animate(src)
-	// converts to hsv so we can sap the saturation and brightness, making it look dried
-	var/starting_color_hsv = ReadHSV(RGBtoHSV(color))
-	var/dried_color = HSVtoRGB(hsv(
-		starting_color_hsv[1],
-		starting_color_hsv[2] - BLOOD_SATURATION_MODIFIER,
-		starting_color_hsv[3] - BLOOD_VALUE_MODIFIER,
-	))
+	// ok let's make the dry color now
+	// we will manually calculate what the resulting color should be when it dries
+	// we do this instead of using something like a color matrix because byond moment
+	// (at any given moment, there may be like... 200 blood decals on your screen at once
+	// byond is, apparently, pretty bad at handling that many color matrix operations,
+	// especially in a filter or while animating)
+	var/list/starting_color_rgb = ReadRGB(color)
+	// we want a fixed offset for a fixed drop in color intensity, plus a scaling offset based on our strongest color
+	// the scaling offset helps keep dark colors from turning black, while also ensurse bright colors don't stay super bright
+	var/max_color = max(starting_color_rgb[1], starting_color_rgb[2], starting_color_rgb[3])
+	var/red_offset = 50 + (75 * (starting_color_rgb[1] / max_color))
+	var/green_offset = 50 + (75 * (starting_color_rgb[2] / max_color))
+	var/blue_offset = 50 + (75 * (starting_color_rgb[3] / max_color))
+	// if the color is already decently dark, we should reduce the offsets even further
+	// this is intended to prevent already dark blood (mixed blood in particular) from becoming full black
+	var/strength = starting_color_rgb[1] + starting_color_rgb[2] + starting_color_rgb[3]
+	if(strength <= 192)
+		red_offset *= 0.5
+		green_offset *= 0.5
+		blue_offset *= 0.5
+	// finally, get this show on the road
+	var/dried_color = rgb(
+		clamp(starting_color_rgb[1] - red_offset, 0, 255),
+		clamp(starting_color_rgb[2] - green_offset, 0, 255),
+		clamp(starting_color_rgb[3] - blue_offset, 0, 255),
+		length(starting_color_rgb) >= 4 ? starting_color_rgb[4] : 255, // maintain alpha! (if it has it)
+	)
 	// if it's dried (or about to dry) we can just set color directly
 	if(dried || drying_progress >= drying_time)
 		color = dried_color
 		return
-
-	// otherwise set the color to what it should be at the current drying progress, then animate down to the dried color
-	// this offers a seamless way to speed up or slow down the animation without causing it to suddenly appear more or less dried
-	color = hsv_gradient(round(drying_progress / drying_time, 0.01), 0, color, 1, dried_color)
+	// otherwise set the color to what it should be at the current drying progress, then animate down to the dried color if we can
+	color = gradient(0, color, 1, dried_color, round(drying_progress / drying_time, 0.01))
 	if(can_dry)
 		animate(src, time = drying_time - drying_progress, color = dried_color)
-
-#undef BLOOD_SATURATION_MODIFIER
-#undef BLOOD_VALUE_MODIFIER
-
-/// Speeds up the drying time by a given amount,
-/// then updates the effect, meaning the animation will speed up
-/// Also forces drying if it progresses past the drying time
-/obj/effect/decal/cleanable/blood/proc/speed_dry(by_amount)
-	drying_progress += by_amount
-	if(drying_progress >= drying_time)
-		dry()
-		return
-
-	update_atom_colour()
 
 /// Slows down the drying time by a given amount,
 /// then updates the effect, meaning the animation will slow down
@@ -560,9 +560,20 @@
 	the_window.bloodied = TRUE
 	expire()
 
-/// Subtype which has random DNA baked in OUTSIDE of mapload
+/// Subtype which has random DNA baked in OUTSIDE of mapload.
+/// For testing, mapping, or badmins
 /obj/effect/decal/cleanable/blood/pre_dna
+	var/list/dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/human/a_minus)
 
 /obj/effect/decal/cleanable/blood/pre_dna/Initialize(mapload)
 	. = ..()
-	add_blood_DNA(list("UNKNOWN DNA" = random_human_blood_type()))
+	add_blood_DNA(dna_types)
+
+/obj/effect/decal/cleanable/blood/pre_dna/lizard
+	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/lizard)
+
+/obj/effect/decal/cleanable/blood/pre_dna/lizhuman
+	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/human/a_minus, "UNKNOWN DNA B" = /datum/blood_type/crew/lizard)
+
+/obj/effect/decal/cleanable/blood/pre_dna/ethereal
+	dna_types = list("UNKNOWN DNA A" = /datum/blood_type/crew/ethereal)
