@@ -157,6 +157,8 @@ SUBSYSTEM_DEF(blackbox)
 		//NON-MODULE CHANGE END
 		if(FREQ_AI_PRIVATE)
 			record_feedback("tally", "radio_usage", 1, "ai private")
+		if(FREQ_ENTERTAINMENT)
+			record_feedback("tally", "radio_usage", 1, "entertainment")
 		if(FREQ_CTF_RED)
 			record_feedback("tally", "radio_usage", 1, "CTF red team")
 		if(FREQ_CTF_BLUE)

@@ -135,7 +135,7 @@
 /mob/living/silicon/pai/add_sensors() //pAIs have to buy their HUDs
 	return
 
-/mob/living/silicon/pai/can_interact_with(atom/target)
+/mob/living/silicon/pai/in_range_to_interact_with(atom/target)
 	if(target == signaler) // Bypass for signaler
 		return TRUE
 	if(target == modularInterface)

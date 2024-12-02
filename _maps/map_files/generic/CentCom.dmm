@@ -2607,7 +2607,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/supply)
 "nE" = (
-/obj/machinery/keycard_auth/directional/south,
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /obj/structure/table/reinforced,
 /obj/item/stack/package_wrap{
 	pixel_y = 11;
@@ -4227,7 +4227,7 @@
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/ferry)
 "uk" = (
-/obj/machinery/keycard_auth/directional/south,
+/obj/machinery/keycard_auth/wall_mounted/directional/south,
 /obj/structure/table/reinforced,
 /obj/machinery/recharger,
 /obj/machinery/button/door/indestructible{
@@ -10099,6 +10099,7 @@
 	pixel_x = 32
 	},
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/computer/security/telescreen/research/directional/south,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/admin)
 "UM" = (
@@ -10329,12 +10330,6 @@
 /area/centcom/central_command_areas/admin)
 "Wq" = (
 /obj/machinery/modular_computer/preset/id/centcom,
-/obj/machinery/computer/security/telescreen{
-	desc = "Used for watching the RD's goons and the AI's satellite from the safety of his office.";
-	name = "Research Monitor";
-	network = list("rd","minisat");
-	pixel_y = 28
-	},
 /turf/open/floor/iron/grimy,
 /area/centcom/central_command_areas/admin)
 "Wt" = (

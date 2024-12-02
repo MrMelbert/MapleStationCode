@@ -5,7 +5,7 @@
  */
 /obj/item/inspector
 	name = "\improper N-spect scanner"
-	desc = "Central Command-issued inspection device. Performs inspections according to Nanotrasen protocols when activated, then prints an encrypted report regarding the maintenance of the station. Definitely not giving you cancer."
+	desc = "Central Command standard issue inspection device. Can perform either wide area scans that central command can use to verify the security of the station, or detailed scan. Can scan people for contraband on their person or items being contraband."
 	icon = 'icons/obj/devices/scanner.dmi'
 	icon_state = "inspector"
 	worn_icon_state = "salestagger"
@@ -19,6 +19,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/device.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/device.ogg'
 
+	COOLDOWN_DECLARE(scanning_person) //Cooldown for scanning a carbon
 	///How long it takes to print on time each mode, ordered NORMAL, FAST, HONK
 	var/list/time_list = list(5 SECONDS, 1 SECONDS, 0.1 SECONDS)
 	///Which print time mode we're on.
@@ -93,6 +94,32 @@
 	else
 		. += "\The [cell] is firmly in place. [span_info("Ctrl-click with an empty hand to remove it.")]"
 
+/obj/item/inspector/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	var/update_context = FALSE
+	if(cell_cover_open && cell)
+		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Remove cell"
+		update_context = TRUE
+
+	if(cell_cover_open && !cell && istype(held_item, /obj/item/stock_parts/cell))
+		context[SCREENTIP_CONTEXT_LMB] = "Install cell"
+		update_context = TRUE
+
+	if(held_item?.tool_behaviour == TOOL_CROWBAR)
+		context[SCREENTIP_CONTEXT_LMB] = "[cell_cover_open ? "close" : "open"] battery panel"
+		update_context = TRUE
+
+	if(update_context)
+		return CONTEXTUAL_SCREENTIP_SET
+	return NONE
+
+/obj/item/inspector/add_item_context(obj/item/source, list/context, atom/target, mob/living/user)
+	if(cell_cover_open || !cell)
+		return NONE
+	if(isitem(target))
+		context[SCREENTIP_CONTEXT_LMB] = "Contraband Scan"
+		return CONTEXTUAL_SCREENTIP_SET
+	return NONE
+
 /**
  * Create our report
  *
@@ -109,10 +136,10 @@
 */
 /obj/item/inspector/proc/print_report(mob/user)
 	if(!cell)
-		to_chat(user, "<span class='info'>\The [src] doesn't seem to be on... It feels quite light. Perhaps it lacks a power cell?")
+		to_chat(user, span_notice("[src] doesn't seem to be on... It feels quite light. Perhaps it lacks a power cell?"))
 		return
 	if(cell.charge == 0)
-		to_chat(user, "<span class='info'>\The [src] doesn't seem to be on... Perhaps it ran out of power?")
+		to_chat(user, span_notice("[src] doesn't seem to be on... Perhaps it ran out of power?"))
 		return
 	if(!cell.use(power_per_print))
 		if(cell.use(power_to_speak))
