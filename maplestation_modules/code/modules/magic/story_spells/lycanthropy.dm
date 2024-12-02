@@ -23,13 +23,9 @@
 	var/datum/species/owner_base_species // what species we are other than a werewolf
 	// yes this might cause other implications, such as mass species change, or with synths (synthcode moment) but i'll look into it later down the line
 
-/datum/action/cooldown/spell/werewolf_form/Grant(mob/living/grant_to)
+/datum/action/cooldown/spell/werewolf_form/Grant(mob/living/carbon/human/grant_to)
 	. = ..()
-	if (!ishuman(grant_to))
-		return stack_trace("A non human was given werewolf form!") // only human mobs should be given this
-	else
-		var/mob/living/carbon/human/lycanthrope = grant_to
-		owner_base_species = lycanthrope.dna.species
+	owner_base_species = grant_to.dna.species
 
 /datum/action/cooldown/spell/werewolf_form/cast(mob/living/carbon/human/cast_on)
 	. = ..()
