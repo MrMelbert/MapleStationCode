@@ -15,6 +15,9 @@
 		affected_mob.electrocute_act(rand(10, 30), "Auric Tesla in their body", 1, SHOCK_NOGLOVES)
 		playsound(affected_mob, SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
+	if(drinker?.mana_pool)
+		drinker.adjust_personal_mana(10) // HOLY JESUS, BATMAN.
+
 /datum/chemical_reaction/auricelectrolysis
 	results = list(/datum/reagent/oxygen = 10, /datum/reagent/hydrogen = 20)
 	required_reagents = list(/datum/reagent/water = 10)
@@ -73,6 +76,9 @@
 	. = ..()
 	if(affected_mob.take_bodypart_damage(10*REM*seconds_per_tick, 0))
 		return UPDATE_MOB_HEALTH
+
+	if(drinker?.mana_pool)
+		drinker.adjust_personal_mana(-10)
 
 /datum/chemical_reaction/plasma_vortex
 	required_reagents = list(/datum/reagent/darkplasma = 1)
