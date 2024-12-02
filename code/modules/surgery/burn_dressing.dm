@@ -19,13 +19,8 @@
 		/datum/surgery_step/dress,
 	)
 
-/datum/surgery/debride/can_start(mob/living/user, mob/living/carbon/target)
-	if(!istype(target))
-		return FALSE
-	if(..())
-		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
-		var/datum/wound/burn/flesh/burn_wound = targeted_bodypart.get_wound_type(targetable_wound)
-		return(burn_wound && burn_wound.infestation > 0)
+/datum/surgery/debride/is_valid_wound(datum/wound/burn/flesh/wound)
+	return ..() && wound.infestation > 0
 
 //SURGERY STEPS
 
@@ -97,7 +92,7 @@
 			span_notice("[user] successfully excises some of the infected flesh from  [target]'s [parse_zone(target_zone)]!"),
 		)
 		log_combat(user, target, "excised infected flesh in", addition="COMBAT MODE: [uppertext(user.combat_mode)]")
-		surgery.operated_bodypart.receive_damage(brute=3, wound_bonus=CANT_WOUND)
+		target.apply_damage(3, BRUTE, surgery.operated_bodypart, wound_bonus = CANT_WOUND, attacking_item = tool)
 		burn_wound.infestation -= infestation_removed
 		burn_wound.sanitization += sanitization_added
 		if(burn_wound.infestation <= 0)
@@ -115,7 +110,7 @@
 		span_notice("[user] carves away some of the healthy flesh from [target]'s [parse_zone(target_zone)] with [tool]!"),
 		span_notice("[user] carves away some of the healthy flesh from  [target]'s [parse_zone(target_zone)]!"),
 	)
-	surgery.operated_bodypart.receive_damage(brute=rand(4,8), sharpness=TRUE)
+	target.apply_damage(rand(4, 8), BRUTE, surgery.operated_bodypart, wound_bonus = 10, sharpness = SHARP_EDGED, attacking_item = tool)
 
 /datum/surgery_step/debride/initiate(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	if(!..())

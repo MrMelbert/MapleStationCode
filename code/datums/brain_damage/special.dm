@@ -16,7 +16,7 @@
 	if(SPT_PROB(2, seconds_per_tick))
 		if(prob(33) && (owner.IsStun() || owner.IsParalyzed() || owner.IsUnconscious()))
 			speak("unstun", TRUE)
-		else if(prob(60) && owner.health <= owner.crit_threshold)
+		else if(prob(60) && owner.health <= 10)
 			speak("heal", TRUE)
 		else if(prob(30) && owner.combat_mode)
 			speak("aggressive")

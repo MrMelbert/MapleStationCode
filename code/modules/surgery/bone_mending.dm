@@ -20,12 +20,20 @@
 		/datum/surgery_step/close,
 	)
 
-/datum/surgery/repair_bone_hairline/can_start(mob/living/user, mob/living/carbon/target)
-	. = ..()
-	if(.)
-		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
-		return(targeted_bodypart.get_wound_type(targetable_wound))
-
+/datum/surgery/repair_broken_rib
+	name = "Repair fractured rib (hairline)"
+	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_REQUIRES_REAL_LIMB
+	targetable_wound = /datum/wound/blunt/bone/rib_break
+	possible_locs = list(
+		BODY_ZONE_CHEST,
+	)
+	steps = list(
+		/datum/surgery_step/incise,
+		/datum/surgery_step/retract_skin,
+		/datum/surgery_step/clamp_bleeders,
+		/datum/surgery_step/repair_bone_hairline,
+		/datum/surgery_step/close,
+	)
 
 ///// Repair Compound Fracture (Critical)
 /datum/surgery/repair_bone_compound
@@ -48,12 +56,6 @@
 		/datum/surgery_step/repair_bone_compound,
 		/datum/surgery_step/close,
 	)
-
-/datum/surgery/repair_bone_compound/can_start(mob/living/user, mob/living/carbon/target)
-	. = ..()
-	if(.)
-		var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
-		return(targeted_bodypart.get_wound_type(targetable_wound))
 
 //SURGERY STEPS
 
@@ -216,14 +218,6 @@
 		/datum/surgery_step/clamp_bleeders/discard_skull_debris,
 		/datum/surgery_step/repair_skull
 	)
-
-/datum/surgery/cranial_reconstruction/can_start(mob/living/user, mob/living/carbon/target)
-	. = ..()
-	if(!.)
-		return FALSE
-
-	var/obj/item/bodypart/targeted_bodypart = target.get_bodypart(user.zone_selected)
-	return !isnull(targeted_bodypart.get_wound_type(targetable_wound))
 
 /datum/surgery_step/clamp_bleeders/discard_skull_debris
 	name = "discard skull debris (hemostat)"

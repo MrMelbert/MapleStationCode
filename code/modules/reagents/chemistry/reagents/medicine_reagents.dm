@@ -150,6 +150,11 @@
 	var/power = round(3 + (-0.00066 * (affected_mob.body_temperature ** 1.5)), DAMAGE_PRECISION)
 	if(power <= 0)
 		return
+	if(power >= 2.5)
+		ADD_TRAIT(affected_mob, TRAIT_ABATES_SHOCK, type)
+		affected_mob.set_pain_mod(type, 0.5)
+		REMOVE_TRAIT(affected_mob, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
+
 	var/need_mob_update = FALSE
 	need_mob_update += affected_mob.adjustOxyLoss(3 * -power * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype, required_respiration_type = affected_respiration_type)
 	need_mob_update += affected_mob.adjustBruteLoss(-power * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
@@ -157,9 +162,16 @@
 	need_mob_update += affected_mob.adjustToxLoss(-power * REM * seconds_per_tick, updating_health = FALSE, forced = TRUE, required_biotype = affected_biotype) //heals TOXINLOVERs
 	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.on_xadone(power * REM * seconds_per_tick)
-	REMOVE_TRAIT(affected_mob, TRAIT_DISFIGURED, TRAIT_GENERIC) //fixes common causes for disfiguration
+	affected_mob.cause_pain(BODY_ZONES_ALL, -0.5 * power * REM * seconds_per_tick)
+	affected_mob.adjust_pain_shock(-0.12 * power * REM * seconds_per_tick)
+
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH
+
+/datum/reagent/medicine/cryoxadone/on_mob_end_metabolize(mob/living/carbon/user)
+	. = ..()
+	user.unset_pain_mod(type)
+	REMOVE_TRAIT(user, TRAIT_ABATES_SHOCK, type)
 
 // Healing
 /datum/reagent/medicine/cryoxadone/on_hydroponics_apply(obj/machinery/hydroponics/mytray, mob/user)
@@ -842,7 +854,7 @@
 
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.health <= affected_mob.crit_threshold)
+	if(affected_mob.stat >= SOFT_CRIT)
 		var/need_mob_update
 		need_mob_update = affected_mob.adjustToxLoss(-2 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)
 		need_mob_update += affected_mob.adjustBruteLoss(-2* REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
@@ -891,7 +903,7 @@
 		return
 
 	var/need_mob_update
-	if(affected_mob.health <= affected_mob.crit_threshold)
+	if(affected_mob.stat >= SOFT_CRIT)
 		need_mob_update = affected_mob.adjustToxLoss(-0.5 * REM * seconds_per_tick, updating_health = FALSE, required_biotype = affected_biotype)
 		need_mob_update += affected_mob.adjustBruteLoss(-0.5 * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
 		need_mob_update += affected_mob.adjustFireLoss(-0.5 * REM * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)
@@ -1206,6 +1218,8 @@
 			. = UPDATE_MOB_HEALTH
 	affected_mob.AdjustAllImmobility(-60  * REM * seconds_per_tick)
 	affected_mob.adjustStaminaLoss(-5 * REM * seconds_per_tick, updating_stamina = FALSE, required_biotype = affected_biotype)
+	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
+		ib.heal_percent(0.1 * REM * seconds_per_tick)
 
 /datum/reagent/medicine/stimulants/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -1291,6 +1305,8 @@
 	need_mob_update += affected_mob.adjustOxyLoss(-15 * REM * seconds_per_tick, updating_health = FALSE)
 	need_mob_update += affected_mob.adjustToxLoss(-5 * REM * seconds_per_tick, updating_health = FALSE)
 	need_mob_update += affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, -15 * REM * seconds_per_tick)
+	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
+		ib.heal_percent(0.2 * REM * seconds_per_tick)
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH
 
@@ -1731,11 +1747,13 @@
 
 	var/datum/wound/bloodiest_wound
 
-	for(var/i in affected_mob.all_wounds)
-		var/datum/wound/iter_wound = i
-		if(iter_wound.blood_flow)
-			if(iter_wound.blood_flow > bloodiest_wound?.blood_flow)
-				bloodiest_wound = iter_wound
+	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
+		if(iter_wound.blood_flow && iter_wound.blood_flow > bloodiest_wound?.blood_flow)
+			bloodiest_wound = iter_wound
+
+	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
+		if(ib.severity > SEVERITY_TRIVIAL)
+			ib.heal_amount(clot_rate * 0.05 * REM * seconds_per_tick)
 
 	if(bloodiest_wound)
 		if(!was_working)
