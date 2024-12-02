@@ -1,71 +1,66 @@
-/* DESIGN NOTES
-* This exists because mana will eventually have attunemenents and alignments that will incresae their efficiency in being used
-* on spells/by people with corresponding attunements/alignments, vice versa for conflicting.
-*
-*/
+/atom/movable
+	var/datum/mana_pool/mana_pool
+	var/has_initial_mana_pool = FALSE // not using flags since this is all modular and flags can be overridden by tg
 
-/// An abstract representation of collections of mana, as it's impossible to represent each individual mana unit
-/datum/mana_pool
-	var/amount = 0
-	/// As attunements on mana is actually a tangible thing, and not just a preference, mana attunements should never go below zero.
-	var/list/datum/attunement/attunements
-	var/maximum_mana_capacity
+	var/mana_overload_threshold = BASE_MANA_OVERLOAD_THRESHOLD
+	var/mana_overload_coefficient = BASE_MANA_OVERLOAD_COEFFICIENT
 
-/datum/mana_pool/New(maximum_mana_capacity = INFINITY, amount = maximum_mana_capacity, attunements = GLOB.default_attunements.Copy())
-	. = ..()
+	var/mana_overloaded = FALSE
 
-	src.maximum_mana_capacity = maximum_mana_capacity
-	src.amount = amount
-	src.attunements = attunements
+// creates the mana pool for use.
+// mostly called on atom_init.
+/atom/movable/proc/initialize_mana_pool()
+	RETURN_TYPE(/datum/mana_pool)
 
-/datum/mana_pool/Destroy(force, ...)
-	attunements = null
+	var/datum/mana_pool/type = get_initial_mana_pool_type()
 
-	return ..()
+	var/datum/mana_pool/pool = new type(parent = src)
+	return pool
 
-#define MANA_POOL_REPLACE_ALL_ATTUNEMENTS (1<<2)
-// TODO BIG FUCKING WARNING THIS EQUATION DOSENT WORK AT ALL
-// Should be fine as long as nothing actually has any attunements
-/// The proc used to modify the mana composition of a mana pool. Should modify attunements in proportion to the ratio
-/// between the current amount of mana we have and the mana coming in/being removed, as well as the attunements.
-/// Mana pools in general will eventually be refactored to be lists of individual mana pieces with unchanging attunements,
-/// so this is not permanent.
-/// Returns how much of "amount" was used.
-/datum/mana_pool/proc/adjust_mana(amount, list/incoming_attunements = GLOB.default_attunements)
+// base proc to return what kind of mana pool this atom will have.
+// meant to be overridden with whatever mana_pool subtype you want.
+/atom/movable/proc/get_initial_mana_pool_type()
+	RETURN_TYPE(/datum/mana_pool)
 
-	/*if (src.amount == 0)
-		CRASH("src.amount was ZERO in [src]'s adjust_quanity") //why would this happen
-		*/
-	if (amount == 0)
-		return amount
+	return /datum/mana_pool
 
-	/*var/ratio
-	if (src.amount == 0)
-		ratio = MANA_POOL_REPLACE_ALL_ATTUNEMENTS
-	else
-		ratio = amount/src.amount*/
+/// New_pool is nullable
+/// standard setter proc. Input the pool you want to add to the atom, and it'll toss out the old
+/atom/movable/proc/set_mana_pool(datum/mana_pool/new_pool)
+	if (!can_have_mana_pool(new_pool))
+		return FALSE
 
-	/*for (var/iterated_attunement as anything in incoming_attunements)
-	// equation formed in desmos, dosent work
-		attunements[iterated_attunement] += (((incoming_attunements[iterated_attunement]) - attunements[iterated_attunement]) * (ratio/2)) */
+	SEND_SIGNAL(src, COMSIG_ATOM_MANA_POOL_CHANGED, mana_pool, new_pool)
 
-	var/result = clamp(src.amount + amount, 0, maximum_mana_capacity)
-	. = result - src.amount // Return the amount that was used
-	//if (abs(.) > abs(amount))
-		// Currently, due to floating point imprecision, leyline recharges always cause this to fire, but honestly its nothing horrible
-		// Ill fix it later(?)
-		//stack_trace("[.], amount used, has its absolute value more than [amount]'s during [src]'s adjust_mana")
-	src.amount = result
+	if (mana_pool)
+		// do stuff like replacement
+		QDEL_NULL(mana_pool)
+		set_mana_pool(null) // todo: see if this is necessary
+	mana_pool = new_pool
 
-#undef MANA_POOL_REPLACE_ALL_ATTUNEMENTS
+	if (isnull(mana_pool))
+		if (mana_overloaded)
+			stop_mana_overload()
 
-/// Returns an adjusted amount of "effective" mana, affected by the attunements.
-/// Will always return a minimum of zero and a maximum of the total amount of mana we can give multiplied by the mults.
-/datum/mana_pool/proc/get_attuned_amount(list/datum/attunement/incoming_attunements, atom/caster, amount_to_adjust = src.amount)
-	var/mult = get_overall_attunement_mults(incoming_attunements, caster)
+// just retrieves mana_pool and initializes it if it doesn't have one for some reason (and is allowed to have one)
+/atom/movable/proc/get_mana_pool_lazy()
 
-	return clamp(SAFE_DIVIDE(amount_to_adjust, mult), 0, amount*mult)
+	if (!can_have_mana_pool())
+		return null
 
-/// Returns the combined attunement mults of all entries in the argument.
-/datum/mana_pool/proc/get_overall_attunement_mults(list/attunements, atom/caster)
-	return get_total_attunement_mult(src.attunements, attunements, caster)
+	initialize_mana_pool_if_possible()
+
+	return mana_pool
+
+// initialize the pool if it doesn't have one, and is allowed to
+/atom/movable/proc/initialize_mana_pool_if_possible()
+	if (isnull(mana_pool) && can_have_mana_pool())
+		mana_pool = initialize_mana_pool()
+
+// arg nullable
+// override this with whatever if you want special functionality if something wants to check if it can have a mana_pool
+/atom/movable/proc/can_have_mana_pool(datum/mana_pool/new_pool)
+	SHOULD_CALL_PARENT(TRUE)
+	SHOULD_BE_PURE(TRUE)
+
+	return TRUE

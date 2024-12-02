@@ -1,40 +1,6 @@
+#define FINGERFLAME_MANA_COST 5 // very cheap, it's just a lighter
+#define FINGERFLAME_ATTUNEMENT_FIRE 0.2 // flame users make this EVEN cheaper
 // This doesn't use the touch spell component because we use mana on activation rather than touch.
-/datum/component/uses_mana/story_spell/finger_flame
-	var/flame_cost = 5 // very cheap, it's just a lighter
-	var/flame_attunement = 0.2 // flame users make this EVEN cheaper
-
-	/// You get some seconds of freecasting to prevent spam.
-	COOLDOWN_DECLARE(free_use_cooldown)
-
-/datum/component/uses_mana/story_spell/finger_flame/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_SPELL_BEFORE_CAST, PROC_REF(handle_precast))
-	RegisterSignal(parent, COMSIG_SPELL_CAST, PROC_REF(handle_cast))
-
-/datum/component/uses_mana/story_spell/finger_flame/UnregisterFromParent()
-	UnregisterSignal(parent, COMSIG_SPELL_BEFORE_CAST)
-	UnregisterSignal(parent, COMSIG_SPELL_CAST)
-
-/datum/component/uses_mana/story_spell/finger_flame/get_attunement_dispositions()
-	. = ..()
-	.[/datum/attunement/fire] = flame_attunement
-
-/datum/component/uses_mana/story_spell/finger_flame/get_mana_required(atom/caster, atom/cast_on, ...)
-	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (..() * flame_cost) : 0
-
-/datum/component/uses_mana/story_spell/finger_flame/handle_precast(datum/action/cooldown/spell/touch/finger_flame/source, atom/cast_on)
-	if(source.attached_hand)
-		return NONE
-	return ..()
-
-/datum/component/uses_mana/story_spell/finger_flame/handle_cast(datum/action/cooldown/spell/source, atom/cast_on)
-	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.
-	// whichs means it uses mana when the flame / hand is CREATED instead of used
-	react_to_successful_use(source, cast_on)
-
-/datum/component/uses_mana/story_spell/finger_flame/react_to_successful_use(datum/action/cooldown/spell/source, atom/cast_on)
-	. = ..()
-	COOLDOWN_START(src, free_use_cooldown, 4 SECONDS)
-
 // All this spell does is give you a lighter on demand.
 /datum/action/cooldown/spell/touch/finger_flame
 	name = "Free Finger Flame"
@@ -51,9 +17,18 @@
 	draw_message = null
 	drop_message = null
 	can_cast_on_self = TRUE // self burn
+	var/mana_cost = FINGERFLAME_MANA_COST
 
+	// You get some seconds of freecasting to prevent spam.
+	COOLDOWN_DECLARE(free_use_cooldown)
 	// I was considering giving this the same "trigger on snap emote" effect that the arm implant has,
 	// but considering this has a tangible cost (mana) while the arm implant is free, I decided against it.
+
+/datum/action/cooldown/spell/touch/finger_flame/cast(...)
+	// this drains mana "on cast", and not on "touch spell hit" or "on after cast", unlike the touch spell component.
+	// whichs means it uses mana when the flame / hand is CREATED instead of used
+	..()
+	COOLDOWN_START(src, free_use_cooldown, 4 SECONDS)
 
 /datum/action/cooldown/spell/touch/finger_flame/can_cast_spell(feedback)
 	return ..() && !HAS_TRAIT(owner, TRAIT_EMOTEMUTE) // checked as if it were an emote invocation spell
@@ -103,8 +78,22 @@
 
 /datum/action/cooldown/spell/touch/finger_flame/mana/New(Target, original)
 	. = ..()
-	AddComponent(/datum/component/uses_mana/story_spell/finger_flame)
+
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_FIRE] += FINGERFLAME_ATTUNEMENT_FIRE
+
+	AddComponent(/datum/component/uses_mana/, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		post_use_comsig = COMSIG_SPELL_CAST, \
+		pre_use_check_with_feedback_comsig = COMSIG_SPELL_BEFORE_CAST, \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		attunements = attunements, \
+	)
 	desc += " Costs mana to conjure, but is free to maintain."
+
+/datum/action/cooldown/spell/touch/finger_flame/proc/get_mana_consumed(atom/caster, datum/spell, atom/cast_on, ...)
+	return COOLDOWN_FINISHED(src, free_use_cooldown) ? (mana_cost) : 0
 
 /datum/action/cooldown/spell/touch/finger_flame/lizard
 	name = "Muster Flame"
@@ -248,3 +237,6 @@
 	. = ..()
 	var/datum/action/cooldown/spell/touch/finger_flame/lizard/fire_breath = locate() in C.actions
 	qdel(fire_breath)
+
+#undef FINGERFLAME_MANA_COST
+#undef FINGERFLAME_ATTUNEMENT_FIRE

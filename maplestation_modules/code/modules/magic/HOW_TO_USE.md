@@ -5,7 +5,7 @@ Adding a mana user is very simple. All you have to do is subtype /datum/componen
 There are a few crucial steps to extending uses_mana.
 Firstly, you must override get_mana_required() and have it return the exact numerical value in EFFECTIVE mana (we will get to this later)
 it requires for the action to be cast. The action in this case can be quite literally anything - anything that requires a signal to determine
-if it will execute. MAKE SURE TO MULTIPLY IT AGAINST THE USER'S CASTING COST MULT: spell.owner.get_casting_cost_mult()
+if it will execute.
 
 If you wish your action to be fail if not enough mana is acquired (common behavior), register a signal to a signal handler from some sort of pre-usage check
 (story_spell_component uses COMSIG_SPELL_BEFORE_CAST, attached to handle_precast, so for spells this is already handled). Most things have a signal for this, you just

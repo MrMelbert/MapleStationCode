@@ -1,32 +1,5 @@
-/datum/component/uses_mana/story_spell/pointed/convect
-
-/datum/component/uses_mana/story_spell/pointed/convect/Initialize(...)
-	. = ..()
-
-	if (!istype(parent, /datum/action/cooldown/spell/pointed/convect))
-		return . | COMPONENT_INCOMPATIBLE
-
 #define CONVECT_HEAT_ATTUNEMENT 0.5
 #define CONVECT_ICE_ATTUNEMENT 0.5
-/datum/component/uses_mana/story_spell/pointed/convect/get_attunement_dispositions()
-	. = ..()
-	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
-	if (convect_spell.temperature_for_cast == 0)
-		return
-	if (convect_spell.temperature_for_cast > 0)
-		.[MAGIC_ELEMENT_FIRE] += CONVECT_HEAT_ATTUNEMENT
-		.[MAGIC_ELEMENT_ICE] -= CONVECT_HEAT_ATTUNEMENT
-		return
-	else
-		.[MAGIC_ELEMENT_ICE] += CONVECT_ICE_ATTUNEMENT
-		.[MAGIC_ELEMENT_FIRE] -= CONVECT_ICE_ATTUNEMENT
-
-#undef CONVECT_HEAT_ATTUNEMENT
-#undef CONVECT_ICE_ATTUNEMENT
-
-/datum/component/uses_mana/story_spell/pointed/convect/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/pointed/convect/convect_spell = parent
-	return ..() * abs(convect_spell.temperature_for_cast) * CONVECT_MANA_COST_PER_KELVIN
 
 /datum/action/cooldown/spell/pointed/convect
 	name = "Convect"
@@ -42,6 +15,8 @@
 	unset_after_click = FALSE
 	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC
 
+	var/list/datum/attunement/attunements
+
 	var/temperature_for_cast = 25
 	//Maximum temperature change able to be chosen when casting
 	var/maximum_temperature_delta = 50
@@ -53,7 +28,33 @@
 /datum/action/cooldown/spell/pointed/convect/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/pointed/convect)
+	update_attunement_dispositions()
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		mana_required = CALLBACK(src, PROC_REF(get_mana_consumed)), \
+		attunements = src.attunements, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+	)
+
+/datum/action/cooldown/spell/pointed/convect/proc/update_attunement_dispositions()
+	if (isnull(attunements))
+		attunements = GLOB.default_attunements.Copy()
+
+	if (temperature_for_cast == 0)
+		return attunements
+	if (temperature_for_cast > 0)
+		attunements[MAGIC_ELEMENT_FIRE] += CONVECT_HEAT_ATTUNEMENT
+		attunements[MAGIC_ELEMENT_ICE] -= CONVECT_HEAT_ATTUNEMENT
+	else
+		attunements[MAGIC_ELEMENT_ICE] += CONVECT_ICE_ATTUNEMENT
+		attunements[MAGIC_ELEMENT_FIRE] -= CONVECT_ICE_ATTUNEMENT
+
+	return attunements
+
+/datum/action/cooldown/spell/pointed/convect/proc/get_mana_consumed()
+	return ((abs(temperature_for_cast) * CONVECT_MANA_COST_PER_KELVIN))
+	// todo: methodize the casting cost mult part
 
 /datum/action/cooldown/spell/pointed/convect/is_valid_target(atom/cast_on)
 	return TRUE //cant call suepr cause i want to be able to use this on myself
@@ -72,6 +73,7 @@
 		return FALSE
 	temperature_for_cast = temperature
 	owner.balloon_alert(owner, "casting temperature set to [temperature]K")
+	update_attunement_dispositions()
 
 /datum/action/cooldown/spell/pointed/convect/on_activation(mob/on_who)
 	. = ..()
@@ -132,3 +134,6 @@
 	var/just_convected_text = span_warning("You [heat_or_cool] [cast_on] by [temperature_for_cast]K.")
 	owner.balloon_alert(owner, just_convected_text)
 	to_chat(owner, just_convected_text)
+
+#undef CONVECT_HEAT_ATTUNEMENT
+#undef CONVECT_ICE_ATTUNEMENT

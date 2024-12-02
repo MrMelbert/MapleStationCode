@@ -1,13 +1,5 @@
-/datum/component/uses_mana/story_spell/conjure_item/flare
-	var/attunement_amount = 0.5
-
-/datum/component/uses_mana/story_spell/conjure_item/flare/get_attunement_dispositions()
-	. = ..()
-	.[MAGIC_ELEMENT_LIGHT] += attunement_amount
-
-/datum/component/uses_mana/story_spell/conjure_item/flare/get_mana_required(atom/caster, atom/cast_on, ...)
-	var/datum/action/cooldown/spell/conjure_item/flare/flare_spell = parent
-	return ..() * flare_spell.flare_cost
+#define FLARE_LIGHT_ATTUNEMENT 0.5
+#define FLARE_BASE_MANA_COST 30
 
 /datum/action/cooldown/spell/conjure_item/flare
 	name = "Flare"
@@ -24,13 +16,13 @@
 	/// What color the flare created appears to be
 	var/flare_color
 	/// What the mana cost is, affected by Lesser variant.
-	var/flare_cost = 30
+	var/mana_cost = FLARE_BASE_MANA_COST
 
 //Variant that conjures a weaker version
 /datum/spellbook_item/spell/conjure_item/flare/apply_params(datum/action/cooldown/spell/conjure_item/flare/our_spell, lesser)
 	if (lesser)
 		our_spell.item_type = /obj/item/flashlight/glowstick/magic/lesser
-		our_spell.flare_cost = 10
+		our_spell.mana_cost = 10
 		our_spell.cooldown_time = 2 MINUTES
 		our_spell.name = "Lesser Flare"
 		our_spell.desc = "Conjure lumens into a glob to be held or thrown to light an area. Right-click the spell icon to set the light color. This weaker version burns up quicker and has a considerable cooldown between conjures."
@@ -45,7 +37,15 @@
 /datum/action/cooldown/spell/conjure_item/flare/New(Target, original)
 	. = ..()
 
-	AddComponent(/datum/component/uses_mana/story_spell/conjure_item/flare)
+	var/list/datum/attunement/attunements = GLOB.default_attunements.Copy()
+	attunements[MAGIC_ELEMENT_LIGHT] += FLARE_LIGHT_ATTUNEMENT
+
+	AddComponent(/datum/component/uses_mana/spell, \
+		activate_check_failure_callback = CALLBACK(src, PROC_REF(spell_cannot_activate)), \
+		get_user_callback = CALLBACK(src, PROC_REF(get_owner)), \
+		mana_required = mana_cost, \
+		attunements = attunements, \
+	)
 
 /obj/item/flashlight/glowstick/magic
 	name = "self sustaining flare"
@@ -109,3 +109,6 @@
 	var/new_color
 	new_color = input(user, "Choose a new color for the flare.", "Light Color", new_color) as color|null
 	return new_color
+
+#undef FLARE_LIGHT_ATTUNEMENT
+#undef FLARE_BASE_MANA_COST
