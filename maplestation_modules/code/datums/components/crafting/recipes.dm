@@ -28,3 +28,14 @@
 	tool_behaviors = list(TOOL_WELDER, TOOL_SCREWDRIVER, TOOL_WRENCH)
 	time = 2 SECONDS
 	category = CAT_WEAPON_MELEE
+
+/datum/crafting_recipe/volite_amulet
+	name = "Volite Amulet"
+	result = /obj/item/clothing/neck/mana_star
+	reqs = list(
+		/obj/item/mana_battery/mana_crystal/cut = 1,
+		/obj/item/stack/sheet/mineral/gold = 1, // cheap for now
+	)
+	tool_behaviors = list(TOOL_SCREWDRIVER)
+	time = 5 SECONDS
+	category = CAT_EQUIPMENT
