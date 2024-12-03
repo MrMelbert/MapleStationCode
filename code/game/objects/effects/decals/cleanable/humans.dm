@@ -83,7 +83,7 @@
 		clamp(starting_color_rgb[1] - red_offset, 0, 255),
 		clamp(starting_color_rgb[2] - green_offset, 0, 255),
 		clamp(starting_color_rgb[3] - blue_offset, 0, 255),
-		length(starting_color_rgb) >= 4 ? starting_color_rgb[4] : 255, // maintain alpha! (if it has it)
+		length(starting_color_rgb) >= 4 ? starting_color_rgb[4] : alpha, // maintain alpha! (if it has it)
 	)
 	// if it's dried (or about to dry) we can just set color directly
 	if(dried || drying_progress >= drying_time)
