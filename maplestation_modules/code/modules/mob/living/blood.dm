@@ -279,15 +279,20 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/crew/lizard
 	name = "L"
 	color = "#047200" // Some species of lizards have mutated green blood due to biliverdin build up
-	compatible_types = list(/datum/blood_type/crew/lizard/silver)
+	compatible_types = list(/datum/blood_type/silver/lizard)
 
-/datum/blood_type/crew/lizard/silver
-	color = "#ffffff9c"
-	compatible_types = list(/datum/blood_type/crew/lizard)
+/datum/blood_type/silver
+	name = "Ag"
+	color = "#c9c9c99c"
+	reagent_type = /datum/reagent/silver
 
-/datum/blood_type/crew/lizard/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
-	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c99c", "size" = 1.5))
+/datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	blood.can_dry = FALSE
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
+
+/datum/blood_type/silver/lizard
+	name = "sL"
+	compatible_types = list(/datum/blood_type/crew/lizard)
 
 /datum/blood_type/crew/skrell
 	name = "S"

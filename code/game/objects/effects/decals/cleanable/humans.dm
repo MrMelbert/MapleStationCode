@@ -64,7 +64,7 @@
 	// (at any given moment, there may be like... 200 blood decals on your screen at once
 	// byond is, apparently, pretty bad at handling that many color matrix operations,
 	// especially in a filter or while animating)
-	var/list/starting_color_rgb = ReadRGB(color)
+	var/list/starting_color_rgb = ReadRGB(color) || list(255, 255, 255, alpha)
 	// we want a fixed offset for a fixed drop in color intensity, plus a scaling offset based on our strongest color
 	// the scaling offset helps keep dark colors from turning black, while also ensurse bright colors don't stay super bright
 	var/max_color = max(starting_color_rgb[1], starting_color_rgb[2], starting_color_rgb[3])
@@ -83,7 +83,7 @@
 		clamp(starting_color_rgb[1] - red_offset, 0, 255),
 		clamp(starting_color_rgb[2] - green_offset, 0, 255),
 		clamp(starting_color_rgb[3] - blue_offset, 0, 255),
-		length(starting_color_rgb) >= 4 ? starting_color_rgb[4] : 255, // maintain alpha! (if it has it)
+		length(starting_color_rgb) >= 4 ? starting_color_rgb[4] : alpha, // maintain alpha! (if it has it)
 	)
 	// if it's dried (or about to dry) we can just set color directly
 	if(dried || drying_progress >= drying_time)
