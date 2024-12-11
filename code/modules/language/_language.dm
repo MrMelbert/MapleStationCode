@@ -1,5 +1,7 @@
-/// maximum of 50 specific scrambled lines per language
+/// Last 50 spoken (uncommon) words will be cached before we start cycling them out (re-randomizing them)
 #define SCRAMBLE_CACHE_LEN 50
+/// Last 20 spoken sentences will be cached before we start cycling them out (re-randomizing them)
+#define SENTENCE_CACHE_LEN 20
 
 /// Datum based languages. Easily editable and modular.
 /datum/language
@@ -29,6 +31,9 @@
 	/// Cache of recently scrambled text
 	/// This allows commonly reused words to not require a full re-scramble every time.
 	var/list/scramble_cache = list()
+	/// Cache of recently spoken sentences
+	/// So if one person speaks over the radio, everyone hears the same thing.
+	var/list/last_sentence_cache = list()
 	/// The 1000 most common words get permanently cached
 	var/list/most_common_cache = list()
 
@@ -121,20 +126,21 @@
 
 	return result
 
-/// Handles caching words for scrambling, so recently used or very common words don't need to be re-scrambled.
-/datum/language/proc/check_cache(input)
+/// Checks the word cache for a word
+/datum/language/proc/read_word_cache(input)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(most_common_cache[input])
 		return most_common_cache[input]
 
 	. = scramble_cache[input]
 	if(.)
+		// bumps it to the top of the cache
 		scramble_cache -= input
 		scramble_cache[input] = .
 	return .
 
 /// Adds a word to the cache
-/datum/language/proc/add_to_cache(input, scrambled_text)
+/datum/language/proc/write_word_cache(input, scrambled_text)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(GLOB.most_common_words[lowertext(input)])
 		most_common_cache[input] = scrambled_text
@@ -142,7 +148,25 @@
 	// Add it to cache, cutting old entries if the list is too long
 	scramble_cache[input] = scrambled_text
 	if(scramble_cache.len > SCRAMBLE_CACHE_LEN)
-		scramble_cache.Cut(1, scramble_cache.len - SCRAMBLE_CACHE_LEN - 1)
+		scramble_cache.Cut(1, scramble_cache.len - SCRAMBLE_CACHE_LEN + 1)
+
+/// Checks the sentence cache for a sentence
+/datum/language/proc/read_sentence_cache(input)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	. = last_sentence_cache[input]
+	if(.)
+		// bumps it to the top of the cache (don't anticipate this happening often)
+		last_sentence_cache -= input
+		last_sentence_cache[input] = .
+	return .
+
+/// Adds a sentence to the cache, though the sentence should be modified with a key
+/datum/language/proc/write_sentence_cache(input, key, result_scramble)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	// Add to the cache (the cache being an assoc list of assoc lists), cutting old entries if the list is too long
+	LAZYSET(last_sentence_cache[input], key, result_scramble)
+	if(last_sentence_cache.len > SENTENCE_CACHE_LEN)
+		last_sentence_cache.Cut(1, last_sentence_cache.len - SENTENCE_CACHE_LEN + 1)
 
 /// Goes through the input and removes any punctuation from the end of the string.
 /proc/strip_punctuation(input)
@@ -170,6 +194,11 @@
 /// Scrambles a sentence in this language.
 /// Takes into account any languages the hearer knows that has mutual understanding with this language.
 /datum/language/proc/scramble_sentence(input, list/mutual_languages)
+	var/cache_key = "[mutual_languages?[type] || 0]-understanding"
+	var/list/cache = read_sentence_cache(cache_key)
+	if(cache?[cache_key])
+		return cache[cache_key]
+
 	var/list/real_words = splittext(input, " ")
 	var/list/scrambled_words = list()
 	for(var/word in real_words)
@@ -197,12 +226,16 @@
 		. += word
 
 	// scrambling the words will drop punctuation, so re-add it at the end
-	return . + find_last_punctuation(trim_right(input))
+	. += find_last_punctuation(trim_right(input))
+
+	write_sentence_cache(input, cache_key, .)
+
+	return .
 
 /// Scrambles a single word in this language.
 /datum/language/proc/scramble_word(input)
 	// If the input is cached already, move it to the end of the cache and return it
-	. = check_cache(input)
+	. = read_word_cache(input)
 	if(.)
 		return .
 
@@ -229,7 +262,7 @@
 			add_period = prob(sentence_chance)
 			add_space = prob(space_chance)
 
-	add_to_cache(input, .)
+	write_word_cache(input, .)
 
 	return .
 

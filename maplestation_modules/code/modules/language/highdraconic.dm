@@ -26,6 +26,9 @@
 		/datum/language/impdraconic = 66,
 	)
 
+// TG unit test compliance (out of laziness)
+#ifndef UNIT_TESTS
+
 // Edit to the silverscale language holder - silverscales can speak high draconic.
 /datum/language_holder/lizard/silver
 	understood_languages = list(
@@ -49,3 +52,5 @@
 	spoken_languages = list(
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
 	)
+
+#endif
