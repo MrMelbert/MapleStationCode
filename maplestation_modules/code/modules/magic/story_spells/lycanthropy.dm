@@ -21,17 +21,18 @@
 	button_icon = 'maplestation_modules/icons/mob/actions/actions_advspells.dmi'
 	button_icon_state = "moon"
 	var/datum/species/owner_base_species // what species we are other than a werewolf
+	var/list/base_features = list("mcolor" = "#FFFFFF")
 	// yes this might cause other implications, such as mass species change, or with synths (synthcode moment) but i'll look into it later down the line
 
-/datum/action/cooldown/spell/werewolf_form/Grant(mob/living/carbon/human/grant_to)
+/datum/action/cooldown/spell/werewolf_form/cast(atom/movable/cast_on)
 	. = ..()
-	owner_base_species = grant_to.dna.species
-
-/datum/action/cooldown/spell/werewolf_form/cast(mob/living/carbon/human/cast_on)
-	. = ..()
-	if(istype(cast_on.dna.species, /datum/species/werewolf))
-		cast_on.balloon_alert(cast_on, "changing back")
-		cast_on.set_species(owner_base_species)
+	var/mob/living/carbon/human/lycanthrope = owner
+	if(istype(lycanthrope.dna.species, /datum/species/werewolf))
+		lycanthrope.balloon_alert(cast_on, "changing back")
+		lycanthrope.dna.features = base_features
+		lycanthrope.set_species(owner_base_species)
 	else
-		cast_on.balloon_alert(cast_on, "turning")
-		cast_on.set_species(/datum/species/werewolf)
+		owner_base_species = lycanthrope.dna.species
+		base_features = lycanthrope.dna.features.Copy()
+		lycanthrope.balloon_alert(cast_on, "turning")
+		lycanthrope.set_species(/datum/species/werewolf)
