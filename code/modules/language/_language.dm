@@ -144,41 +144,60 @@
 	if(scramble_cache.len > SCRAMBLE_CACHE_LEN)
 		scramble_cache.Cut(1, scramble_cache.len - SCRAMBLE_CACHE_LEN - 1)
 
+/// Goes through the input and removes any punctuation from the end of the string.
+/proc/strip_punctuation(input)
+	var/static/list/bad_punctuation = list("!", "?", ".", "~", ";", ":", "-")
+	var/last_char = copytext_char(input, -1)
+	while(last_char in bad_punctuation)
+		input = copytext(input, 1, -1)
+		last_char = copytext_char(input, -1)
+
+	return trim_right(input)
+
+/// Find what punctuation is at the end of the input, returns it.
+/proc/find_last_punctuation(input)
+	. = copytext_char(input, -3)
+	if(. == "...")
+		return .
+	. = copytext_char(input, -2)
+	if(. in list("!!", "??", "..", "?!", "!?"))
+		return .
+	. = copytext_char(input, -1)
+	if(. in list("!", "?" ,".", "~", ";", ":", "-"))
+		return .
+	return ""
+
 /// Scrambles a sentence in this language.
 /// Takes into account any languages the hearer knows that has mutual understanding with this language.
-/datum/language/proc/scramble_sentence(input, list/mutual_languages = list())
+/datum/language/proc/scramble_sentence(input, list/mutual_languages)
 	var/list/real_words = splittext(input, " ")
 	var/list/scrambled_words = list()
 	for(var/word in real_words)
-		var/base_word = lowertext(word)
-		var/base_prob = mutual_languages[type] || 0
-		// the probability of managing to understand a word is based on how common it is
-		// words not in the most common word list are automatically assumed to be the least common word
-		var/commonness = (GLOB.most_common_words[base_word] || 1000)
-		var/final_prob = base_prob + (base_prob * 0.2 * (1 - (min(commonness, 1000) / 500)))
-		scrambled_words += prob(final_prob) ? base_word : scramble_word(word)
+		var/translate_prob = mutual_languages?[type] || 0
+		if(translate_prob > 0)
+			var/base_word = lowertext(strip_punctuation(word))
+			// the probability of managing to understand a word is based on how common it is
+			// 1000 words in the list, so words outside the list are just treated as "the 1500th most common word"
+			var/commonness = GLOB.most_common_words[base_word] || 1500
+			translate_prob += (translate_prob * 0.2 * (1 - (min(commonness, 1500) / 500)))
+			if(prob(translate_prob))
+				scrambled_words += base_word
+				continue
+
+		scrambled_words += scramble_word(word)
 
 	// start building the word. first word is capitalized and otherwise untouched
 	. = capitalize(popleft(scrambled_words))
 	for(var/word in scrambled_words)
 		if(prob(between_word_sentence_chance))
 			. += ". "
-			word = capitalize(word)
 		else if(prob(between_word_space_chance))
 			. += " "
 
 		. += word
 
 	// scrambling the words will drop punctuation, so re-add it at the end
-	var/input_ending_two = copytext_char(input, -2)
-	var/input_ending_one = copytext_char(input, -1)
-	if(input_ending_two in list("!!", "??", "..", "?!", "!?"))
-		. += input_ending_two
-
-	else if(input_ending_one in list("!", "?" ,".", "~", ";", ":", "-"))
-		. += input_ending_one
-
-	return .
+	return . + find_last_punctuation(trim_right(input))
 
 /// Scrambles a single word in this language.
 /datum/language/proc/scramble_word(input)
