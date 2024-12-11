@@ -44,6 +44,8 @@
 	)
 	selected_language = /datum/language/uncommon
 
+#endif
+
 /datum/language_holder/lizard/ash/primative
 	selected_language = /datum/language/impdraconic
 	understood_languages = list(
@@ -52,5 +54,3 @@
 	spoken_languages = list(
 		/datum/language/impdraconic = list(LANGUAGE_ATOM),
 	)
-
-#endif
