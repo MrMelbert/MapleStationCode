@@ -133,7 +133,7 @@
 		return most_common_cache[input]
 
 	. = scramble_cache[input]
-	if(.)
+	if(. && scramble_cache[1] != input)
 		// bumps it to the top of the cache
 		scramble_cache -= input
 		scramble_cache[input] = .
@@ -154,7 +154,7 @@
 /datum/language/proc/read_sentence_cache(input)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	. = last_sentence_cache[input]
-	if(.)
+	if(. && last_sentence_cache[1] != input)
 		// bumps it to the top of the cache (don't anticipate this happening often)
 		last_sentence_cache -= input
 		last_sentence_cache[input] = .
