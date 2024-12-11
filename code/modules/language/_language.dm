@@ -18,13 +18,20 @@
 	var/list/special_characters
 	/// Likelihood of making a new sentence after each syllable.
 	var/sentence_chance = 5
+	/// Likelihood of making a new sentence after each word.
+	var/between_word_sentence_chance = 0
 	/// Likelihood of getting a space in the random scramble string
 	var/space_chance = 55
+	/// Likelyhood of getting a space between words
+	var/between_word_space_chance = 100
 	/// Spans to apply from this language
 	var/list/spans
 	/// Cache of recently scrambled text
 	/// This allows commonly reused words to not require a full re-scramble every time.
 	var/list/scramble_cache = list()
+	/// The 1000 most common words get permanently cached
+	var/list/most_common_cache = list()
+
 	/// The language that an atom knows with the highest "default_priority" is selected by default.
 	var/default_priority = 0
 	/// If TRUE, when generating names, we will always use the default human namelist, even if we have syllables set.
@@ -44,6 +51,11 @@
 	var/default_name_syllable_max = 4
 	/// What char to place in between randomly generated names
 	var/random_name_spacer = " "
+
+	/// Assoc Lazylist of other language types that would have a degree of mutual understanding with this language.
+	/// For example, you could do `list(/datum/language/common = 50)` to say that this language has a 50% chance to understand common words
+	/// And yeah if you give a 100% chance, they can basically just understand the language
+	var/list/mutual_understanding
 
 /// Checks whether we should display the language icon to the passed hearer.
 /datum/language/proc/display_icon(atom/movable/hearer)
@@ -109,56 +121,97 @@
 
 	return result
 
+/// Handles caching words for scrambling, so recently used or very common words don't need to be re-scrambled.
 /datum/language/proc/check_cache(input)
-	var/lookup = scramble_cache[input]
-	if(lookup)
-		scramble_cache -= input
-		scramble_cache[input] = lookup
-	. = lookup
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(most_common_cache[input])
+		return most_common_cache[input]
 
+	. = scramble_cache[input]
+	if(.)
+		scramble_cache -= input
+		scramble_cache[input] = .
+	return .
+
+/// Adds a word to the cache
 /datum/language/proc/add_to_cache(input, scrambled_text)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(GLOB.most_common_words[lowertext(input)])
+		most_common_cache[input] = scrambled_text
+		return
 	// Add it to cache, cutting old entries if the list is too long
 	scramble_cache[input] = scrambled_text
 	if(scramble_cache.len > SCRAMBLE_CACHE_LEN)
-		scramble_cache.Cut(1, scramble_cache.len-SCRAMBLE_CACHE_LEN-1)
+		scramble_cache.Cut(1, scramble_cache.len - SCRAMBLE_CACHE_LEN - 1)
 
-/datum/language/proc/scramble(input)
+/// Scrambles a sentence in this language.
+/// Takes into account any languages the hearer knows that has mutual understanding with this language.
+/datum/language/proc/scramble_sentence(input, list/mutual_languages = list())
+	var/list/real_words = splittext(input, " ")
+	var/list/scrambled_words = list()
+	for(var/word in real_words)
+		var/base_word = lowertext(word)
+		var/base_prob = mutual_languages[type] || 0
+		// the probability of managing to understand a word is based on how common it is
+		// words not in the most common word list are automatically assumed to be the least common word
+		var/commonness = (GLOB.most_common_words[base_word] || 1000)
+		var/final_prob = base_prob + (base_prob * 0.2 * (1 - (min(commonness, 1000) / 500)))
+		scrambled_words += prob(final_prob) ? base_word : scramble_word(word)
+
+	// start building the word. first word is capitalized and otherwise untouched
+	. = capitalize(popleft(scrambled_words))
+	for(var/word in scrambled_words)
+		if(prob(between_word_sentence_chance))
+			. += ". "
+			word = capitalize(word)
+		else if(prob(between_word_space_chance))
+			. += " "
+
+		. += word
+
+	// scrambling the words will drop punctuation, so re-add it at the end
+	var/input_ending_two = copytext_char(input, -2)
+	var/input_ending_one = copytext_char(input, -1)
+	if(input_ending_two in list("!!", "??", "..", "?!", "!?"))
+		. += input_ending_two
+
+	else if(input_ending_one in list("!", "?" ,".", "~", ";", ":", "-"))
+		. += input_ending_one
+
+	return .
+
+/// Scrambles a single word in this language.
+/datum/language/proc/scramble_word(input)
+	// If the input is cached already, move it to the end of the cache and return it
+	. = check_cache(input)
+	if(.)
+		return .
 
 	if(!length(syllables))
-		return stars(input)
+		. = stars(input)
 
-	// If the input is cached already, move it to the end of the cache and return it
-	var/lookup = check_cache(input)
-	if(lookup)
-		return lookup
+	else
+		var/input_size = length_char(input)
+		var/add_space = FALSE
+		var/add_period = FALSE
+		. = ""
+		while(length_char(.) < input_size)
+			// add in the last syllable's period or space first
+			if(add_period)
+				. += ". "
+			else if(add_space)
+				. += " "
+			// generate the next syllable (capitalize if we just added a period)
+			var/next = (. && length(special_characters) && prob(1)) ? pick(special_characters) : pick_weight_recursive(syllables)
+			if(add_period)
+				next = capitalize(next)
+			. += next
+			// determine if the next syllable gets a period or space
+			add_period = prob(sentence_chance)
+			add_space = prob(space_chance)
 
-	var/input_size = length_char(input)
-	var/scrambled_text = ""
-	var/capitalize = TRUE
+	add_to_cache(input, .)
 
-	while(length_char(scrambled_text) < input_size)
-		var/next = (length(scrambled_text) && length(special_characters) && prob(1)) ? pick(special_characters) : pick_weight_recursive(syllables)
-		if(capitalize)
-			next = capitalize(next)
-			capitalize = FALSE
-		scrambled_text += next
-		var/chance = rand(100)
-		if(chance <= sentence_chance)
-			scrambled_text += ". "
-			capitalize = TRUE
-		else if(chance > sentence_chance && chance <= space_chance)
-			scrambled_text += " "
-
-	scrambled_text = trim(scrambled_text)
-	var/ending = copytext_char(scrambled_text, -1)
-	if(ending == ".")
-		scrambled_text = copytext_char(scrambled_text, 1, -2)
-	var/input_ending = copytext_char(input, -1)
-	if(input_ending in list("!","?","."))
-		scrambled_text += input_ending
-
-	add_to_cache(input, scrambled_text)
-
-	return scrambled_text
+	return .
 
 #undef SCRAMBLE_CACHE_LEN

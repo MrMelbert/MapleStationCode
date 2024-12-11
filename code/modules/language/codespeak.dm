@@ -7,7 +7,7 @@
 	icon_state = "codespeak"
 	always_use_default_namelist = TRUE // No syllables anyways
 
-/datum/language/codespeak/scramble(input)
+/datum/language/codespeak/scramble_sentence(input, list/mutual_languages)
 	var/lookup = check_cache(input)
 	if(lookup)
 		return lookup
