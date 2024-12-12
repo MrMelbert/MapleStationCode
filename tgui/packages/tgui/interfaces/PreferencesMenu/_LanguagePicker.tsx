@@ -252,11 +252,11 @@ const LanguagePageInner = (props: {
 
   return (
     <Flex grow>
-      <Flex.Item width="79%" mr={'1%'}>
+      <Flex.Item width="79%" pr="1%">
         <Section
           scrollable
           title={
-            <Flex align="center">
+            <Flex align="center" pr="4%">
               <Flex.Item width="33%">Language</Flex.Item>
               <Flex.Item grow>Spoken</Flex.Item>
               <Flex.Item grow>Understood</Flex.Item>
