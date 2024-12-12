@@ -230,6 +230,7 @@
 	new burn common procs
 */
 
+/// Checks if the wound is in a state that ointment or flesh will help
 /datum/wound/burn/flesh/proc/can_be_ointmented_or_meshed()
 	if(infestation > 0 || sanitization < infestation)
 		return TRUE
