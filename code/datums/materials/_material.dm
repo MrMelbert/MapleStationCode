@@ -152,7 +152,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 			O.clawfootstep = turf_sound_override + "claw"
 			O.heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	if(alpha < 255)
-		ADD_TURF_TRANSPARENCY(T, MATERIAL_SOURCE(type))
+		ADD_TURF_TRANSPARENCY(T, MATERIAL_SOURCE(src))
 		setup_glow(T)
 	return
 
@@ -225,7 +225,7 @@ Simple datum which is instanced once per type and is used for every object of sa
 
 /datum/material/proc/on_removed_turf(turf/T, amount, material_flags)
 	if(alpha < 255)
-		REMOVE_TURF_TRANSPARENCY(T, MATERIAL_SOURCE(type))
+		REMOVE_TURF_TRANSPARENCY(T, MATERIAL_SOURCE(src))
 		// yeets glow
 		T.UnregisterSignal(SSdcs, COMSIG_STARLIGHT_COLOR_CHANGED)
 		T.set_light(0, 0, null)
