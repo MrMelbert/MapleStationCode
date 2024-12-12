@@ -1,7 +1,15 @@
 import { BooleanLike } from 'common/react';
 
 import { useBackend } from '../../backend';
-import { Button, Flex, NoticeBox, Section } from '../../components';
+import {
+  Box,
+  Button,
+  Flex,
+  NoticeBox,
+  Section,
+  Stack,
+  Tooltip,
+} from '../../components';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 type typePath = string;
@@ -114,14 +122,55 @@ const get_understood_button_keys = (langtype: languagePath, data: Data) => {
   };
 };
 
-const LanguageRow = (props: { displayed_language: Language }) => {
+const partial_understanding_percent = (langtype: languagePath, data: Data) => {
+  if (!data.partial_languages[langtype]) {
+    return null;
+  }
+  const all_understood_combined = data.understood_languages
+    .concat(data.pref_understood_languages)
+    .filter((item) => !data.pref_ununderstood_languages.includes(item));
+  if (all_understood_combined.includes(langtype)) {
+    return (
+      <Box color="grey">
+        <Tooltip content="You fully understand this language.">
+          <s>{`${data.partial_languages[langtype]}%`}</s>
+        </Tooltip>
+      </Box>
+    );
+  }
+  return <Box>{data.partial_languages[langtype]}%</Box>;
+};
+
+const LanguageRow = (props: {
+  displayed_language: Language;
+  spoken_cap: number;
+  understood_cap: number;
+}) => {
   const { act, data } = useBackend<Data>();
-  const { displayed_language } = props;
+  const { displayed_language, spoken_cap, understood_cap } = props;
+  const {
+    spoken_languages,
+    pref_spoken_languages,
+    pref_unspoken_languages,
+    understood_languages,
+    pref_understood_languages,
+    pref_ununderstood_languages,
+  } = data;
 
   const lang_type = displayed_language.type;
 
   const spoken_state = get_spoken_language_state(lang_type, data);
   const understood_state = get_understood_language_state(lang_type, data);
+
+  const ignore_spoken_cap = spoken_languages
+    .concat(pref_spoken_languages)
+    .concat(pref_unspoken_languages)
+    .includes(lang_type);
+
+  const ignore_undersood_cap = understood_languages
+    .concat(pref_understood_languages)
+    .concat(pref_ununderstood_languages)
+    .includes(lang_type);
 
   // name - spoken - understood - partial understanding percent
   return (
@@ -137,7 +186,10 @@ const LanguageRow = (props: { displayed_language: Language }) => {
       </Flex.Item>
       <Flex.Item grow>
         <Button
-          disabled={!displayed_language.unlocked}
+          disabled={
+            !displayed_language.unlocked ||
+            (pref_spoken_languages.length >= spoken_cap && !ignore_spoken_cap)
+          }
           icon={StateToIcon[spoken_state]}
           color={StateToColor[spoken_state]}
           tooltip={StateToTooltip[spoken_state]}
@@ -151,7 +203,11 @@ const LanguageRow = (props: { displayed_language: Language }) => {
       </Flex.Item>
       <Flex.Item grow>
         <Button
-          disabled={!displayed_language.unlocked}
+          disabled={
+            !displayed_language.unlocked ||
+            (pref_understood_languages.length >= understood_cap &&
+              !ignore_undersood_cap)
+          }
           icon={StateToIcon[understood_state]}
           color={StateToColor[understood_state]}
           tooltip={StateToTooltip[understood_state]}
@@ -163,40 +219,128 @@ const LanguageRow = (props: { displayed_language: Language }) => {
           }
         />
       </Flex.Item>
-      <Flex.Item width="25%">
-        {data.partial_languages[lang_type]}
-        {data.partial_languages[lang_type] && '%'}
+      <Flex.Item width="33%">
+        {partial_understanding_percent(lang_type, data)}
       </Flex.Item>
     </Flex>
   );
 };
 
-const LanguagePageInner = (props: { base_languages: Language[] }) => {
+const LanguagePageInner = (props: {
+  base_languages: Language[];
+  max_spoken_languages: number;
+  max_understood_languages: number;
+}) => {
+  const { data } = useBackend<Data>();
+  const { base_languages, max_spoken_languages, max_understood_languages } =
+    props;
+  const {
+    spoken_languages,
+    pref_spoken_languages,
+    pref_unspoken_languages,
+    understood_languages,
+    pref_understood_languages,
+    pref_ununderstood_languages,
+  } = data;
+
+  const all_spoken_minus_unspoken = spoken_languages
+    .concat(pref_spoken_languages)
+    .filter((item) => !pref_unspoken_languages.includes(item));
+  const all_understood_minus_ununderstood = understood_languages
+    .concat(pref_understood_languages)
+    .filter((item) => !pref_ununderstood_languages.includes(item));
+
   return (
-    <Section
-      title={
-        <Flex align="center">
-          <Flex.Item width="33%">Language</Flex.Item>
-          <Flex.Item grow>Spoken</Flex.Item>
-          <Flex.Item grow>Understood</Flex.Item>
-          <Flex.Item width="25%">
-            Partial Understanding
-            <Button
-              icon="info"
-              tooltip="What percentage of words you are able to understand,
-                despite not ultimately knowing the language."
-              ml={1}
-            />
-          </Flex.Item>
-        </Flex>
-      }
-    >
-      {props.base_languages
-        .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .map((language) => (
-          <LanguageRow displayed_language={language} key={language.type} />
-        ))}
-    </Section>
+    <Flex grow>
+      <Flex.Item width="79%" mr={'1%'}>
+        <Section
+          scrollable
+          title={
+            <Flex align="center">
+              <Flex.Item width="33%">Language</Flex.Item>
+              <Flex.Item grow>Spoken</Flex.Item>
+              <Flex.Item grow>Understood</Flex.Item>
+              <Flex.Item width="33%">
+                Partial Understanding
+                <Button
+                  icon="info"
+                  tooltip="What percentage of words you are able to understand,
+                    despite not ultimately knowing the language."
+                  ml={1}
+                />
+              </Flex.Item>
+            </Flex>
+          }
+        >
+          {base_languages
+            .sort((a, b) => (a.name > b.name ? 1 : -1))
+            .map((language) => (
+              <LanguageRow
+                displayed_language={language}
+                spoken_cap={max_spoken_languages}
+                understood_cap={max_understood_languages}
+                key={language.type}
+              />
+            ))}
+        </Section>
+      </Flex.Item>
+      <Flex.Item width="20%">
+        <Section align="center">
+          <Stack vertical>
+            <Stack.Item>
+              <Box fontSize="18px" pb={1}>
+                Spoken Languages
+              </Box>
+              <Box
+                bold
+                fontSize="20px"
+                backgroundColor="white"
+                color="black"
+                pb={0.5}
+              >
+                {pref_spoken_languages.length} / {max_spoken_languages}
+              </Box>
+            </Stack.Item>
+            <Stack.Item>
+              <Box fontSize="18px" pb={1}>
+                Understood Languages
+              </Box>
+              <Box
+                bold
+                fontSize="20px"
+                backgroundColor="white"
+                color="black"
+                pb={0.5}
+              >
+                {pref_understood_languages.length} / {max_understood_languages}
+              </Box>
+            </Stack.Item>
+            {all_spoken_minus_unspoken.length <= 0 && (
+              <Stack.Item>
+                <NoticeBox color="red" mt={0.5} preserveWhitespace>
+                  {`You can't speak any languages!
+
+You will be completely unable to communicate verbally, even though sign language.
+
+You may want to select at least one language to speak.`}
+                </NoticeBox>
+              </Stack.Item>
+            )}
+            {all_understood_minus_ununderstood.length <= 0 && (
+              <Stack.Item>
+                <NoticeBox color="red" mt={0.5} preserveWhitespace>
+                  {`You can't understand any languages!
+
+You won't be able to understand any speech, and translating will be very difficult.
+
+You may want to select at least one language to understand.`}
+                </NoticeBox>
+              </Stack.Item>
+            )}
+          </Stack>
+        </Section>
+      </Flex.Item>
+    </Flex>
   );
 };
 
@@ -207,6 +351,10 @@ export const LanguagePage = () => {
         return serverData ? (
           <LanguagePageInner
             base_languages={serverData.language.base_languages}
+            max_spoken_languages={serverData.language.max_spoken_languages}
+            max_understood_languages={
+              serverData.language.max_understood_languages
+            }
           />
         ) : (
           <NoticeBox>Loading...</NoticeBox>

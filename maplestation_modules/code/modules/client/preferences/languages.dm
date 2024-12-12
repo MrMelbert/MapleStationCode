@@ -52,7 +52,6 @@
 		/datum/language/moffic,
 		/datum/language/nekomimetic,
 		/datum/language/draconic,
-		/datum/language/slime,
 		/datum/language/skrell,
 		// these are iffy
 		/datum/language/voltaic,
@@ -60,10 +59,15 @@
 	)
 	/// Languages not rendered in the UI under any circumstances.
 	var/list/dont_show_languages = list(
+		/datum/language/aphasia,
 		/datum/language/codespeak,
 		/datum/language/drone,
 		/datum/language/xenocommon,
 	)
+	/// Max # of languages you can add to your character.
+	var/max_spoken_languages = 1
+	/// Max # of languages you can understand.
+	var/max_understood_languages = 2
 
 /datum/preference/languages/create_default_value()
 	return null
@@ -86,11 +90,15 @@
 						continue
 					if(lang in species_holder.spoken_languages)
 						continue
+					if(length(sanitized_input[key]) >= max_spoken_languages)
+						continue
 
 				if(ADD_UNDERSTOOD_LANGUAGE)
 					if(!(lang in selectable_languages))
 						continue
 					if(lang in species_holder.understood_languages)
+						continue
+					if(length(sanitized_input[key]) >= max_understood_languages)
 						continue
 
 				if(REMOVE_SPOKEN_LANGUAGE)
@@ -151,7 +159,16 @@
 	)
 
 /datum/preference_middleware/language/proc/add_language_to_user(lang_type, lang_key)
+	var/datum/preference/languages/language_pref = GLOB.preference_entries[/datum/preference/languages]
 	var/list/existing = preferences.read_preference(/datum/preference/languages) || list()
+
+	if(lang_key == ADD_SPOKEN_LANGUAGE && length(existing[ADD_SPOKEN_LANGUAGE]) >= language_pref.max_spoken_languages)
+		return FALSE
+	if(lang_key == ADD_UNDERSTOOD_LANGUAGE && length(existing[ADD_UNDERSTOOD_LANGUAGE]) >= language_pref.max_understood_languages)
+		return FALSE
+
+	if((lang_key == ADD_SPOKEN_LANGUAGE || lang_key == ADD_UNDERSTOOD_LANGUAGE) && !(lang_type in language_pref.selectable_languages))
+		return FALSE
 
 	LAZYADD(existing[lang_key], lang_type)
 
@@ -169,17 +186,13 @@
 	return TRUE
 
 /datum/preference_middleware/language/proc/set_language(list/params, mob/user)
-	var/datum/preference/languages/language_pref = GLOB.preference_entries[/datum/preference/languages]
 	if(params["deselecting"])
 		remove_language_from_user(text2path(params["lang_type"]), params["lang_key"])
 		return TRUE
 
 	var/lang_path = text2path(params["lang_type"])
-	if(!GLOB.language_datum_instances[lang_path])
-		return TRUE
-	if((params["lang_key"] == ADD_SPOKEN_LANGUAGE || params["lang_key"] == ADD_UNDERSTOOD_LANGUAGE) && !(lang_path in language_pref.selectable_languages))
-		return TRUE
-	add_language_to_user(lang_path, params["lang_key"])
+	if(GLOB.language_datum_instances[lang_path])
+		add_language_to_user(lang_path, params["lang_key"])
 	return TRUE
 
 /datum/preference_middleware/language/on_new_character(mob/user)
@@ -187,8 +200,6 @@
 
 /datum/preference_middleware/language/get_ui_static_data(mob/user)
 	var/list/data = list()
-
-	data["pref_name"] = preferences.read_preference(/datum/preference/name/real_name)
 
 	var/datum/species/species = GLOB.species_prototypes[preferences.read_preference(/datum/preference/choiced/species)]
 	var/datum/language_holder/species_holder = GLOB.prototype_language_holders[species.species_language_holder]
@@ -224,6 +235,9 @@
 		lang_data["name"] = GLOB.language_datum_instances[found_language].name
 		lang_data["desc"] = GLOB.language_datum_instances[found_language].desc
 		UNTYPED_LIST_ADD(data["base_languages"], lang_data)
+
+	data["max_spoken_languages"] = language_pref.max_spoken_languages
+	data["max_understood_languages"] = language_pref.max_understood_languages
 
 	return data
 

@@ -207,8 +207,8 @@ export type ServerData = {
   };
   language: {
     base_languages: Language[];
-    bonus_languages: Language[];
-    blacklisted_species: string[];
+    max_spoken_languages: number;
+    max_understood_languages: number;
   };
   // NON-MODULE CHANGE END
   [otheyKey: string]: unknown;
