@@ -1,166 +1,201 @@
 import { BooleanLike } from 'common/react';
 
 import { useBackend } from '../../backend';
-import {
-  Box,
-  Button,
-  Dimmer,
-  NoticeBox,
-  Section,
-  Stack,
-} from '../../components';
+import { Button, Flex, NoticeBox, Section } from '../../components';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 type typePath = string;
 
+type languagePath = typePath;
+
 type Data = {
   pref_name: string;
-  selected_species: typePath;
-  selected_lang: typePath | string;
-  trilingual: BooleanLike;
-  bilingual: BooleanLike;
-};
-
-type Species = {
-  name: string;
-  type: typePath;
+  spoken_languages: languagePath[];
+  understood_languages: languagePath[];
+  partial_languages: Record<languagePath, number>[];
+  pref_spoken_languages: languagePath[];
+  pref_understood_languages: languagePath[];
+  pref_unspoken_languages: languagePath[];
+  pref_ununderstood_languages: languagePath[];
 };
 
 export type Language = {
   name: string;
-  type: typePath;
-  incompatible_with: Species | null;
-  requires: Species | null;
+  desc: string;
+  type: languagePath;
+  unlocked: BooleanLike;
 };
 
-// Fake an ispath() check to determine if this species can learn this language
-const isPickable = (lang: Language, species: typePath): boolean => {
-  if (lang.incompatible_with && species.includes(lang.incompatible_with.type)) {
-    return false;
-  }
-  if (lang.requires && !species.includes(lang.requires.type)) {
-    return false;
-  }
-  return true;
+enum LanguageState {
+  DEFAULT,
+  DISABLED,
+  ENABLED,
+  NONE,
+}
+
+const StateToIcon = {
+  [LanguageState.DEFAULT]: 'square-check-o',
+  [LanguageState.DISABLED]: 'square-minus-o',
+  [LanguageState.ENABLED]: 'square-plus-o',
+  [LanguageState.NONE]: 'square-o',
 };
 
-const getLanguageTooltip = (lang: Language): string => {
-  if (lang.incompatible_with && lang.requires) {
-    return `This language cannot be selected by
-      the "${lang.incompatible_with.name}" species and requires
-      the "${lang.requires.name}" species.`;
-  }
-  if (lang.incompatible_with) {
-    return `This language cannot be selected by
-      the "${lang.incompatible_with.name}" species.`;
-  }
-  if (lang.requires) {
-    return `This language requires
-      the "${lang.requires.name}" species.`;
-  }
-  return '';
+const StateToColor = {
+  [LanguageState.DEFAULT]: 'good',
+  [LanguageState.DISABLED]: 'bad',
+  [LanguageState.ENABLED]: 'average',
+  [LanguageState.NONE]: 'default',
 };
 
-const LanguageStack = (props: {
-  language: Language;
-  selected_lang: typePath;
-  selected_species: typePath;
-}) => {
-  const { act } = useBackend<Language>();
-  const { language, selected_species } = props;
-  const { name, type } = language;
-  const pickable = isPickable(language, selected_species);
+const StateToTooltip = {
+  [LanguageState.DEFAULT]: 'You know this feature due to your species.',
+  [LanguageState.DISABLED]: 'You have disabled this feature of your species.',
+  [LanguageState.ENABLED]: 'You have enabled this feature.',
+  [LanguageState.NONE]: '',
+};
 
+const get_spoken_language_state = (
+  langtype: languagePath,
+  data: Data,
+): LanguageState => {
+  if (data.pref_unspoken_languages.includes(langtype)) {
+    return LanguageState.DISABLED;
+  }
+  if (data.pref_spoken_languages.includes(langtype)) {
+    return LanguageState.ENABLED;
+  }
+  if (data.spoken_languages.includes(langtype)) {
+    return LanguageState.DEFAULT;
+  }
+  return LanguageState.NONE;
+};
+
+const get_understood_language_state = (
+  langtype: languagePath,
+  data: Data,
+): LanguageState => {
+  if (data.pref_ununderstood_languages.includes(langtype)) {
+    return LanguageState.DISABLED;
+  }
+  if (data.pref_understood_languages.includes(langtype)) {
+    return LanguageState.ENABLED;
+  }
+  if (data.understood_languages.includes(langtype)) {
+    return LanguageState.DEFAULT;
+  }
+  return LanguageState.NONE;
+};
+
+// Returns the keys for the spoken language button action based on the given language and data
+const get_spoken_button_keys = (langtype: languagePath, data: Data) => {
+  if (data.spoken_languages.includes(langtype)) {
+    return {
+      lang_key: 'Remove spoken language', // Corresponds to DM defines
+      deselecting: data.pref_unspoken_languages.includes(langtype),
+    };
+  }
+  return {
+    lang_key: 'Add spoken language', // Corresponds to DM defines
+    deselecting: data.pref_spoken_languages.includes(langtype),
+  };
+};
+
+// Returns the keys for the understood language button action based on the given language and data
+const get_understood_button_keys = (langtype: languagePath, data: Data) => {
+  if (data.understood_languages.includes(langtype)) {
+    return {
+      lang_key: 'Remove understood language', // Corresponds to DM defines
+      deselecting: data.pref_ununderstood_languages.includes(langtype),
+    };
+  }
+  return {
+    lang_key: 'Add understood language', // Corresponds to DM defines
+    deselecting: data.pref_understood_languages.includes(langtype),
+  };
+};
+
+const LanguageRow = (props: { displayed_language: Language }) => {
+  const { act, data } = useBackend<Data>();
+  const { displayed_language } = props;
+
+  const lang_type = displayed_language.type;
+
+  const spoken_state = get_spoken_language_state(lang_type, data);
+  const understood_state = get_understood_language_state(lang_type, data);
+
+  // name - spoken - understood - partial understanding percent
   return (
-    <Stack>
-      <Stack.Item grow align="left">
-        {name}
-      </Stack.Item>
-      <Stack.Item>
-        <Button.Checkbox
-          fluid
-          checked={type === props.selected_lang}
-          disabled={!pickable}
-          tooltip={pickable ? '' : getLanguageTooltip(language)}
-          content={pickable ? 'Select' : 'Locked'}
+    <Flex p={0.25} className="candystripe" align="center">
+      <Flex.Item width="33%">
+        <Button
+          tooltip={displayed_language.desc}
+          disabled={!displayed_language.desc}
+          icon="question-circle"
+          mr={1}
+        />
+        {displayed_language.name}
+      </Flex.Item>
+      <Flex.Item grow>
+        <Button
+          disabled={!displayed_language.unlocked}
+          icon={StateToIcon[spoken_state]}
+          color={StateToColor[spoken_state]}
+          tooltip={StateToTooltip[spoken_state]}
           onClick={() =>
             act('set_language', {
-              lang_type: type,
-              deselecting: type === props.selected_lang,
+              lang_type: lang_type,
+              ...get_spoken_button_keys(lang_type, data),
             })
           }
         />
-      </Stack.Item>
-    </Stack>
+      </Flex.Item>
+      <Flex.Item grow>
+        <Button
+          disabled={!displayed_language.unlocked}
+          icon={StateToIcon[understood_state]}
+          color={StateToColor[understood_state]}
+          tooltip={StateToTooltip[understood_state]}
+          onClick={() =>
+            act('set_language', {
+              lang_type: lang_type,
+              ...get_understood_button_keys(lang_type, data),
+            })
+          }
+        />
+      </Flex.Item>
+      <Flex.Item width="25%">
+        {data.partial_languages[lang_type]}
+        {data.partial_languages[lang_type] && '%'}
+      </Flex.Item>
+    </Flex>
   );
 };
 
-const WarningDimmer = (props) => {
+const LanguagePageInner = (props: { base_languages: Language[] }) => {
   return (
-    <Dimmer align="center">
-      <Box fontSize="18px">{props.message}</Box>
-    </Dimmer>
-  );
-};
-
-const LanguagePageInner = (props: {
-  base_languages: Language[];
-  bonus_languages: Language[];
-  blacklisted_species: typePath[];
-}) => {
-  const { data } = useBackend<Data>();
-  const { base_languages, bonus_languages, blacklisted_species } = props;
-  const { selected_species, selected_lang, trilingual, bilingual } = data;
-
-  return (
-    <Section>
-      {!!trilingual && (
-        <WarningDimmer
-          message={
-            'The Trilingual quirk grants you an additional random \
-            language - but you cannot select one while the quirk is active.'
-          }
-        />
-      )}
-      {!!bilingual && (
-        <WarningDimmer
-          message={
-            'You have the Bilingual quirk selected, so use its \
-            selection dropdown instead.'
-          }
-        />
-      )}
-      {blacklisted_species.includes(selected_species) && (
-        <WarningDimmer
-          message={'Your species cannot learn any additional languages.'}
-        />
-      )}
-      <Section title="Base Racial Languages">
-        <Stack vertical>
-          {base_languages.map((language) => (
-            <Stack.Item key={language.name}>
-              <LanguageStack
-                language={language}
-                selected_lang={selected_lang}
-                selected_species={selected_species}
-              />
-            </Stack.Item>
-          ))}
-        </Stack>
-      </Section>
-      <Section title="Unique Racial Languages">
-        <Stack vertical>
-          {bonus_languages.map((language) => (
-            <Stack.Item key={language.name}>
-              <LanguageStack
-                language={language}
-                selected_lang={selected_lang}
-                selected_species={selected_species}
-              />
-            </Stack.Item>
-          ))}
-        </Stack>
-      </Section>
+    <Section
+      title={
+        <Flex align="center">
+          <Flex.Item width="33%">Language</Flex.Item>
+          <Flex.Item grow>Spoken</Flex.Item>
+          <Flex.Item grow>Understood</Flex.Item>
+          <Flex.Item width="25%">
+            Partial Understanding
+            <Button
+              icon="info"
+              tooltip="What percentage of words you are able to understand,
+                despite not ultimately knowing the language."
+              ml={1}
+            />
+          </Flex.Item>
+        </Flex>
+      }
+    >
+      {props.base_languages
+        .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .map((language) => (
+          <LanguageRow displayed_language={language} key={language.type} />
+        ))}
     </Section>
   );
 };
@@ -172,8 +207,6 @@ export const LanguagePage = () => {
         return serverData ? (
           <LanguagePageInner
             base_languages={serverData.language.base_languages}
-            bonus_languages={serverData.language.bonus_languages}
-            blacklisted_species={serverData.language.blacklisted_species}
           />
         ) : (
           <NoticeBox>Loading...</NoticeBox>
