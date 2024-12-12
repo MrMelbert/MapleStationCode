@@ -1,3 +1,4 @@
+/*
 /datum/quirk/bilingual
 	name = "Bilingual"
 	desc = "Over the years you've picked up an extra language!"
@@ -26,3 +27,4 @@
 			return
 		to_chat(quirk_holder, span_boldnotice("You are already familiar with the quirk in your preferences, so you learned Galactic Uncommon instead."))
 	quirk_holder.grant_language(language_type, source = LANGUAGE_QUIRK)
+*/

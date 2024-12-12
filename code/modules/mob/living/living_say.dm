@@ -158,6 +158,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		return
 
 	language = message_mods[LANGUAGE_EXTENSION] || get_selected_language()
+	if(!language)
+		message_mods[MODE_CUSTOM_SAY_EMOTE] ||= "makes \a [pick("strange", "weird", "bizarre", "peculiar", "odd", "unusual", "curious")] sound"
+		message_mods[MODE_CUSTOM_SAY_ERASE_INPUT] = TRUE
 
 	var/succumbed = FALSE
 
