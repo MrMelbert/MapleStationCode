@@ -6,6 +6,32 @@
 #define REMOVE_SPOKEN_LANGUAGE "Remove spoken language"
 #define REMOVE_UNDERSTOOD_LANGUAGE "Remove understood language"
 
+/datum/preferences/proc/migrate_quirks_to_language_menu(list/save_data)
+	var/datum/preference_middleware/language/update = locate() in middleware
+	var/datum/preference/languages/language_pref = GLOB.preference_entries[/datum/preference/languages]
+
+	// random quirks
+	if("Bilingual" in all_quirks)
+		var/picked_lang = GLOB.language_types_by_name[save_data["bilingual_language"]]?.type
+		if(picked_lang && (picked_lang in language_pref.selectable_languages))
+			update.add_language_to_user(picked_lang, ADD_SPOKEN_LANGUAGE)
+			update.add_language_to_user(picked_lang, ADD_UNDERSTOOD_LANGUAGE)
+
+	if("Trilingual" in all_quirks)
+		pass() // nothing to do about this
+
+	if("Foreigner" in all_quirks)
+		update.add_language_to_user(/datum/language/uncommon, ADD_SPOKEN_LANGUAGE)
+		update.add_language_to_user(/datum/language/uncommon, ADD_UNDERSTOOD_LANGUAGE)
+		update.add_language_to_user(/datum/language/common, REMOVE_SPOKEN_LANGUAGE)
+		update.add_language_to_user(/datum/language/common, REMOVE_UNDERSTOOD_LANGUAGE)
+
+	// the old prefs
+	var/other_lang = text2path(save_data["language"])
+	if(other_lang && (other_lang in language_pref.selectable_languages))
+		update.add_language_to_user(other_lang, ADD_SPOKEN_LANGUAGE)
+		update.add_language_to_user(other_lang, ADD_UNDERSTOOD_LANGUAGE)
+
 /datum/preference/languages
 	savefile_key = "language"
 	savefile_identifier = PREFERENCE_CHARACTER
