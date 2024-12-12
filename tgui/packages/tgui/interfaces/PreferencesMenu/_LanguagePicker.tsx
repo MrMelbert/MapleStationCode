@@ -320,7 +320,7 @@ const LanguagePageInner = (props: {
                 <NoticeBox color="red" mt={0.5} preserveWhitespace>
                   {`You can't speak any languages!
 
-You will be completely unable to communicate verbally, even though sign language.
+You will be completely unable to communicate verbally, even through sign language.
 
 You may want to select at least one language to speak.`}
                 </NoticeBox>
