@@ -216,7 +216,7 @@
 /datum/quirk/colorblind
 	name = "Colorblind"
 	desc = "You are partially colorblind and are unable to percieve the full color spectrum."
-	icon = FA_ICON_ADJUST
+	icon = FA_ICON_PALETTE
 	value = 0
 	gain_text = span_notice("You suddenly can't see as many colors anymore.")
 	lose_text = span_danger("You can see the world in full color now! It's not that great...")
