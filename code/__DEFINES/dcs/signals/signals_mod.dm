@@ -41,3 +41,5 @@
 #define COMSIG_MOD_WEARER_SET "mod_wearer_set"
 /// Called when the MODsuit wearer is unset.
 #define COMSIG_MOD_WEARER_UNSET "mod_wearer_unset"
+/// Called when the MOD control unit fetches its visor icon
+#define COMSIG_MOD_GET_VISOR_OVERLAY "mod_get_visor_overlay"
