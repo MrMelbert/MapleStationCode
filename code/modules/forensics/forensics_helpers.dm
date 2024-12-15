@@ -77,6 +77,7 @@
 	/// Cached mixed color of all blood DNA on us
 	VAR_PROTECTED/cached_blood_dna_color
 
+/// Gets what color all the blood coating this atom mixed together would be
 /atom/proc/get_blood_dna_color()
 	if(cached_blood_dna_color)
 		return cached_blood_dna_color
@@ -91,6 +92,9 @@
 		final_color = BlendRGB(final_color, color, 0.5)
 	cached_blood_dna_color = final_color
 	return final_color
+
+/obj/effect/decal/cleanable/blood/get_blood_dna_color()
+	return ..() || COLOR_BLOOD
 
 /obj/effect/decal/cleanable/blood/drip/get_blood_dna_color()
 	var/list/all_dna = GET_ATOM_BLOOD_DNA(src)
@@ -117,13 +121,14 @@
 	var/first_dna = GET_ATOM_BLOOD_DNA_LENGTH(src)
 	if(!..())
 		return FALSE
-
-	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
+	if(dried)
+		return TRUE
 	// Imperfect, ends up with some blood types being double-set-up, but harmless (for now)
 	for(var/new_blood in blood_DNA_to_add)
 		var/datum/blood_type/blood = find_blood_type(blood_DNA_to_add[new_blood])
 		blood.set_up_blood(src, first_dna == 0)
 	update_appearance()
+	add_atom_colour(get_blood_dna_color(), FIXED_COLOUR_PRIORITY)
 	return TRUE
 
 /obj/item/add_blood_DNA(list/blood_DNA_to_add)
