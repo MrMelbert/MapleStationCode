@@ -16,7 +16,7 @@
 		gib_animation()
 
 	if(stat != DEAD)
-		death(TRUE)
+		death(TRUE, "being torn apart")
 
 	ghostize()
 	spill_organs(drop_bitflags)
@@ -75,7 +75,7 @@
 	if(body_position == STANDING_UP)
 		// keep us upright so the animation fits.
 		ADD_TRAIT(src, TRAIT_FORCED_STANDING, TRAIT_GENERIC)
-	death(TRUE)
+	death(TRUE, "being vaporized")
 
 	if(drop_items)
 		unequip_everything()
@@ -108,6 +108,7 @@
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/mob, emote), "deathgasp")
 
 	set_stat(DEAD)
+	SShealth_updates.queue_update(src, UPDATE_MEDHUD) // This is just for weird case where death is called out of nowhere
 	unset_machine()
 	timeofdeath = world.time
 	station_timestamp_timeofdeath = station_time_timestamp()
@@ -123,14 +124,10 @@
 			to_chat(src, span_deadsay(span_big("Observer freelook is disabled.\nPlease use Orbit, Teleport, and Jump to look around.")))
 			ghostize(TRUE)
 	set_disgust(0)
-	SetSleeping(0, 0)
+	stop_sound_channel(CHANNEL_HEARTBEAT) // backup in case someone's dehearted before death
 	reset_perspective(null)
 	reload_fullscreen()
 	update_mob_action_buttons()
-	update_damage_hud()
-	update_health_hud()
-	med_hud_set_health()
-	med_hud_set_status()
 	stop_pulling()
 
 	SEND_SIGNAL(src, COMSIG_LIVING_DEATH, gibbed)
