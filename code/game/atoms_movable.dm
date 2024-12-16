@@ -1467,7 +1467,7 @@
 */
 
 /// Gets or creates the relevant language holder. For mindless atoms, gets the local one. For atom with mind, gets the mind one.
-/atom/movable/proc/get_language_holder()
+/atom/movable/proc/get_language_holder() as /datum/language_holder
 	RETURN_TYPE(/datum/language_holder)
 	if(QDELING(src))
 		CRASH("get_language_holder() called on a QDELing atom, \
@@ -1520,6 +1520,10 @@
 /// Gets a random understood language, useful for hallucinations and such.
 /atom/movable/proc/get_random_understood_language()
 	return get_language_holder().get_random_understood_language()
+
+/// Gets a list of all mutually understood languages.
+/atom/movable/proc/get_mutually_understood_languages()
+	return get_language_holder().get_mutually_understood_languages()
 
 /// Gets a random spoken language, useful for forced speech and such.
 /atom/movable/proc/get_random_spoken_language()

@@ -90,7 +90,7 @@ GLOBAL_LIST_INIT_TYPED(language_datum_instances, /datum/language, init_language_
 /// List if all language typepaths learnable, IE, those with keys
 GLOBAL_LIST_INIT(all_languages, init_all_languages())
 // /List of language prototypes to reference, assoc "name" = typepath
-GLOBAL_LIST_INIT(language_types_by_name, init_language_types_by_name())
+GLOBAL_LIST_INIT_TYPED(language_types_by_name, /datum/language, init_language_types_by_name())
 
 /proc/init_language_prototypes()
 	var/list/lang_list = list()
