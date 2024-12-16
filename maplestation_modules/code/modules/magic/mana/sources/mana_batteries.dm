@@ -135,10 +135,17 @@
 	else
 		return ..()
 
-///Volitious is like coal, but magical.
+///Volitious lignite is coal, but magical.
 /obj/item/mana_battery/mana_crystal/lignite/fire_act(exposed_temperature, exposed_volume)
 	atmos_spawn_air("[GAS_CO2]=[10];[TURF_TEMPERATURE(exposed_temperature)]")
+	magic_puff()
 	qdel(src)
+
+///puffs out magic smoke!
+/obj/item/mana_battery/mana_crystal/lignite/proc/magic_puff()
+		var/datum/effect_system/fluid_spread/smoke/chem/smoke_machine/puff = new
+		puff.set_up(4, holder = src, location = loc, carry = /datum/reagent/medicine/quintessence/misty, efficiency = 24)
+		puff.start()
 
 /obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/small
