@@ -147,7 +147,7 @@
 		chems.my_atom = src
 		chems.add_reagent(/datum/reagent/medicine/quintessence/misty, 5)
 		var/datum/effect_system/fluid_spread/smoke/chem/puff = new
-		puff.set_up(3, holder = src, location = loc, carry = chems)
+		puff.set_up(1, holder = src, location = loc, carry = chems)
 		puff.start()
 
 /obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
