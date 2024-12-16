@@ -79,6 +79,6 @@
 	name = "Volite Powder"
 	description = "Pure Volite crystals which has been grinded up into a powder."
 	taste_description = "lots of little sparks"
-	ph = 7
+	ph = 8
 	color = "#22dcb5"
 	var/mana_adjust = 1
