@@ -750,6 +750,7 @@
 	if(shock_buildup < 90)
 		num_repeats *= 0.5
 
+	num_repeats = clamp(num_repeats, 1, 6)
 	if(num_repeats <= 1)
 		return
 	var/static/regex/no_stammer = regex(@@[ ""''()[\]{}.!?,:;_`~-]@)
