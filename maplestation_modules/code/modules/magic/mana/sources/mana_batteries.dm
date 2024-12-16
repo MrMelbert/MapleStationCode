@@ -77,6 +77,7 @@
 // Do not use, basetype
 /datum/mana_pool/mana_battery/mana_crystal
 
+	grind_results = list(/datum/reagent/volite_powder = 10)
 	maximum_mana_capacity = MANA_CRYSTAL_BASE_MANA_CAPACITY
 	softcap = MANA_CRYSTAL_BASE_MANA_CAPACITY
 
@@ -102,6 +103,7 @@
 	name = "Small Volite Crystal"
 	desc = "A miniaturized Volite crystal, formed using the run-off of cutting larger ones. Able to hold mana still, although not as much as a proper formation."
 	icon_state = "small"
+	grind_results = list(/datum/reagent/volite_powder = 5)
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/mana_battery/mana_crystal/small/get_initial_mana_pool_type()
@@ -111,6 +113,15 @@
 	name = "Cut Volite Crystal"
 	desc = "A cut and shaped Volite Crystal, using a standardized square cut. It lacks power until it is slotted into a proper amulet."
 	icon_state = "cut"
+
+/obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
+	return /datum/mana_pool/mana_battery/mana_crystal/small
+
+/obj/item/mana_battery/mana_crystal/lignite
+	name = "Volitious Lignite"
+	desc = "A natural source of Volite. It is formed not unlike coal, where magical plants has been compressed over millions of years by rock."
+	icon_state = "lignite"
+	grind_results = list(/datum/reagent/volite_powder = 5, /datum/reagent/carbon = 5)
 
 /obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/small
