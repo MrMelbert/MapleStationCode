@@ -55,11 +55,18 @@ const StateToColor = {
   [LanguageState.NONE]: 'default',
 };
 
-const StateToTooltip = {
-  [LanguageState.DEFAULT]: 'You know this feature due to your species.',
-  [LanguageState.DISABLED]: 'You have disabled this feature of your species.',
-  [LanguageState.ENABLED]: 'You have enabled this feature.',
-  [LanguageState.NONE]: '',
+const StateToTooltipSpeech = {
+  [LanguageState.DEFAULT]: 'You innately speak this.',
+  [LanguageState.DISABLED]: 'You have opted out of speaking this.',
+  [LanguageState.ENABLED]: 'You have chosen to speak this.',
+  [LanguageState.NONE]: 'You do not speak this.',
+};
+
+const StateToTooltipUnderstanding = {
+  [LanguageState.DEFAULT]: 'You innately understand this.',
+  [LanguageState.DISABLED]: 'You have opted out of understanding this.',
+  [LanguageState.ENABLED]: 'You have chosen to understand this.',
+  [LanguageState.NONE]: 'You do not understand this.',
 };
 
 const get_spoken_language_state = (
@@ -176,13 +183,20 @@ const LanguageRow = (props: {
   return (
     <Flex p={0.25} className="candystripe" align="center">
       <Flex.Item width="33%">
-        <Button
-          tooltip={displayed_language.desc}
-          disabled={!displayed_language.desc}
-          icon="question-circle"
-          mr={1}
-        />
-        {displayed_language.name}
+        {displayed_language.desc ? (
+          <Tooltip content={displayed_language.desc} position="bottom-start">
+            <Box
+              inline
+              style={{
+                borderBottom: '2px dotted rgba(255, 255, 255, 0.8)',
+              }}
+            >
+              {displayed_language.name}
+            </Box>
+          </Tooltip>
+        ) : (
+          <Box>{displayed_language.name}</Box>
+        )}
       </Flex.Item>
       <Flex.Item grow>
         <Button
@@ -192,7 +206,8 @@ const LanguageRow = (props: {
           }
           icon={StateToIcon[spoken_state]}
           color={StateToColor[spoken_state]}
-          tooltip={StateToTooltip[spoken_state]}
+          tooltip={StateToTooltipSpeech[spoken_state]}
+          tooltipPosition={'right'}
           onClick={() =>
             act('set_language', {
               lang_type: lang_type,
@@ -210,7 +225,8 @@ const LanguageRow = (props: {
           }
           icon={StateToIcon[understood_state]}
           color={StateToColor[understood_state]}
-          tooltip={StateToTooltip[understood_state]}
+          tooltip={StateToTooltipUnderstanding[understood_state]}
+          tooltipPosition={'right'}
           onClick={() =>
             act('set_language', {
               lang_type: lang_type,
@@ -257,17 +273,54 @@ const LanguagePageInner = (props: {
           scrollable
           title={
             <Flex align="center" pr="4%">
-              <Flex.Item width="33%">Language</Flex.Item>
-              <Flex.Item grow>Spoken</Flex.Item>
-              <Flex.Item grow>Understood</Flex.Item>
+              <Flex.Item width="33%"> Language</Flex.Item>
+              <Flex.Item grow>
+                <Tooltip
+                  content="Speaking a language allows you to
+                    communicate verbally with others who understand it.
+                    It does NOT necessarily mean you can understand the language."
+                >
+                  <Box
+                    inline
+                    style={{
+                      borderBottom: '2px dotted rgba(255, 255, 255, 0.8)',
+                    }}
+                  >
+                    Spoken
+                  </Box>
+                </Tooltip>
+              </Flex.Item>
+              <Flex.Item grow>
+                <Tooltip
+                  content="Understanding a language allows you to
+                    comprehend what others are saying in it.
+                    It does NOT necessarily mean you can speak the language."
+                >
+                  <Box
+                    inline
+                    style={{
+                      borderBottom: '2px dotted rgba(255, 255, 255, 0.8)',
+                    }}
+                  >
+                    Understood
+                  </Box>
+                </Tooltip>
+              </Flex.Item>
               <Flex.Item width="33%">
-                Partial Understanding
-                <Button
-                  icon="info"
-                  tooltip="What percentage of words you are able to understand,
-                    despite not ultimately knowing the language."
-                  ml={1}
-                />
+                <Tooltip
+                  content="Partial understanding indicates what percentage
+                    of words in the language you are able to understand,
+                    if you otherwise are incapable of fully understanding it."
+                >
+                  <Box
+                    inline
+                    style={{
+                      borderBottom: '2px dotted rgba(255, 255, 255, 0.8)',
+                    }}
+                  >
+                    Partial Understanding
+                  </Box>
+                </Tooltip>
               </Flex.Item>
             </Flex>
           }
