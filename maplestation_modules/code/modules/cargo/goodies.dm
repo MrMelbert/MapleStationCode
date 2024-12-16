@@ -38,12 +38,10 @@
 		/obj/item/mana_battery/mana_crystal/small,
 	)
 
-/datum/supply_pack/goody/volitious_lignite_pack
+/datum/supply_pack/goody/volitious_lignite_single_pack
 	name = "Volitious Lignite Pack"
-	desc = "A three pack of a natural source of volite, volitious lignite."
-	cost = PAYCHECK_CREW * 3
+	desc = "A single pack of a natural source of volite, volitious lignite."
+	cost = PAYCHECK_CREW * 2
 	contains = list(
-		/obj/item/mana_battery/mana_crystal/lignite,
-		/obj/item/mana_battery/mana_crystal/lignite,
 		/obj/item/mana_battery/mana_crystal/lignite,
 	)

@@ -77,7 +77,6 @@
 // Do not use, basetype
 /datum/mana_pool/mana_battery/mana_crystal
 
-	grind_results = list(/datum/reagent/volite_powder = 10)
 	maximum_mana_capacity = MANA_CRYSTAL_BASE_MANA_CAPACITY
 	softcap = MANA_CRYSTAL_BASE_MANA_CAPACITY
 
@@ -93,6 +92,7 @@
 	name = "Stabilized Volite Crystal"
 	desc = "A stabilized Volite Crystal, one of the few objects capable of stably storing mana without binding."
 	icon_state = "standard"
+	grind_results = list(/datum/reagent/volite_powder = 10)
 
 /obj/item/mana_battery/mana_crystal/standard/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/standard
@@ -113,6 +113,7 @@
 	name = "Cut Volite Crystal"
 	desc = "A cut and shaped Volite Crystal, using a standardized square cut. It lacks power until it is slotted into a proper amulet."
 	icon_state = "cut"
+	grind_results = list(/datum/reagent/volite_powder = 10)
 
 /obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/small
@@ -122,6 +123,22 @@
 	desc = "A natural source of Volite. It is formed not unlike coal, where magical plants has been compressed over millions of years by rock."
 	icon_state = "lignite"
 	grind_results = list(/datum/reagent/volite_powder = 5, /datum/reagent/carbon = 5)
+
+///Just like coal, if the temperature of the object is over 300, then ignite
+/obj/item/mana_battery/mana_crystal/lignite/attackby(obj/item/W, mob/user, params)
+	if(W.get_temperature() > 300)
+		var/turf/T = get_turf(src)
+		message_admins("Volitious lignite ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_VERBOSEJMP(T)]")
+		user.log_message("ignited volitious lignite ", LOG_GAME)
+		fire_act(W.get_temperature())
+		return TRUE
+	else
+		return ..()
+
+///Volitious is like coal, but magical.
+/obj/item/mana_battery/mana_crystal/lignite/fire_act(exposed_temperature, exposed_volume)
+	atmos_spawn_air("[GAS_CO2]=[10];[TURF_TEMPERATURE(exposed_temperature)]")
+	qdel(src)
 
 /obj/item/mana_battery/mana_crystal/cut/get_initial_mana_pool_type()
 	return /datum/mana_pool/mana_battery/mana_crystal/small
