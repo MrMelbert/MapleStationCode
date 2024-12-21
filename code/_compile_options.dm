@@ -143,4 +143,5 @@
 #warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
 #endif
 
+/// Comment out to hide content related to the story or characters of Maplestation.
 #define MAPLESTATION_STORY_CONTENT
