@@ -1,6 +1,8 @@
 /obj/machinery/vending/wardrobe/bar_wardrobe
 	added_products = list(
+#ifdef MAPLESTATION_STORY_CONTENT
 		/obj/item/clothing/under/rank/civilian/bartender/vintageskirt = 1,
+#endif
 		/obj/item/clothing/glasses/eyepatch/reagent = 2,
 	)
 
