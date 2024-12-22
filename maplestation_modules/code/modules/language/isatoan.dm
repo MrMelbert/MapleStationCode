@@ -15,7 +15,6 @@
 	icon_state = "mu"
 	icon = 'maplestation_modules/icons/misc/language.dmi'
 	default_priority = 80
-	available_as_pref = TRUE
 
 /datum/language_holder/isatoa
 	understood_languages = list(

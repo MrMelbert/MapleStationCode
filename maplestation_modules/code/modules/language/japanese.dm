@@ -13,7 +13,7 @@
 	)
 	icon_state = "torii"
 	icon = 'maplestation_modules/icons/misc/language.dmi'
-	default_priority = 94
+	default_priority = 90
 
 /datum/language_holder/yangyu
 	understood_languages = list(

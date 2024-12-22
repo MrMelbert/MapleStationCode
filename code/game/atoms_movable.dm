@@ -1467,7 +1467,7 @@
 */
 
 /// Gets or creates the relevant language holder. For mindless atoms, gets the local one. For atom with mind, gets the mind one.
-/atom/movable/proc/get_language_holder()
+/atom/movable/proc/get_language_holder() as /datum/language_holder
 	RETURN_TYPE(/datum/language_holder)
 	if(QDELING(src))
 		CRASH("get_language_holder() called on a QDELing atom, \
