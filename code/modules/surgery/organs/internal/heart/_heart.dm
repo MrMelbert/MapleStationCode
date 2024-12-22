@@ -69,7 +69,10 @@
 	beating = FALSE
 	update_appearance()
 	beat = BEAT_NONE
-	owner?.stop_sound_channel(CHANNEL_HEARTBEAT)
+	if(!isnull(owner))
+		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
+		owner.apply_status_effect(/datum/status_effect/heart_attack)
+		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
 	return TRUE
 
 /obj/item/organ/internal/heart/proc/Restart()
@@ -78,6 +81,9 @@
 
 	beating = TRUE
 	update_appearance()
+	if(!isnull(owner))
+		owner.remove_status_effect(/datum/status_effect/heart_attack)
+		SShealth_updates.queue_update(owner, UPDATE_MEDHUD_STATUS|UPDATE_MEDHUD_HEALTH)
 	return TRUE
 
 /obj/item/organ/internal/heart/OnEatFrom(eater, feeder)
@@ -89,6 +95,29 @@
 /obj/item/organ/internal/heart/proc/is_beating()
 	return beating
 
+/obj/item/organ/internal/heart/proc/get_heart_rate()
+	if(!is_beating())
+		return 0
+
+	var/base_amount = 0
+
+	if(owner.has_status_effect(/datum/status_effect/jitter))
+		base_amount = 100 + rand(0, 25)
+	else if(owner.stat == SOFT_CRIT || owner.stat == HARD_CRIT)
+		base_amount = 60 + rand(-15, -10)
+	else
+		base_amount = 80 + rand(-10, 10)
+	base_amount += round(owner.getOxyLoss() / 5)
+	base_amount += ((BLOOD_VOLUME_NORMAL - owner.blood_volume) / 25)
+	base_amount += owner.pain_controller?.get_heartrate_modifier()
+	if(owner.has_status_effect(/datum/status_effect/determined)) // adrenaline
+		base_amount += 10
+
+	if(owner.has_reagent(/datum/reagent/consumable/coffee)) // funny
+		base_amount += 10
+
+	return round(base_amount * clamp(1.5 * ((maxHealth - damage) / maxHealth), 0.5, 1)) // heart damage puts a multiplier on it
+
 /obj/item/organ/internal/heart/get_status_text(advanced, add_tooltips)
 	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
 		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Apply defibrillation immediately. Similar electric shocks may work in emergencies.", add_tooltips)
@@ -99,7 +128,7 @@
 	return ..() || owner.needs_heart()
 
 /obj/item/organ/internal/heart/on_life(seconds_per_tick, times_fired)
-	..()
+	. = ..()
 
 	// If the owner doesn't need a heart, we don't need to do anything with it.
 	if(!owner.needs_heart())
@@ -108,7 +137,7 @@
 	// Handle "sudden" heart attack
 	if(!beating || (organ_flags & ORGAN_FAILING))
 		if(owner.can_heartattack() && Stop())
-			if(owner.stat == CONSCIOUS)
+			if(owner.stat <= SOFT_CRIT && !owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB))
 				owner.visible_message(span_danger("[owner] clutches at [owner.p_their()] chest as if [owner.p_their()] heart is stopping!"))
 			to_chat(owner, span_userdanger("You feel a terrible pain in your chest, as if your heart has stopped!"))
 		return
@@ -117,10 +146,10 @@
 	if(isnull(owner.client))
 		return
 
+/*
 	if(owner.stat == SOFT_CRIT)
 		if(beat != BEAT_SLOW)
 			beat = BEAT_SLOW
-			to_chat(owner, span_notice("You feel your heart slow down..."))
 			SEND_SOUND(owner, sound('sound/health/slowbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
 
 	else if(owner.stat == HARD_CRIT)
@@ -131,6 +160,7 @@
 	else if(beat != BEAT_NONE)
 		owner.stop_sound_channel(CHANNEL_HEARTBEAT)
 		beat = BEAT_NONE
+*/
 
 /obj/item/organ/internal/heart/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantheart
@@ -203,7 +233,7 @@
 
 /obj/item/organ/internal/heart/cybernetic/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	if(dose_available && owner.health <= owner.crit_threshold && !owner.reagents.has_reagent(rid))
+	if(dose_available && owner.health <= 0 && !owner.reagents.has_reagent(rid))
 		used_dose()
 
 /obj/item/organ/internal/heart/cybernetic/proc/used_dose()

@@ -835,7 +835,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	SHOULD_CALL_PARENT(TRUE)
 	if(H.stat == DEAD)
 		return
-	if(HAS_TRAIT(H, TRAIT_NOBREATH) && (H.health < H.crit_threshold) && !HAS_TRAIT(H, TRAIT_NOCRITDAMAGE))
+	if(HAS_TRAIT(H, TRAIT_NOBREATH) && H.stat >= UNCONSCIOUS && !HAS_TRAIT(H, TRAIT_NOCRITDAMAGE))
 		H.adjustBruteLoss(0.5 * seconds_per_tick)
 
 /datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE, indirect_action = FALSE)
@@ -1087,7 +1087,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(attacker_style?.help_act(user, target) == MARTIAL_ATTACK_SUCCESS)
 		return TRUE
 
-	if(target.body_position == STANDING_UP || (target.appears_alive() && target.stat != SOFT_CRIT && target.stat != HARD_CRIT))
+	if((target.body_position == STANDING_UP || target.appears_alive()) && !target.undergoing_cardiac_arrest())
 		target.help_shake_act(user)
 		if(target != user)
 			log_combat(user, target, "shaken")
@@ -1111,11 +1111,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	else
 
 		var/obj/item/organ/internal/brain/brain = user.get_organ_slot(ORGAN_SLOT_BRAIN)
-		var/obj/item/bodypart/attacking_bodypart
-		if(brain)
-			attacking_bodypart = brain.get_attacking_limb(target)
-		if(!attacking_bodypart)
-			attacking_bodypart = user.get_active_hand()
+		var/obj/item/bodypart/attacking_bodypart = brain?.get_attacking_limb(target) || user.get_active_hand()
 		var/atk_verb = attacking_bodypart.unarmed_attack_verb
 		var/atk_effect = attacking_bodypart.unarmed_attack_effect
 
@@ -1137,17 +1133,17 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		if(target.pulledby && target.pulledby.grab_state >= GRAB_AGGRESSIVE)
 			grappled = TRUE
 
-		var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high)
+		var/damage = rand(attacking_bodypart.unarmed_damage_low, attacking_bodypart.unarmed_damage_high) * user.outgoing_damage_mod
 		var/limb_accuracy = attacking_bodypart.unarmed_effectiveness
 
 		var/obj/item/bodypart/affecting = target.get_bodypart(target.get_random_valid_zone(user.zone_selected))
 
 		var/miss_chance = 100//calculate the odds that a punch misses entirely. considers stamina and brute damage of the puncher. punches miss by default to prevent weird cases
 		if(attacking_bodypart.unarmed_damage_low)
-			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || staggered) //kicks and attacks against staggered targets never miss (provided your species deals more than 0 damage)
+			if((target.body_position == LYING_DOWN) || HAS_TRAIT(user, TRAIT_PERFECT_ATTACKER) || staggered || user == target) //kicks and attacks against staggered targets never miss (provided your species deals more than 0 damage)
 				miss_chance = 0
 			else
-				miss_chance = clamp(UNARMED_MISS_CHANCE_BASE - limb_accuracy + user.getStaminaLoss() + (user.getBruteLoss()*0.5), 0, UNARMED_MISS_CHANCE_MAX) //Limb miss chance + various damage. capped at 80 so there is at least a chance to land a hit.
+				miss_chance = clamp(UNARMED_MISS_CHANCE_BASE - limb_accuracy + user.getStaminaLoss() + ((100 - user.consciousness) * 0.5), 0, UNARMED_MISS_CHANCE_MAX) //Limb miss chance + various damage. capped at 80 so there is at least a chance to land a hit.
 
 		if(!damage || !affecting || prob(miss_chance))//future-proofing for species that have 0 damage/weird cases where no zone is targeted
 			playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
@@ -1175,27 +1171,40 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		var/attack_direction = get_dir(user, target)
 		var/attack_type = attacking_bodypart.attack_type
+		var/attack_sharp = NONE
+		if(atk_effect == ATTACK_EFFECT_CLAW || atk_effect == ATTACK_EFFECT_BITE)
+			attack_sharp = SHARP_EDGED
+		else if(atk_effect == ATTACK_EFFECT_BITE)
+			attack_type = SHARP_POINTY
+
 		if(atk_effect == ATTACK_EFFECT_KICK || grappled) //kicks and punches when grappling bypass armor slightly.
 			if(damage >= 9)
 				target.force_say()
 			log_combat(user, target, grappled ? "grapple punched" : "kicked")
-			target.apply_damage(damage, attack_type, affecting, armor_block - limb_accuracy, attack_direction = attack_direction)
-			target.apply_damage(damage*1.5, STAMINA, affecting, armor_block - limb_accuracy)
+			target.apply_damage(damage, attack_type, affecting, armor_block - limb_accuracy, sharpness = attack_sharp, attack_direction = attack_direction)
+			target.apply_damage(damage * 1.5, STAMINA, affecting, armor_block - limb_accuracy)
+
 		else // Normal attacks do not gain the benefit of armor penetration.
-			target.apply_damage(damage, attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.apply_damage(damage*1.5, STAMINA, affecting, armor_block)
+			target.apply_damage(damage, attack_type, affecting, armor_block, sharpness = attack_sharp, attack_direction = attack_direction)
+			target.apply_damage(damage * 1.5, STAMINA, affecting, armor_block)
 			if(damage >= 9)
 				target.force_say()
 			log_combat(user, target, "punched")
 
 		//If we rolled a punch high enough to hit our stun threshold, or our target is staggered and they have at least 40 damage+stamina loss, we knock them down
-		if((target.stat != DEAD) && prob(limb_accuracy) || (target.stat != DEAD) && staggered && (target.getStaminaLoss() + user.getBruteLoss()) >= 40)
-			target.visible_message(span_danger("[user] knocks [target] down!"), \
-							span_userdanger("You're knocked down by [user]!"), span_hear("You hear aggressive shuffling followed by a loud thud!"), COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_danger("You knock [target] down!"))
-			var/knockdown_duration = 4 SECONDS + (target.getStaminaLoss() + (target.getBruteLoss()*0.5))*0.8 //50 total damage = 4 second base stun + 4 second stun modifier = 8 second knockdown duration
+		if(prob(limb_accuracy) && target.stat != DEAD && armor_block < 100 && staggered && (target.getStaminaLoss() + user.getBruteLoss()) >= 40)
+			var/was_standing = target.body_position == STANDING_UP
+			var/knockdown_duration = 4 SECONDS + (target.getStaminaLoss() + (target.getBruteLoss() * 0.5)) * 0.8 //50 total damage = 4 second base stun + 4 second stun modifier = 8 second knockdown duration
 			target.apply_effect(knockdown_duration, EFFECT_KNOCKDOWN, armor_block)
 			log_combat(user, target, "got a stun punch with their previous punch")
+			// only shows the message if we changed states
+			if(was_standing && target.body_position != STANDING_UP)
+				target.visible_message(
+					span_danger("[user] knocks [target] down!"),
+					span_userdanger("You're knocked down by [user]!"),
+					span_hear("You hear aggressive shuffling followed by a loud thud!"),
+					COMBAT_MESSAGE_RANGE,
+				)
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	if(attacker_style?.disarm_act(user,target) == MARTIAL_ATTACK_SUCCESS)

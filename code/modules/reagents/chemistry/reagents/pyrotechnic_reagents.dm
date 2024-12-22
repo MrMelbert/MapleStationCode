@@ -236,11 +236,13 @@
 	. = ..()
 	affected_mob.mob_surgery_speed_mod = 1-((CRYO_SPEED_PREFACTOR * (1 - creation_purity))+CRYO_SPEED_CONSTANT) //10% - 30% slower
 	affected_mob.color = COLOR_CYAN
+	ADD_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
 
 /datum/reagent/cryostylane/on_mob_delete(mob/living/affected_mob)
 	. = ..()
 	affected_mob.mob_surgery_speed_mod = 1
 	affected_mob.color = COLOR_WHITE
+	REMOVE_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
 
 //Pauses decay! Does do something, I promise.
 /datum/reagent/cryostylane/on_mob_dead(mob/living/carbon/affected_mob, seconds_per_tick)

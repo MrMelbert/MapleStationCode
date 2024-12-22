@@ -54,6 +54,10 @@
 	become_blind(NO_EYES)
 	// Mobs cannot taste anything without a tongue; the tongue organ removes this on Insert
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
+	// No lungs until you get lungs
+	apply_status_effect(/datum/status_effect/lungless)
+	// No heart until you get a heart // Except this is probably unnecessary so we'll skip it
+	// apply_status_effect(/datum/status_effect/heart_attack)
 
 /mob/living/carbon/human/proc/setup_human_dna()
 	randomize_human_normie(src, randomize_mutations = TRUE)
@@ -346,7 +350,7 @@
 		if(!target_zone)
 			target_zone = get_bodypart(check_zone(user.zone_selected))
 		var/obj/item/bodypart/the_part = isbodypart(target_zone) ? target_zone : get_bodypart(check_zone(target_zone)) //keep these synced
-		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.name]."))
+		to_chat(user, span_alert("There is no exposed flesh or thin material on [p_their()] [the_part.plaintext_zone]."))
 
 #define CHECK_PERMIT(item) (item && item.item_flags & NEEDS_PERMIT)
 
@@ -440,75 +444,16 @@
 				step_towards(hand, src)
 				to_chat(src, span_warning("\The [S] pulls \the [hand] from your grip!"))
 
-#define CPR_PANIC_SPEED (0.8 SECONDS)
-
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
 	if(target == src)
-		return
+		return FALSE
 
-	var/panicking = FALSE
+	if (DOING_INTERACTION_WITH_TARGET(src, target))
+		return FALSE
 
-	do
-		CHECK_DNA_AND_SPECIES(target)
-
-		if (DOING_INTERACTION_WITH_TARGET(src,target))
-			return FALSE
-
-		if (target.stat == DEAD || HAS_TRAIT(target, TRAIT_FAKEDEATH))
-			to_chat(src, span_warning("[target.name] is dead!"))
-			return FALSE
-
-		if (is_mouth_covered())
-			to_chat(src, span_warning("Remove your mask first!"))
-			return FALSE
-
-		if (target.is_mouth_covered())
-			to_chat(src, span_warning("Remove [p_their()] mask first!"))
-			return FALSE
-
-		if (!get_organ_slot(ORGAN_SLOT_LUNGS))
-			to_chat(src, span_warning("You have no lungs to breathe with, so you cannot perform CPR!"))
-			return FALSE
-
-		if (HAS_TRAIT(src, TRAIT_NOBREATH))
-			to_chat(src, span_warning("You do not breathe, so you cannot perform CPR!"))
-			return FALSE
-
-		visible_message(span_notice("[src] is trying to perform CPR on [target.name]!"), \
-						span_notice("You try to perform CPR on [target.name]... Hold still!"))
-
-		if (!do_after(src, delay = panicking ? CPR_PANIC_SPEED : (3 SECONDS), target = target))
-			to_chat(src, span_warning("You fail to perform CPR on [target]!"))
-			return FALSE
-
-		if (target.health > target.crit_threshold)
-			return FALSE
-
-		visible_message(span_notice("[src] performs CPR on [target.name]!"), span_notice("You perform CPR on [target.name]."))
-		if(HAS_MIND_TRAIT(src, TRAIT_MORBID))
-			add_mood_event("morbid_saved_life", /datum/mood_event/morbid_saved_life)
-		else
-			add_mood_event("saved_life", /datum/mood_event/saved_life)
-		log_combat(src, target, "CPRed")
-
-		if (HAS_TRAIT(target, TRAIT_NOBREATH))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... which is a sensation you don't recognise..."))
-		else if (!target.get_organ_slot(ORGAN_SLOT_LUNGS))
-			to_chat(target, span_unconscious("You feel a breath of fresh air... but you don't feel any better..."))
-		else
-			target.adjustOxyLoss(-min(target.getOxyLoss(), 7))
-			to_chat(target, span_unconscious("You feel a breath of fresh air enter your lungs... It feels good..."))
-
-		if (target.health <= target.crit_threshold)
-			if (!panicking)
-				to_chat(src, span_warning("[target] still isn't up! You try harder!"))
-			panicking = TRUE
-		else
-			panicking = FALSE
-	while (panicking)
-
-#undef CPR_PANIC_SPEED
+	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
+	return TRUE
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
 	if(dna?.check_mutation(/datum/mutation/human/hulk))
@@ -921,15 +866,17 @@
 
 /mob/living/carbon/human/updatehealth()
 	. = ..()
-	if(HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
-		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
-		return
-	var/health_deficiency = max((maxHealth - health), staminaloss)
-	if(health_deficiency >= 40)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 75)
-		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 25)
-	else
+	update_damage_movespeed()
+
+/mob/living/carbon/human/update_stamina()
+	update_damage_movespeed()
+
+/mob/living/carbon/human/proc/update_damage_movespeed()
+	var/health_deficiency = max((maxHealth - health), staminaloss * 2)
+	if(health_deficiency >= 0)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, multiplicative_slowdown = health_deficiency / 150)
+		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying, TRUE, multiplicative_slowdown = health_deficiency / 50)
+	else if(LAZYACCESS(movespeed_modification, "[/datum/movespeed_modifier/damage_slowdown]"))
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown)
 		remove_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown_flying)
 
