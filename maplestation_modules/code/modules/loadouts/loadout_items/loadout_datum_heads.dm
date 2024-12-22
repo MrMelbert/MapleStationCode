@@ -272,3 +272,5 @@
 /datum/loadout_item/head/santa
 	name = "Santa Hat"
 	item_path = /obj/item/clothing/head/costume/santa/gags
+	ui_icon = /obj/item/clothing/head/costume/santa::icon
+	ui_icon_state = /obj/item/clothing/head/costume/santa::icon_state
