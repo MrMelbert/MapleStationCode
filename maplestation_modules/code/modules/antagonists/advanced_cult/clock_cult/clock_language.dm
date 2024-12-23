@@ -11,7 +11,7 @@
 	spans = list(SPAN_ROBOT)
 	icon_state = "ratvar"
 
-/datum/language/ratvarian/scramble(input)
+/datum/language/ratvarian/scramble_sentence(input, list/mutual_languages)
 	return text2ratvar(input)
 
 /// Regexes used to add ratvarian styling to rot13 english
