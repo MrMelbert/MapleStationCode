@@ -6133,6 +6133,7 @@
 #include "maplestation_modules\code\datums\components\stackable_item.dm"
 #include "maplestation_modules\code\datums\components\crafting\recipes.dm"
 #include "maplestation_modules\code\datums\diseases\disease_resistance.dm"
+#include "maplestation_modules\code\datums\elements\fire_patting_item.dm"
 #include "maplestation_modules\code\datums\elements\glove_slapper.dm"
 #include "maplestation_modules\code\datums\elements\shoe_footstep.dm"
 #include "maplestation_modules\code\datums\elements\temperature_pack.dm"

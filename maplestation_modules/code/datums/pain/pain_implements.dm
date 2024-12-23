@@ -361,6 +361,7 @@
 
 	AddElement(/datum/element/bed_tuckable, 0, 0, 0)
 	AddElement(/datum/element/attack_equip)
+	AddElement(/datum/element/pat_out_fire)
 
 /obj/item/shock_blanket/examine(mob/user)
 	. = ..()

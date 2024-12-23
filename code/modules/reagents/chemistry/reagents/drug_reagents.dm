@@ -87,12 +87,20 @@
 		to_chat(affected_mob, span_notice("[smoke_message]"))
 	affected_mob.add_mood_event("smoked", /datum/mood_event/smoked)
 	affected_mob.remove_status_effect(/datum/status_effect/jitter)
-	affected_mob.AdjustStun(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustKnockdown(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustUnconscious(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustParalyzed(-50 * REM * seconds_per_tick)
-	affected_mob.AdjustImmobilized(-50 * REM * seconds_per_tick)
+	affected_mob.AdjustStun(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustKnockdown(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustUnconscious(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustParalyzed(-5 SECONDS * REM * seconds_per_tick)
+	affected_mob.AdjustImmobilized(-5 SECONDS * REM * seconds_per_tick)
 	return UPDATE_MOB_HEALTH
+
+/datum/reagent/drug/nicotine/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	user.add_consciousness_modifier(type, 3)
+
+/datum/reagent/drug/nicotine/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	affected_mob.remove_consciousness_modifier(type)
 
 /datum/reagent/drug/nicotine/overdose_process(mob/living/affected_mob, seconds_per_tick, times_fired)
 	. = ..()

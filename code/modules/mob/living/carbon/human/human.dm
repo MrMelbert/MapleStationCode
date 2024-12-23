@@ -450,7 +450,88 @@
 		return
 
 	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
-	return TRUE
+
+/mob/living/carbon/human/proc/do_pat_fire(mob/living/carbon/target, obj/item/patting_with)
+	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
+	if((on_fire || (patting_with?.resistance_flags & ON_FIRE)) && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
+		to_chat(src, span_warning("You have your own fire to worry about!"))
+		return
+
+	visible_message(
+		span_notice("[src] pats at the fire engulfing [target]!"),
+		span_notice("You try to pat out the fire on [target]!"),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
+
+	while(do_after(user, 1 SECONDS, target, extra_checks = CALLBACK(src, PROC_REF(pat_fire_check), target),))
+		// check if we're using heatproof stuff (gloves or firesuit)
+		var/using_protection = FALSE
+		if(patting_with && !(patting_with.resistance_flags & ON_FIRE)) // slapping them with something and it's not burning
+			using_protection = patting_with.max_heat_protection_temperature >= target.get_skin_temperature() || (patting_with.resistance_flags & FIRE_PROOF)
+		else
+			var/their_temp = target.get_skin_temperature()
+			for(var/obj/item/clothing/thing as anything in get_clothing_on_part(get_active_hand()))
+				if(thing.max_heat_protection_temperature >= their_temp || (thing.resistance_flags & FIRE_PROOF))
+					using_protection = TRUE
+					break
+		// actually do the patting and extinguishing
+		do_attack_animation(target, "grab")
+		playsound(target, 'sound/weapons/thudswoosh.ogg', 50, TRUE, MEDIUM_RANGE_SOUND_EXTRARANGE)
+		var/fire_heal = -1
+		if(using_protection)
+			fire_heal *= 1.5
+		if(on_fire || (patting_with?.resistance_flags & ON_FIRE))
+			fire_heal *= 0.25
+		target.adjust_fire_stacks(fire_heal)
+		if(!target.on_fire)
+			break
+		// either using heatproof stuff or we straight up can't catch fire from them
+		if(using_protection || HAS_TRAIT(target, TRAIT_NOFIRE_SPREAD))
+			continue
+		if(!prob(5 * target.fire_stacks))
+			continue
+		// check if our item catches fire before our mob does
+		if(patting_with && !(patting_with.resistance_flags & ON_FIRE))
+			var/set_alight = patting_with.fire_act(pick(40, 50, 60) * target.fire_stacks)
+			visible_message(
+				span_danger("[src]'s [patting_with.name] [set_alight ? "bursts into flames" : "shrivels up in the flames"]!"),
+				span_danger("Your [patting_with.name] [set_alight ? "bursts into flames" : "shrivels up in the flames"]!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+			// fire claimed us entirely
+			if(QDELETED(patting_with))
+				break
+			// A. was flammable and is now on fire - next loop, we will take direct fire damage from it (if unprotected)
+			// B. is not flammable - we will continue to burn it, and deal no direct damage
+			if(set_alight || !(patting_with.resistance_flags & FLAMMABLE))
+				continue
+
+		// now WE'RE catching fire (and taking some minor damage if possible)
+		// it doesn't stop you from continuing, but you're on fire man, what are you doing?
+		if(!HAS_TRAIT(src, TRAIT_RESISTHEAT) && !HAS_TRAIT(src, TRAIT_RESISTHEATHANDS))
+			apply_damage(round(target.fire_stacks * 0.5, 0.5), BURN, get_active_hand())
+			playsound(src, SFX_SEAR, 50, TRUE)
+		if(!HAS_TRAIT(src, TRAIT_NOFIRE) && !HAS_TRAIT(src, TRAIT_NOFIRE_SPREAD))
+			adjust_fire_stacks(round(target.fire_stacks * 0.2, 0.1))
+			ignite_mob(silent = TRUE)
+		visible_message(
+			span_danger("[src] [on_fire ? "catches fire from patting at" : "burns [p_their()] hand on"] [target]!"),
+			span_danger("You [on_fire ? "catch fire from patting at" : " burn your hand on"] [target]!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+	if(QDELETED(src) || QDELETED(target) || incapacitated() || target.on_fire)
+		return
+	visible_message(
+		span_notice("[src] pats out the fire on [target]."),
+		span_notice("You pat out the fire on [target]."),
+		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+	)
+
+/mob/living/carbon/human/proc/pat_fire_check(mob/living/carbon/target)
+	PRIVATE_PROC(TRUE)
+	return target.on_fire
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
 	if(dna?.check_mutation(/datum/mutation/human/hulk))
