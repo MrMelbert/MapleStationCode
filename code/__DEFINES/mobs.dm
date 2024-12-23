@@ -584,6 +584,8 @@
 #define PAIN_CRIT_THRESOLD 200
 /// Beyond this amount of shock you are in paincrit
 #define SHOCK_CRIT_THRESHOLD 150
+/// Beyond this amount of shock you are in soft crit
+#define SHOCK_DANGER_THRESHOLD 90
 /// Beyond this amount of shock you can have a heart attack
 #define SHOCK_HEART_ATTACK_THRESHOLD 120
 

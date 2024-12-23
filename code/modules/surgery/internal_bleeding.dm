@@ -34,7 +34,6 @@
 	success_sound = 'sound/surgery/organ2.ogg'
 	time = 6 SECONDS
 	repeatable = TRUE
-	pain_amount = 12
 
 /datum/surgery_step/repair_veins/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	var/in_where = "[target]'s [parse_zone(target_zone)]"
@@ -46,9 +45,10 @@
 		span_notice("[user] begins to repair the arteries in [in_where]."),
 	)
 	display_pain(
-		target,
-		"You feel a horrible stabbing pain in your [parse_zone(target_zone)]!",
+		target = target,
 		target_zone = target_zone,
+		pain_message = "You feel a horrible stabbing pain in your [parse_zone(target_zone)]!",
+		pain_amount = SURGERY_PAIN_LOW,
 	)
 
 /datum/surgery_step/repair_veins/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)

@@ -171,7 +171,7 @@
 	if(ishuman(convertee))
 		var/mob/living/carbon/human/human_convertee = convertee
 		if(!protected)
-			human_convertee.adjust_traumatic_shock(120)
+			human_convertee.adjust_traumatic_shock(SHOCK_HEART_ATTACK_THRESHOLD)
 		human_convertee.cause_pain(BODY_ZONES_ALL, 65)
 
 	ADD_TRAIT(convertee, TRAIT_WAS_ON_CONVERSION_RUNE, REF(user))

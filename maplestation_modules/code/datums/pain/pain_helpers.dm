@@ -93,7 +93,7 @@
 		return
 
 	ASSERT(isnum(amount))
-	pain_controller.traumatic_shock = clamp(pain_controller.traumatic_shock + amount, down_to, MAX_SHOCK)
+	pain_controller.traumatic_shock = clamp(pain_controller.traumatic_shock + amount, down_to, MAX_TRAUMATIC_SHOCK)
 	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE)
 
 /**

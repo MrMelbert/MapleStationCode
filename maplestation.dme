@@ -6152,7 +6152,6 @@
 #include "maplestation_modules\code\datums\pain\scrubber_tweak.dm"
 #include "maplestation_modules\code\datums\pain\pain_causes\generic_pain_causes.dm"
 #include "maplestation_modules\code\datums\pain\pain_causes\opioid_addiction_pain.dm"
-#include "maplestation_modules\code\datums\pain\pain_causes\surgery_pain.dm"
 #include "maplestation_modules\code\datums\pain\pain_reagents\modified_reagents.dm"
 #include "maplestation_modules\code\datums\pain\pain_reagents\painkiller_reactions.dm"
 #include "maplestation_modules\code\datums\pain\pain_reagents\painkiller_related_chems.dm"

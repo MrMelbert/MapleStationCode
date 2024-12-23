@@ -34,7 +34,7 @@
 	implements = list(
 		TOOL_HEMOSTAT = 100,
 		TOOL_SCREWDRIVER = 65,
-		TOOL_WIRECUTTER = 65, // melbert todo : more pain from bad tools, but reduce the speed penalty
+		TOOL_WIRECUTTER = 65,
 		/obj/item/pen = 55)
 	repeatable = TRUE
 	time = 25
@@ -74,7 +74,6 @@
 		woundtype = "bruises"
 	else //why are you trying to 0,0...?
 		woundtype = "burns"
-		pain_type = BURN // NON-MODULE CHANGE
 
 	if(istype(surgery,/datum/surgery/healing))
 		var/datum/surgery/healing/the_surgery = surgery
@@ -86,7 +85,13 @@
 				span_notice("[user] attempts to patch some of [target]'s [woundtype]."),
 				span_notice("[user] attempts to patch some of [target]'s [woundtype]."),
 			)
-		display_pain(target, "Your [woundtype] sting like hell!", target_zone = target_zone) // NON-MODULE CHANGE
+		display_pain(
+			target = target,
+			target_zone = target_zone,
+			pain_message = "Your [woundtype] sting like hell!",
+			pain_amount = SURGERY_PAIN_TRIVIAL,
+			pain_type = burnhealing ? BURN : BRUTE,
+		)
 
 /datum/surgery_step/heal/initiate(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	if(!..())

@@ -516,12 +516,12 @@
 		if(SPT_PROB(max(traumatic_shock / 20, 3), seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
-	if(traumatic_shock >= 90 || curr_pain >= 150)
+	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD || curr_pain >= 150)
 		if(SPT_PROB(max(traumatic_shock / 30, 4), seconds_per_tick))
 			parent.losebreath += 1
 
 	// This is where "soft crit" is now
-	if(traumatic_shock >= 90)
+	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
 			set_pain_modifier(PAINSHOCK, 1.2)
 			parent.add_max_consciousness_value(PAINSHOCK, 60)
@@ -535,7 +535,7 @@
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
-	if((traumatic_shock >= 120 || curr_pain >= 200) && SPT_PROB(max(traumatic_shock / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
+	if((traumatic_shock >= SHOCK_HEART_ATTACK_THRESHOLD || curr_pain >= 200) && SPT_PROB(max(traumatic_shock / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
 		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
@@ -870,7 +870,7 @@
 		if(60 to 120)
 			shock = span_bold("Alert")
 			shock_tip += "Supply epinephrine and immediate pain relief."
-		if(120 to MAX_SHOCK)
+		if(120 to MAX_TRAUMATIC_SHOCK)
 			shock = span_bold("Critical")
 			shock_tip += "Supply epinephrine and immediate pain relief. Monitor for cardiac or respiratory arrest."
 

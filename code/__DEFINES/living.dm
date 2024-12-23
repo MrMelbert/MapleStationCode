@@ -36,8 +36,16 @@
 /// Amount of pain gained (to chest) from surgically removed limb
 #define PAIN_LIMB_REMOVED 30
 
+// Defines for pain (and shock) gained by surgery
+#define SURGERY_PAIN_TRIVIAL 6
+#define SURGERY_PAIN_LOW 12
+#define SURGERY_PAIN_MEDIUM 18
+#define SURGERY_PAIN_HIGH 24
+#define SURGERY_PAIN_SEVERE 36
+#define SURGERY_PAIN_CRITICAL 48
+
 /// Cap on shock level
-#define MAX_SHOCK 200
+#define MAX_TRAUMATIC_SHOCK 200
 
 /// Checks if a mob can feel pain.
 #define CAN_FEEL_PAIN(mob) (mob?.stat <= SOFT_CRIT && mob?.pain_controller?.pain_modifier > 0.5)

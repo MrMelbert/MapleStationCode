@@ -261,11 +261,44 @@
  * * pain_message - The message to be displayed
  * * mechanical_surgery - Boolean flag that represents if a surgery step is done on a mechanical limb (therefore does not force scream)
  */
-/datum/surgery_step/proc/display_pain(mob/living/target, pain_message, mechanical_surgery = FALSE)
-	if(target.stat < UNCONSCIOUS)
-		to_chat(target, span_userdanger(pain_message))
-		if(prob(30) && !mechanical_surgery)
-			target.emote("scream")
+/datum/surgery_step/proc/display_pain(
+	mob/living/carbon/target,
+	pain_message,
+	mechanical_surgery = FALSE,
+	target_zone = BODY_ZONE_CHEST, // can be a list of zones
+	pain_amount = 0,
+	pain_type = BRUTE,
+	surgery_moodlet = /datum/mood_event/surgery,
+	pain_overlay_severity = pain_amount >= 20 ? 2 : 1,
+)
+	ASSERT(!isnull(target))
+	ASSERT(istext(pain_message))
+	// Not actually causing pain, just feedback
+	if(pain_amount <= 0)
+		target.cause_pain(target_zone, pain_amount)
+		target.pain_message(span_danger(pain_message))
+		return
+	// Only feels pain if we feels pain
+	if(!CAN_FEEL_PAIN(target))
+		target.add_mood_event("surgery", /datum/mood_event/anesthetic)
+		target.pain_message(span_danger(pain_message))
+		return
+	// No pain from mechanics but still show the message (usually)
+	if(mechanical_surgery)
+		target.pain_message(span_danger(pain_message))
+		return
+
+	if(implement_type && (implements[implement_type] > 0))
+		pain_amount = round(pain_amount * sqrt(implements[implement_type]) * 0.1, 0.1)
+
+	target.cause_pain(target_zone, pain_amount, pain_type)
+	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)
+		return
+	target.add_mood_event("surgery", surgery_moodlet)
+	target.flash_pain_overlay(pain_overlay_severity, 0.5 SECONDS)
+	target.adjust_traumatic_shock(pain_amount * 0.33)
+	target.pain_emote()
+	target.pain_message(span_userdanger(pain_message))
 
 #undef SURGERY_SPEED_DISSECTION_MODIFIER
 #undef SURGERY_SPEED_MORBID_CURIOSITY
