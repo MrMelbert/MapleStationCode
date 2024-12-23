@@ -464,7 +464,7 @@
 		visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 	)
 
-	while(do_after(user, 1 SECONDS, target, extra_checks = CALLBACK(src, PROC_REF(pat_fire_check), target),))
+	while(do_after(src, 1 SECONDS, target, extra_checks = CALLBACK(src, PROC_REF(pat_fire_check), target),))
 		// check if we're using heatproof stuff (gloves or firesuit)
 		var/using_protection = FALSE
 		if(patting_with && !(patting_with.resistance_flags & ON_FIRE)) // slapping them with something and it's not burning
