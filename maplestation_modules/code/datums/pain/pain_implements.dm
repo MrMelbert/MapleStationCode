@@ -364,7 +364,7 @@
 
 /obj/item/shock_blanket/examine(mob/user)
 	. = ..()
-	. += span_notice("To use: Apply to a patient experiencing shock or loss of body temperature. Keep patient still and lying down for maximum effect.")
+	. += span_notice("To use: Apply to a patient experiencing hypothermia. Keep patient still and lying down for maximum effect.")
 
 /obj/item/shock_blanket/attack_self(mob/user, modifiers)
 	. = ..()
@@ -460,7 +460,7 @@
 		wearer.adjust_body_temperature(-0.25 KELVIN * seconds_per_tick, min_temp = wearer.standard_body_temperature)
 
 /obj/item/shock_blanket/emergency
-	desc = "An emergency variant shock blanket intended to be placed in medkits for field treatment. Faster to apply to patients, but more restrictive to movement."
+	desc = "An variant of shock blanket intended to be placed in medkits for field treatment. Faster to apply to patients, but more restrictive to movement."
 	slowdown = 2.5
 	equip_delay_self = 1.2 SECONDS
 	equip_delay_other = 1.2 SECONDS
@@ -498,7 +498,7 @@
 			"name" = "Pain",
 			"icon" = "pills",
 			"products" = list(
-				/obj/item/shock_blanket/emergency = 3,
+				/obj/item/shock_blanket = 3,
 				/obj/item/temperature_pack/cold = 2,
 				/obj/item/temperature_pack/heat = 2,
 			)
@@ -511,7 +511,7 @@
 			"name" = "Pain",
 			"icon" = "pills",
 			"products" = list(
-				/obj/item/shock_blanket/emergency = 2,
+				/obj/item/shock_blanket = 2,
 				/obj/item/temperature_pack/cold = 1,
 				/obj/item/temperature_pack/heat = 1,
 			)

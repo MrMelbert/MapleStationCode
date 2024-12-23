@@ -176,8 +176,6 @@
 	return COMPONENT_BLOCK_MISC_HELP
 
 /datum/status_effect/choke/proc/heimlich(mob/victim, mob/aggressor)
-	if(victim == aggressor)
-		return
 	if(DOING_INTERACTION_WITH_TARGET(aggressor, victim))
 		victim.balloon_alert(aggressor, "already helping!")
 		return

@@ -568,7 +568,7 @@
 	var/brutecon = round(-0.005 * (total_brute ** 1.5), 0.01)
 	var/firecon =  round(-0.005 * (total_burn ** 1.5), 0.01)
 	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : round(-1 * min(total_oxy * (total_oxy >= 100 ? 0.5 : 0.33), 100), 0.01)
-	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : round(-5 * sqrt(total_tox), 0.01)
+	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : round(-2 * (total_tox ** 0.75), 0.01)
 	// To prevent nobreath/noblood species from being incredibly tanky, due to ignoring major sources of con damage,
 	// we up their damage taken from brute and fire by 2x to compensate.
 	if(HAS_TRAIT(src, TRAIT_NOBLOOD) || HAS_TRAIT(src, TRAIT_NOBREATH) || isnull(pain_controller))
@@ -655,12 +655,19 @@
 	SShealth_updates.queue_update(src, UPDATE_SELF|UPDATE_MEDHUD_HEALTH)
 
 /mob/living/carbon/proc/paincrit_check()
-	if(consciousness <= CONSCIOUSNESS_CRIT_THRESHOLD || pain_controller?.get_total_pain() >= PAIN_CRIT_THRESOLD || pain_controller?.shock_buildup >= SHOCK_CRIT_THRESHOLD)
+	if(consciousness <= CONSCIOUSNESS_CRIT_THRESHOLD || pain_controller?.get_total_pain() >= PAIN_CRIT_THRESOLD || pain_controller?.traumatic_shock >= SHOCK_CRIT_THRESHOLD)
 		if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
 			return
 		var/is_standing = body_position == STANDING_UP
 		add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
-		if(is_standing && body_position != STANDING_UP)
+		if(buckled)
+			visible_message(
+				span_warning("[src] slumps against [buckled]!"),
+				span_userdanger("You go limp, unable to move!"),
+				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+			)
+
+		else if(is_standing && body_position != STANDING_UP)
 			visible_message(
 				span_warning("[src] collapses!"),
 				span_userdanger("You collapse, unable to stand!"),
@@ -778,7 +785,7 @@
 		return
 
 	var/con_severity = clamp(10 - round(consciousness / 10, 1), 0, 10)
-	var/shock_severity = clamp(round((pain_controller?.shock_buildup || 0) / 40, 1), 0, 10)
+	var/shock_severity = clamp(round((pain_controller?.traumatic_shock || 0) / 40, 1), 0, 10)
 	var/crit_severity = (stat == SOFT_CRIT) ? 5 : 0
 	var/severity = max(con_severity, shock_severity, crit_severity)
 	if(severity > 0)

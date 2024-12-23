@@ -117,8 +117,8 @@
 	var/base_con = 15
 
 /datum/status_effect/recent_defib/on_apply()
-	owner.adjust_pain_shock(-12)
-	owner.cause_pain(BODY_ZONES_ALL, -16)
+	// owner.adjust_traumatic_shock(-12)
+	// owner.cause_pain(BODY_ZONES_ALL, -16)
 	owner.add_consciousness_modifier(id, base_con)
 	owner.add_max_consciousness_value(id, base_con)
 	return TRUE

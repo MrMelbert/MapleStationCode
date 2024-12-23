@@ -194,7 +194,10 @@
 			ContactContractDisease(D)
 
 	if(!user.combat_mode)
-		help_shake_act(user)
+		if(src == user)
+			check_self_for_injuries()
+		else
+			help_shake_act(user)
 		return FALSE
 
 	if(..()) //successful monkey bite.
@@ -320,15 +323,7 @@
 		who_touched_us.blood_in_hands -= 1
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/helper)
-	if(on_fire)
-		to_chat(helper, span_warning("You can't put [p_them()] out with just your bare hands!"))
-		return
-
 	if(SEND_SIGNAL(src, COMSIG_CARBON_PRE_MISC_HELP, helper) & COMPONENT_BLOCK_MISC_HELP)
-		return
-
-	if(helper == src)
-		check_self_for_injuries()
 		return
 
 	if(body_position == LYING_DOWN)

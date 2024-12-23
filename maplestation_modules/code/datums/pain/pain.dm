@@ -23,8 +23,8 @@
 	VAR_FINAL/base_pain_decay
 	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
 	VAR_FINAL/natural_decay_counter = 0
-	/// Amount of shock building up from higher levels of pain
-	VAR_FINAL/shock_buildup = 0
+	/// Amount of traumatic shock building up from higher levels of pain
+	VAR_FINAL/traumatic_shock = 0
 	/// Tracks how many successful heart attack rolls in a row
 	VAR_FINAL/heart_attack_counter = 0
 	/// Cooldown to track the last time we lost pain.
@@ -463,7 +463,7 @@
 		if(checked_bodypart.pain_feedback(seconds_per_tick, no_recent_pain))
 			COOLDOWN_START(src, time_since_last_pain_message, rand(8 SECONDS, 12 SECONDS))
 
-	if(!has_pain && shock_buildup <= 0)
+	if(!has_pain && traumatic_shock <= 0)
 		// no-op if none of our bodyparts are in pain and we're not building up shock
 		return
 
@@ -478,40 +478,22 @@
 		shock_mod *= 2 // stacks with above
 	var/curr_pain = get_total_pain()
 	if(curr_pain < 25)
-		parent.adjust_pain_shock(-3 * seconds_per_tick) // staying out of pain for a while gives you a small resiliency to shock (~1 minute)
+		parent.adjust_traumatic_shock(-3 * seconds_per_tick) // staying out of pain for a while gives you a small resiliency to shock (~1 minute)
 	else if(curr_pain < 50)
-		parent.adjust_pain_shock(-1 * seconds_per_tick)
+		parent.adjust_traumatic_shock(-1 * seconds_per_tick)
 	else if(curr_pain < 100)
-		if(shock_buildup <= 30 || parent.consciousness <= 50)
-			parent.adjust_pain_shock(0.5 * shock_mod * seconds_per_tick)
+		if(traumatic_shock <= 30 || parent.consciousness <= 50)
+			parent.adjust_traumatic_shock(0.5 * shock_mod * seconds_per_tick)
 	else if(curr_pain < 200)
-		parent.adjust_pain_shock(1 * shock_mod * seconds_per_tick)
+		parent.adjust_traumatic_shock(1 * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
-			do_pain_message(span_userdanger(pick("It hurts.")))
+			do_pain_message(span_bolddanger(pick("It hurts.", "You really need some painkillers.")))
 	else
-		parent.adjust_pain_shock(clamp(round(0.5 * (curr_pain / 100), 0.1), 1.5, 8) * shock_mod * seconds_per_tick)
+		parent.adjust_traumatic_shock(clamp(round(0.5 * (curr_pain / 100), 0.1), 1.5, 8) * shock_mod * seconds_per_tick)
 		if(SPT_PROB(2, seconds_per_tick))
-			do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!")))
+			do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!", "You need painkillers now!")))
 
-	switch(shock_buildup)
-		if(10 to 60)
-			parent.adjust_body_temperature(-0.5 KELVIN * seconds_per_tick, min_temp = parent.bodytemp_cold_damage_limit + 5 KELVIN)
-		if(60 to 120)
-			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_bolddanger(pick("It hurts.", "You really need some painkillers.")))
-			if(SPT_PROB(4, seconds_per_tick))
-				do_pain_message(span_warning(pick("You feel cold!", "You feel sweaty!")))
-				parent.pain_emote("shiver", 3 SECONDS)
-			parent.adjust_body_temperature(-0.75 KELVIN * seconds_per_tick, min_temp = parent.bodytemp_cold_damage_limit - 5 KELVIN)
-		if(120 to MAX_SHOCK)
-			if(SPT_PROB(2, seconds_per_tick))
-				do_pain_message(span_userdanger(pick("Stop the pain!", "It hurts!", "You need painkillers now!")))
-			if(SPT_PROB(4, seconds_per_tick))
-				do_pain_message(span_warning("You feel freezing!"))
-				parent.pain_emote("shiver", 3 SECONDS)
-			parent.adjust_body_temperature(-1 KELVIN * seconds_per_tick, min_temp = parent.bodytemp_cold_damage_limit - 10 KELVIN)
-
-	if((shock_buildup >= 20 || curr_pain >= 50) && !just_cant_feel_anything)
+	if((traumatic_shock >= 20 || curr_pain >= 50) && !just_cant_feel_anything)
 		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
 			parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 		if(SPT_PROB(min(curr_pain / 10, 12), seconds_per_tick))
@@ -519,22 +501,41 @@
 		if(SPT_PROB(min(curr_pain / 20, 6), seconds_per_tick)) // pain applies its own stutter
 			parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
-	if(shock_buildup >= 40 && parent.stat != HARD_CRIT)
-		if(SPT_PROB(shock_buildup / 60, seconds_per_tick))
+	if(traumatic_shock >= 40 && parent.stat != HARD_CRIT)
+		if(SPT_PROB(traumatic_shock / 60, seconds_per_tick))
 			//parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
 			parent.Knockdown(rand(3 SECONDS, 6 SECONDS))
 
-	if(shock_buildup >= 60 || curr_pain >= 100)
-		if(SPT_PROB(max(shock_buildup / 20, 2), seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
+	if(traumatic_shock >= 60 || curr_pain >= 100)
+		if(SPT_PROB(max(traumatic_shock / 20, 2), seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent]'s body falls limp!"),
 				span_warning("Your body [just_cant_feel_anything ? "goes" : "falls"] limp!"),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-		if(SPT_PROB(max(shock_buildup / 20, 3), seconds_per_tick))
+		if(SPT_PROB(max(traumatic_shock / 20, 3), seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
-	if((shock_buildup >= 120 || curr_pain >= 200) && SPT_PROB(max(shock_buildup / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
+	if(traumatic_shock >= 90 || curr_pain >= 150)
+		if(SPT_PROB(max(traumatic_shock / 30, 4), seconds_per_tick))
+			parent.losebreath += 1
+
+	// This is where "soft crit" is now
+	if(traumatic_shock >= 90)
+		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
+			set_pain_modifier(PAINSHOCK, 1.2)
+			parent.add_max_consciousness_value(PAINSHOCK, 60)
+			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
+			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+
+	else
+		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
+			unset_pain_modifier(PAINSHOCK)
+			parent.remove_max_consciousness_value(PAINSHOCK)
+			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
+			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+
+	if((traumatic_shock >= 120 || curr_pain >= 200) && SPT_PROB(max(traumatic_shock / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
 		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
 			parent.visible_message(
 				span_warning("[parent] falls unconscious!"),
@@ -543,12 +544,12 @@
 			)
 
 	// This is death
-	if(shock_buildup >= 120 && !parent.undergoing_cardiac_arrest())
+	if(traumatic_shock >= SHOCK_HEART_ATTACK_THRESHOLD && !parent.undergoing_cardiac_arrest())
 		var/heart_attack_prob = 0
 		if(parent.health <= parent.maxHealth * -1)
 			heart_attack_prob += abs(parent.health + parent.maxHealth) * 0.1
-		if(shock_buildup >= 180)
-			heart_attack_prob += (shock_buildup * 0.1)
+		if(traumatic_shock >= 180)
+			heart_attack_prob += (traumatic_shock * 0.1)
 		if(SPT_PROB(min(20, heart_attack_prob), seconds_per_tick))
 			if(!COOLDOWN_FINISHED(src, time_since_last_heart_attack_counter))
 				parent.losebreath += 1
@@ -576,23 +577,9 @@
 	else
 		heart_attack_counter = 0
 
-	// This is where "soft crit" is now
-	if(shock_buildup >= 90)
-		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
-			set_pain_modifier(PAINSHOCK, 1.2)
-			parent.add_max_consciousness_value(PAINSHOCK, 60)
-			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
-			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
-
-	else
-		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
-			unset_pain_modifier(PAINSHOCK)
-			parent.remove_max_consciousness_value(PAINSHOCK)
-			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
-			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
-
-	if(curr_pain >= PAIN_CRIT_THRESOLD || shock_buildup >= SHOCK_CRIT_THRESHOLD)
+	if(traumatic_shock >= SHOCK_CRIT_THRESHOLD || curr_pain >= PAIN_CRIT_THRESOLD )
 		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 120 SECONDS)
+
 	parent.paincrit_check()
 
 	// Finally, handle pain decay over time
@@ -644,7 +631,7 @@
 	if(pain <= 25)
 		parent.remove_consciousness_modifier(PAIN)
 	else
-		parent.add_consciousness_modifier(PAIN, round(-0.5 * (max(pain + shock_buildup, 0) ** 0.8)), 0.01)
+		parent.add_consciousness_modifier(PAIN, round(-0.5 * (max(pain + traumatic_shock, 0) ** 0.8)), 0.01)
 	// Buuut the other modifiers aren't
 	pain *= pain_modifier
 
@@ -746,8 +733,8 @@
 	if(!length(phrase))
 		return
 
-	var/num_repeats = floor(((get_total_pain() / 75) + (shock_buildup / 75)) * pain_modifier)
-	if(shock_buildup < 90)
+	var/num_repeats = floor(((get_total_pain() / 75) + (traumatic_shock / 75)) * pain_modifier)
+	if(traumatic_shock < 90)
 		num_repeats *= 0.5
 
 	num_repeats = clamp(num_repeats, 1, 6)
@@ -788,7 +775,7 @@
 		// Shouldn't be necessary but you never know!
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
-	shock_buildup = 0
+	traumatic_shock = 0
 	natural_pain_decay = base_pain_decay
 	unset_pain_modifier(PAINSHOCK)
 	parent.remove_max_consciousness_value(PAINSHOCK)
@@ -807,11 +794,14 @@
 	else
 		START_PROCESSING(SSpain, src)
 
-/// When we are revived, reduced shock
+/// When we are revived, reduced shock & pain
 /datum/pain/proc/revived(...)
 	SIGNAL_HANDLER
 
-	shock_buildup /= 3
+	parent.adjust_traumatic_shock(traumatic_shock * -0.66)
+	for(var/zone in body_zones)
+		var/obj/item/bodypart/revived_bodypart = body_zones[zone]
+		parent.cause_pain(zone, revived_bodypart.pain * -0.9)
 
 /// Used to get the effect of pain on the parent's heart rate.
 /datum/pain/proc/get_heartrate_modifier()
@@ -850,52 +840,63 @@
 	if(parent.stat == DEAD)
 		return
 
-	var/in_shock = HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK)
-
 	var/amount = ""
-	var/tip = ""
-	var/amount_text = ""
-	var/shock_text = ""
+	var/pain_tip = ""
 
 	switch(get_total_pain())
 		if(10 to 50)
 			amount = "minor"
-			tip += "Pain should subside in time."
+			pain_tip += "Pain should subside in time."
 		if(50 to 100)
 			amount = "moderate"
-			tip += "Pain should subside in time and can be quickened with rest or painkilling medication."
+			pain_tip += "Pain should subside in time and can be quickened with rest or painkilling medication."
 		if(100 to 150)
 			amount = "major"
-			tip += "Treat wounds and abate pain with rest, cryogenics, and painkilling medication."
+			pain_tip += "Treat wounds and abate pain with rest, cryogenics, and painkilling medication."
 		if(150 to 200)
 			amount = span_bold("severe")
-			if(!in_shock && shock_buildup > 20)
-				shock_text = span_bold("Alert: Potential of neurogenic shock")
-			tip += "Treat wounds and abate pain with long rest, cryogenics, and moderate painkilling medication."
+			pain_tip += "Treat wounds and abate pain with long rest, cryogenics, and moderate painkilling medication."
 		if(200 to INFINITY)
 			amount = span_bold("extreme")
-			if(!in_shock && shock_buildup > 20)
-				shock_text = span_bold("Alert: High potential of neurogenic shock")
-			tip += "Treat wounds and abate pain with long rest, cryogenics, and heavy painkilling medication."
+			pain_tip += "Treat wounds and abate pain with long rest, cryogenics, and heavy painkilling medication."
 
-	if(!amount)
+	var/shock = ""
+	var/shock_tip = ""
+
+	switch(traumatic_shock)
+		if(20 to 60)
+			shock = "Warning"
+			shock_tip += "Supply epinephrine and pain relief."
+		if(60 to 120)
+			shock = span_bold("Alert")
+			shock_tip += "Supply epinephrine and immediate pain relief."
+		if(120 to MAX_SHOCK)
+			shock = span_bold("Critical")
+			shock_tip += "Supply epinephrine and immediate pain relief. Monitor for cardiac or respiratory arrest."
+
+	if(!amount && !shock)
 		return
 
-	amount_text = span_danger("Subject is experiencing [amount] pain.")
-	if(tochat && tip)
-		amount_text = span_tooltip(tip, amount_text)
+	var/amount_text = ""
+	if(amount)
+		amount_text = span_danger("Subject is experiencing [amount] pain.")
+		if(tochat && pain_tip)
+			amount_text = span_tooltip(pain_tip, amount_text)
 
-	if(in_shock)
-		shock_text = span_bold("Neurogenic shock has begun and should be treated urgently.")
-	if(shock_text && tochat)
-		shock_text = span_tooltip("Provide immediate pain relief, epinephrine, and moderate body temperature. \
-			[in_shock ? "Monitor closely for worsening condition or cardiac arrest. " : ""]Cryogenics may also aid in recovery.", shock_text)
+	var/shock_text = ""
+	if(shock)
+		shock_text = span_danger("[shock]: Traumatic shock")
+		if(tochat && shock_tip)
+			shock_text = span_tooltip(shock_tip, shock_text)
 
 	render_list += "<span class='alert ml-1'>"
-	if(shock_text)
-		render_list += "[shock_text] / "
-	render_list += amount_text
-	render_list += "</span>\n"
+	if(amount_text && shock_text)
+		render_list += "[shock_text] - [amount_text]"
+	else
+		// one of these is empty, so doesn't matter ultimately
+		render_list += shock_text
+		render_list += amount_text
+	render_list += "</span><br>"
 
 #ifdef PAIN_DEBUG
 	debug_print_pain()

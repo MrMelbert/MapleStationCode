@@ -163,7 +163,7 @@
 	for(var/datum/wound/iter_wound as anything in affected_mob.all_wounds)
 		iter_wound.on_xadone(power * REM * seconds_per_tick)
 	affected_mob.cause_pain(BODY_ZONES_ALL, -0.5 * power * REM * seconds_per_tick)
-	affected_mob.adjust_pain_shock(-0.12 * power * REM * seconds_per_tick)
+	affected_mob.adjust_traumatic_shock(-0.12 * power * REM * seconds_per_tick)
 
 	if(need_mob_update)
 		return UPDATE_MOB_HEALTH

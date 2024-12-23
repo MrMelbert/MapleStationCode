@@ -584,6 +584,8 @@
 #define PAIN_CRIT_THRESOLD 200
 /// Beyond this amount of shock you are in paincrit
 #define SHOCK_CRIT_THRESHOLD 150
+/// Beyond this amount of shock you can have a heart attack
+#define SHOCK_HEART_ATTACK_THRESHOLD 120
 
 /// At this threshold you are usually in crit from con loss
 #define HEALTH_THRESHOLD_LIKELY_CRIT -100
@@ -591,7 +593,7 @@
 #define HEALTH_THRESHOLD_LIKELY_DEAD -600
 
 /// Returns whether or not the given mob can succumb
-#define CAN_SUCCUMB(target) ((target.health <= HEALTH_THRESHOLD_LIKELY_CRIT || target.pain_controller?.shock_buildup > 90) && target.stat == HARD_CRIT && !HAS_TRAIT(target, TRAIT_NODEATH))
+#define CAN_SUCCUMB(target) ((target.health <= HEALTH_THRESHOLD_LIKELY_CRIT || target.pain_controller?.traumatic_shock > 90) && target.stat == HARD_CRIT && !HAS_TRAIT(target, TRAIT_NODEATH))
 
 // Body position defines.
 /// Mob is standing up, usually associated with lying_angle value of 0.

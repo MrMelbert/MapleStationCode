@@ -446,11 +446,8 @@
 
 /// Performs CPR on the target after a delay.
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
-	if(target == src)
-		return FALSE
-
-	if (DOING_INTERACTION_WITH_TARGET(src, target))
-		return FALSE
+	if(DOING_INTERACTION_WITH_TARGET(src, target))
+		return
 
 	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
 	return TRUE

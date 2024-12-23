@@ -35,7 +35,7 @@
 
 /datum/reagent/medicine/epinephrine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_pain_shock(-0.1 * REM * seconds_per_tick)
+	affected_mob.adjust_traumatic_shock(-0.1 * REM * seconds_per_tick)
 
 // Atropine fills a simliar niche to epinephrine
 /datum/reagent/medicine/atropine
@@ -53,7 +53,7 @@
 
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_pain_shock(-0.25 * REM * seconds_per_tick)
+	affected_mob.adjust_traumatic_shock(-0.25 * REM * seconds_per_tick)
 
 // Miner's salve is described as a good painkiller
 /datum/reagent/medicine/mine_salve
@@ -103,7 +103,7 @@
 // Saline glucose helps shock
 /datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	affected_mob.adjust_pain_shock(-0.2 * REM * seconds_per_tick)
+	affected_mob.adjust_traumatic_shock(-0.2 * REM * seconds_per_tick)
 
 /datum/reagent/medicine/salglu_solution/on_mob_metabolize(mob/living/carbon/M)
 	. = ..()

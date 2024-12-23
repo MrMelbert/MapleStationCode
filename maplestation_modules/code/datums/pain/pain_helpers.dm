@@ -86,14 +86,14 @@
  * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
  * * down_to - the minimum amount of pain shock the mob can have. Defaults to -30, giving the mob a buffer against shock.
  */
-/mob/living/proc/adjust_pain_shock(amount, down_to = -30)
+/mob/living/proc/adjust_traumatic_shock(amount, down_to = -30)
 	if(isnull(pain_controller))
 		return
-	if(amount > 0 && HAS_TRAIT(src, TRAIT_NO_SHOCK_BUILDUP))
+	if(amount > 0 && HAS_TRAIT(src, TRAIT_NO_TRAUMATIC_SHOCK))
 		return
 
 	ASSERT(isnum(amount))
-	pain_controller.shock_buildup = clamp(pain_controller.shock_buildup + amount, down_to, MAX_SHOCK)
+	pain_controller.traumatic_shock = clamp(pain_controller.traumatic_shock + amount, down_to, MAX_SHOCK)
 	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE)
 
 /**

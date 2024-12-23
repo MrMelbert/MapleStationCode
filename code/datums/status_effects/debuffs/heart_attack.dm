@@ -65,7 +65,7 @@
 	if(owner.has_status_effect(/datum/status_effect/cpr_applied))
 		return
 
-	owner.adjust_pain_shock(2 * seconds_between_ticks)
+	owner.adjust_traumatic_shock(2 * seconds_between_ticks)
 	// More oxy damage is caused via losebreath (in breath())
 	owner.apply_damage(2 * seconds_between_ticks, OXY)
 	owner.apply_damage(2 * seconds_between_ticks, PAIN, BODY_ZONE_CHEST)
