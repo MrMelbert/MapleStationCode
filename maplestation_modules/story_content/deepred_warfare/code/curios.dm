@@ -182,3 +182,18 @@
 
 /obj/item/snowglobe/empty
 	desc = "A small glass globe filled with a miniature winter scene. This one is completely empty, save for the snow."
+
+/obj/item/snowglobe/extra
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a human, clad deep red naval captain's attire, with a large gun case slung across their back."
+
+/obj/item/snowglobe/extra/moon
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of Earth's moon. You didn't know it snowed on the Moon."
+
+/obj/item/snowglobe/extra/marisa
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a monochromatic, ordinary witch soaring through snowy clouds on their broom."
+
+/obj/item/snowglobe/extra/astral
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a starstruck wasteland, infected by an otherworldly blight."
+
+/obj/item/snowglobe/extra/arbiter
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a person wrapped in a pitch black cloak with golden, hexagonal highlights. They stand in the centre of a ruined cityscape."
