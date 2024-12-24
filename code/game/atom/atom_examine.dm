@@ -308,7 +308,7 @@
 		id_examine += "</div>" // container
 		id_examine += "</div>" // text
 
-		to_chat(viewer, examine_block(span_info(id_examine)))
+		to_chat(viewer, boxed_message(span_info(id_examine)))
 
 /**
  * Returns an extended list of examine strings for any contained ID cards.

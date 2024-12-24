@@ -145,4 +145,4 @@
 		skill_strings += span_smallnoticeital("&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]")
 
 	sortTim(skill_strings, GLOBAL_PROC_REF(cmp_text_asc))
-	to_chat(user, examine_block("[span_info("<em>Your skills:</em>")]<br>[jointext(skill_strings, "<br>")]"))
+	to_chat(user, boxed_message("[span_info("<em>Your skills:</em>")]<br>[jointext(skill_strings, "<br>")]"))
