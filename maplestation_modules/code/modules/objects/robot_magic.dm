@@ -15,7 +15,7 @@
 	maximum_mana_capacity = CARBON_BASE_MANA_CAPACITY //same as carbons!
 
 /obj/item/borg/upgrade/magic/get_initial_mana_pool_type()
-	return /datum/mana_pool/mob/living/silicon
+	return /datum/mana_pool/borg_focus
 
 /obj/item/borg/upgrade/magic/action(mob/living/silicon/robot/borg)
 	. = ..()
@@ -31,6 +31,7 @@
 
 		//put the upgrade's magic pool into the borg.
 		if(src.mana_pool != null)
+			borg.initialize_mana_pool(src.mana_pool)
 			borg.set_mana_pool(src.mana_pool) // no need to check if the borg has a mana pool, as this makes one.
 
 		//if the upgrade has no magic pool for some reason, make one!
