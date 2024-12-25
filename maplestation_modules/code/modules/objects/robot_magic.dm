@@ -31,8 +31,7 @@
 
 		//put the upgrade's magic pool into the borg.
 		if(src.mana_pool != null)
-			mana_pool = borg.initialize_mana_pool(src.mana_pool)
-			borg.set_mana_pool(mana_pool) // no need to check if the borg has a mana pool, as this makes one.
+			borg.set_mana_pool(src.mana_pool) // no need to check if the borg has a mana pool, as this makes one.
 
 		//if the upgrade has no magic pool for some reason, make one!
 		else
