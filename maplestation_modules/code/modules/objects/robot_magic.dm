@@ -39,7 +39,7 @@
 			mana_pool = borg.initialize_mana_pool(src.mana_pool)
 			borg.set_mana_pool(mana_pool)
 
-/obj/item/borg/upgrade/magic/deactivate(mob/living/silicon/robot/borg, user = usr)
+/obj/item/borg/upgrade/magic/deactivate(mob/living/silicon/robot/borg)
 	. = ..()
 	if(.)
 		//removes the spells
