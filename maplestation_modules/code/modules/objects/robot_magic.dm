@@ -30,14 +30,9 @@
 			borg_mana_pool = borg.mana_pool
 
 		//put the upgrade's magic pool into the borg.
-		if(src.mana_pool != null)
-			borg.initialize_mana_pool(src.mana_pool)
-			borg.set_mana_pool(src.mana_pool) // no need to check if the borg has a mana pool, as this makes one.
+		borg.initialize_mana_pool_if_possible()
 
-		//if the upgrade has no magic pool for some reason, make one!
-		else
-			mana_pool = borg.initialize_mana_pool(src.mana_pool)
-			borg.set_mana_pool(mana_pool)
+		borg.set_mana_pool(mana_pool)
 
 /obj/item/borg/upgrade/magic/deactivate(mob/living/silicon/robot/borg)
 	. = ..()
@@ -47,17 +42,6 @@
 			action_to_remove.Remove(borg)
 		//resets the mana pool to before
 		borg.set_mana_pool(borg_mana_pool)
+		borg.initialize_mana_pool_if_possible()
 		borg_mana_pool = null //removes the borg's mana pool var from the upgrade as this upgrade being removed from the borg
 
-//borg panel qdels, so i gotta make sure it works when borg panel removes it.
-// /obj/item/borg/upgrade/magic/proc/clear_on_delete(datum/to_clear)
-// 	RegisterSignal(to_clear, COMSIG_QDELETING, PROC_REF(on_delete))
-
-// /obj/item/borg/upgrade/magic/proc/on_delete()
-// 	if(.)
-// 		//removes the spells
-// 		for (var/datum/action/cooldown/spell/action_to_remove in borg.actions)
-// 			action_to_remove.Remove(borg)
-// 			//resets the mana pool to before
-// 		borg.set_mana_pool(borg_mana_pool)
-// 		borg_mana_pool = null //removes the borg's mana pool var from the upgrade as this upgrade being removed from the borg
