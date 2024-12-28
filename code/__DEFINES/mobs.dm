@@ -166,20 +166,17 @@
 #define HUMAN_MAX_OXYLOSS 3
 #define HUMAN_CRIT_MAX_OXYLOSS (SSMOBS_DT/3)
 
-#define STAMINA_REGEN_BLOCK_TIME (10 SECONDS)
-
 /// Damage recieved when past heat damage threshold.
 /// Gets multiplied by 2x, 4x, 8x depending on how far past the threshold you are.
 #define HEAT_DAMAGE 1
-
 /// Damage recieved when past cold damage threshold.
 /// Gets multiplied by 2x, 4x, 8x depending on how far past the threshold you are.
 #define COLD_DAMAGE 0.25
 
 //Brain Damage defines
-#define BRAIN_DAMAGE_MILD 20
-#define BRAIN_DAMAGE_SEVERE 100
-#define BRAIN_DAMAGE_DEATH 200
+#define BRAIN_DAMAGE_MILD 50
+#define BRAIN_DAMAGE_SEVERE 150
+#define BRAIN_DAMAGE_DEATH 300
 
 #define BRAIN_TRAUMA_MILD /datum/brain_trauma/mild
 #define BRAIN_TRAUMA_SEVERE /datum/brain_trauma/severe
@@ -575,8 +572,30 @@
 
 #define SILENCE_RANGED_MESSAGE (1<<0)
 
+/// Threshold at which a mob is considered to be in a hard crit
+#define HARD_CRIT_THRESHOLD 30
+/// Upper max for consciousness
+#define UPPER_CONSCIOUSNESS_MAX 150
+/// Default max for consciousness
+#define CONSCIOUSNESS_MAX 100
+/// Beyond this threshold you are in crit
+#define CONSCIOUSNESS_CRIT_THRESHOLD (HARD_CRIT_THRESHOLD + 5)
+/// Beyond this pain you are in paincrit
+#define PAIN_CRIT_THRESOLD 200
+/// Beyond this amount of shock you are in paincrit
+#define SHOCK_CRIT_THRESHOLD 150
+/// Beyond this amount of shock you are in soft crit
+#define SHOCK_DANGER_THRESHOLD 90
+/// Beyond this amount of shock you can have a heart attack
+#define SHOCK_HEART_ATTACK_THRESHOLD 120
+
+/// At this threshold you are usually in crit from con loss
+#define HEALTH_THRESHOLD_LIKELY_CRIT -100
+/// At this threshold you are usually dead from con loss
+#define HEALTH_THRESHOLD_LIKELY_DEAD -600
+
 /// Returns whether or not the given mob can succumb
-#define CAN_SUCCUMB(target) (HAS_TRAIT(target, TRAIT_CRITICAL_CONDITION) && !HAS_TRAIT(target, TRAIT_NODEATH))
+#define CAN_SUCCUMB(target) ((target.health <= HEALTH_THRESHOLD_LIKELY_CRIT || target.pain_controller?.traumatic_shock > 90) && target.stat == HARD_CRIT && !HAS_TRAIT(target, TRAIT_NODEATH))
 
 // Body position defines.
 /// Mob is standing up, usually associated with lying_angle value of 0.

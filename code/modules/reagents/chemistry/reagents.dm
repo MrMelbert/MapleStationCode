@@ -200,10 +200,12 @@ Primarily used in reagents/reaction_agents
 
 /// Called when this reagent first starts being metabolized by a liver
 /datum/reagent/proc/on_mob_metabolize(mob/living/affected_mob)
+	SHOULD_CALL_PARENT(TRUE)
 	return
 
 /// Called when this reagent stops being metabolized by a liver
 /datum/reagent/proc/on_mob_end_metabolize(mob/living/affected_mob)
+	SHOULD_CALL_PARENT(TRUE)
 	return
 
 /**
