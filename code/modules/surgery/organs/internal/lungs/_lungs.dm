@@ -758,7 +758,7 @@
 	suffocator.failed_last_breath = TRUE
 	// Give them a chance to notice something is wrong.
 	if(prob(20) && suffocator.consciousness > 10)
-		suffocator.emote("gasp")
+		suffocator.pain_emote("gasp")
 	var/oxyloss = suffocator.getOxyLoss()
 	if(oxyloss >= 50)
 		// Suffocating = brain damage

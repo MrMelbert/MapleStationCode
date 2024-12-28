@@ -86,7 +86,7 @@
 	if(losebreath >= 1)
 		losebreath -= 1
 		if(prob(10) && consciousness > 10)
-			emote("gasp")
+			pain_emote("gasp")
 		if(isobj(loc))
 			var/obj/loc_as_obj = loc
 			loc_as_obj.handle_internal_lifeform(src, 0)

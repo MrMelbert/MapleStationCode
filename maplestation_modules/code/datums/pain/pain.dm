@@ -358,6 +358,11 @@
 	// (Note that if they also succeed in applying a wound, more pain comes from that)
 	// Also, sharp attacks apply a smidge extra pain
 	var/pain = damage * (sharpness ? 1.15 : 1)
+	switch(parent.stat)
+		if(UNCONSCIOUS, HARD_CRIT)
+			pain *= 0.5
+		if(DEAD)
+			pain *= 0.1
 	switch(damagetype)
 		// Brute pain is dealt to the target zone
 		// pain is just divided by a random number, for variance
@@ -923,6 +928,7 @@
 	var/list/final_print = list()
 	final_print += "<div class='examine_block'><span class='info'>DEBUG PRINTOUT PAIN: [REF(src)]"
 	final_print += "[parent] has a total pain of [get_total_pain()]."
+	final_print += "[parent] has a traumatic shock of [traumatic_shock]."
 	final_print += "[parent] has a pain modifier of [pain_modifier]."
 	final_print += " - - - - "
 	final_print += "[parent] bodypart printout: (min / current)"

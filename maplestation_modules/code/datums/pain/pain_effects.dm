@@ -167,7 +167,7 @@
 		return FALSE
 
 	owner.add_mood_event(id, /datum/mood_event/revival_sickess, owner)
-	owner.add_max_consciousness_value(id, CONSCIOUSNESS_MAX - max_con)
+	owner.add_max_consciousness_value(id, max_con)
 	addtimer(CALLBACK(src, PROC_REF(improve)), 1 MINUTES, TIMER_DELETE_ME)
 	RegisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(died_again))
 	return TRUE
@@ -180,10 +180,13 @@
 	UnregisterSignal(owner, COMSIG_LIVING_DEATH, PROC_REF(died_again))
 
 /datum/status_effect/revival_sickess/proc/improve()
+	if(max_con >= 100)
+		qdel(src)
+		return
+
 	max_con += 5
 	owner.add_max_consciousness_value(id, max_con)
-	if(max_con <= 95)
-		addtimer(CALLBACK(src, PROC_REF(improve)), 1 MINUTES, TIMER_DELETE_ME)
+	addtimer(CALLBACK(src, PROC_REF(improve)), 1 MINUTES, TIMER_DELETE_ME)
 
 /datum/status_effect/revival_sickess/proc/died_again(...)
 	SIGNAL_HANDLER
