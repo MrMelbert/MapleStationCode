@@ -1,11 +1,8 @@
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
 import {
   AnimatedNumber,
   Box,
   Button,
-  Divider,
   Flex,
   LabeledList,
   NoticeBox,
@@ -13,9 +10,12 @@ import {
   Section,
   Slider,
   Stack,
-  StackDivider,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+import { formatEnergy } from 'tgui-core/format';
+import { formatPower } from 'tgui-core/format';
+
+import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
 
 export const NtosRobotact = (props) => {
@@ -361,11 +361,11 @@ export const NtosRobotactContent = (props) => {
           </Section>
 
           <Stack vertical>
-            {cyborg_groups.map((borggroup) => (
-              <Stack.Item>
+            {cyborg_groups.map((borggroup, cyborgindex) => (
+              <Stack.Item key={cyborgindex}>
                 <Stack>
-                  {borggroup.map((cyborg) => (
-                    <Stack.Item width="24.25%">
+                  {borggroup.map((cyborg, borgindex) => (
+                    <Stack.Item key={borgindex} width="24.25%">
                       <Section
                         key={cyborg.ref}
                         title={cyborg.otherBorgName.slice(0, 20)}
@@ -437,7 +437,7 @@ export const NtosRobotactContent = (props) => {
             ))}
           </Stack>
 
-          {!!!cyborg_groups.length && (
+          {!cyborg_groups.length && (
             <NoticeBox textAlign="center" top="30%" position="relative">
               <Box fontSize={2}>
                 CONNECTION UNAVAILABLE -- NETWORK STATUS UNKNOWN

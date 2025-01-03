@@ -1,4 +1,3 @@
-import { BooleanLike } from 'common/react';
 import {
   Button,
   Collapsible,
@@ -11,9 +10,9 @@ import {
   Tabs,
   Tooltip,
 } from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useSharedState } from '../backend';
-import { TableCell, TableRow } from '../components/Table';
 import { Window } from '../layouts';
 import { LoadingScreen } from './common/LoadingToolbox';
 
@@ -293,16 +292,16 @@ const DomainEntry = (props: DomainEntryProps) => {
         <Stack.Divider />
         <Stack.Item grow>
           <Table>
-            <TableRow>
+            <Table.Row>
               <Tooltip content="Points cost for deploying domain.">
                 <DisplayDetails amount={cost} color="pink" icon="star" />
               </Tooltip>
-            </TableRow>
-            <TableRow>
+            </Table.Row>
+            <Table.Row>
               <Tooltip content="Reward for competing domain.">
                 <DisplayDetails amount={reward} color="gold" icon="coins" />
               </Tooltip>
-            </TableRow>
+            </Table.Row>
           </Table>
         </Stack.Item>
       </Stack>
@@ -348,12 +347,12 @@ const AvatarDisplay = (props) => {
     >
       <Table>
         {avatars.map(({ health, name, pilot, brute, burn, tox, oxy }) => (
-          <TableRow key={name}>
-            <TableCell color="label">
+          <Table.Row key={name}>
+            <Table.Cell color="label">
               {pilot} as{' '}
               <span style={{ color: 'white' }}>&quot;{name}&quot;</span>
-            </TableCell>
-            <TableCell collapsing>
+            </Table.Cell>
+            <Table.Cell collapsing>
               <Stack>
                 {brute === 0 && burn === 0 && tox === 0 && oxy === 0 && (
                   <Stack.Item>
@@ -376,8 +375,8 @@ const AvatarDisplay = (props) => {
                   <Icon color={oxy > 50 ? 'blue' : 'gray'} name="lungs" />
                 </Stack.Item>
               </Stack>
-            </TableCell>
-            <TableCell>
+            </Table.Cell>
+            <Table.Cell>
               <ProgressBar
                 minValue={-100}
                 maxValue={100}
@@ -388,8 +387,8 @@ const AvatarDisplay = (props) => {
                 }}
                 value={health}
               />
-            </TableCell>
-          </TableRow>
+            </Table.Cell>
+          </Table.Row>
         ))}
       </Table>
     </Section>
@@ -400,28 +399,28 @@ const DisplayDetails = (props: DisplayDetailsProps) => {
   const { amount = 0, color, icon = 'star' } = props;
 
   if (amount === 0) {
-    return <TableCell color="label">None</TableCell>;
+    return <Table.Cell color="label">None</Table.Cell>;
   }
 
   if (typeof amount === 'string') {
-    return <TableCell color="label">{String(amount)}</TableCell>; // don't ask
+    return <Table.Cell color="label">{String(amount)}</Table.Cell>; // don't ask
   }
 
   if (amount > 4) {
     return (
-      <TableCell>
+      <Table.Cell>
         <Stack>
           <Stack.Item>{amount}</Stack.Item>
           <Stack.Item>
             <Icon color={color} name={icon} />
           </Stack.Item>
         </Stack>
-      </TableCell>
+      </Table.Cell>
     );
   }
 
   return (
-    <TableCell>
+    <Table.Cell>
       <Stack>
         {Array.from({ length: amount }, (_, index) => (
           <Stack.Item key={index}>
@@ -429,6 +428,6 @@ const DisplayDetails = (props: DisplayDetailsProps) => {
           </Stack.Item>
         ))}
       </Stack>
-    </TableCell>
+    </Table.Cell>
   );
 };

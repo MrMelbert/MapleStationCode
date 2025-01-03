@@ -6,6 +6,7 @@ import {
   ProgressBar,
   Section,
 } from 'tgui-core/components';
+import { formatEnergy } from 'tgui-core/format';
 
 import { useBackend } from '../backend';
 import { Window } from '../layouts';

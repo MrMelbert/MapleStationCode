@@ -1,8 +1,8 @@
-import { exhaustiveCheck } from 'common/exhaustive';
 import { useState } from 'react';
+import { Dropdown, Flex, Button, Stack } from 'tgui-core/components'; // NON-MODULE CHANGE : Adds in Dropdown and Flex
+import { exhaustiveCheck } from 'tgui-core/exhaustive';
 
 import { useBackend } from '../../backend';
-import { Dropdown, Flex, Stack } from '../../components'; // NON-MODULE CHANGE : Adds in Dropdown and Flex
 import { Window } from '../../layouts';
 import { LanguagePage } from './_LanguagePicker'; // NON-MODULE CHANGE
 import { LimbManagerPage } from './_LimbManager'; // NON-MODULE CHANGE
