@@ -116,39 +116,59 @@
 	name = "Pack of HP+ Gum"
 	item_path = /obj/item/storage/box/gum/happiness
 
-/datum/loadout_item/pocket_items/lipstick_black
+/datum/loadout_item/pocket_items/lipstick
+	abstract_type = /datum/loadout_item/pocket_items/lipstick
+
+/datum/loadout_item/pocket_items/lipstick/on_equip_item(
+	obj/item/lipstick/equipped_item,
+	datum/preferences/preference_source,
+	list/preference_list,
+	mob/living/carbon/human/equipper,
+	visuals_only,
+)
+	. = ..()
+	equipper.update_lips(equipped_item.style, equipped_item.lipstick_color, equipped_item.lipstick_trait)
+
+// /datum/loadout_item/pocket_items/lipstick/get_ui_buttons() as /list
+// 	. = ..()
+// 	UNTYPED_LIST_ADD(., list(
+// 		"label" = "Style",
+// 		"act_key" = "select_color",
+// 		"button_icon" = FA_ICON_PALETTE,
+// 		"active_key" = INFO_GREYSCALE,
+// 	))
+
+/datum/loadout_item/pocket_items/lipstick/black
 	name = "Lipstick (Black)"
 	item_path = /obj/item/lipstick/black
 	additional_displayed_text = list("Black")
 
-/datum/loadout_item/pocket_items/lipstick_blue
+/datum/loadout_item/pocket_items/lipstick/blue
 	name = "Lipstick (Blue)"
 	item_path = /obj/item/lipstick/blue
 	additional_displayed_text = list("Blue")
 
-
-/datum/loadout_item/pocket_items/lipstick_green
+/datum/loadout_item/pocket_items/lipstick/green
 	name = "Lipstick (Green)"
 	item_path = /obj/item/lipstick/green
 	additional_displayed_text = list("Green")
 
-
-/datum/loadout_item/pocket_items/lipstick_jade
+/datum/loadout_item/pocket_items/lipstick/jade
 	name = "Lipstick (Jade)"
 	item_path = /obj/item/lipstick/jade
 	additional_displayed_text = list("Jade")
 
-/datum/loadout_item/pocket_items/lipstick_purple
+/datum/loadout_item/pocket_items/lipstick/purple
 	name = "Lipstick (Purple)"
 	item_path = /obj/item/lipstick/purple
 	additional_displayed_text = list("Purple")
 
-/datum/loadout_item/pocket_items/lipstick_red
+/datum/loadout_item/pocket_items/lipstick/red
 	name = "Lipstick (Red)"
 	item_path = /obj/item/lipstick
 	additional_displayed_text = list("Red")
 
-/datum/loadout_item/pocket_items/lipstick_white
+/datum/loadout_item/pocket_items/lipstick/white
 	name = "Lipstick (White)"
 	item_path = /obj/item/lipstick/white
 	additional_displayed_text = list("White")
