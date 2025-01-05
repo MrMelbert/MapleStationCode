@@ -182,7 +182,6 @@
 		var/list/mutypes = list(
 			/datum/mutation/human/chav,
 			/datum/mutation/human/medieval,
-			/datum/mutation/human/mute,
 			/datum/mutation/human/nervousness,
 			/datum/mutation/human/swedish,
 			/datum/mutation/human/unintelligible,
