@@ -39,7 +39,7 @@
 		return FALSE
 	RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_SLEEPIMMUNE), PROC_REF(qdel_us))
 	owner.add_max_consciousness_value(type, 10)
-	owner.set_pain_mod(type, 0.33)
+	owner.set_pain_mod(type, 0.1)
 	applied_at = world.time
 	return TRUE
 

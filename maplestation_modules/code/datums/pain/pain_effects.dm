@@ -89,18 +89,6 @@
 	mood_change = 4
 	timeout = 3 MINUTES
 
-/datum/emote/living/carbon/human/scream
-
-/datum/emote/living/carbon/human/scream/can_run_emote(mob/living/carbon/human/user, status_check, intentional)
-	if(intentional)
-		return ..()
-
-	// Cut unintentional screems if they can't feel pain at the moment
-	if(!CAN_FEEL_PAIN(user))
-		return FALSE
-
-	return ..()
-
 /**
  * Obviousnly not all ailments of a mob are treatable while dead,
  * so we need to apply a "buffer" status effect post-revival
@@ -117,8 +105,6 @@
 	var/base_con = 15
 
 /datum/status_effect/recent_defib/on_apply()
-	// owner.adjust_traumatic_shock(-12)
-	// owner.cause_pain(BODY_ZONES_ALL, -16)
 	owner.add_consciousness_modifier(id, base_con)
 	owner.add_max_consciousness_value(id, base_con)
 	return TRUE

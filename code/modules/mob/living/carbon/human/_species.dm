@@ -468,6 +468,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// else if(old_species.exotic_bloodtype && !exotic_bloodtype)
 	// 	human_who_gained_species.dna.blood_type = random_blood_type()
 
+	if(isnum(species_pain_mod) && species_pain_mod != 1)
+		human_who_gained_species.set_pain_mod(PAIN_MOD_SPECIES, species_pain_mod)
+
 	//Resets blood if it is excessively high so they don't gib
 	normalize_blood(human_who_gained_species)
 
@@ -480,8 +483,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			//Load a persons preferences from DNA
 			var/obj/item/organ/external/new_organ = SSwardrobe.provide_type(organ_path)
 			new_organ.Insert(human, special=TRUE, movement_flags = DELETE_IF_REPLACED)
-
-
 
 	if(length(inherent_traits))
 		human_who_gained_species.add_traits(inherent_traits, SPECIES_TRAIT)
@@ -540,6 +541,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 			C.faction -= i
 
 	clear_tail_moodlets(C)
+
+	C.unset_pain_mod(PAIN_MOD_SPECIES)
 
 	C.physiology?.cold_mod /= coldmod
 	C.physiology?.heat_mod /= heatmod

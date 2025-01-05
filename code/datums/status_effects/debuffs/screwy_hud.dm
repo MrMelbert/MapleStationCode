@@ -56,3 +56,11 @@
 	id = "fake_hud_healthy"
 	priority = 10 // fully healthy is the opposite of death, which is absolute
 	override_icon = "health0"
+
+/datum/status_effect/grouped/screwy_hud/fake_healthy/on_apply()
+	. = ..()
+	owner.set_pain_mod(TRAIT_STATUS_EFFECT(id), 0.1)
+
+/datum/status_effect/grouped/screwy_hud/fake_healthy/on_remove()
+	. = ..()
+	owner.unset_pain_mod(TRAIT_STATUS_EFFECT(id))

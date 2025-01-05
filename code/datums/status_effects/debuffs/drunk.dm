@@ -106,6 +106,7 @@
 	. = ..()
 	owner.sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
 	owner.add_mood_event(id, /datum/mood_event/drunk)
+	owner.set_pain_mod(id, 0.9)
 
 /datum/status_effect/inebriated/drunk/on_remove()
 	clear_effects()
@@ -123,6 +124,7 @@
 	if(owner.sound_environment_override == SOUND_ENVIRONMENT_PSYCHOTIC)
 		owner.sound_environment_override = SOUND_ENVIRONMENT_NONE
 
+	owner.unset_pain_mod(id)
 	owner.remove_max_consciousness_value(id)
 	owner.remove_consciousness_modifier(id)
 

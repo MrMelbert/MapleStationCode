@@ -48,7 +48,7 @@
 #define MAX_TRAUMATIC_SHOCK 200
 
 /// Checks if a mob can feel pain.
-#define CAN_FEEL_PAIN(mob) (mob?.stat <= SOFT_CRIT && mob?.pain_controller?.pain_modifier > 0.5)
+#define CAN_FEEL_PAIN(mob) (mob?.stat <= SOFT_CRIT && mob?.pain_controller?.pain_modifier > 0.33)
 
 // Keys for pain modifiers
 #define PAIN_MOD_CHEMS "chems"

@@ -544,7 +544,8 @@
 		if((methods & INGEST) && show_message)
 			to_chat(exposed_human, span_notice("<i>You feel nothing but a terrible aftertaste.</i>"))
 		return
-	if(exposed_human.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS))
+	var/has_wings = !!exposed_human.get_organ_slot(ORGAN_SLOT_EXTERNAL_WINGS)
+	if(has_wings)
 		to_chat(exposed_human, span_userdanger("A terrible pain travels down your back as your wings change shape!"))
 	else
 		to_chat(exposed_human, span_userdanger("A terrible pain travels down your back as wings burst out!"))
@@ -554,7 +555,15 @@
 	exposed_human.dna.species.handle_mutant_bodyparts(exposed_human)
 	playsound(exposed_human.loc, 'sound/items/poster_ripped.ogg', 50, TRUE, -1)
 	exposed_human.apply_damage(20, def_zone = BODY_ZONE_CHEST, forced = TRUE, wound_bonus = CANT_WOUND)
-	exposed_human.emote("scream")
+	if(has_wings)
+		exposed_human.cause_pain(BODY_ZONE_HEAD, 10)
+		exposed_human.cause_pain(BODY_ZONE_CHEST, 45)
+		exposed_human.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 18)
+	else
+		exposed_human.cause_pain(BODY_ZONE_HEAD, 16)
+		exposed_human.cause_pain(BODY_ZONE_CHEST, 75)
+		exposed_human.cause_pain(list(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), 30)
+	exposed_human.pain_emote("scream")
 
 /datum/reagent/flightpotion/proc/get_wing_choice(mob/needs_wings, obj/item/bodypart/chest/chest)
 	var/list/wing_types = chest.wing_types.Copy()

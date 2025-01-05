@@ -272,6 +272,8 @@
 	if(!.)
 		return
 	// NON-MODULE CHANGE
+	owner.set_pain_mod(id, 0.1)
+	owner.unset_pain_mod(id)
 	owner.add_traits(list(
 		TRAIT_IMMOBILIZED,
 		TRAIT_HANDS_BLOCKED,

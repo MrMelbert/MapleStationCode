@@ -459,9 +459,10 @@
 	if(shock_damage < 1)
 		return FALSE
 	if(!(flags & SHOCK_ILLUSION))
-		adjustFireLoss(shock_damage)
+		set_timed_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
+		apply_damage(shock_damage, BURN, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 	else
-		adjustStaminaLoss(shock_damage)
+		apply_damage(shock_damage, STAMINA, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 	if(!(flags & SHOCK_SUPPRESS_MESSAGE))
 		visible_message(
 			span_danger("[src] was shocked by \the [source]!"), \

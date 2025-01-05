@@ -129,8 +129,7 @@
 	SEND_SIGNAL(owner, COMSIG_LIVING_MINOR_SHOCK)
 	owner.add_mood_event("tased", /datum/mood_event/tased)
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/being_tased)
-	if(owner.pain_controller?.pain_modifier > 0.5)
-		owner.pain_emote("scream")
+	owner.pain_emote("scream")
 	if(ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.force_say()

@@ -103,8 +103,9 @@
 			if(11)
 				to_chat(owner, span_warning("You faint."))
 				owner.Unconscious(80)
-
-	..()
+	if(SPT_PROB(1, seconds_per_tick))
+		owner.cause_pain(BODY_ZONE_HEAD, 10)
+	return ..()
 
 /datum/brain_trauma/mild/healthy
 	name = "Anosognosia"

@@ -1057,8 +1057,8 @@
 	if (HAS_TRAIT(src, TRAIT_DEFIB_BLACKLISTED))
 		return DEFIB_FAIL_BLACKLISTED
 
-	//if ((getBruteLoss() >= MAX_REVIVE_BRUTE_DAMAGE) || (getFireLoss() >= MAX_REVIVE_FIRE_DAMAGE))
-	//	return DEFIB_FAIL_TISSUE_DAMAGE
+	if(consciousness + /datum/status_effect/recent_defib::base_con < 0)
+		return DEFIB_FAIL_CON
 
 	// Only check for a heart if they actually need a heart. Who would've thunk
 	if (needs_heart())

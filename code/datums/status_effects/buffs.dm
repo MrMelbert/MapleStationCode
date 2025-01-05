@@ -146,6 +146,9 @@
 	if(need_mob_update)
 		owner.updatehealth()
 
+	// Heal some pain too
+	owner.cause_pain(BODY_ZONES_ALL, -3)
+
 /datum/status_effect/fleshmend/proc/on_ignited(datum/source)
 	SIGNAL_HANDLER
 

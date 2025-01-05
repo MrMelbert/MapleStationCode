@@ -10,8 +10,19 @@
 /datum/pain
 	/// The parent mob we're tracking.
 	VAR_PRIVATE/mob/living/carbon/parent
-	/// Modifier applied to all negative incoming pain ammounts
-	/// Below 0.5, a mob is treated as "numb", IE, feels no pain effects (though it still accumulates)
+	/**
+	 * Modifier that determines how much of the "pain" the mob actually feels.]
+	 *
+	 * Affects:
+	 * - Pain feedback messages
+	 * - Doing pain-related emotes (screams or gasps)
+	 * - Duration of some pain effects (dizziness, etc)
+	 * - Rate of traumatic shock buildup
+	 * - Strength of passive pain decay
+	 *
+	 * Below 0.5, a mob is treated as "numb", and will outright no longer
+	 * experience pain feedback messages or effects (but it'll still accumulate!)
+	 */
 	VAR_FINAL/pain_modifier = 1
 	/// Lazy Assoc list [id] to [modifier], all our pain modifiers affecting our final mod
 	VAR_PRIVATE/list/pain_mods
@@ -42,7 +53,7 @@
 #endif
 
 /datum/pain/New(mob/living/carbon/human/new_parent)
-	if(!iscarbon(new_parent) || istype(new_parent, /mob/living/carbon/human/dummy))
+	if(!iscarbon(new_parent) || isdummy(new_parent))
 		qdel(src) // If we're not a carbon, or a dummy, delete us
 		return
 
@@ -582,7 +593,7 @@
 	else
 		heart_attack_counter = 0
 
-	if(traumatic_shock >= SHOCK_CRIT_THRESHOLD || curr_pain >= PAIN_CRIT_THRESOLD )
+	if(traumatic_shock >= SHOCK_CRIT_THRESHOLD || curr_pain >= PAIN_CRIT_THRESOLD)
 		parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 120 SECONDS)
 
 	parent.paincrit_check()
@@ -632,6 +643,8 @@
 	SIGNAL_HANDLER
 
 	var/pain = get_total_pain()
+	if(parent.stat == DEAD)
+		pain *= 0.1
 	// Consciousness penalty from pain is unnaffected by pain modifier
 	if(pain <= 25)
 		parent.remove_consciousness_modifier(PAIN)

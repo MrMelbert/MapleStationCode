@@ -612,6 +612,10 @@
 		playsound(src, SFX_BODYFALL, 50, TRUE)
 		playsound(src, 'sound/machines/defib_zap.ogg', 75, TRUE, -1)
 		shock_pulling(30, H)
+		if(H.getOxyLoss() > 50)
+			H.setOxyLoss(50)
+		if(H.getToxLoss() > 50)
+			H.setToxLoss(50)
 
 		var/defib_result = H.can_defib()
 		var/fail_reason
@@ -623,8 +627,8 @@
 				fail_reason = "Patient's heart is missing."
 			if (DEFIB_FAIL_FAILING_HEART)
 				fail_reason = "Patient's heart too damaged, replace or repair and try again."
-			if (DEFIB_FAIL_TISSUE_DAMAGE)
-				fail_reason = "Tissue damage too severe, repair and try again."
+			if(DEFIB_FAIL_CON)
+				fail_reason = "Patient's body is too damaged, continue with repairs."
 			if (DEFIB_FAIL_HUSK)
 				fail_reason = "Patient's body is a mere husk, repair and try again."
 			if (DEFIB_FAIL_FAILING_BRAIN)
