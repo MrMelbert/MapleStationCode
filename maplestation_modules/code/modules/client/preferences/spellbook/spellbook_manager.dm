@@ -141,6 +141,8 @@
 	//  - Read the spellbook_item documentation to see what the entries do
 
 	var/list/spellbook_tabs = list()
+	spellbook_tabs += list(list("name" = "Cantrips", "title" = "Simple spells that require little preparation or components to cast", "contents" = list_to_data(GLOB.spellbook_cantrip_items)))
+	/*
 	spellbook_tabs += list(list("name" = "Aeromancy", "title" = "Items related to manipulation of air and motion", "contents" = list_to_data(GLOB.spellbook_aeromancy_items)))
 	spellbook_tabs += list(list("name" = "Cryokinesis", "title" = "Items related to manipulation of ice", "contents" = list_to_data(GLOB.spellbook_cryokinesis_items)))
 	spellbook_tabs += list(list("name" = "Thermokinesis", "title" = "Items related to manipulation of temperature", "contents" = list_to_data(GLOB.spellbook_thermokinesis_items)))
@@ -150,6 +152,7 @@
 	spellbook_tabs += list(list("name" = "Electrokinesis", "title" = "Items related to manipulation of electricity", "contents" = list_to_data(GLOB.spellbook_electrokinesis_items)))
 	spellbook_tabs += list(list("name" = "Life Magic", "title" = "Items related to Life and Healing magic", "contents" = list_to_data(GLOB.spellbook_healing_items)))
 	spellbook_tabs += list(list("name" = "Misc. Spells", "title" = "Other miscellaneous spells, not associated with any attunements", "contents" = list_to_data(GLOB.spellbook_misc_items)))
+	*/
 
 	data["spellbook_tabs"] = spellbook_tabs
 

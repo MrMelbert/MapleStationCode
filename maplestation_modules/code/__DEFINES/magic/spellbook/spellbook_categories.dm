@@ -8,3 +8,6 @@
 #define SPELLBOOK_CATEGORY_ELECTROKINESIS "Electrokinesis"
 #define SPELLBOOK_CATEGORY_LIFE_MAGIC "Life Magic"
 #define SPELLBOOK_CATEGORY_MISC "Misc. Spells"
+
+// todo: clear out the above
+#define SPELLBOOK_CATEGORY_CANTRIPS "Cantrips"
