@@ -206,7 +206,7 @@
 	additional_displayed_text = list("Random Color")
 
 /datum/loadout_item/head/wig
-	name = "Wig"
+	name = "Natural Wig"
 	item_path = /obj/item/clothing/head/wig/natural
 	additional_displayed_text = list("Hair Color")
 
