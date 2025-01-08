@@ -82,7 +82,7 @@
 	he_who_was_blessed_with_silver.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
 
 	he_who_was_blessed_with_silver.physiology?.damage_resistance += 10
-	he_who_was_blessed_with_silver.dna.species.exotic_bloodtype = /datum/blood_type/crew/lizard/silver
+	he_who_was_blessed_with_silver.dna.species.exotic_bloodtype = /datum/blood_type/silver/lizard
 	organ_owner.update_body(TRUE)
 
 /obj/item/organ/internal/tongue/lizard/silver/on_mob_remove(mob/living/carbon/organ_owner, special)
