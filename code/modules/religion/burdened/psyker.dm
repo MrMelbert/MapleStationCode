@@ -258,11 +258,13 @@
 		if(!user.mind?.holy_role)
 			to_chat(user, span_warning("No one answers your prayers, for you are not holy enough."))
 			return
-	if(get_ammo(FALSE, FALSE) == magazine.max_ammo)
-		to_chat(user, span_warning("Your gun is full; asking for more is greedy."))
+	var/loaded_bullets = get_ammo(FALSE, FALSE)
+	if(loaded_bullets == magazine.max_ammo)
+		to_chat(user, span_warning("Your gun is full; begging for more is greedy."))
 		return
 	user.manual_emote("presses [user.p_their()] palms together...")
-	if(!do_after(user, needs_burden ? 4 SECONDS : 8 SECONDS, src))
+	to_chat(user, span_green("You pray to [GLOB.deity] for more ammunition..."))
+	if(!do_after(user, (needs_burden ? 3 SECONDS : 5 SECONDS) * ((magazine.max_ammo - loaded_bullets) / magazine.max_ammo), src))
 		return
 	for(var/obj/item/ammo_casing/round as anything in get_ammo_list())
 		if(!round.loaded_projectile)
@@ -271,7 +273,7 @@
 	magazine.top_off()
 	user.playsound_local(get_turf(src), 'sound/magic/magic_block_holy.ogg', 50, TRUE)
 	chamber_round()
-	SpinAnimation(4, 2)
+	SpinAnimation(4, 1)
 
 /obj/item/gun/ballistic/revolver/chaplain/before_firing(atom/target, mob/user)
 	var/obj/projectile/bullet/c38/holy/to_fire = chambered?.loaded_projectile
