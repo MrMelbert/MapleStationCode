@@ -179,7 +179,7 @@
 		"A10" = "The fist of God. Keep away from the terrible.",
 		"Lucky" = "Ain't that a kick in the head?",
 		"Shining Darkness" = "We can't expect God to do all the work.",
-		"Ace" = "Memento Mori."
+		"Ace" = "Memento Mori.",
 		"Ambassador" = "There are two types of people in the world... those with guns, and those who dig. You dig.",
 		"Rapture" = "The end of the world.",
 		"54:17" = "No weapon formed against you shall prosper.",
