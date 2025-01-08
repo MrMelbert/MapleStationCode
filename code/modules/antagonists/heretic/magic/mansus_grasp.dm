@@ -41,10 +41,10 @@
 	var/magic_tier = living_hit.can_block_magic(antimagic_flags, charge_cost = 0)
 	var/antimagic_mod = 1
 	if(magic_tier & ANTIMAGIC_TIER_STRONG)
-		living_hit.adjust_staggered_up_to(5 SECONDS)
+		living_hit.adjust_staggered(5 SECONDS)
 		antimagic_mod = 0.33
 	else if(magic_tier & ANTIMAGIC_TIER_WEAK)
-		living_hit.adjust_staggered_up_to(2 SECONDS)
+		living_hit.adjust_staggered(2 SECONDS)
 		living_hit.AdjustKnockdown(2 SECONDS)
 		antimagic_mod = 0.66
 	else
