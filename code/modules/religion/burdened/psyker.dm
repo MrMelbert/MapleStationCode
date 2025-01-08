@@ -178,6 +178,16 @@
 		"Lacytanga" = "Rules are written by the strong.",
 		"A10" = "The fist of God. Keep away from the terrible.",
 		"Lucky" = "Ain't that a kick in the head?",
+		"Shining Darkness" = "We can't expect God to do all the work.",
+		"Ace" = "Memento Mori."
+		"Ambassador" = "There are two types of people in the world... those with guns, and those who dig. You dig.",
+		"Rapture" = "The end of the world.",
+		"54:17" = "No weapon formed against you shall prosper.",
+		"Divine Intervention" = "In God we trust - roll the dice.",
+		"Annabelle" = "Although they call me crazy, I care not, for thou art my helper, my strength, and my savior.",
+		"Lightbringer" = "Put your faith in the light!",
+		"Bishop" = "I commend you for your duty, and God's blessing go with you.",
+		"Vicar" = "Derived from the word latin word for 'substitute' - though this gun is the real deal.",
 	)
 
 /obj/item/gun/ballistic/revolver/chaplain/Initialize(mapload, burden_spawned = FALSE)
