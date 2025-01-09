@@ -101,7 +101,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	lit = TRUE
 	damtype = BURN
 	force = 3
-	hitsound = 'sound/items/tools/welder.ogg'
+	hitsound = 'sound/items/welder.ogg'
 	attack_verb_continuous = string_list(list("burns", "singes"))
 	attack_verb_simple = string_list(list("burn", "singe"))
 	if(isliving(loc))

@@ -18,6 +18,7 @@
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/lizard
 	mutantstomach = /obj/item/organ/internal/stomach/lizard
+	mutanteyes = /obj/item/organ/internal/eyes/lizard
 	coldmod = 1.5
 	heatmod = 0.67
 	payday_modifier = 1.0

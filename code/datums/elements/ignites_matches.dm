@@ -13,7 +13,9 @@
 	SIGNAL_HANDLER
 	if(!istype(match) || match.lit || match.burnt || match.broken)
 		return NONE
-	if(SHOULD_SKIP_INTERACTION(source, match, user))
+//	if(SHOULD_SKIP_INTERACTION(source, match, user))
+//		return NONE
+	if(source.atom_storage && user.combat_mode)
 		return NONE
 	var/over_what_tp = source.loc == user ? "[user.p_their()] [source.name]" : source
 	var/over_what_fp = source.loc == user ? "your [source.name]" : source
