@@ -66,9 +66,6 @@
 
 /// If the mob enters shock, they will have +1 cure condition (helps cure it faster)
 #define TRAIT_ABATES_SHOCK "shock_abated"
-/// Shock buildup does not increase, only decrease. Cannot enter shock if at the threshold.
-/// No effect if already in shock (unlike abates_shock)
-#define TRAIT_NO_TRAUMATIC_SHOCK "no_traumatic_shock"
 /// All this trait does is change your stat to soft crit, which itself doesn't do much,
 /// but as your stat is changed many stat checks will block you (such as using the radio)
 #define TRAIT_SOFT_CRIT "soft_crit"

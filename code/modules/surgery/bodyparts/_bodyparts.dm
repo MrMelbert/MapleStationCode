@@ -485,9 +485,8 @@
 		if(required_bodytype && !(bodytype & required_bodytype))
 			return FALSE
 
-	var/dmg_multi = CONFIG_GET(number/damage_multiplier) * hit_percent
-	brute = round(max(brute * dmg_multi * brute_modifier, 0), DAMAGE_PRECISION)
-	burn = round(max(burn * dmg_multi * burn_modifier, 0), DAMAGE_PRECISION)
+	brute = round(max(brute * hit_percent * brute_modifier, 0), DAMAGE_PRECISION)
+	burn = round(max(burn * hit_percent * burn_modifier, 0), DAMAGE_PRECISION)
 
 	if(!brute && !burn)
 		return FALSE

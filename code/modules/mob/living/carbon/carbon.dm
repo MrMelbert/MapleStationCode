@@ -655,37 +655,37 @@
 	SShealth_updates.queue_update(src, UPDATE_SELF|UPDATE_MEDHUD_HEALTH)
 
 /mob/living/carbon/proc/paincrit_check()
-	if(consciousness <= CONSCIOUSNESS_CRIT_THRESHOLD || pain_controller?.get_total_pain() >= PAIN_CRIT_THRESOLD || pain_controller?.traumatic_shock >= SHOCK_CRIT_THRESHOLD)
+	if(crit_percent() < 100)
 		if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
-			return
-		var/is_standing = body_position == STANDING_UP
-		add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
-		if(buckled)
-			visible_message(
-				span_warning("[src] slumps against [buckled]!"),
-				span_userdanger("You go limp, unable to move!"),
-				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-			)
-
-		else if(is_standing && body_position != STANDING_UP)
-			visible_message(
-				span_warning("[src] collapses!"),
-				span_userdanger("You collapse, unable to stand!"),
-				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-			)
-		else if(body_position == LYING_DOWN)
-			visible_message(
-				span_warning("[src] slumps against the ground!"),
-				span_userdanger("You go limp, unable to get up!"),
-				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-			)
-		else
-			to_chat(src, span_userdanger("You can't will yourself to move!"))
+			Paralyze(2 SECONDS)
+			remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
 		return
 
 	if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
-		Paralyze(2 SECONDS)
-		remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+		return
+	var/is_standing = body_position == STANDING_UP
+	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+	if(buckled)
+		visible_message(
+			span_warning("[src] slumps against [buckled]!"),
+			span_userdanger("You go limp, unable to move!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+
+	else if(is_standing && body_position != STANDING_UP)
+		visible_message(
+			span_warning("[src] collapses!"),
+			span_userdanger("You collapse, unable to stand!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else if(body_position == LYING_DOWN)
+		visible_message(
+			span_warning("[src] slumps against the ground!"),
+			span_userdanger("You go limp, unable to get up!"),
+			visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+		)
+	else
+		to_chat(src, span_userdanger("You can't will yourself to move!"))
 
 /mob/living/carbon/update_sight()
 	if(!client)
@@ -784,10 +784,7 @@
 		clear_fullscreen("crit")
 		return
 
-	var/con_severity = clamp(10 - round(consciousness / 10, 1), 0, 10)
-	var/shock_severity = clamp(round((pain_controller?.traumatic_shock || 0) / 40, 1), 0, 10)
-	var/crit_severity = (stat == SOFT_CRIT) ? 5 : 0
-	var/severity = max(con_severity, shock_severity, crit_severity)
+	var/severity = clamp(round(crit_percent() / 15, 1), 0, 10)
 	if(severity > 0)
 		overlay_fullscreen("crit", /atom/movable/screen/fullscreen/crit, severity)
 	else
@@ -800,7 +797,7 @@
 		clear_fullscreen("oxy")
 		return
 
-	var/severity = clamp(round((current_oxyloss - 10) / 5 + 1), 1, 7)
+	var/severity = clamp(round((current_oxyloss - 10) / 5 + 1, 1), 1, 7)
 	overlay_fullscreen("oxy", /atom/movable/screen/fullscreen/oxy, severity)
 
 /// Applies damage hud according to how much raw damage the mob has taken
@@ -821,7 +818,16 @@
 	apply_oxy_screen_overlay()
 	apply_damage_screen_overlay()
 
-/mob/living/carbon/update_health_hud(shown_health_amount = src.consciousness)
+/// Determines how close we are to being in pain crit (Fully immobile)
+/// Returns a number between -INFINITY to INFINITY, where 100 = in crit, >100 = probably about to die, <0 = super healthy
+/mob/living/carbon/proc/crit_percent()
+	var/con_percent = (CONSCIOUSNESS_MAX - consciousness) / (CONSCIOUSNESS_MAX - CONSCIOUSNESS_CRIT_THRESHOLD)
+	var/shock_percent = (pain_controller?.traumatic_shock || 0) / SHOCK_CRIT_THRESHOLD
+	var/pain_percent = (pain_controller?.get_total_pain() || 0) / PAIN_CRIT_THRESOLD
+	var/softcrit_percent = (stat == SOFT_CRIT) ? 0.5 : 0
+	return round(max(con_percent, shock_percent, pain_percent, softcrit_percent), 0.01) * 100
+
+/mob/living/carbon/update_health_hud()
 	if(!client || !hud_used?.healths)
 		return
 
@@ -829,25 +835,25 @@
 		hud_used.healths.icon_state = "health7"
 		return
 
-	if(SEND_SIGNAL(src, COMSIG_CARBON_UPDATING_HEALTH_HUD, shown_health_amount) & COMPONENT_OVERRIDE_HEALTH_HUD)
+	if(SEND_SIGNAL(src, COMSIG_CARBON_UPDATING_HEALTH_HUD) & COMPONENT_OVERRIDE_HEALTH_HUD)
 		return
 
 	if(stat >= SOFT_CRIT)
 		hud_used.healths.icon_state = "health6"
 		return
 
-	switch(shown_health_amount)
+	switch(100 - crit_percent())
 		if(95 to INFINITY)
 			hud_used.healths.icon_state = "health0"
-		if(85 to 95)
+		if(80 to 95)
 			hud_used.healths.icon_state = "health1"
-		if(65 to 85)
+		if(60 to 80)
 			hud_used.healths.icon_state = "health2"
-		if(50 to 65)
+		if(40 to 60)
 			hud_used.healths.icon_state = "health3"
-		if(35 to 50)
+		if(20 to 40)
 			hud_used.healths.icon_state = "health4"
-		else // (30 to 35), effectively
+		else
 			hud_used.healths.icon_state = "health5"
 
 /// Upsed specifically to update the spacesuit hud element

@@ -26,7 +26,7 @@
 	UnregisterSignal(owner, COMSIG_CARBON_UPDATING_HEALTH_HUD)
 	owner.update_health_hud()
 
-/datum/status_effect/grouped/screwy_hud/proc/on_health_hud_updated(mob/living/carbon/source, shown_health_amount)
+/datum/status_effect/grouped/screwy_hud/proc/on_health_hud_updated(mob/living/carbon/source)
 	SIGNAL_HANDLER
 
 	// Shouldn't even be running if we're dead, but just in case...

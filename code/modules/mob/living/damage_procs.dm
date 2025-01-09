@@ -295,7 +295,7 @@
 	if (!can_adjust_brute_loss(amount, forced, required_bodytype))
 		return 0
 	. = bruteloss
-	bruteloss = clamp((bruteloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	bruteloss = clamp(bruteloss + amount, 0, maxHealth * 2)
 	. -= bruteloss
 	if(!.) // no change, no need to update
 		return 0
@@ -338,7 +338,7 @@
 	if(!can_adjust_oxy_loss(amount, forced, required_biotype, required_respiration_type))
 		return 0
 	. = oxyloss
-	oxyloss = clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, MAX_OXYLOSS(maxHealth))
+	oxyloss = clamp(oxyloss + amount, 0, MAX_OXYLOSS(maxHealth))
 	. -= oxyloss
 	if(!.) // no change, no need to update
 		return FALSE
@@ -379,7 +379,7 @@
 	if(!can_adjust_tox_loss(amount, forced, required_biotype))
 		return 0
 	. = toxloss
-	toxloss = clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	toxloss = clamp(toxloss + amount, 0, maxHealth * 2)
 	. -= toxloss
 	if(!.) // no change, no need to update
 		return FALSE
@@ -413,7 +413,7 @@
 	if(!can_adjust_fire_loss(amount, forced, required_bodytype))
 		return 0
 	. = fireloss
-	fireloss = clamp((fireloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
+	fireloss = clamp(fireloss + amount, 0, maxHealth * 2)
 	. -= fireloss
 	if(. == 0) // no change, no need to update
 		return
@@ -454,7 +454,7 @@
 	if(!can_adjust_stamina_loss(amount, forced, required_biotype))
 		return 0
 	. = staminaloss
-	staminaloss = clamp((staminaloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, max_stamina)
+	staminaloss = clamp(staminaloss + amount, 0, max_stamina)
 	. -= staminaloss
 	if(!.) // no change, no need to update
 		return 0

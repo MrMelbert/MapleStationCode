@@ -87,14 +87,7 @@
  * * down_to - the minimum amount of pain shock the mob can have. Defaults to -30, giving the mob a buffer against shock.
  */
 /mob/living/proc/adjust_traumatic_shock(amount, down_to = -30)
-	if(isnull(pain_controller))
-		return
-	if(amount > 0 && HAS_TRAIT(src, TRAIT_NO_TRAUMATIC_SHOCK))
-		return
-
-	ASSERT(isnum(amount))
-	pain_controller.traumatic_shock = clamp(pain_controller.traumatic_shock + amount, down_to, MAX_TRAUMATIC_SHOCK)
-	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE)
+	pain_controller?.adjust_traumatic_shock(amount, down_to)
 
 /**
  * Cause [amount] of [dam_type] sharp pain to [target_zones].

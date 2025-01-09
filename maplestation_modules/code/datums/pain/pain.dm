@@ -18,7 +18,6 @@
 	 * - Doing pain-related emotes (screams or gasps)
 	 * - Duration of some pain effects (dizziness, etc)
 	 * - Rate of traumatic shock buildup
-	 * - Strength of passive pain decay
 	 *
 	 * Below 0.5, a mob is treated as "numb", and will outright no longer
 	 * experience pain feedback messages or effects (but it'll still accumulate!)
@@ -29,11 +28,9 @@
 	/// Lazy Assoc list [zones] to [references to bodyparts], all the body parts we're tracking
 	VAR_PRIVATE/list/body_zones
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
-	VAR_FINAL/natural_pain_decay = -0.3
+	VAR_FINAL/natural_pain_decay = -1
 	/// The base amount of pain decay received.
 	VAR_FINAL/base_pain_decay
-	/// Counter to track pain decay. Pain decay is only done once every 5 ticks.
-	VAR_FINAL/natural_decay_counter = 0
 	/// Amount of traumatic shock building up from higher levels of pain
 	VAR_FINAL/traumatic_shock = 0
 	/// Tracks how many successful heart attack rolls in a row
@@ -190,7 +187,6 @@
 			return FALSE
 
 	LAZYSET(pain_mods, key, amount)
-	refresh_pain_attributes()
 	return update_pain_modifier()
 
 /**
@@ -220,6 +216,7 @@
 		pain_modifier *= pain_mods[mod]
 	if(old_pain_mod == pain_modifier)
 		return FALSE
+	refresh_pain_attributes()
 	return TRUE
 
 /**
@@ -284,6 +281,36 @@
 	return TRUE
 
 /**
+ * Adjusts the progress of pain shock on the current mob.
+ *
+ * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
+ * * down_to - the minimum amount of pain shock the mob can have. Defaults to -30, giving the mob a buffer against shock.
+ */
+/datum/pain/proc/adjust_traumatic_shock(amount, down_to = -30)
+	if(amount > 0)
+		amount *= max(pain_modifier, 0.33)
+
+	traumatic_shock = clamp(traumatic_shock + amount, down_to, MAX_TRAUMATIC_SHOCK)
+	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE)
+	if(traumatic_shock <= 0)
+		parent.remove_consciousness_modifier(PAINSHOCK)
+	else
+		parent.add_consciousness_modifier(PAINSHOCK, -0.4 * max(traumatic_shock, 0))
+	// Soft crit
+	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD)
+		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
+			set_pain_modifier(PAINSHOCK, 1.2)
+			parent.add_max_consciousness_value(PAINSHOCK, 60)
+			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
+			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+
+	else
+		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
+			unset_pain_modifier(PAINSHOCK)
+			parent.remove_max_consciousness_value(PAINSHOCK)
+			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
+			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+/**
  * Set the minimum amount of pain in all [def_zones] by [amount].
  *
  * * def_zones - list of all zones being adjusted. Can be passed a non-list.
@@ -318,12 +345,12 @@
 	refresh_pain_attributes()
 	SEND_SIGNAL(parent, COMSIG_CARBON_PAIN_GAINED, affected_part, amount, dam_type)
 	COOLDOWN_START(src, time_since_last_pain_loss, 60 SECONDS)
-	if(amount > 30)
+	if(amount > 20)
 		if(prob(33))
 			parent.pain_emote("scream", 5 SECONDS)
 		parent.flash_pain_overlay(2)
 
-	else if(amount > 20)
+	else if(amount > 12)
 		if(prob(33))
 			parent.pain_emote(pick("wince", "gasp", "grimace", "inhale_s", "exhale_s", "flinch"), 3 SECONDS)
 		parent.flash_pain_overlay(1)
@@ -365,9 +392,6 @@
 	else
 		def_zone = check_zone(def_zone)
 
-	// By default pain is calculated based on damage and wounding
-	// (Note that if they also succeed in applying a wound, more pain comes from that)
-	// Also, sharp attacks apply a smidge extra pain
 	var/pain = damage * (sharpness ? 1.15 : 1)
 	switch(parent.stat)
 		if(UNCONSCIOUS, HARD_CRIT)
@@ -483,7 +507,7 @@
 		// no-op if none of our bodyparts are in pain and we're not building up shock
 		return
 
-	var/shock_mod = max(pain_modifier, 0.33)
+	var/shock_mod = 1
 	if(HAS_TRAIT(parent, TRAIT_ABATES_SHOCK))
 		shock_mod *= 0.5
 	if(parent.health > 0)
@@ -498,7 +522,7 @@
 	else if(curr_pain < 50)
 		parent.adjust_traumatic_shock(-1 * seconds_per_tick)
 	else if(curr_pain < 100)
-		if(traumatic_shock <= 30 || parent.consciousness <= 50)
+		if(traumatic_shock <= SHOCK_DANGER_THRESHOLD || parent.consciousness <= 50)
 			parent.adjust_traumatic_shock(0.5 * shock_mod * seconds_per_tick)
 	else if(curr_pain < 200)
 		parent.adjust_traumatic_shock(1 * shock_mod * seconds_per_tick)
@@ -517,39 +541,25 @@
 		if(SPT_PROB(min(curr_pain / 20, 6), seconds_per_tick)) // pain applies its own stutter
 			parent.adjust_stutter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 
-	if(traumatic_shock >= 40 && parent.stat != HARD_CRIT)
+	if((traumatic_shock >= 40 || curr_pain >= 80) && parent.stat != HARD_CRIT)
 		if(SPT_PROB(traumatic_shock / 60, seconds_per_tick))
 			//parent.vomit(VOMIT_CATEGORY_KNOCKDOWN, lost_nutrition = 7.5)
 			parent.Knockdown(rand(3 SECONDS, 6 SECONDS))
 
-	if(traumatic_shock >= 60 || curr_pain >= 100)
-		if(SPT_PROB(max(traumatic_shock / 20, 2), seconds_per_tick) && !parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
-			parent.visible_message(
-				span_warning("[parent]'s body falls limp!"),
-				span_warning("Your body [just_cant_feel_anything ? "goes" : "falls"] limp!"),
-				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
-			)
+	if((traumatic_shock >= 60 || curr_pain >= 100) && parent.stat != HARD_CRIT)
+		if(SPT_PROB(max(traumatic_shock / 20, 2), seconds_per_tick))
+			if(!parent.IsParalyzed() && parent.Paralyze(rand(2 SECONDS, 8 SECONDS)))
+				parent.visible_message(
+					span_warning("[parent]'s body falls limp!"),
+					span_warning("Your body [just_cant_feel_anything ? "goes" : "falls"] limp!"),
+					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
+				)
 		if(SPT_PROB(max(traumatic_shock / 20, 3), seconds_per_tick))
 			parent.adjust_confusion_up_to(8 SECONDS * pain_modifier, 24 SECONDS)
 
 	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD || curr_pain >= 150)
 		if(SPT_PROB(max(traumatic_shock / 30, 4), seconds_per_tick))
 			parent.losebreath += 1
-
-	// This is where "soft crit" is now
-	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD)
-		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
-			set_pain_modifier(PAINSHOCK, 1.2)
-			parent.add_max_consciousness_value(PAINSHOCK, 60)
-			parent.apply_status_effect(/datum/status_effect/low_blood_pressure)
-			parent.add_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
-
-	else
-		if(HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
-			unset_pain_modifier(PAINSHOCK)
-			parent.remove_max_consciousness_value(PAINSHOCK)
-			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
-			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
 
 	if((traumatic_shock >= SHOCK_HEART_ATTACK_THRESHOLD || curr_pain >= 200) && SPT_PROB(max(traumatic_shock / 40, 1), seconds_per_tick) && parent.stat != HARD_CRIT)
 		if(!parent.IsUnconscious() && parent.Unconscious(rand(4 SECONDS, 16 SECONDS)))
@@ -580,6 +590,7 @@
 			else
 				COOLDOWN_START(src, time_since_last_heart_attack_counter, 6 SECONDS)
 				parent.losebreath += 1
+				parent.playsound_local(get_turf(parent), 'sound/effects/singlebeat.ogg', 40, 1, use_reverb = FALSE)
 				heart_attack_counter += 1
 				switch(heart_attack_counter)
 					if(-INFINITY to 0)
@@ -603,23 +614,12 @@
 		// No decay if you're burning (because you'll be gaining pain constantly anyways)
 		return
 
-	// Decay every 5 ticks / 10 seconds, or 2 ticks / 4 seconds if "sleeping" / in crit
-	var/every_x_ticks = (HAS_TRAIT(parent, TRAIT_KNOCKEDOUT) || HAS_TRAIT(parent, TRAIT_SOFT_CRIT)) ? 2 : 5
-
-	natural_decay_counter++
-	if(natural_decay_counter % every_x_ticks != 0)
-		return
-
-	natural_decay_counter = 0
 	if(COOLDOWN_FINISHED(src, time_since_last_pain_loss) && parent.stat == CONSCIOUS)
-		// 0.16 per 10 seconds, ~0.1 per minute, 10 minutes for ~1 decay
-		natural_pain_decay = max(natural_pain_decay - 0.016, -1)
+		natural_pain_decay = max(natural_pain_decay + (base_pain_decay * 0.05), natural_pain_decay * 3)
 	else
 		natural_pain_decay = base_pain_decay
 
-	// modify our pain decay by our pain modifier (ex. 0.5 pain modifier = 2x natural pain decay, capped at ~3x)
-	var/pain_modified_decay = round(natural_pain_decay * (1 / max(pain_modifier, 0.33)), 0.01)
-	adjust_bodypart_pain(BODY_ZONES_ALL, pain_modified_decay)
+	adjust_bodypart_pain(BODY_ZONES_ALL, natural_pain_decay)
 
 /// Affect accuracy of fired guns while in pain.
 /datum/pain/proc/on_mob_fired_gun(mob/living/carbon/human/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
@@ -649,7 +649,7 @@
 	if(pain <= 25)
 		parent.remove_consciousness_modifier(PAIN)
 	else
-		parent.add_consciousness_modifier(PAIN, round(-0.5 * (max(pain + traumatic_shock, 0) ** 0.8)), 0.01)
+		parent.add_consciousness_modifier(PAIN, round(-0.5 * (pain ** 0.66)), 0.01)
 	// Buuut the other modifiers aren't
 	pain *= pain_modifier
 
