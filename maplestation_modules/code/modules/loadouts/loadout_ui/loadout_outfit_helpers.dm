@@ -46,11 +46,8 @@
 	var/list/new_contents = get_all_gear()
 	var/update = NONE
 	for(var/datum/loadout_item/item as anything in loadout_datums)
-		var/obj/item/equipped = locate(item.item_path) in new_contents
-		if(isnull(equipped))
-			continue
 		update |= item.on_equip_item(
-			equipped_item = equipped,
+			equipped_item = locate(item.item_path) in new_contents,
 			preference_source = preference_source,
 			preference_list = preference_list,
 			equipper = src,
@@ -90,7 +87,7 @@
  *
  * Returns a loadout lazylist
  */
-/proc/get_active_loadout(datum/preferences/preferences)
+/proc/get_active_loadout(datum/preferences/preferences) as /list
 	RETURN_TYPE(/list)
 	var/slot = preferences.read_preference(/datum/preference/numeric/active_loadout)
 	var/list/all_loadouts = preferences.read_preference(/datum/preference/loadout)

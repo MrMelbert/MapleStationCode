@@ -117,7 +117,9 @@
 	item_path = /obj/item/storage/box/gum/happiness
 
 /datum/loadout_item/pocket_items/lipstick
-	abstract_type = /datum/loadout_item/pocket_items/lipstick
+	name = "Lipstick"
+	item_path = /obj/item/lipstick
+	additional_displayed_text = list("Recolorable")
 
 /datum/loadout_item/pocket_items/lipstick/on_equip_item(
 	obj/item/lipstick/equipped_item,
@@ -127,51 +129,58 @@
 	visuals_only,
 )
 	. = ..()
-	equipper.update_lips(equipped_item.style, equipped_item.lipstick_color, equipped_item.lipstick_trait)
+	var/picked_style = style_to_style(preference_list[item_path]?[INFO_LAYER])
+	var/picked_color = preference_list[item_path]?[INFO_GREYSCALE] || /obj/item/lipstick::lipstick_color
+	if(istype(equipped_item)) // can be null for visuals_only
+		equipped_item.style = picked_style
+		equipped_item.lipstick_color = picked_color
+	equipper.update_lips(picked_style, picked_color)
 
-// /datum/loadout_item/pocket_items/lipstick/get_ui_buttons() as /list
-// 	. = ..()
-// 	UNTYPED_LIST_ADD(., list(
-// 		"label" = "Style",
-// 		"act_key" = "select_color",
-// 		"button_icon" = FA_ICON_PALETTE,
-// 		"active_key" = INFO_GREYSCALE,
-// 	))
+/// Converts style (readable) to style (internal)
+/datum/loadout_item/pocket_items/lipstick/proc/style_to_style(style)
+	switch(style)
+		if(UPPER_LIP)
+			return "lipstick_upper"
+		if(LOWER_LIP)
+			return "lipstick_lower"
+	return "lipstick"
 
-/datum/loadout_item/pocket_items/lipstick/black
-	name = "Lipstick (Black)"
-	item_path = /obj/item/lipstick/black
-	additional_displayed_text = list("Black")
+/datum/loadout_item/pocket_items/lipstick/get_ui_buttons()
+	. = ..()
+	UNTYPED_LIST_ADD(., list(
+		"label" = "Style",
+		"act_key" = "select_lipstick_style",
+		"button_icon" = FA_ICON_ARROWS_ROTATE,
+		"active_key" = INFO_LAYER,
+	))
+	UNTYPED_LIST_ADD(., list(
+		"label" = "Color",
+		"act_key" = "select_lipstick_color",
+		"button_icon" = FA_ICON_PALETTE,
+		"active_key" = INFO_GREYSCALE,
+	))
 
-/datum/loadout_item/pocket_items/lipstick/blue
-	name = "Lipstick (Blue)"
-	item_path = /obj/item/lipstick/blue
-	additional_displayed_text = list("Blue")
+/datum/loadout_item/pocket_items/lipstick/handle_loadout_action(datum/preference_middleware/loadout/manager, mob/user, action, params)
+	switch(action)
+		if("select_lipstick_style")
+			var/old_style = get_active_loadout(manager.preferences)[item_path][INFO_LAYER] || MIDDLE_LIP
+			var/chosen = tgui_input_list(user, "Pick a lipstick style. This determines where it goes on your sprite.", "Pick a style", list(UPPER_LIP, MIDDLE_LIP, LOWER_LIP), old_style)
+			var/list/loadout = get_active_loadout(manager.preferences) // after sleep: sanity check
+			if(loadout?[item_path]) // Validate they still have it equipped
+				loadout[item_path][INFO_LAYER] = chosen
+				update_loadout(manager.preferences, loadout)
+			return TRUE // Update UI
 
-/datum/loadout_item/pocket_items/lipstick/green
-	name = "Lipstick (Green)"
-	item_path = /obj/item/lipstick/green
-	additional_displayed_text = list("Green")
+		if("select_lipstick_color")
+			var/old_color = get_active_loadout(manager.preferences)[item_path][INFO_GREYSCALE] || /obj/item/lipstick::lipstick_color
+			var/chosen = input(user, "Pick a lipstick color.", "Pick a color", old_color) as color|null
+			var/list/loadout = get_active_loadout(manager.preferences) // after sleep: sanity check
+			if(loadout?[item_path]) // Validate they still have it equipped
+				loadout[item_path][INFO_GREYSCALE] = chosen
+				update_loadout(manager.preferences, loadout)
+			return TRUE // Update UI
 
-/datum/loadout_item/pocket_items/lipstick/jade
-	name = "Lipstick (Jade)"
-	item_path = /obj/item/lipstick/jade
-	additional_displayed_text = list("Jade")
-
-/datum/loadout_item/pocket_items/lipstick/purple
-	name = "Lipstick (Purple)"
-	item_path = /obj/item/lipstick/purple
-	additional_displayed_text = list("Purple")
-
-/datum/loadout_item/pocket_items/lipstick/red
-	name = "Lipstick (Red)"
-	item_path = /obj/item/lipstick
-	additional_displayed_text = list("Red")
-
-/datum/loadout_item/pocket_items/lipstick/white
-	name = "Lipstick (White)"
-	item_path = /obj/item/lipstick/white
-	additional_displayed_text = list("White")
+	return ..()
 
 /datum/loadout_item/pocket_items/razor
 	name = "Razor"

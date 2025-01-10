@@ -48,7 +48,7 @@
 	mob/living/carbon/human/equipper,
 	visuals_only = FALSE,
 )
-	return NONE
+	return NONE // acts funky
 
 /datum/loadout_item/under/jumpsuit/random/skirt
 	name = "Random Jumpskirt"

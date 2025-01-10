@@ -227,10 +227,11 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * At this point the item is in the mob's contents
  *
  * Arguments:
+ * * equipped_item - the item that was equipped - may be null for certain items (pocket items)
  * * preference_source - the datum/preferences our loadout item originated from - cannot be null
+ * * preference_list - what the raw loadout list looks like in the preferences
  * * equipper - the mob we're equipping this item onto - cannot be null
  * * visuals_only - whether or not this is only concerned with visual things (not backpack, not renaming, etc)
- * * preference_list - what the raw loadout list looks like in the preferences
  *
  * Return a bitflag of slot flags to update
  */
@@ -241,7 +242,8 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
 	mob/living/carbon/human/equipper,
 	visuals_only = FALSE,
 )
-	ASSERT(!isnull(equipped_item))
+	if(isnull(equipped_item))
+		return NONE
 
 	//if(!visuals_only)
 	//	ADD_TRAIT(equipped_item, TRAIT_ITEM_OBJECTIVE_BLOCKED, "Loadout")
@@ -323,7 +325,7 @@ GLOBAL_LIST_INIT(all_loadout_categories, init_loadout_categories())
  * Returns a list of buttons that are shown in the loadout UI for customizing this item.
  *
  * Buttons contain
- * - 'L'abel: The text displayed beside the button
+ * - Label: The text displayed beside the button
  * - act_key: The key that is sent to the loadout manager when the button is clicked,
  * for use in handle_loadout_action
  * - button_icon: The FontAwesome icon to display on the button
