@@ -343,3 +343,184 @@
 	SEND_SIGNAL(affected_mob, COMSIG_CARBON_DRINK_CAFFEINE, CAFFEINE_POINTS_ENERGY * seconds_per_tick)
 	if(HAS_TRAIT(affected_mob, TRAIT_CAFFEINE_LOVER))
 		affected_mob.add_mood_event("caffeine_lover", /datum/mood_event/energy_lover)
+
+//Starfruit drinks
+//All the drinks are good-minimum because it requires a 1k import and then growing
+
+/datum/reagent/consumable/starfruit_juice
+	name = "Starfruit Juice"
+	description = "The raw essence of a starfruit."
+	color = "#6d3890"
+	taste_description = "lush cosmic sugar"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/ethanol/starfruit_soda
+	name = "Stellar Twist"
+	description = "A drink overly tired moms could hide in their thermos."
+	boozepwr = 35
+	color = "#434294"
+	quality = DRINK_GOOD
+	taste_description = "sweet stellar adventures"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starfruit_soda
+	required_drink_type = /datum/reagent/consumable/ethanol/starfruit_soda
+	name = "Stellar Twist"
+	desc = "An alcoholic starfruit soda, you can see the carbonation in the glass."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "starsoda"
+
+/datum/reagent/consumable/ethanol/starfruit_lubricant
+	name = "Stellar Lubricant"
+	description = "A drink overly tired moms could hide in their thermos. Now for Synths!"
+	boozepwr = 35
+	color = "#45b33b"
+	quality = DRINK_GOOD
+	taste_description = "sweet stellar adventures"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starfruit_lubricant
+	required_drink_type = /datum/reagent/consumable/ethanol/starfruit_lubricant
+	name = "Stellar Lubricant"
+	desc = "An alcoholic synth friendly starfruit soda, you can see the carbonation in the glass."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "starsodasynth"
+
+/datum/reagent/consumable/starfruit_latte
+	name = "Starlit Latte"
+	description = "A subtly sweet coffee seemingly out of this world."
+	nutriment_factor = 8
+	color = "#361329"
+	quality = DRINK_GOOD
+	taste_description = "hauntingly familiar allure"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starfruit_latte
+	required_drink_type = /datum/reagent/consumable/starfruit_latte
+	name = "mug of starlit latte"
+	desc = "A simple coffee flavored with sweet starfruit juice. It takes you on a journey to a place you’ve never been, yet somehow know by heart."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "starfruit_latte"
+
+/datum/reagent/consumable/starbeam_shake
+	name = "Starbeam Shake"
+	description = "A delightful shake made with a rare starfruit."
+	color = "#a551be"
+	nutriment_factor = 0
+	quality = DRINK_GOOD
+	taste_description = "smooth starlight"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/starbeam_shake
+	required_drink_type = /datum/reagent/consumable/starbeam_shake
+	name = "starbeam shake"
+	desc = "A thick and creamy drink that takes you for a journey in the stars."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "voidshake"
+
+/datum/reagent/consumable/ethanol/forgotten_star
+	name = "Forgotten Star"
+	description = "A cosmic cry of a bygone era."
+	boozepwr = 55
+	color = "#434294"
+	quality = DRINK_GOOD
+	taste_description = "dreamy, tropical starlit sweetness"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/forgotten_star
+	required_drink_type = /datum/reagent/consumable/ethanol/forgotten_star
+	name = "Forgotten Star"
+	desc = "An alcoholic starfruit cocktail, you can almost make out a distant star system in the glass."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "forgottenstar"
+
+/datum/reagent/consumable/ethanol/astral_flame
+	name = "Astral Flame"
+	description = "Enticing flames."
+	boozepwr = 55
+	color = "#6b3481"
+	quality = DRINK_GOOD
+	taste_description = "enticing warmth"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/astral_flame
+	required_drink_type = /datum/reagent/consumable/ethanol/astral_flame
+	name = "Astral Flame"
+	desc = "An alcoholic starfruit mojito, the flame in the glass tempts you closer."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "astralflame"
+
+/datum/reagent/consumable/ethanol/space_muse
+	name = "Space Muse"
+	description = "A snapshot straight from your local telescope."
+	boozepwr = 35
+	color = "#7cb1e2"
+	quality = DRINK_GOOD
+	taste_description = "haughty cosmic thought"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/glass_style/drinking_glass/space_muse
+	required_drink_type = /datum/reagent/consumable/ethanol/space_muse
+	name = "Space Muse"
+	desc = "An alcoholic cocktail that draws you in with subtle bites of mint and starfruit."
+	icon = 'maplestation_modules/icons/obj/food/starfruit.dmi'
+	icon_state = "spacemuse"
+
+/datum/reagent/consumable/starfruit_jelly
+	name = "Starfruit Jelly"
+	description = "A rare sweet fruit jelly."
+	nutriment_factor = 10
+	color = "#6d3890"
+	taste_description = "starfruit"
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+	default_container = /obj/item/reagent_containers/condiment/starfruit_jelly
+
+//Manual with the drink recipes, to make recipe browsing more interesting
+/obj/item/book/manual/starfruit
+	name = "Starfruit Drinks and Brewing"
+	icon = 'maplestation_modules/icons/obj/starfruitbook.dmi'
+	icon_state = "cookbook"
+	lefthand_file = 'maplestation_modules/icons/mob/inhands/starfruitbook_lhand.dmi'
+	righthand_file = 'maplestation_modules/icons/mob/inhands/starfruitbook_rhand.dmi'
+	starting_author = "His Highness, Horatio Gilidan"
+	starting_title = "Starfruit Drinks and Brewing"
+	starting_content = {"<html>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+<style>
+h1 {font-size: 18px; margin: 15px 0px 5px;}
+h2 {font-size: 15px; margin: 15px 0px 5px;}
+li {margin: 2px 0px 2px 15px;}
+ul {list-style: none; margin: 5px; padding: 0px;}
+ol {margin: 5px; padding: 0px 15px;}
+</style>
+</head>
+<body>
+
+<h2>Murian Starfruit Beverage Recipes from all around the Nations of Mu, provided by the Heart of Cremona:</h2>
+
+<b>Starfruit Soda:</b> An alcoholic soda with a distinctly fruity taste and a common fixture in most Gilidan bars. Distinctly enjoyed by young adults and old moms alike.<br>
+Two parts starfruit juice, two parts rum, one part cognac, one part soda water.<br>
+
+<b>Starfruit Lubricant:</b> A drink commonly enjoyed by the synthetic diaspora of Mu, it's surprisingly drinkable to organics, provided you can stand the oily taste.<br>
+One part starfruit juice, one part synthetic oil.<br>
+
+<b>Starlit Latte:</b> A classic recipe from the sailors of Aquatia as a replacement to goat locker coffee, this latte doesn't actually use any dairy products. \
+The natural creaminess of starfruit juice is enough to dilute the bitterness of coffee to a pleasant sensation.<br>
+One part starfruit juice, one part coffee.<br>
+
+<b>Starbeam Shake:</b> A fruity yet aromatically deep milkshake, this one is extremely popular with children and adults alike. \
+Notably brought all of the suitors to the yard during the Celestium Succession Crisis.<br>
+One part starfruit juice, one part vanilla dream, one part ice.<br>
+
+<b>Forgotten Star:</b> An extremely rich alcoholic drink from the beaches of Agrosia, a somewhat spiced up take on the Piña Colada. It evokes memories of nice vacations.<br>
+One part starfruit juice, one part creme de coconut, one part white russian, one part pineapple juice, one part bitters.
+
+<b>Astral Flame:</b> A strong drink with the fire of Solara. It's both warming and with a minty aftertaste to bring an edge to the flames.<br>
+One Part starfruit juice, one part navy rum, one part lime juice, one part soda water, one part menthol.
+
+<b>Space Muse:</b> A simple yet complex drink, often seen in the hands of the intelligentsia of Equitas. Originally a poor man's drink, it's now associated with the nobility.<br>
+One part starfruit juice, one part creme de menthe, one part vodka.
+</body>
+</html>
+"}
