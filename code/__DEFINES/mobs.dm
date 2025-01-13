@@ -447,7 +447,7 @@
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
 /// Factor at which mob nutrition decreases
-#define HUNGER_FACTOR 0.1
+#define HUNGER_FACTOR 0.075
 
 // These add up to 1 to roughly (VERY roughly) represent the proportion of hunger used by each system
 /// What % of hunger is used by homeostasis
