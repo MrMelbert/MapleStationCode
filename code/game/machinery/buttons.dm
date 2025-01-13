@@ -275,6 +275,34 @@
 			balloon_alert(user, "swapped style")
 		return
 
+	if(!panel_open)
+		return SECONDARY_ATTACK_CALL_NORMAL
+
+	if(device)
+		remove_assembly(user)
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(board)
+		remove_airlock_electronics(user)
+		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+	return ..()
+
+/obj/machinery/button/proc/remove_assembly(mob/user)
+	SEND_SIGNAL(device, COMSIG_ASSEMBLY_REMOVED_FROM_BUTTON, src, user)
+	user.put_in_hands(device)
+	to_chat(user, span_notice("You remove \the [device] from the button frame."))
+	device = null
+	update_appearance(UPDATE_ICON)
+
+/obj/machinery/button/proc/remove_airlock_electronics(mob/user)
+	user.put_in_hands(board)
+	to_chat(user, span_notice("You remove the board from the button frame."))
+	req_access = list()
+	req_one_access = list()
+	board = null
+	update_appearance(UPDATE_ICON)
+
+/obj/machinery/button/proc/attempt_press(mob/user)
 	if((machine_stat & (NOPOWER|BROKEN)))
 		return
 
