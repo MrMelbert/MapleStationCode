@@ -13064,7 +13064,6 @@
 /obj/structure/window/reinforced/spawner/directional/north{
 	layer = 2.9
 	},
-/obj/item/radio/intercom/directional/west,
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/large,
 /area/station/medical/medbay/aft)
@@ -48042,6 +48041,7 @@
 /obj/effect/turf_decal/box/white{
 	color = "#52B4E9"
 	},
+/obj/structure/sign/eyechart/directional/east,
 /turf/open/floor/iron/dark/smooth_large,
 /area/station/medical/treatment_center)
 "ous" = (
@@ -57760,9 +57760,9 @@
 	},
 /obj/effect/turf_decal/trimline/blue/filled/end,
 /obj/structure/window/reinforced/spawner/directional/south,
-/obj/structure/sign/warning/no_smoking/circle/directional/west,
 /obj/structure/disposalpipe/segment,
 /obj/machinery/light/directional/west,
+/obj/item/radio/intercom/directional/west,
 /turf/open/floor/iron/large,
 /area/station/medical/medbay/aft)
 "rjE" = (
