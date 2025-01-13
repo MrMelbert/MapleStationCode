@@ -192,8 +192,17 @@
 /obj/item/snowglobe/extra/marisa
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a monochromatic, ordinary witch soaring through snowy clouds on their broom."
 
+/obj/item/snowglobe/extra/lunar
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a vast cityscape, built on the far side of the Moon."
+
 /obj/item/snowglobe/extra/astral
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a starstruck wasteland, infected by an otherworldly blight."
 
+/obj/item/snowglobe/extra/dog
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a titanic armoured serpent, coiled around a rift in time and space."
+
 /obj/item/snowglobe/extra/arbiter
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a person wrapped in a pitch black cloak with golden, hexagonal highlights. They stand in the centre of a ruined cityscape."
+
+/obj/item/snowglobe/extra/limbus
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a strange, train-like bus. It has bright text written on its side, but you can't quite make it out."
