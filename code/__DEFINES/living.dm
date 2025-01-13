@@ -80,6 +80,11 @@
 /// Doesn't let a mob shift this atom around with move_pulled
 #define TRAIT_NO_MOVE_PULL "no_move_pull"
 
+/// Boosts the heart rate of the mob
+#define TRAIT_HEART_RATE_BOOST "heart_rate_boost"
+/// Slows the heart rate of the mob
+#define TRAIT_HEART_RATE_SLOW "heart_rate_slow"
+
 /// The trait that determines if someone has the robotic limb reattachment quirk.
 #define TRAIT_ROBOTIC_LIMBATTACHMENT "trait_robotic_limbattachment"
 

@@ -32,7 +32,7 @@
 	///The types of bodyparts that this surgery can have performed on it. Used for augmented surgeries.
 	var/requires_bodypart_type = BODYTYPE_ORGANIC
 	///The speed modifier given to the surgery through external means.
-	var/speed_modifier = 0
+	var/speed_modifier = 1
 	///Whether the surgery requires research to do. You need to add a design if using this!
 	var/requires_tech = FALSE
 	///typepath of a surgery that will, once researched, replace this surgery in the operating menu.

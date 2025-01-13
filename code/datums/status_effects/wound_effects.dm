@@ -40,6 +40,7 @@
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.physiology.bleed_mod *= WOUND_DETERMINATION_BLEED_MOD
 	ADD_TRAIT(owner, TRAIT_ABATES_SHOCK, TRAIT_STATUS_EFFECT(id))
+	ADD_TRAIT(owner, TRAIT_HEART_RATE_BOOST, TRAIT_STATUS_EFFECT(id))
 	owner.add_consciousness_multiplier(id, 1.15)
 	if(duration >= WOUND_DETERMINATION_SEVERE)
 		owner.throw_alert(id, /atom/movable/screen/alert/determined)
@@ -53,6 +54,7 @@
 		var/mob/living/carbon/human/human_owner = owner
 		human_owner.physiology.bleed_mod /= WOUND_DETERMINATION_BLEED_MOD
 	REMOVE_TRAIT(owner, TRAIT_ABATES_SHOCK, TRAIT_STATUS_EFFECT(id))
+	REMOVE_TRAIT(owner, TRAIT_HEART_RATE_BOOST, TRAIT_STATUS_EFFECT(id))
 	owner.remove_consciousness_multiplier(id)
 	owner.clear_alert(id)
 	owner.apply_status_effect(/datum/status_effect/determination_crash)

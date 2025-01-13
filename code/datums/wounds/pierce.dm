@@ -106,8 +106,8 @@
 
 	if(limb.current_gauze)
 		var/amt_blocking = limb.current_gauze.absorption_rate * seconds_per_tick
-		adjust_blood_flow(-1 * amt_blocking * gauzed_clot_rate)
 		limb.seep_gauze(amt_blocking)
+		adjust_blood_flow(-1 * amt_blocking * gauzed_clot_rate)
 
 /datum/wound/pierce/bleed/adjust_blood_flow(adjust_by, minimum)
 	. = ..()

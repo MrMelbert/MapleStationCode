@@ -284,18 +284,18 @@
  * Adjusts the progress of pain shock on the current mob.
  *
  * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
- * * down_to - the minimum amount of pain shock the mob can have. Defaults to -30, giving the mob a buffer against shock.
+ * * down_to - the minimum amount of pain shock the mob can have.
  */
-/datum/pain/proc/adjust_traumatic_shock(amount, down_to = -30)
+/datum/pain/proc/adjust_traumatic_shock(amount, down_to = -20)
 	if(amount > 0)
 		amount *= max(pain_modifier, 0.33)
 
 	traumatic_shock = clamp(traumatic_shock + amount, down_to, MAX_TRAUMATIC_SHOCK)
-	SShealth_updates.queue_update(src, UPDATE_SELF_DAMAGE)
+	SShealth_updates.queue_update(parent, UPDATE_SELF_DAMAGE)
 	if(traumatic_shock <= 0)
 		parent.remove_consciousness_modifier(PAINSHOCK)
 	else
-		parent.add_consciousness_modifier(PAINSHOCK, -0.4 * max(traumatic_shock, 0))
+		parent.add_consciousness_modifier(PAINSHOCK, -0.4 * traumatic_shock)
 	// Soft crit
 	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
@@ -518,7 +518,7 @@
 		shock_mod *= 2 // stacks with above
 	var/curr_pain = get_total_pain()
 	if(curr_pain < 25)
-		parent.adjust_traumatic_shock(-3 * seconds_per_tick) // staying out of pain for a while gives you a small resiliency to shock (~1 minute)
+		parent.adjust_traumatic_shock(-3 * seconds_per_tick)
 	else if(curr_pain < 50)
 		parent.adjust_traumatic_shock(-1 * seconds_per_tick)
 	else if(curr_pain < 100)
@@ -536,6 +536,8 @@
 	if((traumatic_shock >= 20 || curr_pain >= 50) && !just_cant_feel_anything)
 		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
 			parent.adjust_jitter_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
+		if(SPT_PROB(min(curr_pain / 5, 24), seconds_per_tick))
+			parent.adjust_eye_blur_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 		if(SPT_PROB(min(curr_pain / 10, 12), seconds_per_tick))
 			parent.adjust_dizzy_up_to(5 SECONDS * pain_modifier, 30 SECONDS)
 		if(SPT_PROB(min(curr_pain / 20, 6), seconds_per_tick)) // pain applies its own stutter
@@ -649,37 +651,37 @@
 	if(pain <= 25)
 		parent.remove_consciousness_modifier(PAIN)
 	else
-		parent.add_consciousness_modifier(PAIN, round(-0.5 * (pain ** 0.66)), 0.01)
+		parent.add_consciousness_modifier(PAIN, round(-0.33 * (pain ** 0.75)), 0.01)
 	// Buuut the other modifiers aren't
 	pain *= pain_modifier
 
 	switch(pain)
 		if(0 to 25)
-			parent.mob_surgery_speed_mod = initial(parent.mob_surgery_speed_mod)
+			parent.remove_surgery_speed_mod(PAIN)
 			parent.outgoing_damage_mod = initial(parent.outgoing_damage_mod)
 			parent.remove_movespeed_modifier(MOVESPEED_ID_PAIN)
 			parent.remove_actionspeed_modifier(ACTIONSPEED_ID_PAIN)
 			parent.clear_mood_event(PAIN)
 		if(25 to 75)
-			parent.mob_surgery_speed_mod = 0.9
+			parent.add_surgery_speed_mod(PAIN, 1.1)
 			parent.outgoing_damage_mod = 0.9
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/light)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/light)
 			parent.add_mood_event(PAIN, /datum/mood_event/light_pain)
 		if(75 to 125)
-			parent.mob_surgery_speed_mod = 0.75
+			parent.add_surgery_speed_mod(PAIN, 1.25)
 			parent.outgoing_damage_mod = 0.75
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/medium)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/medium)
 			parent.add_mood_event(PAIN, /datum/mood_event/med_pain)
 		if(125 to 175)
-			parent.mob_surgery_speed_mod = 0.6
+			parent.add_surgery_speed_mod(PAIN, 1.4)
 			parent.outgoing_damage_mod = 0.6
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/heavy)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/heavy)
 			parent.add_mood_event(PAIN, /datum/mood_event/heavy_pain)
 		if(225 to INFINITY)
-			parent.mob_surgery_speed_mod = 0.5
+			parent.add_surgery_speed_mod(PAIN, 1.5)
 			parent.outgoing_damage_mod = 0.5
 			parent.add_movespeed_modifier(/datum/movespeed_modifier/pain/crippling)
 			parent.add_actionspeed_modifier(/datum/actionspeed_modifier/pain/crippling)
@@ -793,14 +795,10 @@
 		// Shouldn't be necessary but you never know!
 		REMOVE_TRAIT(healed_bodypart, TRAIT_PARALYSIS, PAIN_LIMB_PARALYSIS)
 
-	traumatic_shock = 0
+	adjust_traumatic_shock(-INFINITY, 0)
 	natural_pain_decay = base_pain_decay
-	unset_pain_modifier(PAINSHOCK)
-	parent.remove_max_consciousness_value(PAINSHOCK)
-	parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
-	parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
-	parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
-
+	parent.paincrit_check()
+	refresh_pain_attributes()
 
 /// Determines if we should be processing or not.
 /datum/pain/proc/on_parent_statchance(...)
@@ -820,27 +818,6 @@
 	for(var/zone in body_zones)
 		var/obj/item/bodypart/revived_bodypart = body_zones[zone]
 		parent.cause_pain(zone, revived_bodypart.pain * -0.9)
-
-/// Used to get the effect of pain on the parent's heart rate.
-/datum/pain/proc/get_heartrate_modifier()
-	var/base_amount = 0
-	switch(get_total_pain()) // pain raises it a bit
-		if(25 to 100)
-			base_amount += 5
-		if(100 to 175)
-			base_amount += 10
-		if(175 to INFINITY)
-			base_amount += 15
-
-	switch(pain_modifier) // numbness lowers it a bit
-		if(0.25 to 0.5)
-			base_amount -= 15
-		if(0.5 to 0.75)
-			base_amount -= 10
-		if(0.75 to 1)
-			base_amount -= 5
-
-	return base_amount
 
 /**
  * Signal proc for [COMSIG_LIVING_HEALTHSCAN]

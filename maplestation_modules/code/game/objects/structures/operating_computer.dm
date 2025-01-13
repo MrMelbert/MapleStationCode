@@ -45,7 +45,7 @@
 	var/obj/item/organ/patient_brain = table.patient.get_organ_slot(ORGAN_SLOT_BRAIN)
 	data["patient"]["brain"] = isnull(patient_brain) ? 100 : ((patient_brain.damage / patient_brain.maxHealth) * 100)
 	data["patient"]["bloodVolumePercent"] = round((table.patient.blood_volume / BLOOD_VOLUME_NORMAL) * 100)
-	data["patient"]["heartRate"] = table.patient.get_heart_rate()
+	data["patient"]["heartRate"] = table.patient.get_bpm()
 	// We can also show pain and stuff here if we want.
 
 	return data
@@ -73,16 +73,3 @@
 		if("disable_failsafe")
 			table.failsafe_time = INFINITY
 			return TRUE
-
-/mob/living/proc/get_heart_rate()
-	if(stat == DEAD)
-		return 0
-
-	return rand(70, 90)
-
-/mob/living/carbon/human/get_heart_rate()
-	if(stat == DEAD)
-		return 0
-
-	var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
-	return heart?.get_heart_rate() || 0

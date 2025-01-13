@@ -93,13 +93,17 @@
 	if(check_morbid_curiosity(user, tool, surgery))
 		speed_mod *= SURGERY_SPEED_MORBID_CURIOSITY
 
-	var/implement_speed_mod = 1
-	if(implement_type) //this means it isn't a require hand or any item step.
-		implement_speed_mod = implements[implement_type] / 100.0
+	if(implement_type && (implements[implement_type] > 0)) //this means it isn't a require hand or any item step.
+		speed_mod *= (1 / (implements[implement_type] / 100.0))
 
-	speed_mod /= (get_location_modifier(target) * (1 + surgery.speed_modifier) * implement_speed_mod) * target.mob_surgery_speed_mod
+	speed_mod *= surgery.speed_modifier
+
+	speed_mod *= (1 / get_location_modifier(target))
+
+	for(var/id in target.mob_surgery_speed_mods)
+		speed_mod *= target.mob_surgery_speed_mods[id]
+
 	var/modded_time = time * speed_mod
-
 
 	fail_prob = min(max(0, modded_time - (time * SURGERY_SLOWDOWN_CAP_MULTIPLIER)),99)//if modded_time > time * modifier, then fail_prob = modded_time - time*modifier. starts at 0, caps at 99
 	modded_time = min(modded_time, time * SURGERY_SLOWDOWN_CAP_MULTIPLIER)//also if that, then cap modded_time at time*modifier
@@ -154,7 +158,7 @@
 				break
 	else
 		sound_file_use = preop_sound
-	playsound(get_turf(target), sound_file_use, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+	playsound(target, sound_file_use, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
 
 /datum/surgery_step/proc/success(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = TRUE)
 	SEND_SIGNAL(user, COMSIG_MOB_SURGERY_STEP_SUCCESS, src, target, target_zone, tool, surgery, default_display_results)
@@ -176,7 +180,7 @@
 /datum/surgery_step/proc/play_success_sound(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	if(!success_sound)
 		return
-	playsound(get_turf(target), success_sound, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+	playsound(target, success_sound, 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
 
 /datum/surgery_step/proc/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)
 	var/screwedmessage = ""
@@ -289,7 +293,7 @@
 		return
 
 	if(implement_type && (implements[implement_type] > 0))
-		pain_amount = round(pain_amount * sqrt(implements[implement_type]) * 0.1, 0.1)
+		pain_amount = round(pain_amount * 1 / (sqrt(implements[implement_type]) * 0.1), 0.1)
 
 	target.cause_pain(target_zone, pain_amount, pain_type)
 	if(target.IsSleeping() || target.stat >= UNCONSCIOUS)

@@ -565,8 +565,8 @@
 	var/oldhp = health
 	set_health(round(maxHealth - total_oxy - total_tox - total_burn - total_brute, DAMAGE_PRECISION))
 
-	var/brutecon = round(-0.005 * (total_brute ** 1.5), 0.01)
-	var/firecon =  round(-0.005 * (total_burn ** 1.5), 0.01)
+	var/brutecon = round(-0.01 * (total_brute ** 1.5), 0.01)
+	var/firecon =  round(-0.01 * (total_burn ** 1.5), 0.01)
 	var/oxycon = HAS_TRAIT(src, TRAIT_NOBREATH) ? 0 : round(-1 * min(total_oxy * (total_oxy >= 100 ? 0.5 : 0.33), 100), 0.01)
 	var/toxcon = HAS_TRAIT(src, TRAIT_TOXIMMUNE) ? 0 : round(-2 * (total_tox ** 0.75), 0.01)
 	// To prevent nobreath/noblood species from being incredibly tanky, due to ignoring major sources of con damage,
@@ -665,6 +665,8 @@
 		return
 	var/is_standing = body_position == STANDING_UP
 	add_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
+	if(stat == DEAD)
+		return
 	if(buckled)
 		visible_message(
 			span_warning("[src] slumps against [buckled]!"),

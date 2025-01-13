@@ -707,6 +707,7 @@
 	ph = 9
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	addiction_types = list(/datum/addiction/opioids = 25)
+	pain_modifier = 0.5
 
 /datum/reagent/toxin/fentanyl/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
@@ -887,6 +888,14 @@
 	. = ..()
 	if(current_cycle > 22)
 		affected_mob.Sleeping(40 * REM * normalise_creation_purity() * seconds_per_tick)
+
+/datum/reagent/nitroglycerin/on_mob_metabolize(mob/living/carbon/user)
+	. = ..()
+	ADD_TRAIT(user, TRAIT_HEART_RATE_SLOW, type)
+
+/datum/reagent/nitroglycerin/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_SLOW, type)
 
 /datum/reagent/toxin/amanitin
 	name = "Amanitin"

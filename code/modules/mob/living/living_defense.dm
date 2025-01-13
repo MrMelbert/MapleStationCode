@@ -142,11 +142,11 @@
 		// melbert todo scale on pain of bodypart?
 		if(damage_done >= 60)
 			if(!IsParalyzed() && prob(damage_done))
-				extra_paralyze += 0.8 SECONDS
-				extra_knockdown += 1.2 SECONDS
+				extra_paralyze += 0.4 SECONDS
+				extra_knockdown += 0.8 SECONDS
 		else if(damage_done >= 20)
 			if(!IsKnockdown() && prob(damage_done * 2))
-				extra_knockdown += 0.8 SECONDS
+				extra_knockdown += 0.4 SECONDS
 
 	apply_effects(
 		stun = hitting_projectile.stun,
@@ -709,3 +709,33 @@
 		return TRUE
 
 	return FALSE
+
+/// Adds a modifier to the mob's surgery and updates any ongoing surgeries.
+/// Multiplicative, so two 0.8 modifiers would result in a 0.64 speed modifier, meaning surgery is 0.64x faster.
+/mob/living/proc/add_surgery_speed_mod(id, speed_mod)
+	if(LAZYACCESS(mob_surgery_speed_mods, id) == speed_mod)
+		return FALSE
+	if(LAZYACCESS(mob_surgery_speed_mods, id))
+		remove_surgery_speed_mod(id)
+
+	LAZYSET(mob_surgery_speed_mods, id, speed_mod)
+	for(var/datum/surgery/ongoing as anything in surgeries)
+		ongoing.speed_modifier *= speed_mod
+	return TRUE
+
+/// Removes a modifier from the mob's surgery and updates any ongoing surgeries.
+/mob/living/proc/remove_surgery_speed_mod(id)
+	var/removing_mod = LAZYACCESS(mob_surgery_speed_mods, id)
+	if(!removing_mod)
+		return FALSE
+
+	LAZYREMOVE(mob_surgery_speed_mods, id)
+	for(var/datum/surgery/ongoing as anything in surgeries)
+		ongoing.speed_modifier /= removing_mod
+	return TRUE
+
+/// Helper to add a surgery speed modifier which is removed after a set duration.
+/mob/living/proc/add_timed_surgery_speed_mod(id, speed_mod, duration)
+	if(!add_surgery_speed_mod(id, speed_mod))
+		return
+	addtimer(CALLBACK(src, PROC_REF(remove_surgery_speed_mod), id), duration)

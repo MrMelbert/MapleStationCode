@@ -284,7 +284,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 				if(0)
 					ekg_icon_state = "ekg_flat"
 					resp_icon_state = "resp_flat"
-				if(100 to INFINITY)
+				if(11 to INFINITY)
 					ekg_icon_state = "ekg_fast"
 
 		var/hp_color = percent_to_color((patient.maxHealth - patient.health) / patient.maxHealth)

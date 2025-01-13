@@ -155,8 +155,8 @@
 	if(limb.current_gauze)
 		if(clot_rate > 0)
 			adjust_blood_flow(-clot_rate * seconds_per_tick)
-		adjust_blood_flow(-limb.current_gauze.absorption_rate * seconds_per_tick)
 		limb.seep_gauze(limb.current_gauze.absorption_rate * seconds_per_tick)
+		adjust_blood_flow(-limb.current_gauze.absorption_rate * seconds_per_tick)
 	//otherwise, only clot if it's a bleeder
 	else if(limb.can_bleed())
 		adjust_blood_flow(-clot_rate * seconds_per_tick)
