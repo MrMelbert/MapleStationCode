@@ -515,3 +515,41 @@
 #define COMSIG_ITEM_WEIGHT_CLASS_CHANGED "item_weight_class_changed"
 /// Sent from /obj/item/update_weight_class(), to it's loc. (obj/item/changed_item, old_w_class, new_w_class)
 #define COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED "atom_contents_weight_class_changed"
+
+///Sent from /obj/item/skillchip/on_implant()
+#define COMSIG_SKILLCHIP_IMPLANTED "skillchip_implanted"
+
+///Sent from /obj/item/skillchip/on_remove()
+#define COMSIG_SKILLCHIP_REMOVED "skillchip_removed"
+
+/// from /obj/machinery/computer/camera_advanced/shuttle_docker/gatherNavComputerOverlays() : (list/images_out)
+#define COMSIG_SHUTTLE_NAV_COMPUTER_IMAGE_REQUESTED "shuttle_nav_computer_image_requested"
+
+/// Sent from /obj/item/organ/wings/functional/proc/open_wings(): (mob/living/carbon/owner)
+#define COMSIG_WINGS_OPENED "wings_opened"
+/// Sent from /obj/item/organ/wings/functional/proc/close_wings(): (mob/living/carbon/owner)
+#define COMSIG_WINGS_CLOSED "wings_closed"
+
+/// Sent from /obj/item/assembly/on_attach(): (atom/holder)
+#define COMSIG_ASSEMBLY_ATTACHED "assembly_attached"
+
+/// Sent from /obj/item/assembly/on_detach(): (atom/holder)
+#define COMSIG_ASSEMBLY_DETACHED "assembly_detached"
+
+/*
+ * The following two signals are separate from the above two because buttons don't set the holder of the inserted assembly.
+ * This causes subtle behavioral differences that future handlers for these signals may need to account for,
+ * even if none of the currently implemented handlers do.
+ */
+
+/// Sent from /obj/machinery/button/assembly_act(obj/machinery/button/button, mob/user)
+#define COMSIG_ASSEMBLY_ADDED_TO_BUTTON "assembly_added_to_button"
+
+/// Sent from /obj/machinery/button/remove_assembly(obj/machinery/button/button, mob/user)
+#define COMSIG_ASSEMBLY_REMOVED_FROM_BUTTON "assembly_removed_from_button"
+
+/// Sent from /datum/powernet/add_cable()
+#define COMSIG_CABLE_ADDED_TO_POWERNET "cable_added_to_powernet"
+
+/// Sent from /datum/powernet/remove_cable()
+#define COMSIG_CABLE_REMOVED_FROM_POWERNET "cable_removed_from_powernet"

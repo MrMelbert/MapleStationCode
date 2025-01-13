@@ -84,6 +84,9 @@
 		"comp_typecast",
 		"comp_typecheck",
 		"comp_view_sensor",
+		"comp_wirenet_receive",
+		"comp_wirenet_send",
+		"comp_wirenet_send_literal",
 	)
 
 /datum/techweb_node/circuit_shells
