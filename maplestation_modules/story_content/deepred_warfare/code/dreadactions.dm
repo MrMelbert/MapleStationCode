@@ -376,13 +376,13 @@
 	melee_cooldown_time = 0 SECONDS
 	click_to_activate = FALSE
 	shared_cooldown = NONE
-	var/firesize = 4
-	var/doafter_time = 10 SECONDS
+	var/firesize = 2
+	var/doafter_time = 2 SECONDS
 
 /datum/action/cooldown/mob_cooldown/heatburst/Activate(atom/target_atom)
 	var/mob/living/basic/redtechdread/ownercast = owner
 	playsound(ownercast, 'sound/machines/clockcult/stargazer_activate.ogg', 120)
-	ownercast.visible_message(span_alertwarning("[ownercast]'s heatsinks blaze with heat..."))
+	ownercast.visible_message(span_alertwarning("[ownercast]'s heatsink vents blaze with to life..."))
 
 	if(!do_after(ownercast, doafter_time))
 		ownercast.balloon_alert(ownercast, "cancelled")
@@ -440,6 +440,20 @@
 	doafter_time = 5 SECONDS
 	heal_amount = 100
 	energy_cost = 50
+
+/datum/action/cooldown/mob_cooldown/heatburst/high
+	name = "Purge Heat - Overcharge"
+	desc = "Purposefully overcharge your heatsinks to deal damage to nearby enemies."
+	button_icon = 'icons/mob/actions/actions_items.dmi'
+	button_icon_state = "bci_bomb"
+	background_icon_state = "bg_tech"
+	overlay_icon_state = "bg_tech_border"
+	cooldown_time = 3 MINUTES
+	melee_cooldown_time = 0 SECONDS
+	click_to_activate = FALSE
+	shared_cooldown = NONE
+	firesize = 4
+	doafter_time = 5 SECONDS
 
 // vvvvv ABILITIES THAT CAN ONLY BE USED IN RL MODE ONLY vvvvv
 /datum/action/cooldown/mob_cooldown/projectile_attack/rapid_fire/dreadBullet/lightning

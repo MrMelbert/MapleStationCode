@@ -169,6 +169,10 @@
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'
 	icon_state = "rl_coil_impact"
 
+/obj/projectile/bullet/coil/red_lightning/generate_hitscan_tracers(cleanup = TRUE, duration = 2 SECONDS, impacting = TRUE)
+	duration = 2 SECONDS
+	. = ..()
+
 /obj/projectile/bullet/godslayer
 	name = "annihilator round"
 	icon = 'maplestation_modules/story_content/deepred_warfare/icons/projectiles.dmi'

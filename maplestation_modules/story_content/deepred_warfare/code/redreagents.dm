@@ -74,7 +74,8 @@
 
 /datum/reagent/darkplasma/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
 	. = ..()
-	if(affected_mob.damage_random_bodypart(10*REM*seconds_per_tick))
+	if(affected_mob.damage_random_bodypart(10*REM*seconds_per_tick)) // Health rework compatibility.
+	// if(affected_mob.take_bodypart_damage(10*REM*seconds_per_tick, 0)) // Original code.
 		return UPDATE_MOB_HEALTH
 
 	if(affected_mob?.mana_pool)
