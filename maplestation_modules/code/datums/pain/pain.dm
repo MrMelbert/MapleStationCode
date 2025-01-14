@@ -28,7 +28,7 @@
 	/// Lazy Assoc list [zones] to [references to bodyparts], all the body parts we're tracking
 	VAR_PRIVATE/list/body_zones
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
-	VAR_FINAL/natural_pain_decay = -1
+	VAR_FINAL/natural_pain_decay = -0.5
 	/// The base amount of pain decay received.
 	VAR_FINAL/base_pain_decay
 	/// Amount of traumatic shock building up from higher levels of pain
@@ -295,7 +295,7 @@
 	if(traumatic_shock <= 0)
 		parent.remove_consciousness_modifier(PAINSHOCK)
 	else
-		parent.add_consciousness_modifier(PAINSHOCK, -0.4 * traumatic_shock)
+		parent.add_consciousness_modifier(PAINSHOCK, -0.33 * traumatic_shock)
 	// Soft crit
 	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
@@ -513,9 +513,9 @@
 	if(parent.health > 0)
 		shock_mod *= 0.25
 	if(parent.health <= parent.maxHealth * -2 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_BAD))
-		shock_mod *= 1.5
+		shock_mod *= 2
 	if(parent.health <= parent.maxHealth * -4 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_SURVIVE))
-		shock_mod *= 2 // stacks with above
+		shock_mod *= 3 // stacks with above
 	var/curr_pain = get_total_pain()
 	if(curr_pain < 25)
 		parent.adjust_traumatic_shock(-3 * seconds_per_tick)
