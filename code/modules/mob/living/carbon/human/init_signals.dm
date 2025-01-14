@@ -3,6 +3,7 @@
 
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_UNKNOWN_APPEARANCE), SIGNAL_REMOVETRAIT(TRAIT_UNKNOWN_APPEARANCE)), PROC_REF(update_ID_card))
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_DWARF), SIGNAL_REMOVETRAIT(TRAIT_DWARF)), PROC_REF(on_dwarf_trait))
+	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_TOO_TALL), SIGNAL_REMOVETRAIT(TRAIT_TOO_TALL)), PROC_REF(on_tootall_trait))
 
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_FAT), SIGNAL_REMOVETRAIT(TRAIT_FAT)), PROC_REF(on_fat))
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_NOHUNGER), SIGNAL_REMOVETRAIT(TRAIT_NOHUNGER)), PROC_REF(on_nohunger))
@@ -15,17 +16,36 @@
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_INVISIBLE_MAN), SIGNAL_REMOVETRAIT(TRAIT_INVISIBLE_MAN)), PROC_REF(invisible_man_toggle))
 	RegisterSignals(src, list(SIGNAL_ADDTRAIT(TRAIT_DISFIGURED), SIGNAL_REMOVETRAIT(TRAIT_DISFIGURED)), PROC_REF(update_visible_name))
 
-/// Gaining or losing [TRAIT_DWARF] updates our height
+/// Gaining or losing [TRAIT_DWARF] updates our height and grants passtable
 /mob/living/carbon/human/proc/on_dwarf_trait(datum/source)
 	SIGNAL_HANDLER
 
-	// We need to regenerate everything for height
-	regenerate_icons()
+	update_mob_height()
 	// Toggle passtable
 	if(HAS_TRAIT(src, TRAIT_DWARF))
 		passtable_on(src, TRAIT_DWARF)
 	else
 		passtable_off(src, TRAIT_DWARF)
+
+/// Gaining or losing [TRAIT_TOO_TALL] updates our height
+/mob/living/carbon/human/proc/on_tootall_trait(datum/source)
+	SIGNAL_HANDLER
+	update_mob_height()
+
+///From compose_message(). Snowflake code converted into its own signal proc
+/mob/living/carbon/human/proc/get_name_part(datum/source, list/stored_name, visible_name)
+	SIGNAL_HANDLER
+	/**
+	 * For if the message can be seen but not heard, shows our visible identity (like when using sign language)
+	 * Also used by hallucinations, so it doesn't give source's identity away.
+	 */
+	if(visible_name)
+		stored_name[NAME_PART_INDEX] = get_visible_name()
+		return
+	var/voice_name = GetVoice()
+	if(name != voice_name)
+		voice_name += " (as [get_id_name("Unknown")])"
+	stored_name[NAME_PART_INDEX] = voice_name
 
 /mob/living/carbon/human/proc/on_fat(datum/source)
 	SIGNAL_HANDLER
