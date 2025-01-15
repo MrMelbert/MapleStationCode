@@ -33,7 +33,7 @@
 			if (xp_prog_to_level)//is it even possible to level up?
 				xp_req_to_level = SKILL_EXP_LIST[lvl_num+1] - SKILL_EXP_LIST[lvl_num]
 			var/exp_percent = exp / SKILL_EXP_LIST[SKILL_LEVEL_LEGENDARY]
-			.["skills"] += list(list("playername" = targetmind.current, "path" = type, "name" = S.name, "desc" = S.desc, "lvlnum" = lvl_num, "lvl" = lvl_name, "exp" = exp, "exp_prog" = xp_req_to_level - xp_prog_to_level, "exp_req" = xp_req_to_level, "exp_percent" = exp_percent, "max_exp" = SKILL_EXP_LIST[length(SKILL_EXP_LIST)]))
+			.["skills"] += list(list("playername" = targetmind.current, "path" = type, "name" = S.name, "desc" = S.blurb, "lvlnum" = lvl_num, "lvl" = lvl_name, "exp" = exp, "exp_prog" = xp_req_to_level - xp_prog_to_level, "exp_req" = xp_req_to_level, "exp_percent" = exp_percent, "max_exp" = SKILL_EXP_LIST[length(SKILL_EXP_LIST)]))
 
 /datum/skill_panel/ui_act(action, params)
 	. = ..()

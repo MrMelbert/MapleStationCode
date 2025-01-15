@@ -95,7 +95,9 @@
 
 	var/implement_speed_mod = 1
 	if(implement_type) //this means it isn't a require hand or any item step.
-		implement_speed_mod = implements[implement_type] / 100.0
+		implement_speed_mod = (implements[implement_type] + user.mind?.get_skill_modifier(/datum/skill/surgery, SKILL_VALUE_MODIFIER)) / 100.0
+
+	speed_mod *= (user.mind?.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER) || 1)
 
 	speed_mod /= (get_location_modifier(target) * (1 + surgery.speed_modifier) * implement_speed_mod) * target.mob_surgery_speed_mod
 	var/modded_time = time * speed_mod
@@ -115,6 +117,8 @@
 		if((prob(100-fail_prob) || (iscyborg(user) && !silicons_obey_prob)) && chem_check_result && !try_to_fail)
 
 			if(success(user, target, target_zone, tool, surgery))
+				if(target.mind && !iscyborg(user)) // by default, you only gain surgery xp for operating on players. no monkey grinding
+					user.mind?.adjust_experience(/datum/skill/surgery, time * 0.5) // 1 xp per 2 second of surgery - 50 xp for brain surgery
 				play_success_sound(user, target, target_zone, tool, surgery)
 				advance = TRUE
 		else

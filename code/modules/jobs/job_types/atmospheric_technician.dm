@@ -38,6 +38,10 @@
 	job_flags = STATION_JOB_FLAGS
 	rpg_title = "Aeromancer"
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/outfit/job/atmos
 	name = "Atmospheric Technician"
 	jobtype = /datum/job/atmospheric_technician

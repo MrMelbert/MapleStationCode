@@ -5,13 +5,25 @@
 /datum/skill/fishing
 	name = "Fishing"
 	title = "Fisher"
-	desc = "How empty and alone you are on this barren Earth."
-	modifiers = list(SKILL_VALUE_MODIFIER = list(1, 1, 0, -1, -2, -4, -6))
+	blurb = "How empty and alone you are on this barren Earth."
+	earned_by = "attempting a fishing challenge"
+	grants_you = "reduced difficulty in fishing challenges"
+	modifiers = list(
+		SKILL_VALUE_MODIFIER = list(
+			SKILL_LEVEL_NONE = 1,
+			SKILL_LEVEL_NOVICE = 1,
+			SKILL_LEVEL_APPRENTICE = 0,
+			SKILL_LEVEL_JOURNEYMAN = -1,
+			SKILL_LEVEL_EXPERT = -2,
+			SKILL_LEVEL_MASTER = -4,
+			SKILL_LEVEL_LEGENDARY = -6,
+		),
+	)
 	skill_item_path = /obj/item/clothing/head/soft/fishing_hat
 
 /datum/skill/fishing/New()
 	. = ..()
-	levelUpMessages[SKILL_LEVEL_MASTER] = span_nicegreen("After lots of practice, I've begun to truly understand the surprising depth behind [name]. As a master [title], I can take an easier guess of what I'm trying to catch now.")
+	level_up_messages[SKILL_LEVEL_MASTER] = span_nicegreen("After lots of practice, I've begun to truly understand the surprising depth behind [name]. As a master [title], I can take an easier guess of what I'm trying to catch now.")
 
 /datum/skill/fishing/level_gained(datum/mind/mind, new_level, old_level, silent)
 	. = ..()

@@ -37,6 +37,9 @@
 	rpg_title = "Alchemist"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/chemist
 	name = "Chemist"

@@ -33,6 +33,10 @@
 	rpg_title = "Necromancer"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/surgery = SKILL_LEVEL_JOURNEYMAN,
+	)
 
 /datum/job/roboticist/New()
 	. = ..()

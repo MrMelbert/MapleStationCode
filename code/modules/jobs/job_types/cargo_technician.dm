@@ -35,6 +35,9 @@
 	rpg_title = "Merchantman"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/cargo_tech
 	name = "Cargo Technician"

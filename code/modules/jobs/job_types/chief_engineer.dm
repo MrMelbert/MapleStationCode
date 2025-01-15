@@ -48,6 +48,9 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_MASTER,
+	)
 
 /datum/job/chief_engineer/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()

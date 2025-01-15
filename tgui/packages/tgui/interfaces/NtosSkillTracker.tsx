@@ -1,3 +1,4 @@
+import { BooleanLike } from '../../common/react';
 import { useBackend } from '../backend';
 import {
   AnimatedNumber,
@@ -9,16 +10,52 @@ import {
 } from '../components';
 import { NtosWindow } from '../layouts';
 
-export const NtosSkillTracker = (props) => {
-  const { act, data } = useBackend();
-  const { skills = {} } = data;
+type Data = {
+  skills: Skill[];
+};
+
+type Skill = {
+  name: string;
+  title: string;
+  blurb: string;
+  earned_by?: string;
+  grants_you?: string;
+  higher_levels_grant_you?: string;
+  lvl_name: string;
+  progress_percent: number;
+  overall_percent: number;
+  reward: BooleanLike;
+};
+
+export const NtosSkillTracker = () => {
+  const { act, data } = useBackend<Data>();
+  const { skills } = data;
+
   return (
     <NtosWindow width={500} height={600}>
       <NtosWindow.Content scrollable>
         <Section title="Skill Tracker">
           {skills.map((skill, idx) => (
             <Section key={idx} level={2} title={skill.name}>
-              <BlockQuote>{skill.desc}</BlockQuote>
+              <BlockQuote>
+                <i>{skill.blurb}</i>
+              </BlockQuote>
+              {!!skill.earned_by && (
+                <BlockQuote>
+                  {'>'} <b>Earned by</b> {skill.earned_by}.
+                </BlockQuote>
+              )}
+              {!!skill.grants_you && (
+                <BlockQuote>
+                  {'>'} <b>Grants you</b> {skill.grants_you}.
+                </BlockQuote>
+              )}
+              {!!skill.higher_levels_grant_you && (
+                <BlockQuote>
+                  {'>'} <b>At higher levels, you gain</b>{' '}
+                  {skill.higher_levels_grant_you}.
+                </BlockQuote>
+              )}
               <Section>
                 <Table>
                   <Table.Row header>

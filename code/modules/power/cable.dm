@@ -181,7 +181,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 	if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
 		return
 	if(W.tool_behaviour == TOOL_WIRECUTTER)
-		if (shock(user, 50))
+		if (shock(user, 50 - user.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER)))
 			return
 		user.visible_message(span_notice("[user] cuts the cable."), span_notice("You cut the cable."))
 		investigate_log("was cut by [key_name(usr)] in [AREACOORD(src)]", INVESTIGATE_WIRES)
@@ -190,7 +190,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 	else if(W.tool_behaviour == TOOL_MULTITOOL)
 		to_chat(user, get_power_info())
-		shock(user, 5, 0.2)
+		shock(user, 5 - user.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER), 0.2)
 
 	add_fingerprint(user)
 
@@ -624,7 +624,7 @@ GLOBAL_LIST_INIT(wire_node_generating_types, typecacheof(list(/obj/structure/gri
 
 	use(1)
 
-	if(C.shock(user, 50))
+	if(C.shock(user, 50 - user.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER)))
 		if(prob(50)) //fail
 			C.deconstruct()
 

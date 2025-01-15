@@ -47,4 +47,4 @@
 		if(WIRE_DISABLE)
 			A.disabled = !mend
 		if(WIRE_ZAP)
-			A.shock(usr, 50)
+			A.shock(usr, 50 - usr.mind?.get_skill_level(/datum/skill/electronics, SKILL_PROBS_MODIFIER))

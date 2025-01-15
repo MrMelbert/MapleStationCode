@@ -38,6 +38,9 @@
 	rpg_title = "Corpse Runner"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/surgery = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/outfit/job/paramedic
 	name = "Paramedic"

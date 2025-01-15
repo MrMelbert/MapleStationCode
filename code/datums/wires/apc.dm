@@ -48,12 +48,12 @@
 				A.shorted = FALSE
 			else
 				A.shorted = TRUE
-			A.shock(usr, 50)
+			A.shock(usr, 50 - usr.mind?.get_skill_level(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_AI) // Disable AI control.
 			A.aidisabled = !mend
 
 /datum/wires/apc/can_reveal_wires(mob/user)
-	if(HAS_TRAIT(user, TRAIT_KNOW_ENGI_WIRES))
+	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ENGI_WIRES))
 		return TRUE
 
 	return ..()
