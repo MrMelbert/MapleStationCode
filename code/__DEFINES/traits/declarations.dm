@@ -222,7 +222,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 ///Added to mob or mind, changes the icons of the fish shown in the minigame UI depending on the possible reward.
 #define TRAIT_REVEAL_FISH "reveal_fish"
 
-// Trait that says you're shaded by something, used on shadowpeople to prevent DoT from light
+/// Trait that says you're shaded by something (ie partially in the dark)
 #define TRAIT_SHADED "shaded"
 
 /// Added to a mob, allows that mob to experience flavour-based moodlets when examining food

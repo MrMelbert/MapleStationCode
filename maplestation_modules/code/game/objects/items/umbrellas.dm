@@ -98,9 +98,12 @@
 /obj/item/umbrella/pickup(mob/user)
 	. = ..()
 	RegisterSignal(user, COMSIG_ATOM_DIR_CHANGE, PROC_REF(on_dir_change))
+	if(open)
+		ADD_TRAIT(user, TRAIT_SHADED, UMBRELLA_TRAIT)
 
 /obj/item/umbrella/dropped(mob/user, silent)
 	. = ..()
+	REMOVE_TRAIT(user, TRAIT_SHADED, UMBRELLA_TRAIT)
 	UnregisterSignal(user, COMSIG_ATOM_DIR_CHANGE)
 
 /obj/item/umbrella/proc/on_dir_change(mob/living/carbon/owner, olddir, newdir)
