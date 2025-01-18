@@ -40,6 +40,10 @@
 	rpg_title = "Guard"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+	)
 
 GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, SEC_DEPT_SCIENCE, SEC_DEPT_SUPPLY))
 

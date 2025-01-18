@@ -105,6 +105,7 @@
 	if(!hitting_projectile.is_hostile_projectile())
 		return BULLET_ACT_HIT
 
+	hitting_projectile.award_firearms_exp(isnull(mind) ? SKILL_LEVEL_JOURNEYMAN : SKILL_LEVEL_LEGENDARY)
 	// we need a second, silent armor check to actually know how much to reduce damage taken, as opposed to
 	// on [/atom/proc/bullet_act] where it's just to pass it to the projectile's on_hit().
 	var/armor_check = check_projectile_armor(def_zone, hitting_projectile, is_silent = TRUE)

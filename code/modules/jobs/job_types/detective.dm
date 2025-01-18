@@ -44,6 +44,10 @@
 
 	job_tone = "objection"
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_EXPERT,
+		/datum/skill/first_aid = SKILL_LEVEL_NOVICE,
+	)
 
 /datum/outfit/job/detective
 	name = "Detective"

@@ -40,6 +40,7 @@
 
 	base_skills = list(
 		/datum/skill/electronics = SKILL_LEVEL_EXPERT,
+		/datum/skill/mechanics = SKILL_LEVEL_EXPERT,
 	)
 
 /datum/outfit/job/engineer

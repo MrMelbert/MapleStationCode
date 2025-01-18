@@ -21,11 +21,6 @@
 	. |= bullethole_overlays
 
 /obj/item/target/bullet_act(obj/projectile/hitting_projectile, def_zone, piercing_hit = FALSE)
-	if(prob(25))
-		return ..() // RNG change to just not leave a mark, like walls
-	if(length(overlays) > 35)
-		return ..() // Too many bullets, we're done here
-
 	// Projectiles which do not deal damage will not leave dent / scorch mark graphics.
 	// However we snowflake some projectiles to leave them anyway, because they're appropriate.
 	var/static/list/always_leave_marks
@@ -40,6 +35,11 @@
 	var/is_generic_projectile = !is_type_in_typecache(hitting_projectile, always_leave_marks)
 	if(is_generic_projectile && (is_invalid_damage || is_safe))
 		return ..() // Don't bother unless it's real shit
+	hitting_projectile.award_firearms_exp(SKILL_LEVEL_JOURNEYMAN)
+	if(prob(25))
+		return ..() // RNG change to just not leave a mark, like walls
+	if(length(overlays) > 35)
+		return ..() // Too many bullets, we're done here
 
 	var/p_x = hitting_projectile.p_x + pick(0, 0, 0, 0, 0, -1, 1) // really ugly way of coding "sometimes offset p_x!"
 	var/p_y = hitting_projectile.p_y + pick(0, 0, 0, 0, 0, -1, 1)

@@ -56,7 +56,7 @@
 	var/obj/machinery/airalarm/A = holder
 	switch(wire)
 		if(WIRE_POWER) // Short out forever.
-			A.shock(usr, 50 - usr.mind?.get_skill_level(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
+			A.shock(usr, 50 - usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 			A.shorted = !mend
 			A.update_appearance()
 		if(WIRE_IDSCAN)

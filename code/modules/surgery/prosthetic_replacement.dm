@@ -108,6 +108,9 @@
 			span_notice("[user] successfully replaces [target]'s [parse_zone(target_zone)]!"),
 		)
 		display_pain(target, "You feel synthetic sensation wash from your [parse_zone(target_zone)], which you can feel again!", TRUE, target_zone = target_zone) // NON-MODULE CHANGE
+		target.cause_pain(bodypart_to_attach.body_zone, -1 * user.mind?.get_skill_modifier(/datum/skill/cybernetics, SKILL_VALUE_MODIFIER))
+		if(IS_ROBOTIC_LIMB(bodypart_to_attach))
+			user.mind?.adjust_experience(/datum/skill/cybernetics, 100)
 		return
 	else
 		var/obj/item/bodypart/bodypart_to_attach = target.newBodyPart(target_zone, FALSE, FALSE)
@@ -122,6 +125,7 @@
 			span_notice("[user] finishes the attachment procedure!"),
 		)
 		display_pain(target, "You feel a strange sensation from your new [parse_zone(target_zone)].", TRUE, target_zone = target_zone) // NON-MODULE CHANGE
+		user.mind?.adjust_experience(/datum/skill/cybernetics, 200)
 		if(istype(tool, /obj/item/chainsaw))
 			qdel(tool)
 			var/obj/item/chainsaw/mounted_chainsaw/new_arm = new(target)

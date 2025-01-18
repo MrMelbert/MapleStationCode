@@ -33,6 +33,7 @@
 
 	base_skills = list(
 		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/gaming = SKILL_LEVEL_APPRENTICE,
 	)
 
 /datum/outfit/job/bitrunner

@@ -17,3 +17,4 @@
 		),
 	)
 	skill_item_path = /obj/item/clothing/neck/cloak/skill_reward/cleaning
+	innate_skill = TRUE

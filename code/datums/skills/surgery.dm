@@ -2,7 +2,8 @@
 	name = "Surgery"
 	title = "Surgeon"
 	blurb = "Your capability to split someone's brain in two with a pen."
-	earned_by = "completing surgeries on members of the crew, or autopsies on any cadavers"
+	earned_by = "completing surgeries, though apprentices and above will only gain experience from operating on crewmembers. \
+		Autopsies will also give training regardless of skill level (with a bonus for non-human, non-monkey species)"
 	grants_you = "an improved proficiency with surgical tools"
 	higher_levels_grant_you = "the ability to perform more complex surgeries with worse (or improvised) tools"
 	modifiers = list(
@@ -29,3 +30,4 @@
 			SKILL_LEVEL_LEGENDARY = 25,
 		),
 	)
+	innate_skill = TRUE

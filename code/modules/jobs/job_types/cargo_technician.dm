@@ -37,6 +37,8 @@
 
 	base_skills = list(
 		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/firearms = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
 	)
 
 /datum/outfit/job/cargo_tech

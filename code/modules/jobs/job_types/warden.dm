@@ -42,6 +42,11 @@
 	rpg_title = "Jailor"
 	job_flags = STATION_JOB_FLAGS | JOB_BOLD_SELECT_TEXT
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_EXPERT,
+		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
+	)
+
 /datum/outfit/job/warden
 	name = "Warden"
 	jobtype = /datum/job/warden

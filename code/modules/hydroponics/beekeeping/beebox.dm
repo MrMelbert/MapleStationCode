@@ -13,14 +13,16 @@
 
 
 /mob/living/carbon/human/bee_friendly()
-	if(dna && dna.species && dna.species.id == SPECIES_PODPERSON) //bees pollinate plants, duh.
-		return 1
-	if (wear_suit && head && isclothing(wear_suit) && isclothing(head))
+	if(ispodperson(src)) //bees pollinate plants, duh.
+		return TRUE
+	if(mind?.get_skill_level(/datum/skill/botany) >= SKILL_LEVEL_LEGENDARY)
+		return TRUE
+	if (isclothing(wear_suit) && isclothing(head))
 		var/obj/item/clothing/CS = wear_suit
 		var/obj/item/clothing/CH = head
 		if (CS.clothing_flags & CH.clothing_flags & THICKMATERIAL)
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 
 /obj/structure/beebox

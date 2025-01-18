@@ -36,6 +36,12 @@
 
 	job_tone = "holy"
 
+	base_skills = list(
+		/datum/skill/firearms = SKILL_LEVEL_APPRENTICE, // chaplain gun
+		/datum/skill/first_aid = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/cybernetics = SKILL_LEVEL_APPRENTICE, // robot sect
+		/datum/skill/botany = SKILL_LEVEL_APPRENTICE,
+	)
 
 /datum/job/chaplain/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()

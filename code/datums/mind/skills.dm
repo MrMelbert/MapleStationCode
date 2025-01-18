@@ -78,8 +78,9 @@
 	if(!length(shown_skills))
 		to_chat(user, span_notice("You don't seem to have any particularly outstanding skills."))
 		return
-	var/msg = "[span_info("<em>Your skills:</em>")]<br><span class='notice'>"
+	var/list/skill_strings = list()
 	for(var/datum/skill/shown_skill as anything in shown_skills)
-		msg += "&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]<br>"
-	msg += "</span>"
-	to_chat(user, examine_block(msg))
+		skill_strings += "&bull; [initial(shown_skill.name)] - [get_skill_level_name(shown_skill)]"
+
+	sortTim(skill_strings, GLOBAL_PROC_REF(cmp_text_asc))
+	to_chat(user, examine_block("[span_info("<em>Your skills:</em>")]<br>[span_notice(jointext(skill_strings, "<br>"))]"))

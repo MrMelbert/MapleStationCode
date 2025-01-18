@@ -15,6 +15,7 @@
 			SKILL_LEVEL_LEGENDARY = 50,
 		),
 	)
+	innate_skill = TRUE
 
 /datum/skill/electronics/level_gained(datum/mind/mind, new_level, old_level, silent)
 	. = ..()
@@ -23,5 +24,5 @@
 
 /datum/skill/electronics/level_lost(datum/mind/mind, new_level, old_level, silent)
 	. = ..()
-	if(old_level >= SKILL_LEVEL_MASTER)
+	if(old_level >= SKILL_LEVEL_MASTER && new_level < SKILL_LEVEL_MASTER)
 		REMOVE_TRAIT(mind, TRAIT_KNOW_ENGI_WIRES, type)

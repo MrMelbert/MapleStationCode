@@ -121,7 +121,8 @@
 			. += span_notice("- [reagent_gene.get_name()] -")
 
 /// Copy all the variables from one seed to a new instance of the same seed and return it.
-/obj/item/seeds/proc/Copy()
+/obj/item/seeds/proc/Copy() as /obj/item/seeds
+	RETURN_TYPE(/obj/item/seeds)
 	var/obj/item/seeds/copy_seed = new type(null, TRUE)
 	// Copy all the stats
 	copy_seed.lifespan = lifespan
@@ -247,8 +248,14 @@
 			return
 		t_amount++
 		product_name = parent.myseed.plantname
+
 	if(product_count >= 1)
 		SSblackbox.record_feedback("tally", "food_harvested", product_count, product_name)
+		user.mind?.adjust_experience(/datum/skill/botany, 2 * rarity * (yield / MAX_PLANT_YIELD) * (potency / MAX_PLANT_POTENCY))
+
+	else if(product_count == 0 && user.mind?.get_skill_level(/datum/skill/botany) >= SKILL_LEVEL_MASTER)
+		Copy().forceMove(output_loc)
+
 	parent.update_tray(user, product_count)
 
 	return result

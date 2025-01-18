@@ -22,7 +22,7 @@
 		to_chat(src, span_warning("[target.name] is dead!"))
 		return
 
-	var/cpr_certified = HAS_TRAIT(src, TRAIT_CPR_CERTIFIED)
+	var/cpr_certified = HAS_MIND_TRAIT(src, TRAIT_CPR_CERTIFIED)
 	if(!panicking && target.stat != CONSCIOUS && beat >= BEATS_PER_CPR_CYCLE + 1)
 		to_chat(src, span_warning("[target] still isn't up[cpr_certified ? " - you pick up the pace." : "! You try harder!"]"))
 		panicking = TRUE

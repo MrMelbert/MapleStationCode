@@ -37,6 +37,12 @@ Assistant
 	rpg_title = "Lout"
 	config_tag = "ASSISTANT"
 
+	base_skills = list(
+		/datum/skill/electronics = SKILL_LEVEL_NOVICE,
+		/datum/skill/mechanics = SKILL_LEVEL_NOVICE,
+		/datum/skill/botany = SKILL_LEVEL_NOVICE,
+	)
+
 /datum/job/assistant/get_outfit(consistent)
 	if(consistent)
 		return /datum/outfit/job/assistant/always_grey

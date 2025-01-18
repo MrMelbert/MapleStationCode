@@ -48,6 +48,10 @@
 	rpg_title = "Tavern Chef"
 	job_flags = STATION_JOB_FLAGS
 
+	base_skills = list(
+		/datum/skill/botany = SKILL_LEVEL_JOURNEYMAN,
+	)
+
 /datum/job/cook/award_service(client/winner, award)
 	winner.give_award(award, winner.mob)
 
