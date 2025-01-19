@@ -30,7 +30,7 @@
 		CRASH("Invalid outfit passed to equip_outfit_and_loadout ([outfit])")
 
 	var/list/preference_list = get_active_loadout(preference_source)
-	var/list/loadout_datums = loadout_list_to_datums(preference_list)
+	var/list/loadout_datums = loadout_list_to_datums(preference_list, skip_disabled = TRUE)
 	// Slap our things into the outfit given
 	for(var/datum/loadout_item/item as anything in loadout_datums)
 		item.insert_path_into_outfit(
@@ -62,20 +62,23 @@
  * Takes a list of paths (such as a loadout list)
  * and returns a list of their singleton loadout item datums
  *
- * loadout_list - the list being checked
+ * * loadout_list - the list being checked
+ * * skip_disabled - whether to skip disabled items  (like holiday items during non-holiday seasons)
  *
  * Returns a list of singleton datums
  */
-/proc/loadout_list_to_datums(list/loadout_list) as /list
+/proc/loadout_list_to_datums(list/loadout_list, skip_disabled = FALSE) as /list
 	var/list/datums = list()
 
 	if(!length(GLOB.all_loadout_datums))
 		CRASH("No loadout datums in the global loadout list!")
 
 	for(var/path in loadout_list)
-		var/actual_datum = GLOB.all_loadout_datums[path]
-		if(!istype(actual_datum, /datum/loadout_item))
+		var/datum/loadout_item/actual_datum = GLOB.all_loadout_datums[path]
+		if(!istype(actual_datum))
 			stack_trace("Could not find ([path]) loadout item in the global list of loadout datums!")
+			continue
+		if(skip_disabled && actual_datum.is_disabled())
 			continue
 
 		datums += actual_datum
