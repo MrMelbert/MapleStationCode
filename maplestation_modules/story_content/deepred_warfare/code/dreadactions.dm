@@ -27,6 +27,9 @@
 		ownercast.energy_level = 0
 		ownercast.update_base_stats()
 		StartCooldown()
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(1, holder = owner, location = owner.loc)
+		smoke.start()
 		playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 		ownercast.visible_message(span_warning("[ownercast] slows down to a crawl..."))
 		return TRUE
@@ -39,6 +42,9 @@
 	ownercast.energy_level = 1
 	ownercast.update_base_stats()
 	StartCooldown()
+	var/datum/effect_system/fluid_spread/smoke/smoke = new
+	smoke.set_up(1, holder = owner, location = owner.loc)
+	smoke.start()
 	playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
 	ownercast.visible_message(span_boldwarning("[ownercast] unfolds their form and speeds up!"))
 	ownercast.apply_damage(-200) // Second phase moment.
@@ -77,6 +83,9 @@
 			ownercast.energy_level = 0
 			ownercast.update_base_stats()
 			StartCooldown()
+			var/datum/effect_system/fluid_spread/smoke/smoke = new
+			smoke.set_up(1, holder = owner, location = owner.loc)
+			smoke.start()
 			playsound(ownercast, 'sound/machines/clockcult/steam_whoosh.ogg', 120)
 			ownercast.visible_message(span_warning("[ownercast] slows down to a crawl..."))
 			return TRUE
@@ -89,6 +98,9 @@
 		ownercast.energy_level = 1
 		ownercast.update_base_stats()
 		StartCooldown()
+		var/datum/effect_system/fluid_spread/smoke/smoke = new
+		smoke.set_up(1, holder = owner, location = owner.loc)
+		smoke.start()
 		playsound(ownercast, 'sound/mecha/hydraulic.ogg', 120)
 		ownercast.visible_message(span_warning("[ownercast] cools down..."))
 		return TRUE
@@ -97,6 +109,9 @@
 	ownercast.energy_level = 2
 	ownercast.update_base_stats()
 	StartCooldown()
+	var/datum/effect_system/fluid_spread/smoke/smoke = new
+	smoke.set_up(1, holder = owner, location = owner.loc)
+	smoke.start()
 	playsound(ownercast, 'sound/mecha/skyfall_power_up.ogg', 120)
 	ownercast.visible_message(span_alertwarning("[ownercast] heats up and crackles with red lightning!"))
 	ownercast.apply_damage(-200) // Third phase moment.

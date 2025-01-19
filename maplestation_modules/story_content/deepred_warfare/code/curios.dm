@@ -189,11 +189,17 @@
 /obj/item/snowglobe/extra/moon
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of Earth's moon. You didn't know it snowed on the Moon."
 
+/obj/item/snowglobe/extra/mars
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of Mars from the Sol system. You didn't know it snowed on Mars."
+
 /obj/item/snowglobe/extra/marisa
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a monochromatic, ordinary witch soaring through snowy clouds on their broom."
 
 /obj/item/snowglobe/extra/lunar
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a vast cityscape, built on the far side of the Moon."
+
+/obj/item/snowglobe/extra/needlecastle
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a large palace, suspended in the sky upside down."
 
 /obj/item/snowglobe/extra/astral
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a starstruck wasteland, infected by an otherworldly blight."
@@ -201,8 +207,14 @@
 /obj/item/snowglobe/extra/dog
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a titanic armoured serpent, coiled around a rift in time and space."
 
+/obj/item/snowglobe/extra/goozma
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a massive, gooey, tentacled creature, floating in a monsoon of slime."
+
 /obj/item/snowglobe/extra/arbiter
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a person wrapped in a pitch black cloak with golden, hexagonal highlights. They stand in the centre of a ruined cityscape."
 
 /obj/item/snowglobe/extra/limbus
 	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a strange, train-like bus. It has bright text written on its side, but you can't quite make it out."
+
+/obj/item/snowglobe/extra/silence
+	desc = "A small glass globe filled with a miniature winter scene. Inside is a miniature model of a man in a black suit and black gloves, with a featureless mask."
