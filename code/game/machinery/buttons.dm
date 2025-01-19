@@ -95,6 +95,62 @@
 	if(!(machine_stat & (NOPOWER|BROKEN)) && !panel_open)
 		. += emissive_appearance(icon, "[base_icon_state]-light-mask", src, alpha = src.alpha)
 
+/obj/machinery/button/on_set_panel_open(old_value)
+	if(panel_open) // Only allow renaming while the panel is open
+		obj_flags |= UNIQUE_RENAME
+	else
+		obj_flags &= ~UNIQUE_RENAME
+
+
+/**
+ * INTERACTION
+ */
+
+/obj/machinery/button/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!panel_open)
+		return NONE
+
+	if(isassembly(tool))
+		return assembly_act(user, tool)
+	else if(istype(tool, /obj/item/electronics/airlock))
+		return airlock_electronics_act(user, tool)
+
+/obj/machinery/button/proc/assembly_act(mob/living/user, obj/item/assembly/new_device)
+	if(device)
+		to_chat(user, span_warning("The button already contains a device!"))
+		return ITEM_INTERACT_BLOCKING
+	if(!(new_device.assembly_behavior & ASSEMBLY_FUNCTIONAL_OUTPUT))
+		to_chat(user, span_warning("\The [new_device] won't really do anything meaningful inside of the button..."))
+		return ITEM_INTERACT_BLOCKING
+	if(!user.transferItemToLoc(new_device, src, silent = FALSE))
+		to_chat(user, span_warning("\The [new_device] is stuck to you!"))
+		return ITEM_INTERACT_BLOCKING
+
+	device = new_device
+	SEND_SIGNAL(new_device, COMSIG_ASSEMBLY_ADDED_TO_BUTTON, src, user)
+	to_chat(user, span_notice("You add \the [new_device] to the button."))
+
+	update_appearance()
+	return ITEM_INTERACT_SUCCESS
+
+/obj/machinery/button/proc/airlock_electronics_act(mob/living/user, obj/item/electronics/airlock/new_board)
+	if(board)
+		to_chat(user, span_warning("The button already contains a board!"))
+		return ITEM_INTERACT_BLOCKING
+	if(!user.transferItemToLoc(new_board, src, silent = FALSE))
+		to_chat(user, span_warning("\The [new_board] is stuck to you!"))
+		return ITEM_INTERACT_BLOCKING
+
+	board = new_board
+	if(board.one_access)
+		req_one_access = board.accesses
+	else
+		req_access = board.accesses
+	to_chat(user, span_notice("You add \the [new_board] to the button."))
+
+	update_appearance()
+	return ITEM_INTERACT_SUCCESS
+
 /obj/machinery/button/screwdriver_act(mob/living/user, obj/item/tool)
 	if(panel_open || allowed(user))
 		default_deconstruction_screwdriver(user, "[base_icon_state][skin]-open", "[base_icon_state][skin]", tool)
