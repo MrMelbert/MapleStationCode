@@ -296,6 +296,7 @@
 		)
 		statue.set_visuals(owner.appearance)
 		statue.forceMove(get_turf(owner))
+		SET_PLANE_EXPLICIT(statue, owner.plane, owner)
 		owner.forceMove(statue)
 		RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(human_left_statue))
 

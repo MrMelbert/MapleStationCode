@@ -122,3 +122,88 @@
 	sprint_regen_multiplier = new_sprint_regen
 	quirk_human.sprint_length_max *= new_sprint_length
 	quirk_human.sprint_regen_per_second *= new_sprint_regen
+
+#define RANDOM_INNATE_MUTATION "Random"
+
+/datum/quirk/innate_neutral_mutation
+	name = "Minorly Mutated"
+	desc = "You have some kind of minor mutation which is unaffected by Mutadone. \
+		Species without DNA are unaffected by this quirk."
+	icon = FA_ICON_DNA
+	value = 0
+	quirk_flags = QUIRK_HUMAN_ONLY
+	medical_record_text = "Patient has some kind of mutation untreatable by Mutadone."
+
+/datum/quirk/innate_neutral_mutation/add_unique(client/client_source)
+	. = ..()
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	if(!human_holder.can_mutate())
+		return
+
+	var/datum/preference/choiced/innate_neutral_mutation/mut_pref = GLOB.preference_entries[/datum/preference/choiced/innate_neutral_mutation]
+	var/mut_name = client_source?.prefs.read_preference(/datum/preference/choiced/innate_neutral_mutation) || RANDOM_INNATE_MUTATION
+	var/mut_type = mut_pref.mut_options[mut_name] || mut_pref.mut_options[pick(mut_pref.mut_options)]
+
+	var/datum/mutation/human/mut = new mut_type()
+	mut.mutadone_proof = TRUE
+	mut.instability = 0
+	mut.remove_on_aheal = FALSE
+	human_holder.dna.force_give(mut)
+
+	pass(mut_pref) // necessary for linters for some reason?
+
+/datum/quirk/innate_neutral_mutation/remove()
+	. = ..()
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	var/datum/preference/choiced/innate_neutral_mutation/mut_pref = GLOB.preference_entries[/datum/preference/choiced/innate_neutral_mutation]
+
+	for(var/datum/mutation/human/mut as anything in human_holder.dna?.mutations)
+		if(!mut.mutadone_proof || !mut_pref.mut_options[initial(mut.name)])
+			continue
+		human_holder.dna.force_lose(mut)
+
+	pass(mut_pref) // same
+
+/datum/quirk_constant_data/mutations
+	associated_typepath = /datum/quirk/innate_neutral_mutation
+	customization_options = list(/datum/preference/choiced/innate_neutral_mutation)
+
+/datum/preference/choiced/innate_neutral_mutation
+	category = PREFERENCE_CATEGORY_MANUALLY_RENDERED
+	savefile_key = "innate_neutral_mutation"
+	savefile_identifier = PREFERENCE_CHARACTER
+	can_randomize = FALSE
+	/// Options for mutations to pick from.
+	var/static/list/mut_options
+
+/datum/preference/choiced/innate_neutral_mutation/New()
+	. = ..()
+	if(!length(mut_options))
+		var/list/mutypes = list(
+			/datum/mutation/human/chav,
+			/datum/mutation/human/medieval,
+			/datum/mutation/human/nervousness,
+			/datum/mutation/human/swedish,
+			/datum/mutation/human/unintelligible,
+			/datum/mutation/human/wacky,
+		)
+		mut_options = list()
+		for(var/datum/mutation/human/mutype as anything in mutypes)
+			mut_options[initial(mutype.name)] = mutype
+
+/datum/preference/choiced/innate_neutral_mutation/create_default_value()
+	return RANDOM_INNATE_MUTATION
+
+/datum/preference/choiced/innate_neutral_mutation/init_possible_values()
+	return list(RANDOM_INNATE_MUTATION) + assoc_to_keys(mut_options)
+
+/datum/preference/choiced/innate_neutral_mutation/is_accessible(datum/preferences/preferences)
+	if(!..(preferences))
+		return FALSE
+
+	return /datum/quirk/innate_neutral_mutation::name in preferences.all_quirks
+
+/datum/preference/choiced/innate_neutral_mutation/apply_to_human(mob/living/carbon/human/target, value)
+	return
+
+#undef RANDOM_INNATE_MUTATION

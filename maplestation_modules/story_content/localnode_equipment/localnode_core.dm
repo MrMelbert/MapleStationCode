@@ -6,7 +6,7 @@
 
 /obj/item/localnode
 	name = "LocalNode#4248"
-	desc = "It looks like a basketball sized blue orb, however it looks like it had bits broken off with a hammer a few times before covering it with superglue and rolling it in a box of computer parts"
+	desc = "A strange blue orb, humming with alien power and smelling strongly of ozone"
 	icon = 'maplestation_modules/story_content/localnode_equipment/sprites/localnode.dmi'
 	icon_state = "localnode"
 	lefthand_file = 'maplestation_modules/story_content/localnode_equipment/sprites/localnode_inhand_lh.dmi'
