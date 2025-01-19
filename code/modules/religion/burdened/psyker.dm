@@ -120,7 +120,7 @@
 	to_chat(user, span_warning("[null_rod] turns into a gun!"))
 	user.emote("smile")
 	qdel(null_rod)
-	new /obj/item/gun/ballistic/revolver/chaplain(get_turf(religious_tool))
+	new /obj/item/gun/ballistic/revolver/chaplain(get_turf(religious_tool), TRUE)
 	return TRUE
 
 /obj/item/gun/ballistic/revolver/chaplain
@@ -134,8 +134,15 @@
 	custom_materials = null
 	actions_types = list(/datum/action/item_action/pray_refill)
 	projectile_damage_multiplier = 0.72 //it's exactly 18 force for normal bullets
+	unique_reskin = list(
+		"Default" = "lucky",
+		"Excommunicated" = "c38_peacemaker",
+		"Ascetic" = "c38_stainless",
+		"Tithe" = "c38_trim",
+		"Indulgence" = "c38_gold",
+	)
 	/// Needs burden level nine to refill.
-	var/needs_burden = TRUE
+	var/needs_burden = FALSE
 	/// List of all possible names and descriptions.
 	var/static/list/possible_names = list(
 		"Requiescat" = "May they rest in peace.",
@@ -171,9 +178,19 @@
 		"Lacytanga" = "Rules are written by the strong.",
 		"A10" = "The fist of God. Keep away from the terrible.",
 		"Lucky" = "Ain't that a kick in the head?",
+		"Shining Darkness" = "We can't expect God to do all the work.",
+		"Ace" = "Memento Mori.",
+		"Ambassador" = "There are two types of people in the world... those with guns, and those who dig. You dig.",
+		"Rapture" = "The end of the world.",
+		"54:17" = "No weapon formed against you shall prosper.",
+		"Divine Intervention" = "In God we trust - roll the dice.",
+		"Annabelle" = "Although they call me crazy, I care not, for thou art my helper, my strength, and my savior.",
+		"Lightbringer" = "Put your faith in the light!",
+		"Bishop" = "I commend you for your duty, and God's blessing go with you.",
+		"Vicar" = "Derived from the word latin word for 'substitute' - though this gun is the real deal.",
 	)
 
-/obj/item/gun/ballistic/revolver/chaplain/Initialize(mapload)
+/obj/item/gun/ballistic/revolver/chaplain/Initialize(mapload, burden_spawned = FALSE)
 	. = ..()
 	AddComponent(/datum/component/anti_magic, MAGIC_RESISTANCE|MAGIC_RESISTANCE_HOLY)
 	AddComponent(/datum/component/effect_remover, \
@@ -186,6 +203,9 @@
 	AddElement(/datum/element/bane, target_type = /mob/living/basic/revenant, damage_multiplier = 0, added_damage = 25)
 	name = pick(possible_names)
 	desc = possible_names[name]
+	if(burden_spawned)
+		needs_burden = TRUE
+		projectile_damage_multiplier = 1 // Full damage for the faithful
 
 /obj/item/gun/ballistic/revolver/chaplain/proc/on_cult_rune_removed(obj/effect/target, mob/living/user)
 	SIGNAL_HANDLER
@@ -202,6 +222,11 @@
 	name = "Habemus Papam"
 	desc = "I announce to you a great joy."
 
+/obj/item/gun/ballistic/revolver/chaplain/item_action_slot_check(slot, mob/user, datum/action/action)
+	if(istype(action, /datum/action/item_action/pray_refill))
+		return (slot & ITEM_SLOT_HANDS) && (user.mind?.holy_role)
+	return ..()
+
 /obj/item/gun/ballistic/revolver/chaplain/attack_self(mob/living/user)
 	pray_refill(user)
 
@@ -212,21 +237,50 @@
 
 	return ..()
 
+/obj/item/gun/ballistic/revolver/chaplain/equipped(mob/user, slot, initial)
+	. = ..()
+	if((slot & ITEM_SLOT_HANDS) && user.mind?.holy_role)
+		ADD_TRAIT(user, TRAIT_GUNFLIP, REF(src))
+
+/obj/item/gun/ballistic/revolver/chaplain/dropped(mob/user, silent)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_GUNFLIP, REF(src))
+
 /obj/item/gun/ballistic/revolver/chaplain/proc/pray_refill(mob/living/carbon/human/user)
 	if(DOING_INTERACTION_WITH_TARGET(user, src) || !istype(user))
 		return
-	var/datum/brain_trauma/special/burdened/burden = user.has_trauma_type(/datum/brain_trauma/special/burdened)
-	if(needs_burden && (!burden || burden.burden_level < 9))
-		to_chat(user, span_warning("You aren't burdened enough."))
+	if(needs_burden)
+		var/datum/brain_trauma/special/burdened/burden = user.has_trauma_type(/datum/brain_trauma/special/burdened)
+		if(!burden || burden.burden_level < 9)
+			to_chat(user, span_warning("You aren't burdened enough."))
+			return
+	else
+		if(!user.mind?.holy_role)
+			to_chat(user, span_warning("No one answers your prayers, for you are not holy enough."))
+			return
+	var/loaded_bullets = get_ammo(FALSE, FALSE)
+	if(loaded_bullets == magazine.max_ammo)
+		to_chat(user, span_warning("Your gun is full; begging for more is greedy."))
 		return
 	user.manual_emote("presses [user.p_their()] palms together...")
-	if(!do_after(user, 5 SECONDS, src))
-		balloon_alert(user, "interrupted!")
+	to_chat(user, span_green("You pray to [GLOB.deity] for more ammunition..."))
+	if(!do_after(user, (needs_burden ? 3 SECONDS : 5 SECONDS) * ((magazine.max_ammo - loaded_bullets) / magazine.max_ammo), src))
 		return
-	user.say("#Oh great [GLOB.deity], give me the ammunition I need!", forced = "ammo prayer")
+	for(var/obj/item/ammo_casing/round as anything in get_ammo_list())
+		if(!round.loaded_projectile)
+			round.forceMove(drop_location())
+			round.bounce_away(FALSE, 0 SECONDS)
 	magazine.top_off()
 	user.playsound_local(get_turf(src), 'sound/magic/magic_block_holy.ogg', 50, TRUE)
 	chamber_round()
+	SpinAnimation(4, 1)
+
+/obj/item/gun/ballistic/revolver/chaplain/before_firing(atom/target, mob/user)
+	var/obj/projectile/bullet/c38/holy/to_fire = chambered?.loaded_projectile
+	if(istype(to_fire) && needs_burden && user.mind?.holy_role)
+		to_fire.can_crit = TRUE
+		to_fire.ricochets_max = 2
+		to_fire.ricochet_chance = 50
 
 /datum/action/item_action/pray_refill
 	name = "Refill"
@@ -240,27 +294,27 @@
 
 /obj/item/ammo_casing/c38/holy
 	name = "lucky .38 bullet casing"
-	desc = "A lucky .38 bullet casing. You feel lucky just holding it."
+	desc = "A .38 bullet casing. You feel lucky just holding it."
 	caliber = CALIBER_38
 	projectile_type = /obj/projectile/bullet/c38/holy
 	custom_materials = null
 
 /obj/projectile/bullet/c38/holy
 	name = "lucky .38 bullet"
-	ricochets_max = 2
-	ricochet_chance = 50
-	ricochet_auto_aim_angle = 10
-	ricochet_auto_aim_range = 3
+	ricochets_max = 1
+	ricochet_chance = 20
 	wound_bonus = -10
 	embedding = null
+	/// Whether we can do the crit effect
+	var/can_crit = FALSE
 
 /obj/projectile/bullet/c38/holy/on_hit(atom/target, blocked, pierce_hit)
-	. = ..()
-	var/roll_them_bones = rand(1,38)
-	if(roll_them_bones == 1 && isliving(target))
+	if(can_crit && rand(1, 38) == 1 && isliving(target) && !blocked && !pierce_hit)
 		playsound(target, 'sound/machines/synth_yes.ogg', 50, TRUE)
 		playsound(target, pick(list('sound/machines/coindrop.ogg', 'sound/machines/coindrop2.ogg')), 40, TRUE)
 		new /obj/effect/temp_visual/crit(get_turf(target))
+		wound_bonus = 10
+	return ..()
 
 /datum/action/cooldown/spell/pointed/psychic_projection
 	name = "Psychic Projection"
