@@ -5,6 +5,8 @@
 	var/mob/living/carbon/human/ling = allocate(/mob/living/carbon/human/consistent)
 	ling.mind_initialize()
 	ling.mind.add_antag_datum(/datum/antagonist/changeling)
+	ADD_TRAIT(ling, TRAIT_NOSOFTCRIT, TRAIT_GENERIC)
+	ADD_TRAIT(ling, TRAIT_NOHARDCRIT, TRAIT_GENERIC)
 
 	var/obj/item/bodypart/head/noggin = ling.get_bodypart(BODY_ZONE_HEAD)
 	noggin.dismember()
@@ -30,6 +32,9 @@
 /datum/unit_test/normal_decap/Run()
 	var/mob/living/carbon/human/normal_guy = allocate(/mob/living/carbon/human/consistent)
 	normal_guy.mind_initialize()
+	ADD_TRAIT(normal_guy, TRAIT_NOSOFTCRIT, TRAIT_GENERIC)
+	ADD_TRAIT(normal_guy, TRAIT_NOHARDCRIT, TRAIT_GENERIC)
+
 	var/my_guys_mind = normal_guy.mind
 
 	var/obj/item/bodypart/head/noggin = normal_guy.get_bodypart(BODY_ZONE_HEAD)
