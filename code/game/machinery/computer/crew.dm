@@ -157,9 +157,14 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	)
 
 /datum/crewmonitor/New()
-	setup_jobs()
+	if(SSjob.initialized)
+		setup_jobs()
+	else
+		RegisterSignal(SSjob, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(setup_jobs))
 
 /datum/crewmonitor/proc/setup_jobs()
+	SIGNAL_HANDLER
+
 	for(var/datum/job/jobtype as anything in subtypesof(/datum/job))
 		var/datum/job/job = SSjob.GetJobType(jobtype)
 		if(isnull(job))
@@ -171,6 +176,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		var/list/all_titles = job.get_titles()
 		for(var/i in 1 to length(all_titles))
 			jobs[all_titles[i]] = job_prio + (0.1 * (i - 1))
+
+	UnregisterSignal(SSjob, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 
 /datum/crewmonitor/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
