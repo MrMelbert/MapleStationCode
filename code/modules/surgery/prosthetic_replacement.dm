@@ -115,7 +115,7 @@
 		)
 		return
 	else
-		var/obj/item/bodypart/bodypart_to_attach = target.newBodyPart(target_zone, FALSE, FALSE)
+		var/obj/item/bodypart/bodypart_to_attach = target.newBodyPart(target_zone)
 		bodypart_to_attach.try_attach_limb(target)
 		bodypart_to_attach.bodypart_flags |= BODYPART_PSEUDOPART | BODYPART_IMPLANTED
 		user.visible_message(span_notice("[user] finishes attaching [tool]!"), span_notice("You attach [tool]."))

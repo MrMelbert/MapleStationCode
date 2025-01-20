@@ -307,7 +307,7 @@
 				if(!itemUser.has_hand_for_held_index(hand))
 					//If user does not have the corresponding hand anymore, give them one and return the rod to their hand
 					if(((hand % 2) == 0))
-						var/obj/item/bodypart/L = itemUser.newBodyPart(BODY_ZONE_R_ARM, FALSE, FALSE)
+						var/obj/item/bodypart/L = itemUser.newBodyPart(BODY_ZONE_R_ARM)
 						if(L.try_attach_limb(itemUser))
 							L.update_limb(is_creating = TRUE)
 							itemUser.update_body_parts()
@@ -317,7 +317,7 @@
 							consume_owner() //we can't regrow, abort abort
 							return
 					else
-						var/obj/item/bodypart/L = itemUser.newBodyPart(BODY_ZONE_L_ARM, FALSE, FALSE)
+						var/obj/item/bodypart/L = itemUser.newBodyPart(BODY_ZONE_L_ARM)
 						if(L.try_attach_limb(itemUser))
 							L.update_limb(is_creating = TRUE)
 							itemUser.update_body_parts()
