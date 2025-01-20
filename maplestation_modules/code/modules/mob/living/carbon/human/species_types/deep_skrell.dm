@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	name = "Deep Skrell"
 	plural_form = "Deep Skrells"
 	id = SPECIES_DEEP_SKRELL
-	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION)
+	inherent_traits = list(TRAIT_MUTANT_COLORS, TRAIT_LIGHT_DRINKER, TRAIT_EMPATH, TRAIT_BADTOUCH, TRAIT_NIGHT_VISION, TRAIT_WEBBED_HANDS)
 	external_organs = list(/obj/item/organ/external/head_tentacles = "Long")
 	payday_modifier = 0.75
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
@@ -245,8 +245,71 @@ GLOBAL_LIST_EMPTY(deep_head_tentacles_list)
 	item_flags = ABSTRACT | DROPDEL
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
+	color =
 	storage_type = /datum/storage/backpack
+
+/obj/item/storage/back_tentacles/visual_equipped(mob/living/carbon/human/user, slot)
+
 
 /obj/item/storage/back_tentacles/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, TRAIT_BACKPACK_REPLACEMENT)
+
+/datum/species/deep_skrell/proc/on_death(mob/living/died, gibbed)
+	SIGNAL_HANDLER
+	died.drop_all_contents()
+
+/datum/quirk/webbedhands
+	name = "Webbed Hands"
+	desc = "Your fingers are connected by a waterproof webbing. Useful for swimming! Less so for wearing gloves..."
+	value = -6
+	quirk_flags = QUIRK_HUMAN_ONLY|QUIRK_MOODLET_BASED
+	gain_text = span_danger("Your fingers have grown webbing!")
+	lose_text = span_notice("The webbing has retracted back into your hands.")
+	medical_record_text = "Patient has webbed hands."
+	mob_trait = WEBBED_HANDS
+	hardcore_value = 4
+	var/datum/weakref/gloves
+
+/datum/quirk/gloves/add(client/client_source)
+	var/mob/living/carbon/human/human_holder = quirk_holder
+	var/obj/item/clothing/gloves/equipped_gloves = human_holder.back
+	if(istype(equipped_gloves))
+		quirk_holder.add_mood_event("webbed_hands", /datum/mood_event/webbed_hands)
+		RegisterSignal(human_holder.back, COMSIG_ITEM_POST_UNEQUIP, PROC_REF(on_unequipped_gloves))
+	else
+		RegisterSignal(quirk_holder, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(on_equipped_item))
+
+/datum/quirk/webbedhands/remove()
+	UnregisterSignal(quirk_holder, COMSIG_MOB_EQUIPPED_ITEM)
+
+	var/obj/item/clothing/equipped_gloves = gloves?.resolve()
+	if(equipped_gloves)
+		UnregisterSignal(equipped_gloves, COMSIG_ITEM_POST_UNEQUIP)
+		quirk_holder.clear_mood_event("webbed_hands")
+
+/// Signal handler for when the quirk_holder equips an item. If it's gloves, adds the webbed_hands mood event.
+/datum/quirk/badback/proc/on_equipped_item(mob/living/source, obj/item/equipped_item, slot)
+	SIGNAL_HANDLER
+
+	if(!(slot & ITEM_SLOT_HANDS) || !istype(equipped_item, /obj/item/clothing/gloves))
+		return
+
+	quirk_holder.add_mood_event("webbed_hands", /datum/mood_event/webbed_hands)
+	RegisterSignal(equipped_item, COMSIG_ITEM_POST_UNEQUIP, PROC_REF(on_unequipped_backpack))
+	UnregisterSignal(quirk_holder, COMSIG_MOB_EQUIPPED_ITEM)
+	gloves = WEAKREF(equipped_item)
+
+/// Signal handler for when the quirk_holder unequips an equipped gloves. Removes the webbed_hands mood event.
+/datum/quirk/badback/proc/on_unequipped_gloves(obj/item/source, force, atom/newloc, no_move, invdrop, silent)
+	SIGNAL_HANDLER
+
+	UnregisterSignal(source, COMSIG_ITEM_POST_UNEQUIP)
+	quirk_holder.clear_mood_event("webbed_hands")
+	gloves = null
+	RegisterSignal(quirk_holder, COMSIG_MOB_EQUIPPED_ITEM, PROC_REF(on_equipped_item))
+
+/datum/mood_event/webbed_hands
+	description = "Gloves compress the webbing between your fingers painfully!"
+	mood_change = -13
+
