@@ -284,7 +284,7 @@
 /datum/supply_pack/goody/all_crew_translation
 	name = "Crew Cohesion radio translation key"
 	desc = "A radio encryption key that allows the wearer to understand a few words in most languages spoken by the crew."
-	group = "Language Keys (Goodies)"
+	group = /datum/supply_pack/goody/language_keys::group
 	cost = PAYCHECK_COMMAND * 16
 	contains = list(/obj/item/encryptionkey/language/all_crew)
 
