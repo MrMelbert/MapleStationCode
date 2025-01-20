@@ -655,7 +655,7 @@
 	SShealth_updates.queue_update(src, UPDATE_SELF|UPDATE_MEDHUD_HEALTH)
 
 /mob/living/carbon/proc/paincrit_check()
-	if(crit_percent() < 100)
+	if(crit_percent() < 100 || HAS_TRAIT(src, TRAIT_NOSOFTCRIT)) // melbert todo
 		if(HAS_TRAIT_FROM(src, TRAIT_SOFT_CRIT, PAINCRIT))
 			Paralyze(2 SECONDS)
 			remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_FLOORED, TRAIT_HANDS_BLOCKED), PAINCRIT)
