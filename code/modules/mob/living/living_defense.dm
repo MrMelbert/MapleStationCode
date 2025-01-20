@@ -161,7 +161,7 @@
 		paralyze = hitting_projectile.paralyze + extra_paralyze,
 		immobilize = hitting_projectile.immobilize,
 	)
-	if(hitting_projectile.dismemberment)
+	if(hitting_projectile.dismemberment > 0 && !hitting_projectile.grazing)
 		check_projectile_dismemberment(hitting_projectile, def_zone)
 	return BULLET_ACT_HIT
 
@@ -177,8 +177,22 @@
 		. += 50
 	return .
 
-/mob/living/proc/check_projectile_dismemberment(obj/projectile/P, def_zone)
-	return 0
+/// Attempts to dismember a limb if hit with a projectile that has a dismemberment value.
+/mob/living/proc/check_projectile_dismemberment(obj/projectile/incoming_projectile, def_zone)
+	var/obj/item/bodypart/affecting = get_bodypart(def_zone)
+	if(isnull(affecting) || !affecting.can_dismember())
+		return
+	if((100 * (affecting.get_damage() / affecting.max_damage)) < (100 - incoming_projectile.dismemberment))
+		return
+	affecting.dismember(incoming_projectile.damtype)
+	if(incoming_projectile.catastropic_dismemberment)
+		//stops a projectile blowing off a limb effectively doing no damage. Mostly relevant for sniper rifles.
+		apply_damage(
+			incoming_projectile.damage,
+			incoming_projectile.damtype,
+			BODY_ZONE_CHEST,
+			wound_bonus = incoming_projectile.wound_bonus,
+		)
 
 /obj/item/proc/get_volume_by_throwforce_and_or_w_class()
 		if(throwforce && w_class)

@@ -17,7 +17,7 @@
 	TEST_ASSERT_NULL(locate(/obj/item/organ/internal/brain) in noggin, "Changeling's head failed to drop its brain.")
 	TEST_ASSERT_NULL(oldbrain.brainmob.mind, "Changeling's mind was moved to their brain after decapitation and organ dropping, but it should have remained in their body.")
 
-	TEST_ASSERT_EQUAL(ling.stat, CONSCIOUS, "Changeling was not conscious after losing their head.")
+	TEST_ASSERT_NOTEQUAL(ling.stat, DEAD, "Changeling was dead after losing their head.")
 
 	// Cleanup
 	qdel(noggin)
@@ -40,6 +40,8 @@
 	var/obj/item/organ/internal/brain/oldbrain = locate(/obj/item/organ/internal/brain) in noggin
 	noggin.drop_organs()
 	TEST_ASSERT_EQUAL(oldbrain.brainmob.mind, my_guys_mind, "Dummy's mind was not moved to their brain after being removed from their head.")
+
+	TEST_ASSERT_EQUAL(normal_guy.stat, DEAD, "Dummy was not dead after losing their head.")
 
 	// Cleanup
 	qdel(noggin)

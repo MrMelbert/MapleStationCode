@@ -1683,5 +1683,5 @@
 		return
 	if(!GLOB.embed_by_type[embed_data?.type])
 		qdel(embed_data)
-	embed_data = ispath(embed) ? get_embed_by_type(armor) : embed
+	embed_data = ispath(embed) ? get_embed_by_type(embed) : embed
 	SEND_SIGNAL(src, COMSIG_ITEM_EMBEDDING_UPDATE)

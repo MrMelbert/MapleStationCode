@@ -255,7 +255,7 @@
 /datum/reagent/cryostylane/on_mob_delete(mob/living/affected_mob)
 	. = ..()
 	affected_mob.remove_surgery_speed_mod(type)
-	affected_mob.remove_atom_colour(COLOR_CYAN, TEMPORARY_COLOUR_PRIORITY)
+	affected_mob.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, COLOR_CYAN)
 	REMOVE_TRAIT(affected_mob, TRAIT_NO_ORGAN_DECAY, type)
 
 //Pauses decay! Does do something, I promise.

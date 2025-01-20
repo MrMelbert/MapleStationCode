@@ -1367,7 +1367,7 @@
 /mob/living/can_hold_items(obj/item/I)
 	return ..() && HAS_TRAIT(src, TRAIT_CAN_HOLD_ITEMS) && usable_hands
 
-/mob/living/can_perform_action(atom/movable/target, action_bitflags)
+/mob/living/can_perform_action(atom/target, action_bitflags)
 	if(!istype(target))
 		CRASH("Missing target arg for can_perform_action")
 
@@ -2208,8 +2208,13 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				TRAIT_INCAPACITATED,
 				TRAIT_KNOCKEDOUT,
 			)
-			remove_from_alive_mob_list()
-			add_to_dead_mob_list()
+
+	if(stat == DEAD)
+		remove_from_alive_mob_list()
+		add_to_dead_mob_list()
+	else if(. == DEAD)
+		remove_from_dead_mob_list()
+		add_to_alive_mob_list()
 
 	add_traits(added_traits, STAT_TRAIT)
 	remove_traits(removed_traits - added_traits, STAT_TRAIT)
