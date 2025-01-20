@@ -220,9 +220,9 @@
 	contains = list(/obj/item/construction/rld)
 
 // All this does is generate the supply packs for the language keys
-/datum/supply_pack/goody/language_keys_constructor
+/datum/supply_pack/language_keys_constructor
 
-/datum/supply_pack/goody/language_keys_constructor/generate_supply_packs()
+/datum/supply_pack/language_keys_constructor/generate_supply_packs()
 	. = list()
 
 	var/datum/preference/languages/language_pref = GLOB.preference_entries[/datum/preference/languages]
