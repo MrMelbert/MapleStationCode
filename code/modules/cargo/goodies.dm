@@ -216,7 +216,7 @@
 /datum/supply_pack/goody/rapid_lighting_device
 	name = "Rapid Lighting Device (RLD)"
 	desc = "A device used to rapidly provide lighting sources to an area. Reload with iron, plasteel, glass or compressed matter cartridges."
-	cost = PAYCHECK_COMMAND * 10
+	cost = PAYCHECK_CREW * 10
 	contains = list(/obj/item/construction/rld)
 
 // All this does is generate the supply packs for the language keys
