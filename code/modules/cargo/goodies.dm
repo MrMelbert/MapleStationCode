@@ -235,7 +235,7 @@
 		pack.name = "[lang.name] radio translation key"
 		pack.desc = "A hi-tech radio encryption key that allows the wearer to understand [lang.name] when the radio is worn."
 		pack.cost = PAYCHECK_COMMAND * 12
-		pack.id = "[type]_[langtype]_full"
+		pack.id = "[pack.type]_[langtype]_full"
 		pack.contains = list(/obj/item/encryptionkey/language)
 
 		. += pack
@@ -246,7 +246,7 @@
 		budget_pack.name = "[lang.name] budget radio translation key"
 		budget_pack.desc = "A budget radio encryption key that allows the wearer to understand *some* words in [lang.name] when the radio is worn."
 		budget_pack.cost = PAYCHECK_COMMAND * 4
-		budget_pack.id = "[type]_[langtype]_budget"
+		budget_pack.id = "[budget_pack.type]_[langtype]_budget"
 		budget_pack.contains = list(/obj/item/encryptionkey/language)
 
 		. += budget_pack
