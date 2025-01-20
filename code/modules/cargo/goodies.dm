@@ -282,7 +282,7 @@
 		key.flags_1 |= ADMIN_SPAWNED_1
 
 /datum/supply_pack/goody/all_crew_translation
-	name = "Crew Cohesion radio encryption key"
+	name = "Crew Cohesion radio translation key"
 	desc = "A radio encryption key that allows the wearer to understand a few words in most languages spoken by the crew."
 	group = "Language Keys (Goodies)"
 	cost = PAYCHECK_COMMAND * 16
