@@ -108,7 +108,7 @@
 		if(replaced_wound)
 			new_wound = replaced_wound.replace_wound(new_wound, attack_direction = attack_direction)
 		else
-			new_wound.apply_wound(src, attack_direction = attack_direction, wound_source = damage_source)
+			new_wound.apply_wound(src, attack_direction = attack_direction, wound_source = damage_source, injury_roll = injury_roll)
 		log_wound(owner, new_wound, damage, wound_bonus, bare_wound_bonus, base_roll) // dismembering wounds are logged in the apply_wound() for loss wounds since they delete themselves immediately, these will be immediately returned
 		return new_wound
 

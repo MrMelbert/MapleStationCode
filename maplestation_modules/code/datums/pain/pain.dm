@@ -28,7 +28,7 @@
 	/// Lazy Assoc list [zones] to [references to bodyparts], all the body parts we're tracking
 	VAR_PRIVATE/list/body_zones
 	/// Natural amount of decay given to each limb per 5 ticks of process, increases over time
-	VAR_FINAL/natural_pain_decay = -0.5
+	VAR_FINAL/natural_pain_decay = -0.33
 	/// The base amount of pain decay received.
 	VAR_FINAL/base_pain_decay
 	/// Amount of traumatic shock building up from higher levels of pain
@@ -626,15 +626,17 @@
 /// Affect accuracy of fired guns while in pain.
 /datum/pain/proc/on_mob_fired_gun(mob/living/carbon/human/user, obj/item/gun/gun_fired, target, params, zone_override, list/bonus_spread_values)
 	SIGNAL_HANDLER
+	if(gun_fired.loc != user)
+		return
 	var/obj/item/bodypart/shooting_with = user.get_active_hand()
 	var/obj/item/bodypart/chest = user.get_bodypart(BODY_ZONE_CHEST)
 	var/obj/item/bodypart/head = user.get_bodypart(BODY_ZONE_HEAD)
 
 	var/penalty = 0
 	// Basically averaging the pain of the shooting hand, chest, and head, with the hand being weighted more
-	penalty += shooting_with?.get_modified_pain()
-	penalty += chest?.get_modified_pain() * 0.5
-	penalty += head?.get_modified_pain() * 0.5
+	penalty += shooting_with.get_modified_pain()
+	penalty += chest.get_modified_pain() * 0.5
+	penalty += head?.get_modified_pain() * 0.5 // HARS guard
 	penalty /= 3
 	// Applying min and max
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += floor(penalty / 3)

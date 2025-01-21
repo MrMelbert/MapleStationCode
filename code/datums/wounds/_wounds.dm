@@ -183,8 +183,10 @@
  * * smited- If this is a smite, we don't care about this wound for stat tracking purposes (not yet implemented)
  * * attack_direction: For bloodsplatters, if relevant
  * * wound_source: The source of the wound, such as a weapon.
+ * * replacing: If this wound is replacing another of the same type, set to TRUE to prevent the wound from making a new message
+ * * injury_roll: If we're applying this wound from a roll, we pass that roll here
  */
-/datum/wound/proc/apply_wound(obj/item/bodypart/L, silent = FALSE, datum/wound/old_wound = null, smited = FALSE, attack_direction = null, wound_source = "Unknown", replacing = FALSE)
+/datum/wound/proc/apply_wound(obj/item/bodypart/L, silent = FALSE, datum/wound/old_wound = null, smited = FALSE, attack_direction = null, wound_source = "Unknown", replacing = FALSE, injury_roll = 0)
 
 	if (!can_be_applied_to(L, old_wound))
 		qdel(src)
@@ -207,12 +209,9 @@
 	SEND_SIGNAL(victim, COMSIG_CARBON_GAIN_WOUND, src, limb)
 	victim.update_health_hud()
 
-	var/demoted
+	var/demoted = FALSE
 	if(old_wound)
 		demoted = (severity <= old_wound.severity)
-
-	if(severity == WOUND_SEVERITY_TRIVIAL)
-		return
 
 	if(!silent && !demoted && occur_text)
 		var/msg = span_danger("[victim]'s [limb.plaintext_zone] [occur_text]!")

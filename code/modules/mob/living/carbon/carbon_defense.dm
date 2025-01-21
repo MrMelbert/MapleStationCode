@@ -142,7 +142,9 @@
 	var/ib_prob = . + rand(-10, 40) - getarmor(affecting, WOUND)
 	if(ib_prob < 45)
 		return
-	affecting.force_wound_upwards(/datum/wound/bleed_internal, wound_source = user)
+	var/datum/wound/bleed_internal/wound = affecting.force_wound_upwards(/datum/wound/bleed_internal, wound_source = user)
+	if(wound && ib_prob > 60)
+		wound.upgrade_severity(WOUND_SEVERITY_MODERATE)
 
 /mob/living/carbon/attack_drone(mob/living/basic/drone/user)
 	return //so we don't call the carbon's attack_hand().

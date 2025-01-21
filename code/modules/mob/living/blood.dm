@@ -94,7 +94,7 @@
 				// 	investigate_log("has died of bloodloss.", INVESTIGATE_DEATHS)
 				// 	death()
 
-	if(blood_volume > BLOOD_VOLUME_OKAY)
+	if(blood_volume > BLOOD_VOLUME_OKAY || (sigreturn & HANDLE_BLOOD_NO_EFFECTS))
 		remove_max_consciousness_value(BLOOD_LOSS)
 		remove_consciousness_modifier(BLOOD_LOSS)
 

@@ -1782,8 +1782,10 @@
 			bloodiest_wound = iter_wound
 
 	for(var/datum/wound/bleed_internal/ib in affected_mob.all_wounds)
-		if(ib.severity > SEVERITY_TRIVIAL)
-			ib.heal_amount(clot_rate * 0.05 * REM * seconds_per_tick)
+		// capable of healing trivial IB entirely IFF we hadn't ever worsened to a higher severity
+		if(ib.highest_severity != WOUND_SEVERITY_TRIVIAL && ib.severity == WOUND_SEVERITY_TRIVIAL)
+			continue
+		ib.heal_amount(clot_rate * 0.025 * REM * seconds_per_tick)
 
 	if(bloodiest_wound)
 		if(!was_working)
