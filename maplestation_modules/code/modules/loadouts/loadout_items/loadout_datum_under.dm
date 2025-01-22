@@ -409,3 +409,7 @@
 	name = "Violet Nurse Uniform"
 	item_path = /obj/item/clothing/under/dress/vince
 	additional_displayed_text = list("Character Item")
+
+/datum/loadout_item/under/jumpsuit/mvfjumpsuit
+	name = "Pale Jumpsuit"
+	item_path = /obj/item/clothing/under/mvfjumpsuit

@@ -76,6 +76,14 @@
 	icon_state = "chesed_suit"
 	clothing_traits = list(TRAIT_CAFFEINE_LOVER)
 
+/obj/item/clothing/under/mvfjumpsuit
+	name = "pale jumpsuit"
+	desc = "An old-fashioned pale white jumpsuit. Common in spaces within the Mira-Vodyanoy Foundation's sphere of influence."
+	icon = 'maplestation_modules/icons/obj/clothing/under/jumpsuit.dmi'
+	worn_icon = 'maplestation_modules/icons/mob/clothing/under/jumpsuit.dmi'
+	icon_state = "mvf_jumpsuit"
+	can_adjust = FALSE
+
 // https://github.com/Skyrat-SS13/Skyrat-tg/pull/17098
 /obj/item/clothing/under/dress/countess
 	name = "countess dress"
