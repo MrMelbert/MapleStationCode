@@ -19,4 +19,3 @@
 	icon_state = "fivefox"
 	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
 	color_src = HAIR_COLOR
-	wag_flags = NONE // disabling for now because i'm unsure if i want to do it
