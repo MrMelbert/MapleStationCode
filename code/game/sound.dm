@@ -494,37 +494,37 @@
 			)
 		if(SFX_LIQUID_POUR)
 			soundin = pick(
-				'sound/effects/liquid_pour/liquid_pour1.ogg',
-				'sound/effects/liquid_pour/liquid_pour2.ogg',
-				'sound/effects/liquid_pour/liquid_pour3.ogg',
+				'sound/effects/liquid_pour1.ogg',
+				'sound/effects/liquid_pour2.ogg',
+				'sound/effects/liquid_pour3.ogg',
 			)
 		if(SFX_SNORE_FEMALE)
 			soundin = pick_weight(list(
-				'sound/mobs/humanoids/human/snore/snore_female1.ogg' = 33,
-				'sound/mobs/humanoids/human/snore/snore_female2.ogg' = 33,
-				'sound/mobs/humanoids/human/snore/snore_female3.ogg' = 33,
-				'sound/mobs/humanoids/human/snore/snore_mimimi1.ogg' = 1,
+				'sound/voice/human/snore/snore_female1.ogg' = 33,
+				'sound/voice/human/snore/snore_female2.ogg' = 33,
+				'sound/voice/human/snore/snore_female3.ogg' = 33,
+				'sound/voice/human/snore/snore_mimimi1.ogg' = 1,
 			))
 		if(SFX_SNORE_MALE)
 			soundin = pick_weight(list(
-				'sound/mobs/humanoids/human/snore/snore_male1.ogg' = 20,
-				'sound/mobs/humanoids/human/snore/snore_male2.ogg' = 20,
-				'sound/mobs/humanoids/human/snore/snore_male3.ogg' = 20,
-				'sound/mobs/humanoids/human/snore/snore_male3.ogg' = 20,
-				'sound/mobs/humanoids/human/snore/snore_male5.ogg' = 20,
-				'sound/mobs/humanoids/human/snore/snore_mimimi2.ogg' = 1,
+				'sound/voice/human/snore/snore_male1.ogg' = 20,
+				'sound/voice/human/snore/snore_male2.ogg' = 20,
+				'sound/voice/human/snore/snore_male3.ogg' = 20,
+				'sound/voice/human/snore/snore_male3.ogg' = 20,
+				'sound/voice/human/snore/snore_male5.ogg' = 20,
+				'sound/voice/human/snore/snore_mimimi2.ogg' = 1,
 			))
 		if(SFX_MALE_SIGH)
 			soundin = pick(
-				'sound/mobs/humanoids/human/sigh/male_sigh1.ogg',
-				'sound/mobs/humanoids/human/sigh/male_sigh2.ogg',
-				'sound/mobs/humanoids/human/sigh/male_sigh3.ogg',
+				'sound/voice/human/sigh/male_sigh1.ogg',
+				'sound/voice/human/sigh/male_sigh2.ogg',
+				'sound/voice/human/sigh/male_sigh3.ogg',
 			)
 		if(SFX_FEMALE_SIGH)
 			soundin = pick(
-				'sound/mobs/humanoids/human/sigh/female_sigh1.ogg',
-				'sound/mobs/humanoids/human/sigh/female_sigh2.ogg',
-				'sound/mobs/humanoids/human/sigh/female_sigh3.ogg',
+				'sound/voice/human/sigh/female_sigh1.ogg',
+				'sound/voice/human/sigh/female_sigh2.ogg',
+				'sound/voice/human/sigh/female_sigh3.ogg',
 			)
 		if(SFX_WRITING_PEN)
 			soundin = pick(
