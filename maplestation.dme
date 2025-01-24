@@ -6433,6 +6433,7 @@
 #include "maplestation_modules\code\modules\magic\story_spells\mana_sense.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\shock_touch.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\soothe.dm"
+#include "maplestation_modules\code\modules\magic\story_spells\telepathy.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\thaumatergic_sense.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\water_control.dm"
 #include "maplestation_modules\code\modules\magic\story_spells\components\story_spell_component.dm"
