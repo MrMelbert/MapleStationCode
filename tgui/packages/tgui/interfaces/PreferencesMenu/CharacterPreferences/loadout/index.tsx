@@ -1,4 +1,6 @@
 import { Fragment, useState } from 'react';
+import { useBackend } from 'tgui/backend';
+import { CharacterPreview } from 'tgui/interfaces/common/CharacterPreview';
 import {
   Box,
   Button,
@@ -11,10 +13,7 @@ import {
   Tabs,
 } from 'tgui-core/components';
 
-import { useBackend } from '../../../backend';
-import { CharacterPreview } from '../../common/CharacterPreview';
-import { ServerData } from '../data';
-import { ServerPreferencesFetcher } from '../ServerPreferencesFetcher';
+import { useServerPrefs } from '../../useServerPrefs';
 import {
   LoadoutCategory,
   LoadoutItem,
@@ -24,35 +23,22 @@ import {
 import { ItemIcon, LoadoutTabDisplay, SearchDisplay } from './ItemDisplay';
 import { LoadoutModifyDimmer } from './ModifyPanel';
 
-export const LoadoutPage = () => {
-  return (
-    <ServerPreferencesFetcher
-      render={(serverData) => {
-        if (!serverData) {
-          return <NoticeBox>Loading...</NoticeBox>;
-        }
-        const loadoutServerData: ServerData = serverData;
-        return (
-          <LoadoutPageInner
-            loadout_tabs={loadoutServerData.loadout.loadout_tabs}
-            max_loadouts={loadoutServerData.loadout.max_loadouts}
-          />
-        );
-      }}
-    />
-  );
-};
+export function LoadoutPage(props) {
+  const serverData = useServerPrefs();
+  const loadout_tabs = serverData?.loadout.loadout_tabs || [];
+  const max_loadouts = serverData?.loadout.max_loadouts || 0;
 
-const LoadoutPageInner = (props: {
-  loadout_tabs: LoadoutCategory[];
-  max_loadouts: number;
-}) => {
-  const { loadout_tabs, max_loadouts } = props;
   const [searchLoadout, setSearchLoadout] = useState('');
-  const [selectedTabName, setSelectedTab] = useState(loadout_tabs[0].name);
+  const [selectedTabName, setSelectedTab] = useState(
+    loadout_tabs?.[0].name || '',
+  );
   const [modifyItemDimmer, setModifyItemDimmer] = useState<LoadoutItem | null>(
     null,
   );
+
+  if (!serverData) {
+    return <NoticeBox>Loading...</NoticeBox>;
+  }
 
   return (
     <Stack vertical fill>
@@ -110,16 +96,18 @@ const LoadoutPageInner = (props: {
       </Stack.Item>
     </Stack>
   );
-};
+}
 
-const LoadoutTabs = (props: {
+type LoadoutTabsProps = {
   loadout_tabs: LoadoutCategory[];
   max_loadouts: number;
   currentTab: string;
   currentSearch: string;
   modifyItemDimmer: LoadoutItem | null;
   setModifyItemDimmer: (dimmer: LoadoutItem | null) => void;
-}) => {
+};
+
+function LoadoutTabs(props: LoadoutTabsProps) {
   const {
     loadout_tabs,
     max_loadouts,
@@ -185,12 +173,12 @@ const LoadoutTabs = (props: {
       </Stack.Item>
     </Stack>
   );
-};
+}
 
-const typepathToLoadoutItem = (
+function typepathToLoadoutItem(
   typepath: typePath,
   all_tabs: LoadoutCategory[],
-) => {
+) {
   // Maybe a bit inefficient, could be replaced with a hashmap?
   for (const tab of all_tabs) {
     for (const item of tab.contents) {
@@ -200,14 +188,16 @@ const typepathToLoadoutItem = (
     }
   }
   return null;
-};
+}
 
-const LoadoutSelectedItem = (props: {
+type LoadoutSelectedItemProps = {
   path: typePath;
   all_tabs: LoadoutCategory[];
   modifyItemDimmer: LoadoutItem | null;
   setModifyItemDimmer: (dimmer: LoadoutItem | null) => void;
-}) => {
+};
+
+function LoadoutSelectedItem(props: LoadoutSelectedItemProps) {
   const { all_tabs, path, modifyItemDimmer, setModifyItemDimmer } = props;
   const { act } = useBackend();
 
@@ -248,14 +238,16 @@ const LoadoutSelectedItem = (props: {
       </Stack.Item>
     </Stack>
   );
-};
+}
 
-const LoadoutSelectedSection = (props: {
+type LoadoutSelectedSectionProps = {
   all_tabs: LoadoutCategory[];
   max_loadouts: number;
   modifyItemDimmer: LoadoutItem | null;
   setModifyItemDimmer: (dimmer: LoadoutItem | null) => void;
-}) => {
+};
+
+function LoadoutSelectedSection(props: LoadoutSelectedSectionProps) {
   const { act, data } = useBackend<LoadoutManagerData>();
   const { loadout_list, active_loadout } = data.character_preferences.misc;
   const { all_tabs, max_loadouts, modifyItemDimmer, setModifyItemDimmer } =
@@ -335,9 +327,9 @@ const LoadoutSelectedSection = (props: {
         ))}
     </Section>
   );
-};
+}
 
-const LoadoutPreviewSection = () => {
+function LoadoutPreviewSection() {
   const { act, data } = useBackend<LoadoutManagerData>();
 
   return (
@@ -386,4 +378,4 @@ const LoadoutPreviewSection = () => {
       </Stack>
     </Section>
   );
-};
+}
