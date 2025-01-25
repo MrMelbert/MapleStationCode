@@ -18,6 +18,7 @@
 	)
 	mutanttongue = /obj/item/organ/internal/tongue/lizard
 	mutantstomach = /obj/item/organ/internal/stomach/lizard
+	mutanteyes = /obj/item/organ/internal/eyes/lizard
 	coldmod = 1.5
 	heatmod = 0.67
 	payday_modifier = 1.0
@@ -111,6 +112,16 @@
 
 /datum/species/lizard/get_laugh_sound(mob/living/carbon/human/lizard)
 	return 'sound/voice/lizard/lizard_laugh1.ogg'
+
+/datum/species/lizard/get_snore_sound(mob/living/carbon/human/lizard)
+	if(lizard.physique == FEMALE)
+		return SFX_SNORE_FEMALE
+	return SFX_SNORE_MALE
+
+/datum/species/lizard/get_sigh_sound(mob/living/carbon/human/lizard)
+	if(lizard.physique == FEMALE)
+		return SFX_FEMALE_SIGH
+	return SFX_MALE_SIGH
 
 /datum/species/lizard/get_physical_attributes()
 	return "Lizardpeople can withstand slightly higher temperatures than most species, but they are very vulnerable to the cold \
