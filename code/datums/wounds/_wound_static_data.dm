@@ -183,7 +183,7 @@
  * * attack_direction: The direction of the attack that'd generate us. Nullable.
  * * damage_source: The source of the damage that'd cause us. Nullable.
  */
-/datum/wound_pregen_data/proc/get_threshold_for(obj/item/bodypart/part, attack_direction, damage_source)
+/datum/wound_pregen_data/proc/get_threshold_for(obj/item/bodypart/part)
 	return threshold_minimum
 
 /// Returns a new instance of our wound datum.

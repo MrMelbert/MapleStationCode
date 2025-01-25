@@ -282,7 +282,7 @@
 
 	wound_series = WOUND_SERIES_FLESH_BURN_BASIC
 
-/datum/wound/burn/get_limb_examine_description()
+/datum/wound/burn/flesh/get_limb_examine_description()
 	return span_warning("The flesh on this limb appears badly cooked.")
 
 // we don't even care about first degree burns, straight to second

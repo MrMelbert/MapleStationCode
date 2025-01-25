@@ -472,18 +472,18 @@
 		return FALSE
 	if(shock_damage < 1)
 		return FALSE
-	if(!(flags & SHOCK_ILLUSION))
-		set_timed_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
-		apply_damage(shock_damage, BURN, spread_damage = TRUE, wound_bonus = CANT_WOUND)
+	if(flags & SHOCK_ILLUSION)
+		. = apply_damage(shock_damage, STAMINA, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 	else
-		apply_damage(shock_damage, STAMINA, spread_damage = TRUE, wound_bonus = CANT_WOUND)
+		set_timed_pain_mod(PAIN_MOD_RECENT_SHOCK, 0.5, 30 SECONDS)
+		. = apply_damage(shock_damage, BURN, spread_damage = TRUE, wound_bonus = CANT_WOUND)
 	if(!(flags & SHOCK_SUPPRESS_MESSAGE))
 		visible_message(
 			span_danger("[src] was shocked by \the [source]!"), \
 			span_userdanger("You feel a powerful shock coursing through your body!"), \
 			span_hear("You hear a heavy electrical crack.") \
 		)
-	return shock_damage
+	return .
 
 /mob/living/emp_act(severity)
 	. = ..()

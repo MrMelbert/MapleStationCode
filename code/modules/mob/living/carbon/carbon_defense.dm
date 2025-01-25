@@ -271,9 +271,8 @@
 			if(source != carried)
 				shocking_queue += carried
 		//Found our victims, now lets shock them all
-		for(var/victim in shocking_queue)
-			var/mob/living/carbon/C = victim
-			C.electrocute_act(shock_damage*0.75, src, 1, flags, jitter_time, stutter_time, stun_duration)
+		for(var/mob/living/carbon/victim as anything in shocking_queue)
+			victim.electrocute_act(shock_damage*0.75, src, 1, flags, jitter_time, stutter_time, stun_duration)
 	//Stun
 	var/should_stun = (!(flags & SHOCK_TESLA) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
 	var/paralyze = !(flags & SHOCK_KNOCKDOWN)
@@ -289,7 +288,23 @@
 	adjust_stutter(stutter_time)
 	if (should_stun)
 		addtimer(CALLBACK(src, PROC_REF(secondary_shock), paralyze, stun_duration * 1.5), 2 SECONDS)
-	return shock_damage
+	if(. > 0)
+		var/obj/item/bodypart/zapped = get_active_hand() || get_bodypart(BODY_ZONE_CHEST)
+		var/electrical_burn_roll = . + zapped.check_woundings_mods(WOUND_BURN) + rand(-10, 5)
+		var/wound_type
+		var/wound_name = ""
+		if(electrical_burn_roll > 150)
+			wound_type = /datum/wound/burn/flesh/critical
+			wound_name = "Arc Flash Electrical Burn"
+		else if(electrical_burn_roll > 80)
+			wound_type = /datum/wound/burn/flesh/severe
+			wound_name = "HV Electrical Burn"
+		else if(electrical_burn_roll > 20)
+			wound_type = /datum/wound/burn/flesh/moderate
+			wound_name = "LV Electrical Burn"
+		if(wound_type)
+			var/datum/wound/the_wound = zapped.force_wound_upwards(wound_type, wound_source = source)
+			the_wound?.name = wound_name
 
 ///Called slightly after electrocute act to apply a secondary stun.
 /mob/living/carbon/proc/secondary_shock(paralyze, stun_duration)

@@ -7,8 +7,6 @@
 
 	required_wounding_types = list(WOUND_ALL)
 
-	wound_series = WOUND_SERIES_LOSS_BASIC
-
 	threshold_minimum = WOUND_DISMEMBER_OUTRIGHT_THRESH // not actually used since dismembering is handled differently, but may as well assign it since we got it
 
 /datum/wound/loss

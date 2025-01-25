@@ -76,7 +76,15 @@
 		return
 
 	var/base_roll = rand(1, round(damage ** WOUND_DAMAGE_EXPONENT))
-	var/injury_roll = base_roll + check_woundings_mods(woundtype, damage, wound_bonus, bare_wound_bonus)
+	var/injury_roll = base_roll + check_woundings_mods(woundtype, wound_bonus, bare_wound_bonus)
+
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		for(var/obj/item/clothing/shredded as anything in human_owner.get_clothing_on_part(src))
+			if(woundtype == WOUND_SLASH)
+				shredded.take_damage_zone(body_zone, damage, BRUTE)
+			else if(woundtype == WOUND_BURN && damage >= 10) // lazy way to block freezing from shredding clothes without adding another var onto apply_damage()
+				shredded.take_damage_zone(body_zone, damage, BURN)
 
 	// checks outright dismemberment
 	if(injury_roll > WOUND_DISMEMBER_OUTRIGHT_THRESH && prob(get_damage() / max_damage * 100) && can_dismember())
@@ -134,7 +142,7 @@
 
 		var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[iterated_path]
 		var/specific_injury_roll = (injury_roll + series_wounding_mods[pregen_data.wound_series])
-		if (pregen_data.get_threshold_for(src, attack_direction, damage_source) > specific_injury_roll)
+		if (pregen_data.get_threshold_for(src) > specific_injury_roll)
 			possible_wounds -= iterated_path
 			continue
 
@@ -160,15 +168,15 @@
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	if (isnull(potential_wound))
-		return
+		return null
 
 	var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[potential_wound]
 	for(var/datum/wound/existing_wound as anything in wounds)
 		var/datum/wound_pregen_data/existing_pregen_data = existing_wound.get_pregen_data()
 		if (existing_pregen_data.wound_series == pregen_data.wound_series)
 			if(existing_wound.severity < initial(potential_wound.severity)) // we only try if the existing one is inferior to the one we're trying to force
-				existing_wound.replace_wound(new potential_wound, smited)
-			return
+				return existing_wound.replace_wound(new potential_wound, smited)
+			return null
 
 	var/datum/wound/new_wound = new potential_wound
 	new_wound.apply_wound(src, smited = smited, wound_source = wound_source)
@@ -232,7 +240,7 @@
 	var/datum/wound/wound_path = get_corresponding_wound_type(type_list, src, severity, duplicates_allowed = TRUE, care_about_existing_wounds = FALSE)
 	if (wound_path)
 		var/datum/wound_pregen_data/pregen_data = GLOB.all_wound_pregen_data[wound_path]
-		return pregen_data.get_threshold_for(src, damage_source = wound_source)
+		return pregen_data.get_threshold_for(src)
 
 	return return_value_if_no_wound
 
@@ -246,25 +254,13 @@
  * Arguments:
  * * It's the same ones on [/obj/item/bodypart/proc/receive_damage]
  */
-/obj/item/bodypart/proc/check_woundings_mods(wounding_type, damage, wound_bonus, bare_wound_bonus)
+/obj/item/bodypart/proc/check_woundings_mods(wounding_type, wound_bonus, bare_wound_bonus)
 	SHOULD_CALL_PARENT(TRUE)
 
-	var/armor_ablation = 0
 	var/injury_mod = 0
-
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		for(var/obj/item/clothing/clothes as anything in human_owner.get_clothing_on_part(src))
-			// unlike normal armor checks, we tabluate these piece-by-piece manually so we can also pass on appropriate damage the clothing's limbs if necessary
-			armor_ablation += clothes.get_armor_rating(WOUND)
-			if(wounding_type == WOUND_SLASH)
-				clothes.take_damage_zone(body_zone, damage, BRUTE)
-			else if(wounding_type == WOUND_BURN && damage >= 10) // lazy way to block freezing from shredding clothes without adding another var onto apply_damage()
-				clothes.take_damage_zone(body_zone, damage, BURN)
-
-		if(!armor_ablation)
-			injury_mod += bare_wound_bonus
-
+	var/armor_ablation = owner.getarmor(body_zone, WOUND)
+	if(armor_ablation <= 0)
+		injury_mod += bare_wound_bonus
 	injury_mod -= armor_ablation
 	injury_mod += wound_bonus
 
