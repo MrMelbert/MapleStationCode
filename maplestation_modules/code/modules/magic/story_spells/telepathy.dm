@@ -1,4 +1,4 @@
-#define SENDING_MANA_COST 10
+#define SENDING_MANA_COST 7
 
 /datum/action/cooldown/spell/list_target/telepathy/mana
 	name = "Sending"
