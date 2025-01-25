@@ -187,7 +187,7 @@
 /// Returns an appropriate missing eyes overlay
 /obj/item/bodypart/head/proc/get_eyeless_overlay(can_rotate = TRUE)
 	RETURN_TYPE(/image)
-	var/eyeless_icon = owner?.missing_eye_file || 'icons/mob/human/human_face.dmi' // NON-MODULE CHANGE
+	var/eyeless_icon = missing_eye_file || 'icons/mob/human/human_face.dmi' // NON-MODULE CHANGE
 	var/eyeless_icon_state = "eyes_missing"
 
 	var/image/eyeless_overlay
