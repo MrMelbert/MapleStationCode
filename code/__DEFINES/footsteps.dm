@@ -153,8 +153,8 @@ GLOBAL_LIST_INIT(footstep, list(
 			'maplestation_modules/sound/footstep/tile3.ogg' = 6,
 			'maplestation_modules/sound/footstep/tile4.ogg' = 1,
 		),
-		FOOTSTEP_VOLUME = 50,
-		FOOTSTEP_RANGE = 0,
+		FOOTSTEP_VOLUME = 25,
+		FOOTSTEP_RANGE = 1,
 	),
 ))
 //bare footsteps lists
