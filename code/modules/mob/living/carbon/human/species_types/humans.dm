@@ -79,6 +79,16 @@
 		'sound/voice/human/manlaugh2.ogg',
 	)
 
+/datum/species/human/get_snore_sound(mob/living/carbon/human/human)
+	if(human.physique == FEMALE)
+		return SFX_SNORE_FEMALE
+	return SFX_SNORE_MALE
+
+/datum/species/human/get_sigh_sound(mob/living/carbon/human/human)
+	if(human.physique == FEMALE)
+		return SFX_FEMALE_SIGH
+	return SFX_MALE_SIGH
+
 /datum/species/human/get_species_description()
 	return "Humans are the dominant species in the known galaxy. \
 		Their kind extend from old Earth to the edges of known space."

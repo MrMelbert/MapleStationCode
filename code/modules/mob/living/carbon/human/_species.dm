@@ -1285,6 +1285,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/get_cry_sound(mob/living/carbon/human/human)
 	return
 
+/// Returns the species' sigh sound.
+/datum/species/proc/get_sigh_sound(mob/living/carbon/human/human)
+	return
+
 /// Returns the species' cough sound.
 /datum/species/proc/get_cough_sound(mob/living/carbon/human/human)
 	return
@@ -1295,6 +1299,10 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /// Returns the species' sneeze sound.
 /datum/species/proc/get_sneeze_sound(mob/living/carbon/human/human)
+	return
+
+/// Returns the species' snore sound.
+/datum/species/proc/get_snore_sound(mob/living/carbon/human/human)
 	return
 
 /datum/species/proc/get_types_to_preload()

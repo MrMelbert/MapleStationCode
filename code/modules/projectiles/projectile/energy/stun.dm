@@ -285,6 +285,7 @@
 	name = "Tased!"
 	desc = "Taser electrodes are shocking you! You can click this or resist to try to remove them."
 	icon_state = "stun"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/tazed/Click(location, control, params)
 	. = ..()
