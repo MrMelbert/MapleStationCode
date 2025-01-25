@@ -91,6 +91,8 @@
 		/// Can this head be dismembered normally?
 		can_dismember = FALSE
 
+	var/missing_eye_file = 'icons/mob/human/human_face.dmi'
+
 /obj/item/bodypart/head/Destroy()
 	QDEL_NULL(worn_ears_offset)
 	QDEL_NULL(worn_glasses_offset)
@@ -188,7 +190,7 @@
 			. += eye_left
 			. += eye_right
 		else if(!eyes && (head_flags & HEAD_EYEHOLES))
-			var/image/no_eyes = image(owner?.missing_eye_file || 'icons/mob/human/human_face.dmi', "eyes_missing", -BODY_LAYER, SOUTH) // NON-MODULE CHANGE / UPSTREAM ME
+			var/image/no_eyes = image(missing_eye_file || 'icons/mob/human/human_face.dmi', "eyes_missing", -BODY_LAYER, SOUTH) // NON-MODULE CHANGE / UPSTREAM ME
 			worn_face_offset?.apply_offset(no_eyes)
 			. += no_eyes
 
