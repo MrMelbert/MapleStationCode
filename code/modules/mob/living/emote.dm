@@ -88,7 +88,38 @@
 	key = "dance"
 	key_third_person = "dances"
 	message = "dances around happily."
-	hands_use_check = TRUE
+	cooldown = 2.5 SECONDS
+
+/datum/emote/living/dance/can_run_emote(mob/living/user, status_check = TRUE, intentional)
+	return can_dance(user) && user.num_legs >= 2 && ..()
+
+/datum/emote/living/dance/proc/can_dance(mob/living/user)
+	if(QDELETED(user) || user.incapacitated(IGNORE_RESTRAINTS) || user.body_position != STANDING_UP)
+		return FALSE
+	return TRUE
+
+/datum/emote/living/dance/run_emote(mob/user, params, type_override, intentional)
+	. = ..()
+	if(!.)
+		return
+	INVOKE_ASYNC(src, PROC_REF(dance_animation), user)
+
+/datum/emote/living/dance/proc/dance_animation(mob/living/user)
+	for(var/i in 1 to 8)
+		switch(i)
+			if(1, 7)
+				animate(user, pixel_w = user.pixel_w + 6, time = 0.5 SECONDS)
+			if(3, 5)
+				animate(user, pixel_w = user.pixel_w - 6, time = 0.5 SECONDS)
+			else
+				user.setDir(turn(user.dir, 90))
+		sleep(0.25 SECONDS)
+		if(!can_dance(user))
+			user.pixel_w = user.base_pixel_w
+			return
+		if(user.num_legs < 2)
+			user.Knockdown(2 SECONDS)
+			return
 
 /datum/emote/living/deathgasp
 	key = "deathgasp"
@@ -381,13 +412,19 @@
 	message = "sighs."
 	message_mime = "acts out an exaggerated silent sigh."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
+	vary = TRUE
 
 /datum/emote/living/sigh/run_emote(mob/living/user, params, type_override, intentional)
 	. = ..()
-	if(!ishuman(user))
+	if(!. || !ishuman(user))
 		return
 	var/image/emote_animation = image('icons/mob/human/emote_visuals.dmi', user, "sigh")
 	flick_overlay_global(emote_animation, GLOB.clients, 2.0 SECONDS)
+
+/datum/emote/living/sigh/get_sound(mob/living/carbon/human/user)
+	if(!istype(user))
+		return
+	return user.dna.species.get_sigh_sound(user)
 
 /datum/emote/living/sit
 	key = "sit"
@@ -432,6 +469,12 @@
 	message_mime = "sleeps soundly."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = UNCONSCIOUS
+
+// eventually we want to give species their own "snoring" sounds
+/datum/emote/living/snore/get_sound(mob/living/carbon/human/user)
+	if(!istype(user))
+		return
+	return user.dna.species.get_snore_sound(user)
 
 /datum/emote/living/stare
 	key = "stare"

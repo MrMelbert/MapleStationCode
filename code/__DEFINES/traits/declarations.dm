@@ -1060,4 +1060,13 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Trait which means whatever has this is dancing by a dance machine
 #define TRAIT_DISCO_DANCER "disco_dancer"
 
+/// Humans with this trait do not blink
+#define TRAIT_PREVENT_BLINKING "prevent_blinking"
+
+/// Prevents animations for blinking from looping
+#define TRAIT_PREVENT_BLINK_LOOPS "prevent_blink_loops"
+
+/// Mob doesn't get closed eyelids overlay when it gets knocked out cold or dies
+#define TRAIT_NO_EYELIDS "no_eyelids"
+
 // END TRAIT DEFINES
