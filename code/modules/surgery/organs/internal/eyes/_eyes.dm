@@ -76,7 +76,6 @@
 
 /obj/item/organ/internal/eyes/on_mob_insert(mob/living/carbon/receiver, special, movement_flags)
 	. = ..()
-	// melbert todo check this
 	if(ishuman(receiver))
 		var/mob/living/carbon/human/human_recipient = receiver
 		old_eye_color_left = human_recipient.eye_color_left
