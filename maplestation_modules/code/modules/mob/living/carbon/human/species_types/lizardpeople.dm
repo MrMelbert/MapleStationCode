@@ -19,10 +19,11 @@
 	human.update_body(is_creating = TRUE)
 
 /obj/item/organ/internal/tongue/lizard
-	speech_sound_only_normal = TRUE
 	// These sounds have been ported from Goonstation.
 	speech_sound_list = list(
 		'maplestation_modules/sound/voice/lizard_1.ogg' = 80,
 		'maplestation_modules/sound/voice/lizard_2.ogg' = 80,
 		'maplestation_modules/sound/voice/lizard_3.ogg' = 80,
 	)
+	speech_sound_list_question = null
+	speech_sound_list_exclamation = null

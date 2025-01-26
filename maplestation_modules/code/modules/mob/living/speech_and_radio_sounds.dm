@@ -56,20 +56,21 @@
 		return ..()
 	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		return null
-	var/obj/item/organ/internal/tongue/tongue = src?.get_organ_slot(ORGAN_SLOT_TONGUE)
-	if(isnull(tongue))
+	var/obj/item/organ/internal/tongue/tongue = get_organ_slot(ORGAN_SLOT_TONGUE)
+	if(isnull(tongue) || !tongue.speech_sounds_enabled)
 		return null
-	if(!tongue.speech_sounds_enabled)
-		return null
-	if(tongue.speech_sound_only_normal)
-		sound_type = SOUND_NORMAL
 	switch(sound_type)
-		if(SOUND_NORMAL)
-			return string_assoc_list(tongue.speech_sound_list)
 		if(SOUND_QUESTION)
-			return string_assoc_list(tongue.speech_sound_list_question)
+			if(length(tongue.speech_sound_list_question))
+				return string_assoc_list(tongue.speech_sound_list_question)
+
 		if(SOUND_EXCLAMATION)
-			return string_assoc_list(tongue.speech_sound_list_exclamation)
+			if(length(tongue.speech_sound_list_exclamation))
+				return string_assoc_list(tongue.speech_sound_list_exclamation)
+
+	// sound type is normal, OR an unrecognized value, OR we don't have a question/exclamation sound
+	if(length(tongue.speech_sound_list))
+		return string_assoc_list(tongue.speech_sound_list)
 	return null
 
 /mob/living/basic/robot_customer/get_speech_sounds(sound_type)

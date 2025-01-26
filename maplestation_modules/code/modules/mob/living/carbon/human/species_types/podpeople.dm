@@ -74,8 +74,9 @@
 	return perks
 
 /obj/item/organ/internal/tongue/pod
-	speech_sound_only_normal = TRUE
 	speech_sound_list = list(
 		'maplestation_modules/sound/voice/pod.ogg' = 70,
 		'maplestation_modules/sound/voice/pod2.ogg' = 60,
 		)
+	speech_sound_list_question = null
+	speech_sound_list_exclamation = null
