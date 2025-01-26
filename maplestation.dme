@@ -6171,6 +6171,7 @@
 #include "maplestation_modules\code\game\machinery\towel_rack.dm"
 #include "maplestation_modules\code\game\objects\unique_examine_items.dm"
 #include "maplestation_modules\code\game\objects\effects\landmarks.dm"
+#include "maplestation_modules\code\game\objects\effects\posters.dm"
 #include "maplestation_modules\code\game\objects\effects\decals\turfdecal\textured.dm"
 #include "maplestation_modules\code\game\objects\effects\decals\turfdecal\tile.dm"
 #include "maplestation_modules\code\game\objects\effects\temporary_visuals\projectiles\impact.dm"
