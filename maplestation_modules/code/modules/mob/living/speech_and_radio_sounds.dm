@@ -56,7 +56,21 @@
 		return ..()
 	if(HAS_TRAIT(src, TRAIT_SIGN_LANG))
 		return null
-	return dna?.species?.get_species_speech_sounds(sound_type)
+	var/obj/item/organ/internal/tongue/tongue = src?.get_organ_slot(ORGAN_SLOT_TONGUE)
+	if(isnull(tongue))
+		return null
+	if(!tongue.speech_sounds_enabled)
+		return null
+	if(tongue.speech_sound_only_normal)
+		sound_type = SOUND_NORMAL
+	switch(sound_type)
+		if(SOUND_NORMAL)
+			return string_assoc_list(tongue.speech_sound_list)
+		if(SOUND_QUESTION)
+			return string_assoc_list(tongue.speech_sound_list_question)
+		if(SOUND_EXCLAMATION)
+			return string_assoc_list(tongue.speech_sound_list_exclamation)
+	return null
 
 /mob/living/basic/robot_customer/get_speech_sounds(sound_type)
 	var/datum/customer_data/customer_info = ai_controller?.blackboard[BB_CUSTOMER_CUSTOMERINFO]

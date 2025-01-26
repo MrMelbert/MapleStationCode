@@ -2,9 +2,6 @@
 /datum/species/pod
 	species_pain_mod = 1.05
 
-/datum/species/pod/get_species_speech_sounds(sound_type)
-	return string_assoc_list(list('maplestation_modules/sound/voice/pod.ogg' = 70, 'maplestation_modules/sound/voice/pod2.ogg' = 60))
-
 /datum/species/pod/prepare_human_for_preview(mob/living/carbon/human/human)
 	human.dna.features["mcolor"] = "#886600" // player reference :smug:
 	human.dna.features["pod_hair"] = "Rose"
@@ -75,3 +72,10 @@
 			podpeople are more vulnerable to fire.",
 	))
 	return perks
+
+/obj/item/organ/internal/tongue/pod
+	speech_sound_only_normal = TRUE
+	speech_sound_list = list(
+		'maplestation_modules/sound/voice/pod.ogg' = 70,
+		'maplestation_modules/sound/voice/pod2.ogg' = 60,
+		)
