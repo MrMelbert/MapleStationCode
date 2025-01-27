@@ -36,6 +36,8 @@
 #define T20C CELCIUS_TO_KELVIN(20 CELCIUS)
 /// -14C - Temperature used for kitchen cold room, medical freezer, etc.
 #define COLD_ROOM_TEMP CELCIUS_TO_KELVIN(-14 CELCIUS)
+/// -60C - Temperature used for body preservation
+#define BODY_PRESERVATION_TEMP CELCIUS_TO_KELVIN(-60 CELCIUS)
 
 /**
  *I feel the need to document what happens here. Basically this is used
