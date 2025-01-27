@@ -24,10 +24,10 @@
 	for(var/mob/living/trashed_individual in src)
 		if(prob(20))
 			playsound(loc, 'sound/effects/clang.ogg', 30, TRUE, FALSE)
-		else if(CONFIG_GET(number/disposals_damage_chance))
+		else if(prob(CONFIG_GET(number/disposals_damage_chance)))
 			trashed_individual.apply_damage(2 * CONFIG_GET(number/disposals_damage_multiplier), BRUTE)
 			playsound(loc, 'sound/effects/wounds/crack2.ogg', 50, TRUE, FALSE)
-		else if(CONFIG_GET(number/disposals_pain_chance))
+		else if(prob(CONFIG_GET(number/disposals_pain_chance)))
 			var/mob/living/carbon/carbon_trashed = trashed_individual
 			playsound(loc, 'sound/effects/wounds/crack1.ogg', 50, TRUE, FALSE)
 			carbon_trashed.sharp_pain(pick(BODY_ZONES_ALL), 4 * CONFIG_GET(number/disposals_damage_multiplier), BRUTE)
