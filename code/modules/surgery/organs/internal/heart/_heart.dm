@@ -147,6 +147,14 @@
 /obj/item/organ/internal/heart/get_availability(datum/species/owner_species, mob/living/owner_mob)
 	return owner_species.mutantheart
 
+/// Gets the mob's heart rate as bpm (0 to 200(+))
+/mob/living/proc/get_bpm()
+	var/heart_rate = get_heart_rate()
+	if(heart_rate <= 0)
+		return 0
+
+	return heart_rate * 10 + rand(-10, 15)
+
 /// Gets the mob's heart rate scaled from 0 to 20(+)
 /mob/living/proc/get_heart_rate()
 	if(stat == DEAD)
@@ -154,19 +162,9 @@
 
 	return rand(7, 9)
 
-/// Gets the mob's heart rate as bpm
-/mob/living/proc/get_bpm()
-	return get_heart_rate() * 10 + rand(-10, 10)
-
 /mob/living/carbon/human/get_heart_rate()
-	if(stat == DEAD)
-		return 0
-
 	var/obj/item/organ/internal/heart/heart = get_organ_slot(ORGAN_SLOT_HEART)
 	return heart?.get_heart_rate() || 0
-
-/mob/living/carbon/human/get_bpm()
-	return get_heart_rate() * 10 + rand(-10, 15)
 
 /// Gets the heart rate of the heart, scaled from 0 to 20(+)
 /obj/item/organ/internal/heart/proc/get_heart_rate()
@@ -180,9 +178,10 @@
 	base_amount += round(owner.pain_controller?.get_total_pain() / 50, 0.5)
 	base_amount += round(owner.pain_controller?.traumatic_shock / 25, 0.5)
 	base_amount += round((BLOOD_VOLUME_NORMAL - owner.blood_volume) / 250, 0.5)
+	base_amount -= round((CONSCIOUSNESS_MAX - owner.consciousness) / 25, 0.5)
 	var/damage_multiplier = clamp(1.5 * ((maxHealth - damage) / maxHealth), 0.5, 1)
 
-	return round(base_amount * damage_multiplier, 0.5)
+	return clamp(round(base_amount * damage_multiplier, 0.5), 1, 100)
 
 /obj/item/organ/internal/heart/cursed
 	name = "cursed heart"
