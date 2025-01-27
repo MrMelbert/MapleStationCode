@@ -52,6 +52,8 @@
 	var/sound
 	/// Used for the honk borg emote.
 	var/vary = FALSE
+	/// If this emote's sound is affected by TTS pitch
+	var/affected_by_pitch = TRUE
 	/// Can only code call this event instead of the player.
 	var/only_forced_audio = FALSE
 	/// The cooldown between the uses of the emote.
@@ -103,10 +105,30 @@
 
 	user.log_message(msg, LOG_EMOTE)
 
-	var/tmp_sound = get_sound(user)
+	var/sound/tmp_sound = get_sound(user)
 	if(tmp_sound && should_play_sound(user, intentional) && TIMER_COOLDOWN_FINISHED(user, type))
+		var/do_vary = vary
+		if(do_vary && affected_by_pitch && isliving(user))
+			if(!istype(tmp_sound))
+				tmp_sound = sound(get_sfx(tmp_sound))
+			var/mob/living/emoter = user
+			var/user_mod = 1
+			if(emoter.speech_sound_pitch_modifier != 1)
+				user_mod = round(sqrt(emoter.speech_sound_pitch_modifier), 0.1)
+			if(emoter.speech_sound_frequency_modifier != 1)
+				user_mod = round(sqrt(emoter.speech_sound_frequency_modifier), 0.1)
+			// here is where variation is factored in
+			user_mod = clamp(user_mod + pick(-0.1, 0, 0.1), 0.5, 2)
+			// so subtypes can set custom frequencies
+			tmp_sound.frequency ||= 1
+			// regardless of pitch or frequency, we will always use frequency,
+			// because it sounds better for these quick sounds
+			tmp_sound.frequency *= user_mod
+			// otherwise it will override what we just set
+			do_vary = FALSE
+
 		TIMER_COOLDOWN_START(user, type, audio_cooldown)
-		playsound(user, tmp_sound, 50, vary)
+		playsound(user, tmp_sound, 50, do_vary)
 
 	var/is_important = emote_type & EMOTE_IMPORTANT
 	var/is_visual = emote_type & EMOTE_VISIBLE
