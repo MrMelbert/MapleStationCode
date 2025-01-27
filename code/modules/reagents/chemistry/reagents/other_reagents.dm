@@ -1012,11 +1012,24 @@
 
 /datum/reagent/potassium
 	name = "Potassium"
-	description = "A soft, low-melting solid that can easily be cut with a knife. Reacts violently with water."
+	description = "A soft, low-melting solid that can easily be cut with a knife. Reacts violently with water. \
+		Often used medicinally to treat low blood pressure, but can be dangerous in high doses."
 	reagent_state = SOLID
 	color = "#A0A0A0" // rgb: 160, 160, 160
 	taste_description = "sweetness"
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/potassium/on_mob_life(mob/living/carbon/affected_mob, seconds_per_tick, times_fired)
+	. = ..()
+	if(volume > 10)
+		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_low")
+	if(volume > 20)
+		ADD_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_high")
+
+/datum/reagent/potassium/on_mob_end_metabolize(mob/living/affected_mob)
+	. = ..()
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_low")
+	REMOVE_TRAIT(affected_mob, TRAIT_HEART_RATE_BOOST, "[type]_high")
 
 /datum/reagent/mercury
 	name = "Mercury"
