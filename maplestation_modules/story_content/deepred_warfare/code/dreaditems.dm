@@ -58,7 +58,9 @@
 /obj/item/encryptionkey/redtech
 	channels = list(RADIO_CHANNEL_COMMAND = 1, RADIO_CHANNEL_SECURITY = 1, RADIO_CHANNEL_ENGINEERING = 1, RADIO_CHANNEL_SCIENCE = 1, RADIO_CHANNEL_MEDICAL = 1, RADIO_CHANNEL_SUPPLY = 1, RADIO_CHANNEL_SERVICE = 1, RADIO_CHANNEL_AI_PRIVATE = 1, RADIO_CHANNEL_SYNDICATE = 1)
 	translate_binary = TRUE
-	translated_language = /datum/language/machine
+	language_data = list(
+		/datum/language/machine = 100,
+	)
 	syndie = TRUE
 	greyscale_config = /datum/greyscale_config/encryptionkey_syndicate
 	greyscale_colors = "#171717#990000"
