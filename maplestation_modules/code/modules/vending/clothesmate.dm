@@ -16,6 +16,7 @@
 				/obj/item/clothing/under/spacer_turtleneck/plain = 3,
 				/obj/item/clothing/under/spacer_turtleneck/skirt = 3,
 				/obj/item/clothing/under/spacer_turtleneck/skirt/plain = 3,
+				/obj/item/clothing/under/mvfjumpsuit = 3,
 				/obj/item/clothing/under/arbitersuit = 2,
 				/obj/item/clothing/under/chesedsuit = 2,
 			),
