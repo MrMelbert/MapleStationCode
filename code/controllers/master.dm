@@ -340,7 +340,7 @@ GLOBAL_REAL(Master, /datum/controller/master)
 			screen_display = "<font color='yellow'>ERRORED</font>"
 			always_show = TRUE
 
-	if(screen_display && (always_show || (seconds > 0.01 && !(subsystem.flags & SS_NO_INIT_MESSAGE))))
+	if(screen_display && (always_show || (seconds > 0.1 && !(subsystem.flags & SS_NO_INIT_MESSAGE))))
 		SStitle.add_init_text(subsystem.type, "- [subsystem.name]", screen_display, seconds, major_update = TRUE)
 	else
 		SStitle.remove_init_text(subsystem.type)

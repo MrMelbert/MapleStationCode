@@ -156,7 +156,7 @@ SUBSYSTEM_DEF(mapping)
 		load_all_away_missions()
 		SStitle.add_init_text("Away Mission", "> All Away Missions", "<font color='green'>DONE</font>", (REALTIMEOFDAY - start_time) / (1 SECONDS))
 	else
-		SStitle.add_init_text("Away Mission", "> Away Mission", "<font color='yellow'>SKIPPED</font>", (REALTIMEOFDAY - start_time) / (1 SECONDS))
+		SStitle.add_init_text("Away Mission", "> Away Mission", "<font color='yellow'>SKIPPED</font>")
 
 	start_time = REALTIMEOFDAY
 	SStitle.add_init_text("Ruins", "> Ruins", "<font color='yellow'>LOADING...</font>")

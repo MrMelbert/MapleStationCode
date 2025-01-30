@@ -82,6 +82,8 @@ SUBSYSTEM_DEF(title)
 	previous_icon = SStitle.previous_icon
 	init_infos = SStitle.init_infos
 
+#define MAX_INIT_TEXT 40
+
 /**
  * Adds an entry to the initialization information list
  *
@@ -102,8 +104,11 @@ SUBSYSTEM_DEF(title)
 		init_infos[init_category][3] += seconds
 	if(major_update)
 		num_dots = (num_dots % 6 + 1)
+	if(length(init_infos) > MAX_INIT_TEXT)
+		init_infos.Cut(1, length(init_infos) - MAX_INIT_TEXT + 1)
 	update_init_text()
 
+#undef MAX_INIT_TEXT
 
 /// Removes the passed category from the initialization information list
 /datum/controller/subsystem/title/proc/remove_init_text(init_category)
