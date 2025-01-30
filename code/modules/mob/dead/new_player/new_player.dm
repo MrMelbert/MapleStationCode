@@ -434,7 +434,7 @@
 		to_chat(src, span_danger("You have been banned from lobby chat."))
 		return
 
-	message = copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN)
+	message = trim(sanitize(message), MAX_MESSAGE_LEN)
 	var/list/filter_result = is_ooc_filtered(message)
 	if (!CAN_BYPASS_FILTER(mob) && filter_result)
 		REPORT_CHAT_FILTER_TO_USER(src, filter_result)
@@ -446,7 +446,7 @@
 			return
 		message_admins("[ADMIN_LOOKUPFLW(src)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term. Message: \"[message]\"")
 		log_admin_private("[key_name(src)] has passed the soft filter for \"[soft_filter_result[CHAT_FILTER_INDEX_WORD]]\" they may be using a disallowed term. Message: \"[message]\"")
-	if(!message)
+	if(!message || QDELETED(src))
 		return
 	mob.log_talk(message, LOG_OOC)
 	message = "<span class='message linkify'>[emoji_parse(message)]</span>"

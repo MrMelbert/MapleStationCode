@@ -55,8 +55,7 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 	if(QDELETED(src))
 		return
 
-	msg = copytext_char(sanitize(msg), 1, MAX_MESSAGE_LEN)
-
+	msg = trim(sanitize(msg), MAX_MESSAGE_LEN)
 	if(!msg)
 		return
 
