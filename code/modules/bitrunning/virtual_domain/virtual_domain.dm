@@ -37,6 +37,8 @@
 	 * Player customization
 	 */
 
+	/// Any restrictions this domain has on what external sources can load in
+	var/external_load_flags = NONE
 	/// Any outfit that you wish to force on avatars. Overrides preferences
 	var/datum/outfit/forced_outfit
 
