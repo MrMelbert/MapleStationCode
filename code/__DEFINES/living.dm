@@ -146,6 +146,7 @@
 /// Updates associated self-huds on the mob
 #define UPDATE_SELF (UPDATE_SELF_DAMAGE | UPDATE_SELF_HEALTH)
 
+// Used in living mob offset list for determining pixel offsets
 #define PIXEL_W_OFFSET "w"
 #define PIXEL_X_OFFSET "x"
 #define PIXEL_Y_OFFSET "y"
