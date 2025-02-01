@@ -181,6 +181,10 @@
 	rider.add_offsets(RIDING_SOURCE, x_add = x_offset, y_add = y_offset, animate = animate)
 	rider.layer = layer
 
+#undef GET_X_OFFSET
+#undef GET_Y_OFFSET
+#undef GET_LAYER
+
 /**
  * Determines where riders get offset while riding
  *
@@ -307,3 +311,6 @@
 	if((living_hitter in source.buckled_mobs))
 		return
 	return COMPONENT_CANCEL_ATTACK_CHAIN
+
+#undef RIDING_SOURCE
+#undef BEING_RIDDEN_SOURCE
