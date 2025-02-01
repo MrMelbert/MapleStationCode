@@ -58,15 +58,15 @@
 /datum/component/pixel_shift/proc/unpixel_shift()
 	SIGNAL_HANDLER
 	var/mob/living/owner = parent
-	owner.remove_offsets(REF(src))
+	owner.remove_offsets(type)
 	qdel(src)
 
 /// In-turf pixel movement which can allow things to pass through if the threshold is met.
 /datum/component/pixel_shift/proc/pixel_shift(mob/source, direct)
 	passthroughable = NONE
 	var/mob/living/owner = parent
-	var/new_x = owner.offsets?[PIXEL_X_OFFSET]?[REF(src)] || 0
-	var/new_y = owner.offsets?[PIXEL_Y_OFFSET]?[REF(src)] || 0
+	var/new_x = owner.has_offset(type, PIXEL_X_OFFSET)
+	var/new_y = owner.has_offset(type, PIXEL_Y_OFFSET)
 
 	switch(direct)
 		if(NORTH)
@@ -82,7 +82,7 @@
 			if(owner.pixel_x >= -maximum_pixel_shift + owner.base_pixel_x)
 				new_x--
 
-	owner.add_offsets(REF(src), x_add = new_x, y_add = new_y)
+	owner.add_offsets(type, x_add = new_x, y_add = new_y)
 
 	// Yes, I know this sets it to true for everything if more than one is matched.
 	// Movement doesn't check diagonals, and instead just checks EAST or WEST, depending on where you are for those.
