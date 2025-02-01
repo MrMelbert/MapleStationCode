@@ -1066,4 +1066,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Mob doesn't get closed eyelids overlay when it gets knocked out cold or dies
 #define TRAIT_NO_EYELIDS "no_eyelids"
 
+/// Apply this trait to mobs which can buckle humans
+#define TRAIT_CAN_MOUNT_HUMANS "can_mount_humans"
+/// Apply this trait to mobs which can buckle cyborgs
+#define TRAIT_CAN_MOUNT_CYBORGS "can_mount_cyborgs"
+
 // END TRAIT DEFINES

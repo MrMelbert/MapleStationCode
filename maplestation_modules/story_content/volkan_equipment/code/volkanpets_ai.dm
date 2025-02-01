@@ -57,8 +57,10 @@
 /mob/living/basic/volkan/shoulder_pet/proc/toggle_perched(perched)
 	if(!perched)
 		REMOVE_TRAIT(src, TRAIT_PARROT_PERCHED, TRAIT_GENERIC)
+		remove_offsets("perched")
 	else
 		ADD_TRAIT(src, TRAIT_PARROT_PERCHED, TRAIT_GENERIC)
+		add_offsets("perched", y_add = 9)
 	update_appearance(UPDATE_ICON_STATE)
 
 // - AI CONTROLLER -
