@@ -23,8 +23,6 @@
 /datum/status_effect/staggered/on_remove()
 	UnregisterSignal(owner, list(COMSIG_LIVING_DEATH, SIGNAL_ADDTRAIT(TRAIT_NO_STAGGER)))
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/staggered)
-	// Resetting both X on remove so we're back to normal
-	animate(owner, pixel_w = owner.base_pixel_w, time = 0.2 SECONDS, flags = ANIMATION_PARALLEL)
 
 /// Signal proc that self deletes our staggered effect
 /datum/status_effect/staggered/proc/clear_staggered(datum/source)
@@ -33,11 +31,17 @@
 	qdel(src)
 
 /datum/status_effect/staggered/tick(seconds_between_ticks)
-	animate_stagger()
-
-/datum/status_effect/staggered/proc/animate_stagger()
-	if(!owner.appears_alive())
+	//you can't stagger the dead - in case somehow you die mid-stagger
+	if(owner.stat == DEAD || HAS_TRAIT(owner, TRAIT_NO_STAGGER))
+		qdel(src)
 		return
-	animate(owner, pixel_w = 2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
-	animate(pixel_w = -4, time = 0.4 SECONDS, flags = ANIMATION_RELATIVE)
-	animate(pixel_w = 2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
+	if(HAS_TRAIT(owner, TRAIT_FAKEDEATH))
+		return
+	INVOKE_ASYNC(owner, TYPE_PROC_REF(/mob/living, do_stagger_animation))
+
+/// Helper proc that causes the mob to do a stagger animation.
+/// Doesn't change significantly, just meant to represent swaying back and forth
+/mob/living/proc/do_stagger_animation()
+	animate(src, pixel_w = 3, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
+	animate(pixel_w = -6, time = 0.4 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_w = 3, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)

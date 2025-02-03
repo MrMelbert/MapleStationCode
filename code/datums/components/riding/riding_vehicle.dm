@@ -179,25 +179,33 @@
 /datum/component/riding/vehicle/scooter/get_rider_offsets_and_layers(pass_index, mob/offsetter)
 	if(iscyborg(offsetter))
 		return list(
-			TEXT_NORTH = list(0, 0),
-			TEXT_SOUTH = list(0, 0),
-			TEXT_EAST =  list(0, 0),
-			TEXT_WEST =  list(2, 0),
+			TEXT_NORTH = list(0, 2),
+			TEXT_SOUTH = list(0, 2),
+			TEXT_EAST =  list(0, 2),
+			TEXT_WEST =  list(2, 2),
 		)
 	return list(
-		TEXT_NORTH = list( 2, 0),
-		TEXT_SOUTH = list(-2, 0),
-		TEXT_EAST =  list( 0, 0),
-		TEXT_WEST =  list( 2, 0),
+		TEXT_NORTH = list( 2, 2),
+		TEXT_SOUTH = list(-2, 2),
+		TEXT_EAST =  list( 0, 2),
+		TEXT_WEST =  list( 2, 2),
 	)
 
 /datum/component/riding/vehicle/scooter/skateboard
 	vehicle_move_delay = 1.5
 	ride_check_flags = RIDER_NEEDS_LEGS | UNBUCKLE_DISABLED_RIDER
 
+/datum/component/riding/vehicle/scooter/skateboard/get_rider_offsets_and_layers(pass_index, mob/offsetter)
+	return list(
+		TEXT_NORTH = list(0, 5),
+		TEXT_SOUTH = list(0, 5),
+		TEXT_EAST =  list(0, 5),
+		TEXT_WEST =  list(2, 5),
+	)
+
 /datum/component/riding/vehicle/scooter/skateboard/get_parent_offsets_and_layers()
 	return list(
-		TEXT_NORTH = list(0, 0, OBJ_LAYER),
+		TEXT_NORTH = list(0, 0, ABOVE_MOB_LAYER),
 		TEXT_SOUTH = list(0, 0, ABOVE_MOB_LAYER),
 		TEXT_EAST =  list(0, 0, OBJ_LAYER),
 		TEXT_WEST =  list(0, 0, OBJ_LAYER),
