@@ -8,8 +8,14 @@
 	ricochets_max = 0
 	ricochet_chance = 0
 	wound_bonus = -30
-	embedding = list(embed_chance=20, fall_chance=2, jostle_chance=2, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=3, jostle_pain_mult=5, rip_time=1 SECONDS)
+	embed_type = /datum/embed_data/bullet/c38/dual_stage
 	embed_falloff_tile = -1.5
+
+/datum/embed_data/bullet/c38/dual_stage
+	embed_chance = 20
+	pain_mult = 2
+	jostle_pain_mult = 4
+	rip_time = 4 SECONDS
 
 /obj/projectile/bullet/c38/dual_stage/fire(angle, atom/direct_target)
 	. = ..()
@@ -43,9 +49,18 @@
 	ricochet_chance = 0
 	weak_against_armour = TRUE
 	wound_bonus = -30
-	embedding = list(embed_chance=50, fall_chance=1, jostle_chance=0, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.2, pain_mult=1, jostle_pain_mult=2, remove_pain_mult = 2, rip_time=1 SECONDS)
+	embed_type = /datum/embed_data/bullet/c38/maginull
 	embed_falloff_tile = -2.5
 	shrapnel_type = /obj/item/shrapnel/bullet/maginull
+
+/datum/embed_data/bullet/c38/maginull
+	embed_chance = 50
+	fall_chance = 1
+	jostle_chance = 0
+	pain_stam_pct = 0.2
+	pain_mult = 1
+	jostle_pain_mult = 2
+	rip_time = 1 SECONDS
 
 /obj/item/shrapnel/bullet/maginull
 	var/mob/living/carbon/spiked_mob
