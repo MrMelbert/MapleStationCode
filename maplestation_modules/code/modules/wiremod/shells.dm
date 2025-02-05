@@ -27,6 +27,7 @@
 	var/datum/port/output/spoken_into
 	var/datum/port/output/sent_message
 	var/datum/port/output/failure
+	var/datum/port/output/entity
 
 	var/blocking_radio = FALSE
 	var/obj/item/radio/headset/shell/attached_shell
@@ -54,6 +55,7 @@
 	spoken_into = add_output_port("Spoken Into", PORT_TYPE_SIGNAL)
 	failure = add_output_port("Failed To Radio", PORT_TYPE_SIGNAL)
 	sent_message = add_output_port("Successfully Sent Message", PORT_TYPE_SIGNAL)
+	entity = add_output_port("User", PORT_TYPE_USER)
 
 /obj/item/circuit_component/headset/proc/new_message(atom/source, mob/living/user, message, channel)
 	SIGNAL_HANDLER
@@ -108,3 +110,8 @@
 /obj/item/circuit_component/headset/proc/send_signal(datum/signal/subspace/vocal/signal)
 	signal.send_to_receivers()
 	sent_message.set_output(COMPONENT_SIGNAL)
+
+/obj/item/circuit_component/headset/equipped(mob/user, slot)
+	. = ..()
+	if(iscarbon(user) && slot == ITEM_SLOT_EARS)
+		entity.set_output(user)
