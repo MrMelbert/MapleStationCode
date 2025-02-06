@@ -39,6 +39,8 @@
 	var/apply_verb = "treating"
 	/// Whether this item can be used on dead bodies
 	var/works_on_dead = FALSE
+	/// Optional flags to supply to can_inject
+	var/can_inject_flags = NONE
 
 /obj/item/stack/medical/interact_with_atom(atom/interacting_with, mob/living/user)
 	if(!isliving(interacting_with))
@@ -233,7 +235,7 @@
 
 /// Checks if the passed patient can be healed by the passed user
 /obj/item/stack/medical/proc/can_heal(mob/living/patient, mob/living/user, healed_zone, silent = FALSE)
-	return patient.try_inject(user, healed_zone, injection_flags = silent ? NONE : INJECT_TRY_SHOW_ERROR_MESSAGE)
+	return patient.try_inject(user, healed_zone, injection_flags = can_inject_flags | (silent ? NONE : INJECT_TRY_SHOW_ERROR_MESSAGE))
 
 /// Checks a bunch of stuff to see if we can heal the patient, including can_heal
 /// Gives a feedback if we can't ultimatly heal the patient (unless silent is TRUE)
@@ -351,6 +353,7 @@
 	other_delay = 2 SECONDS
 	grind_results = list(/datum/reagent/medicine/c2/libital = 10)
 	merge_type = /obj/item/stack/medical/bruise_pack
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -376,6 +379,7 @@
 	drop_sound = 'sound/items/handling/cloth_drop.ogg'
 	apply_verb = "wrapping"
 	works_on_dead = TRUE
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 	/// tracks how many times we've been scrubbed thoroughly
 	var/times_cleaned = 0
 
@@ -588,6 +592,7 @@
 	sanitization = 1
 	grind_results = list(/datum/reagent/medicine/c2/lenturi = 10)
 	merge_type = /obj/item/stack/medical/ointment
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/ointment/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] is squeezing [src] into [user.p_their()] mouth! [user.p_do(TRUE)]n't [user.p_they()] know that stuff is toxic?"))
@@ -611,6 +616,7 @@
 	var/is_open = TRUE ///This var determines if the sterile packaging of the mesh has been opened.
 	grind_results = list(/datum/reagent/medicine/spaceacillin = 2)
 	merge_type = /obj/item/stack/medical/mesh
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/mesh/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
@@ -685,6 +691,7 @@
 	heal_burn = 3
 	grind_results = list(/datum/reagent/consumable/aloejuice = 1)
 	merge_type = /obj/item/stack/medical/aloe
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/aloe/fresh
 	amount = 2
@@ -705,6 +712,7 @@
 	grind_results = list(/datum/reagent/bone_dust = 10, /datum/reagent/carbon = 10)
 	novariants = TRUE
 	merge_type = /obj/item/stack/medical/bone_gel
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/bone_gel/get_surgery_tool_overlay(tray_extended)
 	return "gel" + (tray_extended ? "" : "_out")
@@ -761,6 +769,7 @@
 	merge_type = /obj/item/stack/medical/poultice
 	apply_verb = "applying to"
 	works_on_dead = TRUE
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/poultice/post_heal_effects(amount_healed, mob/living/carbon/healed_mob, mob/living/user)
 	. = ..()
@@ -783,6 +792,7 @@
 	self_delay = 3 SECONDS
 	other_delay = 1 SECONDS
 	grind_results = list(/datum/reagent/medicine/c2/libital = 2)
+	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
 
 /obj/item/stack/medical/bandage/makeshift
 	name = "makeshift bandage"
