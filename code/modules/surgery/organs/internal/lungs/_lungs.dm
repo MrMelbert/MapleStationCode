@@ -655,7 +655,7 @@
 				to_chat(breather, span_boldwarning("You feel air force itself into your lungs!"))
 
 			breather.cause_pain(BODY_ZONE_CHEST, 10, BRUTE)
-			apply_organ_damage(15)
+			apply_organ_damage(maxHealth * 0.075)
 		breather.failed_last_breath = TRUE
 	// Robot, don't care lol
 	else

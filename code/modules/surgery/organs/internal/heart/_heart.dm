@@ -178,8 +178,8 @@
 	base_amount += round(owner.pain_controller?.get_total_pain() / 50, 0.5)
 	base_amount += round(owner.pain_controller?.traumatic_shock / 25, 0.5)
 	base_amount += round((BLOOD_VOLUME_NORMAL - owner.blood_volume) / 250, 0.5)
-	base_amount -= round((CONSCIOUSNESS_MAX - owner.consciousness) / 25, 0.5)
-	var/damage_multiplier = clamp(1.5 * ((maxHealth - damage) / maxHealth), 0.5, 1)
+	base_amount -= round((CONSCIOUSNESS_MAX - owner.consciousness) / 33, 0.5)
+	var/damage_multiplier = clamp(1.75 * ((maxHealth - damage) / maxHealth), 0.5, 1)
 
 	return clamp(round(base_amount * damage_multiplier, 0.5), 1, 100)
 

@@ -148,7 +148,7 @@
 #define LOW_PRESSURE_DAMAGE 2
 
 /// Humans are slowed by the difference between bodytemp and BODYTEMP_COLD_DAMAGE_LIMIT divided by this
-#define COLD_SLOWDOWN_FACTOR 20
+#define COLD_SLOWDOWN_FACTOR 100
 
 
 //CLOTHES

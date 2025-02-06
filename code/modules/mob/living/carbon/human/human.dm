@@ -737,6 +737,7 @@
 	VV_DROPDOWN_OPTION(VV_HK_PURRBATION, "Toggle Purrbation")
 	VV_DROPDOWN_OPTION(VV_HK_APPLY_DNA_INFUSION, "Apply DNA Infusion")
 	VV_DROPDOWN_OPTION(VV_HK_TURN_INTO_MMI, "Turn into MMI")
+	VV_DROPDOWN_OPTION(VV_HK_MAKE_ME_TANKY, "Make This Mob Tankier")
 
 /mob/living/carbon/human/vv_do_topic(list/href_list)
 	. = ..()
@@ -857,7 +858,62 @@
 
 		qdel(src)
 
+	if(href_list[VV_HK_MAKE_ME_TANKY])
+		var/list/options = list(
+			"More effective HP",
+			"Less brute",
+			"Less burn",
+			"Less toxin / oxygen / brain",
+			"Less pain",
+			"Less environmental",
+			"Tougher organs",
+			"Stun resistance",
+			"Health regen",
+		)
+		var/list/picked = list()
+		while(length(options))
+			var/result = tgui_input_list(usr, "Pick something. Select \"Done\" to finish your selection.", "Tanky", options + list("Done", "Cancel"))
+			if(QDELETED(src) || !result || result == "Cancel")
+				return
+			if(result == "Done")
+				break
+			picked += result
+			options -= result
 
+		var/major = tgui_input_list(usr, "REALLY tanky or just a little tanky?", "Tanky", list("Little", "Lot"))
+		if(QDELETED(src) || !major)
+			return
+		major = (major == "Lot")
+
+		for(var/i in picked)
+			switch(i)
+				if("More effective HP")
+					add_consciousness_modifier("badmin", major ? 30 : 10)
+				if("Less brute")
+					physiology.brute_mod *= (major ? 0.5 : 0.75)
+					physiology.bleed_mod *= (major ? 0.6 : 0.8)
+				if("Less burn")
+					physiology.burn_mod *= (major ? 0.5 : 0.75)
+				if("Less toxin / oxygen / brain")
+					physiology.tox_mod *= (major ? 0.5 : 0.75)
+					physiology.oxy_mod *= (major ? 0.5 : 0.75)
+					physiology.brain_mod *= (major ? 0.5 : 0.75)
+				if("Less pain")
+					set_pain_mod("badmin", major ? 0.6 : 0.8)
+				if("Tougher organs")
+					for(var/obj/item/organ/internal/organ as anything in bodyparts)
+						organ.maxHealth *= (major ? 1.5 : 1.25)
+				if("Less environmental")
+					physiology.pressure_mod *= (major ? 0.6 : 0.8)
+					physiology.heat_mod *= (major ? 0.6 : 0.8)
+					physiology.cold_mod *= (major ? 0.6 : 0.8)
+				if("Stun resistance")
+					ADD_TRAIT(src, TRAIT_BATON_RESISTANCE, "Badmin")
+					physiology.stamina_mod *= (major ? 0.5 : 0.75)
+					physiology.stun_mod *= (major ? 0.5 : 0.75)
+					physiology.knockdown_mod *= (major ? 0.5 : 0.75)
+				if("Health regen")
+					apply_status_effect(/datum/status_effect/basic_health_regen, major ? 1.5 : 0.5)
 
 /mob/living/carbon/human/limb_attack_self()
 	var/obj/item/bodypart/arm = hand_bodyparts[active_hand_index]
