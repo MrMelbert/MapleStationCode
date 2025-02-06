@@ -6,7 +6,7 @@
 	. = ..()
 
 	techweb_point_items += list(
-		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = 65000)
+		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_5_POINTS)
 	)
 
 /datum/export/organ/tongue/lizard/silver
@@ -32,23 +32,17 @@
 	///See above
 	var/old_eye_color_right
 
+	organ_traits = list(
+		TRAIT_HOLY,
+		TRAIT_NOBREATH, // future todo : nobreath is lame, replace this
+	)
+
 /obj/item/organ/internal/tongue/lizard/silver/Initialize(mapload)
 	. = ..()
 
 	desc += " Whoever this tongue is attached to will inherit the abilities of the silverscale."
 	desc += span_blue(" These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
 	price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
-
-	//Migrating silverscale traits to the tongue
-	LAZYOR(organ_traits, list(
-		TRAIT_HOLY,
-		TRAIT_NOBREATH,
-		TRAIT_PIERCEIMMUNE,
-		TRAIT_RESISTHIGHPRESSURE,
-		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_VIRUSIMMUNE,
-		TRAIT_WINE_TASTER,
-	))
 
 /obj/item/organ/internal/tongue/lizard/silver/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
