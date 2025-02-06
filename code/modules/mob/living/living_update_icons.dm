@@ -151,6 +151,14 @@
  * Returns the offset if we are, 0 otherwise.
  */
 /mob/living/proc/has_offset(source, pixel)
+	if(isnull(pixel))
+		for(var/pixel in offsets)
+			var/pixel_source = has_offset(source, pixel)
+			if(pixel_source)
+				return pixel_source
+
+		return 0
+
 	return offsets?[pixel]?[source] || 0
 
 // Updates offsets if base pixel changes
