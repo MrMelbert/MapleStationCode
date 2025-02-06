@@ -188,7 +188,7 @@
 	var/preferred_target = check_zone(user.zone_selected)
 	if(try_heal_checks(patient, user, preferred_target, silent = TRUE))
 		if(preferred_target != healed_zone)
-			patient.balloon_alert(user, "treating [parse_zone(preferred_target)]...")
+			patient.balloon_alert(user, "[apply_verb] [parse_zone(preferred_target)]...")
 		try_heal(patient, user, preferred_target, TRUE, auto_change_zone)
 		return
 
@@ -230,7 +230,7 @@
 	var/new_zone = check_zone(user.zone_selected)
 	if(!try_heal_checks(patient, user, new_zone))
 		return
-	patient.balloon_alert(user, "treating [parse_zone(new_zone)]...")
+	patient.balloon_alert(user, "[apply_verb] [parse_zone(new_zone)]...")
 	try_heal(patient, user, new_zone, silent = TRUE, auto_change_zone = FALSE)
 
 /// Checks if the passed patient can be healed by the passed user
@@ -240,7 +240,7 @@
 /// Checks a bunch of stuff to see if we can heal the patient, including can_heal
 /// Gives a feedback if we can't ultimatly heal the patient (unless silent is TRUE)
 /obj/item/stack/medical/proc/try_heal_checks(mob/living/patient, mob/living/user, healed_zone, silent = FALSE)
-	if(!(healed_zone in GLOB.all_body_zones))
+	if(!(healed_zone in BODY_ZONES_ALL))
 		stack_trace("Invalid zone ([healed_zone || "null"]) passed to try_heal_checks.")
 		healed_zone = BODY_ZONE_CHEST
 
@@ -274,7 +274,7 @@
 				if(!brute_to_heal && stop_bleeding) // no brute, no bleeding
 					carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not bleeding or bruised!")
 				else if(!burn_to_heal && (flesh_regeneration || sanitization) && any_burn_wound) // no burns, existing burn wounds are treated
-					carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] has been fully treated!")
+					carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is fully treated, give it time!")
 				else if(!affecting.brute_dam && !affecting.burn_dam) // not hurt at all
 					carbon_patient.balloon_alert(user, "[affecting.plaintext_zone] is not hurt!")
 				else // probably hurt in some way but we are not the right item for this
@@ -442,7 +442,7 @@
 	return TRUE
 
 // gauze is only relevant for wounds, which are handled in the wounds themselves
-/obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/living/user, silent, healed_zone, auto_change_zone)
+/obj/item/stack/medical/gauze/try_heal(mob/living/patient, mob/living/user, healed_zone, silent, auto_change_zone)
 	var/obj/item/bodypart/limb = patient.get_bodypart(healed_zone)
 	var/treatment_delay = (user == patient ? self_delay : other_delay)
 	var/any_scanned = FALSE
@@ -470,22 +470,14 @@
 	else
 		if(!silent)
 			user.visible_message(
-				span_warning("[user] begins wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
-				span_warning("You begin wrapping the wounds on [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
+				span_warning("[user] begins wrapping [patient]'s [limb.plaintext_zone] with [src]..."),
+				span_warning("You begin wrapping [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
-
-	patient.balloon_alert(user, "wrapping [parse_zone(healed_zone)]...")
 
 	if(!do_after(user, treatment_delay, target = patient))
 		user.balloon_alert(user, "interrupted!")
 		return
-	if(!try_heal_checks(patient, user, 0, 0))
-		return
-	user.balloon_alert(user, "gauze applied")
-	if(user != patient)
-		user.balloon_alert(patient, "gauze applied")
-
 	if(!silent)
 		patient.balloon_alert(user, "wrapped [parse_zone(healed_zone)]")
 		user.visible_message(

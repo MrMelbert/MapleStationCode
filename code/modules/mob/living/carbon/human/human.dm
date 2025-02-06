@@ -445,6 +445,8 @@
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/target)
 	if(DOING_INTERACTION_WITH_TARGET(src, target))
 		return
+	if(target.body_position != LYING_DOWN || target.on_fire || target == src)
+		return
 
 	cpr_process(target, beat = 1) // begin at beat 1, skip the first breath
 

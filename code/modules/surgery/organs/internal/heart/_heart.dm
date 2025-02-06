@@ -131,15 +131,15 @@
 
 	var/heartrate = get_heart_rate()
 	switch(heartrate)
-		if(1 to 6)
+		if(1 to SLOW_HEARTBEAT_THRESHOLD)
 			if(playing_heartbeat_sfx != BEAT_SLOW)
 				playing_heartbeat_sfx = BEAT_SLOW
 				SEND_SOUND(owner, sound('sound/health/slowbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
-		if(0, 6 to 11)
+		if(0, SLOW_HEARTBEAT_THRESHOLD to FAST_HEARTBEAT_THRESHOLD)
 			if(playing_heartbeat_sfx != BEAT_NONE)
 				playing_heartbeat_sfx = BEAT_NONE
 				owner.stop_sound_channel(CHANNEL_HEARTBEAT)
-		if(11 to INFINITY)
+		if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
 			if(playing_heartbeat_sfx != BEAT_FAST)
 				playing_heartbeat_sfx = BEAT_FAST
 				SEND_SOUND(owner, sound('sound/health/fastbeat.ogg', repeat = TRUE, channel = CHANNEL_HEARTBEAT, volume = 40))
