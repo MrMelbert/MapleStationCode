@@ -223,6 +223,7 @@
 	message_mime = "gasps silently!"
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = HARD_CRIT
+	vary = TRUE
 
 /datum/emote/living/gasp/get_sound(mob/living/carbon/human/user)
 	if(!istype(user))
@@ -279,6 +280,7 @@
 	key_third_person = "jumps"
 	message = "jumps!"
 	hands_use_check = TRUE
+	affected_by_pitch = FALSE
 
 /datum/emote/living/jump/run_emote(mob/living/user, params, type_override, intentional)
 	. = ..()
@@ -469,6 +471,7 @@
 	message_mime = "sleeps soundly."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = UNCONSCIOUS
+	vary = TRUE
 
 // eventually we want to give species their own "snoring" sounds
 /datum/emote/living/snore/get_sound(mob/living/carbon/human/user)

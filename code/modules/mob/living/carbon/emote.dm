@@ -15,6 +15,7 @@
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 	audio_cooldown = 5 SECONDS
 	vary = TRUE
+	affected_by_pitch = FALSE
 
 /datum/emote/living/carbon/clap/get_sound(mob/living/user)
 	if(!user.get_bodypart(BODY_ZONE_L_ARM) || !user.get_bodypart(BODY_ZONE_R_ARM))
@@ -176,6 +177,8 @@
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 	hands_use_check = TRUE
 	muzzle_ignore = TRUE
+	vary = TRUE
+	affected_by_pitch = FALSE
 
 /datum/emote/living/carbon/snap/get_sound(mob/living/user)
 	if(ishuman(user))
@@ -219,6 +222,4 @@
 	emote_type = EMOTE_AUDIBLE | EMOTE_VISIBLE
 
 /datum/emote/living/carbon/whistle/get_sound(mob/living/user)
-	if(!istype(user))
-		return
 	return 'sound/voice/human/whistle1.ogg'

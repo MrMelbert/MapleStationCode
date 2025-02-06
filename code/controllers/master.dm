@@ -216,8 +216,6 @@ GLOBAL_REAL(Master, /datum/controller/master)
 	init_stage_completed = 0
 	var/mc_started = FALSE
 
-	to_chat(world, span_boldannounce("Initializing subsystems..."))
-
 	var/list/stage_sorted_subsystems = new(INITSTAGE_MAX)
 	for (var/i in 1 to INITSTAGE_MAX)
 		stage_sorted_subsystems[i] = list()
@@ -251,14 +249,9 @@ GLOBAL_REAL(Master, /datum/controller/master)
 			// Loop.
 			Master.StartProcessing(0)
 
-	var/time = (REALTIMEOFDAY - start_timeofday) / 10
-
-
-
-	var/msg = "Initializations complete within [time] second[time == 1 ? "" : "s"]!"
-	to_chat(world, span_boldannounce("[msg]"))
-	log_world(msg)
-
+	var/time = (REALTIMEOFDAY - start_timeofday) / (1 SECONDS)
+	SStitle.total_init_time = time
+	log_world("Initializations complete within [time] second\s!")
 
 	if(world.system_type == MS_WINDOWS && CONFIG_GET(flag/toast_notification_on_init) && !length(GLOB.clients))
 		world.shelleo("start /min powershell -ExecutionPolicy Bypass -File tools/initToast/initToast.ps1 -name \"[world.name]\" -icon %CD%\\icons\\ui_icons\\common\\tg_16.png -port [world.port]")
@@ -290,7 +283,6 @@ GLOBAL_REAL(Master, /datum/controller/master)
 		SS_INIT_NONE,
 		SS_INIT_SUCCESS,
 		SS_INIT_NO_NEED,
-		SS_INIT_NO_MESSAGE,
 	)
 
 	if (subsystem.flags & SS_NO_INIT || subsystem.initialized) //Don't init SSs with the corresponding flag or if they already are initialized
@@ -298,7 +290,8 @@ GLOBAL_REAL(Master, /datum/controller/master)
 
 	current_initializing_subsystem = subsystem
 	rustg_time_reset(SS_INIT_TIMER_KEY)
-
+	if(!(subsystem.flags & SS_NO_INIT_MESSAGE))
+		SStitle.add_init_text(subsystem.type, "- [subsystem.name]", "<font color='yellow'>INITIALIZING...</font>")
 	var/result = subsystem.Initialize()
 
 	// Capture end time
@@ -326,32 +319,33 @@ GLOBAL_REAL(Master, /datum/controller/master)
 		subsystem.initialized = FALSE
 		subsystem.can_fire = FALSE
 
-	// The rest of this proc is printing the world log and chat message.
+	// The rest of this proc is printing the world log and updating the splash screen.
 	var/message_prefix
-
-	// If true, print the chat message with boldwarning text.
-	var/chat_warning = FALSE
-
+	var/screen_display = ""
+	var/always_show = FALSE
 	switch(result)
 		if(SS_INIT_FAILURE)
 			message_prefix = "Failed to initialize [subsystem.name] subsystem after"
-			chat_warning = TRUE
-		if(SS_INIT_SUCCESS, SS_INIT_NO_MESSAGE)
+			screen_display = "<font color='red'>FAILED</font>"
+			always_show = TRUE
+		if(SS_INIT_SUCCESS)
 			message_prefix = "Initialized [subsystem.name] subsystem within"
+			screen_display = "<font color='green'>DONE</font>"
 		if(SS_INIT_NO_NEED)
 			// This SS is disabled or is otherwise shy.
-			return
+			pass()
 		else
 			// SS_INIT_NONE or an invalid value.
 			message_prefix = "Initialized [subsystem.name] subsystem with errors within"
-			chat_warning = TRUE
+			screen_display = "<font color='yellow'>ERRORED</font>"
+			always_show = TRUE
 
-	var/message = "[message_prefix] [seconds] second[seconds == 1 ? "" : "s"]!"
-	var/chat_message = chat_warning ? span_boldwarning(message) : span_boldannounce(message)
+	if(screen_display && (always_show || (seconds > 0.1 && !(subsystem.flags & SS_NO_INIT_MESSAGE))))
+		SStitle.add_init_text(subsystem.type, "- [subsystem.name]", screen_display, seconds, major_update = TRUE)
+	else
+		SStitle.remove_init_text(subsystem.type)
 
-	if(result != SS_INIT_NO_MESSAGE)
-		to_chat(world, chat_message)
-	log_world(message)
+	log_world("[message_prefix] [seconds] second\s!")
 
 /datum/controller/master/proc/SetRunLevel(new_runlevel)
 	var/old_runlevel = current_runlevel

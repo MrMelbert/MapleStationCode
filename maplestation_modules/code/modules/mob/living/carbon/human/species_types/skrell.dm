@@ -28,15 +28,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	mutanteyes = /obj/item/organ/internal/eyes/skrell
 	mutanttongue = /obj/item/organ/internal/tongue/skrell
 
-/datum/species/skrell/get_species_speech_sounds(sound_type)
-	switch(sound_type)
-		if(SOUND_QUESTION)
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff_ask.ogg' = 120))
-		if(SOUND_EXCLAMATION)
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120))
-		else
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff.ogg' = 120))
-
 /datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(skrell_mob.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
