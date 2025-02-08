@@ -37,7 +37,7 @@
 	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
 	savefile_key = "default_shake_when_helping"
 	savefile_identifier = PREFERENCE_PLAYER
-	default = FALSE
+	default_value = FALSE
 
 /// Emote to skip the radial and just perform CPR
 /datum/emote/living/carbon/human/cpr
@@ -74,8 +74,9 @@
 /obj/item/hand_item/cpr/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!ishuman(interacting_with) || interacting_with == user)
 		return NONE
-	do_cpr(interacting_with)
-	return ITEM_INTERACT_HANDLED
+	var/mob/living/carbon/human/human_user = user
+	human_user.do_cpr(interacting_with)
+	return ITEM_INTERACT_SUCCESS
 
 /// Hand item that serves as a placeholder for checking pulse
 /obj/item/hand_item/check_pulse
@@ -86,8 +87,9 @@
 /obj/item/hand_item/check_pulse/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!ishuman(interacting_with))
 		return NONE
-	check_pulse(interacting_with)
-	return ITEM_INTERACT_HANDLED
+	var/mob/living/carbon/human/human_user = user
+	human_user.check_pulse(interacting_with)
+	return ITEM_INTERACT_SUCCESS
 
 /// Check the pulse of a target
 /mob/living/carbon/human/proc/check_pulse(mob/living/carbon/human/target)
