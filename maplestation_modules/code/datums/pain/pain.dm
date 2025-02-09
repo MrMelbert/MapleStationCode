@@ -1,6 +1,3 @@
-// For debugging pain
-// #define PAIN_DEBUG
-
 /**
  * # Pain controller
  *
@@ -286,7 +283,7 @@
  * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
  * * down_to - the minimum amount of pain shock the mob can have.
  */
-/datum/pain/proc/adjust_traumatic_shock(amount, down_to = -20)
+/datum/pain/proc/adjust_traumatic_shock(amount, down_to = 0)
 	if(amount > 0)
 		amount *= max(pain_modifier, 0.33)
 
@@ -295,7 +292,7 @@
 	if(traumatic_shock <= 0)
 		parent.remove_consciousness_modifier(PAINSHOCK)
 	else
-		parent.add_consciousness_modifier(PAINSHOCK, -0.33 * traumatic_shock)
+		parent.add_consciousness_modifier(PAINSHOCK, -0.15 * traumatic_shock)
 	// Soft crit
 	if(traumatic_shock >= SHOCK_DANGER_THRESHOLD)
 		if(!HAS_TRAIT_FROM(parent, TRAIT_SOFT_CRIT, PAINSHOCK))
@@ -512,9 +509,9 @@
 		shock_mod *= 0.5
 	if(parent.health > 0)
 		shock_mod *= 0.25
-	if(parent.health <= parent.maxHealth * -2 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_BAD))
+	if(parent.health <= parent.maxHealth * -2)
 		shock_mod *= 2
-	if(parent.health <= parent.maxHealth * -4 || (!HAS_TRAIT(parent, TRAIT_NOBLOOD) && parent.blood_volume < BLOOD_VOLUME_SURVIVE))
+	if(parent.health <= parent.maxHealth * -4)
 		shock_mod *= 3 // stacks with above
 	var/curr_pain = get_total_pain()
 	if(curr_pain < 25)

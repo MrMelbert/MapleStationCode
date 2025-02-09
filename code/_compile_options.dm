@@ -142,3 +142,8 @@
 #warn In order to build, run BUILD.bat in the root directory.
 #warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
 #endif
+
+// For balancing health
+// #define HEALTH_DEBUG
+// For debugging pain
+// #define PAIN_DEBUG

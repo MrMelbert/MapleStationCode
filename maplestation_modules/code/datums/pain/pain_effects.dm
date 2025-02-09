@@ -101,6 +101,7 @@
 	id = "recent_defib"
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
+	remove_on_fullheal = TRUE
 	/// Base amount of consciousness / max consciousness to give the patient
 	var/base_con = 15
 

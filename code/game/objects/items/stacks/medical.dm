@@ -412,7 +412,7 @@
 	. = ..()
 	if(.)
 		return .
-	if(!(clean_types & CLEAN_TYPE_HARD_DECAL)) // gotta scrub realllly hard to clean gauze
+	if(!(clean_types & CLEAN_TYPE_BLOOD))
 		return .
 	times_cleaned += 1
 	var/clean_to = initial(absorption_capacity) * (3 / (times_cleaned + 3))

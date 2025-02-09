@@ -879,10 +879,14 @@
 			picked += result
 			options -= result
 
+		if(!length(picked))
+			return
 		var/major = tgui_input_list(usr, "REALLY tanky or just a little tanky?", "Tanky", list("Little", "Lot"))
 		if(QDELETED(src) || !major)
 			return
 		major = (major == "Lot")
+		message_admins("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
+		log_admin("[key_name(usr)] has made [key_name(src)] tanky with the following: [english_list(picked)]")
 
 		for(var/i in picked)
 			switch(i)
