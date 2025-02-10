@@ -44,7 +44,7 @@
 	//Breath damage
 	//These thresholds are checked against what amounts to total_mix_pressure * (gas_type_mols/total_mols)
 	var/safe_oxygen_min = 16 // Minimum safe partial pressure of O2, in kPa
-	var/safe_oxygen_max = 0
+	var/safe_oxygen_max = 30 // Maximum safe partial pressure of O2, in kPa
 	var/safe_nitro_min = 0
 	var/safe_co2_max = 10 // Yes it's an arbitrary value who cares?
 	var/safe_plasma_min = 0
@@ -656,7 +656,6 @@
 
 			breather.cause_pain(BODY_ZONE_CHEST, 10, BRUTE)
 			apply_organ_damage(maxHealth * 0.075)
-		breather.failed_last_breath = TRUE
 	// Robot, don't care lol
 	else
 		breather.failed_last_breath = TRUE

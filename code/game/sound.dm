@@ -536,4 +536,11 @@
 				'sound/effects/writing_pen/writing_pen6.ogg',
 				'sound/effects/writing_pen/writing_pen7.ogg',
 			)
+		if(SFX_CLOTH_RIP)
+			soundin = pick(
+				'maplestation_modules/sound/items/rip1.ogg',
+				'maplestation_modules/sound/items/rip2.ogg',
+				'maplestation_modules/sound/items/rip3.ogg',
+				'maplestation_modules/sound/items/rip4.ogg',
+			)
 	return soundin

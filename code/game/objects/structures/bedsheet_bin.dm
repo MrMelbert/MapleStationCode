@@ -124,17 +124,35 @@ LINEN BINS
 	UnregisterSignal(sleeper, COMSIG_QDELETING)
 	signal_sleeper = null
 
-/obj/item/bedsheet/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_WIRECUTTER || I.get_sharpness())
-		if (!(flags_1 & HOLOGRAM_1))
-			var/obj/item/stack/sheet/cloth/shreds = new (get_turf(src), stack_amount)
+/obj/item/bedsheet/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+	. = ..()
+	if(. & ITEM_INTERACT_ANY_BLOCKER)
+		return
+	if(tool.tool_behaviour != TOOL_WIRECUTTER && !tool.get_sharpness())
+		return
+
+	playsound(tool, 'maplestation_modules/sound/items/snip.ogg', 33, FALSE)
+	playsound(src, SFX_CLOTH_RIP, 33, FALSE)
+	if (!(flags_1 & HOLOGRAM_1))
+		var/drop_loc = drop_location()
+		var/obj/item/stack/sheet/cloth/shreds = new (drop_loc, stack_amount)
+		if(user.CanReach(drop_loc))
 			if(!QDELETED(shreds)) //stacks merged
 				transfer_fingerprints_to(shreds)
 				shreds.add_fingerprint(user)
-		qdel(src)
-		to_chat(user, span_notice("You tear [src] up."))
-	else
-		return ..()
+			user.put_in_hands(shreds)
+			user.visible_message(
+				span_notice("[user] cuts [src] into pieces of cloth with [tool]."),
+				span_notice("You cut [src] into pieces of cloth with [tool]."),
+				span_hear("You hear cutting."),
+			)
+		else //telekinesis
+			tool.visible_message(
+				span_notice("[tool] cuts [src] into pieces of cloth."),
+				blind_message = span_hear("You hear cutting."),
+			)
+	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/bedsheet/AltClick(mob/living/user)
 	// double check the canUseTopic args to make sure it's correct

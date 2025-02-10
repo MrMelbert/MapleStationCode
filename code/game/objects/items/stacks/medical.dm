@@ -99,6 +99,8 @@
 	var/heal_zone = check_zone(user.zone_selected)
 	if(!try_heal_checks(patient, user, heal_zone))
 		return FALSE
+	if(heal_sound)
+		playsound(src, heal_sound, 33, FALSE)
 	SSblackbox.record_feedback("nested tally", "medical_item_used", 1, list("[auto_change_zone ? "auto" : "manual"]", "[type]"))
 	patient.balloon_alert(user, "[apply_verb] [parse_zone(heal_zone)]...")
 	INVOKE_ASYNC(src, PROC_REF(try_heal), patient, user, heal_zone, FALSE, iscarbon(patient) && auto_change_zone) // auto change is useless for non-carbons
@@ -380,6 +382,7 @@
 	apply_verb = "wrapping"
 	works_on_dead = TRUE
 	can_inject_flags = INJECT_CHECK_IGNORE_SPECIES
+	heal_sound = SFX_CLOTH_RIP
 	/// tracks how many times we've been scrubbed thoroughly
 	var/times_cleaned = 0
 
@@ -456,22 +459,22 @@
 		if(user == patient)
 			if(!silent)
 				user.visible_message(
-					span_warning("[user] begins expertly wrapping the wounds on [p_their()]'s [limb.plaintext_zone] with [src]..."),
-					span_warning("You begin quickly wrapping the wounds on your [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
+					span_notice("[user] begins expertly wrapping the wounds on [p_their()]'s [limb.plaintext_zone] with [src]..."),
+					span_notice("You begin quickly wrapping the wounds on your [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
 					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 				)
 		else
 			if(!silent)
 				user.visible_message(
-					span_warning("[user] begins expertly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
-					span_warning("You begin quickly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
+					span_notice("[user] begins expertly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src]..."),
+					span_notice("You begin quickly wrapping the wounds on [patient]'s [limb.plaintext_zone] with [src], keeping the holo-image indications in mind..."),
 					visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 				)
 	else
 		if(!silent)
 			user.visible_message(
-				span_warning("[user] begins wrapping [patient]'s [limb.plaintext_zone] with [src]..."),
-				span_warning("You begin wrapping [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
+				span_notice("[user] begins wrapping [patient]'s [limb.plaintext_zone] with [src]..."),
+				span_notice("You begin wrapping [user == patient ? "your" : "[patient]'s"] [limb.plaintext_zone] with [src]..."),
 				visible_message_flags = ALWAYS_SHOW_SELF_MESSAGE,
 			)
 
@@ -490,23 +493,38 @@
 /obj/item/stack/medical/gauze/twelve
 	amount = 12
 
-/obj/item/stack/medical/gauze/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_WIRECUTTER || I.get_sharpness())
-		if(get_amount() < 2)
-			balloon_alert(user, "not enough gauze!")
-			return
-		var/obj/item/stack/sheet/cloth/cloth = new(I.drop_location())
-		if(user.CanReach(src))
+/obj/item/stack/medical/gauze/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
+	. = ..()
+	if(. & ITEM_INTERACT_BLOCKING)
+		return
+	if(tool.tool_behaviour != TOOL_WIRECUTTER && !tool.get_sharpness())
+		return
+	if(get_amount() < 2)
+		balloon_alert(user, "not enough gauze!")
+		return ITEM_INTERACT_BLOCKING
+
+	playsound(tool, 'maplestation_modules/sound/items/snip.ogg', 33, FALSE)
+	playsound(src, SFX_CLOTH_RIP, 33, FALSE)
+	if(!(flags_1 & HOLOGRAM_1))
+		var/drop_loc = drop_location()
+		var/obj/item/stack/sheet/cloth/cloth = new(drop_loc)
+		if(user.CanReach(drop_loc))
+			if(!QDELETED(cloth))
+				transfer_fingerprints_to(cloth)
+				cloth.add_fingerprint(user)
 			user.put_in_hands(cloth)
-			user.visible_message(span_notice("[user] cuts [src] into pieces of cloth with [I]."), \
-				span_notice("You cut [src] into pieces of cloth with [I]."), \
-				span_hear("You hear cutting."))
+			user.visible_message(
+				span_notice("[user] cuts [src] into pieces of cloth with [tool]."),
+				span_notice("You cut [src] into pieces of cloth with [tool]."),
+				span_hear("You hear cutting."),
+			)
 		else //telekinesis
-			visible_message(span_notice("[I] cuts [src] into pieces of cloth."), \
-				blind_message = span_hear("You hear cutting."))
-		use(2)
-	else
-		return ..()
+			tool.visible_message(
+				span_notice("[tool] cuts [src] into pieces of cloth."),
+				blind_message = span_hear("You hear cutting."),
+			)
+	use(2)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/stack/medical/gauze/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins tightening [src] around [user.p_their()] neck! It looks like [user.p_they()] forgot how to use medical supplies!"))

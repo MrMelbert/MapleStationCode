@@ -182,7 +182,7 @@
 
 	return "<B>[condition.Join()]</B>"
 
-/datum/wound/burn/flesh/severity_text(simple = FALSE)
+/datum/wound/burn/flesh/severity_text()
 	. = ..()
 	. += " Burn / "
 	switch(infestation)
