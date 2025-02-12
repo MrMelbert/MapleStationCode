@@ -14,7 +14,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "DETECTIVE"
 
-	outfit = /datum/outfit/job/detective
+	base_outfit = /datum/outfit/job/detective
 	plasmaman_outfit = /datum/outfit/plasmaman/detective
 	departments_list = list(
 		/datum/job_department/security,

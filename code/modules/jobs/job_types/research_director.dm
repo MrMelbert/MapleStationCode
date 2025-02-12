@@ -18,7 +18,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "RESEARCH_DIRECTOR"
 
-	outfit = /datum/outfit/job/rd
+	base_outfit = /datum/outfit/job/rd
 	plasmaman_outfit = /datum/outfit/plasmaman/research_director
 	departments_list = list(
 		/datum/job_department/science,

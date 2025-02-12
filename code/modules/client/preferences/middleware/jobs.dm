@@ -1,6 +1,7 @@
 /datum/preference_middleware/jobs
 	action_delegations = list(
 		"set_job_preference" = PROC_REF(set_job_preference),
+		"set_title_preference" = PROC_REF(set_title_preference),
 	)
 
 /datum/preference_middleware/jobs/proc/set_job_preference(list/params, mob/user)
@@ -27,6 +28,22 @@
 		var/mob/dead/new_player/cycle = user
 		cycle.update_ready_report()
 
+	return TRUE
+
+/datum/preference_middleware/jobs/proc/set_title_preference(list/params, mob/user)
+	var/base_title = params["base_title"]
+	var/new_title = params["new_title"]
+	if(new_title == base_title)
+		new_title = null // clearing, essentially
+
+	var/datum/job/job = SSjob.GetJob(base_title)
+	if(isnull(job))
+		return FALSE
+	if(new_title && !(new_title in job.get_titles(TRUE)))
+		return FALSE
+
+	set_title(base_title, new_title)
+	preferences.character_preview_view?.update_body()
 	return TRUE
 
 /datum/preference_middleware/jobs/get_constant_data()
@@ -58,6 +75,7 @@
 		jobs[job.title] = list(
 			"description" = job.description,
 			"department" = department_name,
+			"title_options" = job.get_titles(TRUE),
 		)
 
 	data["departments"] = departments
@@ -69,6 +87,7 @@
 	var/list/data = list()
 
 	data["job_preferences"] = preferences.job_preferences
+	data["job_titles"] = preferences.read_preference(/datum/preference/job_titles) || list()
 
 	return data
 
@@ -122,3 +141,39 @@
 			data += job.title
 
 	return data
+
+/datum/preference_middleware/jobs/proc/set_title(base_title, new_title)
+	var/list/set_prefs = preferences.read_preference(/datum/preference/job_titles) || list()
+	set_prefs[base_title] = new_title
+	preferences.update_preference(GLOB.preference_entries[/datum/preference/job_titles], set_prefs)
+
+/// Tracks what title you have set for jobs
+/// Assoc lazylist [job_title] = [title they set]
+/datum/preference/job_titles
+	savefile_key = "job_titles"
+	can_randomize = FALSE
+	savefile_identifier = PREFERENCE_CHARACTER
+
+/datum/preference/job_titles/create_default_value()
+	return null
+
+/datum/preference/job_titles/is_valid(value)
+	return islist(value) || isnull(value)
+
+/datum/preference/job_titles/apply_to_human(mob/living/carbon/human/target, value)
+	return
+
+/datum/preference/job_titles/deserialize(input, datum/preferences/preferences)
+	var/list/input_sanitized = list()
+	for(var/job_title in input)
+		var/datum/job/job = SSjob.GetJob(job_title)
+		if(isnull(job))
+			continue
+		if(!(input[job_title] in job.get_titles(TRUE)))
+			continue
+		input_sanitized[job_title] = input[job_title]
+
+	return input_sanitized
+
+/datum/preference/job_titles/serialize(input)
+	return length(input) ? input : null

@@ -738,6 +738,12 @@
 		)
 	job = /datum/job/doctor
 
+/datum/id_trim/job/medical_doctor/nurse
+	assignment = "Nurse"
+
+/datum/id_trim/job/medical_doctor/surgeon
+	assignment = "Surgeon"
+
 /datum/id_trim/job/mime
 	assignment = "Mime"
 	trim_state = "trim_mime"

@@ -12,7 +12,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CHEMIST"
 
-	outfit = /datum/outfit/job/chemist
+	base_outfit = /datum/outfit/job/chemist
 	plasmaman_outfit = /datum/outfit/plasmaman/chemist
 
 	paycheck = PAYCHECK_CREW

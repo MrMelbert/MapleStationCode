@@ -11,7 +11,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "ATMOSPHERIC_TECHNICIAN"
 
-	outfit = /datum/outfit/job/atmos
+	base_outfit = /datum/outfit/job/atmos
 	plasmaman_outfit = /datum/outfit/plasmaman/atmospherics
 
 	paycheck = PAYCHECK_CREW

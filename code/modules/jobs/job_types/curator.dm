@@ -10,7 +10,7 @@
 	config_tag = "CURATOR"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/curator
+	base_outfit = /datum/outfit/job/curator
 	plasmaman_outfit = /datum/outfit/plasmaman/curator
 
 	paycheck = PAYCHECK_CREW

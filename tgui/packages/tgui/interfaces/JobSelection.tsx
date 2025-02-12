@@ -109,11 +109,10 @@ export const JobSelection = (props) => {
     data.departments_static,
   );
 
+  act('ui_mounted_with_no_bluescreen');
+
   return (
-    <Window
-      width={1012}
-      height={data.shuttle_status ? 690 : 666 /* Hahahahahaha */}
-    >
+    <Window width={1012} height={data.shuttle_status ? 790 : 766}>
       <Window.Content scrollable>
         <StyleableSection
           title={
