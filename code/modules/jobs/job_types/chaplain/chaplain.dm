@@ -36,6 +36,9 @@
 
 	job_tone = "holy"
 
+	title_options = list(
+		"Magister",
+	)
 
 /datum/job/chaplain/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()

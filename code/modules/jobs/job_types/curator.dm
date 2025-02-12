@@ -36,6 +36,11 @@
 	voice_of_god_silence_power = 3
 	rpg_title = "Veteran Adventurer"
 
+	title_options = list(
+		"Journalist",
+		"Librarian",
+	)
+
 /datum/outfit/job/curator
 	name = "Curator"
 	jobtype = /datum/job/curator
