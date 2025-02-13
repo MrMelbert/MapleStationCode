@@ -95,7 +95,7 @@
 			)
 		if(!do_after(
 			user,
-			self_delay,
+			self_delay * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user),
 		))
@@ -109,7 +109,7 @@
 			)
 		if(!do_after(
 			user,
-			other_delay,
+			other_delay * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1),
 			patient,
 			extra_checks = CALLBACK(src, PROC_REF(can_heal), patient, user),
 		))
@@ -126,6 +126,7 @@
 	else
 		CRASH("Stack medical item healing a non-carbon, non-animal mob [patient] ([patient.type])")
 
+	user.mind?.adjust_experience(/datum/skill/first_aid, 50)
 	log_combat(user, patient, "healed", name)
 	if(!use(1) || !repeating || amount <= 0)
 		return
@@ -309,7 +310,7 @@
 	if(!try_heal_checks(patient, user, 0, 0))
 		return
 
-	var/treatment_delay = (user == patient ? self_delay : other_delay)
+	var/treatment_delay = (user == patient ? self_delay : other_delay) * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1)
 	var/obj/item/bodypart/limb = patient.get_bodypart(check_zone(user.zone_selected))
 
 	var/boosted = FALSE

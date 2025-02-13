@@ -638,6 +638,11 @@
 	penalty += chest.get_modified_pain() * 0.5
 	penalty += head?.get_modified_pain() * 0.5 // HARS guard
 	penalty /= 3
+	// Factor in firearms skill
+	if(penalty > 0)
+		penalty += user.mind?.get_skill_modifier(/datum/skill/firearms, SKILL_RANDS_MODIFIER)
+	if(penalty <= 0)
+		return
 	// Applying min and max
 	bonus_spread_values[MIN_BONUS_SPREAD_INDEX] += floor(penalty / 3)
 	bonus_spread_values[MAX_BONUS_SPREAD_INDEX] += floor(penalty)
