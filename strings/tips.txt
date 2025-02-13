@@ -272,3 +272,20 @@ You can use a machine in the vault to deposit cash or rob Cargo's department fun
 You can use an upgraded microwave to charge your PDA!
 You'll quickly lose your interest in the game if you play to win and kill. If you find yourself doing this, take a step back and talk to people - it's a much better experience!
 Some areas of the station use simple nautical directions to indicate their respective locations, like Fore (Front of the ship), Aft (Back), Port (Left side), Starboard (Right), Quarter and Bow (Either sides of Aft and Fore, respectively). You can review these terms on the Notepad App of your PDA.
+You don't need to destroy a Spacecoin machine to make your funds stop draining. Swiping your ID on it will stop the withdrawal.
+As a Bitrunner, upgrading your quantum server will increase rewards and reduce downtime.
+As a Bitrunner, your avatar has a domain info ability which will give you clues to help complete virtual domains.
+You can alt-click tank transfer valves to remove a tank from them.
+You can further the cycle of life by having two adult plushies play with eachother, creating a smaller junior child plushie.
+Most species have only 32 teeth for use in dental implants. Moths have none. Lizards have seventy five.
+You can craft peg limbs and crutches with wood for use in dire circumstances. The latter are also available in medical vendors.
+Biological armor will protect your limb from a zombie's infective attack, unless the limb's more damaged than the armor value. Armor with thick material, such as firesuits and EVA suits, also partially protects, preventing at least the first attack from infection.
+In a pinch, you can reduce bleeding or burn infection with several commonplace reagents - flour, salt, saltwater can all be splashed onto the wound to stall for time, and tea can be drank for a boost to your body's defences.
+First-aid analyzers double the speed of wound treatment on injuries, alongside giving out normal and improvised instructions for treatment.
+Syndicate Duffelbags are a lot quicker to zip and unzip, have significantly less slowdown, and can carry up to two of various bulky, objective-related items - such as fire axes, guns, or gibtonite. Examine them closely to see all the possibilities.
+The Coroner's surgical tools are considered 'cruel implements', which speeds up surgery on corpses but slows it on not-yet-corpses. A few other items also have it.
+As a Coroner, remember that your autopsy scanner also works as an advanced health analyzer on right-click, but only for corpses.
+As the Captain, your sabre deals extra damage to Assistants (as long as they have their original liver).
+You can automatically extract and retract arm implants by 'activating' the empty hand they're on. This includes integrated toolsets, cursed katanas, and vorpal scythes.
+You can combine the Carpet reagent with various different reagents, such as Oil and Cyanide, to create unique carpet types.
+You can bake a birthday cake and then microwave it to create a legendary cake hat. You can then combine it with an energy sword to create an energy cake.

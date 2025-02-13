@@ -150,6 +150,7 @@
 		Or you can click this to cancel it."
 	icon = 'maplestation_modules/icons/hud/screen_alert.dmi'
 	icon_state = "illusion"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/maintaining_illusion/Click(location, control, params)
 	. = ..()

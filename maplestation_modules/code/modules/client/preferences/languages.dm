@@ -1,191 +1,246 @@
 // -- Language preference and UI.
 
-/// Simple define to denote no language.
-#define NO_LANGUAGE "No Language"
+// These defines are used in the UI be careful updating them.
+#define ADD_SPOKEN_LANGUAGE "Add spoken language"
+#define ADD_UNDERSTOOD_LANGUAGE "Add understood language"
+#define REMOVE_SPOKEN_LANGUAGE "Remove spoken language"
+#define REMOVE_UNDERSTOOD_LANGUAGE "Remove understood language"
 
-/datum/preference/choiced/language
-	savefile_key = "bilingual_language"
+/datum/preferences/proc/migrate_quirks_to_language_menu(list/save_data)
+	var/datum/preference_middleware/language/update = locate() in middleware
+	var/datum/preference/languages/language_pref = GLOB.preference_entries[/datum/preference/languages]
 
-// Stores a typepath of a language, or "No language" when passed a null / invalid language.
-/datum/preference/additional_language
+	// random quirks
+	if("Bilingual" in all_quirks)
+		var/picked_lang = GLOB.language_types_by_name[save_data["bilingual_language"]]?.type
+		if(picked_lang && (picked_lang in language_pref.selectable_languages))
+			update.add_language_to_user(picked_lang, ADD_SPOKEN_LANGUAGE)
+			update.add_language_to_user(picked_lang, ADD_UNDERSTOOD_LANGUAGE)
+
+	if("Trilingual" in all_quirks)
+		pass() // nothing to do about this
+
+	if("Foreigner" in all_quirks)
+		update.add_language_to_user(/datum/language/uncommon, ADD_SPOKEN_LANGUAGE)
+		update.add_language_to_user(/datum/language/uncommon, ADD_UNDERSTOOD_LANGUAGE)
+		update.add_language_to_user(/datum/language/common, REMOVE_SPOKEN_LANGUAGE)
+		update.add_language_to_user(/datum/language/common, REMOVE_UNDERSTOOD_LANGUAGE)
+
+	// the old prefs
+	var/other_lang = text2path(save_data["language"])
+	if(other_lang && (other_lang in language_pref.selectable_languages))
+		update.add_language_to_user(other_lang, ADD_SPOKEN_LANGUAGE)
+		update.add_language_to_user(other_lang, ADD_UNDERSTOOD_LANGUAGE)
+
+/datum/preference/languages
 	savefile_key = "language"
 	savefile_identifier = PREFERENCE_CHARACTER
 	priority = PREFERENCE_PRIORITY_NAMES // needs to happen after species, so name works
 	can_randomize = FALSE
 
-/datum/preference/additional_language/deserialize(input, datum/preferences/preferences)
-	if(input == NO_LANGUAGE)
-		return NO_LANGUAGE
-	if("Trilingual" in preferences.all_quirks)
-		return NO_LANGUAGE
-	if("Bilingual" in preferences.all_quirks)
-		return NO_LANGUAGE
+	/// List of languages you can pick.
+	var/list/selectable_languages = list(
+		/datum/language/common,
+		/datum/language/impdraconic,
+		/datum/language/isatoa,
+		/datum/language/piratespeak,
+		/datum/language/shadowtongue,
+		/datum/language/uncommon,
+		/datum/language/yangyu,
+		// these should be auto filled
+		/datum/language/moffic,
+		/datum/language/nekomimetic,
+		/datum/language/draconic,
+		/datum/language/skrell,
+		// these are iffy
+		/datum/language/voltaic,
+		/datum/language/calcic,
+	)
+	/// Languages not rendered in the UI under any circumstances.
+	var/list/dont_show_languages = list(
+		/datum/language/aphasia,
+		/datum/language/codespeak,
+		/datum/language/drone,
+		/datum/language/xenocommon,
+	)
+	/// Max # of languages you can add to your character.
+	var/max_spoken_languages = 1
+	/// Max # of languages you can understand.
+	var/max_understood_languages = 2
 
-	var/datum/language/lang_to_add = check_input_path(input)
-	if(!ispath(lang_to_add, /datum/language))
-		return NO_LANGUAGE
+/datum/preference/languages/create_default_value()
+	return null
 
-	var/datum/species/species = preferences.read_preference(/datum/preference/choiced/species)
-	var/banned = initial(lang_to_add.banned_from_species)
-	var/req = initial(lang_to_add.required_species)
-	if((banned && ispath(species, banned)) || (req && !ispath(species, req)))
-		return NO_LANGUAGE
-
-	return lang_to_add
-
-/datum/preference/additional_language/serialize(input)
-	return check_input_path(input) || NO_LANGUAGE
-
-/datum/preference/additional_language/create_default_value()
-	return NO_LANGUAGE
-
-/datum/preference/additional_language/is_valid(value)
-	return !!check_input_path(value)
-
-/// Checks if our passed input is valid
-/// Returns NO LANGUAGE if passed NO LANGUAGE (truthy value)
-/// Returns null if the input was invalid (falsy value)
-/// Returns a language typepath if the input was a valid path (truthy value)
-/datum/preference/additional_language/proc/check_input_path(input)
-	if(input == NO_LANGUAGE)
-		return NO_LANGUAGE
-
-	var/path_form = istext(input) ? text2path(input) : input
-	// sometimes we deserialize with a text string that is a path, as they're saved as string in our json save
-	// other times we recieve a full typepath, likely from write preference
-	// we need to support either case just to be inclusive, so here we are	var/path_form = istext(input) ? text2path(input) : input
-	if(!ispath(path_form, /datum/language))
+/datum/preference/languages/deserialize(list/input, datum/preferences/preferences)
+	if(!islist(input))
 		return null
 
-	var/datum/language/lang_instance = GLOB.language_datum_instances[path_form]
-	// MAYBE accessed when language datums aren't created so this is just a sanity check
-	if(istype(lang_instance) && !lang_instance.available_as_pref)
-		return null
+	var/datum/species/species = GLOB.species_prototypes[preferences.read_preference(/datum/preference/choiced/species)]
+	var/datum/language_holder/species_holder = GLOB.prototype_language_holders[species.species_language_holder]
+	var/list/sanitized_input = list()
+	for(var/key in input)
+		for(var/lang_text in input[key])
+			var/lang = istext(lang_text) ? text2path(lang_text) : lang_text
+			if(!ispath(lang, /datum/language))
+				continue
+			switch(key)
+				if(ADD_SPOKEN_LANGUAGE)
+					if(!(lang in selectable_languages))
+						continue
+					if(lang in species_holder.spoken_languages)
+						continue
+					if(length(sanitized_input[key]) >= max_spoken_languages)
+						continue
 
-	return path_form
+				if(ADD_UNDERSTOOD_LANGUAGE)
+					if(!(lang in selectable_languages))
+						continue
+					if(lang in species_holder.understood_languages)
+						continue
+					if(length(sanitized_input[key]) >= max_understood_languages)
+						continue
 
-/datum/preference/additional_language/apply_to_human(mob/living/carbon/human/target, value)
-	if(value == NO_LANGUAGE)
+				if(REMOVE_SPOKEN_LANGUAGE)
+					if(!(lang in species_holder.spoken_languages))
+						continue
+
+				if(REMOVE_UNDERSTOOD_LANGUAGE)
+					if(!(lang in species_holder.understood_languages))
+						continue
+
+			LAZYADD(sanitized_input[key], lang)
+
+	return sanitized_input
+
+/datum/preference/languages/is_valid(value)
+	return islist(value) || isnull(value)
+
+/datum/preference/languages/apply_to_human(mob/living/carbon/human/target, value)
+	if(isdummy(target) || !islist(value))
 		return
 
-	target.grant_language(value, ALL, LANGUAGE_PREF)
+	// this needs to be delayed because it's tied to the mind (and we probably don't have that created yet)
+	if(target.mind)
+		add_mind_languages(target, value)
+	else
+		RegisterSignals(target, list(COMSIG_MOB_MIND_TRANSFERRED_INTO, COMSIG_MOB_MIND_INITIALIZED), PROC_REF(comsig_add_mind_languages), TRUE)
+	// this is fine to do now, though
+	remove_species_languages(target, value)
 
-/datum/language
-	// Vars used in determining valid languages for the language preferences.
-	/// Whether this language is available as a pref.
-	var/available_as_pref = FALSE
-	/// The 'base species' of the language, the lizard to the draconic.
-	/// Players cannot select this language in the preferences menu if they already have this species set.
-	var/datum/species/banned_from_species
-	/// The 'required species' of the language, languages that require you be a certain species to know.
-	/// Players cannot select this language in the preferences menu if they do not have this species set.
-	var/datum/species/required_species
+/datum/preference/languages/proc/comsig_add_mind_languages(mob/living/carbon/human/target)
+	SIGNAL_HANDLER
 
-/datum/language/skrell
-	available_as_pref = TRUE
-	banned_from_species = /datum/species/skrell
+	if(!target.client)
+		return
 
-/datum/language/draconic
-	available_as_pref = TRUE
-	banned_from_species = /datum/species/lizard
+	UnregisterSignal(target, list(COMSIG_MOB_MIND_TRANSFERRED_INTO, COMSIG_MOB_MIND_INITIALIZED))
+	add_mind_languages(target, target.client.prefs.read_preference(/datum/preference/languages))
 
-/datum/language/impdraconic
-	available_as_pref = TRUE
-	banned_from_species = /datum/species/lizard/silverscale // already know it (though this check should be deharcoded)
-	required_species = /datum/species/lizard
+/datum/preference/languages/proc/add_mind_languages(mob/living/carbon/human/target, list/value = list())
+	if(QDELETED(target))
+		return
+	for(var/lang in value[ADD_SPOKEN_LANGUAGE])
+		target.grant_language(lang, SPOKEN_LANGUAGE, LANGUAGE_MIND)
+	for(var/lang in value[ADD_UNDERSTOOD_LANGUAGE])
+		target.grant_language(lang, UNDERSTOOD_LANGUAGE, LANGUAGE_MIND)
 
-/datum/language/nekomimetic
-	available_as_pref = TRUE
-	banned_from_species = /datum/species/human/felinid
-
-/datum/language/moffic
-	available_as_pref = TRUE
-	banned_from_species = /datum/species/moth
-
-/datum/language/uncommon
-	available_as_pref = TRUE
-
-/datum/language/piratespeak
-	available_as_pref = TRUE
-
-/datum/language/yangyu
-	available_as_pref = TRUE
-	banned_from_species = /datum/species/ornithid
-
-/datum/language/shadowtongue
-	available_as_pref = TRUE
+/datum/preference/languages/proc/remove_species_languages(mob/living/carbon/human/target, list/value = list())
+	if(QDELETED(target))
+		return
+	for(var/lang in value[REMOVE_SPOKEN_LANGUAGE])
+		target.remove_language(lang, SPOKEN_LANGUAGE, LANGUAGE_SPECIES)
+	for(var/lang in value[REMOVE_UNDERSTOOD_LANGUAGE])
+		target.remove_language(lang, UNDERSTOOD_LANGUAGE, LANGUAGE_SPECIES)
 
 /datum/preference_middleware/language
 	action_delegations = list(
 		"set_language" = PROC_REF(set_language),
 	)
 
+/datum/preference_middleware/language/proc/add_language_to_user(lang_type, lang_key)
+	var/datum/preference/languages/language_pref = GLOB.preference_entries[/datum/preference/languages]
+	var/list/existing = preferences.read_preference(/datum/preference/languages) || list()
+
+	if(lang_key == ADD_SPOKEN_LANGUAGE && length(existing[ADD_SPOKEN_LANGUAGE]) >= language_pref.max_spoken_languages)
+		return FALSE
+	if(lang_key == ADD_UNDERSTOOD_LANGUAGE && length(existing[ADD_UNDERSTOOD_LANGUAGE]) >= language_pref.max_understood_languages)
+		return FALSE
+
+	if((lang_key == ADD_SPOKEN_LANGUAGE || lang_key == ADD_UNDERSTOOD_LANGUAGE) && !(lang_type in language_pref.selectable_languages))
+		return FALSE
+
+	LAZYADD(existing[lang_key], lang_type)
+
+	preferences.write_preference(GLOB.preference_entries[/datum/preference/languages], existing)
+
+	return TRUE
+
+/datum/preference_middleware/language/proc/remove_language_from_user(lang_type, lang_key)
+	var/list/existing = preferences.read_preference(/datum/preference/languages) || list()
+
+	LAZYREMOVE(existing[lang_key], lang_type)
+
+	preferences.write_preference(GLOB.preference_entries[/datum/preference/languages], existing)
+
+	return TRUE
+
 /datum/preference_middleware/language/proc/set_language(list/params, mob/user)
-	var/datum/preference/additional_language/language_pref = GLOB.preference_entries[/datum/preference/additional_language]
 	if(params["deselecting"])
-		preferences.update_preference(language_pref, NO_LANGUAGE)
+		remove_language_from_user(text2path(params["lang_type"]), params["lang_key"])
 		return TRUE
 
 	var/lang_path = text2path(params["lang_type"])
-	var/datum/species/current_species = preferences.read_preference(/datum/preference/choiced/species)
-	var/datum/language/lang_to_add = GLOB.language_datum_instances[lang_path]
-	if(!istype(lang_to_add))
-		to_chat(user, span_warning("Invalid language."))
-		return TRUE
-	if(!lang_to_add.available_as_pref)
-		to_chat(user, span_warning("That language is not available."))
-		return TRUE
-	// Sanity checking - Buttons are disabled in UI but you can never rely on that
-	if(lang_to_add.banned_from_species && ispath(current_species, lang_to_add.banned_from_species))
-		to_chat(user, span_warning("Invalid language for current species."))
-		return TRUE
-	if(lang_to_add.required_species && !ispath(current_species, lang_to_add.required_species))
-		to_chat(user, span_warning("Language requires another species."))
-		return TRUE
-
-	preferences.update_preference(language_pref, lang_path)
+	if(GLOB.language_datum_instances[lang_path])
+		add_language_to_user(lang_path, params["lang_key"])
 	return TRUE
+
+/datum/preference_middleware/language/on_new_character(mob/user)
+	preferences.update_static_data(user)
+
+/datum/preference_middleware/language/get_ui_static_data(mob/user)
+	var/list/data = list()
+
+	var/datum/species/species = GLOB.species_prototypes[preferences.read_preference(/datum/preference/choiced/species)]
+	var/datum/language_holder/species_holder = GLOB.prototype_language_holders[species.species_language_holder]
+	data["spoken_languages"] = assoc_to_keys(species_holder.spoken_languages)
+	data["understood_languages"] = assoc_to_keys(species_holder.understood_languages)
+	data["partial_languages"] = species_holder.get_mutually_understood_languages()
+
+	return data
 
 /datum/preference_middleware/language/get_ui_data(mob/user)
 	var/list/data = list()
 
-	data["selected_lang"] = preferences.read_preference(/datum/preference/additional_language)
-	data["selected_species"] = preferences.read_preference(/datum/preference/choiced/species)
-	data["pref_name"] = preferences.read_preference(/datum/preference/name/real_name)
-	data["trilingual"] = ("Trilingual" in preferences.all_quirks)
-	data["bilingual"] = ("Bilingual" in preferences.all_quirks)
+	var/list/selected_languages = preferences.read_preference(/datum/preference/languages)
+	data["pref_spoken_languages"] = selected_languages?[ADD_SPOKEN_LANGUAGE] || list()
+	data["pref_understood_languages"] = selected_languages?[ADD_UNDERSTOOD_LANGUAGE] || list()
+	data["pref_unspoken_languages"] = selected_languages?[REMOVE_SPOKEN_LANGUAGE] || list()
+	data["pref_ununderstood_languages"] = selected_languages?[REMOVE_UNDERSTOOD_LANGUAGE] || list()
 
 	return data
 
 /datum/preference_middleware/language/get_constant_data()
 	var/list/data = list()
-	var/list/base_languages = list()
-	var/list/bonus_languages = list()
+
+	var/datum/preference/languages/language_pref = GLOB.preference_entries[/datum/preference/languages]
+
+	data["base_languages"] = list()
 	for(var/found_language in GLOB.language_datum_instances)
-		var/datum/language/found_instance = GLOB.language_datum_instances[found_language]
-		if(!found_instance.available_as_pref)
+		if(found_language in language_pref.dont_show_languages)
 			continue
-
 		var/list/lang_data = list()
-		lang_data["name"] = found_instance.name
 		lang_data["type"] = found_language
+		lang_data["unlocked"] = (found_language in language_pref.selectable_languages)
+		lang_data["name"] = GLOB.language_datum_instances[found_language].name
+		lang_data["desc"] = GLOB.language_datum_instances[found_language].desc
+		UNTYPED_LIST_ADD(data["base_languages"], lang_data)
 
-		var/datum/species/banned_species = found_instance.banned_from_species
-		if(banned_species)
-			lang_data["incompatible_with"] = list("name" = initial(banned_species.name), "type" = banned_species)
-		var/datum/species/required_species = found_instance.required_species
-		if(required_species)
-			lang_data["requires"] = list("name" = initial(required_species.name), "type" = required_species)
+	data["max_spoken_languages"] = language_pref.max_spoken_languages
+	data["max_understood_languages"] = language_pref.max_understood_languages
 
-		// Having a required species makes it a bonus language, otherwise it's a base language
-		if(found_instance.required_species)
-			UNTYPED_LIST_ADD(bonus_languages, lang_data)
-		else
-			UNTYPED_LIST_ADD(base_languages, lang_data)
-
-	data["base_languages"] = base_languages
-	data["bonus_languages"] = bonus_languages
-	data["blacklisted_species"] = list()
 	return data
 
-#undef NO_LANGUAGE
+#undef ADD_SPOKEN_LANGUAGE
+#undef ADD_UNDERSTOOD_LANGUAGE
+#undef REMOVE_SPOKEN_LANGUAGE
+#undef REMOVE_UNDERSTOOD_LANGUAGE

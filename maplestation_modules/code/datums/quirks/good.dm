@@ -4,14 +4,8 @@
 /datum/quirk/jolly
 	value = 3
 
-/datum/quirk/bilingual
-	icon = FA_ICON_GLOBE_EUROPE
-	value = 0
-	desc = "Over the years you've picked up an extra language! \
-		(Made redundant by the Language Picker - use it instead.)"
-	medical_record_text = "Patient is bilingual speaks multiple languages."
-
 // New quirks
+/*
 /// Trilingual quirk - Gives the owner a language.
 /datum/quirk/trilingual
 	name = "Trilingual"
@@ -59,6 +53,7 @@
 /datum/quirk/trilingual/remove()
 	if(added_language && !QDELETED(quirk_holder))
 		quirk_holder.get_language_holder().remove_language(added_language, ALL, LANGUAGE_QUIRK)
+*/
 
 /datum/quirk/no_appendix
 	name = "Appendicitis Survivor"

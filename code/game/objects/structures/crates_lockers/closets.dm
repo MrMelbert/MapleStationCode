@@ -163,18 +163,26 @@ GLOBAL_LIST_EMPTY(roundstart_station_closets)
 		take_contents()
 
 	if(sealed)
-		var/datum/gas_mixture/external_air = loc.return_air()
-		if(external_air && is_maploaded)
-			internal_air = external_air.copy()
-		else
-			internal_air = new()
+		var/datum/gas_mixture/external_air = loc?.return_air()
+		internal_air = new(air_volume)
+		if(external_air)
+			if(is_maploaded)
+				internal_air.copy_from_ratio(external_air, internal_air.volume / external_air.volume)
+			else
+				external_air.equalize(internal_air)
 		START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/return_air()
-	if(sealed)
-		return internal_air
-	else
-		return ..()
+	return (sealed && !opened) ? internal_air : ..()
+
+/obj/structure/closet/return_analyzable_air()
+	return (sealed && !opened) ? internal_air : ..()
+
+/obj/structure/closet/assume_air(datum/gas_mixture/giver)
+	return (sealed && !opened) ? internal_air.merge(giver) : ..()
+
+/obj/structure/closet/remove_air(amount)
+	return (sealed && !opened) ? internal_air.remove(amount) : ..()
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()

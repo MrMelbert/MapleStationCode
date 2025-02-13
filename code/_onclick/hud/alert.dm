@@ -276,6 +276,7 @@
 	name = "Mind Control"
 	desc = "Your mind has been hijacked! Click to view the mind control command."
 	icon_state = ALERT_MIND_CONTROL
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	var/command
 
 /atom/movable/screen/alert/mind_control/Click()
@@ -289,6 +290,7 @@
 	desc = "Something got lodged into your flesh and is causing major bleeding. It might fall out with time, but surgery is the safest way. \
 		If you're feeling frisky, examine yourself and click the underlined item to pull the object out."
 	icon_state = ALERT_EMBEDDED_OBJECT
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/embeddedobject/Click()
 	. = ..()
@@ -296,8 +298,7 @@
 		return
 
 	var/mob/living/carbon/carbon_owner = owner
-
-	return carbon_owner.help_shake_act(carbon_owner)
+	return carbon_owner.check_self_for_injuries()
 
 /atom/movable/screen/alert/negative
 	name = "Negative Gravity"
@@ -326,6 +327,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "On Fire"
 	desc = "You're on fire. Stop, drop and roll to put the fire out or move to a vacuum area."
 	icon_state = "fire"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/fire/Click()
 	. = ..()
@@ -344,6 +346,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 /atom/movable/screen/alert/give // information set when the give alert is made
 	icon_state = "default"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	/// The offer we're linked to, yes this is suspiciously like a status effect alert
 	var/datum/status_effect/offering/offer
 	/// Additional text displayed in the description of the alert.
@@ -515,6 +518,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Succumb"
 	desc = "Shuffle off this mortal coil."
 	icon_state = ALERT_SUCCUMB
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/succumb/Click()
 	. = ..()
@@ -803,6 +807,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 		additional processing time to unlock more malfunction abilities."
 	icon_state = ALERT_HACKING_APC
 	timeout = 60 SECONDS
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	var/atom/target = null
 
 /atom/movable/screen/alert/hackingapc/Click()
@@ -830,6 +835,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	desc = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!"
 	icon_state = "template"
 	timeout = 300
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/revival/Click()
 	. = ..()
@@ -843,6 +849,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	desc = "This can be clicked on to perform an action."
 	icon_state = "template"
 	timeout = 30 SECONDS
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	/// Weakref to the target atom to use the action on
 	var/datum/weakref/target_ref
 	/// If we want to interact on click rather than jump/orbit
@@ -868,6 +875,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "template"
 	timeout = 30 SECONDS
 	ghost_screentips = TRUE
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	/// If true you need to call START_PROCESSING manually
 	var/show_time_left = FALSE
 	/// MA for maptext showing time left for poll
@@ -1018,6 +1026,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Buckled"
 	desc = "You've been buckled to something. Click the alert to unbuckle unless you're handcuffed."
 	icon_state = ALERT_BUCKLED
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/restrained/handcuffed
 	name = "Handcuffed"
@@ -1028,6 +1037,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Legcuffed"
 	desc = "You're legcuffed, which slows you down considerably. Click the alert to free yourself."
 	click_master = FALSE
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/restrained/Click()
 	. = ..()
@@ -1065,6 +1075,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Knotted Shoes"
 	desc = "Someone tied your shoelaces together! Click the alert or your shoes to undo the knot."
 	icon_state = ALERT_SHOES_KNOT
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/shoes/Click()
 	. = ..()
@@ -1083,6 +1094,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	name = "Unpossess"
 	desc = "You are possessing an object. Click this alert to unpossess it."
 	icon_state = "buckled"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/unpossess_object/Click()
 	. = ..()
