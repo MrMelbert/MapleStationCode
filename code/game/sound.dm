@@ -165,7 +165,7 @@
 			sound_to_use.environment = A.sound_environment
 
 		if(!use_reverb || sound_to_use.environment == SOUND_ENVIRONMENT_NONE) // Disable revert
-			sound_to_use.echo = EAX2_DEFAULT_ECHO
+			sound_to_use.echo ||= EAX2_DEFAULT_ECHO
 			sound_to_use.echo[ECHO_INDEX_ROOM] = -10000 // -10000 = no reverb
 			sound_to_use.echo[ECHO_INDEX_ROOMHF] = -10000 // -10000 = no reverb
 			sound_to_use.echo[ECHO_INDEX_FLAGS] = NONE
