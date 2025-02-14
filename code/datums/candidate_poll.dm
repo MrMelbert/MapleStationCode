@@ -39,7 +39,7 @@
 	time_started = world.time
 	poll_key = "[question]_[role || "0"]"
 	for(var/custom_message in custom_response_messages)
-		response_messages[custom_message] = custom_response_messages[custom_messsage]
+		response_messages[custom_message] = custom_response_messages[custom_message]
 	for(var/individual_message in response_messages)
 		response_messages[individual_message] = replacetext(response_messages[individual_message], "%ROLE%", role)
 	return ..()
