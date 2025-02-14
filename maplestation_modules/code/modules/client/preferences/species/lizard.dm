@@ -76,7 +76,7 @@
 	color_source = ORGAN_COLOR_OVERRIDE
 
 /datum/bodypart_overlay/mutant/horns/inherit_color(obj/item/bodypart/bodypart_owner, force)
-	draw_color = bodypart_owner?.owner?.dna?.features["lizard_horn_color"] || "#FFFFFF"
+	draw_color = bodypart_owner?.owner?.dna?.features["lizard_horn_color"] || "#dddddd"
 	return TRUE
 
 // The actual preference
@@ -91,7 +91,7 @@
 	target.dna.features["lizard_horn_color"] = value
 
 /datum/preference/color/horn_color/create_default_value()
-	return "#FFFFFF"
+	return "#dddddd"
 
 // -- Lizard Horn Layer selection --
 // Makes it actually work

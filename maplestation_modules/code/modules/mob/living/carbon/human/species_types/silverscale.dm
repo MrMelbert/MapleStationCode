@@ -67,7 +67,7 @@
 
 	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
 		organ_owner.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
-		if (!special)
+		if(!special)
 			to_chat(organ_owner, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... \
 				you are once again Silverscale."))
 
@@ -97,7 +97,7 @@
 
 	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
 		organ_owner.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
-		if (!special)
+		if(!special)
 			to_chat(organ_owner, span_userdanger("You can feel the arcane powers of the silver tongue slip away - \
 				you've lost your silver heritage! Without it, you are less than Silverscale... you MUST get it back!"))
 
@@ -117,7 +117,8 @@
 	for(var/datum/action/cooldown/turn_to_statue/statue in actions)
 		if(organ_owner.loc == statue.statue)
 			organ_owner.forceMove(statue.statue.loc)
-			organ_owner.Paralyze(12 SECONDS)
+			if(!special)
+				organ_owner.Paralyze(12 SECONDS)
 
 /obj/item/organ/internal/tongue/lizard/silver/on_life(seconds_per_tick, times_fired)
 	update_glint()
