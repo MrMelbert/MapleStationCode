@@ -113,5 +113,5 @@
 
 /obj/item/circuit_component/headset/equipped(mob/user, slot)
 	. = ..()
-	if(iscarbon(user) && slot == ITEM_SLOT_EARS)
+	if(iscarbon(user) && (slot & ITEM_SLOT_EARS))
 		entity.set_output(user)
