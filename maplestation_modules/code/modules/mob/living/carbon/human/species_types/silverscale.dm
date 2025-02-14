@@ -21,6 +21,7 @@
 		. += " This will be invaluable towards our research of silverscale biology - please send more samples if you have any!"
 
 /obj/item/organ/internal/tongue/lizard/silver
+	visual = TRUE
 	/// Stored skin color for turning back off of a silverscale.
 	VAR_PRIVATE/old_skincolor
 	///stored mutcolor for when we turn back off of a silverscale.
