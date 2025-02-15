@@ -18,7 +18,7 @@
 	mutantliver = /obj/item/organ/internal/liver/werewolf
 	mutantheart = /obj/item/organ/internal/heart/werewolf
 	external_organs = list(
-		/obj/item/organ/external/tail/cat = "Cat", // todo: add custom wolf tail
+		/obj/item/organ/external/tail/cat/fox = "Fox", // todo: add custom wolf tail
 	)
 	skinned_type = /obj/item/stack/sheet/animalhide/human
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_MAGIC | MIRROR_PRIDE | ERT_SPAWN | RACE_SWAP | SLIME_EXTRACT
