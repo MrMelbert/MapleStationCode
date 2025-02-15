@@ -1,7 +1,7 @@
 /datum/keybinding/human/open_close_storage
 	hotkey_keys = list("ShiftR")
 	name = "open_close_storage"
-	full_name = "Open or close storage"
+	full_name = "Open/Close storage"
 	description = "Close the current storage interface, or open equipped storage if available"
 	keybind_signal = COMSIG_KB_HUMAN_OPENCLOSESTORAGE_DOWN
 
