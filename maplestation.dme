@@ -6506,6 +6506,7 @@
 #include "maplestation_modules\code\modules\projectiles\projectile\bullets\shotgun.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\energy\laser.dm"
 #include "maplestation_modules\code\modules\projectiles\projectile\energy\ppc.dm"
+#include "maplestation_modules\code\modules\quick_store\open_close_storage.dm"
 #include "maplestation_modules\code\modules\radio_emote_helper\emote_helper.dm"
 #include "maplestation_modules\code\modules\reagents\machines.dm"
 #include "maplestation_modules\code\modules\reagents\chemistry\reagents\drink_reagents.dm"

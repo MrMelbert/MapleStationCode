@@ -502,17 +502,21 @@
 			. += item
 
 ///proc extender of [/mob/verb/quick_equip] used to make the verb queuable if the server is overloaded
+
+// NON-MODULE CHANGE START : quick equip to active storage if available
 /mob/proc/execute_quick_equip()
 	var/obj/item/I = get_active_held_item()
 	if(!I)
-		to_chat(src, span_warning("You are not holding anything to equip!"))
-		return
-	if (temporarilyRemoveItemFromInventory(I) && !QDELETED(I))
-		if(I.equip_to_best_slot(src))
-			return
-		if(put_in_active_hand(I))
-			return
-		I.forceMove(drop_location())
+		var/datum/storage/storage = src.active_storage
+		if(storage.real_location.contents.len)
+			var/obj/item/stored = storage.real_location.contents[storage.real_location.contents.len]
+			if(!stored || stored.on_found(src))
+				to_chat(src, span_warning("You are not holding anything to equip!"))
+				return
+			stored.attack_hand(src) // take out thing from item in storage slot
+	if(!QDELETED(I))
+		I.equip_to_best_slot(src)
+// NON-MODULE CHANGE END
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()
