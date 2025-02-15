@@ -31,7 +31,7 @@
 	burn_modifier = 0.9
 	brute_modifier = 0.7
 	dmg_overlay_type = null
-	bodypart_traits = list(TRAIT_NO_JUMPSUIT, TRAIT_IGNOREDAMAGESLOWDOWN, TRAIT_PUSHIMMUNE, TRAIT_STUNIMMUNE)
+	bodypart_traits = list(TRAIT_NO_JUMPSUIT, TRAIT_PUSHIMMUNE, TRAIT_STUNIMMUNE)
 	wing_types = NONE
 
 /obj/item/bodypart/chest/werewolf/update_limb(dropping_limb, is_creating)
