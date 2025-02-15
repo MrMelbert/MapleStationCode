@@ -75,7 +75,7 @@
 	name = "wolf tongue"
 	desc = "A large tongue that looks like a mix of a human's and a wolf's."
 	icon_state = "werewolf_tongue"
-	icon = 'maplestation_modules/icons/mob/mutant_bodyparts.dmi'
+	icon = 'maplestation_modules/icons/obj/surgery.dmi'
 	say_mod = "growls"
 	modifies_speech = TRUE
 	taste_sensitivity = 5
