@@ -171,7 +171,7 @@
 	armor_type = /datum/armor/wintercoat_captain
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/captain
 
-/datum/armor/wintercoat_captain //modular edit to make it closer to the carapace values, but less because of the bonus of being a winter coat
+/datum/armor/wintercoat_captain //downstream edit to make it closer to the carapace values, but less because of the bonus of being a winter coat
 	melee = 40
 	bullet = 30
 	laser = 40
