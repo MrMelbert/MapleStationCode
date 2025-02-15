@@ -137,6 +137,7 @@
 	desc = "Not sure what to do? Click here for a random backstory and some extra equipment. \
 		This will go away shortly, so don't worry if you don't want it."
 	icon_state = "surrender"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/backstory/Click(location, control, params)
 	. = ..()

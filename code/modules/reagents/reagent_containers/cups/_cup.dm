@@ -124,7 +124,7 @@
 			return
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this, transferred_by = user)
-		playsound(target.loc, pick('sound/effects/liquid_pour1.ogg', 'sound/effects/liquid_pour2.ogg', 'sound/effects/liquid_pour3.ogg'), 50)
+		playsound(target.loc, SFX_LIQUID_POUR, 50)
 		to_chat(user, span_notice("You transfer [trans] unit\s of the solution to [target]."))
 
 	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.

@@ -103,8 +103,9 @@
 			if(11)
 				to_chat(owner, span_warning("You faint."))
 				owner.Unconscious(80)
-
-	..()
+	if(SPT_PROB(1, seconds_per_tick))
+		owner.cause_pain(BODY_ZONE_HEAD, 10)
+	return ..()
 
 /datum/brain_trauma/mild/healthy
 	name = "Anosognosia"
@@ -118,7 +119,7 @@
 	return ..()
 
 /datum/brain_trauma/mild/healthy/on_life(seconds_per_tick, times_fired)
-	owner.adjustStaminaLoss(-2.5 * seconds_per_tick) //no pain, no fatigue
+	owner.adjustStaminaLoss(-7.5 * seconds_per_tick) //no pain, no fatigue
 
 /datum/brain_trauma/mild/healthy/on_lose()
 	owner.remove_status_effect(/datum/status_effect/grouped/screwy_hud/fake_healthy, type)
@@ -148,7 +149,8 @@
 
 	else if(SPT_PROB(1.5, seconds_per_tick))
 		to_chat(owner, span_warning("You feel a sudden weakness in your muscles!"))
-		owner.adjustStaminaLoss(50)
+		owner.apply_damage(25, STAMINA, BODY_ZONE_L_LEG)
+		owner.apply_damage(25, STAMINA, BODY_ZONE_R_LEG)
 	..()
 
 /datum/brain_trauma/mild/muscle_spasms
@@ -191,8 +193,6 @@
 	gain_text = span_warning("You lose your grasp on complex words.")
 	lose_text = span_notice("You feel your vocabulary returning to normal again.")
 
-	var/static/list/common_words = world.file2list("strings/1000_most_common.txt")
-
 /datum/brain_trauma/mild/expressive_aphasia/handle_speech(datum/source, list/speech_args)
 	var/message = speech_args[SPEECH_MESSAGE]
 	if(message)
@@ -212,7 +212,7 @@
 				word = copytext(word, 1, suffix_foundon)
 			word = html_decode(word)
 
-			if(lowertext(word) in common_words)
+			if(GLOB.most_common_words[lowertext(word)])
 				new_message += word + suffix
 			else
 				if(prob(30) && message_split.len > 2)

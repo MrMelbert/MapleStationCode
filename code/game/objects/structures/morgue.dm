@@ -251,9 +251,9 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 	var/datum/gas_mixture/internal_air
 
 	/// The rate at which the internal air mixture cools
-	var/cooling_rate_per_second = 4
+	var/cooling_rate_per_second = 4 CELCIUS
 	/// Minimum temperature of the internal air mixture
-	var/minimum_temperature = T0C - 60
+	var/minimum_temperature = BODY_PRESERVATION_TEMP
 
 
 /obj/structure/bodycontainer/morgue/Initialize(mapload)
@@ -482,7 +482,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 
 			if(user.stat != DEAD)
 				user.investigate_log("has died from being cremated.", INVESTIGATE_DEATHS)
-			M.death(TRUE)
+			M.death(TRUE, "cremation")
 			if(M) //some animals get automatically deleted on death.
 				M.ghostize()
 				qdel(M)

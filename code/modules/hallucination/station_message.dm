@@ -80,7 +80,7 @@
 	priority_announce(
 		text = "Figments from an eldritch god are being summoned by [totally_real_cult_leader.real_name] into [fake_summon_area] from an unknown dimension. Disrupt the ritual at all costs!",
 		title = "[command_name()] Higher Dimensional Affairs",
-		sound = 'sound/ambience/antag/bloodcult/bloodcult_scribe.ogg',
+		sound = /*'sound/ambience/antag/bloodcult/bloodcult_scribe.ogg'*/ANNOUNCER_SPANOMALIES,
 		has_important_message = TRUE,
 		players = list(hallucinator),
 	)

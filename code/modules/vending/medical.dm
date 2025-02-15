@@ -21,6 +21,7 @@
 		/obj/item/cane/white = 2,
 		/obj/item/clothing/glasses/eyepatch/medical = 2,
 		/obj/item/storage/box/bandages = 2,
+		/obj/item/storage/box/tongue_depressors = 2,
 	)
 	contraband = list(
 		/obj/item/storage/box/gum/happiness = 3,

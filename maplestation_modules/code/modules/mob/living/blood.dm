@@ -49,12 +49,13 @@
  * Blood Drying SS
  *
  * Used as a low priority backround system to handling the drying of blood on the ground
+ * (basically just handles reducing their bloodiness value over time)
  */
 PROCESSING_SUBSYSTEM_DEF(blood_drying)
 	name = "Blood Drying"
 	flags = SS_NO_INIT | SS_BACKGROUND
 	priority = 10
-	wait = 10 SECONDS
+	wait = 4 SECONDS
 
 /**
  * Blood Types
@@ -101,6 +102,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /**
  * Used to handle any unique facets of blood spawned of this blood type
  *
+ * You don't need to worry about updating the icon of the decal,
+ * it will be handled automatically after setup is finished
+ *
  * Arguments
  * * blood - the blood being set up
  * * new_splat - whether this is a newly instantiated blood decal, or an existing one this blood is being added to
@@ -117,8 +121,6 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
  * * drip - whether to spawn a drip or a splatter
  */
 /datum/blood_type/proc/make_blood_splatter(mob/living/bleeding, turf/blood_turf, drip)
-	if(HAS_TRAIT(bleeding, TRAIT_NOBLOOD))
-		return
 	if(isgroundlessturf(blood_turf))
 		blood_turf = GET_TURF_BELOW(blood_turf)
 	if(isnull(blood_turf) || isclosedturf(blood_turf))
@@ -132,10 +134,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		if(isnull(drop))
 			var/obj/effect/decal/cleanable/blood/splatter = locate() in blood_turf
 			if(!QDELETED(splatter))
-				splatter.adjust_bloodiness(new_blood)
-				splatter.drying_progress -= (new_blood * BLOOD_PER_UNIT_MODIFIER)
-				splatter.update_blood_drying_effect()
 				splatter.add_mob_blood(bleeding)
+				splatter.adjust_bloodiness(new_blood)
+				splatter.slow_dry(1 SECONDS * new_blood * BLOOD_PER_UNIT_MODIFIER)
 				return splatter
 
 			drop = new(blood_turf, bleeding.get_static_viruses())
@@ -170,8 +171,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			return null
 	else
 		splatter.adjust_bloodiness(BLOOD_AMOUNT_PER_DECAL)
-		splatter.drying_progress -= (BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
-		splatter.update_blood_drying_effect()
+		splatter.slow_dry(1 SECONDS * BLOOD_AMOUNT_PER_DECAL * BLOOD_PER_UNIT_MODIFIER)
 	splatter.add_mob_blood(bleeding) //give blood info to the blood decal.
 	if(LAZYLEN(temp_blood_DNA))
 		splatter.add_blood_DNA(temp_blood_DNA)
@@ -277,16 +277,20 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 /datum/blood_type/crew/lizard
 	name = "L"
 	color = "#047200" // Some species of lizards have mutated green blood due to biliverdin build up
-	compatible_types = list(/datum/blood_type/crew/lizard/silver)
+	compatible_types = list(/datum/blood_type/silver/lizard)
 
-/datum/blood_type/crew/lizard/silver
-	color = "#ffffff9c"
-	compatible_types = list(/datum/blood_type/crew/lizard)
+/datum/blood_type/silver
+	name = "Ag"
+	color = "#c9c9c99c"
+	reagent_type = /datum/reagent/silver
 
-/datum/blood_type/crew/lizard/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
-	blood.add_filter("silver_glint", 3, list("type" = "outline", "color" = "#c9c9c99c", "size" = 1.5))
+/datum/blood_type/silver/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
+	blood.can_dry = FALSE
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 125 : 63)
-	blood.update_appearance(UPDATE_OVERLAYS)
+
+/datum/blood_type/silver/lizard
+	name = "sL"
+	compatible_types = list(/datum/blood_type/crew/lizard)
 
 /datum/blood_type/crew/skrell
 	name = "S"
@@ -300,11 +304,9 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 
 /datum/blood_type/crew/ethereal/set_up_blood(obj/effect/decal/cleanable/blood/blood, new_splat)
 	blood.emissive_alpha = max(blood.emissive_alpha, new_splat ? 188 : 125)
-	blood.update_appearance(UPDATE_OVERLAYS)
 	if(!new_splat)
 		return
 	blood.can_dry = FALSE
-	blood.update_blood_drying_effect()
 	RegisterSignals(blood, list(COMSIG_ATOM_ITEM_INTERACTION, COMSIG_ATOM_ITEM_INTERACTION_SECONDARY), PROC_REF(on_cleaned))
 
 /datum/blood_type/crew/ethereal/proc/on_cleaned(obj/effect/decal/cleanable/source, mob/living/user, obj/item/tool, ...)
@@ -337,7 +339,6 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 		return
 	// Oil blood will never dry and can be ignited with fire
 	blood.can_dry = FALSE
-	blood.update_blood_drying_effect()
 	blood.AddElement(/datum/element/easy_ignite)
 
 /// A universal blood type which accepts everything

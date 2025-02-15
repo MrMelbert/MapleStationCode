@@ -33,8 +33,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 ///Recolored by item/greentext
 #define TRAIT_GREENTEXT_CURSED "greentext_curse"
 #define TRAIT_INCAPACITATED "incapacitated"
-/// In some kind of critical condition. Is able to succumb.
-#define TRAIT_CRITICAL_CONDITION "critical-condition"
 /// Whitelist for mobs that can read or write
 #define TRAIT_LITERATE "literate"
 /// Blacklist for mobs that can't read or write
@@ -70,7 +68,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_DISCOORDINATED_TOOL_USER "discoordinated_tool_user"
 #define TRAIT_PACIFISM "pacifism"
 #define TRAIT_IGNORESLOWDOWN "ignoreslow"
-#define TRAIT_IGNOREDAMAGESLOWDOWN "ignoredamageslowdown"
 /// Makes it so the mob can use guns regardless of tool user status
 #define TRAIT_GUN_NATURAL "gunnatural"
 /// Causes death-like unconsciousness
@@ -1059,5 +1056,14 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Trait which means whatever has this is dancing by a dance machine
 #define TRAIT_DISCO_DANCER "disco_dancer"
+
+/// Humans with this trait do not blink
+#define TRAIT_PREVENT_BLINKING "prevent_blinking"
+
+/// Prevents animations for blinking from looping
+#define TRAIT_PREVENT_BLINK_LOOPS "prevent_blink_loops"
+
+/// Mob doesn't get closed eyelids overlay when it gets knocked out cold or dies
+#define TRAIT_NO_EYELIDS "no_eyelids"
 
 // END TRAIT DEFINES

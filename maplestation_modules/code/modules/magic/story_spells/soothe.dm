@@ -129,6 +129,7 @@
 	desc = "Some force is being exerted on you, suddenly quieting your rage, fear, and doubt. \
 		You can <b>resist</b> this effect, if your feelings are stronger than this force lets on."
 	icon_state = "high"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/being_soothed/Click(location, control, params)
 	if(usr != owner || !isliving(owner))
