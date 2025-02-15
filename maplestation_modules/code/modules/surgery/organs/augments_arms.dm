@@ -157,3 +157,17 @@
 
 	to_chat(holder, span_warning("The flame burns out in your mouth."))
 	clear_up(holder, do_message = FALSE)
+
+// + Resprites + //
+/obj/item/organ/internal/cyberimp/arm
+	icon = 'maplestation_modules/icons/obj/organs.dmi'
+	icon_state = "toolkit_generic"
+
+/obj/item/organ/internal/cyberimp/arm/toolset
+	icon_state = "toolkit_engineering"
+
+/obj/item/organ/internal/cyberimp/arm/surgery
+	icon_state = "toolkit_surgical"
+
+/obj/item/organ/internal/cyberimp/arm/muscle
+	icon_state = "muscle_implant"
