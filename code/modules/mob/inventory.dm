@@ -508,7 +508,7 @@
 	var/obj/item/I = get_active_held_item()
 	if(!I)
 		var/datum/storage/storage = src.active_storage
-		if(storage.real_location.contents.len)
+		if(storage?.real_location.contents.len)
 			var/obj/item/stored = storage.real_location.contents[storage.real_location.contents.len]
 			if(!stored || stored.on_found(src))
 				to_chat(src, span_warning("You are not holding anything to equip!"))
