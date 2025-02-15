@@ -12,6 +12,8 @@
 	pickup_sound = 'maplestation_modules/sound/items/pickup/hat.ogg'
 	visor_vars_to_toggle = NONE
 	var/modifies_speech = FALSE
+	unique_reskin_changes_base_icon_state = TRUE
+
 	var/adjusted_flags = null
 	///Did we install a filtering cloth?
 	var/has_filter = FALSE
@@ -84,7 +86,7 @@
 
 /obj/item/clothing/mask/update_icon_state()
 	. = ..()
-	icon_state = "[initial(icon_state)][up ? "_up" : ""]"
+	icon_state = "[base_icon_state || initial(icon_state)][up ? "_up" : ""]"
 
 /**
  * Proc called in lungs.dm to act if wearing a mask with filters, used to reduce the filters durability, return a changed gas mixture depending on the filter status

@@ -8,6 +8,7 @@
 	drop_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/gun.ogg'
 	equip_sound = 'maplestation_modules/sound/items/drop/gun.ogg'
+	unique_reskin_changes_base_icon_state = TRUE
 
 	///sound when inserting magazine
 	var/load_sound = 'sound/weapons/gun/general/magazine_insert_full.ogg'
@@ -195,11 +196,8 @@
 		update_appearance()
 
 /obj/item/gun/ballistic/update_icon_state()
-	if(current_skin)
-		icon_state = "[unique_reskin[current_skin]][sawn_off ? "_sawn" : ""]"
-	else
-		icon_state = "[base_icon_state || initial(icon_state)][sawn_off ? "_sawn" : ""]"
-	return ..()
+	. = ..()
+	icon_state = "[base_icon_state || initial(icon_state)][sawn_off ? "_sawn" : ""]"
 
 /obj/item/gun/ballistic/update_overlays()
 	. = ..()
