@@ -25,9 +25,6 @@
 /obj/item/reagent_containers/condiment/milk
 	icon = 'maplestation_modules/icons/obj/food/containers.dmi'
 
-/obj/item/reagent_containers/condiment/peanut_butter
-	icon = 'maplestation_modules/icons/obj/food/containers.dmi'
-
 /obj/item/reagent_containers/condiment/soysauce
 	icon = 'maplestation_modules/icons/obj/food/containers.dmi'
 

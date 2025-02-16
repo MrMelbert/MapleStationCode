@@ -682,8 +682,8 @@
 	hat_offset = 3
 	borg_skins = list(
 		"Machinified Doctor" = list(SKIN_ICON_STATE = "medical"),
-		"Qualified Doctor" = list(SKIN_ICON_STATE = "qualified_doctor"),
-	)
+		"Qualified Doctor" = list(SKIN_ICON_STATE = "qualified_doctor", SKIN_ICON = 'maplestation_modules/icons/mob/silicon/robots.dmi'),
+	) // NON-MODULE CHANGE
 
 /obj/item/robot_model/miner
 	name = "Miner"
