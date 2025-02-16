@@ -24,6 +24,12 @@
 	var/list/base_features = list("mcolor" = "#FFFFFF")
 	// yes this might cause other implications, such as mass species change, or with synths (synthcode moment) but i'll look into it later down the line
 
+/datum/action/cooldown/spell/werewolf_form/Grant(mob/grant_to)
+		. = ..()
+		var/mob/living/carbon/human/lycanthrope = grant_to
+		owner_base_species = lycanthrope.dna.species
+
+
 /datum/action/cooldown/spell/werewolf_form/cast(atom/movable/cast_on)
 	. = ..()
 	var/mob/living/carbon/human/lycanthrope = owner
@@ -32,7 +38,7 @@
 		lycanthrope.dna.features = base_features
 		lycanthrope.set_species(owner_base_species)
 	else
-		owner_base_species = lycanthrope.dna.species
 		base_features = lycanthrope.dna.features.Copy()
+		owner_base_species = lycanthrope.dna.species
 		lycanthrope.balloon_alert(cast_on, "turning")
 		lycanthrope.set_species(/datum/species/werewolf)

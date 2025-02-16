@@ -86,10 +86,10 @@
 	var/message = speech_args[SPEECH_MESSAGE]
 	if(message[1] != "*")
 
-		// all occurrences of characters "eiou" (case-insensitive) are replaced with "r"
-		message = replacetext(message, regex(@"[eiou]", "ig"), "r")
-		// all characters other than "zhrgbmna .!?-" (case-insensitive) are stripped
-		message = replacetext(message, regex(@"[^zhrgbmna.!?-\s]", "ig"), "")
+		// all occurrences of characters "ei" (case-insensitive) are replaced with "r"
+		message = replacetext(message, regex(@"[ei]", "ig"), "r")
+		// all characters other than "zhrgbmnaou .!?-" (case-insensitive) are stripped
+		message = replacetext(message, regex(@"[^zhrgbmnaou.!?-\s]", "ig"), "")
 		// multiple spaces are replaced with a single (whitespace is trimmed)
 		message = replacetext(message, regex(@"(\s+)", "g"), " ")
 
