@@ -169,6 +169,10 @@
 /datum/element/elevation_core/proc/elevate_mob(mob/living/target, elevate_time = ELEVATE_TIME, force = FALSE)
 	if(HAS_TRAIT(target, TRAIT_IGNORE_ELEVATION) && !force)
 		return
+	// while the offset system can natively handle this,
+	// we want to avoid accidentally double-elevating anything they're buckled to (namely vehicles)
+	if(target.has_offset(source = ELEVATION_SOURCE(src)))
+		return
 	// We are buckled to something
 	if(target.buckled)
 		// We are buckled to a vehicle, so it also must be elevated
@@ -185,6 +189,8 @@
 /// Reverts elevation of the mob.
 /datum/element/elevation_core/proc/deelevate_mob(mob/living/target, elevate_time = ELEVATE_TIME)
 	target.remove_offsets(ELEVATION_SOURCE(src), animate = elevate_time > 0)
+	if(isvehicle(target.buckled))
+		animate(target.buckled, pixel_z = -pixel_shift, time = elevate_time, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)
 
 /**
  * If the mob is buckled or unbuckled to/from a vehicle, shift it up/down
