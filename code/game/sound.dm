@@ -192,7 +192,7 @@
 	set waitfor = FALSE
 	UNTIL(SSticker.login_music) //wait for SSticker init to set the login music
 
-	var/volume = prefs.read_preference(/datum/preference/numeric/sound_lobby_volume) * volume_multiplier
+	var/volume = prefs.read_preference(/datum/preference/numeric/volume/sound_lobby_volume) * volume_multiplier
 	if(volume > 0 && !CONFIG_GET(flag/disallow_title_music))
 		SEND_SOUND(src, sound(SSticker.login_music, repeat = 0, wait = 0, volume = volume, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
 		for(var/atom/movable/screen/lobby_music/text in mob.hud_used?.static_inventory)

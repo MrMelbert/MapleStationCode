@@ -628,7 +628,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/lobby_music)
 
 /atom/movable/screen/lobby_music/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
-	if(hud?.mymob?.client?.prefs?.read_preference(/datum/preference/numeric/sound_lobby_volume) <= 0)
+	if(hud?.mymob?.client?.prefs?.read_preference(/datum/preference/numeric/volume/sound_lobby_volume) <= 0)
 		alpha = 0 // we still need to init it incase they turn it back on
 
 /atom/movable/screen/lobby_music/proc/start_tracking()
