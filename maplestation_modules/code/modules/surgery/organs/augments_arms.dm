@@ -171,3 +171,9 @@
 
 /obj/item/organ/internal/cyberimp/arm/muscle
 	icon_state = "muscle_implant"
+
+/obj/item/organ/internal/cyberimp/arm/gun/taser
+	icon = 'icons/obj/medical/organs/organs.dmi'
+
+/obj/item/organ/internal/cyberimp/arm/gun/laser
+	icon = 'icons/obj/medical/organs/organs.dmi'

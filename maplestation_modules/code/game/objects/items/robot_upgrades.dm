@@ -11,7 +11,7 @@
 /obj/item/borg/upgrade/thrusters
 	icon_state = "module_general"
 
-/obj/item/borg/upgrade/diamond_drill
+/obj/item/borg/upgrade/ddrill
 	icon_state = "module_miner"
 
 /obj/item/borg/upgrade/soh
@@ -60,12 +60,14 @@
 	icon_state = "module_general"
 
 /obj/item/borg/upgrade/rped
+	icon = 'maplestation_modules/icons/obj/robot_items.dmi'
 	icon_state = "module_engineer"
 
 /obj/item/borg/upgrade/inducer
 	icon_state = "module_engineer"
 
 /obj/item/borg/upgrade/pinpointer
+	icon = 'maplestation_modules/icons/obj/robot_items.dmi'
 	icon_state = "module_medical"
 
 /obj/item/borg/upgrade/transform

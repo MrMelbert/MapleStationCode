@@ -18,7 +18,7 @@
 	icon_state = "purple-core"
 
 /obj/item/slime_extract/darkpurple
-	icon_state = "darkpurple-core"
+	icon_state = "dark-purple-core"
 
 /obj/item/slime_extract/orange
 	icon_state = "orange-core"
