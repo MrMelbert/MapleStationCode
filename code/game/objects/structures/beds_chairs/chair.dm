@@ -159,46 +159,27 @@
 	max_integrity = 70
 	buildstackamount = 2
 	item_chair = null
-	// The mutable appearance used for the overlay over buckled mobs.
-	var/mutable_appearance/armrest
 
-/obj/structure/chair/comfy/Initialize(mapload)
-	gen_armrest()
-	return ..()
+/obj/structure/chair/comfy/update_overlays()
+	. = ..()
+	if(has_buckled_mobs())
+		. += generate_armrest()
 
 /obj/structure/chair/comfy/on_changed_z_level(turf/old_turf, turf/new_turf, same_z_layer, notify_contents)
-	if(same_z_layer)
-		return ..()
-	cut_overlay(armrest)
-	QDEL_NULL(armrest)
-	gen_armrest()
+	if(!same_z_layer)
+		update_appearance(UPDATE_OVERLAYS)
 	return ..()
 
-/obj/structure/chair/comfy/proc/gen_armrest()
-	armrest = GetArmrest()
-	armrest.layer = ABOVE_MOB_LAYER
-	update_armrest()
-
-/obj/structure/chair/comfy/proc/GetArmrest()
-	return mutable_appearance(icon, "[icon_state]_armrest")
-
-/obj/structure/chair/comfy/Destroy()
-	QDEL_NULL(armrest)
-	return ..()
+/obj/structure/chair/comfy/proc/generate_armrest()
+	return mutable_appearance(icon, "[icon_state]_armrest", ABOVE_MOB_LAYER)
 
 /obj/structure/chair/comfy/post_buckle_mob(mob/living/M)
 	. = ..()
-	update_armrest()
-
-/obj/structure/chair/comfy/proc/update_armrest()
-	if(has_buckled_mobs())
-		add_overlay(armrest)
-	else
-		cut_overlay(armrest)
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/chair/comfy/post_unbuckle_mob()
 	. = ..()
-	update_armrest()
+	update_appearance(UPDATE_OVERLAYS)
 
 /obj/structure/chair/comfy/brown
 	color = rgb(70, 47, 28)
@@ -220,11 +201,24 @@
 	desc = "A comfortable, secure seat. It has a more sturdy looking buckling system, for smoother flights."
 	icon_state = "shuttle_chair"
 	buildstacktype = /obj/item/stack/sheet/mineral/titanium
+	buckle_sound = SFX_SEATBELT_BUCKLE
+	unbuckle_sound = SFX_SEATBELT_UNBUCKLE
 
 /obj/structure/chair/comfy/shuttle/electrify_self(obj/item/assembly/shock_kit/input_shock_kit, mob/user, list/overlays_from_child_procs)
-	if(!overlays_from_child_procs)
-		overlays_from_child_procs = list(image('icons/obj/chairs.dmi', loc, "echair_over", pixel_x = -1))
+	overlays_from_child_procs ||= list(image('icons/obj/chairs.dmi', loc, "echair_over", pixel_x = -1))
+	return ..()
+
+/obj/structure/chair/comfy/shuttle/Initialize(mapload)
 	. = ..()
+	update_appearance(UPDATE_OVERLAYS)
+
+/obj/structure/chair/comfy/shuttle/update_overlays()
+	. = ..()
+	if(has_buckled_mobs())
+		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_front", ABOVE_MOB_LAYER + 0.01)
+		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_down_behind", src.layer + 0.01)
+	else
+		. += mutable_appearance('maplestation_modules/icons/obj/chairs.dmi', "[icon_state]_up", src.layer + 0.01)
 
 /obj/structure/chair/comfy/shuttle/tactical
 	name = "tactical chair"
