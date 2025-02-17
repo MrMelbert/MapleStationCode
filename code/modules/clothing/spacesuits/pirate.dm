@@ -6,6 +6,7 @@
 	armor_type = /datum/armor/space_pirate
 	strip_delay = 40
 	equip_delay_other = 20
+	visor_dirt = null
 
 /datum/armor/space_pirate
 	melee = 30

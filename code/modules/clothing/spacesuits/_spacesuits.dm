@@ -26,8 +26,13 @@
 	equip_sound = 'sound/items/handling/helmet/helmet_equip1.ogg'
 	pickup_sound = 'sound/items/handling/helmet/helmet_pickup1.ogg'
 	drop_sound = 'sound/items/handling/helmet/helmet_drop1.ogg'
+	///Icon state applied when we get spraypainted/peppersprayed. If null, does not add the dirt component
+	var/visor_dirt = "helm_dirt"
+
 /obj/item/clothing/head/helmet/space/Initialize(mapload)
 	. = ..()
+	if(visor_dirt)
+		AddComponent(/datum/component/clothing_dirt, visor_dirt)
 	add_stabilizer()
 
 /obj/item/clothing/head/helmet/space/proc/add_stabilizer(loose_hat = TRUE)

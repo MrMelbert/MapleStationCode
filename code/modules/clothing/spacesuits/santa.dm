@@ -7,6 +7,7 @@
 	inhand_icon_state = "santahat"
 	flags_cover = HEADCOVERSEYES
 	dog_fashion = /datum/dog_fashion/head/santa
+	visor_dirt = null
 
 /obj/item/clothing/head/helmet/space/santahat/beardless
 	icon = 'icons/obj/clothing/head/costume.dmi'

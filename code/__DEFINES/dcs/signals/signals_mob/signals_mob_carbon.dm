@@ -165,3 +165,7 @@
 /// from /datum/status_effect/limp/proc/check_step()
 #define COMSIG_CARBON_LIMPING "mob_limp_check"
 	#define COMPONENT_CANCEL_LIMP (1<<0)
+
+/// from /obj/item/toy/crayon/spraycan/use_on(target, user, modifiers): (atom/target, mob/user)
+#define COMSIG_CARBON_SPRAYPAINTED "comsig_carbon_spraypainted"
+	#define COMPONENT_CANCEL_SPRAYPAINT (1<<0)

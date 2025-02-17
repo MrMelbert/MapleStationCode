@@ -59,6 +59,7 @@
 	flags_inv = NONE
 	clothing_flags = SNUG_FIT
 	flags_cover = NONE
+	dirt_state = null
 
 /datum/armor/bio_hood_plague
 	bio = 100

@@ -31,6 +31,8 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	var/fishing_modifier = 2
 	///Applies clothing_dirt component to the pepperproof mask if true
 	var/pepper_tint = TRUE
+	///icon_state used by clothing_dirt
+	var/dirt_state = "gas_dirt"
 
 /datum/armor/mask_gas
 	bio = 100
@@ -212,12 +214,13 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	armor_type = /datum/armor/gas_welding
 	actions_types = list(/datum/action/item_action/toggle)
 	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDESNOUT
-	flags_cover = MASKCOVERSEYES
+	flags_cover = MASKCOVERSEYES|MASKCOVERSMOUTH|PEPPERPROOF
 	visor_flags_inv = HIDEEYES
-	visor_flags_cover = MASKCOVERSEYES
+	visor_flags_cover = MASKCOVERSEYES|MASKCOVERSMOUTH|PEPPERPROOF
 	visor_vars_to_toggle = VISOR_FLASHPROTECT | VISOR_TINT
 	resistance_flags = FIRE_PROOF
 	clothing_flags = parent_type::clothing_flags | INTERNALS_ADJUST_EXEMPT
+	dirt_state = "welding_dirt"
 
 /datum/armor/gas_welding
 	melee = 10
@@ -251,6 +254,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	flags_inv = HIDEEARS|HIDEEYES|HIDEFACE|HIDEFACIALHAIR|HIDESNOUT|HIDEHAIR
 	inhand_icon_state = "gas_mask"
 	clothing_flags = BLOCK_GAS_SMOKE_EFFECT|MASKINTERNALS
+	dirt_state = "plague_dirt"
 
 /obj/item/clothing/mask/gas/syndicate
 	name = "syndicate mask"
@@ -460,6 +464,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	inhand_icon_state = "gas_atmos"
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	flags_inv = HIDEFACIALHAIR|HIDEFACE|HIDEEYES|HIDEEARS|HIDEHAIR|HIDESNOUT
+	dirt_state = null
 
 /obj/item/clothing/mask/gas/prop
 	name = "prop gas mask"
@@ -485,5 +490,6 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	desc = "Great for train hijackings. Works like a normal full face gas mask, but won't conceal your identity."
 	icon_state = "driscoll_mask"
 	flags_inv = HIDEFACIALHAIR
+	flags_cover = MASKCOVERSMOUTH
 	w_class = WEIGHT_CLASS_NORMAL
 	inhand_icon_state = null
