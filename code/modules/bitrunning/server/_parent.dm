@@ -62,11 +62,6 @@
 /obj/machinery/quantum_server/post_machine_initialize()
 	. = ..()
 
-	radio = new(src)
-	radio.keyslot = new /obj/item/encryptionkey/headset_cargo()
-	radio.set_listening(FALSE)
-	radio.recalculateChannels()
-
 	RegisterSignals(src, list(COMSIG_MACHINERY_BROKEN, COMSIG_MACHINERY_POWER_LOST), PROC_REF(on_broken))
 	RegisterSignal(src, COMSIG_QDELETING, PROC_REF(on_delete))
 
@@ -76,7 +71,6 @@
 	spawned_threat_refs.Cut()
 	exit_turfs.Cut()
 	QDEL_NULL(generated_domain)
-	QDEL_NULL(radio)
 	return ..()
 
 /obj/machinery/quantum_server/add_context(atom/source, list/context, obj/item/held_item, mob/user)
@@ -198,3 +192,10 @@
 	servo_bonus = servo_rating
 
 	return ..()
+
+/datum/aas_config_entry/bitrunning_QS_ready_announcement
+	name = "Cargo Alert: Bitrunning QS Ready"
+	general_tooltip = "Announces when the quantum server is ready to be used. No variables provided"
+	announcement_lines_map = list(
+		"Message" = "Quantum Server report: Thermal systems within operational parameters. Proceeding to domain configuration."
+	)

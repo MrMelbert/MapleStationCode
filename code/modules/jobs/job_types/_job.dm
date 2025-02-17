@@ -269,9 +269,8 @@
 		var/datum/record/crew/crew_rec = find_record(H.real_name)
 		var/obj/item/card/id/crew_id = H.get_idcard(hand_first = FALSE)
 		var/job_name = crew_rec?.rank || crew_id?.assignment || crew_id?.trim?.assignment || H.job
-		var/datum/callback/announce = CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, job_name, channels)
 		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), announce, 0.1 SECONDS))
+		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_config_announce), /datum/aas_config_entry/newhead, list("PERSON" = human.real_name, "RANK" = job_name), null, channels, null, TRUE), 1))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)
