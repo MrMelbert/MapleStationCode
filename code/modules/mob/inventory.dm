@@ -494,6 +494,7 @@
 // NON-MODULE CHANGE END
 	var/list/obj/item/possible = list(
 		user.get_inactive_held_item(),
+		user.get_item_by_slot(ITEM_SLOT_SUITSTORE), // NON-MODULE CHANGE : holsters, *maybe* some other things?
 		user.get_item_by_slot(ITEM_SLOT_BELT),
 		user.get_item_by_slot(ITEM_SLOT_DEX_STORAGE),
 		user.get_item_by_slot(ITEM_SLOT_BACK),

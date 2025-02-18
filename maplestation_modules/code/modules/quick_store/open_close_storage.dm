@@ -20,6 +20,7 @@
 	user.get_inactive_held_item(),
 	user.get_item_by_slot(ITEM_SLOT_BACK),
 	user.get_item_by_slot(ITEM_SLOT_BELT),
+	user.get_item_by_slot(ITEM_SLOT_SUITSTORE),
 	)
 	for(var/thing in possible)
 		if(isnull(thing))
