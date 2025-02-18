@@ -54,14 +54,18 @@
 	UnregisterSignal(src, COMSIG_LIVING_SET_BUCKLED)
 	toggle_perched(perched = FALSE)
 
+#define PERCH_SOURCE "perched"
+
 /mob/living/basic/volkan/shoulder_pet/proc/toggle_perched(perched)
 	if(!perched)
 		REMOVE_TRAIT(src, TRAIT_PARROT_PERCHED, TRAIT_GENERIC)
-		remove_offsets("perched")
+		remove_offsets(PERCH_SOURCE)
 	else
 		ADD_TRAIT(src, TRAIT_PARROT_PERCHED, TRAIT_GENERIC)
-		add_offsets("perched", y_add = 9)
+		add_offsets(PERCH_SOURCE, y_add = 9)
 	update_appearance(UPDATE_ICON_STATE)
+
+#undef PERCH_SOURCE
 
 // - AI CONTROLLER -
 #define BB_PLACEABLE_ITEM "BB_placeable_item"

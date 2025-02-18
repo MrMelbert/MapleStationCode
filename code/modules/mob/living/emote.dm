@@ -108,14 +108,14 @@
 	for(var/i in 1 to 8)
 		switch(i)
 			if(1, 7)
-				animate(user, pixel_w = user.pixel_w + 6, time = 0.5 SECONDS)
+				animate(user, pixel_w = 6, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 			if(3, 5)
-				animate(user, pixel_w = user.pixel_w - 6, time = 0.5 SECONDS)
+				animate(user, pixel_w = -6, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 			else
 				user.setDir(turn(user.dir, 90))
 		sleep(0.25 SECONDS)
 		if(!can_dance(user))
-			user.pixel_w = user.base_pixel_w
+			user.pixel_w = user.has_offset(pixel = PIXEL_W_OFFSET) + user.base_pixel_w
 			return
 		if(user.num_legs < 2)
 			user.Knockdown(2 SECONDS)

@@ -16,7 +16,6 @@
 
 	RegisterSignals(owner, list(COMSIG_LIVING_DEATH, SIGNAL_ADDTRAIT(TRAIT_NO_STAGGER)), PROC_REF(clear_staggered))
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/staggered)
-	animate_stagger()
 	addtimer(VARSET_CALLBACK(src, spawn_animating, FALSE), initial(tick_interval), TIMER_DELETE_ME)
 	return TRUE
 

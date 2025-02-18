@@ -121,11 +121,13 @@
 		return FALSE
 	return TRUE
 
+#define OFFSET_FEEDING "feeding"
+
 ///The slime will start feeding on the target
 /mob/living/simple_animal/slime/proc/start_feeding(mob/living/target_mob)
 	target_mob.unbuckle_all_mobs(force = TRUE) //Slimes rip other mobs (eg: shoulder parrots) off (Slimes Vs Slimes is already handled in can_feed_on())
 	if(target_mob.buckle_mob(src, force = TRUE))
-		add_offsets("feeding", y_add = target_mob.mob_size <= MOB_SIZE_SMALL ? 0 : 3)
+		add_offsets(OFFSET_FEEDING, y_add = target_mob.mob_size <= MOB_SIZE_SMALL ? 0 : 3)
 		layer = target_mob.layer + 0.01 //appear above the target mob
 		RegisterSignal(src, COMSIG_MOB_UNBUCKLED, PROC_REF(unbuckled_feeding), override = TRUE)
 		target_mob.visible_message(
@@ -167,11 +169,13 @@
 		)
 		to_chat(src, span_notice("<i>I stop feeding on [buckled]...</i>"))
 
-	remove_offsets("feeding")
+	remove_offsets(OFFSET_FEEDING)
 	layer = initial(layer)
 	UnregisterSignal(src, COMSIG_MOB_UNBUCKLED)
 
 	buckled.unbuckle_mob(src, force = TRUE)
+
+#undef OFFSET_FEEDING
 
 /mob/living/simple_animal/slime/verb/Evolve()
 	set category = "Slime"

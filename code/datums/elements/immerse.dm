@@ -347,9 +347,9 @@
 
 	switch(new_lying_angle)
 		if(270)
-			new_x += -source.body_position_pixel_y_offset / source.current_size
+			new_x += -offset_lying / source.current_size
 		if(90)
-			new_x += source.body_position_pixel_y_offset / source.current_size
+			new_x += offset_lying / source.current_size
 		if(0)
 			new_y += -source.get_transform_translation_size(old_div) / old_div
 

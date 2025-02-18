@@ -479,7 +479,7 @@
 		if(GRAB_NECK)
 			offset = GRAB_PIXEL_SHIFT_NECK
 		if(GRAB_KILL)
-			offset = M.loc == loc ? GRAB_PIXEL_SHIFT_NECK : GRAB_PIXEL_SHIFT_STRANGLE
+			offset = mob_to_set.loc == loc ? GRAB_PIXEL_SHIFT_NECK : GRAB_PIXEL_SHIFT_STRANGLE
 	mob_to_set.setDir(get_dir(mob_to_set, src))
 	var/dir_filter = mob_to_set.dir
 	if(ISDIAGONALDIR(dir_filter))
@@ -498,7 +498,7 @@
 				mob_to_set.set_lying_angle(LYING_ANGLE_WEST)
 			mob_to_set.add_offsets(GRABBING_TRAIT, x_add = -offset, y_add = 0, animate = animate)
 
-	SEND_SIGNAL(M, COMSIG_LIVING_SET_PULL_OFFSET)
+	SEND_SIGNAL(mob_to_set, COMSIG_LIVING_SET_PULL_OFFSET)
 
 /**
  * Removes any offsets from the passed mob that are related to being grabbed
