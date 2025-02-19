@@ -12,7 +12,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "XENOBIO"
 
-	outfit = /datum/outfit/job/scientist/xenobiologist
+	base_outfit = /datum/outfit/job/scientist/xenobiologist
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_CREW

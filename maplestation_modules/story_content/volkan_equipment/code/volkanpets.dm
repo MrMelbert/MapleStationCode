@@ -79,6 +79,7 @@
 		after_tame = CALLBACK(src, PROC_REF(tamed)), \
 		unique = FALSE)
 	AddComponent(/datum/component/obeys_commands, pet_commands) // follows pet command
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 
 ///Proc to run once imprinted
 /mob/living/basic/volkan/shoulder_pet/proc/tamed(mob/living/tamer)

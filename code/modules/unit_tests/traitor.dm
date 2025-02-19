@@ -17,7 +17,7 @@
 		var/datum/mind/mind = player.mind
 		if(ishuman(player))
 			var/mob/living/carbon/human/human = player
-			human.equipOutfit(job.outfit)
+			human.equipOutfit(job.base_outfit)
 		mind.set_assigned_role(job)
 		var/datum/antagonist/traitor/traitor = mind.add_antag_datum(/datum/antagonist/traitor)
 		if(!traitor.uplink_handler)

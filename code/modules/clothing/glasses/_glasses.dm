@@ -666,33 +666,32 @@
 	icon_state = "salesman"
 	inhand_icon_state = "salesman"
 	flags_cover = GLASSESCOVERSEYES
-	///Tells us who the current wearer([BIGSHOT]) is.
-	var/mob/living/carbon/human/bigshot
 
 /obj/item/clothing/glasses/salesman/equipped(mob/living/carbon/human/user, slot)
-	..()
+	. = ..()
 	if(!(slot & ITEM_SLOT_EYES))
 		return
-	bigshot = user
-	RegisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE, PROC_REF(moodshift))
+	if(isnull(user.mob_mood))
+		return
+	RegisterSignal(user, COMSIG_CARBON_SANITY_UPDATE, PROC_REF(moodshift))
+	moodshift(user, user.mob_mood.sanity)
 
 /obj/item/clothing/glasses/salesman/dropped(mob/living/carbon/human/user)
-	..()
-	UnregisterSignal(bigshot, COMSIG_CARBON_SANITY_UPDATE)
-	bigshot = initial(bigshot)
+	. = ..()
+	UnregisterSignal(user, COMSIG_CARBON_SANITY_UPDATE)
 	icon_state = initial(icon_state)
 	desc = initial(desc)
 
-/obj/item/clothing/glasses/salesman/proc/moodshift(atom/movable/source, amount)
+/obj/item/clothing/glasses/salesman/proc/moodshift(mob/living/source, amount)
 	SIGNAL_HANDLER
 	if(amount < SANITY_UNSTABLE)
 		icon_state = "salesman_fzz"
 		desc = "A pair of glasses, the lenses are full of TV static. They've certainly seen better days..."
-		bigshot.update_worn_glasses()
+		source.update_worn_glasses()
 	else
 		icon_state = initial(icon_state)
 		desc = initial(desc)
-		bigshot.update_worn_glasses()
+		source.update_worn_glasses()
 
 /obj/item/clothing/glasses/nightmare_vision
 	name = "nightmare vision goggles"
