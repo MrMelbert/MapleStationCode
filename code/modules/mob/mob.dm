@@ -1122,22 +1122,6 @@
 		return FALSE
 	return ..(M, force, check_loc, buckle_mob_flags)
 
-///Call back post buckle to a mob to offset your visual height
-/mob/post_buckle_mob(mob/living/M)
-	if(M.layer <= layer) //make sure they stay above our current layer
-		M.layer = layer + 0.1
-
-///Call back post unbuckle from a mob, (reset your visual height here)
-/mob/post_unbuckle_mob(mob/living/M)
-	M.layer = initial(M.layer)
-	M.update_transform()
-
-///returns the height in pixel the mob should have when buckled to another mob.
-/mob/proc/get_mob_buckling_height(mob/living/seat)
-	if(!isliving(seat))
-		return 6
-	return seat.mob_size * 3
-
 ///Can the mob interact() with an atom?
 /mob/proc/in_range_to_interact_with(atom/A, treat_mob_as_adjacent)
 	if(isAdminGhostAI(src))
