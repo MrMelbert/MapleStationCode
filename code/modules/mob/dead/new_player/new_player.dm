@@ -216,10 +216,7 @@
 
 	if(humanc) //These procs all expect humans
 		GLOB.manifest.inject(humanc)
-		if(SSshuttle.arrivals)
-			SSshuttle.arrivals.QueueAnnounce(humanc, rank)
-		else
-			announce_arrival(humanc, rank)
+		announce_arrival(humanc, rank, try_queue = TRUE)
 		AddEmploymentContract(humanc)
 
 		humanc.increment_scar_slot()
