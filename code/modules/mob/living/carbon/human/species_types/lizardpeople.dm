@@ -219,36 +219,8 @@ Lizard subspecies: SILVER SCALED
 	mutanttongue = /obj/item/organ/internal/tongue/lizard/silver
 	changesource_flags = MIRROR_BADMIN | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN
 	examine_limb_id = SPECIES_LIZARD
-	///stored mutcolor for when we turn back off of a silverscale.
-	var/old_mutcolor
-	///stored horn color for when we turn back off of a silverscale.
-	var/old_horncolor
-	///stored eye color for when we turn back off of a silverscale.
-	var/old_eye_color_left
-	///See above
-	var/old_eye_color_right
 
 /datum/species/lizard/silverscale/get_physical_attributes()
 	return "Silver Scales are to lizardpeople what angels are to humans. \
 		Mostly identical, they are holy, don't breathe, don't get viruses, their hide cannot be pierced, love the taste of wine, \
 		and their tongue allows them to turn into a statue, for some reason."
-
-/datum/species/lizard/silverscale/on_species_gain(mob/living/carbon/human/new_silverscale, datum/species/old_species, pref_load)
-	old_mutcolor = new_silverscale.dna.features["mcolor"]
-	old_horncolor = new_silverscale.dna.features["lizard_horn_color"]
-	old_eye_color_left = new_silverscale.eye_color_left
-	old_eye_color_right = new_silverscale.eye_color_right
-	new_silverscale.dna.features["mcolor"] = "#eeeeee"
-	new_silverscale.dna.features["lizard_horn_color"] = "#eeeeee"
-	new_silverscale.eye_color_left = "#0000a0"
-	new_silverscale.eye_color_right = "#0000a0"
-	. = ..()
-	new_silverscale.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
-
-/datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/was_silverscale, datum/species/new_species, pref_load)
-	was_silverscale.dna.features["mcolor"] = old_mutcolor
-	was_silverscale.dna.features["lizard_horn_color"] = old_horncolor
-	was_silverscale.eye_color_left = old_eye_color_left
-	was_silverscale.eye_color_right = old_eye_color_right
-	was_silverscale.remove_filter("silver_glint")
-	return ..()

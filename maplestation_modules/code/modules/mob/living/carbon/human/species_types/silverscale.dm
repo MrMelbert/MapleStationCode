@@ -21,16 +21,19 @@
 		. += " This will be invaluable towards our research of silverscale biology - please send more samples if you have any!"
 
 /obj/item/organ/internal/tongue/lizard/silver
+	visual = TRUE
 	/// Stored skin color for turning back off of a silverscale.
-	var/old_skincolor
+	VAR_PRIVATE/old_skincolor
 	///stored mutcolor for when we turn back off of a silverscale.
-	var/old_mutcolor
+	VAR_PRIVATE/old_mutcolor
 	///stored horn color for when we turn back off of a silverscale.
-	var/old_horncolor
+	VAR_PRIVATE/old_horncolor
 	///stored eye color for when we turn back off of a silverscale.
-	var/old_eye_color_left
+	VAR_PRIVATE/old_eye_color_left
 	///See above
-	var/old_eye_color_right
+	VAR_PRIVATE/old_eye_color_right
+	/// Tracks what color our glint is, to prevent unnecessary updates
+	VAR_PRIVATE/glint_color
 
 	organ_traits = list(
 		TRAIT_HOLY,
@@ -58,13 +61,8 @@
 	old_eye_color_right = he_who_was_blessed_with_silver.eye_color_right
 
 	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
-		var/datum/species/lizard/silverscale/silver_species = organ_owner.dna.species
-		old_mutcolor = silver_species.old_mutcolor
-		old_eye_color_left = silver_species.old_eye_color_left
-		old_eye_color_right = silver_species.old_eye_color_right
-
 		organ_owner.clear_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID)
-		if (!special)
+		if(!special)
 			to_chat(organ_owner, span_blue("You feel a sense of security as you feel the familiar metallic taste of a silvery tongue... \
 				you are once again Silverscale."))
 
@@ -73,7 +71,7 @@
 	he_who_was_blessed_with_silver.dna.features["lizard_horn_color"] = "#eeeeee"
 	he_who_was_blessed_with_silver.eye_color_left = "#0000a0"
 	he_who_was_blessed_with_silver.eye_color_right = "#0000a0"
-	he_who_was_blessed_with_silver.add_filter("silver_glint", 2, list("type" = "outline", "color" = "#ffffff63", "size" = 2))
+	update_glint()
 
 	he_who_was_blessed_with_silver.physiology?.damage_resistance += 10
 	he_who_was_blessed_with_silver.dna.species.exotic_bloodtype = /datum/blood_type/silver/lizard
@@ -94,7 +92,7 @@
 
 	if (istype(organ_owner.dna.species, /datum/species/lizard/silverscale))
 		organ_owner.add_mood_event(SILVERSCALE_LOST_TONGUE_MOOD_ID, /datum/mood_event/silverscale_lost_tongue)
-		if (!special)
+		if(!special)
 			to_chat(organ_owner, span_userdanger("You can feel the arcane powers of the silver tongue slip away - \
 				you've lost your silver heritage! Without it, you are less than Silverscale... you MUST get it back!"))
 
@@ -114,7 +112,29 @@
 	for(var/datum/action/cooldown/turn_to_statue/statue in actions)
 		if(organ_owner.loc == statue.statue)
 			organ_owner.forceMove(statue.statue.loc)
-			organ_owner.Paralyze(12 SECONDS)
+			if(!special)
+				organ_owner.Paralyze(12 SECONDS)
+
+/obj/item/organ/internal/tongue/lizard/silver/on_life(seconds_per_tick, times_fired)
+	update_glint()
+
+/// Updates the alpha of the "glow" effect
+/obj/item/organ/internal/tongue/lizard/silver/proc/update_glint()
+	var/turf/owner_turf = get_turf(owner)
+	var/lums = owner_turf?.get_lumcount() - LIGHTING_TILE_IS_DARK
+	if(lums <= 0)
+		if(owner.get_filter("silver_glint"))
+			owner.transition_filter("silver_glint", outline_filter(1.5, "#FFFFFF00"), 1 SECONDS)
+			addtimer(CALLBACK(owner, TYPE_PROC_REF(/datum, remove_filter), "silver_glint"), 1 SECONDS)
+		glint_color = null
+		return
+	var/new_glint_color = "#ffffff[num2text(0.5 * lums * 255, 2, 16)]"
+	if(glint_color == new_glint_color)
+		return
+	glint_color = new_glint_color
+	if(!owner.get_filter("silver_glint"))
+		owner.add_filter("silver_glint", 2, outline_filter(1.5, "#FFFFFF00"))
+	owner.transition_filter("silver_glint", outline_filter(1.5, glint_color), 1 SECONDS)
 
 /datum/action/cooldown/turn_to_statue
 	/// Traits granted to the mob when in statue form
