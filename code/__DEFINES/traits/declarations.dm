@@ -523,10 +523,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_MAINTENANCE_METABOLISM "maintenance_metabolism"
 #define TRAIT_CORONER_METABOLISM "coroner_metabolism"
 
-//LUNG TRAITS
-/// Lungs always breathe normally when in vacuum/space.
-#define TRAIT_SPACEBREATHING "spacebreathing"
-
 /// This mob can strip other mobs.
 #define TRAIT_CAN_STRIP "can_strip"
 /// Can use the nuclear device's UI, regardless of a lack of hands

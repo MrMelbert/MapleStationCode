@@ -63,6 +63,11 @@
 	else
 		animate(src)
 
+#define TREATING_BASIC_DAMAGE (1<<0)
+#define TREATING_WOUNDS (1<<1)
+#define TREATING_PAIN (1<<2)
+#define TREATING_SHOCK (1<<3)
+
 /// Cryo cell
 /obj/machinery/cryo_cell
 	name = "cryo cell"
@@ -95,8 +100,8 @@
 	var/obj/item/radio/radio
 	/// Visual content - Occupant
 	var/atom/movable/visual/cryo_occupant/occupant_vis
-	///Cryo will continue to treat people with 0 damage but existing wounds, but will sound off when damage healing is done in case doctors want to directly treat the wounds instead
-	var/treating_wounds = FALSE
+	/// tracks everything the machine is currently treating
+	var/ongoing_treatment = NONE
 	/// Reference to the datum connector we're using to interface with the pipe network
 	var/datum/gas_machine_connector/internal_connector
 	/// Check if the machine has been turned on
@@ -118,7 +123,7 @@
 
 	occupant_vis = new(mapload, src)
 	vis_contents += occupant_vis
-	internal_connector = new(loc, src, dir, CELL_VOLUME * 0.5)
+	internal_connector = new(loc, src, dir, TANK_STANDARD_VOLUME * 4)
 
 	register_context()
 
@@ -320,26 +325,37 @@
 		return PROCESS_KILL
 
 	// Don't bother with fully healed people.
-	if(mob_occupant.get_organic_health() >= mob_occupant.getMaxHealth())
-		if(iscarbon(mob_occupant))
-			var/mob/living/carbon/C = mob_occupant
-			if(C.all_wounds)
-				if(!treating_wounds) // if we have wounds and haven't already alerted the doctors we're only dealing with the wounds, let them know
-					treating_wounds = TRUE
-					playsound(src, 'sound/machines/cryo_warning.ogg', 100) // Bug the doctors.
-					radio.talk_into(src, "Patient vitals fully recovered, continuing automated wound treatment.", RADIO_CHANNEL_MEDICAL)
-			else // otherwise if we were only treating wounds and now we don't have any, turn off treating_wounds so we can boot 'em out
-				treating_wounds = FALSE
+	if(mob_occupant.get_organic_health() < mob_occupant.getMaxHealth())
+		ongoing_treatment |= TREATING_BASIC_DAMAGE
+	else
+		ongoing_treatment &= ~TREATING_BASIC_DAMAGE
 
-		if(!treating_wounds)
-			set_on(FALSE)
-			playsound(src, 'sound/machines/cryo_warning.ogg', 100) // Bug the doctors.
-			var/msg = "Patient fully restored."
-			if(autoeject) // Eject if configured.
-				msg += " Auto ejecting patient now."
-				open_machine()
-			radio.talk_into(src, msg, RADIO_CHANNEL_MEDICAL)
-			return PROCESS_KILL
+	if(iscarbon(mob_occupant))
+		var/mob/living/carbon/carbon_occupant = mob_occupant
+		if(LAZYLEN(carbon_occupant.all_wounds))
+			ongoing_treatment |= TREATING_WOUNDS
+		else
+			ongoing_treatment &= ~TREATING_WOUNDS
+
+	if(mob_occupant.pain_controller?.get_total_pain() > 30)
+		ongoing_treatment |= TREATING_PAIN
+	else
+		ongoing_treatment &= ~TREATING_PAIN
+
+	if(mob_occupant.shock_controller?.traumatic_shock > 30)
+		ongoing_treatment |= TREATING_SHOCK
+	else
+		ongoing_treatment &= ~TREATING_SHOCK
+
+	if(!ongoing_treatment)
+		set_on(FALSE)
+		playsound(src, 'sound/machines/cryo_warning.ogg', 100) // Bug the doctors.
+		var/msg = "Patient fully restored."
+		if(autoeject) // Eject if configured.
+			msg += " Auto ejecting patient now."
+			open_machine()
+		radio.talk_into(src, msg, RADIO_CHANNEL_MEDICAL)
+		return PROCESS_KILL
 
 	var/datum/gas_mixture/air1 = internal_connector.gas_connector.airs[1]
 	if(!QDELETED(beaker) && air1.total_moles() > CRYO_MIN_GAS_MOLES)
@@ -349,6 +365,11 @@
 			efficiency * CRYO_MULTIPLY_FACTOR,
 			methods = VAPOR
 		)
+
+#undef TREATING_BASIC_DAMAGE
+#undef TREATING_WOUNDS
+#undef TREATING_PAIN
+#undef TREATING_SHOCK
 
 /obj/machinery/cryo_cell/process_atmos()
 	if(!on)
@@ -393,14 +414,17 @@
 /obj/machinery/cryo_cell/handle_internal_lifeform(mob/lifeform_inside_me, breath_request)
 	if(breath_request <= 0)
 		return null
-
 	//return breathable air
-	var/datum/gas_mixture/air1 = internal_connector.gas_connector.airs[1]
-	var/breath_percentage = breath_request / air1.volume
-	. = air1.remove(air1.total_moles() * breath_percentage)
+	var/datum/gas_mixture/internal_air = internal_connector.gas_connector.airs[1]
+	// a little bit of handwaving is done here, exposing the mob to only a fraction (1 atm) of the total air in the cell
+	var/mols_requested = (ONE_ATMOSPHERE * breath_request) / (R_IDEAL_GAS_EQUATION * internal_air.return_temperature())
+	. = internal_air.remove(min(mols_requested, internal_air.total_moles()))
 
 	//update molar changes throughout the pipenet
 	internal_connector.gas_connector.update_parents()
+
+/obj/machinery/cryo_cell/return_analyzable_air()
+	return internal_connector.gas_connector.airs[1]
 
 /obj/machinery/cryo_cell/assume_air(datum/gas_mixture/giver)
 	return internal_connector.gas_connector.airs[1].merge(giver)
@@ -414,6 +438,7 @@
 	if(!state_open && !panel_open)
 		set_on(FALSE)
 	flick("pod-open-anim", src)
+	ongoing_treatment = NONE
 	return ..()
 
 /obj/machinery/cryo_cell/close_machine(mob/living/carbon/user, density_to_set = TRUE)

@@ -44,7 +44,7 @@
 	//Breath damage
 	//These thresholds are checked against what amounts to total_mix_pressure * (gas_type_mols/total_mols)
 	var/safe_oxygen_min = 16 // Minimum safe partial pressure of O2, in kPa
-	var/safe_oxygen_max = 30 // Maximum safe partial pressure of O2, in kPa
+	var/safe_oxygen_max = ONE_ATMOSPHERE * 1.25
 	var/safe_nitro_min = 0
 	var/safe_co2_max = 10 // Yes it's an arbitrary value who cares?
 	var/safe_plasma_min = 0
@@ -108,6 +108,11 @@
 	var/heat_level_damage = 8
 	/// Type of damage dealt by a hot breath
 	var/heat_damage_type = BURN
+
+	/// Below this threshold, the mob lungs take damage due to the pressure difference
+	var/low_pressure_threshold = ONE_ATMOSPHERE * 0.15
+	/// Above this threshold, the mob lungs take damage due to the pressure difference
+	var/high_pressure_threshold = ONE_ATMOSPHERE * 2.5
 
 // assign the respiration_type
 /obj/item/organ/internal/lungs/Initialize(mapload)
@@ -248,7 +253,7 @@
 
 /// Handles oxygen breathing. Always called by things that need o2, no matter what
 /obj/item/organ/internal/lungs/proc/breathe_oxygen(mob/living/carbon/breather, datum/gas_mixture/breath, o2_pp, old_o2_pp)
-	if(o2_pp < safe_oxygen_min && !HAS_TRAIT(src, TRAIT_SPACEBREATHING))
+	if(o2_pp < safe_oxygen_min)
 		// Not safe to check the old pp because of can_breath_vacuum
 		breather.throw_alert(ALERT_NOT_ENOUGH_OXYGEN, /atom/movable/screen/alert/not_enough_oxy)
 
@@ -264,11 +269,7 @@
 		breather.clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
 	breathe_gas_volume(breath, /datum/gas/oxygen, /datum/gas/carbon_dioxide)
-	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
-		breather.adjustOxyLoss(-4)
-	else
-		// Less blood so breaths give you less oxygen
-		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
+	heal_oxyloss_on_breath(breather, breath)
 
 /// Maximum Oxygen effects. "Too much O2!"
 /obj/item/organ/internal/lungs/proc/too_much_oxygen(mob/living/carbon/breather, datum/gas_mixture/breath, o2_pp, old_o2_pp)
@@ -296,7 +297,7 @@
 
 /// If the lungs need Nitrogen to breathe properly, N2 is exchanged with CO2.
 /obj/item/organ/internal/lungs/proc/breathe_nitro(mob/living/carbon/breather, datum/gas_mixture/breath, nitro_pp, old_nitro_pp)
-	if(nitro_pp < safe_nitro_min && !HAS_TRAIT(src, TRAIT_SPACEBREATHING))
+	if(nitro_pp < safe_nitro_min)
 		// Suffocation side-effects.
 		// Not safe to check the old pp because of can_breath_vacuum
 		breather.throw_alert(ALERT_NOT_ENOUGH_NITRO, /atom/movable/screen/alert/not_enough_nitro)
@@ -311,11 +312,7 @@
 
 	// Inhale N2, exhale equivalent amount of CO2. Look ma, sideways breathing!
 	breathe_gas_volume(breath, /datum/gas/nitrogen, /datum/gas/carbon_dioxide)
-	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
-		breather.adjustOxyLoss(-4)
-	else
-		// Less blood so breaths give you less oxygen
-		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
+	heal_oxyloss_on_breath(breather, breath)
 
 /// Maximum CO2 effects. "Too much CO2!"
 /obj/item/organ/internal/lungs/proc/too_much_co2(mob/living/carbon/breather, datum/gas_mixture/breath, co2_pp, old_co2_pp)
@@ -351,7 +348,7 @@
 /// If the lungs need Plasma to breathe properly, Plasma is exchanged with CO2.
 /obj/item/organ/internal/lungs/proc/breathe_plasma(mob/living/carbon/breather, datum/gas_mixture/breath, plasma_pp, old_plasma_pp)
 	// Suffocation side-effects.
-	if(plasma_pp < safe_plasma_min && !HAS_TRAIT(src, TRAIT_SPACEBREATHING))
+	if(plasma_pp < safe_plasma_min)
 		// Could check old_plasma_pp but vacuum breathing hates me
 		breather.throw_alert(ALERT_NOT_ENOUGH_PLASMA, /atom/movable/screen/alert/not_enough_plas)
 		// Breathe insufficient amount of Plasma, exhale CO2.
@@ -365,11 +362,7 @@
 		breather.clear_alert(ALERT_NOT_ENOUGH_PLASMA)
 	// Inhale Plasma, exhale equivalent amount of CO2.
 	breathe_gas_volume(breath, /datum/gas/plasma, /datum/gas/carbon_dioxide)
-	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
-		breather.adjustOxyLoss(-4)
-	else
-		// Less blood so breaths give you less oxygen
-		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
+	heal_oxyloss_on_breath(breather, breath)
 
 /// Maximum Plasma effects. "Too much Plasma!"
 /obj/item/organ/internal/lungs/proc/too_much_plasma(mob/living/carbon/breather, datum/gas_mixture/breath, plasma_pp, old_plasma_pp)
@@ -616,49 +609,45 @@
 		return FALSE
 
 	// If the breath is null, it's actually a failed breath
-	var/no_breath = isnull(breath) || skip_breath
-	if(no_breath)
+	if(isnull(breath) || skip_breath)
 		var/static/datum/gas_mixture/immutable/empty_breath = new(BREATH_VOLUME)
 		breath = empty_breath
 
-	// Indicates if there are moles of gas in the breath.
-	var/num_moles = breath.total_moles()
-	var/not_low_pressure = num_moles > 0.01 || HAS_TRAIT(breather, TRAIT_RESISTLOWPRESSURE)
-	var/not_high_pressure = num_moles < 0.1 || HAS_TRAIT(breather, TRAIT_RESISTHIGHPRESSURE)
-	// Check for moles of gas and handle partial pressures / special conditions.
-	if(num_moles > 0 && not_low_pressure && not_high_pressure)
-		// Breath has more than 0 moles of gas.
-		// Route gases through mask filter if breather is wearing one.
-		if(istype(breather.wear_mask) && (breather.wear_mask.clothing_flags & GAS_FILTERING) && breather.wear_mask.has_filter)
-			breath = breather.wear_mask.consume_filter(breath)
-	// Breath has 0 moles of gas, and we can breathe space
-	else if(HAS_TRAIT(src, TRAIT_SPACEBREATHING))
-		// The lungs can breathe anyways. What are you? Some bottom-feeding, scum-sucking algae eater?
-		breather.failed_last_breath = FALSE
-		// Vacuum-adapted lungs regenerate oxyloss even when breathing nothing.
-		if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
-			breather.adjustOxyLoss(-4)
-		else
-			// Less blood so breaths give you less oxygen
-			breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
+	// Breath has more than 0 moles of gas.
+	// Route gases through mask filter if breather is wearing one.
+	if(breath.total_moles() > 0 && istype(breather.wear_mask) && (breather.wear_mask.clothing_flags & GAS_FILTERING) && breather.wear_mask.has_filter)
+		breath = breather.wear_mask.consume_filter(breath)
 
-	// We're in a low / high pressure environment, can't breathe, but trying to, so this hurts the lungs
-	// Unless it's cybernetic then it just doesn't care. Handwave magic whatever
-	else if(!skip_breath && !IS_ROBOTIC_ORGAN(src))
-		if(!failed)
-			// Lungs are poppin
+	var/breath_pressure = breath.return_pressure()
+	var/too_low_pressure = breath_pressure < low_pressure_threshold && !HAS_TRAIT(breather, TRAIT_RESISTLOWPRESSURE)
+	var/too_high_pressure = breath_pressure > high_pressure_threshold && !HAS_TRAIT(breather, TRAIT_RESISTHIGHPRESSURE)
+	// Everything is fine
+	if(!too_low_pressure && !too_high_pressure)
+		breath = pre_breath_gas_handling(breather, breath) || breath
+
+	// We are in a low pressure environment or we aren't breathing correctly
+	// We straight up failed to breathe as a consequence
+	else if(too_low_pressure || skip_breath)
+		if(!skip_breath && !IS_ROBOTIC_ORGAN(src) && !failed)
 			if(damage >= 40 && damage <= 50 && CAN_FEEL_PAIN(breather))
 				to_chat(breather, span_userdanger("You feel a stabbing pain in your chest!"))
-			else if(num_moles < 0.02)
+			else
 				to_chat(breather, span_boldwarning("You feel air rapidly exiting your lungs!"))
-			else if(num_moles > 0.1)
-				to_chat(breather, span_boldwarning("You feel air force itself into your lungs!"))
-
 			breather.cause_pain(BODY_ZONE_CHEST, 10, BRUTE)
 			apply_organ_damage(maxHealth * 0.075)
-	// Robot, don't care lol
-	else
+
 		breather.failed_last_breath = TRUE
+
+	// We are in a high pressure environment
+	// We technically didn't fail the breath, but it will still be very uncomfortable
+	else if(too_high_pressure)
+		if(!skip_breath && !IS_ROBOTIC_ORGAN(src) && !failed)
+			if(damage >= 40 && damage <= 50 && CAN_FEEL_PAIN(breather))
+				to_chat(breather, span_userdanger("You feel a stabbing pain in your chest!"))
+			else
+				to_chat(breather, span_boldwarning("You feel air force itself into your lungs!"))
+			breather.cause_pain(BODY_ZONE_CHEST, 10, BRUTE)
+			apply_organ_damage(maxHealth * 0.075)
 
 	// The list of gases in the breath.
 	var/list/breath_gases = breath.gases
@@ -721,7 +710,7 @@
 
 	src.last_partial_pressures = partial_pressures
 
-	if(num_moles > 0)
+	if(breath.total_moles() > 0)
 		handle_breath_temperature(breath, breather)
 		// Merge breath_out into breath. They're kept seprerate before now to ensure stupid like, order of operations shit doesn't happen
 		// But that time has passed
@@ -730,9 +719,7 @@
 		breath_out.garbage_collect()
 
 	breath.garbage_collect()
-	// Returning FALSE indicates the breath failed.
-	if(!breather.failed_last_breath)
-		return TRUE
+	return !breather.failed_last_breath
 
 /// Remove gas from breath. If output_gas is given, transfers the removed gas to the lung's gas_mixture.
 /// Removes 100% of the given gas type unless given a volume argument.
@@ -745,6 +732,19 @@
 		ASSERT_GAS(exchange_id, breath_out)
 		breath_out.gases[exchange_id][MOLES] += volume
 	return volume
+
+/// Handles what happens when we breathe in successfully, before we parse through the gases to determine specific side effects
+/// Returns a gas mixture, or null (to use the original breath)
+/obj/item/organ/internal/lungs/proc/pre_breath_gas_handling(mob/living/carbon/human/breather, datum/gas_mixture/breath)
+	return null
+
+/// Handles what happens when we breathe in something we need to live
+/obj/item/organ/internal/lungs/proc/heal_oxyloss_on_breath(mob/living/carbon/human/breather, datum/gas_mixture/breath)
+	if(HAS_TRAIT(breather, TRAIT_NOBLOOD))
+		breather.adjustOxyLoss(-4)
+	else
+		// Less blood so breaths give you less oxygen
+		breather.adjustOxyLoss(-1 * min(5, BLOOD_VOLUME_NORMAL / breather.blood_volume))
 
 /// Applies suffocation side-effects to a given Human, scaling based on ratio of required pressure VS "true" pressure.
 /// If pressure is greater than 0, the return value will represent the amount of gas successfully breathed.

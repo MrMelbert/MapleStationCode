@@ -107,12 +107,16 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	// datum/air_group to tell lifeform to process using that breath return
 	//DEFAULT: Take air from turf to give to have mob process
 
-	if(breath_request>0)
-		var/datum/gas_mixture/environment = return_air()
-		var/breath_percentage = BREATH_VOLUME / environment.return_volume()
-		return remove_air(environment.total_moles() * breath_percentage)
-	else
+	if(breath_request <= 0)
 		return null
+
+	var/datum/gas_mixture/environment = return_air()
+	if(isnull(environment))
+		return null
+
+	// a little bit of handwaving is done here, exposing the mob to only a fraction (1 atm) of the total air
+	var/mols_requested = (ONE_ATMOSPHERE * breath_request) / (R_IDEAL_GAS_EQUATION * environment.return_temperature())
+	return remove_air(min(mols_requested, environment.total_moles()))
 
 /obj/proc/updateUsrDialog()
 	if(!(obj_flags & IN_USE))

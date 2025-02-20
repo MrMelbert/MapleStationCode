@@ -154,6 +154,7 @@
 			var/limb_removed_pain = (dismembered ? PAIN_LIMB_DISMEMBERED : PAIN_LIMB_REMOVED)
 			adjust_bodypart_pain(BODY_ZONE_CHEST, limb_removed_pain)
 			adjust_bodypart_pain(BODY_ZONES_MINUS_CHEST, limb_removed_pain / 3)
+			adjust_traumatic_shock(limb_removed_pain / 4)
 
 	if(!QDELETED(lost_limb))
 		lost_limb.pain = initial(lost_limb.pain)
@@ -274,6 +275,10 @@
 		if(print_debug_messages && (print_debug_decay || abs(adjusted_amount) > 1))
 			testing("PAIN DEBUG: [parent] recived [adjusted_amount] pain to [adjusted_bodypart]. Part pain: [adjusted_bodypart.pain]")
 #endif
+#ifdef HEALTH_DEBUG
+	// solely for updating the debug view
+	parent.updatehealth()
+#endif
 
 	return TRUE
 
@@ -307,6 +312,12 @@
 			parent.remove_max_consciousness_value(PAINSHOCK)
 			parent.remove_status_effect(/datum/status_effect/low_blood_pressure)
 			parent.remove_traits(list(TRAIT_SOFT_CRIT, TRAIT_LABOURED_BREATHING), PAINSHOCK)
+
+#ifdef HEALTH_DEBUG
+	// solely for updating the debug view
+	parent.updatehealth()
+#endif
+
 /**
  * Set the minimum amount of pain in all [def_zones] by [amount].
  *
@@ -458,14 +469,15 @@
 #endif
 
 	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(applied_wound.severity) * 5)
-	adjust_bodypart_pain(wounded_limb.body_zone, (applied_wound.severity) * 7.5)
+	adjust_bodypart_pain(wounded_limb.body_zone, initial(applied_wound.severity) * 7.5)
+	adjust_traumatic_shock(initial(applied_wound.severity) * 4)
 
 /// Removes pain when a wound is healed.
 /datum/pain/proc/remove_wound_pain(mob/living/carbon/source, datum/wound/removed_wound, obj/item/bodypart/wounded_limb)
 	SIGNAL_HANDLER
 
-	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(removed_wound.severity) * - 5)
-	adjust_bodypart_pain(wounded_limb.body_zone, initial(removed_wound.severity) * - 5)
+	adjust_bodypart_min_pain(wounded_limb.body_zone, initial(removed_wound.severity) * -5)
+	adjust_bodypart_pain(wounded_limb.body_zone, initial(removed_wound.severity) * -5)
 
 /datum/pain/process(seconds_per_tick)
 	if(parent.stat == DEAD)
@@ -752,10 +764,7 @@
 	if(!length(phrase))
 		return
 
-	var/num_repeats = floor(((get_total_pain() / 75) + (traumatic_shock / 75)) * pain_modifier)
-	if(traumatic_shock < 90)
-		num_repeats *= 0.5
-
+	var/num_repeats = floor(((get_total_pain() / 50) + (traumatic_shock / 50)) * pain_modifier)
 	num_repeats = clamp(num_repeats, 1, 6)
 	if(num_repeats <= 1)
 		return

@@ -104,7 +104,7 @@
 
 /obj/item/organ/internal/heart/get_status_text(advanced, add_tooltips)
 	if(!beating && !(organ_flags & ORGAN_FAILING) && owner.needs_heart() && owner.stat != DEAD)
-		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Apply defibrillation immediately. Similar electric shocks may work in emergencies.", add_tooltips)
+		return conditional_tooltip("<font color='#cc3333'>Cardiac Arrest</font>", "Defibrillate immediately. Similar electric shocks may work in emergencies.", add_tooltips)
 	return ..()
 
 /obj/item/organ/internal/heart/show_on_condensed_scans()
@@ -179,7 +179,10 @@
 	base_amount += round(owner.pain_controller?.traumatic_shock / 25, 0.5)
 	base_amount += round((BLOOD_VOLUME_NORMAL - owner.blood_volume) / 250, 0.5)
 	base_amount -= round((CONSCIOUSNESS_MAX - owner.consciousness) / 33, 0.5)
-	var/damage_multiplier = clamp(1.75 * ((maxHealth - damage) / maxHealth), 0.5, 1)
+	if(ishuman(owner))
+		var/mob/living/carbon/human/human_owner = owner
+		base_amount += round((human_owner.sprint_length_max - human_owner.sprint_length) / human_owner.sprint_length_max, 0.1)
+	var/damage_multiplier = clamp(2.5 * ((maxHealth - damage) / maxHealth), 0.5, 1)
 
 	return clamp(round(base_amount * damage_multiplier, 0.5), 1, 100)
 

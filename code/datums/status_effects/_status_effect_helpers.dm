@@ -37,11 +37,6 @@
 				if(STATUS_EFFECT_REFRESH)
 					existing_effect.refresh(arglist(arguments))
 					return
-				// Replace but only if the type differs
-				if(STATUS_EFFECT_LOOSE_REPLACE)
-					if(existing_effect.type == new_effect)
-						return
-					existing_effect.be_replaced()
 
 	// Create the status effect with our mob + our arguments
 	var/datum/status_effect/new_instance = new new_effect(arguments)
