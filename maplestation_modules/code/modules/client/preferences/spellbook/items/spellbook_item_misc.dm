@@ -46,3 +46,13 @@ GLOBAL_LIST_INIT(spellbook_misc_items, generate_spellbook_items(SPELLBOOK_CATEGO
 	category = SPELLBOOK_CATEGORY_MISC
 
 	our_action_typepath = /datum/action/cooldown/spell/pointed/mana_sense
+
+/datum/spellbook_item/spell/sending
+	name = "Sending"
+	description = "Its Telepathy, but with magic."
+	lore = "Using your magical attunement (or other aptitudes) \
+	you can send a message to another creature within a short radius. "
+
+	category = SPELLBOOK_CATEGORY_MISC
+
+	our_action_typepath = /datum/action/cooldown/spell/list_target/telepathy/mana

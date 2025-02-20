@@ -159,7 +159,8 @@ SUBSYSTEM_DEF(job)
 			log_job_debug("Removed [job.title] due to map config")
 			continue
 		new_all_occupations += job
-		name_occupations[job.title] = job
+		for(var/alt_title in job.get_titles())
+			name_occupations[alt_title] = job
 		type_occupations[job_type] = job
 		if(job.job_flags & JOB_NEW_PLAYER_JOINABLE)
 			new_joinable_occupations += job

@@ -20,6 +20,10 @@
 	///Type of implant this will spawn as imp upon being spawned
 	var/imp_type = null
 
+/obj/item/implanter/Destroy()
+	QDEL_NULL(imp)
+	return ..()
+
 /obj/item/implanter/update_icon_state()
 	icon_state = "implanter[imp ? 1 : 0]"
 	return ..()

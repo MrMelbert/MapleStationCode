@@ -17,10 +17,10 @@ const HEALTH_COLOR_BY_LEVEL = [
 const STAT_LIVING = 0;
 const STAT_DEAD = 4;
 
-const jobIsHead = (jobId) => jobId % 10 === 0;
+const jobIsHead = (jobId) => jobId === 1 || jobId % 10 === 0;
 
 const jobToColor = (jobId) => {
-  if (jobId === 0) {
+  if (jobId === 1) {
     return COLORS.department.captain;
   }
   if (jobId >= 10 && jobId < 20) {

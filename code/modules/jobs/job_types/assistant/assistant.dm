@@ -11,7 +11,7 @@ Assistant
 	spawn_positions = 5
 	supervisors = "absolutely everyone"
 	exp_granted_type = EXP_TYPE_CREW
-	outfit = /datum/outfit/job/assistant
+	base_outfit = /datum/outfit/job/assistant
 	plasmaman_outfit = /datum/outfit/plasmaman
 	paycheck = PAYCHECK_LOWER // Get a job. Job reassignment changes your paycheck now. Get over it.
 
@@ -37,7 +37,7 @@ Assistant
 	rpg_title = "Lout"
 	config_tag = "ASSISTANT"
 
-/datum/job/assistant/get_outfit(consistent)
+/datum/job/assistant/get_outfit(consistent, title)
 	if(consistent)
 		return /datum/outfit/job/assistant/always_grey
 	if(!HAS_TRAIT(SSstation, STATION_TRAIT_ASSISTANT_GIMMICKS))

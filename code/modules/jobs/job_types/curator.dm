@@ -10,7 +10,7 @@
 	config_tag = "CURATOR"
 	exp_granted_type = EXP_TYPE_CREW
 
-	outfit = /datum/outfit/job/curator
+	base_outfit = /datum/outfit/job/curator
 	plasmaman_outfit = /datum/outfit/plasmaman/curator
 
 	paycheck = PAYCHECK_CREW
@@ -35,6 +35,11 @@
 
 	voice_of_god_silence_power = 3
 	rpg_title = "Veteran Adventurer"
+
+	title_options = list(
+		"Journalist",
+		"Librarian",
+	)
 
 /datum/outfit/job/curator
 	name = "Curator"

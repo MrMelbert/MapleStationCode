@@ -291,7 +291,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		if(tgui_alert(new_character,"Warning: No data core entry detected. Would you like to announce the arrival of this character by adding them to various databases, such as medical records?",,list("No","Yes")) == "Yes")
 			GLOB.manifest.inject(new_character)
 
-		if(tgui_alert(new_character,"Would you like an active AI to announce this character?",,list("No","Yes")) == "Yes")
+		if(tgui_alert(new_character,"Would you like the announcement system to announce this character?",,list("No","Yes")) == "Yes")
 			announce_arrival(new_character, new_character.mind.assigned_role.title)
 
 	var/msg = span_adminnotice("[admin] has respawned [player_key] as [new_character.real_name].")

@@ -23,7 +23,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BRIDGE_OFFICER"
 
-	outfit = /datum/outfit/job/bridge_officer
+	base_outfit = /datum/outfit/job/bridge_officer
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_personnel // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND
