@@ -167,8 +167,8 @@
 
 /mob/living/simple_animal/slime/regenerate_icons()
 	cut_overlays()
-	var/icon_text = "[slime_type.colour] [life_stage] slime"
-	icon_dead = "[icon_text] dead"
+	var/icon_text = "[slime_type.colour]-[life_stage]"
+	icon_dead = "[icon_text]-dead"
 	if(stat != DEAD)
 		icon_state = icon_text
 		if(current_mood && !stat)
