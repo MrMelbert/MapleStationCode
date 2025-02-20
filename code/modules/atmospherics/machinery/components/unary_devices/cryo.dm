@@ -342,7 +342,7 @@
 	else
 		ongoing_treatment &= ~TREATING_PAIN
 
-	if(mob_occupant.shock_controller?.traumatic_shock > 30)
+	if(mob_occupant.pain_controller?.traumatic_shock > 30)
 		ongoing_treatment |= TREATING_SHOCK
 	else
 		ongoing_treatment &= ~TREATING_SHOCK
@@ -442,7 +442,6 @@
 	return ..()
 
 /obj/machinery/cryo_cell/close_machine(mob/living/carbon/user, density_to_set = TRUE)
-	treating_wounds = FALSE
 	if(state_open && !panel_open)
 		flick("pod-close-anim", src)
 		. = ..()
