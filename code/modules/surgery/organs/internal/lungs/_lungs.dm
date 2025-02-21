@@ -113,7 +113,7 @@
 	/// This is guaranteed to be lower than the lowest breathable gas minimum
 	var/low_pressure_threshold = ONE_ATMOSPHERE * 0.12
 	/// Above this threshold, the mob lungs take damage due to the pressure difference
-	var/high_pressure_threshold = ONE_ATMOSPHERE * 2.5
+	var/high_pressure_threshold = ONE_ATMOSPHERE * 2.4
 
 // assign the respiration_type
 /obj/item/organ/internal/lungs/Initialize(mapload)
