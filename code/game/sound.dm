@@ -543,4 +543,15 @@
 				'maplestation_modules/sound/items/rip3.ogg',
 				'maplestation_modules/sound/items/rip4.ogg',
 			)
+		if(SFX_SEATBELT_BUCKLE)
+			soundin = pick(
+				'sound/machines/buckle/buckle1.ogg',
+				'sound/machines/buckle/buckle2.ogg',
+				'sound/machines/buckle/buckle3.ogg',
+			)
+		if(SFX_SEATBELT_UNBUCKLE)
+			soundin = pick(
+				'sound/machines/buckle/unbuckle1.ogg',
+				'sound/machines/buckle/unbuckle2.ogg',
+				'sound/machines/buckle/unbuckle3.ogg',
 	return soundin

@@ -14,7 +14,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "SECURITY_OFFICER"
 
-	outfit = /datum/outfit/job/security
+	base_outfit = /datum/outfit/job/security
 	plasmaman_outfit = /datum/outfit/plasmaman/security
 
 	paycheck = PAYCHECK_CREW
@@ -40,6 +40,15 @@
 	rpg_title = "Guard"
 	job_flags = STATION_JOB_FLAGS
 
+/datum/job/security_officer/get_titles(only_selectable = FALSE)
+	. = ..()
+	if(!only_selectable)
+		. += list(
+			JOB_SECURITY_OFFICER_MEDICAL,
+			JOB_SECURITY_OFFICER_ENGINEERING,
+			JOB_SECURITY_OFFICER_SUPPLY,
+			JOB_SECURITY_OFFICER_SCIENCE,
+		)
 
 GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, SEC_DEPT_SCIENCE, SEC_DEPT_SUPPLY))
 

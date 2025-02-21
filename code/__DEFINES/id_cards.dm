@@ -36,3 +36,28 @@
 )
 /// Wildcard slot define for admin/debug/weird, special abstract cards. Can hold infinite of any access.
 #define WILDCARD_LIMIT_ADMIN list(WILDCARD_NAME_ALL = list(limit = -1, usage = list()))
+
+/**
+ * x1, y1, x2, y2 - Represents the bounding box for the ID card's non-transparent portion of its various icon_states.
+ * Used to crop the ID card's transparency away when chaching the icon for better use in tgui chat.
+ */
+#define ID_ICON_BORDERS 1, 9, 32, 24
+
+///Honorific will display next to the first name.
+#define HONORIFIC_POSITION_FIRST (1<<0)
+///Honorific will display next to the last name.
+#define HONORIFIC_POSITION_LAST (1<<1)
+///Honorific will not be displayed.
+#define HONORIFIC_POSITION_DISABLED (1<<2)
+///Honorific will be appended to the full name at the start.
+#define HONORIFIC_POSITION_FIRST_FULL (1<<3)
+///Honorific will be appended to the full name at the end.
+#define HONORIFIC_POSITION_LAST_FULL (1<<4)
+
+#define HONORIFIC_POSITION_BITFIELDS(...) list( \
+	"Honorific + First Name" = HONORIFIC_POSITION_FIRST, \
+	"Honorific + Last Name" = HONORIFIC_POSITION_LAST, \
+	"Honorific + Full Name" = HONORIFIC_POSITION_FIRST_FULL, \
+	"Full Name + Honorific" = HONORIFIC_POSITION_LAST_FULL, \
+	"Disable Honorific" = HONORIFIC_POSITION_DISABLED, \
+)

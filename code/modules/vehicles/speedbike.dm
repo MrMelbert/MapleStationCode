@@ -10,10 +10,23 @@
 	add_overlay(image(icon, cover_iconstate, ABOVE_MOB_LAYER))
 	AddElement(/datum/element/ridable, /datum/component/riding/vehicle/speedbike)
 
+/obj/vehicle/ridden/speedbike/post_buckle_mob(mob/living/user)
+	. = ..()
+	update_appearance()
+
+/obj/vehicle/ridden/speedbike/post_unbuckle_mob()
+	. = ..()
+	update_appearance()
+
 /obj/vehicle/ridden/speedbike/Move(newloc,move_dir)
 	if(has_buckled_mobs())
 		new /obj/effect/temp_visual/dir_setting/speedbike_trail(loc,move_dir)
 	return ..()
+
+/obj/vehicle/ridden/speedbike/update_overlays()
+	. = ..()
+	if(has_buckled_mobs())
+		. += mutable_appearance(icon, cover_iconstate, ABOVE_MOB_LAYER)
 
 /obj/vehicle/ridden/speedbike/red
 	icon_state = "speedbike_red"

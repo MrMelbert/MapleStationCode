@@ -19,7 +19,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "NOBLE_AMBASSADOR"
 
-	outfit = /datum/outfit/job/noble_ambassador
+	base_outfit = /datum/outfit/job/noble_ambassador
 	plasmaman_outfit = /datum/outfit/plasmaman // no outfit yet
 
 	paycheck = PAYCHECK_COMMAND

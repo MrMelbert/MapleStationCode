@@ -151,3 +151,9 @@
 #define SLOW_HEARTBEAT_THRESHOLD 6
 /// Threshold that heart beat becomes "fast"
 #define FAST_HEARTBEAT_THRESHOLD 11
+
+// Used in living mob offset list for determining pixel offsets
+#define PIXEL_W_OFFSET "w"
+#define PIXEL_X_OFFSET "x"
+#define PIXEL_Y_OFFSET "y"
+#define PIXEL_Z_OFFSET "z"

@@ -188,3 +188,5 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 #define SFX_FEMALE_SIGH "female_sigh"
 #define SFX_WRITING_PEN "writing_pen"
 #define SFX_CLOTH_RIP "cloth_rip"
+#define SFX_SEATBELT_BUCKLE "buckle"
+#define SFX_SEATBELT_UNBUCKLE "unbuckle"
