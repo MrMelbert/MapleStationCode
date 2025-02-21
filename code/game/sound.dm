@@ -554,4 +554,5 @@
 				'sound/machines/buckle/unbuckle1.ogg',
 				'sound/machines/buckle/unbuckle2.ogg',
 				'sound/machines/buckle/unbuckle3.ogg',
+			)
 	return soundin
