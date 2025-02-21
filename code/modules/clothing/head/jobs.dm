@@ -130,7 +130,7 @@
 	icon_state = "beret_badge"
 	greyscale_config = /datum/greyscale_config/beret_badge
 	greyscale_config_worn = /datum/greyscale_config/beret_badge/worn
-	greyscale_colors = "#0070B7#FFCE5B"
+	greyscale_colors = "#41579A#F0CC8F"
 
 //Head of Personnel
 /obj/item/clothing/head/hats/hopcap
