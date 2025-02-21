@@ -110,7 +110,8 @@
 	var/heat_damage_type = BURN
 
 	/// Below this threshold, the mob lungs take damage due to the pressure difference
-	var/low_pressure_threshold = ONE_ATMOSPHERE * 0.15
+	/// This is guaranteed to be lower than the lowest breathable gas minimum
+	var/low_pressure_threshold = ONE_ATMOSPHERE * 0.12
 	/// Above this threshold, the mob lungs take damage due to the pressure difference
 	var/high_pressure_threshold = ONE_ATMOSPHERE * 2.5
 
@@ -125,6 +126,10 @@
 		respiration_type |= RESPIRATION_OXYGEN
 	if(safe_plasma_min)
 		respiration_type |= RESPIRATION_PLASMA
+
+	// Always ensures our low_pressure_threshold is less than our smallest (non-zero) breathable gas minimum
+	var/lowest_nonzero_min = min(safe_oxygen_min || INFINITY, safe_nitro_min || INFINITY, safe_plasma_min || INFINITY)
+	low_pressure_threshold = (lowest_nonzero_min == INFINITY) ? 0 : clamp(lowest_nonzero_min - 1, 0, low_pressure_threshold)
 
 	// Sets up what gases we want to react to, and in what way
 	// always is always processed, while_present is called when the gas is in the breath, and on_loss is called right after a gas is lost
