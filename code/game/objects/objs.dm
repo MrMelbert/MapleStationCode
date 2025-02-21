@@ -47,6 +47,12 @@
 	/// Next pr after the network fix will have me refactor door interactions, so help me god.
 	var/id_tag = null
 
+	/// The sound this obj makes when something is buckled to it
+	var/buckle_sound = null
+
+	/// The sound this obj makes when something is unbuckled from it
+	var/unbuckle_sound = null
+
 	uses_integrity = TRUE
 
 /obj/vv_edit_var(vname, vval)
@@ -93,22 +99,13 @@ GLOBAL_LIST_EMPTY(objects_by_id_tag)
 	log_combat(user, src, "attacked", attacking_item)
 
 /obj/assume_air(datum/gas_mixture/giver)
-	if(loc)
-		return loc.assume_air(giver)
-	else
-		return null
+	return loc?.assume_air(giver)
 
 /obj/remove_air(amount)
-	if(loc)
-		return loc.remove_air(amount)
-	else
-		return null
+	return loc?.remove_air(amount)
 
 /obj/return_air()
-	if(loc)
-		return loc.return_air()
-	else
-		return null
+	return loc?.return_air()
 
 /obj/proc/handle_internal_lifeform(mob/lifeform_inside_me, breath_request)
 	//Return: (NONSTANDARD)

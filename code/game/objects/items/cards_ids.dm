@@ -1,9 +1,3 @@
-/**
- * x1, y1, x2, y2 - Represents the bounding box for the ID card's non-transparent portion of its various icon_states.
- * Used to crop the ID card's transparency away when chaching the icon for better use in tgui chat.
- */
-#define ID_ICON_BORDERS 1, 9, 32, 24
-
 /// Fallback time if none of the config entries are set for USE_LOW_LIVING_HOUR_INTERN
 #define INTERN_THRESHOLD_FALLBACK_HOURS 15
 
@@ -37,6 +31,8 @@
 
 	/// Cached icon that has been built for this card. Intended to be displayed in chat. Cardboards IDs and actual IDs use it.
 	var/icon/cached_flat_icon
+	///What is our honorific name/title combo to be displayed?
+	var/honorific_title
 
 /obj/item/card/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to swipe [user.p_their()] neck with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -111,6 +107,11 @@
 	/// Boolean value. If TRUE, the [Intern] tag gets prepended to this ID card when the label is updated.
 	var/is_intern = FALSE
 
+	/// Will this ID card use the first or last name as the name displayed with the honorific?
+	var/honorific_position = HONORIFIC_POSITION_DISABLED
+	/// What is our selected honorific?
+	var/chosen_honorific
+
 /datum/armor/card_id
 	fire = 100
 	acid = 100
@@ -151,6 +152,19 @@
 	if (my_store)
 		QDEL_NULL(my_store)
 	return ..()
+
+/obj/item/card/id/proc/get_message_name_part(mob/living/carbon/carbon_human, list/stored_name)
+	var/voice_name = carbon_human.GetVoice()
+	var/end_string = ""
+	var/return_string = ""
+	if(carbon_human.name != voice_name)
+		end_string += " (as [registered_name])"
+	if(trim && honorific_position != HONORIFIC_POSITION_DISABLED && (carbon_human.name == voice_name)) //The voice and name are the same, so we display the title.
+		return_string += honorific_title
+	else
+		return_string += voice_name //Name on the ID ain't the same as the speaker, so we display their real name with no title.
+	return_string += end_string
+	stored_name[NAME_PART_INDEX] = return_string
 
 /obj/item/card/id/get_id_examine_strings(mob/user)
 	. = ..()
@@ -450,6 +464,8 @@
 		context[SCREENTIP_CONTEXT_ALT_RMB] = "Assign account"
 	if(!registered_account.replaceable || registered_account.account_balance > 0)
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Withdraw credits"
+	if(trim && length(trim.honorifics))
+		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Toggle honorific"
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/card/id/proc/try_project_paystand(mob/user, turf/target)
@@ -752,7 +768,7 @@
 	for(var/mob/living/carbon/human/viewing_mob in viewers(user, 2))
 		if(viewing_mob.stat || viewing_mob == user)
 			continue
-		viewing_mob.say("Is something wrong? [user.first_name()]... you're sweating.", forced = "psycho")
+		viewing_mob.say("Is something wrong? [first_name(user.name)]... you're sweating.", forced = "psycho")
 		break
 
 /obj/item/card/id/examine_more(mob/user)
@@ -809,7 +825,16 @@
 
 /// Updates the name based on the card's vars and state.
 /obj/item/card/id/proc/update_label()
-	var/name_string = registered_name ? "[registered_name]'s ID Card" : initial(name)
+	var/name_string
+	if(registered_name)
+		update_honorific()
+		if(honorific_title)
+			name_string = "[honorific_title]'s ID Card"
+		else
+			name_string = "[registered_name]'s ID Card"
+	else
+		name_string = initial(name)
+
 	var/assignment_string
 
 	if(is_intern)
@@ -822,6 +847,27 @@
 
 	name = "[name_string] ([assignment_string])"
 
+/// Re-generates the honorific title.
+/obj/item/card/id/proc/update_honorific()
+	honorific_title = null
+	if(trim && (!chosen_honorific || !(chosen_honorific in trim.honorifics)))
+		if(!length(trim.honorifics))
+			chosen_honorific = null
+			return
+		chosen_honorific = trim.honorifics[1]
+
+	switch(honorific_position)
+		if(HONORIFIC_POSITION_DISABLED)
+			return
+		if(HONORIFIC_POSITION_FIRST)
+			honorific_title = "[chosen_honorific] [first_name(registered_name)]"
+		if(HONORIFIC_POSITION_LAST)
+			honorific_title = "[chosen_honorific] [last_name(registered_name)]"
+		if(HONORIFIC_POSITION_FIRST_FULL)
+			honorific_title = "[chosen_honorific] [registered_name]"
+		if(HONORIFIC_POSITION_LAST_FULL)
+			honorific_title += "[registered_name][chosen_honorific]"
+
 /// Returns the trim assignment name.
 /obj/item/card/id/proc/get_trim_assignment()
 	return trim?.assignment || assignment
@@ -829,6 +875,62 @@
 /// Returns the trim sechud icon state.
 /obj/item/card/id/proc/get_trim_sechud_icon_state()
 	return trim?.sechud_icon_state || SECHUD_UNKNOWN
+
+/obj/item/card/id/CtrlClick(mob/user)
+	. = ..()
+	if(. == FALSE)
+		return
+	if(!in_contents_of(user) || user.incapacitated()) //Check if the ID is in the ID slot, so it can be changed from there too.
+		return
+
+	if(!trim)
+		balloon_alert(user, "card has no trim!")
+		return
+
+	if(!length(trim.honorifics))
+		balloon_alert(user, "card has no honorific to use!")
+		return
+
+	var/list/choices = list()
+	var/list/readable_names = HONORIFIC_POSITION_BITFIELDS()
+	var/default_honorific
+	var/possible_positions = trim.honorific_positions | initial(honorific_position)
+	for(var/i in readable_names) //Filter out the options you don't have on your ID.
+		if(possible_positions & readable_names[i])
+			choices += i
+		if(initial(honorific_position) & readable_names[i])
+			default_honorific = i
+
+	var/chosen_position = tgui_input_list(user, "What position do you want your honorific in?", "Flair!", choices, default_honorific)
+	if(user.incapacitated() || !in_contents_of(user) || !chosen_position)
+		return
+
+	var/honorific_position_to_use = readable_names[chosen_position]
+	if(honorific_position_to_use == HONORIFIC_POSITION_DISABLED)
+		honorific_position = HONORIFIC_POSITION_DISABLED
+		balloon_alert(user, "honorific disabled")
+		update_label()
+		return
+
+	var/new_honorific = tgui_input_list(user, "What honorific do you want to use?", "Flair!!!", trim.honorifics, chosen_honorific || trim.honorifics[1])
+	if(!new_honorific || user.incapacitated() || !in_contents_of(user))
+		return
+	chosen_honorific = new_honorific
+	switch(honorific_position_to_use)
+		if(HONORIFIC_POSITION_FIRST)
+			honorific_position = HONORIFIC_POSITION_FIRST
+			balloon_alert(user, "honorific set: display first name")
+		if(HONORIFIC_POSITION_LAST)
+			honorific_position = HONORIFIC_POSITION_LAST
+			balloon_alert(user, "honorific set: display last name")
+		if(HONORIFIC_POSITION_FIRST_FULL)
+			honorific_position = HONORIFIC_POSITION_FIRST_FULL
+			balloon_alert(user, "honorific set: start of full name")
+		if(HONORIFIC_POSITION_LAST_FULL)
+			honorific_position = HONORIFIC_POSITION_LAST_FULL
+			balloon_alert(user, "honorific set: end of full name")
+
+	update_label()
 
 /obj/item/card/id/away
 	name = "\proper a perfectly generic identification card"
@@ -1687,7 +1789,6 @@
 	icon_state = "ctf_green"
 
 #undef INTERN_THRESHOLD_FALLBACK_HOURS
-#undef ID_ICON_BORDERS
 #undef HOLOPAY_PROJECTION_INTERVAL
 
 #define INDEX_NAME_COLOR 1
@@ -1759,6 +1860,7 @@
 			input_name = sanitize_name(input_name, allow_numbers = TRUE)
 			if(!after_input_check(user, item, input_name, scribbled_name))
 				return
+			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 			scribbled_name = input_name
 			var/list/details = item.get_writing_implement_details()
 			details_colors[INDEX_NAME_COLOR] = details["color"] || "#000000"
@@ -1766,6 +1868,7 @@
 			var/input_assignment = tgui_input_text(user, "What assignment would you like to put on this card?", "Cardboard card job ssignment", scribbled_assignment || "Assistant", MAX_NAME_LEN)
 			if(!after_input_check(user, item, input_assignment, scribbled_assignment))
 				return
+			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 			scribbled_assignment = sanitize(input_assignment)
 			var/list/details = item.get_writing_implement_details()
 			details_colors[INDEX_ASSIGNMENT_COLOR] = details["color"] || "#000000"
@@ -1781,6 +1884,7 @@
 			var/input_trim = tgui_input_list(user, "Select trim to apply to your card.\nNote: This will not grant any trim accesses.", "Forge Trim", possible_trims)
 			if(!input_trim || !after_input_check(user, item, input_trim, scribbled_trim))
 				return
+			playsound(src, SFX_WRITING_PEN, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, SOUND_FALLOFF_EXPONENT + 3, ignore_walls = FALSE)
 			scribbled_trim = "cardboard_[input_trim]"
 			var/list/details = item.get_writing_implement_details()
 			details_colors[INDEX_TRIM_COLOR] = details["color"] || "#000000"

@@ -164,7 +164,7 @@
 	agent_card.forged = TRUE
 
 	// job_outfit is going to be a path.
-	var/datum/outfit/job/job_outfit = job_datum.outfit
+	var/datum/outfit/job/job_outfit = job_datum.base_outfit
 	if(isnull(job_outfit))
 		return
 

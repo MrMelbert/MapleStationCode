@@ -16,6 +16,7 @@
 	designation = "Default" //used for displaying the prefix & getting the current model of cyborg
 	has_limbs = TRUE
 	hud_type = /datum/hud/robot
+	mouse_drop_zone = TRUE
 
 	///Represents the cyborg's model (engineering, medical, etc.)
 	var/obj/item/robot_model/model = null
@@ -130,8 +131,6 @@
 	var/obj/item/hat
 	var/hat_offset = -3
 
-	///What types of mobs are allowed to ride/buckle to this mob
-	var/static/list/can_ride_typecache = typecacheof(/mob/living/carbon/human)
 	can_buckle = TRUE
 	buckle_lying = FALSE
 

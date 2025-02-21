@@ -1,5 +1,6 @@
 /atom/movable/screen/robot
 	icon = 'icons/hud/screen_cyborg.dmi'
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/robot/module
 	name = "cyborg module"
@@ -309,6 +310,7 @@
 	name = "Alert Panel"
 	icon = 'icons/hud/screen_ai.dmi'
 	icon_state = "alerts"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/robot/alerts/Click()
 	. = ..()

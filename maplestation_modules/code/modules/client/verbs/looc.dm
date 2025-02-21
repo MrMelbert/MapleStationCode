@@ -25,7 +25,7 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 			to_chat(src, span_danger("LOOC is globally muted."))
 			return
 		if(!GLOB.dooc_allowed && (mob.stat == DEAD))
-			to_chat(src, span_danger("OOC / LOOC for dead mobs has been turned off."))
+			to_chat(src, span_danger("LOOC for dead mobs has been turned off."))
 			return
 		if(prefs.muted & MUTE_OOC)
 			to_chat(src, span_danger("You cannot use LOOC (muted)."))
@@ -36,10 +36,10 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 
 	// Really?
 	if(!SSticker.HasRoundStarted())
-		to_chat(src, span_danger("The round hasn't started yet, dummy! Just use OOC."))
+		to_chat(src, span_danger("The round hasn't started yet!"))
 		return
-	if(istype(mob, /mob/dead/new_player))
-		to_chat(src, span_danger("You're not in game to broadcast LOOC anywhere! Use OOC."))
+	if(isnewplayer(mob))
+		to_chat(src, span_danger("You're not in game to broadcast LOOC anywhere!"))
 		return
 
 	// Check for people with OOC muted
@@ -49,14 +49,13 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 
 	// Check for people banned from OOC
 	if(is_banned_from(ckey, "OOC"))
-		to_chat(src, span_danger("You have been banned from OOC / LOOC."))
+		to_chat(src, span_danger("You have been banned from LOOC."))
 		return
 
 	if(QDELETED(src))
 		return
 
-	msg = copytext_char(sanitize(msg), 1, MAX_MESSAGE_LEN)
-
+	msg = trim(sanitize(msg), MAX_MESSAGE_LEN)
 	if(!msg)
 		return
 

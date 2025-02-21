@@ -253,3 +253,8 @@
 /datum/loadout_item/head/garland/lily
 	name = "Lily Crown"
 	item_path = /obj/item/clothing/head/costume/garland/lily
+
+/datum/loadout_item/head/santa
+	name = "Santa Hat"
+	item_path = /obj/item/clothing/head/costume/santa/gags
+	required_holiday = FESTIVE_SEASON

@@ -9,10 +9,12 @@
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
+	if(isnull(owner))
+		return
 	var/obj/item/bodypart/real_hand = hand
 	if(!istype(real_hand))
 		return
-	real_hand.receive_damage(burn = 10 / severity, wound_bonus = 10, damage_source = src)
+	owner.apply_damage(10 / severity, BURN, real_hand, attacking_item = src)
 	to_chat(owner, span_warning("You feel your [parse_zone(zone)] begin to burn up!"))
 
 /obj/item/organ/internal/cyberimp/arm/lighter/on_mob_insert(mob/living/carbon/arm_owner)
@@ -155,3 +157,23 @@
 
 	to_chat(holder, span_warning("The flame burns out in your mouth."))
 	clear_up(holder, do_message = FALSE)
+
+// + Resprites + //
+/obj/item/organ/internal/cyberimp/arm
+	icon = 'maplestation_modules/icons/obj/organs.dmi'
+	icon_state = "toolkit_generic"
+
+/obj/item/organ/internal/cyberimp/arm/toolset
+	icon_state = "toolkit_engineering"
+
+/obj/item/organ/internal/cyberimp/arm/surgery
+	icon_state = "toolkit_surgical"
+
+/obj/item/organ/internal/cyberimp/arm/muscle
+	icon_state = "muscle_implant"
+
+/obj/item/organ/internal/cyberimp/arm/gun/taser
+	icon = 'icons/obj/medical/organs/organs.dmi'
+
+/obj/item/organ/internal/cyberimp/arm/gun/laser
+	icon = 'icons/obj/medical/organs/organs.dmi'

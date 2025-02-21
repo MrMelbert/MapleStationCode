@@ -18,7 +18,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "ASSET_PROTECTION"
 
-	outfit = /datum/outfit/job/asset_protection
+	base_outfit = /datum/outfit/job/asset_protection
 	plasmaman_outfit = /datum/outfit/plasmaman/head_of_security // lazy reuse
 
 	paycheck = PAYCHECK_COMMAND

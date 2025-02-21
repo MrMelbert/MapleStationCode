@@ -21695,7 +21695,7 @@
 /area/station/medical/medbay/central)
 "bCi" = (
 /obj/structure/closet/secure_closet/chief_medical,
-/obj/item/valentine,
+/obj/item/paper/valentine,
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
 	},

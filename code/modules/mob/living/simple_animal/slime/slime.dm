@@ -135,6 +135,7 @@
 	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLIME, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 	ADD_TRAIT(src, TRAIT_CANT_RIDE, INNATE_TRAIT)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_CAN_MOUNT_HUMANS, INNATE_TRAIT)
 
 	RegisterSignal(src, COMSIG_LIVING_UNARMED_ATTACK, PROC_REF(slime_pre_attack))
 
@@ -166,8 +167,8 @@
 
 /mob/living/simple_animal/slime/regenerate_icons()
 	cut_overlays()
-	var/icon_text = "[slime_type.colour] [life_stage] slime"
-	icon_dead = "[icon_text] dead"
+	var/icon_text = "[slime_type.colour]-[life_stage]"
+	icon_dead = "[icon_text]-dead"
 	if(stat != DEAD)
 		icon_state = icon_text
 		if(current_mood && !stat)
@@ -179,13 +180,12 @@
 /mob/living/simple_animal/slime/updatehealth()
 	. = ..()
 	var/mod = 0
-	if(!HAS_TRAIT(src, TRAIT_IGNOREDAMAGESLOWDOWN))
-		var/health_deficiency = (maxHealth - health)
-		if(health_deficiency >= 45)
-			mod += (health_deficiency / 25)
-		if(health <= 0)
-			mod += 2
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/slime_healthmod, multiplicative_slowdown = mod)
+	var/health_deficiency = (maxHealth - health)
+	if(health_deficiency >= 45)
+		mod += (health_deficiency / 25)
+	if(health <= 0)
+		mod += 2
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/damage_slowdown, TRUE, mod)
 
 /mob/living/simple_animal/slime/adjust_body_temperature(amount, min_temp, max_temp, use_insulation)
 	. = ..()
@@ -263,9 +263,6 @@
 
 /mob/living/simple_animal/slime/attack_ui(slot, params)
 	return
-
-/mob/living/simple_animal/slime/get_mob_buckling_height(mob/seat)
-	return min(..(), 3)
 
 /mob/living/simple_animal/slime/examine(mob/user)
 	. = list("<span class='info'>This is [icon2html(src, user)] \a <EM>[src]</EM>!")

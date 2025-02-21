@@ -180,7 +180,7 @@
 		return
 	pushed_mob.Knockdown(30)
 	pushed_mob.apply_damage(10, BRUTE)
-	pushed_mob.apply_damage(40, STAMINA)
+	pushed_mob.apply_damage(40, PAIN)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
 		deconstruct(FALSE)
 	playsound(pushed_mob, 'sound/effects/tableslam.ogg', 90, TRUE)
@@ -195,8 +195,8 @@
 	var/extra_wound = 0
 	if(HAS_TRAIT(user, TRAIT_HULK))
 		extra_wound = 20
-	banged_limb?.receive_damage(30, wound_bonus = extra_wound)
-	pushed_mob.apply_damage(60, STAMINA)
+	pushed_mob.apply_damage(30, BRUTE, banged_limb, wound_bonus = extra_wound)
+	pushed_mob.apply_damage(60, PAIN)
 	take_damage(50)
 	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
 		deconstruct(FALSE)
@@ -767,13 +767,11 @@
 
 ///Align the mob with the table when buckled.
 /obj/structure/table/optable/post_buckle_mob(mob/living/buckled)
-	. = ..()
-	buckled.pixel_y += 6
+	buckled.add_offsets(type, z_add = 6)
 
 ///Disalign the mob with the table when unbuckled.
 /obj/structure/table/optable/post_unbuckle_mob(mob/living/buckled)
-	. = ..()
-	buckled.pixel_y -= 6
+	buckled.remove_offsets(type)
 
 /// Any mob that enters our tile will be marked as a potential patient. They will be turned into a patient if they lie down.
 /obj/structure/table/optable/proc/mark_patient(datum/source, mob/living/carbon/potential_patient)

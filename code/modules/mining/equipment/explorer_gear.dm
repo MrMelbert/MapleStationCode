@@ -66,7 +66,6 @@
 	actions_types = list(/datum/action/item_action/adjust)
 	armor_type = /datum/armor/gas_explorer
 	resistance_flags = FIRE_PROOF
-	has_fov = FALSE
 
 /datum/armor/gas_explorer
 	melee = 10

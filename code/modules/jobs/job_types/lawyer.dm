@@ -10,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "LAWYER"
 
-	outfit = /datum/outfit/job/lawyer
+	base_outfit = /datum/outfit/job/lawyer
 	plasmaman_outfit = /datum/outfit/plasmaman/bar
 
 	paycheck = PAYCHECK_CREW
