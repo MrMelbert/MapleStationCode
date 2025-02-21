@@ -38732,15 +38732,10 @@
 /turf/open/floor/iron,
 /area/station/security/office)
 "hXE" = (
-/obj/structure/bed/dogbed/renault,
-/obj/machinery/button/door/directional/south{
-	id = "captain_escape";
-	name = "Tactical Relocation Toggle"
-	},
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/mob/living/basic/pet/fox/renault,
+/obj/structure/sign/poster/greenscreen/directional/south,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "hXI" = (
@@ -55867,6 +55862,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
+/obj/machinery/greenscreen_camera,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/captain)
 "nMG" = (
@@ -74307,6 +74303,11 @@
 /obj/item/pen/fountain/captain,
 /obj/item/radio/intercom/directional/south,
 /obj/structure/table/wood,
+/obj/machinery/button/door/directional/south{
+	id = "captain_escape";
+	name = "Tactical Relocation Toggle";
+	pixel_y = -40
+	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/heads_quarters/captain)
 "tSm" = (
@@ -80538,6 +80539,8 @@
 	dir = 1
 	},
 /obj/machinery/light/small/directional/north,
+/obj/structure/bed/dogbed/renault,
+/mob/living/basic/pet/fox/renault,
 /turf/open/floor/wood/parquet,
 /area/station/command/heads_quarters/captain/private)
 "vYE" = (

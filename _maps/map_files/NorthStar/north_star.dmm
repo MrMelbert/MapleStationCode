@@ -19268,6 +19268,10 @@
 /area/station/engineering/atmos/hfr_room)
 "eWS" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/greenscreen_camera{
+	dir = 8;
+	pixel_y = 12
+	},
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "eWV" = (
@@ -25588,10 +25592,10 @@
 /area/station/hallway/floor3/aft)
 "gGO" = (
 /obj/machinery/camera/directional/west,
-/obj/structure/extinguisher_cabinet/directional/west,
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
+/obj/structure/sign/poster/greenscreen/directional/west,
 /turf/open/floor/wood/tile,
 /area/station/command/heads_quarters/captain)
 "gGX" = (
@@ -39164,6 +39168,7 @@
 /obj/item/storage/fancy/cigarettes/cigars/cohiba{
 	pixel_y = 3
 	},
+/obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "khc" = (
@@ -58447,6 +58452,7 @@
 "oYL" = (
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/structure/cable,
+/obj/machinery/photocopier,
 /turf/open/floor/carpet,
 /area/station/command/heads_quarters/captain)
 "oYT" = (
@@ -62886,7 +62892,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 4
 	},
-/obj/machinery/photocopier,
+/obj/structure/sign/poster/greenscreen/directional/west,
 /turf/open/floor/wood/tile,
 /area/station/command/heads_quarters/captain)
 "qhE" = (
