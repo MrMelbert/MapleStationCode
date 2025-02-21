@@ -502,20 +502,20 @@
 /obj/item/clothing/mask/nobreath/plague/aerv
 	name = "ringmasters mask"
 	desc = "A beautifully detailed mask, it doesn't seem to have any eyeholes."
-	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "aervmask"
 	inhand_icon_state = "plaguebeak"
 
 /obj/item/clothing/under/rank/noble/penrose/aerv
 	name = "ringmasters outfit"
 	desc = "The patterns seem impossibly detailed and noisy."
-	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "aervuni"
 	inhand_icon_state = "penrosesuit"
 	supports_variations_flags = CLOTHING_NO_VARIATION
@@ -525,10 +525,10 @@
 /obj/item/clothing/suit/penrose/aerv
 	name = "ringmasters coat"
 	desc = "An intricate jacket, a strange tar-like substance lines the inside of it."
-	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "aervsuit"
 	inhand_icon_state = "penrosecoat"
 	resistance_flags = FIRE_PROOF|ACID_PROOF
@@ -536,10 +536,10 @@
 /obj/item/clothing/gloves/penrose/aerv
 	name = "ringmasters clawed gloves"
 	desc = "The fingers are tipped with sharp talons of an unknown material."
-	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "aervgloves"
 	inhand_icon_state = "penrosegloves"
 	resistance_flags = FIRE_PROOF|ACID_PROOF
@@ -547,10 +547,10 @@
 /obj/item/clothing/shoes/jackboots/penrose/aerv
 	name = "ringmasters heeled boots"
 	desc = "The build of these boots would require either insane balance or a non-human build."
-	icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_item.dmi'
-	worn_icon = 'maplestation_modules/story_content/noble_equipment/icons/noble_worn.dmi'
-	lefthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_lhand.dmi'
-	righthand_file = 'maplestation_modules/story_content/noble_equipment/icons/noble_rhand.dmi'
+	icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_item.dmi'
+	worn_icon = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_worn.dmi'
+	lefthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_lhand.dmi'
+	righthand_file = 'maplestation_modules/code/modules/clothing/equipment_sets/noble_equipment/icons/noble_rhand.dmi'
 	icon_state = "aervboots"
 	inhand_icon_state = "penroseboots"
 	resistance_flags = FIRE_PROOF|ACID_PROOF
