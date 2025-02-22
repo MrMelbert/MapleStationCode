@@ -25,11 +25,18 @@ scannable_directory = schema["scannable_directory"]
 subdirectories = schema["subdirectories"]
 FORBIDDEN_INCLUDES = schema["forbidden_includes"]
 excluded_files = schema["excluded_files"]
+preproccessor_directives = ["ifdef", "ifndef", "elif", "else", "endif"]
 
 def post_error(string):
     print(red(f"Ticked File Enforcement [{file_reference}]: " + string))
     if on_github:
         print(f"::error file={file_reference},line=1,title=Ticked File Enforcement::{string}")
+
+def skip_line(line):
+    for directive in preproccessor_directives:
+        if line.startswith("#" + directive):
+            return True
+    return False
 
 for excluded_file in excluded_files:
     full_file_path = scannable_directory + excluded_file
@@ -54,6 +61,8 @@ with open(file_reference, 'r') as file:
         elif line == "// END_INCLUDE":
             break
         elif not reading:
+            continue
+        elif skip_line(line):
             continue
 
         lines.append(line)
