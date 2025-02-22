@@ -458,23 +458,24 @@
  * called when a bodypart is taking damage
  * Damage will not exceed max_damage using this proc, and negative damage cannot be used to heal
  * Returns TRUE if damage icon states changes
+ *
  * Args:
- * brute - The amount of brute damage dealt.
- * burn - The amount of burn damage dealt.
- * blocked - The amount of damage blocked by armor.
- * update_health - Whether to update the owner's health from receiving the hit.
- * required_bodytype - A bodytype flag requirement to get this damage (ex: BODYTYPE_ORGANIC)
- * wound_bonus - Additional bonus chance to get a wound.
- * bare_wound_bonus - Additional bonus chance to get a wound if the bodypart is naked.
- * sharpness - Flag on whether the attack is edged or pointy
- * attack_direction - The direction the bodypart is attacked from, used to send blood flying in the opposite direction.
- * damage_source - The source of damage, typically a weapon.
+ * * brute - The amount of brute damage dealt.
+ * * burn - The amount of burn damage dealt.
+ * * blocked - The amount of damage blocked by armor.
+ * * update_health - Whether to update the owner's health from receiving the hit.
+ * * required_bodytype - A bodytype flag requirement to get this damage (ex: BODYTYPE_ORGANIC)
+ * * wound_bonus - Additional bonus chance to get a wound.
+ * * bare_wound_bonus - Additional bonus chance to get a wound if the bodypart is naked.
+ * * sharpness - Flag on whether the attack is edged or pointy
+ * * attack_direction - The direction the bodypart is attacked from, used to send blood flying in the opposite direction.
+ * * damage_source - The source of damage, typically a weapon.
  */
 /obj/item/bodypart/proc/receive_damage(brute = 0, burn = 0, blocked = 0, updating_health = TRUE, forced = FALSE, required_bodytype = null, wound_bonus = 0, bare_wound_bonus = 0, sharpness = NONE, attack_direction = null, damage_source)
 	SHOULD_CALL_PARENT(TRUE)
 
 	var/hit_percent = forced ? 1 : (100-blocked)/100
-	if((!brute && !burn) || hit_percent <= 0)
+	if((brute <= 0 && burn <= 0) || hit_percent <= 0)
 		return FALSE
 	if (!forced)
 		if(!isnull(owner))
@@ -488,7 +489,7 @@
 	brute = round(max(brute * hit_percent * brute_modifier, 0), DAMAGE_PRECISION)
 	burn = round(max(burn * hit_percent * burn_modifier, 0), DAMAGE_PRECISION)
 
-	if(!brute && !burn)
+	if(brute <= 0 && burn <= 0)
 		return FALSE
 
 	brute *= wound_damage_multiplier
@@ -511,22 +512,27 @@
 	var/can_inflict = max_damage - get_damage()
 	var/total_damage = brute + burn
 	if(total_damage > can_inflict && total_damage > 0) // TODO: the second part of this check should be removed once disabling is all done
-		brute = round(brute * (can_inflict / total_damage),DAMAGE_PRECISION)
-		burn = round(burn * (can_inflict / total_damage),DAMAGE_PRECISION)
+		var/new_brute = round(brute * (can_inflict / total_damage), DAMAGE_PRECISION)
+		var/new_burn = round(burn * (can_inflict / total_damage), DAMAGE_PRECISION)
+		// going over the limb limit causes direct shock
+		owner?.adjust_traumatic_shock(max(0.5, (brute + burn - new_brute - new_burn) * 0.5))
+		// and now update these values to reflect the new damage
+		brute = new_brute
+		burn = new_burn
+		total_damage = brute + burn
 
-	if(can_inflict <= 0)
+	// if we're not doing any damage (now), we don't need to do anything else
+	if(total_damage <= 0)
 		return FALSE
 	if(brute)
 		set_brute_dam(brute_dam + brute)
 	if(burn)
 		set_burn_dam(burn_dam + burn)
-
-	if(owner)
-		if(can_be_disabled)
-			update_disabled()
-		if(updating_health)
-			owner.updatehealth()
-	return update_bodypart_damage_state() || .
+	if(can_be_disabled)
+		update_disabled()
+	if(updating_health)
+		owner?.updatehealth()
+	return update_bodypart_damage_state()
 
 /// Returns a bitflag using ANATOMY_EXTERIOR or ANATOMY_INTERIOR. Used to determine if we as a whole have a interior or exterior biostate, or both.
 /obj/item/bodypart/proc/get_bio_state_status()

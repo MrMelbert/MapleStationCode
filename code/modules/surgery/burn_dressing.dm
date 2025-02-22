@@ -3,9 +3,9 @@
 
 ///// Debride burnt flesh
 /datum/surgery/debride
-	name = "Debride burnt flesh"
+	name = "Debride infected flesh"
 	surgery_flags = SURGERY_REQUIRE_RESTING | SURGERY_REQUIRE_LIMB | SURGERY_REQUIRES_REAL_LIMB
-	targetable_wound = /datum/wound/burn/flesh
+	targetable_wound = /datum/wound/flesh
 	possible_locs = list(
 		BODY_ZONE_R_ARM,
 		BODY_ZONE_L_ARM,
@@ -19,7 +19,7 @@
 		/datum/surgery_step/dress,
 	)
 
-/datum/surgery/debride/is_valid_wound(datum/wound/burn/flesh/wound)
+/datum/surgery/debride/is_valid_wound(datum/wound/flesh/wound)
 	return ..() && wound.infestation > 0
 
 //SURGERY STEPS
@@ -43,7 +43,7 @@
 	var/infestation_removed = 4
 
 /// To give the surgeon a heads up how much work they have ahead of them
-/datum/surgery_step/debride/proc/get_progress(mob/user, mob/living/carbon/target, datum/wound/burn/flesh/burn_wound)
+/datum/surgery_step/debride/proc/get_progress(mob/user, mob/living/carbon/target, datum/wound/flesh/burn_wound)
 	if(!burn_wound?.infestation || !infestation_removed)
 		return
 	var/estimated_remaining_steps = burn_wound.infestation / infestation_removed
@@ -63,7 +63,7 @@
 
 /datum/surgery_step/debride/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	if(surgery.operated_wound)
-		var/datum/wound/burn/flesh/burn_wound = surgery.operated_wound
+		var/datum/wound/flesh/burn_wound = surgery.operated_wound
 		if(burn_wound.infestation <= 0)
 			to_chat(user, span_notice("[target]'s [parse_zone(target_zone)] has no infected flesh to remove!"))
 			surgery.status++
@@ -87,7 +87,7 @@
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(target_zone)]."), span_notice("You look for [target]'s [parse_zone(target_zone)]..."))
 
 /datum/surgery_step/debride/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	var/datum/wound/burn/flesh/burn_wound = surgery.operated_wound
+	var/datum/wound/flesh/burn_wound = surgery.operated_wound
 	if(burn_wound)
 		var/progress_text = get_progress(user, target, burn_wound)
 		display_results(
@@ -121,14 +121,14 @@
 /datum/surgery_step/debride/initiate(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	if(!..())
 		return
-	var/datum/wound/burn/flesh/burn_wound = surgery.operated_wound
+	var/datum/wound/flesh/burn/burn_wound = surgery.operated_wound
 	while(burn_wound && burn_wound.infestation > 0.25)
 		if(!..())
 			break
 
 ///// Dressing burns
 /datum/surgery_step/dress
-	name = "bandage burns (gauze/tape)"
+	name = "bandage flesh (gauze/tape)"
 	implements = list(
 		/obj/item/stack/medical/gauze = 100,
 		/obj/item/stack/sticky_tape/surgical = 100)
@@ -140,14 +140,14 @@
 
 
 /datum/surgery_step/dress/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	var/datum/wound/burn/flesh/burn_wound = surgery.operated_wound
+	var/datum/wound/flesh/burn_wound = surgery.operated_wound
 	if(burn_wound)
 		display_results(
 			user,
 			target,
-			span_notice("You begin to dress the burns on [target]'s [parse_zone(target_zone)]..."),
-			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(target_zone)] with [tool]."),
-			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(target_zone)]."),
+			span_notice("You begin to dress the flesh on [target]'s [parse_zone(target_zone)]..."),
+			span_notice("[user] begins to dress the flesh on [target]'s [parse_zone(target_zone)] with [tool]."),
+			span_notice("[user] begins to dress the flesh on [target]'s [parse_zone(target_zone)]."),
 		)
 		display_pain(
 			target = target,
@@ -158,7 +158,7 @@
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(target_zone)]."), span_notice("You look for [target]'s [parse_zone(target_zone)]..."))
 
 /datum/surgery_step/dress/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	var/datum/wound/burn/flesh/burn_wound = surgery.operated_wound
+	var/datum/wound/flesh/burn_wound = surgery.operated_wound
 	if(burn_wound)
 		display_results(
 			user,
@@ -167,13 +167,13 @@
 			span_notice("[user] successfully wraps [target]'s [parse_zone(target_zone)] with [tool]!"),
 			span_notice("[user] successfully wraps [target]'s [parse_zone(target_zone)]!"),
 		)
-		log_combat(user, target, "dressed burns in", addition="COMBAT MODE: [uppertext(user.combat_mode)]")
+		log_combat(user, target, "dressed flesh in", addition="COMBAT MODE: [uppertext(user.combat_mode)]")
 		burn_wound.sanitization += sanitization_added
 		burn_wound.flesh_healing += flesh_healing_added
 		var/obj/item/bodypart/the_part = target.get_bodypart(target_zone)
 		the_part.apply_gauze(tool)
 	else
-		to_chat(user, span_warning("[target] has no burns there!"))
+		to_chat(user, span_warning("[target] has no flesh wounds there!"))
 	return ..()
 
 /datum/surgery_step/dress/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)

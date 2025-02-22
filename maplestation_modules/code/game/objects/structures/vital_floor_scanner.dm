@@ -53,6 +53,7 @@
 		COMSIG_ATOM_EXITED = PROC_REF(on_exited),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
+	AddComponent(/datum/component/simple_rotation, ROTATION_REQUIRE_WRENCH)
 	update_appearance(UPDATE_OVERLAYS)
 	register_context()
 

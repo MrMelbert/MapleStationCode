@@ -89,7 +89,6 @@
 	if (!victim || HAS_TRAIT(victim, TRAIT_STASIS))
 		return
 
-	set_blood_flow(min(blood_flow, WOUND_SLASH_MAX_BLOODFLOW))
 
 	if(limb.can_bleed())
 		if(!HAS_TRAIT(victim, TRAIT_RESISTCOLD) && victim.get_skin_temperature() < victim.bodytemp_cold_damage_limit)
@@ -105,12 +104,14 @@
 				return
 
 	if(limb.current_gauze)
-		var/amt_blocking = limb.current_gauze.absorption_rate * seconds_per_tick
-		limb.seep_gauze(amt_blocking)
-		adjust_blood_flow(-1 * amt_blocking * gauzed_clot_rate)
+		var/gauze_power = limb.current_gauze.absorption_rate
+		limb.seep_gauze(gauze_power * seconds_per_tick)
+		adjust_blood_flow(-gauze_power * gauzed_clot_rate * seconds_per_tick)
 
 /datum/wound/pierce/bleed/adjust_blood_flow(adjust_by, minimum)
 	. = ..()
+	if(blood_flow > WOUND_MAX_BLOODFLOW)
+		blood_flow = WOUND_MAX_BLOODFLOW
 	if(blood_flow <= 0 && !QDELETED(src))
 		to_chat(victim, span_green("The holes on your [limb.plaintext_zone] have [!limb.can_bleed() ? "healed up" : "stopped bleeding"]!"))
 		qdel(src)

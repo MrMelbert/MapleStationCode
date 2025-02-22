@@ -319,7 +319,7 @@
 	new /obj/effect/temp_visual/medical_holosign(target_turf, user) //produce a holographic glow
 	COOLDOWN_START(src, holosign_cooldown, 10 SECONDS)
 
-// see: [/datum/wound/burn/flesh/proc/uv()]
+// see: [/datum/wound/flesh/proc/uv()]
 /obj/item/flashlight/pen/paramedic
 	name = "paramedic penlight"
 	desc = "A high-powered UV penlight intended to help stave off infection in the field on serious burned patients. Probably really bad to look into."

@@ -143,6 +143,11 @@
 #warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
 #endif
 
+// For balancing health
+// #define HEALTH_DEBUG
+// For debugging pain
+// #define PAIN_DEBUG
+
 /// Uncomment to compile content related to the story or characters of Maplestation.
 // #define MAPLESTATION_STORY_CONTENT
 

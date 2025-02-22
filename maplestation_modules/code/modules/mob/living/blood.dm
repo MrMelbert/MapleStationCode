@@ -149,6 +149,7 @@ PROCESSING_SUBSYSTEM_DEF(blood_drying)
 			// Handle adding a single drip to the base atom
 			// Makes use of viscontents so every drip can dry at an individual rate (with an individual color)
 			var/obj/effect/decal/cleanable/blood/drip/new_drop = new(drop)
+			new_drop.bloodiness = 0
 			new_drop.icon_state = pick_n_take(drop.random_icon_states)
 			new_drop.color = color
 			new_drop.vis_flags |= (VIS_INHERIT_LAYER|VIS_INHERIT_PLANE|VIS_INHERIT_ID)
