@@ -715,7 +715,7 @@
 
 	src.last_partial_pressures = partial_pressures
 
-	if(breath.total_moles() > 0)
+	if(breath.total_moles() + breath_out.total_moles() > 0)
 		handle_breath_temperature(breath, breather)
 		// Merge breath_out into breath. They're kept seprerate before now to ensure stupid like, order of operations shit doesn't happen
 		// But that time has passed
