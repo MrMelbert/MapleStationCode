@@ -394,8 +394,7 @@
 		return FALSE
 
 	//use energy
-	if(!use_power(active_power_usage, force = FALSE)) // Non-module change
-		return FALSE
+	use_power(active_power_usage) // Non-module change
 
 	//do the operation
 	. = FALSE
@@ -506,10 +505,7 @@
 		return
 
 	//use power
-	if(!use_power(active_power_usage, force = FALSE)) // Non-module change
-		is_printing = FALSE
-		update_appearance(UPDATE_OVERLAYS)
-		return
+	use_power(active_power_usage) // Non-module change : can't if use_power, it doesn't return anything, wasn't invented yet
 
 	//print the stuff
 	var/obj/item/reagent_containers/item = new selected_container(drop_location())
