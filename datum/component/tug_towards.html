@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;datum&#x2F;component&#x2F;tug_towards - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="datum/component/tug_towards.html#var">Var Details</a> - <a href="datum/component/tug_towards.html#proc">Proc Details</a></header>
+<main>
+<h1>tug_towards <aside>/<a href="datum.html">datum</a>/<a href="datum/component.html">component</a>/<a href="datum/component/tug_towards.html">tug_towards</a></aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/62953beb66520a482a622c3b16f4f6a47ddfc122/code/datums/components/tug_towards.dm#L4">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;tug_towards.dm 4"/></a></h1>
+
+<p>&quot;Tugs&quot; an atom towards another atom. That is to say, it will visually
+pixel offset to look like it is close to the point it's tugging to,
+but not actually move position.</p><table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="datum/component/tug_towards.html#var/tugging_to_targets">tugging_to_targets</a></th><td>atom -&gt; strength</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="datum/component/tug_towards.html#proc/Initialize">Initialize</a></th><td>The atom we are tugging towards.
+Strength of the tug, as a number 0 through 1.
+0 means no tug, 1 means that if you're on an adjacent tile
+you will be directly at the corner of the tugging_to_target.
+Default is 0.8, which provides a healthy amount of
+distance.</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/tugging_to_targets"><aside class="declaration">var </aside>tugging_to_targets
+            <aside>&ndash; /list/list</aside>
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/62953beb66520a482a622c3b16f4f6a47ddfc122/code/datums/components/tug_towards.dm#L10">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;tug_towards.dm 10"/></a></h3>
+        <p>atom -&gt; strength</p><h2 id="proc">Proc Details</h2><h3 id="proc/Initialize"><aside class="parent"><a title="/datum/component" href="datum/component.html#proc/Initialize">&uarr;</a></aside>Initialize<aside>(/<a href="atom.html">atom</a>/tugging_to, strength) 
+        
+    
+            <a href="https://github.com/MrMelbert/MapleStationCode/blob/62953beb66520a482a622c3b16f4f6a47ddfc122/code/datums/components/tug_towards.dm#L16">
+        <img src="git.png" width="16" height="16" title="code&#x2F;datums&#x2F;components&#x2F;tug_towards.dm 16"/></a></aside>
+        </h3>
+        <p>The atom we are tugging towards.
+Strength of the tug, as a number 0 through 1.
+0 means no tug, 1 means that if you're on an adjacent tile
+you will be directly at the corner of the tugging_to_target.
+Default is 0.8, which provides a healthy amount of
+distance.</p></main>
+<footer>
+    maplestation.dme
+    <a href="https://github.com/MrMelbert/MapleStationCode/tree/62953beb66520a482a622c3b16f4f6a47ddfc122">62953be</a>
+        (master) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/crates/dmdoc/README.md">dmdoc 1.8.0</a></footer>
+</body>
+</html>
