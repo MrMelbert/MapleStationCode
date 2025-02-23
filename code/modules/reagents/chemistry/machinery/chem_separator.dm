@@ -39,7 +39,7 @@
 	QDEL_NULL(soundloop)
 	return ..()
 
-/obj/structure/chem_separator/atom_deconstruct(disassembled)
+/obj/structure/chem_separator/deconstruct(disassembled) // Non-module change
 	var/atom/drop = drop_location()
 
 	new /obj/item/stack/sheet/mineral/wood(drop, 1)
@@ -256,7 +256,9 @@
 	toggle_burner(FALSE)
 
 /obj/structure/chem_separator/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = NONE
+	. = ..() // Non-module change
+	if(LAZYACCESS(modifiers, RIGHT_CLICK)) // Non-module change
+		return item_interaction_secondary(user, tool, modifiers) // Non-module change
 	if(user.combat_mode || tool.item_flags & ABSTRACT || tool.flags_1 & HOLOGRAM_1 || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
@@ -267,7 +269,7 @@
 			user.put_in_hands(distilled_container)
 
 		//add new container
-		if(!user.transferItemToLoc(tool, src, SILENT = FALSE)) // Non-module change
+		if(!user.transferItemToLoc(tool, src, silent = FALSE)) // Non-module change
 			to_chat(user, span_warning("[tool] is stuck in your hand."))
 			return ITEM_INTERACT_BLOCKING
 		distilled_container = tool
@@ -313,7 +315,7 @@
 
 	return ..()
 
-/obj/structure/chem_separator/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
+/obj/structure/chem_separator/proc/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers) // Non-module change : don't have this yet, have to improvise
 	. = NONE
 	if(user.combat_mode || tool.item_flags & ABSTRACT || tool.flags_1 & HOLOGRAM_1 || !user.can_perform_action(src, ALLOW_SILICON_REACH))
 		return ITEM_INTERACT_SKIP_TO_ATTACK
@@ -324,7 +326,7 @@
 			user.put_in_hands(fuel_container)
 
 		//add new container
-		if(!user.transferItemToLoc(tool, src, SILENT = FALSE)) // Non-module change
+		if(!user.transferItemToLoc(tool, src, silent = FALSE)) // Non-module change
 			to_chat(user, span_warning("[tool] is stuck in your hand."))
 			return ITEM_INTERACT_BLOCKING
 		fuel_container = tool
@@ -532,11 +534,11 @@
 			condenser_on = !condenser_on
 			return TRUE
 
-/obj/structure/chem_separator/click_alt(mob/user)
+/obj/structure/chem_separator/AltClick(mob/user) // Non-module change
 	if(!burner_on)
-		return CLICK_ACTION_BLOCKING
+		return TRUE // Non-module change
 
 	toggle_burner(FALSE)
-	return CLICK_ACTION_SUCCESS
+	return TRUE // Non-module change
 
 #undef MAX_BURNER_KNOB_SETTINGS
