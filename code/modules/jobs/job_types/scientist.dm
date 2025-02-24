@@ -1,6 +1,9 @@
 /datum/job/scientist
 	title = JOB_SCIENTIST
 	description = "Do experiments, perform research, feed the slimes, make bombs."
+	title_options = list(
+		"Junior Scientist",
+	)
 	department_head = list(JOB_RESEARCH_DIRECTOR)
 	faction = FACTION_STATION
 	total_positions = 5

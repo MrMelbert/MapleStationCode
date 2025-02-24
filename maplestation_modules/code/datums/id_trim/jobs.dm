@@ -39,7 +39,8 @@
 	minimal_wildcard_access = list(ACCESS_ARMORY)
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOS, ACCESS_CHANGE_IDS)
 	job = /datum/job/asset_protection
-
+	honorifics = list("Officer", "Bodyguard")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 // Bridge Officer
 /datum/id_trim/job/bridge_officer
@@ -59,6 +60,8 @@
 	minimal_wildcard_access = list(ACCESS_VAULT)
 	template_access = list(ACCESS_CAPTAIN, ACCESS_HOP, ACCESS_CHANGE_IDS)
 	job = /datum/job/bridge_officer
+	honorifics = list("Officer", "Assistant", "Steward", "Stewardess")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 // ordnance technician
 /datum/id_trim/job/ordnance_tech
@@ -74,6 +77,8 @@
 		ACCESS_ORDNANCE_STORAGE, ACCESS_RESEARCH, ACCESS_SCIENCE)
 	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
 	job = /datum/job/ordnance_tech
+	honorifics = list("Researcher", "Doctor")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 // Xenobiologist
 /datum/id_trim/job/xenobiologist
@@ -88,6 +93,8 @@
 	minimal_access = list(ACCESS_AUX_BASE, ACCESS_MECH_SCIENCE, ACCESS_MINERAL_STOREROOM, ACCESS_RESEARCH, ACCESS_SCIENCE, ACCESS_XENOBIOLOGY)
 	template_access = list(ACCESS_CAPTAIN, ACCESS_RD, ACCESS_CHANGE_IDS)
 	job = /datum/job/xenobiologist
+	honorifics = list("Researcher", "Doctor")
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
 
 /datum/id_trim/job/noble_ambassador
 	assignment = "Noble Ambassador"
@@ -136,3 +143,22 @@
 		ACCESS_CHANGE_IDS,
 	)
 	job = /datum/job/noble_ambassador
+	honorifics = list(
+		"Ambassador",
+		"Attaché",
+		"Consul",
+		"Counselor",
+		"Delegate",
+		"Diplomat",
+		"Emissary",
+		"Envoy",
+		"Lady",
+		"Lord",
+		"Madam",
+		"Minister",
+		"Noble",
+		"Plenipotentiary",
+		"Representative",
+		"Sir",
+	)
+	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL
