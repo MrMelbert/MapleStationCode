@@ -28,23 +28,6 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	mutanteyes = /obj/item/organ/internal/eyes/skrell
 	mutanttongue = /obj/item/organ/internal/tongue/skrell
 
-/datum/species/skrell/get_species_speech_sounds(sound_type)
-	switch(sound_type)
-		if(SOUND_QUESTION)
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff_ask.ogg' = 120))
-		if(SOUND_EXCLAMATION)
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff_exclaim.ogg' = 120))
-		else
-			return string_assoc_list(list('maplestation_modules/sound/voice/huff.ogg' = 120))
-
-/datum/species/skrell/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
-	. = ..()
-	C.missing_eye_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
-
-/datum/species/skrell/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
-	C.missing_eye_file = initial(C.missing_eye_file)
-	return ..()
-
 /datum/species/skrell/spec_life(mob/living/carbon/human/skrell_mob, seconds_per_tick, times_fired)
 	. = ..()
 	if(skrell_mob.nutrition > NUTRITION_LEVEL_ALMOST_FULL)
@@ -132,6 +115,7 @@ GLOBAL_LIST_EMPTY(head_tentacles_list)
 	limb_id = SPECIES_SKRELL
 	icon_greyscale = 'maplestation_modules/icons/mob/skrell_parts_greyscale.dmi'
 	head_flags = HEAD_LIPS|HEAD_EYESPRITES|HEAD_EYEHOLES|HEAD_DEBRAIN
+	missing_eye_file = 'maplestation_modules/icons/mob/skrell_eyes.dmi'
 
 /obj/item/bodypart/leg/left/skrell
 	limb_id = SPECIES_SKRELL

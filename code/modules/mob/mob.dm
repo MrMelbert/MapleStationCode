@@ -1122,22 +1122,6 @@
 		return FALSE
 	return ..(M, force, check_loc, buckle_mob_flags)
 
-///Call back post buckle to a mob to offset your visual height
-/mob/post_buckle_mob(mob/living/M)
-	if(M.layer <= layer) //make sure they stay above our current layer
-		M.layer = layer + 0.1
-
-///Call back post unbuckle from a mob, (reset your visual height here)
-/mob/post_unbuckle_mob(mob/living/M)
-	M.layer = initial(M.layer)
-	M.update_transform()
-
-///returns the height in pixel the mob should have when buckled to another mob.
-/mob/proc/get_mob_buckling_height(mob/living/seat)
-	if(!isliving(seat))
-		return 6
-	return seat.mob_size * 3
-
 ///Can the mob interact() with an atom?
 /mob/proc/in_range_to_interact_with(atom/A, treat_mob_as_adjacent)
 	if(isAdminGhostAI(src))
@@ -1178,7 +1162,7 @@
  * * ALLOW_SILICON_REACH - If silicons are allowed to perform action from a distance (silicons can operate airlocks from far away)
  * * ALLOW_RESTING - If resting on the floor is allowed to perform action ()
 **/
-/mob/proc/can_perform_action(atom/movable/target, action_bitflags)
+/mob/proc/can_perform_action(atom/target, action_bitflags)
 	return
 
 ///Can this mob use storage
@@ -1291,14 +1275,22 @@
 					break
 				search_pda = 0
 
+/**
+ * This handles updating the [stat] var to the correct stat given the mob's current overall state
+ */
 /mob/proc/update_stat()
 	return
 
+/**
+ * This handles updating the health doll on the mob's screen
+ */
 /mob/proc/update_health_hud()
 	return
 
-/// Changes the stamina HUD based on new information
-/mob/proc/update_stamina_hud()
+/**
+ * This handles updating the red, black, white HUD on the peripheral of the mob's screen
+ */
+/mob/proc/update_damage_hud()
 	return
 
 ///Update the lighting plane and sight of this mob (sends COMSIG_MOB_UPDATE_SIGHT)
@@ -1549,6 +1541,11 @@
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
 
+/mob/living/carbon/adjust_nutrition(change, forced)
+	. = ..()
+	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-10 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
+	add_consciousness_modifier(HUNGER, hungermod)
+
 /mob/proc/adjust_satiety(change)
 	satiety = clamp(satiety + change, -MAX_SATIETY, MAX_SATIETY)
 
@@ -1563,6 +1560,11 @@
 /mob/living/set_nutrition(set_to, forced)
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
+
+/mob/living/carbon/set_nutrition(set_to, forced)
+	. = ..()
+	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
+	add_consciousness_modifier(HUNGER, hungermod)
 
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = equipped_speed_mods()
@@ -1581,6 +1583,7 @@
 			. += I.slowdown
 
 /mob/proc/set_stat(new_stat)
+	PROTECTED_PROC(TRUE)
 	if(new_stat == stat)
 		return
 	. = stat

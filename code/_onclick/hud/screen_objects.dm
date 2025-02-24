@@ -70,6 +70,7 @@
 /atom/movable/screen/swap_hand
 	plane = HUD_PLANE
 	name = "swap hand"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/swap_hand/Click()
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
@@ -90,6 +91,7 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "navigate"
 	screen_loc = ui_navigate_menu
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/navigate/Click()
 	if(!isliving(usr))
@@ -102,12 +104,14 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "craft"
 	screen_loc = ui_crafting
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/area_creator
 	name = "create new area"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "area_edit"
 	screen_loc = ui_building
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/area_creator/Click()
 	if(usr.incapacitated() || (isobserver(usr) && !isAdminGhostAI(usr)))
@@ -123,6 +127,7 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "talk_wheel"
 	screen_loc = ui_language_menu
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/language_menu/Click()
 	usr.get_language_holder().open_language_menu(usr)
@@ -251,6 +256,7 @@
 	plane = ABOVE_HUD_PLANE
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "storage_close"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/close/Initialize(mapload, datum/hud/hud_owner, new_master)
 	. = ..()
@@ -268,9 +274,10 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_drop"
 	plane = HUD_PLANE
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/drop/Click()
-	if(usr.stat == CONSCIOUS)
+	if(!usr.incapacitated())
 		usr.dropItemToGround(usr.get_active_held_item())
 
 /atom/movable/screen/combattoggle
@@ -278,6 +285,7 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "combat_off"
 	screen_loc = ui_combat_toggle
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/combattoggle/Initialize(mapload, datum/hud/hud_owner)
 	. = ..()
@@ -328,6 +336,7 @@
 	name = "run/walk toggle"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "running"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/mov_intent/Click()
 	toggle(usr)
@@ -354,6 +363,7 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "pull"
 	base_icon_state = "pull"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/pull/Click()
 	if(isobserver(usr))
@@ -369,6 +379,7 @@
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_resist"
 	plane = HUD_PLANE
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/resist/Click()
 	if(isliving(usr))
@@ -381,6 +392,7 @@
 	icon_state = "act_rest"
 	base_icon_state = "act_rest"
 	plane = HUD_PLANE
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/rest/Click()
 	if(isliving(usr))
@@ -465,6 +477,7 @@
 	name = "throw/catch"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_throw_off"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/throw_catch/Click()
 	if(iscarbon(usr))
@@ -475,6 +488,7 @@
 	name = "damage zone"
 	icon_state = "zone_sel"
 	screen_loc = ui_zonesel
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	var/overlay_icon = 'icons/hud/screen_gen.dmi'
 	var/static/list/hover_overlays_cache = list()
 	var/hovering
@@ -652,6 +666,7 @@
 /atom/movable/screen/healthdoll
 	name = "health doll"
 	screen_loc = ui_healthdoll
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/healthdoll/Click()
 	if (iscarbon(usr))
@@ -715,10 +730,18 @@
 			// calculate what icon state (1-5, or 0 if undamaged) to use based on damage
 			icon_key = clamp(ceil(damage * 5), 0, 5)
 
-		if(length(body_part.wounds))
+		// NON-MODULE CHANGE
+		var/has_noticable_wound = FALSE
+		for(var/datum/wound/wound as anything in body_part.wounds)
+			if(wound.wound_flags & ALERTS_VICTIM)
+				has_noticable_wound = TRUE
+				break
+
+		if(has_noticable_wound)
 			LAZYSET(animated_zones, part_zone, TRUE)
 		else
 			LAZYREMOVE(animated_zones, part_zone)
+
 		limbs[part_zone].icon_state = "[part_zone][icon_key]"
 	// handle leftovers
 	for(var/missing_zone in owner.get_missing_limbs())
@@ -749,6 +772,7 @@
 	name = "mood"
 	icon_state = "mood5"
 	screen_loc = ui_mood
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/mood/attack_tk()
 	return
@@ -801,6 +825,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 
 
 /atom/movable/screen/component_button
+	mouse_over_pointer = MOUSE_HAND_POINTER
 	var/atom/movable/screen/parent
 
 /atom/movable/screen/component_button/Initialize(mapload, atom/movable/screen/parent)

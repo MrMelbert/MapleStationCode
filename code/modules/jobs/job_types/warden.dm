@@ -15,7 +15,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "WARDEN"
 
-	outfit = /datum/outfit/job/warden
+	base_outfit = /datum/outfit/job/warden
 	plasmaman_outfit = /datum/outfit/plasmaman/warden
 
 	paycheck = PAYCHECK_CREW

@@ -10,7 +10,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CHAPLAIN"
 
-	outfit = /datum/outfit/job/chaplain
+	base_outfit = /datum/outfit/job/chaplain
 	plasmaman_outfit = /datum/outfit/plasmaman/chaplain
 
 	paycheck = PAYCHECK_CREW
@@ -36,6 +36,9 @@
 
 	job_tone = "holy"
 
+	title_options = list(
+		"Magister",
+	)
 
 /datum/job/chaplain/after_spawn(mob/living/spawned, client/player_client)
 	. = ..()

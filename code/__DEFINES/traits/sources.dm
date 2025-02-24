@@ -41,6 +41,8 @@
 /// Trait from light debugging
 #define LIGHT_DEBUG_TRAIT "light-debug"
 
+/// Trait given by an Action datum
+#define ACTION_TRAIT "action"
 #define CLOTHING_TRAIT "clothing"
 #define HELMET_TRAIT "helmet"
 /// inherited from the mask
@@ -53,8 +55,6 @@
 /// inherited from riding vehicles
 #define VEHICLE_TRAIT "vehicle"
 #define INNATE_TRAIT "innate"
-#define CRIT_HEALTH_TRAIT "crit_health"
-#define OXYLOSS_TRAIT "oxyloss"
 /// Trait sorce for "was recently shocked by something"
 #define WAS_SHOCKED "was_shocked"
 #define TURF_TRAIT "turf"
@@ -138,6 +138,8 @@
 
 /// A trait gained from a mob's leap action, like the leaper
 #define LEAPING_TRAIT "leaping"
+/// From grabbing someone
+#define GRABBING_TRAIT "grabbing"
 /// A trait gained from a mob's vanish action, like the herophant
 #define VANISHING_TRAIT "vanishing"
 /// A trait gained from a mob's swoop action, like the ash drake
@@ -178,6 +180,11 @@
 /// Trait applied by MODsuits.
 #define MOD_TRAIT "mod"
 
+/// Trait from mob/living/update_transform()
+#define UPDATE_TRANSFORM_TRAIT "update_transform"
+/// Trait from mob/living/update_offsets()
+#define UPDATE_OFFSET_TRAIT "update_offset"
+
 /// Trait granted by the berserker hood.
 #define BERSERK_TRAIT "berserk_trait"
 /// Trait granted by [/obj/item/rod_of_asclepius]
@@ -210,8 +217,6 @@
 #define SPEED_TRAIT "speed_trait"
 /// Trait given to mobs that have been autopsied
 #define AUTOPSY_TRAIT "autopsy_trait"
-/// Trait given by [/datum/status_effect/blessing_of_insanity]
-#define MAD_WIZARD_TRAIT "mad_wizard_trait"
 
 ///From the market_crash event
 #define MARKET_CRASH_EVENT_TRAIT "crashed_market_event"

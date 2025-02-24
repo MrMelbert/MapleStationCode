@@ -17,7 +17,7 @@
 
 //most likely can be subtyped later
 
-	outfit = /datum/outfit/job/scientist/ordnance_tech
+	base_outfit = /datum/outfit/job/scientist/ordnance_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/science
 
 	paycheck = PAYCHECK_CREW

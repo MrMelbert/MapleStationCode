@@ -11,7 +11,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CARGO_TECHNICIAN"
 
-	outfit = /datum/outfit/job/cargo_tech
+	base_outfit = /datum/outfit/job/cargo_tech
 	plasmaman_outfit = /datum/outfit/plasmaman/cargo
 
 	paycheck = PAYCHECK_CREW
@@ -35,6 +35,9 @@
 	rpg_title = "Merchantman"
 	job_flags = STATION_JOB_FLAGS
 
+	title_options = list(
+		"Mail Carrier",
+	)
 
 /datum/outfit/job/cargo_tech
 	name = "Cargo Technician"

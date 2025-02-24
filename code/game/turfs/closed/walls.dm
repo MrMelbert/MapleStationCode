@@ -53,19 +53,18 @@
 
 // NON-MODULE CHANGE START
 /mob/living/proc/start_leaning(turf/closed/wall/wall)
-	var/new_y = base_pixel_y + pixel_y + body_position_pixel_y_offset
-	var/new_x = base_pixel_x + pixel_x + body_position_pixel_x_offset
-	switch(dir)
-		if(SOUTH)
-			new_y += LEANING_OFFSET
-		if(NORTH)
-			new_y -= LEANING_OFFSET
-		if(WEST)
-			new_x += LEANING_OFFSET
-		if(EAST)
-			new_x -= LEANING_OFFSET
+	var/new_y = 0
+	var/new_x = 0
+	if(dir & NORTH)
+		new_y = -LEANING_OFFSET
+	if(dir & SOUTH)
+		new_y = LEANING_OFFSET
+	if(dir & WEST)
+		new_x = LEANING_OFFSET
+	if(dir & EAST)
+		new_x = -LEANING_OFFSET
 
-	animate(src, 0.2 SECONDS, pixel_x = new_x, pixel_y = new_y)
+	add_offsets(LEANING_TRAIT, x_add = new_x, y_add = new_y)
 	add_traits(list(TRAIT_UNDENSE, TRAIT_EXPANDED_FOV, TRAIT_NO_LEG_AID), LEANING_TRAIT)
 	visible_message(
 		span_notice("[src] leans against [wall]."),
@@ -97,7 +96,7 @@
 		COMSIG_ATOM_POST_DIR_CHANGE,
 		COMSIG_LIVING_RESIST,
 	))
-	animate(src, 0.2 SECONDS, pixel_x = base_pixel_x + body_position_pixel_x_offset, pixel_y = base_pixel_y + body_position_pixel_y_offset)
+	remove_offsets(LEANING_TRAIT)
 	remove_traits(list(TRAIT_UNDENSE, TRAIT_EXPANDED_FOV, TRAIT_NO_LEG_AID), LEANING_TRAIT)
 	update_fov()
 	update_limbless_locomotion()
@@ -234,7 +233,7 @@
  **arg2 is the hulk
  */
 /turf/closed/wall/proc/hulk_recoil(obj/item/bodypart/arm, mob/living/carbon/human/hulkman, damage = 20)
-	arm.receive_damage(brute = damage, blocked = 0, wound_bonus = CANT_WOUND)
+	hulkman.apply_damage(damage, BRUTE, arm, wound_bonus = CANT_WOUND)
 	var/datum/mutation/human/hulk/smasher = locate(/datum/mutation/human/hulk) in hulkman.dna.mutations
 	if(!smasher || !damage) //sanity check but also snow and wood walls deal no recoil damage, so no arm breaky
 		return

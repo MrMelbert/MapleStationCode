@@ -9,7 +9,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "MIME"
 
-	outfit = /datum/outfit/job/mime
+	base_outfit = /datum/outfit/job/mime
 	plasmaman_outfit = /datum/outfit/plasmaman/mime
 
 	paycheck = PAYCHECK_CREW

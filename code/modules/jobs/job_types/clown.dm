@@ -9,7 +9,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CLOWN"
 
-	outfit = /datum/outfit/job/clown
+	base_outfit = /datum/outfit/job/clown
 	plasmaman_outfit = /datum/outfit/plasmaman/clown
 
 	paycheck = PAYCHECK_CREW

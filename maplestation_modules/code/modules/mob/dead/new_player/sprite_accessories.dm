@@ -513,3 +513,9 @@
 	name = "High Black Stockings"
 	icon_state = "highblackstocking"
 	icon = 'maplestation_modules/icons/mob/clothing/underwear.dmi'
+
+/// --- Facial Hair ---
+/datum/sprite_accessory/facial_hair/foxmarkings // not exactly hair but i'm not coding a unique system for this *yet*
+	name = "Facial Markings"
+	icon_state = "facial_foxmarkings"
+	icon = 'maplestation_modules/icons/mob/human_face.dmi'

@@ -73,6 +73,7 @@
 	tool_behaviour = TOOL_CAUTERY
 	toolspeed = 1
 	heat = 500
+	usesound = 'sound/surgery/cautery1.ogg'
 	drop_sound = 'maplestation_modules/sound/items/pickup/metalweapon.ogg'
 	pickup_sound = 'maplestation_modules/sound/items/pickup/surgery_metal.ogg'
 
@@ -83,7 +84,7 @@
 	return surgical_tray_overlay
 
 /obj/item/cautery/ignition_effect(atom/ignitable_atom, mob/user)
-	. = span_notice("[user] touches the end of [src] to \the [ignitable_atom], igniting it with a puff of smoke.")
+	return span_rose("[user] touches the end of [src] to \the [ignitable_atom], igniting it with a puff of smoke.")
 
 /obj/item/cautery/augment
 	desc = "A heated element that cauterizes wounds."

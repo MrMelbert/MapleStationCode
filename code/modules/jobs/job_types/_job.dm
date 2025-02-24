@@ -1,6 +1,13 @@
 /datum/job
-	/// The name of the job , used for preferences, bans and more. Make sure you know what you're doing before changing this.
+	/// The base name of the job, used for preferences, bans and more.
+	/// Make sure you know what you're doing before changing this.
 	var/title = "NOPE"
+	/// Alternate titles to register as pointing to this job.
+	/// Assoc [title] = [outfit], or [title] = [null], in which case the base outfit is used.
+	/// Base [title] = [Base outfit] will always be the first entry in the list.
+	VAR_PROTECTED/list/title_options
+	/// The base outfit of this job, used as a default in all circumstances.
+	var/base_outfit
 
 	/// The description of the job, used for preferences menu.
 	/// Keep it short and useful. Avoid in-jokes, these are for new players.
@@ -43,8 +50,6 @@
 
 	/// If you have the use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_age days old. (meaning they first signed in at least that many days before.)
 	var/minimal_player_age = 0
-
-	var/outfit = null
 
 	/// The job's outfit that will be assigned for plasmamen.
 	var/plasmaman_outfit = null
@@ -117,9 +122,6 @@
 	///RPG job names, for the memes
 	var/rpg_title
 
-	/// Alternate titles to register as pointing to this job.
-	var/list/alternate_titles
-
 	/// Does this job ignore human authority?
 	var/ignore_human_authority = FALSE
 
@@ -133,6 +135,9 @@
 	/// Minimal character age for this job
 	var/required_character_age
 
+	/// Priority for the job on the crew monitor.
+	var/crewmonitor_priority
+
 
 /datum/job/New()
 	. = ..()
@@ -142,6 +147,11 @@
 	var/new_total_positions = CHECK_MAP_JOB_CHANGE(title, "total_positions")
 	if(isnum(new_total_positions))
 		total_positions = new_total_positions
+
+	var/list/alt_titles = list("[title]" = base_outfit)
+	for(var/i in title_options)
+		alt_titles[i] = title_options[i] || base_outfit
+	title_options = alt_titles
 
 /// Executes after the mob has been spawned in the map. Client might not be yet in the mob, and is thus a separate variable.
 /datum/job/proc/after_spawn(mob/living/spawned, client/player_client)
@@ -173,8 +183,19 @@
 			spawned_human.mind.adjust_experience(i, roundstart_experience[i], TRUE)
 
 /// Return the outfit to use
-/datum/job/proc/get_outfit(consistent)
-	return outfit
+/datum/job/proc/get_outfit(consistent, title)
+	return title_options[title] || base_outfit
+
+/**
+ * Returns a list of all titles this job goes by
+ *
+ * If only_selectable is TRUE, only returns titles that can be selected by players in the preferences menu.
+ *
+ * This allows for jobs to have titles not available to players outside of specific circumstances -
+ * it's important to have all titles listed here, so things can recognize alt-titles as "this job" (crew monitor, etc)
+ */
+/datum/job/proc/get_titles(only_selectable = FALSE)
+	return assoc_to_keys(title_options)
 
 /// Announce that this job as joined the round to all crew members.
 /// Note the joining mob has no client at this point.
@@ -218,12 +239,24 @@
 
 /mob/living/carbon/human/dress_up_as_job(datum/job/equipping, visual_only = FALSE, client/player_client, consistent = FALSE)
 	dna.species.pre_equip_species_outfit(equipping, src, visual_only)
-	equip_outfit_and_loadout(equipping.get_outfit(consistent), player_client?.prefs, visual_only, TRUE)
+	var/preferred_title = player_client?.prefs.read_preference(/datum/preference/job_titles)?[equipping.title] || equipping.title
+	equip_outfit_and_loadout(equipping.get_outfit(consistent, preferred_title), player_client?.prefs, visual_only, TRUE)
+	// some titles will have outfits associated, which will have custom trims associated, which handles all the assignment stuff we care about
+	// but if a title just uses the default outfit, or doesn't bother having a trim, then we need to manually set their id card
+	if(!visual_only && preferred_title)
+		var/obj/item/card/id/id = get_idcard(hand_first = FALSE)
+		if(id && id.assignment != preferred_title)
+			id.assignment = preferred_title
+			id.update_label()
 
 /datum/job/proc/announce_head(mob/living/carbon/human/H, channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
 	if(H && GLOB.announcement_systems.len)
+		var/datum/record/crew/crew_rec = find_record(H.real_name)
+		var/obj/item/card/id/crew_id = H.get_idcard(hand_first = FALSE)
+		var/job_name = crew_rec?.rank || crew_id?.assignment || crew_id?.trim?.assignment || H.job
+		var/datum/callback/announce = CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, job_name, channels)
 		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), CALLBACK(pick(GLOB.announcement_systems), TYPE_PROC_REF(/obj/machinery/announcement_system, announce), "NEWHEAD", H.real_name, H.job, channels), 1))
+		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), announce, 0.1 SECONDS))
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/player)

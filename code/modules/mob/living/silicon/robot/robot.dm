@@ -562,7 +562,7 @@
 
 	if(removing.brainmob)
 		if(removing.brainmob.stat == DEAD)
-			removing.brainmob.set_stat(CONSCIOUS)
+			removing.brainmob.revive()
 		mind.transfer_to(removing.brainmob)
 		removing.update_appearance()
 
@@ -589,7 +589,7 @@
 		if(AI_NOTIFICATION_CYBORG_DISCONNECTED) //Tampering with the wires
 			to_chat(connected_ai, "<br><br>[span_notice("NOTICE - Remote telemetry lost with [name].")]<br>")
 
-/mob/living/silicon/robot/can_perform_action(atom/movable/target, action_bitflags)
+/mob/living/silicon/robot/can_perform_action(atom/target, action_bitflags)
 	if(lockcharge || low_power_mode)
 		to_chat(src, span_warning("You can't do that right now!"))
 		return FALSE
@@ -673,17 +673,26 @@
 /mob/living/silicon/robot/update_stat()
 	if(status_flags & GODMODE)
 		return
-	if(stat != DEAD)
-		if(health <= -maxHealth) //die only once
-			death()
-			toggle_headlamp(1)
-			return
-	diag_hud_set_status()
-	diag_hud_set_health()
-	diag_hud_set_aishell()
-	update_health_hud()
-	update_icons() //Updates eye_light overlay
+	if(stat == DEAD)
+		return
+	if(health <= -maxHealth) //die only once
+		death()
+		toggle_headlamp(TRUE)
+		return
+	if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
+		set_stat(UNCONSCIOUS)
+		return
+	if(stat != CONSCIOUS)
+		set_stat(CONSCIOUS)
+		return
 
+/mob/living/silicon/robot/set_stat(new_stat)
+	. = ..()
+	if(isnull(.) || . == stat)
+		return
+	diag_hud_set_status()
+	diag_hud_set_aishell()
+	update_icons() //Updates eye_light overlay
 
 /mob/living/silicon/robot/revive(full_heal_flags = NONE, excess_healing = 0, force_grab_ghost = FALSE)
 	. = ..()
@@ -691,13 +700,11 @@
 		return
 
 	if(!QDELETED(builtInCamera) && !wires.is_cut(WIRE_CAMERA))
-		builtInCamera.toggle_cam(src, 0)
+		builtInCamera.toggle_cam(src, FALSE)
 	if(full_heal_flags & HEAL_ADMIN)
 		locked = TRUE
-	src.set_stat(CONSCIOUS)
 	notify_ai(AI_NOTIFICATION_NEW_BORG)
 	toggle_headlamp(FALSE, TRUE) //This will reenable borg headlamps if doomsday is currently going on still.
-	update_stat()
 	return TRUE
 
 /mob/living/silicon/robot/fully_replace_character_name(oldname, newname)
@@ -941,18 +948,20 @@
 	if(can_buckle && isliving(user) && isliving(M) && !(M in buckled_mobs) && ((user != src) || (!combat_mode)))
 		return user_buckle_mob(M, user, check_loc = FALSE)
 
-/mob/living/silicon/robot/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE, buckle_mob_flags= RIDER_NEEDS_ARM)
-	if(!is_type_in_typecache(M, can_ride_typecache))
-		M.visible_message(span_warning("[M] really can't seem to mount [src]..."))
-		return
-
-	if(stat || incapacitated())
-		return
+/mob/living/silicon/robot/is_buckle_possible(mob/living/target, force, check_loc)
+	if(incapacitated())
+		return FALSE
+	if(!HAS_TRAIT(target, TRAIT_CAN_MOUNT_CYBORGS))
+		target.visible_message(span_warning("[target] really can't seem to mount [src]..."))
+		return FALSE
 	if(model && !model.allow_riding)
-		M.visible_message(span_boldwarning("Unfortunately, [M] just can't seem to hold onto [src]!"))
-		return
+		target.visible_message(span_boldwarning("Unfortunately, [target] just can't seem to hold onto [src]!"))
+		return FALSE
 
-	buckle_mob_flags= RIDER_NEEDS_ARM // just in case
+	return ..()
+
+/mob/living/silicon/robot/buckle_mob(mob/living/M, force, check_loc, buckle_mob_flags)
+	buckle_mob_flags = RIDER_NEEDS_ARM // just in case
 	return ..()
 
 /mob/living/silicon/robot/execute_resist()
@@ -1034,13 +1043,3 @@
 /// Draw power from the robot
 /mob/living/silicon/robot/proc/draw_power(power_to_draw)
 	cell?.use(power_to_draw)
-
-
-/mob/living/silicon/robot/set_stat(new_stat)
-	. = ..()
-	update_stat() // This is probably not needed, but hopefully should be a little sanity check for the spaghetti that borgs are built from
-
-/mob/living/silicon/robot/on_knockedout_trait_loss(datum/source)
-	. = ..()
-	set_stat(CONSCIOUS) //This is a horrible hack, but silicon code forced my hand
-	update_stat()

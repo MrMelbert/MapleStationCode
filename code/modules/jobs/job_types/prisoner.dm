@@ -10,7 +10,7 @@
 	paycheck = PAYCHECK_LOWER
 	config_tag = "PRISONER"
 
-	outfit = /datum/outfit/job/prisoner
+	base_outfit = /datum/outfit/job/prisoner
 	plasmaman_outfit = /datum/outfit/plasmaman/prisoner
 
 	display_order = JOB_DISPLAY_ORDER_PRISONER

@@ -218,21 +218,32 @@
 
 	return atom_to_find.loc
 
-///Send a message in common radio when a player arrives
-/proc/announce_arrival(mob/living/carbon/human/character, rank)
+/**
+ * Send a message in common radio when a player arrives
+ *
+ * * character - The mob of the player who arrived
+ * * backup_job_title - We try to infer the job title based on ID, but if we fail, we use this.
+ * * try_queue - If TRUE, we'll queue the announcement if the shuttle is still docking.
+ */
+/proc/announce_arrival(mob/living/carbon/human/character, backup_job_title, try_queue = FALSE)
 	if(!SSticker.IsRoundInProgress() || QDELETED(character))
 		return
+	var/datum/record/crew/crew_record = find_record(character.real_name)
+	var/obj/item/card/id/crew_id = character.get_idcard(hand_first = FALSE)
+	var/job_title = crew_record?.rank || crew_id?.assignment || crew_id?.trim?.assignment || backup_job_title
+	if(try_queue && SSshuttle.arrivals)
+		// queue announcement basically just calls this proc again, but with the try_queue flag set to false, after the shuttle has finished docking
+		SSshuttle.arrivals.QueueAnnounce(character, job_title)
+		return
 	var/area/player_area = get_area(character)
-	deadchat_broadcast("<span class='game'> has arrived at the station at <span class='name'>[player_area.name]</span>.</span>", "<span class='game'><span class='name'>[character.real_name]</span> ([rank])</span>", follow_target = character, message_type=DEADCHAT_ARRIVALRATTLE)
-	if(!character.mind)
+	deadchat_broadcast("<span class='game'> has arrived at the station at <span class='name'>[player_area.name]</span>.</span>", "<span class='game'><span class='name'>[character.real_name]</span> ([job_title])</span>", follow_target = character, message_type = DEADCHAT_ARRIVALRATTLE)
+	if(!length(GLOB.announcement_systems))
 		return
-	if(!GLOB.announcement_systems.len)
-		return
-	if(!(character.mind.assigned_role.job_flags & JOB_ANNOUNCE_ARRIVAL))
+	if(!(character.mind?.assigned_role.job_flags & JOB_ANNOUNCE_ARRIVAL))
 		return
 
 	var/obj/machinery/announcement_system/announcer = pick(GLOB.announcement_systems)
-	announcer.announce("ARRIVAL", character.real_name, rank, list()) //make the list empty to make it announce it in common
+	announcer.announce("ARRIVAL", character.real_name, job_title, list()) //make the list empty to make it announce it in common
 
 ///Check if the turf pressure allows specialized equipment to work
 /proc/lavaland_equipment_pressure_check(turf/turf_to_check)
@@ -300,4 +311,4 @@
 		message = html_encode(message)
 	else
 		message = copytext(message, 2)
-	to_chat(target, span_purple(examine_block("<span class='oocplain'><b>Tip of the round: </b>[message]</span>")))
+	to_chat(target, span_purple(examine_block("<b>Tip of the round: </b>[message]")))

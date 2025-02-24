@@ -142,3 +142,11 @@
 #warn In order to build, run BUILD.bat in the root directory.
 #warn Consider switching to VSCode editor instead, where you can press Ctrl+Shift+B to build.
 #endif
+
+/// Uncomment to compile content related to the story or characters of Maplestation.
+// #define MAPLESTATION_STORY_CONTENT
+
+// Always compile story content for unit tests. Todo : Just have a single unit test dedicated to story content.
+#ifdef UNIT_TESTS
+#define MAPLESTATION_STORY_CONTENT
+#endif

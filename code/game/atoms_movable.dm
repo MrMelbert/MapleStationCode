@@ -575,7 +575,7 @@
 	if(!. || !isliving(moving_atom))
 		return
 	var/mob/living/pulled_mob = moving_atom
-	set_pull_offsets(pulled_mob, grab_state)
+	set_pull_offsets(pulled_mob, grab_state, animate = FALSE)
 
 /**
  * Checks if the pulling and pulledby should be stopped because they're out of reach.
@@ -1467,7 +1467,7 @@
 */
 
 /// Gets or creates the relevant language holder. For mindless atoms, gets the local one. For atom with mind, gets the mind one.
-/atom/movable/proc/get_language_holder()
+/atom/movable/proc/get_language_holder() as /datum/language_holder
 	RETURN_TYPE(/datum/language_holder)
 	if(QDELING(src))
 		CRASH("get_language_holder() called on a QDELing atom, \
@@ -1485,6 +1485,9 @@
 /atom/movable/proc/grant_all_languages(language_flags = ALL, grant_omnitongue = TRUE, source = LANGUAGE_MIND)
 	return get_language_holder().grant_all_languages(language_flags, grant_omnitongue, source)
 
+/atom/movable/proc/grant_partial_language(language, amount = 50, source = LANGUAGE_ATOM)
+	return get_language_holder().grant_partial_language(language, amount, source)
+
 /// Removes a single language.
 /atom/movable/proc/remove_language(language, language_flags = ALL, source = LANGUAGE_ALL)
 	return get_language_holder().remove_language(language, language_flags, source)
@@ -1492,6 +1495,12 @@
 /// Removes every language and sets omnitongue false.
 /atom/movable/proc/remove_all_languages(source = LANGUAGE_ALL, remove_omnitongue = FALSE)
 	return get_language_holder().remove_all_languages(source, remove_omnitongue)
+
+/atom/movable/proc/remove_partial_language(language, source = LANGUAGE_ALL)
+	return get_language_holder().remove_partial_language(language, source)
+
+/atom/movable/proc/remove_all_partial_languages(source = LANGUAGE_ALL)
+	return get_language_holder().remove_all_partial_languages(source)
 
 /// Adds a language to the blocked language list. Use this over remove_language in cases where you will give languages back later.
 /atom/movable/proc/add_blocked_language(language, source = LANGUAGE_ATOM)
@@ -1520,6 +1529,10 @@
 /// Gets a random understood language, useful for hallucinations and such.
 /atom/movable/proc/get_random_understood_language()
 	return get_language_holder().get_random_understood_language()
+
+/// Gets a list of all mutually understood languages.
+/atom/movable/proc/get_mutually_understood_languages()
+	return get_language_holder().get_mutually_understood_languages()
 
 /// Gets a random spoken language, useful for forced speech and such.
 /atom/movable/proc/get_random_spoken_language()

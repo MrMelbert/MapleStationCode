@@ -1,5 +1,7 @@
 //These are all minor mutations that affect your speech somehow.
 //Individual ones aren't commented since their functions should be evident at a glance
+// no they arent bro
+
 
 /datum/mutation/human/nervousness
 	name = "Nervousness"

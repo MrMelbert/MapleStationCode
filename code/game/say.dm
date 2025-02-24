@@ -119,7 +119,15 @@ GLOBAL_LIST_INIT(freqtospan, list(
 	//Speaker name
 	var/namepart
 	var/list/stored_name = list(null)
-	SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
+
+	if(ishuman(speaker)) //First, try to pull the modified title from a carbon's ID. This will override both visual and audible names.
+		var/mob/living/carbon/human/huspeaker = speaker
+		var/obj/item/card/id/id = huspeaker.get_idcard(hand_first = FALSE)
+		id?.get_message_name_part(huspeaker, stored_name)
+
+	if(!stored_name[NAME_PART_INDEX]) //Otherwise, we just use whatever the name signal gives us.
+		SEND_SIGNAL(speaker, COMSIG_MOVABLE_MESSAGE_GET_NAME_PART, stored_name, visible_name)
+
 	namepart = stored_name[NAME_PART_INDEX] || "[speaker.GetVoice()]"
 
 	//End name span.
@@ -213,7 +221,7 @@ GLOBAL_LIST_INIT(freqtospan, list(
 
 	if(!has_language(language))
 		var/datum/language/dialect = GLOB.language_datum_instances[language]
-		raw_message = dialect.scramble(raw_message)
+		raw_message = dialect.scramble_sentence(raw_message, get_mutually_understood_languages())
 
 	return raw_message
 

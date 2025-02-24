@@ -59,20 +59,17 @@
 	icon_state = "capjacket"
 	inhand_icon_state = "bio_suit"
 	body_parts_covered = CHEST|GROIN|ARMS
-	allowed = list(
-		/obj/item/assembly/flash/handheld,
-		/obj/item/clothing/mask/cigarette,
-		/obj/item/disk,
-		/obj/item/lighter,
-		/obj/item/melee,
-		/obj/item/reagent_containers/cup/glass/flask,
-		/obj/item/stamp,
-		/obj/item/storage/box/matches,
-		/obj/item/storage/fancy/cigarettes,
-		/obj/item/storage/lockbox/medal,
-		/obj/item/tank/internals/emergency_oxygen,
-		/obj/item/tank/internals/plasmaman,
-	)
+	armor_type = /datum/armor/vest_capcarapace
+	resistance_flags = FIRE_PROOF
+	min_cold_protection_temperature = ARMOR_MIN_TEMP_PROTECT
+	max_heat_protection_temperature = ARMOR_MAX_TEMP_PROTECT
+	strip_delay = 60
+	equip_delay_other = 40
+	max_integrity = 250
+
+/obj/item/clothing/suit/jacket/capjacket/Initialize(mapload)
+	. = ..()
+	allowed += GLOB.security_vest_allowed
 
 //Chef
 /obj/item/clothing/suit/toggle/chef

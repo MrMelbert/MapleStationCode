@@ -187,18 +187,6 @@
 			return M
 	return 0
 
-///Find the first name of a mob from the real name with regex
-/mob/proc/first_name()
-	var/static/regex/firstname = new("^\[^\\s-\]+") //First word before whitespace or "-"
-	firstname.Find(real_name)
-	return firstname.match
-
-/// Find the last name of a mob from the real name with regex
-/mob/proc/last_name()
-	var/static/regex/lasttname = new("\[^\\s-\]+$") //First word before whitespace or "-"
-	lasttname.Find(real_name)
-	return lasttname.match
-
 ///Returns a mob's real name between brackets. Useful when you want to display a mob's name alongside their real name
 /mob/proc/get_realname_string()
 	if(real_name && real_name != name)
@@ -476,12 +464,7 @@
 	return player
 
 /proc/health_percentage(mob/living/mob)
-	var/divided_health = mob.health / mob.maxHealth
-	if(iscyborg(mob) || islarva(mob))
-		divided_health = (mob.health + mob.maxHealth) / (mob.maxHealth * 2)
-	else if(iscarbon(mob) || isAI(mob) || isbrain(mob))
-		divided_health = abs(HEALTH_THRESHOLD_DEAD - mob.health) / abs(HEALTH_THRESHOLD_DEAD - mob.maxHealth)
-	return divided_health * 100
+	return (mob.health / mob.maxHealth) * 100
 
 /**
  * Generates a log message when a user manually changes their targeted zone.

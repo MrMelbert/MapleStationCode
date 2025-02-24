@@ -12,7 +12,7 @@
 	config_tag = "STOWAWAY"
 	faction = FACTION_STATION
 
-	outfit = /datum/outfit/job/stowaway
+	base_outfit = /datum/outfit/job/stowaway
 	plasmaman_outfit = /datum/outfit/job/stowaway/plasmaman
 
 	paycheck = PAYCHECK_ZERO
@@ -101,7 +101,7 @@
 			backstory_gist = "You are a former [old_job.title], [reasons]. You've snuck on board to get your old position back."
 			backstory_suggested_goal = "Get your job as [old_job.title] back, and prove yourself - or find a new calling."
 
-			var/datum/outfit/job/job_outfit = old_job.outfit
+			var/datum/outfit/job/job_outfit = old_job.base_outfit
 			backstory_equipment_items = list(
 				initial(job_outfit.uniform) = ITEM_SLOT_BACKPACK,
 				initial(job_outfit.head) = ITEM_SLOT_BACKPACK,
@@ -137,6 +137,7 @@
 	desc = "Not sure what to do? Click here for a random backstory and some extra equipment. \
 		This will go away shortly, so don't worry if you don't want it."
 	icon_state = "surrender"
+	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/backstory/Click(location, control, params)
 	. = ..()

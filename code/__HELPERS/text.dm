@@ -1117,8 +1117,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 		return word
 	var/first_letter = copytext(word, 1, 2)
 	var/first_two_letters = copytext(word, 1, 3)
-	var/first_word_is_vowel = (first_letter in list("a", "e", "i", "o", "u"))
-	var/second_word_is_vowel = (copytext(word, 2, 3) in list("a", "e", "i", "o", "u"))
+	var/first_word_is_vowel = (first_letter in VOWELS)
+	var/second_word_is_vowel = (copytext(word, 2, 3) in VOWELS)
 	//If a word starts with a vowel add the word "way" at the end of the word.
 	if(first_word_is_vowel)
 		return word + pick("yay", "way", "hay") //in cultures around the world it's different, so heck lets have fun and make it random. should still be readable
@@ -1202,3 +1202,13 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 /proc/endswith(input_text, ending)
 	var/input_length = LAZYLEN(ending)
 	return !!findtext(input_text, ending, -input_length)
+
+/// Round a number to a specific decimal place, while maintaining the decimal if rounded to x.0
+/// EX. round_and_format_decimal(1.253, 0.1) -> "1.3"
+/// EX. round_and_format_decimal(1.0, 0.1) -> "1.0" (NOT "1")
+/// Returns a string
+/proc/round_and_format_decimal(input_number, round_to = 0.1)
+	var/input_rounded = round(input_number, round_to)
+	if(round(input_rounded %% 1, round_to) == 0)
+		return "[input_rounded].0"
+	return "[input_rounded]"
