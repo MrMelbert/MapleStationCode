@@ -19,6 +19,8 @@
 	can_install_electronics = FALSE
 	paint_jobs = null
 	can_weld_shut = FALSE
+	// For subtypes that seal
+	air_volume = TANK_STANDARD_VOLUME
 
 	var/foldedbag_path = /obj/item/bodybag
 	var/obj/item/bodybag/foldedbag_instance = null
@@ -149,6 +151,8 @@
 	foldedbag_path = /obj/item/bodybag/bluespace
 	mob_storage_capacity = 15
 	max_mob_size = MOB_SIZE_LARGE
+	sealed = TRUE
+	air_volume = TANK_STANDARD_VOLUME * 2
 
 /obj/structure/closet/body_bag/bluespace/attempt_fold(mob/living/carbon/human/the_folder)
 	. = FALSE
@@ -279,46 +283,19 @@
 	contents_pressure_protection = 0.8
 	contents_thermal_insulation = 0.5
 	foldedbag_path = /obj/item/bodybag/environmental
+	sealed = TRUE
+	air_volume = TANK_STANDARD_VOLUME
 	/// The list of weathers we protect from.
 	var/list/weather_protection = list(TRAIT_ASHSTORM_IMMUNE, TRAIT_RADSTORM_IMMUNE, TRAIT_SNOWSTORM_IMMUNE, TRAIT_VOIDSTORM_IMMUNE) // Does not protect against lava or the The Floor Is Lava spell.
-	/// The contents of the gas to be distributed to an occupant. Set in Initialize()
-	var/datum/gas_mixture/air_contents = null
 
 /obj/structure/closet/body_bag/environmental/Initialize(mapload)
 	. = ..()
 	add_traits(weather_protection, INNATE_TRAIT)
-	refresh_air()
-
-/obj/structure/closet/body_bag/environmental/Destroy()
-	if(air_contents)
-		QDEL_NULL(air_contents)
-	return ..()
-
-/obj/structure/closet/body_bag/environmental/return_air()
-	refresh_air()
-	return air_contents
-
-/obj/structure/closet/body_bag/environmental/remove_air(amount)
-	refresh_air()
-	return air_contents.remove(amount)
-
-/obj/structure/closet/body_bag/environmental/return_analyzable_air()
-	refresh_air()
-	return air_contents
 
 /obj/structure/closet/body_bag/environmental/togglelock(mob/living/user, silent)
 	. = ..()
 	for(var/mob/living/target in contents)
 		to_chat(target, span_warning("You hear a faint hiss, and a white mist fills your vision..."))
-
-/obj/structure/closet/body_bag/environmental/proc/refresh_air()
-	air_contents = null
-	air_contents = new(50) //liters
-	air_contents.temperature = T20C
-
-	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
 
 /obj/structure/closet/body_bag/environmental/nanotrasen
 	name = "elite environmental protection bag"
@@ -441,14 +418,20 @@
 	breakout_time = 8 MINUTES
 	sinch_time = 20 SECONDS
 
-/obj/structure/closet/body_bag/environmental/prisoner/pressurized/syndicate/refresh_air()
-	air_contents = null
-	air_contents = new(50) //liters
-	air_contents.temperature = T20C
+/obj/structure/closet/body_bag/environmental/prisoner/syndicate/process_internal_air(seconds_per_tick)
+	if(opened)
+		// lose a majority of all n2o when we start leaking gas, to stop this being a free (obnoxious) way to make n2o
+		internal_air.assert_gases(/datum/gas/nitrous_oxide)
+		internal_air.gases[/datum/gas/nitrous_oxide][MOLES] *= 0.15
+		return ..()
 
-	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrous_oxide)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
-	air_contents.gases[/datum/gas/nitrous_oxide][MOLES] = (ONE_ATMOSPHERE*50)/(R_IDEAL_GAS_EQUATION*T20C) * N2STANDARD
+	internal_air.assert_gases(/datum/gas/nitrogen, /datum/gas/nitrous_oxide)
+	var/conversion_amount = min(internal_air.gases[/datum/gas/nitrogen][MOLES], 0.2 * internal_air.total_moles() * seconds_per_tick)
+	if(conversion_amount > 0)
+		// 20% of the nitrogen in the bag is converted to nitrous oxide every second while closed
+		internal_air.gases[/datum/gas/nitrogen][MOLES] = max(0, internal_air.gases[/datum/gas/nitrogen][MOLES] - conversion_amount)
+		internal_air.gases[/datum/gas/nitrous_oxide][MOLES] += conversion_amount
+	return ..()
 
 /obj/structure/closet/body_bag/environmental/hardlight
 	name = "hardlight bodybag"
@@ -488,8 +471,6 @@
 	material_drop = /obj/item/stack/sheet/plastic
 	material_drop_amount = 2
 	appearance_flags = parent_type::appearance_flags | KEEP_TOGETHER
-	/// Tracks how many seconds we've been freezing dudes for
-	var/seconds_freezing = -1
 	/// Cooldown for playing the freeze sound effect
 	COOLDOWN_DECLARE(freeze_sound_cd)
 	/// Base color filter applied to the bodybag, adjusted based on integrity
@@ -524,16 +505,30 @@
 
 	COOLDOWN_START(src, last_filter_update, 1 SECONDS)
 
-/obj/structure/closet/body_bag/environmental/stasis/refresh_air()
-	var/mol_count = 50
-	var/inner_temp = T0C - 60
-	air_contents = null
-	air_contents = new(mol_count)
-	air_contents.temperature = inner_temp
+/obj/structure/closet/body_bag/environmental/stasis/process_internal_air(seconds_per_tick)
+	if(opened)
+		var/datum/gas_mixture/current_exposed_air = loc.return_air()
+		if(!current_exposed_air)
+			return
+		internal_air.temperature = max(current_exposed_air.temperature, internal_air.temperature)
+		return ..()
 
-	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
-	air_contents.gases[/datum/gas/oxygen][MOLES] = (ONE_ATMOSPHERE * mol_count) / (R_IDEAL_GAS_EQUATION * inner_temp) * O2STANDARD
-	air_contents.gases[/datum/gas/nitrogen][MOLES] = (ONE_ATMOSPHERE * mol_count) / (R_IDEAL_GAS_EQUATION * inner_temp) * N2STANDARD
+	if(internal_air.temperature > BODY_PRESERVATION_TEMP)
+		var/temperature_decrease_this_tick = min(5 CELCIUS * seconds_per_tick, internal_air.temperature - BODY_PRESERVATION_TEMP)
+		internal_air.temperature -= temperature_decrease_this_tick
+
+	for(var/mob/living/freezing in src)
+		if(internal_air.temperature <= T20C && SPT_PROB(4 * (abs((internal_air.temperature + BODY_PRESERVATION_TEMP) / BODY_PRESERVATION_TEMP) - 1), seconds_per_tick))
+			freezing.Unconscious(1 SECONDS * seconds_per_tick)
+
+		if(internal_air.temperature <= T0C && freezing.on_fire)
+			freezing.extinguish_mob()
+
+		if(internal_air.temperature <= BODY_PRESERVATION_TEMP && !HAS_TRAIT(freezing, TRAIT_STASIS))
+			apply_stasis(freezing)
+
+		// Bout two minutes of time
+		take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
 
 /obj/structure/closet/body_bag/environmental/stasis/examine_status(mob/user)
 	switch(100 * get_integrity_percentage())
@@ -544,58 +539,10 @@
 		if(0 to 25)
 			return span_boldwarning("It's falling apart!")
 
-/obj/structure/closet/body_bag/environmental/stasis/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	if(isinternalorgan(arrived))
-		var/obj/item/organ/organ_arrived = arrived
-		organ_arrived.organ_flags |= ORGAN_FROZEN
-		return
-	if(isbodypart(arrived))
-		for(var/obj/item/organ/internal/organ in arrived)
-			organ.organ_flags |= ORGAN_FROZEN
-		return
-	if(!isliving(arrived))
-		return
-	if(seconds_freezing != -1)
-		return
-	START_PROCESSING(SSobj, src)
-
 /obj/structure/closet/body_bag/environmental/stasis/Exited(atom/movable/gone, direction)
 	. = ..()
-	if(isinternalorgan(gone))
-		var/obj/item/organ/organ_gone = gone
-		organ_gone.organ_flags &= ~ORGAN_FROZEN
-		return
-	if(isbodypart(gone))
-		for(var/obj/item/organ/internal/organ in gone)
-			organ.organ_flags &= ~ORGAN_FROZEN
-		return
-	if(!isliving(gone))
-		return
-	seconds_freezing = -1
-	STOP_PROCESSING(SSobj, src)
 	if(HAS_TRAIT(gone, TRAIT_STASIS))
 		remove_stasis(gone)
-
-/obj/structure/closet/body_bag/environmental/stasis/process(seconds_per_tick)
-
-	var/mob/living/freezing = locate() in src
-	if(isnull(freezing))
-		return PROCESS_KILL
-
-	seconds_freezing += seconds_per_tick
-
-	if(seconds_freezing > 3 && freezing.on_fire)
-		freezing.extinguish_mob()
-
-	if(seconds_freezing > 5 && !HAS_TRAIT(freezing, TRAIT_STASIS))
-		apply_stasis(freezing)
-
-	if(SPT_PROB(2 * (seconds_freezing / 60), seconds_per_tick))
-		freezing.Unconscious(1 SECONDS)
-
-	// Bout two minutes of time
-	take_damage(max_integrity * 0.004 * seconds_per_tick, sound_effect = FALSE)
 
 /obj/structure/closet/body_bag/environmental/stasis/after_open(mob/living/user, force = FALSE)
 	if(COOLDOWN_FINISHED(src, freeze_sound_cd) && (locate(/mob/living) in loc))

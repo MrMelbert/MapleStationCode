@@ -108,14 +108,14 @@
 	for(var/i in 1 to 8)
 		switch(i)
 			if(1, 7)
-				animate(user, pixel_w = user.pixel_w + 6, time = 0.5 SECONDS)
+				animate(user, pixel_w = 6, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 			if(3, 5)
-				animate(user, pixel_w = user.pixel_w - 6, time = 0.5 SECONDS)
+				animate(user, pixel_w = -6, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 			else
 				user.setDir(turn(user.dir, 90))
 		sleep(0.25 SECONDS)
 		if(!can_dance(user))
-			user.pixel_w = user.base_pixel_w
+			user.pixel_w = user.has_offset(pixel = PIXEL_W_OFFSET) + user.base_pixel_w
 			return
 		if(user.num_legs < 2)
 			user.Knockdown(2 SECONDS)
@@ -223,6 +223,7 @@
 	message_mime = "gasps silently!"
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = HARD_CRIT
+	vary = TRUE
 
 /datum/emote/living/gasp/get_sound(mob/living/carbon/human/user)
 	if(!istype(user))
@@ -279,13 +280,14 @@
 	key_third_person = "jumps"
 	message = "jumps!"
 	hands_use_check = TRUE
+	affected_by_pitch = FALSE
 
 /datum/emote/living/jump/run_emote(mob/living/user, params, type_override, intentional)
 	. = ..()
 	if(!.)
 		return FALSE
-	animate(user, pixel_y = user.pixel_y + 4, time = 0.1 SECONDS)
-	animate(pixel_y = user.pixel_y - 4, time = 0.1 SECONDS)
+	animate(user, pixel_z = 4, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_z = -4, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 
 /datum/emote/living/jump/get_sound(mob/living/user)
 	return 'sound/weapons/thudswoosh.ogg'
@@ -399,11 +401,11 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	animate(user, pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(user, pixel_w = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 	for(var/i in 1 to SHIVER_LOOP_DURATION / (0.2 SECONDS)) //desired total duration divided by the iteration duration to give the necessary iteration count
-		animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-		animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
+		animate(pixel_w = -2, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
+		animate(pixel_w = 2, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
+	animate(pixel_w = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 #undef SHIVER_LOOP_DURATION
 
 /datum/emote/living/sigh
@@ -469,6 +471,7 @@
 	message_mime = "sleeps soundly."
 	emote_type = EMOTE_VISIBLE | EMOTE_AUDIBLE
 	stat_allowed = UNCONSCIOUS
+	vary = TRUE
 
 // eventually we want to give species their own "snoring" sounds
 /datum/emote/living/snore/get_sound(mob/living/carbon/human/user)
@@ -514,11 +517,11 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	animate(user, pixel_x = user.pixel_x + 2, time = 0.5 SECONDS)
+	animate(user, pixel_w = 2, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 	for(var/i in 1 to 2)
-		animate(pixel_x = user.pixel_x - 4, time = 1.0 SECONDS)
-		animate(pixel_x = user.pixel_x + 4, time = 1.0 SECONDS)
-	animate(pixel_x = user.pixel_x - 2, time = 0.5 SECONDS)
+		animate(pixel_w = -6, time = 1.0 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
+		animate(pixel_w = 6, time = 1.0 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
+	animate(pixel_w = -2, time = 0.5 SECONDS, flags = ANIMATION_RELATIVE)
 
 /datum/emote/living/tilt
 	key = "tilt"
@@ -535,11 +538,11 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	animate(user, pixel_x = user.pixel_x + 2, time = 0.2 SECONDS)
+	animate(user, pixel_w = 2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
 	for(var/i in 1 to TREMBLE_LOOP_DURATION / (0.4 SECONDS)) //desired total duration divided by the iteration duration to give the necessary iteration count
-		animate(pixel_x = user.pixel_x - 2, time = 0.2 SECONDS)
-		animate(pixel_x = user.pixel_x + 2, time = 0.2 SECONDS)
-	animate(pixel_x = user.pixel_x - 2, time = 0.2 SECONDS)
+		animate(pixel_w = -4, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
+		animate(pixel_w = 4, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
+	animate(pixel_w = -2, time = 0.2 SECONDS, flags = ANIMATION_RELATIVE)
 #undef TREMBLE_LOOP_DURATION
 
 /datum/emote/living/twitch
@@ -551,11 +554,11 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	animate(user, pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(user, pixel_w = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_w = -2, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 	animate(time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(pixel_w = 2, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_w = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 
 /datum/emote/living/twitch_s
 	key = "twitch_s"
@@ -566,8 +569,8 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	animate(user, pixel_x = user.pixel_x - 1, time = 0.1 SECONDS)
-	animate(pixel_x = user.pixel_x + 1, time = 0.1 SECONDS)
+	animate(user, pixel_w = -1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(pixel_w = 1, time = 0.1 SECONDS, flags = ANIMATION_RELATIVE)
 
 /datum/emote/living/wave
 	key = "wave"

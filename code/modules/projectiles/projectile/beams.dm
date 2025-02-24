@@ -21,6 +21,7 @@
 
 
 /obj/projectile/beam/laser
+	generic_name = "laser beam"
 	tracer_type = /obj/effect/projectile/tracer/laser
 	muzzle_type = /obj/effect/projectile/muzzle/laser
 	impact_type = /obj/effect/projectile/impact/laser
@@ -69,15 +70,15 @@
 	name = "low-power laser"
 	icon_state = "laser_musket"
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/purple_laser
-	damage = 25
-	stamina = 40
+	damage = 28
+	stamina = 35
 	light_color = COLOR_STRONG_VIOLET
 	weak_against_armour = TRUE
 
 /obj/projectile/beam/laser/musket/prime
 	name = "mid-power laser"
-	damage = 30
-	stamina = 45
+	damage = 25
+	stamina = 20
 	weak_against_armour = FALSE
 
 /obj/projectile/beam/weak
@@ -88,6 +89,7 @@
 
 /obj/projectile/beam/practice
 	name = "practice laser"
+	generic_name = "practice laser beam"
 	damage = 0
 
 /obj/projectile/beam/scatter
@@ -126,7 +128,7 @@
 	name = "disabler beam"
 	icon_state = "omnilaser"
 	damage = 30
-	damage_type = STAMINA
+	damage_type = PAIN
 	armor_flag = ENERGY
 	hitsound = 'sound/weapons/sear_disabler.ogg'
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser
@@ -149,6 +151,7 @@
 
 /obj/projectile/beam/pulse
 	name = "pulse"
+	generic_name = "pulse beam"
 	icon_state = "u_laser"
 	damage = 50
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser
@@ -226,6 +229,8 @@
 		if(istype(M.wear_suit))
 			if(M.wear_suit.type in suit_types)
 				M.adjustStaminaLoss(34)
+				if(M.getStaminaLoss() > 100)
+					M.Paralyze(5 SECONDS)
 
 /obj/projectile/beam/lasertag/redtag
 	icon_state = "laser"

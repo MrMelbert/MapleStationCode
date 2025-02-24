@@ -19,6 +19,7 @@
 
 /obj/item/clothing/suit/hooded/wintercoat/Initialize(mapload)
 	. = ..()
+	AddElement(/datum/element/pat_out_fire)
 	allowed += list(
 		/obj/item/flashlight,
 		/obj/item/lighter,
@@ -170,13 +171,15 @@
 	armor_type = /datum/armor/wintercoat_captain
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/captain
 
-/datum/armor/wintercoat_captain
-	melee = 25
+/datum/armor/wintercoat_captain //downstream edit to make it closer to the carapace values, but less because of the bonus of being a winter coat
+	melee = 40
 	bullet = 30
-	laser = 30
+	laser = 40
 	energy = 40
-	bomb = 25
-	acid = 50
+	bomb = 20
+	fire = 100
+	acid = 90
+	wound = 10
 
 /obj/item/clothing/suit/hooded/wintercoat/captain/Initialize(mapload)
 	. = ..()

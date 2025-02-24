@@ -128,6 +128,7 @@
 	post_buckle_mob(M)
 
 	SEND_SIGNAL(src, COMSIG_MOVABLE_BUCKLE, M, force)
+	SEND_SIGNAL(M, COMSIG_MOB_BUCKLED, src)
 	return TRUE
 
 /obj/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
@@ -136,6 +137,13 @@
 		if(resistance_flags & ON_FIRE) //Sets the mob on fire if you buckle them to a burning atom/movableect
 			M.adjust_fire_stacks(1)
 			M.ignite_mob()
+		if(buckle_sound)
+			playsound(src, buckle_sound, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, pressure_affected = TRUE, ignore_walls = FALSE)
+
+/obj/unbuckle_mob(mob/living/buckled_mob, force, can_fall)
+	. = ..()
+	if(. && unbuckle_sound)
+		playsound(src, unbuckle_sound, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, pressure_affected = TRUE, ignore_walls = FALSE)
 
 /**
  * Set a mob as unbuckled from src
@@ -163,6 +171,7 @@
 	if(!length(buckled_mobs))
 		UnregisterSignal(src, COMSIG_MOVABLE_SET_ANCHORED)
 	SEND_SIGNAL(src, COMSIG_MOVABLE_UNBUCKLE, buckled_mob, force)
+	SEND_SIGNAL(buckled_mob, COMSIG_MOB_UNBUCKLED, src)
 
 	if(can_fall)
 		var/turf/location = buckled_mob.loc

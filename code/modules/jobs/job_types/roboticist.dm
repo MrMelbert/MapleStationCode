@@ -12,7 +12,7 @@
 	bounty_types = CIV_JOB_ROBO
 	config_tag = "ROBOTICIST"
 
-	outfit = /datum/outfit/job/roboticist
+	base_outfit = /datum/outfit/job/roboticist
 	plasmaman_outfit = /datum/outfit/plasmaman/robotics
 	departments_list = list(
 		/datum/job_department/science,

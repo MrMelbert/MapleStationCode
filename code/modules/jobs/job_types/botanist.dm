@@ -9,7 +9,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "BOTANIST"
 
-	outfit = /datum/outfit/job/botanist
+	base_outfit = /datum/outfit/job/botanist
 	plasmaman_outfit = /datum/outfit/plasmaman/botany
 
 	paycheck = PAYCHECK_CREW

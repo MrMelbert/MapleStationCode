@@ -7,8 +7,6 @@
 
 	required_wounding_types = list(WOUND_ALL)
 
-	wound_series = WOUND_SERIES_LOSS_BASIC
-
 	threshold_minimum = WOUND_DISMEMBER_OUTRIGHT_THRESH // not actually used since dismembering is handled differently, but may as well assign it since we got it
 
 /datum/wound/loss
@@ -19,7 +17,7 @@
 	severity = WOUND_SEVERITY_LOSS
 	status_effect_type = null
 	scar_keyword = "dismember"
-	wound_flags = null
+	wound_flags = NONE
 	already_scarred = TRUE // We manually assign scars for dismembers through endround missing limbs and aheals
 
 	/// The wounding_type of the attack that caused us. Used to generate the description of our scar. Currently unused, but primarily exists in case non-biological wounds are added.

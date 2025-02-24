@@ -87,9 +87,6 @@
 	/// This number is also reset to 0 every tick of carbon Life(). Pain.
 	var/damageoverlaytemp = 0
 
-	///used to halt stamina regen temporarily
-	var/stam_regen_start_time = 0
-
 	/// Timer id of any transformation
 	var/transformation_timer
 

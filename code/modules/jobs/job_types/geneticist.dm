@@ -11,7 +11,7 @@
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "GENETICIST"
 
-	outfit = /datum/outfit/job/geneticist
+	base_outfit = /datum/outfit/job/geneticist
 	plasmaman_outfit = /datum/outfit/plasmaman/genetics
 	departments_list = list(
 		/datum/job_department/science,
