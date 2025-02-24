@@ -73,3 +73,4 @@
 	uniform = /obj/item/clothing/under/rank/medical/scrubs/purple
 	id_trim = /datum/id_trim/job/roboticist/prosthetist
 	mask = /obj/item/clothing/mask/surgical
+	ears = /obj/item/radio/headset/headset_medsci
