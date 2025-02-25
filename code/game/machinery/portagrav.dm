@@ -10,11 +10,11 @@
 	max_integrity = 250
 	circuit = /obj/item/circuitboard/machine/portagrav
 	armor_type = /datum/armor/portable_gravity
-	interaction_flags_click = ALLOW_SILICON_REACH
+	var/interaction_flags_click = ALLOW_SILICON_REACH // Non-module change : doing it this way so it'll complain if/when we do get this
 	//We don't use area power
 	use_power = NO_POWER_USE
 	///The cell we spawn with
-	var/obj/item/stock_parts/power_store/cell/cell = /obj/item/stock_parts/power_store/cell/high
+	var/obj/item/stock_parts/cell/cell = /obj/item/stock_parts/cell/high // Non-module change : get ready for a code-chimera
 	///Is the machine on?
 	var/on = FALSE
 	/// do we use power from wire instead
@@ -97,8 +97,8 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/portagrav/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = NONE
-	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
+	. = ..() // Non-module change
+	if(!istype(tool, /obj/item/stock_parts/cell)) // Non-module change
 		return
 	if(!panel_open)
 		balloon_alert(user, "must open panel!")
