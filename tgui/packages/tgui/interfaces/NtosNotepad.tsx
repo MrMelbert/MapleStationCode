@@ -16,6 +16,7 @@ import {
 
 import { useBackend } from '../backend';
 import { NtosWindow } from '../layouts';
+import { NTOSData } from '../layouts/NtosWindow';
 import { createLogger } from '../logging';
 
 const logger = createLogger('NtosNotepad');
@@ -200,6 +201,9 @@ const StatusBar = (props: StatusBarProps) => {
   const { statuses } = props;
   return (
     <Box className="NtosNotepad__StatusBar">
+      <Box className="NtosNotepad__StatusBar__entry" minWidth="25rem">
+        Press shift-enter to insert new line
+      </Box>
       <Box className="NtosNotepad__StatusBar__entry" minWidth="15rem">
         Ln {statuses.line}, Col {statuses.column}
       </Box>
@@ -244,7 +248,7 @@ interface NotePadTextAreaProps {
   maintainFocus: boolean;
   text: string;
   wordWrap: boolean;
-  setText: (string) => void;
+  setText: (text: string) => void;
   setStatuses: (statuses: Statuses) => void;
 }
 
@@ -268,10 +272,7 @@ class NotePadTextArea extends Component<NotePadTextAreaProps> {
 
     if (this.props.maintainFocus) {
       this.innerRef.current.focus();
-      return false;
     }
-
-    return true;
   }
 
   // eslint-disable-next-line react/no-deprecated
@@ -312,10 +313,12 @@ class NotePadTextArea extends Component<NotePadTextAreaProps> {
     return (
       <TextArea
         ref={this.innerRef}
-        onChange={(_, value) => setText(value)}
+        onInput={(_, value) => setText(value)}
         className="NtosNotepad__textarea"
         nowrap={!wordWrap}
         value={text}
+        scrollbar
+        autoFocus
       />
     );
   }
@@ -323,11 +326,12 @@ class NotePadTextArea extends Component<NotePadTextAreaProps> {
 
 type AboutDialogProps = {
   close: () => void;
-  clientName: string;
 };
 
 const AboutDialog = (props: AboutDialogProps) => {
-  const { close, clientName } = props;
+  const { close } = props;
+  const { act, data } = useBackend<NTOSData>();
+  const { show_imprint, login } = data;
   const paragraphStyle = { padding: '.5rem 1rem 0 2rem' };
   return (
     <Dialog title="About Notepad" onClose={close} width={'500px'}>
@@ -355,7 +359,9 @@ const AboutDialog = (props: AboutDialogProps) => {
           >
             This product is licensed under the NT Corporation Terms to:
           </span>
-          <span style={{ padding: '0 1rem 0 4rem' }}>{clientName}</span>
+          <span style={{ padding: '0 1rem 0 4rem' }}>
+            {show_imprint ? login.IDName : 'Unknown'}
+          </span>
         </Box>
       </div>
       <div className="Dialog__footer">
@@ -371,7 +377,7 @@ type NoteData = {
 type RetryActionType = (retrying?: boolean) => void;
 
 export const NtosNotepad = (props) => {
-  const { act, data, config } = useBackend<NoteData>();
+  const { act, data } = useBackend<NoteData>();
   const { note } = data;
   const [documentName, setDocumentName] = useState(DEFAULT_DOCUMENT_NAME);
   const [originalText, setOriginalText] = useState(note);
@@ -491,7 +497,7 @@ export const NtosNotepad = (props) => {
         </Dialog>
       )}
       {activeDialog === Dialogs.ABOUT && (
-        <AboutDialog close={handleCloseDialog} clientName={config.user.name} />
+        <AboutDialog close={handleCloseDialog} />
       )}
     </NtosWindow>
   );
