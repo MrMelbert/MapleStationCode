@@ -514,7 +514,6 @@
 #include "code\_globalvars\rcd.dm"
 #include "code\_globalvars\religion.dm"
 #include "code\_globalvars\silo.dm"
-#include "code\_globalvars\silo.dm"
 #include "code\_globalvars\tgui.dm"
 #include "code\_globalvars\time_vars.dm"
 #include "code\_globalvars\lists\achievements.dm"
