@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Button,
   Input,
@@ -6,7 +5,9 @@ import {
   NumberInput,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 export const SentienceFunBalloon = (props) => {
@@ -35,8 +36,9 @@ export const SentienceFunBalloon = (props) => {
                   value={range}
                   minValue={1}
                   maxValue={100}
+                  step={1}
                   stepPixelSize={15}
-                  onDrag={(e, value) =>
+                  onDrag={(value) =>
                     act('effect_range', {
                       updated_range: value,
                     })

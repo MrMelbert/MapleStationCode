@@ -1,4 +1,3 @@
-import { useBackend, useLocalState } from '../backend';
 import {
   Box,
   Button,
@@ -13,7 +12,9 @@ import {
   Tabs,
   TextArea,
   Tooltip,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend, useLocalState } from '../backend';
 import { Window } from '../layouts';
 
 export const AdvancedTraitorWindow = (props, context) => {

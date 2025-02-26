@@ -109,7 +109,7 @@
 	/// The antag datum applied
 	var/datum/antagonist/nukeop/antag_datum = /datum/antagonist/nukeop
 	/// Style used by the droppod
-	var/pod_style = STYLE_SYNDICATE
+	var/pod_style = /datum/pod_style/syndicate
 	/// Do we use a random subtype of the outfit?
 	var/use_subtypes = TRUE
 
@@ -175,7 +175,7 @@
 	special_role_name = ROLE_CLOWN_OPERATIVE
 	outfit = /datum/outfit/syndicate/clownop/no_crystals
 	antag_datum = /datum/antagonist/nukeop/clownop
-	pod_style = STYLE_HONK
+	pod_style = /datum/pod_style/clown
 	use_subtypes = FALSE
 
 //////SYNDICATE BORG
@@ -302,7 +302,7 @@
 	/// The antag datum applied
 	var/datum/antagonist/antag_datum
 	/// Style used by the droppod
-	var/pod_style = STYLE_SYNDICATE
+	var/pod_style = /datum/pod_style/syndicate
 	/// Do we use a random subtype of the outfit?
 	var/use_subtypes = TRUE
 	/// The antag role we check if the ghosts have enabled to get the poll.

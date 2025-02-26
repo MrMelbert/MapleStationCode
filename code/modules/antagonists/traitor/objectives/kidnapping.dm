@@ -295,7 +295,7 @@
 	var/obj/structure/closet/supplypod/return_pod = new()
 	return_pod.bluespace = TRUE
 	return_pod.explosionSize = list(0,0,0,0)
-	return_pod.style = STYLE_SYNDICATE
+	return_pod.style = /datum/pod_style/syndicate // Non-module change : removed upstream
 
 	do_sparks(8, FALSE, sent_mob)
 	sent_mob.visible_message(span_notice("[sent_mob] vanishes!"))

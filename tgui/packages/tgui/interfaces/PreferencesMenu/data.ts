@@ -1,4 +1,4 @@
-import { BooleanLike } from 'common/react';
+import { BooleanLike } from 'tgui-core/react';
 
 import { sendAct } from '../../backend';
 import { Language } from './_LanguagePicker'; // NON-MODULE CHANGE
@@ -95,6 +95,7 @@ export type QuirkInfo = {
   max_positive_quirks: number;
   quirk_info: Record<string, Quirk>;
   quirk_blacklist: string[][];
+  points_enabled: boolean;
 };
 
 export enum RandomSetting {

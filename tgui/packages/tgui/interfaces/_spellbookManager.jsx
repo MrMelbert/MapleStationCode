@@ -1,5 +1,13 @@
+import {
+  Box,
+  Button,
+  Dimmer,
+  Section,
+  Stack,
+  Tabs,
+} from 'tgui-core/components';
+
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Dimmer, Section, Stack, Tabs } from '../components';
 import { Window } from '../layouts';
 
 export const _spellbookManager = (props, context) => {

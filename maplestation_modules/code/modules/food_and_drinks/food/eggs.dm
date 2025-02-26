@@ -136,7 +136,7 @@
 				crown.color = COLOR_VERY_SOFT_YELLOW // cheap materials went bad
 	podspawn(list(
 		"target" = get_turf(user),
-		"style" = STYLE_BLUESPACE,
+		"style" = /datum/pod_style/advanced,
 		"spawn" = crown,
 	))
 

@@ -1,4 +1,5 @@
-import { Button, Stack } from '../../../../../components';
+import { Button, Stack } from 'tgui-core/components';
+
 import { Feature, FeatureValueProps } from '../base';
 
 export const spellbook: Feature<undefined, undefined> = {

@@ -1,9 +1,9 @@
+import { FeatureChoiced } from '../base';
 import {
-  FeatureChoiced,
   FeatureDropdownInput,
   FeatureIconnedDropdownInput,
   FeatureWithIcons,
-} from '../base';
+} from '../dropdowns';
 
 export const limp_cane: FeatureWithIcons<string> = {
   name: 'Limp Aid',
