@@ -1,5 +1,5 @@
 import { filter, map, sortBy } from 'common/collections';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import {
   Autofocus,
   Box,

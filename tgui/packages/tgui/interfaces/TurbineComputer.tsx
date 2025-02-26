@@ -6,9 +6,7 @@ import {
   NumberInput,
   ProgressBar,
   Section,
-  Stack,
 } from 'tgui-core/components';
-import { formatPower } from 'tgui-core/format';
 import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend } from '../backend';
