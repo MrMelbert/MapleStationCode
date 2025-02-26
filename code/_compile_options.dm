@@ -151,3 +151,11 @@
 #ifdef MAP_TEST
 #warn Compiling in MAP_TEST mode. Certain game mechanics will be disabled.
 #endif
+
+/// Uncomment to compile content related to the story or characters of Maplestation.
+// #define MAPLESTATION_STORY_CONTENT
+
+// Always compile story content for unit tests. Todo : Just have a single unit test dedicated to story content.
+#ifdef UNIT_TESTS
+#define MAPLESTATION_STORY_CONTENT
+#endif
