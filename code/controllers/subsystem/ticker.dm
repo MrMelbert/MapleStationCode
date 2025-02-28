@@ -122,6 +122,8 @@ SUBSYSTEM_DEF(ticker)
 	// NON-MODULE CHANGE
 	if(!length(music))
 		music = world.file2list(ROUND_START_MUSIC_LIST, "\n")
+		if(length(music) > 1)
+			music -= old_login_music
 		set_lobby_music(pick(music))
 	else
 		set_lobby_music("[global.config.directory]/title_music/sounds/[pick(music)]")
