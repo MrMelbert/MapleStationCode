@@ -376,7 +376,7 @@
 		var/level_format = "[round_and_format_decimal(target.blood_volume, 0.1)] cl" // round to 0.1 but also print "100.0" and not "100"
 		var/blood_type_format = "[target_blood_type.name]"
 
-		if(bpm < 60 || bpm > 100)
+		if(needs_heart && (bpm < 60 || bpm > 100))
 			bpm_format = span_alert(bpm_format)
 
 		switch(target.blood_volume)

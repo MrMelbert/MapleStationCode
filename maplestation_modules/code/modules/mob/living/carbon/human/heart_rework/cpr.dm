@@ -105,13 +105,13 @@
 	target.share_blood_on_touch(src, ITEM_SLOT_NECK)
 	if(!do_after(src, 6 SECONDS, target))
 		return
-	var/own_bpm_penatly = get_heart_rate() > 11 ? 1.2 : 1
-	var/bpm_a = target.get_bpm() * own_bpm_penatly
+	var/own_bpm_penalty = get_heart_rate() > 11 ? 1.2 : 1
+	var/bpm_a = round(target.get_bpm() * own_bpm_penalty, 1)
 	if(bpm_a <= 0)
 		to_chat(src, span_warning("<i>[target.name] has no pulse!</i>"))
 		return
 
-	var/bpm_b = target.get_bpm() * 1.2 * own_bpm_penatly
+	var/bpm_b = round(target.get_bpm() * 1.2 * own_bpm_penalty, 1)
 	to_chat(src, span_notice("<i>[target.name]'s pulse is around [min(bpm_a, bpm_b)] to [max(bpm_a, bpm_b)] bpm.</i>"))
 
 /// Number of "beats" per CPR cycle

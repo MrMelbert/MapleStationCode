@@ -288,6 +288,7 @@
 		/obj/item/surgicaldrill,
 		/obj/item/tank/internals/emergency_oxygen,
 		/obj/item/wrench/medical,
+		/obj/item/razor/scissors,
 	))
 
 /obj/item/storage/belt/medical/paramedic
