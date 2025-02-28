@@ -195,6 +195,8 @@ DEFINE_BITFIELD(smoothing_junction, list(
 #define SMOOTH_GROUP_GAS_TANK S_OBJ(72)
 
 
+#define SMOOTH_GROUP_GRAV_FIELD S_OBJ(69)
+
 /// Performs the work to set smoothing_groups and canSmoothWith.
 /// An inlined function used in both turf/Initialize and atom/Initialize.
 #define SETUP_SMOOTHING(...) \

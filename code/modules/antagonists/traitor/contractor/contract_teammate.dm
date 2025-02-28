@@ -5,7 +5,7 @@
 
 	partner_outfit.equip(partner)
 
-	var/obj/structure/closet/supplypod/arrival_pod = new(null, STYLE_SYNDICATE)
+	var/obj/structure/closet/supplypod/arrival_pod = new(null, /datum/pod_style/syndicate) // Non-module change : removed upstream
 	arrival_pod.explosionSize = list(0,0,0,1)
 	arrival_pod.bluespace = TRUE
 

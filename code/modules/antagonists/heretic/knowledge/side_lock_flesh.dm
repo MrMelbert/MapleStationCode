@@ -11,6 +11,7 @@
 	spell_to_add = /datum/action/cooldown/spell/aoe/wave_of_desperation
 	cost = 1
 	route = PATH_SIDE
+	depth = 8
 
 /datum/heretic_knowledge/spell/apetra_vulnera
 	name = "Apetra Vulnera"
@@ -25,3 +26,4 @@
 	spell_to_add = /datum/action/cooldown/spell/pointed/apetra_vulnera
 	cost = 1
 	route = PATH_SIDE
+	depth = 10

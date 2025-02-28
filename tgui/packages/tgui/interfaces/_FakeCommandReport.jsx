@@ -1,5 +1,12 @@
+import {
+  Button,
+  Dropdown,
+  Section,
+  Stack,
+  TextArea,
+} from 'tgui-core/components';
+
 import { useBackend } from '../backend';
-import { Button, Dropdown, Section, Stack, TextArea } from '../components';
 import { Window } from '../layouts';
 
 export const _FakeCommandReport = (props, context) => {

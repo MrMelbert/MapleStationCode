@@ -44,6 +44,6 @@
 			received_dna_scanner = TRUE
 			podspawn(list(
 				"target" = get_turf(user),
-				"style" = STYLE_SYNDICATE,
+				"style" = /datum/pod_style/syndicate, // Non-module change : upstream killed this lol
 				"spawn" = /obj/item/storage/box/syndie_kit/space_dragon,
 			))

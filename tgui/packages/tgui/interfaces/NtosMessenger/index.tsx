@@ -1,9 +1,5 @@
 import { sortBy } from 'common/collections';
-import { BooleanLike } from 'common/react';
-import { createSearch } from 'common/string';
 import { useState } from 'react';
-
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -14,7 +10,11 @@ import {
   Section,
   Stack,
   TextArea,
-} from '../../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+import { createSearch } from 'tgui-core/string';
+
+import { useBackend } from '../../backend';
 import { NtosWindow } from '../../layouts';
 import { ChatScreen } from './ChatScreen';
 import { NtChat, NtMessenger, NtPicture } from './types';
@@ -100,7 +100,8 @@ const ContactsScreen = (props: any) => {
 
   const [searchUser, setSearchUser] = useState('');
 
-  const sortByUnreads = sortBy<NtChat>((chat) => chat.unread_messages);
+  const sortByUnreads = (array: NtChat[]) =>
+    sortBy(array, (chat) => chat.unread_messages);
 
   const searchChatByName = createSearch(
     searchUser,

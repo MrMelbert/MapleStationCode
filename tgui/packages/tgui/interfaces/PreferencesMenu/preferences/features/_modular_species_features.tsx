@@ -3,11 +3,11 @@ import {
   Feature,
   FeatureChoiced,
   FeatureColorInput,
-  FeatureDropdownInput,
   FeatureNumberInput,
   FeatureNumeric,
   FeatureToggle,
 } from './base';
+import { FeatureDropdownInput } from './dropdowns';
 
 export const feature_head_tentacles: FeatureChoiced = {
   name: 'Head Tentacles',

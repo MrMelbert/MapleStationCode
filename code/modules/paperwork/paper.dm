@@ -154,7 +154,7 @@
 	new_paper.raw_stamp_data = copy_raw_stamps()
 	new_paper.stamp_cache = stamp_cache?.Copy()
 	new_paper.update_icon_state()
-	copy_overlays(new_paper, TRUE)
+	new_paper.copy_overlays(src)
 	return new_paper
 
 /**
@@ -204,8 +204,17 @@
 	var/datum/paper_field/field_data_datum = null
 
 	var/is_signature = ((text == "%sign") || (text == "%s"))
+	var/is_date = ((text == "%date") || (text == "%d"))
+	var/is_time = ((text == "%time") || (text == "%t"))
 
-	var/field_text = is_signature ? signature_name : text
+	var/field_text = text
+	if(is_signature)
+		field_text = signature_name
+	else if(is_date)
+		field_text = "[time2text(world.timeofday, "DD/MM")]/[CURRENT_STATION_YEAR]"
+	else if(is_time)
+		field_text = time2text(world.timeofday, "hh:mm")
+
 	var/field_font = is_signature ? SIGNATURE_FONT : font
 
 	for(var/datum/paper_field/field_input in raw_field_input_data)
@@ -261,9 +270,9 @@
 	if(LAZYLEN(stamp_cache) > MAX_PAPER_STAMPS_OVERLAYS)
 		return
 
-	var/mutable_appearance/stamp_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_[stamp_icon_state]")
-	stamp_overlay.pixel_x = rand(-2, 2)
-	stamp_overlay.pixel_y = rand(-3, 2)
+	var/mutable_appearance/stamp_overlay = mutable_appearance('icons/obj/service/bureaucracy.dmi', "paper_[stamp_icon_state]", appearance_flags = KEEP_APART | RESET_COLOR)
+	stamp_overlay.pixel_w = rand(-2, 2)
+	stamp_overlay.pixel_z = rand(-3, 2)
 	add_overlay(stamp_overlay)
 	LAZYADD(stamp_cache, stamp_icon_state)
 
@@ -289,6 +298,8 @@
 /obj/item/paper/update_icon_state()
 	if(LAZYLEN(raw_text_inputs) && show_written_words)
 		icon_state = "[initial(icon_state)]_words"
+	else
+		icon_state = initial(icon_state)
 	return ..()
 
 /obj/item/paper/verb/rename()
@@ -414,8 +425,8 @@
 	// Handle stamping items.
 	if(writing_stats["interaction_mode"] == MODE_STAMPING)
 		if(!user.can_read(src) || user.is_blind())
-			//The paper's stampable window area is assumed approx 400x500
-			add_stamp(writing_stats["stamp_class"], rand(0, 400), rand(0, 500), rand(0, 360), writing_stats["stamp_icon_state"])
+			//The paper's stampable window area is assumed approx 300x400
+			add_stamp(writing_stats["stamp_class"], rand(0, 300), rand(0, 400), rand(0, 360), writing_stats["stamp_icon_state"])
 			user.visible_message(span_notice("[user] blindly stamps [src] with \the [attacking_item]!"))
 			to_chat(user, span_notice("You stamp [src] with \the [attacking_item] the best you can!"))
 			playsound(src, 'sound/items/handling/standard_stamp.ogg', 50, vary = TRUE)
@@ -426,7 +437,31 @@
 
 	ui_interact(user)
 	return ..()
+// Non-module change start
+/obj/item/paper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = ..()
+	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+		return item_interaction_secondary(user, tool, modifiers)
 
+/// Secondary right click interaction to quickly stamp things
+/obj/item/paper/proc/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers) // Non-module end : the fool I am. (remove the above and the double definition when we have this for real)
+	var/list/writing_stats = tool.get_writing_implement_details()
+
+	if(!length(writing_stats))
+		return NONE
+	if(writing_stats["interaction_mode"] != MODE_STAMPING)
+		return NONE
+	if(!user.can_read(src) || user.is_blind()) // Just leftclick instead
+		return NONE
+
+	add_stamp(writing_stats["stamp_class"], rand(1, 300), rand(1, 400), stamp_icon_state = writing_stats["stamp_icon_state"])
+	user.visible_message(
+		span_notice("[user] quickly stamps [src] with [tool] without looking."),
+		span_notice("You quickly stamp [src] with [tool] without looking."),
+	)
+	playsound(src, 'sound/items/handling/standard_stamp.ogg', 50, vary = TRUE)
+
+	return ITEM_INTERACT_BLOCKING // Stop the UI from opening.
 /**
  * Attempts to ui_interact the paper to the given user, with some sanity checking
  * to make sure the camera still exists via the weakref and that this paper is still
@@ -547,7 +582,7 @@
 			var/stamp_icon_state = stamp_info["stamp_icon_state"]
 
 			if (LAZYLEN(raw_stamp_data) >= MAX_PAPER_STAMPS)
-				to_chat(usr, pick("You try to stamp but you miss!", "There is no where else you can stamp!"))
+				to_chat(usr, pick("You try to stamp but you miss!", "There is nowhere else you can stamp!"))
 				return TRUE
 
 			add_stamp(stamp_class, stamp_x, stamp_y, stamp_rotation, stamp_icon_state)
@@ -562,7 +597,7 @@
 			var/this_input_length = length_char(paper_input)
 
 			if(this_input_length == 0)
-				to_chat(user, pick("Writing block strikes again!", "You forgot to write anthing!"))
+				to_chat(user, pick("Writing block strikes again!", "You forgot to write anything!"))
 				return TRUE
 
 			// If the paper is on an unwritable noticeboard, this usually shouldn't be possible.
