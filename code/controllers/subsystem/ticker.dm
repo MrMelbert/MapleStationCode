@@ -119,12 +119,12 @@ SUBSYSTEM_DEF(ticker)
 				continue
 		music -= S
 
+	// NON-MODULE CHANGE
 	if(!length(music))
 		music = world.file2list(ROUND_START_MUSIC_LIST, "\n")
-		login_music = pick(music)
+		set_lobby_music(pick(music))
 	else
-		login_music = "[global.config.directory]/title_music/sounds/[pick(music)]"
-
+		set_lobby_music("[global.config.directory]/title_music/sounds/[pick(music)]")
 
 	if(!GLOB.syndicate_code_phrase)
 		GLOB.syndicate_code_phrase = generate_code_phrase(return_list=TRUE)
@@ -746,6 +746,16 @@ SUBSYSTEM_DEF(ticker)
 		possible_themes += themes
 	if(possible_themes.len)
 		return "[global.config.directory]/reboot_themes/[pick(possible_themes)]"
+
+/datum/controller/subsystem/ticker/proc/set_lobby_music(new_music, override = FALSE)
+	if(!override && login_music)
+		return
+
+	login_music = new_music
+	var/list/music_file_components = splittext(new_music, "/")
+	var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
+	SStitle.update_music_text(music_file_name)
+
 
 #undef ROUND_START_MUSIC_LIST
 #undef SS_TICKER_TRAIT
