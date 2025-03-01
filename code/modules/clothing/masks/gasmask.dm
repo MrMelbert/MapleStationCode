@@ -291,7 +291,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	w_class = WEIGHT_CLASS_SMALL
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
-	actions_types = list(/datum/action/item_action/adjust)
+	actions_types = list(/datum/action/item_action/adjust_style)
 	dog_fashion = /datum/dog_fashion/head/clown
 	var/list/clownmask_designs = list()
 	voice_filter = null // performer masks expect to be talked through
@@ -348,7 +348,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	w_class = WEIGHT_CLASS_SMALL
 	flags_cover = MASKCOVERSEYES
 	resistance_flags = FLAMMABLE
-	actions_types = list(/datum/action/item_action/adjust)
+	actions_types = list(/datum/action/item_action/adjust_style)
 	species_exception = list(/datum/species/golem)
 	fishing_modifier = 0
 	var/list/mimemask_designs = list()
@@ -442,7 +442,7 @@ GLOBAL_LIST_INIT(clown_mask_options, list(
 	resistance_flags = FLAMMABLE
 	flags_cover = MASKCOVERSEYES
 	max_integrity = 100
-	actions_types = list(/datum/action/item_action/adjust)
+	actions_types = list(/datum/action/item_action/adjust_style)
 	dog_fashion = null
 	fishing_modifier = -2
 	var/list/tikimask_designs = list()

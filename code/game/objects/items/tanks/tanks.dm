@@ -30,6 +30,7 @@
 	demolition_mod = 1.25
 	custom_materials = list(/datum/material/iron = SMALL_MATERIAL_AMOUNT*5)
 	actions_types = list(/datum/action/item_action/set_internals)
+	action_slots = ALL
 	armor_type = /datum/armor/item_tank
 	integrity_failure = 0.5
 	drop_sound = 'maplestation_modules/sound/items/drop/gascan.ogg'
