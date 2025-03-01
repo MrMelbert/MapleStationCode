@@ -756,8 +756,9 @@ SUBSYSTEM_DEF(ticker)
 	login_music = new_music
 	var/list/music_file_components = splittext(new_music, "/")
 	var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
-	SStitle.update_music_text(music_file_name)
-
+	var/list/music_name_components = splittext(music_file_name, "+")
+	var/music_name = length(music_name_components) && music_name_components[length(music_name_components)] || music_file_name
+	SStitle.update_music_text(music_name)
 
 #undef ROUND_START_MUSIC_LIST
 #undef SS_TICKER_TRAIT
