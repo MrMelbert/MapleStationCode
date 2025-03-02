@@ -440,7 +440,7 @@
 		ACCESS_CHANGE_IDS,
 	)
 	job = /datum/job/chief_medical_officer
-	honorifics = list(", PhD.", ", MD.", "Doctor")
+	honorifics = list(", PhD.", ", MD.", "Doctor", "Chief Doctor")
 	honorific_positions = HONORIFIC_POSITION_FIRST | HONORIFIC_POSITION_LAST | HONORIFIC_POSITION_FIRST_FULL | HONORIFIC_POSITION_LAST_FULL
 
 /datum/id_trim/job/clown
