@@ -494,4 +494,4 @@
 		update_appearance()
 		return PROCESS_KILL
 
-	use_power(active_power_usage * seconds_per_tick) // Non-module change
+	use_energy(active_power_usage * seconds_per_tick)

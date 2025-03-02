@@ -316,7 +316,7 @@
 			assembly?.activate()
 		set_scanline("scanning", 1 SECONDS)
 
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 /obj/machinery/scanner_gate/proc/alarm_beep(detected_thing)
 	if(!COOLDOWN_FINISHED(src, next_beep))

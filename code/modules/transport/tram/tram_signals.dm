@@ -308,7 +308,7 @@
  * Returns whether we are still processing.
  */
 /obj/machinery/transport/crossing_signal/proc/update_operating()
-	use_power(idle_power_usage)
+	use_energy(idle_power_usage) // Non-module change : this is old
 	update_appearance()
 	// Immediately process for snappy feedback
 	var/should_process = process() != PROCESS_KILL
@@ -328,7 +328,7 @@
 		set_signal_state(XING_STATE_MALF, force = !is_operational)
 		return PROCESS_KILL
 
-	use_power(active_power_usage)
+	use_energy(active_power_usage) // Non-module change : this is old
 
 	var/obj/structure/transport/linear/tram_part = tram.return_closest_platform_to(src)
 

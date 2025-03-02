@@ -89,7 +89,7 @@
 	COOLDOWN_START(src, scan_cooldown, 5 SECONDS)
 	playsound(src, 'maplestation_modules/sound/healthscanner_used.ogg', 25, FALSE, MEDIUM_RANGE_SOUND_EXTRARANGE)
 	set_occupant(arrived)
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 
 /obj/machinery/vital_floor_scanner/proc/on_exited(datum/source, atom/movable/departed)
 	SIGNAL_HANDLER
