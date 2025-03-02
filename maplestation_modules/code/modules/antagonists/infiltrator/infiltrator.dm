@@ -133,7 +133,7 @@
 	if(isnull(picked_turf))
 		return FALSE
 
-	var/obj/structure/closet/supplypod/infiltrator_pod = new(null, STYLE_SYNDICATE)
+	var/obj/structure/closet/supplypod/infiltrator_pod = new(null, /datum/pod_style/syndicate)
 	infiltrator_pod.explosionSize = list(0, 0, 1, 1)
 	infiltrator_pod.bluespace = TRUE
 
