@@ -242,7 +242,7 @@
 		L.Unconscious(10 SECONDS)
 	L.apply_damage(crush_damage)
 
-/obj/machinery/recycler/on_deconstruction()
+/obj/machinery/recycler/on_deconstruction(disassembled)
 	safety_mode = TRUE
 
 /obj/machinery/recycler/deathtrap
