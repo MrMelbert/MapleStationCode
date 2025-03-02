@@ -54,7 +54,7 @@
 /obj/item/organ/internal/stomach/ethereal/proc/handle_temp(mob/living/carbon/human/human, natural_change, seconds_per_tick)
 	SIGNAL_HANDLER
 
-	if(crystal_charge < (ETHEREAL_CHARGE_LOWPOWER / 2))
+	if(cell.charge < (ETHEREAL_CHARGE_LOWPOWER / 2))
 		return HOMEOSTASIS_HANDLED
 
 	adjust_charge(-1 * ETHEREAL_DISCHARGE_RATE * abs(natural_change) * seconds_per_tick)
