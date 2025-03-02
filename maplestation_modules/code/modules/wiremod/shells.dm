@@ -35,10 +35,11 @@
 /obj/item/circuit_component/headset/register_shell(atom/movable/shell)
 	RegisterSignal(shell, COMSIG_RADIO_NEW_MESSAGE, PROC_REF(new_message))
 	RegisterSignal(shell, COMSIG_RADIO_RECEIVE_MESSAGE, PROC_REF(received_message))
+	RegisterSignal(shell, COMSIG_ITEM_EQUIPPED, PROC_REF(equipped_headset))
 	attached_shell = shell
 
 /obj/item/circuit_component/headset/unregister_shell(atom/movable/shell)
-	UnregisterSignal(shell, list(COMSIG_RADIO_NEW_MESSAGE, COMSIG_RADIO_RECEIVE_MESSAGE))
+	UnregisterSignal(shell, list(COMSIG_RADIO_NEW_MESSAGE, COMSIG_RADIO_RECEIVE_MESSAGE, COMSIG_ITEM_EQUIPPED))
 	attached_shell = null
 
 /obj/item/circuit_component/headset/populate_ports()
@@ -111,7 +112,9 @@
 	signal.send_to_receivers()
 	sent_message.set_output(COMPONENT_SIGNAL)
 
-/obj/item/circuit_component/headset/equipped(mob/user, slot)
-	. = ..()
-	if(iscarbon(user) && (slot & ITEM_SLOT_EARS))
-		entity.set_output(user)
+/obj/item/circuit_component/headset/proc/equipped_headset(atom/source, mob/user, slot)
+	SIGNAL_HANDLER
+
+	if(!(slot & ITEM_SLOT_EARS))
+		return
+	entity.set_output(user)

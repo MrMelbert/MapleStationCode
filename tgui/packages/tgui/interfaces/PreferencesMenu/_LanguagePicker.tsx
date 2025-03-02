@@ -1,6 +1,3 @@
-import { BooleanLike } from 'common/react';
-
-import { useBackend } from '../../backend';
 import {
   Box,
   Button,
@@ -9,7 +6,10 @@ import {
   Section,
   Stack,
   Tooltip,
-} from '../../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../../backend';
 import { ServerPreferencesFetcher } from './ServerPreferencesFetcher';
 
 type typePath = string;
