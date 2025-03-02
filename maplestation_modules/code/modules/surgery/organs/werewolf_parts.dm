@@ -5,7 +5,7 @@
 	is_dimorphic = FALSE
 	should_draw_greyscale = TRUE
 	burn_modifier = 0.9
-	brute_modifier = 0.7
+	brute_modifier = 0.8
 	unarmed_attack_verb = "bite"
 	grappled_attack_verb = "maul"
 	unarmed_attack_effect = ATTACK_EFFECT_BITE
@@ -29,7 +29,7 @@
 	is_dimorphic = TRUE
 	should_draw_greyscale = TRUE
 	burn_modifier = 0.9
-	brute_modifier = 0.7
+	brute_modifier = 0.8
 	dmg_overlay_type = null
 	bodypart_traits = list(TRAIT_NO_JUMPSUIT, TRAIT_PUSHIMMUNE, TRAIT_STUNIMMUNE)
 	wing_types = NONE
@@ -54,7 +54,7 @@
 	unarmed_damage_high = 23
 	unarmed_effectiveness = 15
 	burn_modifier = 0.9
-	brute_modifier = 0.7
+	brute_modifier = 0.8
 	dmg_overlay_type = null
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
@@ -79,7 +79,7 @@
 	unarmed_damage_high = 23
 	unarmed_effectiveness = 15
 	burn_modifier = 0.9
-	brute_modifier = 0.7
+	brute_modifier = 0.8
 	dmg_overlay_type = null
 	bodypart_traits = list(TRAIT_CHUNKYFINGERS)
 
@@ -95,7 +95,7 @@
 	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
 	burn_modifier = 0.9
-	brute_modifier = 0.7
+	brute_modifier = 0.8
 	speed_modifier = -0.1
 	dmg_overlay_type = null
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE
@@ -112,7 +112,7 @@
 	icon_greyscale = 'maplestation_modules/icons/mob/werewolf_parts_greyscale.dmi'
 	should_draw_greyscale = TRUE
 	burn_modifier = 0.9
-	brute_modifier = 0.7
+	brute_modifier = 0.8
 	speed_modifier = -0.1
 	dmg_overlay_type = null
 	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ORGANIC | BODYTYPE_DIGITIGRADE

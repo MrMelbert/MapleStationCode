@@ -37,7 +37,7 @@
 	name = "werewolf brain"
 	desc = "a strange mixture of a human and wolf brain"
 	organ_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LITERATE, TRAIT_PRIMITIVE, TRAIT_CAN_STRIP) // you may be a raging monster, but you still retain traits of your normal self
-	// also you can just inject clever mutation and get the first two traits anyways *shrug
+	// i'll look into making this more interesting when rage is fully implemented
 
 /obj/item/organ/internal/brain/werewolf/get_attacking_limb(mob/living/carbon/human/target)
 	if(target.body_position == LYING_DOWN)
@@ -65,7 +65,7 @@ feel free to update this section if any of the three below can be accessed out o
 		list(
 			SPECIES_PERK_TYPE = SPECIES_NEGATIVE_PERK,
 			SPECIES_PERK_ICON = "paw",
-			SPECIES_PERK_NAME = "Primal Primate",
+			SPECIES_PERK_NAME = "The Creature",
 			SPECIES_PERK_DESC = "Werewolves are monstrous humans, and can't do most things a human can do. Computers are impossible, \
 				complex machines are right out, and most clothes don't fit your larger form.",
 		),

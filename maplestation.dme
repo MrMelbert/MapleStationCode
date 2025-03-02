@@ -6146,6 +6146,7 @@
 #include "maplestation_modules\code\datums\greyscale\_greyscale_config.dm"
 #include "maplestation_modules\code\datums\id_trim\jobs.dm"
 #include "maplestation_modules\code\datums\keybinding\communication.dm"
+#include "maplestation_modules\code\datums\mood_events\other_mood_events.dm"
 #include "maplestation_modules\code\datums\mood_events\quirk_mood_events.dm"
 #include "maplestation_modules\code\datums\mood_events\reagent_mood_events.dm"
 #include "maplestation_modules\code\datums\pain\pain.dm"
