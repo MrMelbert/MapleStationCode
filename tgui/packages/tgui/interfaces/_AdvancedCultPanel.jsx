@@ -1,4 +1,3 @@
-import { useBackend } from '../backend';
 import {
   Button,
   Dropdown,
@@ -6,7 +5,9 @@ import {
   LabeledList,
   Stack,
   TextArea,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import {
   AdvancedTraitorBackgroundSection,
   AdvancedTraitorGoalsSection,

@@ -49,6 +49,7 @@
 	filedesc = "Secure & Private Messenger"
 	size = 1
 	can_run_on_flags = PROGRAM_ALL
+	circuit_comp_type = null
 
 //For the USB port: Basically the ntnet sender and receiver, but with a custom name and description.  IC it would be *all* custom but I am lazy and this is pretty damn close :)
 /obj/item/circuit_component/ntnet_send/volkan

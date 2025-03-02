@@ -110,6 +110,15 @@
 	///The max amount of paper that can be held at once.
 	var/max_paper = 30
 
+	/// The capacity of the circuit shell component of this item
+	var/shell_capacity = SHELL_CAPACITY_MEDIUM
+
+	/**
+	 * Reference to the circuit shell component, because we're special and do special things with it,
+	 * such as creating and deleting unremovable circuit comps based on the programs installed.
+	 */
+	var/datum/component/shell/shell
+
 /datum/armor/item_modular_computer
 	bullet = 20
 	laser = 20
@@ -120,6 +129,7 @@
 	START_PROCESSING(SSobj, src)
 	if(!physical)
 		physical = src
+		add_shell_component(shell_capacity)
 	set_light_color(comp_light_color)
 	set_light_range(comp_light_luminosity)
 	if(looping_sound)
@@ -136,6 +146,26 @@
 	install_default_programs()
 	register_context()
 	update_appearance()
+
+///Initialize the shell for this item, or the physical machinery it belongs to.
+/obj/item/modular_computer/proc/add_shell_component(capacity = SHELL_CAPACITY_MEDIUM, shell_flags = NONE)
+	shell = physical.AddComponent(/datum/component/shell, list(new /obj/item/circuit_component/modpc), capacity, shell_flags)
+	RegisterSignal(shell, COMSIG_SHELL_CIRCUIT_ATTACHED, PROC_REF(on_circuit_attached))
+	RegisterSignal(shell, COMSIG_SHELL_CIRCUIT_REMOVED, PROC_REF(on_circuit_removed))
+
+/obj/item/modular_computer/proc/on_circuit_attached(datum/source)
+	SIGNAL_HANDLER
+	RegisterSignal(shell.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE, PROC_REF(use_power_for_circuits))
+
+///Try to draw power from our internal cell first, before switching to that of the circuit.
+/obj/item/modular_computer/proc/use_power_for_circuits(datum/source, power_usage_per_input)
+	SIGNAL_HANDLER
+	if(use_power(power_usage_per_input, check_programs = FALSE))
+		return COMPONENT_OVERRIDE_POWER_USAGE
+
+/obj/item/modular_computer/proc/on_circuit_removed(datum/source)
+	SIGNAL_HANDLER
+	UnregisterSignal(shell.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE)
 
 /obj/item/modular_computer/proc/install_default_programs()
 	SHOULD_CALL_PARENT(FALSE)
@@ -158,6 +188,7 @@
 	if(computer_id_slot)
 		QDEL_NULL(computer_id_slot)
 
+	shell = null
 	physical = null
 	return ..()
 
@@ -246,13 +277,14 @@
 	if(computer_id_slot)
 		return FALSE
 
-	computer_id_slot = inserting_id
 	if(user)
 		if(!user.transferItemToLoc(inserting_id, src))
 			return FALSE
 		to_chat(user, span_notice("You insert \the [inserting_id] into the card slot."))
 	else
 		inserting_id.forceMove(src)
+
+	computer_id_slot = inserting_id
 
 	playsound(src, 'sound/machines/terminal_insert_disc.ogg', 50, FALSE)
 	if(ishuman(loc))
@@ -261,6 +293,7 @@
 			human_wearer.sec_hud_set_ID()
 	update_appearance()
 	update_slot_icon()
+	SEND_SIGNAL(src, COMSIG_MODULAR_COMPUTER_INSERTED_ID, inserting_id, user)
 	return TRUE
 
 /**
@@ -436,31 +469,38 @@
 	playsound(src, 'sound/machines/card_slide.ogg', 50)
 
 /obj/item/modular_computer/proc/turn_on(mob/user, open_ui = TRUE)
-	var/issynth = issilicon(user) // Robots and AIs get different activation messages.
+	var/issynth = FALSE // Robots and AIs get different activation messages.
+	if(user)
+		issynth = issilicon(user) // Non-module change
+
 	if(atom_integrity <= integrity_failure * max_integrity)
-		if(issynth)
-			to_chat(user, span_warning("You send an activation signal to \the [src], but it responds with an error code. It must be damaged."))
-		else
-			to_chat(user, span_warning("You press the power button, but the computer fails to boot up, displaying variety of errors before shutting down again."))
+		if(user)
+			if(issynth)
+				to_chat(user, span_warning("You send an activation signal to \the [src], but it responds with an error code. It must be damaged."))
+			else
+				to_chat(user, span_warning("You press the power button, but the computer fails to boot up, displaying variety of errors before shutting down again."))
 		return FALSE
 
 	if(use_power()) // checks if the PC is powered
-		if(issynth)
-			to_chat(user, span_notice("You send an activation signal to \the [src], turning it on."))
-		else
-			to_chat(user, span_notice("You press the power button and start up \the [src]."))
 		if(looping_sound)
 			soundloop.start()
 		enabled = TRUE
 		update_appearance()
-		if(open_ui)
-			update_tablet_open_uis(user)
+		if(user)
+			if(issynth)
+				to_chat(user, span_notice("You send an activation signal to \the [src], turning it on."))
+			else
+				to_chat(user, span_notice("You press the power button and start up \the [src]."))
+			if(open_ui)
+				update_tablet_open_uis(user)
+		SEND_SIGNAL(src, COMSIG_MODULAR_COMPUTER_TURNED_ON, user)
 		return TRUE
 	else // Unpowered
-		if(issynth)
-			to_chat(user, span_warning("You send an activation signal to \the [src] but it does not respond."))
-		else
-			to_chat(user, span_warning("You press the power button but \the [src] does not respond."))
+		if(user)
+			if(issynth)
+				to_chat(user, span_warning("You send an activation signal to \the [src] but it does not respond."))
+			else
+				to_chat(user, span_warning("You press the power button but \the [src] does not respond."))
 		return FALSE
 
 // Process currently calls handle_power(), may be expanded in future if more things are added.
@@ -554,14 +594,14 @@
 		if(NTNET_ETHERNET_SIGNAL)
 			data["PC_ntneticon"] = "sig_lan.gif"
 
+	var/list/program_headers = list()
 	if(length(idle_threads))
-		var/list/program_headers = list()
 		for(var/datum/computer_file/program/idle_programs as anything in idle_threads)
 			if(!idle_programs.ui_header)
 				continue
 			program_headers.Add(list(list("icon" = idle_programs.ui_header)))
 
-		data["PC_programheaders"] = program_headers
+	data["PC_programheaders"] = program_headers
 
 	data["PC_stationtime"] = station_time_timestamp()
 	data["PC_stationdate"] = "[time2text(world.realtime, "DDD, Month DD")], [CURRENT_STATION_YEAR]"
@@ -572,18 +612,22 @@
 	if(program.computer != src)
 		CRASH("tried to open program that does not belong to this computer")
 
-	if(!program || !istype(program)) // Program not found or it's not executable program.
+	if(isnull(program) || !istype(program)) // Program not found or it's not executable program.
 		if(user)
 			to_chat(user, span_danger("\The [src]'s screen shows \"I/O ERROR - Unable to run program\" warning."))
 		return FALSE
 
+	if(active_program == program)
+		return FALSE
+
 	// The program is already running. Resume it.
 	if(program in idle_threads)
+		active_program?.background_program()
 		active_program = program
 		program.alert_pending = FALSE
 		idle_threads.Remove(program)
 		if(open_ui)
-			update_tablet_open_uis(user)
+			INVOKE_ASYNC(src, PROC_REF(update_tablet_open_uis), user)
 		update_appearance(UPDATE_ICON)
 		return TRUE
 
@@ -603,10 +647,12 @@
 	if(!program.on_start(user))
 		return FALSE
 
+	active_program?.background_program()
+
 	active_program = program
 	program.alert_pending = FALSE
 	if(open_ui)
-		update_tablet_open_uis(user)
+		INVOKE_ASYNC(src, PROC_REF(update_tablet_open_uis), user)
 	update_appearance(UPDATE_ICON)
 	return TRUE
 
@@ -652,6 +698,7 @@
 		physical.visible_message(span_notice("\The [src] shuts down."))
 	enabled = FALSE
 	update_appearance()
+	SEND_SIGNAL(src, COMSIG_MODULAR_COMPUTER_SHUT_DOWN, loud)
 
 ///Imprints name and job into the modular computer, and calls back to necessary functions.
 ///Acts as a replacement to directly setting the imprints fields. All fields are optional, the proc will try to fill in missing gaps.
@@ -682,10 +729,11 @@
  * It is separated from ui_act() to be overwritten as needed.
 */
 /obj/item/modular_computer/proc/toggle_flashlight(mob/user)
-	if(!has_light || !internal_cell || !internal_cell.charge)
+	if(!has_light || !internal_cell?.charge)
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, disabled_time))
-		balloon_alert(user, "disrupted!")
+		if(user)
+			balloon_alert(user, "disrupted!")
 		return FALSE
 	set_light_on(!light_on)
 	update_appearance()
