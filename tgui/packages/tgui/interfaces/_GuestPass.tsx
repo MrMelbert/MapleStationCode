@@ -1,6 +1,4 @@
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -12,7 +10,9 @@ import {
   Section,
   Stack,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type Access = string;
@@ -96,7 +96,7 @@ const GuestPassMainPage = () => {
               step={0.5}
               minValue={min_time}
               maxValue={max_time}
-              onChange={(e, value) => act('change_time', { new_time: value })}
+              onChange={(value) => act('change_time', { new_time: value })}
             />
           </LabeledList.Item>
           <LabeledList.Item label="Access" />
