@@ -10,7 +10,7 @@
 
 /obj/item/organ/internal/stomach/ethereal/on_life(seconds_per_tick, times_fired)
 	. = ..()
-	adjust_charge(-ETHEREAL_CHARGE_FACTOR * seconds_per_tick)
+	adjust_charge(-ETHEREAL_DISCHARGE_RATE * seconds_per_tick)
 	handle_charge(owner, seconds_per_tick, times_fired)
 
 /obj/item/organ/internal/stomach/ethereal/on_mob_insert(mob/living/carbon/stomach_owner)
@@ -48,7 +48,7 @@
 	if(crystal_charge < (ETHEREAL_CHARGE_LOWPOWER / 2))
 		return HOMEOSTASIS_HANDLED
 
-	adjust_charge(-1 * ETHEREAL_CHARGE_FACTOR * abs(natural_change) * seconds_per_tick)
+	adjust_charge(-1 * ETHEREAL_DISCHARGE_RATE * abs(natural_change) * seconds_per_tick)
 	return HOMEOSTASIS_NO_HUNGER
 
 /**Changes the energy of the crystal stomach.
