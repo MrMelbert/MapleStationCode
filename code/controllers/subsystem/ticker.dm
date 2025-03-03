@@ -68,6 +68,8 @@ SUBSYSTEM_DEF(ticker)
 
 	/// Why an emergency shuttle was called
 	var/emergency_reason
+	/// The level of round chaos the players voted for
+	var/voted_round_chaos
 
 /datum/controller/subsystem/ticker/Initialize()
 	var/list/byond_sound_formats = list(
@@ -333,6 +335,18 @@ SUBSYSTEM_DEF(ticker)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
 		else
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score)] hardcore random points if you survive this round!"))
+
+	addtimer(CALLBACK(src, PROC_REF(run_chaos_vote)), 3 MINUTES)
+
+/datum/controller/subsystem/ticker/proc/run_chaos_vote()
+	if(voted_round_chaos)
+		return
+
+	if(SSvote.current_vote)
+		addtimer(CALLBACK(src, PROC_REF(run_chaos_vote)), 2 MINUTES)
+		return
+
+	SSvote.initiate_vote(/datum/vote/round_chaos, "the server", forced = TRUE)
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)

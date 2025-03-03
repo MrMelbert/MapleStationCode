@@ -37,6 +37,8 @@ SUBSYSTEM_DEF(statpanels)
 			var/ETA = SSshuttle.emergency.getModeStr()
 			if(ETA)
 				global_data += "[ETA] [SSshuttle.emergency.getTimerStr()]"
+		if(SSticker.voted_round_chaos)
+			global_data += "Voted Round Chaos Level: [SSticker.voted_round_chaos]"
 		src.currentrun = GLOB.clients.Copy()
 		mc_data = null
 
