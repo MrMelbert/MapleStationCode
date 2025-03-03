@@ -2,6 +2,10 @@
 	title = JOB_DETECTIVE
 	description = "Investigate crimes, gather evidence, perform interrogations, \
 		look badass, smoke cigarettes."
+	title_options = list(
+		"Investigator",
+		"Inspector",
+	)
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_HEAD_OF_SECURITY)
 	faction = FACTION_STATION

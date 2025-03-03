@@ -2,6 +2,9 @@
 	title = JOB_SECURITY_OFFICER
 	description = "Protect company assets, follow the Standard Operating \
 		Procedure, eat donuts."
+	title_options = list(
+		"Junior Officer",
+	)
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_HEAD_OF_SECURITY)
 	faction = FACTION_STATION
