@@ -244,7 +244,8 @@ const ChoicesPanel = (props) => {
                   buttons={
                     <Button
                       disabled={
-                        user.cannotVote || user.singleSelection === choice.name
+                        !!user.cannotVote ||
+                        user.singleSelection === choice.name
                       }
                       tooltip={user.cannotVote}
                       onClick={() => {
