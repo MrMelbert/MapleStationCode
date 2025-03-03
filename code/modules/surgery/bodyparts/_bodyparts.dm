@@ -900,6 +900,8 @@
 /obj/item/bodypart/proc/update_limb(dropping_limb = FALSE, is_creating = FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	SEND_SIGNAL(src, COMSIG_BODYPART_UPDATED, dropping_limb, is_creating)
+
 	if(IS_ORGANIC_LIMB(src))
 		if(!(bodypart_flags & BODYPART_UNHUSKABLE) && owner && HAS_TRAIT(owner, TRAIT_HUSK))
 			dmg_overlay_type = "" //no damage overlay shown when husked
