@@ -1051,16 +1051,11 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		user.do_pat_fire(target)
 		return TRUE
 
-	if(!target.appears_alive())
-		to_chat(user, span_warning("[target] has no pulse!"))
+	if(target.body_position != LYING_DOWN)
+		target.help_shake_act(user)
 		return TRUE
 
-	if(target.stat == HARD_CRIT && target.body_position == LYING_DOWN) // having a heart attack coincidentally also puts you in hard crit
-		user.do_cpr(target)
-		return TRUE
-
-	target.help_shake_act(user)
-	log_combat(user, target, "shaken")
+	user.open_help_radial(target)
 	return TRUE
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)

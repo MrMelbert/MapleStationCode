@@ -58,9 +58,6 @@
 			add_mood_event("suffocation", /datum/mood_event/suffocation)
 		else
 			clear_mood_event("suffocation")
-	else if(isobj(loc))
-		var/obj/location_as_object = loc
-		location_as_object.handle_internal_lifeform(src, 0)
 
 // Second link in a breath chain, calls [carbon/proc/check_breath()]
 /mob/living/carbon/proc/breathe(seconds_per_tick, times_fired, next_breath = 4)
@@ -87,21 +84,11 @@
 		losebreath -= 1
 		if(prob(10) && consciousness > 10)
 			pain_emote("gasp", 1 SECONDS)
-		if(isobj(loc))
-			var/obj/loc_as_obj = loc
-			loc_as_obj.handle_internal_lifeform(src, 0)
 		skip_breath = TRUE
 
 	// Breathe from internals or externals (name is misleading)
 	else if(internal || external)
-		breath = get_breath_from_internal(BREATH_VOLUME)
-
-		if(breath == SKIP_INTERNALS) //in case of 0 pressure internals
-			breath = get_breath_from_surroundings(environment, BREATH_VOLUME)
-
-		else if(isobj(loc)) //Breathe from loc as obj again
-			var/obj/loc_as_obj = loc
-			loc_as_obj.handle_internal_lifeform(src, 0)
+		breath = get_breath_from_internal(BREATH_VOLUME) || get_breath_from_surroundings(environment, BREATH_VOLUME)
 
 	// Breathe from air
 	else
@@ -151,18 +138,22 @@
 	if(invalid_internals())
 		// Unexpectely lost breathing apparatus and ability to breathe from the internal air tank.
 		cutoff_internals()
-		return SKIP_INTERNALS
+		return null
 
+	var/datum/gas_mixture/breath = new(volume_needed)
+	var/datum/gas_mixture/obtained
 	if (external)
-		. = external.remove_air_volume(volume_needed)
+		obtained = external.remove_air_volume(volume_needed)
 	else if (internal)
-		. = internal.remove_air_volume(volume_needed)
+		obtained = internal.remove_air_volume(volume_needed)
 	else
 		// Return without taking a breath if there is no air tank.
 		stack_trace("get_breath_from_internal called on a mob without internals or externals")
-		return SKIP_INTERNALS
+		return null
 
-	return .
+	if(obtained)
+		breath.merge(obtained)
+	return breath
 
 /**
  * Attempts to take a breath from the surroundings.
@@ -171,14 +162,18 @@
  * Returns null if there was no gas in the surroundings or no gas was distributed.
  */
 /mob/living/carbon/proc/get_breath_from_surroundings(datum/gas_mixture/environment, volume_needed)
+	var/datum/gas_mixture/breath = new(volume_needed)
+	var/datum/gas_mixture/obtained
 	if(isobj(loc)) //Breathe from loc as object
 		var/obj/loc_as_obj = loc
-		. = loc_as_obj.handle_internal_lifeform(src, volume_needed)
+		obtained = loc_as_obj.handle_internal_lifeform(src, volume_needed)
 
 	else if(isturf(loc)) //Breathe from loc as turf
-		. = loc.remove_air((environment?.total_moles() * BREATH_PERCENTAGE) || 0)
+		obtained = loc.remove_air((environment?.total_moles() * BREATH_PERCENTAGE) || 0)
 
-	return .
+	if(obtained)
+		breath.merge(obtained)
+	return breath
 
 /mob/living/carbon/proc/handle_blood(seconds_per_tick, times_fired)
 	return

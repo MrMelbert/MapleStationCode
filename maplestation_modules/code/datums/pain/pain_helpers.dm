@@ -84,9 +84,9 @@
  * Adjusts the progress of pain shock on the current mob.
  *
  * * amount - the number of ticks of progress to remove. Note that one tick = two seconds for pain.
- * * down_to - the minimum amount of pain shock the mob can have. Defaults to -30, giving the mob a buffer against shock.
+ * * down_to - the minimum amount of pain shock the mob can have.
  */
-/mob/living/proc/adjust_traumatic_shock(amount, down_to = -20)
+/mob/living/proc/adjust_traumatic_shock(amount, down_to = 0)
 	pain_controller?.adjust_traumatic_shock(amount, down_to)
 
 /**

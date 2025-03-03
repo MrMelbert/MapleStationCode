@@ -210,6 +210,12 @@
 	desc = "A mix of Aspirin, Paracetamol and Coffee to produce an effective, but short lasting painkiller with little to no side effects. Do not take multiple at once."
 	list_reagents = list(/datum/reagent/medicine/painkiller/aspirin_para_coffee = 10)
 
+/obj/item/reagent_containers/pill/nitroglycerin
+	name = "nitroglycerin pill"
+	desc = "Used to treat heart conditions."
+	icon_state = "pill10"
+	list_reagents = list(/datum/reagent/nitroglycerin = 5)
+
 /obj/item/storage/pill_bottle/prescription
 	name = "prescription pill bottle"
 	desc = "Contains prescription pills."

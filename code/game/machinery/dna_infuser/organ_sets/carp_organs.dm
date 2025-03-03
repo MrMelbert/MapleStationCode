@@ -25,11 +25,18 @@
 	greyscale_config = /datum/greyscale_config/mutant_organ
 	greyscale_colors = CARP_COLORS
 
+	low_pressure_threshold = 0
+	high_pressure_threshold = ONE_ATMOSPHERE * 1.2
+
 /obj/item/organ/internal/lungs/carp/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/noticable_organ, "neck has odd gills.", BODY_ZONE_HEAD)
 	AddElement(/datum/element/organ_set_bonus, /datum/status_effect/organ_set_bonus/carp)
-	ADD_TRAIT(src, TRAIT_SPACEBREATHING, REF(src))
+
+/obj/item/organ/internal/lungs/carp/pre_breath_gas_handling(mob/living/carbon/human/breather, datum/gas_mixture/breath)
+	// 0 mol breaths function as "successful breaths" and thus heal us
+	if(breath.total_moles() <= 0)
+		heal_oxyloss_on_breath(breather, breath)
 
 ///occasionally sheds carp teeth, stronger melee (bite) attacks, but you can't cover your mouth anymore.
 /obj/item/organ/internal/tongue/carp

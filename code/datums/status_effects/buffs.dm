@@ -601,3 +601,27 @@
 
 /datum/status_effect/jump_jet/on_remove()
 	owner.RemoveElement(/datum/element/forced_gravity, 0)
+
+/datum/status_effect/basic_health_regen
+	id = "basic_health_regen"
+	status_type = STATUS_EFFECT_MULTIPLE
+	tick_interval = 1 SECONDS
+	duration = INFINITY
+	alert_type = null
+	/// How much to heal per second
+	var/modifier = 1
+
+/datum/status_effect/basic_health_regen/on_creation(mob/living/new_owner, modifier = 1)
+	src.modifier = modifier
+	return ..()
+
+/datum/status_effect/basic_health_regen/tick(seconds_between_ticks)
+	if(owner.stat == DEAD)
+		return
+	owner.adjustBruteLoss(-1 * modifier * seconds_between_ticks)
+	owner.adjustFireLoss(-1 * modifier * seconds_between_ticks)
+	owner.adjustToxLoss(-1 * modifier * seconds_between_ticks)
+	owner.adjustOxyLoss(-1 * modifier * seconds_between_ticks)
+	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
+		owner.blood_volume += modifier * seconds_between_ticks
+	owner.cause_pain(BODY_ZONES_ALL, -0.5 * modifier * seconds_between_ticks)

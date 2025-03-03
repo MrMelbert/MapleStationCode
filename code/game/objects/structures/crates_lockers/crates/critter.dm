@@ -17,20 +17,7 @@
 	can_install_electronics = FALSE
 	elevation = 21
 	elevation_open = 0
-
-	var/obj/item/tank/internals/emergency_oxygen/tank
-
-/obj/structure/closet/crate/critter/Initialize(mapload)
-	. = ..()
-	tank = new
-
-/obj/structure/closet/crate/critter/Destroy()
-	var/turf/T = get_turf(src)
-	if(tank)
-		tank.forceMove(T)
-		tank = null
-
-	return ..()
+	sealed = TRUE
 
 /obj/structure/closet/crate/critter/update_icon_state()
 	SHOULD_CALL_PARENT(FALSE)
@@ -45,15 +32,3 @@
 	. += "crittercrate_door"
 	if(manifest)
 		. += "manifest"
-
-/obj/structure/closet/crate/critter/return_air()
-	if(tank)
-		return tank.return_air()
-	else
-		return loc.return_air()
-
-/obj/structure/closet/crate/critter/return_analyzable_air()
-	if(tank)
-		return tank.return_analyzable_air()
-	else
-		return null

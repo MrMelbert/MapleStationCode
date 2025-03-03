@@ -37,6 +37,11 @@
 	)
 	result_path = /obj/machinery/computer/vitals_reader
 
+/obj/item/wallframe/status_display/vitals/after_attach(obj/machinery/computer/vitals_reader/attached_to)
+	. = ..()
+	if(istype(attached_to))
+		attached_to.beeps = FALSE
+
 /obj/item/wallframe/status_display/vitals/advanced
 	name = "advanced vitals display frame"
 	desc = "Used to build advanced vitals displays. Performs a more detailed scan of the patient than the basic display."
@@ -467,7 +472,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 				beep_message("lets out a beep.")
 				last_reported_stat = CONSCIOUS
 
-	playsound(src, beepsound, 25, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+	playsound(src, beepsound, 15, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/machinery/computer/vitals_reader/proc/beep_message(message)
 	for(var/mob/viewer as anything in viewers(src))

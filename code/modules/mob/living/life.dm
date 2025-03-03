@@ -97,20 +97,16 @@
 		var/burn_damage = HEAT_DAMAGE
 		if(effective_temp > heat_threshold_high)
 			burn_damage *= 8
-			// melbert todo : status effects should handle the damage, not the proc
-			apply_status_effect(/datum/status_effect/thermia/hyper/three)
 		else if(effective_temp > heat_threshold_medium)
 			burn_damage *= 4
-			apply_status_effect(/datum/status_effect/thermia/hyper/two)
 		else if(effective_temp > heat_threshold_low)
 			burn_damage *= 2
-			apply_status_effect(/datum/status_effect/thermia/hyper/one)
 
 		if(temperature_burns(burn_damage * seconds_per_tick) > 0 && SPT_PROB(10, seconds_per_tick) && !temperature_insulation && !on_fire)
 			var/expected_temp = get_temperature(loc?.return_air())
 			var/insulation = get_insulation(expected_temp)
 			if(insulation > 0.5 && expected_temp < body_temperature)
-				to_chat(src, span_danger("Your clothing is insulating you, keeping you warmer!"))
+				to_chat(src, span_danger("Your insulation is keeping you warmer!"))
 
 		if(effective_temp > heat_threshold_medium)
 			apply_status_effect(/datum/status_effect/stacking/heat_exposure, 1, heat_threshold_medium)
@@ -128,20 +124,23 @@
 		var/cold_damage = COLD_DAMAGE
 		if(body_temperature < cold_threshold_high)
 			cold_damage *= 8
-			// melbert todo : status effects should handle the damage, not the proc
-			apply_status_effect(/datum/status_effect/thermia/hypo/three)
 		else if(body_temperature < cold_threshold_medium)
 			cold_damage *= 4
-			apply_status_effect(/datum/status_effect/thermia/hypo/two)
 		else if(body_temperature < cold_threshold_low)
 			cold_damage *= 2
-			apply_status_effect(/datum/status_effect/thermia/hypo/one)
 
 		if(temperature_cold_damage(cold_damage * seconds_per_tick) > 0 && SPT_PROB(10, seconds_per_tick) && !temperature_insulation)
 			var/expected_temp = get_temperature(loc?.return_air())
 			var/insulation = get_insulation(expected_temp)
 			if(insulation > 0.5 && expected_temp > body_temperature)
-				to_chat(src, span_danger("Your clothing is insulating you, keeping you colder!"))
+				to_chat(src, span_danger("You insulation is keeping you cooler!"))
+
+/mob/living/carbon/body_temperature_damage(datum/gas_mixture/environment, seconds_per_tick, times_fired)
+	if(body_temperature > bodytemp_heat_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTHEAT))
+		apply_status_effect(/datum/status_effect/thermia/hyper)
+
+	if(body_temperature < bodytemp_cold_damage_limit && !HAS_TRAIT(src, TRAIT_RESISTCOLD))
+		apply_status_effect(/datum/status_effect/thermia/hypo)
 
 /// Applies damage to the mob due to being too cold
 /mob/living/proc/temperature_cold_damage(damage)

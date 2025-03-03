@@ -29,6 +29,7 @@
 		"dropper",
 		"pillbottle",
 		"xlarge_beaker",
+		"medical_scissors",
 	)
 	experiments_to_unlock = list(
 		/datum/experiment/autopsy/human,
@@ -77,6 +78,7 @@
 		"defibmount",
 		"medicalbed_emergency",
 		"piercesyringe",
+		"medical_scissors_trauma",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_3_POINTS)
 	discount_experiments = list(/datum/experiment/scanning/reagent/haloperidol = TECHWEB_TIER_3_POINTS)
