@@ -18,19 +18,18 @@
 	return ..()
 
 /datum/ai_behavior/run_away_from_target/perform(seconds_per_tick, datum/ai_controller/controller, target_key, hiding_location_key)
-	. = ..()
 	if (controller.blackboard[BB_BASIC_MOB_STOP_FLEEING])
-		return
+		return AI_BEHAVIOR_DELAY
 	var/atom/target = controller.blackboard[hiding_location_key] || controller.blackboard[target_key]
-	if (QDELETED(target) || !stop_running_from(controller, target))
-		finish_action(controller, succeeded = TRUE, target_key = target_key, hiding_location_key = hiding_location_key)
-		return
+	if (QDELETED(target) || !stop_running_from(controller, target)) // NON-MODULE CHANGE
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_SUCCEEDED
 	if (get_dist(controller.pawn, controller.current_movement_target) > required_distance)
-		return // Still heading over
+		return AI_BEHAVIOR_DELAY // Still heading over
 	if (plot_path_away_from(controller, target))
-		return
-	finish_action(controller, succeeded = FALSE, target_key = target_key, hiding_location_key = hiding_location_key)
+		return AI_BEHAVIOR_DELAY
+	return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
 
+// NON-MODULE CHANGE
 /// Return FALSE if we should stop running from the target
 /// Return TRUE if we should keep running
 /datum/ai_behavior/run_away_from_target/proc/stop_running_from(datum/ai_controller/controller, atom/target)
@@ -71,3 +70,14 @@
 	. = ..()
 	if (clear_failed_targets && !succeeded)
 		controller.clear_blackboard_key(target_key)
+
+/datum/ai_behavior/run_away_from_target/run_and_shoot
+	clear_failed_targets = FALSE
+
+/datum/ai_behavior/run_away_from_target/run_and_shoot/perform(seconds_per_tick, datum/ai_controller/controller, target_key, hiding_location_key)
+	var/atom/target = controller.blackboard[target_key]
+	if(QDELETED(target))
+		return AI_BEHAVIOR_DELAY | AI_BEHAVIOR_FAILED
+	var/mob/living/living_pawn = controller.pawn
+	living_pawn.RangedAttack(target)
+	return ..()
