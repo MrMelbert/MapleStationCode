@@ -198,12 +198,12 @@
 			user.visible_message(span_danger("[our_guy] stamps on [user]'s hand, mid-shoelace [tied ? "knotting" : "untying"]!"), span_userdanger("Ow! [our_guy] stamps on your hand!"), list(our_guy))
 			to_chat(our_guy, span_userdanger("You stamp on [user]'s hand! What the- [user.p_they()] [user.p_were()] [tied ? "knotting" : "untying"] your shoelaces!"))
 			user.emote("scream")
-			if(istype(L))
+			if(istype(living_user))
 				// NON-MODULE CHANGE
-				var/damage_what = L.get_active_hand()
-				L.apply_damage(10, BRUTE, damage_what)
-				L.apply_damage(40, PAIN, damage_what)
-				L.Paralyze(10)
+				var/damage_what = living_user.get_active_hand()
+				living_user.apply_damage(10, BRUTE, damage_what)
+				living_user.apply_damage(40, PAIN, damage_what)
+				living_user.Paralyze(10)
 
 ///checking to make sure we're still on the person we're supposed to be, for lacing do_after's
 /obj/item/clothing/shoes/proc/still_shoed(mob/living/carbon/our_guy)
