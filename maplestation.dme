@@ -6193,6 +6193,7 @@
 #include "maplestation_modules\code\datums\quirks\negative.dm"
 #include "maplestation_modules\code\datums\quirks\neutral.dm"
 #include "maplestation_modules\code\datums\ruins\space.dm"
+#include "maplestation_modules\code\datums\votes\chaos.dm"
 #include "maplestation_modules\code\datums\votes\transfer_vote.dm"
 #include "maplestation_modules\code\game\area\space_station_13_areas.dm"
 #include "maplestation_modules\code\game\machinery\cloning_pod.dm"
