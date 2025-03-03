@@ -122,8 +122,8 @@
  *
  * * voter - the mob who is voting
  *
- * Return TRUE if the mob can vote in this vote.
- * Return FALSE if the mob cannot vote in this vote.
+ * Return VOTE_AVAILABLE if the mob can vote in this vote.
+ * Return a string with the reason why the mob can't vote in this vote.
  */
 /datum/vote/proc/can_mob_vote(mob/voter)
 	if(CONFIG_GET(flag/no_dead_vote) && voter.stat == DEAD && !voter.client?.holder)
