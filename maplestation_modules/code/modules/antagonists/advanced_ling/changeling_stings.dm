@@ -56,6 +56,7 @@
 		timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE,
 		extra_checks = CALLBACK(src, PROC_REF(check_range), user, target),
 		interaction_key = DOAFTER_SOURCE_LINGSTING,
+		hidden = TRUE,
 	))
 		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
@@ -105,6 +106,7 @@
 		timed_action_flags = IGNORE_USER_LOC_CHANGE | IGNORE_TARGET_LOC_CHANGE,
 		extra_checks = CALLBACK(src, PROC_REF(check_range), user, target),
 		interaction_key = DOAFTER_SOURCE_LINGSTING,
+		hidden = TRUE,
 	))
 		to_chat(user, span_warning("We could not complete the sting on [target]. They are not yet aware."))
 		return FALSE
