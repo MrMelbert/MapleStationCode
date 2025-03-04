@@ -75,6 +75,7 @@
 	name = "prosthetic digitigrade right leg"
 	icon_static = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
+	icon_state = "digitigrade_r_leg"
 	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/robot/surplus/digi/Initialize(mapload)
