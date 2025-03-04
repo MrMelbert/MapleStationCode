@@ -196,22 +196,22 @@
 	charge_light_type = null
 	connector_type = "slimecore"
 
-/obj/item/stock_parts/cell/power_store/beam_rifle // Non-module change: this'll conflict if you're grabbing the event horizon rifle, just delete it like they did
+/obj/item/stock_parts/power_store/cell/beam_rifle // Non-module change: this'll conflict if you're grabbing the event horizon rifle, just delete it like they did
 	name = "beam rifle capacitor"
 	desc = "A high powered capacitor that can provide huge amounts of energy in an instant."
 	maxcharge = STANDARD_CELL_CHARGE * 50
 	chargerate = STANDARD_CELL_RATE * 2.5 //Extremely energy intensive
 
-/obj/item/stock_parts/cell/power_store/beam_rifle/corrupt() // Non-module change
+/obj/item/stock_parts/power_store/cell/beam_rifle/corrupt() // Non-module change
 	return
 
-/obj/item/stock_parts/cell/power_store/beam_rifle/emp_act(severity) // Non-module change
+/obj/item/stock_parts/power_store/cell/beam_rifle/emp_act(severity) // Non-module change
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
 	charge = clamp((charge-(10000/severity)),0,maxcharge)
 
-/obj/item/stock_parts/cell/power_store/emergency_light
+/obj/item/stock_parts/power_store/cell/emergency_light
 	name = "miniature power cell"
 	desc = "A tiny power cell with a very low power capacity. Used in light fixtures to power them in the event of an outage."
 	maxcharge = STANDARD_CELL_CHARGE * 0.12 //Emergency lights use 0.2 W per tick, meaning ~10 minutes of emergency power from a cell
