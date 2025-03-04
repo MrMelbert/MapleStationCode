@@ -44,9 +44,9 @@
 	AddElement(/datum/element/bodypart_sprint_buff, 10)
 	AddElement( \
 		/datum/element/digitigrade_limb/change_static_icon, \
-		squashed_id = initial(limb_id), \
-		free_id = BODYPART_ID_DIGITIGRADE, \
-		squashed_icon = /obj/item/bodypart/leg/right/robot/digi::icon_static, \
+		squashed_id = /obj/item/bodypart/leg/right/robot::limb_id, \
+		free_id = initial(limb_id), \
+		squashed_icon = /obj/item/bodypart/leg/right/robot/::icon_static, \
 		free_icon = initial(icon_static), \
 	)
 
@@ -65,9 +65,9 @@
 	AddElement(/datum/element/bodypart_sprint_buff, 10)
 	AddElement( \
 		/datum/element/digitigrade_limb/change_static_icon, \
-		squashed_id = initial(limb_id), \
-		free_id = BODYPART_ID_DIGITIGRADE, \
-		squashed_icon = /obj/item/bodypart/leg/left/robot/digi::icon_static, \
+		squashed_id = /obj/item/bodypart/leg/left/robot::limb_id, \
+		free_id = initial(limb_id), \
+		squashed_icon = /obj/item/bodypart/leg/left/robot::icon_static, \
 		free_icon = initial(icon_static), \
 	)
 
@@ -83,8 +83,8 @@
 	// 0 buff - +5 for digi, -5 for prosthetic
 	AddElement( \
 		/datum/element/digitigrade_limb/change_static_icon, \
-		squashed_id = initial(limb_id), \
-		free_id = BODYPART_ID_DIGITIGRADE, \
+		squashed_id = /obj/item/bodypart/leg/right/robot/surplus::limb_id, \
+		free_id = initial(limb_id), \
 		squashed_icon = /obj/item/bodypart/leg/right/robot/surplus::icon_static, \
 		free_icon = initial(icon_static), \
 	)
@@ -95,14 +95,15 @@
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_l_leg"
 	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/left/robot/surplus/digi/Initialize(mapload)
 	. = ..()
 	// 0 buff - +5 for digi, -5 for prosthetic
 	AddElement( \
 		/datum/element/digitigrade_limb/change_static_icon, \
-		squashed_id = initial(limb_id), \
-		free_id = BODYPART_ID_DIGITIGRADE, \
+		squashed_id = /obj/item/bodypart/leg/left/robot/surplus::limb_id, \
+		free_id = initial(limb_id), \
 		squashed_icon = /obj/item/bodypart/leg/left/robot/surplus::icon_static, \
 		free_icon = initial(icon_static), \
 	)
@@ -122,8 +123,8 @@
 	AddElement(/datum/element/bodypart_sprint_buff, 20)
 	AddElement( \
 		/datum/element/digitigrade_limb/change_static_icon, \
-		squashed_id = initial(limb_id), \
-		free_id = BODYPART_ID_DIGITIGRADE, \
+		squashed_id = /obj/item/bodypart/leg/right/robot/advanced::limb_id, \
+		free_id = initial(limb_id), \
 		squashed_icon = /obj/item/bodypart/leg/right/robot/advanced::icon_static, \
 		free_icon = initial(icon_static), \
 	)
@@ -143,8 +144,8 @@
 	AddElement(/datum/element/bodypart_sprint_buff, 20)
 	AddElement( \
 		/datum/element/digitigrade_limb/change_static_icon, \
-		squashed_id = initial(limb_id), \
-		free_id = BODYPART_ID_DIGITIGRADE, \
+		squashed_id = /obj/item/bodypart/leg/left/robot/advanced::limb_id, \
+		free_id = initial(limb_id), \
 		squashed_icon = /obj/item/bodypart/leg/left/robot/advanced::icon_static, \
 		free_icon = initial(icon_static), \
 	)
