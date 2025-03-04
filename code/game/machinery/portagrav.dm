@@ -98,7 +98,7 @@
 
 /obj/machinery/power/portagrav/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..() // Non-module change
-	if(!istype(tool, /obj/item/stock_parts/cell)) // Non-module change
+	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return
 	if(!panel_open)
 		balloon_alert(user, "must open panel!")

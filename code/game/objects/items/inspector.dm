@@ -101,7 +101,7 @@
 		context[SCREENTIP_CONTEXT_CTRL_LMB] = "Remove cell"
 		update_context = TRUE
 
-	if(cell_cover_open && !cell && istype(held_item, /obj/item/stock_parts/cell))
+	if(cell_cover_open && !cell && istype(held_item, /obj/item/stock_parts/power_store/cell))
 		context[SCREENTIP_CONTEXT_LMB] = "Install cell"
 		update_context = TRUE
 

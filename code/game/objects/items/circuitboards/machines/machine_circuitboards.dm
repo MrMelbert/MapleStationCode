@@ -919,7 +919,7 @@
 		/datum/stock_part/capacitor = 1,
 		/datum/stock_part/servo = 1,
 		/obj/item/stack/sheet/glass = 1,
-		/obj/item/stock_parts/cell = 1)
+		/obj/item/stock_parts/power_store/cell = 1) // Non-module change
 	needs_anchored = FALSE
 
 /obj/item/circuitboard/machine/stasis

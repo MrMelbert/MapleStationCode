@@ -96,7 +96,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/auto_cpr/attackby(obj/item/attacking_item, mob/user, params)
-	if(istype(attacking_item, /obj/item/stock_parts/cell))
+	if(istype(attacking_item, /obj/item/stock_parts/power_store/cell))
 		if(!isnull(cell))
 			balloon_alert(user, "already has cell!")
 			return TRUE
