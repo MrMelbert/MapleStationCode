@@ -44,7 +44,7 @@
 	/// Tracks how many pulses we've done on the current patient, to prevent message spam
 	VAR_FINAL/pulse_count = 0
 	/// The cell that powers this device
-	VAR_FINAL/obj/item/stock_parts/cell/cell
+	VAR_FINAL/obj/item/stock_parts/power_store/cell/cell
 	/// How much cell charge to use per pulse / compression
 	var/charge_per_pulse = 50
 	/// How much damage / pain we do per pulse
@@ -222,5 +222,5 @@
 
 /obj/item/auto_cpr/loaded/Initialize(mapload)
 	. = ..()
-	cell = new /obj/item/stock_parts/cell/upgraded(src)
+	cell = new /obj/item/stock_parts/power_store/cell/upgraded(src)
 	update_appearance(UPDATE_ICON_STATE)
