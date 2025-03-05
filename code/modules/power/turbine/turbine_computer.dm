@@ -82,7 +82,7 @@
 	.["temp"] = main_control.compressor.input_turf?.air.temperature || 0
 	.["regulator"] = main_control.compressor.intake_regulator
 
-/obj/machinery/computer/turbine_computer/ui_act(action, params)
+/obj/machinery/computer/turbine_computer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
 		return

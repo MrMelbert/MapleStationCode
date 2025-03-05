@@ -46,7 +46,7 @@
 			return list(TURBINE_UPGRADE_PART = /obj/item/stack/sheet/mineral/metal_hydrogen, TURBINE_UPGRADE_AMOUNT = 5)
 
 /obj/item/turbine_parts/item_interaction(mob/living/user, obj/item/attacking_item, list/modifiers)
-	. = NONE
+	. = ..() // Non-module change
 
 	var/list/required_parts = get_tier_upgrades()
 	if(!length(required_parts))
