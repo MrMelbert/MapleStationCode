@@ -117,6 +117,7 @@
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20
+	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/robot/advanced/digi/Initialize(mapload)
 	. = ..()
@@ -138,6 +139,7 @@
 	unarmed_damage_low = 12
 	unarmed_damage_high = 18
 	unarmed_effectiveness = 20
+	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/left/robot/advanced/digi/Initialize(mapload)
 	. = ..()
