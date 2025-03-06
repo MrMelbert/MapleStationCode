@@ -638,7 +638,7 @@
 	name = "Internal inducer"
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "inducer-engi"
-	cell_type = null
+	powerdevice = null
 
 /obj/item/inducer/cyborg/get_cell()
 	var/obj/item/robot_model/possible_model = loc
@@ -647,7 +647,7 @@
 		. = silicon_friend.cell
 
 /obj/item/inducer/cyborg/screwdriver_act(mob/living/user, obj/item/tool)
-	return FALSE
+	return NONE
 
 /obj/item/borg/upgrade/pinpointer
 	name = "medical cyborg crew pinpointer"
