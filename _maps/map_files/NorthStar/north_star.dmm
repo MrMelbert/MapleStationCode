@@ -12199,7 +12199,7 @@
 /obj/machinery/camera/motion/directional/north{
 	c_tag = "Minisat North"
 	},
-/obj/machinery/power/smes/super/full,
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/circuit,
 /area/station/ai_monitored/turret_protected/aisat/service)
@@ -19548,7 +19548,7 @@
 /turf/open/openspace,
 /area/station/science/xenobiology/hallway)
 "fbl" = (
-/obj/machinery/power/smes,
+/obj/machinery/power/smes/full,
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
@@ -61847,7 +61847,7 @@
 /turf/open/floor/iron/white,
 /area/station/science/lobby)
 "pUB" = (
-/obj/machinery/power/smes/super/full,
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/circuit,
 /area/station/ai_monitored/turret_protected/aisat/service)

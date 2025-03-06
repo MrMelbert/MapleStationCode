@@ -53072,10 +53072,10 @@
 /turf/open/floor/iron/dark,
 /area/station/service/library)
 "mJV" = (
-/obj/machinery/power/smes,
 /obj/machinery/light/small/directional/north,
 /obj/structure/sign/warning/electric_shock/directional/north,
 /obj/structure/cable,
+/obj/machinery/power/smes/full,
 /turf/open/floor/circuit/red/telecomms,
 /area/station/tcommsat/server)
 "mKp" = (
@@ -68019,9 +68019,7 @@
 /obj/item/radio/intercom/directional/north,
 /obj/effect/decal/cleanable/cobweb,
 /obj/effect/decal/cleanable/dirt,
-/obj/machinery/power/smes/super/full{
-	name = "ai power storage unit"
-	},
+/obj/machinery/power/smes/full,
 /obj/structure/cable,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/storage/satellite)
