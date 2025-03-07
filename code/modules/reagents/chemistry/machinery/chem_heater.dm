@@ -31,7 +31,7 @@
 		QDEL_NULL(beaker)
 	return ..()
 
-/obj/machinery/chem_heater/on_deconstruction() // Non-module change
+/obj/machinery/chem_heater/on_deconstruction(disassembled)
 	beaker?.forceMove(drop_location())
 
 /obj/machinery/chem_heater/add_context(atom/source, list/context, obj/item/held_item, mob/user)
