@@ -35,7 +35,8 @@
 
 	register_context()
 
-/obj/machinery/power/turbine/LateInitialize() // Non-module change : converted to post_machine_initialize later, going to conflict
+
+/obj/machinery/power/turbine/post_machine_initialize()
 	. = ..()
 
 	activate_parts()

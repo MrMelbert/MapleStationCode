@@ -7441,7 +7441,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
-/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "bAK" = (
@@ -14955,6 +14954,12 @@
 /obj/machinery/status_display/ai/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/turret_protected/aisat_interior)
+"eis" = (
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
+	dir = 4
+	},
+/turf/open/floor/iron,
+/area/station/engineering/gravity_generator)
 "eiQ" = (
 /obj/structure/table/reinforced,
 /obj/machinery/door/window/right/directional/west{
@@ -24271,6 +24276,7 @@
 /obj/effect/turf_decal/siding/thinplating/corner{
 	dir = 4
 	},
+/obj/machinery/airalarm/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/primary/tram/center)
 "hMQ" = (
@@ -28505,9 +28511,14 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 6
 	},
-/obj/structure/table,
 /obj/machinery/firealarm/directional/east,
 /obj/machinery/light/directional/east,
+/obj/structure/table,
+/obj/item/book/manual/wiki/engineering_guide{
+	pixel_x = -2
+	},
+/obj/item/radio/off,
+/obj/item/radio/intercom/directional/south,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "jos" = (
@@ -33516,7 +33527,10 @@
 /area/station/security/brig)
 "kWp" = (
 /obj/effect/turf_decal/trimline/neutral/filled/line,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/power/terminal{
+	dir = 8
+	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "kWq" = (
@@ -34358,11 +34372,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/construction/engineering)
-"llW" = (
-/obj/machinery/power/smes/full,
-/obj/structure/cable,
-/turf/open/floor/circuit,
-/area/station/ai_monitored/turret_protected/ai)
 "lml" = (
 /turf/closed/wall/r_wall,
 /area/station/engineering/atmos/pumproom)
@@ -43256,7 +43265,7 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 1
 	},
-/obj/machinery/airalarm/directional/north,
+/obj/machinery/transport/power_rectifier,
 /turf/open/floor/iron,
 /area/station/hallway/primary/tram/center)
 "orh" = (
@@ -44032,6 +44041,9 @@
 "oIP" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/light/small/dim/directional/north,
+/obj/structure/cable,
+/obj/machinery/power/apc/auto_name/directional/east,
+/obj/machinery/transport/power_rectifier,
 /turf/open/floor/iron/smooth,
 /area/station/hallway/primary/tram/right)
 "oIU" = (
@@ -47966,10 +47978,8 @@
 /obj/effect/turf_decal/trimline/neutral/filled/line{
 	dir = 10
 	},
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
-	dir = 4
-	},
 /obj/machinery/light/directional/west,
+/obj/machinery/power/smes/engineering,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "qes" = (
@@ -51774,6 +51784,16 @@
 /obj/effect/turf_decal/sand/plating,
 /turf/open/floor/plating/airless,
 /area/station/asteroid)
+"rwg" = (
+/obj/effect/turf_decal/trimline/neutral/filled/line{
+	dir = 1
+	},
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/transport/power_rectifier,
+/turf/open/floor/iron,
+/area/station/hallway/primary/tram/left)
 "rws" = (
 /obj/structure/table/glass,
 /obj/item/storage/box/monkeycubes{
@@ -57934,9 +57954,11 @@
 /turf/open/floor/iron/dark,
 /area/station/security/execution/transfer)
 "tGd" = (
-/obj/machinery/power/smes/full,
 /obj/machinery/airalarm/directional/east,
-/obj/structure/cable,
+/obj/structure/table,
+/obj/item/storage/toolbox/electrical{
+	pixel_y = 5
+	},
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "tGo" = (
@@ -61689,7 +61711,6 @@
 "uPi" = (
 /obj/effect/turf_decal/trimline/neutral/filled/line,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "uPo" = (
@@ -66118,13 +66139,6 @@
 /obj/structure/flora/coconuts,
 /turf/open/misc/grass/jungle,
 /area/station/science/explab)
-"wtS" = (
-/obj/machinery/power/terminal{
-	dir = 4
-	},
-/obj/structure/cable,
-/turf/open/floor/iron,
-/area/station/engineering/gravity_generator)
 "wuc" = (
 /obj/effect/turf_decal/trimline/yellow/filled/corner{
 	dir = 1
@@ -70915,6 +70929,16 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"yks" = (
+/obj/effect/turf_decal/trimline/red/filled/line{
+	dir = 1
+	},
+/obj/effect/turf_decal/trimline/neutral/filled/warning{
+	dir = 1
+	},
+/obj/machinery/transport/power_rectifier,
+/turf/open/floor/iron,
+/area/station/hallway/primary/tram/right)
 "ykN" = (
 /obj/effect/turf_decal/trimline/green/corner{
 	dir = 8
@@ -102753,7 +102777,7 @@ pcO
 iKr
 ofZ
 uKK
-ajF
+eis
 kWp
 fal
 akK
@@ -103524,7 +103548,7 @@ bKu
 bVW
 swg
 uKK
-wtS
+ajF
 bzP
 fal
 aks
@@ -153625,7 +153649,7 @@ aQO
 aQO
 aQO
 aQO
-qhM
+rwg
 nYq
 yiM
 cFs
@@ -167245,7 +167269,7 @@ izU
 izU
 izU
 izU
-hce
+izU
 ore
 sOD
 izU
@@ -169815,7 +169839,7 @@ izU
 izU
 izU
 izU
-izU
+hce
 hMK
 gnK
 izU
@@ -180353,7 +180377,7 @@ uJc
 ged
 whL
 vUE
-aEz
+yks
 yeB
 ipC
 seR
