@@ -483,7 +483,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		)
 
 /obj/machinery/computer/vitals_reader/click_alt(mob/user)
-	if(!interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
+	if(!(interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND))
 		return CLICK_ACTION_BLOCKING
 	beeps = !beeps
 	balloon_alert(user, "beeps [beeps ? "enabled" : "disabled"]")
