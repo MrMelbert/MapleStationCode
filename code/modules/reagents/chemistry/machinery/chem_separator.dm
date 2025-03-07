@@ -39,7 +39,7 @@
 	QDEL_NULL(soundloop)
 	return ..()
 
-/obj/structure/chem_separator/deconstruct(disassembled) // Non-module change
+/obj/structure/chem_separator/atom_deconstruct(disassembled)
 	var/atom/drop = drop_location()
 
 	new /obj/item/stack/sheet/mineral/wood(drop, 1)
