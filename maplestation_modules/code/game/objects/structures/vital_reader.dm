@@ -483,10 +483,12 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 		)
 
 /obj/machinery/computer/vitals_reader/click_alt(mob/user)
+	if(!interaction_flags_atom & INTERACT_ATOM_ATTACK_HAND)
+		return CLICK_ACTION_BLOCKING
 	beeps = !beeps
 	balloon_alert(user, "beeps [beeps ? "enabled" : "disabled"]")
 	playsound(src, 'sound/machines/click.ogg', 50)
-	return TRUE
+	return CLICK_ACTION_SUCCESS
 
 /// Sets the passed mob as the active patient
 /// If there is already a patient, it will be unset first.
