@@ -132,6 +132,9 @@
 	mouse_over_pointer = MOUSE_HAND_POINTER
 
 /atom/movable/screen/alert/status_effect/being_soothed/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return
 	if(usr != owner || !isliving(owner))
 		return FALSE
 

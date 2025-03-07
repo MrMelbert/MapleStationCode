@@ -225,9 +225,9 @@ Check out the other color set packs at your local game vendor or order online to
 
 /obj/item/toy/counter/update_name()
 	. = ..()
-	if(HAS_TRAIT_FROM(src, TRAIT_WAS_RENAMED, PEN_LABEL_TRAIT))
+	if(HAS_TRAIT_FROM(src, TRAIT_WAS_RENAMED, RENAMING_TOOL_LABEL_TRAIT))
 		base_name = name
-		REMOVE_TRAIT(src, TRAIT_WAS_RENAMED, PEN_LABEL_TRAIT)
+		REMOVE_TRAIT(src, TRAIT_WAS_RENAMED, RENAMING_TOOL_LABEL_TRAIT)
 	name = "[base_name] - [current_number]"
 
 /obj/item/toy/counter/attack_hand(mob/living/user)
