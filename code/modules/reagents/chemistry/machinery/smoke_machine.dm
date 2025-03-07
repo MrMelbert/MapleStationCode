@@ -88,7 +88,7 @@
 		var/datum/effect_system/fluid_spread/smoke/chem/smoke_machine/smoke = new()
 		smoke.set_up(setting * 3, holder = src, location = location, carry = reagents, efficiency = efficiency)
 		smoke.start()
-		use_power(active_power_usage)
+		use_energy(active_power_usage)
 
 /obj/machinery/smoke_machine/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
@@ -111,10 +111,9 @@
 		return
 	return ..()
 
-/obj/machinery/smoke_machine/deconstruct()
+/obj/machinery/smoke_machine/on_deconstruction(disassembled)
 	reagents.expose(loc, TOUCH)
 	reagents.clear_reagents()
-	return ..()
 
 /obj/machinery/smoke_machine/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
