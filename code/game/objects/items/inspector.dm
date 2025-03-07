@@ -414,6 +414,6 @@
 		target.MakeSlippery(TURF_WET_WATER, min_wet_time = 10 SECONDS, wet_time_to_add = 5 SECONDS)
 		to_chat(user, span_notice("As you try to fold [src] into the shape of a plane, it disintegrates into water!"))
 		qdel(src)
-	return CLICK_ACTION_SUCCES
+	return CLICK_ACTION_SUCCESS
 
 #undef ENERGY_TO_SPEAK
