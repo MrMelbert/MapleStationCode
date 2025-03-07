@@ -534,11 +534,11 @@
 			condenser_on = !condenser_on
 			return TRUE
 
-/obj/structure/chem_separator/AltClick(mob/user) // Non-module change
+/obj/structure/chem_separator/click_alt(mob/user)
 	if(!burner_on)
-		return TRUE // Non-module change
+		return CLICK_ACTION_BLOCKING
 
 	toggle_burner(FALSE)
-	return TRUE // Non-module change
+	return CLICK_ACTION_SUCCESS
 
 #undef MAX_BURNER_KNOB_SETTINGS
