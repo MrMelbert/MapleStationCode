@@ -464,14 +464,9 @@
 
 	ui_interact(user)
 	return ..()
-// Non-module change start
-/obj/item/paper/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..()
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
-		return item_interaction_secondary(user, tool, modifiers)
 
 /// Secondary right click interaction to quickly stamp things
-/obj/item/paper/proc/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers) // Non-module end : the fool I am. (remove the above and the double definition when we have this for real)
+/obj/item/paper/item_interaction_secondary(mob/living/user, obj/item/tool, list/modifiers)
 	var/list/writing_stats = tool.get_writing_implement_details()
 
 	if(!length(writing_stats))

@@ -97,7 +97,7 @@
 		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/portagrav/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..() // Non-module change
+	. = NONE
 	if(!istype(tool, /obj/item/stock_parts/power_store/cell))
 		return
 	if(!panel_open)

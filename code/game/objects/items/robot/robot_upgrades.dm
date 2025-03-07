@@ -650,7 +650,6 @@
 	return NONE
 
 /obj/item/inducer/cyborg/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..() // Non-module change
 	return ITEM_INTERACT_FAILURE
 
 /obj/item/borg/upgrade/pinpointer

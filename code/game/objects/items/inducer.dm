@@ -99,8 +99,7 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/inducer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..() // Non-module change
-
+	. = NONE
 	if(user.combat_mode || !istype(tool) || tool.flags_1 & HOLOGRAM_1 || tool.item_flags & ABSTRACT)
 		return ITEM_INTERACT_SKIP_TO_ATTACK
 
