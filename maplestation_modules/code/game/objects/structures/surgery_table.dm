@@ -60,7 +60,7 @@
 			. = CONTEXTUAL_SCREENTIP_SET
 
 
-/obj/structure/table/optable/deconstruct(disassembled, wrench_disassembly)
+/obj/structure/table/optable/atom_deconstruct(disassembled, wrench_disassembly)
 	attached_tank?.forceMove(drop_location())
 	return ..()
 

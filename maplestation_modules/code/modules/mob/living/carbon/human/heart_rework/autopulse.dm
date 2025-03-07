@@ -64,9 +64,8 @@
 	QDEL_NULL(cell)
 	return ..()
 
-/obj/item/auto_cpr/deconstruct(disassembled)
+/obj/item/auto_cpr/atom_deconstruct(disassembled)
 	cell.forceMove(drop_location())
-	return ..()
 
 /obj/item/auto_cpr/examine(mob/user)
 	. = ..()

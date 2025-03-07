@@ -77,12 +77,11 @@
 		return FALSE
 	return ..()
 
-/obj/structure/desk_bell/deconstruct(disassembled)
+/obj/structure/desk_bell/atom_deconstruct(disassembled)
 	if(disassembled)
 		if(!broken_ringer) // Drop 2 if it's not broken.
 			new/obj/item/stack/sheet/iron(drop_location())
 		new/obj/item/stack/sheet/iron(drop_location())
-	return ..()
 
 // Deconstruct
 /obj/structure/desk_bell/wrench_act_secondary(mob/living/user, obj/item/tool)
