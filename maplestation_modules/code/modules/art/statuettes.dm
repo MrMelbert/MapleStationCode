@@ -16,9 +16,6 @@
 	AddElement(/datum/element/item_scaling, 0.4, 1)
 	AddComponent(/datum/component/simple_rotation)
 
-/obj/item/statue/AltClick(mob/user)
-	return ..() // This hotkey is BLACKLISTED since it's used by /datum/component/simple_rotation
-
 /obj/item/statue/custom/Destroy()
 	content_ma = null
 	return ..()
