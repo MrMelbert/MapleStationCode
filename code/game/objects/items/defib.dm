@@ -153,7 +153,6 @@
 	return TRUE
 
 /obj/item/defibrillator/item_interaction(mob/living/user, obj/item/item, list/modifiers)
-	. = ..() // Non-modular change
 	if(item == paddles)
 		toggle_paddles()
 		return NONE

@@ -813,7 +813,6 @@
 	return ITEM_INTERACT_SUCCESS
 
 /obj/item/modular_computer/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
-	. = ..() // Non-modular change
 	if(isidcard(tool))
 		return InsertID(tool, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
 
