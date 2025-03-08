@@ -35,6 +35,7 @@
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_r_leg"
 	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
 	unarmed_effectiveness = 20
@@ -56,6 +57,7 @@
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_default.dmi'
 	icon_state = "digitigrade_l_leg"
 	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	limb_id = BODYPART_ID_DIGITIGRADE
 	unarmed_damage_low = 10
 	unarmed_damage_high = 15
 	unarmed_effectiveness = 20
@@ -77,6 +79,7 @@
 	icon = 'maplestation_modules/icons/mob/augmentation/digitigrade_prosthetic.dmi'
 	icon_state = "digitigrade_r_leg"
 	bodytype = parent_type::bodytype | BODYTYPE_DIGITIGRADE
+	limb_id = BODYPART_ID_DIGITIGRADE
 
 /obj/item/bodypart/leg/right/robot/surplus/digi/Initialize(mapload)
 	. = ..()
