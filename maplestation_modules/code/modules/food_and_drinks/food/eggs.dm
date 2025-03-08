@@ -54,8 +54,7 @@
 		set_time = tgui_input_number(user, "Input minutes allowed for challenge", "Eggcellent Challenge", default = 10, max_value = 60, min_value = 1) || 10
 	return CLICK_ACTION_SUCCESS
 
-/obj/item/food/omelette/eggcellent_plate/CtrlShiftClick(mob/user)
-	. = ..()
+/obj/item/food/omelette/eggcellent_plate/click_ctrl_shift(mob/user)
 	if(current_challenger_weak)
 		return
 	if (difficulty == EGGS_NAMELESS_HERO)

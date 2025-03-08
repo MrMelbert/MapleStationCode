@@ -440,10 +440,7 @@
 		to_chat(user, examine_block(.), trailing_newline = FALSE, type = MESSAGE_TYPE_INFO)
 	return .
 
-/obj/item/healthanalyzer/CtrlShiftClick(mob/user)
-	. = ..()
-	if(. == FALSE)
-		return
+/obj/item/healthanalyzer/click_ctrl_shift(mob/user)
 	if(!length(last_scan_text))
 		balloon_alert(user, "no scans!")
 		return
