@@ -192,7 +192,7 @@
 			new_stick.color = color_choice
 			new_stick.set_light_color(new_stick.color)
 			new_stick.throw_at(A, 9, 3, user)
-			new_stick.turn_on()
+			new_stick.light_on = TRUE // Non-module change : I guess we don't have this yet, oops
 			new_stick.update_brightness()
 
 			return TRUE
