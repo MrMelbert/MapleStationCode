@@ -663,19 +663,19 @@ Striking a noncultist, however, will tear their flesh."}
 	if(QDELETED(src) || loc != user || user.incapacitated())
 		return ITEM_INTERACT_BLOCKING
 	if(isnull(cultist_to_receive))
-		to_chat(user, span_cult_italic("You require a destination!"))
+		to_chat(user, span_cultitalic("You require a destination!"))
 		return ITEM_INTERACT_BLOCKING
 	if(cultist_to_receive.stat == DEAD)
-		to_chat(user, span_cult_italic("[cultist_to_receive] has died!"))
+		to_chat(user, span_cultitalic("[cultist_to_receive] has died!"))
 		return ITEM_INTERACT_BLOCKING
 	if(!(cultist_to_receive.mind in cult_team.members))
-		to_chat(user, span_cult_italic("[cultist_to_receive] is not a follower of the Geometer!"))
+		to_chat(user, span_cultitalic("[cultist_to_receive] is not a follower of the Geometer!"))
 		return ITEM_INTERACT_BLOCKING
 	if(!isturf(interacting_with.loc))
-		to_chat(user, span_cult_italic("[interacting_with] must be on a surface in order to teleport it!"))
+		to_chat(user, span_cultitalic("[interacting_with] must be on a surface in order to teleport it!"))
 		return ITEM_INTERACT_BLOCKING
 
-	to_chat(user, span_cult_italic("You ignite [interacting_with] with [src], turning it to ash, \
+	to_chat(user, span_cultitalic("You ignite [interacting_with] with [src], turning it to ash, \
 		but through the torch's flames you see that [interacting_with] has reached [cultist_to_receive]!"))
 	user.log_message("teleported [interacting_with] to [cultist_to_receive] with [src].", LOG_GAME)
 	cultist_to_receive.put_in_hands(interacting_with)
@@ -880,7 +880,7 @@ Striking a noncultist, however, will tear their flesh."}
 		var/obj/structure/emergency_shield/cult/weak/N = new(user.loc)
 		if(do_after(user, 9 SECONDS, target = user))
 			user.Paralyze(40)
-			to_chat(user, span_cult_italic("You have exhausted the power of this spell!"))
+			to_chat(user, span_cultitalic("You have exhausted the power of this spell!"))
 		REMOVE_TRAIT(user, TRAIT_IMMOBILIZED, CULT_TRAIT)
 		firing = FALSE
 		if(N)

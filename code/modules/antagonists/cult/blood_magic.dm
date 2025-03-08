@@ -441,7 +441,7 @@
 	else if(target.can_block_magic())
 		to_chat(user, span_warning("The spell had no effect!"))
 	else
-		to_chat(user, span_cult_italic("In a brilliant flash of red, [target] falls to the ground!"))
+		to_chat(user, span_cultitalic("In a brilliant flash of red, [target] falls to the ground!"))
 		target.Paralyze(16 SECONDS * effect_coef)
 		target.flash_act(1, TRUE)
 		if(issilicon(target))
@@ -505,9 +505,9 @@
 			span_warning("There is a boom of outrushing air as something appears above the rune!"),
 			null,
 			span_hear("You hear a boom."),
-			playsound(origin, SFX_PORTAL_ENTER, 50, TRUE, SILENCED_SOUND_EXTRARANGE)
-			playsound(dest, SFX_PORTAL_ENTER, 50, TRUE, SILENCED_SOUND_EXTRARANGE)
 		)
+		playsound(origin, SFX_PORTAL_ENTER, 50, TRUE, SILENCED_SOUND_EXTRARANGE) // Non-module change
+		playsound(dest, SFX_PORTAL_ENTER, 50, TRUE, SILENCED_SOUND_EXTRARANGE) // Non-module change
 	return ..()
 
 //Shackles
