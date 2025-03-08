@@ -882,7 +882,7 @@
 	return trim?.sechud_icon_state || SECHUD_UNKNOWN
 
 /obj/item/card/id/item_ctrl_click(mob/user)
-	if(!in_contents_of(user) || user.incapacitated) //Check if the ID is in the ID slot, so it can be changed from there too.
+	if(!in_contents_of(user) || user.incapacitated()) //Check if the ID is in the ID slot, so it can be changed from there too.
 		return
 
 	if(!trim)
