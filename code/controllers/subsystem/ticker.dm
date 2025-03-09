@@ -119,12 +119,14 @@ SUBSYSTEM_DEF(ticker)
 				continue
 		music -= S
 
+	// NON-MODULE CHANGE
 	if(!length(music))
 		music = world.file2list(ROUND_START_MUSIC_LIST, "\n")
-		login_music = pick(music)
+		if(length(music) > 1)
+			music -= old_login_music
+		set_lobby_music(pick(music))
 	else
-		login_music = "[global.config.directory]/title_music/sounds/[pick(music)]"
-
+		set_lobby_music("[global.config.directory]/title_music/sounds/[pick(music)]")
 
 	if(!GLOB.syndicate_code_phrase)
 		GLOB.syndicate_code_phrase = generate_code_phrase(return_list=TRUE)
@@ -229,7 +231,6 @@ SUBSYSTEM_DEF(ticker)
 		return TRUE
 	return FALSE
 
-
 /datum/controller/subsystem/ticker/proc/setup()
 	to_chat(world, span_boldannounce("Starting game..."))
 	var/init_start = world.timeofday
@@ -285,7 +286,7 @@ SUBSYSTEM_DEF(ticker)
 	log_world("Game start took [(world.timeofday - init_start)/10]s")
 	INVOKE_ASYNC(SSdbcore, TYPE_PROC_REF(/datum/controller/subsystem/dbcore,SetRoundStart))
 
-	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
+	to_chat(world, span_notice(span_bold("Welcome to [station_name()], enjoy your stay!")))
 	SEND_SOUND(world, sound(SSstation.announcer.get_rand_welcome_sound()))
 
 	current_state = GAME_STATE_PLAYING
@@ -746,6 +747,17 @@ SUBSYSTEM_DEF(ticker)
 		possible_themes += themes
 	if(possible_themes.len)
 		return "[global.config.directory]/reboot_themes/[pick(possible_themes)]"
+
+/datum/controller/subsystem/ticker/proc/set_lobby_music(new_music, override = FALSE)
+	if(!override && login_music)
+		return
+
+	login_music = new_music
+	var/list/music_file_components = splittext(new_music, "/")
+	var/music_file_name = length(music_file_components) && music_file_components[length(music_file_components)] || new_music
+	var/list/music_name_components = splittext(music_file_name, "+")
+	var/music_name = length(music_name_components) && music_name_components[length(music_name_components)] || music_file_name
+	SStitle.update_music_text(music_name)
 
 #undef ROUND_START_MUSIC_LIST
 #undef SS_TICKER_TRAIT

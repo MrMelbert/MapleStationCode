@@ -3,45 +3,33 @@
 
 /datum/vote/autotransfer
 	name = "Crew Transfer"
-	message = "Click to initiate an OOC Crew Transfer vote, calling the emergency shuttle on success."
+	default_message = "Click to initiate an OOC Crew Transfer vote, calling the emergency shuttle on success."
 	default_choices = list(
 		CHOICE_SHUTTLE,
 		CHOICE_CONTINUE,
 	)
 
-/datum/vote/autotransfer/toggle_votable(mob/toggler)
-	if(!toggler)
-		CRASH("[type] wasn't passed a \"toggler\" mob to toggle_votable.")
-	if(!check_rights_for(toggler.client, R_ADMIN))
-		return FALSE
-
+/datum/vote/autotransfer/toggle_votable()
 	CONFIG_SET(flag/allow_vote_transfer, !CONFIG_GET(flag/allow_vote_transfer))
-	return TRUE
 
 /datum/vote/autotransfer/is_config_enabled()
 	return CONFIG_GET(flag/allow_vote_transfer)
 
-/datum/vote/autotransfer/can_be_initiated(mob/by_who, forced)
+/datum/vote/autotransfer/can_be_initiated(forced)
 	. = ..()
-	if(!.)
-		return FALSE
+	if(. != VOTE_AVAILABLE)
+		return .
 
 	if(!forced && !CONFIG_GET(flag/allow_vote_transfer))
-		if(by_who)
-			to_chat(by_who, span_warning("Transfer votes are disabled."))
-		return FALSE
+		return "Transfer votes are disabled."
 
 	if(!SScrewtransfer)
-		if(by_who)
-			to_chat(by_who, span_warning("Transfer subsystem missing. Can't really host a vote for it! This is a bug."))
-		return FALSE
+		return "Transfer subsystem missing. Can't really host a vote for it! This is a bug."
 
 	if(SScrewtransfer.transfer_vote_successful)
-		if(by_who)
-			to_chat(by_who, span_warning("A transfer vote has already passed."))
-		return FALSE
+		return "A transfer vote has already passed."
 
-	return TRUE
+	return VOTE_AVAILABLE
 
 /datum/vote/autotransfer/get_vote_result(list/non_voters)
 	if(!CONFIG_GET(flag/default_no_vote))

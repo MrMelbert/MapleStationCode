@@ -334,3 +334,16 @@
 	icon = 'maplestation_modules/icons/obj/storage/crates.dmi'
 	icon_state = "opscrate"
 	base_icon_state = "opscrate"
+
+/datum/supply_pack/science/volitious_lignite_single_pack
+	name = "Volitious Lignite Pack"
+	desc = "A bundle containing 5 pieces of a natural source of volite, volitious lignite."
+	cost = PAYCHECK_COMMAND * 2
+	contains = list(
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+		/obj/item/mana_battery/mana_crystal/lignite,
+	)
+

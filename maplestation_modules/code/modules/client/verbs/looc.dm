@@ -157,9 +157,7 @@ GLOBAL_VAR_INIT(looc_allowed, TRUE)
 	return src
 
 /// Admin verb for toggling LOOC
-/datum/admins/proc/togglelooc()
-	set category = "Server"
-	set name = "Toggle LOOC"
+ADMIN_VERB(togglelooc, R_ADMIN, "Toggle LOOC", "Toggle LOOC globally" , ADMIN_CATEGORY_SERVER)
 
 	toggle_looc()
 	log_admin("[key_name(usr)] toggled LOOC.")

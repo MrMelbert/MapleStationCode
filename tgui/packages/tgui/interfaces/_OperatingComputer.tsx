@@ -1,6 +1,3 @@
-import { BooleanLike } from 'common/react';
-
-import { useBackend, useSharedState } from '../backend';
 import {
   AnimatedNumber,
   Button,
@@ -11,7 +8,10 @@ import {
   ProgressBar,
   Section,
   Tabs,
-} from '../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend, useSharedState } from '../backend';
 import { Window } from '../layouts';
 
 const damageTypes = [
@@ -246,7 +246,7 @@ const PatientStateView = (
                   step={1}
                   value={anesthesia.failsafe}
                   disabled={!failsafe_enabled} // Just in case
-                  onChange={(e, value) =>
+                  onChange={(value) =>
                     act('set_failsafe', { new_failsafe_time: value })
                   }
                 />
