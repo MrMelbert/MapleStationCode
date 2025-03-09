@@ -2,6 +2,9 @@
 	title = JOB_VIROLOGIST
 	description = "Study the effects of various diseases and synthesize a \
 		vaccine for them. Engineer beneficial viruses."
+	title_options = list(
+		"Pathologist",
+	)
 	department_head = list(JOB_CHIEF_MEDICAL_OFFICER)
 	faction = FACTION_STATION
 	total_positions = 1
