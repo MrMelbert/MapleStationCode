@@ -38,6 +38,8 @@
 /datum/status_effect/high_blood_pressure/proc/on_healthscan(datum/source, list/render_list, advanced, mob/user, mode, tochat)
 	SIGNAL_HANDLER
 
+	if(owner.has_status_effect(/datum/status_effect/low_blood_pressure))
+		return
 	render_list += "<span class='alert ml-1'>Hypertension detected.</span><br>"
 
 /datum/status_effect/seizure

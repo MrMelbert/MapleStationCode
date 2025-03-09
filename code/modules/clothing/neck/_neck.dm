@@ -273,12 +273,16 @@
 
 			//assess heart
 			if(body_part == BODY_ZONE_CHEST)//if we're listening to the chest
-				if(isnull(heart) || !heart.is_beating() || carbon_patient.stat == DEAD)
-					render_list += "<span class='danger ml-1'>You don't hear a heartbeat!</span>\n"//they're dead or their heart isn't beating
-				else if(heart.damage > 10 || carbon_patient.blood_volume <= BLOOD_VOLUME_OKAY)
-					render_list += "<span class='danger ml-1'>You hear a weak heartbeat.</span>\n"//their heart is damaged, or they have critical blood
-				else
-					render_list += "<span class='notice ml-1'>You hear a healthy heartbeat.</span>\n"//they're okay :D
+				var/heart_rate = carbon_patient.get_heart_rate()
+				switch(heart_rate)
+					if(0)
+						render_list += "<span class='danger ml-1'>You don't hear a heartbeat!</span>\n"
+					if(1 to SLOW_HEARTBEAT_THRESHOLD)
+						render_list += "<span class='danger ml-1'>You hear a weak heartbeat.</span>\n"
+					if(SLOW_HEARTBEAT_THRESHOLD to FAST_HEARTBEAT_THRESHOLD)
+						render_list += "<span class='notice ml-1'>You hear a healthy heartbeat.</span>\n"//they're okay :D
+					if(FAST_HEARTBEAT_THRESHOLD to INFINITY)
+						render_list += "<span class='danger ml-1'>You hear a fast heartbeat.</span>\n"
 
 		if(BODY_ZONE_PRECISE_GROIN)//If we're targeting the groin
 			render_list += span_info("You carefully press down on [carbon_patient]'s abdomen:\n")

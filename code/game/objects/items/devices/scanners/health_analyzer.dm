@@ -367,12 +367,16 @@
 	var/datum/blood_type/target_blood_type = target.get_blood_type()
 	if(target_blood_type)
 		var/bpm = target.get_bpm()
+		var/needs_heart = TRUE
+		if(ishuman(target))
+			var/mob/living/carbon/human/humantarget = target
+			needs_heart = humantarget.needs_heart()
 
-		var/bpm_format = "[bpm] bpm"
+		var/bpm_format = "[needs_heart ? bpm : "n/a"] bpm"
 		var/level_format = "[round_and_format_decimal(target.blood_volume, 0.1)] cl" // round to 0.1 but also print "100.0" and not "100"
 		var/blood_type_format = "[target_blood_type.name]"
 
-		if(bpm < 60 || bpm > 100)
+		if(needs_heart && (bpm < 60 || bpm > 100))
 			bpm_format = span_alert(bpm_format)
 
 		switch(target.blood_volume)

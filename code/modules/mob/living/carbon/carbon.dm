@@ -618,6 +618,22 @@
 		if(num_seared_parts >= 3)
 			become_husk(BURN)
 
+#ifdef HEALTH_DEBUG
+	if(client && hud_used)
+		hud_used.healthdoll.maptext_x = -50
+		hud_used.healthdoll.maptext_height = 200
+		hud_used.healthdoll.maptext_width = 75
+		hud_used.healthdoll.maptext = MAPTEXT("Th: [health]\
+			<br>Br: [total_brute]\
+			<br>Bu: [total_burn]\
+			<br>O: [total_oxy]\
+			<br>T: [total_tox]\
+			<br>Con: [consciousness]\
+			<br>Pain: [pain_controller.get_total_pain()]\
+			<br>Shock: [pain_controller.traumatic_shock]\
+		")
+#endif
+
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
 /datum/movespeed_modifier/carbon_consciousness

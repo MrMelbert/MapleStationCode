@@ -178,25 +178,23 @@
 
 /obj/structure/closet/body_bag/bluespace/perform_fold(mob/living/carbon/human/the_folder)
 	visible_message(span_notice("[the_folder] folds up [src]."))
-	var/obj/item/bodybag/folding_bodybag = undeploy_bodybag(the_folder.loc)
+	var/obj/item/bodybag/bluespace/folding_bodybag = undeploy_bodybag(the_folder.loc)
+	folding_bodybag.internal_air = internal_air
+	internal_air = null
 	var/max_weight_of_contents = initial(folding_bodybag.w_class)
-	for(var/am in contents)
-		var/atom/movable/content = am
+	for(var/atom/movable/content in src)
 		content.forceMove(folding_bodybag)
 		if(isliving(content))
 			to_chat(content, span_userdanger("You're suddenly forced into a tiny, compressed space!"))
-		if(iscarbon(content))
-			var/mob/living/carbon/mob = content
-			if (mob.dna?.get_mutation(/datum/mutation/human/dwarfism))
-				max_weight_of_contents = max(WEIGHT_CLASS_NORMAL, max_weight_of_contents)
-				continue
+		if(HAS_TRAIT(content, TRAIT_DWARF))
+			max_weight_of_contents = max(WEIGHT_CLASS_NORMAL, max_weight_of_contents)
+			continue
 		if(!isitem(content))
 			max_weight_of_contents = max(WEIGHT_CLASS_BULKY, max_weight_of_contents)
 			continue
-		var/obj/item/A_is_item = content
-		if(A_is_item.w_class < max_weight_of_contents)
-			continue
-		max_weight_of_contents = A_is_item.w_class
+		var/obj/item/content_item = content
+		max_weight_of_contents = max(max_weight_of_contents, content_item.w_class)
+
 	folding_bodybag.update_weight_class(max_weight_of_contents)
 	the_folder.put_in_hands(folding_bodybag)
 

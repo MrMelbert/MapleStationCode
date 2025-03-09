@@ -395,7 +395,7 @@
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 	pain_modifier = 0.75
 	pain_type_to_look_for = BURN
-	wound_type_to_look_for = /datum/wound/burn
+	wound_type_to_look_for = /datum/wound/flesh
 
 /datum/reagent/medicine/painkiller/specialized/anurifen/on_mob_life(mob/living/carbon/M, seconds_per_tick, times_fired)
 	// a bit of aiuri influence
