@@ -112,9 +112,8 @@ SUBSYSTEM_DEF(vote)
 		"winners" = winners_string,
 		"final_winner" = final_winner_string,
 	)
-	var/log_string = replacetext(to_display, "\n", "\\n") // 'keep' the newlines, but dont actually print them as newlines
-	log_vote(log_string, vote_log_data)
-	to_chat(world, span_infoplain(vote_font("\n[to_display]")))
+	log_vote("vote finalized", vote_log_data)
+	to_chat(world, examine_block(span_infoplain(vote_font("[to_display]"))))
 
 	// Finally, doing any effects on vote completion
 	if (final_winner) // if no one voted, or the vote cannot be won, final_winner will be null
@@ -128,7 +127,7 @@ SUBSYSTEM_DEF(vote)
 		return
 	if(!voter?.ckey)
 		return
-	if(CONFIG_GET(flag/no_dead_vote) && voter.stat == DEAD && !voter.client?.holder)
+	if(current_vote.can_mob_vote(voter) != VOTE_AVAILABLE)
 		return
 
 	// If user has already voted, remove their specific vote
@@ -152,7 +151,7 @@ SUBSYSTEM_DEF(vote)
 		return
 	if(!voter?.ckey)
 		return
-	if(CONFIG_GET(flag/no_dead_vote) && voter.stat == DEAD && !voter.client?.holder)
+	if(current_vote.can_mob_vote(voter) != VOTE_AVAILABLE)
 		return
 
 	else
@@ -226,9 +225,9 @@ SUBSYSTEM_DEF(vote)
 	var/to_display = current_vote.initiate_vote(vote_initiator_name, duration)
 
 	log_vote(to_display)
-	to_chat(world, span_infoplain(vote_font("\n[span_bold(to_display)]\n\
-		Type <b>vote</b> or click <a href='byond://winset?command=vote'>here</a> to place your votes.\n\
-		You have [DisplayTimeText(duration)] to vote.")))
+	to_chat(world, examine_block(span_infoplain(vote_font("[span_bold(to_display)]<br>\
+		Type <b>vote</b> or click <a href='byond://winset?command=vote'>here</a> to place your votes.<br>\
+		You have [DisplayTimeText(duration)] to vote."))))
 
 	// And now that it's going, give everyone a voter action
 	for(var/client/new_voter as anything in GLOB.clients)
@@ -290,11 +289,12 @@ SUBSYSTEM_DEF(vote)
 
 	var/is_lower_admin = !!user.client?.holder
 	var/is_upper_admin = check_rights_for(user.client, R_ADMIN)
-
+	var/is_valid_voter = current_vote?.can_mob_vote(user)
 	data["user"] = list(
 		"ckey" = user.client?.ckey,
 		"isLowerAdmin" = is_lower_admin,
 		"isUpperAdmin" = is_upper_admin,
+		"cannotVote" = is_valid_voter == VOTE_AVAILABLE ? null : is_valid_voter,
 		// What the current user has selected in any ongoing votes.
 		"singleSelection" = current_vote?.choices_by_ckey[user.client?.ckey],
 		"multiSelection" = current_vote?.choices_by_ckey,
