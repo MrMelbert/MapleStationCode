@@ -15,7 +15,7 @@
 #define MAX_MICROWAVE_DIRTINESS 100
 
 /// For the wireless version, and display fluff
-#define TIER_1_CELL_CHARGE_RATE 250
+#define TIER_1_CELL_CHARGE_RATE (0.25 * STANDARD_CELL_CHARGE)
 
 /obj/machinery/microwave
 	name = "microwave oven"
@@ -52,9 +52,9 @@
 	/// If we use a cell instead of powernet
 	var/cell_powered = FALSE
 	/// The cell we charge with
-	var/obj/item/stock_parts/cell/cell
+	var/obj/item/stock_parts/power_store/cell
 	/// The cell we're charging
-	var/obj/item/stock_parts/cell/vampire_cell
+	var/obj/item/stock_parts/power_store/vampire_cell
 	/// Capable of vampire charging PDAs
 	var/vampire_charging_capable = FALSE
 	/// Charge contents of microwave instead of cook
@@ -105,7 +105,7 @@
 				itemized_ingredient.pixel_y = itemized_ingredient.base_pixel_y + rand(-5, 6)
 	return ..()
 
-/obj/machinery/microwave/on_deconstruction()
+/obj/machinery/microwave/on_deconstruction(disassembled)
 	eject()
 	return ..()
 
@@ -121,7 +121,7 @@
 	if(cell_powered)
 		if(!isnull(cell))
 			context[SCREENTIP_CONTEXT_CTRL_LMB] = "Remove cell"
-		else if(held_item && istype(held_item, /obj/item/stock_parts/cell))
+		else if(held_item && istype(held_item, /obj/item/stock_parts/power_store/cell))
 			context[SCREENTIP_CONTEXT_CTRL_LMB] = "Insert cell"
 
 	if(held_item?.tool_behaviour == TOOL_WRENCH)
@@ -389,7 +389,7 @@
 			return TRUE
 		return ..()
 
-	if(istype(item, /obj/item/stock_parts/cell) && cell_powered)
+	if(istype(item, /obj/item/stock_parts/power_store/cell) && cell_powered)
 		var/swapped = FALSE
 		if(!isnull(cell))
 			cell.forceMove(drop_location())
@@ -674,7 +674,7 @@
 				pre_success(cooker)
 		return
 	cycles--
-	use_power(active_power_usage)
+	use_energy(active_power_usage)
 	addtimer(CALLBACK(src, PROC_REF(cook_loop), type, cycles, wait, cooker), wait)
 
 /obj/machinery/microwave/power_change()
@@ -830,8 +830,9 @@
 	if(cell_powered && !cell.use(charge_rate))
 		charge_loop_finish(cooker)
 
-	vampire_cell.give(charge_rate * (0.85 + (efficiency * 0.5))) // we lose a tiny bit of power in the transfer as heat
-	use_power(charge_rate)
+	use_energy(charge_rate * (0.5 - efficiency * 0.12)) //Some of the power gets lost as heat.
+	charge_cell(charge_rate * (0.5 + efficiency * 0.12), vampire_cell) //Cell gets charged, which further uses power.
+
 
 	vampire_charge_amount = vampire_cell.maxcharge - vampire_cell.charge
 
@@ -901,12 +902,12 @@
 /obj/machinery/microwave/engineering/Initialize(mapload)
 	. = ..()
 	if(mapload)
-		cell = new /obj/item/stock_parts/cell/upgraded/plus
+		cell = new /obj/item/stock_parts/power_store/cell/upgraded/plus
 	update_appearance()
 
 /obj/machinery/microwave/engineering/cell_included/Initialize(mapload)
 	. = ..()
-	cell = new /obj/item/stock_parts/cell/upgraded/plus
+	cell = new /obj/item/stock_parts/power_store/cell/upgraded/plus
 	update_appearance()
 
 #undef MICROWAVE_NORMAL

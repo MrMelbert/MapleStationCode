@@ -151,7 +151,7 @@
 		return TRUE
 	return ..()
 
-/obj/machinery/atmospherics/components/binary/circulator/on_deconstruction()
+/obj/machinery/atmospherics/components/binary/circulator/on_deconstruction(disassembled)
 	if(generator)
 		disconnectFromGenerator()
 
