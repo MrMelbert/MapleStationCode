@@ -765,7 +765,3 @@ LINEN BINS
 	name = "linen basket"
 	icon_state = "linenbasket-empty"
 	base_icon_state = "linenbasket"
-
-#undef BEDSHEET_ABSTRACT
-#undef BEDSHEET_SINGLE
-#undef BEDSHEET_DOUBLE
