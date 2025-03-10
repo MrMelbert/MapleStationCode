@@ -141,8 +141,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return ..()
 
 /obj/machinery/computer/vitals_reader/wrench_act(mob/living/user, obj/item/tool)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return FALSE
 	if(user.combat_mode)
 		return FALSE
 	balloon_alert(user, "detaching...")
@@ -152,8 +150,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 	return TRUE
 
 /obj/machinery/computer/vitals_reader/on_deconstruction(disassembled)
-	if(obj_flags & NO_DECONSTRUCTION)
-		return
 	var/atom/drop_loc = drop_location()
 	if(disassembled)
 		new frame(drop_loc)
