@@ -1,4 +1,4 @@
-/datum/material/cold_iron
+/datum/material/iron/cold_iron
 	name = "Cold Wrought Iron"
 	desc = "A handforged magical iron metal. It is very difficult to make and commands a very high price point."
 	color = "#c6c9c9"
