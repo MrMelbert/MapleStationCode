@@ -23,7 +23,7 @@
 	icon = 'icons/obj/weapons/guns/toy.dmi'
 	icon_state = "foamdart"
 	base_icon_state = "foamdart"
-	custom_materials = list(/datum/material/cold_iron = SMALL_MATERIAL_AMOUNT)
+	custom_materials = list(/datum/material/iron/cold_iron = SMALL_MATERIAL_AMOUNT)
 	harmful = FALSE
 
 /obj/projectile/bullet/foam_dart/novelty_flying_disc
@@ -37,7 +37,7 @@
 	shrapnel_type = null
 	embed_type = null
 	ricochets_max = 5
-	ricochet_chance = 700 //BOUNCY
+	ricochet_chance = 700 //BOUNCY!!
 	ricochet_incidence_leeway = 0
 	range = 70 //assuming each tile is 3 feet this should be about 210 feet, aka, over 200 feet. Yes this is big.
 
