@@ -53019,7 +53019,6 @@
 /obj/structure/railing{
 	dir = 1
 	},
-/obj/machinery/power/apc/auto_name/directional/east,
 /turf/open/floor/catwalk_floor,
 /area/station/hallway/primary/tram/right)
 "rUd" = (
