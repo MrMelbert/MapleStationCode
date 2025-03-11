@@ -32,7 +32,8 @@
 
 	// Combat mode in melee range with bayonet -> bayonet stab
 	var/obj/item/knife/combat/knife = EASY_ALLOCATE()
-	gun.AddComponent(/datum/component/bayonet_attachable, starting_bayonet = knife)
+//	gun.AddComponent(/datum/component/bayonet_attachable, starting_bayonet = knife) // Non-module change : gun code was refactored to compenentize bayonets, we don't have that (yet?)
+	gun.bayonet = knife // Non-module change
 
 	attacker.set_combat_mode(TRUE)
 	click_wrapper(attacker, victim)
@@ -50,8 +51,9 @@
 	butcher.set_combat_mode(TRUE)
 	var/obj/item/gun/energy/recharge/kinetic_accelerator/gun = EASY_ALLOCATE()
 	var/obj/item/knife/combat/knife = EASY_ALLOCATE()
-	var/datum/component/bayonet_attachable/bayonet = gun.GetComponent(/datum/component/bayonet_attachable)
-	bayonet.add_bayonet(knife)
+//	var/datum/component/bayonet_attachable/bayonet = gun.GetComponent(/datum/component/bayonet_attachable) // Non-module change : see above
+//	bayonet.add_bayonet(knife) // Non-module change
+	gun.bayonet = knife // Non-module change
 	var/datum/component/butchering/butcher_comp = knife.GetComponent(/datum/component/butchering)
 	butcher_comp.speed = 1 SECONDS
 
