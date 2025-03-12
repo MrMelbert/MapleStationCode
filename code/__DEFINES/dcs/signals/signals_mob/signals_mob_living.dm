@@ -263,19 +263,29 @@
 
 /// From /datum/element/basic_eating/finish_eating()
 #define COMSIG_MOB_ATE "mob_ate"
+	///cancel post eating
+	#define COMSIG_MOB_TERMINATE_EAT (1<<0)
 
-#define COMSIG_LIVING_BODY_TEMPERATURE_CHANGE "living_body_temperature_change"
+///From mob/living/carbon/proc/throw_mode_on and throw_mode_off
+#define COMSIG_LIVING_THROW_MODE_TOGGLE "living_throw_mode_toggle"
+/// From mob/living/proc/on_fall
+#define COMSIG_LIVING_THUD "living_thud"
+///From /datum/component/happiness()
+#define COMSIG_MOB_HAPPINESS_CHANGE "happiness_change"
+/// From /obj/item/melee/baton/baton_effect(): (datum/source, mob/living/user, /obj/item/melee/baton)
+#define COMSIG_MOB_BATONED "mob_batoned"
 
-#define COMSIG_LIVING_HOMEOSTASIS "living_homeostasis"
-	/// Return to do no homeostasis at all
-	#define HOMEOSTASIS_HANDLED (1<<0)
-	/// Return to not reduce hunger at all
-	#define HOMEOSTASIS_NO_HUNGER (1<<1)
+/// From /obj/machinery/gibber/startgibbing(): (mob/living/user, /obj/machinery/gibber, list/results)
+#define COMSIG_LIVING_GIBBER_ACT "living_gibber_act"
 
-//from base of living/set_pull_offset(): (mob/living/pull_target, grab_state)
-#define COMSIG_LIVING_SET_PULL_OFFSET "living_set_pull_offset"
-//from base of living/reset_pull_offsets(): (mob/living/pull_target, override)
-#define COMSIG_LIVING_RESET_PULL_OFFSETS "living_reset_pull_offsets"
-//from base of living/CanAllowThrough(): (atom/movable/mover, border_dir)
-#define COMSIG_LIVING_CAN_ALLOW_THROUGH "living_can_allow_through"
-	#define COMPONENT_LIVING_PASSABLE (1<<0)
+/// Sent to the mob when their mind is slaved
+#define COMSIG_MOB_ENSLAVED_TO "mob_enslaved_to"
+/// From /obj/item/proc/attack_atom: (mob/living/attacker, atom/attacked)
+#define COMSIG_LIVING_ATTACK_ATOM "living_attack_atom"
+/// From /mob/living/proc/stop_leaning()
+#define COMSIG_LIVING_STOPPED_LEANING "living_stopped_leaning"
+
+/// From /mob/living/get_examine_name(mob/user) : (mob/examined, visible_name, list/name_override)
+/// Allows mobs to override how they perceive others when examining
+#define COMSIG_LIVING_PERCEIVE_EXAMINE_NAME "living_perceive_examine_name"
+	#define COMPONENT_EXAMINE_NAME_OVERRIDEN (1<<0)
