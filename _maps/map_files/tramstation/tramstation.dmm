@@ -14698,6 +14698,11 @@
 	},
 /turf/open/floor/plating,
 /area/station/ai_monitored/turret_protected/aisat/maint)
+"ebY" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
+/turf/open/floor/iron/smooth,
+/area/station/hallway/primary/tram/right)
 "ecg" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -23309,6 +23314,7 @@
 	name = "Ladder Access Hatch"
 	},
 /obj/effect/decal/cleanable/dirt,
+/obj/structure/cable,
 /turf/open/floor/iron/smooth,
 /area/station/hallway/primary/tram/right)
 "hrr" = (
@@ -47980,6 +47986,7 @@
 	},
 /obj/machinery/light/directional/west,
 /obj/machinery/power/smes/engineering,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/engineering/gravity_generator)
 "qes" = (
@@ -52532,6 +52539,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/trimline/neutral/filled/corner,
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/hallway/primary/tram/right)
 "rNk" = (
@@ -65789,6 +65797,7 @@
 /obj/effect/turf_decal/trimline/neutral/filled/corner{
 	dir = 4
 	},
+/obj/structure/cable,
 /turf/open/floor/iron,
 /area/station/hallway/primary/tram/right)
 "wlM" = (
@@ -184745,7 +184754,7 @@ vPB
 uCO
 fZS
 bMb
-rxO
+ebY
 ugK
 vUE
 brm
