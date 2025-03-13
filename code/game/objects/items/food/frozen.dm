@@ -24,7 +24,7 @@
 		/datum/reagent/consumable/ice = 4,
 	)
 	tastes = list("ice cream" = 2, "berry" = 2)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -41,7 +41,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 5,
 	)
 	tastes = list("blue cherries" = 2, "ice cream" = 2)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/spacefreezy/make_edible()
@@ -60,7 +60,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("ice cream" = 1, "banana" = 1)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/sundae/make_edible()
@@ -79,7 +79,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("ice cream" = 1, "banana" = 1, "a bad joke" = 1)
-	foodtypes = FRUIT | DAIRY | SUGAR
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/honkdae/make_edible()
@@ -523,7 +523,7 @@
 		/datum/reagent/consumable/sugar = 2,
 	)
 	tastes = list("chopped hazelnuts", "waffle")
-	foodtypes = DAIRY | SUGAR
+	foodtypes = GRAIN|DAIRY|SUGAR
 	venue_value = FOOD_PRICE_NORMAL
 	crafting_complexity = FOOD_COMPLEXITY_3
 

@@ -11,7 +11,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("muffin" = 1)
-	foodtypes = GRAIN | SUGAR | BREAKFAST
+	foodtypes = GRAIN|DAIRY|SUGAR|BREAKFAST
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
@@ -21,7 +21,7 @@
 	icon_state = "berrymuffin"
 	desc = "A delicious and spongy little cake, with berries."
 	tastes = list("muffin" = 3, "berry" = 1)
-	foodtypes = GRAIN | FRUIT | SUGAR | BREAKFAST
+	foodtypes = GRAIN|DAIRY|SUGAR|BREAKFAST|FRUIT
 	venue_value = FOOD_PRICE_NORMAL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -31,7 +31,7 @@
 	alpha = 125
 	desc = "My stomach is a graveyard! No living being can quench my bloodthirst!"
 	tastes = list("muffin" = 3, "spookiness" = 1)
-	foodtypes = GRAIN | FRUIT | SUGAR | BREAKFAST
+	foodtypes = GRAIN|DAIRY|SUGAR|BREAKFAST|FRUIT
 	crafting_complexity = FOOD_COMPLEXITY_4
 
 /obj/item/food/muffin/booberry/Initialize(mapload, starting_reagent_purity, no_base_reagents)
@@ -44,7 +44,7 @@
 	base_icon_state = "moffin"
 	desc = "A delicious and spongy little cake."
 	tastes = list("muffin" = 3, "dust" = 1, "lint" = 1)
-	foodtypes = CLOTH | GRAIN | SUGAR | BREAKFAST
+	foodtypes = CLOTH|DAIRY|GRAIN|SUGAR|BREAKFAST
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/muffin/moffin/Initialize(mapload)
@@ -72,7 +72,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("waffles" = 1)
-	foodtypes = GRAIN | SUGAR | BREAKFAST
+	foodtypes = GRAIN|DAIRY|BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -86,7 +86,7 @@
 		/datum/reagent/consumable/nutriment/protein = 4,
 	)
 	tastes = list("waffles" = 7, "people" = 1)
-	foodtypes = GRAIN | MEAT
+	foodtypes = MEAT|GRAIN|DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -100,7 +100,7 @@
 		/datum/reagent/consumable/nutriment/protein = 2,
 	)
 	tastes = list("waffles" = 7, "the colour green" = 1)
-	foodtypes = GRAIN
+	foodtypes = VEGETABLES|GRAIN|DAIRY
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -115,7 +115,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("waffles" = 1, "mushrooms" = 1)
-	foodtypes = GRAIN | VEGETABLES | SUGAR | BREAKFAST
+	foodtypes = GRAIN|DAIRY|VEGETABLES|BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -147,7 +147,7 @@
 	trash_type = /obj/item/paper/paperslip/fortune
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5)
 	tastes = list("cookie" = 1)
-	foodtypes = GRAIN | SUGAR
+	foodtypes = GRAIN|SUGAR|DAIRY
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
@@ -179,7 +179,7 @@
 		/datum/reagent/consumable/sugar = 6,
 	)
 	tastes = list("sweetness" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_2
 
 /obj/item/food/cookie/sugar/Initialize(mapload, seasonal_changes = TRUE)
@@ -198,7 +198,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("biscuit" = 3, "chocolate" = 1)
-	foodtypes = GRAIN | JUNKFOOD
+	foodtypes = JUNKFOOD|GRAIN|DAIRY|SUGAR
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -211,7 +211,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("cookie" = 2, "oat" = 1)
-	foodtypes = GRAIN
+	foodtypes = GRAIN|DAIRY
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/cookie/raisin
@@ -223,7 +223,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("cookie" = 1, "raisins" = 1)
-	foodtypes = GRAIN | FRUIT
+	foodtypes = GRAIN|FRUIT|DAIRY|SUGAR
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/poppypretzel
@@ -235,7 +235,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("pretzel" = 1)
-	foodtypes = GRAIN | SUGAR
+	foodtypes = GRAIN|DAIRY|SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -249,7 +249,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 1,
 	)
 	tastes = list("mushroom" = 1, "biscuit" = 1)
-	foodtypes = GRAIN | VEGETABLES
+	foodtypes = VEGETABLES|GRAIN|DAIRY
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -303,7 +303,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 2,
 	)
 	tastes = list("cake" = 3, "cherry" = 1)
-	foodtypes = GRAIN | FRUIT | SUGAR
+	foodtypes = GRAIN|DAIRY|FRUIT|SUGAR
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
@@ -315,6 +315,23 @@
 	tastes = list("cake" = 3, "blue cherry" = 1)
 	crafting_complexity = FOOD_COMPLEXITY_3
 
+/obj/item/food/jupitercupcake
+	name = "jupiter-cup-cake"
+	desc = "A static dessert."
+	icon_state = "jupitercupcake"
+	food_reagents = list(
+		/datum/reagent/consumable/nutriment = 6,
+		/datum/reagent/consumable/nutriment/vitamin = 2,
+		/datum/reagent/consumable/caramel = 3,
+		/datum/reagent/consumable/liquidelectricity/enriched = 3,
+	)
+	tastes = list("cake" = 3, "caramel" = 2, "zap" = 1)
+	foodtypes = GRAIN|DAIRY|VEGETABLES|SUGAR
+	food_flags = FOOD_FINGER_FOOD
+	w_class = WEIGHT_CLASS_SMALL
+	crafting_complexity = FOOD_COMPLEXITY_3
+	crafted_food_buff = /datum/status_effect/food/trait/shockimmune
+
 /obj/item/food/honeybun
 	name = "honey bun"
 	desc = "A sticky pastry bun glazed with honey."
@@ -324,7 +341,7 @@
 		/datum/reagent/consumable/honey = 6,
 	)
 	tastes = list("pastry" = 1, "sweetness" = 1)
-	foodtypes = GRAIN | SUGAR
+	foodtypes = GRAIN|DAIRY|SUGAR
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -350,7 +367,7 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 5)
 	tastes = list("cream" = 2, "waffle" = 1)
 	bite_consumption = 4
-	foodtypes = DAIRY | SUGAR
+	foodtypes = DAIRY | SUGAR | GRAIN
 	food_flags = FOOD_FINGER_FOOD
 	crafting_complexity = FOOD_COMPLEXITY_3
 	max_volume = 10 //The max volumes scales up with the number of scoops of ice cream served.
@@ -414,7 +431,7 @@
 		/datum/reagent/consumable/peanut_butter = 5,
 	)
 	tastes = list("peanut butter" = 2, "cookie" = 1)
-	foodtypes = GRAIN | JUNKFOOD | NUTS
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|NUTS
 	crafting_complexity = FOOD_COMPLEXITY_3
 
 /obj/item/food/raw_brownie_batter
@@ -427,7 +444,7 @@
 		/datum/reagent/consumable/nutriment/vitamin = 4,
 	)
 	tastes = list("raw brownie batter" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR | BREAKFAST
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR|BREAKFAST
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/raw_brownie_batter/make_bakeable()
@@ -443,7 +460,7 @@
 		/datum/reagent/consumable/sugar = 12,
 	)
 	tastes = list("brownie" = 1, "chocolatey goodness" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR|BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -460,7 +477,7 @@
 		/datum/reagent/consumable/sugar = 3,
 	)
 	tastes = list("brownie" = 1, "chocolatey goodness" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR|BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_2
 
@@ -475,7 +492,7 @@
 		/datum/reagent/consumable/peanut_butter = 4,
 	)
 	tastes = list("raw brownie batter" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR | NUTS
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR|BREAKFAST|NUTS
 	crafting_complexity = FOOD_COMPLEXITY_1
 
 /obj/item/food/peanut_butter_brownie_batter/make_bakeable()
@@ -492,7 +509,7 @@
 		/datum/reagent/consumable/peanut_butter = 20,
 	)
 	tastes = list("brownie" = 1, "chocolatey goodness" = 1, "peanut butter" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR | NUTS
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR|BREAKFAST|NUTS
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -510,7 +527,7 @@
 		/datum/reagent/consumable/peanut_butter = 5,
 	)
 	tastes = list("brownie" = 1, "chocolatey goodness" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR|BREAKFAST|NUTS
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -525,7 +542,7 @@
 		/datum/reagent/consumable/peanut_butter = 5,
 	)
 	tastes = list("peanut butter" = 1, "peanuts" = 1, "cream" = 1)
-	foodtypes = GRAIN | JUNKFOOD | SUGAR | NUTS
+	foodtypes = GRAIN|DAIRY|JUNKFOOD|SUGAR|NUTS
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
 
@@ -577,7 +594,7 @@
 	icon_state = "thumbprint_cookie"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6)
 	tastes = list("cookie" = 2, "cherry jelly" = 3)
-	foodtypes = GRAIN | SUGAR | FRUIT
+	foodtypes = GRAIN|DAIRY|SUGAR|FRUIT
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 	crafting_complexity = FOOD_COMPLEXITY_3
