@@ -117,13 +117,13 @@
 	var/bleed_overlay_icon
 
 	//Damage messages used by help_shake_act()
-	var/light_brute_msg = "bruised"
+	var/light_brute_msg = "bruised and feels sore"
 	var/medium_brute_msg = "battered"
 	var/heavy_brute_msg = "mangled"
 
-	var/light_burn_msg = "numb"
+	var/light_burn_msg = "red and feels numb"
 	var/medium_burn_msg = "blistered"
-	var/heavy_burn_msg = "peeling away"
+	var/heavy_burn_msg = "like its peeling away"
 
 	//Damage messages used by examine(). the desc that is most common accross all bodyparts gets shown
 	var/list/damage_examines = list(
@@ -286,11 +286,10 @@
 
 /**
  * Called when a bodypart is checked for injuries.
- *
- * Modifies the check_list list with the resulting report of the limb's status.
  */
-/obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner, list/check_list)
+/obj/item/bodypart/proc/check_for_injuries(mob/living/carbon/human/examiner)
 
+	var/list/check_list = list()
 	var/list/limb_damage = list(BRUTE = brute_dam, BURN = burn_dam)
 
 	SEND_SIGNAL(src, COMSIG_BODYPART_CHECKED_FOR_INJURY, examiner, check_list, limb_damage)
@@ -340,32 +339,44 @@
 		else
 			is_disabled += " and"
 
-	// melbert todo : if you have clothes covering, it's harder to diagnose
-	check_list += "\t<span class='[no_damage ? "notice" : "warning"]'>Your [name][is_disabled][self_aware ? " has " : " is "][status].</span>"
+	check_list += "<span class='[no_damage ? "notice" : "warning"]'>Your [plaintext_zone][is_disabled][self_aware ? " has " : " looks "][status].</span>"
 
+	var/adept_organ_feeler = owner == examiner && HAS_TRAIT(examiner, TRAIT_SELF_AWARE)
+	for(var/obj/item/organ/organ in src)
+		if(organ.organ_flags & ORGAN_HIDDEN)
+			continue
+		var/feeling = organ.feel_for_damage(adept_organ_feeler)
+		if(feeling)
+			check_list += "\t[feeling]"
+
+	// melbert todo : if you have clothes covering, it's harder to diagnose
 	for(var/datum/wound/wound as anything in wounds)
-		var/wound_desc = wound.get_self_check_description(src, examiner)
+		var/wound_desc = wound.get_self_check_description(adept_organ_feeler)
 		if(wound_desc)
-			check_list += "\t\t[wound_desc]"
+			check_list += "\t[wound_desc]"
 
 	for(var/obj/item/embedded_thing as anything in embedded_objects)
-		if(embedded_thing.get_embed().hidden_embed)
+		if(embedded_thing.get_embed().stealthy_embed)
 			continue
-		var/stuck_word = embedded_thing.is_embed_harmless() ? "stuck" : "embedded"
-		check_list += "\t\t<a href='?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]' class='warning'>There is \a [embedded_thing] [stuck_word] in it!</a>"
+		var/harmless = embedded_thing.get_embed().is_harmless()
+		var/stuck_wordage = harmless ? "stuck to" : "embedded in"
+		var/span_to_use = harmless ? "notice" : "boldwarning"
+		check_list += "\t<span class='[span_to_use]'><a href='byond://?src=[REF(examiner)];embedded_object=[REF(embedded_thing)];embedded_limb=[REF(src)]'>There is [icon2html(embedded_thing, examiner)] \a [embedded_thing] [stuck_wordage] your [plaintext_zone]!</a></span>"
 
 	if(current_gauze)
 		check_list += span_notice("\t\tThere is some <a href='?src=[REF(examiner)];gauze_limb=[REF(src)]'>[current_gauze.name]</a> wrapped around it.")
 	else if(can_bleed())
 		switch(get_modified_bleed_rate())
 			if(0.2 to 1)
-				check_list += span_warning("\t\tIt's lightly bleeding.")
+				check_list += span_warning("\tIt's lightly bleeding.")
 			if(1 to 2)
-				check_list += span_warning("\t\tIt's bleeding.")
+				check_list += span_warning("\tIt's bleeding.")
 			if(3 to 4)
-				check_list += span_warning("\t\tIt's bleeding heavily!")
+				check_list += span_warning("\tIt's bleeding heavily!")
 			if(4 to INFINITY)
-				check_list += span_warning("\t\tIt's bleeding profusely!")
+				check_list += span_warning("\tIt's bleeding profusely!")
+
+	return jointext(check_list, "<br>")
 
 /obj/item/bodypart/blob_act()
 	receive_damage(max_damage, wound_bonus = CANT_WOUND)

@@ -56,7 +56,7 @@
 
 	var/damage = weapon.throwforce
 	if(harmful)
-		if(!embed_data.hidden_embed)
+		if(!embed_data.stealthy_embed)
 			victim.throw_alert(ALERT_EMBEDDED_OBJECT, /atom/movable/screen/alert/embeddedobject)
 			victim.add_mood_event("embedded", /datum/mood_event/embedded)
 		if(limb.can_bleed())
@@ -110,7 +110,7 @@
 		victim.apply_damage((1 - embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
 		if(CAN_FEEL_PAIN(victim))
 			victim.apply_damage(embed_data.pain_stam_pct * damage, PAIN, limb)
-			if(embed_data.hidden_embed)
+			if(embed_data.stealthy_embed)
 				to_chat(victim, span_danger("Something in your [limb.plaintext_zone] hurts!"))
 			else
 				to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] hurts!"))
@@ -146,12 +146,12 @@
 	victim.apply_damage((1 -  embed_data.pain_stam_pct) * damage, BRUTE, limb, wound_bonus = CANT_WOUND)
 	if(CAN_FEEL_PAIN(victim))
 		victim.apply_damage( embed_data.pain_stam_pct * damage, PAIN, limb)
-		if(embed_data.hidden_embed)
+		if(embed_data.stealthy_embed)
 			to_chat(victim, span_danger("Something in your [limb.plaintext_zone] jostles and stings!"))
 		else
 			to_chat(victim, span_userdanger("[weapon] embedded in your [limb.plaintext_zone] jostles and stings!"))
 	else
-		if(embed_data.hidden_embed)
+		if(embed_data.stealthy_embed)
 			to_chat(victim, span_danger("Something in your [limb.plaintext_zone] jostles!"))
 		else
 			to_chat(victim, span_danger("[weapon] embedded in your [limb.plaintext_zone] jostles!"))
