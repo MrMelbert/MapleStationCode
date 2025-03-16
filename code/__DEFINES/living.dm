@@ -119,15 +119,9 @@
 
 #define COLOR_BLOOD "#c90000"
 
-/// Checks if the value is "left"
-/// Used primarily for hand or foot indexes
-#define IS_RIGHT(value) (value % 2 == 0)
-/// Checks if the value is "right"
-/// Used primarily for hand or foot indexes
-#define IS_LEFT(value) (value % 2 != 0)
 /// Helper for picking between left or right when given a value
 /// Used primarily for hand or foot indexes
-#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT(value) ? left : right)
+#define SELECT_LEFT_OR_RIGHT(value, left, right) (IS_LEFT_INDEXvalue) ? left : right)
 
 // Used in ready menu anominity
 /// Hide ckey
