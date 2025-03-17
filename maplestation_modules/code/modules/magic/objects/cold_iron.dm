@@ -22,7 +22,7 @@
 	desc = "A sheet of handforged magical iron metal. It is very difficult to make and commands a very high price point."
 	icon_state = "sheet-coldiron"
 	inhand_icon_state = "sheet-coldiron"
-	icon = 'MapleStationCode/icons/obj/magic/magic_metals.dmi'
+	icon = 'maplestation_modules/icons/obj/magic/magic_metals.dmi'
 	merge_type = /obj/item/stack/sheet/iron/cold_iron
 	grind_results = list(/datum/reagent/iron/cold_iron = 20)
 	material_type = /datum/material/iron/cold_iron
