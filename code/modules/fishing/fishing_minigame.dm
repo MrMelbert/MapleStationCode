@@ -306,8 +306,8 @@
 	deltimer(next_phase_timer)
 	phase = WAIT_PHASE
 	//Bobbing animation
-	animate(lure, pixel_y = 1, time = 1 SECONDS, loop = -1, flags = ANIMATION_RELATIVE)
-	animate(pixel_y = -1, time = 1 SECONDS, flags = ANIMATION_RELATIVE)
+	animate(lure, pixel_z = 1, time = 1 SECONDS, loop = -1, flags = ANIMATION_RELATIVE)
+	animate(pixel_z = -1, time = 1 SECONDS, flags = ANIMATION_RELATIVE)
 	//Setup next phase
 	var/wait_time = rand(1 SECONDS, 30 SECONDS)
 	next_phase_timer = addtimer(CALLBACK(src, PROC_REF(start_biting_phase)), wait_time, TIMER_STOPPABLE)
@@ -340,8 +340,8 @@
 				send_alert("bones!!!")
 	else
 		send_alert("!!!")
-	animate(lure, pixel_y = 3, time = 5, loop = -1, flags = ANIMATION_RELATIVE)
-	animate(pixel_y = -3, time = 5, flags = ANIMATION_RELATIVE)
+	animate(lure, pixel_z = 3, time = 5, loop = -1, flags = ANIMATION_RELATIVE)
+	animate(pixel_z = -3, time = 5, flags = ANIMATION_RELATIVE)
 	// Setup next phase
 	var/wait_time = rand(3 SECONDS, 6 SECONDS)
 	next_phase_timer = addtimer(CALLBACK(src, PROC_REF(start_baiting_phase)), wait_time, TIMER_STOPPABLE)
@@ -690,4 +690,3 @@
 #undef REELING_STATE_IDLE
 #undef REELING_STATE_UP
 #undef REELING_STATE_DOWN
-
