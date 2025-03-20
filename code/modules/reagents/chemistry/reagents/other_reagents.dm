@@ -2578,10 +2578,9 @@
 
 /datum/reagent/bz_metabolites/on_mob_life(mob/living/carbon/target, seconds_per_tick, times_fired)
 	. = ..()
-	if(target.mind)
-		var/datum/antagonist/changeling/changeling = target.mind.has_antag_datum(/datum/antagonist/changeling)
-		if(changeling)
-			changeling.adjust_chemicals(-2 * REM * seconds_per_tick)
+	target.adjust_hallucinations(5 SECONDS * REM * seconds_per_tick)
+	var/datum/antagonist/changeling/changeling = IS_CHANGELING(target)
+	changeling?.adjust_chemicals(-2 * REM * seconds_per_tick)
 
 /datum/reagent/pax/peaceborg
 	name = "Synthpax"

@@ -1,6 +1,7 @@
 /// A hallucination that makes us and (possibly) other people look like something else.
 /datum/hallucination/delusion
 	abstract_hallucination_parent = /datum/hallucination/delusion
+	hallucination_tier = HALLUCINATION_TIER_UNCOMMON
 
 	/// The duration of the delusions
 	var/duration = 30 SECONDS
@@ -211,6 +212,7 @@
 	delusion_name = "Syndicate"
 	affects_others = TRUE
 	affects_us = FALSE
+	hallucination_tier = HALLUCINATION_TIER_RARE
 
 /datum/hallucination/delusion/preset/syndies/make_delusion_image(mob/over_who)
 	delusion_appearance = get_dynamic_human_appearance(
@@ -228,6 +230,22 @@
 		),
 	)
 
+	return ..()
+
+/datum/hallucination/delusion/preset/seccies
+	dynamic_delusion = TRUE
+	random_hallucination_weight = 0
+	delusion_name = "Security"
+	affects_others = TRUE
+	affects_us = FALSE
+
+/datum/hallucination/delusion/preset/seccies/make_delusion_image(mob/over_who)
+	delusion_appearance = get_dynamic_human_appearance(
+		outfit_path = /datum/outfit/job/security,
+		bloody_slots = prob(5) ? ALL : NONE,
+		r_hand = prob(15) ? /obj/item/melee/baton/security/loaded : null,
+		l_hand = prob(15) ? /obj/item/melee/baton/security/loaded : null,
+	)
 	return ..()
 
 /// Hallucination used by the nightmare vision goggles to turn everyone except you into mares
