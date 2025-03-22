@@ -27,7 +27,7 @@
 /obj/machinery/computer/camera_advanced/xenobio
 	name = "Slime management console"
 	desc = "A computer used for remotely handling slimes."
-	networks = list("ss13")
+	networks = list(CAMERANET_NETWORK_SS13)
 	circuit = /obj/item/circuitboard/computer/xenobiology
 
 	///The recycler connected to the camera console
@@ -58,7 +58,7 @@
 
 	stored_slimes = list()
 
-/obj/machinery/computer/camera_advanced/xenobio/LateInitialize(mapload)
+/obj/machinery/computer/camera_advanced/xenobio/post_machine_initialize()
 	. = ..()
 	for(var/obj/machinery/monkey_recycler/recycler in GLOB.monkey_recyclers)
 		if(get_area(recycler.loc) == get_area(loc))
@@ -212,7 +212,7 @@ Due to keyboard shortcuts, the second one is not necessarily the remote eye's lo
 		return
 
 	target_mob.visible_message(span_notice("[target_mob] vanishes as [p_theyre()] reclaimed for recycling!"))
-	connected_recycler.use_power(500)
+	connected_recycler.use_energy(500 JOULES)
 	monkeys += connected_recycler.cube_production
 	monkeys = round(monkeys, 0.1) //Prevents rounding errors
 	qdel(target_mob)

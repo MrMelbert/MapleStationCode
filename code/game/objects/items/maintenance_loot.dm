@@ -25,23 +25,23 @@
 
 //A good battery early in the shift. Source of lead & sulfuric acid reagents.
 //Add lead material to this once implemented.
-/obj/item/stock_parts/cell/lead
+/obj/item/stock_parts/power_store/cell/lead
 	name = "lead-acid battery"
 	desc = "A primitive battery. It is quite large and feels unexpectedly heavy."
 	icon = 'icons/obj/maintenance_loot.dmi'
 	icon_state = "lead_battery"
+	force = 10 // double the force of a normal cell
 	throwforce = 10
-	maxcharge = 20000 //decent max charge
-	chargerate = 1400 //charging is about 30% less efficient than lithium batteries.
+	w_class = WEIGHT_CLASS_NORMAL
+	maxcharge = STANDARD_CELL_CHARGE * 60 // initial charge reduced on init
+	chargerate = STANDARD_CELL_RATE * 0.3 //charging is about 70% less efficient than lithium batteries.
 	charge_light_type = null
 	connector_type = "leadacid"
-	rating = 2 //Kind of a mid-tier battery
-	w_class = WEIGHT_CLASS_NORMAL
 	grind_results = list(/datum/reagent/lead = 15, /datum/reagent/toxin/acid = 15, /datum/reagent/water = 20)
 
 //starts partially discharged
-/obj/item/stock_parts/cell/lead/Initialize(mapload)
+/obj/item/stock_parts/power_store/cell/lead/Initialize(mapload)
 	AddElement(/datum/element/update_icon_blocker)
 	. = ..()
-	var/initial_percent = rand(20, 80) / 100
+	var/initial_percent = rand(40, 60) / 100 // 250kJ to 350kJ
 	charge = initial_percent * maxcharge
