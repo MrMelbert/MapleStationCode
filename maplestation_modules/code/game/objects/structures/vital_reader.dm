@@ -423,7 +423,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/vitals_reader/no_hand, 32)
 			var/obj/machinery/computer/operating/op = nearby_thing
 			patient = op.table?.patient
 
-		if(!istype(patient) || (patient.mob_biotypes & MOB_ROBOTIC))
+		if(!istype(patient))
+			continue
+		// skips bots, borgs, and drones - not synths and androids
+		if((patient.mob_biotypes & MOB_ROBOTIC) && !(patient.mob_biotypes & MOB_HUMANOID))
 			continue
 
 		set_patient(patient)
