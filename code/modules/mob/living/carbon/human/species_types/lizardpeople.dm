@@ -206,9 +206,7 @@ Lizard subspecies: SILVER SCALED
 	id = SPECIES_LIZARD_SILVER
 	inherent_biotypes = MOB_ORGANIC|MOB_HUMANOID|MOB_REPTILE
 	inherent_traits = list(
-		TRAIT_HOLY,
-		TRAIT_NOBREATH,
-		TRAIT_PIERCEIMMUNE,
+		TRAIT_PIERCEIMMUNE, // future todo : someone should make pierce immunity per-bodypart rather than blanket
 		TRAIT_RESISTHIGHPRESSURE,
 		TRAIT_RESISTLOWPRESSURE,
 		TRAIT_TACKLING_TAILED_DEFENDER,

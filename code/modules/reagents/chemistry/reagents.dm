@@ -176,7 +176,7 @@
 
 
 /// Called in burns.dm *if* the reagent has the REAGENT_AFFECTS_WOUNDS process flag
-/datum/reagent/proc/on_burn_wound_processing(datum/wound/burn/flesh/burn_wound)
+/datum/reagent/proc/on_burn_wound_processing(datum/wound/flesh/burn_wound)
 	return
 
 /*

@@ -1544,7 +1544,7 @@
 /mob/living/carbon/set_nutrition(set_to, forced)
 	. = ..()
 	var/hungermod = (HAS_TRAIT(src, TRAIT_NOHUNGER) || nutrition > NUTRITION_LEVEL_HUNGRY) ? 0 : (-20 * (1 - (nutrition / NUTRITION_LEVEL_HUNGRY)))
-	add_consciousness_modifier(HUNGER, hungermod)
+	add_consciousness_modifier(HUNGER, round(hungermod, 0.01))
 
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = equipped_speed_mods()

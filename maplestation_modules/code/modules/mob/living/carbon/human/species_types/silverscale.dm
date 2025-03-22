@@ -6,7 +6,7 @@
 	. = ..()
 
 	techweb_point_items += list(
-		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = 65000)
+		/obj/item/organ/internal/tongue/lizard/silver = list(TECHWEB_POINT_TYPE_GENERIC = TECHWEB_TIER_5_POINTS)
 	)
 
 /datum/export/organ/tongue/lizard/silver
@@ -35,23 +35,18 @@
 	/// Tracks what color our glint is, to prevent unnecessary updates
 	VAR_PRIVATE/glint_color
 
+	organ_traits = list(
+		TRAIT_HOLY,
+	)
+
 /obj/item/organ/internal/tongue/lizard/silver/Initialize(mapload)
 	. = ..()
-
 	desc += " Whoever this tongue is attached to will inherit the abilities of the silverscale."
-	desc += span_blue(" These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
-	price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
 
-	//Migrating silverscale traits to the tongue
-	LAZYOR(organ_traits, list(
-		TRAIT_HOLY,
-		TRAIT_NOBREATH,
-		TRAIT_PIERCEIMMUNE,
-		TRAIT_RESISTHIGHPRESSURE,
-		TRAIT_RESISTLOWPRESSURE,
-		TRAIT_VIRUSIMMUNE,
-		TRAIT_WINE_TASTER,
-	))
+/obj/item/organ/internal/tongue/lizard/silver/examine(mob/user)
+	. = ..()
+	. += span_blue("These tongues are highly sought after by scientists galaxy-wide (though they never make open inquries). This is sure to fetch a high \
+		price in the cargo shuttle, or supply a hefty amount of research information if destructively analyzed.")
 
 /obj/item/organ/internal/tongue/lizard/silver/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
@@ -225,7 +220,7 @@
 /datum/species/lizard/silverscale
 	plural_form = "Silverscales"
 	damage_modifier = 0 //It belongs on the tongue now
-	mutantlungs = /obj/item/organ/internal/lungs
+	mutantlungs = /obj/item/organ/internal/lungs/silverscale
 
 /datum/species/lizard/silverscale/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	. = ..()
@@ -343,3 +338,32 @@
 	return to_add
 
 #undef SILVERSCALE_LOST_TONGUE_MOOD_ID
+
+/obj/item/organ/internal/lungs/silverscale
+	name = "silverscale lungs"
+	icon = 'icons/obj/medical/organs/infuser_organs.dmi'
+	icon_state = "lungs"
+	greyscale_config = /datum/greyscale_config/mutant_organ
+	greyscale_colors = "#eeeeee#eeeeee#eeeeee"
+
+	// evolved to smoke better
+	maxHealth = 1.5 * STANDARD_ORGAN_THRESHOLD
+	// breathing in a vacuum is "fine"
+	safe_oxygen_min = 0
+	safe_oxygen_max = 0
+	// more resistant to gas hazards
+	safe_plasma_max = 10
+	safe_co2_max = 20
+	n2o_para_min = 5
+	n2o_sleep_min = 10
+	BZ_trip_balls_min = 10
+	BZ_brain_damage_min = 20
+	tritium_irradiation_moles_min = 10
+	tritium_irradiation_moles_max = 30
+	// wider range of safe pressure / immune to low pressure
+	low_pressure_threshold = 0
+	high_pressure_threshold = ONE_ATMOSPHERE * 3
+
+/obj/item/organ/internal/lungs/silverscale/pre_breath_gas_handling(mob/living/carbon/human/breather, datum/gas_mixture/breath)
+	// Any successful breath gives us healing
+	heal_oxyloss_on_breath(breather, breath)

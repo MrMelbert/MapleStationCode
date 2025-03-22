@@ -157,6 +157,7 @@
 #define VV_HK_PURRBATION "purrbation"
 #define VV_HK_APPLY_DNA_INFUSION "apply_dna_infusion"
 #define VV_HK_TURN_INTO_MMI "turn_into_mmi"
+#define VV_HK_MAKE_ME_TANKY "make_me_tanky"
 
 // misc
 #define VV_HK_SPACEVINE_PURGE "spacevine_purge"
