@@ -48,6 +48,7 @@ type UserData = {
   singleSelection: string | null;
   multiSelection: string[] | null;
   countMethod: VoteSystem;
+  cannotVote?: string;
 };
 
 enum VoteSystem {
@@ -242,7 +243,11 @@ const ChoicesPanel = (props) => {
                   textAlign="right"
                   buttons={
                     <Button
-                      disabled={user.singleSelection === choice.name}
+                      disabled={
+                        !!user.cannotVote ||
+                        user.singleSelection === choice.name
+                      }
+                      tooltip={user.cannotVote}
                       onClick={() => {
                         act('voteSingle', { voteOption: choice.name });
                       }}

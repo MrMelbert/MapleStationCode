@@ -113,6 +113,24 @@
 	return "[contains_vote_in_name ? "[capitalize(name)]" : "[capitalize(name)] vote"] started by [initiator || "Central Command"]."
 
 /**
+ * Called when a mob votes in this vote.
+ *
+ * Checks if the mob can vote in this vote.
+ *
+ * By default, checks the no_dead_vote config flag.
+ * You can override this if you want you vote to ignore this config, but you should call parent otherwise.
+ *
+ * * voter - the mob who is voting
+ *
+ * Return VOTE_AVAILABLE if the mob can vote in this vote.
+ * Return a string with the reason why the mob can't vote in this vote.
+ */
+/datum/vote/proc/can_mob_vote(mob/voter)
+	if(CONFIG_GET(flag/no_dead_vote) && voter.stat == DEAD && !voter.client?.holder)
+		return "Dead players cannot vote."
+	return VOTE_AVAILABLE
+
+/**
  * Gets the result of the vote.
  *
  * non_voters - a list of all ckeys who didn't vote in the vote.
@@ -176,7 +194,7 @@
 	else
 		returned_text += span_bold("[capitalize(name)] Vote")
 
-	returned_text += "\nWinner Selection: "
+	returned_text += "<br>Winner Selection: "
 	switch(winner_method)
 		if(VOTE_WINNER_METHOD_NONE)
 			returned_text += "None"
@@ -193,9 +211,9 @@
 		return span_bold("Vote Result: Inconclusive - No Votes!")
 
 	if (display_statistics)
-		returned_text += "\nResults:"
+		returned_text += "<br>Results:"
 		for(var/option in choices)
-			returned_text += "\n"
+			returned_text += "<br>"
 			var/votes = choices[option]
 			var/percentage_text = ""
 			if(votes > 0)
@@ -212,7 +230,7 @@
 	if(!real_winner) // vote has no winner or cannot be won, but still had votes
 		return returned_text
 
-	returned_text += "\n"
+	returned_text += "<br>"
 	returned_text += get_winner_text(all_winners, real_winner, non_voters)
 
 	return returned_text
@@ -229,11 +247,11 @@
 /datum/vote/proc/get_winner_text(list/all_winners, real_winner, list/non_voters)
 	var/returned_text = ""
 	if(length(all_winners) > 1)
-		returned_text += "\n[span_bold("Vote Tied Between:")]"
+		returned_text += "<br>[span_bold("Vote Tied Between:")]"
 		for(var/a_winner in all_winners)
-			returned_text += "\n\t[a_winner]"
+			returned_text += "<br>\t[a_winner]"
 
-	returned_text += span_bold("\nVote Result: [real_winner]")
+	returned_text += span_bold("<br>Vote Result: [real_winner]")
 	return returned_text
 
 /**
