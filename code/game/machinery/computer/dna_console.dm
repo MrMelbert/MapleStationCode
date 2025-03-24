@@ -205,6 +205,24 @@
 			return
 	return ..()
 
+/// This is the only thing that uses this so let's just cut out the middleman and put it here
+/obj/machinery/computer/scan_consolenew/proc/generate_chromosome()
+	var/static/list/chromosomes
+	if(!chromosomes)
+		chromosomes = list()
+		for(var/chromeindex in subtypesof(/obj/item/chromosome))
+			var/obj/item/chromosome/chrome = chromeindex
+			if(!initial(chrome.weight))
+				break
+			chromosomes[chromeindex] = initial(chrome.weight)
+	var/obj/item/chromosome/newchrome = pick_weight(chromosomes)
+	// Pity chance
+	if(!ispath(newchrome, /obj/item/chromosome/stabilizer))
+		chromosomes[/obj/item/chromosome/stabilizer] += 5
+	else
+		chromosomes[/obj/item/chromosome/stabilizer] = 10
+	return newchrome
+
 /obj/machinery/computer/scan_consolenew/multitool_act(mob/living/user, obj/item/multitool/tool)
 	if(!QDELETED(tool.buffer) && istype(tool.buffer, /datum/techweb))
 		stored_research = tool.buffer
