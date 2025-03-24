@@ -227,10 +227,13 @@
  *
  * * for_dir: The direction to get the trail for
  * * check_reverse: If TRUE, will also check for the reverse direction
+ * For example if you pass dir = EAST it will return the first EAST or WEST trail component
  * * check_diagonals: If TRUE, will also check for any diagonal directions
- * For example if you pass dir = EAST it will return any NORTH or NORTHEAST trail components
+ * For example if you pass dir = EAST it will return the first EAST, NORTHEAST, or SOUTHEAST trail component
+ * * check_reverse_diagonals: If TRUE, will also check for any reverse diagonal directions
+ * For example if you pass dir = EAST it will return the first SOUTHEAST, EAST, NORTHEAST, WEST, SOUTHWEST, or NORTHWEST trail component
  */
-/obj/effect/decal/cleanable/blood/trail_holder/proc/get_trail_holder(for_dir, check_reverse = FALSE, check_diagonals = FALSE, check_reverse_diagonals = FALSE)
+/obj/effect/decal/cleanable/blood/trail_holder/proc/get_trail_component(for_dir, check_reverse = FALSE, check_diagonals = FALSE, check_reverse_diagonals = FALSE)
 	. = LAZYACCESS(trail_components, "[for_dir]")
 	if(.)
 		return .
@@ -259,7 +262,7 @@
  * Returns the new trail, a [/obj/effect/decal/cleanable/blood/trail]
  */
 /obj/effect/decal/cleanable/blood/trail_holder/proc/add_dir_to_trail(new_dir = NORTH)
-	. = get_trail_holder(new_dir, check_reverse = TRUE)
+	. = get_trail_component(new_dir, check_reverse = TRUE)
 	if(.)
 		return .
 

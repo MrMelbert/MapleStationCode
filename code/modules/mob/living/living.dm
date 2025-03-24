@@ -1119,7 +1119,7 @@
 		// if there's no existing trail making a curve would look weird
 		// melbert todo : the illusion breaks if you turn around, but then keep going your initial facing
 		for(var/obj/effect/decal/cleanable/blood/trail_holder/past_trail in get_step(start, REVERSE_DIR(was_facing)))
-			if(past_trail.get_trail_holder(was_facing, check_reverse = TRUE, check_diagonals = TRUE, check_reverse_diagonals = TRUE))
+			if(past_trail.get_trail_component(was_facing, check_reverse = TRUE, check_diagonals = TRUE, check_reverse_diagonals = TRUE))
 				trail_dir |= was_facing
 				// in case we produced an invalid dir: go back on relevant axis
 				if((trail_dir & (NORTH|SOUTH)) == (NORTH|SOUTH))
@@ -1136,7 +1136,7 @@
 		//
 		// if that is the case we will look for another trail (or create a new one)
 		// (this will let fresh blood be laid over very dried blood)
-		var/obj/effect/decal/cleanable/blood/trail/any_trail_component = any_trail.get_trail_holder(trail_dir, check_reverse = TRUE)
+		var/obj/effect/decal/cleanable/blood/trail/any_trail_component = any_trail.get_trail_component(trail_dir, check_reverse = TRUE)
 		if(isnull(any_trail_component) || !any_trail_component.dried)
 			trail = any_trail
 			break
