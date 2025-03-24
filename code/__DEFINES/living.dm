@@ -157,3 +157,6 @@
 #define PIXEL_X_OFFSET "x"
 #define PIXEL_Y_OFFSET "y"
 #define PIXEL_Z_OFFSET "z"
+
+/// Disables headset use, but not internal radio / intercom use
+#define TRAIT_BLOCK_HEADSET_USE "block_headset_use"

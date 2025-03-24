@@ -122,6 +122,9 @@
 					span_userdanger("[user] [hulk_verb]ed [src]!"), span_hear("You hear a sickening sound of flesh hitting flesh!"), null, user)
 	to_chat(user, span_danger("You [hulk_verb] [src]!"))
 	apply_damage(15, BRUTE, wound_bonus=10)
+	// NON-MODULE CHANGES
+	if(user != src)
+		set_headset_block_if_lower(5 SECONDS)
 
 /mob/living/carbon/human/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -196,6 +199,9 @@
 			if(check_block(user, damage, "the [user.name]"))
 				return FALSE
 			apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, MELEE))
+			// NON-MODULE CHANGES
+			if(damage > 5 && user != src)
+				set_headset_block_if_lower(5 SECONDS)
 		return TRUE
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/adult/user, list/modifiers)
