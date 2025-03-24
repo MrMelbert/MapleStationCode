@@ -33,9 +33,9 @@
 	var/list/req_access
 	/// List of accesses needed to use this object: The user must possess at least one access in this list in order to use the object.
 	/// Example: If req_one_access = list(ACCESS_ENGINE, ACCESS_CE)- then the user must have either ACCESS_ENGINE or ACCESS_CE in order to use the object.
-	var/list/req_one_access
+	var/list/req_one_accesS
 
-	/// Custom fire overlay icon, will just use the default overlay if this is null
+	/// Cached custom fire overlay
 	var/custom_fire_overlay
 	/// Particles this obj uses when burning, if any
 	var/burning_particles

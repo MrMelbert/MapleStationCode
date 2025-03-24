@@ -135,3 +135,8 @@
 #define COMSIG_ATOM_PRE_CLEAN "atom_pre_clean"
 	///cancel clean
 	#define COMSIG_ATOM_CANCEL_CLEAN (1<<0)
+
+/// From /atom/proc/update_atom_colour() : (color_changed)
+#define COMSIG_ATOM_COLOR_UPDATED "atom_color_updated"
+	/// Cancels update_appearance call in case you are somehow forced to call it manually to prevent dupe calls
+	#define COMPONENT_CANCEL_COLOR_APPEARANCE_UPDATE (1<<0)

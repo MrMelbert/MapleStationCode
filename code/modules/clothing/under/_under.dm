@@ -100,9 +100,15 @@
 
 	if(damaged_clothes)
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damageduniform")
-		// NON-MODULE CHANGE reworking clothing blood overlays
 	if(accessory_overlay)
 		. += accessory_overlay
+
+/obj/item/clothing/under/separate_worn_overlays(mutable_appearance/standing, mutable_appearance/draw_target, isinhands = FALSE, icon_file)
+	. = ..()
+	if(isinhands)
+		return
+	if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+		. += mutable_appearance('icons/effects/blood.dmi', "uniformblood")
 
 /obj/item/clothing/under/attackby(obj/item/attacking_item, mob/user, params)
 	if(has_sensor == BROKEN_SENSORS && istype(attacking_item, /obj/item/stack/cable_coil))
