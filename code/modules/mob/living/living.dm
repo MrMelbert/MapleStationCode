@@ -1063,8 +1063,11 @@
 		if(!storage_is_important_recurisve && !can_reach_active_storage)
 			active_storage.hide_contents(src)
 
-	if(body_position == LYING_DOWN && !buckled && prob(getBruteLoss()*200/maxHealth))
-		makeTrail(newloc, T, old_direction)
+	if(!HAS_TRAIT(src, TRAIT_NOBLOOD) && !buckled)
+		var/health_check = body_position == LYING_DOWN && prob(getBruteLoss() * 200 / maxHealth)
+		var/bleeding_check = prob(get_bleed_rate() * 20)
+		if(health_check || bleeding_check)
+			makeTrail(newloc, T, old_direction)
 
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
@@ -1086,20 +1089,24 @@
 	if(!trail_type)
 		return
 
-	var/brute_ratio = round(getBruteLoss() / maxHealth, 0.1)
-	if(blood_volume < max(BLOOD_VOLUME_NORMAL*(1 - brute_ratio * 0.25), 0))//don't leave trail if blood volume below a threshold
+	var/brute_ratio = round(getBruteLoss() / (maxHealth * 4), 0.1)
+	var/bleeding_rate =  round(get_bleed_rate() / 4, 0.1)
+	// we only leave a trail if we're below a certain blood threshold
+	// the more brute damage we have, or the more we're bleeding, the less blood we need to leave a trail
+	if(blood_volume < max(BLOOD_VOLUME_NORMAL * (1 - max(bleeding_rate, brute_ratio)), 0))
 		return
 
-	var/bleed_amount = bleedDragAmount()
-	blood_volume = max(blood_volume - bleed_amount, 0) //that depends on our brute damage.
+	if(body_position == LYING_DOWN)
+		bleed(bleedDragAmount(), drip = FALSE)
+
 	var/newdir = get_dir(target_turf, start)
 	if(newdir != direction)
-		newdir = newdir | direction
-		if(newdir == (NORTH|SOUTH))
+		newdir |= direction
+		if(newdir & (NORTH|SOUTH))
 			newdir = NORTH
-		else if(newdir == (EAST|WEST))
+		else if(newdir & (EAST|WEST))
 			newdir = EAST
-	if((newdir in GLOB.cardinals) && (prob(50)))
+	if((newdir in GLOB.cardinals) && prob(50))
 		newdir = REVERSE_DIR(get_dir(target_turf, start))
 	if(!blood_exists)
 		new /obj/effect/decal/cleanable/blood/trail_holder(start, get_static_viruses()) // NON-MODULE CHANGE : Repathing trail to blood
