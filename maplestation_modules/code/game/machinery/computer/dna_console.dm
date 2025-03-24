@@ -1,10 +1,11 @@
 /obj/item/chromosome
+	/// Normally 5, multiplied by 10 for easier use
 	weight = 50
 
 /obj/item/chromosome/stabilizer
 	weight = 10
 
-/generate_chromosome()
+/obj/machinery/computer/scan_consolenew/generate_chromosome()
 	var/static/list/chromosomes
 	if(!chromosomes)
 		chromosomes = list()
