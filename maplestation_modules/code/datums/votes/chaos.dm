@@ -7,6 +7,7 @@
 		"Medium",
 		"High",
 	)
+	count_method = VOTE_COUNT_METHOD_MULTI
 	display_statistics = FALSE
 
 /datum/vote/round_chaos/can_mob_vote(mob/voter)
