@@ -16,6 +16,8 @@
 
 	if(!earslot_overlay)
 		earslot_overlay = image(icon = 'icons/hud/screen_gen.dmi', icon_state = "x")
+		SET_PLANE_IMPLICIT(earslot_overlay, ABOVE_HUD_PLANE)
+		earslot_overlay.layer = HIGH_OBJ_LAYER
 		earslot_overlay.alpha = 200
 	var/atom/movable/screen/inventory/ear_slot = owner.hud_used?.inv_slots[TOBITSHIFT(ITEM_SLOT_EARS) + 1]
 	ear_slot?.add_overlay(earslot_overlay)
