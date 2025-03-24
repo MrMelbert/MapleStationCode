@@ -257,7 +257,7 @@
 /datum/holiday/april_fools/celebrate()
 	. = ..()
 	SSjob.set_overflow_role(/datum/job/clown)
-	SSticker.login_music = 'sound/ambience/clown.ogg'
+	SSticker.set_lobby_music('sound/ambience/clown.ogg', TRUE) // NON-MODULE CHANGE
 	for(var/i in GLOB.new_player_list)
 		var/mob/dead/new_player/P = i
 		if(P.client)

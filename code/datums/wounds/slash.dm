@@ -43,9 +43,6 @@
 	/// Once the blood flow drops below minimum_flow, we demote it to this type of wound. If there's none, we're all better
 	var/demotes_to
 
-	/// The maximum flow we've had so far
-	var/highest_flow
-
 	/// A bad system I'm using to track the worst scar we earned (since we can demote, we want the biggest our wound has been, not what it was when it was cured (probably moderate))
 	var/datum/scar/highest_scar
 
@@ -140,29 +137,23 @@
 		return BLOOD_FLOW_INCREASING
 
 /datum/wound/slash/flesh/handle_process(seconds_per_tick, times_fired)
-
 	if (!victim || HAS_TRAIT(victim, TRAIT_STASIS))
 		return
 
 	// in case the victim has the NOBLOOD trait, the wound will simply not clot on it's own
 	if(limb.can_bleed())
-		set_blood_flow(min(blood_flow, WOUND_SLASH_MAX_BLOODFLOW))
+		if(clot_rate > 0)
+			adjust_blood_flow(-clot_rate * seconds_per_tick)
+			if(QDELETED(src))
+				return
 
 		if(HAS_TRAIT(victim, TRAIT_BLOODY_MESS))
 			adjust_blood_flow(0.25) // old heparin used to just add +2 bleed stacks per tick, this adds 0.5 bleed flow to all open cuts which is probably even stronger as long as you can cut them first
 
-	//gauze always reduces blood flow, even for non bleeders
 	if(limb.current_gauze)
-		if(clot_rate > 0)
-			adjust_blood_flow(-clot_rate * seconds_per_tick)
-		limb.seep_gauze(limb.current_gauze.absorption_rate * seconds_per_tick)
-		adjust_blood_flow(-limb.current_gauze.absorption_rate * seconds_per_tick)
-	//otherwise, only clot if it's a bleeder
-	else if(limb.can_bleed())
-		adjust_blood_flow(-clot_rate * seconds_per_tick)
-
-	if(blood_flow > highest_flow)
-		highest_flow = blood_flow
+		var/gauze_power = limb.current_gauze.absorption_rate
+		limb.seep_gauze(gauze_power * seconds_per_tick)
+		adjust_blood_flow(-gauze_power * seconds_per_tick)
 
 /* BEWARE, THE BELOW NONSENSE IS MADNESS. bones.dm looks more like what I have in mind and is sufficiently clean, don't pay attention to this messiness */
 
@@ -197,8 +188,7 @@
 /// if a felinid is licking this cut to reduce bleeding
 /datum/wound/slash/flesh/proc/lick_wounds(mob/living/carbon/human/user)
 	// transmission is one way patient -> felinid since google said cat saliva is antiseptic or whatever, and also because felinids are already risking getting beaten for this even without people suspecting they're spreading a deathvirus
-	for(var/i in victim.diseases)
-		var/datum/disease/iter_disease = i
+	for(var/datum/disease/iter_disease as anything in victim.diseases)
 		if(iter_disease.spread_flags & (DISEASE_SPREAD_SPECIAL | DISEASE_SPREAD_NON_CONTAGIOUS))
 			continue
 		user.ForceContractDisease(iter_disease)
@@ -210,7 +200,6 @@
 
 	user.visible_message(span_notice("[user] licks the wounds on [victim]'s [limb.plaintext_zone]."), span_notice("You lick some of the wounds on [victim]'s [limb.plaintext_zone]"), ignored_mobs=victim)
 	to_chat(victim, span_green("[user] licks the wounds on your [limb.plaintext_zone]!"))
-
 	var/mob/victim_stored = victim
 	adjust_blood_flow(-0.5)
 
@@ -221,6 +210,8 @@
 
 /datum/wound/slash/flesh/adjust_blood_flow(adjust_by, minimum)
 	. = ..()
+	if(blood_flow > WOUND_MAX_BLOODFLOW)
+		blood_flow = WOUND_MAX_BLOODFLOW
 	if(blood_flow < minimum_flow && !QDELETED(src))
 		if(demotes_to)
 			replace_wound(new demotes_to)

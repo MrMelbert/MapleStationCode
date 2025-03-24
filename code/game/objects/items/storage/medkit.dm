@@ -388,6 +388,7 @@
 		/obj/item/hemostat,
 		/obj/item/cautery,
 		/obj/item/autopsy_scanner,
+		/obj/item/clothing/mask/surgical,
 	))
 
 /obj/item/storage/medkit/coroner/PopulateContents()

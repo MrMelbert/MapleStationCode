@@ -935,9 +935,18 @@
 		var/ash_type = /obj/effect/decal/cleanable/ash
 		if(w_class == WEIGHT_CLASS_HUGE || w_class == WEIGHT_CLASS_GIGANTIC)
 			ash_type = /obj/effect/decal/cleanable/ash/large
+		// NON-MODULE CHANGE
 		var/obj/effect/decal/cleanable/ash/A = new ash_type(T)
-		A.desc += "\nLooks like this used to be \an [name] some time ago."
+		A.desc += "\nLooks like this used to be \an [get_ash_name()] some time ago."
 		..()
+
+// NON-MODULE CHANGE
+/// Return what - when this item is burned into ash - is displayed in the ash's description
+/obj/item/proc/get_ash_name()
+	return name
+
+/obj/item/paper/get_ash_name()
+	return "sheet of paper"
 
 /obj/item/acid_melt()
 	if(!QDELETED(src))
