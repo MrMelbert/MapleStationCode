@@ -1018,7 +1018,8 @@
 
 			target_organ.apply_organ_damage(excess_healing * -1, required_organ_flag = ORGAN_ORGANIC) //1 excess = 5 organ damage healed
 
-	return ..()
+	. = ..()
+	update_bodypart_bleed_overlays()
 
 /mob/living/carbon/heal_and_revive(heal_to = 75, revive_message)
 	// We can't heal them if they're missing a heart
@@ -1494,12 +1495,15 @@
 	else if(handcuffed)
 		ADD_TRAIT(src, TRAIT_RESTRAINED, HANDCUFFED_TRAIT)
 
+/mob/living/carbon/on_standing_up()
+	. = ..()
+	update_bodypart_bleed_overlays()
 
 /mob/living/carbon/on_lying_down(new_lying_angle)
 	. = ..()
 	if(!buckled || buckled.buckle_lying != 0)
 		lying_angle_on_lying_down(new_lying_angle)
-
+	update_bodypart_bleed_overlays()
 
 /// Special carbon interaction on lying down, to transform its sprite by a rotation.
 /mob/living/carbon/proc/lying_angle_on_lying_down(new_lying_angle)

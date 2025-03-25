@@ -277,8 +277,16 @@
 	// negative dirs denote "straight diagonal" dirs
 	else
 		var/real_dir = abs(new_dir)
-		new_trail.setDir(real_dir)
-		new_trail.transform = new_trail.transform.Turn((real_dir & EAST) ? -45 : 225)
+		new_trail.setDir(real_dir & (EAST|WEST))
+		switch(real_dir)
+			if(NORTHEAST)
+				new_trail.transform = new_trail.transform.Turn(-45)
+			if(NORTHWEST)
+				new_trail.transform = new_trail.transform.Turn(45)
+			if(SOUTHEAST)
+				new_trail.transform = new_trail.transform.Turn(-135)
+			if(SOUTHWEST)
+				new_trail.transform = new_trail.transform.Turn(135)
 
 	LAZYSET(trail_components, "[new_dir]", new_trail)
 	vis_contents += new_trail

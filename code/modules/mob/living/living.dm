@@ -1110,7 +1110,7 @@
 	// this is not the same as a diagonal dir. sorry.
 	// this is insteasd denoted by a negative direction (so we don't conflict with real dirs)
 	if(movement_direction in GLOB.diagonals)
-		trail_dir = -1 * ((movement_direction == NORTHEAST || movement_direction == SOUTHWEST) ? EAST : WEST)
+		trail_dir = -1 * movement_direction
 	// the mob is going a direction they were not previously facing
 	// we now factor in their facing direction to make a trail that looks like they're turning
 	// this is done by creating a diagonal dir
