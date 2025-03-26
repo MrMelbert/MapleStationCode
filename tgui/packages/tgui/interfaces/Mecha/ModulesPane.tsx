@@ -309,6 +309,7 @@ const MECHA_SNOWFLAKE_ID_AIR_TANK = 'air_tank_snowflake';
 const MECHA_SNOWFLAKE_ID_WEAPON_BALLISTIC = 'ballistic_weapon_snowflake';
 const MECHA_SNOWFLAKE_ID_GENERATOR = 'generator_snowflake';
 const MECHA_SNOWFLAKE_ID_CLAW = 'lawclaw_snowflake';
+const MECHA_SNOWFLAKE_ID_RCD = 'rcd_snowflake';
 
 export const ModuleDetailsExtra = (props: { module: MechModule }) => {
   const module = props.module;
@@ -329,6 +330,8 @@ export const ModuleDetailsExtra = (props: { module: MechModule }) => {
       return <SnowflakeGeneraor module={module} />;
     case MECHA_SNOWFLAKE_ID_CLAW:
       return <SnowflakeLawClaw module={module} />;
+    case MECHA_SNOWFLAKE_ID_RCD:
+      return <SnowflakeRCD module={module} />;
     default:
       return null;
   }
@@ -1054,5 +1057,51 @@ const SnowflakeLawClaw = (props) => {
         />
       }
     />
+  );
+};
+
+const SnowflakeRCD = (props) => {
+  const { act, data } = useBackend<MainData>();
+  const { ref } = props.module;
+  const { scan_ready, deconstructing, mode } = props.module.snowflake;
+  return (
+    <>
+      <LabeledList.Item label="Destruction Scan">
+        <Button
+          icon="satellite-dish"
+          color={scan_ready ? 'green' : 'transparent'}
+          onClick={() =>
+            act('equip_act', {
+              ref: ref,
+              gear_action: 'rcd_scan',
+            })
+          }
+        />
+      </LabeledList.Item>
+      <LabeledList.Item label="Deconstructing">
+        <Button
+          icon="power-off"
+          content={deconstructing ? 'On' : 'Off'}
+          color={deconstructing ? 'green' : 'blue'}
+          onClick={() =>
+            act('equip_act', {
+              ref: ref,
+              gear_action: 'toggle_deconstruct',
+            })
+          }
+        />
+      </LabeledList.Item>
+      <LabeledList.Item label="Construction Mode">
+        <Button
+          content={mode}
+          onClick={() =>
+            act('equip_act', {
+              ref: ref,
+              gear_action: 'change_mode',
+            })
+          }
+        />
+      </LabeledList.Item>
+    </>
   );
 };

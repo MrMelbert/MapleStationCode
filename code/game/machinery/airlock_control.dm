@@ -127,4 +127,4 @@
 		var/datum/gas_mixture/turf_gasmix = turf.return_air()
 		turf_gasmix.temperature += delta_temperature
 		air_update_turf(FALSE, FALSE)
-	use_power(required_energy * 0.01) // melbert todo - keep an eye on this with the nergy rework
+	use_energy(required_energy * 0.01)

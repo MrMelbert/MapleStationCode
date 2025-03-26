@@ -13,7 +13,7 @@
 	result = /obj/item/melee/baseball_bat/homerun
 	reqs = list(/obj/item/melee/baseball_bat = 1,
 				/obj/item/toy/crayon/red = 1,
-				/obj/item/stock_parts/cell/hyper = 1,
+				/obj/item/stock_parts/power_store/cell/hyper = 1,
 				)
 	tool_behaviors = list(TOOL_WIRECUTTER, TOOL_SCREWDRIVER)
 	time = 2 SECONDS
