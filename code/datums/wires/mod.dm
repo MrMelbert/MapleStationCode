@@ -57,6 +57,7 @@
 	return ..()
 
 /datum/wires/mod/can_reveal_wires(mob/user)
+	// NON-MODULE CHANGE
 	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ROBO_WIRES))
 		return TRUE
 	return ..()

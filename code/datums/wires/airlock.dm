@@ -139,6 +139,7 @@
 		if(WIRE_SHOCK) // Pulse to shock the door for 10 ticks.
 			if(!A.secondsElectrified)
 				A.set_electrified(MACHINE_DEFAULT_ELECTRIFY_TIME, usr)
+			// NON-MODULE CHANGE
 			A.shock(usr, 100- usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_SAFETY)
 			A.safe = !A.safe
@@ -229,6 +230,7 @@
 
 
 /datum/wires/airlock/can_reveal_wires(mob/user)
+	// NON-MODULE CHANGE
 	if(HAS_MIND_TRAIT(user, TRAIT_KNOW_ENGI_WIRES))
 		return TRUE
 

@@ -10,8 +10,7 @@
 /mob/proc/bee_friendly()
 	return 0
 
-
-
+// NON-MODULE CHANGE
 /mob/living/carbon/human/bee_friendly()
 	if(ispodperson(src)) //bees pollinate plants, duh.
 		return TRUE

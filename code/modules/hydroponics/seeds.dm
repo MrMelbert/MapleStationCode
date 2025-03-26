@@ -121,6 +121,7 @@
 			. += span_notice("- [reagent_gene.get_name()] -")
 
 /// Copy all the variables from one seed to a new instance of the same seed and return it.
+// NON-MODULE CHANGE
 /obj/item/seeds/proc/Copy() as /obj/item/seeds
 	RETURN_TYPE(/obj/item/seeds)
 	var/obj/item/seeds/copy_seed = new type(null, TRUE)
@@ -249,6 +250,7 @@
 		t_amount++
 		product_name = parent.myseed.plantname
 
+	// NON-MODULE CHANGE
 	if(product_count >= 1)
 		SSblackbox.record_feedback("tally", "food_harvested", product_count, product_name)
 		user.mind?.adjust_experience(/datum/skill/botany, 2 * rarity * (yield / MAX_PLANT_YIELD) * (potency / MAX_PLANT_POTENCY))
