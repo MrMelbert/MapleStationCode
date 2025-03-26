@@ -113,6 +113,7 @@
 			pain_message = "You feel synthetic sensation wash from your [parse_zone(target_zone)], which you can feel again!",
 			mechanical_surgery = TRUE,
 		)
+		// NON-MODULE CHANGE
 		target.cause_pain(bodypart_to_attach.body_zone, -1 * user.mind?.get_skill_modifier(/datum/skill/cybernetics, SKILL_VALUE_MODIFIER))
 		if(IS_ROBOTIC_LIMB(bodypart_to_attach))
 			user.mind?.adjust_experience(/datum/skill/cybernetics, 100)

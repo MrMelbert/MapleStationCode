@@ -25,9 +25,8 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 			SKILL_LEVEL_LEGENDARY = 1,
 		),
 	)
-	/// If TRUE, this skill is considered to be core or innate
-	/// This means the skill will always be visible to the user, even if at level 0
-	var/innate_skill = FALSE
+	/// Flags relating to this skill
+	var/skill_flags = NONE
 	/// Typepath of skill item reward that will appear when a user finishes leveling up a skill
 	var/skill_item_path
 	/// List associating different messages that appear on level up with different levels

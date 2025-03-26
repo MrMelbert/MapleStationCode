@@ -33,6 +33,7 @@
 	)
 
 /datum/surgery_step/autopsy/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/autopsy_scanner/tool, datum/surgery/surgery, default_display_results = FALSE)
+	// NON-MODULE CHANGE
 	var/xp_given = 200 // some alien species
 	if(isalien(target))
 		xp_given *= 2.5 // truly foreign

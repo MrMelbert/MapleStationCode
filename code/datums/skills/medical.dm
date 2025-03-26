@@ -16,7 +16,7 @@
 			SKILL_LEVEL_LEGENDARY = 0.75,
 		),
 	)
-	innate_skill = TRUE
+	skill_flags = SKILL_ALWAYS_PRINT
 
 /datum/skill/first_aid/level_gained(datum/mind/mind, new_level, old_level, silent)
 	. = ..()

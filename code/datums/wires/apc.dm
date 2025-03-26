@@ -48,6 +48,7 @@
 				A.shorted = FALSE
 			else
 				A.shorted = TRUE
+			// NON-MODULE CHANGE
 			A.shock(usr, 50 - usr.mind?.get_skill_modifier(/datum/skill/electronics, SKILL_PROBS_MODIFIER))
 		if(WIRE_AI) // Disable AI control.
 			A.aidisabled = !mend

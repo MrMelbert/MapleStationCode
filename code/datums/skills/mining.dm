@@ -26,4 +26,4 @@
 		),
 	)
 	skill_item_path = /obj/item/clothing/neck/cloak/skill_reward/mining
-	innate_skill = TRUE
+	skill_flags = SKILL_ALWAYS_PRINT

@@ -5,4 +5,4 @@
 	earned_by = "growing plants"
 	higher_levels_grant_you = "guaranteed seed samples from plants with zero yield \
 		and safety around bees without a suit"
-	innate_skill = TRUE
+	skill_flags = SKILL_ALWAYS_PRINT

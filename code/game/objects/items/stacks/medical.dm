@@ -93,6 +93,7 @@
 				span_notice("[user] starts to apply [src] on [user.p_them()]self..."),
 				span_notice("You begin applying [src] on yourself..."),
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
 			self_delay * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1),
@@ -107,6 +108,7 @@
 				span_notice("[user] starts to apply [src] on [patient]."),
 				span_notice("You begin applying [src] on [patient]..."),
 			)
+		// NON-MODULE CHANGE
 		if(!do_after(
 			user,
 			other_delay * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1),
@@ -310,6 +312,7 @@
 	if(!try_heal_checks(patient, user, 0, 0))
 		return
 
+	// NON-MODULE CHANGE
 	var/treatment_delay = (user == patient ? self_delay : other_delay) * (user.mind?.get_skill_modifier(/datum/skill/first_aid, SKILL_SPEED_MODIFIER) || 1)
 	var/obj/item/bodypart/limb = patient.get_bodypart(check_zone(user.zone_selected))
 

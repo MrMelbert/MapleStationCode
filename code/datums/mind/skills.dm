@@ -73,7 +73,7 @@
 /datum/mind/proc/print_levels(user)
 	var/list/shown_skills = list()
 	for(var/datum/skill/known_skill as anything in known_skills)
-		if(initial(known_skill.innate_skill) || known_skills[known_skill][SKILL_LVL] > SKILL_LEVEL_NONE) //Do we actually have a level in this?
+		if((initial(known_skill.skill_flags) & SKILL_ALWAYS_PRINT) || known_skills[known_skill][SKILL_LVL] > SKILL_LEVEL_NONE) //Do we actually have a level in this?
 			shown_skills += known_skill
 	if(!length(shown_skills))
 		to_chat(user, span_notice("You don't seem to have any particularly outstanding skills."))

@@ -1069,6 +1069,7 @@
 	if(!delay && !tool_start_check(user, amount))
 		return
 
+	// NON-MODULE CHANGE
 	if(tool_behaviour == TOOL_MINING && user.mind)
 		delay *= user.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
 		if(prob(user.mind.get_skill_modifier(/datum/skill/mining, SKILL_PROBS_MODIFIER)))

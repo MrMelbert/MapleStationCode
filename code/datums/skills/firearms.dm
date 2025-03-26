@@ -15,4 +15,4 @@
 			SKILL_LEVEL_LEGENDARY = -20,
 		),
 	)
-	innate_skill = TRUE
+	skill_flags = SKILL_ALWAYS_PRINT
