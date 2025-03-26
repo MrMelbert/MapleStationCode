@@ -89,10 +89,14 @@ const getActiveCategory = (
   return null;
 };
 
+type bodypartPath = string;
+type limbDatumPath = string;
+
 type Data = {
   // limbs: LimbCategory[];
   selected_limbs: string[] | null;
   preview_flat_icon: string;
+  unavailable_paths: Record<limbDatumPath, string>[];
 };
 
 export type LimbCategory = {
@@ -103,22 +107,25 @@ export type LimbCategory = {
 type Limb = {
   name: string;
   tooltip: string;
-  path: string;
+  path: bodypartPath;
+  datum_type: limbDatumPath;
 };
 
 const LimbSelectButton = (props: {
   select_limb: Limb;
   selected_limbs: string[] | null;
 }) => {
-  const { act, data } = useBackend<Limb>();
+  const { act, data } = useBackend<Data>();
   const { select_limb, selected_limbs } = props;
+  const { unavailable_paths } = data;
   const is_active = selected_limbs?.includes(select_limb.path);
   return (
     <Button.Checkbox
       checked={is_active}
       content={select_limb.name}
-      tooltip={select_limb.tooltip}
-      tooltipPosition="right"
+      tooltip={unavailable_paths[select_limb.datum_type] || select_limb.tooltip}
+      disabled={unavailable_paths[select_limb.datum_type]}
+      tooltipPosition="bottom"
       onClick={() =>
         act(is_active ? 'deselect_path' : 'select_path', {
           path_to_use: select_limb.path,
