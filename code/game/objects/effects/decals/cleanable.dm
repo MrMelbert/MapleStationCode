@@ -40,13 +40,7 @@
 					handle_merge_decal(C)
 					return INITIALIZE_HINT_QDEL
 
-	if(LAZYLEN(diseases))
-		var/list/datum/disease/diseases_to_add = list()
-		for(var/datum/disease/D in diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-				diseases_to_add += D
-		if(LAZYLEN(diseases_to_add))
-			AddComponent(/datum/component/infective, diseases_to_add)
+	add_viruses(diseases)
 
 	AddElement(/datum/element/beauty, beauty)
 
@@ -65,6 +59,15 @@
 	if(T && is_station_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 	return ..()
+
+/// Adds viruses to the decal
+/obj/effect/decal/cleanable/proc/add_viruses(list/datum/disease/diseases)
+	var/list/datum/disease/diseases_to_add
+	for(var/datum/disease/virus as anything in diseases)
+		if(virus.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+			LAZYADD(diseases_to_add, virus)
+	if(LAZYLEN(diseases_to_add))
+		AddComponent(/datum/component/infective, diseases_to_add)
 
 /obj/effect/decal/cleanable/proc/replace_decal(obj/effect/decal/cleanable/C) // Returns true if we should give up in favor of the pre-existing decal
 	if(mergeable_decal)

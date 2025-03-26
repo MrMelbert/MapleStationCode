@@ -19,6 +19,8 @@
 		var/datum/brain_trauma/BT = T
 		BT.on_death()
 
+	update_bodypart_bleed_overlays()
+
 /mob/living/carbon/proc/inflate_gib() // Plays an animation that makes mobs appear to inflate before finally gibbing
 	addtimer(CALLBACK(src, PROC_REF(gib), DROP_BRAIN|DROP_ORGANS|DROP_ITEMS), 25)
 	var/matrix/M = matrix()
