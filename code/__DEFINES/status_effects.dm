@@ -171,3 +171,8 @@
 #define adjust_static_vision_up_to(duration, up_to) adjust_timed_status_effect(duration, /datum/status_effect/static_vision, up_to)
 #define set_static_vision(duration) set_timed_status_effect(duration, /datum/status_effect/static_vision)
 #define set_static_vision_if_lower(duration) set_timed_status_effect(duration, /datum/status_effect/static_vision, TRUE)
+
+#define adjust_headset_block(duration) adjust_timed_status_effect(duration, /datum/status_effect/block_headset_use)
+#define adjust_headset_block_up_to(duration, up_to) adjust_timed_status_effect(duration, /datum/status_effect/block_headset_use, up_to)
+#define set_headset_block(duration) set_timed_status_effect(duration, /datum/status_effect/block_headset_use)
+#define set_headset_block_if_lower(duration) set_timed_status_effect(duration, /datum/status_effect/block_headset_use, TRUE)
