@@ -29,7 +29,7 @@ handles linking back and forth.
 	allow_standalone = TRUE,
 	force_connect = FALSE,
 	mat_container_flags = NONE,
-	list/mat_container_signals = null
+	list/mat_container_signals = null,
 )
 	if (!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
